@@ -697,7 +697,7 @@ sources:
     local: resources/web/wand125-linear-certificates-2026-10-02/
     source_key: '[wand125 linear certificates 2026-10-02]'
     scope: {n_values: [83, 101, 102, 103, 104, 105]}
-    reviewed: '2026-10-02'
+    reviewed: '2026-10-03'
     source_date: '2026-10-02'
     disposition: current-report
     replay_disposition: case-specific
@@ -705,6 +705,7 @@ sources:
     evidence:
       - E-n083-wand125-linear-935-report
       - E-n101-wand125-linear-1028-report
+      - E-n101-wand125-linear-1028-source-replay
     notes: >-
       Revision 0c35d909764997ead04dfd90081c9fe9af8d07f2, retrieved at 2026-10-02T07:47Z for
       jlevy/squares#294 (the n = 101 certificate, first committed at af1db07b) and its
@@ -713,8 +714,11 @@ sources:
       had not registered. Both are recorded as reported lower bounds (T-073), above Green's
       reported values at n = 83 and 101; by monotonicity the n = 101 value is also the
       strongest report at n = 102 to 105, and at n = 106 Nagamochi's is higher. The exact
-      audit and the replay's checks before its first angle pass, one angle of each was
-      replayed, and a negative control refused two mutated n = 101 measures. The 2 October
+      audit and the replay's checks before its first angle pass, and a negative control
+      refused two mutated n = 101 measures. The n = 101 certificate's complete replay of 2
+      October matched the shipped run at all 201 directions
+      (E-n101-wand125-linear-1028-source-replay), which put n = 101 to 105 in the verified
+      lane (T-080); at n = 83 one angle was replayed, to price the replay. The 2 October
       review read the certificates and the checker, with no blocking defect (T-073 at C1). The source's margin over Green at n = 83, "more than 0.0833", is
       false (it is 0.083266...); the bound is unaffected. The issue announces n = 82 at 9.32,
       which no revision publishes yet. A later revision, 06eeb40c, adds three

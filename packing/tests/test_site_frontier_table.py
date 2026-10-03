@@ -182,11 +182,17 @@ def test_the_table_fits_its_track_at_1280_and_scrolls_in_its_wrap_below(
     widths = {cell["words"]: cell["width"] for cell in wide["head"]}
     assert widths["n"] < 50
     assert widths["Recent"] < 96
-    # At 1280 the table is stretched to its track; below it keeps its own width, 1192
-    # pixels since the table has no frame (2026-10-02, think-wadm), 1194 before.
+    # At 1280 the table is stretched to its track; below it keeps its own width, the same
+    # at every narrower window: 1192 pixels since the table has no frame (2026-10-02,
+    # think-wadm), 1194 before, and 1180 since 3 October 2026, when an exact gap with a
+    # numerator or denominator of more than eight digits became its decimal (n = 68's
+    # 4512425581603/15625000000000 was the widest gap; GAP_DIGITS).
+    own = laid[WIDTHS[1]]["table_width"]
+    assert own <= wide["table_width"]
+    assert own == pytest.approx(1180, abs=10)
     for width in WIDTHS[1:]:
         assert laid[width]["scrolls"] > 0, width
-        assert laid[width]["table_width"] == pytest.approx(wide["table_width"], abs=10), width
+        assert laid[width]["table_width"] == pytest.approx(own, abs=1), width
     assert [laid[width]["page_scrolls"] for width in WIDTHS] == [0] * len(WIDTHS)
 
 
@@ -245,10 +251,11 @@ def test_the_table_still_sorts_filters_and_opens(page: Any, laid: dict[int, Any]
     # and s(59), s(60) and s(61) made 44; the replays recorded later that day (T-048,
     # T-069, T-071, T-074 and s(77), s(78)) made 60; T-064's replay of 3 October, which
     # proved nine k^2 - 3 cases, made 69; T-075's replays the same day took n = 83, 91 and
-    # 96 off Nagamochi's bound and made 72, the cases `recent_lower_bounds` names.
+    # 96 off Nagamochi's bound and made 72; T-080's replayed linear certificate took
+    # n = 101 to 105 off it and made 77, the cases `recent_lower_bounds` names.
     page.get_by_label("recent only").check()
-    assert page.locator(".site-table-tools .site-count").inner_text() == "72 of 324 cases"
-    assert shown.count() == 72
+    assert page.locator(".site-table-tools .site-count").inner_text() == "77 of 324 cases"
+    assert shown.count() == 77
     assert shown.first.get_attribute("id") == "n-11"
     page.get_by_label("recent only").uncheck()
     assert shown.count() == 324

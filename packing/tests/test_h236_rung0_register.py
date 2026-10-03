@@ -109,9 +109,12 @@ def test_the_register_rows_quote_the_verdict_and_pin_the_manifest() -> None:
     assert "rho = 808514697/200000000000" in claim
     assert "labels [3,4,2,5,0,1,8,10,6,9,7]" in claim
     assert reduction["evidence"] == ["E-n011-h236-rung0-reduction"]
+    # The radius computation gained its own same-implementation replay entry on
+    # 2026-10-02; the composition note keeps T-036 at C2 regardless.
     assert theorem["evidence"] == [
         "E-n011-h236-rung0-reduction",
         "E-n011-trump-local-theorem-first-clause",
+        "E-n011-trump-isolation-radius",
     ]
     entry = evidence["E-n011-h236-rung0-reduction"]
     assert MANIFEST_DIGEST in " ".join(entry["certificate"].split())

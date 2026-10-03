@@ -164,6 +164,7 @@ def check() -> list[str]:
         not in {
             ("packing", "sqsearch", "target"),
             ("packing", "sqverify_exact", "target"),
+            ("packing", "sqverify_fast", "target"),
         }
         and not any(
             part in IGNORED_PARTS or part.startswith(".")

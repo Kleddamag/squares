@@ -263,23 +263,51 @@ def test_the_chain_is_every_result_on_the_case_oldest_first(
 def test_the_chain_on_eleven_squares_says_how_each_result_stands_there(
     overview: overview_data.Overview, bodies: dict[str, str]
 ) -> None:
-    """T-060 holds the case and T-037 is superseded; T-047 is the current best at other
-    cases and superseded at n = 11, and its step says both."""
+    """T-060 holds the case, and T-037 and T-047 are superseded. T-047 was the current best
+    at other cases until 2026-10-02, when wand125's replayed rectangle certificates
+    (T-045, T-070) took the last two it held, n = 26 and 29; superseded everywhere, its
+    step draws the chip and has nothing to add about this case."""
     steps = dict(STEP.findall(bodies[SETTLED]))
     assert steps["t-060"] == overview_sections.standing_key(HOLDS)
     assert steps["t-037"] == overview_sections.standing_key(SUPERSEDED)
     wide = _result(overview, "T-047")
-    assert wide.standing == HOLDS
+    assert wide.standing == SUPERSEDED
     assert result_overview.standing_on(wide, [11]) == SUPERSEDED
     step = bodies[SETTLED].split('data-step="t-047"', 1)[1].split("</li>", 1)[0]
+    assert overview_sections.is_superseded(wide)
+    assert ">superseded<" in step
+    assert "on this case" not in step
+    assert steps["t-047"] == overview_sections.standing_key(SUPERSEDED)
+
+
+def test_a_chain_step_says_both_standings_of_a_result_that_holds_elsewhere(
+    overview: overview_data.Overview, bodies: dict[str, str]
+) -> None:
+    """T-045 is the current best at other cases and superseded at n = 32 by Evan Daniel's
+    s(32) = 6 (T-051), and its step in that chain says both. T-047 on n = 11 was this
+    test's case until 2026-10-02, when it stopped holding anywhere."""
+    steps = dict(STEP.findall(bodies["T-051"]))
+    assert steps["t-051"] == overview_sections.standing_key(HOLDS)
+    wide = _result(overview, "T-045")
+    assert wide.standing == HOLDS
+    assert result_overview.standing_on(wide, [32]) == SUPERSEDED
+    step = bodies["T-051"].split('data-step="t-045"', 1)[1].split("</li>", 1)[0]
     # A result that still stands draws no chip, so the step has none for its standing
     # elsewhere and says in words how it stands on this case.
     assert not overview_sections.is_superseded(wide)
     assert ">current best<" not in step
+    assert ">superseded<" not in step
+    assert "on this case, superseded by <a href=" in step
+    assert steps["t-045"] == overview_sections.standing_key(SUPERSEDED)
+
+
+def test_a_result_superseded_in_part_stays_current_in_its_chain(
+    bodies: dict[str, str],
+) -> None:
+    """T-036, which T-060 supersedes only in part, is current in n = 11's chain, and its
+    step says it is superseded in part, by T-060, linked (think-7df0)."""
+    steps = dict(STEP.findall(bodies[SETTLED]))
     t060 = f'<a href="{overview_sections.result_url("T-060")}">T-060</a>'
-    assert f"on this case, superseded by {t060}" in step
-    assert steps["t-047"] == overview_sections.standing_key(SUPERSEDED)
-    # T-036, which T-060 supersedes only in part, is current, and its step says so.
     assert steps["t-036"] != overview_sections.standing_key(SUPERSEDED)
     t036 = bodies[SETTLED].split('data-step="t-036"', 1)[1].split("</li>", 1)[0]
     in_part = 'data-standing="superseded-in-part">superseded</span>'
@@ -287,8 +315,8 @@ def test_the_chain_on_eleven_squares_says_how_each_result_stands_there(
 
 
 def test_a_chain_names_only_the_successors_on_its_own_cases(bodies: dict[str, str]) -> None:
-    """T-019 is about n = 17 to 19 and superseded by T-020, T-030, T-043 and T-046; on
-    n = 17's chain its step names only T-043, which holds that case (think-6zg1)."""
+    """T-019 is about n = 17 to 19 and superseded on each; on n = 17's chain its step
+    names only the result that holds that case, T-043 (think-6zg1)."""
     step = bodies["T-043"].split('data-step="t-019"', 1)[1].split("</li>", 1)[0]
     chips = step.split('<p class="site-result-step-chips">', 1)[1].split("</p>", 1)[0]
     assert re.findall(r'href="all-results\.html#(t-\d+)"', chips) == ["t-043"]

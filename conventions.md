@@ -322,6 +322,26 @@ independent external certificate, repository replay, and repository audit are se
 facts. Running the source generator’s own checker is useful evidence but does not become
 an independent implementation.
 
+**Every check names its code, and whose it is.**
+[checked: evidence schema and `devtools.verifier_registry`] An evidence entry whose
+method runs code lists the programs that verified it in `verifiers`, by their ids in
+[`verifiers.yaml`](packing/frontier/verifiers.yaml), each external or first-party with
+the digests that ran.
+Its `relationship_to_generator` says whether those programs are the producer’s own code
+(`same-implementation`), reuse named parts of it (`shared-components`, which lists
+them), or share none of it (`independent-implementation`, which names the record of what
+its authors read).
+[epistemics.md → Which Code Confirmed It](epistemics.md#which-code-confirmed-it) defines
+the values; `devtools.backfill_verifier_relation` fills `verifiers` and audits the
+relation after a merge.
+
+**“Confirmed” says which confirmation.**
+[checked in the register’s prose; convention elsewhere] Wherever a claim, a case record,
+a review or a reply on an issue says a result is confirmed, it says how: reproduced with
+the producer’s code, re-implemented sharing the producer’s components, or independently
+re-implemented. “Confirmed by a replay” alone does not tell a reader whether a second
+program agreed.
+
 **Claims are separated by assurance**—reported, numerically checked, or formally
 verified—and citations sit near the claims they support.
 “Verified” is reserved for the formal level.

@@ -401,6 +401,9 @@ def test_actual_article_renders_all_retained_figures_and_pinned_sources() -> Non
         "D4_BAN_REGIONS",
         "D4_REGIONS",
         "D4_BANS",
+        "LOCAL_RADII_TABLE",
+        "ROLE_MAP_TABLE",
+        "COVER_SITES_TABLE",
     }
     said = " ".join(" ".join(caption.split()) for caption in written)
     for phrase in (
@@ -489,7 +492,10 @@ def test_the_front_is_the_shared_components_in_the_owners_form(
             "<strong>Joshua Levy</strong></a></span>"
         ),
         "<span>Agents: <strong>GPT-6 Astra</strong> and <strong>GPT-6 Sol</strong></span>",
-        f'<span class="edition">{release.OPTIMALITY_REVIEW_EDITION}</span>',
+        (
+            f'<span class="edition">{release.OPTIMALITY_REVIEW_EDITION} '
+            '(<a href="#version-history">version history</a>)</span>'
+        ),
         (
             '<span class="publication-date">'
             f"Original proof {release.OPTIMALITY_PROOF_PUBLISHED} · "
@@ -511,7 +517,7 @@ def test_the_front_is_the_shared_components_in_the_owners_form(
         f"- [{address}](https://{address})\n"
         "- Human oversight: [**Joshua Levy**](https://x.com/ojoshe)\n"
         "- Agents: **GPT-6 Astra** and **GPT-6 Sol**\n"
-        f"- {release.OPTIMALITY_REVIEW_EDITION}\n"
+        f"- {release.OPTIMALITY_REVIEW_EDITION} ([version history](#version-history))\n"
         f"- Original proof {release.OPTIMALITY_PROOF_PUBLISHED} · "
         f"Last revised {release.OPTIMALITY_REVIEW_REVISED}\n\n"
     )
@@ -541,7 +547,9 @@ def test_a_table_keeps_to_the_column_and_scrolls_inside_its_wrap() -> None:
     assert html.index(shared) < html.index(css)
     article = html.split('<article class="kpress kpress-doc kpress-prose cert-page n11-paper">')
     assert len(article) == 2
-    assert len(re.findall(r'<div class="kpress-table-wrap"><table\b', article[1])) == 2
+    # The branch table, the frame legend, the role map, the two tables of Appendix C
+    # and the version history: each is wrapped, and the wrap is what the rule caps.
+    assert len(re.findall(r'<div class="kpress-table-wrap"><table\b', article[1])) == 6
 
 
 @pytest.mark.skipif(

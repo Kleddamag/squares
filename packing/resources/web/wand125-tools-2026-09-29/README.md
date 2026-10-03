@@ -56,7 +56,12 @@ separates two citable claims in the [results register](../../../frontier/RESULTS
   `general_pose_tree`. This is a row-scan claim; it does not independently establish the
   global counting theorem or rectangle-density coverage.
 
-Neither registration promotes a frontier bound.
+Neither registration promotes a frontier bound. 
+The [ceiling resolution](../../../../docs/project/reviews/review-2026-10-02-wand125-ceiling-resolution.md)
+of 2 October proves the ceiling in corrected form, exactly for each $n=1,\dots,100$, in
+[exact ceiling certificates](receipts/ceiling-certificates-2026-10-02.json.gz) with a
+[summary receipt](receipts/ceiling-certificates-2026-10-02.json): `B·UB(n)` at the 64
+integer-grid rows and the update's `B(1+D)·UB(n)` at all 100.
 Transfers and rescaling must produce a fresh certificate with exact mass below the
 target count and complete coverage; search success and a coverage-only acceptance
 message are insufficient.

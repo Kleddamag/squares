@@ -34,6 +34,7 @@ PATTERN_PROBES = (
     "packing/src/sqpack/research/canonical.py",
     "packing/sqsearch/src/main.rs",
     "packing/sqverify_exact/src/lib.rs",
+    "packing/sqverify_fast/src/rotated.rs",
     "packing/cases/small_n/optimal_moduli.py",
     "packing/devtools/render_defects.py",
     "packing/devtools/assess_frontier_rigidity.py",

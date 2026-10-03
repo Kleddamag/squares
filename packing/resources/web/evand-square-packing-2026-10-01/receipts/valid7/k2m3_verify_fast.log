@@ -1,0 +1,41 @@
+# command: sh /tmp/claude-0/-home-user-squares/4ea49914-96b4-51a9-a2a9-c5603fe593f4/scratchpad/k2m3_verify_fast.sh
+# cwd: source/s12 of the October 1 evand packet, as retained; verify.sh changes to s12/ itself and writes only to a temporary directory
+# python3: packing/.venv/bin/python3 first on PATH: CPython 3.14.7 with numpy 2.5.2
+# host: 4 cores; load 19.75 14.33 7.21; started 2026-10-02T19:32:56Z
+--- hashes
+L4_k02_box7.txt: OK
+L4_k02_family.txt: OK
+L4_k02_exact.json: OK
+qx2_zm/checker/qx2_zm.py: OK
+qx2_zm/checker/zm_mixed.py: OK
+qx2_zm/checker/zeromargin.py: OK
+qx2_zm/checker/mixed_cover.py: OK
+qx2_zm/runV3_6294052a_leaves.jsonl.gz: OK
+qx2_zm/runV3_6294052a_leaves.out: OK
+qx2_zm/lemmaZ.out: OK
+--- the box cover: well-formed, exact total < 46, D4-invariant measure (search/qx2_records.py, own parser)
+    cover: s = 7, D = 5, W = 1000000000000: 0 points, 800 axis-parallel segments on 60 lines, 1 polygon = [9/5, 26/5]^2 with mass = area = 289/25; total = 5701378693611/125000000000 = 45.611029548888; < 46: True; D4-invariant: True
+    cover: CLEAN
+--- the family file rebuilds the box cover exactly; sigma = 0, D > 3/4 (search/qx2_family_check.py)
+    a = 9/5; one period of the profile: atoms 9/5 + layer 1/5 = 2  (sigma = 0)
+    profile mirror-symmetric: True; corner module diagonal-symmetric: True
+    nu(C) = 1135633136217/500000000000 = 2.271266272434; m_v = 220372778697/250000000000 = 0.881491114788; D = 423621306389/500000000000 = 0.847242612778; 4D > 3: True
+    box k = 7: 800 segments built from the family; file has 800; identical multisets: True; Lebesgue square [9/5,26/5]^2 with density 1: True
+    total = 5701378693611/125000000000 = 45.611029548888; k^2 - 4D = 5701378693611/125000000000; equal: True; < k^2 - 3: True
+    FAMILY CHECK OK
+--- Lemma Z: the theta = 0 face, exact (shipped checker, qx2_zm.py axis)
+    Lemma Z (theta = 0 face) on the box cover: 900 one-sided limit corners on a 16^2 grid over [1/2,7/2]^2; min = 1 = 1.000000000000000 at ('1/2', '5/2', '1', '-1'); exactly tight: 188; OK
+    identical to the shipped qx2_zm/lemmaZ.out
+--- shipped run V3 (qx2_zm/): header shas = checker/ + cover, settings, 9,800 D4 roots, every leaf, coverage
+    header: sha256 of qx2_zm.py 6294052a…, zm_mixed.py 1fd20346…, zeromargin.py 640fe453…, mixed_cover.py bb89de15…, input c0a67509… = the shipped files
+    argv: search/qx2_zm.py search/qx2_data/L4_k02_box7.txt --depth 18 --exact-umax 1/2 --exact-from 3 --dump-leaves (pitch, u-bins default 1/10, 8; whole region; EXACT on)
+    roots: exactly the 9800 boxes of [0,7/2]^2 x u in [0,1/2] (pitch 1/10, 8 u-bins), each once
+    leaves: 32079 (2191 of zero volume: AXIS/EMPTY at a single angle), all certifying kinds, labels consistent, census = leaf lists, boxes = 2 leaves - 1 per root, UNCERT 0
+    coverage: in every root the positive-volume leaves are interior-disjoint and the 2308 uncovered parts (the clip_bin slabs) hold no admissible pose with u > 0; volume: leaves 4.728534589 + slabs 1.396465411 = 49/8 (exact) = the region's (m/2)^2 / 2: True
+    census = .out: boxes 54358, max depth 17, CPU 81377 s; LEB 689, CAP 374, EXACT 9763, EXACT0 381, EXACT45 759, AXIS 61, SYM 1171, PIECE 15926, EMPTY 2955; VERIFIED-D4
+    record: CLEAN
+--- Lean data (lean/Sqpack/BentzData.lean) regenerated from the shipped cover and family
+    wrote /tmp/tmp.HOOzfT3z72/lean/BentzData.lean: 800 segments, 70 nonzero table entries
+    identical to lean/Sqpack/BentzData.lean
+s(k^2 - 3) = k bundle: OK
+# finished 2026-10-02T19:33:12Z; exit 0; wall 15.849 s; CPU 5.2 s (user 5.039 + sys 0.179); load 21.16 15.01 7.59

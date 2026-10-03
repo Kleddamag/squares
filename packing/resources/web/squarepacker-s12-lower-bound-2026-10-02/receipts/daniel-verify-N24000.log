@@ -1,0 +1,13 @@
+# command: /tmp/claude-0/-home-user-squares/4ea49914-96b4-51a9-a2a9-c5603fe593f4/scratchpad/aa/verify-target-packet/release/verify s12_lower_3.969118.txt 12 24000 2 0
+# cwd: scratch run directory holding s12_lower_3.969118.txt restored from this packet (sha256 6ad9b0e8...7578); verify built by cargo 1.97.0 --release from the September 26 evand packet's s12/verify (main.rs blob 0e8035a3, identical at 7d6f46d9), binary sha256 9e79ec32; reniced to 10 after a container restart killed the first run
+# python3: not used by this command
+# host: 4 cores; load 13.08 5.79 2.27; started 2026-10-02T19:27:05Z
+D4-symmetric atom set: true  -> angles cover [0,45] deg
+atoms=1736 total weight = 119738036/10000000 = 11.973804
+s = 31360/7901 = 3.969118
+angles: k=0..9942 (N=24000), covering [0,45deg]
+min covered weight over ALL placements = 10000056/10000000 = 1.000006  (at angle k=0)
+VERIFIED: every CLOSED unit square inside C covers weight >= 1, and total weight < 12.
+==> 12 unit squares cannot be packed into any square of side < 31360/7901 = 3.969117833,
+    i.e.  s(12) >= 3.969117833
+# finished 2026-10-02T20:02:39Z; exit 0; wall 2134.403 s; CPU 982.4 s (user 978.986 + sys 3.402); load 16.94 18.64 16.94

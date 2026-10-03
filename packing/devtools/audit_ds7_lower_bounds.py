@@ -343,6 +343,13 @@ def reported_payload(candidate: Candidate, n: int) -> dict[str, Any]:
         f"n={candidate.base_n}; reference [8] is Green's private communication (2000). "
         "The source proof has not been recovered."
     )
+    if candidate.theorem == 9 and candidate.k is not None and candidate.k >= 4:
+        # docs/project/reviews/review-2026-10-02-green-ds7-theorem9.md
+        note += (
+            " The unavoidable-set argument DS7's Figure 34 illustrates does not prove it: "
+            f"at k={candidate.k} that point pattern leaves a unit square empty "
+            "(devtools.check_green_ds7)."
+        )
     if n != candidate.base_n:
         note += f" Inherited at n={n} by monotonicity."
     if candidate.theorem == 10 and candidate.k == 4:

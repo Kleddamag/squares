@@ -30,19 +30,25 @@ from sqpack.cli.validate import main
 from sqpack.yamlio import safe_load
 from tests import site_browser
 
-#: (proved, open) at each corpus the frontier-corpus step has summarized.
+#: (proved, open) at each corpus the frontier-corpus step has summarized. 2026-10-02: the
+#: replayed zmx2 sweeps of the s(60) and s(59) mixed covers (T-062, T-063, T-066) proved
+#: n = 59, 60 and 61 in the formal lane, three more in every corpus; later that day the
+#: completed sweeps of the s(77) cover (T-067) proved n = 77 and 78, two more. 2026-10-03:
+#: the full Valid7 replay and the built Lean reduction (T-064) proved n = 97, 118, 141,
+#: 166, 193, 222, 253, 286 and 321, which meets the reported lane at every corpus.
 FRONTIER_LANE_SPLIT: dict[str, tuple[int, int]] = {
-    "n=1..100": (39, 61),
-    "n=1..200": (51, 149),
-    "n=1..324": (63, 261),
+    "n=1..100": (45, 55),
+    "n=1..200": (61, 139),
+    "n=1..324": (77, 247),
 }
 
-# Source-reported closures from T-062 to T-064 change this lane alone; the
-# verified/formal lane above remains open until certificate replay.
+# Source-reported closures from T-062 to T-064, and T-066 and T-067 at n = 59 and 77,
+# change this lane alone; the verified/formal lane above remains open until
+# certificate replay.
 REPORTED_LANE_SPLIT: dict[str, tuple[int, int]] = {
-    "n=1..100": (43, 57),
-    "n=1..200": (59, 141),
-    "n=1..324": (75, 249),
+    "n=1..100": (45, 55),
+    "n=1..200": (61, 139),
+    "n=1..324": (77, 247),
 }
 
 WORKFLOW = Path(__file__).resolve().parents[2] / ".github/workflows/packing-validation.yml"
@@ -2167,8 +2173,9 @@ def test_frontier_contract_accepts_the_declared_schema_metadata(
         f"{corpus.count} artifacts, n = {corpus.label[2:]}; formal lane: "
         f"{proved} proved, {open_cases} open"
     ) in stdout
-    # T-062 to T-064 close twelve cases in the reported lane only. Keep this
-    # expectation independent of the production count tuple.
+    # T-062 to T-064, T-066 and T-067 close fourteen cases in the reported lane; three of
+    # them, n = 59, 60 and 61, are also closed in the formal lane since 2026-10-02.
+    # Keep this expectation independent of the production count tuple.
     reported_proved, reported_open = REPORTED_LANE_SPLIT[corpus.label]
     assert f"reported lane: {reported_proved} proved, {reported_open} open" in stdout
 
@@ -2818,6 +2825,7 @@ def test_the_edit_tier_cannot_under_run() -> None:
     suite_d = names(fast=False, suite_d=True)
     geometry = names(fast=False, geometry=True)
     typecheck = names(fast=False, typecheck=True)
+    measure_verifier = names(fast=False, measure_verifier=True)
 
     assert records <= edit <= fast <= everything
     assert fast - edit == {step.name for step in validate.STEPS if step.broad}, (
@@ -2836,6 +2844,7 @@ def test_the_edit_tier_cannot_under_run() -> None:
         suite_c,
         suite_d,
         sweeps,
+        measure_verifier,
     ]
     assert set().union(*parts) == fast
     for index, part in enumerate(parts):
@@ -3056,6 +3065,19 @@ def test_the_pull_request_surface_defers_only_what_was_measured() -> None:
     turns on: all eight failures CI caught on the `T-021` branch were sub-0.15s record
     comparisons, 0.46s of call time between them. The wall was never where the catching
     was.
+
+    **A twelfth arrived on 2026-10-03 with the clean-room measure verifier.**
+    `measure verifier full controls (sqverify-fast)` is `devtools.check_sqverify_fast`
+    without `--quick`: 72.8s single threaded on an idle four-cpu box, 56.6s of it the
+    mixed certificates' exact differentials and near-threshold controls, against about
+    22s for the quick set. The quick set runs on every pull request in the
+    `measure-verifier` job, and it keeps one of each kind of check: the differential
+    against the exact oracle on one rectangle and one mixed certificate, the rectangle
+    controls, the mixed `n = 101` packet's retained controls, the admission refusals and
+    the fault injection. What waits for the deep gate is the second rectangle and the
+    other directions, the mixed `n = 37` packet and the near-threshold controls. It runs
+    in `deferred-controls-finer` beside the negative controls, which measured 621s against
+    a 965s ceiling.
     """
     deferred = {step.name for step in validate.STEPS} - set().union(
         *_workflow_selections(pull_request=True).values()
@@ -3073,6 +3095,7 @@ def test_the_pull_request_surface_defers_only_what_was_measured() -> None:
         "finer-net dilation-limit record, 1440 steps",
         "threshold dilation-limit record, 720 steps",
         "threshold dilation-limit record, 1440 steps",
+        "measure verifier full controls (sqverify-fast)",
     }
     # And the same set is what `--fast` leaves out, so the flag and the workflow cannot
     # drift apart: a step marked `fast` that no pull-request job invokes is deferred in
@@ -3298,6 +3321,7 @@ def _workflow_selections(*, pull_request: bool) -> dict[str, set[str]]:
                 suite_d=namespace.suite_d,
                 geometry=namespace.geometry,
                 typecheck=namespace.typecheck,
+                measure_verifier=namespace.measure_verifier,
             )
         }
         for job_name, namespace in _workflow_commands(pull_request=pull_request).items()
@@ -3344,6 +3368,7 @@ def test_the_pull_request_jobs_partition_the_surface() -> None:
         "suite-d",
         "sweeps",
         "typecheck",
+        "measure-verifier",
     }
     names = list(selections)
     for index, job in enumerate(names):
@@ -3360,6 +3385,9 @@ def test_the_pull_request_jobs_partition_the_surface() -> None:
     assert selections["geometry"] == {step.name for step in validate.STEPS if step.geometry}
     assert selections["frontend"] == {step.name for step in validate.STEPS if step.frontend}
     assert selections["typecheck"] == {step.name for step in validate.STEPS if step.typecheck}
+    assert selections["measure-verifier"] == {
+        step.name for step in validate.STEPS if step.measure_verifier
+    }
 
 
 def test_a_verified_merge_repeats_everything_not_positively_tree_reusable() -> None:
@@ -3722,6 +3750,7 @@ def test_every_tier_band_is_declared_for_the_shape_ci_runs() -> None:
         "suite_d",
         "sweeps",
         "typecheck",
+        "measure_verifier",
     }
 
 
@@ -3782,7 +3811,7 @@ def test_post_merge_workers_bind_one_sha_and_a_separate_complete_aggregate() -> 
         assert len(matching) == 1, job
         assert f'test "${matching[0]}" = "success"' in command
 
-    # No deferred job can enter the nine-prerequisite pull-request context.
+    # No deferred job can enter the ten-prerequisite pull-request context.
     assert set(jobs["packing-required"]["needs"]) == {
         "validate",
         "frontend",
@@ -3793,6 +3822,7 @@ def test_post_merge_workers_bind_one_sha_and_a_separate_complete_aggregate() -> 
         "suite-c",
         "suite-d",
         "sweeps",
+        "measure-verifier",
     }
     for name in expected - {"validate"}:
         job = jobs[name]
@@ -3979,6 +4009,7 @@ def test_broad_is_opt_out_so_a_new_step_joins_the_edit_tier() -> None:
         "differential: search energy vs validity oracle",  # 0.34s, likewise
         "lint floor (rust)",  # 14.94s of cargo clippy and rustfmt
         "exact rectangle Rust geometry",  # exact crate lint/tests and Python oracle
+        "measure verifier Rust (sqverify-fast)",  # clean-room crate, oracle, controls
         # The four record sweeps, split at their measured seams on 2026-09-06 so the pull
         # request's second runner can schedule them. The figures beside them are the
         # 148.50s and 102.56s above, divided by the same measurement that split them:
@@ -4039,6 +4070,75 @@ def test_exact_rust_geometry_is_fast_and_runs_the_differential_oracle(
     assert ("cargo", "test", "--locked", "--all-targets", "--quiet") in calls
     assert ("cargo", "build", "--locked", "--release", "--quiet") in calls
     assert calls[-1][-1] == "/scratch/exact-target/release/sqverify-exact"
+
+
+def test_measure_verifier_is_fast_and_runs_the_oracle_and_controls(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    step = next(
+        step for step in validate.STEPS if step.name == "measure verifier Rust (sqverify-fast)"
+    )
+    assert step.fast
+    assert step.broad
+    assert not step.needs_engine
+    assert "packing/sqverify_fast/*" in step.touches
+    calls: list[tuple[str, ...]] = []
+
+    def commands(
+        context: validate.Context,
+        commands: tuple[tuple[str, ...], ...],
+        *,
+        cwd: Path,
+    ) -> str:
+        assert cwd == validate.MEASURE_VERIFIER_CRATE
+        assert context.environment["RUSTDOCFLAGS"] == "old -D warnings"
+        calls.extend(commands)
+        return "test result: ok. 8 passed; 0 failed"
+
+    def run(_context: validate.Context, command: tuple[str, ...], **_: object) -> str:
+        calls.append(command)
+        return "SQVERIFY-FAST CHECKS PASSED"
+
+    monkeypatch.setattr(validate.shutil, "which", lambda *_, **__: "cargo")
+    monkeypatch.setattr(validate, "_commands", commands)
+    monkeypatch.setattr(validate, "_run", run)
+    environment = {"RUSTDOCFLAGS": "old", "CARGO_TARGET_DIR": "/scratch/fast-target"}
+    context = validate.Context(
+        deep=False, strict=True, jobs=1, inner_jobs=1, environment=environment
+    )
+    assert "CHECKS PASSED" in step.action(context)
+    assert any(command[:3] == ("cargo", "clippy", "--locked") for command in calls)
+    assert (
+        "cargo",
+        "test",
+        "--locked",
+        "--profile",
+        "gate-test",
+        "--all-targets",
+        "--quiet",
+    ) in calls
+    assert ("cargo", "build", "--locked", "--release", "--quiet") in calls
+    assert calls[-1][-3:] == (
+        "--binary",
+        "/scratch/fast-target/release/sqverify-fast",
+        "--quick",
+    )
+
+
+def test_measure_verifier_refuses_missing_compiler_or_empty_tests(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    step = next(
+        step for step in validate.STEPS if step.name == "measure verifier Rust (sqverify-fast)"
+    )
+    context = validate.Context(deep=False, strict=False, jobs=1, inner_jobs=1, environment={})
+    monkeypatch.setattr(validate.shutil, "which", lambda *_, **__: None)
+    with pytest.raises(validate.StepFailureError, match="requires cargo"):
+        step.action(context)
+    monkeypatch.setattr(validate.shutil, "which", lambda *_, **__: "cargo")
+    monkeypatch.setattr(validate, "_commands", lambda *_, **__: "test result: ok. 0 passed")
+    with pytest.raises(validate.StepFailureError, match="no passing Rust tests"):
+        step.action(context)
 
 
 def test_exact_rust_geometry_refuses_missing_compiler_or_empty_tests(

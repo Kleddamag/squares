@@ -31,10 +31,13 @@ PACKETS = (
     "n17-guzhou-r068-2026-09-28",
     "wand125-rectangle-certificates-2026-09-27",
     "wand125-rectangle-certificates-2026-09-28",
+    "wand125-rectangle-certificates-2026-10-01",
     "wand125-point-and-mixed-2026-09-28",
+    "wand125-point-and-mixed-2026-10-01",
     "franciscouzo-square-packing-2026-09-27",
     "casson-square-packing-2026-09-23",
     "wang-li-n11-2026-09-29",
+    "n11-optimality-gpt6-pro-review-2026-10-03",
 )
 
 
@@ -79,11 +82,11 @@ def test_header_and_blob_helpers() -> None:
 
 
 def test_evand_october_source_manifest() -> None:
-    """Pinned source blobs survive retention, including the one local gzip transform."""
+    """Pinned source blobs survive retention, including the local gzip transforms."""
     packet = WEB / "evand-square-packing-2026-10-01"
     with (packet / "source-manifest.tsv").open(newline="") as stream:
         rows = list(csv.DictReader(stream, delimiter="\t"))
-    assert len(rows) == 62
+    assert len(rows) == 77
     assert len({row["upstream_path"] for row in rows}) == len(rows)
     for row in rows:
         upstream = row["upstream_path"]

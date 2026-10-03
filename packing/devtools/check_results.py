@@ -47,6 +47,7 @@ from typing import Any
 from devtools.build_bound_citations import RECENT_SINCE
 from devtools.result_status import STATUSES, activity_problems, status
 from devtools.rung_prose import REGISTER_FIELDS, Standing, label_problems
+from devtools.verifier_registry import RANK, confirming_runs, strongest
 from sqpack.assurance import EXTERNAL_ORIGINS, PROOF_METHODS
 from sqpack.yamlio import safe_load
 
@@ -292,6 +293,70 @@ def third_party_replayed(entries: list[dict]) -> bool:
         entry.get("origin") == "independently-external" and _machine_proof_shaped(entry)
         for entry in entries
     )
+
+
+#: The claims that carry each half of an exact value.
+_LOWER_CLAIMS = frozenset({"lower-bound", "exact-value"})
+_UPPER_CLAIMS = frozenset({"upper-bound", "exact-value"})
+
+
+def confirmation_code(
+    record: Mapping[str, Any], entries: Sequence[Mapping[str, Any]]
+) -> str | None:
+    """The attribute shown beside the rung: how the code of the result's confirming runs
+    stands to the code its producer used, as a `relationship_to_generator` value, or
+    nothing where no confirming run is recorded. Never a rung (epistemics.md,
+    Confirmation).
+
+    The runs are the confirming-origin entries with a passing replay, the machine-shaped
+    ones where there are any. Each part of the claim takes the relation furthest from the
+    producer's code among the runs that confirm it, and the result takes the part closest
+    to it: an optimality result is as independent as the less independent of its halves,
+    so the grid replay of an upper half never makes a lower half re-run with the source's
+    own checker read as re-implemented. A bound reads its own runs, and any other kind
+    reads all of them.
+    """
+    runs = confirming_runs(entries)
+    machine = [entry for entry in runs if _machine_proof_shaped(dict(entry))]
+    pool = machine or runs
+    if not pool:
+        return None
+    kind = record.get("kind")
+    if kind in {"lower-bound", "upper-bound"}:
+        own = [entry for entry in pool if entry.get("claim") in {kind, "exact-value"}]
+        return strongest(own or pool)
+    lower = strongest(entry for entry in pool if entry.get("claim") in _LOWER_CLAIMS)
+    upper = strongest(entry for entry in pool if entry.get("claim") in _UPPER_CLAIMS)
+    if lower and upper:
+        return min((lower, upper), key=RANK.__getitem__)
+    return strongest(pool)
+
+
+#: The word whose kind the prose rule asks for, as a verb or a participle; a novelty label
+#: or a status in code is not the word.
+_CONFIRMED = re.compile(r"(?<![\w`])confirmed(?![\w`-])", re.IGNORECASE)
+#: The phrases that say which kind of confirmation a sentence means (epistemics.md,
+#: Confirmation): the producer's own code re-run, a re-implementation sharing its named
+#: components, or an independent re-implementation.
+CONFIRMATION_KINDS = re.compile(
+    r"producer[\u2019']s (?:own )?(?:verification )?code"
+    r"|independent(?:ly)?[ -]re-?implement|independent implementation"
+    r"|shar(?:es|ing|ed) (?:the producer[\u2019']s )?(?:named )?components",
+    re.IGNORECASE,
+)
+_SENTENCE_END = re.compile(r"(?<=[.;:])\s+(?=[A-Z`(\[])")
+
+
+def confirmation_prose_problems(record: Mapping[str, Any]) -> list[str]:
+    """Sentences of a result's `claim`, `composition` or `next_rung` that say "confirmed"
+    without saying which kind of confirmation: the producer's code re-run, shared
+    components, or an independent re-implementation. `notes` is history and exempt."""
+    return [
+        f"{record['id']}: {name} says confirmed without saying how: {sentence[:90]}"
+        for name in ("claim", "composition", "next_rung")
+        for sentence in _SENTENCE_END.split(" ".join(str(record.get(name) or "").split()))
+        if _CONFIRMED.search(sentence) and not CONFIRMATION_KINDS.search(sentence)
+    ]
 
 
 def review_problems(record: dict, document_map: dict) -> list[str]:
@@ -922,6 +987,7 @@ def main() -> int:
         problems.extend(superseded_by_problems(record, dated, scopes))
         problems.extend(established_problems(record, register["last_reviewed"]))
         problems.extend(activity_problems(record, str(register["last_reviewed"])))
+        problems.extend(confirmation_prose_problems(record))
 
         for kind, value in (record.get("produced_by") or {}).items():
             if value not in known_ids.get(kind, set()):

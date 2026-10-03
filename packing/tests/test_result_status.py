@@ -143,7 +143,9 @@ def test_every_registered_result_has_exactly_one_status_from_the_record() -> Non
         marks = render_recent_results.position_marks(
             entry, render_recent_results.standing(entry, records), records
         )
-        line = status_line(entry, evidence, marks)
+        line = status_line(
+            entry, evidence, marks, how=render_results.confirmed_how(entry, evidence)
+        )
         assert line.startswith(word), entry["id"]
         row = next(row for row in rendered.splitlines() if row.startswith(f"| {entry['id']} "))
         assert f"| {line} |" in row, entry["id"]
@@ -216,7 +218,14 @@ def test_superseded_is_marked_on_a_bound_and_where_a_later_result_is_declared() 
     derived = [
         entry for entry in marked if records.results[entry]["kind"] in check_results.BOUND_KINDS
     ]
-    assert len(derived) == 26
+    # Thirty since 2026-10-02, when wand125's replayed rectangle certificates (T-045,
+    # T-070) superseded T-030 at n = 18, T-020 at n = 19, T-021 at n = 20 and T-047 at
+    # n = 26 and 29, the last counts each of them held; thirty-one later that day, when
+    # the 1 October replays (T-074) beat wand125's point certificates (T-044) at the last
+    # of their counts; thirty-two since 3 October, when squarepacker's rescaling (T-078)
+    # superseded Daniel's s(12) >= 15680/3951 (T-049).
+    assert len(derived) == 32
+    assert {"T-020", "T-021", "T-030", "T-044", "T-047", "T-049"} <= set(derived)
     assert {str(records.results[entry]["kind"]) for entry in derived} == {"lower-bound"}
     # A result of another kind is marked only where its entry declares the whole of it
     # implied, and in part where it declares a part (think-rl2b).
@@ -234,7 +243,7 @@ def test_superseded_is_marked_on_a_bound_and_where_a_later_result_is_declared() 
         assert entry not in by, entry
     assert view.superseding(records.results["T-037"], records) == ("T-060",)
     assert view.position_marks(records.results["T-019"], view.SUPERSEDED, records) == [
-        "superseded by T-020, T-030, T-043 and T-046"
+        "superseded by T-043, T-045, T-046, T-068 and T-074"
     ]
     # Only a bound supersedes: at n = 13 and 46 a correction and an audit carry the
     # lower bound's evidence beside the optimality results that hold it.

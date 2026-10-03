@@ -17,6 +17,8 @@ Shared arithmetic dependencies and reproduction limits are stated below.
 For a human or agent reviewing T-060, start with the
 [validation guide](VALIDATION.md): proof obligations, certificate and checker links,
 available commands, and the remaining requirements for a standalone release.
+The [receipts register](receipts/README.md) gives the purpose of every receipt: its tier,
+what it records, and which checker or receipt binds it.
 
 This packet pins source commit `f9e0de713a0949d1bc6a0fa6b59d96edf6c3d65c` and tree
 `3fed944c5a0c1dda5e61cb9f45f0dd3d4dc6360c`. The selected files in [`source/`](source/)
@@ -65,17 +67,12 @@ No publisher checker was used as proof authority in these independent checks.
 ## Reproducing the Independent Checks
 
 There are two distinct tasks.
-To **recheck retained evidence**, use Python 3.14 and the external-scratch environment
-required by `AGENTS.md`. On the recorded Mac, run:
-
-```bash
-source /Volumes/spud-ext1/agent-scratch/wand125-tools-01a0ebfc/env.sh
-cd packing
-.venv/bin/python3 -m devtools.inventory_n11_completion --out "$TMPDIR/n11-completion-new.json"
-.venv/bin/python3 -m devtools.check_n11_final_composition --out "$TMPDIR/n11-composition-new.json"
-```
-
-Use new output names.
+To **recheck retained evidence**, run the completion inventory and the final composer as
+the validation guide’s [portable replay commands](VALIDATION.md#portable-replay-commands)
+give them: from `packing/`, with the project’s Python 3.14 environment, writing to a new
+directory outside the source tree.
+The same section gives one portable command for each retained geometric check, and
+separates hash checks, retained composition and fresh geometry.
 The [completion inventory tool](../../../devtools/inventory_n11_completion.py) and
 [final composer](../../../devtools/check_n11_final_composition.py) bind reviewed
 receipts, case IDs, source hashes, and state joins.

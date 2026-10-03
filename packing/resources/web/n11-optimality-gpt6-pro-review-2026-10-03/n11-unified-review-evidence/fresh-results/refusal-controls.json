@@ -1,0 +1,56 @@
+{
+  "verify_reconciliation.py -O": {
+    "exit_code": 1,
+    "refused": true,
+    "output": "Traceback (most recent call last):\n  File \"/tmp/n11 unified review relocated offnxcw_/evidence with spaces/verify_reconciliation.py\", line 4, in <module>\n    raise RuntimeError(\"This mathematical checker refuses Python -O/-OO.\")\nRuntimeError: This mathematical checker refuses Python -O/-OO.\n"
+  },
+  "verify_reconciliation.py -OO": {
+    "exit_code": 1,
+    "refused": true,
+    "output": "Traceback (most recent call last):\n  File \"/tmp/n11 unified review relocated offnxcw_/evidence with spaces/verify_reconciliation.py\", line 4, in <module>\n    raise RuntimeError(\"This mathematical checker refuses Python -O/-OO.\")\nRuntimeError: This mathematical checker refuses Python -O/-OO.\n"
+  },
+  "reconciliation_local_checks.py -O": {
+    "exit_code": 1,
+    "refused": true,
+    "output": "Assertions must remain enabled.\n"
+  },
+  "reconciliation_local_checks.py -OO": {
+    "exit_code": 1,
+    "refused": true,
+    "output": "Assertions must remain enabled.\n"
+  },
+  "reconciliation-coverage-check.py -O": {
+    "exit_code": 1,
+    "refused": true,
+    "output": "Traceback (most recent call last):\n  File \"/tmp/n11 unified review relocated offnxcw_/evidence with spaces/reconciliation-coverage-check.py\", line 8, in <module>\n    raise RuntimeError(\"This mathematical checker refuses Python -O/-OO.\")\nRuntimeError: This mathematical checker refuses Python -O/-OO.\n"
+  },
+  "reconciliation-coverage-check.py -OO": {
+    "exit_code": 1,
+    "refused": true,
+    "output": "Traceback (most recent call last):\n  File \"/tmp/n11 unified review relocated offnxcw_/evidence with spaces/reconciliation-coverage-check.py\", line 8, in <module>\n    raise RuntimeError(\"This mathematical checker refuses Python -O/-OO.\")\nRuntimeError: This mathematical checker refuses Python -O/-OO.\n"
+  },
+  "reconciliation-original-coverage-check.py -O": {
+    "exit_code": 1,
+    "refused": true,
+    "output": "Traceback (most recent call last):\n  File \"/tmp/n11 unified review relocated offnxcw_/evidence with spaces/reconciliation-original-coverage-check.py\", line 9, in <module>\n    raise RuntimeError(\"This mathematical checker refuses Python -O/-OO.\")\nRuntimeError: This mathematical checker refuses Python -O/-OO.\n"
+  },
+  "reconciliation-original-coverage-check.py -OO": {
+    "exit_code": 1,
+    "refused": true,
+    "output": "Traceback (most recent call last):\n  File \"/tmp/n11 unified review relocated offnxcw_/evidence with spaces/reconciliation-original-coverage-check.py\", line 9, in <module>\n    raise RuntimeError(\"This mathematical checker refuses Python -O/-OO.\")\nRuntimeError: This mathematical checker refuses Python -O/-OO.\n"
+  },
+  "mutation:geometry-audit/df7938d9ba27095a38fabe45f8b26b259a2cc896c2ae4aac6bae874f417adc4e.json": {
+    "exit_code": 2,
+    "refused": true,
+    "output": "REFUSED: Input identity mismatch: geometry-audit/df7938d9ba27095a38fabe45f8b26b259a2cc896c2ae4aac6bae874f417adc4e.json\n"
+  },
+  "mutation:manifest.json": {
+    "exit_code": 2,
+    "refused": true,
+    "output": "REFUSED: Manifest SHA-256 mismatch\n"
+  },
+  "restored": {
+    "exit_code": 0,
+    "output": "Checked 186 immutable file identities.\nPASS_HASHES_ONLY; no mathematical checks performed.\n"
+  }
+}

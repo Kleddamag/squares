@@ -1,0 +1,122 @@
+{
+  "kind": "wand125-mixed-certificate-audit/v1",
+  "packet": "wand125-mixed-bounds-2026-10-02",
+  "source_revision": "52af997dc91c579658f0828bc8304e306ad9d95b",
+  "certificates": {
+    "n84": {
+      "directory": "certificates/mixed_n84_L940",
+      "side": "47/5",
+      "side_float": 9.4,
+      "core": "9977/10000",
+      "rectangles": 661,
+      "total_mass": "8399999/100000",
+      "budget_gap": "1/100000",
+      "candidate_digest": "58dabcb47821d0113b20b33d904cd3f0e9b3d3f49e3c043d4e23d009d655f41c",
+      "checker_sha256": "89b674a6feabe24d91c29431de1624907c4bff83280ceb481475455686693652",
+      "code_files": 10,
+      "code_identical_to_n50": true,
+      "net": {
+        "step": "83/40000",
+        "count": "201",
+        "endpoint_check": "89/40000",
+        "rotated_side_upper": "399908091/400000000",
+        "side_margin": "91909/400000000"
+      },
+      "centre_domains": {
+        "nodes": 200,
+        "eliminated_width_min": "24678449934996538617/204801102240949166420000",
+        "eliminated_width_min_float": 0.00012049959529007936,
+        "eliminated_width_max": "11437689778285417/7030288794430420000",
+        "eliminated_width_max_float": 0.00162691606457855,
+        "axis_domain": "[47/10, 89/10]^2"
+      },
+      "certificate_status": "ALL_ANGLES_VERIFIED_AND_REPLAYED",
+      "axis_cells": 18198756,
+      "axis_integer_minimum": 1.0083383947166207,
+      "oblique_nodes": 98464504,
+      "least_lower": 1.0000000008975796,
+      "least_lower_at": 175,
+      "tarball": "certificates/mixed_n84_L940/n84-L9.40-proof-bundle.tar.gz",
+      "tarball_sha256": "723f167b569835d8aa6f2dfb9eb61d99f5199a2a94f78a4edf9039b7eaf7f080",
+      "source_audit": {
+        "status": "AUDITED_AND_PACKAGED",
+        "certificate_sha256_matches": true,
+        "archive_sha256_matches": true,
+        "compared_field": "compared_with",
+        "compared_with": "92667/10000",
+        "compared_note": "inherited Green n82 9.266733 (published rectangle n84 9.2225)",
+        "improvement_lower": "1333/10000"
+      },
+      "comparison": {
+        "green": "Theorem 9, k=9, from n = 82",
+        "green_interval_float": [
+          9.266733533245633,
+          9.266733533245633
+        ],
+        "side_exceeds_green": true,
+        "source_value_exceeds_green": false,
+        "nagamochi": "1 + sqrt(67)",
+        "side_exceeds_nagamochi": true
+      },
+      "coverage_decided_here": false
+    },
+    "n85": {
+      "directory": "certificates/mixed_n85_L942",
+      "side": "471/50",
+      "side_float": 9.42,
+      "core": "9977/10000",
+      "rectangles": 587,
+      "total_mass": "8499999/100000",
+      "budget_gap": "1/100000",
+      "candidate_digest": "b95a0bb41a77cb00d8716c5256ae5bea71f1c668ce44047671e41e7f3f909a4c",
+      "checker_sha256": "89b674a6feabe24d91c29431de1624907c4bff83280ceb481475455686693652",
+      "code_files": 10,
+      "code_identical_to_n50": true,
+      "net": {
+        "step": "83/40000",
+        "count": "201",
+        "endpoint_check": "89/40000",
+        "rotated_side_upper": "399908091/400000000",
+        "side_margin": "91909/400000000"
+      },
+      "centre_domains": {
+        "nodes": 200,
+        "eliminated_width_min": "24678449934996538617/204801102240949166420000",
+        "eliminated_width_min_float": 0.00012049959529007936,
+        "eliminated_width_max": "11437689778285417/7030288794430420000",
+        "eliminated_width_max_float": 0.00162691606457855,
+        "axis_domain": "[471/100, 223/25]^2"
+      },
+      "certificate_status": "ALL_ANGLES_VERIFIED_AND_REPLAYED",
+      "axis_cells": 15784729,
+      "axis_integer_minimum": 1.013816765469528,
+      "oblique_nodes": 97066046,
+      "least_lower": 1.0000000017271347,
+      "least_lower_at": 44,
+      "tarball": "certificates/mixed_n85_L942/n85-L9.42-proof-bundle.tar.gz",
+      "tarball_sha256": "c61c51087753ffa9eb57a03b08e5f4aae4439f877ef54386d133f425d389150a",
+      "source_audit": {
+        "status": "AUDITED_AND_PACKAGED",
+        "certificate_sha256_matches": true,
+        "archive_sha256_matches": true,
+        "compared_field": "compared_with",
+        "compared_with": "92667/10000",
+        "compared_note": "inherited Green n82 9.266733 (published rectangle n85 9.2325)",
+        "improvement_lower": "1533/10000"
+      },
+      "comparison": {
+        "green": "Theorem 9, k=9, from n = 82",
+        "green_interval_float": [
+          9.266733533245633,
+          9.266733533245633
+        ],
+        "side_exceeds_green": true,
+        "source_value_exceeds_green": false,
+        "nagamochi": "1 + sqrt(68)",
+        "side_exceeds_nagamochi": true
+      },
+      "coverage_decided_here": false
+    }
+  },
+  "scope": "Exact premises only, from the retained files: pinned digests, the measure's count, side, core, nonnegativity and total n - 1/100000, the candidate digest by the source's rule, the net containment, the checker and code identity, a replay record at threshold one for each of the 201 angles, and the source audit's certificate and tarball digests. Coverage is decided by the source's checker, whose replay is recorded separately."
+}

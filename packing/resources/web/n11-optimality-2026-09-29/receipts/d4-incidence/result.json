@@ -1,0 +1,1009 @@
+{
+  "status": "PASS_D4_INCIDENCE_BRIDGE",
+  "scope": "Review S3's replacement for the final D4 bridge only. From the cover and overlay objects alone, every one of the 648 source/triple combinations for sources 999, 1462 and 1659 under the hypothesis that no D4 view admits case 438 is contradicted by incidence propagation, by one exact distance bound (the 999 survivor), or by the reflection g1 onto the closed 999 source (the 1462 survivor). The 1,572-ban distance inventory is not read here; it remains the premise of the earlier conditional cuts for cases 2175 and 2176 and is not deleted by this bridge. All prior exclusions (the 2,180 mask exclusions that leave cases 438, 999, 1462 and 1659) and the case-438 capture remain premises; no global optimality is proved.",
+  "global_optimality_proved": false,
+  "input_sha256": {
+    "cover": "df7938d9ba27095a38fabe45f8b26b259a2cc896c2ae4aac6bae874f417adc4e",
+    "overlay": "845b5f748843dd60fa7e290a5ea1a304da4e439ae229bd73a841aec816f4e700"
+  },
+  "input_stored_object_sha256": {
+    "cover": "7c6d14012f06eb892912a50c93cc7408ce1f90524d46693c6178a01ceae71a99",
+    "overlay": "4b36026f5f16998929032abf5e730b56a2166a0880d5b6464b3abf9d9ed62bda"
+  },
+  "checker_path": "packing/devtools/check_n11_optimality_d4_incidence.py",
+  "checker_sha256": "f31f5a922ca568d7a30cf9bca06a129247311c9eb37aefae8fc6e7876e7fb3e6",
+  "reconstruction_module_path": "packing/devtools/check_n11_optimality_d4.py",
+  "reconstruction_module_sha256": "19f4b0a47afd6acb327e85bd4a98ca2a43d2fdaa49aeb0edd30aa12d1b6aac1d",
+  "compact_cover_sites_checked": 16,
+  "overlay_prefix_counts": [
+    16,
+    56,
+    124,
+    220
+  ],
+  "overlay_dimensions": {
+    "0": 8,
+    "2": 212
+  },
+  "allowed_non_target_raw_masks": {
+    "J999": [
+      0,
+      1,
+      2,
+      4,
+      6,
+      7,
+      9,
+      10,
+      12,
+      14,
+      15
+    ],
+    "J1462": [
+      0,
+      1,
+      3,
+      5,
+      6,
+      8,
+      9,
+      11,
+      12,
+      13,
+      14
+    ],
+    "HJ999": [
+      0,
+      1,
+      3,
+      5,
+      6,
+      8,
+      9,
+      11,
+      13,
+      14,
+      15
+    ],
+    "J1659": [
+      0,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      11,
+      12,
+      13,
+      14
+    ],
+    "HJ1462": [
+      1,
+      2,
+      3,
+      4,
+      6,
+      7,
+      9,
+      10,
+      12,
+      14,
+      15
+    ],
+    "HJ1659": [
+      1,
+      2,
+      3,
+      4,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      15
+    ]
+  },
+  "views": [
+    "g0(x,y)=(x,y)",
+    "g1(x,y)=(1-x,y)",
+    "g2(x,y)=(1-y,x)",
+    "g3(x,y)=(y,x)"
+  ],
+  "propagation_rules": [
+    "An owner's initial domain is every closed region whose g0 label is the owner and whose g1, g2, g3 labels lie in those views' masks.",
+    "Immediate contradiction: before any rule fires, some owner has no region or some label of a g1, g2 or g3 mask lies in no owner's domain.",
+    "Reserve (one operation): an owner with exactly one region removes from every other owner each region sharing any of its g1, g2, g3 labels.",
+    "Force (one operation when it removes a region): a label carried by one owner's domain alone restricts that owner to regions carrying it.",
+    "Propagation contradiction: an owner's domain or a label's owner set empties after a rule has fired."
+  ],
+  "sources": [
+    {
+      "source_canonical_index": 999,
+      "source_mask": [
+        0,
+        1,
+        2,
+        4,
+        6,
+        7,
+        9,
+        10,
+        12,
+        14,
+        15
+      ],
+      "triples": 216,
+      "immediate_contradictions": 168,
+      "propagation_contradictions": 47,
+      "surviving_triples": 1,
+      "max_propagation_operations": 12,
+      "survivor_other_view_masks": [
+        [
+          "J1462",
+          "J1462",
+          "J999"
+        ]
+      ],
+      "review_counts": {
+        "immediate_contradictions": 168,
+        "propagation_contradictions": 47,
+        "surviving_triples": 1,
+        "max_recorded_propagation_operations": 19
+      }
+    },
+    {
+      "source_canonical_index": 1462,
+      "source_mask": [
+        0,
+        1,
+        3,
+        5,
+        6,
+        8,
+        9,
+        11,
+        12,
+        13,
+        14
+      ],
+      "triples": 216,
+      "immediate_contradictions": 198,
+      "propagation_contradictions": 17,
+      "surviving_triples": 1,
+      "max_propagation_operations": 15,
+      "survivor_other_view_masks": [
+        [
+          "J999",
+          "HJ999",
+          "HJ1462"
+        ]
+      ],
+      "review_counts": {
+        "immediate_contradictions": 198,
+        "propagation_contradictions": 17,
+        "surviving_triples": 1,
+        "max_recorded_propagation_operations": 15
+      }
+    },
+    {
+      "source_canonical_index": 1659,
+      "source_mask": [
+        0,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        11,
+        12,
+        13,
+        14
+      ],
+      "triples": 216,
+      "immediate_contradictions": 196,
+      "propagation_contradictions": 20,
+      "surviving_triples": 0,
+      "max_propagation_operations": 19,
+      "survivor_other_view_masks": [],
+      "review_counts": {
+        "immediate_contradictions": 196,
+        "propagation_contradictions": 20,
+        "surviving_triples": 0,
+        "max_recorded_propagation_operations": 7
+      }
+    }
+  ],
+  "survivor_999": {
+    "view_mask_names": [
+      "J999",
+      "J1462",
+      "J1462",
+      "J999"
+    ],
+    "view_masks": [
+      [
+        0,
+        1,
+        2,
+        4,
+        6,
+        7,
+        9,
+        10,
+        12,
+        14,
+        15
+      ],
+      [
+        0,
+        1,
+        3,
+        5,
+        6,
+        8,
+        9,
+        11,
+        12,
+        13,
+        14
+      ],
+      [
+        0,
+        1,
+        3,
+        5,
+        6,
+        8,
+        9,
+        11,
+        12,
+        13,
+        14
+      ],
+      [
+        0,
+        1,
+        2,
+        4,
+        6,
+        7,
+        9,
+        10,
+        12,
+        14,
+        15
+      ]
+    ],
+    "operations": 12,
+    "fixpoint_domains": {
+      "0": [
+        [
+          0,
+          3,
+          3,
+          0
+        ]
+      ],
+      "1": [
+        [
+          1,
+          1,
+          11,
+          4
+        ]
+      ],
+      "2": [
+        [
+          2,
+          5,
+          6,
+          9
+        ]
+      ],
+      "4": [
+        [
+          4,
+          11,
+          1,
+          1
+        ]
+      ],
+      "6": [
+        [
+          6,
+          9,
+          9,
+          6
+        ],
+        [
+          6,
+          9,
+          9,
+          10
+        ],
+        [
+          6,
+          9,
+          13,
+          10
+        ]
+      ],
+      "7": [
+        [
+          7,
+          0,
+          14,
+          12
+        ]
+      ],
+      "9": [
+        [
+          9,
+          6,
+          5,
+          2
+        ]
+      ],
+      "10": [
+        [
+          10,
+          8,
+          8,
+          10
+        ],
+        [
+          10,
+          8,
+          8,
+          15
+        ],
+        [
+          10,
+          8,
+          12,
+          10
+        ],
+        [
+          10,
+          8,
+          13,
+          10
+        ],
+        [
+          10,
+          9,
+          9,
+          6
+        ],
+        [
+          10,
+          9,
+          9,
+          10
+        ],
+        [
+          10,
+          9,
+          13,
+          10
+        ],
+        [
+          10,
+          12,
+          8,
+          10
+        ],
+        [
+          10,
+          12,
+          8,
+          15
+        ],
+        [
+          10,
+          13,
+          8,
+          10
+        ],
+        [
+          10,
+          13,
+          8,
+          15
+        ],
+        [
+          10,
+          13,
+          9,
+          6
+        ],
+        [
+          10,
+          13,
+          9,
+          10
+        ],
+        [
+          10,
+          13,
+          13,
+          10
+        ]
+      ],
+      "12": [
+        [
+          12,
+          14,
+          0,
+          7
+        ]
+      ],
+      "14": [
+        [
+          14,
+          12,
+          8,
+          15
+        ],
+        [
+          14,
+          13,
+          8,
+          15
+        ]
+      ],
+      "15": [
+        [
+          15,
+          8,
+          12,
+          14
+        ],
+        [
+          15,
+          8,
+          13,
+          14
+        ]
+      ]
+    }
+  },
+  "distance_closure_999": {
+    "forced_regions": [
+      {
+        "owner": 1,
+        "region_labels": [
+          1,
+          1,
+          11,
+          4
+        ],
+        "vertices": [
+          [
+            "196550149817/422552000000",
+            "0"
+          ],
+          [
+            "226001850183/422552000000",
+            "0"
+          ],
+          [
+            "197272901303260707/368910893132000000",
+            "341652346007821/73782178626400000"
+          ],
+          [
+            "1/2",
+            "75838707941/746024000000"
+          ],
+          [
+            "171637991828739293/368910893132000000",
+            "341652346007821/73782178626400000"
+          ]
+        ],
+        "vertex_bounding_box": {
+          "x": [
+            "196550149817/422552000000",
+            "226001850183/422552000000"
+          ],
+          "y": [
+            "0",
+            "75838707941/746024000000"
+          ]
+        },
+        "stated_box": {
+          "x": [
+            "23/50",
+            "27/50"
+          ],
+          "y": [
+            "0",
+            "11/100"
+          ]
+        },
+        "inside_stated_box": true
+      },
+      {
+        "owner": 2,
+        "region_labels": [
+          2,
+          5,
+          6,
+          9
+        ],
+        "vertices": [
+          [
+            "8279959610234849/16309444058000000",
+            "11440249932738727/48928332174000000"
+          ],
+          [
+            "4061837715759/7332499000000",
+            "29287950748577/109987485000000"
+          ],
+          [
+            "8758696339928223/15819173098000000",
+            "4395604732592341/15819173098000000"
+          ],
+          [
+            "31384269691121147/58446316538000000",
+            "16245980828382513/58446316538000000"
+          ]
+        ],
+        "vertex_bounding_box": {
+          "x": [
+            "8279959610234849/16309444058000000",
+            "4061837715759/7332499000000"
+          ],
+          "y": [
+            "11440249932738727/48928332174000000",
+            "16245980828382513/58446316538000000"
+          ]
+        },
+        "stated_box": {
+          "x": [
+            "11/25",
+            "14/25"
+          ],
+          "y": [
+            "23/100",
+            "7/25"
+          ]
+        },
+        "inside_stated_box": true
+      }
+    ],
+    "max_abs_dx_from_boxes": "1/10",
+    "max_abs_dy_from_boxes": "7/25",
+    "physical_scale": "287708359002281417731/100000000000000000000",
+    "physical_scale_below_3": true,
+    "box_bound_squared_distance": "18293518064592627965599295211194793982627781/25000000000000000000000000000000000000000000",
+    "box_bound_squared_distance_float": 0.7317407225837051,
+    "review_bound": "1989/2500",
+    "box_bound_below_review_bound_below_one": true,
+    "exact_vertex_max_squared_physical_distance": "272100642564123130521590552725036319877564615970144347118300704626647367548648169/386518286590632276841186591360000000000000000000000000000000000000000000000000000",
+    "exact_vertex_max_squared_physical_distance_float": 0.7039787042528968,
+    "exact_vertex_bound_below_one": true
+  },
+  "reflection_reduction_1462": {
+    "survivor": {
+      "view_mask_names": [
+        "J1462",
+        "J999",
+        "HJ999",
+        "HJ1462"
+      ],
+      "view_masks": [
+        [
+          0,
+          1,
+          3,
+          5,
+          6,
+          8,
+          9,
+          11,
+          12,
+          13,
+          14
+        ],
+        [
+          0,
+          1,
+          2,
+          4,
+          6,
+          7,
+          9,
+          10,
+          12,
+          14,
+          15
+        ],
+        [
+          0,
+          1,
+          3,
+          5,
+          6,
+          8,
+          9,
+          11,
+          13,
+          14,
+          15
+        ],
+        [
+          1,
+          2,
+          3,
+          4,
+          6,
+          7,
+          9,
+          10,
+          12,
+          14,
+          15
+        ]
+      ],
+      "operations": 15,
+      "fixpoint_domains": {
+        "0": [
+          [
+            0,
+            7,
+            3,
+            1
+          ]
+        ],
+        "1": [
+          [
+            1,
+            1,
+            11,
+            4
+          ]
+        ],
+        "3": [
+          [
+            3,
+            0,
+            15,
+            12
+          ]
+        ],
+        "5": [
+          [
+            5,
+            2,
+            6,
+            9
+          ]
+        ],
+        "6": [
+          [
+            6,
+            9,
+            13,
+            10
+          ]
+        ],
+        "8": [
+          [
+            8,
+            15,
+            1,
+            2
+          ],
+          [
+            8,
+            15,
+            1,
+            3
+          ]
+        ],
+        "9": [
+          [
+            9,
+            6,
+            5,
+            2
+          ],
+          [
+            9,
+            6,
+            5,
+            6
+          ],
+          [
+            9,
+            6,
+            9,
+            6
+          ]
+        ],
+        "11": [
+          [
+            11,
+            4,
+            14,
+            14
+          ]
+        ],
+        "12": [
+          [
+            12,
+            10,
+            0,
+            7
+          ],
+          [
+            12,
+            10,
+            5,
+            7
+          ],
+          [
+            12,
+            14,
+            0,
+            7
+          ],
+          [
+            12,
+            15,
+            0,
+            3
+          ],
+          [
+            12,
+            15,
+            0,
+            7
+          ]
+        ],
+        "13": [
+          [
+            13,
+            10,
+            0,
+            7
+          ],
+          [
+            13,
+            10,
+            5,
+            2
+          ],
+          [
+            13,
+            10,
+            5,
+            6
+          ],
+          [
+            13,
+            10,
+            5,
+            7
+          ],
+          [
+            13,
+            10,
+            9,
+            6
+          ],
+          [
+            13,
+            14,
+            0,
+            7
+          ],
+          [
+            13,
+            15,
+            0,
+            7
+          ]
+        ],
+        "14": [
+          [
+            14,
+            12,
+            8,
+            15
+          ]
+        ]
+      }
+    },
+    "g1_view_raw_mask": [
+      0,
+      1,
+      2,
+      4,
+      6,
+      7,
+      9,
+      10,
+      12,
+      14,
+      15
+    ],
+    "g1_view_is_raw_canonical_j999": true,
+    "reflected_view_mask_names": [
+      "J999",
+      "J1462",
+      "J1462",
+      "J999"
+    ],
+    "reflected_masks_equal_999_survivor": true,
+    "regions_carried_by_g1": 220,
+    "argument": "Let P be a packing whose four views carry the 1462 survivor's masks (J1462, J999, HJ999, HJ1462) in g0..g3. Since g2*g1 = H*g3 and g3*g1 = H*g2 and the half-turn H sends cell j to cell 15-j, a center of P in region R(a0,a1,a2,a3) maps under g1 to a center of g1(P) in region R(a1,a0,15-a3,15-a2). So g1(P) carries masks (J999, J1462, H(HJ1462), H(HJ999)) = (J999, J1462, J1462, J999): its g0 view is the raw canonical mask J999, with no half-turn needed, and its other views are the 999 survivor's. g1(P) is a packing in the same container satisfying the same premises, since the set of D4 views is unchanged and so no view of g1(P) admits case 438, and every one of the 216 triples of source 999 has been contradicted. Hence P does not exist either; no symmetry-equivariant boundary tie-break is needed.",
+    "direct_corroboration": {
+      "forced_regions": [
+        {
+          "owner": 1,
+          "region_labels": [
+            1,
+            1,
+            11,
+            4
+          ],
+          "vertices": [
+            [
+              "196550149817/422552000000",
+              "0"
+            ],
+            [
+              "226001850183/422552000000",
+              "0"
+            ],
+            [
+              "197272901303260707/368910893132000000",
+              "341652346007821/73782178626400000"
+            ],
+            [
+              "1/2",
+              "75838707941/746024000000"
+            ],
+            [
+              "171637991828739293/368910893132000000",
+              "341652346007821/73782178626400000"
+            ]
+          ],
+          "vertex_bounding_box": {
+            "x": [
+              "196550149817/422552000000",
+              "226001850183/422552000000"
+            ],
+            "y": [
+              "0",
+              "75838707941/746024000000"
+            ]
+          },
+          "stated_box": {
+            "x": [
+              "23/50",
+              "27/50"
+            ],
+            "y": [
+              "0",
+              "11/100"
+            ]
+          },
+          "inside_stated_box": true
+        },
+        {
+          "owner": 5,
+          "region_labels": [
+            5,
+            2,
+            6,
+            9
+          ],
+          "vertices": [
+            [
+              "3270661284241/7332499000000",
+              "29287950748577/109987485000000"
+            ],
+            [
+              "8029484447765151/16309444058000000",
+              "11440249932738727/48928332174000000"
+            ],
+            [
+              "27062046846878853/58446316538000000",
+              "16245980828382513/58446316538000000"
+            ],
+            [
+              "7060476758071777/15819173098000000",
+              "4395604732592341/15819173098000000"
+            ]
+          ],
+          "vertex_bounding_box": {
+            "x": [
+              "3270661284241/7332499000000",
+              "8029484447765151/16309444058000000"
+            ],
+            "y": [
+              "11440249932738727/48928332174000000",
+              "16245980828382513/58446316538000000"
+            ]
+          },
+          "stated_box": {
+            "x": [
+              "11/25",
+              "14/25"
+            ],
+            "y": [
+              "23/100",
+              "7/25"
+            ]
+          },
+          "inside_stated_box": true
+        }
+      ],
+      "max_abs_dx_from_boxes": "1/10",
+      "max_abs_dy_from_boxes": "7/25",
+      "physical_scale": "287708359002281417731/100000000000000000000",
+      "physical_scale_below_3": true,
+      "box_bound_squared_distance": "18293518064592627965599295211194793982627781/25000000000000000000000000000000000000000000",
+      "box_bound_squared_distance_float": 0.7317407225837051,
+      "review_bound": "1989/2500",
+      "box_bound_below_review_bound_below_one": true,
+      "exact_vertex_max_squared_physical_distance": "272100642564123130521590552725036319877564615970144347118300704626647367548648169/386518286590632276841186591360000000000000000000000000000000000000000000000000000",
+      "exact_vertex_max_squared_physical_distance_float": 0.7039787042528968,
+      "exact_vertex_bound_below_one": true
+    }
+  },
+  "control_with_case_438_allowed": {
+    "allowed_raw_masks": [
+      "HJ1462",
+      "HJ1659",
+      "HJ438",
+      "HJ999",
+      "J1462",
+      "J1659",
+      "J438",
+      "J999"
+    ],
+    "construction_pattern": {
+      "g0": "J438",
+      "other_views": [
+        "J1659",
+        "HJ1462",
+        "J999"
+      ],
+      "survives": true
+    },
+    "sources": {
+      "438": {
+        "triples": 512,
+        "immediate_contradictions": 343,
+        "propagation_contradictions": 131,
+        "surviving_triples": 38
+      },
+      "999": {
+        "triples": 512,
+        "immediate_contradictions": 356,
+        "propagation_contradictions": 136,
+        "surviving_triples": 20
+      },
+      "1462": {
+        "triples": 512,
+        "immediate_contradictions": 443,
+        "propagation_contradictions": 60,
+        "surviving_triples": 9
+      },
+      "1659": {
+        "triples": 512,
+        "immediate_contradictions": 432,
+        "propagation_contradictions": 68,
+        "surviving_triples": 12
+      }
+    }
+  },
+  "wall_seconds": 1.3625549870000668,
+  "process_cpu_seconds": 1.3210907630000002
+}

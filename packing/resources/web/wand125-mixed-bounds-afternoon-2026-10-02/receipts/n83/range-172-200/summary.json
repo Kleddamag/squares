@@ -1,0 +1,18 @@
+{
+  "status": "RANGE_REPLAYED",
+  "certificate": "n83",
+  "range": [
+    172,
+    200
+  ],
+  "directions": 29,
+  "replayed": 29,
+  "missing": [],
+  "refused": [],
+  "runs": [
+    "2026-10-02T19:25:44Z-681",
+    "2026-10-02T20:33:34Z-641"
+  ],
+  "cpu_seconds": 15037.1,
+  "scope": "The source's per-angle replay functions and unchanged C++ checker, after the full driver's preconditions on a bundle bound to the pinned tarball; each direction passes only if the function returned the certificate's own record."
+}

@@ -390,9 +390,9 @@ the larger of the two lower bounds holds.
 $G^S_x$ is R5’s enclosure with the centre’s ordinate fixed at $y_0$ (the segment ends’
 offsets enclosed with half-width zero), its abscissa still ranging over the box.
 Any bound valid on the box is valid on the segment, so each segment bound is also capped
-by the box’s. The current build does not use R7: experiments exp-009 and exp-010 found
-that it removes about a third of the boxes but costs as much again in enclosures,
-eagerly or lazily.
+by the box’s. The current build does not use R7: experiments exp-009, exp-010 and
+exp-016 found that it removes about a third of the boxes but costs as much again in
+enclosures, eagerly, lazily, or fused with the box’s own enclosures.
 
 ## Inheritance of Derivative Bounds
 

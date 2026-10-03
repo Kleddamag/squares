@@ -105,9 +105,10 @@ replays, at all 201 directions on a host with load average 4 to 5, `sqverify-fas
 and 128 on `mixed_n101_L1028` (format L; the replay used 27,669, 216 times more), and
 3.5 seconds at the linear certificate’s direction zero, where the replay spent 950. The
 per-certificate table is [census-mixed/README.md](census-mixed/README.md).
-Seven hypotheses were rejected: H-001, H-005, H-008, H-004, H-009, H-010 and H-011. The
-two first-leg rounds found a real 27 to 37% cut in boxes that costs as much again in
-enclosures; it is the most promising open lead.
+Eight hypotheses were rejected: H-001, H-005, H-008, H-004, H-009, H-010, H-011 and
+H-012. The three first-leg rounds (exp-009, exp-010, exp-016) found a real 27 to 37% cut
+in boxes that costs as much again in enclosures, eagerly, lazily or fused with the box’s
+own; it pays only with a cheaper predictor of the boxes that need it.
 
 <!-- This document follows common-doc-guidelines.md.
 See github.com/jlevy/practical-prose and review guidelines before editing.

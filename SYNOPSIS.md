@@ -787,9 +787,11 @@ case or experiment separately.
 | [H-010: Reciprocal Node Placement](packing/benchmarks/measure-verifier/experiments/exp-012-h010-reciprocal-node-placement.md) | research synthesis | record | retained | — |
 | [Reciprocals for Node Placement](packing/benchmarks/measure-verifier/hypotheses/H-010-reciprocal-node-placement.md) | implementation plan | supporting | maintained | — |
 | [Starting at the Low Side of a Sign-Definite Axis](packing/benchmarks/measure-verifier/hypotheses/H-011-sign-definite-side-start.md) | implementation plan | supporting | maintained | — |
+| [Fused First-Leg Enclosures](packing/benchmarks/measure-verifier/hypotheses/H-012-fused-first-leg-enclosures.md) | implementation plan | supporting | maintained | — |
 | [H-011: Sign-Definite Side Starts](packing/benchmarks/measure-verifier/experiments/exp-013-h011-sign-definite-side-start.md) | research synthesis | record | retained | — |
 | [The Release Audit’s Price](packing/benchmarks/measure-verifier/experiments/exp-014-release-audit-cost.md) | research synthesis | record | retained | — |
 | [Milestone B’s Price on Rectangle Certificates](packing/benchmarks/measure-verifier/experiments/exp-015-milestone-b-cost.md) | research synthesis | record | retained | — |
+| [H-012: Fused First-Leg Enclosures](packing/benchmarks/measure-verifier/experiments/exp-016-h012-fused-first-leg-enclosures.md) | research synthesis | record | retained | — |
 | [Independence Record for sqverify-fast](packing/sqverify_fast/INDEPENDENCE.md) | research synthesis | record | maintained | — |
 | [PR 127 Integration Checkpoint Evidence](packing/campaign/series/series-000-smoke-and-calibration/results/agenda-030/pr127-checkpoint/README.md) | research synthesis | record | retained | — |
 | [Correction: the stacking capacity bound in lane X3’s box sweep is false](packing/campaign/series/series-000-smoke-and-calibration/results/agenda-034/lane-x3-box-sweep-capacity-correction.md) | dated review record | record | retained | — |

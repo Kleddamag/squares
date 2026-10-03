@@ -26,7 +26,7 @@ second implementation agrees.
 ## The Short Version
 
 - **74** programs: **30** external and **44** first-party; **62** decide claims and **12** check premises.
-- **187** of **208** evidence entries name the programs that verified them: 128 reproduced with the producer’s code, 44 independently re-implemented, 8 no relation: a proof, a derivation or a report, 7 re-implemented, sharing the producer’s components.
+- **188** of **209** evidence entries name the programs that verified them: 129 reproduced with the producer’s code, 44 independently re-implemented, 8 no relation: a proof, a derivation or a report, 7 re-implemented, sharing the producer’s components.
 
 ## Programs
 
@@ -39,7 +39,7 @@ second implementation agrees.
 | [`V-wand125-verify-portable-py`](#v-wand125-verify-portable-py) | verify_portable.py | wand125 | external | decides | 2 | 1 |
 | [`V-wand125-check-with-sqpack`](#v-wand125-check-with-sqpack) | check_with_sqpack.py | wand125 | external | decides | 5 | 1 |
 | [`V-wand125-valid7-checker`](#v-wand125-valid7-checker) | valid7-independent-check (Tier A, Tier B and the record checker) | wand125 | external | decides | 1 | 1 |
-| [`V-evand-zmx2`](#v-evand-zmx2) | zmx2 | Evan Daniel | external | decides | 17 | 9 |
+| [`V-evand-zmx2`](#v-evand-zmx2) | zmx2 | Evan Daniel | external | decides | 18 | 9 |
 | [`V-evand-zm-mixed-py`](#v-evand-zm-mixed-py) | zm_mixed.py | Evan Daniel | external | decides | 5 | 6 |
 | [`V-evand-zeromargin-py`](#v-evand-zeromargin-py) | zeromargin.py | Evan Daniel | external | decides | 4 | 2 |
 | [`V-evand-angle-net-verify`](#v-evand-angle-net-verify) | verify (the angle-net arrangement sweep) | Evan Daniel | external | decides | 6 | 3 |
@@ -101,8 +101,8 @@ second implementation agrees.
 | [`V-audit-wand125-rectangles`](#v-audit-wand125-rectangles) | devtools.audit_wand125_rectangles | Squares Project (Levy) | first-party | premises | 3 | 3 |
 | [`V-audit-wand125-point-and-mixed`](#v-audit-wand125-point-and-mixed) | devtools.audit_wand125_point_and_mixed | Squares Project (Levy) | first-party | premises | 11 | 6 |
 | [`V-audit-wand125-linear`](#v-audit-wand125-linear) | devtools.audit_wand125_linear | Squares Project (Levy) | first-party | premises | 0 | 0 |
-| [`V-replay-evand-zmx2`](#v-replay-evand-zmx2) | devtools.replay_evand_zmx2 | Squares Project (Levy) | first-party | premises | 4 | 5 |
-| [`V-audit-evand-mixed-covers`](#v-audit-evand-mixed-covers) | devtools.audit_evand_mixed_covers | Squares Project (Levy) | first-party | premises | 8 | 8 |
+| [`V-replay-evand-zmx2`](#v-replay-evand-zmx2) | devtools.replay_evand_zmx2 | Squares Project (Levy) | first-party | premises | 5 | 5 |
+| [`V-audit-evand-mixed-covers`](#v-audit-evand-mixed-covers) | devtools.audit_evand_mixed_covers | Squares Project (Levy) | first-party | premises | 9 | 8 |
 | [`V-compare-evand-s32-sweep`](#v-compare-evand-s32-sweep) | devtools.compare_evand_s32_sweep | Squares Project (Levy) | first-party | premises | 1 | 1 |
 | [`V-audit-guzhou-r068`](#v-audit-guzhou-r068) | devtools.audit_guzhou_r068 | Squares Project (Levy) | first-party | premises | 2 | 2 |
 | [`V-audit-valid7-independent`](#v-audit-valid7-independent) | devtools.audit_valid7_independent | Squares Project (Levy) | first-party | premises | 1 | 1 |
@@ -268,6 +268,7 @@ Decides a zero-margin point-and-segment cover by branch and bound over centre an
 | --- | --- | --- | --- |
 | `E-n060-evand-mixed-cover-report` | the source’s own run | producer’s code | T-062, T-063 |
 | `E-n061-wand125-point-cover-evand-replay-report` | a third party’s run | independent | T-063 |
+| `E-n061-wand125-point-cover-zmx2-replay` | replayed here | producer’s code | T-063 |
 | `E-n060-evand-mixed-cover-zmx2-replay` | replayed here | producer’s code | T-062, T-063 |
 | `E-n045-wand125-point-cover-report` | the source’s own run | producer’s code | T-054 |
 | `E-n045-wand125-point-cover-source-replay` | replayed here | producer’s code | T-054 |
@@ -1216,6 +1217,7 @@ Builds zmx2 from the retained bytes, refuses any input whose SHA-256 is not the 
 
 | evidence | run | code | results |
 | --- | --- | --- | --- |
+| `E-n061-wand125-point-cover-zmx2-replay` | replayed here | producer’s code | T-063 |
 | `E-n060-evand-mixed-cover-zmx2-replay` | replayed here | producer’s code | T-062, T-063 |
 | `E-n059-wand125-mixed-cover-zmx2-replay` | replayed here | producer’s code | T-066 |
 | `E-n077-wand125-mixed-cover-zmx2-replay` | replayed here | producer’s code | T-067 |
@@ -1232,6 +1234,7 @@ Parses zmx2 root logs with its own code, requires every root once with none unce
 
 | evidence | run | code | results |
 | --- | --- | --- | --- |
+| `E-n061-wand125-point-cover-zmx2-replay` | replayed here | producer’s code | T-063 |
 | `E-n060-evand-mixed-cover-zmx2-replay` | replayed here | producer’s code | T-062, T-063 |
 | `E-n059-wand125-mixed-cover-zmx2-replay` | replayed here | producer’s code | T-066 |
 | `E-n077-wand125-mixed-cover-zmx2-replay` | replayed here | producer’s code | T-067 |

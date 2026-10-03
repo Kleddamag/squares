@@ -8,7 +8,7 @@ ours, which rest on someone else's argument, and how far each has been checked.
 
 ## The short version
 
-- **208** evidence records. **134** are formal; **128** of those were established here.
+- **209** evidence records. **135** are formal; **129** of those were established here.
 - **65** rest on an argument made elsewhere, of which **7** have been read by nobody here.
 - **36** claim to be first established here. **13** make no novelty statement at all - not assessed, which is not the same as not novel.
 
@@ -27,6 +27,7 @@ results, it is a statement about what this repository has itself examined.
 | `E-n060-evand-mixed-cover-report` | 1 | lower-bound | reported | - | elsewhere | informally-verified | previously-published | producer’s code | `V-evand-zm-mixed-py`, `V-evand-zmx2` |
 | `E-n061-evand-derived-report` | 1 | lower-bound | reported | - | elsewhere | informally-verified | previously-published | no code | - |
 | `E-n061-wand125-point-cover-evand-replay-report` | 0 | lower-bound | reported | - | elsewhere | - | previously-published | independent | `V-evand-zeromargin-py`, `V-evand-zmcheck`, `V-evand-zmx2` |
+| `E-n061-wand125-point-cover-zmx2-replay` | 0 | lower-bound | verified | strict inequalities only | here | informally-verified | previously-published | producer’s code | `V-evand-zmx2`, `V-replay-evand-zmx2`, `V-audit-evand-mixed-covers` |
 | `E-n060-evand-mixed-cover-zmx2-replay` | 2 | lower-bound | verified | strict inequalities only | here | - | previously-published | producer’s code | `V-evand-zmx2`, `V-replay-evand-zmx2`, `V-audit-evand-mixed-covers` |
 | `E-k2m3-evand-family-report` | 10 | lower-bound | reported | - | elsewhere | informally-verified | previously-published | producer’s code | `V-evand-qx2-zm-py`, `V-evand-lean` |
 | `E-k2m3-wand125-valid7-independent` | 0 | lower-bound | reported | - | elsewhere | informally-verified | previously-published | independent | `V-wand125-valid7-checker`, `V-audit-valid7-independent` |
@@ -233,10 +234,10 @@ results, it is a statement about what this repository has itself examined.
 
 ## What the register rests on
 
-- **assurance**: numerically-checked 4, reported 70, verified 134
-- **method**: exact-algebraic 85, interval-certified 38, numerical-multiprecision 4, proof-assistant-checked 2, proof-audited 3, published-proof 6, reported 70
-- **novelty**: apparently-novel 36, common-knowledge 4, not assessed 13, previously-published 155
-- **relationship to the producer's code**: generator 4, independent-implementation 44, not-applicable 16, same-implementation 131, shared-components 7, unknown-historical 6
+- **assurance**: numerically-checked 4, reported 70, verified 135
+- **method**: exact-algebraic 85, interval-certified 39, numerical-multiprecision 4, proof-assistant-checked 2, proof-audited 3, published-proof 6, reported 70
+- **novelty**: apparently-novel 36, common-knowledge 4, not assessed 13, previously-published 156
+- **relationship to the producer's code**: generator 4, independent-implementation 44, not-applicable 16, same-implementation 132, shared-components 7, unknown-historical 6
 
 The `cases` column is how many frontier records cite each piece of evidence, and it is the reason to read this table rather than count records. Ranked below are the *formal* records only: a `reported` record cited across the frontier may be a shared catalogue and is labelled as such, which is the register working rather than risk. The risk is a verified claim resting on an argument nobody has examined.
 

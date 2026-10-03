@@ -34,6 +34,7 @@ import pytest
 from devtools.audit_evand_mixed_covers import (
     IMPORTED_CASES,
     POINT_COVERS,
+    POINT_ONLY_CASES,
     REPO,
     ZM_MIXED_SETTINGS,
     Case,
@@ -128,6 +129,23 @@ def _write_cover(path: Path, cover: MixedCover) -> Path:
     ]
     path.write_text("\n".join(rows) + "\n", encoding="ascii")
     return path
+
+
+def test_the_plain_point_cover_of_s61_audits_clean() -> None:
+    result = audit_cover(POINT_ONLY_CASES[61])
+    assert cover_clean(result), result
+    assert result["segments"] == 0
+    assert result["total"] == "8584985072679551/140737488355328"
+
+
+def test_a_plain_cover_that_is_not_d4_invariant_is_refused(tmp_path: Path) -> None:
+    plain = "8 1\n2000\n562949953421312\n2\n1000 2000 5\n3000 2000 5\n"
+    path = tmp_path / "cover.txt"
+    path.write_text(plain, encoding="ascii")
+    result = audit_cover(POINT_ONLY_CASES[61], path)
+    assert not cover_clean(result)
+    assert not result["d4_invariant_entry_by_entry"]
+    assert not result["counts_as_stated"]
 
 
 def _cover(n: int) -> MixedCover:

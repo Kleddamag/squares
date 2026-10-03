@@ -195,6 +195,74 @@ evidence:
       from s(60) = 8 (T-062); this is a second route that uses points only and a cover built
       by someone else.
     source_reviewed: '2026-10-02'
+  - id: E-n061-wand125-point-cover-zmx2-replay
+    claim: lower-bound
+    scope: {n_values: [61]}
+    assurance: verified
+    method: interval-certified
+    performed_by: repository
+    relationship_to_generator: same-implementation
+    origin: replayed-here
+    novelty: previously-published
+    source_key: '[wand125 point n61 2026-09-30]'
+    certificate: resources/web/wand125-point-n61-2026-09-30/square-packing-bounds/point_n61_L8/cover.txt.gz
+    replay: >-
+      From packing/, with cargo on PATH: .venv/bin/python3 -m devtools.replay_evand_zmx2
+      build --checker 6b7f0f79 --work W, which assembles zmx2.rs 6b7f0f79... (the version
+      the source's verify.sh pins by that digest) and its crate from retained bytes and
+      refuses any input whose SHA-256 is not the record's; then .venv/bin/python3 -m
+      devtools.replay_evand_zmx2 run --case 61 --mode d4 --work W --out OUT --threads 4,
+      which runs zmx2 cert --d4 --pair-points on the retained cover and must end
+      VERIFIED-D4 over all 6,400 roots, none uncertified; then .venv/bin/python3 -m
+      devtools.audit_evand_mixed_covers zmx2 --case 61 --mode d4 --atoms pairpts on the
+      roots log and audit_evand_mixed_covers cover --case 61, which must each exit 0. The
+      controls are replay_evand_zmx2 control --case 61 for drop-heaviest-point and
+      drop-second-heaviest-point, each of which must read NOT VERIFIED. The receipts are
+      in the packet's receipts/ and receipts/controls/.
+    replay_status: passed
+    verifiers: [V-evand-zmx2, V-replay-evand-zmx2, V-audit-evand-mixed-covers]
+    proof:
+      source: packing/resources/web/wand125-point-n61-2026-09-30/square-packing-bounds/point_n61_L8/README.md
+      theorem: No 61 unit squares fit in a square of side below 8; with the 8 x 8 grid, s(61) = 8.
+      scope: Unrestricted square packing with independent rotations, disjoint interiors and boundary contact allowed.
+      pinpoints: >-
+        point_n61_L8/README.md and its check_cover.py and verify.sh; Daniel's
+        certificates/FORMAT.md and search/ZMX2.md, retained in the 2026-09-28 evand packet;
+        the 2 October review of this cover, sections 2 to 4; the receipts and controls in
+        the packet.
+      assumptions:
+        - The point measure is positive, exactly D4-invariant and totals 8584985072679551/2^47 < 61, which the source's check_cover.py, zmx2 d4 and this repository's audit (receipts/n61_cover_audit.json) each re-check.
+        - Every closed unit square in [0,8]^2 captures mass at least 1, a point on its boundary counting in full; zmx2 --d4 --pair-points certifies this over all 6,400 roots of the D4 region, which the invariance carries to every centre and angle.
+        - Scaling a packing of 61 at side s < 8 by 8/s makes 61 pairwise disjoint closed unit squares, so a total below 61 excludes it.
+        - zmx2's acceptances are exact integer tests on binary64 enclosures widened outward (its Lemma R), which assumes correctly rounded IEEE-754 arithmetic without contraction or wider evaluation, as Rust guarantees for f64 on x86-64; the program is not formally verified.
+      audit_record: docs/project/reviews/review-2026-10-02-wand125-s61-point-cover.md
+    external_review:
+      state: informally-verified
+      date: '2026-10-02'
+      reviewed_by: >-
+        AI agent, lane FF of the 2 October W2 phase, the lane that ran the replay; model
+        unstated (docs/project/reviews/review-2026-10-02-wand125-s61-point-cover.md)
+      note: >-
+        No defect. The reduction, the fold and the cover's data facts were re-derived, and
+        the trust boundary read; zmx2 itself was taken from the review of the s(59) and
+        s(77) covers, which read it in full at the same hash. Its findings are notes: the
+        tight poses are contacts at integer coordinates, which zmx2 decides in closed form;
+        the claim README links a file outside the packet's scope; and the value is already
+        proved by T-062 and T-063.
+    limitations: >-
+      Replayed here on 2 October 2026: zmx2 6b7f0f79... cert --d4 --pair-points on
+      wand125's retained point-only cover, VERIFIED-D4, 6,400 of 6,400 roots, 800,042
+      boxes, 392,572 certified and 10,649 empty leaves, maximum depth 30, none uncertified
+      or capped, 256 s wall on four cores (receipts/n61_zmx2_d4_pairpoints.log); the box
+      total and depth equal the source's own run and Daniel's census. The cover is
+      wand125's and the checker is Evan Daniel's, unmodified and external to wand125, as
+      the source's own verify.sh uses it, so the decision is an implementation independent
+      of the cover's producer; it is the same checker as T-062's and T-066's replays, so it
+      adds no method. Only the D4 sweep was run; the --full sweep was not. Two mutated
+      covers, each with one D4 orbit removed, are refused (460 and 452 uncertified boxes in
+      one root region each). The value already follows from s(60) = 8 (T-062); this is a
+      second route, by points only and a cover built by someone else.
+    source_reviewed: '2026-10-02'
 
   - id: E-n060-evand-mixed-cover-zmx2-replay
     claim: lower-bound

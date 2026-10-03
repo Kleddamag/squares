@@ -161,6 +161,15 @@ FIXES: dict[str, Fix] = {
             "implementation as E-n045-evand-mixed-cover-zmx2-replay"
         ),
     ),
+    "E-n061-wand125-point-cover-zmx2-replay": Fix(
+        INDEPENDENT,
+        SAME,
+        (
+            "the replay builds and runs zmx2 6b7f0f79, the digest the source's own verify.sh "
+            "pins and verifies the cover with; its review says so, as wand125's own verify.sh "
+            "already uses it. The pattern of E-n045-wand125-point-cover-source-replay"
+        ),
+    ),
     "E-n045-wand125-point-cover-report": Fix(
         INDEPENDENT,
         SAME,

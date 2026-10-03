@@ -674,11 +674,179 @@ target in `section_covered`; a comment at `covered_by_sweep` stating that region
 be convex and in hull order; and a doctored closure with a stale relabelled cover for
 `cache-cover-survives-restep`.
 
+## 5. Addendum (2026-10-03): Adaptive Rows, Digest `64474e45`
+
+**Reviewed:** `packing/devtools/verify_n17_kernel_certificate.py` at lane P2’s worktree
+`9d3cb521b` (SHA-256 `64474e45…`), which is the admitted `5c550f7c…` plus the verifier
+hunk of `p2-adaptive-final.patch` (+47 −10; applying that hunk to `5c550f7c` gives
+`64474e45` byte for byte).
+**Materials:** P2’s patch, worktree, receipts, mutants and lane K2’s two refined
+closures under the session scratchpad `lanes/p2-refine/`; my scripts, receipts and logs
+under `audit-verifier-rewrites/refinement/` (`mutate_refined.py.txt`,
+`run_refinement_mutants_r6.py.txt`, the `64474e45` module retained as `.py.txt`, `w7-*`,
+`n1-*`, `doctored-*`, `refinement-mutants-r6*`, `worktree-tests.log`). The verifier
+still imports nothing beyond the standard library and the cover tool, and nothing from
+`gmpy2`, onto which the producer and checker moved at `c401c81d6`; the arithmetic
+diversity of section 2.4 is kept.
+
+**Verdict: ADMIT WITH CONDITIONS.** Refined rows cannot be accepted unsoundly: the rows
+of a step must partition $[0, 1]$ exactly, each must cite by reference an accepted row
+of the owner that contains it, and every obligation of a row (its legal box, its strict
+core, its required domain, its cover) is taken over the row’s own interval, as every
+obligation of a partner row is.
+Uniform certificates are verified exactly as before, with identical counts and an
+identical sample draw.
+The conditions are, as in section 2.8, test additions: the committed suite (42 tests in
+P2’s worktree, all passing) misses five weakening mutants that only this review’s
+doctored refinements catch, and the minimal test for each is given below.
+
+### 5.1 What Changed
+
+`predecessors(accepted, rows, si)` replaces the positional check
+`(lo, hi) == prior.interval == (ri/bins, (ri+1)/bins)` and the dict comparison of
+`prior_reference`. It requires the step’s rows to be a nonempty list whose intervals
+start at 0, each at the previous one’s end, each with $lo < hi \le 1$, the last ending
+at 1; builds a map from the canonical JSON of each accepted row’s reference to that row,
+refusing duplicates; and for each row takes the accepted row its `prior_reference`
+names, refusing a missing one and a row whose interval leaves its predecessor’s.
+`check_step` then uses that predecessor where it used the positional one, and
+`verify_objects` draws the full set and the sample from the step’s own row count.
+Nothing else moved: the required domain is still `prior.outer` cut by
+`wall_box(lo, hi)`, the core is still proved strict over `(lo, hi)`, the row’s reference
+must still be `{phase3, node, step, row index}`, partner covers are still admitted per
+accepted row with `len(items) == len(rows)`, matching references and intervals and a
+strict core over the partner row’s own interval, the kernel is still held to every row’s
+planes, the closure is still derived over every accepted row, and the seed is still
+required uniform.
+
+### 5.2 Why a Refined Row Cannot Be Accepted Unsoundly
+
+- **Partition.** The cursor starts at 0 and each row must start exactly where the last
+  ended, with positive length, and the last must end at 1: closed rows with no gap and
+  no overlap (a shared endpoint lies in both rows, and both are proved).
+  A gap would leave angles no row speaks for; the mutants `partition-gap-accepted`,
+  `-overlap-accepted`, `-end-unchecked`, `empty-row-allowed` and my
+  `partition-start-unchecked` each remove one of these and each is caught (5.4).
+- **Predecessor by reference.** Accepted references are unique by construction (each was
+  required equal to the verifier’s own expected dict, with the row index, or to the
+  seed’s), so the duplicate check is redundant, as P2 says of the one equivalent mutant;
+  canonical-JSON equality is at least as strict as dict equality (it tells `1` from
+  `True`). A citation of another owner’s row, of a replaced row (the grandparent), of
+  the row itself or of nothing is refused.
+- **Containment and uniqueness.** The accepted rows partition $[0, 1]$ by induction (the
+  seed is uniform and every step’s rows are proved a partition), so a row of positive
+  length lies inside exactly one accepted row; the citation must name that one, a row
+  can never span two accepted rows (no coarsening), and the natural order of citations
+  is forced.
+- **The row’s own interval.** The required domain is the predecessor’s outer domain,
+  which contains every centre the owner can have at the predecessor’s angles and so at
+  the row’s, cut by the legal box of $[lo, hi]$, valid on the whole row by the concavity
+  argument of `wall_box`; the core is proved strict over $[lo, hi]$; the cover is
+  decided on that required domain.
+  P2’s mutants `box-of-the-predecessor`, `box-not-cut` and `box-of-the-upper-half` and
+  my four half-interval core mutants probe this, and
+  `test_a_refined_row_is_held_to_its_own_legal_box` shows the wall closure has rows
+  whose cover reaches only their own box, so the box of the row’s own interval is what
+  the pass depends on.
+- **Partner covers of variable length.** `check_partners` is unchanged: one item per
+  accepted row of the partner, in order, with the row’s reference and interval, dead
+  rows empty, a cover with no live row refused, and the admitted cover memoised on the
+  accepted `Row` object, which the partner’s own step replaces.
+  My doctored covers with a missing last item, two items swapped, or an item’s interval
+  widened to the parent’s are refused (“cover length”, “reference”, “interval”).
+- **The sample draw.** The sample is drawn from `range(count)` per step and the closure
+  step is always checked in full; for a uniform certificate `count == bins` and the
+  generator consumes the same numbers, so the draw is the one `5c550f7c` made: the
+  sampled W7 and N1 receipts below carry its counts exactly.
+- **No refined certificate was ever admissible before.** The reviewed `5c550f7c` refuses
+  both of K2’s refined closures at “step 4 row 0: interval” (`blind-5c550f7c.json`,
+  `wall-5c550f7c.json`).
+
+### 5.3 Evidence
+
+| Run | `5c550f7c` | `64474e45` |
+| --- | --- | --- |
+| W7 full (`w7-full-64474e45.json`) | PASS, 184 s | PASS, 291 s; counts and closure identical (30,952,184 inequalities, 7,752 regions, 3,324 rows, 19,282 partner rows) |
+| W7 `--sample 4 --sample-seed 12345` | PASS, 76 s | PASS, 109 s; the same 270 rows, 596 regions, 2,076,688 inequalities |
+| N1 `--sample 1 --sample-seed 12345` | PASS, 117 s | PASS, 171 s; the same 113 rows, 400 regions, 669,668 inequalities |
+| K2’s refined blind closure (2 bins; rows per step 2, 2, 2, 2, 4, 4, 8) | FAIL at “step 4 row 0: interval” | PASS: 24 rows in full, 24 regions, 2,416 inequalities, 18 partner rows, closure owner 0 step 6 |
+| K2’s refined wall closure (2 bins; 2, 2, 2, 2, 4, 4, 4, 4, 5) | FAIL likewise | PASS: 21 rows in full, 21 regions, 1,500 inequalities, 16 partner rows, closure owner 0 step 8 |
+
+P2’s own full receipts (`w7-full-64474e45.json`, `n1-full-64474e45.json` in the
+materials) agree with the admitted counts on both uniform certificates, N1 in full
+(2,611 rows, 16,709,184 inequalities).
+
+**Doctored refinements** (`doctored-{blind,wall}-64474e45.log`), beyond P2’s nine
+committed ones: a closing step whose first row starts at $2^{-20}$ (“interval gap”) or
+whose last row ends at $1 - 2^{-20}$ (“do not reach the end”); a reversed interval; a
+row citing itself (“not an accepted row”); a split’s second child ending $2^{-30}$ past
+its parent with the next row moved to meet it, so only containment can refuse (“escapes
+its predecessor”); both children claiming the parent’s whole interval (“overlap”); the
+three partner-cover edits above; a refined row’s core, and a refined partner row’s core,
+scaled until strict over one half of the row only (“core not strict”); and the same two
+cores grown by a single point found by search that is strict over one half of the row
+and not the other, which leaves every other obligation of the row intact.
+All 15 applicable mutations are refused at the intended check on both closures; the two
+scaled lower-half forms are not applicable because strictness binds at the low end on
+these closures, which is why the grown-point form was added.
+
+### 5.4 Mutants
+
+`run_refinement_mutants_r6.py.txt` reproduces P2’s thirteen mutants and adds seven, each
+against P2’s selection of the worktree’s committed tests and against the doctored
+refinements on both closures (`refinement-mutants-r6.log`, `-core-strict.log`).
+
+| Mutant | Committed tests | Doctored refinements |
+| --- | --- | --- |
+| P2’s twelve weakening mutants (partition gap, overlap, end; containment skipped, lower end only; positional fallback, by containment; box of the predecessor, not cut, upper half; full mode and sample on the seed grid; empty row) | caught, 1 to 4 tests each, as P2 reports | five also caught here; the box mutants refuse the sound wall closure |
+| `duplicate-accepted-unchecked` | missed: equivalent, see 5.2 | missed |
+| `partition-start-unchecked` (the cursor starts at the first row’s own start) | **missed** | caught: `partition-starts-above-zero` accepted on the blind closure |
+| `containment-upper-end-only` | caught (`cite_the_next_parent`) | missed |
+| `core-strict-lower-half`, `core-strict-upper-half` (the owner’s core proved over half its row) | **missed** | caught: the grown-point and (upper) scaled cores accepted |
+| `partner-core-strict-lower-half`, `-upper-half` | **missed** | caught likewise |
+| `core-strict-predecessor-interval` (stricter) | nine tests fail: it refuses sound refined rows, never accepts more | refuses both sound closures |
+
+**Conditions: five test additions,** for the mutants the committed suite misses.
+All are edits in the style of `test_the_kernel_verifier_refuses_a_doctored_refinement`,
+on the blind pair P2’s tests already produce, expecting the message named; the
+procedures are in `mutate_refined.py.txt`.
+
+1. `partition-start-unchecked`: set the closing step’s first row’s `interval[0]` to
+   `"1/1048576"`; expect “interval gap” (`start_above_zero`).
+2. `core-strict-lower-half` and `core-strict-upper-half`: take a refined row (one whose
+   interval is narrower than its cited predecessor’s), find by the search in
+   `point_strict_on_one_half` a point strict over the row’s lower (upper) half but not
+   over the whole row, replace the core by the hull of the old core and that point, and
+   recompute `common_core_halfplanes` from the new core and the row’s residual vertices;
+   expect “core not strict”.
+   Growing rather than replacing keeps every other obligation of the row satisfied, so a
+   half-interval verifier accepts the certificate.
+3. `partner-core-strict-lower-half` and `-upper-half`: the same point grown into a
+   refined partner row’s published `core`; expect “core not strict”.
+
+The four core mutants are on a line `5c550f7c` already had, so they are not a defect of
+the patch; they matter now because “every obligation uses the row’s own interval” is one
+of the facts the refinement rests on, and a row’s interval is now whatever the
+certificate says it is.
+The conditions change no byte of the verifier.
+
+### 5.5 The Row Count
+
+The verifier caps nothing: `predecessors` accepts any nonempty partition.
+That has no bearing on soundness, since every row of every step is proved in full mode
+and the closure step is proved in full in sample mode; it bears on cost, which grows
+with the rows, and on sample mode, whose fixed `sample` rows per step cover a shrinking
+share of a step as rows multiply, which is why a sampled run remains a planning check.
+Two things worth doing: report the total and the largest per-step row count in the
+receipt’s `counts`, so a refined certificate’s shape is visible in the ledger, and keep
+the producer’s `max_rows` as the practical ceiling.
+No change to the verifier is needed.
+
 ## Evidence Status
 
 | Kind | Items |
 | --- | --- |
-| Measured, this review | the facet, sweep, `between` and section audits; the W7 full run and the W7 and N1 sampled agreement runs; the 34 doctored certificates; the 21 verifier mutants against three checks; the extended test file against the five mutants it was written for; the blind-pair equivalence of the first-row-only mutant; the sampled agreement run on A; the four crafted enclosure tables; the 35 committed tests, now 39 |
+| Measured, this review | section 5: the uniform runs under `64474e45`, the two refined closures under both verifiers, 17 doctored refinements, 21 mutants against the committed tests and the doctored refinements; sections 1 to 4: the facet, sweep, `between` and section audits; the W7 full run and the W7 and N1 sampled agreement runs; the 34 doctored certificates; the 21 verifier mutants against three checks; the extended test file against the five mutants it was written for; the blind-pair equivalence of the first-row-only mutant; the sampled agreement run on A; the four crafted enclosure tables; the 35 committed tests, now 39 |
 | Read from code, this review | the diffs of both verifiers; the arguments of sections 2.1 to 2.3 and 3.2 to 3.4 |
 | Taken from the record | the admitted W7 receipt and F2’s receipt; N1’s `check-saved.json`; A’s admitted receipt; the prior reviews’ line numbers and mutation lists |
 | Not checked here | the kernel’s checker and producer (reviewed by R3); HiGHS and `mpmath` (nothing in either verifier depends on them); the Taylor producer’s floats (the verifier recomputes every Taylor quantity it uses) |

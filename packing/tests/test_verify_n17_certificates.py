@@ -307,6 +307,297 @@ def test_the_kernel_verifier_refuses_bytes_that_do_not_match_their_name(
 
 
 # ---------------------------------------------------------------------------
+# The kernel verifier on refined rows, from the producer's split policy
+# ---------------------------------------------------------------------------
+
+# The blind pair moved onto both walls: its cells reach x = 1/2 and y = 1/2, so a
+# bisected row's legal box is narrower than its predecessor's wherever the turn is off the
+# axes, and the rows' covers reach only their own boxes.
+WALL_TRIANGLE = [(x - Q(1, 2), y - Q(1, 2)) for x, y in TRIANGLE]
+WALL_SHIFTED = [(x + Q(1, 100), y) for x, y in WALL_TRIANGLE]
+PAIRS = {"blind": (TRIANGLE, SHIFTED), "wall": (WALL_TRIANGLE, WALL_SHIFTED)}
+
+
+@cache
+def split_objects(pair: str) -> tuple[dict[str, Any], dict[str, Any]]:
+    """A closure whose rows the producer's split policy refined, made once per pair.
+
+    Both pairs stall on two uniform rows. With `SplitPolicy(64, 200)` the blind pair
+    closes at step 6 with rows per step 2, 2, 2, 2, 4, 4, 8 (lane K2's
+    `test_hull_kernel_split`), and the wall pair at step 8 with 2, 2, 2, 2, 4, 4, 4, 4, 5.
+    """
+    frame = make_frame(
+        name=f"{pair}-pair",
+        cap=Q(3),
+        length=Q(3),
+        cells=list(PAIRS[pair]),
+        cell_names=["left", "right"],
+        occupancy=2,
+        action_names=("r0",),
+    )
+    production = producer.produce(
+        frame,
+        [0, 1],
+        bins=2,
+        max_rounds=12,
+        budget=Budget(time.monotonic() + 60, 200_000),
+        split=producer.SplitPolicy(floor=64, max_rows=200),
+    )
+    assert production.outcome == "closed"
+    return production.seed, production.node
+
+
+def split_certificate(
+    tmp_path: Path, pair: str, edit: Callable[[dict[str, Any]], None] | None = None
+) -> Path:
+    seed, node = split_objects(pair)
+    if edit is not None:
+        node = copy.deepcopy(node)
+        edit(node)
+    save_certificate(tmp_path / pair, seed, node)
+    return tmp_path / pair
+
+
+def pair_cells(tmp_path: Path, pair: str) -> kernel_verifier.Cells:
+    path = cells_file(tmp_path, Q(3), ["left", "right"], list(PAIRS[pair]))
+    return kernel_verifier.file_cells(path, hashlib.sha256(path.read_bytes()).hexdigest())
+
+
+def children(step: dict[str, Any]) -> list[int]:
+    """Each row index whose row shares its predecessor with the next row: a split."""
+    rows = step["rows"]
+    return [
+        index
+        for index in range(len(rows) - 1)
+        if rows[index]["prior_reference"] == rows[index + 1]["prior_reference"]
+    ]
+
+
+@pytest.mark.parametrize("pair", ["blind", "wall"])
+def test_the_kernel_verifier_passes_refined_rows(tmp_path: Path, pair: str) -> None:
+    seed, node = split_objects(pair)
+    counts = [len(step["rows"]) for step in node["steps"]]
+    assert max(counts) > seed["bins"]
+    assert any(children(step) for step in node["steps"])
+    cells = pair_cells(tmp_path, pair)
+    receipt = kernel_verifier.verify(split_certificate(tmp_path, pair), cells)
+    assert receipt["status"] == "PASS", receipt["failure"]
+    assert receipt["closure"] == node["contradiction"]
+    assert receipt["counts"]["steps"] == len(counts)
+    assert receipt["counts"]["rows_full"] > seed["bins"] * len(counts)
+    sampled = kernel_verifier.verify(split_certificate(tmp_path, pair), cells, sample=1)
+    assert sampled["status"] == "PASS", sampled["failure"]
+
+
+def test_a_refined_row_is_held_to_its_own_legal_box(tmp_path: Path) -> None:
+    """Some bisected row of the wall pair has a cover that reaches only its own legal box:
+    cut by its predecessor's wider box instead, its required domain is not covered. So the
+    pass above depends on the verifier cutting by the box of the row's own interval, and a
+    verifier that kept the predecessor's box would refuse a sound certificate."""
+    seed, node = split_objects("wall")
+    cells = pair_cells(tmp_path, "wall")
+    own_only = 0
+    for si, step in enumerate(node["steps"]):
+        state = replayed_state(seed, node, cells, si)
+        owner = step["owner"]
+        cited = kernel_verifier.predecessors(state.rows[owner], step["rows"], si)
+        for row, prior in zip(step["rows"], cited, strict=True):
+            lo, hi = Q(row["interval"][0]), Q(row["interval"][1])
+            if (lo, hi) == prior.interval or not prior.outer:
+                continue
+            own = kernel_verifier.intersect_convex(
+                list(prior.outer), kernel_verifier.wall_box(lo, hi, cells.cap)
+            )
+            wide = kernel_verifier.intersect_convex(
+                list(prior.outer), kernel_verifier.wall_box(*prior.interval, cells.cap)
+            )
+            if kernel_verifier.area2(own) == 0:
+                continue
+            core = kernel_verifier.hull(decode(row["core_vertices"]))
+            regions = [
+                state.forbidden_region(state.groups[other], core)
+                for other in state.mask
+                if other != owner and state.groups[other]
+            ]
+            regions.extend(
+                kernel_verifier.hull(decode(item["vertices"]))
+                for item in row["collision_regions"]
+            )
+            regions.extend(kernel_verifier.hull(decode(p)) for p in row["residual_polygons"])
+            assert kernel_verifier.covered_by_sweep(kernel_verifier.hull(own), regions)[0]
+            if not kernel_verifier.covered_by_sweep(kernel_verifier.hull(wide), regions)[0]:
+                own_only += 1
+    assert own_only > 0
+
+
+def first_split(node: dict[str, Any]) -> tuple[dict[str, Any], int]:
+    step = next(step for step in node["steps"] if children(step))
+    return step, children(step)[0]
+
+
+def leave_gap(node: dict[str, Any]) -> None:
+    step, index = first_split(node)
+    end = step["rows"][index]["interval"]
+    end[1] = str(Q(end[1]) - Q(1, 2**20))
+
+
+def overlap(node: dict[str, Any]) -> None:
+    step, index = first_split(node)
+    end = step["rows"][index]["interval"]
+    end[1] = str(Q(end[1]) + Q(1, 2**20))
+
+
+def stop_short(node: dict[str, Any]) -> None:
+    step, _ = first_split(node)
+    step["rows"].pop()
+
+
+def cite_the_next_parent(node: dict[str, Any]) -> None:
+    """The first split's first child cites the accepted row after its parent, which starts
+    above it: the predecessor's lower end refuses it."""
+    step, index = first_split(node)
+    child = step["rows"][index]
+    child["prior_reference"] = next(
+        row["prior_reference"]
+        for row in step["rows"][index:]
+        if row["prior_reference"] != child["prior_reference"]
+    )
+
+
+def cite_the_previous_parent(node: dict[str, Any]) -> None:
+    """The last child in the first step with a split cites the accepted row before its
+    parent, which ends below it: the predecessor's upper end refuses it."""
+    step = next(step for step in node["steps"] if children(step))
+    index = children(step)[-1] + 1
+    child = step["rows"][index]
+    child["prior_reference"] = next(
+        row["prior_reference"]
+        for row in reversed(step["rows"][:index])
+        if row["prior_reference"] != child["prior_reference"]
+    )
+
+
+def insert_an_empty_row(node: dict[str, Any]) -> None:
+    """The closing step's first row is preceded by a copy of itself over the single angle
+    0, an empty interval that the partition refuses."""
+    rows = node["steps"][-1]["rows"]
+    empty = copy.deepcopy(rows[0])
+    empty["interval"] = ["0", "0"]
+    rows.insert(0, empty)
+
+
+def cite_the_grandparent(node: dict[str, Any]) -> None:
+    """A row of the closing step cites its predecessor's own predecessor, which contains it
+    but was replaced at the owner's previous step: only acceptance can refuse it."""
+    last = node["steps"][-1]
+    earlier = [step for step in node["steps"][:-1] if step["owner"] == last["owner"]][-1]
+    row = last["rows"][0]
+    parent = next(r for r in earlier["rows"] if r["reference"] == row["prior_reference"])
+    row["prior_reference"] = parent["prior_reference"]
+
+
+def cite_the_partner(node: dict[str, Any]) -> None:
+    """A row cites the partner's accepted row with its interval, not one of its own."""
+    step = node["steps"][-1]
+    items = next(iter(step["prior_partner_pose_covers"].values()))
+    step["rows"][0]["prior_reference"] = items[0]["reference"]
+
+
+def unchecked_beyond_the_seed_grid(node: dict[str, Any]) -> None:
+    """The closure step's last row, past the seed's two bins, loses its collision regions."""
+    rows = node["steps"][-1]["rows"]
+    assert len(rows) > 2
+    rows[-1]["collision_regions"] = []
+
+
+@pytest.mark.parametrize(
+    ("edit", "message"),
+    [
+        (leave_gap, "interval gap"),
+        (overlap, "interval overlap"),
+        (stop_short, "do not reach the end"),
+        (cite_the_next_parent, "escapes its predecessor"),
+        (cite_the_previous_parent, "escapes its predecessor"),
+        (insert_an_empty_row, "row 0: interval is empty"),
+        (cite_the_grandparent, "not an accepted row"),
+        (cite_the_partner, "not an accepted row"),
+        (unchecked_beyond_the_seed_grid, "NOT covered"),
+    ],
+)
+def test_the_kernel_verifier_refuses_a_doctored_refinement(
+    tmp_path: Path, edit: Callable[[dict[str, Any]], None], message: str
+) -> None:
+    receipt = kernel_verifier.verify(
+        split_certificate(tmp_path, "blind", edit), pair_cells(tmp_path, "blind")
+    )
+    assert receipt["status"] == "FAIL"
+    assert message in receipt["failure"]
+
+
+def drop_a_late_collision(node: dict[str, Any]) -> None:
+    """The last row of the first step with more rows than the seed's two loses its
+    collision regions; that step is not the closure, so only a sample can reach it."""
+    step = next(step for step in node["steps"][:-1] if len(step["rows"]) > 2)
+    step["rows"][-1]["collision_regions"] = []
+
+
+def test_a_sample_draws_from_the_steps_own_rows(tmp_path: Path) -> None:
+    receipt = kernel_verifier.verify(
+        split_certificate(tmp_path, "blind", drop_a_late_collision),
+        pair_cells(tmp_path, "blind"),
+        sample=8,
+    )
+    assert receipt["status"] == "FAIL"
+    assert "NOT covered" in receipt["failure"]
+
+
+def common_core_planes(core: list[Point], vertices: list[Point]) -> list[dict[str, Any]]:
+    """The published form of each core edge's plane moved out to the least vertex."""
+    planes: list[dict[str, Any]] = []
+    for k in range(len(core)):
+        p, q = core[k], core[(k + 1) % len(core)]
+        a, b = q[1] - p[1], p[0] - q[0]
+        least = min(a * v[0] + b * v[1] for v in vertices)
+        planes.append({"normal": [str(a), str(b)], "upper": str(a * p[0] + b * p[1] + least)})
+    return planes
+
+
+def cut_to_the_upper_half(node: dict[str, Any]) -> None:
+    """The first live child row keeps only the residual that the legal box of its upper
+    half admits, dropping poses that its own, wider box admits. Its common-core planes are
+    recomputed, and its bounds dropped when nothing is left, so that only the cover can
+    refuse it: a verifier that cut a row by a box narrower than its own would accept it."""
+    for step in node["steps"]:
+        for index in sorted({i + k for i in children(step) for k in (0, 1)}):
+            row = step["rows"][index]
+            lo, hi = Q(row["interval"][0]), Q(row["interval"][1])
+            box = kernel_verifier.wall_box((lo + hi) / 2, hi, Q(3))
+            given = [kernel_verifier.hull(decode(p)) for p in row["residual_polygons"]]
+            cut = [
+                kernel_verifier.hull(kernel_verifier.intersect_convex(p, box)) for p in given
+            ]
+            cut = [p for p in cut if len(p) >= 3]
+            if not given or cut == given:
+                continue
+            row["residual_polygons"] = [encode(p) for p in cut]
+            vertices = [v for p in cut for v in p]
+            core = kernel_verifier.hull(decode(row["core_vertices"]))
+            row["common_core_halfplanes"] = common_core_planes(core, vertices) if cut else []
+            if not cut:
+                row["outer_bounds"], row["outer_domain"] = [], []
+            return
+    raise AssertionError("no child row's residual reaches past its upper half's box")
+
+
+def test_the_kernel_verifier_refuses_a_row_cut_to_a_narrower_box(tmp_path: Path) -> None:
+    receipt = kernel_verifier.verify(
+        split_certificate(tmp_path, "wall", cut_to_the_upper_half), pair_cells(tmp_path, "wall")
+    )
+    assert receipt["status"] == "FAIL"
+    assert "NOT covered" in receipt["failure"]
+
+
+# ---------------------------------------------------------------------------
 # The kernel verifier's integer forms, against its Fraction forms
 # ---------------------------------------------------------------------------
 

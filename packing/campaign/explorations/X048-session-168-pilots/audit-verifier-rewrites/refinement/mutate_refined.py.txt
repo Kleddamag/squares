@@ -260,7 +260,89 @@ def partner_core_strict_on_a_half_only(which: str) -> Mutation:
     return mutate
 
 
+def point_strict_on_one_half(v: ModuleType, lo: Q, hi: Q, which: str) -> Point | None:
+    """A point strictly inside the unit square at every half-angle of one half of
+    `[lo, hi]` but not at every half-angle of the whole row, by a search over directions
+    and radii near the square's boundary. None when the row admits no such point."""
+    import math
+
+    mid = (lo + hi) / 2
+    half = (lo, mid) if which == "lower" else (mid, hi)
+    for k in range(720):
+        phi = math.pi * k / 360
+        direction = (Q(round(math.cos(phi) * 2**16), 2**16), Q(round(math.sin(phi) * 2**16), 2**16))
+        for step in range(0, 160):
+            r = Q(45, 100) + Q(step, 512)
+            p = (r * direction[0], r * direction[1])
+            if v.core_strict([p], *half) and not v.core_strict([p], lo, hi):
+                return p
+    return None
+
+
+def core_grown_by_a_half_strict_point(which: str) -> Mutation:
+    """A refined row's core grown by one point that is strict over one half of the row's
+    interval only; the core still contains the old one, so every other obligation of the
+    row holds and only strictness over the whole interval refuses it. Steps with an empty
+    kernel are preferred, so no kernel point meets the recomputed planes."""
+
+    def mutate(seed: dict[str, Any], node: dict[str, Any], v: ModuleType) -> str:
+        candidates = sorted(
+            refined_rows(node), key=lambda t: (bool(node["steps"][t[0]]["common_owned_kernel"]), -t[0])
+        )
+        for si, ri, row, _parent in candidates:
+            if not row["core_vertices"]:
+                continue
+            lo, hi = Q(row["interval"][0]), Q(row["interval"][1])
+            p = point_strict_on_one_half(v, lo, hi, which)
+            if p is None:
+                continue
+            core = v.hull(dec(row["core_vertices"]))
+            grown = v.hull([*core, p])
+            mid = (lo + hi) / 2
+            half = (lo, mid) if which == "lower" else (mid, hi)
+            assert v.core_strict(grown, *half) and not v.core_strict(grown, lo, hi)
+            row["core_vertices"] = enc(grown)
+            recompute_planes(row)
+            return "core not strict"
+        raise RuntimeError(f"no refined row admits a point strict on its {which} half only")
+
+    return mutate
+
+
+def partner_core_grown_by_a_half_strict_point(which: str) -> Mutation:
+    """A refined partner row's published core grown likewise."""
+
+    def mutate(seed: dict[str, Any], node: dict[str, Any], v: ModuleType) -> str:
+        bins = len(node["initial"]["cell_references"][next(iter(node["initial"]["cell_references"]))])
+        for si in range(len(node["steps"]) - 1, -1, -1):
+            step = node["steps"][si]
+            for pj, items in step["prior_partner_pose_covers"].items():
+                if len(items) <= bins:
+                    continue
+                for item in items:
+                    if not item["core"]:
+                        continue
+                    lo, hi = Q(item["interval"][0]), Q(item["interval"][1])
+                    p = point_strict_on_one_half(v, lo, hi, which)
+                    if p is None:
+                        continue
+                    core = v.hull(dec(item["core"]))
+                    grown = v.hull([*core, p])
+                    mid = (lo + hi) / 2
+                    half = (lo, mid) if which == "lower" else (mid, hi)
+                    assert v.core_strict(grown, *half) and not v.core_strict(grown, lo, hi)
+                    item["core"] = enc(grown)
+                    return "core not strict"
+        raise RuntimeError(f"no refined partner row admits a point strict on its {which} half only")
+
+    return mutate
+
+
 MUTATIONS: dict[str, Mutation] = {
+    "owner-core-grown-by-a-point-strict-on-lower-half-only": core_grown_by_a_half_strict_point("lower"),
+    "owner-core-grown-by-a-point-strict-on-upper-half-only": core_grown_by_a_half_strict_point("upper"),
+    "partner-core-grown-by-a-point-strict-on-lower-half-only": partner_core_grown_by_a_half_strict_point("lower"),
+    "partner-core-grown-by-a-point-strict-on-upper-half-only": partner_core_grown_by_a_half_strict_point("upper"),
     "partition-starts-above-zero": start_above_zero,
     "partition-ends-below-one": end_below_one,
     "row-interval-reversed": reversed_interval,

@@ -12,12 +12,17 @@ What it re-derives, from scratch:
   the seed; the seed's world is the cells; the mask is the node's;
 - the seed: every owned point is owned (bisection on the half-angle with an interval
   product bound), every row is the cell cut by the row's legal box;
+- every step's rows: a partition of the half-angle range `[0, 1]` in exact rationals, in
+  order, with no gap and no overlap, each row citing by reference one of the owner's
+  accepted rows whose interval contains it; the seed's rows are the uniform grid, and a
+  step may split an accepted row into narrower ones, which then replace it;
 - the owned-hull chain through every step: the prior hulls equal the state, kernel points
   satisfy every live row's common-core planes (recomputed from the published core and
   residual vertices), compression witnesses are exact convex combinations on the grid;
 - every partner pose cover: its domain is the hull of the partner's current residual
   vertices, its core is strictly inside the partner's square over the row;
-- for the rows checked in full: the required domain, the strict core, every collision
+- for the rows checked in full: the required domain (the predecessor's outer domain cut
+  by the legal box of the row's own interval), the strict core, every collision
   region against every live partner row and every facet of the exact Minkowski
   difference, and coverage of the required domain by forbidden, collision and residual
   regions by an exact vertical sweep (every event abscissa, and one probe inside every
@@ -886,6 +891,42 @@ def check_cover(
     state.tick("cover_checks")
 
 
+def reference_key(reference: Any) -> str:
+    return json.dumps(reference, sort_keys=True, separators=(",", ":"))
+
+
+def predecessors(accepted: list[Row], rows: list[dict[str, Any]], si: int) -> list[Row]:
+    """Each step row's accepted predecessor, after the rows are proved a refinement.
+
+    The rows' intervals partition `[0, 1]` in order: the first starts at 0, each starts
+    where the one before ends, each is nonempty, and the last ends at 1. Each row cites by
+    `prior_reference` one of the owner's accepted rows, whose interval contains the row's.
+    The accepted rows partition `[0, 1]` themselves, so the predecessor is the only one
+    that can contain the row, and an unrefined row has exactly its predecessor's interval.
+    """
+    require(isinstance(rows, list) and len(rows) > 0, f"step {si}: no rows")
+    by_reference = {reference_key(r.reference): r for r in accepted}
+    require(len(by_reference) == len(accepted), f"step {si}: duplicate accepted reference")
+    cursor = Q(0)
+    found: list[Row] = []
+    for ri, row in enumerate(rows):
+        where = f"step {si} row {ri}"
+        lo, hi = Q(row["interval"][0]), Q(row["interval"][1])
+        require(lo == cursor, f"{where}: interval {'gap' if lo > cursor else 'overlap'}")
+        require(lo < hi <= 1, f"{where}: interval is empty or ends past 1")
+        cursor = hi
+        prior = by_reference.get(reference_key(row["prior_reference"]))
+        require(prior is not None, f"{where}: prior reference is not an accepted row")
+        assert prior is not None
+        require(
+            prior.interval[0] <= lo and hi <= prior.interval[1],
+            f"{where}: interval escapes its predecessor",
+        )
+        found.append(prior)
+    require(cursor == 1, f"step {si}: the rows do not reach the end of the interval")
+    return found
+
+
 def check_step(
     state: State, step: dict[str, Any], si: int, node_id: Any, full: set[int]
 ) -> tuple[list[Row], list[Plane], bool]:
@@ -894,15 +935,10 @@ def check_step(
     new_rows: list[Row] = []
     all_planes: list[Plane] = []
     any_live = False
-    for ri, row in enumerate(step["rows"]):
+    cited = predecessors(state.rows[owner], step["rows"], si)
+    for ri, (row, prior) in enumerate(zip(step["rows"], cited, strict=True)):
         where = f"step {si} row {ri}"
-        prior = state.rows[owner][ri]
         lo, hi = Q(row["interval"][0]), Q(row["interval"][1])
-        require(
-            (lo, hi) == prior.interval == (Q(ri, state.bins), Q(ri + 1, state.bins)),
-            f"{where}: interval",
-        )
-        require(row["prior_reference"] == prior.reference, f"{where}: prior reference")
         require(
             row["reference"] == {"kind": "phase3", "node": node_id, "step": si, "row": ri},
             f"{where}: reference",
@@ -1108,10 +1144,11 @@ def verify_objects(
                 same_set(poly(step["prior_owned_hulls"][str(o)]), state.groups[o]),
                 f"step {si}: prior hull {o}",
             )
+        count = len(step["rows"])
         full = (
-            set(range(bins))
+            set(range(count))
             if sample is None or si == closure_step
-            else set(rng.sample(range(bins), min(sample, bins)))
+            else set(rng.sample(range(count), min(sample, count)))
         )
         new_rows, planes, any_live = check_step(state, step, si, node["node_id"], full)
         compress(state, step, si, planes, any_live=any_live)

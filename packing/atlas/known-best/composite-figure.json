@@ -18,7 +18,7 @@
           "degree_recorded_upstream": 11,
           "exact_value_known": 95,
           "lower_bound_first_proved_here": 1,
-          "lower_bound_recent_result": 61,
+          "lower_bound_recent_result": 64,
           "only_known_numerically": 5,
           "proved_optimal": 45,
           "rigidity_catalogue_annotated": 2,
@@ -42,7 +42,7 @@
           "degree_recorded_upstream": 21,
           "exact_value_known": 269,
           "lower_bound_first_proved_here": 1,
-          "lower_bound_recent_result": 69,
+          "lower_bound_recent_result": 72,
           "only_known_numerically": 55,
           "proved_optimal": 77,
           "rigidity_catalogue_annotated": 2,
@@ -4032,15 +4032,15 @@
           "state": "minimal-polynomial"
         },
         "lower": {
-          "display": "s(83) ≥ 9.124038",
+          "display": "s(83) ≥ 9.370000",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-n083-wand125-mixed-937-source-replay"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": true,
-          "value": "9.12403840464"
+          "value": "9.37"
         },
         "n": 83,
         "optimality": {
@@ -4122,15 +4122,15 @@
           "state": "closed-form"
         },
         "lower": {
-          "display": "s(85) ≥ 9.420000",
+          "display": "s(85) ≥ 9.460000",
           "evidence": [
-            "E-n085-wand125-mixed-942-source-replay"
+            "E-n085-wand125-mixed-946-source-replay"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
           "recent_result": true,
           "shown": true,
-          "value": "9.42"
+          "value": "9.46"
         },
         "n": 85,
         "optimality": {
@@ -4167,15 +4167,15 @@
           "state": "closed-form"
         },
         "lower": {
-          "display": "s(86) ≥ 9.420000",
+          "display": "s(86) ≥ 9.460000",
           "evidence": [
-            "E-n085-wand125-mixed-942-source-replay"
+            "E-n085-wand125-mixed-946-source-replay"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
           "recent_result": true,
           "shown": true,
-          "value": "9.42"
+          "value": "9.46"
         },
         "n": 86,
         "optimality": {
@@ -4212,15 +4212,15 @@
           "state": "minimal-polynomial"
         },
         "lower": {
-          "display": "s(87) ≥ 9.420000",
+          "display": "s(87) ≥ 9.480000",
           "evidence": [
-            "E-n085-wand125-mixed-942-source-replay"
+            "E-n087-wand125-mixed-948-source-replay"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
           "recent_result": true,
           "shown": true,
-          "value": "9.42"
+          "value": "9.48"
         },
         "n": 87,
         "optimality": {
@@ -4257,15 +4257,15 @@
           "state": "minimal-polynomial"
         },
         "lower": {
-          "display": "s(88) ≥ 9.477500",
+          "display": "s(88) ≥ 9.480000",
           "evidence": [
-            "E-wand125-rectangle-2026-10-01-source-replay"
+            "E-n087-wand125-mixed-948-source-replay"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
           "recent_result": true,
           "shown": true,
-          "value": "9.4775"
+          "value": "9.48"
         },
         "n": 88,
         "optimality": {
@@ -4392,15 +4392,15 @@
           "state": "closed-form"
         },
         "lower": {
-          "display": "s(91) ≥ 9.602325",
+          "display": "s(91) ≥ 9.700000",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-n091-wand125-mixed-970-source-replay"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": true,
-          "value": "9.60232526704"
+          "value": "9.7"
         },
         "n": 91,
         "optimality": {
@@ -4437,15 +4437,15 @@
           "state": "closed-form"
         },
         "lower": {
-          "display": "s(92) ≥ 9.690000",
+          "display": "s(92) ≥ 9.750000",
           "evidence": [
-            "E-n092-wand125-mixed-969-source-replay"
+            "E-n092-wand125-mixed-975-source-replay"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
           "recent_result": true,
           "shown": true,
-          "value": "9.69"
+          "value": "9.75"
         },
         "n": 92,
         "optimality": {
@@ -4482,15 +4482,15 @@
           "state": "closed-form"
         },
         "lower": {
-          "display": "s(93) ≥ 9.722500",
+          "display": "s(93) ≥ 9.750000",
           "evidence": [
-            "E-wand125-rectangle-2026-10-01-source-replay"
+            "E-n092-wand125-mixed-975-source-replay"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
           "recent_result": true,
           "shown": true,
-          "value": "9.7225"
+          "value": "9.75"
         },
         "n": 93,
         "optimality": {
@@ -4617,15 +4617,15 @@
           "state": "closed-form"
         },
         "lower": {
-          "display": "s(96) ≥ 9.888194",
+          "display": "s(96) ≥ 9.960000",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-n096-wand125-mixed-996-source-replay"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": true,
-          "value": "9.88819441732"
+          "value": "9.96"
         },
         "n": 96,
         "optimality": {
@@ -15158,7 +15158,7 @@
       "degree_recorded_upstream": 21,
       "exact_value_known": 269,
       "lower_bound_first_proved_here": 1,
-      "lower_bound_recent_result": 69,
+      "lower_bound_recent_result": 72,
       "only_known_numerically": 55,
       "proved_optimal": 77,
       "rigidity_catalogue_annotated": 2,

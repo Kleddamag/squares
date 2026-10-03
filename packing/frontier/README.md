@@ -459,29 +459,30 @@ lower-bound side has underused methods.
 
 Counts below are computed from the artifacts, not asserted.
 
-Of the 247 open cases, **196** have Nagamochi’s formula as their verified lower bound.
+Of the 247 open cases, **193** have Nagamochi’s formula as their verified lower bound.
 Two others use certificates already integrated into the register: at $n = 12$ this
 project’s re-weighting of Evan Daniel’s points ($15680000/3949423$), and at $n = 17$ the
 current external certificate bound ($116511/25000$). Complete interval and exact replays
-of external certificates hold the other 49: wand125’s mixed rectangle-measure
-certificates at $n = 37$, 50, 65, 66, 76, 84, 85, 90 and 92, and by monotonicity at
-$n = 51$ from $n = 50$ and at $n = 86$ and 87 from $n = 85$, and its rectangle-density
-certificates, directly or by monotonicity, at $n = 18$ to 20, 26 to 31, 38 to 44, 52 to
-58, 67 to 75, 88, 89 and 93 to 95. On 2026-10-02 those replays superseded this
-repository’s first-party bounds at $n = 18$, 19 and 20 ($4679/1000$, $24/5$ and
-$97/20$), Tokoharu’s at $n = 26$, 29 and 30, wand125’s point certificates at $n = 39$ to
-41, 52, 53, 55, 56 and 68 to 72, and Nagamochi’s formula at 33 counts.
-$n = 32$ left the open cases on 2026-09-27, when a replayed external closed cover proved
-$s(32) = 6$, and $n = 21$ and $n = 45$ on 2026-09-29, when replayed external mixed
-covers proved $s(21) = 5$ and $s(45) = 7$; $n = 59$, 60 and 61 left them on 2026-10-02,
-when replayed mixed covers proved $s(59) = s(60) = s(61) = 8$, and $n = 77$ and 78 later
-that day, when the replayed $s(77)$ cover proved $s(77) = s(78) = 9$; and nine more,
-$n = 97$, 118, 141, 166, 193, 222, 253, 286 and 321, left them on 2026-10-03, when the
-replayed `Valid7` and the built Lean reduction proved $s(k^2 - 3) = k$ for every
-$k \ge 6$ (T-064). Within the original $n \le 100$ corpus, the corresponding Nagamochi
-count is 4. The count is checked against the case records by
-`devtools.check_nagamochi_bounds` (`D-430`), because earlier hand-maintained counts
-outlived their case promotions.
+of external certificates hold the other 52: wand125’s mixed rectangle-measure
+certificates at $n = 37$, 50, 65, 66, 76, 83 to 85, 87, 90 to 92 and 96, and by
+monotonicity at $n = 51$ from $n = 50$, at $n = 86$ from $n = 85$, at $n = 88$ from
+$n = 87$ and at $n = 93$ from $n = 92$, and its rectangle-density certificates, directly
+or by monotonicity, at $n = 18$ to 20, 26 to 31, 38 to 44, 52 to 58, 67 to 75, 89, 94
+and 95. On 2026-10-02 those replays superseded this repository’s first-party bounds at
+$n = 18$, 19 and 20 ($4679/1000$, $24/5$ and $97/20$), Tokoharu’s at $n = 26$, 29 and
+30, wand125’s point certificates at $n = 39$ to 41, 52, 53, 55, 56 and 68 to 72, and
+Nagamochi’s formula at 33 counts; on 2026-10-03 its afternoon mixed certificates
+superseded Nagamochi’s formula at three more, $n = 83$, 91 and 96. $n = 32$ left the
+open cases on 2026-09-27, when a replayed external closed cover proved $s(32) = 6$, and
+$n = 21$ and $n = 45$ on 2026-09-29, when replayed external mixed covers proved
+$s(21) = 5$ and $s(45) = 7$; $n = 59$, 60 and 61 left them on 2026-10-02, when replayed
+mixed covers proved $s(59) = s(60) = s(61) = 8$, and $n = 77$ and 78 later that day,
+when the replayed $s(77)$ cover proved $s(77) = s(78) = 9$; and nine more, $n = 97$,
+118, 141, 166, 193, 222, 253, 286 and 321, left them on 2026-10-03, when the replayed
+`Valid7` and the built Lean reduction proved $s(k^2 - 3) = k$ for every $k \ge 6$
+(T-064). Within the original $n \le 100$ corpus, the corresponding Nagamochi count is 4.
+The count is checked against the case records by `devtools.check_nagamochi_bounds`
+(`D-430`), because earlier hand-maintained counts outlived their case promotions.
 
 Of the 247 open cases, 102 are still held by the trivial grid.
 The other 145 carry non-grid constructions.

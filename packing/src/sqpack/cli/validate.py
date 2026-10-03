@@ -93,10 +93,13 @@ FRONTIER_COUNTS: dict[str, tuple[int, int, int]] = {
     # more, all open in both lanes. 2026-10-03: the full replay of Valid7 and the built
     # Lean reduction proved T-064's s(k^2 - 3) = k, closing n = 97, 118, 141, 166, 193,
     # 222, 253, 286 and 321; all were reported-proved and Nagamochi-bounded, so the
-    # formal-open and Nagamochi-bounded counts fall together, by one, five and nine.
-    "n=1..100": (55, 55, 4),
-    "n=1..200": (139, 139, 88),
-    "n=1..324": (247, 247, 196),
+    # formal-open and Nagamochi-bounded counts fall together, by one, five and nine. The
+    # same day the replays of wand125's six afternoon mixed certificates (T-075) took
+    # n = 83, 91 and 96 off Nagamochi's bound, all open in both lanes, so only the
+    # Nagamochi-bounded count falls, by three in every corpus.
+    "n=1..100": (55, 55, 1),
+    "n=1..200": (139, 139, 85),
+    "n=1..324": (247, 247, 193),
 }
 #: n = 68, 103, 105, 110 and 131 left the exclusions on 2026-09-29, when their records
 #: moved from UnitSquare renderings to Francisco Couzo's packings (T-056); n = 69 is the

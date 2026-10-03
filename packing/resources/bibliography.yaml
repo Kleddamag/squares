@@ -657,6 +657,8 @@ sources:
       with a co-author trailer naming an AI assistant.
       web/wand125-mixed-bounds-afternoon-2026-10-02/acquisition/sources.json pins revision
       b00fc70f1904e9b1b567afee056d347f911209e8. Dated by that revision, 2026-10-02 UTC.
+      Each certificate's complete replay ran here on 2026-10-02 or 2026-10-03, with its
+      receipts in the packet.
   - key: '[wand125 linear n82 2026-10-02]'
     authors: [wand125]
     year: 2026

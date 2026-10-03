@@ -1,0 +1,29 @@
+# command: .venv/bin/python3 -m devtools.check_general_pose_tree_census run resources/web/wand125-tools-2026-09-29/receipts/n11-bound-full.jsonl 0-12027 --checker /tmp/ee/checker --certificate-dir resources/web/external-square-certificates-2026-09-22/kleddamag-11 --leaf 10 --max-seconds 18000
+# cwd: packing/ of jlevy/squares; checker: wand125/square-packing-tools at 0d33ab61 (clean clone)
+# python3: packing/.venv python 3.14.7
+# host: 4 cores; load 1.63 1.87 0.91; started 2026-10-02T17:41:43Z
+{
+  "all_minima_match": true,
+  "binding_sha256": "8aae1ac487916f427c1ff7797809268eb018f80cff031cd4e27e2b0a8c629acc",
+  "bound_at_production": true,
+  "complete": true,
+  "expected_rows": 12028,
+  "global_counting_theorem_verified": false,
+  "global_minimum": 999962528,
+  "global_minimum_matches_reference": true,
+  "independent_exact_witness_replays": 12028,
+  "independent_global_minimum_proof": false,
+  "independent_witness_evidence": "exact attainment at the reported point",
+  "journal_sha256": "b7f3ebd4da4269d4ea74fc372f7d034a3855dc096de93a528800214b518ef7fc",
+  "minimum_search_evidence": "pinned source branch-and-bound",
+  "missing_ranges": [],
+  "missing_rows": 0,
+  "packing_bound_verified": false,
+  "process_outcome": "COMPLETE",
+  "producer_reported_witness_replays": 12028,
+  "rows_checked": 12028,
+  "sample_minimum": 999962528,
+  "scope": "per-row exact minimum equality only",
+  "verdict": "COMPLETE_ROW_EQUALITY"
+}
+# finished 2026-10-02T20:49:58Z; exit 0; wall 11294.628 s; CPU 11292.7 s (user 11291.450 + sys 1.203); load 1.00 1.00 1.00

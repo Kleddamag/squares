@@ -1,0 +1,2937 @@
+{
+  "generated_by": "packing/devtools/certify_rectangle_ceiling.py",
+  "verifier": "packing/src/sqpack/rectangle_ceiling.py",
+  "claim": "T-058",
+  "net": {
+    "B": "9977/10000",
+    "D": "83/40000",
+    "angle_count": 201,
+    "alpha": "399908091/400000000"
+  },
+  "premises": {
+    "alpha_is_399908091_over_400000000": true,
+    "net_reaches_45_degrees": true,
+    "every_half_gap_at_most_arctan_d": true,
+    "sharp_factor_below_alpha": true,
+    "alpha_below_one": true,
+    "net_directions_are_unit": true
+  },
+  "source_table": {
+    "archive": "packing/resources/web/wand125-tools-2026-09-29/upstream.tar.gz",
+    "revision": "0d33ab61726c2ab03e3eb8f457dabaf22db8571f",
+    "member": "transfer/data/ub.json"
+  },
+  "certificates": "packing/resources/web/wand125-tools-2026-09-29/receipts/ceiling-certificates-2026-10-02.json.gz",
+  "summary": {
+    "cases": 100,
+    "verified": 100,
+    "with_source_ub": 100,
+    "proves_B_times_ub": 64,
+    "proves_factor_times_ub": 100,
+    "proves_above_l_cap_0d33ab6": 64,
+    "proves_above_l_cap_3eb08e6": 100,
+    "net_aligned_routes": 64
+  },
+  "rows": [
+    {
+      "n": 1,
+      "ceiling": "9977/10000",
+      "ceiling_decimal": "0.997700000000",
+      "route": "witness",
+      "witness": "packing/witnesses/known-best/n-001.yaml",
+      "witness_side": "1",
+      "witness_placement": {
+        "side": "9977/10000",
+        "net_aligned": true,
+        "worst_containment_factor": "1.0",
+        "slack": "0"
+      },
+      "grid_side": "9977/10000",
+      "source": {
+        "ub": "1.0",
+        "ubExact": "1",
+        "B_times_ub": "9977/10000",
+        "l_cap_0d33ab6": "0.997",
+        "factor_3eb08e6": "B",
+        "factor_times_ub": "9977/10000",
+        "l_cap_3eb08e6": "0.997"
+      },
+      "proves_B_times_ub": true,
+      "proves_factor_times_ub": true,
+      "proves_above_l_cap_0d33ab6": true,
+      "proves_above_l_cap_3eb08e6": true,
+      "excess_over_B_times_ub": "0.000e+00"
+    },
+    {
+      "n": 2,
+      "ceiling": "9977/5000",
+      "ceiling_decimal": "1.995400000000",
+      "route": "witness",
+      "witness": "packing/witnesses/known-best/n-002.yaml",
+      "witness_side": "2",
+      "witness_placement": {
+        "side": "9977/5000",
+        "net_aligned": true,
+        "worst_containment_factor": "1.0",
+        "slack": "0"
+      },
+      "grid_side": "9977/5000",
+      "source": {
+        "ub": "2.0",
+        "ubExact": "2",
+        "B_times_ub": "9977/5000",
+        "l_cap_0d33ab6": "1.995",
+        "factor_3eb08e6": "B",
+        "factor_times_ub": "9977/5000",
+        "l_cap_3eb08e6": "1.995"
+      },
+      "proves_B_times_ub": true,
+      "proves_factor_times_ub": true,
+      "proves_above_l_cap_0d33ab6": true,
+      "proves_above_l_cap_3eb08e6": true,
+      "excess_over_B_times_ub": "0.000e+00"
+    },
+    {
+      "n": 3,
+      "ceiling": "9977/5000",
+      "ceiling_decimal": "1.995400000000",
+      "route": "witness",
+      "witness": "packing/witnesses/known-best/n-003.yaml",
+      "witness_side": "2",
+      "witness_placement": {
+        "side": "9977/5000",
+        "net_aligned": true,
+        "worst_containment_factor": "1.0",
+        "slack": "0"
+      },
+      "grid_side": "9977/5000",
+      "source": {
+        "ub": "2.0",
+        "ubExact": "2",
+        "B_times_ub": "9977/5000",
+        "l_cap_0d33ab6": "1.995",
+        "factor_3eb08e6": "B",
+        "factor_times_ub": "9977/5000",
+        "l_cap_3eb08e6": "1.995"
+      },
+      "proves_B_times_ub": true,
+      "proves_factor_times_ub": true,
+      "proves_above_l_cap_0d33ab6": true,
+      "proves_above_l_cap_3eb08e6": true,
+      "excess_over_B_times_ub": "0.000e+00"
+    },
+    {
+      "n": 4,
+      "ceiling": "9977/5000",
+      "ceiling_decimal": "1.995400000000",
+      "route": "witness",
+      "witness": "packing/witnesses/known-best/n-004.yaml",
+      "witness_side": "2",
+      "witness_placement": {
+        "side": "9977/5000",
+        "net_aligned": true,
+        "worst_containment_factor": "1.0",
+        "slack": "0"
+      },
+      "grid_side": "9977/5000",
+      "source": {
+        "ub": "2.0",
+        "ubExact": "2",
+        "B_times_ub": "9977/5000",
+        "l_cap_0d33ab6": "1.995",
+        "factor_3eb08e6": "B",
+        "factor_times_ub": "9977/5000",
+        "l_cap_3eb08e6": "1.995"
+      },
+      "proves_B_times_ub": true,
+      "proves_factor_times_ub": true,
+      "proves_above_l_cap_0d33ab6": true,
+      "proves_above_l_cap_3eb08e6": true,
+      "excess_over_B_times_ub": "0.000e+00"
+    },
+    {
+      "n": 5,
+      "ceiling": "1352251507244001/500000000000000",
+      "ceiling_decimal": "2.704503014488",
+      "route": "witness",
+      "witness": "packing/witnesses/known-best/n-005.yaml",
+      "witness_side": "2.7071067811865475244008443621",
+      "witness_placement": {
+        "side": "1352251507244001/500000000000000",
+        "net_aligned": false,
+        "worst_containment_factor": "1.001341258520905876009641",
+        "slack": "0"
+      },
+      "grid_side": "29931/10000",
+      "source": {
+        "ub": "2.707107",
+        "ubExact": "2 + (1/2)sqrt(2)",
+        "B_times_ub": "27008806539/10000000000",
+        "l_cap_0d33ab6": "2.7",
+        "factor_3eb08e6": "ALPHA",
+        "factor_times_ub": "1082593992502737/400000000000000",
+        "l_cap_3eb08e6": "2.706"
+      },
+      "proves_B_times_ub": false,
+      "proves_factor_times_ub": true,
+      "proves_above_l_cap_0d33ab6": false,
+      "proves_above_l_cap_3eb08e6": true,
+      "excess_over_B_times_ub": "3.622e-03"
+    },
+    {
+      "n": 6,
+      "ceiling": "29931/10000",
+      "ceiling_decimal": "2.993100000000",
+      "route": "witness",
+      "witness": "packing/witnesses/known-best/n-006.yaml",
+      "witness_side": "3",
+      "witness_placement": {
+        "side": "29931/10000",
+        "net_aligned": true,
+        "worst_containment_factor": "1.0",
+        "slack": "0"
+      },
+      "grid_side": "29931/10000",
+      "source": {
+        "ub": "3.0",
+        "ubExact": "3",
+        "B_times_ub": "29931/10000",
+        "l_cap_0d33ab6": "2.993",
+        "factor_3eb08e6": "B",
+        "factor_times_ub": "29931/10000",
+        "l_cap_3eb08e6": "2.993"
+      },
+      "proves_B_times_ub": true,
+      "proves_factor_times_ub": true,
+      "proves_above_l_cap_0d33ab6": true,
+      "proves_above_l_cap_3eb08e6": true,
+      "excess_over_B_times_ub": "0.000e+00"
+    },
+    {
+      "n": 7,
+      "ceiling": "29931/10000",
+      "ceiling_decimal": "2.993100000000",
+      "route": "witness",
+      "witness": "packing/witnesses/known-best/n-007.yaml",
+      "witness_side": "3",
+      "witness_placement": {
+        "side": "29931/10000",
+        "net_aligned": true,
+        "worst_containment_factor": "1.0",
+        "slack": "0"
+      },
+      "grid_side": "29931/10000",
+      "source": {
+        "ub": "3.0",
+        "ubExact": "3",
+        "B_times_ub": "29931/10000",
+        "l_cap_0d33ab6": "2.993",
+        "factor_3eb08e6": "B",
+        "factor_times_ub": "29931/10000",
+        "l_cap_3eb08e6": "2.993"
+      },
+      "proves_B_times_ub": true,
+      "proves_factor_times_ub": true,
+      "proves_above_l_cap_0d33ab6": true,
+      "proves_above_l_cap_3eb08e6": true,
+      "excess_over_B_times_ub": "0.000e+00"
+    },
+    {
+      "n": 8,
+      "ceiling": "29931/10000",
+      "ceiling_decimal": "2.993100000000",
+      "route": "witness",
+      "witness": "packing/witnesses/known-best/n-008.yaml",
+      "witness_side": "3",
+      "witness_placement": {
+        "side": "29931/10000",
+        "net_aligned": true,
+        "worst_containment_factor": "1.0",
+        "slack": "0"
+      },
+      "grid_side": "29931/10000",
+      "source": {
+        "ub": "3.0",
+        "ubExact": "3",
+        "B_times_ub": "29931/10000",
+        "l_cap_0d33ab6": "2.993",
+        "factor_3eb08e6": "B",
+        "factor_times_ub": "29931/10000",
+        "l_cap_3eb08e6": "2.993"
+      },
+      "proves_B_times_ub": true,
+      "proves_factor_times_ub": true,
+      "proves_above_l_cap_0d33ab6": true,
+      "proves_above_l_cap_3eb08e6": true,
+      "excess_over_B_times_ub": "0.000e+00"
+    },
+    {
+      "n": 9,
+      "ceiling": "29931/10000",
+      "ceiling_decimal": "2.993100000000",
+      "route": "witness",
+      "witness": "packing/witnesses/known-best/n-009.yaml",
+      "witness_side": "3",
+      "witness_placement": {
+        "side": "29931/10000",
+        "net_aligned": true,
+        "worst_containment_factor": "1.0",
+        "slack": "0"
+      },
+      "grid_side": "29931/10000",
+      "source": {
+        "ub": "3.0",
+        "ubExact": "3",
+        "B_times_ub": "29931/10000",
+        "l_cap_0d33ab6": "2.993",
+        "factor_3eb08e6": "B",
+        "factor_times_ub": "29931/10000",
+        "l_cap_3eb08e6": "2.993"
+      },
+      "proves_B_times_ub": true,
+      "proves_factor_times_ub": true,
+      "proves_above_l_cap_0d33ab6": true,
+      "proves_above_l_cap_3eb08e6": true,
+      "excess_over_B_times_ub": "0.000e+00"
+    },
+    {
+      "n": 10,
+      "ceiling": "370354118811431/100000000000000",
+      "ceiling_decimal": "3.703541188114",
+      "route": "witness",
+      "witness": "packing/witnesses/known-best/n-010.yaml",
+      "witness_side": "3.7071067811865475244008443621",
+      "witness_placement": {
+        "side": "370354118811431/100000000000000",
+        "net_aligned": false,
+        "worst_containment_factor": "1.001341258520905876009641",
+        "slack": "0"
+      },
+      "grid_side": "9977/2500",
+      "source": {
+        "ub": "3.707107",
+        "ubExact": "3 + (1/2)sqrt(2)",
+        "B_times_ub": "36985806539/10000000000",
+        "l_cap_0d33ab6": "3.698",
+        "factor_3eb08e6": "ALPHA",
+        "factor_times_ub": "1482502083502737/400000000000000",
+        "l_cap_3eb08e6": "3.706"
+      },
+      "proves_B_times_ub": false,
+      "proves_factor_times_ub": true,
+      "proves_above_l_cap_0d33ab6": false,
+      "proves_above_l_cap_3eb08e6": true,
+      "excess_over_B_times_ub": "4.961e-03"
+    },
+    {
+      "n": 11,
+      "ceiling": "3872049697244811/1000000000000000",
+      "ceiling_decimal": "3.872049697245",
+      "route": "witness",
+      "witness": "packing/witnesses/known-best/n-011.yaml",
+      "witness_side": "3.87708359002281417730789706010096",
+      "witness_placement": {
+        "side": "3872049697244811/1000000000000000",
+        "net_aligned": false,
+        "worst_containment_factor": "1.001003938088517902861057",
+        "slack": "0"
+      },
+      "grid_side": "9977/2500",
+      "source": {
+        "ub": "3.877084",
+        "ubExact": "root(P_trump11, 3.87708359002281417730789706010096)",
+        "B_times_ub": "9670416767/2500000000",
+        "l_cap_0d33ab6": "3.868",
+        "factor_3eb08e6": "ALPHA",
+        "factor_times_ub": "387619315271661/100000000000000",
+        "l_cap_3eb08e6": "3.876"
+      },
+      "proves_B_times_ub": false,
+      "proves_factor_times_ub": true,
+      "proves_above_l_cap_0d33ab6": false,
+      "proves_above_l_cap_3eb08e6": true,
+      "excess_over_B_times_ub": "3.883e-03"
+    },
+    {
+      "n": 12,
+      "ceiling": "9977/2500",
+      "ceiling_decimal": "3.990800000000",
+      "route": "witness",
+      "witness": "packing/witnesses/known-best/n-012.yaml",
+      "witness_side": "4",
+      "witness_placement": {
+        "side": "9977/2500",
+        "net_aligned": true,
+        "worst_containment_factor": "1.0",
+        "slack": "0"
+      },
+      "grid_side": "9977/2500",
+      "source": {
+        "ub": "4.0",
+        "ubExact": "4",
+        "B_times_ub": "9977/2500",
+        "l_cap_0d33ab6": "3.99",
+        "factor_3eb08e6": "B",
+        "factor_times_ub": "9977/2500",
+        "l_cap_3eb08e6": "3.99"
+      },
+      "proves_B_times_ub": true,
+      "proves_factor_times_ub": true,
+      "proves_above_l_cap_0d33ab6": true,
+      "proves_above_l_cap_3eb08e6": true,
+      "excess_over_B_times_ub": "0.000e+00"
+    },
+    {
+      "n": 13,
+      "ceiling": "9977/2500",
+      "ceiling_decimal": "3.990800000000",
+      "route": "witness",
+      "witness": "packing/witnesses/known-best/n-013.yaml",
+      "witness_side": "4",
+      "witness_placement": {
+        "side": "9977/2500",
+        "net_aligned": true,
+        "worst_containment_factor": "1.0",
+        "slack": "0"
+      },
+      "grid_side": "9977/2500",
+      "source": {
+        "ub": "4.0",
+        "ubExact": "4",
+        "B_times_ub": "9977/2500",
+        "l_cap_0d33ab6": "3.99",
+        "factor_3eb08e6": "B",
+        "factor_times_ub": "9977/2500",
+        "l_cap_3eb08e6": "3.99"
+      },
+      "proves_B_times_ub": true,
+      "proves_factor_times_ub": true,
+      "proves_above_l_cap_0d33ab6": true,
+      "proves_above_l_cap_3eb08e6": true,
+      "excess_over_B_times_ub": "0.000e+00"
+    },
+    {
+      "n": 14,
+      "ceiling": "9977/2500",
+      "ceiling_decimal": "3.990800000000",
+      "route": "witness",
+      "witness": "packing/witnesses/known-best/n-014.yaml",
+      "witness_side": "4",
+      "witness_placement": {
+        "side": "9977/2500",
+        "net_aligned": true,
+        "worst_containment_factor": "1.0",
+        "slack": "0"
+      },
+      "grid_side": "9977/2500",
+      "source": {
+        "ub": "4.0",
+        "ubExact": "4",
+        "B_times_ub": "9977/2500",
+        "l_cap_0d33ab6": "3.99",
+        "factor_3eb08e6": "B",
+        "factor_times_ub": "9977/2500",
+        "l_cap_3eb08e6": "3.99"
+      },
+      "proves_B_times_ub": true,
+      "proves_factor_times_ub": true,
+      "proves_above_l_cap_0d33ab6": true,
+      "proves_above_l_cap_3eb08e6": true,
+      "excess_over_B_times_ub": "0.000e+00"
+    },
+    {
+      "n": 15,
+      "ceiling": "9977/2500",
+      "ceiling_decimal": "3.990800000000",
+      "route": "witness",
+      "witness": "packing/witnesses/known-best/n-015.yaml",
+      "witness_side": "4",
+      "witness_placement": {
+        "side": "9977/2500",
+        "net_aligned": true,
+        "worst_containment_factor": "1.0",
+        "slack": "0"
+      },
+      "grid_side": "9977/2500",
+      "source": {
+        "ub": "4.0",
+        "ubExact": "4",
+        "B_times_ub": "9977/2500",
+        "l_cap_0d33ab6": "3.99",
+        "factor_3eb08e6": "B",
+        "factor_times_ub": "9977/2500",
+        "l_cap_3eb08e6": "3.99"
+      },
+      "proves_B_times_ub": true,
+      "proves_factor_times_ub": true,
+      "proves_above_l_cap_0d33ab6": true,
+      "proves_above_l_cap_3eb08e6": true,
+      "excess_over_B_times_ub": "0.000e+00"
+    },
+    {
+      "n": 16,
+      "ceiling": "9977/2500",
+      "ceiling_decimal": "3.990800000000",
+      "route": "witness",
+      "witness": "packing/witnesses/known-best/n-016.yaml",
+      "witness_side": "4",
+      "witness_placement": {
+        "side": "9977/2500",
+        "net_aligned": true,
+        "worst_containment_factor": "1.0",
+        "slack": "0"
+      },
+      "grid_side": "9977/2500",
+      "source": {
+        "ub": "4.0",
+        "ubExact": "4",
+        "B_times_ub": "9977/2500",
+        "l_cap_0d33ab6": "3.99",
+        "factor_3eb08e6": "B",
+        "factor_times_ub": "9977/2500",
+        "l_cap_3eb08e6": "3.99"
+      },
+      "proves_B_times_ub": true,
+      "proves_factor_times_ub": true,
+      "proves_above_l_cap_0d33ab6": true,
+      "proves_above_l_cap_3eb08e6": true,
+      "excess_over_B_times_ub": "0.000e+00"
+    },
+    {
+      "n": 17,
+      "ceiling": "467337870599333/100000000000000",
+      "ceiling_decimal": "4.673378705993",
+      "route": "witness",
+      "witness": "packing/witnesses/known-best/n-017.yaml",
+      "witness_side": "4.67553009360455095163411127048315",
+      "witness_placement": {
+        "side": "467337870599333/100000000000000",
+        "net_aligned": false,
+        "worst_containment_factor": "1.001844103749817097478467",
+        "slack": "0"
+      },
+      "grid_side": "9977/2000",
+      "source": {
+        "ub": "4.67553",
+        "ubExact": "5",
+        "B_times_ub": "4664776281/1000000000",
+        "l_cap_0d33ab6": "4.664",
+        "factor_3eb08e6": "ALPHA",
+        "factor_times_ub": "186978227671323/40000000000000",
+        "l_cap_3eb08e6": "4.674"
+      },
+      "proves_B_times_ub": false,
+      "proves_factor_times_ub": true,
+      "proves_above_l_cap_0d33ab6": false,
+      "proves_above_l_cap_3eb08e6": true,
+      "excess_over_B_times_ub": "8.602e-03"
+    },
+    {
+      "n": 18,
+      "ceiling": "4816834378349013/1000000000000000",
+      "ceiling_decimal": "4.816834378349",
+      "route": "witness",
+      "witness": "packing/witnesses/known-best/n-018.yaml",
+      "witness_side": "4.82287565553229529525080787682",
+      "witness_placement": {
+        "side": "4816834378349013/1000000000000000",
+        "net_aligned": false,
+        "worst_containment_factor": "1.001049784826300378281801",
+        "slack": "0"
+      },
+      "grid_side": "9977/2000",
+      "source": {
+        "ub": "4.822876",
+        "ubExact": "(7/2) + (1/2)sqrt(7)",
+        "B_times_ub": "12029458463/2500000000",
+        "l_cap_0d33ab6": "4.811",
+        "factor_3eb08e6": "ALPHA",
+        "factor_times_ub": "482176783572429/100000000000000",
+        "l_cap_3eb08e6": "4.821"
+      },
+      "proves_B_times_ub": false,
+      "proves_factor_times_ub": true,
+      "proves_above_l_cap_0d33ab6": false,
+      "proves_above_l_cap_3eb08e6": true,
+      "excess_over_B_times_ub": "5.051e-03"
+    },
+    {
+      "n": 19,
+      "ceiling": "305057435427497/62500000000000",
+      "ceiling_decimal": "4.880918966840",
+      "route": "witness",
+      "witness": "packing/witnesses/known-best/n-019.yaml",
+      "witness_side": "4.88561808316412673173558496561",
+      "witness_placement": {
+        "side": "305057435427497/62500000000000",
+        "net_aligned": false,
+        "worst_containment_factor": "1.001341258520905876009641",
+        "slack": "0"
+      },
+      "grid_side": "9977/2000",
+      "source": {
+        "ub": "4.885618",
+        "ubExact": "3 + (4/3)sqrt(2)",
+        "B_times_ub": "24371905393/5000000000",
+        "l_cap_0d33ab6": "4.874",
+        "factor_3eb08e6": "ALPHA",
+        "factor_times_ub": "976899083867619/200000000000000",
+        "l_cap_3eb08e6": "4.884"
+      },
+      "proves_B_times_ub": false,
+      "proves_factor_times_ub": true,
+      "proves_above_l_cap_0d33ab6": false,
+      "proves_above_l_cap_3eb08e6": true,
+      "excess_over_B_times_ub": "6.538e-03"
+    },
+    {
+      "n": 20,
+      "ceiling": "9977/2000",
+      "ceiling_decimal": "4.988500000000",
+      "route": "witness",
+      "witness": "packing/witnesses/known-best/n-020.yaml",
+      "witness_side": "5",
+      "witness_placement": {
+        "side": "9977/2000",
+        "net_aligned": true,
+        "worst_containment_factor": "1.0",
+        "slack": "0"
+      },
+      "grid_side": "9977/2000",
+      "source": {
+        "ub": "5.0",
+        "ubExact": "5",
+        "B_times_ub": "9977/2000",
+        "l_cap_0d33ab6": "4.988",
+        "factor_3eb08e6": "B",
+        "factor_times_ub": "9977/2000",
+        "l_cap_3eb08e6": "4.988"
+      },
+      "proves_B_times_ub": true,
+      "proves_factor_times_ub": true,
+      "proves_above_l_cap_0d33ab6": true,
+      "proves_above_l_cap_3eb08e6": true,
+      "excess_over_B_times_ub": "0.000e+00"
+    },
+    {
+      "n": 21,
+      "ceiling": "9977/2000",
+      "ceiling_decimal": "4.988500000000",
+      "route": "witness",
+      "witness": "packing/witnesses/known-best/n-021.yaml",
+      "witness_side": "5",
+      "witness_placement": {
+        "side": "9977/2000",
+        "net_aligned": true,
+        "worst_containment_factor": "1.0",
+        "slack": "0"
+      },
+      "grid_side": "9977/2000",
+      "source": {
+        "ub": "5.0",
+        "ubExact": "5",
+        "B_times_ub": "9977/2000",
+        "l_cap_0d33ab6": "4.988",
+        "factor_3eb08e6": "B",
+        "factor_times_ub": "9977/2000",
+        "l_cap_3eb08e6": "4.988"
+      },
+      "proves_B_times_ub": true,
+      "proves_factor_times_ub": true,
+      "proves_above_l_cap_0d33ab6": true,
+      "proves_above_l_cap_3eb08e6": true,
+      "excess_over_B_times_ub": "0.000e+00"
+    },
+    {
+      "n": 22,
+      "ceiling": "9977/2000",
+      "ceiling_decimal": "4.988500000000",
+      "route": "witness",
+      "witness": "packing/witnesses/known-best/n-022.yaml",
+      "witness_side": "5",
+      "witness_placement": {
+        "side": "9977/2000",
+        "net_aligned": true,
+        "worst_containment_factor": "1.0",
+        "slack": "0"
+      },
+      "grid_side": "9977/2000",
+      "source": {
+        "ub": "5.0",
+        "ubExact": "5",
+        "B_times_ub": "9977/2000",
+        "l_cap_0d33ab6": "4.988",
+        "factor_3eb08e6": "B",
+        "factor_times_ub": "9977/2000",
+        "l_cap_3eb08e6": "4.988"
+      },
+      "proves_B_times_ub": true,
+      "proves_factor_times_ub": true,
+      "proves_above_l_cap_0d33ab6": true,
+      "proves_above_l_cap_3eb08e6": true,
+      "excess_over_B_times_ub": "0.000e+00"
+    },
+    {
+      "n": 23,
+      "ceiling": "9977/2000",
+      "ceiling_decimal": "4.988500000000",
+      "route": "witness",
+      "witness": "packing/witnesses/known-best/n-023.yaml",
+      "witness_side": "5",
+      "witness_placement": {
+        "side": "9977/2000",
+        "net_aligned": true,
+        "worst_containment_factor": "1.0",
+        "slack": "0"
+      },
+      "grid_side": "9977/2000",
+      "source": {
+        "ub": "5.0",
+        "ubExact": "5",
+        "B_times_ub": "9977/2000",
+        "l_cap_0d33ab6": "4.988",
+        "factor_3eb08e6": "B",
+        "factor_times_ub": "9977/2000",
+        "l_cap_3eb08e6": "4.988"
+      },
+      "proves_B_times_ub": true,
+      "proves_factor_times_ub": true,
+      "proves_above_l_cap_0d33ab6": true,
+      "proves_above_l_cap_3eb08e6": true,
+      "excess_over_B_times_ub": "0.000e+00"
+    },
+    {
+      "n": 24,
+      "ceiling": "9977/2000",
+      "ceiling_decimal": "4.988500000000",
+      "route": "witness",
+      "witness": "packing/witnesses/known-best/n-024.yaml",
+      "witness_side": "5",
+      "witness_placement": {
+        "side": "9977/2000",
+        "net_aligned": true,
+        "worst_containment_factor": "1.0",
+        "slack": "0"
+      },
+      "grid_side": "9977/2000",
+      "source": {
+        "ub": "5.0",
+        "ubExact": "5",
+        "B_times_ub": "9977/2000",
+        "l_cap_0d33ab6": "4.988",
+        "factor_3eb08e6": "B",
+        "factor_times_ub": "9977/2000",
+        "l_cap_3eb08e6": "4.988"
+      },
+      "proves_B_times_ub": true,
+      "proves_factor_times_ub": true,
+      "proves_above_l_cap_0d33ab6": true,
+      "proves_above_l_cap_3eb08e6": true,
+      "excess_over_B_times_ub": "0.000e+00"
+    },
+    {
+      "n": 25,
+      "ceiling": "9977/2000",
+      "ceiling_decimal": "4.988500000000",
+      "route": "witness",
+      "witness": "packing/witnesses/known-best/n-025.yaml",
+      "witness_side": "5",
+      "witness_placement": {
+        "side": "9977/2000",
+        "net_aligned": true,
+        "worst_containment_factor": "1.0",
+        "slack": "0"
+      },
+      "grid_side": "9977/2000",
+      "source": {
+        "ub": "5.0",
+        "ubExact": "5",
+        "B_times_ub": "9977/2000",
+        "l_cap_0d33ab6": "4.988",
+        "factor_3eb08e6": "B",
+        "factor_times_ub": "9977/2000",
+        "l_cap_3eb08e6": "4.988"
+      },
+      "proves_B_times_ub": true,
+      "proves_factor_times_ub": true,
+      "proves_above_l_cap_0d33ab6": true,
+      "proves_above_l_cap_3eb08e6": true,
+      "excess_over_B_times_ub": "0.000e+00"
+    },
+    {
+      "n": 26,
+      "ceiling": "1123182721879647/200000000000000",
+      "ceiling_decimal": "5.615913609398",
+      "route": "witness",
+      "witness": "packing/witnesses/known-best/n-026.yaml",
+      "witness_side": "5.62132034355964257320253308632",
+      "witness_placement": {
+        "side": "1123182721879647/200000000000000",
+        "net_aligned": false,
+        "worst_containment_factor": "1.001341258520905876009641",
+        "slack": "0"
+      },
+      "grid_side": "29931/5000",
+      "source": {
+        "ub": "5.62132",
+        "ubExact": "(7/2) + (3/2)sqrt(2)",
+        "B_times_ub": "1402097741/250000000",
+        "l_cap_0d33ab6": "5.608",
+        "factor_3eb08e6": "ALPHA",
+        "factor_times_ub": "56200283752503/10000000000000",
+        "l_cap_3eb08e6": "5.62"
+      },
+      "proves_B_times_ub": false,
+      "proves_factor_times_ub": true,
+      "proves_above_l_cap_0d33ab6": false,
+      "proves_above_l_cap_3eb08e6": true,
+      "excess_over_B_times_ub": "7.523e-03"
+    },
+    {
+      "n": 27,
+      "ceiling": "228064701414677/40000000000000",
+      "ceiling_decimal": "5.701617535367",
+      "route": "witness",
+      "witness": "packing/witnesses/known-best/n-027.yaml",
+      "witness_side": "5.7071067811865475244008443621",
+      "witness_placement": {
+        "side": "228064701414677/40000000000000",
+        "net_aligned": false,
+        "worst_containment_factor": "1.001341258520905876009641",
+        "slack": "0"
+      },
+      "grid_side": "29931/5000",
+      "source": {
+        "ub": "5.707107",
+        "ubExact": "5 + (1/2)sqrt(2)",
+        "B_times_ub": "56939806539/10000000000",
+        "l_cap_0d33ab6": "5.693",
+        "factor_3eb08e6": "ALPHA",
+        "factor_times_ub": "2282318265502737/400000000000000",
+        "l_cap_3eb08e6": "5.705"
+      },
+      "proves_B_times_ub": false,
+      "proves_factor_times_ub": true,
+      "proves_above_l_cap_0d33ab6": false,
+      "proves_above_l_cap_3eb08e6": true,
+      "excess_over_B_times_ub": "7.637e-03"
+    },
+    {
+      "n": 28,
+      "ceiling": "5821076497368123/1000000000000000",
+      "ceiling_decimal": "5.821076497368",
+      "route": "witness",
+      "witness": "packing/witnesses/known-best/n-028.yaml",
+      "witness_side": "5.824444616674059296958628758848381019903901347055291450106",
+      "witness_placement": {
+        "side": "5821076497368123/1000000000000000",
+        "net_aligned": false,
+        "worst_containment_factor": "1.001725696059022977677064",
+        "slack": "0"
+      },
+      "grid_side": "29931/5000",
+      "source": {
+        "ub": "5.824445",
+        "ubExact": "6",
+        "B_times_ub": "11622097553/2000000000",
+        "l_cap_0d33ab6": "5.811",
+        "factor_3eb08e6": "ALPHA",
+        "factor_times_ub": "465848536216899/80000000000000",
+        "l_cap_3eb08e6": "5.823"
+      },
+      "proves_B_times_ub": false,
+      "proves_factor_times_ub": true,
+      "proves_above_l_cap_0d33ab6": false,
+      "proves_above_l_cap_3eb08e6": true,
+      "excess_over_B_times_ub": "1.003e-02"
+    },
+    {
+      "n": 29,
+      "ceiling": "5930893285364399/1000000000000000",
+      "ceiling_decimal": "5.930893285364",
+      "route": "witness",
+      "witness": "packing/witnesses/known-best/n-029.yaml",
+      "witness_side": "5.933833462676929189689460616352019138433834181077886974638825915080254236879801441252051729965280562",
+      "witness_placement": {
+        "side": "5930893285364399/1000000000000000",
+        "net_aligned": false,
+        "worst_containment_factor": "1.001808666196030623785877",
+        "slack": "0"
+      },
+      "grid_side": "29931/5000",
+      "source": {
+        "ub": "5.933833",
+        "ubExact": "296691673133846459487189947549/50000000000000000000000000000",
+        "B_times_ub": "59201851841/10000000000",
+        "l_cap_0d33ab6": "5.92",
+        "factor_3eb08e6": "ALPHA",
+        "factor_times_ub": "2372987827342803/400000000000000",
+        "l_cap_3eb08e6": "5.932"
+      },
+      "proves_B_times_ub": false,
+      "proves_factor_times_ub": true,
+      "proves_above_l_cap_0d33ab6": false,
+      "proves_above_l_cap_3eb08e6": true,
+      "excess_over_B_times_ub": "1.071e-02"
+    },
+    {
+      "n": 30,
+      "ceiling": "29931/5000",
+      "ceiling_decimal": "5.986200000000",
+      "route": "witness",
+      "witness": "packing/witnesses/known-best/n-030.yaml",
+      "witness_side": "6",
+      "witness_placement": {
+        "side": "29931/5000",
+        "net_aligned": true,
+        "worst_containment_factor": "1.0",
+        "slack": "0"
+      },
+      "grid_side": "29931/5000",
+      "source": {
+        "ub": "6.0",
+        "ubExact": "6",
+        "B_times_ub": "29931/5000",
+        "l_cap_0d33ab6": "5.986",
+        "factor_3eb08e6": "B",
+        "factor_times_ub": "29931/5000",
+        "l_cap_3eb08e6": "5.986"
+      },
+      "proves_B_times_ub": true,
+      "proves_factor_times_ub": true,
+      "proves_above_l_cap_0d33ab6": true,
+      "proves_above_l_cap_3eb08e6": true,
+      "excess_over_B_times_ub": "0.000e+00"
+    },
+    {
+      "n": 31,
+      "ceiling": "29931/5000",
+      "ceiling_decimal": "5.986200000000",
+      "route": "witness",
+      "witness": "packing/witnesses/known-best/n-031.yaml",
+      "witness_side": "6",
+      "witness_placement": {
+        "side": "29931/5000",
+        "net_aligned": true,
+        "worst_containment_factor": "1.0",
+        "slack": "0"
+      },
+      "grid_side": "29931/5000",
+      "source": {
+        "ub": "6.0",
+        "ubExact": "6",
+        "B_times_ub": "29931/5000",
+        "l_cap_0d33ab6": "5.986",
+        "factor_3eb08e6": "B",
+        "factor_times_ub": "29931/5000",
+        "l_cap_3eb08e6": "5.986"
+      },
+      "proves_B_times_ub": true,
+      "proves_factor_times_ub": true,
+      "proves_above_l_cap_0d33ab6": true,
+      "proves_above_l_cap_3eb08e6": true,
+      "excess_over_B_times_ub": "0.000e+00"
+    },
+    {
+      "n": 32,
+      "ceiling": "29931/5000",
+      "ceiling_decimal": "5.986200000000",
+      "route": "witness",
+      "witness": "packing/witnesses/known-best/n-032.yaml",
+      "witness_side": "6",
+      "witness_placement": {
+        "side": "29931/5000",
+        "net_aligned": true,
+        "worst_containment_factor": "1.0",
+        "slack": "0"
+      },
+      "grid_side": "29931/5000",
+      "source": {
+        "ub": "6.0",
+        "ubExact": "6",
+        "B_times_ub": "29931/5000",
+        "l_cap_0d33ab6": "5.986",
+        "factor_3eb08e6": "B",
+        "factor_times_ub": "29931/5000",
+        "l_cap_3eb08e6": "5.986"
+      },
+      "proves_B_times_ub": true,
+      "proves_factor_times_ub": true,
+      "proves_above_l_cap_0d33ab6": true,
+      "proves_above_l_cap_3eb08e6": true,
+      "excess_over_B_times_ub": "0.000e+00"
+    },
+    {
+      "n": 33,
+      "ceiling": "29931/5000",
+      "ceiling_decimal": "5.986200000000",
+      "route": "witness",
+      "witness": "packing/witnesses/known-best/n-033.yaml",
+      "witness_side": "6",
+      "witness_placement": {
+        "side": "29931/5000",
+        "net_aligned": true,
+        "worst_containment_factor": "1.0",
+        "slack": "0"
+      },
+      "grid_side": "29931/5000",
+      "source": {
+        "ub": "6.0",
+        "ubExact": "6",
+        "B_times_ub": "29931/5000",
+        "l_cap_0d33ab6": "5.986",
+        "factor_3eb08e6": "B",
+        "factor_times_ub": "29931/5000",
+        "l_cap_3eb08e6": "5.986"
+      },
+      "proves_B_times_ub": true,
+      "proves_factor_times_ub": true,
+      "proves_above_l_cap_0d33ab6": true,
+      "proves_above_l_cap_3eb08e6": true,
+      "excess_over_B_times_ub": "0.000e+00"
+    },
+    {
+      "n": 34,
+      "ceiling": "29931/5000",
+      "ceiling_decimal": "5.986200000000",
+      "route": "witness",
+      "witness": "packing/witnesses/known-best/n-034.yaml",
+      "witness_side": "6",
+      "witness_placement": {
+        "side": "29931/5000",
+        "net_aligned": true,
+        "worst_containment_factor": "1.0",
+        "slack": "0"
+      },
+      "grid_side": "29931/5000",
+      "source": {
+        "ub": "6.0",
+        "ubExact": "6",
+        "B_times_ub": "29931/5000",
+        "l_cap_0d33ab6": "5.986",
+        "factor_3eb08e6": "B",
+        "factor_times_ub": "29931/5000",
+        "l_cap_3eb08e6": "5.986"
+      },
+      "proves_B_times_ub": true,
+      "proves_factor_times_ub": true,
+      "proves_above_l_cap_0d33ab6": true,
+      "proves_above_l_cap_3eb08e6": true,
+      "excess_over_B_times_ub": "0.000e+00"
+    },
+    {
+      "n": 35,
+      "ceiling": "29931/5000",
+      "ceiling_decimal": "5.986200000000",
+      "route": "witness",
+      "witness": "packing/witnesses/known-best/n-035.yaml",
+      "witness_side": "6",
+      "witness_placement": {
+        "side": "29931/5000",
+        "net_aligned": true,
+        "worst_containment_factor": "1.0",
+        "slack": "0"
+      },
+      "grid_side": "29931/5000",
+      "source": {
+        "ub": "6.0",
+        "ubExact": "6",
+        "B_times_ub": "29931/5000",
+        "l_cap_0d33ab6": "5.986",
+        "factor_3eb08e6": "B",
+        "factor_times_ub": "29931/5000",
+        "l_cap_3eb08e6": "5.986"
+      },
+      "proves_B_times_ub": true,
+      "proves_factor_times_ub": true,
+      "proves_above_l_cap_0d33ab6": true,
+      "proves_above_l_cap_3eb08e6": true,
+      "excess_over_B_times_ub": "0.000e+00"
+    },
+    {
+      "n": 36,
+      "ceiling": "29931/5000",
+      "ceiling_decimal": "5.986200000000",
+      "route": "witness",
+      "witness": "packing/witnesses/known-best/n-036.yaml",
+      "witness_side": "6",
+      "witness_placement": {
+        "side": "29931/5000",
+        "net_aligned": true,
+        "worst_containment_factor": "1.0",
+        "slack": "0"
+      },
+      "grid_side": "29931/5000",
+      "source": {
+        "ub": "6.0",
+        "ubExact": "6",
+        "B_times_ub": "29931/5000",
+        "l_cap_0d33ab6": "5.986",
+        "factor_3eb08e6": "B",
+        "factor_times_ub": "29931/5000",
+        "l_cap_3eb08e6": "5.986"
+      },
+      "proves_B_times_ub": true,
+      "proves_factor_times_ub": true,
+      "proves_above_l_cap_0d33ab6": true,
+      "proves_above_l_cap_3eb08e6": true,
+      "excess_over_B_times_ub": "0.000e+00"
+    },
+    {
+      "n": 37,
+      "ceiling": "3296630526577283/500000000000000",
+      "ceiling_decimal": "6.593261053155",
+      "route": "witness",
+      "witness": "packing/witnesses/known-best/n-037.yaml",
+      "witness_side": "6.59861960924436011617837046268",
+      "witness_placement": {
+        "side": "3296630526577283/500000000000000",
+        "net_aligned": false,
+        "worst_containment_factor": "1.001491357840173740722534",
+        "slack": "0"
+      },
+      "grid_side": "69839/10000",
+      "source": {
+        "ub": "6.59862",
+        "ubExact": "7",
+        "B_times_ub": "3291721587/500000000",
+        "l_cap_0d33ab6": "6.583",
+        "factor_3eb08e6": "ALPHA",
+        "factor_times_ub": "131942076371721/20000000000000",
+        "l_cap_3eb08e6": "6.597"
+      },
+      "proves_B_times_ub": false,
+      "proves_factor_times_ub": true,
+      "proves_above_l_cap_0d33ab6": false,
+      "proves_above_l_cap_3eb08e6": true,
+      "excess_over_B_times_ub": "9.818e-03"
+    },
+    {
+      "n": 38,
+      "ceiling": "6700655708993233/1000000000000000",
+      "ceiling_decimal": "6.700655708993",
+      "route": "witness",
+      "witness": "packing/witnesses/known-best/n-038.yaml",
+      "witness_side": "6.7071067811865475244008443621",
+      "witness_placement": {
+        "side": "6700655708993233/1000000000000000",
+        "net_aligned": false,
+        "worst_containment_factor": "1.001341258520905876009641",
+        "slack": "0"
+      },
+      "grid_side": "69839/10000",
+      "source": {
+        "ub": "6.707107",
+        "ubExact": "6 + (1/2)sqrt(2)",
+        "B_times_ub": "66916806539/10000000000",
+        "l_cap_0d33ab6": "6.691",
+        "factor_3eb08e6": "ALPHA",
+        "factor_times_ub": "2682226356502737/400000000000000",
+        "l_cap_3eb08e6": "6.705"
+      },
+      "proves_B_times_ub": false,
+      "proves_factor_times_ub": true,
+      "proves_above_l_cap_0d33ab6": false,
+      "proves_above_l_cap_3eb08e6": true,
+      "excess_over_B_times_ub": "8.975e-03"
+    },
+    {
+      "n": 39,
+      "ceiling": "340143044729803/50000000000000",
+      "ceiling_decimal": "6.802860894596",
+      "route": "witness",
+      "witness": "packing/witnesses/known-best/n-039.yaml",
+      "witness_side": "6.8107220830686488516977794443517526346472763123335",
+      "witness_placement": {
+        "side": "340143044729803/50000000000000",
+        "net_aligned": false,
+        "worst_containment_factor": "1.001148404175788875090349",
+        "slack": "0"
+      },
+      "grid_side": "69839/10000",
+      "source": {
+        "ub": "6.810722",
+        "ubExact": "7",
+        "B_times_ub": "33975286697/5000000000",
+        "l_cap_0d33ab6": "6.795",
+        "factor_3eb08e6": "ALPHA",
+        "factor_times_ub": "1361831416675851/200000000000000",
+        "l_cap_3eb08e6": "6.809"
+      },
+      "proves_B_times_ub": false,
+      "proves_factor_times_ub": true,
+      "proves_above_l_cap_0d33ab6": false,
+      "proves_above_l_cap_3eb08e6": true,
+      "excess_over_B_times_ub": "7.804e-03"
+    },
+    {
+      "n": 40,
+      "ceiling": "3410929681723387/500000000000000",
+      "ceiling_decimal": "6.821859363447",
+      "route": "witness",
+      "witness": "packing/witnesses/known-best/n-040.yaml",
+      "witness_side": "6.82842712474619009760337744842",
+      "witness_placement": {
+        "side": "3410929681723387/500000000000000",
+        "net_aligned": false,
+        "worst_containment_factor": "1.001341258520905876009641",
+        "slack": "0"
+      },
+      "grid_side": "69839/10000",
+      "source": {
+        "ub": "6.828427",
+        "ubExact": "4 + 2 sqrt(2)",
+        "B_times_ub": "68127216179/10000000000",
+        "l_cap_0d33ab6": "6.812",
+        "factor_3eb08e6": "ALPHA",
+        "factor_times_ub": "2730743206102857/400000000000000",
+        "l_cap_3eb08e6": "6.826"
+      },
+      "proves_B_times_ub": false,
+      "proves_factor_times_ub": true,
+      "proves_above_l_cap_0d33ab6": false,
+      "proves_above_l_cap_3eb08e6": true,
+      "excess_over_B_times_ub": "9.138e-03"
+    },
+    {
+      "n": 41,
+      "ceiling": "6922695521402113/1000000000000000",
+      "ceiling_decimal": "6.922695521402",
+      "route": "witness",
+      "witness": "packing/witnesses/known-best/n-041.yaml",
+      "witness_side": "6.9266930944688022315810789135602089486814578984065",
+      "witness_placement": {
+        "side": "6922695521402113/1000000000000000",
+        "net_aligned": false,
+        "worst_containment_factor": "1.001726845978494921140632",
+        "slack": "0"
+      },
+      "grid_side": "69839/10000",
+      "source": {
+        "ub": "6.926693",
+        "ubExact": "7",
+        "B_times_ub": "69107616061/10000000000",
+        "l_cap_0d33ab6": "6.91",
+        "factor_3eb08e6": "ALPHA",
+        "factor_times_ub": "2770040574573063/400000000000000",
+        "l_cap_3eb08e6": "6.925"
+      },
+      "proves_B_times_ub": false,
+      "proves_factor_times_ub": true,
+      "proves_above_l_cap_0d33ab6": false,
+      "proves_above_l_cap_3eb08e6": true,
+      "excess_over_B_times_ub": "1.193e-02"
+    },
+    {
+      "n": 42,
+      "ceiling": "69839/10000",
+      "ceiling_decimal": "6.983900000000",
+      "route": "witness",
+      "witness": "packing/witnesses/known-best/n-042.yaml",
+      "witness_side": "7",
+      "witness_placement": {
+        "side": "69839/10000",
+        "net_aligned": true,
+        "worst_containment_factor": "1.0",
+        "slack": "0"
+      },
+      "grid_side": "69839/10000",
+      "source": {
+        "ub": "7.0",
+        "ubExact": "7",
+        "B_times_ub": "69839/10000",
+        "l_cap_0d33ab6": "6.983",
+        "factor_3eb08e6": "B",
+        "factor_times_ub": "69839/10000",
+        "l_cap_3eb08e6": "6.983"
+      },
+      "proves_B_times_ub": true,
+      "proves_factor_times_ub": true,
+      "proves_above_l_cap_0d33ab6": true,
+      "proves_above_l_cap_3eb08e6": true,
+      "excess_over_B_times_ub": "0.000e+00"
+    },
+    {
+      "n": 43,
+      "ceiling": "69839/10000",
+      "ceiling_decimal": "6.983900000000",
+      "route": "witness",
+      "witness": "packing/witnesses/known-best/n-043.yaml",
+      "witness_side": "7",
+      "witness_placement": {
+        "side": "69839/10000",
+        "net_aligned": true,
+        "worst_containment_factor": "1.0",
+        "slack": "0"
+      },
+      "grid_side": "69839/10000",
+      "source": {
+        "ub": "7.0",
+        "ubExact": "7",
+        "B_times_ub": "69839/10000",
+        "l_cap_0d33ab6": "6.983",
+        "factor_3eb08e6": "B",
+        "factor_times_ub": "69839/10000",
+        "l_cap_3eb08e6": "6.983"
+      },
+      "proves_B_times_ub": true,
+      "proves_factor_times_ub": true,
+      "proves_above_l_cap_0d33ab6": true,
+      "proves_above_l_cap_3eb08e6": true,
+      "excess_over_B_times_ub": "0.000e+00"
+    },
+    {
+      "n": 44,
+      "ceiling": "69839/10000",
+      "ceiling_decimal": "6.983900000000",
+      "route": "witness",
+      "witness": "packing/witnesses/known-best/n-044.yaml",
+      "witness_side": "7",
+      "witness_placement": {
+        "side": "69839/10000",
+        "net_aligned": true,
+        "worst_containment_factor": "1.0",
+        "slack": "0"
+      },
+      "grid_side": "69839/10000",
+      "source": {
+        "ub": "7.0",
+        "ubExact": "7",
+        "B_times_ub": "69839/10000",
+        "l_cap_0d33ab6": "6.983",
+        "factor_3eb08e6": "B",
+        "factor_times_ub": "69839/10000",
+        "l_cap_3eb08e6": "6.983"
+      },
+      "proves_B_times_ub": true,
+      "proves_factor_times_ub": true,
+      "proves_above_l_cap_0d33ab6": true,
+      "proves_above_l_cap_3eb08e6": true,
+      "excess_over_B_times_ub": "0.000e+00"
+    },
+    {
+      "n": 45,
+      "ceiling": "69839/10000",
+      "ceiling_decimal": "6.983900000000",
+      "route": "witness",
+      "witness": "packing/witnesses/known-best/n-045.yaml",
+      "witness_side": "7",
+      "witness_placement": {
+        "side": "69839/10000",
+        "net_aligned": true,
+        "worst_containment_factor": "1.0",
+        "slack": "0"
+      },
+      "grid_side": "69839/10000",
+      "source": {
+        "ub": "7.0",
+        "ubExact": "7",
+        "B_times_ub": "69839/10000",
+        "l_cap_0d33ab6": "6.983",
+        "factor_3eb08e6": "B",
+        "factor_times_ub": "69839/10000",
+        "l_cap_3eb08e6": "6.983"
+      },
+      "proves_B_times_ub": true,
+      "proves_factor_times_ub": true,
+      "proves_above_l_cap_0d33ab6": true,
+      "proves_above_l_cap_3eb08e6": true,
+      "excess_over_B_times_ub": "0.000e+00"
+    },
+    {
+      "n": 46,
+      "ceiling": "69839/10000",
+      "ceiling_decimal": "6.983900000000",
+      "route": "witness",
+      "witness": "packing/witnesses/known-best/n-046.yaml",
+      "witness_side": "7",
+      "witness_placement": {
+        "side": "69839/10000",
+        "net_aligned": true,
+        "worst_containment_factor": "1.0",
+        "slack": "0"
+      },
+      "grid_side": "69839/10000",
+      "source": {
+        "ub": "7.0",
+        "ubExact": "7",
+        "B_times_ub": "69839/10000",
+        "l_cap_0d33ab6": "6.983",
+        "factor_3eb08e6": "B",
+        "factor_times_ub": "69839/10000",
+        "l_cap_3eb08e6": "6.983"
+      },
+      "proves_B_times_ub": true,
+      "proves_factor_times_ub": true,
+      "proves_above_l_cap_0d33ab6": true,
+      "proves_above_l_cap_3eb08e6": true,
+      "excess_over_B_times_ub": "0.000e+00"
+    },
+    {
+      "n": 47,
+      "ceiling": "69839/10000",
+      "ceiling_decimal": "6.983900000000",
+      "route": "witness",
+      "witness": "packing/witnesses/known-best/n-047.yaml",
+      "witness_side": "7",
+      "witness_placement": {
+        "side": "69839/10000",
+        "net_aligned": true,
+        "worst_containment_factor": "1.0",
+        "slack": "0"
+      },
+      "grid_side": "69839/10000",
+      "source": {
+        "ub": "7.0",
+        "ubExact": "7",
+        "B_times_ub": "69839/10000",
+        "l_cap_0d33ab6": "6.983",
+        "factor_3eb08e6": "B",
+        "factor_times_ub": "69839/10000",
+        "l_cap_3eb08e6": "6.983"
+      },
+      "proves_B_times_ub": true,
+      "proves_factor_times_ub": true,
+      "proves_above_l_cap_0d33ab6": true,
+      "proves_above_l_cap_3eb08e6": true,
+      "excess_over_B_times_ub": "0.000e+00"
+    },
+    {
+      "n": 48,
+      "ceiling": "69839/10000",
+      "ceiling_decimal": "6.983900000000",
+      "route": "witness",
+      "witness": "packing/witnesses/known-best/n-048.yaml",
+      "witness_side": "7",
+      "witness_placement": {
+        "side": "69839/10000",
+        "net_aligned": true,
+        "worst_containment_factor": "1.0",
+        "slack": "0"
+      },
+      "grid_side": "69839/10000",
+      "source": {
+        "ub": "7.0",
+        "ubExact": "7",
+        "B_times_ub": "69839/10000",
+        "l_cap_0d33ab6": "6.983",
+        "factor_3eb08e6": "B",
+        "factor_times_ub": "69839/10000",
+        "l_cap_3eb08e6": "6.983"
+      },
+      "proves_B_times_ub": true,
+      "proves_factor_times_ub": true,
+      "proves_above_l_cap_0d33ab6": true,
+      "proves_above_l_cap_3eb08e6": true,
+      "excess_over_B_times_ub": "0.000e+00"
+    },
+    {
+      "n": 49,
+      "ceiling": "69839/10000",
+      "ceiling_decimal": "6.983900000000",
+      "route": "witness",
+      "witness": "packing/witnesses/known-best/n-049.yaml",
+      "witness_side": "7",
+      "witness_placement": {
+        "side": "69839/10000",
+        "net_aligned": true,
+        "worst_containment_factor": "1.0",
+        "slack": "0"
+      },
+      "grid_side": "69839/10000",
+      "source": {
+        "ub": "7.0",
+        "ubExact": "7",
+        "B_times_ub": "69839/10000",
+        "l_cap_0d33ab6": "6.983",
+        "factor_3eb08e6": "B",
+        "factor_times_ub": "69839/10000",
+        "l_cap_3eb08e6": "6.983"
+      },
+      "proves_B_times_ub": true,
+      "proves_factor_times_ub": true,
+      "proves_above_l_cap_0d33ab6": true,
+      "proves_above_l_cap_3eb08e6": true,
+      "excess_over_B_times_ub": "0.000e+00"
+    },
+    {
+      "n": 50,
+      "ceiling": "302563596739601/40000000000000",
+      "ceiling_decimal": "7.564089918490",
+      "route": "witness",
+      "witness": "packing/witnesses/known-best/n-050.yaml",
+      "witness_side": "7.571428571428571428571428571428571428571",
+      "witness_placement": {
+        "side": "302563596739601/40000000000000",
+        "net_aligned": false,
+        "worst_containment_factor": "1.00133381171846511914934",
+        "slack": "0"
+      },
+      "grid_side": "9977/1250",
+      "source": {
+        "ub": "7.571429",
+        "ubExact": "7 + (4/7)",
+        "B_times_ub": "75540147133/10000000000",
+        "l_cap_0d33ab6": "7.554",
+        "factor_3eb08e6": "ALPHA",
+        "factor_times_ub": "3027875717532039/400000000000000",
+        "l_cap_3eb08e6": "7.569"
+      },
+      "proves_B_times_ub": false,
+      "proves_factor_times_ub": true,
+      "proves_above_l_cap_0d33ab6": false,
+      "proves_above_l_cap_3eb08e6": true,
+      "excess_over_B_times_ub": "1.008e-02"
+    },
+    {
+      "n": 51,
+      "ceiling": "7695569017648187/1000000000000000",
+      "ceiling_decimal": "7.695569017648",
+      "route": "witness",
+      "witness": "packing/witnesses/known-best/n-051.yaml",
+      "witness_side": "7.7007992354170117234288477569189654333524112673258",
+      "witness_placement": {
+        "side": "7695569017648187/1000000000000000",
+        "net_aligned": false,
+        "worst_containment_factor": "1.001624557918893635548029",
+        "slack": "0"
+      },
+      "grid_side": "9977/1250",
+      "source": {
+        "ub": "7.700799",
+        "ubExact": "8",
+        "B_times_ub": "76830871623/10000000000",
+        "l_cap_0d33ab6": "7.683",
+        "factor_3eb08e6": "ALPHA",
+        "factor_times_ub": "3079611827264709/400000000000000",
+        "l_cap_3eb08e6": "7.699"
+      },
+      "proves_B_times_ub": false,
+      "proves_factor_times_ub": true,
+      "proves_above_l_cap_0d33ab6": false,
+      "proves_above_l_cap_3eb08e6": true,
+      "excess_over_B_times_ub": "1.248e-02"
+    },
+    {
+      "n": 52,
+      "ceiling": "7699693882619541/1000000000000000",
+      "ceiling_decimal": "7.699693882620",
+      "route": "witness",
+      "witness": "packing/witnesses/known-best/n-052.yaml",
+      "witness_side": "7.7071067811865475244008443621",
+      "witness_placement": {
+        "side": "7699693882619541/1000000000000000",
+        "net_aligned": false,
+        "worst_containment_factor": "1.001341258520905876009641",
+        "slack": "0"
+      },
+      "grid_side": "9977/1250",
+      "source": {
+        "ub": "7.707107",
+        "ubExact": "7 + (1/2)sqrt(2)",
+        "B_times_ub": "76893806539/10000000000",
+        "l_cap_0d33ab6": "7.689",
+        "factor_3eb08e6": "ALPHA",
+        "factor_times_ub": "3082134447502737/400000000000000",
+        "l_cap_3eb08e6": "7.705"
+      },
+      "proves_B_times_ub": false,
+      "proves_factor_times_ub": true,
+      "proves_above_l_cap_0d33ab6": false,
+      "proves_above_l_cap_3eb08e6": true,
+      "excess_over_B_times_ub": "1.031e-02"
+    },
+    {
+      "n": 53,
+      "ceiling": "7813076489312613/1000000000000000",
+      "ceiling_decimal": "7.813076489313",
+      "route": "witness",
+      "witness": "packing/witnesses/known-best/n-053.yaml",
+      "witness_side": "7.8228756555322952952508078768196302128551295915412",
+      "witness_placement": {
+        "side": "7813076489312613/1000000000000000",
+        "net_aligned": false,
+        "worst_containment_factor": "1.001049784826300378281801",
+        "slack": "0"
+      },
+      "grid_side": "9977/1250",
+      "source": {
+        "ub": "7.822876",
+        "ubExact": "(13/2) + (1/2)sqrt(7)",
+        "B_times_ub": "19512208463/2500000000",
+        "l_cap_0d33ab6": "7.804",
+        "factor_3eb08e6": "ALPHA",
+        "factor_times_ub": "782107851822429/100000000000000",
+        "l_cap_3eb08e6": "7.821"
+      },
+      "proves_B_times_ub": false,
+      "proves_factor_times_ub": true,
+      "proves_above_l_cap_0d33ab6": false,
+      "proves_above_l_cap_3eb08e6": true,
+      "excess_over_B_times_ub": "8.193e-03"
+    },
+    {
+      "n": 54,
+      "ceiling": "1959178029581839/250000000000000",
+      "ceiling_decimal": "7.836712118327",
+      "route": "witness",
+      "witness": "packing/witnesses/known-best/n-054.yaml",
+      "witness_side": "7.84666719284348978294331459096",
+      "witness_placement": {
+        "side": "1959178029581839/250000000000000",
+        "net_aligned": false,
+        "worst_containment_factor": "1.001033676455604885756716",
+        "slack": "0"
+      },
+      "grid_side": "9977/1250",
+      "source": {
+        "ub": "7.846667",
+        "ubExact": "7 - (1/2)sqrt(2) + sqrt(1 + sqrt(2))",
+        "B_times_ub": "78286196659/10000000000",
+        "l_cap_0d33ab6": "7.828",
+        "factor_3eb08e6": "ALPHA",
+        "factor_times_ub": "3137945620682697/400000000000000",
+        "l_cap_3eb08e6": "7.844"
+      },
+      "proves_B_times_ub": false,
+      "proves_factor_times_ub": true,
+      "proves_above_l_cap_0d33ab6": false,
+      "proves_above_l_cap_3eb08e6": true,
+      "excess_over_B_times_ub": "8.092e-03"
+    },
+    {
+      "n": 55,
+      "ceiling": "7940924942780701/1000000000000000",
+      "ceiling_decimal": "7.940924942781",
+      "route": "witness",
+      "witness": "packing/witnesses/known-best/n-055.yaml",
+      "witness_side": "7.9457710075039129789580095385274780713965449730227",
+      "witness_placement": {
+        "side": "7940924942780701/1000000000000000",
+        "net_aligned": false,
+        "worst_containment_factor": "1.001694003887776824721554",
+        "slack": "0"
+      },
+      "grid_side": "9977/1250",
+      "source": {
+        "ub": "7.945771",
+        "ubExact": "8",
+        "B_times_ub": "79274957267/10000000000",
+        "l_cap_0d33ab6": "7.927",
+        "factor_3eb08e6": "ALPHA",
+        "factor_times_ub": "3177578112133161/400000000000000",
+        "l_cap_3eb08e6": "7.943"
+      },
+      "proves_B_times_ub": false,
+      "proves_factor_times_ub": true,
+      "proves_above_l_cap_0d33ab6": false,
+      "proves_above_l_cap_3eb08e6": true,
+      "excess_over_B_times_ub": "1.343e-02"
+    },
+    {
+      "n": 56,
+      "ceiling": "9977/1250",
+      "ceiling_decimal": "7.981600000000",
+      "route": "witness",
+      "witness": "packing/witnesses/known-best/n-056.yaml",
+      "witness_side": "8",
+      "witness_placement": {
+        "side": "9977/1250",
+        "net_aligned": true,
+        "worst_containment_factor": "1.0",
+        "slack": "0"
+      },
+      "grid_side": "9977/1250",
+      "source": {
+        "ub": "8.0",
+        "ubExact": "8",
+        "B_times_ub": "9977/1250",
+        "l_cap_0d33ab6": "7.981",
+        "factor_3eb08e6": "B",
+        "factor_times_ub": "9977/1250",
+        "l_cap_3eb08e6": "7.981"
+      },
+      "proves_B_times_ub": true,
+      "proves_factor_times_ub": true,
+      "proves_above_l_cap_0d33ab6": true,
+      "proves_above_l_cap_3eb08e6": true,
+      "excess_over_B_times_ub": "0.000e+00"
+    },
+    {
+      "n": 57,
+      "ceiling": "9977/1250",
+      "ceiling_decimal": "7.981600000000",
+      "route": "witness",
+      "witness": "packing/witnesses/known-best/n-057.yaml",
+      "witness_side": "8",
+      "witness_placement": {
+        "side": "9977/1250",
+        "net_aligned": true,
+        "worst_containment_factor": "1.0",
+        "slack": "0"
+      },
+      "grid_side": "9977/1250",
+      "source": {
+        "ub": "8.0",
+        "ubExact": "8",
+        "B_times_ub": "9977/1250",
+        "l_cap_0d33ab6": "7.981",
+        "factor_3eb08e6": "B",
+        "factor_times_ub": "9977/1250",
+        "l_cap_3eb08e6": "7.981"
+      },
+      "proves_B_times_ub": true,
+      "proves_factor_times_ub": true,
+      "proves_above_l_cap_0d33ab6": true,
+      "proves_above_l_cap_3eb08e6": true,
+      "excess_over_B_times_ub": "0.000e+00"
+    },
+    {
+      "n": 58,
+      "ceiling": "9977/1250",
+      "ceiling_decimal": "7.981600000000",
+      "route": "witness",
+      "witness": "packing/witnesses/known-best/n-058.yaml",
+      "witness_side": "8",
+      "witness_placement": {
+        "side": "9977/1250",
+        "net_aligned": true,
+        "worst_containment_factor": "1.0",
+        "slack": "0"
+      },
+      "grid_side": "9977/1250",
+      "source": {
+        "ub": "8.0",
+        "ubExact": "8",
+        "B_times_ub": "9977/1250",
+        "l_cap_0d33ab6": "7.981",
+        "factor_3eb08e6": "B",
+        "factor_times_ub": "9977/1250",
+        "l_cap_3eb08e6": "7.981"
+      },
+      "proves_B_times_ub": true,
+      "proves_factor_times_ub": true,
+      "proves_above_l_cap_0d33ab6": true,
+      "proves_above_l_cap_3eb08e6": true,
+      "excess_over_B_times_ub": "0.000e+00"
+    },
+    {
+      "n": 59,
+      "ceiling": "9977/1250",
+      "ceiling_decimal": "7.981600000000",
+      "route": "witness",
+      "witness": "packing/witnesses/known-best/n-059.yaml",
+      "witness_side": "8",
+      "witness_placement": {
+        "side": "9977/1250",
+        "net_aligned": true,
+        "worst_containment_factor": "1.0",
+        "slack": "0"
+      },
+      "grid_side": "9977/1250",
+      "source": {
+        "ub": "8.0",
+        "ubExact": "8",
+        "B_times_ub": "9977/1250",
+        "l_cap_0d33ab6": "7.981",
+        "factor_3eb08e6": "B",
+        "factor_times_ub": "9977/1250",
+        "l_cap_3eb08e6": "7.981"
+      },
+      "proves_B_times_ub": true,
+      "proves_factor_times_ub": true,
+      "proves_above_l_cap_0d33ab6": true,
+      "proves_above_l_cap_3eb08e6": true,
+      "excess_over_B_times_ub": "0.000e+00"
+    },
+    {
+      "n": 60,
+      "ceiling": "9977/1250",
+      "ceiling_decimal": "7.981600000000",
+      "route": "witness",
+      "witness": "packing/witnesses/known-best/n-060.yaml",
+      "witness_side": "8",
+      "witness_placement": {
+        "side": "9977/1250",
+        "net_aligned": true,
+        "worst_containment_factor": "1.0",
+        "slack": "0"
+      },
+      "grid_side": "9977/1250",
+      "source": {
+        "ub": "8.0",
+        "ubExact": "8",
+        "B_times_ub": "9977/1250",
+        "l_cap_0d33ab6": "7.981",
+        "factor_3eb08e6": "B",
+        "factor_times_ub": "9977/1250",
+        "l_cap_3eb08e6": "7.981"
+      },
+      "proves_B_times_ub": true,
+      "proves_factor_times_ub": true,
+      "proves_above_l_cap_0d33ab6": true,
+      "proves_above_l_cap_3eb08e6": true,
+      "excess_over_B_times_ub": "0.000e+00"
+    },
+    {
+      "n": 61,
+      "ceiling": "9977/1250",
+      "ceiling_decimal": "7.981600000000",
+      "route": "witness",
+      "witness": "packing/witnesses/known-best/n-061.yaml",
+      "witness_side": "8",
+      "witness_placement": {
+        "side": "9977/1250",
+        "net_aligned": true,
+        "worst_containment_factor": "1.0",
+        "slack": "0"
+      },
+      "grid_side": "9977/1250",
+      "source": {
+        "ub": "8.0",
+        "ubExact": "8",
+        "B_times_ub": "9977/1250",
+        "l_cap_0d33ab6": "7.981",
+        "factor_3eb08e6": "B",
+        "factor_times_ub": "9977/1250",
+        "l_cap_3eb08e6": "7.981"
+      },
+      "proves_B_times_ub": true,
+      "proves_factor_times_ub": true,
+      "proves_above_l_cap_0d33ab6": true,
+      "proves_above_l_cap_3eb08e6": true,
+      "excess_over_B_times_ub": "0.000e+00"
+    },
+    {
+      "n": 62,
+      "ceiling": "9977/1250",
+      "ceiling_decimal": "7.981600000000",
+      "route": "witness",
+      "witness": "packing/witnesses/known-best/n-062.yaml",
+      "witness_side": "8",
+      "witness_placement": {
+        "side": "9977/1250",
+        "net_aligned": true,
+        "worst_containment_factor": "1.0",
+        "slack": "0"
+      },
+      "grid_side": "9977/1250",
+      "source": {
+        "ub": "8.0",
+        "ubExact": "8",
+        "B_times_ub": "9977/1250",
+        "l_cap_0d33ab6": "7.981",
+        "factor_3eb08e6": "B",
+        "factor_times_ub": "9977/1250",
+        "l_cap_3eb08e6": "7.981"
+      },
+      "proves_B_times_ub": true,
+      "proves_factor_times_ub": true,
+      "proves_above_l_cap_0d33ab6": true,
+      "proves_above_l_cap_3eb08e6": true,
+      "excess_over_B_times_ub": "0.000e+00"
+    },
+    {
+      "n": 63,
+      "ceiling": "9977/1250",
+      "ceiling_decimal": "7.981600000000",
+      "route": "witness",
+      "witness": "packing/witnesses/known-best/n-063.yaml",
+      "witness_side": "8",
+      "witness_placement": {
+        "side": "9977/1250",
+        "net_aligned": true,
+        "worst_containment_factor": "1.0",
+        "slack": "0"
+      },
+      "grid_side": "9977/1250",
+      "source": {
+        "ub": "8.0",
+        "ubExact": "8",
+        "B_times_ub": "9977/1250",
+        "l_cap_0d33ab6": "7.981",
+        "factor_3eb08e6": "B",
+        "factor_times_ub": "9977/1250",
+        "l_cap_3eb08e6": "7.981"
+      },
+      "proves_B_times_ub": true,
+      "proves_factor_times_ub": true,
+      "proves_above_l_cap_0d33ab6": true,
+      "proves_above_l_cap_3eb08e6": true,
+      "excess_over_B_times_ub": "0.000e+00"
+    },
+    {
+      "n": 64,
+      "ceiling": "9977/1250",
+      "ceiling_decimal": "7.981600000000",
+      "route": "witness",
+      "witness": "packing/witnesses/known-best/n-064.yaml",
+      "witness_side": "8",
+      "witness_placement": {
+        "side": "9977/1250",
+        "net_aligned": true,
+        "worst_containment_factor": "1.0",
+        "slack": "0"
+      },
+      "grid_side": "9977/1250",
+      "source": {
+        "ub": "8.0",
+        "ubExact": "8",
+        "B_times_ub": "9977/1250",
+        "l_cap_0d33ab6": "7.981",
+        "factor_3eb08e6": "B",
+        "factor_times_ub": "9977/1250",
+        "l_cap_3eb08e6": "7.981"
+      },
+      "proves_B_times_ub": true,
+      "proves_factor_times_ub": true,
+      "proves_above_l_cap_0d33ab6": true,
+      "proves_above_l_cap_3eb08e6": true,
+      "excess_over_B_times_ub": "0.000e+00"
+    },
+    {
+      "n": 65,
+      "ceiling": "2131831051077117/250000000000000",
+      "ceiling_decimal": "8.527324204308",
+      "route": "witness",
+      "witness": "packing/witnesses/known-best/n-065.yaml",
+      "witness_side": "8.53553390593273762200422181052425",
+      "witness_placement": {
+        "side": "2131831051077117/250000000000000",
+        "net_aligned": false,
+        "worst_containment_factor": "1.001341258520905876009641",
+        "slack": "0"
+      },
+      "grid_side": "89793/10000",
+      "source": {
+        "ub": "8.535534",
+        "ubExact": "5 + (5/2)sqrt(2)",
+        "B_times_ub": "42579511359/5000000000",
+        "l_cap_0d33ab6": "8.515",
+        "factor_3eb08e6": "ALPHA",
+        "factor_times_ub": "1706714553802797/200000000000000",
+        "l_cap_3eb08e6": "8.533"
+      },
+      "proves_B_times_ub": false,
+      "proves_factor_times_ub": true,
+      "proves_above_l_cap_0d33ab6": false,
+      "proves_above_l_cap_3eb08e6": true,
+      "excess_over_B_times_ub": "1.142e-02"
+    },
+    {
+      "n": 66,
+      "ceiling": "8648527858762009/1000000000000000",
+      "ceiling_decimal": "8.648527858762",
+      "route": "witness",
+      "witness": "packing/witnesses/known-best/n-066.yaml",
+      "witness_side": "8.65685424949238019520675489684",
+      "witness_placement": {
+        "side": "8648527858762009/1000000000000000",
+        "net_aligned": false,
+        "worst_containment_factor": "1.001341258520905876009641",
+        "slack": "0"
+      },
+      "grid_side": "89793/10000",
+      "source": {
+        "ub": "8.656854",
+        "ubExact": "3 + 4 sqrt(2)",
+        "B_times_ub": "43184716179/5000000000",
+        "l_cap_0d33ab6": "8.636",
+        "factor_3eb08e6": "ALPHA",
+        "factor_times_ub": "1730972978602857/200000000000000",
+        "l_cap_3eb08e6": "8.654"
+      },
+      "proves_B_times_ub": false,
+      "proves_factor_times_ub": true,
+      "proves_above_l_cap_0d33ab6": false,
+      "proves_above_l_cap_3eb08e6": true,
+      "excess_over_B_times_ub": "1.158e-02"
+    },
+    {
+      "n": 67,
+      "ceiling": "8698732056245849/1000000000000000",
+      "ceiling_decimal": "8.698732056246",
+      "route": "witness",
+      "witness": "packing/witnesses/known-best/n-067.yaml",
+      "witness_side": "8.7071067811865475244008443621",
+      "witness_placement": {
+        "side": "8698732056245849/1000000000000000",
+        "net_aligned": false,
+        "worst_containment_factor": "1.001341258520905876009641",
+        "slack": "0"
+      },
+      "grid_side": "89793/10000",
+      "source": {
+        "ub": "8.707107",
+        "ubExact": "8 + (1/2)sqrt(2)",
+        "B_times_ub": "86870806539/10000000000",
+        "l_cap_0d33ab6": "8.687",
+        "factor_3eb08e6": "ALPHA",
+        "factor_times_ub": "3482042538502737/400000000000000",
+        "l_cap_3eb08e6": "8.705"
+      },
+      "proves_B_times_ub": false,
+      "proves_factor_times_ub": true,
+      "proves_above_l_cap_0d33ab6": false,
+      "proves_above_l_cap_3eb08e6": true,
+      "excess_over_B_times_ub": "1.165e-02"
+    },
+    {
+      "n": 68,
+      "ceiling": "351811898548059/40000000000000",
+      "ceiling_decimal": "8.795297463701",
+      "route": "witness",
+      "witness": "packing/witnesses/known-best/n-068.yaml",
+      "witness_side": "8.798795237222592",
+      "witness_placement": {
+        "side": "351811898548059/40000000000000",
+        "net_aligned": false,
+        "worst_containment_factor": "1.001906857083919970553295",
+        "slack": "0"
+      },
+      "grid_side": "89793/10000",
+      "source": {
+        "ub": "8.798795237223",
+        "ubExact": "9",
+        "B_times_ub": "87785580081773871/10000000000000000",
+        "l_cap_0d33ab6": "8.778",
+        "factor_3eb08e6": "ALPHA",
+        "factor_times_ub": "3518709406417742071293/400000000000000000000",
+        "l_cap_3eb08e6": "8.796"
+      },
+      "proves_B_times_ub": false,
+      "proves_factor_times_ub": true,
+      "proves_above_l_cap_0d33ab6": false,
+      "proves_above_l_cap_3eb08e6": true,
+      "excess_over_B_times_ub": "1.674e-02"
+    },
+    {
+      "n": 69,
+      "ceiling": "8820182561113143/1000000000000000",
+      "ceiling_decimal": "8.820182561113",
+      "route": "witness",
+      "witness": "packing/witnesses/known-best/n-069.yaml",
+      "witness_side": "8.827205507815920656880680735618736931225314831",
+      "witness_placement": {
+        "side": "8820182561113143/1000000000000000",
+        "net_aligned": false,
+        "worst_containment_factor": "1.001507865598495501620183",
+        "slack": "0"
+      },
+      "grid_side": "89793/10000",
+      "source": {
+        "ub": "8.827206",
+        "ubExact": "9",
+        "B_times_ub": "44034517131/5000000000",
+        "l_cap_0d33ab6": "8.806",
+        "factor_3eb08e6": "ALPHA",
+        "factor_times_ub": "1765035550161873/200000000000000",
+        "l_cap_3eb08e6": "8.825"
+      },
+      "proves_B_times_ub": false,
+      "proves_factor_times_ub": true,
+      "proves_above_l_cap_0d33ab6": false,
+      "proves_above_l_cap_3eb08e6": true,
+      "excess_over_B_times_ub": "1.328e-02"
+    },
+    {
+      "n": 70,
+      "ceiling": "1109378321881397/125000000000000",
+      "ceiling_decimal": "8.875026575051",
+      "route": "witness",
+      "witness": "packing/witnesses/known-best/n-070.yaml",
+      "witness_side": "8.88166675700900462482351214891",
+      "witness_placement": {
+        "side": "1109378321881397/125000000000000",
+        "net_aligned": false,
+        "worst_containment_factor": "1.001555950776451393512781",
+        "slack": "0"
+      },
+      "grid_side": "89793/10000",
+      "source": {
+        "ub": "8.881667",
+        "ubExact": "9",
+        "B_times_ub": "88612391659/10000000000",
+        "l_cap_0d33ab6": "8.861",
+        "factor_3eb08e6": "ALPHA",
+        "factor_times_ub": "3551850494867697/400000000000000",
+        "l_cap_3eb08e6": "8.879"
+      },
+      "proves_B_times_ub": false,
+      "proves_factor_times_ub": true,
+      "proves_above_l_cap_0d33ab6": false,
+      "proves_above_l_cap_3eb08e6": true,
+      "excess_over_B_times_ub": "1.379e-02"
+    },
+    {
+      "n": 71,
+      "ceiling": "1787514693718803/200000000000000",
+      "ceiling_decimal": "8.937573468594",
+      "route": "witness",
+      "witness": "packing/witnesses/known-best/n-071.yaml",
+      "witness_side": "8.9440715575703155065652038687172104484570741885199",
+      "witness_placement": {
+        "side": "1787514693718803/200000000000000",
+        "net_aligned": false,
+        "worst_containment_factor": "1.001577102628088604729467",
+        "slack": "0"
+      },
+      "grid_side": "89793/10000",
+      "source": {
+        "ub": "8.944072",
+        "ubExact": "9",
+        "B_times_ub": "11154375793/1250000000",
+        "l_cap_0d33ab6": "8.923",
+        "factor_3eb08e6": "ALPHA",
+        "factor_times_ub": "447100844910819/50000000000000",
+        "l_cap_3eb08e6": "8.942"
+      },
+      "proves_B_times_ub": false,
+      "proves_factor_times_ub": true,
+      "proves_above_l_cap_0d33ab6": false,
+      "proves_above_l_cap_3eb08e6": true,
+      "excess_over_B_times_ub": "1.407e-02"
+    },
+    {
+      "n": 72,
+      "ceiling": "89793/10000",
+      "ceiling_decimal": "8.979300000000",
+      "route": "witness",
+      "witness": "packing/witnesses/known-best/n-072.yaml",
+      "witness_side": "9",
+      "witness_placement": {
+        "side": "89793/10000",
+        "net_aligned": true,
+        "worst_containment_factor": "1.0",
+        "slack": "0"
+      },
+      "grid_side": "89793/10000",
+      "source": {
+        "ub": "9.0",
+        "ubExact": "9",
+        "B_times_ub": "89793/10000",
+        "l_cap_0d33ab6": "8.979",
+        "factor_3eb08e6": "B",
+        "factor_times_ub": "89793/10000",
+        "l_cap_3eb08e6": "8.979"
+      },
+      "proves_B_times_ub": true,
+      "proves_factor_times_ub": true,
+      "proves_above_l_cap_0d33ab6": true,
+      "proves_above_l_cap_3eb08e6": true,
+      "excess_over_B_times_ub": "0.000e+00"
+    },
+    {
+      "n": 73,
+      "ceiling": "89793/10000",
+      "ceiling_decimal": "8.979300000000",
+      "route": "witness",
+      "witness": "packing/witnesses/known-best/n-073.yaml",
+      "witness_side": "9",
+      "witness_placement": {
+        "side": "89793/10000",
+        "net_aligned": true,
+        "worst_containment_factor": "1.0",
+        "slack": "0"
+      },
+      "grid_side": "89793/10000",
+      "source": {
+        "ub": "9.0",
+        "ubExact": "9",
+        "B_times_ub": "89793/10000",
+        "l_cap_0d33ab6": "8.979",
+        "factor_3eb08e6": "B",
+        "factor_times_ub": "89793/10000",
+        "l_cap_3eb08e6": "8.979"
+      },
+      "proves_B_times_ub": true,
+      "proves_factor_times_ub": true,
+      "proves_above_l_cap_0d33ab6": true,
+      "proves_above_l_cap_3eb08e6": true,
+      "excess_over_B_times_ub": "0.000e+00"
+    },
+    {
+      "n": 74,
+      "ceiling": "89793/10000",
+      "ceiling_decimal": "8.979300000000",
+      "route": "witness",
+      "witness": "packing/witnesses/known-best/n-074.yaml",
+      "witness_side": "9",
+      "witness_placement": {
+        "side": "89793/10000",
+        "net_aligned": true,
+        "worst_containment_factor": "1.0",
+        "slack": "0"
+      },
+      "grid_side": "89793/10000",
+      "source": {
+        "ub": "9.0",
+        "ubExact": "9",
+        "B_times_ub": "89793/10000",
+        "l_cap_0d33ab6": "8.979",
+        "factor_3eb08e6": "B",
+        "factor_times_ub": "89793/10000",
+        "l_cap_3eb08e6": "8.979"
+      },
+      "proves_B_times_ub": true,
+      "proves_factor_times_ub": true,
+      "proves_above_l_cap_0d33ab6": true,
+      "proves_above_l_cap_3eb08e6": true,
+      "excess_over_B_times_ub": "0.000e+00"
+    },
+    {
+      "n": 75,
+      "ceiling": "89793/10000",
+      "ceiling_decimal": "8.979300000000",
+      "route": "witness",
+      "witness": "packing/witnesses/known-best/n-075.yaml",
+      "witness_side": "9",
+      "witness_placement": {
+        "side": "89793/10000",
+        "net_aligned": true,
+        "worst_containment_factor": "1.0",
+        "slack": "0"
+      },
+      "grid_side": "89793/10000",
+      "source": {
+        "ub": "9.0",
+        "ubExact": "9",
+        "B_times_ub": "89793/10000",
+        "l_cap_0d33ab6": "8.979",
+        "factor_3eb08e6": "B",
+        "factor_times_ub": "89793/10000",
+        "l_cap_3eb08e6": "8.979"
+      },
+      "proves_B_times_ub": true,
+      "proves_factor_times_ub": true,
+      "proves_above_l_cap_0d33ab6": true,
+      "proves_above_l_cap_3eb08e6": true,
+      "excess_over_B_times_ub": "0.000e+00"
+    },
+    {
+      "n": 76,
+      "ceiling": "89793/10000",
+      "ceiling_decimal": "8.979300000000",
+      "route": "witness",
+      "witness": "packing/witnesses/known-best/n-076.yaml",
+      "witness_side": "9",
+      "witness_placement": {
+        "side": "89793/10000",
+        "net_aligned": true,
+        "worst_containment_factor": "1.0",
+        "slack": "0"
+      },
+      "grid_side": "89793/10000",
+      "source": {
+        "ub": "9.0",
+        "ubExact": "9",
+        "B_times_ub": "89793/10000",
+        "l_cap_0d33ab6": "8.979",
+        "factor_3eb08e6": "B",
+        "factor_times_ub": "89793/10000",
+        "l_cap_3eb08e6": "8.979"
+      },
+      "proves_B_times_ub": true,
+      "proves_factor_times_ub": true,
+      "proves_above_l_cap_0d33ab6": true,
+      "proves_above_l_cap_3eb08e6": true,
+      "excess_over_B_times_ub": "0.000e+00"
+    },
+    {
+      "n": 77,
+      "ceiling": "89793/10000",
+      "ceiling_decimal": "8.979300000000",
+      "route": "witness",
+      "witness": "packing/witnesses/known-best/n-077.yaml",
+      "witness_side": "9",
+      "witness_placement": {
+        "side": "89793/10000",
+        "net_aligned": true,
+        "worst_containment_factor": "1.0",
+        "slack": "0"
+      },
+      "grid_side": "89793/10000",
+      "source": {
+        "ub": "9.0",
+        "ubExact": "9",
+        "B_times_ub": "89793/10000",
+        "l_cap_0d33ab6": "8.979",
+        "factor_3eb08e6": "B",
+        "factor_times_ub": "89793/10000",
+        "l_cap_3eb08e6": "8.979"
+      },
+      "proves_B_times_ub": true,
+      "proves_factor_times_ub": true,
+      "proves_above_l_cap_0d33ab6": true,
+      "proves_above_l_cap_3eb08e6": true,
+      "excess_over_B_times_ub": "0.000e+00"
+    },
+    {
+      "n": 78,
+      "ceiling": "89793/10000",
+      "ceiling_decimal": "8.979300000000",
+      "route": "witness",
+      "witness": "packing/witnesses/known-best/n-078.yaml",
+      "witness_side": "9",
+      "witness_placement": {
+        "side": "89793/10000",
+        "net_aligned": true,
+        "worst_containment_factor": "1.0",
+        "slack": "0"
+      },
+      "grid_side": "89793/10000",
+      "source": {
+        "ub": "9.0",
+        "ubExact": "9",
+        "B_times_ub": "89793/10000",
+        "l_cap_0d33ab6": "8.979",
+        "factor_3eb08e6": "B",
+        "factor_times_ub": "89793/10000",
+        "l_cap_3eb08e6": "8.979"
+      },
+      "proves_B_times_ub": true,
+      "proves_factor_times_ub": true,
+      "proves_above_l_cap_0d33ab6": true,
+      "proves_above_l_cap_3eb08e6": true,
+      "excess_over_B_times_ub": "0.000e+00"
+    },
+    {
+      "n": 79,
+      "ceiling": "89793/10000",
+      "ceiling_decimal": "8.979300000000",
+      "route": "witness",
+      "witness": "packing/witnesses/known-best/n-079.yaml",
+      "witness_side": "9",
+      "witness_placement": {
+        "side": "89793/10000",
+        "net_aligned": true,
+        "worst_containment_factor": "1.0",
+        "slack": "0"
+      },
+      "grid_side": "89793/10000",
+      "source": {
+        "ub": "9.0",
+        "ubExact": "9",
+        "B_times_ub": "89793/10000",
+        "l_cap_0d33ab6": "8.979",
+        "factor_3eb08e6": "B",
+        "factor_times_ub": "89793/10000",
+        "l_cap_3eb08e6": "8.979"
+      },
+      "proves_B_times_ub": true,
+      "proves_factor_times_ub": true,
+      "proves_above_l_cap_0d33ab6": true,
+      "proves_above_l_cap_3eb08e6": true,
+      "excess_over_B_times_ub": "0.000e+00"
+    },
+    {
+      "n": 80,
+      "ceiling": "89793/10000",
+      "ceiling_decimal": "8.979300000000",
+      "route": "witness",
+      "witness": "packing/witnesses/known-best/n-080.yaml",
+      "witness_side": "9",
+      "witness_placement": {
+        "side": "89793/10000",
+        "net_aligned": true,
+        "worst_containment_factor": "1.0",
+        "slack": "0"
+      },
+      "grid_side": "89793/10000",
+      "source": {
+        "ub": "9.0",
+        "ubExact": "9",
+        "B_times_ub": "89793/10000",
+        "l_cap_0d33ab6": "8.979",
+        "factor_3eb08e6": "B",
+        "factor_times_ub": "89793/10000",
+        "l_cap_3eb08e6": "8.979"
+      },
+      "proves_B_times_ub": true,
+      "proves_factor_times_ub": true,
+      "proves_above_l_cap_0d33ab6": true,
+      "proves_above_l_cap_3eb08e6": true,
+      "excess_over_B_times_ub": "0.000e+00"
+    },
+    {
+      "n": 81,
+      "ceiling": "89793/10000",
+      "ceiling_decimal": "8.979300000000",
+      "route": "witness",
+      "witness": "packing/witnesses/known-best/n-081.yaml",
+      "witness_side": "9",
+      "witness_placement": {
+        "side": "89793/10000",
+        "net_aligned": true,
+        "worst_containment_factor": "1.0",
+        "slack": "0"
+      },
+      "grid_side": "89793/10000",
+      "source": {
+        "ub": "9.0",
+        "ubExact": "9",
+        "B_times_ub": "89793/10000",
+        "l_cap_0d33ab6": "8.979",
+        "factor_3eb08e6": "B",
+        "factor_times_ub": "89793/10000",
+        "l_cap_3eb08e6": "8.979"
+      },
+      "proves_B_times_ub": true,
+      "proves_factor_times_ub": true,
+      "proves_above_l_cap_0d33ab6": true,
+      "proves_above_l_cap_3eb08e6": true,
+      "excess_over_B_times_ub": "0.000e+00"
+    },
+    {
+      "n": 82,
+      "ceiling": "1190795297241847/125000000000000",
+      "ceiling_decimal": "9.526362377935",
+      "route": "witness",
+      "witness": "packing/witnesses/known-best/n-082.yaml",
+      "witness_side": "9.53553390593273762200422181052425",
+      "witness_placement": {
+        "side": "1190795297241847/125000000000000",
+        "net_aligned": false,
+        "worst_containment_factor": "1.001341258520905876009641",
+        "slack": "0"
+      },
+      "grid_side": "9977/1000",
+      "source": {
+        "ub": "9.535534",
+        "ubExact": "6 + (5/2)sqrt(2)",
+        "B_times_ub": "47568011359/5000000000",
+        "l_cap_0d33ab6": "9.513",
+        "factor_3eb08e6": "ALPHA",
+        "factor_times_ub": "1906668599302797/200000000000000",
+        "l_cap_3eb08e6": "9.533"
+      },
+      "proves_B_times_ub": false,
+      "proves_factor_times_ub": true,
+      "proves_above_l_cap_0d33ab6": false,
+      "proves_above_l_cap_3eb08e6": true,
+      "excess_over_B_times_ub": "1.276e-02"
+    },
+    {
+      "n": 83,
+      "ceiling": "77019093791849/8000000000000",
+      "ceiling_decimal": "9.627386723981",
+      "route": "witness",
+      "witness": "packing/witnesses/known-best/n-083.yaml",
+      "witness_side": "9.634825620923357372904697707067667802634",
+      "witness_placement": {
+        "side": "77019093791849/8000000000000",
+        "net_aligned": false,
+        "worst_containment_factor": "1.001531438075339952019932",
+        "slack": "0"
+      },
+      "grid_side": "9977/1000",
+      "source": {
+        "ub": "9.634826",
+        "ubExact": "10",
+        "B_times_ub": "48063329501/5000000000",
+        "l_cap_0d33ab6": "9.612",
+        "factor_3eb08e6": "ALPHA",
+        "factor_times_ub": "1926522436388583/200000000000000",
+        "l_cap_3eb08e6": "9.632"
+      },
+      "proves_B_times_ub": false,
+      "proves_factor_times_ub": true,
+      "proves_above_l_cap_0d33ab6": false,
+      "proves_above_l_cap_3eb08e6": true,
+      "excess_over_B_times_ub": "1.472e-02"
+    },
+    {
+      "n": 84,
+      "ceiling": "2424442557468039/250000000000000",
+      "ceiling_decimal": "9.697770229872",
+      "route": "witness",
+      "witness": "packing/witnesses/known-best/n-084.yaml",
+      "witness_side": "9.7071067811865475244008443621",
+      "witness_placement": {
+        "side": "2424442557468039/250000000000000",
+        "net_aligned": false,
+        "worst_containment_factor": "1.001341258520905876009641",
+        "slack": "0"
+      },
+      "grid_side": "9977/1000",
+      "source": {
+        "ub": "9.707107",
+        "ubExact": "9 + (1/2)sqrt(2)",
+        "B_times_ub": "96847806539/10000000000",
+        "l_cap_0d33ab6": "9.684",
+        "factor_3eb08e6": "ALPHA",
+        "factor_times_ub": "3881950629502737/400000000000000",
+        "l_cap_3eb08e6": "9.704"
+      },
+      "proves_B_times_ub": false,
+      "proves_factor_times_ub": true,
+      "proves_above_l_cap_0d33ab6": false,
+      "proves_above_l_cap_3eb08e6": true,
+      "excess_over_B_times_ub": "1.299e-02"
+    },
+    {
+      "n": 85,
+      "ceiling": "608329372397313/62500000000000",
+      "ceiling_decimal": "9.733269958357",
+      "route": "witness",
+      "witness": "packing/witnesses/known-best/n-085.yaml",
+      "witness_side": "9.74264068711928514640506617263",
+      "witness_placement": {
+        "side": "608329372397313/62500000000000",
+        "net_aligned": false,
+        "worst_containment_factor": "1.001341258520905876009641",
+        "slack": "0"
+      },
+      "grid_side": "9977/1000",
+      "source": {
+        "ub": "9.742641",
+        "ubExact": "(11/2) + 3 sqrt(2)",
+        "B_times_ub": "97202329257/10000000000",
+        "l_cap_0d33ab6": "9.72",
+        "factor_3eb08e6": "ALPHA",
+        "factor_times_ub": "3896160963608331/400000000000000",
+        "l_cap_3eb08e6": "9.74"
+      },
+      "proves_B_times_ub": false,
+      "proves_factor_times_ub": true,
+      "proves_above_l_cap_0d33ab6": false,
+      "proves_above_l_cap_3eb08e6": true,
+      "excess_over_B_times_ub": "1.304e-02"
+    },
+    {
+      "n": 86,
+      "ceiling": "9810571229955013/1000000000000000",
+      "ceiling_decimal": "9.810571229955",
+      "route": "witness",
+      "witness": "packing/witnesses/known-best/n-086.yaml",
+      "witness_side": "9.82287565553229529525080787682",
+      "witness_placement": {
+        "side": "9810571229955013/1000000000000000",
+        "net_aligned": false,
+        "worst_containment_factor": "1.001049784826300378281801",
+        "slack": "0"
+      },
+      "grid_side": "9977/1000",
+      "source": {
+        "ub": "9.822876",
+        "ubExact": "(17/2) + (1/2)sqrt(7)",
+        "B_times_ub": "24500708463/2500000000",
+        "l_cap_0d33ab6": "9.8",
+        "factor_3eb08e6": "ALPHA",
+        "factor_times_ub": "982061897322429/100000000000000",
+        "l_cap_3eb08e6": "9.82"
+      },
+      "proves_B_times_ub": false,
+      "proves_factor_times_ub": true,
+      "proves_above_l_cap_0d33ab6": false,
+      "proves_above_l_cap_3eb08e6": true,
+      "excess_over_B_times_ub": "1.029e-02"
+    },
+    {
+      "n": 87,
+      "ceiling": "9833274240074069/1000000000000000",
+      "ceiling_decimal": "9.833274240074",
+      "route": "witness",
+      "witness": "packing/witnesses/known-best/n-087.yaml",
+      "witness_side": "9.8388174399661870994315642837452826048",
+      "witness_placement": {
+        "side": "9833274240074069/1000000000000000",
+        "net_aligned": false,
+        "worst_containment_factor": "1.001740602354148134112105",
+        "slack": "0"
+      },
+      "grid_side": "9977/1000",
+      "source": {
+        "ub": "9.838817",
+        "ubExact": "10",
+        "B_times_ub": "98161877209/10000000000",
+        "l_cap_0d33ab6": "9.816",
+        "factor_3eb08e6": "ALPHA",
+        "factor_times_ub": "3934622524168347/400000000000000",
+        "l_cap_3eb08e6": "9.836"
+      },
+      "proves_B_times_ub": false,
+      "proves_factor_times_ub": true,
+      "proves_above_l_cap_0d33ab6": false,
+      "proves_above_l_cap_3eb08e6": true,
+      "excess_over_B_times_ub": "1.709e-02"
+    },
+    {
+      "n": 88,
+      "ceiling": "2470718752763819/250000000000000",
+      "ceiling_decimal": "9.882875011055",
+      "route": "witness",
+      "witness": "packing/witnesses/known-best/n-088.yaml",
+      "witness_side": "9.8881530537585723827475586833839531166",
+      "witness_placement": {
+        "side": "2470718752763819/250000000000000",
+        "net_aligned": false,
+        "worst_containment_factor": "1.001770297310115600289405",
+        "slack": "0"
+      },
+      "grid_side": "9977/1000",
+      "source": {
+        "ub": "9.888153",
+        "ubExact": "10",
+        "B_times_ub": "98654102481/10000000000",
+        "l_cap_0d33ab6": "9.865",
+        "factor_3eb08e6": "ALPHA",
+        "factor_times_ub": "3954352389745923/400000000000000",
+        "l_cap_3eb08e6": "9.885"
+      },
+      "proves_B_times_ub": false,
+      "proves_factor_times_ub": true,
+      "proves_above_l_cap_0d33ab6": false,
+      "proves_above_l_cap_3eb08e6": true,
+      "excess_over_B_times_ub": "1.746e-02"
+    },
+    {
+      "n": 89,
+      "ceiling": "9940177538779239/1000000000000000",
+      "ceiling_decimal": "9.940177538779",
+      "route": "witness",
+      "witness": "packing/witnesses/known-best/n-089.yaml",
+      "witness_side": "9.94974746830583267080591053473394",
+      "witness_placement": {
+        "side": "9940177538779239/1000000000000000",
+        "net_aligned": false,
+        "worst_containment_factor": "1.001341258520905876009641",
+        "slack": "0"
+      },
+      "grid_side": "9977/1000",
+      "source": {
+        "ub": "9.949747",
+        "ubExact": "5 + (7/2)sqrt(2)",
+        "B_times_ub": "99268625819/10000000000",
+        "l_cap_0d33ab6": "9.926",
+        "factor_3eb08e6": "ALPHA",
+        "factor_times_ub": "3978984328702977/400000000000000",
+        "l_cap_3eb08e6": "9.947"
+      },
+      "proves_B_times_ub": false,
+      "proves_factor_times_ub": true,
+      "proves_above_l_cap_0d33ab6": false,
+      "proves_above_l_cap_3eb08e6": true,
+      "excess_over_B_times_ub": "1.331e-02"
+    },
+    {
+      "n": 90,
+      "ceiling": "9977/1000",
+      "ceiling_decimal": "9.977000000000",
+      "route": "witness",
+      "witness": "packing/witnesses/known-best/n-090.yaml",
+      "witness_side": "10",
+      "witness_placement": {
+        "side": "9977/1000",
+        "net_aligned": true,
+        "worst_containment_factor": "1.0",
+        "slack": "0"
+      },
+      "grid_side": "9977/1000",
+      "source": {
+        "ub": "10.0",
+        "ubExact": "10",
+        "B_times_ub": "9977/1000",
+        "l_cap_0d33ab6": "9.976",
+        "factor_3eb08e6": "B",
+        "factor_times_ub": "9977/1000",
+        "l_cap_3eb08e6": "9.976"
+      },
+      "proves_B_times_ub": true,
+      "proves_factor_times_ub": true,
+      "proves_above_l_cap_0d33ab6": true,
+      "proves_above_l_cap_3eb08e6": true,
+      "excess_over_B_times_ub": "0.000e+00"
+    },
+    {
+      "n": 91,
+      "ceiling": "9977/1000",
+      "ceiling_decimal": "9.977000000000",
+      "route": "witness",
+      "witness": "packing/witnesses/known-best/n-091.yaml",
+      "witness_side": "10",
+      "witness_placement": {
+        "side": "9977/1000",
+        "net_aligned": true,
+        "worst_containment_factor": "1.0",
+        "slack": "0"
+      },
+      "grid_side": "9977/1000",
+      "source": {
+        "ub": "10.0",
+        "ubExact": "10",
+        "B_times_ub": "9977/1000",
+        "l_cap_0d33ab6": "9.976",
+        "factor_3eb08e6": "B",
+        "factor_times_ub": "9977/1000",
+        "l_cap_3eb08e6": "9.976"
+      },
+      "proves_B_times_ub": true,
+      "proves_factor_times_ub": true,
+      "proves_above_l_cap_0d33ab6": true,
+      "proves_above_l_cap_3eb08e6": true,
+      "excess_over_B_times_ub": "0.000e+00"
+    },
+    {
+      "n": 92,
+      "ceiling": "9977/1000",
+      "ceiling_decimal": "9.977000000000",
+      "route": "witness",
+      "witness": "packing/witnesses/known-best/n-092.yaml",
+      "witness_side": "10",
+      "witness_placement": {
+        "side": "9977/1000",
+        "net_aligned": true,
+        "worst_containment_factor": "1.0",
+        "slack": "0"
+      },
+      "grid_side": "9977/1000",
+      "source": {
+        "ub": "10.0",
+        "ubExact": "10",
+        "B_times_ub": "9977/1000",
+        "l_cap_0d33ab6": "9.976",
+        "factor_3eb08e6": "B",
+        "factor_times_ub": "9977/1000",
+        "l_cap_3eb08e6": "9.976"
+      },
+      "proves_B_times_ub": true,
+      "proves_factor_times_ub": true,
+      "proves_above_l_cap_0d33ab6": true,
+      "proves_above_l_cap_3eb08e6": true,
+      "excess_over_B_times_ub": "0.000e+00"
+    },
+    {
+      "n": 93,
+      "ceiling": "9977/1000",
+      "ceiling_decimal": "9.977000000000",
+      "route": "witness",
+      "witness": "packing/witnesses/known-best/n-093.yaml",
+      "witness_side": "10",
+      "witness_placement": {
+        "side": "9977/1000",
+        "net_aligned": true,
+        "worst_containment_factor": "1.0",
+        "slack": "0"
+      },
+      "grid_side": "9977/1000",
+      "source": {
+        "ub": "10.0",
+        "ubExact": "10",
+        "B_times_ub": "9977/1000",
+        "l_cap_0d33ab6": "9.976",
+        "factor_3eb08e6": "B",
+        "factor_times_ub": "9977/1000",
+        "l_cap_3eb08e6": "9.976"
+      },
+      "proves_B_times_ub": true,
+      "proves_factor_times_ub": true,
+      "proves_above_l_cap_0d33ab6": true,
+      "proves_above_l_cap_3eb08e6": true,
+      "excess_over_B_times_ub": "0.000e+00"
+    },
+    {
+      "n": 94,
+      "ceiling": "9977/1000",
+      "ceiling_decimal": "9.977000000000",
+      "route": "witness",
+      "witness": "packing/witnesses/known-best/n-094.yaml",
+      "witness_side": "10",
+      "witness_placement": {
+        "side": "9977/1000",
+        "net_aligned": true,
+        "worst_containment_factor": "1.0",
+        "slack": "0"
+      },
+      "grid_side": "9977/1000",
+      "source": {
+        "ub": "10.0",
+        "ubExact": "10",
+        "B_times_ub": "9977/1000",
+        "l_cap_0d33ab6": "9.976",
+        "factor_3eb08e6": "B",
+        "factor_times_ub": "9977/1000",
+        "l_cap_3eb08e6": "9.976"
+      },
+      "proves_B_times_ub": true,
+      "proves_factor_times_ub": true,
+      "proves_above_l_cap_0d33ab6": true,
+      "proves_above_l_cap_3eb08e6": true,
+      "excess_over_B_times_ub": "0.000e+00"
+    },
+    {
+      "n": 95,
+      "ceiling": "9977/1000",
+      "ceiling_decimal": "9.977000000000",
+      "route": "witness",
+      "witness": "packing/witnesses/known-best/n-095.yaml",
+      "witness_side": "10",
+      "witness_placement": {
+        "side": "9977/1000",
+        "net_aligned": true,
+        "worst_containment_factor": "1.0",
+        "slack": "0"
+      },
+      "grid_side": "9977/1000",
+      "source": {
+        "ub": "10.0",
+        "ubExact": "10",
+        "B_times_ub": "9977/1000",
+        "l_cap_0d33ab6": "9.976",
+        "factor_3eb08e6": "B",
+        "factor_times_ub": "9977/1000",
+        "l_cap_3eb08e6": "9.976"
+      },
+      "proves_B_times_ub": true,
+      "proves_factor_times_ub": true,
+      "proves_above_l_cap_0d33ab6": true,
+      "proves_above_l_cap_3eb08e6": true,
+      "excess_over_B_times_ub": "0.000e+00"
+    },
+    {
+      "n": 96,
+      "ceiling": "9977/1000",
+      "ceiling_decimal": "9.977000000000",
+      "route": "witness",
+      "witness": "packing/witnesses/known-best/n-096.yaml",
+      "witness_side": "10",
+      "witness_placement": {
+        "side": "9977/1000",
+        "net_aligned": true,
+        "worst_containment_factor": "1.0",
+        "slack": "0"
+      },
+      "grid_side": "9977/1000",
+      "source": {
+        "ub": "10.0",
+        "ubExact": "10",
+        "B_times_ub": "9977/1000",
+        "l_cap_0d33ab6": "9.976",
+        "factor_3eb08e6": "B",
+        "factor_times_ub": "9977/1000",
+        "l_cap_3eb08e6": "9.976"
+      },
+      "proves_B_times_ub": true,
+      "proves_factor_times_ub": true,
+      "proves_above_l_cap_0d33ab6": true,
+      "proves_above_l_cap_3eb08e6": true,
+      "excess_over_B_times_ub": "0.000e+00"
+    },
+    {
+      "n": 97,
+      "ceiling": "9977/1000",
+      "ceiling_decimal": "9.977000000000",
+      "route": "witness",
+      "witness": "packing/witnesses/known-best/n-097.yaml",
+      "witness_side": "10",
+      "witness_placement": {
+        "side": "9977/1000",
+        "net_aligned": true,
+        "worst_containment_factor": "1.0",
+        "slack": "0"
+      },
+      "grid_side": "9977/1000",
+      "source": {
+        "ub": "10.0",
+        "ubExact": "10",
+        "B_times_ub": "9977/1000",
+        "l_cap_0d33ab6": "9.976",
+        "factor_3eb08e6": "B",
+        "factor_times_ub": "9977/1000",
+        "l_cap_3eb08e6": "9.976"
+      },
+      "proves_B_times_ub": true,
+      "proves_factor_times_ub": true,
+      "proves_above_l_cap_0d33ab6": true,
+      "proves_above_l_cap_3eb08e6": true,
+      "excess_over_B_times_ub": "0.000e+00"
+    },
+    {
+      "n": 98,
+      "ceiling": "9977/1000",
+      "ceiling_decimal": "9.977000000000",
+      "route": "witness",
+      "witness": "packing/witnesses/known-best/n-098.yaml",
+      "witness_side": "10",
+      "witness_placement": {
+        "side": "9977/1000",
+        "net_aligned": true,
+        "worst_containment_factor": "1.0",
+        "slack": "0"
+      },
+      "grid_side": "9977/1000",
+      "source": {
+        "ub": "10.0",
+        "ubExact": "10",
+        "B_times_ub": "9977/1000",
+        "l_cap_0d33ab6": "9.976",
+        "factor_3eb08e6": "B",
+        "factor_times_ub": "9977/1000",
+        "l_cap_3eb08e6": "9.976"
+      },
+      "proves_B_times_ub": true,
+      "proves_factor_times_ub": true,
+      "proves_above_l_cap_0d33ab6": true,
+      "proves_above_l_cap_3eb08e6": true,
+      "excess_over_B_times_ub": "0.000e+00"
+    },
+    {
+      "n": 99,
+      "ceiling": "9977/1000",
+      "ceiling_decimal": "9.977000000000",
+      "route": "witness",
+      "witness": "packing/witnesses/known-best/n-099.yaml",
+      "witness_side": "10",
+      "witness_placement": {
+        "side": "9977/1000",
+        "net_aligned": true,
+        "worst_containment_factor": "1.0",
+        "slack": "0"
+      },
+      "grid_side": "9977/1000",
+      "source": {
+        "ub": "10.0",
+        "ubExact": "10",
+        "B_times_ub": "9977/1000",
+        "l_cap_0d33ab6": "9.976",
+        "factor_3eb08e6": "B",
+        "factor_times_ub": "9977/1000",
+        "l_cap_3eb08e6": "9.976"
+      },
+      "proves_B_times_ub": true,
+      "proves_factor_times_ub": true,
+      "proves_above_l_cap_0d33ab6": true,
+      "proves_above_l_cap_3eb08e6": true,
+      "excess_over_B_times_ub": "0.000e+00"
+    },
+    {
+      "n": 100,
+      "ceiling": "9977/1000",
+      "ceiling_decimal": "9.977000000000",
+      "route": "witness",
+      "witness": "packing/witnesses/known-best/n-100.yaml",
+      "witness_side": "10",
+      "witness_placement": {
+        "side": "9977/1000",
+        "net_aligned": true,
+        "worst_containment_factor": "1.0",
+        "slack": "0"
+      },
+      "grid_side": "9977/1000",
+      "source": {
+        "ub": "10.0",
+        "ubExact": "10",
+        "B_times_ub": "9977/1000",
+        "l_cap_0d33ab6": "9.976",
+        "factor_3eb08e6": "B",
+        "factor_times_ub": "9977/1000",
+        "l_cap_3eb08e6": "9.976"
+      },
+      "proves_B_times_ub": true,
+      "proves_factor_times_ub": true,
+      "proves_above_l_cap_0d33ab6": true,
+      "proves_above_l_cap_3eb08e6": true,
+      "excess_over_B_times_ub": "0.000e+00"
+    }
+  ]
+}

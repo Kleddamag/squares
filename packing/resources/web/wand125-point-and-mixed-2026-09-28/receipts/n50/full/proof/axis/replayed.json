@@ -1,0 +1,8 @@
+{
+  "status": "AXIS_CERTIFICATE_REPLAYED",
+  "digest": "fdfaed937a788e0f2dcd45689927c59ffe62b1436aa06a4363a0ea6dd1a53fda",
+  "cells": 13205956,
+  "gamma": "1",
+  "integer_minimum": 1.0084468491077132,
+  "scope": "Net angle zero only, no full packing certification."
+}

@@ -168,7 +168,9 @@ def test_the_register_counts_match_the_frontier_readme() -> None:
     """Since the correction of 2 October 2026 no operative verified bound cites T-007."""
     summary = audit.build_document()["summary"]
     operative = summary["operative_cites_t007"]
-    assert (operative["all"], operative["open"], summary["open_cases"]) == (0, 0, 261)
+    # 261 open cases at the correction; 247 since the merge of 2026-10-03, whose replayed
+    # covers and families proved n = 59 to 61, 77, 78 and nine k^2 - 3 cases.
+    assert (operative["all"], operative["open"], summary["open_cases"]) == (0, 0, 247)
     assert operative["outside_t007_registered_scope_n"] == ""
     assert summary["classes"] == {
         audit.UNAFFECTED: 324,
@@ -204,19 +206,26 @@ def test_case_rows_carry_each_kind_of_support_separately() -> None:
         "operative-bound-independent",
     )
     assert n62["reported_lower_bound"]["cites_t007"] is True
+    # Since the merge of 2026-10-03 the replayed covers proving s(59) = 8 (T-066) and
+    # s(60) = s(61) = 8 (T-062) are verified too, and carry to n = 62 by monotonicity.
     assert [s["results"] for s in n62["support"]["registered_verified"]["sources"]] == [
-        ["T-083"]
+        ["T-066"],
+        ["T-062"],
+        ["T-083"],
     ]
     assert n62["support"]["registered_reported"]["reaches_nagamochi"] is True
     assert [s["results"] for s in n62["support"]["registered_reported"]["sources"]] == [
+        ["T-066"],
         ["T-062"],
         ["T-063"],
     ]
     assert n62["support"]["karakus_explicit_bound"]["reaches_nagamochi"] is False
     assert n62["support"]["chelokot_lean"]["verified"] is True
     assert by_n[63]["support"]["karakus_k2_minus_1"]["value"] == 8
-    assert by_n[73]["operative_lower_bound"]["exact_form"] == "861/100"
-    assert by_n[73]["operative_lower_bound"]["results"] == ["T-044"]
+    # T-044's 861/100 until the merge of 2026-10-03; wand125's replayed n = 71 rectangle
+    # certificate (T-070) since, carried by monotonicity.
+    assert by_n[73]["operative_lower_bound"]["exact_form"] == "1737/200"
+    assert by_n[73]["operative_lower_bound"]["results"] == ["T-070"]
     assert by_n[150]["operative_lower_bound"]["t007_scope_covers_n"] is False
 
 

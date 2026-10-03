@@ -256,6 +256,7 @@ from typing import Any, Protocol
 import yaml
 from strif import atomic_output_file
 
+from devtools import render_case_verifiers
 from devtools.audit_ds7_lower_bounds import (
     GREEN9,
     GREEN10,
@@ -2137,6 +2138,10 @@ def render_body(
     else:
         lines.extend(nagamochi_lower_section(n, payload))
     lines.append("")
+    # The programs behind the verified bounds, as `devtools.render_case_verifiers` keeps
+    # them in every case record, so a fresh draft already carries its section.
+    lines.extend(render_case_verifiers.section_for(payload))
+    lines.append("")
     lines.append(COMMON_DOC_FOOTER)
 
     # Formatted in process by the Python build of the same formatter the pre-commit hook
@@ -2293,7 +2298,11 @@ def adopt_upper_bound_packet(n: int, text: str) -> str:
     """
     intake, plans, earlier = _upper_bound_packets()
     plan = plans.get(n)
-    return text if plan is None else intake.apply_case(plan, text, earlier[n])
+    if plan is None:
+        return text
+    # The intake moves the verified upper bound's evidence, so the record's
+    # verification-code section is written again from the front matter it leaves.
+    return render_case_verifiers.refresh(intake.apply_case(plan, text, earlier[n]))
 
 
 def generate_record(

@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import gzip
 import hashlib
 import json
 import os
@@ -13,6 +14,7 @@ import pytest
 from devtools.check_general_pose_tree_census import (
     CensusError,
     inspect_legacy,
+    pack_journal,
     parse_rows,
     run_bound,
     validate_bound,
@@ -436,3 +438,67 @@ def test_publication_race_preserves_the_competing_evidence(
             checker_files=("general_pose_tree/run_n11.py",),
         )
     assert output.read_text() == "competing evidence\n"
+
+
+def _validate_fixture(checker: Path, certificate: Path, journal: Path) -> dict[str, object]:
+    return validate_bound(
+        journal,
+        checker,
+        certificate / "global-certificate.json",
+        certificate / "evidence/portable/python.json",
+        require_complete=True,
+        expected_rows=3,
+        expected_revision=None,
+        expected_certificate_sha256=None,
+        expected_reference_sha256=None,
+        checker_files=("general_pose_tree/run_n11.py",),
+    )
+
+
+def test_packed_journal_admits_with_the_digest_of_its_inflated_bytes(tmp_path: Path) -> None:
+    checker, certificate, output = _run_fixture(tmp_path)
+    packed = tmp_path / "rows.jsonl.gz"
+    receipt = pack_journal(output, packed)
+    assert packed.read_bytes() == gzip.compress(output.read_bytes(), compresslevel=9, mtime=0)
+    assert receipt["journal_sha256"] == hashlib.sha256(output.read_bytes()).hexdigest()
+    plain = _validate_fixture(checker, certificate, output)
+    assert _validate_fixture(checker, certificate, packed) == plain
+    assert plain["verdict"] == "COMPLETE_ROW_EQUALITY"
+
+
+def test_packing_refuses_overwrite_and_double_compression(tmp_path: Path) -> None:
+    _, _, output = _run_fixture(tmp_path)
+    packed = tmp_path / "rows.jsonl.gz"
+    pack_journal(output, packed)
+    with pytest.raises(CensusError, match="already exists"):
+        pack_journal(output, packed)
+    with pytest.raises(CensusError, match="already gzipped"):
+        pack_journal(packed, tmp_path / "again.jsonl.gz")
+    with pytest.raises(CensusError, match=r"must end in \.gz"):
+        pack_journal(output, tmp_path / "rows.packed")
+
+
+def test_malformed_and_oversized_gzip_journals_are_typed_refusals(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    checker, certificate, output = _run_fixture(tmp_path)
+    packed = tmp_path / "rows.jsonl.gz"
+    pack_journal(output, packed)
+    data = packed.read_bytes()
+    truncated = tmp_path / "truncated.jsonl.gz"
+    truncated.write_bytes(data[:-8])
+    with pytest.raises(CensusError, match="malformed gzip"):
+        _validate_fixture(checker, certificate, truncated)
+    trailing = tmp_path / "trailing.jsonl.gz"
+    trailing.write_bytes(data + b"junk")
+    with pytest.raises(CensusError, match="malformed gzip"):
+        _validate_fixture(checker, certificate, trailing)
+    corrupt = tmp_path / "corrupt.jsonl.gz"
+    corrupt.write_bytes(data[:20] + bytes([data[20] ^ 0xFF]) + data[21:])
+    with pytest.raises(CensusError, match="malformed gzip"):
+        _validate_fixture(checker, certificate, corrupt)
+    bomb = tmp_path / "bomb.jsonl.gz"
+    bomb.write_bytes(gzip.compress(b"0" * 5_000_000, mtime=0))
+    monkeypatch.setattr("devtools.check_general_pose_tree_census.MAX_INPUT_BYTES", 1_000_000)
+    with pytest.raises(CensusError, match="inflates beyond"):
+        _validate_fixture(checker, certificate, bomb)

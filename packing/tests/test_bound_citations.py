@@ -753,9 +753,16 @@ RECORDED: dict[int, tuple[tuple[str, str, str] | None, tuple[str, str, str] | No
     ),
     # A parallel packing certified here: the finder's line, confirmed by the register
     # entry whose replay it is (T-056), where the UnitSquare release stood until then.
+    # Below it, wand125's rectangle bound of 1 October replayed as T-074, which took the
+    # case on 2026-10-02 from its 28 September certificate (T-070), itself raised that day
+    # from the point bound of T-044.
     68: (
         ("Couzo 2026, GitHub (confirmed T-056)", "external", "verified"),
-        ("wand125 after Levy et al. 2026, GitHub (confirmed T-044)", "external", "verified"),
+        (
+            "wand125 after Tokoharu, Levy et al. 2026, GitHub (confirmed T-074)",
+            "external",
+            "verified",
+        ),
     ),
     # The catalogue credits nobody, so the line cites the catalogue by its compilers.
     # Since 2026-10-02 the verified floors past 100 are Karakuş's, which replaced
@@ -794,8 +801,11 @@ def test_the_recorded_register_gives_these_lines(n: int) -> None:
     [
         (11, "Queuingtheorydotcom after Levy et al.", "Web", "T-060"),
         (17, "Guzhou0806 after Kleddamag et al.", "GitHub", "T-043"),
-        (26, "Tokoharu after Levy, wand125 et al.", "GitHub", "T-047"),
-        (29, "Tokoharu after Levy, wand125 et al.", "GitHub", "T-047"),
+        # Tokoharu's T-047 held n = 26 and 29 until 2026-10-02, when wand125's merged
+        # rectangle replays raised both, n = 26 under T-045 and n = 29 under T-070, and
+        # the replays of its 1 October certificates raised both again later that day.
+        (26, "wand125 after Tokoharu, Levy et al.", "GitHub", "T-074"),
+        (29, "wand125 after Tokoharu, Levy et al.", "GitHub", "T-074"),
     ],
 )
 def test_promoted_external_bounds_keep_the_sources_credit(
@@ -856,8 +866,10 @@ RECORDED_LINKS: dict[tuple[int, str], tuple[list[str], list[str]]] = {
     (7, "lower"): (["T-083"], ["T-083"]),
     # Karakuş's general bound, read here and not replayed, since 2026-10-02.
     (101, "lower"): (["T-080"], []),
-    # This project's own bound: established, not confirmed.
-    (18, "lower"): (["T-030"], []),
+    # This project's own bound, established rather than confirmed, was T-030's until
+    # 2026-10-02 (`test_a_novel_first_party_bound_cites_this_project_and_its_result` keeps
+    # that shape); since then it is wand125's rectangle bound, which T-045 replays.
+    (18, "lower"): (["T-045"], ["T-045"]),
 }
 
 
@@ -1018,7 +1030,12 @@ def test_the_project_lower_bounds_are_exactly_those_first_proved_here() -> None:
         if entry["lower"] is not None and entry["lower"]["basis"] == "project"
     }
     assert project == proved
-    assert proved
+    # The guard against a vacuous pass was `assert proved` until 2026-10-02, when the
+    # merged rectangle replays raised n = 18, 19 and 20 above T-030, T-020 and T-021, the
+    # last lower bounds first proved here. The synthetic test above holds a project line's
+    # shape. A project lower bound stands again since 3 October 2026: n = 12, T-079's
+    # re-weighting of Daniel's points.
+    assert proved == {12}
 
 
 def test_the_star_marks_recent_results_whoever_proved_them() -> None:
@@ -1026,15 +1043,20 @@ def test_the_star_marks_recent_results_whoever_proved_them() -> None:
 
     Kleddamag's 3.875, developed from T-026, preceded the exact T-060 proof. Credit
     is the line's business: joint work names this project after the author, other work
-    names only its own lineage, and this project's sole work names the project.
+    names only its own lineage, and this project's sole work names the project. n = 18
+    was this project's (T-030) until 2026-10-02 and is wand125's rectangle bound since,
+    starred all the same.
     """
     lines = {entry["n"]: entry["lower"] for entry in _record()["entries"]}
     assert lines[11]["recent"]
     assert lines[11]["text"] == "Queuingtheorydotcom after Levy et al. 2026, Web"
     assert lines[12]["recent"]
-    assert lines[12]["text"].startswith("Daniel after Burns")
+    # This project's re-weighting of Daniel's points since 3 October 2026 (T-079), after
+    # squarepacker's rescaling (T-078) earlier that day; a project bound is named as the
+    # project's.
+    assert lines[12]["text"] == "Squares Project (Levy) 2026, result T-079"
     assert lines[18]["recent"]
-    assert lines[18]["text"].startswith(citations.PROJECT_NAME)
+    assert lines[18]["text"] == "wand125 after Tokoharu, Levy et al. 2026, GitHub"
     assert all(line["recent"] for line in lines.values() if line and line["basis"] == "project")
     assert not lines[6]["recent"]  # Kearney and Shiu 2002
 
@@ -1073,8 +1095,11 @@ def test_the_corrections_on_record_are_recent_and_name_nagamochi_2005() -> None:
     lines = {entry["n"]: entry["lower"] for entry in _record()["entries"] if entry["lower"]}
     corrected = {n: line for n, line in lines.items() if line["corrects"]}
     # 267 on 2026-10-02; 265 since 3 October, when n = 37 and 61 moved onto Bašić and
-    # Slivková's 2018 piercing bound (T-084), which corrects nothing.
-    assert len(corrected) == 265
+    # Slivková's 2018 piercing bound (T-084), which corrects nothing; 225 since the merge
+    # of the same day, when replayed certificates and covers recorded in parallel
+    # (T-048, T-062, T-064, T-066, T-067, T-069 to T-072, T-074 and T-075) took 40 of the
+    # corrected floors, none of them correcting anything.
+    assert len(corrected) == 225
     assert 37 not in corrected
     assert 61 not in corrected
     assert all(line["recent"] for line in corrected.values())

@@ -1,0 +1,53 @@
+{
+ "log": "resources/web/evand-square-packing-2026-10-01/receipts/s60_zmx2_full_roots.log",
+ "sha256": "c3ed66ea3c1ee768f48a0e4e5281647907fb36e8ca81d4dd69d256621ecd26c7",
+ "header": "# zmx2 cert hash=478e927dc2f4c16c mode=full atoms=grid depth=40 node_cap=20000000 kappa=1.5 K=30 region=x0-79,y0-79,bins0-3",
+ "mode": "full",
+ "atoms": "grid",
+ "flags": {
+  "pair_points": false,
+  "no_atoms": false,
+  "sym_atoms": false,
+  "mirror_only": false,
+  "first_order": false
+ },
+ "header_settings": {
+  "depth": "40",
+  "node_cap": "20000000",
+  "kappa": "1.5",
+  "K": "30"
+ },
+ "header_unrecognised": [],
+ "headers_equal_apart_from_region": true,
+ "mode_in_header": true,
+ "region_in_header": true,
+ "joined": false,
+ "runs": [
+  {
+   "log": "resources/web/evand-square-packing-2026-10-01/receipts/s60_zmx2_full_roots.log",
+   "line": 1,
+   "region": "x0-79,y0-79,bins0-3",
+   "roots": 51200
+  }
+ ],
+ "roots_in_region": 51200,
+ "roots_present": 51200,
+ "roots_missing": 0,
+ "roots_outside_region": 0,
+ "roots_outside_their_runs_limits": 0,
+ "roots_recorded_more_than_once": 0,
+ "repeated_roots": [],
+ "root_ids_inconsistent": 0,
+ "unparsed_lines": 0,
+ "boxes": 21036120,
+ "certified_leaves": 10414200,
+ "empty_leaves": 129460,
+ "uncertified_boxes": 0,
+ "uncert_lines": 0,
+ "capped_roots": 0,
+ "max_depth": 24,
+ "atoms_source_ran": "grid",
+ "atoms_as_source_ran": true,
+ "atoms_required": "grid",
+ "atoms_as_required": true
+}

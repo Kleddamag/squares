@@ -165,23 +165,24 @@ alone is not full pre-merge evidence.
 
 | Tier | Who runs it, and when | Steps | Ceiling | Cost when last measured |
 | --- | --- | ---: | ---: | --- |
-| `--records` | contributor, before touching a registry; also every pull request | 42 of 95 | 300 s | 11.0 s |
-| `--edit` | contributor, in the edit loop | 57 of 95 | 240 s | 59.4 s |
+| `--records` | contributor, before touching a registry; also every pull request | 43 of 98 | 300 s | 11.0 s |
+| `--edit` | contributor, in the edit loop | 58 of 98 | 240 s | 59.4 s |
 | `--push` | contributor, once before a push — the edit tier plus tests reachable from the diff (`--since`) | varies with the diff | 1800 s | about a minute for a narrow code change; an implicitly configured broad diff selects the whole suite and assigns one outer job so pytest can use the host, see below |
-| `--fast` | contributor, at a block boundary; the union of the nine tiers below | 83 of 95 | 600 s | record cleared 2026-09-07 when the corpus widened; 229.1 s locally, only the ceiling applies |
-| `--checks` | **CI, on every pull request**, in the `validate` job | 60 of 95 | 140 s | 103.70 s, the geometric mean of thirty-three hosted readings on 2026-09-30 and 10-01, with the band 59.4–137.1 s (2.31x) the runner pool spanned on unchanged steps; the 114.34 s two-attempt record stays in the register as history |
-| `--frontend` | **CI, on every pull request**, in the `frontend` job, concurrently | 4 of 95 | 150 s | 104.74 s, the geometric mean of 32 hosted readings from 27 to 30 September (70.97–134.86 s, 1.90x); 85.25 s from two readings stays in the register as history |
-| `--typecheck` | **CI, on every pull request**, in the `typecheck` job, concurrently | 1 of 95 | 111 s | 76.5 s, the centre of eighteen hosted readings, with the band 56.67–92.27 s that its two runner regimes span |
-| `--geometry` | **CI, on every pull request**, in the `geometry` job, concurrently | 9 of 95 | 180 s | 98.07 s, the geometric mean of fourteen hosted readings, with the band 58.75–116.19 s that its two runner regimes span |
-| `--suite-a` | **CI, on every pull request**, in the `suite-a` job, concurrently | 1 of 95 | 131 s | 114.58 s, the geometric mean of twelve hosted readings on 2026-10-01 of the three-shard partition after the day’s growth, band 83.91–128.65 s (1.53x); two more walls that day, 131.58 and 132.67 s, were over the ceiling with every test green and are named, not averaged; the 85.03 s two-reading record stays in the register as history |
-| `--suite-b` | **CI, on every pull request**, in the `suite-b` job, concurrently | 1 of 95 | 154 s | 114.38 s, the geometric mean of eleven hosted readings on 2026-10-01 of the same partition, band 79.30–139.35 s (1.76x); the 104.65 s single reading stays as history |
-| `--suite-c` | **CI, on every pull request**, in the `suite-c` job, concurrently | 1 of 95 | 154 s | 132.05 s, the geometric mean of eleven hosted readings on 2026-10-01 after the day’s files landed in it, band 90.34–147.16 s (1.63x); the 102.94 s thirty-one-reading record and the 88.59 s first reading stay as history |
-| `--suite-d` | **CI, on every pull request**, in the `suite-d` job, concurrently | 1 of 95 | 131 s | pending its first hosted cohort under `think-t7k5`; the record’s cohort predicts about 84 s for its 278.9 test-second share |
-| `--sweeps` | **CI, on every pull request**, in the `sweeps` job, concurrently | 5 of 95 | 200 s | 101.51 s, the geometric mean of six 4-of-80 hosted readings (66.36–130.77 s, spread 1.97x); the 119.72 s seven-reading mean and PR 180’s 138.84 s predecessor remain in the register as history |
-| *(no flag)* | Full checkpoint before final review and at block close; main, dispatch, and daily CI | 95 of 95 | 3600 s | integration plus ten deferred workers; new whole-wall measurement pending |
+| `--fast` | contributor, at a block boundary; the union of the ten tiers below | 85 of 98 | 600 s | record cleared 2026-09-07 when the corpus widened; 229.1 s locally, only the ceiling applies |
+| `--checks` | **CI, on every pull request**, in the `validate` job | 61 of 98 | 140 s | 103.70 s, the geometric mean of thirty-three hosted readings on 2026-09-30 and 10-01, with the band 59.4–137.1 s (2.31x) the runner pool spanned on unchanged steps; the 114.34 s two-attempt record stays in the register as history |
+| `--frontend` | **CI, on every pull request**, in the `frontend` job, concurrently | 4 of 98 | 150 s | 104.74 s, the geometric mean of 32 hosted readings from 27 to 30 September (70.97–134.86 s, 1.90x); 85.25 s from two readings stays in the register as history |
+| `--typecheck` | **CI, on every pull request**, in the `typecheck` job, concurrently | 1 of 98 | 111 s | 76.5 s, the centre of eighteen hosted readings, with the band 56.67–92.27 s that its two runner regimes span |
+| `--geometry` | **CI, on every pull request**, in the `geometry` job, concurrently | 9 of 98 | 180 s | 98.07 s, the geometric mean of fourteen hosted readings, with the band 58.75–116.19 s that its two runner regimes span |
+| `--suite-a` | **CI, on every pull request**, in the `suite-a` job, concurrently | 1 of 98 | 131 s | 114.58 s, the geometric mean of twelve hosted readings on 2026-10-01 of the three-shard partition after the day’s growth, band 83.91–128.65 s (1.53x); two more walls that day, 131.58 and 132.67 s, were over the ceiling with every test green and are named, not averaged; the 85.03 s two-reading record stays in the register as history |
+| `--suite-b` | **CI, on every pull request**, in the `suite-b` job, concurrently | 1 of 98 | 154 s | 114.38 s, the geometric mean of eleven hosted readings on 2026-10-01 of the same partition, band 79.30–139.35 s (1.76x); the 104.65 s single reading stays as history |
+| `--suite-c` | **CI, on every pull request**, in the `suite-c` job, concurrently | 1 of 98 | 154 s | 132.05 s, the geometric mean of eleven hosted readings on 2026-10-01 after the day’s files landed in it, band 90.34–147.16 s (1.63x); the 102.94 s thirty-one-reading record and the 88.59 s first reading stay as history |
+| `--suite-d` | **CI, on every pull request**, in the `suite-d` job, concurrently | 1 of 98 | 131 s | pending its first hosted cohort under `think-t7k5`; the record’s cohort predicts about 84 s for its 278.9 test-second share |
+| `--sweeps` | **CI, on every pull request**, in the `sweeps` job, concurrently | 5 of 98 | 200 s | 101.51 s, the geometric mean of six 4-of-80 hosted readings (66.36–130.77 s, spread 1.97x); the 119.72 s seven-reading mean and PR 180’s 138.84 s predecessor remain in the register as history |
+| `--measure-verifier` | **CI, on every pull request**, in the `measure-verifier` job, concurrently | 1 of 98 | 90 s | pending its first hosted cohort under `think-th8p`; its one step read 21.20 s and, on a runner where every step was about 1.9x slow, 45.30 s inside `--checks` |
+| *(no flag)* | Full checkpoint before final review and at block close; main, dispatch, and daily CI | 98 of 98 | 3600 s | integration plus ten deferred workers; new whole-wall measurement pending |
 
-Step counts describe the current 95-step registry, read from `packing-validate --list`
-on 2026-10-02. Dated costs retain their measured source and resource shape; they are not
+Step counts describe the current 98-step registry, read from `packing-validate --list`
+on 2026-10-03. Dated costs retain their measured source and resource shape; they are not
 fresh measurements of the new scheduling.
 
 `--geometry`’s recorded cost is the geometric mean of seven readings at the reference
@@ -287,9 +288,10 @@ After `main` merged into the stack, #160 read 200.68 s and 199.74 s at `72629c03
   representation.
 
 **The pull-request surface is `--checks`, `--frontend`, `--typecheck`, `--geometry`,
-`--suite-a`, `--suite-b`, `--suite-c`, `--suite-d`, and `--sweeps` together, run as nine
-concurrent CI jobs**, so a pull request waits for the longest part rather than for their
-sum. All nine feed the stable `packing-required` aggregate context.
+`--suite-a`, `--suite-b`, `--suite-c`, `--suite-d`, `--sweeps`, and `--measure-verifier`
+together, run as ten concurrent CI jobs**, so a pull request waits for the longest part
+rather than for their sum.
+All ten feed the stable `packing-required` aggregate context.
 Repository protection settings determine whether GitHub requires that context before a
 merge. `test_the_pull_request_jobs_partition_the_surface` reads the workflow and checks
 that they are pairwise disjoint and that they cover every step of `--fast` — so the
@@ -642,8 +644,8 @@ uv run --frozen --all-extras --group dev packing-validate --push
 # here, where there is only one machine and nothing to overlap with.
 uv run --frozen --all-extras --group dev packing-validate --fast
 
-# The nine parts CI runs concurrently on a pull request. They partition --fast, so
-# running all nine is running the surface and running one is running a part of it.
+# The ten parts CI runs concurrently on a pull request. They partition --fast, so
+# running all ten is running the surface and running one is running a part of it.
 uv run --frozen --all-extras --group dev packing-validate --checks
 uv run --frozen --all-extras --group dev packing-validate --frontend
 uv run --frozen --all-extras --group dev packing-validate --typecheck
@@ -653,6 +655,7 @@ uv run --frozen --all-extras --group dev packing-validate --suite-b
 uv run --frozen --all-extras --group dev packing-validate --suite-c
 uv run --frozen --all-extras --group dev packing-validate --suite-d
 uv run --frozen --all-extras --group dev packing-validate --sweeps
+uv run --frozen --all-extras --group dev packing-validate --measure-verifier
 
 # One named component. --only is repeatable and matches displayed step names.
 uv run --frozen --all-extras --group dev packing-validate --only "basin identity"

@@ -1,0 +1,19 @@
+# command: /tmp/claude-0/-home-user-squares/4ea49914-96b4-51a9-a2a9-c5603fe593f4/scratchpad/aa/verify-target-packet/release/verify scaled-7901-7900.txt 12 24000 1 0
+# cwd: scratch controls directory; scaled-7901-7900.txt (sha256 04d7105c); verify as in receipts/daniel-verify-N24000.log (binary sha256 9e79ec32); environment VERIFY_BINS=3880:3910, a partial sweep that cannot print VERIFIED
+# python3: not used by this command
+# host: 4 cores; load 26.93 25.81 20.85; started 2026-10-02T17:43:12Z
+D4-symmetric atom set: true  -> angles cover [0,45] deg
+atoms=1736 total weight = 119738036/10000000 = 11.973804
+s = 31360/7900 = 3.969620
+angles: k=0..9942 (N=24000), covering [0,45deg]
+PARTIAL RUN: VERIFY_BINS=3880:3910 -- only these bins are swept; this run cannot verify anything
+  FAIL at angle k=3893: covered 9849809/10000000
+  FAIL at angle k=3894: covered 9849809/10000000
+  FAIL at angle k=3895: covered 9849809/10000000
+  FAIL at angle k=3896: covered 9849809/10000000
+  FAIL at angle k=3897: covered 9849809/10000000
+  FAIL at angle k=3898: covered 9849809/10000000
+  FAIL at angle k=3899: covered 9849809/10000000
+min covered weight over ALL placements = 9849809/10000000 = 0.984981  (at angle k=3893)
+NOT VERIFIED (PARTIAL RUN: only bins 3880..3910 of 0..9941 were swept)
+# finished 2026-10-02T17:43:21Z; exit 0; wall 9.350 s; CPU 2.3 s (user 2.320 + sys 0.028); load 26.70 25.80 20.90

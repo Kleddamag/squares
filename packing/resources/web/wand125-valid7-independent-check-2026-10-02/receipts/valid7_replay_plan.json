@@ -1,0 +1,1035 @@
+{
+  "kind": "valid7-replay-plan/v1",
+  "checker": "wand125",
+  "roots": 156800,
+  "recorded_cpu_hours": 626.36,
+  "priced_cpu_hours": 540.54,
+  "speed": 0.4,
+  "cores_per_shard": 4,
+  "host_cpu_hours_estimate": 216.22,
+  "shards": [
+    {
+      "shard": 1,
+      "cells": 1580,
+      "priced_cpu_hours": 39.53,
+      "largest_root_seconds": 2261.0,
+      "wall_hours_estimate": 3.95,
+      "runs": [
+        {
+          "rectangle": [
+            "0",
+            "11/5",
+            "0",
+            "7"
+          ],
+          "record": "runs/wand125_shard01_1.jsonl",
+          "receipt": "receipts/wand125_shard01_1.log",
+          "command": [
+            ".venv/bin/python",
+            "-c",
+            "import multiprocessing, runpy, sys; multiprocessing.set_start_method('fork'); sys.argv = sys.argv[1:]; sys.path.insert(0, 'src'); runpy.run_path(sys.argv[0], run_name='__main__')",
+            "src/run_all.py",
+            "cover/L4_k02_box7.txt",
+            "--centers",
+            "0",
+            "11/5",
+            "0",
+            "7",
+            "--nproc",
+            "4",
+            "--record",
+            "runs/wand125_shard01_1.jsonl",
+            "--resume"
+          ]
+        },
+        {
+          "rectangle": [
+            "11/5",
+            "23/10",
+            "0",
+            "4"
+          ],
+          "record": "runs/wand125_shard01_2.jsonl",
+          "receipt": "receipts/wand125_shard01_2.log",
+          "command": [
+            ".venv/bin/python",
+            "-c",
+            "import multiprocessing, runpy, sys; multiprocessing.set_start_method('fork'); sys.argv = sys.argv[1:]; sys.path.insert(0, 'src'); runpy.run_path(sys.argv[0], run_name='__main__')",
+            "src/run_all.py",
+            "cover/L4_k02_box7.txt",
+            "--centers",
+            "11/5",
+            "23/10",
+            "0",
+            "4",
+            "--nproc",
+            "4",
+            "--record",
+            "runs/wand125_shard01_2.jsonl",
+            "--resume"
+          ]
+        }
+      ]
+    },
+    {
+      "shard": 2,
+      "cells": 125,
+      "priced_cpu_hours": 38.91,
+      "largest_root_seconds": 1398.1,
+      "wall_hours_estimate": 3.89,
+      "runs": [
+        {
+          "rectangle": [
+            "11/5",
+            "23/10",
+            "4",
+            "7"
+          ],
+          "record": "runs/wand125_shard02_1.jsonl",
+          "receipt": "receipts/wand125_shard02_1.log",
+          "command": [
+            ".venv/bin/python",
+            "-c",
+            "import multiprocessing, runpy, sys; multiprocessing.set_start_method('fork'); sys.argv = sys.argv[1:]; sys.path.insert(0, 'src'); runpy.run_path(sys.argv[0], run_name='__main__')",
+            "src/run_all.py",
+            "cover/L4_k02_box7.txt",
+            "--centers",
+            "11/5",
+            "23/10",
+            "4",
+            "7",
+            "--nproc",
+            "4",
+            "--record",
+            "runs/wand125_shard02_1.jsonl",
+            "--resume"
+          ]
+        },
+        {
+          "rectangle": [
+            "23/10",
+            "12/5",
+            "0",
+            "7"
+          ],
+          "record": "runs/wand125_shard02_2.jsonl",
+          "receipt": "receipts/wand125_shard02_2.log",
+          "command": [
+            ".venv/bin/python",
+            "-c",
+            "import multiprocessing, runpy, sys; multiprocessing.set_start_method('fork'); sys.argv = sys.argv[1:]; sys.path.insert(0, 'src'); runpy.run_path(sys.argv[0], run_name='__main__')",
+            "src/run_all.py",
+            "cover/L4_k02_box7.txt",
+            "--centers",
+            "23/10",
+            "12/5",
+            "0",
+            "7",
+            "--nproc",
+            "4",
+            "--record",
+            "runs/wand125_shard02_2.jsonl",
+            "--resume"
+          ]
+        },
+        {
+          "rectangle": [
+            "12/5",
+            "5/2",
+            "0",
+            "5/2"
+          ],
+          "record": "runs/wand125_shard02_3.jsonl",
+          "receipt": "receipts/wand125_shard02_3.log",
+          "command": [
+            ".venv/bin/python",
+            "-c",
+            "import multiprocessing, runpy, sys; multiprocessing.set_start_method('fork'); sys.argv = sys.argv[1:]; sys.path.insert(0, 'src'); runpy.run_path(sys.argv[0], run_name='__main__')",
+            "src/run_all.py",
+            "cover/L4_k02_box7.txt",
+            "--centers",
+            "12/5",
+            "5/2",
+            "0",
+            "5/2",
+            "--nproc",
+            "4",
+            "--record",
+            "runs/wand125_shard02_3.jsonl",
+            "--resume"
+          ]
+        }
+      ]
+    },
+    {
+      "shard": 3,
+      "cells": 14,
+      "priced_cpu_hours": 37.67,
+      "largest_root_seconds": 836.6,
+      "wall_hours_estimate": 3.77,
+      "runs": [
+        {
+          "rectangle": [
+            "12/5",
+            "5/2",
+            "5/2",
+            "39/10"
+          ],
+          "record": "runs/wand125_shard03_1.jsonl",
+          "receipt": "receipts/wand125_shard03_1.log",
+          "command": [
+            ".venv/bin/python",
+            "-c",
+            "import multiprocessing, runpy, sys; multiprocessing.set_start_method('fork'); sys.argv = sys.argv[1:]; sys.path.insert(0, 'src'); runpy.run_path(sys.argv[0], run_name='__main__')",
+            "src/run_all.py",
+            "cover/L4_k02_box7.txt",
+            "--centers",
+            "12/5",
+            "5/2",
+            "5/2",
+            "39/10",
+            "--nproc",
+            "4",
+            "--record",
+            "runs/wand125_shard03_1.jsonl",
+            "--resume"
+          ]
+        }
+      ]
+    },
+    {
+      "shard": 4,
+      "cells": 64,
+      "priced_cpu_hours": 38.27,
+      "largest_root_seconds": 1251.3,
+      "wall_hours_estimate": 3.83,
+      "runs": [
+        {
+          "rectangle": [
+            "12/5",
+            "5/2",
+            "39/10",
+            "7"
+          ],
+          "record": "runs/wand125_shard04_1.jsonl",
+          "receipt": "receipts/wand125_shard04_1.log",
+          "command": [
+            ".venv/bin/python",
+            "-c",
+            "import multiprocessing, runpy, sys; multiprocessing.set_start_method('fork'); sys.argv = sys.argv[1:]; sys.path.insert(0, 'src'); runpy.run_path(sys.argv[0], run_name='__main__')",
+            "src/run_all.py",
+            "cover/L4_k02_box7.txt",
+            "--centers",
+            "12/5",
+            "5/2",
+            "39/10",
+            "7",
+            "--nproc",
+            "4",
+            "--record",
+            "runs/wand125_shard04_1.jsonl",
+            "--resume"
+          ]
+        },
+        {
+          "rectangle": [
+            "5/2",
+            "13/5",
+            "0",
+            "33/10"
+          ],
+          "record": "runs/wand125_shard04_2.jsonl",
+          "receipt": "receipts/wand125_shard04_2.log",
+          "command": [
+            ".venv/bin/python",
+            "-c",
+            "import multiprocessing, runpy, sys; multiprocessing.set_start_method('fork'); sys.argv = sys.argv[1:]; sys.path.insert(0, 'src'); runpy.run_path(sys.argv[0], run_name='__main__')",
+            "src/run_all.py",
+            "cover/L4_k02_box7.txt",
+            "--centers",
+            "5/2",
+            "13/5",
+            "0",
+            "33/10",
+            "--nproc",
+            "4",
+            "--record",
+            "runs/wand125_shard04_2.jsonl",
+            "--resume"
+          ]
+        }
+      ]
+    },
+    {
+      "shard": 5,
+      "cells": 152,
+      "priced_cpu_hours": 38.72,
+      "largest_root_seconds": 965.0,
+      "wall_hours_estimate": 3.87,
+      "runs": [
+        {
+          "rectangle": [
+            "5/2",
+            "13/5",
+            "33/10",
+            "7"
+          ],
+          "record": "runs/wand125_shard05_1.jsonl",
+          "receipt": "receipts/wand125_shard05_1.log",
+          "command": [
+            ".venv/bin/python",
+            "-c",
+            "import multiprocessing, runpy, sys; multiprocessing.set_start_method('fork'); sys.argv = sys.argv[1:]; sys.path.insert(0, 'src'); runpy.run_path(sys.argv[0], run_name='__main__')",
+            "src/run_all.py",
+            "cover/L4_k02_box7.txt",
+            "--centers",
+            "5/2",
+            "13/5",
+            "33/10",
+            "7",
+            "--nproc",
+            "4",
+            "--record",
+            "runs/wand125_shard05_1.jsonl",
+            "--resume"
+          ]
+        },
+        {
+          "rectangle": [
+            "13/5",
+            "27/10",
+            "0",
+            "7"
+          ],
+          "record": "runs/wand125_shard05_2.jsonl",
+          "receipt": "receipts/wand125_shard05_2.log",
+          "command": [
+            ".venv/bin/python",
+            "-c",
+            "import multiprocessing, runpy, sys; multiprocessing.set_start_method('fork'); sys.argv = sys.argv[1:]; sys.path.insert(0, 'src'); runpy.run_path(sys.argv[0], run_name='__main__')",
+            "src/run_all.py",
+            "cover/L4_k02_box7.txt",
+            "--centers",
+            "13/5",
+            "27/10",
+            "0",
+            "7",
+            "--nproc",
+            "4",
+            "--record",
+            "runs/wand125_shard05_2.jsonl",
+            "--resume"
+          ]
+        },
+        {
+          "rectangle": [
+            "27/10",
+            "14/5",
+            "0",
+            "9/2"
+          ],
+          "record": "runs/wand125_shard05_3.jsonl",
+          "receipt": "receipts/wand125_shard05_3.log",
+          "command": [
+            ".venv/bin/python",
+            "-c",
+            "import multiprocessing, runpy, sys; multiprocessing.set_start_method('fork'); sys.argv = sys.argv[1:]; sys.path.insert(0, 'src'); runpy.run_path(sys.argv[0], run_name='__main__')",
+            "src/run_all.py",
+            "cover/L4_k02_box7.txt",
+            "--centers",
+            "27/10",
+            "14/5",
+            "0",
+            "9/2",
+            "--nproc",
+            "4",
+            "--record",
+            "runs/wand125_shard05_3.jsonl",
+            "--resume"
+          ]
+        }
+      ]
+    },
+    {
+      "shard": 6,
+      "cells": 211,
+      "priced_cpu_hours": 38.76,
+      "largest_root_seconds": 885.2,
+      "wall_hours_estimate": 3.88,
+      "runs": [
+        {
+          "rectangle": [
+            "27/10",
+            "14/5",
+            "9/2",
+            "7"
+          ],
+          "record": "runs/wand125_shard06_1.jsonl",
+          "receipt": "receipts/wand125_shard06_1.log",
+          "command": [
+            ".venv/bin/python",
+            "-c",
+            "import multiprocessing, runpy, sys; multiprocessing.set_start_method('fork'); sys.argv = sys.argv[1:]; sys.path.insert(0, 'src'); runpy.run_path(sys.argv[0], run_name='__main__')",
+            "src/run_all.py",
+            "cover/L4_k02_box7.txt",
+            "--centers",
+            "27/10",
+            "14/5",
+            "9/2",
+            "7",
+            "--nproc",
+            "4",
+            "--record",
+            "runs/wand125_shard06_1.jsonl",
+            "--resume"
+          ]
+        },
+        {
+          "rectangle": [
+            "14/5",
+            "3",
+            "0",
+            "7"
+          ],
+          "record": "runs/wand125_shard06_2.jsonl",
+          "receipt": "receipts/wand125_shard06_2.log",
+          "command": [
+            ".venv/bin/python",
+            "-c",
+            "import multiprocessing, runpy, sys; multiprocessing.set_start_method('fork'); sys.argv = sys.argv[1:]; sys.path.insert(0, 'src'); runpy.run_path(sys.argv[0], run_name='__main__')",
+            "src/run_all.py",
+            "cover/L4_k02_box7.txt",
+            "--centers",
+            "14/5",
+            "3",
+            "0",
+            "7",
+            "--nproc",
+            "4",
+            "--record",
+            "runs/wand125_shard06_2.jsonl",
+            "--resume"
+          ]
+        },
+        {
+          "rectangle": [
+            "3",
+            "31/10",
+            "0",
+            "23/5"
+          ],
+          "record": "runs/wand125_shard06_3.jsonl",
+          "receipt": "receipts/wand125_shard06_3.log",
+          "command": [
+            ".venv/bin/python",
+            "-c",
+            "import multiprocessing, runpy, sys; multiprocessing.set_start_method('fork'); sys.argv = sys.argv[1:]; sys.path.insert(0, 'src'); runpy.run_path(sys.argv[0], run_name='__main__')",
+            "src/run_all.py",
+            "cover/L4_k02_box7.txt",
+            "--centers",
+            "3",
+            "31/10",
+            "0",
+            "23/5",
+            "--nproc",
+            "4",
+            "--record",
+            "runs/wand125_shard06_3.jsonl",
+            "--resume"
+          ]
+        }
+      ]
+    },
+    {
+      "shard": 7,
+      "cells": 258,
+      "priced_cpu_hours": 38.25,
+      "largest_root_seconds": 915.6,
+      "wall_hours_estimate": 3.82,
+      "runs": [
+        {
+          "rectangle": [
+            "3",
+            "31/10",
+            "23/5",
+            "7"
+          ],
+          "record": "runs/wand125_shard07_1.jsonl",
+          "receipt": "receipts/wand125_shard07_1.log",
+          "command": [
+            ".venv/bin/python",
+            "-c",
+            "import multiprocessing, runpy, sys; multiprocessing.set_start_method('fork'); sys.argv = sys.argv[1:]; sys.path.insert(0, 'src'); runpy.run_path(sys.argv[0], run_name='__main__')",
+            "src/run_all.py",
+            "cover/L4_k02_box7.txt",
+            "--centers",
+            "3",
+            "31/10",
+            "23/5",
+            "7",
+            "--nproc",
+            "4",
+            "--record",
+            "runs/wand125_shard07_1.jsonl",
+            "--resume"
+          ]
+        },
+        {
+          "rectangle": [
+            "31/10",
+            "17/5",
+            "0",
+            "7"
+          ],
+          "record": "runs/wand125_shard07_2.jsonl",
+          "receipt": "receipts/wand125_shard07_2.log",
+          "command": [
+            ".venv/bin/python",
+            "-c",
+            "import multiprocessing, runpy, sys; multiprocessing.set_start_method('fork'); sys.argv = sys.argv[1:]; sys.path.insert(0, 'src'); runpy.run_path(sys.argv[0], run_name='__main__')",
+            "src/run_all.py",
+            "cover/L4_k02_box7.txt",
+            "--centers",
+            "31/10",
+            "17/5",
+            "0",
+            "7",
+            "--nproc",
+            "4",
+            "--record",
+            "runs/wand125_shard07_2.jsonl",
+            "--resume"
+          ]
+        },
+        {
+          "rectangle": [
+            "17/5",
+            "7/2",
+            "0",
+            "12/5"
+          ],
+          "record": "runs/wand125_shard07_3.jsonl",
+          "receipt": "receipts/wand125_shard07_3.log",
+          "command": [
+            ".venv/bin/python",
+            "-c",
+            "import multiprocessing, runpy, sys; multiprocessing.set_start_method('fork'); sys.argv = sys.argv[1:]; sys.path.insert(0, 'src'); runpy.run_path(sys.argv[0], run_name='__main__')",
+            "src/run_all.py",
+            "cover/L4_k02_box7.txt",
+            "--centers",
+            "17/5",
+            "7/2",
+            "0",
+            "12/5",
+            "--nproc",
+            "4",
+            "--record",
+            "runs/wand125_shard07_3.jsonl",
+            "--resume"
+          ]
+        }
+      ]
+    },
+    {
+      "shard": 8,
+      "cells": 232,
+      "priced_cpu_hours": 39.53,
+      "largest_root_seconds": 877.0,
+      "wall_hours_estimate": 3.95,
+      "runs": [
+        {
+          "rectangle": [
+            "17/5",
+            "7/2",
+            "12/5",
+            "7"
+          ],
+          "record": "runs/wand125_shard08_1.jsonl",
+          "receipt": "receipts/wand125_shard08_1.log",
+          "command": [
+            ".venv/bin/python",
+            "-c",
+            "import multiprocessing, runpy, sys; multiprocessing.set_start_method('fork'); sys.argv = sys.argv[1:]; sys.path.insert(0, 'src'); runpy.run_path(sys.argv[0], run_name='__main__')",
+            "src/run_all.py",
+            "cover/L4_k02_box7.txt",
+            "--centers",
+            "17/5",
+            "7/2",
+            "12/5",
+            "7",
+            "--nproc",
+            "4",
+            "--record",
+            "runs/wand125_shard08_1.jsonl",
+            "--resume"
+          ]
+        },
+        {
+          "rectangle": [
+            "7/2",
+            "37/10",
+            "0",
+            "7"
+          ],
+          "record": "runs/wand125_shard08_2.jsonl",
+          "receipt": "receipts/wand125_shard08_2.log",
+          "command": [
+            ".venv/bin/python",
+            "-c",
+            "import multiprocessing, runpy, sys; multiprocessing.set_start_method('fork'); sys.argv = sys.argv[1:]; sys.path.insert(0, 'src'); runpy.run_path(sys.argv[0], run_name='__main__')",
+            "src/run_all.py",
+            "cover/L4_k02_box7.txt",
+            "--centers",
+            "7/2",
+            "37/10",
+            "0",
+            "7",
+            "--nproc",
+            "4",
+            "--record",
+            "runs/wand125_shard08_2.jsonl",
+            "--resume"
+          ]
+        },
+        {
+          "rectangle": [
+            "37/10",
+            "19/5",
+            "0",
+            "23/5"
+          ],
+          "record": "runs/wand125_shard08_3.jsonl",
+          "receipt": "receipts/wand125_shard08_3.log",
+          "command": [
+            ".venv/bin/python",
+            "-c",
+            "import multiprocessing, runpy, sys; multiprocessing.set_start_method('fork'); sys.argv = sys.argv[1:]; sys.path.insert(0, 'src'); runpy.run_path(sys.argv[0], run_name='__main__')",
+            "src/run_all.py",
+            "cover/L4_k02_box7.txt",
+            "--centers",
+            "37/10",
+            "19/5",
+            "0",
+            "23/5",
+            "--nproc",
+            "4",
+            "--record",
+            "runs/wand125_shard08_3.jsonl",
+            "--resume"
+          ]
+        }
+      ]
+    },
+    {
+      "shard": 9,
+      "cells": 257,
+      "priced_cpu_hours": 38.18,
+      "largest_root_seconds": 871.4,
+      "wall_hours_estimate": 3.82,
+      "runs": [
+        {
+          "rectangle": [
+            "37/10",
+            "19/5",
+            "23/5",
+            "7"
+          ],
+          "record": "runs/wand125_shard09_1.jsonl",
+          "receipt": "receipts/wand125_shard09_1.log",
+          "command": [
+            ".venv/bin/python",
+            "-c",
+            "import multiprocessing, runpy, sys; multiprocessing.set_start_method('fork'); sys.argv = sys.argv[1:]; sys.path.insert(0, 'src'); runpy.run_path(sys.argv[0], run_name='__main__')",
+            "src/run_all.py",
+            "cover/L4_k02_box7.txt",
+            "--centers",
+            "37/10",
+            "19/5",
+            "23/5",
+            "7",
+            "--nproc",
+            "4",
+            "--record",
+            "runs/wand125_shard09_1.jsonl",
+            "--resume"
+          ]
+        },
+        {
+          "rectangle": [
+            "19/5",
+            "41/10",
+            "0",
+            "7"
+          ],
+          "record": "runs/wand125_shard09_2.jsonl",
+          "receipt": "receipts/wand125_shard09_2.log",
+          "command": [
+            ".venv/bin/python",
+            "-c",
+            "import multiprocessing, runpy, sys; multiprocessing.set_start_method('fork'); sys.argv = sys.argv[1:]; sys.path.insert(0, 'src'); runpy.run_path(sys.argv[0], run_name='__main__')",
+            "src/run_all.py",
+            "cover/L4_k02_box7.txt",
+            "--centers",
+            "19/5",
+            "41/10",
+            "0",
+            "7",
+            "--nproc",
+            "4",
+            "--record",
+            "runs/wand125_shard09_2.jsonl",
+            "--resume"
+          ]
+        },
+        {
+          "rectangle": [
+            "41/10",
+            "21/5",
+            "0",
+            "23/10"
+          ],
+          "record": "runs/wand125_shard09_3.jsonl",
+          "receipt": "receipts/wand125_shard09_3.log",
+          "command": [
+            ".venv/bin/python",
+            "-c",
+            "import multiprocessing, runpy, sys; multiprocessing.set_start_method('fork'); sys.argv = sys.argv[1:]; sys.path.insert(0, 'src'); runpy.run_path(sys.argv[0], run_name='__main__')",
+            "src/run_all.py",
+            "cover/L4_k02_box7.txt",
+            "--centers",
+            "41/10",
+            "21/5",
+            "0",
+            "23/10",
+            "--nproc",
+            "4",
+            "--record",
+            "runs/wand125_shard09_3.jsonl",
+            "--resume"
+          ]
+        }
+      ]
+    },
+    {
+      "shard": 10,
+      "cells": 212,
+      "priced_cpu_hours": 39.06,
+      "largest_root_seconds": 931.8,
+      "wall_hours_estimate": 3.91,
+      "runs": [
+        {
+          "rectangle": [
+            "41/10",
+            "21/5",
+            "23/10",
+            "7"
+          ],
+          "record": "runs/wand125_shard10_1.jsonl",
+          "receipt": "receipts/wand125_shard10_1.log",
+          "command": [
+            ".venv/bin/python",
+            "-c",
+            "import multiprocessing, runpy, sys; multiprocessing.set_start_method('fork'); sys.argv = sys.argv[1:]; sys.path.insert(0, 'src'); runpy.run_path(sys.argv[0], run_name='__main__')",
+            "src/run_all.py",
+            "cover/L4_k02_box7.txt",
+            "--centers",
+            "41/10",
+            "21/5",
+            "23/10",
+            "7",
+            "--nproc",
+            "4",
+            "--record",
+            "runs/wand125_shard10_1.jsonl",
+            "--resume"
+          ]
+        },
+        {
+          "rectangle": [
+            "21/5",
+            "22/5",
+            "0",
+            "7"
+          ],
+          "record": "runs/wand125_shard10_2.jsonl",
+          "receipt": "receipts/wand125_shard10_2.log",
+          "command": [
+            ".venv/bin/python",
+            "-c",
+            "import multiprocessing, runpy, sys; multiprocessing.set_start_method('fork'); sys.argv = sys.argv[1:]; sys.path.insert(0, 'src'); runpy.run_path(sys.argv[0], run_name='__main__')",
+            "src/run_all.py",
+            "cover/L4_k02_box7.txt",
+            "--centers",
+            "21/5",
+            "22/5",
+            "0",
+            "7",
+            "--nproc",
+            "4",
+            "--record",
+            "runs/wand125_shard10_2.jsonl",
+            "--resume"
+          ]
+        },
+        {
+          "rectangle": [
+            "22/5",
+            "9/2",
+            "0",
+            "5/2"
+          ],
+          "record": "runs/wand125_shard10_3.jsonl",
+          "receipt": "receipts/wand125_shard10_3.log",
+          "command": [
+            ".venv/bin/python",
+            "-c",
+            "import multiprocessing, runpy, sys; multiprocessing.set_start_method('fork'); sys.argv = sys.argv[1:]; sys.path.insert(0, 'src'); runpy.run_path(sys.argv[0], run_name='__main__')",
+            "src/run_all.py",
+            "cover/L4_k02_box7.txt",
+            "--centers",
+            "22/5",
+            "9/2",
+            "0",
+            "5/2",
+            "--nproc",
+            "4",
+            "--record",
+            "runs/wand125_shard10_3.jsonl",
+            "--resume"
+          ]
+        }
+      ]
+    },
+    {
+      "shard": 11,
+      "cells": 71,
+      "priced_cpu_hours": 37.74,
+      "largest_root_seconds": 1191.3,
+      "wall_hours_estimate": 3.77,
+      "runs": [
+        {
+          "rectangle": [
+            "22/5",
+            "9/2",
+            "5/2",
+            "7"
+          ],
+          "record": "runs/wand125_shard11_1.jsonl",
+          "receipt": "receipts/wand125_shard11_1.log",
+          "command": [
+            ".venv/bin/python",
+            "-c",
+            "import multiprocessing, runpy, sys; multiprocessing.set_start_method('fork'); sys.argv = sys.argv[1:]; sys.path.insert(0, 'src'); runpy.run_path(sys.argv[0], run_name='__main__')",
+            "src/run_all.py",
+            "cover/L4_k02_box7.txt",
+            "--centers",
+            "22/5",
+            "9/2",
+            "5/2",
+            "7",
+            "--nproc",
+            "4",
+            "--record",
+            "runs/wand125_shard11_1.jsonl",
+            "--resume"
+          ]
+        },
+        {
+          "rectangle": [
+            "9/2",
+            "23/5",
+            "0",
+            "13/5"
+          ],
+          "record": "runs/wand125_shard11_2.jsonl",
+          "receipt": "receipts/wand125_shard11_2.log",
+          "command": [
+            ".venv/bin/python",
+            "-c",
+            "import multiprocessing, runpy, sys; multiprocessing.set_start_method('fork'); sys.argv = sys.argv[1:]; sys.path.insert(0, 'src'); runpy.run_path(sys.argv[0], run_name='__main__')",
+            "src/run_all.py",
+            "cover/L4_k02_box7.txt",
+            "--centers",
+            "9/2",
+            "23/5",
+            "0",
+            "13/5",
+            "--nproc",
+            "4",
+            "--record",
+            "runs/wand125_shard11_2.jsonl",
+            "--resume"
+          ]
+        }
+      ]
+    },
+    {
+      "shard": 12,
+      "cells": 16,
+      "priced_cpu_hours": 38.89,
+      "largest_root_seconds": 751.4,
+      "wall_hours_estimate": 3.89,
+      "runs": [
+        {
+          "rectangle": [
+            "9/2",
+            "23/5",
+            "13/5",
+            "21/5"
+          ],
+          "record": "runs/wand125_shard12_1.jsonl",
+          "receipt": "receipts/wand125_shard12_1.log",
+          "command": [
+            ".venv/bin/python",
+            "-c",
+            "import multiprocessing, runpy, sys; multiprocessing.set_start_method('fork'); sys.argv = sys.argv[1:]; sys.path.insert(0, 'src'); runpy.run_path(sys.argv[0], run_name='__main__')",
+            "src/run_all.py",
+            "cover/L4_k02_box7.txt",
+            "--centers",
+            "9/2",
+            "23/5",
+            "13/5",
+            "21/5",
+            "--nproc",
+            "4",
+            "--record",
+            "runs/wand125_shard12_1.jsonl",
+            "--resume"
+          ]
+        }
+      ]
+    },
+    {
+      "shard": 13,
+      "cells": 74,
+      "priced_cpu_hours": 38.99,
+      "largest_root_seconds": 1279.3,
+      "wall_hours_estimate": 3.9,
+      "runs": [
+        {
+          "rectangle": [
+            "9/2",
+            "23/5",
+            "21/5",
+            "7"
+          ],
+          "record": "runs/wand125_shard13_1.jsonl",
+          "receipt": "receipts/wand125_shard13_1.log",
+          "command": [
+            ".venv/bin/python",
+            "-c",
+            "import multiprocessing, runpy, sys; multiprocessing.set_start_method('fork'); sys.argv = sys.argv[1:]; sys.path.insert(0, 'src'); runpy.run_path(sys.argv[0], run_name='__main__')",
+            "src/run_all.py",
+            "cover/L4_k02_box7.txt",
+            "--centers",
+            "9/2",
+            "23/5",
+            "21/5",
+            "7",
+            "--nproc",
+            "4",
+            "--record",
+            "runs/wand125_shard13_1.jsonl",
+            "--resume"
+          ]
+        },
+        {
+          "rectangle": [
+            "23/5",
+            "47/10",
+            "0",
+            "23/5"
+          ],
+          "record": "runs/wand125_shard13_2.jsonl",
+          "receipt": "receipts/wand125_shard13_2.log",
+          "command": [
+            ".venv/bin/python",
+            "-c",
+            "import multiprocessing, runpy, sys; multiprocessing.set_start_method('fork'); sys.argv = sys.argv[1:]; sys.path.insert(0, 'src'); runpy.run_path(sys.argv[0], run_name='__main__')",
+            "src/run_all.py",
+            "cover/L4_k02_box7.txt",
+            "--centers",
+            "23/5",
+            "47/10",
+            "0",
+            "23/5",
+            "--nproc",
+            "4",
+            "--record",
+            "runs/wand125_shard13_2.jsonl",
+            "--resume"
+          ]
+        }
+      ]
+    },
+    {
+      "shard": 14,
+      "cells": 1634,
+      "priced_cpu_hours": 38.06,
+      "largest_root_seconds": 1552.5,
+      "wall_hours_estimate": 3.81,
+      "runs": [
+        {
+          "rectangle": [
+            "23/5",
+            "47/10",
+            "23/5",
+            "7"
+          ],
+          "record": "runs/wand125_shard14_1.jsonl",
+          "receipt": "receipts/wand125_shard14_1.log",
+          "command": [
+            ".venv/bin/python",
+            "-c",
+            "import multiprocessing, runpy, sys; multiprocessing.set_start_method('fork'); sys.argv = sys.argv[1:]; sys.path.insert(0, 'src'); runpy.run_path(sys.argv[0], run_name='__main__')",
+            "src/run_all.py",
+            "cover/L4_k02_box7.txt",
+            "--centers",
+            "23/5",
+            "47/10",
+            "23/5",
+            "7",
+            "--nproc",
+            "4",
+            "--record",
+            "runs/wand125_shard14_1.jsonl",
+            "--resume"
+          ]
+        },
+        {
+          "rectangle": [
+            "47/10",
+            "7",
+            "0",
+            "7"
+          ],
+          "record": "runs/wand125_shard14_2.jsonl",
+          "receipt": "receipts/wand125_shard14_2.log",
+          "command": [
+            ".venv/bin/python",
+            "-c",
+            "import multiprocessing, runpy, sys; multiprocessing.set_start_method('fork'); sys.argv = sys.argv[1:]; sys.path.insert(0, 'src'); runpy.run_path(sys.argv[0], run_name='__main__')",
+            "src/run_all.py",
+            "cover/L4_k02_box7.txt",
+            "--centers",
+            "47/10",
+            "7",
+            "0",
+            "7",
+            "--nproc",
+            "4",
+            "--record",
+            "runs/wand125_shard14_2.jsonl",
+            "--resume"
+          ]
+        }
+      ]
+    }
+  ],
+  "mirror_check": {
+    "pairs": 46575,
+    "left_cpu_hours": 271.15,
+    "mirror_cpu_hours": 253.31,
+    "spread": 0.1
+  }
+}

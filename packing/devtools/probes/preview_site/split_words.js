@@ -6,7 +6,7 @@
 // which breaks are faults is `preview_site.split_problem`'s to say.
 //
 // `root` names where to look, every open popover by default. A page framed inside a root
-// (the case popover frames `cases.html`) is looked at too, from its own `body`, since a
+// (a card's popover frames its page) is looked at too, from its own `body`, since a
 // local build's frames are the page's own origin. Typeset mathematics, drawings and
 // anything not laid out are passed over: a formula's glyphs sit at many heights by design.
 //

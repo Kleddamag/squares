@@ -25,8 +25,12 @@ from tests import site_renders
 #: to grow a little; a change that crosses it should shrink something rather than lift it.
 #: Measured at 4,168,556 bytes on 2026-10-01 before the drawing took its own column and
 #: the closed forms their decimals, and at 4,183,093 after: 25,748 bytes of room, then
-#: 11,211. Each cell KPress writes carries `data-col` and `data-col-index`, 128,050
-#: bytes of the page that nothing on the site reads (think-k8xp).
+#: 11,211. Each cell KPress writes carried `data-col` and `data-col-index`, 128,050
+#: bytes of the page that nothing on the site reads; every page drops them since
+#: 2026-10-02 (think-k8xp), which left the page 4,070,117 bytes with the status chips'
+#: fills of the same day. Each row's own popover went on 2026-10-03, when a row came to
+#: open its case's record in the one case popover (think-necq): 3,442,575 bytes, and
+#: 3,498,657 with the case badges of the same day (think-7cbx).
 PAGE_CEILING_BYTES = 4 * 1024 * 1024
 
 #: The columns as a reader meets them: the drawing under no heading, the case, the star,
@@ -334,6 +338,9 @@ def test_the_page_is_self_contained_and_under_its_ceiling(page: str) -> None:
     assert_self_contained("frontier.html", page)
     size = len(page.encode("utf-8"))
     assert size < PAGE_CEILING_BYTES, f"frontier.html is {size:,} bytes"
+    # KPress's per-cell column labels, which nothing on the site reads, are dropped.
+    assert "data-col=" not in page
+    assert "data-col-index=" not in page
 
 
 def test_the_page_carries_the_table_script_and_its_controls(page: str) -> None:
@@ -362,49 +369,27 @@ def test_an_evidence_name_and_its_comma_are_one_box() -> None:
     assert one.endswith("</code></a>")
 
 
-def test_a_rows_detail_is_its_popover_and_comes_from_one_function(
-    cases: dict[int, dict[str, Any]], monkeypatch: pytest.MonkeyPatch
-) -> None:
-    """A frontier row's cells hold no disclosure: what they used to open one at a time,
-    the construction, the minimal polynomial, the sources, the verification, the notes
-    and the evidence, is the body of the row's one popover, which
-    `frontier_row_popover_body` alone writes. The row names that popover, carries its
-    native trigger in the Records cell, and keeps its `n` a link to the case record."""
-    evidence = tables.load_evidence()
-    body = frontier.frontier_row_popover_body(cases[11], evidence)
-    for heading in ("Best known packing", "Reported lower bound", "Verification and evidence"):
-        assert f'<p class="site-popover-heading">{heading}</p>' in body
-    for term in ("Construction", "Minimal polynomial", "Kind", "Verification", "Notes"):
-        assert f"<dt>{term}</dt>" in body
-    assert body.count("<dt>Source</dt>") == 2
-    assert '<dt>Evidence</dt><dd><span class="site-name"><a href=' in body
-    assert "evidence.yaml#L" in body
-    # Label and value side by side: the one block whose lists share a label column.
-    assert body.startswith('<div class="site-pairs"><p class="site-popover-heading">')
-    assert body.endswith("</dl></div>")
-    row, popover = frontier.case_row(cases[11], evidence, recent=True)
-    assert f'<div class="site-row-pop-body">{body}</div>' in popover
+def test_a_row_opens_its_case_record(cases: dict[int, dict[str, Any]]) -> None:
+    """A frontier row's cells hold no disclosure, and the row has no popover of its own:
+    the whole row opens its case's record in the page's one case popover, the visual
+    summary and then the record's further data, as the atlas does (think-necq). The row
+    names its record file for that popover, keeps its `n` a link to the same record,
+    and links the case file in the Records cell. The table carries one popover, the
+    case popover, after it."""
+    row = frontier.case_row(cases[11], recent=True)
     assert "<details" not in row
     assert "<dl" not in row
     assert row.startswith('<tr id="n-11" data-n="11" ')
-    assert 'data-row-popover="pop-frontier-n-11" aria-label="n = 11, proved"' in row
-    assert (
-        '<button type="button" class="site-row-open" popovertarget="pop-frontier-n-11">'
-        "Details</button>"
-    ) in row
-    assert 'href="cases.html#n-11" data-case="11"' in row
-    assert (
-        'href="cases.html#n-11" data-go="page">Open the case record for n = 11</a>' in popover
-    )
-
-    def marked(case: dict[str, Any], _: dict[str, dict[str, Any]]) -> str:
-        return f"<p>BODY OF {case['n']}</p>"
-
-    monkeypatch.setattr(frontier, "frontier_row_popover_body", marked)
+    assert 'data-case-row="11" data-case-href="cases/11.html"' in row
+    assert 'aria-label="n = 11, proved: open its case record"' in row
+    assert "data-row-popover" not in row
+    assert "site-row-open" not in row
+    assert 'href="cases/11.html" data-case="11"' in row
+    assert ">n-011.md</a>" in row
+    assert '<a class="site-cell-quiet" href="cases/11.html" data-case="11">Record</a>' in row
     table = frontier.table_html([cases[11], cases[12]])
-    for n in (11, 12):
-        assert table.count(f'<div class="site-row-pop-body"><p>BODY OF {n}</p></div>') == 1
-    assert table.index("</table>") < table.index('<div class="site-popover site-row-pop"')
+    assert table.count('<div class="site-popover') == 1
+    assert table.index("</table>") < table.index('id="pop-case"')
     assert "<details" not in table
 
 

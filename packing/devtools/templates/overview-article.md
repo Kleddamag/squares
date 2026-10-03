@@ -17,21 +17,33 @@
 
 ## The Squares Project
 
-This Squares Project site collects all known historic research and current new results
-on the square packing problem.
-Work on this problem has exploded in the summer of 2026 thanks to AI-powered research
-efforts.
-
-We and several others have proved new results as part of this project for low values of
-$n$, including $n = 11$, $n = 12$, $n = 17$ and many others.
-As part of a collaborative open effort, several people have built on results from this
-project or developed other new proofs, and this site
-[independently checks and documents](all-results.html#verification-ladders) the proofs
-and certificates behind them.
+Work on the square packing problem has exploded in the summer of 2026 thanks to
+AI-powered research efforts.
+This Squares Project was begun by [Joshua Levy](https://x.com/ojoshe) in August 2026
+with some initial explorations that obtained
+[new lower bounds](papers/n11-lower-bounds-explainer.html) for $n = 11, 17, 18, 19, 20$
+and other low values.
+Now several others have obtained results building on this work, including a landmark new
+proof by Queuingtheorydotcom of the optimality of the famous
+[case of 11 squares](cases/11.html).
+This project now independently tabulates all known new results and does
+[AI-assisted verification](all-results.html#verification-ladders) of the proofs and
+certificates behind them, to encourage open collaboration on open questions and
+formalizations of current proofs.
 
 If you have new results or know of newer results, please
 [file an issue]({{NEW_ISSUE_URL}}) to report them, and we will gladly incorporate them
-and cite your work.
+and cite your work. We also have a group chat.
+Contact [ojoshe](https://x.com/ojoshe) if you wish to join.
+
+<!-- The two paragraphs above are the owner's words of 2026-10-03 (think-a7oa), each
+     fact checked against the record: the project's first packing work is of
+     2026-08-22; its own lower bounds are at
+     n = 11, 12 and 17 to 21 (T-001 to T-034); the explainer the link names is n = 11's,
+     and it lists the bounds at 12, 17 and 19 that its method gave; and the optimality
+     of n = 11 is T-060, Queuingtheorydotcom's. "AI-assisted verification" links the
+     ladders, which say how far each result is checked; the sentence does not say every
+     result is checked, since some are recorded and not yet replayed here. -->
 
 {{PAGE_CARDS}}
 
@@ -54,8 +66,8 @@ and cite your work.
 Eleven squares is settled: $s(11) = 3.8770835\ldots$, the exact side of Trump’s 1979
 packing, by [T-060](all-results.html#t-060). Seventeen squares is bracketed by
 machine-checked bounds, [T-043](all-results.html#t-043) below and
-[T-065](all-results.html#t-065) above, and [$n = 21$](cases.html#n-21),
-[$32$](cases.html#n-32) and [$45$](cases.html#n-45) have new exact values.
+[T-065](all-results.html#t-065) above, and [$n = 21$](cases/21.html),
+[$32$](cases/32.html) and [$45$](cases/45.html) have new exact values.
 {{STAR_LEGEND}}
 The table above starts at significance S4 and up, max age 180 days and superseded
 hidden.

@@ -24,6 +24,12 @@
     const caption = svg.closest("figure")?.querySelector("figcaption");
     const note = svg.querySelector(".n11-diagram-note");
     const bounds = svg.getBoundingClientRect();
+    // The width a diagram's labels were laid out for at the support size, where it names
+    // one; drawn narrower, its labels shrink in proportion (`diagram-labels.js`).
+    const fitFrom = Number.parseFloat(
+      getComputedStyle(svg).getPropertyValue("--paper-diagram-fit-from"),
+    );
+    const shrink = fitFrom > bounds.width ? bounds.width / fitFrom : 1;
     const overflowingLabels = Array.from(svg.querySelectorAll("text"))
       .filter((text) => {
         const box = text.getBoundingClientRect();
@@ -39,9 +45,10 @@
       overflowingLabels,
       name: svg.getAttribute("class") || "witness",
       label: Number.parseFloat(getComputedStyle(label).fontSize) * scale,
-      support: Number.parseFloat(getComputedStyle(parent).fontSize),
+      support: Number.parseFloat(getComputedStyle(parent).fontSize) * shrink,
       note: note ? Number.parseFloat(getComputedStyle(note).fontSize) * scale : null,
-      caption: caption ? Number.parseFloat(getComputedStyle(caption).fontSize) : null,
+      caption: caption ? Number.parseFloat(getComputedStyle(caption).fontSize) * shrink : null,
+      shrink,
       scrollWidth: parent.scrollWidth,
       clientWidth: parent.clientWidth,
     });

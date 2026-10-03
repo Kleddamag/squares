@@ -1,8 +1,9 @@
 """One render of each site page, and of each result's overview, per test process.
 
 Rendering a page of the site costs seconds: the overview and the frontier atlas about
-two each, the case records about five (the page is 9 MB), every page together about ten,
-and the sixty-one result overviews about eight. Rendering is deterministic
+two each, the case records about five (one render of every record, which the record page
+and the 324 record files are cut from), every page together about ten, and the
+sixty-one result overviews about eight. Rendering is deterministic
 (`test_overview.test_the_render_is_deterministic` renders afresh to say so), and the
 site's test modules only read what is rendered, so they share one render of each, kept
 here for the life of the process. Before this, `test_overview`, `test_repo_links`,
@@ -93,3 +94,9 @@ def result_bodies() -> dict[str, str]:
         result.id: result_overview.result_popover_html(result, loaded)
         for result in loaded.results
     }
+
+
+@cache
+def case_records() -> dict[str, str]:
+    """Every case's record file (`render_overview.case_records`), by served name."""
+    return {record.name: record.html for record in render_overview.case_records()}

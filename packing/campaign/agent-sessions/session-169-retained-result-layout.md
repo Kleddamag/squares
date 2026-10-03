@@ -119,6 +119,28 @@ session:
   - task: 'think-6o0h: measure what the atlas''s committed SVG renderings cost and what drawing them at
       the Pages build would cost (W7, measurement only).'
     operator: Claude subagent (Opus; high effort named in the dispatch)
+    status: completed
+    recording: contemporaneous
+    phase: 1
+    outcome: 'Keep both drawing sets committed. House set 53.4 MB working tree and 4.53 MB packed, regularized
+      11.2 MB and 1.45 MB; their whole history about 10-12 MB, about 1% of the packs. Drawing all 375 takes
+      13 s on 4 workers and is byte-for-byte deterministic, but drawing at the build saves working-tree
+      bytes, not history, and loses the renderer''s corpus-wide golden test, the colour data the workbench
+      and test_render_colors read, and the drawings the documents link. If growth matters, slim the encoding
+      first: each square is written twice with 28-digit coordinates.'
+    evidence:
+    - bead think-6o0h, notes of 2026-10-03 (lane C's measurement table and options)
+    files: []
+    checks:
+    - three byte-identical redraws at 1 and 4 workers, compared with the committed files
+    uncertainty: Hosted-runner draw time (12-19 s) is estimated from per-drawing CPU time on a shared host.
+    elapsed_seconds: 1587.0
+    elapsed_quality: platform_measured
+    started_at: '2026-10-03T17:31:00Z'
+    next_action: Recorded in think-6o0h, closed; the encoding question passes to think-nkp0.
+  - task: 'think-nkp0: measure what drives the repository''s size and growth, and rank what would slow it
+      (W7, measurement only; the owner asked whether squashing PR 305 would help).'
+    operator: Claude subagent (Opus; high effort named in the dispatch)
     status: in_progress
     recording: contemporaneous
     phase: 1
@@ -129,21 +151,23 @@ session:
     uncertainty: null
     elapsed_seconds: null
     elapsed_quality: null
-    started_at: '2026-10-03T17:31:00Z'
-    deadline_at: '2026-10-03T19:01:00Z'
-    budget_minutes: 90
-    expected_output: Measurements, a readers and writers inventory, options and a recommendation for the
-      owner.
-    kill_condition: The renderers cannot draw outside the repository without changing tracked files.
-    fallback: Draw in its own worktree and discard the drawings after timing them.
-    validation_command: git status --short (empty after the measurement)
+    started_at: '2026-10-03T18:40:00Z'
+    deadline_at: '2026-10-03T20:40:00Z'
+    budget_minutes: 120
+    expected_output: Size and growth by path family over all history and the current tree, churn, transfer
+      costs, and ranked options with savings, costs and risks.
+    validation_command: git status --short (unchanged by the lane)
+    kill_condition: The measurement needs a gc, repack or history rewrite of the shared repository.
+    fallback: Measure from a disposable clone under /tmp instead.
     write_scope:
-    - /tmp (scratch only; measurement writes nothing in the repository)
+    - /tmp (scratch only)
     excluded_commands:
+    - git gc
+    - git repack
     - git commit
     - git push
     - tbd
-    next_action: Report; the coordinator records the recommendation in think-6o0h.
+    next_action: Report; the coordinator records it in think-nkp0 and puts the options to the owner.
   budget:
     wall_minutes: 310
     slice_minutes: 30

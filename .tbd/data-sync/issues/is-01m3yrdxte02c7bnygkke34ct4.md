@@ -5,7 +5,7 @@ title: Import, confirm and answer every reported result (2 October 2026 effort)
 kind: epic
 status: open
 priority: 1
-version: 38
+version: 39
 labels:
   - result-import
 dependencies: []
@@ -31,7 +31,7 @@ child_order_hints:
   - is-01m3ytdhr6h2xnsvj4f2nc2nk2
   - is-01m3z77bdhk8tn3epx63ywhxft
 created_at: 2026-10-02T16:51:15.917Z
-updated_at: 2026-10-03T05:49:39.117Z
+updated_at: 2026-10-03T06:15:09.178Z
 ---
 Umbrella for the 2 October 2026 effort: PRs #290 -> #292 -> #298 (imports and records), plus a stacked PR for verifier provenance and the independent verifier. Children track each lane; done when every reported result is confirmed or refuted (or has a bead naming exactly what remains), every issue has a current status reply, closeable issues are closed, and all PRs are merged.
 
@@ -118,3 +118,4 @@ Next steps for the next agent, in order:
 - 04:52 FF done (claude/lane-ff-s61-point @dcfe0e627): wand125 point-only s(61) cover VERIFIED-D4 by zmx2 6b7f0f79 (6,400/6,400 roots), controls refused; second route for T-063. RV done (claude/lane-rv-s12-review @4b3c0573): our s(12) >= 15680000/3949423 ACCEPTED (Route B; Route A implied), Daniel's verify rebuilt and native parent-core PASS_COMPLETE (39,765 rows) as an independent first-party check; draft S3, apparently-novel; to register as a new Levy result superseding T-078. Both queued for the records lane after T-064.
 - 05:00 Stacked verifier PR opened as draft: jlevy/squares#311 (branch claude/verifier-provenance-and-independent-verifier, base claude/zealous-gauss-jem7l9; lane SP session_01Hqz93p1waL3UQYW44eKsWd). Lanes X, W1, W2 (through Milestone B) merged; backfill re-run on the base's evidence.yaml (188 entries name their programs, 0 unclassified); 4 new registry entries; two independence_record judgments flagged in the body for review. Each time #298's records move, merge the new base into #311 and re-run devtools.backfill_verifier_relation instead of hand-merging evidence.yaml.
 - 2026-10-03 ~05:30 T-064 at V3/C3 (pushed 19cb367ba): qx2 replay compare ok (9,800 roots, 32,079 leaves equal to the source's V3 record, none uncertified; E-k2m3-evand-valid7-qx2-replay, same-implementation) + Lean reduction built (E-k2m3-evand-bentz-lean-build, proof-assistant-checked, axioms propext/Classical.choice/Quot.sound). Nine more cases proved: n = 97, 118, 141, 166, 193, 222, 253, 286, 321; counts 77 proved / 247 open. Remaining on T-064: wand125's independent Valid7 checker replay with --guard-d1 (runners w1-w5, ~216 CPU-h), which would add an independent-implementation route and close D-1. The verifiers field waits for #311.
+2026-10-03 06:16 check-in: pushed since 04:52: m4 (done @6dfa6b9e), m6 @8c889f2d (n83 0-86), w1-w5 (w5 done @8cfcb5aa), r5 @b829406d (n42 PASS; replaced by r6 for n70/n20), s1/s2 logs only, l83 nothing yet, n82b nothing yet, n82a BLOCKED by a classifier denial on commit/push (needs the user). RA/RB done; W2 pushed RA S1-S4 fix @cfb653a2f (RB's TI items and the format-M question pending); RV, FF done and queued in the records lane; SP done, SP2 driving #311. #298 head 19cb367ba: real conflict with main (#310) being merged by the records lane; dispatched run 37101013522 on 8371ca135 failed on n-012 (fixed) and the slow-lane atlas pin (REBUILT_EQUALITIES lacks 97 from T-064; sent to the records lane).

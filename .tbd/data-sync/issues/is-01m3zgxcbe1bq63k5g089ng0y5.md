@@ -3,15 +3,19 @@ type: is
 id: is-01m3zgxcbe1bq63k5g089ng0y5
 title: "Results: the standard case view gives context where a result is about one case"
 kind: task
-status: in_progress
+status: closed
 priority: 2
-version: 3
+version: 4
 spec_path: docs/project/specs/active/plan-2026-09-29-github-pages-overview.md
 labels: []
 dependencies: []
 parent_id: is-01m3zgx0c1edkfwarjxzctvgmp
 created_at: 2026-10-02T23:59:08.142Z
-updated_at: 2026-10-03T04:58:08.777Z
+updated_at: 2026-10-03T14:38:06.179Z
+closed_at: 2026-10-03T14:38:06.179Z
+close_reason: Merged in jlevy/squares#312 (c831b4ee0), after a correctness and engineering review round (419a1db5d)
+resolution: null
+duplicate_of: null
 ---
 think-t21m: a result's page or popover that concerns a single case (or a short run of cases) shows that case's standard view, the drawing and the bounds' number line, for context, where it makes sense; where a result spans many cases it links them instead. Which surfaces take it is decided against the rows and popovers as they are, and recorded in paper-design.md.
 

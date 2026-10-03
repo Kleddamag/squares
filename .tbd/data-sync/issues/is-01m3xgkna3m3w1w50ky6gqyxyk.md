@@ -5,7 +5,7 @@ title: "Families of the n = 1..324 known-best packings: patterns, contact shadin
 kind: epic
 status: in_progress
 priority: 2
-version: 18
+version: 20
 labels:
   - research
 dependencies: []
@@ -26,8 +26,9 @@ child_order_hints:
   - is-01m3xqak9dr1e1r1z9ydv5gdf7
   - is-01m3yqvdgvgy8pbdg53j9xb7pj
   - is-01m3z2p86sfyxcc595rne126t7
+  - is-01m41cx3q2pckpmsmmwq1rsngz
 created_at: 2026-10-02T05:15:20.771Z
-updated_at: 2026-10-02T19:50:34.447Z
+updated_at: 2026-10-03T17:27:33.847Z
 ---
 Owner question, 2026-10-02, after the atlas triangle view (think-kbo4) put all 324 known-best packings side by side.
 
@@ -40,3 +41,7 @@ Questions:
 4. Asymptotics. How do these families behave as n grows? Is the set of patterns in the limit finite or infinitely varied? Which theory studies large-n structure, and is it on our research frontier (H-035, H-037, asymptotic-waste-bounds.yaml)?
 
 Claim boundary: atlas witnesses are feasible constructions, not optimality evidence. A regularized drawing is a derived view and never replaces a source witness or promotes a tier.
+
+## Notes
+
+2026-10-03 close: every child bead is closed but think-wqfw, the owner's restoring commit for the sixteen rollups' withheld model labels. Session-168 is completed and certified at dd636b4cc; PR jlevy/squares#305 merged main (jlevy/squares#312) at 4a0d79ee9 and is green on every check at c73d0cc25. The epic closes when think-wqfw does.

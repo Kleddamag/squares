@@ -2489,7 +2489,11 @@ def _rust_quality(context: Context) -> str:
 
 def _rust_measure_verifier(context: Context) -> str:
     """Lint, test and build the clean-room measure verifier, then hold it to the exact
-    oracle and the mutation controls (`devtools.check_sqverify_fast --quick`)."""
+    oracle and the mutation controls (`devtools.check_sqverify_fast --quick`).
+
+    The tests build under the crate's `gate-test` profile, release optimisation without
+    fat LTO: under `--release` they cost two fat-LTO links of their own beside the
+    binary's, and on run 37098372802 the step was 84.4s of a 168.3s checks tier."""
     cargo = shutil.which("cargo", path=context.environment.get("PATH"))
     if cargo is None:
         raise StepFailureError("measure verifier gate requires cargo")
@@ -2503,7 +2507,7 @@ def _rust_measure_verifier(context: Context) -> str:
         (
             (cargo, "fmt", "--all", "--check"),
             (cargo, "clippy", "--locked", "--release", "--all-targets", "--", "-D", "warnings"),
-            (cargo, "test", "--locked", "--release", "--all-targets", "--quiet"),
+            (cargo, "test", "--locked", "--profile", "gate-test", "--all-targets", "--quiet"),
             (cargo, "doc", "--locked", "--no-deps", "--quiet"),
             (cargo, "build", "--locked", "--release", "--quiet"),
         ),

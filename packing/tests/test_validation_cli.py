@@ -4083,6 +4083,15 @@ def test_measure_verifier_is_fast_and_runs_the_oracle_and_controls(
     )
     assert "CHECKS PASSED" in step.action(context)
     assert any(command[:3] == ("cargo", "clippy", "--locked") for command in calls)
+    assert (
+        "cargo",
+        "test",
+        "--locked",
+        "--profile",
+        "gate-test",
+        "--all-targets",
+        "--quiet",
+    ) in calls
     assert ("cargo", "build", "--locked", "--release", "--quiet") in calls
     assert calls[-1][-3:] == (
         "--binary",

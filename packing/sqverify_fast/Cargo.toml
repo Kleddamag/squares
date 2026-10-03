@@ -44,3 +44,11 @@ lto = "fat"
 codegen-units = 1
 panic = "abort"
 debug = false
+
+# The gate's test build. Release's optimisation without its fat LTO and single codegen
+# unit, which the shipped binary keeps: the gate otherwise paid three fat-LTO links,
+# the library's tests, the binary's tests and the binary, and LTO changes no result.
+[profile.gate-test]
+inherits = "release"
+lto = false
+codegen-units = 16

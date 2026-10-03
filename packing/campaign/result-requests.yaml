@@ -49,7 +49,13 @@ issues:
           raised the verified bound past it, so 31360/7901 is the n = 12 reported bound.
     beads: [think-gh2o]
     answer_bead: think-5mkr
-    replies: []
+    replies:
+      - url: https://github.com/jlevy/squares/issues/309#issuecomment-5971664953
+        date: '2026-10-03'
+        by: jlevy
+        kind: acknowledgement
+        reported:
+          - result: s12-31360-7901
     close_when: >-
       T-078 is confirmed, which it is at V3/C3, and the reply saying so is posted from
       main.
@@ -89,7 +95,14 @@ issues:
           blocker asks for Green's complete proof before any promotion.
     beads: [think-abie, think-r7yt]
     answer_bead: think-xoob
-    replies: []
+    replies:
+      - url: https://github.com/jlevy/squares/issues/308#issuecomment-5971665066
+        date: '2026-10-03'
+        by: jlevy
+        kind: acknowledgement
+        reported:
+          - result: green-ds7-theorem9
+            id: E-green-ds7-theorem9-reported-lower
     close_when: >-
       Triage has mapped the claim, the record holds the defect against
       E-green-ds7-theorem9-reported-lower or the report is refuted, and a reply says
@@ -134,7 +147,18 @@ issues:
         state: done
     beads: [think-e3tq, think-4k80]
     answer_bead: think-wtz3
-    replies: []
+    replies:
+      - url: https://github.com/jlevy/squares/issues/296#issuecomment-5971665176
+        date: '2026-10-03'
+        by: jlevy
+        kind: acknowledgement
+        reported:
+          - result: valid7-independent
+            id: T-064
+            verification: V3
+            confirmation: C3
+            status: confirmed
+          - result: s78-second-route
     close_when: >-
       T-064 is confirmed (a complete replay of one Valid7 checker, a review of the
       independent checker's method and the Lean reduction built with its axiom receipt) or
@@ -182,7 +206,16 @@ issues:
         state: queued
     beads: [think-bkqm, think-bmze]
     answer_bead: think-bmze
-    replies: []
+    replies:
+      - url: https://github.com/jlevy/squares/issues/295#issuecomment-5971665348
+        date: '2026-10-03'
+        by: jlevy
+        kind: acknowledgement
+        reported:
+          - result: lemma1-false
+            id: T-007
+          - result: karakus-2026
+          - result: chelokot-2026
     close_when: >-
       The record holds the Lemma 1 defect against T-007, the values it supplies are
       re-derived, and the two replacement sources are registered or declined.
@@ -203,7 +236,7 @@ issues:
       - key: n101
         claim: s(101) >= 257/25 = 10.28 (mixed_n101_L1028, af1db07), and s(102..105) by monotonicity
         source: body
-        register: [T-073]
+        register: [T-073, T-080]
       - key: n83
         claim: s(83) >= 187/20 = 9.35 (mixed_n83_L935, 0c35d90)
         source: https://github.com/jlevy/squares/issues/294#issuecomment-5946131807
@@ -291,7 +324,13 @@ issues:
         register: [T-068, T-074]
     beads: [think-6ei5]
     answer_bead: think-pmxk
-    replies: []
+    replies:
+      - url: https://github.com/jlevy/squares/issues/281#issuecomment-5971665493
+        date: '2026-10-03'
+        by: jlevy
+        kind: acknowledgement
+        reported:
+          - result: rect-34
     close_when: >-
       T-068 is confirmed or refuted at all 34 counts. Counts that pass move to replayed
       entries, as T-045 and T-070 did for T-046; add each such entry to this result.
@@ -314,7 +353,13 @@ issues:
         register: [T-066]
     beads: [think-oy3i]
     answer_bead: think-aan5
-    replies: []
+    replies:
+      - url: https://github.com/jlevy/squares/issues/280#issuecomment-5971665606
+        date: '2026-10-03'
+        by: jlevy
+        kind: acknowledgement
+        reported:
+          - result: s59
     close_when: T-066 is confirmed, and the reply saying so is posted from main.
 
   - number: 279

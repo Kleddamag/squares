@@ -645,10 +645,16 @@ RECORDED: dict[int, tuple[tuple[str, str, str] | None, tuple[str, str, str] | No
             "verified",
         ),
     ),
-    # The catalogue credits nobody, so the line cites the catalogue by its compilers.
+    # The catalogue credits nobody, so the line cites the catalogue by its compilers. The
+    # lower line was Nagamochi's until 3 October 2026, when the replayed linear
+    # certificate of 2 October was recorded (T-080).
     101: (
         ("Friedman & Ellsworth, Squares in Squares (reported)", "external", "reported"),
-        ("Nagamochi 2005, Electron. J. Combin. 12, #R37", "external", "verified"),
+        (
+            "wand125 after Tokoharu, Levy et al. 2026, GitHub (confirmed T-080)",
+            "external",
+            "verified",
+        ),
     ),
     # Three finders and two improvers gave "Arslanov et al." with no year here until
     # Couzo's certified packing took the case; the synthetic test above keeps that shape.
@@ -743,7 +749,10 @@ RECORDED_LINKS: dict[tuple[int, str], tuple[list[str], list[str]]] = {
     (13, "lower"): (["T-005", "T-006"], []),
     # The register records Nagamochi's theorem below 100 without replaying it.
     (7, "lower"): (["T-007"], []),
-    (101, "lower"): ([], []),
+    # Above 100 it records Nagamochi's theorem nowhere, so the line links no result; n = 101
+    # stood here until its linear certificate's replay was recorded (T-080).
+    (106, "lower"): ([], []),
+    (101, "lower"): (["T-080"], ["T-080"]),
     # This project's own bound, established rather than confirmed, was T-030's until
     # 2026-10-02 (`test_a_novel_first_party_bound_cites_this_project_and_its_result` keeps
     # that shape); since then it is wand125's rectangle bound, which T-045 replays.

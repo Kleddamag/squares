@@ -597,6 +597,8 @@ sources:
       human direction, and the commits name Claude as co-author.
       web/wand125-linear-certificates-2026-10-02/acquisition/sources.json pins revision
       0c35d909764997ead04dfd90081c9fe9af8d07f2. Dated by that revision, 2026-10-02 UTC.
+      The n = 101 certificate's complete replay ran here on 2026-10-02, with its receipts
+      in the packet.
   - key: '[wand125 valid7 independent check 2026-10-02]'
     authors: [wand125]
     year: 2026

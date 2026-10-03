@@ -1,0 +1,673 @@
+---
+title: n17 Verifier Rewrites Review
+date: 2026-10-03
+status: planning-review
+---
+# n17 Verifier Rewrites Review
+
+**Session:** 168, lane R6 (independent soundness reviewer).
+**Reviewed:** the standing kernel verifier
+`packing/devtools/verify_n17_kernel_certificate.py` at commit `e0b66f07b` (SHA-256
+`5c550f7c…`, lane F2’s rewrite) against the reviewed version at `55656158`
+(`26bd5b41…`), and the standing branch-and-bound verifier
+`packing/devtools/verify_n17_bb_certificate.py` at `ff5471e89` (`9ca8df6f…`, lane P2’s
+Taylor path and enclosure retry) against `55656158` (`4a93c74c…`). **Question:** may
+either new digest be listed under `verifiers:` in
+`packing/campaign/explorations/X048-session-168-pilots/certified-sub-patterns.yaml`,
+where `devtools/census_n17_certified.py` counts an admitted entry only with a passing
+full verification by a listed digest?
+**Method:** the diffs read in full against the two prior reviews
+(`review-2026-10-02-n17-w7-closure.md`,
+`review-2026-10-02-n17-branch-and-bound-certifier.md`) and F2’s rationale
+(`review-2026-10-02-n17-cost-reduction-performance.md`, section 4); then scripts of my
+own under
+`packing/campaign/explorations/X048-session-168-pilots/audit-verifier-rewrites/`:
+`audit_kernel_rewrite.py.txt` (a differential harness of the new integer forms against
+the reviewed `Fraction` forms and against a third method), `mutate_cert.py.txt` and
+`make_fixture.py.txt` (34 doctored kernel certificates), `run_verifier_mutants.py.txt`
+with `mutant_plugin.py.txt` (21 mutants of the verifier’s new code, each run against the
+harness, the committed tests and the doctored certificates), `bb_trig_retry.py.txt` (the
+2,400-bit retry on crafted enclosure tables), and the agreement runs whose receipts and
+logs sit beside them (`w7-*.json`, `n1-*.json`, `a-*.json`). Nothing in the repository
+was edited except this document and that directory; the ledger is untouched.
+
+## Verdicts
+
+- **Kernel verifier `5c550f7c…`: ADMIT WITH CONDITIONS.** Every obligation the reviewed
+  version checked is still checked, exactly, and nothing is weakened: the edge-merge
+  facets are the exact halfplane description of partner − core for every pair the
+  certificate can present, the sweep decides closed coverage exactly, and the four memos
+  are pure functions of exact inputs, invalidated when their inputs change.
+  The new verifier re-proves W7 in full with the admitted receipt’s counts, agrees with
+  the reviewed verifier on the same sampled rows of W7 and of N1, refuses all 33 unsound
+  doctored certificates, and every weakening mutant of its new code is caught by at
+  least one check in this review.
+  The conditions (section 2.8) are three test additions, not verifier changes: the
+  committed tests miss three weakening mutants that only this review’s own cases catch,
+  and the digest should not be listed until the suite that guards the next rewrite sees
+  them. The verifier’s bytes, and so the digest, are unchanged by the conditions.
+- **Branch-and-bound verifier `9ca8df6f…`: ADMIT.** The interval-mode (schema v1) path
+  is unchanged in effect, and now stricter in three places; the 2,400-bit retry of a
+  failed enclosure cannot accept an enclosure that excludes the true value; the Taylor
+  checks X1 to X5 are sound as far as reading and the committed Taylor tests establish.
+  No Taylor certificate is planned for admission, and admitting one would be a review of
+  that certificate, not of this digest.
+
+## Summary
+
+- **The kernel rewrite keeps the proof and changes the arithmetic.** The diff
+  (`git diff 55656158 e0b66f07b`) touches three computations and nothing else: collision
+  facets, the row cover, and memoisation.
+  The seed, frame, hull chain, compression, closure derivation, final-state comparison,
+  partner-cover equality and strictness, the region’s containment in the required
+  domain, the degenerate-row branch and the `--sample` protocol are byte-identical.
+- **Facets.** `difference_facets` is the support-function form of a Minkowski sum: every
+  facet of partner − core has the direction of an edge of the partner or of the negated
+  core, and its support is the partner’s maximum minus the core’s minimum.
+  Both inputs reach it as `hull` output with at least three vertices and positive area
+  (lines 771–772 and 929–930), so no degenerate direction, repeated vertex or non-convex
+  input can enter; parallel directions merge on a lowest-terms key.
+  On 206 pairs, including slivers, 2^-50 edges, odd denominators and point-symmetric
+  pairs, the facet set equals the reviewed hull form’s, every facet is tight, and random
+  points near the boundary classify identically.
+- **Sweep.** `covered_by_sweep` probes every vertex abscissa and edge crossing in the
+  domain’s x-range and one interior point of every open slab between them; on an open
+  slab no edge begins, ends or crosses, so every comparison the closed-interval merge
+  makes has a constant outcome there, and one probe decides the slab.
+  An uncovered point of the closed domain has an uncovered open neighbourhood meeting
+  the domain’s interior, so some slab sees it.
+  On 229 cases, among them a gap of width 2^-60 hidden strictly between two events, the
+  sweep agrees with the reviewed area cover and with point sampling.
+  Two observations, neither a defect: `section_covered` deems a one-point target with no
+  span covered, which the sweep can meet only at the domain’s extreme abscissae and
+  which the neighbouring slab probe then exposes (section 2.2); and the sweep’s section
+  of a polygon is the min and max of its live edges’ ordinates, which is right only for
+  convex input, and every call site passes `hull` output.
+- **Memos.** The facet memo keys on both cores’ exact homogeneous vertex tuples, the
+  forbidden-region memo on the exact owned hull and core, the row-minimum memo on the
+  normal direction over an immutable domain, and a partner row’s admitted cover is
+  reused only on the same accepted `Row` object with byte-equal published lists; a
+  partner’s own step builds new `Row` objects, so its covers are proved afresh.
+  Doctored certificates that republish a cover with a wider core, a grown domain, or
+  stale lists after the partner stepped (relabelled so that only the domain check can
+  refuse) are all refused.
+- **Agreement.** W7 in full: PASS, 184 s, every count equal to the admitted receipt’s
+  (30,952,184 facet inequalities, 7,752 regions, 3,324 cover checks, 19,282 partner
+  rows). W7 sampled at four rows per step: old and new PASS on the same 270 rows with
+  identical counts, 342 s against 76 s. N1, the pending 17-cell state node (32 bins, 82
+  steps), sampled at one row per step with every row of the closure step: the new
+  verifier passes it in 117 s with the checker’s closure (owner 18, step 81), 113 rows
+  in full, 400 regions, 669,668 facet inequalities, 41,162 partner rows; the reviewed
+  verifier passes the same rows with the same closure and identical counts in 923 s.
+- **Mutation testing.** 33 unsound doctored certificates refused, each at the check its
+  construction targets, and one control passed its cover check (section 2.6). Of 21
+  verifier mutants, 19 are caught by at least one check, one is equivalent (vertical
+  edges are redundant with the non-vertical edges that end on them), and one, a memo
+  keyed on the normal’s x-component alone, is caught by nothing here and is established
+  by reading (section 2.7). The committed tests miss three weakening mutants: two sweep
+  mutants that probe only at events, caught by the hidden-lens cases, and a collision
+  loop over the first partner row only, caught by a region vertex pushed past a later
+  row’s facet.
+- **Branch and bound.** The v1 path’s values are computed by the same code (the plane
+  tuples carry two extra fields the v1 path ignores; `cos_sin` is the same series at the
+  same 160 bits), and three checks are new and stricter: the manifest’s schema must
+  match the Taylor setting, a cut record must have four or eight fields, and a wall-row
+  reference in an interval certificate is refused.
+  On A sampled (50 closures of each kind, the 20 deepest, every ancestor, 100
+  enclosures, seed 7) the two verifiers PASS the same 1,225 nodes with identical counts.
+  The retry accepts an enclosure only when this module’s own 2,400-bit enclosure fits
+  inside it: on a crafted table, a recorded enclosure narrower than the 160-bit one but
+  containing the true value is refused by the reviewed verifier and accepted by the new
+  one, and two that exclude the true value are refused by both.
+  X1 to X5 are read in section 3.4; the 35 committed tests of both verifiers pass.
+
+## 1. What the Kernel Rewrite Changed
+
+The reviewed verifier proved each full row’s collision regions against
+`planes_of(minkowski_diff(partner_core, core))` in `Fraction`, with the minimum over the
+partner row’s domain recomputed per facet, and decided each row’s cover by
+`covered_by_area`: closed clipping subtraction whose leftover pieces must have total
+area zero. The rewrite:
+
+- computes the facets of partner − core by `difference_facets` in homogeneous integers
+  (`(X, Y, Z)` with `Z > 0`, `homogeneous` at line 307) and checks each region vertex by
+  cross-multiplication (`check_collisions`, lines 837–848);
+- decides the cover by `covered_by_sweep` (line 521) and keeps `covered_by_area` as the
+  reference the tests hold it against;
+- memoises `difference_facets` per pair of cores (`State.difference`), `minkowski_diff`
+  per (owned hull, core) (`State.forbidden_region`), the least value of `n · y` over a
+  partner row’s domain per direction (`CoverRow.minimum`), and the admitted cover of a
+  partner row (`Row.cover`, reused at `check_partners` lines 798–806 only when the same
+  `Row` object sees byte-equal `domain` and `core` lists).
+
+`check_partners` also replaces `if not vertices` by `if not any(r.residual)`, which is
+the same test, and `check_collisions` computes `planes_of(required)` once per row
+instead of once per vertex, which is the same check.
+Everything else in the module is unchanged.
+
+## 2. Soundness of the New Code
+
+### 2.1 The Edge-Merge Facets Are Exact
+
+**Claim.** For strictly convex counterclockwise polygons $P$ and $C$ with at least three
+vertices,
+$\{p : n \cdot p \le h_P(n) - \min_{w \in C} n \cdot w \text{ for every } n \in
+N\}$, with $N$ the outward edge normals of $P$ and the negated outward edge normals of
+$C$, equals $\mathrm{hull}(P - C)$.
+
+**Why.** The support function of a Minkowski sum is the sum of the summands’ support
+functions, and in the plane the edge directions of $P + (-C)$ are exactly the edge
+directions of $P$ and of $-C$ (the face of the sum in direction $n$ is the sum of the
+faces, and a face that is an edge of either summand gives an edge of the sum).
+So the halfplanes over $N$ are exactly the facets of the sum, each with its exact
+support, and a convex polygon is the intersection of its facet halfplanes.
+Extra directions would only add supporting halfplanes, which do not cut the set; the
+risk is a missing direction or a wrong support, and the evidence below checks both.
+
+**Where the implementation meets the claim.** `directions` (line 358) takes the normal
+$(q_y - p_y,\; p_x - q_x)$ of each edge $p \to q$ scaled by the positive product of the
+two denominators, outward for counterclockwise order, and divides by the gcd so that
+parallel directions share a key; `hull` (Andrew’s chain, line 102) returns
+counterclockwise order with collinear points removed.
+`support` (line 371) compares $v/z$ values by cross-multiplication with positive
+denominators. `difference_facets` (line 387) takes the partner’s maximum and the core’s
+minimum and forms
+$(h_n, h_d) = (\text{top}_n \text{low}_d - \text{low}_n \text{top}_d,\;
+\text{top}_d \text{low}_d)$ with $h_d > 0$. In `check_collisions` the bound is
+$h + \min_{y \in D} n \cdot y$ as $(h_n m_d + m_n h_d)/(h_d m_d)$ and the test
+$(n \cdot v) h_d m_d \le \text{bound}_n z$ is the reviewed inequality cleared of
+denominators. The inputs are `cover.core` (the hull of the published partner core, at
+least three vertices and positive area, line 772) and `core_h` (the hull of the row’s
+core, line 929–930), so a repeated or collinear vertex, a segment or a point never reach
+`directions`, where a zero normal would divide by zero rather than pass.
+The reviewed `require(len(facets) >= 3)` is kept.
+
+**Evidence.** `audit_kernel_rewrite.py.txt --only facets`: 206 pairs (six fixed pairs,
+including core = −partner where every direction merges and a core with an edge exactly
+parallel to a partner edge, and 200 random pairs drawn from coarse-grid, 2^-30-grid,
+odd-denominator, sliver, 2^-50-edge and regular kinds); 2,014 facets.
+For every pair the set of (lowest-terms normal, exact support) equals the reviewed
+`planes_of(minkowski_diff)` set with the same cardinality, every facet is attained by a
+vertex difference and violated by none, and 20 random points per pair within 2^-45 of a
+hull edge classify identically under both forms.
+The committed `test_difference_facets_are_the_hull_facets` makes the first of these
+checks on 41 pairs.
+
+### 2.2 The Sweep Decides Closed Coverage Exactly
+
+**Claim.** `covered_by_sweep(D, R)` returns `True` if and only if the closed convex
+polygon $D$ (positive area) is contained in the union of the closed convex polygons in
+$R$ (those with at least three hull vertices; points and segments cover no area and are
+dropped, as the area form drops them).
+
+**Why.** Let $E$ be the set of vertex abscissae of $D$ and of every region in $D$'s
+x-range together with every abscissa where two non-vertical edges cross there.
+On an open slab between consecutive points of $E$ no edge begins or ends and no two
+edges cross, so for any two live edges the order of their ordinates is the same at every
+abscissa of the slab, or they are the same line and equal everywhere.
+Every comparison `section_covered` makes is between ordinates of live edges at the probe
+(the sort by lower end, the gap test, the cursor update and the end test), so its
+outcome at one interior probe is its outcome at every abscissa of the slab; ties among
+equal lower ends do not change the merge’s result.
+A convex polygon with a live edge on a slab has exactly two live edges there, so its
+section is the closed interval between their ordinates, and at an event abscissa its
+section is the min and max over its live edges and vertical edges, which `_widen` takes.
+If some point of $D$ is uncovered, it has an open neighbourhood disjoint from the closed
+union, that neighbourhood meets the interior of $D$ in an open set, and that open set
+contains abscissae of an open slab; at those abscissae the section of $D$ has an
+uncovered open sub-interval, so the merge fails there and hence at the slab’s probe.
+Conversely a `True` at every probe gives coverage on every slab and at every event.
+
+**Where the implementation meets the claim.** `compile_edges` (line 428) writes each
+non-vertical edge as $a x + b y + c = 0$ with $b > 0$ so that its ordinate at $X/W$ is
+$-(aX + cW)/(bW)$ with a positive denominator (line 562), and files vertical edges by
+their normalised abscissa; I checked that the line through $p$ and $q$ vanishes at both.
+`sweep_events` (line 451) adds every vertex abscissa in $[\text{left}, \text{right}]$
+and, for every pair of edges with overlapping closed x-ranges (edges taken by increasing
+`lo`, against those whose `hi` still reaches it), the crossing $x = (b_1 c_2 - c_1
+b_2)/(a_1 b_2 - b_1 a_2)$ when it lies in the overlap; parallel edges are skipped, and
+coincident ones are equal everywhere.
+`covered_by_sweep` requires the domain’s own extremes to be the first and last events
+(line 540), probes `positions[0]`, then for each consecutive pair the `between` ratio
+and the right event (line 545), keeps an edge live while `lo <= probe <= hi` (lines
+552–557), and requires the domain to have a section at every probe (line 567). `between`
+(line 327) returns a lowest-terms ratio strictly inside $(a, b)$ by continued fractions;
+on 223 pairs, including Farey neighbours with 30-digit terms where nothing below the
+mediant’s denominator fits, it is strictly inside, in lowest terms, and at the mediant
+when forced. `section_covered` (line 487) sorts by a float key and confirms the order
+exactly on every adjacent pair, which is enough because the order relation on the lower
+ends is transitive; a mis-sort would be redone exactly, never accepted.
+
+**Two observations, neither a defect.**
+
+- `section_covered(((y, 1), (y, 1)), [])` is `True`: a target that is a single point
+  with no span never enters the merge, and the final test `cursor >= high` holds.
+  The sweep meets a one-point domain section only at `left` and `right` when the
+  domain’s extreme vertex is not on a vertical edge.
+  An uncovered extreme vertex has an uncovered neighbourhood in the domain’s interior,
+  which the first or last slab probe reports: the harness cases `vertex-only-gap-2^-40`,
+  `-2^-70` and `-right` (a wedge whose only region is the wedge cut 2^-40, 2^-70 and
+  2^-50 short of one vertex) all return `False`. A one-line guard
+  (`if low == high and not spans: return False`) would remove the quirk; it is not
+  needed for soundness.
+- The section of a polygon at a probe is the min and max of its live edges’ ordinates,
+  which is the polygon’s section only when the polygon is convex; a non-convex or
+  self-intersecting region would have its section overstated.
+  Every region reaching the sweep is `hull` output (`forbidden_region` returns
+  `minkowski_diff`, a hull; collision regions and residuals are hulled at lines 828 and
+  916; the domain is `hull(required)` at line 872), so the contract holds, and it should
+  be kept if the call sites change.
+
+**Evidence.** `audit_kernel_rewrite.py.txt --only sweep`: 229 cases, 93 covered and 136
+not, with the sweep agreeing with `covered_by_area` on every one, the first uncovered
+abscissa reported exactly when the verdict is `False`, and a third method agreeing: 30
+random points of a covered domain each inside some region, and a centroid of a leftover
+piece of the area subtraction inside none (2,926 points).
+The cases: 200 random tilings of random convex domains cut by random lines (rectangle,
+coarse-grid, 2^-30-grid, odd-denominator and regular kinds), with a piece removed, a
+piece shifted by 2^-40, a piece shrunk toward an interior point by 1 − 2^-35, or
+unrelated regions and a segment added; and 29 constructed ones: a **lens hidden strictly
+between two events** at widths 1/8, 2^-40 and 2^-60 (a left block whose vertical edge
+covers the whole section at $x = a$, a right block likewise at $x = b$, and between them
+a region whose peaked roof rises from $y = 2$ at $x = a$ under a region whose V-shaped
+floor sits $2\varepsilon$ above it at $x = a$ and crosses it at $x = a + 4\varepsilon$,
+so the gap is invisible at every event and visible on one open slab), each with its
+closed control; 4 × 4 axis-aligned tilings with one tile narrowed by 2^-50 horizontally,
+vertically, or at one corner; a fan of four triangles around an interior point with one
+apex pulled back by 2^-50; a bow-tie of four triangles meeting at a point, with and
+without one; the domain itself, twice, shaved by 2^-60 at one vertex, and shifted by
+2^-60; a domain and tiling with denominators $2^{40} 3^7 5^3$; segments and points mixed
+in; a triangle fan with one piece shrunk by 1 − 2^-40; an engulfing region, and two
+engulfing half-planes 2^-50 apart.
+The committed `test_the_sweep_agrees_with_the_area_cover` has 48 random cases of the
+first kind and no hidden lens, which is why the two sweep mutants of section 2.7 pass
+it.
+
+### 2.3 The Memos Return Only What Was Computed for Their Inputs
+
+| Memo | Key | Value | Invalidation |
+| --- | --- | --- | --- |
+| `State.facets` | the two cores as tuples of homogeneous integer vertices in hull order (equal polygons give equal tuples, since `homogeneous` of a lowest-terms `Fraction` pair is canonical) | `difference_facets`, a pure function of the key | none needed |
+| `State.forbidden` | `(tuple(owned hull), tuple(core))` as exact `Fraction` points | `minkowski_diff`, pure; the owned hull is replaced, never mutated, by `compress` (lines 1017–1019) | none needed |
+| `CoverRow.minima` | the facet direction `(nx, ny)` in lowest terms | `support(domain, nx, ny, largest=False)` over the immutable `domain` tuple fixed at admission | none needed |
+| `Row.cover` | the accepted `Row` object, with the published `domain` and `core` lists compared by value (lines 799–803) | the proof that the domain equals the hull of the row’s residual vertices and the core is strict over the row’s interval, a pure function of `(Row.residual, Row.interval, lists)`; `Row.residual` is never mutated after construction | a partner’s own step stores fresh `Row` objects with `cover=None` (`check_step` line 975, `verify_objects` line 1118), so every cover of a re-stepped partner is proved afresh; any change in either published list proves afresh |
+
+A cache hit therefore skips no obligation: it returns the result of the same obligation
+on the same inputs. The checks around the memo are still run on every step: the partner
+must be in the mask and not the owner, the cover must have one item per accepted row,
+each item’s reference and interval must equal the row’s, a dead row must publish empty
+lists, and a cover with no live row is refused.
+
+**Evidence.** The committed
+`test_a_republished_partner_cover_is_reused_only_when_identical` and
+`test_the_facet_cache_keys_on_the_exact_cores`; the doctored certificates
+`cover-memo-same-domain-wider-core` (refused “core not strict” at the later step),
+`cover-memo-same-core-grown-domain` (“domain”), `cover-stale-after-partner-stepped`
+(“reference”) and `cover-stale-relabelled-after-partner-stepped` (the stale lists
+carrying the new rows’ references and intervals, so that only the domain check can
+refuse: refused “domain”); and the five cache mutants of section 2.7. On the W7 fixture
+of 14 steps every step republishes all six partners, so the memo’s reuse path is
+exercised on 672 partner rows and the verdict and counts are the reviewed verifier’s.
+
+### 2.4 Independence
+
+The module imports `argparse`, `gzip`, `hashlib`, `json`, `math`, `random`, `time`,
+`collections.abc`, `dataclasses`, `fractions`, `itertools`, `pathlib` and `typing`, and,
+lazily in `cover_cells`, `devtools.check_n17_capacity_one_cover`, which imports
+`devtools.check_n17_endpoint_feasibility` and nothing from `sqpack.hull_kernel`,
+`check_n17_subpattern`, the selector or the branch and bound.
+The committed `test_a_verifier_imports_no_producer_checker_or_solver` imports the module
+in a subprocess, builds the cells and asserts that none of those modules, nor anything
+named like HiGHS, is in `sys.modules`; it passes.
+The two Python verifiers still share CPython’s `int` and `fractions` with the checker,
+as the performance review’s section 4 notes; the rewrite adds no dependency.
+
+### 2.5 Agreement With the Reviewed Verifier
+
+| Run | Verifier | Mode | Status | Rows in full | Collision regions | Facet inequalities | Partner rows | Seconds |
+| --- | --- | --- | --- | ---: | ---: | ---: | ---: | ---: |
+| W7, admitted receipt (`verification.json`) | `26bd5b41` | full | PASS | 3,324 | 7,752 | 30,952,184 | 19,282 | 4,258 |
+| W7, F2’s receipt (`verification-5c550f7c.json`) | `5c550f7c` | full | PASS | 3,324 | 7,752 | 30,952,184 | 19,282 | 242 |
+| W7, this review (`w7-new-full.json`) | `5c550f7c` | full | PASS | 3,324 | 7,752 | 30,952,184 | 19,282 | 184 |
+| W7, `--sample 4 --sample-seed 12345` (`w7-old-sample4.json`) | `26bd5b41` | sample | PASS | 270 | 596 | 2,076,688 | 19,282 | 342 |
+| W7, same sample (`w7-new-sample4.json`) | `5c550f7c` | sample | PASS | 270 | 596 | 2,076,688 | 19,282 | 76 |
+| N1, `--sample 1 --sample-seed 12345` (`n1-old-sample1.json`) | `26bd5b41` | sample | PASS | 113 | 400 | 669,668 | 41,162 | 923 |
+| N1, same sample (`n1-new-sample1.json`) | `5c550f7c` | sample | PASS | 113 | 400 | 669,668 | 41,162 | 117 |
+
+The sampling code is unchanged, so the same seed selects the same rows in both
+verifiers, and the counts compare row for row.
+Every count the two verifiers report on the same input is equal; the closure derived is
+`all_parent_poses_forbidden` for owner 5 at step 57 on W7 and for owner 18 (interior-W)
+at step 81 on N1, the closure lane K2’s checker recorded.
+N1 is the 17-cell state node from lane K2’s `--check-saved` run (32 bins, 82 steps,
+8,470 collision regions), which the checker passed; it is pending, not admitted, and is
+used here only as a second, larger input on which the two verifiers can be compared.
+
+### 2.6 Doctored Certificates
+
+`make_fixture.py.txt` produces W7 at 8 bins with lane K2’s producer (14 steps, 112 rows,
+257 collision regions, two steps with kernels, four compressions, a stall; the same
+shape as lane R3’s mutation fixture), saved with the checker tool’s saver so that only
+the mathematics is wrong.
+`mutate_cert.py.txt` edits a deep copy per mutation, re-saves it, and runs the new
+verifier’s `verify_objects`; the unmutated fixture is accepted (84,300 facet
+inequalities, 672 partner rows).
+Where a mutation would first trip a structural check rather than the one under test (a
+residual change alters the published common-core planes and outer bounds; a seed change
+alters the digest the node binds), the harness recomputes those so the refusal names the
+intended check.
+
+| Mutation | Expected refusal | Verdict |
+| --- | --- | --- |
+| collision-region vertex pushed 2^-40, and 2^-80, past its tightest facet over every live partner row | region escapes the collision set | refused |
+| a vertex added past a facet of a partner row other than the first live one, every first-row facet still satisfied | region escapes the collision set | refused |
+| region vertex outside the required domain | escapes the required domain | refused |
+| region naming the owner; region naming a partner whose cover was removed | collision partner | refused, refused |
+| partner cover domain with a vertex dropped; with a far vertex added | domain | refused, refused |
+| a live partner row declared empty; every row declared empty | domain | refused, refused |
+| partner core scaled by 1.02; by 1 + 2^-20 | core not strict | refused, refused |
+| the same domain republished at a later step with a wider core (memo) | core not strict | refused |
+| the same core republished with a grown domain (memo) | domain | refused |
+| a cover copied from before the partner stepped; the same relabelled with the new rows’ references and intervals | reference; domain | refused, refused |
+| a residual polygon dropped, planes recomputed; planes kept | required domain NOT covered; common-core planes | refused, refused |
+| a residual shrunk toward its centroid by 1 − 2^-40; by 1 − 2^-70 | NOT covered | refused, refused |
+| a corner triangle of side 2^-40 cut from a residual; a vertical residual edge moved inward by 2^-50 | NOT covered | refused, refused |
+| a collision region shrunk by 1 − 2^-40 | NOT covered | refused |
+| the row’s residuals replaced by four pieces of its required domain with a lens of width 2^-40 hidden between two events, collision regions removed | NOT covered | refused (uncovered at $x = 253059607/146052101$) |
+| the same with the lens closed (control) | passes the cover check | passed it; refused later at “final residual”, as the altered residual no longer matches the final state |
+| a kernel point pushed 2^-40 past its tightest common-core plane | kernel point fails a plane | refused |
+| a retained hull vertex moved one grid unit; an extra retained point with a copied witness | witness point | refused, refused |
+| a prior owned hull with a point added | prior hull | refused |
+| a row removed | any | refused (“final rows”) |
+| a closure declared on a stall | no closure derived | refused |
+| a seed row with a vertex dropped; an unowned seed point, both with the node rebound to the new seed digest | seed row domain; not owned | refused, refused |
+| the owner’s core scaled by 1 + 2^-20 | core not strict | refused |
+
+Lane R3’s 26 mutations against the kernel’s checker are matched here against the
+verifier where the verifier checks the same thing; the unowned seed point, which ends as
+`INCOMPLETE` in the checker, is refused outright by the verifier’s bounded bisection.
+
+### 2.7 Mutants of the Verifier’s New Code
+
+`run_verifier_mutants.py.txt` applies each textual patch once to a scratch copy of the
+verifier and runs three checks against it: the harness (`--trials 120`), the twelve
+kernel tests of `tests/test_verify_n17_certificates.py` (with `mutant_plugin.py.txt`
+binding the mutant under the committed module’s name, so the repository is untouched),
+and the 34 doctored certificates (caught when the mutant accepts an unsound one or
+refuses the sound fixture).
+
+| Mutant | What it weakens | Harness | Committed tests | Doctored certificates |
+| --- | --- | --- | --- | --- |
+| facets: core directions dropped | a facet subset | caught | caught | missed |
+| facets: core support as a max | every facet bound too large | caught | caught | caught (refuses the sound fixture) |
+| facets: partner support skips a vertex | a bound too small or too large | caught | caught | caught (refuses the fixture) |
+| collision: row minimum subtracted | bound wrong | missed (not audited) | caught | caught (refuses the fixture) |
+| collision: first partner row only | a dropped quantifier | missed (not audited) | **missed** | caught (the later-row vertex is accepted) |
+| sweep: no mid-slab probes | gaps between events unseen | caught (hidden lens) | **missed** | missed |
+| sweep: crossings not events | slab order not constant | caught (hidden lens) | **missed** | missed |
+| sweep: ended edges stay live | sections overstated | caught | caught | caught |
+| sweep: edges live early | sections overstated | caught | caught | caught |
+| sweep: vertical edges ignored | — equivalent: the non-vertical edges ending on a vertical edge are live at its abscissa and give the same section | missed | missed | missed |
+| section: gap ignored | an uncovered interval accepted | caught | caught | caught |
+| section: end ignored | a short merge accepted | caught | caught | missed |
+| section: open merge | touching spans treated as a gap less | caught | caught | caught |
+| `between` returns an endpoint | the slab probe is an event | caught | caught | missed |
+| cache: facets keyed on the partner alone | facets of another core reused | missed (not audited) | caught | caught (refuses the fixture) |
+| cache: forbidden region keyed on the hull alone | a region of another core reused | missed (not audited) | missed | caught (refuses the fixture) |
+| cache: cover reused when the domain matches | a wider core reused | missed (not audited) | caught | caught |
+| cache: cover reused when the core matches | a grown domain reused | missed (not audited) | caught | caught |
+| cache: covers survive the partner’s step | stale proofs reused | missed (not audited) | missed | weakened: the relabelled stale cover is reused and the certificate is refused later at a collision check instead of at “domain” |
+| cache: row minimum keyed on $n_x$ alone | a minimum of another direction reused | missed (not audited) | missed | missed |
+| `homogeneous` scales $x$ by the wrong factor | every integer form wrong | caught | caught | caught (refuses the fixture) |
+
+Reading the misses: the harness audits only the four pure functions, so collision-loop
+and cache mutants are outside it by design; the doctored certificates can only show a
+mutant that accepts something, and a mutant that refuses more is caught by the sound
+fixture. The row-minimum key mutant is seen by nothing here: on the fixture no partner
+row meets two facet normals with equal $n_x$ and different $n_y$ in a way that changes a
+verdict, and the committed code’s key `(nx, ny)` is the full input of `support` over a
+fixed domain, which is what establishes it.
+
+### 2.8 Conditions: Three Test Additions
+
+Three weakening mutants pass the committed tests and are caught only by cases written
+for this review. A verifier whose tests do not see a dropped quantifier in its collision
+loop, or a sweep that probes only at events, is guarded by this review alone, and the
+next rewrite would start from the same blind spots.
+The digest `5c550f7c…` should be listed once the following are in
+`packing/tests/test_verify_n17_certificates.py`; none changes the verifier’s bytes.
+
+1. **Mutant `sweep-no-mid-slab-probes`** (`probes.extend((between(a, b), b))` →
+   `probes.extend((b,))`) and **mutant `sweep-no-crossing-events`** (every edge pair
+   treated as parallel).
+   Caught by the harness cases `lens-2^-40`, `lens-2^-60` and `lens-1/8`. Minimal
+   addition, in `test_the_sweep_agrees_with_the_area_cover` or a test of its own: with
+   $\varepsilon = 2^{-40}$,
+   ```python
+   big = [(Q(0), Q(0)), (Q(4), Q(0)), (Q(4), Q(4)), (Q(0), Q(4))]
+   left = [(Q(0), Q(0)), (Q(1), Q(0)), (Q(1), Q(4)), (Q(0), Q(4))]
+   right = [(Q(3), Q(0)), (Q(4), Q(0)), (Q(4), Q(4)), (Q(3), Q(4))]
+   below = hull([(Q(1), Q(0)), (Q(3), Q(0)), (Q(3), Q(2)), (Q(2), Q(9, 4)), (Q(1), Q(2))])
+   above = hull([(Q(1), Q(4)), (Q(3), Q(4)), (Q(3), 2 + 2 * eps), (Q(2), 2 + 2 * eps - Q(1, 4)), (Q(1), 2 + 2 * eps)])
+   assert covered_by_sweep(big, [left, right, below, above])[0] is False   # eps = 2^-40
+   assert covered_by_sweep(big, [left, right, below, closed])[0] is True   # closed: eps = 0, V through (2, 7/4)
+   ```
+   The gap lies over $x \in (1, 1 + 4\varepsilon)$: at $x = 1$ the left block covers the
+   whole section, at the crossing the two sections touch, and no other event lies
+   between, so only an interior probe of that slab sees it.
+   Both mutants return `True` on it; the committed verifier returns `False`.
+2. **Mutant `collision-first-partner-row-only`** (`for cover in partners[pj]` →
+   `partners[pj][:1]`). Caught by the doctored certificate
+   `region-vertex-pushed-later-row-only-2^-40`. Minimal addition: a fifth edit in
+   `test_the_kernel_verifier_refuses_a_doctored_closure`, expecting “escapes the
+   collision set”, that takes the blind pair’s closing step, replays the verifier’s
+   state to it (`check_frame`, `check_seed`, `check_step` with `full=set()`,
+   `compress`), takes the row’s first collision region and its partner’s live covers,
+   finds among the facets of `planes_of(minkowski_diff(partner_core, core))` of every
+   live row but the first the (vertex, facet) of least slack, and **appends** to the
+   region the vertex moved along that facet’s normal by slack $+ 2^{-40}$, provided the
+   moved point satisfies every facet of the first live row and lies in the required
+   domain (otherwise the next candidate).
+   Appending rather than moving keeps the region a superset of the old one, so the row’s
+   cover still holds and only the collision check can refuse.
+   `mutate_cert.py.txt::region_pushed_later_row_only` is this procedure; the blind
+   pair’s partner has sixteen live rows, so a candidate exists.
+   The mutant accepts the edit; the committed verifier refuses it at the intended check.
+
+Two cheaper additions that I recommend in the same change, though I do not make them
+conditions, since both mutants are established by reading and one is caught by the
+doctored certificates: for `cache-forbidden-key-hull-only`, the analogue of
+`test_the_facet_cache_keys_on_the_exact_cores` for `State.forbidden_region` (the same
+hull with two cores must give two regions); for `cache-minimum-key-nx-only`, a unit test
+that `CoverRow.minimum(0, 1)` followed by `minimum(0, -1)` returns
+`support(domain, 0, -1, largest=False)`. For `cache-cover-survives-restep`, a doctored
+closure with a stale relabelled cover expecting “domain” would catch it in the committed
+style (the mutant then fails elsewhere, and the message assertion fails).
+
+### What I Looked For and Did Not Find
+
+An inward rounding anywhere in the integer forms (there is no rounding: every comparison
+is a cross-multiplication with positive denominators); a float that decides anything
+(the one float, the sort key, is confirmed exactly); an open comparison where the
+reviewed version had a closed one (the facet test, the live-edge range, the section
+merge and the slab endpoints are all closed); a probe set that could miss a slab (events
+are sorted exactly and `between` is strictly inside); a memo keyed on object identity
+alone or on a mutable value (the cover memo is keyed on identity *and* the published
+lists, and `Row.residual` has no writer after construction); a cache that outlives its
+inputs (the partner’s step replaces its rows); a change to the `--sample` protocol or to
+what a sampled run claims (none; the receipt still says `sample`); any weakening of the
+degenerate-row branch (unchanged).
+
+## 3. The Branch-and-Bound Verifier
+
+### 3.1 What Changed
+
+`git diff 55656158 ff5471e89`: `cos_sin` becomes a call to `cos_sin_bits(t, KBITS)`, the
+same series at the same 160 bits with the scale parameterised; `check_trig` retries a
+failed enclosure at `PRECISE_BITS = 2400`; `planes_of_piece` returns five-tuples
+`(nx, ny, r, c, o)` whose last two fields (the chord factor and the offset of X3) the v1
+path never reads (`row_of` passes `plane[:3]` to `plane_box_min`; the closed-pair and
+pair-split checks test only whether the plane list is empty); `row_of` dispatches a
+`["w", t]` reference to `wall_row` and an eight-field cut to `taylor_cut_row`, both of
+which refuse unless `header.settings.taylor` is true; `combination_min` and
+`check_bounds` gain the $k$ angle-offset columns only when `self.taylor` is set; the
+header check requires the manifest’s schema to be v1 without the Taylor setting and v2
+with it, and $K \ge \sqrt2/4$ by $16K^2 \ge 2$; `parsed_cut` refuses a cut with any
+field count but four or eight; `prepared` derives `centres_q` and `offsets_q` from a
+node’s `taylor` record when present.
+
+### 3.2 The Interval Path Is Unchanged in Effect
+
+For a v1 certificate the values the verifier computes are the reviewed ones: the
+enclosures (same series, same scale; the retry runs only after a failure and only makes
+the check more permissive, see 3.3), the planes’ first three fields (`base = g_lo * c`
+with $c = 1$ or $1 - x^2/2$ is the reviewed `g_lo` and chord; the wide-piece $r$ is the
+reviewed $g_{lo} - 2\tau(S + \tau D) - \varepsilon E$ computed as `g_lo - offset`), the
+cut minimum, the Farkas and bound combinations over $2k$ columns, and the box
+inheritance. Three refusals are new: a v1 manifest whose `schema` is not
+`n17-subpattern-bb-certificate/v1` (the reviewed verifier never read the schema), a cut
+with a field count other than four or eight (the reviewed verifier read four fields and
+ignored the rest), and a `["w", t]` reference in an interval certificate (the reviewed
+verifier would have read it as a cut index).
+None can turn a refusal into a pass.
+
+**Agreement on A.** Both verifiers on the admitted A certificate with
+`--sample 50 --deepest 20 --trig-sample 100 --seed 7` (`a-old-sample.json`,
+`a-new-sample.json`; the node choice is seeded and the choosing code is unchanged, so
+the same 1,225 nodes are checked): both PASS with no node failure; 41,598 nodes, 21,215
+closed leaves (10,032 disc, 4,504 lp, 6,679 pair), depth 31; identical counts: 51,793
+cuts, 21,581 bound tightenings, 54 Farkas, 34 disc and 32 pair closures, 844 angle and
+261 pair splits, 100 enclosures; 103 s against 114 s. The verifier was not rewritten for
+speed and is not faster.
+
+### 3.3 The 2,400-Bit Retry Cannot Accept an Enclosure That Excludes the Truth
+
+`check_trig` accepts a recorded enclosure $[c_{lo}, c_{hi}] \times [s_{lo}, s_{hi}]$
+when this module’s own enclosure fits inside it; the retry recomputes the module’s
+enclosure at 2,400 bits and asks the same question.
+`cos_sin_bits` sums the Taylor terms $t^n/n!$ as integer intervals scaled by
+$2^{\text{bits}}$, stops when the next term’s magnitude is below two units, and widens
+both results by that magnitude plus one unit; since every derivative of cosine and sine
+is bounded by one, the Lagrange remainder of the degree-$(n-1)$ polynomial is at most
+$|t|^n/n!$, so the result is a valid enclosure at any precision.
+A valid enclosure inside the recorded one puts the true value inside the recorded one,
+which is what every later check needs; a tighter valid enclosure only makes the
+containment test more permissive among recorded enclosures that *do* contain the truth.
+A recorded enclosure that excludes the true value contains no valid enclosure at any
+precision and is refused after the retry as before.
+The recorded normal must still lie inside the recorded enclosure.
+
+**Evidence.** `bb_trig_retry.py.txt` (log `bb-trig-retry.log`) makes the committed
+tests’ crowded-row certificate (203 nodes, 116 enclosures, interval mode) and rewrites
+the middle entry of its enclosure table four ways, re-hashing the table and the
+manifest:
+
+| Enclosure recorded at $t = 2.1671…$ | Reviewed `4a93c74c` | New `9ca8df6f` |
+| --- | --- | --- |
+| as written by the pilot | PASS | PASS |
+| this module’s own 400-bit enclosure: narrower than 160 bits, contains the true value | FAIL (its 160-bit enclosure does not fit) | PASS, through the retry |
+| the 400-bit enclosure shifted by $2^{-300}$: excludes the true value | FAIL | FAIL |
+| the written enclosure shifted by twice its width: excludes the true value | FAIL | FAIL |
+
+The one new acceptance is of an enclosure that contains the true value, which is the
+only property the later checks use.
+
+### 3.4 The Taylor Checks X1 to X5
+
+The LP of a v2 node has columns $x_s, y_s$ and the offsets $t_s = \theta_s - c_s$ over
+$T_s = [lo_s - c_s, hi_s - c_s]$, with the centres $c_s$ read from the node and the
+ranges derived by the verifier (`prepared`); the expansion is valid about any point with
+$\rho = \max |t|$, so a centre outside its interval costs accuracy, not soundness.
+
+- **X2, gap lines.** For a pair $(i, j)$ and signs $s_1, s_2 \in \{\pm1\}$, let
+  $f(\alpha) = (s_1 \cos\alpha + s_2 \sin\alpha)/2$; then $h(\alpha) = (|\cos\alpha| +
+  |\sin\alpha|)/2 \ge f(\alpha)$ and
+  $g = \tfrac12 + h(\theta_j - \theta_i) \ge \tfrac12 +
+  f(\alpha_0 + \tau)$ with $\alpha_0 = c_j - c_i$ and $\tau = t_j - t_i \in A$,
+  $|\tau| \le
+  \rho$. Taylor’s theorem with $f'' = -f$, $|f''| \le \sqrt2/2$, gives
+  $f(\alpha_0 + \tau)
+  \ge f(\alpha_0) + f'(\alpha_0)\tau - (\sqrt2/4)\tau^2$, and
+  $f'(\alpha_0)\tau \ge b\tau -
+  |f'(\alpha_0) - b|\rho$ for any slope $b$. `line_constant` (line 648) bounds
+  $f(\alpha_0)$ below from the enclosure of $\cos\alpha_0, \sin\alpha_0$ with the signs
+  applied, bounds $|f' - b|$ above by `spread = max(d_hi - b, b - d_lo)` with
+  $f' = (s_2\cos -
+  s_1\sin)/2$ enclosed, and subtracts $K\rho^2$ with $K \ge \sqrt2/4$ (checked at the
+  header). So $g \ge a + b\tau$ with $a$ recomputed here, never read from the record.
+- **X3, planes at the pose’s own gap.** The reviewed lemma gives $n(\phi) \cdot d \ge g$
+  at an end angle or $n(m) \cdot d \ge g\cos x \ge g(1 - x^2/2)$ at the chord, and the
+  float normal is within $\varepsilon$ of the true one componentwise, so $\bar n \cdot d
+  \ge c\,g - o$ with $(c, o) = (1, \varepsilon E)$ or $(1 - x^2/2, \varepsilon E)$; for
+  a wide piece the reviewed bound $n(m) \cdot d \ge g - 2\tau(S + \tau D)$ gives $(1,
+  2\tau(S + \tau D) + \varepsilon E)$. These are the fields `planes_of_piece` records.
+  Since $c > 0$, $r = c\,g_{lo} - o$ remains a valid lower bound and the possibility
+  filter is unchanged.
+- **X4, Taylor cuts.** A cut $u \cdot d - w\tau \ge v$ is valid when
+  $v \le \min\{u \cdot
+  d - w\tau : d \in \text{d-box},\ \tau \in A,\ \bar n \cdot d \ge c(a + b\tau) - o\}$
+  over every possible plane, because the pose’s own plane satisfies
+  $\bar n \cdot d \ge c\,g -
+  o \ge c(a + b\tau) - o$ by X2 and X3. `taylor_plane_min` (line 945) bounds each such
+  minimum below by the Lagrangian $\max_{\lambda \ge 0}\big[\min_{\text{boxes}} (u -
+  \lambda\bar n) \cdot d + (\lambda c b - w)\tau + \lambda(ca - o)\big]$ over
+  $\lambda = 0$ and the three multipliers that cancel a coefficient; weak duality makes
+  every candidate a valid lower bound whether or not the region is nonempty, and the
+  committed `test_the_exact_taylor_bound_is_the_lp_value` shows the maximum reaching the
+  LP value on a hand-solved instance.
+  The row returned, $(u, -u, -w, w)$ on the four centre columns and the two offset
+  columns with right side $-v$, is the cut.
+- **X5, wall rows.** $x_s \ge h(\theta_s) \ge f(c_s + t_s) \ge a + b t_s$ with $a$
+  bounded by `line_constant` at $c_s$ and $\rho_s$; `wall_row` refuses a recorded $a$
+  above that bound and returns $-x_s + b t_s \le -a$ for side $+1$ and
+  $x_s + b t_s \le U - a$ for side $-1$ (the field order `[s, axis, side, s1, s2, b, a]`
+  matches the pilot’s `taylor_ref`).
+- **X1, the combinations.** `combination_min` minimises each offset column over
+  `offsets_q`; bounds (C4) tighten centre columns only, and a bound on an offset column
+  would index past the boxes and be reported as malformed.
+
+**Evidence.** The committed `tests/test_verify_n17_bb_taylor.py` passes two Taylor
+certificates (a crowded row in the open and one against the west wall, with wall rows
+referenced) and refuses nine doctored kinds: a cut’s $v$ raised by $10^{-6}$, its slope
+$b$ changed, a sign flipped, a centre moved by $1/10$, the centres removed, a wall’s $a$
+raised by $10^{-6}$, $K = 1/4$, an interval claim on a Taylor certificate, and a v1
+schema on a v2 certificate.
+Those 12 tests and the 23 of `tests/test_verify_n17_certificates.py` pass at `HEAD`
+(`bb-tests.log`, 35 passed in 24 s), the kernel verifier’s twelve among them.
+
+## 4. Bottom Line
+
+The kernel verifier `5c550f7c…` is sound: the rewrite changes how three quantities are
+computed and not what is required of a certificate, the new computations are exact by
+argument and by measurement against the reviewed ones, and the memos cannot return a
+result for an input they were not computed for.
+It re-proves the admitted W7 certificate with the admitted counts in 184 seconds, and
+the two verifiers agree row for row on the W7 and N1 samples.
+Admit it once the three test additions of section 2.8 are in, which change no byte of
+the verifier; I judge them a condition of listing the digest rather than a follow-up,
+because the committed suite is what stands between this review and the next rewrite, and
+it does not see a dropped quantifier in the collision loop or a sweep that probes only
+at events.
+
+The branch-and-bound verifier `9ca8df6f…` is sound for interval-mode certificates, with
+three new refusals and no new acceptance on that path, and its Taylor path is sound as
+far as reading and the committed tests establish.
+Admit it; a Taylor certificate, if one is ever put forward, needs its own full
+verification and review as A’s did.
+
+Three non-blocking follow-ups for the kernel verifier: the one-line guard on a one-point
+target in `section_covered`; a comment at `covered_by_sweep` stating that regions must
+be convex and in hull order; and the two cheap cache unit tests of section 2.8.
+
+## Evidence Status
+
+| Kind | Items |
+| --- | --- |
+| Measured, this review | the facet, sweep, `between` and section audits; the W7 full run and the W7 and N1 sampled agreement runs; the 34 doctored certificates; the 21 verifier mutants against three checks; the sampled agreement run on A; the four crafted enclosure tables; the 35 committed tests |
+| Read from code, this review | the diffs of both verifiers; the arguments of sections 2.1 to 2.3 and 3.2 to 3.4 |
+| Taken from the record | the admitted W7 receipt and F2’s receipt; N1’s `check-saved.json`; A’s admitted receipt; the prior reviews’ line numbers and mutation lists |
+| Not checked here | the kernel’s checker and producer (reviewed by R3); HiGHS and `mpmath` (nothing in either verifier depends on them); the Taylor producer’s floats (the verifier recomputes every Taylor quantity it uses) |
+
+<!-- This document follows common-doc-guidelines.md.
+See github.com/jlevy/practical-prose and review guidelines before editing.
+-->

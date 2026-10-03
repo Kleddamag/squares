@@ -538,6 +538,7 @@ case or experiment separately.
 | [n17 Capture After the Pilot](docs/project/reviews/review-2026-10-02-n17-capture-after-pilot.md) | dated review record | record | retained | — |
 | [n17 Cost Reduction by Pruning](docs/project/reviews/review-2026-10-02-n17-cost-reduction-pruning.md) | dated review record | record | retained | — |
 | [n17 Cost Reduction by Performance Engineering](docs/project/reviews/review-2026-10-02-n17-cost-reduction-performance.md) | dated review record | record | retained | — |
+| [n17 Verifier Rewrites Review](docs/project/reviews/review-2026-10-03-n17-verifier-rewrites.md) | dated review record | record | retained | — |
 | [Session 168 Handoff: Work Stopped Mid-Flight](packing/campaign/explorations/X048-session-168-pilots/handoff/README.md) | research synthesis | record | retained | — |
 | [n17 Optimality Route After PR 265](docs/project/reviews/review-2026-10-01-n17-route-after-pr265.md) | dated review record | record | retained | — |
 | [X-048 Session 168 Pilots: Receipts](packing/campaign/explorations/X048-session-168-pilots/README.md) | research synthesis | record | retained | — |

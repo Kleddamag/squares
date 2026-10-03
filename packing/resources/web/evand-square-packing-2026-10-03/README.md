@@ -78,10 +78,75 @@ Decompressed it is 16,201 lines, a header and one line per root.
   `Bentz4Data.lean` regenerated identical.
   It recomputes no tilted leaf, so it is a diagnostic and not a replay of `ValidTilt9`.
 
-## Replay Plan
+## Full Replay of `ValidTilt9`: Plan and Calibration, 3 October 2026
 
-Pending: the full `qx2_zm.py` replay’s shard plan is written by
-`devtools.plan_valid9_replay`.
+The run’s record carries every root’s CPU time: 815,343 s, 226.48 CPU-hours on the
+source’s host.
+[`devtools.plan_valid9_replay`](../../../devtools/plan_valid9_replay.py) prices the
+replay from that record, splits it into shards, stages the digest-checked checker and
+cover, and compares a sharded replay with the record root for root.
+Nothing below is a replay of `ValidTilt9`; the coordinator launches the shards.
+
+- [`receipts/valid9/qx2_calibration_x23-24_y16-17.log`](receipts/valid9/qx2_calibration_x23-24_y16-17.log)
+  and
+  [`qx2_calibration_x33-34_y22-23.log`](receipts/valid9/qx2_calibration_x33-34_y22-23.log):
+  two centre cells near the mean cell cost, 8 roots each, run with the published
+  settings on 4 processes.
+  They took 931.9 CPU-s here against 802.9 s recorded, so the speed is 1.17 CPU-s here
+  per recorded CPU-s, measured on a host loaded by other work.
+  [`qx2_calibration_compare.json`](receipts/valid9/qx2_calibration_compare.json): `ok`,
+  every leaf list of the 16 roots equal to the published one, 420 leaves.
+- [`receipts/valid9/qx2_replay_plan.json`](receipts/valid9/qx2_replay_plan.json): 14
+  shards of 4 cores, about 265 CPU-hours here.
+  Each shard is at most three region-restricted runs.
+  The wall bound is CPU / 4 plus three quarters of the largest root, summed over the
+  shard’s runs.
+
+| Shard | Cells | Priced CPU-h | Largest root (s) | Wall estimate (h) | Wall bound (h) |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| 1 | 704 | 16.27 | 1,799 | 4.76 | 5.52 |
+| 2 | 320 | 16.39 | 1,359 | 4.79 | 5.58 |
+| 3 | 80 | 16.15 | 1,980 | 4.72 | 5.70 |
+| 4 | 13 | 16.10 | 4,196 | 4.71 | 5.73 |
+| 5 | 40 | 15.55 | 2,247 | 4.55 | 5.42 |
+| 6 | 46 | 16.02 | 2,180 | 4.69 | 5.61 |
+| 7 | 82 | 16.46 | 1,675 | 4.81 | 5.81 |
+| 8 | 90 | 15.99 | 1,679 | 4.68 | 5.70 |
+| 9 | 58 | 16.39 | 1,619 | 4.79 | 5.57 |
+| 10 | 78 | 16.25 | 1,694 | 4.75 | 5.68 |
+| 11 | 93 | 16.42 | 1,227 | 4.80 | 5.68 |
+| 12 | 137 | 16.45 | 1,319 | 4.81 | 5.60 |
+| 13 | 164 | 16.19 | 1,293 | 4.74 | 5.36 |
+| 14 | 120 | 15.85 | 1,160 | 4.64 | 5.20 |
+| All | 2,025 | 226.48 | 4,196 | | |
+
+The wall times assume speed 1.17. The Valid7 replay ran 13% above its record, against
+1% for its calibration, so give each runner at least the bound.
+
+**Runner procedure**, one shard per 4-core runner, from `packing/` on a fresh clone set
+up as `AGENTS.md` describes:
+
+1. Stage:
+   `uv run --frozen --all-extras --group dev python -m devtools.plan_valid9_replay stage --work WORK`,
+   which refuses any checker file or cover whose digest is not the record’s.
+2. For each run of the shard in `qx2_replay_plan.json`, in order:
+   `uv run --frozen --all-extras --group dev python -m devtools.replay_receipt --receipt <receipt> --cwd-label "work dir staged by plan_valid9_replay" --python-note "packing/.venv/bin/python3" --chdir WORK -- <command>`,
+   with the command’s leading `python3` replaced by the absolute path of
+   `packing/.venv/bin/python3`.
+3. If a run is interrupted, run the same command again with the receipt renamed
+   `<run>_try2.log`, `_try3.log` and so on; `--resume` skips every root already in its
+   record. Keep every receipt.
+4. When the shard’s runs end, each with `VERIFIED-D4` and no uncertified box, compress
+   each record with `gzip -9n -k runs/<run>.jsonl` and commit the `.jsonl.gz` and `.log`
+   files into `receipts/valid9/`.
+5. When all 14 shards are in:
+   `uv run --frozen --all-extras --group dev python -m devtools.plan_valid9_replay compare receipts/valid9/qx2_k008_shard*.jsonl.gz --json receipts/valid9/qx2_replay_compare.json`,
+   which must report `ok`, 16,200 roots each recorded once, and every leaf list equal to
+   the published one.
+
+`stage --work WORK --s12` also stages the complete upstream `s12` tree at `WORK/s12`,
+where `NPROC=4 sh certificates/k2m4/verify.sh --full` runs the bundle’s own unsharded
+check, about 265 CPU-hours here.
 
 ## Lean Build
 

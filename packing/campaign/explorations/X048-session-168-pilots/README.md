@@ -331,6 +331,31 @@ by deletion to a minimal failing sub-pattern.
   The receipt’s `found_classes` still counts them, and the confirmed-only figures above
   do not. “Minimal” means irreducible under deletion, not smallest.
 
+## The Local Theorem at a Larger Radius
+
+Lane L1 built `devtools/check_n17_local_radius.py`, which runs the H-261 recipe at a
+per-coordinate radius vector and H-268’s slide coverage at a chosen radius, calling both
+checkers’ functions unchanged.
+The [review](../../../../docs/project/reviews/review-2026-10-03-n17-local-radius.md)
+reads the receipts. Each is reproduced from `packing/` by
+`python -m devtools.check_n17_local_radius` with the arguments below, writing to
+`receipts/local-radius/`; $B_c$ is `--box 0 4/25 -1/128 11/100 -13/200 1/30`.
+
+| Receipt | Arguments | Outcome |
+| --- | --- | --- |
+| `scan-uniform.json` | `scan` | the ratio is linear in a uniform radius, $-\omega_{11}$ binding; the uniform limit lies between $1/4630$ and $1/4391$ |
+| `shape-bwprime-1024.json`, `ratio-bwprime-1024.json` and its certificates | `shape --floor 1/1024`, then `ratio --radii` on it | exact pass on $B_W'$ with every coordinate at least $1/1024$, worst $0.999973$ |
+| `shape-bwprime-896.json`, `shape-bwprime-512.json` | `shape --floor 1/896` (`1/512`) `--theta 1` | no vector settles |
+| `slide-11-2048.json` | `slide --radius 11/2048 --thresholds 2/5 -1/10 3/20 --tight 6/25 -1/10 3/20` | passes, but $b$ reaches $0.143$, outside $B_W'$, so the $B_W'$ vector does not compose |
+| `slide-9-2048.json` | `slide --radius 9/2048 --thresholds 2/5 -1/10 3/20 --tight 4/25 -13/200 11/100` | passes; the certified box lies in $B_c$ |
+| `shape-composition-1216.json`, `ratio-composition-1216.json` and its certificates | `shape --floor 1/1216` on $B_c$, then `ratio` | exact pass, every coordinate at least $1/1216$, worst $0.999317$ |
+| `shape-composition-1152.json` | `shape --floor 1/1152` on $B_c$ | settles with $\omega_{11}$ above the slide radius, so it does not compose |
+| `shape-composition-capture.json`, `ratio-composition-capture.json` and its certificates | `shape --floor 1/1024 --position-share 1/3` on $B_c$, then `ratio` | exact pass, every angle at least $1/1024$ and every position at least $1/3072$, worst $0.999368$ |
+| `bounds-*.json` | `bounds` at $1/5000$ and at the $B_W'$ vector | a finer curvature lemma would gain about a factor of two |
+
+The slide receipt’s `margins`, `declared_box` and `inside_declared_box` fields compare
+with $B_W$, the slide module’s constant, and are not what the composition uses.
+
 <!-- This document follows common-doc-guidelines.md.
 See github.com/jlevy/practical-prose and review guidelines before editing.
 -->

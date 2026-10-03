@@ -741,6 +741,10 @@ fn ids(count: usize, what: &str) -> Result<Vec<u32>, String> {
     Ok((0..u32::try_from(count).map_err(|_| format!("too many {what}"))?).collect())
 }
 
+/// How many boxes may reach the depth limit before the search stops: past one,
+/// it continues only to look for a counterexample candidate elsewhere.
+const MAX_DEEP_BOXES: u64 = 4096;
+
 /// Verify one net direction by branch and bound: any `index >= 1`, and
 /// `index = 0` for a measure with points or segments.
 ///
@@ -795,6 +799,10 @@ pub fn verify_direction(
     let mut audits = 0u64;
     let mut verdict = Verdict::Verified;
     let mut witness = None;
+    // Boxes left at the depth limit: the search goes on past them, so that a
+    // counterexample elsewhere is still found, and the first is reported.
+    let mut deep_boxes = 0u64;
+    let mut deep_witness = None;
     while let Some(node) = stack.pop() {
         arena.truncate(node.parent_end);
         point_arena.truncate(node.point_end);
@@ -956,15 +964,21 @@ pub fn verify_direction(
             break;
         }
         if node.depth >= limits.max_depth || nodes >= limits.max_nodes {
-            verdict = Verdict::Unresolved;
-            witness = Some((
+            let here = (
                 x0,
                 y0,
                 add_dn(value, add_dn(atom_inner, atom_lists.centre_dn(&fr, &g))),
                 dx,
                 dy,
-            ));
-            break;
+            );
+            deep_witness.get_or_insert(here);
+            deep_boxes += 1;
+            if nodes >= limits.max_nodes || deep_boxes >= MAX_DEEP_BOXES {
+                verdict = Verdict::Unresolved;
+                witness = deep_witness;
+                break;
+            }
+            continue;
         }
         // Split where the derivative penalty is larger, unless straddling atoms
         // cost more than the penalty does: they stop straddling only as the box
@@ -1022,6 +1036,10 @@ pub fn verify_direction(
         stack.push(second);
         stack.push(first);
     }
+    if verdict == Verdict::Verified && deep_witness.is_some() {
+        verdict = Verdict::Unresolved;
+        witness = deep_witness;
+    }
     Ok(DirectionResult {
         index,
         verdict,
@@ -1054,6 +1072,27 @@ pub fn centre_lower_bound(cert: &Certificate, index: u32, x0: f64, y0: f64) -> R
         full_centre_bound(&fr, &cert.rects, x0, y0),
         atoms_dn(&fr, &g, &cert.points, &cert.segments),
     ))
+}
+
+/// The estimate from above of the mass captured at one centre that decides
+/// whether a stopped search reports a counterexample candidate: the probe that
+/// shows why a centre was, or was not, reported.
+///
+/// # Errors
+///
+/// Returns a message if a constant cannot be enclosed.
+pub fn centre_estimate_up(cert: &Certificate, index: u32, x0: f64, y0: f64) -> Result<f64, String> {
+    let fr = frame(cert, index)?;
+    let g = probe_geom(cert, &fr, index, (x0, y0, 0.0, 0.0))?;
+    let point_ids = ids(cert.points.len(), "points")?;
+    let segment_ids = ids(cert.segments.len(), "segments")?;
+    let lists = Straddling {
+        points: &cert.points,
+        point_ids: &point_ids,
+        segments: &cert.segments,
+        segment_ids: &segment_ids,
+    };
+    Ok(full_centre_bound(&fr, &cert.rects, x0, y0) + lists.centre_estimate_up(&fr, &g))
 }
 
 /// The geometry of a probe box `(x0, y0, dx, dy)`.

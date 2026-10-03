@@ -7,10 +7,12 @@ which proves $s(n) \ge L$. It is lane W2 of `think-gpe0`, written without readin
 authors’ checkers ([INDEPENDENCE.md](INDEPENDENCE.md)), with every lemma it relies on
 proved in [SOUNDNESS.md](SOUNDNESS.md).
 
-Milestone A, rectangle-density certificates, is implemented: exact admission, the axis
-direction by an exact-event vertex sweep, the rotated directions by interval branch and
-bound. Points and segments (Milestone B, `think-4vf7`) and continuous-angle covers are
-not.
+Milestones A and B are implemented: exact admission of formats T (Tokoharu’s rectangle
+densities), M (rectangle rows, per-bin centre domain) and L (points, segments and
+rectangles); the axis direction of a rectangle measure by an exact-event vertex sweep;
+every other direction, and direction zero of a measure with points or segments, by
+interval branch and bound.
+Continuous-angle covers (formats D and P) are not.
 
 ## Use
 
@@ -27,8 +29,10 @@ Standard output is one JSON receipt per direction and a summary line; the exit s
 `PARTIAL` for a subset), 1 when one is refused, and 2 on an admission refusal.
 The default threshold is the certificate’s declared one, else 1. `--confirm` evaluates a
 refusal’s witness in exact rationals.
-`--probe r,x,y[,dx,dy]` prints the certified centre (and box) bound beside the exact
-capture, for differential tests.
+`--probe r,x,y[,dx,dy]` prints the certified centre (and box) bound and the
+counterexample estimate beside the exact capture, for differential tests.
+`--audit-every K` (default 1024) sets the release audit’s sampling, `1` audits every
+box.
 
 ## Checks
 
@@ -38,8 +42,11 @@ capture, for differential tests.
   `sqpack.rectangle_density` and the mutation controls).
   Without `--quick` the check covers more certificates and directions.
 - `devtools.sqverify_fast_census`: every replayed certificate at all 201 directions;
-  results and the generated table are in
-  [`benchmarks/measure-verifier/census/`](../benchmarks/measure-verifier/census/).
+  results and the generated tables are in
+  [`benchmarks/measure-verifier/census/`](../benchmarks/measure-verifier/census/)
+  (format T) and
+  [`benchmarks/measure-verifier/census-mixed/`](../benchmarks/measure-verifier/census-mixed/)
+  (formats M and L, with the authors’ CPU on the directions they replayed).
 
 ## How to Resume
 
@@ -63,10 +70,11 @@ Everything needed is on the branch; nothing lives only in a session.
 4. To extend the census, `python -m devtools.sqverify_fast_census --binary
    sqverify_fast/target/release/sqverify-fast --out benchmarks/measure-verifier/census
    --threads 2 --resume`, then `--report` to regenerate its table and `--check` to
-   confirm every case.
-5. Open work is in the beads under `think-gpe0`: `think-tgra` (this loop), `think-4vf7`
-   (points and segments), `think-na5a` (a release-build audit with a fault-injection
-   control), `think-j1pd` (a reference timing route for `verify.cpp` at any direction).
+   confirm every case; add `--family mixed` and `--out
+   benchmarks/measure-verifier/census-mixed` for formats M and L.
+5. Open work is in the beads under `think-gpe0`: `think-tgra` (this loop), `think-j1pd`
+   (a reference timing route for `verify.cpp` at any direction).
+   The release audit (`think-na5a`) and points and segments (`think-4vf7`) are done.
 
 <!-- This document follows common-doc-guidelines.md.
 See github.com/jlevy/practical-prose and review guidelines before editing.

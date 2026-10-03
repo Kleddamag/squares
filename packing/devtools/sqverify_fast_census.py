@@ -1,6 +1,13 @@
-"""Verify every replayed wand125 rectangle certificate with the clean-room verifier.
+"""Verify every replayed wand125 certificate with the clean-room verifier.
 
-Milestone A of the independent measure verifier (`think-d69e`). The certificates are
+Two families. `--family rectangles` is Milestone A of the independent measure verifier
+(`think-d69e`); `--family mixed` is Milestone B (`think-4vf7`): every certificate of
+formats M and L whose directions this repository has replayed with the authors' checker
+(a `range-*` directory under the packet's `receipts/`), at all 201 directions and the
+threshold the certificate declares, with the authors' recorded CPU on the directions
+they replayed beside ours on the same directions.
+
+For the rectangles family the certificates are
 the ones this repository has already replayed with the authors' checker: every case in
 the `receipts/replay/audit.json` of the wand125 rectangle packets, and Tokoharu's three
 in the 22 September packet. Each runs through `sqverify-fast` at all 201 net
@@ -21,7 +28,10 @@ From `packing/`:
 
     .venv/bin/python3 -m devtools.sqverify_fast_census \\
         --binary sqverify_fast/target/release/sqverify-fast \\
-        --out benchmarks/measure-verifier/census --threads 3 --resume
+        --out benchmarks/measure-verifier/census --threads 2 --resume
+    .venv/bin/python3 -m devtools.sqverify_fast_census --family mixed \\
+        --binary sqverify_fast/target/release/sqverify-fast \\
+        --out benchmarks/measure-verifier/census-mixed --threads 2 --resume
 """
 
 from __future__ import annotations
@@ -46,6 +56,13 @@ PACKETS = ("2026-09-27", "2026-09-28")
 THRESHOLD = "10001/10000"
 TOKOHARU_PACKET = "2026-09-22"
 TOKOHARU = WEB / "external-square-certificates-2026-09-22/tokoharu-density/certificates"
+# The packets of formats M and L whose receipts hold replays.
+MIXED_PACKETS = (
+    "wand125-point-and-mixed-2026-10-01",
+    "wand125-mixed-bounds-2026-10-02",
+    "wand125-mixed-bounds-n76-2026-10-02",
+    "wand125-linear-certificates-2026-10-02",
+)
 # Tokoharu's three certificates, replayed in the 22 September packet's density receipt.
 TOKOHARU_CASES = (
     ("cert_n11_L381", 11, "381/100"),
@@ -62,9 +79,14 @@ class Case:
     certificate: str
     n: int
     side: str
+    # Mixed family: the candidate's path, and None for the declared threshold.
+    path: Path | None = None
+    threshold: str | None = THRESHOLD
 
     @property
     def candidate(self) -> Path:
+        if self.path is not None:
+            return self.path
         if self.packet == TOKOHARU_PACKET:
             return TOKOHARU / self.certificate / "certified_candidate.json"
         for packet in (self.packet, *PACKETS):
@@ -102,6 +124,44 @@ def replayed_cases() -> list[Case]:
     return cases
 
 
+def mixed_cases() -> list[Case]:
+    """Every format M or L certificate with at least one replayed direction."""
+    cases: list[Case] = []
+    for packet in MIXED_PACKETS:
+        receipts = WEB / packet / "receipts"
+        for folder in sorted(receipts.iterdir()):
+            if not folder.is_dir() or not any(folder.glob("range-*/directions.jsonl")):
+                continue
+            n = int(folder.name.removeprefix("n"))
+            found = sorted(
+                (WEB / packet / "square-packing-bounds/certificates").glob(
+                    f"mixed_n{n}_L*/candidate.json.gz"
+                )
+            )
+            if len(found) != 1:
+                raise SystemExit(f"{packet}: no single candidate for n{n}")
+            data = json.loads(gzip.decompress(found[0].read_bytes()))
+            side = str(Fraction(str(data["L"])))
+            cases.append(Case(packet, found[0].parent.name, n, side, found[0], None))
+    return cases
+
+
+def mixed_reference(case: Case) -> dict[str, Any]:
+    """The authors' replayed directions of one mixed case, with their CPU seconds."""
+    folder = WEB / case.packet / "receipts" / f"n{case.n}"
+    rows: dict[int, dict[str, Any]] = {}
+    for path in sorted(folder.glob("range-*/directions.jsonl")):
+        for line in path.read_text(encoding="utf-8").splitlines():
+            row = json.loads(line)
+            if row.get("status") == "REPLAYED":
+                rows[int(row["index"])] = row
+    return {
+        "directions": sorted(rows),
+        "cpu_seconds": sum(float(row.get("cpu_seconds") or 0.0) for row in rows.values()),
+        "nodes": sum(int((row.get("report") or {}).get("nodes") or 0) for row in rows.values()),
+    }
+
+
 def sha256(path: Path) -> str:
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
@@ -123,8 +183,7 @@ def run(binary: Path, case: Case, out: Path, threads: int) -> dict[str, Any]:
         case.side,
         "--directions",
         "all",
-        "--threshold",
-        THRESHOLD,
+        *(["--threshold", case.threshold] if case.threshold is not None else []),
         "--threads",
         str(threads),
         "--confirm",
@@ -169,6 +228,7 @@ def run(binary: Path, case: Case, out: Path, threads: int) -> dict[str, Any]:
         key=lambda row: row["min_certified_lower_bound"],
         default=None,
     )
+    threshold = Fraction(str(summary.get("threshold") or case.threshold or THRESHOLD))
     least_check: dict[str, Any] | None = None
     if least is not None:
         box = least["least_bound_box"]
@@ -185,10 +245,14 @@ def run(binary: Path, case: Case, out: Path, threads: int) -> dict[str, Any]:
             "r": least["r"],
             "centre": [box["x"], box["y"]],
             "exact_coverage": exact,
-            "clears_threshold": exact is not None and Fraction(exact) >= Fraction(THRESHOLD),
+            "clears_threshold": exact is not None and Fraction(exact) >= threshold,
         }
     return {
         "least_bound_leaf_exact": least_check,
+        "threshold": str(threshold),
+        "direction_cpu_seconds": {
+            str(row["r"]): row.get("cpu_seconds") for row in rows if "cpu_seconds" in row
+        },
         "packet": case.packet,
         "certificate": case.certificate,
         "n": case.n,
@@ -305,8 +369,88 @@ def render_report(census: dict[str, Any]) -> str:
     return "\n".join(lines)
 
 
+MIXED_ALIGN = "--- ---: --- --- ---: ---: --- --- ---: ---: --- ---: ---: ---:"
+
+
+def render_mixed_report(census: dict[str, Any]) -> str:
+    """The mixed census as a Markdown table, beside the authors' replays."""
+    cases = {case.certificate: case for case in mixed_cases()}
+    lines = [
+        "# Milestone B Census",
+        "",
+        "Generated by `python -m devtools.sqverify_fast_census --family mixed --report`;",
+        "do not edit by hand.",
+        "",
+        "Every certificate of formats M (rectangle rows, per-bin centre domain) and L (points,",
+        "segments and rectangles, Tokoharu's domain) with at least one direction replayed by",
+        "the authors' checker in this repository, verified by `sqverify-fast` at all 201 net",
+        "directions at the threshold the certificate declares, 1. *Exact leaf* is the exact",
+        "rational capture at the centre of the least-bound leaf of the least-bound direction.",
+        "*Authors' CPU* is the authors' checker's recorded CPU seconds on the directions this",
+        "repository replayed; *ours, same directions* is `sqverify-fast`'s thread CPU on",
+        "exactly those directions. CPU on a shared host whose load average is given.",
+        "",
+        (
+            "| Certificate | n | Format | Status | Directions | Nodes | Least certified bound"
+            " | Exact leaf | CPU s, all 201 | Load | Replayed directions | Authors' CPU s"
+            " | Ours, same directions | Ratio |"
+        ),
+        "|" + "|".join(f" {align} " for align in MIXED_ALIGN.split()) + "|",
+    ]
+    total_cpu = 0.0
+    verified = 0
+    for name in sorted(census["cases"], key=lambda key: (census["cases"][key]["n"], key)):
+        entry = census["cases"][name]
+        case = cases.get(name)
+        reference: dict[str, Any] = (
+            mixed_reference(case) if case is not None else {"directions": []}
+        )
+        replayed = reference["directions"]
+        ours = sum(
+            float((entry.get("direction_cpu_seconds") or {}).get(str(r)) or 0.0)
+            for r in replayed
+        )
+        authors = float(reference.get("cpu_seconds") or 0.0)
+        span = "all 201" if len(replayed) == 201 else ", ".join(str(r) for r in replayed)
+        least = entry.get("least_bound_leaf_exact") or {}
+        cpu = float(entry.get("cpu_seconds") or 0.0)
+        total_cpu += cpu
+        verified += entry.get("status") == "VERIFIED"
+        cells = [
+            f"`{name}`",
+            str(entry["n"]),
+            str((entry.get("premises") or {}).get("format")),
+            str(entry.get("status")),
+            str(entry.get("directions_verified")),
+            f"{entry.get('nodes'):,}",
+            str(entry.get("least_certified_bound")),
+            "clears" if least.get("clears_threshold") else "FAILS",
+            f"{cpu:.1f}",
+            f"{float(entry.get('load_before') or 0.0):.1f}",
+            span,
+            f"{authors:,.0f}",
+            f"{ours:.1f}",
+            f"{authors / ours:,.0f}x" if ours > 0 else "-",
+        ]
+        lines.append("| " + " | ".join(cells) + " |")
+    lines += [
+        "",
+        (
+            f"{verified} of {len(census['cases'])} certificates verified;"
+            f" {total_cpu:.0f} CPU seconds in all."
+        ),
+        "",
+        "<!-- This document follows common-doc-guidelines.md.",
+        "See github.com/jlevy/practical-prose and review guidelines before editing.",
+        "-->",
+        "",
+    ]
+    return "\n".join(lines)
+
+
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=(__doc__ or "").splitlines()[0])
+    parser.add_argument("--family", choices=("rectangles", "mixed"), default="rectangles")
     parser.add_argument("--binary", type=Path, required=True)
     parser.add_argument("--out", type=Path, required=True)
     parser.add_argument("--threads", type=int, default=1)
@@ -324,9 +468,14 @@ def main(argv: list[str] | None = None) -> int:
         if census_path.is_file()
         else {"kind": "sqverify-fast-census/v1", "threshold": THRESHOLD, "cases": {}}
     )
-    cases = replayed_cases()
+    mixed = args.family == "mixed"
+    if mixed:
+        census["family"] = "mixed"
+        census["threshold"] = "declared"
+    cases = mixed_cases() if mixed else replayed_cases()
     if args.report:
-        (args.out / "README.md").write_text(render_report(census), encoding="utf-8")
+        render = render_mixed_report if mixed else render_report
+        (args.out / "README.md").write_text(render(census), encoding="utf-8")
         return 0
     if args.check:
 

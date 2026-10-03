@@ -167,7 +167,8 @@ fn probe(
         &s,
     );
     let centre = sqverify_fast::rotated::centre_lower_bound(cert, index, x, y)?;
-    let mut out = json!({"r": index, "x": x, "y": y, "centre_lower_bound": centre, "exact_coverage": exact.to_string(),
+    let estimate = sqverify_fast::rotated::centre_estimate_up(cert, index, x, y)?;
+    let mut out = json!({"r": index, "x": x, "y": y, "centre_lower_bound": centre, "centre_estimate_up": estimate, "exact_coverage": exact.to_string(),
         "exact_coverage_approx": num_traits::ToPrimitive::to_f64(&exact)});
     if numbers.len() == 4 {
         out["dx"] = json!(numbers[2]);

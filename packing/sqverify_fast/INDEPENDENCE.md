@@ -37,6 +37,14 @@ Mathematics (reviews under `docs/project/reviews/`):
   and the preconditions.
   The section “Inscribed-polygon area and arithmetic” (lines 195–224), which describes
   the checker’s area routine, was skipped.
+- For Milestone B, `review-2026-10-02-wand125-linear-certificates-and-n76.md` and
+  `review-2026-10-02-wand125-mixed-rectangle-bounds.md`: their statements of the
+  formats, the atom bounds (a point counts when it lies in the closed core for every
+  centre of a box; a segment’s sub-segment counts when both its ends do) and the per-bin
+  domain, which spec §1.4–§1.6 restates.
+  Lines 86–161 of the linear review name functions of the authors’ Python driver
+  (`unified_measure.py`) in prose; nothing here uses them.
+  No passage quoting or paraphrasing checker code line by line was read.
 
 Lane W1’s clean outputs, checked out from its branch `worktree-agent-a9b6885d64664dd01`
 at the coordinator’s instruction (these two files only; the research note, the
@@ -72,6 +80,14 @@ Certificate data and summaries (packets under `packing/resources/web/`):
 - `receipts/replay/audit.json` of the 27 and 28 September packets (case list, status,
   counts and timings only) and `receipts/controls/rect_n41_L676.json` of the 1 October
   packet (mutation descriptions and witness).
+- For Milestone B, in the packets `wand125-point-and-mixed-2026-10-01`,
+  `wand125-mixed-bounds-2026-10-02`, `wand125-mixed-bounds-n76-2026-10-02` and
+  `wand125-linear-certificates-2026-10-02`: the `candidate.json.gz` of every `mixed_n*`
+  certificate (top-level keys, rows and masses), and under `receipts/` the
+  `merged.json`, `summary.json` and `directions.jsonl` of each replayed range (status,
+  index, nodes, CPU and wall seconds, load) and the `control.json` of n37 and n101
+  (mutation descriptions, witness centre and exact coverage, the checker’s verdicts).
+  The `code/` folder beside `mixed_n101_L1028` was listed by `ls` and never opened.
 
 ## Commands Run
 
@@ -92,10 +108,19 @@ Certificate data and summaries (packets under `packing/resources/web/`):
 - `cargo build`, `cargo test`, `cargo clippy`, `valgrind --tool=callgrind` and
   `callgrind_annotate` on this crate only.
 - `packing-validate --edit` and `--only` on this worktree.
+- For Milestone B: `sqverify-fast` on the mixed and linear candidates and on their
+  mutations; `python -m devtools.check_sqverify_fast --only mixed` and
+  `python -m devtools.sqverify_fast_census --family mixed`; a throwaway build of this
+  crate using Tokoharu’s domain for format M and a dense NumPy evaluation of every axis
+  vertex of `mixed_n76_L894`, to check the axis minimum independently (both agree with
+  the sweep: 1.0075338896, below the authors’ recorded `integer_minimum` of 1.0075130,
+  so that figure is their conservative bound, not the minimum); the dense evaluation is
+  now `axis_minimum_dense` in `devtools/check_sqverify_fast.py`.
 
 The census reads, from the replay receipts, only the authors’ summary fields (status,
 node total, least printed bound, wall seconds and the worker count in the recorded
-command), to set them beside this verifier’s results.
+command; for formats M and L, each replayed direction’s index, status, nodes and CPU
+seconds), to set them beside this verifier’s results.
 
 ## Outside References
 

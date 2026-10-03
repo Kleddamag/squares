@@ -5,7 +5,7 @@ title: Import, confirm and answer every reported result (2 October 2026 effort)
 kind: epic
 status: open
 priority: 1
-version: 28
+version: 29
 labels:
   - result-import
 dependencies: []
@@ -31,7 +31,7 @@ child_order_hints:
   - is-01m3ytdhr6h2xnsvj4f2nc2nk2
   - is-01m3z77bdhk8tn3epx63ywhxft
 created_at: 2026-10-02T16:51:15.917Z
-updated_at: 2026-10-02T23:33:49.612Z
+updated_at: 2026-10-02T23:54:02.259Z
 ---
 Umbrella for the 2 October 2026 effort: PRs #290 -> #292 -> #298 (imports and records), plus a stacked PR for verifier provenance and the independent verifier. Children track each lane; done when every reported result is confirmed or refuted (or has a bead naming exactly what remains), every issue has a current status reply, closeable issues are closed, and all PRs are merged.
 
@@ -107,3 +107,4 @@ Next steps for the next agent, in order:
 - 23:28 T-068's 29 replayed rectangle certificates registered as T-074 at V3/C3 over 31 counts (497667314, re-pinned bbf2a6cbf). Container restarted again; records lane resumed to finish CI fixes from workflow_dispatch run 37075005561 (frontier-table count, rectangle-audit test, suite-file record, h236 T-036 evidence list, and the slow-lane digest mismatch: lane CC's replay mode edited packing/cases/trump11/isolation_radius.py whose bytes a retained review pins — the mode must live in its own module). Then afternoon V0 registration and #309.
 - W2: release audit with fault injection pushed (241f0a32a); Milestone B next. Headline benchmark on an idle runner: session_019VVW5gkewSCGv5ggVDmR3q, branch claude/bench-sqverify-fast-headline.
 - 23:33 EE done (claude/lane-ee-t059-census @4972a842c): T-059 census 12,028/12,028 rows COMPLETE_ROW_EQUALITY, global minimum 999962528 = reference, every witness replayed; T-059 V0/C1 -> V3/C3 (replayed-here, same-implementation); think-pgrx fixed (gzipped journals). To merge into #298 by the records lane; also update plan-2026-10-01-result-status.md, which still says the replay is queued. Close think-11z6/think-pgrx after merge.
+- 23:5x CI fixes pushed (ce615a6ec: isolation_radius.py restored to reviewed bytes, replay mode in cases.trump11.isolation_radius_replay; test and suite-record fixes); lane EE merged (48a840593, T-059 V3/C3), re-pinned 79d6c91b5. Dispatched run 37078567481 on ce615a6ec: slow-lane green; validate pending. T-044 now superseded by T-074. Records lane next: afternoon V0 registrations, then #309.

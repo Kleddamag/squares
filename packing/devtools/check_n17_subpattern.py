@@ -142,10 +142,13 @@ def check_saved(
     *,
     max_seconds: float = 3600.0,
     require_no_producer: bool = True,
+    cover: str = "indexed",
 ) -> dict[str, Any]:
     """Certify saved objects with the checker alone: seed admission, the sequential
     replay and the transfer. The producer is never imported; with `require_no_producer`
-    its absence from `sys.modules` is asserted before and after the check."""
+    its absence from `sys.modules` is asserted before and after the check. `cover` names
+    the row-cover sweep (`sequential.COVERS`); the indexed and reference forms prove the
+    same cover and report the same events and probes."""
     if require_no_producer and PRODUCER in sys.modules:
         raise RefusalError("the producer is loaded; a saved check must run without it")
     started = time.monotonic()
@@ -158,7 +161,13 @@ def check_saved(
         frame, seed, mask=mask, bins=bins, budget=budget, allow_empty_groups=True
     )
     trace = sequential.replay_sequential(
-        frame, node_object, seed_state, mask=mask, seed_sha256=seed_sha, budget=budget
+        frame,
+        node_object,
+        seed_state,
+        mask=mask,
+        seed_sha256=seed_sha,
+        budget=budget,
+        cover=cover,
     )
     if require_no_producer and PRODUCER in sys.modules:
         raise RefusalError("the producer was imported during a saved check")
@@ -169,6 +178,7 @@ def check_saved(
         "cells": [frame.cell_names[owner] for owner in mask],
         "mask": mask,
         "bins": bins,
+        "cover_backend": cover,
         "seed_sha256": seed_sha,
         "node_sha256": node_sha,
         "closure": trace.closure,
@@ -350,7 +360,9 @@ def main(argv: list[str] | None = None) -> int:
     start, cpu = time.monotonic(), time.process_time()
     if args.check_saved is not None:
         try:
-            result = check_saved(args.check_saved, max_seconds=args.max_seconds)
+            result = check_saved(
+                args.check_saved, max_seconds=args.max_seconds, cover=args.cover
+            )
         except IncompleteError as error:
             result = {"status": "INCOMPLETE", "reason": str(error), "excluded_orbits": 0}
         except (ValueError, KeyError, IndexError, TypeError, OSError) as error:

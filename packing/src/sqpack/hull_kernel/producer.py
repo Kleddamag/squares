@@ -277,13 +277,18 @@ def cached_core(
     return cores[(lo, hi)]
 
 
+RowKey = tuple[str, str]
+
+
 @dataclass(frozen=True)
 class PartnerRow:
     """One live partner row, with what every query row reuses computed once.
 
     `own` holds, for each outward edge normal `n` of the partner core `Q_r`, the support
     `max over Q_r of n.v` plus `min over D_r of n.y`: the part of that facet's bound that
-    does not depend on the query core.
+    does not depend on the query core. `key` is the row's interval, which names its core
+    within one production, and `domain_max` memoises `max over D_r of m.v` by the query
+    core's key and normal index, a pure function of the domain.
     """
 
     domain: Polygon
@@ -291,6 +296,8 @@ class PartnerRow:
     own: tuple[tuple[Q, Q, Q], ...]
     float_domain: tuple[tuple[float, float], ...]
     float_own: tuple[tuple[float, float, float], ...]
+    key: RowKey = ("", "")
+    domain_max: dict[tuple[RowKey, int], Q] = field(default_factory=dict)
 
 
 def _normals(polygon: Polygon) -> list[tuple[Q, Q]]:
@@ -301,7 +308,7 @@ def _normals(polygon: Polygon) -> list[tuple[Q, Q]]:
     ]
 
 
-def prepare_partner(domain: Polygon, core: Polygon) -> PartnerRow:
+def prepare_partner(domain: Polygon, core: Polygon, key: RowKey = ("", "")) -> PartnerRow:
     own = tuple(
         (
             nx,
@@ -316,7 +323,72 @@ def prepare_partner(domain: Polygon, core: Polygon) -> PartnerRow:
         own,
         tuple((float(x), float(y)) for x, y in domain),
         tuple((float(a), float(b), float(c)) for a, b, c in own),
+        key,
     )
+
+
+@dataclass(frozen=True)
+class CoreTerms:
+    """One core's outward normals and its support in each of them."""
+
+    normals: tuple[tuple[Q, Q], ...]
+    own_max: tuple[Q, ...]
+
+
+class CollisionTerms:
+    """The core-only terms of `collision_planes`, memoised by row interval within one
+    production (where an interval names one core): a core's own terms, and for a pair of
+    cores the support of each in the other's normals. The planes built from them are the
+    same `Fraction` values as the uncached form's, so the floats the prefilter clips with
+    and the regions written are unchanged.
+    """
+
+    def __init__(self) -> None:
+        self.cores: dict[RowKey, CoreTerms] = {}
+        self.pairs: dict[tuple[RowKey, RowKey], tuple[tuple[Q, ...], tuple[Q, ...]]] = {}
+
+    def core(self, key: RowKey, core: Polygon) -> CoreTerms:
+        found = self.cores.get(key)
+        if found is None:
+            normals = tuple(_normals(core))
+            found = self.cores[key] = CoreTerms(
+                normals, tuple(max(mx * x + my * y for x, y in core) for mx, my in normals)
+            )
+        return found
+
+    def pair(
+        self, key: RowKey, core: Polygon, query: CoreTerms, partner: PartnerRow
+    ) -> tuple[tuple[Q, ...], tuple[Q, ...]]:
+        """`min over the query core of n.w` for each partner normal `n`, and `min over the
+        partner core of m.v` for each query normal `m`."""
+        found = self.pairs.get((key, partner.key))
+        if found is None:
+            found = self.pairs[(key, partner.key)] = (
+                tuple(min(nx * x + ny * y for x, y in core) for nx, ny, _ in partner.own),
+                tuple(
+                    min(mx * x + my * y for x, y in partner.core) for mx, my in query.normals
+                ),
+            )
+        return found
+
+
+def cached_collision_planes(
+    key: RowKey, core: Polygon, partner: PartnerRow, terms: CollisionTerms
+) -> list[Halfplane]:
+    """`collision_planes` with its core-only terms read from `terms`: the same planes."""
+    query = terms.core(key, core)
+    in_query, in_partner = terms.pair(key, core, query, partner)
+    planes: list[Halfplane] = [
+        (nx, ny, own - in_query[index]) for index, (nx, ny, own) in enumerate(partner.own)
+    ]
+    for index, (mx, my) in enumerate(query.normals):
+        furthest = partner.domain_max.get((key, index))
+        if furthest is None:
+            furthest = partner.domain_max[(key, index)] = max(
+                mx * x + my * y for x, y in partner.domain
+            )
+        planes.append((-mx, -my, query.own_max[index] - in_partner[index] - furthest))
+    return planes
 
 
 def collision_planes(core: Polygon, partner: PartnerRow) -> list[Halfplane]:
@@ -365,7 +437,14 @@ def _satisfies(planes: list[tuple[int, int, int]], point: Point) -> bool:
     return all(a * px + b * py <= c * z for a, b, c in planes)
 
 
-def collision_region(core: Polygon, domain: Polygon, partner_rows: list[PartnerRow]) -> Polygon:
+def collision_region(
+    core: Polygon,
+    domain: Polygon,
+    partner_rows: list[PartnerRow],
+    *,
+    key: RowKey | None = None,
+    terms: CollisionTerms | None = None,
+) -> Polygon:
     """A convex part of `domain` every centre of which collides with every partner pose.
 
     The exact set is the domain cut by every facet `n.p <= h + min over D_r of n.y` of
@@ -373,10 +452,20 @@ def collision_region(core: Polygon, domain: Polygon, partner_rows: list[PartnerR
     point; the region returned is the hull of grid points pulled inside it and of the
     domain's own vertices, each kept only if it satisfies every one of those halfplanes and
     the domain's exactly, in integers; the checker verifies the same inequalities itself.
+    With `key` and `terms` the planes come from the memoised form, with the same values.
     """
     if not _float_collision(core, domain, partner_rows):
         return []
-    planes = [plane for partner in partner_rows for plane in collision_planes(core, partner)]
+    if key is None or terms is None:
+        planes = [
+            plane for partner in partner_rows for plane in collision_planes(core, partner)
+        ]
+    else:
+        planes = [
+            plane
+            for partner in partner_rows
+            for plane in cached_collision_planes(key, core, partner, terms)
+        ]
     region = [(float(x), float(y)) for x, y in domain]
     for a, b, c in planes:
         region = _float_clip(region, float(a), float(b), float(c))
@@ -430,10 +519,21 @@ def _float_collision(core: Polygon, domain: Polygon, partner_rows: list[PartnerR
     return True
 
 
+PartnerMemo = dict[int, tuple[Row, PartnerRow]]
+
+
 def partner_cover(
-    frame: Frame, accepted: list[Row], cores: dict[tuple[Q, Q], Polygon]
+    frame: Frame,
+    accepted: list[Row],
+    cores: dict[tuple[Q, Q], Polygon],
+    memo: PartnerMemo | None = None,
 ) -> tuple[list[dict[str, Any]], list[PartnerRow]]:
-    """A partner's complete pose cover in the grammar, and its live rows."""
+    """A partner's complete pose cover in the grammar, and its live rows.
+
+    `memo` keeps each accepted row's `PartnerRow`, by the identity of the row object it
+    was built from (held in the entry, so the identity cannot be reused), across the
+    steps that republish the row unchanged; a replaced row object builds a new one.
+    """
     given: list[dict[str, Any]] = []
     live: list[PartnerRow] = []
     for row in accepted:
@@ -450,7 +550,16 @@ def partner_cover(
             lo, hi = (Q(value) for value in row["interval"])
             domain, core = hull(vertices), cached_core(frame, lo, hi, cores)
             item["domain"], item["core"] = encode(domain), encode(core)
-            live.append(prepare_partner(domain, core))
+            entry = None if memo is None else memo.get(id(row))
+            if entry is not None and entry[0] is row:
+                prepared = entry[1]
+            else:
+                prepared = prepare_partner(
+                    domain, core, (row["interval"][0], row["interval"][1])
+                )
+                if memo is not None:
+                    memo[id(row)] = (row, prepared)
+            live.append(prepared)
         given.append(item)
     return given, live
 
@@ -480,8 +589,10 @@ def produce_row(
     groups: dict[int, Polygon],
     partners: dict[int, list[PartnerRow]] | None = None,
     cores: dict[tuple[Q, Q], Polygon] | None = None,
+    terms: CollisionTerms | None = None,
 ) -> tuple[dict[str, Any], Row, list[Halfplane]]:
     lo, hi = (Q(value) for value in predecessor["interval"])
+    key: RowKey = (predecessor["interval"][0], predecessor["interval"][1])
     reference = {"kind": "phase3", "node": node_id, "step": step_index, "row": row_index}
     required = intersect(hull(points(predecessor["outer_domain"])), wall_lines(frame, lo, hi))
     accepted: Row = {
@@ -510,7 +621,7 @@ def produce_row(
     positive = area2(required) > 0
     removed = [region for region in forbidden_regions(groups, owner, core) if region]
     for partner, live in sorted((partners or {}).items()):
-        region = collision_region(core, required, live)
+        region = collision_region(core, required, live, key=key, terms=terms)
         if region:
             row["collision_regions"].append({"partner": partner, "vertices": encode(region)})
             removed.append(region)
@@ -636,6 +747,8 @@ def produce(
     closure: dict[str, Any] | None = None
     production = Production(seed, {})
     cores = CoreCache(core)
+    terms = CollisionTerms()
+    memo: PartnerMemo = {}
     previous: list[dict[str, Any]] | None = None
     for round_index in range(max_rounds):
         for owner in mask:
@@ -651,7 +764,7 @@ def produce(
             if collision:
                 for other in mask:
                     if other != owner:
-                        given, live = partner_cover(frame, rows[other], cores)
+                        given, live = partner_cover(frame, rows[other], cores, memo)
                         if live:
                             covers[str(other)], partners[other] = given, live
             produced = [
@@ -665,6 +778,7 @@ def produce(
                     groups=groups,
                     partners=partners,
                     cores=cores,
+                    terms=terms,
                 )
                 for index, predecessor in enumerate(rows[owner])
             ]

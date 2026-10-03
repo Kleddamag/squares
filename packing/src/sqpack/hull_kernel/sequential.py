@@ -32,7 +32,14 @@ from dataclasses import dataclass, field
 from fractions import Fraction as Q
 from typing import Any
 
-from sqpack.hull_kernel.collision import integer_universal_collision, self_hull_cuts
+from sqpack.hull_kernel.collision import (
+    FacetCache,
+    PreparedRow,
+    as_prepared,
+    cached_universal_collision,
+    prepare_rows,
+    self_hull_cuts,
+)
 from sqpack.hull_kernel.covers import (
     closed_degenerate_cover,
     convex_halfplanes,
@@ -114,15 +121,18 @@ def check_row(
     predecessor: Mapping[str, Any],
     budget: Budget,
     cover: str = "reference",
-    partners: Mapping[int, list[tuple[Polygon, Polygon]]] | None = None,
+    partners: Mapping[int, Sequence[PreparedRow | tuple[Polygon, Polygon]]] | None = None,
+    facets: FacetCache | None = None,
 ) -> RowResult:
     """One closed row of the sequential grammar, from its accepted predecessor.
 
     A collision region names an admitted partner; it is accepted only if every vertex lies
     in the row's legal domain and, for every live row `(D_r, Q_r)` of that partner's
     complete pose cover, in every facet `n.p <= h + min over D_r of n.y` of `Q_r - Q_i`
-    (`integer_universal_collision`): square `i` centred there overlaps the partner in
-    every pose the partner can still take.
+    (`cached_universal_collision`, the memoised form of `integer_universal_collision`):
+    square `i` centred there overlaps the partner in every pose the partner can still
+    take. `facets` is the node's memo of facets by pair of cores; a fresh one is used
+    when none is given.
     """
     row = step["rows"][row_index]
     owner = step["owner"]
@@ -169,13 +179,14 @@ def check_row(
     strict_core(frame, core, lo, hi)
     collisions: list[Polygon] = []
     collision_checks = 0
+    memo: FacetCache = {} if facets is None else facets
     for item in row["collision_regions"]:
         partner = item["partner"]
         require(partners is not None and partner in partners, "collision partner not admitted")
         assert partners is not None
         region = convex(points(item["vertices"]))
-        collision_checks += integer_universal_collision(
-            core, domain, partners[partner], region, budget=budget
+        collision_checks += cached_universal_collision(
+            core, domain, as_prepared(partners[partner]), region, budget=budget, facets=memo
         )
         collisions.append(region)
     forbidden = [region for region in forbidden_regions(prior, owner, core) if region]
@@ -367,6 +378,7 @@ def replay_sequential(
     groups, rows = dict(seed.groups), dict(seed.rows)
     trace = SequentialTrace()
     steps = source["steps"]
+    facets: FacetCache = {}
     for step_index, step in enumerate(steps):
         require(trace.closure is None, "a step follows the node's closure")
         owner = step["owner"]
@@ -385,6 +397,7 @@ def replay_sequential(
         )
         predecessors = complete_refinement(step["rows"], rows[owner], max_rows=budget.max_nodes)
         partners = admit_partner_covers(frame, step, rows, mask=mask)
+        prepared = {partner: prepare_rows(live) for partner, live in partners.items()}
         results = [
             check_row(
                 frame,
@@ -395,7 +408,8 @@ def replay_sequential(
                 predecessor=predecessor,
                 budget=budget,
                 cover=cover,
-                partners=partners,
+                partners=prepared,
+                facets=facets,
             )
             for row_index, predecessor in enumerate(predecessors)
         ]

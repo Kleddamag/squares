@@ -12,7 +12,10 @@ n11's `B` read from the frame and the arithmetic unchanged:
   for every live row `(D_r, Q_j^r)` of a partner's complete pose cover, in every facet
   `n.p <= h + min over D_r of n.y` of `Q_j^r - Q_i`; a centre there overlaps the partner
   in every pose it can still take. The integer form lifts points to homogeneous integer
-  coordinates and decides every inequality by cross-multiplication;
+  coordinates and decides every inequality by cross-multiplication; the cached form
+  (`cached_universal_collision`, on `prepare_rows` and a `FacetCache`) checks the same
+  inequalities with the facets memoised by the pair of cores and each facet's minimum
+  over `D_r` memoised on the partner row;
 * `support_outer_domain`: a row's residual hull clipped to the world by the eight
   support directions, rounded outward to `10^-8`, and `common_core_output`, which checks
   a row's published common-core planes and eight support bounds.
@@ -27,10 +30,11 @@ from __future__ import annotations
 
 import time
 from collections.abc import Mapping, Sequence
+from dataclasses import dataclass, field
 from fractions import Fraction
 from fractions import Fraction as Q
 from functools import cmp_to_key
-from math import lcm
+from math import gcd, lcm
 from typing import Any
 
 from sqpack.hull_kernel.covers import convex_halfplanes
@@ -228,6 +232,135 @@ def homogeneous_hull(points: list[HomogeneousPoint]) -> list[HomogeneousPoint]:
             upper.pop()
         upper.append(point)
     return lower[:-1] + upper[:-1]
+
+
+@dataclass(frozen=True)
+class PreparedRow:
+    """A live partner row with its homogeneous forms and the memo of its domain minima.
+
+    `minima` holds, by facet direction in lowest terms, the least value of `d . y` over
+    the domain as `(value, denominator)`; a facet `n = g d` with `g > 0` has minimum
+    `g` times that. It is a pure function of the domain, which never changes.
+    """
+
+    domain: Polygon
+    core: Polygon
+    centers: tuple[HomogeneousPoint, ...]
+    partner: tuple[HomogeneousPoint, ...]
+    minima: dict[tuple[int, int], tuple[int, int]] = field(default_factory=dict)
+
+    def minimum(self, nx: int, ny: int) -> tuple[int, int]:
+        """`min over the domain of n . y` as `(value, denominator)`, from the memo."""
+        g = gcd(nx, ny)
+        direction = (nx // g, ny // g)
+        found = self.minima.get(direction)
+        if found is None:
+            dx, dy = direction
+            least: tuple[int, int] | None = None
+            for x, y, z in self.centers:
+                value = dx * x + dy * y
+                if least is None or value * least[1] < least[0] * z:
+                    least = value, z
+            if least is None:
+                raise RefusalError("empty partner domain")
+            found = self.minima[direction] = least
+        return g * found[0], found[1]
+
+
+def prepare_rows(rows: Sequence[tuple[Polygon, Polygon]]) -> list[PreparedRow]:
+    """Each live partner row encoded once, with the obligations the reference form checks
+    on every use checked here once: a nonempty domain and a core of positive area."""
+    prepared: list[PreparedRow] = []
+    for domain, core in rows:
+        require(bool(domain) and area2(core) > 0, "partner core or domain")
+        prepared.append(
+            PreparedRow(
+                domain,
+                core,
+                tuple(encode_homogeneous(point) for point in domain),
+                tuple(encode_homogeneous(point) for point in core),
+            )
+        )
+    return prepared
+
+
+def as_prepared(rows: Sequence[PreparedRow | tuple[Polygon, Polygon]]) -> list[PreparedRow]:
+    """Partner rows in prepared form: prepared ones as they are, raw pairs encoded."""
+    prepared: list[PreparedRow] = []
+    raw: list[tuple[Polygon, Polygon]] = []
+    for row in rows:
+        if isinstance(row, PreparedRow):
+            prepared.append(row)
+        else:
+            raw.append(row)
+    return prepared + prepare_rows(raw) if raw else prepared
+
+
+FacetKey = tuple[tuple[HomogeneousPoint, ...], tuple[HomogeneousPoint, ...]]
+FacetCache = dict[FacetKey, list[tuple[int, int, int]]]
+
+
+def difference_facets(
+    query: tuple[HomogeneousPoint, ...], partner: tuple[HomogeneousPoint, ...]
+) -> list[tuple[int, int, int]]:
+    """The facets `(nx, ny, upper)` of the hull of `partner - query`, exactly as
+    `integer_universal_collision` builds them."""
+    difference = homogeneous_hull(
+        [
+            (x * qz - qx * z, y * qz - qy * z, z * qz)
+            for x, y, z in partner
+            for qx, qy, qz in query
+        ]
+    )
+    require(len(difference) >= 3, "degenerate collision hull")
+    return [
+        (b[1] * a[2] - a[1] * b[2], a[0] * b[2] - b[0] * a[2], a[0] * b[1] - a[1] * b[0])
+        for a, b in zip(difference, difference[1:] + difference[:1], strict=True)
+    ]
+
+
+def cached_universal_collision(
+    query_core: Polygon,
+    query_domain: Polygon,
+    partner_rows: Sequence[PreparedRow],
+    region: Polygon,
+    *,
+    budget: Budget,
+    facets: FacetCache,
+) -> int:
+    """`integer_universal_collision` with its facets memoised by the pair of cores.
+
+    The facets of `Q_r - Q_i` depend on the two cores alone and a node has at most
+    `bins` distinct cores, so they are built once per pair and read back by the exact
+    homogeneous vertices; the minimum of each facet over `D_r` comes from the row's memo.
+    The inequalities, their order and the check count are the reference form's.
+    """
+    require(bool(partner_rows), "empty partner family requires separate contradiction")
+    require(area2(query_core) > 0, "query core")
+    query_lines = convex_halfplanes(query_domain)
+    require(
+        all(nx * x + ny * y <= bound for x, y in region for nx, ny, bound in query_lines),
+        "collision region escapes query domain",
+    )
+    query = tuple(encode_homogeneous(point) for point in query_core)
+    vertices = [encode_homogeneous(point) for point in region]
+    checks = 0
+    for row in partner_rows:
+        _remaining(budget)
+        key = (query, row.partner)
+        found = facets.get(key)
+        if found is None:
+            found = facets[key] = difference_facets(query, row.partner)
+        for nx, ny, upper in found:
+            value, denominator = row.minimum(nx, ny)
+            rhs = upper * denominator + value
+            for x, y, z in vertices:
+                checks += 1
+                require(
+                    (nx * x + ny * y) * denominator <= rhs * z,
+                    "region escapes universal collision set",
+                )
+    return checks
 
 
 def integer_universal_collision(

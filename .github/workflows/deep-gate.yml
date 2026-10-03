@@ -277,6 +277,7 @@ jobs:
           packing-validate
           --only "negative controls"
           --only "finer-net dilation-limit record, 1440 steps"
+          --only "measure verifier full controls (sqverify-fast)"
           --jobs 1 --inner-jobs 2
 
       - name: Preserve validation timings and partial logs

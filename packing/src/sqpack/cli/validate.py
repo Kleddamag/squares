@@ -2552,6 +2552,41 @@ def _rust_measure_verifier(context: Context) -> str:
     return f"{output}\n{checks}"
 
 
+def _rust_measure_verifier_full(context: Context) -> str:
+    """Build the measure verifier and hold it to every oracle comparison and control
+    `devtools.check_sqverify_fast` has, the ones `--quick` leaves out included.
+
+    The quick run is the pull request's; this is the rest of it, deferred on its cost:
+    72.8 s on an idle four-cpu box against about 22 s for the quick set, 56.6 s of it the
+    mixed certificates' exact differentials and near-threshold controls, and single
+    threaded throughout, so it would be the longest unit of the measure verifier's job.
+    """
+    cargo = shutil.which("cargo", path=context.environment.get("PATH"))
+    if cargo is None:
+        raise StepFailureError("measure verifier full controls require cargo")
+    child = replace(context, timeout_seconds=min(context.timeout_seconds, 600))
+    output = _commands(
+        child,
+        ((cargo, "build", "--locked", "--release", "--quiet"),),
+        cwd=MEASURE_VERIFIER_CRATE,
+    )
+    target = Path(context.environment.get("CARGO_TARGET_DIR", "target"))
+    if not target.is_absolute():
+        target = MEASURE_VERIFIER_CRATE / target
+    checks = _run(
+        child,
+        (
+            sys.executable,
+            "-m",
+            "devtools.check_sqverify_fast",
+            "--binary",
+            str(target / "release/sqverify-fast"),
+        ),
+    )
+    _require_text(checks, "SQVERIFY-FAST CHECKS PASSED")
+    return f"{output}\n{checks}"
+
+
 def _rust_exact_geometry(context: Context) -> str:
     """Check the diagnostic exact batch kernel against the Python area oracle."""
     cargo = shutil.which("cargo", path=context.environment.get("PATH"))
@@ -4250,6 +4285,13 @@ STEPS: tuple[Step, ...] = (
         fast=True,
         broad=True,
         measure_verifier=True,
+        touches=_MEASURE_VERIFIER_SRC,
+    ),
+    # The full oracle and control set, deferred on its cost: 72.8 s single threaded on an
+    # idle four-cpu box, against the quick set the pull request runs above.
+    Step(
+        "measure verifier full controls (sqverify-fast)",
+        _rust_measure_verifier_full,
         touches=_MEASURE_VERIFIER_SRC,
     ),
     Step(

@@ -595,6 +595,7 @@ def test_ci_jobs_fetch_provenance_history_and_key_the_uv_cache_from_the_lock() -
             "finer-net dilation-limit record, 1440 steps",
             "threshold dilation-limit record, 720 steps",
             "n=40 rigidity bracket still reproduces",
+            "measure verifier full controls (sqverify-fast)",
         )
         for flag in ("--skip", name)
     ] + ["--jobs", "1", "--inner-jobs", "2"]

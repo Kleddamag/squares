@@ -3065,6 +3065,19 @@ def test_the_pull_request_surface_defers_only_what_was_measured() -> None:
     turns on: all eight failures CI caught on the `T-021` branch were sub-0.15s record
     comparisons, 0.46s of call time between them. The wall was never where the catching
     was.
+
+    **A twelfth arrived on 2026-10-03 with the clean-room measure verifier.**
+    `measure verifier full controls (sqverify-fast)` is `devtools.check_sqverify_fast`
+    without `--quick`: 72.8s single threaded on an idle four-cpu box, 56.6s of it the
+    mixed certificates' exact differentials and near-threshold controls, against about
+    22s for the quick set. The quick set runs on every pull request in the
+    `measure-verifier` job, and it keeps one of each kind of check: the differential
+    against the exact oracle on one rectangle and one mixed certificate, the rectangle
+    controls, the mixed `n = 101` packet's retained controls, the admission refusals and
+    the fault injection. What waits for the deep gate is the second rectangle and the
+    other directions, the mixed `n = 37` packet and the near-threshold controls. It runs
+    in `deferred-controls-finer` beside the negative controls, which measured 621s against
+    a 965s ceiling.
     """
     deferred = {step.name for step in validate.STEPS} - set().union(
         *_workflow_selections(pull_request=True).values()
@@ -3082,6 +3095,7 @@ def test_the_pull_request_surface_defers_only_what_was_measured() -> None:
         "finer-net dilation-limit record, 1440 steps",
         "threshold dilation-limit record, 720 steps",
         "threshold dilation-limit record, 1440 steps",
+        "measure verifier full controls (sqverify-fast)",
     }
     # And the same set is what `--fast` leaves out, so the flag and the workflow cannot
     # drift apart: a step marked `fast` that no pull-request job invokes is deferred in

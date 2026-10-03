@@ -1922,7 +1922,9 @@ ci_gates:
       serially with the predecessor job's process allocation. The first hosted wall was
       621s; the 965s reporting ceiling is 1.55x that reading, originally derived from
       predecessor run 35579234418 Step times (420.033 and 158.098s), 24s setup and
-      runner spread.
+      runner spread. Since 2026-10-03 it also runs `measure verifier full controls
+      (sqverify-fast)`, 72.8 s single threaded on an idle four-cpu box plus a cold
+      release build of the crate; no hosted reading of the job includes it yet.
   - id: deferred-threshold-720-rigidity
     measured_seconds: 623.0
     measured_on: '2026-09-29'
@@ -2070,7 +2072,10 @@ ci_gates:
     ceiling_seconds: 965.0
     argument: >-
       Derived reporting estimate from retained negative-control and finer-net Step times,
-      setup cost and hosted-runner spread. This worker has no current hosted wall.
+      setup cost and hosted-runner spread. This worker has no current hosted wall. Since
+      2026-10-03 it also runs `measure verifier full controls (sqverify-fast)`, 72.8 s
+      single threaded on an idle four-cpu box plus a cold release build of the crate; no
+      hosted reading of the job includes it yet.
   - id: deferred-threshold-720-rigidity
     measured_seconds: null
     measured_on: null

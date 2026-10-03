@@ -7185,3 +7185,118 @@ results:
       entered as evidence until now. A replayed release is registered again as its own
       entry, as T-045, T-070 and T-074 were, because the reported entry keeps a count no
       replay here carries yet: T-073's n = 83. T-073 keeps its claim.
+  - id: T-082
+    kind: lower-bound
+    registered: '2026-10-03'
+    headline: "Mixed rectangle-measure lower bounds reported at 22 counts in `n = 51…96`"
+    claim: >-
+      wand125/square-packing-bounds reports 22 rectangle-density certificates published on 3
+      October 2026: s(51) >= 373/50 = 7.46, s(52) >= 151/20 = 7.55, s(55) >= 966/125 = 7.728,
+      s(58) >= 1581/200 = 7.905, s(69) >= 2153/250 = 8.612, s(70) >= 3459/400 = 8.6475, s(71)
+      >= 1741/200 = 8.705, s(73) >= 8809/1000 = 8.809, s(74) >= 3547/400 = 8.8675, s(75) >=
+      223/25 = 8.92, s(76) >= 224/25 = 8.96, s(86) >= 19/2 = 9.5, s(87) >= 191/20 = 9.55,
+      s(88) >= 48/5 = 9.6, s(89) >= 193/20 = 9.65, s(90) >= 389/40 = 9.725, s(91) >= 39/4 =
+      9.75, s(92) >= 977/100 = 9.77, s(93) >= 493/50 = 9.86, s(94) >= 248/25 = 9.92, s(95) >=
+      249/25 = 9.96 and s(96) >= 997/100 = 9.97.
+
+      Each is a density of 303 to 571 uniform rectangles in D4 orbits and no point mass, of
+      total mass n - 1/100000, at core side 9977/10000 on 201 net half-angles of step
+      83/40000, of the kind and checker of T-069, T-071, T-072 and T-075. The source reports
+      each accepted at all 200 oblique net angles by code/mixed_rotated_verify.cpp, its
+      research copy of Tokoharu's verify.cpp at coverage threshold one, and at the axis by
+      exact integer tables. Six supersede certificates of the same source this record holds
+      verified at the same count: at n = 76 (T-072), 87, 91, 92 and 96 (T-075), and 90
+      (T-069).
+
+      Each value is above what the record reported at its count, by 0.01 to 0.125: over the
+      source's rectangle certificates (T-046, T-070, T-074, T-077) at 13 counts, and over its
+      earlier mixed certificates directly at six and by monotonicity at n = 86, 88 and 93. A
+      packing of n + 1 squares contains one of n, but at each next count the record already
+      reports more, or holds its own certificate here, so none carries further.
+
+      Here the source was retained, its exact premises were recomputed from the retained
+      bytes, and the replay's checks before its first angle were run on each pinned tarball.
+      None of it decides coverage, and no angle was replayed. The values stand as reported,
+      and the verified lower bounds are unchanged.
+
+      wand125 after Tokoharu and Levy,
+      [square-packing-bounds](https://github.com/wand125/square-packing-bounds/tree/2aff2076c492d62340e986c84f60a0a29eb668df/certificates).
+      Registration was requested in 22 comments of 3 October 2026 on jlevy/squares#282. The
+      source says parts of the work were produced with AI assistance under human direction.
+    scope: {n_values: [51, 52, 55, 58, 69, 70, 71, 73, 74, 75, 76, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96]}
+    verification: V0
+    confirmation: C1
+    significance:
+      score: 3
+      rationale: >-
+        Scored as a claim: if the replays pass, the strongest lower bounds on record at 22
+        counts from n = 51 to 96. Further sizes from the generator and checker of T-069,
+        T-071, T-072 and T-075, with no new technique, at S3 as those are; the score gates
+        nothing.
+      scored: '2026-10-03'
+      by: 'issue-282 October 3 import, registering lane (repository; draft)'
+    novelty: previously-published
+    attribution:
+      source_keys: ['[wand125 mixed bounds 2026-10-03]']
+      published: '2026-10-03'
+    composition: >-
+      22 primary certificates, each on its own reported entry, at V0/C1: read by the 3
+      October review of these certificates, and not replayed. Coverage is decided by the
+      source's C++ checker alone, byte for byte the checker the 28 September and 2 October
+      reviews read; the axis tables are a second implementation for one direction and not a
+      second method.
+    evidence:
+      - E-n051-wand125-mixed-746-report
+      - E-n052-wand125-mixed-755-report
+      - E-n055-wand125-mixed-7728-report
+      - E-n058-wand125-mixed-7905-report
+      - E-n069-wand125-mixed-8612-report
+      - E-n070-wand125-mixed-86475-report
+      - E-n071-wand125-mixed-8705-report
+      - E-n073-wand125-mixed-8809-report
+      - E-n074-wand125-mixed-88675-report
+      - E-n075-wand125-mixed-892-report
+      - E-n076-wand125-mixed-896-report
+      - E-n086-wand125-mixed-950-report
+      - E-n087-wand125-mixed-955-report
+      - E-n088-wand125-mixed-960-report
+      - E-n089-wand125-mixed-965-report
+      - E-n090-wand125-mixed-9725-report
+      - E-n091-wand125-mixed-975-report
+      - E-n092-wand125-mixed-977-report
+      - E-n093-wand125-mixed-986-report
+      - E-n094-wand125-mixed-992-report
+      - E-n095-wand125-mixed-996-report
+      - E-n096-wand125-mixed-997-report
+    reviews:
+      - path: docs/project/reviews/review-2026-10-03-wand125-october-3-certificates.md
+        kind: adversarial
+        reviewer: REVIEWER_PLACEHOLDER
+        reviewer_kind: ai
+        relation: project
+        date: '2026-10-03'
+        scope: >-
+          The 22 certificates wand125/square-packing-bounds published on 3 October, pinned at 2aff2076, against checkers byte-identical to ones already reviewed: the argument from certificate to bound, the comparisons and improvement figures, the checker's exit status and asserts, what the new measures add, their sizes, structure and records; blind to any replay and not to retention.
+        verdict: VERDICT_PLACEHOLDER
+        covers: [T-082]
+    artifacts:
+      - packing/resources/web/wand125-mixed-bounds-2026-10-03/README.md
+      - packing/resources/web/wand125-mixed-bounds-2026-10-03/receipts/mixed-audit.json
+      - packing/devtools/audit_wand125_point_and_mixed.py
+      - docs/project/reviews/review-2026-10-03-wand125-october-3-certificates.md
+      - docs/project/reviews/review-2026-09-28-wand125-n50-mixed-verifier.md
+    next_rung: >-
+      The complete replays, about 162 CPU-hours planned (179 by the source's own oblique
+      seconds), with devtools.audit_wand125_point_and_mixed mixed-shard
+      wand125-mixed-bounds-2026-10-03 --runners 8 for the ranges, mixed-replay on each and
+      mixed-merge per certificate, before any verified lower bound is raised; a count's
+      verified lower bound moves when its replay returns the certificate's own record at all
+      201 directions.
+    notes: >-
+      V0 because each cited entry is the source's claim: assurance reported, replay not
+      attempted. C1 because the 3 October review of these certificates is recorded as each
+      report entry's external_review, with no blocking defect. That review was prompted
+      separately from the lane that retained the packet and registered the entry. One entry
+      for the 22, all pinned at one revision, as T-075 is for its six; a later revision than
+      T-075's, so a separate entry. The proof-bundle tarballs are pinned by digest and not
+      retained.

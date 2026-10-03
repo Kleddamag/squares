@@ -260,8 +260,9 @@ issues:
     summary: >-
       Mixed rectangle-measure lower bounds checked by mixed_rotated_verify.cpp at five
       counts, then a rolling series of comments adding n = 84, 85, 76, 96, 85 again, 87, 91,
-      92 again, 83 and 96 again.
-    read_through: '2026-10-02T15:16:57Z'
+      92 again, 83 and 96 again on 2 October, and 22 more on 3 October, from n = 95 down to
+      n = 69, six of them again at counts already posted (76, 87, 90, 91, 92, 96).
+    read_through: '2026-10-03T18:48:43Z'
     results:
       - key: mixed-five
         claim: s(37) >= 161/25, s(65) >= 167/20, s(66) >= 421/50, s(90) >= 48/5 and s(92) >= 969/100
@@ -298,9 +299,138 @@ issues:
         claim: s(96) >= 249/25 = 9.96 (mixed_n96_L996, b00fc70)
         source: https://github.com/jlevy/squares/issues/282#issuecomment-5955463430
         register: [T-075]
+      - key: n95-996
+        claim: s(95) >= 249/25 = 9.96 (mixed_n95_L996, 9933226)
+        source: https://github.com/jlevy/squares/issues/282#issuecomment-5964806255
+        register: [T-082]
+      - key: n94-992
+        claim: s(94) >= 248/25 = 9.92 (mixed_n94_L992, caabf77)
+        source: https://github.com/jlevy/squares/issues/282#issuecomment-5964970265
+        register: [T-082]
+      - key: n86-950
+        claim: s(86) >= 19/2 = 9.5 (mixed_n86_L950, bbb78b2)
+        source: https://github.com/jlevy/squares/issues/282#issuecomment-5965525458
+        register: [T-082]
+      - key: n87-955
+        claim: s(87) >= 191/20 = 9.55 (mixed_n87_L955, 239e95f)
+        source: https://github.com/jlevy/squares/issues/282#issuecomment-5965608183
+        register: [T-082]
+      - key: n93-986
+        claim: s(93) >= 493/50 = 9.86 (mixed_n93_L986, e11387e)
+        source: https://github.com/jlevy/squares/issues/282#issuecomment-5965785579
+        register: [T-082]
+      - key: n89-965
+        claim: s(89) >= 193/20 = 9.65 (mixed_n89_L965, b1dc461)
+        source: https://github.com/jlevy/squares/issues/282#issuecomment-5965873364
+        register: [T-082]
+      - key: n52-755
+        claim: s(52) >= 151/20 = 7.55 (mixed_n52_L755, 3d365c4)
+        source: https://github.com/jlevy/squares/issues/282#issuecomment-5966383825
+        register: [T-082]
+      - key: n75-892
+        claim: s(75) >= 223/25 = 8.92 (mixed_n75_L892, 216e4b4)
+        source: https://github.com/jlevy/squares/issues/282#issuecomment-5966471175
+        register: [T-082]
+      - key: n51-746
+        claim: s(51) >= 373/50 = 7.46 (mixed_n51_L746, 06a1e9d)
+        source: https://github.com/jlevy/squares/issues/282#issuecomment-5966907664
+        register: [T-082]
+      - key: n88-960
+        claim: s(88) >= 48/5 = 9.6 (mixed_n88_L960, bf23abf)
+        source: https://github.com/jlevy/squares/issues/282#issuecomment-5967152250
+        register: [T-082]
+      - key: n58-7905
+        claim: s(58) >= 1581/200 = 7.905 (mixed_n58_L7905, 7bcfef5)
+        source: https://github.com/jlevy/squares/issues/282#issuecomment-5967170488
+        register: [T-082]
+      - key: n91-975
+        claim: s(91) >= 39/4 = 9.75 (mixed_n91_L975, ee10b72)
+        source: https://github.com/jlevy/squares/issues/282#issuecomment-5967446024
+        register: [T-082]
+      - key: n55-7728
+        claim: s(55) >= 966/125 = 7.728 (mixed_n55_L7728, 2d22930)
+        source: https://github.com/jlevy/squares/issues/282#issuecomment-5968358529
+        register: [T-082]
+      - key: n90-9725
+        claim: s(90) >= 389/40 = 9.725 (mixed_n90_L9725, 4a4f2f8)
+        source: https://github.com/jlevy/squares/issues/282#issuecomment-5968439278
+        register: [T-082]
+      - key: n92-977
+        claim: s(92) >= 977/100 = 9.77 (mixed_n92_L977, 5baaec2)
+        source: https://github.com/jlevy/squares/issues/282#issuecomment-5969312608
+        register: [T-082]
+      - key: n76-896
+        claim: s(76) >= 224/25 = 8.96 (mixed_n76_L896, 3d2089e)
+        source: https://github.com/jlevy/squares/issues/282#issuecomment-5969402336
+        register: [T-082]
+      - key: n74-88675
+        claim: s(74) >= 3547/400 = 8.8675 (mixed_n74_L88675, ce65306)
+        source: https://github.com/jlevy/squares/issues/282#issuecomment-5970827530
+        register: [T-082]
+      - key: n71-8705
+        claim: s(71) >= 1741/200 = 8.705 (mixed_n71_L8705, 044c127)
+        source: https://github.com/jlevy/squares/issues/282#issuecomment-5970961348
+        register: [T-082]
+      - key: n70-86475
+        claim: s(70) >= 3459/400 = 8.6475 (mixed_n70_L86475, 13188dd)
+        source: https://github.com/jlevy/squares/issues/282#issuecomment-5970989651
+        register: [T-082]
+      - key: n73-8809
+        claim: s(73) >= 8809/1000 = 8.809 (mixed_n73_L8809, b780f58)
+        source: https://github.com/jlevy/squares/issues/282#issuecomment-5971102614
+        register: [T-082]
+      - key: n96-997
+        claim: s(96) >= 997/100 = 9.97 (mixed_n96_L997, 1695131)
+        source: https://github.com/jlevy/squares/issues/282#issuecomment-5971628643
+        register: [T-082]
+      - key: n69-8612
+        claim: s(69) >= 2153/250 = 8.612 (mixed_n69_L8612, 2aff207)
+        source: https://github.com/jlevy/squares/issues/282#issuecomment-5971914803
+        register: [T-082]
     beads: [think-ye2x, think-fb6h, think-09ag, think-r7yt]
     answer_bead: think-7gop
-    replies: []
+    replies:
+      - url: https://github.com/jlevy/squares/issues/282#issuecomment-5972354526
+        date: '2026-10-03'
+        by: jlevy
+        kind: confirmation
+        reported:
+          - result: mixed-five
+            id: T-069
+            verification: V3
+            confirmation: C3
+            status: confirmed
+          - result: n84-n85
+            id: T-071
+            verification: V3
+            confirmation: C3
+            status: confirmed
+          - result: n76
+            id: T-072
+            verification: V3
+            confirmation: C3
+            status: confirmed
+          - result: n96-992
+          - result: n85-946
+            id: T-075
+            verification: V3
+            confirmation: C3
+            status: confirmed
+          - result: n87-n91-n92
+            id: T-075
+            verification: V3
+            confirmation: C3
+            status: confirmed
+          - result: n83-937
+            id: T-075
+            verification: V3
+            confirmation: C3
+            status: confirmed
+          - result: n96-996
+            id: T-075
+            verification: V3
+            confirmation: C3
+            status: confirmed
     close_when: >-
       T-069, T-071 and T-072 are confirmed or refuted, and every later certificate posted
       here is imported and settled. The thread is a rolling request: each release is

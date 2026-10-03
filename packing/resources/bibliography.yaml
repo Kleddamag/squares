@@ -700,6 +700,29 @@ sources:
       1 October key is, on the same README attribution ("The method is not ours."). The
       README says parts of the work were produced with AI assistance under human direction.
       Dated by that revision, 2026-10-02 UTC.
+  - key: '[wand125 mixed bounds 2026-10-03]'
+    authors: [wand125]
+    year: 2026
+    venue: GitHub
+    dated: '2026-10-03'
+    credit: wand125 after Tokoharu, Levy, Stromquist, Nagamochi, Burns, Massaccesi
+    short_credit: wand125 after Tokoharu, Levy et al.
+    lineage: builds-on-project
+    note: >-
+      The 22 mixed rectangle-measure certificates that wand125/square-packing-bounds added in
+      22 commits on 2026-10-03, for n = 51, 52, 55, 58, 69, 70, 71, 73, 74, 75, 76, 86, 87,
+      88, 89, 90, 91, 92, 93, 94, 95 and 96 (certificates/mixed_n95_L996 to mixed_n69_L8612),
+      each requested for registration in its own comment of that day on jlevy/squares#282:
+      rectangle densities of mass n - 1/100000 checked at coverage one by
+      code/mixed_rotated_verify.cpp, byte for byte the checker of the source's n = 50
+      certificate and of the [wand125 mixed bounds afternoon 2026-10-02] certificates. Six
+      supersede certificates of earlier keys, mixed_n76_L894, mixed_n87_L948,
+      mixed_n90_L960, mixed_n91_L970, mixed_n92_L975 and mixed_n96_L996. Credited as they
+      are, on the root README's Attribution section, which opens "The method is not ours.";
+      the README says parts of the work were produced with AI assistance under human
+      direction, and each commit message ends with a co-author trailer naming an AI
+      assistant. web/wand125-mixed-bounds-2026-10-03/acquisition/sources.json pins revision
+      2aff2076c492d62340e986c84f60a0a29eb668df. Dated by that revision, 2026-10-03 UTC.
   - key: '[franciscouzo square-packing 2026-09-27]'
     authors: [Couzo]
     year: 2026

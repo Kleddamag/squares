@@ -29,6 +29,7 @@ from __future__ import annotations
 import json
 from collections.abc import Mapping, Sequence
 from dataclasses import dataclass, field
+from fractions import Fraction as Q
 from typing import Any
 
 from sqpack.hull_kernel.collision import (
@@ -69,7 +70,6 @@ from sqpack.hull_kernel.node import (
     points,
     remaining,
 )
-from sqpack.hull_kernel.rational import Q
 from sqpack.hull_kernel.sweep import exact_union_cover
 
 COVERS = {
@@ -276,10 +276,7 @@ def owner_extents(
         "residual_box_extent": (
             None
             if box is None
-            else [
-                str(Q(box[0][1]) - Q(box[0][0])),
-                str(Q(box[1][1]) - Q(box[1][0])),
-            ]
+            else [str(Q(box[0][1]) - Q(box[0][0])), str(Q(box[1][1]) - Q(box[1][0]))]
         ),
         "owned_hull_vertices": len(group),
         "owned_hull_area2_physical": str(area2(group) / frame.scale**2),

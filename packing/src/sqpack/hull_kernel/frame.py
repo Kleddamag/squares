@@ -32,6 +32,7 @@ from __future__ import annotations
 import itertools
 from collections.abc import Sequence
 from dataclasses import dataclass
+from fractions import Fraction as Q
 from functools import cached_property
 
 from sqpack.hull_kernel.geometry import (
@@ -40,7 +41,6 @@ from sqpack.hull_kernel.geometry import (
     require,
     strictly_convex_counterclockwise,
 )
-from sqpack.hull_kernel.rational import Q, Rational
 
 D4_ACTIONS = ("r0", "r1", "r2", "r3", "f0", "f1", "f2", "f3")
 HALF_TURN_ACTIONS = ("r0", "r2")
@@ -247,31 +247,24 @@ class Frame:
 def make_frame(
     *,
     name: str,
-    cap: Rational,
-    length: Rational,
-    cells: Sequence[Sequence[tuple[Rational, Rational]]],
+    cap: Q,
+    length: Q,
+    cells: Sequence[Sequence[Point]],
     cell_names: Sequence[str],
     occupancy: int,
     action_names: Sequence[str],
-    core_slack: Rational = DEFAULT_CORE_SLACK,
+    core_slack: Q = DEFAULT_CORE_SLACK,
     provenance: str = "",
-    capture_cap: Rational | None = None,
+    capture_cap: Q | None = None,
 ) -> Frame:
-    """Validate the inputs and compute every action's cell permutation from geometry.
-
-    Every number is taken into the kernel's rational type `Q` here, so the geometry
-    downstream runs on one type whatever the caller passed (`Fraction` from the cover
-    tools, integers from tests).
-    """
-    cap, length, core_slack = Q(cap), Q(length), Q(core_slack)
-    capture_cap = None if capture_cap is None else Q(capture_cap)
+    """Validate the inputs and compute every action's cell permutation from geometry."""
     require(cap > 1 and length > 0, "the cap must exceed one and the field side be positive")
     require(0 < core_slack < length / cap, "the core slack must lie strictly inside (0, B)")
     require(
         capture_cap is None or 1 < capture_cap <= cap,
         "a capture cap must lie in (1, U]",
     )
-    polygons = tuple(tuple((Q(x), Q(y)) for x, y in cell) for cell in cells)
+    polygons = tuple(tuple(cell) for cell in cells)
     names = tuple(cell_names)
     require(
         len(names) == len(polygons) == len(set(names)), "cell names must be unique, one each"

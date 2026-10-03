@@ -8,8 +8,8 @@ from __future__ import annotations
 import copy
 import dataclasses
 import time
-from collections.abc import Mapping, Sequence
-from fractions import Fraction
+from collections.abc import Mapping
+from fractions import Fraction as Q
 from typing import Any
 
 import pytest
@@ -19,7 +19,6 @@ from devtools import check_n11_generic_fresh as frozen
 from sqpack.hull_kernel import Budget, RefusalError, node
 from sqpack.hull_kernel.frame import Frame
 from sqpack.hull_kernel.induction import hull, strict_core, wall_lines
-from sqpack.hull_kernel.rational import Q, as_fraction
 
 
 @pytest.fixture(scope="module")
@@ -34,11 +33,6 @@ def frame(sources: tool.Sources) -> Frame:
 
 def budget() -> Budget:
     return Budget(time.monotonic() + 30, tool.MAX_EVENTS)
-
-
-def fractions_of(polygon: Sequence[tuple[Q, Q]]) -> list[tuple[Fraction, Fraction]]:
-    """A kernel polygon as the frozen checkers' `Fraction` points, value for value."""
-    return [(as_fraction(x), as_fraction(y)) for x, y in polygon]
 
 
 def prior(sources: tool.Sources) -> dict[int, list[tuple[Q, Q]]]:
@@ -59,16 +53,16 @@ def test_wall_lines_and_the_strict_core_are_the_frozen_functions(
 ) -> None:
     for index in range(tool.BINS):
         lo, hi = Q(index, tool.BINS), Q(index + 1, tool.BINS)
-        assert wall_lines(frame, lo, hi) == frozen._wall_lines(as_fraction(lo), as_fraction(hi))
+        assert wall_lines(frame, lo, hi) == frozen._wall_lines(lo, hi)
     row = sources.source["steps"][0]["rows"][0]
     core = node.convex(node.points(row["core_vertices"]))
     strict_core(frame, core, Q(0), Q(1, 32))
-    frozen._strict_core(fractions_of(core), Fraction(0), Fraction(1, 32))
+    frozen._strict_core(core, Q(0), Q(1, 32))
     touching = [(Q(0), Q(0)), (frame.scale / 2, Q(0)), (Q(0), frame.scale / 4)]
     with pytest.raises(RefusalError, match="strict containment"):
         strict_core(frame, touching, Q(0), Q(1, 32))
     with pytest.raises(ValueError, match="strict containment"):
-        frozen._strict_core(fractions_of(touching), Fraction(0), Fraction(1, 32))
+        frozen._strict_core(touching, Q(0), Q(1, 32))
 
 
 def test_the_terminal_owner_and_the_transfer(sources: tool.Sources, frame: Frame) -> None:

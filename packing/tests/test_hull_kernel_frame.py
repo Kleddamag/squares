@@ -5,6 +5,7 @@ from __future__ import annotations
 import copy
 import itertools
 from collections.abc import Sequence
+from fractions import Fraction as Q
 from typing import Any
 
 import pytest
@@ -14,7 +15,6 @@ from devtools import check_n11_optimality_field_mask0 as frozen
 from devtools import check_n17_capacity_one_cover as cover_tool
 from sqpack.hull_kernel import Frame, RefusalError, make_frame, n11, orbit_representatives
 from sqpack.hull_kernel.frame import D4_ACTIONS, apply_matrix, d4_matrix
-from sqpack.hull_kernel.rational import Q, as_fraction
 
 
 @pytest.fixture(scope="module")
@@ -31,10 +31,8 @@ def n17_frame() -> Frame:
 def test_d4_matrices_follow_the_cover_tool_convention() -> None:
     point = (Q(1, 3), Q(5, 7))
     for action in D4_ACTIONS:
-        image = apply_matrix(d4_matrix(action), Q(cover_tool.CENTRE), point)
-        assert image == cover_tool.d4_apply(
-            action, (as_fraction(point[0]), as_fraction(point[1]))
-        )
+        image = apply_matrix(d4_matrix(action), cover_tool.CENTRE, point)
+        assert image == cover_tool.d4_apply(action, point)
 
 
 def test_the_n11_frame_is_the_frozen_checkers_geometry(n11_cover: dict[str, Any]) -> None:

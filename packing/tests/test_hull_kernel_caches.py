@@ -4,6 +4,7 @@ cover backend of a saved check. Each memo must change no value, no verdict and n
 from __future__ import annotations
 
 import time
+from fractions import Fraction as Q
 from pathlib import Path
 from typing import Any
 
@@ -14,7 +15,6 @@ from sqpack.hull_kernel import Budget, RefusalError, collision, producer, sequen
 from sqpack.hull_kernel.frame import Frame, make_frame
 from sqpack.hull_kernel.induction import convex, hull
 from sqpack.hull_kernel.node import points
-from sqpack.hull_kernel.rational import Q
 
 
 def budget() -> Budget:

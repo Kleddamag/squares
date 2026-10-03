@@ -17,6 +17,7 @@ both proves strict containment over the whole sub-interval, by convexity in the 
 from __future__ import annotations
 
 import time
+from fractions import Fraction as Q
 from typing import Any
 
 from sqpack.hull_kernel.frame import Frame
@@ -29,7 +30,6 @@ from sqpack.hull_kernel.geometry import (
     require,
     trig,
 )
-from sqpack.hull_kernel.rational import Q
 
 
 def ownership(

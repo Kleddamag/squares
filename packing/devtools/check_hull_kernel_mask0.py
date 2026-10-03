@@ -37,7 +37,6 @@ from devtools import check_n17_capacity_one_cover as n17_cover
 from sqpack.hull_kernel import counting, n11, n17
 from sqpack.hull_kernel.frame import Frame
 from sqpack.hull_kernel.geometry import Budget, IncompleteError, RefusalError
-from sqpack.hull_kernel.rational import as_fraction
 
 RECEIPT_DIR = frozen.PACKET / "receipts/field-mask0"
 RECEIPT = RECEIPT_DIR / "result.json"
@@ -322,13 +321,7 @@ def sample_replay(
     row_reference = [
         {
             "row_index": index,
-            **frozen.row_geometry(
-                packet_json,
-                cover,
-                cell,
-                (as_fraction(interval[0]), as_fraction(interval[1])),
-                budget=budget,
-            ),
+            **frozen.row_geometry(packet_json, cover, cell, interval, budget=budget),
         }
         for cell, index, interval in selected
     ]

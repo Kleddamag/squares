@@ -12,19 +12,17 @@ in scope: no n17 exclusion is run from this module.
 from __future__ import annotations
 
 from collections.abc import Sequence
+from fractions import Fraction as Q
 
 from sqpack.hull_kernel.frame import D4_ACTIONS, Frame, make_frame
-from sqpack.hull_kernel.rational import Q, Rational
+from sqpack.hull_kernel.geometry import Point
 
 N17_CAP = Q(1169, 250)
 N17_OCCUPANCY = 17
 
 
 def frame_from_cells(
-    cells: Sequence[tuple[str, Sequence[tuple[Rational, Rational]]]],
-    *,
-    design: str,
-    provenance: str = "",
+    cells: Sequence[tuple[str, Sequence[Point]]], *, design: str, provenance: str = ""
 ) -> Frame:
     """The n17 frame on named physical cells; refuses unless D4 maps them onto themselves."""
     return make_frame(

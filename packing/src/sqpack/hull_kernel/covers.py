@@ -18,6 +18,7 @@ from __future__ import annotations
 import heapq
 import time
 from dataclasses import dataclass, field
+from fractions import Fraction as Q
 from itertools import pairwise
 
 from sqpack.hull_kernel.geometry import (
@@ -29,7 +30,6 @@ from sqpack.hull_kernel.geometry import (
     area2,
     require,
 )
-from sqpack.hull_kernel.rational import Q
 
 type Line = tuple[Q, Q, Q, Q]
 
@@ -267,12 +267,7 @@ def convex_halfplanes(region: Polygon) -> list[Halfplane]:
     poly = closed_convex_hull(region)
     if len(poly) == 1:
         x, y = poly[0]
-        return [
-            (Q(1), Q(), x),
-            (Q(-1), Q(), -x),
-            (Q(), Q(1), y),
-            (Q(), Q(-1), -y),
-        ]
+        return [(Q(1), Q(), x), (Q(-1), Q(), -x), (Q(), Q(1), y), (Q(), Q(-1), -y)]
     if len(poly) == 2:
         (x0, y0), (x1, y1) = poly
         dx, dy = x1 - x0, y1 - y0

@@ -6,6 +6,7 @@ import hashlib
 import json
 import math
 import time
+from fractions import Fraction as Q
 from pathlib import Path
 from typing import Any
 
@@ -16,7 +17,6 @@ from sqpack.hull_kernel import Budget, RefusalError, node, sequential
 from sqpack.hull_kernel.frame import Frame
 from sqpack.hull_kernel.geometry import area2, trig
 from sqpack.hull_kernel.induction import strict_core
-from sqpack.hull_kernel.rational import Q
 
 EXCLUSION_CAP = Q(1169, 250)
 
@@ -269,7 +269,7 @@ def test_the_box_sub_case_cuts_every_cell_but_six_around_the_endpoint(
     for item in renumbered.targets:
         cell = boxed.cell(item.owner)
         corners = [
-            (Q(x), Q(y))
+            (x, y)
             for x in (item.centre[0].lo, item.centre[0].hi)
             for y in (item.centre[1].lo, item.centre[1].hi)
         ]
@@ -323,7 +323,7 @@ def test_the_n11_control_is_case_438_with_its_optimum_inside_its_cells() -> None
     for item in optimum.targets:
         cell = n11_frame.world(item.owner)
         corners = [
-            (Q(x), Q(y))
+            (x, y)
             for x in (item.centre[0].lo, item.centre[0].hi)
             for y in (item.centre[1].lo, item.centre[1].hi)
         ]

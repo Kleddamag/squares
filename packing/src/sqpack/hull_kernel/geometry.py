@@ -9,9 +9,8 @@ that checker's `Fraction` outputs bit for bit. Only the names of the error types
 from __future__ import annotations
 
 import math
+from fractions import Fraction as Q
 from typing import NamedTuple
-
-from sqpack.hull_kernel.rational import Q
 
 type Point = tuple[Q, Q]
 type Polygon = list[Point]

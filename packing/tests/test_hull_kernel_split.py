@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import copy
 import time
+from fractions import Fraction as Q
 from itertools import pairwise
 from pathlib import Path
 
@@ -13,7 +14,6 @@ from devtools import check_hull_kernel_mask0 as mask0_tool
 from devtools import check_n17_subpattern as tool
 from sqpack.hull_kernel import Budget, RefusalError, node, producer, sequential
 from sqpack.hull_kernel.frame import Frame, make_frame
-from sqpack.hull_kernel.rational import Q
 
 # The blind pair at two bins under the envelope core: uniform rows stall, and bisecting
 # the stuck rows closes it in round 3 with 16 rows. Pinned so a refactor that changes the

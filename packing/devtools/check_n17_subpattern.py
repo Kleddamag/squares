@@ -38,7 +38,6 @@ from devtools import check_hull_kernel_mask0 as mask0_tool
 from sqpack.hull_kernel import node, sequential
 from sqpack.hull_kernel.frame import Frame
 from sqpack.hull_kernel.geometry import Budget, IncompleteError, RefusalError
-from sqpack.hull_kernel.rational import BACKEND
 
 PATTERNS = {
     "A": (
@@ -181,7 +180,6 @@ def check_saved(
         "mask": mask,
         "bins": bins,
         "cover_backend": cover,
-        "rational_backend": BACKEND,
         "seed_sha256": seed_sha,
         "node_sha256": node_sha,
         "closure": trace.closure,
@@ -272,7 +270,6 @@ def run(
         "bins": bins,
         "max_rounds": max_rounds,
         "cover_backend": cover,
-        "rational_backend": BACKEND,
         "collision_regions": collision,
         "hull_limit": hull_limit,
         "producer_share": producer_share,

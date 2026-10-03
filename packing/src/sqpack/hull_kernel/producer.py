@@ -32,6 +32,7 @@ import math
 import time
 from collections.abc import Callable, Sequence
 from dataclasses import dataclass, field
+from fractions import Fraction as Q
 from typing import Any
 
 from sqpack.hull_kernel.collision import SUPPORT_NORMALS, outward_round
@@ -60,7 +61,6 @@ from sqpack.hull_kernel.induction import (
 )
 from sqpack.hull_kernel.node import Row, points
 from sqpack.hull_kernel.ownership import ownership
-from sqpack.hull_kernel.rational import Q, Z
 from sqpack.hull_kernel.sequential import derived_closure, owner_extents
 
 GRID = 2**20
@@ -415,8 +415,8 @@ def collision_planes(core: Polygon, partner: PartnerRow) -> list[Halfplane]:
     return planes
 
 
-def _integer_planes(planes: list[Halfplane]) -> list[tuple[Z, Z, Z]]:
-    result: list[tuple[Z, Z, Z]] = []
+def _integer_planes(planes: list[Halfplane]) -> list[tuple[int, int, int]]:
+    result: list[tuple[int, int, int]] = []
     for a, b, c in planes:
         scale = math.lcm(a.denominator, b.denominator, c.denominator)
         result.append(
@@ -429,7 +429,7 @@ def _integer_planes(planes: list[Halfplane]) -> list[tuple[Z, Z, Z]]:
     return result
 
 
-def _satisfies(planes: list[tuple[Z, Z, Z]], point: Point) -> bool:
+def _satisfies(planes: list[tuple[int, int, int]], point: Point) -> bool:
     """`a x + b y <= c` for every integer plane, at a rational point, by cross-multiplying."""
     x, y = point
     z = math.lcm(x.denominator, y.denominator)
@@ -471,17 +471,17 @@ def collision_region(
         region = _float_clip(region, float(a), float(b), float(c))
         if len(region) < 3:
             return []
-    integer = _integer_planes(planes + convex_halfplanes(domain))
+    exact = _integer_planes(planes + convex_halfplanes(domain))
     cx = sum(x for x, _ in region) / len(region)
     cy = sum(y for _, y in region) / len(region)
-    kept = [vertex for vertex in domain if _satisfies(integer, vertex)]
+    kept = [vertex for vertex in domain if _satisfies(exact, vertex)]
     for x, y in region:
         for pull in (2.0**-12, 2.0**-6, 2.0**-3):
             point = (
                 Q(round((x + (cx - x) * pull) * GRID), GRID),
                 Q(round((y + (cy - y) * pull) * GRID), GRID),
             )
-            if _satisfies(integer, point):
+            if _satisfies(exact, point):
                 kept.append(point)
                 break
     polygon = hull(kept)

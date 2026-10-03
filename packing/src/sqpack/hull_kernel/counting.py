@@ -23,6 +23,7 @@ from __future__ import annotations
 import time
 from collections.abc import Mapping, Sequence
 from dataclasses import dataclass
+from fractions import Fraction as Q
 from itertools import pairwise
 from typing import Any
 
@@ -41,7 +42,6 @@ from sqpack.hull_kernel.geometry import (
     trig,
 )
 from sqpack.hull_kernel.ownership import ownership
-from sqpack.hull_kernel.rational import Q
 from sqpack.hull_kernel.sweep import exact_union_cover
 
 type Row = tuple[int, int, tuple[Q, Q]]
@@ -159,12 +159,7 @@ def counting_row(
     low, high = frame.field_centre_bounds(min(sum(trig(t), Q()) for t in interval) / 2)
     legal = intersect(
         frame.world(cell),
-        [
-            (Q(1), Q(0), high),
-            (Q(-1), Q(0), -low),
-            (Q(0), Q(1), high),
-            (Q(0), Q(-1), -low),
-        ],
+        [(Q(1), Q(0), high), (Q(-1), Q(0), -low), (Q(0), Q(1), high), (Q(0), Q(-1), -low)],
     )
     require(area2(legal) > 0, "degenerate row domain needs a separate proof")
     domain = [frame.rotate(p, c, s) for p in legal]

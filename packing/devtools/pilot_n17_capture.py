@@ -101,6 +101,7 @@ import sys
 import time
 from collections.abc import Mapping, Sequence
 from dataclasses import dataclass, field, replace
+from fractions import Fraction as Q
 from pathlib import Path
 from typing import Any
 
@@ -126,7 +127,6 @@ from sqpack.hull_kernel.geometry import (
 )
 from sqpack.hull_kernel.induction import encode, hull, same, strict_core
 from sqpack.hull_kernel.ownership import ownership
-from sqpack.hull_kernel.rational import Q, as_fraction
 
 TOOL_SHA256 = hashlib.sha256(Path(__file__).read_bytes()).hexdigest()
 KERNEL_DIR = Path(producer.__file__).resolve().parent
@@ -197,7 +197,7 @@ class Endpoint:
     v: tuple[float, float]
     provenance: dict[str, Any]
     system: str = "n17"
-    scale: Q = field(default_factory=lambda: Q(1))
+    scale: Q = Q(1)
     slides: Mapping[int, tuple[str, Q, Q]] = field(default_factory=lambda: dict(SLIDES))
     coarse: int | None = SIX
 
@@ -237,9 +237,9 @@ def load_endpoint(frame: Frame) -> Endpoint:
             f"cell {name} differs from the cover tool's",
         )
         if label in THETA_LABELS:
-            charts: tuple[tuple[Q, Q], ...] = ((Q(t_box.lo), Q(t_box.hi)),)
+            charts: tuple[tuple[Q, Q], ...] = ((t_box.lo, t_box.hi),)
         elif label == 16:
-            charts = ((Q(t16[0]), Q(t16[1])),)
+            charts = (t16,)
         else:
             charts = ((Q(0), Q(0)), (Q(1), Q(1)))
         turn = chart_turn(float((charts[0][0] + charts[0][1]) / 2)) % QUARTER
@@ -303,20 +303,19 @@ def load_n11_endpoint(frame: Frame) -> Endpoint:
             )
             for k in (0, 1)
         )
-        # The frame's numbers are the kernel's `mpq`; `Box` holds `Fraction` by exact type.
         centre = (
-            Box(as_fraction(scale * (cap / 2 - cy[1])), as_fraction(scale * (cap / 2 - cy[0]))),
-            Box(as_fraction(scale * (cap / 2 + cx[0])), as_fraction(scale * (cap / 2 + cx[1]))),
+            Box(scale * (cap / 2 - cy[1]), scale * (cap / 2 - cy[0])),
+            Box(scale * (cap / 2 + cx[0]), scale * (cap / 2 + cx[1])),
         )
         charts: tuple[tuple[Q, Q], ...] = (
-            ((Q(0), Q(0)), (Q(1), Q(1))) if label < 6 else ((Q(root_lo), Q(root_hi)),)
+            ((Q(0), Q(0)), (Q(1), Q(1))) if label < 6 else ((root_lo, root_hi),)
         )
         turn = 0.0 if label < 6 else chart_turn(float((root_lo + root_hi) / 2))
         owner = roles[label]
         targets.append(Target(label, owner, frame.cell_names[owner], centre, charts, turn))
     return Endpoint(
         targets=tuple(targets),
-        side=Box(as_fraction(side_lo), as_fraction(side_hi)),
+        side=Box(side_lo, side_hi),
         capture_cap=cap,
         u=(1.0, 0.0),
         v=(0.0, 1.0),
@@ -480,7 +479,7 @@ def in_convex(polygon: Polygon, point: Point) -> bool:
 def endpoint_holds(target: Target, rows: Sequence[Mapping[str, Any]]) -> dict[str, Any] | None:
     """The first live row holding the endpoint's exact pose, or None."""
     corners = [
-        (Q(x), Q(y))
+        (x, y)
         for x in (target.centre[0].lo, target.centre[0].hi)
         for y in (target.centre[1].lo, target.centre[1].hi)
     ]

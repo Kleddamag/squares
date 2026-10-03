@@ -5,7 +5,7 @@ title: Import, confirm and answer every reported result (2 October 2026 effort)
 kind: epic
 status: open
 priority: 1
-version: 40
+version: 41
 labels:
   - result-import
 dependencies: []
@@ -31,7 +31,7 @@ child_order_hints:
   - is-01m3ytdhr6h2xnsvj4f2nc2nk2
   - is-01m3z77bdhk8tn3epx63ywhxft
 created_at: 2026-10-02T16:51:15.917Z
-updated_at: 2026-10-03T14:40:07.295Z
+updated_at: 2026-10-03T14:49:18.133Z
 ---
 Umbrella for the 2 October 2026 effort: PRs #290 -> #292 -> #298 (imports and records), plus a stacked PR for verifier provenance and the independent verifier. Children track each lane; done when every reported result is confirmed or refuted (or has a bead naming exactly what remains), every issue has a current status reply, closeable issues are closed, and all PRs are merged.
 
@@ -120,3 +120,4 @@ Next steps for the next agent, in order:
 - 2026-10-03 ~05:30 T-064 at V3/C3 (pushed 19cb367ba): qx2 replay compare ok (9,800 roots, 32,079 leaves equal to the source's V3 record, none uncertified; E-k2m3-evand-valid7-qx2-replay, same-implementation) + Lean reduction built (E-k2m3-evand-bentz-lean-build, proof-assistant-checked, axioms propext/Classical.choice/Quot.sound). Nine more cases proved: n = 97, 118, 141, 166, 193, 222, 253, 286, 321; counts 77 proved / 247 open. Remaining on T-064: wand125's independent Valid7 checker replay with --guard-d1 (runners w1-w5, ~216 CPU-h), which would add an independent-implementation route and close D-1. The verifiers field waits for #311.
 2026-10-03 06:16 check-in: pushed since 04:52: m4 (done @6dfa6b9e), m6 @8c889f2d (n83 0-86), w1-w5 (w5 done @8cfcb5aa), r5 @b829406d (n42 PASS; replaced by r6 for n70/n20), s1/s2 logs only, l83 nothing yet, n82b nothing yet, n82a BLOCKED by a classifier denial on commit/push (needs the user). RA/RB done; W2 pushed RA S1-S4 fix @cfb653a2f (RB's TI items and the format-M question pending); RV, FF done and queued in the records lane; SP done, SP2 driving #311. #298 head 19cb367ba: real conflict with main (#310) being merged by the records lane; dispatched run 37101013522 on 8371ca135 failed on n-012 (fixed) and the slow-lane atlas pin (REBUILT_EQUALITIES lacks 97 from T-064; sent to the records lane).
 2026-10-03 14:45 check-in (07:16 trigger read late): the account's 5-hour limit stopped every lane about 06:20-08:20 UTC (reset 09:50); nothing ran 08:20-14:38. Resumed at 14:40: records lane (main merge 00375def0 committed locally, unpushed; atlas 97 fix in progress), W2 (pushed 82332fee4; TI-2 in progress), SP2 (#311 at 38a35b63e), runners r6, l83 (pushed f3b9c7ea2), s1, s2, m6, n82b, w1-w4 (w4 pushed 6a3dcde2b). n82a still blocked on the classifier denial of committing its receipts into packing/resources/web; it needs the user. r5 is superseded by r6.
+2026-10-03 15:00 #298 merged origin/main (00375def0; #310's eight-column tables kept, site-n-wraps re-applied because T-075's n cell otherwise scrolls 242 px at 1024 px; 399 site tests pass) and the atlas 97 pin (af178efd4); records and edit tiers pass; pin already at the last data commit. Branch-mergeability check green on af178efd4; full dispatched run 37130939993 in progress. GitHub still reports #298 CONFLICTING against its base claude/import-2026-10-01-requests although the base is an ancestor and merge-tree is clean (the known false-dirty state; PR runs do not trigger, so CI is dispatched). #290 and #292 are MERGEABLE/CLEAN. Main moved again to c831b4ee0 (#312, site review round); #298 still merges cleanly into it.

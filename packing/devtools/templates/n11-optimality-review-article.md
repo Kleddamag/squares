@@ -964,10 +964,9 @@ to rebind newly generated parent receipts, whose timing fields change their byte
 That automation issue is tracked separately from the completed mathematical
 obligations.[^reproduce]
 
-Each accepted execution is retained as a **receipt**: its verdict, the SHA-256 of every
-input object and of the checker’s own bytes, the command and commit that produced it,
-and a replay script.
-The composer reads a fixed set of these by hash.
+Each accepted execution is retained as a **receipt**: its verdict, a hash of every input
+object and of the checker’s own bytes, the command and commit that produced it, and a
+replay script. The composer reads a fixed set of these by hash.
 A reader can therefore verify at three depths: that every retained object still decodes
 to its hash; that the composition’s joins agree over the retained executions, which
 takes seconds; or that a component’s geometry recomputes afresh from the retained

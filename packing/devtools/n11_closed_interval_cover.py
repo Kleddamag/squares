@@ -20,7 +20,8 @@ the first such span passes that test even when it ends below the point, so `[1, 
 "covered" by `[0, 0]`. Over all 12,180 target/family pairs drawn from the 28 closed
 intervals with integer endpoints in -3..3, it makes 616 false accepts, every one on a
 singleton target, and no false refusals; on a target of positive length it is exact.
-Section C2 of `docs/project/reviews/review-2026-10-03-n11-optimality-adversarial-gpt6-pro-unified.md`
+Section C2 of
+`docs/project/reviews/review-2026-10-03-n11-optimality-adversarial-gpt6-pro-unified.md`
 reports the defect.
 
 The historical function stays byte-for-byte as it is. Eight later modules pin that

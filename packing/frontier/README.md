@@ -461,7 +461,7 @@ Counts below are computed from the artifacts, not asserted.
 
 Of the 256 open cases, **205** have Nagamochi’s formula as their verified lower bound.
 Two others use certificates already integrated into the register, the current external
-certificate bounds at $n = 12$ ($15680/3951$) and $n = 17$ ($116511/25000$). Complete
+certificate bounds at $n = 12$ ($31360/7901$) and $n = 17$ ($116511/25000$). Complete
 interval and exact replays of external certificates hold the other 49: wand125’s mixed
 rectangle-measure certificates at $n = 37$, 50, 65, 66, 76, 84, 85, 90 and 92, and by
 monotonicity at $n = 51$ from $n = 50$ and at $n = 86$ and 87 from $n = 85$, and its
@@ -498,7 +498,7 @@ Ranked by gap—the best-known packing minus the verified lower bound, which is 
 | $n$ | gap | record | note |
 | --- | --- | --- | --- |
 | 17 | 0.0151 | Bidwell | carried to $\frac{116511}{25000}$ by Guzhou0806 after Kleddamag |
-| 12 | 0.0314 | grid | $4^2 - 4$, carried to $\frac{15680}{3951}$ by Daniel after Burns, Massaccesi |
+| 12 | 0.0309 | grid | $4^2 - 4$, carried to $\frac{31360}{7901}$ by squarepacker after Daniel |
 | 31 | 0.0475 | grid | $6^2 - 5$, carried to $\frac{2381}{400}$ by wand125 after Tokoharu |
 | 97 | 0.0557 | grid | $10^2 - 3$ |
 | 44 | 0.0575 | grid | $7^2 - 5$, carried to $\frac{2777}{400}$ by wand125 after Tokoharu |

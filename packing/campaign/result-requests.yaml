@@ -27,24 +27,31 @@ issues:
     opened: '2026-10-02'
     state: open
     kind: result-report
-    triage: pending
+    triage: done
     summary: >-
       s(12) >= 31360/7901, by Daniel's 1,736-point weighted certificate for s(12) >=
       15680/3951 (T-049) with every coordinate and the container scaled by 7902/7901,
       verified on a net of 24,000 angles by Daniel's verifier and by an independent checker
       in the author's repository; archived on Zenodo.
     read_through: '2026-10-02T16:57:30Z'
-    results: []
+    results:
+      - key: s12-31360-7901
+        claim: s(12) >= 31360/7901 = 3.969117833..., Daniel's certificate rescaled by 7902/7901
+        source: body
+        register: [T-078]
     asks:
       - what: An independent replay and, if it holds, the n = 12 frontier record updated
-        state: queued
-    beads: []
+        state: done
+        note: >-
+          Replayed here by Daniel's verifier and the author's indep_check.cpp at N = 24000,
+          and decided by the native parent-core route; the n = 12 record holds 31360/7901
+          verified since 3 October (T-078).
+    beads: [think-gh2o]
     answer_bead: think-5mkr
     replies: []
     close_when: >-
-      Triage has mapped the claim, its register entry is confirmed or refuted, and the
-      reply saying so is posted from main.
-    notes: Opened after this record was first written; not yet triaged or tracked by an import bead.
+      T-078 is confirmed, which it is at V3/C3, and the reply saying so is posted from
+      main.
 
   - number: 308
     title: >-
@@ -190,8 +197,7 @@ issues:
       - key: n82
         claim: s(82) >= 233/25 = 9.32 (mixed_n82_L932, 58f153f)
         source: https://github.com/jlevy/squares/issues/294#issuecomment-5952428928
-        not_registered: Published after T-073's pin, and queued for import with the certificates at b00fc70.
-        queued: true
+        register: [T-076]
     beads: [think-m7cm, think-r7yt]
     answer_bead: think-weg6
     replies: []
@@ -232,23 +238,19 @@ issues:
       - key: n85-946
         claim: s(85) >= 473/50 = 9.46 (mixed_n85_L946, 028b915), so s(86), s(87) >= 9.46
         source: https://github.com/jlevy/squares/issues/282#issuecomment-5951548018
-        not_registered: Queued for import with the certificates published at b00fc70.
-        queued: true
+        register: [T-075]
       - key: n87-n91-n92
         claim: s(87) >= 237/25, s(91) >= 97/10 and s(92) >= 39/4 (6e4e978)
         source: https://github.com/jlevy/squares/issues/282#issuecomment-5953839070
-        not_registered: Queued for import with the certificates published at b00fc70.
-        queued: true
+        register: [T-075]
       - key: n83-937
         claim: s(83) >= 937/100 (mixed_n83_L937, 25c421d)
         source: https://github.com/jlevy/squares/issues/282#issuecomment-5954944553
-        not_registered: Queued for import with the certificates published at b00fc70.
-        queued: true
+        register: [T-075]
       - key: n96-996
         claim: s(96) >= 249/25 = 9.96 (mixed_n96_L996, b00fc70)
         source: https://github.com/jlevy/squares/issues/282#issuecomment-5955463430
-        not_registered: Queued for import with the certificates published at b00fc70.
-        queued: true
+        register: [T-075]
     beads: [think-ye2x, think-fb6h, think-09ag, think-r7yt]
     answer_bead: think-7gop
     replies: []

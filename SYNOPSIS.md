@@ -237,6 +237,7 @@ action for each are in [`frontier/RESULTS.md`](packing/frontier/RESULTS.md); the
 | [T-058](packing/frontier/RESULTS.md) | 1-100 | `V3` | `C3` | `S2` | `previously-published` | A rectangle-density certificate with core side B = 9977/10000 and the 201-direction net of step D = 83/40000 cannot have mass below n at any side L >= α U, where U is the side of any packing of n unit squares and α = B(1 + D) = 399908091/400000000; if every orientation of that packing lies in the net’s D4 orbit, L >= B U suffices. |
 | [T-059](packing/frontier/RESULTS.md) | 11 | `V3` | `C3` | `S2` | `previously-published` | wand125/square-packing-tools reports that its exact general_pose_tree checker reproduces all 12028 per-row core minima of Kleddamag’s n11 certificate, release v1.0.2, with global row minimum 999962528 units and all witnesses replayed. |
 | [T-061](packing/frontier/RESULTS.md) | 11 | `V3` | `C3` | `S2` | `previously-published` | s(11) > 3875000000/999999999 = 3.875000003875000003875 …, by Ke Wang and Can Li’s Zenodo record of 29 September 2026, reported on jlevy/squares#247. |
+| [T-078](packing/frontier/RESULTS.md) | 12 | `V3` | `C3` | `S2` | `previously-published` | s(12) >= 31360/7901 = 3.96911783 …, by squarepacker (Ryu Sungjoon) after Evan Daniel, published on 2 October 2026 and reported on jlevy/squares#309. |
 | [T-063](packing/frontier/RESULTS.md) | 61 | `V3` | `C3` | `S1` | `previously-published` | s(61) = 8, as a corollary of s(60) = 8 (T-062), which Evan Daniel published with it on 28 September 2026. |
 
 | Significance | What [`epistemics.md`](epistemics.md#significance-and-novelty) anchors it to |
@@ -272,7 +273,7 @@ hypothesis status and summarizes experiment verdicts, and the
 | Explorations | 46 | 27 linked to proposed hypotheses; 19 uncodified |
 | Hypotheses | 195 | 39 confirmed; 32 refuted; 61 blocked; 17 unresolved; 9 open; 32 open questions; 2 result registered; 2 abandoned; 0 running; 1 exhausted |
 | Experiments | 170 | 53 accepted; 37 rejected; 52 unresolved; 12 baseline; 11 blocked; 4 abandoned; 0 in progress; 1 exhausted |
-| Frontier results | 77 | 77 registered, 49 by others |
+| Frontier results | 78 | 78 registered, 50 by others |
 
 <!-- END CURRENT-RESEARCH-STATUS -->
 

@@ -772,6 +772,32 @@ sources:
       reported lower bound (T-076), above Green's reported value, which the case reported
       before it. The exact audit and the replay's checks before its first angle pass; no
       angle was replayed, and the proof-bundle tarball is pinned by digest and not retained.
+  - id: squarepacker-s12-lower-bound-2026-10-02
+    title: Daniel's s(12) certificate rescaled by 7902/7901
+    role: source-repository
+    url: https://github.com/squarepacker/s12-lower-bound/tree/8c53049025b94bb589ed25a90203f0a34c2945e4
+    local: resources/web/squarepacker-s12-lower-bound-2026-10-02/
+    source_key: '[squarepacker s12 2026]'
+    scope: {n_values: [12]}
+    reviewed: '2026-10-02'
+    source_date: '2026-10-02'
+    disposition: current-report
+    replay_disposition: case-specific
+    represented_by: [frontier/n-012.md]
+    evidence:
+      - E-n012-squarepacker-31360-7901-report
+      - E-n012-squarepacker-31360-7901-source-replay
+      - E-n012-squarepacker-31360-7901-native-parent-core
+    notes: >-
+      Revision 8c53049025b94bb589ed25a90203f0a34c2945e4 by Ryu Sungjoon (squarepacker),
+      archived as Zenodo 10.5281/zenodo.23106582, retained whole for jlevy/squares#309. Evan
+      Daniel's s(12) certificate (T-049) with every coordinate and the container multiplied
+      by 7902/7901, weights unchanged. Daniel's verifier and the author's indep_check.cpp
+      both accepted it here at the angle net N = 24000, and this repository's native
+      parent-core interval route decided all 9,942 rows, so s(12) >= 31360/7901 is verified
+      (T-078, V3/C3) and supersedes T-049's 15680/3951. All three checkers refuse two mutated
+      certificates. The one retained review was written by the lane that ran the replays
+      (its finding F1).
   - id: wand125-valid7-independent-check-2026-10-02
     title: Independent exact checker of Valid7 for s(k^2 - 3) = k
     role: source-repository

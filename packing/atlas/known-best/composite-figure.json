@@ -643,16 +643,16 @@
           "state": "closed-form"
         },
         "lower": {
-          "display": "s(12) ≥ 3.968615",
+          "display": "s(12) ≥ 3.969117",
           "evidence": [
-            "E-n012-evand-15680-3951-native-parent-core",
-            "E-n012-evand-15680-3951-source-replay"
+            "E-n012-squarepacker-31360-7901-native-parent-core",
+            "E-n012-squarepacker-31360-7901-source-replay"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
           "recent_result": true,
           "shown": true,
-          "value": "3.968615"
+          "value": "3.969117"
         },
         "n": 12,
         "optimality": {

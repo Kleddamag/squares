@@ -206,17 +206,17 @@
           "assurance": "verified",
           "basis": "external",
           "confirmed_by": [
-            "T-049"
+            "T-078"
           ],
-          "note": "(confirmed T-049)",
+          "note": "(confirmed T-078)",
           "recent": true,
           "result": null,
           "results": [
-            "T-049"
+            "T-078"
           ],
-          "source_key": "[evand square-packing 2026]",
-          "text": "Daniel after Burns, Massaccesi 2026, GitHub",
-          "value": "3.968615"
+          "source_key": "[squarepacker s12 2026]",
+          "text": "squarepacker after Daniel 2026, GitHub",
+          "value": "3.969117"
         },
         "n": 12,
         "record": "n-012",

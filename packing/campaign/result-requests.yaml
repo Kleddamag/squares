@@ -17,8 +17,59 @@ softschema:
   status: enforced
 repository: jlevy/squares
 owner: jlevy
-last_reviewed: '2026-10-02'
+last_reviewed: '2026-10-03'
 issues:
+  - number: 316
+    title: >-
+      s(k² − 4) = k for every k ≥ 5: registration request (external certificate + Lean
+      reduction)
+    author: evand
+    opened: '2026-10-03'
+    state: open
+    kind: result-report
+    triage: done
+    summary: >-
+      s(k^2 - 4) = k for every k >= 5: k = 5, 6 and 7 by the author's s(21), s(32) and s(45)
+      bundles, and every k >= 8 by one family of measures reduced to the 9 x 9 box, whose
+      tilted premise ValidTilt9 qx2_zm.py certifies over 16,200 D4 roots and whose reduction
+      bentz4_of_validTilt9 is kernel-checked in Lean; by monotonicity also s(k^2 - 3) = k for
+      k >= 5.
+    read_through: '2026-10-03T17:29:23Z'
+    results:
+      - key: k2m4
+        claim: s(k^2 - 4) = k for every integer k >= 5
+        source: body
+        register: [T-080]
+      - key: k2m3-by-monotonicity
+        claim: s(k^2 - 3) = k for every integer k >= 5, by monotonicity from s(k^2 - 4) = k
+        source: body
+        register: [T-064]
+    asks:
+      - what: An independent check of ValidTilt9, by wand125's checker on box 9 or otherwise
+        state: queued
+        note: >-
+          wand125's Valid7 checker has not been run on box 9. This repository's clean-room
+          verifier sqverify_fast does not yet cover continuous-angle closed covers; its
+          Milestone C (docs/project/specs/active/plan-2026-10-03-measure-verifier-milestone-c.md)
+          is the route.
+    beads: [think-8hk1]
+    answer_bead: think-ws87
+    replies:
+      - url: https://github.com/jlevy/squares/issues/316#issuecomment-5971664755
+        date: '2026-10-03'
+        by: jlevy
+        kind: acknowledgement
+        reported:
+          - result: k2m4
+          - result: k2m3-by-monotonicity
+    close_when: >-
+      T-080 is confirmed and the reply saying so is posted from main, and the independent
+      check of ValidTilt9 is done or declined.
+    notes: >-
+      The k^2 - 3 corollary is registered by T-064 for k >= 6, and its k = 5 case, s(22) =
+      5, is Bentz's; the issue's route adds no entry for it. Ids are provisional until
+      merged.
+
   - number: 309
     title: >-
       New lower bound for s(12): 31360/7901 = 3.969117833… (Daniel's certificate rescaled,

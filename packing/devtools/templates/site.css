@@ -66,6 +66,9 @@ body {
   --site-font-size-sans-base: calc(var(--kpress-font-size-base) * var(--site-font-scale-sans));
   --site-font-size-support: calc(var(--site-font-size-sans-base) * var(--paper-support-scale));
   --site-font-size-note: calc(var(--site-font-size-sans-base) * var(--paper-note-scale));
+  /* A table's filter bar, its controls and their labels: a step under the table's own
+     text, so the bar reads as the table's tools and not as its content. */
+  --site-font-size-control: calc(var(--site-font-size-sans-base) * 0.8);
   --site-support-color: var(--kpress-doc-muted);
   --site-wide: calc(var(--kpress-measure) + 24rem);
   /* How far a block may bleed past the wide track (the atlas grid, and a data table
@@ -857,9 +860,11 @@ body {
      shorter than a select, reads level with the labels beside it, and so does the
      count. */
   align-items: baseline;
-  gap: 0.5rem 1rem;
+  gap: 0.4rem 0.9rem;
   font-family: var(--kpress-font-sans);
-  font-size: var(--site-font-size-support);
+  /* Smaller than the table's text since 2026-10-02 (the owner, `think-gwcu`), the
+     support size until then. */
+  font-size: var(--site-font-size-control);
   font-weight: var(--site-font-weight-sans-light);
   margin-block: var(--site-table-space) 0.5rem;
 }
@@ -898,7 +903,14 @@ body {
   border-radius: var(--kpress-radius-sm, 4px);
   color: var(--kpress-doc-text);
   font: inherit;
-  padding: 0.1rem 0.35rem;
+  padding: 0.05rem 0.3rem;
+}
+/* A touch screen's browser zooms the page into a field whose text is under 16px when it
+   takes focus, so there a control keeps 16px at least; its label stays the bar's size. */
+@media (pointer: coarse) {
+  .site-table-tools :is(select, input:not([type="checkbox"])) {
+    font-size: max(16px, 1em);
+  }
 }
 /* A checkbox is the bar's own control too: the site's accent when checked, never the
    browser's blue, no box of its own around it, and its words on one line beside it. */

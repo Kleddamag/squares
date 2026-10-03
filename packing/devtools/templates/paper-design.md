@@ -1492,6 +1492,12 @@ it.
   and the same order. Only where Significance, Max age and Hide superseded start, and the
   count at its end, are the table’s own.
   `overview_sections.result_filters` writes it and `overview/table.js` drives it.
+  Every table’s bar, the frontier table’s too, is set at the control size,
+  `--site-font-size-control`, 0.8 of the sans base and a step under the table’s own
+  text, its controls and their labels alike, so it reads as the table’s tools (the
+  owner, 2026-10-02, `think-gwcu`; it was the support size).
+  On a touch screen a field keeps 16 pixels at least, under which a phone’s browser
+  zooms the page into it.
   - **Facets.** A result’s row carries each facet as an attribute
     (`overview_sections.result_facets`), and the bar has one control for each:
 

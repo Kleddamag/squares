@@ -3949,6 +3949,27 @@ def test_a_page_title_stands_one_space_above_what_follows_it() -> None:
     assert "  margin-block: 2rem 2.2rem;\n" in paper
 
 
+def test_a_tables_filter_bar_is_set_a_step_under_its_tables_text() -> None:
+    """A table's filter bar, its controls, their labels and its count, is set at the
+    control size, 0.8 of the sans base, a step under the table's own note-size text,
+    so it reads as the table's tools (the owner, 2026-10-02, `think-gwcu`; it was the
+    support size). On a touch screen a field keeps 16 pixels at least, under which a
+    phone's browser zooms the page into it on focus."""
+    css = render_overview.SITE_CSS.read_text(encoding="utf-8")
+    assert "--site-font-size-control: calc(var(--site-font-size-sans-base) * 0.8);" in css
+    bar = css[css.index("\n.site-table-tools {") :]
+    bar = bar[: bar.index("}")]
+    assert "font-size: var(--site-font-size-control);" in bar
+    assert "gap: 0.4rem 0.9rem;" in bar
+    fields = css[css.index(".site-table-tools :is(select, input) {") :]
+    assert "padding: 0.05rem 0.3rem;" in fields[: fields.index("}")]
+    coarse = css[css.index("@media (pointer: coarse) {") :]
+    assert (
+        '.site-table-tools :is(select, input:not([type="checkbox"])) {\n'
+        "    font-size: max(16px, 1em);"
+    ) in coarse[: coarse.index("\n}\n")]
+
+
 def test_every_table_stands_one_shared_space_from_the_text_around_it() -> None:
     """The space above and below a table is one token: above the filter bar of a table
     that has one, below every table's wrap, and around a document's own table, which

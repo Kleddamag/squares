@@ -1,0 +1,13 @@
+{
+  "verified": true,
+  "process_exit_code": 0,
+  "directions": 181,
+  "reported_reachable_event_cells": 1044374137,
+  "least_charge": "100000203/100000000",
+  "least_direction_index": 69,
+  "certificate_sha256": "3935651af614eb3e9a1926179925f98643beb17ed1764a323fe83a527f4bad5c",
+  "point_atoms": 584,
+  "threshold_atoms": 320,
+  "total_budget": "685457679/62500000",
+  "claim": "s(11) >= 191/50"
+}

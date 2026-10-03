@@ -102,13 +102,18 @@ upgrade.
 ## The Evidence Pack
 
 The review’s evidence pack arrived as one archive of 202 files and 6,086,828 bytes, with
-the SHA-256 the review states in its Appendix B.5. It is retained as a packet under
-`packing/resources/web/`, with a README that distinguishes recorded evidence from
-commands that perform new checks, a provenance file with the archive’s digest, and an
-inventory of every file with its digest and whether it was retained.
-Files above the project’s size guidance for Git, and files that duplicate a retained
-receipt or the review itself, are listed in the inventory with their digests and not
-checked in; everything a reader needs to rerun the review’s own checks is.
+the SHA-256 the review states in its Appendix B.5; its manifest was recomputed entry by
+entry with no mismatch, and both of its drivers passed here with the same statuses the
+review records. It is retained as the
+[packet of October 3](../../../packing/resources/web/n11-optimality-gpt6-pro-review-2026-10-03/README.md):
+196 of the 202 files at their archive paths, the larger data files as deterministic
+gzip, 5.4 MB in all, with a README that distinguishes recorded evidence from commands
+that perform new checks, a provenance file that inventories all 202 members with their
+digests, and a restore script that rebuilds the archive byte for byte.
+The six omitted files are byte-identical to objects the packet of September 29 already
+retains; the restore script decompresses them from there.
+The 59 field receipts of Review B are the bulk of the packet, 4.1 MB compressed; the
+44-certificate check reads them, which is why they stay.
 
 ## What Remains Open
 

@@ -1,0 +1,7 @@
+# Versions used for the relocated Python 3.12 component replay.
+# These packages are needed by the two local implementations; other entry points
+# in this supplement use only the Python standard library.
+numpy==2.3.5
+scipy==1.17.0
+sympy==1.14.0
+mpmath==1.3.0

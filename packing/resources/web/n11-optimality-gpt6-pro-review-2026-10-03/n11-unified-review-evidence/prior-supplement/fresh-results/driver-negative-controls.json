@@ -1,0 +1,20 @@
+{
+  "-O": {
+    "exit_code": 1,
+    "output": "Traceback (most recent call last):\n  File \"/tmp/n11 review relocated dw1vkmgu/relocated supplement/verify_review.py\", line 4, in <module>\n    raise RuntimeError(\"This mathematical checker refuses Python -O/-OO.\")\nRuntimeError: This mathematical checker refuses Python -O/-OO.\n"
+  },
+  "-OO": {
+    "exit_code": 1,
+    "output": "Traceback (most recent call last):\n  File \"/tmp/n11 review relocated dw1vkmgu/relocated supplement/verify_review.py\", line 4, in <module>\n    raise RuntimeError(\"This mathematical checker refuses Python -O/-OO.\")\nRuntimeError: This mathematical checker refuses Python -O/-OO.\n"
+  },
+  "source_mutation": {
+    "exit_code": 2,
+    "output": "REFUSED: Byte-count mismatch: independent_exact_witness.py\n"
+  },
+  "restored": {
+    "exit_code": 0,
+    "output": "Checked 118 supplied file identities.\nPASS_HASHES_ONLY \u2014 no mathematical replay was performed.\n"
+  },
+  "source_manifest_sha256": "be0e69e6b03832be13fa0b03af9b45063e096917e6c1c665cff3447561be4965",
+  "scope": "Driver refusal controls; source bytes restored to the manifest before packaging."
+}

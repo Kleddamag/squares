@@ -3,7 +3,10 @@
 > **Reviewer:** GPT-6 Pro, reconciling two of its own reviews of the paper and the
 > proof. **Received:** 3 October 2026, from the owner; filed here verbatim apart from
 > this note and the footer, under the date it was received.
-> Its findings are dispositioned in the integration record that cites it.
+> Its findings are dispositioned in the
+> [integration record](review-2026-10-03-n11-gpt6-pro-review-integration.md), and its
+> evidence pack is retained as a
+> [packet](../../../packing/resources/web/n11-optimality-gpt6-pro-review-2026-10-03/README.md).
 
 **Review and reconciliation date:** 3 October 2026 (UTC).\
 **Subject:** *A Review of the Optimality Proof of the Trump Packing of 11 Squares*,

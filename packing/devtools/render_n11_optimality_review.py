@@ -174,6 +174,9 @@ RENDER_INPUTS = (
     PACKING / "resources/web/n11-optimality-2026-09-29/receipts/exclusion-inventory.json",
     PACKING / "resources/web/n11-optimality-2026-09-29/receipts/local-isolation/result.json",
     PACKING / "resources/web/n11-optimality-2026-09-29/receipts/pose-inclusion/result.json",
+    # The paper's exact tables: the role guard and the focused rectangle's radii.
+    PACKING / "resources/web/n11-optimality-2026-09-29/receipts/pose-inclusion/guard.json",
+    PACKING / "resources/web/n11-optimality-2026-09-29/receipts/local-dual-residual/objects",
     PACKING / "devtools/check_n11_generic_fresh.py",
     PACKING / "devtools/check_n11_optimality_field_mask0.py",
     PACKING

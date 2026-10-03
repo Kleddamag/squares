@@ -348,6 +348,20 @@ EXPLAINER_REVISED = "October 1, 2026"
 #: (think-2cqu).
 OPTIMALITY_REVIEW_HISTORY = (
     PublicationHistoryEntry(
+        version="v0.1.2",
+        first_published="October 3, 2026",
+        result_scope=(
+            "The second reviewed revision: GPT-6 Pro's unified adversarial review of "
+            "October 3 is applied. The invariant is stated row by row with ownership "
+            "quantified over valid packings, the field citation names the original's "
+            "§12 and a worked mask-0 certificate, the separation features are written "
+            "as a disjunction of conjunctions, the isolation lemma carries the weighted "
+            "residual, the five-site charge gains its ten-hull form, the root is "
+            "certified unique on its interval, the uniqueness corollary is stated "
+            "conditionally, and the frames, roles, radii and cover sites are tabulated."
+        ),
+    ),
+    PublicationHistoryEntry(
         version="v0.1.1",
         first_published="October 3, 2026",
         result_scope=(

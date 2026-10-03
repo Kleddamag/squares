@@ -9,7 +9,7 @@ GitHub; then the title; then the credits, in the owner's form (2026-10-01):
 
     Human oversight: **Joshua Levy**
     Agents: **GPT-6 Astra** and **GPT-6 Sol**
-    Draft v0.1.1 (version history)
+    Draft v0.1.2 (version history)
     Original proof September 29, 2026 · Last revised October 3, 2026
 
 Names in bold, addresses as plain links, the version plain, a line's space before a

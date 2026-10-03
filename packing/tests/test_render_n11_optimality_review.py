@@ -401,6 +401,9 @@ def test_actual_article_renders_all_retained_figures_and_pinned_sources() -> Non
         "D4_BAN_REGIONS",
         "D4_REGIONS",
         "D4_BANS",
+        "LOCAL_RADII_TABLE",
+        "ROLE_MAP_TABLE",
+        "COVER_SITES_TABLE",
     }
     said = " ".join(" ".join(caption.split()) for caption in written)
     for phrase in (
@@ -544,7 +547,9 @@ def test_a_table_keeps_to_the_column_and_scrolls_inside_its_wrap() -> None:
     assert html.index(shared) < html.index(css)
     article = html.split('<article class="kpress kpress-doc kpress-prose cert-page n11-paper">')
     assert len(article) == 2
-    assert len(re.findall(r'<div class="kpress-table-wrap"><table\b', article[1])) == 2
+    # The branch table, the frame legend, the role map, the two tables of Appendix C
+    # and the version history: each is wrapped, and the wrap is what the rule caps.
+    assert len(re.findall(r'<div class="kpress-table-wrap"><table\b', article[1])) == 6
 
 
 @pytest.mark.skipif(

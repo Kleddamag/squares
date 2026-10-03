@@ -5,13 +5,13 @@ title: "Answer #227: follow up the T-056 replies (V3/C3, links on main), then cl
 kind: task
 status: open
 priority: 1
-version: 1
+version: 2
 labels:
   - result-import
 dependencies: []
-parent_id: is-01m3yrzmzcpq964zt2kr14w8jv
+parent_id: is-01m41csdc2gp36ry5p6n7c2x2y
 created_at: 2026-10-02T17:01:57.088Z
-updated_at: 2026-10-02T17:01:57.088Z
+updated_at: 2026-10-03T17:26:22.262Z
 ---
 Answer jlevy/squares#227 (franciscouzo, opened 2026-09-23): 102 and 103
 

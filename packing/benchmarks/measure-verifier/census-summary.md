@@ -33,6 +33,9 @@ check of the certificate here, which the last column says.
 | `rect_n40_L6695` | T | 40 | 1339/200 | VERIFIED | 167.4 | 1.0001000001762095 | complete | no |
 | `rect_n41_L6755` | T | 41 | 1351/200 | VERIFIED | 169.3 | 1.0001000036794614 | complete | no |
 | `rect_n42_L68275` | T | 42 | 2731/400 | VERIFIED | 272.0 | 1.0001000002448244 | none | yes |
+| `mixed_n50_L7318` | M | 50 | 3659/500 | VERIFIED | 176.6 | 1.0000000022689954 | none | yes |
+| `mixed_n50_L735` | L | 50 | 147/20 | VERIFIED | 647.1 | 1.0000000002563805 | none | yes |
+| `mixed_n50_L740` | M | 50 | 37/5 | VERIFIED | 810.7 | 1.0000000004091405 | complete | no |
 | `rect_n52_L7535` | T | 52 | 1507/200 | VERIFIED | 236.8 | 1.0001000012991306 | complete | no |
 | `rect_n53_L7595` | T | 53 | 1519/200 | VERIFIED | 202.9 | 1.0001000005722172 | complete | no |
 | `rect_n59_L792` | T | 59 | 198/25 | VERIFIED | 191.2 | 1.0001000019592972 | complete | no |
@@ -66,7 +69,7 @@ check of the certificate here, which the last column says.
 | `mixed_n96_L996` | M | 96 | 249/25 | VERIFIED | 456.4 | 1.000000000121414 | none | yes |
 | `mixed_n101_L1028` | L | 101 | 257/25 | VERIFIED | 128.4 | 1.000000000300333 | complete | no |
 
-51 of 51 certificates verified; 15 of them are the first complete check of their
+54 of 54 certificates verified; 17 of them are the first complete check of their
 certificate in this repository.
 
 <!-- This document follows common-doc-guidelines.md.

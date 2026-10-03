@@ -17,6 +17,9 @@ those directions. CPU on a shared host whose load average is given.
 | Certificate | n | Format | Status | Directions | Nodes | Least certified bound | Exact leaf | CPU s, all 201 | Load | Replayed directions | Authors’ CPU s | Ours, same directions | Ratio |
 | --- | ---: | --- | --- | ---: | ---: | --- | --- | ---: | ---: | --- | ---: | ---: | ---: |
 | `mixed_n37_L644` | 37 | M | VERIFIED | 201 | 49,002,652 | 1.000000001365918 | clears | 621.1 | 1.8 | all 201 | 18,462 | 620.9 | 30x |
+| `mixed_n50_L7318` | 50 | M | VERIFIED | 201 | 25,730,280 | 1.0000000022689954 | clears | 176.6 | 5.4 | none: first complete check here | - | - | - |
+| `mixed_n50_L735` | 50 | L | VERIFIED | 201 | 62,847,662 | 1.0000000002563805 | clears | 647.1 | 12.0 | none: first complete check here | - | - | - |
+| `mixed_n50_L740` | 50 | M | VERIFIED | 201 | 79,977,134 | 1.0000000004091405 | clears | 810.7 | 8.5 | all 201 | - | - | - |
 | `mixed_n65_L835` | 65 | M | VERIFIED | 201 | 91,946,228 | 1.000000000539362 | clears | 1629.0 | 2.0 | all 201 | 65,879 | 1628.5 | 40x |
 | `mixed_n66_L842` | 66 | M | VERIFIED | 201 | 87,565,608 | 1.0000000000012201 | clears | 1460.1 | 4.0 | all 201 | 42,065 | 1459.8 | 29x |
 | `mixed_n76_L894` | 76 | M | VERIFIED | 201 | 32,989,364 | 1.0000000029480338 | clears | 758.5 | 4.9 | all 201 | 13,096 | 758.3 | 17x |
@@ -34,7 +37,7 @@ those directions. CPU on a shared host whose load average is given.
 | `mixed_n96_L996` | 96 | M | VERIFIED | 201 | 26,793,520 | 1.000000000121414 | clears | 456.4 | 2.1 | none: first complete check here | - | - | - |
 | `mixed_n101_L1028` | 101 | L | VERIFIED | 201 | 53,145,987 | 1.000000000300333 | clears | 128.4 | 4.0 | all 201 | 27,669 | 128.0 | 216x |
 
-17 of 17 certificates verified; 20882 CPU seconds in all.
+20 of 20 certificates verified; 22516 CPU seconds in all.
 
 <!-- This document follows common-doc-guidelines.md.
 See github.com/jlevy/practical-prose and review guidelines before editing.

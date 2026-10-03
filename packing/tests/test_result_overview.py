@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import html
 import re
+from dataclasses import replace
 
 import pytest
 
@@ -253,7 +254,16 @@ def test_the_chain_is_every_result_on_the_case_oldest_first(
         assert f'<p class="site-result-step-head">{dated} <a href=' in step
         assert not re.search(r'class="site-date-kind">\w+</span> [\d-]+', step)
         assert overview_data.tex_bounds(other.summary) in step
-        assert overview_sections.kind_and_status(other) in step
+        # Where the result stands here as it does as a whole, its marks name only the
+        # results that supersede it on these cases (`result_overview.supersessions_on`).
+        shared = sorted(cases & set(result_overview.scope(other)))
+        here = result_overview.standing_on(other, shared)
+        shown = (
+            replace(other, supersessions=result_overview.supersessions_on(other, shared))
+            if here == other.standing
+            else other
+        )
+        assert overview_sections.kind_and_status(shown) in step
         assert f"packing/frontier/results.yaml?plain=1#L{lines[other.id]}" in step
         assert html.escape(other.credit) in step
         for key in (other.record.get("attribution") or {}).get("source_keys") or []:

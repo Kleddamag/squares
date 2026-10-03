@@ -203,6 +203,32 @@ sources:
       checkers share the point-test formulation, says T-064's fast check is structure only,
       and records that Nagamochi's Lemma 1 is false; none of these moves a value this record
       holds, and the s(k^2 - 2) = k corollary it states is not registered.
+  - id: evand-square-packing-2026-10-03
+    title: square-packing, the k2m4 family s(k^2 - 4) = k
+    role: source-repository
+    url: https://github.com/evand/square-packing/tree/2eb15455a6f178213287a84ab4d0576c060baabe
+    local: resources/web/evand-square-packing-2026-10-03/square-packing/s12/
+    source_key: '[evand square-packing 2026-10-03]'
+    scope: {n_values: [21, 32, 45, 60, 77, 96, 117, 140, 165, 192, 221, 252, 285, 320]}
+    reviewed: '2026-10-03'
+    source_date: '2026-10-03'
+    disposition: current-report
+    replay_disposition: case-specific
+    represented_by: [frontier/evidence.yaml]
+    evidence:
+      - E-k2m4-evand-family-report
+      - E-k2m4-evand-validtilt9-qx2-report
+      - E-k2m4-evand-lean-report
+    notes: >-
+      Revision 2eb15455a6f178213287a84ab4d0576c060baabe, retrieved at 2026-10-03T17:33Z,
+      the commit jlevy/squares#316 names; main had moved eight minutes later to c321d35c,
+      whose changes are to the site and s12/README.md and not to the bundle or the Lean. It
+      reports s(k^2 - 4) = k for every k >= 5 (T-081): k = 5, 6 and 7 by the bundles this
+      record holds as T-052, T-051 and T-053, and every k >= 8 by one family reduced to the
+      9 x 9 box, whose tilted premise ValidTilt9 is decided by qx2_zm.py and whose
+      reduction is in Lean. The bundle, the run's record and the Lean closure are retained.
+      The fast verify.sh passed here; the full run has not been replayed. The cases k = 10
+      to 18 move in the reported lane only.
   - id: kleddamag-n17-466001-2026
     title: Seventeen unit squares — a certified lower bound, 4.66001 package
     role: source-repository

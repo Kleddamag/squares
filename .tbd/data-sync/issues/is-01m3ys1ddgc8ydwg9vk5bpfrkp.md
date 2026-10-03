@@ -3,15 +3,19 @@ type: is
 id: is-01m3ys1ddgc8ydwg9vk5bpfrkp
 title: "Answer #247: correct the reply's T-058 to T-061 at V3/C3, then close"
 kind: task
-status: open
+status: closed
 priority: 1
-version: 2
+version: 3
 labels:
   - result-import
 dependencies: []
 parent_id: is-01m41csdc2gp36ry5p6n7c2x2y
 created_at: 2026-10-02T17:01:54.480Z
-updated_at: 2026-10-03T17:26:08.221Z
+updated_at: 2026-10-03T18:49:12.912Z
+closed_at: 2026-10-03T18:49:12.912Z
+close_reason: null
+resolution: null
+duplicate_of: null
 ---
 Answer jlevy/squares#247 (XiaoLiaoShe, opened 2026-09-29): New exact lower bound for s(11): 3.875000003875... with reproducible certificate
 

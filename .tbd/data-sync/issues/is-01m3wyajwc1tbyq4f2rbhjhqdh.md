@@ -3,9 +3,9 @@ type: is
 id: is-01m3wyajwc1tbyq4f2rbhjhqdh
 title: "Post the replies the import review found owing: 256, 279 to 282, 238, and corrections on 227, 247 and 170"
 kind: task
-status: open
+status: closed
 priority: 1
-version: 6
+version: 7
 spec_path: docs/project/specs/active/plan-2026-10-01-result-import-first-application.md
 labels:
   - packing
@@ -15,7 +15,11 @@ dependencies:
     target: is-01m3yrzmzcpq964zt2kr14w8jv
 parent_id: is-01m41csdc2gp36ry5p6n7c2x2y
 created_at: 2026-10-01T23:55:49.001Z
-updated_at: 2026-10-03T17:25:39.400Z
+updated_at: 2026-10-03T18:49:16.670Z
+closed_at: 2026-10-03T18:49:16.670Z
+close_reason: null
+resolution: null
+duplicate_of: null
 ---
 Owner posts, or an agent at the owner request. Drafts are in docs/project/specs/active/plan-2026-10-01-result-import-first-application.md. Every statement was checked against main at f25a85cb5; recheck before posting.
 

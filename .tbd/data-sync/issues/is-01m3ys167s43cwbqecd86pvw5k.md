@@ -5,13 +5,13 @@ title: "Answer #282: wand125's mixed certificates (T-069, T-071, T-072; later on
 kind: task
 status: open
 priority: 2
-version: 2
+version: 3
 labels:
   - result-import
 dependencies: []
 parent_id: is-01m41csdc2gp36ry5p6n7c2x2y
 created_at: 2026-10-02T17:01:47.129Z
-updated_at: 2026-10-03T17:26:59.194Z
+updated_at: 2026-10-03T22:47:14.145Z
 ---
 Answer jlevy/squares#282 (wand125, opened 2026-10-01): Mixed rectangle-measure certificates for n = 37, 65, 66, 90, 92 (after T-048): registration request
 
@@ -30,3 +30,7 @@ Closeable now: no: mixed-five is open; n84-n85 is open; n85-946 is queued; n87-n
 Close condition: T-069, T-071 and T-072 are confirmed or refuted, and every later certificate posted here is imported and settled. The thread is a rolling request: each release is imported and answered on its own.
 
 Sequence: once the pull request holding the ids above is on main, from packing/ on main run `uv run --frozen --all-extras --group dev python -m devtools.check_requests --draft 282`; the owner posts it (or an agent at the owner's request); record the comment's URL, date, kind and reported state under the issue's `replies` in packing/campaign/result-requests.yaml; rerun --report and close the issue with a final comment when it says closeable. Import beads: think-ye2x, think-fb6h, think-09ag, think-r7yt.
+
+## Notes
+
+2026-10-03 22:55 T-069, T-071, T-072, T-075 at V3/C3 on main; T-082 (22 certificates of 3 Oct) on main at V0/C1 via #324 (4949d1439); reply with OC-1/OC-2 posted (issuecomment-5974294911). Stays open until T-082's replays are recorded (think-wpuu).

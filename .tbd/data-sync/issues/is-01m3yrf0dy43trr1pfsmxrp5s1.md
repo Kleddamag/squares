@@ -3,15 +3,19 @@ type: is
 id: is-01m3yrf0dy43trr1pfsmxrp5s1
 title: "Stacked PR on #298: verifier provenance and the independent verifier"
 kind: task
-status: in_progress
+status: closed
 priority: 1
-version: 6
+version: 7
 labels:
   - verifiers
 dependencies: []
 parent_id: is-01m3yrdxte02c7bnygkke34ct4
 created_at: 2026-10-02T16:51:51.358Z
-updated_at: 2026-10-03T17:20:47.720Z
+updated_at: 2026-10-03T22:39:33.323Z
+closed_at: 2026-10-03T22:39:33.323Z
+close_reason: "#311 merged into main at 4043d863e; remaining verifier slices tracked under think-gpe0 (think-3ok2, think-th8p, think-j1pd)."
+resolution: null
+duplicate_of: null
 ---
 Branch stacked on claude/zealous-gauss-jem7l9; carries the verifier-provenance epic and the independent-verifier slices. Draft until its lanes land; green and mergeable after #298. Merge order #290 -> #292 -> #298 -> this.
 

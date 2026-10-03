@@ -3,15 +3,19 @@ type: is
 id: is-01m3ys14zf9kaxrjz44ksfrhmd
 title: "Answer #294: wand125's linear certificates (T-073; n = 82 queued)"
 kind: task
-status: open
+status: closed
 priority: 2
-version: 2
+version: 3
 labels:
   - result-import
 dependencies: []
 parent_id: is-01m41csdc2gp36ry5p6n7c2x2y
 created_at: 2026-10-02T17:01:45.839Z
-updated_at: 2026-10-03T17:26:53.084Z
+updated_at: 2026-10-03T22:39:34.317Z
+closed_at: 2026-10-03T22:39:34.316Z
+close_reason: "Final reply posted and #294 closed 2026-10-03; T-073 (n83) and T-080 (n101-105) V3/C3, T-076 (n82) V3/C3. The missing n82/n83 linear-control is think-e5ds."
+resolution: null
+duplicate_of: null
 ---
 Answer jlevy/squares#294 (wand125, opened 2026-10-02): Linear point/segment certificates: s(101) ≥ 257/25 = 10.28
 

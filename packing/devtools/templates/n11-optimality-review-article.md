@@ -964,6 +964,28 @@ to rebind newly generated parent receipts, whose timing fields change their byte
 That automation issue is tracked separately from the completed mathematical
 obligations.[^reproduce]
 
+Each accepted execution is retained as a **receipt**: its verdict, a hash of every input
+object and of the checker’s own bytes, the command and commit that produced it, and a
+replay script. The composer reads a fixed set of these by hash.
+A reader can therefore verify at three depths: that every retained object still decodes
+to its hash; that the composition’s joins agree over the retained executions, which
+takes seconds; or that a component’s geometry recomputes afresh from the retained
+inputs, for which the validation guide gives one portable command per checker.
+The packet also keeps the ancestry each accepted receipt cites as its input, the
+controls that measure what a partial or refused run reports, and the superseded attempts
+beside their replacements, so the record says why each accepted run exists; the
+[receipts register](../../resources/web/n11-optimality-2026-09-29/receipts/README.md)
+states the purpose of every one and who reads it.
+
+The two adversarial reviews of October 3 added four checked components that stand beside
+the accepted ones rather than in their place: a corrected closed-interval kernel for new
+callers; the incidence propagation that shortens the symmetry lemma; the two-radius
+local box; and the selection of 44 of the 46 accepted field certificates whose union is
+already the whole field exclusion, a reading aid and a replay shortcut rather than a
+deletion. Each has its own receipt or manifest and its own tests.
+None is a premise of the composed proof, and none changes a frozen checker or an
+accepted receipt.
+
 The [T-060 validation guide][reproduction] separates fast checks of retained evidence
 from fresh geometric replay, and links each checker, source binding and recorded
 execution. It is the place to reproduce a component; merely rerunning the final composer
@@ -1088,7 +1110,7 @@ coordinates are not inputs to certificate acceptance.
 Two adversarial reviews of October 3, 2026, the
 [project’s own](../../../docs/project/reviews/review-2026-10-03-n11-optimality-paper-adversarial.md)
 and
-[GPT-6 Pro’s](../../../docs/project/reviews/review-2026-10-03-n11-optimality-adversarial-gpt6-pro.md),
+[GPT-6 Pro’s](../../../docs/project/reviews/review-2026-10-03-n11-optimality-adversarial-gpt6-pro-unified.md),
 recomputed the paper’s numbers independently and found no mathematical error; the
 [integration record](../../../docs/project/reviews/review-2026-10-03-n11-gpt6-pro-review-integration.md)
 dispositions every finding of the second, and the retained components it added stand
@@ -1180,7 +1202,7 @@ beside the accepted ones rather than in their place.
     the accepted charge certificates and the clearance of the non-contacting pairs were
     computed there, outside the accepted certificate ensemble.
 
-[^gpt6]: [GPT-6 Pro’s unified adversarial review](../../../docs/project/reviews/review-2026-10-03-n11-optimality-adversarial-gpt6-pro.md),
+[^gpt6]: [GPT-6 Pro’s unified adversarial review](../../../docs/project/reviews/review-2026-10-03-n11-optimality-adversarial-gpt6-pro-unified.md),
     received 3 October 2026: its findings C1, C5, C6, C7 and C9 and simplifications S1,
     S5, S6 and S7 are applied in this revision, and the
     [integration record](../../../docs/project/reviews/review-2026-10-03-n11-gpt6-pro-review-integration.md)

@@ -306,9 +306,6 @@ exclude = [
 [tool.basedpyright]
 include = [
     "src/sqpack",
-    # Local type stubs for dependencies that ship none (gmpy2, for the kernel's rationals),
-    # held to the same floor as the code that relies on them.
-    "typings",
     "cases",
     "devtools",
     "benchmarks",

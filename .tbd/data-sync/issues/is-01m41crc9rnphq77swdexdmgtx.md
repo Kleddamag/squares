@@ -5,7 +5,7 @@ title: "Merge #292, #298, #311 into main bottom-up once each is green and mergea
 kind: task
 status: open
 priority: 1
-version: 17
+version: 18
 labels:
   - merge
 dependencies:
@@ -37,9 +37,11 @@ dependencies:
     target: is-01m3ys17qmmqsa0pby2rg6x2hk
   - type: blocks
     target: is-01m3xrx8b86kp8t1k6gj71p4ej
+  - type: blocks
+    target: is-01m41e1tqg81pgz89snb0whnv4
 parent_id: is-01m41cr1mz526vz5b2a5e4z100
 created_at: 2026-10-03T17:24:58.807Z
-updated_at: 2026-10-03T17:46:27.813Z
+updated_at: 2026-10-03T17:47:38.872Z
 ---
 Merge commits, not squash or rebase (think-fqut: GitHub's stacked merge rebases children). After each merge, retarget and check the next PR is still mergeable; refresh its CI.
 

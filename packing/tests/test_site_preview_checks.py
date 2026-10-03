@@ -162,6 +162,8 @@ def test_the_columns_table_has_one_line_a_column() -> None:
                     "column": "Result",
                     "width": 412.8,
                     "held": 396.8,
+                    "held_by": "t-033",
+                    "overflows": [{"row": "t-019", "by": 3.2}],
                     "lines": 3,
                     "broken": [],
                     "tallest": None,
@@ -190,8 +192,11 @@ def test_the_columns_table_has_one_line_a_column() -> None:
         "-",
     )
     assert (credit["col_width"], credit["share"], credit["max_lines"]) == ("102.6", "9%", 9)
-    # The widest content a cell holds, where the report has it.
+    # The widest content a cell holds and the row that holds it, where the report has
+    # them, and how many cells show something past their own box.
     assert (result["held"], credit["held"]) == ("396.8", "-")
+    assert (result["held_by"], credit["held_by"]) == ("t-033", "-")
+    assert (result["overflows"], credit["overflows"]) == (1, 0)
     assert (credit["broken_words"], credit["tallest_row"]) == (2, "t-048")
     assert (credit["row_height"], credit["its_lines"]) == ("238.8", 9)
     assert (credit["table"], credit["past_frame"], credit["shown"]) == ("1104", "0", 61)

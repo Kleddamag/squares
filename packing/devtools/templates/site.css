@@ -31,6 +31,38 @@ body {
   --kpress-doc-link: var(--kpress-doc-accent);
   --color-primary-light: var(--kpress-doc-accent);
 }
+/* The rung scale: a fill's lightness and chroma at level 0, and what one level adds to
+   each. Chips are light fills carrying the page's own text colour: level 0 sits close to
+   the page background, nearly neutral, and each level is darker and more saturated;
+   dark mode turns the lightness over (below). `devtools.rung_scale` measures every fill
+   these make and its text contrast (paper-design.md, Color). */
+:root {
+  --site-rung-base: 95%;
+  --site-rung-step: -5.5%;
+  --site-rung-chroma-base: 0.015;
+  --site-rung-chroma-step: 0.024;
+}
+/* The site's own colours, each a token, so that a colour is tried and changed in one
+   place (`devtools.check_colour_tokens` refuses a rule that names one of its own;
+   paper-design.md, Color). Significance's ink is a dark teal between the confirmation
+   green and the verification blue, darker and bluer than the accent so that it never
+   reads as a link, and light in dark mode (below): the colour of significance wherever
+   the site shows one (`overview_sections.significance_mark`; the owner, 2026-10-03,
+   `think-m3m4`), which `devtools.rung_scale` measures against the page in both themes.
+   The new-result star is the one warm mark. A popover's backdrop dims the page with a
+   scrim. A mix of the page's own colours keeps its mix in the rule that paints with it,
+   since a token resolves where it is declared and the dark theme's page colours are set
+   below the root; its ratio is the token: a plain chip's tint of the muted gray, and how
+   much accent a pressed action keeps. Both blocks stand before the dark theme's values,
+   which share their specificity on the root, so the dark ones win there as they do
+   below it (`think-uer5`). */
+:root {
+  --site-significance: oklch(42% 0.07 205);
+  --site-new-result: oklch(52% 0.19 25);
+  --site-scrim: oklch(0% 0 0 / 0.12);
+  --site-chip-tint: 16%;
+  --site-action-hover-accent: 85%;
+}
 :root:where([data-kpress-resolved-theme="dark"]),
 :where([data-kpress-resolved-theme="dark"]) :is(.kpress, .kpress-page-main, .kpress-tooltip),
 :is(.kpress, .kpress-page-main, .kpress-tooltip)[data-kpress-resolved-theme="dark"] {
@@ -44,36 +76,6 @@ body {
   --site-significance: oklch(80% 0.085 205);
   --site-new-result: oklch(66% 0.17 25);
   --site-hero-filter: brightness(0.88);
-}
-/* The rung scale: a fill's lightness and chroma at level 0, and what one level adds to
-   each. Chips are light fills carrying the page's own text colour: level 0 sits close to
-   the page background, nearly neutral, and each level is darker and more saturated;
-   dark mode turns the lightness over (above). `devtools.rung_scale` measures every fill
-   these make and its text contrast (paper-design.md, Color). */
-:root {
-  --site-rung-base: 95%;
-  --site-rung-step: -5.5%;
-  --site-rung-chroma-base: 0.015;
-  --site-rung-chroma-step: 0.024;
-}
-/* The site's own colours, each a token, so that a colour is tried and changed in one
-   place (`devtools.check_colour_tokens` refuses a rule that names one of its own;
-   paper-design.md, Color). Significance's ink is a dark teal between the confirmation
-   green and the verification blue, darker and bluer than the accent so that it never
-   reads as a link, and light in dark mode (above): the colour of significance wherever
-   the site shows one (`overview_sections.significance_mark`; the owner, 2026-10-03,
-   `think-m3m4`), which `devtools.rung_scale` measures against the page in both themes.
-   The new-result star is the one warm mark. A popover's backdrop dims the page with a
-   scrim. A mix of the page's own colours keeps its mix in the rule that paints with it,
-   since a token resolves where it is declared and the dark theme's page colours are set
-   below the root; its ratio is the token: a plain chip's tint of the muted gray, and how
-   much accent a pressed action keeps. */
-:root {
-  --site-significance: oklch(42% 0.07 205);
-  --site-new-result: oklch(52% 0.19 25);
-  --site-scrim: oklch(0% 0 0 / 0.12);
-  --site-chip-tint: 16%;
-  --site-action-hover-accent: 85%;
 }
 
 /* The paper typography profile, read from paper-type.css, which the explainer carries
@@ -1465,10 +1467,10 @@ body {
 }
 
 /* ---------- A table of results on a phone ----------
-   Six columns do not fit 390px, and scrolling a table sideways to read one claim is the
-   wrong trade: each row becomes a small card, id, significance, cases and rungs on its
-   first line, then the claim with its records under it, and the credit and date; the
-   status line sits under the rungs. The results page's table and the overview's recent table are the one
+   Nine columns do not fit 390px, and scrolling a table sideways to read one claim is the
+   wrong trade: each row becomes a small card, id, cases and rungs on its first line, the
+   significance under the id and the status line under the rungs on its second, then the
+   claim with its records under it, and the credit and date. The results page's table and the overview's recent table are the one
    table (`.site-results`), so both take it. The card places its cells by class, not by
    column, and orders them (`order`): the wide table's row opens with the date and sets
    the credit before the status and the details, so the card reads as it did before the
@@ -1489,7 +1491,7 @@ body {
     border-block-end: 1px solid var(--kpress-doc-border);
     column-gap: 0.6rem;
     display: grid;
-    grid-template-columns: auto auto minmax(0, 1fr) auto;
+    grid-template-columns: auto minmax(0, 1fr) auto;
     padding: 0.7rem 0.5rem;
     row-gap: 0.3rem;
   }
@@ -1510,16 +1512,19 @@ body {
     font-weight: 650;
     grid-area: 1 / 1;
   }
-  /* The significance follows the id, the card's first line reading id, significance,
-     cases and rungs. */
-  .site-results .site-col-s {
+  .site-results .site-col-n {
     grid-area: 1 / 2;
   }
-  .site-results .site-col-n {
+  .site-results .site-rungs {
     grid-area: 1 / 3;
   }
-  .site-results .site-rungs {
-    grid-area: 1 / 4;
+  /* The significance opens the card's second line, under the id and the cases, level
+     with the status under the rungs. On the first line, between the id and the cases,
+     its track came out of the cases', the one that gives way, and next to a long status
+     a short list had none: n = 11 stood a word to a line across the rungs (`think-uer5`,
+     2026-10-03). */
+  .site-results .site-col-s {
+    grid-area: 2 / 1 / auto / 3;
   }
   /* The status stands right under the rungs, in their track, on the card's second line,
      as it did when it was in their cell. The track is as wide as its content, and a
@@ -1527,7 +1532,7 @@ body {
      would take the whole card and leave the cases and the credit no room. So the cell
      stops at two chips' width, and a third chip wraps under them. */
   .site-results .site-col-status {
-    grid-area: 2 / 4;
+    grid-area: 2 / 3;
   }
   .kpress .site-results td.site-col-status {
     max-width: 14.5rem;
@@ -1561,11 +1566,11 @@ body {
   /* The claim and its details come before the credit and the date, which the wide row
      sets on either side of them. */
   .site-results .site-col-credit {
-    grid-column: 1 / 4;
+    grid-column: 1 / 3;
     order: 1;
   }
   .site-results .site-col-date {
-    grid-column: 4;
+    grid-column: 3;
     order: 2;
     text-align: end;
   }

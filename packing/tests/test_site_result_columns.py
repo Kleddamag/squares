@@ -472,10 +472,18 @@ def test_on_a_phone_each_row_is_a_card_that_fits(
     laid: dict[tuple[str, int], Laid], name: str
 ) -> None:
     """At 390 pixels each row is a card as wide as the page's column, the floors of the
-    wide table do not apply, and no credit breaks inside a word."""
+    wide table do not apply, and no credit breaks inside a word. No cell of a card shows
+    anything past its own box: with the significance on the card's first line, the cases
+    beside it were left no width on 34 of 70 cards, and n = 11 stood a word to a line
+    across the rungs (`think-uer5`)."""
     table = laid[name, PHONE].table
     assert table["layout"] == "cards"
     assert table["scrolls"] == 0
+    overflowing = {c["column"]: c["overflows"] for c in table["columns"] if c["overflows"]}
+    assert overflowing == {}
+    cases = [c for c in table["columns"] if c["column"].startswith("num site-col-n")]
+    assert cases
+    assert all(column["held"] > 0 for column in cases)
     credit = next(c for c in table["columns"] if c["column"].startswith("site-col-credit"))
     assert credit["broken"] == []
     assert credit["lines"] >= 1

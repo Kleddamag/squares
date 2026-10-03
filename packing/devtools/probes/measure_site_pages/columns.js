@@ -9,7 +9,8 @@
 // In the `table` layout each column is reported under its header's words with its width
 // and what its cells hold: `lines`, the most lines any cell of it takes; `held`, the
 // width of the widest content a cell of it holds, so a column can be held to what it
-// holds, and `held_by`, the key of the row whose cell holds it; and `tallest`, the
+// holds, and `held_by`, the key of the row whose cell holds it; `overflows`, the rows
+// whose cell shows something past its own box, with by how much; and `tallest`, the
 // tallest row whose height this column's cell sets, with that row's key, its height and
 // the lines the cell takes. A row's height is set by the cell
 // whose content is tallest, so a column that never sets one reports no `tallest`. A
@@ -41,12 +42,14 @@
   const shown = (el) => el.getClientRects().length > 0;
   /** @param {Element} el */
   const words = (el) => (el.textContent ?? "").replace(/\s+/g, " ").trim();
-  /** The width of what a cell shows: the span of the boxes of its words and of its
-   * elements, passing over an element a pixel wide or tall and all it holds, as a
-   * visually hidden copy is (KaTeX's MathML, KPress's semantic math), whose words keep
-   * their own width inside the clip.
-   * @param {Element} cell */
-  const shownWidth = (cell) => {
+  /** Where what a cell shows starts and ends across the line: the span of the boxes of
+   * its words and of its elements, passing over an element a pixel wide or tall and all
+   * it holds, as a visually hidden copy is (KaTeX's MathML, KPress's semantic math),
+   * whose words keep their own width inside the clip. `null` for a cell that shows
+   * nothing.
+   * @param {Element} cell
+   * @returns {{ left: number, right: number } | null} */
+  const shownExtent = (cell) => {
     let left = Number.POSITIVE_INFINITY;
     let right = Number.NEGATIVE_INFINITY;
     const range = document.createRange();
@@ -73,10 +76,10 @@
       }
     };
     visit(cell);
-    return right > left ? right - left : 0;
+    return right > left ? { left, right } : null;
   };
-  /** The height and width of what a cell holds, and the lines that height is at the
-   * cell's line height.
+  /** The height and width of what a cell holds, the lines that height is at the cell's
+   * line height, and how far what it shows runs past the cell's own box on either side.
    * @param {Element} cell */
   const content = (cell) => {
     const range = document.createRange();
@@ -84,9 +87,12 @@
     const { height } = range.getBoundingClientRect();
     const style = getComputedStyle(cell);
     const line = Number.parseFloat(style.lineHeight) || Number.parseFloat(style.fontSize) * 1.2;
+    const extent = shownExtent(cell);
+    const box = cell.getBoundingClientRect();
     return {
       height: round(height),
-      width: round(shownWidth(cell)),
+      width: extent ? round(extent.right - extent.left) : 0,
+      overflow: extent ? round(Math.max(0, extent.right - box.right, box.left - extent.left)) : 0,
       lines: height > 0 ? Math.max(1, Math.round(height / line)) : 0,
     };
   };
@@ -304,6 +310,9 @@
           lines: Math.max(0, ...cellsOf.map(({ cell }) => cell.lines)),
           held: Math.max(0, ...cellsOf.map(({ cell }) => cell.width)),
           held_by: holds ? holds.row.key : null,
+          overflows: cellsOf
+            .filter(({ cell }) => cell.overflow > 0.5)
+            .map(({ row, cell }) => ({ row: row.key, by: cell.overflow })),
           broken: [...new Set(cellsOf.flatMap(({ cell }) => cell.broken))],
           split: [...new Set(cellsOf.flatMap(({ cell }) => cell.split))],
           cuts: [...new Set(cellsOf.flatMap(({ cell }) => cell.cuts))],

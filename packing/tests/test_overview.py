@@ -234,8 +234,8 @@ def test_the_posters_and_the_film_have_a_section_of_their_own_under_the_atlas(
         overview_sections.ATLAS_CARDS
     )
     note = section.split('<p class="site-wide site-atlas-note">', 1)[1].split("</p>", 1)[0]
-    # The star is explained once on the page, above the recent table (`star_legend`);
-    # the note links that legend and says it no second time.
+    # The star is keyed once on the page, in the legend over the recent table
+    # (`rung_legend`); the note links that table and says it no second time.
     assert note.startswith(
         'The best packings known, each star a <a href="#recent-results">new result</a>.'
     )
@@ -3822,7 +3822,7 @@ def test_both_tables_of_results_end_with_the_same_id_column(
     # On a phone the id opens the card, in both tables, and the date, the row's first
     # cell, still follows the credit there.
     assert "  .site-results .site-col-id {\n    font-weight: 650;\n    grid-area: 1 / 1;" in css
-    assert "    grid-column: 4;\n    order: 2;\n    text-align: end;" in css
+    assert "    grid-column: 3;\n    order: 2;\n    text-align: end;" in css
 
 
 def test_a_date_cell_leads_with_the_date_and_then_says_what_it_dates(

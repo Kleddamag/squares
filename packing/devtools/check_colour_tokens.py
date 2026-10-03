@@ -19,6 +19,13 @@ each `var(...)` in its value is set aside:
 - and every token a property that paints names is declared, in these stylesheets or
   KPress's: a misspelt one paints nothing, and nothing else would say so.
 
+A `var()`'s fallback is held to the same rule, since it paints wherever its token is
+unset: `var(--site-ink, #000)` names a colour of its own. Every rule's own declarations
+are read, those of a rule that also holds a nested rule (an `@page` beside its margin
+boxes) among them. A token is counted declared if any of these stylesheets or KPress's
+declares it, not only those a given page loads; that a page's own sheets declare every
+token it paints with is `think-wviw`'s.
+
 A custom property may hold any value: that is what a token is. A mix of other colours
 stays in the rule that uses it, with its ratio a token, since a token resolves where it
 is declared and a mix of the page's colours declared at the root would miss the dark
@@ -45,7 +52,6 @@ ROOT = Path(__file__).resolve().parent.parent
 STYLESHEETS = tuple(sorted((ROOT / "devtools" / "templates").glob("*.css")))
 
 _COMMENT = re.compile(r"/\*.*?\*/", re.DOTALL)
-_BLOCK = re.compile(r"([^{}]*)\{([^{}]*)\}")
 _HEX = re.compile(r"#[0-9a-fA-F]{3,8}\b")
 _FUNCTION = re.compile(
     r"\b(rgba?|hsla?|hwb|lab|lch|oklab|oklch|color|color-mix)\(", re.IGNORECASE
@@ -54,10 +60,11 @@ _DIGIT = re.compile(r"\d")
 _WORD = re.compile(r"(?<![\w-])[a-zA-Z]+(?![\w-])")
 #: The properties that paint, where a word may be a named colour.
 _PAINTS = re.compile(
-    r"^(?:color|background(?:-color)?|border(?:-[a-z]+)*?(?:-color)?|outline(?:-color)?|"
-    r"fill|stroke|accent-color|caret-color|text-decoration(?:-color)?|column-rule"
-    r"(?:-color)?|box-shadow|text-shadow|scrollbar-color|stop-color|flood-color|"
-    r"lighting-color)$"
+    r"^(?:color|background(?:-color|-image)?|border(?:-[a-z]+)*?(?:-color)?|"
+    r"outline(?:-color)?|fill|stroke|accent-color|caret-color|text-decoration(?:-color)?|"
+    r"column-rule(?:-color)?|box-shadow|text-shadow|scrollbar-color|stop-color|"
+    r"flood-color|lighting-color|filter|backdrop-filter|-webkit-text-fill-color|"
+    r"-webkit-text-stroke(?:-color)?|mask(?:-image)?)$"
 )
 _NAMED = """aliceblue antiquewhite aqua aquamarine azure beige bisque black blanchedalmond blue
     blueviolet brown burlywood cadetblue chartreuse chocolate coral cornflowerblue cornsilk
@@ -129,10 +136,27 @@ def _closing(text: str, opening: int) -> int:
     return len(text)
 
 
+def _fallback(inner: str) -> str:
+    """What a `var()` holds after its token: the fallback past its first top-level comma,
+    or nothing."""
+    depth = 0
+    for index, char in enumerate(inner):
+        if char == "(":
+            depth += 1
+        elif char == ")":
+            depth -= 1
+        elif char == "," and depth == 0:
+            return inner[index + 1 :]
+    return ""
+
+
 def without_tokens(value: str) -> str:
-    """A value with every `var(...)`, fallback and all, set aside."""
+    """A value with every `var(...)`'s token set aside and its fallback kept, itself
+    without tokens, since a fallback paints wherever its token is unset."""
     while (start := value.find("var(")) >= 0:
-        value = value[:start] + " " + value[_closing(value, start + 3) :]
+        end = _closing(value, start + 3)
+        fallback = without_tokens(_fallback(value[start + 4 : end - 1]))
+        value = f"{value[:start]} {fallback} {value[end:]}"
     return value
 
 
@@ -157,15 +181,46 @@ def colour_problems(property_name: str, value: str) -> list[str]:
     return problems
 
 
+def _blank(text: str, start: int, end: int) -> str:
+    """`text` with `start` to `end` blanked, its newlines kept."""
+    return text[:start] + re.sub(r"[^\n]", " ", text[start:end]) + text[end:]
+
+
+def rule_blocks(text: str) -> list[tuple[str, int, str]]:
+    """Every rule of a stylesheet, outer and nested: its selector or at-rule prelude, where
+    its body starts, and the body with each rule nested in it blanked, prelude and all,
+    so what is left is the rule's own declarations, at their own offsets."""
+    blocks: list[tuple[str, int, str]] = []
+    opened: list[tuple[str, int]] = []
+    for index, char in enumerate(text):
+        if char == "{":
+            prelude = max(text.rfind(mark, 0, index) for mark in ";{}") + 1
+            opened.append((" ".join(text[prelude:index].split()), index + 1))
+        elif char == "}" and opened:
+            selector, body_start = opened.pop()
+            body = text[body_start:index]
+            depth = 0
+            nested_from = 0
+            for at, inner in enumerate(body):
+                if inner == "{":
+                    if depth == 0:
+                        nested_from = max(body.rfind(mark, 0, at) for mark in ";}") + 1
+                    depth += 1
+                elif inner == "}":
+                    depth -= 1
+                    if depth == 0:
+                        body = _blank(body, nested_from, at + 1)
+            blocks.append((selector or "(top level)", body_start, body))
+    return blocks
+
+
 def stylesheet_findings(css: str, path: Path = Path("<css>")) -> list[Finding]:
     """Every declaration in `css` that paints with a colour of its own."""
     text = _blank_comments(css)
     findings: list[Finding] = []
-    for block in _BLOCK.finditer(text):
-        selector = " ".join(block.group(1).split()) or "(top level)"
-        body_start = block.start(2)
+    for selector, body_start, body in rule_blocks(text):
         offset = 0
-        for piece in block.group(2).split(";"):
+        for piece in body.split(";"):
             if ":" in piece:
                 name, _, value = piece.partition(":")
                 name = name.strip()
@@ -203,8 +258,8 @@ def undeclared_paint_tokens(
     declared = {name for text in texts for name in _CUSTOM.findall(text)}
     painted: set[str] = set()
     for text in texts[: len(sheets)]:
-        for block in _BLOCK.finditer(text):
-            for piece in block.group(2).split(";"):
+        for _, _, body in rule_blocks(text):
+            for piece in body.split(";"):
                 name, _, value = piece.partition(":")
                 if _PAINTS.match(name.strip().lower()):
                     painted.update(_VAR_NAME.findall(value))

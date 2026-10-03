@@ -56,10 +56,42 @@ def test_a_rule_that_names_a_colour_of_its_own_is_refused() -> None:
         "color-mix() names a value of its own: color-mix(in oklch, 16%, )"
     ]
     assert _problems(".a { border-color: teal; }") == ["named colour teal"]
-    # Hidden in a fallback is still a colour of its own once the token is set aside.
+    # Beside a token is still a colour of its own once the token is set aside.
     assert _problems(".a { color: var(--missing), #000; }") == ["hex colour #000"]
     # Inside an at-rule, and with a comment in the way.
     assert _problems("@media print { .a { /* ink */ color: #000; } }") == ["hex colour #000"]
+
+
+def test_a_colour_in_a_fallback_is_a_colour_of_its_own() -> None:
+    """A `var()`'s fallback paints wherever its token is unset, so it is held to the rule
+    too, at any depth; a fallback that is itself a token passes (`think-uer5`)."""
+    assert _problems(".a { color: var(--site-ink, #000); }") == ["hex colour #000"]
+    assert _problems(".a { color: var(--x, red); }") == ["named colour red"]
+    assert _problems(".a { color: var(--a, var(--b, oklch(50% 0.1 20))); }") == [
+        "oklch() names a value of its own: oklch(50% 0.1 20)"
+    ]
+    assert _problems(".a { color: var(--a, var(--b)); border: 1px solid var(--c,); }") == []
+
+
+def test_a_rule_beside_a_nested_rule_is_read_too() -> None:
+    """A rule's own declarations count where it also holds a nested rule, as an `@page`
+    holds its margin boxes; the nested rule's prelude is never read as a declaration."""
+    assert _problems(".a { color: #123456; .b { margin: 0; } }") == ["hex colour #123456"]
+    assert _problems(".a { margin: 0; &:hover { color: teal; } }") == ["named colour teal"]
+    css = '@page { color: #000; @bottom-left { content: "x"; } }'
+    (finding,) = colours.stylesheet_findings(css)
+    assert (finding.selector, finding.declaration) == ("@page", "color: #000")
+    assert _problems(".a { #add .b { margin: 0; } }") == []
+
+
+def test_every_property_that_paints_is_read() -> None:
+    """A gradient, a filter's shadow and a text fill paint as a colour does."""
+    assert _problems(".a { background-image: linear-gradient(white, black); }") == [
+        "named colour white",
+        "named colour black",
+    ]
+    assert _problems(".a { filter: drop-shadow(0 1px 2px black); }") == ["named colour black"]
+    assert _problems(".a { -webkit-text-fill-color: navy; }") == ["named colour navy"]
 
 
 def test_a_finding_names_its_line_and_rule() -> None:

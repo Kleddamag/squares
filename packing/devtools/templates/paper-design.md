@@ -984,9 +984,11 @@ it.
   width. A rung chip adds `.site-rung-fill` with `data-rung` and `data-level`, and its
   fill strengthens and saturates with the level (Color, The Rung Scale).
   Significance is listed first: wherever a result’s rungs are shown together, in a table
-  row, a popover, a result’s overview or a case record, they run S, V, C, from the one
-  function that sets the order, `overview_sections.rung_chips`. The generated register
-  documents keep their own order, verification first.
+  row, a popover, a result’s overview or a case record, they run S, V, C: the
+  significance mark, then the V and C chips (`overview_sections.rung_chips`). A table
+  row draws the mark in a column of its own before the Rungs column’s V and C
+  (`significance_cell`, `ladder_chips`). The generated register documents keep their own
+  order, verification first.
   A kind chip (`kind_chip`) says what a result is, in the rubric’s words, `lower bound`
   or `case exclusion`, and carries `data-kind`. Every result draws one: on a line of its
   own under its rungs in a table, and after the rungs in a popover’s head and a chain’s
@@ -1519,9 +1521,9 @@ it.
   result’s text for it (`think-m3m4`). The status cell sorts on the status word; the
   details do not sort.
   On a phone each row is a card that places its cells by class, not by column, so the
-  card reads as before: the id, the significance, the cases and the rungs on its first
-  line, the status under the rungs, the claim with its details on a line under it, a dot
-  drawn between two links, then the credit and the date.
+  card reads as before: the id, the cases and the rungs on its first line, the
+  significance under the id and the status under the rungs, the claim with its details
+  on a line under it, a dot drawn between two links, then the credit and the date.
   The tables are two filters of one table, and differ only in where the filter bar
   starts, which sets the rows that begin `hidden` and the count, and in a row’s key: on
   the results page a row is the result’s own address (`id="t-018"`), and on the overview
@@ -1597,21 +1599,26 @@ it.
   Every table stands `--site-table-space` clear of the text above and below it
   (**Spacing**, above).
   Wide tables bleed on large screens, as **Wide bleed** above describes.
-  On a phone, a table of results becomes one card per row: the id, the significance, the
-  cases and the rungs on its first line, and a list of five values or more on a line of
-  its own under them, the card’s width.
-  A date cell leads with the date and then says what it dates, `published` or
-  `established`, in the support colour (`date_cell`): under the date on a wide table,
-  which keeps the column narrow, and beside it on a phone.
+  On a phone, a table of results becomes one card per row: the id, the cases and the
+  rungs on its first line, the significance under the id and the status under the rungs
+  on its second, and a list of five values or more, or a long one, on a line of its own
+  under them, the card’s width.
+  The significance stood on the first line until review found the cases left no width
+  beside it on 34 of 70 cards (`think-uer5`), and no cell of a card shows anything past
+  its own box (`test_on_a_phone_each_row_is_a_card_that_fits`). A date cell leads with
+  the date and then says what it dates, `published` or `established`, in the support
+  colour (`date_cell`): under the date on a wide table, which keeps the column narrow,
+  and beside it on a phone.
   In both tables of results a new result’s star follows its significance mark, in the S
   column (`new_result_star`, `significance_cell`), where it hung after the result’s text
   until 2026-10-03 (`think-m3m4`). The rule is the atlas’s, asked of a result instead of
   a case (`overview_data.starred_results`): the verified lower bound of a case rests on
   the result now, and that bound is recent, so a superseded result and an upper bound
   carry no star. The star is never the only signal: it is an image whose name and tooltip
-  say “New result” and the cases, the row’s own name ends “new result”, and the prose
-  above each table says what it marks (`star_legend`). A superseded result’s row reads
-  quieter, its text in the support colour, in every site table, by one rule on
+  say “New result” and the cases, the row’s own name ends “new result”, the legend over
+  each table of results shows it as “new result” (`rung_legend`), and the Results page’s
+  prose says what it marks (`star_legend`). A superseded result’s row reads quieter, its
+  text in the support colour, in every site table, by one rule on
   `tr[data-current="false"]`; its chips keep their fills.
   A row reached by its address (`frontier.html#n-11`, `all-results.html#t-018`) takes
   the wash, in every site table.
@@ -1913,9 +1920,10 @@ pointer and by keyboard, and measures its label at 1280, 768 and 390 pixels.
   Frontier page’s counts, its audit of its sources, the seventeen-square history before
   this project, and when a bound by others counts as verified, which is the rule its
   verified columns apply.
-  Each table keeps its own star legend, since a star without one reads as decoration,
-  and one function writes it (`star_legend`); the atlas note links the legend under the
-  recent table in place of a third.
+  Each table of results keeps its own key to the star, since a star without one reads as
+  decoration: the legend over it shows the star as “new result” (`rung_legend`), and the
+  Results page’s prose says what it marks (`star_legend`). The atlas note links the
+  recent table, and its legend, in place of a third.
   The Frontier page opens with the survey’s account, its audit, its recent counts and
   the seventeen-square history, and ends its prose with the key to its columns, beside
   the table. The way onward follows the section’s shape: a section whose key element is a
@@ -2106,13 +2114,14 @@ names.
 
 - **Head.** The popover’s own caps label, the result’s id, and its headline, the
   result’s summary, stand above the body and are in the page, so they do not change when
-  the overview lands. The body opens with the S, V and C rung chips, the kind chip and
-  the status line, as the tables show them; then the date and what it dates, in the
-  tables’ order (`date_cell`), the credit and the cases, in the support colour; the
-  claim at the note size; where the entry declares a later result that implies it
-  (`superseded_by`), a paragraph under the claim that opens “Superseded in part by
-  T-060.”, the later result linked, and says what it implies and what still stands; and
-  a closed disclosure with the significance, composition, next rung and novelty.
+  the overview lands. The body opens with the significance mark, the V and C rung chips,
+  the kind chip and the status line, as the tables show them; then the date and what it
+  dates, in the tables’ order (`date_cell`), the credit and the cases, in the support
+  colour; the claim at the note size; where the entry declares a later result that
+  implies it (`superseded_by`), a paragraph under the claim that opens “Superseded in
+  part by T-060.”, the later result linked, and says what it implies and what still
+  stands; and a closed disclosure with the significance, composition, next rung and
+  novelty.
 - **The case.** A result about one case, or up to four, shows each case’s visual summary
   as the case’s record opens with it (**Visual summary**, above), smaller and with no
   caption under the drawing: the packing drawn at the atlas’s scale

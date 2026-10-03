@@ -644,7 +644,8 @@ def new_result_star(result: Result, overview: Overview) -> str:
 
 def star_legend() -> str:
     """The sentence that says what the star in a table of results marks, with the star
-    itself, for the prose above each table (`{{STAR_LEGEND}}` in the two articles)."""
+    itself, for the prose above the Results page's table (`{{STAR_LEGEND}}` in its
+    article); the homepage's table keys the star in its legend alone (`rung_legend`)."""
     return (
         f'A star (<span class="site-star" aria-hidden="true">{STAR}</span>) marks a '
         f"{NEW_RESULT}, as the atlas does: the verified lower bound of a case rests on it "

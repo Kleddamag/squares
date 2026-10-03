@@ -1,8 +1,9 @@
 // The table script wired to a stand-in results table and its tools bar: a flat list of
 // rows carrying the facets `overview_sections.result_facets` writes, under the controls
-// `overview_sections.result_filters` writes, Significance starting at S4 and up and
-// Max age and Hide superseded wherever the page under test starts them. The stand-ins
-// are only what the script reads, the day among them; the test reads what it then shows.
+// `overview_sections.result_filters` writes, Significance starting at S4 and up (a
+// stand-in level: the overview starts at S3) and Max age and Hide superseded wherever
+// the page under test starts them. The stand-ins are only what the script reads, the
+// day among them; the test reads what it then shows.
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import { test } from "node:test";
@@ -356,7 +357,8 @@ void test("the row the address names shows whatever the filters hide", () => {
 });
 
 void test("an age is measured from the reader's day, again on every load", () => {
-  // The overview's Recent Results: S4 and up, and no older than 180 days. The HTML's
+  // As the overview's Recent Results open: a significance floor, S4 here, and no older
+  // than 180 days. The HTML's
   // `hidden` rows and count are as of the day the page was built, and are settled here.
   const recent = page({ age: "180" });
   assert.deepEqual(recent.shown(), { rows: ["t-001", "t-005"] });

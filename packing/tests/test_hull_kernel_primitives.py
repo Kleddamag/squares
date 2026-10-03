@@ -9,7 +9,8 @@ on small exact controls, outputs and refusals alike.
 from __future__ import annotations
 
 import time
-from fractions import Fraction as Q
+from collections.abc import Sequence
+from fractions import Fraction
 from typing import Any
 
 import pytest
@@ -26,6 +27,7 @@ from sqpack.hull_kernel import Budget, RefusalError, collision, covers, node
 from sqpack.hull_kernel.frame import Frame
 from sqpack.hull_kernel.geometry import Polygon, intersect
 from sqpack.hull_kernel.induction import convex, forbidden_regions, hull, wall_lines
+from sqpack.hull_kernel.rational import Q, as_fraction
 from sqpack.hull_kernel.sweep import exact_union_cover
 
 type RowInputs = tuple[Polygon, list[Polygon], dict[str, Any], Polygon]
@@ -55,6 +57,11 @@ def first_row(sources: tool.Sources, frame: Frame) -> RowInputs:
     return domain, forbidden_regions(prior, 6, core) + residual, row, core
 
 
+def fractions_of(polygon: Sequence[tuple[Q, Q]]) -> list[tuple[Fraction, Fraction]]:
+    """A kernel polygon as the frozen checkers' `Fraction` points, value for value."""
+    return [(as_fraction(x), as_fraction(y)) for x, y in polygon]
+
+
 def budget() -> Budget:
     return Budget(time.monotonic() + 30, 50_000)
 
@@ -71,9 +78,14 @@ def test_the_fast_and_indexed_covers_agree_with_theirs_and_the_reference(
     assert reference == {"events": 87, "probes": 173, "edge_segments": 242}
     assert covers.fast_union_cover(domain, regions, budget=budget()) == reference
     assert covers.indexed_union_cover(domain, regions, budget=budget()) == reference
-    assert frozen_fast.exact_union_cover(domain, regions, budget=frozen_budget()) == reference
+    frozen_domain, frozen_regions = fractions_of(domain), [fractions_of(r) for r in regions]
     assert (
-        frozen_indexed.exact_union_cover(domain, regions, budget=frozen_budget()) == reference
+        frozen_fast.exact_union_cover(frozen_domain, frozen_regions, budget=frozen_budget())
+        == reference
+    )
+    assert (
+        frozen_indexed.exact_union_cover(frozen_domain, frozen_regions, budget=frozen_budget())
+        == reference
     )
     with pytest.raises(RefusalError, match="uncovered"):
         covers.fast_union_cover(domain, regions[:-3], budget=budget())
@@ -86,17 +98,23 @@ def test_the_closed_degenerate_cover_is_the_frozen_one() -> None:
     left = [(Q(-1), Q(-1)), (Q(1), Q(-1)), (Q(1), Q(2)), (Q(-1), Q(2))]
     right = [(Q(1), Q(-1)), (Q(3), Q(-1)), (Q(3), Q(2)), (Q(1), Q(2))]
     expected = frozen_degenerate.exact_cover_closed_degenerate(
-        segment, [left, right], budget=frozen_budget()
+        fractions_of(segment), [fractions_of(left), fractions_of(right)], budget=frozen_budget()
     )
     assert covers.closed_degenerate_cover(segment, [left, right], budget=budget()) == expected
-    assert covers.convex_halfplanes(left) == frozen_degenerate.convex_halfplanes(left)
-    assert covers.convex_halfplanes(segment) == frozen_degenerate.convex_halfplanes(segment)
+    assert covers.convex_halfplanes(left) == frozen_degenerate.convex_halfplanes(
+        fractions_of(left)
+    )
+    assert covers.convex_halfplanes(segment) == frozen_degenerate.convex_halfplanes(
+        fractions_of(segment)
+    )
     short = [(Q(3, 2), Q(-1)), (Q(3), Q(-1)), (Q(3), Q(2)), (Q(3, 2), Q(2))]
     with pytest.raises(RefusalError, match="uncovered degenerate"):
         covers.closed_degenerate_cover(segment, [left, short], budget=budget())
     with pytest.raises(ValueError, match="uncovered degenerate"):
         frozen_degenerate.exact_cover_closed_degenerate(
-            segment, [left, short], budget=frozen_budget()
+            fractions_of(segment),
+            [fractions_of(left), fractions_of(short)],
+            budget=frozen_budget(),
         )
 
 
@@ -107,13 +125,19 @@ def test_self_hull_cuts_match_the_transition_pilot(sources: tool.Sources, frame:
     tight = min(x for x, _ in owned) + frame.scale / 4
     accepted = collision.self_hull_cuts(frame, [(Q(1), Q(0), loose)], owned, lo, hi)
     assert accepted == frozen_pilot.necessary_self_cuts(
-        [{"normal": ["1", "0"], "upper": str(loose)}], owned, lo, hi
+        [{"normal": ["1", "0"], "upper": str(loose)}],
+        fractions_of(owned),
+        as_fraction(lo),
+        as_fraction(hi),
     )
     with pytest.raises(RefusalError, match="excludes a possible square center"):
         collision.self_hull_cuts(frame, [(Q(1), Q(0), tight)], owned, lo, hi)
     with pytest.raises(ValueError, match="excludes a possible square center"):
         frozen_pilot.necessary_self_cuts(
-            [{"normal": ["1", "0"], "upper": str(tight)}], owned, lo, hi
+            [{"normal": ["1", "0"], "upper": str(tight)}],
+            fractions_of(owned),
+            as_fraction(lo),
+            as_fraction(hi),
         )
 
 
@@ -133,9 +157,13 @@ def test_universal_collision_rational_and_integer_match_theirs() -> None:
     query_domain = square((Q(1), Q(1)), Q(1, 10))
     region = square((Q(1), Q(1)), Q(1, 500))
     partners = [(partner_domain, core), (square((Q(1), Q(1)), Q(1, 2000)), core)]
-    expected = frozen_pilot.universal_collision(
-        core, query_domain, partners, region, budget=frozen_budget()
+    frozen_inputs = (
+        fractions_of(core),
+        fractions_of(query_domain),
+        [(fractions_of(d), fractions_of(c)) for d, c in partners],
+        fractions_of(region),
     )
+    expected = frozen_pilot.universal_collision(*frozen_inputs, budget=frozen_budget())
     assert expected == 2 * 4 * 4
     assert collision.universal_collision(
         core, query_domain, partners, region, budget=budget()
@@ -144,10 +172,7 @@ def test_universal_collision_rational_and_integer_match_theirs() -> None:
         core, query_domain, partners, region, budget=budget()
     ) == (expected)
     assert (
-        frozen_integer.universal_collision(
-            core, query_domain, partners, region, budget=frozen_budget()
-        )
-        == expected
+        frozen_integer.universal_collision(*frozen_inputs, budget=frozen_budget()) == expected
     )
     far = square((Q(9, 5), Q(1)), Q(1, 500))
     wide = square((Q(1), Q(1)), Q(1))
@@ -165,9 +190,9 @@ def test_support_outer_domain_and_common_core_output_match_the_pilot(
     world = frame.world(6)
     residual = [convex(node.points(value)) for value in row["residual_polygons"]]
     assert collision.support_outer_domain(residual, world) == frozen_pilot.phase2_outer(
-        row, world
+        row, fractions_of(world)
     )
-    assert collision.outward_round(Q(1, 3)) == frozen_pilot.outward_round(Q(1, 3))
+    assert collision.outward_round(Q(1, 3)) == frozen_pilot.outward_round(Fraction(1, 3))
     published = {
         **row,
         "outer_bounds": [
@@ -192,7 +217,9 @@ def test_support_outer_domain_and_common_core_output_match_the_pilot(
         [str(x), str(y)] for x, y in collision.support_outer_domain(residual, world)
     ]
     planes = collision.common_core_output(published, core, residual, world)
-    assert planes == frozen_pilot.verify_row_output(published, core, residual, world)
+    assert planes == frozen_pilot.verify_row_output(
+        published, fractions_of(core), [fractions_of(r) for r in residual], fractions_of(world)
+    )
     assert planes == len(core)
     published["common_core_halfplanes"] = published["common_core_halfplanes"][1:]
     with pytest.raises(RefusalError, match="common-core output planes"):

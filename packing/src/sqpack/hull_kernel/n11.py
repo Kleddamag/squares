@@ -11,12 +11,12 @@ re-pinned here.
 from __future__ import annotations
 
 from collections.abc import Mapping
-from fractions import Fraction as Q
 from typing import Any
 
 from sqpack.hull_kernel.counting import CountingPacket, MajorityFeature
 from sqpack.hull_kernel.frame import HALF_TURN_ACTIONS, Frame, make_frame
 from sqpack.hull_kernel.geometry import Point, area2, require
+from sqpack.hull_kernel.rational import Q
 
 N11_CAP = Q(387708359002281417731, 10**20)
 N11_LENGTH = Q(191, 50)

@@ -25,7 +25,6 @@ from __future__ import annotations
 import time
 from collections.abc import Mapping, Sequence
 from dataclasses import dataclass, field
-from fractions import Fraction as Q
 from typing import Any
 
 from sqpack.hull_kernel.frame import Frame
@@ -51,6 +50,7 @@ from sqpack.hull_kernel.induction import (
     wall_lines,
 )
 from sqpack.hull_kernel.ownership import ownership
+from sqpack.hull_kernel.rational import Q
 from sqpack.hull_kernel.sweep import exact_union_cover
 
 type Row = dict[str, Any]
@@ -252,7 +252,8 @@ def check_row(
     require(row["prior_reference"] == predecessor["reference"], "wrong predecessor row")
     lo, hi = (Q(t) for t in row["interval"])
     require(
-        (lo, hi) == (Q(row_index, bins), Q(row_index + 1, bins)), "row interval gap/overlap"
+        (lo, hi) == (Q(row_index, bins), Q(row_index + 1, bins)),
+        "row interval gap/overlap",
     )
     require([lo, hi] == [Q(t) for t in predecessor["interval"]], "row predecessor interval")
     domain = intersect(hull(points(predecessor["outer_domain"])), wall_lines(frame, lo, hi))

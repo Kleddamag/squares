@@ -18,7 +18,6 @@ Copies of the geometric functions of the frozen fresh-wall generic checker
 from __future__ import annotations
 
 from collections.abc import Mapping, Sequence
-from fractions import Fraction as Q
 
 from sqpack.hull_kernel.frame import Frame
 from sqpack.hull_kernel.geometry import (
@@ -30,6 +29,7 @@ from sqpack.hull_kernel.geometry import (
     require,
     trig,
 )
+from sqpack.hull_kernel.rational import Q
 
 
 def hull(values: Polygon) -> Polygon:

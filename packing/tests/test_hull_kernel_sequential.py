@@ -7,7 +7,6 @@ import gzip
 import subprocess
 import sys
 import time
-from fractions import Fraction as Q
 from pathlib import Path
 from typing import Any
 
@@ -18,6 +17,7 @@ from devtools import check_n17_subpattern as tool
 from sqpack.hull_kernel import Budget, RefusalError, node, producer, sequential
 from sqpack.hull_kernel.frame import Frame, make_frame
 from sqpack.hull_kernel.geometry import Polygon
+from sqpack.hull_kernel.rational import Q
 
 
 def budget() -> Budget:

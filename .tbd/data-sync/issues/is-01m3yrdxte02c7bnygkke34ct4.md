@@ -5,7 +5,7 @@ title: Import, confirm and answer every reported result (2 October 2026 effort)
 kind: epic
 status: open
 priority: 1
-version: 36
+version: 37
 labels:
   - result-import
 dependencies: []
@@ -31,7 +31,7 @@ child_order_hints:
   - is-01m3ytdhr6h2xnsvj4f2nc2nk2
   - is-01m3z77bdhk8tn3epx63ywhxft
 created_at: 2026-10-02T16:51:15.917Z
-updated_at: 2026-10-03T04:52:50.828Z
+updated_at: 2026-10-03T05:00:25.080Z
 ---
 Umbrella for the 2 October 2026 effort: PRs #290 -> #292 -> #298 (imports and records), plus a stacked PR for verifier provenance and the independent verifier. Children track each lane; done when every reported result is confirmed or refuted (or has a bead naming exactly what remains), every issue has a current status reply, closeable issues are closed, and all PRs are merged.
 
@@ -116,3 +116,4 @@ Next steps for the next agent, in order:
 - 01:46 check-in: CI run 37084456313 on 80022bafb GREEN (37081079279 failed only the table-width test, fixed). T-064 qx2 shards 1 and 2 COMPLETE; queued for the records lane: merge claude/replay-valid7-inputs and claude/lane-ll-t064-lean, bring shard receipts into evand-square-packing-2026-10-01/receipts/valid7/, run plan_valid7_replay compare --checker qx2, record T-064 evidence. Nudged (no push since the 22:56 resume): m1, m3, r1, r2, r4, the s(77) runner, FF. RV pushed 01:36 (native parent-core certifies BB's certificate).
 - 2026-10-03 04:55 Session limit hit again at ~01:30-01:48 UTC (reset 03:40); everything stopped. Old runners (m1, r2, the s(77) runner, and r1/r4/m3 by the same rule) REFUSED follow-up jobs sent by message (they accept only their initial prompt's job): replaced at 01:48 by new runners whose initial prompt is the job: n82a session_015CiPn4iFQWzpznZyFdwuZL (linear n82 0-123, claude/replay-wand125-n82-a), n82b session_01DrdQyssm1DBDH88Brh3yAq (124-200, -n82-b), m6 session_01Bm7LCpB7yJjWhTBogEq3ni (mixed n83 0-135, n87, n91; claude/replay-wand125-afternoon-m6), s1 session_01QMRbn2cefpcbee1ce4LshT (T-046 n72, n91; claude/replay-wand125-sept28-s1), s2 session_01FjniKWBCgBfQSm7URfWSi7 (n73, n51, n57, n58; -s2), l83 session_01PADmST5bjm6g2wbCbc2gbK (T-073 linear n83 + merge + control; claude/replay-wand125-linear-n83). Ignore the old runners' pending confirmation requests. All active sessions were sent resume messages at 04:52, plus the records lane (finishing the T-064 merge, MERGE_HEAD 9e8e66f63) and W2.
 - 04:52 FF done (claude/lane-ff-s61-point @dcfe0e627): wand125 point-only s(61) cover VERIFIED-D4 by zmx2 6b7f0f79 (6,400/6,400 roots), controls refused; second route for T-063. RV done (claude/lane-rv-s12-review @4b3c0573): our s(12) >= 15680000/3949423 ACCEPTED (Route B; Route A implied), Daniel's verify rebuilt and native parent-core PASS_COMPLETE (39,765 rows) as an independent first-party check; draft S3, apparently-novel; to register as a new Levy result superseding T-078. Both queued for the records lane after T-064.
+- 05:00 Stacked verifier PR opened as draft: jlevy/squares#311 (branch claude/verifier-provenance-and-independent-verifier, base claude/zealous-gauss-jem7l9; lane SP session_01Hqz93p1waL3UQYW44eKsWd). Lanes X, W1, W2 (through Milestone B) merged; backfill re-run on the base's evidence.yaml (188 entries name their programs, 0 unclassified); 4 new registry entries; two independence_record judgments flagged in the body for review. Each time #298's records move, merge the new base into #311 and re-run devtools.backfill_verifier_relation instead of hand-merging evidence.yaml.

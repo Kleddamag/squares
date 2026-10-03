@@ -14,12 +14,12 @@ totals:
   sessions_measured: 112
   sessions_unmeasured: 54
   attributed:
-    rollups: 265
-    turns: 67076
-    tool_calls: 37007
-    tool_errors: 790
-    one_off_code: 5328
-    wall_hours: 572.85
+    rollups: 270
+    turns: 69844
+    tool_calls: 38534
+    tool_errors: 799
+    one_off_code: 5592
+    wall_hours: 595.51
   unattributed:
     rollups: 65
     turns: 14196
@@ -28,12 +28,12 @@ totals:
     one_off_code: 1184
     wall_hours: 67.13
   measured:
-    rollups: 330
-    turns: 81272
-    tool_calls: 45156
-    tool_errors: 975
-    one_off_code: 6512
-    wall_hours: 639.98
+    rollups: 335
+    turns: 84040
+    tool_calls: 46683
+    tool_errors: 984
+    one_off_code: 6776
+    wall_hours: 662.64
 codex_receipts:
   attributed: 68
   unattributed: 2
@@ -2875,9 +2875,14 @@ sessions:
   - packing/campaign/resource-usage/agent-abfdcf4d3642c3fe2.yaml
   - packing/campaign/resource-usage/agent-ad8c36a04ebcd61d9.yaml
   - packing/campaign/resource-usage/agent-ae1c5c75727ba7c4d.yaml
-  turns: 3098
-  tool_calls: 1613
-  tool_errors: 17
-  one_off_code: 240
-  wall_hours: 15.77
+  - packing/campaign/resource-usage/agent-ab5f6ac0531baee62.yaml
+  - packing/campaign/resource-usage/agent-a2f9102eba6720d45.yaml
+  - packing/campaign/resource-usage/agent-a5e0eae4c2694a29b.yaml
+  - packing/campaign/resource-usage/agent-a72b23ec598f03d8c.yaml
+  - packing/campaign/resource-usage/agent-a0ce03a4c2b6775a7.yaml
+  turns: 5866
+  tool_calls: 3140
+  tool_errors: 26
+  one_off_code: 504
+  wall_hours: 38.43
   codex_receipts: []

@@ -766,6 +766,11 @@ session:
   - packing/campaign/resource-usage/agent-abfdcf4d3642c3fe2.yaml
   - packing/campaign/resource-usage/agent-ad8c36a04ebcd61d9.yaml
   - packing/campaign/resource-usage/agent-ae1c5c75727ba7c4d.yaml
+  - packing/campaign/resource-usage/agent-ab5f6ac0531baee62.yaml
+  - packing/campaign/resource-usage/agent-a2f9102eba6720d45.yaml
+  - packing/campaign/resource-usage/agent-a5e0eae4c2694a29b.yaml
+  - packing/campaign/resource-usage/agent-a72b23ec598f03d8c.yaml
+  - packing/campaign/resource-usage/agent-a0ce03a4c2b6775a7.yaml
   stop_reason: null
   next_action: 'Owner decisions: the order of think-xucp and think-ym34; the owner replaces the eleven
     rollups'' withheld model labels with the originals; then certify and close.'

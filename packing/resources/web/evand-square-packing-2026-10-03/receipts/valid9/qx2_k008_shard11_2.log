@@ -1,0 +1,18 @@
+# command: sh -c '/home/user/squares/packing/.venv/bin/python3 checker/qx2_zm.py K4_k008_box9.txt --depth 18 --nproc 4 --exact-umax 1/2 --exact-from 3 --progress 200 --cx-lo 17/5 --cx-hi 7/2 --cy-lo 0 --cy-hi 9/2 --resume runs/qx2_k008_shard11_2.jsonl --dump-leaves'
+# cwd: work dir staged by plan_valid9_replay, shard 11
+# python3: packing/.venv/bin/python3: CPython 3.14.7
+# host: 4 cores; load 2.94 3.75 3.91; started 2026-10-03T19:48:32Z
+zeromargin.py sha256 640fe453c1a32f4aa580ca2b1261c6406923a4d7c131f65604a432c7fc2086ab (= pinned)
+sha256 6294052a37ce66c5d84b55afd606e3a52f463e22b876bf44b5aa903aefb7e737  qx2_zm.py
+sha256 1fd203469bb43a55ca7ce376b9717437e0970eead31941ec7fa100ab24d5ba95  zm_mixed.py
+sha256 640fe453c1a32f4aa580ca2b1261c6406923a4d7c131f65604a432c7fc2086ab  zeromargin.py
+sha256 bb89de15ecf5821dd7e1a36ebab8a50d792a406b7fb0f5cb38059f99ef74aae5  mixed_cover.py
+sha256 4151d7c4059d5dcf56130c9373e6b5b60635e1a4250f46562d7ecc4d64a27801  input
+argv: checker/qx2_zm.py K4_k008_box9.txt --depth 18 --nproc 4 --exact-umax 1/2 --exact-from 3 --progress 200 --cx-lo 17/5 --cx-hi 7/2 --cy-lo 0 --cy-hi 9/2 --resume runs/qx2_k008_shard11_2.jsonl --dump-leaves
+container [0,9]^2, 0 points, 2076 segments on 80 lines, Lebesgue square [14/5,31/5]^2; total 3835229774429/50000000000 = 76.704595488580
+D4 roots [0,m/2]^2 x u in [0,1/2]: 360 roots (PARTIAL); depth 18; EXACT on for u1 <= 1/2
+  200/360 roots, 1058 boxes, uncert 0, 2700s
+done in 6468s: boxes 3016, max depth 13, CPU 25257 s
+  leaves: LEB 11  CAP 107  EXACT 809  EXACT0 45  EXACT45 96  AXIS 1  SYM 73  PIECE 500  ADM 0  P1 0  MIX 0  SPLIT 0  EMPTY 46  UNCERT 0
+VERIFIED-D4 (u > 0; u = 0 face: qx2_zm.py axis) (PARTIAL)
+# finished 2026-10-03T21:36:20Z; exit 0; wall 6468.101 s; CPU 25257.4 s (user 25254.711 + sys 2.656); load 1.48 3.07 3.66

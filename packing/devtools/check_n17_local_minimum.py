@@ -132,12 +132,12 @@ from devtools.check_n17_endpoint_feasibility import (
     FROZEN_ROOT_REF,
     REPO,
     Box,
-    _check_frozen_root_bytes,
     _fraction_string,
     _layout,
     _object_unique,
     _read_limited,
     _wall_gap,
+    require_retained_path,
 )
 from devtools.check_n17_endpoint_feasibility import _support as _axis_support
 from devtools.check_n17_endpoint_features import (
@@ -3071,8 +3071,8 @@ def main(argv: list[str] | None = None) -> int:
     if args.ratio:
         return ratio_main(args)
     try:
+        require_retained_path(args.root_certificate, FROZEN_ROOT_REF)
         raw = _read_limited(args.root_certificate)
-        _check_frozen_root_bytes(raw)
         midpoint, radii = read_point(raw)
         result = certify(
             *midpoint,
@@ -3134,8 +3134,8 @@ def _check_radius(radius: Q) -> None:
 def ratio_main(args: argparse.Namespace) -> int:
     """`--ratio`: the slider-box ratio test receipt; exit 0 only if every check passes."""
     try:
+        require_retained_path(args.root_certificate, FROZEN_ROOT_REF)
         raw = _read_limited(args.root_certificate)
-        _check_frozen_root_bytes(raw)
         midpoint, root_radii = read_point(raw)
         _check_radius(args.radius)
         box = DECLARED_BOX if args.box is None else slider_box(args.box)

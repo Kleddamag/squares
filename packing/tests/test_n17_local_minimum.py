@@ -139,16 +139,13 @@ def test_cli_refuses_each_control(
     control: str,
     failed: str,
     tmp_path: Path,
-    monkeypatch: pytest.MonkeyPatch,
     capsys: pytest.CaptureFixture[str],
 ) -> None:
-    seen: list[bytes] = []
-    monkeypatch.setattr(local, "_check_frozen_root_bytes", seen.append)
     output = tmp_path / "receipt.json"
     assert local.main(["--control", control, "--output", str(output)]) == 1
     receipt = json.loads(output.read_text())
     raw = local.ROOT_CERTIFICATE.read_bytes()
-    assert seen == [raw]
+    assert receipt["inputs"]["root_certificate_git_ref"] == local.FROZEN_ROOT_REF
     assert receipt["passed"] is False
     assert receipt["checks"][failed] is False
     assert receipt["inputs"]["root_certificate_sha256"] == hashlib.sha256(raw).hexdigest()
@@ -158,15 +155,14 @@ def test_cli_refuses_each_control(
 def test_cli_rejects_unbound_or_malformed_input(
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]
 ) -> None:
-    def reject(_raw: bytes) -> None:
-        raise ValueError("root certificate differs from frozen exp-237 Git blob")
-
-    monkeypatch.setattr(local, "_check_frozen_root_bytes", reject)
-    assert local.main([]) == 2
-    assert "frozen" in json.loads(capsys.readouterr().out)["error"]
+    """The root is named by revision and path; a copy elsewhere is not that root."""
+    copy_elsewhere = tmp_path / "certificate.json"
+    copy_elsewhere.write_bytes(local.ROOT_CERTIFICATE.read_bytes())
+    assert local.main([str(copy_elsewhere)]) == 2
+    assert "expected the retained" in json.loads(capsys.readouterr().out)["error"]
     malformed = tmp_path / "root.json"
     malformed.write_text("{}")
-    monkeypatch.setattr(local, "_check_frozen_root_bytes", lambda _raw: None)
+    monkeypatch.setattr(local, "require_retained_path", lambda _path, _reference: None)
     assert local.main([str(malformed)]) == 2
     assert json.loads(capsys.readouterr().out)["passed"] is False
 
@@ -274,7 +270,6 @@ def test_default_box_replays_the_committed_exp244_receipt() -> None:
 def test_box_option_defaults_to_the_declared_box(
     monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]
 ) -> None:
-    monkeypatch.setattr(local, "_check_frozen_root_bytes", lambda _raw: None)
     seen: list[object] = []
 
     def stub(*_point: Q, box: object, **_options: object) -> None:
@@ -315,7 +310,6 @@ def test_a_box_leaving_a_tau_branch_is_refused_before_any_dual(
 ) -> None:
     box = local.slider_box([Q(value) for value in bounds])
     assert local.sign_branch_audit(_family(), box)["failures"] == [face]
-    monkeypatch.setattr(local, "_check_frozen_root_bytes", lambda _raw: None)
 
     def unreachable(*_args: object, **_kwargs: object) -> None:
         raise AssertionError("the C4 audit ran on a box outside the tau branches")
@@ -589,7 +583,6 @@ def test_cli_ratio_mode_without_the_n11_replay(
     monkeypatch: pytest.MonkeyPatch,
     capsys: pytest.CaptureFixture[str],
 ) -> None:
-    monkeypatch.setattr(local, "_check_frozen_root_bytes", lambda _raw: None)
     # C11 has its own test; a stub keeps this wiring test fast and shows it is load-bearing.
     monkeypatch.setattr(local, "stress_audit", lambda _family, _box: {"passed": False})
     output = tmp_path / "ratio.json"

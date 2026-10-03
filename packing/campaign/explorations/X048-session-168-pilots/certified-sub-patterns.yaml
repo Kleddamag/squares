@@ -38,6 +38,13 @@ verifiers:
   - path: packing/devtools/verify_n17_kernel_certificate.py
     revision: 25c1cdef690f4c1d398364a13e3cf96281c01c17
     review: docs/project/reviews/review-2026-10-03-n17-verifier-rewrites.md
+  # The kernel verifier with exact point and segment covers (lane V1, after n11's finding
+  # C2). Every earlier listed kernel revision accepts an uncovered zero-area row; the
+  # admitted receipts above stand because on W7, SW9 and N1 that branch never ran (review
+  # section 6). New admissions should be verified at this revision.
+  - path: packing/devtools/verify_n17_kernel_certificate.py
+    revision: 318c28c42afaa4128c07dcbc785d717adbaf95a9
+    review: docs/project/reviews/review-2026-10-03-n17-verifier-rewrites.md
 entries:
   - name: W7
     cells: [corner-SW, side-N0, side-W0, side-W1, side-W2, interior-SW, interior-W]

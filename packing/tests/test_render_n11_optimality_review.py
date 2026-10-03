@@ -489,7 +489,10 @@ def test_the_front_is_the_shared_components_in_the_owners_form(
             "<strong>Joshua Levy</strong></a></span>"
         ),
         "<span>Agents: <strong>GPT-6 Astra</strong> and <strong>GPT-6 Sol</strong></span>",
-        f'<span class="edition">{release.OPTIMALITY_REVIEW_EDITION}</span>',
+        (
+            f'<span class="edition">{release.OPTIMALITY_REVIEW_EDITION} '
+            '(<a href="#version-history">version history</a>)</span>'
+        ),
         (
             '<span class="publication-date">'
             f"Original proof {release.OPTIMALITY_PROOF_PUBLISHED} · "
@@ -511,7 +514,7 @@ def test_the_front_is_the_shared_components_in_the_owners_form(
         f"- [{address}](https://{address})\n"
         "- Human oversight: [**Joshua Levy**](https://x.com/ojoshe)\n"
         "- Agents: **GPT-6 Astra** and **GPT-6 Sol**\n"
-        f"- {release.OPTIMALITY_REVIEW_EDITION}\n"
+        f"- {release.OPTIMALITY_REVIEW_EDITION} ([version history](#version-history))\n"
         f"- Original proof {release.OPTIMALITY_PROOF_PUBLISHED} · "
         f"Last revised {release.OPTIMALITY_REVIEW_REVISED}\n\n"
     )

@@ -53,6 +53,7 @@ from sqpack.probes import probe
 from sqpack.release import (
     OPTIMALITY_PROOF_PUBLISHED,
     OPTIMALITY_REVIEW_EDITION,
+    OPTIMALITY_REVIEW_HISTORY,
     OPTIMALITY_REVIEW_REVISED,
 )
 
@@ -77,10 +78,10 @@ DESCRIPTION = (
 )
 #: The paper's front, in the two papers' one form (`devtools.paper_front`): the proof it
 #: explains, credited first by its author and address; then who oversaw the review and
-#: which agents wrote it; its own version, a draft at its first, with no history to
-#: link, and never the site's edition; and its dates, the day the source published the
-#: proof and the day the article last changed, all from `sqpack.release`. The head
-#: states the second to a link preview (`page_meta`).
+#: which agents wrote it; its own version, a draft, which links its version history at
+#: the foot of the page, and never the site's edition; and its dates, the day the source
+#: published the proof and the day the article last changed, all from `sqpack.release`.
+#: The head states the second to a link preview (`page_meta`).
 FRONT = paper_front.check(
     paper_front.PaperFront(
         slug=SLUG,
@@ -95,6 +96,7 @@ FRONT = paper_front.check(
             paper_front.Dated("Original proof", OPTIMALITY_PROOF_PUBLISHED),
             paper_front.Dated(paper_front.REVISED, OPTIMALITY_REVIEW_REVISED),
         ),
+        history="version-history",
     )
 )
 FIGURE_KEYS = (
@@ -186,6 +188,15 @@ RENDER_INPUTS = (
     PACKING / "resources/web/n11-optimality-2026-09-29/receipts/field-mask0/objects",
     REPO / "vendor" / "kpress",
 )
+
+
+def version_history_markdown() -> str:
+    """The paper's own editions, newest first, each with the day it was first published
+    and what changed in the paper: `sqpack.release.OPTIMALITY_REVIEW_HISTORY`."""
+    return "\n".join(
+        f"- **{entry.version} — {entry.first_published}.** {entry.result_scope}"
+        for entry in OPTIMALITY_REVIEW_HISTORY
+    )
 
 
 def render_all_figures() -> dict[str, str]:
@@ -350,7 +361,11 @@ def expanded_markdown(
             re.IGNORECASE,
         ):
             raise ValueError(f"{key} contains active or remote SVG content")
-    filled = _fill(source, {**figures, **facts}, source=article)
+    filled = _fill(
+        source,
+        {**figures, **facts, "VERSION_HISTORY": version_history_markdown()},
+        source=article,
+    )
     return _repository_links(filled, source=article, revision=revision)
 
 

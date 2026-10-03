@@ -959,6 +959,10 @@ claiming fewer necessary cases, rounds or branches.
 The figures are explanatory renderings of retained data; their rounded screen
 coordinates are not inputs to certificate acceptance.
 
+## Version History
+
+{{VERSION_HISTORY}}
+
 [^credit]: [T-060 attribution and evidence](../../frontier/results.yaml);
     [upstream source and third-party credits](../../resources/web/n11-optimality-2026-09-29/README.md).
     Trump’s construction is credited to Walter Trump; the bundled exact reconstruction

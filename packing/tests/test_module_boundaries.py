@@ -1105,6 +1105,14 @@ def test_the_slow_marker_is_declared_only_by_measured_nodes() -> None:
         "test_n11_threshold_certificate.py": {
             "test_the_case_package_replays_the_retained_bytes_by_the_interval_route",  # 46.7s
         },
+        # 16s of call time across 1 on 2026-10-03: the unchanged local isolation audit
+        # rerun on the two-radius variant box, all 128 branches, matched field by field
+        # against the retained receipt. Not a shared build -- the file's six other
+        # tests build the variant in memory, check its pins and the radius comparison,
+        # and cost under a second between them -- so this pays only for itself.
+        "test_n11_optimality_local_two_radius.py": {
+            "test_retained_result_matches_a_fresh_audit",  # 16.0s
+        },
         # 9s of call time across 2: the two searches of the plateau reader that run over
         # the whole 88-core ceiling family -- the rank-one Chvatal-Gomory separation at
         # `t = 2` under its own 60s limit, and the complete two-of-three search over the

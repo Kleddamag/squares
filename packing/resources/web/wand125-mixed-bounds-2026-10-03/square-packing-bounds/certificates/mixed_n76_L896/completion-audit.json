@@ -1,0 +1,16 @@
+{
+  "status": "AUDITED_AND_PACKAGED",
+  "n": 76,
+  "L": "224/25",
+  "total_mass": "7599999/100000",
+  "compared_with": "447/50",
+  "compared_note": "our published n76 8.94",
+  "improvement_lower": "1/50",
+  "candidate_digest": "c990078499a592dccb6336f69b956077046ca1fde498577f511c8c43f2c78a40",
+  "all_angles": 201,
+  "certificate_sha256": "15fe1fa785c990924f54f2b34b47b3b95676a239ea15d556a64e0e31f0d2ce9e",
+  "bundle": "n76-L8.96-proof-bundle",
+  "archive_sha256": "85cc7e1e5f6a2ea89d3e294adbd765dcd3187a31adae4cec82ce2020a80192c7",
+  "route": "n76 fresh structured Green init n76-896h at L8.96, rectangles full-net repair, 201-angle verification and replay.",
+  "scope": "All centres at all 201 net angles plus strict core containment for every orientation; independent axis replay, same-algorithm outward-rounded oblique replay."
+}

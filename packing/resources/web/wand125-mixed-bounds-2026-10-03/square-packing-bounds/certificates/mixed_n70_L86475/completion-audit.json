@@ -1,0 +1,16 @@
+{
+  "status": "AUDITED_AND_PACKAGED",
+  "n": 70,
+  "L": "3459/400",
+  "total_mass": "6999999/100000",
+  "compared_with": "8639/1000",
+  "compared_note": "our certified n70 8.639 (record 8.6275)",
+  "improvement_lower": "17/2000",
+  "candidate_digest": "41af9ea74a3bf12d1971832120fdba2526b899b789068ef706475f38c8312ab2",
+  "all_angles": 201,
+  "certificate_sha256": "0a21f0ccf1886c33873ac7e9f671ad58b0c2d9a704c5c895f516921f48561c93",
+  "bundle": "n70-L8.6475-proof-bundle",
+  "archive_sha256": "fa020a0c5fff5422c6e01bfe0a78c7f1689076736b2cc1d959cd16ee49d06bbf",
+  "route": "n70 fresh structured Green init n70-86475 at L8.6475, rectangles full-net repair, 201-angle verification and replay.",
+  "scope": "All centres at all 201 net angles plus strict core containment for every orientation; independent axis replay, same-algorithm outward-rounded oblique replay."
+}

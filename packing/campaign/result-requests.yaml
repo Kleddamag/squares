@@ -378,8 +378,9 @@ issues:
     summary: >-
       Mixed rectangle-measure lower bounds checked by mixed_rotated_verify.cpp at five
       counts, then a rolling series of comments adding n = 84, 85, 76, 96, 85 again, 87, 91,
-      92 again, 83 and 96 again.
-    read_through: '2026-10-03T17:58:45Z'
+      92 again, 83 and 96 again on 2 October, and 22 more on 3 October, from n = 95 down to
+      n = 69, six of them again at counts already posted (76, 87, 90, 91, 92, 96).
+    read_through: '2026-10-03T18:48:43Z'
     results:
       - key: mixed-five
         claim: s(37) >= 161/25, s(65) >= 167/20, s(66) >= 421/50, s(90) >= 48/5 and s(92) >= 969/100
@@ -421,12 +422,9 @@ issues:
           Twenty-two mixed rectangle-measure certificates posted in comments of 3 October
           2026, from mixed_n95_L996 (s(95) >= 249/25) to mixed_n69_L8612 (s(69) >=
           2153/250), at n = 51, 52, 55, 58, 69, 70, 71, 73, 74, 75, 76, 86, 87, 88, 89, 90,
-          91, 92, 93, 94, 95 and 96, each above what the record reports at its count
+          91, 92, 93, 94, 95 and 96, 21 above what the record reported at their counts; at n = 96, below T-081's reported s(96) = 10 and above the verified 249/25
         source: https://github.com/jlevy/squares/issues/282#issuecomment-5964806255
-        not_registered: >-
-          Posted on 3 October after the b00fc70 import; not yet retained, reviewed or
-          registered. Their import is the next stage of think-r7yt's successor.
-        queued: true
+        register: [T-082]
     beads: [think-ye2x, think-fb6h, think-09ag, think-r7yt]
     answer_bead: think-7gop
     replies:

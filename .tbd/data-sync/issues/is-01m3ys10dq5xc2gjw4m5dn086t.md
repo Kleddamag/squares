@@ -5,13 +5,13 @@ title: "Answer #309: squarepacker's s(12) >= 31360/7901 (triage first)"
 kind: task
 status: open
 priority: 2
-version: 1
+version: 2
 labels:
   - result-import
 dependencies: []
-parent_id: is-01m3yrzmzcpq964zt2kr14w8jv
+parent_id: is-01m41csdc2gp36ry5p6n7c2x2y
 created_at: 2026-10-02T17:01:41.175Z
-updated_at: 2026-10-02T17:01:41.175Z
+updated_at: 2026-10-03T17:26:29.884Z
 ---
 Answer jlevy/squares#309 (squarepacker, opened 2026-10-02): New lower bound for s(12): 31360/7901 = 3.969117833… (Daniel's certificate rescaled, reproducible)
 

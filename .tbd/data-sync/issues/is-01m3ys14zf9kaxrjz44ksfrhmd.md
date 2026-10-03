@@ -5,13 +5,13 @@ title: "Answer #294: wand125's linear certificates (T-073; n = 82 queued)"
 kind: task
 status: open
 priority: 2
-version: 1
+version: 2
 labels:
   - result-import
 dependencies: []
-parent_id: is-01m3yrzmzcpq964zt2kr14w8jv
+parent_id: is-01m41csdc2gp36ry5p6n7c2x2y
 created_at: 2026-10-02T17:01:45.839Z
-updated_at: 2026-10-02T17:01:45.839Z
+updated_at: 2026-10-03T17:26:53.084Z
 ---
 Answer jlevy/squares#294 (wand125, opened 2026-10-02): Linear point/segment certificates: s(101) ≥ 257/25 = 10.28
 

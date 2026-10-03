@@ -5,7 +5,7 @@ title: "Post the replies the import review found owing: 256, 279 to 282, 238, an
 kind: task
 status: open
 priority: 1
-version: 5
+version: 6
 spec_path: docs/project/specs/active/plan-2026-10-01-result-import-first-application.md
 labels:
   - packing
@@ -13,9 +13,9 @@ labels:
 dependencies:
   - type: blocks
     target: is-01m3yrzmzcpq964zt2kr14w8jv
-parent_id: is-01m3yrdxte02c7bnygkke34ct4
+parent_id: is-01m41csdc2gp36ry5p6n7c2x2y
 created_at: 2026-10-01T23:55:49.001Z
-updated_at: 2026-10-02T17:02:01.140Z
+updated_at: 2026-10-03T17:25:39.400Z
 ---
 Owner posts, or an agent at the owner request. Drafts are in docs/project/specs/active/plan-2026-10-01-result-import-first-application.md. Every statement was checked against main at f25a85cb5; recheck before posting.
 

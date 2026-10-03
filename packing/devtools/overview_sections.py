@@ -160,17 +160,6 @@ def is_site_page(href: str) -> bool:
     return page in SITE_PAGES or (page.endswith("/") and f"{page}index.html" in SITE_PAGES)
 
 
-def is_case_record(href: str) -> bool:
-    """Whether `href` is a case's record file, `cases/11.html`, from the site's root
-    (`render_case_pages.case_url`): a page a reader may land on and share, though it is
-    the record alone and not one of `SITE_PAGES`."""
-    from devtools import overview_data  # noqa: PLC0415
-    from devtools.render_case_pages import case_url  # noqa: PLC0415
-
-    page = href.partition("#")[0].partition("?")[0]
-    return page in {case_url(n) for n in overview_data.load().cases}
-
-
 def embed_url(href: str) -> str:
     """A site page's address framed in a popover: `view=embed`, which its `embed.js`
     reads to drop the site chrome, added before any fragment."""

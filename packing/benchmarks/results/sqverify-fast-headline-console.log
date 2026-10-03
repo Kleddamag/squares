@@ -1,0 +1,57 @@
+rect_n32_L595@r1           candidate    r0 cpu=0.13086799999999998 instr=None verdict=verified nodes=15397 load=0.91
+rect_n32_L595@r1           verify-cpp   r0 cpu=1.821 instr=None verdict=verified nodes=15387 load=0.91
+rect_n32_L595@r100         verify-cpp   r0 cpu=5.311 instr=None verdict=verified nodes=25041 load=0.92
+rect_n32_L595@r100         candidate    r0 cpu=0.203318 instr=None verdict=verified nodes=24525 load=0.93
+rect_n32_L595@r150         candidate    r0 cpu=0.227597 instr=None verdict=verified nodes=27725 load=0.93
+rect_n32_L595@r150         verify-cpp   r0 cpu=6.584 instr=None verdict=verified nodes=28541 load=0.93
+rect_n32_L595@r200         verify-cpp   r0 cpu=7.508 instr=None verdict=verified nodes=32183 load=0.94
+rect_n32_L595@r200         candidate    r0 cpu=0.246782 instr=None verdict=verified nodes=31061 load=0.95
+rect_n78_L8955@r1          candidate    r0 cpu=0.9159639999999999 instr=None verdict=verified nodes=128895 load=0.95
+rect_n78_L8955@r1          verify-cpp   r0 cpu=29.139 instr=None verdict=verified nodes=128911 load=0.95
+rect_n78_L8955@r50         verify-cpp   r0 cpu=42.987 instr=None verdict=verified nodes=132139 load=0.97
+rect_n78_L8955@r50         candidate    r0 cpu=1.224264 instr=None verdict=verified nodes=131641 load=0.99
+rect_n32_L595@r1           verify-cpp   r1 cpu=2.099 instr=None verdict=verified nodes=15387 load=0.99
+rect_n32_L595@r1           candidate    r1 cpu=0.169182 instr=None verdict=verified nodes=15397 load=0.99
+rect_n32_L595@r100         candidate    r1 cpu=0.241824 instr=None verdict=verified nodes=24525 load=0.99
+rect_n32_L595@r100         verify-cpp   r1 cpu=5.563 instr=None verdict=verified nodes=25041 load=0.99
+rect_n32_L595@r150         verify-cpp   r1 cpu=6.871 instr=None verdict=verified nodes=28541 load=1.0
+rect_n32_L595@r150         candidate    r1 cpu=0.229116 instr=None verdict=verified nodes=27725 load=1.0
+rect_n32_L595@r200         candidate    r1 cpu=0.25418599999999997 instr=None verdict=verified nodes=31061 load=1.0
+rect_n32_L595@r200         verify-cpp   r1 cpu=7.986 instr=None verdict=verified nodes=32183 load=1.0
+rect_n78_L8955@r1          verify-cpp   r1 cpu=29.79 instr=None verdict=verified nodes=128911 load=1.0
+rect_n78_L8955@r1          candidate    r1 cpu=0.9095199999999999 instr=None verdict=verified nodes=128895 load=1.0
+rect_n78_L8955@r50         candidate    r1 cpu=1.102381 instr=None verdict=verified nodes=131641 load=1.0
+rect_n78_L8955@r50         verify-cpp   r1 cpu=43.626 instr=None verdict=verified nodes=132139 load=1.0
+rect_n32_L595@r1           candidate    r2 cpu=0.146779 instr=None verdict=verified nodes=15397 load=1.0
+rect_n32_L595@r1           verify-cpp   r2 cpu=1.97 instr=None verdict=verified nodes=15387 load=1.0
+rect_n32_L595@r100         verify-cpp   r2 cpu=5.551 instr=None verdict=verified nodes=25041 load=1.0
+rect_n32_L595@r100         candidate    r2 cpu=0.203572 instr=None verdict=verified nodes=24525 load=1.0
+rect_n32_L595@r150         candidate    r2 cpu=0.214577 instr=None verdict=verified nodes=27725 load=1.0
+rect_n32_L595@r150         verify-cpp   r2 cpu=7.366 instr=None verdict=verified nodes=28541 load=1.0
+rect_n32_L595@r200         verify-cpp   r2 cpu=7.947 instr=None verdict=verified nodes=32183 load=1.0
+rect_n32_L595@r200         candidate    r2 cpu=0.233545 instr=None verdict=verified nodes=31061 load=1.0
+rect_n78_L8955@r1          candidate    r2 cpu=0.947518 instr=None verdict=verified nodes=128895 load=1.0
+rect_n78_L8955@r1          verify-cpp   r2 cpu=31.279 instr=None verdict=verified nodes=128911 load=1.0
+rect_n78_L8955@r50         verify-cpp   r2 cpu=44.109 instr=None verdict=verified nodes=132139 load=1.16
+rect_n78_L8955@r50         candidate    r2 cpu=1.083765 instr=None verdict=verified nodes=131641 load=1.58
+metric: cpu_seconds
+cell                                         candidate                  verify-cpp
+rect_n32_L595@r1                0.1468 [0.1309,0.1692]          1.97 [1.821,2.099]
+rect_n32_L595@r100              0.2036 [0.2033,0.2418]         5.551 [5.311,5.563]
+rect_n32_L595@r150              0.2276 [0.2146,0.2291]         6.871 [6.584,7.366]
+rect_n32_L595@r200              0.2468 [0.2335,0.2542]         7.947 [7.508,7.986]
+rect_n78_L8955@r1                0.916 [0.9095,0.9475]         29.79 [29.14,31.28]
+rect_n78_L8955@r50                 1.102 [1.084,1.224]         43.63 [42.99,44.11]
+total of medians                                 2.843                       95.75
+verdicts: {'candidate': ['verified'], 'verify-cpp': ['verified']}
+load average: median 1.00, max 1.58
+rect_n32_L595      candidate    cpu=27.958986999999997 verdict=VERIFIED directions=201 nodes=4753696 load=1.58
+rect_n32_L595      verify-cpp   cpu=1359.524746 verdict=PASS directions=201 nodes=5808912 load=1.35
+rect_n31_L592      candidate    cpu=39.722666000000004 verdict=VERIFIED directions=201 nodes=5845668 load=1.0
+rect_n31_L592      verify-cpp   cpu=2127.5217390000003 verdict=PASS directions=201 nodes=7267448 load=0.66
+metric: cpu_seconds
+cell                                        verify-cpp
+rect_n31_L592@all                     2128 [2128,2128]
+total of medians                                  2128
+verdicts: {'verify-cpp': ['PASS']}
+load average: median 0.66, max 0.66

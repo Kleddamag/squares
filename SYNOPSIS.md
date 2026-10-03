@@ -1083,6 +1083,7 @@ case or experiment separately.
 | [wand125 Rectangle Certificates of 1 October: Review of T-068](docs/project/reviews/review-2026-10-02-wand125-rectangle-bounds-t068.md) | dated review record | record | retained | — |
 | [wand125 Mixed Rectangle-Measure Certificates: Review of T-069 and of n = 84, 85](docs/project/reviews/review-2026-10-02-wand125-mixed-rectangle-bounds.md) | dated review record | record | retained | — |
 | [wand125 Linear Certificates: Review of `s(101) ≥ 257/25`, `s(83) ≥ 187/20` and the Point-and-Segment Checker, with an Addendum on n = 76](docs/project/reviews/review-2026-10-02-wand125-linear-certificates-and-n76.md) | dated review record | record | retained | — |
+| [Soundness Review: The Clean-Room Measure Verifier `sqverify-fast`](docs/project/reviews/review-2026-10-03-sqverify-fast-soundness.md) | dated review record | record | retained | — |
 | [Density Solvers Compared: Tokoharu’s and wand125’s Rectangle-Density Tools Against This Repository’s Certificate Stack](docs/project/reviews/review-2026-09-28-density-solver-comparison.md) | dated review record | record | retained | — |
 | [Proof Review: Guzhou0806’s R067 and R068, `s(17) > 233009/50000` and `s(17) > 116511/25000`](docs/project/reviews/review-2026-09-28-n17-guzhou-r067-r068.md) | dated review record | record | retained | — |
 | [Proof Review: wand125’s Point-Only Certificates for `s(45) = 7` and `s(21) = 5`](docs/project/reviews/review-2026-09-28-wand125-point-only-s21-s45.md) | dated review record | record | retained | — |

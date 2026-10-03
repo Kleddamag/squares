@@ -1,0 +1,41 @@
+{
+  "format": "external-source-acquisition-v1",
+  "retrieved_at_utc": "2026-10-02T17:26Z",
+  "git_scope": "A complete clone of the public repository, fetched when main was this commit; the manifest covers every file of the tree.",
+  "sources": [
+    {
+      "id": "squarepacker-s12-lower-bound",
+      "source_url": "https://github.com/squarepacker/s12-lower-bound",
+      "source_ref": "8c53049025b94bb589ed25a90203f0a34c2945e4",
+      "source_commit": "8c53049025b94bb589ed25a90203f0a34c2945e4",
+      "committed_utc": "2026-10-02T16:45:25Z",
+      "git_tree": "9f41baf8f5547d2712d0a127ea5378bf284b64de",
+      "archived_path": "packing/resources/web/squarepacker-s12-lower-bound-2026-10-02/s12-lower-bound",
+      "subtree_manifest": "packing/resources/web/squarepacker-s12-lower-bound-2026-10-02/acquisition/upstream-subtree.sha256",
+      "subtree_scope": [
+        "LICENSE",
+        "README.md",
+        "SHA256SUMS",
+        "s12_lower_3.969118.txt",
+        "controls",
+        "logs",
+        "tools"
+      ],
+      "subtree_file_count": 24,
+      "subtree_total_bytes": 94729,
+      "retained_file_count": 24,
+      "retained_total_bytes": 94729,
+      "compressed": [
+        "s12-lower-bound/controls/scaled_further_31360_7900.txt.gz",
+        "s12-lower-bound/s12_lower_3.969118.txt.gz"
+      ],
+      "pinned_only": [],
+      "license": "MIT: LICENSE reproduces Evan Daniel's MIT licence for the material derived from evand/square-packing at 7d6f46d9 and releases README.md, tools/ and logs/ under the same terms, Copyright (c) 2026 Ryu Sungjoon",
+      "claims": [
+        "s(12) >= 31360/7901 = 3.96911783..., by Evan Daniel's 1,736-point weighted certificate s12/certificates/s12_lower_3.9686.txt (evand/square-packing 7d6f46d9) with every coordinate and the container multiplied by 7902/7901 and the weights unchanged, total 119738036/10^7 < 12 (s12_lower_3.969118.txt, README.md)",
+        "Daniel's verify at 7d6f46d rejects the rescaled certificate on the angle nets N = 6000 (least 9849809/10^7) and 12000 (9867834/10^7) and verifies it at N = 24000 (10000056/10^7), also when rebuilt with overflow checks (logs/daniel_verify_*.log)",
+        "tools/indep_check.cpp, written from the statement and sweeping [0, 90] degrees with no symmetry assumed, agrees on every net and also verifies at N = 48000 and 96000; the certificate scaled to 31360/7900 is rejected at N = 24000 (logs/indep_check_*.log, logs/control_*.log)"
+      ]
+    }
+  ]
+}

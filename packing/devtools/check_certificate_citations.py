@@ -96,6 +96,29 @@ def referenced_evidence(node: object) -> set[str]:
     return found
 
 
+#: What an evidence entry claims when it bears on a bound of `s(n)`. Only a case record
+#: stands as the citation of such an entry, whatever result also cites it.
+BOUND_CLAIMS = frozenset({"lower-bound", "upper-bound", "exact-value"})
+
+
+def method_limit_evidence(evidence_by_id: Mapping[str, Mapping[str, object]]) -> set[str]:
+    """Evidence a registered result of kind `method-limit` cites, claiming no bound.
+
+    A method limit's evidence says how far a proof method can reach, not what `s(n)` is,
+    so its citing record is the method-limit result. An entry that claims a bound is left
+    to the case records even when a method-limit result cites it too, so the exception
+    cannot hide a bound no case carries.
+    """
+    register = safe_load((FRONTIER / "results.yaml").read_text(encoding="utf-8"))
+    return {
+        identifier
+        for result in register["results"]
+        if result.get("kind") == "method-limit"
+        for identifier in result.get("evidence", [])
+        if (evidence_by_id.get(identifier) or {}).get("claim") not in BOUND_CLAIMS
+    }
+
+
 def orphaned_evidence(evidence_by_id: dict[str, dict]) -> list[str]:
     """Verified, replayable evidence that no frontier record cites.
 
@@ -108,11 +131,17 @@ def orphaned_evidence(evidence_by_id: dict[str, dict]) -> list[str]:
     This is the general form: evidence that is verified, has passed its replay, and names a
     certificate is evidence somebody meant to bear on a case. If no case cites it, either
     the record is behind or the evidence should not be in the register.
+
+    A method limit is the one exception to "a case cites it": it bounds what a proof
+    method can reach across many cases, and a case record has no block for that. Its
+    citing record is the method-limit result in the register (T-058's exact ceilings).
+    Evidence that claims a bound still needs a case to cite it (`method_limit_evidence`).
     """
     cited: set[str] = set()
     for path in sorted(FRONTIER.glob("n-*.md")):
         case = safe_load(path.read_text(encoding="utf-8").split("---\n")[1])
         cited |= referenced_evidence(case["packing"])
+    cited |= method_limit_evidence(evidence_by_id)
 
     return sorted(
         identifier

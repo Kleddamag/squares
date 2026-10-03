@@ -83,10 +83,17 @@ FRONTIER_COUNTS: dict[str, tuple[int, int, int]] = {
     # completed zmx2 replay of the s(77) mixed cover (T-067) proved n = 77 and, by its
     # total below 78, n = 78; both were reported-proved and neither Nagamochi-bounded,
     # so formal-open falls by two in every corpus. The replayed s(76) >= 447/50 (T-072)
-    # leaves n = 76 open.
-    "n=1..100": (56, 55, 21),
-    "n=1..200": (144, 139, 109),
-    "n=1..324": (256, 247, 221),
+    # leaves n = 76 open. 2026-10-02, the merged replay of wand125's n = 50 mixed
+    # certificate (T-048) took n = 50 and, by its mass, n = 51 off Nagamochi's bound;
+    # both stay open in both lanes, so only the Nagamochi-bounded count falls by two. The
+    # same day the replayed mixed certificates of T-069 and T-071 took n = 37, 65, 66, 84,
+    # 85, 87, 90 and 92 off it, eight more, all open in both lanes; n = 86 moved too, from
+    # a rectangle certificate. Then the merged replays of wand125's rectangle
+    # certificates of 1 October (T-074) took n = 57, 58, 88, 89, 93 and 94 off it, six
+    # more, all open in both lanes.
+    "n=1..100": (56, 55, 5),
+    "n=1..200": (144, 139, 93),
+    "n=1..324": (256, 247, 205),
 }
 #: n = 68, 103, 105, 110 and 131 left the exclusions on 2026-09-29, when their records
 #: moved from UnitSquare renderings to Francisco Couzo's packings (T-056); n = 69 is the
@@ -3307,6 +3314,15 @@ def _standing(context: Context) -> str:
     return _module(context, "devtools.check_standing")
 
 
+def _result_requests(context: Context) -> str:
+    # Sub-second: one record, its schema and the register. Records tier because it checks
+    # the record against the register -- that every issue's results name entries that
+    # exist and every reply is a comment on its own issue, the join stage 7 of the result
+    # import process reads to say which author is owed a reply. A reply due is reported,
+    # never failed: it is the owner's next move, not a broken record.
+    return _module(context, "devtools.check_requests")
+
+
 def _case_prose(context: Context) -> str:
     # Sub-second: it regex-scans a hundred case bodies against their own front matter and
     # reuses check_rung_figures's exact-arithmetic rule. Records tier because it checks the
@@ -4770,6 +4786,21 @@ STEPS: tuple[Step, ...] = (
         ),
     ),
     Step(
+        "result requests name registered results",
+        _result_requests,
+        fast=True,
+        records=True,
+        touches=(
+            *_CORE,
+            "packing/devtools/check_requests.py",
+            "packing/devtools/result_status.py",
+            "packing/campaign/result-requests.yaml",
+            "packing/campaign/schemas/result-requests.schema.yaml",
+            "packing/frontier/results.yaml",
+            "packing/frontier/evidence.yaml",
+        ),
+    ),
+    Step(
         "case prose agrees with its own front matter",
         _case_prose,
         fast=True,
@@ -5204,6 +5235,9 @@ TREE_REUSABLE_FAST_STEPS = frozenset(
         # The register, the bibliography and the case records, read and compared: no
         # clock, no network and no history.
         "standings agree with the bounds their entries state",
+        # One record, its schema and the register; `--report`, `--draft` and `--github`
+        # read git and GitHub, and the step runs none of them.
+        "result requests name registered results",
         "case prose agrees with its own front matter",
         # Reads the register, the reader documents and its own allowlist; the `git grep`
         # in the module belongs to `--retained`, which this step does not run.

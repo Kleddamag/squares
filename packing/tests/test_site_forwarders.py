@@ -191,7 +191,8 @@ def test_the_overview_sends_an_old_explainer_fragment_to_the_paper(
 ) -> None:
     """The explainer was once the site's root, so a fragment the overview lacks goes to
     the paper where it is served now, in one step and not through `explainer.html`; a
-    result's row goes to the results table; and a fragment the overview has stays."""
+    result's row goes to the results table; The Frontier Survey's goes to the Frontier
+    page; and a fragment the overview has stays."""
     arrival = f"{served}{LOWER_BOUNDS_PAPER}?review=fonts#fn-3"
     assert _arrives(browser, f"{served}?review=fonts#fn-3", arrival, scripts=True) == arrival
     arrival = f"{served}{render_overview.RESULTS_PAGE}#t-018"
@@ -201,6 +202,11 @@ def test_the_overview_sends_an_old_explainer_fragment_to_the_paper(
     for ladders in ("verification-ladders", "verification-at-a-glance"):
         arrival = f"{served}{render_overview.RESULTS_PAGE}#{ladders}"
         assert _arrives(browser, f"{served}#{ladders}", arrival, scripts=True) == arrival
+    # The Frontier Survey left the overview the same day: both its fragments go to the
+    # Frontier page, whose title carries the first.
+    for survey in ("the-frontier-survey", "the-survey"):
+        arrival = f"{served}frontier.html#{survey}"
+        assert _arrives(browser, f"{served}#{survey}", arrival, scripts=True) == arrival
     stays = f"{served}#recent-results"
     assert _arrives(browser, stays, stays, scripts=True) == stays
 

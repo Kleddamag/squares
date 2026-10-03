@@ -3,12 +3,14 @@
 from __future__ import annotations
 
 import functools
+import json
 from fractions import Fraction
 from typing import cast
 
 import pytest
 
 from cases.trump11 import isolation_radius as tool
+from cases.trump11 import isolation_radius_replay as replay_tool
 from cases.trump11 import tangent_cones as tc
 
 # Exact kappa_0 in Q(u), low degree first, as the tool pins it on branch 0.  A change here
@@ -119,3 +121,74 @@ def test_stress_ratio_identity_holds_on_branch_zero() -> None:
     assert tool.decimal(w.field, rho).startswith("4.51876250763899")
     assert tool.stress_ratio_identity(w, branch, rho)["holds"] is True
     assert tool.stress_ratio_identity(w, branch, rho + w.field.one)["holds"] is False
+
+
+RESULTS = tool.ROOT / "campaign/series/series-000-smoke-and-calibration/results"
+RETAINED = RESULTS / "bc-199-trump-isolation-radius.json"
+RECEIPT = RESULTS / "bc-199-isolation-radius-replay-receipt.json"
+RETAINED_ROW_RADIUS = "808514697/200000000000"
+
+
+def retained_record() -> dict:
+    return json.loads(RETAINED.read_text())
+
+
+def test_a_record_agrees_with_itself_and_timing_is_not_compared() -> None:
+    record = retained_record()
+    other = json.loads(json.dumps(record))
+    other["elapsed_seconds"] = 1.0
+    other["branches"][0]["seconds"] = 99.0
+    assert replay_tool.differences(record, other) == []
+    assert replay_tool.row_radius(record) == RETAINED_ROW_RADIUS
+
+
+def test_every_perturbed_record_is_refused() -> None:
+    record = retained_record()
+    perturbed = replay_tool.perturbations(record)
+    assert set(perturbed) == {
+        "radius_off_in_last_digit",
+        "argmin_face_witness_moved",
+        "exact_kappa_coefficient_off_by_one",
+        "declared_box_changed",
+    }
+    for name, copy in perturbed.items():
+        assert replay_tool.differences(record, copy), name
+    radius = replay_tool.differences(record, perturbed["radius_off_in_last_digit"])
+    assert radius == [
+        (
+            "rho_0_weighted.rational_lower_bound_short: retained '808514697/200000000000', "
+            "recomputed '808514698/200000000000'"
+        )
+    ]
+
+
+def test_structural_disagreement_is_refused() -> None:
+    record = retained_record()
+    short = json.loads(json.dumps(record))
+    short["branches"].pop()
+    assert any("length 128" in item for item in replay_tool.differences(record, short))
+    missing = json.loads(json.dumps(record))
+    del missing["rho_0_weighted"]
+    assert any("absent" in item for item in replay_tool.differences(record, missing))
+
+
+def test_the_retained_replay_receipt_passed_with_every_control_refused() -> None:
+    receipt = json.loads(RECEIPT.read_text())
+    assert receipt["status"] == "passed"
+    assert receipt["mismatches"] == []
+    assert receipt["retained_row_radius"] == RETAINED_ROW_RADIUS
+    assert receipt["recomputed_row_radius"] == RETAINED_ROW_RADIUS
+    assert receipt["retained_leaves_compared"] == receipt["recomputed_leaves"]
+    assert receipt["relationship_to_generator"] == "same-implementation"
+    assert receipt["controls_all_refused"] is True
+    assert all(item["refused"] for item in receipt["controls"].values())
+    # The one input that moved since the record is tangent_cones.py, by a lint-only edit
+    # (an unused `field` parameter of exact_pivot_rows); a second moved input is news.
+    assert receipt["inputs_drifted"] == ["cases/trump11/tangent_cones.py"]
+
+
+@pytest.mark.exhaustive_exact
+def test_replay_of_the_retained_record_passes() -> None:
+    receipt = replay_tool.replay(RETAINED)
+    assert receipt["status"] == "passed"
+    assert receipt["controls_all_refused"] is True

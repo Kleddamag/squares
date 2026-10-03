@@ -1,0 +1,350 @@
+{
+  "kind": "wand125-mixed-certificate-audit/v1",
+  "packet": "wand125-mixed-bounds-afternoon-2026-10-02",
+  "source_revision": "b00fc70f1904e9b1b567afee056d347f911209e8",
+  "certificates": {
+    "n83": {
+      "directory": "certificates/mixed_n83_L937",
+      "side": "937/100",
+      "side_float": 9.37,
+      "core": "9977/10000",
+      "rectangles": 728,
+      "total_mass": "8299999/100000",
+      "budget_gap": "1/100000",
+      "candidate_digest": "a76336032928972d66d644c335cdfa62809ab2fef213474c86c36fd81ea7733a",
+      "checker_sha256": "89b674a6feabe24d91c29431de1624907c4bff83280ceb481475455686693652",
+      "code_files": 10,
+      "code_identical_to_n50": true,
+      "net": {
+        "step": "83/40000",
+        "count": "201",
+        "endpoint_check": "89/40000",
+        "rotated_side_upper": "399908091/400000000",
+        "side_margin": "91909/400000000"
+      },
+      "centre_domains": {
+        "nodes": 200,
+        "eliminated_width_min": "24678449934996538617/204801102240949166420000",
+        "eliminated_width_min_float": 0.00012049959529007936,
+        "eliminated_width_max": "11437689778285417/7030288794430420000",
+        "eliminated_width_max_float": 0.00162691606457855,
+        "axis_domain": "[937/200, 887/100]^2"
+      },
+      "certificate_status": "ALL_ANGLES_VERIFIED_AND_REPLAYED",
+      "axis_cells": 21808900,
+      "axis_integer_minimum": 1.0063110587189603,
+      "oblique_nodes": 122070074,
+      "least_lower": 1.0000000002030356,
+      "least_lower_at": 165,
+      "tarball": "certificates/mixed_n83_L937/n83-L9.37-proof-bundle.tar.gz",
+      "tarball_sha256": "cbf81b21c271b4297036d71eae4948eacabece39fd14d092757a3a5748b9c9c7",
+      "source_audit": {
+        "status": "AUDITED_AND_PACKAGED",
+        "certificate_sha256_matches": true,
+        "archive_sha256_matches": true,
+        "compared_field": "compared_with",
+        "compared_with": "92667/10000",
+        "compared_note": "inherited Green n82 9.266733 (published rectangle n83 9.15)",
+        "improvement_lower": "1033/10000"
+      },
+      "comparison": {
+        "green": "Theorem 9, k=9, from n = 82",
+        "green_interval_float": [
+          9.266733533245633,
+          9.266733533245633
+        ],
+        "side_exceeds_green": true,
+        "source_value_exceeds_green": false,
+        "nagamochi": "1 + sqrt(66)",
+        "side_exceeds_nagamochi": true
+      },
+      "coverage_decided_here": false
+    },
+    "n85-L946": {
+      "directory": "certificates/mixed_n85_L946",
+      "side": "473/50",
+      "side_float": 9.46,
+      "core": "9977/10000",
+      "rectangles": 525,
+      "total_mass": "8499999/100000",
+      "budget_gap": "1/100000",
+      "candidate_digest": "d99031dfded8ab07e5cec0520f8d9b04c9f983cf846e29c17382803d970aca94",
+      "checker_sha256": "89b674a6feabe24d91c29431de1624907c4bff83280ceb481475455686693652",
+      "code_files": 10,
+      "code_identical_to_n50": true,
+      "net": {
+        "step": "83/40000",
+        "count": "201",
+        "endpoint_check": "89/40000",
+        "rotated_side_upper": "399908091/400000000",
+        "side_margin": "91909/400000000"
+      },
+      "centre_domains": {
+        "nodes": 200,
+        "eliminated_width_min": "24678449934996538617/204801102240949166420000",
+        "eliminated_width_min_float": 0.00012049959529007936,
+        "eliminated_width_max": "11437689778285417/7030288794430420000",
+        "eliminated_width_max_float": 0.00162691606457855,
+        "axis_domain": "[473/100, 224/25]^2"
+      },
+      "certificate_status": "ALL_ANGLES_VERIFIED_AND_REPLAYED",
+      "axis_cells": 12694969,
+      "axis_integer_minimum": 1.0025322687268394,
+      "oblique_nodes": 87731796,
+      "least_lower": 1.0000000021147502,
+      "least_lower_at": 182,
+      "tarball": "certificates/mixed_n85_L946/n85-L9.46-proof-bundle.tar.gz",
+      "tarball_sha256": "d518b3a95c337361f58d66f520b1fe91ca2e41ffb37bdbb53c7c3235e7ec768c",
+      "source_audit": {
+        "status": "AUDITED_AND_PACKAGED",
+        "certificate_sha256_matches": true,
+        "archive_sha256_matches": true,
+        "compared_field": "compared_with",
+        "compared_with": "92667/10000",
+        "compared_note": "inherited Green n82 9.266733 (published rectangle n85 9.2325)",
+        "improvement_lower": "1933/10000"
+      },
+      "comparison": {
+        "green": "Theorem 9, k=9, from n = 82",
+        "green_interval_float": [
+          9.266733533245633,
+          9.266733533245633
+        ],
+        "side_exceeds_green": true,
+        "source_value_exceeds_green": false,
+        "nagamochi": "1 + sqrt(68)",
+        "side_exceeds_nagamochi": true
+      },
+      "coverage_decided_here": false
+    },
+    "n87": {
+      "directory": "certificates/mixed_n87_L948",
+      "side": "237/25",
+      "side_float": 9.48,
+      "core": "9977/10000",
+      "rectangles": 299,
+      "total_mass": "8699999/100000",
+      "budget_gap": "1/100000",
+      "candidate_digest": "6b720d7b963bb104b45c5ad543a35c8fad4e1b70fd137969890d7645dd9179d4",
+      "checker_sha256": "89b674a6feabe24d91c29431de1624907c4bff83280ceb481475455686693652",
+      "code_files": 10,
+      "code_identical_to_n50": true,
+      "net": {
+        "step": "83/40000",
+        "count": "201",
+        "endpoint_check": "89/40000",
+        "rotated_side_upper": "399908091/400000000",
+        "side_margin": "91909/400000000"
+      },
+      "centre_domains": {
+        "nodes": 200,
+        "eliminated_width_min": "24678449934996538617/204801102240949166420000",
+        "eliminated_width_min_float": 0.00012049959529007936,
+        "eliminated_width_max": "11437689778285417/7030288794430420000",
+        "eliminated_width_max_float": 0.00162691606457855,
+        "axis_domain": "[237/50, 449/50]^2"
+      },
+      "certificate_status": "ALL_ANGLES_VERIFIED_AND_REPLAYED",
+      "axis_cells": 2866249,
+      "axis_integer_minimum": 1.013387013743792,
+      "oblique_nodes": 37506392,
+      "least_lower": 1.0000000089739896,
+      "least_lower_at": 176,
+      "tarball": "certificates/mixed_n87_L948/n87-L9.48-proof-bundle.tar.gz",
+      "tarball_sha256": "c77d8ea193dc345feda1a6000f7e893c861f8f65ca922fb6270689129dd54d28",
+      "source_audit": {
+        "status": "AUDITED_AND_PACKAGED",
+        "certificate_sha256_matches": true,
+        "archive_sha256_matches": true,
+        "compared_field": "compared_with",
+        "compared_with": "92667/10000",
+        "compared_note": "inherited Green n82 9.266733 (record n87 9.46 via n85 9.46 monotonicity)",
+        "improvement_lower": "2133/10000"
+      },
+      "comparison": {
+        "green": "Theorem 9, k=9, from n = 82",
+        "green_interval_float": [
+          9.266733533245633,
+          9.266733533245633
+        ],
+        "side_exceeds_green": true,
+        "source_value_exceeds_green": false,
+        "nagamochi": "1 + sqrt(70)",
+        "side_exceeds_nagamochi": true
+      },
+      "coverage_decided_here": false
+    },
+    "n91": {
+      "directory": "certificates/mixed_n91_L970",
+      "side": "97/10",
+      "side_float": 9.7,
+      "core": "9977/10000",
+      "rectangles": 288,
+      "total_mass": "9099999/100000",
+      "budget_gap": "1/100000",
+      "candidate_digest": "6745b3740e0fbd9d1be94770868829c0c76d8081b472d47d59a8a779f60d6564",
+      "checker_sha256": "89b674a6feabe24d91c29431de1624907c4bff83280ceb481475455686693652",
+      "code_files": 10,
+      "code_identical_to_n50": true,
+      "net": {
+        "step": "83/40000",
+        "count": "201",
+        "endpoint_check": "89/40000",
+        "rotated_side_upper": "399908091/400000000",
+        "side_margin": "91909/400000000"
+      },
+      "centre_domains": {
+        "nodes": 200,
+        "eliminated_width_min": "24678449934996538617/204801102240949166420000",
+        "eliminated_width_min_float": 0.00012049959529007936,
+        "eliminated_width_max": "11437689778285417/7030288794430420000",
+        "eliminated_width_max_float": 0.00162691606457855,
+        "axis_domain": "[97/20, 46/5]^2"
+      },
+      "certificate_status": "ALL_ANGLES_VERIFIED_AND_REPLAYED",
+      "axis_cells": 2748964,
+      "axis_integer_minimum": 1.005778849360574,
+      "oblique_nodes": 30125436,
+      "least_lower": 1.0000000003906073,
+      "least_lower_at": 191,
+      "tarball": "certificates/mixed_n91_L970/n91-L9.70-proof-bundle.tar.gz",
+      "tarball_sha256": "56174c72cae492ad957efba93810e5d671702ae3fe0496ef2d78e501aa6e9934",
+      "source_audit": {
+        "status": "AUDITED_AND_PACKAGED",
+        "certificate_sha256_matches": true,
+        "archive_sha256_matches": true,
+        "compared_field": "compared_with",
+        "compared_with": "1929/200",
+        "compared_note": "record n91 9.645",
+        "improvement_lower": "11/200"
+      },
+      "comparison": {
+        "green": "Theorem 9, k=9, from n = 82",
+        "green_interval_float": [
+          9.266733533245633,
+          9.266733533245633
+        ],
+        "side_exceeds_green": true,
+        "source_value_exceeds_green": true,
+        "nagamochi": "1 + sqrt(74)",
+        "side_exceeds_nagamochi": true
+      },
+      "coverage_decided_here": false
+    },
+    "n92-L975": {
+      "directory": "certificates/mixed_n92_L975",
+      "side": "39/4",
+      "side_float": 9.75,
+      "core": "9977/10000",
+      "rectangles": 324,
+      "total_mass": "9199999/100000",
+      "budget_gap": "1/100000",
+      "candidate_digest": "458d60ad8485c0e9aeabdfeefc21e93249e47666cbb60357465aa35d7e2e524c",
+      "checker_sha256": "89b674a6feabe24d91c29431de1624907c4bff83280ceb481475455686693652",
+      "code_files": 10,
+      "code_identical_to_n50": true,
+      "net": {
+        "step": "83/40000",
+        "count": "201",
+        "endpoint_check": "89/40000",
+        "rotated_side_upper": "399908091/400000000",
+        "side_margin": "91909/400000000"
+      },
+      "centre_domains": {
+        "nodes": 200,
+        "eliminated_width_min": "24678449934996538617/204801102240949166420000",
+        "eliminated_width_min_float": 0.00012049959529007936,
+        "eliminated_width_max": "11437689778285417/7030288794430420000",
+        "eliminated_width_max_float": 0.00162691606457855,
+        "axis_domain": "[39/8, 37/4]^2"
+      },
+      "certificate_status": "ALL_ANGLES_VERIFIED_AND_REPLAYED",
+      "axis_cells": 3560769,
+      "axis_integer_minimum": 1.008723611315222,
+      "oblique_nodes": 32377010,
+      "least_lower": 1.0000000022907243,
+      "least_lower_at": 191,
+      "tarball": "certificates/mixed_n92_L975/n92-L9.75-proof-bundle.tar.gz",
+      "tarball_sha256": "1f61a64007a9fdc99158c220529d55c8c54da28dca08680720dc9ab8373b5cd3",
+      "source_audit": {
+        "status": "AUDITED_AND_PACKAGED",
+        "certificate_sha256_matches": true,
+        "archive_sha256_matches": true,
+        "compared_field": "compared_with",
+        "compared_with": "969/100",
+        "compared_note": "our published n92 9.69",
+        "improvement_lower": "3/50"
+      },
+      "comparison": {
+        "green": "Theorem 9, k=9, from n = 82",
+        "green_interval_float": [
+          9.266733533245633,
+          9.266733533245633
+        ],
+        "side_exceeds_green": true,
+        "source_value_exceeds_green": true,
+        "nagamochi": "1 + sqrt(75)",
+        "side_exceeds_nagamochi": true
+      },
+      "coverage_decided_here": false
+    },
+    "n96": {
+      "directory": "certificates/mixed_n96_L996",
+      "side": "249/25",
+      "side_float": 9.96,
+      "core": "9977/10000",
+      "rectangles": 279,
+      "total_mass": "9599999/100000",
+      "budget_gap": "1/100000",
+      "candidate_digest": "a0cbba40370f94a0125f323c839c75dcb5b6145c32b1b81e80665fb75f27d561",
+      "checker_sha256": "89b674a6feabe24d91c29431de1624907c4bff83280ceb481475455686693652",
+      "code_files": 10,
+      "code_identical_to_n50": true,
+      "net": {
+        "step": "83/40000",
+        "count": "201",
+        "endpoint_check": "89/40000",
+        "rotated_side_upper": "399908091/400000000",
+        "side_margin": "91909/400000000"
+      },
+      "centre_domains": {
+        "nodes": 200,
+        "eliminated_width_min": "24678449934996538617/204801102240949166420000",
+        "eliminated_width_min_float": 0.00012049959529007936,
+        "eliminated_width_max": "11437689778285417/7030288794430420000",
+        "eliminated_width_max_float": 0.00162691606457855,
+        "axis_domain": "[249/50, 473/50]^2"
+      },
+      "certificate_status": "ALL_ANGLES_VERIFIED_AND_REPLAYED",
+      "axis_cells": 1420864,
+      "axis_integer_minimum": 1.0056403520432675,
+      "oblique_nodes": 31529330,
+      "least_lower": 1.0000000030392873,
+      "least_lower_at": 122,
+      "tarball": "certificates/mixed_n96_L996/n96-L9.96-proof-bundle.tar.gz",
+      "tarball_sha256": "5fc6195b1ba4d1e609acf7b2108bcef93869d463ebfe0542d401137a23818b6f",
+      "source_audit": {
+        "status": "AUDITED_AND_PACKAGED",
+        "certificate_sha256_matches": true,
+        "archive_sha256_matches": true,
+        "compared_field": "compared_with",
+        "compared_with": "248/25",
+        "compared_note": "our published n96 9.92 (Nagamochi reference 9.8882, unproven)",
+        "improvement_lower": "1/25"
+      },
+      "comparison": {
+        "green": "Theorem 9, k=9, from n = 82",
+        "green_interval_float": [
+          9.266733533245633,
+          9.266733533245633
+        ],
+        "side_exceeds_green": true,
+        "source_value_exceeds_green": true,
+        "nagamochi": "1 + sqrt(79)",
+        "side_exceeds_nagamochi": true
+      },
+      "coverage_decided_here": false
+    }
+  },
+  "scope": "Exact premises only, from the retained files: pinned digests, the measure's count, side, core, nonnegativity and total n - 1/100000, the candidate digest by the source's rule, the net containment, the checker and code identity, a replay record at threshold one for each of the 201 angles, and the source audit's certificate and tarball digests. Coverage is decided by the source's checker, whose replay is recorded separately."
+}

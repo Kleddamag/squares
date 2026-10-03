@@ -291,6 +291,26 @@ sources:
       work was produced by Claude (Anthropic) in a single session under human direction.
       The selective packet web/evand-square-packing-2026-10-02/ retains them; nothing was
       replayed. Dated by that revision, 2026-10-02 UTC.
+  - key: '[squarepacker s12 2026]'
+    authors: [Ryu]
+    year: 2026
+    venue: GitHub
+    dated: '2026-10-02'
+    credit: squarepacker after Daniel
+    lineage: independent
+    note: >-
+      squarepacker/s12-lower-bound at 8c53049025b94bb589ed25a90203f0a34c2945e4
+      (2026-10-02T16:45:25Z), by Ryu Sungjoon (GitHub squarepacker), archived as Zenodo
+      10.5281/zenodo.23106582 (v1.0, tag v1.0 = 7acf812c, published 2026-10-02), and
+      reported on jlevy/squares#309. It claims s(12) >= 31360/7901 from Evan Daniel's
+      s12_lower_3.9686.txt with every coordinate and the container multiplied by
+      7902/7901, verified by Daniel's verifier and by the author's own indep_check.cpp
+      at the angle net N = 24000. Its README credits the certificate, the verifier, the
+      reduction and its Lean formalisation to Daniel, and says the rescaling, the
+      verification runs and indep_check.cpp were prepared with the help of an AI
+      assistant from Anthropic. MIT, derived material under Daniel's licence. Retained
+      whole in web/squarepacker-s12-lower-bound-2026-10-02/; dated by that revision,
+      2026-10-02 UTC.
   - key: '[Kleddamag n11 2026]'
     authors: [Kleddamag]
     year: 2026
@@ -409,7 +429,7 @@ sources:
     venue: GitHub
     dated: '2026-09-28'
     credit: wand125 after Daniel, Tokoharu, Levy, Stromquist, Nagamochi, Burns, Massaccesi
-    short_credit: wand125 after Daniel, Tokoharu, Levy et al.
+    short_credit: wand125 after Daniel et al.
     lineage: credits-project
     note: >-
       The point-only s(21) = 5 and s(45) = 7 certificates and the mixed-rectangle
@@ -428,7 +448,8 @@ sources:
       528-529 and 635-650), so this project is credited second-hand.
       web/wand125-point-and-mixed-2026-09-28/acquisition/sources.json pins revision
       39d8ecc74d651b54ec977c331c8f2015b442a6c4 and every file of the five claim
-      directories. Dated by that revision, 2026-09-28.
+      directories. Dated by that revision, 2026-09-28. The complete s(21) and n = 50
+      replays ran here on 2026-09-29, with their receipts in the packet.
   - key: '[wand125 rectangle bounds 2026-10-01]'
     authors: [wand125]
     year: 2026
@@ -491,7 +512,8 @@ sources:
       wand125's. The README says parts of the work were produced with AI assistance under
       human direction. web/wand125-point-and-mixed-2026-10-01/acquisition/sources.json pins
       revision 1a25a5ed745fdd905a52f48fcc48150a0669032d. Dated by that revision,
-      2026-10-01 UTC.
+      2026-10-01 UTC. Each certificate's complete replay ran here on 2026-10-02, with its
+      receipts in the packet.
   - key: '[wand125 mixed bounds 2026-10-02]'
     authors: [wand125]
     year: 2026
@@ -512,6 +534,8 @@ sources:
       produced with AI assistance under human direction, and the commit names Claude as
       co-author. web/wand125-mixed-bounds-2026-10-02/acquisition/sources.json pins revision
       52af997dc91c579658f0828bc8304e306ad9d95b. Dated by that revision, 2026-10-02 UTC.
+      Each certificate's complete replay ran here on 2026-10-02, with its receipts in the
+      packet.
   - key: '[wand125 mixed bounds n76 2026-10-02]'
     authors: [wand125]
     year: 2026
@@ -572,6 +596,86 @@ sources:
       READ_LOG.md. web/wand125-valid7-independent-check-2026-10-02/acquisition/sources.json
       pins the revision, and the release records are pinned by SHA-256. Dated by that
       revision, 2026-10-02 UTC.
+  - key: '[wand125 Green DS7 Theorem 9 2026-10-02]'
+    authors: [wand125]
+    year: 2026
+    venue: GitHub
+    dated: '2026-10-02'
+    credit: wand125 after Friedman, MacIver
+    lineage: independent
+    note: >-
+      The gist 9e5f27e25607c0966c4f91bc1253ce8b at 9d6de784d98169b90a1af8d5e57c0499cfb12874
+      (2026-10-02T12:35:13Z; its commit author's name is Hiroaki Hosono), bylined "wand125,
+      2026-10-02": DS7 Figure 34's sixteen points are not unavoidable at side G_4, and Green's
+      pattern reconstructed for every k fails the same way for k >= 4, so the published
+      material does not establish DS7 Theorem 9 there; not a counterexample to the bound.
+      It credits Friedman's survey and MacIver's manuscript, which uses the same pattern at
+      k = 4, and does not mention this project. No licence and no statement of how it was
+      written. Requested in jlevy/squares#308.
+      web/wand125-green-ds7-theorem9-2026-10-02/acquisition/sources.json pins the revision.
+      Dated by that revision, 2026-10-02 UTC.
+  - key: '[wand125 mixed bounds afternoon 2026-10-02]'
+    authors: [wand125]
+    year: 2026
+    venue: GitHub
+    dated: '2026-10-02'
+    credit: wand125 after Tokoharu, Levy, Stromquist, Nagamochi, Burns, Massaccesi
+    short_credit: wand125 after Tokoharu, Levy et al.
+    lineage: builds-on-project
+    note: >-
+      The six mixed rectangle-measure certificates for n = 83, 85, 87, 91, 92 and 96 that
+      wand125/square-packing-bounds added in four commits on the afternoon of 2026-10-02
+      (certificates/mixed_n83_L937, mixed_n85_L946, mixed_n87_L948, mixed_n91_L970,
+      mixed_n92_L975 and mixed_n96_L996), requested for registration in four comments of
+      that day on jlevy/squares#282: rectangle densities of mass n - 1/100000 checked at
+      coverage one by code/mixed_rotated_verify.cpp, byte for byte the checker of the
+      source's n = 50 certificate and of the [wand125 mixed bounds 2026-10-02]
+      certificates. Two supersede certificates of those keys, mixed_n85_L942 and
+      mixed_n92_L969. Credited as they are, on the root README's unchanged Attribution
+      section, which opens "The method is not ours."; the README says parts of the work
+      were produced with AI assistance under human direction, and each commit message ends
+      with a co-author trailer naming an AI assistant.
+      web/wand125-mixed-bounds-afternoon-2026-10-02/acquisition/sources.json pins revision
+      b00fc70f1904e9b1b567afee056d347f911209e8. Dated by that revision, 2026-10-02 UTC.
+  - key: '[wand125 linear n82 2026-10-02]'
+    authors: [wand125]
+    year: 2026
+    venue: GitHub
+    dated: '2026-10-02'
+    credit: wand125 after Tokoharu, Levy, Stromquist, Nagamochi, Burns, Massaccesi
+    short_credit: wand125 after Tokoharu, Levy et al.
+    lineage: builds-on-project
+    note: >-
+      The linear certificate for n = 82 that wand125/square-packing-bounds added on
+      2026-10-02 (certificates/mixed_n82_L932, first committed at 58f153f8), requested for
+      registration in a comment of that day on jlevy/squares#294: a measure of point
+      masses, uniform segments and uniform rectangles in D4 orbits, of mass 82 - 1/100000,
+      on the support of the source's n = 83 linear certificate scaled by 932/935 with its
+      masses solved again, checked by code/unified_linear_verify.cpp, byte for byte the
+      checker of the [wand125 linear certificates 2026-10-02]. A later revision than those,
+      so a key of its own. Credited as they are, on the root README's unchanged Attribution
+      section; the README says parts of the work were produced with AI assistance under
+      human direction, and the commit message ends with a co-author trailer naming an AI
+      assistant. web/wand125-linear-n82-2026-10-02/acquisition/sources.json pins revision
+      b00fc70f1904e9b1b567afee056d347f911209e8. Dated by that revision, 2026-10-02 UTC.
+  - key: '[wand125 rectangle bounds 2026-10-02]'
+    authors: [wand125]
+    year: 2026
+    venue: GitHub
+    dated: '2026-10-02'
+    credit: wand125 after Tokoharu, Levy, Stromquist, Nagamochi, Burns, Massaccesi
+    short_credit: wand125 after Tokoharu, Levy et al.
+    lineage: builds-on-project
+    note: >-
+      The rectangle-density certificates wand125/square-packing-bounds raised on 2026-10-02
+      in three commits (06eeb40c, 7d770221 and 4318bdf9), at n = 20, 42, 59, 70, 77, 91 and
+      93, built with and checked by Tokoharu's solver and interval verifier. No issue
+      requests them; the import of 2 October took them in from the source's own commits.
+      web/wand125-rectangle-certificates-2026-10-02/acquisition/sources.json pins revision
+      b00fc70f1904e9b1b567afee056d347f911209e8 and every file of its tree. Credited as the
+      1 October key is, on the same README attribution ("The method is not ours."). The
+      README says parts of the work were produced with AI assistance under human direction.
+      Dated by that revision, 2026-10-02 UTC.
   - key: '[franciscouzo square-packing 2026-09-27]'
     authors: [Couzo]
     year: 2026

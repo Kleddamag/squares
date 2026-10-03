@@ -230,9 +230,10 @@ $9.645$, and the `compared_note` of the $n = 92$ `completion-audit.json` says $9
 
 ## Limitations
 
-- **Nothing was replayed.** No checker was built or run, no tarball was unpacked, and
-  neither `verify.sh` was executed.
-  The statements above are read from the retained files or are digest comparisons.
+- **Nothing was replayed at retention.** No checker was built or run, no tarball was
+  unpacked, and neither `verify.sh` was executed; the replays the sections below record
+  came later. The statements above are read from the retained files or are digest
+  comparisons.
 - **The bundles are pinned and not held.** A replay of the five densities needs the
   tarballs from the source at the pinned revision; each must have the digest above.
 - **Dates come from GitHub.** The clone is shallow, so first-commit dates rest on the
@@ -316,6 +317,29 @@ accepts `mixed_n37_L644` at net index 99, its least recorded bound, matching the
 record, and refuses two mutated copies there (`ANGLE_UNRESOLVED`): every mass scaled by
 99/100, and the heaviest orbit at a witness centre deleted, whose exact coverage falls to
 0.99918 and 0.97768. `tests/test_wand125_checker_controls.py` holds them.
+
+## Complete Replays of the Five Densities, 2 October 2026
+
+Each of the five densities was replayed over all 201 directions by
+`audit_wand125_point_and_mixed mixed-replay`, in one to three runs of four workers on
+shared 4-core x86-64 Linux containers (Intel Xeon, `c++` 13.3.0, one BLAS and OpenMP
+thread, `PYTHONOPTIMIZE` unset), each run bound to the pinned tarball, and `mixed-merge`
+printed `FULL_REPLAY_MATCHES_SHIPPED`: every direction returned the record the
+certificate holds, the axis direction its cells and integer minimum and each oblique
+direction its node count and lower bound.
+
+| Certificate | Directions | Least oblique bound (index) | Axis cells, minimum | CPU-hours | Receipts |
+| --- | ---: | --- | --- | ---: | --- |
+| `mixed_n37_L644` | 201 | $1.000000005449259$ (99) | 5,044,516, $1.010578471379292$ | 5.13 | [`receipts/n37/`](receipts/n37/) |
+| `mixed_n65_L835` | 201 | $1.0000000003683225$ (104) | 26,532,801, $1.005594099748123$ | 18.33 | [`receipts/n65/`](receipts/n65/) |
+| `mixed_n66_L842` | 201 | $1.0000000009256298$ (10) | 17,530,969, $1.0031018132438783$ | 11.69 | [`receipts/n66/`](receipts/n66/) |
+| `mixed_n90_L960` | 201 | $1.000000000041986$ (122) | 11,812,969, $1.0187419121321$ | 7.36 | [`receipts/n90/`](receipts/n90/) |
+| `mixed_n92_L969` | 201 | $1.0000000034450072$ (172) | 12,489,156, $1.0245720286547386$ | 6.67 | [`receipts/n92/`](receipts/n92/) |
+
+Each `merged.json` is the merged verdict, and `mixed-merge NAME --check` re-derives it.
+The runs replay the source’s own checker and per-angle functions, so they confirm the
+source’s runs rather than deciding coverage a second way. The controls above were made on
+`mixed_n37_L644` with the same checker bytes; no mutation of the other four was run.
 
 ## Compressed Files
 

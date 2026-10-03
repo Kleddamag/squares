@@ -262,12 +262,24 @@ count.
   encloses its exact datum, the axis-event partition is complete, orbit normalization
   preserves mass, and the exact mass is below `n`. All 53 pass, in 68 s on one core; the
   16 unchanged entries equal those of the September 28 receipt.
-- No coverage replay has run at this pin, and none of the source’s programs was run in
-  making this packet. The earlier packets’ replay receipts remain; they are of the
+- [`receipts/replay/audit.json.gz`](receipts/replay/audit.json.gz) and one directory per
+  certificate: the complete 201-direction replays of 2 October 2026 of 30 of the 37
+  certificates retained here, every one except `rect_n66_L8385`, `rect_n77_L89325`,
+  `rect_n78_L8965`, `rect_n86_L9365`, `rect_n87_L941`, `rect_n90_L95775` and
+  `rect_n59_L79325`, whose counts are held above them by mixed certificates or exact
+  values. Each ran Tokoharu’s unchanged `verify.cpp` through `run_verify.py` with one
+  worker, in sixteen cloud batches (`claude/replay-wand125-rect-oct1-r1` to `-r4`, four
+  each), about 143 hours of wall in all. `audit_wand125_rectangles --packet 2026-10-01
+  --merge` folded the batches’ receipts in, checking each case against this packet’s
+  preflight, the published input digest and the reviewed checker digest, and every
+  replay reproduced the upstream accepting run’s nodes, leaves and lower bound angle by
+  angle. The transfer branches are not merged. None of the source’s other programs was
+  run in making this packet; the earlier packets’ replay receipts remain, and are of the
   certificates those packets retain.
 
 The preflight proves every obligation except global rotated coverage, which the external
-checker decides. Until a replay passes here, each bound is the source’s report.
+checker decides; for the 30 replayed certificates the replay decides it with the
+source’s checker (`E-wand125-rectangle-2026-10-01-source-replay`, T-074).
 
 `python -m devtools.apply_wand125_rectangles --packet 2026-10-01 --replay-plan` lists
 the standing certificates whose replay would raise a verified lower bound, largest rise
@@ -362,6 +374,7 @@ present, the repository’s readers require them to agree.
 | `wand125-rectangles/certificates/rect_n94_L9805/certified_candidate.json.gz` | upstream | `8dd2c3028e6b04cd1ab3391b7b7db8d31d658d1d` | `5f4e7bf572dca33dc929846af75b7ed4447978309683251e2d2d2defcf531c72` |
 | `wand125-rectangles/certificates/rect_n95_L98518/certified_candidate.json.gz` | upstream | `3f0f156717c1998fc656651a90462f71cf478f88` | `cd70e6eab2fc136b04c9225a2c101cb2b55be1119ba93146245dac3a064d275d` |
 | `receipts/preflight/audit.json.gz` | receipt | `5eb49297f7075b5b5a2d02cc8bd707e51cddec56` | `5391bc60ee502401ac2b37e82b350413dffe5a4ddaad3bd4c5b05a8dd797bf73` |
+| `receipts/replay/audit.json.gz` | receipt | `9d464296a65aca764420e85110bb8849724a0f5d` | `a3a04836844267ed2b8fe782ed7eade166205bc3f7892b067cb3987eb30d6c99` |
 
 <!-- This document follows common-doc-guidelines.md.
 See github.com/jlevy/practical-prose and review guidelines before editing.

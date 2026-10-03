@@ -24,11 +24,21 @@ complete pass a method-distinct confirmation.
 The native theorem proves the strict ``s(n) > L``; the claim recorded is the source's
 ``s(n) >= L``.
 
+The reader is not tied to one source or one net. ``s12-rescaled`` is squarepacker's
+certificate of jlevy/squares#309, Daniel's ``s12`` file with every coordinate and the
+container multiplied by ``7902/7901``, which its producer's checkers refuse at
+``N = 6000`` and ``12000`` and accept at ``N = 24000``; its case therefore carries the net
+``N = 24000``, and every row is the same construction at that net. ``--certificate`` and
+``--certificate-sha256`` run a case's net and count on another file of the same format,
+pinned by its digest on the command line, which is how a mutated control is decided.
+
 Usage (from ``packing/``)::
 
     uv run --frozen --all-extras --group dev python -m devtools.verify_evand_angle_net_native \\
         --case s12 --pilot --output OUT.json
     ... --case s12 --all --workers 2 --output OUT.json
+    ... --case s12-rescaled --rows 0 --certificate CONTROL.txt \\
+        --certificate-sha256 HEX --output OUT.json
 
 ``--all`` writes an append-only row journal beside the receipt (``OUT.rows.jsonl``), and
 ``--resume JOURNAL`` skips the rows a previous journal of the same case and settings
@@ -39,6 +49,7 @@ already certified; a resumed receipt still requires every row certified before i
 from __future__ import annotations
 
 import argparse
+import dataclasses
 import hashlib
 import json
 import platform
@@ -65,6 +76,9 @@ REPO = Path(__file__).resolve().parents[2]
 PACKET = REPO / "packing/resources/web/evand-square-packing-2026-09-26/square-packing/s12"
 SOURCE_URL = "https://github.com/evand/square-packing"
 SOURCE_COMMIT = "167d842cd27ba1451cb2833773ea930c80b9e65b"
+RESCALED = (
+    REPO / "packing/resources/web/squarepacker-s12-lower-bound-2026-10-02/s12-lower-bound"
+)
 #: The source's net and its sigma rounding, as `verify/src/main.rs` `bin_geometry` has them.
 NET = 6000
 SIGMA_SCALE = 1_000_000
@@ -76,9 +90,12 @@ class Case:
     n: int
     path: Path
     sha256: str
-    #: The source's recorded least captured weight and bin at N = 6000.
+    #: The source's recorded least captured weight and bin at the case's net.
     source_minimum: str
     source_bin: int
+    net: int = NET
+    source_url: str = SOURCE_URL
+    source_commit: str = SOURCE_COMMIT
 
 
 CASES = {
@@ -95,6 +112,16 @@ CASES = {
         "c8e8f878205f2da9c213e4a87c06f17c5a759dce7e695e676dd5c50e0994f2ef",
         "10000083/10000000",
         684,
+    ),
+    "s12-rescaled": Case(
+        12,
+        RESCALED / "s12_lower_3.969118.txt",
+        "6ad9b0e8257166687f4e861b97f024f4993d7b2125897173b2f5e9f6e2167578",
+        "10000056/10000000",
+        0,
+        24000,
+        "https://github.com/squarepacker/s12-lower-bound",
+        "8c53049025b94bb589ed25a90203f0a34c2945e4",
     ),
 }
 
@@ -141,7 +168,7 @@ def net_rows(net: int = NET) -> tuple[ParentCoreRow, ...]:
         k += 1
 
 
-def parse_certificate(n: int, values: list[int]) -> ParentCoreCertificate:
+def parse_certificate(n: int, values: list[int], net: int = NET) -> ParentCoreCertificate:
     """Build the native certificate from the source's ``s_num s_den D W m (X Y w)^m``."""
     _require(len(values) >= 5, "truncated header")
     s_num, s_den, denominator, weight_scale, count = values[:5]
@@ -157,14 +184,26 @@ def parse_certificate(n: int, values: list[int]) -> ParentCoreCertificate:
         if w:
             atoms.append(Atom(str(index), *point, Fraction(w, weight_scale)))
     return ParentCoreCertificate(
-        n, side, Fraction(1), Fraction(1), tuple(atoms), (), net_rows()
+        n, side, Fraction(1), Fraction(1), tuple(atoms), (), net_rows(net)
     )
 
 
-def load_case(name: str) -> tuple[Case, ParentCoreCertificate]:
+def resolve_case(name: str, certificate: Path | None = None, sha256: str | None = None) -> Case:
+    """The named case, or its net and count on another file pinned by ``sha256``."""
     case = CASES[name]
+    if certificate is None:
+        return case
+    _require(sha256 is not None, "--certificate needs --certificate-sha256")
+    return dataclasses.replace(case, path=certificate.resolve(), sha256=sha256)
+
+
+def load_case(case: Case) -> ParentCoreCertificate:
     _, values = read_source(case.path, case.sha256)
-    return case, parse_certificate(case.n, values)
+    return parse_certificate(case.n, values, case.net)
+
+
+def _shown(path: Path) -> str:
+    return str(path.relative_to(REPO)) if path.is_relative_to(REPO) else str(path)
 
 
 def _git(*arguments: str) -> str:
@@ -173,7 +212,9 @@ def _git(*arguments: str) -> str:
     ).stdout.strip()
 
 
-def journal_certified(path: Path, name: str, batch_size: int) -> dict[int, dict[str, Any]]:
+def journal_certified(
+    path: Path, name: str, case: Case, batch_size: int
+) -> dict[int, dict[str, Any]]:
     """Rows a previous journal of this case and batch size recorded as certified."""
     lines = path.read_text(encoding="utf-8").splitlines()
     _require(bool(lines), "empty journal")
@@ -182,7 +223,7 @@ def journal_certified(path: Path, name: str, batch_size: int) -> dict[int, dict[
         head.get("schema") == "EvandNativeRowJournal/v1"
         and head.get("case") == name
         and head.get("batch_size") == batch_size
-        and head.get("certificate_sha256") == CASES[name].sha256,
+        and head.get("certificate_sha256") == case.sha256,
         "journal is for another case, certificate or batch size",
     )
     certified: dict[int, dict[str, Any]] = {}
@@ -198,6 +239,7 @@ def journal_certified(path: Path, name: str, batch_size: int) -> dict[int, dict[
 
 def run(
     name: str,
+    case: Case,
     rows: tuple[int, ...] | None,
     *,
     batch_size: int,
@@ -207,7 +249,7 @@ def run(
     source_state: tuple[str, bool],
 ) -> dict[str, Any]:
     started = time.monotonic()
-    case, certificate = load_case(name)
+    certificate = load_case(case)
     premises = validate_parent_core(certificate)
     catalogue = len(certificate.rows)
     selected = tuple(range(catalogue)) if rows is None else rows
@@ -218,9 +260,9 @@ def run(
         "python": sys.version,
         "platform": platform.platform(),
         "command": sys.argv,
-        "source_url": SOURCE_URL,
-        "source_commit": SOURCE_COMMIT,
-        "certificate": str(case.path.relative_to(REPO)),
+        "source_url": case.source_url,
+        "source_commit": case.source_commit,
+        "certificate": _shown(case.path),
         "certificate_sha256": case.sha256,
     }
     if journal is not None:
@@ -288,7 +330,7 @@ def run(
         "provenance": provenance,
         "claim": f"s({case.n}) >= {certificate.outer_side}",
         "native_bound": f"s({case.n}) > {certificate.outer_side / certificate.parent_side}",
-        "net": NET,
+        "net": case.net,
         "sigma_scale": SIGMA_SCALE,
         "points": len(certificate.atoms),
         "budget": str(certificate.budget),
@@ -330,11 +372,16 @@ def main() -> int:
     parser.add_argument("--batch-size", type=int, default=2048)
     parser.add_argument("--workers", type=int, choices=(1, 2), default=1)
     parser.add_argument("--resume", type=Path, help="a previous row journal of this case")
+    parser.add_argument(
+        "--certificate", type=Path, help="decide this file at the case's net, e.g. a control"
+    )
+    parser.add_argument("--certificate-sha256", help="the digest --certificate must have")
     parser.add_argument("--output", type=Path, required=True)
     args = parser.parse_args()
     source_state = _git("rev-parse", "HEAD"), bool(_git("status", "--porcelain"))
+    case = resolve_case(args.case, args.certificate, args.certificate_sha256)
     if args.premises:
-        case, certificate = load_case(args.case)
+        certificate = load_case(case)
         premises = validate_parent_core(certificate)
         result: dict[str, Any] = {
             "schema": "EvandNativeParentCoreReceipt/v1",
@@ -345,23 +392,25 @@ def main() -> int:
             "premises": {k: str(v) for k, v in asdict(premises).items()},
         }
     else:
-        case = CASES[args.case]
         rows: tuple[int, ...] | None
         if args.all:
             rows = None
         elif args.pilot:
-            last = len(net_rows()) - 1
+            last = len(net_rows(case.net)) - 1
             rows = tuple(sorted({0, case.source_bin, last}))
         else:
             rows = tuple(args.rows)
         resumed = (
-            journal_certified(args.resume, args.case, args.batch_size) if args.resume else {}
+            journal_certified(args.resume, args.case, case, args.batch_size)
+            if args.resume
+            else {}
         )
         args.output.parent.mkdir(parents=True, exist_ok=True)
         journal_path = args.output.with_suffix(".rows.jsonl")
         with journal_path.open("x", encoding="utf-8") as journal:
             result = run(
                 args.case,
+                case,
                 rows,
                 batch_size=args.batch_size,
                 workers=args.workers,

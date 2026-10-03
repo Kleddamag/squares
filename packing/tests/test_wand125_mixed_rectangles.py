@@ -1,10 +1,12 @@
 """Controls for the mixed rectangle-measure certificates of wand125/square-packing-bounds.
 
-`devtools.audit_wand125_point_and_mixed` audits and replays nine of them: n = 50 (T-048),
-the five of jlevy/squares#282 (T-069), the two of its comment of 2 October and the n = 76 of
-its later comment that day. Three
-families of check stand between a certificate and a recorded replay, and each is held
-here to its positive case and to two or more mutated controls that it must refuse:
+`devtools.audit_wand125_point_and_mixed` audits and replays fifteen of them: n = 50
+(T-048), the five of jlevy/squares#282 (T-069), the two of its comment of 2 October, the
+n = 76 of its later comment that day, and the six of that afternoon pinned at ``b00fc70``,
+two of which supersede certificates at n = 85 and 92 and are named ``n85-L946`` and
+``n92-L975``. Three families of check stand between a certificate and a recorded replay,
+and each is held here to its positive case and to two or more mutated controls that it
+must refuse:
 
 - **the retained files**: the exact premises the source's statements rest on, from the
   packet's bytes alone;
@@ -44,7 +46,8 @@ from devtools import audit_wand125_point_and_mixed as audit
 
 G_PACKET = audit.G_PACKET
 H_PACKET = audit.H_PACKET
-NAMES = sorted(audit.MIXED, key=lambda name: int(name[1:]))
+I_PACKET = audit.I_PACKET
+NAMES = sorted(audit.MIXED, key=lambda name: (audit.MIXED[name].n, audit.MIXED[name].side))
 
 
 def _sha256(data: bytes) -> str:
@@ -97,6 +100,12 @@ def test_the_least_bounds_are_the_ones_the_sources_state(
     assert least["n85"] == (1.0000000017271347, 44)
     assert least["n90"] == (1.000000000041986, 122)
     assert least["n76"] == (1.000000000516032, 150)
+    assert least["n83"] == (1.0000000002030356, 165)
+    assert least["n85-L946"] == (1.0000000021147502, 182)
+    assert least["n87"] == (1.0000000089739896, 176)
+    assert least["n91"] == (1.0000000003906073, 191)
+    assert least["n92-L975"] == (1.0000000022907243, 191)
+    assert least["n96"] == (1.0000000030392873, 122)
 
 
 def test_n50_agrees_with_its_own_exact_audit(audits: dict[str, dict[str, Any]]) -> None:
@@ -124,7 +133,7 @@ def test_the_g_packet_matches_its_acquisition_contract() -> None:
     assert acquire_source.check(G_PACKET, acquire_source.REPO) == []
 
 
-@pytest.mark.parametrize("packet", [G_PACKET, H_PACKET], ids=["g", "h"])
+@pytest.mark.parametrize("packet", [G_PACKET, H_PACKET, I_PACKET], ids=["g", "h", "i"])
 def test_each_2_october_packet_audit_recomputes_to_its_receipt(packet: Path) -> None:
     receipt = packet / "receipts/mixed-audit.json"
     expected = json.dumps(audit.mixed_audit(packet), indent=2, default=str) + "\n"
@@ -143,6 +152,62 @@ def test_the_h_comparison_is_the_sources_own_rectangle_value(
     assert facts["source_audit"]["compared_with"] == "357/40"
     assert Fraction(facts["source_audit"]["improvement_lower"]) == Fraction(3, 200)
     assert facts["comparison"]["side_exceeds_nagamochi"]
+
+
+def test_the_i_packet_matches_its_acquisition_contract() -> None:
+    assert acquire_source.check(I_PACKET, acquire_source.REPO) == []
+
+
+def test_a_later_certificate_at_a_named_count_takes_its_side_as_well() -> None:
+    """The afternoon's n = 85 and 92 supersede certificates the table already names."""
+    later = {name: c for name, c in audit.MIXED.items() if c.packet == I_PACKET}
+    assert set(later) == {"n83", "n85-L946", "n87", "n91", "n92-L975", "n96"}
+    assert audit.MIXED["n85"].directory.name == "mixed_n85_L942"
+    assert audit.MIXED["n85-L946"].directory.name == "mixed_n85_L946"
+    assert audit.MIXED["n92-L975"].receipts == I_PACKET / "receipts/n92-L975"
+    assert {c.revision for c in later.values()} == {audit.I_REVISION}
+    assert len({c.tarball for c in audit.MIXED.values()}) == len(audit.MIXED)
+
+
+def test_the_i_comparisons_are_greens_rounded_value_or_the_sources_own(
+    audits: dict[str, dict[str, Any]],
+) -> None:
+    """n = 83, 85 and 87 compare with 92667/10000, below Green's value; the other three
+    with the source's own earlier certificate, which the side exceeds."""
+    for name in ("n83", "n85-L946", "n87"):
+        assert audits[name]["source_audit"]["compared_with"] == "92667/10000"
+        assert not audits[name]["comparison"]["source_value_exceeds_green"]
+    earlier = {"n91": "1929/200", "n92-L975": "969/100", "n96": "248/25"}
+    for name, value in earlier.items():
+        facts = audits[name]
+        assert facts["source_audit"]["compared_with"] == value
+        assert Fraction(facts["side"]) - Fraction(value) == Fraction(
+            facts["source_audit"]["improvement_lower"]
+        )
+        assert facts["comparison"]["side_exceeds_nagamochi"]
+
+
+@pytest.mark.parametrize("name", ["n83", "n85-L946", "n87", "n91", "n92-L975", "n96"])
+def test_each_i_pre_replay_receipt_is_bound_to_the_pin(name: str) -> None:
+    """``mixed-fetch`` on each pinned tarball: the pin, the bundle and all 200 inputs."""
+    certificate = audit.MIXED[name]
+    record = json.loads((certificate.receipts / "fetch.json").read_text())
+    digest, size = audit.tarball_pin(certificate)
+    assert record["status"] == "BUNDLE_READY"
+    assert record["certificate"] == name
+    assert (record["tarball"]["sha256"], record["tarball"]["bytes"]) == (digest, size)
+    assert record["tarball"]["revision"] == audit.I_REVISION
+    assert record["bindings"] == {
+        "status": "BUNDLE_BOUND_TO_PACKET",
+        "listed_files": 621,
+        "code_files": 10,
+    }
+    assert record["preconditions"]["candidate_digest"] == certificate.candidate_digest
+    assert record["preconditions"]["checker_sha256"] == audit.N50_CHECKER_SHA256
+    assert record["inputs"]["status"] == "ALL_INPUTS_ENCLOSE_THE_CANDIDATE"
+    assert record["inputs"]["inputs"] == 200
+    assert record["inputs"]["rectangle_images"] == 8 * certificate.rectangles
+    assert record["bundle_records"]["frontier_boxes"] == 0
 
 
 def _with_heavier_rectangle(data: bytes) -> bytes:

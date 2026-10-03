@@ -12,6 +12,7 @@ from __future__ import annotations
 
 import base64
 import html
+import itertools
 import math
 import re
 import textwrap
@@ -191,11 +192,18 @@ CARD_LARGE_FROM = 160
 #: one-line notes are small; the rest carry a sentence and are medium.
 SECTION_CARD_SIZES: dict[str, CardSize] = {
     "pages": "medium",
-    "survey": "medium",
     "atlas": "medium",
     "projects": "medium",
     "documents": "small",
 }
+
+#: A section set in lines of its own, as counts of its cards in order, where one
+#: wrapping row would leave a card alone on its last line: the five page cards stand two
+#: over three, the two papers over the tutorial, the workbench and the Frontier page,
+#: rather than four and one (the owner, 2026-10-02, `think-ec5k`). Each line is a row of
+#: its own, and none sets more cards to a line than the longest line holds, so the lines
+#: share one column width. The stylesheet holds each longest line here to a rule.
+SECTION_CARD_LINES: dict[str, tuple[int, ...]] = {"pages": (2, 3)}
 
 
 #: Elements with no end tag, which open nothing a parser must later close.
@@ -374,9 +382,18 @@ def card(
     )
 
 
-def _cards(cards: list[str]) -> str:
-    frame = '<div class="site-cards-frame site-wide"><div class="site-cards">'
-    return frame + "".join(cards) + "</div></div>"
+def _cards(cards: list[str], section: str = "") -> str:
+    """A card section's frame and its cards: one wrapping row, or for a section of
+    `SECTION_CARD_LINES` a row per line, each no wider than its longest line."""
+    lines = SECTION_CARD_LINES.get(section, (len(cards),))
+    if sum(lines) != len(cards):
+        raise SystemExit(f"{section}: {len(cards)} cards in lines of {lines}")
+    most = f' data-cards-most="{max(lines)}"' if section in SECTION_CARD_LINES else ""
+    rows = "".join(
+        f'<div class="site-cards"{most}>{"".join(cards[end - count : end])}</div>'
+        for count, end in zip(lines, itertools.accumulate(lines), strict=True)
+    )
+    return f'<div class="site-cards-frame site-wide">{rows}</div>'
 
 
 # ---------- Row popovers: the one way a table row shows its detail ----------
@@ -842,6 +859,21 @@ def id_cell(result: Result, detail: RowDetail) -> str:
     return f'<td class="site-col-id" data-value="{_esc(result.id)}">{detail.trigger}</td>'
 
 
+#: The most characters a result's list of cases may have and stay on one line, half the
+#: `--site-cases-measure` of `site.css`: a cell wraps from five values, and also when a
+#: shorter list is longer than this, since on one line it would hold the column wider
+#: than the half measure it narrows to before the table scrolls. T-075's four values, two
+#: counts and two ranges, are 20 characters, and on one line ran the table of results 26
+#: pixels past its frame at 1024.
+CASES_ONE_LINE = 12
+
+
+def case_cell_class(result: Result) -> str:
+    """The n cell's classes: `site-n-wraps` where its list wraps in the measure."""
+    long = len(result.scope.split(", ")) >= 5 or len(result.scope) > CASES_ONE_LINE
+    return "num site-col-n site-n-wraps" if long else "num site-col-n"
+
+
 def case_list(result: Result) -> str:
     """A result's cases as its n cell sets them: the register's counts and ranges
     (`Result.scope`: `68, 102`, then `130` to `132` as a range with an en dash), each
@@ -897,7 +929,8 @@ def result_cells(result: Result, overview: Overview, detail: RowDetail) -> str:
     standing = f'<span class="site-standing">{status_marks(result)}</span>'
     return (
         f"{id_cell(result, detail)}"
-        f'<td class="num site-col-n" data-value="{result.first_n}">{case_list(result)}</td>'
+        f'<td class="{case_cell_class(result)}" data-value="{result.first_n}">'
+        f"{case_list(result)}</td>"
         f'<td class="site-col-result">{result_text(result)}'
         f"{new_result_star(result, overview)}"
         f'<div class="site-records">{_records(result)}</div></td>'
@@ -1376,9 +1409,10 @@ def paper_cards() -> str:
 #: the optimality paper's and the tutorial's keep a shorter line here. The optimality
 #: paper is first, as on the Papers page: it explains the result that stands. Every
 #: address is a full page the site serves, the paper's a directory below the root, so
-#: its card links straight to it. The Frontier page's card stood here until 2026-10-02
-#: and is The Frontier Survey's own (`SURVEY_CARDS`), as the Results page's pointer is
-#: Recent Results' own.
+#: its card links straight to it. The Frontier page's card is last: it stood in The
+#: Frontier Survey section, beside a card to the recent cases, until the owner dropped
+#: that section on 2026-10-02 and moved the card to every case up here (`think-ec5k`).
+#: The Results page is reached from Recent Results, whose pointer is its own.
 PAGES: tuple[tuple[str, str, str, str], ...] = (
     (
         OPTIMALITY.href,
@@ -1402,45 +1436,19 @@ PAGES: tuple[tuple[str, str, str, str], ...] = (
         "Pack squares by hand",
         "Move squares yourself and watch the known packings.",
     ),
-)
-
-
-def page_cards() -> str:
-    """One card per page of `PAGES`. Each card is the link itself and goes to its page
-    in the same tab: the target is a full page the site serves, so no popover previews
-    it (`link_card`, `new_tab=False`)."""
-    return _page_cards(PAGES, "pages")
-
-
-#: The Frontier Survey section's way onward: the Frontier page, every case, and the same
-#: page narrowed to the cases whose verified lower bound is recent, the ones the atlas
-#: stars, through the query its table script presets a filter from (`recent=true`,
-#: `overview/table.js`). The section's one paragraph says what the survey is; the counts
-#: and the rest of its account are the Frontier page's own prose.
-SURVEY_CARDS: tuple[tuple[str, str, str, str], ...] = (
     (
         "frontier.html",
         "Frontier survey",
         "Every case from n = 1 to 324",
         "Reported and verified bounds side by side, with their sources.",
     ),
-    (
-        "frontier.html?recent=true",
-        "Frontier survey",
-        "The recent cases",
-        "Every case whose verified lower bound was proved since this project began.",
-    ),
 )
 
 
-def survey_cards() -> str:
-    """The Frontier Survey section's two cards, each the link to its view of the
-    Frontier page in the same tab (`SURVEY_CARDS`)."""
-    return _page_cards(SURVEY_CARDS, "survey")
-
-
-def _page_cards(cards: tuple[tuple[str, str, str, str], ...], section: str) -> str:
-    """A section of direct cards to pages of the site, at the section's declared size."""
+def page_cards() -> str:
+    """One card per page of `PAGES`, at the section's declared size. Each card is the
+    link itself and goes to its page in the same tab: the target is a full page the site
+    serves, so no popover previews it (`link_card`, `new_tab=False`)."""
     return _cards(
         [
             link_card(
@@ -1448,11 +1456,12 @@ def _page_cards(cards: tuple[tuple[str, str, str, str], ...], section: str) -> s
                 label,
                 tex_bounds(title),
                 tex_bounds(note),
-                size=SECTION_CARD_SIZES[section],
+                size=SECTION_CARD_SIZES["pages"],
                 new_tab=False,
             )
-            for href, label, title, note in cards
-        ]
+            for href, label, title, note in PAGES
+        ],
+        "pages",
     )
 
 
@@ -1483,6 +1492,11 @@ OTHER_PROJECTS: tuple[tuple[str, str, str], ...] = (
         "https://github.com/evand/square-packing",
         "Evan Daniel",
         "Exact weighted certificates and zero-margin closed covers, closing n = 21, 32 and 45.",
+    ),
+    (
+        "https://github.com/squarepacker/s12-lower-bound",
+        "Ryu Sungjoon",
+        "Evan Daniel's s(12) certificate rescaled by 7902/7901, a bound for twelve squares.",
     ),
     (
         "https://github.com/wand125/square-packing-bounds",

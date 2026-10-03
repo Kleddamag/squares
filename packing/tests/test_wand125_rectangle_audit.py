@@ -18,7 +18,9 @@ from devtools.audit_wand125_rectangles import (
     CASES,
     CASES_2026_09_28,
     CASES_2026_10_01,
+    CASES_2026_10_02,
     OCTOBER_1,
+    OCTOBER_2,
     PACKETS,
     REPO,
     SEPTEMBER_27,
@@ -60,6 +62,9 @@ ISSUE_281 = (
 )
 #: One of the smallest interval inputs among the certificates new at 1a25a5e.
 SMALL_2026_10_01 = 20
+#: The standing certificates b00fc70 raised; no count is new. The import registers the
+#: three at n = 20, 42 and 70; the other four are below bounds held separately.
+RAISED_2026_10_02 = (20, 42, 59, 70, 77, 91, 93)
 
 
 def _payload(n: int, frontier: Path = FRONTIER) -> dict:
@@ -77,6 +82,7 @@ def _value(field: dict) -> Fraction:
         ("2026-09-27", 1367, 184, None),
         ("2026-09-28", 2295, 153, 55),
         ("2026-10-01", 2897, 149, 71),
+        ("2026-10-02", 3167, 29, 191),
     ],
 )
 def test_retained_subset_matches_the_pinned_tree(
@@ -107,6 +113,45 @@ def test_the_october_pin_only_adds_files_except_three_readmes() -> None:
         Path("point_n21_L5/lean/README.md"),
     }
     assert len(later) - len(earlier) == 602
+
+
+def test_the_october_2_pin_changes_no_rectangle_file() -> None:
+    """b00fc70 adds directories, withdraws one mixed certificate and re-hashes others."""
+    earlier = read_tree_manifest(OCTOBER_1.tree_manifest)
+    later = read_tree_manifest(OCTOBER_2.tree_manifest)
+    changed = {path for path, digest in earlier.items() if later.get(path, digest) != digest}
+    removed = {path for path in earlier if path not in later}
+    assert len(later) - len(earlier) == 286 - len(removed)
+    assert {path.parts[1] for path in removed} == {"mixed_n50_L7318"}
+    assert len(changed) == 29
+    assert Path("README.md") in changed
+    assert not [path for path in changed if path.parts[1:2] and path.parts[1][:5] == "rect_"]
+    new = [path for path in later if path not in earlier and path.parts[0] == "certificates"]
+    added = {path.parts[1] for path in new if path.parts[1][:5] == "rect_"}
+    raised = {CASES_2026_10_02[n][0] for n in RAISED_2026_10_02}
+    assert added == raised | {"rect_n93_L973"}
+
+
+def test_the_october_2_pin_reads_unchanged_certificates_from_three_packets() -> None:
+    changed = {n for n, case in CASES_2026_10_02.items() if CASES_2026_10_01[n] != case}
+    assert changed == set(RAISED_2026_10_02)
+    assert set(CASES_2026_10_02) == set(CASES_2026_10_01)
+    for n, (name, side) in CASES_2026_10_02.items():
+        assert side >= CASES_2026_10_01[n][1]
+        holder = OCTOBER_2.holder(Path("certificates") / name / "verified_angles.jsonl")
+        expected = (
+            OCTOBER_2
+            if n in changed
+            else OCTOBER_1.holder(Path("certificates") / name / "verified_angles.jsonl")
+        )
+        assert holder is expected
+    provenance = source_provenance(OCTOBER_2, OCTOBER_2.source)
+    assert provenance["referenced_path"] == str(OCTOBER_1.source.relative_to(REPO))
+    assert provenance["files_referenced_by_packet"] == {
+        str(SEPTEMBER_27.source.relative_to(REPO)): 4 * 4 + 7,
+        str(SEPTEMBER_28.source.relative_to(REPO)): 4 * 11,
+        str(OCTOBER_1.source.relative_to(REPO)): 4 * 31,
+    }
 
 
 def test_no_rectangle_directory_at_the_october_pin_carries_an_archive() -> None:
@@ -566,6 +611,23 @@ STRONGER_REPORTS = {
         90: Fraction(48, 5),
         92: Fraction(969, 100),
     },
+    # The same, with wand125's n76 mixed certificate, and the mixed certificates of the
+    # packet's own revision at n91 and n92, which carries to n93.
+    "2026-10-02": {
+        37: Fraction(161, 25),
+        59: Fraction(8),
+        60: Fraction(8),
+        61: Fraction(8),
+        65: Fraction(167, 20),
+        66: Fraction(421, 50),
+        76: Fraction(447, 50),
+        77: Fraction(9),
+        78: Fraction(9),
+        90: Fraction(48, 5),
+        91: Fraction(97, 10),
+        92: Fraction(39, 4),
+        93: Fraction(39, 4),
+    },
 }
 
 
@@ -684,6 +746,43 @@ def test_the_october_report_entry_says_what_the_packet_holds() -> None:
     assert "between 1.00004 and 1.04329" in text
 
 
+def test_the_october_2_report_entry_says_what_the_packet_holds() -> None:
+    """Every figure the entry's prose states, against the table and the receipt."""
+    october = apply.BY_DATE["2026-10-02"]
+    assert october.packet is OCTOBER_2
+    text = " ".join(october.entries[october.report].split())
+    sides = (
+        ", ".join(f"{CASES_2026_10_02[n][1]} at n{n}" for n in RAISED_2026_10_02[:-1])
+        + f" and {CASES_2026_10_02[93][1]} at n93"
+    )
+    assert f"The seven sides are {sides};" in text
+    assert "The 46 standing certificates the revision left unchanged" in text
+    record = json.loads(
+        read_retained_text(OCTOBER_2.directory / "receipts/preflight/audit.json")
+    )
+    masses = {case["n"]: Fraction(case["mass_exact"]) for case in record["cases"]}
+    assert all(masses[n] == n - Fraction(1, 100) for n in RAISED_2026_10_02)
+    factors = [
+        Fraction(
+            tokoharu.load_json(
+                OCTOBER_2.source
+                / "certificates"
+                / CASES_2026_10_02[n][0]
+                / "certified_candidate.json"
+            )["scaling_experiment"]["factor_exact"]
+        )
+        for n in RAISED_2026_10_02
+    ]
+    assert Fraction("1.00009") < min(factors)
+    assert max(factors) < Fraction("1.03993")
+    assert "between 1.00009 and 1.03993" in text
+    monotone = monotone_bounds({n: side for n, (_name, side) in CASES_2026_10_02.items()})
+    earlier = monotone_bounds({n: side for n, (_name, side) in CASES_2026_10_01.items()})
+    moved = {n for n in monotone if monotone[n] != earlier[n] and monotone[n][1] != n}
+    assert moved == {92}
+    assert monotone[92] == (Fraction(3859, 400), 91)
+
+
 def _paragraphs(path: Path) -> tuple[str, list[str]]:
     _, front, body = path.read_text(encoding="utf-8").split("---\n", 2)
     title, _, rest = body.partition("\n\n")
@@ -704,7 +803,7 @@ def _foreign(registration: apply.Registration, n: int) -> str:
 
 
 def _direct_plan(frontier: Path) -> apply.Plan:
-    newest = apply.REGISTRATIONS[-1]
+    newest = apply.registered(frontier)
     return next(
         plan
         for plan in apply.plans(newest, frontier)
@@ -724,7 +823,7 @@ def test_an_intake_is_written_beside_another_sources_paragraph_of_its_date(
     """
     frontier = tmp_path / "frontier"
     shutil.copytree(FRONTIER, frontier)
-    newest = apply.REGISTRATIONS[-1]
+    newest = apply.registered(frontier)
     plan = _direct_plan(frontier)
     path = frontier / f"n-{plan.n:03d}.md"
     head, parts = _paragraphs(path)
@@ -752,7 +851,7 @@ def test_an_intake_is_rewritten_in_place_below_a_foreign_one(tmp_path: Path) -> 
     """
     frontier = tmp_path / "frontier"
     shutil.copytree(FRONTIER, frontier)
-    newest = apply.REGISTRATIONS[-1]
+    newest = apply.registered(frontier)
     plan = _direct_plan(frontier)
     path = frontier / f"n-{plan.n:03d}.md"
     head, parts = _paragraphs(path)
@@ -823,10 +922,10 @@ def test_an_earlier_dated_paragraph_of_another_source_is_never_retired(tmp_path:
     """Only the registrations' own earlier paragraphs have their claims put in the past."""
     frontier = tmp_path / "frontier"
     shutil.copytree(FRONTIER, frontier)
-    newest = apply.REGISTRATIONS[-1]
+    newest = apply.registered(frontier)
     plan = _direct_plan(frontier)
     path = frontier / f"n-{plan.n:03d}.md"
-    earlier = apply.REGISTRATIONS[-2]
+    earlier = apply.REGISTRATIONS[apply.REGISTRATIONS.index(newest) - 1]
     foreign = (
         f"{earlier.intake} Another source reports `s({plan.n}) >= 1/1 = 1`, with total "
         "mass `1/2 = 0.5 < 1`, by its own checker."

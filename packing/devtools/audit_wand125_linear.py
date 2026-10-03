@@ -8,16 +8,20 @@ every closed core of side ``9977/10000`` at each of 201 net half-angles of step
 ``83/40000`` has measure at least 1. They are
 
 - ``certificates/mixed_n101_L1028`` (at ``af1db07``, unchanged at ``0c35d90``):
-  ``s(101) >= 257/25`` from 333 point, 897 segment and 4 rectangle orbits; and
+  ``s(101) >= 257/25`` from 333 point, 897 segment and 4 rectangle orbits;
 - ``certificates/mixed_n83_L935`` (at ``0c35d90``): ``s(83) >= 187/20`` from 86 point,
-  222 segment and 774 rectangle orbits.
+  222 segment and 774 rectangle orbits; and
+- ``certificates/mixed_n82_L932`` (at ``58f153f``, pinned at ``b00fc70`` in its own
+  packet): ``s(82) >= 233/25`` from 86 point, 222 segment and 774 rectangle orbits.
 
-Both are decided by ``code/unified_linear_verify.cpp`` (SHA-256 ``0249726a...``) through
-its Python driver, which re-exports each angle's input from the candidate and requires the
-checker to return the stored record. The checker is byte for byte the one in the
-``mixed_n50_L735`` bundle the 2026-09-28 packet pins. The 2026-10-02 linear packet retains
-the seven files of ``code/`` that no other packet holds; the other six are the retained
-``mixed_n50_L740/code/`` copies. `LINEAR` names each certificate with its statement.
+All three are decided by ``code/unified_linear_verify.cpp`` (SHA-256 ``0249726a...``)
+through its Python driver, which re-exports each angle's input from the candidate and
+requires the checker to return the stored record. The checker is byte for byte the one in
+the ``mixed_n50_L735`` bundle the 2026-09-28 packet pins, and every file of each
+directory's ``code/`` is byte for byte the same. The 2026-10-02 linear packet retains the
+seven files of ``code/`` that no other packet holds; the other six are the retained
+``mixed_n50_L740/code/`` copies. `LINEAR` names each certificate with its packet and
+statement.
 
 ``linear-audit`` recomputes from the packet's retained bytes, importing no source code,
 every premise that is plain arithmetic: the pinned digests, the schema, the stated count,
@@ -43,8 +47,8 @@ witness centre, the original accepted and both refused.
 
 Usage, from ``packing/`` with the project interpreter::
 
-    .venv/bin/python3 -m devtools.audit_wand125_linear linear-audit [--check] \\
-        [--tarball TARBALL ...]
+    .venv/bin/python3 -m devtools.audit_wand125_linear linear-audit [--packet PACKET] \\
+        [--check] [--tarball TARBALL ...]
     .venv/bin/python3 -m devtools.audit_wand125_linear linear-fetch n101 --work W --out F
     .venv/bin/python3 -m devtools.audit_wand125_linear linear-replay n101 \\
         --range 0-100 --work W --workers 4 [--stop-after-hours H] [--via auto|url|git]
@@ -88,6 +92,8 @@ from devtools.retained_data import read_retained_bytes
 
 LINEAR_REVISION = "0c35d909764997ead04dfd90081c9fe9af8d07f2"
 LINEAR_PACKET = mixed.WEB / "wand125-linear-certificates-2026-10-02"
+N82_REVISION = "b00fc70f1904e9b1b567afee056d347f911209e8"
+N82_PACKET = mixed.WEB / "wand125-linear-n82-2026-10-02"
 LINEAR_SCHEMA = "point_line_rectangle_v1"
 #: ``unified_linear_verify.cpp``, the checker every linear certificate names.
 LINEAR_CHECKER_SHA256 = "0249726ab1e67dc481e0c53f43b524902a48f95d051b1b08865a3cf3ef89a06d"
@@ -141,10 +147,13 @@ class LinearCertificate(mixed.MixedCertificate):
     segments: int
 
 
-#: Each row is n, the side as the directory names it, the side, and the point, segment and
-#: rectangle orbit counts and candidate digest the source states.
-_LINEAR_ROWS: tuple[tuple[int, str, Fraction, int, int, int, str], ...] = (
+#: Each row is the packet, the pinned revision, n, the side as the directory names it, the
+#: side, and the point, segment and rectangle orbit counts and candidate digest the source
+#: states.
+_LINEAR_ROWS: tuple[tuple[Path, str, int, str, Fraction, int, int, int, str], ...] = (
     (
+        LINEAR_PACKET,
+        LINEAR_REVISION,
         101,
         "10.28",
         Fraction(257, 25),
@@ -154,6 +163,8 @@ _LINEAR_ROWS: tuple[tuple[int, str, Fraction, int, int, int, str], ...] = (
         "933aa46895a8cdfda1e3d0017b394a4de5d585d507a65472b2c4fe0165d0f79b",
     ),
     (
+        LINEAR_PACKET,
+        LINEAR_REVISION,
         83,
         "9.35",
         Fraction(187, 20),
@@ -162,12 +173,23 @@ _LINEAR_ROWS: tuple[tuple[int, str, Fraction, int, int, int, str], ...] = (
         774,
         "159f4c9ec8342d70d3bbf509c21edd95e9d344f3d25b8f2250e8d558cc76d0b5",
     ),
+    (
+        N82_PACKET,
+        N82_REVISION,
+        82,
+        "9.32",
+        Fraction(233, 25),
+        86,
+        222,
+        774,
+        "5ddb7ed328ca3250e8d0ffaab577a68acd8a2debfa600a43500e05e5ee019606",
+    ),
 )
 LINEAR: dict[str, LinearCertificate] = {
     f"n{n}": LinearCertificate(
         name=f"n{n}",
-        packet=LINEAR_PACKET,
-        revision=LINEAR_REVISION,
+        packet=packet,
+        revision=revision,
         directory=Path(f"certificates/mixed_n{n}_L{label.replace('.', '')}"),
         n=n,
         side=side,
@@ -177,7 +199,7 @@ LINEAR: dict[str, LinearCertificate] = {
         points=points,
         segments=segments,
     )
-    for n, label, side, points, segments, rectangles, digest in _LINEAR_ROWS
+    for packet, revision, n, label, side, points, segments, rectangles, digest in _LINEAR_ROWS
 }
 
 
@@ -474,7 +496,7 @@ def linear_certificate(
         and Fraction(audit["L"]) == side
         and Fraction(audit["total_mass"]) == total
         and audit["all_angles"] == LAST + 1
-        and audit["bundle"] == certificate.bundle
+        and audit["bundle"] in (certificate.bundle, certificate.tarball)
         and audit["verifier_source_sha256"] == LINEAR_CHECKER_SHA256,
         "the source's audit states another measure",
     )
@@ -484,7 +506,13 @@ def linear_certificate(
     )
     _require(audit["archive_sha256"] == archive, "the source's audit binds another tarball")
     _require(archive in files["README.md"].decode(), "the README states another tarball")
-    compared = Fraction(audit["compared_with"])
+    # The n = 82 audit compares with the upper end of its own enclosure of Green's value.
+    field = "green_upper" if "green_upper" in audit else "compared_with"
+    compared = Fraction(audit[field])
+    _require(
+        field == "compared_with" or Fraction(audit["green_interval"][1]) == compared,
+        "the source's Green upper bound is not its interval's upper end",
+    )
     improvement = Fraction(audit["improvement_lower"])
     _require(improvement == side - compared > 0, "the source's improvement is not L - value")
     return {
@@ -514,6 +542,7 @@ def linear_certificate(
             "status": audit["status"],
             "certificate_sha256_matches": True,
             "archive_sha256_matches": True,
+            **({} if field == "compared_with" else {"compared_field": field}),
             "compared_with": str(compared),
             "compared_note": audit.get("compared_note"),
             "improvement_lower": str(improvement),
@@ -1001,7 +1030,9 @@ PRICE_SAMPLES: tuple[tuple[str, int, float, float], ...] = (
 )
 
 #: The source's own seconds for each complete run, summed over its bundle's 201 records.
-UPSTREAM_SECONDS = {"n101": 31303.5, "n83": 75685.9}
+#: n = 82's run was resumed and finished on other machines (its ``completion-audit.json``),
+#: and has no sampled angle here.
+UPSTREAM_SECONDS = {"n101": 31303.5, "n83": 75685.9, "n82": 118941.6}
 
 
 def linear_costs(certificate: LinearCertificate) -> list[float]:
@@ -1425,16 +1456,18 @@ def linear_control(
 # --------------------------------------------------------------------------- command line
 
 
-def linear_audit_supplements(tarballs: Iterable[Path] = ()) -> dict[str, Any]:
+def linear_audit_supplements(
+    tarballs: Iterable[Path] = (), packet: Path = LINEAR_PACKET
+) -> dict[str, Any]:
     """Tarballs checked against the pin and replay receipts merged, out of the receipt."""
-    chosen = {c.tarball: c for c in LINEAR.values()}
+    chosen = {c.tarball: c for c in LINEAR.values() if c.packet == packet}
     checked: dict[str, Any] = {}
     for path in tarballs:
         certificate = chosen.get(path.name)
         if certificate is None:
-            raise ValueError(f"{path.name} is not a tarball {LINEAR_PACKET.name} pins")
+            raise ValueError(f"{path.name} is not a tarball {packet.name} pins")
         checked[certificate.name] = mixed.check_tarball(certificate, path)
-    replays = {c.name: mixed.replay_receipts(c) for c in LINEAR.values()}
+    replays = {c.name: mixed.replay_receipts(c) for c in chosen.values()}
     return {
         "tarballs": checked,
         "replays": {name: state for name, state in replays.items() if state is not None},
@@ -1447,8 +1480,12 @@ def _parser() -> argparse.ArgumentParser:
     names = sorted(LINEAR, key=lambda name: int(name[1:]))
     auditing = commands.add_parser("linear-audit", help="exact premises of the linear certs")
     auditing.add_argument(
-        "--out", type=Path, default=LINEAR_PACKET / "receipts/linear-audit.json"
+        "--packet",
+        default=LINEAR_PACKET.name,
+        choices=sorted({c.packet.name for c in LINEAR.values()}),
+        help="the packet's directory name under resources/web/",
     )
+    auditing.add_argument("--out", type=Path, help="default: PACKET/receipts/linear-audit.json")
     auditing.add_argument(
         "--check", action="store_true", help="compare with --out, write nothing"
     )
@@ -1491,8 +1528,10 @@ def _parser() -> argparse.ArgumentParser:
 def main() -> int:
     args = _parser().parse_args()
     if args.command == "linear-audit":
-        status = mixed.write_or_check(args.out, linear_audit(), check=args.check)
-        print(json.dumps(linear_audit_supplements(args.tarball), indent=2))
+        packet = mixed.WEB / args.packet
+        out = args.out or packet / "receipts/linear-audit.json"
+        status = mixed.write_or_check(out, linear_audit(packet), check=args.check)
+        print(json.dumps(linear_audit_supplements(args.tarball, packet), indent=2))
         return status
     if args.command == "linear-price":
         print(json.dumps(linear_price(), indent=2))

@@ -634,12 +634,13 @@ RECORDED: dict[int, tuple[tuple[str, str, str] | None, tuple[str, str, str] | No
     ),
     # A parallel packing certified here: the finder's line, confirmed by the register
     # entry whose replay it is (T-056), where the UnitSquare release stood until then.
-    # Below it, wand125's rectangle bound replayed as T-070, which took the case from the
-    # point bound of T-044 on 2026-10-02.
+    # Below it, wand125's rectangle bound of 1 October replayed as T-074, which took the
+    # case on 2026-10-02 from its 28 September certificate (T-070), itself raised that day
+    # from the point bound of T-044.
     68: (
         ("Couzo 2026, GitHub (confirmed T-056)", "external", "verified"),
         (
-            "wand125 after Tokoharu, Levy et al. 2026, GitHub (confirmed T-070)",
+            "wand125 after Tokoharu, Levy et al. 2026, GitHub (confirmed T-074)",
             "external",
             "verified",
         ),
@@ -680,9 +681,10 @@ def test_the_recorded_register_gives_these_lines(n: int) -> None:
         (11, "Queuingtheorydotcom after Levy et al.", "Web", "T-060"),
         (17, "Guzhou0806 after Kleddamag et al.", "GitHub", "T-043"),
         # Tokoharu's T-047 held n = 26 and 29 until 2026-10-02, when wand125's merged
-        # rectangle replays raised both: n = 26 under T-045 and n = 29 under T-070.
-        (26, "wand125 after Tokoharu, Levy et al.", "GitHub", "T-045"),
-        (29, "wand125 after Tokoharu, Levy et al.", "GitHub", "T-070"),
+        # rectangle replays raised both, n = 26 under T-045 and n = 29 under T-070, and
+        # the replays of its 1 October certificates raised both again later that day.
+        (26, "wand125 after Tokoharu, Levy et al.", "GitHub", "T-074"),
+        (29, "wand125 after Tokoharu, Levy et al.", "GitHub", "T-074"),
     ],
 )
 def test_promoted_external_bounds_keep_the_sources_credit(
@@ -904,7 +906,8 @@ def test_the_star_marks_recent_results_whoever_proved_them() -> None:
     assert lines[11]["recent"]
     assert lines[11]["text"] == "Queuingtheorydotcom after Levy et al. 2026, Web"
     assert lines[12]["recent"]
-    assert lines[12]["text"].startswith("Daniel after Burns")
+    # squarepacker's rescaling of Daniel's certificate since 3 October 2026 (T-078).
+    assert lines[12]["text"] == "squarepacker after Daniel 2026, GitHub"
     assert lines[18]["recent"]
     assert lines[18]["text"] == "wand125 after Tokoharu, Levy et al. 2026, GitHub"
     assert all(line["recent"] for line in lines.values() if line and line["basis"] == "project")

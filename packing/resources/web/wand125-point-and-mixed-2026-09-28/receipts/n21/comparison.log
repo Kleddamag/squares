@@ -1,0 +1,158 @@
+# command: .venv/bin/python3 -m devtools.audit_wand125_point_and_mixed n21-compare /tmp/claude-0/-home-user-squares/4ea49914-96b4-51a9-a2a9-c5603fe593f4/scratchpad/laneS/n21out --m1-linkage /tmp/claude-0/-home-user-squares/4ea49914-96b4-51a9-a2a9-c5603fe593f4/scratchpad/laneS/m1-full-linkage.json.gz --collect resources/web/wand125-point-and-mixed-2026-09-28/receipts/n21 --out resources/web/wand125-point-and-mixed-2026-09-28/receipts/n21/comparison.json
+# cwd: packing/ of the repository; OUT holds the transfer branch's copy of the run's output records
+# python3: the project interpreter, CPython 3.14.7 (.venv/bin/python3)
+# host: 4 cores; load 5.32 4.60 3.26; started 2026-10-02T16:47:20Z
+{
+  "status": "MATCHES_SOURCE_M1_RECORD",
+  "agreement": {
+    "status": true,
+    "candidate_sha256": true,
+    "root_count": true,
+    "sieve_count": true,
+    "frontier_count": true,
+    "excluded_count": true,
+    "threshold": true,
+    "mass": true,
+    "strict_gap": true,
+    "independent_external_review": true,
+    "formal_verification": true,
+    "all_stages_exit_zero": true
+  },
+  "outputs_against_m1": {
+    "outputs_here": 45446,
+    "outputs_m1": 45446,
+    "identical": 45436,
+    "differing": 10,
+    "differing_names": [
+      "inputs.json",
+      "portable-reads.json",
+      "progress.json",
+      "result.json"
+    ],
+    "differing_examples": [
+      "frontier-s0/result.json",
+      "frontier-s1/result.json",
+      "root/inputs.json",
+      "root/portable-reads.json",
+      "root/progress.json",
+      "root/result.json",
+      "sieve/inputs.json",
+      "sieve/portable-reads.json",
+      "sieve/progress.json",
+      "sieve/result.json"
+    ],
+    "only_here": [],
+    "only_m1": []
+  },
+  "replay": {
+    "status": "FRESH_ALL_DOMAIN_REPLAY_VERIFIED",
+    "candidate_sha256": "84a7dae793f05ff72de52ddcd3058e8518c1f84c461f94d11305adefe6137679",
+    "root_count": 5000,
+    "sieve_count": 8758,
+    "frontier_count": 31678,
+    "excluded_count": 7052,
+    "threshold": "249987/250000",
+    "mass": "2624862500021/125000000000",
+    "strict_gap": "999979/125000000000",
+    "independent_external_review": false,
+    "formal_verification": false,
+    "seconds": 13772.729971290002,
+    "workers": 2,
+    "python": "3.14.7 (main, Sep 24 2026, 17:58:18) [Clang 22.1.3 ]",
+    "platform": "Linux-6.18.44-fc-v37-x86_64-with-glibc2.39",
+    "bindings": {
+      "/tmp/claude-0/-home-user-squares/b85b7ecf-955c-5223-9481-e5200885a948/scratchpad/lane3/src/point_n21_L5/verify_portable.py": "2cea95ceac939fee8926eee413e1cfc049af25e98efb1dc8660b44cf14b6ed92",
+      "/tmp/claude-0/-home-user-squares/b85b7ecf-955c-5223-9481-e5200885a948/scratchpad/lane3/src/point_n21_L5/assemble_portable.py": "88888adc784f120edced532bb6c98b9ba33c66792d13ecc064e29e870ca4237e",
+      "/tmp/claude-0/-home-user-squares/b85b7ecf-955c-5223-9481-e5200885a948/scratchpad/lane3/src/point_n21_L5/bundle/portable_replay.py": "e8f170a04716e10dd0efdc2898be217f04a03bc4197600ce671739d4736b5dd1",
+      "/tmp/claude-0/-home-user-squares/b85b7ecf-955c-5223-9481-e5200885a948/scratchpad/lane3/src/point_n21_L5/bundle/portable-manifest.json": "bb2883c5d05e3073011267f95cccd3301c2f97dd4c1e1d64fc4c6e46c8ec9c6c"
+    },
+    "stages": [
+      {
+        "stage": "frontier",
+        "shard": 0,
+        "exit_code": 0,
+        "seconds": 12626.133432487
+      },
+      {
+        "stage": "frontier",
+        "shard": 1,
+        "exit_code": 0,
+        "seconds": 12575.268026299
+      },
+      {
+        "stage": "root",
+        "shard": null,
+        "exit_code": 0,
+        "seconds": 299.50265143199977
+      },
+      {
+        "stage": "sieve",
+        "shard": null,
+        "exit_code": 0,
+        "seconds": 811.8449462030003
+      }
+    ],
+    "linkage_sha256": "646c4369836c8352ca7726c6bc7515bd54479282ca0512e8cd58c3255dd8330d",
+    "result_sha256": "06c8f3fc7a34efeef93373cae57beee7c0b03cef4ff19994c7ada04f09d3b9f5"
+  },
+  "reference": {
+    "status": "FRESH_ALL_DOMAIN_REPLAY_VERIFIED",
+    "candidate_sha256": "84a7dae793f05ff72de52ddcd3058e8518c1f84c461f94d11305adefe6137679",
+    "root_count": 5000,
+    "sieve_count": 8758,
+    "frontier_count": 31678,
+    "excluded_count": 7052,
+    "threshold": "249987/250000",
+    "mass": "2624862500021/125000000000",
+    "strict_gap": "999979/125000000000",
+    "independent_external_review": false,
+    "formal_verification": false,
+    "seconds": 8577.313336874999,
+    "linkage_sha256": "6efc5fe539db5a37ec1ac0851271cee4c51dc5912d886d059ef253769bf7e0dc",
+    "stages": [
+      {
+        "stage": "root",
+        "shard": null,
+        "exit_code": 0,
+        "seconds": 139.45580649998737
+      },
+      {
+        "stage": "sieve",
+        "shard": null,
+        "exit_code": 0,
+        "seconds": 412.11077858298086
+      },
+      {
+        "stage": "frontier",
+        "shard": 0,
+        "exit_code": 0,
+        "seconds": 7873.12403079198
+      },
+      {
+        "stage": "frontier",
+        "shard": 1,
+        "exit_code": 0,
+        "seconds": 7967.529389625008
+      }
+    ]
+  },
+  "note": "Linkage records embed absolute output paths and per-run output digests, so their SHA-256 differs between runs; the certified quantities are compared.",
+  "stored": [
+    "result.json",
+    "run-inputs.json",
+    "frontier-s0-exit.json",
+    "frontier-s1-exit.json",
+    "root-exit.json",
+    "sieve-exit.json",
+    "frontier-s0.log.gz",
+    "frontier-s1.log.gz",
+    "n21_verify_portable.log",
+    "root.log",
+    "sieve.log"
+  ],
+  "compressed_file_rows": [
+    "| `receipts/n21/frontier-s0.log.gz` | receipt | `fe34f614c5824ff54dafc0b91e61bd8cd5486e9c` | `34950ceae8c6ed75d70ced698106bcbe7f2b487a194fb79927d9a5b582a041d6` |",
+    "| `receipts/n21/frontier-s1.log.gz` | receipt | `2b352fad97f4e4d8aaa7b1382bcc357a6dd88d4e` | `8db8376070249d8c61499a39078cb5111df7437780c0ee0d2592c1bb0880cd0e` |"
+  ]
+}
+# finished 2026-10-02T16:47:21Z; exit 0; wall 0.899 s; CPU 0.7 s (user 0.628 + sys 0.121); load 5.32 4.60 3.26

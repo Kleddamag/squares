@@ -890,11 +890,11 @@ Use the structured form to query or plot; use these tables to read.
 
 | `n` | best reported `s(n)` | how | deg | reported lower bound | from | gap |
 | --- | --- | --- | --- | --- | --- | --- |
-| 12 | 4 | grid | — | 3.968615 | counting | 0.0314 |
+| 12 | 4 | grid | — | 3.969117 | counting | 0.0309 |
 | 17 | 4.67553009 | hand | 18 | 4.66044 | counting | 0.0151 |
 | 18 | `(7/2) + (1/2)√7` = 4.82287566 | hand | — | 4.695 | counting | 0.1279 |
 | 19 | `3 + (4/3)√2` = 4.88561808 | hand | — | 4.8175 | counting | 0.0681 |
-| 20 | 5 | grid | — | 4.8975 | counting | 0.1025 |
+| 20 | 5 | grid | — | 4.9 | counting | 0.1 |
 | 26 | `(7/2) + (3/2)√2` = 5.62132034 | extension | — | 5.5325 | counting | 0.0888 |
 | 27 | `5 + (1/2)√2` = 5.70710678 | strip | — | 5.635 | counting | 0.0721 |
 | 28 | 5.82444462 | annealing | 6 | 5.7225 | counting | 0.1019 |
@@ -906,7 +906,7 @@ Use the structured form to query or plot; use these tables to read.
 | 39 | 6.81072208 | annealing | 5 | 6.635 | counting | 0.1757 |
 | 40 | `4 + 2 √2` = 6.82842712 | hand | — | 6.7 | counting | 0.1284 |
 | 41 | 6.92669309 | annealing | 42 | 6.76 | counting | 0.1667 |
-| 42 | 7 | grid | — | 6.815 | counting | 0.185 |
+| 42 | 7 | grid | — | 6.8275 | counting | 0.1725 |
 | 43 | 7 | grid | — | 6.8875 | counting | 0.1125 |
 | 44 | 7 | grid | — | 6.9425 | counting | 0.0575 |
 | 50 | `7 + (4/7)` = 7.57142857 | annealing | — | 7.4 | counting | 0.1714 |
@@ -923,28 +923,28 @@ Use the structured form to query or plot; use these tables to read.
 | 67 | `8 + (1/2)√2` = 8.70710678 | strip | — | 8.455 | counting | 0.2521 |
 | 68 | 8.79879524 | — | — | 8.51 | counting | 0.2888 |
 | 69 | 8.82720551 | — | — | 8.585 | counting | 0.2422 |
-| 70 | 8.88166676 | hand | 4 | 8.625 | counting | 0.2567 |
+| 70 | 8.88166676 | hand | 4 | 8.6275 | counting | 0.2542 |
 | 71 | 8.94407156 | annealing | — | 8.685 | counting | 0.2591 |
 | 72 | 9 | grid | — | 8.74 | counting | 0.26 |
 | 73 | 9 | grid | — | 8.78 | counting | 0.22 |
 | 74 | 9 | grid | — | 8.8475 | counting | 0.1525 |
 | 75 | 9 | grid | — | 8.9 | counting | 0.1 |
 | 76 | 9 | grid | — | 8.94 | counting | 0.06 |
-| 82 | `6 + (5/2)√2` = 9.53553391 | hand | — | 9.266734 | unavoidable points | 0.2688 |
-| 83 | 9.63482562 | extension | 24 | 9.35 | counting | 0.2848 |
+| 82 | `6 + (5/2)√2` = 9.53553391 | hand | — | 9.32 | counting | 0.2155 |
+| 83 | 9.63482562 | extension | 24 | 9.37 | counting | 0.2648 |
 | 84 | `9 + (1/2)√2` = 9.70710678 | strip | — | 9.4 | counting | 0.3071 |
-| 85 | `(11/2) + 3 √2` = 9.74264069 | hand | — | 9.42 | counting | 0.3226 |
-| 86 | `(17/2) + (1/2)√7` = 9.82287566 | extension | — | 9.365 | counting | 0.4579 |
-| 87 | 9.83881744 | annealing | 44 | 9.41 | counting | 0.4288 |
-| 88 | 9.88815305 | hand | 20 | 9.4775 | counting | 0.4107 |
+| 85 | `(11/2) + 3 √2` = 9.74264069 | hand | — | 9.46 | counting | 0.2826 |
+| 86 | `(17/2) + (1/2)√7` = 9.82287566 | extension | — | 9.46 | monotone from `s(85)` | 0.3629 |
+| 87 | 9.83881744 | annealing | 44 | 9.48 | counting | 0.3588 |
+| 88 | 9.88815305 | hand | 20 | 9.48 | monotone from `s(87)` | 0.4082 |
 | 89 | `5 + (7/2)√2` = 9.94974747 | hand | — | 9.565 | counting | 0.3847 |
 | 90 | 10 | grid | — | 9.6 | counting | 0.4 |
-| 91 | 10 | grid | — | 9.645 | counting | 0.355 |
-| 92 | 10 | grid | — | 9.69 | counting | 0.31 |
-| 93 | 10 | grid | — | 9.7225 | counting | 0.2775 |
+| 91 | 10 | grid | — | 9.7 | counting | 0.3 |
+| 92 | 10 | grid | — | 9.75 | counting | 0.25 |
+| 93 | 10 | grid | — | 9.75 | monotone from `s(92)` | 0.25 |
 | 94 | 10 | grid | — | 9.805 | counting | 0.195 |
 | 95 | 10 | grid | — | 9.8518 | counting | 0.1482 |
-| 96 | 10 | grid | — | 9.888194 | Nagamochi | 0.1118 |
+| 96 | 10 | grid | — | 9.96 | counting | 0.04 |
 | 101 | `7 + (5/2)√2` = 10.53553391 | extension | — | 10.28 | counting | 0.2555 |
 | 102 | 10.60717468 | — | — | 10.28 | monotone from `s(101)` | 0.3272 |
 | 103 | 10.70351676 | — | — | 10.28 | monotone from `s(101)` | 0.4235 |

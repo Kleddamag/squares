@@ -869,7 +869,6 @@ def overview_page() -> Page:
         "ATLAS_GRID": overview_sections.atlas_grid(),
         "ATLAS_CARDS": overview_sections.atlas_cards(),
         "PAGE_CARDS": overview_sections.page_cards(),
-        "SURVEY_CARDS": overview_sections.survey_cards(),
         "RECENT": overview_sections.recent_table(overview),
         "STAR_LEGEND": overview_sections.star_legend(),
         "ARROW_RIGHT": overview_sections.arrow_icon("right"),

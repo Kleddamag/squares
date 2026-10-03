@@ -201,9 +201,12 @@ def test_superseded_is_marked_on_a_bound_and_on_nothing_else() -> None:
     ]
     # Thirty since 2026-10-02, when wand125's replayed rectangle certificates (T-045,
     # T-070) superseded T-030 at n = 18, T-020 at n = 19, T-021 at n = 20 and T-047 at
-    # n = 26 and 29, the last counts each of them held.
-    assert len(marked) == 30
-    assert {"T-020", "T-021", "T-030", "T-047"} <= set(marked)
+    # n = 26 and 29, the last counts each of them held; thirty-one later that day, when
+    # the 1 October replays (T-074) beat wand125's point certificates (T-044) at the last
+    # of their counts; thirty-two since 3 October, when squarepacker's rescaling (T-078)
+    # superseded Daniel's s(12) >= 15680/3951 (T-049).
+    assert len(marked) == 32
+    assert {"T-020", "T-021", "T-030", "T-044", "T-047", "T-049"} <= set(marked)
     assert {str(records.results[entry]["kind"]) for entry in marked} == {"lower-bound"}
 
 

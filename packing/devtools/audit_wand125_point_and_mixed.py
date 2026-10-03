@@ -13,7 +13,8 @@ in Tokoharu's rectangle format:
 
 Later revisions add more ``certificates/mixed_n*`` directories of the same kind, with the
 same code byte for byte: n = 37, 65, 66, 90 and 92 at ``1a25a5ed``, n = 84 and 85 at
-``52af997``, n = 76 at ``7975030``, and n = 83, 85, 87, 91, 92 and 96 at ``b00fc70``.
+``52af997``, n = 76 at ``7975030``, n = 83, 85, 87, 91, 92 and 96 at ``b00fc70``, and
+22 more at ``2aff207``, n = 51 to 96, five of them at counts already named.
 `MIXED` names each with its packet and the source's statement; a certificate at a count
 an earlier one already names is ``n85-L946``, its count and side. The linear certificates
 of ``af1db07``, ``0c35d90`` and ``b00fc70``, which another checker decides, are
@@ -84,6 +85,7 @@ Usage, from ``packing/`` with the project interpreter::
     .venv/bin/python3 -m devtools.audit_wand125_point_and_mixed mixed-merge n84 [--check]
     .venv/bin/python3 -m devtools.audit_wand125_point_and_mixed mixed-plan n84 --parts 3
     .venv/bin/python3 -m devtools.audit_wand125_point_and_mixed mixed-price
+    .venv/bin/python3 -m devtools.audit_wand125_point_and_mixed mixed-shard PACKET --runners 8
     .venv/bin/python3 -m devtools.audit_wand125_point_and_mixed mixed-compare n84 BUNDLE --out F
     .venv/bin/python3 -m devtools.audit_wand125_point_and_mixed mixed-control n37 --work W
 
@@ -1802,12 +1804,15 @@ H_REVISION = "7975030a192607ef27edd1559aee4e98bd93047b"
 H_PACKET = WEB / "wand125-mixed-bounds-n76-2026-10-02"
 I_REVISION = "b00fc70f1904e9b1b567afee056d347f911209e8"
 I_PACKET = WEB / "wand125-mixed-bounds-afternoon-2026-10-02"
+J_REVISION = "2aff2076c492d62340e986c84f60a0a29eb668df"
+J_PACKET = WEB / "wand125-mixed-bounds-2026-10-03"
 
 
 #: Every mixed certificate this tool audits and replays: n = 50 (T-048), the five of
 #: jlevy/squares#282 (T-069), the two of its comment of 2 October, the n = 76 of its
-#: later comment the same day (pinned at ``7975030``, its own packet), and the six the
-#: source added that afternoon (UTC), pinned together at ``b00fc70``. Each row is the
+#: later comment the same day (pinned at ``7975030``, its own packet), the six the
+#: source added that afternoon (UTC), pinned together at ``b00fc70``, and the 22 it added
+#: on 3 October, pinned together at ``2aff207``. Each row is the
 #: packet, the pinned revision, n, the side as the directory names it, the side, the
 #: rectangle count and the candidate digest, as the source states them.
 _MIXED_ROWS: tuple[tuple[Path, str, int, str, Fraction, int, str], ...] = (
@@ -1937,6 +1942,204 @@ _MIXED_ROWS: tuple[tuple[Path, str, int, str, Fraction, int, str], ...] = (
         Fraction(249, 25),
         279,
         "a0cbba40370f94a0125f323c839c75dcb5b6145c32b1b81e80665fb75f27d561",
+    ),
+    (
+        J_PACKET,
+        J_REVISION,
+        51,
+        "7.46",
+        Fraction(373, 50),
+        446,
+        "503278fd59bd1f04d7563a77cb16d80aec47df36e1a9b79e329c6cbd97334872",
+    ),
+    (
+        J_PACKET,
+        J_REVISION,
+        52,
+        "7.55",
+        Fraction(151, 20),
+        455,
+        "bc1ec3a1934ae09852d588da55b6a11183287000246c2522b2cdbbc72ded684d",
+    ),
+    (
+        J_PACKET,
+        J_REVISION,
+        55,
+        "7.728",
+        Fraction(966, 125),
+        303,
+        "6131cd0a67d3499df1ca62abe1088a1b9d3bc5961b69656fb0f0cedb72a6e605",
+    ),
+    (
+        J_PACKET,
+        J_REVISION,
+        58,
+        "7.905",
+        Fraction(1581, 200),
+        319,
+        "96727aa1681161ab21e0a9677739fd32badc0ddd8933f8c7daf1d6192ba14754",
+    ),
+    (
+        J_PACKET,
+        J_REVISION,
+        69,
+        "8.612",
+        Fraction(2153, 250),
+        556,
+        "9965c638aa6dadaeb5fd08eadd905529c175116ff6c3d1d87447d947f20d1a1e",
+    ),
+    (
+        J_PACKET,
+        J_REVISION,
+        70,
+        "8.6475",
+        Fraction(3459, 400),
+        495,
+        "41af9ea74a3bf12d1971832120fdba2526b899b789068ef706475f38c8312ab2",
+    ),
+    (
+        J_PACKET,
+        J_REVISION,
+        71,
+        "8.705",
+        Fraction(1741, 200),
+        471,
+        "8d8f26610731ec3e553f20d46687339937967b057f4dff725bd4456addabaefa",
+    ),
+    (
+        J_PACKET,
+        J_REVISION,
+        73,
+        "8.809",
+        Fraction(8809, 1000),
+        450,
+        "5684ebfd1f061a11ab9ae84c3568d22586a0acc3df1192df3dd08e2af38144f9",
+    ),
+    (
+        J_PACKET,
+        J_REVISION,
+        74,
+        "8.8675",
+        Fraction(3547, 400),
+        505,
+        "d9b1c057c7e9337e041e96f662aa5c7b63de4124624aa69b70308487e8841d48",
+    ),
+    (
+        J_PACKET,
+        J_REVISION,
+        75,
+        "8.92",
+        Fraction(223, 25),
+        340,
+        "cea59cc4cde834867b66a5c5b64d0affd9718172cee53ae92557c2874fed984e",
+    ),
+    (
+        J_PACKET,
+        J_REVISION,
+        76,
+        "8.96",
+        Fraction(224, 25),
+        341,
+        "c990078499a592dccb6336f69b956077046ca1fde498577f511c8c43f2c78a40",
+    ),
+    (
+        J_PACKET,
+        J_REVISION,
+        86,
+        "9.50",
+        Fraction(19, 2),
+        509,
+        "a042af995541097298a2c6b44970d072a1b7eb7bcbcc41d0e4d8965c3dcb82fa",
+    ),
+    (
+        J_PACKET,
+        J_REVISION,
+        87,
+        "9.55",
+        Fraction(191, 20),
+        509,
+        "f1e27ede3e2b29a87f4da9493d17a2258334a28c01b81ecffd157d2b0eda6b76",
+    ),
+    (
+        J_PACKET,
+        J_REVISION,
+        88,
+        "9.60",
+        Fraction(48, 5),
+        443,
+        "7a0f3594ce03191207646bcc2db5af878c5bbc390641625b7e0837d0d2ebb9ab",
+    ),
+    (
+        J_PACKET,
+        J_REVISION,
+        89,
+        "9.65",
+        Fraction(193, 20),
+        416,
+        "fff74c43cbd5fe435f70b45b157b4d5da9fbd7bb17a11202bad37dab1a42aa77",
+    ),
+    (
+        J_PACKET,
+        J_REVISION,
+        90,
+        "9.725",
+        Fraction(389, 40),
+        571,
+        "a251cc29c19c2a27b3458e2dac67aad8190050317d9f19c7f47099a45b924bd8",
+    ),
+    (
+        J_PACKET,
+        J_REVISION,
+        91,
+        "9.75",
+        Fraction(39, 4),
+        457,
+        "c4c175eb7af4a7964758e89dc33d91bd3e375b35765b6511f4b33c8d8d28ff9d",
+    ),
+    (
+        J_PACKET,
+        J_REVISION,
+        92,
+        "9.77",
+        Fraction(977, 100),
+        345,
+        "d1aafdd22771b24ada660b6f741044a6564a7921aaae95bb8bf5cb8d59bbb4d9",
+    ),
+    (
+        J_PACKET,
+        J_REVISION,
+        93,
+        "9.86",
+        Fraction(493, 50),
+        443,
+        "dd3da64f729a011c79c9e570d53a4986bba80572d1cf42c15fc4b14d3cd0a858",
+    ),
+    (
+        J_PACKET,
+        J_REVISION,
+        94,
+        "9.92",
+        Fraction(248, 25),
+        488,
+        "f974716d36c4a841610e80585b8d4d8ef5c62080a75d7bd770afbfd37f359ff9",
+    ),
+    (
+        J_PACKET,
+        J_REVISION,
+        95,
+        "9.96",
+        Fraction(249, 25),
+        438,
+        "9e3220d8e292b7aa693cadf50b24c998f8a9d348c23afca9bb38e16d359a866e",
+    ),
+    (
+        J_PACKET,
+        J_REVISION,
+        96,
+        "9.97",
+        Fraction(997, 100),
+        376,
+        "5e89a1ae869f6f4a12b2fadfffd7996048e856c1ec5206939fbb8ff9d6cf5b69",
     ),
 )
 
@@ -3142,6 +3345,106 @@ def mixed_plan(certificate: MixedCertificate, parts: int) -> dict[str, Any]:
     }
 
 
+def observed_ratio() -> tuple[float | None, list[dict[str, Any]]]:
+    """Measured replay CPU-hours over `estimated_cpu_hours`, over every merged replay.
+
+    Each certificate whose ``merged.json`` holds a complete replay contributes its own
+    measured CPU-hours, so the ratio is the record's, and moves as replays are merged.
+    """
+    rows = []
+    for name, certificate in sorted(MIXED.items(), key=lambda item: item[1].n):
+        merged = certificate.receipts / "merged.json"
+        if not merged.is_file():
+            continue
+        result = json.loads(merged.read_text())
+        if result.get("status") != "FULL_REPLAY_MATCHES_SHIPPED":
+            continue
+        rows.append(
+            {
+                "certificate": name,
+                "measured_cpu_hours": result["cpu_hours"],
+                "estimated_cpu_hours": round(estimated_cpu_hours(certificate), 2),
+            }
+        )
+    if not rows:
+        return None, rows
+    measured = sum(row["measured_cpu_hours"] for row in rows)
+    estimated = sum(row["estimated_cpu_hours"] for row in rows)
+    return measured / estimated, rows
+
+
+def mixed_shard(
+    packet: Path, runners: int, workers: int = MAX_REPLAY_WORKERS
+) -> dict[str, Any]:
+    """Split every complete replay a packet needs across ``runners`` hosts of equal load.
+
+    Each certificate is priced by `estimated_cpu_hours` scaled by `observed_ratio`; one
+    larger than a quarter of a runner's share is cut by `balanced_ranges` into pieces of
+    about a quarter of that share, and the pieces go, largest first, to the runner with
+    the least load. Each runner's commands run one after another at ``workers`` workers;
+    a certificate is merged once every piece of it has run.
+    """
+    chosen = [c for c in MIXED.values() if c.packet == packet]
+    _require(bool(chosen), f"no mixed certificate is registered for {packet.name}")
+    _require(runners >= 1, "runners must be at least 1")
+    ratio, basis = observed_ratio()
+    scale = ratio if ratio is not None else 1.0
+    hours = {c.name: estimated_cpu_hours(c) * scale for c in chosen}
+    share = sum(hours.values()) / runners
+    pieces: list[tuple[float, str, int, int]] = []
+    for certificate in chosen:
+        costs = direction_costs(certificate)
+        total = sum(costs)
+        parts = max(1, min(len(costs), round(4 * hours[certificate.name] / share)))
+        for first, stop in balanced_ranges(costs, parts):
+            piece = hours[certificate.name] * sum(costs[first:stop]) / total
+            pieces.append((piece, certificate.name, first, stop - 1))
+    loads = [0.0] * runners
+    assigned: list[list[tuple[float, str, int, int]]] = [[] for _ in range(runners)]
+    for piece in sorted(pieces, key=lambda item: (-item[0], item[1], item[2])):
+        target = loads.index(min(loads))
+        assigned[target].append(piece)
+        loads[target] += piece[0]
+    prefix = "uv run --frozen --all-extras --group dev python -m "
+    tool = "devtools.audit_wand125_point_and_mixed"
+    plan = []
+    for index, batch in enumerate(assigned, start=1):
+        batch.sort(key=lambda item: (MIXED[item[1]].n, MIXED[item[1]].side, item[2]))
+        plan.append(
+            {
+                "runner": index,
+                "estimated_cpu_hours": round(loads[index - 1], 2),
+                "estimated_wall_hours": round(loads[index - 1] / workers, 2),
+                "commands": [
+                    f"{prefix}{tool} mixed-replay {name} --range {first}-{last} "
+                    f"--work /tmp/wand125-{name} --workers {workers} --via git"
+                    for _, name, first, last in batch
+                ],
+                "pieces": [
+                    {"certificate": name, "range": [first, last], "cpu_hours": round(cost, 2)}
+                    for cost, name, first, last in batch
+                ],
+            }
+        )
+    return {
+        "packet": packet.name,
+        "runners": runners,
+        "workers_per_runner": workers,
+        "estimated_cpu_hours": round(sum(hours.values()), 1),
+        "unscaled_cpu_hours": round(sum(estimated_cpu_hours(c) for c in chosen), 1),
+        "observed_ratio": None if ratio is None else round(ratio, 3),
+        "ratio_basis": basis,
+        "certificates": {name: round(value, 2) for name, value in hours.items()},
+        "plan": plan,
+        "merges": [f"{prefix}{tool} mixed-merge {c.name}" for c in chosen],
+        "scope": (
+            "An estimate: mixed-price's rate, scaled by the ratio of measured to estimated "
+            "CPU-hours over every replay already merged. Wall hours assume all workers "
+            "stay busy; a rerun of any command replays only what has not passed."
+        ),
+    }
+
+
 def mixed_merge(certificate: MixedCertificate, receipts: Path) -> dict[str, Any]:
     """Merge every range's receipts into the complete replay's verdict, or refuse it.
 
@@ -3515,6 +3818,10 @@ def _add_mixed_commands(commands: Any) -> None:
     planning.add_argument("certificate", choices=names)
     planning.add_argument("--parts", type=int, default=1)
     commands.add_parser("mixed-price", help="estimate every replay's CPU-hours")
+    sharding = commands.add_parser("mixed-shard", help="split a packet's replays by runner")
+    sharding.add_argument("packet", help="the packet's directory name under resources/web/")
+    sharding.add_argument("--runners", type=int, required=True)
+    sharding.add_argument("--workers", type=int, default=MAX_REPLAY_WORKERS)
 
 
 def write_or_check(path: Path, result: dict[str, Any], *, check: bool) -> int:
@@ -3578,6 +3885,9 @@ def _mixed_main(args: argparse.Namespace) -> dict[str, Any] | int:
 def _run_mixed(args: argparse.Namespace) -> int:
     if args.command == "mixed-price":
         print(json.dumps(mixed_price(), indent=2))
+        return 0
+    if args.command == "mixed-shard":
+        print(json.dumps(mixed_shard(WEB / args.packet, args.runners, args.workers), indent=2))
         return 0
     outcome = _mixed_main(args)
     if isinstance(outcome, int):

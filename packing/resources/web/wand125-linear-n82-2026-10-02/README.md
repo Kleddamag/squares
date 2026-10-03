@@ -21,9 +21,10 @@ the [six mixed certificates](../wand125-mixed-bounds-afternoon-2026-10-02/README
 the [rectangle packet](../wand125-rectangle-certificates-2026-10-02/README.md) of the same
 revision. Its proposed Frontier key is **[wand125 linear n82 2026-10-02]**. The claim
 below is stated as the source states it.
-It was not replayed here. What was checked is SHA-256 digests, Git blob ids, the exact
-premises the audit below recomputes from the retained bytes, and every check the replay
-makes before its first angle, run on the pinned tarball.
+It was replayed here in full on 3 October 2026, every direction returning the
+certificate’s record. Before that, what was checked is SHA-256 digests, Git blob ids,
+the exact premises the audit below recomputes from the retained bytes, and every check the
+replay makes before its first angle, run on the pinned tarball.
 
 ## Source and Pin
 
@@ -172,7 +173,8 @@ The bundle records the source’s own run as 118,941.6 seconds.
 
 ## Replaying the Certificate
 
-It has not been replayed here. The source’s check is `code/replay_linear_bundle.py`,
+It has been replayed here in full; see the next section. The source’s check is
+`code/replay_linear_bundle.py`,
 run on the unpacked bundle beside `code/`. `devtools.audit_wand125_linear` runs the same
 check split by net angle, as for the other linear certificates:
 
@@ -199,6 +201,26 @@ merged across machines, so its seconds are not one host’s, and `linear-price` 
 without an estimate. `linear-plan n82 --parts 6` gives six ranges of equal node count, 0–51,
 52–90, 91–123, 124–152, 153–178 and 179–200, each about 4 CPU-hours here.
 
+## The Complete Replay, 3 October 2026
+
+The six ranges of `linear-plan n82 --parts 6` ran on 3 October 2026, one `linear-replay`
+run of four workers each, on two runners of shared 4-core x86-64 Linux containers (Intel
+Xeon at 2.1 or 2.8 GHz, `c++` 13.3.0, Python 3.14.7, one BLAS and OpenMP thread,
+`PYTHONOPTIMIZE` unset), each bound to the pinned tarball. `linear-merge n82` printed
+`FULL_REPLAY_MATCHES_SHIPPED`: every one of the 201 directions, the axis included,
+returned the record the certificate holds, its status, input digest and node count.
+
+| Certificate | Directions | Ranges | Axis CPU-seconds | CPU-hours | Receipts |
+| --- | ---: | ---: | ---: | ---: | --- |
+| `mixed_n82_L932` | 201 | 6 | 105.4 | 30.74 | [`receipts/n82/`](receipts/n82/) |
+
+[`receipts/n82/merged.json`](receipts/n82/merged.json) is the merged verdict, and
+`linear-merge n82 --check` re-derives it. The runs replay the source’s own checker and
+replay functions, so they confirm the source’s run rather than deciding coverage a second
+way. The certificate’s per-direction records carry no least lower bound, so the receipts
+cannot keep one (finding LC-4 of the linear certificates’ review). The 30.7 CPU-hours
+here sit between this packet’s estimate of about 26 and the bundle’s 33.0.
+
 ## Where the Request and the Retained Files Differ
 
 - **The bundle’s name.** The `bundle` field of `completion-audit.json` is
@@ -212,8 +234,8 @@ without an estimate. `linear-plan n82 --parts 6` gives six ranges of equal node 
 
 ## Limitations
 
-- **It was not replayed.** Every statement above is read from the retained files,
-  recomputed by the exact audit, or one of the pre-replay checks on the pinned tarball.
+- **The replay is the source’s own checker.** Coverage is decided by the source’s C++
+  alone; the replay confirms its run and is not a second method.
 - **No control of its own.** The checker’s negative control is the linear packet’s, at
   $n = 101$; this certificate shares the checker byte for byte.
 - **The bundle is pinned and not held.** A replay needs the tarball from the source at

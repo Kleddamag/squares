@@ -18,7 +18,7 @@
           "degree_recorded_upstream": 11,
           "exact_value_known": 95,
           "lower_bound_first_proved_here": 1,
-          "lower_bound_recent_result": 64,
+          "lower_bound_recent_result": 65,
           "only_known_numerically": 5,
           "proved_optimal": 45,
           "rigidity_catalogue_annotated": 2,
@@ -42,7 +42,7 @@
           "degree_recorded_upstream": 21,
           "exact_value_known": 269,
           "lower_bound_first_proved_here": 1,
-          "lower_bound_recent_result": 77,
+          "lower_bound_recent_result": 78,
           "only_known_numerically": 55,
           "proved_optimal": 77,
           "rigidity_catalogue_annotated": 2,
@@ -3987,15 +3987,15 @@
           "state": "closed-form"
         },
         "lower": {
-          "display": "s(82) ≥ 9.062257",
+          "display": "s(82) ≥ 9.320000",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-n082-wand125-linear-932-source-replay"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": true,
-          "value": "9.0622577483"
+          "value": "9.32"
         },
         "n": 82,
         "optimality": {
@@ -15158,7 +15158,7 @@
       "degree_recorded_upstream": 21,
       "exact_value_known": 269,
       "lower_bound_first_proved_here": 1,
-      "lower_bound_recent_result": 77,
+      "lower_bound_recent_result": 78,
       "only_known_numerically": 55,
       "proved_optimal": 77,
       "rigidity_catalogue_annotated": 2,

@@ -1,0 +1,53 @@
+{
+  "status": "BUNDLE_READY",
+  "certificate": "n93",
+  "environment": {
+    "OPENBLAS_NUM_THREADS": "1",
+    "OMP_NUM_THREADS": "1",
+    "PYTHONOPTIMIZE": null
+  },
+  "tarball": {
+    "status": "TARBALL_MATCHES_PIN",
+    "path": "certificates/mixed_n93_L986/n93-L9.86-proof-bundle.tar.gz",
+    "revision": "2aff2076c492d62340e986c84f60a0a29eb668df",
+    "sha256": "10e608e2703da81ed008866dab811aa2c4f04c860acd9c01f5a4eb8b52c780ff",
+    "bytes": 18020286,
+    "origin": "supplied",
+    "refused_routes": []
+  },
+  "bindings": {
+    "status": "BUNDLE_BOUND_TO_PACKET",
+    "listed_files": 621,
+    "code_files": 10
+  },
+  "preconditions": {
+    "status": "DRIVER_PRECONDITIONS_HOLD",
+    "candidate_digest": "dd3da64f729a011c79c9e570d53a4986bba80572d1cf42c15fc4b14d3cd0a858",
+    "angles": 201,
+    "total_mass": "9299999/100000",
+    "checker_sha256": "89b674a6feabe24d91c29431de1624907c4bff83280ceb481475455686693652"
+  },
+  "inputs": {
+    "status": "ALL_INPUTS_ENCLOSE_THE_CANDIDATE",
+    "inputs": 200,
+    "rectangle_images": 3544,
+    "gamma": "1",
+    "scope": "Each oblique input hashes to its recorded digest and every interval encloses the exact datum recomputed from the candidate; coverage is not decided here."
+  },
+  "bundle_records": {
+    "oblique_records": 200,
+    "gammas": [
+      "1"
+    ],
+    "statuses": [
+      "ANGLE_VERIFIED"
+    ],
+    "axis_status": "AXIS_VERIFIED",
+    "frontier_boxes": 0,
+    "nodes": 94366242,
+    "least_lower": 1.0000000019291797,
+    "upstream_oblique_seconds": 29355.985013323,
+    "upstream_axis_seconds": 31.516118428000482
+  },
+  "bundle": "/tmp/claude-0/-home-user-squares/ef1ada02-3ab4-5845-808e-7f43a394c561/scratchpad/fetch-n93/unpacked/n93-L9.86-proof-bundle"
+}

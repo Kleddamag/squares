@@ -3,18 +3,18 @@ type: is
 id: is-01m3v5tw63ebmd3t7hpep12nbj
 title: frontier.html is within 92 KB of its 4,194,304-byte ceiling
 kind: task
-status: open
+status: in_progress
 priority: 3
-version: 2
+version: 4
 spec_path: docs/project/specs/active/plan-2026-09-29-github-pages-overview.md
 labels: []
 dependencies: []
-parent_id: is-01m3p52z585a2zb9jmy19b0r96
+parent_id: is-01m3zgh5vhwpb57pvzhtnd5ece
 created_at: 2026-10-01T07:28:33.986Z
-updated_at: 2026-10-01T19:15:17.747Z
+updated_at: 2026-10-03T00:16:37.710Z
 ---
 After the row popovers, frontier.html is 4,102,673 bytes. One more column or per-row detail breaks the ceiling. Move its row detail to fetched fragments as the result overviews are, or raise the ceiling on purpose.
 
 ## Notes
 
-2026-10-01: after the Frontier table changes and #267, frontier.html was within 1,999 bytes of its 4,194,304 ceiling on the integration branch. Removed the repeated tooltip on the same-value mark (470 times, about 20 KB); headroom 22.6 KB. Remaining lever: KPress writes data-col and data-col-index on every cell, about 128 KB of this page, read by no CSS or JS in the site or KPress.
+Committed c669d2f37 (every page drops data-col and data-col-index; frontier.html 4,070,117 bytes).

@@ -728,8 +728,8 @@ def test_the_report_uses_the_actual_location_for_a_test_outside_rootdir(tmp_path
 @pytest.mark.parametrize(
     ("arguments", "message"),
     [
-        (["--suite-a", "--suite-b"], "nine parts"),
-        (["--checks", "--typecheck"], "nine parts"),
+        (["--suite-a", "--suite-b"], "ten parts"),
+        (["--checks", "--typecheck"], "ten parts"),
     ],
 )
 def test_the_cli_refuses_more_than_one_public_fast_part(

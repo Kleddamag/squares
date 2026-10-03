@@ -209,10 +209,10 @@ tiers:
   reference: {jobs: 3, inner_jobs: 1, cpus: 4}
   argument: >-
     Since 2026-09-06 no CI job runs this tier whole: a pull request now runs `checks`,
-    `frontend`, `typecheck`, `geometry`, `suite_a`, `suite_b`, `suite_c`, `suite_d`, and
-    `sweeps` concurrently, and this is their union. The nine parts are where the live
-    bands now are. It is still a real tier -- it is what a contributor runs before a
-    block boundary, and it is the thing the nine parts have to add up to -- which is why
+    `frontend`, `typecheck`, `geometry`, `suite_a`, `suite_b`, `suite_c`, `suite_d`,
+    `sweeps`, and `measure_verifier` concurrently, and this is their union. The ten parts
+    are where the live bands now are. It is still a real tier -- it is what a contributor
+    runs before a block boundary, and it is the thing the ten parts have to add up to -- which is why
     it keeps a ceiling rather than being retired.
     The edit tier plus the behavioural tests under the per-test ceiling: every floor,
     every record check, and the quick lane. What it excludes is a rule rather than a list
@@ -523,10 +523,10 @@ tiers:
     it never uses. It is 54 steps of pure outer-parallel work at `--jobs 3`,
     which is three units on four cpus and one cpu of headroom, and its wall is step time
     divided rather than any one step's own cost. `checks`, `frontend`, `typecheck`,
-    `geometry`, `suite_a`, `suite_b`, `suite_c`, `suite_d`, and `sweeps` are a partition
-    of `--fast` by construction in `_select_steps`, and
+    `geometry`, `suite_a`, `suite_b`, `suite_c`, `suite_d`, `sweeps`, and
+    `measure_verifier` are a partition of `--fast` by construction in `_select_steps`, and
     `test_the_pull_request_jobs_partition_the_surface` checks that the workflow invokes
-    all nine. What the geometry split bought is on its entry below.
+    all ten. What the geometry split bought is on its entry below.
 
 - id: frontend
   command: packing-validate --frontend
@@ -1230,6 +1230,34 @@ tiers:
     `Step.typecheck` remains part of `--edit`, and the pull-request partition test keeps
     it inside `--fast` exactly once.
 
+- id: measure_verifier
+  command: packing-validate --measure-verifier
+  # A new tier, so pending under think-th8p as `suite_d` is under think-t7k5: the ceiling
+  # applies from the first run, and the first complete pull-request cohort replaces the
+  # pending fields with its observed wall. 90 s is about 2x the slowest hosted reading of
+  # the one step it holds, 45.30 s inside a contended `checks` tier on run 37131940076,
+  # and the step runs alone here.
+  ceiling_seconds: 90.0
+  measured_seconds: null
+  measured_on: null
+  measured_where: null
+  pending_measurement: think-th8p
+  pending_until: '2026-10-10'
+  reference: {jobs: 1, inner_jobs: 1, cpus: 4}
+  argument: >-
+    The clean-room measure verifier's gate (think-gpe0): cargo fmt, clippy, the crate's
+    tests under its gate-test profile, the docs and the release build, then
+    `devtools.check_sqverify_fast --quick` against the exact oracle and the mutation
+    controls. In `checks` it read 84.45 s of a 168.34 s tier against 140 s on run
+    37098372802, compiling cold on every push that moved the crate's sources, and after
+    the gate-test profile and the prefix-restored cache 21.20 s of 74.75 s on run
+    37131372579. Lane W2's reviewer fixes added adversarial integration tests and controls,
+    and on run 37131940076 it read 45.30 s of a 137.93 s tier on a runner where every step
+    was about 1.9x slow. Its own job takes its compile and its single-threaded controls
+    off the `checks` queue; the job keys, restores and populates the crate's build before
+    the gate as `validate` does for the engine. `packing-required` requires it as it
+    requires the other nine.
+
 - id: sweeps
   command: packing-validate --sweeps
   # Measured rather than argued from the parts since run 34010470187: `--sweeps --jobs 4
@@ -1894,7 +1922,9 @@ ci_gates:
       serially with the predecessor job's process allocation. The first hosted wall was
       621s; the 965s reporting ceiling is 1.55x that reading, originally derived from
       predecessor run 35579234418 Step times (420.033 and 158.098s), 24s setup and
-      runner spread.
+      runner spread. Since 2026-10-03 it also runs `measure verifier full controls
+      (sqverify-fast)`, 72.8 s single threaded on an idle four-cpu box plus a cold
+      release build of the crate; no hosted reading of the job includes it yet.
   - id: deferred-threshold-720-rigidity
     measured_seconds: 623.0
     measured_on: '2026-09-29'
@@ -2042,7 +2072,10 @@ ci_gates:
     ceiling_seconds: 965.0
     argument: >-
       Derived reporting estimate from retained negative-control and finer-net Step times,
-      setup cost and hosted-runner spread. This worker has no current hosted wall.
+      setup cost and hosted-runner spread. This worker has no current hosted wall. Since
+      2026-10-03 it also runs `measure verifier full controls (sqverify-fast)`, 72.8 s
+      single threaded on an idle four-cpu box plus a cold release build of the crate; no
+      hosted reading of the job includes it yet.
   - id: deferred-threshold-720-rigidity
     measured_seconds: null
     measured_on: null

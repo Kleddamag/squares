@@ -113,6 +113,11 @@ DECLARED_CONSUMERS = {
         "registered result still holds a case bound; it takes no value from the field and "
         "never reads the ceiling as s(n)"
     ),
+    "packing/devtools/render_case_verifiers.py": (
+        "reads only the evidence ids the field cites, to name the programs behind a case "
+        "record's verified upper bound in its Verification Code table; it takes no value "
+        "from the field and never reads the ceiling as s(n)"
+    ),
     "packing/devtools/render_case_pages.py": (
         "shows the field in each case record's own panel, labelled the verified upper bound, "
         "and as the upper end of the verified interval the record's heading states; it "

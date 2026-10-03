@@ -143,7 +143,9 @@ def test_every_registered_result_has_exactly_one_status_from_the_record() -> Non
         marks = render_recent_results.position_marks(
             entry, render_recent_results.standing(entry, records)
         )
-        line = status_line(entry, evidence, marks)
+        line = status_line(
+            entry, evidence, marks, how=render_results.confirmed_how(entry, evidence)
+        )
         assert line.startswith(word), entry["id"]
         row = next(row for row in rendered.splitlines() if row.startswith(f"| {entry['id']} "))
         assert f"| {line} |" in row, entry["id"]

@@ -161,6 +161,7 @@ _REPORT_2026_09_28 = """\
     source_key: '[wand125 rectangle bounds 2026-09-28]'
     certificate: {certificate}
     replay_status: not-attempted
+    verifiers: [V-tokoharu-verify-cpp]
     limitations: >-
       Source 39d8ecc74d651b54ec977c331c8f2015b442a6c4, pushed between 2026-09-27 and
       2026-09-28 (UTC), reports one standing rectangle-density certificate in Tokoharu's
@@ -195,6 +196,7 @@ _MONOTONE_2026_09_28 = """\
     novelty: previously-published
     source_key: '[wand125 rectangle bounds 2026-09-28]'
     replay_status: not-attempted
+    verifiers: [V-tokoharu-verify-cpp]
     limitations: >-
       Reported-lane transfer at 39d8ecc: a certificate whose exact mass is below k
       refutes k squares as well, and deleting squares proves monotonicity, so each listed
@@ -220,6 +222,7 @@ _REPORT_2026_10_01 = """\
     source_key: '[wand125 rectangle bounds 2026-10-01]'
     certificate: {certificate}
     replay_status: not-attempted
+    verifiers: [V-tokoharu-verify-cpp]
     limitations: >-
       Source 1a25a5ed745fdd905a52f48fcc48150a0669032d, committed 2026-10-01 (UTC),
       reports one standing rectangle-density certificate in Tokoharu's format for each
@@ -260,6 +263,7 @@ _MONOTONE_2026_10_01 = """\
     novelty: previously-published
     source_key: '[wand125 rectangle bounds 2026-10-01]'
     replay_status: not-attempted
+    verifiers: [V-tokoharu-verify-cpp]
     limitations: >-
       Reported-lane transfer at 1a25a5e: a certificate whose exact mass is below k
       refutes k squares as well, and deleting squares proves monotonicity, so each listed

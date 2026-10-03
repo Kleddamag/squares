@@ -559,6 +559,7 @@ case or experiment separately.
 | [N11 Optimality Review — Intuition and Visual Structure](docs/project/reviews/review-2026-09-30-n11-explainer-intuition.md) | dated review record | record | retained | — |
 | [Research: s(12) Beyond Rescaling](docs/project/research/research-2026-10-02-s12-beyond-rescaling.md) | research synthesis | record | retained | — |
 | [Research: Exact Arithmetic and Verifier Performance](docs/project/research/research-2026-09-30-exact-arithmetic-verifier-performance.md) | research synthesis | record | retained | — |
+| [Research: Where the Authors’ Measure Checkers Spend Their Time](docs/project/research/research-2026-10-02-author-checker-profile.md) | research synthesis | record | retained | — |
 | [Eleven-Square Global Optimality: Source Intake and Verification Handoff](docs/project/reviews/review-2026-09-29-n11-optimality.md) | dated review record | record | retained | — |
 | [Eleven-Square Optimality: Census and Capture Ancestry Contract](docs/project/reviews/review-2026-09-29-n11-optimality-census-contract.md) | dated review record | record | retained | — |
 | [Eleven-Square Optimality: Expository Simplification Review](docs/project/reviews/review-2026-09-30-n11-expository-simplification.md) | dated review record | record | retained | — |
@@ -606,7 +607,9 @@ case or experiment separately.
 | [Plan: Revising the Verification and Confirmation Ladders](docs/project/specs/active/plan-2026-09-30-epistemics-ladder-review.md) | implementation plan | current | transient | — |
 | [Plan: A Kind for Every Registered Result](docs/project/specs/active/plan-2026-10-01-result-kinds.md) | implementation plan | current | transient | — |
 | [Plan: A Workflow Status for Every Result, and No Separate Block for Reported Ones](docs/project/specs/active/plan-2026-10-01-result-status.md) | implementation plan | current | transient | — |
+| [Plan: An Independent, Fast Verifier for Measure-Capture Certificates](docs/project/specs/active/plan-2026-10-02-independent-measure-verifier.md) | implementation plan | current | transient | — |
 | [Plan: The First Application of the Result Import Process](docs/project/specs/active/plan-2026-10-01-result-import-first-application.md) | implementation plan | current | transient | — |
+| [Measure Verifier Milestone C: The Continuous-Angle Family](docs/project/specs/active/plan-2026-10-03-measure-verifier-milestone-c.md) | implementation plan | current | transient | — |
 | [Feature: A Top-Level Overview Page for the Published Site](docs/project/specs/active/plan-2026-09-29-github-pages-overview.md) | implementation plan | current | transient | — |
 | [BC329 Calibration Reader: Source-Distinct Review](docs/project/reviews/review-2026-09-13-n11-bc329-source-distinct-reader.md) | dated review record | record | retained | — |
 | [BC329 Reader Repair: Exact-Commit Rereview](docs/project/reviews/review-2026-09-13-n11-bc329-reader-rereview.md) | dated review record | record | retained | — |
@@ -770,6 +773,43 @@ case or experiment separately.
 | [Math Startup and Layout Stability](packing/benchmarks/math-startup/README.md) | component scope and use | supporting | maintained | — |
 | [Math Startup Ideas](packing/benchmarks/math-startup/ideas.md) | implementation plan | supporting | maintained | — |
 | [Math Startup Ledger](packing/benchmarks/math-startup/ledger.md) | generated status view | generated | generated | — |
+| [Measure-Verifier Performance Campaign](packing/benchmarks/measure-verifier/README.md) | component scope and use | supporting | maintained | — |
+| [Idea Board: Measure-Verifier Performance](packing/benchmarks/measure-verifier/ideas.md) | implementation plan | supporting | maintained | — |
+| [Edge Classification Removes Most Edge-Length Enclosures](packing/benchmarks/measure-verifier/hypotheses/H-001-edge-classification.md) | implementation plan | supporting | maintained | — |
+| [Cheaper Exact Admission Halves a Short Run’s Instructions](packing/benchmarks/measure-verifier/hypotheses/H-002-cheap-admission.md) | implementation plan | supporting | maintained | — |
+| [Merged Density Jumps Tighten the Derivative Enclosure](packing/benchmarks/measure-verifier/hypotheses/H-003-merged-jump-segments.md) | implementation plan | supporting | maintained | — |
+| [Bounding the First Leg’s Derivative on Its Segment Cuts Nodes](packing/benchmarks/measure-verifier/hypotheses/H-004-path-specific-gradient.md) | implementation plan | supporting | maintained | — |
+| [One A-Priori Error Budget Beats Per-Operation Directed Rounding](packing/benchmarks/measure-verifier/hypotheses/H-005-error-budget-arithmetic.md) | implementation plan | supporting | maintained | — |
+| [Inheriting the Parent’s Derivative Bound](packing/benchmarks/measure-verifier/hypotheses/H-006-inherited-derivative-bound.md) | implementation plan | supporting | maintained | — |
+| [Branch-Free Directed Rounding](packing/benchmarks/measure-verifier/hypotheses/H-007-branch-free-directed-steps.md) | implementation plan | supporting | maintained | — |
+| [Baseline: v0 Beside verify.cpp](packing/benchmarks/measure-verifier/experiments/exp-001-baseline-v0-against-verify-cpp.md) | research synthesis | record | retained | — |
+| [H-001: Edge Classification](packing/benchmarks/measure-verifier/experiments/exp-002-h001-edge-classification.md) | research synthesis | record | retained | — |
+| [H-006: Inherited Derivative Bounds](packing/benchmarks/measure-verifier/experiments/exp-003-h006-inherited-derivative-bound.md) | research synthesis | record | retained | — |
+| [H-002: Cheaper Exact Admission](packing/benchmarks/measure-verifier/experiments/exp-004-h002-cheap-admission.md) | research synthesis | record | retained | — |
+| [H-007: Branch-Free Directed Steps](packing/benchmarks/measure-verifier/experiments/exp-005-h007-branch-free-directed-steps.md) | research synthesis | record | retained | — |
+| [Soundness of sqverify-fast](packing/sqverify_fast/SOUNDNESS.md) | component scope and use | definitive | maintained | — |
+| [sqverify-fast](packing/sqverify_fast/README.md) | component scope and use | supporting | maintained | — |
+| [Milestone A Census](packing/benchmarks/measure-verifier/census/README.md) | generated status view | generated | generated | — |
+| [Milestone B Census](packing/benchmarks/measure-verifier/census-mixed/README.md) | generated status view | generated | generated | — |
+| [Census Summary](packing/benchmarks/measure-verifier/census-summary.md) | generated status view | generated | generated | — |
+| [Whole `rect_n32_L595`: c2 Against verify.cpp](packing/benchmarks/measure-verifier/experiments/exp-006-whole-certificate-n32.md) | research synthesis | record | retained | — |
+| [H-005: One Error Budget per Edge](packing/benchmarks/measure-verifier/experiments/exp-007-h005-error-budget.md) | research synthesis | record | retained | — |
+| [H-008: Skipping Hopeless Boxes’ Own Enclosures](packing/benchmarks/measure-verifier/experiments/exp-008-h008-skip-hopeless-own-gradient.md) | research synthesis | record | retained | — |
+| [Skipping the Own Derivative Enclosure on Hopeless Boxes](packing/benchmarks/measure-verifier/hypotheses/H-008-skip-hopeless-own-gradient.md) | implementation plan | supporting | maintained | — |
+| [Lazy First-Leg Enclosures](packing/benchmarks/measure-verifier/hypotheses/H-009-lazy-first-leg-enclosures.md) | implementation plan | supporting | maintained | — |
+| [H-004: First-Leg Enclosures on Every Box](packing/benchmarks/measure-verifier/experiments/exp-009-h004-path-specific-gradient.md) | research synthesis | record | retained | — |
+| [H-009: Lazy First-Leg Enclosures](packing/benchmarks/measure-verifier/experiments/exp-010-h009-lazy-first-leg-enclosures.md) | research synthesis | record | retained | — |
+| [c2 Beside verify.cpp, Single Directions](packing/benchmarks/measure-verifier/experiments/exp-011-c2-cells-against-verify-cpp.md) | research synthesis | record | retained | — |
+| [H-010: Reciprocal Node Placement](packing/benchmarks/measure-verifier/experiments/exp-012-h010-reciprocal-node-placement.md) | research synthesis | record | retained | — |
+| [Reciprocals for Node Placement](packing/benchmarks/measure-verifier/hypotheses/H-010-reciprocal-node-placement.md) | implementation plan | supporting | maintained | — |
+| [Starting at the Low Side of a Sign-Definite Axis](packing/benchmarks/measure-verifier/hypotheses/H-011-sign-definite-side-start.md) | implementation plan | supporting | maintained | — |
+| [Fused First-Leg Enclosures](packing/benchmarks/measure-verifier/hypotheses/H-012-fused-first-leg-enclosures.md) | implementation plan | supporting | maintained | — |
+| [H-011: Sign-Definite Side Starts](packing/benchmarks/measure-verifier/experiments/exp-013-h011-sign-definite-side-start.md) | research synthesis | record | retained | — |
+| [The Release Audit’s Price](packing/benchmarks/measure-verifier/experiments/exp-014-release-audit-cost.md) | research synthesis | record | retained | — |
+| [Milestone B’s Price on Rectangle Certificates](packing/benchmarks/measure-verifier/experiments/exp-015-milestone-b-cost.md) | research synthesis | record | retained | — |
+| [H-012: Fused First-Leg Enclosures](packing/benchmarks/measure-verifier/experiments/exp-016-h012-fused-first-leg-enclosures.md) | research synthesis | record | retained | — |
+| [The Price of a Fatal NaN](packing/benchmarks/measure-verifier/experiments/exp-017-nan-fatal-cost.md) | research synthesis | record | retained | — |
+| [Independence Record for sqverify-fast](packing/sqverify_fast/INDEPENDENCE.md) | research synthesis | record | maintained | — |
 | [PR 127 Integration Checkpoint Evidence](packing/campaign/series/series-000-smoke-and-calibration/results/agenda-030/pr127-checkpoint/README.md) | research synthesis | record | retained | — |
 | [Correction: the stacking capacity bound in lane X3’s box sweep is false](packing/campaign/series/series-000-smoke-and-calibration/results/agenda-034/lane-x3-box-sweep-capacity-correction.md) | dated review record | record | retained | — |
 | [Agenda 034, lane A6: structural site placement at L = 153/40, and the certificate that closes the site side](packing/campaign/series/series-000-smoke-and-calibration/results/agenda-034/lane-a6-structural-sites-and-the-depth-one-certificate.md) | research synthesis | record | retained | — |
@@ -962,6 +1002,7 @@ case or experiment separately.
 | [Current Square-Packing Frontier](packing/frontier/STATUS.md) | generated status view | generated | generated | — |
 | [Evidence inventory](packing/frontier/INVENTORY.md) | generated status view | generated | generated | — |
 | [Results](packing/frontier/RESULTS.md) | generated status view | generated | generated | — |
+| [Verifiers](packing/frontier/VERIFIERS.md) | generated status view | generated | generated | — |
 | [Where the fractional certificate can still go](packing/frontier/CERTIFICATE-REACH.md) | generated status view | generated | generated | — |
 | [Research Resources: Square Packing](packing/resources/README.md) | source retention and archive policy | definitive | maintained | — |
 | [Defect log](defects.md) | generated status view | generated | generated | — |
@@ -1066,6 +1107,8 @@ case or experiment separately.
 | [wand125 Certificates of the Afternoon of 2 October: Review of Six Mixed Bounds, the Linear `s(82) ≥ 233/25` and Seven Rectangle Rungs](docs/project/reviews/review-2026-10-02-wand125-afternoon-certificates.md) | dated review record | record | retained | — |
 | [Proof Review: squarepacker’s `s(12) ≥ 31360/7901`, Evan Daniel’s Certificate Rescaled by `7902/7901`](docs/project/reviews/review-2026-10-02-s12-rescaled-certificate.md) | dated review record | record | retained | — |
 | [Method Review: wand125’s Independent Checker of Valid7 (`T-064`)](docs/project/reviews/review-2026-10-02-valid7-independent-checker.md) | dated review record | record | retained | — |
+| [Soundness Review: The Clean-Room Measure Verifier `sqverify-fast`](docs/project/reviews/review-2026-10-03-sqverify-fast-soundness.md) | dated review record | record | retained | — |
+| [sqverify-fast: Adversarial Testing and Independence Audit](docs/project/reviews/review-2026-10-03-sqverify-fast-testing-and-independence.md) | dated review record | record | retained | — |
 | [Density Solvers Compared: Tokoharu’s and wand125’s Rectangle-Density Tools Against This Repository’s Certificate Stack](docs/project/reviews/review-2026-09-28-density-solver-comparison.md) | dated review record | record | retained | — |
 | [Proof Review: Guzhou0806’s R067 and R068, `s(17) > 233009/50000` and `s(17) > 116511/25000`](docs/project/reviews/review-2026-09-28-n17-guzhou-r067-r068.md) | dated review record | record | retained | — |
 | [Proof Review: wand125’s Point-Only Certificates for `s(45) = 7` and `s(21) = 5`](docs/project/reviews/review-2026-09-28-wand125-point-only-s21-s45.md) | dated review record | record | retained | — |

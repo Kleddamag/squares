@@ -3,3 +3,6 @@
 # python3: W/.venv: CPython 3.14.7, python-flint 0.9.0
 # host: 4 cores; load 0.45 0.11 0.04; started 2026-10-03T20:24:35Z
 roots 448, already done 369
+new roots 79 leaves {'CORE': 62267, 'TIERB2': 45499} uncertified 0 counterexamples 0 cpu 12794.0s
+VERIFIED
+# finished 2026-10-03T21:18:31Z; exit 0; wall 3236.778 s; CPU 12626.6 s (user 12623.758 + sys 2.851); load 2.39 3.58 3.79

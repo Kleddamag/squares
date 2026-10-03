@@ -26,7 +26,7 @@ second implementation agrees.
 ## The Short Version
 
 - **74** programs: **30** external and **44** first-party; **62** decide claims and **12** check premises.
-- **185** of **206** evidence entries name the programs that verified them: 126 reproduced with the producer’s code, 44 independently re-implemented, 8 no relation: a proof, a derivation or a report, 7 re-implemented, sharing the producer’s components.
+- **187** of **208** evidence entries name the programs that verified them: 128 reproduced with the producer’s code, 44 independently re-implemented, 8 no relation: a proof, a derivation or a report, 7 re-implemented, sharing the producer’s components.
 
 ## Programs
 
@@ -45,8 +45,8 @@ second implementation agrees.
 | [`V-evand-angle-net-verify`](#v-evand-angle-net-verify) | verify (the angle-net arrangement sweep) | Evan Daniel | external | decides | 6 | 3 |
 | [`V-evand-xcheck-py`](#v-evand-xcheck-py) | xcheck.py | Evan Daniel | external | decides | 4 | 2 |
 | [`V-evand-zmcheck`](#v-evand-zmcheck) | zmcheck (verify2/src/main.rs) | Evan Daniel | external | decides | 3 | 2 |
-| [`V-evand-qx2-zm-py`](#v-evand-qx2-zm-py) | qx2_zm.py | Evan Daniel | external | decides | 1 | 1 |
-| [`V-evand-lean`](#v-evand-lean) | The source's Lean development (lean/) | Evan Daniel | external | decides | 4 | 4 |
+| [`V-evand-qx2-zm-py`](#v-evand-qx2-zm-py) | qx2_zm.py | Evan Daniel | external | decides | 2 | 1 |
+| [`V-evand-lean`](#v-evand-lean) | The source's Lean development (lean/) | Evan Daniel | external | decides | 5 | 4 |
 | [`V-kleddamag-n11-verify`](#v-kleddamag-n11-verify) | verify.py | Kleddamag | external | decides | 4 | 2 |
 | [`V-kleddamag-n17-verify`](#v-kleddamag-n17-verify) | verify.py | Kleddamag | external | decides | 9 | 5 |
 | [`V-wang-li-n11-verify`](#v-wang-li-n11-verify) | verify.py of the Zenodo release | Wang and Li | external | decides | 2 | 1 |
@@ -379,6 +379,7 @@ The source's exact-rational checker of Valid7, the finite statement its k^2 - 3 
 | evidence | run | code | results |
 | --- | --- | --- | --- |
 | `E-k2m3-evand-family-report` | the source’s own run | producer’s code | T-064 |
+| `E-k2m3-evand-valid7-qx2-replay` | replayed here | producer’s code | T-064 |
 
 ### `V-evand-lean`
 
@@ -392,6 +393,7 @@ Kernel-checks a value of s(n) from a checker-cover hypothesis: for s(13) = 4 the
 | evidence | run | code | results |
 | --- | --- | --- | --- |
 | `E-k2m3-evand-family-report` | the source’s own run | producer’s code | T-064 |
+| `E-k2m3-evand-bentz-lean-build` | replayed here | producer’s code | T-064 |
 | `E-n032-evand-closed-cover-report` | the source’s own run | producer’s code | T-051 |
 | `E-n013-evand-casefree-cover-lean-kernel` | replayed here | producer’s code | T-006 |
 | `E-n021-evand-mixed-cover-report` | the source’s own run | producer’s code | T-052 |

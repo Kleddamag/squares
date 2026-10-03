@@ -90,10 +90,13 @@ FRONTIER_COUNTS: dict[str, tuple[int, int, int]] = {
     # 85, 87, 90 and 92 off it, eight more, all open in both lanes; n = 86 moved too, from
     # a rectangle certificate. Then the merged replays of wand125's rectangle
     # certificates of 1 October (T-074) took n = 57, 58, 88, 89, 93 and 94 off it, six
-    # more, all open in both lanes.
-    "n=1..100": (56, 55, 5),
-    "n=1..200": (144, 139, 93),
-    "n=1..324": (256, 247, 205),
+    # more, all open in both lanes. 2026-10-03: the full replay of Valid7 and the built
+    # Lean reduction proved T-064's s(k^2 - 3) = k, closing n = 97, 118, 141, 166, 193,
+    # 222, 253, 286 and 321; all were reported-proved and Nagamochi-bounded, so the
+    # formal-open and Nagamochi-bounded counts fall together, by one, five and nine.
+    "n=1..100": (55, 55, 4),
+    "n=1..200": (139, 139, 88),
+    "n=1..324": (247, 247, 196),
 }
 #: n = 68, 103, 105, 110 and 131 left the exclusions on 2026-09-29, when their records
 #: moved from UnitSquare renderings to Francisco Couzo's packings (T-056); n = 69 is the

@@ -782,6 +782,10 @@ def ink(png: bytes, *, color: str, size: float, scale: float = GLYPH_SCALE) -> f
     return round(float(coverage.sum()) / (size * scale) ** 2, 4)
 
 
+#: A DOM text node's `nodeType`.
+TEXT_NODE = 3
+
+
 def _platform_faces(session: Any, root: int, mark: str) -> list[str]:
     """The platform faces Blink drew the marked element's own text with, by name; a face
     the page did not ship is named as the reader's own (`host`)."""
@@ -789,6 +793,35 @@ def _platform_faces(session: Any, root: int, mark: str) -> list[str]:
         "DOM.querySelector", {"nodeId": root, "selector": f'[{GLYPH_MARK}="{mark}"]'}
     )
     fonts = session.send("CSS.getPlatformFontsForNode", {"nodeId": node["nodeId"]})["fonts"]
+    return sorted({_platform_face(font) for font in fonts})
+
+
+def _own_text_faces(session: Any, root: int, mark: str) -> list[str]:
+    """The platform faces Blink drew the marked element's own text nodes with, by name.
+
+    Asked of the element, `CSS.getPlatformFontsForNode` also counts the glyphs of inline
+    children laid out in its line boxes: a result cell with words of its own and a star
+    after them reported the star's host face as the cell's (T-064's row, 2026-10-03),
+    though the star is a run of its own, measured under its own role. A text row stands
+    for the element's own text, so its faces are asked of each of its text nodes.
+    """
+    node = session.send(
+        "DOM.querySelector", {"nodeId": root, "selector": f'[{GLYPH_MARK}="{mark}"]'}
+    )
+    described = session.send("DOM.describeNode", {"nodeId": node["nodeId"], "depth": 1})
+    backend = [
+        child["backendNodeId"]
+        for child in described["node"].get("children", [])
+        if child["nodeType"] == TEXT_NODE and child.get("nodeValue", "").strip()
+    ]
+    if not backend:
+        return _platform_faces(session, root, mark)
+    pushed = session.send("DOM.pushNodesByBackendIdsToFrontend", {"backendNodeIds": backend})
+    fonts = [
+        font
+        for text in pushed["nodeIds"]
+        for font in session.send("CSS.getPlatformFontsForNode", {"nodeId": text})["fonts"]
+    ]
     return sorted({_platform_face(font) for font in fonts})
 
 
@@ -883,7 +916,7 @@ def measure_glyphs(
             session.send("CSS.enable")
             root = session.send("DOM.getDocument", {"depth": 0})["root"]["nodeId"]
             for row in found["text"]:
-                faces = _platform_faces(session, root, row["mark"])
+                faces = _own_text_faces(session, root, row["mark"])
                 row["drawn"], row["host_faces"] = ", ".join(faces), _host_faces(faces)
             stem = f"glyphs-{shot_stem(name)}-{width}-{scheme}"
             for index, row in enumerate(found["math"]):

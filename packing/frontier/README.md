@@ -135,7 +135,7 @@ The ones that carry the most weight:
   exactly only when `status` is `proved`.
 - `reported_status` is the source-set view; `status` is `proved` only when the verified
   bounds match exactly.
-  There are currently 68 proved and 256 open formal cases.
+  There are currently 77 proved and 247 open formal cases.
 - `reported_upper_bound.catalogue_rigid` transcribes what the catalogue says about
   rigidity, in the catalogue’s own three-valued vocabulary: `rigid`, `semi-rigid`, or
   `not-stated`. `not-stated` is source silence and never a claim that a packing can
@@ -463,7 +463,7 @@ lower-bound side has underused methods.
 
 Counts below are computed from the artifacts, not asserted.
 
-Of the 256 open cases, **205** have Nagamochi’s formula as their verified lower bound.
+Of the 247 open cases, **196** have Nagamochi’s formula as their verified lower bound.
 Two others use certificates already integrated into the register, the current external
 certificate bounds at $n = 12$ ($31360/7901$) and $n = 17$ ($116511/25000$). Complete
 interval and exact replays of external certificates hold the other 49: wand125’s mixed
@@ -478,12 +478,15 @@ $n = 32$ left the open cases on 2026-09-27, when a replayed external closed cove
 $s(32) = 6$, and $n = 21$ and $n = 45$ on 2026-09-29, when replayed external mixed
 covers proved $s(21) = 5$ and $s(45) = 7$; $n = 59$, 60 and 61 left them on 2026-10-02,
 when replayed mixed covers proved $s(59) = s(60) = s(61) = 8$, and $n = 77$ and 78 later
-that day, when the replayed $s(77)$ cover proved $s(77) = s(78) = 9$. Within the
-original $n \le 100$ corpus, the corresponding Nagamochi count is 5. The count is
-checked against the case records by `devtools.check_nagamochi_bounds` (`D-430`), because
-earlier hand-maintained counts outlived their case promotions.
+that day, when the replayed $s(77)$ cover proved $s(77) = s(78) = 9$; and nine more,
+$n = 97$, 118, 141, 166, 193, 222, 253, 286 and 321, left them on 2026-10-03, when the
+replayed `Valid7` and the built Lean reduction proved $s(k^2 - 3) = k$ for every
+$k \ge 6$ (T-064). Within the original $n \le 100$ corpus, the corresponding Nagamochi
+count is 4. The count is checked against the case records by
+`devtools.check_nagamochi_bounds` (`D-430`), because earlier hand-maintained counts
+outlived their case promotions.
 
-Of the 256 open cases, 111 are still held by the trivial grid.
+Of the 247 open cases, 102 are still held by the trivial grid.
 The other 145 carry non-grid constructions.
 Within $n \le 100$, the 33 non-grid open cases comprise 13 hand-built, 10 from simulated
 annealing (nine of the ten dated 2024–2026; $n = 53$ is Cantrell’s from 2002), 5
@@ -504,8 +507,8 @@ Ranked by gap—the best-known packing minus the verified lower bound, which is 
 | 17 | 0.0151 | Bidwell | carried to $\frac{116511}{25000}$ by Guzhou0806 after Kleddamag |
 | 12 | 0.0309 | grid | $4^2 - 4$, carried to $\frac{31360}{7901}$ by squarepacker after Daniel |
 | 31 | 0.0475 | grid | $6^2 - 5$, carried to $\frac{2381}{400}$ by wand125 after Tokoharu |
-| 97 | 0.0557 | grid | $10^2 - 3$ |
 | 44 | 0.0575 | grid | $7^2 - 5$, carried to $\frac{2777}{400}$ by wand125 after Tokoharu |
+| 76 | 0.0600 | grid | $9^2 - 5$, carried to $\frac{447}{50}$ by wand125 after Tokoharu |
 
 The $n = 17$ bound is Guzhou0806 / N17 project’s R068, continuing Kleddamag’s charge
 (Kleddamag building on Squares Project (Joshua Levy), Mira and Guzhou0806): an exact
@@ -518,17 +521,12 @@ $n = 21$, in this table at $0.0050$ from 2026-09-27, left it with that proof.
 $n = 11$, which headed it at $0.0021$ once Kleddamag carried it to $31/8$, left it on
 2026-09-30, when T-060 proved $s(11)$ equal to Trump’s side, and $n = 61$ on 2026-10-02,
 when a replayed mixed cover proved $s(60) = 8$ and with it $s(61) = 8$; $n = 78$ left it
-later that day, when another proved $s(77) = 9$ and with it $s(78) = 9$.
-
-$n = 97$ is the smallest unproved member of the family $s(m^2 - 3) = m$, which is
-**proved exactly for $m = 3, 4, 5, 6, 7, 8, 9$** (that is
-`s(6), s(13), s(22), s(33), s(46), s(61), s(78)`) and reported by Evan Daniel for every
-larger $m$ (T-064), a claim not yet replayed here.
-Its gap is small because its lower bound is nearly tight, and its conjectured optimum is
-an **integer**—the case the existing proof technique is built for.
-
-Its small gap and integer conjectured optimum make it a candidate for the existing
-technique; the retained source audit found little case-specific treatment.
+later that day, when another proved $s(77) = 9$ and with it $s(78) = 9$. $n = 97$, at
+$0.0557$, left it on 2026-10-03, when Evan Daniel’s family $s(m^2 - 3) = m$ was proved
+here for every $m \ge 6$ (T-064): his exact checker of the finite premise `Valid7` was
+replayed in full and his Lean reduction from it was built.
+With Bentz’s $s(6)$, $s(13)$ and $s(22)$ the family is now **proved exactly for every
+$m \ge 3$**.
 
 Among the cases with a *non-trivial* record, $n = 19$ follows $n = 17$ at $0.0681$, then
 $n = 27$ at $0.0721$, $n = 26$ at $0.0888$ and $n = 28$ at $0.1019$. First-party

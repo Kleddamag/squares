@@ -237,11 +237,11 @@ def test_the_table_still_sorts_filters_and_opens(page: Any, laid: dict[int, Any]
 
     # 27 recent cases until 2026-10-02, when the merged rectangle replays (T-045, T-070)
     # and s(59), s(60) and s(61) made 44; the replays recorded later that day (T-048,
-    # T-069, T-071, T-074 and s(77), s(78)) made 60, the cases `recent_lower_bounds`
-    # names.
+    # T-069, T-071, T-074 and s(77), s(78)) made 60; T-064's replay of 3 October, which
+    # proved nine k^2 - 3 cases, made 69, the cases `recent_lower_bounds` names.
     page.get_by_label("recent only").check()
-    assert page.locator(".site-table-tools .site-count").inner_text() == "60 of 324 cases"
-    assert shown.count() == 60
+    assert page.locator(".site-table-tools .site-count").inner_text() == "69 of 324 cases"
+    assert shown.count() == 69
     assert shown.first.get_attribute("id") == "n-11"
     page.get_by_label("recent only").uncheck()
     assert shown.count() == 324

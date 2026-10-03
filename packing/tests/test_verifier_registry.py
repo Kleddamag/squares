@@ -285,8 +285,16 @@ def test_a_confirmed_status_says_how() -> None:
         record, EVIDENCE, how="reproduced with the producer\u2019s code"
     )
     assert line == "confirmed, reproduced with the producer\u2019s code"
-    reviewed = RESULTS["T-064"]
-    assert result_status.status_line(reviewed, EVIDENCE, how="anything") == "reviewed"
+    # Any result not yet confirmed, since the register moves results up: T-064 was the
+    # example here until its confirmation landed.
+    unconfirmed = next(
+        record
+        for _, record in sorted(RESULTS.items())
+        if result_status.status(record, EVIDENCE) != result_status.CONFIRMED
+    )
+    assert result_status.status_line(
+        unconfirmed, EVIDENCE, how="anything"
+    ) == result_status.status_line(unconfirmed, EVIDENCE)
 
 
 def test_results_md_names_the_programs_behind_each_result() -> None:

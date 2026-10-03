@@ -1187,39 +1187,39 @@ Use the structured form to query or plot; use these tables to read.
 | 79 | `9` | Nagamochi | Hiroshi Nagamochi (2005) | proved |
 | 80 | `9` | Nagamochi | Hiroshi Nagamochi (2005) | proved |
 | 81 | `9` | perfect square | classical | proved |
-| 97 | `10` | counting | Evan Daniel (2026) | proof audit pending |
+| 97 | `10` | counting | Evan Daniel (2026) | proved |
 | 98 | `10` | Nagamochi | Hiroshi Nagamochi (2005) | proved |
 | 99 | `10` | Nagamochi | Hiroshi Nagamochi (2005) | proved |
 | 100 | `10` | perfect square | classical | proved |
-| 118 | `11` | counting | Evan Daniel (2026) | proof audit pending |
+| 118 | `11` | counting | Evan Daniel (2026) | proved |
 | 119 | `11` | Nagamochi | Hiroshi Nagamochi (2005) | proved |
 | 120 | `11` | Nagamochi | Hiroshi Nagamochi (2005) | proved |
 | 121 | `11` | perfect square | classical | proved |
-| 141 | `12` | counting | Evan Daniel (2026) | proof audit pending |
+| 141 | `12` | counting | Evan Daniel (2026) | proved |
 | 142 | `12` | Nagamochi | Hiroshi Nagamochi (2005) | proved |
 | 143 | `12` | Nagamochi | Hiroshi Nagamochi (2005) | proved |
 | 144 | `12` | perfect square | classical | proved |
-| 166 | `13` | counting | Evan Daniel (2026) | proof audit pending |
+| 166 | `13` | counting | Evan Daniel (2026) | proved |
 | 167 | `13` | Nagamochi | Hiroshi Nagamochi (2005) | proved |
 | 168 | `13` | Nagamochi | Hiroshi Nagamochi (2005) | proved |
 | 169 | `13` | perfect square | classical | proved |
-| 193 | `14` | counting | Evan Daniel (2026) | proof audit pending |
+| 193 | `14` | counting | Evan Daniel (2026) | proved |
 | 194 | `14` | Nagamochi | Hiroshi Nagamochi (2005) | proved |
 | 195 | `14` | Nagamochi | Hiroshi Nagamochi (2005) | proved |
 | 196 | `14` | perfect square | classical | proved |
-| 222 | `15` | counting | Evan Daniel (2026) | proof audit pending |
+| 222 | `15` | counting | Evan Daniel (2026) | proved |
 | 223 | `15` | Nagamochi | Hiroshi Nagamochi (2005) | proved |
 | 224 | `15` | Nagamochi | Hiroshi Nagamochi (2005) | proved |
 | 225 | `15` | perfect square | classical | proved |
-| 253 | `16` | counting | Evan Daniel (2026) | proof audit pending |
+| 253 | `16` | counting | Evan Daniel (2026) | proved |
 | 254 | `16` | Nagamochi | Hiroshi Nagamochi (2005) | proved |
 | 255 | `16` | Nagamochi | Hiroshi Nagamochi (2005) | proved |
 | 256 | `16` | perfect square | classical | proved |
-| 286 | `17` | counting | Evan Daniel (2026) | proof audit pending |
+| 286 | `17` | counting | Evan Daniel (2026) | proved |
 | 287 | `17` | Nagamochi | Hiroshi Nagamochi (2005) | proved |
 | 288 | `17` | Nagamochi | Hiroshi Nagamochi (2005) | proved |
 | 289 | `17` | perfect square | classical | proved |
-| 321 | `18` | counting | Evan Daniel (2026) | proof audit pending |
+| 321 | `18` | counting | Evan Daniel (2026) | proved |
 | 322 | `18` | Nagamochi | Hiroshi Nagamochi (2005) | proved |
 | 323 | `18` | Nagamochi | Hiroshi Nagamochi (2005) | proved |
 | 324 | `18` | perfect square | classical | proved |

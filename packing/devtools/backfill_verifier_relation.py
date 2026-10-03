@@ -262,6 +262,14 @@ DECISIONS: dict[str, tuple[Classification, str]] = {
             "decision inside one decide_certificate --corner-clip invocation."
         ),
     ),
+    "E-k2m3-evand-valid7-qx2-replay": (
+        runs(("V-evand-qx2-zm-py",), SAME, "decision"),
+        (
+            "Its replay stages the source's own qx2_zm.py at the hashes run V3 names and runs "
+            "it here; plan_valid7_replay only copies, shards and compares leaves, and decides "
+            "nothing. The record says same-implementation."
+        ),
+    ),
     "E-n032-evand-zmx2-full-sym-report": (
         runs(("V-evand-zmx2",), SAME, "decision"),
         (

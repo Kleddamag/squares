@@ -5,7 +5,7 @@ title: Import, confirm and answer every reported result (2 October 2026 effort)
 kind: epic
 status: open
 priority: 1
-version: 31
+version: 32
 labels:
   - result-import
 dependencies: []
@@ -31,7 +31,7 @@ child_order_hints:
   - is-01m3ytdhr6h2xnsvj4f2nc2nk2
   - is-01m3z77bdhk8tn3epx63ywhxft
 created_at: 2026-10-02T16:51:15.917Z
-updated_at: 2026-10-03T00:29:27.397Z
+updated_at: 2026-10-03T01:38:39.352Z
 ---
 Umbrella for the 2 October 2026 effort: PRs #290 -> #292 -> #298 (imports and records), plus a stacked PR for verifier provenance and the independent verifier. Children track each lane; done when every reported result is confirmed or refuted (or has a bead naming exactly what remains), every issue has a current status reply, closeable issues are closed, and all PRs are merged.
 
@@ -111,3 +111,4 @@ Next steps for the next agent, in order:
 - 2026-10-03 00:0x T-075 registered (V0/C1, S3): the six afternoon mixed certificates (n83 937/100; n85 473/50 -> n86; n87 237/25 -> n88; n91 97/10; n92 39/4 -> n93; n96 249/25); pushed a82c464e4; CI run 37081079279 dispatched. Run 37078567481 on ce615a6ec: all green except one stale count already fixed in 48a840593. Next: linear n82 as T-076, then #309, then neutralize model names this branch added to reviewer strings.
 - 2026-10-03 00:30 idle-host headline (branch claude/bench-sqverify-fast-headline, 4-CPU Xeon 2.1 GHz, load ~1): whole certificates rect_n32_L595 verify.cpp 1359.5 CPU-s vs sqverify-fast 28.0 (48.6x), rect_n31_L592 2127.5 vs 39.7 (53.6x); per-direction sample 33.7x (14-35x per cell), same verdicts, node counts within a few percent (the gain is per-box cost).
 - 00:30 check-in: T-064 qx2 shard 2 COMPLETE (claude/replay-valid7-qx2-s2), shard 1 partial; Valid7 wand125 w1-w5 pushing; m4 and r5 partial; m1, m3, r1, r2, r4, the s(77) runner and FF have not pushed since the 22:56 resume (runs push after ~1.6-1.8 h; recheck at 01:45). CI run 37081079279 in progress; #298 still 'dirty' on GitHub. Records lane: T-076 (linear n82, V0) pushed ee5806d82; T-077 rectangles, #309 and the model-name cleanup next.
+- 2026-10-03 ~01:00 T-077 (rectangles n20, n42, n70 at V0) and a results-table wrap fix pushed (80022bafb); dispatched run 37084456313 fully GREEN. #309 registered as T-078 at V3/C3, S2, superseding T-049 (squarepacker after Daniel; native parent-core route as independent-implementation), pushed 214eb5c5c; result-requests.yaml maps #309 -> T-078, #282's afternoon results -> T-075, #294's n82 -> T-076. Records lane next: model-name cleanup; then T-046 leftovers, T-073 n83 and the afternoon replays as runners finish.

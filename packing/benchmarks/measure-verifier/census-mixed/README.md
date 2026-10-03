@@ -14,10 +14,11 @@ those directions. CPU on a shared host whose load average is given.
 
 | Certificate | n | Format | Status | Directions | Nodes | Least certified bound | Exact leaf | CPU s, all 201 | Load | Replayed directions | Authors’ CPU s | Ours, same directions | Ratio |
 | --- | ---: | --- | --- | ---: | ---: | --- | --- | ---: | ---: | --- | ---: | ---: | ---: |
+| `mixed_n65_L835` | 65 | M | VERIFIED | 201 | 91,946,228 | 1.000000000539362 | clears | 1645.7 | 1.1 | 100 | 237 | 8.3 | 29x |
 | `mixed_n76_L894` | 76 | M | VERIFIED | 201 | 32,989,364 | 1.0000000029480338 | clears | 758.5 | 4.9 | all 201 | 13,096 | 758.3 | 17x |
 | `mixed_n101_L1028` | 101 | L | VERIFIED | 201 | 53,145,987 | 1.000000000300333 | clears | 128.4 | 4.0 | all 201 | 27,669 | 128.0 | 216x |
 
-2 of 2 certificates verified; 887 CPU seconds in all.
+3 of 3 certificates verified; 2533 CPU seconds in all.
 
 <!-- This document follows common-doc-guidelines.md.
 See github.com/jlevy/practical-prose and review guidelines before editing.

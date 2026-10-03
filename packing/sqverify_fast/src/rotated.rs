@@ -21,7 +21,7 @@ use num_bigint::BigInt;
 use num_rational::BigRational;
 
 use crate::certificate::{Certificate, Point, Rect, Segment, direction, domain_upper};
-use crate::exact::{approx, enclose};
+use crate::exact::{approx, enclose, of_f64};
 use crate::interval::{Iv, add_dn, add_up, dn, mul_dn, mul_up, sub_dn, sub_up, up};
 
 /// Absolute slack for classification decisions made in plain binary64
@@ -745,6 +745,9 @@ fn ids(count: usize, what: &str) -> Result<Vec<u32>, String> {
 /// it continues only to look for a counterexample candidate elsewhere.
 const MAX_DEEP_BOXES: u64 = 4096;
 
+/// How many of those boxes have their centre's capture evaluated exactly.
+const MAX_EXACT_CENTRES: u64 = 32;
+
 /// Verify one net direction by branch and bound: any `index >= 1`, and
 /// `index = 0` for a measure with points or segments.
 ///
@@ -754,6 +757,7 @@ const MAX_DEEP_BOXES: u64 = 4096;
 pub fn verify_direction(
     cert: &Certificate,
     index: u32,
+    threshold: &BigRational,
     threshold_hi: f64,
     limits: Limits,
 ) -> Result<DirectionResult, String> {
@@ -973,6 +977,16 @@ pub fn verify_direction(
             );
             deep_witness.get_or_insert(here);
             deep_boxes += 1;
+            // The first few such centres are evaluated exactly: one below the
+            // threshold is a refutation, which a band of centres within the
+            // floating-point estimate's error of the threshold would hide.
+            if deep_boxes <= MAX_EXACT_CENTRES
+                && &crate::oracle::coverage(cert, &of_f64(x0), &of_f64(y0), &c, &s) < threshold
+            {
+                verdict = Verdict::CounterexampleCandidate;
+                witness = Some(here);
+                break;
+            }
             if nodes >= limits.max_nodes || deep_boxes >= MAX_DEEP_BOXES {
                 verdict = Verdict::Unresolved;
                 witness = deep_witness;

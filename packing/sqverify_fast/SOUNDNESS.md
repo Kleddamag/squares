@@ -228,8 +228,11 @@ segment parameters widened by `TAU`), stops the direction as a counterexample ca
 which is a refusal; `--confirm` evaluates the candidate centre in exact rationals
 (`oracle::coverage`). The estimate decides only which refusal is reported.
 A box at the depth limit is set aside and the search goes on, so that a counterexample
-elsewhere is still found; the direction is then `unresolved`, as it is when the node
-budget runs out or 4,096 boxes reach the depth limit.
+elsewhere is still found; the first 32 such boxes have their centre’s capture evaluated
+exactly, and one below $T$ is reported as a counterexample candidate, since the
+estimate’s error can hide a band of centres just below the threshold.
+Otherwise the direction is `unresolved`, as it is when the node budget runs out or 4,096
+boxes reach the depth limit.
 Every one of these outcomes is a refusal.
 
 ## Formats M and L: Points, Segments and Domains

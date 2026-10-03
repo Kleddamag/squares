@@ -114,7 +114,7 @@ fn run_direction_inner(
             receipt,
         });
     }
-    let result = crate::rotated::verify_direction(cert, index, threshold_hi, limits)?;
+    let result = crate::rotated::verify_direction(cert, index, threshold, threshold_hi, limits)?;
     let mut receipt = json!({
         "r": index,
         "method": "interval-branch-and-bound",

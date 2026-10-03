@@ -14,9 +14,9 @@ certificate passes here; this review names what that replay must show.
 The draft significance score `S3` is confirmed.
 
 This is the review lane of stage 4 of the result import process for import E
-(`think-6ei5`), written by Claude (model Fable, extra-high thinking effort), separately
-prompted as lane R3 with no shared context with the replay lane, on 2026-10-02. It
-registers nothing and moves no bound.
+(`think-6ei5`), written by Claude (AI review; model unstated; extra-high thinking
+effort), separately prompted as lane R3 with no shared context with the replay lane, on
+2026-10-02. It registers nothing and moves no bound.
 
 ## Scope and Evidence
 

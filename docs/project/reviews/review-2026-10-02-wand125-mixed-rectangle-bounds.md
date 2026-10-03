@@ -20,8 +20,8 @@ The seven values stand as reported until the complete replay of each bundle pass
 `S3` is confirmed for `T-069` and proposed for the $n = 84$, 85 entry to be registered.
 
 This is the review lane of stage 4 of the result import process for imports F
-(`think-ye2x`) and G, written by Claude (model Fable, extra-high thinking effort),
-separately prompted as lane R3 with no shared context with the replay lane, on
+(`think-ye2x`) and G, written by Claude (AI review; model unstated; extra-high thinking
+effort), separately prompted as lane R3 with no shared context with the replay lane, on
 2026-10-02. It registers nothing and moves no bound.
 
 ## Scope and Evidence

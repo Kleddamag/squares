@@ -27,10 +27,10 @@ checker; its exact premises hold, and `S3` is confirmed for its entry.
 The addendum at the end records what was checked.
 
 This is review lane R4 of stage 4 of the result import process, for imports I (issue 294
-and its comment) and H (the comment on issue 282), written by Claude (model Fable) at
-extra-high thinking effort, raised to maximum for the checker’s argument, separately
-prompted as lane R4 with no shared context with the replay lane, on 2026-10-02. It
-registers nothing and moves no bound.
+and its comment) and H (the comment on issue 282), written by Claude (AI review; model
+unstated) at extra-high thinking effort, raised to maximum for the checker’s argument,
+separately prompted as lane R4 with no shared context with the replay lane, on
+2026-10-02. It registers nothing and moves no bound.
 
 ## Scope and Evidence
 

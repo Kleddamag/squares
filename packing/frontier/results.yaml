@@ -4365,7 +4365,7 @@ results:
     reviews:
       - path: docs/project/reviews/review-2026-10-02-evand-s32-no-fold-run.md
         kind: adversarial
-        reviewer: Claude (model Fable) at maximum thinking effort, review lane R2, prompted separately from the replay lane
+        reviewer: Claude (AI review; model unstated) at maximum thinking effort, review lane R2, prompted separately from the replay lane
         reviewer_kind: ai
         relation: project
         date: '2026-10-02'
@@ -5295,7 +5295,7 @@ results:
     reviews:
       - path: docs/project/reviews/review-2026-10-02-evand-s60-geometric-premises.md
         kind: adversarial
-        reviewer: Claude (model Fable) at maximum thinking effort, review lane R2, prompted separately from the replay lane
+        reviewer: Claude (AI review; model unstated) at maximum thinking effort, review lane R2, prompted separately from the replay lane
         reviewer_kind: ai
         relation: project
         date: '2026-10-02'
@@ -5392,7 +5392,7 @@ results:
     reviews:
       - path: docs/project/reviews/review-2026-10-02-evand-s60-geometric-premises.md
         kind: adversarial
-        reviewer: Claude (model Fable) at maximum thinking effort, review lane R2, prompted separately from the replay lane
+        reviewer: Claude (AI review; model unstated) at maximum thinking effort, review lane R2, prompted separately from the replay lane
         reviewer_kind: ai
         relation: project
         date: '2026-10-02'
@@ -5673,7 +5673,7 @@ results:
     reviews:
       - path: docs/project/reviews/review-2026-10-02-wand125-s59-s77-mixed-covers.md
         kind: adversarial
-        reviewer: Claude (model Fable) at maximum thinking effort, review lane R1, prompted separately from the replay lane with no shared context
+        reviewer: Claude (AI review; model unstated) at maximum thinking effort, review lane R1, prompted separately from the replay lane with no shared context
         reviewer_kind: ai
         relation: project
         date: '2026-10-02'
@@ -5786,7 +5786,7 @@ results:
     reviews:
       - path: docs/project/reviews/review-2026-10-02-wand125-s59-s77-mixed-covers.md
         kind: adversarial
-        reviewer: Claude (model Fable) at maximum thinking effort, review lane R1, prompted separately from the replay lane with no shared context
+        reviewer: Claude (AI review; model unstated) at maximum thinking effort, review lane R1, prompted separately from the replay lane with no shared context
         reviewer_kind: ai
         relation: project
         date: '2026-10-02'
@@ -5899,7 +5899,7 @@ results:
     reviews:
       - path: docs/project/reviews/review-2026-10-02-wand125-rectangle-bounds-t068.md
         kind: adversarial
-        reviewer: Claude (model Fable) at extra-high thinking effort, review lane R3, prompted separately from the replay lane with no shared context
+        reviewer: Claude (AI review; model unstated) at extra-high thinking effort, review lane R3, prompted separately from the replay lane with no shared context
         reviewer_kind: ai
         relation: project
         date: '2026-10-02'
@@ -5993,7 +5993,7 @@ results:
     reviews:
       - path: docs/project/reviews/review-2026-10-02-wand125-mixed-rectangle-bounds.md
         kind: adversarial
-        reviewer: Claude (model Fable) at extra-high thinking effort, review lane R3, prompted separately from the replay lane with no shared context
+        reviewer: Claude (AI review; model unstated) at extra-high thinking effort, review lane R3, prompted separately from the replay lane with no shared context
         reviewer_kind: ai
         relation: project
         date: '2026-10-02'
@@ -6196,7 +6196,7 @@ results:
     reviews:
       - path: docs/project/reviews/review-2026-10-02-wand125-mixed-rectangle-bounds.md
         kind: adversarial
-        reviewer: Claude (model Fable) at extra-high thinking effort, review lane R3, prompted separately from the replay lane with no shared context
+        reviewer: Claude (AI review; model unstated) at extra-high thinking effort, review lane R3, prompted separately from the replay lane with no shared context
         reviewer_kind: ai
         relation: project
         date: '2026-10-02'
@@ -6293,7 +6293,7 @@ results:
     reviews:
       - path: docs/project/reviews/review-2026-10-02-wand125-linear-certificates-and-n76.md
         kind: adversarial
-        reviewer: Claude (model Fable) at extra-high thinking effort, review lane R4, prompted separately from the replay lane with no shared context
+        reviewer: Claude (AI review; model unstated) at extra-high thinking effort, review lane R4, prompted separately from the replay lane with no shared context
         reviewer_kind: ai
         relation: project
         date: '2026-10-02'
@@ -6405,7 +6405,7 @@ results:
     reviews:
       - path: docs/project/reviews/review-2026-10-02-wand125-linear-certificates-and-n76.md
         kind: adversarial
-        reviewer: Claude (model Fable) at extra-high thinking effort, review lane R4, prompted separately from the replay lane with no shared context
+        reviewer: Claude (AI review; model unstated) at extra-high thinking effort, review lane R4, prompted separately from the replay lane with no shared context
         reviewer_kind: ai
         relation: project
         date: '2026-10-02'

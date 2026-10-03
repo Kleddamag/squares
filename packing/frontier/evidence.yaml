@@ -91,10 +91,10 @@ evidence:
       state: informally-verified
       date: '2026-10-02'
       reviewed_by: >-
-        Claude (model Fable) at maximum thinking effort, review lane R2, prompted separately
+        Claude (AI review; model unstated) at maximum thinking effort, review lane R2, prompted separately
         from the replay lane
         (docs/project/reviews/review-2026-10-02-evand-s60-geometric-premises.md), after
-        GPT-6 Astra's 2026-10-01 mathematical-transfer read
+        another AI reviewer's 2026-10-01 mathematical-transfer read (model unstated)
       note: >-
         The 2 October review of the geometric premises found every premise holding and no
         blocking defect: the cover is a finite nonnegative measure on the closed container
@@ -138,10 +138,10 @@ evidence:
       state: informally-verified
       date: '2026-10-02'
       reviewed_by: >-
-        Claude (model Fable) at maximum thinking effort, review lane R2, prompted separately
+        Claude (AI review; model unstated) at maximum thinking effort, review lane R2, prompted separately
         from the replay lane
         (docs/project/reviews/review-2026-10-02-evand-s60-geometric-premises.md), after
-        GPT-6 Astra's 2026-10-01 mathematical-transfer read
+        another AI reviewer's 2026-10-01 mathematical-transfer read (model unstated)
       note: >-
         Both reads found the deduction sound as stated: s(61) >= s(60) by deleting a
         square, and s(61) <= 8 by the grid. The 2 October review of the geometric premises
@@ -919,7 +919,7 @@ evidence:
       state: informally-verified
       date: '2026-10-02'
       reviewed_by: >-
-        Claude (model Fable) at extra-high thinking effort, review lane R3, prompted
+        Claude (AI review; model unstated) at extra-high thinking effort, review lane R3, prompted
         separately from the replay lane with no shared context
         (docs/project/reviews/review-2026-10-02-wand125-rectangle-bounds-t068.md)
       note: >-
@@ -1438,7 +1438,7 @@ evidence:
       state: informally-verified
       date: '2026-10-02'
       reviewed_by: >-
-        Claude (model Fable) at maximum thinking effort, review lane R1, prompted separately
+        Claude (AI review; model unstated) at maximum thinking effort, review lane R1, prompted separately
         from the replay lane with no shared context
         (docs/project/reviews/review-2026-10-02-wand125-s59-s77-mixed-covers.md)
       note: >-
@@ -1579,7 +1579,7 @@ evidence:
       state: informally-verified
       date: '2026-10-02'
       reviewed_by: >-
-        Claude (model Fable) at maximum thinking effort, review lane R1, prompted separately
+        Claude (AI review; model unstated) at maximum thinking effort, review lane R1, prompted separately
         from the replay lane with no shared context
         (docs/project/reviews/review-2026-10-02-wand125-s59-s77-mixed-covers.md)
       note: >-
@@ -1711,7 +1711,7 @@ evidence:
       state: informally-verified
       date: '2026-10-02'
       reviewed_by: >-
-        Claude (model Fable) at extra-high thinking effort, review lane R3, prompted
+        Claude (AI review; model unstated) at extra-high thinking effort, review lane R3, prompted
         separately from the replay lane with no shared context
         (docs/project/reviews/review-2026-10-02-wand125-mixed-rectangle-bounds.md)
       note: >-
@@ -1818,7 +1818,7 @@ evidence:
       state: informally-verified
       date: '2026-10-02'
       reviewed_by: >-
-        Claude (model Fable) at extra-high thinking effort, review lane R3, prompted
+        Claude (AI review; model unstated) at extra-high thinking effort, review lane R3, prompted
         separately from the replay lane with no shared context
         (docs/project/reviews/review-2026-10-02-wand125-mixed-rectangle-bounds.md)
       note: >-
@@ -1928,7 +1928,7 @@ evidence:
       state: informally-verified
       date: '2026-10-02'
       reviewed_by: >-
-        Claude (model Fable) at extra-high thinking effort, review lane R3, prompted
+        Claude (AI review; model unstated) at extra-high thinking effort, review lane R3, prompted
         separately from the replay lane with no shared context
         (docs/project/reviews/review-2026-10-02-wand125-mixed-rectangle-bounds.md)
       note: >-
@@ -2035,7 +2035,7 @@ evidence:
       state: informally-verified
       date: '2026-10-02'
       reviewed_by: >-
-        Claude (model Fable) at extra-high thinking effort, review lane R3, prompted
+        Claude (AI review; model unstated) at extra-high thinking effort, review lane R3, prompted
         separately from the replay lane with no shared context
         (docs/project/reviews/review-2026-10-02-wand125-mixed-rectangle-bounds.md)
       note: >-
@@ -2144,7 +2144,7 @@ evidence:
       state: informally-verified
       date: '2026-10-02'
       reviewed_by: >-
-        Claude (model Fable) at extra-high thinking effort, review lane R3, prompted
+        Claude (AI review; model unstated) at extra-high thinking effort, review lane R3, prompted
         separately from the replay lane with no shared context
         (docs/project/reviews/review-2026-10-02-wand125-mixed-rectangle-bounds.md)
       note: >-
@@ -2260,7 +2260,7 @@ evidence:
       state: informally-verified
       date: '2026-10-02'
       reviewed_by: >-
-        Claude (model Fable) at extra-high thinking effort, review lane R3, prompted
+        Claude (AI review; model unstated) at extra-high thinking effort, review lane R3, prompted
         separately from the replay lane with no shared context
         (docs/project/reviews/review-2026-10-02-wand125-mixed-rectangle-bounds.md)
       note: >-
@@ -2379,7 +2379,7 @@ evidence:
       state: informally-verified
       date: '2026-10-02'
       reviewed_by: >-
-        Claude (model Fable) at extra-high thinking effort, review lane R3, prompted
+        Claude (AI review; model unstated) at extra-high thinking effort, review lane R3, prompted
         separately from the replay lane with no shared context
         (docs/project/reviews/review-2026-10-02-wand125-mixed-rectangle-bounds.md)
       note: >-
@@ -2502,7 +2502,7 @@ evidence:
       state: informally-verified
       date: '2026-10-02'
       reviewed_by: >-
-        Claude (model Fable) at extra-high thinking effort, review lane R4, prompted
+        Claude (AI review; model unstated) at extra-high thinking effort, review lane R4, prompted
         separately from the replay lane with no shared context
         (docs/project/reviews/review-2026-10-02-wand125-linear-certificates-and-n76.md)
       note: >-
@@ -2626,7 +2626,7 @@ evidence:
       state: informally-verified
       date: '2026-10-02'
       reviewed_by: >-
-        Claude (model Fable) at extra-high thinking effort, review lane R4, prompted
+        Claude (AI review; model unstated) at extra-high thinking effort, review lane R4, prompted
         separately from the replay lane with no shared context
         (docs/project/reviews/review-2026-10-02-wand125-linear-certificates-and-n76.md)
       note: >-
@@ -2685,7 +2685,7 @@ evidence:
       state: informally-verified
       date: '2026-10-02'
       reviewed_by: >-
-        Claude (model Fable) at extra-high thinking effort, review lane R4, prompted
+        Claude (AI review; model unstated) at extra-high thinking effort, review lane R4, prompted
         separately from the replay lane with no shared context
         (docs/project/reviews/review-2026-10-02-wand125-linear-certificates-and-n76.md)
       note: >-
@@ -3117,7 +3117,7 @@ evidence:
       state: informally-verified
       date: '2026-10-02'
       reviewed_by: >-
-        Claude (model Fable) at maximum thinking effort, review lane R2, prompted separately
+        Claude (AI review; model unstated) at maximum thinking effort, review lane R2, prompted separately
         from the replay lane
         (docs/project/reviews/review-2026-10-02-evand-s32-no-fold-run.md)
       note: >-
@@ -5719,7 +5719,7 @@ evidence:
       state: informally-verified
       date: '2026-10-02'
       reviewed_by: >-
-        Claude (model Fable) at maximum thinking effort, review lane R2, prompted separately
+        Claude (AI review; model unstated) at maximum thinking effort, review lane R2, prompted separately
         from the replay lane
         (docs/project/reviews/review-2026-10-02-evand-s32-no-fold-run.md)
       note: >-

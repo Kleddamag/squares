@@ -1,9 +1,10 @@
 # Proof Review: Evan Daniel’s `s(32)` Cover Certified Without the D4 Fold, and What the Checkers Share
 
 Reviewed 2026-10-02 from the retained packets and a read-only clone of the source, by
-Claude (model Fable) at maximum thinking effort, as review lane R2 of the W2 phase that
-is stage 4 of the [result import](../../../packing/campaign/result-import.md) for Evan
-Daniel’s comment of 1 October on
+Claude (AI review; model unstated) at maximum thinking effort, as review lane R2 of the
+W2 phase that is stage 4 of the
+[result import](../../../packing/campaign/result-import.md) for Evan Daniel’s comment of
+1 October on
 [jlevy/squares#238](https://github.com/jlevy/squares/issues/238#issuecomment-5923097530)
 (bead `think-48e1`). The lane was prompted separately from the replay lane and shares no
 context with it; this document was written without sight of any replay result.

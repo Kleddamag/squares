@@ -1,8 +1,8 @@
 # Proof Review: The Geometric Premises of Evan Daniel’s `s(60) = 8` and `s(61) = 8`
 
-Reviewed 2026-10-02 from the retained packets, read-only, by Claude (model Fable) at
-maximum thinking effort, as review lane R2 of the W2 phase that is stage 4 of the
-[result import](../../../packing/campaign/result-import.md) for
+Reviewed 2026-10-02 from the retained packets, read-only, by Claude (AI review; model
+unstated) at maximum thinking effort, as review lane R2 of the W2 phase that is stage 4
+of the [result import](../../../packing/campaign/result-import.md) for
 [jlevy/squares#256](https://github.com/jlevy/squares/issues/256) (bead `think-x73z`).
 The lane was prompted separately from the replay lane and shares no context with it;
 this document was written without sight of any replay result, as the

@@ -4,9 +4,9 @@
 the [result import runbook](../../../packing/campaign/result-import.md) for issues
 [280](https://github.com/jlevy/squares/issues/280) and
 [279](https://github.com/jlevy/squares/issues/279), beads `think-oy3i` and `think-xujq`.
-**Reviewer:** Claude, model Fable, at maximum thinking effort, separately prompted, with
-no shared context with the replay lane: nothing of the replay lane’s work, and no
-receipt or log written after 2026-10-02T00:00Z, was read.
+**Reviewer:** Claude (AI review; model unstated), at maximum thinking effort, separately
+prompted, with no shared context with the replay lane: nothing of the replay lane’s
+work, and no receipt or log written after 2026-10-02T00:00Z, was read.
 It is an adversarial soundness review of two computer-assisted exact values registered
 as reported, $s(59) = 8$ (`T-066`) and $s(77) = 9$ (`T-067`), and of the corollaries the
 record states for them in `T-062`, `T-063` and `T-064`. It replays nothing: the verdicts

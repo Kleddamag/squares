@@ -1,0 +1,87 @@
+{
+  "format": "external-source-declaration-v1",
+  "id": "wand125-mixed-bounds",
+  "source_url": "https://github.com/wand125/square-packing-bounds",
+  "source_ref": "refs/heads/main",
+  "source_commit": "2aff2076c492d62340e986c84f60a0a29eb668df",
+  "retrieved_at_utc": "2026-10-03T18:49:00Z",
+  "git_scope": "A blob-filtered clone of the single public branch with its full history, checked out sparsely at this commit: the 22 claim directories and the three root files. Every file under the 22 claim directories is digested, with the three root files; the rest of the tree is pinned by the commit.",
+  "archived_dir": "square-packing-bounds",
+  "license": "MIT, Copyright (c) 2026 wand125 (root LICENSE)",
+  "claims": [
+    "s(51) >= 373/50 (certificates/mixed_n51_L746)",
+    "s(52) >= 151/20 (certificates/mixed_n52_L755)",
+    "s(55) >= 966/125 (certificates/mixed_n55_L7728)",
+    "s(58) >= 1581/200 (certificates/mixed_n58_L7905)",
+    "s(69) >= 2153/250 (certificates/mixed_n69_L8612)",
+    "s(70) >= 3459/400 (certificates/mixed_n70_L86475)",
+    "s(71) >= 1741/200 (certificates/mixed_n71_L8705)",
+    "s(73) >= 8809/1000 (certificates/mixed_n73_L8809)",
+    "s(74) >= 3547/400 (certificates/mixed_n74_L88675)",
+    "s(75) >= 223/25 (certificates/mixed_n75_L892)",
+    "s(76) >= 224/25 (certificates/mixed_n76_L896)",
+    "s(86) >= 19/2 (certificates/mixed_n86_L950)",
+    "s(87) >= 191/20 (certificates/mixed_n87_L955)",
+    "s(88) >= 48/5 (certificates/mixed_n88_L960)",
+    "s(89) >= 193/20 (certificates/mixed_n89_L965)",
+    "s(90) >= 389/40 (certificates/mixed_n90_L9725)",
+    "s(91) >= 39/4 (certificates/mixed_n91_L975)",
+    "s(92) >= 977/100 (certificates/mixed_n92_L977)",
+    "s(93) >= 493/50 (certificates/mixed_n93_L986)",
+    "s(94) >= 248/25 (certificates/mixed_n94_L992)",
+    "s(95) >= 249/25 (certificates/mixed_n95_L996)",
+    "s(96) >= 997/100 (certificates/mixed_n96_L997)"
+  ],
+  "scope": [
+    "README.md",
+    "LICENSE",
+    ".gitignore",
+    "certificates/mixed_n51_L746",
+    "certificates/mixed_n52_L755",
+    "certificates/mixed_n55_L7728",
+    "certificates/mixed_n58_L7905",
+    "certificates/mixed_n69_L8612",
+    "certificates/mixed_n70_L86475",
+    "certificates/mixed_n71_L8705",
+    "certificates/mixed_n73_L8809",
+    "certificates/mixed_n74_L88675",
+    "certificates/mixed_n75_L892",
+    "certificates/mixed_n76_L896",
+    "certificates/mixed_n86_L950",
+    "certificates/mixed_n87_L955",
+    "certificates/mixed_n88_L960",
+    "certificates/mixed_n89_L965",
+    "certificates/mixed_n90_L9725",
+    "certificates/mixed_n91_L975",
+    "certificates/mixed_n92_L977",
+    "certificates/mixed_n93_L986",
+    "certificates/mixed_n94_L992",
+    "certificates/mixed_n95_L996",
+    "certificates/mixed_n96_L997"
+  ],
+  "pinned_only": [
+    {
+      "match": "LICENSE",
+      "reason": "retained byte-identical by the 2026-09-27 rectangle packet",
+      "identical_to": "packing/resources/web/wand125-rectangle-certificates-2026-09-27/wand125-rectangles/LICENSE"
+    },
+    {
+      "match": ".gitignore",
+      "reason": "a retained .gitignore would act on this repository's tree; the 2026-10-01 packet README quotes it"
+    },
+    {
+      "match": "certificates/mixed_*/*-proof-bundle.tar.gz",
+      "reason": "complete proof bundle (11.7 to 23.7 MB)"
+    },
+    {
+      "match": "certificates/mixed_*/code/*",
+      "reason": "byte-identical to the mixed_n50_L740/code/ file of the same name, retained by the 2026-09-28 packet",
+      "identical_to": "packing/resources/web/wand125-point-and-mixed-2026-09-28/square-packing-bounds/certificates/mixed_n50_L740/code"
+    },
+    {
+      "match": "certificates/mixed_*/requirements.txt",
+      "reason": "byte-identical to mixed_n50_L740/requirements.txt, retained by the 2026-09-28 packet",
+      "identical_to": "packing/resources/web/wand125-point-and-mixed-2026-09-28/square-packing-bounds/certificates/mixed_n50_L740/requirements.txt"
+    }
+  ]
+}

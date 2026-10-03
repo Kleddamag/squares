@@ -704,6 +704,7 @@ sources:
     represented_by: [frontier/n-083.md, frontier/n-101.md, frontier/n-102.md, frontier/n-103.md, frontier/n-104.md, frontier/n-105.md]
     evidence:
       - E-n083-wand125-linear-935-report
+      - E-n083-wand125-linear-935-source-replay
       - E-n101-wand125-linear-1028-report
       - E-n101-wand125-linear-1028-source-replay
     notes: >-
@@ -718,7 +719,9 @@ sources:
       refused two mutated n = 101 measures. The n = 101 certificate's complete replay of 2
       October matched the shipped run at all 201 directions
       (E-n101-wand125-linear-1028-source-replay), which put n = 101 to 105 in the verified
-      lane (T-080); at n = 83 one angle was replayed, to price the replay. The 2 October
+      lane (T-080); n = 83's of 3 October matched too
+      (E-n083-wand125-linear-935-source-replay), which puts T-073 at V3/C3 and moves no
+      case value, the replayed mixed 937/100 being higher there. The 2 October
       review read the certificates and the checker, with no blocking defect (T-073 at C1). The source's margin over Green at n = 83, "more than 0.0833", is
       false (it is 0.083266...); the bound is unaffected. The issue announces n = 82 at 9.32,
       which no revision publishes yet. A later revision, 06eeb40c, adds three
@@ -793,13 +796,14 @@ sources:
     local: resources/web/wand125-linear-n82-2026-10-02/
     source_key: '[wand125 linear n82 2026-10-02]'
     scope: {n_values: [82]}
-    reviewed: '2026-10-02'
+    reviewed: '2026-10-03'
     source_date: '2026-10-02'
     disposition: current-report
     replay_disposition: case-specific
     represented_by: [frontier/n-082.md]
     evidence:
       - E-n082-wand125-linear-932-report
+      - E-n082-wand125-linear-932-source-replay
     notes: >-
       Revision b00fc70f1904e9b1b567afee056d347f911209e8, retrieved at 2026-10-02T16:53Z for a
       comment of that day on jlevy/squares#294; the directory was first committed at
@@ -807,8 +811,10 @@ sources:
       of the source's n = 83 linear certificate scaled by 932/935, checked by
       code/unified_linear_verify.cpp, byte for byte the checker of T-073. Recorded as a
       reported lower bound (T-076), above Green's reported value, which the case reported
-      before it. The exact audit and the replay's checks before its first angle pass; no
-      angle was replayed, and the proof-bundle tarball is pinned by digest and not retained.
+      before it. The exact audit and the replay's checks before its first angle pass, and the complete
+      replay of 3 October matched the shipped run at all 201 directions
+      (E-n082-wand125-linear-932-source-replay), which put s(82) >= 233/25 in the verified
+      lane; the proof-bundle tarball is pinned by digest and not retained.
   - id: squarepacker-s12-lower-bound-2026-10-02
     title: Daniel's s(12) certificate rescaled by 7902/7901
     role: source-repository
@@ -858,6 +864,56 @@ sources:
       --pair-points, VERIFIED-D4 over all 6,400 roots, and two mutated covers refused;
       recorded as a second route on T-063, since s(61) = 8 already follows from s(60) = 8
       (T-062). The 2 October review of the cover found no defect.
+  - id: wand125-mixed-bounds-2026-10-03
+    title: Mixed rectangle-measure certificates of 3 October 2026 for 22 counts in n = 51 to 96
+    role: source-repository
+    url: https://github.com/wand125/square-packing-bounds/tree/2aff2076c492d62340e986c84f60a0a29eb668df
+    local: resources/web/wand125-mixed-bounds-2026-10-03/
+    source_key: '[wand125 mixed bounds 2026-10-03]'
+    scope: {n_values: [51, 52, 55, 58, 69, 70, 71, 73, 74, 75, 76, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96]}
+    reviewed: '2026-10-03'
+    source_date: '2026-10-03'
+    disposition: current-report
+    replay_disposition: case-specific
+    represented_by: [frontier/n-051.md, frontier/n-052.md, frontier/n-055.md, frontier/n-058.md, frontier/n-069.md, frontier/n-070.md, frontier/n-071.md, frontier/n-073.md, frontier/n-074.md, frontier/n-075.md, frontier/n-076.md, frontier/n-086.md, frontier/n-087.md, frontier/n-088.md, frontier/n-089.md, frontier/n-090.md, frontier/n-091.md, frontier/n-092.md, frontier/n-093.md, frontier/n-094.md, frontier/n-095.md, frontier/n-096.md]
+    evidence:
+      - E-n051-wand125-mixed-746-report
+      - E-n052-wand125-mixed-755-report
+      - E-n055-wand125-mixed-7728-report
+      - E-n058-wand125-mixed-7905-report
+      - E-n069-wand125-mixed-8612-report
+      - E-n070-wand125-mixed-86475-report
+      - E-n071-wand125-mixed-8705-report
+      - E-n073-wand125-mixed-8809-report
+      - E-n074-wand125-mixed-88675-report
+      - E-n075-wand125-mixed-892-report
+      - E-n076-wand125-mixed-896-report
+      - E-n086-wand125-mixed-950-report
+      - E-n087-wand125-mixed-955-report
+      - E-n088-wand125-mixed-960-report
+      - E-n089-wand125-mixed-965-report
+      - E-n090-wand125-mixed-9725-report
+      - E-n091-wand125-mixed-975-report
+      - E-n092-wand125-mixed-977-report
+      - E-n093-wand125-mixed-986-report
+      - E-n094-wand125-mixed-992-report
+      - E-n095-wand125-mixed-996-report
+      - E-n096-wand125-mixed-997-report
+    notes: >-
+      Revision 2aff2076c492d62340e986c84f60a0a29eb668df, retrieved at about 2026-10-03T18:49Z
+      for 22 comments of that day on jlevy/squares#282. 22 rectangle densities checked at
+      coverage one by the source's research copy of Tokoharu's verify.cpp, byte for byte the
+      checker of its n = 50 certificate, each of mass n - 1/100000, each added by its own
+      commit between 02:49 and 17:58 UTC and pinned together at the last. All 22 are recorded
+      as reported lower bounds (T-082), 21 above what the record reported at their counts;
+      at n = 96 the reported s(96) = 10 of T-081 is higher, and 997/100 is above the verified
+      249/25. Six
+      supersede certificates this record holds verified: mixed_n76_L894 (T-072),
+      mixed_n87_L948, mixed_n91_L970, mixed_n92_L975 and mixed_n96_L996 (T-075), and
+      mixed_n90_L960 (T-069). The exact audit and the replay's checks before its first angle
+      pass on all 22; no angle was replayed, and the proof-bundle tarballs are pinned by
+      digest and not retained. Every comparison in the source's audits is with an exact
+      rational; six name an unpublished value of the source's own.
   - id: wand125-valid7-independent-check-2026-10-02
     title: Independent exact checker of Valid7 for s(k^2 - 3) = k
     role: source-repository

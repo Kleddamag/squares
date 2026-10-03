@@ -972,12 +972,11 @@ it.
   only where its entry declares a later result that implies it (`superseded_by`), and
   `superseded in part` where that result implies some of it, as `T-060` does `T-036`’s
   bound and not its equality case.
-  A chip and its links are one unit, so a narrow cell wraps between marks and not inside
-  one. A result that still stands draws no chip for that: `current best` is the default,
-  so it is left unsaid.
-  That a bound is only reported is no chip of its own: it is the status `recorded`. A
-  second proof of a value another result holds says so by its kind, `simplification`,
-  and a result that bounds nothing by its kind too.
+  An id never breaks at its hyphen.
+  A result that still stands draws no chip for that: `current best` is the default, so
+  it is left unsaid. That a bound is only reported is no chip of its own: it is the
+  status `recorded`. A second proof of a value another result holds says so by its kind,
+  `simplification`, and a result that bounds nothing by its kind too.
   Each of these chips adds no style of its own, so every one is the same plain gray
   chip, one font size, line height and height, and they differ only in their words.
   The Rungs column is as wide as its widest chip, so in a table each chip of the status

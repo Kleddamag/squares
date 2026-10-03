@@ -51,6 +51,7 @@ import math
 import re
 import sys
 from collections.abc import Iterable, Mapping, Sequence
+from dataclasses import replace
 from decimal import Decimal
 from functools import cache
 from pathlib import Path
@@ -705,6 +706,24 @@ def _standing_on(result_id: str, cases: tuple[int, ...]) -> str:
     return standing({**record, "scope": {"n_values": list(cases)}}, records)
 
 
+def supersessions_on(other: Result, cases: Sequence[int]) -> tuple[Any, ...]:
+    """A result's marks of supersession on `cases` alone
+    (`render_recent_results.supersessions`), asked of the result with its scope cut to
+    those cases, as `standing_on` asks its standing: a bound superseded on several cases
+    names, on a chain about some of them, only the results that hold those."""
+    return _supersessions_on(other.id, tuple(cases))
+
+
+@cache
+def _supersessions_on(result_id: str, cases: tuple[int, ...]) -> tuple[Any, ...]:
+    """`supersessions_on`, kept, as `_standing_on` is."""
+    from devtools.render_recent_results import standing, supersessions  # noqa: PLC0415
+
+    records = _records()
+    cut = {**records.results[result_id], "scope": {"n_values": list(cases)}}
+    return tuple(supersessions(cut, standing(cut, records), records))
+
+
 def citations(other: Result) -> list[str]:
     """A result's citations and sources, as a chain step links them: each source's
     bibliography entry, the packet its artifacts sit in, the proof source and review the
@@ -731,7 +750,8 @@ def step(other: Result, current: Result, cases: Sequence[int]) -> str:
     (`overview_sections.date_cell`).
 
     A broad result's chain runs to dozens of results, so a step there keeps its kind and
-    status and leaves its rungs to its own row."""
+    status and leaves its rungs to its own row. A superseded result's step names the
+    results that supersede it on these cases alone (`supersessions_on`)."""
     from devtools.overview_sections import (  # noqa: PLC0415
         date_cell,
         kind_and_status,
@@ -739,6 +759,7 @@ def step(other: Result, current: Result, cases: Sequence[int]) -> str:
         standing_key,
         status_chips,
     )
+    from devtools.render_recent_results import SUPERSEDED, listed  # noqa: PLC0415
 
     wanted = set(cases)
     shared = [n for n in scope(other) if n in wanted]
@@ -753,16 +774,29 @@ def step(other: Result, current: Result, cases: Sequence[int]) -> str:
     if other.id == current.id:
         current_mark = ' data-current=""'
         this = ' <span class="site-result-this">this result</span>'
-    chips = kind_and_status(other) if is_broad(cases) else status_chips(other)
     here = standing_on(other, shared)
+    marks = supersessions_on(other, shared)
+    # Where the result stands here as it does as a whole, its marks name only the
+    # results on these cases; where it stands differently, its chips are the whole
+    # result's, as its row's are, and a note says how it stands here.
+    shown = replace(other, supersessions=marks) if here == other.standing else other
+    chips = kind_and_status(shown) if is_broad(cases) else status_chips(shown)
     if here != other.standing:
         on_case = "on this case" if len(cases) == 1 else "on these cases"
-        chips += f' <span class="site-cell-quiet">{on_case}, {_esc(here)}</span>'
+        said = _esc(here)
+        by = [mark.by for mark in marks if mark.mark == SUPERSEDED and mark.by]
+        if by:
+            links = [f'<a href="{_esc(result_url(item))}">{_esc(item)}</a>' for item in by[0]]
+            said += f" by {listed(links)}"
+        chips += f' <span class="site-cell-quiet">{on_case}, {said}</span>'
     chip_line = f'<p class="site-result-step-chips">{chips}</p>'
     cites = [_esc(other.credit), *citations(other)]
+    # A result its entry declares superseded as a whole is set back as a superseded
+    # bound is, whatever its standing.
+    dimmed = SUPERSEDED if any(mark.mark == SUPERSEDED for mark in marks) else here
     return (
         f'<li class="site-result-step" data-step="{_esc(other.id.lower())}" '
-        f'data-standing="{_esc(standing_key(here))}"{current_mark}>'
+        f'data-standing="{_esc(standing_key(dimmed))}"{current_mark}>'
         f'<p class="site-result-step-head">{date_cell(other)} '
         f'<a href="{_esc(result_url(other.id))}">{_esc(other.id)}</a>{this}'
         f"{on}</p>"

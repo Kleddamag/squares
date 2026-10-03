@@ -245,8 +245,9 @@ $defs:
           implies some of it and this one still holds the rest, which marks it superseded
           in part and keeps it current. `what` says what the later result implies and,
           for a part, what this one still holds alone. `devtools.check_results` holds each
-          named result to the register: it exists, is not this one, was registered no
-          earlier, and shares a case with it.
+          named result to the register: it exists, is not this one, is named once, is
+          dated no earlier (its source's publication, or the day this project established
+          it), and shares a case with it.
         items:
           type: object
           additionalProperties: false

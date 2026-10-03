@@ -867,7 +867,7 @@ def result_head() -> str:
         'what the result is">Rungs</th>'
         '<th data-sort="text" class="site-col-status" title="How far the work on it here '
         "has gone: recorded, reviewed, confirmed or incomplete; then who has the next "
-        'move, and superseded where it is">Status</th>'
+        'move, and superseded, wholly or in part, and by what, where it is">Status</th>'
         '<th class="site-col-details">Details</th>'
         '<th data-sort="text" class="site-col-id">ID</th>'
         "</tr></thead>"
@@ -1243,7 +1243,7 @@ def supersession_marks(result: Result) -> str:
     later result implies some of it, each followed by the results that supersede it as
     links to their rows (`Result.supersessions`): the results a superseded bound's cases
     rest on now, or those a result of another kind declares imply it. Each mark and its
-    results are one unit, so a narrow cell wraps between marks and not inside one."""
+    results are one element, and an id never breaks at its hyphen (`site.css`)."""
     marks = []
     for mark in result.supersessions:
         by = ""

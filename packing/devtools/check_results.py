@@ -19,8 +19,8 @@ each entry's `registered` date. It requires each entry's `kind`, one of `KINDS`,
 and cross-checks it against the relations the headline and the claim state and
 the claims of the cited evidence (`kind_problems`). It holds a `superseded_by`, the
 later results a result of a kind that is no bound declares imply it in whole or in part,
-to registered, later results on a case it shares, and refuses one on a bound, whose
-supersession is derived (`superseded_by_problems`). It holds a `builds_on`, which
+to registered results dated no earlier, on a case it shares, and refuses one on a bound,
+whose supersession is derived (`superseded_by_problems`). It holds a `builds_on`, which
 puts `after …` in the credit of a result of this project, to the sources the
 result's own evidence cites. It refuses a rung label in a `claim`, `composition`
 or `next_rung`, or in a case record, that asserts a rung no result the clause is
@@ -647,8 +647,22 @@ def kind_problems(
     return [f"{rid}: {problem}" for problem in problems]
 
 
+def result_date(record: Mapping[str, Any]) -> str:
+    """The date a result is of: its source's `attribution.published` for a result by
+    others, which may be a year alone, else the day this project `established` it."""
+    attribution = record.get("attribution") or {}
+    return str(attribution.get("published") or record.get("established") or "")
+
+
+def _earlier(date_of: str, than: str) -> bool:
+    """Whether one result's date is strictly before another's, at the precision both
+    give: `1979` is before `2026-09-24`, and `2026` is not before `2026-09-24`."""
+    shared = min(len(date_of), len(than))
+    return date_of[:shared] < than[:shared]
+
+
 def superseded_by_problems(
-    record: dict, registered: Mapping[str, str], scopes: Mapping[str, set[int]]
+    record: dict, dated: Mapping[str, str], scopes: Mapping[str, set[int]]
 ) -> list[str]:
     """What is wrong with a result's `superseded_by`, the later results it declares
     imply it in whole or in part.
@@ -656,9 +670,10 @@ def superseded_by_problems(
     Only a result whose kind is no bound declares it: a bound's supersession is derived
     from the case records (`render_recent_results.superseding`), and a declaration
     beside it would be a second account that could disagree. Each named result is in
-    the register, is not this one, appears once, was registered no earlier than this
-    one, and shares a case with it. `registered` and `scopes` are every result's
-    registration date and cases.
+    the register, is not this one, appears once, is dated no earlier than this one
+    (`result_date`: when its source published it or this project established it, not
+    when it was registered), and shares a case with it. `dated` and `scopes` are every
+    result's date and cases.
     """
     rid = record["id"]
     declared = record.get("superseded_by") or []
@@ -667,8 +682,9 @@ def superseded_by_problems(
     if record.get("kind") in BOUND_KINDS:
         return [
             (
-                f"{rid}: declares superseded_by, but a {kind_label(record['kind'])}'s "
-                "supersession is derived from the case records and never declared"
+                f"{rid}: declares superseded_by, but its kind is "
+                f"{kind_label(record['kind'])}, whose supersession is derived from the "
+                "case records and never declared"
             )
         ]
     problems: list[str] = []
@@ -682,13 +698,13 @@ def superseded_by_problems(
             problems.append(f"{rid}: superseded_by names {other} twice")
             continue
         seen.add(other)
-        if other not in registered:
+        if other not in dated:
             problems.append(f"{rid}: superseded_by names {other}, which is not registered")
             continue
-        if str(registered[other]) < str(registered[rid]):
+        if _earlier(dated[other], dated[rid]):
             problems.append(
-                f"{rid}: superseded_by names {other}, registered {registered[other]}, "
-                f"before this result's {registered[rid]}"
+                f"{rid}: superseded_by names {other}, dated {dated[other]}, before this "
+                f"result's {dated[rid]}"
             )
         if not scopes.get(rid, set()) & scopes.get(other, set()):
             problems.append(f"{rid}: superseded_by names {other}, which shares no case with it")
@@ -873,7 +889,7 @@ def main() -> int:
     if actual_ids != expected_ids:
         problems.append(f"register ids are not contiguous T-001..: {actual_ids}")
     scopes = {record["id"]: scope_values(record["scope"]) for record in results}
-    registered = {record["id"]: str(record.get("registered")) for record in results}
+    dated = {record["id"]: result_date(record) for record in results}
 
     standings: dict[str, Standing] = {}
     for record in results:
@@ -903,7 +919,7 @@ def main() -> int:
         problems.extend(registered_problems(record, str(register["last_reviewed"])))
         problems.extend(headline_problems(record))
         problems.extend(kind_problems(record, cited, scopes))
-        problems.extend(superseded_by_problems(record, registered, scopes))
+        problems.extend(superseded_by_problems(record, dated, scopes))
         problems.extend(established_problems(record, register["last_reviewed"]))
         problems.extend(activity_problems(record, str(register["last_reviewed"])))
 
@@ -985,7 +1001,7 @@ def main() -> int:
         f"{len(results)} registered results: every declared rung passes its "
         "structural checks, every path, source and produced_by id resolves, every "
         "headline and date holds, every kind agrees with its claim and evidence, every "
-        "declared supersession names a later result on a shared case, every "
+        "declared supersession names a result no earlier on a shared case, every "
         "recent case lower bound is covered, every reader-tier mention exists; by status, "
         + ", ".join(f"{held.count(name)} {name}" for name in STATUSES)
     )

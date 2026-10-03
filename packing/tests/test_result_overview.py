@@ -276,8 +276,21 @@ def test_the_chain_on_eleven_squares_says_how_each_result_stands_there(
     # elsewhere and says in words how it stands on this case.
     assert not overview_sections.is_superseded(wide)
     assert ">current best<" not in step
-    assert "on this case, superseded" in step
+    t060 = f'<a href="{overview_sections.result_url("T-060")}">T-060</a>'
+    assert f"on this case, superseded by {t060}" in step
     assert steps["t-047"] == overview_sections.standing_key(SUPERSEDED)
+    # T-036, which T-060 supersedes only in part, is current, and its step says so.
+    assert steps["t-036"] != overview_sections.standing_key(SUPERSEDED)
+    t036 = bodies[SETTLED].split('data-step="t-036"', 1)[1].split("</li>", 1)[0]
+    assert f'>superseded in part</span> <span class="site-cell-quiet">by {t060}' in t036
+
+
+def test_a_chain_names_only_the_successors_on_its_own_cases(bodies: dict[str, str]) -> None:
+    """T-019 is about n = 17 to 19 and superseded by T-020, T-030, T-043 and T-046; on
+    n = 17's chain its step names only T-043, which holds that case (think-6zg1)."""
+    step = bodies["T-043"].split('data-step="t-019"', 1)[1].split("</li>", 1)[0]
+    chips = step.split('<p class="site-result-step-chips">', 1)[1].split("</p>", 1)[0]
+    assert re.findall(r'href="all-results\.html#(t-\d+)"', chips) == ["t-043"]
 
 
 @pytest.mark.parametrize("result_id", [SETTLED, EARLIER, BROAD])

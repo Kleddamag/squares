@@ -212,14 +212,14 @@ class Held(NamedTuple):
     """Entries a verified bound, lower or upper, rests on."""
     reported: frozenset[str]
     """Entries a reported bound, lower or upper, rests on."""
-    upper: frozenset[str]
+    upper_evidence: frozenset[str]
     """The verified upper bound's evidence, the grid's included: an exact value's top."""
     proved: bool
     """Whether the case is proved, so its verified bounds meet at an exact value."""
-    lower: frozenset[str] = frozenset()
+    lower_holders: frozenset[str]
     """Entries a lower bound, verified or reported, rests on: what a lower bound that
     holds none of them was superseded by."""
-    upper_held: frozenset[str] = frozenset()
+    upper_holders: frozenset[str]
     """Entries an upper bound, verified or reported, rests on."""
 
 
@@ -466,10 +466,10 @@ def held(n: int, records: Records) -> Held:
     return Held(
         verified=frozenset(lower | verified_upper),
         reported=frozenset(reported_lower | reported_upper),
-        upper=frozenset(str(item) for item in (upper or {}).get("evidence") or []),
+        upper_evidence=frozenset(str(item) for item in (upper or {}).get("evidence") or []),
         proved=case["status"] == "proved",
-        lower=frozenset(lower | reported_lower),
-        upper_held=frozenset(verified_upper | reported_upper),
+        lower_holders=frozenset(lower | reported_lower),
+        upper_holders=frozenset(verified_upper | reported_upper),
     )
 
 
@@ -486,7 +486,9 @@ def standing(record: Mapping[str, Any], records: Records) -> str:
     claims = {records.register.evidence[item].get("claim") for item in cited}
     if not claims & BOUND_CLAIMS:
         return NO_STANDING
-    if "lower-bound" in claims and any(case.proved and cited & case.upper for case in cases):
+    if "lower-bound" in claims and any(
+        case.proved and cited & case.upper_evidence for case in cases
+    ):
         if str(record["confirmation"]) in REPLAYED_RUNGS:
             return SECOND_CERTIFICATE
         return SECOND_CERTIFICATE_REPORTED
@@ -525,22 +527,23 @@ def superseded(record: Mapping[str, Any], held: str) -> bool:
 
 
 def superseding(record: Mapping[str, Any], records: Records) -> tuple[str, ...]:
-    """The results a superseded bound was superseded by, in id order: the entries the
-    bounds of its own cases rest on now, on its own side, verified or reported (a lower
-    bound's lower bounds, an upper bound's upper bounds, both for an exact value), read
-    as `held` reads them. Empty where no register entry carries those bounds."""
-    kind = str(record["kind"])
+    """The results a superseded bound was superseded by, in id order: the bounds, entries
+    of a kind in `BOUND_KINDS`, that the bounds of its own cases rest on now, verified or
+    reported, read as `held` reads them. An upper bound's are the upper bounds' holders;
+    a lower bound's and an exact value's are the lower bounds' holders, since a
+    construction never supersedes a proof. An audit or a correction that cites a bound's
+    evidence carries it and supersedes nothing. Empty where no register entry carries
+    those bounds."""
+    upper = str(record["kind"]) == "upper-bound"
     found: set[str] = set()
     for n in _scope(record):
-        if n not in records.cases:
-            continue
-        case = held(n, records)
-        if kind != "upper-bound":
-            found |= case.lower
-        if kind != "lower-bound":
-            found |= case.upper_held
+        if n in records.cases:
+            case = held(n, records)
+            found |= case.upper_holders if upper else case.lower_holders
     found.discard(str(record["id"]))
-    return tuple(sorted(found))
+    return tuple(
+        sorted(entry for entry in found if records.results[entry]["kind"] in BOUND_KINDS)
+    )
 
 
 class Supersession(NamedTuple):
@@ -570,13 +573,12 @@ def supersessions(
     now for a bound (`superseding`), or by those its entry declares for a result of
     another kind; and `superseded in part` by those its entry declares, which only a
     result of another kind can (`superseded_by`, extent `part`)."""
+    bound = str(record.get("kind")) in BOUND_KINDS
     marks: list[Supersession] = []
     if superseded(record, stands):
-        if str(record.get("kind")) in BOUND_KINDS:
-            marks.append(Supersession(SUPERSEDED, superseding(record, records)))
-        else:
-            marks.append(Supersession(SUPERSEDED, _declared(record, WHOLE)))
-    part = _declared(record, PART)
+        by = superseding(record, records) if bound else _declared(record, WHOLE)
+        marks.append(Supersession(SUPERSEDED, by))
+    part = () if bound else _declared(record, PART)
     if part:
         marks.append(Supersession(SUPERSEDED_IN_PART, part))
     return marks

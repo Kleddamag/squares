@@ -230,7 +230,7 @@ Two marks sit beside a status and are no part of it.
   `T-060`’s $s(11) = T$ implies `T-036`’s bound for its family and not its equality
   case, since `T-060` makes no claim of uniqueness, so `T-036` is superseded in part.
   [`devtools/check_results.py`](packing/devtools/check_results.py) holds each named
-  result to a later registration on a case the two share, and refuses the field on a
+  result to one dated no earlier, on a case the two share, and refuses the field on a
   bound, whose supersession is derived.
 - **Activity** says who has the next move, where the record shows it.
   A register entry may carry `activity`, with a `state` of `in-analysis` (a replay, a
@@ -358,8 +358,8 @@ Method limit, correction and audit are told apart by review alone.
 A result’s standing, whether a case bound rests on it now, is about bounds.
 A result whose evidence claims no bound has no standing, and no later bound supersedes
 it; a later result that implies it is declared instead ([Status](#status)). Of a
-standing, the register’s views show one thing, the *superseded* mark, and only on a
-result whose kind is a bound.
+standing, the register’s views show one thing, the *superseded* mark, which a standing
+gives only a bound; another kind carries the mark only where its entry declares it.
 
 ## Results by Others
 

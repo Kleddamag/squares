@@ -16,11 +16,13 @@ competes with `C`: it is the reader's summary of it. `incomplete` is the one val
 ladder cannot give.
 
 Two more things sit beside a status and are not part of it. Whether a result is
-*superseded* is its position on the frontier, derived from the case records
-(`render_recent_results.standing`). Its `activity` is who has the next move: this
-project, with work under way (`in analysis`), or another party, with a request on file
-(`waiting on …`). An activity is the one hand-recorded fact here, so it is dated, names
-the record that shows it, and expires (`activity_problems`).
+*superseded*, and by what, is its position on the frontier: derived from the case
+records for a bound (`render_recent_results.standing`, `superseding`), and declared in
+its entry for a result of another kind that a later result implies, wholly or in part
+(`superseded_by`, `render_recent_results.supersessions`). Its `activity` is who has the
+next move: this project, with work under way (`in analysis`), or another party, with a
+request on file (`waiting on …`). An activity is the one hand-recorded fact here, so it
+is dated, names the record that shows it, and expires (`activity_problems`).
 
 Provisional: the vocabulary, the rung at which a result is `confirmed`, and whether the
 two activities are marks beside the status or statuses of their own are the owner's to

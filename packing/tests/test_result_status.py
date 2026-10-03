@@ -224,6 +224,20 @@ def test_superseded_is_marked_on_a_bound_and_where_a_later_result_is_declared() 
     assert view.position_marks(records.results["T-019"], view.SUPERSEDED, records) == [
         "superseded by T-020, T-030, T-043 and T-046"
     ]
+    # Only a bound supersedes: at n = 13 and 46 a correction and an audit carry the
+    # lower bound's evidence beside the optimality results that hold it.
+    for n, other in ((13, "T-005"), (46, "T-004")):
+        assert other in view.held(n, records).lower_holders
+        assert records.results[other]["kind"] not in check_results.BOUND_KINDS
+    lower = {"id": "T-999", "kind": "lower-bound", "scope": {"n_values": [13, 46]}}
+    assert view.superseding(lower, records) == ("T-006", "T-008")
+    # An exact value is superseded by a proof, never by a construction: Trump's packing,
+    # T-011, holds n = 11's upper bound and supersedes no proof of s(11).
+    assert view.held(11, records).upper_holders == {"T-011"}
+    exact = {"id": "T-999", "kind": "optimality", "scope": {"n_values": [11]}}
+    assert view.superseding(exact, records) == ("T-060",)
+    upper = {"id": "T-999", "kind": "upper-bound", "scope": {"n_values": [11]}}
+    assert view.superseding(upper, records) == ("T-011",)
     # T-060 implies T-036's bound and not its equality case (think-7df0).
     t036 = records.results["T-036"]
     assert view.position_marks(t036, view.standing(t036, records), records) == [

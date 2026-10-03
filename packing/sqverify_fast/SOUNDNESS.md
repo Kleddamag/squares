@@ -59,7 +59,18 @@ $t_{\max}^2 + 2 t_{\max} - 1 > 0$, and for every net index $r$ and every centre 
    $B(\cos\delta + \sin\delta) = B \cos\delta (1 + \tan\delta) \le B(1 +
    D) < 1$. So it lies in the open unit square, hence in $K$, and its centre lies in
    $[a_r, L - a_r]^2$, the set of centres whose $B$-square at angle $\theta_r$ lies in
-   $K$.
+   $K$. The per-bin domain (format M) assigns half-angle tangents within $D/2$ of $t_r$,
+   so there $\delta$ may reach $2\arctan(D/2)$, whose tangent $D/(1 - D^2/4)$ exceeds
+   $D$. The bound still holds in half-angle form: with
+   $z = \tan(\delta/2) = |t - t_r|/(1 +
+   t t_r) \le D/2$, $\cos\delta + \sin\delta = (1 + 2z - z^2)/(1 + z^2) \le 1 + 2z \le
+   1 + D$, since $(1 + 2z)(1 + z^2) - (1 + 2z - z^2) = 2z^2 + 2z^3 \ge 0$ (spec N2, N3).
+   So $B(1 + D) < 1$ suffices for both domains.
+   Admission checks the stronger tangent form $B(1 + D/(1 - D^2/4)) < 1$ for format M as
+   well, which a proof through $\cos\delta(1 + \tan\delta)$ would need: at
+   $D = 83/40000$ the two limits on $B$ are about $0.99792929671$ and $0.99792929449$,
+   and every retained certificate has $B =
+   9977/10000$, below both (question of the 3 October testing review).
 
 4. *Counting (N4).* The $n$ unit squares have disjoint interiors, so their $B$-squares
    are pairwise disjoint closed sets in $K$. With $g \ge 0$, $n \le \sum_i \int_{Q_i} g
@@ -74,7 +85,9 @@ positive-weight rectangle (containment is not needed for N4 but is the format’
 promise). Lemma F3’s caps are checked there too: $L \le 1000$, at most $2^{16}$ net
 directions, at most $10^6$ listed rows, and every expanded rectangle’s density at most
 $2^{96}$. Negative weights, duplicate JSON keys, a count or side that disagrees with the
-request, and decimal tokens that do not parse exactly are refusals.
+request, and decimal tokens that do not parse exactly are refusals, and so is a gzip
+input with a second member or any byte after its first, which another reader would see
+differently (finding TI-2 of the 3 October testing review).
 Decimal JSON numbers are their literal values, never the nearest binary64. The expansion
 multiplies nothing out of order: each image’s exact density is summed when images
 coincide, and the expanded total must integrate back to $M$ exactly.
@@ -256,7 +269,9 @@ point masses and segments of mass spread uniformly by length beside the rectangl
 threshold is $\Gamma = 1$, and format M declares the per-bin centre domain.
 Admission refuses a negative mass, a point or segment endpoint outside $[0, L]^2$, a
 segment of length zero, a nonempty format M `points` list, a format L `net` other than
-step $83/40000$ and last index $200$, and a `total_mass` other than the exact sum.
+step $83/40000$ and last index $200$, certificate metadata that changes the net of
+either format (finding TI-3), format M’s premise $B(1 + D/(1 - D^2/4)) < 1$ failing
+(N3), and a `total_mass` other than the exact sum.
 Every row is an orbit representative whose eight $D_4$ images carry an eighth of its
 mass each; coincident images are merged by exact key (a segment and its reverse are one
 key), and the merged total must equal $M$.
@@ -425,6 +440,10 @@ of the 3 October soundness review, whose reproducers are in `tests/adversarial.r
   admission, and with its densities forced past the cap the axis sweep refuses it as
   `non-finite`, whether the overflow is in a column’s initial slope or inside the
   domain; a fault-injected run is never verified.
+- `tests/adversarial.rs`, from the 3 October testing review’s findings: a gzip input
+  with a second member or trailing bytes is refused; format L and M nets cannot be
+  changed by metadata; format M’s tangent-form premise refuses a $B$ between the two
+  limits, which format T admits.
 - `interval::tests::nan_is_never_dropped`: every interval primitive keeps a `NaN`
   endpoint, and an overflowing directed step is `NaN`.
 - `rotated_tests::oracle_counts_closed_intersections`: the oracle counts a point on the
@@ -474,11 +493,19 @@ rectangles enter the incremental sum as their exact mass and the full sum throug
 which is within rounding of it.
 Second, the classification of every rectangle, point and segment against the box (R1,
 B1): the mass certified inside and the number of straddling items of each kind.
-On a correct run the sums agree to within `AUDIT_TOLERANCE` (relative $10^{-9}$) and the
-counts exactly, since a sub-box’s fresh classification repeats its ancestors’ decisions
-(a rounding coincidence within $10^{-13}$ of a decision’s slack could break the tie,
-which would be a false refusal, never an acceptance); a disagreement proves the
-incremental bookkeeping wrong at that box or at an ancestor whose decisions it inherits.
+On a correct run the sums agree to within `AUDIT_TOLERANCE` (relative $10^{-9}$) plus
+the representation slack, and the counts exactly.
+The slack is, over every rectangle that can meet the centre’s square, its density times
+the area between its outer and inner representable rectangles: the incremental sum
+counts an inside rectangle by its exact mass, while R2 counts its inner representable
+rectangle, and for a sliver of extreme density that difference is large (finding TI-1 of
+the 3 October testing review, whose reproducer the audit refused falsely before).
+The classification comparison is unaffected, and it is what catches a wrong inside
+decision. The counts agree exactly because a sub-box’s fresh classification repeats its
+ancestors’ decisions (a rounding coincidence within $10^{-13}$ of a decision’s slack
+could break the tie, which would be a false refusal, never an acceptance); a
+disagreement proves the incremental bookkeeping wrong at that box or at an ancestor
+whose decisions it inherits.
 The search then stops with `audit-failed`, a refusal.
 The second comparison is what catches a straddling item wrongly certified inside whose
 whole mass happens to lie in the centre’s own square, which leaves the centre bound

@@ -383,11 +383,21 @@ pub fn read_json(path: &Path) -> Result<(Vec<u8>, Value), AdmissionError> {
         return refuse("candidate exceeds 64 MiB");
     }
     let decoded = if raw.starts_with(&[0x1f, 0x8b]) {
+        // One gzip member and nothing after it, as Python's reader requires: a
+        // second member or trailing bytes would let two readers see two inputs.
+        const LIMIT: u64 = 512 * 1024 * 1024;
         let mut text = Vec::new();
-        flate2::read::GzDecoder::new(raw.as_slice())
-            .take(512 * 1024 * 1024)
+        let mut decoder = flate2::bufread::GzDecoder::new(raw.as_slice());
+        Read::by_ref(&mut decoder)
+            .take(LIMIT)
             .read_to_end(&mut text)
             .map_err(|error| AdmissionError(format!("bad gzip: {error}")))?;
+        if text.len() as u64 >= LIMIT {
+            return refuse("decompressed candidate exceeds 512 MiB");
+        }
+        if !decoder.into_inner().is_empty() {
+            return refuse("gzip input has bytes after its first member");
+        }
         text
     } else {
         raw.clone()
@@ -572,6 +582,23 @@ pub fn admit(
     }
 
     let (format, domain, listed) = sources(object)?;
+    // Formats M and L fix the net; metadata may restate it but never change it.
+    if format != "T" && (step != ratio(83, 40_000) || angle_count != 201) {
+        return refuse(format!(
+            "format {format}'s net is step 83/40000 with 201 directions; certificate \
+             metadata may not change it"
+        ));
+    }
+    // The per-bin domain assigns a half-angle tangent within D/2 of t_r, so the
+    // angle may differ from theta_r by up to 2 atan(D/2), whose tangent is
+    // D/(1 - D^2/4). Lemma N3 needs only B(1 + D) < 1 (by the half-angle form),
+    // and admission also checks the bound a tangent-based argument would need.
+    if domain == Domain::PerBin {
+        let quarter = &step * &step / ratio(4, 1);
+        if &core * (&one + &step / (&one - quarter)) >= one {
+            return refuse("B (1 + D / (1 - D^2/4)) >= 1 for the per-bin domain");
+        }
+    }
     if listed.len() > MAX_PRIMITIVES {
         return refuse("too many primitives");
     }

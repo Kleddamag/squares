@@ -32,7 +32,12 @@ refusal’s witness in exact rationals.
 `--probe r,x,y[,dx,dy]` prints the certified centre (and box) bound and the
 counterexample estimate beside the exact capture, for differential tests.
 `--audit-every K` (default 1024) sets the release audit’s sampling, `1` audits every
-box.
+box. `--inject-fault-at-node N` is a control: its run is never verified, and every
+receipt records the injected box.
+A direction’s verdict is `verified` or one of the refusals `counterexample-candidate`,
+`unresolved`, `audit-failed`, `non-finite` (an enclosure that is not finite, which lemma
+F3 rules out for an admitted certificate) and `fault-injected`; the axis sweep says
+`refused` or `non-finite`.
 
 ## Checks
 

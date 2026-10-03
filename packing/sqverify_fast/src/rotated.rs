@@ -910,13 +910,14 @@ pub fn verify_direction(
         if limits.audit_every > 0 && (nodes - 1).is_multiple_of(limits.audit_every) {
             audits += 1;
             let full = full_centre_bound(&fr, rects, x0, y0);
+            let slack = representation_slack(&fr, &g, rects);
             let incremental = Tally {
                 inside: add_dn(inner, atom_inner),
                 rects: own_end - own_start,
                 points: own_point_end - own_point_start,
                 segments: own_segment_end - own_segment_start,
             };
-            if (full - value).abs() > AUDIT_TOLERANCE * (1.0 + full.abs())
+            if (full - value).abs() > AUDIT_TOLERANCE * (1.0 + full.abs()) + slack
                 || (full - value).is_nan()
                 || !Tally::fresh(&fr, &g, cert).agrees(&incremental)
             {
@@ -1149,6 +1150,33 @@ fn probe_geom(
 /// differ only by rounding (inside masses enter as exact enclosures, the full
 /// sum through lemma R2), far below this.
 const AUDIT_TOLERANCE: f64 = 1e-9;
+
+/// An upper bound on how much lemma R2's inner representable rectangles can
+/// lose against the exact ones at the box's centre: for each rectangle that can
+/// meet the centre's square, its density times the area between its outer and
+/// inner representable rectangles. The incremental sum counts an inside
+/// rectangle by its exact mass, the full recomputation by R2, so this is the
+/// gap the audit must allow besides rounding (finding TI-1 of the 3 October
+/// testing review: slivers of extreme density).
+fn representation_slack(fr: &Frame, g: &BoxGeom, rects: &[Rect]) -> f64 {
+    let centre = centre_geom(g);
+    let mut slack = 0.0;
+    for rect in rects {
+        if matches!(classify(fr, &centre, rect), Class::Outside) {
+            continue;
+        }
+        let outer = mul_up(
+            sub_up(rect.x2.hi, rect.x1.lo),
+            sub_up(rect.y2.hi, rect.y1.lo),
+        );
+        let inner = mul_dn(
+            fmax(sub_dn(rect.x2.lo, rect.x1.hi), 0.0),
+            fmax(sub_dn(rect.y2.lo, rect.y1.hi), 0.0),
+        );
+        slack = add_up(slack, mul_up(rect.rho.hi, sub_up(outer, inner)));
+    }
+    slack
+}
 
 /// The centre bound from every rectangle, by lemma R2 alone.
 fn full_centre_bound(fr: &Frame, rects: &[Rect], x0: f64, y0: f64) -> f64 {

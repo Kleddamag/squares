@@ -351,3 +351,90 @@ fn a_fault_injected_run_is_never_verified() {
         );
     }
 }
+
+// ------------------------------------- findings of the 3 October testing review
+
+/// Writes `bytes` to a fresh temporary file and reads it as a candidate.
+fn read_bytes(name: &str, bytes: &[u8]) -> Result<(), String> {
+    let dir = std::env::temp_dir().join(format!("sqverify-rb-{}-{name}", std::process::id()));
+    std::fs::create_dir_all(&dir).expect("a temporary directory");
+    let path = dir.join("candidate.json.gz");
+    std::fs::write(&path, bytes).expect("a temporary file");
+    let result = sqverify_fast::certificate::read_json(&path)
+        .map(|_| ())
+        .map_err(|error| error.0);
+    std::fs::remove_dir_all(&dir).expect("the temporary directory removed");
+    result
+}
+
+fn gzip(bytes: &[u8]) -> Vec<u8> {
+    use std::io::Write;
+    let mut encoder = flate2::write::GzEncoder::new(Vec::new(), flate2::Compression::default());
+    encoder.write_all(bytes).expect("gzip in memory");
+    encoder.finish().expect("gzip in memory")
+}
+
+#[test]
+fn gzip_input_must_be_one_member_and_nothing_else() {
+    // Finding TI-2: Python's reader refuses a second member or trailing bytes, so
+    // this reader must too, or the two would see different inputs.
+    let json = br#"{"L": "3", "B": "9/10", "rectangles": [[0, 0, 1, 1]], "weights": [1]}"#;
+    let one = gzip(json);
+    assert!(read_bytes("one", &one).is_ok());
+    let mut two = one.clone();
+    two.extend(gzip(json));
+    assert!(
+        read_bytes("two", &two)
+            .unwrap_err()
+            .contains("after its first member")
+    );
+    let mut trailing = one.clone();
+    trailing.extend(b"garbage");
+    assert!(
+        read_bytes("trailing", &trailing)
+            .unwrap_err()
+            .contains("after its first member")
+    );
+}
+
+#[test]
+fn format_l_and_m_nets_cannot_be_overridden() {
+    // Finding TI-3: certificate metadata may restate the fixed net, never change it.
+    let linear = |metadata: Value| {
+        json!({"schema": "point_line_rectangle_v1", "L": "3", "B": "1/2",
+            "net": {"step": "83/40000", "last": 200},
+            "primitives": [{"kind": "point", "geometry": [1, 1], "mass": 1}],
+            "certificate": metadata})
+    };
+    let error = admit_value(&linear(json!({"D": "9/20", "angle_count": 3})), 2).unwrap_err();
+    assert!(error.contains("net"), "{error}");
+    assert!(admit_value(&linear(json!({"D": "83/40000", "angle_count": 201})), 2).is_ok());
+    let mixed = json!({"n": 2, "L": "3", "B": "1/2", "points": [],
+        "rectangles": [{"rectangle": [0, 0, 1, 1], "mass": 1}],
+        "certificate": {"angle_count": 150}});
+    assert!(admit_value(&mixed, 2).is_err());
+}
+
+#[test]
+fn the_per_bin_domain_checks_the_tangent_form_of_the_shrink_premise() {
+    // The testing review's question: with bins of half-width D/2 in t, the angle
+    // may differ from theta_r by 2 atan(D/2), whose tangent is D/(1 - D^2/4).
+    // Admission checks B (1 + D/(1 - D^2/4)) < 1 for format M. The two limits on
+    // B are about 0.99792929449 and 0.99792929671; a B between them passes
+    // B (1 + D) < 1 and must still be refused for format M, and admitted for T.
+    let d = ratio(83, 40000);
+    let one = ratio(1, 1);
+    let between = ratio(997_929_295, 1_000_000_000);
+    assert!(&between * (&one + &d) < one);
+    assert!(&between * (&one + &d / (&one - &d * &d / ratio(4, 1))) >= one);
+    let b = text(&between);
+    let mixed = json!({"n": 2, "L": "3", "B": b, "points": [],
+        "rectangles": [{"rectangle": [0, 0, 1, 1], "mass": 1}]});
+    let error = admit_value(&mixed, 2).unwrap_err();
+    assert!(error.contains("per-bin"), "{error}");
+    let tokoharu = json!({"L": "3", "B": b, "rectangles": [[0, 0, 1, 1]], "weights": [1]});
+    assert!(admit_value(&tokoharu, 2).is_ok());
+    // The retained certificates' B = 9977/10000 clears both forms exactly.
+    let retained = ratio(9977, 10000);
+    assert!(&retained * (&one + &d / (&one - &d * &d / ratio(4, 1))) < one);
+}

@@ -662,6 +662,17 @@ def render_summary(rows: list[dict[str, Any]]) -> str:
     return "\n".join(lines)
 
 
+def census_delta(old: dict[str, Any], new: dict[str, Any]) -> list[str]:
+    """Every difference in verdict, nodes or least certified bound between two runs."""
+    fields = ("status", "nodes", "least_certified_bound", "directions_verified")
+    return [
+        f"{name}: {field} {old['cases'][name].get(field)} -> {new['cases'][name].get(field)}"
+        for name in sorted(set(old["cases"]) & set(new["cases"]))
+        for field in fields
+        if old["cases"][name].get(field) != new["cases"][name].get(field)
+    ]
+
+
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=(__doc__ or "").splitlines()[0])
     parser.add_argument("--family", choices=("rectangles", "mixed"), default="rectangles")
@@ -681,6 +692,11 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--only", default="", help="comma-separated certificate names")
     parser.add_argument(
         "--packets", default="", help="comma-separated packets (the folder under --out)"
+    )
+    parser.add_argument(
+        "--delta",
+        type=Path,
+        help="an earlier census.json: print every case whose verdict, nodes or bound moved",
     )
     parser.add_argument(
         "--summary",
@@ -708,6 +724,14 @@ def main(argv: list[str] | None = None) -> int:
         if census_path.is_file()
         else {"kind": "sqverify-fast-census/v1", "threshold": THRESHOLD, "cases": {}}
     )
+    if args.delta is not None:
+        old = json.loads(args.delta.read_text(encoding="utf-8"))
+        changes = census_delta(old, census)
+        common = len(set(old["cases"]) & set(census["cases"]))
+        print(f"{common} cases in both runs; {len(changes)} differences")
+        for line in changes:
+            print(f"  {line}")
+        return 1 if changes else 0
     mixed = args.family == "mixed"
     if mixed:
         census["family"] = "mixed"

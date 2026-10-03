@@ -32,9 +32,10 @@ import json
 import math
 import sys
 import time
-from collections.abc import Callable
+from collections.abc import Callable, Sequence
 from concurrent.futures import ProcessPoolExecutor
 from dataclasses import dataclass
+from fractions import Fraction
 from pathlib import Path
 from typing import Any
 
@@ -45,6 +46,7 @@ from sqpack.hull_kernel import n11, node
 from sqpack.hull_kernel.frame import Frame
 from sqpack.hull_kernel.geometry import Budget, IncompleteError, RefusalError
 from sqpack.hull_kernel.induction import hull
+from sqpack.hull_kernel.rational import as_fraction
 
 RECEIPT_DIR = frozen.PACKET / "receipts/generic-mask2095-intake"
 RECEIPT = RECEIPT_DIR / "full-result.json"
@@ -282,6 +284,11 @@ def library_projection(library: dict[str, Any]) -> dict[str, Any]:
     return {"rows_checked": len(rows), "steps_completed": len(STEP_OWNERS), "steps": steps}
 
 
+def as_fractions(polygon: Sequence[tuple[Any, Any]]) -> list[tuple[Fraction, Fraction]]:
+    """The kernel's polygon as the frozen checker's `Fraction` points; the values are equal."""
+    return [(as_fraction(x), as_fraction(y)) for x, y in polygon]
+
+
 def require_same(left: Any, right: Any, what: str) -> None:
     """Exact equality; on a difference, the first differing path of the JSON forms."""
     if left == right:
@@ -396,7 +403,7 @@ def sample_replay(sources: Sources, *, max_seconds: float) -> dict[str, Any]:
         step["rows"][0],
         0,
         6,
-        prior=prior,
+        prior={owner: as_fractions(polygon) for owner, polygon in prior.items()},
         predecessor=seed.rows[6][0],
         world=world,
         budget=frozen_budget,
@@ -411,7 +418,7 @@ def sample_replay(sources: Sources, *, max_seconds: float) -> dict[str, Any]:
     kernel = node.points(step["common_owned_kernel"])
     require_same(
         node.compressed(step, prior[6], kernel),
-        frozen._compressed(step, prior[6], kernel),
+        frozen._compressed(step, as_fractions(prior[6]), as_fractions(kernel)),
         "library and frozen step-0 compression",
     )
     return {

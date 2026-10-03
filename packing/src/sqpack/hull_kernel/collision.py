@@ -31,8 +31,6 @@ from __future__ import annotations
 import time
 from collections.abc import Mapping, Sequence
 from dataclasses import dataclass, field
-from fractions import Fraction
-from fractions import Fraction as Q
 from functools import cmp_to_key
 from math import gcd, lcm
 from typing import Any
@@ -51,11 +49,12 @@ from sqpack.hull_kernel.geometry import (
     require,
 )
 from sqpack.hull_kernel.induction import hull, same
+from sqpack.hull_kernel.rational import Q, Z
 
 SUPPORT_NORMALS = ((1, 0), (-1, 0), (0, 1), (0, -1), (1, 1), (1, -1), (-1, 1), (-1, -1))
 OUTWARD_GRID = 10**8
 
-type HomogeneousPoint = tuple[int, int, int]
+type HomogeneousPoint = tuple[Z, Z, Z]
 
 
 def _remaining(budget: Budget) -> None:
@@ -182,12 +181,13 @@ def common_core_output(
         lines.append((Q(nx), Q(ny), upper))
     outer = intersect(world, lines)
     require(
-        same([(Q(x), Q(y)) for x, y in row["outer_domain"]], outer), "row outer domain differs"
+        same([(Q(x), Q(y)) for x, y in row["outer_domain"]], outer),
+        "row outer domain differs",
     )
     return len(planes)
 
 
-def encode_homogeneous(point: tuple[Fraction, Fraction]) -> HomogeneousPoint:
+def encode_homogeneous(point: tuple[Q, Q]) -> HomogeneousPoint:
     """Lift a rational point with a positive common denominator."""
     x, y = point
     z = lcm(x.denominator, y.denominator)
@@ -202,7 +202,7 @@ def compare_homogeneous(a: HomogeneousPoint, b: HomogeneousPoint) -> int:
     return (value > 0) - (value < 0)
 
 
-def orientation(a: HomogeneousPoint, b: HomogeneousPoint, c: HomogeneousPoint) -> int:
+def orientation(a: HomogeneousPoint, b: HomogeneousPoint, c: HomogeneousPoint) -> Z:
     """Return a determinant with the exact affine orientation sign."""
     return (
         a[0] * (b[1] * c[2] - b[2] * c[1])
@@ -247,16 +247,16 @@ class PreparedRow:
     core: Polygon
     centers: tuple[HomogeneousPoint, ...]
     partner: tuple[HomogeneousPoint, ...]
-    minima: dict[tuple[int, int], tuple[int, int]] = field(default_factory=dict)
+    minima: dict[tuple[Z, Z], tuple[Z, Z]] = field(default_factory=dict)
 
-    def minimum(self, nx: int, ny: int) -> tuple[int, int]:
+    def minimum(self, nx: Z, ny: Z) -> tuple[Z, Z]:
         """`min over the domain of n . y` as `(value, denominator)`, from the memo."""
         g = gcd(nx, ny)
         direction = (nx // g, ny // g)
         found = self.minima.get(direction)
         if found is None:
             dx, dy = direction
-            least: tuple[int, int] | None = None
+            least: tuple[Z, Z] | None = None
             for x, y, z in self.centers:
                 value = dx * x + dy * y
                 if least is None or value * least[1] < least[0] * z:
@@ -297,12 +297,12 @@ def as_prepared(rows: Sequence[PreparedRow | tuple[Polygon, Polygon]]) -> list[P
 
 
 FacetKey = tuple[tuple[HomogeneousPoint, ...], tuple[HomogeneousPoint, ...]]
-FacetCache = dict[FacetKey, list[tuple[int, int, int]]]
+FacetCache = dict[FacetKey, list[tuple[Z, Z, Z]]]
 
 
 def difference_facets(
     query: tuple[HomogeneousPoint, ...], partner: tuple[HomogeneousPoint, ...]
-) -> list[tuple[int, int, int]]:
+) -> list[tuple[Z, Z, Z]]:
     """The facets `(nx, ny, upper)` of the hull of `partner - query`, exactly as
     `integer_universal_collision` builds them."""
     difference = homogeneous_hull(
@@ -399,7 +399,7 @@ def integer_universal_collision(
             nx = b[1] * a[2] - a[1] * b[2]
             ny = a[0] * b[2] - b[0] * a[2]
             upper = a[0] * b[1] - a[1] * b[0]
-            minimum: tuple[int, int] | None = None
+            minimum: tuple[Z, Z] | None = None
             for x, y, z in centers:
                 value = nx * x + ny * y
                 if minimum is None or value * minimum[1] < minimum[0] * z:

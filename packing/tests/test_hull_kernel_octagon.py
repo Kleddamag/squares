@@ -5,7 +5,6 @@ from __future__ import annotations
 import hashlib
 import json
 import time
-from fractions import Fraction as Q
 from pathlib import Path
 
 import pytest
@@ -17,6 +16,7 @@ from sqpack.hull_kernel import Budget, RefusalError, producer
 from sqpack.hull_kernel.frame import Frame, make_frame
 from sqpack.hull_kernel.geometry import Polygon, trig
 from sqpack.hull_kernel.induction import strict_core
+from sqpack.hull_kernel.rational import Q
 
 # The blind pair's node under the default (envelope) core, as the committed producer
 # makes it: the octagon option must leave the default bytes alone.

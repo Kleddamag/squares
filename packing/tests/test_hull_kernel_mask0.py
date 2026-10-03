@@ -5,7 +5,7 @@ from __future__ import annotations
 import copy
 import dataclasses
 import time
-from fractions import Fraction as Q
+from fractions import Fraction
 from typing import Any
 
 import pytest
@@ -14,6 +14,7 @@ from devtools import check_hull_kernel_mask0 as tool
 from devtools import check_n11_optimality_field_mask0 as frozen
 from sqpack.hull_kernel import Budget, RefusalError, counting, n11
 from sqpack.hull_kernel.geometry import clip
+from sqpack.hull_kernel.rational import Q, as_fraction
 from sqpack.hull_kernel.sweep import exact_union_cover
 
 type Sources = tuple[dict[str, Any], dict[str, Any], dict[str, Any]]
@@ -39,22 +40,33 @@ def test_the_primitives_reproduce_the_frozen_functions_bit_for_bit(sources: Sour
     denominator = packet["certificate"]["coordinate_denominator"]
     for _, _, interval in rows[::9]:
         envelope = counting.row_envelope(frame, interval)
-        assert envelope == frozen.row_envelope(interval)
+        assert envelope == frozen.row_envelope(
+            (as_fraction(interval[0]), as_fraction(interval[1]))
+        )
         core, _, c, s = envelope
         sites = [frame.rotate(site, c, s) for site in library_packet.sites]
         assert sites == [
-            frozen.rotate((Q(x, denominator), Q(y, denominator)), c, s)
+            frozen.rotate(
+                (Fraction(x, denominator), Fraction(y, denominator)),
+                as_fraction(c),
+                as_fraction(s),
+            )
             for x, y in packet["certificate"]["sites"]
         ]
         assert counting.majority_halfplanes(sites, core / 2, 3) == frozen.true_halfplanes(
-            sites, core / 2
+            [(as_fraction(x), as_fraction(y)) for x, y in sites], as_fraction(core / 2)
         )
     square = [(Q(0), Q(0)), (Q(1), Q(0)), (Q(1), Q(1)), (Q(0), Q(1))]
     left, right = clip(square, (Q(1), Q(0), Q(1, 2))), clip(square, (Q(-1), Q(0), Q(-1, 2)))
-    assert left == frozen.clip(square, (Q(1), Q(0), Q(1, 2)))
+    frozen_square = [(as_fraction(x), as_fraction(y)) for x, y in square]
+    frozen_left = frozen.clip(frozen_square, (Fraction(1), Fraction(0), Fraction(1, 2)))
+    frozen_right = frozen.clip(frozen_square, (Fraction(-1), Fraction(0), Fraction(-1, 2)))
+    assert left == frozen_left
     frozen_budget = frozen.Budget(time.monotonic() + 30, 500)
     assert exact_union_cover(square, [left, right], budget=budget()) == (
-        frozen.exact_union_cover(square, [left, right], budget=frozen_budget)
+        frozen.exact_union_cover(
+            frozen_square, [frozen_left, frozen_right], budget=frozen_budget
+        )
     )
     shifted = clip(square, (Q(-1), Q(0), -(Q(1, 2) + Q(1, 10**50))))
     with pytest.raises(RefusalError, match="row uncovered"):

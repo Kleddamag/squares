@@ -12,7 +12,6 @@ later n11 checkers are not lifted here.
 from __future__ import annotations
 
 import time
-from fractions import Fraction as Q
 from itertools import pairwise
 
 from sqpack.hull_kernel.geometry import (
@@ -23,6 +22,7 @@ from sqpack.hull_kernel.geometry import (
     area2,
     require,
 )
+from sqpack.hull_kernel.rational import Q
 
 
 def vertical_interval(poly: Polygon, x: Q) -> tuple[Q, Q] | None:

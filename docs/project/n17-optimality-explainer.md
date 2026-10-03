@@ -266,7 +266,35 @@ sixteen contracting owners and square 6 coarse, refines angle rows by bisection,
 checks after every certified update that the family’s exact pose still lies in some live
 row of every owner. A companion run at $U$ must *fail* to contract below the first-order
 feasible set, as a check that the two-cap distinction is real.
-As of 2026-10-02 the pilot has not reported.
+
+The first pilot met that falsifier: over 14 rounds from a box of radius $1/1024$, no
+position contracted ($g = 1.000$). An
+[independent review](reviews/review-2026-10-02-n17-capture-after-pilot.md) found the
+result limited by the producer, not the architecture.
+In a model of the best pairwise induction, positions contract only once each owner’s
+widest live row is about a tenth of its position extent, and the pilot’s cap of 24 live
+rows kept that ratio between a quarter and one.
+Calibrated by $n = 11$, the model predicts $g \approx 0.91$. The review sharpened the
+falsifier: if every owner’s widest row is under a twentieth of its position extent for
+three rounds and no two-sided extent falls by ten percent, the architecture is wrong.
+The second pilot raised the cap.
+Its $n = 11$ control reproduced the recorded contraction ($g \approx 0.80$ against
+$0.84$). At 128 rows no $n = 17$ position contracted, but the widest-row ratio stalled
+at a fifth on side-N2, so the falsifier could be neither met nor cleared.
+At 256 rows the ratio reached a tenth at round 10, where the model says positions should
+begin to move, and the run continues (modelled and measured; not yet decided).
+
+The target itself is larger than $1/5000$ per coordinate.
+Following $n = 11$'s two-radius result, a
+[radius review](reviews/review-2026-10-03-n17-local-radius.md) found that a uniform
+radius cannot pass much beyond $1/4630$. A per-coordinate vector does compose with the
+slide coverage on a box $B_c$: every coordinate at least $1/1216$, $\omega_{11}$ at
+$85/16$ of that, worst ratio $0.999317$, exact.
+That makes capture’s target four to five times larger and the angle rows it needs about
+two bisections coarser.
+It is held as a component, not yet a hypothesis, until a pilot adopts it.
+The $1/1024$ pilot box is not inside it, so capture must still contract every angle two
+to 33 times.
 
 ## Approaches Tried and Set Aside
 
@@ -300,8 +328,9 @@ obvious speed-up; it is unbuilt and its gain unmeasured.
 
 Stated without a forecast, because none is on record.
 
-1. **Certify or refute the remaining flags.** W7 and A are admitted, and 42 of the 44
-   flagged classes have no certificate; the kernel stalled on the next three it tried.
+1. **Certify or refute the remaining flags.** W7, A and SW9 are admitted, and 88 flagged
+   classes have no certificate; uniform rows stalled on several that adaptive rows then
+   closed or are retrying.
    A flag the prover cannot close is either a false flag, in which case the search
    resumes, or a stall of the engine on a true pattern, which needs finer rows,
    splitting or the other prover.
@@ -311,12 +340,22 @@ Stated without a forecast, because none is on record.
    CPU-seconds each. The kernel has excluded one such state, N1, in 3,723 s, but the
    $n = 17$ per-state method and its price are not established; the
    [residue process review](reviews/review-2026-10-02-n17-residue-process.md) plans one.
-3. **Capture.** The pilot measures the contraction factor, and the falsifier above
-   decides whether the architecture holds.
+3. **Capture.** The 256-row pilot has just reached the row width where contraction
+   should start, and the review’s falsifier decides whether the architecture holds.
+   If it holds, the per-coordinate target above is the next pilot’s goal, registered as
+   a hypothesis with its vector and box frozen.
+   If it fails, the widened projection theorem is the fallback.
 4. **Independent review of everything.** Each piece so far carries one review.
    The composition of the census, the certificates, the consumer and the capture into
    one argument has not been written down, let alone reviewed, and T-060’s rungs show
    what further assurance costs even then.
+5. **Certificates that fit in memory.** Adaptive rows close classes that uniform rows
+   could not, but flag 2’s node reached 931 MB of JSON, and the checker needed 8.6 GB to
+   read it. A streamed or compact certificate format, or a compiled checker, has to come
+   before adaptive rows are used at scale.
+6. **Admission at the corrected verifier.** After $n = 11$'s finding C2, the kernel
+   verifier’s point and segment covers were made exact (318c28c42). The defect never ran
+   on W7, SW9 or N1. New admissions should be verified at that revision or later.
 
 If the proof were completed, the result would be apparently novel in the sense the
 tutorial’s [§8](../../TUTORIAL.md#8-what-is-known-and-what-is-not) defines: new to the

@@ -144,8 +144,8 @@ MUTANTS: list[tuple[str, str, str, str]] = [
     (
         "cache-cover-survives-restep",
         "a partner's new rows inherit the old rows' admitted covers",
-        "            new_rows.append(Row((lo, hi), row[\"reference\"], outer, residual))",
-        "            new_rows.append(Row((lo, hi), row[\"reference\"], outer, residual, prior.cover))",
+        "        new_rows.append(Row((lo, hi), row[\"reference\"], outer, residual))",
+        "        new_rows.append(Row((lo, hi), row[\"reference\"], outer, residual, prior.cover))",
     ),
     (
         "cache-minimum-key-nx-only",

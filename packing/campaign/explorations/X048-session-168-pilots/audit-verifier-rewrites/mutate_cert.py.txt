@@ -228,9 +228,9 @@ def region_pushed_later_row_only(delta: Q) -> Mutation:
                     if all(fa * moved[0] + fb * moved[1] <= fc for fa, fb, fc in first) and all(
                         pa * moved[0] + pb * moved[1] <= pc for pa, pb, pc in required_planes
                     ):
-                        new_region = list(region)
-                        new_region[vi] = moved
-                        item["vertices"] = enc(new_region)
+                        # Added, not moved, so the region still contains the old one and
+                        # the row's cover is untouched: only the collision check can refuse.
+                        item["vertices"] = enc([*region, moved])
                         return "escapes the collision set"
         raise RuntimeError("no region vertex can be pushed past a later row's facet alone")
 

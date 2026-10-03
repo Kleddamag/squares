@@ -542,7 +542,8 @@ multiplicatively, since every term here is count times size times rate.
 
 ## Addendum, 2026-10-03: What the Ranked Plan’s First Steps Found
 
-The lanes that took up this plan corrected two of its derivations and settled one rank.
+The lanes that took up this plan corrected two of its derivations and settled two ranks,
+both against the plan.
 
 **The second-order core in section 4.1 needs a scale factor.** Lane K2 found that the
 intersection of a row’s two end-angle squares is not inside every intermediate square.
@@ -553,9 +554,16 @@ $p\cdot u_\theta \le h\cos(\theta-\mathrm{mid})/\cos(\Delta/2)$, so scaling the 
 by $\cos(\Delta/2)$ is enough (lane C1’s derivation).
 K2’s committed core (`d97187d52`) uses $\cos^2(\Delta/2)=(1+\cos\Delta)/2$, which is
 rational in the half-angle chart.
-The loss stays second order: the smallest support is 0.4981 at 16 bins, against the
-envelope core’s 0.4924 at 64. Soundness never rests on the factor, because the checker’s
-`strict_core` re-proves every vertex against every turn in the closed row interval.
+The exact $\cos(\Delta/2)$ is generally irrational there.
+The loss stays second order.
+The smallest support over each row’s end and middle directions is 0.4981 at 16 bins,
+against the envelope core’s 0.4924 at 64. The exact factor would give 0.4990, and a
+rational bound $\max(\cos^2, 1-D^2/8)$ with $D\ge\Delta$ would recover nearly all of it.
+Soundness never rests on the factor: the checker’s `strict_core` re-proves in exact
+arithmetic that every core vertex lies strictly inside the square at every turn of the
+closed row interval, and the independent verifier repeats that obligation.
+A factor that is too large makes a certificate fail to check; it cannot certify a false
+exclusion.
 
 **The size lever is linear in rows, not quadratic.** Lane F2’s
 [performance review](review-2026-10-02-n17-cost-reduction-performance.md) measured the
@@ -576,11 +584,35 @@ crowds at arity eight go to the kernel.
 The receipts are in
 [`receipts/bb-rank4/`](../../../packing/campaign/explorations/X048-session-168-pilots/receipts/bb-rank4/).
 
-**Rank 1 and rank 2 are running.** Lane S2’s rank-2 sweep tool (`16ea38d81`) reproduces
-this review’s universe counts at arity 8 and 9. Its first 3,000 classes, the
-highest-coverage arity-8 classes of the first queue, gave one flag: a south-wall crowd
-that removes 539 of the 2,264 residue orbits by itself.
-W7’s re-run at 32 and 16 bins with the octagon core has not yet run.
+**Rank 1 is settled: its falsifier fired.** W7 at 32 bins with the octagon core does not
+close. The producer reached a fixed point after 11 rounds and stopped by itself: 77
+steps, 2,464 rows, 1,052 s. The result is a certified stall
+([receipt](../../../packing/campaign/explorations/X048-session-168-pilots/receipts/kernel-octagon-W7-bins32.json)).
+The octagon contracts much further than the envelope core did at 32 bins.
+Corner-SW and the three west sides fall to between 10 and 17 live rows of 32. But no row
+of side-N0, interior-SW or interior-W ever dies, and side-N0’s residual box freezes from
+round 6 at $0.590\times0.911$. At 64 bins all of side-N0’s rows died in one step.
+Lane K2’s reading is that the octagon removes a coarse row’s core loss but not its
+domain loss. A row’s residual, and the partner cover built from it, is the union over
+every angle in the row, and halving the bins doubles that sweep.
+So core size was not what kept W7 open at 32 bins, and the four- to sixteen-fold size
+cut this plan assumed is not available this way.
+Kernel certificates stay at 64 bins.
+Adaptive rows, bisected in angle only where a residual or partner cover is wide, are the
+untested form of the lever.
+
+**What this does to the arithmetic.** Without rank 1, section 6 puts the class and tail
+terms back at four to sixteen times its lower figures.
+Lane F2’s rate levers multiply in: the verifier rewrite measured 17.6 times on W7, and
+the producer and checker levers are estimated at 2 to 3 times.
+The total therefore rests on count and rate.
+Rank 2 decides the count.
+
+**Rank 2 is running.** Lane S2’s sweep tool (`16ea38d81`) reproduces this review’s
+universe counts at arity 8 and 9. Its first 3,000 classes, the highest-coverage arity-8
+classes of the first queue, gave one flag: a south-wall crowd that removes 539 of the
+2,264 residue orbits by itself.
+That class is next for the kernel, at 64 bins.
 
 <!-- This document follows common-doc-guidelines.md.
 See github.com/jlevy/practical-prose and review guidelines before editing.

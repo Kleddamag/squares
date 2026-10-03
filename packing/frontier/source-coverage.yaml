@@ -933,9 +933,11 @@ sources:
       retrieved at 2026-10-02T07:42Z for jlevy/squares#296. A second, separately written
       exact-rational checker of Valid7, the finite premise of T-064, run on the cover T-064
       cites: 156,800 root boxes of the unreduced pose space, none uncertified. Recorded as
-      an evidence update to T-064, which moves no rung: the source's verify.sh and
-      devtools.audit_valid7_independent checked the records here, re-certifying sampled
-      leaves, and the 626 core-hour run was not repeated; the method has not been reviewed.
+      an evidence update to T-064, which moves no rung. On 2 October the source's verify.sh
+      and devtools.audit_valid7_independent checked the records here, re-certifying sampled
+      leaves, and the method was reviewed; on 2 and 3 October the run was replayed here in
+      full with the review's D-1 guarded, fourteen shards, every root certified and every
+      V2 root's leaves equal to the published ones (receipts/replay/ in the packet).
       The scope is T-064's projection of the family onto the cases this record holds.
   - id: franciscouzo-square-packing-2026
     title: Square packings better than the published records

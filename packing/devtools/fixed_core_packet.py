@@ -3727,8 +3727,10 @@ def load_result(
     )
     if sources.get("manifest") != manifest:
         raise PacketError("result source or implementation manifest differs on readback")
-    if sources.get("runtime") != runtime_binding(repository):
-        raise PacketError("result runtime differs from the readback environment")
+    # The recorded runtime describes the run and stays in the result as its history. It
+    # is not a condition on reading the result back: another interpreter, lock or host
+    # reads the same retained bytes (development.md, Hashes and Repository-Owned
+    # Artifacts, 2026-10-03). `validate_result_document` has already checked its shape.
     source = (repository / SOURCE_PATH).read_bytes()
     t026_source = (repository / T026_PATH).read_bytes()
     if (

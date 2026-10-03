@@ -68,6 +68,7 @@ from devtools.fixed_core_packet import (
     _reconstruct_raw_directions,
     _strict_json,
     _strict_json_bytes,
+    _validate_runtime_record,
     _write_direction,
     replay_raw_witness,
     run_dilation_replay,
@@ -3068,8 +3069,11 @@ def load_result(
     )
     if sources.get("manifest") != manifest:
         raise CalibrationError("calibration source manifest changed on readback")
-    if sources.get("runtime") != runtime_binding(repository):
-        raise CalibrationError("calibration runtime changed on readback")
+    # The recorded runtime describes the run and stays in the receipt as its history. It
+    # is not a condition on reading the receipt back: another interpreter, lock or host
+    # reads the same retained bytes (development.md, Hashes and Repository-Owned
+    # Artifacts, 2026-10-03). Only its shape is checked here.
+    _validate_runtime_record(sources.get("runtime"))
     fixture_raw = (repository / FIXTURE_PATH).read_bytes()
     fixture, source_record = load_fixture(fixture_raw)
     _validate_retained_artifact_set(output_dir)

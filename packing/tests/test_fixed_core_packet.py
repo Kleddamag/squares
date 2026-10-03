@@ -1298,22 +1298,33 @@ def test_public_readback_refuses_a_direct_unsupervised_worker_receipt(
         load_result(output, repository=REPOSITORY, expected_revision=REVISION)
 
 
-def test_readback_refuses_a_different_runtime_identity(tmp_path: Path) -> None:
-    output, _result = _execute(tmp_path, RAW_THRESHOLD)
+def test_readback_reads_a_result_recorded_under_another_runtime(tmp_path: Path) -> None:
+    """A dependency or interpreter change never invalidates a retained result.
+
+    The recorded runtime is the run's history; the readback environment may differ
+    from it and reads the same retained bytes to the same result.
+    """
+
+    def interrupted(_certificate, *, progress, log, **_kwargs):
+        _write_row(log, "0", {"direction": 0, "charge": "7/8", "witness": ["1", "1"]})
+        progress(1, (0,), Fraction(7, 8), 0, (Fraction(1), Fraction(1)))
+        raise PacketDeadlineError("synthetic retained-prefix timeout")
+
+    output, _result = _execute(tmp_path, RAW_THRESHOLD + 1, raw_runner=interrupted)
     saved = cast(dict[str, object], json.loads((output / "result.json").read_text()))
     runtime = cast(dict[str, object], cast(dict[str, object], saved["sources"])["runtime"])
     cast(dict[str, object], runtime["packages"])["numpy"] = "2.5.1"
+    cast(dict[str, object], runtime["python"])["version"] = "3.14.6"
     (output / "result.json").write_text(json.dumps(saved, indent=2) + "\n")
-    with (
-        patch("devtools.fixed_core_packet.source_manifest", return_value=MANIFEST),
-        pytest.raises(PacketError, match="runtime differs"),
-    ):
-        load_result(
+    assert runtime != RUNTIME
+    with patch("devtools.fixed_core_packet.source_manifest", return_value=MANIFEST):
+        readback = load_result(
             output,
             repository=REPOSITORY,
             expected_revision=REVISION,
             require_supervision=False,
         )
+    assert readback == saved
 
 
 def test_load_result_refuses_complete_acceptance_without_all_retained_rows(

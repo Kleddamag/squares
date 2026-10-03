@@ -208,10 +208,12 @@ class Case:
     zmx2_atoms: str = "grid"
     #: Box totals the source states for ``zmx2`` runs whose logs it does not publish.
     zmx2_boxes_stated: tuple[tuple[str, int], ...] = ()
+    #: The directory holding the cover where it is not ``source/certificates/<bundle>``.
+    directory: Path | None = None
 
     @property
     def bundle_dir(self) -> Path:
-        return self.source / "certificates" / self.bundle
+        return self.directory or self.source / "certificates" / self.bundle
 
     @property
     def cover_path(self) -> Path:
@@ -284,6 +286,20 @@ IMPORTED_CASES = {
     ),
 }
 MIXED_CASES = {**CASES, **IMPORTED_CASES}
+#: A cover in the plain point format, audited by ``cover`` alone: its sweeps are the
+#: ``PointCoverRun`` below. wand125's s(61) total is the one its ``provenance.json`` states.
+POINT_ONLY_CASES = {
+    61: Case(
+        n=61,
+        side=8,
+        bundle="point_n61_L8",
+        cover="cover.txt",
+        total=Fraction(8584985072679551, 2**47),
+        points=15193,
+        segments=0,
+        directory=WEB / "wand125-point-n61-2026-09-30/square-packing-bounds/point_n61_L8",
+    )
+}
 
 
 def _stored(path: Path) -> Path:
@@ -356,9 +372,12 @@ def parse_cover(text: str) -> MixedCover:
     """Parse the format line by line; ``#`` starts a comment; every count must match."""
     rows = [line.split("#", 1)[0].split() for line in text.splitlines()]
     rows = [row for row in rows if row]
-    if rows[0] != ["mixed", "1"]:
-        raise ValueError(f"not mixed format v1: {rows[0]}")
-    values = [[int(token) for token in row] for row in rows[1:]]
+    if rows[0] == ["mixed", "1"]:
+        values = [[int(token) for token in row] for row in rows[1:]]
+    else:
+        # The plain point format (``certificates/FORMAT.md``): mixed v1 with no
+        # ``mixed 1`` line and neither segment nor polygon counts.
+        values = [[int(token) for token in row] for row in rows] + [[0], [0]]
 
     def take(count: int, width: int) -> list[list[int]]:
         nonlocal values
@@ -1441,13 +1460,19 @@ class PointCoverRun:
     receipt: str
     #: Totals ``search/ZMX2.md`` section 9 reports for the source's run; it ships no log.
     boxes: int
-    certified_leaves: int
-    empty_leaves: int
+    certified_leaves: int | None
+    empty_leaves: int | None
     max_depth: int
+    #: The packet whose ``receipts/`` holds the log: the source's own, or a later replay's.
+    directory: Path = RECEIPTS
     #: The source's own unreduced ``zmx2 cert --full`` log, where it ships one.
     full_log: Path | None = None
     #: The ``atoms`` header value of that log.
     full_atoms: str | None = None
+
+    @property
+    def log(self) -> Path:
+        return self.directory / self.receipt
 
 
 #: The source's ``s(13)`` and ``s(32)`` point covers, which the previous packet retains.
@@ -1464,6 +1489,19 @@ POINT_COVER_RUNS = (
         full_log=EVAND_1001 / "certificates/s32/zmx2_full_sym/roots.log.xz",
         full_atoms="pairpts+sym",
     ),
+    # wand125's point-only s(61) cover: its provenance.json reports 800,042 boxes at depth
+    # 30 and no leaf split, which is left out of the comparison. Replayed here with the
+    # zmx2 6b7f0f79 its verify.sh builds.
+    PointCoverRun(
+        61,
+        8,
+        "n61_zmx2_d4_pairpoints_roots.log",
+        800042,
+        None,
+        None,
+        30,
+        directory=WEB / "wand125-point-n61-2026-09-30/receipts",
+    ),
 )
 POINT_COVERS = {run.n: run for run in POINT_COVER_RUNS}
 
@@ -1472,7 +1510,7 @@ def shipped_zmx2(n: int, mode: str) -> Path | None:
     """The reference log for ``compare-zmx2``, or ``None`` where no log is retained."""
     run = POINT_COVERS.get(n)
     if run is not None:
-        return RECEIPTS / run.receipt if mode == "d4" else run.full_log
+        return run.log if mode == "d4" else run.full_log
     case = MIXED_CASES[n]
     return case.bundle_dir / f"zmx2_{mode}/roots.log" if mode in case.zmx2_modes else None
 
@@ -1485,13 +1523,21 @@ def audit_point_cover_run(
     ``path`` defaults to the packet's retained log; a replayer passes their own, or the
     parts of a joined run.
     """
-    result = audit_zmx2(run, path or RECEIPTS / run.receipt, "d4")
-    result["totals_equal_source_report"] = (
-        result["boxes"],
-        result["certified_leaves"],
-        result["empty_leaves"],
-        result["max_depth"],
-    ) == (run.boxes, run.certified_leaves, run.empty_leaves, run.max_depth)
+    result = audit_zmx2(run, path or run.log, "d4")
+    stated = (run.boxes, run.certified_leaves, run.empty_leaves, run.max_depth)
+    result["totals_equal_source_report"] = all(
+        want is None or got == want
+        for got, want in zip(
+            (
+                result["boxes"],
+                result["certified_leaves"],
+                result["empty_leaves"],
+                result["max_depth"],
+            ),
+            stated,
+            strict=True,
+        )
+    )
     return result
 
 
@@ -1507,7 +1553,7 @@ def check_point_cover_runs(
     clean = True
     for run in runs:
         key = f"s{run.n}_point_cover_zmx2_d4"
-        log = RECEIPTS / run.receipt
+        log = run.log
         if not retained_exists(log):
             report[key] = {"log": _display(log), "missing": True}
             clean = False
@@ -1587,6 +1633,9 @@ def check_packet() -> dict[str, Any]:
         clean &= ok
     point_covers, points_clean = check_point_cover_runs()
     report.update(point_covers)
+    for n, case in POINT_ONLY_CASES.items():
+        report[f"s{n}_point_cover"] = audit_cover(case)
+        clean &= cover_clean(report[f"s{n}_point_cover"])
     for n, case in IMPORTED_CASES.items():
         report[f"s{n}"], ok, open_question = check_imported_case(case)
         clean &= ok
@@ -1659,7 +1708,9 @@ def main(argv: Sequence[str] | None = None) -> int:
     mixed = sorted(MIXED_CASES)
     zmx2_cases = sorted({*MIXED_CASES, *POINT_COVERS})
     cover = commands.add_parser("cover", parents=[common], help="audit one mixed cover")
-    cover.add_argument("--case", type=int, choices=mixed, required=True)
+    cover.add_argument(
+        "--case", type=int, choices=sorted({*mixed, *POINT_ONLY_CASES}), required=True
+    )
     cover.add_argument("path", type=Path, nargs="?")
     zmx2 = commands.add_parser(
         "zmx2", parents=[common], help="audit zmx2 cert logs, several read as one"
@@ -1713,7 +1764,7 @@ def main(argv: Sequence[str] | None = None) -> int:
     if args.command in {"zmx2", "compare-zmx2"}:
         result, ok = _zmx2_command(parser, args)
     elif args.command == "cover":
-        result = audit_cover(MIXED_CASES[args.case], args.path)
+        result = audit_cover({**MIXED_CASES, **POINT_ONLY_CASES}[args.case], args.path)
         ok = cover_clean(result)
     elif args.command == "zm-mixed" and args.deep:
         result = audit_zm_mixed_composite(

@@ -798,6 +798,28 @@ sources:
       (T-078, V3/C3) and supersedes T-049's 15680/3951. All three checkers refuse two mutated
       certificates. The one retained review was written by the lane that ran the replays
       (its finding F1).
+  - id: wand125-point-n61-2026-09-30
+    title: Point-only cover for s(61) = 8
+    role: source-repository
+    url: https://github.com/wand125/square-packing-bounds/tree/f8846cec9661773dbd0cc7cbeee7d01ddb12a2b8/point_n61_L8
+    local: resources/web/wand125-point-n61-2026-09-30/
+    source_key: '[wand125 point n61 2026-09-30]'
+    scope: {n_values: [61]}
+    reviewed: '2026-10-02'
+    source_date: '2026-09-30'
+    disposition: current-report
+    replay_disposition: case-specific
+    represented_by: [frontier/evidence.yaml, frontier/results.yaml]
+    evidence:
+      - E-n061-wand125-point-cover-zmx2-replay
+    notes: >-
+      Revision f8846cec9661773dbd0cc7cbeee7d01ddb12a2b8, retrieved at 2026-10-02T17:37Z for
+      a comment of that day on jlevy/squares#238. A D4-invariant point measure on [0,8]^2,
+      15,193 points of total 8584985072679551/2^47 < 61, whose capture condition the
+      source checks with Evan Daniel's unmodified zmx2. Replayed here by zmx2 --d4
+      --pair-points, VERIFIED-D4 over all 6,400 roots, and two mutated covers refused;
+      recorded as a second route on T-063, since s(61) = 8 already follows from s(60) = 8
+      (T-062). The 2 October review of the cover found no defect.
   - id: wand125-valid7-independent-check-2026-10-02
     title: Independent exact checker of Valid7 for s(k^2 - 3) = k
     role: source-repository

@@ -5359,7 +5359,10 @@ results:
       T-062's lower half was replayed here in full on 2 October 2026, and this value with it.
       wand125's s(59) = 8 (T-066), replayed here the same day, gives it a second route by
       the same deduction, and the same source's family s(k^2 - 3) = k (T-064) states it again
-      at k = 8, by a separate certificate not replayed here.
+      at k = 8, by a separate certificate, replayed here on 3 October with the reduction
+      built. wand125's point-only cover for s(61) itself, which Evan Daniel also reports
+      certifying, was replayed here on 2 October by Daniel's zmx2, VERIFIED-D4 over all
+      6,400 roots: a route that uses points only, on a cover built by someone else.
 
       Evan Daniel,
       [evand/square-packing](https://github.com/evand/square-packing/tree/08e8a5faa54c0a7b0bb1cb0134c77d3565ce40c5/s12/certificates/s60),
@@ -5386,10 +5389,13 @@ results:
       whose scope takes in n = 61 because the cover's total is below 61; monotonicity by
       deletion, E-n061-evand-derived-report, read and found sound; and the 8 x 8 grid,
       E-basic-grid-upper. It stands at T-062's V3/C3 and never above it. wand125's s(59) =
-      8 (T-066) is a second route under the same checker. wand125's separate point-only
-      cover for s(61) = 8, which Evan Daniel reports certifying with zeromargin.py and
-      zmcheck (E-n061-wand125-point-cover-evand-replay-report), is a report not replayed
-      here, so it sets nothing.
+      8 (T-066) is a second route under the same checker.
+
+      So is wand125's separate point-only cover for s(61) = 8, replayed here by zmx2
+      (E-n061-wand125-point-cover-zmx2-replay): an independent implementation of the
+      cover's producer, but the same checker, so no second method. Evan Daniel's reports
+      of certifying that cover with zeromargin.py and zmcheck
+      (E-n061-wand125-point-cover-evand-replay-report) are not replayed here.
     reviews:
       - path: docs/project/reviews/review-2026-10-02-evand-s60-geometric-premises.md
         kind: adversarial
@@ -5406,6 +5412,7 @@ results:
       - E-n060-evand-mixed-cover-zmx2-replay
       - E-n061-evand-derived-report
       - E-n061-wand125-point-cover-evand-replay-report
+      - E-n061-wand125-point-cover-zmx2-replay
       - E-basic-grid-upper
     artifacts:
       - packing/frontier/n-061.md
@@ -5416,16 +5423,17 @@ results:
       - docs/project/reviews/review-2026-10-02-evand-s60-geometric-premises.md
       - packing/resources/web/evand-square-packing-2026-10-02/README.md
       - packing/resources/web/evand-square-packing-2026-10-02/square-packing/s12/search/S61_WAND125_REPLAY.md
+      - packing/resources/web/wand125-point-n61-2026-09-30/README.md
+      - packing/resources/web/wand125-point-n61-2026-09-30/receipts/n61_zmx2_d4_pairpoints.log
+      - packing/resources/web/wand125-point-n61-2026-09-30/receipts/n61_zmx2_d4_pairpoints_audit.json
+      - docs/project/reviews/review-2026-10-02-wand125-s61-point-cover.md
     controls:
       - packing/tests/test_replay_controls.py
       - packing/tests/test_audit_evand_mixed_covers.py
     next_rung: >-
-      Nothing of its own: this entry rises with T-062. A point-only route stands beside it
-      as a report, Evan Daniel's replay of wand125's point-only cover by zeromargin.py and
-      zmcheck (E-n061-wand125-point-cover-evand-replay-report). Replaying either of those
-      checkers here on the retained cover, with the intake of wand125's own source
-      (think-hxrz), would give s(61) = 8 a route that rests neither on zmx2 nor on T-062's
-      cover.
+      Nothing of its own: this entry rises with T-062. wand125's point-only cover was
+      replayed here by zmx2 (think-hxrz); replaying Daniel's zeromargin.py or zmcheck on it
+      would give s(61) = 8 a route that rests neither on zmx2 nor on T-062's cover.
     notes: >-
       Raised from V0/C1 with T-062 on 2 October 2026. The deduction was read on 1 October
       and again in the review of the geometric premises (section 4.9), which found it sound

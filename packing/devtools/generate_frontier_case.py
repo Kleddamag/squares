@@ -40,14 +40,14 @@ hand-written records to show that the rules are the ones the corpus already foll
   `1/2 + sqrt(n - floor(sqrt(n)) + 1/4)`, under `E-karakus-strip-lower`; it is exactly
   `k` at `n = k^2 - 1`. A perfect square's is the area bound under `E-basic-area-lower`,
   and a `k^2 - 2` case's is `k` under `E-chelokot-square-minus-two-lean`, chelokot's Lean
-  theorem `s(n^2 - 2) = n`, replayed here with its axiom receipt (`T-069`).
+  theorem `s(n^2 - 2) = n`, replayed here with its axiom receipt (`T-083`).
   The reported lower field takes the stronger of Nagamochi's closed form, under
   `E-nagamochi-lower`, and the source candidates in `audit_ds7_lower_bounds`; Green's
   missing proofs remain source-reported only. A perfect square reports the area bound
   under `E-basic-area-lower`, which is what the hand-written perfect squares do.
   Corrected 2026-10-02: until then Nagamochi's closed form was the verified lower bound
   here too. Its published proof rests on Nagamochi's Lemma 1, which Karakuş 2026 showed
-  false, so it is now a reported bound (`T-007`, `T-068`,
+  false, so it is now a reported bound (`T-007`, `T-082`,
   `docs/project/reviews/review-2026-10-02-nagamochi-lemma1-karakus.md`).
 - `status` is `proved` only where the verified lower bound meets the reported upper
   bound exactly. In `101..324` that is the 24 cases `k^2`, `k^2 - 1` and `k^2 - 2` for
@@ -256,6 +256,7 @@ from typing import Any, Protocol
 import yaml
 from strif import atomic_output_file
 
+from devtools import render_case_verifiers
 from devtools.audit_ds7_lower_bounds import (
     GREEN9,
     GREEN10,
@@ -304,13 +305,13 @@ GRID_UPPER_EVIDENCE = "E-basic-grid-upper"
 AREA_LOWER_EVIDENCE = "E-basic-area-lower"
 NAGAMOCHI_EVIDENCE = "E-nagamochi-lower"
 KARAKUS_EVIDENCE = "E-karakus-strip-lower"
-#: The exact recomputation of the counterexample to Nagamochi's Lemma 1 (`T-068`): why a
+#: The exact recomputation of the counterexample to Nagamochi's Lemma 1 (`T-082`): why a
 #: record's verified floor is Karakuş's rather than Nagamochi's. Scoped from `n = 10`, the
 #: first case whose container the counterexample family reaches.
 LEMMA1_EVIDENCE = "E-nagamochi-lemma1-counterexample"
 LEMMA1_FROM = 10
 #: chelokot's Lean proof that `s(n^2 - 2) = n` for every `n >= 2`, replayed here with its
-#: axiom receipt (`T-069`): the verified lower bound of the `k^2 - 2` family since 2026-10-02.
+#: axiom receipt (`T-083`): the verified lower bound of the `k^2 - 2` family since 2026-10-02.
 LEAN_EVIDENCE = "E-chelokot-square-minus-two-lean"
 LEAN_NOTE = "Lean theorem: s(n^2 - 2) = n for every integer n >= 2."
 #: The least nonsquare `n` Karakuş's Corollary 6.2 covers.
@@ -1303,7 +1304,7 @@ def verified_lower_bound(n: int) -> dict[str, Any]:
 
     The area bound at a perfect square, and Karakuş's bound everywhere else. Until
     2026-10-02 it was Nagamochi's closed form throughout, whose published proof rests on a
-    false lemma (`T-068`); see this module's docstring.
+    false lemma (`T-082`); see this module's docstring.
     """
     if is_perfect_square(n):
         side = str(grid_ceiling(n))
@@ -2137,6 +2138,10 @@ def render_body(
     else:
         lines.extend(nagamochi_lower_section(n, payload))
     lines.append("")
+    # The programs behind the verified bounds, as `devtools.render_case_verifiers` keeps
+    # them in every case record, so a fresh draft already carries its section.
+    lines.extend(render_case_verifiers.section_for(payload))
+    lines.append("")
     lines.append(COMMON_DOC_FOOTER)
 
     # Formatted in process by the Python build of the same formatter the pre-commit hook
@@ -2293,7 +2298,11 @@ def adopt_upper_bound_packet(n: int, text: str) -> str:
     """
     intake, plans, earlier = _upper_bound_packets()
     plan = plans.get(n)
-    return text if plan is None else intake.apply_case(plan, text, earlier[n])
+    if plan is None:
+        return text
+    # The intake moves the verified upper bound's evidence, so the record's
+    # verification-code section is written again from the front matter it leaves.
+    return render_case_verifiers.refresh(intake.apply_case(plan, text, earlier[n]))
 
 
 def generate_record(

@@ -143,7 +143,9 @@ def test_every_registered_result_has_exactly_one_status_from_the_record() -> Non
         marks = render_recent_results.position_marks(
             entry, render_recent_results.standing(entry, records)
         )
-        line = status_line(entry, evidence, marks)
+        line = status_line(
+            entry, evidence, marks, how=render_results.confirmed_how(entry, evidence)
+        )
         assert line.startswith(word), entry["id"]
         row = next(row for row in rendered.splitlines() if row.startswith(f"| {entry['id']} "))
         assert f"| {line} |" in row, entry["id"]
@@ -199,7 +201,16 @@ def test_superseded_is_marked_on_a_bound_and_on_nothing_else() -> None:
         for entry in records.register.results
         if view.superseded(entry, view.standing(entry, records))
     ]
-    assert len(marked) == 26
+    # Thirty since 2026-10-02, when wand125's replayed rectangle certificates (T-045,
+    # T-070) superseded T-030 at n = 18, T-020 at n = 19, T-021 at n = 20 and T-047 at
+    # n = 26 and 29, the last counts each of them held; thirty-one later that day, when
+    # the 1 October replays (T-074) beat wand125's point certificates (T-044) at the last
+    # of their counts; thirty-two since 3 October, when squarepacker's rescaling (T-078)
+    # superseded Daniel's s(12) >= 15680/3951 (T-049); thirty-three since the merge of the
+    # same day, when the replays recorded in parallel (T-063, T-069) beat Bašić and
+    # Slivková's piercing bound (T-084) at both of its counts.
+    assert len(marked) == 33
+    assert {"T-020", "T-021", "T-030", "T-044", "T-047", "T-049", "T-084"} <= set(marked)
     assert {str(records.results[entry]["kind"]) for entry in marked} == {"lower-bound"}
 
 

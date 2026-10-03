@@ -749,8 +749,8 @@ bound, so the closed form above and both exact families are unproved by this pap
 every `N ≥ 10`. Nothing is disproved, and no packing beating any of its values is known.
 Karakuş proves the weaker `s(N) ≥ 1/2 + √(N − ⌊√N⌋ + 1/4)` for every nonsquare `N ≥ 8`
 and, with it, `s(m² − 1) = m`; `s(m² − 2) = m` rests on chelokot’s Lean proof alone.
-The register now holds Nagamochi’s values as reported bounds, and `T-007`, `T-066`,
-`T-067`, `T-068` and `T-069` record where each part stands
+The register now holds Nagamochi’s values as reported bounds, and `T-007`, `T-080`,
+`T-081`, `T-082` and `T-083` record where each part stands
 ([review](../reviews/review-2026-10-02-nagamochi-lemma1-karakus.md)). This section is
 kept as written.
 
@@ -915,68 +915,66 @@ Use the structured form to query or plot; use these tables to read.
 
 | `n` | best reported `s(n)` | how | deg | reported lower bound | from | gap |
 | --- | --- | --- | --- | --- | --- | --- |
-| 12 | 4 | grid | — | 3.968615 | counting | 0.0314 |
+| 12 | 4 | grid | — | 3.969117 | counting | 0.0309 |
 | 17 | 4.67553009 | hand | 18 | 4.66044 | counting | 0.0151 |
 | 18 | `(7/2) + (1/2)√7` = 4.82287566 | hand | — | 4.695 | counting | 0.1279 |
-| 19 | `3 + (4/3)√2` = 4.88561808 | hand | — | 4.815 | counting | 0.0706 |
-| 20 | 5 | grid | — | 4.895 | counting | 0.105 |
-| 26 | `(7/2) + (3/2)√2` = 5.62132034 | extension | — | 5.53 | counting | 0.0913 |
-| 27 | `5 + (1/2)√2` = 5.70710678 | strip | — | 5.6 | counting | 0.1071 |
-| 28 | 5.82444462 | annealing | 6 | 5.72 | counting | 0.1044 |
-| 29 | 5.93383346 | annealing | — | 5.79 | counting | 0.1438 |
-| 30 | 6 | grid | — | 5.865 | counting | 0.135 |
-| 31 | 6 | grid | — | 5.935 | counting | 0.065 |
-| 37 | 6.59861961 | hand | 8 | 6.425 | counting | 0.1736 |
-| 38 | `6 + (1/2)√2` = 6.70710678 | strip | — | 6.54 | counting | 0.1671 |
-| 39 | 6.81072208 | annealing | 5 | 6.63 | counting | 0.1807 |
-| 40 | `4 + 2 √2` = 6.82842712 | hand | — | 6.695 | counting | 0.1334 |
-| 41 | 6.92669309 | annealing | 42 | 6.755 | counting | 0.1717 |
-| 42 | 7 | grid | — | 6.79 | counting | 0.21 |
-| 43 | 7 | grid | — | 6.865 | counting | 0.135 |
-| 44 | 7 | grid | — | 6.935 | counting | 0.065 |
+| 19 | `3 + (4/3)√2` = 4.88561808 | hand | — | 4.8175 | counting | 0.0681 |
+| 20 | 5 | grid | — | 4.9 | counting | 0.1 |
+| 26 | `(7/2) + (3/2)√2` = 5.62132034 | extension | — | 5.5325 | counting | 0.0888 |
+| 27 | `5 + (1/2)√2` = 5.70710678 | strip | — | 5.635 | counting | 0.0721 |
+| 28 | 5.82444462 | annealing | 6 | 5.7225 | counting | 0.1019 |
+| 29 | 5.93383346 | annealing | — | 5.7975 | counting | 0.1363 |
+| 30 | 6 | grid | — | 5.875 | counting | 0.125 |
+| 31 | 6 | grid | — | 5.9525 | counting | 0.0475 |
+| 37 | 6.59861961 | hand | 8 | 6.44 | counting | 0.1586 |
+| 38 | `6 + (1/2)√2` = 6.70710678 | strip | — | 6.545 | counting | 0.1621 |
+| 39 | 6.81072208 | annealing | 5 | 6.635 | counting | 0.1757 |
+| 40 | `4 + 2 √2` = 6.82842712 | hand | — | 6.7 | counting | 0.1284 |
+| 41 | 6.92669309 | annealing | 42 | 6.76 | counting | 0.1667 |
+| 42 | 7 | grid | — | 6.8275 | counting | 0.1725 |
+| 43 | 7 | grid | — | 6.8875 | counting | 0.1125 |
+| 44 | 7 | grid | — | 6.9425 | counting | 0.0575 |
 | 50 | `7 + (4/7)` = 7.57142857 | annealing | — | 7.4 | counting | 0.1714 |
 | 51 | 7.70079924 | annealing | 12 | 7.4425 | counting | 0.2583 |
 | 52 | `7 + (1/2)√2` = 7.70710678 | strip | — | 7.535 | counting | 0.1721 |
-| 53 | `(13/2) + (1/2)√7` = 7.82287566 | annealing | — | 7.595 | counting | 0.2279 |
-| 54 | `7 - (1/2)√2 + sqrt(1 + √2)` = 7.84666719 | hand | — | 7.6675 | counting | 0.1792 |
-| 55 | 7.94577101 | annealing | — | 7.71 | counting | 0.2358 |
-| 56 | 8 | grid | — | 7.77 | counting | 0.23 |
+| 53 | `(13/2) + (1/2)√7` = 7.82287566 | annealing | — | 7.6075 | counting | 0.2154 |
+| 54 | `7 - (1/2)√2 + sqrt(1 + √2)` = 7.84666719 | hand | — | 7.6725 | counting | 0.1742 |
+| 55 | 7.94577101 | annealing | — | 7.7125 | counting | 0.2333 |
+| 56 | 8 | grid | — | 7.7825 | counting | 0.2175 |
 | 57 | 8 | grid | — | 7.835 | counting | 0.165 |
 | 58 | 8 | grid | — | 7.89 | counting | 0.11 |
-| 59 | 8 | grid | — | 7.92 | counting | 0.08 |
-| 65 | `5 + (5/2)√2` = 8.53553391 | hand | — | 8.289966 | unavoidable points | 0.2456 |
-| 66 | `3 + 4 √2` = 8.65685425 | hand | — | 8.375 | counting | 0.2819 |
+| 65 | `5 + (5/2)√2` = 8.53553391 | hand | — | 8.35 | counting | 0.1855 |
+| 66 | `3 + 4 √2` = 8.65685425 | hand | — | 8.42 | counting | 0.2369 |
 | 67 | `8 + (1/2)√2` = 8.70710678 | strip | — | 8.455 | counting | 0.2521 |
-| 68 | 8.79879524 | — | — | 8.495 | counting | 0.3038 |
-| 69 | 8.82720551 | — | — | 8.575 | counting | 0.2522 |
-| 70 | 8.88166676 | hand | 4 | 8.62 | counting | 0.2617 |
+| 68 | 8.79879524 | — | — | 8.51 | counting | 0.2888 |
+| 69 | 8.82720551 | — | — | 8.585 | counting | 0.2422 |
+| 70 | 8.88166676 | hand | 4 | 8.6275 | counting | 0.2542 |
 | 71 | 8.94407156 | annealing | — | 8.685 | counting | 0.2591 |
 | 72 | 9 | grid | — | 8.74 | counting | 0.26 |
 | 73 | 9 | grid | — | 8.78 | counting | 0.22 |
-| 74 | 9 | grid | — | 8.84 | counting | 0.16 |
-| 75 | 9 | grid | — | 8.89 | counting | 0.11 |
-| 76 | 9 | grid | — | 8.92 | counting | 0.08 |
-| 77 | 9 | grid | — | 8.92 | monotone | 0.08 |
-| 82 | `6 + (5/2)√2` = 9.53553391 | hand | — | 9.266734 | unavoidable points | 0.2688 |
-| 83 | 9.63482562 | extension | 24 | 9.266734 | monotone | 0.3681 |
-| 84 | `9 + (1/2)√2` = 9.70710678 | strip | — | 9.266734 | monotone | 0.4404 |
-| 85 | `(11/2) + 3 √2` = 9.74264069 | hand | — | 9.266734 | monotone | 0.4759 |
-| 86 | `(17/2) + (1/2)√7` = 9.82287566 | extension | — | 9.355 | counting | 0.4679 |
-| 87 | 9.83881744 | annealing | 44 | 9.3666 | Nagamochi | 0.4722 |
-| 88 | 9.88815305 | hand | 20 | 9.45 | counting | 0.4382 |
-| 89 | `5 + (7/2)√2` = 9.94974747 | hand | — | 9.55 | counting | 0.3997 |
-| 90 | 10 | grid | — | 9.55 | monotone | 0.45 |
-| 91 | 10 | grid | — | 9.645 | counting | 0.355 |
-| 92 | 10 | grid | — | 9.660254 | Nagamochi | 0.3397 |
-| 93 | 10 | grid | — | 9.717798 | Nagamochi | 0.2822 |
-| 94 | 10 | grid | — | 9.795 | counting | 0.205 |
-| 95 | 10 | grid | — | 9.8418 | counting | 0.1582 |
-| 96 | 10 | grid | — | 9.888194 | Nagamochi | 0.1118 |
-| 101 | `7 + (5/2)√2` = 10.53553391 | extension | — | 10.246736 | unavoidable points | 0.2888 |
-| 102 | 10.60717468 | — | — | 10.246736 | monotone | 0.3604 |
-| 103 | 10.70351676 | — | — | 10.246736 | monotone | 0.4568 |
-| 104 | `10 + (1/2)√2` = 10.70710678 | strip | — | 10.246736 | monotone | 0.4604 |
-| 105 | 10.80607787 | — | — | 10.273618 | Nagamochi | 0.5325 |
+| 74 | 9 | grid | — | 8.8475 | counting | 0.1525 |
+| 75 | 9 | grid | — | 8.9 | counting | 0.1 |
+| 76 | 9 | grid | — | 8.94 | counting | 0.06 |
+| 82 | `6 + (5/2)√2` = 9.53553391 | hand | — | 9.32 | counting | 0.2155 |
+| 83 | 9.63482562 | extension | 24 | 9.37 | counting | 0.2648 |
+| 84 | `9 + (1/2)√2` = 9.70710678 | strip | — | 9.4 | counting | 0.3071 |
+| 85 | `(11/2) + 3 √2` = 9.74264069 | hand | — | 9.46 | counting | 0.2826 |
+| 86 | `(17/2) + (1/2)√7` = 9.82287566 | extension | — | 9.46 | monotone from `s(85)` | 0.3629 |
+| 87 | 9.83881744 | annealing | 44 | 9.48 | counting | 0.3588 |
+| 88 | 9.88815305 | hand | 20 | 9.48 | monotone from `s(87)` | 0.4082 |
+| 89 | `5 + (7/2)√2` = 9.94974747 | hand | — | 9.565 | counting | 0.3847 |
+| 90 | 10 | grid | — | 9.6 | counting | 0.4 |
+| 91 | 10 | grid | — | 9.7 | counting | 0.3 |
+| 92 | 10 | grid | — | 9.75 | counting | 0.25 |
+| 93 | 10 | grid | — | 9.75 | monotone from `s(92)` | 0.25 |
+| 94 | 10 | grid | — | 9.805 | counting | 0.195 |
+| 95 | 10 | grid | — | 9.8518 | counting | 0.1482 |
+| 96 | 10 | grid | — | 9.96 | counting | 0.04 |
+| 101 | `7 + (5/2)√2` = 10.53553391 | extension | — | 10.28 | counting | 0.2555 |
+| 102 | 10.60717468 | — | — | 10.28 | monotone from `s(101)` | 0.3272 |
+| 103 | 10.70351676 | — | — | 10.28 | monotone from `s(101)` | 0.4235 |
+| 104 | `10 + (1/2)√2` = 10.70710678 | strip | — | 10.28 | monotone from `s(101)` | 0.4271 |
+| 105 | 10.80607787 | — | — | 10.28 | monotone from `s(101)` | 0.5261 |
 | 106 | 10.82290804 | — | — | 10.327379 | Nagamochi | 0.4955 |
 | 107 | `10 - (1/2)√2 + sqrt(1 + √2)` = 10.84666719 | — | — | 10.380832 | Nagamochi | 0.4658 |
 | 108 | 10.92591939 | extension | 144 | 10.433981 | Nagamochi | 0.4919 |
@@ -1203,48 +1201,50 @@ Use the structured form to query or plot; use these tables to read.
 | 47 | `7` | Nagamochi | Hiroshi Nagamochi (2005) | proved |
 | 48 | `7` | Nagamochi | Hiroshi Nagamochi (2005) | proved |
 | 49 | `7` | perfect square | classical | proved |
-| 60 | `8` | counting | Evan Daniel (2026) | proof audit pending |
-| 61 | `8` | monotone | Evan Daniel (2026) | proof audit pending |
+| 59 | `8` | counting | wand125 (2026) | proved |
+| 60 | `8` | counting | Evan Daniel (2026) | proved |
+| 61 | `8` | monotone | Evan Daniel (2026) | proved |
 | 62 | `8` | Nagamochi | Hiroshi Nagamochi (2005) | proved |
 | 63 | `8` | Nagamochi | Hiroshi Nagamochi (2005) | proved |
 | 64 | `8` | perfect square | classical | proved |
-| 78 | `9` | counting | Evan Daniel (2026) | proof audit pending |
+| 77 | `9` | counting | wand125 (2026) | proved |
+| 78 | `9` | counting | Evan Daniel (2026) | proved |
 | 79 | `9` | Nagamochi | Hiroshi Nagamochi (2005) | proved |
 | 80 | `9` | Nagamochi | Hiroshi Nagamochi (2005) | proved |
 | 81 | `9` | perfect square | classical | proved |
-| 97 | `10` | counting | Evan Daniel (2026) | proof audit pending |
+| 97 | `10` | counting | Evan Daniel (2026) | proved |
 | 98 | `10` | Nagamochi | Hiroshi Nagamochi (2005) | proved |
 | 99 | `10` | Nagamochi | Hiroshi Nagamochi (2005) | proved |
 | 100 | `10` | perfect square | classical | proved |
-| 118 | `11` | counting | Evan Daniel (2026) | proof audit pending |
+| 118 | `11` | counting | Evan Daniel (2026) | proved |
 | 119 | `11` | Nagamochi | Hiroshi Nagamochi (2005) | proved |
 | 120 | `11` | Nagamochi | Hiroshi Nagamochi (2005) | proved |
 | 121 | `11` | perfect square | classical | proved |
-| 141 | `12` | counting | Evan Daniel (2026) | proof audit pending |
+| 141 | `12` | counting | Evan Daniel (2026) | proved |
 | 142 | `12` | Nagamochi | Hiroshi Nagamochi (2005) | proved |
 | 143 | `12` | Nagamochi | Hiroshi Nagamochi (2005) | proved |
 | 144 | `12` | perfect square | classical | proved |
-| 166 | `13` | counting | Evan Daniel (2026) | proof audit pending |
+| 166 | `13` | counting | Evan Daniel (2026) | proved |
 | 167 | `13` | Nagamochi | Hiroshi Nagamochi (2005) | proved |
 | 168 | `13` | Nagamochi | Hiroshi Nagamochi (2005) | proved |
 | 169 | `13` | perfect square | classical | proved |
-| 193 | `14` | counting | Evan Daniel (2026) | proof audit pending |
+| 193 | `14` | counting | Evan Daniel (2026) | proved |
 | 194 | `14` | Nagamochi | Hiroshi Nagamochi (2005) | proved |
 | 195 | `14` | Nagamochi | Hiroshi Nagamochi (2005) | proved |
 | 196 | `14` | perfect square | classical | proved |
-| 222 | `15` | counting | Evan Daniel (2026) | proof audit pending |
+| 222 | `15` | counting | Evan Daniel (2026) | proved |
 | 223 | `15` | Nagamochi | Hiroshi Nagamochi (2005) | proved |
 | 224 | `15` | Nagamochi | Hiroshi Nagamochi (2005) | proved |
 | 225 | `15` | perfect square | classical | proved |
-| 253 | `16` | counting | Evan Daniel (2026) | proof audit pending |
+| 253 | `16` | counting | Evan Daniel (2026) | proved |
 | 254 | `16` | Nagamochi | Hiroshi Nagamochi (2005) | proved |
 | 255 | `16` | Nagamochi | Hiroshi Nagamochi (2005) | proved |
 | 256 | `16` | perfect square | classical | proved |
-| 286 | `17` | counting | Evan Daniel (2026) | proof audit pending |
+| 286 | `17` | counting | Evan Daniel (2026) | proved |
 | 287 | `17` | Nagamochi | Hiroshi Nagamochi (2005) | proved |
 | 288 | `17` | Nagamochi | Hiroshi Nagamochi (2005) | proved |
 | 289 | `17` | perfect square | classical | proved |
-| 321 | `18` | counting | Evan Daniel (2026) | proof audit pending |
+| 321 | `18` | counting | Evan Daniel (2026) | proved |
 | 322 | `18` | Nagamochi | Hiroshi Nagamochi (2005) | proved |
 | 323 | `18` | Nagamochi | Hiroshi Nagamochi (2005) | proved |
 | 324 | `18` | perfect square | classical | proved |

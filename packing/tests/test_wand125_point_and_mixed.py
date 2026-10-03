@@ -11,6 +11,7 @@ replayed in the packet's receipts.
 
 from __future__ import annotations
 
+import hashlib
 import json
 from fractions import Fraction
 from pathlib import Path
@@ -141,3 +142,68 @@ def test_n21_finished_stages_reproduce_every_proof_file_of_the_m1_run() -> None:
             f"{stage}/{name}"
             for name in ("inputs.json", "portable-reads.json", "progress.json", "result.json")
         ]
+
+
+def test_n21_complete_replay_matches_the_m1_record_output_for_output() -> None:
+    receipts = audit.PACKET / "receipts" / "n21"
+    recorded = json.loads((receipts / "comparison.json").read_text())
+    assert recorded["status"] == "MATCHES_SOURCE_M1_RECORD"
+    assert all(recorded["agreement"].values())
+    outputs = recorded["outputs_against_m1"]
+    assert outputs["outputs_here"] == outputs["outputs_m1"] == 45446
+    assert outputs["identical"] == 45436
+    assert not outputs["only_here"]
+    assert not outputs["only_m1"]
+    assert outputs["differing_names"] == [
+        "inputs.json",
+        "portable-reads.json",
+        "progress.json",
+        "result.json",
+    ]
+    # The run's linkage.json is not retained, so its digest is the one result.json states.
+    fresh = audit.n21_compare(receipts)
+    linkage = json.loads((receipts / "result.json").read_text())["linkage_sha256"]
+    assert fresh["agreement"] == recorded["agreement"]
+    assert fresh["reference"] == recorded["reference"]
+    assert fresh["replay"] | {"linkage_sha256": linkage} == recorded["replay"]
+
+
+def test_n21_collect_takes_a_receipts_path_relative_to_the_working_directory(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    out = tmp_path / "out"
+    out.mkdir()
+    (out / "result.json").write_text("{}")
+    (out / "run-inputs.json").write_text("{}")
+    exit_record = {"stage": "root", "shard": None, "exit_code": 0, "seconds": 1}
+    (out / "root-exit.json").write_text(json.dumps(exit_record))
+    (out / "root.log").write_text("".join(f"{k}\n" for k in range(audit.LINE_THRESHOLD + 1)))
+    monkeypatch.setattr(audit, "PACKET", tmp_path / "packet")
+    monkeypatch.chdir(tmp_path)
+    result = audit.n21_collect(out, Path("packet/receipts/n21"), None)
+    assert result["status"] == "DIFFERS"
+    stored = ["result.json", "run-inputs.json", "root-exit.json", "root.log.gz"]
+    assert result["stored"] == stored
+    row = result["compressed_file_rows"][0]
+    assert row.startswith("| `receipts/n21/root.log.gz` | receipt |")
+
+
+def test_n50_complete_replay_returns_every_shipped_record() -> None:
+    full = audit.PACKET / "receipts" / "n50" / "full"
+    retained = audit.SOURCE / audit.N50["L740"] / "certificate.json"
+    shipped = json.loads(read_retained_bytes(retained))
+    fresh_bytes = read_retained_bytes(full / "proof" / "certificate.json")
+    fresh = json.loads(fresh_bytes)
+    assert fresh["status"] == "ALL_ANGLES_VERIFIED_AND_REPLAYED"
+    assert fresh == shipped
+    progress = json.loads((full / "proof" / "replay-progress.json").read_text())
+    assert progress == {"done": audit.N50_LAST + 1, "total": audit.N50_LAST + 1}
+    axis = json.loads((full / "proof" / "axis" / "replayed.json").read_text())
+    assert axis == shipped["results"]["0"]
+    for index in range(1, audit.N50_LAST + 1):
+        replayed = full / "proof" / f"net{index:03}" / "replayed.json"
+        assert json.loads(replayed.read_text()) == shipped["results"][str(index)]
+    recorded = json.loads((full / "compare.json").read_text())
+    assert recorded["status"] == "FULL_REPLAY_MATCHES_SHIPPED"
+    assert recorded["oblique_angles_matching"] == audit.N50_LAST
+    assert recorded["certificate_sha256"] == hashlib.sha256(fresh_bytes).hexdigest()

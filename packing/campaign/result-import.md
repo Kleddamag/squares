@@ -91,6 +91,9 @@ Triage decides what the import is before anything is retained, in an hour or les
   author’s repository.
   A later revision is a new packet; files added later from the same revision join the
   packet they belong to.
+  [`devtools.acquire_source`](../devtools/acquire_source.py) writes a packet from a
+  declaration kept in its `acquisition/` directory, and its `--check` re-derives the
+  packet from its manifest.
 - **The bibliography key** carries the date of the pinned revision as `dated`, and is
   defined in the [resources README](../resources/README.md) as well.
   Credit is read from the source’s own files, now and not after the review.
@@ -125,6 +128,16 @@ is not a condition of it.
 - It runs the retained copy of each checker, which is read before it is run.
   A script that fetches one over the network is run with the fetch replaced, and the
   receipt says so.
+- Its evidence entry names every program the replay runs in `verifiers`, deciders and
+  premise checks alike, and registers a new one in
+  [`verifiers.yaml`](../frontier/verifiers.yaml) with the digest that ran and the
+  retained path of its source.
+  `relationship_to_generator` is read from the deciding programs: `same-implementation`
+  for the source’s own checker, `shared-components` with the reused parts listed,
+  `independent-implementation` with the record of what its authors read
+  ([epistemics.md](../../epistemics.md#which-code-confirmed-it)).
+  `devtools.backfill_verifier_relation --dry-run` shows what it would write and which
+  values look wrong.
 - Where the source’s script cannot pass as published, the evidence entry’s `limitations`
   say so, the author is told, and the same checks are run as this repository’s own
   sequence.
@@ -150,6 +163,13 @@ defect open, rewrites the entry’s `claim`, `notes` and `next_rung` together an
 its `activity`, so that no field says a replay is pending while another says it passed.
 The reviewer also confirms or changes the draft significance score.
 An open defect goes to the author with the review.
+
+The reviewer of the pull request checks one thing in every sentence the stage writes:
+where the claim, the case record, the review or the reply says the result is
+*confirmed*, it says which confirmation, reproduced with the producer’s code,
+re-implemented sharing named components, or independently re-implemented.
+The checker holds the register’s `claim`, `composition` and `next_rung` to it; the case
+record, the review and the reply are held to it here.
 
 ## Stage 5: Publish
 
@@ -185,7 +205,64 @@ The process adds when and how:
   branch dies with the branch, and a `T-NNN` quoted from one can change.
 - There is one reply when the result is imported and one when it is confirmed or a
   defect is found, and a follow-up whenever the record moves past what a reply said.
+  The reply that reports a confirmation names the programs that ran, and says whether
+  they were the author’s own code re-run or a re-implementation.
 - The issue is closed with a final comment when nothing the author asked for is queued.
+
+### The Requests Record
+
+[`result-requests.yaml`](result-requests.yaml) has one entry for each issue that reports
+a result, a defect or a correction.
+It records what the issue reports, and for each reported result the register and
+evidence ids it maps to, or why it is not registered and whether it is queued.
+It also names the beads that track the issue, the bead that answers it, every reply
+posted with the state that reply reported, and when the issue can close.
+It records no current rung.
+[`devtools.check_requests`](../devtools/check_requests.py) derives each result’s state
+from the register:
+
+- *confirmed*, when every register entry it maps to is at `V3` and `C3` or above;
+- *refuted* or *defect recorded*, from the entries’ reviews and evidence;
+- *open* while validation runs, and *queued* while it waits for import.
+
+A **reply is due** when the issue has had no reply, when an entry has been registered,
+renumbered or moved a rung since the last reply that spoke of it, or when a reply’s
+statement is marked `outdated` and no later reply `corrects` it.
+An issue is **closeable** when triage is done, every result is confirmed or refuted (a
+reported defect: recorded against the entry it names), and no `ask` is queued.
+
+A confirmation is described from the confirming evidence’s `relationship_to_generator`:
+*reproduced with the author’s own checker* for `same-implementation`, *re-verified by an
+independent implementation* for `independent-implementation`. The programs are the
+entry’s `verifiers`, named from `frontier/verifiers.yaml`; without them no program is
+named, and without a usable relation the report and the draft say it is not yet
+recorded. An exact value is described by its lower half alone, as its confirmation is.
+
+Run each command from `packing/` as
+`uv run --frozen --all-extras --group dev python -m devtools.check_requests`, with:
+
+| Option | What it does |
+| --- | --- |
+| none | The gate step: the schema holds and every id resolves; one line per issue |
+| `--report` | A table per issue: each result’s entries, rungs, state, how it was confirmed and whether its id is on `main`; the replies due; whether it is closeable |
+| `--backlog` | Every register entry below `V3` or `C3`, with its `next_rung`, its `activity`, the beads it names and the issues it serves |
+| `--draft N` | The status comment for issue N, ending in the Claude Code footer; it refuses unless `HEAD` is on `origin/main` |
+| `--github` | Read-only: the issues the record lacks, the replies missing from it and the comments after an entry’s `read_through` |
+
+A reply due is reported and never fails the gate: it is the owner’s next move, not a
+broken record.
+
+### After the Merge
+
+1. On `main`, run `--github` and take into the record any issue, reply or comment it
+   lacks. A new issue enters with `triage: pending`, and stage 1 maps its results.
+2. For each issue that `--report` marks reply due, render `--draft N`. The owner posts
+   it, or an agent does at the owner’s request.
+3. Record the reply under the issue’s `replies`: its URL, date and kind, and in
+   `reported` the id, rungs and status it stated for each result.
+   Name in `corrects` any earlier reply whose `outdated` statements it corrects.
+4. When `--report` says an issue is closeable, close it with the final comment and set
+   the entry’s `state` and `closed`.
 
 <!-- This document follows common-doc-guidelines.md.
 See github.com/jlevy/practical-prose and review guidelines before editing.

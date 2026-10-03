@@ -13,7 +13,7 @@ from datetime import date, timedelta
 from decimal import Decimal
 from html.parser import HTMLParser
 from pathlib import Path
-from typing import Any, cast
+from typing import cast
 
 import pytest
 
@@ -2822,19 +2822,15 @@ def test_recent_results_is_one_table_not_cards_or_a_list(
         cell = row.split('<td class="site-col-result"', 1)[1].split("</td>", 1)[0]
         assert "site-row-open" not in cell
         assert "<br" not in row
-    # Evan Daniel's three exact values, the closures the exact-value cards used to show,
-    # and since 2026-10-02 the k^2-1 and k^2-2 families, whose exact values rest on 2026
-    # results (T-067, T-069) that each cover a whole family rather than one case.
+    # Evan Daniel's three exact values, the closures the exact-value cards used to show, and
+    # every closure since: each is a case some row lists. Until 2026-10-02 each was its
+    # row's first case; s(78) = 9, proved that day by the s(77) cover's total being below
+    # 78, is the second case of T-067's row, which lists 77 and 78. Since 2026-10-02 the
+    # k^2-1 and k^2-2 families count too, whose exact values rest on 2026 results (T-081,
+    # T-083) that each cover a whole family rather than one case.
     exact = {n for n in overview.recent_lower if overview.cases[n]["status"] == "proved"}
-    shown = {n for r in newest for n in _scope_numbers(r.record["scope"])}
+    shown = {n for r in newest for n in scope_values(dict(r.record["scope"]))}
     assert exact <= shown
-
-
-def _scope_numbers(scope: dict[str, Any]) -> set[int]:
-    """Every case a result's scope covers: its listed values, or its whole range."""
-    if "n_values" in scope:
-        return set(scope["n_values"])
-    return set(range(scope["n_min"], scope["n_max"] + 1))
 
 
 def test_the_recent_table_lists_every_result_less_the_superseded_at_s4_and_180_days(
@@ -3076,14 +3072,15 @@ PROBLEM_STATEMENT = (
         "for most $n$. In many cases, $s(n)$ is known only to lie between an upper bound "
         "(the size of the enclosing square for the tightest packing ever discovered, such "
         "as $s(29) \\le 5.934$) and a lower bound (a size below which it is proved that no "
-        "packing can exist, such as the reported $s(29) \\ge 5.79$)."
+        "packing can exist, such as the reported $s(29) \\ge 5.7975$)."
     ),
 )
 
 
 def test_the_intros_examples_are_the_records() -> None:
     """The introduction's two examples are case 29's current bounds: its lower example
-    is the reported lower bound, wand125's 5.79 of 2026-09-28 when this was written,
+    is the reported lower bound, wand125's 5.79 of 2026-09-28 when this was written and
+    its 2319/400 = 5.7975 of 1 October (T-074) since,
     and its upper example is the reported upper bound rounded up, which also stands at
     or above the verified ceiling, so it is itself a proved ceiling. A new bound at
     $n = 29$ that leaves an example stale fails here rather than on the page."""
@@ -3814,7 +3811,7 @@ def test_both_tables_of_results_have_the_same_columns(
         assert classes.findall(here) == [
             "site-col-date",
             "site-col-result",
-            "num site-col-n",
+            overview_sections.case_cell_class(result),
             "site-col-credit",
             "site-rungs",
             "site-col-status",
@@ -4984,7 +4981,11 @@ def test_a_result_rows_popover_body_comes_from_one_function(
 #: What the two pages that list results may weigh. The result overviews are 2.8 MB
 #: between them; a page that carried them, as both once would have, crosses its ceiling.
 #: The shell every page carries, its faces and math, is about 1.8 MB of each.
-PAGE_CEILINGS = {"index.html": 4_300_000, render_overview.RESULTS_PAGE: 2_800_000}
+#: index.html's ceiling was 4,300,000 until the merge of main into PR 305 on 2026-10-03:
+#: PR 305's tip rendered it at 4,187,329 bytes (the regularized atlas drawings among
+#: them) and main's at 4,092,191, each under it, and the merge at 4,448,100. Raised to
+#: 4,700,000, which still fails a page that carries the overviews.
+PAGE_CEILINGS = {"index.html": 4_700_000, render_overview.RESULTS_PAGE: 2_800_000}
 
 
 def test_no_page_carries_a_result_overview(
@@ -5524,8 +5525,13 @@ def test_hide_superseded_starts_checked_on_the_overview_and_clear_on_the_results
             assert not superseded, result.id
     # Every standing stays, and so does a result with none: nothing but a superseded
     # bound is hidden for it. The one result that derives `superseded` and stays is the
-    # limit of a method, which is no bound.
-    assert kept == {*render_recent_results.STANDINGS, render_recent_results.NO_STANDING}
+    # limit of a method, which is no bound. No result has stood as a reported second
+    # certificate since 2026-10-02, when T-055's replay was recorded; when one does again,
+    # this pin fails and the standing returns to the set.
+    assert kept == {
+        *render_recent_results.STANDINGS,
+        render_recent_results.NO_STANDING,
+    } - {render_recent_results.SECOND_CERTIFICATE_REPORTED}
     current = sum(not overview_sections.is_superseded(r) for r in overview.results)
     assert 0 < shown < without < len(overview.results)
     assert shown < current < len(overview.results)

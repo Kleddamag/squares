@@ -414,6 +414,7 @@ PRUNE = frozenset(
         ROOT / "resources",
         ROOT / "sqsearch/target",
         ROOT / "sqverify_exact/target",
+        ROOT / "sqverify_fast/target",
         ROOT / "witnesses/prospective",
         # The exact certificates of T-056 and T-057 join on 2026-09-29, when their intake
         # (jlevy/squares#227) put the snapshot at 174,743,423 bytes against the
@@ -461,7 +462,12 @@ PRUNE = frozenset(
 BUILD_CACHES = frozenset(
     {"__pycache__", ".pytest_cache", ".ruff_cache", "dist", "node_modules"}
 )
-LINK_BACK = (Path(".venv"), Path("sqsearch/target"), Path("sqverify_exact/target"))
+LINK_BACK = (
+    Path(".venv"),
+    Path("sqsearch/target"),
+    Path("sqverify_exact/target"),
+    Path("sqverify_fast/target"),
+)
 # Individual files rescued from `PRUNE` because a check that runs inside a worker reads
 # that exact path. `clone_tree` copies precisely this tuple and `snapshot_source_bytes`
 # counts precisely this tuple, so the two cannot drift; adding a rescue is one line.
@@ -607,7 +613,14 @@ ROOT_DOCUMENTS = (
 # operating headroom at 192 MiB while think-t1lk owns dependency-aware selection.
 # This changes no copied bytes or time limit. At three portable workers the storage
 # ceiling is 576 MiB; the current measured payload remains about 160.05 MiB per tree.
-SNAPSHOT_MAX_BYTES = 192 * 1024 * 1024
+# 2026-10-03, the merge of main (#292, #311) into PR 305: 204,106,772 bytes, 2,780,180
+# over 192 MiB, though each side alone was under it -- main's retained certificate
+# packets and receipts and PR 305's regularized atlas layer and X-049 censuses, each
+# needed by its own checks. The note above says not to answer that with another archive
+# hunt, so the same reasoning restores roughly 29 MiB of headroom at 224 MiB, with
+# think-t1lk still owning dependency-aware selection. At three portable workers the
+# storage ceiling is 672 MiB; nothing copied changes.
+SNAPSHOT_MAX_BYTES = 224 * 1024 * 1024
 DEFAULT_CONTROL_TIMEOUT_SECONDS = 120.0
 TERMINATION_GRACE_SECONDS = 1.0
 # Directories that must be walked into rather than bulk-copied, because something
@@ -732,7 +745,7 @@ def _clone_into(src: Path, dst: Path) -> None:
 
 
 INLINE_LINK = re.compile(r"\]\(([^)#\s]+)\)")
-# Omitted sources a checked document may legitimately link into. `.venv` and the two
+# Omitted sources a checked document may legitimately link into. `.venv` and the three
 # cargo `target` directories are symlinked back whole, and `.gate-running` is a
 # marker, so the linked-file copy covers only the content prunes and referenced
 # workflows.
@@ -747,6 +760,7 @@ LINKED_PRUNE_ROOTS = (
             ROOT / ".venv",
             ROOT / "sqsearch/target",
             ROOT / "sqverify_exact/target",
+            ROOT / "sqverify_fast/target",
         }
     ),
     REPO / ".github/workflows",

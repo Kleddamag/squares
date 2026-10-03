@@ -1,0 +1,40 @@
+{
+  "status": "FULL_REPLAY_MATCHES_SHIPPED",
+  "certificate": "n83",
+  "directory": "certificates/mixed_n83_L937",
+  "tarball_sha256": "cbf81b21c271b4297036d71eae4948eacabece39fd14d092757a3a5748b9c9c7",
+  "candidate_digest": "a76336032928972d66d644c335cdfa62809ab2fef213474c86c36fd81ea7733a",
+  "angles_replayed": 201,
+  "missing": [],
+  "refused": [],
+  "ranges": [
+    {
+      "range": "range-000-086",
+      "runs": 1,
+      "rows": 87
+    },
+    {
+      "range": "range-087-135",
+      "runs": 1,
+      "rows": 49
+    },
+    {
+      "range": "range-136-171",
+      "runs": 1,
+      "rows": 36
+    },
+    {
+      "range": "range-172-200",
+      "runs": 2,
+      "rows": 29
+    }
+  ],
+  "hosts": [
+    "Intel(R) Xeon(R) Processor @ 2.10GHz",
+    "Intel(R) Xeon(R) Processor @ 2.80GHz"
+  ],
+  "axis_cpu_seconds": 175.918,
+  "cpu_hours": 16.256,
+  "cpu_hours_all_rows": 16.256,
+  "scope": "The complete replay, possibly split by angle across sessions: the source's driver preconditions and its per-angle replay functions with its unchanged C++ checker, every angle returning the record the source's certificate holds. The same outward-rounded algorithm as the source's run, not an independent one."
+}

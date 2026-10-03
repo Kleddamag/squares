@@ -3,7 +3,7 @@ softschema:
   schema: source-coverage.schema.yaml
   status: enforced
 
-last_reviewed: '2026-10-01'
+last_reviewed: '2026-10-02'
 coverage_scope: >
   Current public upper-bound catalogues and first-party result releases known to this
   project, the Schadt n=29 witness-contract regression source, and the September 2026
@@ -52,6 +52,7 @@ sources:
       - E-n032-evand-closed-cover-report
       - E-n032-evand-closed-cover-source-run
       - E-n032-evand-closed-cover-zmx2-replay
+      - E-n032-evand-zmx2-full-sym-replay
       - E-n012-evand-15680-3951-report
       - E-n012-evand-15680-3951-source-replay
       - E-n012-evand-15680-3951-native-parent-core
@@ -79,7 +80,9 @@ sources:
       is below the verified 31/8 and is retained in the packet but not registered.
       On 2026-09-29 the same repository's s(21) = 5
       (evand-square-packing-2026-09-28) superseded its s(21) >= 5000/1001,
-      which is kept as the previous verified bound.
+      which is kept as the previous verified bound. On 2026-10-02 zmx2's run on the s(32)
+      cover without the D4 fold, from the checker source retained in
+      evand-zmx2-sym-atoms-2026-09-30, was replayed here (E-n032-evand-zmx2-full-sym-replay).
   - id: evand-square-packing-2026-09-28
     title: square-packing, mixed covers for s(21) = 5 and s(45) = 7
     role: source-repository
@@ -124,8 +127,8 @@ sources:
     url: https://github.com/evand/square-packing/tree/08e8a5faa54c0a7b0bb1cb0134c77d3565ce40c5
     local: resources/web/evand-square-packing-2026-10-01/source/s12/
     source_key: '[evand square-packing 2026-10-01]'
-    scope: {n_values: [33, 46, 60, 61, 78, 97, 118, 141, 166, 193, 222, 253, 286, 321]}
-    reviewed: '2026-10-01'
+    scope: {n_values: [32, 33, 46, 60, 61, 78, 97, 118, 141, 166, 193, 222, 253, 286, 321]}
+    reviewed: '2026-10-02'
     source_date: '2026-10-01'
     disposition: current-report
     replay_disposition: case-specific
@@ -144,8 +147,11 @@ sources:
       - frontier/n-321.md
     evidence:
       - E-n060-evand-mixed-cover-report
+      - E-n060-evand-mixed-cover-zmx2-replay
       - E-n061-evand-derived-report
       - E-k2m3-evand-family-report
+      - E-n032-evand-zmx2-full-sym-report
+      - E-n032-evand-zmx2-full-sym-replay
     notes: >-
       Pinned source 08e8a5faa54c0a7b0bb1cb0134c77d3565ce40c5 reports s(60) = 8
       by a mixed cover checked there by zm_mixed.py and zmx2, and hence s(61) = 8 by
@@ -157,11 +163,46 @@ sources:
       This map projects that infinite family to the cases through n = 324; the
       universal claim and the conditional Lean reduction are recorded in T-064.
       The exact Valid7 premise has one source Python checker and has not been
-      freshly replayed here. No verified case bound changes on this intake.
+      freshly replayed here. No verified case bound changed on this intake.
       The source's CREDITS.md says it was produced by Claude (Anthropic)
       in a single session under human direction.
       An independent point-only s(61) = 8 source by wand125 at f8846cec is noted
       in the coverage review; its primary packet awaits separate intake.
+      On 2026-10-01 the packet gained, from the same revision, the s60 bundle's run
+      records (jlevy/squares#256, which names the earlier d9f79bc1, where no file of the
+      bundle but its README differs) and the records of a zmx2 run that certifies the
+      s(32) cover without the D4 fold (jlevy/squares#238), reported and not replayed.
+      On 2026-10-02 the s(60) cover's zmx2 sweeps were replayed here, root for root equal
+      to the source's records (E-n060-evand-mixed-cover-zmx2-replay), which put s(60) = 8
+      and s(61) = 8 in the verified lane (T-062, T-063); zm_mixed.py and the k2m3 family
+      were not replayed. The same day the s(32) cover's zmx2 run without the D4 fold was
+      replayed here, every root equal to the source's records
+      (E-n032-evand-zmx2-full-sym-replay), from the zmx2 source that made it, retained in
+      the evand-zmx2-sym-atoms-2026-09-30 packet; it moved no rung of T-051.
+  - id: evand-square-packing-2026-10-02
+    title: square-packing, the point-only s(61) replay and claims audit
+    role: source-repository
+    url: https://github.com/evand/square-packing/tree/7d6f46d9d0780241245dfbf77bad28aa1594c6b5
+    local: resources/web/evand-square-packing-2026-10-02/square-packing/s12/
+    source_key: '[evand square-packing 2026-10-02]'
+    scope: {n_values: [61]}
+    reviewed: '2026-10-02'
+    source_date: '2026-10-02'
+    disposition: current-report
+    replay_disposition: case-specific
+    represented_by: [frontier/evidence.yaml]
+    evidence:
+      - E-n061-wand125-point-cover-evand-replay-report
+    notes: >-
+      Revision 7d6f46d9d0780241245dfbf77bad28aa1594c6b5, retrieved at 2026-10-02T07:44Z
+      for Evan Daniel's comment of 2 October on jlevy/squares#238. It reports his replay
+      of wand125's point-only s(61) = 8 cover by zeromargin.py and zmcheck, recorded as a
+      reported route beside T-063 and not replayed here; the cover and every checker its
+      manifest names are retained. The same pin holds Lemma 2 of the clique family in Lean,
+      the dual_exact.py fixes and the claims audit, which restates that the source's
+      checkers share the point-test formulation, says T-064's fast check is structure only,
+      and records that Nagamochi's Lemma 1 is false; none of these moves a value this record
+      holds, and the s(k^2 - 2) = k corollary it states is not registered.
   - id: kleddamag-n17-466001-2026
     title: Seventeen unit squares — a certified lower bound, 4.66001 package
     role: source-repository
@@ -446,17 +487,19 @@ sources:
     url: https://github.com/wand125/square-packing-bounds/tree/39d8ecc74d651b54ec977c331c8f2015b442a6c4
     local: resources/web/wand125-point-and-mixed-2026-09-28/
     source_key: '[wand125 point and mixed bounds 2026-09-28]'
-    scope: {n_values: [21, 45, 50]}
-    reviewed: '2026-09-28'
+    scope: {n_values: [21, 45, 50, 51]}
+    reviewed: '2026-10-02'
     source_date: '2026-09-28'
     disposition: current-report
     replay_disposition: case-specific
-    represented_by: [frontier/n-021.md, frontier/n-045.md, frontier/n-050.md]
+    represented_by: [frontier/n-021.md, frontier/n-045.md, frontier/n-050.md, frontier/n-051.md]
     evidence:
       - E-n045-wand125-point-cover-report
       - E-n045-wand125-point-cover-source-replay
       - E-n021-wand125-point-endpoint-report
+      - E-n021-wand125-point-endpoint-source-replay
       - E-n050-wand125-mixed-740-report
+      - E-n050-wand125-mixed-740-source-replay
     notes: >-
       Revision 39d8ecc74d651b54ec977c331c8f2015b442a6c4 of the same repository
       as the rectangle certificates, retained on 2026-09-28 as 64 files of a
@@ -466,11 +509,348 @@ sources:
       second method. A point-only s(21) = 5 on Daniel's support, decided by the
       source's own rational replay, and s(50) >= 37/5, checked by a research
       copy of Tokoharu's verify.cpp at threshold one, are recorded as reported
-      bounds; their complete replays were running when this entry was written
-      (the s(21) root and sieve stages, and four of the n = 50 directions,
-      matched the source's records). The source claims no priority for s(21)
-      or s(45). The superseded n = 50 rungs 147/20 and 3659/500 are retained
+      bounds when this entry was written. Both complete replays passed here on
+      2026-09-29 and came into the packet on 2026-10-02
+      (E-n021-wand125-point-endpoint-source-replay, matching the source's M1
+      run; E-n050-wand125-mixed-740-source-replay, equal to the shipped record
+      at all 201 directions), which put s(50) >= 37/5 and, by its mass, s(51)
+      >= 37/5 in the verified lane and gave s(21) = 5 a second, point-only
+      route there. The source claims no priority for s(21) or s(45). The superseded n = 50 rungs 147/20 and 3659/500 are retained
       and not registered.
+  - id: wand125-rectangles-2026-10-01
+    title: Rectangle-density certificates raised or added since 28 September
+    role: source-repository
+    url: https://github.com/wand125/square-packing-bounds/tree/1a25a5ed745fdd905a52f48fcc48150a0669032d
+    local: resources/web/wand125-rectangle-certificates-2026-10-01/
+    source_key: '[wand125 rectangle bounds 2026-10-01]'
+    scope: {n_values: [19, 20, 26, 27, 28, 29, 30, 31, 38, 39, 40, 41, 42, 43, 44, 53, 54, 55, 56, 59, 66, 68, 69, 70, 74, 75, 76, 77, 78, 86, 87, 88, 89, 90, 93, 94, 95]}
+    reviewed: '2026-10-01'
+    source_date: '2026-10-01'
+    disposition: current-report
+    replay_disposition: case-specific
+    represented_by: [frontier/evidence.yaml]
+    evidence: [E-wand125-rectangle-2026-10-01-report, E-wand125-rectangle-2026-10-01-source-replay]
+    notes: >-
+      Revision 1a25a5ed745fdd905a52f48fcc48150a0669032d, retrieved at 2026-10-02T00:18Z for
+      jlevy/squares#281. Of its 53 standing rectangle certificates, 37 are new or raised
+      since 39d8ecc: the 34 the request lists, and those at n59, n77 and n78, which it
+      leaves out for the exact values reported there. All 53 pass the first-party exact
+      preflight. When this entry was written no coverage replay of the 37 had run here, so
+      every one was a reported bound (T-068); on 2 October 30 of them passed a complete
+      replay here, and the 29 that hold a verified bound are registered again as T-074
+      (E-wand125-rectangle-2026-10-01-source-replay). At n20, n42 and n70 the 2026-10-02
+      revision's raised rungs (T-077) now hold the reported field. At n59, n66, n77, n78 and n90 a stronger report holds the case, so
+      those five case records do not cite this source. The request says each directory
+      carries a tarball, and none does.
+  - id: wand125-exact-covers-2026-10-01
+    title: Mixed covers for s(59) = 8 and s(77) = 9
+    role: source-repository
+    url: https://github.com/wand125/square-packing-bounds/tree/1a25a5ed745fdd905a52f48fcc48150a0669032d
+    local: resources/web/wand125-point-and-mixed-2026-10-01/
+    source_key: '[wand125 exact covers 2026-10-01]'
+    scope: {n_values: [59, 77]}
+    reviewed: '2026-10-02'
+    source_date: '2026-10-01'
+    disposition: current-report
+    replay_disposition: case-specific
+    represented_by: [frontier/n-059.md, frontier/n-077.md]
+    evidence:
+      - E-n059-wand125-mixed-cover-report
+      - E-n059-wand125-mixed-cover-zmx2-replay
+      - E-n077-wand125-mixed-cover-report
+      - E-n077-wand125-mixed-cover-zmx2-replay
+    notes: >-
+      Revision 1a25a5ed745fdd905a52f48fcc48150a0669032d, retrieved at 2026-10-02T00:18Z for
+      jlevy/squares#280 and #279. Two mixed covers in Evan Daniel's format, built from his
+      s(60) = 8 cover and reported accepted by his checkers pinned at evand/square-packing
+      b91d70b6, whose four checker files earlier packets here retain byte for byte. Both
+      were recorded as reported exact values (T-066, T-067). On 2026-10-02 the s(59)
+      cover's zmx2 sweeps were replayed here (E-n059-wand125-mixed-cover-zmx2-replay),
+      which put s(59) = 8 in the verified lane, and later that day the s(77) cover's
+      (E-n077-wand125-mixed-cover-zmx2-replay), the unreduced sweep in two region runs read
+      as one record, which put s(77) = 9 and, by its total below 78, s(78) = 9 there. Each
+      directory's SHA256SUMS lists run logs that are not in the published tree, so the
+      source's verify.sh cannot pass its first step as published. The s(59) exact-rational
+      evidence is two runs, the complete one ending NOT VERIFIED with six boxes. The same
+      revision's point-only s(61) = 8 cover awaits its own import (think-hxrz).
+  - id: wand125-mixed-bounds-2026-10-01
+    title: Mixed rectangle-measure certificates for n = 37, 65, 66, 90, 92
+    role: source-repository
+    url: https://github.com/wand125/square-packing-bounds/tree/1a25a5ed745fdd905a52f48fcc48150a0669032d
+    local: resources/web/wand125-point-and-mixed-2026-10-01/
+    source_key: '[wand125 mixed bounds 2026-10-01]'
+    scope: {n_values: [37, 65, 66, 90, 92]}
+    reviewed: '2026-10-02'
+    source_date: '2026-10-01'
+    disposition: current-report
+    replay_disposition: case-specific
+    represented_by: [frontier/n-037.md, frontier/n-065.md, frontier/n-066.md, frontier/n-090.md, frontier/n-092.md]
+    evidence:
+      - E-n037-wand125-mixed-644-report
+      - E-n037-wand125-mixed-644-source-replay
+      - E-n065-wand125-mixed-835-report
+      - E-n065-wand125-mixed-835-source-replay
+      - E-n066-wand125-mixed-842-report
+      - E-n066-wand125-mixed-842-source-replay
+      - E-n090-wand125-mixed-960-report
+      - E-n090-wand125-mixed-960-source-replay
+      - E-n092-wand125-mixed-969-report
+      - E-n092-wand125-mixed-969-source-replay
+    notes: >-
+      The same revision and packet, retained for jlevy/squares#282. Five rectangle
+      densities checked at coverage one by the source's research copy of Tokoharu's
+      verify.cpp, the checker of its s(50) certificate, each of mass n - 1/100000. All
+      five were recorded as reported lower bounds (T-069), and on 2026-10-02 each passed a
+      complete replay here, every direction returning the certificate's record, which put
+      all five in the verified lane; the proof-bundle tarballs are pinned by digest and not
+      retained. The revision also
+      holds mixed_n87_L939 and mixed_n87_L940, below its rectangle certificate at n = 87,
+      which are pinned and not registered; the request announces n = 82 to 85 to follow.
+  - id: wand125-mixed-bounds-2026-10-02
+    title: Mixed rectangle-measure certificates for n = 84, 85
+    role: source-repository
+    url: https://github.com/wand125/square-packing-bounds/tree/52af997dc91c579658f0828bc8304e306ad9d95b
+    local: resources/web/wand125-mixed-bounds-2026-10-02/
+    source_key: '[wand125 mixed bounds 2026-10-02]'
+    scope: {n_values: [84, 85, 86, 87]}
+    reviewed: '2026-10-02'
+    source_date: '2026-10-02'
+    disposition: current-report
+    replay_disposition: case-specific
+    represented_by: [frontier/n-084.md, frontier/n-085.md, frontier/n-086.md, frontier/n-087.md]
+    evidence:
+      - E-n084-wand125-mixed-940-report
+      - E-n084-wand125-mixed-940-source-replay
+      - E-n085-wand125-mixed-942-report
+      - E-n085-wand125-mixed-942-source-replay
+    notes: >-
+      Revision 52af997dc91c579658f0828bc8304e306ad9d95b, retrieved at 2026-10-02T01:12Z for
+      a comment of that day on jlevy/squares#282. Two rectangle densities checked at
+      coverage one by the source's research copy of Tokoharu's verify.cpp, byte for byte
+      the checker of its n = 50 certificate, each of mass n - 1/100000. Both are recorded
+      as reported lower bounds (T-071), above Green's reported value at both counts; the
+      n = 85 value is also above the rectangle certificates T-068 reports at n = 86 and
+      87. The exact audit passes, and on 2026-10-02 both passed a complete replay here,
+      which put s(84) >= 47/5 and s(85) >= 471/50 in the verified lane, the second carried
+      by its mass to n = 86 and 87; the proof-bundle tarballs are pinned by digest and not
+      retained. The source's improvement_lower at both counts is measured from a
+      value below Green's and is not a lower bound (review finding MX-2). A later revision,
+      af1db07b, adds an n = 101 certificate by another verifier, which jlevy/squares#294
+      requests and the wand125-linear-certificates-2026-10-02 packet pins.
+  - id: wand125-mixed-bounds-n76-2026-10-02
+    title: Mixed rectangle-measure certificate for n = 76
+    role: source-repository
+    url: https://github.com/wand125/square-packing-bounds/tree/7975030a192607ef27edd1559aee4e98bd93047b
+    local: resources/web/wand125-mixed-bounds-n76-2026-10-02/
+    source_key: '[wand125 mixed bounds n76 2026-10-02]'
+    scope: {n_values: [76]}
+    reviewed: '2026-10-02'
+    source_date: '2026-10-02'
+    disposition: current-report
+    replay_disposition: case-specific
+    represented_by: [frontier/n-076.md]
+    evidence:
+      - E-n076-wand125-mixed-894-report
+      - E-n076-wand125-mixed-894-source-replay
+    notes: >-
+      Revision 7975030a192607ef27edd1559aee4e98bd93047b, retrieved at 2026-10-02T07:47Z for
+      a comment of that day on jlevy/squares#282. One rectangle density checked at coverage
+      one by the source's research copy of Tokoharu's verify.cpp, byte for byte the checker
+      of its n = 50 certificate, of mass 76 - 1/100000. Recorded as a reported lower bound
+      (T-072), above the source's rectangle certificate 357/40 (T-068), which it says it
+      supersedes. The exact audit and the replay's checks before its first angle pass, and
+      the complete replay of 2 October matched the shipped run at all 201 directions
+      (E-n076-wand125-mixed-894-source-replay), which put s(76) >= 447/50 in the verified
+      lane. The 2 October review of the linear certificates read it in an addendum, with
+      no defect.
+      The proof-bundle tarball is pinned by digest and not retained.
+  - id: wand125-linear-certificates-2026-10-02
+    title: Linear point, segment and rectangle certificates for n = 101 and 83
+    role: source-repository
+    url: https://github.com/wand125/square-packing-bounds/tree/0c35d909764997ead04dfd90081c9fe9af8d07f2
+    local: resources/web/wand125-linear-certificates-2026-10-02/
+    source_key: '[wand125 linear certificates 2026-10-02]'
+    scope: {n_values: [83, 101, 102, 103, 104, 105]}
+    reviewed: '2026-10-02'
+    source_date: '2026-10-02'
+    disposition: current-report
+    replay_disposition: case-specific
+    represented_by: [frontier/n-083.md, frontier/n-101.md, frontier/n-102.md, frontier/n-103.md, frontier/n-104.md, frontier/n-105.md]
+    evidence:
+      - E-n083-wand125-linear-935-report
+      - E-n101-wand125-linear-1028-report
+    notes: >-
+      Revision 0c35d909764997ead04dfd90081c9fe9af8d07f2, retrieved at 2026-10-02T07:47Z for
+      jlevy/squares#294 (the n = 101 certificate, first committed at af1db07b) and its
+      comment of that day (n = 83). Measures of points, uniform segments and uniform
+      rectangles checked by code/unified_linear_verify.cpp, a certificate kind this record
+      had not registered. Both are recorded as reported lower bounds (T-073), above Green's
+      reported values at n = 83 and 101; by monotonicity the n = 101 value is also the
+      strongest report at n = 102 to 105, and at n = 106 Nagamochi's is higher. The exact
+      audit and the replay's checks before its first angle pass, one angle of each was
+      replayed, and a negative control refused two mutated n = 101 measures. The 2 October
+      review read the certificates and the checker, with no blocking defect (T-073 at C1). The source's margin over Green at n = 83, "more than 0.0833", is
+      false (it is 0.083266...); the bound is unaffected. The issue announces n = 82 at 9.32,
+      which no revision publishes yet. A later revision, 06eeb40c, adds three
+      Tokoharu-format rectangle certificates; no request names it, and it is not pinned.
+  - id: wand125-rectangles-2026-10-02
+    title: Rectangle-density certificates raised on 2 October
+    role: source-repository
+    url: https://github.com/wand125/square-packing-bounds/tree/b00fc70f1904e9b1b567afee056d347f911209e8
+    local: resources/web/wand125-rectangle-certificates-2026-10-02/
+    source_key: '[wand125 rectangle bounds 2026-10-02]'
+    scope: {n_values: [20, 42, 59, 70, 77, 91, 93]}
+    reviewed: '2026-10-02'
+    source_date: '2026-10-02'
+    disposition: current-report
+    replay_disposition: case-specific
+    represented_by: [frontier/n-020.md, frontier/n-042.md, frontier/n-070.md]
+    evidence: [E-wand125-rectangle-2026-10-02-report]
+    notes: >-
+      Revision b00fc70f1904e9b1b567afee056d347f911209e8, retrieved at 2026-10-02T16:53Z with
+      the afternoon's requests; no request names these certificates. Of its 53 standing
+      rectangle certificates, seven are raised since 1a25a5e, at n20, n42, n59, n70, n77, n91
+      and n93, in three commits of 2 October. All 53 pass the first-party exact preflight; no
+      coverage replay of the seven has run here, so each is a reported bound (T-077). At
+      n59 and n77 the exact values s(59) = 8 and s(77) = 9 hold, and at n91 and n93 the same
+      revision's mixed certificates (T-075), so those four case records do not cite this
+      source.
+  - id: wand125-mixed-bounds-afternoon-2026-10-02
+    title: Mixed rectangle-measure certificates for n = 83, 85, 87, 91, 92, 96
+    role: source-repository
+    url: https://github.com/wand125/square-packing-bounds/tree/b00fc70f1904e9b1b567afee056d347f911209e8
+    local: resources/web/wand125-mixed-bounds-afternoon-2026-10-02/
+    source_key: '[wand125 mixed bounds afternoon 2026-10-02]'
+    scope: {n_values: [83, 85, 86, 87, 88, 91, 92, 93, 96]}
+    reviewed: '2026-10-03'
+    source_date: '2026-10-02'
+    disposition: current-report
+    replay_disposition: case-specific
+    represented_by: [frontier/n-083.md, frontier/n-085.md, frontier/n-086.md, frontier/n-087.md, frontier/n-088.md, frontier/n-091.md, frontier/n-092.md, frontier/n-093.md, frontier/n-096.md]
+    evidence:
+      - E-n083-wand125-mixed-937-report
+      - E-n083-wand125-mixed-937-source-replay
+      - E-n085-wand125-mixed-946-report
+      - E-n085-wand125-mixed-946-source-replay
+      - E-n087-wand125-mixed-948-report
+      - E-n087-wand125-mixed-948-source-replay
+      - E-n091-wand125-mixed-970-report
+      - E-n091-wand125-mixed-970-source-replay
+      - E-n092-wand125-mixed-975-report
+      - E-n092-wand125-mixed-975-source-replay
+      - E-n096-wand125-mixed-996-report
+      - E-n096-wand125-mixed-996-source-replay
+    notes: >-
+      Revision b00fc70f1904e9b1b567afee056d347f911209e8, retrieved at 2026-10-02T16:53Z for
+      four comments of that afternoon on jlevy/squares#282. Six rectangle densities checked
+      at coverage one by the source's research copy of Tokoharu's verify.cpp, byte for byte
+      the checker of its n = 50 certificate, each of mass n - 1/100000, committed in four
+      revisions between 11:38 and 15:16 UTC and pinned together at the last. All six were
+      recorded as reported lower bounds (T-075), each above what the record reported at its
+      count; by mass the n = 85, 87 and 92 values are also the strongest reports at n = 86,
+      88 and 93. Two supersede certificates this record held verified, mixed_n85_L942
+      (T-071) and mixed_n92_L969 (T-069). On 2 and 3 October each passed a complete replay
+      here, every direction returning the certificate's record, which put all six and the
+      three counts they carry by mass in the verified lane; the proof-bundle tarballs are
+      pinned by digest and not retained. The source's improvement_lower at n = 83, 85 and 87
+      is measured from a value below Green's (review finding AF-1), and at n = 96 the source
+      calls Nagamochi's value unproven (AF-3). The same revision's rectangle rungs at n = 91
+      and 93 are below these certificates there.
+  - id: wand125-linear-n82-2026-10-02
+    title: Linear point, segment and rectangle certificate for n = 82
+    role: source-repository
+    url: https://github.com/wand125/square-packing-bounds/tree/b00fc70f1904e9b1b567afee056d347f911209e8
+    local: resources/web/wand125-linear-n82-2026-10-02/
+    source_key: '[wand125 linear n82 2026-10-02]'
+    scope: {n_values: [82]}
+    reviewed: '2026-10-02'
+    source_date: '2026-10-02'
+    disposition: current-report
+    replay_disposition: case-specific
+    represented_by: [frontier/n-082.md]
+    evidence:
+      - E-n082-wand125-linear-932-report
+    notes: >-
+      Revision b00fc70f1904e9b1b567afee056d347f911209e8, retrieved at 2026-10-02T16:53Z for a
+      comment of that day on jlevy/squares#294; the directory was first committed at
+      58f153f8. A measure of points, uniform segments and uniform rectangles on the support
+      of the source's n = 83 linear certificate scaled by 932/935, checked by
+      code/unified_linear_verify.cpp, byte for byte the checker of T-073. Recorded as a
+      reported lower bound (T-076), above Green's reported value, which the case reported
+      before it. The exact audit and the replay's checks before its first angle pass; no
+      angle was replayed, and the proof-bundle tarball is pinned by digest and not retained.
+  - id: squarepacker-s12-lower-bound-2026-10-02
+    title: Daniel's s(12) certificate rescaled by 7902/7901
+    role: source-repository
+    url: https://github.com/squarepacker/s12-lower-bound/tree/8c53049025b94bb589ed25a90203f0a34c2945e4
+    local: resources/web/squarepacker-s12-lower-bound-2026-10-02/
+    source_key: '[squarepacker s12 2026]'
+    scope: {n_values: [12]}
+    reviewed: '2026-10-02'
+    source_date: '2026-10-02'
+    disposition: current-report
+    replay_disposition: case-specific
+    represented_by: [frontier/n-012.md]
+    evidence:
+      - E-n012-squarepacker-31360-7901-report
+      - E-n012-squarepacker-31360-7901-source-replay
+      - E-n012-squarepacker-31360-7901-native-parent-core
+    notes: >-
+      Revision 8c53049025b94bb589ed25a90203f0a34c2945e4 by Ryu Sungjoon (squarepacker),
+      archived as Zenodo 10.5281/zenodo.23106582, retained whole for jlevy/squares#309. Evan
+      Daniel's s(12) certificate (T-049) with every coordinate and the container multiplied
+      by 7902/7901, weights unchanged. Daniel's verifier and the author's indep_check.cpp
+      both accepted it here at the angle net N = 24000, and this repository's native
+      parent-core interval route decided all 9,942 rows, so s(12) >= 31360/7901 is verified
+      (T-078, V3/C3) and supersedes T-049's 15680/3951; it stays the reported bound at
+      n = 12, and this project's re-weighting of the same points (T-079) holds the verified
+      one since 3 October. All three checkers refuse two mutated certificates. The one retained review was written by the lane that ran the replays
+      (its finding F1).
+  - id: wand125-point-n61-2026-09-30
+    title: Point-only cover for s(61) = 8
+    role: source-repository
+    url: https://github.com/wand125/square-packing-bounds/tree/f8846cec9661773dbd0cc7cbeee7d01ddb12a2b8/point_n61_L8
+    local: resources/web/wand125-point-n61-2026-09-30/
+    source_key: '[wand125 point n61 2026-09-30]'
+    scope: {n_values: [61]}
+    reviewed: '2026-10-02'
+    source_date: '2026-09-30'
+    disposition: current-report
+    replay_disposition: case-specific
+    represented_by: [frontier/evidence.yaml, frontier/results.yaml]
+    evidence:
+      - E-n061-wand125-point-cover-zmx2-replay
+    notes: >-
+      Revision f8846cec9661773dbd0cc7cbeee7d01ddb12a2b8, retrieved at 2026-10-02T17:37Z for
+      a comment of that day on jlevy/squares#238. A D4-invariant point measure on [0,8]^2,
+      15,193 points of total 8584985072679551/2^47 < 61, whose capture condition the
+      source checks with Evan Daniel's unmodified zmx2. Replayed here by zmx2 --d4
+      --pair-points, VERIFIED-D4 over all 6,400 roots, and two mutated covers refused;
+      recorded as a second route on T-063, since s(61) = 8 already follows from s(60) = 8
+      (T-062). The 2 October review of the cover found no defect.
+  - id: wand125-valid7-independent-check-2026-10-02
+    title: Independent exact checker of Valid7 for s(k^2 - 3) = k
+    role: source-repository
+    url: https://github.com/wand125/valid7-independent-check/tree/38dd31b369991b0d96c917a4af0c7139b44a038d
+    local: resources/web/wand125-valid7-independent-check-2026-10-02/
+    source_key: '[wand125 valid7 independent check 2026-10-02]'
+    scope: {n_values: [33, 46, 61, 78, 97, 118, 141, 166, 193, 222, 253, 286, 321]}
+    reviewed: '2026-10-02'
+    source_date: '2026-10-02'
+    disposition: current-report
+    replay_disposition: case-specific
+    represented_by: [frontier/evidence.yaml]
+    evidence:
+      - E-k2m3-wand125-valid7-independent
+    notes: >-
+      Revision 38dd31b369991b0d96c917a4af0c7139b44a038d with its release records-v1,
+      retrieved at 2026-10-02T07:42Z for jlevy/squares#296. A second, separately written
+      exact-rational checker of Valid7, the finite premise of T-064, run on the cover T-064
+      cites: 156,800 root boxes of the unreduced pose space, none uncertified. Recorded as
+      an evidence update to T-064, which moves no rung: the source's verify.sh and
+      devtools.audit_valid7_independent checked the records here, re-certifying sampled
+      leaves, and the 626 core-hour run was not repeated; the method has not been reviewed.
+      The scope is T-064's projection of the family onto the cases this record holds.
   - id: franciscouzo-square-packing-2026
     title: Square packings better than the published records
     role: source-repository

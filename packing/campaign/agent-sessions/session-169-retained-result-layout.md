@@ -204,6 +204,32 @@ session:
       T-007 withdrawn, take each case''s strongest verified floor, regenerate the views (W7, writes in its
       own worktree).'
     operator: Claude subagent (Opus; max effort named in the dispatch)
+    status: completed
+    recording: contemporaneous
+    phase: 2
+    outcome: 'Merged with all 67 conflicts resolved (e617ae4b1, re-pin bcb8bdba5, record merge 19d5830bd):
+      the register is contiguous T-001..T-084; main''s certificate floors won all 45 cases both sides
+      moved, none resting on Nagamochi; 225 floors still correct Nagamochi 2005 (from 265); T-084 is
+      superseded at n = 37 (161/25, T-069) and n = 61 (s(61) = 8, T-063) and stays registered; 247 open and
+      77 proved cases. It raised the negative-controls snapshot cap (192 to 224 MiB) and the index page
+      test ceiling (4.3 to 4.7 MB), each with a dated reason, and flagged n-034''s stale prose, which the
+      coordinator corrected (d58796b2d). Interrupted once by the account''s session limit and resumed.'
+    evidence:
+    - packing/frontier/results.yaml
+    - packing/frontier/README.md
+    files: []
+    checks:
+    - packing-validate --records 43 of 98, --edit 58 of 98, --sweeps 5 of 98, --push all but the two host-only
+      tests (10,582 passed); check_case_prose, check_results, check_synopsis, the ledger check and the
+      release pin pass
+    uncertainty: The two raised ceilings are the owner's to keep or answer by pruning.
+    elapsed_seconds: 3706.3
+    elapsed_quality: platform_measured
+    started_at: '2026-10-03T19:00:00Z'
+    next_action: Integrated by fast-forward; PR 305 pushed at 309f5fd05.
+  - task: 'think-k131 stage 3: merge PR 305 into the stacked branch, re-lay batch A (the eight atlas and
+      frontier files), decide the new large JSON files main added, re-pin (W7, writes in its own worktree).'
+    operator: Claude subagent (Opus; extra-high effort named in the dispatch)
     status: in_progress
     recording: contemporaneous
     phase: 2
@@ -214,20 +240,20 @@ session:
     uncertainty: null
     elapsed_seconds: null
     elapsed_quality: null
-    started_at: '2026-10-03T19:00:00Z'
-    deadline_at: '2026-10-03T23:30:00Z'
-    budget_minutes: 270
-    expected_output: A merge commit (and a re-pin if needed) in its worktree, every check green, a table of
-      every case whose floor, status or tag changed.
+    started_at: '2026-10-03T22:10:00Z'
+    deadline_at: '2026-10-04T00:20:00Z'
+    budget_minutes: 130
+    expected_output: Commits on the stacked branch for the coordinator to push, with the layout check
+      holding every large retained result or naming its exemption.
     validation_command: cd packing && uv run --frozen --all-extras --group dev packing-validate --records
-    kill_condition: A case's floor needs an owner's judgement.
-    fallback: Leave that case as main has it and report it.
+    kill_condition: A file's value would change, or a binding forbids its re-layout.
+    fallback: Leave it on the allowlist with its reason.
     write_scope:
-    - the whole tree, as a merge
+    - the stacked branch, as a merge plus batch A
     excluded_commands:
     - git push
     - tbd
-    next_action: Report; the coordinator reviews, integrates and pushes.
+    next_action: Report; the coordinator pushes PR 323.
   budget:
     wall_minutes: 490
     slice_minutes: 30

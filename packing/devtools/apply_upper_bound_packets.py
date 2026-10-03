@@ -349,9 +349,13 @@ def front_matter(plan: Plan, front: str) -> str:
         registration.interval_replay,
         CASSON_REPORT,
     }
+    # Never earlier than a later intake's review, the rule
+    # `devtools.apply_wand125_rectangles` keeps from the other side: its 1 October
+    # registration reviewed n = 68 after this intake did. ISO dates order as text.
+    reviewed = max(str(payload.get("source_reviewed") or ""), INTAKE)
     front = re.sub(
         r"^  source_reviewed: .*$",
-        f"  source_reviewed: '{INTAKE}'",
+        f"  source_reviewed: '{reviewed}'",
         front,
         count=1,
         flags=re.MULTILINE,
@@ -378,8 +382,13 @@ def front_matter(plan: Plan, front: str) -> str:
     wanted = [registration.report, registration.replay, registration.interval_replay]
     if plan.casson is not None:
         wanted.append(CASSON_REPORT)
-    evidence = [item for item in payload["evidence"] if item not in wanted]
-    front = set_block(front, "evidence", wanted + evidence)
+    # This intake's entries lead a draft. On a record that already carries them they keep
+    # their places, since a later intake may have put its own ahead of them, as wand125's
+    # rectangle registrations did at n = 68.
+    evidence = list(payload["evidence"])
+    front = set_block(
+        front, "evidence", [item for item in wanted if item not in evidence] + evidence
+    )
     conflicts = [item for item in payload["conflicts"] if not _ours(item, ours)]
     front = set_block(
         front, "conflicts", conflicts + ([conflict(plan)] if plan.trailing else [])
@@ -391,9 +400,13 @@ def front_matter(plan: Plan, front: str) -> str:
     added = [resource(registration.source)]
     if plan.casson is not None:
         added.append(resource(CASSON))
-    keys = {item["key"] for item in added}
-    kept = [item for item in payload["resources"] if item["key"] not in keys]
-    return set_block(front, "resources", added + kept)
+    # And its resources likewise: written over in place where present, ahead otherwise.
+    ours_by_key = {item["key"]: item for item in added}
+    kept = [ours_by_key.get(item["key"]) or item for item in payload["resources"]]
+    present = {item["key"] for item in kept}
+    return set_block(
+        front, "resources", [item for item in added if item["key"] not in present] + kept
+    )
 
 
 # --------------------------------------------------------------------------------------

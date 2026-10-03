@@ -31,15 +31,19 @@ Usage, from `packing/`:
 from __future__ import annotations
 
 import argparse
+from collections.abc import Mapping
 from pathlib import Path
+from typing import Any
 
 from strif import atomic_output_file
 
-from devtools.check_results import kind_label
+from devtools.check_results import confirmation_code, kind_label
 from devtools.register_prose import paragraphs
 from devtools.render_recent_results import load_records, position_marks, standing
 from devtools.result_credit import OTHERS, credit_line, source_lineage
-from devtools.result_status import status_line
+from devtools.result_status import CONFIRMED, status, status_line
+from devtools.verifier_registry import LABELS, entry_line
+from devtools.verifier_registry import load as load_verifiers
 from sqpack.yamlio import safe_load
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -80,6 +84,14 @@ A result's status says how far the work on it here has gone, and follows `C`:
 *recorded* (`C0`), *reviewed* (`C1`), *confirmed* (`C2` and up), or *incomplete* while a
 defect found in it is open. After it come who has the next move, where one is recorded,
 and *superseded*, where the result is a bound that no case bound rests on now.
+A confirmed result says how it was confirmed, from the code its confirming runs used:
+*reproduced with the producer's code*, where they re-ran the code that produced or
+verified it; *re-implemented, sharing the producer's components*, where separately
+written code reused named parts of it; *independently re-implemented*, where code that
+shares none of it decided the claim. An exact value takes the less independent of its two
+halves. [Verification Code](#verification-code) below names every program behind each
+result, external or first-party, and [`VERIFIERS.md`](VERIFIERS.md) says what each one
+is and whose it is.
 """
 
 
@@ -105,6 +117,45 @@ def next_action(record: dict) -> list[str]:
     if rest:
         # A blank line closes a multi-paragraph item, so the next bullet starts clean.
         lines.append("")
+    return lines
+
+
+def confirmed_how(record: Mapping[str, Any], evidence: Mapping[str, Mapping[str, Any]]) -> str:
+    """How a confirmed result was confirmed, as the status cell says it: the label of
+    `check_results.confirmation_code`, or nothing."""
+    code = confirmation_code(record, [evidence[ref] for ref in record["evidence"]])
+    return LABELS[code] if code else ""
+
+
+def verification_code(
+    results: list[dict], evidence: Mapping[str, Mapping[str, Any]]
+) -> list[str]:
+    """The section naming every program behind each result: one item per result, its
+    status said in full, and one line per cited evidence entry with who ran it, how its
+    code stands to the producer's, and its programs, each marked external or
+    first-party (`verifier_registry.entry_line`)."""
+    verifiers = load_verifiers()
+    lines = [
+        "## Verification Code",
+        "",
+        (
+            "The programs behind each result, by its cited evidence: who ran each check, "
+            "how the code that ran stands to the code the result's producer used, and "
+            "which programs they are, each external or first-party. A premise check "
+            "verifies inputs or receipts and leaves the decision to the program beside it."
+        ),
+        "",
+    ]
+    for record in sorted(results, key=lambda item: item["id"]):
+        held = status(record, evidence)
+        how = confirmed_how(record, evidence) if held == CONFIRMED else ""
+        lines.append(f"- **{record['id']}** — {held}{f', {how}' if how else ''}")
+        lines.extend(
+            f"  - {entry_line(evidence[ref], verifiers)}"
+            for ref in record["evidence"]
+            if ref in evidence
+        )
+    lines.append("")
     return lines
 
 
@@ -160,7 +211,7 @@ def render() -> str:
 
     def status(record: dict) -> str:
         position = position_marks(record, standing(record, records))
-        return status_line(record, evidence, position)
+        return status_line(record, evidence, position, how=confirmed_how(record, evidence))
 
     lines.append("| id | n | kind | credit | V | C | S | status | novelty | claim |")
     lines.append("| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |")
@@ -196,6 +247,7 @@ def render() -> str:
                 for record in group
             )
             lines.append("")
+    lines.extend(verification_code(results, evidence))
     lines.append("## Next actions")
     lines.append("")
     lines.append("The next evidence-improving action or terminal rationale for each result:")

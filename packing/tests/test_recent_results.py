@@ -109,7 +109,7 @@ def test_an_entry_that_claims_no_bound_has_no_standing(records: view.Records) ->
         "restricted-optimality",
         "method-limit",
         "audit",
-        # T-068, from 2026-10-02: the correction of Nagamochi's Lemma 1 cites the exact
+        # T-082, from 2026-10-02: the correction of Nagamochi's Lemma 1 cites the exact
         # recomputation of its counterexample, which claims no bound.
         "correction",
     }
@@ -143,8 +143,9 @@ def test_standing_agrees_with_the_recent_rows(
         ("T-059", view.NO_STANDING),
         # A second proof of s(45) = 7, whose bound Evan Daniel's cover holds.
         ("T-054", view.SECOND_CERTIFICATE),
-        # A second route to s(21) = 5 that is reported and not yet replayed here.
-        ("T-055", view.SECOND_CERTIFICATE_REPORTED),
+        # A second, point-only route to s(21) = 5, reported until its complete replay here
+        # was recorded on 2026-10-02.
+        ("T-055", view.SECOND_CERTIFICATE),
     ],
 )
 def test_standing_is_read_from_the_case_records(

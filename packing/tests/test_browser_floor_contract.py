@@ -807,6 +807,7 @@ def _jobs_without_node(document: Mapping[str, Any], step_name: str) -> list[str]
                 suite_d=namespace.suite_d,
                 geometry=namespace.geometry,
                 typecheck=namespace.typecheck,
+                measure_verifier=namespace.measure_verifier,
             )
             if step_name in {chosen.name for chosen in selected} and not (node and npm):
                 missing.append(job_name)

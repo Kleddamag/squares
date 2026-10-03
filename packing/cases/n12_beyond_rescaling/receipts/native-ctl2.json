@@ -1,0 +1,87 @@
+{
+  "schema": "EvandNativeParentCoreReceipt/v1",
+  "status": "UNRESOLVED",
+  "method": "directed-rounding box branch-and-bound over parent-core rows",
+  "case": "file:ctl2.txt:96000",
+  "provenance": {
+    "git_commit": "803d3643a0a2b486c3d9415d028d576e8d71047e",
+    "dirty": true,
+    "python": "3.14.7 (main, Sep 29 2026, 15:01:40) [Clang 22.1.3 ]",
+    "platform": "Linux-6.18.44-fc-v51-x86_64-with-glibc2.39",
+    "command": [
+      "packing/devtools/verify_evand_angle_net_native.py",
+      "--certificate",
+      "WORK/ctl2.txt",
+      "--net",
+      "96000",
+      "--rows",
+      "7808",
+      "--output",
+      "WORK/native_ctl2.json"
+    ],
+    "source_url": "https://github.com/evand/square-packing",
+    "source_commit": "167d842cd27ba1451cb2833773ea930c80b9e65b",
+    "certificate": "WORK/ctl2.txt",
+    "certificate_sha256": "5fc6fce806eee3837291fedbce0e17c20f7c2c7145d532d903082942afa88224"
+  },
+  "claim": "s(12) >= 15680/3949",
+  "native_bound": "s(12) > 15680/3949",
+  "net": 96000,
+  "sigma_scale": 1000000,
+  "points": 1616,
+  "budget": "14970347/1250000",
+  "counting_gap": "29653/1250000",
+  "premises": {
+    "budget": "14970347/1250000",
+    "minimum_containment_numerator": "389446383489/4915061207552000000000",
+    "final_half_tangent": "2651/6400",
+    "rows": 39765
+  },
+  "catalogue_rows": 39765,
+  "selected_rows": 1,
+  "resumed_rows": 0,
+  "complete": false,
+  "batch_size": 2048,
+  "workers": 1,
+  "scale": 10000000,
+  "threshold_units": 10000000,
+  "boxes": 15223,
+  "row_cpu_seconds": 0.7003221209997719,
+  "least_lower": {
+    "row": 7808,
+    "units": null
+  },
+  "source_minimum": {
+    "weight": "",
+    "bin": -1
+  },
+  "refutations": [
+    {
+      "row": 7808,
+      "rotated_centre": [
+        3.5916001194659843,
+        0.9158830757883611
+      ],
+      "charge": "1958699/2000000",
+      "admissible": true
+    }
+  ],
+  "seconds": 10.80511036200005,
+  "rows": [
+    {
+      "label": "7808",
+      "status": "refuted",
+      "lower": null,
+      "upper": 9793495,
+      "witness": [
+        3.5916001194659843,
+        0.9158830757883611
+      ],
+      "boxes": 15223,
+      "stalled": 0,
+      "budget_exhausted": false,
+      "index": 7808,
+      "seconds": 0.7003221209997719
+    }
+  ]
+}

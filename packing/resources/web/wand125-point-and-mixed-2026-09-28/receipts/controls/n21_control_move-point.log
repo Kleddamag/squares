@@ -1,0 +1,15 @@
+# command: /home/user/squares/.claude/worktrees/agent-a5b5ce7d8b55fc0dd/packing/.venv/bin/python verify_portable.py --bundle /tmp/claude-0/-home-user-squares/4ea49914-96b4-51a9-a2a9-c5603fe593f4/scratchpad/laneZ/work/move-point/bundle --workers 2 --out /tmp/claude-0/-home-user-squares/4ea49914-96b4-51a9-a2a9-c5603fe593f4/scratchpad/laneZ/work/move-point/run
+# cwd: point_n21_L5/ staged by devtools.audit_wand125_point_and_mixed n21-control: verify_portable.py 2cea95ceac939fee8926eee413e1cfc049af25e98efb1dc8660b44cf14b6ed92 and assemble_portable.py 88888adc784f120edced532bb6c98b9ba33c66792d13ecc064e29e870ca4237e from packing/resources/web/wand125-point-and-mixed-2026-09-28; bundle bb2883c5d05e3073011267f95cccd3301c2f97dd4c1e1d64fc4c6e46c8ec9c6c re-bound to cover d75619f91be63e1455417521a3c79d800ea605006adcde5444e34b3edca74e65, the move-point mutation of 84a7dae793f05ff72de52ddcd3058e8518c1f84c461f94d11305adefe6137679: moves the 8 entries at the D4 images of (1000, 700)/1000 by the images of (1, 0)/1000, keeping their weights
+# python3: the project interpreter, CPython 3.14.7 with NumPy 2.5.2 and SciPy 1.17.1
+# host: 4 cores; load 19.03 22.62 21.32; started 2026-10-02T17:49:33Z
+Traceback (most recent call last):
+  File "/tmp/claude-0/-home-user-squares/4ea49914-96b4-51a9-a2a9-c5603fe593f4/scratchpad/laneZ/work/package/verify_portable.py", line 85, in <module>
+    main()
+    ~~~~^^
+  File "/tmp/claude-0/-home-user-squares/4ea49914-96b4-51a9-a2a9-c5603fe593f4/scratchpad/laneZ/work/package/verify_portable.py", line 58, in main
+    records += [run_stage("root"), run_stage("sieve")]
+                ~~~~~~~~~^^^^^^^^
+  File "/tmp/claude-0/-home-user-squares/4ea49914-96b4-51a9-a2a9-c5603fe593f4/scratchpad/laneZ/work/package/verify_portable.py", line 54, in run_stage
+    raise RuntimeError(f"{name} failed: exit {process.returncode}; see {name}.log")
+RuntimeError: root failed: exit 1; see root.log
+# finished 2026-10-02T17:49:39Z; exit 1; wall 6.277 s; CPU 2.9 s (user 2.548 + sys 0.359); load 18.87 22.53 21.30

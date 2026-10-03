@@ -1,0 +1,293 @@
+{
+  "kind": "wand125-mixed-certificate-audit/v1",
+  "packet": "wand125-point-and-mixed-2026-10-01",
+  "source_revision": "1a25a5ed745fdd905a52f48fcc48150a0669032d",
+  "certificates": {
+    "n37": {
+      "directory": "certificates/mixed_n37_L644",
+      "side": "161/25",
+      "side_float": 6.44,
+      "core": "9977/10000",
+      "rectangles": 350,
+      "total_mass": "3699999/100000",
+      "budget_gap": "1/100000",
+      "candidate_digest": "6f854ead4bf928a491768f56590ef92a2b3c14fa345a9bb7edbd23e421e99fe1",
+      "checker_sha256": "89b674a6feabe24d91c29431de1624907c4bff83280ceb481475455686693652",
+      "code_files": 10,
+      "code_identical_to_n50": true,
+      "net": {
+        "step": "83/40000",
+        "count": "201",
+        "endpoint_check": "89/40000",
+        "rotated_side_upper": "399908091/400000000",
+        "side_margin": "91909/400000000"
+      },
+      "centre_domains": {
+        "nodes": 200,
+        "eliminated_width_min": "24678449934996538617/204801102240949166420000",
+        "eliminated_width_min_float": 0.00012049959529007936,
+        "eliminated_width_max": "11437689778285417/7030288794430420000",
+        "eliminated_width_max_float": 0.00162691606457855,
+        "axis_domain": "[161/50, 297/50]^2"
+      },
+      "certificate_status": "ALL_ANGLES_VERIFIED_AND_REPLAYED",
+      "axis_cells": 5044516,
+      "axis_integer_minimum": 1.010578471379292,
+      "oblique_nodes": 50197404,
+      "least_lower": 1.000000005449259,
+      "least_lower_at": 99,
+      "tarball": "certificates/mixed_n37_L644/n37-L6.44-proof-bundle.tar.gz",
+      "tarball_sha256": "1e3420bb16e6caf80048b66ca8a6a16ae766ec3e0db87a09fddd10db68c8c246",
+      "source_audit": {
+        "status": "AUDITED_AND_PACKAGED",
+        "certificate_sha256_matches": true,
+        "archive_sha256_matches": true,
+        "compared_field": "green_upper",
+        "compared_with": "11748615584564890327329971450328819074179188565799898184781618520291676678764196062287006973/1850000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+        "compared_note": null,
+        "improvement_lower": "165384415435109672670028549671180925820811434200101815218381479708323321235803937712993027/1850000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
+      },
+      "comparison": {
+        "green": "Theorem 9, k=6, from n = 37",
+        "green_interval_float": [
+          6.350603018683724,
+          6.350603018683724
+        ],
+        "side_exceeds_green": true,
+        "source_value_exceeds_green": true,
+        "nagamochi": "1 + sqrt(26)",
+        "side_exceeds_nagamochi": true
+      },
+      "coverage_decided_here": false
+    },
+    "n65": {
+      "directory": "certificates/mixed_n65_L835",
+      "side": "167/20",
+      "side_float": 8.35,
+      "core": "9977/10000",
+      "rectangles": 787,
+      "total_mass": "6499999/100000",
+      "budget_gap": "1/100000",
+      "candidate_digest": "cc10ef9189731abaea77cf96b68b0a44743bb13d5b252d4559b6b65e5085beb6",
+      "checker_sha256": "89b674a6feabe24d91c29431de1624907c4bff83280ceb481475455686693652",
+      "code_files": 10,
+      "code_identical_to_n50": true,
+      "net": {
+        "step": "83/40000",
+        "count": "201",
+        "endpoint_check": "89/40000",
+        "rotated_side_upper": "399908091/400000000",
+        "side_margin": "91909/400000000"
+      },
+      "centre_domains": {
+        "nodes": 200,
+        "eliminated_width_min": "24678449934996538617/204801102240949166420000",
+        "eliminated_width_min_float": 0.00012049959529007936,
+        "eliminated_width_max": "11437689778285417/7030288794430420000",
+        "eliminated_width_max_float": 0.00162691606457855,
+        "axis_domain": "[167/40, 157/20]^2"
+      },
+      "certificate_status": "ALL_ANGLES_VERIFIED_AND_REPLAYED",
+      "axis_cells": 26532801,
+      "axis_integer_minimum": 1.005594099748123,
+      "oblique_nodes": 93302968,
+      "least_lower": 1.0000000003683225,
+      "least_lower_at": 104,
+      "tarball": "certificates/mixed_n65_L835/n65-L8.35-proof-bundle.tar.gz",
+      "tarball_sha256": "016f32f6a8be9bd03e6920d4cf3606676f63fac2caa90b029463655faa01eab8",
+      "source_audit": {
+        "status": "AUDITED_AND_PACKAGED",
+        "certificate_sha256_matches": true,
+        "archive_sha256_matches": true,
+        "compared_field": "green_upper",
+        "compared_with": "538847763108502356344219534147260750214057343799003249512968365938795222200073915050550379557/65000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+        "compared_note": null,
+        "improvement_lower": "3902236891497643655780465852739249785942656200996750487031634061204777799926084949449620443/65000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
+      },
+      "comparison": {
+        "green": "Theorem 9, k=8, from n = 65",
+        "green_interval_float": [
+          8.289965586284652,
+          8.289965586284652
+        ],
+        "side_exceeds_green": true,
+        "source_value_exceeds_green": true,
+        "nagamochi": "1 + sqrt(50)",
+        "side_exceeds_nagamochi": true
+      },
+      "coverage_decided_here": false
+    },
+    "n66": {
+      "directory": "certificates/mixed_n66_L842",
+      "side": "421/50",
+      "side_float": 8.42,
+      "core": "9977/10000",
+      "rectangles": 631,
+      "total_mass": "6599999/100000",
+      "budget_gap": "1/100000",
+      "candidate_digest": "eb86256982300d42ada314676302394b433822b1673fafe8e3c53b3a4499a3e6",
+      "checker_sha256": "89b674a6feabe24d91c29431de1624907c4bff83280ceb481475455686693652",
+      "code_files": 10,
+      "code_identical_to_n50": true,
+      "net": {
+        "step": "83/40000",
+        "count": "201",
+        "endpoint_check": "89/40000",
+        "rotated_side_upper": "399908091/400000000",
+        "side_margin": "91909/400000000"
+      },
+      "centre_domains": {
+        "nodes": 200,
+        "eliminated_width_min": "24678449934996538617/204801102240949166420000",
+        "eliminated_width_min_float": 0.00012049959529007936,
+        "eliminated_width_max": "11437689778285417/7030288794430420000",
+        "eliminated_width_max_float": 0.00162691606457855,
+        "axis_domain": "[421/100, 198/25]^2"
+      },
+      "certificate_status": "ALL_ANGLES_VERIFIED_AND_REPLAYED",
+      "axis_cells": 17530969,
+      "axis_integer_minimum": 1.0031018132438783,
+      "oblique_nodes": 90325926,
+      "least_lower": 1.0000000009256298,
+      "least_lower_at": 10,
+      "tarball": "certificates/mixed_n66_L842/n66-L8.42-proof-bundle.tar.gz",
+      "tarball_sha256": "0f06a42bd26f8a0dcdcbf408099ed003c6c6c16f6ed9317138f58bf2f8193109",
+      "source_audit": {
+        "status": "AUDITED_AND_PACKAGED",
+        "certificate_sha256_matches": true,
+        "archive_sha256_matches": true,
+        "compared_field": "compared_with",
+        "compared_with": "1677/200",
+        "compared_note": "published rectangle 8.385",
+        "improvement_lower": "7/200"
+      },
+      "comparison": {
+        "green": "Theorem 9, k=8, from n = 65",
+        "green_interval_float": [
+          8.289965586284652,
+          8.289965586284652
+        ],
+        "side_exceeds_green": true,
+        "source_value_exceeds_green": true,
+        "nagamochi": "1 + sqrt(51)",
+        "side_exceeds_nagamochi": true
+      },
+      "coverage_decided_here": false
+    },
+    "n90": {
+      "directory": "certificates/mixed_n90_L960",
+      "side": "48/5",
+      "side_float": 9.6,
+      "core": "9977/10000",
+      "rectangles": 762,
+      "total_mass": "8999999/100000",
+      "budget_gap": "1/100000",
+      "candidate_digest": "99f1c45db199a0012da0617afc619857df108625c0f9263eef196df6ce2c7884",
+      "checker_sha256": "89b674a6feabe24d91c29431de1624907c4bff83280ceb481475455686693652",
+      "code_files": 10,
+      "code_identical_to_n50": true,
+      "net": {
+        "step": "83/40000",
+        "count": "201",
+        "endpoint_check": "89/40000",
+        "rotated_side_upper": "399908091/400000000",
+        "side_margin": "91909/400000000"
+      },
+      "centre_domains": {
+        "nodes": 200,
+        "eliminated_width_min": "24678449934996538617/204801102240949166420000",
+        "eliminated_width_min_float": 0.00012049959529007936,
+        "eliminated_width_max": "11437689778285417/7030288794430420000",
+        "eliminated_width_max_float": 0.00162691606457855,
+        "axis_domain": "[24/5, 91/10]^2"
+      },
+      "certificate_status": "ALL_ANGLES_VERIFIED_AND_REPLAYED",
+      "axis_cells": 11812969,
+      "axis_integer_minimum": 1.0187419121321,
+      "oblique_nodes": 59985962,
+      "least_lower": 1.000000000041986,
+      "least_lower_at": 122,
+      "tarball": "certificates/mixed_n90_L960/n90-L9.60-proof-bundle.tar.gz",
+      "tarball_sha256": "98a828a0dc3673ee793de8ea37d8f55b335690c9b9bfbd17b36a58f46da493e2",
+      "source_audit": {
+        "status": "AUDITED_AND_PACKAGED",
+        "certificate_sha256_matches": true,
+        "archive_sha256_matches": true,
+        "compared_field": "compared_with",
+        "compared_with": "3827/400",
+        "compared_note": "published rectangle 9.5675 (Nagamochi 9.544004)",
+        "improvement_lower": "13/400"
+      },
+      "comparison": {
+        "green": "Theorem 9, k=9, from n = 82",
+        "green_interval_float": [
+          9.266733533245633,
+          9.266733533245633
+        ],
+        "side_exceeds_green": true,
+        "source_value_exceeds_green": true,
+        "nagamochi": "1 + sqrt(73)",
+        "side_exceeds_nagamochi": true
+      },
+      "coverage_decided_here": false
+    },
+    "n92": {
+      "directory": "certificates/mixed_n92_L969",
+      "side": "969/100",
+      "side_float": 9.69,
+      "core": "9977/10000",
+      "rectangles": 832,
+      "total_mass": "9199999/100000",
+      "budget_gap": "1/100000",
+      "candidate_digest": "2b2624e8d6ebdd620cb13c728634872a8a7d7c4b10313568af824750e7138eb0",
+      "checker_sha256": "89b674a6feabe24d91c29431de1624907c4bff83280ceb481475455686693652",
+      "code_files": 10,
+      "code_identical_to_n50": true,
+      "net": {
+        "step": "83/40000",
+        "count": "201",
+        "endpoint_check": "89/40000",
+        "rotated_side_upper": "399908091/400000000",
+        "side_margin": "91909/400000000"
+      },
+      "centre_domains": {
+        "nodes": 200,
+        "eliminated_width_min": "24678449934996538617/204801102240949166420000",
+        "eliminated_width_min_float": 0.00012049959529007936,
+        "eliminated_width_max": "11437689778285417/7030288794430420000",
+        "eliminated_width_max_float": 0.00162691606457855,
+        "axis_domain": "[969/200, 919/100]^2"
+      },
+      "certificate_status": "ALL_ANGLES_VERIFIED_AND_REPLAYED",
+      "axis_cells": 12489156,
+      "axis_integer_minimum": 1.0245720286547386,
+      "oblique_nodes": 60700598,
+      "least_lower": 1.0000000034450072,
+      "least_lower_at": 172,
+      "tarball": "certificates/mixed_n92_L969/n92-L9.69-proof-bundle.tar.gz",
+      "tarball_sha256": "52555aa331d6fe8d8f65911d0581cb4b46a2674e1a188ee35b9daecc258b4445",
+      "source_audit": {
+        "status": "AUDITED_AND_PACKAGED",
+        "certificate_sha256_matches": true,
+        "archive_sha256_matches": true,
+        "compared_field": "compared_with",
+        "compared_with": "24151/2500",
+        "compared_note": "Nagamochi 9.660254 (published 9.6475)",
+        "improvement_lower": "37/1250"
+      },
+      "comparison": {
+        "green": "Theorem 9, k=9, from n = 82",
+        "green_interval_float": [
+          9.266733533245633,
+          9.266733533245633
+        ],
+        "side_exceeds_green": true,
+        "source_value_exceeds_green": true,
+        "nagamochi": "1 + sqrt(75)",
+        "side_exceeds_nagamochi": true
+      },
+      "coverage_decided_here": false
+    }
+  },
+  "scope": "Exact premises only, from the retained files: pinned digests, the measure's count, side, core, nonnegativity and total n - 1/100000, the candidate digest by the source's rule, the net containment, the checker and code identity, a replay record at threshold one for each of the 201 angles, and the source audit's certificate and tarball digests. Coverage is decided by the source's checker, whose replay is recorded separately."
+}

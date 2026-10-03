@@ -173,7 +173,7 @@ decides each claim.
 | 112 features, 24 available, 88 unavailable, 512 raw, 128 branches, 42 rows | own census from the gap functions | per pair 1,1,1,1,2,2,4,1,1,2,2,2,2,2; 42 = 20 wall rows + 22 pair rows; 128 = 512/4 from the two flush pairs (3,4) and (3,5) |
 | 88 features stay unavailable on the rectangle | own Taylor test | smallest margin $0.012636$ |
 | 8,448 dual margins, $c_j<1$ | duals rechecked against recomputed gradients and own curvature bounds | worst ratio 0.6768 with a cruder $D_{op}$; receipt 0.6765052082 |
-| the curvature bound $K$ holds | derivation of the Hessian; 3,000 random second differences in the rectangle | largest observed $ |
+| the curvature bound $K$ holds | derivation of the Hessian; 3,000 random second differences in the rectangle | largest observed $\lvert d^\top Hd\rvert/K=0.997$ |
 | radii within the working box | `focused.json` | all 33 radii $\le1/64$; largest 0.00676, smallest 0.00065; two exceed the older uniform $1/248$ |
 | omitting non-contacting pairs is harmless | own clearance test | all 41 stay strictly separated across the whole rectangle, clearance $\ge0.0151$; non-tied wall corners clear by 0.548 |
 | the frame map and role bijection | algebra; receipt `inverse` string; composition joins | $Q^{-1}(x,y)=(y,-x)$; roles $[3,15,8,0,4,1,2,11,9,10,13]$ |

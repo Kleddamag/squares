@@ -73,6 +73,7 @@ from typing import Any, Literal
 
 from strif import atomic_output_file
 
+from sqpack import retained_json
 from sqpack.yamlio import load_yaml
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -1226,7 +1227,7 @@ def expected_document(entries: Sequence[dict[str, Any]] | None = None) -> dict[s
 
 
 def _text(document: dict[str, Any]) -> str:
-    return json.dumps(document, indent=2, sort_keys=True) + "\n"
+    return retained_json.dumps(document, sort_keys=True)
 
 
 def _records(document: dict[str, Any]) -> int:

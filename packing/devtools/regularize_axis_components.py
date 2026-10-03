@@ -112,6 +112,7 @@ from strif import atomic_output_file
 from devtools import census_atlas_contact_shades as shades
 from devtools import check_rational_witness_independent as independent
 from devtools.upper_bound_packets import MAX_SIDE_INCREASE, RATIONAL_DIGITS
+from sqpack import retained_json
 from sqpack.verify import separated, verify_packing
 from sqpack.witness import (
     WitnessError,
@@ -1707,7 +1708,7 @@ def atlas_index(
 
 
 def _index_text(index: dict[str, Any]) -> str:
-    return json.dumps(index, indent=2, ensure_ascii=False) + "\n"
+    return retained_json.dumps(index, ensure_ascii=False)
 
 
 def _normalized(record: dict[str, Any]) -> dict[str, Any]:

@@ -37,6 +37,7 @@ from typing import Any
 import mpmath as mp
 from strif import atomic_output_file
 
+from sqpack import retained_json
 from sqpack.witness import materialize_witness
 from sqpack.yamlio import load_yaml
 
@@ -1404,7 +1405,7 @@ def expected_document(records: Sequence[Mapping[str, Any]] | None = None) -> dic
 
 
 def _text(document: Mapping[str, Any]) -> str:
-    return json.dumps(document, indent=2, sort_keys=True) + "\n"
+    return retained_json.dumps(document, sort_keys=True)
 
 
 def update() -> None:

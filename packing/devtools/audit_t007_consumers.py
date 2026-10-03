@@ -85,6 +85,7 @@ from typing import Any
 from strif import atomic_output_file
 
 from devtools import check_nagamochi_bounds as nagamochi
+from sqpack import retained_json
 from sqpack.yamlio import load_yaml
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -1377,7 +1378,7 @@ def build_document() -> dict[str, Any]:
 
 
 def render(document: Mapping[str, Any]) -> str:
-    return json.dumps(document, indent=2, sort_keys=True, ensure_ascii=False) + "\n"
+    return retained_json.dumps(document, sort_keys=True, ensure_ascii=False)
 
 
 def report(document: Mapping[str, Any]) -> str:

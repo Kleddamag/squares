@@ -31,7 +31,6 @@ From `packing/`, with `uv run --frozen --all-extras --group dev` before each:
 from __future__ import annotations
 
 import argparse
-import json
 import sys
 from collections.abc import Sequence
 from decimal import Decimal
@@ -41,6 +40,7 @@ from typing import Any
 
 import sympy
 
+from sqpack import retained_json
 from sqpack.known_best import KNOWN_BEST_CORPUS
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -178,7 +178,7 @@ def survey(numbers: Sequence[int]) -> dict[str, Any]:
 
 
 def _text(record: dict[str, Any]) -> str:
-    return json.dumps(record, indent=2, ensure_ascii=False) + "\n"
+    return retained_json.dumps(record, ensure_ascii=False)
 
 
 def main(argv: Sequence[str] | None = None) -> int:

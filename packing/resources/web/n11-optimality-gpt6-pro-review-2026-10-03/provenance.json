@@ -3,7 +3,7 @@
   "scope": "Verbatim selected members of a supplied review-evidence ZIP, with every member identified; no member is edited. Inclusion is not execution attestation; the replay receipts record what was run here.",
   "supplied_by": "Repository owner, uploaded to a Claude Code session on 2026-10-03",
   "produced_by": "GPT-6 Pro, as the evidence pack for the unified adversarial review",
-  "review": "docs/project/reviews/review-2026-10-03-n11-optimality-adversarial-gpt6-pro.md",
+  "review": "docs/project/reviews/review-2026-10-03-n11-optimality-adversarial-gpt6-pro-unified.md",
   "received_at_utc": "2026-10-03T05:58:40Z",
   "archive": {
     "filename": "n11-optimality-unified-review-evidence.zip",

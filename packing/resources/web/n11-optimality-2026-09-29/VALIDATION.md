@@ -230,7 +230,7 @@ and byte-exact parent receipts, as the next section explains.
 
 ## Retained Replacement Components
 
-GPT-6 Pro’s [review of October 3](../../../../docs/project/reviews/review-2026-10-03-n11-optimality-adversarial-gpt6-pro.md)
+GPT-6 Pro’s [review of October 3](../../../../docs/project/reviews/review-2026-10-03-n11-optimality-adversarial-gpt6-pro-unified.md)
 proposed four checked replacements for components of this packet, and the
 [integration record](../../../../docs/project/reviews/review-2026-10-03-n11-gpt6-pro-review-integration.md)
 retains each beside the accepted component it would replace.

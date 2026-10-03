@@ -1088,7 +1088,7 @@ coordinates are not inputs to certificate acceptance.
 Two adversarial reviews of October 3, 2026, the
 [project’s own](../../../docs/project/reviews/review-2026-10-03-n11-optimality-paper-adversarial.md)
 and
-[GPT-6 Pro’s](../../../docs/project/reviews/review-2026-10-03-n11-optimality-adversarial-gpt6-pro.md),
+[GPT-6 Pro’s](../../../docs/project/reviews/review-2026-10-03-n11-optimality-adversarial-gpt6-pro-unified.md),
 recomputed the paper’s numbers independently and found no mathematical error; the
 [integration record](../../../docs/project/reviews/review-2026-10-03-n11-gpt6-pro-review-integration.md)
 dispositions every finding of the second, and the retained components it added stand
@@ -1180,7 +1180,7 @@ beside the accepted ones rather than in their place.
     the accepted charge certificates and the clearance of the non-contacting pairs were
     computed there, outside the accepted certificate ensemble.
 
-[^gpt6]: [GPT-6 Pro’s unified adversarial review](../../../docs/project/reviews/review-2026-10-03-n11-optimality-adversarial-gpt6-pro.md),
+[^gpt6]: [GPT-6 Pro’s unified adversarial review](../../../docs/project/reviews/review-2026-10-03-n11-optimality-adversarial-gpt6-pro-unified.md),
     received 3 October 2026: its findings C1, C5, C6, C7 and C9 and simplifications S1,
     S5, S6 and S7 are applied in this revision, and the
     [integration record](../../../docs/project/reviews/review-2026-10-03-n11-gpt6-pro-review-integration.md)

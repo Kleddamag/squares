@@ -4,7 +4,7 @@
 **Author:** Claude Code, one lead session with five Opus sub-agents on the mechanical
 slices; human oversight pending\
 **Subject:**
-[GPT-6 Pro’s unified adversarial review](review-2026-10-03-n11-optimality-adversarial-gpt6-pro.md),
+[GPT-6 Pro’s unified adversarial review](review-2026-10-03-n11-optimality-adversarial-gpt6-pro-unified.md),
 received from the owner on October 3 with its evidence pack, against the
 [paper](../../../packing/devtools/templates/n11-optimality-review-article.md), the
 retained proof packet and the verification record\

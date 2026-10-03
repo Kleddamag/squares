@@ -1,6 +1,6 @@
 {
   "schema": "sqpack.n11-fixed-T-local-two-radius-receipt.v1",
-  "review": "docs/project/reviews/review-2026-10-03-n11-optimality-adversarial-gpt6-pro.md",
+  "review": "docs/project/reviews/review-2026-10-03-n11-optimality-adversarial-gpt6-pro-unified.md",
   "review_section": "S2. Use two radii, six curvature constants, and one row dictionary",
   "review_appendix": "A.2 The published 33 local radii",
   "source_repository": "https://github.com/Queuingtheorydotcom/11SquaresOptimal",

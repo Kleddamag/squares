@@ -184,23 +184,6 @@ exempt:
   reason: pending
   bound_by: Nothing; devtools.build_contact_scaffold_atlas writes it.
   bead: think-k131
-# Batch B: the n5 case results, replayed by value.
-- path: packing/campaign/series/series-000-smoke-and-calibration/results/exp-042-h-023-n5-endpoint-aware-rotating-paths.json
-  reason: pending
-  bound_by: Nothing; cases.n5.rotating_release_paths --record writes it.
-  bead: think-k131
-- path: packing/campaign/series/series-000-smoke-and-calibration/results/exp-039-h-023-n5-fixed-angle-polytope.json
-  reason: pending
-  bound_by: Nothing; cases.n5.fixed_angle_polytope --record writes it.
-  bead: think-k131
-- path: packing/campaign/series/series-000-smoke-and-calibration/results/exp-035-h-023-n5-tangent-cones.json
-  reason: pending
-  bound_by: Nothing; cases.n5.tangent_cones --record writes it.
-  bead: think-k131
-- path: packing/campaign/series/series-000-smoke-and-calibration/results/exp-038-h-023-n5-tangent-inventory.json
-  reason: pending
-  bound_by: Nothing; cases.n5.tangent_inventory --record writes it.
-  bead: think-k131
 # Batch C: one-shot campaign results.
 - path: packing/campaign/series/series-000-smoke-and-calibration/results/agenda-040/one-spare-inventory-n32.json
   reason: pending

@@ -5,7 +5,7 @@ title: "Import wand125: linear point/segment certificates s(101) >= 257/25 and s
 kind: task
 status: open
 priority: 2
-version: 5
+version: 6
 labels:
   - result-import
   - packing
@@ -14,7 +14,7 @@ dependencies:
     target: is-01m3yrzkz80qd1wv5sjr0kkkv0
 parent_id: is-01m3yrdxte02c7bnygkke34ct4
 created_at: 2026-10-02T07:40:22.080Z
-updated_at: 2026-10-03T06:05:03.023Z
+updated_at: 2026-10-03T20:58:53.957Z
 ---
 Result import process, I. New certificate kind: point masses + uniform segments + rectangles, D4, mass n - 1/100000, checked by code/unified_linear_verify.cpp (the verifier of mixed_n50_L735), 201 net angles. n101 at af1db07, n83 at 0c35d90; n82 (9.32) announced. Stage 2 packet, stage 3 entry V0/C0, stage 4 replay + review (new checker: review needed). Compared with Green G_10 = 10.2467.
 
@@ -25,3 +25,4 @@ T-073 (linear certificates at n = 83 and 101..105, V0/C1). From packing/: `.venv
 ## Notes
 
 2026-10-03 06:05 l83 (session_01PADmST5bjm6g2wbCbc2gbK): first launch failed from the wrong directory; 0-90 relaunched 04:52Z and running; then 91-152, 153-200, linear-merge, linear-control. Branch claude/replay-wand125-linear-n83 has no receipts yet.
+2026-10-03 21:05 Follow-up PR #327 (182776349): T-076 n82 linear V3/C3 (six ranges, 30.74 CPU-h; n82 verified 233/25) and T-073 n83 linear V3/C3 (26.15 CPU-h; no case moves, T-075 higher), plus think-sfbj reply records. After merge: final note on #294 to @wand125 (n82, n83 confirmed) and close #294.

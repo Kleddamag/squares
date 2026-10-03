@@ -11,7 +11,7 @@
 // is done the page gains `math-ready`, the explainer's signal.
 //
 // `siteMath.typeset(root)` queues what is still untypeset under `root`; the case records
-// (`case-view.js`) call it when a record is shown, and the popovers when one opens.
+// (`case-page.js`) call it when a record is shown, and the popovers when one opens.
 (() => {
   const math = globalThis.squaresMath;
   if (!math) {

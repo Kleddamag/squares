@@ -12,8 +12,8 @@ of a tab starts, what the keyboard does, what the address says, and what a reade
 asks for reduced motion sees. The drawing tabs beside the view tabs swap each case that
 has a regularized view for that drawing, badged, in place (`overview/atlas-layer.js`):
 the fixture reads that the swap moves nothing, holds through a change of view and the
-expander, follows the keyboard and the address, and that the popover says when the
-drawing it shows is regularized.
+expander, follows the keyboard and the address, and that a regularized tile is the link
+to its case's record, as the house tile is.
 
 One fixture drives the page through all of it and keeps what it read, so no test waits
 on a browser in its own time. The layouts are read with the measuring tool's probe and
@@ -41,7 +41,6 @@ from tests import site_renders
 PROBES = Path(__file__).resolve().parent / "probes"
 PRESSED = probe(PROBES, "site_atlas_views/pressed")
 INTERRUPTED = probe(PROBES, "site_atlas_views/interrupted")
-POPOVER = probe(PROBES, "site_atlas_views/popover")
 WATCH = probe(PROBES, "site_atlas_views/watch")
 SEEN = probe(PROBES, "site_atlas_views/seen")
 ACTIONS = probe(PROBES, "site_atlas_views/actions")
@@ -159,11 +158,13 @@ def _desktop(browser: Any, address: str) -> Readings:
     cell.hover()
     page.wait_for_timeout(SETTLE_MS)
     seen["tile hovered"] = page.evaluate(DRAWING, {"holder": CELL})
-    cell.click()
-    page.locator("[data-atlas-popover]:popover-open").wait_for()
-    seen["popover"] = page.evaluate(POPOVER)
-    page.keyboard.press("Escape")
-    seen["popover closed"] = page.evaluate(POPOVER)
+    # A tile opens its case's record in the case popover, which fetches the record, so
+    # that is held where the records are served (`test_site_case_records`); from a file,
+    # a tile is the link to that record the popover opens.
+    seen["tile link"] = {
+        "href": cell.get_attribute("href"),
+        "case": cell.get_attribute("data-case"),
+    }
 
     # The expander is under the triangle, below the window: brought into it, as a reader
     # who presses it has it, so what follows the tiles is seen to move with them.
@@ -258,17 +259,15 @@ def _drawings(browser: Any, address: str) -> Readings:
         atlas.settle(page)
         seen.setdefault("drawing keys", []).append((key, atlas.layout(page)))
 
+    # A regularized tile is the link to its case's record, as a house tile is (above).
     first = min(seen["drawings, regularized"]["regularized"])
-    seen["pressed regularized case"] = first
-    page.locator(f'.site-atlas-cell[data-atlas-n="{first}"]').click()
-    page.locator("[data-atlas-popover]:popover-open").wait_for()
-    seen["regularized popover"] = page.evaluate(POPOVER)
-    page.keyboard.press("Escape")
-    seen["regularized popover closed"] = page.evaluate(POPOVER)
-    page.locator(CELL).click()
-    page.locator("[data-atlas-popover]:popover-open").wait_for()
-    seen["house popover"] = page.evaluate(POPOVER)
-    page.keyboard.press("Escape")
+    tile = page.locator(f'.site-atlas-cell[data-atlas-n="{first}"]')
+    seen["regularized tile link"] = {
+        "n": first,
+        "href": tile.get_attribute("href"),
+        "case": tile.get_attribute("data-case"),
+        "layer": tile.get_attribute("data-atlas-layer"),
+    }
     page.close()
     return seen
 
@@ -628,18 +627,8 @@ def test_the_expander_reads_show_more_then_show_less_with_the_chevron_turned(
     assert closed["controls"] == opened["controls"] == "atlas-cells"
 
 
-def test_a_triangle_tile_opens_the_atlas_popover_and_takes_the_focus_back(
-    seen: Readings,
-) -> None:
-    assert seen["popover"]["open"]
-    assert seen["popover"]["title"] == "n = 11"
-    assert seen["popover"]["note"] is False
-    assert seen["popover closed"] == {
-        "open": False,
-        "title": "n = 11",
-        "focus": "11",
-        "note": False,
-    }
+def test_a_triangle_tile_is_the_link_to_its_case_record(seen: Readings) -> None:
+    assert seen["tile link"] == {"href": "cases/11.html", "case": "11"}
 
 
 def _layers(report: dict[str, Any]) -> dict[str, dict[str, Any]]:
@@ -738,16 +727,12 @@ def test_the_arrow_keys_move_between_the_drawing_tabs_and_select_the_one_focused
         assert (current["selected"], current["tabindex"]) == ("true", 0), key
 
 
-def test_a_regularized_tile_opens_the_popover_saying_what_it_shows(seen: Readings) -> None:
-    """Pressed, a regularized tile opens the popover with the note under its drawing,
-    and closing it returns the focus to that tile; a house tile's popover has no note."""
-    n = seen["pressed regularized case"]
-    opened = seen["regularized popover"]
-    assert (opened["open"], opened["title"], opened["note"]) == (True, f"n = {n}", True)
-    closed = seen["regularized popover closed"]
-    assert (closed["open"], closed["focus"]) == (False, str(n))
-    assert seen["house popover"]["title"] == "n = 11"
-    assert seen["house popover"]["note"] is False
+def test_a_regularized_tile_is_the_link_to_the_same_case_record(seen: Readings) -> None:
+    """A regularized tile opens the record its house tile opens: the record's drawing is
+    the house one, and the regularized layer is only the atlas's view of it."""
+    tile = seen["regularized tile link"]
+    n = tile["n"]
+    assert tile == {"n": n, "href": f"cases/{n}.html", "case": str(n), "layer": "regularized"}
 
 
 def test_a_linked_regularized_atlas_is_regularized_before_a_tile_is_drawn(

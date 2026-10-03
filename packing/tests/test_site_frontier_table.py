@@ -119,9 +119,10 @@ def test_the_drawing_makes_no_row_taller_than_its_text(
     laid: dict[int, dict[str, Any]], width: int
 ) -> None:
     """The drawing is two lines of the table's text high, and every row has two lines
-    at least, the case file's link over the row's trigger. So in the shortest row, one
-    of whole numbers, the drawing and the Records cell's two lines each fill the cell's
-    height between its padding, and the row is no taller than those two lines need."""
+    at least, the case file's link over the link to the case's record. So in the
+    shortest row, one of whole numbers, the drawing and the Records cell's two lines
+    each fill the cell's height between its padding, and the row is no taller than those
+    two lines need."""
     shortest = laid[width]["rows"][ROWS.index("n-1")]
     thumb, records = shortest["cells"][0], shortest["cells"][column("Records")]
     assert shortest["height"] == min(row["height"] for row in laid[width]["rows"])
@@ -180,9 +181,11 @@ def test_the_table_fits_its_track_at_1280_and_scrolls_in_its_wrap_below(
     widths = {cell["words"]: cell["width"] for cell in wide["head"]}
     assert widths["n"] < 50
     assert widths["Recent"] < 96
+    # At 1280 the table is stretched to its track; below it keeps its own width, 1192
+    # pixels since the table has no frame (2026-10-02, think-wadm), 1194 before.
     for width in WIDTHS[1:]:
         assert laid[width]["scrolls"] > 0, width
-        assert laid[width]["table_width"] == pytest.approx(wide["table_width"], abs=8), width
+        assert laid[width]["table_width"] == pytest.approx(wide["table_width"], abs=10), width
     assert [laid[width]["page_scrolls"] for width in WIDTHS] == [0] * len(WIDTHS)
 
 
@@ -207,9 +210,10 @@ def test_a_fraction_shows_its_decimal_and_a_name_stays_whole(
 
 
 def test_the_table_still_sorts_filters_and_opens(page: Any, laid: dict[int, Any]) -> None:
-    """The columns moved and the script did not: a heading sorts its own column, the
-    filters narrow the rows, the drawing opens the row's popover as the rest of the row
-    does, and the number opens the case's record."""
+    """The columns moved and the script did not: a heading sorts its own column and the
+    filters narrow the rows. A row opens its case's record, which is fetched, so that is
+    held where the page is served (`test_site_case_records`); here, from a file, a row is
+    one control that names its record."""
     assert laid
     shown = page.locator("#frontier-table tbody tr:not([hidden])")
     recent = page.locator("#frontier-table thead th", has_text="Recent")
@@ -242,16 +246,7 @@ def test_the_table_still_sorts_filters_and_opens(page: Any, laid: dict[int, Any]
 
     row = page.locator("#n-12")
     row.scroll_into_view_if_needed()
-    row.locator("td.site-thumb svg").click()
-    popover = page.locator("#pop-frontier-n-12")
-    assert popover.is_visible()
-    assert row.get_attribute("aria-expanded") == "true"
-    page.keyboard.press("Escape")
-    assert not popover.is_visible()
-    row.locator("td.site-col-n a").click()
-    record = page.locator("[data-case-popover]")
-    assert record.is_visible()
-    assert not popover.is_visible()
-    assert record.locator("[data-case-expand]").get_attribute("href") == "cases.html#n-12"
-    page.keyboard.press("Escape")
-    assert not record.is_visible()
+    assert row.get_attribute("data-case-href") == "cases/12.html"
+    assert row.get_attribute("tabindex") == "0"
+    assert row.get_attribute("aria-controls") == "pop-case"
+    assert row.locator("td.site-col-n a").get_attribute("href") == "cases/12.html"

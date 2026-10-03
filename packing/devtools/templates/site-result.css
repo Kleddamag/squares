@@ -6,14 +6,15 @@
    site's own from site.css and site-nav.css, so it follows the theme and the print
    rules; change the document first, then this file.
 
-   The case's panel is the atlas popover's own: its block carries `site-atlas-pop`, so
-   the film's gap bar, bound, badges and citation take the rules site.css already gives
+   The case's panel is the case's visual summary, as its record opens
+   (`render_case_pages.visual_summary`): its block carries `site-atlas-pop`, so the
+   film's gap bar, bound, badges and citation take the rules site.css already gives
    them. This sheet adds only what the overview has beyond that panel: its head, the
    record's bounds, the compact case list, the chain of results and the links.
    ============================================================ */
 
 /* ---------- The popover that holds an overview ----------
-   As large as the atlas popover, whatever kind of popover the row opens, and one
+   As large as the case popover, whatever kind of popover the row opens, and one
    scrolling panel: a page popover's flex column, made for a framed page, would clip it.
    A row's popover holds the result's short detail until its overview is fetched
    (`data-row-pop-src`, `overview/row-popover.js`); it is this size from the start, so
@@ -152,37 +153,19 @@
 }
 
 /* ---------- The case ----------
-   The atlas popover's panel, with the drawing in the page's ink and a caption. A result
+   The case's visual summary, the drawing smaller than its record draws it. A result
    about a few cases stacks one panel per case, each headed by its n. */
 .site-result-film + .site-result-film {
   border-block-start: 1px solid var(--kpress-doc-border);
   margin-block-start: 1rem;
   padding-block-start: 0.8rem;
 }
-.site-result-film .site-atlas-pop-figure {
-  margin: 0;
-}
-.site-result-film .site-atlas-pop-figure svg {
-  color: var(--kpress-doc-text);
-}
-.site-result-film .site-atlas-pop-figure figcaption {
-  color: var(--site-support-color);
-  font-size: var(--site-font-size-note);
-  margin-block-start: 0.5rem;
-  text-align: center;
+.site-result-film .site-case-figure {
+  inline-size: min(18rem, 100%);
 }
 .kpress .site-result .site-result-case-n {
   font-size: 1.3em;
   margin-block: 0 0.7rem;
-}
-/* The bar's labels are placed when the page is rendered, each centred on its mark by
-   site.css. Two values too close to sit side by side are set either side of their
-   marks instead, where the atlas popover's script would move them. */
-.site-result-film .site-atlas-gap-values span[data-anchor="end"] {
-  transform: translateX(calc(-100% - 0.3rem));
-}
-.site-result-film .site-atlas-gap-values span[data-anchor="start"] {
-  transform: translateX(0.3rem);
 }
 
 /* The record's four bounds and the gap: a small plain grid marked with table roles,

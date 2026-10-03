@@ -69,7 +69,7 @@ machine-checked bounds, [T-043](all-results.html#t-043) below and
 [T-065](all-results.html#t-065) above, and [$n = 21$](cases/21.html),
 [$32$](cases/32.html) and [$45$](cases/45.html) have new exact values.
 {{STAR_LEGEND}}
-The table above starts at significance S4 and up, max age 180 days and superseded
+The table above starts at significance S3 and up, max age 180 days and superseded
 hidden.
 
 Each row carries three ratings, each a rung of its own ladder.

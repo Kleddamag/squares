@@ -88,10 +88,12 @@ Page colors that are not the accent take their hues from it:
 | --- | --- | --- | --- |
 | Verification rung (`V`) | 250 | Rises with the level | The blue square, `#166eac` |
 | Confirmation rung (`C`) | 158 | Rises with the level | The green square, `#158655` |
-| Significance rung (`S`) | 250 | 0.008 at every level | Gray |
+| Significance (`S`) | 205 | One ink, the same at every level | Between the blue and the green |
 
 Every chip carries the page’s own text colour, black in light mode, on a light fill, and
 in dark mode light text on a dark fill.
+Significance is no chip (the owner, 2026-10-03, `think-m3m4`): its rung is drawn on the
+page in its own ink, a dark teal (**Significance**, below).
 A plain chip is a 16% tint of the muted gray over the page background, and an accent
 chip a 22% tint of the accent.
 
@@ -111,14 +113,12 @@ them:
 | `--site-rung-chroma-base`, the chroma at level 0 | 0.015 | 0.012 |
 | `--site-rung-chroma-step`, what a level adds to it | 0.024 | 0.019 |
 
-Significance is gray by design: it takes the lightness steps and no chroma step, so a
-higher level is darker in light mode and lighter in dark, never coloured.
 No chip has a value of its own; a level’s fill is always these tokens at that level.
 
 The text is the page’s own at every step, with no switch to a second text colour: the
 scale stops where that text still reads.
 Every fill is inside sRGB, so a browser shows the chroma written here, and the text’s
-contrast on it is 6.0:1 or better in light mode and 5.3:1 or better in dark, against the
+contrast on it is 6.1:1 or better in light mode and 5.3:1 or better in dark, against the
 4.5:1 that WCAG AA asks of body text.
 The fills and ratios below are what `devtools.rung_scale` computes from the tokens in
 `site.css` and KPress’s page colours; run it after changing a token.
@@ -127,11 +127,6 @@ every ratio to 4.5:1.
 
 | Rung | Light fill | Text contrast | Dark fill | Text contrast |
 | --- | --- | --- | --- | --- |
-| `S1` | `oklch(89.5% 0.008 250)` `#d8dde2` | 13.0:1 | `oklch(29.6% 0.008 250)` `#2a2d31` | 11.7:1 |
-| `S2` | `oklch(84.0% 0.008 250)` `#c7cbd0` | 10.9:1 | `oklch(34.2% 0.008 250)` `#35393d` | 9.9:1 |
-| `S3` | `oklch(78.5% 0.008 250)` `#b5b9be` | 9.0:1 | `oklch(38.8% 0.008 250)` `#414549` | 8.2:1 |
-| `S4` | `oklch(73.0% 0.008 250)` `#a4a8ad` | 7.4:1 | `oklch(43.4% 0.008 250)` `#4e5155` | 6.8:1 |
-| `S5` | `oklch(67.5% 0.008 250)` `#93979c` | 6.0:1 | `oklch(48.0% 0.008 250)` `#5a5e62` | 5.5:1 |
 | `V0` | `oklch(95.0% 0.015 250)` `#e7f0f8` | 15.4:1 | `oklch(25.0% 0.012 250)` `#1d2227` | 13.6:1 |
 | `V1` | `oklch(89.5% 0.039 250)` `#cadff6` | 13.0:1 | `oklch(29.6% 0.031 250)` `#212e3c` | 11.7:1 |
 | `V2` | `oklch(84.0% 0.063 250)` `#accef3` | 10.9:1 | `oklch(34.2% 0.050 250)` `#243a51` | 9.9:1 |
@@ -162,7 +157,46 @@ table to its output and every ratio to 4.5:1.
 | `proved` | `oklch(78.5% 0.087 145)` `#96c897` | 9.3:1 | `oklch(38.8% 0.069 145)` `#2b4e2d` | 8.0:1 |
 | `open` | `oklch(84.0% 0.083 95)` `#dbcb8c` | 10.9:1 | `oklch(34.2% 0.070 95)` `#443800` | 9.9:1 |
 
-The recent-bound star is the one warm mark, `oklch(52% 0.19 25)`.
+### Significance and the Other Inks
+
+A significance rung is drawn in an ink of its own on the page, not on a chip:
+`--site-significance`, a dark teal at hue 205, between the confirmation green and the
+verification blue so it reads as neither, and darker and bluer than the accent so it
+never reads as a link; it is light in dark mode.
+The rung is its letter and level, `S4`, at the sans medium weight, then as many short
+bars in the same ink as its level, one to five, so a column of them reads as a meter
+(`overview_sections.significance_mark`). It is the second column of a table of results,
+narrow, with a new result’s star after the bars, and it stands first among the rungs in
+a result’s overview, a case record and the rating ladders.
+
+The recent-bound star is the one warm mark, `--site-new-result`, lighter in dark mode so
+it keeps its contrast there.
+`devtools.rung_scale` measures both inks against the page’s background in each theme,
+and `tests/test_rung_scale.py` holds this table to its output: the significance ink is
+text, held to 4.5:1, and the star a symbol, held to 3:1, both inside sRGB.
+
+| Ink | Light | Against the page | Dark | Against the page |
+| --- | --- | --- | --- | --- |
+| `--site-significance` | `oklch(42.0% 0.070 205)` `#05585f` | 8.2:1 | `oklch(80.0% 0.085 205)` `#77ced8` | 10.2:1 |
+| `--site-new-result` | `oklch(52.0% 0.190 25)` `#be222a` | 6.1:1 | `oklch(66.0% 0.170 25)` `#e8605b` | 5.5:1 |
+
+### Every Colour Is a Token
+
+Every colour the site and its papers paint with is a custom property, so a colour is
+tried and changed in one place, and a dark theme or a print sheet redefines the token
+rather than every rule that uses it (the owner, 2026-10-03, `think-zhlc`). A rule says
+`var(--site-shadow)`, never `oklch(0% 0 0 / 0.15)`; a mix of the page’s own colours
+stays in the rule that paints with it, since a token resolves where it is declared and
+the dark theme’s page colours are set below the root, and its ratio is the token:
+`color-mix(in oklch, var(--kpress-doc-muted) var(--site-chip-tint),
+var(--kpress-doc-bg))`. `devtools.check_colour_tokens` holds every served stylesheet to
+this: no hex colour, no colour function that names a number of its own, and no named
+colour in a property that paints, outside a custom property, and every token a rule
+paints with is declared.
+Two declarations are allowed, each with its reason in the checker, and an allowance that
+names nothing fails: the folio’s ink in a printed paper’s `@page` margin boxes.
+`tests/test_colour_tokens.py` holds the stylesheets to it, with a negative control for
+each rule.
 
 Every hover, a table’s group row and a targeted row take one gentle wash, `--site-wash`,
 defined in `site-nav.css` because every page carries it: KPress’s hover surface in light
@@ -1717,9 +1751,10 @@ Max age is a number of days, and empty is no limit. There is no date range.
 
 - **Defaults.** The caller passes them (`FilterDefaults`), and they are the one thing
   that differs between the two bars.
-  Recent Results on the overview starts at significance S4 and up, a maximum age of 180
-  days and Hide superseded checked (`RECENT_DEFAULTS`); the results page starts at All,
-  no maximum age and the box clear (`RESULTS_DEFAULTS`), so every result shows.
+  Recent Results on the overview starts at significance S3 and up (S4 until 2026-10-03,
+  `think-x60s`), a maximum age of 180 days and Hide superseded checked
+  (`RECENT_DEFAULTS`); the results page starts at All, no maximum age and the box clear
+  (`RESULTS_DEFAULTS`), so every result shows.
   Every other control starts at All on both.
   The bar has no reset control: a control’s default is its state in the HTML, which a
   fresh load of the page returns to.
@@ -1906,7 +1941,7 @@ pointer and by keyboard, and measures its label at 1280, 768 and 390 pixels.
   README’s two paragraphs on the same progress opened the section until that day and are
   README’s own now (**Page headings**, above).
   The results page’s tools bar sits above it (**Result filters**, above), starting at
-  significance S4 and up, a maximum age of 180 days and Hide superseded checked, with
+  significance S3 and up, a maximum age of 180 days and Hide superseded checked, with
   the count of rows shown out of the total at the bar’s end.
   Those three defaults are all that make the table recent and current: no result is left
   out of it by a date or a status the page fixes, and none is listed anywhere but in it.

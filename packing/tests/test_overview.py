@@ -2635,17 +2635,17 @@ def test_recent_results_is_one_table_not_cards_or_a_list(
     assert exact <= shown
 
 
-def test_the_recent_table_lists_every_result_less_the_superseded_at_s4_and_180_days(
+def test_the_recent_table_lists_every_result_less_the_superseded_at_s3_and_180_days(
     page: str, overview: overview_data.Overview
 ) -> None:
     """Every result is a row, and no date or standing the page fixes leaves one out:
-    what makes the table recent is where its bar starts, Significance at S4 and up, Max
+    what makes the table recent is where its bar starts, Significance at S3 and up, Max
     age at 180 days and Hide superseded checked. The rows outside those are hidden in
     the HTML, their age measured from the register's own reference date, and the count
     is already written, so the first paint is the filtered table."""
     defaults = overview_sections.RECENT_DEFAULTS
     assert defaults == overview_sections.FilterDefaults(
-        significance=4, max_age=180, hide_superseded=True
+        significance=3, max_age=180, hide_superseded=True
     )
     assert not hasattr(overview_sections, "RECENT_FROM")
     recent = _recent_table(page)
@@ -2659,8 +2659,8 @@ def test_the_recent_table_lists_every_result_less_the_superseded_at_s4_and_180_d
     assert '<label>Significance <select data-filter="s" data-bound="min">' in tools
     significance = tools.split('data-filter="s"', 1)[1].split("</select>", 1)[0]
     options = re.findall(r'<option value="(\d?)"( selected)?>([^<]+)</option>', significance)
-    assert ("4", " selected", "S4 and up") in options
-    assert ("3", "", "S3 and up") in options
+    assert ("3", " selected", "S3 and up") in options
+    assert ("4", "", "S4 and up") in options
     assert options[0] == ("", "", "All")
     assert (
         '<label>Max age <input type="number" data-filter="date" data-bound="age" '
@@ -2690,7 +2690,7 @@ def test_the_recent_table_lists_every_result_less_the_superseded_at_s4_and_180_d
     # Where the bar starts, said once, in the bar's own words; the sentence on clearing
     # the filters left with the rest of the detail on 2026-10-02.
     starts = (
-        "The table above starts at significance S4 and up, max age 180 days and "
+        "The table above starts at significance S3 and up, max age 180 days and "
         "superseded hidden."
     )
     assert text.count(starts) == 1
@@ -2973,7 +2973,7 @@ def test_recent_results_opens_with_its_table_and_says_what_it_shows_under_it(
     first, second = (_rendered_text(paragraph) for paragraph in paragraphs)
     assert first.startswith("Eleven squares is settled: $s(11) = 3.8770835\\ldots$")
     assert first.endswith(
-        "The table above starts at significance S4 and up, max age 180 days and "
+        "The table above starts at significance S3 and up, max age 180 days and "
         "superseded hidden."
     )
     assert 50 <= len(first.split()) <= 100, len(first.split())

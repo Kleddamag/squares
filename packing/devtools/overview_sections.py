@@ -56,8 +56,8 @@ def _esc(text: object) -> str:
 
 
 def _fill(rung: str) -> str:
-    """The attributes `site.css` colours a rung by: its scale, `V`, `C` or `S`, and its
-    level, which darkens the fill. Badges, bar segments and legend swatches share them."""
+    """The attributes `site.css` colours a rung chip by: its scale, `V` or `C`, and its
+    level, which darkens the fill. Significance is no chip (`significance_mark`)."""
     return f'data-rung="{_esc(rung[0])}" data-level="{_esc(rung[1:])}"'
 
 
@@ -65,6 +65,28 @@ def _rung(label: str) -> str:
     """A rung chip as a table prints it. The rung's full meaning is the title of the
     diagram's chip (`_ladder_cell`), where the rubric is explained once."""
     return f'<span class="site-chip site-rung-fill" {_fill(label)}>{_esc(label)}</span>'
+
+
+#: The significance ladder's top rung, the most bars its mark draws.
+SIGNIFICANCE_TOP = 5
+
+
+def significance_mark(level: int, meaning: str = "") -> str:
+    """A significance rung as the site draws it wherever it shows one: its letter and
+    level, `S4`, in the significance teal (`--site-significance`), and that many small
+    bars after it in the same ink, one to five. It is no chip: significance asks how
+    much a result matters, a different question from what the verification and
+    confirmation chips answer, so it looks different from them (the owner, 2026-10-03,
+    `think-m3m4`). It is one image to a screen reader, named by its level, and titled
+    with the rubric's `meaning` where one is given."""
+    bars = '<span class="site-significance-bar"></span>' * level
+    title = f' title="{_esc(meaning)}"' if meaning else ""
+    return (
+        f'<span class="site-significance" data-level="{level}" role="img" '
+        f'aria-label="Significance S{level} of {SIGNIFICANCE_TOP}"{title}>'
+        f'<span class="site-significance-label" aria-hidden="true">S{level}</span>'
+        f'<span class="site-significance-bars" aria-hidden="true">{bars}</span></span>'
+    )
 
 
 def standing_key(standing: str) -> str:
@@ -603,13 +625,12 @@ def new_result_label(result: Result, overview: Overview) -> str:
 
 
 def new_result_star(result: Result, overview: Overview) -> str:
-    """The red star straight after a new result's text in a table of results, or nothing
-    (`new_result_label`). The glyph is an image whose name and tooltip are the label, so
-    it is read and not only seen, and the row's own name says "new result" too
-    (`result_row`). No space joins it to the text: a browser may break a line between a
-    formula and a space that does not break, which left the star on a line of its own.
-    `site.css` hangs it after the last character instead, with a gap, in room the cell
-    keeps for it."""
+    """The red star of a new result in a table of results, or nothing
+    (`new_result_label`): in the significance cell, after the significance mark's bars
+    (`significance_cell`), where it stood after the result's text until 2026-10-03
+    (`think-m3m4`). The glyph is an image whose name and tooltip are the label, so it is
+    read and not only seen, and the row's own name says "new result" too
+    (`result_row`)."""
     label = new_result_label(result, overview)
     if not label:
         return ""
@@ -665,7 +686,7 @@ class FilterDefaults(NamedTuple):
 
 #: The overview's Recent Results: what matters most, from the last half year, and of
 #: that only what nothing has superseded.
-RECENT_DEFAULTS = FilterDefaults(significance=4, max_age=180, hide_superseded=True)
+RECENT_DEFAULTS = FilterDefaults(significance=3, max_age=180, hide_superseded=True)
 
 #: The results page: every result, of any significance, any age and any standing.
 RESULTS_DEFAULTS = FilterDefaults()
@@ -848,23 +869,27 @@ def result_filters(
 
 def result_head() -> str:
     """The header row of a table of results: the one set of columns both tables carry,
-    in one order. The date; the result; the cases; the credit; the rungs, with the kind
-    under them; the status; the details, the result's records a link to a line; and the
-    id, which is the row's trigger. The owner set this order on 2026-10-02: the id led
-    and the date closed the row until then (`think-t090`); the status stood under the
-    kind, in the rungs' cell, though it is where the result stands and no rung
-    (`think-ybt5`); and the records stood on a line under the summary, where the result's
-    cell holds the claim alone now (`think-e4o3`). A column sorts where an order means
+    in one order. The date; the significance, with a new result's star; the result; the
+    cases; the credit; the verification and confirmation rungs, with the kind under
+    them; the status; the details, the result's records a link to a line; and the id,
+    which is the row's trigger. The owner set this order on 2026-10-02: the id led and
+    the date closed the row until then (`think-t090`); the status stood under the kind,
+    in the rungs' cell, though it is where the result stands and no rung (`think-ybt5`);
+    and the records stood on a line under the summary, where the result's cell holds the
+    claim alone now (`think-e4o3`). Significance left the rungs for a column of its own,
+    the second, on 2026-10-03 (`think-m3m4`). A column sorts where an order means
     something, on either page."""
     return (
         "<thead><tr>"
         '<th data-sort="text" title="Published, for a result by others; established, for '
         f'this project{APOSTROPHE}s">Date</th>'
+        '<th data-sort="num" class="site-col-s" title="Significance, S1 to S5, and a star '
+        'on a new result">S</th>'
         '<th class="site-col-result">Result</th>'
         '<th data-sort="num" class="num site-col-n">n</th>'
         '<th data-sort="text">Credit</th>'
-        '<th data-sort="text" title="Significance, verification and confirmation, then '
-        'what the result is">Rungs</th>'
+        '<th data-sort="text" title="Verification and confirmation, then what the result '
+        'is">Rungs</th>'
         '<th data-sort="text" class="site-col-status" title="How far the work on it here '
         "has gone: recorded, reviewed, confirmed or incomplete; then who has the next "
         'move, and superseded, wholly or in part, and by what, where it is">Status</th>'
@@ -925,24 +950,25 @@ def date_cell(result: Result) -> str:
 
 def result_cells(result: Result, overview: Overview, detail: RowDetail) -> str:
     """A result's cells, one for each column of `result_head`, the same on both tables:
-    its date (`date_cell`), its summary with the star a new result earns (`result_text`,
-    `new_result_star`), its cases (`case_list`), its credit (`credit_cell`), its rung
-    chips with its kind on a line under them (`kind_chip`), its status line
-    (`status_marks`), its records a link to a line (`_records`), and its id
-    (`id_cell`). The status cell sorts on the status word alone."""
+    its date (`date_cell`), its significance with the star a new result earns
+    (`significance_cell`), its summary (`result_text`), its cases (`case_list`), its
+    credit (`credit_cell`), its verification and confirmation chips with its kind on a
+    line under them (`ladder_chips`, `kind_chip`), its status line (`status_marks`), its
+    records a link to a line (`_records`), and its id (`id_cell`). The status cell sorts
+    on the status word alone."""
     record = result.record
     standing = f'<span class="site-standing">{status_marks(result)}</span>'
     return (
         f'<td class="site-col-date" data-value="{_esc(result.dated[1])}">'
         f"{date_cell(result)}</td>"
-        f'<td class="site-col-result">{result_text(result)}'
-        f"{new_result_star(result, overview)}</td>"
+        f"{significance_cell(result, overview)}"
+        f'<td class="site-col-result">{result_text(result)}</td>'
         f'<td class="num site-col-n" data-value="{result.first_n}">{case_list(result)}</td>'
         f'<td class="site-col-credit" data-value="{_esc(result.credit)}">'
         f"{credit_cell(result.credit)}</td>"
         f'<td class="site-rungs" '
         f'data-value="{_esc(record["confirmation"] + record["verification"])}">'
-        f'{rung_chips(result)}<span class="site-kind">{kind_chip(result)}</span></td>'
+        f'{ladder_chips(result)}<span class="site-kind">{kind_chip(result)}</span></td>'
         f'<td class="site-col-status" data-value="{_esc(result.status)}">{standing}</td>'
         '<td class="site-col-details">'
         f'<div class="site-records">{_records(result)}</div></td>'
@@ -1121,14 +1147,21 @@ def rung_short_meanings() -> dict[str, str]:
 
 
 def _ladder_cell(scale: str, level: int) -> str:
-    """One rung of the ladder diagram: the chip the tables use, titled with the rubric's
-    full meaning, and the two-line description."""
+    """One rung of the ladder diagram: the chip the tables use, or for significance its
+    mark (`significance_mark`), titled with the rubric's full meaning, and the two-line
+    description."""
     label = f"{scale}{level}"
+    meaning = rung_meanings()[label]
+    rung = (
+        significance_mark(level, meaning)
+        if scale == "S"
+        else f'<span class="site-chip site-rung-fill" title="{_esc(meaning)}" '
+        f"{_fill(label)}>{label}</span>"
+    )
     return (
         f'<div class="site-ladders-cell" role="cell" data-ladder="{scale}">'
         '<div class="site-ladders-rung">'
-        f'<span class="site-chip site-rung-fill" title="{_esc(rung_meanings()[label])}" '
-        f"{_fill(label)}>{label}</span>"
+        f"{rung}"
         f'<span class="site-ladders-meaning">{_esc(rung_short_meanings()[label])}</span>'
         "</div></div>"
     )
@@ -1219,8 +1252,20 @@ def recent_results(overview: Overview) -> list[Result]:
 
 
 def significance(result: Result) -> int:
-    """A result's S rung, the level its S chip shows."""
+    """A result's S rung, the level its significance mark shows."""
     return int(result.record["significance"]["score"])
+
+
+def significance_cell(result: Result, overview: Overview) -> str:
+    """A result's significance cell, the second of its row in both tables of results:
+    its mark (`significance_mark`), titled with the rubric's meaning, then the star a
+    new result earns (`new_result_star`). The column is narrow and sorts on the level."""
+    level = significance(result)
+    mark = significance_mark(level, rung_meanings()[f"S{level}"])
+    return (
+        f'<td class="site-col-s" data-value="{level}">'
+        f"{mark}{new_result_star(result, overview)}</td>"
+    )
 
 
 def result_rungs(result: Result) -> tuple[str, str, str]:
@@ -1231,10 +1276,20 @@ def result_rungs(result: Result) -> tuple[str, str, str]:
     return (f"S{significance(result)}", record["verification"], record["confirmation"])
 
 
+def ladder_chips(result: Result) -> str:
+    """A result's verification and confirmation chips, V and C, a space apart, as a
+    table's rungs cell sets them, its significance having a column of its own."""
+    return " ".join(_rung(rung) for rung in result_rungs(result)[1:])
+
+
 def rung_chips(result: Result) -> str:
-    """A result's rung chips, S, V and C, a space apart: the one place their order is
-    set, for a table's row, a popover, a result's overview and a case record."""
-    return " ".join(_rung(rung) for rung in result_rungs(result))
+    """A result's rungs, S, V and C, a space apart: its significance mark
+    (`significance_mark`), then its verification and confirmation chips
+    (`ladder_chips`). The one place their order is set, for a popover, a result's
+    overview and a case record; a table's row sets the significance in a column of its
+    own."""
+    level = significance(result)
+    return f"{significance_mark(level, rung_meanings()[f'S{level}'])} {ladder_chips(result)}"
 
 
 def supersession_marks(result: Result) -> str:

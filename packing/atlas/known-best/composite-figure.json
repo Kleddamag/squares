@@ -17,7 +17,7 @@
           "degree_known": 95,
           "degree_recorded_upstream": 11,
           "exact_value_known": 95,
-          "lower_bound_correction": 17,
+          "lower_bound_correction": 16,
           "lower_bound_first_proved_here": 1,
           "lower_bound_recent_result": 81,
           "only_known_numerically": 5,
@@ -42,7 +42,7 @@
           "degree_known": 269,
           "degree_recorded_upstream": 21,
           "exact_value_known": 269,
-          "lower_bound_correction": 220,
+          "lower_bound_correction": 219,
           "lower_bound_first_proved_here": 1,
           "lower_bound_recent_result": 297,
           "only_known_numerically": 55,
@@ -4070,16 +4070,16 @@
           "state": "closed-form"
         },
         "lower": {
-          "correction": true,
-          "display": "s(82) ≥ 9.058621",
+          "correction": false,
+          "display": "s(82) ≥ 9.320000",
           "evidence": [
-            "E-karakus-strip-lower"
+            "E-n082-wand125-linear-932-source-replay"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
           "recent_result": true,
           "shown": true,
-          "value": "9.05862138431"
+          "value": "9.32"
         },
         "n": 82,
         "optimality": {
@@ -15483,7 +15483,7 @@
       "degree_known": 269,
       "degree_recorded_upstream": 21,
       "exact_value_known": 269,
-      "lower_bound_correction": 220,
+      "lower_bound_correction": 219,
       "lower_bound_first_proved_here": 1,
       "lower_bound_recent_result": 297,
       "only_known_numerically": 55,

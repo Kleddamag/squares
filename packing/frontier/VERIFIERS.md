@@ -26,16 +26,16 @@ second implementation agrees.
 ## The Short Version
 
 - **78** programs: **31** external and **47** first-party; **64** decide claims and **14** check premises.
-- **204** of **227** evidence entries name the programs that verified them: 142 reproduced with the producer’s code, 46 independently re-implemented, 9 no relation: a proof, a derivation or a report, 7 re-implemented, sharing the producer’s components.
+- **228** of **251** evidence entries name the programs that verified them: 166 reproduced with the producer’s code, 46 independently re-implemented, 9 no relation: a proof, a derivation or a report, 7 re-implemented, sharing the producer’s components.
 
 ## Programs
 
 | id | program | author | provenance | role | evidence | results |
 | --- | --- | --- | --- | --- | ---: | ---: |
 | [`V-tokoharu-verify-cpp`](#v-tokoharu-verify-cpp) | verify.cpp | Tokoharu | external | decides | 12 | 7 |
-| [`V-wand125-mixed-rotated-verify-cpp`](#v-wand125-mixed-rotated-verify-cpp) | mixed_rotated_verify.cpp | wand125 | external | decides | 30 | 5 |
-| [`V-wand125-verify-mixed-full-proof-py`](#v-wand125-verify-mixed-full-proof-py) | verify_mixed_full_proof.py | wand125 | external | decides | 7 | 2 |
-| [`V-wand125-unified-linear-verify-cpp`](#v-wand125-unified-linear-verify-cpp) | unified_linear_verify.cpp | wand125 | external | decides | 4 | 3 |
+| [`V-wand125-mixed-rotated-verify-cpp`](#v-wand125-mixed-rotated-verify-cpp) | mixed_rotated_verify.cpp | wand125 | external | decides | 52 | 6 |
+| [`V-wand125-verify-mixed-full-proof-py`](#v-wand125-verify-mixed-full-proof-py) | verify_mixed_full_proof.py | wand125 | external | decides | 29 | 3 |
+| [`V-wand125-unified-linear-verify-cpp`](#v-wand125-unified-linear-verify-cpp) | unified_linear_verify.cpp | wand125 | external | decides | 6 | 3 |
 | [`V-wand125-verify-portable-py`](#v-wand125-verify-portable-py) | verify_portable.py | wand125 | external | decides | 2 | 1 |
 | [`V-wand125-check-with-sqpack`](#v-wand125-check-with-sqpack) | check_with_sqpack.py | wand125 | external | decides | 5 | 1 |
 | [`V-wand125-valid7-checker`](#v-wand125-valid7-checker) | valid7-independent-check (Tier A, Tier B and the record checker) | wand125 | external | decides | 1 | 1 |
@@ -102,7 +102,7 @@ second implementation agrees.
 | [`V-audit-tokoharu-density`](#v-audit-tokoharu-density) | devtools.audit_tokoharu_density | Squares Project (Levy) | first-party | premises | 1 | 1 |
 | [`V-audit-wand125-rectangles`](#v-audit-wand125-rectangles) | devtools.audit_wand125_rectangles | Squares Project (Levy) | first-party | premises | 3 | 3 |
 | [`V-audit-wand125-point-and-mixed`](#v-audit-wand125-point-and-mixed) | devtools.audit_wand125_point_and_mixed | Squares Project (Levy) | first-party | premises | 17 | 7 |
-| [`V-audit-wand125-linear`](#v-audit-wand125-linear) | devtools.audit_wand125_linear | Squares Project (Levy) | first-party | premises | 1 | 1 |
+| [`V-audit-wand125-linear`](#v-audit-wand125-linear) | devtools.audit_wand125_linear | Squares Project (Levy) | first-party | premises | 3 | 3 |
 | [`V-replay-chelokot-lean`](#v-replay-chelokot-lean) | devtools.replay_chelokot_lean | Squares Project (Levy) | first-party | premises | 1 | 1 |
 | [`V-replay-evand-zmx2`](#v-replay-evand-zmx2) | devtools.replay_evand_zmx2 | Squares Project (Levy) | first-party | premises | 5 | 5 |
 | [`V-audit-evand-mixed-covers`](#v-audit-evand-mixed-covers) | devtools.audit_evand_mixed_covers | Squares Project (Levy) | first-party | premises | 9 | 8 |
@@ -179,6 +179,28 @@ Decides a mixed point-and-rectangle certificate at each of the 201 net direction
 | `E-n092-wand125-mixed-975-source-replay` | replayed here | producer’s code | T-075 |
 | `E-n096-wand125-mixed-996-report` | the source’s own run | producer’s code | T-075 |
 | `E-n096-wand125-mixed-996-source-replay` | replayed here | producer’s code | T-075 |
+| `E-n051-wand125-mixed-746-report` | the source’s own run | producer’s code | T-082 |
+| `E-n052-wand125-mixed-755-report` | the source’s own run | producer’s code | T-082 |
+| `E-n055-wand125-mixed-7728-report` | the source’s own run | producer’s code | T-082 |
+| `E-n058-wand125-mixed-7905-report` | the source’s own run | producer’s code | T-082 |
+| `E-n069-wand125-mixed-8612-report` | the source’s own run | producer’s code | T-082 |
+| `E-n070-wand125-mixed-86475-report` | the source’s own run | producer’s code | T-082 |
+| `E-n071-wand125-mixed-8705-report` | the source’s own run | producer’s code | T-082 |
+| `E-n073-wand125-mixed-8809-report` | the source’s own run | producer’s code | T-082 |
+| `E-n074-wand125-mixed-88675-report` | the source’s own run | producer’s code | T-082 |
+| `E-n075-wand125-mixed-892-report` | the source’s own run | producer’s code | T-082 |
+| `E-n076-wand125-mixed-896-report` | the source’s own run | producer’s code | T-082 |
+| `E-n086-wand125-mixed-950-report` | the source’s own run | producer’s code | T-082 |
+| `E-n087-wand125-mixed-955-report` | the source’s own run | producer’s code | T-082 |
+| `E-n088-wand125-mixed-960-report` | the source’s own run | producer’s code | T-082 |
+| `E-n089-wand125-mixed-965-report` | the source’s own run | producer’s code | T-082 |
+| `E-n090-wand125-mixed-9725-report` | the source’s own run | producer’s code | T-082 |
+| `E-n091-wand125-mixed-975-report` | the source’s own run | producer’s code | T-082 |
+| `E-n092-wand125-mixed-977-report` | the source’s own run | producer’s code | T-082 |
+| `E-n093-wand125-mixed-986-report` | the source’s own run | producer’s code | T-082 |
+| `E-n094-wand125-mixed-992-report` | the source’s own run | producer’s code | T-082 |
+| `E-n095-wand125-mixed-996-report` | the source’s own run | producer’s code | T-082 |
+| `E-n096-wand125-mixed-997-report` | the source’s own run | producer’s code | T-082 |
 
 ### `V-wand125-verify-mixed-full-proof-py`
 
@@ -199,6 +221,28 @@ The source's driver for a complete mixed-certificate proof: it runs mixed_rotate
 | `E-n091-wand125-mixed-970-report` | the source’s own run | producer’s code | T-075 |
 | `E-n092-wand125-mixed-975-report` | the source’s own run | producer’s code | T-075 |
 | `E-n096-wand125-mixed-996-report` | the source’s own run | producer’s code | T-075 |
+| `E-n051-wand125-mixed-746-report` | the source’s own run | producer’s code | T-082 |
+| `E-n052-wand125-mixed-755-report` | the source’s own run | producer’s code | T-082 |
+| `E-n055-wand125-mixed-7728-report` | the source’s own run | producer’s code | T-082 |
+| `E-n058-wand125-mixed-7905-report` | the source’s own run | producer’s code | T-082 |
+| `E-n069-wand125-mixed-8612-report` | the source’s own run | producer’s code | T-082 |
+| `E-n070-wand125-mixed-86475-report` | the source’s own run | producer’s code | T-082 |
+| `E-n071-wand125-mixed-8705-report` | the source’s own run | producer’s code | T-082 |
+| `E-n073-wand125-mixed-8809-report` | the source’s own run | producer’s code | T-082 |
+| `E-n074-wand125-mixed-88675-report` | the source’s own run | producer’s code | T-082 |
+| `E-n075-wand125-mixed-892-report` | the source’s own run | producer’s code | T-082 |
+| `E-n076-wand125-mixed-896-report` | the source’s own run | producer’s code | T-082 |
+| `E-n086-wand125-mixed-950-report` | the source’s own run | producer’s code | T-082 |
+| `E-n087-wand125-mixed-955-report` | the source’s own run | producer’s code | T-082 |
+| `E-n088-wand125-mixed-960-report` | the source’s own run | producer’s code | T-082 |
+| `E-n089-wand125-mixed-965-report` | the source’s own run | producer’s code | T-082 |
+| `E-n090-wand125-mixed-9725-report` | the source’s own run | producer’s code | T-082 |
+| `E-n091-wand125-mixed-975-report` | the source’s own run | producer’s code | T-082 |
+| `E-n092-wand125-mixed-977-report` | the source’s own run | producer’s code | T-082 |
+| `E-n093-wand125-mixed-986-report` | the source’s own run | producer’s code | T-082 |
+| `E-n094-wand125-mixed-992-report` | the source’s own run | producer’s code | T-082 |
+| `E-n095-wand125-mixed-996-report` | the source’s own run | producer’s code | T-082 |
+| `E-n096-wand125-mixed-997-report` | the source’s own run | producer’s code | T-082 |
 
 ### `V-wand125-unified-linear-verify-cpp`
 
@@ -213,9 +257,11 @@ Decides a linear (segment) certificate at every net direction, the axis directio
 | evidence | run | code | results |
 | --- | --- | --- | --- |
 | `E-n083-wand125-linear-935-report` | the source’s own run | producer’s code | T-073 |
+| `E-n083-wand125-linear-935-source-replay` | replayed here | producer’s code | T-073 |
 | `E-n101-wand125-linear-1028-report` | the source’s own run | producer’s code | T-073, T-080 |
 | `E-n101-wand125-linear-1028-source-replay` | replayed here | producer’s code | T-080 |
 | `E-n082-wand125-linear-932-report` | the source’s own run | producer’s code | T-076 |
+| `E-n082-wand125-linear-932-source-replay` | replayed here | producer’s code | T-076 |
 
 ### `V-wand125-verify-portable-py`
 
@@ -1259,7 +1305,9 @@ The audit, replay driver and controls for wand125's linear certificates.
 
 | evidence | run | code | results |
 | --- | --- | --- | --- |
+| `E-n083-wand125-linear-935-source-replay` | replayed here | producer’s code | T-073 |
 | `E-n101-wand125-linear-1028-source-replay` | replayed here | producer’s code | T-080 |
+| `E-n082-wand125-linear-932-source-replay` | replayed here | producer’s code | T-076 |
 
 ### `V-replay-chelokot-lean`
 

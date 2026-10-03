@@ -831,6 +831,7 @@ documents:
   - {path: docs/project/reviews/review-2026-10-02-valid7-independent-checker.md, role: review, authority: record, lifecycle: retained}
   - {path: docs/project/reviews/review-2026-10-03-sqverify-fast-soundness.md, role: review, authority: record, lifecycle: retained}
   - {path: docs/project/reviews/review-2026-10-03-sqverify-fast-testing-and-independence.md, role: review, authority: record, lifecycle: retained}
+  - {path: docs/project/reviews/review-2026-10-03-wand125-october-3-certificates.md, role: review, authority: record, lifecycle: retained}
   - {path: docs/project/reviews/review-2026-10-03-evand-k2m4-claim-chain.md, role: review, authority: record, lifecycle: retained}
   - path: docs/project/reviews/review-2026-09-28-density-solver-comparison.md
     role: review

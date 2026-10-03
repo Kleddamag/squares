@@ -12,7 +12,7 @@ at the perfect squares and on Karakuş's Corollaries 1.2 and 6.2 elsewhere
 (`E-karakus-strip-lower`, `T-083`, `T-084`).
 
 Replayed certificates recorded in parallel on 2 and 3 October 2026, and merged with the
-correction on 3 October, have since raised 50 of those 287 floors above the corrected
+correction on 3 October, have since raised 51 of those 287 floors above the corrected
 ones: wand125's rectangle-density, mixed and linear certificates, Daniel's and wand125's mixed
 covers proving `s(59) = s(60) = s(61) = 8` and `s(77) = s(78) = 9`, and the replayed
 `s(k^2 - 3) = k` family (`T-064`). None of them rests on Nagamochi 2005.

@@ -1106,8 +1106,9 @@ def test_the_corrections_on_record_are_recent_and_name_nagamochi_2005() -> None:
     # of the same day, when replayed certificates and covers recorded in parallel
     # (T-048, T-062, T-064, T-066, T-067, T-069 to T-072, T-074 and T-075) took 40 of the
     # corrected floors, none of them correcting anything; 220 since the second merge that
-    # day, when wand125's replayed linear certificate (T-080) took n = 101 to 105.
-    assert len(corrected) == 220
+    # day, when wand125's replayed linear certificate (T-080) took n = 101 to 105; 219
+    # since the third, when its replayed n = 82 linear certificate (T-076) took n = 82.
+    assert len(corrected) == 219
     assert 37 not in corrected
     assert 61 not in corrected
     assert all(line["recent"] for line in corrected.values())

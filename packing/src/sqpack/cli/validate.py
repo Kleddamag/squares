@@ -101,13 +101,15 @@ FRONTIER_COUNTS: dict[str, tuple[int, int, int]] = {
     # all open in both lanes, so that count falls by five in the two larger corpora. The
     # same day Daniel's reported s(k^2 - 4) = k (T-081) made n = 96, 117, 140, 165, 192,
     # 221, 252, 285 and 320 reported-proved and left their verified lanes alone, so only
-    # the reported-open count falls, by one, five and nine. 0 Nagamochi-bounded since
-    # 2026-10-02, independently: Nagamochi's Lemma 1 is false (think-589i), so no
-    # verified floor rests on T-007 any more; the open cases' floors are Karakus 2026's,
-    # and s(k^2-2) = k rests on the replayed Lean proof (T-086), so no case opened. The
-    # lines merged on 2026-10-03: the formal-open and reported-open counts are the
-    # replays' and reports' above, and the Nagamochi-bounded count is the correction's,
-    # zero.
+    # the reported-open count falls, by one, five and nine; and the n = 82 linear replay
+    # (T-076) took n = 82 off Nagamochi's bound, by one in every corpus, on the line
+    # that had not yet taken the correction. 0 Nagamochi-bounded since 2026-10-02,
+    # independently: Nagamochi's Lemma 1 is false (think-589i), so no verified floor
+    # rests on T-007 any more; the open cases' floors are Karakus 2026's, and
+    # s(k^2-2) = k rests on the replayed Lean proof (T-086), so no case opened. The lines
+    # merged on 2026-10-03: the formal-open and reported-open counts are the replays' and
+    # reports' above, and the Nagamochi-bounded count is the correction's, zero; T-076
+    # raised n = 82 from Karakus's floor instead, which moves none of the three counts.
     "n=1..100": (55, 54, 0),
     "n=1..200": (139, 134, 0),
     "n=1..324": (247, 238, 0),

@@ -23,11 +23,13 @@ ran with, so it is not a CPU figure.
 | `rect_n20_L4895` | 20 | VERIFIED | 201 | 10,879,848 | 1,705,636 | 12,652,620 | 1.0001000055866192 | clears | 103.7 | 15.6 | complete | 1400 (4) |
 | `rect_n20_L48975` | 20 | VERIFIED | 201 | 10,957,436 | 2,096,704 | 13,120,190 | 1.0001000001810014 | clears | 106.9 | 7.0 | complete | 7595 (1) |
 | `rect_n20_L49` | 20 | VERIFIED | 201 | 18,160,092 | 2,414,916 | - | 1.0001000010273078 | clears | 214.1 | 2.0 | none: first complete check here | - |
+| `rect_n21_L49875` | 21 | VERIFIED | 201 | 36,440,740 | 492,804 | - | 1.0001000007714431 | clears | 349.1 | 7.6 | none: first complete check here | - |
 | `cert_n26_L5508` | 26 | VERIFIED | 201 | 4,104,480 | 360,000 | 4,533,720 | 1.0001000057290834 | clears | 40.4 | 18.3 | complete | 179 (4) |
 | `rect_n26_L553` | 26 | VERIFIED | 201 | 14,242,188 | 2,842,596 | 17,165,686 | 1.0001000010935819 | clears | 116.4 | 20.6 | complete | 1704 (4) |
 | `rect_n26_L55325` | 26 | VERIFIED | 201 | 16,746,972 | 3,006,756 | 19,832,060 | 1.0001000000788831 | clears | 129.9 | 5.0 | complete | 9613 (1) |
 | `rect_n27_L56` | 27 | VERIFIED | 201 | 9,825,464 | 1,401,856 | 11,492,606 | 1.000100000125862 | clears | 80.6 | 14.7 | complete | 3967 (2) |
 | `rect_n27_L5635` | 27 | VERIFIED | 201 | 19,612,752 | 2,509,056 | 22,428,190 | 1.0001000006538547 | clears | 171.3 | 4.1 | complete | 8916 (1) |
+| `rect_n28_L572` | 28 | VERIFIED | 201 | 16,383,470 | 2,356,225 | - | 1.0001000011440067 | clears | 162.2 | 7.7 | none: first complete check here | - |
 | `rect_n28_L57225` | 28 | VERIFIED | 201 | 20,919,640 | 2,893,401 | 24,221,209 | 1.0001000010341632 | clears | 203.6 | 3.3 | complete | 10029 (1) |
 | `cert_n29_L571` | 29 | VERIFIED | 201 | 3,594,754 | 211,600 | 3,860,166 | 1.0001000124838866 | clears | 31.7 | 21.4 | complete | 93 (4) |
 | `rect_n29_L579` | 29 | VERIFIED | 201 | 10,112,184 | 1,763,584 | 12,223,906 | 1.0001000015468269 | clears | 96.1 | 10.1 | complete | 923 (4) |
@@ -35,8 +37,10 @@ ran with, so it is not a CPU figure.
 | `rect_n30_L5865` | 30 | VERIFIED | 201 | 11,172,492 | 1,461,681 | 12,985,999 | 1.000100002112256 | clears | 98.3 | 12.2 | complete | 953 (4) |
 | `rect_n30_L5875` | 30 | VERIFIED | 201 | 22,021,000 | 2,782,224 | 25,234,338 | 1.0001000004862441 | clears | 252.4 | 6.3 | complete | 12780 (1) |
 | `rect_n31_L592` | 31 | VERIFIED | 201 | 5,845,668 | 1,281,424 | 7,267,448 | 1.0001000019260526 | clears | 50.7 | 7.6 | complete | 2242 (2) |
+| `rect_n31_L5935` | 31 | VERIFIED | 201 | 13,072,764 | 1,612,900 | - | 1.000100001602695 | clears | 113.1 | 3.5 | none: first complete check here | - |
 | `rect_n31_L59525` | 31 | VERIFIED | 201 | 16,288,890 | 2,496,400 | 19,219,226 | 1.0001000003283942 | clears | 167.4 | 3.0 | complete | 6991 (1) |
 | `rect_n32_L595` | 32 | VERIFIED | 201 | 4,753,696 | 940,900 | 5,808,912 | 1.0001000045052235 | clears | 34.2 | 10.1 | complete | 2478 (2) |
+| `rect_n37_L6425` | 37 | VERIFIED | 201 | 25,234,728 | 2,725,801 | - | 1.0001000008561982 | clears | 184.8 | 4.8 | none: first complete check here | - |
 | `rect_n38_L654` | 38 | VERIFIED | 201 | 17,505,758 | 2,660,161 | 20,270,571 | 1.0001000009335435 | clears | 163.4 | 10.3 | complete | 2205 (4) |
 | `rect_n38_L6545` | 38 | VERIFIED | 201 | 21,062,716 | 3,763,600 | 24,946,254 | 1.0001000000846751 | clears | 195.5 | 2.5 | complete | 13632 (1) |
 | `rect_n39_L663` | 39 | VERIFIED | 201 | 14,061,766 | 4,032,064 | 18,162,666 | 1.0001000005511531 | clears | 168.9 | 10.4 | complete | 3869 (4) |
@@ -45,32 +49,50 @@ ran with, so it is not a CPU figure.
 | `rect_n40_L67` | 40 | VERIFIED | 201 | 16,505,592 | 4,879,681 | 21,501,387 | 1.0001000018843231 | clears | 197.4 | 7.1 | complete | 12904 (1) |
 | `rect_n41_L6755` | 41 | VERIFIED | 201 | 16,208,256 | 2,886,601 | 19,190,037 | 1.0001000036794614 | clears | 169.3 | 10.3 | complete | 2423 (4) |
 | `rect_n41_L676` | 41 | VERIFIED | 201 | 20,599,106 | 4,687,225 | 25,438,093 | 1.0001000009531718 | clears | 228.6 | 3.3 | complete | 16215 (1) |
+| `rect_n42_L679` | 42 | VERIFIED | 201 | 19,532,506 | 6,086,089 | - | 1.000100006431074 | clears | 138.3 | 6.1 | none: first complete check here | - |
 | `rect_n42_L6815` | 42 | VERIFIED | 201 | 20,753,580 | 5,593,225 | 26,504,129 | 1.0001000000390723 | clears | 198.5 | 2.6 | complete | 15489 (1) |
 | `rect_n42_L68275` | 42 | VERIFIED | 201 | 22,464,390 | 5,769,604 | - | 1.0001000002448244 | clears | 272.0 | 11.0 | none: first complete check here | - |
+| `rect_n43_L6865` | 43 | VERIFIED | 201 | 11,779,652 | 7,273,809 | - | 1.0001000028518026 | clears | 102.4 | 7.2 | none: first complete check here | - |
 | `rect_n43_L68875` | 43 | VERIFIED | 201 | 25,981,162 | 10,478,169 | 36,873,467 | 1.0001000005477412 | clears | 226.4 | 2.2 | complete | 19620 (1) |
+| `rect_n44_L6935` | 44 | VERIFIED | 201 | 24,038,000 | 5,943,844 | - | 1.0001000005067233 | clears | 167.2 | 7.6 | none: first complete check here | - |
 | `rect_n44_L69425` | 44 | VERIFIED | 201 | 27,001,492 | 9,431,041 | 36,809,903 | 1.0001000000736677 | clears | 211.0 | 5.2 | complete | 17213 (1) |
+| `rect_n51_L74425` | 51 | VERIFIED | 201 | 20,751,844 | 2,044,900 | - | 1.0001000002568405 | clears | 182.3 | 8.1 | none: first complete check here | - |
 | `rect_n52_L7535` | 52 | VERIFIED | 201 | 21,711,584 | 2,666,689 | 24,539,623 | 1.0001000012991306 | clears | 236.8 | 10.9 | complete | 3222 (4) |
 | `rect_n53_L7595` | 53 | VERIFIED | 201 | 15,481,454 | 5,522,500 | 21,079,926 | 1.0001000005722172 | clears | 202.9 | 9.0 | complete | 6619 (4) |
 | `rect_n53_L76075` | 53 | VERIFIED | 201 | 21,711,762 | 9,284,209 | 31,105,567 | 1.0001000005003464 | clears | 257.9 | 5.9 | complete | 21752 (1) |
+| `rect_n54_L76675` | 54 | VERIFIED | 201 | 18,956,212 | 4,161,600 | - | 1.0001000000667002 | clears | 208.8 | 9.9 | none: first complete check here | - |
 | `rect_n54_L76725` | 54 | VERIFIED | 201 | 22,038,684 | 5,895,184 | 28,051,952 | 1.0001000001245186 | clears | 241.7 | 6.2 | complete | 16197 (1) |
+| `rect_n55_L771` | 55 | VERIFIED | 201 | 21,283,060 | 4,739,329 | - | 1.0001000020557316 | clears | 233.2 | 12.1 | none: first complete check here | - |
 | `rect_n55_L77125` | 55 | VERIFIED | 201 | 24,786,600 | 6,869,641 | 31,849,467 | 1.0001000002999096 | clears | 252.1 | 6.0 | complete | 17614 (1) |
+| `rect_n56_L777` | 56 | VERIFIED | 201 | 18,758,604 | 4,946,176 | - | 1.0001000017583521 | clears | 202.8 | 8.8 | none: first complete check here | - |
 | `rect_n56_L77825` | 56 | VERIFIED | 201 | 23,979,136 | 8,456,464 | 32,540,810 | 1.0001000006761118 | clears | 254.6 | 6.0 | complete | 21781 (1) |
+| `rect_n57_L7835` | 57 | VERIFIED | 201 | 25,048,128 | 3,463,321 | - | 1.0001000003177027 | clears | 248.6 | 9.1 | none: first complete check here | - |
+| `rect_n58_L789` | 58 | VERIFIED | 201 | 27,894,596 | 3,648,100 | - | 1.0001000032359766 | clears | 256.4 | 7.2 | none: first complete check here | - |
 | `rect_n59_L792` | 59 | VERIFIED | 201 | 21,473,592 | 6,646,084 | 28,400,348 | 1.0001000019592972 | clears | 191.2 | 10.5 | complete | 7007 (4) |
 | `rect_n59_L79325` | 59 | VERIFIED | 201 | 26,497,754 | 6,838,225 | - | 1.0001000006839356 | clears | 238.9 | 5.0 | none: first complete check here | - |
 | `rect_n59_L79375` | 59 | VERIFIED | 201 | 30,161,624 | 7,683,984 | - | 1.000100002281957 | clears | 320.8 | 8.5 | none: first complete check here | - |
+| `rect_n60_L794` | 60 | VERIFIED | 201 | 29,296,370 | 3,027,600 | - | 1.0001000038080838 | clears | 191.9 | 6.3 | none: first complete check here | - |
 | `rect_n61_L796` | 61 | VERIFIED | 201 | 17,479,486 | 2,907,025 | 20,526,671 | 1.000100005068861 | clears | 109.0 | 12.1 | complete | 2042 (4) |
+| `rect_n66_L8375` | 66 | VERIFIED | 201 | 20,563,162 | 3,751,969 | - | 1.000100000263314 | clears | 230.3 | 6.2 | none: first complete check here | - |
 | `rect_n66_L8385` | 66 | VERIFIED | 201 | 23,025,368 | 3,944,196 | - | 1.0001000001280729 | clears | 250.1 | 6.2 | none: first complete check here | - |
 | `rect_n67_L8455` | 67 | VERIFIED | 201 | 20,822,002 | 4,297,329 | 25,217,361 | 1.0001000007618854 | clears | 257.1 | 18.1 | complete | 6438 (4) |
+| `rect_n68_L8495` | 68 | VERIFIED | 201 | 19,213,334 | 2,408,704 | - | 1.0001000035563214 | clears | 235.7 | 6.0 | none: first complete check here | - |
 | `rect_n68_L851` | 68 | VERIFIED | 201 | 25,941,398 | 6,692,569 | 32,919,625 | 1.0001000031311404 | clears | 296.9 | 6.0 | complete | 22868 (1) |
 | `rect_n69_L8575` | 69 | VERIFIED | 201 | 21,597,710 | 4,761,124 | 26,472,386 | 1.0001000005653509 | clears | 307.7 | 1.4 | complete | 8403 (4) |
 | `rect_n69_L8585` | 69 | VERIFIED | 201 | 25,054,388 | 5,040,025 | 30,214,587 | 1.0001000000646423 | clears | 339.2 | 6.0 | complete | 23215 (1) |
+| `rect_n70_L862` | 70 | VERIFIED | 201 | 26,396,624 | 1,580,049 | - | 1.0001000005601692 | clears | 266.2 | 3.4 | none: first complete check here | - |
 | `rect_n70_L8625` | 70 | VERIFIED | 201 | 23,625,076 | 7,371,225 | 31,138,891 | 1.0001000008439647 | clears | 290.4 | 4.6 | complete | 24109 (1) |
 | `rect_n70_L86275` | 70 | VERIFIED | 201 | 25,906,116 | 12,545,764 | - | 1.0001000000371736 | clears | 371.0 | 9.6 | none: first complete check here | - |
 | `rect_n71_L8685` | 71 | VERIFIED | 201 | 21,961,900 | 4,687,225 | 26,773,005 | 1.0001000016144455 | clears | 317.3 | 3.2 | complete | 7826 (4) |
+| `rect_n72_L874` | 72 | VERIFIED | 201 | 23,432,708 | 5,067,001 | - | 1.000100000114479 | clears | 328.4 | 2.9 | none: first complete check here | - |
+| `rect_n73_L878` | 73 | VERIFIED | 201 | 22,125,214 | 5,085,025 | - | 1.000100002057731 | clears | 312.8 | 6.3 | none: first complete check here | - |
+| `rect_n74_L884` | 74 | VERIFIED | 201 | 23,490,808 | 4,695,889 | - | 1.0001000014372012 | clears | 307.1 | 5.4 | none: first complete check here | - |
 | `rect_n74_L88475` | 74 | VERIFIED | 201 | 27,314,918 | 9,199,089 | 36,661,111 | 1.0001000002730311 | clears | 333.9 | 2.4 | complete | 29334 (1) |
 | `rect_n75_L889` | 75 | VERIFIED | 201 | 25,338,836 | 2,286,144 | 27,766,278 | 1.000100000092212 | clears | 291.2 | 13.1 | complete | 3524 (4) |
 | `rect_n75_L89` | 75 | VERIFIED | 201 | 27,015,402 | 2,748,964 | 29,959,986 | 1.0001000012091874 | clears | 303.4 | 7.9 | complete | 16074 (1) |
+| `rect_n76_L892` | 76 | VERIFIED | 201 | 28,862,926 | 3,104,644 | - | 1.0001000032640825 | clears | 254.7 | 9.4 | none: first complete check here | - |
 | `rect_n76_L8925` | 76 | VERIFIED | 201 | 26,064,970 | 5,924,356 | 32,186,322 | 1.0001000015650008 | clears | 283.5 | 7.9 | complete | 19987 (1) |
+| `rect_n77_L891` | 77 | VERIFIED | 201 | 17,207,796 | 4,112,784 | - | 1.0001000012862522 | clears | 169.5 | 6.9 | none: first complete check here | - |
 | `rect_n77_L89325` | 77 | VERIFIED | 201 | 30,901,322 | 7,144,929 | - | 1.0001000022464466 | clears | 235.1 | 5.9 | none: first complete check here | - |
 | `rect_n77_L894` | 77 | VERIFIED | 201 | 29,744,892 | 5,461,569 | - | 1.0001000029952136 | clears | 269.8 | 6.4 | none: first complete check here | - |
 | `rect_n78_L8955` | 78 | VERIFIED | 201 | 28,132,328 | 2,039,184 | 30,376,068 | 1.0001000000494495 | clears | 271.1 | 10.4 | complete | 4208 (4) |
@@ -78,17 +100,21 @@ ran with, so it is not a CPU figure.
 | `rect_n86_L9355` | 86 | VERIFIED | 201 | 25,602,784 | 2,941,225 | 28,780,525 | 1.0001000005089622 | clears | 213.3 | 11.9 | complete | 3920 (4) |
 | `rect_n86_L9365` | 86 | VERIFIED | 201 | 28,820,266 | 3,024,121 | - | 1.000100000512849 | clears | 240.9 | 9.8 | none: first complete check here | - |
 | `rect_n87_L941` | 87 | VERIFIED | 201 | 28,941,188 | 7,198,489 | - | 1.0001000008254144 | clears | 252.6 | 20.0 | none: first complete check here | - |
+| `rect_n88_L945` | 88 | VERIFIED | 201 | 21,211,118 | 4,571,044 | - | 1.0001000012079906 | clears | 233.5 | 6.2 | none: first complete check here | - |
 | `rect_n88_L94775` | 88 | VERIFIED | 201 | 27,765,264 | 2,792,241 | 30,817,677 | 1.0001000051383455 | clears | 232.9 | 20.0 | complete | 14011 (1) |
+| `rect_n89_L955` | 89 | VERIFIED | 201 | 24,319,868 | 5,760,000 | - | 1.0001000092566568 | clears | 293.3 | 6.1 | none: first complete check here | - |
 | `rect_n89_L9565` | 89 | VERIFIED | 201 | 27,226,506 | 5,513,104 | 32,887,546 | 1.000100000784854 | clears | 299.7 | 13.5 | complete | 20877 (1) |
 | `rect_n90_L95775` | 90 | VERIFIED | 201 | 28,651,630 | 9,363,600 | - | 1.0001000003477836 | clears | 243.9 | 11.7 | none: first complete check here | - |
+| `rect_n91_L9645` | 91 | VERIFIED | 201 | 26,505,540 | 3,108,169 | - | 1.000100000631634 | clears | 274.6 | 5.0 | none: first complete check here | - |
 | `rect_n91_L96475` | 91 | VERIFIED | 201 | 26,538,888 | 8,976,016 | - | 1.0001000002583975 | clears | 322.9 | 6.3 | none: first complete check here | - |
 | `rect_n93_L97225` | 93 | VERIFIED | 201 | 30,490,558 | 11,594,025 | 42,247,573 | 1.0001000022564717 | clears | 280.7 | 5.6 | complete | 29442 (1) |
 | `rect_n93_L9735` | 93 | VERIFIED | 201 | 30,511,836 | 14,784,025 | - | 1.0001000018920165 | clears | 337.4 | 6.1 | none: first complete check here | - |
+| `rect_n94_L9795` | 94 | VERIFIED | 201 | 27,420,246 | 2,862,864 | - | 1.0001000000378433 | clears | 274.6 | 2.6 | none: first complete check here | - |
 | `rect_n94_L9805` | 94 | VERIFIED | 201 | 30,796,026 | 3,568,321 | 34,535,827 | 1.0001000020831263 | clears | 283.9 | 7.4 | complete | 18694 (1) |
 | `rect_n95_L98418` | 95 | VERIFIED | 201 | 28,687,314 | 5,822,569 | 34,659,569 | 1.0001000007374712 | clears | 283.4 | 8.2 | complete | 12283 (4) |
 | `rect_n95_L98518` | 95 | VERIFIED | 201 | 28,664,070 | 5,597,956 | 34,416,768 | 1.0001000049027422 | clears | 270.5 | 3.3 | complete | 22935 (1) |
 
-71 of 71 certificates verified; 15486 CPU seconds in all.
+97 of 97 certificates verified; 21408 CPU seconds in all.
 
 <!-- This document follows common-doc-guidelines.md.
 See github.com/jlevy/practical-prose and review guidelines before editing.

@@ -1892,16 +1892,18 @@
         "lower": {
           "assurance": "verified",
           "basis": "external",
-          "confirmed_by": [],
-          "note": null,
-          "recent": false,
+          "confirmed_by": [
+            "T-076"
+          ],
+          "note": "(confirmed T-076)",
+          "recent": true,
           "result": null,
           "results": [
-            "T-007"
+            "T-076"
           ],
-          "source_key": "[Nagamochi 2005]",
-          "text": "Nagamochi 2005, Electron. J. Combin. 12, #R37",
-          "value": "9.0622577483"
+          "source_key": "[wand125 linear n82 2026-10-02]",
+          "text": "wand125 after Tokoharu, Levy et al. 2026, GitHub",
+          "value": "9.32"
         },
         "n": 82,
         "record": "n-082",

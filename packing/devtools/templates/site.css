@@ -615,7 +615,7 @@ body {
   --site-popover-max-block: calc(100dvh - 2 * var(--site-popover-window-margin));
 }
 /* A phone keeps the heights it had: a card's or a row's popover up to 80% of the window
-   and 40rem, here; a framed page, the atlas popover and a result overview in their own
+   and 40rem, here; a framed page, the case popover and a result overview in their own
    rules below. */
 @media (max-width: 40rem) {
   :root {
@@ -1484,17 +1484,21 @@ body {
    The row is the unit (paper-design.md, Row popovers): a row with detail opens one
    popover, a card's, wherever it is pressed, and no cell expands on its own. Beyond the
    hover wash above, it keeps the wash while it has keyboard focus, with an accent ring
-   inside its edge, and while its popover is open. Once `row-popover.js` has made it the
-   control it shows the pointer anywhere on it; its native trigger, which opens the
-   popover without scripts, reads as the text it wraps. */
-.kpress .site-table tbody tr[data-row-popover]:is(:focus-visible, [aria-expanded="true"]) {
+   inside its edge, and while its popover is open. A frontier row, which opens its case's
+   record in the case popover (`case-popover.js`), is marked the same way. Once its
+   script has made it the control it shows the pointer anywhere on it; its native
+   trigger, which opens the popover without scripts, reads as the text it wraps. */
+.kpress
+  .site-table
+  tbody
+  tr:is([data-row-popover], [data-case-row]):is(:focus-visible, [aria-expanded="true"]) {
   background: var(--site-wash);
 }
-.kpress .site-table tbody tr[data-row-popover]:focus-visible {
+.kpress .site-table tbody tr:is([data-row-popover], [data-case-row]):focus-visible {
   outline: 2px solid var(--kpress-doc-accent);
   outline-offset: -2px;
 }
-.kpress .site-table tbody tr[data-row-ready] {
+.kpress .site-table tbody tr:is([data-row-ready], [data-case-row][aria-controls]) {
   cursor: pointer;
 }
 .kpress .site-table .site-row-open {
@@ -1801,7 +1805,8 @@ body {
    It bleeds past the wide track as the window grows, up to 140rem, and its cells keep a
    size that reads, so the row holds more cases the wider the screen: four on a phone,
    eleven at 1280 pixels, seventeen at 1920 and twenty at 2560. A cell washes on hover
-   like a card and opens the atlas popover (below). The wash is the cell's background,
+   like a card and opens the case popover (Case records, below). The wash is the cell's
+   background,
    behind the drawing, and it is all that changes: every line keeps the page's ink. */
 .site-page .site-atlas-grid {
   --site-wide: var(--site-bleed-max);
@@ -2099,9 +2104,6 @@ body {
   display: table-row;
   line-height: 1.4;
 }
-.site-atlas-pop .site-atlas-pop-cite[hidden] {
-  display: none;
-}
 .site-atlas-pop-which {
   display: table-cell;
   font-weight: var(--site-font-weight-sans-medium);
@@ -2204,7 +2206,7 @@ body {
 }
 /* While a record is shown, the page is that record: the title, the account and the
    index above it step aside until the reader goes back to every case. */
-:root:has(.site-case-reader:not([hidden])) .site-case-front {
+:root:is([data-case-loading], :has(.site-case-reader:not([hidden]))) .site-case-front {
   display: none;
 }
 /* The case popover: as large as a result's overview, one scrolling panel, the record
@@ -2218,8 +2220,24 @@ body {
   block-size: auto;
   display: block;
   max-block-size: var(--site-popover-max-block);
-  overflow: auto;
+  overflow: hidden auto;
 }
+/* The panel scrolls as a whole, so its close cross is held at its corner as the record
+   scrolls under it, rather than leaving with the record's head: a record runs to many
+   screens, and a phone leaves almost no room outside the panel to press. */
+.site-popover.site-case-pop .site-popover-close {
+  background: var(--kpress-doc-bg);
+  float: inline-end;
+  inset-block-start: var(--site-popover-close-inset);
+  margin-block-start: calc(var(--site-popover-close-inset) - var(--site-popover-pad));
+  margin-inline-end: calc(var(--site-popover-close-inset) - var(--site-popover-pad));
+  position: sticky;
+  z-index: 2;
+}
+.site-popover.site-case-pop .site-popover-close:is(:hover, :focus-visible) {
+  background: var(--site-wash);
+}
+
 .site-case-pop .site-popover-actions {
   background: var(--kpress-doc-bg);
   border-block-start: 1px solid var(--kpress-doc-border);
@@ -2371,9 +2389,13 @@ body {
   font-family: var(--kpress-font-sans);
   font-weight: var(--site-font-weight-sans-light);
 }
+/* A long formula in a case file's prose scrolls in the prose, not the case popover's
+   panel or the page, so the drawing, the head and the foot never pan sideways on a
+   phone. */
 .site-case-prose {
   border-block-start: 1px solid var(--kpress-doc-border);
   margin-block-start: 2rem;
+  overflow-x: auto;
 }
 .kpress .site-case-heading {
   font-family: var(--kpress-font-sans);
@@ -2446,6 +2468,9 @@ body {
   gap: 0.25rem;
   grid-template-columns: repeat(auto-fill, minmax(2.6rem, 1fr));
   margin-block: 1.5rem;
+}
+.site-case-index[hidden] {
+  display: none;
 }
 .kpress .site-case-index a {
   border: 1px solid var(--kpress-doc-border);

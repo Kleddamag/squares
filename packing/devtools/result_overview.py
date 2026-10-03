@@ -417,8 +417,7 @@ def film_facts_html(fact: dict[str, Any]) -> str:
         else ""
     )
     open_items = "".join(_badge("?", "query", text) for text in fact["open"])
-    # `data-atlas-open` is what site.css keys the open items' quiet style on. The atlas
-    # popover's script reads that attribute inside its own popover alone.
+    # `data-atlas-open` is what site.css keys the open items' quiet style on.
     opened = (
         '<div data-atlas-open><p class="site-atlas-pop-head">Open</p>'
         f'<ul class="site-atlas-pop-badges">{open_items}</ul></div>'

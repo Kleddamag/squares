@@ -124,38 +124,54 @@ def frontier_atlas(browser: Any, root: Path) -> Walk:
 
 
 @pytest.fixture(scope="module")
-def case_records(browser: Any, root: Path) -> Iterator[dict[int, Walk]]:
-    """Each of `CASES` as a reader opens its record file: served, since the record page
-    fetches the file, and shown in the record page."""
+def served(root: Path) -> Iterator[str]:
+    """The frontier page, the record page and the records of `CASES`, served, since a
+    record is fetched; the address, with its closing slash."""
     files = [
+        site_renders.page("frontier.html"),
         site_renders.page(render_case_pages.CASES_PAGE),
         *(
-            render_overview.Page(render_case_pages.case_url(n), records)
-            for n, records in (
-                (n, site_renders.case_records()[render_case_pages.case_url(n)]) for n in CASES
+            render_overview.Page(
+                render_case_pages.case_url(n),
+                site_renders.case_records()[render_case_pages.case_url(n)],
             )
+            for n in CASES
         ),
     ]
-    served = root / "served"
-    render_overview.write_site(served, files)
+    directory = root / "served"
+    render_overview.write_site(directory, files)
     with socket.socket() as probe:
         probe.bind(("127.0.0.1", 0))
         port = int(probe.getsockname()[1])
-    server = serve(served, port)
+    server = serve(directory, port)
     try:
-        yield {
-            n: walk(
-                browser,
-                f"http://127.0.0.1:{port}/{render_case_pages.case_url(n)}",
-                presses=(),
-                whole=True,
-                ready=f'[data-case-reader] article.site-case[data-case="{n}"]',
-            )
-            for n in CASES
-        }
+        yield f"http://127.0.0.1:{port}/"
     finally:
         server.shutdown()
         server.server_close()
+
+
+@pytest.fixture(scope="module")
+def case_records(browser: Any, served: str) -> dict[int, Walk]:
+    """Each of `CASES` as a reader opens its record file, shown in the record page."""
+    return {
+        n: walk(
+            browser,
+            f"{served}{render_case_pages.case_url(n)}",
+            presses=(),
+            whole=True,
+            ready=f'[data-case-reader] article.site-case[data-case="{n}"]',
+        )
+        for n in CASES
+    }
+
+
+@pytest.fixture(scope="module")
+def frontier_popover(browser: Any, served: str) -> Walk:
+    """The frontier page with case 11's row pressed: its record in the case popover."""
+    return walk(
+        browser, f"{served}frontier.html", presses=("#n-11 td.site-thumb svg",), whole=False
+    )
 
 
 def test_the_overviews_sans_surfaces_set_sans_math_and_its_math_headline_serif(
@@ -189,11 +205,25 @@ def test_the_frontier_table_sets_sans_math(frontier_atlas: Walk) -> None:
     """The frontier atlas's table is sans math. The page has no subtitle: its range of
     cases, set as sans math under the title, went on 2026-10-02 (the owner,
     `think-wz9d`). Its case popover, which fetches a record, is walked where the
-    records are served (`case_records`)."""
+    records are served (`frontier_popover`)."""
     wrong, rows = frontier_atlas
     assert wrong == []
     assert rows[("table cell", SANS_TEXT, SANS_MATH)]["count"] > 0
     assert not [key for key in rows if key[0] == "subtitle"]
+
+
+def test_the_case_popover_sets_its_records_math_sans(frontier_popover: Walk) -> None:
+    """A case's record in the frontier's case popover is set as on its own page: its
+    head, panels and visual summary are sans text with sans math, the case file's prose
+    serif with serif math, and nothing is set wrongly. In the popover the probe counts
+    the record's head and panels under the popover's surface."""
+    wrong, rows = frontier_popover
+    assert wrong == []
+    assert rows[("popover", SANS_TEXT, SANS_MATH)]["count"] > 0
+    assert rows[("visual summary", SANS_TEXT, SANS_MATH)]["count"] > 0
+    for surface, text, face in rows:
+        if surface in {"popover", "visual summary"}:
+            assert (text == SANS_TEXT) == (face == SANS_MATH), (surface, text, face)
 
 
 @pytest.mark.parametrize("n", CASES)

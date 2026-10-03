@@ -14,7 +14,7 @@
    ============================================================ */
 
 /* ---------- The popover that holds an overview ----------
-   As large as the atlas popover, whatever kind of popover the row opens, and one
+   As large as the case popover, whatever kind of popover the row opens, and one
    scrolling panel: a page popover's flex column, made for a framed page, would clip it.
    A row's popover holds the result's short detail until its overview is fetched
    (`data-row-pop-src`, `overview/row-popover.js`); it is this size from the start, so

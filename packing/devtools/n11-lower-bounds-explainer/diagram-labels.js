@@ -1,9 +1,9 @@
 /* Keep SVG labels at the publication support-text size through viewBox scaling. A
-   diagram that names in `--paper-diagram-fit-from` the narrowest width its labels were
-   laid out for at that size, and is drawn narrower, as the T-060 paper's are on a
-   phone, takes labels that shrink with it in proportion, so each stays in its box: a
-   floor of 0.7 of the support size, tried on 2026-10-03, ran the roadmap's titles into
-   their boxes' edges and its arrows. */
+   diagram that names in `--paper-diagram-fit-from` (a registered length, so read here in
+   px) the narrowest width its labels were laid out for at that size, and is drawn
+   narrower, as the T-060 paper's are on a phone, takes labels that shrink with it in
+   proportion, so each stays in its box: a floor of 0.7 of the support size, tried on
+   2026-10-03, ran the roadmap's titles into their boxes' edges and its arrows. */
 (() => {
   const diagrams = [
     ...document.querySelectorAll(

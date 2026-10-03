@@ -1290,13 +1290,14 @@ it.
   (the owner, 2026-10-02 and 03, `think-t21m`).
   - **The record file.** `cases/N.html`, one for each case, is a plain page: its own
     head, a name (“n = 11 · Case Records”), a description, a canonical link and a link
-    preview (**Page Metadata and Social Cards**, below), no styles and no site shell,
-    and the record itself as HTML, an `article.site-case` that names its case in
-    `data-case`, as the root element does.
-    A reader without scripts, and a crawler, reads the record there, plain.
-    One inlined script in its head (`overview/case-forward.js`) sends a reader with
-    scripts on at once to the record page, `./?n=11`, with the fragment they came with;
-    `?raw` keeps a reader on the file, and so does a file read from disk.
+    preview (**Page Metadata and Social Cards**, below), no site shell, and the record
+    itself as HTML, an `article.site-case` that names its case in `data-case`, as the
+    root element does. A reader without scripts, and a crawler, reads the record there,
+    plain, under one small style of its own: a reading column, the drawing at the record
+    page’s size and each formula once, as its MathML. One inlined script in its head
+    (`overview/case-forward.js`) sends a reader with scripts on at once to the record
+    page, `./?n=11`, with the fragment they came with; `?raw` keeps a reader on the
+    file, and so does a file read from disk.
   - **The record page.** `cases/` (`cases/index.html`) is the hero, the page’s account
     and the index of every case, a solved case in the accent, with an empty reader where
     a record goes (`overview/case-page.js`). `cases/?n=11` and `cases/#n-11` show case
@@ -1304,23 +1305,31 @@ it.
     script never runs, places its article in the reader, takes the file’s title, and
     writes `cases/11.html` back into the address bar (`history.replaceState`), keeping
     any other fragment. While a record shows, the hero, the account and the index step
-    aside (`.site-case-front`, by `:has()`). A step to the neighbouring case, a link in
-    the record to another case, and a link of the index load that case in place and push
-    its address (`history.pushState`); the record’s **All cases** pushes `./` and shows
-    the index again; Back and Forward show what the address names (`popstate`). A record
-    that cannot be fetched sends the reader to the file itself, `11.html?raw`. Without
-    scripts the page is the index, whose links go to each record file.
+    aside (`.site-case-front`, by `:has()`), and while a case the address names is still
+    being fetched (`data-case-loading`). A step to the neighbouring case, a link in the
+    record to another case, and a link of the index load that case in place and push its
+    address (`history.pushState`); the record’s **All cases** pushes `./` and shows the
+    index again; Back and Forward show what the address names (`popstate`). A record
+    that cannot be fetched sends the reader to the file itself, `11.html?raw`, in place
+    of the history entry unless a press asked for it, so Back never lands on an address
+    that sends the reader straight on again.
+    Without scripts the page is the index, whose links go to each record file.
   - **The case popover.** A page that opens cases carries one case popover
     (`render_case_pages.case_popover`, `#pop-case`): the overview, after the atlas grid,
     and the Frontier page, after its table.
     It opens on an atlas tile, on a frontier row (**Frontier table**, below) and on any
     `a[data-case]` link, whose `href` is the record file.
-    It is a card’s popover in every other way (square corners, the scrim, the caps label
-    “Case record”, the close cross, Escape and a click outside), as large as a result
-    overview, up to 62rem wide and as tall as the window allows, and it scrolls as one
-    panel; its one action, **Open the Case Record**, goes to the record’s own address
-    and stays in reach in a sticky foot.
-    It has no headline of its own: the record names its case in its head.
+    Every link a page or a record writes to a record file carries `data-case`, the
+    prose’s among them (`render_case_pages.mark_case_links`): the overview’s and the
+    Frontier page’s, and a case file’s link to another case file, which a record opens
+    in place. It is a card’s popover in every other way (square corners, the scrim, the
+    caps label “Case record”, the close cross, Escape and a click outside), as large as
+    a result overview, up to 62rem wide and as tall as the window allows, and it scrolls
+    as one panel; its one action, **Open the Case Record**, goes to the record’s own
+    address and stays in reach in a sticky foot, as its close cross does at its corner:
+    both are held in place as the record scrolls under them.
+    A long formula in a case file’s prose scrolls in the prose, so the panel never pans
+    sideways. It has no headline of its own: the record names its case in its head.
     On opening, `overview/case-popover.js` fetches the record file, once a page, takes
     its article, resolves each relative `href` and `src` in it against the file’s
     address (a bare fragment is kept), puts it in the body, points the action at the
@@ -1328,8 +1337,9 @@ it.
     The record’s steps, and the left and right arrow keys while the popover is open and
     no form field has focus, load the neighbouring case in the same popover at its top;
     **All cases** is an ordinary link to `cases/`. Closing returns focus to what opened
-    it. A fetch that fails, as every fetch does on a page read from a file, sends the
-    reader to the record file, which is where the link goes without scripts.
+    it. A frontier row reads as expanded while its case’s record is shown, however it was
+    reached. A fetch that fails, as every fetch does on a page read from a file, sends
+    the reader to the record file, which is where the link goes without scripts.
     On a phone the popover takes the window less half a rem on every side.
   - **The record.** It opens with its head: the steps to the previous case and the next,
     the site’s arrow left and right, with **All cases** between them; the n, its status
@@ -1352,7 +1362,12 @@ it.
     each record file are cut from it (`render_case_pages._rendered`), and each record’s
     links are written again from `cases/` (`rebase_links`). In the one render a record
     is a `<section>`, since the page’s own article holds every record, and in its file
-    an `<article>`.
+    an `<article>`. Its headings’ ids are made again within the record alone, from their
+    text with kpress’s own slugger (`_own_ids`), so a heading added to one case file
+    never renumbers another record’s and breaks a shared `cases/N.html#…`. The page
+    model’s list of headings, the records’, is emptied on the record page, which has no
+    contents rail. A footnote in a case file is refused: kpress gathers footnotes at the
+    foot of the one render, outside every record.
   - **Why not 324 pages.** Every site page inlines its shell, about 1.8 MB of faces and
     KaTeX, so 324 full pages would carry it 324 times.
     The record page carries it once, 1.9 MB with the index, and the record files are the
@@ -1595,9 +1610,10 @@ it.
     At 1280 the columns are 56, 42, 88, 85, 196, 165, 185, 152, 139 and 91 pixels.
     Before the drawing had its column the table was 1282 pixels wide at every window
     width and ran 82 past its track at 1280.
-  - **Bytes.** The page is held under 4 MiB (`tests/test_frontier_page.py`), 3.44 MB
-    since its rows’ popovers went (measured 2026-10-03), and a row’s markup is paid 324
-    times, so a cell carries a class and no wrapper it can do without.
+  - **Bytes.** The page is held under 4 MiB (`tests/test_frontier_page.py`), 3.50 MB
+    since its rows’ popovers went and the case badges came (measured 2026-10-03), and a
+    row’s markup is paid 324 times, so a cell carries a class and no wrapper it can do
+    without.
   - **Checks.** `tests/test_site_frontier_table.py` holds the order, the drawing’s
     column and size, the bold number, the centring, the fit at 1280, the decimal under a
     fraction, sorting and filtering, and each row as one control that names its record,

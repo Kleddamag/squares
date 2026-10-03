@@ -144,10 +144,10 @@ OVERVIEWS = ("result/t-001.html", "result/t-002.html")
 
 
 def case_record(n: int) -> bytes:
-    """A case's record file as it is served: its record, which names its case."""
-    return (
-        f'<html data-case="{n}"><article class="site-case" data-case="{n}"></article>'.encode()
-    )
+    """A case's record file as it is served: a page's head for its own address, then
+    its record, which names its case."""
+    canonical = render_overview.canonical_url(render_case_pages.case_url(n))
+    return page(canonical) + f'<article class="site-case" data-case="{n}"></article>'.encode()
 
 
 def result_overview(
@@ -1050,9 +1050,15 @@ def test_check_holds_every_page_to_its_head_and_the_site_to_its_card(
     clean = "one of each identity and card tag, agreeing with its address"
     shared = check_published_site.shared_pages()
     assert shared == (*SITE_PAGES, EXPLAINER, OPTIMALITY_PAPER, "workbench/index.html")
-    for name in shared:
+    # The record files the check samples are pages a reader shares too.
+    records = [
+        render_case_pages.case_url(n)
+        for n in sorted({1, check_published_site.RECORD_FILE_SAMPLE, CASE_COUNT})
+    ]
+    for name in (*shared, *records):
         assert f"{name}: {clean}" in lines, name
-    assert f"each of {len(shared)} pages has a description of its own" in lines
+    pages = len(shared) + len(records)
+    assert f"each of {pages} pages has a description of its own" in lines
     # The address the paper's directory had is one of the renderer's forwarders now.
     assert dict(render_overview.MOVED_PAGES)[landing] == OPTIMALITY_PAPER
     paper_url = render_overview.canonical_url(OPTIMALITY_PAPER)

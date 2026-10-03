@@ -29,7 +29,8 @@ from tests import site_renders
 #: bytes of the page that nothing on the site reads; every page drops them since
 #: 2026-10-02 (think-k8xp), which left the page 4,070,117 bytes with the status chips'
 #: fills of the same day. Each row's own popover went on 2026-10-03, when a row came to
-#: open its case's record in the one case popover (think-necq): 3,442,575 bytes.
+#: open its case's record in the one case popover (think-necq): 3,442,575 bytes, and
+#: 3,498,657 with the case badges of the same day (think-7cbx).
 PAGE_CEILING_BYTES = 4 * 1024 * 1024
 
 #: The columns as a reader meets them: the drawing under no heading, the case, the star,

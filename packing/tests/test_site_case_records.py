@@ -84,7 +84,10 @@ def test_a_frontier_row_opens_its_record_and_steps_to_the_next(
 ) -> None:
     """Pressing a row anywhere opens the case popover on its record, the visual summary
     first, with the action to the record's own address; the right arrow key and the
-    record's own step move it to the next case in place; Escape closes it."""
+    record's own step move it to the next case in place, and the row of the case shown
+    reads as expanded; Escape closes it, every row reads as collapsed, and focus is back
+    on the row that opened it. Enter on a row opens it too."""
+    sync_api = site_browser.api()
     with _page(browser) as page:
         page.goto(f"{served}frontier.html", wait_until="load")
         row = page.locator("#n-12")
@@ -104,14 +107,40 @@ def test_a_frontier_row_opens_its_record_and_steps_to_the_next(
         assert (frontier_link.get_attribute("href") or "").endswith("frontier.html#n-12")
         page.keyboard.press("ArrowRight")
         popover.locator('[data-case-body] article.site-case[data-case="13"]').wait_for()
+        assert row.get_attribute("aria-expanded") == "false"
+        assert page.locator("#n-13").get_attribute("aria-expanded") == "true"
         popover.locator('[data-case-body] a[data-case-step="14"]').click()
         popover.locator('[data-case-body] article.site-case[data-case="14"]').wait_for()
         assert popover.is_visible()
         page.keyboard.press("Escape")
         assert not popover.is_visible()
+        assert page.locator('tr[data-case-row][aria-expanded="true"]').count() == 0
+        sync_api.expect(row).to_be_focused()
+        page.keyboard.press("Enter")
+        popover.locator('[data-case-body] article.site-case[data-case="12"]').wait_for()
+        assert popover.is_visible()
+
+
+def test_a_record_opens_a_case_its_prose_links_in_place(browser: Any, served: str) -> None:
+    """A case file's link to another case file is marked for the case popover
+    (`mark_case_links`): in the popover it loads that case in place, and the page stays
+    where it is."""
+    with _page(browser) as page:
+        page.goto(f"{served}frontier.html", wait_until="load")
+        page.locator("#n-13 td.site-col-n a").click()
+        popover = page.locator("#pop-case")
+        popover.locator('[data-case-body] article.site-case[data-case="13"]').wait_for()
+        prose = popover.locator('[data-case-body] .site-case-prose a[data-case="32"]').first
+        prose.scroll_into_view_if_needed()
+        prose.click()
+        popover.locator('[data-case-body] article.site-case[data-case="32"]').wait_for()
+        assert page.url == f"{served}frontier.html"
 
 
 def test_an_atlas_cell_opens_the_same_record(browser: Any, served: str) -> None:
+    """A tile opens the case popover on its record; Escape closes it and focus is back
+    on the tile."""
+    sync_api = site_browser.api()
     with _page(browser) as page:
         page.goto(served, wait_until="load")
         page.locator("[data-atlas-grid]").scroll_into_view_if_needed()
@@ -122,6 +151,9 @@ def test_an_atlas_cell_opens_the_same_record(browser: Any, served: str) -> None:
         popover.locator('[data-case-body] article.site-case[data-case="11"]').wait_for()
         assert popover.is_visible()
         assert popover.locator(".site-case-summary figure svg").count() == 1
+        page.keyboard.press("Escape")
+        assert not popover.is_visible()
+        sync_api.expect(cell).to_be_focused()
 
 
 def test_a_record_file_shows_in_the_record_page_at_its_own_address(
@@ -155,6 +187,17 @@ def test_the_old_one_page_address_arrives_at_the_case(browser: Any, served: str)
         page.goto(f"{served}cases.html#n-17", wait_until="load")
         page.wait_for_url(f"{served}cases/17.html")
         page.locator('[data-case-reader] article.site-case[data-case="17"]').wait_for()
+
+
+def test_a_record_that_cannot_be_fetched_does_not_trap_back(browser: Any, served: str) -> None:
+    """An address naming a case with no record file sends the reader to the file itself,
+    in place of the address, so Back returns to where the reader came from."""
+    with _page(browser) as page:
+        page.goto(f"{served}frontier.html", wait_until="load")
+        page.goto(f"{served}cases/?n=999", wait_until="load")
+        page.wait_for_url(f"{served}cases/999.html?raw")
+        page.go_back(wait_until="load")
+        assert page.url == f"{served}frontier.html"
 
 
 def test_without_scripts_a_record_file_is_read_where_it_is(browser: Any, served: str) -> None:

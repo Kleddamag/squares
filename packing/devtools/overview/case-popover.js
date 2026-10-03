@@ -1,10 +1,11 @@
-// Every link to a case record opens it in the page's one case popover: an atlas tile on
-// the overview, the `n` of a frontier row, a result's link to its cases, a link in
-// prose, each an `a[data-case]` whose `href` is the record file, `cases/11.html`. A
+// Every link to a case record on a page that carries the case popover opens it there: an
+// atlas tile on the overview, the `n` of a frontier row, a link in the page's prose or in
+// a record, each an `a[data-case]` whose `href` is the record file, `cases/11.html`
+// (`render_case_pages.mark_case_links`). A result's overview links its cases as pages. A
 // frontier row, `tr[data-case-row]`, is one control for its case as a results row is for
 // its detail (`row-popover.js`): it takes focus, and a click anywhere on it but on its
 // own links and controls, or Enter or Space while it has focus, opens the record file it
-// names in `data-case-href`; it reads as expanded while its record is shown. Without this
+// names in `data-case-href`; the row of the case shown reads as expanded. Without this
 // script every link goes to the record file, which sends a reader on to the record page.
 //
 // The record is fetched, not framed. The file holds the record alone, as HTML, in
@@ -127,16 +128,26 @@
   let asking = null;
   /** The number of the latest request: only it may show its record, or navigate. */
   let latest = 0;
+  /**
+   * The row of the case whose record is shown, which reads as expanded.
+   * @type {HTMLTableRowElement | null}
+   */
+  let expanded = null;
 
   /**
-   * A row reads as expanded while the record it opened is shown.
-   * @param {HTMLElement | null} opener
-   * @param {boolean} expanded
+   * A row reads as expanded while its case's record is shown, however that record was
+   * reached: by the row, by a link in it, or by stepping from another case.
+   * @param {HTMLElement} article
    */
-  const mark = (opener, expanded) => {
-    if (opener instanceof HTMLTableRowElement) {
-      opener.setAttribute("aria-expanded", String(expanded));
+  const markShown = (article) => {
+    const n = article.getAttribute("data-case");
+    const row = n === null ? null : document.querySelector(`tr[data-case-row="${n}"]`);
+    const shown = row instanceof HTMLTableRowElement ? row : null;
+    if (shown !== expanded) {
+      expanded?.setAttribute("aria-expanded", "false");
+      expanded = shown;
     }
+    expanded?.setAttribute("aria-expanded", "true");
   };
 
   /**
@@ -156,12 +167,9 @@
     body.replaceChildren(article);
     action?.setAttribute("href", url);
     if (!stepping) {
-      if (origin !== opener) {
-        mark(origin, false);
-      }
       origin = opener;
-      mark(opener, true);
     }
+    markShown(article);
     if (!popover.matches(":popover-open")) {
       popover.showPopover();
       if (close instanceof HTMLElement) {
@@ -285,7 +293,8 @@
     if (!(event instanceof ToggleEvent) || event.newState !== "closed" || origin === null) {
       return;
     }
-    mark(origin, false);
+    expanded?.setAttribute("aria-expanded", "false");
+    expanded = null;
     // Back to what opened the popover, unless the reader has already moved on to
     // something else, such as another row whose press closed it.
     const focus = document.activeElement;

@@ -1236,7 +1236,7 @@ def test_the_frontier_page_opens_with_the_surveys_account(
     assert "An external certificate counts once it is replayed here in full" in text
     assert "The survey audits what it records." in text
     assert "The earliest published proof of $s(7) = 3$ carries four recorded defects" in text
-    assert 'href="cases/7.html"' in prose
+    assert 'href="cases/7.html" data-case="7"' in prose
     # Each repository document is linked on `main`, in a new tab as every link off the
     # site opens.
     for path, words in (
@@ -1272,7 +1272,7 @@ def test_the_frontier_page_opens_with_the_surveys_account(
         assert author in text, author
     assert 'href="all-results.html#t-015">T-015</a>' in prose
     assert 'href="all-results.html#t-016">T-016</a>' in prose
-    assert 'href="cases/17.html">seventeen-square record</a>' in prose
+    assert 'href="cases/17.html" data-case="17">seventeen-square record</a>' in prose
     # Neither other page says any of this a second time: the Results page points to the
     # policy for results by others and does not restate when a certificate counts. Each
     # page's prose is read without its rows' popovers, whose detail may say a result
@@ -1590,8 +1590,8 @@ def test_the_document_cards_lead_with_readme_and_epistemics(
     # where a record is shown, the Records column and a result's popover, and from no
     # prose of either page.
     frontier = rendered("frontier.html")
-    assert '<a href="cases/17.html">seventeen-square record</a>' in frontier
-    assert '<a href="cases/7.html">record for seven squares</a>' in frontier
+    assert '<a href="cases/17.html" data-case="17">seventeen-square record</a>' in frontier
+    assert '<a href="cases/7.html" data-case="7">record for seven squares</a>' in frontier
     frontier_prose = frontier.split("</h1>", 1)[1].split('<div class="site-table-tools', 1)[0]
     overview_prose = re.sub(
         r'<div class="site-popover.*?</div>\s*</div>', "", page, flags=re.DOTALL
@@ -2831,7 +2831,9 @@ def _template_paragraphs(section: str) -> list[str]:
 #: question after a colon, the lower bound glossed as a size below which no packing can
 #: exist, and an example of each bound at $n = 29$, the case's current bounds as the
 #: record reports them (the owner, 2026-10-03: "make the examples current"), each
-#: written as the record writes it, with $\le$ and $\ge$
+#: written as the record writes it, with $\le$ and $\ge$. The lower is called reported:
+#: wand125's certificate is not yet replayed here, and its result stands at V0/C0, so
+#: "proved" alone would put a reported bound in a verified one's place
 #: (`test_the_intros_examples_are_the_records`).
 PROBLEM_STATEMENT = (
     (
@@ -2845,7 +2847,7 @@ PROBLEM_STATEMENT = (
         "for most $n$. In many cases, $s(n)$ is known only to lie between an upper bound "
         "(the size of the enclosing square for the tightest packing ever discovered, such "
         "as $s(29) \\le 5.934$) and a lower bound (a size below which it is proved that no "
-        "packing can exist, such as $s(29) \\ge 5.79$)."
+        "packing can exist, such as the reported $s(29) \\ge 5.79$)."
     ),
 )
 
@@ -3014,7 +3016,7 @@ def test_recent_results_names_the_headline_results_at_their_rows(
     assert re.findall(r"\bT-\d{3}\b", text) == ["T-060", "T-043", "T-065"]
     records = site_renders.case_records()
     for n in (21, 32, 45):
-        assert f'<a href="{render_case_pages.case_url(n)}">' in lead, n
+        assert f'<a href="{render_case_pages.case_url(n)}" data-case="{n}">' in lead, n
         assert render_case_pages.case_url(n) in records, n
     hrefs = re.findall(r'href="([^"]+)"', lead)
     for href in hrefs:
@@ -3087,7 +3089,7 @@ def test_the_sites_own_statement_follows_readmes_introduction(page: str) -> None
     for link in (
         f"{founder}Joshua Levy</a>",
         '<a href="papers/n11-lower-bounds-explainer.html">new lower bounds</a>',
-        f'<a href="{render_case_pages.case_url(11)}">case of 11 squares</a>',
+        f'<a href="{render_case_pages.case_url(11)}" data-case="11">case of 11 squares</a>',
         '<a href="all-results.html#verification-ladders">AI-assisted verification</a>',
     ):
         assert link in paragraphs[0], link
@@ -4397,8 +4399,6 @@ def test_a_label_column_is_as_wide_as_its_labels() -> None:
     assert "display: table-cell;" in which
     assert "white-space: nowrap;" in which
     assert "inline-size" not in which
-    # A hidden row stays hidden: `display: table-row` would otherwise show it.
-    assert "display: none;" in _rule(css, ".site-atlas-pop .site-atlas-pop-cite[hidden]")
     name = _rule(css, ".site-name")
     assert "display: inline-block;" in name
     assert "max-inline-size: 100%;" in name
@@ -4832,6 +4832,30 @@ def test_the_site_writes_each_result_overview_once_and_drops_a_withdrawn_one(
     assert render_overview.main(["--output", str(tmp_path), "--check"]) == 1
 
 
+def test_check_finds_a_record_file_or_overview_left_from_another_build(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    """`--check` holds the directories the site writes whole, `result/` and `cases/`, to
+    a fresh render: a file a later build would remove, a case dropped or a result
+    withdrawn since, makes the build stale, as a missing or changed one does."""
+    files = [
+        render_overview.Page("index.html", "<p>page</p>"),
+        render_overview.Page("cases/index.html", "<p>records</p>"),
+    ]
+    records = [render_overview.Page("cases/11.html", "<p>eleven</p>")]
+    monkeypatch.setattr(render_overview, "render_all", lambda: files)
+    monkeypatch.setattr(render_overview, "result_fragments", list)
+    monkeypatch.setattr(render_overview, "case_records", lambda: records)
+    monkeypatch.setattr(render_overview, "forwarder_pages", list)
+    assert render_overview.main(["--output", str(tmp_path)]) == 0
+    assert render_overview.main(["--output", str(tmp_path), "--check"]) == 0
+    (tmp_path / "cases" / "325.html").write_text("a dropped case", encoding="utf-8")
+    assert render_overview.main(["--output", str(tmp_path), "--check"]) == 1
+    render_overview.write_site(tmp_path, [*files, *records])
+    assert not (tmp_path / "cases" / "325.html").exists()
+    assert render_overview.main(["--output", str(tmp_path), "--check"]) == 0
+
+
 def test_a_result_row_popover_is_the_same_panel_in_both_tables(
     overview: overview_data.Overview,
 ) -> None:
@@ -4954,19 +4978,28 @@ def test_a_deferred_row_body_waits_in_a_template_with_a_fallback_for_no_scripts(
 
 
 def test_a_row_with_detail_takes_the_shared_wash_and_no_disclosure_style() -> None:
-    """The row's hover wash is the shared table rule's; a row with detail keeps it on
-    keyboard focus, with a ring, and while its popover is open, and shows the pointer
-    once the script has made it the control. No rule styles a `<details>` in a table."""
+    """The row's hover wash is the shared table rule's; a row with detail, and a
+    frontier row, which opens its case's record (think-necq), keeps it on keyboard
+    focus, with a ring, and while its popover is open, and shows the pointer once its
+    script has made it the control. No rule styles a `<details>` in a table."""
     css = render_overview.SITE_CSS.read_text(encoding="utf-8")
     hover = css[css.index(".kpress .site-table tbody tr:hover {") :]
     assert "background: var(--site-wash);" in hover[: hover.index("}")]
-    row = ".kpress .site-table tbody tr[data-row-popover]"
-    held = css[css.index(f'{row}:is(:focus-visible, [aria-expanded="true"]) {{') :]
-    assert "background: var(--site-wash);" in held[: held.index("}")]
-    ring = css[css.index(".kpress .site-table tbody tr[data-row-popover]:focus-visible {") :]
-    assert "outline: 2px solid var(--kpress-doc-accent);" in ring[: ring.index("}")]
-    ready = css[css.index(".kpress .site-table tbody tr[data-row-ready] {") :]
-    assert "cursor: pointer;" in ready[: ready.index("}")]
+    held = _rule(
+        css,
+        ".kpress\n  .site-table\n  tbody\n  tr:is([data-row-popover], [data-case-row])"
+        ':is(:focus-visible, [aria-expanded="true"])',
+    )
+    assert "background: var(--site-wash);" in held
+    ring = _rule(
+        css,
+        ".kpress .site-table tbody tr:is([data-row-popover], [data-case-row]):focus-visible",
+    )
+    assert "outline: 2px solid var(--kpress-doc-accent);" in ring
+    ready = _rule(
+        css, ".kpress .site-table tbody tr:is([data-row-ready], [data-case-row][aria-controls])"
+    )
+    assert "cursor: pointer;" in ready
     trigger = css[css.index(".kpress .site-table .site-row-open {") :]
     for declaration in ("background: none;", "border: 0;", "color: inherit;", "font: inherit;"):
         assert declaration in trigger[: trigger.index("}")], declaration

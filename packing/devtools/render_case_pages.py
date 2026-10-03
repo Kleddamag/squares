@@ -14,9 +14,10 @@ its title and link preview, and the record as HTML with no styles or shell, so a
 without scripts or a crawler reads it there. With scripts it sends the reader on at
 once to the record page, `cases/` (`cases/index.html`), which fetches the same file,
 shows its record in the site's design and puts `cases/11.html` back in the address bar
-(`overview/case-page.js`). Every page that links a case (the overview's atlas grid, the
-frontier table's rows, the results) opens it in the same popover, which fetches the same
-file (`overview/case-popover.js`), so a case reads the same wherever it is opened.
+(`overview/case-page.js`). The overview's atlas grid and the frontier table's rows open
+it in the same popover, which fetches the same file (`overview/case-popover.js`), so a
+case reads the same wherever it is opened. A result's overview links its cases' record
+files, which a reader opens as pages.
 
 The record files are not 324 pages. A site page carries about 1.8 MB of inlined faces
 and KaTeX, since every page is self-contained; 324 copies of that would be about 600 MB.
@@ -100,6 +101,26 @@ def case_link(n: int, content: str, *, classes: str = "", label: str = "") -> st
     if label:
         attributes += f' aria-label="{html.escape(label)}"'
     return f'<a{attributes} href="{case_url(n)}" data-case="{n}">{content}</a>'
+
+
+#: A link to a case's record file, from the site's root, as a page's prose writes one.
+_CASE_LINK = re.compile(r'<a\b[^>]*?\shref="cases/(\d+)\.html(?:#[^"]*)?"[^>]*>')
+
+
+def mark_case_links(markup: str) -> str:
+    """Every link in `markup` to a case's record file marked as `case_link` marks one,
+    `data-case`, so the case popover on a page, and the record page in a record, opens
+    it in place: a link the prose writes, `[case of 11 squares](cases/11.html)` or a case
+    file's link to another case file, reads as the atlas's and the frontier's do."""
+
+    def marked(match: re.Match[str]) -> str:
+        tag = match.group(0)
+        # A step already says which case it loads (`data-case-step`).
+        if " data-case=" in tag or " data-case-step=" in tag:
+            return tag
+        return f'{tag[:-1]} data-case="{match.group(1)}">'
+
+    return _CASE_LINK.sub(marked, markup)
 
 
 def case_popover() -> str:
@@ -971,14 +992,60 @@ def _rendered() -> str:
     if problems:
         listing = "\n  ".join(problems)
         raise SystemExit(f"{len(problems)} unresolved links in the case records:\n  {listing}")
+    refuse_footnotes(rendered.html)
     return rendered.html
+
+
+#: What kpress writes on a footnote's mark in the text.
+FOOTNOTE_MARK = "data-kpress-footnote-ref"
+
+
+def refuse_footnotes(page: str) -> None:
+    """Refuse the one render of every record if a case file has a footnote: kpress
+    gathers footnotes at the foot of the page, after the last record, so one would be
+    cut off from its record file. Refused until a record carries its own."""
+    if FOOTNOTE_MARK in page:
+        raise SystemExit("a case file has a footnote, which its record file would lose")
+
+
+#: A heading kpress wrote, with its id and its content.
+_HTML_HEADING = re.compile(r'(<h([1-6])\b[^>]*?\sid=")([^"]*)("[^>]*>)(.*?)(</h\2>)', re.DOTALL)
+#: A formula as kpress writes one, which a heading's id leaves out, as kpress's does.
+_MATH_MARKUP = re.compile(r'<span class="kpress-math[ "].*?</math></span></span>', re.DOTALL)
+
+
+def _own_ids(record: str) -> str:
+    """`record` with its headings' ids its own. kpress gives every heading of the one
+    render an id unique across all of it, so a case's heading was `the-packing-312` for
+    the 312 records above it, and one heading more in an earlier case renumbered every
+    later record's, breaking a shared `cases/N.html#…`. Each id is made again from its
+    heading's text with kpress's own slugger, counted within the record alone, and the
+    record's links to its own headings follow."""
+    from kpress.format._github_slugger import GithubSlugger  # noqa: PLC0415
+
+    slugger = GithubSlugger()
+    renamed: dict[str, str] = {}
+
+    def heading(match: re.Match[str]) -> str:
+        text = html.unescape(re.sub(r"<[^>]+>", "", _MATH_MARKUP.sub("", match.group(5))))
+        new = slugger.slug(text) or f"section-{len(renamed) + 1}"
+        renamed[match.group(3)] = new
+        return f"{match.group(1)}{new}{match.group(4)}{match.group(5)}{match.group(6)}"
+
+    record = _HTML_HEADING.sub(heading, record)
+    return re.sub(
+        r'href="#([^"]+)"',
+        lambda m: f'href="#{renamed.get(html.unescape(m.group(1)), m.group(1))}"',
+        record,
+    )
 
 
 def _records(page: str) -> dict[int, str]:
     """Each record's markup, cut from the one render of every record, by case, as the
-    article it is in its own file. In the one render it is a `section`: the page's own
-    article holds every record, and the site's link rewriting reads that article to
-    its first close (`site_documents.rewrite_article`)."""
+    article it is in its own file, its headings' ids its own (`_own_ids`). In the one
+    render it is a `section`: the page's own article holds every record, and the site's
+    link rewriting reads that article to its first close
+    (`site_documents.rewrite_article`)."""
     found: dict[int, str] = {}
     for match in re.finditer(
         r"<!-- case-record (\d+) -->(.*?)" + re.escape(_RECORD_CLOSE), page, re.DOTALL
@@ -988,10 +1055,12 @@ def _records(page: str) -> dict[int, str]:
             record.startswith('<section class="site-case"') and record.endswith("</section>")
         ):
             raise SystemExit(f"n = {match.group(1)}: the record is not one section")
-        found[int(match.group(1))] = (
-            "<article"
-            + record.removeprefix("<section").removesuffix("</section>")
-            + "</article>"
+        found[int(match.group(1))] = _own_ids(
+            mark_case_links(
+                "<article"
+                + record.removeprefix("<section").removesuffix("</section>")
+                + "</article>"
+            )
         )
     return found
 
@@ -1005,16 +1074,40 @@ def cases_page() -> Page:
     page = _rendered()
     start = page.index(_RECORD_OPEN.format(n=min(_records(page))))
     end = page.rindex(_RECORD_CLOSE) + len(_RECORD_CLOSE)
-    return Page(CASES_PAGE, rebase_links(page[:start] + _READER + page[end:], CASES_DIR))
+    shell = _without_headings(page[:start] + _READER + page[end:])
+    return Page(CASES_PAGE, rebase_links(shell, CASES_DIR))
+
+
+#: kpress's model of the page, which lists every heading of the one render.
+_PAGE_MODEL = re.compile(
+    r'(<script type="application/json" id="kpress-page-model">)(.*?)(</script>)', re.DOTALL
+)
+
+
+def _without_headings(page: str) -> str:
+    """The record page with its model's list of headings emptied: they are the records'
+    headings, about 80 KB, none of them on the page, and nothing reads them, since the
+    page has no contents rail."""
+    import json  # noqa: PLC0415
+
+    def emptied(match: re.Match[str]) -> str:
+        model = json.loads(match.group(2))
+        model["headings"] = []
+        text = json.dumps(model, ensure_ascii=False).replace("</", "<\\/")
+        return f"{match.group(1)}{text}{match.group(3)}"
+
+    found, count = _PAGE_MODEL.subn(emptied, page)
+    if count != 1:
+        raise SystemExit(f"{CASES_PAGE}: kpress wrote {count} page models, not one")
+    return found
 
 
 def _description(case: dict[str, Any]) -> str:
     """A record file's own sentence, for a search engine and a shared link's preview."""
     state = "solved" if case["status"] == "proved" else "open"
     return (
-        f"The record of packing {case['n']} unit squares in the smallest square, a case "
-        f"{state}: the best packing known, every bound with its credit, and every result "
-        "on the case."
+        f"Packing {case['n']} unit squares in the smallest square, a case {state}: the "
+        "best packing known, every bound and its credit, and every result on it."
     )
 
 

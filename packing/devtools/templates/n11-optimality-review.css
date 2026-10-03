@@ -79,6 +79,14 @@
     max-width: none;
   }
 }
+/* The width a diagram's labels were laid out for, registered as a length, so the label
+   script reads it in pixels whatever unit it is written in (`diagram-labels.js`), and an
+   unset or `initial` value is 0px, which shrinks nothing. */
+@property --paper-diagram-fit-from {
+  syntax: "<length>";
+  inherits: true;
+  initial-value: 0px;
+}
 /* On a phone a diagram takes the column where it reasonably can, as the owner asked on
    2026-10-03 (think-wzc1), judged figure by figure; until then each was held at 680px or
    more and scrolled sideways. A pair stacks. Below `--paper-diagram-fit-from`, the

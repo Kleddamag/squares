@@ -11,8 +11,11 @@ adds the front door and the pages around it, as the plan in
   and recent list point into by row (`#t-018`);
 - `frontier.html`, the frontier atlas: one row for every case, from its
   `SquarePackingCase/v2` record;
-- `cases.html`, the case records: every case's full record at `cases.html#n-N`, which
-  the atlas grid and the frontier atlas both open (`render_case_pages`);
+- `cases/index.html`, the record page: the index of every case and the reader that shows
+  one case's record file, `cases/N.html`, which this module writes beside it
+  (`case_records`) and the atlas grid and the frontier table both open in their case
+  popover (`render_case_pages`); `cases.html`, where every record was until 2026-10-03,
+  is a forwarder to it;
 - `papers.html`, the Papers section's page: one large card per paper, from the one list
   `overview_sections.PAPERS`. The optimality review (`papers/n11-optimality-review.html`,
   `render_n11_optimality_review`), the lower-bounds explainer
@@ -902,7 +905,7 @@ def overview_page() -> Page:
         title=PROJECT_NAME,
         description=OVERVIEW_DESCRIPTION,
         toc=False,
-        rewrite_body=site_documents.rewrite_overview_blocks,
+        rewrite_body=lambda text: _case_links(site_documents.rewrite_overview_blocks(text)),
         page_scripts=(
             FORWARD_SCRIPT,
             TABLE_SCRIPT,
@@ -984,8 +987,17 @@ def frontier_page() -> Page:
         title="The Frontier Survey",
         description=FRONTIER_DESCRIPTION,
         toc=False,
+        rewrite_body=_case_links,
         page_scripts=(TABLE_SCRIPT, POPOVER_SCRIPT, CASE_POPOVER_SCRIPT),
     )
+
+
+def _case_links(page: str) -> str:
+    """A page's links to case records, its prose's among them, marked for its case
+    popover (`render_case_pages.mark_case_links`)."""
+    from devtools.render_case_pages import mark_case_links  # noqa: PLC0415
+
+    return mark_case_links(page)
 
 
 def cases_page() -> Page:
@@ -1163,6 +1175,18 @@ def main(argv: Sequence[str] | None = None) -> int:
             for p in (*pages, *fragments, *records, *forwarders)
             if not (output / p.name).is_file()
             or (output / p.name).read_text(encoding="utf-8") != p.html
+        ]
+        # A file left in a directory this module writes whole, a result withdrawn or a
+        # case dropped since, is stale too: `write_site` would remove it.
+        from devtools.overview_sections import RESULT_FRAGMENTS  # noqa: PLC0415
+        from devtools.render_case_pages import CASES_DIR  # noqa: PLC0415
+
+        written = {p.name for p in (*pages, *fragments, *records)}
+        stale += [
+            path.relative_to(output).as_posix()
+            for directory in (RESULT_FRAGMENTS, CASES_DIR)
+            for path in sorted((output / directory).glob("*.html"))
+            if path.relative_to(output).as_posix() not in written
         ]
         if stale:
             print(f"stale or missing: {', '.join(stale)}", file=sys.stderr)

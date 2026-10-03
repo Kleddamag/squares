@@ -1038,10 +1038,12 @@ def check(
     sample = (
         sorted({indexed[0], RECORD_FILE_SAMPLE, indexed[-1]} & set(indexed)) if indexed else []
     )
+    records: list[str] = []
     for n in sample:
         address = render_case_pages.case_url(n)
         status, body = fetch(site + address, timeout=timeout)
-        found = CASE_RECORD.search(body.decode("utf-8", errors="replace"))
+        record = body.decode("utf-8", errors="replace")
+        found = CASE_RECORD.search(record)
         holds = None if found is None else int(found.group(1))
         results.append(
             (
@@ -1050,6 +1052,13 @@ def check(
                 + ("" if holds == n else f", but it holds {holds!r}"),
             )
         )
+        if status == 200:
+            # A record file is a page a reader shares: its head is held as a page's is,
+            # and its links to the repository as the pages' are.
+            heads[address] = record
+            records.append(record)
+    if records:
+        links_main("the case records", "\n".join(records))
 
     # Every link above resolves; whether every link is there is asked of the renderer.
     try:

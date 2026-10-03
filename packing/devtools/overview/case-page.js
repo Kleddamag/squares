@@ -228,17 +228,31 @@
     latest += 1;
     const request = latest;
     wanted = n;
+    // The page's title, account and index step aside at once while a record named by
+    // the address is fetched, as they do once it is shown (site.css), rather than
+    // showing for the length of the fetch.
+    document.documentElement.toggleAttribute("data-case-loading", how !== "push");
     void record(n).then(
       (fetched) => {
         if (request === latest) {
           wanted = null;
+          document.documentElement.removeAttribute("data-case-loading");
           place(n, fetched, how, hash, rel);
         }
       },
       () => {
         if (request === latest) {
           wanted = null;
-          location.href = `${n}.html?raw${hash}`;
+          document.documentElement.removeAttribute("data-case-loading");
+          // To the file itself: a press adds the visit to history as any link does;
+          // an arrival or Back and Forward takes the entry's place, so Back does not
+          // land on this address again and come straight back.
+          const file = `${n}.html?raw${hash}`;
+          if (how === "push") {
+            location.assign(file);
+          } else {
+            location.replace(file);
+          }
         }
       },
     );
@@ -251,6 +265,7 @@
   const showIndex = (how) => {
     latest += 1;
     wanted = null;
+    document.documentElement.removeAttribute("data-case-loading");
     if (shown === null) {
       return;
     }

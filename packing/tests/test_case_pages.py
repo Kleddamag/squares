@@ -92,11 +92,13 @@ def test_a_record_file_names_itself_and_sends_a_reader_with_scripts_on(
     canonical = render_overview.canonical_url("cases/29.html")
     assert f'<link rel="canonical" href="{canonical}">' in text
     assert f'<meta property="og:url" content="{canonical}">' in text
-    assert "packing 29 unit squares" in text
+    assert "Packing 29 unit squares in the smallest square" in text
     forward = render_case_pages.CASE_FORWARD_SCRIPT.read_text(encoding="utf-8")
     assert text.count("<script>") == 1
     assert forward.strip() in text
-    assert "<style" not in text
+    # One small style of its own, for a plain reading, and none of the site's.
+    assert text.count("<style>") == 1
+    assert ".kpress-math-render{display:none}" in text
     assert "kpress-shell" not in text
     assert_self_contained("cases/29.html", text)
 
@@ -412,6 +414,71 @@ def test_a_cases_badges_are_one_mark_wherever_a_case_is_drawn(
     plain = [n for n, fact in facts.items() if not fact["badges"]]
     if plain:
         assert result_overview.case_badges(plain[0]) == ""
+
+
+def test_a_records_heading_ids_are_its_own(records: dict[str, str]) -> None:
+    """Each record's headings take ids counted within the record alone (`_own_ids`), so
+    a heading added to one case file never renumbers another record's: the same heading
+    has the same id in every record, and none carries a count of the records above."""
+    seen: dict[str, set[str]] = {}
+    for name, text in records.items():
+        ids = re.findall(r'<h[1-6][^>]*\sid="([^"]*)"', text)
+        assert len(ids) == len(set(ids)), name
+        for heading, found in re.findall(r'<h[1-6][^>]*\sid="([^"]*)"[^>]*>(.*?)</h', text):
+            seen.setdefault(re.sub(r"<[^>]+>", "", found).strip(), set()).add(heading)
+    assert seen["The packing"] == {"the-packing"}
+    assert all(len(ids) == 1 for title, ids in seen.items() if title.startswith("The ")), {
+        title: ids for title, ids in seen.items() if len(ids) > 1
+    }
+
+
+def test_a_link_to_a_record_file_is_marked_for_the_case_popover() -> None:
+    marked = render_case_pages.mark_case_links(
+        '<p><a href="cases/11.html">x</a> <a href="cases/13.html#a">z</a> '
+        '<a aria-label="y" href="cases/12.html" data-case="12">y</a> '
+        '<a href="frontier.html">f</a></p>'
+    )
+    assert marked == (
+        '<p><a href="cases/11.html" data-case="11">x</a> '
+        '<a href="cases/13.html#a" data-case="13">z</a> '
+        '<a aria-label="y" href="cases/12.html" data-case="12">y</a> '
+        '<a href="frontier.html">f</a></p>'
+    )
+
+
+def test_the_record_page_lists_no_heading_it_does_not_show(page: str) -> None:
+    """kpress lists every heading of a page in its page model; the record page's would
+    be every record's, about 80 KB of headings it does not show, so its list is empty."""
+    model = page.split('<script type="application/json" id="kpress-page-model">', 1)[1]
+    assert '"headings": []' in model.split("</script>", 1)[0]
+
+
+def test_a_record_files_description_has_room(records: dict[str, str]) -> None:
+    """Each record file's description is its own and keeps clear of the limit
+    `head_tags` refuses past, so a rewording does not fail the render."""
+    descriptions = re.findall(
+        r'<meta name="description" content="([^"]*)"', "".join(records.values())
+    )
+    assert len(descriptions) == len(records) == len(set(descriptions))
+    assert max(len(text) for text in descriptions) <= render_overview.DESCRIPTION_LIMIT - 15
+
+
+def test_a_footnote_in_a_case_file_is_refused() -> None:
+    """kpress gathers footnotes at the foot of the one render, outside every record, so
+    the render refuses one rather than lose it from its record file; the mark it looks
+    for is the one kpress writes."""
+    from kpress.format.model import DocumentInput, RenderOptions  # noqa: PLC0415
+    from kpress.format.render import render_page  # noqa: PLC0415
+
+    markdown = "# T\n\nA note.[^x]\n\n[^x]: The note.\n"
+    document = DocumentInput(
+        title="t", source_text=markdown, source_path="t.md", body_markdown=markdown
+    )
+    page = render_page(document, RenderOptions(asset_mode="inline", asset_policy="none")).html
+    assert render_case_pages.FOOTNOTE_MARK in page
+    with pytest.raises(SystemExit, match="footnote"):
+        render_case_pages.refuse_footnotes(page)
+    render_case_pages.refuse_footnotes("<p>No note.</p>")
 
 
 def test_each_record_steps_to_its_neighbours_with_the_sites_arrows(

@@ -79,19 +79,36 @@
     max-width: none;
   }
 }
+/* The width a diagram's labels were laid out for, registered as a length, so the label
+   script reads it in pixels whatever unit it is written in (`diagram-labels.js`), and an
+   unset or `initial` value is 0px, which shrinks nothing. */
+@property --paper-diagram-fit-from {
+  syntax: "<length>";
+  inherits: true;
+  initial-value: 0px;
+}
+/* On a phone a diagram takes the column where it reasonably can, as the owner asked on
+   2026-10-03 (think-wzc1), judged figure by figure; until then each was held at 680px or
+   more and scrolled sideways. A pair stacks. Below `--paper-diagram-fit-from`, the
+   narrowest width a diagram's labels were laid out for at the support size, its labels
+   shrink with it in proportion (`diagram-labels.js`), so each stays in its box: about
+   0.53 of the support size at 390px, which suits a drawing whose labels are short or
+   whose shapes carry it. Two keep their width and scroll, since shrunk their lettering
+   would not read: the capture tree, whose branch conditions are fractions in the note
+   size, and the charge-budget panel, which is mostly lines of set notation. */
 @media screen and (max-width: 42rem) {
   .n11-paper .figure-pair {
-    grid-template-columns: minmax(640px, 1fr);
-    overflow-x: auto;
-  }
-  .n11-paper figure:has(> .n11-diagram) {
-    overflow-x: auto;
+    grid-template-columns: minmax(0, 1fr);
   }
   .n11-paper .n11-diagram {
-    min-width: 680px;
+    --paper-diagram-fit-from: 680px;
   }
-  .n11-paper .n11-diagram.n11-capacity {
-    min-width: 0;
+  .n11-paper figure:has(> :is(.n11-capture, .n11-mechanism-charge)) {
+    overflow-x: auto;
+  }
+  .n11-paper :is(.n11-capture, .n11-mechanism-charge) {
+    --paper-diagram-fit-from: initial;
+    min-width: 680px;
   }
   .n11-paper .n11-capture {
     min-width: 850px;

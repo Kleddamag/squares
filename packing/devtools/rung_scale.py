@@ -10,6 +10,10 @@ own, and the levels of each ladder from `epistemics.md`, and reports each rung i
 theme: the fill in OkLCh and as sRGB hex, whether sRGB holds it, and the WCAG contrast
 ratio of the page's text on it.
 
+The status chips take fills from the same scale, a rule each in the stylesheet naming
+a hue, a level and an optional chroma boost (`status_fills`, the owner, 2026-10-02,
+`think-c19o`), and are reported the same way.
+
 It needs no browser. `tests/test_rung_scale.py` holds the scale to what the design
 system says of it (`templates/paper-design.md`, Color): saturation and strength rise
 with the level, every fill is in gamut, and the text keeps 4.5:1 on every one. The same
@@ -47,6 +51,9 @@ _BLOCK = re.compile(r"([^{}]+)\{([^{}]*)\}")
 _DECLARATION = re.compile(r"(--[\w-]+)\s*:\s*([^;]+);")
 _OKLCH = re.compile(r"oklch\(\s*([\d.]+)%\s+([\d.]+)\s+([\d.]+)\s*\)")
 _VAR = re.compile(r"var\((--[\w-]+)\)")
+#: A status chip's own rule: its attribute, a result's `status` or a case's
+#: `case-status`, and its word.
+_STATUS_RULE = re.compile(r'\.site-chip\[data-(status|case-status)="([a-z-]+)"\]')
 
 Oklch = tuple[float, float, float]
 
@@ -214,14 +221,56 @@ def fills() -> list[Fill]:
     return report
 
 
-def markdown_table(report: Sequence[Fill]) -> str:
+def status_fills() -> list[Fill]:
+    """Every status chip's fill in each theme, its word as the `rung`: the scale's
+    lightness and chroma at the rule's `--rung-level`, its `--rung-chroma-boost` added to
+    the chroma, at its `--rung-hue`."""
+    themes = theme_tokens()
+    pages = page_colours()
+    rules = [
+        (match.group(2), declared)
+        for selector, declared in _blocks(SITE_CSS)
+        if (match := _STATUS_RULE.fullmatch(selector))
+    ]
+    if not rules:
+        raise SystemExit("site.css has no status chip rule")
+    report = []
+    for theme in THEMES:
+        tokens = themes[theme]
+        for word, declared in rules:
+            level = _number(declared["--rung-level"])
+            hue = _number(declared["--rung-hue"])
+            lightness = _number(tokens["--site-rung-base"])
+            colour = (
+                lightness + level * _number(tokens["--site-rung-step"]),
+                _number(tokens["--site-rung-chroma-base"])
+                + level * _number(tokens["--site-rung-chroma-step"])
+                + _number(declared.get("--rung-chroma-boost", "0")),
+                hue,
+            )
+            report.append(
+                Fill(
+                    theme=theme,
+                    rung=word,
+                    lightness=colour[0],
+                    chroma=colour[1],
+                    hue=hue,
+                    hex=hex_colour(colour),
+                    in_gamut=colour[1] <= _maximum_chroma(colour[0], hue),
+                    contrast=contrast(pages[theme]["text"], colour),
+                )
+            )
+    return report
+
+
+def markdown_table(report: Sequence[Fill], head: str = "Rung") -> str:
     """The scale as the design document carries it: one row a rung, a theme a pair of
     columns, the fill in OkLCh with its hex and the text's contrast on it."""
     by_rung: dict[str, dict[str, Fill]] = {}
     for fill in report:
         by_rung.setdefault(fill.rung, {})[fill.theme] = fill
     lines = [
-        "| Rung | Light fill | Text contrast | Dark fill | Text contrast |",
+        f"| {head} | Light fill | Text contrast | Dark fill | Text contrast |",
         "| --- | --- | --- | --- | --- |",
     ]
     for rung, themed in by_rung.items():
@@ -237,7 +286,11 @@ def main(argv: Sequence[str] | None = None) -> int:
     if argv:
         raise SystemExit(__doc__)
     report = fills()
+    statuses = status_fills()
     print(markdown_table(report))
+    print()
+    print(markdown_table(statuses, "Status"))
+    report += statuses
     pages = page_colours()
     for theme in THEMES:
         print(f"{theme}: text on the page background {contrast(*pages[theme].values()):.1f}:1")

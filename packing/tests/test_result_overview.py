@@ -12,6 +12,7 @@ from devtools import (
     overview_data,
     overview_sections,
     register_prose,
+    render_case_pages,
     render_overview,
     repo_links,
     result_overview,
@@ -117,15 +118,17 @@ def test_the_head_states_the_result_as_the_site_does(
 def test_a_single_case_shows_the_films_panel_and_the_packing(
     result_id: str, bodies: dict[str, str]
 ) -> None:
-    """The number line, the chained bound, the badges and the citation are the atlas
-    popover's panel, from the film's own facts, beside the atlas drawing of the case; the
-    case record's verified and reported bounds and the gap follow."""
+    """The case is its visual summary, as its record opens (`render_case_pages.
+    visual_summary`): the atlas drawing of the case first, then the number line, the
+    chained bound, the badges and the citation, from the film's own facts; the case
+    record's verified and reported bounds and the gap follow."""
     from devtools.render_frontier_page import packing_svg  # noqa: PLC0415
 
     body = bodies[result_id]
     fact = result_overview.film_facts()[11]
     assert body.count('class="site-atlas-pop site-result-film" data-overview-case="11"') == 1
     assert packing_svg(11, units=overview_sections.ATLAS_UNITS) in body
+    assert body.index("<svg") < body.index('<div class="site-atlas-gap">')
     # The gap bar: the scale's integers, sqrt(n) and sqrt(n) + 1, and the best known side.
     bar = body.split('<div class="site-atlas-gap">', 1)[1].split("site-atlas-pop-head", 1)[0]
     for label in ("3", "4", "5", "3.317", "4.317"):
@@ -183,7 +186,7 @@ def test_a_broad_result_lists_its_cases_instead_of_drawing_them(
     facts = result_overview.film_facts()
     for n in cases:
         row = listing.split(f'data-overview-case="{n}"', 1)[1].split('role="row"', 1)[0]
-        assert f'<a href="cases.html#n-{n}">{n}</a>' in row
+        assert f'<a href="cases/{n}.html">{n}</a>' in row
         assert f'<a href="frontier.html#n-{n}">frontier</a>' in row
         assert f"{REPO_URL}/blob/main/packing/frontier/n-{n:03d}.md" in row
         assert f'<span class="is-upper">{facts[n]["upper"]}</span>' in row
@@ -288,9 +291,9 @@ def test_the_links_reach_the_site_and_the_record(
     assert f'<a href="all-results.html#{result_id.lower()}">' in links
     if result_id == BROAD:
         assert '<a href="frontier.html">' in links
-        assert '<a href="cases.html">' in links
+        assert '<a href="cases/">' in links
     else:
-        assert '<a href="cases.html#n-11">' in links
+        assert '<a href="cases/11.html">' in links
         assert '<a href="frontier.html#n-11">' in links
         # Both papers on the case, the one on the result that stands first, each where
         # it is served under `papers/`.
@@ -367,15 +370,19 @@ def test_every_site_link_is_a_served_page_and_a_real_fragment(
 ) -> None:
     rows = {result.id.lower() for result in overview.results}
     cases = {f"n-{n}" for n in overview.cases}
+    records = {render_case_pages.case_url(n) for n in overview.cases}
     for result_id, body in bodies.items():
         for href in HREF.findall(body):
             if href.startswith("https://"):
                 continue
             page, _, fragment = href.partition("#")
+            if page in records or page == render_case_pages.CASES_HOME:
+                assert not fragment, href
+                continue
             assert page in render_overview.SITE_PAGES, (result_id, href)
             if page == render_overview.RESULTS_PAGE:
                 assert fragment in rows, href
-            elif page in {"cases.html", "frontier.html"}:
+            elif page == "frontier.html":
                 assert not fragment or fragment in cases, href
             else:
                 assert page in {
@@ -415,7 +422,8 @@ def test_a_link_to_nothing_fails_the_render(overview: overview_data.Overview) ->
         f'<a href="{REPO_URL}/tree/main/README.md">x</a>',
         f'<a href="{REPO_URL}/blob/0123456789abcdef/README.md">x</a>',
         '<a href="nowhere.html">x</a>',
-        '<a href="cases.html#n-999">x</a>',
+        '<a href="cases/999.html">x</a>',
+        '<a href="cases.html#n-11">x</a>',
         '<a href="all-results.html#t-999">x</a>',
     )
     for body in refused:
@@ -441,18 +449,12 @@ def test_the_overview_depends_on_no_popover(bodies: dict[str, str]) -> None:
 
 
 def test_the_gap_bar_keeps_the_films_scale() -> None:
-    """The bar is placed here with the scale `atlas-grid.js` draws the atlas popover's
-    with; the script's constants are read so the two cannot drift apart."""
+    """The bar is placed here, the one place it is drawn since the atlas popover's script
+    stopped drawing its own on 2026-10-03, on the film's scale: from one below the grid
+    bound, two units across, inset five percent each side, its values to three places."""
     script = render_overview.ATLAS_GRID_SCRIPT.read_text(encoding="utf-8")
-    # The constants are read out of the script by pattern, not quoted as JavaScript.
-    inset = re.search(r"\bINSET = (\d+);", script)
-    span = re.search(r"\(value - lo\) / (\d+)\)\) \* \(100 - 2 \* INSET\)", script)
-    assert inset is not None
-    assert int(inset.group(1)) == result_overview.GAP_INSET
-    assert span is not None
-    assert int(span.group(1)) == result_overview.GAP_SPAN
-    assert re.search(r"\blo = Math\.ceil\(root\) - 1;", script)
-    assert "value.toFixed(3)" in script
+    assert "drawGap" not in script
+    assert (result_overview.GAP_INSET, result_overview.GAP_SPAN) == (5, 2)
     assert [result_overview.grid_floor(n) for n in (1, 2, 4, 5, 11, 16, 17)] == [
         0,
         1,

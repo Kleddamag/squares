@@ -623,6 +623,11 @@ def test_radical_svg_has_print_geometry(tmp_path: Path) -> None:
             browser.close()
 
 
+#: The diagrams that keep their width on a phone and scroll inside their figure: their
+#: lettering, shrunk to the column, would not read (think-wzc1).
+SCROLLED_ON_A_PHONE = {"n11-diagram n11-capture", "n11-diagram n11-mechanism-charge"}
+
+
 @pytest.mark.skipif(
     os.environ.get("SQPACK_N11_OPTIMALITY_REVIEW_BROWSER") != "1",
     reason="the dedicated T-060 Pages job sets SQPACK_N11_OPTIMALITY_REVIEW_BROWSER=1",
@@ -666,8 +671,20 @@ def test_diagram_labels_keep_publication_sizes_through_viewbox_scale(tmp_path: P
                             media,
                             role,
                         )
+                # On a phone a diagram takes the column where it reasonably can, its
+                # labels shrunk with it, and the two whose lettering would not read so
+                # keep their width and scroll (the owner, 2026-10-03, think-wzc1).
+                scrolled = {
+                    role["name"] for role in roles if role["scrollWidth"] > role["clientWidth"]
+                }
                 if width == 390:
-                    assert any(role["scrollWidth"] > role["clientWidth"] for role in roles)
+                    assert scrolled == SCROLLED_ON_A_PHONE, (width, media, scrolled)
+                    for role in roles:
+                        fitted = role["name"] not in SCROLLED_ON_A_PHONE
+                        assert (role["shrink"] < 1) == fitted, (width, media, role)
+                else:
+                    assert not scrolled, (width, media, scrolled)
+                    assert all(role["shrink"] == 1 for role in roles)
                 page.close()
         finally:
             browser.close()

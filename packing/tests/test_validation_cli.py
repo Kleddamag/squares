@@ -2825,6 +2825,7 @@ def test_the_edit_tier_cannot_under_run() -> None:
     suite_d = names(fast=False, suite_d=True)
     geometry = names(fast=False, geometry=True)
     typecheck = names(fast=False, typecheck=True)
+    measure_verifier = names(fast=False, measure_verifier=True)
 
     assert records <= edit <= fast <= everything
     assert fast - edit == {step.name for step in validate.STEPS if step.broad}, (
@@ -2843,6 +2844,7 @@ def test_the_edit_tier_cannot_under_run() -> None:
         suite_c,
         suite_d,
         sweeps,
+        measure_verifier,
     ]
     assert set().union(*parts) == fast
     for index, part in enumerate(parts):
@@ -3305,6 +3307,7 @@ def _workflow_selections(*, pull_request: bool) -> dict[str, set[str]]:
                 suite_d=namespace.suite_d,
                 geometry=namespace.geometry,
                 typecheck=namespace.typecheck,
+                measure_verifier=namespace.measure_verifier,
             )
         }
         for job_name, namespace in _workflow_commands(pull_request=pull_request).items()
@@ -3351,6 +3354,7 @@ def test_the_pull_request_jobs_partition_the_surface() -> None:
         "suite-d",
         "sweeps",
         "typecheck",
+        "measure-verifier",
     }
     names = list(selections)
     for index, job in enumerate(names):
@@ -3367,6 +3371,9 @@ def test_the_pull_request_jobs_partition_the_surface() -> None:
     assert selections["geometry"] == {step.name for step in validate.STEPS if step.geometry}
     assert selections["frontend"] == {step.name for step in validate.STEPS if step.frontend}
     assert selections["typecheck"] == {step.name for step in validate.STEPS if step.typecheck}
+    assert selections["measure-verifier"] == {
+        step.name for step in validate.STEPS if step.measure_verifier
+    }
 
 
 def test_a_verified_merge_repeats_everything_not_positively_tree_reusable() -> None:
@@ -3729,6 +3736,7 @@ def test_every_tier_band_is_declared_for_the_shape_ci_runs() -> None:
         "suite_d",
         "sweeps",
         "typecheck",
+        "measure_verifier",
     }
 
 
@@ -3789,7 +3797,7 @@ def test_post_merge_workers_bind_one_sha_and_a_separate_complete_aggregate() -> 
         assert len(matching) == 1, job
         assert f'test "${matching[0]}" = "success"' in command
 
-    # No deferred job can enter the nine-prerequisite pull-request context.
+    # No deferred job can enter the ten-prerequisite pull-request context.
     assert set(jobs["packing-required"]["needs"]) == {
         "validate",
         "frontend",
@@ -3800,6 +3808,7 @@ def test_post_merge_workers_bind_one_sha_and_a_separate_complete_aggregate() -> 
         "suite-c",
         "suite-d",
         "sweeps",
+        "measure-verifier",
     }
     for name in expected - {"validate"}:
         job = jobs[name]

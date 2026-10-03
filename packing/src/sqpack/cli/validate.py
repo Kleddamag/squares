@@ -164,6 +164,7 @@ TIER_FLAGS = (
     "sweeps",
     "geometry",
     "typecheck",
+    "measure_verifier",
     "fast",
 )
 TIER_IDS = (*TIER_FLAGS, "full")
@@ -578,10 +579,11 @@ class Step:
     enough that the pull request runs it on its own runner rather than beside the rest.
 
     `fast` says *whether* a pull request runs a step; this field, `frontend`,
-    `suite_a`, `suite_b`, `suite_c`, `suite_d`, `geometry`, and `typecheck` say *which
-    pull-request job* runs it. Every sweep is also `fast`, the nine selections complement
-    `--fast`, and `test_the_pull_request_jobs_partition_the_surface` reads the workflow and
-    checks all nine against what CI actually invokes -- so a step cannot land in no job,
+    `suite_a`, `suite_b`, `suite_c`, `suite_d`, `geometry`, `typecheck`, and
+    `measure_verifier` say *which pull-request job* runs it. Every sweep is also `fast`,
+    the ten selections complement `--fast`, and
+    `test_the_pull_request_jobs_partition_the_surface` reads the workflow and checks all ten
+    against what CI actually invokes -- so a step cannot land in no job,
     and no step is paid for twice.
 
     The boundary is a measurement, not a topic. Four steps carry it, and on CI's
@@ -662,6 +664,17 @@ class Step:
 
     BasedPyright is one process that outer ``--jobs`` cannot divide.  This remains part
     of ``--edit`` locally; the flag changes only which required pull-request job owns it.
+    """
+
+    measure_verifier: bool = False
+    """Assigns the clean-room measure verifier's gate to its own pull-request runner.
+
+    It compiles and tests a Rust crate under fat LTO and then drives the binary through
+    the oracle and the mutation controls, and its sources move on most pushes. In
+    `checks` it read 84.4s of a 168.3s tier on run 37098372802 and 45.3s of a 137.93s
+    tier against 140s on run 37131940076, where every step ran about 1.9x slow. On a
+    runner of its own its compile and its controls stop contending with the perimeter
+    and exact verification, and its cost is a tier with its own ceiling.
     """
 
     geometry: bool = False
@@ -804,6 +817,8 @@ class Step:
             tags.append("suite-d")
         elif self.typecheck:
             tags.append("typecheck")
+        elif self.measure_verifier:
+            tags.append("measure-verifier")
         elif self.geometry:
             tags.append("geometry")
         elif self.fast:
@@ -3605,9 +3620,9 @@ _WORKBENCH_INPUTS = (
 # tier that has to hold everything a merge would otherwise be the first to check. Since
 # 2026-09-06 a pull request runs it as concurrent jobs rather than one. The current
 # partition is `--checks`, `--frontend`, `--typecheck`, `--geometry`, `--suite-a`,
-# `--suite-b`, `--suite-c`, `--suite-d`, and `--sweeps`, argued on the corresponding
-# `Step` fields; the tier is unchanged and what
-# a pull request waits for is its longest part rather than their sum.
+# `--suite-b`, `--suite-c`, `--suite-d`, `--measure-verifier`, and `--sweeps`, argued on
+# the corresponding `Step` fields; the tier is unchanged and what a pull request waits
+# for is its longest part rather than their sum.
 #
 # The three-way split was the second cut and it was taken on the two-job surface's own
 # measurement (run 34010470187): `checks` 221.70s against `sweeps` 110.66s, badly
@@ -4234,6 +4249,7 @@ STEPS: tuple[Step, ...] = (
         _rust_measure_verifier,
         fast=True,
         broad=True,
+        measure_verifier=True,
         touches=_MEASURE_VERIFIER_SRC,
     ),
     Step(
@@ -5284,17 +5300,18 @@ def _select_steps(
     suite_d: bool = False,
     geometry: bool = False,
     typecheck: bool = False,
+    measure_verifier: bool = False,
     skip: Sequence[str] = (),
 ) -> list[Step]:
     """The steps a tier and its name filters select.
 
     `--checks`, `--frontend`, `--suite-a`, `--suite-b`, `--suite-c`, `--suite-d`, `--sweeps`,
-    `--geometry`, and `--typecheck` are the parts of `--fast`, and they exist because CI runs
-    them as concurrent GitHub jobs. They are a partition by construction here: eight
-    select their placement field and `--checks` selects fast steps marked with none of
-    them. No step can be in two parts or in none.
+    `--geometry`, `--typecheck`, and `--measure-verifier` are the parts of `--fast`, and they
+    exist because CI runs them as concurrent GitHub jobs. They are a partition by
+    construction here: nine select their placement field and `--checks` selects fast
+    steps marked with none of them. No step can be in two parts or in none.
 
-    Nine jobs could have divided the tier with `--only` and `--skip` instead, and that
+    Ten jobs could have divided the tier with `--only` and `--skip` instead, and that
     was rejected on the register rather than on taste. A subset of a tier has no
     declared cost: `--only` reports no tier at all, and `--skip` reports the tier it
     narrowed, so a part-tier run would have been judged against the whole tier's
@@ -5337,6 +5354,8 @@ def _select_steps(
         selected = [step for step in STEPS if step.geometry]
     elif typecheck:
         selected = [step for step in STEPS if step.typecheck]
+    elif measure_verifier:
+        selected = [step for step in STEPS if step.measure_verifier]
     elif checks:
         selected = [
             step
@@ -5351,6 +5370,7 @@ def _select_steps(
                 or step.suite_d
                 or step.geometry
                 or step.typecheck
+                or step.measure_verifier
             )
         ]
     else:
@@ -5878,7 +5898,7 @@ def _parser() -> ArgumentParser:
         "--checks",
         action="store_true",
         help=(
-            "run the part of --fast that is none of the other eight: the Python and Rust "
+            "run the part of --fast that is none of the other nine: the Python and Rust "
             "record checks, and everything that needs the Rust engine"
         ),
     )
@@ -5924,6 +5944,15 @@ def _parser() -> ArgumentParser:
         help=(
             "run the part of --fast that is the type floor; the pull request gives it "
             "a runner of its own"
+        ),
+    )
+    parser.add_argument(
+        "--measure-verifier",
+        action="store_true",
+        help=(
+            "run the part of --fast that lints, tests and builds the clean-room measure "
+            "verifier and holds it to the oracle and the controls; the pull request gives "
+            "it a runner of its own"
         ),
     )
     parser.add_argument(
@@ -6037,6 +6066,7 @@ def _validate_invocation(
     suite_d: bool = False,
     geometry: bool = False,
     typecheck: bool = False,
+    measure_verifier: bool = False,
     since: str | None = None,
     push: bool = False,
     skip: Sequence[str] = (),
@@ -6052,6 +6082,7 @@ def _validate_invocation(
         suite_d,
         geometry,
         typecheck,
+        measure_verifier,
     )
     parts = any(selections)
     narrowed = only or skip or fast or records or edit or parts or since or push
@@ -6059,7 +6090,7 @@ def _validate_invocation(
         raise UsageError(
             "--strict cannot be combined with --only, --skip, --fast, --checks, "
             "--frontend, --suite-a, --suite-b, --suite-c, --suite-d, --sweeps, --geometry, "
-            "--typecheck, --records, --edit, --push, or --since"
+            "--typecheck, --measure-verifier, --records, --edit, --push, or --since"
         )
     if edit and fast:
         raise UsageError(
@@ -6068,14 +6099,14 @@ def _validate_invocation(
     if sum(selections) > 1:
         raise UsageError(
             "--checks, --frontend, --geometry, --suite-a, --suite-b, --suite-c, --suite-d, "
-            "--sweeps and --typecheck are the nine parts of --fast; ask for --fast to run "
-            "them all, or for one of them to run that part"
+            "--sweeps, --typecheck and --measure-verifier are the ten parts of --fast; ask "
+            "for --fast to run them all, or for one of them to run that part"
         )
     if parts and (fast or records or edit or push):
         raise UsageError(
             "--checks, --frontend, --geometry, --suite-a, --suite-b, --suite-c, --suite-d, "
-            "--sweeps and --typecheck are parts of --fast and are not combined with another "
-            "tier; --fast is all nine of them"
+            "--sweeps, --typecheck and --measure-verifier are parts of --fast and are not "
+            "combined with another tier; --fast is all ten of them"
         )
     if push and (fast or records or edit):
         raise UsageError(
@@ -6145,6 +6176,7 @@ def main(argv: Sequence[str] | None = None) -> int:
             suite_d=namespace.suite_d,
             geometry=namespace.geometry,
             typecheck=namespace.typecheck,
+            measure_verifier=namespace.measure_verifier,
             since=namespace.since,
             push=namespace.push,
             skip=namespace.skip,
@@ -6190,6 +6222,7 @@ def main(argv: Sequence[str] | None = None) -> int:
             suite_d=namespace.suite_d,
             geometry=namespace.geometry,
             typecheck=namespace.typecheck,
+            measure_verifier=namespace.measure_verifier,
             skip=namespace.skip,
         )
         selected = _unless_verified(namespace, selected)

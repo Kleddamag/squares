@@ -161,6 +161,33 @@ the core bound of Tier A, the two lemmas of the fixed-angle solver, and the symb
 execution of Tier B are proved in `DESIGN.md` and the module docstrings, and a review of
 them is the other lane of stage 4.
 
+## Method Review and Replay Plan, 2 October 2026
+
+The [method review](../../../../docs/project/reviews/review-2026-10-02-valid7-independent-checker.md)
+found every lemma sound, under premises this cover meets.
+It found one implementation defect, D-1: `tier_b2.nonneg_open` accepts a polynomial
+that vanishes at its one sample point. D-1 is non-blocking for `T-064`, and it is closed
+by a replay staged with `--guard-d1`.
+Its receipts here, written by
+[`devtools.plan_valid7_replay`](../../../devtools/plan_valid7_replay.py) and
+`devtools.replay_receipt`:
+
+- [`receipts/valid7_calibration_x51-52_y25-26.log`](receipts/valid7_calibration_x51-52_y25-26.log)
+  and
+  [`receipts/valid7_calibration_x54-55_y63-64.log`](receipts/valid7_calibration_x54-55_y63-64.log):
+  two centre cells of `run_all.py` V2, 64 roots, with every leaf list equal to the
+  published one
+  ([`valid7_calibration_compare.json`](receipts/valid7_calibration_compare.json)). They
+  took 0.35 and 0.40 of the recorded time, which is wall time in the source’s 32-process
+  pool. The run was launched under the `fork` start method; under the default
+  `forkserver`, the receipt misses the workers’ CPU
+  ([`valid7_calibration_forkserver_x51-52_y25-26.log`](receipts/valid7_calibration_forkserver_x51-52_y25-26.log)).
+- [`receipts/valid7_leaf_recheck_x54-55_y63-64.log`](receipts/valid7_leaf_recheck_x54-55_y63-64.log):
+  `check_record.py` re-certifying every leaf of one cell costs as much as the search.
+- [`receipts/valid7_replay_plan.json`](receipts/valid7_replay_plan.json): the full
+  replay at V2, 540.5 priced hours, about 216 CPU-hours here, in fourteen 4-core shards
+  of about 4 hours each.
+
 <!-- This document follows common-doc-guidelines.md.
 See github.com/jlevy/practical-prose and review guidelines before editing.
 -->

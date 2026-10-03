@@ -1,0 +1,42 @@
+{
+  "kind": "evand-bentz-lean-stage/v1",
+  "ok": true,
+  "problems": [],
+  "upstream": "evand/square-packing 08e8a5faa54c0a7b0bb1cb0134c77d3565ce40c5 s12/",
+  "toolchain": "leanprover/lean4:v4.33.1",
+  "blobs": {
+    "lean/lean-toolchain": "a8afa7d1b02d96f0671eba854a8dc4b416beb473",
+    "lean/lakefile.toml": "3d90112e8d0f492f5d0d18d3a64e57fc04c932e0",
+    "lean/lake-manifest.json": "43e6e5aafbfd523d9ff7b16869798d739d1cd16c",
+    "lean/Sqpack/Basic.lean": "cbfe567fe20c6b81899bd1ed6eb8cbd8611c090b",
+    "lean/Sqpack/Chord.lean": "913bd7dfd7d8804315ba6adf132f95dddd768cc6",
+    "lean/Sqpack/ZeroMargin.lean": "7d40021f619994ac900178c9a7e94f8cb4dcc27f",
+    "lean/Sqpack/D4.lean": "d599b89dba509df9ab33adf2273249a2bc7fa00e",
+    "lean/Sqpack/Cover.lean": "4fd6f59fc9c5943f5f884598e04820fe2ad67395",
+    "lean/Sqpack/S32Data.lean": "b8ea5d9487edc11cb7c801af7f4c1c4724f79be0",
+    "lean/Sqpack/S32.lean": "065a2c43515c363fbfce38bb7efc2e85d4d47578",
+    "lean/Sqpack/MixedMeasure.lean": "196d723865ed62532795cbe229f3eaf2af525079",
+    "lean/Sqpack/BentzData.lean": "74cf901dc4e8bbb321511e7a647229cdcae33210",
+    "lean/Sqpack/Bentz.lean": "fe5cd3b7cc6fc55eaa5c2a3436925db90fef215f",
+    "lean/scripts/gen_s32_data.py": "7b32805f22a9feeab0400460913582c949a861a6",
+    "lean/scripts/gen_bentz_data.py": "62fbcc3b2c18197b67af5ab4da558607a1f0566d",
+    "certificates/k2m3/L4_k02_box7.txt": "e28fabfaa309334983e4e2e33355afbcf758b962",
+    "certificates/k2m3/L4_k02_family.txt": "be71d3dbb0370bd95d39c9c667973aafc7d3e1b2"
+  },
+  "regenerated": {
+    "gen_s32_data": "wrote lean/Sqpack/S32Data.lean: 13085 entries, total 3171350535386, sha256 a0d2d38fc9a585a166b9e06c5069fdae9bdce44ca9fb64dda75abcc99e3c2144",
+    "gen_bentz_data": "wrote regenerate/BentzData.lean: 800 segments, 70 nonzero table entries"
+  },
+  "kernel_escapes": {
+    "\\bsorry\\b": 0,
+    "^\\s*axiom\\b": 0,
+    "\\bnative_decide\\b": 0,
+    "\\bofReduceBool\\b": 0,
+    "\\bimplemented_by\\b": 0,
+    "@\\[extern": 0,
+    "debug\\.skipKernelTC": 0,
+    "\\bunsafe\\b": 0
+  },
+  "probe": "lean/AxiomsBentz.lean",
+  "theorem": "SquarePacking.Bentz.bentz_of_valid7"
+}

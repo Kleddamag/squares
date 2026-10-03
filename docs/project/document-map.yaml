@@ -779,6 +779,7 @@ documents:
   - {path: docs/project/reviews/review-2026-10-02-green-ds7-theorem9.md, role: review, authority: record, lifecycle: retained}
   - {path: docs/project/reviews/review-2026-10-02-wand125-afternoon-certificates.md, role: review, authority: record, lifecycle: retained}
   - {path: docs/project/reviews/review-2026-10-02-s12-rescaled-certificate.md, role: review, authority: record, lifecycle: retained}
+  - {path: docs/project/reviews/review-2026-10-02-valid7-independent-checker.md, role: review, authority: record, lifecycle: retained}
   - path: docs/project/reviews/review-2026-09-28-density-solver-comparison.md
     role: review
     authority: record

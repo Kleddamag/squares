@@ -111,6 +111,7 @@ from devtools import check_n11_optimality_pose_inclusion as pose_tool
 from devtools import check_n17_capacity_one_cover as cover
 from devtools import check_n17_slider_coverage as slider_tool
 from devtools.check_n17_endpoint_feasibility import THETA_LABELS, Box
+from devtools.provenance import provenance
 from sqpack.hull_kernel import n11, node, producer, sequential
 from sqpack.hull_kernel.covers import convex_halfplanes
 from sqpack.hull_kernel.frame import Frame, make_frame
@@ -128,12 +129,8 @@ from sqpack.hull_kernel.geometry import (
 from sqpack.hull_kernel.induction import encode, hull, same, strict_core
 from sqpack.hull_kernel.ownership import ownership
 
-TOOL_SHA256 = hashlib.sha256(Path(__file__).read_bytes()).hexdigest()
 KERNEL_DIR = Path(producer.__file__).resolve().parent
-KERNEL_SHA256 = {
-    path.name: hashlib.sha256(path.read_bytes()).hexdigest()
-    for path in sorted(KERNEL_DIR.glob("*.py"))
-}
+PROVENANCE = provenance(Path(__file__), *sorted(KERNEL_DIR.glob("*.py")))
 SCHEMA = "n17-capture-pilot/v1"
 RADIUS = Q(1, 5000)
 CAP_GRID = 10**12
@@ -1218,8 +1215,10 @@ def run_pilot(
         pilot.resumed = {
             "from": str(resume),
             "round": restored["round"],
-            "sha256": restored["sha256"],
             "settings_then": restored["settings"],
+            "written_by": restored.get("provenance")
+            or {key: restored.get(key) for key in ("tool_sha256", "kernel_sha256")},
+            "changed_since": restored["drift"],
         }
     previous = measured
     for round_index in range(first_round, max_rounds + 1):
@@ -1379,8 +1378,7 @@ def run_pilot(
                 checkpoints / f"checkpoint-round-{round_index:03d}.json.gz",
                 {
                     "schema": f"{SCHEMA}/checkpoint",
-                    "tool_sha256": TOOL_SHA256,
-                    "kernel_sha256": KERNEL_SHA256,
+                    "provenance": PROVENANCE,
                     "settings": {**settings, "max_live": max_live},
                     "round": round_index,
                     "seed": seed,
@@ -1485,20 +1483,30 @@ def write_checkpoint(path: Path, record: Mapping[str, Any]) -> None:
 
 
 def load_checkpoint(path: Path, settings: Mapping[str, Any]) -> dict[str, Any]:
-    """A checkpoint, refused unless this tool and kernel wrote it with these settings.
+    """A checkpoint, refused only when it is not one or was written with other settings.
 
     The live-row cap may differ, so that a run at a higher cap can branch from a lower
-    cap's last round in which no owner reached it; every step before the branch was
-    certified, by the same checker functions, in the process that wrote the checkpoint.
+    cap's last round in which no owner reached it. Every step before the branch was
+    certified, by the checker functions, in the process that wrote the checkpoint, and
+    `replay` certifies the whole node again at the end of the run. The code that wrote it is
+    therefore recorded, not compared: `drift` lists the files of this tool and the kernel
+    whose bytes differ from the writer's, and is None for a checkpoint written before
+    provenance was recorded.
     """
-    raw = gzip.decompress(path.read_bytes())
-    record = json.loads(raw)
+    record = json.loads(gzip.decompress(path.read_bytes()))
     require(record.get("schema") == f"{SCHEMA}/checkpoint", "not a pilot checkpoint")
-    require(record["tool_sha256"] == TOOL_SHA256, "the checkpoint was written by other bytes")
-    require(record["kernel_sha256"] == KERNEL_SHA256, "the kernel changed since the checkpoint")
     then = {key: value for key, value in record["settings"].items() if key != "max_live"}
     require(then == json.loads(json.dumps(dict(settings))), "the checkpoint's settings differ")
-    record["sha256"] = hashlib.sha256(raw).hexdigest()
+    written = record.get("provenance")
+    record["drift"] = (
+        None
+        if written is None
+        else sorted(
+            name
+            for name in {*written["files"], *PROVENANCE["files"]}
+            if written["files"].get(name) != PROVENANCE["files"].get(name)
+        )
+    )
     return record
 
 
@@ -1508,8 +1516,7 @@ def write_partial(path: Path, pilot: Pilot) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     record = {
         "schema": f"{SCHEMA}/partial",
-        "tool_sha256": TOOL_SHA256,
-        "kernel_sha256": KERNEL_SHA256,
+        "provenance": PROVENANCE,
         "endpoint_control": (
             {"held": True, "checked_after": len(pilot.updates) + 1}
             if pilot.endpoint_lost is None
@@ -1806,8 +1813,7 @@ def run(
         "replay": replayed,
         "node_sha256": producer.content_sha256(pilot.node),
         "seed_sha256": producer.content_sha256(pilot.seed),
-        "tool_sha256": TOOL_SHA256,
-        "kernel_sha256": KERNEL_SHA256,
+        "provenance": PROVENANCE,
         "wall_seconds": time.monotonic() - started,
         "process_cpu_seconds": time.process_time() - cpu,
     }

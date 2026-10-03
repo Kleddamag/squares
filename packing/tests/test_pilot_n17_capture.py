@@ -2,7 +2,6 @@
 
 from __future__ import annotations
 
-import hashlib
 import json
 import math
 import time
@@ -13,6 +12,7 @@ from typing import Any
 import pytest
 
 from devtools import pilot_n17_capture as pilot
+from devtools.provenance import git_blob
 from sqpack.hull_kernel import Budget, RefusalError, node, sequential
 from sqpack.hull_kernel.frame import Frame
 from sqpack.hull_kernel.geometry import area2, trig
@@ -44,23 +44,6 @@ def seed_rows(frame: Frame, endpoint: pilot.Endpoint) -> dict[int, list[dict[str
 
 def target(endpoint: pilot.Endpoint, label: int) -> pilot.Target:
     return next(item for item in endpoint.targets if item.label == label)
-
-
-def test_digests_are_read_at_import() -> None:
-    assert hashlib.sha256(Path(pilot.__file__).read_bytes()).hexdigest() == pilot.TOOL_SHA256
-    checkers = {
-        "node.py",
-        "sequential.py",
-        "collision.py",
-        "covers.py",
-        "induction.py",
-        "ownership.py",
-        "sweep.py",
-        "geometry.py",
-        "frame.py",
-        "producer.py",
-    }
-    assert checkers <= set(pilot.KERNEL_SHA256)
 
 
 def test_the_capture_cap_is_the_root_box_enclosure_of_s_star(endpoint: pilot.Endpoint) -> None:
@@ -179,7 +162,7 @@ def test_two_certified_steps_keep_the_endpoint_and_replay_agrees(
     assert replayed["final_state_agrees"] is True
     assert replayed["closure"] is None
     written = json.loads(partial.read_text())
-    assert written["tool_sha256"] == pilot.TOOL_SHA256
+    assert written["provenance"] == pilot.PROVENANCE
     assert [entry["round"] for entry in written["rounds"]] == [0, 1]
     assert len(written["updates"]) == 2
 
@@ -374,9 +357,12 @@ def test_the_review_falsifier_and_the_contraction_start_are_read_from_rounds() -
     assert reading["g_after_start_geometric_mean"] == pytest.approx(0.5)
 
 
-def test_a_checkpoint_resumes_the_next_round_and_refuses_other_settings(
-    endpoint: pilot.Endpoint, frame: Frame, tmp_path: Path
+def test_a_checkpoint_resumes_after_a_comment_only_kernel_change(
+    endpoint: pilot.Endpoint, frame: Frame, tmp_path: Path, monkeypatch: pytest.MonkeyPatch
 ) -> None:
+    """A checkpoint written before a comment was appended to the kernel resumes: the
+    change is recorded as drift, the run continues from the next round, and the whole node
+    replays. Only other settings refuse a resume."""
     boxed, renumbered = pilot.box_frame(frame, endpoint, Q(1, 64))
     settings: dict[str, Any] = {
         "bins": 2,
@@ -390,6 +376,16 @@ def test_a_checkpoint_resumes_the_next_round_and_refuses_other_settings(
     saved = tmp_path / "checkpoint-round-001.json.gz"
     assert saved.exists()
     assert first.endpoint_lost is None
+    # The provenance a fresh import would read after `# a comment` is appended to the
+    # kernel's `__init__.py`, without editing the checkout under a running suite.
+    changed = "packing/src/sqpack/hull_kernel/__init__.py"
+    data = (pilot.KERNEL_DIR / "__init__.py").read_bytes() + b"# a comment\n"
+    after = {
+        **pilot.PROVENANCE,
+        "dirty": True,
+        "files": {**pilot.PROVENANCE["files"], changed: git_blob(data)},
+    }
+    monkeypatch.setattr(pilot, "PROVENANCE", after)
     resumed = pilot.run_pilot(
         boxed,
         renumbered,
@@ -400,10 +396,15 @@ def test_a_checkpoint_resumes_the_next_round_and_refuses_other_settings(
     )
     assert resumed.resumed is not None
     assert resumed.resumed["round"] == 1
+    assert resumed.resumed["changed_since"] == [changed]
+    assert resumed.resumed["written_by"]["files"][changed] != git_blob(data)
     assert resumed.rounds[:2] == first.rounds
     assert resumed.node["steps"][: len(first.node["steps"])] == first.node["steps"]
     assert len(resumed.node["steps"]) == len(first.node["steps"]) + 1
     assert resumed.endpoint_lost is None
+    replayed = pilot.replay(boxed, resumed, max_seconds=120)
+    assert replayed["status"] == "PASS_REPLAYED"
+    assert replayed["final_state_agrees"] is True
     with pytest.raises(RefusalError, match="settings differ"):
         pilot.run_pilot(
             boxed, renumbered, max_rounds=2, resume=saved, **{**settings, "bins": 8}

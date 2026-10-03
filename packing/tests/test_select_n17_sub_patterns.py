@@ -2,7 +2,6 @@
 
 from __future__ import annotations
 
-import hashlib
 import itertools
 import json
 from dataclasses import replace
@@ -14,6 +13,7 @@ import numpy as np
 import pytest
 
 from devtools import select_n17_sub_patterns as selector
+from devtools.provenance import git_blob
 from devtools.select_n17_sub_patterns import (
     MARGIN,
     Budget,
@@ -392,15 +392,18 @@ def test_priority_subset_defers_the_least_crowded() -> None:
 def test_receipts_name_the_bytes_imported_not_the_file_at_write_time(
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch
 ) -> None:
-    imported = selector.MODULE_SHA256
-    assert imported == hashlib.sha256(Path(selector.__file__).read_bytes()).hexdigest()
+    """The provenance is read at import, so a receipt written after the file was edited on
+    disk still names the bytes the run imported (the defect fixed in `1d8577bca`)."""
+    imported = selector.PROVENANCE
+    blob = git_blob(Path(selector.__file__).read_bytes())
+    assert list(imported["files"].values()) == [blob]
     edited = tmp_path / "select_n17_sub_patterns.py"
     _ = edited.write_text("# edited on disk after the run imported the module\n")
     monkeypatch.setattr(selector, "__file__", str(edited))
-    assert run(max_arity=1, tight_sizes=())["module_sha256"] == imported
+    assert run(max_arity=1, tight_sizes=())["provenance"] == imported
     output = tmp_path / "count.json"
     assert main(["--count-only", "--max-arity", "1", "--output", str(output)]) == 0
-    assert json.loads(output.read_text(encoding="utf-8"))["module_sha256"] == imported
+    assert json.loads(output.read_text(encoding="utf-8"))["provenance"] == imported
 
 
 def test_the_finish_places_what_the_short_search_leaves() -> None:

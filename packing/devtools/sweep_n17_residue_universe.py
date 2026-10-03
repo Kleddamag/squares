@@ -19,12 +19,14 @@ pairs. Within a queue, classes go by residue coverage (the residue orbits holdin
 of the class), most first. Arity-8 classes with at most two missing pairs are not queued:
 the arity-8 priority sweep searched them all and the residue holds only those it placed.
 
-Resumable. `plan` writes the queue once (`plan.json`, with its digest in every chunk).
-`sweep` searches it in chunks of a fixed size and writes each chunk's receipt atomically
-when it completes; rerun with the same arguments after a restart and it skips every chunk
-already written. `summary` reads the plan and the chunks: per queue, the classes searched,
-placed and flagged and the hit rate; and the greedy cover of the residue's orbits by the
-flags found so far, with the falsifier of F1's plan (a cover of less than half).
+Resumable. `plan` writes the queue once (`plan.json`, with the flag masks it was planned
+under, which a second `plan` must reproduce). `sweep` searches it in chunks of a fixed
+size and writes each chunk's receipt atomically when it completes; rerun with the same
+arguments after a restart and it skips every chunk already written. `summary` reads the
+plan and the chunks, each of which must hold the plan's queue at its index: per queue, the
+classes searched, placed and flagged and the hit rate; and the greedy cover of the
+residue's orbits by the flags found so far, with the falsifier of F1's plan (a cover of
+less than half).
 """
 
 from __future__ import annotations
@@ -42,6 +44,7 @@ import numpy as np
 from numpy.typing import NDArray
 
 from devtools import select_n17_sub_patterns as selector
+from devtools.provenance import provenance
 
 PLAN_SCHEMA = "n17-residue-universe-plan/v1"
 CHUNK_SCHEMA = "n17-residue-universe-chunk/v1"
@@ -50,7 +53,7 @@ STATUS = (
     "float search, not a certificate: a flag is a class the selector's search with the "
     "finish could not place; the prover must certify it before it excludes anything"
 )
-MODULE_SHA256 = hashlib.sha256(Path(__file__).read_bytes()).hexdigest()
+PROVENANCE = provenance(Path(__file__))
 SCREEN = selector.Budget(starts=12, hops=24, deep_starts=48, deep_hops=48)
 FULL = selector.Budget()
 # The random-first stage: a few random starts on a stream the old search never draws from,
@@ -229,17 +232,26 @@ def write_atomic(path: Path, document: Any) -> None:
 def plan(
     flags_path: Path, directory: Path, *, arities: Sequence[int] = ARITIES
 ) -> dict[str, Any]:
-    """Compute and write the queue once; reuse it if it is already written."""
+    """Compute and write the queue once; reuse it if it was planned under the same flags.
+
+    The flags are compared as the sorted list of canonical masks; a plan written before it
+    recorded them is compared by their count.
+    """
     target = directory / "plan.json"
+    geometry = selector.cover_geometry()
+    flags = load_flags(flags_path, geometry)
     if target.exists():
         written = json.loads(target.read_text(encoding="utf-8"))
-        if written["flags_source"]["sha256"] != digest_of(flags_path):
+        same = (
+            written["flag_masks"] == flags
+            if "flag_masks" in written
+            else written["flags"] == len(flags)
+        )
+        if not same:
             raise ValueError(f"{target} was planned under other flags; use a new directory")
         return written
     clock = time.perf_counter()
-    geometry = selector.cover_geometry()
     endpoint = selector.mask_of(selector.endpoint_pose()["cells"])
-    flags = load_flags(flags_path, geometry)
     residue = make_residue(geometry, flags, endpoint)
     rows = universe(geometry, residue, arities)
     queued, left = make_queue(rows)
@@ -259,8 +271,9 @@ def plan(
         "schema": PLAN_SCHEMA,
         "status": STATUS,
         "design": selector.DEFAULT_DESIGN,
-        "flags_source": {"path": str(flags_path), "sha256": digest_of(flags_path)},
+        "flags_source": {"path": str(flags_path)},
         "flags": len(flags),
+        "flag_masks": flags,
         "residue": {
             "states": int(residue.alive.size),
             "orbits": residue.orbits,
@@ -275,7 +288,7 @@ def plan(
         "queue": [
             [r["mask"], r["arity"], r["missing"], r["coverage"], r["queue"]] for r in queued
         ],
-        "module_sha256": MODULE_SHA256,
+        "provenance": PROVENANCE,
         "seconds": round(time.perf_counter() - clock, 3),
     }
     directory.mkdir(parents=True, exist_ok=True)
@@ -356,7 +369,6 @@ def sweep(
     cache: dict[tuple[int, selector.Budget], selector.Verdict] = {}
     plan_path = directory / "plan.json"
     planned = json.loads(plan_path.read_text(encoding="utf-8"))
-    plan_digest = digest_of(plan_path)
     geometry = geometry or selector.cover_geometry()
     queue = planned["queue"]
     written: list[int] = []
@@ -390,7 +402,6 @@ def sweep(
             {
                 "schema": CHUNK_SCHEMA,
                 "status": STATUS,
-                "plan_sha256": plan_digest,
                 "chunk": index,
                 "chunk_size": chunk,
                 "seed": seed,
@@ -398,8 +409,8 @@ def sweep(
                 "full": budget_record(full),
                 **({} if levers == Levers() else {"levers": levers.record()}),
                 "classes": rows,
-                "module_sha256": MODULE_SHA256,
-                "selector_sha256": selector.MODULE_SHA256,
+                "provenance": PROVENANCE,
+                "selector_provenance": selector.PROVENANCE,
                 "seconds": round(time.perf_counter() - clock, 3),
             },
         )
@@ -447,11 +458,12 @@ def greedy_cover(sets: dict[int, NDArray[np.int64]], orbits: int) -> list[dict[s
 def summary(directory: Path, flags_path: Path) -> dict[str, Any]:
     """Hit rates per queue and the greedy cover of the residue by the flags found so far."""
     planned = json.loads((directory / "plan.json").read_text(encoding="utf-8"))
-    plan_digest = digest_of(directory / "plan.json")
     rows: list[dict[str, Any]] = []
     for path in sorted(directory.glob("chunk-*.json")):
         document = json.loads(path.read_text(encoding="utf-8"))
-        if document["plan_sha256"] != plan_digest:
+        start = document["chunk"] * document["chunk_size"]
+        queued = planned["queue"][start : start + document["chunk_size"]]
+        if [row["mask"] for row in document["classes"]] != [row[0] for row in queued]:
             raise ValueError(f"{path} was written for another plan")
         rows.extend(document["classes"])
     queues = []
@@ -486,7 +498,7 @@ def summary(directory: Path, flags_path: Path) -> dict[str, Any]:
     return {
         "schema": SUMMARY_SCHEMA,
         "status": STATUS,
-        "plan_sha256": plan_digest,
+        "plan": str(directory / "plan.json"),
         "residue_orbits": residue.orbits,
         "searched": len(rows),
         "planned": len(planned["queue"]),
@@ -504,7 +516,7 @@ def summary(directory: Path, flags_path: Path) -> dict[str, Any]:
         "cover_share": removed / residue.orbits if residue.orbits else None,
         "falsifier": "the flags' greedy cover removes less than half of the residue",
         "falsified_so_far": removed < residue.orbits / 2,
-        "module_sha256": MODULE_SHA256,
+        "provenance": PROVENANCE,
     }
 
 

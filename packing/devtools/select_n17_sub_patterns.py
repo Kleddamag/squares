@@ -117,6 +117,7 @@ from scipy.optimize import minimize
 
 from devtools import check_n17_capacity_one_cover as cover
 from devtools.check_n17_endpoint_feasibility import THETA_LABELS
+from devtools.provenance import provenance
 
 SCHEMA = "n17-sub-pattern-selector/v1"
 COUNT_SCHEMA = "n17-sub-pattern-class-count/v1"
@@ -139,9 +140,9 @@ RECHECK_SCHEMA = "n17-sub-pattern-recheck/v1"
 INTERACTION = math.sqrt(2.0) + 1e-9
 ENDPOINT_POSE_TOLERANCE = 1e-12
 TIGHT_HALF_SIDE = 1e-3
-# The bytes this process imported. A receipt written later must not name the file on disk
-# then, which may have been edited while a long run was searching.
-MODULE_SHA256 = hashlib.sha256(Path(__file__).read_bytes()).hexdigest()
+# The bytes this process imported, read now: a receipt written later must not name the file
+# on disk then, which may have been edited while a long run was searching.
+PROVENANCE = provenance(Path(__file__))
 CORNER_X = np.array([-0.5, 0.5, 0.5, -0.5])
 CORNER_Y = np.array([-0.5, -0.5, 0.5, 0.5])
 
@@ -1446,7 +1447,7 @@ def run(
         "flagged": swept["flagged"],
         "survivors_by_arity": by_arity,
         "certification_priority": priority,
-        "module_sha256": MODULE_SHA256,
+        "provenance": PROVENANCE,
     }
     if restrict_from is not None:
         receipt["parameters"]["restrict_to_survivors_from"] = restrict_from
@@ -1597,7 +1598,7 @@ def recheck(
             if row["status"] == "still-flagged"
         ],
         "projections": projections,
-        "module_sha256": MODULE_SHA256,
+        "provenance": PROVENANCE,
         "seconds": round(time.perf_counter() - clock, 3),
     }
 
@@ -1635,7 +1636,7 @@ def count_main(arguments: argparse.Namespace) -> int:
         "levels": count_classes(
             geometry, max_arity=arguments.max_arity, flagged=flagged, window=arguments.window
         ),
-        "module_sha256": MODULE_SHA256,
+        "provenance": PROVENANCE,
         "seconds": round(time.perf_counter() - clock, 3),
     }
     text = json.dumps(record, indent=1, sort_keys=True)

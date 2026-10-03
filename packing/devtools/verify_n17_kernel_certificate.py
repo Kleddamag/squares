@@ -8,8 +8,9 @@ exact polygons, or from a JSON cells file whose SHA-256 the caller states.
 
 What it re-derives, from scratch:
 
-- both objects' digests (the file names) and their canonical JSON; the node's source is
-  the seed; the seed's world is the cells; the mask is the node's;
+- the node's source is the seed (the node names it by the SHA-256 of its canonical JSON,
+  a content id); the seed's world is the cells; the mask is the node's. The saved files'
+  names are names: a file is read whatever it is called and however it is spaced;
 - the seed: every owned point is owned (bisection on the half-angle with an interval
   product bound), every row is the cell cut by the row's legal box;
 - every step's rows: a partition of the half-angle range `[0, 1]` in exact rationals, in
@@ -47,9 +48,10 @@ Modes. Full, the default, checks every row of every step and is what admission r
 `--sample N` checks `N` rows per step drawn by a seeded generator, and every row of the
 closure step: a planning check, not an admission.
 
-The receipt names the seed's and node's digests, the cells' source, the mask, the closure,
-the mode and the counts, this module's SHA-256 read at import, and PASS or FAIL with the
-first failure.
+The receipt names the certificate directory (repository-relative) and the seed's and
+node's content ids, the cells' source, the mask, the closure, the mode and the counts,
+this module's provenance read at import (its Git blob id, the revision and whether it
+differs from it; `devtools.provenance`), and PASS or FAIL with the first failure.
 """
 
 from __future__ import annotations
@@ -68,9 +70,11 @@ from itertools import pairwise
 from pathlib import Path
 from typing import Any
 
+from devtools.provenance import provenance, repository_path
+
 SCHEMA = "n17-certificate-verification/v1"
 KIND = "kernel"
-MODULE_SHA256 = hashlib.sha256(Path(__file__).read_bytes()).hexdigest()
+PROVENANCE = provenance(Path(__file__))
 HULL_LIMIT = 16
 GRID = 2**20
 
@@ -643,15 +647,14 @@ def file_cells(path: Path, sha256: str) -> Cells:
     )
 
 
-def load_object(path: Path, kind: str) -> tuple[dict[str, Any], str]:
-    """A gzipped canonical JSON object named by the SHA-256 of its bytes."""
-    raw = gzip.decompress(path.read_bytes())
-    digest = hashlib.sha256(raw).hexdigest()
-    require(path.name == f"{kind}-{digest}.json.gz", f"{kind} digest mismatch: {digest}")
-    document = json.loads(raw)
+def load_object(path: Path) -> tuple[dict[str, Any], str]:
+    """A gzipped JSON object and its content id, the SHA-256 of its canonical JSON.
+
+    The producer names the file by that id; the name is not read back as a check.
+    """
+    document = json.loads(gzip.decompress(path.read_bytes()))
     canonical = json.dumps(document, sort_keys=True, separators=(",", ":")).encode()
-    require(hashlib.sha256(canonical).hexdigest() == digest, f"{kind} is not canonical JSON")
-    return document, digest
+    return document, hashlib.sha256(canonical).hexdigest()
 
 
 @dataclass
@@ -1117,8 +1120,8 @@ def verify_objects(
     require(
         len(seeds) == 1 and len(nodes) == 1, "the directory must hold one seed and one node"
     )
-    seed, seed_sha = load_object(seeds[0], "seed")
-    node, node_sha = load_object(nodes[0], "node")
+    seed, seed_sha = load_object(seeds[0])
+    node, node_sha = load_object(nodes[0])
     require(node["source"]["sha256"] == seed_sha, "the node's source is not the seed")
     mask = check_frame(seed, node, cells)
     bins = seed["bins"]
@@ -1206,8 +1209,8 @@ def verify(
     receipt: dict[str, Any] = {
         "schema": SCHEMA,
         "verifier": KIND,
-        "verifier_sha256": MODULE_SHA256,
-        "directory": str(directory),
+        "provenance": PROVENANCE,
+        "directory": repository_path(directory),
         "cells_source": cells.source,
         "mode": "full" if sample is None else "sample",
         "sample_rows_per_step": sample,

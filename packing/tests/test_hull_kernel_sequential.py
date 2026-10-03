@@ -4,7 +4,6 @@ from __future__ import annotations
 
 import copy
 import gzip
-import hashlib
 import subprocess
 import sys
 import time
@@ -212,16 +211,11 @@ def test_a_saved_closure_is_certified_by_the_checker_alone(
     assert result["node_sha256"] == tool.content_sha256(production.node)
     with pytest.raises(RefusalError, match="producer is loaded"):
         tool.check_saved(tmp_path, blind_pair)
+    # The file's name is a name, not a check: edited in place under its old name, the node
+    # is refused for what the edit says.
     saved = next(tmp_path.glob("node-*.json.gz"))
     raw = gzip.decompress(saved.read_bytes())
     saved.write_bytes(gzip.compress(raw.replace(b'"closed":true', b'"closed":false')))
-    with pytest.raises(RefusalError, match="digest"):
-        tool.check_saved(tmp_path, blind_pair, require_no_producer=False)
-    edited = raw.replace(b'"closed":true', b'"closed":false')
-    saved.unlink()
-    (tmp_path / f"node-{hashlib.sha256(edited).hexdigest()}.json.gz").write_bytes(
-        gzip.compress(edited)
-    )
     with pytest.raises(RefusalError, match="declared closure differs"):
         tool.check_saved(tmp_path, blind_pair, require_no_producer=False)
 

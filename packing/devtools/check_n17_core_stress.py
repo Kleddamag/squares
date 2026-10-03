@@ -51,6 +51,7 @@ from devtools.check_n17_endpoint_features import (
 )
 from devtools.check_n17_root_certificate import CertificateError, n17_polynomials
 from devtools.check_n17_root_certificate import check as check_root
+from devtools.provenance import provenance
 
 DIMENSION = 52
 FACE_PAIRS = tuple(sorted(PARALLEL_PAIRS))
@@ -1524,7 +1525,7 @@ def main(argv: list[str] | None = None) -> int:
     if not INSTRUMENT_READY:
         return _refuse("instrument_unready")
     started = time.monotonic()
-    instrument_sha256 = hashlib.sha256(Path(__file__).read_bytes()).hexdigest()
+    instrument = provenance(Path(__file__))
     try:
         controls = synthetic_controls()
     except REFUSALS as error:
@@ -1534,7 +1535,7 @@ def main(argv: list[str] | None = None) -> int:
             _encode_receipt(
                 {
                     "schema": "n17-core-stress-controls/v1",
-                    "instrument_sha256": instrument_sha256,
+                    "instrument_provenance": instrument,
                     "controls": controls,
                     "passed": True,
                 }
@@ -1571,7 +1572,7 @@ def main(argv: list[str] | None = None) -> int:
         interval_seconds = time.monotonic() - interval_started
         result = {
             "schema": "n17-core-stress-certificate/v1",
-            "instrument_sha256": instrument_sha256,
+            "instrument_provenance": instrument,
             "root_git_ref": FROZEN_ROOT_REF,
             "endpoint_git_ref": FROZEN_ENDPOINT_REF,
             "feature_git_ref": FROZEN_FEATURE_REF,

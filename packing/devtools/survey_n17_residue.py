@@ -55,7 +55,8 @@ over seeds and rounds, give its placement rate by round under fresh and carried 
 seeded runs start from its exact pose and from perturbed copies, reported apart; and a
 seeded draw of distance-2 states is searched at the same budget.
 
-The receipt records the module's digest at import, the parameters, the population and
+The receipt records the module's provenance at import (`devtools.provenance`), the
+parameters, the population and
 strata, each state's results, the distributions (penetration bands, by Hamming distance,
 minimal arity, the share of new classes), each distinct minimal class with the survivors
 it would remove if certified, and a stratified extrapolation to all surviving orbits:
@@ -82,6 +83,7 @@ import numpy as np
 from numpy.typing import NDArray
 
 from devtools import select_n17_sub_patterns as selector
+from devtools.provenance import provenance
 
 SCHEMA = "n17-residue-survey/v1"
 STATUS = (
@@ -89,7 +91,7 @@ STATUS = (
     "margin, failures are searches that found none, and minimal sub-patterns are "
     "candidates the prover would have to certify"
 )
-MODULE_SHA256 = hashlib.sha256(Path(__file__).read_bytes()).hexdigest()
+PROVENANCE = provenance(Path(__file__))
 REPO = Path(__file__).resolve().parents[2]
 RECEIPTS = "packing/campaign/explorations/X048-session-168-pilots/receipts"
 ARITY7 = f"{RECEIPTS}/selector-arity7-seed1.json"
@@ -1481,8 +1483,8 @@ def main(argv: list[str] | None = None) -> int:
         "design": design,
         "cap": str(selector.cover.U),
         "cells": list(geometry.names),
-        "module_sha256": MODULE_SHA256,
-        "selector_sha256": selector.MODULE_SHA256,
+        "provenance": PROVENANCE,
+        "selector_provenance": selector.PROVENANCE,
         "parameters": {
             "flag_set": arguments.flag_set,
             "flag_receipts": {

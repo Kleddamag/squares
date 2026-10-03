@@ -35,6 +35,7 @@ from pathlib import Path
 from typing import Any
 
 from devtools import check_hull_kernel_mask0 as mask0_tool
+from devtools.provenance import provenance
 from sqpack.hull_kernel import node, sequential
 from sqpack.hull_kernel.frame import Frame
 from sqpack.hull_kernel.geometry import Budget, IncompleteError, RefusalError
@@ -108,23 +109,20 @@ def save_certificate(
 
 
 def load_certificate(directory: Path) -> tuple[dict[str, Any], dict[str, Any], str, str]:
-    """The saved seed and node, each refused unless its bytes are canonical and its file
-    name is the SHA-256 of those bytes."""
-    loaded: list[tuple[dict[str, Any], str]] = []
+    """The saved seed and node, and their content ids (`content_sha256`).
+
+    `save_certificate` names each file by its content id; the name is a name, and a file
+    is read whatever it is called and however its JSON is spaced. The node names its seed
+    by the seed's content id, which the replay's header admission checks.
+    """
+    loaded: list[dict[str, Any]] = []
     for kind in ("seed", "node"):
         found = sorted(directory.glob(f"{kind}-*.json.gz"))
         if len(found) != 1:
             raise RefusalError(f"expected exactly one saved {kind} in {directory}")
-        raw = gzip.decompress(found[0].read_bytes())
-        digest = hashlib.sha256(raw).hexdigest()
-        if found[0].name != f"{kind}-{digest}.json.gz":
-            raise RefusalError(f"saved {kind} differs from the digest it is named by")
-        value = json.loads(raw)
-        if canonical_bytes(value) != raw:
-            raise RefusalError(f"saved {kind} is not in canonical form")
-        loaded.append((value, digest))
-    (seed, seed_sha), (node_object, node_sha) = loaded
-    return seed, node_object, seed_sha, node_sha
+        loaded.append(json.loads(gzip.decompress(found[0].read_bytes())))
+    seed, node_object = loaded
+    return seed, node_object, content_sha256(seed), content_sha256(node_object)
 
 
 def checker_modules() -> dict[str, str]:
@@ -411,7 +409,7 @@ def main(argv: list[str] | None = None) -> int:
         except (ValueError, KeyError, IndexError, TypeError, OSError) as error:
             result = {"status": "REFUSED", "reason": str(error), "excluded_orbits": 0}
         result.update(
-            tool_sha256=hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
+            provenance=provenance(Path(__file__)),
             wall_seconds=time.monotonic() - start,
             process_cpu_seconds=time.process_time() - cpu,
         )
@@ -451,8 +449,7 @@ def main(argv: list[str] | None = None) -> int:
     except (ValueError, KeyError, IndexError, TypeError, OSError) as error:
         result = {"status": "REFUSED", "reason": str(error), "excluded_orbits": 0}
     result.update(
-        kernel_sha256=mask0_tool.kernel_digests(),
-        tool_sha256=hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
+        provenance=provenance(Path(__file__), *sorted(Path(node.__file__).parent.glob("*.py"))),
         wall_seconds=time.monotonic() - start,
         process_cpu_seconds=time.process_time() - cpu,
         wall_ceiling_seconds=args.max_seconds,

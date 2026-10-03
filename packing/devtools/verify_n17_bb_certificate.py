@@ -30,8 +30,12 @@ largest Lagrangian bound over the multipliers that cancel a coefficient, which i
 value); every wall line's constant is at most the recomputed one. The Farkas and bound
 checks then run over the centre boxes and the offset ranges together.
 
-The receipt names the manifest's digest, the cells' source, the pattern, the mode and the
-counts, this module's SHA-256 read at import, and PASS or FAIL with the failures.
+The receipt names the certificate directory (repository-relative) and the manifest's name,
+the cells' source, the pattern, the mode and the counts, this module's provenance read at
+import (its Git blob id, the revision and whether it differs from it;
+`devtools.provenance`), and PASS or FAIL with the failures. The certificate's files are
+named by the SHA-256 of their bytes; the names are names, and a file is read whatever it
+is called.
 """
 
 from __future__ import annotations
@@ -48,9 +52,11 @@ from fractions import Fraction as Q
 from pathlib import Path
 from typing import Any
 
+from devtools.provenance import provenance, repository_path
+
 SCHEMA = "n17-certificate-verification/v1"
 KIND = "branch-and-bound"
-MODULE_SHA256 = hashlib.sha256(Path(__file__).read_bytes()).hexdigest()
+PROVENANCE = provenance(Path(__file__))
 MAX_FAILURES = 50
 
 Point = tuple[Q, Q]
@@ -378,10 +384,7 @@ def file_cells(path: Path, sha256: str) -> Cells:
 
 
 def read_named(directory: Path, name: str) -> Any:
-    data = gzip.decompress((directory / f"{name}.json.gz").read_bytes())
-    if hashlib.sha256(data).hexdigest() != name:
-        raise CertificateError(f"{name}: bytes do not hash to the name")
-    return json.loads(data)
+    return json.loads(gzip.decompress((directory / f"{name}.json.gz").read_bytes()))
 
 
 def manifest_from_readme(directory: Path) -> str:
@@ -1209,8 +1212,8 @@ def verify_certificate(
     receipt: dict[str, Any] = {
         "schema": SCHEMA,
         "verifier": KIND,
-        "verifier_sha256": MODULE_SHA256,
-        "directory": str(directory),
+        "provenance": PROVENANCE,
+        "directory": repository_path(directory),
         "cells_source": cells.source,
         "mode": "full" if mode.full else "sample",
         "sample": None

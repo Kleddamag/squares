@@ -3,24 +3,35 @@
 # entries marked `admitted`; a `pending` entry is a projection, reported on its own line.
 # Every path is repository-relative. Admitting an entry means setting `status: admitted`
 # and naming the review document that admits it in `evidence`.
-schema: n17-certified-sub-patterns/v1
+schema: n17-certified-sub-patterns/v2
 design: ring-3-voronoi-8-tabbed-unique
-# The reviewed digests of the standing verifiers, written separately from the producers.
-# An admitted entry counts only with a full, passing verification by one of these.
+# The standing verifiers, written separately from the producers, at the revisions a review
+# admitted. An admitted entry counts only with a full, passing verification by a listed
+# verifier at a listed revision, or at a later one at which its file is unchanged.
 verifiers:
-  # 26bd5b41: the review verifier retained at 55656158 (W7's receipt). 5c550f7c: the
-  # same obligations with the collision facets and the row cover on homogeneous integers
-  # and the partner covers memoised (e0b66f07b), admitted by the verifier-rewrites review
-  # of 2026-10-03 once its three test conditions were met.
-  kernel:
-    - 26bd5b41a8a3ae66bfb6b597b30d640cc74c7386f654626202743cfc3b521985
-    - 5c550f7c1e4cd1f71039bd8daa4475e91330e3845ca25e50789abadb1e2455c3
-  # 4a93c74c: the reviewed verifier retained at 55656158 (A's receipt). 9ca8df6f: the
-  # same interval-path obligations plus a 2,400-bit enclosure retry and the opt-in Taylor
-  # checks (ff5471e89), admitted by the verifier-rewrites review of 2026-10-03.
-  branch-and-bound:
-    - 4a93c74c4616cb81a87b5276f2f43d88a06fcae991c1d2732ad1152332710155
-    - 9ca8df6f399c11cdbc695bf7e27d436fdbc1b2e72bbaf63a430bb5752af20cbf
+  # The review verifiers retained at 556561586: lane R3's for the kernel (W7's receipt),
+  # lane R4's for the branch and bound (A's receipt).
+  - path: packing/devtools/verify_n17_kernel_certificate.py
+    revision: 556561586095f1eaf7952e32199f40a4d3360d20
+    review: docs/project/reviews/review-2026-10-02-n17-w7-closure.md
+  - path: packing/devtools/verify_n17_bb_certificate.py
+    revision: 556561586095f1eaf7952e32199f40a4d3360d20
+    review: docs/project/reviews/review-2026-10-02-n17-branch-and-bound-certifier.md
+  # The kernel verifier on homogeneous integers with memoised partner covers (e0b66f07b),
+  # and the branch-and-bound verifier with the 2,400-bit enclosure retry and the opt-in
+  # Taylor checks (ff5471e89), both admitted by the verifier-rewrites review of 2026-10-03.
+  - path: packing/devtools/verify_n17_kernel_certificate.py
+    revision: e0b66f07b1d5daa04da0edc07dd591d7c17d9c47
+    review: docs/project/reviews/review-2026-10-03-n17-verifier-rewrites.md
+  - path: packing/devtools/verify_n17_bb_certificate.py
+    revision: ff5471e8902aeab0a9247501e9a3de380619d56a
+    review: docs/project/reviews/review-2026-10-03-n17-verifier-rewrites.md
+  # The kernel verifier on adaptive rows (575795e02): a step's rows partition [0, 1] and
+  # each cites an accepted row that contains it. Admitted by the same review's section 5
+  # once its five condition tests were committed (056de341f; section 5.4).
+  - path: packing/devtools/verify_n17_kernel_certificate.py
+    revision: 575795e029151abc52d892126acd05e23795641d
+    review: docs/project/reviews/review-2026-10-03-n17-verifier-rewrites.md
 entries:
   - name: W7
     cells: [corner-SW, side-N0, side-W0, side-W1, side-W2, interior-SW, interior-W]
@@ -28,13 +39,15 @@ entries:
     # Admitted in exp-249: the saved objects re-certified by the checker alone in a clean
     # worktree at 15df68ab, after a full-row independent re-check of all 3,712 rows.
     receipt: packing/campaign/series/series-000-smoke-and-calibration/results/exp-249-n17-first-certified-sub-patterns/run-001/receipt.json
-    receipt_sha256: 24def832191d386807ad74eea5013875fc0a888f21bbdcb6c3ccd47b7e6846f1
     certificate: packing/campaign/explorations/X048-session-168-pilots/certificates/W7
     status: admitted
     evidence: docs/project/reviews/review-2026-10-02-n17-w7-closure.md
     verification:
       receipt: packing/campaign/explorations/X048-session-168-pilots/certificates/W7/verification.json
-      sha256: c54469973c6b389c743421e1ff510013bcc3cb9e7832241e87b1ed63def7c36d
+      # Written before receipts recorded their verifier: the kernel verifier at 556561586.
+      verifier:
+        path: packing/devtools/verify_n17_kernel_certificate.py
+        revision: 556561586095f1eaf7952e32199f40a4d3360d20
   - name: A
     cells: [interior-SW, interior-NW, interior-W, interior-S, interior-N, interior-SE]
     certifier: branch-and-bound
@@ -43,10 +56,13 @@ entries:
     # (manifest 340492bd). The claim rests on that certificate check, not on the
     # witness-path controls.
     receipt: packing/campaign/series/series-000-smoke-and-calibration/results/exp-249-n17-first-certified-sub-patterns/run-002/receipt.json
-    receipt_sha256: 1b9e06258ece81572d59493cd048c08883d7d662950c9c76d4064e354bdb6301
     certificate: packing/campaign/explorations/X048-session-168-pilots/certificates/A
     status: admitted
     evidence: docs/project/reviews/review-2026-10-02-n17-branch-and-bound-certifier.md
     verification:
       receipt: packing/campaign/explorations/X048-session-168-pilots/certificates/A/verification.json
-      sha256: 6e14b138a1b19a8b5a9afd5fc99c05c3622648b4e33c96c28966b3145df9b0e8
+      # Written before receipts recorded their verifier: the branch-and-bound verifier at
+      # 556561586.
+      verifier:
+        path: packing/devtools/verify_n17_bb_certificate.py
+        revision: 556561586095f1eaf7952e32199f40a4d3360d20

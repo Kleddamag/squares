@@ -102,7 +102,6 @@ def test_the_kernel_verifier_passes_the_blind_pair(tmp_path: Path) -> None:
     assert receipt["mode"] == "full"
     assert receipt["closure"]["kind"] == "all_parent_poses_forbidden"
     assert receipt["counts"]["collision_regions"] > 0
-    assert receipt["verifier_sha256"] == kernel_verifier.MODULE_SHA256
     seed, node = blind_pair_objects()
     assert receipt["certificate"] == {
         "seed_sha256": hashlib.sha256(canonical(seed)).hexdigest(),
@@ -251,9 +250,9 @@ def test_the_w7_fixture_is_what_the_producer_writes() -> None:
     production = producer.produce(
         frame, mask, bins=8, max_rounds=6, budget=budget, node_id="n17-W7-audit-fixture"
     )
-    _, _, seed_digest, node_digest = load_certificate(W7_BINS8)
-    assert hashlib.sha256(canonical_bytes(production.seed)).hexdigest() == seed_digest
-    assert hashlib.sha256(canonical_bytes(production.node)).hexdigest() == node_digest
+    seed, node = w7_stall_objects()
+    assert canonical_bytes(production.seed) == canonical_bytes(seed)
+    assert canonical_bytes(production.node) == canonical_bytes(node)
     # The control for the partner-row test below: the undoctored fixture verifies, as a
     # stall. It lives here, beside the build, so the fast test pays for one replay.
     assert (
@@ -292,16 +291,23 @@ def test_the_kernel_verifier_refuses_a_doctored_closure(
     assert message in receipt["failure"]
 
 
-def test_the_kernel_verifier_refuses_bytes_that_do_not_match_their_name(
-    tmp_path: Path,
-) -> None:
+def test_a_saved_object_is_judged_by_what_it_says_not_by_its_name(tmp_path: Path) -> None:
+    """The saver names files by content id, and the name is not read back: the closure
+    re-spaced under another name verifies, and edited in place it is refused for what the
+    edit says."""
     directory = blind_pair(tmp_path)
     saved = next(directory.glob("node-*.json.gz"))
     raw = gzip.decompress(saved.read_bytes())
-    saved.write_bytes(gzip.compress(raw.replace(b'"closed":true', b'"closed":false')))
+    saved.unlink()
+    renamed = directory / "node-renamed.json.gz"
+    _ = renamed.write_bytes(gzip.compress(json.dumps(json.loads(raw), indent=1).encode()))
+    passed = kernel_verifier.verify(directory, blind_cells(tmp_path))
+    assert passed["status"] == "PASS", passed["failure"]
+    assert passed["certificate"]["node_sha256"] == hashlib.sha256(raw).hexdigest()
+    _ = renamed.write_bytes(gzip.compress(raw.replace(b'"closed":true', b'"closed":false')))
     receipt = kernel_verifier.verify(directory, blind_cells(tmp_path))
     assert receipt["status"] == "FAIL"
-    assert "digest" in receipt["failure"]
+    assert "closed flags" in receipt["failure"]
     with pytest.raises(kernel_verifier.VerificationError, match="digest"):
         _ = kernel_verifier.file_cells(tmp_path / "cells.json", "0" * 64)
 
@@ -970,7 +976,6 @@ def test_the_bb_verifier_passes_the_round_trip_certificate(
     assert receipt["mode"] == "full"
     assert receipt["checked_nodes"] == receipt["nodes"] > 1
     assert receipt["pattern"] == list(ROW)
-    assert receipt["verifier_sha256"] == bb_verifier.MODULE_SHA256
 
 
 def read_named(directory: Path, name: str) -> Any:

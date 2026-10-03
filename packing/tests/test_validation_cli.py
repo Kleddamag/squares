@@ -33,11 +33,13 @@ from tests import site_browser
 #: (proved, open) at each corpus the frontier-corpus step has summarized. 2026-10-02: the
 #: replayed zmx2 sweeps of the s(60) and s(59) mixed covers (T-062, T-063, T-066) proved
 #: n = 59, 60 and 61 in the formal lane, three more in every corpus; later that day the
-#: completed sweeps of the s(77) cover (T-067) proved n = 77 and 78, two more.
+#: completed sweeps of the s(77) cover (T-067) proved n = 77 and 78, two more. 2026-10-03:
+#: the full Valid7 replay and the built Lean reduction (T-064) proved n = 97, 118, 141,
+#: 166, 193, 222, 253, 286 and 321, which meets the reported lane at every corpus.
 FRONTIER_LANE_SPLIT: dict[str, tuple[int, int]] = {
-    "n=1..100": (44, 56),
-    "n=1..200": (56, 144),
-    "n=1..324": (68, 256),
+    "n=1..100": (45, 55),
+    "n=1..200": (61, 139),
+    "n=1..324": (77, 247),
 }
 
 # Source-reported closures from T-062 to T-064, and T-066 and T-067 at n = 59 and 77,

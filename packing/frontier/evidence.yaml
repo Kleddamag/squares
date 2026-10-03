@@ -336,8 +336,139 @@ evidence:
       uncertified, and the code each record's header names is the code retained. That is a
       record check that re-certifies 2,000 sampled Tier A and 300 Tier B leaves, a
       diagnostic and not a replay: the other 9.6 million leaves stand on the labels the run
-      gave them. The method, in DESIGN.md and the module docstrings, has not been reviewed
-      here, and there is no Lean proof of Valid7.
+      gave them. There is no Lean proof of Valid7.
+      The method, in DESIGN.md and every module of src/, was reviewed on 2 October
+      (docs/project/reviews/review-2026-10-02-valid7-independent-checker.md, lane Y) and
+      found sound, with one implementation defect, D-1: tier_b2.nonneg_open accepts a
+      polynomial that vanishes at its one rational sample point, so it can accept a piece
+      on which the polynomial is negative elsewhere. D-1 cannot make a true Valid7 fail,
+      and it could hide a counterexample only where the mass touches 1 from below at
+      exactly the sample, an algebraic coincidence; the records keep counts, not pieces,
+      so they cannot show whether it arose. It is non-blocking for T-064, whose Valid7 is
+      replayed by Daniel's checker (E-k2m3-evand-valid7-qx2-replay), and it blocks this
+      run from counting as confirming evidence until a replay with the line guarded
+      (plan_valid7_replay stage --guard-d1) or the author's fix. The review's other
+      findings, D-2 to D-4, are non-blocking, and F-6 notes that the 626 core-hours are
+      wall time.
+    external_review:
+      state: informally-verified
+      date: '2026-10-02'
+      reviewed_by: >-
+        Claude (AI review; model unstated), method-review lane Y of the 2 October W2 phase,
+        separately prompted
+        (docs/project/reviews/review-2026-10-02-valid7-independent-checker.md)
+      note: >-
+        The method is sound, with one implementation defect, D-1, in the exact positivity
+        test, non-blocking for the claim and closed by a guarded replay or the author's
+        fix. The checker's independence from Daniel's code is declared and consistent with
+        everything the files let anyone check.
+    source_reviewed: '2026-10-02'
+
+  - id: E-k2m3-evand-valid7-qx2-replay
+    claim: lower-bound
+    scope: {n_values: [33, 46, 61, 78, 97, 118, 141, 166, 193, 222, 253, 286, 321]}
+    assurance: verified
+    method: exact-algebraic
+    performed_by: repository
+    relationship_to_generator: same-implementation
+    origin: replayed-here
+    novelty: previously-published
+    source_key: '[evand square-packing 2026-10-01]'
+    certificate: resources/web/evand-square-packing-2026-10-01/source/s12/certificates/k2m3/L4_k02_box7.txt
+    replay: >-
+      From packing/: .venv/bin/python3 -m devtools.plan_valid7_replay stage --checker qx2
+      --work W, which copies the retained qx2_zm.py, zm_mixed.py, zeromargin.py,
+      mixed_cover.py and the cover into W and refuses any file whose SHA-256 is not the one
+      run V3's header names; then, in W, the two shards of
+      receipts/valid7/qx2_replay_plan.json, four region-restricted runs of .venv/bin/python3
+      checker/qx2_zm.py L4_k02_box7.txt --depth 18 --nproc 4 --exact-umax 1/2 --exact-from
+      3 with --resume and --dump-leaves, each resumable; then .venv/bin/python3 -m
+      devtools.plan_valid7_replay compare --checker qx2 on the four records, which must
+      report ok with all 9,800 roots matching the published leaves. The theta = 0 face,
+      Lemma Z, is checked by qx2_zm.py axis against the shipped lemmaZ.out, which the
+      source's fast verify.sh run here does (receipts/valid7/k2m3_verify_fast.log).
+    replay_status: passed
+    proof:
+      source: packing/resources/web/evand-square-packing-2026-10-01/source/s12/certificates/k2m3/README.md
+      theorem: 'Valid7: every closed unit square in [0,7]^2, at every centre and every angle, has mass at least 1 under the k = 7 measure L4_k02_box7.txt.'
+      scope: Every closed unit square in the closed container [0,7]^2, any rotation, the D4 region of centres and u = tan(theta/2) in [0, 1/2] after the cover's D4 invariance, which the checker verifies before folding.
+      pinpoints: >-
+        The k2m3 README's lemmas (Lemma E and its variants, the McCormick bound, Lemma Z for
+        theta = 0); qx2_zm.py at 6294052a, zm_mixed.py, zeromargin.py and mixed_cover.py
+        under the digests run V3 names; the published record
+        qx2_zm/runV3_6294052a_leaves.jsonl.gz; the four shard records and
+        qx2_replay_compare.json in receipts/valid7/ of the 2026-10-01 evand packet.
+      assumptions:
+        - The cover file is the measure the Lean statement's box7Cover names, verbatim; its D4 invariance is checked by the checker before the domain is folded.
+        - Every acceptance of qx2_zm.py is an exact Fraction decision or an exact enumeration (Lemma Z at theta = 0), with no decision on a floating-point comparison.
+      audit_record: docs/project/reviews/review-2026-10-01-evand-mathematical-transfer.md
+    limitations: >-
+      Replays Evan Daniel's exact-rational qx2_zm.py, the source's own checker of Valid7,
+      on the retained cover in full on 2 and 3 October 2026, in two shards of two
+      region-restricted runs each on 4-core cloud runners, resumed from their own records
+      after interruptions (the retry logs are kept): together 9,800 roots, 54,358 boxes and
+      32,079 leaves, none uncertified, every run VERIFIED-D4, about 25.6 CPU-hours by the
+      checker's own count against the published 22.6. devtools.plan_valid7_replay compare
+      found every root recorded once, exactly the published roots, and each root's leaf
+      list equal to run V3's (receipts/valid7/qx2_replay_compare.json). It is the source's
+      code on the source's cover, a same-implementation replay; it is not wand125's
+      independent checker, whose run is reported and not replayed here. Valid7 is the one
+      hypothesis of the Lean reduction (E-k2m3-evand-bentz-lean-build), and this replay
+      discharges it for this cover; it says nothing about the reduction itself. No
+      mutated-cover control of qx2_zm.py was run here: wand125's three lighter covers are
+      not D4-invariant, and qx2_zm.py refuses them at load, which is no test of its
+      coverage; the source reports a D4-symmetric mutant refused at its tight germ. The
+      controls here are the comparison's own: a faithful shard passes and each injected
+      fault is named (tests/test_plan_valid7_replay.py).
+    source_reviewed: '2026-10-02'
+
+  - id: E-k2m3-evand-bentz-lean-build
+    claim: exact-value
+    scope: {n_values: [33, 46, 61, 78, 97, 118, 141, 166, 193, 222, 253, 286, 321]}
+    assurance: verified
+    method: proof-assistant-checked
+    performed_by: repository
+    relationship_to_generator: same-implementation
+    origin: replayed-here
+    novelty: previously-published
+    source_key: '[evand square-packing 2026-10-01]'
+    certificate: resources/web/evand-square-packing-2026-10-01/source/s12/lean/Sqpack/Bentz.lean
+    replay: >-
+      From packing/: .venv/bin/python3 -m devtools.stage_evand_bentz_lean --out W --json
+      W/stage.json, which assembles the import closure from retained bytes and regenerates
+      S32Data.lean and BentzData.lean; then, with elan and the pinned
+      leanprover/lean4:v4.33.1, in W/s12/lean: lake exe cache get, env LEAN_NUM_THREADS=1
+      lake build Sqpack.Bentz, and lake env lean AxiomsBentz.lean, which must print that
+      bentz_of_valid7, valid_of_valid7, box7Cover_measure, famCover_total and mass_shift
+      depend on axioms [propext, Classical.choice, Quot.sound]. The receipts are
+      receipts/lean/build_bentz.log and axioms_bentz.log in the 2026-10-01 evand packet.
+    replay_status: passed
+    axioms_receipt: packing/resources/web/evand-square-packing-2026-10-01/receipts/lean/axioms_bentz.log
+    proof:
+      source: packing/resources/web/evand-square-packing-2026-10-01/source/s12/lean/Sqpack/Bentz.lean
+      theorem: 'SquarePacking.Bentz.bentz_of_valid7 (h : Valid7) : for every k >= 6, minSide (k^2 - 3) = k, where minSide n is the infimum of the sides s of the closed square [0,s]^2 holding n closed unit squares with arbitrary independent rotations and pairwise disjoint open interiors.'
+      scope: Unrestricted square packing with disjoint interiors and boundary contact allowed, for every k >= 6, under the one hypothesis Valid7.
+      pinpoints: >-
+        Sqpack/Bentz.lean (Valid7, box7Cover, bentz_of_valid7 by not_packs_of_measure and
+        packs_grid); Sqpack/BentzData.lean, regenerated byte for byte from the cover;
+        Sqpack/MixedMeasure.lean (segMeasure, areaMeasure, MixedCover.measure);
+        Sqpack/Basic.lean (coord, sq, box, Packs, minSide); the build and axiom receipts.
+      assumptions:
+        - Valid7, the theorem's one hypothesis, for the k = 7 cover; it is not proved in Lean and is discharged for this cover by E-k2m3-evand-valid7-qx2-replay.
+        - The Lean kernel of leanprover/lean4 v4.33.1 and Mathlib 0df444a3 from the official cache are sound; with the definitions read for the 2 October review, that is the trusted base. The finite cover facts (box7Cover_measure, famCover_total, nonnegativity, mass_shift) are kernel-checked by decide +kernel, not assumed.
+      audit_record: docs/project/reviews/review-2026-10-02-valid7-independent-checker.md
+    limitations: >-
+      Built here on 2 October 2026 by lane LL from the closure stage_evand_bentz_lean
+      assembled (ten project modules and Mathlib), every staged file with the Git blob of
+      the source's 08e8a5fa tree: lake build Sqpack.Bentz exit 0 over 8,715 jobs on
+      leanprover/lean4:v4.33.1 with Mathlib's official cache, single-threaded, with a peak
+      above 13 GB that needed swap on a 16 GB host. The five theorems print only propext,
+      Classical.choice and Quot.sound. It proves that Valid7 implies s(k^2 - 3) = k for
+      every k >= 6, and nothing about Valid7: alone it is a conditional theorem, and with
+      E-k2m3-evand-valid7-qx2-replay it gives the lower half for the cover the statement
+      names. The project sources contain no sorry, axiom, native_decide, ofReduceBool,
+      implemented_by, extern or unsafe outside comments. The 2 October review read the
+      statement and its definitions; no human formalization review is retained.
     source_reviewed: '2026-10-02'
   - id: E-n011-global-optimality-report
     claim: lower-bound
@@ -3880,11 +4011,11 @@ evidence:
         lambda = 1 to estimate the minimum". That last is geometrically evident and is the
         only place the argument leans on something unargued. This promotes nothing: the
         method stays `published-proof`, and `proof-assistant-checked` is a different thing.
-        Separately `devtools/check_nagamochi_bounds.py` re-derives the 30 operative
+        Separately `devtools/check_nagamochi_bounds.py` re-derives the 29 operative
         verified-field values from Theorem 2 in the gate, so a transcription slip in a
         current bound is caught even though the proof behind them is not machine-checked.
         95 of the hundred case records cite this record and it supplies the operative
-        verified lower bound in 30 of them; the other 65 citations are historical or
+        verified lower bound in 29 of them; the other 66 citations are historical or
         reported context, and a citation count is not a count of current bounds.
     limitations: External published proof; its arithmetic is not independently replayed here.
     source_reviewed: '2026-08-24'

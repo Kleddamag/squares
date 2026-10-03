@@ -215,6 +215,33 @@ explains each of these; none is a complete replay of either checker.
   packet’s $s(32)$ cover. It was not built: this container lacked the disk for the
   toolchain and Mathlib’s cache.
 
+## Full Replay of `Valid7` Here, 2 and 3 October 2026
+
+Daniel’s `qx2_zm.py` was replayed in full on the retained cover, in the two shards of
+[`qx2_replay_plan.json`](receipts/valid7/qx2_replay_plan.json), each run staged by
+`devtools.plan_valid7_replay stage` from the digest-checked retained checker and cover,
+on 4-core cloud runners.
+Each shard is two region-restricted runs with run V3’s settings, resumed from its own
+record after interruptions; every attempt’s receipt is kept (`*_try2.log` to
+`*_try4.log`).
+
+- **Records:** [`qx2_shard01_1.jsonl.gz`](receipts/valid7/qx2_shard01_1.jsonl.gz),
+  [`qx2_shard01_2.jsonl.gz`](receipts/valid7/qx2_shard01_2.jsonl.gz),
+  [`qx2_shard02_1.jsonl.gz`](receipts/valid7/qx2_shard02_1.jsonl.gz) and
+  [`qx2_shard02_2.jsonl.gz`](receipts/valid7/qx2_shard02_2.jsonl.gz), with a `.log`
+  receipt for each run. Every run reports `VERIFIED-D4` with no uncertified box: 54,358
+  boxes in all, the published count, and about 25.6 CPU-hours by the checker’s own count.
+- **Comparison:** `devtools.plan_valid7_replay compare --checker qx2` on the four records
+  ([`qx2_replay_compare.json`](receipts/valid7/qx2_replay_compare.json)): `ok`, every
+  root recorded once, exactly the 9,800 published roots, and each root’s leaf list equal
+  to run V3’s, 32,079 leaves.
+- **The axis face:** Lemma Z, $\theta = 0$, is decided by the exact enumeration
+  `qx2_zm.py axis`, which the fast `verify.sh` above re-ran identical to `lemmaZ.out`.
+
+This is the source’s checker on the source’s cover, a same-implementation replay. It
+discharges `Valid7` for this cover, the one hypothesis of the reduction built below, so
+the two give `T-064`’s lower half. wand125’s independent checker was not replayed.
+
 ## Lean Build Here, 2 October 2026
 
 `T-064`'s Lean reduction, `SquarePacking.Bentz.bentz_of_valid7 : Valid7 → ∀ k ≥ 6, minSide (k² − 3) = k`,
@@ -248,7 +275,9 @@ came from `lake exe cache get` (8,690 files).
 ## Compressed Files
 
 Five `s60` files have more than 1,000 lines and were compressed locally with `gzip -9n`,
-and so were three replay receipts of 2 October, the rows whose origin is `receipt`:
+and so were three replay receipts of 2 October and the four `Valid7` shard records of 2
+and 3 October, the rows whose origin is `receipt`, whose byte totals below exclude the
+shard records:
 38,022,279 bytes upstream, 2,210,505 stored.
 Each row gives the Git blob and SHA-256 of the decompressed upstream bytes, as produced
 by `devtools.retained_data.describe`. `gunzip -k` on a stored file restores the upstream
@@ -264,6 +293,10 @@ file beside it.
 | `receipts/s60_zmx2_full.log.gz` | receipt | `6cae3dd180d1eec4e088e0a05d953da86492a40d` | `f8843b53108141c626fcb7332fd3c8ca999dd182ac9090aa4712fe9f3286215c` |
 | `receipts/s60_zmx2_d4_roots.log.gz` | receipt | `58a884336118da5db3253947e81dec54d1e71be0` | `58f90b89e220fa5ef623ae75a7b48e3bdfe8d6ce5e5181a8f8f96afd0342edf3` |
 | `receipts/s60_zmx2_full_roots.log.gz` | receipt | `06fad9c541064734aff448a375d77d22363d1190` | `c3ed66ea3c1ee768f48a0e4e5281647907fb36e8ca81d4dd69d256621ecd26c7` |
+| `receipts/valid7/qx2_shard01_1.jsonl.gz` | receipt | `06a8a0b0bd08c846ce5b4c6256837df93e7963a1` | `e81eafee58fbfd37c8b0ff90e9d7b868a6601f836a8846a27f1b8771b2d068e4` |
+| `receipts/valid7/qx2_shard01_2.jsonl.gz` | receipt | `c405ead3f4e5902026e362464d1671faeab43ad2` | `0f548964a4891601cb083aba2f0cb00cf675a07105b07a2311d0bda88cdfbbae` |
+| `receipts/valid7/qx2_shard02_1.jsonl.gz` | receipt | `28876588bbc146887d7ea62ac05a6ac05bf9a3e3` | `2bb8c407c0b4237ef9a9cdbaaa600bc224a1d41268e854cae1fba80f40044098` |
+| `receipts/valid7/qx2_shard02_2.jsonl.gz` | receipt | `695eba8e753c2e542dcdf460504d2d9f5b8e374e` | `79e640b1e6066c1857cdc42fde7cd3edcc11a4ecec87214b28b9f13f25d4ee9d` |
 
 Two files were compressed by the source and are stored verbatim, so their *compressed*
 bytes match the raw Git blob in the source manifest:

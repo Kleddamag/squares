@@ -3,15 +3,19 @@ type: is
 id: is-01m3ys11k8svw9337p3gsj48rf
 title: "Answer #308: Green's DS7 Theorem 9 not established for k >= 4 (after think-abie's triage)"
 kind: task
-status: open
+status: closed
 priority: 2
-version: 2
+version: 3
 labels:
   - result-import
 dependencies: []
 parent_id: is-01m41csdc2gp36ry5p6n7c2x2y
 created_at: 2026-10-02T17:01:42.376Z
-updated_at: 2026-10-03T17:26:37.275Z
+updated_at: 2026-10-03T18:49:15.085Z
+closed_at: 2026-10-03T18:49:15.084Z
+close_reason: null
+resolution: null
+duplicate_of: null
 ---
 Answer jlevy/squares#308 (wand125, opened 2026-10-02): E-green-ds7-theorem9-reported-lower (DS7 Theorem 9, Green): the published argument does not establish s(k²+1) ≥ G_k for k ≥ 4
 

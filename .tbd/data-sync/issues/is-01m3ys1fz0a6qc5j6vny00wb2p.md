@@ -3,15 +3,19 @@ type: is
 id: is-01m3ys1fz0a6qc5j6vny00wb2p
 title: "Answer #227: follow up the T-056 replies (V3/C3, links on main), then close"
 kind: task
-status: open
+status: closed
 priority: 1
-version: 2
+version: 3
 labels:
   - result-import
 dependencies: []
 parent_id: is-01m41csdc2gp36ry5p6n7c2x2y
 created_at: 2026-10-02T17:01:57.088Z
-updated_at: 2026-10-03T17:26:22.262Z
+updated_at: 2026-10-03T18:49:14.014Z
+closed_at: 2026-10-03T18:49:14.013Z
+close_reason: null
+resolution: null
+duplicate_of: null
 ---
 Answer jlevy/squares#227 (franciscouzo, opened 2026-09-23): 102 and 103
 

@@ -258,7 +258,8 @@ def test_a_clipped_block_is_named_with_how_far_it_runs_past_each_side() -> None:
 def test_a_shot_is_named_for_its_page_and_fragment() -> None:
     assert shot_stem("index.html") == "index"
     assert shot_stem("workbench/index.html") == "workbench"
-    assert shot_stem("cases.html#n-11") == "cases-n-11"
+    assert shot_stem("cases/index.html#n-11") == "cases-n-11"
+    assert shot_stem("frontier.html#n-11") == "frontier-n-11"
     assert shot_stem("papers/n11-optimality-review.html") == "papers-n11-optimality-review"
 
 
@@ -269,7 +270,7 @@ def test_a_shot_is_named_for_its_width_scheme_and_press() -> None:
     assert shot_name("index.html", 390, "light") == "index-390.png"
     assert shot_name("index.html", 390, "dark") == "index-390-dark.png"
     assert shot_name("frontier.html", 1280, "dark", 1) == "frontier-1280-dark-press1.png"
-    assert shot_name("cases.html#n-11", 1280, "light", 2) == "cases-n-11-1280-press2.png"
+    assert shot_name("cases/index.html#n-11", 1280, "light", 2) == "cases-n-11-1280-press2.png"
     assert SCHEMES == ("light", "dark")
 
 
@@ -499,7 +500,12 @@ def test_only_a_page_that_starts_a_film_is_opened_under_reduced_motion() -> None
     motion."""
     assert motion_for("visualize.html") == "reduce"
     assert motion_for("visualize.html#film") == "reduce"
-    for name in ("index.html", "frontier.html", "workbench/index.html", "cases.html#n-11"):
+    for name in (
+        "index.html",
+        "frontier.html",
+        "workbench/index.html",
+        "cases/index.html#n-11",
+    ):
         assert motion_for(name) == "no-preference", name
 
 

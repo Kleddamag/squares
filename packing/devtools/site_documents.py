@@ -184,7 +184,7 @@ RECORD_PAGES: dict[str, str] = {
     repo_links.STATUS: "frontier.html",
 }
 #: Where every case's record is served, one address per case (`render_case_pages`).
-CASES_PAGE = "cases.html"
+CASES_DIR = "cases"
 _CASE_FILE = re.compile(r"packing/frontier/n-(\d{3})\.md")
 #: A link as kpress writes one, with its text plain or one code span.
 _TEXT_LINK = re.compile(r'<a href="([^"]*)">(<code>)?([^<]*)(</code>)?</a>')
@@ -297,7 +297,7 @@ def record_aliases(tree: RepositoryTree) -> dict[str, str]:
     results register and the status table (`RECORD_PAGES`), and each case file in `tree`
     to that case's record."""
     cases = {
-        path: f"{CASES_PAGE}#n-{int(match.group(1))}"
+        path: f"{CASES_DIR}/{int(match.group(1))}.html"
         for path in tree.files
         if (match := _CASE_FILE.fullmatch(path))
     }

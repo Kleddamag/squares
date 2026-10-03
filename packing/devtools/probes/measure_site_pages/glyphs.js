@@ -116,7 +116,7 @@
   const chrome =
     "nav, figure, figcaption, table, blockquote, details, [popover], .kpress-toc, .hero, " +
     ".site-hero, .site-card, .kpress-footnotes, .credits, .colophon, .site-colophon, " +
-    ".panel, .site-ladders, .doc-links, .site-case-records, .kpress-tooltip";
+    ".panel, .site-ladders, .doc-links, .site-case-reader, .kpress-tooltip";
   /** @type {[string, string, string?][]} */
   const roles = [
     ["nav name", ".site-name-text"],
@@ -196,7 +196,7 @@
     [".site-card-value", "card headline"],
     [".site-card-note", "card note"],
     [".site-popover-value", "popover headline"],
-    [".site-atlas-pop", "atlas popover"],
+    [".site-atlas-pop", "visual summary"],
     [".site-popover", "popover"],
     [".site-chip", "chip"],
     [".site-nav", "nav"],
@@ -206,7 +206,7 @@
     [".panel, .tip-panel, .mass-line", "panel"],
     [".site-case-head", "case head"],
     [".site-case-bounds", "case bounds"],
-    [".site-case-more", "case detail"],
+    [".site-case-data", "case detail"],
     ["summary", "summary"],
     ["details", "details"],
     ["th", "table head"],

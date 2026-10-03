@@ -166,3 +166,43 @@ def test_the_design_document_carries_the_measured_scale(
         f"{lowest['light']:.1f}:1 or better in light mode and "
         f"{lowest['dark']:.1f}:1 or better in dark"
     ) in " ".join(design.split())
+
+
+def test_the_status_chips_take_fills_from_the_scale() -> None:
+    """A status chip's fill is the rung scale's at its own hue and level (the owner,
+    2026-10-02, `think-c19o`): a result's `confirmed` the green of the confirmation
+    rungs at C3's strength, its `reviewed` the verification rungs' blue, a case's
+    `proved` a green and its `open` a yellow. Each is in gamut with the page's text at
+    WCAG AA or better on it in both themes, and the one `oklch()` that makes them is the
+    status rule's, so no status has a colour of its own."""
+    statuses = rung_scale.status_fills()
+    assert {fill.rung for fill in statuses} == {"confirmed", "reviewed", "proved", "open"}
+    assert {fill.theme for fill in statuses} == set(rung_scale.THEMES)
+    for fill in statuses:
+        assert fill.in_gamut, fill
+        assert fill.contrast >= rung_scale.MINIMUM_CONTRAST, fill
+    hues = {fill.rung: fill.hue for fill in statuses}
+    ladders = rung_scale.ladder_tokens()
+    assert hues["confirmed"] == float(ladders["C"]["--rung-hue"])
+    assert hues["reviewed"] == float(ladders["V"]["--rung-hue"])
+    assert 130 <= hues["proved"] <= 160
+    assert 80 <= hues["open"] <= 110
+    confirmed = {fill.theme: fill for fill in statuses if fill.rung == "confirmed"}
+    for fill in rung_scale.fills():
+        if fill.rung == "C3":
+            assert (fill.lightness, fill.chroma) == pytest.approx(
+                (confirmed[fill.theme].lightness, confirmed[fill.theme].chroma)
+            )
+    css = render_overview.SITE_CSS.read_text(encoding="utf-8")
+    start = css.index(".site-chip:is([data-case-status]")
+    rules = css[start : css.index("\n/*", start)]
+    assert rules.count("oklch(") == 1
+    assert "#" not in rules
+    assert 'data-tone="accent"' not in css
+
+
+def test_the_design_document_carries_the_status_fills() -> None:
+    """The status table in `paper-design.md` is this tool's output."""
+    design = (render_overview.TEMPLATES / "paper-design.md").read_text(encoding="utf-8")
+    for line in rung_scale.markdown_table(rung_scale.status_fills(), "Status").splitlines():
+        assert line in design, line

@@ -36,7 +36,6 @@ from tests import site_renders
 PROBES = Path(__file__).resolve().parent / "probes"
 PRESSED = probe(PROBES, "site_atlas_views/pressed")
 INTERRUPTED = probe(PROBES, "site_atlas_views/interrupted")
-POPOVER = probe(PROBES, "site_atlas_views/popover")
 WATCH = probe(PROBES, "site_atlas_views/watch")
 SEEN = probe(PROBES, "site_atlas_views/seen")
 ACTIONS = probe(PROBES, "site_atlas_views/actions")
@@ -146,11 +145,13 @@ def _desktop(browser: Any, address: str) -> Readings:
     cell.hover()
     page.wait_for_timeout(SETTLE_MS)
     seen["tile hovered"] = page.evaluate(DRAWING, {"holder": CELL})
-    cell.click()
-    page.locator("[data-atlas-popover]:popover-open").wait_for()
-    seen["popover"] = page.evaluate(POPOVER)
-    page.keyboard.press("Escape")
-    seen["popover closed"] = page.evaluate(POPOVER)
+    # A tile opens its case's record in the case popover, which fetches the record, so
+    # that is held where the records are served (`test_site_case_records`); from a file,
+    # a tile is the link to that record the popover opens.
+    seen["tile link"] = {
+        "href": cell.get_attribute("href"),
+        "case": cell.get_attribute("data-case"),
+    }
 
     # The expander is under the triangle, below the window: brought into it, as a reader
     # who presses it has it, so what follows the tiles is seen to move with them.
@@ -547,9 +548,5 @@ def test_the_expander_reads_show_more_then_show_less_with_the_chevron_turned(
     assert closed["controls"] == opened["controls"] == "atlas-cells"
 
 
-def test_a_triangle_tile_opens_the_atlas_popover_and_takes_the_focus_back(
-    seen: Readings,
-) -> None:
-    assert seen["popover"]["open"]
-    assert seen["popover"]["title"] == "n = 11"
-    assert seen["popover closed"] == {"open": False, "title": "n = 11", "focus": "11"}
+def test_a_triangle_tile_is_the_link_to_its_case_record(seen: Readings) -> None:
+    assert seen["tile link"] == {"href": "cases/11.html", "case": "11"}

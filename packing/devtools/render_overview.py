@@ -11,8 +11,11 @@ adds the front door and the pages around it, as the plan in
   and recent list point into by row (`#t-018`);
 - `frontier.html`, the frontier atlas: one row for every case, from its
   `SquarePackingCase/v2` record;
-- `cases.html`, the case records: every case's full record at `cases.html#n-N`, which
-  the atlas grid and the frontier atlas both open (`render_case_pages`);
+- `cases/index.html`, the record page: the index of every case and the reader that shows
+  one case's record file, `cases/N.html`, which this module writes beside it
+  (`case_records`) and the atlas grid and the frontier table both open in their case
+  popover (`render_case_pages`); `cases.html`, where every record was until 2026-10-03,
+  is a forwarder to it;
 - `papers.html`, the Papers section's page: one large card per paper, from the one list
   `overview_sections.PAPERS`. The optimality review (`papers/n11-optimality-review.html`,
   `render_n11_optimality_review`), the lower-bounds explainer
@@ -83,7 +86,6 @@ ATLAS_VIEW_SCRIPT = BROWSER / "atlas-view.js"
 ATLAS_GRID_SCRIPT = BROWSER / "atlas-grid.js"
 EMBED_SCRIPT = BROWSER / "embed.js"
 CASE_POPOVER_SCRIPT = BROWSER / "case-popover.js"
-CASE_VIEW_SCRIPT = BROWSER / "case-view.js"
 #: What starts the Visualize page's film when the page is visited.
 FILM_SCRIPT = BROWSER / "film.js"
 THEME_SCRIPT = BROWSER / "theme.js"
@@ -214,7 +216,7 @@ SITE_PAGES: tuple[str, ...] = (
     "index.html",
     "frontier.html",
     RESULTS_PAGE,
-    "cases.html",
+    "cases/index.html",
     "papers.html",
     paper_path(N11_OPTIMALITY_REVIEW),
     paper_path(N11_LOWER_BOUNDS_EXPLAINER),
@@ -243,12 +245,16 @@ MOVED_PAGES: tuple[tuple[str, str], ...] = (
     ("explainer.html", paper_path(N11_LOWER_BOUNDS_EXPLAINER)),
     ("n11-optimality/t-060-explainer.html", paper_path(N11_OPTIMALITY_REVIEW)),
     ("n11-optimality/index.html", paper_path(N11_OPTIMALITY_REVIEW)),
+    # Every record was one page, each at its fragment, until 2026-10-03 (think-bnw2): the
+    # record page takes `#n-11` and shows that case's record file, `cases/11.html`.
+    ("cases.html", "cases/index.html"),
 )
 #: What a forwarder calls the place it sends a reader, by that place's address. A paper
 #: is called by its title, which its card has (`overview_sections.PAPERS`).
 FORWARDER_TITLES: dict[str, str] = {
     RESULTS_PAGE: "Every Result",
     "frontier.html": "The Frontier Atlas",
+    "cases/index.html": "Case Records",
     repo_url(repo_links.DEFECTS, kind="blob"): "defects.md on GitHub",
 }
 #: Every file that moved and is not a page, the same way: the papers' Markdown and PDF,
@@ -744,6 +750,7 @@ def kpress_page(
     prose = 'class="kpress-prose kpress-long-text'
     page = page.replace(prose + '"', prose + ' site-page"', 1)
     page = _document_scrolls(name, page)
+    page = _KPRESS_CELL_LABELS.sub("", page)
     if rewrite_body is not None:
         page = rewrite_body(page)
     programs = f"\n{kpress_client_script()}" + "".join(
@@ -753,6 +760,13 @@ def kpress_page(
     page = page.replace("</body>", f"{math_scripts}{programs}\n</body>", 1)
     assert_self_contained(name, page)
     return Page(name, page)
+
+
+#: The column label and position kpress writes on every table cell, `data-col` and
+#: `data-col-index`, hooks for a downstream decorator (`kpress.contract`) that nothing on
+#: the site reads: about 128 KB of the frontier page, whose size has a ceiling, and a
+#: little of every page with a table. Every page drops them (`think-k8xp`).
+_KPRESS_CELL_LABELS = re.compile(r' data-col="[^"]*" data-col-index="\d+"')
 
 
 #: What kpress's standalone shell writes of a page's identity: its own link-preview tags,
@@ -891,7 +905,7 @@ def overview_page() -> Page:
         title=PROJECT_NAME,
         description=OVERVIEW_DESCRIPTION,
         toc=False,
-        rewrite_body=site_documents.rewrite_overview_blocks,
+        rewrite_body=lambda text: _case_links(site_documents.rewrite_overview_blocks(text)),
         page_scripts=(
             FORWARD_SCRIPT,
             TABLE_SCRIPT,
@@ -899,6 +913,7 @@ def overview_page() -> Page:
             ROW_POPOVER_SCRIPT,
             ATLAS_VIEW_SCRIPT,
             ATLAS_GRID_SCRIPT,
+            CASE_POPOVER_SCRIPT,
         ),
     )
 
@@ -972,13 +987,33 @@ def frontier_page() -> Page:
         title="The Frontier Survey",
         description=FRONTIER_DESCRIPTION,
         toc=False,
-        page_scripts=(TABLE_SCRIPT, POPOVER_SCRIPT, CASE_POPOVER_SCRIPT, ROW_POPOVER_SCRIPT),
+        rewrite_body=_case_links,
+        page_scripts=(TABLE_SCRIPT, POPOVER_SCRIPT, CASE_POPOVER_SCRIPT),
     )
 
 
+def _case_links(page: str) -> str:
+    """A page's links to case records, its prose's among them, marked for its case
+    popover (`render_case_pages.mark_case_links`)."""
+    from devtools.render_case_pages import mark_case_links  # noqa: PLC0415
+
+    return mark_case_links(page)
+
+
 def cases_page() -> Page:
-    """Every case's record, one page, one address per case (`cases.html#n-11`)."""
+    """The record page, `cases/`: the index of every case and the reader that shows one
+    case's record file (`render_case_pages.cases_page`)."""
     from devtools.render_case_pages import cases_page as build  # noqa: PLC0415
+
+    return build()
+
+
+def case_records() -> list[Page]:
+    """Each case's record file, `cases/11.html`, beside the record page: the record
+    alone, which the record page and every case popover fetch
+    (`render_case_pages.case_records`). Like a result's overview, a record file is not
+    among `PAGES`."""
+    from devtools.render_case_pages import case_records as build  # noqa: PLC0415
 
     return build()
 
@@ -1026,7 +1061,7 @@ PAGES: dict[str, Callable[[], Page]] = {
     "index.html": overview_page,
     "frontier.html": frontier_page,
     RESULTS_PAGE: results_page,
-    "cases.html": cases_page,
+    "cases/index.html": cases_page,
     "papers.html": papers_page,
     "tutorial.html": tutorial_page,
     "visualize.html": visualize_page,
@@ -1096,22 +1131,24 @@ def forwarder_pages() -> list[Page]:
 
 
 def render_site() -> list[Page]:
-    """Every file this module writes: the pages, the result fragments, and a forwarder
-    at each address a page used to have."""
-    return [*render_all(), *result_fragments(), *forwarder_pages()]
+    """Every file this module writes: the pages, the result fragments, the case record
+    files, and a forwarder at each address a page used to have."""
+    return [*render_all(), *result_fragments(), *case_records(), *forwarder_pages()]
 
 
 def write_site(output: Path, files: Sequence[Page]) -> None:
-    """Write `files` under `output`, and drop any result fragment already there that is
-    not among them, so a directory built before a result was withdrawn does not keep
-    serving it."""
+    """Write `files` under `output`, and drop any result fragment or case record file
+    already there that is not among them, so a directory built before a result was
+    withdrawn, or a case dropped, does not keep serving it."""
     from devtools.overview_sections import RESULT_FRAGMENTS  # noqa: PLC0415
+    from devtools.render_case_pages import CASES_DIR  # noqa: PLC0415
 
     output.mkdir(parents=True, exist_ok=True)
     kept = {output / file.name for file in files}
-    for stale in sorted((output / RESULT_FRAGMENTS).glob("*.html")):
-        if stale not in kept:
-            stale.unlink()
+    for directory in (RESULT_FRAGMENTS, CASES_DIR):
+        for stale in sorted((output / directory).glob("*.html")):
+            if stale not in kept:
+                stale.unlink()
     for file in files:
         target = output / file.name
         target.parent.mkdir(parents=True, exist_ok=True)
@@ -1130,23 +1167,36 @@ def main(argv: Sequence[str] | None = None) -> int:
     output = args.output.resolve()
     pages = render_all()
     fragments = result_fragments()
+    records = case_records()
     forwarders = forwarder_pages()
     if args.check:
         stale = [
             p.name
-            for p in (*pages, *fragments, *forwarders)
+            for p in (*pages, *fragments, *records, *forwarders)
             if not (output / p.name).is_file()
             or (output / p.name).read_text(encoding="utf-8") != p.html
+        ]
+        # A file left in a directory this module writes whole, a result withdrawn or a
+        # case dropped since, is stale too: `write_site` would remove it.
+        from devtools.overview_sections import RESULT_FRAGMENTS  # noqa: PLC0415
+        from devtools.render_case_pages import CASES_DIR  # noqa: PLC0415
+
+        written = {p.name for p in (*pages, *fragments, *records)}
+        stale += [
+            path.relative_to(output).as_posix()
+            for directory in (RESULT_FRAGMENTS, CASES_DIR)
+            for path in sorted((output / directory).glob("*.html"))
+            if path.relative_to(output).as_posix() not in written
         ]
         if stale:
             print(f"stale or missing: {', '.join(stale)}", file=sys.stderr)
             return 1
         print(
-            f"{len(pages)} pages, {len(fragments)} result overviews and "
-            f"{len(forwarders)} forwarders match a fresh render"
+            f"{len(pages)} pages, {len(fragments)} result overviews, {len(records)} case "
+            f"records and {len(forwarders)} forwarders match a fresh render"
         )
         return 0
-    write_site(output, [*pages, *fragments, *forwarders])
+    write_site(output, [*pages, *fragments, *records, *forwarders])
     for page in pages:
         print(f"wrote {output / page.name} ({len(page.html) // 1024} KB)")
     for forwarder in forwarders:
@@ -1156,6 +1206,11 @@ def main(argv: Sequence[str] | None = None) -> int:
     print(
         f"wrote {len(fragments)} result overviews under "
         f"{', '.join(f'{place}/' for place in places)} ({total // 1024} KB in all)"
+    )
+    kept = sum(len(record.html.encode("utf-8")) for record in records)
+    print(
+        f"wrote {len(records)} case records under {output / 'cases'}/ "
+        f"({kept // 1024} KB in all)"
     )
     return 0
 

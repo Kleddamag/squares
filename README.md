@@ -2,15 +2,16 @@
 
 <!-- BEGIN SHARED: project-intro (devtools.site_documents) -->
 
-The square packing problem is a simple and long-standing problem in geometry.
-It asks: what is the size of the smallest square that can hold $n$ unit squares, where
-the squares are free to rotate but cannot overlap?
+The square packing problem is a simple and long-standing problem in geometry: what is
+the size of the smallest square that can hold $n$ unit squares, where the squares are
+free to rotate but cannot overlap?
 The side length of that smallest square is written $s(n)$.
 
-The question is elementary to understand but is an open problem for most $n$. In many
-cases, the answer is known only to lie between an upper bound (the size of the enclosing
-square for the tightest packing ever discovered) and a lower bound (a size below which
-it is proved that no packing can exist).
+The question of the value of $s(n)$ is simple, but the answer is an open problem for
+most $n$. In many cases, $s(n)$ is known only to lie between an upper bound (the size of
+the enclosing square for the tightest packing ever discovered, such as
+$s(29) \le 5.934$) and a lower bound (a size below which it is proved that no packing
+can exist, such as the reported $s(29) \ge 5.79$).
 
 <!-- END SHARED: project-intro -->
 

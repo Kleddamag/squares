@@ -2192,7 +2192,7 @@ The front is, in order:
 
   Human oversight: **Joshua Levy**
   Agents: **GPT-6 Astra** and **GPT-6 Sol**
-  Draft v0.1.2 (version history)
+  Draft v0.1.3 (version history)
   Original proof September 29, 2026 · Last revised October 3, 2026
   ```
 
@@ -2205,7 +2205,7 @@ The front is, in order:
   every page carries names it, and so does the GITHUB chip.
 
 - **The version line.** The paper’s own version, plain: `EXPLAINER_VERSION` for the
-  explainer and `OPTIMALITY_REVIEW_EDITION` (“Draft v0.1.2”) for the review, both from
+  explainer and `OPTIMALITY_REVIEW_EDITION` (“Draft v0.1.3”) for the review, both from
   `sqpack.release`. Never the site’s edition and never the data hash: the site’s version
   goes on no paper (the owner, 2026-10-01: papers are individually versioned, and a
   paper’s version history reflects versions of the paper, not of the website).

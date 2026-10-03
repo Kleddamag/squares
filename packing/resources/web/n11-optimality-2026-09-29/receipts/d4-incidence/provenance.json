@@ -1,6 +1,6 @@
 {
   "schema": "sqpack.n11-d4-incidence-bridge-receipt.v1",
-  "review": "docs/project/reviews/review-2026-10-03-n11-optimality-adversarial-gpt6-pro.md",
+  "review": "docs/project/reviews/review-2026-10-03-n11-optimality-adversarial-gpt6-pro-unified.md",
   "review_section": "S3. Replace the final D4 search by incidence propagation and one distance bound",
   "source_repository": "https://github.com/Queuingtheorydotcom/11SquaresOptimal",
   "source_revision": "f9e0de713a0949d1bc6a0fa6b59d96edf6c3d65c",

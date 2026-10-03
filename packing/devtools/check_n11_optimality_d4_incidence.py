@@ -1,7 +1,7 @@
 """Check the final n=11 D4 bridge by incidence propagation and one distance bound.
 
 This is the replacement that finding S3 of
-`docs/project/reviews/review-2026-10-03-n11-optimality-adversarial-gpt6-pro.md` proposes
+`docs/project/reviews/review-2026-10-03-n11-optimality-adversarial-gpt6-pro-unified.md` proposes
 for the three finite searches of `check_n11_optimality_d4`. The sixteen closed cells and
 the 220 closed four-view regions are rebuilt with that module's exact builders. Then, for
 each source case 999, 1462 and 1659 in view g0 and each of the 216 ordered triples of

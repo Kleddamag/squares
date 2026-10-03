@@ -348,6 +348,16 @@ EXPLAINER_REVISED = "October 1, 2026"
 #: (think-2cqu).
 OPTIMALITY_REVIEW_HISTORY = (
     PublicationHistoryEntry(
+        version="v0.1.3",
+        first_published="October 3, 2026",
+        result_scope=(
+            "The closing section explains what a receipt is, the three depths at which "
+            "a reader can verify the retained evidence, and the four checked components "
+            "the reviews of October 3 added beside the accepted ones; the receipts "
+            "register is linked."
+        ),
+    ),
+    PublicationHistoryEntry(
         version="v0.1.2",
         first_published="October 3, 2026",
         result_scope=(

@@ -1,7 +1,7 @@
 # GPT-6 Pro Evidence Pack for the Eleven-Square Optimality Review
 
 This packet retains the evidence archive that GPT-6 Pro delivered with its
-[unified adversarial review](../../../../docs/project/reviews/review-2026-10-03-n11-optimality-adversarial-gpt6-pro.md)
+[unified adversarial review](../../../../docs/project/reviews/review-2026-10-03-n11-optimality-adversarial-gpt6-pro-unified.md)
 of the tentative proof that Trump’s eleven-square packing is optimal.
 The review’s Appendix B.4 and B.5 describe the archive.
 It holds the review’s new reconciliation checkers with their pinned source closures,

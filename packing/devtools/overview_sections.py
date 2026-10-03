@@ -1060,17 +1060,20 @@ def rung_legend(*, here: bool) -> str:
     )
     href = f"#{LADDERS_SECTION}" if here else f"{RESULTS_PAGE}#{LADDERS_SECTION}"
     star = f'<span class="site-star" aria-hidden="true">{STAR}</span>'
+
     def group(scale: str, shown: str) -> str:
         return (
             '<span class="site-rung-legend-group">'
             f'<span class="site-rung-legend-name">{_esc(names[scale])}</span> {shown}</span>'
         )
 
+    # The star's words are a span of their own: no shipped face carries the star, and a
+    # run that held both would be drawn, and measured, as the star's host face.
     return (
         '<div class="site-rung-legend" role="note" aria-label="What a row\u2019s marks mean">'
         f"<p>{group('S', marks)}</p>"
         f"<p>{group('V', chips('V'))} {group('C', chips('C'))}</p>"
-        f'<p><span class="site-rung-legend-group">{star} {NEW_RESULT}</span> '
+        f'<p><span class="site-rung-legend-group">{star} <span>{NEW_RESULT}</span></span> '
         f'<a href="{href}">What each rung means</a></p>'
         "</div>"
     )

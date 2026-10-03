@@ -1106,13 +1106,19 @@ it.
     wrap to two lines of 25 characters (`SHORT_MEANING_LINE`) stops the build until it
     is given a shorter form.
   - **Rows.** Every rung is the same height at any one width, since each is a chip and a
-    two-line box. A cell arranges the two by its own width.
-    With 16.5rem or more it sets the chip in a 2.25rem rail, the chip’s own width, and
+    two-line box; a significance mark stands as tall as a chip, the chip’s line height
+    and margin. A cell arranges the two by its own width.
+    With 17.85rem or more it sets the chip in a rail, 2.25rem, the chip’s own width, or
+    3.6rem for significance, the widest mark’s (`--site-ladders-significance-rail`), and
     the description beside it, 0.75rem on, 64.1px a row: at 1280 and 1024 pixels, down
-    to a 908-pixel window, and on a phone down to 296 pixels.
-    Narrower, it sets the chip on a line of its own and the description under it across
-    the cell, 91.8px a row, from 907 pixels down to 716, so at 768. A description is
-    never set narrower than 13.5rem (`--site-ladders-meaning-min`).
+    to a 973-pixel window, and on a phone down to 318 pixels.
+    Every cell turns at the widest rail’s width, so a row’s rungs stay one height and a
+    significance description, 1.35rem narrower than the others beside its wider rail, is
+    never under its least: at 16.5rem, the chips’ rail’s, it was set 21.6px short and
+    took a third line (2026-10-03). Narrower, it sets the chip on a line of its own and
+    the description under it across the cell, 91.8px a row, from 972 pixels down to 716,
+    so at 768 and 908. A description is never set narrower than 13.5rem
+    (`--site-ladders-meaning-min`).
   - **Columns.** The three columns are equal, and each keeps 0.75rem
     (`--site-ladders-inset`) clear after its words, before the next column’s chip.
     Three columns therefore need 42.75rem: three times the least description and its
@@ -1282,12 +1288,15 @@ it.
   So nothing changes at 1280 pixels or narrower, and on a large screen a table’s text
   columns wrap less. The frontier table, whose own track is 86rem, is the page’s content
   area less its gutters up to 1456 pixels and goes from 1376 to 1600 above that.
-  The tables of results are the one exception: since they hold eight columns
-  (2026-10-02, `think-ybt5`, `think-e4o3`), their floors come to 1139 pixels with every
-  row showing, more than the 1104 of the wide track, so they bleed from 74rem, 1184
-  pixels. They fit from about 1220, are 1200 pixels wide at 1280, as the frontier table
-  is there, 1520 at 1600 and 1600 from about 1680 up, and below 1220 they scroll in
-  their wrap: by 195 pixels at 1024 and 451 at 768 with every row showing.
+  The tables of results are the one exception: since they hold nine columns (eight from
+  2026-10-02, `think-ybt5`, `think-e4o3`, and the significance its own from 2026-10-03,
+  `think-m3m4`), their floors come to 1198 pixels with every row showing, more than the
+  1104 of the wide track, so they bleed from 74rem, 1184 pixels.
+  They fit from about 1278, are 1200 pixels wide at 1280, as the frontier table is
+  there, with 2 to spare, 1360 at 1440 and 1520 at 1600, and they go on past the 1600
+  other tables stop at, to a cap of their own, `--site-results-table-max` (112rem): 1792
+  pixels at 1920 (`think-bcmc`). Below 1278 they scroll in their wrap: by 254 pixels at
+  1024 and 510 at 768 with every row showing.
   The rule takes any `.site-wide` that is or holds a `.site-table-wrap`, so a new table
   bleeds with no rule of its own.
 
@@ -1494,21 +1503,25 @@ it.
   The two tables of results, the overview’s recent table and the results page’s, are one
   table: one header (`result_head`) and one row (`result_table_row`), so the same
   columns in the same order.
-  They are the date; the result, its summary whole, method and all, and its star; the
-  cases, n; the credit, the finder first and “after …”, what the result builds on, quiet
-  after it, in full; the rungs, with the kind on a line under them; the status line, its
-  chips one under another (**Chips**, above); the details, the result’s records (its
-  case link, the register, its evidence, source and reviews), a link to a line; and the
-  id, the last column and the row’s trigger, as narrow as an id, under the 6rem KPress
-  keeps a cell to. The owner set that order on 2026-10-02: the id led and the date closed
-  the row until then (`think-t090`); the status line stood under the kind
-  (`think-ybt5`); and the records stood on a quiet line under the summary, a dot between
-  two links, where the result’s cell holds the claim alone now (`think-e4o3`). The
-  status cell sorts on the status word; the details do not sort.
+  They are the date; the significance, S, its mark (**Significance and the Other Inks**,
+  above) and a new result’s star after it; the result, its summary whole, method and
+  all; the cases, n; the credit, the finder first and “after …”, what the result builds
+  on, quiet after it, in full; the rungs, verification and confirmation, with the kind
+  on a line under them; the status line, its chips one under another (**Chips**, above);
+  the details, the result’s records (its case link, the register, its evidence, source
+  and reviews), a link to a line; and the id, the last column and the row’s trigger, as
+  narrow as an id, under the 6rem KPress keeps a cell to.
+  The owner set that order on 2026-10-02: the id led and the date closed the row until
+  then (`think-t090`); the status line stood under the kind (`think-ybt5`); and the
+  records stood on a quiet line under the summary, a dot between two links, where the
+  result’s cell holds the claim alone now (`think-e4o3`). Significance left the rungs
+  for a column of its own, the second, on 2026-10-03, and a new result’s star left the
+  result’s text for it (`think-m3m4`). The status cell sorts on the status word; the
+  details do not sort.
   On a phone each row is a card that places its cells by class, not by column, so the
-  card reads as before: the id, the cases and the rungs on its first line, the status
-  under the rungs, the claim with its details on a line under it, a dot drawn between
-  two links, then the credit and the date.
+  card reads as before: the id, the significance, the cases and the rungs on its first
+  line, the status under the rungs, the claim with its details on a line under it, a dot
+  drawn between two links, then the credit and the date.
   The tables are two filters of one table, and differ only in where the filter bar
   starts, which sets the rows that begin `hidden` and the count, and in a row’s key: on
   the results page a row is the result’s own address (`id="t-018"`), and on the overview
@@ -1518,17 +1531,22 @@ it.
   The line under the overview’s table, “See all results”, is the one link between them.
   Both sort on any column whose header carries the sort pair.
   The widths follow from each column’s floor and from what the n column asks for.
-  The id, the rungs, the status, the details and the date are as narrow as what they
-  hold. The details are as wide as their widest link, 96 pixels, and a result with many
-  records is the tallest row: T-051’s nine links stand 239 pixels.
-  The rungs column is as wide as its widest chip, since no chip wraps: the three rungs
-  at 114 pixels, and the widest kind, “restricted optimality”, at 180 where a row with
-  one shows. The kind takes a line under the rungs, and the status column is as wide as
-  its widest chip, its chips one under another.
+  The id, the significance, the rungs, the status, the details and the date are as
+  narrow as what they hold.
+  The significance is as wide as its widest mark, S5’s five bars and a star, 81 pixels
+  with the cell’s 0.3rem padding either side: its bars are 0.36em wide, 0.2em after the
+  label, and the star takes the cell’s end padding (trimmed on 2026-10-03, `think-r3rd`,
+  from 90 pixels, which set the table 7.8 past its frame at 1280). The details are as
+  wide as their widest link, 96 pixels, and a result with many records is the tallest
+  row: T-051’s nine links stand 239 pixels.
+  The rungs column is as wide as its widest chip, since no chip wraps: the two rungs
+  share a line, and the widest kind, “restricted optimality”, sets it at 180 where a row
+  with one shows. The kind takes a line under the rungs, and the status column is as wide
+  as its widest chip, 114 pixels, its chips one under another.
   The credit column is at least 11.5rem wide, which holds the longest name on one line
   (“Queuingtheorydotcom”, 167 pixels of the 184), so a credit wraps between names and
   never inside one; KPress’s own floor, 6rem, set it a word to a line.
-  The result column is at least 18rem, 288 pixels, and no formula holds it wider.
+  The result column is at least 16.75rem, 268 pixels, and no formula holds it wider.
   KaTeX sets a formula as pieces a line cannot end inside, one up to each relation or
   binary operator at its top level, and the widest piece in either table is 249 pixels,
   the numerator of T-033’s quotient.
@@ -1551,23 +1569,21 @@ it.
   The table gives the n column its measure before the result and the credit share the
   spare width, and where the window is short of room the n column narrows first, to half
   its measure at the least, a range and a count to a line.
-  Where no row showing holds a long list, as on the overview when it opens, the column
-  is as narrow as its lists, 85 pixels, so a single case has no empty column beside it.
-  With every row showing, the id, n, result, credit, rungs and date columns measure 56,
-  225, 342, 200, 180 and 100 pixels at a 1280-pixel window, where T-056’s list takes 6
-  lines, and 56, 135, 288, 184, 180 and 100 at 1024, where it takes 11; the table fits
-  its frame at both, with 14 pixels to spare at 1024 before the n column reaches its
-  floor. At 768 they measure 56, 120, 288, 184, 180 and 100, the list takes 11 lines, and
-  the table runs 242 pixels past its 688-pixel frame.
-  The floors come to 930 pixels, so a table fits its frame down to a window of about
-  1010 pixels and scrolls sideways in its wrap below that.
-  The measure is a trade against the result column: each 2ch of it takes about 13 pixels
-  from the result at a 1280-pixel window and adds about 75 to the height of the results
-  page’s table, whose summaries carry their records.
-  At 24ch the longest list sets a row 165 pixels tall, under the 171 the tallest summary
-  sets there. The records are no column of their own, which would set a link to a line:
-  they sit under the summary, a line or two of links.
-  Both tables show them.
+  Where no row showing holds a long list, as in a view of one kind of short lists, the
+  column is as narrow as its lists, under 96 pixels, so a single case has no empty
+  column beside it. The overview as it opens shows T-056’s list since it starts at S3
+  (`think-x60s`). With every row showing, the date, significance, result, n, credit,
+  rungs, status, details and id columns measure 100, 81, 313, 225, 197, 180, 114, 96 and
+  56 pixels at a 1440-pixel window, where the table is 1360 and gives the n column its
+  whole measure: T-056’s list takes 6 lines, a row 165 pixels tall, under the 239 of
+  T-051’s details. At 1280 every column is at its floor, 100, 81, 268, 122, 184, 180,
+  114, 96 and 56, the n column’s being its 120 and the 2 pixels the others’ floors leave
+  it, so the list takes 11 lines there, a row 288 pixels tall; at 1024 and 768 the n
+  column is at 120, the rest the same, and the table runs 254 and 510 pixels past its
+  944- and 688-pixel frames.
+  The floors come to 1198 pixels, so a table fits its frame down to a window of about
+  1278 pixels and scrolls sideways in its wrap below that.
+  A result’s records are the Details column, a link to a line; both tables show them.
   `devtools.measure_site_pages columns` and `chips` measure all of this on a built site:
   each column’s width, the most lines a cell takes, the words a line break splits and
   the tallest row a column sets; the values of a list of cases cut across lines, the
@@ -1581,21 +1597,20 @@ it.
   Every table stands `--site-table-space` clear of the text above and below it
   (**Spacing**, above).
   Wide tables bleed on large screens, as **Wide bleed** above describes.
-  On a phone, a table of results becomes one card per row: the id, the cases and the
-  rungs on its first line, and a list of five values or more on a line of its own under
-  them, the card’s width.
+  On a phone, a table of results becomes one card per row: the id, the significance, the
+  cases and the rungs on its first line, and a list of five values or more on a line of
+  its own under them, the card’s width.
   A date cell leads with the date and then says what it dates, `published` or
   `established`, in the support colour (`date_cell`): under the date on a wide table,
   which keeps the column narrow, and beside it on a phone.
-  In both tables of results the star follows the text of a new result
-  (`new_result_star`). It hangs after the last character: it takes no width, so it never
-  wraps to a line by itself, and its cell keeps 1.1em for it at the end of every line.
-  The rule is the atlas’s, asked of a result instead of a case
-  (`overview_data.starred_results`): the verified lower bound of a case rests on the
-  result now, and that bound is recent, so a superseded result and an upper bound carry
-  no star. The star is never the only signal: it is an image whose name and tooltip say
-  “New result” and the cases, the row’s own name ends “new result”, and the prose above
-  each table says what it marks (`star_legend`). A superseded result’s row reads
+  In both tables of results a new result’s star follows its significance mark, in the S
+  column (`new_result_star`, `significance_cell`), where it hung after the result’s text
+  until 2026-10-03 (`think-m3m4`). The rule is the atlas’s, asked of a result instead of
+  a case (`overview_data.starred_results`): the verified lower bound of a case rests on
+  the result now, and that bound is recent, so a superseded result and an upper bound
+  carry no star. The star is never the only signal: it is an image whose name and tooltip
+  say “New result” and the cases, the row’s own name ends “new result”, and the prose
+  above each table says what it marks (`star_legend`). A superseded result’s row reads
   quieter, its text in the support colour, in every site table, by one rule on
   `tr[data-current="false"]`; its chips keep their fills.
   A row reached by its address (`frontier.html#n-11`, `all-results.html#t-018`) takes

@@ -1129,7 +1129,10 @@ def test_a_table_of_results_opens_with_a_legend_of_every_rungs_mark(
         for label in expected:
             assert f'title="{html.escape(meanings[label], quote=True)}"' in legend, label
         assert f'<a href="{href}">What each rung means</a>' in legend
-        assert f"{overview_sections.STAR}</span> {overview_sections.NEW_RESULT}" in legend
+        # The star's words are a span of their own, so the face they are drawn in is
+        # measured apart from the star's, which no shipped face carries.
+        words = f"<span>{overview_sections.NEW_RESULT}</span>"
+        assert f"{overview_sections.STAR}</span> {words}" in legend
     assert "site-ladders-key" not in page
 
 
@@ -1510,8 +1513,9 @@ def test_every_rung_chip_in_the_diagram_is_titled_with_the_rubrics_meaning(
 def test_the_ladder_diagram_is_its_own_component_on_the_shared_tokens() -> None:
     """The diagram's rules are its own (`.site-ladders`), and its measures agree with one
     another: the description's box is two lines and is never clipped; a rung sets its
-    description beside the rail only where the cell holds the rail, the gap and the least
-    description; and three columns stand only where each still holds that least. It
+    description beside the rail only where the cell holds the widest rail, the gap and
+    the least description; and three columns stand only where each still holds that
+    least. It
     stands the tables' space clear of the text. Its one rule is under the column heads:
     no cell and no row carries a border, and the rows are kept apart by space alone."""
     css = render_overview.SITE_CSS.read_text(encoding="utf-8")
@@ -1531,11 +1535,15 @@ def test_the_ladder_diagram_is_its_own_component_on_the_shared_tokens() -> None:
         return float(found.group(1))
 
     rail, gap, least, inset = rem("rail"), rem("gap"), rem("meaning-min"), rem("inset")
+    # Significance's marks take a wider rail than the chips, and every cell turns at the
+    # one width, so the widest rail sets it.
+    widest = max(rail, rem("significance-rail"))
+    assert widest > rail
     beside = re.search(r"@container \(inline-size >= ([\d.]+)rem\)", rules)
     columns = re.search(r"@container site-ladders \(inline-size < ([\d.]+)rem\)", rules)
     assert beside, "no query sets a description beside its rail"
     assert columns, "no query stacks the ladders"
-    assert float(beside.group(1)) == rail + gap + least
+    assert float(beside.group(1)) == pytest.approx(widest + gap + least)
     assert float(columns.group(1)) / len(overview_sections.DIMENSIONS) - inset >= least
 
     def body(selector: str) -> str:
@@ -3857,9 +3865,8 @@ def test_a_new_result_is_starred_in_both_tables_by_the_atlas_rule(
     for served in (page, results):
         assert len(ROW_STAR.findall(served)) == len(starred)
         # The legend over each table says what the star marks, in two words.
-        assert f"{overview_sections.STAR}</span> {overview_sections.NEW_RESULT}" in _legend(
-            served
-        )
+        words = f"<span>{overview_sections.NEW_RESULT}</span>"
+        assert f"{overview_sections.STAR}</span> {words}" in _legend(served)
     # The results page says it in full before its table; the overview says no more than
     # its legend since 2026-10-03 (think-42dx).
     assert legend in re.sub(r"<[^>]+>", "", results)

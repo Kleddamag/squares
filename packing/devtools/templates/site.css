@@ -173,12 +173,12 @@ body {
   margin-inline: calc((var(--site-table-wide) - 100%) / -2);
   max-width: var(--site-table-wide);
 }
-/* The tables of results hold eight columns since 2026-10-02 (`think-ybt5`,
-   `think-e4o3`): 1139 pixels at their floors where every row shows, more than the wide
-   track's 1104 at a 1280-pixel window. So they bleed from 74rem (1184 pixels), fit from
-   about 1220, and are 1200 pixels wide at 1280, as wide as the frontier table there;
-   narrower, they scroll in their wrap, as any table does where its floors outrun the
-   window. */
+/* The tables of results hold nine columns since 2026-10-03 (eight from 2026-10-02,
+   `think-ybt5`, `think-e4o3`; the significance's from `think-m3m4`): 1198 pixels at
+   their floors where every row shows, more than the wide track's 1104 at a 1280-pixel
+   window. So they bleed from 74rem (1184 pixels), fit from about 1278, and are 1200
+   pixels wide at 1280, as wide as the frontier table there, with 2 to spare; narrower,
+   they scroll in their wrap, as any table does where its floors outrun the window. */
 .site-page .site-wide:has(> .site-table-wrap .site-results) {
   --site-table-bleed-from: 74rem;
   --site-table-max: var(--site-results-table-max);
@@ -1222,7 +1222,7 @@ body {
   font-family: var(--kpress-font-sans);
   font-variant-numeric: tabular-nums;
   font-weight: var(--site-font-weight-sans-medium);
-  gap: 0.22em;
+  gap: 0.2em;
   vertical-align: baseline;
   white-space: nowrap;
 }
@@ -1234,7 +1234,7 @@ body {
   background: currentcolor;
   block-size: 0.26em;
   border-radius: 0.06em;
-  inline-size: 0.42em;
+  inline-size: 0.36em;
 }
 @media (forced-colors: active) {
   .site-significance-bar {
@@ -1313,6 +1313,7 @@ body {
   display: grid;
   font-family: var(--kpress-font-sans);
   font-size: var(--site-font-size-note);
+  font-weight: var(--site-font-weight-sans-light);
   gap: 0.3rem;
   margin-block: 0.4rem 0;
 }
@@ -1342,18 +1343,22 @@ body {
 /* Significance is the second column, narrow but prominent: its mark on one line, and a
    new result's star after the bars, where it stood after the result's text until
    2026-10-03 (`think-m3m4`). The column is as wide as its widest mark, KPress's 6rem
-   floor given up as the cases' is. */
+   floor given up as the cases' is: S5's and a star, 80.6px. The mark was trimmed to
+   that the same day (`think-r3rd`), its bars 0.36em wide and 0.2em after its label
+   (`.site-significance`, above), the cell's padding 0.3rem and the star's margin below,
+   from 90.4px, which set the nine columns' floors 7.8px past the 1200 a 1280-pixel
+   window gives the table; now they leave it 2. */
 .site-results .site-col-s {
   white-space: nowrap;
 }
 .kpress .site-results :is(th, td).site-col-s {
   min-width: 0;
-  padding-inline: 0.35rem;
+  padding-inline: 0.3rem;
 }
-/* The star takes part of the cell's end padding, which stays wide enough to keep it off
-   the result's text. */
+/* The star takes the cell's end padding and a little of the result's start padding,
+   which still keeps it clear of the result's text. */
 .site-results .site-col-s .site-star {
-  margin-inline: 0.25em -0.3em;
+  margin-inline: 0.2em -0.4em;
 }
 /* On a wide table the result takes the spare width: past KPress's 40rem cell cap, and
    ahead of a long credit, which wraps at 20rem. */
@@ -1370,14 +1375,12 @@ body {
    line ("Queuingtheorydotcom", 167px of the 184), so a credit wraps between names, two
    or three to a line, and never inside one. KPress's own floor, 6rem, set a credit one
    word to a line while the result column kept the spare width. The rungs column is as
-   wide as its widest chip, since no chip wraps: the three rungs at 114px, and the
-   widest kind, "restricted optimality", at 180 where a row with one shows; no chip of
-   the status line is wider. The result
-   column's floor is its 18rem (above): the widest piece of a formula a line cannot end
-   inside is narrower than that, now that a long quotient may end a line after its
-   solidus (`overview_data.breakable_quotients`). A result's records are no column of
-   their own, which would set a link to a line; they sit under the summary, in the
-   result's cell, on a line or two. */
+   wide as its widest chip, since no chip wraps: the two rungs share a line, and the
+   widest kind, "restricted optimality", sets it at 180 where a row with one shows. The
+   result column's floor is its 16.75rem (above): the widest piece of a formula a line
+   cannot end inside, 248.5px, and the cell's padding are narrower than that, now that a
+   long quotient may end a line after its solidus (`overview_data.breakable_quotients`).
+   A result's records are its Details column, a link to a line (below). */
 @media (width >= 40rem) {
   .site-results .site-col-credit {
     min-width: 11.5rem;
@@ -1439,8 +1442,7 @@ body {
    after a formula, where with the last piece a box 148 of 214 widths had one. */
 .site-results .site-col-result :is(.kpress-math-inline, .katex-html > .base:last-child) {
   display: inline;
-}
-/* A result's records, its case link, the register, its evidence, source and reviews, are
+} /* A result's records, its case link, the register, its evidence, source and reviews, are
    its Details, a column of their own since 2026-10-02 (`think-e4o3`; they stood on a
    line under the summary until then): one link to a line, the column as narrow as its
    widest link, so the result's cell holds the claim alone. On a phone they are a line
@@ -1881,22 +1883,30 @@ body {
 }
 /* Significance's rungs are marks, not chips (`significance_mark`): its column's rail is
    as wide as the widest, S5 and its five bars, so every description in it starts on one
-   line, as the chips' do. */
+   line, as the chips' do. A mark stands as tall as a chip, the chip's line height and
+   margin, so a rung of it is as tall as any other where it stands on a line of its own
+   over its description, and its letters are level with its description's first line
+   where it stands beside it. */
 .site-ladders-cell[data-ladder="S"] {
   --site-ladders-rail: var(--site-ladders-significance-rail);
 }
 .site-ladders-rung .site-significance {
   grid-area: chip;
   justify-self: start;
+  line-height: 1.45;
+  margin-block: 0.15rem;
 }
 .site-ladders-meaning {
   block-size: calc(2 * var(--site-ladders-line));
   grid-area: meaning;
 }
-/* A rung with room, 16.5rem (the rail, the gap and the least description): the chip in
-   its rail and the description beside it, its first line level with the chip's letters,
-   which the chip's own margin sets down. */
-@container (inline-size >= 16.5rem) {
+/* A rung with room, 17.85rem (the widest rail, significance's, the gap and the least
+   description): the chip in its rail and the description beside it, its first line
+   level with the chip's letters, which the chip's own margin sets down. Every cell
+   turns at that one width, so a row's rungs stay one height; at 16.5rem, the chips'
+   rail's, a significance description was set 21.6 pixels short of its least and took
+   a third line (2026-10-03). */
+@container (inline-size >= 17.85rem) {
   .site-ladders-rung {
     align-items: start;
     grid-template: "chip meaning" auto / var(--site-ladders-rail) minmax(0, 1fr);

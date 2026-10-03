@@ -7,13 +7,15 @@
 // on the page, to find it in a full-page screenshot.
 //
 // In the `table` layout each column is reported under its header's words with its width
-// and what its cells hold: `lines`, the most lines any cell of it takes, and `tallest`,
-// the tallest row whose height this column's cell sets, with that row's key, its height
-// and the lines the cell takes. A row's height is set by the cell whose content is
-// tallest, so a column that never sets one reports no `tallest`. A cell's content is
-// measured as the box around what it holds, and its lines as that height over the
-// cell's own line height: exact for a cell of words, and a count of line boxes at the
-// cell's line height for one of chips or math, whose lines are taller. `broken` lists the
+// and what its cells hold: `lines`, the most lines any cell of it takes; `held`, the
+// width of the widest content a cell of it holds, so a column can be held to what it
+// holds; and `tallest`, the tallest row whose height this column's cell sets, with that
+// row's key, its height and the lines the cell takes. A row's height is set by the cell
+// whose content is tallest, so a column that never sets one reports no `tallest`. A
+// cell's content is measured as the box around what it holds, with what a negative
+// margin sets past the cell's edge, and its lines as that height over the cell's own
+// line height: exact for a cell of words, and a count of line boxes at the cell's line
+// height for one of chips or math, whose lines are taller. `broken` lists the
 // words of the column that a line break splits, which a cell too narrow for its longest
 // word does to it ("Queuingthe" over "orydotcom"); a break after a hyphen or a slash is
 // a word's own and is not counted, and typeset math is passed over.
@@ -38,16 +40,52 @@
   const shown = (el) => el.getClientRects().length > 0;
   /** @param {Element} el */
   const words = (el) => (el.textContent ?? "").replace(/\s+/g, " ").trim();
-  /** The height of what a cell holds, and the lines that is at the cell's line height.
+  /** The width of what a cell shows: the span of the boxes of its words and of its
+   * elements, passing over an element a pixel wide or tall and all it holds, as a
+   * visually hidden copy is (KaTeX's MathML, KPress's semantic math), whose words keep
+   * their own width inside the clip.
+   * @param {Element} cell */
+  const shownWidth = (cell) => {
+    let left = Number.POSITIVE_INFINITY;
+    let right = Number.NEGATIVE_INFINITY;
+    const range = document.createRange();
+    /** @param {DOMRect} box */
+    const add = (box) => {
+      if (box.width > 0 && box.height > 0) {
+        left = Math.min(left, box.left);
+        right = Math.max(right, box.right);
+      }
+    };
+    /** @param {Node} node */
+    const visit = (node) => {
+      for (const child of node.childNodes) {
+        if (child.nodeType === Node.TEXT_NODE && (child.textContent ?? "").trim()) {
+          range.selectNodeContents(child);
+          [...range.getClientRects()].forEach(add);
+        } else if (child instanceof Element) {
+          const box = child.getBoundingClientRect();
+          if (box.width > 1 && box.height > 1) {
+            add(box);
+            visit(child);
+          }
+        }
+      }
+    };
+    visit(cell);
+    return right > left ? right - left : 0;
+  };
+  /** The height and width of what a cell holds, and the lines that height is at the
+   * cell's line height.
    * @param {Element} cell */
   const content = (cell) => {
     const range = document.createRange();
     range.selectNodeContents(cell);
-    const height = range.getBoundingClientRect().height;
+    const { height } = range.getBoundingClientRect();
     const style = getComputedStyle(cell);
     const line = Number.parseFloat(style.lineHeight) || Number.parseFloat(style.fontSize) * 1.2;
     return {
       height: round(height),
+      width: round(shownWidth(cell)),
       lines: height > 0 ? Math.max(1, Math.round(height / line)) : 0,
     };
   };
@@ -190,7 +228,12 @@
     .map((found) => {
       const table = /** @type {HTMLTableElement} */ (found);
       const wrap = table.closest(".site-table-wrap") ?? table;
-      const bar = wrap.previousElementSibling;
+      // The bar is right above the table, or above the legend a table of results sets
+      // between them (`overview_sections.rung_legend`).
+      let bar = wrap.previousElementSibling;
+      while (bar?.classList.contains("site-rung-legend")) {
+        bar = bar.previousElementSibling;
+      }
       const tools = bar?.classList.contains("site-table-tools") && shown(bar) ? bar : wrap;
       const top = tools.getBoundingClientRect().top;
       const box = table.getBoundingClientRect();
@@ -254,6 +297,7 @@
           column: name,
           width: cards || !head ? null : round(head.getBoundingClientRect().width),
           lines: Math.max(0, ...cellsOf.map(({ cell }) => cell.lines)),
+          held: Math.max(0, ...cellsOf.map(({ cell }) => cell.width)),
           broken: [...new Set(cellsOf.flatMap(({ cell }) => cell.broken))],
           split: [...new Set(cellsOf.flatMap(({ cell }) => cell.split))],
           cuts: [...new Set(cellsOf.flatMap(({ cell }) => cell.cuts))],

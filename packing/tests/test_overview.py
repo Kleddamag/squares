@@ -5285,10 +5285,11 @@ def test_hide_superseded_starts_checked_on_the_overview_and_clear_on_the_results
 ) -> None:
     """Hide superseded is one checkbox of the shared bar, checked in the overview's HTML
     and clear in the results page's, from each table's `FilterDefaults`. What it hides is
-    the register's own standing: a row's `data-current` is `false` exactly where its
-    standing is `superseded`, and `true` for every other, a current best, a second
-    certificate and a result that claims no bound, which has no standing, alike. So on
-    the overview no row shown
+    the superseded mark: a row's `data-current` is `false` exactly where a bound's
+    standing is `superseded` or a result of another kind declares a later result that
+    implies the whole of it (`superseded_by`, think-rl2b), and `true` for every other, a
+    current best, a second certificate and a result that claims no bound and declares
+    none, alike. So on the overview no row shown
     is superseded and the count is of the rest, and on the results page the same rows
     carry the flag but none is hidden. No result a star marks is superseded, so the
     default never hides a new result."""
@@ -5306,10 +5307,14 @@ def test_hide_superseded_starts_checked_on_the_overview_and_clear_on_the_results
     kept = set()
     for result in overview.results:
         superseded = overview_sections.is_superseded(result)
-        assert superseded == (
-            result.standing == render_recent_results.SUPERSEDED
-            and result.record["kind"] in check_results.BOUND_KINDS
-        ), result.id
+        if result.record["kind"] in check_results.BOUND_KINDS:
+            assert superseded == (result.standing == render_recent_results.SUPERSEDED), (
+                result.id
+            )
+        else:
+            declared = result.record.get("superseded_by") or []
+            whole = any(item["extent"] == "whole" for item in declared)
+            assert superseded == whole, result.id
         flag = f'data-current="{"false" if superseded else "true"}"'
         ours = _recent_row(recent, result.id).split(">", 1)[0] + ">"
         theirs = _row(results, result.id).split(">", 1)[0] + ">"
@@ -5325,8 +5330,9 @@ def test_hide_superseded_starts_checked_on_the_overview_and_clear_on_the_results
         if result.id in overview.starred:
             assert not superseded, result.id
     # Every standing stays, and so does a result with none: nothing but a superseded
-    # bound is hidden for it. The one result that derives `superseded` and stays is the
-    # limit of a method, which is no bound.
+    # bound, or a result of another kind declared superseded as a whole, is hidden for
+    # it. The one result that derives `superseded` and stays is the limit of a method,
+    # which is no bound.
     assert kept == {*render_recent_results.STANDINGS, render_recent_results.NO_STANDING}
     current = sum(not overview_sections.is_superseded(r) for r in overview.results)
     assert 0 < shown < without < len(overview.results)

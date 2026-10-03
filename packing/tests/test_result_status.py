@@ -213,10 +213,22 @@ def test_superseded_is_marked_on_a_bound_and_where_a_later_result_is_declared() 
         for entry in records.register.results
         if view.superseded(entry, view.standing(entry, records))
     ]
-    assert len(marked) == 26
-    assert {str(records.results[entry]["kind"]) for entry in marked} == {"lower-bound"}
+    derived = [
+        entry for entry in marked if records.results[entry]["kind"] in check_results.BOUND_KINDS
+    ]
+    assert len(derived) == 26
+    assert {str(records.results[entry]["kind"]) for entry in derived} == {"lower-bound"}
+    # A result of another kind is marked only where its entry declares the whole of it
+    # implied, and in part where it declares a part (think-rl2b).
+    assert [entry for entry in marked if entry not in derived] == ["T-031"]
+    in_part = [
+        str(entry["id"])
+        for entry in records.register.results
+        if any(item["extent"] == "part" for item in entry.get("superseded_by") or [])
+    ]
+    assert in_part == ["T-023", "T-036"]
     # Each superseded bound names the results its cases' bounds rest on now.
-    for entry in marked:
+    for entry in derived:
         by = view.superseding(records.results[entry], records)
         assert by, entry
         assert entry not in by, entry
@@ -238,11 +250,17 @@ def test_superseded_is_marked_on_a_bound_and_where_a_later_result_is_declared() 
     assert view.superseding(exact, records) == ("T-060",)
     upper = {"id": "T-999", "kind": "upper-bound", "scope": {"n_values": [11]}}
     assert view.superseding(upper, records) == ("T-011",)
-    # T-060 implies T-036's bound and not its equality case (think-7df0).
-    t036 = records.results["T-036"]
-    assert view.position_marks(t036, view.standing(t036, records), records) == [
-        "superseded in part by T-060"
-    ]
+    # T-060 implies T-036's bound and not its equality case (think-7df0); it implies
+    # T-023's exclusion and not its count of the branch, and the whole of T-031's
+    # exclusion, since no packing of eleven squares fits at side 96/25 (think-rl2b).
+    expected = {
+        "T-036": ["superseded in part by T-060"],
+        "T-023": ["superseded in part by T-060"],
+        "T-031": ["superseded by T-060"],
+    }
+    for entry, marks in expected.items():
+        record = records.results[entry]
+        assert view.position_marks(record, view.standing(record, records), records) == marks
 
 
 def activity(**changes: Any) -> Record:

@@ -1030,6 +1030,26 @@ def test_t036_is_superseded_in_part_by_t060() -> None:
     assert "is not implied" in what
 
 
+def test_the_96_25_case_exclusions_are_superseded_by_t060() -> None:
+    """T-060 leaves no packing of eleven squares at side 96/25, below T. That implies the
+    whole of T-031's exclusion of the octagon class, and T-023's exclusion of its
+    four-owner branch but not its count that at most five further squares fit beside
+    the owners, which is about ten squares (think-rl2b)."""
+    expected = {"T-031": "whole", "T-023": "part"}
+    for entry, extent in expected.items():
+        record, _, _ = _live_record(entry)
+        assert record["kind"] == "case-exclusion", entry
+        assert [(item["result"], item["extent"]) for item in record["superseded_by"]] == [
+            ("T-060", extent)
+        ], entry
+        assert "96/25" in record["claim"], entry
+    record, _, _ = _live_record("T-023")
+    what = " ".join(record["superseded_by"][0]["what"].split())
+    assert what.startswith("The conclusion")
+    assert "at most five further squares" in what
+    assert "is not implied" in what
+
+
 def test_results_md_labels_every_result_by_its_kind() -> None:
     register = safe_load(render_results.RESULTS.read_text(encoding="utf-8"))
     committed = render_results.OUTPUT.read_text(encoding="utf-8")

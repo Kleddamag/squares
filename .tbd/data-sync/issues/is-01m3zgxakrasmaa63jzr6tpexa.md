@@ -3,15 +3,19 @@ type: is
 id: is-01m3zgxakrasmaa63jzr6tpexa
 title: "Cases: the standard case view, the best packing drawn first and large, then the number line of the lower and upper bounds, then the record's facts"
 kind: task
-status: in_progress
+status: closed
 priority: 2
-version: 4
+version: 5
 spec_path: docs/project/specs/active/plan-2026-09-29-github-pages-overview.md
 labels: []
 dependencies: []
 parent_id: is-01m3zgx0c1edkfwarjxzctvgmp
 created_at: 2026-10-02T23:59:06.359Z
-updated_at: 2026-10-03T04:58:07.523Z
+updated_at: 2026-10-03T14:38:05.169Z
+closed_at: 2026-10-03T14:38:05.169Z
+close_reason: Merged in jlevy/squares#312 (c831b4ee0), after a correctness and engineering review round (419a1db5d)
+resolution: null
+duplicate_of: null
 ---
 The one view of a case (think-t21m): its known-best packing drawn large at the top, then the number line of its verified and reported lower and upper bounds, the visual the film and the results show for some values, then the record's facts, cleaner than the case record today. One builder, used by the case page and by the frontier popover (and by results where it fits). Shots at 1280 and 390, both schemes; tests; paper-design.md (Case records).
 

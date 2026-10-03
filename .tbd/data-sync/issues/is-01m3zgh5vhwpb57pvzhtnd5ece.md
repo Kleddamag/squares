@@ -3,9 +3,9 @@ type: is
 id: is-01m3zgh5vhwpb57pvzhtnd5ece
 title: "Site: the big tables' polish of 2026-10-02 evening (borders, filter controls, tag colours, spacing)"
 kind: epic
-status: in_progress
+status: closed
 priority: 2
-version: 8
+version: 9
 spec_path: docs/project/specs/active/plan-2026-09-29-github-pages-overview.md
 labels: []
 dependencies: []
@@ -18,6 +18,10 @@ child_order_hints:
   - is-01m3zghp4dv92r5qwqva39z45z
   - is-01m3v5tw63ebmd3t7hpep12nbj
 created_at: 2026-10-02T23:52:28.263Z
-updated_at: 2026-10-03T00:10:13.261Z
+updated_at: 2026-10-03T14:38:02.478Z
+closed_at: 2026-10-03T14:38:02.478Z
+close_reason: Merged in jlevy/squares#312 (c831b4ee0), after a correctness and engineering review round (419a1db5d)
+resolution: null
+duplicate_of: null
 ---
 Owner, 2026-10-02: a batch of fixes to the big tables (Recent Results on the Overview, the Results page's table, the Frontier table) and the spacing around them: drop the tables' outer border; smaller filter controls and labels; default filter values (All) gray, active ones black, tallies black; consistent tag colours (proved green, open yellow, reviewed blue, confirmed the C rungs' green); more space after the See all results button and wherever text is adjacent to a button or a table. One PR, one commit per child bead.

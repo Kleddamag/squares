@@ -1,40 +1,42 @@
 ---
 type: is
 id: is-01m3yqvdgvgy8pbdg53j9xb7pj
-title: Restore the model names in session-168's eleven cost rollups
+title: Restore the model names in session-168's sixteen cost rollups
 kind: chore
 status: open
 priority: 1
-version: 1
+version: 4
 assignee: jlevy
 labels:
   - session-168
 dependencies: []
 parent_id: is-01m3xgkna3m3w1w50ky6gqyxyk
 created_at: 2026-10-02T16:41:09.403Z
-updated_at: 2026-10-02T16:41:09.403Z
+updated_at: 2026-10-03T06:24:41.460Z
 ---
-Session-168's eleven cost rollups are committed in fefca54a5 with the two model
-identifiers replaced, because that session could not push model identifiers.
-Every count is the rollup's own; only four labels differ from the originals.
+Session-168's sixteen cost rollups, one per log (the coordinator's and fifteen
+lanes'), are committed in `packing/campaign/resource-usage/` with the three
+model identifiers and five command-name words replaced by labels. Every count is
+the rollup's own; only the labels differ from the originals.
 
 The owner restores them in one commit on claude/ecstatic-archimedes-62hj6a
 (PR jlevy/squares#305):
 
-1. Either extract `session-168-rollups-original.tar.gz` (sent in the session
-   chat) into `packing/campaign/resource-usage/`, or apply the reverse
-   substitution given in the chat to the eleven files below. It maps
-   `model-withheld-a`, `model-withheld-b`, `withheld-word-1` and
-   `withheld-word-2` back to their originals.
-2. Run `uv run --frozen --all-extras --group dev python -m devtools.close_session --render`
-   and `packing-ledger render` from `packing/`; neither output should change,
-   since the tables carry no model names. Then `packing-validate --records`.
+1. Either extract `session-168-rollups-original-final.tar.gz` (sent in the
+   session chat on 2026-10-03; it supersedes the earlier
+   `session-168-rollups-original.tar.gz`) into
+   `packing/campaign/resource-usage/`, or apply the reverse substitution given in
+   the chat to the sixteen files below. It maps `model-withheld-a`, `-b` and
+   `-c` and `withheld-word-1` to `-5` back to their originals.
+2. From `packing/`, run `uv run --frozen --all-extras --group dev python -m devtools.close_session --render`
+   and `packing-ledger render`; neither output should change, since the tables
+   carry no model names. Then run `packing-validate --records`.
 3. Commit and push.
-4. Replace the two labels in the PR body's "Model use" table.
+4. Replace the three labels in the PR body's "Model use" table.
 
 | Rollup | Lane | Label | Turns |
 | --- | --- | --- | ---: |
-| `6179239e-fec5-52e8-aabb-a0e229f3f822.yaml` | Coordinator | a | 956 |
+| `6179239e-fec5-52e8-aabb-a0e229f3f822.yaml` | Coordinator | a | 1,888 |
 | `agent-a665a16af102749a0.yaml` | Literature: packing families | a | 216 |
 | `agent-a68c888b24723b197.yaml` | Family census tool | a | 181 |
 | `agent-a9f4406a56646937f.yaml` | Contact-shade census tool | a | 213 |
@@ -45,8 +47,18 @@ The owner restores them in one commit on claude/ecstatic-archimedes-62hj6a
 | `agent-a30ab1dd97b959c63.yaml` | Archive sources, fix asymptotic record | a | 404 |
 | `agent-abfdcf4d3642c3fe2.yaml` | Codify X-049 hypotheses | b | 110 |
 | `agent-a4a764a6285487659.yaml` | Regularized-view atlas layer | a | 297 |
+| `agent-ab5f6ac0531baee62.yaml` | Lean replay | c | 171 |
+| `agent-a2f9102eba6720d45.yaml` | T-007 re-grounding | a | 758 |
+| `agent-a5e0eae4c2694a29b.yaml` | Verify-atlas lane and dilation | a | 357 |
+| `agent-a72b23ec598f03d8c.yaml` | Homepage toggle | a | 356 |
+| `agent-a0ce03a4c2b6775a7.yaml` | Correction tag | a | 195 |
 
-Totals: label a 2,563 turns, label b 534, one synthetic turn; 3,098 in all.
-`withheld-word-1` and `withheld-word-2` occur only in the coordinator's rollup,
-as two command-name keys. Done when the eleven files carry the real names,
-the records tier passes, and the PR body's table matches.
+Totals: label a 5,149 turns, label b 534, label c 170, and 13 synthetic turns;
+5,866 in all. `withheld-word-1` and `-2` occur only in the coordinator's rollup,
+and `withheld-word-3` to `-5` only in the T-007 re-grounding lane's, each as a
+command-name key. Done when the sixteen files carry the original names, the
+records tier passes, and the PR body's table matches.
+
+## Notes
+
+2026-10-03 session-168 close: the rollups now cover all sixteen logs (the coordinator's and fifteen lanes'), regenerated at the close. The coordinator's file and the ten earlier lane files are overwritten with current counts; five lane files are new: agent-ab5f6ac0531baee62 (Lean replay), agent-a2f9102eba6720d45 (T-007 re-grounding), agent-a5e0eae4c2694a29b (verify-atlas and dilation), agent-a72b23ec598f03d8c (homepage toggle), agent-a0ce03a4c2b6775a7 (correction tag). Three labels are withheld now, model-withheld-a, -b and -c; label c is the Lean replay lane's alone. The word labels are withheld-word-1 and -2 (coordinator's file, as before) and withheld-word-3, -4 and -5 (agent-a2f9102eba6720d45, three command-word keys of the form b<word>b). The mapping and the originals are in the session chat (session-168-rollups-original.tar.gz is superseded by the close's tarball). Restoring: replace each label in the sixteen files with its original, commit, push, then fix the PR body's model table.

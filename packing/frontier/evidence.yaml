@@ -811,7 +811,7 @@ evidence:
         Unrestricted independent rotations and disjoint interiors; n41 follows from n39 and
         n71 from n70 by monotonicity, and since 2026-10-02 n54 from n53, n57 from n56 and
         n73 from n72, where Nagamochi's closed form had held the verified field until its
-        proof was found incomplete (T-084).
+        proof was found incomplete (T-085).
       pinpoints: All five Certificate verification conditions; complete successful entries for the ten named files in receipts/wand125-points/sqpack-exact-replay.log.
       assumptions:
         - Exact nonnegative point weights have total mass strictly below the target count.
@@ -1631,7 +1631,7 @@ evidence:
       2026-10-01 point-and-mixed packet, held by tests/test_wand125_checker_controls.py);
       no mutation of the n = 50 certificate itself was run. The mass, below 51, carries
       the bound to n = 51, where it is above Nagamochi's closed form, a reported bound
-      since Karakuş's finding (T-084); at n = 52 and 53
+      since Karakuş's finding (T-085); at n = 52 and 53
       the replayed rectangle certificates of T-070 are higher, so it carries nothing
       there. The tarball is pinned by digest and not retained.
     source_reviewed: '2026-09-28'
@@ -3015,7 +3015,7 @@ evidence:
       covered 0.99198... and 0.95298... (receipts/n101/control.json). The mass,
       10099999/100000, is below 102 to 105, so the bound carries to those counts; at n =
       106 Nagamochi's 10.3273... is higher, and so is Karakuş's 10.3107..., the verified
-      floor there since Karakuş's finding (T-084, merged 2026-10-03). The tarball is
+      floor there since Karakuş's finding (T-085, merged 2026-10-03). The tarball is
       pinned by digest and not retained.
     source_reviewed: '2026-10-03'
   - id: E-n083-wand125-mixed-937-report
@@ -3139,7 +3139,7 @@ evidence:
       2026-10-01 point-and-mixed packet, held by
       tests/test_wand125_checker_controls.py); no mutation of the n = 83 certificate
       itself was run. It raises the verified lower bound at n = 83 above Nagamochi's
-      closed form, 9.1240384..., a reported bound since Karakuş's finding (T-084, merged
+      closed form, 9.1240384..., a reported bound since Karakuş's finding (T-085, merged
       2026-10-03), past Green's reported 9.2667335..., which this case
       holds by monotonicity from n = 82, and past the linear 187/20 reported there
       (T-073). The review it rests on, of the afternoon certificates, was written by the
@@ -3425,7 +3425,7 @@ evidence:
       1.005778849360574 over 2,748,964 cells; its oblique run took 7,792 seconds over
       30,125,436 nodes. It exceeds the source's own rectangle certificate the record
       reports at n = 91, 1929/200, with which the source compares it, by 0.055, and
-      Nagamochi's 1 + sqrt(74) = 9.6023..., verified until Karakuş's finding (T-084).
+      Nagamochi's 1 + sqrt(74) = 9.6023..., verified until Karakuş's finding (T-085).
       The source says the full replay
       was run again from the published tarball on a fresh machine, by the same
       implementation and not an independent one; that was not checked here. The
@@ -3514,7 +3514,7 @@ evidence:
       deleted (receipts/n37/control.json of the 2026-10-01 point-and-mixed packet, held
       by tests/test_wand125_checker_controls.py); no mutation of the n = 91 certificate
       itself was run. It raises the verified lower bound at n = 91 above Nagamochi's 1 +
-      sqrt(74) = 9.6023..., a reported bound since Karakuş's finding (T-084, merged
+      sqrt(74) = 9.6023..., a reported bound since Karakuş's finding (T-085, merged
       2026-10-03), and above the rectangle certificate the source reports
       there, 1929/200. The review it rests on, of the afternoon certificates, was
       written by the retaining lane and not by a separately prompted reviewer. The
@@ -3669,7 +3669,7 @@ evidence:
       records is 1.0000000030392873, at net index 122, and the axis integer minimum
       1.0056403520432675 over 1,420,864 cells; its oblique run took 8,827 seconds over
       31,529,330 nodes. It exceeds Nagamochi's 1 + sqrt(79) = 9.8882..., which this
-      case held verified until Karakuş's finding (T-084, merged 2026-10-03), by 0.0718,
+      case held verified until Karakuş's finding (T-085, merged 2026-10-03), by 0.0718,
       the first certificate in this record above that
       value, and supersedes the source's mixed_n96_L992 of the same day, 248/25, which
       is pinned and not registered. The source's audit calls Nagamochi's value
@@ -3763,7 +3763,7 @@ evidence:
       by tests/test_wand125_checker_controls.py); no mutation of the n = 96 certificate
       itself was run. It raises the verified lower bound at n = 96 above Nagamochi's 1 +
       sqrt(79) = 9.8882..., which held it until Karakuş's finding moved it to the
-      reported lane (T-084, merged 2026-10-03). The review it rests on, of the
+      reported lane (T-085, merged 2026-10-03). The review it rests on, of the
       afternoon certificates, was written by the retaining lane and not by a separately
       prompted reviewer. The tarball is pinned by digest and not retained.
     source_reviewed: '2026-10-03'
@@ -4622,7 +4622,7 @@ evidence:
         (arXiv:2609.37410, Section 4, 0 < t <= 1/50) and chelokot's square of side
         10001/10000 in [0,4]^2 each score below one after a concentric shrink;
         devtools/check_nagamochi_lemma1_counterexample.py recomputes every printed quantity
-        of both in exact rational arithmetic (E-nagamochi-lemma1-counterexample, T-084).
+        of both in exact rational arithmetic (E-nagamochi-lemma1-counterexample, T-085).
         The gap is in Section 5.5, Case 6, where the reduction reaches a contact
         configuration that the hypothesis of Lemma 6 does not cover. The paper has no other
         proof of Theorem 1 and Theorem 2 is algebra on it, so Theorem 2 is unproved by this

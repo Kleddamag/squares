@@ -40,14 +40,14 @@ hand-written records to show that the rules are the ones the corpus already foll
   `1/2 + sqrt(n - floor(sqrt(n)) + 1/4)`, under `E-karakus-strip-lower`; it is exactly
   `k` at `n = k^2 - 1`. A perfect square's is the area bound under `E-basic-area-lower`,
   and a `k^2 - 2` case's is `k` under `E-chelokot-square-minus-two-lean`, chelokot's Lean
-  theorem `s(n^2 - 2) = n`, replayed here with its axiom receipt (`T-085`).
+  theorem `s(n^2 - 2) = n`, replayed here with its axiom receipt (`T-086`).
   The reported lower field takes the stronger of Nagamochi's closed form, under
   `E-nagamochi-lower`, and the source candidates in `audit_ds7_lower_bounds`; Green's
   missing proofs remain source-reported only. A perfect square reports the area bound
   under `E-basic-area-lower`, which is what the hand-written perfect squares do.
   Corrected 2026-10-02: until then Nagamochi's closed form was the verified lower bound
   here too. Its published proof rests on Nagamochi's Lemma 1, which Karakuş 2026 showed
-  false, so it is now a reported bound (`T-007`, `T-084`,
+  false, so it is now a reported bound (`T-007`, `T-085`,
   `docs/project/reviews/review-2026-10-02-nagamochi-lemma1-karakus.md`).
 - `status` is `proved` only where the verified lower bound meets the reported upper
   bound exactly. In `101..324` that is the 24 cases `k^2`, `k^2 - 1` and `k^2 - 2` for
@@ -305,13 +305,13 @@ GRID_UPPER_EVIDENCE = "E-basic-grid-upper"
 AREA_LOWER_EVIDENCE = "E-basic-area-lower"
 NAGAMOCHI_EVIDENCE = "E-nagamochi-lower"
 KARAKUS_EVIDENCE = "E-karakus-strip-lower"
-#: The exact recomputation of the counterexample to Nagamochi's Lemma 1 (`T-084`): why a
+#: The exact recomputation of the counterexample to Nagamochi's Lemma 1 (`T-085`): why a
 #: record's verified floor is Karakuş's rather than Nagamochi's. Scoped from `n = 10`, the
 #: first case whose container the counterexample family reaches.
 LEMMA1_EVIDENCE = "E-nagamochi-lemma1-counterexample"
 LEMMA1_FROM = 10
 #: chelokot's Lean proof that `s(n^2 - 2) = n` for every `n >= 2`, replayed here with its
-#: axiom receipt (`T-085`): the verified lower bound of the `k^2 - 2` family since 2026-10-02.
+#: axiom receipt (`T-086`): the verified lower bound of the `k^2 - 2` family since 2026-10-02.
 LEAN_EVIDENCE = "E-chelokot-square-minus-two-lean"
 LEAN_NOTE = "Lean theorem: s(n^2 - 2) = n for every integer n >= 2."
 #: The least nonsquare `n` Karakuş's Corollary 6.2 covers.
@@ -1304,7 +1304,7 @@ def verified_lower_bound(n: int) -> dict[str, Any]:
 
     The area bound at a perfect square, and Karakuş's bound everywhere else. Until
     2026-10-02 it was Nagamochi's closed form throughout, whose published proof rests on a
-    false lemma (`T-084`); see this module's docstring.
+    false lemma (`T-085`); see this module's docstring.
     """
     if is_perfect_square(n):
         side = str(grid_ceiling(n))

@@ -715,12 +715,12 @@ RECORDED: dict[int, tuple[tuple[str, str, str] | None, tuple[str, str, str] | No
     # The grid ceiling is derived whoever the catalogue credits (think-dlof).
     6: (None, ("Kearney & Shiu 2002, Electron. J. Combin. 9, #R14", "external", "verified")),
     # What the register verified, not the earlier reported proof (the owner, 2026-09-22).
-    # chelokot's Lean theorem s(n^2 - 2) = n, replayed here (T-085), since 2026-10-02,
+    # chelokot's Lean theorem s(n^2 - 2) = n, replayed here (T-086), since 2026-10-02,
     # which stands in for Nagamochi's Theorem 2, so the line says it corrects that paper.
     7: (
         None,
         (
-            "chelokot 2026, GitHub corrects Nagamochi 2005 (confirmed T-085)",
+            "chelokot 2026, GitHub corrects Nagamochi 2005 (confirmed T-086)",
             "external",
             "verified",
         ),
@@ -767,7 +767,7 @@ RECORDED: dict[int, tuple[tuple[str, str, str] | None, tuple[str, str, str] | No
     # The catalogue credits nobody, so the line cites the catalogue by its compilers. The
     # lower line was Nagamochi's until 3 October 2026, when the replayed linear
     # certificate of 2 October was recorded (T-080); on PR 305's line it was Karakuş's from
-    # 2 October (T-082) until the two lines merged.
+    # 2 October (T-083) until the two lines merged.
     101: (
         ("Friedman & Ellsworth, Squares in Squares (reported)", "external", "reported"),
         (
@@ -868,10 +868,10 @@ RECORDED_LINKS: dict[tuple[int, str], tuple[list[str], list[str]]] = {
     # printed -- and neither replays the bound, so neither confirms it.
     (13, "lower"): (["T-005", "T-006"], []),
     # chelokot's Lean proof, replayed here with its axiom receipt, since 2026-10-02.
-    (7, "lower"): (["T-085"], ["T-085"]),
+    (7, "lower"): (["T-086"], ["T-086"]),
     # Karakuş's general bound, read here and not replayed, since 2026-10-02; n = 101 stood
     # here until its linear certificate's replay was recorded (T-080) on 3 October.
-    (106, "lower"): (["T-082"], []),
+    (106, "lower"): (["T-083"], []),
     (101, "lower"): (["T-080"], ["T-080"]),
     # This project's own bound, established rather than confirmed, was T-030's until
     # 2026-10-02 (`test_a_novel_first_party_bound_cites_this_project_and_its_result` keeps
@@ -1102,7 +1102,7 @@ def test_the_corrections_on_record_are_recent_and_name_nagamochi_2005() -> None:
     lines = {entry["n"]: entry["lower"] for entry in _record()["entries"] if entry["lower"]}
     corrected = {n: line for n, line in lines.items() if line["corrects"]}
     # 267 on 2026-10-02; 265 since 3 October, when n = 37 and 61 moved onto Bašić and
-    # Slivková's 2018 piercing bound (T-086), which corrects nothing; 225 since the merge
+    # Slivková's 2018 piercing bound (T-087), which corrects nothing; 225 since the merge
     # of the same day, when replayed certificates and covers recorded in parallel
     # (T-048, T-062, T-064, T-066, T-067, T-069 to T-072, T-074 and T-075) took 40 of the
     # corrected floors, none of them correcting anything; 220 since the second merge that

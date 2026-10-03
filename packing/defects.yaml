@@ -17296,7 +17296,7 @@ defects:
     and T-007 stood at V3/C1 on it. Lemma 1 of that paper, the per-square scoring
     assertion Theorem 1 is summed from, is false for every container with a > 3 and
     b > 2: Karakuş's squares K_t and chelokot's square of side 10001/10000 score below
-    one, recomputed here exactly (T-084). The paper has no other proof of Theorem 1, so
+    one, recomputed here exactly (T-085). The paper has no other proof of Theorem 1, so
     Theorem 2 is unproved by it at every N >= 10. The operative verified lower bound of
     287 case records cited it: 238 open floors, all 17 perfect squares from 4 on, the 16
     cases k^2 - 1 and the 16 cases k^2 - 2 from 7 on.
@@ -17311,12 +17311,12 @@ defects:
     Per the review of 2026-10-02: E-nagamochi-lower is now reported, with its external
     review defect-found, and T-007 stands at V0/C1, status incomplete. The verified floors
     were re-grounded: the perfect squares on the area bound, s(k^2 - 1) = k on Karakuş's
-    Corollary 1.2 (T-083), and the general floor on his weaker Corollary 6.2 (T-082), all
+    Corollary 1.2 (T-084), and the general floor on his weaker Corollary 6.2 (T-083), all
     at V3/C1, except at n = 54, 57 and 73, where T-044's registered bounds, masked until
-    then, are stronger; T-084 records Lemma 1's correction. Nagamochi's values stay in the
+    then, are stronger; T-085 records Lemma 1's correction. Nagamochi's values stay in the
     reported lane. The case bodies, the generator, the frontier README and three research
     reports carry dated corrections, and devtools.check_nagamochi_bounds now re-derives
     Karakuş's values in the verified lane and Nagamochi's in the reported lane.
-    The k^2 - 2 family rests on chelokot's Lean proof, replayed here with its axiom receipt (T-085), at the same values.
+    The k^2 - 2 family rests on chelokot's Lean proof, replayed here with its axiom receipt (T-086), at the same values.
   regression: none
   recorded_in: docs/project/reviews/review-2026-10-02-nagamochi-lemma1-karakus.md

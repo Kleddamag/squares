@@ -1,0 +1,26 @@
+{
+ "cover": "packing/resources/web/wand125-point-n61-2026-09-30/square-packing-bounds/point_n61_L8/cover.txt",
+ "sha256": "bcb66c7910ef844ce8d39c423d7a5a419bd530a344689331f7665ba6971d0374",
+ "side": "8",
+ "coordinate_denominator": 2000,
+ "mass_denominator": 562949953421312,
+ "points": 15193,
+ "segments": 0,
+ "polygons": 0,
+ "lines_carrying_segments": {
+  "x": [],
+  "y": []
+ },
+ "segment_lengths": {},
+ "point_mass": "8584985072679551/140737488355328",
+ "segment_mass": "0",
+ "total": "8584985072679551/140737488355328",
+ "total_decimal": "60.999987800",
+ "total_equals_stated": true,
+ "total_below_n": true,
+ "counts_as_stated": true,
+ "d4_invariant_entry_by_entry": true,
+ "d4_invariant_as_measure": true,
+ "points_on_segment_lines": 0,
+ "problems": []
+}

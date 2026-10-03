@@ -73,10 +73,33 @@ FRONTIER_COUNTS: dict[str, tuple[int, int, int]] = {
     # from the n=1..324 reported-open count. T-062 and T-063 report exact values
     # at n=60 and n=61, while T-064 reports the k^2-3 family. Its ten new open
     # instances n=78..321 bring the reported-open count down without changing
-    # the formal-open or Nagamochi-bounded counts.
-    "n=1..100": (61, 57, 38),
-    "n=1..200": (149, 141, 126),
-    "n=1..324": (261, 249, 238),
+    # the formal-open or Nagamochi-bounded counts. 2026-10-01: T-066 and T-067 report
+    # s(59) = 8 and s(77) = 9 from mixed covers not yet replayed here, so both left the
+    # reported-open count in every corpus and stay formal-open. 2026-10-02: 21 merged
+    # rectangle replays (T-045, T-070) took 17 open cases off Nagamochi's bound, and the
+    # zmx2 replays of the s(60) and s(59) mixed covers (T-062, T-063, T-066) proved
+    # n = 59, 60 and 61 in the verified lane; all three were already reported-proved and
+    # none was Nagamochi-bounded, so only formal-open moves. 2026-10-02 later: the
+    # completed zmx2 replay of the s(77) mixed cover (T-067) proved n = 77 and, by its
+    # total below 78, n = 78; both were reported-proved and neither Nagamochi-bounded,
+    # so formal-open falls by two in every corpus. The replayed s(76) >= 447/50 (T-072)
+    # leaves n = 76 open. 2026-10-02, the merged replay of wand125's n = 50 mixed
+    # certificate (T-048) took n = 50 and, by its mass, n = 51 off Nagamochi's bound;
+    # both stay open in both lanes, so only the Nagamochi-bounded count falls by two. The
+    # same day the replayed mixed certificates of T-069 and T-071 took n = 37, 65, 66, 84,
+    # 85, 87, 90 and 92 off it, eight more, all open in both lanes; n = 86 moved too, from
+    # a rectangle certificate. Then the merged replays of wand125's rectangle
+    # certificates of 1 October (T-074) took n = 57, 58, 88, 89, 93 and 94 off it, six
+    # more, all open in both lanes. 2026-10-03: the full replay of Valid7 and the built
+    # Lean reduction proved T-064's s(k^2 - 3) = k, closing n = 97, 118, 141, 166, 193,
+    # 222, 253, 286 and 321; all were reported-proved and Nagamochi-bounded, so the
+    # formal-open and Nagamochi-bounded counts fall together, by one, five and nine. The
+    # same day the replays of wand125's six afternoon mixed certificates (T-075) took
+    # n = 83, 91 and 96 off Nagamochi's bound, all open in both lanes, so only the
+    # Nagamochi-bounded count falls, by three in every corpus.
+    "n=1..100": (55, 55, 1),
+    "n=1..200": (139, 139, 85),
+    "n=1..324": (247, 247, 193),
 }
 #: n = 68, 103, 105, 110 and 131 left the exclusions on 2026-09-29, when their records
 #: moved from UnitSquare renderings to Francisco Couzo's packings (T-056); n = 69 is the
@@ -3253,6 +3276,15 @@ def _standing(context: Context) -> str:
     return _module(context, "devtools.check_standing")
 
 
+def _result_requests(context: Context) -> str:
+    # Sub-second: one record, its schema and the register. Records tier because it checks
+    # the record against the register -- that every issue's results name entries that
+    # exist and every reply is a comment on its own issue, the join stage 7 of the result
+    # import process reads to say which author is owed a reply. A reply due is reported,
+    # never failed: it is the owner's next move, not a broken record.
+    return _module(context, "devtools.check_requests")
+
+
 def _case_prose(context: Context) -> str:
     # Sub-second: it regex-scans a hundred case bodies against their own front matter and
     # reuses check_rung_figures's exact-arithmetic rule. Records tier because it checks the
@@ -4698,6 +4730,21 @@ STEPS: tuple[Step, ...] = (
         ),
     ),
     Step(
+        "result requests name registered results",
+        _result_requests,
+        fast=True,
+        records=True,
+        touches=(
+            *_CORE,
+            "packing/devtools/check_requests.py",
+            "packing/devtools/result_status.py",
+            "packing/campaign/result-requests.yaml",
+            "packing/campaign/schemas/result-requests.schema.yaml",
+            "packing/frontier/results.yaml",
+            "packing/frontier/evidence.yaml",
+        ),
+    ),
+    Step(
         "case prose agrees with its own front matter",
         _case_prose,
         fast=True,
@@ -5131,6 +5178,9 @@ TREE_REUSABLE_FAST_STEPS = frozenset(
         # The register, the bibliography and the case records, read and compared: no
         # clock, no network and no history.
         "standings agree with the bounds their entries state",
+        # One record, its schema and the register; `--report`, `--draft` and `--github`
+        # read git and GitHub, and the step runs none of them.
+        "result requests name registered results",
         "case prose agrees with its own front matter",
         # Reads the register, the reader documents and its own allowlist; the `git grep`
         # in the module belongs to `--retained`, which this step does not run.

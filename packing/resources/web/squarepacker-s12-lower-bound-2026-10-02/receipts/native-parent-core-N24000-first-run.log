@@ -1,0 +1,26 @@
+# command: uv run --frozen --all-extras --group dev python -m devtools.verify_evand_angle_net_native --case s12-rescaled --all --workers 2 --output /tmp/claude-0/-home-user-squares/4ea49914-96b4-51a9-a2a9-c5603fe593f4/scratchpad/aa/native/native-parent-core-N24000.json
+# cwd: packing/ of this repository at the clean commit the JSON receipt names
+# python3: packing/.venv/bin/python3, CPython 3.14.7, through uv run --frozen
+# host: 4 cores; load 25.87 24.99 19.10; started 2026-10-02T17:38:49Z
+warning: The `UV_NATIVE_TLS` environment variable is deprecated and will be removed in a future release. Use `UV_SYSTEM_CERTS` instead.
+row 0: certified, 5799 boxes, 0 stalled, 2.26s
+row 100: certified, 4023 boxes, 0 stalled, 0.89s
+row 200: certified, 5063 boxes, 0 stalled, 1.70s
+row 300: certified, 6711 boxes, 0 stalled, 1.50s
+row 400: certified, 7719 boxes, 0 stalled, 2.40s
+row 500: certified, 8235 boxes, 0 stalled, 2.03s
+row 600: certified, 6991 boxes, 0 stalled, 1.13s
+row 700: certified, 7571 boxes, 0 stalled, 1.26s
+row 800: certified, 8083 boxes, 0 stalled, 1.50s
+row 900: certified, 7963 boxes, 0 stalled, 1.32s
+row 1000: certified, 8795 boxes, 0 stalled, 1.46s
+row 1100: certified, 10975 boxes, 0 stalled, 1.14s
+row 1200: certified, 10803 boxes, 0 stalled, 3.28s
+row 1300: certified, 12391 boxes, 0 stalled, 2.95s
+row 1400: certified, 10995 boxes, 0 stalled, 1.85s
+row 1500: certified, 13843 boxes, 0 stalled, 2.10s
+row 1600: certified, 12191 boxes, 0 stalled, 1.53s
+row 1700: certified, 12255 boxes, 0 stalled, 2.56s
+row 1800: certified, 12815 boxes, 0 stalled, 3.16s
+/root/.local/share/uv/python/cpython-3.14.7-linux-x86_64-gnu/lib/python3.14/multiprocessing/resource_tracker.py:475: UserWarning: resource_tracker: There appear to be 5 leaked semaphore objects to clean up at shutdown: {'/mp-4rz3v906', '/mp-mz0m2uws', '/mp-rm4muenx', '/mp-ylk4nwq_', '/mp-1ce8e870'}
+  warnings.warn(

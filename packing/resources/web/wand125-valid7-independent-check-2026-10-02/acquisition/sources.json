@@ -1,0 +1,49 @@
+{
+  "format": "external-source-acquisition-v1",
+  "retrieved_at_utc": "2026-10-02T07:42Z",
+  "git_scope": "A full clone of the public repository, whose history is this one commit; every tracked file is in the scope. The release records-v1 is not part of the Git tree: its checksum file is kept beside the archive under release/ and its two record files are pinned by SHA-256 in the README.",
+  "sources": [
+    {
+      "id": "wand125-valid7-independent-check",
+      "source_url": "https://github.com/wand125/valid7-independent-check",
+      "source_ref": "38dd31b369991b0d96c917a4af0c7139b44a038d",
+      "source_commit": "38dd31b369991b0d96c917a4af0c7139b44a038d",
+      "committed_utc": "2026-10-02T02:49:17Z",
+      "git_tree": "5667d8de5af73aaa9f48b8631ed18a8e2e7db369",
+      "archived_path": "packing/resources/web/wand125-valid7-independent-check-2026-10-02/valid7-independent-check",
+      "subtree_manifest": "packing/resources/web/wand125-valid7-independent-check-2026-10-02/acquisition/upstream-subtree.sha256",
+      "subtree_scope": [
+        ".gitignore",
+        "DESIGN.md",
+        "LICENSE",
+        "NOTICE",
+        "README.md",
+        "READ_LOG.md",
+        "cover",
+        "requirements.txt",
+        "src",
+        "tests",
+        "verify.sh",
+        "versions"
+      ],
+      "subtree_file_count": 29,
+      "subtree_total_bytes": 216830,
+      "retained_file_count": 28,
+      "retained_total_bytes": 198592,
+      "compressed": [],
+      "pinned_only": [
+        {
+          "path": "cover/L4_k02_box7.txt",
+          "bytes": 18238,
+          "sha256": "c0a6750997897c21ffc693df6df97f89a248dd9eb588a2fe2b83bf359793694b",
+          "reason": "byte-identical to the 2026-10-01 evand packet's copy, the cover T-064 cites",
+          "identical_to": "packing/resources/web/evand-square-packing-2026-10-01/source/s12/certificates/k2m3/L4_k02_box7.txt"
+        }
+      ],
+      "license": "MIT (LICENSE, Copyright (c) 2026 wand125); cover/L4_k02_box7.txt is Evan Daniel's, MIT, per NOTICE",
+      "claims": [
+        "A second, independently written exact-rational checker certifies Valid7 for Evan Daniel's cover L4_k02_box7.txt without symmetry reduction: 156,800 root boxes over centres [0,7]^2 and u = tan(theta/2) in [-1/2, 1/2], 0 uncertified, 9,640,060 leaves, about 626 core-hours; records in release records-v1"
+      ]
+    }
+  ]
+}

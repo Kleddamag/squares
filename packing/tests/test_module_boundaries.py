@@ -876,6 +876,15 @@ def test_exhaustive_exact_marker_is_declared_only_by_measured_slow_nodes() -> No
         "test_n40_rigidity.py": {
             "test_the_record_round_trips",
         },
+        # The BC-199 isolation-radius record recomputed leaf by leaf from its declared box
+        # and threshold: 470.96 s of exact arithmetic for the retained receipt on
+        # 2026-10-02, on one core. It ran in the slow lane for one dispatched checkpoint
+        # (run 37075005561), where a single eight-minute node is a third of the lane's
+        # 1800 s budget; the fast tests beside it pin the comparison, the perturbation
+        # controls and the retained receipt.
+        "test_trump_isolation_radius.py": {
+            "test_replay_of_the_retained_record_passes",
+        },
     }
     declared: dict[str, set[str]] = {}
     marker = "pytest.mark.exhaustive_exact"

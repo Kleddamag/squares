@@ -1281,8 +1281,10 @@ body {
    (`overview_sections.case_list`), so a range is never cut after its dash. A list reads
    from the start of its cell, as text does, and the column's header with it.
 
-   A cell of up to four values stays on one line and is as narrow as that line. A cell of
-   five or more wraps, and asks for `--site-cases-measure`: T-056's 23 values take 6
+   A cell of up to four values stays on one line and is as narrow as that line, unless
+   that line is longer than half the measure (`overview_sections.CASES_ONE_LINE`). A cell
+   of five or more, or a long one, wraps (`.site-n-wraps`), and asks for
+   `--site-cases-measure`: T-056's 23 values take 6
    lines there, where a column as narrow as one value set them one or two to a line, 15
    lines and a row 386px tall. The measure is what the cell would like, not a floor: a
    table gives a column the width it asks for before the result and the credit, which
@@ -1302,7 +1304,7 @@ body {
   .site-results td.site-col-n {
     white-space: nowrap;
   }
-  .site-results td.site-col-n:has(.site-n-value:nth-child(5)) {
+  .site-results td.site-col-n.site-n-wraps {
     min-width: calc(var(--site-cases-measure) / 2 + 1rem);
     white-space: normal;
     width: calc(var(--site-cases-measure) + 1rem);
@@ -1313,8 +1315,20 @@ body {
    wraps inside itself and sends the words after it to a new line, which then began with
    the summary's comma. In the line, a formula ends a line where KaTeX lets one end,
    after a relation or a binary operator at its top level, and the words after it follow
-   on. */
-.site-results .site-col-result .kpress-math-inline {
+   on.
+
+   The formula's last piece is set in the line too. KaTeX sets each piece as a box
+   (`.base`, an inline block), and a browser may end a line after a box whatever follows
+   it, so a formula whose last piece filled its line sent the comma after it to the
+   next: T-078's, once T-079 joined the table (3 October 2026). A word joiner between
+   them does not stop Chromium. In the line, the piece is a run of text a line cannot
+   end inside, as it was, and the comma, stop or bracket after it keeps to it as it does
+   to a word: the line ends after the formula's last relation or operator instead, and
+   the last piece and its comma go on together. Nothing in the piece moves, and every
+   other piece stays a box, so the formula still ends a line only where KaTeX lets it.
+   Across windows of 320 to 1600 pixels no line of either table begins with punctuation
+   after a formula, where with the last piece a box 148 of 214 widths had one. */
+.site-results .site-col-result :is(.kpress-math-inline, .katex-html > .base:last-child) {
   display: inline;
 }
 /* A result's records, its case link, the register, its evidence, source and reviews, are
@@ -1406,10 +1420,10 @@ body {
     color: var(--kpress-doc-muted);
     content: "n = ";
   }
-  /* A list of five values or more takes a line of its own under the id, the rungs and
-     the status, the card's whole width, and wraps there from the start of the line:
-     between them it had under half of that. */
-  .kpress .site-results td.site-col-n:has(.site-n-value:nth-child(5)) {
+  /* A list that wraps, of five values or more or a long one, takes a line of its own
+     under the id, the rungs and the status, the card's whole width, and wraps there from
+     the start of the line: between them it had under half of that. */
+  .kpress .site-results td.site-col-n.site-n-wraps {
     grid-area: 3 / 1 / auto / -1;
     text-align: start;
   }

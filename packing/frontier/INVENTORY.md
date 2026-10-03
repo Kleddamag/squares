@@ -8,9 +8,9 @@ ours, which rest on someone else's argument, and how far each has been checked.
 
 ## The short version
 
-- **160** evidence records. **111** are formal; **105** of those were established here.
-- **40** rest on an argument made elsewhere, of which **8** have been read by nobody here.
-- **36** claim to be first established here. **12** make no novelty statement at all - not assessed, which is not the same as not novel.
+- **219** evidence records. **145** are formal; **139** of those were established here.
+- **65** rest on an argument made elsewhere, of which **7** have been read by nobody here.
+- **40** claim to be first established here. **13** make no novelty statement at all - not assessed, which is not the same as not novel.
 
 A formal claim on an unread external proof is still formal: the proof proves its
 claim whether or not we read it. The count above is not a doubt about those
@@ -24,22 +24,72 @@ results, it is a statement about what this repository has itself examined.
 | `E-n017-certified-endpoint` | 1 | upper-bound | verified | equalities and inequalities, no tolerance | here | informally-verified | *not assessed* |
 | `E-n060-evand-mixed-cover-report` | 1 | lower-bound | reported | - | elsewhere | informally-verified | previously-published |
 | `E-n061-evand-derived-report` | 1 | lower-bound | reported | - | elsewhere | informally-verified | previously-published |
+| `E-n061-wand125-point-cover-evand-replay-report` | 0 | lower-bound | reported | - | elsewhere | - | previously-published |
+| `E-n061-wand125-point-cover-zmx2-replay` | 0 | lower-bound | verified | strict inequalities only | here | informally-verified | previously-published |
+| `E-n060-evand-mixed-cover-zmx2-replay` | 2 | lower-bound | verified | strict inequalities only | here | - | previously-published |
 | `E-k2m3-evand-family-report` | 10 | lower-bound | reported | - | elsewhere | informally-verified | previously-published |
+| `E-k2m3-wand125-valid7-independent` | 0 | lower-bound | reported | - | elsewhere | informally-verified | previously-published |
+| `E-k2m3-evand-valid7-qx2-replay` | 9 | lower-bound | verified | equalities and inequalities, no tolerance | here | - | previously-published |
+| `E-k2m3-evand-bentz-lean-build` | 9 | exact-value | verified | its theorem, against a named kernel | here | - | previously-published |
 | `E-n011-global-optimality-report` | 1 | lower-bound | reported | - | elsewhere | defect-found | previously-published |
 | `E-n011-global-optimality-independent` | 1 | exact-value | verified | equalities and inequalities, no tolerance | here | informally-verified | previously-published |
 | `E-wand125-tools-ceiling-report` | 0 | derived-structure | reported | - | elsewhere | defect-found | previously-published |
+| `E-wand125-tools-ceiling-certificates` | 0 | derived-structure | verified | equalities and inequalities, no tolerance | here | - | previously-published |
 | `E-wand125-tools-n11-row-report` | 0 | derived-structure | reported | - | elsewhere | defect-found | previously-published |
-| `E-wand125-point-source-replay` | 10 | lower-bound | verified | equalities and inequalities, no tolerance | here | informally-verified | previously-published |
-| `E-wand125-n052-derived-lower` | 1 | lower-bound | verified | equalities and inequalities, no tolerance | here | informally-verified | *not assessed* |
-| `E-wand125-rectangle-report` | 8 | lower-bound | reported | - | elsewhere | - | previously-published |
+| `E-wand125-tools-n11-row-replay` | 0 | derived-structure | verified | equalities and inequalities, no tolerance | here | - | previously-published |
+| `E-wand125-point-source-replay` | 0 | lower-bound | verified | equalities and inequalities, no tolerance | here | informally-verified | previously-published |
+| `E-wand125-n052-derived-lower` | 0 | lower-bound | verified | equalities and inequalities, no tolerance | here | informally-verified | *not assessed* |
+| `E-wand125-rectangle-report` | 1 | lower-bound | reported | - | elsewhere | - | previously-published |
 | `E-wand125-rectangle-monotone-report` | 0 | lower-bound | reported | - | here | - | previously-published |
-| `E-wand125-rectangle-source-replay` | 3 | lower-bound | verified | strict inequalities only | here | informally-verified | previously-published |
-| `E-wand125-rectangle-2026-09-28-report` | 35 | lower-bound | reported | - | elsewhere | - | previously-published |
-| `E-wand125-rectangle-2026-09-28-monotone-report` | 2 | lower-bound | reported | - | here | - | previously-published |
+| `E-wand125-rectangle-source-replay` | 1 | lower-bound | verified | strict inequalities only | here | informally-verified | previously-published |
+| `E-wand125-rectangle-2026-09-28-report` | 8 | lower-bound | reported | - | elsewhere | - | previously-published |
+| `E-wand125-rectangle-2026-09-28-monotone-report` | 0 | lower-bound | reported | - | here | - | previously-published |
+| `E-wand125-rectangle-2026-09-28-source-replay` | 5 | lower-bound | verified | strict inequalities only | here | - | previously-published |
+| `E-wand125-rectangle-2026-10-01-report` | 24 | lower-bound | reported | - | elsewhere | informally-verified | previously-published |
+| `E-wand125-rectangle-2026-10-01-source-replay` | 29 | lower-bound | verified | strict inequalities only | here | - | previously-published |
+| `E-wand125-rectangle-2026-10-02-report` | 3 | lower-bound | reported | - | elsewhere | informally-verified | previously-published |
 | `E-n045-wand125-point-cover-report` | 0 | lower-bound | reported | - | elsewhere | - | previously-published |
 | `E-n045-wand125-point-cover-source-replay` | 0 | lower-bound | verified | strict inequalities only | here | informally-verified | previously-published |
-| `E-n021-wand125-point-endpoint-report` | 0 | lower-bound | reported | - | elsewhere | - | previously-published |
-| `E-n050-wand125-mixed-740-report` | 1 | lower-bound | reported | - | elsewhere | - | previously-published |
+| `E-n021-wand125-point-endpoint-report` | 0 | lower-bound | reported | - | elsewhere | informally-verified | previously-published |
+| `E-n021-wand125-point-endpoint-source-replay` | 0 | lower-bound | verified | equalities and inequalities, no tolerance | here | - | previously-published |
+| `E-n050-wand125-mixed-740-report` | 1 | lower-bound | reported | - | elsewhere | informally-verified | previously-published |
+| `E-n050-wand125-mixed-740-source-replay` | 2 | lower-bound | verified | strict inequalities only | here | - | previously-published |
+| `E-n059-wand125-mixed-cover-report` | 1 | lower-bound | reported | - | elsewhere | informally-verified | previously-published |
+| `E-n059-wand125-mixed-cover-zmx2-replay` | 1 | lower-bound | verified | strict inequalities only | here | - | previously-published |
+| `E-n077-wand125-mixed-cover-report` | 1 | lower-bound | reported | - | elsewhere | informally-verified | previously-published |
+| `E-n077-wand125-mixed-cover-zmx2-replay` | 2 | lower-bound | verified | strict inequalities only | here | - | previously-published |
+| `E-n037-wand125-mixed-644-report` | 1 | lower-bound | reported | - | elsewhere | informally-verified | previously-published |
+| `E-n037-wand125-mixed-644-source-replay` | 1 | lower-bound | verified | strict inequalities only | here | - | previously-published |
+| `E-n065-wand125-mixed-835-report` | 1 | lower-bound | reported | - | elsewhere | informally-verified | previously-published |
+| `E-n065-wand125-mixed-835-source-replay` | 1 | lower-bound | verified | strict inequalities only | here | - | previously-published |
+| `E-n066-wand125-mixed-842-report` | 1 | lower-bound | reported | - | elsewhere | informally-verified | previously-published |
+| `E-n066-wand125-mixed-842-source-replay` | 1 | lower-bound | verified | strict inequalities only | here | - | previously-published |
+| `E-n090-wand125-mixed-960-report` | 1 | lower-bound | reported | - | elsewhere | informally-verified | previously-published |
+| `E-n090-wand125-mixed-960-source-replay` | 1 | lower-bound | verified | strict inequalities only | here | - | previously-published |
+| `E-n092-wand125-mixed-969-report` | 0 | lower-bound | reported | - | elsewhere | informally-verified | previously-published |
+| `E-n092-wand125-mixed-969-source-replay` | 0 | lower-bound | verified | strict inequalities only | here | - | previously-published |
+| `E-n084-wand125-mixed-940-report` | 1 | lower-bound | reported | - | elsewhere | informally-verified | previously-published |
+| `E-n084-wand125-mixed-940-source-replay` | 1 | lower-bound | verified | strict inequalities only | here | - | previously-published |
+| `E-n085-wand125-mixed-942-report` | 0 | lower-bound | reported | - | elsewhere | informally-verified | previously-published |
+| `E-n085-wand125-mixed-942-source-replay` | 0 | lower-bound | verified | strict inequalities only | here | - | previously-published |
+| `E-n076-wand125-mixed-894-report` | 1 | lower-bound | reported | - | elsewhere | informally-verified | previously-published |
+| `E-n076-wand125-mixed-894-source-replay` | 1 | lower-bound | verified | strict inequalities only | here | - | previously-published |
+| `E-n083-wand125-linear-935-report` | 0 | lower-bound | reported | - | elsewhere | informally-verified | previously-published |
+| `E-n101-wand125-linear-1028-report` | 5 | lower-bound | reported | - | elsewhere | informally-verified | previously-published |
+| `E-n083-wand125-mixed-937-report` | 1 | lower-bound | reported | - | elsewhere | informally-verified | previously-published |
+| `E-n083-wand125-mixed-937-source-replay` | 1 | lower-bound | verified | strict inequalities only | here | - | previously-published |
+| `E-n085-wand125-mixed-946-report` | 2 | lower-bound | reported | - | elsewhere | informally-verified | previously-published |
+| `E-n085-wand125-mixed-946-source-replay` | 2 | lower-bound | verified | strict inequalities only | here | - | previously-published |
+| `E-n087-wand125-mixed-948-report` | 2 | lower-bound | reported | - | elsewhere | informally-verified | previously-published |
+| `E-n087-wand125-mixed-948-source-replay` | 2 | lower-bound | verified | strict inequalities only | here | - | previously-published |
+| `E-n091-wand125-mixed-970-report` | 1 | lower-bound | reported | - | elsewhere | informally-verified | previously-published |
+| `E-n091-wand125-mixed-970-source-replay` | 1 | lower-bound | verified | strict inequalities only | here | - | previously-published |
+| `E-n092-wand125-mixed-975-report` | 2 | lower-bound | reported | - | elsewhere | informally-verified | previously-published |
+| `E-n092-wand125-mixed-975-source-replay` | 2 | lower-bound | verified | strict inequalities only | here | - | previously-published |
+| `E-n096-wand125-mixed-996-report` | 1 | lower-bound | reported | - | elsewhere | informally-verified | previously-published |
+| `E-n096-wand125-mixed-996-source-replay` | 1 | lower-bound | verified | strict inequalities only | here | - | previously-published |
+| `E-n082-wand125-linear-932-report` | 1 | lower-bound | reported | - | elsewhere | informally-verified | previously-published |
+| `E-n032-evand-zmx2-full-sym-report` | 0 | lower-bound | reported | - | elsewhere | informally-verified | previously-published |
 | `E-n011-kleddamag-3875-source-replay` | 0 | lower-bound | verified | equalities and inequalities, no tolerance | here | informally-verified | previously-published |
 | `E-n011-kleddamag-3875-native-parent-core` | 0 | lower-bound | verified | strict inequalities only | here | informally-verified | previously-published |
 | `E-n011-kleddamag-3875-report` | 0 | lower-bound | reported | - | elsewhere | - | previously-published |
@@ -50,18 +100,18 @@ results, it is a statement about what this repository has itself examined.
 | `E-wand125-point-bounds-report` | 0 | lower-bound | reported | - | elsewhere | - | previously-published |
 | `E-tokoharu-density-monotone-report` | 0 | lower-bound | reported | - | here | - | previously-published |
 | `E-wand125-point-monotone-report` | 0 | lower-bound | reported | - | here | - | previously-published |
-| `E-tokoharu-density-source-replay` | 3 | lower-bound | verified | strict inequalities only | here | informally-verified | previously-published |
-| `E-green-ds7-theorem9-reported-lower` | 39 | lower-bound | reported | - | elsewhere | not-reviewed | previously-published |
+| `E-tokoharu-density-source-replay` | 0 | lower-bound | verified | strict inequalities only | here | informally-verified | previously-published |
+| `E-green-ds7-theorem9-reported-lower` | 30 | lower-bound | reported | - | elsewhere | defect-found | previously-published |
 | `E-green-ds7-theorem10-reported-lower` | 0 | lower-bound | reported | - | elsewhere | not-reviewed | previously-published |
 | `E-friedman-ds7-table2-opaque-lower` | 0 | lower-bound | reported | - | elsewhere | - | previously-published |
 | `E-n017-maciver-reported-lower` | 0 | lower-bound | reported | - | elsewhere | not-reviewed | previously-published |
-| `E-green26-reported-lower` | 0 | lower-bound | reported | - | - | - | previously-published |
+| `E-green26-reported-lower` | 0 | lower-bound | reported | - | - | defect-found | previously-published |
 | `E-kingbird-upper-register` | 177 | upper-bound | reported | - | - | - | previously-published |
 | `E-kingbird-grid-completeness` | 96 | upper-bound | reported | - | - | - | previously-published |
 | `E-unitsquare-release1-report` | 1 | upper-bound | reported | - | - | - | previously-published |
 | `E-basic-grid-upper` | 254 | upper-bound | verified | equalities and inequalities, no tolerance | here | - | common-knowledge |
 | `E-basic-area-lower` | 18 | lower-bound | verified | equalities and inequalities, no tolerance | here | - | common-knowledge |
-| `E-nagamochi-lower` | 287 | lower-bound | verified | whatever its theorem states | elsewhere | informally-verified | previously-published |
+| `E-nagamochi-lower` | 242 | lower-bound | verified | whatever its theorem states | elsewhere | informally-verified | previously-published |
 | `E-migrated-lower-report` | 6 | lower-bound | reported | - | - | - | *not assessed* |
 | `E-side2-center-lower` | 2 | lower-bound | verified | equalities and inequalities, no tolerance | here | - | common-knowledge |
 | `E-n005-gobel-upper` | 1 | upper-bound | verified | equalities and inequalities, no tolerance | here | - | previously-published |
@@ -113,9 +163,17 @@ results, it is a statement about what this repository has itself examined.
 | `E-n032-evand-closed-cover-report` | 1 | lower-bound | reported | - | elsewhere | - | previously-published |
 | `E-n032-evand-closed-cover-source-run` | 1 | lower-bound | verified | equalities and inequalities, no tolerance | here | informally-verified | previously-published |
 | `E-n032-evand-closed-cover-zmx2-replay` | 1 | lower-bound | verified | strict inequalities only | here | informally-verified | previously-published |
-| `E-n012-evand-15680-3951-report` | 1 | lower-bound | reported | - | elsewhere | - | previously-published |
-| `E-n012-evand-15680-3951-source-replay` | 1 | lower-bound | verified | equalities and inequalities, no tolerance | here | informally-verified | previously-published |
-| `E-n012-evand-15680-3951-native-parent-core` | 1 | lower-bound | verified | strict inequalities only | here | - | previously-published |
+| `E-n032-evand-zmx2-full-sym-replay` | 1 | lower-bound | verified | strict inequalities only | here | informally-verified | previously-published |
+| `E-n012-evand-15680-3951-report` | 0 | lower-bound | reported | - | elsewhere | - | previously-published |
+| `E-n012-evand-15680-3951-source-replay` | 0 | lower-bound | verified | equalities and inequalities, no tolerance | here | informally-verified | previously-published |
+| `E-n012-evand-15680-3951-native-parent-core` | 0 | lower-bound | verified | strict inequalities only | here | - | previously-published |
+| `E-n012-squarepacker-31360-7901-report` | 1 | lower-bound | reported | - | elsewhere | - | previously-published |
+| `E-n012-squarepacker-31360-7901-source-replay` | 0 | lower-bound | verified | equalities and inequalities, no tolerance | here | informally-verified | previously-published |
+| `E-n012-squarepacker-31360-7901-native-parent-core` | 0 | lower-bound | verified | strict inequalities only | here | - | previously-published |
+| `E-n012-levy-15680000-3949423-generator` | 0 | lower-bound | verified | equalities and inequalities, no tolerance | here | - | apparently-novel |
+| `E-n012-levy-15680000-3949423-source-replay` | 1 | lower-bound | verified | equalities and inequalities, no tolerance | here | - | apparently-novel |
+| `E-n012-levy-15680000-3949423-native-parent-core` | 1 | lower-bound | verified | strict inequalities only | here | - | apparently-novel |
+| `E-n012-levy-15680000-3949423-audit` | 0 | derived-structure | verified | equalities and inequalities, no tolerance | here | - | apparently-novel |
 | `E-n021-evand-5000-1001-report` | 0 | lower-bound | reported | - | elsewhere | - | previously-published |
 | `E-n021-evand-5000-1001-source-replay` | 0 | lower-bound | verified | equalities and inequalities, no tolerance | here | informally-verified | previously-published |
 | `E-n013-evand-casefree-cover-report` | 0 | lower-bound | reported | - | elsewhere | - | previously-published |
@@ -158,11 +216,11 @@ results, it is a statement about what this repository has itself examined.
 | `E-n018-fractional-certificate` | 0 | lower-bound | verified | equalities and inequalities, no tolerance | here | - | apparently-novel |
 | `E-n018-t028-fractional-certificate` | 0 | lower-bound | verified | equalities and inequalities, no tolerance | here | - | apparently-novel |
 | `E-n018-t029-fractional-certificate` | 0 | lower-bound | verified | equalities and inequalities, no tolerance | here | - | apparently-novel |
-| `E-n018-t030-fractional-certificate` | 1 | lower-bound | verified | equalities and inequalities, no tolerance | here | - | apparently-novel |
-| `E-n020-fractional-certificate-97-20` | 1 | lower-bound | verified | equalities and inequalities, no tolerance | here | - | apparently-novel |
-| `E-n020-fractional-certificate` | 1 | lower-bound | verified | equalities and inequalities, no tolerance | here | - | apparently-novel |
+| `E-n018-t030-fractional-certificate` | 0 | lower-bound | verified | equalities and inequalities, no tolerance | here | - | apparently-novel |
+| `E-n020-fractional-certificate-97-20` | 0 | lower-bound | verified | equalities and inequalities, no tolerance | here | - | apparently-novel |
+| `E-n020-fractional-certificate` | 0 | lower-bound | verified | equalities and inequalities, no tolerance | here | - | apparently-novel |
 | `E-n021-fractional-certificate-122-25` | 0 | lower-bound | verified | equalities and inequalities, no tolerance | here | - | apparently-novel |
-| `E-fractional-interval-decision` | 3 | lower-bound | verified | strict inequalities only | here | - | previously-published |
+| `E-fractional-interval-decision` | 0 | lower-bound | verified | strict inequalities only | here | - | previously-published |
 | `E-n011-five-dot-full-net` | 0 | derived-structure | verified | equalities and inequalities, no tolerance | here | - | *not assessed* |
 | `E-n011-five-dot-independent-union` | 0 | derived-structure | verified | equalities and inequalities, no tolerance | here | - | *not assessed* |
 | `E-n011-wall-owner-footprints` | 0 | derived-structure | verified | equalities and inequalities, no tolerance | here | - | *not assessed* |
@@ -172,7 +230,8 @@ results, it is a statement about what this repository has itself examined.
 | `E-n011-corner-class-96-25-interval-decision` | 0 | derived-structure | verified | strict inequalities only | here | - | apparently-novel |
 | `E-n011-h236-rung0-reduction` | 0 | derived-structure | verified | equalities and inequalities, no tolerance | here | - | apparently-novel |
 | `E-n011-trump-local-theorem-first-clause` | 0 | derived-structure | verified | whatever its theorem states | here | - | *not assessed* |
-| `E-wand125-n068-derived-lower` | 1 | lower-bound | verified | equalities and inequalities, no tolerance | here | informally-verified | *not assessed* |
+| `E-n011-trump-isolation-radius` | 0 | derived-structure | verified | equalities and inequalities, no tolerance | here | - | *not assessed* |
+| `E-wand125-n068-derived-lower` | 0 | lower-bound | verified | equalities and inequalities, no tolerance | here | informally-verified | *not assessed* |
 | `E-franciscouzo-2026-09-27-report` | 49 | upper-bound | reported | - | elsewhere | - | previously-published |
 | `E-franciscouzo-2026-09-27-exact-replay` | 49 | upper-bound | verified | equalities and inequalities, no tolerance | here | - | previously-published |
 | `E-franciscouzo-2026-09-27-interval-replay` | 49 | upper-bound | verified | strict inequalities only | here | - | previously-published |
@@ -183,9 +242,9 @@ results, it is a statement about what this repository has itself examined.
 
 ## What the register rests on
 
-- **assurance**: numerically-checked 4, reported 45, verified 111
-- **method**: exact-algebraic 79, interval-certified 22, numerical-multiprecision 4, proof-assistant-checked 1, proof-audited 3, published-proof 6, reported 45
-- **novelty**: apparently-novel 36, common-knowledge 4, not assessed 12, previously-published 108
+- **assurance**: numerically-checked 4, reported 70, verified 145
+- **method**: exact-algebraic 88, interval-certified 46, numerical-multiprecision 4, proof-assistant-checked 2, proof-audited 3, published-proof 6, reported 70
+- **novelty**: apparently-novel 40, common-knowledge 4, not assessed 13, previously-published 162
 
 The `cases` column is how many frontier records cite each piece of evidence, and it is the reason to read this table rather than count records. Ranked below are the *formal* records only: a `reported` record cited across the frontier may be a shared catalogue and is labelled as such, which is the register working rather than risk. The risk is a verified claim resting on an argument nobody has examined.
 
@@ -199,9 +258,8 @@ Claims marked `apparently-novel`: first established here as far as the archived 
 | `E-n005-fixed-side-local-rigidity` | 5 | The first exact PROOF that Goebel's n = 5 optimum is locally rigid at fixed side -- a property ASSERTED WITHOUT PROOF by Kingbird (archived main page, line 44, "Rigid." with a link and no argument), not stated by Goebel 1979 (zero occurrences of "rigid" or "uniqu" in the extraction) and not annotated by Friedman DS7, whose Theorem 2 is a lower bound only and analyses no equality case | 1 | verified |
 | `E-n005-second-order-rigidity` | 5 | That n = 5 is not infinitesimally rigid but is second-order rigid, proved exactly; the catalogue asserts 'Rigid.' without defining or arguing it | 1 | verified |
 | `E-n011-trump-local-rigidity` | 11 | Local rigidity proved by exhausting all 128 branchwise cones; sources assert rigidity, and zero algebraic freedom does not exclude a branching motion | 1 | verified |
-| `E-n018-t030-fractional-certificate` | 18 | The certificate and the side. The method is Burns's, the parametrisation Massaccesi's, and the seed T-029's own atoms scaled to 4679/1000 plus a windows-5 lattice; what is new is a certificate at 4679/1000, found after T-029 retained 1871/400 and 117/25 locked at 18.000000. | 1 | verified |
-| `E-n020-fractional-certificate` | 19, 20, 21 | The certificate and the side. The method is Burns's and the parametrisation is Massaccesi's; what is new is a certificate at a side no published bound reaches at any of these three sizes, found by this project's generator. | 1 | verified |
-| `E-n020-fractional-certificate-97-20` | 20, 21 | The certificate and the side. The method is Burns's, the parametrisation Massaccesi's, and the previous rung this project's own; what is new is a certificate at 97/20, found by seeding the generator's site set with the 24/5 certificate's own atoms scaled to the new side after the uniform grid walled there. | 1 | verified |
+| `E-n012-levy-15680000-3949423-native-parent-core` | 12 | New weights for Daniel's 1,736 points, scaled by 3951000/3949423, found by linear programming over their D4 orbits; the points, the verifier and the method are Daniel's, Burns's and Massaccesi's. | 1 | verified |
+| `E-n012-levy-15680000-3949423-source-replay` | 12 | New weights for Daniel's 1,736 points, scaled by 3951000/3949423, found by linear programming over their D4 orbits; the points, the verifier and the method are Daniel's, Burns's and Massaccesi's. | 1 | verified |
 | `E-n029-interval-certified-upper` | 29 | An interval certificate for a square-in-square bound; the packing is Kingbird's | 1 | verified |
 | `E-n040-first-order-flexibility` | 40 | That the tilted block turns at first order and every turn is refused at second; DS7 asserts n = 40 is rigid and this refines rather than contradicts it | 1 | verified |
 | `E-green17-sixteen-point-lower` | 17, 18 | The certified object: sixteen rational points unavoidable in [0, 4426213/1000000]^2, every decision an exact rational sign. The bound's value sits below Green's reported number, so what is new is the verified certificate, not the frontier of reported claims. | 0 | verified |
@@ -225,10 +283,15 @@ Claims marked `apparently-novel`: first established here as far as the archived 
 | `E-n011-threshold-net720-dilation-limit` | 11 | The exact lower-bound value from the 720-step threshold re-certification under T-022's dilation-limit argument. It is weaker than the registered bound and is retained because its source rung is the control that isolates the effect of the net alone. | 0 | verified |
 | `E-n012-fractional-certificate` | 12 | The certificate and the bound it carries, not the method. The weighted fractional unavoidable-set technique is Burns's, with Massaccesi's parameters; what is new here is a first-party certificate ladder at n = 12, reaching 99/25, and the generator that produced it. The first instance was retained at 19/5. Anyone holding Burns's note could have run this search. | 0 | verified |
 | `E-n012-independent-verifier` | 12 | Nothing new in this entry -- it is a second, independent decision of the historical 77/20 rung and its 19/5 calibration certificate. | 0 | verified |
+| `E-n012-levy-15680000-3949423-audit` | 12 | New weights for Daniel's 1,736 points, scaled by 3951000/3949423, found by linear programming over their D4 orbits; the points, the verifier and the method are Daniel's, Burns's and Massaccesi's. | 0 | verified |
+| `E-n012-levy-15680000-3949423-generator` | 12 | New weights for Daniel's 1,736 points, scaled by 3951000/3949423, found by linear programming over their D4 orbits; the points, the verifier and the method are Daniel's, Burns's and Massaccesi's. | 0 | verified |
 | `E-n017-fractional-certificate` | 17, 18, 19 | The certificate and the side. The method is Burns's and the parametrisation is Massaccesi's own; what is new is a denser certificate at a larger side than his, found by this project's generator once its separation oracle was corrected. | 0 | verified |
 | `E-n018-fractional-certificate` | 18 | The certificate and the side. The method is Burns's, the parametrisation Massaccesi's, and the seed T-019's own atoms scaled to 467/100; what is new is a certificate at 467/100, found after the uniform grid walled there. | 0 | verified |
 | `E-n018-t028-fractional-certificate` | 18 | The certificate and the side. The method is Burns's, the parametrisation Massaccesi's, and the seed T-027's own atoms scaled to 187/40 plus a windows-5 lattice; what is new is a certificate at 187/40, found after 117/25 locked at 18.000000. | 0 | verified |
 | `E-n018-t029-fractional-certificate` | 18 | The certificate and the side. The method is Burns's, the parametrisation Massaccesi's, and the seed T-028's own atoms scaled to 1871/400 plus a windows-5 lattice; what is new is a certificate at 1871/400, found after T-028 retained 187/40 and 117/25 locked at 18.000000. | 0 | verified |
+| `E-n018-t030-fractional-certificate` | 18 | The certificate and the side. The method is Burns's, the parametrisation Massaccesi's, and the seed T-029's own atoms scaled to 4679/1000 plus a windows-5 lattice; what is new is a certificate at 4679/1000, found after T-029 retained 1871/400 and 117/25 locked at 18.000000. | 0 | verified |
+| `E-n020-fractional-certificate` | 19, 20, 21 | The certificate and the side. The method is Burns's and the parametrisation is Massaccesi's; what is new is a certificate at a side no published bound reaches at any of these three sizes, found by this project's generator. | 0 | verified |
+| `E-n020-fractional-certificate-97-20` | 20, 21 | The certificate and the side. The method is Burns's, the parametrisation Massaccesi's, and the previous rung this project's own; what is new is a certificate at 97/20, found by seeding the generator's site set with the 24/5 certificate's own atoms scaled to the new side after the uniform grid walled there. | 0 | verified |
 | `E-n021-fractional-certificate-122-25` | 21 | The certificate and the side. The method is Burns's, the parametrisation Massaccesi's, and the previous rung this project's own; what is new is a certificate at 122/25, found by the stock generator on auto grids (34, 46, 56) at inset 1/2 with no seed and no windows, after a T-021-seeded site set at the same side ran out its deadline unconverged. | 0 | verified |
 | `E-n029-schadt-rational-upper` | 29 | A rational certificate for an n = 29 bound; the pose is Schadt's | 0 | verified |
 
@@ -236,13 +299,13 @@ The `n` column is what each covers and `cases` is how many frontier records cite
 
 | evidence | cases | whose work | read here |
 | --- | ---: | --- | --- |
-| `E-nagamochi-lower` | 287 | elsewhere | informally-verified |
 | `E-basic-grid-upper` | 254 | here | - |
+| `E-nagamochi-lower` | 242 | elsewhere | informally-verified |
 | `E-franciscouzo-2026-09-27-exact-replay` | 49 | here | - |
 | `E-franciscouzo-2026-09-27-interval-replay` | 49 | here | - |
-| `E-basic-area-lower` | 18 | here | - |
+| `E-wand125-rectangle-2026-10-01-source-replay` | 29 | here | - |
 
-The most-cited argument this repository did not produce is `E-nagamochi-lower`, carrying 287 frontier cases. It is an external proof, and it has been read here: its record carries the review, what was re-derived, and the four things that were not. The arithmetic is what picked it out for reading -- being cited this heavily is the reason to open an argument, not a reason to trust it.
+The most-cited argument this repository did not produce is `E-nagamochi-lower`, carrying 242 frontier cases. It is an external proof, and it has been read here: its record carries the review, what was re-derived, and the four things that were not. The arithmetic is what picked it out for reading -- being cited this heavily is the reason to open an argument, not a reason to trust it.
 
 `[Stromquist 2003]` is why that matters rather than being a formality: its `n = 11` argument needed a source-distinct repair, which `E-n011-repaired-lower` supplies.
 

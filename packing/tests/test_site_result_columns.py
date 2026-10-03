@@ -287,7 +287,19 @@ def test_a_cell_of_cases_holds_each_value_in_a_box_and_reads_as_the_register_doe
     most = max(overview.results, key=lambda result: len(result.scope.split(", ")))
     assert (most.id, len(most.scope.split(", "))) == (MOST_CASES, 23)
     row, _ = overview_sections.result_table_row(most, overview, here=True, shown=True)
-    assert f'<td class="num site-col-n" data-value="{most.first_n}">' in row
+    assert f'<td class="num site-col-n site-n-wraps" data-value="{most.first_n}">' in row
+    # A list wraps from five values, and a shorter one too where it is longer than half
+    # the measure: four values with two ranges among them would hold the column wider
+    # than the floor it narrows to (T-075 on 3 October 2026).
+    for result in overview.results:
+        values = result.scope.split(", ")
+        wraps = len(values) >= 5 or len(result.scope) > overview_sections.CASES_ONE_LINE
+        assert ("site-n-wraps" in overview_sections.case_cell_class(result)) is wraps
+    assert any(
+        len(result.scope.split(", ")) < 5
+        and "site-n-wraps" in overview_sections.case_cell_class(result)
+        for result in overview.results
+    )
     assert f'data-n="{overview_sections.result_cases(most)}"' in row
     assert overview_data.EN_DASH in most.scope
     assert overview_data.EN_DASH not in overview_sections.result_cases(most)

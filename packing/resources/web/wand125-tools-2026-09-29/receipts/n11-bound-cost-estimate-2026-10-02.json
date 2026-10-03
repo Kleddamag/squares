@@ -1,0 +1,11 @@
+{
+  "estimate_full_row_seconds": 9263,
+  "max_row_seconds": 0.9704532019999874,
+  "mean_row_seconds": 0.7701,
+  "note": "Sample rows are the first, middle and last twenty and are not necessarily representative; the source-reported 9,446 CPU-seconds is the cross-check. Container: 4 cores, one serial process.",
+  "requested_rows": "0-19,6000-6019,12008-12027",
+  "sample_rows": 60,
+  "source_reported_cpu_seconds": 9446,
+  "sum_row_seconds": 46.206,
+  "whole_process_wall_seconds": 57.2
+}

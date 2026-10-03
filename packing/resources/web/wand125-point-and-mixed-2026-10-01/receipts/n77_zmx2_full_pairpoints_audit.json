@@ -1,0 +1,69 @@
+{
+ "logs": [
+  {
+   "path": "resources/web/wand125-point-and-mixed-2026-10-01/receipts/n77_zmx2_full_pairpoints_x0-44_y0-89_roots.log",
+   "sha256": "fa3c979493b2d1eca106d2c6c2663d6ac04cc665c97731ac068b0a096e823663"
+  },
+  {
+   "path": "resources/web/wand125-point-and-mixed-2026-10-01/receipts/n77_zmx2_full_pairpoints_x45-89_y0-89_roots.log",
+   "sha256": "dd5671350795bbb295d9943560cd7c5dddbaa11af98b2fad6c9df697914734cc"
+  }
+ ],
+ "header": "# zmx2 cert hash=f69807b8322a68fb mode=full atoms=pairpts depth=40 node_cap=20000000 kappa=1.5 K=30 region=x0-44,y0-89,bins0-3",
+ "mode": "full",
+ "atoms": "pairpts",
+ "flags": {
+  "pair_points": true,
+  "no_atoms": false,
+  "sym_atoms": false,
+  "mirror_only": false,
+  "first_order": false
+ },
+ "header_settings": {
+  "depth": "40",
+  "node_cap": "20000000",
+  "kappa": "1.5",
+  "K": "30"
+ },
+ "header_unrecognised": [],
+ "headers_equal_apart_from_region": true,
+ "mode_in_header": true,
+ "region_in_header": true,
+ "joined": true,
+ "runs": [
+  {
+   "log": "resources/web/wand125-point-and-mixed-2026-10-01/receipts/n77_zmx2_full_pairpoints_x0-44_y0-89_roots.log",
+   "line": 1,
+   "region": "x0-44,y0-89,bins0-3",
+   "roots": 32400
+  },
+  {
+   "log": "resources/web/wand125-point-and-mixed-2026-10-01/receipts/n77_zmx2_full_pairpoints_x45-89_y0-89_roots.log",
+   "line": 1,
+   "region": "x45-89,y0-89,bins0-3",
+   "roots": 32400
+  }
+ ],
+ "roots_in_region": 64800,
+ "roots_present": 64800,
+ "roots_missing": 0,
+ "roots_outside_region": 0,
+ "roots_outside_their_runs_limits": 0,
+ "roots_recorded_more_than_once": 0,
+ "repeated_roots": [],
+ "root_ids_inconsistent": 0,
+ "unparsed_lines": 0,
+ "boxes": 46583600,
+ "certified_leaves": 23118612,
+ "empty_leaves": 205588,
+ "uncertified_boxes": 0,
+ "uncert_lines": 0,
+ "capped_roots": 0,
+ "max_depth": 36,
+ "atoms_source_ran": "pairpts",
+ "atoms_as_source_ran": true,
+ "boxes_stated_by_source": 46583600,
+ "boxes_equal_source_statement": true,
+ "atoms_required": "pairpts",
+ "atoms_as_required": true
+}

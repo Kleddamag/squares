@@ -1,0 +1,132 @@
+{
+  "kind": "wand125-linear-certificate-audit/v1",
+  "packet": "wand125-linear-certificates-2026-10-02",
+  "source_revision": "0c35d909764997ead04dfd90081c9fe9af8d07f2",
+  "certificates": {
+    "n101": {
+      "directory": "certificates/mixed_n101_L1028",
+      "side": "257/25",
+      "side_float": 10.28,
+      "core": "9977/10000",
+      "orbits": {
+        "rectangle": 4,
+        "point": 333,
+        "segment": 897
+      },
+      "images": {
+        "rectangle": 32,
+        "point": 2664,
+        "segment": 7176
+      },
+      "d4_invariant": true,
+      "total_mass": "10099999/100000",
+      "budget_gap": "1/100000",
+      "candidate_digest": "933aa46895a8cdfda1e3d0017b394a4de5d585d507a65472b2c4fe0165d0f79b",
+      "checker_sha256": "0249726ab1e67dc481e0c53f43b524902a48f95d051b1b08865a3cf3ef89a06d",
+      "code_files": 13,
+      "code_retained_in": [
+        "packing/resources/web/wand125-linear-certificates-2026-10-02/square-packing-bounds/certificates/mixed_n101_L1028/code",
+        "packing/resources/web/wand125-point-and-mixed-2026-09-28/square-packing-bounds/certificates/mixed_n50_L740/code"
+      ],
+      "net": {
+        "step": "83/40000",
+        "count": "201",
+        "endpoint_check": "89/40000",
+        "rotated_side_upper": "399908091/400000000",
+        "side_margin": "91909/400000000"
+      },
+      "centre_half_width_least": "4158604353/937780000",
+      "centre_half_width_least_at": 200,
+      "certificate_status": "ALL_LINEAR_ANGLES_VERIFIED_AND_REPLAYED",
+      "nodes": 55222823,
+      "most_nodes": 2072307,
+      "most_nodes_at": 0,
+      "axis_nodes": 2072307,
+      "tarball": "certificates/mixed_n101_L1028/n101-L10.28-proof-bundle.tar.gz",
+      "tarball_sha256": "c32bba42686b9b27268a770c6505d9e8e0804bf0bb169848cecfb622775efdd5",
+      "source_audit": {
+        "status": "AUDITED_AND_PACKAGED",
+        "certificate_sha256_matches": true,
+        "archive_sha256_matches": true,
+        "compared_with": "129365045399295176799163281040940248013625606162393871727320682186439667163853263754654717679/12625000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+        "compared_note": "Green G_10 = 2*sqrt2-1+(810+18*sqrt5)/101 (Friedman DS7, Theorem 9 with k = 10), rational upper bound from 90-digit integer square roots",
+        "improvement_lower": "419954600704823200836718959059751986374393837606128272679317813560332836146736245345282321/12625000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
+      },
+      "comparison": {
+        "green": "Theorem 9, k=10, from n = 101",
+        "green_interval_float": [
+          10.246736269251103,
+          10.246736269251103
+        ],
+        "side_exceeds_green": true,
+        "source_value_exceeds_green": true,
+        "nagamochi": "1 + sqrt(82)",
+        "side_exceeds_nagamochi": true
+      },
+      "coverage_decided_here": false
+    },
+    "n83": {
+      "directory": "certificates/mixed_n83_L935",
+      "side": "187/20",
+      "side_float": 9.35,
+      "core": "9977/10000",
+      "orbits": {
+        "rectangle": 774,
+        "point": 86,
+        "segment": 222
+      },
+      "images": {
+        "rectangle": 6192,
+        "point": 688,
+        "segment": 1776
+      },
+      "d4_invariant": true,
+      "total_mass": "8299999/100000",
+      "budget_gap": "1/100000",
+      "candidate_digest": "159f4c9ec8342d70d3bbf509c21edd95e9d344f3d25b8f2250e8d558cc76d0b5",
+      "checker_sha256": "0249726ab1e67dc481e0c53f43b524902a48f95d051b1b08865a3cf3ef89a06d",
+      "code_files": 13,
+      "code_retained_in": [
+        "packing/resources/web/wand125-linear-certificates-2026-10-02/square-packing-bounds/certificates/mixed_n101_L1028/code",
+        "packing/resources/web/wand125-point-and-mixed-2026-09-28/square-packing-bounds/certificates/mixed_n50_L740/code"
+      ],
+      "net": {
+        "step": "83/40000",
+        "count": "201",
+        "endpoint_check": "89/40000",
+        "rotated_side_upper": "399908091/400000000",
+        "side_margin": "91909/400000000"
+      },
+      "centre_half_width_least": "3722536653/937780000",
+      "centre_half_width_least_at": 200,
+      "certificate_status": "ALL_LINEAR_ANGLES_VERIFIED_AND_REPLAYED",
+      "nodes": 137090913,
+      "most_nodes": 1037823,
+      "most_nodes_at": 200,
+      "axis_nodes": 424193,
+      "tarball": "certificates/mixed_n83_L935/n83-L9.35-proof-bundle.tar.gz",
+      "tarball_sha256": "ca8bf31319a02ee58d978e3de3a86289c4893a2c68eead34e72f22841e111705",
+      "source_audit": {
+        "status": "AUDITED_AND_PACKAGED",
+        "certificate_sha256_matches": true,
+        "archive_sha256_matches": true,
+        "compared_with": "92667/10000",
+        "compared_note": "Green's reported bound for n = 82-85, 2*sqrt2 + (247 + 12*sqrt2)/41 = 9.266733 (Friedman DS7, Theorem 9 with k = 9); our previously published rectangle certificate for n = 83 was 9.15",
+        "improvement_lower": "833/10000"
+      },
+      "comparison": {
+        "green": "Theorem 9, k=9, from n = 82",
+        "green_interval_float": [
+          9.266733533245633,
+          9.266733533245633
+        ],
+        "side_exceeds_green": true,
+        "source_value_exceeds_green": false,
+        "nagamochi": "1 + sqrt(66)",
+        "side_exceeds_nagamochi": true
+      },
+      "coverage_decided_here": false
+    }
+  },
+  "scope": "Exact premises only, from the retained files: pinned digests, the measure's count, side, core, orbit counts, containment, nonnegativity and total n - 1/100000, its D4 invariance, the candidate digest by the source's rule, the net containment and centre domains, the checker and code identity, a replay record for each of the 201 angles, and the source audit's certificate and tarball digests. Coverage is decided by the source's checker, whose replay is recorded separately."
+}

@@ -1,0 +1,26 @@
+1 {'witnesses': 0, 'empty': 1, 'repairs': 0, 'clips': 1, 'strata': 27}
+101 {'witnesses': 0, 'empty': 101, 'repairs': 0, 'clips': 77, 'strata': 2727}
+201 {'witnesses': 0, 'empty': 201, 'repairs': 0, 'clips': 151, 'strata': 5427}
+301 {'witnesses': 0, 'empty': 301, 'repairs': 0, 'clips': 227, 'strata': 8127}
+401 {'witnesses': 0, 'empty': 401, 'repairs': 0, 'clips': 301, 'strata': 10827}
+501 {'witnesses': 0, 'empty': 501, 'repairs': 0, 'clips': 377, 'strata': 13527}
+601 {'witnesses': 0, 'empty': 601, 'repairs': 0, 'clips': 451, 'strata': 16227}
+701 {'witnesses': 0, 'empty': 701, 'repairs': 0, 'clips': 527, 'strata': 18927}
+801 {'witnesses': 0, 'empty': 801, 'repairs': 0, 'clips': 601, 'strata': 21627}
+Traceback (most recent call last):
+  File "/tmp/claude-0/-home-user-squares/4ea49914-96b4-51a9-a2a9-c5603fe593f4/scratchpad/laneZ/work/drop-heaviest-point/bundle/portable_replay.py", line 69, in <module>
+    if __name__=='__main__':main()
+                            ~~~~^^
+  File "/tmp/claude-0/-home-user-squares/4ea49914-96b4-51a9-a2a9-c5603fe593f4/scratchpad/laneZ/work/drop-heaviest-point/bundle/portable_replay.py", line 67, in main
+    runpy.run_path(str(R/'n21_L5_refit29_final_replay/run_prefix.py'),run_name='__main__')
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<frozen runpy>", line 294, in run_path
+  File "<frozen runpy>", line 98, in _run_module_code
+  File "<frozen runpy>", line 88, in _run_code
+  File "/tmp/claude-0/-home-user-squares/4ea49914-96b4-51a9-a2a9-c5603fe593f4/scratchpad/laneZ/work/drop-heaviest-point/bundle/runs/evand_n21_n32_bridge_20260927/results/n21_L5_refit29_final_replay/run_prefix.py", line 32, in <module>
+    assert kind=='ADM';z=witnesses[j];assert boxkey(z['box'])==boxkey(box);value=witness_replay(c,w,L,box,z['indices']);assert value>=q;used.add(j);counts['witnesses']+=1
+                                                                                 ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/claude-0/-home-user-squares/4ea49914-96b4-51a9-a2a9-c5603fe593f4/scratchpad/laneZ/work/drop-heaviest-point/bundle/src/nagamochi_research/replay_physical_point_witness.py", line 66, in replay
+    if mass<1:raise ValueError('Insufficient witness mass')
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ValueError: Insufficient witness mass

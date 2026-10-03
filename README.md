@@ -11,7 +11,7 @@ The question of the value of $s(n)$ is simple, but the answer is an open problem
 most $n$. In many cases, $s(n)$ is known only to lie between an upper bound (the size of
 the enclosing square for the tightest packing ever discovered, such as
 $s(29) \le 5.934$) and a lower bound (a size below which it is proved that no packing
-can exist, such as the reported $s(29) \ge 5.79$).
+can exist, such as the reported $s(29) \ge 5.7975$).
 
 <!-- END SHARED: project-intro -->
 
@@ -247,10 +247,11 @@ The Motion Lab is an exploratory instrument, not a citable research result.
 
 ## Reports
 
-These 21 research reports are the durable topical syntheses:
+These 22 research reports are the durable topical syntheses:
 
 | Report | Scope |
 | --- | --- |
+| [s(12) Beyond Rescaling](docs/project/research/research-2026-10-02-s12-beyond-rescaling.md) | Daniel’s s(12) certificate scaled past #309 at a finer angle net, then re-weighted by linear programming to a candidate s(12) ≥ 15680000/3949423, with source-verifier receipts and controls |
 | [Exact Arithmetic for Independent Verifiers](docs/project/research/research-2026-09-30-exact-arithmetic-verifier-performance.md) | Source-level comparison of Python and Rust rational arithmetic, native-library options, sampled profiles, and a controlled experiment measuring redundant normalization |
 | [Fractional Packing, Duality, and the Next N11 Discriminators](docs/project/research/research-2026-09-10-x027-fractional-duality.md) | Exact full-unit transport, interior duality and density equivalence, finite witnesses, and the limits of fractional obstructions |
 | [Seven Corner Marks, Contact Components, and Relational Helpers](docs/project/research/research-2026-09-10-x027-structural-helpers.md) | New ownership and contact-component deductions, shared-owner consistency, and bounded segment-helper comparisons |

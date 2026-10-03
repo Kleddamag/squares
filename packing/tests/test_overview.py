@@ -2615,9 +2615,12 @@ def test_recent_results_is_one_table_not_cards_or_a_list(
         cell = row.split('<td class="site-col-result"', 1)[1].split("</td>", 1)[0]
         assert "site-row-open" not in cell
         assert "<br" not in row
-    # Evan Daniel's three exact values, the closures the exact-value cards used to show.
+    # Evan Daniel's three exact values, the closures the exact-value cards used to show, and
+    # every closure since: each is a case some row lists. Until 2026-10-02 each was its
+    # row's first case; s(78) = 9, proved that day by the s(77) cover's total being below
+    # 78, is the second case of T-067's row, which lists 77 and 78.
     exact = {n for n in overview.recent_lower if overview.cases[n]["status"] == "proved"}
-    shown = {r.first_n for r in newest}
+    shown = {n for r in newest for n in scope_values(dict(r.record["scope"]))}
     assert exact <= shown
 
 
@@ -2860,14 +2863,15 @@ PROBLEM_STATEMENT = (
         "for most $n$. In many cases, $s(n)$ is known only to lie between an upper bound "
         "(the size of the enclosing square for the tightest packing ever discovered, such "
         "as $s(29) \\le 5.934$) and a lower bound (a size below which it is proved that no "
-        "packing can exist, such as the reported $s(29) \\ge 5.79$)."
+        "packing can exist, such as the reported $s(29) \\ge 5.7975$)."
     ),
 )
 
 
 def test_the_intros_examples_are_the_records() -> None:
     """The introduction's two examples are case 29's current bounds: its lower example
-    is the reported lower bound, wand125's 5.79 of 2026-09-28 when this was written,
+    is the reported lower bound, wand125's 5.79 of 2026-09-28 when this was written and
+    its 2319/400 = 5.7975 of 1 October (T-074) since,
     and its upper example is the reported upper bound rounded up, which also stands at
     or above the verified ceiling, so it is itself a proved ceiling. A new bound at
     $n = 29$ that leaves an example stale fails here rather than on the page."""
@@ -3598,7 +3602,7 @@ def test_both_tables_of_results_have_the_same_columns(
         assert classes.findall(here) == [
             "site-col-date",
             "site-col-result",
-            "num site-col-n",
+            overview_sections.case_cell_class(result),
             "site-col-credit",
             "site-rungs",
             "site-col-status",
@@ -5308,8 +5312,13 @@ def test_hide_superseded_starts_checked_on_the_overview_and_clear_on_the_results
             assert not superseded, result.id
     # Every standing stays, and so does a result with none: nothing but a superseded
     # bound is hidden for it. The one result that derives `superseded` and stays is the
-    # limit of a method, which is no bound.
-    assert kept == {*render_recent_results.STANDINGS, render_recent_results.NO_STANDING}
+    # limit of a method, which is no bound. No result has stood as a reported second
+    # certificate since 2026-10-02, when T-055's replay was recorded; when one does again,
+    # this pin fails and the standing returns to the set.
+    assert kept == {
+        *render_recent_results.STANDINGS,
+        render_recent_results.NO_STANDING,
+    } - {render_recent_results.SECOND_CERTIFICATE_REPORTED}
     current = sum(not overview_sections.is_superseded(r) for r in overview.results)
     assert 0 < shown < without < len(overview.results)
     assert shown < current < len(overview.results)

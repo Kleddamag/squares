@@ -5,7 +5,7 @@ title: Import, confirm and answer every reported result (2 October 2026 effort)
 kind: epic
 status: open
 priority: 1
-version: 34
+version: 35
 labels:
   - result-import
 dependencies: []
@@ -31,7 +31,7 @@ child_order_hints:
   - is-01m3ytdhr6h2xnsvj4f2nc2nk2
   - is-01m3z77bdhk8tn3epx63ywhxft
 created_at: 2026-10-02T16:51:15.917Z
-updated_at: 2026-10-03T01:46:46.316Z
+updated_at: 2026-10-03T04:52:10.830Z
 ---
 Umbrella for the 2 October 2026 effort: PRs #290 -> #292 -> #298 (imports and records), plus a stacked PR for verifier provenance and the independent verifier. Children track each lane; done when every reported result is confirmed or refuted (or has a bead naming exactly what remains), every issue has a current status reply, closeable issues are closed, and all PRs are merged.
 
@@ -114,3 +114,4 @@ Next steps for the next agent, in order:
 - 2026-10-03 ~01:00 T-077 (rectangles n20, n42, n70 at V0) and a results-table wrap fix pushed (80022bafb); dispatched run 37084456313 fully GREEN. #309 registered as T-078 at V3/C3, S2, superseding T-049 (squarepacker after Daniel; native parent-core route as independent-implementation), pushed 214eb5c5c; result-requests.yaml maps #309 -> T-078, #282's afternoon results -> T-075, #294's n82 -> T-076. Records lane next: model-name cleanup; then T-046 leftovers, T-073 n83 and the afternoon replays as runners finish.
 - 01:43 W2 Milestone B done (717e4f8ca); W2 now running a census of every retained certificate (afternoon set, T-046 leftovers, T-069/T-071, n83) as the input for independent-implementation evidence, then Milestone C planning. Adversarial reviews started (think-r07y): RA session_016UeXVvBvKFHW6cdwMT7ATx (soundness, branch claude/review-ra-sqverify-fast), RB session_01LHZZ1FBh29RNFrCiVgyUu8 (testing and independence audit, think-3ok2, branch claude/review-rb-sqverify-fast). Independent-implementation evidence entries wait for both reviews to accept.
 - 01:46 check-in: CI run 37084456313 on 80022bafb GREEN (37081079279 failed only the table-width test, fixed). T-064 qx2 shards 1 and 2 COMPLETE; queued for the records lane: merge claude/replay-valid7-inputs and claude/lane-ll-t064-lean, bring shard receipts into evand-square-packing-2026-10-01/receipts/valid7/, run plan_valid7_replay compare --checker qx2, record T-064 evidence. Nudged (no push since the 22:56 resume): m1, m3, r1, r2, r4, the s(77) runner, FF. RV pushed 01:36 (native parent-core certifies BB's certificate).
+- 2026-10-03 04:55 Session limit hit again at ~01:30-01:48 UTC (reset 03:40); everything stopped. Old runners (m1, r2, the s(77) runner, and r1/r4/m3 by the same rule) REFUSED follow-up jobs sent by message (they accept only their initial prompt's job): replaced at 01:48 by new runners whose initial prompt is the job: n82a session_015CiPn4iFQWzpznZyFdwuZL (linear n82 0-123, claude/replay-wand125-n82-a), n82b session_01DrdQyssm1DBDH88Brh3yAq (124-200, -n82-b), m6 session_01Bm7LCpB7yJjWhTBogEq3ni (mixed n83 0-135, n87, n91; claude/replay-wand125-afternoon-m6), s1 session_01QMRbn2cefpcbee1ce4LshT (T-046 n72, n91; claude/replay-wand125-sept28-s1), s2 session_01FjniKWBCgBfQSm7URfWSi7 (n73, n51, n57, n58; -s2), l83 session_01PADmST5bjm6g2wbCbc2gbK (T-073 linear n83 + merge + control; claude/replay-wand125-linear-n83). Ignore the old runners' pending confirmation requests. All active sessions were sent resume messages at 04:52, plus the records lane (finishing the T-064 merge, MERGE_HEAD 9e8e66f63) and W2.

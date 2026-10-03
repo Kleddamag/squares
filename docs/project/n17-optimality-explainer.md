@@ -329,8 +329,11 @@ obvious speed-up; it is unbuilt and its gain unmeasured.
 Stated without a forecast, because none is on record.
 
 1. **Certify or refute the remaining flags.** W7, A and SW9 are admitted, and 88 flagged
-   classes have no certificate; uniform rows stalled on several that adaptive rows then
-   closed or are retrying.
+   classes have no certificate.
+   Uniform rows stalled on several.
+   Adaptive rows closed flag 3 (SW9) but stalled on flag 2 at their cap of 1,152 rows:
+   the cap was spent by round 4, the live rows fell from 1,152 to 794 by round 18 and
+   then stopped, and three of the nine owners never lost a row.
    A flag the prover cannot close is either a false flag, in which case the search
    resumes, or a stall of the engine on a true pattern, which needs finer rows,
    splitting or the other prover.
@@ -350,9 +353,11 @@ Stated without a forecast, because none is on record.
    one argument has not been written down, let alone reviewed, and T-060’s rungs show
    what further assurance costs even then.
 5. **Certificates that fit in memory.** Adaptive rows close classes that uniform rows
-   could not, but flag 2’s node reached 931 MB of JSON, and the checker needed 8.6 GB to
-   read it. A streamed or compact certificate format, or a compiled checker, has to come
-   before adaptive rows are used at scale.
+   could not, but flag 2’s node reached 931 MB of JSON. The producer’s own check of it
+   reached 8.6 GB and was killed; the standalone check of the saved objects peaked at
+   about 4.3 GB and took 3,714 s. A streamed or compact certificate format, or a
+   compiled checker, has to come before adaptive rows are used at scale or their cap is
+   raised.
 6. **Admission at the corrected verifier.** After $n = 11$'s finding C2, the kernel
    verifier’s point and segment covers were made exact (318c28c42). The defect never ran
    on W7, SW9 or N1. New admissions should be verified at that revision or later.

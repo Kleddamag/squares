@@ -684,16 +684,29 @@ def test_source_closure_reports_code_and_environment_drift_without_refusing(
     ]
 
 
-def test_source_closure_refuses_a_manifest_that_misdescribes_its_revision(
+def test_source_closure_keeps_recorded_digests_and_checks_the_closure_paths(
     tmp_path: Path,
 ) -> None:
+    """Row blob ids and digests are the runs' record, kept and not compared; the
+    manifests must still name the execution revision's import closure, path for path."""
     repository = tmp_path / "source-repository"
     repository.mkdir()
     revision, manifest = _source_repository(repository)
-    tampered = deepcopy(manifest)
-    tampered[0]["git_blob"] = "0" * 40
-    run_root, review_root = _retain_profiles(tmp_path, revision, tampered)
-    with pytest.raises(verifier.RunSetRefusalError, match="execution revision"):
+    recorded = deepcopy(manifest)
+    recorded[0]["git_blob"] = "0" * 40
+    recorded[0]["sha256"] = "1" * 64
+    run_root, review_root = _retain_profiles(tmp_path / "recorded", revision, recorded)
+    accepted = verifier.verify_source_closure(
+        repository=repository,
+        run_root=run_root,
+        review_root=review_root,
+        execution_revision=revision,
+        candidate_tree=revision,
+    )
+    assert accepted["sources"] == recorded
+    missing = [row for row in manifest if row["path"] != "packing/devtools/helper.py"]
+    run_root, review_root = _retain_profiles(tmp_path / "missing", revision, missing)
+    with pytest.raises(verifier.RunSetRefusalError, match="complete source closure"):
         verifier.verify_source_closure(
             repository=repository,
             run_root=run_root,

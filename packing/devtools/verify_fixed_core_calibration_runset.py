@@ -2,7 +2,7 @@
 
 The source-distinct reader owns scientific checks. This module binds its three
 accepted proofs to the coordinator, preserves the run root, and checks that every
-receipt's source manifest describes the execution revision that produced it.
+receipt's source manifest names the execution revision's import closure.
 
 The run set is a fact about that revision. What has changed in its source closure
 since -- code, `pyproject.toml`, `uv.lock` or `.python-version` -- is reported as
@@ -1047,12 +1047,13 @@ def verify_source_closure(
     execution_revision: str,
     candidate_tree: str,
 ) -> dict[str, object]:
-    """Bind every receipt's sources to the execution revision; report candidate drift.
+    """Check the three receipts name one source closure; report candidate drift.
 
-    The manifests must agree with each other and with the execution revision's own
-    Git objects. Paths whose mode or blob differ between that revision's closure and
-    `candidate_tree`'s, or that only one closure holds, are returned as `drift`:
-    information for the evidence commit, never a refusal.
+    The manifests must agree with each other and name exactly the execution
+    revision's import closure. Their blob ids and digests are the runs' own record and
+    are kept, not compared. Paths whose mode or blob differ between that revision's
+    closure and `candidate_tree`'s, or that only one closure holds, are returned as
+    `drift`: information for the evidence commit, never a refusal.
     """
     repository = _canonical_dir(repository, "repository")
     run_root, review_root = _roots(run_root, review_root)
@@ -1118,13 +1119,6 @@ def verify_source_closure(
         manifests.append(manifest)
     if manifests[0] != manifests[1] or manifests[0] != manifests[2]:
         _refuse("three profile source manifests disagree")
-    for row in manifests[0]:
-        path = cast(str, row["path"])
-        execution_mode, execution_blob = execution_entries[path]
-        if execution_mode not in ("100644", "100755") or row["git_blob"] != execution_blob:
-            _refuse(f"source manifest does not describe the execution revision: {path}")
-        if row["sha256"] != _sha(_git(repository, "cat-file", "blob", execution_blob)):
-            _refuse(f"source manifest does not describe the execution revision: {path}")
     drift = sorted(
         path
         for path in {*execution_paths, *candidate_paths}

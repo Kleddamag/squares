@@ -26,14 +26,14 @@ second implementation agrees.
 ## The Short Version
 
 - **75** programs: **30** external and **45** first-party; **62** decide claims and **13** check premises.
-- **192** of **213** evidence entries name the programs that verified them: 131 reproduced with the producer’s code, 45 independently re-implemented, 9 no relation: a proof, a derivation or a report, 7 re-implemented, sharing the producer’s components.
+- **198** of **219** evidence entries name the programs that verified them: 137 reproduced with the producer’s code, 45 independently re-implemented, 9 no relation: a proof, a derivation or a report, 7 re-implemented, sharing the producer’s components.
 
 ## Programs
 
 | id | program | author | provenance | role | evidence | results |
 | --- | --- | --- | --- | --- | ---: | ---: |
 | [`V-tokoharu-verify-cpp`](#v-tokoharu-verify-cpp) | verify.cpp | Tokoharu | external | decides | 12 | 7 |
-| [`V-wand125-mixed-rotated-verify-cpp`](#v-wand125-mixed-rotated-verify-cpp) | mixed_rotated_verify.cpp | wand125 | external | decides | 24 | 5 |
+| [`V-wand125-mixed-rotated-verify-cpp`](#v-wand125-mixed-rotated-verify-cpp) | mixed_rotated_verify.cpp | wand125 | external | decides | 30 | 5 |
 | [`V-wand125-verify-mixed-full-proof-py`](#v-wand125-verify-mixed-full-proof-py) | verify_mixed_full_proof.py | wand125 | external | decides | 7 | 2 |
 | [`V-wand125-unified-linear-verify-cpp`](#v-wand125-unified-linear-verify-cpp) | unified_linear_verify.cpp | wand125 | external | decides | 3 | 2 |
 | [`V-wand125-verify-portable-py`](#v-wand125-verify-portable-py) | verify_portable.py | wand125 | external | decides | 2 | 1 |
@@ -99,7 +99,7 @@ second implementation agrees.
 | [`V-audit-n17-endpoint-receipt`](#v-audit-n17-endpoint-receipt) | devtools.audit_n17_endpoint_receipt | Squares Project (Levy) | first-party | premises | 1 | 1 |
 | [`V-audit-tokoharu-density`](#v-audit-tokoharu-density) | devtools.audit_tokoharu_density | Squares Project (Levy) | first-party | premises | 1 | 1 |
 | [`V-audit-wand125-rectangles`](#v-audit-wand125-rectangles) | devtools.audit_wand125_rectangles | Squares Project (Levy) | first-party | premises | 3 | 3 |
-| [`V-audit-wand125-point-and-mixed`](#v-audit-wand125-point-and-mixed) | devtools.audit_wand125_point_and_mixed | Squares Project (Levy) | first-party | premises | 11 | 6 |
+| [`V-audit-wand125-point-and-mixed`](#v-audit-wand125-point-and-mixed) | devtools.audit_wand125_point_and_mixed | Squares Project (Levy) | first-party | premises | 17 | 7 |
 | [`V-audit-wand125-linear`](#v-audit-wand125-linear) | devtools.audit_wand125_linear | Squares Project (Levy) | first-party | premises | 0 | 0 |
 | [`V-replay-evand-zmx2`](#v-replay-evand-zmx2) | devtools.replay_evand_zmx2 | Squares Project (Levy) | first-party | premises | 5 | 5 |
 | [`V-audit-evand-mixed-covers`](#v-audit-evand-mixed-covers) | devtools.audit_evand_mixed_covers | Squares Project (Levy) | first-party | premises | 9 | 8 |
@@ -165,11 +165,17 @@ Decides a mixed point-and-rectangle certificate at each of the 201 net direction
 | `E-n076-wand125-mixed-894-report` | the source’s own run | producer’s code | T-072 |
 | `E-n076-wand125-mixed-894-source-replay` | replayed here | producer’s code | T-072 |
 | `E-n083-wand125-mixed-937-report` | the source’s own run | producer’s code | T-075 |
+| `E-n083-wand125-mixed-937-source-replay` | replayed here | producer’s code | T-075 |
 | `E-n085-wand125-mixed-946-report` | the source’s own run | producer’s code | T-075 |
+| `E-n085-wand125-mixed-946-source-replay` | replayed here | producer’s code | T-075 |
 | `E-n087-wand125-mixed-948-report` | the source’s own run | producer’s code | T-075 |
+| `E-n087-wand125-mixed-948-source-replay` | replayed here | producer’s code | T-075 |
 | `E-n091-wand125-mixed-970-report` | the source’s own run | producer’s code | T-075 |
+| `E-n091-wand125-mixed-970-source-replay` | replayed here | producer’s code | T-075 |
 | `E-n092-wand125-mixed-975-report` | the source’s own run | producer’s code | T-075 |
+| `E-n092-wand125-mixed-975-source-replay` | replayed here | producer’s code | T-075 |
 | `E-n096-wand125-mixed-996-report` | the source’s own run | producer’s code | T-075 |
+| `E-n096-wand125-mixed-996-source-replay` | replayed here | producer’s code | T-075 |
 
 ### `V-wand125-verify-mixed-full-proof-py`
 
@@ -1198,6 +1204,12 @@ Fetches, pins and binds wand125's point and mixed bundles, checks their exact pr
 | `E-n084-wand125-mixed-940-source-replay` | replayed here | producer’s code | T-071 |
 | `E-n085-wand125-mixed-942-source-replay` | replayed here | producer’s code | T-071 |
 | `E-n076-wand125-mixed-894-source-replay` | replayed here | producer’s code | T-072 |
+| `E-n083-wand125-mixed-937-source-replay` | replayed here | producer’s code | T-075 |
+| `E-n085-wand125-mixed-946-source-replay` | replayed here | producer’s code | T-075 |
+| `E-n087-wand125-mixed-948-source-replay` | replayed here | producer’s code | T-075 |
+| `E-n091-wand125-mixed-970-source-replay` | replayed here | producer’s code | T-075 |
+| `E-n092-wand125-mixed-975-source-replay` | replayed here | producer’s code | T-075 |
+| `E-n096-wand125-mixed-996-source-replay` | replayed here | producer’s code | T-075 |
 
 ### `V-audit-wand125-linear`
 

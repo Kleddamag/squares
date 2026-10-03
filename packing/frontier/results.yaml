@@ -321,11 +321,11 @@ results:
       score: 3
       rationale: >-
         The workhorse lower bound: 95 of the hundred case records cite this result,
-        and it supplies the operative verified lower bound in 29 of them. The count was
+        and it supplies the operative verified lower bound in 26 of them. The count was
         88 until 2026-08-31, when this project's certificates began displacing it; replayed
         external certificates displaced 18 more case values on 2026-09-22, one more,
         n = 32, on 2026-09-27, another, n = 45, on 2026-09-29, 33 more on 2026-10-02, and
-        n = 97 on 2026-10-03.
+        n = 83, 91, 96 and 97 on 2026-10-03.
       scored: '2026-08-31'
       by: session-061 review (repository)
     novelty: previously-published
@@ -339,8 +339,8 @@ results:
       - packing/devtools/check_nagamochi_bounds.py
     next_rung: >-
       The proof itself is C1 with four named unverified items in the read;
-      the 29 operative verified-field values are separately re-derived in the gate (a replay
-      of the transcriptions, which by itself would read at C2), while the other 66 citations
+      the 26 operative verified-field values are separately re-derived in the gate (a replay
+      of the transcriptions, which by itself would read at C2), while the other 69 citations
       carry historical or
       reported context and are not current bounds. C3 needs a machine check of Theorem 1's
       unavoidable-set capacity argument.
@@ -6580,10 +6580,10 @@ results:
   - id: T-075
     kind: lower-bound
     registered: '2026-10-03'
-    headline: "Mixed rectangle-measure lower bounds reported at nine counts in `n = 83…96`"
+    headline: "Mixed rectangle-measure lower bounds replayed at nine counts in `n = 83…96`"
     claim: >-
       Six rectangle-density certificates that wand125/square-packing-bounds published on the
-      afternoon of 2 October 2026 report s(83) >= 937/100 = 9.37, s(85) >= 473/50 = 9.46,
+      afternoon of 2 October 2026 prove s(83) >= 937/100 = 9.37, s(85) >= 473/50 = 9.46,
       s(87) >= 237/25 = 9.48, s(91) >= 97/10 = 9.7, s(92) >= 39/4 = 9.75 and s(96) >= 249/25
       = 9.96. A packing of 86 squares contains one of 85, and likewise at 88 and 93, so they
       also give s(86) >= 473/50, s(88) >= 237/25 and s(93) >= 39/4.
@@ -6593,7 +6593,7 @@ results:
       83/40000, of the kind and checker of T-069, T-071 and T-072. The source reports each
       accepted at all 200 oblique net angles by code/mixed_rotated_verify.cpp, its research
       copy of Tokoharu's verify.cpp at coverage threshold one, and at the axis by exact
-      integer tables. Two supersede certificates this record holds verified at the same
+      integer tables. Two supersede certificates this record held verified at the same
       count, at n = 85 (T-071) and n = 92 (T-069).
 
       Each value is above what the record reported at its count: by 0.02 at n = 83, over the
@@ -6603,10 +6603,10 @@ results:
       85 and 87 the source measures its improvement from 92667/10000, below Green's reported
       9.2667335..., so those figures overstate the margin; the bounds are unaffected.
 
-      Here the six were retained, their exact premises were recomputed from the retained
-      bytes, and the replay's checks before its first angle were run on the six pinned
-      tarballs. None of it decides coverage, and no angle was replayed. The values stand as
-      reported, and the verified lower bounds are unchanged.
+      Each certificate passed a complete replay here on 2 and 3 October 2026 of the source's
+      unchanged checker and per-angle functions on its pinned tarball: all 201 directions,
+      each returning the certificate's own record. The replays run the source's own
+      algorithm and are not an independent decision of coverage.
 
       wand125 after Tokoharu and Levy,
       [square-packing-bounds](https://github.com/wand125/square-packing-bounds/tree/b00fc70f1904e9b1b567afee056d347f911209e8/certificates).
@@ -6614,35 +6614,41 @@ results:
       The source says parts of the work were produced with AI assistance under human
       direction.
     scope: {n_values: [83, 85, 86, 87, 88, 91, 92, 93, 96]}
-    verification: V0
-    confirmation: C1
+    verification: V3
+    confirmation: C3
     significance:
       score: 3
       rationale: >-
-        Scored as a claim: if the replays pass, the strongest lower bounds on record at nine
-        counts, the first above Nagamochi's value at n = 96. Further sizes from the generator
-        and checker of T-069, T-071 and T-072, with no new technique, at S3 as those are; the
-        2 October review of the afternoon certificates proposed S3, and the score gates
-        nothing.
+        Raised the verified lower bound at nine counts, n = 83 to 96, the first above
+        Nagamochi's value at n = 96. Further sizes from the generator and checker of T-069,
+        T-071 and T-072, with no new technique, at S3 as those are; the 2 October review of
+        the afternoon certificates proposed S3, which the replays leave standing.
       scored: '2026-10-03'
-      by: 'think-r7yt import, registering lane (repository; draft)'
+      by: think-r7yt stage 4, the records lane keeping the registering lane's draft (repository)
     novelty: previously-published
     attribution:
       source_keys: ['[wand125 mixed bounds afternoon 2026-10-02]']
       published: '2026-10-02'
     composition: >-
-      One claim per certificate, each on its own reported entry; n = 86, 88 and 93 take the
-      n = 85, 87 and 92 certificates directly, their masses being below those counts, so no
-      step is added. Every part stands at V0/C1: read by the 2 October review of the
-      afternoon certificates, and not replayed. Coverage is decided by the source's C++
-      checker alone.
+      Six primary certificates, each on its own reported entry and its own replay entry.
+      n = 86, 88 and 93 take the n = 85, 87 and 92 certificates directly, their masses
+      being below those counts, so no step is added. Each replay runs the source's C++
+      checker unchanged: one interval-certified method, replayed here, C3. Coverage is
+      decided by that checker alone; the axis tables are a second implementation for one
+      direction and not a second method.
     evidence:
       - E-n083-wand125-mixed-937-report
+      - E-n083-wand125-mixed-937-source-replay
       - E-n085-wand125-mixed-946-report
+      - E-n085-wand125-mixed-946-source-replay
       - E-n087-wand125-mixed-948-report
+      - E-n087-wand125-mixed-948-source-replay
       - E-n091-wand125-mixed-970-report
+      - E-n091-wand125-mixed-970-source-replay
       - E-n092-wand125-mixed-975-report
+      - E-n092-wand125-mixed-975-source-replay
       - E-n096-wand125-mixed-996-report
+      - E-n096-wand125-mixed-996-source-replay
     reviews:
       - path: docs/project/reviews/review-2026-10-02-wand125-afternoon-certificates.md
         kind: adversarial
@@ -6657,24 +6663,36 @@ results:
     artifacts:
       - packing/resources/web/wand125-mixed-bounds-afternoon-2026-10-02/README.md
       - packing/resources/web/wand125-mixed-bounds-afternoon-2026-10-02/receipts/mixed-audit.json
-      - packing/resources/web/wand125-mixed-bounds-afternoon-2026-10-02/receipts/n83/fetch.json
+      - packing/resources/web/wand125-mixed-bounds-afternoon-2026-10-02/receipts/n83/merged.json
+      - packing/resources/web/wand125-mixed-bounds-afternoon-2026-10-02/receipts/n85-L946/merged.json
+      - packing/resources/web/wand125-mixed-bounds-afternoon-2026-10-02/receipts/n87/merged.json
+      - packing/resources/web/wand125-mixed-bounds-afternoon-2026-10-02/receipts/n91/merged.json
+      - packing/resources/web/wand125-mixed-bounds-afternoon-2026-10-02/receipts/n92-L975/merged.json
+      - packing/resources/web/wand125-mixed-bounds-afternoon-2026-10-02/receipts/n96/merged.json
       - packing/devtools/audit_wand125_point_and_mixed.py
       - docs/project/reviews/review-2026-10-02-wand125-afternoon-certificates.md
       - docs/project/reviews/review-2026-09-28-wand125-n50-mixed-verifier.md
+    controls:
+      - packing/tests/test_wand125_checker_controls.py
+      - packing/resources/web/wand125-point-and-mixed-2026-10-01/receipts/n37/control.json
     next_rung: >-
-      think-r7yt: the complete replays, about 16.0 CPU-hours for n = 83, 8.3 for n = 85 and
-      1.6 to 2.0 for each of the other four by the packet's pricing, with
-      devtools.audit_wand125_point_and_mixed mixed-replay and mixed-merge, before any verified
-      lower bound is raised; mixed-control n96 would put a negative control on a certificate
-      of this release. V3/C3 when they pass, as for T-069, T-071 and T-072.
+      V4 and C4 need two adversarial AI reviews by distinct reviewers and a human oversight
+      record; one adversarial review is retained, written by the retaining lane before any
+      replay. A second machine method would be a method-distinct decision of rotated
+      coverage; the replays here run the source's own checker. The checker's controls were
+      made on the n = 37 certificate of the same kind; mixed-control n96 would put one on a
+      certificate of this release.
     notes: >-
-      V0 because every cited entry is the source's claim: assurance reported, replay not
-      attempted. C1 because the 2 October review of the afternoon certificates is recorded
-      as the six report entries' external_review, with no blocking defect. That review was
+      Raised from V0/C1 on 3 October 2026, when the complete replays (think-r7yt) matched
+      the shipped runs at all 201 directions, about 36.1 CPU-hours here over the six. The 2
+      October review of the afternoon certificates had found no blocking defect. It was
       written by the retaining lane itself and not by a separately prompted reviewer, which
-      its reviews entry says. Its findings AF-1 to AF-3 are in the entries' limitations.
+      its reviews entry says; its findings AF-1 to AF-3 are in the entries' limitations.
+
       Registered before the same revision's rectangle rungs, as its finding AF-6 advises, so
-      that the rungs at n = 91 and 93 write nothing there.
+      that the rungs at n = 91 and 93 write nothing there. The source ships a completion
+      audit for each count, which is retained; the proof-bundle tarballs are pinned by
+      digest and not retained.
 
   - id: T-076
     kind: lower-bound
@@ -7017,7 +7035,7 @@ results:
       arrangement sweep (exact-algebraic), run by the producing lane and replayed by the
       review lane, and this repository's directed-rounding interval coverage of every row
       (interval-certified); that is C3, with two methods shown beside the rung. The exact
-      audit of the file is well-formedness only. All rest on the certificate, the counting
+      audit of the file is a premise check, well-formedness only, and decides nothing. All rest on the certificate, the counting
       step and the shrink lemma on the net N = 96000, and the native rows are the sweep's
       bins and sigma_k by design.
     evidence:

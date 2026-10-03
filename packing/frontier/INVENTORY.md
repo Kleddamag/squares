@@ -8,7 +8,7 @@ ours, which rest on someone else's argument, and how far each has been checked.
 
 ## The short version
 
-- **213** evidence records. **139** are formal; **133** of those were established here.
+- **219** evidence records. **145** are formal; **139** of those were established here.
 - **65** rest on an argument made elsewhere, of which **7** have been read by nobody here.
 - **40** claim to be first established here. **13** make no novelty statement at all - not assessed, which is not the same as not novel.
 
@@ -48,7 +48,7 @@ results, it is a statement about what this repository has itself examined.
 | `E-wand125-rectangle-2026-09-28-monotone-report` | 0 | lower-bound | reported | - | here | - | previously-published | no code | `V-tokoharu-verify-cpp` |
 | `E-wand125-rectangle-2026-09-28-source-replay` | 5 | lower-bound | verified | strict inequalities only | here | - | previously-published | producer’s code | `V-tokoharu-verify-cpp`, `V-audit-wand125-rectangles` |
 | `E-wand125-rectangle-2026-10-01-report` | 24 | lower-bound | reported | - | elsewhere | informally-verified | previously-published | producer’s code | `V-tokoharu-verify-cpp` |
-| `E-wand125-rectangle-2026-10-01-source-replay` | 31 | lower-bound | verified | strict inequalities only | here | - | previously-published | producer’s code | `V-tokoharu-verify-cpp`, `V-audit-wand125-rectangles` |
+| `E-wand125-rectangle-2026-10-01-source-replay` | 29 | lower-bound | verified | strict inequalities only | here | - | previously-published | producer’s code | `V-tokoharu-verify-cpp`, `V-audit-wand125-rectangles` |
 | `E-wand125-rectangle-2026-10-02-report` | 3 | lower-bound | reported | - | elsewhere | informally-verified | previously-published | producer’s code | `V-tokoharu-verify-cpp` |
 | `E-n045-wand125-point-cover-report` | 0 | lower-bound | reported | - | elsewhere | - | previously-published | producer’s code | `V-evand-zmx2` |
 | `E-n045-wand125-point-cover-source-replay` | 0 | lower-bound | verified | strict inequalities only | here | informally-verified | previously-published | producer’s code | `V-evand-zmx2`, `V-audit-wand125-point-and-mixed` |
@@ -69,21 +69,27 @@ results, it is a statement about what this repository has itself examined.
 | `E-n090-wand125-mixed-960-report` | 1 | lower-bound | reported | - | elsewhere | informally-verified | previously-published | producer’s code | `V-wand125-mixed-rotated-verify-cpp` |
 | `E-n090-wand125-mixed-960-source-replay` | 1 | lower-bound | verified | strict inequalities only | here | - | previously-published | producer’s code | `V-wand125-mixed-rotated-verify-cpp`, `V-audit-wand125-point-and-mixed` |
 | `E-n092-wand125-mixed-969-report` | 0 | lower-bound | reported | - | elsewhere | informally-verified | previously-published | producer’s code | `V-wand125-mixed-rotated-verify-cpp` |
-| `E-n092-wand125-mixed-969-source-replay` | 1 | lower-bound | verified | strict inequalities only | here | - | previously-published | producer’s code | `V-wand125-mixed-rotated-verify-cpp`, `V-audit-wand125-point-and-mixed` |
+| `E-n092-wand125-mixed-969-source-replay` | 0 | lower-bound | verified | strict inequalities only | here | - | previously-published | producer’s code | `V-wand125-mixed-rotated-verify-cpp`, `V-audit-wand125-point-and-mixed` |
 | `E-n084-wand125-mixed-940-report` | 1 | lower-bound | reported | - | elsewhere | informally-verified | previously-published | producer’s code | `V-wand125-mixed-rotated-verify-cpp` |
 | `E-n084-wand125-mixed-940-source-replay` | 1 | lower-bound | verified | strict inequalities only | here | - | previously-published | producer’s code | `V-wand125-mixed-rotated-verify-cpp`, `V-audit-wand125-point-and-mixed` |
 | `E-n085-wand125-mixed-942-report` | 0 | lower-bound | reported | - | elsewhere | informally-verified | previously-published | producer’s code | `V-wand125-mixed-rotated-verify-cpp` |
-| `E-n085-wand125-mixed-942-source-replay` | 3 | lower-bound | verified | strict inequalities only | here | - | previously-published | producer’s code | `V-wand125-mixed-rotated-verify-cpp`, `V-audit-wand125-point-and-mixed` |
+| `E-n085-wand125-mixed-942-source-replay` | 0 | lower-bound | verified | strict inequalities only | here | - | previously-published | producer’s code | `V-wand125-mixed-rotated-verify-cpp`, `V-audit-wand125-point-and-mixed` |
 | `E-n076-wand125-mixed-894-report` | 1 | lower-bound | reported | - | elsewhere | informally-verified | previously-published | producer’s code | `V-wand125-mixed-rotated-verify-cpp` |
 | `E-n076-wand125-mixed-894-source-replay` | 1 | lower-bound | verified | strict inequalities only | here | - | previously-published | producer’s code | `V-wand125-mixed-rotated-verify-cpp`, `V-audit-wand125-point-and-mixed` |
 | `E-n083-wand125-linear-935-report` | 0 | lower-bound | reported | - | elsewhere | informally-verified | previously-published | producer’s code | `V-wand125-unified-linear-verify-cpp` |
 | `E-n101-wand125-linear-1028-report` | 5 | lower-bound | reported | - | elsewhere | informally-verified | previously-published | producer’s code | `V-wand125-unified-linear-verify-cpp` |
 | `E-n083-wand125-mixed-937-report` | 1 | lower-bound | reported | - | elsewhere | informally-verified | previously-published | producer’s code | `V-wand125-mixed-rotated-verify-cpp`, `V-wand125-verify-mixed-full-proof-py` |
+| `E-n083-wand125-mixed-937-source-replay` | 1 | lower-bound | verified | strict inequalities only | here | - | previously-published | producer’s code | `V-wand125-mixed-rotated-verify-cpp`, `V-audit-wand125-point-and-mixed` |
 | `E-n085-wand125-mixed-946-report` | 2 | lower-bound | reported | - | elsewhere | informally-verified | previously-published | producer’s code | `V-wand125-mixed-rotated-verify-cpp`, `V-wand125-verify-mixed-full-proof-py` |
+| `E-n085-wand125-mixed-946-source-replay` | 2 | lower-bound | verified | strict inequalities only | here | - | previously-published | producer’s code | `V-wand125-mixed-rotated-verify-cpp`, `V-audit-wand125-point-and-mixed` |
 | `E-n087-wand125-mixed-948-report` | 2 | lower-bound | reported | - | elsewhere | informally-verified | previously-published | producer’s code | `V-wand125-mixed-rotated-verify-cpp`, `V-wand125-verify-mixed-full-proof-py` |
+| `E-n087-wand125-mixed-948-source-replay` | 2 | lower-bound | verified | strict inequalities only | here | - | previously-published | producer’s code | `V-wand125-mixed-rotated-verify-cpp`, `V-audit-wand125-point-and-mixed` |
 | `E-n091-wand125-mixed-970-report` | 1 | lower-bound | reported | - | elsewhere | informally-verified | previously-published | producer’s code | `V-wand125-mixed-rotated-verify-cpp`, `V-wand125-verify-mixed-full-proof-py` |
+| `E-n091-wand125-mixed-970-source-replay` | 1 | lower-bound | verified | strict inequalities only | here | - | previously-published | producer’s code | `V-wand125-mixed-rotated-verify-cpp`, `V-audit-wand125-point-and-mixed` |
 | `E-n092-wand125-mixed-975-report` | 2 | lower-bound | reported | - | elsewhere | informally-verified | previously-published | producer’s code | `V-wand125-mixed-rotated-verify-cpp`, `V-wand125-verify-mixed-full-proof-py` |
+| `E-n092-wand125-mixed-975-source-replay` | 2 | lower-bound | verified | strict inequalities only | here | - | previously-published | producer’s code | `V-wand125-mixed-rotated-verify-cpp`, `V-audit-wand125-point-and-mixed` |
 | `E-n096-wand125-mixed-996-report` | 1 | lower-bound | reported | - | elsewhere | informally-verified | previously-published | producer’s code | `V-wand125-mixed-rotated-verify-cpp`, `V-wand125-verify-mixed-full-proof-py` |
+| `E-n096-wand125-mixed-996-source-replay` | 1 | lower-bound | verified | strict inequalities only | here | - | previously-published | producer’s code | `V-wand125-mixed-rotated-verify-cpp`, `V-audit-wand125-point-and-mixed` |
 | `E-n082-wand125-linear-932-report` | 1 | lower-bound | reported | - | elsewhere | informally-verified | previously-published | producer’s code | `V-wand125-unified-linear-verify-cpp` |
 | `E-n032-evand-zmx2-full-sym-report` | 0 | lower-bound | reported | - | elsewhere | informally-verified | previously-published | producer’s code | `V-evand-zmx2` |
 | `E-n011-kleddamag-3875-source-replay` | 0 | lower-bound | verified | equalities and inequalities, no tolerance | here | informally-verified | previously-published | producer’s code | `V-kleddamag-n11-verify` |
@@ -107,7 +113,7 @@ results, it is a statement about what this repository has itself examined.
 | `E-unitsquare-release1-report` | 1 | upper-bound | reported | - | - | - | previously-published | producer’s code | *none held* |
 | `E-basic-grid-upper` | 254 | upper-bound | verified | equalities and inequalities, no tolerance | here | - | common-knowledge | independent | `V-check-basic-bounds` |
 | `E-basic-area-lower` | 18 | lower-bound | verified | equalities and inequalities, no tolerance | here | - | common-knowledge | independent | `V-check-basic-bounds` |
-| `E-nagamochi-lower` | 245 | lower-bound | verified | whatever its theorem states | elsewhere | informally-verified | previously-published | no code | - |
+| `E-nagamochi-lower` | 242 | lower-bound | verified | whatever its theorem states | elsewhere | informally-verified | previously-published | no code | - |
 | `E-migrated-lower-report` | 6 | lower-bound | reported | - | - | - | *not assessed* | unknown | - |
 | `E-side2-center-lower` | 2 | lower-bound | verified | equalities and inequalities, no tolerance | here | - | common-knowledge | producer’s code | `V-optimal-moduli` |
 | `E-n005-gobel-upper` | 1 | upper-bound | verified | equalities and inequalities, no tolerance | here | - | previously-published | independent | `V-sqpack-verify` |
@@ -238,10 +244,10 @@ results, it is a statement about what this repository has itself examined.
 
 ## What the register rests on
 
-- **assurance**: numerically-checked 4, reported 70, verified 139
-- **method**: exact-algebraic 88, interval-certified 40, numerical-multiprecision 4, proof-assistant-checked 2, proof-audited 3, published-proof 6, reported 70
-- **novelty**: apparently-novel 40, common-knowledge 4, not assessed 13, previously-published 156
-- **relationship to the producer's code**: generator 5, independent-implementation 45, not-applicable 17, same-implementation 133, shared-components 7, unknown-historical 6
+- **assurance**: numerically-checked 4, reported 70, verified 145
+- **method**: exact-algebraic 88, interval-certified 46, numerical-multiprecision 4, proof-assistant-checked 2, proof-audited 3, published-proof 6, reported 70
+- **novelty**: apparently-novel 40, common-knowledge 4, not assessed 13, previously-published 162
+- **relationship to the producer's code**: generator 5, independent-implementation 45, not-applicable 17, same-implementation 139, shared-components 7, unknown-historical 6
 
 The `cases` column is how many frontier records cite each piece of evidence, and it is the reason to read this table rather than count records. Ranked below are the *formal* records only: a `reported` record cited across the frontier may be a shared catalogue and is labelled as such, which is the register working rather than risk. The risk is a verified claim resting on an argument nobody has examined.
 
@@ -297,12 +303,12 @@ The `n` column is what each covers and `cases` is how many frontier records cite
 | evidence | cases | whose work | read here |
 | --- | ---: | --- | --- |
 | `E-basic-grid-upper` | 254 | here | - |
-| `E-nagamochi-lower` | 245 | elsewhere | informally-verified |
+| `E-nagamochi-lower` | 242 | elsewhere | informally-verified |
 | `E-franciscouzo-2026-09-27-exact-replay` | 49 | here | - |
 | `E-franciscouzo-2026-09-27-interval-replay` | 49 | here | - |
-| `E-wand125-rectangle-2026-10-01-source-replay` | 31 | here | - |
+| `E-wand125-rectangle-2026-10-01-source-replay` | 29 | here | - |
 
-The most-cited argument this repository did not produce is `E-nagamochi-lower`, carrying 245 frontier cases. It is an external proof, and it has been read here: its record carries the review, what was re-derived, and the four things that were not. The arithmetic is what picked it out for reading -- being cited this heavily is the reason to open an argument, not a reason to trust it.
+The most-cited argument this repository did not produce is `E-nagamochi-lower`, carrying 242 frontier cases. It is an external proof, and it has been read here: its record carries the review, what was re-derived, and the four things that were not. The arithmetic is what picked it out for reading -- being cited this heavily is the reason to open an argument, not a reason to trust it.
 
 `[Stromquist 2003]` is why that matters rather than being a formality: its `n = 11` argument needed a source-distinct repair, which `E-n011-repaired-lower` supplies.
 

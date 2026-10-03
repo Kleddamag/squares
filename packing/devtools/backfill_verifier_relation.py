@@ -170,17 +170,6 @@ FIXES: dict[str, Fix] = {
             "already uses it. The pattern of E-n045-wand125-point-cover-source-replay"
         ),
     ),
-    # Owner decision 2026-10-03 for T-079; the records lane makes the same correction on
-    # #298, and once it arrives this fix is redundant and is removed.
-    "E-n012-levy-15680000-3949423-audit": Fix(
-        INDEPENDENT,
-        NOT_APPLICABLE,
-        (
-            "T-079's composition calls the exact audit well-formedness only, and the audit's "
-            "docstring leaves coverage to the verifier: it checks the premises and decides "
-            "nothing, so it has no relation to the producer's decision"
-        ),
-    ),
     "E-n045-wand125-point-cover-report": Fix(
         INDEPENDENT,
         SAME,

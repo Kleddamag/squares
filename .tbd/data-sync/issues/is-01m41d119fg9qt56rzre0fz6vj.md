@@ -1,26 +1,18 @@
 ---
 type: is
-id: is-01m41cwf746pjat13p3b3thb3a
-title: "Acknowledge the result issues that have no reply yet: #316, #309, #308, #296, #295, #281, #280"
+id: is-01m41d119fg9qt56rzre0fz6vj
+title: "result-requests.yaml: record the seven acknowledgements posted 2026-10-03 (#316, #309, #308, #296, #295, #281, #280) and add #316's request entry"
 kind: task
-status: closed
-priority: 1
-version: 3
+status: open
+priority: 2
+version: 1
 labels:
-  - issues
+  - records
 dependencies: []
 parent_id: is-01m41csdc2gp36ry5p6n7c2x2y
-created_at: 2026-10-03T17:27:12.867Z
-updated_at: 2026-10-03T17:29:41.680Z
-closed_at: 2026-10-03T17:29:41.680Z
-close_reason: null
-resolution: null
-duplicate_of: null
+created_at: 2026-10-03T17:29:42.447Z
+updated_at: 2026-10-03T17:29:42.447Z
 ---
-Status now, no provisional T-ids, link PRs #298/#311; final reply follows from main.
-
-## Notes
-
 Posted 2026-10-03 ~17:45 UTC on the owner's instruction ("follow up on all issues"):
 - #316 https://github.com/jlevy/squares/issues/316#issuecomment-5971664755 (acknowledgement, import plan)
 - #309 https://github.com/jlevy/squares/issues/309#issuecomment-5971664953 (confirmed V3/C3 in #298; the Levy re-weighting credited to the rescaling)

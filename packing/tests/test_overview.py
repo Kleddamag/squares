@@ -10,6 +10,7 @@ import textwrap
 from collections import Counter
 from collections.abc import Callable
 from datetime import date, timedelta
+from decimal import Decimal
 from html.parser import HTMLParser
 from pathlib import Path
 from typing import cast
@@ -20,6 +21,7 @@ from devtools import (
     check_results,
     overview_data,
     overview_sections,
+    render_case_pages,
     render_overview,
     render_recent_results,
     result_status,
@@ -2819,34 +2821,55 @@ def _template_paragraphs(section: str) -> list[str]:
     return [" ".join(part.split()) for part in prose.split("\n\n") if part.strip()]
 
 
-#: README's `project-intro` block, the owner's words of 2026-10-01 copy-edited: the
+#: README's `project-intro` block, the owner's words of 2026-10-03 (`think-8lyq`): the
 #: question after a colon, the lower bound glossed as a size below which no packing can
-#: exist, and one added sentence that names $s(n)$, which the next block uses.
+#: exist, and an example of each bound at $n = 29$. The owner's lower example, 5.79, is
+#: wand125's reported bound, not yet replayed here; the example is the verified 5.71,
+#: which the case record and the atlas show, and both are written as the record writes
+#: them, with $\le$ and $\ge$ (`test_the_intros_examples_are_the_records`).
 PROBLEM_STATEMENT = (
     (
-        "The square packing problem is a simple and long-standing problem in geometry. It "
-        "asks: what is the size of the smallest square that can hold $n$ unit squares, "
-        "where the squares are free to rotate but cannot overlap? The side length of that "
+        "The square packing problem is a simple and long-standing problem in geometry: "
+        "what is the size of the smallest square that can hold $n$ unit squares, where "
+        "the squares are free to rotate but cannot overlap? The side length of that "
         "smallest square is written $s(n)$."
     ),
     (
-        "The question is elementary to understand but is an open problem for most $n$. In "
-        "many cases, the answer is known only to lie between an upper bound (the size of "
-        "the enclosing square for the tightest packing ever discovered) and a lower bound "
-        "(a size below which it is proved that no packing can exist)."
+        "The question of the value of $s(n)$ is simple, but the answer is an open problem "
+        "for most $n$. In many cases, $s(n)$ is known only to lie between an upper bound "
+        "(the size of the enclosing square for the tightest packing ever discovered, such "
+        "as $s(29) \\le 5.934$) and a lower bound (a size below which it is proved that no "
+        "packing can exist, such as $s(29) \\ge 5.71$)."
     ),
 )
+
+
+def test_the_intros_examples_are_the_records() -> None:
+    """The introduction's two examples are case 29's verified bounds, rounded outward:
+    its upper example is at or above the verified upper bound, so it still holds, and
+    its lower example is the verified lower bound itself. A new bound at $n = 29$ that
+    leaves an example stale fails here rather than on the page."""
+    from devtools import overview_data, site_documents  # noqa: PLC0415
+
+    block = site_documents.intro_block(site_documents.README.read_text(encoding="utf-8"))
+    upper = Decimal(re.findall(r"\$s\(29\) \\le ([\d.]+)\$", block)[0])
+    lower = Decimal(re.findall(r"\$s\(29\) \\ge ([\d.]+)\$", block)[0])
+    case = overview_data.load().cases[29]
+    verified_upper = Decimal(case["verified_upper_bound"]["value"])
+    verified_lower = Decimal(case["verified_lower_bound"]["value"])
+    assert verified_upper <= upper < verified_upper + Decimal("0.001")
+    assert lower == verified_lower
 
 
 def test_the_overviews_first_section_is_readmes_one_block(page: str) -> None:
     """The overview says what README's opening says, word for word and formula for
     formula, in one place: the first section opens with README's `project-intro` block,
-    the problem and its bounds, which writes $s(n)$ once. README's next two paragraphs,
-    what the project covers and its newest major result, were a second shared block
-    that opened Recent Results until 2026-10-02; they are README's own since, unmarked,
-    and no other block is shared. The template holds a placeholder where the block
-    goes, names no registered result of its own in the first section, and opens Recent
-    Results with a paragraph of its own."""
+    the problem and its bounds, which names $s(n)$ and writes it thrice. README's next
+    two paragraphs, what the project covers and its newest major result, were a second
+    shared block that opened Recent Results until 2026-10-02; they are README's own
+    since, unmarked, and no other block is shared. The template holds a placeholder
+    where the block goes, names no registered result of its own in the first section,
+    and opens Recent Results with a paragraph of its own."""
     from devtools import site_documents  # noqa: PLC0415
 
     readme = site_documents.README.read_text(encoding="utf-8")
@@ -2861,7 +2884,7 @@ def test_the_overviews_first_section_is_readmes_one_block(page: str) -> None:
     )
     assert problem == PROBLEM_STATEMENT[0]
     assert bounds == PROBLEM_STATEMENT[1]
-    assert blocks["project-intro"].count("$s(n)$") == 1
+    assert blocks["project-intro"].count("$s(n)$") == 3
     assert not re.search(r"^#", blocks["project-intro"], re.MULTILINE)
     assert "<!--" not in blocks["project-intro"]
     # README keeps its account of recent progress, unmarked, right after the block.
@@ -3010,61 +3033,73 @@ def test_recent_results_names_the_headline_results_at_their_rows(
     assert exact == {21, 32, 45}
 
 
-#: The site's own statement, the owner's words of 2026-10-01 copy-edited. One phrase is
-#: narrowed to what the register holds: the owner's "all proofs and certificates" reads
-#: "the proofs and certificates behind them", since some registered results are reported
-#: and not yet replayed here.
+#: The site's own statement, the owner's words of 2026-10-03 (`think-a7oa`), with the
+#: name the owner left blank filled from the register (T-060 is Queuingtheorydotcom's),
+#: the project's start put as the record has it (its explorations obtained the lower
+#: bounds, from 2026-08-31, after it began on 2026-08-22), and one phrase narrowed to
+#: what the register holds: the project tabulates every known new result and verifies
+#: the proofs behind them, without claiming every one is checked, since some registered
+#: results are recorded and not yet replayed here.
 SITE_STATEMENT = (
     (
-        "This Squares Project site collects all known historic research and "
-        "current new results on the square packing problem. Work on this problem has "
-        "exploded in the summer of 2026 thanks to AI-powered research efforts."
-    ),
-    (
-        "We and several others have proved new results as part of this project for low "
-        "values of $n$, including $n = 11$, $n = 12$, $n = 17$ and many others. As part "
-        "of a collaborative open effort, several people have built on results from this "
-        "project or developed other new proofs, and this site independently checks and "
-        "documents the proofs and certificates behind them."
+        "Work on the square packing problem has exploded in the summer of 2026 thanks to "
+        "AI-powered research efforts. This Squares Project was begun by Joshua Levy in "
+        "August 2026 with some initial explorations that obtained new lower bounds for "
+        "$n = 11, 17, 18, 19, 20$ and other low values. Now several others have obtained "
+        "results building on this work, including a landmark new proof by "
+        "Queuingtheorydotcom of the optimality of the famous case of 11 squares. This "
+        "project now independently tabulates all known new results and does AI-assisted "
+        "verification of the proofs and certificates behind them, to encourage open "
+        "collaboration on open questions and formalizations of current proofs."
     ),
     (
         "If you have new results or know of newer results, please file an issue to "
-        "report them, and we will gladly incorporate them and cite your work."
+        "report them, and we will gladly incorporate them and cite your work. We also "
+        "have a group chat. Contact ojoshe if you wish to join."
     ),
 )
 
 
 def test_the_sites_own_statement_follows_readmes_introduction(page: str) -> None:
-    """After README's introduction the section has three paragraphs of its own: what the
-    site collects, who proved the new results and what the site does with them, and where
-    to report a result it lacks. The second links its checking to the section that shows
-    how far each result is checked, and does not claim every proof is; the third opens a
-    new issue on the repository."""
+    """After README's introduction the section has two paragraphs of its own (the
+    owner, 2026-10-03): how the project began and what it does now, and where to
+    report a result it lacks and how to join its chat. The first links the project's
+    founder, the explainer that holds its first lower bounds, the case record of
+    $n = 11$, and the ladders that show how far each result is checked, and does not
+    claim every proof is; the second opens a new issue on the repository and links
+    the founder's account on X."""
     from devtools import site_documents  # noqa: PLC0415
 
     problem = page.split('id="the-problem"', 1)[1].split('id="recent-results"', 1)[0]
     own = problem.split(site_documents.OVERVIEW_INTRO_CLOSE, 1)[1].split("<div", 1)[0]
     paragraphs = re.findall(r"<p>(.*?)</p>", own, re.DOTALL)
     assert [_rendered_text(paragraph) for paragraph in paragraphs] == list(SITE_STATEMENT)
-    assert (
-        '<a href="all-results.html#verification-ladders">independently checks and documents</a>'
-        in paragraphs[1]
-    )
+    # An external link opens in a new tab, so its anchor carries more than its address.
+    founder = '<a href="https://x.com/ojoshe" target="_blank" rel="noopener noreferrer">'
+    for link in (
+        f"{founder}Joshua Levy</a>",
+        '<a href="papers/n11-lower-bounds-explainer.html">new lower bounds</a>',
+        f'<a href="{render_case_pages.case_url(11)}">case of 11 squares</a>',
+        '<a href="all-results.html#verification-ladders">AI-assisted verification</a>',
+    ):
+        assert link in paragraphs[0], link
     assert "all proofs" not in " ".join(SITE_STATEMENT)
     assert 'id="verification-ladders"' not in page
     assert render_overview.NEW_ISSUE_URL == "https://github.com/jlevy/squares/issues/new"
     assert re.search(
         rf'<a href="{re.escape(render_overview.NEW_ISSUE_URL)}"[^>]*>file an issue</a>',
-        paragraphs[2],
+        paragraphs[1],
     )
-    assert "formal" not in " ".join(SITE_STATEMENT).lower()
+    assert f"{founder}ojoshe</a>" in paragraphs[1]
+    # Formal proofs are invited, not claimed.
+    assert "formally" not in " ".join(SITE_STATEMENT).lower()
 
 
 def test_the_sites_statement_stands_under_its_own_section_heading(page: str) -> None:
     """README's two paragraphs stay under the page's first heading, and the site's own
     statement has a section heading of its own, The Squares Project: an ordinary
     `h2` with its own id and its entry in the page's contents, directly after README's
-    block and directly above the paragraph that says what the site collects. It is no
+    block and directly above the paragraph on how the project began. It is no
     page title, so it takes the two section spaces every `h2` takes
     (`test_section_headings_share_one_space_above_and_one_below`)."""
     from devtools import site_documents  # noqa: PLC0415
@@ -3075,15 +3110,15 @@ def test_the_sites_statement_stands_under_its_own_section_heading(page: str) -> 
     after_intro = problem.split(site_documents.OVERVIEW_INTRO_CLOSE, 1)[1]
     assert after_intro.lstrip().startswith(heading)
     following = after_intro.split(heading, 1)[1].lstrip()
-    assert following.startswith("<p>This Squares Project site collects")
+    assert following.startswith("<p>Work on the square packing problem")
     assert heading not in problem.split(site_documents.OVERVIEW_INTRO_CLOSE, 1)[0]
     contents = '{"href": "#the-squares-project", "level": 1, "title": "The Squares Project"}'
     assert contents in page
     assert page.index(contents) < page.index('{"href": "#recent-results"')
     template = render_overview.OVERVIEW_ARTICLE.read_text(encoding="utf-8")
     assert (
-        "{{README_INTRO}}\n\n## The Squares Project\n\nThis Squares Project "
-        "site collects" in template
+        "{{README_INTRO}}\n\n## The Squares Project\n\nWork on the square packing "
+        "problem" in template
     )
 
 

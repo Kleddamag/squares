@@ -17,21 +17,33 @@
 
 ## The Squares Project
 
-This Squares Project site collects all known historic research and current new results
-on the square packing problem.
-Work on this problem has exploded in the summer of 2026 thanks to AI-powered research
-efforts.
-
-We and several others have proved new results as part of this project for low values of
-$n$, including $n = 11$, $n = 12$, $n = 17$ and many others.
-As part of a collaborative open effort, several people have built on results from this
-project or developed other new proofs, and this site
-[independently checks and documents](all-results.html#verification-ladders) the proofs
-and certificates behind them.
+Work on the square packing problem has exploded in the summer of 2026 thanks to
+AI-powered research efforts.
+This Squares Project was begun by [Joshua Levy](https://x.com/ojoshe) in August 2026
+with some initial explorations that obtained
+[new lower bounds](papers/n11-lower-bounds-explainer.html) for $n = 11, 17, 18, 19, 20$
+and other low values.
+Now several others have obtained results building on this work, including a landmark new
+proof by Queuingtheorydotcom of the optimality of the famous
+[case of 11 squares](cases.html#n-11). This project now independently tabulates all
+known new results and does
+[AI-assisted verification](all-results.html#verification-ladders) of the proofs and
+certificates behind them, to encourage open collaboration on open questions and
+formalizations of current proofs.
 
 If you have new results or know of newer results, please
 [file an issue]({{NEW_ISSUE_URL}}) to report them, and we will gladly incorporate them
-and cite your work.
+and cite your work. We also have a group chat.
+Contact [ojoshe](https://x.com/ojoshe) if you wish to join.
+
+<!-- The two paragraphs above are the owner's words of 2026-10-03 (think-a7oa), each
+     fact checked against the record: the project's first packing work is of
+     2026-08-22; its own lower bounds are at
+     n = 11, 12 and 17 to 21 (T-001 to T-034); the explainer the link names is n = 11's,
+     and it lists the bounds at 12, 17 and 19 that its method gave; and the optimality
+     of n = 11 is T-060, Queuingtheorydotcom's. "AI-assisted verification" links the
+     ladders, which say how far each result is checked; the sentence does not say every
+     result is checked, since some are recorded and not yet replayed here. -->
 
 {{PAGE_CARDS}}
 

@@ -964,6 +964,29 @@ to rebind newly generated parent receipts, whose timing fields change their byte
 That automation issue is tracked separately from the completed mathematical
 obligations.[^reproduce]
 
+Each accepted execution is retained as a **receipt**: its verdict, the SHA-256 of every
+input object and of the checker’s own bytes, the command and commit that produced it,
+and a replay script.
+The composer reads a fixed set of these by hash.
+A reader can therefore verify at three depths: that every retained object still decodes
+to its hash; that the composition’s joins agree over the retained executions, which
+takes seconds; or that a component’s geometry recomputes afresh from the retained
+inputs, for which the validation guide gives one portable command per checker.
+The packet also keeps the ancestry each accepted receipt cites as its input, the
+controls that measure what a partial or refused run reports, and the superseded attempts
+beside their replacements, so the record says why each accepted run exists; the
+[receipts register](../../resources/web/n11-optimality-2026-09-29/receipts/README.md)
+states the purpose of every one and who reads it.
+
+The two adversarial reviews of October 3 added four checked components that stand beside
+the accepted ones rather than in their place: a corrected closed-interval kernel for new
+callers; the incidence propagation that shortens the symmetry lemma; the two-radius
+local box; and the selection of 44 of the 46 accepted field certificates whose union is
+already the whole field exclusion, a reading aid and a replay shortcut rather than a
+deletion. Each has its own receipt or manifest and its own tests.
+None is a premise of the composed proof, and none changes a frozen checker or an
+accepted receipt.
+
 The [T-060 validation guide][reproduction] separates fast checks of retained evidence
 from fresh geometric replay, and links each checker, source binding and recorded
 execution. It is the place to reproduce a component; merely rerunning the final composer

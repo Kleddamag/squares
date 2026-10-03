@@ -10,6 +10,7 @@ import textwrap
 from collections import Counter
 from collections.abc import Callable
 from datetime import date, timedelta
+from decimal import Decimal
 from html.parser import HTMLParser
 from pathlib import Path
 from typing import cast
@@ -20,8 +21,10 @@ from devtools import (
     check_results,
     overview_data,
     overview_sections,
+    render_case_pages,
     render_overview,
     render_recent_results,
+    result_overview,
     result_status,
 )
 from devtools.check_results import scope_values
@@ -59,8 +62,8 @@ def register() -> list[dict]:
 @pytest.fixture(scope="module")
 def rendered() -> Callable[[str], str]:
     """Any site page by name, from the one render of each the test process shares
-    (`tests.site_renders`). Every page is rendered here, during setup, `cases.html` and
-    its 9 MB among them, so no check carries a render in its own call time."""
+    (`tests.site_renders`). Every page is rendered here, during setup, the case record
+    page among them, so no check carries a render in its own call time."""
     site_renders.pages()
     return site_renders.html
 
@@ -117,9 +120,7 @@ def test_the_results_table_has_its_own_page_and_the_overview_points_to_it(
     ) in recent
 
 
-def test_every_link_to_a_result_goes_to_its_row(
-    page: str, results: str, rendered: Callable[[str], str]
-) -> None:
+def test_every_link_to_a_result_goes_to_its_row(page: str, results: str) -> None:
     """The overview's recent table and replay table, and the case records, link a
     result at its row on the results page, never at a fragment of their own page."""
     rows = {row_id for row_id, _, _ in ROW.findall(results)}
@@ -130,9 +131,10 @@ def test_every_link_to_a_result_goes_to_its_row(
     assert set(linked) - rows == {"verification-ladders"}
     assert 'id="verification-ladders"' in results
     assert not re.search(r'href="#t-\d+"', page)
-    cases = rendered("cases.html")
-    assert set(re.findall(r'href="all-results\.html#([^"]+)"', cases)) <= rows
-    assert 'href="index.html#t-' not in cases
+    for record in site_renders.case_records().values():
+        assert set(re.findall(r'href="\.\./all-results\.html#([^"]+)"', record)) <= rows
+        assert 'href="index.html#t-' not in record
+        assert 'href="../index.html#t-' not in record
 
 
 def test_every_moved_fragment_is_one_the_forwarder_sends_on(page: str, results: str) -> None:
@@ -199,11 +201,11 @@ def _atlas_cards(page: str) -> list[tuple[str, str]]:
 def test_the_posters_and_the_film_have_a_section_of_their_own_under_the_atlas(
     page: str,
 ) -> None:
-    """The Atlas of Square Packings keeps the grid, its expander and the grid's own note,
-    and holds no card. The two posters and the film follow under an ordinary section
-    heading, PDFs and Videos, after The Frontier Survey, with its own id and its entry in
-    the page's contents, and their note, the star, the shorter film, the release and the
-    SVGs, goes with them."""
+    """The Atlas of Square Packings keeps the grid and its expander, and holds no card.
+    The two posters and the film follow under an ordinary section heading, PDFs and
+    Videos, directly after it since The Frontier Survey went on 2026-10-02, with its own
+    id and its entry in the page's contents, and their note, the star, the shorter film,
+    the release and the SVGs, goes with them."""
     heading = '<h2 id="pdfs-and-videos">PDFs and Videos</h2>'
     assert page.count(heading) == 1
     atlas = page.split('id="the-atlas-of-square-packings"', 1)[1].split("<h2", 1)[0]
@@ -214,11 +216,7 @@ def test_the_posters_and_the_film_have_a_section_of_their_own_under_the_atlas(
     # posters' note is the PDFs and Videos section's.
     assert atlas.count('class="site-atlas-note"') == 0
     assert 'class="site-wide site-atlas-note"' not in atlas
-    assert (
-        page.index('id="the-atlas-of-square-packings"')
-        < page.index('id="the-frontier-survey"')
-        < page.index(heading)
-    )
+    assert page.index('id="the-atlas-of-square-packings"') < page.index(heading)
     section = page.split(heading, 1)[1].split("<h2", 1)[0]
     assert section.lstrip().startswith('<div class="site-cards-frame')
     assert section.count('<a class="site-card site-card-link"') == len(
@@ -239,15 +237,16 @@ def test_the_posters_and_the_film_have_a_section_of_their_own_under_the_atlas(
     assert page.index('{"href": "#the-atlas-of-square-packings"') < page.index(contents)
 
 
-def test_the_atlas_section_is_named_for_its_packings_and_the_survey_follows_it(
+def test_the_atlas_section_is_named_for_its_packings_and_the_sections_run_in_order(
     page: str,
 ) -> None:
     """The homepage's atlas section is The Atlas of Square Packings, and it was The Atlas
-    until 2026-10-01: an empty anchor in the heading keeps `#the-atlas` landing on it, the
-    device The Frontier Survey uses. The sections run in the owner's order: the project,
-    the recent results, the atlas, the survey directly after it, then the posters and
-    film, the other projects and the documents; Verification Ladders stood between the
-    recent results and the atlas until 2026-10-02, and is the results page's since."""
+    until 2026-10-01: an empty anchor in the heading keeps `#the-atlas` landing on it.
+    The sections run in the owner's order: the problem, the project with its page cards,
+    the recent results, the atlas, then the posters and film, the other projects and the
+    documents. Verification Ladders stood between the recent results and the atlas until
+    2026-10-02, and is the results page's since; The Frontier Survey stood after the
+    atlas until the same day, and its card is a page card since."""
     heading = (
         '<h2 id="the-atlas-of-square-packings">The Atlas of Square Packings'
         '<a id="the-atlas"></a></h2>'
@@ -264,7 +263,6 @@ def test_the_atlas_section_is_named_for_its_packings_and_the_survey_follows_it(
         "the-squares-project",
         "recent-results",
         "the-atlas-of-square-packings",
-        "the-frontier-survey",
         "pdfs-and-videos",
         "other-square-packing-projects",
         "squares-project-documentation",
@@ -333,24 +331,26 @@ def test_each_page_card_is_a_plain_link_to_its_page(page: str) -> None:
     """The overview's five page cards lead to full pages the site serves, so each card
     is the link itself and goes there in the same tab: an `<a href>` with the page icon
     (`data-go="page"`), no popover, no framed preview and no new tab. Each keeps its
-    label, headline, note and size. The optimality paper is first, as on the Papers
-    page: its card carries the Papers card's label and title, a shorter note within what
-    T-060's rungs allow, and an address a directory below the site's root."""
+    label, headline, note and size. The optimality paper leads the papers, as on the
+    Papers page: its card carries the Papers card's label and title, a shorter note
+    within what T-060's rungs allow, and an address a directory below the site's root."""
     cards = _page_cards(page)
     pages = overview_sections.PAGES
     assert [href for href, _, _ in cards] == [href for href, *_ in pages]
-    # The Frontier page's card is The Frontier Survey's own since 2026-10-02
-    # (`test_the_survey_is_the_frontier_survey_and_its_cards_lead_to_its_page`).
+    # The Frontier page's card is first, alone on its line, up from The Frontier Survey's
+    # section since 2026-10-02 (think-ec5k, think-ns3d;
+    # `test_the_frontier_survey_is_the_frontier_pages_and_its_card_is_a_page_card`).
     assert [href for href, *_ in pages] == [
+        "frontier.html",
         "papers/n11-optimality-review.html",
         "papers/n11-lower-bounds-explainer.html",
         "tutorial.html",
         "workbench/",
     ]
     paper = overview_sections.PAPERS[0]
-    assert pages[0][:3] == (overview_sections.OPTIMALITY_PAPER, paper.label, paper.title)
+    assert pages[1][:3] == (overview_sections.OPTIMALITY_PAPER, paper.label, paper.title)
     assert overview_sections.OPTIMALITY is paper
-    note = pages[0][3]
+    note = pages[1][3]
     assert note.startswith("Explains the accepted proof that Trump\u2019s packing")
     assert "(T-060)" in note
     assert "formal" not in note.lower()
@@ -410,7 +410,8 @@ def test_a_site_page_is_a_page_the_site_serves() -> None:
         "workbench/",
         overview_sections.OPTIMALITY_PAPER,
         "frontier.html?recent=true",
-        "cases.html#n-11",
+        "cases/",
+        "cases/#n-11",
         overview_sections.result_url("T-060"),
         *(href for href, *_ in overview_sections.PAGES),
         *(paper.href for paper in overview_sections.PAPERS),
@@ -435,7 +436,7 @@ def test_every_other_direct_card_opens_in_a_new_tab(page: str) -> None:
     tab, on the site or off it, and never hands the new tab a way back to this one: a
     poster's PDF, the film, another project."""
     direct = re.findall(r'<a class="site-card[^"]*"[^>]*>', page)
-    same_tab = len(overview_sections.PAGES) + len(overview_sections.SURVEY_CARDS)
+    same_tab = len(overview_sections.PAGES)
     assert len(direct) == same_tab + len(overview_sections.OTHER_PROJECTS) + len(
         overview_sections.ATLAS_CARDS
     )
@@ -462,13 +463,14 @@ def test_a_card_hero_is_served_beside_the_page_never_fetched() -> None:
 def test_the_atlas_grid_draws_every_case_and_places_it_lazily(page: str) -> None:
     """One cell per tracked case, each linking to its case record, in two templates the
     script places: the first hundred when the grid comes near, the rest on expanding."""
-    grid = page.split("data-atlas-grid>", 1)[1].split("data-atlas-facts>", 1)[0]
+    grid = page.split("data-atlas-grid>", 1)[1].split('<p class="site-action-row', 1)[0]
 
     def cells(which: str) -> list[int]:
         template = grid.split(f"<template data-atlas-{which}>", 1)[1]
         template = template.split("</template>", maxsplit=1)[0]
         found = re.findall(
-            r'<a class="site-atlas-cell" href="cases\.html#n-(\d+)" data-atlas-n="(\d+)"',
+            r'<a class="site-atlas-cell" href="cases/(\d+)\.html" data-case="\d+" '
+            r'data-atlas-n="(\d+)"',
             template,
         )
         assert all(n == cell for n, cell in found)
@@ -511,8 +513,6 @@ def test_the_atlas_grid_expands_from_100_to_324_with_one_button() -> None:
     assert 'toggleChevron.dataset.arrow = open ? "double-up" : "double-down"' in script
     assert "toggle.textContent" not in script
     assert "rest.append(restTemplate.content.cloneNode(true))" in script
-    step = script[script.index("A case the grid does not show yet") :]
-    assert "expandGrid(true)" in step[: step.index("show(next)")]
 
 
 def test_the_atlas_expander_reuses_the_action_button_and_tokens() -> None:
@@ -530,8 +530,10 @@ def test_the_atlas_expander_reuses_the_action_button_and_tokens() -> None:
     row = css[css.index(".site-atlas-grid .site-atlas-toggle-row {") :]
     row = row[: row.index("}")]
     assert "--site-action-space: var(--site-atlas-toggle-space);" in row
-    action_row = _rule(css, ".site-action-row")
-    assert "margin-block: var(--site-action-space) 0;" in action_row
+    action_row = _rule(css, ".kpress .site-action-row")
+    # A table's own space below it since 2026-10-02 (think-0o9u), so text that follows
+    # a button stands as clear of it as of a table.
+    assert "margin-block: var(--site-action-space) var(--site-table-space);" in action_row
     assert "text-align: center;" in action_row
     grid = css[css.index(".site-page .site-atlas-grid {") :]
     assert "--site-atlas-toggle-space:" in grid[: grid.index("}")]
@@ -596,7 +598,7 @@ def test_the_atlas_marks_each_perfect_square_and_nothing_else_on_a_tile(page: st
     """A perfect square ends its row of the triangle, and its tile says so; that mark is
     all the triangle adds to a tile's markup. Where a tile stands is the script's to
     write, since it follows from the window's width."""
-    grid = page.split("data-atlas-grid>", 1)[1].split("data-atlas-facts>", 1)[0]
+    grid = page.split("data-atlas-grid>", 1)[1].split('<p class="site-action-row', 1)[0]
     squares = re.findall(r'data-atlas-n="(\d+)" data-atlas-square ', grid)
     assert [int(n) for n in squares] == [k * k for k in range(1, 19)]
     assert grid.count("data-atlas-square") == 18
@@ -710,19 +712,13 @@ def test_the_triangle_is_sized_and_timed_by_tokens_the_script_reads() -> None:
         assert sized not in script
 
 
-def _atlas_facts(page: str) -> dict[int, dict]:
-    import json  # noqa: PLC0415
-
-    body = page.split('<script type="application/json" data-atlas-facts>', 1)[1]
-    return {fact["n"]: fact for fact in json.loads(body.split("</script>", 1)[0])}
-
-
-def test_the_atlas_popover_carries_what_the_film_shows_for_each_case(page: str) -> None:
-    """The one atlas popover is filled from the grid's facts: for n = 11, settled by
-    T-060, the exact value, its star and badges and both bounds' sources with this
-    project's notes; for n = 17, still open, the film's chained bound and what is open;
-    all read from the atlas figure and `bound-citations.json`."""
-    facts = _atlas_facts(page)
+def test_a_cases_visual_summary_carries_what_the_film_shows() -> None:
+    """A case's visual summary, which opens its record (`render_case_pages.
+    visual_summary`), is the film's panel for the case: for n = 11, settled by T-060,
+    the exact value, its star and badges and both bounds' sources with this project's
+    notes; for n = 17, still open, the film's chained bound and what is open; all read
+    from the atlas figure and `bound-citations.json` (`atlas_film_facts`)."""
+    facts = result_overview.film_facts()
     assert sorted(facts) == list(range(1, 325))
     eleven = facts[11]
     assert eleven["exact"] is True
@@ -745,23 +741,23 @@ def test_the_atlas_popover_carries_what_the_film_shows_for_each_case(page: str) 
     assert seventeen["open"] == ["optimality"]
     assert seventeen["cite"]["lower"]["note"] == "(confirmed T-043)"
     assert facts[1] == {**facts[1], "exact": True, "upper": "1", "lower": None, "open": []}
-    assert page.count('id="pop-atlas" popover') == 1
-    assert page.count(" data-atlas-popover ") == 1
 
 
-def test_the_atlas_popover_sets_its_math_and_leads_to_the_record(page: str) -> None:
-    """Its math is kpress's own math node (the formulas under the gap bar, and the
-    template every value is typeset from), never raw TeX; its button is Expand to the
-    case record, which the script points at `cases.html#n-N` for the case shown."""
-    popover = page.split('id="pop-atlas" popover', 1)[1].split("</template></div>", 1)[0]
-    assert popover.count('class="kpress-math kpress-math-inline"') == 3
-    assert r"\sqrt{n} + 1" in popover
-    assert "$" not in popover
+def test_the_atlas_grid_opens_each_case_in_the_case_popover(page: str) -> None:
+    """A cell opens the page's one case popover, which fetches the case's record file
+    and shows its record as its own page does (think-t21m). The atlas popover the
+    script filled from a JSON of the film's facts, until 2026-10-03, is gone with its
+    JSON; its button is the case popover's, to the record's own address."""
+    assert page.count('id="pop-case" popover') == 1
+    assert 'id="pop-atlas"' not in page
+    assert "data-atlas-facts" not in page
+    popover = render_case_pages.case_popover()
+    assert popover in page
     (action,) = re.findall(r'<a class="site-popover-action"[^>]*>([^<]*)</a>', popover)
-    assert action == "See All Cases"
-    assert "data-atlas-expand" in popover
+    assert action == "Open the Case Record"
     script = render_overview.ATLAS_GRID_SCRIPT.read_text(encoding="utf-8")
-    assert 'expand.setAttribute("href", cell.getAttribute("href")' in script
+    assert "data-atlas-popover" not in script
+    assert "data-atlas-facts" not in script
     assert "site-atlas-tip" not in page
 
 
@@ -776,14 +772,79 @@ def test_the_document_is_kpress_viewport_with_its_contents_behaviours(page: str)
         assert f"/* kpress: js/{module} */" in page, module
 
 
+def test_the_big_tables_have_no_outer_border(
+    page: str, results: str, rendered: Callable[[str], str]
+) -> None:
+    """The site's tables, Recent Results, the Results page's table and the frontier
+    table, have no frame (the owner, 2026-10-02, `think-wadm`): KPress draws a border
+    round every `.kpress-table`, and the site's rule takes it off every `.site-table`,
+    keeping the rule under the header and the light rule under each row."""
+    css = render_overview.SITE_CSS.read_text(encoding="utf-8")
+    assert ".kpress .site-table {\n  border: 0;\n}" in css
+    rows = css[css.index(".kpress .site-table tbody tr {") :]
+    assert "border-block-end: 1px solid var(--kpress-doc-border);" in rows[: rows.index("}")]
+    for name, html_page in (
+        ("index.html", page),
+        ("all-results.html", results),
+        ("frontier.html", rendered("frontier.html")),
+    ):
+        tables = re.findall(r'<table class="([^"]*)"', html_page)
+        assert tables, name
+        assert all("site-table" in classes.split() for classes in tables), (name, tables)
+
+
 def test_every_card_grid_sits_in_a_frame_it_can_measure(page: str) -> None:
     """A card is as wide as a column of the grid its frame fits, which it can know only by
-    asking the frame, so every card section is the only child of a `.site-cards-frame`."""
-    grids = re.findall(r'<div class="([^"]*)"><div class="(site-cards[^"]*)">', page)
+    asking the frame, so every card section is a `.site-cards-frame` holding its grid
+    and nothing else: one grid, or for a section set in lines of its own
+    (`SECTION_CARD_LINES`) one grid per line, each directly after the one before."""
+    grids = re.findall(r'(<div class="[^"]*">|</div>)<div class="site-cards[" ]', page)
     every = re.findall(r'<div class="site-cards[" ]', page)
     assert len(grids) == len(every), "a card grid outside a frame"
-    assert all(frame == "site-cards-frame site-wide" for frame, _ in grids)
+    opened = [before for before in grids if before != "</div>"]
+    assert all(before == '<div class="site-cards-frame site-wide">' for before in opened)
+    assert len(grids) - len(opened) == sum(
+        len(lines) - 1 for lines in overview_sections.SECTION_CARD_LINES.values()
+    )
     assert "site-cards-dimensions" not in page, "the rating ladders are no card grid"
+
+
+def test_the_page_cards_stand_one_two_and_two_at_one_column_width(
+    page: str, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    """The five page cards stand in three lines: the Frontier page alone at the top, then
+    the two papers, then the tutorial and the workbench (the owner, 2026-10-02,
+    `think-ns3d`; two over three from `think-ec5k` the same day). One wrapping row would
+    set four where the frame fits four and leave the fifth alone. A section set in lines
+    of its own (`SECTION_CARD_LINES`) is one frame holding a grid per line, a gap apart,
+    each marked with its longest line's count, which the stylesheet caps a line of its
+    size at, so the lines share one column width and each centres in it. Lines that do
+    not count the section's cards are refused."""
+    assert overview_sections.SECTION_CARD_LINES == {"pages": (1, 2, 2)}
+    assert len(overview_sections.PAGES) == 5
+    frame = page.split('<div class="site-cards-frame site-wide">', 1)[1]
+    rows = re.findall(r'<div class="site-cards" data-cards-most="2">(.*?)</div>', frame)
+    assert [
+        re.findall(r'class="site-card site-card-link" href="([^"]+)"', row) for row in rows
+    ] == [
+        ["frontier.html"],
+        ["papers/n11-optimality-review.html", "papers/n11-lower-bounds-explainer.html"],
+        ["tutorial.html", "workbench/"],
+    ]
+    css = render_overview.SITE_CSS.read_text(encoding="utf-8")
+    gap = css[css.index(".site-cards + .site-cards {") :]
+    assert "margin-block-start: var(--site-card-gap);" in gap[: gap.index("}")]
+    screen = _screen_card_rules()
+    for section, lines in overview_sections.SECTION_CARD_LINES.items():
+        most, size = max(lines), overview_sections.SECTION_CARD_SIZES[section]
+        rule = screen[screen.index(f'.site-cards[data-cards-most="{most}"] > .site-card {{') :]
+        assert (
+            f"--site-cards-line: min(var(--site-cards-{size}), {most});"
+            in rule[: rule.index("}")]
+        ), section
+    monkeypatch.setitem(overview_sections.SECTION_CARD_LINES, "pages", (2, 2))
+    with pytest.raises(SystemExit, match="pages: 5 cards in lines of"):
+        overview_sections.page_cards()
 
 
 #: A container query naming how many cards of one size its frame fits to a line from a
@@ -882,7 +943,6 @@ def test_every_card_names_one_of_three_sizes(page: str) -> None:
     ), "a card with no size"
     assert [len(cards) for cards in sections.values()] == [
         len(overview_sections.PAGES),
-        len(overview_sections.SURVEY_CARDS),
         len(overview_sections.ATLAS_CARDS),
         len(overview_sections.OTHER_PROJECTS),
         len(overview_sections.DOCUMENTS),
@@ -892,7 +952,6 @@ def test_every_card_names_one_of_three_sizes(page: str) -> None:
         assert {size for size, _ in cards} == {declared}, name
     assert overview_sections.SECTION_CARD_SIZES == {
         "pages": "medium",
-        "survey": "medium",
         "atlas": "medium",
         "projects": "medium",
         "documents": "small",
@@ -1007,14 +1066,45 @@ def _ladders(results: str) -> str:
     return section.split('<div class="site-ladders-frame site-wide">', 1)[1].split("<p", 1)[0]
 
 
+def test_recent_results_keys_every_rung_with_its_chip_and_short_meaning(page: str) -> None:
+    """Under Recent Results' account of the ratings stands a key to them (the owner,
+    2026-10-02, `think-tgjv`): the rating ladders' grid, a column per rating headed by
+    its name and its letter alone, a row per level with the highest at the top, each
+    rung the chip the table draws beside its short meaning. Its cells are the ladders'
+    own (`_ladder_cell`), so the key and the Results page's diagram never disagree; what
+    each rating asks, and the links to `epistemics.md`, are the diagram's alone."""
+    key = overview_sections.rung_key()
+    assert key.startswith('<div class="site-ladders-frame site-ladders-key site-wide">')
+    heads = re.findall(r'<span class="site-ladders-name">([^<]+)</span>', key)
+    assert heads == ["Significance (S)", "Verification (V)", "Confirmation (C)"]
+    assert "href=" not in key
+    assert "site-ladders-question" not in key
+    meanings = overview_sections.rung_short_meanings()
+    cells = re.findall(r'<div class="site-ladders-cell" role="cell".*?</div></div>', key)
+    assert len(cells) == len(meanings) == 17
+    for label, meaning in meanings.items():
+        assert f">{label}</span>" in key, label
+        assert (
+            f'<span class="site-ladders-meaning">{html.escape(meaning, quote=False)}</span>'
+            in (key)
+        ), label
+    diagram = overview_sections.verification_block()
+    assert cells == re.findall(
+        r'<div class="site-ladders-cell" role="cell".*?</div></div>', diagram
+    )
+    section = page.split('id="recent-results"', 1)[1].split("<h2", 1)[0]
+    assert section.count(" site-ladders-key ") == 1
+
+
 def test_the_ladders_are_the_results_pages_and_the_overview_points_to_them(
     page: str, results: str
 ) -> None:
     """Verification Ladders left the overview for the results page on 2026-10-02 (the
     owner, think-hqb3): the section stands under the table there, headed as it was, with
-    the empty anchor of its older fragment; the overview has no ladders section and no
-    diagram, and its Recent Results paragraph says what the three chips on a row
-    indicate, in the ladder heads' words, and links the section. The results page's
+    the empty anchor of its older fragment; the overview has no ladders section, and its
+    Recent Results says what the three ratings on a row mean, links the section, and
+    shows every rung in a key, the ladders' grid without their questions or links
+    (think-tgjv). The results page's
     opening paragraph points at the section, so a reader meets the table first and the
     account of the ratings is written once, as the section's lead."""
     heading = (
@@ -1047,125 +1137,64 @@ def test_the_ladders_are_the_results_pages_and_the_overview_points_to_them(
     # defines them.
     assert "how much the result matters" not in intro
     assert "the strongest verification its evidence supports" not in intro
-    # The stylesheet every page inlines keeps the diagram's rules; the markup is gone.
+    # The section and its diagram are gone; its grid is the key's, once.
     for gone in (
         'id="verification-ladders"',
         'id="verification-at-a-glance"',
-        'class="site-ladders',
+        '<span class="site-ladders-question">',
+        '<a class="site-ladders-name"',
     ):
         assert gone not in page, gone
+    assert page.count('class="site-ladders"') == 1
+    assert page.count('<div class="site-ladders-frame site-ladders-key site-wide">') == 1
     # The overview names the ladders once, in the chips' sentence, and nowhere else a
     # reader sees: its inlined stylesheet and the templates' comments name them too.
     assert _seen(page).count("Verification Ladders") == 1
-    chips = (
-        "The chips on a row say how significant the result is (S), how it was originally "
-        "verified (V) and how it has been confirmed (C), each rung defined on the "
-        "Verification Ladders."
-    )
-    assert chips in _rendered_text(_recent_lead(page))
+    ladders = "the Verification Ladders on the Results page define each one in full."
+    assert ladders in _rendered_text(_recent_prose(page))
     assert (
         '<a href="all-results.html#verification-ladders">Verification Ladders</a>'
-        in _recent_lead(page)
+        in _recent_prose(page)
     )
     for scale, _, _, question in overview_sections.DIMENSIONS:
         assert question in results, scale
 
 
-def test_the_survey_is_the_frontier_survey_and_its_old_fragment_lands_on_it(
+def test_the_frontier_survey_is_the_frontier_pages_and_its_card_is_a_page_card(
     page: str, rendered: Callable[[str], str]
 ) -> None:
-    """The homepage's section on the record of every case is headed The Frontier Survey,
-    and it was The Survey until 2026-10-01: an empty anchor in the heading keeps
-    `#the-survey` landing on it, the device Verification Ladders uses. One vocabulary
-    holds in what a reader sees: the page and its bar entry are Frontier, what the page
-    holds is the frontier survey, and "atlas" is the grid of packings, never the table of
-    cases, so no page calls the Frontier page an atlas."""
-    heading = '<h2 id="the-frontier-survey">The Frontier Survey<a id="the-survey"></a></h2>'
-    assert page.count(heading) == 1
-    assert 'href="#the-survey"' not in page
-    contents = '{"href": "#the-frontier-survey", "level": 1, "title": "The Frontier Survey"}'
-    assert contents in page
-    section = page.split(heading, 1)[1].split("<h2", 1)[0]
-    assert _rendered_text(section).startswith("The frontier survey is the record the atlas")
-    assert '<a href="frontier.html">Frontier</a> page lists every case' in section
+    """The homepage had a section headed The Frontier Survey, one paragraph and two cards
+    to the Frontier page, until the owner dropped it on 2026-10-02 (`think-ec5k`): its
+    account is the Frontier page's own prose, and its card to every case is the first of
+    the page cards under The Squares Project, alone on its line (`think-ns3d`); the card
+    to the recent cases went with it.
+    The section's two fragments, `#the-frontier-survey` and the older `#the-survey`, name
+    nothing on the homepage, so `forward.js` sends them to the Frontier page, whose title
+    carries the first. One vocabulary holds in what a reader sees: the page and its bar
+    entry are Frontier, what the page holds is the frontier survey, and "atlas" is the
+    grid of packings, never the table of cases, so no page calls the Frontier page an
+    atlas."""
+    for gone in ('id="the-frontier-survey"', 'id="the-survey"', 'href="#the-survey"'):
+        assert gone not in page, gone
+    assert '"href": "#the-frontier-survey"' not in page
+    assert "The frontier survey is the record the atlas" not in _seen(page)
+    assert "frontier.html?recent=true" not in page
     assert '<a data-page="frontier" href="frontier.html">Frontier</a>' in page
+    href, tag, body = _page_cards(page)[0]
+    assert (href, tag) == ("frontier.html", ' data-go="page" data-card-size="medium"')
+    assert '<span class="site-card-label">Frontier survey</span>' in body
     frontier = rendered("frontier.html")
     assert "<title>The Frontier Survey · The Squares Project</title>" in frontier
-    assert re.search(r"<h1[^>]*>The Frontier Survey</h1>", frontier)
-    card = next(body for href, _, body in _survey_cards(page) if href == "frontier.html")
-    assert '<span class="site-card-label">Frontier survey</span>' in card
-    for name in ("index.html", "frontier.html", "cases.html", render_overview.RESULTS_PAGE):
+    assert re.search(r'<h1 id="the-frontier-survey"[^>]*>The Frontier Survey</h1>', frontier)
+    for name in (
+        "index.html",
+        "frontier.html",
+        render_case_pages.CASES_PAGE,
+        render_overview.RESULTS_PAGE,
+    ):
         # What a reader sees or hears: the page without its inlined styles and programs.
         text = re.sub(r"<(script|style)\b.*?</\1>", "", rendered(name), flags=re.DOTALL)
         assert "frontier atlas" not in text.lower(), name
-
-
-def _survey_cards(page: str) -> list[tuple[str, str, str]]:
-    """The Frontier Survey section's cards: each card's address, the rest of its opening
-    tag, and its body."""
-    section = page.split('id="the-frontier-survey"', 1)[1].split("<h2", 1)[0]
-    frame = section.split('<div class="site-cards-frame', 1)[1].split("</div></div>", 1)[0]
-    return re.findall(
-        r'<a class="site-card site-card-link" href="([^"]+)"([^>]*)>(.*?)</a>', frame, re.DOTALL
-    )
-
-
-def test_the_survey_is_one_paragraph_and_its_cards_lead_to_the_frontier_page(
-    page: str, rendered: Callable[[str], str]
-) -> None:
-    """Since 2026-10-02 the homepage says the survey in one paragraph, what it records
-    and what the Frontier page adds, and leads there with two direct cards: every case,
-    and the page narrowed to the recent cases by the query its table script reads
-    (`recent=true`). Each is a page card, in the same tab, at the section's size. What
-    the section used to carry, the counts, how a certificate counts, the audit of its
-    sources and the seventeen-square history, is the Frontier page's own prose
-    (`test_the_frontier_page_opens_with_the_surveys_account`), so the section states
-    none of it: no count, no date, no author of a seventeen-square bound. Nor does it
-    say that the reported and the verified bounds are kept apart, which is the Frontier
-    page's Reported and verified."""
-    section = page.split('id="the-frontier-survey"', 1)[1].split("<h2", 1)[0]
-    prose = section.split('<div class="site-cards-frame', 1)[0]
-    paragraphs = re.findall(r"<p>(.*?)</p>", prose, re.DOTALL)
-    assert len(paragraphs) == 1
-    text = _rendered_text(paragraphs[0])
-    assert text.startswith("The frontier survey is the record the atlas is drawn from")
-    assert text.endswith("when a bound by others counts as verified.")
-    for gone in (
-        "22 August",
-        "hundred",
-        "s(7)",
-        "Brandwijk",
-        "T-015",
-        "archive",
-        "kept separate",
-        "apart from",
-        "replayed",
-    ):
-        assert gone not in _rendered_text(section), gone
-    cards = _survey_cards(page)
-    assert [href for href, _, _ in cards] == [
-        href for href, *_ in overview_sections.SURVEY_CARDS
-    ]
-    assert [href for href, *_ in overview_sections.SURVEY_CARDS] == [
-        "frontier.html",
-        "frontier.html?recent=true",
-    ]
-    size = overview_sections.SECTION_CARD_SIZES["survey"]
-    for (href, tag, body), (_, label, title, note) in zip(
-        cards, overview_sections.SURVEY_CARDS, strict=True
-    ):
-        assert overview_sections.is_site_page(href), href
-        assert tag == f' data-go="page" data-card-size="{size}"', href
-        assert 'target="_blank"' not in tag, href
-        assert f'<span class="site-card-label">{label}</span>' in body
-        assert _rendered_text(body.split('<span class="site-card-note">', 1)[1]) == note
-        assert overview_sections.reading_text(title.replace("n = 1", "n=1")) in (
-            overview_sections.reading_text(body)
-        )
-    # The section's prose names the page once and the cards hold no other link.
-    assert prose.count('href="frontier.html"') == 1
-    assert "frontier.html?recent=true" in rendered("index.html")
-    assert "section-tabs" not in section
 
 
 def test_the_frontier_page_opens_with_the_surveys_account(
@@ -1207,7 +1236,7 @@ def test_the_frontier_page_opens_with_the_surveys_account(
     assert "An external certificate counts once it is replayed here in full" in text
     assert "The survey audits what it records." in text
     assert "The earliest published proof of $s(7) = 3$ carries four recorded defects" in text
-    assert 'href="cases.html#n-7"' in prose
+    assert 'href="cases/7.html" data-case="7"' in prose
     # Each repository document is linked on `main`, in a new tab as every link off the
     # site opens.
     for path, words in (
@@ -1243,7 +1272,7 @@ def test_the_frontier_page_opens_with_the_surveys_account(
         assert author in text, author
     assert 'href="all-results.html#t-015">T-015</a>' in prose
     assert 'href="all-results.html#t-016">T-016</a>' in prose
-    assert 'href="cases.html#n-17">seventeen-square record</a>' in prose
+    assert 'href="cases/17.html" data-case="17">seventeen-square record</a>' in prose
     # Neither other page says any of this a second time: the Results page points to the
     # policy for results by others and does not restate when a certificate counts. Each
     # page's prose is read without its rows' popovers, whose detail may say a result
@@ -1561,8 +1590,8 @@ def test_the_document_cards_lead_with_readme_and_epistemics(
     # where a record is shown, the Records column and a result's popover, and from no
     # prose of either page.
     frontier = rendered("frontier.html")
-    assert '<a href="cases.html#n-17">seventeen-square record</a>' in frontier
-    assert '<a href="cases.html#n-7">record for seven squares</a>' in frontier
+    assert '<a href="cases/17.html" data-case="17">seventeen-square record</a>' in frontier
+    assert '<a href="cases/7.html" data-case="7">record for seven squares</a>' in frontier
     frontier_prose = frontier.split("</h1>", 1)[1].split('<div class="site-table-tools', 1)[0]
     overview_prose = re.sub(
         r'<div class="site-popover.*?</div>\s*</div>', "", page, flags=re.DOTALL
@@ -1885,7 +1914,12 @@ def _the_bar(page: str, *, root: str) -> str:
     bars = SITE_NAV_BLOCK.findall(page)
     assert len(bars) == 1, "a page carries exactly one navigation bar"
     assert bars[0].count(' aria-current="page"') == 1, "the bar marks one page current"
-    return bars[0].replace(' aria-current="page"', "").replace(f'href="{root}', 'href="')
+    bar = bars[0].replace(' aria-current="page"', "")
+    if root:
+        # A link to the root itself, written from below it, is the root's directory,
+        # `../`, where the partial writes `{{ROOT}}./`.
+        bar = bar.replace(f'href="{root}"', 'href="./"')
+    return bar.replace(f'href="{root}', 'href="')
 
 
 def _workbench_page() -> str:
@@ -1906,7 +1940,8 @@ def test_every_site_page_carries_the_same_bar(
     if name == "workbench/index.html":
         page, root = _workbench_page(), "../"
     else:
-        page, root = rendered(name), ""
+        # A page in a directory of its own, the case records', reaches the root from it.
+        page, root = rendered(name), "../" * name.count("/")
     partial = (
         render_overview.SITE_NAV.read_text(encoding="utf-8")
         .replace("{{ROOT}}", "")
@@ -2248,13 +2283,14 @@ def test_a_results_rungs_run_significance_first(overview: overview_data.Overview
 
 
 @pytest.mark.parametrize(
-    "name", ["index.html", render_overview.RESULTS_PAGE, "cases.html", "frontier.html"]
+    "name", ["index.html", render_overview.RESULTS_PAGE, "cases/11.html", "frontier.html"]
 )
 def test_every_page_lists_significance_first(name: str, rendered: Callable[[str], str]) -> None:
     """Wherever rung chips sit side by side, on any page, they run S, V, C: a result's
     three in a row, a popover, an overview or a case record, and the V and C of an entry
     awaiting replay. No run repeats a scale or puts a later one first."""
-    runs = [run for run in _rung_runs(rendered(name)) if len(run) > 1]
+    shown = site_renders.case_records()[name] if name.startswith("cases/") else rendered(name)
+    runs = [run for run in _rung_runs(shown) if len(run) > 1]
     if name != "frontier.html":
         assert any(len(run) == len(RUNG_ORDER) for run in runs), name
     for run in runs:
@@ -2378,6 +2414,17 @@ def test_every_result_shows_its_status_and_its_place_on_the_frontier(
             assert standing.findall(row) == marks, result.id
             line = row.split('<span class="site-standing">', 1)[1]
             assert line.startswith(overview_sections.status_chip(result.status)), result.id
+            # The status line is a column of its own since 2026-10-02 (think-ybt5),
+            # sorted on the status word, and the rungs' cell holds no part of it.
+            # As a page serves it, KPress has labelled the cell, after its own attributes.
+            shown = re.escape(overview_sections.status_marks(result))
+            cell = re.compile(
+                rf'<td class="site-col-status" data-value="{result.status}"[^>]*>'
+                rf'<span class="site-standing">{shown}</span></td>'
+            )
+            assert len(cell.findall(row)) == 1, result.id
+            rungs = row.split('<td class="site-rungs"', 1)[1].split("</td>", 1)[0]
+            assert "data-status=" not in rungs, result.id
             for word in (">current best<", ">reported<", ">second certificate<"):
                 assert word not in row, (result.id, word)
     assert {result.status for result in overview.results} <= set(result_status.STATUSES)
@@ -2453,8 +2500,9 @@ def test_every_result_shows_its_kind(
 ) -> None:
     """A result's kind is the register's `kind`, never restated: every row of both
     tables carries it as `data-kind`, for the Kind filter, and draws it as one plain
-    chip in the rubric's words, on a line of its own under its rungs and above its
-    status line. A result with no standing is of a kind that is no bound."""
+    chip in the rubric's words, on a line of its own under its rungs, the last thing in
+    their cell: the status line has a column of its own since 2026-10-02 (`think-ybt5`).
+    A result with no standing is of a kind that is no bound."""
     recent = _recent_table(page)
     for result in overview.results:
         kind = result.record["kind"]
@@ -2463,10 +2511,7 @@ def test_every_result_shows_its_kind(
         assert chip == f'<span class="site-chip" data-kind="{kind}">{label}</span>'
         assert "data-tone" not in chip
         marks = overview_sections.status_marks(result)
-        under = (
-            f'{overview_sections.rung_chips(result)}<span class="site-kind">{chip}</span>'
-            f'<span class="site-standing">{marks}</span>'
-        )
+        under = f'{overview_sections.rung_chips(result)}<span class="site-kind">{chip}</span>'
         for row in (_row(results, result.id), _recent_row(recent, result.id)):
             assert f' data-kind="{kind}" ' in row.split(">", 1)[0], result.id
             assert f">{under}</td>" in row, result.id
@@ -2539,7 +2584,7 @@ def test_recent_results_is_one_table_not_cards_or_a_list(
     # The script that sorts and filters the results page's table wires this one too.
     assert "data-site-table" in recent
     heads = re.findall(r"<th[^>]*>([^<]+)</th>", recent.split("</thead>", 1)[0])
-    assert heads == ["ID", "n", "Result", "Credit", "Rungs", "Date"]
+    assert heads == ["Date", "Result", "n", "Credit", "Rungs", "Status", "Details", "ID"]
     newest = overview_sections.recent_results(overview)
     assert re.findall(r'<tr data-result="(t-\d+)"', recent) == [r.id.lower() for r in newest]
     for result in newest:
@@ -2554,7 +2599,8 @@ def test_recent_results_is_one_table_not_cards_or_a_list(
             f'popovertarget="pop-result-{result.id.lower()}">{result.id}</button></td>'
         ) in row
         assert row.count(f">{result.id}<") == 1
-        assert "site-row-open" not in row.split('<td class="site-col-result"', 1)[1]
+        cell = row.split('<td class="site-col-result"', 1)[1].split("</td>", 1)[0]
+        assert "site-row-open" not in cell
         assert "<br" not in row
     # Evan Daniel's three exact values, the closures the exact-value cards used to show.
     exact = {n for n in overview.recent_lower if overview.cases[n]["status"] == "proved"}
@@ -2617,7 +2663,8 @@ def test_the_recent_table_lists_every_result_less_the_superseded_at_s4_and_180_d
     # Where the bar starts, said once, in the bar's own words; the sentence on clearing
     # the filters left with the rest of the detail on 2026-10-02.
     starts = (
-        "The table starts at significance S4 and up, max age 180 days and superseded hidden."
+        "The table above starts at significance S4 and up, max age 180 days and "
+        "superseded hidden."
     )
     assert text.count(starts) == 1
     assert "clear Hide superseded" not in text
@@ -2717,14 +2764,14 @@ def test_only_t060_of_the_s5_results_still_holds(overview: overview_data.Overvie
 
 
 def test_recent_results_has_no_lead_line(page: str) -> None:
-    """Nothing stands between the section's prose and its filter bar: the generated
-    "Lead result" line the owner dropped on 2026-10-01 is gone, from the page, the
-    template and the module that wrote it."""
+    """Nothing stands between the section's heading and its filter bar, since its prose
+    follows the table (think-tgjv): the generated "Lead result" line the owner dropped
+    on 2026-10-01 is gone, from the page, the template and the module that wrote it."""
     section = page.split('id="recent-results"', 1)[1].split("<h2", 1)[0]
     assert "site-recent-lead" not in section
     assert "Lead result" not in section
     before = section.split('<div class="site-table-tools', 1)[0]
-    assert re.search(r'</p>\s*<div class="site-wide">$', before)
+    assert re.search(r'(?:</h2>|-->)\s*<div class="site-wide">$', before)
     template = render_overview.OVERVIEW_ARTICLE.read_text(encoding="utf-8")
     assert "RECENT_LEAD" not in template
     assert not hasattr(overview_sections, "recent_lead")
@@ -2746,11 +2793,12 @@ def _intro(page: str) -> str:
     return _shared(page, "project-intro")
 
 
-def _recent_lead(page: str) -> str:
-    """Recent Results' one paragraph, the markup between its heading and its filter
-    bar."""
+def _recent_prose(page: str) -> str:
+    """Recent Results' two paragraphs, the markup under its table's action and over its
+    key to the ratings (`rung_key`)."""
     section = page.split('id="recent-results"', 1)[1].split("<h2", 1)[0]
-    return section.split("</h2>", 1)[1].split('<div class="site-table-tools', 1)[0]
+    after = section.split('<p class="site-action-row site-more">', 1)[1].split("</p>", 1)[1]
+    return after.split('<div class="site-ladders-frame site-ladders-key', 1)[0]
 
 
 #: One formula as kpress writes it: the TeX for KaTeX, then its MathML.
@@ -2779,34 +2827,58 @@ def _template_paragraphs(section: str) -> list[str]:
     return [" ".join(part.split()) for part in prose.split("\n\n") if part.strip()]
 
 
-#: README's `project-intro` block, the owner's words of 2026-10-01 copy-edited: the
+#: README's `project-intro` block, the owner's words of 2026-10-03 (`think-8lyq`): the
 #: question after a colon, the lower bound glossed as a size below which no packing can
-#: exist, and one added sentence that names $s(n)$, which the next block uses.
+#: exist, and an example of each bound at $n = 29$, the case's current bounds as the
+#: record reports them (the owner, 2026-10-03: "make the examples current"), each
+#: written as the record writes it, with $\le$ and $\ge$. The lower is called reported:
+#: wand125's certificate is not yet replayed here, and its result stands at V0/C0, so
+#: "proved" alone would put a reported bound in a verified one's place
+#: (`test_the_intros_examples_are_the_records`).
 PROBLEM_STATEMENT = (
     (
-        "The square packing problem is a simple and long-standing problem in geometry. It "
-        "asks: what is the size of the smallest square that can hold $n$ unit squares, "
-        "where the squares are free to rotate but cannot overlap? The side length of that "
+        "The square packing problem is a simple and long-standing problem in geometry: "
+        "what is the size of the smallest square that can hold $n$ unit squares, where "
+        "the squares are free to rotate but cannot overlap? The side length of that "
         "smallest square is written $s(n)$."
     ),
     (
-        "The question is elementary to understand but is an open problem for most $n$. In "
-        "many cases, the answer is known only to lie between an upper bound (the size of "
-        "the enclosing square for the tightest packing ever discovered) and a lower bound "
-        "(a size below which it is proved that no packing can exist)."
+        "The question of the value of $s(n)$ is simple, but the answer is an open problem "
+        "for most $n$. In many cases, $s(n)$ is known only to lie between an upper bound "
+        "(the size of the enclosing square for the tightest packing ever discovered, such "
+        "as $s(29) \\le 5.934$) and a lower bound (a size below which it is proved that no "
+        "packing can exist, such as the reported $s(29) \\ge 5.79$)."
     ),
 )
+
+
+def test_the_intros_examples_are_the_records() -> None:
+    """The introduction's two examples are case 29's current bounds: its lower example
+    is the reported lower bound, wand125's 5.79 of 2026-09-28 when this was written,
+    and its upper example is the reported upper bound rounded up, which also stands at
+    or above the verified ceiling, so it is itself a proved ceiling. A new bound at
+    $n = 29$ that leaves an example stale fails here rather than on the page."""
+    from devtools import overview_data, site_documents  # noqa: PLC0415
+
+    block = site_documents.intro_block(site_documents.README.read_text(encoding="utf-8"))
+    upper = Decimal(re.findall(r"\$s\(29\) \\le ([\d.]+)\$", block)[0])
+    lower = Decimal(re.findall(r"\$s\(29\) \\ge ([\d.]+)\$", block)[0])
+    case = overview_data.load().cases[29]
+    reported_upper = Decimal(case["reported_upper_bound"]["value"])
+    ceiling = Decimal(case["verified_upper_bound"]["value"])
+    assert max(reported_upper, ceiling) <= upper < reported_upper + Decimal("0.001")
+    assert lower == Decimal(case["reported_lower_bound"]["value"])
 
 
 def test_the_overviews_first_section_is_readmes_one_block(page: str) -> None:
     """The overview says what README's opening says, word for word and formula for
     formula, in one place: the first section opens with README's `project-intro` block,
-    the problem and its bounds, which writes $s(n)$ once. README's next two paragraphs,
-    what the project covers and its newest major result, were a second shared block
-    that opened Recent Results until 2026-10-02; they are README's own since, unmarked,
-    and no other block is shared. The template holds a placeholder where the block
-    goes, names no registered result of its own in the first section, and opens Recent
-    Results with a paragraph of its own."""
+    the problem and its bounds, which names $s(n)$ and writes it thrice. README's next
+    two paragraphs, what the project covers and its newest major result, were a second
+    shared block that opened Recent Results until 2026-10-02; they are README's own
+    since, unmarked, and no other block is shared. The template holds a placeholder
+    where the block goes, names no registered result of its own in the first section,
+    and opens Recent Results with a paragraph of its own."""
     from devtools import site_documents  # noqa: PLC0415
 
     readme = site_documents.README.read_text(encoding="utf-8")
@@ -2821,7 +2893,7 @@ def test_the_overviews_first_section_is_readmes_one_block(page: str) -> None:
     )
     assert problem == PROBLEM_STATEMENT[0]
     assert bounds == PROBLEM_STATEMENT[1]
-    assert blocks["project-intro"].count("$s(n)$") == 1
+    assert blocks["project-intro"].count("$s(n)$") == 3
     assert not re.search(r"^#", blocks["project-intro"], re.MULTILINE)
     assert "<!--" not in blocks["project-intro"]
     # README keeps its account of recent progress, unmarked, right after the block.
@@ -2840,44 +2912,64 @@ def test_the_overviews_first_section_is_readmes_one_block(page: str) -> None:
     assert "eleven" not in own.lower()
     recent = template.split("## Recent Results", 1)[1].split("\n## ", 1)[0]
     assert "README_PROGRESS" not in template
-    assert _template_paragraphs(recent)[0].startswith("Eleven squares is settled:")
+    # The table and its action come first since 2026-10-02 (think-tgjv), then the prose.
+    prose = [part for part in _template_paragraphs(recent) if not part.startswith(("{{", "<p"))]
+    assert prose[0].startswith("Eleven squares is settled:")
 
 
-def test_recent_results_is_one_paragraph_before_its_table(page: str) -> None:
-    """Recent Results is one paragraph of 60 to 125 words between its heading and the
-    filter bar (the owner, 2026-10-02): the headline of recent progress, the star
-    legend, one sentence on what the three chips on a row indicate, in the ladder heads'
-    words, linking the Verification Ladders on the results page, and one sentence on
-    where the filters start. The ceiling was 90 before the chips' sentence joined the
-    paragraph later that day (think-hqb3), when the ladders left the page. What stood
-    there until that day, README's two paragraphs and a paragraph on the table, is gone
-    from the page: the rungs, review, packet and defects of T-060 are its row's, the
-    ratings, kinds and statuses the Results page's, and the sentence on clearing the
-    filters is not needed where the bar is."""
+def test_recent_results_opens_with_its_table_and_says_what_it_shows_under_it(
+    page: str,
+) -> None:
+    """Recent Results opens with its table, and under the table's one action stand two
+    short paragraphs and a key (the owner, 2026-10-02, `think-tgjv`; one paragraph stood
+    between the heading and the filter bar until then). The first is the headline of
+    recent progress, the star legend and where the filters start; the second says what
+    the three ratings on a row mean, rung by rung in brief, links the Verification
+    Ladders on the Results page, and leads to the key (`rung_key`), which shows every
+    chip with its short meaning. What stood there before 2026-10-02, README's two
+    paragraphs and a paragraph on the table, is gone from the page: the rungs, review,
+    packet and defects of T-060 are its row's, and the kinds and statuses the Results
+    page's."""
     problem = page.split('id="the-problem"', 1)[1].split('id="recent-results"', 1)[0]
     section = page.split('id="recent-results"', 1)[1].split("<h2", 1)[0]
-    lead = _recent_lead(page)
-    assert len(re.findall(r"<p>", lead)) == 1
-    assert re.sub(r"<!--.*?-->", "", lead.split("<p>", 1)[0], flags=re.DOTALL).strip() == ""
-    text = _rendered_text(lead)
-    assert text.startswith("Eleven squares is settled: $s(11) = 3.8770835\\ldots$")
-    assert text.endswith(
-        "The table starts at significance S4 and up, max age 180 days and superseded hidden."
+    head = section.split("</h2>", 1)[1]
+    # The table first: nothing a reader sees stands between the heading and its bar,
+    # which opens the table's wide block.
+    before = re.sub(
+        r"<!--.*?-->", "", head.split('<div class="site-table-tools', 1)[0], flags=re.DOTALL
     )
-    words = len(text.split())
-    assert 60 <= words <= 125, words
+    assert before.strip() == '<div class="site-wide">'
+    lead = _recent_prose(page)
+    paragraphs = re.findall(r"<p>(.*?)</p>", lead, re.DOTALL)
+    assert len(paragraphs) == 2
+    first, second = (_rendered_text(paragraph) for paragraph in paragraphs)
+    assert first.startswith("Eleven squares is settled: $s(11) = 3.8770835\\ldots$")
+    assert first.endswith(
+        "The table above starts at significance S4 and up, max age 180 days and "
+        "superseded hidden."
+    )
+    assert 50 <= len(first.split()) <= 100, len(first.split())
     legend = re.sub(r"<[^>]+>", "", overview_sections.star_legend())
-    assert legend in text
-    chips = "The chips on a row say how significant the result is (S)"
-    assert (
-        text.index("T-065")
-        < text.index(legend)
-        < text.index(chips)
-        < text.index("The table starts")
-    )
-    # The lead, then the filter bar, then the table.
-    tools = section.index('<div class="site-table-tools')
-    assert section.index(lead) < tools < section.index(_recent_table(page))
+    assert first.index("T-065") < first.index(legend) < first.index("The table above")
+    assert second.startswith("Each row carries three ratings, each a rung of its own ladder.")
+    for scale in (
+        "Significance, S1 to S5,",
+        "Verification, V0 to V5,",
+        "Confirmation, C0 to C5,",
+    ):
+        assert scale in second, scale
+    assert second.endswith("on the Results page define each one in full.")
+    assert len(second.split()) <= 130, len(second.split())
+    # The table, its action, the two paragraphs, then the key.
+    order = [
+        section.index('<div class="site-table-tools'),
+        section.index(_recent_table(page)),
+        section.index('<p class="site-action-row site-more">'),
+        section.index(lead),
+        section.index('<div class="site-ladders-frame site-ladders-key'),
+    ]
+    assert order == sorted(order)
+    text = first + " " + second
     # The section's prose is the lead; its bar and rows name sources and credits of
     # their own (Guzhou0806 is a Source option, Kleddamag a credit), so they are read
     # out of the lead and the sections before it only.
@@ -2898,13 +2990,13 @@ def test_recent_results_is_one_paragraph_before_its_table(page: str) -> None:
     for gone in ("The project covers the problem at every", "retained packet", "clear Hide"):
         assert gone not in _rendered_text(section), gone
     assert "These are the recent results this project tracks" not in _rendered_text(section)
-    for defined_there in ("recorded", "reviewed", "incomplete", "replayed here in full"):
+    for defined_there in ("reviewed", "incomplete", "replayed here in full"):
         assert defined_there not in text, defined_there
     assert "epistemics" not in lead
 
 
 def test_recent_results_names_the_headline_results_at_their_rows(
-    page: str, results: str, rendered: Callable[[str], str]
+    page: str, results: str
 ) -> None:
     """The paragraph names the results that settle eleven squares, bracket seventeen and
     give the new exact values, each id at its row on the Results page and each case at
@@ -2913,7 +3005,7 @@ def test_recent_results_names_the_headline_results_at_their_rows(
     account."""
     from devtools import check_results, site_documents  # noqa: PLC0415
 
-    lead = _recent_lead(page)
+    lead = _recent_prose(page)
     text = _rendered_text(lead)
     assert "the exact side of Trump\u2019s 1979 packing" in text
     assert "Seventeen squares is bracketed by machine-checked bounds, T-043 below" in text
@@ -2922,13 +3014,14 @@ def test_recent_results_names_the_headline_results_at_their_rows(
         assert f'<a href="all-results.html#{result}">{result.upper()}</a>' in lead, result
         assert f'id="{result}"' in results, result
     assert re.findall(r"\bT-\d{3}\b", text) == ["T-060", "T-043", "T-065"]
-    cases = rendered("cases.html")
+    records = site_renders.case_records()
     for n in (21, 32, 45):
-        assert f'<a href="cases.html#n-{n}">' in lead, n
-        assert f'id="n-{n}"' in cases, n
+        assert f'<a href="{render_case_pages.case_url(n)}" data-case="{n}">' in lead, n
+        assert render_case_pages.case_url(n) in records, n
     hrefs = re.findall(r'href="([^"]+)"', lead)
     for href in hrefs:
-        assert href.partition("#")[0] in render_overview.SITE_PAGES, href
+        page_name = href.partition("#")[0]
+        assert page_name in render_overview.SITE_PAGES or page_name in records, href
     assert site_documents.README in check_results.READER_TIER
     assert render_overview.OVERVIEW_ARTICLE in check_results.READER_TIER
     template = render_overview.OVERVIEW_ARTICLE.read_text(encoding="utf-8")
@@ -2950,61 +3043,73 @@ def test_recent_results_names_the_headline_results_at_their_rows(
     assert exact == {21, 32, 45}
 
 
-#: The site's own statement, the owner's words of 2026-10-01 copy-edited. One phrase is
-#: narrowed to what the register holds: the owner's "all proofs and certificates" reads
-#: "the proofs and certificates behind them", since some registered results are reported
-#: and not yet replayed here.
+#: The site's own statement, the owner's words of 2026-10-03 (`think-a7oa`), with the
+#: name the owner left blank filled from the register (T-060 is Queuingtheorydotcom's),
+#: the project's start put as the record has it (its explorations obtained the lower
+#: bounds, from 2026-08-31, after it began on 2026-08-22), and one phrase narrowed to
+#: what the register holds: the project tabulates every known new result and verifies
+#: the proofs behind them, without claiming every one is checked, since some registered
+#: results are recorded and not yet replayed here.
 SITE_STATEMENT = (
     (
-        "This Squares Project site collects all known historic research and "
-        "current new results on the square packing problem. Work on this problem has "
-        "exploded in the summer of 2026 thanks to AI-powered research efforts."
-    ),
-    (
-        "We and several others have proved new results as part of this project for low "
-        "values of $n$, including $n = 11$, $n = 12$, $n = 17$ and many others. As part "
-        "of a collaborative open effort, several people have built on results from this "
-        "project or developed other new proofs, and this site independently checks and "
-        "documents the proofs and certificates behind them."
+        "Work on the square packing problem has exploded in the summer of 2026 thanks to "
+        "AI-powered research efforts. This Squares Project was begun by Joshua Levy in "
+        "August 2026 with some initial explorations that obtained new lower bounds for "
+        "$n = 11, 17, 18, 19, 20$ and other low values. Now several others have obtained "
+        "results building on this work, including a landmark new proof by "
+        "Queuingtheorydotcom of the optimality of the famous case of 11 squares. This "
+        "project now independently tabulates all known new results and does AI-assisted "
+        "verification of the proofs and certificates behind them, to encourage open "
+        "collaboration on open questions and formalizations of current proofs."
     ),
     (
         "If you have new results or know of newer results, please file an issue to "
-        "report them, and we will gladly incorporate them and cite your work."
+        "report them, and we will gladly incorporate them and cite your work. We also "
+        "have a group chat. Contact ojoshe if you wish to join."
     ),
 )
 
 
 def test_the_sites_own_statement_follows_readmes_introduction(page: str) -> None:
-    """After README's introduction the section has three paragraphs of its own: what the
-    site collects, who proved the new results and what the site does with them, and where
-    to report a result it lacks. The second links its checking to the section that shows
-    how far each result is checked, and does not claim every proof is; the third opens a
-    new issue on the repository."""
+    """After README's introduction the section has two paragraphs of its own (the
+    owner, 2026-10-03): how the project began and what it does now, and where to
+    report a result it lacks and how to join its chat. The first links the project's
+    founder, the explainer that holds its first lower bounds, the case record of
+    $n = 11$, and the ladders that show how far each result is checked, and does not
+    claim every proof is; the second opens a new issue on the repository and links
+    the founder's account on X."""
     from devtools import site_documents  # noqa: PLC0415
 
     problem = page.split('id="the-problem"', 1)[1].split('id="recent-results"', 1)[0]
     own = problem.split(site_documents.OVERVIEW_INTRO_CLOSE, 1)[1].split("<div", 1)[0]
     paragraphs = re.findall(r"<p>(.*?)</p>", own, re.DOTALL)
     assert [_rendered_text(paragraph) for paragraph in paragraphs] == list(SITE_STATEMENT)
-    assert (
-        '<a href="all-results.html#verification-ladders">independently checks and documents</a>'
-        in paragraphs[1]
-    )
+    # An external link opens in a new tab, so its anchor carries more than its address.
+    founder = '<a href="https://x.com/ojoshe" target="_blank" rel="noopener noreferrer">'
+    for link in (
+        f"{founder}Joshua Levy</a>",
+        '<a href="papers/n11-lower-bounds-explainer.html">new lower bounds</a>',
+        f'<a href="{render_case_pages.case_url(11)}" data-case="11">case of 11 squares</a>',
+        '<a href="all-results.html#verification-ladders">AI-assisted verification</a>',
+    ):
+        assert link in paragraphs[0], link
     assert "all proofs" not in " ".join(SITE_STATEMENT)
     assert 'id="verification-ladders"' not in page
     assert render_overview.NEW_ISSUE_URL == "https://github.com/jlevy/squares/issues/new"
     assert re.search(
         rf'<a href="{re.escape(render_overview.NEW_ISSUE_URL)}"[^>]*>file an issue</a>',
-        paragraphs[2],
+        paragraphs[1],
     )
-    assert "formal" not in " ".join(SITE_STATEMENT).lower()
+    assert f"{founder}ojoshe</a>" in paragraphs[1]
+    # Formal proofs are invited, not claimed.
+    assert "formally" not in " ".join(SITE_STATEMENT).lower()
 
 
 def test_the_sites_statement_stands_under_its_own_section_heading(page: str) -> None:
     """README's two paragraphs stay under the page's first heading, and the site's own
     statement has a section heading of its own, The Squares Project: an ordinary
     `h2` with its own id and its entry in the page's contents, directly after README's
-    block and directly above the paragraph that says what the site collects. It is no
+    block and directly above the paragraph on how the project began. It is no
     page title, so it takes the two section spaces every `h2` takes
     (`test_section_headings_share_one_space_above_and_one_below`)."""
     from devtools import site_documents  # noqa: PLC0415
@@ -3015,15 +3120,15 @@ def test_the_sites_statement_stands_under_its_own_section_heading(page: str) -> 
     after_intro = problem.split(site_documents.OVERVIEW_INTRO_CLOSE, 1)[1]
     assert after_intro.lstrip().startswith(heading)
     following = after_intro.split(heading, 1)[1].lstrip()
-    assert following.startswith("<p>This Squares Project site collects")
+    assert following.startswith("<p>Work on the square packing problem")
     assert heading not in problem.split(site_documents.OVERVIEW_INTRO_CLOSE, 1)[0]
     contents = '{"href": "#the-squares-project", "level": 1, "title": "The Squares Project"}'
     assert contents in page
     assert page.index(contents) < page.index('{"href": "#recent-results"')
     template = render_overview.OVERVIEW_ARTICLE.read_text(encoding="utf-8")
     assert (
-        "{{README_INTRO}}\n\n## The Squares Project\n\nThis Squares Project "
-        "site collects" in template
+        "{{README_INTRO}}\n\n## The Squares Project\n\nWork on the square packing "
+        "problem" in template
     )
 
 
@@ -3439,16 +3544,28 @@ def test_both_tables_of_results_have_the_same_columns(
     (`id`) on the results page and `data-result` on the overview, and `hidden`, which is
     where each table's filters start. So the overview shows each result's records, as
     the results page does, and no row of one links to the other. Both sort and both
-    filter. A result's records are a line under its summary, no column."""
+    filter. The columns run date, result, cases, credit, rungs, status, details and id,
+    the owner's order of 2026-10-02 (`think-t090`, `think-ybt5`, `think-e4o3`): a
+    result's records are its Details, a link to a line, and its result cell holds the
+    claim and its star alone."""
     table = overview_sections.results_table(overview)
     recent = overview_sections.recent_table(overview)
     head = overview_sections.result_head()
     assert table.count(head) == recent.count(head) == 1
     assert table.count("<thead>") == recent.count("<thead>") == 1
     heads = re.findall(r"<th([^>]*)>([^<]+)</th>", head)
-    assert [words for _, words in heads] == ["ID", "n", "Result", "Credit", "Rungs", "Date"]
+    assert [words for _, words in heads] == [
+        "Date",
+        "Result",
+        "n",
+        "Credit",
+        "Rungs",
+        "Status",
+        "Details",
+        "ID",
+    ]
     sorts = ["data-sort=" in attributes for attributes, _ in heads]
-    assert sorts == [True, True, False, True, True, True]
+    assert sorts == [True, False, True, True, True, True, False, True]
     # As each page serves it, after KPress has labelled the cells.
     served = re.compile(r"<th[^>]*>([^<]+)</th>")
     on_overview = served.findall(_recent_table(page).split("</thead>", 1)[0])
@@ -3466,18 +3583,26 @@ def test_both_tables_of_results_have_the_same_columns(
         there = _recent_row(recent, result.id)
         assert classes.findall(here) == classes.findall(there), result.id
         assert classes.findall(here) == [
-            "site-col-id",
-            "num site-col-n",
+            "site-col-date",
             "site-col-result",
+            "num site-col-n",
             "site-col-credit",
             "site-rungs",
-            "site-col-date",
+            "site-col-status",
+            "site-col-details",
+            "site-col-id",
         ]
-        # The records close the result's own cell, after its summary and its star.
+        # The records are the Details cell, after the status and before the id, a link
+        # to a line with no dots between; the result's cell holds none of them.
         assert here.count('<div class="site-records">') == 1, result.id
         assert re.search(
-            r'<div class="site-records">.*?</div></td><td class="site-col-credit"', here
-        )
+            r'<td class="site-col-details"><div class="site-records">(<a [^>]*>[^<]+</a>)+'
+            r'</div></td><td class="site-col-id"',
+            here,
+        ), result.id
+        result_cell = here.split('<td class="site-col-result">', 1)[1].split("</td>", 1)[0]
+        assert "<a " not in result_cell, result.id
+        assert " · " not in here, result.id
         assert f'<tr id="{result.id.lower()}" ' in here
         assert f'<tr data-result="{result.id.lower()}" ' in there
         # The row is the same markup on both pages, as written and as each page serves
@@ -3500,21 +3625,24 @@ def test_both_tables_of_results_have_the_same_columns(
     assert "site-recent-table" not in css + table + recent
     assert not re.search(r"\.site-records\s*\{[^}]*display:\s*none", css)
     assert "Records" not in head
-    for gone in ("site-col-method", "site-col-status"):
-        assert gone not in css + table + recent, gone
+    # The overview's old Status column held every chip, the rungs among them, until
+    # 2026-10-01 (think-3vh9); the status line has a column again since 2026-10-02
+    # (think-ybt5), with the status chips alone.
+    assert "site-col-method" not in css + table + recent
 
 
-def test_both_tables_of_results_lead_with_the_same_id_column(
+def test_both_tables_of_results_end_with_the_same_id_column(
     overview: overview_data.Overview,
 ) -> None:
-    """The id is a column of its own, the first, in the results table and in Recent
-    Results alike: one cell, written by one helper, holding the row's trigger and
-    nothing else. On a phone it opens each card, in both tables."""
+    """The id is a column of its own, the last since 2026-10-02 (`think-t090`; it was the
+    first), in the results table and in Recent Results alike: one cell, written by one
+    helper, holding the row's trigger and nothing else. On a phone it still opens each
+    card, in both tables, which place their cells by class."""
     table = overview_sections.results_table(overview)
     recent = overview_sections.recent_table(overview)
-    first = re.compile(r"<thead><tr><th([^>]*)>([^<]+)</th>")
+    last = re.compile(r"<th([^>]*)>([^<]+)</th></tr></thead>")
     for html_table in (table, recent):
-        head = first.search(html_table)
+        head = last.search(html_table)
         assert head
         assert head.group(2) == "ID"
         assert 'class="site-col-id"' in head.group(1)
@@ -3525,15 +3653,17 @@ def test_both_tables_of_results_lead_with_the_same_id_column(
         )
         cell = f'<td class="site-col-id" data-value="{result.id}">{trigger}</td>'
         for row in (_row(table, result.id), _recent_row(recent, result.id)):
-            # The row's first cell, straight after the row's own tag.
-            assert row.split(">", 1)[1].startswith(cell), result.id
+            # The row's last cell, straight before the row's end.
+            assert row.endswith(f"{cell}</tr>"), result.id
             assert row.count("site-row-open") == 1, result.id
             assert row.count(f">{result.id}<") == 1, result.id
     css = render_overview.SITE_CSS.read_text(encoding="utf-8")
     # As narrow as an id, below the floor KPress keeps a cell to.
     assert "  .site-table .site-col-id {\n    min-width: 0;\n  }" in css
-    # On a phone the id opens the card, in both tables.
+    # On a phone the id opens the card, in both tables, and the date, the row's first
+    # cell, still follows the credit there.
     assert "  .site-results .site-col-id {\n    font-weight: 650;\n    grid-area: 1 / 1;" in css
+    assert "    grid-column: 3;\n    order: 2;\n    text-align: end;" in css
 
 
 def test_a_date_cell_leads_with_the_date_and_then_says_what_it_dates(
@@ -3573,10 +3703,10 @@ def test_a_new_result_is_starred_in_both_tables_by_the_atlas_rule(
 ) -> None:
     """A row is starred where the atlas stars its case: the result holds a case's
     verified lower bound now, and that bound is recent (`starred_results`). The starred
-    cases are the ones the atlas popover and the film call a new result, each starred
+    cases are the ones a case's visual summary and the film call a new result, each starred
     result is a current best in scope, and the star is read as well as seen: it has a
     label, the row's name says so, and the prose above each table says what it marks."""
-    atlas = {n for n, fact in _atlas_facts(page).items() if fact["star"]}
+    atlas = {n for n, fact in result_overview.film_facts().items() if fact["star"]}
     assert atlas == set(overview.recent_lower)
     starred = overview.starred
     assert {n for cases in starred.values() for n in cases} == atlas
@@ -3595,18 +3725,12 @@ def test_a_new_result_is_starred_in_both_tables_by_the_atlas_rule(
     table = overview_sections.results_table(overview)
     recent = overview_sections.recent_table(overview)
     for result in overview.results:
-        # Each row, and where its star stands: after the result's own text, before the
-        # line of its records.
-        records = '<div class="site-records">'
+        # Each row, and where its star stands: after the result's own text, the last
+        # thing in its cell, since its records are a Details column (think-e4o3).
+        placed_here = overview_sections.result_text(result) + "{star}</td>"
         rows = (
-            (
-                _row(table, result.id),
-                overview_sections.result_text(result) + "{star}" + records,
-            ),
-            (
-                _recent_row(recent, result.id),
-                overview_sections.result_text(result) + "{star}" + records,
-            ),
+            (_row(table, result.id), placed_here),
+            (_recent_row(recent, result.id), placed_here),
         )
         for row, placed in rows:
             name = re.search(r' aria-label="([^"]*)"', row)
@@ -3634,8 +3758,11 @@ def test_a_new_result_is_starred_in_both_tables_by_the_atlas_rule(
     )
     for served in (page, results):
         assert legend in re.sub(r"<[^>]+>", "", served)
-        assert served.index("marks a new result") < served.index('<div class="site-table-tools')
         assert len(ROW_STAR.findall(served)) == len(starred)
+    # The results page says it before its table; the overview, under its table since
+    # 2026-10-02 (think-tgjv), with the rest of what the table shows.
+    assert results.index("marks a new result") < results.index('<div class="site-table-tools')
+    assert page.index(_recent_table(page)) < page.index("marks a new result")
     css = render_overview.SITE_CSS.read_text(encoding="utf-8")
     assert ".site-star {\n  color: oklch(52% 0.19 25);\n}" in css
     # The star hangs after the text's last character: with no width it cannot wrap to a
@@ -3869,6 +3996,57 @@ def test_a_page_title_stands_one_space_above_what_follows_it() -> None:
     assert "  margin-block: 2rem 2.2rem;\n" in paper
 
 
+def test_a_tables_filter_bar_is_set_a_step_under_its_tables_text() -> None:
+    """A table's filter bar, its controls, their labels and its count, is set at the
+    control size, 0.8 of the sans base, a step under the table's own note-size text,
+    so it reads as the table's tools (the owner, 2026-10-02, `think-gwcu`; it was the
+    support size). On a touch screen a field keeps 16 pixels at least, under which a
+    phone's browser zooms the page into it on focus."""
+    css = render_overview.SITE_CSS.read_text(encoding="utf-8")
+    assert "--site-font-size-control: calc(var(--site-font-size-sans-base) * 0.8);" in css
+    bar = css[css.index("\n.site-table-tools {") :]
+    bar = bar[: bar.index("}")]
+    assert "font-size: var(--site-font-size-control);" in bar
+    assert "gap: 0.4rem 0.9rem;" in bar
+    fields = css[css.index(".site-table-tools :is(select, input) {") :]
+    assert "padding: 0.05rem 0.3rem;" in fields[: fields.index("}")]
+    coarse = css[css.index("@media (pointer: coarse) {") :]
+    assert (
+        '.site-table-tools :is(select, input:not([type="checkbox"])) {\n'
+        "    font-size: max(16px, 1em);"
+    ) in coarse[: coarse.index("\n}\n")]
+
+
+def test_a_filter_at_its_default_is_gray_and_one_that_filters_is_the_text_colour(
+    page: str, results: str, rendered: Callable[[str], str]
+) -> None:
+    """A control at its no-filter value is gray and a control that filters is the text
+    colour, so the bar says what narrows the table (the owner, 2026-10-02,
+    `think-pcei`): a select showing its empty-valued "All", an empty field's placeholder
+    and an unchecked checkbox's words are gray, and the count is the text colour. Every
+    select in every bar has its no-filter choice as the empty value the rule reads."""
+    css = render_overview.SITE_CSS.read_text(encoding="utf-8")
+    for rule, colour in (
+        ('.site-table-tools select:has(option[value=""]:checked) {', "--site-support-color"),
+        (".site-table-tools select option {", "--kpress-doc-text"),
+        (".site-table-tools input::placeholder {", "--site-support-color"),
+        ('.site-table-tools label:has(input[type="checkbox"]:checked) {', "--kpress-doc-text"),
+        (".site-table-tools .site-count {", "--kpress-doc-text"),
+    ):
+        block = css[css.index(rule) :]
+        assert f"color: var({colour});" in block[: block.index("}")], rule
+    for name, html_page in (
+        ("index.html", page),
+        ("all-results.html", results),
+        ("frontier.html", rendered("frontier.html")),
+    ):
+        bar = html_page.split('<div class="site-table-tools', 1)[1].split("</div>", 1)[0]
+        selects = re.findall(r"<select[^>]*>(.*?)</select>", bar, re.DOTALL)
+        assert selects, name
+        for options in selects:
+            assert options.startswith('<option value=""'), (name, options[:60])
+
+
 def test_every_table_stands_one_shared_space_from_the_text_around_it() -> None:
     """The space above and below a table is one token: above the filter bar of a table
     that has one, below every table's wrap, and around a document's own table, which
@@ -3892,7 +4070,8 @@ def test_every_table_stands_one_shared_space_from_the_text_around_it() -> None:
     # The rating ladders, which are no table, stand the same space clear of the text.
     ladders = css[css.index("@media screen {\n  .site-ladders-frame {") :]
     assert "margin-block: var(--site-table-space);" in ladders[: ladders.index("}")]
-    assert css.count("var(--site-table-space)") == 3
+    # The action row under a table or grid takes it below itself too (think-0o9u).
+    assert css.count("var(--site-table-space)") == 4
     assert "@media print {\n  .site-nav,\n  .site-table-tools {\n    display: none;" in css
     design = (render_overview.TEMPLATES / "paper-design.md").read_text(encoding="utf-8")
     assert "| Above and below a table | `--site-table-space` | 2rem, 32px |" in design
@@ -3965,7 +4144,7 @@ def test_the_frontier_results_and_papers_pages_carry_no_subtitle(
     assert render_overview.RESULTS_DESCRIPTION
     assert render_overview.PAPERS_DESCRIPTION
     assert render_overview.FRONTIER_DESCRIPTION
-    cases = rendered("cases.html")
+    cases = rendered(render_case_pages.CASES_PAGE)
     assert cases.count('<p class="subtitle">') == 1
 
 
@@ -3975,18 +4154,6 @@ def test_wrapped_chips_never_touch() -> None:
     css = render_overview.SITE_CSS.read_text(encoding="utf-8")
     rule = css[css.index(".site-chip {") :]
     assert "margin-block: 0.15rem;" in rule[: rule.index("}")]
-
-
-def test_the_atlas_stepper_draws_one_arrow_mirrored() -> None:
-    """Both stepper arrows are the site's one arrow, left and right, never the arrow
-    characters, which the site's face lacks and browsers draw from mismatched fallbacks."""
-    popover = overview_sections.atlas_popover()
-    step = popover[popover.index('<span class="site-atlas-pop-step">') :]
-    step = step[: step.index("</span></p>")]
-    assert not ARROW_CHARACTERS.search(step)
-    assert step.count(overview_sections.arrow_icon("right")) == 1
-    assert step.count(overview_sections.arrow_icon("left")) == 1
-    assert overview_sections.step_arrow(back=True) == overview_sections.arrow_icon("left")
 
 
 #: Every arrow a typed character could draw, as characters and as CSS or HTML escapes.
@@ -4133,8 +4300,8 @@ def test_every_popover_shares_one_margin_and_close_target() -> None:
 def test_a_popover_is_as_tall_as_the_window_allows() -> None:
     """A popover's height has one limit, read from one token: the window's height less a
     margin above and below, so a taller window shows more of a long panel. A card's and
-    a row's popover, the atlas popover and a result overview may be that tall, and a
-    framed page, the case popover among them, is that tall. No rule stops a popover at a
+    a row's popover, the case popover and a result overview may be that tall, and a
+    framed page is that tall. No rule stops a popover at a
     fixed height, and none declares `max-height`, which is the same property as
     `max-block-size` and would override it. A phone keeps the heights it had."""
     css = re.sub(
@@ -4149,7 +4316,7 @@ def test_a_popover_is_as_tall_as_the_window_allows() -> None:
     )
     limit = "max-block-size: var(--site-popover-max-block);"
     assert limit in _rule(css, ".site-popover")
-    assert limit in _rule(css, ".site-popover.site-atlas-pop")
+    assert limit in _rule(css, ".site-popover.site-case-pop:popover-open")
     framed = _rule(css, '.site-popover[data-go="page"]:popover-open')
     assert "block-size: var(--site-popover-max-block);" in framed
     assert "max-block-size: none;" in framed
@@ -4172,8 +4339,8 @@ def test_a_popover_is_as_tall_as_the_window_allows() -> None:
     )
     assert any("    block-size: min(88vh, 56rem);" in block for block in phone)
     assert any(
-        "  .site-popover.site-atlas-pop {\n    inline-size: calc(100vw - 1rem);\n"
-        "    max-block-size: calc(100dvh - 1rem);" in block
+        "  .site-popover.site-case-pop:popover-open {\n    max-block-size: calc(100dvh - 1rem);"
+        in block
         for block in phone
     )
 
@@ -4217,19 +4384,13 @@ def test_no_site_text_breaks_inside_a_word() -> None:
 
 
 def test_a_label_column_is_as_wide_as_its_labels() -> None:
-    """No label column has a width of its own. A row's pairs put the labels in a
-    `max-content` column and the values in the rest; the atlas panel's citation rows are
-    table rows, so their label cell is as wide as "lower" or "upper" is drawn; and a name
-    set as code is one box that a line breaks before, never inside."""
+    """No label column has a width of its own. The film panel's citation rows, in a
+    case's visual summary, are table rows, so their label cell is as wide as "lower" or
+    "upper" is drawn; and a name set as code is one box that a line breaks before, never
+    inside. The frontier row's pairs, labels in a `max-content` column, went with its
+    popover on 2026-10-03."""
     css = render_overview.SITE_CSS.read_text(encoding="utf-8")
-    pairs = _rule(css, ".site-pairs")
-    assert "grid-template-columns: max-content minmax(0, 1fr);" in pairs
-    # Two columns only where there is room: a phone lays the block out as a plain list.
-    assert "@media (width > 40rem) {\n  .site-pairs {\n" in css
-    assert css.count(".site-pairs {") == 1
-    assert "grid-template-columns: subgrid;" in _rule(
-        css, ".site-popover .site-pairs > .site-detail"
-    )
+    assert ".site-pairs" not in css
     cite = _rule(css, ".site-atlas-pop .site-atlas-pop-cite")
     assert "display: table-row;" in cite
     assert "padding-inline-start" not in cite
@@ -4238,8 +4399,6 @@ def test_a_label_column_is_as_wide_as_its_labels() -> None:
     assert "display: table-cell;" in which
     assert "white-space: nowrap;" in which
     assert "inline-size" not in which
-    # A hidden row stays hidden: `display: table-row` would otherwise show it.
-    assert "display: none;" in _rule(css, ".site-atlas-pop .site-atlas-pop-cite[hidden]")
     name = _rule(css, ".site-name")
     assert "display: inline-block;" in name
     assert "max-inline-size: 100%;" in name
@@ -4284,14 +4443,8 @@ def test_a_headline_that_is_all_math_sets_it_serif(page: str) -> None:
     ) + re.findall(r'<p class="site-popover-value"([^>]*)>(.*?)</p>', page)
     assert len(headlines) > len(overview_sections.DOCUMENTS)
     for attributes, value in headlines:
-        if "data-atlas-title" in attributes:
-            continue
         marked = overview_sections.SERIF_MATH in attributes
         assert marked == overview_sections.is_all_math(value), value
-
-    card = overview_sections.atlas_popover()
-    assert 'data-math-face="serif" id="pop-atlas-title"' in card
-    assert "data-kpress-prose-font" not in card.split(">", 1)[0]
     shell = (
         render_overview.PACKING
         / "devtools"
@@ -4355,7 +4508,6 @@ def test_a_wide_block_keeps_one_gutter_inside_the_pages_content_area() -> None:
         "--site-table-grow: max(0px, 100vw - var(--site-table-bleed-from));",
         "max-width: min(36rem, 100vw - 2rem);",
         "inline-size: min(46rem, 100vw - 2rem);",
-        "max-inline-size: min(46rem, 100vw - 2rem);",
         "inline-size: min(62rem, 100vw - 2rem);",
         "inline-size: calc(100vw - 1rem);",
     ]
@@ -4421,8 +4573,9 @@ def test_every_data_table_is_the_shared_component(page: str, results: str) -> No
 
 # ---------- Row popovers: the row is the unit (think-br9e) ----------
 
-#: The pages whose tables have rows with detail.
-ROW_PAGES = ("index.html", "all-results.html", "frontier.html")
+#: The pages whose tables have rows with detail. The frontier table's rows open the
+#: case popover instead, since 2026-10-03 (`test_case_pages`).
+ROW_PAGES = ("index.html", "all-results.html")
 
 
 class _RowWiring(HTMLParser):
@@ -4532,19 +4685,16 @@ def test_every_row_with_detail_is_wired_to_one_popover(name: str) -> None:
 def test_the_tables_with_row_detail_are_the_ones_named(
     overview: overview_data.Overview,
 ) -> None:
-    """The recent table on the overview, the results table on its page and the frontier
-    atlas: each row's popover is its own, by its key."""
-    from devtools.render_frontier_page import frontier_cases  # noqa: PLC0415
-
+    """The recent table on the overview and the results table on its page: each row's
+    popover is its own, by its key. The frontier table's rows open their case's record
+    in the one case popover instead (think-necq)."""
     recent = {f"pop-result-{r.id.lower()}" for r in overview_sections.recent_results(overview)}
     assert recent
     assert set(_row_wiring("index.html").popovers) == recent
     assert set(_row_wiring("all-results.html").popovers) == {
         f"pop-result-{r.id.lower()}" for r in overview.results
     }
-    assert set(_row_wiring("frontier.html").popovers) == {
-        f"pop-frontier-n-{case['n']}" for case in frontier_cases()
-    }
+    assert not _row_wiring("frontier.html").popovers
 
 
 @pytest.mark.parametrize("name", ROW_PAGES)
@@ -4666,6 +4816,7 @@ def test_the_site_writes_each_result_overview_once_and_drops_a_withdrawn_one(
     assert (tmp_path / "result" / "t-001.html").read_text(encoding="utf-8") == "<p>one</p>\n"
     monkeypatch.setattr(render_overview, "render_all", lambda: files[:1])
     monkeypatch.setattr(render_overview, "result_fragments", lambda: files[1:])
+    monkeypatch.setattr(render_overview, "case_records", list)
     forwarder = render_overview.Page("old.html", "<p>moved</p>")
     monkeypatch.setattr(render_overview, "forwarder_pages", lambda: [forwarder])
     assert [file.name for file in render_overview.render_site()] == [
@@ -4679,6 +4830,30 @@ def test_the_site_writes_each_result_overview_once_and_drops_a_withdrawn_one(
     assert render_overview.main(["--output", str(tmp_path), "--check"]) == 0
     (tmp_path / "result" / "t-001.html").write_text("changed", encoding="utf-8")
     assert render_overview.main(["--output", str(tmp_path), "--check"]) == 1
+
+
+def test_check_finds_a_record_file_or_overview_left_from_another_build(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    """`--check` holds the directories the site writes whole, `result/` and `cases/`, to
+    a fresh render: a file a later build would remove, a case dropped or a result
+    withdrawn since, makes the build stale, as a missing or changed one does."""
+    files = [
+        render_overview.Page("index.html", "<p>page</p>"),
+        render_overview.Page("cases/index.html", "<p>records</p>"),
+    ]
+    records = [render_overview.Page("cases/11.html", "<p>eleven</p>")]
+    monkeypatch.setattr(render_overview, "render_all", lambda: files)
+    monkeypatch.setattr(render_overview, "result_fragments", list)
+    monkeypatch.setattr(render_overview, "case_records", lambda: records)
+    monkeypatch.setattr(render_overview, "forwarder_pages", list)
+    assert render_overview.main(["--output", str(tmp_path)]) == 0
+    assert render_overview.main(["--output", str(tmp_path), "--check"]) == 0
+    (tmp_path / "cases" / "325.html").write_text("a dropped case", encoding="utf-8")
+    assert render_overview.main(["--output", str(tmp_path), "--check"]) == 1
+    render_overview.write_site(tmp_path, [*files, *records])
+    assert not (tmp_path / "cases" / "325.html").exists()
+    assert render_overview.main(["--output", str(tmp_path), "--check"]) == 0
 
 
 def test_a_result_row_popover_is_the_same_panel_in_both_tables(
@@ -4803,19 +4978,28 @@ def test_a_deferred_row_body_waits_in_a_template_with_a_fallback_for_no_scripts(
 
 
 def test_a_row_with_detail_takes_the_shared_wash_and_no_disclosure_style() -> None:
-    """The row's hover wash is the shared table rule's; a row with detail keeps it on
-    keyboard focus, with a ring, and while its popover is open, and shows the pointer
-    once the script has made it the control. No rule styles a `<details>` in a table."""
+    """The row's hover wash is the shared table rule's; a row with detail, and a
+    frontier row, which opens its case's record (think-necq), keeps it on keyboard
+    focus, with a ring, and while its popover is open, and shows the pointer once its
+    script has made it the control. No rule styles a `<details>` in a table."""
     css = render_overview.SITE_CSS.read_text(encoding="utf-8")
     hover = css[css.index(".kpress .site-table tbody tr:hover {") :]
     assert "background: var(--site-wash);" in hover[: hover.index("}")]
-    row = ".kpress .site-table tbody tr[data-row-popover]"
-    held = css[css.index(f'{row}:is(:focus-visible, [aria-expanded="true"]) {{') :]
-    assert "background: var(--site-wash);" in held[: held.index("}")]
-    ring = css[css.index(".kpress .site-table tbody tr[data-row-popover]:focus-visible {") :]
-    assert "outline: 2px solid var(--kpress-doc-accent);" in ring[: ring.index("}")]
-    ready = css[css.index(".kpress .site-table tbody tr[data-row-ready] {") :]
-    assert "cursor: pointer;" in ready[: ready.index("}")]
+    held = _rule(
+        css,
+        ".kpress\n  .site-table\n  tbody\n  tr:is([data-row-popover], [data-case-row])"
+        ':is(:focus-visible, [aria-expanded="true"])',
+    )
+    assert "background: var(--site-wash);" in held
+    ring = _rule(
+        css,
+        ".kpress .site-table tbody tr:is([data-row-popover], [data-case-row]):focus-visible",
+    )
+    assert "outline: 2px solid var(--kpress-doc-accent);" in ring
+    ready = _rule(
+        css, ".kpress .site-table tbody tr:is([data-row-ready], [data-case-row][aria-controls])"
+    )
+    assert "cursor: pointer;" in ready
     trigger = css[css.index(".kpress .site-table .site-row-open {") :]
     for declaration in ("background: none;", "border: 0;", "color: inherit;", "font: inherit;"):
         assert declaration in trigger[: trigger.index("}")], declaration
@@ -5350,6 +5534,7 @@ def test_the_site_writes_its_forwarders_and_checks_them(
     page = render_overview.Page("index.html", "<p>page</p>")
     monkeypatch.setattr(render_overview, "render_all", lambda: [page])
     monkeypatch.setattr(render_overview, "result_fragments", list)
+    monkeypatch.setattr(render_overview, "case_records", list)
     moved = [old for old, _ in render_overview.MOVED_PAGES]
     assert [file.name for file in render_overview.render_site()] == ["index.html", *moved]
     assert {"explainer.html", "n11-optimality/index.html"} < set(moved)
@@ -5362,3 +5547,30 @@ def test_the_site_writes_its_forwarders_and_checks_them(
     assert render_overview.main(["--output", str(tmp_path), "--check"]) == 1
     (tmp_path / "explainer.html").unlink()
     assert render_overview.main(["--output", str(tmp_path), "--check"]) == 1
+
+
+def test_a_cases_status_is_one_chip_wherever_it_is_drawn(
+    rendered: Callable[[str], str], overview: overview_data.Overview
+) -> None:
+    """A case's status, `proved` or `open`, is one chip (`case_status_chip`) on every page
+    that draws it, the frontier table and the case records alike, and its fill is the
+    status's own (the owner, 2026-10-02, `think-c19o`): no page marks a case with the
+    accent tone it had before."""
+    statuses = {case["status"] for case in overview.cases.values()}
+    assert statuses == {"proved", "open"}
+    records = site_renders.case_records()
+    shown = {
+        "frontier.html": rendered("frontier.html"),
+        # A record draws its own case's status: one solved case and one open one.
+        "case records": records["cases/11.html"] + records["cases/29.html"],
+    }
+    for name, page in shown.items():
+        assert 'data-tone="accent"' not in page, name
+        drawn = re.findall(
+            r'<span class="site-chip" data-case-status="(\w+)">(\w+)</span>', page
+        )
+        assert drawn, name
+        assert all(attribute == word for attribute, word in drawn), name
+        assert {word for _, word in drawn} == statuses, name
+        for status in statuses:
+            assert page.count(overview_sections.case_status_chip(status)) >= 1, (name, status)

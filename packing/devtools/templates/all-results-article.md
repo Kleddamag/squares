@@ -24,7 +24,7 @@ Under its rungs each result shows its kind, which says what it is: a *lower boun
 that bound no case, such as a *rigidity*, a *case exclusion* or a *simplification*, a
 second and simpler proof of a value another result holds.
 
-Under its kind is its status, how far the work on it here has gone: *recorded*,
+Its status, in a column of its own, is how far the work on it here has gone: *recorded*,
 registered from its source with nothing here yet read or replayed; *reviewed*, its
 argument read here; *confirmed*, a replay of its certificate passed; or *incomplete*, a
 defect found in it still open.
@@ -36,8 +36,8 @@ request that is with the source or another party.
 A bound that no case bound rests on now is marked *superseded*.
 
 {{STAR_LEGEND}}
-Open a row for the full claim and its novelty label, and follow the records to the case
-file, the evidence, the retained source and the review.
+Open a row for the full claim and its novelty label, and follow its details, a link to a
+line, to the case file, the evidence, the retained source and the review.
 The newest, and the ones that matter most, are on the [overview](./#recent-results).
 
 The table starts with every result showing, newest first.

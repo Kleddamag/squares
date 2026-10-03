@@ -90,20 +90,20 @@ Follow the `n` link for full provenance, numerical evidence, conflicts, and bloc
 | [`80`](n-080.md) | `9` | `9` | `9` | `9` | proved | replayed here, external proof | — | 2026-08-24 |
 | [`81`](n-081.md) | `9` | `9` | `9.0` | `9` | proved | replayed here, external proof | — | 2026-08-24 |
 | [`82`](n-082.md) | `6 + (5/2)√2` | `6 + (5/2)√2` | `94*√2/41 + 247/41` | `1 + √65` | open | replayed here, external proof | formal lower differs from report | 2026-10-02 |
-| [`83`](n-083.md) | `9.63482562092335` | `10` | `187/20` | `1 + √66` | open | replayed here, external proof | formal upper trails report; formal lower differs from report; catalogue ahead, intake pending | 2026-10-02 |
+| [`83`](n-083.md) | `9.63482562092335` | `10` | `937/100` | `1 + √66` | open | replayed here, external proof | formal upper trails report; formal lower differs from report; catalogue ahead, intake pending | 2026-10-02 |
 | [`84`](n-084.md) | `9 + (1/2)√2` | `9 + (1/2)√2` | `47/5` | `47/5` | open | replayed here | — | 2026-10-02 |
-| [`85`](n-085.md) | `(11/2) + 3 √2` | `(11/2) + 3 √2` | `471/50` | `471/50` | open | replayed here | — | 2026-10-02 |
-| [`86`](n-086.md) | `(17/2) + (1/2)√7` | `(17/2) + (1/2)√7` | `1873/200` | `471/50` | open | replayed here | formal lower differs from report | 2026-10-02 |
-| [`87`](n-087.md) | `9.83881743996618` | `10` | `941/100` | `471/50` | open | replayed here | formal upper trails report; formal lower differs from report; catalogue ahead, intake pending | 2026-10-02 |
-| [`88`](n-088.md) | `9.88815305375857` | `10` | `3791/400` | `3791/400` | open | replayed here | formal upper trails report | 2026-10-01 |
+| [`85`](n-085.md) | `(11/2) + 3 √2` | `(11/2) + 3 √2` | `473/50` | `471/50` | open | replayed here | formal lower differs from report | 2026-10-02 |
+| [`86`](n-086.md) | `(17/2) + (1/2)√7` | `(17/2) + (1/2)√7` | `473/50` | `471/50` | open | replayed here | formal lower differs from report | 2026-10-02 |
+| [`87`](n-087.md) | `9.83881743996618` | `10` | `237/25` | `471/50` | open | replayed here | formal upper trails report; formal lower differs from report; catalogue ahead, intake pending | 2026-10-02 |
+| [`88`](n-088.md) | `9.88815305375857` | `10` | `237/25` | `3791/400` | open | replayed here | formal upper trails report; formal lower differs from report | 2026-10-02 |
 | [`89`](n-089.md) | `5 + (7/2)√2` | `5 + (7/2)√2` | `1913/200` | `1913/200` | open | replayed here | — | 2026-10-01 |
 | [`90`](n-090.md) | `10` | `10` | `48/5` | `48/5` | open | replayed here | — | 2026-10-02 |
-| [`91`](n-091.md) | `10` | `10` | `1929/200` | `1 + √74` | open | replayed here, external proof | formal lower differs from report | 2026-09-28 |
-| [`92`](n-092.md) | `10` | `10` | `969/100` | `969/100` | open | replayed here | — | 2026-10-02 |
-| [`93`](n-093.md) | `10` | `10` | `3889/400` | `3889/400` | open | replayed here | — | 2026-10-01 |
+| [`91`](n-091.md) | `10` | `10` | `97/10` | `1 + √74` | open | replayed here, external proof | formal lower differs from report | 2026-10-02 |
+| [`92`](n-092.md) | `10` | `10` | `39/4` | `969/100` | open | replayed here | formal lower differs from report | 2026-10-02 |
+| [`93`](n-093.md) | `10` | `10` | `39/4` | `3889/400` | open | replayed here | formal lower differs from report | 2026-10-02 |
 | [`94`](n-094.md) | `10` | `10` | `1961/200` | `1961/200` | open | replayed here | — | 2026-10-01 |
 | [`95`](n-095.md) | `10` | `10` | `49259/5000` | `49259/5000` | open | replayed here | — | 2026-10-01 |
-| [`96`](n-096.md) | `10` | `10` | `9.888194417316` | `1 + √79` | open | replayed here, external proof | — | 2026-08-24 |
+| [`96`](n-096.md) | `10` | `10` | `249/25` | `1 + √79` | open | replayed here, external proof | formal lower differs from report | 2026-10-02 |
 | [`97`](n-097.md) | `10` | `10` | `10` | `1 + √80` | open | replayed here, external proof | formal lower differs from report; proof audit pending | 2026-10-01 |
 | [`98`](n-098.md) | `10` | `10` | `10` | `10` | proved | replayed here, external proof | — | 2026-08-24 |
 | [`99`](n-099.md) | `10` | `10` | `10` | `10` | proved | replayed here, external proof | — | 2026-08-24 |

@@ -2636,6 +2636,335 @@ evidence:
         No blocking defect; coverage statements remain the source's until the replay
         passes.
     source_reviewed: '2026-10-02'
+  - id: E-n083-wand125-mixed-937-report
+    claim: lower-bound
+    scope: {n_values: [83]}
+    assurance: reported
+    reported_method: interval-certified
+    performed_by: source-author
+    relationship_to_generator: same-implementation
+    origin: external
+    novelty: previously-published
+    source_key: '[wand125 mixed bounds afternoon 2026-10-02]'
+    certificate: resources/web/wand125-mixed-bounds-afternoon-2026-10-02/square-packing-bounds/certificates/mixed_n83_L937/candidate.json.gz
+    replay_status: not-attempted
+    limitations: >-
+      wand125/square-packing-bounds at b00fc70f1904e9b1b567afee056d347f911209e8 (the
+      directory's one commit is 25c421d5, 2026-10-02T14:46:34Z) reports s(83) >=
+      937/100 = 9.37 from a rectangle density of 728 uniform-density rectangles and no
+      point mass, total mass 8299999/100000, core side B = 9977/10000 and 201 net
+      half-angles of step 83/40000, checked there by code/mixed_rotated_verify.cpp
+      (SHA-256 89b674a6...), the research copy of Tokoharu's verify.cpp that the n =
+      50 certificate uses: it accepts a centre box at lower bound 1 instead of
+      10001/10000, with the axis direction decided by exact integer tables in
+      code/verify_axis_certificate.py, both run by the driver
+      code/verify_mixed_full_proof.py. The least oblique lower bound the source
+      records is 1.0000000002030356, at net index 165, and the axis integer minimum
+      1.0063110587189603 over 21,808,900 cells; its oblique run took 44,833 seconds
+      over 122,070,074 nodes. It exceeds Green's reported 2 sqrt(2) + (247 + 12
+      sqrt(2))/41 = 9.2667335..., which this case held by monotonicity from n = 82,
+      and the linear s(83) >= 187/20 the record reports (T-073), by 0.02. The source's
+      improvement_lower, 1033/10000, is measured from 92667/10000, below Green's
+      value, and is not a lower bound on the improvement, which is 0.10326646...
+      (review finding AF-1); its comparison note names a "published rectangle" value
+      of 9.15 that nothing here holds (AF-2). The source says the full replay was run
+      again from the published tarball on a fresh machine, by the same implementation
+      and not an independent one; that was not checked here. The tarball (SHA-256
+      cbf81b21...) is pinned by digest and not retained. Here
+      devtools.audit_wand125_point_and_mixed mixed-audit (receipts/mixed-audit.json in
+      the packet) recomputes the mass, the net, the centre domains and the candidate
+      digest from the retained bytes, and its mixed-fetch checked the pinned tarball,
+      its 621 listed files, the driver's preconditions and that all 200 oblique inputs
+      enclose the exact candidate; none of it decides coverage, and no angle was
+      replayed.
+    external_review:
+      state: informally-verified
+      date: '2026-10-02'
+      reviewed_by: >-
+        AI agent, lane V of the 2026-10-02 result import, after retaining the
+        packets and before any replay; the retaining lane's own review, not prompted
+        separately from it; model unstated
+        (docs/project/reviews/review-2026-10-02-wand125-afternoon-certificates.md)
+      note: >-
+        No blocking defect. The code/ directory is byte for byte the mixed checker
+        read on 28 September and 2 October, and every exact premise readable from
+        the retained files holds; the review re-derived only what the new measure
+        adds, its size, structure and records. The 200 oblique coverage statements
+        and the axis tables are the source's until the replay here passes.
+    source_reviewed: '2026-10-02'
+  - id: E-n085-wand125-mixed-946-report
+    claim: lower-bound
+    scope: {n_values: [85, 86]}
+    assurance: reported
+    reported_method: interval-certified
+    performed_by: source-author
+    relationship_to_generator: same-implementation
+    origin: external
+    novelty: previously-published
+    source_key: '[wand125 mixed bounds afternoon 2026-10-02]'
+    certificate: resources/web/wand125-mixed-bounds-afternoon-2026-10-02/square-packing-bounds/certificates/mixed_n85_L946/candidate.json.gz
+    replay_status: not-attempted
+    limitations: >-
+      wand125/square-packing-bounds at b00fc70f1904e9b1b567afee056d347f911209e8 (the
+      directory's one commit is 028b9155, 2026-10-02T11:38:12Z) reports s(85) >=
+      473/50 = 9.46 from a rectangle density of 525 uniform-density rectangles and no
+      point mass, total mass 8499999/100000, core side B = 9977/10000 and 201 net
+      half-angles of step 83/40000, checked there by code/mixed_rotated_verify.cpp
+      (SHA-256 89b674a6...), the research copy of Tokoharu's verify.cpp that the n =
+      50 certificate uses: it accepts a centre box at lower bound 1 instead of
+      10001/10000, with the axis direction decided by exact integer tables in
+      code/verify_axis_certificate.py, both run by the driver
+      code/verify_mixed_full_proof.py. The least oblique lower bound the source
+      records is 1.0000000021147502, at net index 182, and the axis integer minimum
+      1.0025322687268394 over 12,694,969 cells; its oblique run took 27,379 seconds
+      over 87,731,796 nodes. It supersedes the source's mixed_n85_L942, s(85) >=
+      471/50, which this case holds verified (T-071), and exceeds Green's reported
+      9.2667335...; the source's improvement_lower, 1933/10000, is measured from
+      92667/10000, below Green's value, and is not a lower bound on the improvement,
+      which is 0.19326646... (review finding AF-1); its comparison note names a
+      "published rectangle" value of 9.2325 that nothing here holds (AF-2). Its mass
+      is below 86, so by monotonicity it bounds n = 86 as well, above the rectangle
+      certificate reported there, 1873/200 (T-068), and the verified 471/50. The
+      source says the full replay was run again from the published tarball on a fresh
+      machine, by the same implementation and not an independent one; that was not
+      checked here. The tarball (SHA-256 d518b3a9...) is pinned by digest and not
+      retained. Here devtools.audit_wand125_point_and_mixed mixed-audit
+      (receipts/mixed-audit.json in the packet) recomputes the mass, the net, the
+      centre domains and the candidate digest from the retained bytes, and its
+      mixed-fetch checked the pinned tarball, its 621 listed files, the driver's
+      preconditions and that all 200 oblique inputs enclose the exact candidate; none
+      of it decides coverage, and no angle was replayed.
+    external_review:
+      state: informally-verified
+      date: '2026-10-02'
+      reviewed_by: >-
+        AI agent, lane V of the 2026-10-02 result import, after retaining the
+        packets and before any replay; the retaining lane's own review, not prompted
+        separately from it; model unstated
+        (docs/project/reviews/review-2026-10-02-wand125-afternoon-certificates.md)
+      note: >-
+        No blocking defect. The code/ directory is byte for byte the mixed checker
+        read on 28 September and 2 October, and every exact premise readable from
+        the retained files holds; the review re-derived only what the new measure
+        adds, its size, structure and records. The 200 oblique coverage statements
+        and the axis tables are the source's until the replay here passes.
+    source_reviewed: '2026-10-02'
+  - id: E-n087-wand125-mixed-948-report
+    claim: lower-bound
+    scope: {n_values: [87, 88]}
+    assurance: reported
+    reported_method: interval-certified
+    performed_by: source-author
+    relationship_to_generator: same-implementation
+    origin: external
+    novelty: previously-published
+    source_key: '[wand125 mixed bounds afternoon 2026-10-02]'
+    certificate: resources/web/wand125-mixed-bounds-afternoon-2026-10-02/square-packing-bounds/certificates/mixed_n87_L948/candidate.json.gz
+    replay_status: not-attempted
+    limitations: >-
+      wand125/square-packing-bounds at b00fc70f1904e9b1b567afee056d347f911209e8 (the
+      directory's one commit is 6e4e9786, 2026-10-02T13:49:30Z) reports s(87) >=
+      237/25 = 9.48 from a rectangle density of 299 uniform-density rectangles and no
+      point mass, total mass 8699999/100000, core side B = 9977/10000 and 201 net
+      half-angles of step 83/40000, checked there by code/mixed_rotated_verify.cpp
+      (SHA-256 89b674a6...), the research copy of Tokoharu's verify.cpp that the n =
+      50 certificate uses: it accepts a centre box at lower bound 1 instead of
+      10001/10000, with the axis direction decided by exact integer tables in
+      code/verify_axis_certificate.py, both run by the driver
+      code/verify_mixed_full_proof.py. The least oblique lower bound the source
+      records is 1.0000000089739896, at net index 176, and the axis integer minimum
+      1.013387013743792 over 2,866,249 cells; its oblique run took 7,758 seconds over
+      37,506,392 nodes. It exceeds the rectangle certificate the record reports at n =
+      87, 941/100 (T-068), and the verified 471/50 carried from n = 85 (T-071). The
+      source compares with 92667/10000 and calls 9.46, carried from its n = 85
+      certificate, the record; its improvement_lower, 2133/10000, is not a lower bound
+      on the improvement over Green's 9.2667335..., which is 0.21326646... (review
+      finding AF-1). Its mass is below 88, so by monotonicity it bounds n = 88 as
+      well, above the replayed rectangle certificate 3791/400 there (T-074) by 0.0025.
+      The source says the full replay was run again from the published tarball on a
+      fresh machine, by the same implementation and not an independent one; that was
+      not checked here. The tarball (SHA-256 c77d8ea1...) is pinned by digest and not
+      retained. Here devtools.audit_wand125_point_and_mixed mixed-audit
+      (receipts/mixed-audit.json in the packet) recomputes the mass, the net, the
+      centre domains and the candidate digest from the retained bytes, and its
+      mixed-fetch checked the pinned tarball, its 621 listed files, the driver's
+      preconditions and that all 200 oblique inputs enclose the exact candidate; none
+      of it decides coverage, and no angle was replayed.
+    external_review:
+      state: informally-verified
+      date: '2026-10-02'
+      reviewed_by: >-
+        AI agent, lane V of the 2026-10-02 result import, after retaining the
+        packets and before any replay; the retaining lane's own review, not prompted
+        separately from it; model unstated
+        (docs/project/reviews/review-2026-10-02-wand125-afternoon-certificates.md)
+      note: >-
+        No blocking defect. The code/ directory is byte for byte the mixed checker
+        read on 28 September and 2 October, and every exact premise readable from
+        the retained files holds; the review re-derived only what the new measure
+        adds, its size, structure and records. The 200 oblique coverage statements
+        and the axis tables are the source's until the replay here passes.
+    source_reviewed: '2026-10-02'
+  - id: E-n091-wand125-mixed-970-report
+    claim: lower-bound
+    scope: {n_values: [91]}
+    assurance: reported
+    reported_method: interval-certified
+    performed_by: source-author
+    relationship_to_generator: same-implementation
+    origin: external
+    novelty: previously-published
+    source_key: '[wand125 mixed bounds afternoon 2026-10-02]'
+    certificate: resources/web/wand125-mixed-bounds-afternoon-2026-10-02/square-packing-bounds/certificates/mixed_n91_L970/candidate.json.gz
+    replay_status: not-attempted
+    limitations: >-
+      wand125/square-packing-bounds at b00fc70f1904e9b1b567afee056d347f911209e8 (the
+      directory's one commit is 6e4e9786, 2026-10-02T13:49:30Z) reports s(91) >= 97/10
+      = 9.7 from a rectangle density of 288 uniform-density rectangles and no point
+      mass, total mass 9099999/100000, core side B = 9977/10000 and 201 net
+      half-angles of step 83/40000, checked there by code/mixed_rotated_verify.cpp
+      (SHA-256 89b674a6...), the research copy of Tokoharu's verify.cpp that the n =
+      50 certificate uses: it accepts a centre box at lower bound 1 instead of
+      10001/10000, with the axis direction decided by exact integer tables in
+      code/verify_axis_certificate.py, both run by the driver
+      code/verify_mixed_full_proof.py. The least oblique lower bound the source
+      records is 1.0000000003906073, at net index 191, and the axis integer minimum
+      1.005778849360574 over 2,748,964 cells; its oblique run took 7,792 seconds over
+      30,125,436 nodes. It exceeds the source's own rectangle certificate the record
+      reports at n = 91, 1929/200, with which the source compares it, by 0.055, and
+      Nagamochi's verified 1 + sqrt(74) = 9.6023.... The source says the full replay
+      was run again from the published tarball on a fresh machine, by the same
+      implementation and not an independent one; that was not checked here. The
+      tarball (SHA-256 56174c72...) is pinned by digest and not retained. Here
+      devtools.audit_wand125_point_and_mixed mixed-audit (receipts/mixed-audit.json in
+      the packet) recomputes the mass, the net, the centre domains and the candidate
+      digest from the retained bytes, and its mixed-fetch checked the pinned tarball,
+      its 621 listed files, the driver's preconditions and that all 200 oblique inputs
+      enclose the exact candidate; none of it decides coverage, and no angle was
+      replayed.
+    external_review:
+      state: informally-verified
+      date: '2026-10-02'
+      reviewed_by: >-
+        AI agent, lane V of the 2026-10-02 result import, after retaining the
+        packets and before any replay; the retaining lane's own review, not prompted
+        separately from it; model unstated
+        (docs/project/reviews/review-2026-10-02-wand125-afternoon-certificates.md)
+      note: >-
+        No blocking defect. The code/ directory is byte for byte the mixed checker
+        read on 28 September and 2 October, and every exact premise readable from
+        the retained files holds; the review re-derived only what the new measure
+        adds, its size, structure and records. The 200 oblique coverage statements
+        and the axis tables are the source's until the replay here passes.
+    source_reviewed: '2026-10-02'
+  - id: E-n092-wand125-mixed-975-report
+    claim: lower-bound
+    scope: {n_values: [92, 93]}
+    assurance: reported
+    reported_method: interval-certified
+    performed_by: source-author
+    relationship_to_generator: same-implementation
+    origin: external
+    novelty: previously-published
+    source_key: '[wand125 mixed bounds afternoon 2026-10-02]'
+    certificate: resources/web/wand125-mixed-bounds-afternoon-2026-10-02/square-packing-bounds/certificates/mixed_n92_L975/candidate.json.gz
+    replay_status: not-attempted
+    limitations: >-
+      wand125/square-packing-bounds at b00fc70f1904e9b1b567afee056d347f911209e8 (the
+      directory's one commit is 6e4e9786, 2026-10-02T13:49:30Z) reports s(92) >= 39/4
+      = 9.75 from a rectangle density of 324 uniform-density rectangles and no point
+      mass, total mass 9199999/100000, core side B = 9977/10000 and 201 net
+      half-angles of step 83/40000, checked there by code/mixed_rotated_verify.cpp
+      (SHA-256 89b674a6...), the research copy of Tokoharu's verify.cpp that the n =
+      50 certificate uses: it accepts a centre box at lower bound 1 instead of
+      10001/10000, with the axis direction decided by exact integer tables in
+      code/verify_axis_certificate.py, both run by the driver
+      code/verify_mixed_full_proof.py. The least oblique lower bound the source
+      records is 1.0000000022907243, at net index 191, and the axis integer minimum
+      1.008723611315222 over 3,560,769 cells; its oblique run took 6,744 seconds over
+      32,377,010 nodes. It supersedes the source's mixed_n92_L969, s(92) >= 969/100,
+      which this case holds verified (T-069) and with which the source compares it, by
+      0.06. Its mass is below 93, so by monotonicity it bounds n = 93 as well, above
+      the replayed rectangle certificate 3889/400 there (T-074) by 0.0275. The source
+      says the full replay was run again from the published tarball on a fresh
+      machine, by the same implementation and not an independent one; that was not
+      checked here. The tarball (SHA-256 1f61a640...) is pinned by digest and not
+      retained. Here devtools.audit_wand125_point_and_mixed mixed-audit
+      (receipts/mixed-audit.json in the packet) recomputes the mass, the net, the
+      centre domains and the candidate digest from the retained bytes, and its
+      mixed-fetch checked the pinned tarball, its 621 listed files, the driver's
+      preconditions and that all 200 oblique inputs enclose the exact candidate; none
+      of it decides coverage, and no angle was replayed.
+    external_review:
+      state: informally-verified
+      date: '2026-10-02'
+      reviewed_by: >-
+        AI agent, lane V of the 2026-10-02 result import, after retaining the
+        packets and before any replay; the retaining lane's own review, not prompted
+        separately from it; model unstated
+        (docs/project/reviews/review-2026-10-02-wand125-afternoon-certificates.md)
+      note: >-
+        No blocking defect. The code/ directory is byte for byte the mixed checker
+        read on 28 September and 2 October, and every exact premise readable from
+        the retained files holds; the review re-derived only what the new measure
+        adds, its size, structure and records. The 200 oblique coverage statements
+        and the axis tables are the source's until the replay here passes.
+    source_reviewed: '2026-10-02'
+  - id: E-n096-wand125-mixed-996-report
+    claim: lower-bound
+    scope: {n_values: [96]}
+    assurance: reported
+    reported_method: interval-certified
+    performed_by: source-author
+    relationship_to_generator: same-implementation
+    origin: external
+    novelty: previously-published
+    source_key: '[wand125 mixed bounds afternoon 2026-10-02]'
+    certificate: resources/web/wand125-mixed-bounds-afternoon-2026-10-02/square-packing-bounds/certificates/mixed_n96_L996/candidate.json.gz
+    replay_status: not-attempted
+    limitations: >-
+      wand125/square-packing-bounds at b00fc70f1904e9b1b567afee056d347f911209e8 (the
+      pinned revision is the directory's one commit, 2026-10-02T15:16:36Z) reports
+      s(96) >= 249/25 = 9.96 from a rectangle density of 279 uniform-density
+      rectangles and no point mass, total mass 9599999/100000, core side B =
+      9977/10000 and 201 net half-angles of step 83/40000, checked there by
+      code/mixed_rotated_verify.cpp (SHA-256 89b674a6...), the research copy of
+      Tokoharu's verify.cpp that the n = 50 certificate uses: it accepts a centre box
+      at lower bound 1 instead of 10001/10000, with the axis direction decided by
+      exact integer tables in code/verify_axis_certificate.py, both run by the driver
+      code/verify_mixed_full_proof.py. The least oblique lower bound the source
+      records is 1.0000000030392873, at net index 122, and the axis integer minimum
+      1.0056403520432675 over 1,420,864 cells; its oblique run took 8,827 seconds over
+      31,529,330 nodes. It exceeds Nagamochi's 1 + sqrt(79) = 9.8882..., which this
+      case holds verified, by 0.0718, the first certificate in this record above that
+      value, and supersedes the source's mixed_n96_L992 of the same day, 248/25, which
+      is pinned and not registered. The source's audit calls Nagamochi's value
+      unproven and cites jlevy/squares#295 (review finding AF-3); the certificate does
+      not rest on it. Its mass is below 97, where the record reports 10. The source
+      says the full replay was run again from the published tarball on a fresh
+      machine, by the same implementation and not an independent one; that was not
+      checked here. The tarball (SHA-256 5fc6195b...) is pinned by digest and not
+      retained. Here devtools.audit_wand125_point_and_mixed mixed-audit
+      (receipts/mixed-audit.json in the packet) recomputes the mass, the net, the
+      centre domains and the candidate digest from the retained bytes, and its
+      mixed-fetch checked the pinned tarball, its 621 listed files, the driver's
+      preconditions and that all 200 oblique inputs enclose the exact candidate; none
+      of it decides coverage, and no angle was replayed.
+    external_review:
+      state: informally-verified
+      date: '2026-10-02'
+      reviewed_by: >-
+        AI agent, lane V of the 2026-10-02 result import, after retaining the
+        packets and before any replay; the retaining lane's own review, not prompted
+        separately from it; model unstated
+        (docs/project/reviews/review-2026-10-02-wand125-afternoon-certificates.md)
+      note: >-
+        No blocking defect. The code/ directory is byte for byte the mixed checker
+        read on 28 September and 2 October, and every exact premise readable from
+        the retained files holds; the review re-derived only what the new measure
+        adds, its size, structure and records. The 200 oblique coverage statements
+        and the axis tables are the source's until the replay here passes.
+    source_reviewed: '2026-10-02'
   - id: E-n032-evand-zmx2-full-sym-report
     claim: lower-bound
     scope: {n_values: [32]}

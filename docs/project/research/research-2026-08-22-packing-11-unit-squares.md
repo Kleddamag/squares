@@ -931,20 +931,20 @@ Use the structured form to query or plot; use these tables to read.
 | 75 | 9 | grid | — | 8.9 | counting | 0.1 |
 | 76 | 9 | grid | — | 8.94 | counting | 0.06 |
 | 82 | `6 + (5/2)√2` = 9.53553391 | hand | — | 9.266734 | unavoidable points | 0.2688 |
-| 83 | 9.63482562 | extension | 24 | 9.35 | counting | 0.2848 |
+| 83 | 9.63482562 | extension | 24 | 9.37 | counting | 0.2648 |
 | 84 | `9 + (1/2)√2` = 9.70710678 | strip | — | 9.4 | counting | 0.3071 |
-| 85 | `(11/2) + 3 √2` = 9.74264069 | hand | — | 9.42 | counting | 0.3226 |
-| 86 | `(17/2) + (1/2)√7` = 9.82287566 | extension | — | 9.365 | counting | 0.4579 |
-| 87 | 9.83881744 | annealing | 44 | 9.41 | counting | 0.4288 |
-| 88 | 9.88815305 | hand | 20 | 9.4775 | counting | 0.4107 |
+| 85 | `(11/2) + 3 √2` = 9.74264069 | hand | — | 9.46 | counting | 0.2826 |
+| 86 | `(17/2) + (1/2)√7` = 9.82287566 | extension | — | 9.46 | monotone from `s(85)` | 0.3629 |
+| 87 | 9.83881744 | annealing | 44 | 9.48 | counting | 0.3588 |
+| 88 | 9.88815305 | hand | 20 | 9.48 | monotone from `s(87)` | 0.4082 |
 | 89 | `5 + (7/2)√2` = 9.94974747 | hand | — | 9.565 | counting | 0.3847 |
 | 90 | 10 | grid | — | 9.6 | counting | 0.4 |
-| 91 | 10 | grid | — | 9.645 | counting | 0.355 |
-| 92 | 10 | grid | — | 9.69 | counting | 0.31 |
-| 93 | 10 | grid | — | 9.7225 | counting | 0.2775 |
+| 91 | 10 | grid | — | 9.7 | counting | 0.3 |
+| 92 | 10 | grid | — | 9.75 | counting | 0.25 |
+| 93 | 10 | grid | — | 9.75 | monotone from `s(92)` | 0.25 |
 | 94 | 10 | grid | — | 9.805 | counting | 0.195 |
 | 95 | 10 | grid | — | 9.8518 | counting | 0.1482 |
-| 96 | 10 | grid | — | 9.888194 | Nagamochi | 0.1118 |
+| 96 | 10 | grid | — | 9.96 | counting | 0.04 |
 | 101 | `7 + (5/2)√2` = 10.53553391 | extension | — | 10.28 | counting | 0.2555 |
 | 102 | 10.60717468 | — | — | 10.28 | monotone from `s(101)` | 0.3272 |
 | 103 | 10.70351676 | — | — | 10.28 | monotone from `s(101)` | 0.4235 |

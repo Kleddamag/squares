@@ -8,8 +8,8 @@ ours, which rest on someone else's argument, and how far each has been checked.
 
 ## The short version
 
-- **195** evidence records. **130** are formal; **124** of those were established here.
-- **56** rest on an argument made elsewhere, of which **7** have been read by nobody here.
+- **201** evidence records. **130** are formal; **124** of those were established here.
+- **62** rest on an argument made elsewhere, of which **7** have been read by nobody here.
 - **36** claim to be first established here. **13** make no novelty statement at all - not assessed, which is not the same as not novel.
 
 A formal claim on an unread external proof is still formal: the proof proves its
@@ -39,10 +39,10 @@ results, it is a statement about what this repository has itself examined.
 | `E-wand125-rectangle-report` | 1 | lower-bound | reported | - | elsewhere | - | previously-published |
 | `E-wand125-rectangle-monotone-report` | 0 | lower-bound | reported | - | here | - | previously-published |
 | `E-wand125-rectangle-source-replay` | 1 | lower-bound | verified | strict inequalities only | here | informally-verified | previously-published |
-| `E-wand125-rectangle-2026-09-28-report` | 9 | lower-bound | reported | - | elsewhere | - | previously-published |
+| `E-wand125-rectangle-2026-09-28-report` | 8 | lower-bound | reported | - | elsewhere | - | previously-published |
 | `E-wand125-rectangle-2026-09-28-monotone-report` | 0 | lower-bound | reported | - | here | - | previously-published |
 | `E-wand125-rectangle-2026-09-28-source-replay` | 5 | lower-bound | verified | strict inequalities only | here | - | previously-published |
-| `E-wand125-rectangle-2026-10-01-report` | 31 | lower-bound | reported | - | elsewhere | informally-verified | previously-published |
+| `E-wand125-rectangle-2026-10-01-report` | 27 | lower-bound | reported | - | elsewhere | informally-verified | previously-published |
 | `E-wand125-rectangle-2026-10-01-source-replay` | 31 | lower-bound | verified | strict inequalities only | here | - | previously-published |
 | `E-n045-wand125-point-cover-report` | 0 | lower-bound | reported | - | elsewhere | - | previously-published |
 | `E-n045-wand125-point-cover-source-replay` | 0 | lower-bound | verified | strict inequalities only | here | informally-verified | previously-published |
@@ -62,16 +62,22 @@ results, it is a statement about what this repository has itself examined.
 | `E-n066-wand125-mixed-842-source-replay` | 1 | lower-bound | verified | strict inequalities only | here | - | previously-published |
 | `E-n090-wand125-mixed-960-report` | 1 | lower-bound | reported | - | elsewhere | informally-verified | previously-published |
 | `E-n090-wand125-mixed-960-source-replay` | 1 | lower-bound | verified | strict inequalities only | here | - | previously-published |
-| `E-n092-wand125-mixed-969-report` | 1 | lower-bound | reported | - | elsewhere | informally-verified | previously-published |
+| `E-n092-wand125-mixed-969-report` | 0 | lower-bound | reported | - | elsewhere | informally-verified | previously-published |
 | `E-n092-wand125-mixed-969-source-replay` | 1 | lower-bound | verified | strict inequalities only | here | - | previously-published |
 | `E-n084-wand125-mixed-940-report` | 1 | lower-bound | reported | - | elsewhere | informally-verified | previously-published |
 | `E-n084-wand125-mixed-940-source-replay` | 1 | lower-bound | verified | strict inequalities only | here | - | previously-published |
-| `E-n085-wand125-mixed-942-report` | 1 | lower-bound | reported | - | elsewhere | informally-verified | previously-published |
+| `E-n085-wand125-mixed-942-report` | 0 | lower-bound | reported | - | elsewhere | informally-verified | previously-published |
 | `E-n085-wand125-mixed-942-source-replay` | 3 | lower-bound | verified | strict inequalities only | here | - | previously-published |
 | `E-n076-wand125-mixed-894-report` | 1 | lower-bound | reported | - | elsewhere | informally-verified | previously-published |
 | `E-n076-wand125-mixed-894-source-replay` | 1 | lower-bound | verified | strict inequalities only | here | - | previously-published |
-| `E-n083-wand125-linear-935-report` | 1 | lower-bound | reported | - | elsewhere | informally-verified | previously-published |
+| `E-n083-wand125-linear-935-report` | 0 | lower-bound | reported | - | elsewhere | informally-verified | previously-published |
 | `E-n101-wand125-linear-1028-report` | 5 | lower-bound | reported | - | elsewhere | informally-verified | previously-published |
+| `E-n083-wand125-mixed-937-report` | 1 | lower-bound | reported | - | elsewhere | informally-verified | previously-published |
+| `E-n085-wand125-mixed-946-report` | 2 | lower-bound | reported | - | elsewhere | informally-verified | previously-published |
+| `E-n087-wand125-mixed-948-report` | 2 | lower-bound | reported | - | elsewhere | informally-verified | previously-published |
+| `E-n091-wand125-mixed-970-report` | 1 | lower-bound | reported | - | elsewhere | informally-verified | previously-published |
+| `E-n092-wand125-mixed-975-report` | 2 | lower-bound | reported | - | elsewhere | informally-verified | previously-published |
+| `E-n096-wand125-mixed-996-report` | 1 | lower-bound | reported | - | elsewhere | informally-verified | previously-published |
 | `E-n032-evand-zmx2-full-sym-report` | 0 | lower-bound | reported | - | elsewhere | informally-verified | previously-published |
 | `E-n011-kleddamag-3875-source-replay` | 0 | lower-bound | verified | equalities and inequalities, no tolerance | here | informally-verified | previously-published |
 | `E-n011-kleddamag-3875-native-parent-core` | 0 | lower-bound | verified | strict inequalities only | here | informally-verified | previously-published |
@@ -218,9 +224,9 @@ results, it is a statement about what this repository has itself examined.
 
 ## What the register rests on
 
-- **assurance**: numerically-checked 4, reported 61, verified 130
-- **method**: exact-algebraic 83, interval-certified 37, numerical-multiprecision 4, proof-assistant-checked 1, proof-audited 3, published-proof 6, reported 61
-- **novelty**: apparently-novel 36, common-knowledge 4, not assessed 13, previously-published 142
+- **assurance**: numerically-checked 4, reported 67, verified 130
+- **method**: exact-algebraic 83, interval-certified 37, numerical-multiprecision 4, proof-assistant-checked 1, proof-audited 3, published-proof 6, reported 67
+- **novelty**: apparently-novel 36, common-knowledge 4, not assessed 13, previously-published 148
 
 The `cases` column is how many frontier records cite each piece of evidence, and it is the reason to read this table rather than count records. Ranked below are the *formal* records only: a `reported` record cited across the frontier may be a shared catalogue and is labelled as such, which is the register working rather than risk. The risk is a verified claim resting on an argument nobody has examined.
 

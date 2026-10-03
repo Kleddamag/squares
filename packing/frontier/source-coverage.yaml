@@ -690,6 +690,40 @@ sources:
       false (it is 0.083266...); the bound is unaffected. The issue announces n = 82 at 9.32,
       which no revision publishes yet. A later revision, 06eeb40c, adds three
       Tokoharu-format rectangle certificates; no request names it, and it is not pinned.
+  - id: wand125-mixed-bounds-afternoon-2026-10-02
+    title: Mixed rectangle-measure certificates for n = 83, 85, 87, 91, 92, 96
+    role: source-repository
+    url: https://github.com/wand125/square-packing-bounds/tree/b00fc70f1904e9b1b567afee056d347f911209e8
+    local: resources/web/wand125-mixed-bounds-afternoon-2026-10-02/
+    source_key: '[wand125 mixed bounds afternoon 2026-10-02]'
+    scope: {n_values: [83, 85, 86, 87, 88, 91, 92, 93, 96]}
+    reviewed: '2026-10-02'
+    source_date: '2026-10-02'
+    disposition: current-report
+    replay_disposition: case-specific
+    represented_by: [frontier/n-083.md, frontier/n-085.md, frontier/n-086.md, frontier/n-087.md, frontier/n-088.md, frontier/n-091.md, frontier/n-092.md, frontier/n-093.md, frontier/n-096.md]
+    evidence:
+      - E-n083-wand125-mixed-937-report
+      - E-n085-wand125-mixed-946-report
+      - E-n087-wand125-mixed-948-report
+      - E-n091-wand125-mixed-970-report
+      - E-n092-wand125-mixed-975-report
+      - E-n096-wand125-mixed-996-report
+    notes: >-
+      Revision b00fc70f1904e9b1b567afee056d347f911209e8, retrieved at 2026-10-02T16:53Z for
+      four comments of that afternoon on jlevy/squares#282. Six rectangle densities checked
+      at coverage one by the source's research copy of Tokoharu's verify.cpp, byte for byte
+      the checker of its n = 50 certificate, each of mass n - 1/100000, committed in four
+      revisions between 11:38 and 15:16 UTC and pinned together at the last. All six are
+      recorded as reported lower bounds (T-075), each above what the record reported at its
+      count; by mass the n = 85, 87 and 92 values are also the strongest reports at n = 86,
+      88 and 93. Two supersede certificates this record holds verified, mixed_n85_L942
+      (T-071) and mixed_n92_L969 (T-069). The exact audit and the replay's checks before its
+      first angle pass on all six; no angle was replayed, and the proof-bundle tarballs are
+      pinned by digest and not retained. The source's improvement_lower at n = 83, 85 and 87
+      is measured from a value below Green's (review finding AF-1), and at n = 96 the source
+      calls Nagamochi's value unproven (AF-3). The same revision's rectangle rungs at n = 91
+      and 93 are below these certificates there.
   - id: wand125-valid7-independent-check-2026-10-02
     title: Independent exact checker of Valid7 for s(k^2 - 3) = k
     role: source-repository

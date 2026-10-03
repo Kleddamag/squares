@@ -614,6 +614,29 @@ sources:
       written. Requested in jlevy/squares#308.
       web/wand125-green-ds7-theorem9-2026-10-02/acquisition/sources.json pins the revision.
       Dated by that revision, 2026-10-02 UTC.
+  - key: '[wand125 mixed bounds afternoon 2026-10-02]'
+    authors: [wand125]
+    year: 2026
+    venue: GitHub
+    dated: '2026-10-02'
+    credit: wand125 after Tokoharu, Levy, Stromquist, Nagamochi, Burns, Massaccesi
+    short_credit: wand125 after Tokoharu, Levy et al.
+    lineage: builds-on-project
+    note: >-
+      The six mixed rectangle-measure certificates for n = 83, 85, 87, 91, 92 and 96 that
+      wand125/square-packing-bounds added in four commits on the afternoon of 2026-10-02
+      (certificates/mixed_n83_L937, mixed_n85_L946, mixed_n87_L948, mixed_n91_L970,
+      mixed_n92_L975 and mixed_n96_L996), requested for registration in four comments of
+      that day on jlevy/squares#282: rectangle densities of mass n - 1/100000 checked at
+      coverage one by code/mixed_rotated_verify.cpp, byte for byte the checker of the
+      source's n = 50 certificate and of the [wand125 mixed bounds 2026-10-02]
+      certificates. Two supersede certificates of those keys, mixed_n85_L942 and
+      mixed_n92_L969. Credited as they are, on the root README's unchanged Attribution
+      section, which opens "The method is not ours."; the README says parts of the work
+      were produced with AI assistance under human direction, and each commit message ends
+      with a co-author trailer naming an AI assistant.
+      web/wand125-mixed-bounds-afternoon-2026-10-02/acquisition/sources.json pins revision
+      b00fc70f1904e9b1b567afee056d347f911209e8. Dated by that revision, 2026-10-02 UTC.
   - key: '[franciscouzo square-packing 2026-09-27]'
     authors: [Couzo]
     year: 2026

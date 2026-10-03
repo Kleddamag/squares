@@ -2824,7 +2824,7 @@ def test_recent_results_is_one_table_not_cards_or_a_list(
         assert "<br" not in row
     # Evan Daniel's three exact values, the closures the exact-value cards used to show,
     # and since 2026-10-02 the k^2-1 and k^2-2 families, whose exact values rest on 2026
-    # results (T-067, T-069) that each cover a whole family rather than one case.
+    # results (T-081, T-083) that each cover a whole family rather than one case.
     exact = {n for n in overview.recent_lower if overview.cases[n]["status"] == "proved"}
     shown = {n for r in newest for n in _scope_numbers(r.record["scope"])}
     assert exact <= shown

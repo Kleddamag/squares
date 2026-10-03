@@ -350,7 +350,7 @@ evidence:
         Unrestricted independent rotations and disjoint interiors; n41 follows from n39 and
         n71 from n70 by monotonicity, and since 2026-10-02 n54 from n53, n57 from n56 and
         n73 from n72, where Nagamochi's closed form had held the verified field until its
-        proof was found incomplete (T-068).
+        proof was found incomplete (T-082).
       pinpoints: All five Certificate verification conditions; complete successful entries for the ten named files in receipts/wand125-points/sqpack-exact-replay.log.
       assumptions:
         - Exact nonnegative point weights have total mass strictly below the target count.
@@ -1456,7 +1456,7 @@ evidence:
         (arXiv:2609.37410, Section 4, 0 < t <= 1/50) and chelokot's square of side
         10001/10000 in [0,4]^2 each score below one after a concentric shrink;
         devtools/check_nagamochi_lemma1_counterexample.py recomputes every printed quantity
-        of both in exact rational arithmetic (E-nagamochi-lemma1-counterexample, T-068).
+        of both in exact rational arithmetic (E-nagamochi-lemma1-counterexample, T-082).
         The gap is in Section 5.5, Case 6, where the reduction reaches a contact
         configuration that the hypothesis of Lemma 6 does not cover. The paper has no other
         proof of Theorem 1 and Theorem 2 is algebra on it, so Theorem 2 is unproved by this

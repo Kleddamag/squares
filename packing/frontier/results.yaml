@@ -350,16 +350,16 @@ results:
     notes: >-
       2026-10-02: held V3/C1 from its registration, V3 on the published proof and C1 on the
       read of 2026-08-30. Lemma 1 of the paper, from which Theorem 1 is summed, is false for
-      every container with a > 3 and b > 2 (Karakuş 2026 and chelokot 2026; T-068), and the
+      every container with a > 3 and b > 2 (Karakuş 2026 and chelokot 2026; T-082), and the
       paper has no other proof of Theorem 1, so at every N >= 10 this result has no
       checkable proof. It is recorded, V0, and the read that found the defect keeps C1,
       which makes its status incomplete. Nothing is disproved, and no packing beating any of
       its values is known.
 
       The verified floors that rested on it were re-grounded the same day: the perfect
-      squares on the area bound, s(m^2 - 1) = m on Karakuş's Corollary 1.2 (T-067),
-      s(m^2 - 2) = m on chelokot's Lean proof, replayed here (T-069), and the general floor
-      on Karakuş's weaker Corollary 6.2 (T-066), except at n = 54, 57 and 73, where
+      squares on the area bound, s(m^2 - 1) = m on Karakuş's Corollary 1.2 (T-081),
+      s(m^2 - 2) = m on chelokot's Lean proof, replayed here (T-083), and the general floor
+      on Karakuş's weaker Corollary 6.2 (T-080), except at n = 54, 57 and 73, where
       registered T-044 bounds it had masked are stronger. Its values stay in the case
       records as reported bounds. The record of the finding is the review of 2 October
       2026 listed among the artifacts.
@@ -3666,7 +3666,7 @@ results:
       Three more follow by monotonicity since 2 October 2026: s(54) >= 369/50 from the n = 53
       file, s(57) >= 381/50 from the n = 56 file and s(73) >= 861/100 from the n = 72 file.
       Nagamochi's closed form, stronger at those counts, had held their verified fields until
-      its published proof was found incomplete (T-068).
+      its published proof was found incomplete (T-082).
 
       Every file was replayed here in full on 22 September 2026 by this repository's exact
       verifier, sqpack.fractional.certificate, over the complete 201-direction net through the
@@ -3723,7 +3723,7 @@ results:
       pending. The oversight record restores the rung.
 
       2026-10-02: n = 54, 57 and 73 added by monotonicity, when Nagamochi's closed form left
-      the verified lane (T-068); the bounds were registered here all along and the closed
+      the verified lane (T-082); the bounds were registered here all along and the closed
       form had masked them.
     next_rung: >-
       V4 and C4 need two adversarial AI reviews by distinct reviewers and a human oversight
@@ -5376,7 +5376,7 @@ results:
       retained human oversight record. A proof that the endpoint's side is the root of the
       catalogue's degree-18 polynomial would make the bound Bidwell's exact value. First-order
       stationarity, local minimality and global optimality are unproved.
-  - id: T-066
+  - id: T-080
     kind: lower-bound
     registered: '2026-10-02'
     headline: "`s(n) ≥ 1/2 + √(n − ⌊√n⌋ + 1/4)` for every nonsquare `8 ≤ n ≤ 324`"
@@ -5387,7 +5387,7 @@ results:
       The bound is his rectangle bound, Theorem 1.1, at a square container whose side t
       solves t^2 - (t - floor(sqrt(N))) = N. The rectangle bound is proved by a strip
       measure that uses neither the scoring lemma nor the technical lemmas of Nagamochi
-      2005. It equals ceil(sqrt(N)) exactly at N = m^2 - 1, which is T-067, and is strictly
+      2005. It equals ceil(sqrt(N)) exactly at N = m^2 - 1, which is T-081, and is strictly
       below Nagamochi's Theorem 2, T-007, at every other nonsquare N.
 
       The proof was read in full and re-derived here, and is not machine-checked. Hakan
@@ -5421,7 +5421,7 @@ results:
       C2 and above need a replay: a machine check of Proposition 5.1, that every square of
       side in (1, 1.01] gets more than one from the strip measure, over its three-parameter
       pose space. A stronger floor at any n is a new result, not a rung change.
-  - id: T-067
+  - id: T-081
     kind: optimality
     registered: '2026-10-02'
     headline: "`s(k² − 1) = k` for every integer `k ≥ 3`; `k = 3…18` are the cases held here"
@@ -5435,7 +5435,7 @@ results:
       s(24) = 5, s(35) = 6, s(48) = 7, s(63) = 8, s(80) = 9, s(99) = 10, s(120) = 11,
       s(143) = 12, s(168) = 13, s(195) = 14, s(224) = 15, s(255) = 16, s(288) = 17 and
       s(323) = 18. Nagamochi 2005 stated the family first (T-007); Nagamochi's Lemma 1, on
-      which that proof rests, is false (T-068), and Karakuş's proof uses neither that lemma
+      which that proof rests, is false (T-082), and Karakuş's proof uses neither that lemma
       nor the paper's technical lemmas.
 
       The proof was read in full and re-derived here, and is not machine-checked. Hakan
@@ -5477,7 +5477,7 @@ results:
       C2 and above need a replay of the lower half: a machine check of Proposition 5.1, or a
       replay of chelokot's Lean proof of the same family by an augmented measure, which is
       reported and was not built here.
-  - id: T-068
+  - id: T-082
     kind: correction
     registered: '2026-10-02'
     headline: "Nagamochi 2005, Lemma 1 is false for every container with `a > 3` and `b > 2`"
@@ -5492,7 +5492,7 @@ results:
 
       What holds in its place is Karakuş's strip measure, of total ab - (a + 1 - ceil a),
       which gives every such square more than one for a >= 2 and b >= 3 (his Proposition
-      5.1), and the rectangle bound it yields (T-066, T-067). Nagamochi's Theorem 1 at full
+      5.1), and the rectangle bound it yields (T-080, T-081). Nagamochi's Theorem 1 at full
       strength, and so T-007, is unproved and not disproved.
 
       Every printed quantity of both counterexamples was recomputed here in exact rational
@@ -5528,7 +5528,7 @@ results:
       Rung 4 on either axis needs two adversarial AI reviews by distinct reviewers and a
       retained human oversight record. Whether Lemma 1 holds for a = 3 or for a, b in
       [2, 3) is undecided; the family does not reach those containers.
-  - id: T-069
+  - id: T-083
     kind: optimality
     registered: '2026-10-02'
     headline: "`s(k² − 2) = k` for every integer `k ≥ 2`; `k = 3…18` are the cases held here"
@@ -5537,7 +5537,7 @@ results:
       Records.NearSquare.squareMinusTwo_isMinimumSide, kernel-checked here. The lower half
       compensates each square of score at most one under Nagamochi's measure from other
       squares of the packing, so it does not use Nagamochi's Lemma 1, which is false
-      (T-068); the upper half is the k x k grid with two squares removed.
+      (T-082); the upper half is the k x k grid with two squares removed.
 
       This entry's scope is the cases this record holds, k = 3 to 18: s(7) = 3, s(14) = 4,
       s(23) = 5, s(34) = 6, s(47) = 7, s(62) = 8, s(79) = 9, s(98) = 10, s(119) = 11,
@@ -5587,7 +5587,7 @@ results:
       Rung 4 needs two adversarial AI reviews by distinct reviewers and a human oversight
       record; rung 5 needs a named human expert's review of the formalization, and C5 two,
       with the open-review pointer the public repository already supports.
-  - id: T-070
+  - id: T-084
     kind: lower-bound
     registered: '2026-10-03'
     headline: "`s(37) ≥ 5√3/2 + 2√2 − 1` and `s(61) ≥ 7√3/2 + 2√2 − 1`, by optimal piercing"
@@ -5600,7 +5600,7 @@ results:
       just below 5 sqrt(3)/2 + 2 sqrt(2) - 1 it is 36, so s(37) >= 5 sqrt(3)/2 +
       2 sqrt(2) - 1, about 6.1586, which the paper does not state.
 
-      Both are above Karakuş's general floor, T-066, which they replace as the verified
+      Both are above Karakuş's general floor, T-080, which they replace as the verified
       lower bound at these two cases; at every other case the theorem is weaker than the
       verified floor already held. The proof uses nothing of Nagamochi 2005. It was read
       and re-derived here and is not machine-checked; its arithmetic is replayed exactly

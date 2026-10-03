@@ -210,7 +210,7 @@ session:
       blocked layer items on think-bgkz with their reason.
     outcome: 'All four lanes reached their exits and were integrated (dc7867f1f, 6200bcf23 and fixes through
       730f4f2e1, green on every required check). The Lean replay passed, so s(k^2-2) = k stands at V3/C3
-      (T-069); T-007 is V0/C1 and 271 case records are re-grounded (T-066, T-067, T-068, D-516); the homepage
+      (T-083); T-007 is V0/C1 and 271 case records are re-grounded (T-080, T-081, T-082, D-516); the homepage
       toggle, the deferred regularized-views job and the dilation decision (refusal kept) close think-bgkz
       but for its first hosted measurement.'
     evidence:
@@ -236,7 +236,7 @@ session:
     budget_minutes: 120
     started_at: '2026-10-02T20:50:30Z'
     deadline_at: '2026-10-02T22:50:30Z'
-    expected_output: A checked corrects field on T-066, T-067 and T-069; the tag on the frontier table,
+    expected_output: A checked corrects field on T-080, T-081 and T-083; the tag on the frontier table,
       case pages, homepage atlas popovers and the workbench stage; D-516 cited in every dated correction;
       green hosted CI.
     validation_command: cd packing && uv run --frozen --all-extras --group dev packing-validate --fast
@@ -289,12 +289,12 @@ session:
     budget_minutes: 180
     started_at: '2026-10-03T05:30:00Z'
     deadline_at: '2026-10-03T08:30:00Z'
-    expected_output: T-070 registered and published through every surface; the deferred job's first hosted
+    expected_output: T-084 registered and published through every surface; the deferred job's first hosted
       reading in gate-budgets.yaml; a terminal session record.
     validation_command: cd packing && uv run --frozen --all-extras --group dev packing-validate --fast
     kill_condition: The published proof does not survive the read, or the deferred job cannot be dispatched.
     fallback: Record the finding on think-jkeu, or leave the measurement on think-bgkz with its blocker.
-    outcome: 'Basic and Slivkova''s Theorem 7 was read and re-derived and registered as T-070 by the new
+    outcome: 'Basic and Slivkova''s Theorem 7 was read and re-derived and registered as T-084 by the new
       result publication sequence: the verified floor at n = 37 (6.158554, not stated in the paper) and
       n = 61 (7.890604, their Theorem 10), the only cases where it beat the held floor. The deep gate''s
       first dispatch measured regularized-views at 310 s of job wall, recorded in gate-budgets.yaml. The
@@ -320,8 +320,8 @@ session:
       register.
     after: 'X-049 answers the four questions. Nagamochi 2005''s Lemma 1 is false, so T-007 is V0 and
       271 case records are re-grounded with dated corrections citing D-516; s(k^2-2) = k stands on a
-      replayed Lean proof (T-069), the open floors on Karakus (T-066, T-067), n = 37 and 61 on Basic and
-      Slivkova (T-070), and each correcting floor says "corrects Nagamochi 2005". The regularized layer
+      replayed Lean proof (T-083), the open floors on Karakus (T-080, T-081), n = 37 and 61 on Basic and
+      Slivkova (T-084), and each correcting floor says "corrects Nagamochi 2005". The regularized layer
       has its homepage toggle and a measured deferred job. Open: think-wqfw, the owner''s restoring commit.'
   delegations:
   - task: 'think-zfxi: literature survey of square-packing families by position relative to k^2 (W1-shaped,
@@ -670,8 +670,8 @@ session:
     elapsed_quality: operator_reported_approximate
     outcome: 'T-007 to V0/C1 incomplete; E-nagamochi-lower reported with a defect-found review; new
       E-karakus-strip-lower, E-nagamochi-lemma1-counterexample and E-chelokot-square-minus-two-lean; new
-      T-066 (Karakus general floor, V3/C1), T-067 (s(k^2-1) = k, V3/C1), T-068 (Lemma 1 correction,
-      V3/C3) and T-069 (s(k^2-2) = k on the replayed Lean proof, V3/C3). 271 case records re-grounded:
+      T-080 (Karakus general floor, V3/C1), T-081 (s(k^2-1) = k, V3/C1), T-082 (Lemma 1 correction,
+      V3/C3) and T-083 (s(k^2-2) = k on the replayed Lean proof, V3/C3). 271 case records re-grounded:
       perfect squares on the area bound, k^2-1 on Karakus, k^2-2 on the Lean proof (values unchanged),
       238 open floors on Karakus Corollary 6.2, and n = 54, 57, 73 on T-044''s registered monotonicity
       values. No status changed; no verified floor rests on T-007. D-516 records the defect.'
@@ -693,7 +693,7 @@ session:
       passed; the coordinator's gate run covers the rest
     uncertainty: 'Two departures from the review''s literal text, both by coordinator decision: n = 54,
       57 and 73 carry the stronger registered T-044 values rather than Karakus''s, and n = 61 keeps Karakus''s
-      value with a note naming Basic-Slivkova''s stronger archived bound (think-jkeu). T-066 and T-067
+      value with a note naming Basic-Slivkova''s stronger archived bound (think-jkeu). T-080 and T-081
       carry S3 by the lane''s judgement.'
     elapsed_seconds: 5200.0
     next_action: Integrated by the coordinator.
@@ -768,7 +768,7 @@ session:
   - packing-validate --edit passed (54 steps) with the follow-up lanes in the tree, 187 s.
   - 'packing-validate --records passed after integration; new steps: the T-007 inventory (1.15 s) and
     the regularized atlas check (0.11 s).'
-  - 'packing-validate --records passed 42 of 42 at the T-070 registration; build_known_best_atlas --check
+  - 'packing-validate --records passed 42 of 42 at the T-084 registration; build_known_best_atlas --check
     --sample passed (36 of 324 rebuilt, composites trailing the pin as allowed until the next version).'
   - 'full gate: fast at dd636b4ccaea8dff8b7c083cb32ff90d1dbc5e71: passed (hosted Packing validation run
     37101500066: validate, frontend, typecheck, geometry, suite-a to suite-d and sweeps, the nine
@@ -794,7 +794,7 @@ session:
     at the certified commit, but think-wqfw, the owner's restoring commit for the sixteen rollups' withheld
     model labels.
   next_action: 'Selected next entry unchanged: think-11ma, the exact geometric-exclusion pilot below the
-    certified n17 endpoint. Identifiers T-066 to T-070 and session-168 collide with open PRs 292, 298,
+    certified n17 endpoint. Identifiers T-080 to T-084 and session-168 collide with open PRs 292, 298,
     307 and 311; the one landing second renumbers.'
 ---
 # Families of Known-Best Packings, Contact Shading, and the Large-n Limit

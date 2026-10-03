@@ -210,14 +210,14 @@ action for each are in [`frontier/RESULTS.md`](packing/frontier/RESULTS.md); the
 | [T-056](packing/frontier/RESULTS.md) | 68, 102, 103, 105, 106, 110, 123, 130, 131, 132, 152, 154, 155, 156, 172, 177, 180, 181, 182, 199, 206, 207, 208, 209, 210, 228, 236, 237, 238, 239, 240, 241, 259, 263, 268, 269, 270, 271, 272, 273, 292, 297, 301, 302, 303, 304, 305, 306, 307 | `V3` | `C3` | `S3` | `previously-published` | For each of 49 counts n from 68 to 307, s(n) is at most the verified upper bound its case record carries, from Francisco Couzo’s packings as published on 27 September 2026. |
 | [T-057](packing/frontier/RESULTS.md) | 211 | `V3` | `C3` | `S3` | `previously-published` | s(211) <= 14.99796070496771500150 < 15, by Joost de Winter’s packing of 16 September 2026: 211 unit squares in a square of that side. |
 | [T-065](packing/frontier/RESULTS.md) | 17 | `V3` | `C3` | `S3` | `previously-published` | s(17) <= 4.6755300936045509516342148538535054: seventeen unit squares fit in a square of at most that side. |
-| [T-068](packing/frontier/RESULTS.md) | 10-324 | `V3` | `C3` | `S3` | `previously-published` | Lemma 1 of Nagamochi 2005 -- every square of side in (1, 1.01] inside [0,a] x [0,b] scores more than one against the paper’s unavoidable set -- is false for every container with a > 3 and b > 2. |
-| [T-069](packing/frontier/RESULTS.md) | 7, 14, 23, 34, 47, 62, 79, 98, 119, 142, 167, 194, 223, 254, 287, 322 | `V3` | `C3` | `S3` | `previously-published` | s(k^2 - 2) = k for every integer k >= 2: chelokot’s Lean theorem Records.NearSquare.squareMinusTwo_isMinimumSide, kernel-checked here. |
+| [T-082](packing/frontier/RESULTS.md) | 10-324 | `V3` | `C3` | `S3` | `previously-published` | Lemma 1 of Nagamochi 2005 -- every square of side in (1, 1.01] inside [0,a] x [0,b] scores more than one against the paper’s unavoidable set -- is false for every container with a > 3 and b > 2. |
+| [T-083](packing/frontier/RESULTS.md) | 7, 14, 23, 34, 47, 62, 79, 98, 119, 142, 167, 194, 223, 254, 287, 322 | `V3` | `C3` | `S3` | `previously-published` | s(k^2 - 2) = k for every integer k >= 2: chelokot’s Lean theorem Records.NearSquare.squareMinusTwo_isMinimumSide, kernel-checked here. |
 | [T-036](packing/frontier/RESULTS.md) | 11 | `V3` | `C2` | `S3` | `apparently-novel` | Every packing of eleven unit squares in a square container, six at orientation 0 and five sharing one orientation modulo pi/2 with half-tangent in [91442076901/250000000000, 73154061521/200000000000] (an interval containing [t* - 10^-6, t* + 10^-6] for Trump’s exact half-tangent t*), has container side at least U = 3.877083590022814 …, the exact side of Trump’s packing, and a packing in the family has side exactly U only if it is a quarter-turn image of Trump’s pose with the squares relabelled within the two classes. |
 | [T-007](packing/frontier/RESULTS.md) | 4-100 | `V0` | `C1` | `S3` | `previously-published` | For every integer 4 <= N <= 100, Nagamochi 2005, Theorem 2 gives s(N) >= min(ceil(sqrt(N)), sqrt(N - 2*floor(sqrt(N)) + 1) + 1). |
 | [T-062](packing/frontier/RESULTS.md) | 60 | `V0` | `C1` | `S3` | `previously-published` | Evan Daniel reports s(60) = 8, published on 28 September 2026: the lower half by a mixed cover of the side-8 square, the upper half by the 8 x 8 grid. |
-| [T-066](packing/frontier/RESULTS.md) | 8-324 | `V3` | `C1` | `S3` | `previously-published` | For every nonsquare integer 8 <= N <= 324, Karakuş 2026, Corollary 6.2 gives s(N) >= 1/2 + sqrt(N - floor(sqrt(N)) + 1/4), which is strictly above sqrt(N). |
-| [T-067](packing/frontier/RESULTS.md) | 8, 15, 24, 35, 48, 63, 80, 99, 120, 143, 168, 195, 224, 255, 288, 323 | `V3` | `C1` | `S3` | `previously-published` | s(k^2 - 1) = k for every integer k >= 3: Karakuş 2026, Corollary 1.2. |
-| [T-070](packing/frontier/RESULTS.md) | 37, 61 | `V3` | `C1` | `S3` | `previously-published` | Bašić and Slivková 2018, Theorem 7 with Proposition 8: no more than B(x) unit squares fit in a square of side x, where B(x) counts the points of an equilateral-lattice piercing set, floor(x)(m + 2) plus floor((m + 2)/2) when frac(x) >= 1/2, with m = floor((2/sqrt 3)(x + 1 - 2 sqrt 2)). |
+| [T-080](packing/frontier/RESULTS.md) | 8-324 | `V3` | `C1` | `S3` | `previously-published` | For every nonsquare integer 8 <= N <= 324, Karakuş 2026, Corollary 6.2 gives s(N) >= 1/2 + sqrt(N - floor(sqrt(N)) + 1/4), which is strictly above sqrt(N). |
+| [T-081](packing/frontier/RESULTS.md) | 8, 15, 24, 35, 48, 63, 80, 99, 120, 143, 168, 195, 224, 255, 288, 323 | `V3` | `C1` | `S3` | `previously-published` | s(k^2 - 1) = k for every integer k >= 3: Karakuş 2026, Corollary 1.2. |
+| [T-084](packing/frontier/RESULTS.md) | 37, 61 | `V3` | `C1` | `S3` | `previously-published` | Bašić and Slivková 2018, Theorem 7 with Proposition 8: no more than B(x) unit squares fit in a square of side x, where B(x) counts the points of an equilateral-lattice piercing set, floor(x)(m + 2) plus floor((m + 2)/2) when frac(x) >= 1/2, with m = floor((2/sqrt 3)(x + 1 - 2 sqrt 2)). |
 | [T-046](packing/frontier/RESULTS.md) | 18, 19, 20, 26, 27, 28, 29, 30, 31, 37, 38, 39, 40, 41, 42, 43, 44, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 86, 88, 89, 90, 91, 94, 95 | `V0` | `C0` | `S3` | `previously-published` | wand125/square-packing-bounds reports one standing rectangle-density certificate for each of 48 counts from n = 18 to n = 95, added or raised between 26 and 28 September 2026. |
 | [T-048](packing/frontier/RESULTS.md) | 50 | `V0` | `C0` | `S3` | `previously-published` | On 28 September 2026 wand125/square-packing-bounds reported s(50) >= 37/5 = 7.4. |
 | [T-003](packing/frontier/RESULTS.md) | 17, 18 | `V3` | `C3` | `S2` | `apparently-novel` | The sixteen-point set’s unavoidability ceiling lies in [4426213/1000000, 4427/1000): certification at the left endpoint, an exact escaping pose at the right, with the top strips’ a + 2b <= 2*sqrt(2) hypothesis identifying the closing mechanism at 753/250 + sqrt(2), inside the bracket. |
@@ -1369,7 +1369,7 @@ Keep all orientations and closed-cell assignments; measure certified exclusions 
 unresolved cases before attempting a broad census.
 The overnight execution is complete, and no successor is launched by this handoff.
 
-#### Session 168: Families, the T-007 Correction and T-070
+#### Session 168: Families, the T-007 Correction and T-084
 
 [Session 168](packing/campaign/agent-sessions/session-168-known-best-families-and-shading.md)
 answered the owner’s four questions about the $n = 1..324$ atlas in
@@ -1379,12 +1379,12 @@ than arithmetic, an exact regularized layer darkens them on the homepage toggle,
 pattern set at large $n$ is open.
 Its literature lane found Nagamochi 2005’s Lemma 1 false, so T-007 is `V0` and 271 case
 records were re-grounded with dated corrections and defect D-516: 233 open floors fell
-to Karakuş’s general bound (T-066), $s(k^2-1) = k$ rests on Karakuş (T-067),
-$s(k^2-2) = k$ on chelokot’s Lean proof replayed here with an axiom receipt (T-069), and
-$n = 37, 61$ on Bašić and Slivková’s piercing bound (T-070). Floors that correct
+to Karakuş’s general bound (T-080), $s(k^2-1) = k$ rests on Karakuş (T-081),
+$s(k^2-2) = k$ on chelokot’s Lean proof replayed here with an axiom receipt (T-083), and
+$n = 37, 61$ on Bašić and Slivková’s piercing bound (T-084). Floors that correct
 Nagamochi’s work say so on every surface, as “corrects Nagamochi 2005”. Its open items
 are the owner’s restoring commit for the withheld model labels (`think-wqfw`), and its
-identifiers T-066 to T-070 and session-168 collide with open PRs 292, 298, 307 and 311,
+identifiers T-080 to T-084 and session-168 collide with open PRs 292, 298, 307 and 311,
 which the one landing second renumbers.
 The selected next entry above is unchanged.
 

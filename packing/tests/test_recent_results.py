@@ -109,7 +109,7 @@ def test_an_entry_that_claims_no_bound_has_no_standing(records: view.Records) ->
         "restricted-optimality",
         "method-limit",
         "audit",
-        # T-068, from 2026-10-02: the correction of Nagamochi's Lemma 1 cites the exact
+        # T-082, from 2026-10-02: the correction of Nagamochi's Lemma 1 cites the exact
         # recomputation of its counterexample, which claims no bound.
         "correction",
     }

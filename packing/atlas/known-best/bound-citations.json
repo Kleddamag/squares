@@ -76,18 +76,18 @@
           "assurance": "verified",
           "basis": "external",
           "confirmed_by": [
-            "T-069"
+            "T-083"
           ],
           "corrects": {
             "credit": "Nagamochi 2005",
             "result": "T-007",
             "source_key": "[Nagamochi 2005]"
           },
-          "note": "(confirmed T-069)",
+          "note": "(confirmed T-083)",
           "recent": true,
           "result": null,
           "results": [
-            "T-069"
+            "T-083"
           ],
           "source_key": "[chelokot Nagamochi counterexample 2026]",
           "text": "chelokot 2026, GitHub",
@@ -111,8 +111,8 @@
           "recent": true,
           "result": null,
           "results": [
-            "T-066",
-            "T-067"
+            "T-080",
+            "T-081"
           ],
           "source_key": "[Karakuş 2026]",
           "text": "Karakus 2026, arXiv:2609.37410",
@@ -240,18 +240,18 @@
           "assurance": "verified",
           "basis": "external",
           "confirmed_by": [
-            "T-069"
+            "T-083"
           ],
           "corrects": {
             "credit": "Nagamochi 2005",
             "result": "T-007",
             "source_key": "[Nagamochi 2005]"
           },
-          "note": "(confirmed T-069)",
+          "note": "(confirmed T-083)",
           "recent": true,
           "result": null,
           "results": [
-            "T-069"
+            "T-083"
           ],
           "source_key": "[chelokot Nagamochi counterexample 2026]",
           "text": "chelokot 2026, GitHub",
@@ -275,8 +275,8 @@
           "recent": true,
           "result": null,
           "results": [
-            "T-066",
-            "T-067"
+            "T-080",
+            "T-081"
           ],
           "source_key": "[Karakuş 2026]",
           "text": "Karakus 2026, arXiv:2609.37410",
@@ -453,18 +453,18 @@
           "assurance": "verified",
           "basis": "external",
           "confirmed_by": [
-            "T-069"
+            "T-083"
           ],
           "corrects": {
             "credit": "Nagamochi 2005",
             "result": "T-007",
             "source_key": "[Nagamochi 2005]"
           },
-          "note": "(confirmed T-069)",
+          "note": "(confirmed T-083)",
           "recent": true,
           "result": null,
           "results": [
-            "T-069"
+            "T-083"
           ],
           "source_key": "[chelokot Nagamochi counterexample 2026]",
           "text": "chelokot 2026, GitHub",
@@ -488,8 +488,8 @@
           "recent": true,
           "result": null,
           "results": [
-            "T-066",
-            "T-067"
+            "T-080",
+            "T-081"
           ],
           "source_key": "[Karakuş 2026]",
           "text": "Karakus 2026, arXiv:2609.37410",
@@ -726,18 +726,18 @@
           "assurance": "verified",
           "basis": "external",
           "confirmed_by": [
-            "T-069"
+            "T-083"
           ],
           "corrects": {
             "credit": "Nagamochi 2005",
             "result": "T-007",
             "source_key": "[Nagamochi 2005]"
           },
-          "note": "(confirmed T-069)",
+          "note": "(confirmed T-083)",
           "recent": true,
           "result": null,
           "results": [
-            "T-069"
+            "T-083"
           ],
           "source_key": "[chelokot Nagamochi counterexample 2026]",
           "text": "chelokot 2026, GitHub",
@@ -761,8 +761,8 @@
           "recent": true,
           "result": null,
           "results": [
-            "T-066",
-            "T-067"
+            "T-080",
+            "T-081"
           ],
           "source_key": "[Karakuş 2026]",
           "text": "Karakus 2026, arXiv:2609.37410",
@@ -788,7 +788,7 @@
           "recent": false,
           "result": null,
           "results": [
-            "T-070"
+            "T-084"
           ],
           "source_key": "[Basic-Slivkova 2018]",
           "text": "Basic & Slivková 2018, Discrete Appl. Math. 247",
@@ -822,7 +822,7 @@
           "recent": true,
           "result": null,
           "results": [
-            "T-066"
+            "T-080"
           ],
           "source_key": "[Karakuş 2026]",
           "text": "Karakus 2026, arXiv:2609.37410",
@@ -952,7 +952,7 @@
           "recent": true,
           "result": null,
           "results": [
-            "T-066"
+            "T-080"
           ],
           "source_key": "[Karakuş 2026]",
           "text": "Karakus 2026, arXiv:2609.37410",
@@ -976,7 +976,7 @@
           "recent": true,
           "result": null,
           "results": [
-            "T-066"
+            "T-080"
           ],
           "source_key": "[Karakuş 2026]",
           "text": "Karakus 2026, arXiv:2609.37410",
@@ -1000,7 +1000,7 @@
           "recent": true,
           "result": null,
           "results": [
-            "T-066"
+            "T-080"
           ],
           "source_key": "[Karakuş 2026]",
           "text": "Karakus 2026, arXiv:2609.37410",
@@ -1061,18 +1061,18 @@
           "assurance": "verified",
           "basis": "external",
           "confirmed_by": [
-            "T-069"
+            "T-083"
           ],
           "corrects": {
             "credit": "Nagamochi 2005",
             "result": "T-007",
             "source_key": "[Nagamochi 2005]"
           },
-          "note": "(confirmed T-069)",
+          "note": "(confirmed T-083)",
           "recent": true,
           "result": null,
           "results": [
-            "T-069"
+            "T-083"
           ],
           "source_key": "[chelokot Nagamochi counterexample 2026]",
           "text": "chelokot 2026, GitHub",
@@ -1096,8 +1096,8 @@
           "recent": true,
           "result": null,
           "results": [
-            "T-066",
-            "T-067"
+            "T-080",
+            "T-081"
           ],
           "source_key": "[Karakuş 2026]",
           "text": "Karakus 2026, arXiv:2609.37410",
@@ -1127,7 +1127,7 @@
           "recent": true,
           "result": null,
           "results": [
-            "T-066"
+            "T-080"
           ],
           "source_key": "[Karakuş 2026]",
           "text": "Karakus 2026, arXiv:2609.37410",
@@ -1161,7 +1161,7 @@
           "recent": true,
           "result": null,
           "results": [
-            "T-066"
+            "T-080"
           ],
           "source_key": "[Karakuş 2026]",
           "text": "Karakus 2026, arXiv:2609.37410",
@@ -1367,7 +1367,7 @@
           "recent": true,
           "result": null,
           "results": [
-            "T-066"
+            "T-080"
           ],
           "source_key": "[Karakuş 2026]",
           "text": "Karakus 2026, arXiv:2609.37410",
@@ -1391,7 +1391,7 @@
           "recent": true,
           "result": null,
           "results": [
-            "T-066"
+            "T-080"
           ],
           "source_key": "[Karakuş 2026]",
           "text": "Karakus 2026, arXiv:2609.37410",
@@ -1415,7 +1415,7 @@
           "recent": true,
           "result": null,
           "results": [
-            "T-066"
+            "T-080"
           ],
           "source_key": "[Karakuş 2026]",
           "text": "Karakus 2026, arXiv:2609.37410",
@@ -1435,7 +1435,7 @@
           "recent": false,
           "result": null,
           "results": [
-            "T-070"
+            "T-084"
           ],
           "source_key": "[Basic-Slivkova 2018]",
           "text": "Basic & Slivková 2018, Discrete Appl. Math. 247",
@@ -1450,18 +1450,18 @@
           "assurance": "verified",
           "basis": "external",
           "confirmed_by": [
-            "T-069"
+            "T-083"
           ],
           "corrects": {
             "credit": "Nagamochi 2005",
             "result": "T-007",
             "source_key": "[Nagamochi 2005]"
           },
-          "note": "(confirmed T-069)",
+          "note": "(confirmed T-083)",
           "recent": true,
           "result": null,
           "results": [
-            "T-069"
+            "T-083"
           ],
           "source_key": "[chelokot Nagamochi counterexample 2026]",
           "text": "chelokot 2026, GitHub",
@@ -1485,8 +1485,8 @@
           "recent": true,
           "result": null,
           "results": [
-            "T-066",
-            "T-067"
+            "T-080",
+            "T-081"
           ],
           "source_key": "[Karakuş 2026]",
           "text": "Karakus 2026, arXiv:2609.37410",
@@ -1516,7 +1516,7 @@
           "recent": true,
           "result": null,
           "results": [
-            "T-066"
+            "T-080"
           ],
           "source_key": "[Karakuş 2026]",
           "text": "Karakus 2026, arXiv:2609.37410",
@@ -1550,7 +1550,7 @@
           "recent": true,
           "result": null,
           "results": [
-            "T-066"
+            "T-080"
           ],
           "source_key": "[Karakuş 2026]",
           "text": "Karakus 2026, arXiv:2609.37410",
@@ -1584,7 +1584,7 @@
           "recent": true,
           "result": null,
           "results": [
-            "T-066"
+            "T-080"
           ],
           "source_key": "[Karakuş 2026]",
           "text": "Karakus 2026, arXiv:2609.37410",
@@ -1794,7 +1794,7 @@
           "recent": true,
           "result": null,
           "results": [
-            "T-066"
+            "T-080"
           ],
           "source_key": "[Karakuş 2026]",
           "text": "Karakus 2026, arXiv:2609.37410",
@@ -1818,7 +1818,7 @@
           "recent": true,
           "result": null,
           "results": [
-            "T-066"
+            "T-080"
           ],
           "source_key": "[Karakuş 2026]",
           "text": "Karakus 2026, arXiv:2609.37410",
@@ -1842,7 +1842,7 @@
           "recent": true,
           "result": null,
           "results": [
-            "T-066"
+            "T-080"
           ],
           "source_key": "[Karakuş 2026]",
           "text": "Karakus 2026, arXiv:2609.37410",
@@ -1866,7 +1866,7 @@
           "recent": true,
           "result": null,
           "results": [
-            "T-066"
+            "T-080"
           ],
           "source_key": "[Karakuş 2026]",
           "text": "Karakus 2026, arXiv:2609.37410",
@@ -1890,7 +1890,7 @@
           "recent": true,
           "result": null,
           "results": [
-            "T-066"
+            "T-080"
           ],
           "source_key": "[Karakuş 2026]",
           "text": "Karakus 2026, arXiv:2609.37410",
@@ -1905,18 +1905,18 @@
           "assurance": "verified",
           "basis": "external",
           "confirmed_by": [
-            "T-069"
+            "T-083"
           ],
           "corrects": {
             "credit": "Nagamochi 2005",
             "result": "T-007",
             "source_key": "[Nagamochi 2005]"
           },
-          "note": "(confirmed T-069)",
+          "note": "(confirmed T-083)",
           "recent": true,
           "result": null,
           "results": [
-            "T-069"
+            "T-083"
           ],
           "source_key": "[chelokot Nagamochi counterexample 2026]",
           "text": "chelokot 2026, GitHub",
@@ -1940,8 +1940,8 @@
           "recent": true,
           "result": null,
           "results": [
-            "T-066",
-            "T-067"
+            "T-080",
+            "T-081"
           ],
           "source_key": "[Karakuş 2026]",
           "text": "Karakus 2026, arXiv:2609.37410",
@@ -1971,7 +1971,7 @@
           "recent": true,
           "result": null,
           "results": [
-            "T-066"
+            "T-080"
           ],
           "source_key": "[Karakuş 2026]",
           "text": "Karakus 2026, arXiv:2609.37410",
@@ -2005,7 +2005,7 @@
           "recent": true,
           "result": null,
           "results": [
-            "T-066"
+            "T-080"
           ],
           "source_key": "[Karakuş 2026]",
           "text": "Karakus 2026, arXiv:2609.37410",
@@ -2039,7 +2039,7 @@
           "recent": true,
           "result": null,
           "results": [
-            "T-066"
+            "T-080"
           ],
           "source_key": "[Karakuş 2026]",
           "text": "Karakus 2026, arXiv:2609.37410",
@@ -2073,7 +2073,7 @@
           "recent": true,
           "result": null,
           "results": [
-            "T-066"
+            "T-080"
           ],
           "source_key": "[Karakuş 2026]",
           "text": "Karakus 2026, arXiv:2609.37410",
@@ -2107,7 +2107,7 @@
           "recent": true,
           "result": null,
           "results": [
-            "T-066"
+            "T-080"
           ],
           "source_key": "[Karakuş 2026]",
           "text": "Karakus 2026, arXiv:2609.37410",
@@ -2141,7 +2141,7 @@
           "recent": true,
           "result": null,
           "results": [
-            "T-066"
+            "T-080"
           ],
           "source_key": "[Karakuş 2026]",
           "text": "Karakus 2026, arXiv:2609.37410",
@@ -2175,7 +2175,7 @@
           "recent": true,
           "result": null,
           "results": [
-            "T-066"
+            "T-080"
           ],
           "source_key": "[Karakuş 2026]",
           "text": "Karakus 2026, arXiv:2609.37410",
@@ -2209,7 +2209,7 @@
           "recent": true,
           "result": null,
           "results": [
-            "T-066"
+            "T-080"
           ],
           "source_key": "[Karakuş 2026]",
           "text": "Karakus 2026, arXiv:2609.37410",
@@ -2243,7 +2243,7 @@
           "recent": true,
           "result": null,
           "results": [
-            "T-066"
+            "T-080"
           ],
           "source_key": "[Karakuş 2026]",
           "text": "Karakus 2026, arXiv:2609.37410",
@@ -2267,7 +2267,7 @@
           "recent": true,
           "result": null,
           "results": [
-            "T-066"
+            "T-080"
           ],
           "source_key": "[Karakuş 2026]",
           "text": "Karakus 2026, arXiv:2609.37410",
@@ -2291,7 +2291,7 @@
           "recent": true,
           "result": null,
           "results": [
-            "T-066"
+            "T-080"
           ],
           "source_key": "[Karakuş 2026]",
           "text": "Karakus 2026, arXiv:2609.37410",
@@ -2315,7 +2315,7 @@
           "recent": true,
           "result": null,
           "results": [
-            "T-066"
+            "T-080"
           ],
           "source_key": "[Karakuş 2026]",
           "text": "Karakus 2026, arXiv:2609.37410",
@@ -2339,7 +2339,7 @@
           "recent": true,
           "result": null,
           "results": [
-            "T-066"
+            "T-080"
           ],
           "source_key": "[Karakuş 2026]",
           "text": "Karakus 2026, arXiv:2609.37410",
@@ -2363,7 +2363,7 @@
           "recent": true,
           "result": null,
           "results": [
-            "T-066"
+            "T-080"
           ],
           "source_key": "[Karakuş 2026]",
           "text": "Karakus 2026, arXiv:2609.37410",
@@ -2387,7 +2387,7 @@
           "recent": true,
           "result": null,
           "results": [
-            "T-066"
+            "T-080"
           ],
           "source_key": "[Karakuş 2026]",
           "text": "Karakus 2026, arXiv:2609.37410",
@@ -2411,7 +2411,7 @@
           "recent": true,
           "result": null,
           "results": [
-            "T-066"
+            "T-080"
           ],
           "source_key": "[Karakuş 2026]",
           "text": "Karakus 2026, arXiv:2609.37410",
@@ -2426,18 +2426,18 @@
           "assurance": "verified",
           "basis": "external",
           "confirmed_by": [
-            "T-069"
+            "T-083"
           ],
           "corrects": {
             "credit": "Nagamochi 2005",
             "result": "T-007",
             "source_key": "[Nagamochi 2005]"
           },
-          "note": "(confirmed T-069)",
+          "note": "(confirmed T-083)",
           "recent": true,
           "result": null,
           "results": [
-            "T-069"
+            "T-083"
           ],
           "source_key": "[chelokot Nagamochi counterexample 2026]",
           "text": "chelokot 2026, GitHub",
@@ -2461,8 +2461,8 @@
           "recent": true,
           "result": null,
           "results": [
-            "T-066",
-            "T-067"
+            "T-080",
+            "T-081"
           ],
           "source_key": "[Karakuş 2026]",
           "text": "Karakus 2026, arXiv:2609.37410",
@@ -2492,7 +2492,7 @@
           "recent": true,
           "result": null,
           "results": [
-            "T-066"
+            "T-080"
           ],
           "source_key": "[Karakuş 2026]",
           "text": "Karakus 2026, arXiv:2609.37410",
@@ -2526,7 +2526,7 @@
           "recent": true,
           "result": null,
           "results": [
-            "T-066"
+            "T-080"
           ],
           "source_key": "[Karakuş 2026]",
           "text": "Karakus 2026, arXiv:2609.37410",
@@ -2564,7 +2564,7 @@
           "recent": true,
           "result": null,
           "results": [
-            "T-066"
+            "T-080"
           ],
           "source_key": "[Karakuş 2026]",
           "text": "Karakus 2026, arXiv:2609.37410",
@@ -2602,7 +2602,7 @@
           "recent": true,
           "result": null,
           "results": [
-            "T-066"
+            "T-080"
           ],
           "source_key": "[Karakuş 2026]",
           "text": "Karakus 2026, arXiv:2609.37410",
@@ -2636,7 +2636,7 @@
           "recent": true,
           "result": null,
           "results": [
-            "T-066"
+            "T-080"
           ],
           "source_key": "[Karakuş 2026]",
           "text": "Karakus 2026, arXiv:2609.37410",
@@ -2674,7 +2674,7 @@
           "recent": true,
           "result": null,
           "results": [
-            "T-066"
+            "T-080"
           ],
           "source_key": "[Karakuş 2026]",
           "text": "Karakus 2026, arXiv:2609.37410",
@@ -2712,7 +2712,7 @@
           "recent": true,
           "result": null,
           "results": [
-            "T-066"
+            "T-080"
           ],
           "source_key": "[Karakuş 2026]",
           "text": "Karakus 2026, arXiv:2609.37410",
@@ -2746,7 +2746,7 @@
           "recent": true,
           "result": null,
           "results": [
-            "T-066"
+            "T-080"
           ],
           "source_key": "[Karakuş 2026]",
           "text": "Karakus 2026, arXiv:2609.37410",
@@ -2780,7 +2780,7 @@
           "recent": true,
           "result": null,
           "results": [
-            "T-066"
+            "T-080"
           ],
           "source_key": "[Karakuş 2026]",
           "text": "Karakus 2026, arXiv:2609.37410",
@@ -2814,7 +2814,7 @@
           "recent": true,
           "result": null,
           "results": [
-            "T-066"
+            "T-080"
           ],
           "source_key": "[Karakuş 2026]",
           "text": "Karakus 2026, arXiv:2609.37410",
@@ -2852,7 +2852,7 @@
           "recent": true,
           "result": null,
           "results": [
-            "T-066"
+            "T-080"
           ],
           "source_key": "[Karakuş 2026]",
           "text": "Karakus 2026, arXiv:2609.37410",
@@ -2876,7 +2876,7 @@
           "recent": true,
           "result": null,
           "results": [
-            "T-066"
+            "T-080"
           ],
           "source_key": "[Karakuş 2026]",
           "text": "Karakus 2026, arXiv:2609.37410",
@@ -2900,7 +2900,7 @@
           "recent": true,
           "result": null,
           "results": [
-            "T-066"
+            "T-080"
           ],
           "source_key": "[Karakuş 2026]",
           "text": "Karakus 2026, arXiv:2609.37410",
@@ -2924,7 +2924,7 @@
           "recent": true,
           "result": null,
           "results": [
-            "T-066"
+            "T-080"
           ],
           "source_key": "[Karakuş 2026]",
           "text": "Karakus 2026, arXiv:2609.37410",
@@ -2948,7 +2948,7 @@
           "recent": true,
           "result": null,
           "results": [
-            "T-066"
+            "T-080"
           ],
           "source_key": "[Karakuş 2026]",
           "text": "Karakus 2026, arXiv:2609.37410",
@@ -2972,7 +2972,7 @@
           "recent": true,
           "result": null,
           "results": [
-            "T-066"
+            "T-080"
           ],
           "source_key": "[Karakuş 2026]",
           "text": "Karakus 2026, arXiv:2609.37410",
@@ -2996,7 +2996,7 @@
           "recent": true,
           "result": null,
           "results": [
-            "T-066"
+            "T-080"
           ],
           "source_key": "[Karakuş 2026]",
           "text": "Karakus 2026, arXiv:2609.37410",
@@ -3020,7 +3020,7 @@
           "recent": true,
           "result": null,
           "results": [
-            "T-066"
+            "T-080"
           ],
           "source_key": "[Karakuş 2026]",
           "text": "Karakus 2026, arXiv:2609.37410",
@@ -3035,18 +3035,18 @@
           "assurance": "verified",
           "basis": "external",
           "confirmed_by": [
-            "T-069"
+            "T-083"
           ],
           "corrects": {
             "credit": "Nagamochi 2005",
             "result": "T-007",
             "source_key": "[Nagamochi 2005]"
           },
-          "note": "(confirmed T-069)",
+          "note": "(confirmed T-083)",
           "recent": true,
           "result": null,
           "results": [
-            "T-069"
+            "T-083"
           ],
           "source_key": "[chelokot Nagamochi counterexample 2026]",
           "text": "chelokot 2026, GitHub",
@@ -3070,8 +3070,8 @@
           "recent": true,
           "result": null,
           "results": [
-            "T-066",
-            "T-067"
+            "T-080",
+            "T-081"
           ],
           "source_key": "[Karakuş 2026]",
           "text": "Karakus 2026, arXiv:2609.37410",
@@ -3101,7 +3101,7 @@
           "recent": true,
           "result": null,
           "results": [
-            "T-066"
+            "T-080"
           ],
           "source_key": "[Karakuş 2026]",
           "text": "Karakus 2026, arXiv:2609.37410",
@@ -3135,7 +3135,7 @@
           "recent": true,
           "result": null,
           "results": [
-            "T-066"
+            "T-080"
           ],
           "source_key": "[Karakuş 2026]",
           "text": "Karakus 2026, arXiv:2609.37410",
@@ -3173,7 +3173,7 @@
           "recent": true,
           "result": null,
           "results": [
-            "T-066"
+            "T-080"
           ],
           "source_key": "[Karakuş 2026]",
           "text": "Karakus 2026, arXiv:2609.37410",
@@ -3207,7 +3207,7 @@
           "recent": true,
           "result": null,
           "results": [
-            "T-066"
+            "T-080"
           ],
           "source_key": "[Karakuş 2026]",
           "text": "Karakus 2026, arXiv:2609.37410",
@@ -3241,7 +3241,7 @@
           "recent": true,
           "result": null,
           "results": [
-            "T-066"
+            "T-080"
           ],
           "source_key": "[Karakuş 2026]",
           "text": "Karakus 2026, arXiv:2609.37410",
@@ -3275,7 +3275,7 @@
           "recent": true,
           "result": null,
           "results": [
-            "T-066"
+            "T-080"
           ],
           "source_key": "[Karakuş 2026]",
           "text": "Karakus 2026, arXiv:2609.37410",
@@ -3309,7 +3309,7 @@
           "recent": true,
           "result": null,
           "results": [
-            "T-066"
+            "T-080"
           ],
           "source_key": "[Karakuş 2026]",
           "text": "Karakus 2026, arXiv:2609.37410",
@@ -3343,7 +3343,7 @@
           "recent": true,
           "result": null,
           "results": [
-            "T-066"
+            "T-080"
           ],
           "source_key": "[Karakuş 2026]",
           "text": "Karakus 2026, arXiv:2609.37410",
@@ -3377,7 +3377,7 @@
           "recent": true,
           "result": null,
           "results": [
-            "T-066"
+            "T-080"
           ],
           "source_key": "[Karakuş 2026]",
           "text": "Karakus 2026, arXiv:2609.37410",
@@ -3415,7 +3415,7 @@
           "recent": true,
           "result": null,
           "results": [
-            "T-066"
+            "T-080"
           ],
           "source_key": "[Karakuş 2026]",
           "text": "Karakus 2026, arXiv:2609.37410",
@@ -3453,7 +3453,7 @@
           "recent": true,
           "result": null,
           "results": [
-            "T-066"
+            "T-080"
           ],
           "source_key": "[Karakuş 2026]",
           "text": "Karakus 2026, arXiv:2609.37410",
@@ -3491,7 +3491,7 @@
           "recent": true,
           "result": null,
           "results": [
-            "T-066"
+            "T-080"
           ],
           "source_key": "[Karakuş 2026]",
           "text": "Karakus 2026, arXiv:2609.37410",
@@ -3515,7 +3515,7 @@
           "recent": true,
           "result": null,
           "results": [
-            "T-066"
+            "T-080"
           ],
           "source_key": "[Karakuş 2026]",
           "text": "Karakus 2026, arXiv:2609.37410",
@@ -3539,7 +3539,7 @@
           "recent": true,
           "result": null,
           "results": [
-            "T-066"
+            "T-080"
           ],
           "source_key": "[Karakuş 2026]",
           "text": "Karakus 2026, arXiv:2609.37410",
@@ -3563,7 +3563,7 @@
           "recent": true,
           "result": null,
           "results": [
-            "T-066"
+            "T-080"
           ],
           "source_key": "[Karakuş 2026]",
           "text": "Karakus 2026, arXiv:2609.37410",
@@ -3587,7 +3587,7 @@
           "recent": true,
           "result": null,
           "results": [
-            "T-066"
+            "T-080"
           ],
           "source_key": "[Karakuş 2026]",
           "text": "Karakus 2026, arXiv:2609.37410",
@@ -3611,7 +3611,7 @@
           "recent": true,
           "result": null,
           "results": [
-            "T-066"
+            "T-080"
           ],
           "source_key": "[Karakuş 2026]",
           "text": "Karakus 2026, arXiv:2609.37410",
@@ -3635,7 +3635,7 @@
           "recent": true,
           "result": null,
           "results": [
-            "T-066"
+            "T-080"
           ],
           "source_key": "[Karakuş 2026]",
           "text": "Karakus 2026, arXiv:2609.37410",
@@ -3659,7 +3659,7 @@
           "recent": true,
           "result": null,
           "results": [
-            "T-066"
+            "T-080"
           ],
           "source_key": "[Karakuş 2026]",
           "text": "Karakus 2026, arXiv:2609.37410",
@@ -3683,7 +3683,7 @@
           "recent": true,
           "result": null,
           "results": [
-            "T-066"
+            "T-080"
           ],
           "source_key": "[Karakuş 2026]",
           "text": "Karakus 2026, arXiv:2609.37410",
@@ -3698,18 +3698,18 @@
           "assurance": "verified",
           "basis": "external",
           "confirmed_by": [
-            "T-069"
+            "T-083"
           ],
           "corrects": {
             "credit": "Nagamochi 2005",
             "result": "T-007",
             "source_key": "[Nagamochi 2005]"
           },
-          "note": "(confirmed T-069)",
+          "note": "(confirmed T-083)",
           "recent": true,
           "result": null,
           "results": [
-            "T-069"
+            "T-083"
           ],
           "source_key": "[chelokot Nagamochi counterexample 2026]",
           "text": "chelokot 2026, GitHub",
@@ -3733,8 +3733,8 @@
           "recent": true,
           "result": null,
           "results": [
-            "T-066",
-            "T-067"
+            "T-080",
+            "T-081"
           ],
           "source_key": "[Karakuş 2026]",
           "text": "Karakus 2026, arXiv:2609.37410",
@@ -3764,7 +3764,7 @@
           "recent": true,
           "result": null,
           "results": [
-            "T-066"
+            "T-080"
           ],
           "source_key": "[Karakuş 2026]",
           "text": "Karakus 2026, arXiv:2609.37410",
@@ -3798,7 +3798,7 @@
           "recent": true,
           "result": null,
           "results": [
-            "T-066"
+            "T-080"
           ],
           "source_key": "[Karakuş 2026]",
           "text": "Karakus 2026, arXiv:2609.37410",
@@ -3832,7 +3832,7 @@
           "recent": true,
           "result": null,
           "results": [
-            "T-066"
+            "T-080"
           ],
           "source_key": "[Karakuş 2026]",
           "text": "Karakus 2026, arXiv:2609.37410",
@@ -3866,7 +3866,7 @@
           "recent": true,
           "result": null,
           "results": [
-            "T-066"
+            "T-080"
           ],
           "source_key": "[Karakuş 2026]",
           "text": "Karakus 2026, arXiv:2609.37410",
@@ -3900,7 +3900,7 @@
           "recent": true,
           "result": null,
           "results": [
-            "T-066"
+            "T-080"
           ],
           "source_key": "[Karakuş 2026]",
           "text": "Karakus 2026, arXiv:2609.37410",
@@ -3934,7 +3934,7 @@
           "recent": true,
           "result": null,
           "results": [
-            "T-066"
+            "T-080"
           ],
           "source_key": "[Karakuş 2026]",
           "text": "Karakus 2026, arXiv:2609.37410",
@@ -3968,7 +3968,7 @@
           "recent": true,
           "result": null,
           "results": [
-            "T-066"
+            "T-080"
           ],
           "source_key": "[Karakuş 2026]",
           "text": "Karakus 2026, arXiv:2609.37410",
@@ -4002,7 +4002,7 @@
           "recent": true,
           "result": null,
           "results": [
-            "T-066"
+            "T-080"
           ],
           "source_key": "[Karakuş 2026]",
           "text": "Karakus 2026, arXiv:2609.37410",
@@ -4040,7 +4040,7 @@
           "recent": true,
           "result": null,
           "results": [
-            "T-066"
+            "T-080"
           ],
           "source_key": "[Karakuş 2026]",
           "text": "Karakus 2026, arXiv:2609.37410",
@@ -4074,7 +4074,7 @@
           "recent": true,
           "result": null,
           "results": [
-            "T-066"
+            "T-080"
           ],
           "source_key": "[Karakuş 2026]",
           "text": "Karakus 2026, arXiv:2609.37410",
@@ -4112,7 +4112,7 @@
           "recent": true,
           "result": null,
           "results": [
-            "T-066"
+            "T-080"
           ],
           "source_key": "[Karakuş 2026]",
           "text": "Karakus 2026, arXiv:2609.37410",
@@ -4150,7 +4150,7 @@
           "recent": true,
           "result": null,
           "results": [
-            "T-066"
+            "T-080"
           ],
           "source_key": "[Karakuş 2026]",
           "text": "Karakus 2026, arXiv:2609.37410",
@@ -4188,7 +4188,7 @@
           "recent": true,
           "result": null,
           "results": [
-            "T-066"
+            "T-080"
           ],
           "source_key": "[Karakuş 2026]",
           "text": "Karakus 2026, arXiv:2609.37410",
@@ -4212,7 +4212,7 @@
           "recent": true,
           "result": null,
           "results": [
-            "T-066"
+            "T-080"
           ],
           "source_key": "[Karakuş 2026]",
           "text": "Karakus 2026, arXiv:2609.37410",
@@ -4236,7 +4236,7 @@
           "recent": true,
           "result": null,
           "results": [
-            "T-066"
+            "T-080"
           ],
           "source_key": "[Karakuş 2026]",
           "text": "Karakus 2026, arXiv:2609.37410",
@@ -4260,7 +4260,7 @@
           "recent": true,
           "result": null,
           "results": [
-            "T-066"
+            "T-080"
           ],
           "source_key": "[Karakuş 2026]",
           "text": "Karakus 2026, arXiv:2609.37410",
@@ -4284,7 +4284,7 @@
           "recent": true,
           "result": null,
           "results": [
-            "T-066"
+            "T-080"
           ],
           "source_key": "[Karakuş 2026]",
           "text": "Karakus 2026, arXiv:2609.37410",
@@ -4308,7 +4308,7 @@
           "recent": true,
           "result": null,
           "results": [
-            "T-066"
+            "T-080"
           ],
           "source_key": "[Karakuş 2026]",
           "text": "Karakus 2026, arXiv:2609.37410",
@@ -4332,7 +4332,7 @@
           "recent": true,
           "result": null,
           "results": [
-            "T-066"
+            "T-080"
           ],
           "source_key": "[Karakuş 2026]",
           "text": "Karakus 2026, arXiv:2609.37410",
@@ -4356,7 +4356,7 @@
           "recent": true,
           "result": null,
           "results": [
-            "T-066"
+            "T-080"
           ],
           "source_key": "[Karakuş 2026]",
           "text": "Karakus 2026, arXiv:2609.37410",
@@ -4380,7 +4380,7 @@
           "recent": true,
           "result": null,
           "results": [
-            "T-066"
+            "T-080"
           ],
           "source_key": "[Karakuş 2026]",
           "text": "Karakus 2026, arXiv:2609.37410",
@@ -4404,7 +4404,7 @@
           "recent": true,
           "result": null,
           "results": [
-            "T-066"
+            "T-080"
           ],
           "source_key": "[Karakuş 2026]",
           "text": "Karakus 2026, arXiv:2609.37410",
@@ -4419,18 +4419,18 @@
           "assurance": "verified",
           "basis": "external",
           "confirmed_by": [
-            "T-069"
+            "T-083"
           ],
           "corrects": {
             "credit": "Nagamochi 2005",
             "result": "T-007",
             "source_key": "[Nagamochi 2005]"
           },
-          "note": "(confirmed T-069)",
+          "note": "(confirmed T-083)",
           "recent": true,
           "result": null,
           "results": [
-            "T-069"
+            "T-083"
           ],
           "source_key": "[chelokot Nagamochi counterexample 2026]",
           "text": "chelokot 2026, GitHub",
@@ -4454,8 +4454,8 @@
           "recent": true,
           "result": null,
           "results": [
-            "T-066",
-            "T-067"
+            "T-080",
+            "T-081"
           ],
           "source_key": "[Karakuş 2026]",
           "text": "Karakus 2026, arXiv:2609.37410",
@@ -4485,7 +4485,7 @@
           "recent": true,
           "result": null,
           "results": [
-            "T-066"
+            "T-080"
           ],
           "source_key": "[Karakuş 2026]",
           "text": "Karakus 2026, arXiv:2609.37410",
@@ -4519,7 +4519,7 @@
           "recent": true,
           "result": null,
           "results": [
-            "T-066"
+            "T-080"
           ],
           "source_key": "[Karakuş 2026]",
           "text": "Karakus 2026, arXiv:2609.37410",
@@ -4553,7 +4553,7 @@
           "recent": true,
           "result": null,
           "results": [
-            "T-066"
+            "T-080"
           ],
           "source_key": "[Karakuş 2026]",
           "text": "Karakus 2026, arXiv:2609.37410",
@@ -4591,7 +4591,7 @@
           "recent": true,
           "result": null,
           "results": [
-            "T-066"
+            "T-080"
           ],
           "source_key": "[Karakuş 2026]",
           "text": "Karakus 2026, arXiv:2609.37410",
@@ -4625,7 +4625,7 @@
           "recent": true,
           "result": null,
           "results": [
-            "T-066"
+            "T-080"
           ],
           "source_key": "[Karakuş 2026]",
           "text": "Karakus 2026, arXiv:2609.37410",
@@ -4659,7 +4659,7 @@
           "recent": true,
           "result": null,
           "results": [
-            "T-066"
+            "T-080"
           ],
           "source_key": "[Karakuş 2026]",
           "text": "Karakus 2026, arXiv:2609.37410",
@@ -4693,7 +4693,7 @@
           "recent": true,
           "result": null,
           "results": [
-            "T-066"
+            "T-080"
           ],
           "source_key": "[Karakuş 2026]",
           "text": "Karakus 2026, arXiv:2609.37410",
@@ -4727,7 +4727,7 @@
           "recent": true,
           "result": null,
           "results": [
-            "T-066"
+            "T-080"
           ],
           "source_key": "[Karakuş 2026]",
           "text": "Karakus 2026, arXiv:2609.37410",
@@ -4765,7 +4765,7 @@
           "recent": true,
           "result": null,
           "results": [
-            "T-066"
+            "T-080"
           ],
           "source_key": "[Karakuş 2026]",
           "text": "Karakus 2026, arXiv:2609.37410",
@@ -4799,7 +4799,7 @@
           "recent": true,
           "result": null,
           "results": [
-            "T-066"
+            "T-080"
           ],
           "source_key": "[Karakuş 2026]",
           "text": "Karakus 2026, arXiv:2609.37410",
@@ -4833,7 +4833,7 @@
           "recent": true,
           "result": null,
           "results": [
-            "T-066"
+            "T-080"
           ],
           "source_key": "[Karakuş 2026]",
           "text": "Karakus 2026, arXiv:2609.37410",
@@ -4871,7 +4871,7 @@
           "recent": true,
           "result": null,
           "results": [
-            "T-066"
+            "T-080"
           ],
           "source_key": "[Karakuş 2026]",
           "text": "Karakus 2026, arXiv:2609.37410",
@@ -4909,7 +4909,7 @@
           "recent": true,
           "result": null,
           "results": [
-            "T-066"
+            "T-080"
           ],
           "source_key": "[Karakuş 2026]",
           "text": "Karakus 2026, arXiv:2609.37410",
@@ -4947,7 +4947,7 @@
           "recent": true,
           "result": null,
           "results": [
-            "T-066"
+            "T-080"
           ],
           "source_key": "[Karakuş 2026]",
           "text": "Karakus 2026, arXiv:2609.37410",
@@ -4971,7 +4971,7 @@
           "recent": true,
           "result": null,
           "results": [
-            "T-066"
+            "T-080"
           ],
           "source_key": "[Karakuş 2026]",
           "text": "Karakus 2026, arXiv:2609.37410",
@@ -4995,7 +4995,7 @@
           "recent": true,
           "result": null,
           "results": [
-            "T-066"
+            "T-080"
           ],
           "source_key": "[Karakuş 2026]",
           "text": "Karakus 2026, arXiv:2609.37410",
@@ -5019,7 +5019,7 @@
           "recent": true,
           "result": null,
           "results": [
-            "T-066"
+            "T-080"
           ],
           "source_key": "[Karakuş 2026]",
           "text": "Karakus 2026, arXiv:2609.37410",
@@ -5043,7 +5043,7 @@
           "recent": true,
           "result": null,
           "results": [
-            "T-066"
+            "T-080"
           ],
           "source_key": "[Karakuş 2026]",
           "text": "Karakus 2026, arXiv:2609.37410",
@@ -5067,7 +5067,7 @@
           "recent": true,
           "result": null,
           "results": [
-            "T-066"
+            "T-080"
           ],
           "source_key": "[Karakuş 2026]",
           "text": "Karakus 2026, arXiv:2609.37410",
@@ -5091,7 +5091,7 @@
           "recent": true,
           "result": null,
           "results": [
-            "T-066"
+            "T-080"
           ],
           "source_key": "[Karakuş 2026]",
           "text": "Karakus 2026, arXiv:2609.37410",
@@ -5115,7 +5115,7 @@
           "recent": true,
           "result": null,
           "results": [
-            "T-066"
+            "T-080"
           ],
           "source_key": "[Karakuş 2026]",
           "text": "Karakus 2026, arXiv:2609.37410",
@@ -5139,7 +5139,7 @@
           "recent": true,
           "result": null,
           "results": [
-            "T-066"
+            "T-080"
           ],
           "source_key": "[Karakuş 2026]",
           "text": "Karakus 2026, arXiv:2609.37410",
@@ -5163,7 +5163,7 @@
           "recent": true,
           "result": null,
           "results": [
-            "T-066"
+            "T-080"
           ],
           "source_key": "[Karakuş 2026]",
           "text": "Karakus 2026, arXiv:2609.37410",
@@ -5187,7 +5187,7 @@
           "recent": true,
           "result": null,
           "results": [
-            "T-066"
+            "T-080"
           ],
           "source_key": "[Karakuş 2026]",
           "text": "Karakus 2026, arXiv:2609.37410",
@@ -5202,18 +5202,18 @@
           "assurance": "verified",
           "basis": "external",
           "confirmed_by": [
-            "T-069"
+            "T-083"
           ],
           "corrects": {
             "credit": "Nagamochi 2005",
             "result": "T-007",
             "source_key": "[Nagamochi 2005]"
           },
-          "note": "(confirmed T-069)",
+          "note": "(confirmed T-083)",
           "recent": true,
           "result": null,
           "results": [
-            "T-069"
+            "T-083"
           ],
           "source_key": "[chelokot Nagamochi counterexample 2026]",
           "text": "chelokot 2026, GitHub",
@@ -5237,8 +5237,8 @@
           "recent": true,
           "result": null,
           "results": [
-            "T-066",
-            "T-067"
+            "T-080",
+            "T-081"
           ],
           "source_key": "[Karakuş 2026]",
           "text": "Karakus 2026, arXiv:2609.37410",
@@ -5268,7 +5268,7 @@
           "recent": true,
           "result": null,
           "results": [
-            "T-066"
+            "T-080"
           ],
           "source_key": "[Karakuş 2026]",
           "text": "Karakus 2026, arXiv:2609.37410",
@@ -5302,7 +5302,7 @@
           "recent": true,
           "result": null,
           "results": [
-            "T-066"
+            "T-080"
           ],
           "source_key": "[Karakuş 2026]",
           "text": "Karakus 2026, arXiv:2609.37410",
@@ -5336,7 +5336,7 @@
           "recent": true,
           "result": null,
           "results": [
-            "T-066"
+            "T-080"
           ],
           "source_key": "[Karakuş 2026]",
           "text": "Karakus 2026, arXiv:2609.37410",
@@ -5374,7 +5374,7 @@
           "recent": true,
           "result": null,
           "results": [
-            "T-066"
+            "T-080"
           ],
           "source_key": "[Karakuş 2026]",
           "text": "Karakus 2026, arXiv:2609.37410",
@@ -5408,7 +5408,7 @@
           "recent": true,
           "result": null,
           "results": [
-            "T-066"
+            "T-080"
           ],
           "source_key": "[Karakuş 2026]",
           "text": "Karakus 2026, arXiv:2609.37410",
@@ -5442,7 +5442,7 @@
           "recent": true,
           "result": null,
           "results": [
-            "T-066"
+            "T-080"
           ],
           "source_key": "[Karakuş 2026]",
           "text": "Karakus 2026, arXiv:2609.37410",
@@ -5476,7 +5476,7 @@
           "recent": true,
           "result": null,
           "results": [
-            "T-066"
+            "T-080"
           ],
           "source_key": "[Karakuş 2026]",
           "text": "Karakus 2026, arXiv:2609.37410",
@@ -5510,7 +5510,7 @@
           "recent": true,
           "result": null,
           "results": [
-            "T-066"
+            "T-080"
           ],
           "source_key": "[Karakuş 2026]",
           "text": "Karakus 2026, arXiv:2609.37410",
@@ -5544,7 +5544,7 @@
           "recent": true,
           "result": null,
           "results": [
-            "T-066"
+            "T-080"
           ],
           "source_key": "[Karakuş 2026]",
           "text": "Karakus 2026, arXiv:2609.37410",
@@ -5578,7 +5578,7 @@
           "recent": true,
           "result": null,
           "results": [
-            "T-066"
+            "T-080"
           ],
           "source_key": "[Karakuş 2026]",
           "text": "Karakus 2026, arXiv:2609.37410",
@@ -5616,7 +5616,7 @@
           "recent": true,
           "result": null,
           "results": [
-            "T-066"
+            "T-080"
           ],
           "source_key": "[Karakuş 2026]",
           "text": "Karakus 2026, arXiv:2609.37410",
@@ -5654,7 +5654,7 @@
           "recent": true,
           "result": null,
           "results": [
-            "T-066"
+            "T-080"
           ],
           "source_key": "[Karakuş 2026]",
           "text": "Karakus 2026, arXiv:2609.37410",
@@ -5692,7 +5692,7 @@
           "recent": true,
           "result": null,
           "results": [
-            "T-066"
+            "T-080"
           ],
           "source_key": "[Karakuş 2026]",
           "text": "Karakus 2026, arXiv:2609.37410",
@@ -5730,7 +5730,7 @@
           "recent": true,
           "result": null,
           "results": [
-            "T-066"
+            "T-080"
           ],
           "source_key": "[Karakuş 2026]",
           "text": "Karakus 2026, arXiv:2609.37410",
@@ -5768,7 +5768,7 @@
           "recent": true,
           "result": null,
           "results": [
-            "T-066"
+            "T-080"
           ],
           "source_key": "[Karakuş 2026]",
           "text": "Karakus 2026, arXiv:2609.37410",
@@ -5806,7 +5806,7 @@
           "recent": true,
           "result": null,
           "results": [
-            "T-066"
+            "T-080"
           ],
           "source_key": "[Karakuş 2026]",
           "text": "Karakus 2026, arXiv:2609.37410",
@@ -5830,7 +5830,7 @@
           "recent": true,
           "result": null,
           "results": [
-            "T-066"
+            "T-080"
           ],
           "source_key": "[Karakuş 2026]",
           "text": "Karakus 2026, arXiv:2609.37410",
@@ -5854,7 +5854,7 @@
           "recent": true,
           "result": null,
           "results": [
-            "T-066"
+            "T-080"
           ],
           "source_key": "[Karakuş 2026]",
           "text": "Karakus 2026, arXiv:2609.37410",
@@ -5878,7 +5878,7 @@
           "recent": true,
           "result": null,
           "results": [
-            "T-066"
+            "T-080"
           ],
           "source_key": "[Karakuş 2026]",
           "text": "Karakus 2026, arXiv:2609.37410",
@@ -5902,7 +5902,7 @@
           "recent": true,
           "result": null,
           "results": [
-            "T-066"
+            "T-080"
           ],
           "source_key": "[Karakuş 2026]",
           "text": "Karakus 2026, arXiv:2609.37410",
@@ -5926,7 +5926,7 @@
           "recent": true,
           "result": null,
           "results": [
-            "T-066"
+            "T-080"
           ],
           "source_key": "[Karakuş 2026]",
           "text": "Karakus 2026, arXiv:2609.37410",
@@ -5950,7 +5950,7 @@
           "recent": true,
           "result": null,
           "results": [
-            "T-066"
+            "T-080"
           ],
           "source_key": "[Karakuş 2026]",
           "text": "Karakus 2026, arXiv:2609.37410",
@@ -5974,7 +5974,7 @@
           "recent": true,
           "result": null,
           "results": [
-            "T-066"
+            "T-080"
           ],
           "source_key": "[Karakuş 2026]",
           "text": "Karakus 2026, arXiv:2609.37410",
@@ -5998,7 +5998,7 @@
           "recent": true,
           "result": null,
           "results": [
-            "T-066"
+            "T-080"
           ],
           "source_key": "[Karakuş 2026]",
           "text": "Karakus 2026, arXiv:2609.37410",
@@ -6022,7 +6022,7 @@
           "recent": true,
           "result": null,
           "results": [
-            "T-066"
+            "T-080"
           ],
           "source_key": "[Karakuş 2026]",
           "text": "Karakus 2026, arXiv:2609.37410",
@@ -6046,7 +6046,7 @@
           "recent": true,
           "result": null,
           "results": [
-            "T-066"
+            "T-080"
           ],
           "source_key": "[Karakuş 2026]",
           "text": "Karakus 2026, arXiv:2609.37410",
@@ -6061,18 +6061,18 @@
           "assurance": "verified",
           "basis": "external",
           "confirmed_by": [
-            "T-069"
+            "T-083"
           ],
           "corrects": {
             "credit": "Nagamochi 2005",
             "result": "T-007",
             "source_key": "[Nagamochi 2005]"
           },
-          "note": "(confirmed T-069)",
+          "note": "(confirmed T-083)",
           "recent": true,
           "result": null,
           "results": [
-            "T-069"
+            "T-083"
           ],
           "source_key": "[chelokot Nagamochi counterexample 2026]",
           "text": "chelokot 2026, GitHub",
@@ -6096,8 +6096,8 @@
           "recent": true,
           "result": null,
           "results": [
-            "T-066",
-            "T-067"
+            "T-080",
+            "T-081"
           ],
           "source_key": "[Karakuş 2026]",
           "text": "Karakus 2026, arXiv:2609.37410",
@@ -6127,7 +6127,7 @@
           "recent": true,
           "result": null,
           "results": [
-            "T-066"
+            "T-080"
           ],
           "source_key": "[Karakuş 2026]",
           "text": "Karakus 2026, arXiv:2609.37410",
@@ -6161,7 +6161,7 @@
           "recent": true,
           "result": null,
           "results": [
-            "T-066"
+            "T-080"
           ],
           "source_key": "[Karakuş 2026]",
           "text": "Karakus 2026, arXiv:2609.37410",
@@ -6195,7 +6195,7 @@
           "recent": true,
           "result": null,
           "results": [
-            "T-066"
+            "T-080"
           ],
           "source_key": "[Karakuş 2026]",
           "text": "Karakus 2026, arXiv:2609.37410",
@@ -6233,7 +6233,7 @@
           "recent": true,
           "result": null,
           "results": [
-            "T-066"
+            "T-080"
           ],
           "source_key": "[Karakuş 2026]",
           "text": "Karakus 2026, arXiv:2609.37410",
@@ -6267,7 +6267,7 @@
           "recent": true,
           "result": null,
           "results": [
-            "T-066"
+            "T-080"
           ],
           "source_key": "[Karakuş 2026]",
           "text": "Karakus 2026, arXiv:2609.37410",
@@ -6301,7 +6301,7 @@
           "recent": true,
           "result": null,
           "results": [
-            "T-066"
+            "T-080"
           ],
           "source_key": "[Karakuş 2026]",
           "text": "Karakus 2026, arXiv:2609.37410",
@@ -6335,7 +6335,7 @@
           "recent": true,
           "result": null,
           "results": [
-            "T-066"
+            "T-080"
           ],
           "source_key": "[Karakuş 2026]",
           "text": "Karakus 2026, arXiv:2609.37410",
@@ -6369,7 +6369,7 @@
           "recent": true,
           "result": null,
           "results": [
-            "T-066"
+            "T-080"
           ],
           "source_key": "[Karakuş 2026]",
           "text": "Karakus 2026, arXiv:2609.37410",
@@ -6403,7 +6403,7 @@
           "recent": true,
           "result": null,
           "results": [
-            "T-066"
+            "T-080"
           ],
           "source_key": "[Karakuş 2026]",
           "text": "Karakus 2026, arXiv:2609.37410",
@@ -6437,7 +6437,7 @@
           "recent": true,
           "result": null,
           "results": [
-            "T-066"
+            "T-080"
           ],
           "source_key": "[Karakuş 2026]",
           "text": "Karakus 2026, arXiv:2609.37410",
@@ -6471,7 +6471,7 @@
           "recent": true,
           "result": null,
           "results": [
-            "T-066"
+            "T-080"
           ],
           "source_key": "[Karakuş 2026]",
           "text": "Karakus 2026, arXiv:2609.37410",
@@ -6509,7 +6509,7 @@
           "recent": true,
           "result": null,
           "results": [
-            "T-066"
+            "T-080"
           ],
           "source_key": "[Karakuş 2026]",
           "text": "Karakus 2026, arXiv:2609.37410",
@@ -6547,7 +6547,7 @@
           "recent": true,
           "result": null,
           "results": [
-            "T-066"
+            "T-080"
           ],
           "source_key": "[Karakuş 2026]",
           "text": "Karakus 2026, arXiv:2609.37410",
@@ -6585,7 +6585,7 @@
           "recent": true,
           "result": null,
           "results": [
-            "T-066"
+            "T-080"
           ],
           "source_key": "[Karakuş 2026]",
           "text": "Karakus 2026, arXiv:2609.37410",
@@ -6623,7 +6623,7 @@
           "recent": true,
           "result": null,
           "results": [
-            "T-066"
+            "T-080"
           ],
           "source_key": "[Karakuş 2026]",
           "text": "Karakus 2026, arXiv:2609.37410",
@@ -6661,7 +6661,7 @@
           "recent": true,
           "result": null,
           "results": [
-            "T-066"
+            "T-080"
           ],
           "source_key": "[Karakuş 2026]",
           "text": "Karakus 2026, arXiv:2609.37410",
@@ -6699,7 +6699,7 @@
           "recent": true,
           "result": null,
           "results": [
-            "T-066"
+            "T-080"
           ],
           "source_key": "[Karakuş 2026]",
           "text": "Karakus 2026, arXiv:2609.37410",
@@ -6723,7 +6723,7 @@
           "recent": true,
           "result": null,
           "results": [
-            "T-066"
+            "T-080"
           ],
           "source_key": "[Karakuş 2026]",
           "text": "Karakus 2026, arXiv:2609.37410",
@@ -6747,7 +6747,7 @@
           "recent": true,
           "result": null,
           "results": [
-            "T-066"
+            "T-080"
           ],
           "source_key": "[Karakuş 2026]",
           "text": "Karakus 2026, arXiv:2609.37410",
@@ -6771,7 +6771,7 @@
           "recent": true,
           "result": null,
           "results": [
-            "T-066"
+            "T-080"
           ],
           "source_key": "[Karakuş 2026]",
           "text": "Karakus 2026, arXiv:2609.37410",
@@ -6795,7 +6795,7 @@
           "recent": true,
           "result": null,
           "results": [
-            "T-066"
+            "T-080"
           ],
           "source_key": "[Karakuş 2026]",
           "text": "Karakus 2026, arXiv:2609.37410",
@@ -6819,7 +6819,7 @@
           "recent": true,
           "result": null,
           "results": [
-            "T-066"
+            "T-080"
           ],
           "source_key": "[Karakuş 2026]",
           "text": "Karakus 2026, arXiv:2609.37410",
@@ -6843,7 +6843,7 @@
           "recent": true,
           "result": null,
           "results": [
-            "T-066"
+            "T-080"
           ],
           "source_key": "[Karakuş 2026]",
           "text": "Karakus 2026, arXiv:2609.37410",
@@ -6867,7 +6867,7 @@
           "recent": true,
           "result": null,
           "results": [
-            "T-066"
+            "T-080"
           ],
           "source_key": "[Karakuş 2026]",
           "text": "Karakus 2026, arXiv:2609.37410",
@@ -6891,7 +6891,7 @@
           "recent": true,
           "result": null,
           "results": [
-            "T-066"
+            "T-080"
           ],
           "source_key": "[Karakuş 2026]",
           "text": "Karakus 2026, arXiv:2609.37410",
@@ -6915,7 +6915,7 @@
           "recent": true,
           "result": null,
           "results": [
-            "T-066"
+            "T-080"
           ],
           "source_key": "[Karakuş 2026]",
           "text": "Karakus 2026, arXiv:2609.37410",
@@ -6939,7 +6939,7 @@
           "recent": true,
           "result": null,
           "results": [
-            "T-066"
+            "T-080"
           ],
           "source_key": "[Karakuş 2026]",
           "text": "Karakus 2026, arXiv:2609.37410",
@@ -6963,7 +6963,7 @@
           "recent": true,
           "result": null,
           "results": [
-            "T-066"
+            "T-080"
           ],
           "source_key": "[Karakuş 2026]",
           "text": "Karakus 2026, arXiv:2609.37410",
@@ -6978,18 +6978,18 @@
           "assurance": "verified",
           "basis": "external",
           "confirmed_by": [
-            "T-069"
+            "T-083"
           ],
           "corrects": {
             "credit": "Nagamochi 2005",
             "result": "T-007",
             "source_key": "[Nagamochi 2005]"
           },
-          "note": "(confirmed T-069)",
+          "note": "(confirmed T-083)",
           "recent": true,
           "result": null,
           "results": [
-            "T-069"
+            "T-083"
           ],
           "source_key": "[chelokot Nagamochi counterexample 2026]",
           "text": "chelokot 2026, GitHub",
@@ -7013,8 +7013,8 @@
           "recent": true,
           "result": null,
           "results": [
-            "T-066",
-            "T-067"
+            "T-080",
+            "T-081"
           ],
           "source_key": "[Karakuş 2026]",
           "text": "Karakus 2026, arXiv:2609.37410",
@@ -7044,7 +7044,7 @@
           "recent": true,
           "result": null,
           "results": [
-            "T-066"
+            "T-080"
           ],
           "source_key": "[Karakuş 2026]",
           "text": "Karakus 2026, arXiv:2609.37410",
@@ -7078,7 +7078,7 @@
           "recent": true,
           "result": null,
           "results": [
-            "T-066"
+            "T-080"
           ],
           "source_key": "[Karakuş 2026]",
           "text": "Karakus 2026, arXiv:2609.37410",
@@ -7112,7 +7112,7 @@
           "recent": true,
           "result": null,
           "results": [
-            "T-066"
+            "T-080"
           ],
           "source_key": "[Karakuş 2026]",
           "text": "Karakus 2026, arXiv:2609.37410",
@@ -7150,7 +7150,7 @@
           "recent": true,
           "result": null,
           "results": [
-            "T-066"
+            "T-080"
           ],
           "source_key": "[Karakuş 2026]",
           "text": "Karakus 2026, arXiv:2609.37410",
@@ -7184,7 +7184,7 @@
           "recent": true,
           "result": null,
           "results": [
-            "T-066"
+            "T-080"
           ],
           "source_key": "[Karakuş 2026]",
           "text": "Karakus 2026, arXiv:2609.37410",
@@ -7218,7 +7218,7 @@
           "recent": true,
           "result": null,
           "results": [
-            "T-066"
+            "T-080"
           ],
           "source_key": "[Karakuş 2026]",
           "text": "Karakus 2026, arXiv:2609.37410",
@@ -7252,7 +7252,7 @@
           "recent": true,
           "result": null,
           "results": [
-            "T-066"
+            "T-080"
           ],
           "source_key": "[Karakuş 2026]",
           "text": "Karakus 2026, arXiv:2609.37410",
@@ -7290,7 +7290,7 @@
           "recent": true,
           "result": null,
           "results": [
-            "T-066"
+            "T-080"
           ],
           "source_key": "[Karakuş 2026]",
           "text": "Karakus 2026, arXiv:2609.37410",
@@ -7324,7 +7324,7 @@
           "recent": true,
           "result": null,
           "results": [
-            "T-066"
+            "T-080"
           ],
           "source_key": "[Karakuş 2026]",
           "text": "Karakus 2026, arXiv:2609.37410",
@@ -7358,7 +7358,7 @@
           "recent": true,
           "result": null,
           "results": [
-            "T-066"
+            "T-080"
           ],
           "source_key": "[Karakuş 2026]",
           "text": "Karakus 2026, arXiv:2609.37410",
@@ -7392,7 +7392,7 @@
           "recent": true,
           "result": null,
           "results": [
-            "T-066"
+            "T-080"
           ],
           "source_key": "[Karakuş 2026]",
           "text": "Karakus 2026, arXiv:2609.37410",
@@ -7426,7 +7426,7 @@
           "recent": true,
           "result": null,
           "results": [
-            "T-066"
+            "T-080"
           ],
           "source_key": "[Karakuş 2026]",
           "text": "Karakus 2026, arXiv:2609.37410",
@@ -7464,7 +7464,7 @@
           "recent": true,
           "result": null,
           "results": [
-            "T-066"
+            "T-080"
           ],
           "source_key": "[Karakuş 2026]",
           "text": "Karakus 2026, arXiv:2609.37410",
@@ -7502,7 +7502,7 @@
           "recent": true,
           "result": null,
           "results": [
-            "T-066"
+            "T-080"
           ],
           "source_key": "[Karakuş 2026]",
           "text": "Karakus 2026, arXiv:2609.37410",
@@ -7540,7 +7540,7 @@
           "recent": true,
           "result": null,
           "results": [
-            "T-066"
+            "T-080"
           ],
           "source_key": "[Karakuş 2026]",
           "text": "Karakus 2026, arXiv:2609.37410",
@@ -7578,7 +7578,7 @@
           "recent": true,
           "result": null,
           "results": [
-            "T-066"
+            "T-080"
           ],
           "source_key": "[Karakuş 2026]",
           "text": "Karakus 2026, arXiv:2609.37410",
@@ -7616,7 +7616,7 @@
           "recent": true,
           "result": null,
           "results": [
-            "T-066"
+            "T-080"
           ],
           "source_key": "[Karakuş 2026]",
           "text": "Karakus 2026, arXiv:2609.37410",
@@ -7654,7 +7654,7 @@
           "recent": true,
           "result": null,
           "results": [
-            "T-066"
+            "T-080"
           ],
           "source_key": "[Karakuş 2026]",
           "text": "Karakus 2026, arXiv:2609.37410",
@@ -7678,7 +7678,7 @@
           "recent": true,
           "result": null,
           "results": [
-            "T-066"
+            "T-080"
           ],
           "source_key": "[Karakuş 2026]",
           "text": "Karakus 2026, arXiv:2609.37410",
@@ -7702,7 +7702,7 @@
           "recent": true,
           "result": null,
           "results": [
-            "T-066"
+            "T-080"
           ],
           "source_key": "[Karakuş 2026]",
           "text": "Karakus 2026, arXiv:2609.37410",
@@ -7726,7 +7726,7 @@
           "recent": true,
           "result": null,
           "results": [
-            "T-066"
+            "T-080"
           ],
           "source_key": "[Karakuş 2026]",
           "text": "Karakus 2026, arXiv:2609.37410",
@@ -7750,7 +7750,7 @@
           "recent": true,
           "result": null,
           "results": [
-            "T-066"
+            "T-080"
           ],
           "source_key": "[Karakuş 2026]",
           "text": "Karakus 2026, arXiv:2609.37410",
@@ -7774,7 +7774,7 @@
           "recent": true,
           "result": null,
           "results": [
-            "T-066"
+            "T-080"
           ],
           "source_key": "[Karakuş 2026]",
           "text": "Karakus 2026, arXiv:2609.37410",
@@ -7798,7 +7798,7 @@
           "recent": true,
           "result": null,
           "results": [
-            "T-066"
+            "T-080"
           ],
           "source_key": "[Karakuş 2026]",
           "text": "Karakus 2026, arXiv:2609.37410",
@@ -7822,7 +7822,7 @@
           "recent": true,
           "result": null,
           "results": [
-            "T-066"
+            "T-080"
           ],
           "source_key": "[Karakuş 2026]",
           "text": "Karakus 2026, arXiv:2609.37410",
@@ -7846,7 +7846,7 @@
           "recent": true,
           "result": null,
           "results": [
-            "T-066"
+            "T-080"
           ],
           "source_key": "[Karakuş 2026]",
           "text": "Karakus 2026, arXiv:2609.37410",
@@ -7870,7 +7870,7 @@
           "recent": true,
           "result": null,
           "results": [
-            "T-066"
+            "T-080"
           ],
           "source_key": "[Karakuş 2026]",
           "text": "Karakus 2026, arXiv:2609.37410",
@@ -7894,7 +7894,7 @@
           "recent": true,
           "result": null,
           "results": [
-            "T-066"
+            "T-080"
           ],
           "source_key": "[Karakuş 2026]",
           "text": "Karakus 2026, arXiv:2609.37410",
@@ -7918,7 +7918,7 @@
           "recent": true,
           "result": null,
           "results": [
-            "T-066"
+            "T-080"
           ],
           "source_key": "[Karakuş 2026]",
           "text": "Karakus 2026, arXiv:2609.37410",
@@ -7942,7 +7942,7 @@
           "recent": true,
           "result": null,
           "results": [
-            "T-066"
+            "T-080"
           ],
           "source_key": "[Karakuş 2026]",
           "text": "Karakus 2026, arXiv:2609.37410",
@@ -7957,18 +7957,18 @@
           "assurance": "verified",
           "basis": "external",
           "confirmed_by": [
-            "T-069"
+            "T-083"
           ],
           "corrects": {
             "credit": "Nagamochi 2005",
             "result": "T-007",
             "source_key": "[Nagamochi 2005]"
           },
-          "note": "(confirmed T-069)",
+          "note": "(confirmed T-083)",
           "recent": true,
           "result": null,
           "results": [
-            "T-069"
+            "T-083"
           ],
           "source_key": "[chelokot Nagamochi counterexample 2026]",
           "text": "chelokot 2026, GitHub",
@@ -7992,8 +7992,8 @@
           "recent": true,
           "result": null,
           "results": [
-            "T-066",
-            "T-067"
+            "T-080",
+            "T-081"
           ],
           "source_key": "[Karakuş 2026]",
           "text": "Karakus 2026, arXiv:2609.37410",
@@ -8023,7 +8023,7 @@
           "recent": true,
           "result": null,
           "results": [
-            "T-066"
+            "T-080"
           ],
           "source_key": "[Karakuş 2026]",
           "text": "Karakus 2026, arXiv:2609.37410",
@@ -8057,7 +8057,7 @@
           "recent": true,
           "result": null,
           "results": [
-            "T-066"
+            "T-080"
           ],
           "source_key": "[Karakuş 2026]",
           "text": "Karakus 2026, arXiv:2609.37410",
@@ -8091,7 +8091,7 @@
           "recent": true,
           "result": null,
           "results": [
-            "T-066"
+            "T-080"
           ],
           "source_key": "[Karakuş 2026]",
           "text": "Karakus 2026, arXiv:2609.37410",
@@ -8129,7 +8129,7 @@
           "recent": true,
           "result": null,
           "results": [
-            "T-066"
+            "T-080"
           ],
           "source_key": "[Karakuş 2026]",
           "text": "Karakus 2026, arXiv:2609.37410",
@@ -8163,7 +8163,7 @@
           "recent": true,
           "result": null,
           "results": [
-            "T-066"
+            "T-080"
           ],
           "source_key": "[Karakuş 2026]",
           "text": "Karakus 2026, arXiv:2609.37410",
@@ -8197,7 +8197,7 @@
           "recent": true,
           "result": null,
           "results": [
-            "T-066"
+            "T-080"
           ],
           "source_key": "[Karakuş 2026]",
           "text": "Karakus 2026, arXiv:2609.37410",
@@ -8231,7 +8231,7 @@
           "recent": true,
           "result": null,
           "results": [
-            "T-066"
+            "T-080"
           ],
           "source_key": "[Karakuş 2026]",
           "text": "Karakus 2026, arXiv:2609.37410",
@@ -8265,7 +8265,7 @@
           "recent": true,
           "result": null,
           "results": [
-            "T-066"
+            "T-080"
           ],
           "source_key": "[Karakuş 2026]",
           "text": "Karakus 2026, arXiv:2609.37410",
@@ -8303,7 +8303,7 @@
           "recent": true,
           "result": null,
           "results": [
-            "T-066"
+            "T-080"
           ],
           "source_key": "[Karakuş 2026]",
           "text": "Karakus 2026, arXiv:2609.37410",
@@ -8337,7 +8337,7 @@
           "recent": true,
           "result": null,
           "results": [
-            "T-066"
+            "T-080"
           ],
           "source_key": "[Karakuş 2026]",
           "text": "Karakus 2026, arXiv:2609.37410",
@@ -8371,7 +8371,7 @@
           "recent": true,
           "result": null,
           "results": [
-            "T-066"
+            "T-080"
           ],
           "source_key": "[Karakuş 2026]",
           "text": "Karakus 2026, arXiv:2609.37410",
@@ -8405,7 +8405,7 @@
           "recent": true,
           "result": null,
           "results": [
-            "T-066"
+            "T-080"
           ],
           "source_key": "[Karakuş 2026]",
           "text": "Karakus 2026, arXiv:2609.37410",
@@ -8443,7 +8443,7 @@
           "recent": true,
           "result": null,
           "results": [
-            "T-066"
+            "T-080"
           ],
           "source_key": "[Karakuş 2026]",
           "text": "Karakus 2026, arXiv:2609.37410",
@@ -8481,7 +8481,7 @@
           "recent": true,
           "result": null,
           "results": [
-            "T-066"
+            "T-080"
           ],
           "source_key": "[Karakuş 2026]",
           "text": "Karakus 2026, arXiv:2609.37410",
@@ -8519,7 +8519,7 @@
           "recent": true,
           "result": null,
           "results": [
-            "T-066"
+            "T-080"
           ],
           "source_key": "[Karakuş 2026]",
           "text": "Karakus 2026, arXiv:2609.37410",
@@ -8557,7 +8557,7 @@
           "recent": true,
           "result": null,
           "results": [
-            "T-066"
+            "T-080"
           ],
           "source_key": "[Karakuş 2026]",
           "text": "Karakus 2026, arXiv:2609.37410",
@@ -8595,7 +8595,7 @@
           "recent": true,
           "result": null,
           "results": [
-            "T-066"
+            "T-080"
           ],
           "source_key": "[Karakuş 2026]",
           "text": "Karakus 2026, arXiv:2609.37410",
@@ -8633,7 +8633,7 @@
           "recent": true,
           "result": null,
           "results": [
-            "T-066"
+            "T-080"
           ],
           "source_key": "[Karakuş 2026]",
           "text": "Karakus 2026, arXiv:2609.37410",
@@ -8671,7 +8671,7 @@
           "recent": true,
           "result": null,
           "results": [
-            "T-066"
+            "T-080"
           ],
           "source_key": "[Karakuş 2026]",
           "text": "Karakus 2026, arXiv:2609.37410",
@@ -8695,7 +8695,7 @@
           "recent": true,
           "result": null,
           "results": [
-            "T-066"
+            "T-080"
           ],
           "source_key": "[Karakuş 2026]",
           "text": "Karakus 2026, arXiv:2609.37410",
@@ -8719,7 +8719,7 @@
           "recent": true,
           "result": null,
           "results": [
-            "T-066"
+            "T-080"
           ],
           "source_key": "[Karakuş 2026]",
           "text": "Karakus 2026, arXiv:2609.37410",
@@ -8743,7 +8743,7 @@
           "recent": true,
           "result": null,
           "results": [
-            "T-066"
+            "T-080"
           ],
           "source_key": "[Karakuş 2026]",
           "text": "Karakus 2026, arXiv:2609.37410",
@@ -8767,7 +8767,7 @@
           "recent": true,
           "result": null,
           "results": [
-            "T-066"
+            "T-080"
           ],
           "source_key": "[Karakuş 2026]",
           "text": "Karakus 2026, arXiv:2609.37410",
@@ -8791,7 +8791,7 @@
           "recent": true,
           "result": null,
           "results": [
-            "T-066"
+            "T-080"
           ],
           "source_key": "[Karakuş 2026]",
           "text": "Karakus 2026, arXiv:2609.37410",
@@ -8815,7 +8815,7 @@
           "recent": true,
           "result": null,
           "results": [
-            "T-066"
+            "T-080"
           ],
           "source_key": "[Karakuş 2026]",
           "text": "Karakus 2026, arXiv:2609.37410",
@@ -8839,7 +8839,7 @@
           "recent": true,
           "result": null,
           "results": [
-            "T-066"
+            "T-080"
           ],
           "source_key": "[Karakuş 2026]",
           "text": "Karakus 2026, arXiv:2609.37410",
@@ -8863,7 +8863,7 @@
           "recent": true,
           "result": null,
           "results": [
-            "T-066"
+            "T-080"
           ],
           "source_key": "[Karakuş 2026]",
           "text": "Karakus 2026, arXiv:2609.37410",
@@ -8887,7 +8887,7 @@
           "recent": true,
           "result": null,
           "results": [
-            "T-066"
+            "T-080"
           ],
           "source_key": "[Karakuş 2026]",
           "text": "Karakus 2026, arXiv:2609.37410",
@@ -8911,7 +8911,7 @@
           "recent": true,
           "result": null,
           "results": [
-            "T-066"
+            "T-080"
           ],
           "source_key": "[Karakuş 2026]",
           "text": "Karakus 2026, arXiv:2609.37410",
@@ -8935,7 +8935,7 @@
           "recent": true,
           "result": null,
           "results": [
-            "T-066"
+            "T-080"
           ],
           "source_key": "[Karakuş 2026]",
           "text": "Karakus 2026, arXiv:2609.37410",
@@ -8959,7 +8959,7 @@
           "recent": true,
           "result": null,
           "results": [
-            "T-066"
+            "T-080"
           ],
           "source_key": "[Karakuş 2026]",
           "text": "Karakus 2026, arXiv:2609.37410",
@@ -8983,7 +8983,7 @@
           "recent": true,
           "result": null,
           "results": [
-            "T-066"
+            "T-080"
           ],
           "source_key": "[Karakuş 2026]",
           "text": "Karakus 2026, arXiv:2609.37410",
@@ -8998,18 +8998,18 @@
           "assurance": "verified",
           "basis": "external",
           "confirmed_by": [
-            "T-069"
+            "T-083"
           ],
           "corrects": {
             "credit": "Nagamochi 2005",
             "result": "T-007",
             "source_key": "[Nagamochi 2005]"
           },
-          "note": "(confirmed T-069)",
+          "note": "(confirmed T-083)",
           "recent": true,
           "result": null,
           "results": [
-            "T-069"
+            "T-083"
           ],
           "source_key": "[chelokot Nagamochi counterexample 2026]",
           "text": "chelokot 2026, GitHub",
@@ -9033,8 +9033,8 @@
           "recent": true,
           "result": null,
           "results": [
-            "T-066",
-            "T-067"
+            "T-080",
+            "T-081"
           ],
           "source_key": "[Karakuş 2026]",
           "text": "Karakus 2026, arXiv:2609.37410",

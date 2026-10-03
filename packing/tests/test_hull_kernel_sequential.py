@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import copy
 import gzip
+import json
 import subprocess
 import sys
 import time
@@ -130,6 +131,35 @@ def test_pattern_a_stalls_at_four_bins_with_its_extents(n17_frame: Frame) -> Non
     assert result["seed_points"]["interior-SW"] > 0
 
 
+def test_a_saved_run_is_checked_from_its_saved_node_with_the_same_result(
+    n17_frame: Frame, tmp_path: Path
+) -> None:
+    """With `save_objects` the run checks the node it saved, read a step at a time, and
+    lets the produced one go; its result is the one the in-memory check gives, and the
+    files are what `gzip.compress` of the canonical bytes gives."""
+    settings: dict[str, Any] = {
+        "name": "A",
+        "bins": 4,
+        "max_rounds": 2,
+        "max_seconds": 60,
+        "cover": "indexed",
+        "collision": False,
+    }
+    in_memory = tool.run(n17_frame, tool.PATTERNS["A"], **settings)
+    saved = tool.run(n17_frame, tool.PATTERNS["A"], save_objects=tmp_path, **settings)
+    timing = ("producer_seconds", "checker_seconds")
+    assert {key: value for key, value in saved.items() if key not in timing} == {
+        key: value for key, value in in_memory.items() if key not in timing
+    }
+    seed_file, node_file = tool.saved_files(tmp_path)
+    assert {path.name for path in tmp_path.iterdir()} == {seed_file.name, node_file.name}
+    assert node_file.name == f"node-{saved['node_sha256']}.json.gz"
+    for path in (seed_file, node_file):
+        document = json.loads(gzip.decompress(path.read_bytes()))
+        assert path.read_bytes() == gzip.compress(tool.canonical_bytes(document), mtime=0)
+        assert tool.content_sha256(document) in path.name
+
+
 def test_the_endpoint_sub_pattern_stalls(n17_frame: Frame) -> None:
     result = tool.run(
         n17_frame,
@@ -218,6 +248,66 @@ def test_a_saved_closure_is_certified_by_the_checker_alone(
     saved.write_bytes(gzip.compress(raw.replace(b'"closed":true', b'"closed":false')))
     with pytest.raises(RefusalError, match="declared closure differs"):
         tool.check_saved(tmp_path, blind_pair, require_no_producer=False)
+
+
+def test_a_saved_node_is_read_a_step_at_a_time_with_the_same_content(
+    blind_pair: Frame, tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    """`stream_node` gives the node's own members, steps and content id, from the file
+    `save_certificate` writes and from the same node re-spaced, with reads so short that
+    values and numbers are split between them; the saved check certifies both alike."""
+    production = producer.produce(blind_pair, [0, 1], bins=16, max_rounds=2, budget=budget())
+    expected = json.loads(tool.canonical_bytes(production.node))
+    canonical, spaced = tmp_path / "canonical", tmp_path / "spaced"
+    tool.save_certificate(canonical, production.seed, production.node)
+    tool.save_certificate(spaced, production.seed, production.node)
+    _, node_file = tool.saved_files(spaced)
+    node_file.write_bytes(
+        gzip.compress(json.dumps(expected, indent=1, sort_keys=True).encode())
+    )
+    monkeypatch.setattr(tool, "STREAM_CHUNK", 7)
+    for directory in (canonical, spaced):
+        header, steps = tool.stream_node(tool.saved_files(directory)[1])
+        assert steps
+        assert list(steps) == expected["steps"]
+        assert {**header, "steps": expected["steps"]} == expected
+        assert steps.content_sha256 == tool.content_sha256(production.node)
+        with pytest.raises(RefusalError, match="read once"):
+            next(iter(steps))
+    checked = [
+        tool.check_saved(directory, blind_pair, max_seconds=60, require_no_producer=False)
+        for directory in (canonical, spaced)
+    ]
+    trace = certify(blind_pair, production, [0, 1], 16)
+    for result in checked:
+        assert result["node_sha256"] == tool.content_sha256(production.node)
+        assert result["closure"] == trace.closure
+        assert result["rows_checked"] == sum(step["rows"] for step in trace.steps)
+        assert result["events"] == sum(step["events"] for step in trace.steps)
+
+
+@pytest.mark.parametrize(
+    ("text", "message"),
+    [
+        ("[]", "is a JSON object"),
+        ('{"mask":[]}', "has no steps"),
+        ('{"mask":[],"mask":[],"steps":[]}', "repeats its member"),
+        ('{"steps":[],"mask":[]}', "follows the steps"),
+        ('{"steps":[{} {}]}', "separated by commas"),
+        ('{"steps":[{}],"terminal":true} []', "data follows"),
+    ],
+)
+def test_a_saved_node_out_of_canonical_order_or_malformed_is_refused(
+    tmp_path: Path, text: str, message: str
+) -> None:
+    path = tmp_path / "node-0.json.gz"
+    path.write_bytes(gzip.compress(text.encode()))
+
+    def read(path: Path) -> list[dict[str, Any]]:
+        return list(tool.stream_node(path)[1])
+
+    with pytest.raises(RefusalError, match=message):
+        _ = read(path)
 
 
 def test_the_saved_check_path_never_imports_the_producer() -> None:

@@ -10,7 +10,7 @@ from typing import Any
 import pytest
 
 from devtools import check_n17_subpattern as tool
-from sqpack.hull_kernel import Budget, RefusalError, collision, producer, sequential
+from sqpack.hull_kernel import Budget, RefusalError, collision, node, producer, sequential
 from sqpack.hull_kernel.frame import Frame, make_frame
 from sqpack.hull_kernel.induction import convex, hull
 from sqpack.hull_kernel.node import points
@@ -197,3 +197,50 @@ def test_a_saved_check_reports_the_same_cover_under_either_backend(
             tmp_path, blind_pair, max_seconds=120, require_no_producer=False, cover="area"
         )
     assert sequential.COVERS["indexed"] is not sequential.COVERS["reference"]
+
+
+def test_emptying_the_pair_memos_at_every_step_changes_nothing(
+    blind_pair: Frame, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    """The producer's core-pair terms and the replay's facet memo are emptied at a step's
+    start once they pass their bound. With the bound at zero they are emptied at every
+    step, and the produced bytes, the checked counts and the closure are the same."""
+
+    def produce() -> producer.Production:
+        return producer.produce(
+            blind_pair,
+            [0, 1],
+            bins=2,
+            max_rounds=12,
+            budget=budget(),
+            split=producer.SplitPolicy(floor=64, max_rows=200),
+        )
+
+    def replay(production: producer.Production) -> sequential.SequentialTrace:
+        admitted = node.admit_seed(
+            blind_pair,
+            production.seed,
+            mask=[0, 1],
+            bins=2,
+            budget=budget(),
+            allow_empty_groups=True,
+        )
+        return sequential.replay_sequential(
+            blind_pair,
+            production.node,
+            admitted,
+            mask=[0, 1],
+            seed_sha256=tool.content_sha256(production.seed),
+            budget=budget(),
+            cover="indexed",
+        )
+
+    bounded = produce()
+    bounded_trace = replay(bounded)
+    monkeypatch.setattr(producer, "TERM_MEMO_PAIRS", 0)
+    monkeypatch.setattr(sequential, "FACET_MEMO_PAIRS", 0)
+    emptied = produce()
+    assert tool.canonical_bytes(emptied.node) == tool.canonical_bytes(bounded.node)
+    emptied_trace = replay(emptied)
+    assert emptied_trace.steps == bounded_trace.steps
+    assert emptied_trace.closure == bounded_trace.closure is not None

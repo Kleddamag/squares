@@ -32,7 +32,7 @@ import math
 import time
 from collections.abc import Callable, Sequence
 from dataclasses import dataclass, field
-from typing import Any
+from typing import Any, Protocol
 
 from sqpack.hull_kernel.collision import SUPPORT_NORMALS, outward_round
 from sqpack.hull_kernel.counting import row_envelope
@@ -254,6 +254,11 @@ def octagon_core(frame: Frame, lo: Q, hi: Q) -> Polygon:
 
 
 CORES = {"envelope": envelope_core, "octagon": octagon_core}
+# `CollisionTerms.pairs` is emptied at a step's start once it holds more pairs than this.
+# Uniform rows give at most `bins` squared, which a production keeps throughout; adaptive
+# rows give many more. The terms are a pure function of the two cores, so emptying the
+# memo recomputes them and changes nothing produced.
+TERM_MEMO_PAIRS = 1 << 15
 
 
 class CoreCache(dict[tuple[Q, Q], Polygon]):
@@ -532,7 +537,8 @@ def partner_cover(
 
     `memo` keeps each accepted row's `PartnerRow`, by the identity of the row object it
     was built from (held in the entry, so the identity cannot be reused), across the
-    steps that republish the row unchanged; a replaced row object builds a new one.
+    steps that republish the row unchanged; a replaced row object builds a new one, and
+    `produce` drops the replaced row's entry.
     """
     given: list[dict[str, Any]] = []
     live: list[PartnerRow] = []
@@ -817,6 +823,15 @@ def split_rows(
     return len(chosen)
 
 
+class StepLog(Protocol):
+    """Where `produce` keeps its steps: it appends each and counts them, nothing more, so
+    a log that writes them out holds none of them (`check_n17_subpattern.SpilledSteps`)."""
+
+    def append(self, step: dict[str, Any], /) -> None: ...
+
+    def __len__(self) -> int: ...
+
+
 @dataclass
 class Production:
     seed: dict[str, Any]
@@ -839,11 +854,13 @@ def produce(
     stop_at: float | None = None,
     core: str = "envelope",
     split: SplitPolicy | None = None,
+    step_log: StepLog | None = None,
 ) -> Production:
     """Seed, then round-robin complete steps until closure, a stall or the round cap.
 
     With `split`, rows are refined at round ends (`split_rows`), and a round that changes
-    nothing stalls only if it split nothing either.
+    nothing stalls only if it split nothing either. The node's steps are a list unless a
+    `step_log` is given, which becomes them.
     """
     seed = build_seed(frame, mask, bins=bins, budget=budget)
     seed_sha = content_sha256(seed)
@@ -866,7 +883,7 @@ def produce(
             str(owner): [row["reference"] for row in rows[owner]] for owner in mask
         },
     }
-    steps: list[dict[str, Any]] = []
+    steps: StepLog = [] if step_log is None else step_log
     closure: dict[str, Any] | None = None
     production = Production(seed, {})
     cores = CoreCache(core)
@@ -882,6 +899,8 @@ def produce(
             if stop_at is not None and steps and time.monotonic() >= stop_at:
                 production.outcome = "time_cap"
                 break
+            if len(terms.pairs) > TERM_MEMO_PAIRS:
+                terms.pairs.clear()
             step_index = len(steps)
             prior_hulls = {str(other): encode(groups[other]) for other in mask}
             covers: dict[str, list[dict[str, Any]]] = {}
@@ -948,6 +967,10 @@ def produce(
                 step["inner_grid_compression"] = receipt
             rows[owner] = [accepted for _, accepted, _ in produced]
             plans[owner] = [(None, row) for row in rows[owner]]
+            # A replaced row is never a partner again, so its memo entry only held memory.
+            current = {id(row) for accepted_rows in rows.values() for row in accepted_rows}
+            for key in [key for key in memo if key not in current]:
+                del memo[key]
             steps.append(step)
             if progress is not None:
                 event: dict[str, Any] = {

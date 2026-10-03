@@ -77,6 +77,12 @@ COVERS = {
     "fast": fast_union_cover,
     "indexed": indexed_union_cover,
 }
+# The replay's memo of collision facets by pair of cores is emptied at a step's start once
+# it holds more pairs than this. Uniform rows give at most `bins` squared pairs, which a
+# node keeps throughout; adaptive rows give many more, and the memo then holds at most this
+# many and one step's. The facets are a pure function of the two cores, so emptying the
+# memo recomputes them and changes no check.
+FACET_MEMO_PAIRS = 1 << 15
 
 
 def _key(value: object) -> str:
@@ -384,6 +390,8 @@ def replay_sequential(
     facets: FacetCache = {}
     for step_index, step in enumerate(steps):
         require(trace.closure is None, "a step follows the node's closure")
+        if len(facets) > FACET_MEMO_PAIRS:
+            facets.clear()
         owner = step["owner"]
         require(
             type(step["index"]) is int and step["index"] == step_index and owner in mask,

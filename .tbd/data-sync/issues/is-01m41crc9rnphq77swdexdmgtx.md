@@ -5,7 +5,7 @@ title: "Merge #292, #298, #311 into main bottom-up once each is green and mergea
 kind: task
 status: open
 priority: 1
-version: 16
+version: 17
 labels:
   - merge
 dependencies:
@@ -39,7 +39,7 @@ dependencies:
     target: is-01m3xrx8b86kp8t1k6gj71p4ej
 parent_id: is-01m41cr1mz526vz5b2a5e4z100
 created_at: 2026-10-03T17:24:58.807Z
-updated_at: 2026-10-03T17:36:23.438Z
+updated_at: 2026-10-03T17:46:27.813Z
 ---
 Merge commits, not squash or rebase (think-fqut: GitHub's stacked merge rebases children). After each merge, retarget and check the next PR is still mergeable; refresh its CI.
 
@@ -52,3 +52,4 @@ Merge procedure (main is unprotected; delete_branch_on_merge is true, and GitHub
 3. #311 green → merge with a merge commit.
 4. Then final issue replies from main with check_requests --draft N (think-hen3), evand's #316, #256 and #238 first, then close the closeable ones.
 Follow-up branch after landing: n82 (T-076), n83 (T-073), T-077, T-046 leftovers, Valid7 w-shards, census evidence (think-3ok2), #316 import (IM316 branch claude/import-316-k2m4), and any newer issues.
+2026-10-03 18:20 Revised: #290, #292 and #298 are a native GitHub PR stack (stack 293). 'gh pr edit 298 --base main' is refused ("part of a stack"), and the GraphQL API has no unstack mutation. Merging #292 first would make GitHub restack-rebase #298 (as it did #292 after #290), rewriting a branch full of merge commits under the records lane's unpushed work. Plan without any rewrite: (1) the records lane pushes the restacked #298, which contains #292's head c307f646f, so #298 is a clean fast-forward of its base; (2) merge #298 into its base claude/import-2026-10-01-requests with a merge commit (top of stack; nothing above it in the native stack); (3) #292 then carries everything; CI on #292's new head; merge #292 into main with a merge commit. #311 (not in the native stack) gets retargeted by GitHub as its base branch is deleted; SP2 follows. #292 green and CLEAN at c307f646f (run 37140957988) before step 2.

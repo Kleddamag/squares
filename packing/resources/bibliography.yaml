@@ -637,6 +637,27 @@ sources:
       with a co-author trailer naming an AI assistant.
       web/wand125-mixed-bounds-afternoon-2026-10-02/acquisition/sources.json pins revision
       b00fc70f1904e9b1b567afee056d347f911209e8. Dated by that revision, 2026-10-02 UTC.
+  - key: '[wand125 linear n82 2026-10-02]'
+    authors: [wand125]
+    year: 2026
+    venue: GitHub
+    dated: '2026-10-02'
+    credit: wand125 after Tokoharu, Levy, Stromquist, Nagamochi, Burns, Massaccesi
+    short_credit: wand125 after Tokoharu, Levy et al.
+    lineage: builds-on-project
+    note: >-
+      The linear certificate for n = 82 that wand125/square-packing-bounds added on
+      2026-10-02 (certificates/mixed_n82_L932, first committed at 58f153f8), requested for
+      registration in a comment of that day on jlevy/squares#294: a measure of point
+      masses, uniform segments and uniform rectangles in D4 orbits, of mass 82 - 1/100000,
+      on the support of the source's n = 83 linear certificate scaled by 932/935 with its
+      masses solved again, checked by code/unified_linear_verify.cpp, byte for byte the
+      checker of the [wand125 linear certificates 2026-10-02]. A later revision than those,
+      so a key of its own. Credited as they are, on the root README's unchanged Attribution
+      section; the README says parts of the work were produced with AI assistance under
+      human direction, and the commit message ends with a co-author trailer naming an AI
+      assistant. web/wand125-linear-n82-2026-10-02/acquisition/sources.json pins revision
+      b00fc70f1904e9b1b567afee056d347f911209e8. Dated by that revision, 2026-10-02 UTC.
   - key: '[franciscouzo square-packing 2026-09-27]'
     authors: [Couzo]
     year: 2026

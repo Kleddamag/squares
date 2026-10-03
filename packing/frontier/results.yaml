@@ -6614,7 +6614,7 @@ results:
         scope: >-
           The fourteen certificates wand125/square-packing-bounds published between 05:58 and 15:16 UTC on 2 October, pinned at b00fc70f: six mixed rectangle densities, the linear s(82) >= 233/25 and seven rectangle rungs, against checkers byte-identical to ones already reviewed; what the new measures add, their sizes, structure and records; a review of the mathematics and the records, blind to the replay and not to retention.
         verdict: accepted
-        covers: [T-075]
+        covers: [T-075, T-076]
     artifacts:
       - packing/resources/web/wand125-mixed-bounds-afternoon-2026-10-02/README.md
       - packing/resources/web/wand125-mixed-bounds-afternoon-2026-10-02/receipts/mixed-audit.json
@@ -6636,3 +6636,89 @@ results:
       its reviews entry says. Its findings AF-1 to AF-3 are in the entries' limitations.
       Registered before the same revision's rectangle rungs, as its finding AF-6 advises, so
       that the rungs at n = 91 and 93 write nothing there.
+
+  - id: T-076
+    kind: lower-bound
+    registered: '2026-10-03'
+    headline: "Linear-measure lower bound reported at `n = 82`"
+    claim: >-
+      wand125/square-packing-bounds reports s(82) >= 233/25 = 9.32 from a measure of points,
+      segments and rectangles published on 2 October 2026. The measure is of the kind and
+      checker of T-073: point masses, segments of uniform density and rectangles of uniform
+      density, in D4 orbits with exact rational geometry, of total mass 82 - 1/100000, at core
+      side 9977/10000 on 201 net half-angles of step 83/40000, with 86 point, 222 segment and
+      774 rectangle orbits. They are those of T-073's n = 83 certificate, every coordinate
+      scaled by exactly 932/935, with the masses solved again.
+
+      The source reports it accepted at all 201 net angles, the axis included, by
+      code/unified_linear_verify.cpp, byte for byte the verifier of T-073, in 153,579,479
+      nodes, and says the full replay was run again from the published tarball by the same
+      implementation. The value exceeds Green's reported 2 sqrt(2) + (247 + 12 sqrt(2))/41 =
+      9.2667335..., the value this record reported at n = 82, by 0.0532664..., and does not
+      rest on Green's argument, which jlevy/squares#308 reports the published material does
+      not establish for k >= 4. Its mass is below 83, where T-075's 937/100 is higher.
+
+      Here the source was retained, its exact premises were recomputed from the retained
+      bytes, and the replay's checks before its first angle were run on the pinned tarball.
+      None of it decides coverage, and no angle was replayed. The value stands as reported,
+      and the verified lower bound is unchanged.
+
+      wand125 after Tokoharu and Levy,
+      [square-packing-bounds](https://github.com/wand125/square-packing-bounds/tree/b00fc70f1904e9b1b567afee056d347f911209e8/certificates/mixed_n82_L932).
+      Registration was requested in a comment of 2 October 2026 on jlevy/squares#294. The
+      source says parts of the work were produced with AI assistance under human direction.
+    scope: {n_values: [82]}
+    verification: V0
+    confirmation: C1
+    significance:
+      score: 3
+      rationale: >-
+        Scored as a claim: if the replay passes, the strongest lower bound on record at
+        n = 82, the one count from 82 to 85 where the record still reported Green's value,
+        by a certificate of T-073's kind that does not rest on Green's argument. A further
+        size from one generator and checker, at S3 as T-073 is; the 2 October review of the
+        afternoon certificates proposed S3, and the score gates nothing.
+      scored: '2026-10-03'
+      by: 'think-r7yt import, registering lane (repository; draft)'
+    novelty: previously-published
+    attribution:
+      source_keys: ['[wand125 linear n82 2026-10-02]']
+      published: '2026-10-02'
+    composition: >-
+      One claim from one certificate, at V0/C1: read by the 2 October review of the
+      afternoon certificates, and not replayed. Coverage is decided by the source's C++
+      checker alone, which the 2 October review of the linear certificates read function by
+      function.
+    evidence:
+      - E-n082-wand125-linear-932-report
+    reviews:
+      - path: docs/project/reviews/review-2026-10-02-wand125-afternoon-certificates.md
+        kind: adversarial
+        reviewer: AI agent, lane V of the 2026-10-02 result import, written after retaining the packets and before any replay; the retaining lane's own review, not prompted separately from it; model unstated
+        reviewer_kind: ai
+        relation: project
+        date: '2026-10-02'
+        scope: >-
+          The fourteen certificates wand125/square-packing-bounds published between 05:58 and 15:16 UTC on 2 October, pinned at b00fc70f: six mixed rectangle densities, the linear s(82) >= 233/25 and seven rectangle rungs, against checkers byte-identical to ones already reviewed; what the new measures add, their sizes, structure and records; a review of the mathematics and the records, blind to the replay and not to retention.
+        verdict: accepted
+        covers: [T-075, T-076]
+    artifacts:
+      - packing/resources/web/wand125-linear-n82-2026-10-02/README.md
+      - packing/resources/web/wand125-linear-n82-2026-10-02/receipts/linear-audit.json
+      - packing/resources/web/wand125-linear-n82-2026-10-02/receipts/n82/fetch.json
+      - packing/devtools/audit_wand125_linear.py
+      - docs/project/reviews/review-2026-10-02-wand125-afternoon-certificates.md
+      - docs/project/reviews/review-2026-10-02-wand125-linear-certificates-and-n76.md
+    next_rung: >-
+      think-r7yt: the complete replay, about 26 CPU-hours by the packet's pricing in six
+      ranges of equal node count, with devtools.audit_wand125_linear linear-replay and
+      linear-merge, before the verified lower bound is raised; linear-control n82 would put
+      a negative control on this certificate. V3/C3 when it passes.
+    notes: >-
+      V0 because the cited entry is the source's claim: assurance reported, replay not
+      attempted. C1 because the 2 October review of the afternoon certificates is recorded
+      as the report entry's external_review, with no blocking defect. That review was written
+      by the retaining lane itself and not by a separately prompted reviewer, which its
+      reviews entry says; the checker's own reading is the separately prompted 2 October
+      review of the linear certificates (T-073). A later revision than T-073's, so a separate
+      entry.

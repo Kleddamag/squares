@@ -2965,6 +2965,66 @@ evidence:
         adds, its size, structure and records. The 200 oblique coverage statements
         and the axis tables are the source's until the replay here passes.
     source_reviewed: '2026-10-02'
+  - id: E-n082-wand125-linear-932-report
+    claim: lower-bound
+    scope: {n_values: [82]}
+    assurance: reported
+    reported_method: interval-certified
+    performed_by: source-author
+    relationship_to_generator: same-implementation
+    origin: external
+    novelty: previously-published
+    source_key: '[wand125 linear n82 2026-10-02]'
+    certificate: resources/web/wand125-linear-n82-2026-10-02/square-packing-bounds/certificates/mixed_n82_L932/candidate.json.gz
+    replay_status: not-attempted
+    limitations: >-
+      wand125/square-packing-bounds at b00fc70f1904e9b1b567afee056d347f911209e8 (the
+      directory's one commit is 58f153f8, 2026-10-02T12:33:44Z) reports s(82) >=
+      233/25 = 9.32 from a linear measure of 86 point, 222 segment and 774 rectangle
+      orbits under D4, segment mass uniform along its length, total mass
+      8199999/100000, core side B = 9977/10000 and 201 net half-angles of step
+      83/40000. Its 1,082 primitives are those of the source's mixed_n83_L935 (T-073),
+      every coordinate scaled by exactly 932/935, with the masses solved again. It is
+      checked there at all 201 angles, the axis included, by
+      code/unified_linear_verify.cpp (SHA-256 0249726a...), run by the driver
+      code/replay_linear_bundle.py, the checker of the source's n = 83 and n = 101
+      linear certificates: an outward-rounded interval branch and bound over centre
+      boxes in one quadrant of the centre domain, which the measure's quarter-turn
+      symmetry makes stand for the whole; 153,579,479 nodes, and the bundle records
+      the source's run as 118,941.6 seconds, resumed and merged across machines. It
+      exceeds Green's reported 2 sqrt(2) + (247 + 12 sqrt(2))/41 = 9.2667335..., the
+      value this case reports, by 0.0532664..., which is the source's
+      improvement_lower, measured from the upper end of its own 90-digit enclosure of
+      Green's value and so a true lower bound on the margin. The source says Green's
+      bound is a reported value whose published argument does not establish DS7
+      Theorem 9 for k >= 4 (jlevy/squares#308); this certificate does not rest on it.
+      Its mass is below 83, where the source's mixed s(83) >= 937/100 is higher. The
+      source says the full replay was run again from the published tarball on a fresh
+      machine, by the same implementation and not an independent one; that was not
+      checked here. The tarball (SHA-256 296d8f09...) is pinned by digest and not
+      retained. Here devtools.audit_wand125_linear linear-audit
+      (receipts/linear-audit.json in the packet) recomputes the orbit counts, the D4
+      invariance, the mass, the net and the candidate digest from the retained bytes,
+      and its linear-fetch checked the pinned tarball, its 810 files, the replay
+      driver's preconditions and that all 201 inputs enclose the exact candidate; none
+      of it decides coverage, and no angle was replayed. Its negative control is n =
+      101's, which shares the checker byte for byte. The source audit names its bundle
+      by the tarball's file name (review finding AF-4).
+    external_review:
+      state: informally-verified
+      date: '2026-10-02'
+      reviewed_by: >-
+        AI agent, lane V of the 2026-10-02 result import, after retaining the
+        packets and before any replay; the retaining lane's own review, not prompted
+        separately from it; model unstated
+        (docs/project/reviews/review-2026-10-02-wand125-afternoon-certificates.md)
+      note: >-
+        No blocking defect. The checker is byte for byte the linear checker read on
+        2 October, and the measure is n = 83's support scaled by the ratio of the
+        sides with its masses solved again, so that review's reading applies
+        unchanged. Coverage statements remain the source's until the replay here
+        passes.
+    source_reviewed: '2026-10-02'
   - id: E-n032-evand-zmx2-full-sym-report
     claim: lower-bound
     scope: {n_values: [32]}

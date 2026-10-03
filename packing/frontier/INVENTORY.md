@@ -8,8 +8,8 @@ ours, which rest on someone else's argument, and how far each has been checked.
 
 ## The short version
 
-- **201** evidence records. **130** are formal; **124** of those were established here.
-- **62** rest on an argument made elsewhere, of which **7** have been read by nobody here.
+- **202** evidence records. **130** are formal; **124** of those were established here.
+- **63** rest on an argument made elsewhere, of which **7** have been read by nobody here.
 - **36** claim to be first established here. **13** make no novelty statement at all - not assessed, which is not the same as not novel.
 
 A formal claim on an unread external proof is still formal: the proof proves its
@@ -78,6 +78,7 @@ results, it is a statement about what this repository has itself examined.
 | `E-n091-wand125-mixed-970-report` | 1 | lower-bound | reported | - | elsewhere | informally-verified | previously-published |
 | `E-n092-wand125-mixed-975-report` | 2 | lower-bound | reported | - | elsewhere | informally-verified | previously-published |
 | `E-n096-wand125-mixed-996-report` | 1 | lower-bound | reported | - | elsewhere | informally-verified | previously-published |
+| `E-n082-wand125-linear-932-report` | 1 | lower-bound | reported | - | elsewhere | informally-verified | previously-published |
 | `E-n032-evand-zmx2-full-sym-report` | 0 | lower-bound | reported | - | elsewhere | informally-verified | previously-published |
 | `E-n011-kleddamag-3875-source-replay` | 0 | lower-bound | verified | equalities and inequalities, no tolerance | here | informally-verified | previously-published |
 | `E-n011-kleddamag-3875-native-parent-core` | 0 | lower-bound | verified | strict inequalities only | here | informally-verified | previously-published |
@@ -90,7 +91,7 @@ results, it is a statement about what this repository has itself examined.
 | `E-tokoharu-density-monotone-report` | 0 | lower-bound | reported | - | here | - | previously-published |
 | `E-wand125-point-monotone-report` | 0 | lower-bound | reported | - | here | - | previously-published |
 | `E-tokoharu-density-source-replay` | 0 | lower-bound | verified | strict inequalities only | here | informally-verified | previously-published |
-| `E-green-ds7-theorem9-reported-lower` | 31 | lower-bound | reported | - | elsewhere | defect-found | previously-published |
+| `E-green-ds7-theorem9-reported-lower` | 30 | lower-bound | reported | - | elsewhere | defect-found | previously-published |
 | `E-green-ds7-theorem10-reported-lower` | 0 | lower-bound | reported | - | elsewhere | not-reviewed | previously-published |
 | `E-friedman-ds7-table2-opaque-lower` | 0 | lower-bound | reported | - | elsewhere | - | previously-published |
 | `E-n017-maciver-reported-lower` | 0 | lower-bound | reported | - | elsewhere | not-reviewed | previously-published |
@@ -224,9 +225,9 @@ results, it is a statement about what this repository has itself examined.
 
 ## What the register rests on
 
-- **assurance**: numerically-checked 4, reported 67, verified 130
-- **method**: exact-algebraic 83, interval-certified 37, numerical-multiprecision 4, proof-assistant-checked 1, proof-audited 3, published-proof 6, reported 67
-- **novelty**: apparently-novel 36, common-knowledge 4, not assessed 13, previously-published 148
+- **assurance**: numerically-checked 4, reported 68, verified 130
+- **method**: exact-algebraic 83, interval-certified 37, numerical-multiprecision 4, proof-assistant-checked 1, proof-audited 3, published-proof 6, reported 68
+- **novelty**: apparently-novel 36, common-knowledge 4, not assessed 13, previously-published 149
 
 The `cases` column is how many frontier records cite each piece of evidence, and it is the reason to read this table rather than count records. Ranked below are the *formal* records only: a `reported` record cited across the frontier may be a shared catalogue and is labelled as such, which is the register working rather than risk. The risk is a verified claim resting on an argument nobody has examined.
 

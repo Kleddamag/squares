@@ -724,6 +724,29 @@ sources:
       is measured from a value below Green's (review finding AF-1), and at n = 96 the source
       calls Nagamochi's value unproven (AF-3). The same revision's rectangle rungs at n = 91
       and 93 are below these certificates there.
+  - id: wand125-linear-n82-2026-10-02
+    title: Linear point, segment and rectangle certificate for n = 82
+    role: source-repository
+    url: https://github.com/wand125/square-packing-bounds/tree/b00fc70f1904e9b1b567afee056d347f911209e8
+    local: resources/web/wand125-linear-n82-2026-10-02/
+    source_key: '[wand125 linear n82 2026-10-02]'
+    scope: {n_values: [82]}
+    reviewed: '2026-10-02'
+    source_date: '2026-10-02'
+    disposition: current-report
+    replay_disposition: case-specific
+    represented_by: [frontier/n-082.md]
+    evidence:
+      - E-n082-wand125-linear-932-report
+    notes: >-
+      Revision b00fc70f1904e9b1b567afee056d347f911209e8, retrieved at 2026-10-02T16:53Z for a
+      comment of that day on jlevy/squares#294; the directory was first committed at
+      58f153f8. A measure of points, uniform segments and uniform rectangles on the support
+      of the source's n = 83 linear certificate scaled by 932/935, checked by
+      code/unified_linear_verify.cpp, byte for byte the checker of T-073. Recorded as a
+      reported lower bound (T-076), above Green's reported value, which the case reported
+      before it. The exact audit and the replay's checks before its first angle pass; no
+      angle was replayed, and the proof-bundle tarball is pinned by digest and not retained.
   - id: wand125-valid7-independent-check-2026-10-02
     title: Independent exact checker of Valid7 for s(k^2 - 3) = k
     role: source-repository

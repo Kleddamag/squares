@@ -930,7 +930,7 @@ Use the structured form to query or plot; use these tables to read.
 | 74 | 9 | grid | — | 8.8475 | counting | 0.1525 |
 | 75 | 9 | grid | — | 8.9 | counting | 0.1 |
 | 76 | 9 | grid | — | 8.94 | counting | 0.06 |
-| 82 | `6 + (5/2)√2` = 9.53553391 | hand | — | 9.266734 | unavoidable points | 0.2688 |
+| 82 | `6 + (5/2)√2` = 9.53553391 | hand | — | 9.32 | counting | 0.2155 |
 | 83 | 9.63482562 | extension | 24 | 9.37 | counting | 0.2648 |
 | 84 | `9 + (1/2)√2` = 9.70710678 | strip | — | 9.4 | counting | 0.3071 |
 | 85 | `(11/2) + 3 √2` = 9.74264069 | hand | — | 9.46 | counting | 0.2826 |

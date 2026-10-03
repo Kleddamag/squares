@@ -1040,14 +1040,42 @@ def test_a_card_without_a_declared_size_takes_its_texts() -> None:
 #: A cell of the rating-ladder diagram: the ladder it belongs to, then, where it holds a
 #: rung, the chip's title, scale, level and label, and the description. Nothing follows
 #: the description, so a cell with a tally in it is no match.
-_LADDER_CELL = re.compile(
+_LADDER_CELL_RE = re.compile(
     r'<div class="site-ladders-cell(?P<empty> site-ladders-empty)?" role="cell" '
     r'data-ladder="(?P<ladder>[SVC])">'
     r'(?:<div class="site-ladders-rung">'
-    r'<span class="site-chip site-rung-fill" title="(?P<title>[^"]*)" '
-    r'data-rung="(?P<scale>[SVC])" data-level="(?P<level>\d)">(?P<label>[SVC]\d)</span>'
+    r'(?:<span class="site-chip site-rung-fill" title="(?P<title>[^"]*)" '
+    r'data-rung="(?P<scale>[VC])" data-level="(?P<level>\d)">(?P<label>[VC]\d)</span>'
+    r'|<span class="site-significance" data-level="(?P<s_level>\d)" role="img" '
+    r'aria-label="Significance S(?P=s_level) of 5" title="(?P<s_title>[^"]*)">'
+    r'<span class="site-significance-label" aria-hidden="true">(?P<s_label>S\d)</span>'
+    r'<span class="site-significance-bars" aria-hidden="true">'
+    r'(?P<bars>(?:<span class="site-significance-bar"></span>)*)</span></span>)'
     r'<span class="site-ladders-meaning">(?P<meaning>[^<]*)</span></div>)?</div>'
 )
+
+
+class _LADDER_CELL:  # noqa: N801
+    """The ladder diagram's cells, a chip's (V and C) and a significance mark's (S) read
+    alike: `ladder`, `label`, `scale`, `level`, `title` and `meaning`, and for a mark
+    the bars it draws, one per level."""
+
+    @staticmethod
+    def finditer(text: str) -> list[dict[str, str | None]]:
+        cells = []
+        for match in _LADDER_CELL_RE.finditer(text):
+            cell = match.groupdict()
+            if cell["s_label"]:
+                bars = (cell["bars"] or "").count("site-significance-bar")
+                assert bars == int(cell["s_level"] or 0), cell
+                cell |= {
+                    "label": cell["s_label"],
+                    "scale": "S",
+                    "level": cell["s_level"],
+                    "title": cell["s_title"],
+                }
+            cells.append(cell)
+        return cells
 
 
 def _seen(page: str) -> str:
@@ -2244,9 +2272,14 @@ def test_every_small_label_is_one_chip(name: str, rendered: Callable[[str], str]
 
 
 #: A rung chip, and what may stand between two chips of one run: white space.
+#: A rung as the site draws it, its label the one group: a V or C chip, or the
+#: significance mark, S1 to S5 with its bars (`overview_sections.significance_mark`).
 RUNG_CHIP = re.compile(
-    r'<span class="site-chip site-rung-fill" data-rung="([SVC])" data-level="(\d)">'
-    r"([SVC]\d)</span>"
+    r'<span class="(?:site-chip site-rung-fill" data-rung="[VC]" data-level="\d'
+    r'|site-significance" data-level="\d" role="img" aria-label="[^"]*"(?: title="[^"]*")?>'
+    r'<span class="site-significance-label" aria-hidden="true)">([SVC]\d)</span>'
+    r'(?:<span class="site-significance-bars" aria-hidden="true">'
+    r'(?:<span class="site-significance-bar"></span>)*</span></span>)?'
 )
 #: The order the site lists a result's rungs in: significance first (think-ucon).
 RUNG_ORDER = "SVC"
@@ -2258,9 +2291,9 @@ def _rung_runs(html: str) -> list[list[str]]:
     end = None
     for match in RUNG_CHIP.finditer(html):
         if end is not None and not html[end : match.start()].strip():
-            runs[-1].append(match.group(3))
+            runs[-1].append(match.group(1))
         else:
-            runs.append([match.group(3)])
+            runs.append([match.group(1)])
         end = match.end()
     return runs
 
@@ -2278,7 +2311,7 @@ def test_a_results_rungs_run_significance_first(overview: overview_data.Overview
             record["confirmation"],
         )
         chips = overview_sections.rung_chips(result)
-        assert [label for _, _, label in RUNG_CHIP.findall(chips)] == list(rungs)
+        assert RUNG_CHIP.findall(chips) == list(rungs)
         assert overview_sections.status_chips(result).startswith(chips)
 
 
@@ -2286,12 +2319,13 @@ def test_a_results_rungs_run_significance_first(overview: overview_data.Overview
     "name", ["index.html", render_overview.RESULTS_PAGE, "cases/11.html", "frontier.html"]
 )
 def test_every_page_lists_significance_first(name: str, rendered: Callable[[str], str]) -> None:
-    """Wherever rung chips sit side by side, on any page, they run S, V, C: a result's
-    three in a row, a popover, an overview or a case record, and the V and C of an entry
-    awaiting replay. No run repeats a scale or puts a later one first."""
+    """Wherever rungs sit side by side, on any page, they run S, V, C: a case record's
+    three, and the V and C of a table's row, whose significance is a column of its own
+    before them (`test_each_results_row_shows_its_rungs_significance_first`). No run
+    repeats a scale or puts a later one first."""
     shown = site_renders.case_records()[name] if name.startswith("cases/") else rendered(name)
     runs = [run for run in _rung_runs(shown) if len(run) > 1]
-    if name != "frontier.html":
+    if name.startswith("cases/"):
         assert any(len(run) == len(RUNG_ORDER) for run in runs), name
     for run in runs:
         places = [RUNG_ORDER.index(label[0]) for label in run]
@@ -2301,8 +2335,9 @@ def test_every_page_lists_significance_first(name: str, rendered: Callable[[str]
 def test_each_results_row_shows_its_rungs_significance_first(
     page: str, results: str, overview: overview_data.Overview
 ) -> None:
-    """The Rungs cell of the results table and of Recent Results opens with the result's
-    S, V and C chips, in that order."""
+    """A row of the results table and of Recent Results shows the result's significance
+    in its own column, the second, and its V and C chips open its Rungs cell, so its
+    rungs still read S, V, C across the row (`think-m3m4`)."""
     recent = {result.id for result in overview_sections.recent_results(overview)}
     assert recent
     table = _recent_table(page)
@@ -2314,12 +2349,19 @@ def test_each_results_row_shows_its_rungs_significance_first(
         return row[found.end() :]
 
     for result in overview.results:
-        chips = overview_sections.rung_chips(result)
-        assert cell(_row(results, result.id), "site-rungs").startswith(chips), result.id
+        chips = overview_sections.ladder_chips(result)
+        level = overview_sections.significance(result)
+        mark = overview_sections.significance_mark(
+            level, overview_sections.rung_meanings()[f"S{level}"]
+        )
+        rows = [_row(results, result.id)]
         if result.id in recent:
-            assert cell(_recent_row(table, result.id), "site-rungs").startswith(chips), (
-                result.id
-            )
+            rows.append(_recent_row(table, result.id))
+        for row in rows:
+            assert cell(row, "site-rungs").startswith(chips), result.id
+            assert cell(row, "site-col-s").startswith(mark), result.id
+            assert row.index('class="site-col-s"') < row.index('class="site-rungs"')
+            assert RUNG_CHIP.findall(row) == list(overview_sections.result_rungs(result))
     for title in re.findall(
         r'<th[^>]* title="([^"]*whether a case bound[^"]*)"', page + results
     ):
@@ -2534,7 +2576,7 @@ def test_every_result_shows_its_kind(
         assert chip == f'<span class="site-chip" data-kind="{kind}">{label}</span>'
         assert "data-tone" not in chip
         marks = overview_sections.status_marks(result)
-        under = f'{overview_sections.rung_chips(result)}<span class="site-kind">{chip}</span>'
+        under = f'{overview_sections.ladder_chips(result)}<span class="site-kind">{chip}</span>'
         for row in (_row(results, result.id), _recent_row(recent, result.id)):
             assert f' data-kind="{kind}" ' in row.split(">", 1)[0], result.id
             assert f">{under}</td>" in row, result.id
@@ -2624,7 +2666,7 @@ def test_recent_results_is_one_table_not_cards_or_a_list(
     # The script that sorts and filters the results page's table wires this one too.
     assert "data-site-table" in recent
     heads = re.findall(r"<th[^>]*>([^<]+)</th>", recent.split("</thead>", 1)[0])
-    assert heads == ["Date", "Result", "n", "Credit", "Rungs", "Status", "Details", "ID"]
+    assert heads == ["Date", "S", "Result", "n", "Credit", "Rungs", "Status", "Details", "ID"]
     newest = overview_sections.recent_results(overview)
     assert re.findall(r'<tr data-result="(t-\d+)"', recent) == [r.id.lower() for r in newest]
     for result in newest:
@@ -2695,7 +2737,7 @@ def test_the_recent_table_lists_every_result_less_the_superseded_at_s3_and_180_d
         assert f'data-date="{dated}"' in row, result.id
         current = not overview_sections.is_superseded(result)
         assert f'data-current="{"true" if current else "false"}"' in row, result.id
-        keeps = score >= 4 and dated >= cutoff and current
+        keeps = score >= 3 and dated >= cutoff and current
         assert (" hidden>" in row.split(">", 1)[0] + ">") == (not keeps), result.id
         shown += keeps
     assert 0 < shown < len(overview.results)
@@ -2751,9 +2793,9 @@ def test_the_html_measures_an_age_from_the_register_and_never_from_the_clock(
     every = overview_sections.RESULTS_DEFAULTS
     assert every == overview_sections.FilterDefaults(significance=None, max_age=None)
     day = date(2026, 9, 30)
-    assert shows(result("2026-04-03", 4), recent, day)
+    assert shows(result("2026-04-03", 3), recent, day)
     assert not shows(result("2026-04-02", 5), recent, day)
-    assert not shows(result("2026-09-29", 3), recent, day)
+    assert not shows(result("2026-09-29", 2), recent, day)
     assert not shows(result("1979", 5), recent, day)
     # A result dated after the reference is no older than any age.
     assert shows(result("2026-10-15", 4), recent, day)
@@ -3605,6 +3647,7 @@ def test_both_tables_of_results_have_the_same_columns(
     heads = re.findall(r"<th([^>]*)>([^<]+)</th>", head)
     assert [words for _, words in heads] == [
         "Date",
+        "S",
         "Result",
         "n",
         "Credit",
@@ -3614,7 +3657,7 @@ def test_both_tables_of_results_have_the_same_columns(
         "ID",
     ]
     sorts = ["data-sort=" in attributes for attributes, _ in heads]
-    assert sorts == [True, False, True, True, True, True, False, True]
+    assert sorts == [True, True, False, True, True, True, True, False, True]
     # As each page serves it, after KPress has labelled the cells.
     served = re.compile(r"<th[^>]*>([^<]+)</th>")
     on_overview = served.findall(_recent_table(page).split("</thead>", 1)[0])
@@ -3633,6 +3676,7 @@ def test_both_tables_of_results_have_the_same_columns(
         assert classes.findall(here) == classes.findall(there), result.id
         assert classes.findall(here) == [
             "site-col-date",
+            "site-col-s",
             "site-col-result",
             "num site-col-n",
             "site-col-credit",
@@ -3715,7 +3759,7 @@ def test_both_tables_of_results_end_with_the_same_id_column(
     # On a phone the id opens the card, in both tables, and the date, the row's first
     # cell, still follows the credit there.
     assert "  .site-results .site-col-id {\n    font-weight: 650;\n    grid-area: 1 / 1;" in css
-    assert "    grid-column: 3;\n    order: 2;\n    text-align: end;" in css
+    assert "    grid-column: 4;\n    order: 2;\n    text-align: end;" in css
 
 
 def test_a_date_cell_leads_with_the_date_and_then_says_what_it_dates(
@@ -3779,7 +3823,13 @@ def test_a_new_result_is_starred_in_both_tables_by_the_atlas_rule(
     for result in overview.results:
         # Each row, and where its star stands: after the result's own text, the last
         # thing in its cell, since its records are a Details column (think-e4o3).
-        placed_here = overview_sections.result_text(result) + "{star}</td>"
+        # The star follows the significance mark, in the significance cell, since
+        # 2026-10-03 (`think-m3m4`); the result's cell holds its text alone.
+        level = overview_sections.significance(result)
+        mark = overview_sections.significance_mark(
+            level, overview_sections.rung_meanings()[f"S{level}"]
+        )
+        placed_here = mark + "{star}</td>"
         rows = (
             (_row(table, result.id), placed_here),
             (_recent_row(recent, result.id), placed_here),
@@ -3816,16 +3866,12 @@ def test_a_new_result_is_starred_in_both_tables_by_the_atlas_rule(
     assert results.index("marks a new result") < results.index('<div class="site-table-tools')
     assert page.index(_recent_table(page)) < page.index("marks a new result")
     css = render_overview.SITE_CSS.read_text(encoding="utf-8")
-    assert ".site-star {\n  color: oklch(52% 0.19 25);\n}" in css
-    # The star hangs after the text's last character: with no width it cannot wrap to a
-    # line of its own, and its cell keeps room for it, as a table's cell and as a card's.
-    hang = css[css.index("\n.site-results .site-col-result .site-star {") :]
-    hang = hang[: hang.index("}")]
-    assert "display: inline-block;" in hang
-    assert "width: 0;" in hang
-    room = ".kpress .site-results td.site-col-result:has(.site-star) {\n"
-    assert room + "  padding-inline-end: calc(0.5rem + 1.1em);" in css
-    assert "  " + room + "    padding-inline-end: 1.1em;" in css
+    # The star's colour is a token (`think-zhlc`), and it sits after the significance
+    # mark's bars in the significance cell, no longer hung after the result's text.
+    assert ".site-star {\n  color: var(--site-new-result);\n}" in css
+    assert ".site-results .site-col-s .site-star {" in css
+    assert ".site-col-result .site-star" not in css
+    assert "td.site-col-result:has(.site-star)" not in css
     assert "\u00a0" not in table + recent
 
 
@@ -5150,7 +5196,7 @@ def test_both_tables_of_results_carry_the_identical_filter_set(page: str, result
     assert HIDE_SUPERSEDED.format(checked="") in there
     assert here.count(" checked") == 1
     assert " checked" not in there
-    assert dict(_SELECTED.findall(here)) == everything | {"s": "4"}
+    assert dict(_SELECTED.findall(here)) == everything | {"s": "3"}
     assert dict(_SELECTED.findall(there)) == everything
     started = r'<input\b[^>]*data-bound="([a-z]+)"[^>]* value="([^"]*)"'
     assert re.findall(started, here) == [("age", "180")]

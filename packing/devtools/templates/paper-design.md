@@ -1179,9 +1179,14 @@ it.
   after the label at the label’s size, the arrow right where the control is a link that
   navigates and the double chevron where it is a button that shows more or less in
   place. Both forms share one rule in `site.css`, and the row sets `--site-action-space`
-  (1.2rem) above itself and nothing below, where the next heading’s own space begins.
-  The site has two: **See all results** under the homepage’s recent table, a link to the
-  results page with the arrow right, and the atlas’s expander, below.
+  (1.2rem) above itself and a table’s own space, `--site-table-space` (2rem), below, so
+  text that follows a button stands as clear of it as of a table; where a heading
+  follows, its larger space takes over (the owner, 2026-10-02, `think-0o9u`; nothing
+  below until then). The rule is scoped to the page, `.kpress .site-action-row`, since
+  the row is a paragraph and KPress’s `.kpress-prose p` margin outranked it, which had
+  set both of its margins to 0.75rem. The site has two: **See all results** under the
+  homepage’s recent table, a link to the results page with the arrow right, and the
+  atlas’s expander, below.
   The Frontier, Results and Papers pages end their tables with no action, so none
   carries one. `tests/test_site_atlas_views.py` reads both in Chromium at 1280 and 390
   pixels and holds their colours, type, height, padding and centring to each other.

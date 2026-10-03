@@ -528,8 +528,10 @@ def test_the_atlas_expander_reuses_the_action_button_and_tokens() -> None:
     row = css[css.index(".site-atlas-grid .site-atlas-toggle-row {") :]
     row = row[: row.index("}")]
     assert "--site-action-space: var(--site-atlas-toggle-space);" in row
-    action_row = _rule(css, ".site-action-row")
-    assert "margin-block: var(--site-action-space) 0;" in action_row
+    action_row = _rule(css, ".kpress .site-action-row")
+    # A table's own space below it since 2026-10-02 (think-0o9u), so text that follows
+    # a button stands as clear of it as of a table.
+    assert "margin-block: var(--site-action-space) var(--site-table-space);" in action_row
     assert "text-align: center;" in action_row
     grid = css[css.index(".site-page .site-atlas-grid {") :]
     assert "--site-atlas-toggle-space:" in grid[: grid.index("}")]
@@ -4023,7 +4025,8 @@ def test_every_table_stands_one_shared_space_from_the_text_around_it() -> None:
     # The rating ladders, which are no table, stand the same space clear of the text.
     ladders = css[css.index("@media screen {\n  .site-ladders-frame {") :]
     assert "margin-block: var(--site-table-space);" in ladders[: ladders.index("}")]
-    assert css.count("var(--site-table-space)") == 3
+    # The action row under a table or grid takes it below itself too (think-0o9u).
+    assert css.count("var(--site-table-space)") == 4
     assert "@media print {\n  .site-nav,\n  .site-table-tools {\n    display: none;" in css
     design = (render_overview.TEMPLATES / "paper-design.md").read_text(encoding="utf-8")
     assert "| Above and below a table | `--site-table-space` | 2rem, 32px |" in design

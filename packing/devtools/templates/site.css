@@ -770,14 +770,18 @@ body {
   color: var(--kpress-doc-bg);
 }
 /* The row that holds the one action under a table or grid: centred, in the sans at the
-   note size, `--site-action-space` under what it follows and nothing of its own below,
-   where the next heading's space begins. */
-.site-action-row {
+   note size, `--site-action-space` under what it follows, and a table's own space,
+   `--site-table-space`, below it, so text that follows a button stands as clear of it
+   as of a table (the owner, 2026-10-02, `think-0o9u`; nothing below it until then).
+   Where a heading follows, its larger space takes over, the two margins being one.
+   The row is a paragraph, so the rule is scoped to the page to outrank KPress's
+   `.kpress-prose p`, whose 0.75rem stood in for both margins until then. */
+.kpress .site-action-row {
   --site-action-space: 1.2rem;
   font-family: var(--kpress-font-sans);
   font-size: var(--site-font-size-note);
   font-weight: var(--site-font-weight-sans-medium);
-  margin-block: var(--site-action-space) 0;
+  margin-block: var(--site-action-space) var(--site-table-space);
   text-align: center;
 }
 

@@ -189,6 +189,54 @@ def region_pushed(delta: Q) -> Mutation:
     return mutate
 
 
+def region_pushed_later_row_only(delta: Q) -> Mutation:
+    """A region vertex pushed past a facet of a partner row other than the first live
+    one, while every facet of the first live row still holds: a verifier that checked
+    only the first partner row would accept it."""
+
+    def mutate(seed: dict[str, Any], node: dict[str, Any], v: ModuleType) -> str:
+        for si, ri, row in reversed(live_rows(node)):
+            step = node["steps"][si]
+            state, _ = replayed_state(seed, node, v, si)
+            partners = v.check_partners(state, step, si)
+            core = v.hull(dec(row["core_vertices"]))
+            required_planes = v.planes_of(required_domain(state, v, step, ri))
+            for item in row["collision_regions"]:
+                covers = partners[item["partner"]]
+                if len(covers) < 2:
+                    continue
+                region = v.hull(dec(item["vertices"]))
+                per_cover = []
+                for cover in covers:
+                    partner_core = [(Q(x, z), Q(y, z)) for x, y, z in cover.core]
+                    domain = [(Q(x, z), Q(y, z)) for x, y, z in cover.domain]
+                    difference = v.minkowski_diff(partner_core, core)
+                    per_cover.append(
+                        [(a, b, c + min(a * y[0] + b * y[1] for y in domain)) for a, b, c in v.planes_of(difference)]
+                    )
+                first = per_cover[0]
+                candidates = sorted(
+                    (bound - (a * x + b * y), k, a, b, vi)
+                    for k, facets in enumerate(per_cover[1:], 1)
+                    for a, b, bound in facets
+                    for vi, (x, y) in enumerate(region)
+                )
+                for slack, _k, a, b, vi in candidates[:200]:
+                    x, y = region[vi]
+                    t = (slack + delta) / (a * a + b * b)
+                    moved = (x + t * a, y + t * b)
+                    if all(fa * moved[0] + fb * moved[1] <= fc for fa, fb, fc in first) and all(
+                        pa * moved[0] + pb * moved[1] <= pc for pa, pb, pc in required_planes
+                    ):
+                        new_region = list(region)
+                        new_region[vi] = moved
+                        item["vertices"] = enc(new_region)
+                        return "escapes the collision set"
+        raise RuntimeError("no region vertex can be pushed past a later row's facet alone")
+
+    return mutate
+
+
 def region_outside_domain(seed: dict[str, Any], node: dict[str, Any], v: ModuleType) -> str:
     si, ri, row = pick_row(node)
     item = row["collision_regions"][0]
@@ -578,6 +626,7 @@ def owner_core_scaled(seed: dict[str, Any], node: dict[str, Any], v: ModuleType)
 MUTATIONS: dict[str, Mutation] = {
     "region-vertex-pushed-2^-40": region_pushed(Q(1, 2**40)),
     "region-vertex-pushed-2^-80": region_pushed(Q(1, 2**80)),
+    "region-vertex-pushed-later-row-only-2^-40": region_pushed_later_row_only(Q(1, 2**40)),
     "region-outside-required-domain": region_outside_domain,
     "region-names-owner": region_names_owner,
     "region-names-unadmitted-partner": region_names_unadmitted,

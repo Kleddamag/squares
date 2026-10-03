@@ -2890,7 +2890,7 @@ sessions:
   title: "One Record per Line for Retained Results, and PR 305's Size"
   status: in_progress
   primary_bead: think-gmef
-  phases: 1
+  phases: 2
   measured: false
   unmeasured_reason: >-
     declares no resource measurement

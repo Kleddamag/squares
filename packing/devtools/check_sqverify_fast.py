@@ -339,6 +339,28 @@ def controls(binary: Path, scratch: Path, *, quick: bool) -> list[tuple[bool, st
         outcomes.append(
             (ok, f"fault at box {node}, audit every {audit}: refused ({row.get('verdict')})")
         )
+    # A fault the sparse audit never sees is still never evidence (review finding S2):
+    # the run exits non-zero and every receipt names the injected box.
+    result = run_binary(
+        binary,
+        path32,
+        32,
+        "--directions",
+        "100",
+        "--audit-every",
+        str(1 << 40),
+        "--inject-fault-at-node",
+        "9",
+    )
+    rows = [json.loads(line) for line in result.stdout.splitlines() if line.startswith("{")]
+    ok = (
+        result.returncode == 1
+        and bool(rows)
+        and all(row.get("fault_injected_at_box") == 9 for row in rows)
+        and all(row.get("verdict") != "verified" for row in rows if "r" in row)
+    )
+    verdicts = [row.get("verdict") for row in rows if "r" in row]
+    outcomes.append((ok, f"unaudited fault at box 9: not verified ({verdicts}), recorded"))
     # Admission refusals.
     mass = sum((Fraction(w) for w in raw32["weights"]), Fraction(0))
     malformed: list[tuple[str, dict[str, Any] | str]] = [

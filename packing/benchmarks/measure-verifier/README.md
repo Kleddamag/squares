@@ -93,11 +93,12 @@ estimate only.
 
 ## Standing Results
 
-The standing build is c5: c2 (exp-003, exp-004 and exp-005 accepted on v0) with the
-sampled release audit (exp-014, +3.4%) and Milestone B’s points, segments and fresh
-classification audit (exp-015, +1.4% on rectangle certificates).
-On this loaded host c2 used 43 times less CPU than `verify.cpp` on the whole of
-`rect_n32_L595` (exp-006) and 29 times less on six single directions (exp-011).
+The standing build is c7b: c2 (exp-003, exp-004 and exp-005 accepted on v0) with the
+sampled release audit (exp-014, +3.4%), Milestone B’s points, segments and fresh
+classification audit (exp-015, +1.4% on rectangle certificates), and the fixes for the
+soundness review’s findings, which make `NaN` fatal (exp-017, −1.0%). On this loaded
+host c2 used 43 times less CPU than `verify.cpp` on the whole of `rect_n32_L595`
+(exp-006) and 29 times less on six single directions (exp-011).
 
 Milestone B adds points, segments and formats M and L. Against the authors’ recorded
 replays, at all 201 directions on a host with load average 4 to 5, `sqverify-fast` used

@@ -75,6 +75,15 @@ pub fn run_direction(
     let threshold_hi = crate::exact::enclose(threshold)?.hi;
     let cpu_start = thread_cpu_seconds();
     let mut report = run_direction_inner(cert, index, threshold, threshold_hi, limits, confirm)?;
+    // A fault-injection control is never evidence: its receipt says so, and it is
+    // never reported verified, whatever the audit caught.
+    if let Some(node) = limits.inject_fault_at {
+        report.receipt["fault_injected_at_box"] = json!(node);
+        if report.verified {
+            report.verified = false;
+            report.receipt["verdict"] = json!("fault-injected");
+        }
+    }
     if let (Some(start), Some(end)) = (cpu_start, thread_cpu_seconds()) {
         report.receipt["cpu_seconds"] = json!(end - start);
     }
@@ -99,7 +108,13 @@ fn run_direction_inner(
         let receipt = json!({
             "r": 0,
             "method": "axis-vertex-sweep",
-            "verdict": if result.verified { "verified" } else { "refused" },
+            "verdict": if result.verified {
+                "verified"
+            } else if result.non_finite {
+                "non-finite"
+            } else {
+                "refused"
+            },
             "x_events": result.x_events,
             "y_events": result.y_events,
             "vertices": result.x_events * result.y_events,

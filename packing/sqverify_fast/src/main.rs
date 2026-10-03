@@ -283,6 +283,7 @@ fn run() -> Result<bool, String> {
         "threads": options.threads,
         "build": sqverify_fast::build_identity(),
         "premises": premises(&cert),
+        "fault_injected_at_box": options.limits.inject_fault_at,
     });
     println!("{summary}");
     if let Some(dir) = &options.receipts {

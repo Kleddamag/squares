@@ -20,6 +20,16 @@ use crate::interval::Iv;
 /// (lemma F2) is proved for coordinates of magnitude at most `4 * MAX_SIDE`.
 pub const MAX_SIDE: i64 = 1000;
 
+/// Lemma F3's admission caps, which keep every intermediate of the search
+/// finite: an expanded rectangle's density is at most `2^MAX_DENSITY_LOG2`, the
+/// net has at most `MAX_ANGLE_COUNT` directions and its last half-angle tangent
+/// is at most one half, and a certificate lists at most `MAX_PRIMITIVES` rows.
+pub const MAX_DENSITY_LOG2: usize = 96;
+/// See [`MAX_DENSITY_LOG2`].
+pub const MAX_ANGLE_COUNT: u32 = 1 << 16;
+/// See [`MAX_DENSITY_LOG2`].
+pub const MAX_PRIMITIVES: usize = 1_000_000;
+
 /// One expanded rectangle with its exact data.
 #[derive(Clone, Debug)]
 pub struct ExactRect {
@@ -545,8 +555,10 @@ pub fn admit(
     if &side * &side < ratio(2, 1) * &core * &core {
         return refuse("L^2 < 2 B^2: the centre domain could be empty");
     }
-    if !(step.is_positive() && angle_count >= 2) {
-        return refuse("the net needs a positive step and at least two directions");
+    if !(step.is_positive() && (2..=MAX_ANGLE_COUNT).contains(&angle_count)) {
+        return refuse(format!(
+            "the net needs a positive step and 2 to {MAX_ANGLE_COUNT} directions"
+        ));
     }
     if &core * (&one + &step) >= one {
         return refuse("B (1 + D) >= 1: the shrunk square need not fit inside the unit square");
@@ -555,12 +567,12 @@ pub fn admit(
     if &last * &last + ratio(2, 1) * &last - &one <= zero {
         return refuse("the net does not reach past pi/4");
     }
-    if last >= one {
-        return refuse("the net overshoots pi/2 (t >= 1)");
+    if last > ratio(1, 2) {
+        return refuse("the net's last half-angle tangent exceeds 1/2 (lemma F3)");
     }
 
     let (format, domain, listed) = sources(object)?;
-    if listed.len() > 1_000_000 {
+    if listed.len() > MAX_PRIMITIVES {
         return refuse("too many primitives");
     }
     let inside = |q: &BigRational| &zero <= q && q <= &side;
@@ -655,8 +667,14 @@ pub fn admit(
     let mut exact = Vec::with_capacity(order.len());
     let mut rects = Vec::with_capacity(order.len());
     let mut integrated = BigRational::zero();
+    let max_density = BigRational::from_integer(BigInt::from(1) << MAX_DENSITY_LOG2);
     for key in order {
         let density = merged[&key].clone();
+        if density > max_density {
+            return refuse(format!(
+                "a rectangle's density exceeds 2^{MAX_DENSITY_LOG2} (lemma F3)"
+            ));
+        }
         let [x1, y1, x2, y2] = key;
         let image_mass = &density * (&x2 - &x1) * (&y2 - &y1);
         let rect = ExactRect {

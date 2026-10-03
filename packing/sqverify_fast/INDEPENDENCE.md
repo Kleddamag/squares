@@ -122,6 +122,12 @@ Certificate data and summaries (packets under `packing/resources/web/`):
   `compare.json` and `inputs.json`) for replay status only, and the census tool over
   every `certified_candidate.json.gz` and `candidate.json.gz` there.
   `ls` listed the `code/` folders beside some certificates; none was opened.
+- For the soundness review’s findings: a merge of
+  `origin/claude/review-ra-sqverify-fast` (`0e38246a9`), which added
+  `docs/project/reviews/review-2026-10-03-sqverify-fast-soundness.md` and
+  `tests/adversarial.rs`; both were read in full.
+  The reviewer read this crate and the specification, not the authors’ checkers, so
+  neither brings anything of theirs.
 - For Milestone B: `sqverify-fast` on the mixed and linear candidates and on their
   mutations; `python -m devtools.check_sqverify_fast --only mixed` and
   `python -m devtools.sqverify_fast_census --family mixed`; a throwaway build of this

@@ -669,6 +669,11 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--out", type=Path, required=True)
     parser.add_argument("--threads", type=int, default=1)
     parser.add_argument("--resume", action="store_true")
+    parser.add_argument(
+        "--same-build",
+        action="store_true",
+        help="with --resume, keep only cases this binary verified (a re-run after a fix)",
+    )
     parser.add_argument("--check", action="store_true")
     parser.add_argument(
         "--report", action="store_true", help="render --out/README.md from the census"
@@ -741,7 +746,13 @@ def main(argv: list[str] | None = None) -> int:
         held = census["cases"].get(case.certificate)
         # A verified case is kept whichever build verified it: each case records its
         # own binary and source digests, so a census may span builds honestly.
-        if args.resume and held is not None and held.get("status") == "VERIFIED":
+        # --same-build keeps only this binary's, to re-run everything after a fix.
+        if (
+            args.resume
+            and held is not None
+            and held.get("status") == "VERIFIED"
+            and (not args.same_build or held.get("binary_sha256") == binary_sha)
+        ):
             continue
         result = run(args.binary, case, args.out / case.packet, args.threads)
         result["binary_sha256"] = binary_sha

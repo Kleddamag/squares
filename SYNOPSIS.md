@@ -798,6 +798,7 @@ case or experiment separately.
 | [The Release Audit’s Price](packing/benchmarks/measure-verifier/experiments/exp-014-release-audit-cost.md) | research synthesis | record | retained | — |
 | [Milestone B’s Price on Rectangle Certificates](packing/benchmarks/measure-verifier/experiments/exp-015-milestone-b-cost.md) | research synthesis | record | retained | — |
 | [H-012: Fused First-Leg Enclosures](packing/benchmarks/measure-verifier/experiments/exp-016-h012-fused-first-leg-enclosures.md) | research synthesis | record | retained | — |
+| [The Price of a Fatal NaN](packing/benchmarks/measure-verifier/experiments/exp-017-nan-fatal-cost.md) | research synthesis | record | retained | — |
 | [Independence Record for sqverify-fast](packing/sqverify_fast/INDEPENDENCE.md) | research synthesis | record | maintained | — |
 | [PR 127 Integration Checkpoint Evidence](packing/campaign/series/series-000-smoke-and-calibration/results/agenda-030/pr127-checkpoint/README.md) | research synthesis | record | retained | — |
 | [Correction: the stacking capacity bound in lane X3’s box sweep is false](packing/campaign/series/series-000-smoke-and-calibration/results/agenda-034/lane-x3-box-sweep-capacity-correction.md) | dated review record | record | retained | — |

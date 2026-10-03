@@ -230,15 +230,14 @@ fn per_bin_domain_needs_the_fold_at_pi_over_four() {
 
 // ------------------------------------------------- non-finite intermediates
 
-/// The certificate of finding S1: a band of density 2 that every centre on the
-/// domain's lower edge captures in full, plus twenty slivers of height
-/// 2^-1000 and density about 1.5e307 whose summed slope steps overflow in the
-/// axis sweep. At `(3.5, 3.5)`, inside the r = 0 domain `[2, 3.55]^2`, the
-/// exact capture is zero.
-fn overflow_cert() -> Certificate {
+/// The certificate of finding S1, as JSON: a band of density 2 that every
+/// centre on the domain's lower edge captures in full, plus twenty slivers of
+/// height 2^-1000 ending at ordinate `top` whose summed slope steps overflow in
+/// the axis sweep, with weight `weight` each. At `(3.5, 3.5)`, inside the r = 0
+/// domain `[2, 3.55]^2`, the exact capture is zero.
+fn overflow_value(top: &BigRational, weight: &str) -> Value {
     let den = BigInt::from(1) << 1000usize;
-    let y2 = ratio(49, 20);
-    let y1 = &y2 - BigRational::new(BigInt::from(1), den);
+    let y1 = top - BigRational::new(BigInt::from(1), den);
     let mut rects = vec![json!(["0", "3/2", "4", "5/2"])];
     let mut weights = vec![json!("16")];
     for k in 0..20 {
@@ -246,22 +245,41 @@ fn overflow_cert() -> Certificate {
             text(&ratio(k, 1000)),
             text(&y1),
             text(&(ratio(4, 1) - ratio(k, 1000))),
-            text(&y2)
+            text(top)
         ]));
-        weights.push(json!("22000000"));
+        weights.push(json!(weight));
     }
-    admit_value(
-        &json!({"L": "4", "B": "9/10", "rectangles": rects, "weights": weights}),
-        1_000_000_000,
-    )
-    .expect("overflow certificate is admissible")
+    json!({"L": "4", "B": "9/10", "rectangles": rects, "weights": weights})
+}
+
+/// The S1 certificate past admission. Lemma F3's density cap refuses it, so it
+/// is admitted with tiny sliver weights and the slivers' densities are then
+/// raised to about 1.5e307 in place: the sweep itself meets the overflow.
+fn overflow_cert(top: &BigRational) -> Certificate {
+    let light = overflow_value(top, &format!("1/{}", BigInt::from(1) << 950usize));
+    let mut cert = admit_value(&light, 1_000_000_000).expect("the light version is admissible");
+    let huge = ratio(15, 1) * BigRational::from_integer(BigInt::from(10).pow(306));
+    for (exact, rect) in cert.exact.iter_mut().zip(cert.rects.iter_mut()) {
+        if &exact.y2 - &exact.y1 < ratio(1, 1_000_000) {
+            exact.density = huge.clone();
+            rect.rho = sqverify_fast::interval::Iv::point(1.5e307);
+        }
+    }
+    cert
+}
+
+#[test]
+fn admission_refuses_the_overflow_densities() {
+    // Lemma F3's cap: the slivers' densities, about 1.5e307, exceed 2^96.
+    let value = overflow_value(&ratio(49, 20), "22000000");
+    let error = admit_value(&value, 1_000_000_000).expect_err("the S1 certificate was admitted");
+    assert!(error.contains("density"), "{error}");
 }
 
 #[test]
 fn overflow_certificate_has_an_uncovered_centre() {
-    // The witness half of S1, which holds on any build: the measure is admitted
-    // and a centre of the r = 0 domain captures nothing.
-    let cert = overflow_cert();
+    // The witness half of S1: a centre of the r = 0 domain captures nothing.
+    let cert = overflow_cert(&ratio(49, 20));
     assert!(domain_upper(&cert, 0).unwrap() >= ratio(71, 20));
     let exact = coverage(
         &cert,
@@ -274,10 +292,62 @@ fn overflow_certificate_has_an_uncovered_centre() {
 }
 
 #[test]
-#[ignore = "reproduces open defect S1 of the 3 October soundness review"]
 fn axis_sweep_refuses_the_overflow_certificate() {
-    let cert = overflow_cert();
+    // The slivers' steps lie just below the domain: the overflow is in the
+    // initial slope.
+    let cert = overflow_cert(&ratio(49, 20));
     let threshold = parse_rational("1").unwrap();
     let report = sqverify_fast::run_direction(&cert, 0, &threshold, LIMITS, false).unwrap();
     assert!(!report.verified, "direction 0 verified: {}", report.receipt);
+    assert_eq!(
+        report.receipt["verdict"], "non-finite",
+        "{}",
+        report.receipt
+    );
+}
+
+#[test]
+fn axis_sweep_refuses_an_overflow_inside_the_domain() {
+    // The second reproducer: slivers ending at ordinate 3 put their steps at
+    // about 2.55, inside the domain [2, 3.55], so the overflow arises in a
+    // column's step list rather than its initial slope.
+    let cert = overflow_cert(&ratio(3, 1));
+    let threshold = parse_rational("1").unwrap();
+    let report = sqverify_fast::run_direction(&cert, 0, &threshold, LIMITS, false).unwrap();
+    assert!(!report.verified, "direction 0 verified: {}", report.receipt);
+    assert_eq!(
+        report.receipt["verdict"], "non-finite",
+        "{}",
+        report.receipt
+    );
+}
+
+#[test]
+fn a_fault_injected_run_is_never_verified() {
+    // Finding S2: with the audit sampled too sparsely to see it, an injected
+    // fault must still not yield a verified receipt, and the receipt names it.
+    let value = json!({"L": "3", "B": "9/10",
+        "rectangles": [[0, 0, 3, 3]], "weights": [8]});
+    let cert = admit_value(&value, 9).unwrap();
+    let threshold = parse_rational("1/2").unwrap();
+    let limits = Limits {
+        audit_every: 1 << 40,
+        inject_fault_at: Some(2),
+        ..LIMITS
+    };
+    for index in [0u32, 1, 100] {
+        let report = sqverify_fast::run_direction(&cert, index, &threshold, limits, false).unwrap();
+        assert!(!report.verified, "r={index}: {}", report.receipt);
+        assert_eq!(
+            report.receipt["fault_injected_at_box"], 2,
+            "{}",
+            report.receipt
+        );
+        let clean = sqverify_fast::run_direction(&cert, index, &threshold, LIMITS, false).unwrap();
+        assert!(
+            clean.verified,
+            "r={index} clean run refused: {}",
+            clean.receipt
+        );
+    }
 }

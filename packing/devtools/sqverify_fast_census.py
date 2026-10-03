@@ -1,13 +1,18 @@
 """Verify every replayed wand125 certificate with the clean-room verifier.
 
-Two families. `--family rectangles` is Milestone A of the independent measure verifier
-(`think-d69e`); `--family mixed` is Milestone B (`think-4vf7`): every certificate of
-formats M and L whose directions this repository has replayed with the authors' checker
-(a `range-*` directory under the packet's `receipts/`), at all 201 directions and the
-threshold the certificate declares, with the authors' recorded CPU on the directions
-they replayed beside ours on the same directions.
+Two families, each covering every retained certificate of its formats, replayed by the
+authors' checker here or not. `--family rectangles` (format T; Milestone A,
+`think-d69e`) runs every `certified_candidate.json.gz` of the wand125 rectangle packets
+and Tokoharu's three, at the threshold the files declare; `--family mixed` (formats M
+and L; Milestone B, `think-4vf7`) runs every `mixed_n*` candidate of the wand125 mixed
+and linear packets at the threshold they declare, with the authors' recorded CPU on the
+directions they replayed beside ours on the same directions. `--summary` writes
+`census-summary.json` and `census-summary.md` beside the two census folders: one row per
+certificate with its verdict, CPU, least certified bound and whether the authors' replay
+recorded here is complete, the input the records lane uses for evidence entries.
 
-For the rectangles family the certificates are
+The replay receipts named below were the first census's case list; the rectangle
+family now reads them only for the authors' replay status. They are
 the ones this repository has already replayed with the authors' checker: every case in
 the `receipts/replay/audit.json` of the wand125 rectangle packets, and Tokoharu's three
 in the 22 September packet. Each runs through `sqverify-fast` at all 201 net
@@ -52,17 +57,21 @@ from typing import Any
 
 PROJECT = Path(__file__).resolve().parents[1]
 WEB = PROJECT / "resources/web"
-PACKETS = ("2026-09-27", "2026-09-28")
+PACKETS = ("2026-09-27", "2026-09-28", "2026-10-01", "2026-10-02")
 THRESHOLD = "10001/10000"
 TOKOHARU_PACKET = "2026-09-22"
 TOKOHARU = WEB / "external-square-certificates-2026-09-22/tokoharu-density/certificates"
-# The packets of formats M and L whose receipts hold replays.
+# The packets of formats M and L.
 MIXED_PACKETS = (
+    "wand125-point-and-mixed-2026-09-28",
     "wand125-point-and-mixed-2026-10-01",
     "wand125-mixed-bounds-2026-10-02",
     "wand125-mixed-bounds-n76-2026-10-02",
+    "wand125-mixed-bounds-afternoon-2026-10-02",
     "wand125-linear-certificates-2026-10-02",
+    "wand125-linear-n82-2026-10-02",
 )
+CENSUS_ROOT = PROJECT / "benchmarks/measure-verifier"
 # Tokoharu's three certificates, replayed in the 22 September packet's density receipt.
 TOKOHARU_CASES = (
     ("cert_n11_L381", 11, "381/100"),
@@ -73,7 +82,7 @@ TOKOHARU_CASES = (
 
 @dataclass(frozen=True)
 class Case:
-    """One replayed standing certificate."""
+    """One retained certificate."""
 
     packet: str
     certificate: str
@@ -102,7 +111,20 @@ class Case:
         raise SystemExit(f"no retained candidate for {self.certificate}")
 
 
-def replayed_cases() -> list[Case]:
+def side_digits(side: Fraction) -> str:
+    """The digits of a side as certificate names spell it: `447/50` is `894`."""
+    text = f"{float(side):.6f}".rstrip("0").rstrip(".")
+    return text.replace(".", "")
+
+
+def named_side(name: str, side: Fraction) -> bool:
+    """Whether a certificate's name (`..._L894`) spells its side."""
+    digits = name.rsplit("_L", 1)[1]
+    return digits.rstrip("0") == side_digits(side).rstrip("0")
+
+
+def rectangle_cases() -> list[Case]:
+    """Tokoharu's three replayed certificates and every wand125 rectangle certificate."""
     receipt = WEB / "external-square-certificates-2026-09-22/receipts/density/audit.json"
     passed = {
         (int(case["n"]), str(case["L"]))
@@ -115,51 +137,109 @@ def replayed_cases() -> list[Case]:
         if (n, side) in passed
     ]
     for packet in PACKETS:
-        receipt = WEB / f"wand125-rectangle-certificates-{packet}/receipts/replay/audit.json"
-        data = json.loads(receipt.read_text(encoding="utf-8"))
-        for case in data["cases"]:
-            if case.get("status") != "PASS":
-                continue
-            cases.append(Case(packet, case["certificate"], int(case["n"]), str(case["L"])))
+        root = WEB / f"wand125-rectangle-certificates-{packet}/wand125-rectangles/certificates"
+        for path in sorted(root.glob("rect_n*_L*/certified_candidate.json.gz")):
+            name = path.parent.name
+            data = json.loads(gzip.decompress(path.read_bytes()), parse_float=str)
+            side = Fraction(str(data["L"]))
+            if not named_side(name, side):
+                raise SystemExit(f"{name}: the name does not spell the side {side}")
+            n = int(name.split("_")[1].removeprefix("n"))
+            cases.append(Case(packet, name, n, str(side), path))
     return cases
 
 
 def mixed_cases() -> list[Case]:
-    """Every format M or L certificate with at least one replayed direction."""
+    """Every format M or L certificate of the wand125 mixed and linear packets."""
     cases: list[Case] = []
     for packet in MIXED_PACKETS:
-        receipts = WEB / packet / "receipts"
-        for folder in sorted(receipts.iterdir()):
-            if not folder.is_dir() or not any(folder.glob("range-*/directions.jsonl")):
-                continue
-            n = int(folder.name.removeprefix("n"))
-            found = sorted(
-                (WEB / packet / "square-packing-bounds/certificates").glob(
-                    f"mixed_n{n}_L*/candidate.json.gz"
-                )
-            )
-            if len(found) != 1:
-                raise SystemExit(f"{packet}: no single candidate for n{n}")
-            data = json.loads(gzip.decompress(found[0].read_bytes()))
-            side = str(Fraction(str(data["L"])))
-            cases.append(Case(packet, found[0].parent.name, n, side, found[0], None))
+        root = WEB / packet / "square-packing-bounds/certificates"
+        for path in sorted(root.glob("mixed_n*_L*/candidate.json.gz")):
+            name = path.parent.name
+            data = json.loads(gzip.decompress(path.read_bytes()), parse_float=str)
+            side = Fraction(str(data["L"]))
+            n = int(data["n"])
+            if not named_side(name, side) or name.split("_")[1] != f"n{n}":
+                raise SystemExit(f"{name}: the name does not spell n = {n} and L = {side}")
+            cases.append(Case(packet, name, n, str(side), path, None))
     return cases
 
 
+def replay_folders(case: Case) -> list[Path]:
+    """A mixed case's receipt folders: `n76`, or `n85-L946` where two sides share n."""
+    receipts = WEB / case.packet / "receipts"
+    digits = case.certificate.rsplit("_L", 1)[1]
+    named = receipts / f"n{case.n}-L{digits}"
+    plain = receipts / f"n{case.n}"
+    if named.is_dir():
+        return [named]
+    return [plain] if plain.is_dir() else []
+
+
+def has_siblings(case: Case) -> bool:
+    """Whether another certificate of the packet has the same n (and so `nN` is shared)."""
+    return any(
+        other.name != case.certificate
+        for other in (WEB / case.packet / "square-packing-bounds/certificates").glob(
+            f"mixed_n{case.n}_L*"
+        )
+    )
+
+
 def mixed_reference(case: Case) -> dict[str, Any]:
-    """The authors' replayed directions of one mixed case, with their CPU seconds."""
-    folder = WEB / case.packet / "receipts" / f"n{case.n}"
+    """The authors' replayed directions of one mixed case, with their CPU seconds.
+
+    A full replay recorded only as a comparison (`full/compare.json`, the 28 September
+    packet) counts as all 201 directions when its certificate digest is this case's.
+    """
     rows: dict[int, dict[str, Any]] = {}
-    for path in sorted(folder.glob("range-*/directions.jsonl")):
-        for line in path.read_text(encoding="utf-8").splitlines():
-            row = json.loads(line)
-            if row.get("status") == "REPLAYED":
-                rows[int(row["index"])] = row
+    complete_without_rows = False
+    shared = has_siblings(case) and not any(
+        folder.name.startswith(f"n{case.n}-L") for folder in replay_folders(case)
+    )
+    for folder in replay_folders(case):
+        # A folder shared by two sides of the same n binds only through a digest.
+        for path in [] if shared else sorted(folder.glob("range-*/directions.jsonl")):
+            for line in path.read_text(encoding="utf-8").splitlines():
+                row = json.loads(line)
+                if row.get("status") == "REPLAYED":
+                    rows[int(row["index"])] = row
+        compare = folder / "full/compare.json"
+        if compare.is_file():
+            record = json.loads(compare.read_text(encoding="utf-8"))
+            certificate = case.candidate.parent / "certificate.json.gz"
+            digest = (
+                hashlib.sha256(gzip.decompress(certificate.read_bytes())).hexdigest()
+                if certificate.is_file()
+                else None
+            )
+            # The replay's own digest is of a file not retained here; its inputs
+            # receipt binds it instead, by the number of rectangle images it enclosed.
+            inputs = folder / "inputs.json"
+            images = (
+                json.loads(inputs.read_text(encoding="utf-8")).get("rectangle_images")
+                if inputs.is_file()
+                else None
+            )
+            rows_here = json.loads(gzip.decompress(case.candidate.read_bytes())).get(
+                "rectangles", []
+            )
+            complete_without_rows = record.get("status") == "FULL_REPLAY_MATCHES_SHIPPED" and (
+                record.get("certificate_sha256") == digest or images == 8 * len(rows_here)
+            )
     return {
-        "directions": sorted(rows),
+        "directions": list(range(201)) if complete_without_rows else sorted(rows),
         "cpu_seconds": sum(float(row.get("cpu_seconds") or 0.0) for row in rows.values()),
         "nodes": sum(int((row.get("report") or {}).get("nodes") or 0) for row in rows.values()),
+        "per_direction_cpu": not complete_without_rows,
     }
+
+
+def replay_status(directions: int) -> str:
+    """How much of a certificate the authors' replay recorded here covers."""
+    if directions >= 201:
+        return "complete"
+    return f"partial ({directions} of 201)" if directions else "none"
 
 
 def sha256(path: Path) -> str:
@@ -286,9 +366,19 @@ def replay_reference() -> dict[str, dict[str, Any]]:
         if name is not None:
             reference[name] = case["replay"]
     for packet in PACKETS:
-        receipt = WEB / f"wand125-rectangle-certificates-{packet}/receipts/replay/audit.json"
-        for case in json.loads(receipt.read_text(encoding="utf-8"))["cases"]:
-            reference[case["certificate"]] = case["replay"]
+        folder = WEB / f"wand125-rectangle-certificates-{packet}/receipts/replay"
+        for name in ("audit.json", "audit.json.gz"):
+            receipt = folder / name
+            if not receipt.is_file():
+                continue
+            raw = receipt.read_bytes()
+            text = gzip.decompress(raw) if name.endswith(".gz") else raw
+            for case in json.loads(text)["cases"]:
+                replay = case.get("replay")
+                if isinstance(replay, dict) and (
+                    (replay.get("summary") or {}).get("status") == "VERIFIED"
+                ):
+                    reference[case["certificate"]] = replay
     return reference
 
 
@@ -308,22 +398,24 @@ def render_report(census: dict[str, Any]) -> str:
         "",
         "Generated by `python -m devtools.sqverify_fast_census --report`; do not edit by hand.",
         "",
-        "Every rectangle-density certificate this repository has replayed with the authors'",
-        "checker, verified by `sqverify-fast` at all 201 net directions at the threshold",
-        f"{census['threshold']}. *Nodes* counts boxes at $r \\ge 1$; the authors' count also",
-        "includes the axis direction's vertices, given here as *axis vertices*. *Exact leaf*",
-        "is the exact rational capture at the centre of the least-bound leaf of the",
-        "least-bound direction, which must clear the threshold. CPU is user plus system",
+        "Every retained rectangle-density certificate (format T), verified by",
+        "`sqverify-fast` at all 201 net directions at the threshold",
+        f"{census['threshold']}. *Authors' replay here* says whether this repository holds a",
+        "complete replay by the authors' checker; where it holds none, this census is the",
+        "first complete check here. *Nodes* counts boxes at $r \\ge 1$; the authors' count",
+        "also includes the axis direction's vertices, given here as *axis vertices*.",
+        "*Exact leaf* is the exact rational capture at the centre of the least-bound leaf",
+        "of the least-bound direction, which must clear the threshold. CPU is user plus system",
         "time of the whole process (`wait4`), on a shared host whose load average is given.",
         "The replay wall is the authors' checker's recorded wall time with the worker count",
         "it ran with, so it is not a CPU figure.",
         "",
         (
             "| Certificate | n | Status | Directions | Nodes | Axis vertices | Authors' nodes"
-            " | Least certified bound | Exact leaf | CPU s | Load | Authors' replay wall s"
-            " (workers) |"
+            " | Least certified bound | Exact leaf | CPU s | Load | Authors' replay here"
+            " | Authors' replay wall s (workers) |"
         ),
-        "| --- | ---: | --- | ---: | ---: | ---: | ---: | --- | --- | ---: | ---: | ---: |",
+        "|" + "|".join(f" {align} " for align in RECT_ALIGN.split()) + "|",
     ]
     total_cpu = 0.0
     verified = 0
@@ -348,11 +440,12 @@ def render_report(census: dict[str, Any]) -> str:
             str(case.get("directions_verified")),
             f"{case.get('nodes'):,}",
             f"{case.get('axis_vertices') or 0:,}",
-            f"{int(summary.get('nodes', 0)):,}",
+            f"{int(summary.get('nodes', 0)):,}" if summary else "-",
             str(case.get("least_certified_bound")),
             "clears" if least.get("clears_threshold") else "FAILS",
             f"{cpu:.1f}",
             f"{float(case.get('load_before') or 0.0):.1f}",
+            "complete" if summary else "none: first complete check here",
             wall_text,
         ]
         lines.append("| " + " | ".join(cells) + " |")
@@ -369,6 +462,7 @@ def render_report(census: dict[str, Any]) -> str:
     return "\n".join(lines)
 
 
+RECT_ALIGN = "--- ---: --- ---: ---: ---: ---: --- --- ---: ---: --- ---:"
 MIXED_ALIGN = "--- ---: --- --- ---: ---: --- --- ---: ---: --- ---: ---: ---:"
 
 
@@ -381,10 +475,11 @@ def render_mixed_report(census: dict[str, Any]) -> str:
         "Generated by `python -m devtools.sqverify_fast_census --family mixed --report`;",
         "do not edit by hand.",
         "",
-        "Every certificate of formats M (rectangle rows, per-bin centre domain) and L (points,",
-        "segments and rectangles, Tokoharu's domain) with at least one direction replayed by",
-        "the authors' checker in this repository, verified by `sqverify-fast` at all 201 net",
-        "directions at the threshold the certificate declares, 1. *Exact leaf* is the exact",
+        "Every retained certificate of formats M (rectangle rows, per-bin centre domain) and L",
+        "(points, segments and rectangles, Tokoharu's domain), verified by `sqverify-fast` at",
+        "all 201 net directions at the threshold the certificate declares, 1. *Replayed",
+        "directions* are those the authors' checker replayed in this repository; where there",
+        "are none, this census is the first complete check here. *Exact leaf* is the exact",
         "rational capture at the centre of the least-bound leaf of the least-bound direction.",
         "*Authors' CPU* is the authors' checker's recorded CPU seconds on the directions this",
         "repository replayed; *ours, same directions* is `sqverify-fast`'s thread CPU on",
@@ -411,7 +506,13 @@ def render_mixed_report(census: dict[str, Any]) -> str:
             for r in replayed
         )
         authors = float(reference.get("cpu_seconds") or 0.0)
-        span = "all 201" if len(replayed) == 201 else ", ".join(str(r) for r in replayed)
+        span = (
+            "all 201"
+            if len(replayed) == 201
+            else ", ".join(str(r) for r in replayed) or "none: first complete check here"
+        )
+        if not reference.get("per_direction_cpu", True):
+            ours = 0.0
         least = entry.get("least_bound_leaf_exact") or {}
         cpu = float(entry.get("cpu_seconds") or 0.0)
         total_cpu += cpu
@@ -428,9 +529,9 @@ def render_mixed_report(census: dict[str, Any]) -> str:
             f"{cpu:.1f}",
             f"{float(entry.get('load_before') or 0.0):.1f}",
             span,
-            f"{authors:,.0f}",
-            f"{ours:.1f}",
-            f"{authors / ours:,.0f}x" if ours > 0 else "-",
+            f"{authors:,.0f}" if authors > 0 else "-",
+            f"{ours:.1f}" if ours > 0 else "-",
+            f"{authors / ours:,.0f}x" if ours > 0 and authors > 0 else "-",
         ]
         lines.append("| " + " | ".join(cells) + " |")
     lines += [
@@ -439,6 +540,119 @@ def render_mixed_report(census: dict[str, Any]) -> str:
             f"{verified} of {len(census['cases'])} certificates verified;"
             f" {total_cpu:.0f} CPU seconds in all."
         ),
+        "",
+        "<!-- This document follows common-doc-guidelines.md.",
+        "See github.com/jlevy/practical-prose and review guidelines before editing.",
+        "-->",
+        "",
+    ]
+    return "\n".join(lines)
+
+
+def summary_rows() -> list[dict[str, Any]]:
+    """One row per certificate of both censuses, for records and the summary table."""
+    rows: list[dict[str, Any]] = []
+    rectangles = json.loads((CENSUS_ROOT / "census/census.json").read_text(encoding="utf-8"))
+    mixed = json.loads((CENSUS_ROOT / "census-mixed/census.json").read_text(encoding="utf-8"))
+    reference = replay_reference()
+    families = (
+        ("census", rectangles, {case.certificate: case for case in rectangle_cases()}),
+        ("census-mixed", mixed, {case.certificate: case for case in mixed_cases()}),
+    )
+    for folder, census, cases in families:
+        for name, entry in census["cases"].items():
+            case = cases.get(name)
+            if folder == "census":
+                replay = "complete" if name in reference else "none"
+                source = (
+                    "tokoharu-density"
+                    if entry.get("packet") == TOKOHARU_PACKET
+                    else f"wand125-rectangle-certificates-{entry.get('packet')}"
+                )
+            else:
+                replayed = mixed_reference(case)["directions"] if case is not None else []
+                replay = replay_status(len(replayed))
+                source = str(entry.get("packet"))
+            least = entry.get("least_bound_leaf_exact") or {}
+            verified = (
+                entry.get("status") == "VERIFIED"
+                and entry.get("returncode") == 0
+                and least.get("clears_threshold") is True
+            )
+            rows.append(
+                {
+                    "certificate": name,
+                    "packet": source,
+                    "candidate": str(case.candidate.relative_to(PROJECT.parent))
+                    if case is not None
+                    else None,
+                    "format": (entry.get("premises") or {}).get("format", "T"),
+                    "n": entry.get("n"),
+                    "L": entry.get("L"),
+                    "verdict": "VERIFIED" if verified else str(entry.get("status")),
+                    "directions_verified": entry.get("directions_verified"),
+                    "threshold": entry.get("threshold") or census.get("threshold"),
+                    "least_certified_bound": entry.get("least_certified_bound"),
+                    "least_leaf_exact_clears": least.get("clears_threshold") is True,
+                    "cpu_seconds": round(float(entry.get("cpu_seconds") or 0.0), 1),
+                    "nodes": entry.get("nodes"),
+                    "authors_replay_here": replay,
+                    "first_complete_check_here": verified and replay != "complete",
+                    "receipts": (
+                        f"packing/benchmarks/measure-verifier/{folder}/"
+                        f"{entry.get('packet')}/{name}.jsonl.gz"
+                    ),
+                    "candidate_sha256": entry.get("candidate_sha256"),
+                    "binary_sha256": entry.get("binary_sha256"),
+                    "source_sha256": (entry.get("build") or {}).get("source_sha256"),
+                }
+            )
+    rows.sort(key=lambda row: (int(row["n"] or 0), str(row["certificate"])))
+    return rows
+
+
+def render_summary(rows: list[dict[str, Any]]) -> str:
+    """The census summary as a Markdown table."""
+    verified = sum(row["verdict"] == "VERIFIED" for row in rows)
+    first = sum(bool(row["first_complete_check_here"]) for row in rows)
+    lines = [
+        "# Census Summary",
+        "",
+        "Generated by `python -m devtools.sqverify_fast_census --summary`; do not edit by",
+        "hand. The same rows, with receipt paths and digests, are in `census-summary.json`.",
+        "",
+        "Every retained certificate that `sqverify-fast` decides (formats T, M and L), from",
+        "the two census folders: [census/](census/README.md) and",
+        "[census-mixed/](census-mixed/README.md). *Verdict* is `VERIFIED` only when all 201",
+        "net directions verified, the process exited zero, and the exact capture at the",
+        "least-bound leaf's centre cleared the threshold. *Authors' replay here* is what",
+        "this repository holds of a replay by the authors' own checker; where it holds less",
+        "than a complete replay, this census is the first complete check of the certificate",
+        "here, which the last column says.",
+        "",
+        (
+            "| Certificate | Format | n | L | Verdict | CPU s | Least certified bound"
+            " | Authors' replay here | First complete check here |"
+        ),
+        "| --- | --- | ---: | --- | --- | ---: | --- | --- | --- |",
+    ]
+    for row in rows:
+        cells = [
+            f"`{row['certificate']}`",
+            str(row["format"]),
+            str(row["n"]),
+            str(row["L"]),
+            str(row["verdict"]),
+            f"{row['cpu_seconds']:.1f}",
+            str(row["least_certified_bound"]),
+            str(row["authors_replay_here"]),
+            "yes" if row["first_complete_check_here"] else "no",
+        ]
+        lines.append("| " + " | ".join(cells) + " |")
+    lines += [
+        "",
+        f"{verified} of {len(rows)} certificates verified; {first} of them are the first",
+        "complete check of their certificate in this repository.",
         "",
         "<!-- This document follows common-doc-guidelines.md.",
         "See github.com/jlevy/practical-prose and review guidelines before editing.",
@@ -460,7 +674,28 @@ def main(argv: list[str] | None = None) -> int:
         "--report", action="store_true", help="render --out/README.md from the census"
     )
     parser.add_argument("--only", default="", help="comma-separated certificate names")
+    parser.add_argument(
+        "--packets", default="", help="comma-separated packets (the folder under --out)"
+    )
+    parser.add_argument(
+        "--summary",
+        action="store_true",
+        help="write census-summary.json and census-summary.md from both census folders",
+    )
     args = parser.parse_args(argv)
+    if args.summary:
+        rows = summary_rows()
+        (CENSUS_ROOT / "census-summary.json").write_text(
+            json.dumps(
+                {"kind": "sqverify-fast-census-summary/v1", "certificates": rows},
+                indent=2,
+                sort_keys=True,
+            )
+            + "\n",
+            encoding="utf-8",
+        )
+        (CENSUS_ROOT / "census-summary.md").write_text(render_summary(rows), encoding="utf-8")
+        return 0
     census_path = args.out / "census.json"
     binary_sha = sha256(args.binary)
     census: dict[str, Any] = (
@@ -472,7 +707,7 @@ def main(argv: list[str] | None = None) -> int:
     if mixed:
         census["family"] = "mixed"
         census["threshold"] = "declared"
-    cases = mixed_cases() if mixed else replayed_cases()
+    cases = mixed_cases() if mixed else rectangle_cases()
     if args.report:
         render = render_mixed_report if mixed else render_report
         (args.out / "README.md").write_text(render(census), encoding="utf-8")
@@ -492,13 +727,16 @@ def main(argv: list[str] | None = None) -> int:
             for case in cases
             if not passed(census["cases"].get(case.certificate, {}))
         ]
-        print(f"{len(cases) - len(missing)} of {len(cases)} replayed certificates VERIFIED")
+        print(f"{len(cases) - len(missing)} of {len(cases)} retained certificates VERIFIED")
         for name in missing:
             print(f"  not verified: {name}")
         return 1 if missing else 0
     only = {name for name in args.only.split(",") if name}
+    packets = {name for name in args.packets.split(",") if name}
     for case in cases:
         if only and case.certificate not in only:
+            continue
+        if packets and case.packet not in packets:
             continue
         held = census["cases"].get(case.certificate)
         # A verified case is kept whichever build verified it: each case records its

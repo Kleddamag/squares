@@ -22,9 +22,9 @@ It claims two bounds:
 The argument from a passing run of Daniel’s verifier to a bound at every angle is sound
 at $N = 96000$. This lane checked the certificate exactly with its own tool and reran
 Daniel’s verifier over all 39,765 bins: `VERIFIED`, least captured weight
-$10000045/10^7$. The complete first-party parent-core run is in progress, and this
-document is an interim draft until it ends.
-Both mutation controls are refused by both checkers.
+$10000045/10^7$. This repository’s parent-core checker, which shares no code with the
+sweep or with the generating LP, certified all 39,765 rows (`PASS_COMPLETE`). Both
+mutation controls are refused by both checkers.
 No defect is blocking; there are five notes.
 
 ## 1. What Was Reviewed
@@ -146,7 +146,7 @@ which is the attribution the write-up gives.
 | Check | Code | Scope | Outcome | Receipt |
 | --- | --- | --- | --- | --- |
 | Arrangement sweep, Daniel’s `verify`, overflow-checked build `60279b2c` | external (the producer’s) | all 39,765 bins, $N = 96000$, two threads | `VERIFIED`, least $10000045/10^7$ at bin 0; 1,642 s wall, 2,913 CPU-s | [log](../../../packing/cases/n12_beyond_rescaling/receipts/review-source-verifier-N96000.log) |
-| Parent-core interval branch and bound | first-party | all 39,765 rows, $N = 96000$, two workers | in progress | to follow |
+| Parent-core interval branch and bound | first-party | all 39,765 rows, $N = 96000$, two workers | `PASS_COMPLETE`: every row certified at the one-unit threshold, 375,934,771 boxes, no stall, no exhausted budget, no refutation; 11,358 row-CPU-s | [receipt](../../../packing/cases/n12_beyond_rescaling/receipts/review-native-complete.json), [row journal](../../../packing/cases/n12_beyond_rescaling/receipts/review-native-complete.rows.jsonl.gz) |
 | Control 1, lowered orbit, source verifier at bin 0 | external | bin 0 | least $9999845/10^7$, refused | [log](../../../packing/cases/n12_beyond_rescaling/receipts/review-source-verifier-ctl1.log) |
 | Control 2, one step larger, source verifier at bin 7808 | external | bin 7808 | least $9764124/10^7$, refused | [log](../../../packing/cases/n12_beyond_rescaling/receipts/review-source-verifier-ctl2.log) |
 | Control 1, native checker | first-party | row 0 | refuted with an exact witness | [receipt](../../../packing/cases/n12_beyond_rescaling/receipts/review-native-ctl1.json) |
@@ -183,7 +183,11 @@ Severity is blocking, non-blocking, or note.
 Lane BB’s native run decided 1,034 of 39,765 rows, `PASS_PARTIAL`. Because of the
 fitting described in §4, a sample was weaker evidence than it would be for a certificate
 produced without reference to the source verifier.
-This review’s complete run closes the gap once it ends; it is in progress.
+This review’s complete run closes the gap: all 39,765 rows certified, none refuted.
+The run was stopped by a container restart after 9,407 rows and resumed from its row
+journal. The first part ran on clean commit `32cd041c`, the rest on clean commit
+`b1a78984`, and the checker’s code is identical at both; the receipt counts the 9,407
+resumed rows and requires every row certified before it says `PASS_COMPLETE`.
 
 ### F2. Two statements in the write-up are estimates and should say so (note)
 
@@ -226,7 +230,7 @@ No defect.
 
 | Claim | Verdict |
 | --- | --- |
-| Route B, $s(12) \ge 15680000/3949423$ | **Accepted.** Exact audit, a complete source-verifier replay here, a complete native run in progress, both controls refused by both checkers |
+| Route B, $s(12) \ge 15680000/3949423$ | **Accepted.** Exact audit, a complete source-verifier replay here, a complete first-party parent-core run, both controls refused by both checkers |
 | Route A, $s(12) \ge 1568000/395039$ | **Accepted**, as implied by Route B, since $1568000/395039 < 15680000/3949423$. This lane checked the file exactly (§3) but did not replay its sweep; lane BB’s receipt is the only run on it |
 | Route B exceeds #309’s $31360/7901$ by about $0.0010824$, and Daniel’s by about $0.0015847$ | Confirmed exactly |
 | Both controls are refused | Confirmed, by both checkers, on controls rebuilt here |
@@ -269,7 +273,7 @@ draft `S3` with `by` naming this review, and these evidence entries:
 | --- | --- | --- | --- | --- |
 | Lane BB’s complete sweep, `route-b-source-verifier.json` | `repository` | `generator` | none, the producing run | Daniel’s `verify`, external |
 | This review’s complete sweep, `review-source-verifier-N96000.log` | `repository` | `same-implementation` | `replayed-here` | Daniel’s `verify`, external |
-| This review’s parent-core run, `review-native-complete.json` (in progress) | `repository` | `independent-implementation` | `audited-here` | `devtools.verify_evand_angle_net_native`, first-party |
+| This review’s parent-core run, `review-native-complete.json` | `repository` | `independent-implementation` | `audited-here` | `devtools.verify_evand_angle_net_native`, first-party |
 | This review’s exact audit, `review-audit.json` | `repository` | `independent-implementation` | `audited-here` | `devtools.audit_s12_reweighted`, first-party, well-formedness only |
 
 The source replay is `exact-algebraic` and the native run `interval-certified`, which

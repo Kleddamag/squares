@@ -7,12 +7,12 @@ softschema:
   schema: schemas/session-close-report.schema.yaml
   envelope: null
   status: enforced
-count: 166
+count: 167
 generated_by: >-
   uv run --frozen --all-extras --group dev python -m devtools.close_session --render
 totals:
   sessions_measured: 112
-  sessions_unmeasured: 54
+  sessions_unmeasured: 55
   attributed:
     rollups: 270
     turns: 69844
@@ -2885,4 +2885,14 @@ sessions:
   tool_errors: 26
   one_off_code: 504
   wall_hours: 38.43
+  codex_receipts: []
+- id: session-169
+  title: "One Record per Line for Retained Results, and PR 305's Size"
+  status: in_progress
+  primary_bead: think-gmef
+  phases: 1
+  measured: false
+  unmeasured_reason: >-
+    declares no resource measurement
+  rollups: []
   codex_receipts: []

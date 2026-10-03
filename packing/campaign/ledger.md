@@ -181,6 +181,7 @@ Each entry summarizes one user-level research window. Cycle slots are wall-clock
 | [session-164](agent-sessions/session-164-upstream-merge-and-certification.md) | completed | contemporaneous | `pipeline-improvement` (correctness) | `pipeline-improvement` (correctness) | 39 | think-3i74 | After the reviewed helper cleanup lands, implement the bounded fresh-ensemble replay entry point under think-e2ot; preserve the accepted historical evidence. PR 249 reconciliation, optional Rust performance and later exposition remain separate tracks. |
 | [session-165](agent-sessions/session-165-post-optimality-overnight.md) | completed | contemporaneous | `insight-iteration` (insight) | `pipeline-improvement` (correctness) | 36 | think-kaqh | think-11ma: in a separately scheduled W3 block, preregister a small exact geometric-exclusion pilot below the certified endpoint. The overnight heartbeat is to be paused by15:00UTC; no new overnight research or H258 retry. |
 | [session-168](agent-sessions/session-168-known-best-families-and-shading.md) | completed | contemporaneous | `insight-iteration` (insight) | `remediation` (correctness) | 9 | think-los0 | Selected next entry unchanged: think-11ma, the exact geometric-exclusion pilot below the certified n17 endpoint. Identifiers T-066 to T-070 and session-168 collide with open PRs 292, 298, 307 and 311; the one landing second renumbers. |
+| [session-169](agent-sessions/session-169-retained-result-layout.md) | in_progress | contemporaneous | `pipeline-improvement` (efficiency) | `pipeline-improvement` (efficiency) | 1 | think-gmef | Integrate the three lanes as they report. |
 
 ### Workflow summary
 
@@ -194,7 +195,7 @@ Declared counts are contemporaneous contracts; retrospective counts are reconstr
 | `process-review` | 16 | 4 | 64 | 6 |
 | `efficiency-loop` | 11 | 1 | 40 | 1 |
 | `research-loop` | 31 | 4 | 115 | 8 |
-| `pipeline-improvement` | 38 | 2 | 208 | 6 |
+| `pipeline-improvement` | 39 | 2 | 209 | 6 |
 | `documentation-pass` | 1 | 0 | 29 | 3 |
 | `remediation` | 2 | 1 | 6 | 3 |
 | `review-planning-oversight` | 6 | 0 | 42 | 2 |

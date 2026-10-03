@@ -22,7 +22,7 @@ use num_rational::BigRational;
 
 use crate::certificate::{Certificate, Point, Rect, Segment, direction, domain_upper};
 use crate::exact::{approx, enclose, of_f64};
-use crate::interval::{Iv, add_dn, add_up, dn, mul_dn, mul_up, sub_dn, sub_up, up};
+use crate::interval::{Iv, add_dn, add_up, dn, fmax, fmin, mul_dn, mul_up, sub_dn, sub_up, up};
 
 /// Absolute slack for classification decisions made in plain binary64
 /// (lemma F2: the rounding error of those expressions is below `1e-11` for
@@ -59,6 +59,9 @@ pub enum Verdict {
     /// recomputation: the search's bookkeeping is wrong, and nothing it
     /// accepted can be trusted.
     AuditFailed,
+    /// A box's bound or derivative enclosure was not finite; lemma F3 proves
+    /// this cannot happen for an admitted certificate, so it is a refusal.
+    NonFinite,
 }
 
 impl Verdict {
@@ -70,6 +73,7 @@ impl Verdict {
             Self::CounterexampleCandidate => "counterexample-candidate",
             Self::Unresolved => "unresolved",
             Self::AuditFailed => "audit-failed",
+            Self::NonFinite => "non-finite",
         }
     }
 }
@@ -201,9 +205,9 @@ fn frame(cert: &Certificate, index: u32) -> Result<Frame, String> {
 /// `[a, b]` inside the exact one (lemma Z1).
 #[inline]
 fn overlap_dn(x: f64, hf: f64, a: f64, b: f64) -> f64 {
-    let right = add_dn(x, hf).min(b);
-    let left = sub_up(x, hf).max(a);
-    sub_dn(right, left).max(0.0)
+    let right = fmin(add_dn(x, hf), b);
+    let left = fmax(sub_up(x, hf), a);
+    fmax(sub_dn(right, left), 0.0)
 }
 
 /// Lemma Z1: at direction zero the overlap area is the product of two
@@ -243,14 +247,12 @@ fn axis_partial(fr: &Frame, along: (f64, f64, Iv, Iv), across: (f64, f64, Iv, Iv
     let (oc, od, oa, ob) = across;
     // The cross overlap is unimodal in its centre, so its least value over a
     // range is at an end; the ends here are rounded outward.
-    let ends = overlap_dn(sub_dn(oc, od), fr.hf, oa.hi, ob.lo).min(overlap_dn(
-        add_up(oc, od),
-        fr.hf,
-        oa.hi,
-        ob.lo,
-    ));
-    let most = up(2.0 * fr.h_hi).min(sub_up(ob.hi, oa.lo));
-    let width = Iv::new(ends.min(most), most);
+    let ends = fmin(
+        overlap_dn(sub_dn(oc, od), fr.hf, oa.hi, ob.lo),
+        overlap_dn(add_up(oc, od), fr.hf, oa.hi, ob.lo),
+    );
+    let most = fmin(up(2.0 * fr.h_hi), sub_up(ob.hi, oa.lo));
+    let width = Iv::new(fmin(ends, most), most);
     let plus = indicator(c, d, fr.hf, fr.h_hi, a, b);
     let minus = indicator(c, d, -fr.h_hi, -fr.hf, a, b);
     width.times(plus.minus(minus)).mul_nonneg(rho)
@@ -532,7 +534,7 @@ fn section_dn(k: &LineCoeffs, xi: f64, e: f64, b: f64) -> f64 {
     let f2 = add_dn(k.hc.lo, kx_dn(k.sc, xi));
     let g1 = sub_up(-k.hs.lo, kx_dn(k.cs, xi));
     let g2 = add_up(-k.hc.lo, kx_up(k.sc, xi));
-    sub_dn(e.min(f1).min(f2), b.max(g1).max(g2))
+    sub_dn(fmin(fmin(e, f1), f2), fmax(fmax(b, g1), g2))
 }
 
 /// A certified lower bound on `|R ∩ Q(c0)|` (lemma R2).
@@ -590,7 +592,7 @@ fn area_dn(fr: &Frame, rect: &Rect, x0: f64, y0: f64) -> f64 {
     for &x in &nodes[1..] {
         let v = section_dn(k, x, e, b);
         let sum = add_dn(previous_v, v);
-        if sum > 0.0 {
+        if sum > 0.0 || sum.is_nan() {
             let width = sub_dn(x, previous_x);
             if width > 0.0 {
                 total = add_dn(total, dn(mul_dn(sum, width) * 0.5));
@@ -894,6 +896,13 @@ pub fn verify_direction(
             let rect = &rects[arena[position] as usize];
             value = add_dn(value, mul_dn(rect.rho.lo, area_dn(&fr, rect, x0, y0)));
         }
+        // Lemma F3: every quantity that can decide acceptance is finite for an
+        // admitted certificate; one that is not stops the direction.
+        if !(value.is_finite() && atoms.is_finite()) {
+            verdict = Verdict::NonFinite;
+            witness = Some((x0, y0, value, dx, dy));
+            break;
+        }
         // Lemma A3: the audit recomputes the centre bound from every rectangle,
         // using no classification and nothing inherited, and classifies every
         // item afresh; a disagreement means the incremental bookkeeping (R1's
@@ -901,13 +910,15 @@ pub fn verify_direction(
         if limits.audit_every > 0 && (nodes - 1).is_multiple_of(limits.audit_every) {
             audits += 1;
             let full = full_centre_bound(&fr, rects, x0, y0);
+            let slack = representation_slack(&fr, &g, rects);
             let incremental = Tally {
                 inside: add_dn(inner, atom_inner),
                 rects: own_end - own_start,
                 points: own_point_end - own_point_start,
                 segments: own_segment_end - own_segment_start,
             };
-            if (full - value).abs() > AUDIT_TOLERANCE * (1.0 + full.abs())
+            if (full - value).abs() > AUDIT_TOLERANCE * (1.0 + full.abs()) + slack
+                || (full - value).is_nan()
                 || !Tally::fresh(&fr, &g, cert).agrees(&incremental)
             {
                 verdict = Verdict::AuditFailed;
@@ -935,6 +946,11 @@ pub fn verify_direction(
             let (rx, ry) = gradient(&fr, &g, &rects[arena[position] as usize]);
             gx = gx.plus(rx);
             gy = gy.plus(ry);
+        }
+        if !(gx.is_valid() && gy.is_valid()) {
+            verdict = Verdict::NonFinite;
+            witness = Some((x0, y0, value, dx, dy));
+            break;
         }
         // Both this box's enclosure and the inherited one bound the derivative here.
         let gx_bound = gx.mag().min(node.gx_inherited);
@@ -1134,6 +1150,33 @@ fn probe_geom(
 /// differ only by rounding (inside masses enter as exact enclosures, the full
 /// sum through lemma R2), far below this.
 const AUDIT_TOLERANCE: f64 = 1e-9;
+
+/// An upper bound on how much lemma R2's inner representable rectangles can
+/// lose against the exact ones at the box's centre: for each rectangle that can
+/// meet the centre's square, its density times the area between its outer and
+/// inner representable rectangles. The incremental sum counts an inside
+/// rectangle by its exact mass, the full recomputation by R2, so this is the
+/// gap the audit must allow besides rounding (finding TI-1 of the 3 October
+/// testing review: slivers of extreme density).
+fn representation_slack(fr: &Frame, g: &BoxGeom, rects: &[Rect]) -> f64 {
+    let centre = centre_geom(g);
+    let mut slack = 0.0;
+    for rect in rects {
+        if matches!(classify(fr, &centre, rect), Class::Outside) {
+            continue;
+        }
+        let outer = mul_up(
+            sub_up(rect.x2.hi, rect.x1.lo),
+            sub_up(rect.y2.hi, rect.y1.lo),
+        );
+        let inner = mul_dn(
+            fmax(sub_dn(rect.x2.lo, rect.x1.hi), 0.0),
+            fmax(sub_dn(rect.y2.lo, rect.y1.hi), 0.0),
+        );
+        slack = add_up(slack, mul_up(rect.rho.hi, sub_up(outer, inner)));
+    }
+    slack
+}
 
 /// The centre bound from every rectangle, by lemma R2 alone.
 fn full_centre_bound(fr: &Frame, rects: &[Rect], x0: f64, y0: f64) -> f64 {

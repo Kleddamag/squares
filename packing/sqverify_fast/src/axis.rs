@@ -29,6 +29,9 @@ pub struct AxisResult {
     pub argmin: (String, String),
     /// Whether every vertex cleared the threshold.
     pub verified: bool,
+    /// Whether a vertex's enclosure was not finite, which refuses the
+    /// direction (lemma F3 proves it cannot happen for an admitted certificate).
+    pub non_finite: bool,
 }
 
 /// Where a slope step of the ordinate sweep takes effect.
@@ -133,6 +136,7 @@ pub fn verify_axis(
 
     let mut min_lower = f64::INFINITY;
     let mut argmin = (0usize, 0usize);
+    let mut non_finite = false;
     let mut delta = vec![Iv::point(0.0); m];
     let y0 = y_iv[0];
     for (k, &x) in x_iv.iter().enumerate() {
@@ -165,6 +169,14 @@ pub fn verify_axis(
         // the first cell: fold it into the initial slope.
         slope = slope.plus(delta[0]);
         for j in 0..m {
+            // A vertex whose enclosure is not finite stops the sweep: a NaN fails
+            // every comparison and would otherwise drop out of the minimum.
+            if !(value.lo.is_finite() && value.hi.is_finite()) {
+                non_finite = true;
+                min_lower = f64::NAN;
+                argmin = (k, j);
+                break;
+            }
             if value.lo < min_lower {
                 min_lower = value.lo;
                 argmin = (k, j);
@@ -175,12 +187,16 @@ pub fn verify_axis(
                 slope = slope.plus(delta[j + 1]);
             }
         }
+        if non_finite {
+            break;
+        }
     }
     Ok(AxisResult {
         x_events: xs.len(),
         y_events: ys.len(),
         min_lower,
         argmin: (xs[argmin.0].to_string(), ys[argmin.1].to_string()),
-        verified: min_lower >= threshold_hi,
+        verified: !non_finite && min_lower.is_finite() && min_lower >= threshold_hi,
+        non_finite,
     })
 }

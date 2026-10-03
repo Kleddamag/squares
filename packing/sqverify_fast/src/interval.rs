@@ -18,6 +18,26 @@ const GAP: f64 = 1.0 / 4_503_599_627_370_496.0;
 /// The smallest positive subnormal, the gap at and below the normal range.
 const TINY: f64 = 5e-324;
 
+/// The smaller of two values, or `NaN` when either is `NaN` or `a` is
+/// infinite; `f64::min` would return the other operand and turn a failed
+/// computation into a finite, wrong one (lemma F3).
+///
+/// The select returns `b` whenever the comparison fails, so a `NaN` in `b`
+/// survives it; `a * 0` is zero for finite `a` and `NaN` otherwise, which
+/// carries a `NaN` (or an overflow) in `a`. Three instructions, branch-free.
+#[inline]
+#[must_use]
+pub fn fmin(a: f64, b: f64) -> f64 {
+    (if a < b { a } else { b }) + a * 0.0
+}
+
+/// The larger of two values, or `NaN` when either is `NaN` or `a` is infinite.
+#[inline]
+#[must_use]
+pub fn fmax(a: f64, b: f64) -> f64 {
+    (if a > b { a } else { b }) + a * 0.0
+}
+
 /// A lower bound on the exact real result `x` from its rounded value.
 #[inline]
 #[must_use]
@@ -121,7 +141,10 @@ impl Iv {
         let b = self.lo * other.hi;
         let c = self.hi * other.lo;
         let d = self.hi * other.hi;
-        Self::new(dn(a.min(b).min(c.min(d))), up(a.max(b).max(c.max(d))))
+        Self::new(
+            dn(fmin(fmin(a, b), fmin(c, d))),
+            up(fmax(fmax(a, b), fmax(c, d))),
+        )
     }
 
     /// The enclosure of the product with a nonnegative interval `k`.
@@ -148,28 +171,28 @@ impl Iv {
     #[inline]
     #[must_use]
     pub fn min(self, other: Self) -> Self {
-        Self::new(self.lo.min(other.lo), self.hi.min(other.hi))
+        Self::new(fmin(self.lo, other.lo), fmin(self.hi, other.hi))
     }
 
     /// The pointwise maximum of two enclosed quantities.
     #[inline]
     #[must_use]
     pub fn max(self, other: Self) -> Self {
-        Self::new(self.lo.max(other.lo), self.hi.max(other.hi))
+        Self::new(fmax(self.lo, other.lo), fmax(self.hi, other.hi))
     }
 
     /// The enclosure of the positive part `max(x, 0)`.
     #[inline]
     #[must_use]
     pub fn pos(self) -> Self {
-        Self::new(self.lo.max(0.0), self.hi.max(0.0))
+        Self::new(fmax(self.lo, 0.0), fmax(self.hi, 0.0))
     }
 
     /// The largest absolute value in the interval.
     #[inline]
     #[must_use]
     pub fn mag(self) -> f64 {
-        self.lo.abs().max(self.hi.abs())
+        fmax(self.lo.abs(), self.hi.abs())
     }
 
     /// Whether both endpoints are finite and ordered.
@@ -183,6 +206,35 @@ impl Iv {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn nan_is_never_dropped() {
+        let nan = Iv::new(f64::NAN, 1.0);
+        let one = Iv::point(1.0);
+        for value in [
+            nan.min(one),
+            one.min(nan),
+            nan.max(one),
+            one.max(nan),
+            nan.pos(),
+            nan.times(one),
+            one.times(nan),
+            nan.plus(one),
+            nan.minus(one),
+            nan.mul_nonneg(one),
+        ] {
+            assert!(
+                value.lo.is_nan() || value.hi.is_nan(),
+                "{value:?} lost its NaN"
+            );
+            assert!(!value.is_valid());
+        }
+        assert!(nan.mag().is_nan());
+        assert!(fmin(f64::NAN, 0.0).is_nan() && fmax(0.0, f64::NAN).is_nan());
+        // Overflow becomes NaN, never a finite bound: dn(+inf) and up(-inf).
+        assert!(add_dn(f64::MAX, f64::MAX).is_nan());
+        assert!(sub_up(-f64::MAX, f64::MAX).is_nan());
+    }
 
     #[test]
     fn directed_steps_bracket_exact_sums() {

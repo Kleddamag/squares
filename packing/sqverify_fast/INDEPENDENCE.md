@@ -31,20 +31,31 @@ Mathematics (reviews under `docs/project/reviews/`):
   per operation, rational enclosure by exact comparison), its bounds (concave-section
   trapezoids, edge-length enclosures from nine affine terms, classification with slack)
   and its limits are its own, derived in `SOUNDNESS.md`.
-- `review-2026-09-22-tokoharu-density-mathematics.md`, lines 1–194 and 225–318: the
-  mathematical reduction, the net and shrink argument, the quarter-turn reduction, the
-  axis-grid argument, the derivative formula and mean-value bound, optional smoothing
-  and the preconditions.
+- `review-2026-09-22-tokoharu-density-mathematics.md`, lines 1–200 and 225–318 as
+  displayed: the mathematical reduction, the net and shrink argument, the quarter-turn
+  reduction, the axis-grid argument, the derivative formula and mean-value bound,
+  optional smoothing and the preconditions, and also “Scope and Evidence” and “Exact
+  Preconditions and Replay Results”.
   The section “Inscribed-polygon area and arithmetic” (lines 195–224), which describes
-  the checker’s area routine, was skipped.
-- For Milestone B, `review-2026-10-02-wand125-linear-certificates-and-n76.md` and
-  `review-2026-10-02-wand125-mixed-rectangle-bounds.md`: their statements of the
-  formats, the atom bounds (a point counts when it lies in the closed core for every
-  centre of a box; a segment’s sub-segment counts when both its ends do) and the per-bin
-  domain, which spec §1.4–§1.6 restates.
-  Lines 86–161 of the linear review name functions of the authors’ Python driver
-  (`unified_measure.py`) in prose; nothing here uses them.
-  No passage quoting or paraphrasing checker code line by line was read.
+  the checker’s area routine, was meant to be skipped, but the read of lines 1–200
+  displayed its first six lines.
+- For Milestone B, the section headings of
+  `review-2026-10-02-wand125-linear-certificates-and-n76.md` and
+  `review-2026-10-02-wand125-mixed-rectangle-bounds.md`, then lines 86–161 of the first
+  (“The Argument From a Linear Measure to the Bound”) and lines 1–126 of the second (its
+  opening, scope and verdict, and “The Argument From Certificate to Bound”): the
+  formats, the atom bounds and the per-bin domain, which spec §1.4–§1.6 restates.
+  Lines 86–161 name functions of the authors’ Python driver (`unified_measure.py`) in
+  prose; nothing here uses them.
+  Lines 162–290 of the linear review (“The Checker, Function by Function”), which the
+  testing review says paraphrase a checker routine line by line, were not displayed.
+- For the Milestone C plan, §§3–4 (lines 86–233) of
+  `review-2026-10-02-wand125-s59-s77-mixed-covers.md`, at the coordinator’s direction:
+  the statement, the measure’s closed conventions, the scaling reduction, the pose space
+  and its $D_4$ fold, and §4’s account of what the authors’ continuous-angle checker
+  decides and assumes, which names its lemmas, limits and two function names but quotes
+  no code. The specification’s §1.7 (the same lemmas) was read from the copy checked out
+  earlier.
 
 Lane W1’s clean outputs, checked out from its branch `worktree-agent-a9b6885d64664dd01`
 at the coordinator’s instruction (these two files only; the research note, the
@@ -89,6 +100,42 @@ Certificate data and summaries (packets under `packing/resources/web/`):
   (mutation descriptions, witness centre and exact coverage, the checker’s verdicts).
   The `code/` folder beside `mixed_n101_L1028` was listed by `ls` and never opened.
 
+The two adversarial reviews of this crate, merged at the coordinator’s direction: the
+soundness review (`review-2026-10-03-sqverify-fast-soundness.md`) in full, and the
+testing and independence review
+(`review-2026-10-03-sqverify-fast-testing-and-independence.md`) except lines 201–242
+(“What the code shows”), which compares this crate with the authors’ checkers and was
+skipped for that reason.
+
+## Departures From the Specification’s Protocol
+
+The specification (§2.2–§2.4, version `6c5ff1430`) allows only listed review sections
+and forbids replay receipts.
+This lane departed from it in four ways, each disclosed when it happened or found:
+
+1. **A review read in full.** `review-2026-09-27-wand125-rectangle-scaling.md` was read
+   whole, before the allowance was known; §2.2 allows only “The Net and the Box Argument
+   at Side 9” and “The Monotone Transfers”.
+   Its sections on fixed-width types, floating-point constants and hard limits describe
+   `verify.cpp`’s constants; nothing here uses them.
+2. **Review sections beyond the allowance.** In the Tokoharu review, “Scope and
+   Evidence”, “Exact Preconditions and Replay Results” and six lines of the area
+   routine’s section; in the mixed rectangle review, its opening, scope and verdict; in
+   the s(59) and s(77) review, §4 (the coordinator’s direction, for the Milestone C
+   plan).
+3. **Replay receipts read.** §2.3 forbids `packing/resources/web/**/receipts/`. This
+   lane read the summary fields of the replay audits (`audit.json`, `audit.json.gz`,
+   `mixed-audit.json`, `exact-audit.json`), of the replay ranges (`merged.json`,
+   `summary.json`, `directions.jsonl`), of the controls (`control.json`,
+   `rect_n41_L676.json`) and of the n50 replay (`compare.json`, `inputs.json`):
+   statuses, counts, timings, witnesses and mutation descriptions, for the census and
+   the controls, which need them.
+   These hold the checkers’ verdicts and numbers, not code; no log under `receipts/` was
+   opened.
+4. **No machine-readable record until now.** `independence-record.yaml` beside this file
+   is the §2.4 record, written by hand from this lane’s transcript; the audit tool that
+   §2.4 asks for (slice 4) has not run over it.
+
 ## Commands Run
 
 - `python -m devtools.check_bootstrap`, `git submodule update --init --recursive`,
@@ -108,6 +155,19 @@ Certificate data and summaries (packets under `packing/resources/web/`):
 - `cargo build`, `cargo test`, `cargo clippy`, `valgrind --tool=callgrind` and
   `callgrind_annotate` on this crate only.
 - `packing-validate --edit` and `--only` on this worktree.
+- For the census of every retained certificate: a merge of the updated base branch
+  (which brought the afternoon packets of 2 October), the `receipts/` summaries of every
+  wand125 rectangle and mixed packet (`audit.json`, `audit.json.gz`, `mixed-audit.json`,
+  `linear-audit.json`, `exact-audit.json`, `fetch.json`, and the n50 replay’s
+  `compare.json` and `inputs.json`) for replay status only, and the census tool over
+  every `certified_candidate.json.gz` and `candidate.json.gz` there.
+  `ls` listed the `code/` folders beside some certificates; none was opened.
+- For the soundness review’s findings: a merge of
+  `origin/claude/review-ra-sqverify-fast` (`0e38246a9`), which added
+  `docs/project/reviews/review-2026-10-03-sqverify-fast-soundness.md` and
+  `tests/adversarial.rs`; both were read in full.
+  The reviewer read this crate and the specification, not the authors’ checkers, so
+  neither brings anything of theirs.
 - For Milestone B: `sqverify-fast` on the mixed and linear candidates and on their
   mutations; `python -m devtools.check_sqverify_fast --only mixed` and
   `python -m devtools.sqverify_fast_census --family mixed`; a throwaway build of this

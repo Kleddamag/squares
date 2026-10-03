@@ -8,6 +8,11 @@ checker’s source; [INDEPENDENCE.md](INDEPENDENCE.md) records what was read.
 A verdict of `verified` for all directions of a net, together with the exact admission
 premises, proves $s(n) \ge L$. Every other verdict proves nothing.
 
+“Spec §” below cites lane W1’s specification,
+`docs/project/specs/active/plan-2026-10-02-independent-measure-verifier.md`, which is
+not on this branch: it is on W1’s branch and in this branch’s history at the parent of
+commit `abf0a592b`.
+
 ## The Claim
 
 A certificate gives a side $L$, a shrunk side $B$, a net step $D$ and count $N_\theta$
@@ -37,12 +42,16 @@ $t_{\max}^2 + 2 t_{\max} - 1 > 0$, and for every net index $r$ and every centre 
    $\theta_{\max} > \pi/4$.
 
 2. *Orientation (N2).* A unit square’s angle is defined modulo $\pi/2$; take $\varphi
-   \in [0, \pi/2)$. If $\varphi > \theta_{\max}$, reflect the whole configuration in the
+   \in [0, \pi/2)$. If $\varphi > \pi/4$, reflect the whole configuration in the
    diagonal $y = x$, which maps $K$ to itself, preserves $g$, preserves disjointness,
-   and sends $\varphi$ to $\pi/2 - \varphi < \pi/4 < \theta_{\max}$. So assume
-   $\varphi \le
-   \theta_{\max}$, and let $\theta_r$ be a net angle with $\delta = |\varphi - \theta_r|
-   \le \arctan D$.
+   and sends $\varphi$ to $\pi/2 - \varphi < \pi/4$. So assume $\varphi \in [0,
+   \pi/4]$, which N1 places below $\theta_{\max}$, and let $\theta_r$ be a net angle
+   with $|\tan(\varphi/2) - t_r| \le D/2$ (N1), so $\delta = |\varphi - \theta_r| \le
+   \arctan D$. The fold is at $\pi/4$, not at $\theta_{\max}$: lemma D’s per-bin domain
+   (format M) depends on it, since the half-width $\rho$ falls again past $\tan(\pi/8)$
+   and a square folded only above $\theta_{\max}$ could sit at half-angle tangent up to
+   $t_{200} + D/2$, where $\rho$ is below $\rho(a_{200})$. Tokoharu’s domain needs no
+   such care, but the same fold serves it.
 
 3. *Shrink (N3).* The concentric square of side $B$ at angle $\theta_r$, seen in the
    unit square’s frame, is rotated by $\delta$; its extent along either of the unit
@@ -50,7 +59,18 @@ $t_{\max}^2 + 2 t_{\max} - 1 > 0$, and for every net index $r$ and every centre 
    $B(\cos\delta + \sin\delta) = B \cos\delta (1 + \tan\delta) \le B(1 +
    D) < 1$. So it lies in the open unit square, hence in $K$, and its centre lies in
    $[a_r, L - a_r]^2$, the set of centres whose $B$-square at angle $\theta_r$ lies in
-   $K$.
+   $K$. The per-bin domain (format M) assigns half-angle tangents within $D/2$ of $t_r$,
+   so there $\delta$ may reach $2\arctan(D/2)$, whose tangent $D/(1 - D^2/4)$ exceeds
+   $D$. The bound still holds in half-angle form: with
+   $z = \tan(\delta/2) = |t - t_r|/(1 +
+   t t_r) \le D/2$, $\cos\delta + \sin\delta = (1 + 2z - z^2)/(1 + z^2) \le 1 + 2z \le
+   1 + D$, since $(1 + 2z)(1 + z^2) - (1 + 2z - z^2) = 2z^2 + 2z^3 \ge 0$ (spec N2, N3).
+   So $B(1 + D) < 1$ suffices for both domains.
+   Admission checks the stronger tangent form $B(1 + D/(1 - D^2/4)) < 1$ for format M as
+   well, which a proof through $\cos\delta(1 + \tan\delta)$ would need: at
+   $D = 83/40000$ the two limits on $B$ are about $0.99792929671$ and $0.99792929449$,
+   and every retained certificate has $B =
+   9977/10000$, below both (question of the 3 October testing review).
 
 4. *Counting (N4).* The $n$ unit squares have disjoint interiors, so their $B$-squares
    are pairwise disjoint closed sets in $K$. With $g \ge 0$, $n \le \sum_i \int_{Q_i} g
@@ -58,12 +78,16 @@ $t_{\max}^2 + 2 t_{\max} - 1 > 0$, and for every net index $r$ and every centre 
 
 The code checks every premise but the coverage in exact rationals at admission
 (`certificate::admit`): $0 < M < n$; $0 < B < 1$; $B(1 + D) < 1$; the endpoint
-polynomial; $t_{\max} < 1$ (so every net angle is below $\pi/2$ and its cosine and sine
-are positive); $L^2 \ge 2B^2$ (so $a_r \le L/2$ and the domains are nonempty); and $0
-\le x_1 < x_2 \le L$, $0 \le y_1 < y_2 \le L$ for every positive-weight rectangle
-(containment is not needed for N4 but is the format’s promise).
-Negative weights, duplicate JSON keys, a count or side that disagrees with the request,
-and decimal tokens that do not parse exactly are refusals.
+polynomial; $t_{\max} \le 1/2$ (so every net angle is below $\pi/2$, its sine is
+positive and its cosine at least $3/5$); $L^2 \ge 2B^2$ (so $a_r \le L/2$ and the
+domains are nonempty); and $0 \le x_1 < x_2 \le L$, $0 \le y_1 < y_2 \le L$ for every
+positive-weight rectangle (containment is not needed for N4 but is the format’s
+promise). Lemma F3’s caps are checked there too: $L \le 1000$, at most $2^{16}$ net
+directions, at most $10^6$ listed rows, and every expanded rectangle’s density at most
+$2^{96}$. Negative weights, duplicate JSON keys, a count or side that disagrees with the
+request, and decimal tokens that do not parse exactly are refusals, and so is a gzip
+input with a second member or any byte after its first, which another reader would see
+differently (finding TI-2 of the 3 October testing review).
 Decimal JSON numbers are their literal values, never the nearest binary64. The expansion
 multiplies nothing out of order: each image’s exact density is summed when images
 coincide, and the expanded total must integrate back to $M$ exactly.
@@ -222,15 +246,18 @@ The receipt’s minimum certified bound is the least accepted value, a lower bou
 $\min F$ over the quadrant.
 With points or segments, the box’s atom bound (lemmas B1 to B3) is added after the
 derivative penalty, which it does not enter.
-A box whose centre bound falls below $T - 10^{-9}$, and whose centre still falls below
-it when the atoms are estimated from above (points within `TAU` of the square counted,
-segment parameters widened by `TAU`), stops the direction as a counterexample candidate,
-which is a refusal; `--confirm` evaluates the candidate centre in exact rationals
-(`oracle::coverage`). The estimate decides only which refusal is reported.
-A box at the depth limit is set aside and the search goes on, so that a counterexample
-elsewhere is still found; the first 32 such boxes have their centre’s capture evaluated
-exactly, and one below $T$ is reported as a counterexample candidate, since the
-estimate’s error can hide a band of centres just below the threshold.
+Every accept is the comparison `bound >= threshold`, which is false for `NaN`; a box
+whose centre bound, atom bound or derivative enclosure is not finite stops the direction
+as `non-finite`, a refusal, and lemma F3 proves that this cannot happen for an admitted
+certificate. A box whose centre bound falls below $T - 10^{-9}$, and whose centre still
+falls below it when the atoms are estimated from above (points within `TAU` of the
+square counted, segment parameters widened by `TAU`), stops the direction as a
+counterexample candidate, which is a refusal; `--confirm` evaluates the candidate centre
+in exact rationals (`oracle::coverage`). The estimate decides only which refusal is
+reported. A box at the depth limit is set aside and the search goes on, so that a
+counterexample elsewhere is still found; the first 32 such boxes have their centre’s
+capture evaluated exactly, and one below $T$ is reported as a counterexample candidate,
+since the estimate’s error can hide a band of centres just below the threshold.
 Otherwise the direction is `unresolved`, as it is when the node budget runs out or 4,096
 boxes reach the depth limit.
 Every one of these outcomes is a refusal.
@@ -242,7 +269,9 @@ point masses and segments of mass spread uniformly by length beside the rectangl
 threshold is $\Gamma = 1$, and format M declares the per-bin centre domain.
 Admission refuses a negative mass, a point or segment endpoint outside $[0, L]^2$, a
 segment of length zero, a nonempty format M `points` list, a format L `net` other than
-step $83/40000$ and last index $200$, and a `total_mass` other than the exact sum.
+step $83/40000$ and last index $200$, certificate metadata that changes the net of
+either format (finding TI-3), format M’s premise $B(1 + D/(1 - D^2/4)) < 1$ failing
+(N3), and a `total_mass` other than the exact sum.
 Every row is an orbit representative whose eight $D_4$ images carry an eighth of its
 mass each; coincident images are merged by exact key (a segment and its reverse are one
 key), and the merged total must equal $M$.
@@ -348,6 +377,44 @@ most ten operations deep, so by the standard model $|\mathrm{fl}(a \circ b) - a 
 3 \times 10^{-11}$, far below `TAU`. Decisions near the slack become boundary items,
 which R2–R5 handle soundly.
 
+**Lemma F3 (every intermediate is finite).** Lemma I1 needs every rounded result to be
+finite: $\mathrm{dn}(+\infty)$ and $\mathrm{up}(-\infty)$ are `NaN`, and `NaN` fails
+every comparison. Admission caps the inputs so that no intermediate on the certification
+path exceeds $2^{200}$ in magnitude, far below the binary64 limit $2^{1024}$:
+
+- Coordinates, offsets and half-widths are at most $4L \le 2^{12}$ (`MAX_SIDE`).
+- $t_{\max} \le 1/2$ gives $c_r \ge 3/5$; at least two directions and at most $2^{16}$
+  with the endpoint polynomial give $D \ge \tan(\pi/8)/2^{16} > 2^{-18}$, so $s_r \ge
+  s_1 = 2D/(1 + D^2) > 2^{-18}$ for $r \ge 1$. Every line coefficient ($h/s$, $c/s$,
+  $1/(sc)$, …) is then below $2^{19}$, and every term of R5 below $2^{32}$.
+- Each expanded density is at most $2^{96}$ and there are at most
+  $8 \cdot 10^6 < 2^{23}$ expanded items.
+  A rectangle’s R2 area bound is below $2^{49}$ (thirteen trapezoids of width at most
+  $2^{12}$ and height at most $2^{33}$), its weighted area below $2^{145}$, its
+  derivative enclosure below $2^{130}$; the sums over every item stay below $2^{170}$,
+  and the penalty, a derivative bound times a half-width, below $2^{182}$. Masses are
+  below $n < 2^{64}$.
+- In the axis sweep a column weight $\rho\, o_x$ is below $2^{108}$, a slope below
+  $2^{133}$, an increment below $2^{145}$, and a vertex value below $2^{181}$ after at
+  most $2^{26}$ events.
+- Each directed step multiplies a magnitude by at most $1 + 2^{-51}$ and adds
+  $2^{-1074}$, so outward rounding over fewer than $2^{40}$ operations per quantity
+  stays within a factor of $2$.
+
+The divisions on the path are by enclosed constants bounded away from zero ($c$, $s$,
+and in `lambda_range` a slope at least the smallest normal, whose possibly infinite
+quotient is clamped to $[0, 1]$ and only chooses parameters that B3 then proves).
+So no infinity arises, and without one no `NaN` can (no $0/0$, no $\infty - \infty$, no
+$0
+\cdot \infty$). The code also makes `NaN` fatal wherever it could pass unseen: `fmin`
+and `fmax` replace `f64::min` and `f64::max` in every interval primitive and in R2, Z1
+and Z2, so a `NaN` endpoint propagates rather than being dropped (each selects with one
+comparison, which keeps a `NaN` second operand, and adds $0 \cdot a$, which is `NaN`
+when the first is `NaN` or infinite); the search checks the centre bound, the atom bound
+and the derivative enclosure of every box and stops with `non-finite`; and the axis
+sweep refuses a non-finite vertex rather than leaving it out of the minimum (finding S1
+of the 3 October soundness review, whose reproducers are in `tests/adversarial.rs`).
+
 ## Tests That Hold the Lemmas
 
 - `rotated_tests::area_lower_bound_is_below_and_close_to_exact`: R2 against exact
@@ -367,6 +434,18 @@ which R2–R5 handle soundly.
   capture of random points and segments (a third horizontal, a third vertical) at the
   corners and an interior point of random boxes, and the counterexample estimate above
   the exact capture at the centre; letting B3 skip its endpoint proofs makes it fail.
+- `tests/adversarial.rs`, from the 3 October soundness review: admission against each
+  broken premise and exact decimal masses, boundary configurations at side 1000 against
+  the oracle, the per-bin fold, and lemma F3: the overflow certificate is refused at
+  admission, and with its densities forced past the cap the axis sweep refuses it as
+  `non-finite`, whether the overflow is in a column’s initial slope or inside the
+  domain; a fault-injected run is never verified.
+- `tests/adversarial.rs`, from the 3 October testing review’s findings: a gzip input
+  with a second member or trailing bytes is refused; format L and M nets cannot be
+  changed by metadata; format M’s tangent-form premise refuses a $B$ between the two
+  limits, which format T admits.
+- `interval::tests::nan_is_never_dropped`: every interval primitive keeps a `NaN`
+  endpoint, and an overflowing directed step is `NaN`.
 - `rotated_tests::oracle_counts_closed_intersections`: the oracle counts a point on the
   square’s edge and a segment along it in full, and a segment touching a corner not at
   all.
@@ -414,11 +493,19 @@ rectangles enter the incremental sum as their exact mass and the full sum throug
 which is within rounding of it.
 Second, the classification of every rectangle, point and segment against the box (R1,
 B1): the mass certified inside and the number of straddling items of each kind.
-On a correct run the sums agree to within `AUDIT_TOLERANCE` (relative $10^{-9}$) and the
-counts exactly, since a sub-box’s fresh classification repeats its ancestors’ decisions
-(a rounding coincidence within $10^{-13}$ of a decision’s slack could break the tie,
-which would be a false refusal, never an acceptance); a disagreement proves the
-incremental bookkeeping wrong at that box or at an ancestor whose decisions it inherits.
+On a correct run the sums agree to within `AUDIT_TOLERANCE` (relative $10^{-9}$) plus
+the representation slack, and the counts exactly.
+The slack is, over every rectangle that can meet the centre’s square, its density times
+the area between its outer and inner representable rectangles: the incremental sum
+counts an inside rectangle by its exact mass, while R2 counts its inner representable
+rectangle, and for a sliver of extreme density that difference is large (finding TI-1 of
+the 3 October testing review, whose reproducer the audit refused falsely before).
+The classification comparison is unaffected, and it is what catches a wrong inside
+decision. The counts agree exactly because a sub-box’s fresh classification repeats its
+ancestors’ decisions (a rounding coincidence within $10^{-13}$ of a decision’s slack
+could break the tie, which would be a false refusal, never an acceptance); a
+disagreement proves the incremental bookkeeping wrong at that box or at an ancestor
+whose decisions it inherits.
 The search then stops with `audit-failed`, a refusal.
 The second comparison is what catches a straddling item wrongly certified inside whose
 whole mass happens to lie in the centre’s own square, which leaves the centre bound
@@ -431,6 +518,9 @@ every box, which catches it at the box where it is made.
 `--inject-fault-at-node N` certifies inside the first straddling rectangle at box $N$,
 or the first straddling point or segment when no rectangle straddles, the control of
 spec §4.2; the controls in `devtools/check_sqverify_fast.py` require the refusal.
+A run with the flag is never evidence: every receipt and the summary record
+`fault_injected_at_box`, and a direction the injected fault did not stop is reported
+`fault-injected`, not `verified`, so the run exits non-zero whatever the audit caught.
 
 <!-- This document follows common-doc-guidelines.md.
 See github.com/jlevy/practical-prose and review guidelines before editing.

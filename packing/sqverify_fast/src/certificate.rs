@@ -20,6 +20,16 @@ use crate::interval::Iv;
 /// (lemma F2) is proved for coordinates of magnitude at most `4 * MAX_SIDE`.
 pub const MAX_SIDE: i64 = 1000;
 
+/// Lemma F3's admission caps, which keep every intermediate of the search
+/// finite: an expanded rectangle's density is at most `2^MAX_DENSITY_LOG2`, the
+/// net has at most `MAX_ANGLE_COUNT` directions and its last half-angle tangent
+/// is at most one half, and a certificate lists at most `MAX_PRIMITIVES` rows.
+pub const MAX_DENSITY_LOG2: usize = 96;
+/// See [`MAX_DENSITY_LOG2`].
+pub const MAX_ANGLE_COUNT: u32 = 1 << 16;
+/// See [`MAX_DENSITY_LOG2`].
+pub const MAX_PRIMITIVES: usize = 1_000_000;
+
 /// One expanded rectangle with its exact data.
 #[derive(Clone, Debug)]
 pub struct ExactRect {
@@ -373,11 +383,21 @@ pub fn read_json(path: &Path) -> Result<(Vec<u8>, Value), AdmissionError> {
         return refuse("candidate exceeds 64 MiB");
     }
     let decoded = if raw.starts_with(&[0x1f, 0x8b]) {
+        // One gzip member and nothing after it, as Python's reader requires: a
+        // second member or trailing bytes would let two readers see two inputs.
+        const LIMIT: u64 = 512 * 1024 * 1024;
         let mut text = Vec::new();
-        flate2::read::GzDecoder::new(raw.as_slice())
-            .take(512 * 1024 * 1024)
+        let mut decoder = flate2::bufread::GzDecoder::new(raw.as_slice());
+        Read::by_ref(&mut decoder)
+            .take(LIMIT)
             .read_to_end(&mut text)
             .map_err(|error| AdmissionError(format!("bad gzip: {error}")))?;
+        if text.len() as u64 >= LIMIT {
+            return refuse("decompressed candidate exceeds 512 MiB");
+        }
+        if !decoder.into_inner().is_empty() {
+            return refuse("gzip input has bytes after its first member");
+        }
         text
     } else {
         raw.clone()
@@ -545,8 +565,10 @@ pub fn admit(
     if &side * &side < ratio(2, 1) * &core * &core {
         return refuse("L^2 < 2 B^2: the centre domain could be empty");
     }
-    if !(step.is_positive() && angle_count >= 2) {
-        return refuse("the net needs a positive step and at least two directions");
+    if !(step.is_positive() && (2..=MAX_ANGLE_COUNT).contains(&angle_count)) {
+        return refuse(format!(
+            "the net needs a positive step and 2 to {MAX_ANGLE_COUNT} directions"
+        ));
     }
     if &core * (&one + &step) >= one {
         return refuse("B (1 + D) >= 1: the shrunk square need not fit inside the unit square");
@@ -555,12 +577,29 @@ pub fn admit(
     if &last * &last + ratio(2, 1) * &last - &one <= zero {
         return refuse("the net does not reach past pi/4");
     }
-    if last >= one {
-        return refuse("the net overshoots pi/2 (t >= 1)");
+    if last > ratio(1, 2) {
+        return refuse("the net's last half-angle tangent exceeds 1/2 (lemma F3)");
     }
 
     let (format, domain, listed) = sources(object)?;
-    if listed.len() > 1_000_000 {
+    // Formats M and L fix the net; metadata may restate it but never change it.
+    if format != "T" && (step != ratio(83, 40_000) || angle_count != 201) {
+        return refuse(format!(
+            "format {format}'s net is step 83/40000 with 201 directions; certificate \
+             metadata may not change it"
+        ));
+    }
+    // The per-bin domain assigns a half-angle tangent within D/2 of t_r, so the
+    // angle may differ from theta_r by up to 2 atan(D/2), whose tangent is
+    // D/(1 - D^2/4). Lemma N3 needs only B(1 + D) < 1 (by the half-angle form),
+    // and admission also checks the bound a tangent-based argument would need.
+    if domain == Domain::PerBin {
+        let quarter = &step * &step / ratio(4, 1);
+        if &core * (&one + &step / (&one - quarter)) >= one {
+            return refuse("B (1 + D / (1 - D^2/4)) >= 1 for the per-bin domain");
+        }
+    }
+    if listed.len() > MAX_PRIMITIVES {
         return refuse("too many primitives");
     }
     let inside = |q: &BigRational| &zero <= q && q <= &side;
@@ -655,8 +694,14 @@ pub fn admit(
     let mut exact = Vec::with_capacity(order.len());
     let mut rects = Vec::with_capacity(order.len());
     let mut integrated = BigRational::zero();
+    let max_density = BigRational::from_integer(BigInt::from(1) << MAX_DENSITY_LOG2);
     for key in order {
         let density = merged[&key].clone();
+        if density > max_density {
+            return refuse(format!(
+                "a rectangle's density exceeds 2^{MAX_DENSITY_LOG2} (lemma F3)"
+            ));
+        }
         let [x1, y1, x2, y2] = key;
         let image_mass = &density * (&x2 - &x1) * (&y2 - &y1);
         let rect = ExactRect {

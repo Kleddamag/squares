@@ -859,6 +859,21 @@ def id_cell(result: Result, detail: RowDetail) -> str:
     return f'<td class="site-col-id" data-value="{_esc(result.id)}">{detail.trigger}</td>'
 
 
+#: The most characters a result's list of cases may have and stay on one line, half the
+#: `--site-cases-measure` of `site.css`: a cell wraps from five values, and also when a
+#: shorter list is longer than this, since on one line it would hold the column wider
+#: than the half measure it narrows to before the table scrolls. T-075's four values, two
+#: counts and two ranges, are 20 characters, and on one line ran the table of results 26
+#: pixels past its frame at 1024.
+CASES_ONE_LINE = 12
+
+
+def case_cell_class(result: Result) -> str:
+    """The n cell's classes: `site-n-wraps` where its list wraps in the measure."""
+    long = len(result.scope.split(", ")) >= 5 or len(result.scope) > CASES_ONE_LINE
+    return "num site-col-n site-n-wraps" if long else "num site-col-n"
+
+
 def case_list(result: Result) -> str:
     """A result's cases as its n cell sets them: the register's counts and ranges
     (`Result.scope`: `68, 102`, then `130` to `132` as a range with an en dash), each
@@ -914,7 +929,8 @@ def result_cells(result: Result, overview: Overview, detail: RowDetail) -> str:
     standing = f'<span class="site-standing">{status_marks(result)}</span>'
     return (
         f"{id_cell(result, detail)}"
-        f'<td class="num site-col-n" data-value="{result.first_n}">{case_list(result)}</td>'
+        f'<td class="{case_cell_class(result)}" data-value="{result.first_n}">'
+        f"{case_list(result)}</td>"
         f'<td class="site-col-result">{result_text(result)}'
         f"{new_result_star(result, overview)}"
         f'<div class="site-records">{_records(result)}</div></td>'

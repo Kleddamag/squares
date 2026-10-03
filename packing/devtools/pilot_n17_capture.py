@@ -877,6 +877,11 @@ def produce_step(
     mine = bounding_box(rows[owner], "outer_domain")
     covers: dict[str, list[dict[str, Any]]] = {}
     partners: dict[int, list[producer.PartnerRow]] = {}
+    # The core-only terms of every collision plane, memoised by row interval for this
+    # step as `producer.produce` memoises them for a production: within a step an
+    # interval names one `core_kind` core, read from `cores`. Without this the producer
+    # recomputed each partner's support minima for every row it located a region for.
+    terms = producer.CollisionTerms()
     for other in mask:
         if other == owner:
             continue
@@ -908,6 +913,7 @@ def produce_step(
                 groups=groups,
                 partners=partners,
                 cores=cores,
+                terms=terms,
             )
         )
     planes = [plane for _, _, row_planes in produced for plane in row_planes]

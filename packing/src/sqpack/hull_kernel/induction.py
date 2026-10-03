@@ -122,13 +122,47 @@ def strict_core(frame: Frame, core: Polygon, lo: Q, hi: Q) -> None:
             )
 
 
+def minkowski_sum(left: Polygon, right: Polygon) -> Polygon:
+    """`hull([p + q for p in left for q in right])`, built from the sum's own vertices.
+
+    The Minkowski sum of two convex polygons is traced by merging their edges by angle:
+    from the lowest vertex of each, the summand whose next edge turns first advances.
+    Every vertex of the sum is a point visited that way, and every point visited is a
+    pairwise sum, so the hull of the visited points is the hull of all the pairwise
+    sums -- the same polygon from the same `hull`, in the same vertex order -- from
+    `len(left) + len(right)` points rather than their product. A summand whose hull has
+    fewer than three vertices, or a merge that does not close in that many steps, falls
+    back to the pairwise sums.
+    """
+    a, b = hull(left), hull(right)
+    n, m = len(a), len(b)
+    visited: Polygon = []
+    if n >= 3 and m >= 3:
+        start_a = min(range(n), key=lambda k: (a[k][1], a[k][0]))
+        start_b = min(range(m), key=lambda k: (b[k][1], b[k][0]))
+        i = j = 0
+        for _ in range(n + m):
+            if i == n and j == m:
+                break
+            p, q = a[(start_a + i) % n], b[(start_b + j) % m]
+            visited.append((p[0] + q[0], p[1] + q[1]))
+            p2, q2 = a[(start_a + i + 1) % n], b[(start_b + j + 1) % m]
+            cross = (p2[0] - p[0]) * (q2[1] - q[1]) - (p2[1] - p[1]) * (q2[0] - q[0])
+            if cross >= 0 and i < n:
+                i += 1
+            if cross <= 0 and j < m:
+                j += 1
+        if i != n or j != m:
+            visited = []
+    if not visited:
+        visited = [(p[0] + q[0], p[1] + q[1]) for p in a for q in b]
+    return hull(visited)
+
+
 def forbidden_regions(prior: Mapping[int, Polygon], owner: int, core: Polygon) -> list[Polygon]:
     """`K_j - Q_i` for every other owner `j`, in the prior state's owner order."""
-    return [
-        hull([(p[0] - q[0], p[1] - q[1]) for p in group for q in core])
-        for other, group in prior.items()
-        if other != owner
-    ]
+    negated = [(-x, -y) for x, y in core]
+    return [minkowski_sum(group, negated) for other, group in prior.items() if other != owner]
 
 
 def common_core_planes(core: Polygon, vertices: Polygon) -> list[Halfplane]:

@@ -10,6 +10,7 @@ scope: >
   current project documentation rules.
 documents:
   - {path: docs/project/reviews/review-2026-10-02-nagamochi-lemma1-karakus.md, role: review, authority: record, lifecycle: retained}
+  - {path: docs/project/reviews/review-2026-10-03-n11-optimality-upstream-delta.md, role: review, authority: record, lifecycle: retained}
   - {path: docs/project/reviews/review-2026-10-03-n11-optimality-adversarial-gpt6-pro-unified.md, role: review, authority: record, lifecycle: retained}
   - {path: docs/project/reviews/review-2026-10-03-n11-gpt6-pro-review-integration.md, role: review, authority: record, lifecycle: retained}
   - {path: docs/project/reviews/review-2026-10-03-n11-optimality-paper-adversarial.md, role: review, authority: record, lifecycle: retained}

@@ -526,6 +526,7 @@ case or experiment separately.
 | Document or collection | Role | Authority | Lifecycle | Current replacement |
 | --- | --- | --- | --- | --- |
 | [Nagamochi’s Lemma 1 Is False: What T-007 Rests On Now](docs/project/reviews/review-2026-10-02-nagamochi-lemma1-karakus.md) | dated review record | record | retained | — |
+| [Eleven-Square Optimality Proof: The Delta for the Original Contributor](docs/project/reviews/review-2026-10-03-n11-optimality-upstream-delta.md) | dated review record | record | retained | — |
 | [Unified adversarial review of the tentative optimality proof for eleven squares](docs/project/reviews/review-2026-10-03-n11-optimality-adversarial-gpt6-pro-unified.md) | dated review record | record | retained | — |
 | [Integration of GPT-6 Pro’s Adversarial Review of the Eleven-Square Optimality Proof](docs/project/reviews/review-2026-10-03-n11-gpt6-pro-review-integration.md) | dated review record | record | retained | — |
 | [Eleven-Square Optimality Paper: Adversarial Review](docs/project/reviews/review-2026-10-03-n11-optimality-paper-adversarial.md) | dated review record | record | retained | — |

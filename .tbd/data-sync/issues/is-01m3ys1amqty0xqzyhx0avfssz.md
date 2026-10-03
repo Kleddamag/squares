@@ -5,13 +5,13 @@ title: "Answer #279: wand125's s(77) = 9 (T-067), then close"
 kind: task
 status: open
 priority: 1
-version: 1
+version: 2
 labels:
   - result-import
 dependencies: []
-parent_id: is-01m3yrzmzcpq964zt2kr14w8jv
+parent_id: is-01m41csdc2gp36ry5p6n7c2x2y
 created_at: 2026-10-02T17:01:51.639Z
-updated_at: 2026-10-02T17:01:51.639Z
+updated_at: 2026-10-03T17:25:53.001Z
 ---
 Answer jlevy/squares#279 (wand125, opened 2026-10-01): Exact value s(77) = 9 (k = 9 of the k² − 4 series): registration request (external certificate)
 

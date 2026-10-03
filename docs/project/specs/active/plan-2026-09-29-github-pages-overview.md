@@ -184,14 +184,15 @@ The data layer reuses the register’s own code rather than re-deriving it:
 
 ### URL Layout
 
-As built (amended 2026-09-30 and 2026-10-01):
+As built (amended 2026-09-30, 2026-10-01 and 2026-10-03):
 
 | Path | Page | Nav tab |
 | --- | --- | --- |
 | `/` | the overview (new) | Overview |
 | `/frontier.html` | the frontier atlas, $n = 1\ldots324$ (new) | Frontier |
 | `/all-results.html` | every register entry, the results table (new) | Results |
-| `/cases.html#n-N` | one case record per tracked $n$ (new) | none; opened from the atlas grid and the frontier atlas |
+| `/cases/` | the record page: the index of every case, and the reader that shows one case’s record in the site’s design, with that record’s own address in the bar (new, 2026-10-03) | none |
+| `/cases/N.html` | one case’s record file per tracked $n$, a plain page with its own title and link preview, which sends a reader with scripts on to `/cases/`; the record page and the case popover on the overview and the frontier atlas fetch it (new, 2026-10-03) | none; opened from the atlas grid and the frontier atlas |
 | `/papers.html` | the papers page: one large card each for the optimality paper, the explainer and the tutorial, each a link that goes to its paper in the same tab (new) | Papers |
 | `/papers/n11-optimality-review.html` | the n = 11 optimality paper, from its own renderer and Pages job, with its Markdown and PDF beside it under the same slug | Papers |
 | `/papers/n11-lower-bounds-explainer.html` | the n = 11 explainer, with its Markdown and PDF beside it under the same slug (moved from `/explainer.html`, and before that from `/`) | Papers |
@@ -200,6 +201,7 @@ As built (amended 2026-09-30 and 2026-10-01):
 | `/workbench/` | the workbench, now carrying the site nav and the Workbench tab | Visualize |
 | `/readme.html`, `/epistemics.html`, `/synopsis.html`, `/conventions.html`, `/development.html` | the repository documents, rendered for the documentation cards’ popovers, in the cards’ order | none |
 | `/results.html`, `/status.html`, `/defects.html` | forwarders since 2026-10-01 (`think-bk2e`): `RESULTS.md`, `STATUS.md` and `defects.md` are no longer pages, and their old addresses send a visit to `/all-results.html`, to `/frontier.html` and to `defects.md` on GitHub | none |
+| `/cases.html` | a forwarder since 2026-10-03 (`think-bnw2`): every case record was on this one page at `#n-N`, and a visit lands on `/cases/` with its fragment kept, which shows that case | none |
 | `/result/t-nnn.html` | one result’s overview, a fragment its row’s popover fetches; not a page | none |
 | the composite assets | unchanged, at the root | none |
 | `/explainer.html`, `/n11-optimality/`, `/n11-optimality/t-060-explainer.html` | forwarders at the papers’ old addresses: each sends a reader on to the paper with the query string and fragment they came with | none |
@@ -850,6 +852,16 @@ decisions that changed the plan above:
   The proposal, the status of every result and the choices left to the owner are in
   [the result-status plan](plan-2026-10-01-result-status.md) (`think-d04u`,
   `think-ai94`).
+- **One record per case, at an address of its own** (2026-10-02 and 03, `think-t21m`).
+  Each case has a record file a reader can share, `cases/11.html`, which the record page
+  at `cases/` shows in the site’s design, and the one page of every record,
+  `cases.html#n-N`, forwards there (`think-bnw2`). A record opens with the case’s visual
+  summary, the atlas popover’s view laid out with the drawing first and large and the
+  number line of its bounds under it; the atlas popover itself is gone (`think-7aar`). A
+  frontier row opens the same view as an atlas tile and the record page, the record in
+  the one case popover, in place of a popover of its own (`think-necq`). A result keeps
+  its own overview, which shows the same visual summary, smaller, and links the case’s
+  record (`think-7slb`).
 
 ## References
 

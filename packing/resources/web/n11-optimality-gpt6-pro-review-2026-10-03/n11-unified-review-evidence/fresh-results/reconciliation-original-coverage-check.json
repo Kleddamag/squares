@@ -1,0 +1,69 @@
+{
+  "scope": "Unchanged publisher helper modules; tiny synthetic inputs only, no global replay.",
+  "source_revision": "Queuingtheorydotcom/11SquaresOptimal@f9e0de713a0949d1bc6a0fa6b59d96edf6c3d65c",
+  "source_sha256": {
+    "arrangement_audit_v2.py": "0dfc3d4ca546cf465d39bc75c534eeca133099a5283acae95810c4e957f3fc0b",
+    "audit_capture_v9.py": "95ae3362ee4992c332960e4af53697dd3d1b31e381682051b49fd47700ad9d0c"
+  },
+  "required_source_files": {
+    "original/src/evidence/research/phase3/work/geometry/audit_kernel_survivor.py": "81999f6c23bf876d34d596f9bb5a4a1616dcaea65926b011239e8d913bfbbdaa",
+    "original/src/evidence/research/phase3/work/geometry/audit_wall_kernel.py": "f442d798796e6017225dea528c9bcf7b4fbeb3c2c3e6262f68de2e43ff542660",
+    "original/src/evidence/research/phase3/work/phase3/collision/validate_collision_kernel_v3.py": "3108b1a4aade301b286ccaf72429569f2dff96f48a6869e39616c0805d745905",
+    "original/src/evidence/research/phase3/work/phase3/hull/arrangement_audit.py": "df050facaf26edfb6e5320cb82f529462d7fc108a6076807073ec80f55eb7351",
+    "original/src/evidence/research/phase3/work/phase3/hull/arrangement_audit_v2.py": "0dfc3d4ca546cf465d39bc75c534eeca133099a5283acae95810c4e957f3fc0b",
+    "original/src/evidence/research/phase3/work/phase3/hull/audit_capture_v9.py": "95ae3362ee4992c332960e4af53697dd3d1b31e381682051b49fd47700ad9d0c",
+    "original/src/evidence/research/phase3/work/phase3/hull/audit_residual_kernel.py": "f4ec7eda8eb78cfa93d9c298dbaddb8e7e605417b0b73ac6b6de7d9421440be4",
+    "original/src/evidence/research/phase3/work/phase3/hull/own_hull_constraints.py": "93eaafff20aed1eea0d4115e9c7fb1b11658cdd59c0d0b2f076c7ed1348ac476",
+    "original/src/evidence/research/phase3/work/phase3/hull/rational.py": "957aa967ed06cc11a4d74bf504a421add85cce1b1fd03ca76f101ec6c66ae116"
+  },
+  "controls": {
+    "point_below": {
+      "passed": false,
+      "status": "EXACT_UNCOVERED_SEGMENT",
+      "parameter": "1/2",
+      "accepted_slabs": 0
+    },
+    "point_equal": {
+      "passed": true,
+      "status": "PASS_EXACT_LOWER_DIMENSIONAL_COVER",
+      "accepted_slabs": 0
+    },
+    "segment_exact_seam": {
+      "passed": true,
+      "status": "PASS_EXACT_LOWER_DIMENSIONAL_COVER",
+      "accepted_slabs": 0
+    },
+    "segment_gap_1e_minus_50": {
+      "passed": false,
+      "status": "EXACT_UNCOVERED_SEGMENT",
+      "parameter": "100000000000000000000000000000000000000000000000001/200000000000000000000000000000000000000000000000000",
+      "accepted_slabs": 0
+    },
+    "triangle_uncovered": {
+      "passed": false,
+      "status": "EXACT_UNCOVERED_POINT",
+      "point": [
+        "1/2",
+        "1"
+      ],
+      "accepted_slabs": 0,
+      "splits": 0
+    },
+    "area_exact_seam": {
+      "passed": true,
+      "status": "PASS_VERTICAL_ARRANGEMENT",
+      "accepted_slabs": 2,
+      "splits": 0
+    },
+    "area_gap_1e_minus_50": {
+      "passed": false,
+      "status": "EXACT_UNCOVERED_POINT",
+      "point": [
+        "100000000000000000000000000000000000000000000000001/200000000000000000000000000000000000000000000000000",
+        "1/2"
+      ],
+      "accepted_slabs": 1,
+      "splits": 0
+    }
+  }
+}

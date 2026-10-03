@@ -1,0 +1,23 @@
+{
+  "status": "PASS_RELOCATED_MINIMAL_LOCAL_SUBTREE",
+  "command": [
+    "python",
+    "-B",
+    "local-isolation-audit/verify_simplified_local.py",
+    "--output",
+    "fresh-results/simplified-local-result.json"
+  ],
+  "cwd": "/tmp",
+  "inputs_resolved_from_script_directory": true,
+  "uses_original_workspace_inputs": false,
+  "dependency_environment": "numpy/scipy installed runtime; sympy/mpmath external dependency directory only",
+  "scientific_result_matches_original": true,
+  "python_optimized_mode_rejected": true,
+  "fresh_signed_coordinate_residuals_checked": 8448,
+  "negative_features_checked": 88,
+  "worst_dual_ratio": "237880431895517578125000/249999999158632916515561",
+  "checker_sha256": "77c336e84bbfdd8c6ac6398f4f71872a48f120da88047e10f41fb59183ca471a",
+  "original_checker_sha256": "1aa4c3979f670c8a9e6a4d56947e64dc98f99b6fa0d2faf4b34dd9c99fdd8f29",
+  "bundle_script_change": "Output path CLI only; scientific logic and hash-pinned inputs/source modules unchanged.",
+  "seconds": 15.74643338200076
+}

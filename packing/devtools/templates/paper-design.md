@@ -1490,7 +1490,10 @@ it.
   (`overview_data.breakable_quotients`), so a line may end after it: four results state
   one of 33 to 40 digits, which as one piece is up to 395 pixels wide.
   A formula in a summary is set in the line and not in KPress’s inline box, so the words
-  after it follow on the same line and no line begins with the comma after a formula.
+  after it follow on the same line.
+  Its last piece is set in the line too: a browser may end a line after any box, even
+  before a comma, so the comma after a formula goes on with the formula’s last piece and
+  no line begins with it.
   The n column holds a result’s cases, each count or range in a box a line cannot end
   inside (`overview_sections.case_list`), so a range is never cut at its dash, and it
   reads from the start of the cell, as text does.
@@ -2189,8 +2192,8 @@ The front is, in order:
 
   Human oversight: **Joshua Levy**
   Agents: **GPT-6 Astra** and **GPT-6 Sol**
-  Draft v0.1.0
-  Original proof September 29, 2026 · Last revised October 1, 2026
+  Draft v0.1.3 (version history)
+  Original proof September 29, 2026 · Last revised October 3, 2026
   ```
 
   A paper that explains someone else’s work credits its source first, by the author’s
@@ -2202,7 +2205,7 @@ The front is, in order:
   every page carries names it, and so does the GITHUB chip.
 
 - **The version line.** The paper’s own version, plain: `EXPLAINER_VERSION` for the
-  explainer and `OPTIMALITY_REVIEW_EDITION` (“Draft v0.1.0”) for the review, both from
+  explainer and `OPTIMALITY_REVIEW_EDITION` (“Draft v0.1.3”) for the review, both from
   `sqpack.release`. Never the site’s edition and never the data hash: the site’s version
   goes on no paper (the owner, 2026-10-01: papers are individually versioned, and a
   paper’s version history reflects versions of the paper, not of the website).

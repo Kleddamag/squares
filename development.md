@@ -1172,11 +1172,12 @@ A reader finds it in `release.py` and here.
 owner, 2026-10-01: “the repository version should not go on the papers anymore.
 Papers should be individually versioned”). Each paper’s version line prints its own
 version from `release.py`: the explainer’s is `EXPLAINER_VERSION`, the newest entry of
-`EXPLAINER_HISTORY`, and the review’s is `OPTIMALITY_REVIEW_EDITION` (“Draft v0.1.0”).
-The top of the explainer reads, on two lines, like “v0.4.2 (version history)” and “First
-published September 5, 2026 · Last revised October 1, 2026”: which version of the paper
-is being read, with a link to the paper’s own editions at the foot of the page, then
-when the paper first reached a reader and when the article last changed.
+`EXPLAINER_HISTORY`, and the review’s is `OPTIMALITY_REVIEW_EDITION`, its status and the
+newest entry of `OPTIMALITY_REVIEW_HISTORY` (“Draft v0.1.3”). The top of the explainer
+reads, on two lines, like “v0.4.2 (version history)” and “First published September 5,
+2026 · Last revised October 1, 2026”: which version of the paper is being read, with a
+link to the paper’s own editions at the foot of the page, then when the paper first
+reached a reader and when the article last changed.
 Both papers write their front, the formats row, the title and the credits, from one
 component (`devtools.paper_front`), and `devtools.paper_structure` compares the two
 rendered papers axis by axis

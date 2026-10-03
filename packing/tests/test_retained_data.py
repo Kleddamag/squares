@@ -37,6 +37,7 @@ PACKETS = (
     "franciscouzo-square-packing-2026-09-27",
     "casson-square-packing-2026-09-23",
     "wang-li-n11-2026-09-29",
+    "n11-optimality-gpt6-pro-review-2026-10-03",
 )
 
 

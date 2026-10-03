@@ -1,0 +1,66 @@
+{
+  "schema": "EvandNativeParentCoreReceipt/v1",
+  "status": "PASS_COMPLETE",
+  "method": "directed-rounding box branch-and-bound over parent-core rows",
+  "case": "file:cert.txt:96000",
+  "provenance": {
+    "git_commit": "b1a789844404352e0cfbd869bf77f1fddc5c4fde",
+    "dirty": false,
+    "python": "3.14.7 (main, Sep 29 2026, 15:01:40) [Clang 22.1.3 ]",
+    "platform": "Linux-6.18.44-fc-v64-x86_64-with-glibc2.39",
+    "command": [
+      "/home/user/squares/packing/devtools/verify_evand_angle_net_native.py",
+      "--certificate",
+      "/tmp/claude-0/-home-user-squares/1a9f6022-66a1-5452-ad0c-29fb32612942/scratchpad/rv/cert.txt",
+      "--n",
+      "12",
+      "--net",
+      "96000",
+      "--all",
+      "--workers",
+      "2",
+      "--resume",
+      "/tmp/claude-0/-home-user-squares/1a9f6022-66a1-5452-ad0c-29fb32612942/scratchpad/rv/native-complete.rows.jsonl",
+      "--output",
+      "/tmp/claude-0/-home-user-squares/1a9f6022-66a1-5452-ad0c-29fb32612942/scratchpad/rv/native-resumed.json"
+    ],
+    "source_url": "https://github.com/evand/square-packing",
+    "source_commit": "167d842cd27ba1451cb2833773ea930c80b9e65b",
+    "certificate": "/tmp/claude-0/-home-user-squares/1a9f6022-66a1-5452-ad0c-29fb32612942/scratchpad/rv/cert.txt",
+    "certificate_sha256": "6823e8e872259a6cf3ed258400bf1a0973e1972ab671e8fdcab25938ca605a66"
+  },
+  "claim": "s(12) >= 15680000/3949423",
+  "native_bound": "s(12) > 15680000/3949423",
+  "net": 96000,
+  "sigma_scale": 1000000,
+  "points": 1616,
+  "budget": "14970347/1250000",
+  "counting_gap": "29653/1250000",
+  "premises": {
+    "budget": "14970347/1250000",
+    "minimum_containment_numerator": "389446383489/4915061207552000000000",
+    "final_half_tangent": "2651/6400",
+    "rows": 39765
+  },
+  "catalogue_rows": 39765,
+  "selected_rows": 39765,
+  "resumed_rows": 9407,
+  "complete": true,
+  "batch_size": 2048,
+  "workers": 2,
+  "scale": 10000000,
+  "threshold_units": 10000000,
+  "boxes": 375934771,
+  "row_cpu_seconds": 11358.414037343004,
+  "least_lower": {
+    "row": 6903,
+    "units": 10000000
+  },
+  "source_minimum": {
+    "weight": "",
+    "bin": -1
+  },
+  "refutations": [],
+  "seconds": 3832.110121325,
+  "rows": null
+}

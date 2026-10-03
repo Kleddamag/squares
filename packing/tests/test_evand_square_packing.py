@@ -129,17 +129,20 @@ def test_frontier_records_the_certified_side(
 
 def test_the_n12_bound_is_daniels_certificate_rescaled() -> None:
     """s(12) >= 31360/7901 (T-078) is Daniel's certificate for 15680/3951 with every
-    coordinate and the side multiplied by 7902/7901: the frontier carries the rescaled
-    side, from squarepacker's replayed and natively decided certificate."""
+    coordinate and the side multiplied by 7902/7901: the frontier reports the rescaled
+    side, squarepacker's, and verifies this project's re-weighting of the same points at
+    a side scaled by 3951000/3949423 (T-079), since 3 October 2026."""
     (side,) = (claim[2] for claim in CLAIMS if claim[1] == 12)
     case = _case(12)
+    reported = case["reported_lower_bound"]
+    assert Fraction(reported["exact_form"]) == side * Fraction(7902, 7901)
+    assert reported["source_key"] == "[squarepacker s12 2026]"
     verified = case["verified_lower_bound"]
-    assert Fraction(verified["exact_form"]) == side * Fraction(7902, 7901)
+    assert Fraction(verified["exact_form"]) == side * Fraction(3951000, 3949423)
     assert verified["evidence"] == [
-        "E-n012-squarepacker-31360-7901-source-replay",
-        "E-n012-squarepacker-31360-7901-native-parent-core",
+        "E-n012-levy-15680000-3949423-source-replay",
+        "E-n012-levy-15680000-3949423-native-parent-core",
     ]
-    assert case["reported_lower_bound"]["source_key"] == "[squarepacker s12 2026]"
 
 
 @pytest.mark.parametrize("n", [21, 45])

@@ -2,8 +2,8 @@
 
 **Date:** 2026-10-01
 
-**Reviewer:** Claude (Opus 5.5), coordinating three read-only audit lanes (Opus 5.5 at
-extra-high reasoning), for the repository owner
+**Reviewer:** Claude (AI review; model unstated), coordinating three read-only audit
+lanes (at extra-high reasoning), for the repository owner
 
 **Workflow:** W4 process review, process focus
 

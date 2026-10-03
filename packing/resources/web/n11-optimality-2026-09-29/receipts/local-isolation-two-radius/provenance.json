@@ -1,0 +1,72 @@
+{
+  "schema": "sqpack.n11-fixed-T-local-two-radius-receipt.v1",
+  "review": "docs/project/reviews/review-2026-10-03-n11-optimality-adversarial-gpt6-pro-unified.md",
+  "review_section": "S2. Use two radii, six curvature constants, and one row dictionary",
+  "review_appendix": "A.2 The published 33 local radii",
+  "source_repository": "https://github.com/Queuingtheorydotcom/11SquaresOptimal",
+  "source_revision": "f9e0de713a0949d1bc6a0fa6b59d96edf6c3d65c",
+  "input_provenance": "../local-dual-residual/provenance.json",
+  "objects": {
+    "weighted": {
+      "decoded_sha256": "ffe9f89d40a9538ec9a10d8700999f05483d0ccfad17b84d430590da7dd65889",
+      "decoded_bytes": 11017145,
+      "stored_path": "../local-dual-residual/objects/ffe9f89d40a9538ec9a10d8700999f05483d0ccfad17b84d430590da7dd65889.gz",
+      "lfs_oid_sha256": "25f7ca79130e14bf63a2a08f2246bc6b02b53effd85b87b3831207539014ba1c",
+      "stored_bytes": 1532021
+    },
+    "accepted_focused": {
+      "decoded_sha256": "9a9cf4e0fdcb1b1d226b9c07ec08d08cbbc572749cec9bc09cf3cd92bd4d88f3",
+      "decoded_bytes": 103426,
+      "stored_path": "../local-dual-residual/objects/9a9cf4e0fdcb1b1d226b9c07ec08d08cbbc572749cec9bc09cf3cd92bd4d88f3.gz",
+      "lfs_oid_sha256": "cb67f9e3b0d473f1a6c32c561cd9a2f03bf002118d335e7ec73e5eea4051d610",
+      "stored_bytes": 28183
+    },
+    "two_radius_focused": {
+      "decoded_sha256": "c3395ec46641117e66bea741b2f6348b0a1568fced73ae8a87064a62d8be947d",
+      "decoded_bytes": 102534,
+      "stored": false,
+      "construction": "Rebuilt in memory by the checker from the accepted focused object: the radii list and the 11 per-label inclusion[*].radii copies become 1/256, except coordinates 29 and 32 (the angular radii of local labels 9 and 10), which become 1/128; every other field keeps its value, and the object is reserialized as the accepted one is (indent 2, trailing newline). The checker refuses unless the rebuilt bytes have this digest.",
+      "stale_descriptive_fields": "status, worst_dual_ratio, checker_sha256, feature_stability and the proposal paths are carried over unchanged and describe the accepted certificate, not this rectangle; the audit reads only radii."
+    }
+  },
+  "accepted_component": {
+    "result_path": "../local-isolation/result.json",
+    "result_sha256": "a98623f57017b4f04c8d3a72083caa7d4a6fb5096a79ab1e4dbbf2cd9b35a29d",
+    "replaced": false,
+    "note": "The proof's local rectangle remains the fitted one in ../local-isolation; this receipt is a checked replacement retained beside it."
+  },
+  "pose_inclusion_receipt": {
+    "result_path": "../pose-inclusion/result.json",
+    "result_sha256": "c5b970458135847f5790f2311e4861faf720924ad7e62f5bafb6d1978743144c",
+    "rerun": false,
+    "note": "Inclusion in the larger box follows from this accepted receipt plus result.json's radius_comparison; the pose-inclusion checker pins the accepted focused object and local result and is not rerun."
+  },
+  "checker_path": "packing/devtools/check_n11_optimality_local_two_radius.py",
+  "checker_sha256": "f6fa80181fc590841e1f6f16b58ef240d9d3c0a9b067a970220eade6519515ae",
+  "isolation_checker_path": "packing/devtools/check_n11_optimality_local_isolation.py",
+  "isolation_checker_sha256": "4e64b3de55e1dafec6f8f976aaa6395218801d6c7111f8f5e22cdf2bb99b6ccc",
+  "isolation_checker_note": "Unedited: equal to checker_sha256 in ../local-isolation/provenance.json. The two-radius checker points its focused-object pin (check_n11_optimality_local_dual.FOCUSED_SHA) at the rebuilt digest for the duration of one audit call and restores it afterwards.",
+  "residual_checker_path": "packing/devtools/check_n11_optimality_local_dual.py",
+  "residual_checker_sha256": "2078773593607d3da54f4d6fe7088c5fed224309837d712b030c75d9be04e1f1",
+  "test_path": "packing/tests/test_n11_optimality_local_two_radius.py",
+  "test_sha256": "2117f2af4ff60019d8141f2a22bcd03bdb40e0020fe51925ddf84c112cb2492b",
+  "result_path": "result.json",
+  "result_sha256": "89be63f4f9faa40bd9665b9969cfd36347bbb46005799c1c9f680ed0ca3d59f3",
+  "repository_head_commit": "f7a23673c6132c84258708361725e16b5d13cf77",
+  "repository_head_note": "The checker, its test and this receipt were written on top of this commit and were not yet committed when result.json was produced; checker_sha256 and test_sha256 identify the executed bytes.",
+  "executed_from": "repository root",
+  "executed_command": "{ time -p bash packing/resources/web/n11-optimality-2026-09-29/receipts/local-isolation-two-radius/replay.sh packing/resources/web/n11-optimality-2026-09-29/receipts/local-isolation-two-radius/result.json > /dev/null; } 2> packing/resources/web/n11-optimality-2026-09-29/receipts/local-isolation-two-radius/outer-time.txt",
+  "checker_command": "cd packing && timeout 120s .venv/bin/python3 -B -m devtools.check_n11_optimality_local_two_radius --objects resources/web/n11-optimality-2026-09-29/receipts/local-dual-residual/objects --max-seconds 90 --output <result.json>",
+  "interpreter": "CPython 3.14.7 (packing/.venv)",
+  "platform": "Linux x86_64",
+  "replay_script": "replay.sh",
+  "outer_time": "outer-time.txt",
+  "outer_time_note": "Measured while other sessions shared the machine (29.2 s real against 16.5 s user); the audit's own wall time is in result.json.",
+  "worst_dual_ratio": "443761388077705598133820213127/511999998276880213023868928000",
+  "worst_coordinate": {
+    "branch": 105,
+    "coordinate": 31,
+    "sign": -1
+  },
+  "scope": "Review S2's two-radius rectangle (every center coordinate 1/256; every angle 1/256 except local labels 9 and 10 at 1/128), checked by this repository's unchanged fixed-T isolation audit with its own per-pair curvature bounds. A checked replacement retained beside the accepted local-isolation component, which it does not replace: the proof's rectangle remains the fitted one. Pose inclusion in this larger box follows from the accepted pose-inclusion receipt plus the radius comparison recorded here. Case-438 capture, the global exclusions, and global optimality are not checked."
+}

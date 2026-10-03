@@ -34,7 +34,6 @@ from devtools.overview_data import (
     Overview,
     Result,
     compress,
-    math_html,
     prose_html,
     tex_bounds,
 )
@@ -109,6 +108,14 @@ def status_chip(status: str) -> str:
     `incomplete` (`devtools.result_status`), the one word for how far this project's
     workflow has taken the result. The plain gray chip, like the kind's."""
     return f'<span class="site-chip" data-status="{_esc(status)}">{_esc(status)}</span>'
+
+
+def case_status_chip(status: str) -> str:
+    """A case's status as its chip, `proved` or `open`, the one chip for it on every page
+    that draws it, the frontier table, a case record and a result's list of cases: its
+    fill is the status's own, green for `proved` and yellow for `open` (`site.css`,
+    `think-c19o`)."""
+    return f'<span class="site-chip" data-case-status="{_esc(status)}">{_esc(status)}</span>'
 
 
 def activity_chip(result: Result) -> str:
@@ -198,12 +205,14 @@ SECTION_CARD_SIZES: dict[str, CardSize] = {
 }
 
 #: A section set in lines of its own, as counts of its cards in order, where one
-#: wrapping row would leave a card alone on its last line: the five page cards stand two
-#: over three, the two papers over the tutorial, the workbench and the Frontier page,
-#: rather than four and one (the owner, 2026-10-02, `think-ec5k`). Each line is a row of
-#: its own, and none sets more cards to a line than the longest line holds, so the lines
-#: share one column width. The stylesheet holds each longest line here to a rule.
-SECTION_CARD_LINES: dict[str, tuple[int, ...]] = {"pages": (2, 3)}
+#: wrapping row would not set them as they are meant to read: the five page cards stand
+#: one, two and two, the Frontier page alone at the top, then the two papers, then the
+#: tutorial and the workbench (the owner, 2026-10-02, `think-ns3d`; they stood two over
+#: three from `think-ec5k` the same day, the Frontier page's card last). Each line is a
+#: row of its own, and none sets more cards to a line than the longest line holds, so the
+#: lines share one column width, half the frame's. The stylesheet holds each longest line
+#: here to a rule.
+SECTION_CARD_LINES: dict[str, tuple[int, ...]] = {"pages": (1, 2, 2)}
 
 
 #: Elements with no end tag, which open nothing a parser must later close.
@@ -525,7 +534,10 @@ def _detail(result: Result) -> str:
 
 
 def _records(result: Result) -> str:
-    return " · ".join(
+    """A result's records, its case link, the register, its evidence, source and reviews,
+    as its Details cell sets them: one link to a line on a wide screen, and on a phone a
+    line under the claim, a dot drawn between two links (`site.css`)."""
+    return "".join(
         f'<a href="{_esc(link.url)}"'
         + (f' title="{_esc(link.title)}"' if link.title else "")
         + f">{_esc(link.label)}</a>"
@@ -566,7 +578,8 @@ def result_fragment(result_id: str) -> str:
 #: The site's one star, the mark of a recent lower bound (paper-design.md), as an escape.
 STAR = "\u2605"
 
-#: What a starred result is called, as the film and the atlas popover call a starred case.
+#: What a starred result is called, as the film and a case's visual summary call a starred
+#: case.
 NEW_RESULT = "new result"
 
 
@@ -576,8 +589,8 @@ def new_result_label(result: Result, overview: Overview) -> str:
 
     The rule is the atlas's (`overview_data.starred_results`): the result is the one a
     case's verified lower bound rests on, and that bound is recent, proved or published
-    since `RECENT_SINCE`. It is the star and the "new result" of the film and of the
-    atlas popover, asked of the result instead of the case.
+    since `RECENT_SINCE`. It is the star and the "new result" of the film and of a case's
+    visual summary, asked of the result instead of the case.
     """
     cases = overview.starred.get(result.id)
     if not cases:
@@ -834,26 +847,34 @@ def result_filters(
 
 def result_head() -> str:
     """The header row of a table of results: the one set of columns both tables carry,
-    in one order. The id, which is the row's trigger; the cases; the result, with its
-    records under it; the credit; the rungs, with the kind under them and the status
-    under that; and the date. A column sorts where an order means something, on either
-    page."""
+    in one order. The date; the result; the cases; the credit; the rungs, with the kind
+    under them; the status; the details, the result's records a link to a line; and the
+    id, which is the row's trigger. The owner set this order on 2026-10-02: the id led
+    and the date closed the row until then (`think-t090`); the status stood under the
+    kind, in the rungs' cell, though it is where the result stands and no rung
+    (`think-ybt5`); and the records stood on a line under the summary, where the result's
+    cell holds the claim alone now (`think-e4o3`). A column sorts where an order means
+    something, on either page."""
     return (
         "<thead><tr>"
-        '<th data-sort="text" class="site-col-id">ID</th>'
-        '<th data-sort="num" class="num site-col-n">n</th>'
-        '<th class="site-col-result">Result</th>'
-        '<th data-sort="text">Credit</th>'
-        '<th data-sort="text" title="Significance, verification and confirmation, then '
-        'what the result is, and how far the work on it here has gone">Rungs</th>'
         '<th data-sort="text" title="Published, for a result by others; established, for '
         f'this project{APOSTROPHE}s">Date</th>'
+        '<th class="site-col-result">Result</th>'
+        '<th data-sort="num" class="num site-col-n">n</th>'
+        '<th data-sort="text">Credit</th>'
+        '<th data-sort="text" title="Significance, verification and confirmation, then '
+        'what the result is">Rungs</th>'
+        '<th data-sort="text" class="site-col-status" title="How far the work on it here '
+        "has gone: recorded, reviewed, confirmed or incomplete; then who has the next "
+        'move, and superseded where it is">Status</th>'
+        '<th class="site-col-details">Details</th>'
+        '<th data-sort="text" class="site-col-id">ID</th>'
         "</tr></thead>"
     )
 
 
 def id_cell(result: Result, detail: RowDetail) -> str:
-    """A result's id cell, the first of its row in both tables of results: the id in a
+    """A result's id cell, the last of its row in both tables of results: the id in a
     column of its own (`.site-col-id`), as the row's native trigger, which opens the
     row's popover without scripts (`row_detail`)."""
     return f'<td class="site-col-id" data-value="{_esc(result.id)}">{detail.trigger}</td>'
@@ -862,9 +883,9 @@ def id_cell(result: Result, detail: RowDetail) -> str:
 #: The most characters a result's list of cases may have and stay on one line, half the
 #: `--site-cases-measure` of `site.css`: a cell wraps from five values, and also when a
 #: shorter list is longer than this, since on one line it would hold the column wider
-#: than the half measure it narrows to before the table scrolls. T-075's four values, two
-#: counts and two ranges, are 20 characters, and on one line ran the table of results 26
-#: pixels past its frame at 1024.
+#: than the floor it narrows to before the table scrolls. T-075's four values, two counts
+#: and two ranges, are 20 characters, and on one line ran the table of results 26 pixels
+#: past its frame at 1024 with six columns, and 47 past its floors with eight.
 CASES_ONE_LINE = 12
 
 
@@ -918,30 +939,29 @@ def date_cell(result: Result) -> str:
 
 def result_cells(result: Result, overview: Overview, detail: RowDetail) -> str:
     """A result's cells, one for each column of `result_head`, the same on both tables:
-    its id (`id_cell`), its cases (`case_list`), its summary with the star a new result
-    earns (`result_text`, `new_result_star`) and its records on a quiet line under it,
-    its credit (`credit_cell`), its rung chips with its kind on a line under them
-    (`kind_chip`) and its status line under that (`status_marks`), and its date
-    (`date_cell`). The records are no column of their own: a column narrow enough to fit
-    set them a link to a line, and under the summary they take a line or two, in both
-    tables."""
+    its date (`date_cell`), its summary with the star a new result earns (`result_text`,
+    `new_result_star`), its cases (`case_list`), its credit (`credit_cell`), its rung
+    chips with its kind on a line under them (`kind_chip`), its status line
+    (`status_marks`), its records a link to a line (`_records`), and its id
+    (`id_cell`). The status cell sorts on the status word alone."""
     record = result.record
     standing = f'<span class="site-standing">{status_marks(result)}</span>'
     return (
-        f"{id_cell(result, detail)}"
+        f'<td class="site-col-date" data-value="{_esc(result.dated[1])}">'
+        f"{date_cell(result)}</td>"
+        f'<td class="site-col-result">{result_text(result)}'
+        f"{new_result_star(result, overview)}</td>"
         f'<td class="{case_cell_class(result)}" data-value="{result.first_n}">'
         f"{case_list(result)}</td>"
-        f'<td class="site-col-result">{result_text(result)}'
-        f"{new_result_star(result, overview)}"
-        f'<div class="site-records">{_records(result)}</div></td>'
         f'<td class="site-col-credit" data-value="{_esc(result.credit)}">'
         f"{credit_cell(result.credit)}</td>"
         f'<td class="site-rungs" '
         f'data-value="{_esc(record["confirmation"] + record["verification"])}">'
-        f'{rung_chips(result)}<span class="site-kind">{kind_chip(result)}</span>'
-        f"{standing}</td>"
-        f'<td class="site-col-date" data-value="{_esc(result.dated[1])}">'
-        f"{date_cell(result)}</td>"
+        f'{rung_chips(result)}<span class="site-kind">{kind_chip(result)}</span></td>'
+        f'<td class="site-col-status" data-value="{_esc(result.status)}">{standing}</td>'
+        '<td class="site-col-details">'
+        f'<div class="site-records">{_records(result)}</div></td>'
+        f"{id_cell(result, detail)}"
     )
 
 
@@ -1140,17 +1160,48 @@ def verification_block() -> str:
     page in its own scroller and restyles it as `.kpress-table`, which this diagram is
     not. Each name links to that section of `epistemics.md`.
     """
-    levels = {scale: {level for level, _ in rungs} for scale, rungs in rubric_levels().items()}
-    heads = "".join(
-        f'<div class="site-ladders-head" role="columnheader" data-ladder="{scale}">'
-        f'<a class="site-ladders-name" href="epistemics.html#{section}">{_esc(name)}</a> '
-        f'<span class="site-ladders-question">{_esc(question)}</span></div>'
+    heads = {
+        scale: (
+            f'<a class="site-ladders-name" href="epistemics.html#{section}">{_esc(name)}</a> '
+            f'<span class="site-ladders-question">{_esc(question)}</span>'
+        )
         for scale, name, section, question in DIMENSIONS
+    }
+    names = ", ".join(name.lower() for _, name, _, _ in DIMENSIONS)
+    return _ladder_grid(heads, f"Verification ladders by level: {names}", "site-ladders-frame")
+
+
+def rung_key() -> str:
+    """The overview's key to the three ratings on a row of its table: the rating ladders'
+    grid (`verification_block`) with each column headed by its rating and its letter
+    alone, no question and no link, each rung its chip and its short meaning. It stands
+    under Recent Results' account of the ratings (the owner, 2026-10-02, `think-tgjv`);
+    the ladders themselves, with what each rating asks, are the Results page's."""
+    heads = {
+        scale: f'<span class="site-ladders-name">{_esc(name)} ({scale})</span>'
+        for scale, name, _, _ in DIMENSIONS
+    }
+    names = ", ".join(name.lower() for _, name, _, _ in DIMENSIONS)
+    return _ladder_grid(
+        heads, f"The ratings' rungs by level: {names}", "site-ladders-frame site-ladders-key"
+    )
+
+
+def _ladder_grid(heads: dict[str, str], label: str, frame: str) -> str:
+    """The ladders' grid under `heads`, each column's head by its letter: a header row,
+    then a row per level, the highest at the top, each cell a rung (`_ladder_cell`) or
+    empty where a ladder has no rung at that level, in a frame of class `frame` in the
+    wide track."""
+    levels = {scale: {level for level, _ in rungs} for scale, rungs in rubric_levels().items()}
+    columns = "".join(
+        f'<div class="site-ladders-head" role="columnheader" data-ladder="{scale}">'
+        f"{heads[scale]}</div>"
+        for scale, *_ in DIMENSIONS
     )
     rows = [
         (
             '<div class="site-ladders-row" role="row">'
-            f'<span class="site-ladders-level" role="columnheader">Level</span>{heads}</div>'
+            f'<span class="site-ladders-level" role="columnheader">Level</span>{columns}</div>'
         )
     ]
     every = sorted({level for scale, *_ in DIMENSIONS for level in levels[scale]}, reverse=True)
@@ -1167,10 +1218,8 @@ def verification_block() -> str:
             f'<span class="site-ladders-level" role="rowheader">Level {level}</span>'
             f"{cells}</div>"
         )
-    names = ", ".join(name.lower() for _, name, _, _ in DIMENSIONS)
-    label = f"Verification ladders by level: {names}"
     return (
-        '<div class="site-ladders-frame site-wide">'
+        f'<div class="{frame} site-wide">'
         f'<div class="site-ladders" role="table" aria-label="{label}">'
         f"{''.join(rows)}</div></div>"
     )
@@ -1407,13 +1456,20 @@ def paper_cards() -> str:
 #: there. Both are register prose, so a bound in either is written in ASCII
 #: (`s(11) >= 3.8264…`) and set as math. The explainer's card takes its paper's words;
 #: the optimality paper's and the tutorial's keep a shorter line here. The optimality
-#: paper is first, as on the Papers page: it explains the result that stands. Every
+#: paper leads the papers, as on the Papers page: it explains the result that stands. Every
 #: address is a full page the site serves, the paper's a directory below the root, so
-#: its card links straight to it. The Frontier page's card is last: it stood in The
-#: Frontier Survey section, beside a card to the recent cases, until the owner dropped
-#: that section on 2026-10-02 and moved the card to every case up here (`think-ec5k`).
+#: its card links straight to it. The Frontier page's card is first, on a line of its
+#: own (`SECTION_CARD_LINES`, `think-ns3d`): it stood in The Frontier Survey section,
+#: beside a card to the recent cases, until the owner dropped that section on 2026-10-02
+#: and moved the card to every case up here (`think-ec5k`), last of the five at first.
 #: The Results page is reached from Recent Results, whose pointer is its own.
 PAGES: tuple[tuple[str, str, str, str], ...] = (
+    (
+        "frontier.html",
+        "Frontier survey",
+        "Every case from n = 1 to 324",
+        "Reported and verified bounds side by side, with their sources.",
+    ),
     (
         OPTIMALITY.href,
         OPTIMALITY.label,
@@ -1435,12 +1491,6 @@ PAGES: tuple[tuple[str, str, str, str], ...] = (
         "Workbench",
         "Pack squares by hand",
         "Move squares yourself and watch the known packings.",
-    ),
-    (
-        "frontier.html",
-        "Frontier survey",
-        "Every case from n = 1 to 324",
-        "Reported and verified bounds side by side, with their sources.",
     ),
 )
 
@@ -2038,63 +2088,6 @@ def atlas_film_facts() -> list[dict[str, object]]:
     return facts
 
 
-def _atlas_formula(key: str, tex: str) -> str:
-    return (
-        f'<span class="site-atlas-gap-formula" data-atlas-formula="{key}">'
-        f"{math_html(tex)}</span>"
-    )
-
-
-def atlas_popover() -> str:
-    """The one popover every atlas cell opens, filled by `overview/atlas-grid.js` from
-    the page's film facts. Its slots are empty here but for what is the same at every n:
-    the gap bar's two formulas, and the template each value's math is typeset from."""
-    return (
-        '<div class="site-popover site-atlas-pop" id="pop-atlas" popover '
-        'data-go="atlas" data-atlas-popover '
-        'role="dialog" aria-labelledby="pop-atlas-title">'
-        '<button type="button" class="site-popover-close" popovertarget="pop-atlas" '
-        'popovertargetaction="hide" aria-label="Close">\u00d7</button>'
-        '<span class="site-card-label">Best known packing</span>'
-        f'<p class="site-popover-value site-atlas-pop-title" {SERIF_MATH} '
-        'id="pop-atlas-title" data-atlas-title></p>'
-        '<div class="site-atlas-pop-body">'
-        '<div class="site-atlas-pop-figure" data-atlas-figure></div>'
-        '<div class="site-atlas-pop-facts">'
-        '<div class="site-atlas-gap" data-atlas-gap>'
-        '<div class="site-atlas-gap-values" data-atlas-gap-values></div>'
-        '<div class="site-atlas-gap-rail" data-atlas-gap-rail></div>'
-        '<div class="site-atlas-gap-row" data-atlas-gap-integers></div>'
-        '<div class="site-atlas-gap-row" data-atlas-gap-roots></div>'
-        '<div class="site-atlas-gap-row site-atlas-gap-formulas">'
-        + _atlas_formula("area", r"\sqrt{n}")
-        + _atlas_formula("grid", r"\sqrt{n} + 1")
-        + "</div></div>"
-        '<p class="site-atlas-pop-head">Proven</p>'
-        '<p class="site-atlas-pop-bound" data-atlas-bound></p>'
-        '<ul class="site-atlas-pop-badges" data-atlas-badges></ul>'
-        "<div data-atlas-citation>"
-        '<p class="site-atlas-pop-head">Citation '
-        '<span class="site-atlas-pop-record">record <span data-atlas-record></span></span></p>'
-        '<p class="site-atlas-pop-cite" data-atlas-cite="lower"></p>'
-        '<p class="site-atlas-pop-cite" data-atlas-cite="upper"></p></div>'
-        '<div data-atlas-open><p class="site-atlas-pop-head">Open</p>'
-        '<ul class="site-atlas-pop-badges" data-atlas-open-items></ul></div>'
-        "</div></div>"
-        '<p class="site-popover-actions">'
-        '<a class="site-popover-action" data-go="page" data-atlas-expand href="cases.html">'
-        "See All Cases</a>"
-        '<span class="site-atlas-pop-step">'
-        '<button type="button" data-atlas-step="-1" aria-label="Previous case">'
-        f"{step_arrow(back=True)}</button>"
-        '<button type="button" data-atlas-step="1" aria-label="Next case">'
-        f"{step_arrow()}</button>"
-        "</span></p>"
-        f"<template data-atlas-math>{math_html('n')}</template>"
-        "</div>"
-    )
-
-
 #: The directions of the site's one arrow (paper-design.md, Arrows): each is the one
 #: drawing, `--site-arrow` in site.css, turned or mirrored by `data-arrow`.
 #: The arrow's five directions, and the double chevron's two: `double-down` for a control
@@ -2110,11 +2103,6 @@ def arrow_icon(direction: str = "right") -> str:
     if direction not in ARROW_DIRECTIONS:
         raise ValueError(f"unknown arrow direction {direction!r}")
     return f'<span class="site-icon-arrow" data-arrow="{direction}" aria-hidden="true"></span>'
-
-
-def step_arrow(*, back: bool = False) -> str:
-    """The atlas stepper's arrow: the site's arrow, left for the previous case."""
-    return arrow_icon("left" if back else "right")
 
 
 #: The atlas's two views, in tab order: the key the block's `data-atlas-view` and the
@@ -2152,9 +2140,10 @@ def atlas_view_tabs() -> str:
 
 def atlas_grid() -> str:
     """Every tracked case's known-best packing, n = 1 to 324, as a grid of drawings,
-    each a link to its case record. With scripts, `overview/atlas-grid.js` opens a cell
-    in the one atlas popover instead: what the ascent film's panel says about that n,
-    from `atlas_film_facts`, beside the drawing shown large, with a button to the record.
+    each a link to its case record. With scripts, a cell opens the page's one case
+    popover instead (`overview/case-popover.js`), which shows the case's record as its
+    own page does: the visual summary, the drawing large and the bounds' number line,
+    then the record's further data (`render_case_pages`, think-t21m).
 
     The block is rendered in the grid view (`data-atlas-view`), under tabs that switch
     it to the triangle (`atlas_view_tabs`). Both views are one set of tiles: the triangle
@@ -2166,18 +2155,17 @@ def atlas_grid() -> str:
     parses but does not render. The script places the first `ATLAS_FIRST` when the grid
     nears the viewport, so the page opens as fast as it did without them, and the rest
     only when the reader presses the button under the grid, "Show More" with the double
-    chevron down, or steps the popover past the last case shown. The button then reads
+    chevron down. The button then reads
     "Show Less" with the chevron up and collapses the grid again; its name for assistive
     technology says what each does and how many cases that is (`data-name-more`,
     `data-name-less`), it controls the box of tiles (`ATLAS_PANEL`), and it is the site's
     one action under a table or grid (`.site-action`, with "See all results"). Its row
-    ships `hidden`, since without the script it would do nothing. The facts are one JSON
-    element, a tenth the size the same facts would take as markup in every cell.
+    ships `hidden`, since without the script it would do nothing. The atlas popover,
+    filled by the script from a JSON of the film's facts, stood after the block until
+    2026-10-03; the case popover took its place.
     """
-    import json  # noqa: PLC0415
-
     from devtools import render_frontier_page as frontier  # noqa: PLC0415
-    from devtools.render_case_pages import case_url  # noqa: PLC0415
+    from devtools.render_case_pages import case_popover, case_url  # noqa: PLC0415
 
     cases = frontier.frontier_cases()
     cells = []
@@ -2186,12 +2174,12 @@ def atlas_grid() -> str:
         status = case["status"]
         square = " data-atlas-square" if math.isqrt(n) ** 2 == n else ""
         cells.append(
-            f'<a class="site-atlas-cell" href="{case_url(n)}" data-atlas-n="{n}"{square} '
+            f'<a class="site-atlas-cell" href="{case_url(n)}" data-case="{n}" '
+            f'data-atlas-n="{n}"{square} '
             f'data-status="{_esc(status)}" aria-label="n = {n}, {_esc(status)}">'
             f"{frontier.packing_svg(n, units=ATLAS_UNITS)}"
             f'<span class="site-atlas-n">{n}</span></a>'
         )
-    facts = json.dumps(atlas_film_facts(), ensure_ascii=False, separators=(",", ":"))
     more, less = "Show More", "Show Less"
     name_more = f"Show more: all {len(cases)} cases"
     name_less = f"Show less: the first {ATLAS_FIRST}"
@@ -2200,9 +2188,6 @@ def atlas_grid() -> str:
         f"data-atlas-grid>{atlas_view_tabs()}"
         f"<template data-atlas-first>{''.join(cells[:ATLAS_FIRST])}</template>"
         f"<template data-atlas-rest>{''.join(cells[ATLAS_FIRST:])}</template>"
-        '<script type="application/json" data-atlas-facts>'
-        + facts.replace("</", "<\\/")
-        + "</script>"
         # The triangle's one-line key ("Each row ends at a perfect square…") stood here
         # and the line under the expander ("Every case from n = 1 to 324 is also in the
         # frontier survey, and each has a case record.") after it, until 2026-10-02 (the
@@ -2214,5 +2199,5 @@ def atlas_grid() -> str:
         f'aria-label="{name_more}" data-label-more="{more}" data-label-less="{less}" '
         f'data-name-more="{name_more}" data-name-less="{name_less}">'
         f"<span data-atlas-label>{more}</span>{arrow_icon('double-down')}</button></p>"
-        f"</div>{atlas_popover()}"
+        f"</div>{case_popover()}"
     )

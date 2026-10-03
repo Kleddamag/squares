@@ -206,11 +206,20 @@ jobs:
         if: "steps.exact-cache.outputs.cache-hit == 'true'"
         run: git ls-files -z -- sqverify_exact | xargs -0 touch -t 200001010000
 
-      # The clean-room measure verifier (think-gpe0) is cached the same way: an exact
-      # source/compiler pair only, and every lint, test, build and oracle check still
-      # runs in its gate step.
+      # The clean-room measure verifier (think-gpe0) is keyed the same way, and every
+      # lint, test, build and oracle check still runs in its gate step. Its sources move
+      # on most pushes while its dependencies do not, so an exact-only key missed nearly
+      # every time and the gate recompiled the whole tree: on run 37098372802 the step was
+      # 84.4s of a 168.3s checks tier. So it restores by prefix as the engine does, and a
+      # miss compiles the gate's own commands here, with the gate's flags, before the
+      # exact-key save can bind this tree to the target. A partial restore leaves the
+      # checkout's mtimes alone, so cargo rebuilds the crate and reuses its dependencies;
+      # only an exact hit backdates the sources.
+      # On a pull request this build belongs to the `measure-verifier` job, which runs
+      # the measure verifier's tier; here it serves only the complete post-merge gate.
       - name: Key the measure verifier cache on its sources and compiler
         id: measure-key
+        if: "github.event_name != 'pull_request'"
         working-directory: packing/sqverify_fast
         run: |
           rustc_vv="$(rustc -vV)"
@@ -219,15 +228,34 @@ jobs:
 
       - name: Restore the measure verifier build
         id: measure-cache
+        if: "github.event_name != 'pull_request'"
         uses: actions/cache/restore@0400d5f644dc74513175e3cd8d07132dd4860809 # v4.2.4
         with:
           path: packing/sqverify_fast/target
           key: >-
             ${{ runner.os }}-sqverify-fast-${{ steps.measure-key.outputs.rustc }}-${{
             steps.measure-key.outputs.tree }}
+          restore-keys: |
+            ${{ runner.os }}-sqverify-fast-${{ steps.measure-key.outputs.rustc }}-
+
+      - name: Populate the measure verifier build for this exact tree
+        id: measure-populate
+        if: >-
+          github.event_name != 'pull_request' &&
+          steps.measure-cache.outputs.cache-hit != 'true'
+        working-directory: packing/sqverify_fast
+        env:
+          RUSTDOCFLAGS: -D warnings
+        run: |
+          cargo clippy --locked --release --all-targets --quiet -- -D warnings
+          cargo test --locked --profile gate-test --all-targets --no-run --quiet
+          cargo doc --locked --no-deps --quiet
+          cargo build --locked --release --quiet
 
       - name: Date measure verifier sources before their identical cached build
-        if: "steps.measure-cache.outputs.cache-hit == 'true'"
+        if: >-
+          github.event_name != 'pull_request' &&
+          steps.measure-cache.outputs.cache-hit == 'true'
         run: git ls-files -z -- sqverify_fast | xargs -0 touch -t 200001010000
 
       # `--fast` is the pull-request surface, and two separate pieces of work in one day
@@ -270,9 +298,9 @@ jobs:
       # `prospective n=101..324 source map and safe seed` 213.19s. Reverting the promotion
       # was refused on coverage grounds, so the cost is bought with more runners instead:
       # `--checks` here, then `--frontend`, `--typecheck`, `--geometry`, `--suite-a`,
-      # `--suite-b`, `--suite-c`, `--suite-d`, and `--sweeps` below. The nine partition
-      # `--fast` and run concurrently, and a pull request waits for the longest rather than
-      # their sum. All nine are required through `packing-required`.
+      # `--suite-b`, `--suite-c`, `--suite-d`, `--sweeps`, and `--measure-verifier` below.
+      # The ten partition `--fast` and run concurrently, and a pull request waits for the
+      # longest rather than their sum. All ten are required through `packing-required`.
       #
       # **Two runners were not enough, and the second cut is measured too.** Run
       # 34010470187 on the two-job surface: `checks` 221.70s against `sweeps` 110.66s.
@@ -323,7 +351,7 @@ jobs:
       # measured, so a second core of headroom would cost this job more than the fourth
       # worker ever cost it.
       #
-      # Nothing left the surface to buy any of this. The nine jobs still select every
+      # Nothing left the surface to buy any of this. The ten jobs still select every
       # step `--fast` does, which is what
       # `test_the_pull_request_jobs_partition_the_surface` checks -- `OR-13`, and the
       # same refusal recorded two paragraphs up.
@@ -334,15 +362,15 @@ jobs:
       # `--only` reports no tier at all and would have left every part of the
       # pull-request surface with no declared ceiling, which is `D-466` exactly.
       # `--checks`, `--frontend`, `--typecheck`, `--geometry`, `--suite-a`, `--suite-b`,
-      # `--suite-c`, `--suite-d`, and `--sweeps` each carry an entry in
+      # `--suite-c`, `--suite-d`, `--sweeps`, and `--measure-verifier` each carry an entry in
       # `devtools/gate-budgets.yaml`.
       #
       # `test_the_pull_request_jobs_partition_the_surface` reads this file, parses these
-      # nine commands with the CLI's own parser and resolves them through its own
-      # selector, and requires the nine selections to be pairwise disjoint and to cover
+      # ten commands with the CLI's own parser and resolves them through its own
+      # selector, and requires the ten selections to be pairwise disjoint and to cover
       # every step outside the four
       # `test_the_pull_request_surface_defers_only_what_was_measured` pins. A step added
-      # tomorrow lands in one of the nine jobs or fails that test.
+      # tomorrow lands in one of the ten jobs or fails that test.
       - name: Run the required pull-request checks
         if: "github.event_name == 'pull_request'"
         run: >-
@@ -392,6 +420,7 @@ jobs:
           --skip "finer-net dilation-limit record, 1440 steps"
           --skip "threshold dilation-limit record, 720 steps"
           --skip "n=40 rigidity bracket still reproduces"
+          --skip "measure verifier full controls (sqverify-fast)"
           --jobs 1 --inner-jobs 2
 
       - name: Save the Rust build for the exact engine tree
@@ -421,7 +450,8 @@ jobs:
       - name: Save the measure verifier build intermediates
         if: >-
           always() && steps.measure-cache.outcome == 'success' &&
-          steps.measure-cache.outputs.cache-hit != 'true'
+          steps.measure-cache.outputs.cache-hit != 'true' &&
+          steps.measure-populate.outcome == 'success'
         uses: actions/cache/save@0400d5f644dc74513175e3cd8d07132dd4860809 # v4.2.4
         with:
           path: packing/sqverify_fast/target
@@ -585,6 +615,7 @@ jobs:
           packing-validate
           --only "negative controls"
           --only "finer-net dilation-limit record, 1440 steps"
+          --only "measure verifier full controls (sqverify-fast)"
           --jobs 1 --inner-jobs 2
 
       - name: Preserve validation timings and partial logs
@@ -898,6 +929,103 @@ jobs:
         run: >-
           uv run --frozen --all-extras --group dev
           packing-validate --typecheck --jobs 1 --inner-jobs 1
+
+      - name: Preserve validation timings and partial logs
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: validation-timings-${{ github.job }}-${{ github.run_attempt }}
+          path: ${{ env.PACKING_VALIDATION_ARTIFACT_DIR }}
+          if-no-files-found: warn
+          retention-days: 30
+
+  measure-verifier:
+    # The clean-room measure verifier's tier on a runner of its own (think-th8p). In
+    # `checks` it read 84.4s of a 168.3s tier on run 37098372802, and 45.3s of a 137.93s
+    # tier against the 140s ceiling on run 37131940076, where every step ran about 1.9x
+    # slow. Its compile, tests and controls no longer contend with the perimeter and
+    # exact verification, and its cost is the `measure_verifier` tier's own record.
+    if: "github.event_name == 'pull_request'"
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: packing
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          submodules: true
+
+      - name: Install uv and Python 3.14
+        uses: astral-sh/setup-uv@c771a70e6277c0a99b617c7a806ffedaca235ff9 # v9.0.0
+        with:
+          version: "0.12.8"
+          python-version: "3.14.7"
+          working-directory: packing
+          enable-cache: true
+          cache-dependency-glob: uv.lock
+
+      - name: Synchronize the locked development environment
+        run: uv sync --frozen --all-extras --group dev
+
+      # The clean-room measure verifier (think-gpe0) is keyed the same way, and every
+      # lint, test, build and oracle check still runs in its gate step. Its sources move
+      # on most pushes while its dependencies do not, so an exact-only key missed nearly
+      # every time and the gate recompiled the whole tree: on run 37098372802 the step was
+      # 84.4s of a 168.3s checks tier. So it restores by prefix as the engine does, and a
+      # miss compiles the gate's own commands here, with the gate's flags, before the
+      # exact-key save can bind this tree to the target. A partial restore leaves the
+      # checkout's mtimes alone, so cargo rebuilds the crate and reuses its dependencies;
+      # only an exact hit backdates the sources.
+      - name: Key the measure verifier cache on its sources and compiler
+        id: measure-key
+        working-directory: packing/sqverify_fast
+        run: |
+          rustc_vv="$(rustc -vV)"
+          echo "tree=$(git rev-parse HEAD:packing/sqverify_fast)" >> "$GITHUB_OUTPUT"
+          echo "rustc=$(printf '%s' "$rustc_vv" | sha256sum | cut -c1-16)" >> "$GITHUB_OUTPUT"
+
+      - name: Restore the measure verifier build
+        id: measure-cache
+        uses: actions/cache/restore@0400d5f644dc74513175e3cd8d07132dd4860809 # v4.2.4
+        with:
+          path: packing/sqverify_fast/target
+          key: >-
+            ${{ runner.os }}-sqverify-fast-${{ steps.measure-key.outputs.rustc }}-${{
+            steps.measure-key.outputs.tree }}
+          restore-keys: |
+            ${{ runner.os }}-sqverify-fast-${{ steps.measure-key.outputs.rustc }}-
+
+      - name: Populate the measure verifier build for this exact tree
+        id: measure-populate
+        if: "steps.measure-cache.outputs.cache-hit != 'true'"
+        working-directory: packing/sqverify_fast
+        env:
+          RUSTDOCFLAGS: -D warnings
+        run: |
+          cargo clippy --locked --release --all-targets --quiet -- -D warnings
+          cargo test --locked --profile gate-test --all-targets --no-run --quiet
+          cargo doc --locked --no-deps --quiet
+          cargo build --locked --release --quiet
+
+      - name: Date measure verifier sources before their identical cached build
+        if: "steps.measure-cache.outputs.cache-hit == 'true'"
+        run: git ls-files -z -- sqverify_fast | xargs -0 touch -t 200001010000
+
+      - name: Run the required pull-request measure verifier tier
+        run: >-
+          uv run --frozen --all-extras --group dev
+          packing-validate --measure-verifier --jobs 1 --inner-jobs 1
+
+      - name: Save the measure verifier build intermediates
+        if: >-
+          always() && steps.measure-cache.outcome == 'success' &&
+          steps.measure-cache.outputs.cache-hit != 'true' &&
+          steps.measure-populate.outcome == 'success'
+        uses: actions/cache/save@0400d5f644dc74513175e3cd8d07132dd4860809 # v4.2.4
+        with:
+          path: packing/sqverify_fast/target
+          key: ${{ steps.measure-cache.outputs.cache-primary-key }}
 
       - name: Preserve validation timings and partial logs
         if: always()
@@ -1419,7 +1547,7 @@ jobs:
           retention-days: 30
 
   post-merge-required:
-    # Separate complete-checkpoint verdict. Pull requests retain exactly nine fast jobs.
+    # Separate complete-checkpoint verdict. Pull requests retain exactly ten fast jobs.
     if: "!cancelled() && github.event_name != 'pull_request'"
     needs:
       - validate
@@ -1512,14 +1640,16 @@ jobs:
     # single required context is the reason the split is allowed to exist: `BC-218` set
     # that as the condition for any fan-out, because `D-380` records what a fan-out of
     # separately required checks did to this repository once. A reviewer still watches one
-    # context; it has nine prerequisites now.
+    # context; it has ten prerequisites now.
     #
     # `needs` alone is not enough, which is why every prerequisite also has a `test` line
     # below. This job runs under `!cancelled()`, so it is reached even when a prerequisite
     # failed, and it is the shell that decides -- a job named in `needs` and missing from
     # the script is an advisory check nothing blocks on.
     if: "!cancelled() && github.event_name == 'pull_request'"
-    needs: [validate, frontend, typecheck, geometry, suite-a, suite-b, suite-c, suite-d, sweeps]
+    needs:
+      [validate, frontend, typecheck, geometry, suite-a, suite-b, suite-c, suite-d, sweeps,
+       measure-verifier]
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -1536,6 +1666,7 @@ jobs:
           SUITE_C_RESULT: ${{ needs.suite-c.result }}
           SUITE_D_RESULT: ${{ needs.suite-d.result }}
           SWEEPS_RESULT: ${{ needs.sweeps.result }}
+          MEASURE_VERIFIER_RESULT: ${{ needs.measure-verifier.result }}
         run: |
           test "$VALIDATE_RESULT" = "success"
           test "$FRONTEND_RESULT" = "success"
@@ -1546,6 +1677,7 @@ jobs:
           test "$SUITE_C_RESULT" = "success"
           test "$SUITE_D_RESULT" = "success"
           test "$SWEEPS_RESULT" = "success"
+          test "$MEASURE_VERIFIER_RESULT" = "success"
 
       - name: Check out the wall budget and its register
         if: always() && github.event_name == 'pull_request'

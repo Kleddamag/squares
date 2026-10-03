@@ -1,9 +1,12 @@
-"""The case records: one record per case at one address, opened the same way from the
-overview's atlas grid and from the frontier atlas."""
+"""The case records: one record per case at an address of its own, `cases/11.html`,
+shown by the record page (`cases/`) and opened the same way, in one case popover, from
+the overview's atlas grid and from the frontier table's rows (think-t21m)."""
 
 from __future__ import annotations
 
+import html
 import re
+from pathlib import Path
 
 import pytest
 
@@ -11,20 +14,28 @@ from devtools import overview_sections, render_case_pages, render_overview
 from devtools import render_research_tables as tables
 from devtools.render_overview import assert_self_contained
 from devtools.repo_links import DEFAULT_BRANCH, REPO_URL, hash_pinned_links
+from sqpack.probes import probe
 from tests import site_renders
 
-#: Measured at 9.1 MB on 2026-09-30 (324 records): 1.6 MB of site shell, 1.3 MB of large
-#: drawings, 2.1 MB of formulas (TeX and its MathML fallback) and the rest the records'
-#: prose, bounds and links. One page of every record replaces 324 pages that would each
-#: carry the shell; a change that crosses the ceiling should shrink something.
-PAGE_CEILING_BYTES = 11 * 1024 * 1024
+PROBES = Path(__file__).resolve().parent / "probes"
 
-SECTION = re.compile(r'<section class="site-case" id="n-(\d+)" data-n="(\d+)"')
+#: The record page carries the site's shell, the account and the index, and no record:
+#: it fetches each record file. Measured at about 1.9 MB on 2026-10-03.
+PAGE_CEILING_BYTES = 2_500_000
+#: One record file is the record alone, with no styles or shell. Measured on 2026-10-03:
+#: from 16 KB (n = 1) to 217 KB (n = 11, whose prose and results are the longest, and
+#: n = 17 close behind), 10.4 MB for all 324.
+RECORD_CEILING_BYTES = 300_000
 
 
 @pytest.fixture(scope="module")
 def page() -> str:
-    return site_renders.html("cases.html")
+    return site_renders.html(render_case_pages.CASES_PAGE)
+
+
+@pytest.fixture(scope="module")
+def records() -> dict[str, str]:
+    return site_renders.case_records()
 
 
 @pytest.fixture(scope="module")
@@ -42,123 +53,250 @@ def numbers() -> list[int]:
     return sorted(int(path.stem.split("-")[1]) for path in tables.FRONTIER.glob("n-*.md"))
 
 
-def _record(page: str, n: int) -> str:
-    start = page.index(f'<section class="site-case" id="n-{n}"')
-    end = page.find('<section class="site-case" id=', start + 1)
-    return page[start : end if end > 0 else page.index("</article>", start)]
+def _record(records: dict[str, str], n: int) -> str:
+    """Case `n`'s record, the one article its record file carries."""
+    text = records[render_case_pages.case_url(n)]
+    start = text.index('<article class="site-case"')
+    return text[start : text.rindex("</article>") + len("</article>")]
 
 
-def test_every_case_has_one_record_at_its_own_address(page: str, numbers: list[int]) -> None:
-    found = [(int(a), int(b)) for a, b in SECTION.findall(page)]
-    assert [a for a, _ in found] == numbers
-    assert all(a == b for a, b in found)
-    assert "cases.html" in render_overview.SITE_PAGES
-    assert render_case_pages.case_url(11) == "cases.html#n-11"
+def test_every_case_has_a_record_file_at_its_own_address(
+    records: dict[str, str], numbers: list[int]
+) -> None:
+    assert render_case_pages.case_url(11) == "cases/11.html"
+    assert sorted(records) == sorted(f"cases/{n}.html" for n in numbers)
+    for n in numbers:
+        record = _record(records, n)
+        assert record.startswith(f'<article class="site-case" data-case="{n}" '), n
+        assert record.count('<article class="site-case"') == 1, n
 
 
-def test_the_atlas_grid_and_the_frontier_atlas_link_the_same_record(
+def test_the_record_page_is_served_and_the_old_page_forwards_to_it() -> None:
+    assert render_case_pages.CASES_PAGE == "cases/index.html"
+    assert render_case_pages.CASES_PAGE in render_overview.SITE_PAGES
+    assert render_case_pages.CASES_PAGE in render_overview.PAGES
+    assert "cases.html" not in render_overview.SITE_PAGES
+    assert ("cases.html", render_case_pages.CASES_PAGE) in render_overview.MOVED_PAGES
+    assert render_overview.canonical_url(render_case_pages.CASES_PAGE).endswith("/cases/")
+
+
+def test_a_record_file_names_itself_and_sends_a_reader_with_scripts_on(
+    records: dict[str, str],
+) -> None:
+    """A record file has its own title, description, canonical address and link
+    preview, so a shared link to a case reads as that case; its one script sends a
+    reader on to the record page, and it carries no styles or shell."""
+    text = records["cases/29.html"]
+    assert '<html lang="en" data-case="29">' in text
+    assert "<title>n = 29 · Case Records · The Squares Project</title>" in text
+    canonical = render_overview.canonical_url("cases/29.html")
+    assert f'<link rel="canonical" href="{canonical}">' in text
+    assert f'<meta property="og:url" content="{canonical}">' in text
+    assert "Packing 29 unit squares in the smallest square" in text
+    forward = render_case_pages.CASE_FORWARD_SCRIPT.read_text(encoding="utf-8")
+    assert text.count("<script>") == 1
+    assert forward.strip() in text
+    # One small style of its own, for a plain reading, and none of the site's.
+    assert text.count("<style>") == 1
+    assert ".kpress-math-render{display:none}" in text
+    assert "kpress-shell" not in text
+    assert_self_contained("cases/29.html", text)
+
+
+def test_every_record_file_is_small(records: dict[str, str]) -> None:
+    sizes = {name: len(text.encode()) for name, text in records.items()}
+    assert max(sizes.values()) < RECORD_CEILING_BYTES, max(sizes, key=sizes.__getitem__)
+
+
+def test_a_records_links_are_written_from_its_own_directory(
+    records: dict[str, str],
+) -> None:
+    """Every relative link in a record file resolves from `cases/`, where the record
+    page that shows it also stands: a site page climbs out (`../frontier.html`), a
+    neighbouring record does not (`12.html`), and every case is `./`. A host page
+    elsewhere rebases them against the record file's own address
+    (`overview/case-popover.js`)."""
+    record = _record(records, 11)
+    assert 'href="../frontier.html#n-11"' in record
+    assert 'href="../all-results.html#t-018"' in record
+    assert 'href="10.html" rel="prev" data-case-step="10"' in record
+    assert 'href="12.html" rel="next" data-case-step="12"' in record
+    assert 'href="./" data-case-index' in record
+    relative = [
+        html.unescape(url)
+        for url in re.findall(r'\s(?:href|src)="([^"]*)"', record)
+        if not re.match(r"#|[a-zA-Z][a-zA-Z0-9+.-]*:|/", url)
+    ]
+    served = {f"../{name}" for name in render_overview.SITE_PAGES} | {"./", "../"}
+    cases = {f"{n}.html" for n in site_renders.overview().cases}
+    for url in relative:
+        target = url.partition("#")[0].partition("?")[0]
+        assert target in served or target in cases, url
+
+
+@pytest.mark.parametrize(
+    ("url", "moved"),
+    [
+        ("frontier.html#n-11", "../frontier.html#n-11"),
+        ("cases/12.html", "12.html"),
+        ("cases/12.html#n-3", "12.html#n-3"),
+        ("cases/", "./"),
+        ("./", "../"),
+        ("papers/x.html?y=1#z", "../papers/x.html?y=1#z"),
+        ("#fn-1", "#fn-1"),
+        ("https://github.com/jlevy/squares", "https://github.com/jlevy/squares"),
+        ("mailto:a@b.c", "mailto:a@b.c"),
+        ("", ""),
+    ],
+)
+def test_a_link_from_the_root_is_written_again_from_the_records_directory(
+    url: str, moved: str
+) -> None:
+    assert render_case_pages.rebase_link(url, render_case_pages.CASES_DIR) == moved
+
+
+def test_rebasing_leaves_scripts_and_styles_alone() -> None:
+    script = probe(PROBES, "case_pages/attribute_text")
+    style = '<style>a[href="b.html"] {}</style>'
+    markup = (
+        f'<a href="frontier.html">x</a><script>{script}</script>{style}<img src="poster.png">'
+    )
+    assert render_case_pages.rebase_links(markup, "cases") == (
+        f'<a href="../frontier.html">x</a><script>{script}</script>{style}'
+        '<img src="../poster.png">'
+    )
+
+
+def test_the_atlas_grid_and_the_frontier_table_open_the_same_record(
     numbers: list[int], frontier: str
 ) -> None:
-    """Both entry points link each case to `cases.html#n-N`. The frontier atlas marks
-    its links with `data-case`, which the shared case popover opens; the atlas grid's
-    cells open the atlas popover instead, whose button leads to the same record."""
+    """Both entry points name each case's record file and open it in the one case
+    popover: the atlas grid's cells and the frontier table's `n` are links marked
+    `data-case`, and a frontier row names its record for the popover to open."""
     grid = overview_sections.atlas_grid()
-    links = re.findall(r'href="cases\.html#n-(\d+)" data-case="(\d+)"', frontier)
+    cells = re.findall(r'href="cases/(\d+)\.html" data-case="(\d+)" data-atlas-n="(\d+)"', grid)
+    assert [int(n) for n, _, _ in cells] == numbers
+    assert all(a == b == c for a, b, c in cells)
+    assert grid.count(render_case_pages.case_popover()) == 1
+    links = re.findall(
+        r'<a aria-label="n = \d+: open its case record" href="cases/(\d+)\.html" '
+        r'data-case="(\d+)"',
+        frontier,
+    )
     assert [int(n) for n, _ in links] == numbers
-    assert all(n == case for n, case in links)
+    assert all(a == b for a, b in links)
+    rows = re.findall(r'data-case-row="(\d+)" data-case-href="cases/(\d+)\.html"', frontier)
+    assert [int(n) for n, _ in rows] == numbers
+    assert all(a == b for a, b in rows)
     assert frontier.count(render_case_pages.case_popover()) == 1
-    cells = re.findall(r'href="cases\.html#n-(\d+)" data-atlas-n="(\d+)"', grid)
-    assert [int(n) for n, _ in cells] == numbers
-    assert all(n == cell for n, cell in cells)
-    assert "data-case=" not in grid
 
 
-def test_both_entry_pages_carry_their_popover_scripts(overview: str, frontier: str) -> None:
-    popover = render_overview.POPOVER_SCRIPT.read_text(encoding="utf-8")
+def test_the_frontier_rows_minimal_popovers_are_gone(frontier: str) -> None:
+    """The popover each frontier row opened until 2026-10-03, its construction, lower
+    bound kind and verification notes, went with think-necq: a row opens the case's
+    record, which carries all of that."""
+    assert "pop-frontier-n-" not in frontier
+    assert not re.search(r"<tr\b[^>]*\sdata-row-popover", frontier)
+    assert render_overview.ROW_POPOVER_SCRIPT.read_text(encoding="utf-8") not in frontier
+    assert "site-pairs" not in frontier
+
+
+def test_both_entry_pages_carry_the_case_popover_script(overview: str, frontier: str) -> None:
     case_popover = render_case_pages.CASE_POPOVER_SCRIPT.read_text(encoding="utf-8")
-    atlas_grid = render_overview.ATLAS_GRID_SCRIPT.read_text(encoding="utf-8")
-    assert popover in overview
-    assert atlas_grid in overview
-    assert popover in frontier
+    assert case_popover in overview
     assert case_popover in frontier
+    assert render_overview.ATLAS_GRID_SCRIPT.read_text(encoding="utf-8") in overview
+    assert "data-atlas-facts" not in overview
+    assert 'id="pop-atlas"' not in overview
 
 
-def test_the_popover_frames_the_record_and_expands_to_it() -> None:
+def test_the_popover_fetches_the_record_and_opens_its_address() -> None:
     markup = render_case_pages.case_popover()
     assert 'id="pop-case" popover' in markup
-    assert 'data-go="page"' in markup
-    assert "<iframe" in markup
-    assert "data-case-frame" in markup
-    assert 'data-case-expand href="cases.html"' in markup
+    assert "data-case-popover" in markup
+    assert "data-case-body" in markup
+    assert 'data-case-open href="cases/"' in markup
+    assert "<iframe" not in markup
 
 
-def test_the_popover_headline_is_the_case_as_serif_math() -> None:
-    """The case popover's headline is `n = 11` as mathematics, not plain text: the script
-    fills kpress's own math node from the template the popover carries and has the
-    site's math driver typeset it, and the headline, math standing alone, is marked for
-    the serif face."""
-    markup = render_case_pages.case_popover()
-    assert '<p class="site-popover-value" data-math-face="serif" data-case-title>' in markup
-    template = markup.split("<template data-case-math>", 1)[1].split("</template>", 1)[0]
-    assert template.startswith('<span class="kpress-math kpress-math-inline"')
-    assert 'class="kpress-math-render"' in template
-    assert 'class="kpress-math-semantic"' in template
-    script = render_case_pages.CASE_POPOVER_SCRIPT.read_text(encoding="utf-8")
-    for token in (
-        "template[data-case-math]",
-        ".kpress-math-render",
-        "siteMath",
-        "replaceChildren",
-    ):
-        assert token in script, token
-    assert "heading.textContent = `n = " not in script
-
-
-def test_the_page_shows_one_record_by_its_fragment(page: str) -> None:
-    assert render_case_pages.CASE_VIEW_SCRIPT.read_text(encoding="utf-8") in page
-    assert "data-case-records" in page
-    assert 'id="cases"' in page
+def test_the_record_page_reads_one_record_at_a_time(page: str, numbers: list[int]) -> None:
+    """The record page holds no record: its reader fetches the one the address names,
+    and its index links every record file."""
+    assert render_case_pages.CASE_PAGE_SCRIPT.read_text(encoding="utf-8") in page
+    assert "data-case-reader hidden" in page
+    assert '<article class="site-case"' not in page
+    index = page.split('<nav class="site-case-index', 1)[1].split("</nav>", 1)[0]
+    assert "data-case-index" in index
+    links = re.findall(r'href="(\d+)\.html" data-case="(\d+)"', index)
+    assert [int(n) for n, _ in links] == numbers
+    # The page stands in `cases/`: its bar climbs out to the site's root.
+    assert 'href="../all-results.html"' in page
+    assert 'href="../frontier.html"' in page
 
 
 def test_the_page_is_self_contained_and_under_its_ceiling(page: str) -> None:
-    assert_self_contained("cases.html", page)
+    assert_self_contained(render_case_pages.CASES_PAGE, page)
     assert len(page.encode()) < PAGE_CEILING_BYTES
 
 
-def test_every_record_draws_its_packing_and_sets_its_bounds_as_math(
-    page: str, numbers: list[int]
+def test_every_record_opens_with_its_visual_summary(
+    records: dict[str, str], numbers: list[int]
 ) -> None:
+    """The visual summary comes first, under the record's head: the drawing, then the
+    number line of the bounds, then the bound as one statement; the record's further
+    data and the case file's prose follow it."""
     for n in numbers:
-        record = _record(page, n)
-        assert '<figure class="site-case-figure' in record, n
+        record = _record(records, n)
+        order = [
+            record.index('<header class="site-case-head"'),
+            record.index('<section class="site-case-summary'),
+            record.index('<figure class="site-case-figure'),
+            record.index('<div class="site-atlas-gap"'),
+            record.index('<p class="site-atlas-pop-bound"'),
+            record.index('<div class="site-case-data"'),
+            record.index('<div class="site-case-prose"'),
+        ]
+        assert order == sorted(order), n
         assert "<svg " in record, n
         assert f"s({n})" in record, n
         assert "data-kpress-math" in record, n
 
 
-def test_no_math_is_left_as_source_text(page: str) -> None:
-    article = re.sub(r"<script.*?</script>", "", page, flags=re.DOTALL).split("<article", 1)[1]
-    assert not re.search(r"\{\{[A-Z0-9_]+\}\}", page)
-    assert not re.search(r"(?<![\w\\])\$[^$\s][^$<]*\$", article)
+def test_a_result_about_one_case_shows_the_same_visual_summary() -> None:
+    body = site_renders.result_bodies()["T-060"]
+    assert '<section class="site-case-summary' in body
+    assert body.index('<figure class="site-case-figure') < body.index(
+        '<div class="site-atlas-gap"'
+    )
+
+
+def test_no_math_is_left_as_source_text(records: dict[str, str]) -> None:
+    for name, text in records.items():
+        assert not re.search(r"\{\{[A-Z0-9_]+\}\}", text), name
+        article = re.sub(r"<script.*?</script>", "", text, flags=re.DOTALL)
+        assert not re.search(r"(?<![\w\\])\$[^$\s][^$<]*\$", article), name
+    record = _record(records, 11)
     # The case files' formulas, which they write in code spans, are set as math.
-    assert "<code>s(11)</code>" not in article
-    assert "<code>31/8</code>" not in article
+    assert "<code>s(11)</code>" not in record
+    assert "<code>31/8</code>" not in record
 
 
-def test_case_11_carries_its_polynomial_results_and_links(page: str) -> None:
-    record = _record(page, 11)
+def test_case_11_carries_its_polynomial_results_verification_and_links(
+    records: dict[str, str],
+) -> None:
+    record = _record(records, 11)
     assert "Minimal polynomial, degree 8" in record
     assert "s^8 - 20s^7" in record
     for result in ("T-018", "T-026", "T-033"):
-        assert f'<a href="all-results.html#{result.lower()}">{result}</a>' in record
-    assert '<a href="frontier.html#n-11">' in record
+        assert f'<a href="../all-results.html#{result.lower()}">{result}</a>' in record
+    assert '<a href="../frontier.html#n-11">' in record
     branch = f"{REPO_URL}/blob/{DEFAULT_BRANCH}/"
     assert f'class="site-case-github" href="{branch}packing/frontier/n-011.md"' in record
-    assert 'href="#n-10" rel="prev"' in record
-    assert 'href="#n-12" rel="next"' in record
+    # What the frontier row's popover said until 2026-10-03 is the record's now.
+    assert '<span class="site-card-label">Verification</span>' in record
 
 
-def test_a_case_records_results_list_significance_first(page: str) -> None:
+def test_a_case_records_results_list_significance_first(records: dict[str, str]) -> None:
     """Each result in a case record shows its rungs after its id as the tables do: S,
     then V, then C (`overview_sections.rung_chips`)."""
     results = {result.id: result for result in site_renders.overview().results}
@@ -166,7 +304,7 @@ def test_a_case_records_results_list_significance_first(page: str) -> None:
         r'<li class="site-case-result" data-result="(T-\d{3})">'
         r'<p class="site-case-result-head"><a [^>]*>T-\d{3}</a> (.*?) '
         r'<span class="site-credit">',
-        _record(page, 11),
+        _record(records, 11),
     )
     assert {"T-018", "T-026", "T-033"} <= {result_id for result_id, _ in heads}
     for result_id, chips in heads:
@@ -174,20 +312,21 @@ def test_a_case_records_results_list_significance_first(page: str) -> None:
         assert [label[0] for label in re.findall(r">([SVC]\d)</span>", chips)] == list("SVC")
 
 
-def test_every_repository_link_names_main(page: str) -> None:
+def test_every_repository_link_names_main(page: str, records: dict[str, str]) -> None:
     from devtools.check_published_site import repository_links  # noqa: PLC0415
 
-    assert not hash_pinned_links(page)
-    links = repository_links(page)
+    for text in (page, *records.values()):
+        assert not hash_pinned_links(text)
+    links = [link for text in records.values() for link in repository_links(text)]
     assert links
     assert {ref for _, ref, _ in links} == {DEFAULT_BRANCH}
 
 
-def test_a_link_to_another_case_file_opens_its_record_here(page: str) -> None:
-    """`n-013.md` links `n-012.md`; on this page that is case 12's record."""
-    record = _record(page, 13)
-    assert 'href="#n-12"' in record
-    assert 'href="#n-32"' in record
+def test_a_link_to_another_case_file_opens_its_record(records: dict[str, str]) -> None:
+    """`n-013.md` links `n-012.md`; in a record that is case 12's record file."""
+    record = _record(records, 13)
+    assert 'href="12.html"' in record
+    assert 'href="32.html"' in record
 
 
 @pytest.mark.parametrize(
@@ -247,17 +386,114 @@ def test_the_prose_sets_formulas_and_keeps_names() -> None:
     assert "footer" not in shown
 
 
+def test_a_cases_badges_are_one_mark_wherever_a_case_is_drawn(
+    records: dict[str, str], frontier: str
+) -> None:
+    """The film's badges, optimal, exact, numerical and rigid, are the site's one mark
+    for a case's properties (the owner, 2026-10-03, think-7cbx): the visual summary lists
+    them with their words, and where a case is one line, a record's head and a frontier
+    row, they stand after its status chip as glyphs alone, each named, from one builder
+    (`result_overview.case_badges`)."""
+    from devtools import result_overview  # noqa: PLC0415
+
+    facts = result_overview.film_facts()
+    assert [label for _, _, label in facts[11]["badges"]] == ["optimal", "exact", "rigid"]
+    badges = result_overview.case_badges(11)
+    for glyph, style, label in facts[11]["badges"]:
+        named = result_overview.badge_glyph(glyph, style, label, named=True)
+        assert f'role="img" aria-label="{label}" title="{label}">' in named
+        assert named in badges
+        # The summary's list draws the same square, its word beside it.
+        listed = result_overview.badge_glyph(glyph, style, label)
+        assert f"{listed}{label}</li>" in _record(records, 11)
+    head = _record(records, 11).split("</header>", 1)[0]
+    assert badges in head
+    row = frontier.split('<tr id="n-11" ', 1)[1].split("</tr>", 1)[0]
+    assert badges in row
+    # A case with no property the film marks has no row of them.
+    plain = [n for n, fact in facts.items() if not fact["badges"]]
+    if plain:
+        assert result_overview.case_badges(plain[0]) == ""
+
+
+def test_a_records_heading_ids_are_its_own(records: dict[str, str]) -> None:
+    """Each record's headings take ids counted within the record alone (`_own_ids`), so
+    a heading added to one case file never renumbers another record's: the same heading
+    has the same id in every record, and none carries a count of the records above."""
+    seen: dict[str, set[str]] = {}
+    for name, text in records.items():
+        ids = re.findall(r'<h[1-6][^>]*\sid="([^"]*)"', text)
+        assert len(ids) == len(set(ids)), name
+        for heading, found in re.findall(r'<h[1-6][^>]*\sid="([^"]*)"[^>]*>(.*?)</h', text):
+            seen.setdefault(re.sub(r"<[^>]+>", "", found).strip(), set()).add(heading)
+    assert seen["The packing"] == {"the-packing"}
+    assert all(len(ids) == 1 for title, ids in seen.items() if title.startswith("The ")), {
+        title: ids for title, ids in seen.items() if len(ids) > 1
+    }
+
+
+def test_a_link_to_a_record_file_is_marked_for_the_case_popover() -> None:
+    marked = render_case_pages.mark_case_links(
+        '<p><a href="cases/11.html">x</a> <a href="cases/13.html#a">z</a> '
+        '<a aria-label="y" href="cases/12.html" data-case="12">y</a> '
+        '<a href="frontier.html">f</a></p>'
+    )
+    assert marked == (
+        '<p><a href="cases/11.html" data-case="11">x</a> '
+        '<a href="cases/13.html#a" data-case="13">z</a> '
+        '<a aria-label="y" href="cases/12.html" data-case="12">y</a> '
+        '<a href="frontier.html">f</a></p>'
+    )
+
+
+def test_the_record_page_lists_no_heading_it_does_not_show(page: str) -> None:
+    """kpress lists every heading of a page in its page model; the record page's would
+    be every record's, about 80 KB of headings it does not show, so its list is empty."""
+    model = page.split('<script type="application/json" id="kpress-page-model">', 1)[1]
+    assert '"headings": []' in model.split("</script>", 1)[0]
+
+
+def test_a_record_files_description_has_room(records: dict[str, str]) -> None:
+    """Each record file's description is its own and keeps clear of the limit
+    `head_tags` refuses past, so a rewording does not fail the render."""
+    descriptions = re.findall(
+        r'<meta name="description" content="([^"]*)"', "".join(records.values())
+    )
+    assert len(descriptions) == len(records) == len(set(descriptions))
+    assert max(len(text) for text in descriptions) <= render_overview.DESCRIPTION_LIMIT - 15
+
+
+def test_a_footnote_in_a_case_file_is_refused() -> None:
+    """kpress gathers footnotes at the foot of the one render, outside every record, so
+    the render refuses one rather than lose it from its record file; the mark it looks
+    for is the one kpress writes."""
+    from kpress.format.model import DocumentInput, RenderOptions  # noqa: PLC0415
+    from kpress.format.render import render_page  # noqa: PLC0415
+
+    markdown = "# T\n\nA note.[^x]\n\n[^x]: The note.\n"
+    document = DocumentInput(
+        title="t", source_text=markdown, source_path="t.md", body_markdown=markdown
+    )
+    page = render_page(document, RenderOptions(asset_mode="inline", asset_policy="none")).html
+    assert render_case_pages.FOOTNOTE_MARK in page
+    with pytest.raises(SystemExit, match="footnote"):
+        render_case_pages.refuse_footnotes(page)
+    render_case_pages.refuse_footnotes("<p>No note.</p>")
+
+
 def test_each_record_steps_to_its_neighbours_with_the_sites_arrows(
-    page: str, numbers: list[int]
+    records: dict[str, str], numbers: list[int]
 ) -> None:
     """A record's steps are the site's drawn arrows, left before the previous case and
-    right after the next, never the arrow characters the site's face lacks."""
+    right after the next, never the arrow characters the site's face lacks; between
+    them, every case."""
     left, right = overview_sections.arrow_icon("left"), overview_sections.arrow_icon("right")
     for n in (numbers[0], 11, numbers[-1]):
-        record = _record(page, n)
+        record = _record(records, n)
         steps = record[record.index('<nav class="site-case-steps"') :]
         steps = steps[: steps.index("</nav>")]
         assert "←" not in steps
         assert "→" not in steps
-        assert (f'rel="prev">{left}n = {n - 1}</a>' in steps) == (n != numbers[0])
+        assert (f'data-case-step="{n - 1}">{left}n = {n - 1}</a>' in steps) == (n != numbers[0])
         assert (f"n = {n + 1}{right}</a>" in steps) == (n != numbers[-1])
+        assert '<a href="./" data-case-index>All cases</a>' in steps

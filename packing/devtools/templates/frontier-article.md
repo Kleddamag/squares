@@ -25,7 +25,7 @@ built; nothing on it is typed by hand.
 
 **Audited sources.** The survey audits what it records.
 The earliest published proof of $s(7) = 3$ carries four recorded defects in its printed
-route, so the [record for seven squares](cases.html#n-7) rests the case on independent
+route, so the [record for seven squares](cases/7.html) rests the case on independent
 later proofs. The [literature archive]({{ARCHIVE_URL}}) keeps each primary source, a
 cleaned transcription and the unedited extraction it was checked against, and the
 [evidence inventory]({{INVENTORY_URL}}) shows what each claim rests on and who did the
@@ -41,7 +41,7 @@ Brandwijk’s $89/20$ (18 July), Burns’s $4.4811$ (6 August), MacIver’s $4.4
 August), Mira’s and Fort’s sixteen-point sets (10 and 11 August), anabologyco-maker’s
 $4.57$ and $9141/2000$ (13 and 16 August), and Massaccesi’s $4.5058$ (21 August),
 replayed here as [T-015](all-results.html#t-015) and [T-016](all-results.html#t-016).
-The [seventeen-square record](cases.html#n-17) lists them all; each has since been
+The [seventeen-square record](cases/17.html) lists them all; each has since been
 superseded.
 
 **Reported and verified.** The *best known packing* and the *reported lower* bound are
@@ -60,9 +60,10 @@ are closed forms and zero where the case is solved.
 *Records* links each case file.
 Values that are roots of a polynomial are shown as decimals, cut rather than rounded.
 
-**A row’s details.** Open a row for how its packing was built, the polynomial behind a
+**A row’s details.** Open a row for its case record: the best packing known drawn large,
+the number line of its bounds, then how its packing was built, the polynomial behind a
 decimal, the sources, how its bounds were verified and the evidence entries behind them.
-A case’s *n* opens its full record.
+The same record opens from the overview’s atlas, and has an address of its own to share.
 
 Click a column heading to sort; the filters narrow the rows.
 

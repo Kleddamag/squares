@@ -1,0 +1,26 @@
+{
+  "geometry_rerun": false,
+  "global_optimality_proved": false,
+  "mandatory_certificates": 43,
+  "mandatory_union": 1903,
+  "minimum_sufficient_field_certificates": 44,
+  "original_angle_rows": 24373,
+  "original_ownership_points": 5877,
+  "recorded_complete_field_replays": 59,
+  "recorded_field_case_union": 1904,
+  "redundant_generic_case_ids": [
+    644,
+    1698,
+    1705,
+    1745,
+    1833,
+    1845,
+    2158
+  ],
+  "residual_case": 1456,
+  "scope": "Finite sets and minimality checked against recorded fresh field results. Geometry is not reexecuted. The 71 count is a top-level certificate count, not a 71-file source closure; shared ancestry and downstream bindings remain separate obligations.",
+  "selected_angle_rows": 17963,
+  "selected_ownership_points": 4233,
+  "status": "PASS_RECORDED_FIELD_SETS_AND_MINIMUM_44",
+  "sufficient_top_level_baseline_certificates": 71
+}

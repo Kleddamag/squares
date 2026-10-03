@@ -120,9 +120,10 @@ def test_the_drawing_makes_no_row_taller_than_its_text(
     laid: dict[int, dict[str, Any]], width: int
 ) -> None:
     """The drawing is two lines of the table's text high, and every row has two lines
-    at least, the case file's link over the row's trigger. So in the shortest row, one
-    of whole numbers, the drawing and the Records cell's two lines each fill the cell's
-    height between its padding, and the row is no taller than those two lines need."""
+    at least, the case file's link over the link to the case's record. So in the
+    shortest row, one of whole numbers, the drawing and the Records cell's two lines
+    each fill the cell's height between its padding, and the row is no taller than those
+    two lines need."""
     shortest = laid[width]["rows"][ROWS.index("n-1")]
     thumb, records = shortest["cells"][0], shortest["cells"][column("Records")]
     assert shortest["height"] == min(row["height"] for row in laid[width]["rows"])
@@ -181,9 +182,17 @@ def test_the_table_fits_its_track_at_1280_and_scrolls_in_its_wrap_below(
     widths = {cell["words"]: cell["width"] for cell in wide["head"]}
     assert widths["n"] < 50
     assert widths["Recent"] < 96
+    # At 1280 the table is stretched to its track; below it keeps its own width, the same
+    # at every narrower window: 1192 pixels since the table has no frame (2026-10-02,
+    # think-wadm), 1194 before, and 1180 since 3 October 2026, when an exact gap with a
+    # numerator or denominator of more than eight digits became its decimal (n = 68's
+    # 4512425581603/15625000000000 was the widest gap; GAP_DIGITS).
+    own = laid[WIDTHS[1]]["table_width"]
+    assert own <= wide["table_width"]
+    assert own == pytest.approx(1180, abs=10)
     for width in WIDTHS[1:]:
         assert laid[width]["scrolls"] > 0, width
-        assert laid[width]["table_width"] == pytest.approx(wide["table_width"], abs=8), width
+        assert laid[width]["table_width"] == pytest.approx(own, abs=1), width
     assert [laid[width]["page_scrolls"] for width in WIDTHS] == [0] * len(WIDTHS)
 
 
@@ -199,8 +208,10 @@ def test_a_fraction_shows_its_decimal_and_a_name_stays_whole(
     assert lower == ["≈ 3.96911783…"]
     exact, shown = Fraction(31360, 7901), Fraction(lower[0][2:-1])
     assert 0 < exact - shown < Fraction(1, 10**8)
-    assert [cell["approx"] for cell in rows["n-12"]["cells"]].count([]) == len(COLUMNS) - 2
-    assert rows["n-12"]["cells"][column("Gap")]["approx"] == ["≈ 0.03088216…"]
+    # Three closed forms since 3 October 2026, when T-079's verified lower bound parted
+    # from the reported one: the two lower bounds and the gap.
+    assert [cell["approx"] for cell in rows["n-12"]["cells"]].count([]) == len(COLUMNS) - 3
+    assert rows["n-12"]["cells"][column("Gap")]["approx"] == ["≈ 0.02979979…"]
     # A terminating fraction shows its exact decimal in either column. The example was
     # n = 18 until 2026-10-02, when T-045's replay raised its verified bound to the
     # reported 939/200 and the cell became "same", and then n = 19 until T-074's did the
@@ -213,9 +224,10 @@ def test_a_fraction_shows_its_decimal_and_a_name_stays_whole(
 
 
 def test_the_table_still_sorts_filters_and_opens(page: Any, laid: dict[int, Any]) -> None:
-    """The columns moved and the script did not: a heading sorts its own column, the
-    filters narrow the rows, the drawing opens the row's popover as the rest of the row
-    does, and the number opens the case's record."""
+    """The columns moved and the script did not: a heading sorts its own column and the
+    filters narrow the rows. A row opens its case's record, which is fetched, so that is
+    held where the page is served (`test_site_case_records`); here, from a file, a row is
+    one control that names its record."""
     assert laid
     shown = page.locator("#frontier-table tbody tr:not([hidden])")
     recent = page.locator("#frontier-table thead th", has_text="Recent")
@@ -237,27 +249,20 @@ def test_the_table_still_sorts_filters_and_opens(page: Any, laid: dict[int, Any]
 
     # 27 recent cases until 2026-10-02, when the merged rectangle replays (T-045, T-070)
     # and s(59), s(60) and s(61) made 44; the replays recorded later that day (T-048,
-    # T-069, T-071, T-074 and s(77), s(78)) made 60, the cases `recent_lower_bounds`
-    # names.
+    # T-069, T-071, T-074 and s(77), s(78)) made 60; T-064's replay of 3 October, which
+    # proved nine k^2 - 3 cases, made 69; T-075's replays the same day took n = 83, 91 and
+    # 96 off Nagamochi's bound and made 72; T-080's replayed linear certificate took
+    # n = 101 to 105 off it and made 77, the cases `recent_lower_bounds` names.
     page.get_by_label("recent only").check()
-    assert page.locator(".site-table-tools .site-count").inner_text() == "60 of 324 cases"
-    assert shown.count() == 60
+    assert page.locator(".site-table-tools .site-count").inner_text() == "77 of 324 cases"
+    assert shown.count() == 77
     assert shown.first.get_attribute("id") == "n-11"
     page.get_by_label("recent only").uncheck()
     assert shown.count() == 324
 
     row = page.locator("#n-12")
     row.scroll_into_view_if_needed()
-    row.locator("td.site-thumb svg").click()
-    popover = page.locator("#pop-frontier-n-12")
-    assert popover.is_visible()
-    assert row.get_attribute("aria-expanded") == "true"
-    page.keyboard.press("Escape")
-    assert not popover.is_visible()
-    row.locator("td.site-col-n a").click()
-    record = page.locator("[data-case-popover]")
-    assert record.is_visible()
-    assert not popover.is_visible()
-    assert record.locator("[data-case-expand]").get_attribute("href") == "cases.html#n-12"
-    page.keyboard.press("Escape")
-    assert not record.is_visible()
+    assert row.get_attribute("data-case-href") == "cases/12.html"
+    assert row.get_attribute("tabindex") == "0"
+    assert row.get_attribute("aria-controls") == "pop-case"
+    assert row.locator("td.site-col-n a").get_attribute("href") == "cases/12.html"

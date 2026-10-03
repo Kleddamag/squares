@@ -1,0 +1,63 @@
+# command: env LEAN_NUM_THREADS=1 lake build Sqpack.Bentz
+# cwd: s12/lean staged by stage_evand_bentz_lean
+# python3: not used by this command
+# host: 4 cores; load 0.80 1.08 0.82; started 2026-10-02T20:25:27Z
+⚠ [8706/8715] Replayed Sqpack.Basic
+warning: Sqpack/Basic.lean:18:100: This line exceeds the 100 character limit, please shorten it!
+
+Note: This linter can be disabled with `set_option linter.style.longLine false`
+warning: Sqpack/Basic.lean:23:12: please avoid 'open (scoped) Classical' statements: this can hide theorem statements which would be better stated with explicit decidability statements.
+Instead, use `open Classical in` for definitions or instances, the `classical` tactic for proofs.
+For theorem statements, either add missing decidability assumptions or use `open Classical in`.
+
+Note: This linter can be disabled with `set_option linter.style.openClassical false`
+warning: Sqpack/Basic.lean:260:100: This line exceeds the 100 character limit, please shorten it!
+
+Note: This linter can be disabled with `set_option linter.style.longLine false`
+⚠ [8707/8715] Replayed Sqpack.Chord
+warning: Sqpack/Chord.lean:40:23: `Set.mem_setOf_eq` has been deprecated: Use `Set.mem_ofPred_eq` instead
+warning: Sqpack/Chord.lean:48:19: `Set.mem_setOf_eq` has been deprecated: Use `Set.mem_ofPred_eq` instead
+warning: Sqpack/Chord.lean:54:19: `Set.mem_setOf_eq` has been deprecated: Use `Set.mem_ofPred_eq` instead
+warning: Sqpack/Chord.lean:245:2: `push_neg` has been deprecated. Prefer using `push Not` instead.
+If you'd rather continue using `push_neg` in your project, you can implement it as follows:
+```
+open Lean.Parser.Tactic in
+macro "push_neg" cfg:optConfig loc:(location)? : tactic =>
+  `(tactic| push $cfg:optConfig Not $[$loc]?)
+```
+warning: Sqpack/Chord.lean:257:4: `push_neg` has been deprecated. Prefer using `push Not` instead.
+If you'd rather continue using `push_neg` in your project, you can implement it as follows:
+```
+open Lean.Parser.Tactic in
+macro "push_neg" cfg:optConfig loc:(location)? : tactic =>
+  `(tactic| push $cfg:optConfig Not $[$loc]?)
+```
+⚠ [8708/8715] Replayed Sqpack.ZeroMargin
+warning: Sqpack/ZeroMargin.lean:715:2: `push_neg` has been deprecated. Prefer using `push Not` instead.
+If you'd rather continue using `push_neg` in your project, you can implement it as follows:
+```
+open Lean.Parser.Tactic in
+macro "push_neg" cfg:optConfig loc:(location)? : tactic =>
+  `(tactic| push $cfg:optConfig Not $[$loc]?)
+```
+⚠ [8709/8715] Replayed Sqpack.D4
+warning: Sqpack/D4.lean:29:12: please avoid 'open (scoped) Classical' statements: this can hide theorem statements which would be better stated with explicit decidability statements.
+Instead, use `open Classical in` for definitions or instances, the `classical` tactic for proofs.
+For theorem statements, either add missing decidability assumptions or use `open Classical in`.
+
+Note: This linter can be disabled with `set_option linter.style.openClassical false`
+⚠ [8712/8715] Replayed Sqpack.S32
+warning: Sqpack/S32.lean:27:12: please avoid 'open (scoped) Classical' statements: this can hide theorem statements which would be better stated with explicit decidability statements.
+Instead, use `open Classical in` for definitions or instances, the `classical` tactic for proofs.
+For theorem statements, either add missing decidability assumptions or use `open Classical in`.
+
+Note: This linter can be disabled with `set_option linter.style.openClassical false`
+⚠ [8715/8715] Built Sqpack.Bentz (1183s)
+warning: Sqpack/Bentz.lean:8:100: This line exceeds the 100 character limit, please shorten it!
+
+Note: This linter can be disabled with `set_option linter.style.longLine false`
+warning: Sqpack/Bentz.lean:715:100: This line exceeds the 100 character limit, please shorten it!
+
+Note: This linter can be disabled with `set_option linter.style.longLine false`
+Build completed successfully (8715 jobs).
+# finished 2026-10-02T20:45:34Z; exit 0; wall 1207.468 s; CPU 841.1 s (user 318.691 + sys 522.385); load 1.14 1.04 1.01

@@ -1,0 +1,42 @@
+{
+  "format": "external-source-acquisition-v1",
+  "retrieved_at_utc": "2026-10-02T17:37Z",
+  "git_scope": "A blob-filtered clone of the single public branch, checked out sparse at this commit over the root README.md and LICENSE and the point_n61_L8 directory. Every file under the claim directory is digested, with the root files; the rest of the tree is pinned by the commit.",
+  "sources": [
+    {
+      "id": "wand125-point-n61",
+      "source_url": "https://github.com/wand125/square-packing-bounds",
+      "source_ref": "refs/heads/main",
+      "source_commit": "f8846cec9661773dbd0cc7cbeee7d01ddb12a2b8",
+      "committed_utc": "2026-09-30T01:34:53Z",
+      "git_tree": "4e76cfc46278341b2257eab527d1608b35ac1c9a",
+      "archived_path": "packing/resources/web/wand125-point-n61-2026-09-30/square-packing-bounds",
+      "subtree_manifest": "packing/resources/web/wand125-point-n61-2026-09-30/acquisition/upstream-subtree.sha256",
+      "subtree_scope": [
+        "README.md",
+        "LICENSE",
+        "point_n61_L8"
+      ],
+      "subtree_file_count": 7,
+      "subtree_total_bytes": 416232,
+      "retained_file_count": 6,
+      "retained_total_bytes": 415168,
+      "compressed": [
+        "square-packing-bounds/point_n61_L8/cover.txt.gz"
+      ],
+      "pinned_only": [
+        {
+          "path": "LICENSE",
+          "bytes": 1064,
+          "sha256": "c0dd43e7892932c81335f74a2fdbf1a98f5977bab14c0c4c30e3abcc97c34904",
+          "reason": "retained byte-identical by the 2026-09-27 rectangle packet",
+          "identical_to": "packing/resources/web/wand125-rectangle-certificates-2026-09-27/wand125-rectangles/LICENSE"
+        }
+      ],
+      "license": "MIT, Copyright (c) 2026 wand125 (root LICENSE)",
+      "claims": [
+        "s(61) = 8 (point_n61_L8)"
+      ]
+    }
+  ]
+}

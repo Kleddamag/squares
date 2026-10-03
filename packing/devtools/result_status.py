@@ -146,11 +146,18 @@ def activity_label(activity: Mapping[str, Any] | None) -> str:
     return f"waiting on {str(activity.get('party', '')).replace('-', ' ')}"
 
 
-def status_line(record: Record, evidence: Evidence, position: Sequence[str] = ()) -> str:
+def status_line(
+    record: Record, evidence: Evidence, position: Sequence[str] = (), how: str = ""
+) -> str:
     """A result's status as one cell of a Markdown table: the status, then its activity
     and `superseded` where it is one (`render_recent_results.position_marks`), the
-    marks the site draws as chips beside it."""
-    marks = [status(record, evidence), activity_label(record.get("activity")), *position]
+    marks the site draws as chips beside it. A confirmed result says how, in `how`, as
+    the mark after the status: reproduced with the producer's code, or re-implemented
+    (epistemics.md, Confirmation). The status stays the first mark, so the cell reads
+    the same way whatever follows it."""
+    held = status(record, evidence)
+    qualifier = how if held == CONFIRMED else ""
+    marks = [held, qualifier, activity_label(record.get("activity")), *position]
     return ", ".join(mark for mark in marks if mark)
 
 

@@ -803,7 +803,12 @@ def test_a_worker_snapshot_can_be_asked_what_this_repository_tracks(
     # snapshot's content, which is why the index is built before they are symlinked in.
     assert not any(
         name.startswith(
-            ("packing/.venv", "packing/sqsearch/target", "packing/sqverify_exact/target")
+            (
+                "packing/.venv",
+                "packing/sqsearch/target",
+                "packing/sqverify_exact/target",
+                "packing/sqverify_fast/target",
+            )
         )
         for name in tracked
     )

@@ -1,0 +1,123 @@
+{
+  "status": "PASS_INDEPENDENT_CONDITIONAL_D4_BRIDGE",
+  "scope": "Exact cover, closed four-view overlay, strict pair bans, and three finite UNSAT checks; 2180 exclusions and case-438 capture remain premises.",
+  "global_optimality_proved": false,
+  "input_sha256": {
+    "cover": "df7938d9ba27095a38fabe45f8b26b259a2cc896c2ae4aac6bae874f417adc4e",
+    "overlay": "845b5f748843dd60fa7e290a5ea1a304da4e439ae229bd73a841aec816f4e700",
+    "distance": "4f960f4001faa6c9c1e7521f3a2344f71e10b41cd38a6425f6821cc1fd2ccd47"
+  },
+  "checker_sha256": "19f4b0a47afd6acb327e85bd4a98ca2a43d2fdaa49aeb0edd30aa12d1b6aac1d",
+  "raw_masks": 4368,
+  "canonical_masks": 2184,
+  "overlay_prefix_counts": [
+    16,
+    56,
+    124,
+    220
+  ],
+  "overlay_dimensions": {
+    "2": 212,
+    "0": 8
+  },
+  "strict_distance_bans": 1572,
+  "allowed_non_target_raw_masks": [
+    [
+      0,
+      1,
+      2,
+      4,
+      6,
+      7,
+      9,
+      10,
+      12,
+      14,
+      15
+    ],
+    [
+      0,
+      1,
+      3,
+      5,
+      6,
+      8,
+      9,
+      11,
+      12,
+      13,
+      14
+    ],
+    [
+      0,
+      1,
+      3,
+      5,
+      6,
+      8,
+      9,
+      11,
+      13,
+      14,
+      15
+    ],
+    [
+      0,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      11,
+      12,
+      13,
+      14
+    ],
+    [
+      1,
+      2,
+      3,
+      4,
+      6,
+      7,
+      9,
+      10,
+      12,
+      14,
+      15
+    ],
+    [
+      1,
+      2,
+      3,
+      4,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      15
+    ]
+  ],
+  "finite_search": [
+    {
+      "source_canonical_index": 999,
+      "status": "UNSAT",
+      "nodes": 75
+    },
+    {
+      "source_canonical_index": 1462,
+      "status": "UNSAT",
+      "nodes": 61
+    },
+    {
+      "source_canonical_index": 1659,
+      "status": "UNSAT",
+      "nodes": 31
+    }
+  ],
+  "wall_seconds": 0.868311389000155,
+  "process_cpu_seconds": 0.867362842
+}

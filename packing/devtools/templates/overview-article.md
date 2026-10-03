@@ -17,53 +17,90 @@
 
 ## The Squares Project
 
-This Squares Project site collects all known historic research and current new results
-on the square packing problem.
-Work on this problem has exploded in the summer of 2026 thanks to AI-powered research
-efforts.
-
-We and several others have proved new results as part of this project for low values of
-$n$, including $n = 11$, $n = 12$, $n = 17$ and many others.
-As part of a collaborative open effort, several people have built on results from this
-project or developed other new proofs, and this site
-[independently checks and documents](all-results.html#verification-ladders) the proofs
-and certificates behind them.
+Work on the square packing problem has exploded in the summer of 2026 thanks to
+AI-powered research efforts.
+This Squares Project was begun by [Joshua Levy](https://x.com/ojoshe) in August 2026
+with some initial explorations that obtained
+[new lower bounds](papers/n11-lower-bounds-explainer.html) for $n = 11, 17, 18, 19, 20$
+and other low values.
+Now several others have obtained results building on this work, including a landmark new
+proof by Queuingtheorydotcom of the optimality of the famous
+[case of 11 squares](cases/11.html).
+Separately, Evan Daniel has proved the optimality of
+[a whole infinite family](all-results.html#t-064), $s(k^2 - 3) = k$ for every $k \ge 6$,
+along with exact values at [21](cases/21.html), [32](cases/32.html) and
+[45](cases/45.html) squares.
+This project now independently tabulates all known new results and does
+[AI-assisted verification](all-results.html#verification-ladders) of the proofs and
+certificates behind them, to encourage open collaboration on open questions and
+formalizations of current proofs.
 
 If you have new results or know of newer results, please
 [file an issue]({{NEW_ISSUE_URL}}) to report them, and we will gladly incorporate them
-and cite your work.
+and cite your work. We also have a group chat.
+Contact [ojoshe](https://x.com/ojoshe) if you wish to join.
+
+<!-- The two paragraphs above are the owner's words of 2026-10-03 (think-a7oa), each
+     fact checked against the record: the project's first packing work is of
+     2026-08-22; its own lower bounds are at
+     n = 11, 12 and 17 to 21 (T-001 to T-034); the explainer the link names is n = 11's,
+     and it lists the bounds at 12, 17 and 19 that its method gave; and the optimality
+     of n = 11 is T-060, Queuingtheorydotcom's. The sentence after it names the
+     top-line results by others (the owner, 2026-10-03, think-nlyc), each checked the
+     same way: s(k^2 - 3) = k for every k >= 6 is T-064, and s(21) = 5, s(32) = 6 and
+     s(45) = 7 are T-052, T-051 and T-053, all four credited to Daniel after Burns,
+     Massaccesi and all at V3/C3, T-064 by the full replay of the source's Valid7
+     checker and the Lean reduction built here. The bibliography files their sources as
+     independent of this project, so they stand in a sentence of their own and not
+     among the results building on this work, and the sentence gives no significance
+     score, since only n = 11's results are S5 and these are S4. "AI-assisted
+     verification" links the ladders, which say how far each result is checked; the
+     sentence does not say every result is checked, since some are recorded and not
+     yet replayed here. -->
 
 {{PAGE_CARDS}}
 
 ## Recent Results
 
-<!-- One paragraph before the table (the owner, 2026-10-02): the headline of recent
-     progress with its result ids, which check_results.READER_TIER holds to the
-     register, then the star legend and where the table's filters start. README carries
-     its own fuller account of the same progress, and the two stopped being one shared
-     block that day (site_documents, think-ekw5). The ratings, the kinds, the statuses
-     and the dating rule are defined once, on the Results page; a result's rungs, review
-     and retained packet are its row's; and when a bound by others counts as verified is
-     said once, on the Frontier page. -->
-
-Eleven squares is settled: $s(11) = 3.8770835\ldots$, the exact side of Trump’s 1979
-packing, by [T-060](all-results.html#t-060). Seventeen squares is bracketed by
-machine-checked bounds, [T-043](all-results.html#t-043) below and
-[T-065](all-results.html#t-065) above, and [$n = 21$](cases.html#n-21),
-[$32$](cases.html#n-32) and [$45$](cases.html#n-45) have new exact values.
-{{STAR_LEGEND}}
-The chips on a row say how significant the result is (S), how it was originally verified
-(V) and how it has been confirmed (C), each rung defined on the
-[Verification Ladders](all-results.html#verification-ladders).
-The table starts at significance S4 and up, max age 180 days and superseded hidden.
+<!-- The table first, then its one action, then what it shows (the owner, 2026-10-02,
+     think-tgjv; the paragraph stood between the heading and the filter bar until that
+     day). The first paragraph is the headline of recent progress, with its result ids,
+     which check_results.READER_TIER holds to the register, the star legend and where
+     the filters start. The second says what the three ratings on a row mean, rung by
+     rung in brief, and the key under it shows every chip with its short meaning
+     (rung_key); the ladders that define each rung in full, and the ratings' kinds,
+     statuses and dating rule, are the Results page's. README carries its own fuller
+     account of the same progress (site_documents, think-ekw5). -->
 
 {{RECENT}}
 
 <p class="site-action-row site-more"><a class="site-action" href="all-results.html">See all results{{ARROW_RIGHT}}</a></p>
 
+Eleven squares is settled: $s(11) = 3.8770835\ldots$, the exact side of Trump’s 1979
+packing, by [T-060](all-results.html#t-060). Seventeen squares is bracketed by
+machine-checked bounds, [T-043](all-results.html#t-043) below and
+[T-065](all-results.html#t-065) above, and [$n = 21$](cases/21.html),
+[$32$](cases/32.html) and [$45$](cases/45.html) have new exact values.
+{{STAR_LEGEND}}
+The table above starts at significance S4 and up, max age 180 days and superseded
+hidden.
+
+Each row carries three ratings, each a rung of its own ladder.
+Significance, S1 to S5, is how much the result matters, from bookkeeping at S1 to a move
+on a central open case at S5. Verification, V0 to V5, is how it was first established: a
+bare claim at V0, a numerical check at V1, a checkable proof or machine certificate at
+V3, a formal proof at V5. Confirmation, C0 to C5, is how far it has been checked since:
+recorded at C0, read at C1, replayed at C2, replayed by machine at C3, and up to a
+formal confirmation at C5. The key below gives every rung in brief, and the
+[Verification Ladders](all-results.html#verification-ladders) on the Results page define
+each one in full.
+
+{{RUNG_KEY}}
+
 <!-- Verification Ladders stood here, between Recent Results and the atlas, until
      2026-10-02 (the owner, think-hqb3): the section is the Results page's, under its
-     table, and the sentence above says what the chips indicate and links it. Its two
+     table, and Recent Results' second paragraph says what the ratings mean, over a key
+     of every rung (think-tgjv), and links it. Its two
      fragments, #verification-ladders and the older #verification-at-a-glance, are sent
      there by forward.js (overview/forward.js). -->
 

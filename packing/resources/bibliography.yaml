@@ -291,6 +291,22 @@ sources:
       work was produced by Claude (Anthropic) in a single session under human direction.
       The selective packet web/evand-square-packing-2026-10-02/ retains them; nothing was
       replayed. Dated by that revision, 2026-10-02 UTC.
+  - key: '[evand square-packing 2026-10-03]'
+    authors: [Daniel]
+    year: 2026
+    venue: GitHub
+    dated: '2026-10-03'
+    credit: Daniel after Burns, Massaccesi
+    lineage: independent
+    note: >-
+      evand/square-packing at 2eb15455a6f178213287a84ab4d0576c060baabe
+      (2026-10-03T17:15:04Z), the commit jlevy/squares#316 names: the k2m4 bundle for
+      s(k^2 - 4) = k for every k >= 5, with the box-9 cover, its family, the qx2_zm.py run
+      record over 16,200 roots, and the Lean reduction bentz4_of_validTilt9 conditional on
+      the finite statement ValidTilt9. Its CREDITS.md still says the work was produced by
+      Claude (Anthropic) in a single session under human direction. The packet
+      web/evand-square-packing-2026-10-03/ retains the bundle, the record and the Lean
+      closure; the bundle's fast verify.sh was run here and the full run was not.
   - key: '[squarepacker s12 2026]'
     authors: [Ryu]
     year: 2026
@@ -556,6 +572,26 @@ sources:
       co-author. web/wand125-mixed-bounds-n76-2026-10-02/acquisition/sources.json pins
       revision 7975030a192607ef27edd1559aee4e98bd93047b. Dated by that revision, 2026-10-02
       UTC. Its complete replay ran here on 2026-10-02, with its receipts in the packet.
+  - key: '[wand125 point n61 2026-09-30]'
+    authors: [wand125]
+    year: 2026
+    venue: GitHub
+    dated: '2026-09-30'
+    credit: wand125 after Daniel, Levy, Stromquist, Nagamochi, Burns, Massaccesi
+    short_credit: wand125 after Daniel, Levy et al.
+    lineage: credits-project
+    note: >-
+      The point-only cover for s(61) = 8 that wand125/square-packing-bounds added on
+      2026-09-30 (point_n61_L8), requested for retention in a comment of 2026-10-02 on
+      jlevy/squares#238. The README says the capture condition is checked by Evan Daniel's
+      unmodified zmx2, fetched at evand/square-packing 6e1223cf, that the measure was lifted
+      from the source's own point-only s(45) cover, and that s(61) = 8 already follows from
+      Daniel's s(60) = 8. Credited as the exact-covers key is, on the root README's
+      Attribution section, which opens "The method is not ours." and credits Stromquist,
+      Nagamochi, Burns, Massaccesi and this repository; the root README says parts of the
+      work were produced with AI assistance under human direction. web/wand125-point-n61-2026-09-30/acquisition/sources.json
+      pins revision f8846cec9661773dbd0cc7cbeee7d01ddb12a2b8. Dated by that revision,
+      2026-09-30 UTC.
   - key: '[wand125 linear certificates 2026-10-02]'
     authors: [wand125]
     year: 2026
@@ -577,6 +613,8 @@ sources:
       human direction, and the commits name Claude as co-author.
       web/wand125-linear-certificates-2026-10-02/acquisition/sources.json pins revision
       0c35d909764997ead04dfd90081c9fe9af8d07f2. Dated by that revision, 2026-10-02 UTC.
+      The n = 101 certificate's complete replay ran here on 2026-10-02, with its receipts
+      in the packet.
   - key: '[wand125 valid7 independent check 2026-10-02]'
     authors: [wand125]
     year: 2026
@@ -637,6 +675,8 @@ sources:
       with a co-author trailer naming an AI assistant.
       web/wand125-mixed-bounds-afternoon-2026-10-02/acquisition/sources.json pins revision
       b00fc70f1904e9b1b567afee056d347f911209e8. Dated by that revision, 2026-10-02 UTC.
+      Each certificate's complete replay ran here on 2026-10-02 or 2026-10-03, with its
+      receipts in the packet.
   - key: '[wand125 linear n82 2026-10-02]'
     authors: [wand125]
     year: 2026

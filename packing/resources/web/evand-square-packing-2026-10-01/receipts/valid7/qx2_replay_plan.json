@@ -1,0 +1,174 @@
+{
+  "kind": "valid7-replay-plan/v1",
+  "checker": "qx2",
+  "roots": 9800,
+  "recorded_cpu_hours": 22.6,
+  "priced_cpu_hours": 22.6,
+  "speed": 1.01,
+  "cores_per_shard": 4,
+  "host_cpu_hours_estimate": 22.83,
+  "shards": [
+    {
+      "shard": 1,
+      "cells": 751,
+      "priced_cpu_hours": 11.37,
+      "largest_root_seconds": 402.7,
+      "wall_hours_estimate": 2.87,
+      "runs": [
+        {
+          "rectangle": [
+            "0",
+            "21/10",
+            "0",
+            "7/2"
+          ],
+          "record": "runs/qx2_shard01_1.jsonl",
+          "receipt": "receipts/qx2_shard01_1.log",
+          "command": [
+            "python3",
+            "checker/qx2_zm.py",
+            "L4_k02_box7.txt",
+            "--depth",
+            "18",
+            "--nproc",
+            "4",
+            "--exact-umax",
+            "1/2",
+            "--exact-from",
+            "3",
+            "--progress",
+            "200",
+            "--cx-lo",
+            "0",
+            "--cx-hi",
+            "21/10",
+            "--cy-lo",
+            "0",
+            "--cy-hi",
+            "7/2",
+            "--resume",
+            "runs/qx2_shard01_1.jsonl",
+            "--dump-leaves"
+          ]
+        },
+        {
+          "rectangle": [
+            "21/10",
+            "11/5",
+            "0",
+            "8/5"
+          ],
+          "record": "runs/qx2_shard01_2.jsonl",
+          "receipt": "receipts/qx2_shard01_2.log",
+          "command": [
+            "python3",
+            "checker/qx2_zm.py",
+            "L4_k02_box7.txt",
+            "--depth",
+            "18",
+            "--nproc",
+            "4",
+            "--exact-umax",
+            "1/2",
+            "--exact-from",
+            "3",
+            "--progress",
+            "200",
+            "--cx-lo",
+            "21/10",
+            "--cx-hi",
+            "11/5",
+            "--cy-lo",
+            "0",
+            "--cy-hi",
+            "8/5",
+            "--resume",
+            "runs/qx2_shard01_2.jsonl",
+            "--dump-leaves"
+          ]
+        }
+      ]
+    },
+    {
+      "shard": 2,
+      "cells": 474,
+      "priced_cpu_hours": 11.24,
+      "largest_root_seconds": 536.2,
+      "wall_hours_estimate": 2.84,
+      "runs": [
+        {
+          "rectangle": [
+            "21/10",
+            "11/5",
+            "8/5",
+            "7/2"
+          ],
+          "record": "runs/qx2_shard02_1.jsonl",
+          "receipt": "receipts/qx2_shard02_1.log",
+          "command": [
+            "python3",
+            "checker/qx2_zm.py",
+            "L4_k02_box7.txt",
+            "--depth",
+            "18",
+            "--nproc",
+            "4",
+            "--exact-umax",
+            "1/2",
+            "--exact-from",
+            "3",
+            "--progress",
+            "200",
+            "--cx-lo",
+            "21/10",
+            "--cx-hi",
+            "11/5",
+            "--cy-lo",
+            "8/5",
+            "--cy-hi",
+            "7/2",
+            "--resume",
+            "runs/qx2_shard02_1.jsonl",
+            "--dump-leaves"
+          ]
+        },
+        {
+          "rectangle": [
+            "11/5",
+            "7/2",
+            "0",
+            "7/2"
+          ],
+          "record": "runs/qx2_shard02_2.jsonl",
+          "receipt": "receipts/qx2_shard02_2.log",
+          "command": [
+            "python3",
+            "checker/qx2_zm.py",
+            "L4_k02_box7.txt",
+            "--depth",
+            "18",
+            "--nproc",
+            "4",
+            "--exact-umax",
+            "1/2",
+            "--exact-from",
+            "3",
+            "--progress",
+            "200",
+            "--cx-lo",
+            "11/5",
+            "--cx-hi",
+            "7/2",
+            "--cy-lo",
+            "0",
+            "--cy-hi",
+            "7/2",
+            "--resume",
+            "runs/qx2_shard02_2.jsonl",
+            "--dump-leaves"
+          ]
+        }
+      ]
+    }
+  ]
+}

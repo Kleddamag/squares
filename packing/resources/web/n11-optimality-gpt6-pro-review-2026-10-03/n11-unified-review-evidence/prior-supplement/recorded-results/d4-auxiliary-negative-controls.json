@@ -1,0 +1,132 @@
+{
+  "status": "PASS_AUXILIARY_REJECTION_CONTROLS",
+  "controls": [
+    {
+      "control": "all_648_authentic_cases",
+      "result": "PASS"
+    },
+    {
+      "control": "reported_view_zero_exploit",
+      "result": "REJECTED",
+      "reason": "terminal unused_label view must be 1, 2, or 3"
+    },
+    {
+      "control": "invalid_terminal_view_-1",
+      "result": "REJECTED",
+      "reason": "terminal unused_label view must be 1, 2, or 3"
+    },
+    {
+      "control": "invalid_terminal_view_4",
+      "result": "REJECTED",
+      "reason": "terminal unused_label view must be 1, 2, or 3"
+    },
+    {
+      "control": "invalid_terminal_view_True",
+      "result": "REJECTED",
+      "reason": "terminal unused_label view must be 1, 2, or 3"
+    },
+    {
+      "control": "invalid_terminal_view_'1'",
+      "result": "REJECTED",
+      "reason": "terminal unused_label view must be 1, 2, or 3"
+    },
+    {
+      "control": "corrupted_schema",
+      "result": "REJECTED",
+      "reason": "certificate schema"
+    },
+    {
+      "control": "input_hash_metadata",
+      "result": "REJECTED",
+      "reason": "pinned source input bindings"
+    },
+    {
+      "control": "label_inventory_binding",
+      "result": "REJECTED",
+      "reason": "label inventory binding"
+    },
+    {
+      "control": "view_convention_binding",
+      "result": "REJECTED",
+      "reason": "view/frame binding"
+    },
+    {
+      "control": "source_index_boolean",
+      "result": "REJECTED",
+      "reason": "source index"
+    },
+    {
+      "control": "target_index_negative",
+      "result": "REJECTED",
+      "reason": "target indices"
+    },
+    {
+      "control": "target_index_boolean",
+      "result": "REJECTED",
+      "reason": "target indices"
+    },
+    {
+      "control": "target_triple_length",
+      "result": "REJECTED",
+      "reason": "target indices"
+    },
+    {
+      "control": "duplicate_case",
+      "result": "REJECTED",
+      "reason": "case duplicate or mismatch"
+    },
+    {
+      "control": "missing_case",
+      "result": "REJECTED",
+      "reason": "complete case count"
+    },
+    {
+      "control": "empty_terminal_owner_outside_source",
+      "result": "REJECTED",
+      "reason": "terminal owner is not empty"
+    },
+    {
+      "control": "empty_terminal_owner_boolean",
+      "result": "REJECTED",
+      "reason": "terminal owner is not empty"
+    },
+    {
+      "control": "step_view_zero",
+      "result": "REJECTED",
+      "reason": "propagation step view must be 1, 2, or 3"
+    },
+    {
+      "control": "step_owner_boolean",
+      "result": "REJECTED",
+      "reason": "step owner"
+    },
+    {
+      "control": "drop_region_negative",
+      "result": "REJECTED",
+      "reason": "drops region grammar"
+    },
+    {
+      "control": "drop_region_boolean",
+      "result": "REJECTED",
+      "reason": "drops region grammar"
+    },
+    {
+      "control": "python_optimization",
+      "result": "REJECTED"
+    },
+    {
+      "control": "actual_cover_byte_hash",
+      "result": "REJECTED"
+    },
+    {
+      "control": "actual_overlay_byte_hash",
+      "result": "REJECTED"
+    }
+  ],
+  "sha256": {
+    "d4_incidence_data.py": "6f02f1ab2187b7521520bec24f1c66edf290c9631476c1ebf61336daeb5cfe9a",
+    "d4_propagation_certificate.py": "4d0f91f3d6e016daa4fa1a9ced9adc07224a52747a921f3a4a5f8500f3ca1c60",
+    "d4-propagation-traces.json": "6aae8c0fc1cc1ed057177377a4708b9e29d0862061f6bd3202e080b93c450406",
+    "d4_independent_geometry.py": "31097829cc7f20a1945214130426da15838aada7a36c971064635cfb9f890f9a"
+  }
+}

@@ -10,7 +10,9 @@ What it re-derives, from scratch:
 
 - the node's source is the seed (the node names it by the SHA-256 of its canonical JSON,
   a content id); the seed's world is the cells; the mask is the node's. The saved files'
-  names are names: a file is read whatever it is called and however it is spaced;
+  names are names: a file is read whatever it is called and however it is spaced. The
+  node is read a step at a time (`NodeStream`), so its members that sort before `steps`
+  must come before it, as they do in the canonical JSON;
 - the seed: every owned point is owned (bisection on the half-angle with an interval
   product bound), every row is the cell cut by the row's legal box;
 - every step's rows: a partition of the half-angle range `[0, 1]` in exact rationals, in
@@ -41,9 +43,10 @@ by cross-multiplication. Four caches hold pure functions of exact inputs and not
 else: the facets of a (partner core, core) pair, the least value of `n . y` over a
 partner row's domain by direction, the forbidden region of an (owned hull, core) pair,
 and a partner row's admitted cover, reused at a later step only when that step publishes
-identical domain and core lists for the same accepted row. `covered_by_area`, the
-area-subtraction form of the cover, is kept as the reference the tests hold the sweep
-against.
+identical domain and core lists for the same accepted row. `bound_memos` keeps the two
+pair-keyed ones to about a step's worth, so that adaptive rows do not grow them without
+limit. `covered_by_area`, the area-subtraction form of the cover, is kept as the
+reference the tests hold the sweep against.
 
 Modes. Full, the default, checks every row of every step and is what admission requires.
 `--sample N` checks `N` rows per step drawn by a seeded generator, and every row of the
@@ -58,13 +61,14 @@ differs from it; `devtools.provenance`), and PASS or FAIL with the first failure
 from __future__ import annotations
 
 import argparse
+import codecs
 import gzip
 import hashlib
 import json
 import math
 import random
 import time
-from collections.abc import Sequence
+from collections.abc import Iterator, Sequence
 from dataclasses import dataclass, field
 from fractions import Fraction as Q
 from itertools import pairwise
@@ -743,8 +747,137 @@ def load_object(path: Path) -> tuple[dict[str, Any], str]:
     The producer names the file by that id; the name is not read back as a check.
     """
     document = json.loads(gzip.decompress(path.read_bytes()))
-    canonical = json.dumps(document, sort_keys=True, separators=(",", ":")).encode()
-    return document, hashlib.sha256(canonical).hexdigest()
+    return document, hashlib.sha256(canonical(document)).hexdigest()
+
+
+def canonical(value: Any) -> bytes:
+    """The canonical JSON a content id is the SHA-256 of: sorted keys, no spaces."""
+    return json.dumps(value, sort_keys=True, separators=(",", ":")).encode()
+
+
+READ_BYTES = 1 << 20
+AFTER_VALUE = frozenset(" \t\n\r,:]}")
+
+
+def gunzip_text(path: Path) -> Iterator[str]:
+    """A gzipped UTF-8 file's text, in pieces of about `READ_BYTES` bytes."""
+    utf8 = codecs.getincrementaldecoder("utf-8")()
+    with gzip.open(path, "rb") as stream:
+        while block := stream.read(READ_BYTES):
+            yield utf8.decode(block)
+    yield utf8.decode(b"", final=True)
+
+
+class NodeStream:
+    """A saved node read a step at a time, so that no more than about a step is held.
+
+    Its members up to `steps` are parsed whole into `header`, and every member that sorts
+    before `steps` must precede it, as in the canonical form, so that the header is whole
+    before the first step. `steps()` then parses the array one element at a time and,
+    after the last, reads the remaining members into `header` and sets `sha256`, the
+    content id: the canonical JSON is hashed as it is reached, the members before `steps`
+    in name order, each step, then the members after it. Spacing between tokens is free,
+    as for `json.loads`; a repeated member is refused.
+    """
+
+    def __init__(self, path: Path) -> None:
+        self.header: dict[str, Any] = {}
+        self.sha256: str | None = None
+        self._source = gunzip_text(path)
+        self._text = ""
+        self._at = 0
+        self._end = False
+        self._decoder = json.JSONDecoder()
+        self._digest = hashlib.sha256(b"{")
+        self._read = False
+        require(self._char() == "{", "the node is not a JSON object")
+        separator = "}" if self._peek() == "}" else ","
+        while separator == ",":
+            name = self._name()
+            if name == "steps":
+                require(self._char() == "[", "the node's steps are not an array")
+                for key in sorted(key for key in self.header if key < "steps"):
+                    self._digest.update(self._member(key) + b",")
+                self._digest.update(b'"steps":[')
+                return
+            self.header[name] = self._value()
+            separator = self._char()
+            require(separator in {",", "}"}, "the node's members are not comma-separated")
+        raise VerificationError("the node has no steps")
+
+    def steps(self) -> Iterator[dict[str, Any]]:
+        require(not self._read, "the node's steps are read once")
+        self._read = True
+        count = 0
+        separator = self._char() if self._peek() == "]" else ","
+        while separator == ",":
+            step = self._value()
+            self._digest.update((b"," if count else b"") + canonical(step))
+            count += 1
+            yield step
+            separator = self._char()
+            require(separator in {",", "]"}, "the node's steps are not comma-separated")
+        self._digest.update(b"]")
+        while (separator := self._char()) == ",":
+            name = self._name()
+            require(name > "steps", f"the node's member {name!r} follows its steps")
+            self.header[name] = self._value()
+        require(separator == "}", "the node's members are not comma-separated")
+        require(self._peek() == "", "data follows the node")
+        for key in sorted(key for key in self.header if key > "steps"):
+            self._digest.update(b"," + self._member(key))
+        self._digest.update(b"}")
+        self.sha256 = self._digest.hexdigest()
+
+    def _member(self, key: str) -> bytes:
+        return json.dumps(key).encode() + b":" + canonical(self.header[key])
+
+    def _fill(self) -> None:
+        """Read at least as much again as is unread, so a value's retries cost time
+        linear in its length."""
+        pieces = [self._text[self._at :]]
+        missing = max(READ_BYTES, len(pieces[0]))
+        while missing > 0 and (piece := next(self._source, None)) is not None:
+            pieces.append(piece)
+            missing -= len(piece)
+        self._end = missing > 0
+        self._text, self._at = "".join(pieces), 0
+
+    def _peek(self) -> str:
+        """The next character that is not JSON whitespace, or "" at the end."""
+        while True:
+            while self._at < len(self._text) and self._text[self._at] in " \t\n\r":
+                self._at += 1
+            if self._at < len(self._text) or self._end:
+                return self._text[self._at : self._at + 1]
+            self._fill()
+
+    def _char(self) -> str:
+        found = self._peek()
+        self._at += len(found)
+        return found
+
+    def _name(self) -> str:
+        name = self._value()
+        require(isinstance(name, str), "a node member's name is not a string")
+        require(name not in self.header, f"the node repeats its member {name!r}")
+        require(self._char() == ":", "a node member's name lacks its colon")
+        return name
+
+    def _value(self) -> Any:
+        _ = self._peek()
+        while True:
+            try:
+                value, end = self._decoder.raw_decode(self._text, self._at)
+            except json.JSONDecodeError:
+                if self._end:
+                    raise
+            else:
+                # A number that ends the buffer may go on in the next piece.
+                if self._end or self._text[end : end + 1] in AFTER_VALUE:
+                    self._at = end
+                    return value
+            self._fill()
 
 
 @dataclass
@@ -1187,6 +1320,24 @@ def check_final(state: State, node: dict[str, Any], *, stall: bool) -> None:
     )
 
 
+MEMO_PAIRS = 1 << 15
+
+
+def bound_memos(state: State, owner: int, before: list[Point]) -> None:
+    """Keep the memos near a step's worth after `owner`'s step; they hold pure functions of
+    exact inputs, so this changes no check. The forbidden regions of the owned hull the
+    step replaced are dropped, since no row asks for them while it stays replaced, and the
+    facets are dropped once they pass `MEMO_PAIRS` pairs: uniform rows give at most `bins`
+    squared, which are kept throughout, and adaptive rows give many more."""
+    if state.groups[owner] != before:
+        stale = tuple(before)
+        state.forbidden = {
+            key: region for key, region in state.forbidden.items() if key[0] != stale
+        }
+    if len(state.facets) > MEMO_PAIRS:
+        state.facets.clear()
+
+
 def verify_objects(
     directory: Path,
     cells: Cells,
@@ -1202,7 +1353,8 @@ def verify_objects(
         len(seeds) == 1 and len(nodes) == 1, "the directory must hold one seed and one node"
     )
     seed, seed_sha = load_object(seeds[0])
-    node, node_sha = load_object(nodes[0])
+    stream = NodeStream(nodes[0])
+    node = stream.header
     require(node["source"]["sha256"] == seed_sha, "the node's source is not the seed")
     mask = check_frame(seed, node, cells)
     bins = seed["bins"]
@@ -1215,7 +1367,7 @@ def verify_objects(
     closure_step = -1 if stall else contradiction["step"]
     rng = random.Random(sample_seed)
     derived: dict[str, Any] | None = None
-    steps = node["steps"]
+    steps = stream.steps()
     for si, step in enumerate(steps):
         require(
             step["index"] == si and step["owner"] in mask and step["complete"] is True,
@@ -1234,9 +1386,11 @@ def verify_objects(
             if sample is None or si == closure_step
             else set(rng.sample(range(count), min(sample, count)))
         )
+        before = state.groups[owner]
         new_rows, planes, any_live = check_step(state, step, si, node["node_id"], full)
         compress(state, step, si, planes, any_live=any_live)
         state.rows[owner] = new_rows
+        bound_memos(state, owner, before)
         state.tick("steps")
         derived = derive_closure(state, owner, si)
         if progress:
@@ -1261,13 +1415,14 @@ def verify_objects(
                 and derived.get("owner") == contradiction.get("owner"),
                 f"step {si}: the derived closure is not the declared one",
             )
-            require(si == len(steps) - 1, "steps after the closure")
+            require(next(steps, None) is None, "steps after the closure")
             break
     else:
         require(stall, "no closure derived")
+    require(stream.sha256 is not None, "the node was not read to its end")
     check_final(state, node, stall=stall)
     return {
-        "certificate": {"seed_sha256": seed_sha, "node_sha256": node_sha},
+        "certificate": {"seed_sha256": seed_sha, "node_sha256": stream.sha256},
         "mask": mask,
         "cells": [cells.names[k] for k in mask],
         "bins": bins,

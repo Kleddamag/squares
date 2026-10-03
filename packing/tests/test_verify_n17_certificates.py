@@ -314,6 +314,53 @@ def test_a_saved_object_is_judged_by_what_it_says_not_by_its_name(tmp_path: Path
         _ = kernel_verifier.file_cells(tmp_path / "cells.json", "0" * 64)
 
 
+def test_the_kernel_verifier_reads_a_node_a_step_at_a_time(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    """The node stream gives the node's own members, steps and content id, from the saved
+    file and from the same node re-spaced, with reads so short that values and numbers
+    are split between them."""
+    _, node = blind_pair_objects()
+    expected = json.loads(canonical(node))
+    directory = blind_pair(tmp_path)
+    saved = next(directory.glob("node-*.json.gz"))
+    spaced = tmp_path / "spaced.json.gz"
+    _ = spaced.write_bytes(gzip.compress(json.dumps(expected, indent=2).encode()))
+    monkeypatch.setattr(kernel_verifier, "READ_BYTES", 5)
+    for path in (saved, spaced):
+        stream = kernel_verifier.NodeStream(path)
+        steps = stream.steps()
+        assert list(steps) == expected["steps"]
+        assert {**stream.header, "steps": expected["steps"]} == expected
+        assert stream.sha256 == hashlib.sha256(canonical(node)).hexdigest()
+        with pytest.raises(kernel_verifier.VerificationError, match="read once"):
+            _ = next(stream.steps())
+
+
+@pytest.mark.parametrize(
+    ("text", "message"),
+    [
+        ('"node"', "not a JSON object"),
+        ('{"mask":[]}', "has no steps"),
+        ('{"mask":[],"mask":[],"steps":[]}', "repeats its member"),
+        ('{"steps":[],"mask":[]}', "follows its steps"),
+        ('{"steps":[{} {}]}', "not comma-separated"),
+        ('{"steps":[],"terminal":true}{}', "data follows"),
+    ],
+)
+def test_the_kernel_verifier_refuses_a_node_out_of_canonical_order(
+    tmp_path: Path, text: str, message: str
+) -> None:
+    path = tmp_path / "node.json.gz"
+    _ = path.write_bytes(gzip.compress(text.encode()))
+
+    def read(path: Path) -> list[dict[str, Any]]:
+        return list(kernel_verifier.NodeStream(path).steps())
+
+    with pytest.raises(kernel_verifier.VerificationError, match=message):
+        _ = read(path)
+
+
 # ---------------------------------------------------------------------------
 # The kernel verifier on refined rows, from the producer's split policy
 # ---------------------------------------------------------------------------
@@ -395,6 +442,20 @@ def test_the_kernel_verifier_passes_refined_rows(tmp_path: Path, pair: str) -> N
     assert receipt["counts"]["rows_full"] > seed["bins"] * len(counts)
     sampled = kernel_verifier.verify(split_certificate(tmp_path, pair), cells, sample=1)
     assert sampled["status"] == "PASS", sampled["failure"]
+
+
+@pytest.mark.parametrize("pair", ["blind", "wall"])
+def test_the_kernel_verifier_bounds_its_memos_without_changing_a_count(
+    tmp_path: Path, pair: str, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    """With the facet bound at zero the facets are dropped after every step, as the
+    forbidden regions of every replaced hull always are, and the receipt is the same."""
+    cells = pair_cells(tmp_path, pair)
+    bounded = kernel_verifier.verify(split_certificate(tmp_path, pair), cells)
+    monkeypatch.setattr(kernel_verifier, "MEMO_PAIRS", 0)
+    emptied = kernel_verifier.verify(split_certificate(tmp_path, pair), cells)
+    assert bounded["status"] == "PASS", bounded["failure"]
+    assert {**emptied, "seconds": None} == {**bounded, "seconds": None}
 
 
 def test_a_refined_row_is_held_to_its_own_legal_box(tmp_path: Path) -> None:

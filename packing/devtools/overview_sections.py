@@ -111,6 +111,14 @@ def status_chip(status: str) -> str:
     return f'<span class="site-chip" data-status="{_esc(status)}">{_esc(status)}</span>'
 
 
+def case_status_chip(status: str) -> str:
+    """A case's status as its chip, `proved` or `open`, the one chip for it on every page
+    that draws it, the frontier table, a case record and a result's list of cases: its
+    fill is the status's own, green for `proved` and yellow for `open` (`site.css`,
+    `think-c19o`)."""
+    return f'<span class="site-chip" data-case-status="{_esc(status)}">{_esc(status)}</span>'
+
+
 def activity_chip(result: Result) -> str:
     """Who has the next move on a result, where the register records it: `in analysis`
     for work under way here, `waiting on source` for a request with another party

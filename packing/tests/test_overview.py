@@ -5493,3 +5493,25 @@ def test_the_site_writes_its_forwarders_and_checks_them(
     assert render_overview.main(["--output", str(tmp_path), "--check"]) == 1
     (tmp_path / "explainer.html").unlink()
     assert render_overview.main(["--output", str(tmp_path), "--check"]) == 1
+
+
+def test_a_cases_status_is_one_chip_wherever_it_is_drawn(
+    rendered: Callable[[str], str], overview: overview_data.Overview
+) -> None:
+    """A case's status, `proved` or `open`, is one chip (`case_status_chip`) on every page
+    that draws it, the frontier table and the case records alike, and its fill is the
+    status's own (the owner, 2026-10-02, `think-c19o`): no page marks a case with the
+    accent tone it had before."""
+    statuses = {case["status"] for case in overview.cases.values()}
+    assert statuses == {"proved", "open"}
+    for name in ("frontier.html", "cases.html"):
+        page = rendered(name)
+        assert 'data-tone="accent"' not in page, name
+        drawn = re.findall(
+            r'<span class="site-chip" data-case-status="(\w+)">(\w+)</span>', page
+        )
+        assert drawn, name
+        assert all(attribute == word for attribute, word in drawn), name
+        assert {word for _, word in drawn} == statuses, name
+        for status in statuses:
+            assert page.count(overview_sections.case_status_chip(status)) >= 1, (name, status)

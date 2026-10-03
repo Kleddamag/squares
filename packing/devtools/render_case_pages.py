@@ -678,13 +678,12 @@ def _sources(case: dict[str, Any]) -> str:
 
 def record_head(case: dict[str, Any], *, recent: bool, first: int, last: int) -> str:
     """The record's head and its structured part, as one HTML block."""
-    from devtools.overview_sections import arrow_icon  # noqa: PLC0415
+    from devtools.overview_sections import arrow_icon, case_status_chip  # noqa: PLC0415
     from devtools.repo_links import branch_file  # noqa: PLC0415
 
     n = case["n"]
     status = case["status"]
-    tone = ' data-tone="accent"' if status == "proved" else ""
-    chip = f'<span class="site-chip"{tone}>{_esc(status)}</span>'
+    chip = case_status_chip(status)
     if case["reported_status"] != status:
         chip += f' <span class="site-credit">reported {_esc(case["reported_status"])}</span>'
     star = ' <span class="site-star" title="Recent lower bound">\u2605</span>' if recent else ""

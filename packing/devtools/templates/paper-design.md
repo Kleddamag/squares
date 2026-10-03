@@ -145,6 +145,23 @@ every ratio to 4.5:1.
 | `C4` | `oklch(73.0% 0.111 158)` `#65bd8d` | 7.8:1 | `oklch(43.4% 0.088 158)` `#1a5f3e` | 6.5:1 |
 | `C5` | `oklch(67.5% 0.135 158)` `#3aaf76` | 6.4:1 | `oklch(48.0% 0.107 158)` `#0f6f46` | 5.3:1 |
 
+The status chips take fills from the same scale, so one status reads the same wherever
+it is drawn and turns over with the page (the owner, 2026-10-02, `think-c19o`): a
+result’s `confirmed` is the confirmation rungs’ green at C3’s strength and its
+`reviewed` the verification rungs’ blue at V2’s, and a case’s `proved` is a green and
+its `open` a yellow, each a hue and a level of the scale, and the yellow a chroma boost
+of 0.02, the most that keeps its dark fill in sRGB. The other statuses, the kinds and
+the standings keep the plain chip.
+`devtools.rung_scale` computes these too, and `tests/test_rung_scale.py` holds this
+table to its output and every ratio to 4.5:1.
+
+| Status | Light fill | Text contrast | Dark fill | Text contrast |
+| --- | --- | --- | --- | --- |
+| `confirmed` | `oklch(78.5% 0.087 158)` `#88caa4` | 9.3:1 | `oklch(38.8% 0.069 158)` `#1f5036` | 7.9:1 |
+| `reviewed` | `oklch(84.0% 0.063 250)` `#accef3` | 10.9:1 | `oklch(34.2% 0.050 250)` `#243a51` | 9.9:1 |
+| `proved` | `oklch(78.5% 0.087 145)` `#96c897` | 9.3:1 | `oklch(38.8% 0.069 145)` `#2b4e2d` | 8.0:1 |
+| `open` | `oklch(84.0% 0.083 95)` `#dbcb8c` | 10.9:1 | `oklch(34.2% 0.070 95)` `#443800` | 9.9:1 |
+
 The recent-bound star is the one warm mark, `oklch(52% 0.19 25)`.
 
 Every hover, a table’s group row and a targeted row take one gentle wash, `--site-wash`,
@@ -910,10 +927,12 @@ it.
 
 - **Chips.** Every small label is one `.site-chip`: square corners, the sans face at the
   note size, a solid light fill and no border, lettered in the page’s own text colour.
-  A plain chip is a light gray tint; `data-tone="accent"` is an accent tint, for a
-  settled state such as a proved case.
-  No chip wraps: one rule on the component, `white-space: nowrap`, keeps a chip’s words
-  on one line wherever it sits, and no other rule lets one break.
+  A plain chip is a light gray tint; a status chip takes its status’s fill from the rung
+  scale (Color, The Rung Scale): a case’s `proved` green and `open` yellow
+  (`data-case-status`, written by `case_status_chip` wherever a case’s status is drawn),
+  a result’s `confirmed` green and `reviewed` blue (`data-status`). No chip wraps: one
+  rule on the component, `white-space: nowrap`, keeps a chip’s words on one line
+  wherever it sits, and no other rule lets one break.
   What holds a chip is made wide enough for it.
   A row of chips wraps like words, between chips, a space apart, with a small block
   margin (0.15rem) so a wrapped row never touches the row above, on any page or at any

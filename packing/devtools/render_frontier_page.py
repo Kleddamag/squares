@@ -526,7 +526,7 @@ def case_row(
     popover, whose body is `frontier_row_popover_body` and whose button opens the record
     too. The cells are in `HEADERS`' order: the drawing, `n`, the star, and then what is
     known."""
-    from devtools.overview_sections import row_detail  # noqa: PLC0415
+    from devtools.overview_sections import case_status_chip, row_detail  # noqa: PLC0415
     from devtools.render_case_pages import case_link  # noqa: PLC0415
     from devtools.render_case_pages import case_url as record_url  # noqa: PLC0415
 
@@ -534,8 +534,7 @@ def case_row(
     case_url = repo_url(tables.FRONTIER / f"n-{n:03d}.md")
     upper, lower = case["reported_upper_bound"], case["reported_lower_bound"]
     status = case["status"]
-    tone = ' data-tone="accent"' if status == "proved" else ""
-    shown_status = f'<span class="site-chip"{tone}>{html.escape(status)}</span>'
+    shown_status = case_status_chip(status)
     if case["reported_status"] != status:
         shown_status += f" (reported {html.escape(case['reported_status'])})"
     gap_html, gap_value = gap(case)

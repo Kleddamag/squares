@@ -502,6 +502,7 @@ def case_list(cases: Sequence[int], overview: Overview) -> str:
     the case's status, and its record on this site, its row in the frontier atlas and
     its case file on GitHub."""
     from devtools import render_frontier_page as frontier  # noqa: PLC0415
+    from devtools.overview_sections import case_status_chip  # noqa: PLC0415
     from devtools.render_case_pages import case_url  # noqa: PLC0415
 
     facts = film_facts()
@@ -513,7 +514,6 @@ def case_list(cases: Sequence[int], overview: Overview) -> str:
         _, gap_value = frontier.gap(case)
         gap = frontier.decimal_text(Decimal(gap_value).normalize()) if gap_value != "0" else "0"
         status = case["status"]
-        tone = ' data-tone="accent"' if status == "proved" else ""
         star = (
             '<span class="site-star" title="Recent lower bound">\u2605</span>'
             if fact["star"]
@@ -528,7 +528,7 @@ def case_list(cases: Sequence[int], overview: Overview) -> str:
                         f'<span class="is-upper">{_esc(fact["upper"])}</span>', classes="num"
                     ),
                     _cell(_esc(gap), classes="num"),
-                    _cell(f'<span class="site-chip"{tone}>{_esc(status)}</span>'),
+                    _cell(case_status_chip(status)),
                     _cell(
                         f'<a href="frontier.html#n-{n}">frontier</a> '
                         f'<a href="{_esc(repo_url(case_file(n)))}">'

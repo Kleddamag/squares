@@ -202,7 +202,7 @@ record equal to the containment facts recomputed here; the checker `89b674a6…`
 angles; the source audit’s certificate and tarball digests; and its improvement equal to
 the side less its comparison value. All 22 pass. Each side exceeds Green’s DS7 value at
 its count, enclosed to 60 digits, and Nagamochi’s $1 + \sqrt{n - 2\lfloor\sqrt n\rfloor + 1}$,
-and the centre domains are recomputed at all 200 oblique nodes. None of it decides
+and the centre domains are recomputed at the oblique nodes. None of it decides
 coverage.
 
 On 3 October `mixed-fetch` was run on each pinned tarball, read from the sparse checkout
@@ -294,11 +294,16 @@ arrived. No replay has been launched.
   `mixed_n91_L970` and `mixed_n92_L975`.) Each is below the side and above the public
   value the comment names, so the improvement stated is smaller than the improvement over
   what the source has published, never larger.
+- **Improvement figures that are not lower bounds.** At $n = 88$ and 93 the audit
+  compares with the rectangle values $3791/400$ and $973/100$, below the bounds already
+  standing there ($237/25$ and $39/4$, and $191/20$ at $n = 88$ from `mixed_n87_L955`,
+  which that README names), so `improvement_lower` overstates the margin, as at five
+  counts before (review finding OC-1).
 - **Nagamochi’s value as a reference.** The comments call his closed form “a reference
   value” and cite [jlevy/squares#295](https://github.com/jlevy/squares/issues/295). The
   comparison facts in the audit receipt state it, and no claim here rests on it.
 
-The review of these certificates is recorded with the register entry.
+The [review of these certificates](../../../../docs/project/reviews/review-2026-10-03-wand125-october-3-certificates.md) records these as findings OC-1 and OC-2.
 
 ## Limitations
 

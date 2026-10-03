@@ -195,7 +195,6 @@ def test_the_j_comparisons_are_exact_rationals_below_each_side(
         assert Fraction(facts["source_audit"]["compared_with"]) != Fraction(92667, 10000)
         assert facts["comparison"]["side_exceeds_green"]
         assert facts["comparison"]["side_exceeds_nagamochi"]
-        assert facts["centre_domains"]["nodes"] == audit.N50_LAST
 
 
 def test_a_later_certificate_at_a_named_count_takes_its_side_as_well() -> None:

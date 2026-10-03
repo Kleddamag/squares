@@ -7271,13 +7271,13 @@ results:
     reviews:
       - path: docs/project/reviews/review-2026-10-03-wand125-october-3-certificates.md
         kind: adversarial
-        reviewer: REVIEWER_PLACEHOLDER
+        reviewer: AI agent, the review lane of the 2026-10-03 import, prompted separately from the lane that retained the packet and registered the entry, after retention and blind to any replay; model unstated
         reviewer_kind: ai
         relation: project
         date: '2026-10-03'
         scope: >-
           The 22 certificates wand125/square-packing-bounds published on 3 October, pinned at 2aff2076, against checkers byte-identical to ones already reviewed: the argument from certificate to bound, the comparisons and improvement figures, the checker's exit status and asserts, what the new measures add, their sizes, structure and records; blind to any replay and not to retention.
-        verdict: VERDICT_PLACEHOLDER
+        verdict: accepted
         covers: [T-082]
     artifacts:
       - packing/resources/web/wand125-mixed-bounds-2026-10-03/README.md
@@ -7298,5 +7298,6 @@ results:
       report entry's external_review, with no blocking defect. That review was prompted
       separately from the lane that retained the packet and registered the entry. One entry
       for the 22, all pinned at one revision, as T-075 is for its six; a later revision than
-      T-075's, so a separate entry. The proof-bundle tarballs are pinned by digest and not
-      retained.
+      T-075's, so a separate entry. The review's OC-1 is in the n = 88 and 93 entries'
+      limitations: the source's improvement figures there are not lower bounds. The
+      proof-bundle tarballs are pinned by digest and not retained.

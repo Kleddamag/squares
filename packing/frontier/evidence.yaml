@@ -10853,10 +10853,18 @@ evidence:
       state: informally-verified
       date: '2026-10-03'
       reviewed_by: >-
-        REVIEWER_PLACEHOLDER
+        AI agent, the review lane of the 2026-10-03 import, prompted separately from the
+        lane that retained the packet and registered the entry, after retention and blind to
+        any replay; model unstated
         (docs/project/reviews/review-2026-10-03-wand125-october-3-certificates.md)
       note: >-
-        NOTE_PLACEHOLDER
+        No blocking defect. The code/ directory is byte for byte the mixed checker read on
+        28 September and 2 October, and every exact premise readable from the retained files
+        holds; the review re-derived what the new measures add, their sizes, structure,
+        comparisons and records, and replayed two directions from regenerated inputs (n = 92
+        at index 2 and n = 73 at index 79), each returning the certificate's record.
+        Findings OC-1 to OC-5 are not blocking. The 200 oblique coverage statements and the
+        axis tables are the source's until the replay here passes.
     source_reviewed: '2026-10-03'
   - id: E-n052-wand125-mixed-755-report
     claim: lower-bound
@@ -10900,10 +10908,18 @@ evidence:
       state: informally-verified
       date: '2026-10-03'
       reviewed_by: >-
-        REVIEWER_PLACEHOLDER
+        AI agent, the review lane of the 2026-10-03 import, prompted separately from the
+        lane that retained the packet and registered the entry, after retention and blind to
+        any replay; model unstated
         (docs/project/reviews/review-2026-10-03-wand125-october-3-certificates.md)
       note: >-
-        NOTE_PLACEHOLDER
+        No blocking defect. The code/ directory is byte for byte the mixed checker read on
+        28 September and 2 October, and every exact premise readable from the retained files
+        holds; the review re-derived what the new measures add, their sizes, structure,
+        comparisons and records, and replayed two directions from regenerated inputs (n = 92
+        at index 2 and n = 73 at index 79), each returning the certificate's record.
+        Findings OC-1 to OC-5 are not blocking. The 200 oblique coverage statements and the
+        axis tables are the source's until the replay here passes.
     source_reviewed: '2026-10-03'
   - id: E-n055-wand125-mixed-7728-report
     claim: lower-bound
@@ -10947,10 +10963,18 @@ evidence:
       state: informally-verified
       date: '2026-10-03'
       reviewed_by: >-
-        REVIEWER_PLACEHOLDER
+        AI agent, the review lane of the 2026-10-03 import, prompted separately from the
+        lane that retained the packet and registered the entry, after retention and blind to
+        any replay; model unstated
         (docs/project/reviews/review-2026-10-03-wand125-october-3-certificates.md)
       note: >-
-        NOTE_PLACEHOLDER
+        No blocking defect. The code/ directory is byte for byte the mixed checker read on
+        28 September and 2 October, and every exact premise readable from the retained files
+        holds; the review re-derived what the new measures add, their sizes, structure,
+        comparisons and records, and replayed two directions from regenerated inputs (n = 92
+        at index 2 and n = 73 at index 79), each returning the certificate's record.
+        Findings OC-1 to OC-5 are not blocking. The 200 oblique coverage statements and the
+        axis tables are the source's until the replay here passes.
     source_reviewed: '2026-10-03'
   - id: E-n058-wand125-mixed-7905-report
     claim: lower-bound
@@ -10994,10 +11018,18 @@ evidence:
       state: informally-verified
       date: '2026-10-03'
       reviewed_by: >-
-        REVIEWER_PLACEHOLDER
+        AI agent, the review lane of the 2026-10-03 import, prompted separately from the
+        lane that retained the packet and registered the entry, after retention and blind to
+        any replay; model unstated
         (docs/project/reviews/review-2026-10-03-wand125-october-3-certificates.md)
       note: >-
-        NOTE_PLACEHOLDER
+        No blocking defect. The code/ directory is byte for byte the mixed checker read on
+        28 September and 2 October, and every exact premise readable from the retained files
+        holds; the review re-derived what the new measures add, their sizes, structure,
+        comparisons and records, and replayed two directions from regenerated inputs (n = 92
+        at index 2 and n = 73 at index 79), each returning the certificate's record.
+        Findings OC-1 to OC-5 are not blocking. The 200 oblique coverage statements and the
+        axis tables are the source's until the replay here passes.
     source_reviewed: '2026-10-03'
   - id: E-n069-wand125-mixed-8612-report
     claim: lower-bound
@@ -11041,10 +11073,18 @@ evidence:
       state: informally-verified
       date: '2026-10-03'
       reviewed_by: >-
-        REVIEWER_PLACEHOLDER
+        AI agent, the review lane of the 2026-10-03 import, prompted separately from the
+        lane that retained the packet and registered the entry, after retention and blind to
+        any replay; model unstated
         (docs/project/reviews/review-2026-10-03-wand125-october-3-certificates.md)
       note: >-
-        NOTE_PLACEHOLDER
+        No blocking defect. The code/ directory is byte for byte the mixed checker read on
+        28 September and 2 October, and every exact premise readable from the retained files
+        holds; the review re-derived what the new measures add, their sizes, structure,
+        comparisons and records, and replayed two directions from regenerated inputs (n = 92
+        at index 2 and n = 73 at index 79), each returning the certificate's record.
+        Findings OC-1 to OC-5 are not blocking. The 200 oblique coverage statements and the
+        axis tables are the source's until the replay here passes.
     source_reviewed: '2026-10-03'
   - id: E-n070-wand125-mixed-86475-report
     claim: lower-bound
@@ -11076,23 +11116,32 @@ evidence:
       this count (Theorem 9, k=8, from n = 65; 1 + sqrt(55)), which the audit compares
       exactly. The source's completion audit compares with 8639/1000 ("our certified n70
       8.639 (record 8.6275)") and states improvement_lower 17/2000, exactly the side less
-      that value. The source says the full replay was run again from the published tarball
-      on a fresh machine, by the same implementation and not an independent one; that was
-      not checked here. The tarball (SHA-256 fa020a0c...) is pinned by digest and not
-      retained. Here devtools.audit_wand125_point_and_mixed mixed-audit
-      (receipts/mixed-audit.json in the packet) recomputes the mass, the net, the centre
-      domains and the candidate digest from the retained bytes, and its mixed-fetch checked
-      the pinned tarball, its 621 listed files, the driver's preconditions and that all 200
-      oblique inputs enclose the exact candidate; none of it decides coverage, and no angle
-      was replayed.
+      that value. The value it names was not published as a certificate; it lies above the
+      public value, so the stated improvement understates the margin (review finding OC-2).
+      The source says the full replay was run again from the published tarball on a fresh
+      machine, by the same implementation and not an independent one; that was not checked
+      here. The tarball (SHA-256 fa020a0c...) is pinned by digest and not retained. Here
+      devtools.audit_wand125_point_and_mixed mixed-audit (receipts/mixed-audit.json in the
+      packet) recomputes the mass, the net, the centre domains and the candidate digest from
+      the retained bytes, and its mixed-fetch checked the pinned tarball, its 621 listed
+      files, the driver's preconditions and that all 200 oblique inputs enclose the exact
+      candidate; none of it decides coverage, and no angle was replayed.
     external_review:
       state: informally-verified
       date: '2026-10-03'
       reviewed_by: >-
-        REVIEWER_PLACEHOLDER
+        AI agent, the review lane of the 2026-10-03 import, prompted separately from the
+        lane that retained the packet and registered the entry, after retention and blind to
+        any replay; model unstated
         (docs/project/reviews/review-2026-10-03-wand125-october-3-certificates.md)
       note: >-
-        NOTE_PLACEHOLDER
+        No blocking defect. The code/ directory is byte for byte the mixed checker read on
+        28 September and 2 October, and every exact premise readable from the retained files
+        holds; the review re-derived what the new measures add, their sizes, structure,
+        comparisons and records, and replayed two directions from regenerated inputs (n = 92
+        at index 2 and n = 73 at index 79), each returning the certificate's record.
+        Findings OC-1 to OC-5 are not blocking. The 200 oblique coverage statements and the
+        axis tables are the source's until the replay here passes.
     source_reviewed: '2026-10-03'
   - id: E-n071-wand125-mixed-8705-report
     claim: lower-bound
@@ -11124,9 +11173,11 @@ evidence:
       this count (Theorem 9, k=8, from n = 65; 1 + sqrt(56)), which the audit compares
       exactly. The source's completion audit compares with 87/10 ("our certified n71 8.70
       (record 8.685)") and states improvement_lower 1/200, exactly the side less that value.
-      The source says the full replay was run again from the published tarball on a fresh
-      machine, by the same implementation and not an independent one; that was not checked
-      here. The tarball (SHA-256 a94ffa64...) is pinned by digest and not retained. Here
+      The value it names was not published as a certificate; it lies above the public value,
+      so the stated improvement understates the margin (review finding OC-2). The source
+      says the full replay was run again from the published tarball on a fresh machine, by
+      the same implementation and not an independent one; that was not checked here. The
+      tarball (SHA-256 a94ffa64...) is pinned by digest and not retained. Here
       devtools.audit_wand125_point_and_mixed mixed-audit (receipts/mixed-audit.json in the
       packet) recomputes the mass, the net, the centre domains and the candidate digest from
       the retained bytes, and its mixed-fetch checked the pinned tarball, its 621 listed
@@ -11136,10 +11187,18 @@ evidence:
       state: informally-verified
       date: '2026-10-03'
       reviewed_by: >-
-        REVIEWER_PLACEHOLDER
+        AI agent, the review lane of the 2026-10-03 import, prompted separately from the
+        lane that retained the packet and registered the entry, after retention and blind to
+        any replay; model unstated
         (docs/project/reviews/review-2026-10-03-wand125-october-3-certificates.md)
       note: >-
-        NOTE_PLACEHOLDER
+        No blocking defect. The code/ directory is byte for byte the mixed checker read on
+        28 September and 2 October, and every exact premise readable from the retained files
+        holds; the review re-derived what the new measures add, their sizes, structure,
+        comparisons and records, and replayed two directions from regenerated inputs (n = 92
+        at index 2 and n = 73 at index 79), each returning the certificate's record.
+        Findings OC-1 to OC-5 are not blocking. The 200 oblique coverage statements and the
+        axis tables are the source's until the replay here passes.
     source_reviewed: '2026-10-03'
   - id: E-n073-wand125-mixed-8809-report
     claim: lower-bound
@@ -11183,10 +11242,18 @@ evidence:
       state: informally-verified
       date: '2026-10-03'
       reviewed_by: >-
-        REVIEWER_PLACEHOLDER
+        AI agent, the review lane of the 2026-10-03 import, prompted separately from the
+        lane that retained the packet and registered the entry, after retention and blind to
+        any replay; model unstated
         (docs/project/reviews/review-2026-10-03-wand125-october-3-certificates.md)
       note: >-
-        NOTE_PLACEHOLDER
+        No blocking defect. The code/ directory is byte for byte the mixed checker read on
+        28 September and 2 October, and every exact premise readable from the retained files
+        holds; the review re-derived what the new measures add, their sizes, structure,
+        comparisons and records, and replayed two directions from regenerated inputs (n = 92
+        at index 2 and n = 73 at index 79), each returning the certificate's record.
+        Findings OC-1 to OC-5 are not blocking. The 200 oblique coverage statements and the
+        axis tables are the source's until the replay here passes.
     source_reviewed: '2026-10-03'
   - id: E-n074-wand125-mixed-88675-report
     claim: lower-bound
@@ -11230,10 +11297,18 @@ evidence:
       state: informally-verified
       date: '2026-10-03'
       reviewed_by: >-
-        REVIEWER_PLACEHOLDER
+        AI agent, the review lane of the 2026-10-03 import, prompted separately from the
+        lane that retained the packet and registered the entry, after retention and blind to
+        any replay; model unstated
         (docs/project/reviews/review-2026-10-03-wand125-october-3-certificates.md)
       note: >-
-        NOTE_PLACEHOLDER
+        No blocking defect. The code/ directory is byte for byte the mixed checker read on
+        28 September and 2 October, and every exact premise readable from the retained files
+        holds; the review re-derived what the new measures add, their sizes, structure,
+        comparisons and records, and replayed two directions from regenerated inputs (n = 92
+        at index 2 and n = 73 at index 79), each returning the certificate's record.
+        Findings OC-1 to OC-5 are not blocking. The 200 oblique coverage statements and the
+        axis tables are the source's until the replay here passes.
     source_reviewed: '2026-10-03'
   - id: E-n075-wand125-mixed-892-report
     claim: lower-bound
@@ -11277,10 +11352,18 @@ evidence:
       state: informally-verified
       date: '2026-10-03'
       reviewed_by: >-
-        REVIEWER_PLACEHOLDER
+        AI agent, the review lane of the 2026-10-03 import, prompted separately from the
+        lane that retained the packet and registered the entry, after retention and blind to
+        any replay; model unstated
         (docs/project/reviews/review-2026-10-03-wand125-october-3-certificates.md)
       note: >-
-        NOTE_PLACEHOLDER
+        No blocking defect. The code/ directory is byte for byte the mixed checker read on
+        28 September and 2 October, and every exact premise readable from the retained files
+        holds; the review re-derived what the new measures add, their sizes, structure,
+        comparisons and records, and replayed two directions from regenerated inputs (n = 92
+        at index 2 and n = 73 at index 79), each returning the certificate's record.
+        Findings OC-1 to OC-5 are not blocking. The 200 oblique coverage statements and the
+        axis tables are the source's until the replay here passes.
     source_reviewed: '2026-10-03'
   - id: E-n076-wand125-mixed-896-report
     claim: lower-bound
@@ -11325,10 +11408,18 @@ evidence:
       state: informally-verified
       date: '2026-10-03'
       reviewed_by: >-
-        REVIEWER_PLACEHOLDER
+        AI agent, the review lane of the 2026-10-03 import, prompted separately from the
+        lane that retained the packet and registered the entry, after retention and blind to
+        any replay; model unstated
         (docs/project/reviews/review-2026-10-03-wand125-october-3-certificates.md)
       note: >-
-        NOTE_PLACEHOLDER
+        No blocking defect. The code/ directory is byte for byte the mixed checker read on
+        28 September and 2 October, and every exact premise readable from the retained files
+        holds; the review re-derived what the new measures add, their sizes, structure,
+        comparisons and records, and replayed two directions from regenerated inputs (n = 92
+        at index 2 and n = 73 at index 79), each returning the certificate's record.
+        Findings OC-1 to OC-5 are not blocking. The 200 oblique coverage statements and the
+        axis tables are the source's until the replay here passes.
     source_reviewed: '2026-10-03'
   - id: E-n086-wand125-mixed-950-report
     claim: lower-bound
@@ -11372,10 +11463,18 @@ evidence:
       state: informally-verified
       date: '2026-10-03'
       reviewed_by: >-
-        REVIEWER_PLACEHOLDER
+        AI agent, the review lane of the 2026-10-03 import, prompted separately from the
+        lane that retained the packet and registered the entry, after retention and blind to
+        any replay; model unstated
         (docs/project/reviews/review-2026-10-03-wand125-october-3-certificates.md)
       note: >-
-        NOTE_PLACEHOLDER
+        No blocking defect. The code/ directory is byte for byte the mixed checker read on
+        28 September and 2 October, and every exact premise readable from the retained files
+        holds; the review re-derived what the new measures add, their sizes, structure,
+        comparisons and records, and replayed two directions from regenerated inputs (n = 92
+        at index 2 and n = 73 at index 79), each returning the certificate's record.
+        Findings OC-1 to OC-5 are not blocking. The 200 oblique coverage statements and the
+        axis tables are the source's until the replay here passes.
     source_reviewed: '2026-10-03'
   - id: E-n087-wand125-mixed-955-report
     claim: lower-bound
@@ -11420,10 +11519,18 @@ evidence:
       state: informally-verified
       date: '2026-10-03'
       reviewed_by: >-
-        REVIEWER_PLACEHOLDER
+        AI agent, the review lane of the 2026-10-03 import, prompted separately from the
+        lane that retained the packet and registered the entry, after retention and blind to
+        any replay; model unstated
         (docs/project/reviews/review-2026-10-03-wand125-october-3-certificates.md)
       note: >-
-        NOTE_PLACEHOLDER
+        No blocking defect. The code/ directory is byte for byte the mixed checker read on
+        28 September and 2 October, and every exact premise readable from the retained files
+        holds; the review re-derived what the new measures add, their sizes, structure,
+        comparisons and records, and replayed two directions from regenerated inputs (n = 92
+        at index 2 and n = 73 at index 79), each returning the certificate's record.
+        Findings OC-1 to OC-5 are not blocking. The 200 oblique coverage statements and the
+        axis tables are the source's until the replay here passes.
     source_reviewed: '2026-10-03'
   - id: E-n088-wand125-mixed-960-report
     claim: lower-bound
@@ -11454,23 +11561,33 @@ evidence:
       (T-075), by 0.12, and Green's and Nagamochi's values at this count (Theorem 9, k=9,
       from n = 82; 1 + sqrt(71)), which the audit compares exactly. The source's completion
       audit compares with 3791/400 ("record n88 9.4775") and states improvement_lower
-      49/400, exactly the side less that value. The source says the full replay was run
-      again from the published tarball on a fresh machine, by the same implementation and
-      not an independent one; that was not checked here. The tarball (SHA-256 7e4305f1...)
-      is pinned by digest and not retained. Here devtools.audit_wand125_point_and_mixed
-      mixed-audit (receipts/mixed-audit.json in the packet) recomputes the mass, the net,
-      the centre domains and the candidate digest from the retained bytes, and its
-      mixed-fetch checked the pinned tarball, its 621 listed files, the driver's
-      preconditions and that all 200 oblique inputs enclose the exact candidate; none of it
-      decides coverage, and no angle was replayed.
+      49/400, exactly the side less that value. That value is below the bound already
+      standing at this count, so the source's improvement_lower is not a lower bound on the
+      improvement, which is 0.12 (review finding OC-1). The source says the full replay was
+      run again from the published tarball on a fresh machine, by the same implementation
+      and not an independent one; that was not checked here. The tarball (SHA-256
+      7e4305f1...) is pinned by digest and not retained. Here
+      devtools.audit_wand125_point_and_mixed mixed-audit (receipts/mixed-audit.json in the
+      packet) recomputes the mass, the net, the centre domains and the candidate digest from
+      the retained bytes, and its mixed-fetch checked the pinned tarball, its 621 listed
+      files, the driver's preconditions and that all 200 oblique inputs enclose the exact
+      candidate; none of it decides coverage, and no angle was replayed.
     external_review:
       state: informally-verified
       date: '2026-10-03'
       reviewed_by: >-
-        REVIEWER_PLACEHOLDER
+        AI agent, the review lane of the 2026-10-03 import, prompted separately from the
+        lane that retained the packet and registered the entry, after retention and blind to
+        any replay; model unstated
         (docs/project/reviews/review-2026-10-03-wand125-october-3-certificates.md)
       note: >-
-        NOTE_PLACEHOLDER
+        No blocking defect. The code/ directory is byte for byte the mixed checker read on
+        28 September and 2 October, and every exact premise readable from the retained files
+        holds; the review re-derived what the new measures add, their sizes, structure,
+        comparisons and records, and replayed two directions from regenerated inputs (n = 92
+        at index 2 and n = 73 at index 79), each returning the certificate's record.
+        Findings OC-1 to OC-5 are not blocking. The 200 oblique coverage statements and the
+        axis tables are the source's until the replay here passes.
     source_reviewed: '2026-10-03'
   - id: E-n089-wand125-mixed-965-report
     claim: lower-bound
@@ -11502,9 +11619,11 @@ evidence:
       this count (Theorem 9, k=9, from n = 82; 1 + sqrt(72)), which the audit compares
       exactly. The source's completion audit compares with 48/5 ("our certified n89 9.60
       (record 9.565)") and states improvement_lower 1/20, exactly the side less that value.
-      The source says the full replay was run again from the published tarball on a fresh
-      machine, by the same implementation and not an independent one; that was not checked
-      here. The tarball (SHA-256 75e1549d...) is pinned by digest and not retained. Here
+      The value it names was not published as a certificate; it lies above the public value,
+      so the stated improvement understates the margin (review finding OC-2). The source
+      says the full replay was run again from the published tarball on a fresh machine, by
+      the same implementation and not an independent one; that was not checked here. The
+      tarball (SHA-256 75e1549d...) is pinned by digest and not retained. Here
       devtools.audit_wand125_point_and_mixed mixed-audit (receipts/mixed-audit.json in the
       packet) recomputes the mass, the net, the centre domains and the candidate digest from
       the retained bytes, and its mixed-fetch checked the pinned tarball, its 621 listed
@@ -11514,10 +11633,18 @@ evidence:
       state: informally-verified
       date: '2026-10-03'
       reviewed_by: >-
-        REVIEWER_PLACEHOLDER
+        AI agent, the review lane of the 2026-10-03 import, prompted separately from the
+        lane that retained the packet and registered the entry, after retention and blind to
+        any replay; model unstated
         (docs/project/reviews/review-2026-10-03-wand125-october-3-certificates.md)
       note: >-
-        NOTE_PLACEHOLDER
+        No blocking defect. The code/ directory is byte for byte the mixed checker read on
+        28 September and 2 October, and every exact premise readable from the retained files
+        holds; the review re-derived what the new measures add, their sizes, structure,
+        comparisons and records, and replayed two directions from regenerated inputs (n = 92
+        at index 2 and n = 73 at index 79), each returning the certificate's record.
+        Findings OC-1 to OC-5 are not blocking. The 200 oblique coverage statements and the
+        axis tables are the source's until the replay here passes.
     source_reviewed: '2026-10-03'
   - id: E-n090-wand125-mixed-9725-report
     claim: lower-bound
@@ -11549,8 +11676,10 @@ evidence:
       82; 1 + sqrt(73)), which the audit compares exactly. It supersedes the source's
       mixed_n90_L960, which this record holds. The source's completion audit compares with
       97/10 ("our certified n90 9.70 (record 9.60)") and states improvement_lower 1/40,
-      exactly the side less that value. The source says the full replay was run again from
-      the published tarball on a fresh machine, by the same implementation and not an
+      exactly the side less that value. The value it names was not published as a
+      certificate; it lies above the public value, so the stated improvement understates the
+      margin (review finding OC-2). The source says the full replay was run again from the
+      published tarball on a fresh machine, by the same implementation and not an
       independent one; that was not checked here. The tarball (SHA-256 1744a7d6...) is
       pinned by digest and not retained. Here devtools.audit_wand125_point_and_mixed
       mixed-audit (receipts/mixed-audit.json in the packet) recomputes the mass, the net,
@@ -11562,10 +11691,18 @@ evidence:
       state: informally-verified
       date: '2026-10-03'
       reviewed_by: >-
-        REVIEWER_PLACEHOLDER
+        AI agent, the review lane of the 2026-10-03 import, prompted separately from the
+        lane that retained the packet and registered the entry, after retention and blind to
+        any replay; model unstated
         (docs/project/reviews/review-2026-10-03-wand125-october-3-certificates.md)
       note: >-
-        NOTE_PLACEHOLDER
+        No blocking defect. The code/ directory is byte for byte the mixed checker read on
+        28 September and 2 October, and every exact premise readable from the retained files
+        holds; the review re-derived what the new measures add, their sizes, structure,
+        comparisons and records, and replayed two directions from regenerated inputs (n = 92
+        at index 2 and n = 73 at index 79), each returning the certificate's record.
+        Findings OC-1 to OC-5 are not blocking. The 200 oblique coverage statements and the
+        axis tables are the source's until the replay here passes.
     source_reviewed: '2026-10-03'
   - id: E-n091-wand125-mixed-975-report
     claim: lower-bound
@@ -11610,10 +11747,18 @@ evidence:
       state: informally-verified
       date: '2026-10-03'
       reviewed_by: >-
-        REVIEWER_PLACEHOLDER
+        AI agent, the review lane of the 2026-10-03 import, prompted separately from the
+        lane that retained the packet and registered the entry, after retention and blind to
+        any replay; model unstated
         (docs/project/reviews/review-2026-10-03-wand125-october-3-certificates.md)
       note: >-
-        NOTE_PLACEHOLDER
+        No blocking defect. The code/ directory is byte for byte the mixed checker read on
+        28 September and 2 October, and every exact premise readable from the retained files
+        holds; the review re-derived what the new measures add, their sizes, structure,
+        comparisons and records, and replayed two directions from regenerated inputs (n = 92
+        at index 2 and n = 73 at index 79), each returning the certificate's record.
+        Findings OC-1 to OC-5 are not blocking. The 200 oblique coverage statements and the
+        axis tables are the source's until the replay here passes.
     source_reviewed: '2026-10-03'
   - id: E-n092-wand125-mixed-977-report
     claim: lower-bound
@@ -11658,10 +11803,18 @@ evidence:
       state: informally-verified
       date: '2026-10-03'
       reviewed_by: >-
-        REVIEWER_PLACEHOLDER
+        AI agent, the review lane of the 2026-10-03 import, prompted separately from the
+        lane that retained the packet and registered the entry, after retention and blind to
+        any replay; model unstated
         (docs/project/reviews/review-2026-10-03-wand125-october-3-certificates.md)
       note: >-
-        NOTE_PLACEHOLDER
+        No blocking defect. The code/ directory is byte for byte the mixed checker read on
+        28 September and 2 October, and every exact premise readable from the retained files
+        holds; the review re-derived what the new measures add, their sizes, structure,
+        comparisons and records, and replayed two directions from regenerated inputs (n = 92
+        at index 2 and n = 73 at index 79), each returning the certificate's record.
+        Findings OC-1 to OC-5 are not blocking. The 200 oblique coverage statements and the
+        axis tables are the source's until the replay here passes.
     source_reviewed: '2026-10-03'
   - id: E-n093-wand125-mixed-986-report
     claim: lower-bound
@@ -11692,8 +11845,10 @@ evidence:
       (T-075), by 0.11, and Green's and Nagamochi's values at this count (Theorem 9, k=9,
       from n = 82; 1 + sqrt(76)), which the audit compares exactly. The source's completion
       audit compares with 973/100 ("record n93 9.73") and states improvement_lower 13/100,
-      exactly the side less that value. The source says the full replay was run again from
-      the published tarball on a fresh machine, by the same implementation and not an
+      exactly the side less that value. That value is below the bound already standing at
+      this count, so the source's improvement_lower is not a lower bound on the improvement,
+      which is 0.11 (review finding OC-1). The source says the full replay was run again
+      from the published tarball on a fresh machine, by the same implementation and not an
       independent one; that was not checked here. The tarball (SHA-256 10e608e2...) is
       pinned by digest and not retained. Here devtools.audit_wand125_point_and_mixed
       mixed-audit (receipts/mixed-audit.json in the packet) recomputes the mass, the net,
@@ -11705,10 +11860,18 @@ evidence:
       state: informally-verified
       date: '2026-10-03'
       reviewed_by: >-
-        REVIEWER_PLACEHOLDER
+        AI agent, the review lane of the 2026-10-03 import, prompted separately from the
+        lane that retained the packet and registered the entry, after retention and blind to
+        any replay; model unstated
         (docs/project/reviews/review-2026-10-03-wand125-october-3-certificates.md)
       note: >-
-        NOTE_PLACEHOLDER
+        No blocking defect. The code/ directory is byte for byte the mixed checker read on
+        28 September and 2 October, and every exact premise readable from the retained files
+        holds; the review re-derived what the new measures add, their sizes, structure,
+        comparisons and records, and replayed two directions from regenerated inputs (n = 92
+        at index 2 and n = 73 at index 79), each returning the certificate's record.
+        Findings OC-1 to OC-5 are not blocking. The 200 oblique coverage statements and the
+        axis tables are the source's until the replay here passes.
     source_reviewed: '2026-10-03'
   - id: E-n094-wand125-mixed-992-report
     claim: lower-bound
@@ -11740,9 +11903,11 @@ evidence:
       this count (Theorem 9, k=9, from n = 82; 1 + sqrt(77)), which the audit compares
       exactly. The source's completion audit compares with 247/25 ("our certified n94 9.88
       (record 9.805)") and states improvement_lower 1/25, exactly the side less that value.
-      The source says the full replay was run again from the published tarball on a fresh
-      machine, by the same implementation and not an independent one; that was not checked
-      here. The tarball (SHA-256 b866b117...) is pinned by digest and not retained. Here
+      The value it names was not published as a certificate; it lies above the public value,
+      so the stated improvement understates the margin (review finding OC-2). The source
+      says the full replay was run again from the published tarball on a fresh machine, by
+      the same implementation and not an independent one; that was not checked here. The
+      tarball (SHA-256 b866b117...) is pinned by digest and not retained. Here
       devtools.audit_wand125_point_and_mixed mixed-audit (receipts/mixed-audit.json in the
       packet) recomputes the mass, the net, the centre domains and the candidate digest from
       the retained bytes, and its mixed-fetch checked the pinned tarball, its 621 listed
@@ -11752,10 +11917,18 @@ evidence:
       state: informally-verified
       date: '2026-10-03'
       reviewed_by: >-
-        REVIEWER_PLACEHOLDER
+        AI agent, the review lane of the 2026-10-03 import, prompted separately from the
+        lane that retained the packet and registered the entry, after retention and blind to
+        any replay; model unstated
         (docs/project/reviews/review-2026-10-03-wand125-october-3-certificates.md)
       note: >-
-        NOTE_PLACEHOLDER
+        No blocking defect. The code/ directory is byte for byte the mixed checker read on
+        28 September and 2 October, and every exact premise readable from the retained files
+        holds; the review re-derived what the new measures add, their sizes, structure,
+        comparisons and records, and replayed two directions from regenerated inputs (n = 92
+        at index 2 and n = 73 at index 79), each returning the certificate's record.
+        Findings OC-1 to OC-5 are not blocking. The 200 oblique coverage statements and the
+        axis tables are the source's until the replay here passes.
     source_reviewed: '2026-10-03'
   - id: E-n095-wand125-mixed-996-report
     claim: lower-bound
@@ -11787,9 +11960,11 @@ evidence:
       this count (Theorem 9, k=9, from n = 82; 1 + sqrt(78)), which the audit compares
       exactly. The source's completion audit compares with 248/25 ("our certified n95 9.92
       (record 9.8518)") and states improvement_lower 1/25, exactly the side less that value.
-      The source says the full replay was run again from the published tarball on a fresh
-      machine, by the same implementation and not an independent one; that was not checked
-      here. The tarball (SHA-256 1f7b67cd...) is pinned by digest and not retained. Here
+      The value it names was not published as a certificate; it lies above the public value,
+      so the stated improvement understates the margin (review finding OC-2). The source
+      says the full replay was run again from the published tarball on a fresh machine, by
+      the same implementation and not an independent one; that was not checked here. The
+      tarball (SHA-256 1f7b67cd...) is pinned by digest and not retained. Here
       devtools.audit_wand125_point_and_mixed mixed-audit (receipts/mixed-audit.json in the
       packet) recomputes the mass, the net, the centre domains and the candidate digest from
       the retained bytes, and its mixed-fetch checked the pinned tarball, its 621 listed
@@ -11799,10 +11974,18 @@ evidence:
       state: informally-verified
       date: '2026-10-03'
       reviewed_by: >-
-        REVIEWER_PLACEHOLDER
+        AI agent, the review lane of the 2026-10-03 import, prompted separately from the
+        lane that retained the packet and registered the entry, after retention and blind to
+        any replay; model unstated
         (docs/project/reviews/review-2026-10-03-wand125-october-3-certificates.md)
       note: >-
-        NOTE_PLACEHOLDER
+        No blocking defect. The code/ directory is byte for byte the mixed checker read on
+        28 September and 2 October, and every exact premise readable from the retained files
+        holds; the review re-derived what the new measures add, their sizes, structure,
+        comparisons and records, and replayed two directions from regenerated inputs (n = 92
+        at index 2 and n = 73 at index 79), each returning the certificate's record.
+        Findings OC-1 to OC-5 are not blocking. The 200 oblique coverage statements and the
+        axis tables are the source's until the replay here passes.
     source_reviewed: '2026-10-03'
   - id: E-n096-wand125-mixed-997-report
     claim: lower-bound
@@ -11847,8 +12030,16 @@ evidence:
       state: informally-verified
       date: '2026-10-03'
       reviewed_by: >-
-        REVIEWER_PLACEHOLDER
+        AI agent, the review lane of the 2026-10-03 import, prompted separately from the
+        lane that retained the packet and registered the entry, after retention and blind to
+        any replay; model unstated
         (docs/project/reviews/review-2026-10-03-wand125-october-3-certificates.md)
       note: >-
-        NOTE_PLACEHOLDER
+        No blocking defect. The code/ directory is byte for byte the mixed checker read on
+        28 September and 2 October, and every exact premise readable from the retained files
+        holds; the review re-derived what the new measures add, their sizes, structure,
+        comparisons and records, and replayed two directions from regenerated inputs (n = 92
+        at index 2 and n = 73 at index 79), each returning the certificate's record.
+        Findings OC-1 to OC-5 are not blocking. The 200 oblique coverage statements and the
+        axis tables are the source's until the replay here passes.
     source_reviewed: '2026-10-03'

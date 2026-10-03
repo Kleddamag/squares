@@ -28,6 +28,7 @@ import yaml
 from jsonschema_rs import Draft202012Validator
 
 from devtools.check_basic_bounds import check_case_basic_bounds
+from devtools.verifier_registry import problems as verifier_problems
 from sqpack.assurance import check_case_semantics, check_evidence_semantics
 from sqpack.known_best import KNOWN_BEST_CORPUS
 from sqpack.yamlio import load_yaml, safe_load
@@ -187,6 +188,10 @@ def cross_checks() -> list[str]:
     evidence_by_id = {record["id"]: record for record in evidence_records}
     for record in evidence_records:
         errs.extend(check_evidence_semantics(record))
+    # Which programs verified each entry, and whose: every id resolves in the verifier
+    # registry, and the registry's own paths and records resolve (epistemics.md,
+    # Confirmation).
+    errs.extend(verifier_problems(evidence_records))
 
     case_numbers: list[int] = []
     for case in sorted(FRONTIER.glob("n-*.md")):

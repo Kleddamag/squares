@@ -1070,7 +1070,8 @@ def test_results_md_labels_every_result_by_its_kind() -> None:
         elif "superseded by " in status and record["kind"] not in check_results.BOUND_KINDS:
             assert any(item["extent"] == "whole" for item in record["superseded_by"])
     t037 = next(line for line in committed.splitlines() if line.startswith("| T-037 |"))
-    assert "| confirmed, superseded by T-060 |" in t037
+    assert t037.split(" | ")[8].startswith("confirmed, ")
+    assert t037.split(" | ")[8].endswith(", superseded by T-060")
 
 
 def test_results_by_others_awaiting_a_replay_lead_their_group() -> None:

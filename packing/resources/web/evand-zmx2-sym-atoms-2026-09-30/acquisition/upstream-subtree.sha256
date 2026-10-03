@@ -1,0 +1,5 @@
+843286a0459c6ad1d064bbfb22966fb27ae6ebbadc4579dc17254a566013486a  ./s12/search/zmx2_sym_run.sh
+e1daec4d9995e879ddbf4aa5fb89b6f03eaaa23157ef60feb72741e3a0ffa57e  ./s12/verify2/Cargo.lock
+4e0f078ea45b32802c21cb71413305e30cd062c3fa371c6ff6e62bda3d07a577  ./s12/verify2/Cargo.toml
+92a4cfe87b4e33d57ce132c9c517eded3fe62b4a5a2151b5ba250b8ee329fe64  ./s12/verify2/src/bin/zmx2.rs
+94b7d83ecf6aeea64c20aea9d4f5c210c28577fb3870581d79169204c980c12b  ./s12/verify2/src/main.rs

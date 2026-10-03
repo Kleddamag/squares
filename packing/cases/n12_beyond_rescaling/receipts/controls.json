@@ -1,0 +1,20 @@
+{
+  "schema": "S12BeyondRescalingControls/v1",
+  "base_certificate_sha256": "6823e8e872259a6cf3ed258400bf1a0973e1972ab671e8fdcab25938ca605a66",
+  "controls": [
+    {
+      "name": "lowered orbit",
+      "mutation": "devtools.s12_angle_net_rescale mutate --lower-orbit 3948000 3134000 100: the orbit of one point in the bin-0 binding corner square loses 100/10^7 of weight; still D4-symmetric, total 14970247/1250000 < 12",
+      "certificate_sha256": "18a408c9f6ef9e7056378d6243ba35f506ef415c2b838ca8ad24e029f768cf6f",
+      "source_verifier": "overflow-checked build, VERIFY_BINS=0:0, N = 96000: min covered weight 9999845/10000000 at bin 0, NOT VERIFIED",
+      "first_party": "devtools.verify_evand_angle_net_native --rows 0: row 0 refuted with an exact witness (receipts/native-ctl1.json)"
+    },
+    {
+      "name": "one step larger",
+      "mutation": "devtools.s12_angle_net_rescale mutate --denominator 3949000: the same integers and weights over 3949000, container 15680/3949 = 3.9706255",
+      "certificate_sha256": "5fc6fce806eee3837291fedbce0e17c20f7c2c7145d532d903082942afa88224",
+      "source_verifier": "screen at N = 96000, stride 64: 128 of 622 screened bins below 1, least 9764124/10000000 at bin 7808",
+      "first_party": "devtools.verify_evand_angle_net_native --rows 7808: refuted with an exact witness, charge 1958699/2000000 (receipts/native-ctl2.json)"
+    }
+  ]
+}

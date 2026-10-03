@@ -1395,8 +1395,10 @@ body {
    (`overview_sections.case_list`), so a range is never cut after its dash. A list reads
    from the start of its cell, as text does, and the column's header with it.
 
-   A cell of up to four values stays on one line and is as narrow as that line. A cell of
-   five or more wraps, and asks for `--site-cases-measure`: T-056's 23 values take 6
+   A cell of up to four values stays on one line and is as narrow as that line, unless
+   that line is longer than half the measure (`overview_sections.CASES_ONE_LINE`). A cell
+   of five or more, or a long one, wraps (`.site-n-wraps`), and asks for
+   `--site-cases-measure`: T-056's 23 values take 6
    lines there, where a column as narrow as one value set them one or two to a line, 15
    lines and a row 386px tall. The measure is what the cell would like, not a floor: a
    table gives a column the width it asks for before the result and the credit, which
@@ -1416,7 +1418,7 @@ body {
   .site-results td.site-col-n {
     white-space: nowrap;
   }
-  .site-results td.site-col-n:has(.site-n-value:nth-child(5)) {
+  .site-results td.site-col-n.site-n-wraps {
     min-width: calc(var(--site-cases-measure) / 2 + 1rem);
     white-space: normal;
     width: calc(var(--site-cases-measure) + 1rem);
@@ -1536,10 +1538,10 @@ body {
     color: var(--kpress-doc-muted);
     content: "n = ";
   }
-  /* A list of five values or more takes a line of its own under the id, the rungs and
-     the status, the card's whole width, and wraps there from the start of the line:
-     between them it had under half of that. */
-  .kpress .site-results td.site-col-n:has(.site-n-value:nth-child(5)) {
+  /* A list that wraps, of five values or more or a long one, takes a line of its own
+     under the id, the rungs and the status, the card's whole width, and wraps there from
+     the start of the line: between them it had under half of that. */
+  .kpress .site-results td.site-col-n.site-n-wraps {
     grid-area: 3 / 1 / auto / -1;
     text-align: start;
   }

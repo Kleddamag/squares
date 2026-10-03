@@ -1,0 +1,13 @@
+# command: env VERIFY_BINS=7808:7808 ./verify/target/release/verify ctl2.txt 12 96000 1
+# cwd: scratch dir holding the overflow-checked build of the retained s12/verify (binary sha256 60279b2c) and the controls written by devtools.audit_s12_reweighted --control-dir
+# python3: not used by this command
+# host: 4 cores; load 3.36 1.33 0.52; started 2026-10-02T23:02:00Z
+D4-symmetric atom set: true  -> angles cover [0,45] deg
+atoms=1736 total weight = 119762776/10000000 = 11.976278
+s = 15680/3949 = 3.970625
+angles: k=0..39765 (N=96000), covering [0,45deg]
+PARTIAL RUN: VERIFY_BINS=7808:7808 -- only these bins are swept; this run cannot verify anything
+  FAIL at angle k=7808: covered 9764124/10000000
+min covered weight over ALL placements = 9764124/10000000 = 0.976412  (at angle k=7808)
+NOT VERIFIED (PARTIAL RUN: only bins 7808..7808 of 0..39764 were swept)
+# finished 2026-10-02T23:02:00Z; exit 0; wall 0.075 s; CPU 0.1 s (user 0.070 + sys 0.004); load 3.36 1.33 0.52

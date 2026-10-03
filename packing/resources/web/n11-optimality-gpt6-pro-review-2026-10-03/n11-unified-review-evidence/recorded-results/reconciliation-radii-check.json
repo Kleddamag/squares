@@ -1,0 +1,132 @@
+{
+  "status": "PASS_RADII_AND_REPORTED_FRACTION_SANITY",
+  "scope": "Exact transcription match and algebraic consistency only; does not validate Review A unavailable dual weights or checker execution",
+  "A_file_sha256": "e911c70cd3e1834661e0d07a0fca358022c797e59487dbaa0ee8bf3635dc7438",
+  "pinned_inclusion_sha256": "c5b970458135847f5790f2311e4861faf720924ad7e62f5bafb6d1978743144c",
+  "rows": [
+    {
+      "label": 0,
+      "owner": 3,
+      "matches_pinned_radii": true,
+      "radii": [
+        "18767167/10000000000",
+        "4435327/2000000000",
+        "5670363/2500000000"
+      ],
+      "contained_in_simplified_box": true
+    },
+    {
+      "label": 1,
+      "owner": 15,
+      "matches_pinned_radii": true,
+      "radii": [
+        "1636033/1000000000",
+        "6880181/5000000000",
+        "1764113/1000000000"
+      ],
+      "contained_in_simplified_box": true
+    },
+    {
+      "label": 2,
+      "owner": 8,
+      "matches_pinned_radii": true,
+      "radii": [
+        "8962451/10000000000",
+        "5212397/5000000000",
+        "5670363/2500000000"
+      ],
+      "contained_in_simplified_box": true
+    },
+    {
+      "label": 3,
+      "owner": 0,
+      "matches_pinned_radii": true,
+      "radii": [
+        "1635053/1000000000",
+        "10683139/10000000000",
+        "1890121/1250000000"
+      ],
+      "contained_in_simplified_box": true
+    },
+    {
+      "label": 4,
+      "owner": 4,
+      "matches_pinned_radii": true,
+      "radii": [
+        "4087019/2500000000",
+        "13962901/10000000000",
+        "20161291/10000000000"
+      ],
+      "contained_in_simplified_box": true
+    },
+    {
+      "label": 5,
+      "owner": 1,
+      "matches_pinned_radii": true,
+      "radii": [
+        "12900283/10000000000",
+        "534153/500000000",
+        "1890121/1250000000"
+      ],
+      "contained_in_simplified_box": true
+    },
+    {
+      "label": 6,
+      "owner": 2,
+      "matches_pinned_radii": true,
+      "radii": [
+        "678279/500000000",
+        "4124329/5000000000",
+        "35312013/10000000000"
+      ],
+      "contained_in_simplified_box": true
+    },
+    {
+      "label": 7,
+      "owner": 11,
+      "matches_pinned_radii": true,
+      "radii": [
+        "11182451/10000000000",
+        "3232837/5000000000",
+        "8824483/2500000000"
+      ],
+      "contained_in_simplified_box": true
+    },
+    {
+      "label": 8,
+      "owner": 9,
+      "matches_pinned_radii": true,
+      "radii": [
+        "9356857/10000000000",
+        "8671199/10000000000",
+        "7549783/5000000000"
+      ],
+      "contained_in_simplified_box": true
+    },
+    {
+      "label": 9,
+      "owner": 10,
+      "matches_pinned_radii": true,
+      "radii": [
+        "293551/400000000",
+        "10335557/10000000000",
+        "40352153/10000000000"
+      ],
+      "contained_in_simplified_box": true
+    },
+    {
+      "label": 10,
+      "owner": 13,
+      "matches_pinned_radii": true,
+      "radii": [
+        "1920157/2500000000",
+        "8222903/2500000000",
+        "67647473/10000000000"
+      ],
+      "contained_in_simplified_box": true
+    }
+  ],
+  "A_stated_fraction": "24251087101573907634681435939000000000/35849803998164131953538679451950587687",
+  "A_stated_fraction_decimal": 0.6764635896702756,
+  "A_stated_fraction_below_one": true
+}

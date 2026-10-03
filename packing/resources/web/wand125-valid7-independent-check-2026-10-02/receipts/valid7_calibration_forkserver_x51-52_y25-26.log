@@ -1,0 +1,8 @@
+# command: /tmp/claude-0/-home-user-squares/4ea49914-96b4-51a9-a2a9-c5603fe593f4/scratchpad/v7/venv/bin/python src/run_all.py cover/L4_k02_box7.txt --centers 51/10 26/5 5/2 13/5 --nproc 2 --record runs/wand125_calibration.jsonl --resume
+# cwd: a work dir staged by devtools.plan_valid7_replay stage --checker wand125
+# python3: a scratch venv: CPython 3.14.7 with python-flint 0.9.0, as requirements.txt pins
+# host: 4 cores; load 24.88 25.01 20.07; started 2026-10-02T17:41:36Z
+roots 32, already done 0
+new roots 32 leaves {'CORE': 2273, 'TIERB2': 2} uncertified 0 counterexamples 0 cpu 322.2s
+VERIFIED
+# finished 2026-10-02T17:44:19Z; exit 0; wall 162.625 s; CPU 0.2 s (user 0.137 + sys 0.025); load 28.02 26.38 21.41

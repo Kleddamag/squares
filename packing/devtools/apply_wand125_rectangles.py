@@ -59,6 +59,8 @@ import yaml
 from strif import atomic_write_text
 
 from devtools.audit_wand125_rectangles import (
+    OCTOBER_1,
+    OCTOBER_2,
     PACKETS,
     SEPTEMBER_27,
     SEPTEMBER_28,
@@ -88,6 +90,10 @@ class Registration:
     replay: str
     #: Counts where a stronger bound from another source is registered separately, so
     #: this packet's certificate there is a superseded prior and moves neither lane.
+    #: `plans` skips such a count outright, so a replay of its certificate would not
+    #: reach the verified lane either: a count belongs here only once the other bound
+    #: holds both lanes. Where the stronger bound is only reported, `plans` already
+    #: leaves the reported field to it, and a replay still raises the verified one.
     superseded_priors: Mapping[int, str]
     #: The report entries to insert into ``evidence.yaml`` when missing; ``{scope}`` is
     #: filled with the cases that cite each one, and ``{certificate}`` with the packet's
@@ -105,6 +111,19 @@ class Registration:
     @property
     def link(self) -> str:
         return f"../resources/web/{self.packet.directory.name}/README.md"
+
+    @property
+    def head(self) -> str:
+        """How the paragraph this registration writes begins, and so how it is found.
+
+        The date alone is not enough: other sources' intakes of the same day open with the
+        same bold label, and a paragraph this tool did not write is never touched.
+        """
+        return f"{self.intake} wand125’s [rectangle-density source]({self.link})"
+
+    def wrote(self, paragraph: str) -> bool:
+        """Whether ``paragraph`` is this registration's, however Flowmark wrapped it."""
+        return " ".join(paragraph.split()).startswith(self.head)
 
     @property
     def ids(self) -> frozenset[str]:
@@ -142,6 +161,7 @@ _REPORT_2026_09_28 = """\
     source_key: '[wand125 rectangle bounds 2026-09-28]'
     certificate: {certificate}
     replay_status: not-attempted
+    verifiers: [V-tokoharu-verify-cpp]
     limitations: >-
       Source 39d8ecc74d651b54ec977c331c8f2015b442a6c4, pushed between 2026-09-27 and
       2026-09-28 (UTC), reports one standing rectangle-density certificate in Tokoharu's
@@ -176,6 +196,7 @@ _MONOTONE_2026_09_28 = """\
     novelty: previously-published
     source_key: '[wand125 rectangle bounds 2026-09-28]'
     replay_status: not-attempted
+    verifiers: [V-tokoharu-verify-cpp]
     limitations: >-
       Reported-lane transfer at 39d8ecc: a certificate whose exact mass is below k
       refutes k squares as well, and deleting squares proves monotonicity, so each listed
@@ -187,6 +208,136 @@ _MONOTONE_2026_09_28 = """\
       registered report. This derivation does not strengthen the assurance of its
       source premise or substitute for its complete replay.
     source_reviewed: '2026-09-28'
+"""
+_REPORT_2026_10_01 = """\
+  - id: E-wand125-rectangle-2026-10-01-report
+    claim: lower-bound
+    scope: {scope}
+    assurance: reported
+    reported_method: interval-certified
+    performed_by: source-author
+    relationship_to_generator: same-implementation
+    origin: external
+    novelty: previously-published
+    source_key: '[wand125 rectangle bounds 2026-10-01]'
+    certificate: {certificate}
+    replay_status: not-attempted
+    verifiers: [V-tokoharu-verify-cpp]
+    limitations: >-
+      Source 1a25a5ed745fdd905a52f48fcc48150a0669032d, committed 2026-10-01 (UTC),
+      reports one standing rectangle-density certificate in Tokoharu's format for each
+      listed count, each new or raised since 39d8ecc and first committed between
+      2026-09-29 and 2026-10-01 (UTC), accepted there by Tokoharu's unchanged interval
+      checker (verify.cpp SHA-256
+      a75140df1b484ad104a214d2e8de87afda9fca5929341ec40121afde0c1af602). The listed
+      sides run from 1927/400 at n19 to 49259/5000 at n95; the complete list is the
+      CASES_2026_10_01 table of devtools/audit_wand125_rectangles.py and the source's own
+      README. Registration was requested in jlevy/squares#281, which lists 34 of the 37
+      and leaves out n59, n77 and n78. The sixteen standing certificates the revision
+      left unchanged, at n18, 21, 32, 37, 45, 51, 52, 57, 58, 60, 61, 67, 71, 72, 73 and
+      91, are byte-identical to those E-wand125-rectangle-report and
+      E-wand125-rectangle-2026-09-28-report record, and their cases stay on those
+      entries. Each certificate's weights were multiplied by one exact rational factor,
+      between 1.00004 and 1.04329, to bring its mass to n - 1/100 before the recorded
+      run, which checked the scaled data. The n31 certificate, of mass 3099/100, also
+      gives s(32) >= 2381/400, above the unchanged direct n32 claim 119/20 and below
+      Evan Daniel's s(32) = 6. Lower rungs, matching certificates, the point
+      certificates and the point-only, exact-cover and mixed-measure bundles at the same
+      revision are pinned by digest only. This is the public-claim entry, not a local
+      verification receipt. At n59, n66, n77, n78 and n90 a stronger bound was
+      registered separately when this entry was written, so those five case records do
+      not cite this entry: the source's own exact covers s(59) = 8 and s(77) = 9, Evan
+      Daniel's s(78) = 9, and the source's mixed rectangle-measure certificates 421/50
+      at n66 and 48/5 at n90.
+    source_reviewed: '2026-10-01'
+"""
+_MONOTONE_2026_10_01 = """\
+  - id: E-wand125-rectangle-2026-10-01-monotone-report
+    claim: lower-bound
+    scope: {scope}
+    assurance: reported
+    reported_method: interval-certified
+    performed_by: repository
+    relationship_to_generator: not-applicable
+    origin: audited-here
+    novelty: previously-published
+    source_key: '[wand125 rectangle bounds 2026-10-01]'
+    replay_status: not-attempted
+    verifiers: [V-tokoharu-verify-cpp]
+    limitations: >-
+      Reported-lane transfer at 1a25a5e: a certificate whose exact mass is below k
+      refutes k squares as well, and deleting squares proves monotonicity, so each listed
+      count takes the strongest smaller-count certificate below whose mass it lies. Two
+      certificates new at this revision are the strongest below counts they do not
+      name: the n31 certificate at 2381/400, of mass 3099/100, passes the unchanged
+      direct n32 claim 119/20 and carries to n32 through n36, and the n78 certificate at
+      1793/200, of mass 7799/100, carries to n79 through n85. The direct n77 claim,
+      3573/400, now exceeds the n76 transfer 357/40, and n87 and n90 have certificates of
+      their own. The listed counts are those where the transfer beats every other
+      registered report. This derivation does not strengthen the assurance of its
+      source premise or substitute for its complete replay.
+    source_reviewed: '2026-10-01'
+"""
+_REPORT_2026_10_02 = """\
+  - id: E-wand125-rectangle-2026-10-02-report
+    claim: lower-bound
+    scope: {scope}
+    assurance: reported
+    reported_method: interval-certified
+    performed_by: source-author
+    relationship_to_generator: same-implementation
+    origin: external
+    novelty: previously-published
+    source_key: '[wand125 rectangle bounds 2026-10-02]'
+    certificate: {certificate}
+    replay_status: not-attempted
+    limitations: >-
+      Source b00fc70f1904e9b1b567afee056d347f911209e8, committed 2026-10-02 (UTC),
+      reports one standing rectangle-density certificate in Tokoharu's format for each
+      listed count, each raised since 1a25a5e by three commits of 2026-10-02 (UTC),
+      06eeb40, 7d77022 and 4318bdf, and accepted there by Tokoharu's unchanged interval
+      checker (verify.cpp SHA-256
+      a75140df1b484ad104a214d2e8de87afda9fca5929341ec40121afde0c1af602). The seven sides
+      are 49/10 at n20, 2731/400 at n42, 127/16 at n59, 3451/400 at n70, 447/50 at n77,
+      3859/400 at n91 and 1947/200 at n93; the complete standing list is the
+      CASES_2026_10_02 table of devtools/audit_wand125_rectangles.py. No issue requests
+      them; the import of 2 October took them in from the source's own commits. The 46
+      standing certificates the revision left unchanged are byte-identical to those the
+      earlier rectangle entries record, and their cases stay on those entries. Each
+      certificate's weights were multiplied by one exact rational factor, between
+      1.00009 and 1.03993, to bring its mass to n - 1/100 before the recorded run, which
+      checked the scaled data. Lower rungs, matching certificates, the point
+      certificates and the point-only, exact-cover, mixed and linear bundles at the same
+      revision are pinned by digest only. This is the public-claim entry, not a local
+      verification receipt. At n59 and n77 a stronger bound was registered separately
+      when this entry was written, the source's own exact covers s(59) = 8 and
+      s(77) = 9, so those case records do not cite this entry; at n91 and n93 the same
+      revision's mixed rectangle-measure certificates, 97/10 at n91 and 39/4 at n92,
+      which carries to n93, are stronger wherever they are registered.
+    source_reviewed: '2026-10-02'
+"""
+_MONOTONE_2026_10_02 = """\
+  - id: E-wand125-rectangle-2026-10-02-monotone-report
+    claim: lower-bound
+    scope: {scope}
+    assurance: reported
+    reported_method: interval-certified
+    performed_by: repository
+    relationship_to_generator: not-applicable
+    origin: audited-here
+    novelty: previously-published
+    source_key: '[wand125 rectangle bounds 2026-10-02]'
+    replay_status: not-attempted
+    limitations: >-
+      Reported-lane transfer at b00fc70: a certificate whose exact mass is below k
+      refutes k squares as well, and deleting squares proves monotonicity, so each listed
+      count takes the strongest smaller-count certificate below whose mass it lies. The
+      one transfer new at this revision is the n91 certificate at 3859/400, of mass
+      9099/100, to n92, where the source's mixed certificates hold more. The listed
+      counts are those where the transfer beats every other registered report. This
+      derivation does not strengthen the assurance of its source premise or substitute
+      for its complete replay.
+    source_reviewed: '2026-10-02'
 """
 
 SEPTEMBER_27_REGISTRATION = Registration(
@@ -220,8 +371,56 @@ SEPTEMBER_28_REGISTRATION = Registration(
         "E-wand125-rectangle-2026-09-28-monotone-report": _MONOTONE_2026_09_28,
     },
 )
+OCTOBER_1_REGISTRATION = Registration(
+    packet=OCTOBER_1,
+    source_key="[wand125 rectangle bounds 2026-10-01]",
+    report="E-wand125-rectangle-2026-10-01-report",
+    monotone_report="E-wand125-rectangle-2026-10-01-monotone-report",
+    replay="E-wand125-rectangle-2026-10-01-source-replay",
+    # The three counts where another source's bound holds both lanes, so no replay of the
+    # rectangle certificate could move either; all three certificates are unchanged since
+    # 39d8ecc. The counts whose stronger bound is only reported are deliberately absent:
+    # wand125's exact covers s(59) = 8 and s(77) = 9, evand's s(60) = s(61) = 8 and
+    # s(78) = 9, and wand125's mixed certificates at n37, n66 and n90 (n65 and n92 have no
+    # rectangle certificate). `plans` leaves their reported fields alone because the
+    # record holds more, and a replayed rectangle certificate still raises their
+    # verified lane, which sits at Nagamochi's bound until one of those claims is replayed.
+    superseded_priors={
+        21: "evand/square-packing s(21) = 5 supersedes 399/80",
+        32: "evand/square-packing s(32) = 6 supersedes 119/20 and the n31 transfer 2381/400",
+        45: "evand/square-packing s(45) = 7 supersedes 1391/200",
+    },
+    entries={
+        "E-wand125-rectangle-2026-10-01-report": _REPORT_2026_10_01,
+        "E-wand125-rectangle-2026-10-01-monotone-report": _MONOTONE_2026_10_01,
+    },
+)
+OCTOBER_2_REGISTRATION = Registration(
+    packet=OCTOBER_2,
+    source_key="[wand125 rectangle bounds 2026-10-02]",
+    report="E-wand125-rectangle-2026-10-02-report",
+    monotone_report="E-wand125-rectangle-2026-10-02-monotone-report",
+    replay="E-wand125-rectangle-2026-10-02-source-replay",
+    # The same three counts as at 1a25a5e, whose certificates are unchanged since 39d8ecc.
+    # The exact covers at n59 and n77 and the mixed certificates at n91 and n92 are only
+    # reported, so they are left to the comparison with the record, as before.
+    superseded_priors={
+        21: "evand/square-packing s(21) = 5 supersedes 399/80",
+        32: "evand/square-packing s(32) = 6 supersedes 119/20 and the n31 transfer 2381/400",
+        45: "evand/square-packing s(45) = 7 supersedes 1391/200",
+    },
+    entries={
+        "E-wand125-rectangle-2026-10-02-report": _REPORT_2026_10_02,
+        "E-wand125-rectangle-2026-10-02-monotone-report": _MONOTONE_2026_10_02,
+    },
+)
 #: Oldest first; the order is the order of the packets' pins.
-REGISTRATIONS = (SEPTEMBER_27_REGISTRATION, SEPTEMBER_28_REGISTRATION)
+REGISTRATIONS = (
+    SEPTEMBER_27_REGISTRATION,
+    SEPTEMBER_28_REGISTRATION,
+    OCTOBER_1_REGISTRATION,
+    OCTOBER_2_REGISTRATION,
+)
 BY_DATE = {registration.date: registration for registration in REGISTRATIONS}
 OURS = frozenset().union(*(registration.ids for registration in REGISTRATIONS))
 if set(BY_DATE) != set(PACKETS):
@@ -506,18 +705,36 @@ def _verified_sentence(plan: Plan, registration: Registration) -> str | None:
     )
 
 
-def intake(plan: Plan, registration: Registration) -> str:
+def _field_side(field: Mapping[str, Any] | None) -> Fraction | None:
+    return None if not field else Fraction(Decimal(str(field["value"])))
+
+
+def intake(plan: Plan, registration: Registration, payload: Mapping[str, Any]) -> str:
+    """The registration's paragraph for one case, whose fields are ``payload`` before it.
+
+    A certificate's own side is written as a bound on ``s(n)`` only when it is what the
+    reported or verified field holds once the plan is applied, since `check_case_prose`
+    holds that form to the fields; otherwise it is "a direct certificate", and the
+    stronger bound another source registered keeps the field and its own paragraph.
+    """
     n = plan.n
     cases = registration.packet.cases
-    link = f"[rectangle-density source]({registration.link})"
-    head = f"{registration.intake} wand125’s {link}"
+    head = registration.head
     sentences: list[str] = []
     monotone = plan.reported is not None and plan.reported.source != n
     if n in cases:
         side = cases[n][1]
         mass = _mass(registration, n)
+        fields = (
+            plan.reported.side
+            if plan.reported is not None
+            else _field_side(payload.get("reported_lower_bound")),
+            plan.verified.side
+            if plan.verified is not None
+            else _field_side(payload.get("verified_lower_bound")),
+        )
         claim = f"`s({n}) >= {side} = {_decimal(side)}`"
-        if monotone:
+        if monotone or side not in fields:
             claim = f"a direct `{side} = {_decimal(side)}` certificate for this case"
         sentences.append(
             f"{head} reports {claim}, with total mass "
@@ -730,17 +947,27 @@ def apply_case(plan: Plan, registration: Registration, frontier: Path = FRONTIER
         )
     # The intake is written with code spans, and its mathematics made math by the rules
     # `devtools.migrate_math` applied to the rest of the body.
-    paragraph = markdown_math(intake(plan, registration))
+    paragraph = markdown_math(intake(plan, registration, payload))
     title, _, rest = body.partition("\n\n")
-    if rest.startswith(registration.intake):
-        existing_paragraph, _, rest = rest.partition("\n\n")
+    # This registration's paragraph is found by its source and packet, wherever it is;
+    # a new one goes under the title. Every other paragraph is someone else's or an
+    # earlier registration's, and only the latter's claims are ever retired.
+    parts = rest.split("\n\n")
+    mine = [index for index, part in enumerate(parts) if registration.wrote(part)]
+    if len(mine) > 1:
+        raise ValueError(f"n = {plan.n} holds {len(mine)} {registration.date} paragraphs")
+    place = mine[0] if mine else 0
+    if mine:
+        existing_paragraph = parts.pop(place)
         # Flowmark rewraps the paragraph at commit; the same words are the same paragraph.
         if " ".join(existing_paragraph.split()) == paragraph:
             paragraph = existing_paragraph
-    earlier = tuple(item.intake for item in REGISTRATIONS[: _index(registration)])
+    earlier = REGISTRATIONS[: _index(registration)]
     rest = "\n\n".join(
-        _retire_earlier_intake(part, plan, registration) if part.startswith(earlier) else part
-        for part in rest.split("\n\n")
+        _retire_earlier_intake(part, plan, registration)
+        if any(item.wrote(part) for item in earlier)
+        else part
+        for part in parts
     )
     if plan.reported is not None:
         rest = _retire_selected_report(rest, plan)
@@ -748,9 +975,17 @@ def apply_case(plan: Plan, registration: Registration, frontier: Path = FRONTIER
         rest = _retire_nagamochi_prose(
             rest, plan, str(payload["reported_upper_bound"]["value"])
         )
-    # Only what a retirement wrote is still code: the rest is migrated already.
-    body = f"{title}\n\n{paragraph}\n\n{markdown_math(rest)}"
-    return f"---\n{front}---\n{body}"
+    others = rest.split("\n\n")
+    if len(others) != len(parts):
+        raise ValueError(f"n = {plan.n}: rewriting the body changed its paragraphs")
+    # Only what a retirement wrote is still code: the rest is migrated already, and a
+    # paragraph no retirement changed is left exactly as it is.
+    others = [
+        markdown_math(new) if new != old else old
+        for new, old in zip(others, parts, strict=True)
+    ]
+    others.insert(place, paragraph)
+    return f"---\n{front}---\n{title}\n\n" + "\n\n".join(others)
 
 
 def _entry_span(text: str, identifier: str) -> tuple[int, int] | None:

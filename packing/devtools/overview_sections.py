@@ -908,6 +908,21 @@ def id_cell(result: Result, detail: RowDetail) -> str:
     return f'<td class="site-col-id" data-value="{_esc(result.id)}">{detail.trigger}</td>'
 
 
+#: The most characters a result's list of cases may have and stay on one line, half the
+#: `--site-cases-measure` of `site.css`: a cell wraps from five values, and also when a
+#: shorter list is longer than this, since on one line it would hold the column wider
+#: than the floor it narrows to before the table scrolls. T-075's four values, two counts
+#: and two ranges, are 20 characters, and on one line ran the table of results 26 pixels
+#: past its frame at 1024 with six columns, and 47 past its floors with eight.
+CASES_ONE_LINE = 12
+
+
+def case_cell_class(result: Result) -> str:
+    """The n cell's classes: `site-n-wraps` where its list wraps in the measure."""
+    long = len(result.scope.split(", ")) >= 5 or len(result.scope) > CASES_ONE_LINE
+    return "num site-col-n site-n-wraps" if long else "num site-col-n"
+
+
 def case_list(result: Result) -> str:
     """A result's cases as its n cell sets them: the register's counts and ranges
     (`Result.scope`: `68, 102`, then `130` to `132` as a range with an en dash), each
@@ -965,7 +980,8 @@ def result_cells(result: Result, overview: Overview, detail: RowDetail) -> str:
         f"{date_cell(result)}</td>"
         f"{significance_cell(result, overview)}"
         f'<td class="site-col-result">{result_text(result)}</td>'
-        f'<td class="num site-col-n" data-value="{result.first_n}">{case_list(result)}</td>'
+        f'<td class="{case_cell_class(result)}" data-value="{result.first_n}">'
+        f"{case_list(result)}</td>"
         f'<td class="site-col-credit" data-value="{_esc(result.credit)}">'
         f"{credit_cell(result.credit)}</td>"
         f'<td class="site-rungs" '
@@ -1642,9 +1658,19 @@ OTHER_PROJECTS: tuple[tuple[str, str, str], ...] = (
         "Exact weighted certificates and zero-margin closed covers, closing n = 21, 32 and 45.",
     ),
     (
+        "https://github.com/squarepacker/s12-lower-bound",
+        "Ryu Sungjoon",
+        "Evan Daniel's s(12) certificate rescaled by 7902/7901, a bound for twelve squares.",
+    ),
+    (
         "https://github.com/wand125/square-packing-bounds",
         "wand125",
         "Weighted point and rectangle-density lower-bound certificates across many n.",
+    ),
+    (
+        "https://github.com/wand125/valid7-independent-check",
+        "wand125",
+        "A second, independent exact checker of Valid7, the finite step of s(k² \u2212 3) = k.",
     ),
     (
         "https://github.com/tokoharu/square-packing-density-bounds",

@@ -1,0 +1,7 @@
+Checked 186 immutable file identities.
+PASS_HASHES_ONLY; no mathematical checks performed.
+
+real	0m0.211s
+user	0m0.155s
+sys	0m0.038s
+exit=0

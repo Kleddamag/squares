@@ -1,0 +1,12 @@
+{
+  "status": "FRESH_NEAR_INPUT_BINDING_MISMATCH_CONFIRMED",
+  "source_sha256": "491afdaaf411e7fdb4968bdcda7232ea517ead34739d0ae8c7d5570333a981cc",
+  "compressed_sha256": "5d74352c6c05fd4e0ea4d4842915061603669a54205af2a59cf2303051a48949",
+  "compressed_bytes": 27653954,
+  "decoded_bytes": 185901535,
+  "actual_final_state_sha256": "a6d45c0c383496fbffd0934e37d735badecc6d05f1e8346da8c063ee5f44fd80",
+  "publisher_claimed_final_state_sha256": "810027063afb57bda360cc16eced4bf0e62c6cb29f112237f945cabab8613f9f",
+  "matches_independently_retained_actual": true,
+  "geometry_replayed": false,
+  "seconds": 6.399787363000087
+}

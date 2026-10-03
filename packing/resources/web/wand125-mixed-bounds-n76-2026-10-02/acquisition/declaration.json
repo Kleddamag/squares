@@ -1,0 +1,45 @@
+{
+  "format": "external-source-declaration-v1",
+  "id": "wand125-mixed-bounds",
+  "source_url": "https://github.com/wand125/square-packing-bounds",
+  "source_ref": "refs/heads/main",
+  "source_commit": "7975030a192607ef27edd1559aee4e98bd93047b",
+  "retrieved_at_utc": "2026-10-02T07:47Z",
+  "git_scope": "A blob-filtered clone of the single public branch, fetched to 06eeb40c, checked out sparse at this commit over the root README.md, LICENSE and .gitignore and the claim directory. Every file under the claim directory is digested, with the three root files; the rest of the 2,968-file tree is pinned by the commit.",
+  "archived_dir": "square-packing-bounds",
+  "license": "MIT, Copyright (c) 2026 wand125 (root LICENSE)",
+  "claims": [
+    "s(76) >= 447/50 (certificates/mixed_n76_L894)"
+  ],
+  "scope": [
+    "README.md",
+    "LICENSE",
+    ".gitignore",
+    "certificates/mixed_n76_L894"
+  ],
+  "pinned_only": [
+    {
+      "match": "LICENSE",
+      "reason": "retained byte-identical by the 2026-09-27 rectangle packet",
+      "identical_to": "packing/resources/web/wand125-rectangle-certificates-2026-09-27/wand125-rectangles/LICENSE"
+    },
+    {
+      "match": ".gitignore",
+      "reason": "a retained .gitignore would act on this repository's tree; the 2026-10-01 packet README quotes it"
+    },
+    {
+      "match": "certificates/mixed_*/*-proof-bundle.tar.gz",
+      "reason": "complete proof bundle (11.9 MB)"
+    },
+    {
+      "match": "certificates/mixed_*/code/*",
+      "reason": "byte-identical to the mixed_n50_L740/code/ file of the same name, retained by the 2026-09-28 packet",
+      "identical_to": "packing/resources/web/wand125-point-and-mixed-2026-09-28/square-packing-bounds/certificates/mixed_n50_L740/code"
+    },
+    {
+      "match": "certificates/mixed_*/requirements.txt",
+      "reason": "byte-identical to mixed_n50_L740/requirements.txt, retained by the 2026-09-28 packet",
+      "identical_to": "packing/resources/web/wand125-point-and-mixed-2026-09-28/square-packing-bounds/certificates/mixed_n50_L740/requirements.txt"
+    }
+  ]
+}

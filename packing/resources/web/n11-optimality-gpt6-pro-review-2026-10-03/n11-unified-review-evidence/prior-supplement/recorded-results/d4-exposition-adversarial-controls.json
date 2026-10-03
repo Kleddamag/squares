@@ -1,0 +1,149 @@
+{
+  "authentic_summary": {
+    "999": {
+      "initial_contradictions": 168,
+      "propagated_contradictions": 47,
+      "survivors": 1,
+      "maximum_operations": 19
+    },
+    "1462": {
+      "initial_contradictions": 198,
+      "propagated_contradictions": 17,
+      "survivors": 1,
+      "maximum_operations": 15
+    },
+    "1659": {
+      "initial_contradictions": 196,
+      "propagated_contradictions": 20,
+      "survivors": 0,
+      "maximum_operations": 7
+    }
+  },
+  "controls": [
+    [
+      "Original false terminal exploit",
+      true,
+      "terminal unused_label view must be 1, 2, or 3"
+    ],
+    [
+      "Invalid terminal view -1",
+      true,
+      "terminal unused_label view must be 1, 2, or 3"
+    ],
+    [
+      "Invalid terminal view 4",
+      true,
+      "terminal unused_label view must be 1, 2, or 3"
+    ],
+    [
+      "Invalid terminal view True",
+      true,
+      "terminal unused_label view must be 1, 2, or 3"
+    ],
+    [
+      "Invalid terminal view 1.0",
+      true,
+      "terminal unused_label view must be 1, 2, or 3"
+    ],
+    [
+      "Case omission",
+      true,
+      "complete case count"
+    ],
+    [
+      "Case duplication",
+      true,
+      "case duplicate or mismatch"
+    ],
+    [
+      "Wrong cap",
+      true,
+      "view/frame binding"
+    ],
+    [
+      "Wrong input binding",
+      true,
+      "pinned source input bindings"
+    ],
+    [
+      "Wrong label binding",
+      true,
+      "label inventory binding"
+    ],
+    [
+      "Wrong view binding",
+      true,
+      "view/frame binding"
+    ],
+    [
+      "Non-integer source",
+      true,
+      "source index"
+    ]
+  ],
+  "source_sha256": {
+    "d4_incidence_data.py": "6f02f1ab2187b7521520bec24f1c66edf290c9631476c1ebf61336daeb5cfe9a",
+    "d4_propagation_certificate.py": "4d0f91f3d6e016daa4fa1a9ced9adc07224a52747a921f3a4a5f8500f3ca1c60",
+    "d4_independent_geometry.py": "31097829cc7f20a1945214130426da15838aada7a36c971064635cfb9f890f9a",
+    "d4-propagation-traces.json": "6aae8c0fc1cc1ed057177377a4708b9e29d0862061f6bd3202e080b93c450406"
+  },
+  "additional_controls": [
+    {
+      "name": "d4_propagation_certificate rejects -O",
+      "returncode": 1
+    },
+    {
+      "name": "d4_independent_geometry rejects -O",
+      "returncode": 1
+    },
+    {
+      "name": "relocated exact geometry",
+      "result": {
+        "method": "Independent exact boundary-line intersection enumeration; no proof-checker imports",
+        "counts": [
+          16,
+          56,
+          124,
+          220
+        ],
+        "dimensions": {
+          "2": 212,
+          "0": 8
+        },
+        "maximum_cell_squared_physical_diameter": "196471698868229799711490263426870840158942905163933003300260799468114337241449583804816613/206619277667778980378105359478676124500000000000000000000000000000000000000000000000000000",
+        "reflection_13_fixed_26_to_57": true,
+        "region13_box": [
+          "23/50",
+          "27/50",
+          "0",
+          "11/100"
+        ],
+        "region26_and57_box": [
+          "11/25",
+          "14/25",
+          "23/100",
+          "7/25"
+        ],
+        "exact_distance_maxima": {
+          "26": "272100642564123130521590552725036319877564615970144347118300704626647367548648169/386518286590632276841186591360000000000000000000000000000000000000000000000000000",
+          "57": "272100642564123130521590552725036319877564615970144347118300704626647367548648169/386518286590632276841186591360000000000000000000000000000000000000000000000000000"
+        },
+        "coarse_distance_using_actual_U": "18293518064592627965599295211194793982627781/25000000000000000000000000000000000000000000",
+        "simple_distance_bound_using_U_lt_4": "1989/2500",
+        "seconds": 0.5562791639999887
+      }
+    },
+    {
+      "name": "relocated trace consumer minimal closure",
+      "returncode": 0
+    },
+    {
+      "name": "actual cover source byte mutation",
+      "returncode": 1
+    },
+    {
+      "name": "actual overlay source byte mutation",
+      "returncode": 1
+    }
+  ]
+}

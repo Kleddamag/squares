@@ -60,6 +60,15 @@ def register() -> list[dict]:
 
 
 @pytest.fixture(scope="module")
+def case_pages() -> dict[str, str]:
+    """Every case record by served name, from the one render the test process shares
+    (`tests.site_renders.case_records`). The 324 records take about fifteen seconds to
+    render, so they are rendered here, during setup, as the pages are: a check that reads
+    them carries no render in its own call time, which the pull-request surface caps."""
+    return site_renders.case_records()
+
+
+@pytest.fixture(scope="module")
 def rendered() -> Callable[[str], str]:
     """Any site page by name, from the one render of each the test process shares
     (`tests.site_renders`). Every page is rendered here, during setup, the case record
@@ -120,7 +129,9 @@ def test_the_results_table_has_its_own_page_and_the_overview_points_to_it(
     ) in recent
 
 
-def test_every_link_to_a_result_goes_to_its_row(page: str, results: str) -> None:
+def test_every_link_to_a_result_goes_to_its_row(
+    page: str, results: str, case_pages: dict[str, str]
+) -> None:
     """The overview's recent table and replay table, and the case records, link a
     result at its row on the results page, never at a fragment of their own page."""
     rows = {row_id for row_id, _, _ in ROW.findall(results)}
@@ -131,7 +142,7 @@ def test_every_link_to_a_result_goes_to_its_row(page: str, results: str) -> None
     assert set(linked) - rows == {"verification-ladders"}
     assert 'id="verification-ladders"' in results
     assert not re.search(r'href="#t-\d+"', page)
-    for record in site_renders.case_records().values():
+    for record in case_pages.values():
         assert set(re.findall(r'href="\.\./all-results\.html#([^"]+)"', record)) <= rows
         assert 'href="index.html#t-' not in record
         assert 'href="../index.html#t-' not in record
@@ -2328,12 +2339,14 @@ def test_a_results_rungs_run_significance_first(overview: overview_data.Overview
 @pytest.mark.parametrize(
     "name", ["index.html", render_overview.RESULTS_PAGE, "cases/11.html", "frontier.html"]
 )
-def test_every_page_lists_significance_first(name: str, rendered: Callable[[str], str]) -> None:
+def test_every_page_lists_significance_first(
+    name: str, rendered: Callable[[str], str], case_pages: dict[str, str]
+) -> None:
     """Wherever rungs sit side by side, on any page, they run S, V, C: a case record's
     three, and the V and C of a table's row, whose significance is a column of its own
     before them (`test_each_results_row_shows_its_rungs_significance_first`). No run
     repeats a scale or puts a later one first."""
-    shown = site_renders.case_records()[name] if name.startswith("cases/") else rendered(name)
+    shown = case_pages[name] if name.startswith("cases/") else rendered(name)
     # The legend over a table of results lists every mark of a ladder in a row, by
     # design, and is no result's rungs (`test_a_table_of_results_opens_with_a_legend`).
     shown = re.sub(r'<div class="site-rung-legend".*?</div>', "", shown, flags=re.DOTALL)
@@ -2701,9 +2714,12 @@ def test_recent_results_is_one_table_not_cards_or_a_list(
         cell = row.split('<td class="site-col-result"', 1)[1].split("</td>", 1)[0]
         assert "site-row-open" not in cell
         assert "<br" not in row
-    # Evan Daniel's three exact values, the closures the exact-value cards used to show.
+    # Evan Daniel's three exact values, the closures the exact-value cards used to show, and
+    # every closure since: each is a case some row lists. Until 2026-10-02 each was its
+    # row's first case; s(78) = 9, proved that day by the s(77) cover's total being below
+    # 78, is the second case of T-067's row, which lists 77 and 78.
     exact = {n for n in overview.recent_lower if overview.cases[n]["status"] == "proved"}
-    shown = {r.first_n for r in newest}
+    shown = {n for r in newest for n in scope_values(dict(r.record["scope"]))}
     assert exact <= shown
 
 
@@ -2951,14 +2967,15 @@ PROBLEM_STATEMENT = (
         "for most $n$. In many cases, $s(n)$ is known only to lie between an upper bound "
         "(the size of the enclosing square for the tightest packing ever discovered, such "
         "as $s(29) \\le 5.934$) and a lower bound (a size below which it is proved that no "
-        "packing can exist, such as the reported $s(29) \\ge 5.79$)."
+        "packing can exist, such as the reported $s(29) \\ge 5.7975$)."
     ),
 )
 
 
 def test_the_intros_examples_are_the_records() -> None:
     """The introduction's two examples are case 29's current bounds: its lower example
-    is the reported lower bound, wand125's 5.79 of 2026-09-28 when this was written,
+    is the reported lower bound, wand125's 5.79 of 2026-09-28 when this was written and
+    its 2319/400 = 5.7975 of 1 October (T-074) since,
     and its upper example is the reported upper bound rounded up, which also stands at
     or above the verified ceiling, so it is itself a proved ceiling. A new bound at
     $n = 29$ that leaves an example stale fails here rather than on the page."""
@@ -3091,7 +3108,7 @@ def test_recent_results_opens_with_its_table_and_says_what_it_shows_under_it(
 
 
 def test_recent_results_names_the_headline_results_at_their_rows(
-    page: str, results: str
+    page: str, results: str, case_pages: dict[str, str]
 ) -> None:
     """The paragraph names the results that settle eleven squares, bracket seventeen and
     give the new exact values, each id at its row on the Results page and each case at
@@ -3109,7 +3126,7 @@ def test_recent_results_names_the_headline_results_at_their_rows(
         assert f'<a href="all-results.html#{result}">{result.upper()}</a>' in lead, result
         assert f'id="{result}"' in results, result
     assert re.findall(r"\bT-\d{3}\b", text) == ["T-060", "T-043", "T-065"]
-    records = site_renders.case_records()
+    records = case_pages
     for n in (21, 32, 45):
         assert f'<a href="{render_case_pages.case_url(n)}" data-case="{n}">' in lead, n
         assert render_case_pages.case_url(n) in records, n
@@ -3144,7 +3161,11 @@ def test_recent_results_names_the_headline_results_at_their_rows(
 #: bounds, from 2026-08-31, after it began on 2026-08-22), and one phrase narrowed to
 #: what the register holds: the project tabulates every known new result and verifies
 #: the proofs behind them, without claiming every one is checked, since some registered
-#: results are recorded and not yet replayed here.
+#: results are recorded and not yet replayed here. The sentence after Queuingtheorydotcom's
+#: is the owner's of the same day (`think-nlyc`): the top-line results by others, Evan
+#: Daniel's family T-064 and his exact values T-052, T-051 and T-053, in a sentence of
+#: their own because the bibliography files them as independent of this project, and
+#: without a significance score, since they are S4 and only n = 11's results are S5.
 SITE_STATEMENT = (
     (
         "Work on the square packing problem has exploded in the summer of 2026 thanks to "
@@ -3152,10 +3173,13 @@ SITE_STATEMENT = (
         "August 2026 with some initial explorations that obtained new lower bounds for "
         "$n = 11, 17, 18, 19, 20$ and other low values. Now several others have obtained "
         "results building on this work, including a landmark new proof by "
-        "Queuingtheorydotcom of the optimality of the famous case of 11 squares. This "
-        "project now independently tabulates all known new results and does AI-assisted "
-        "verification of the proofs and certificates behind them, to encourage open "
-        "collaboration on open questions and formalizations of current proofs."
+        "Queuingtheorydotcom of the optimality of the famous case of 11 squares. "
+        "Separately, Evan Daniel has proved the optimality of a whole infinite family, "
+        "$s(k^2 - 3) = k$ for every $k \\ge 6$, along with exact values at 21, 32 and 45 "
+        "squares. This project now independently tabulates all known new results and "
+        "does AI-assisted verification of the proofs and certificates behind them, to "
+        "encourage open collaboration on open questions and formalizations of current "
+        "proofs."
     ),
     (
         "If you have new results or know of newer results, please file an issue to "
@@ -3165,14 +3189,22 @@ SITE_STATEMENT = (
 )
 
 
-def test_the_sites_own_statement_follows_readmes_introduction(page: str) -> None:
+def test_the_sites_own_statement_follows_readmes_introduction(
+    page: str, results: str, case_pages: dict[str, str]
+) -> None:
     """After README's introduction the section has two paragraphs of its own (the
     owner, 2026-10-03): how the project began and what it does now, and where to
     report a result it lacks and how to join its chat. The first links the project's
     founder, the explainer that holds its first lower bounds, the case record of
-    $n = 11$, and the ladders that show how far each result is checked, and does not
-    claim every proof is; the second opens a new issue on the repository and links
-    the founder's account on X."""
+    $n = 11$, Evan Daniel's family $s(k^2 - 3) = k$ at its row on the Results page and
+    his exact values at the case records of 21, 32 and 45, and the ladders that show how
+    far each result is checked, and does not claim every proof is; the second opens a
+    new issue on the repository and links the founder's account on X. Each result the
+    first names is the register's, with the credit it gives: T-060 Queuingtheorydotcom's
+    and building on this project, T-064, T-052, T-051 and T-053 Daniel's and independent
+    of it, which is why his results stand in a sentence of their own; each is an
+    optimality result at V3/C3 or above, so "proved" holds. No significance score is
+    named, since only n = 11's results are S5 (the owner, 2026-10-03, think-nlyc)."""
     from devtools import site_documents  # noqa: PLC0415
 
     problem = page.split('id="the-problem"', 1)[1].split('id="recent-results"', 1)[0]
@@ -3185,9 +3217,36 @@ def test_the_sites_own_statement_follows_readmes_introduction(page: str) -> None
         f"{founder}Joshua Levy</a>",
         '<a href="papers/n11-lower-bounds-explainer.html">new lower bounds</a>',
         f'<a href="{render_case_pages.case_url(11)}" data-case="11">case of 11 squares</a>',
+        '<a href="all-results.html#t-064">a whole infinite family</a>',
+        *(
+            f'<a href="{render_case_pages.case_url(n)}" data-case="{n}">{n}</a>'
+            for n in (21, 32, 45)
+        ),
         '<a href="all-results.html#verification-ladders">AI-assisted verification</a>',
     ):
         assert link in paragraphs[0], link
+    # Every link lands: a case at its record, a result at its row on the Results page.
+    for n in (11, 21, 32, 45):
+        assert render_case_pages.case_url(n) in case_pages, n
+    assert 'id="t-064"' in results
+    # The register's own facts, as the sentences state them.
+    by_id = {r.id: r for r in overview_data.load().results}
+    groups = dict(OTHERS)
+    assert by_id["T-060"].credit.startswith("Queuingtheorydotcom after Levy")
+    assert by_id["T-060"].group == groups["builds-on-project"]
+    exact = {"T-064": None, "T-052": [21], "T-051": [32], "T-053": [45]}
+    for result, n_values in exact.items():
+        record = by_id[result].record
+        assert by_id[result].credit.startswith("Daniel"), result
+        assert by_id[result].group == groups["independent"], result
+        assert record["kind"] == "optimality", result
+        assert int(record["verification"][1:]) >= 3, result
+        assert int(record["confirmation"][1:]) >= 3, result
+        assert n_values is None or record["scope"]["n_values"] == n_values, result
+    assert "s(k^2 - 3) = k for every integer k >= 6" in by_id["T-064"].record["claim"]
+    assert "Evan Daniel" in by_id["T-064"].record["claim"]
+    for score in ("S4", "S5"):
+        assert score not in " ".join(SITE_STATEMENT), score
     assert "all proofs" not in " ".join(SITE_STATEMENT)
     assert 'id="verification-ladders"' not in page
     assert render_overview.NEW_ISSUE_URL == "https://github.com/jlevy/squares/issues/new"
@@ -3682,7 +3741,7 @@ def test_both_tables_of_results_have_the_same_columns(
             "site-col-date",
             "site-col-s",
             "site-col-result",
-            "num site-col-n",
+            overview_sections.case_cell_class(result),
             "site-col-credit",
             "site-rungs",
             "site-col-status",
@@ -5406,8 +5465,13 @@ def test_hide_superseded_starts_checked_on_the_overview_and_clear_on_the_results
     # Every standing stays, and so does a result with none: nothing but a superseded
     # bound, or a result of another kind declared superseded as a whole, is hidden for
     # it. The one result that derives `superseded` and stays is the limit of a method,
-    # which is no bound.
-    assert kept == {*render_recent_results.STANDINGS, render_recent_results.NO_STANDING}
+    # which is no bound. No result has stood as a reported second certificate since
+    # 2026-10-02, when T-055's replay was recorded; when one does again, this pin fails
+    # and the standing returns to the set.
+    assert kept == {
+        *render_recent_results.STANDINGS,
+        render_recent_results.NO_STANDING,
+    } - {render_recent_results.SECOND_CERTIFICATE_REPORTED}
     current = sum(not overview_sections.is_superseded(r) for r in overview.results)
     assert 0 < shown < without < len(overview.results)
     assert shown < current < len(overview.results)
@@ -5661,7 +5725,7 @@ def test_the_site_writes_its_forwarders_and_checks_them(
 
 
 def test_a_cases_status_is_one_chip_wherever_it_is_drawn(
-    rendered: Callable[[str], str], overview: overview_data.Overview
+    rendered: Callable[[str], str], overview: overview_data.Overview, case_pages: dict[str, str]
 ) -> None:
     """A case's status, `proved` or `open`, is one chip (`case_status_chip`) on every page
     that draws it, the frontier table and the case records alike, and its fill is the
@@ -5669,7 +5733,7 @@ def test_a_cases_status_is_one_chip_wherever_it_is_drawn(
     accent tone it had before."""
     statuses = {case["status"] for case in overview.cases.values()}
     assert statuses == {"proved", "open"}
-    records = site_renders.case_records()
+    records = case_pages
     shown = {
         "frontier.html": rendered("frontier.html"),
         # A record draws its own case's status: one solved case and one open one.

@@ -30,6 +30,7 @@ from collections import Counter
 from collections.abc import Sequence
 from pathlib import Path
 
+from devtools.verifier_registry import SHORT_LABELS, runs_code
 from sqpack.yamlio import safe_load
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -148,10 +149,16 @@ def render() -> str:
         "## Every record",
         "",
         (
-            "| evidence | cases | claim | assurance | method decides "
-            "| whose work | read here | novelty |"
+            "`code` is how the code that verified a record stands to the code its result's "
+            "producer used, and `programs` names that code by its id in "
+            "[`VERIFIERS.md`](VERIFIERS.md), which says whose each program is."
         ),
-        "| --- | ---: | --- | --- | --- | --- | --- | --- |",
+        "",
+        (
+            "| evidence | cases | claim | assurance | method decides "
+            "| whose work | read here | novelty | code | programs |"
+        ),
+        "| --- | ---: | --- | --- | --- | --- | --- | --- | --- | --- |",
     ]
 
     for record in records:
@@ -159,10 +166,14 @@ def render() -> str:
         whose = "here" if ours(record) else ("elsewhere" if record.get("origin") else "-")
         review = (record.get("external_review") or {}).get("state", "-")
         novelty = record.get("novelty") or "*not assessed*"
+        code = SHORT_LABELS.get(str(record.get("relationship_to_generator")), "-")
+        programs = ", ".join(f"`{v}`" for v in record.get("verifiers") or []) or (
+            "*none held*" if runs_code(record) else "-"
+        )
         lines.append(
             f"| `{record['id']}` | {load.get(record['id'], 0)} "
             f"| {record.get('claim', '-')} | {record.get('assurance', '-')} "
-            f"| {decides} | {whose} | {review} | {novelty} |"
+            f"| {decides} | {whose} | {review} | {novelty} | {code} | {programs} |"
         )
 
     lines += ["", "## What the register rests on", ""]
@@ -170,6 +181,10 @@ def render() -> str:
         ("assurance", Counter(str(r.get("assurance")) for r in records)),
         ("method", Counter(str(r.get("method") or "reported") for r in records)),
         ("novelty", Counter(str(r.get("novelty") or "not assessed") for r in records)),
+        (
+            "relationship to the producer's code",
+            Counter(str(r.get("relationship_to_generator")) for r in records),
+        ),
     ):
         parts = ", ".join(f"{k} {v}" for k, v in sorted(counter.items()))
         lines.append(f"- **{label}**: {parts}")

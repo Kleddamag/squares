@@ -1,0 +1,11 @@
+# command: /tmp/claude-0/-home-user-squares/4ea49914-96b4-51a9-a2a9-c5603fe593f4/scratchpad/aa/indep/indep_check weights-minus-57.txt 24000
+# cwd: scratch controls directory; weights-minus-57.txt written by devtools.audit_s12_rescaled_certificate --write-controls, sha256 61b48f23; indep_check as in receipts/indep-check-build.log, binary sha256 e7748f8b
+# python3: not used by this command
+# host: 4 cores; load 27.67 26.07 21.09; started 2026-10-02T17:43:42Z
+certificate: s = 31360/7901 = 3.969117833, D = 7901, W = 10000000, m = 1736
+total weight = 119639084/10000000 = 11.963908400   (n = 12: total < n)
+angle net N = 24000, bins k = 0..23999 covering [0,90] deg (no symmetry assumed), grid Q = 1000000000000000
+min captured weight over all bins = 9985548/10000000 = 0.998554800   (bin k=4154, 19.6393 deg)
+  near centre (1.394333, 1.380182) at angle 19.639314 deg (diagnostic, floating point)
+NOT VERIFIED
+# finished 2026-10-02T17:47:08Z; exit 1; wall 206.219 s; CPU 67.4 s (user 64.451 + sys 2.918); load 20.93 24.59 21.62

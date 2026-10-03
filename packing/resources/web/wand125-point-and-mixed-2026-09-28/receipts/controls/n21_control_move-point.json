@@ -1,0 +1,128 @@
+{
+  "kind": "wand125-n21-control/v1",
+  "status": "CONTROL_REFUSED",
+  "certificate": "point_n21_L5",
+  "revision": "39d8ecc74d651b54ec977c331c8f2015b442a6c4",
+  "mutation": {
+    "kind": "move-point",
+    "detail": "moves the 8 entries at the D4 images of (1000, 700)/1000 by the images of (1, 0)/1000, keeping their weights",
+    "rows": [
+      64,
+      65,
+      66,
+      67,
+      68,
+      69,
+      70,
+      71
+    ],
+    "original_sha256": "84a7dae793f05ff72de52ddcd3058e8518c1f84c461f94d11305adefe6137679",
+    "sha256": "d75619f91be63e1455417521a3c79d800ea605006adcde5444e34b3edca74e65",
+    "entries": 4604,
+    "positive_entries": 4520,
+    "coordinates_distinct": true,
+    "nonnegative": true,
+    "d4_invariant": true,
+    "total": "2624862500021/125000000000",
+    "below_21q": true
+  },
+  "witness": {
+    "square": "[0, 1] x [0, 1], closed, at angle zero",
+    "root": 832,
+    "threshold": "249987/250000",
+    "capture_original_exact": "1001050000003/1000000000000",
+    "capture_mutated_exact": "181932391817/200000000000"
+  },
+  "checker": {
+    "verify_portable_sha256": "2cea95ceac939fee8926eee413e1cfc049af25e98efb1dc8660b44cf14b6ed92",
+    "assemble_portable_sha256": "88888adc784f120edced532bb6c98b9ba33c66792d13ecc064e29e870ca4237e",
+    "portable_replay_sha256": "e8f170a04716e10dd0efdc2898be217f04a03bc4197600ce671739d4736b5dd1",
+    "accepting_run": "receipts/n21/run-inputs.json",
+    "workers": 2
+  },
+  "rebinding": {
+    "pristine_manifest_sha256": "bb2883c5d05e3073011267f95cccd3301c2f97dd4c1e1d64fc4c6e46c8ec9c6c",
+    "rebound_manifest_sha256": "2d2d33aac699f6bb38f6700f4c66d30f9c205cb01ab9e006f1a84c5a7714064b",
+    "files": 75130,
+    "files_rewritten": 37223,
+    "gzip_rewritten": 0,
+    "digests_replaced": 37223,
+    "rewritten_by_folder": {
+      "n21_L5_refit29_additional_assembly_trial": 1,
+      "n21_L5_refit29_axis_band_trial": 1,
+      "n21_L5_refit29_counterexample_trial": 1,
+      "n21_L5_refit29_frontier_inventory10": 1,
+      "n21_L5_refit29_full_transfer_s0_trial": 8566,
+      "n21_L5_refit29_full_transfer_s1_trial": 7652,
+      "n21_L5_refit29_full_transfer_s2_trial": 7629,
+      "n21_L5_refit29_handoff5": 5735,
+      "n21_L5_refit29_joined38_repair_all": 103,
+      "n21_L5_refit29_joined38_repair_trial": 2,
+      "n21_L5_refit29_joined39_ratio_trial": 1,
+      "n21_L5_refit29_joined44_margin_trial": 44,
+      "n21_L5_refit29_joined49_transfer_trial": 4,
+      "n21_L5_refit29_joined_cached_pilot": 1,
+      "n21_L5_refit29_joined_diagnosis_trial": 2,
+      "n21_L5_refit29_joined_worst_trial": 7,
+      "n21_L5_refit29_normal_direct_batch1": 37,
+      "n21_L5_refit29_normal_direct_batch2": 23,
+      "n21_L5_refit29_normal_direct_batch3": 6,
+      "n21_L5_refit29_normal_inventory2_direct": 20,
+      "n21_L5_refit29_normal_inventory3_direct": 6,
+      "n21_L5_refit29_normal_inventory4_direct": 8,
+      "n21_L5_refit29_normal_inventory5_direct": 7,
+      "n21_L5_refit29_normal_inventory6_direct": 30,
+      "n21_L5_refit29_normal_inventory7_direct": 44,
+      "n21_L5_refit29_normal_inventory8_direct": 34,
+      "n21_L5_refit29_normal_inventory9_direct": 53,
+      "n21_L5_refit29_normal_new14_direct": 22,
+      "n21_L5_refit29_normal_new4_direct": 5,
+      "n21_L5_refit29_normal_overlay_complete": 1,
+      "n21_L5_refit29_normal_worst8_trial": 8,
+      "n21_L5_refit29_ordinary124_margin_trial": 110,
+      "n21_L5_refit29_ordinary_allmodels_pilot": 3,
+      "n21_L5_refit29_ordinary_residual_trial": 4,
+      "n21_L5_refit29_parent38_replay_trial": 1,
+      "n21_L5_refit29_root_repair_trial": 12,
+      "n21_L5_refit29_root_transfer_trial": 5001,
+      "n21_L5_refit29_sieve_repair_trial": 104,
+      "n21_L5_refit29_sieve_transfer_trial": 2,
+      "n21_L5_refit29_tail_handoff": 1932
+    },
+    "python_naming_a_replaced_digest": [
+      "runs/evand_n21_n32_bridge_20260927/results/n21_L5_refit29_scoped_gate/check.py"
+    ]
+  },
+  "run": {
+    "started_utc": "2026-10-02T17:49:33Z",
+    "ended_utc": "2026-10-02T17:49:39Z",
+    "exit": 1,
+    "wall_seconds": 6.3,
+    "cpu_seconds": 2.9,
+    "stage_exits": [
+      {
+        "stage": "root",
+        "shard": null,
+        "exit_code": 1,
+        "seconds": 5.98374318399965
+      }
+    ],
+    "failure": {
+      "status": "FAILED",
+      "error": "RuntimeError('root failed: exit 1; see root.log')"
+    },
+    "result": null,
+    "verdict": "REFUSED",
+    "stage": "root",
+    "stage_log": "root.log",
+    "parents_completed": 832,
+    "refusal": "ValueError: Point containment not proved: 66",
+    "raised_in": {
+      "file": "replay_physical_point_witness.py",
+      "function": "replay",
+      "line": 64
+    }
+  },
+  "receipt": "n21_control_move-point.log",
+  "scope": "A stage-4 negative control: the source's verify_portable.py, unchanged, on a copy of the pinned bundle whose cover is mutated and whose records are re-bound to it by digest. The witness square proves the mutated cover is not a certificate; the runner has no subset mode and runs to its first failure."
+}

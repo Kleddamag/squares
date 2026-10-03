@@ -43,8 +43,10 @@ WIDTHS = (1280, 1024, 768, 390)
 #: The rows read: a row of whole numbers (the shortest a row can be), a radical with its
 #: credit, the proved case with a root shown as a decimal and the longest credited name,
 #: a fraction that is a recent bound, a verified bound printed beside the reported one,
-#: and a three-digit case with a rational upper bound.
-CASES = (1, 5, 11, 12, 18, 230)
+#: and a three-digit case with a rational upper bound. The fraction was n = 18's until
+#: 2026-10-02, when its verified bound rose to the reported one, and then n = 19's until
+#: the same happened there later that day.
+CASES = (1, 5, 11, 12, 51, 230)
 ROWS = [f"n-{n}" for n in CASES]
 #: The drawing's side before it had a column: 2.6rem.
 OLD_THUMB = 41.6
@@ -180,30 +182,43 @@ def test_the_table_fits_its_track_at_1280_and_scrolls_in_its_wrap_below(
     widths = {cell["words"]: cell["width"] for cell in wide["head"]}
     assert widths["n"] < 50
     assert widths["Recent"] < 96
-    # At 1280 the table is stretched to its track; below it keeps its own width, 1192
-    # pixels since the table has no frame (2026-10-02, think-wadm), 1194 before.
+    # At 1280 the table is stretched to its track; below it keeps its own width, the same
+    # at every narrower window: 1192 pixels since the table has no frame (2026-10-02,
+    # think-wadm), 1194 before, and 1180 since 3 October 2026, when an exact gap with a
+    # numerator or denominator of more than eight digits became its decimal (n = 68's
+    # 4512425581603/15625000000000 was the widest gap; GAP_DIGITS).
+    own = laid[WIDTHS[1]]["table_width"]
+    assert own <= wide["table_width"]
+    assert own == pytest.approx(1180, abs=10)
     for width in WIDTHS[1:]:
         assert laid[width]["scrolls"] > 0, width
-        assert laid[width]["table_width"] == pytest.approx(wide["table_width"], abs=10), width
+        assert laid[width]["table_width"] == pytest.approx(own, abs=1), width
     assert [laid[width]["page_scrolls"] for width in WIDTHS] == [0] * len(WIDTHS)
 
 
 def test_a_fraction_shows_its_decimal_and_a_name_stays_whole(
     laid: dict[int, dict[str, Any]],
 ) -> None:
-    """The reported lower bound of n = 12 is `15680/3951`, and the cell prints its
-    decimal under it: the fraction's value cut after eight places, which is not the
-    `3.968615` the record holds. The row's other closed form is its gap. A credit's
-    longest name, in the row above, is set on one line."""
+    """The reported lower bound of n = 12 is `31360/7901` (`15680/3951` until 3 October
+    2026), and the cell prints its decimal under it: the fraction's value cut after eight
+    places, which is not the `3.969117` the record holds. The row's other closed form is
+    its gap. A credit's longest name, in the row above, is set on one line."""
     rows = {row["id"]: row for row in laid[1280]["rows"]}
     lower = rows["n-12"]["cells"][column("Reported lower")]["approx"]
-    assert lower == ["≈ 3.96861554…"]
-    exact, shown = Fraction(15680, 3951), Fraction(lower[0][2:-1])
+    assert lower == ["≈ 3.96911783…"]
+    exact, shown = Fraction(31360, 7901), Fraction(lower[0][2:-1])
     assert 0 < exact - shown < Fraction(1, 10**8)
-    assert [cell["approx"] for cell in rows["n-12"]["cells"]].count([]) == len(COLUMNS) - 2
-    assert rows["n-12"]["cells"][column("Gap")]["approx"] == ["≈ 0.03138445…"]
-    assert rows["n-18"]["cells"][column("Verified lower")]["approx"] == ["= 4.679"]
-    assert rows["n-18"]["cells"][column("Reported lower")]["approx"] == ["= 4.695"]
+    # Three closed forms since 3 October 2026, when T-079's verified lower bound parted
+    # from the reported one: the two lower bounds and the gap.
+    assert [cell["approx"] for cell in rows["n-12"]["cells"]].count([]) == len(COLUMNS) - 3
+    assert rows["n-12"]["cells"][column("Gap")]["approx"] == ["≈ 0.02979979…"]
+    # A terminating fraction shows its exact decimal in either column. The example was
+    # n = 18 until 2026-10-02, when T-045's replay raised its verified bound to the
+    # reported 939/200 and the cell became "same", and then n = 19 until T-074's did the
+    # same there later that day; n = 51 shows both, 37/5 from n = 50's replayed mixed
+    # certificate below its own reported rectangle certificate.
+    assert rows["n-51"]["cells"][column("Verified lower")]["approx"] == ["= 7.4"]
+    assert rows["n-51"]["cells"][column("Reported lower")]["approx"] == ["= 7.4425"]
     assert all(cell["approx"] == [] for cell in rows["n-1"]["cells"])
     assert rows["n-11"]["cells"][column("Reported lower")]["broken"] == []
 
@@ -232,9 +247,15 @@ def test_the_table_still_sorts_filters_and_opens(page: Any, laid: dict[int, Any]
     # The heading with no words sorts nothing and is no tab stop.
     assert page.locator("#frontier-table thead th.site-thumb").get_attribute("tabindex") is None
 
+    # 27 recent cases until 2026-10-02, when the merged rectangle replays (T-045, T-070)
+    # and s(59), s(60) and s(61) made 44; the replays recorded later that day (T-048,
+    # T-069, T-071, T-074 and s(77), s(78)) made 60; T-064's replay of 3 October, which
+    # proved nine k^2 - 3 cases, made 69; T-075's replays the same day took n = 83, 91 and
+    # 96 off Nagamochi's bound and made 72; T-080's replayed linear certificate took
+    # n = 101 to 105 off it and made 77, the cases `recent_lower_bounds` names.
     page.get_by_label("recent only").check()
-    assert page.locator(".site-table-tools .site-count").inner_text() == "27 of 324 cases"
-    assert shown.count() == 27
+    assert page.locator(".site-table-tools .site-count").inner_text() == "77 of 324 cases"
+    assert shown.count() == 77
     assert shown.first.get_attribute("id") == "n-11"
     page.get_by_label("recent only").uncheck()
     assert shown.count() == 324

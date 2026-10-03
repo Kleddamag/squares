@@ -1,0 +1,9 @@
+{
+  "status": "PASS_SIMPLIFIED_FIXED_T_LOCAL_BOX",
+  "fresh_signed_coordinate_residuals_checked": 8448,
+  "negative_features_checked": 88,
+  "worst_dual_ratio": "237880431895517578125000/249999999158632916515561",
+  "worst_dual_ratio_float": 0.9515217307843866,
+  "minimum_feature_margin_float": 0.005897503722317347,
+  "seconds": 16.459488946999954
+}

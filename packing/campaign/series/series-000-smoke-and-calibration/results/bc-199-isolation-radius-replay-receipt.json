@@ -1,0 +1,52 @@
+{
+  "controls": {
+    "argmin_face_witness_moved": {
+      "first_difference": "branches[0].kappa_argmin_face.coordinate: retained '0', recomputed '32'",
+      "refused": true
+    },
+    "declared_box_changed": {
+      "first_difference": "box_sup_radius: retained '1/65', recomputed '1/64'",
+      "refused": true
+    },
+    "exact_kappa_coefficient_off_by_one": {
+      "first_difference": "branches[0].kappa_lower[0]: retained '60680852276/318363336892', recomputed '60680852275/318363336892'",
+      "refused": true
+    },
+    "radius_off_in_last_digit": {
+      "first_difference": "rho_0_weighted.rational_lower_bound_short: retained '808514698/200000000000', recomputed '808514697/200000000000'",
+      "refused": true
+    }
+  },
+  "controls_all_refused": true,
+  "inputs": {
+    "campaign/series/series-000-smoke-and-calibration/results/exp-013-h-026-trump-tangent.json": {
+      "current": "60a4b7c48034b37063509a8a641974ed5eae86dccd056e9cbc6cf2fd7f2f0661",
+      "recorded": "60a4b7c48034b37063509a8a641974ed5eae86dccd056e9cbc6cf2fd7f2f0661",
+      "unchanged": true
+    },
+    "cases/trump11/packing.py": {
+      "current": "3b4eae938c37c13af6252ac5d83fa99aa95f6b1627b99920c5df8be94c56bea9",
+      "recorded": "3b4eae938c37c13af6252ac5d83fa99aa95f6b1627b99920c5df8be94c56bea9",
+      "unchanged": true
+    },
+    "cases/trump11/tangent_cones.py": {
+      "current": "17302de574d9f7bc377cbc1dc4c537dc60976d6a1e4e63432adb5fa184058765",
+      "recorded": "31f1c09ff296fdb99a8f6e1f26803350c043796029c40c43b33c1d5637e8dc86",
+      "unchanged": false
+    }
+  },
+  "inputs_drifted": [
+    "cases/trump11/tangent_cones.py"
+  ],
+  "kind": "isolation-radius-replay",
+  "mismatches": [],
+  "recomputation_seconds": 470.956,
+  "recomputed_leaves": 4951,
+  "recomputed_row_radius": "808514697/200000000000",
+  "record": "packing/campaign/series/series-000-smoke-and-calibration/results/bc-199-trump-isolation-radius.json",
+  "relationship_to_generator": "same-implementation",
+  "retained_leaves_compared": 4951,
+  "retained_row_radius": "808514697/200000000000",
+  "schema_version": 1,
+  "status": "passed"
+}

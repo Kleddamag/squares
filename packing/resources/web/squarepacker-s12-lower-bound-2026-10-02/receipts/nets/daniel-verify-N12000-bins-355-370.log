@@ -1,0 +1,19 @@
+# command: /tmp/claude-0/-home-user-squares/4ea49914-96b4-51a9-a2a9-c5603fe593f4/scratchpad/aa/verify-target-packet/release/verify s12_lower_3.969118.txt 12 12000 1 0
+# cwd: scratch run directory holding s12_lower_3.969118.txt restored from this packet (sha256 6ad9b0e8...7578); verify as in receipts/daniel-verify-N24000.log (binary sha256 9e79ec32); environment VERIFY_BINS=355:370, a partial sweep that cannot print VERIFIED
+# python3: not used by this command
+# host: 4 cores; load 26.01 22.74 21.53; started 2026-10-02T17:53:15Z
+D4-symmetric atom set: true  -> angles cover [0,45] deg
+atoms=1736 total weight = 119738036/10000000 = 11.973804
+s = 31360/7901 = 3.969118
+angles: k=0..4971 (N=12000), covering [0,45deg]
+PARTIAL RUN: VERIFY_BINS=355:370 -- only these bins are swept; this run cannot verify anything
+  FAIL at angle k=361: covered 9867834/10000000
+  FAIL at angle k=362: covered 9867834/10000000
+  FAIL at angle k=363: covered 9867834/10000000
+  FAIL at angle k=364: covered 9867834/10000000
+  FAIL at angle k=365: covered 9867834/10000000
+  FAIL at angle k=366: covered 9867834/10000000
+  FAIL at angle k=367: covered 9867834/10000000
+min covered weight over ALL placements = 9867834/10000000 = 0.986783  (at angle k=361)
+NOT VERIFIED (PARTIAL RUN: only bins 355..370 of 0..4970 were swept)
+# finished 2026-10-02T17:53:19Z; exit 0; wall 4.457 s; CPU 1.0 s (user 1.002 + sys 0.003); load 26.41 22.87 21.58

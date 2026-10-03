@@ -1,0 +1,127 @@
+{
+  "schema": "S12ReweightedAudit/v1",
+  "status": "PASS",
+  "tool": "devtools.audit_s12_reweighted",
+  "relationship_to_generator": "independent-implementation",
+  "facts": {
+    "points": 1736,
+    "orbits": 223,
+    "zero_weight_points": 120,
+    "weights_changed_from_daniel": 1736,
+    "daniel_total": "29934509/2500000",
+    "total": "14970347/1250000",
+    "side": "15680000/3949423",
+    "side_decimal": "3.9702002039",
+    "daniel_side_decimal": "3.9686155404"
+  },
+  "checks": [
+    {
+      "check": "Daniel's file is the reviewed T-049 release",
+      "pass": true,
+      "value": "75f1cc891a8b8739b92b50c7ddbd85a493efa58cf2e921d58ce4ac7c2dcabe78"
+    },
+    {
+      "check": "Route B digest",
+      "pass": true,
+      "value": "6823e8e872259a6cf3ed258400bf1a0973e1972ab671e8fdcab25938ca605a66"
+    },
+    {
+      "check": "Route B parses: positive header, m lines, s_den | s_num*D",
+      "pass": true,
+      "value": {
+        "s": "15680000/3949423",
+        "D": 3949423,
+        "W": 10000000
+      }
+    },
+    {
+      "check": "Route B bytes are the canonical rendering",
+      "pass": true,
+      "value": 38879
+    },
+    {
+      "check": "weights are nonnegative integers over W",
+      "pass": true,
+      "value": {
+        "zero": 120
+      }
+    },
+    {
+      "check": "every point in the closed container",
+      "pass": true,
+      "value": {
+        "side_units": 15680000
+      }
+    },
+    {
+      "check": "total is the recorded fraction",
+      "pass": true,
+      "value": "14970347/1250000"
+    },
+    {
+      "check": "total weight < 12",
+      "pass": true,
+      "value": {
+        "total": "14970347/1250000",
+        "gap": "29653/1250000"
+      }
+    },
+    {
+      "check": "container is the claimed side",
+      "pass": true,
+      "value": "15680000/3949423"
+    },
+    {
+      "check": "container is Daniel's side times the scale",
+      "pass": true,
+      "value": "3951000/3949423"
+    },
+    {
+      "check": "points are Daniel's, in order, times 1000",
+      "pass": true,
+      "value": 1736
+    },
+    {
+      "check": "weighted multiset is D4-invariant",
+      "pass": true,
+      "value": 223
+    },
+    {
+      "check": "Route A digest",
+      "pass": true,
+      "value": "93ccef6363b0814ec34c66e94ac8bc83b707e3f7430955c9ccd9ab250e8ae235"
+    },
+    {
+      "check": "Route A container is the claimed side",
+      "pass": true,
+      "value": "1568000/395039"
+    },
+    {
+      "check": "Route A is Daniel's file, times 1000, weights unchanged",
+      "pass": true,
+      "value": "29934509/2500000"
+    },
+    {
+      "check": "Route A is D4-invariant and in the container",
+      "pass": true,
+      "value": 15680000
+    },
+    {
+      "check": "control 1 (lowered orbit) rebuilt here matches the recorded digest",
+      "pass": true,
+      "value": {
+        "sha256": "18a408c9f6ef9e7056378d6243ba35f506ef415c2b838ca8ad24e029f768cf6f",
+        "total": "14970247/1250000",
+        "points_lowered": 8
+      }
+    },
+    {
+      "check": "control 2 (one step larger) rebuilt here matches the recorded digest",
+      "pass": true,
+      "value": {
+        "sha256": "5fc6fce806eee3837291fedbce0e17c20f7c2c7145d532d903082942afa88224",
+        "side": "15680/3949"
+      }
+    }
+  ]
+}

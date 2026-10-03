@@ -204,19 +204,17 @@
       {
         "lower": {
           "assurance": "verified",
-          "basis": "external",
-          "confirmed_by": [
-            "T-049"
-          ],
-          "note": "(confirmed T-049)",
+          "basis": "project",
+          "confirmed_by": [],
+          "note": null,
           "recent": true,
-          "result": null,
+          "result": "T-079",
           "results": [
-            "T-049"
+            "T-079"
           ],
-          "source_key": "[evand square-packing 2026]",
-          "text": "Daniel after Burns, Massaccesi 2026, GitHub",
-          "value": "3.968615"
+          "source_key": null,
+          "text": "Squares Project (Levy) 2026, result T-079",
+          "value": "3.970200"
         },
         "n": 12,
         "record": "n-012",
@@ -337,17 +335,19 @@
       {
         "lower": {
           "assurance": "verified",
-          "basis": "project",
-          "confirmed_by": [],
-          "note": null,
-          "recent": true,
-          "result": "T-030",
-          "results": [
-            "T-030"
+          "basis": "external",
+          "confirmed_by": [
+            "T-045"
           ],
-          "source_key": null,
-          "text": "Squares Project (Levy) 2026, result T-030",
-          "value": "4.679"
+          "note": "(confirmed T-045)",
+          "recent": true,
+          "result": null,
+          "results": [
+            "T-045"
+          ],
+          "source_key": "[wand125 rectangle bounds 2026]",
+          "text": "wand125 after Tokoharu, Levy et al. 2026, GitHub",
+          "value": "4.695"
         },
         "n": 18,
         "record": "n-018",
@@ -366,17 +366,19 @@
       {
         "lower": {
           "assurance": "verified",
-          "basis": "project",
-          "confirmed_by": [],
-          "note": null,
-          "recent": true,
-          "result": "T-020",
-          "results": [
-            "T-020"
+          "basis": "external",
+          "confirmed_by": [
+            "T-074"
           ],
-          "source_key": null,
-          "text": "Squares Project (Levy) 2026, result T-020",
-          "value": "4.8"
+          "note": "(confirmed T-074)",
+          "recent": true,
+          "result": null,
+          "results": [
+            "T-074"
+          ],
+          "source_key": "[wand125 rectangle bounds 2026-10-01]",
+          "text": "wand125 after Tokoharu, Levy et al. 2026, GitHub",
+          "value": "4.8175"
         },
         "n": 19,
         "record": "n-019",
@@ -395,17 +397,19 @@
       {
         "lower": {
           "assurance": "verified",
-          "basis": "project",
-          "confirmed_by": [],
-          "note": null,
-          "recent": true,
-          "result": "T-021",
-          "results": [
-            "T-021"
+          "basis": "external",
+          "confirmed_by": [
+            "T-074"
           ],
-          "source_key": null,
-          "text": "Squares Project (Levy) 2026, result T-021",
-          "value": "4.85"
+          "note": "(confirmed T-074)",
+          "recent": true,
+          "result": null,
+          "results": [
+            "T-074"
+          ],
+          "source_key": "[wand125 rectangle bounds 2026-10-01]",
+          "text": "wand125 after Tokoharu, Levy et al. 2026, GitHub",
+          "value": "4.8975"
         },
         "n": 20,
         "record": "n-020",
@@ -511,17 +515,17 @@
           "assurance": "verified",
           "basis": "external",
           "confirmed_by": [
-            "T-047"
+            "T-074"
           ],
-          "note": "(confirmed T-047)",
+          "note": "(confirmed T-074)",
           "recent": true,
           "result": null,
           "results": [
-            "T-047"
+            "T-074"
           ],
-          "source_key": "[Tokoharu density 2026]",
-          "text": "Tokoharu after Levy, wand125 et al. 2026, GitHub",
-          "value": "5.508"
+          "source_key": "[wand125 rectangle bounds 2026-10-01]",
+          "text": "wand125 after Tokoharu, Levy et al. 2026, GitHub",
+          "value": "5.5325"
         },
         "n": 26,
         "record": "n-026",
@@ -542,17 +546,17 @@
           "assurance": "verified",
           "basis": "external",
           "confirmed_by": [
-            "T-045"
+            "T-074"
           ],
-          "note": "(confirmed T-045)",
+          "note": "(confirmed T-074)",
           "recent": true,
           "result": null,
           "results": [
-            "T-045"
+            "T-074"
           ],
-          "source_key": "[wand125 rectangle bounds 2026]",
+          "source_key": "[wand125 rectangle bounds 2026-10-01]",
           "text": "wand125 after Tokoharu, Levy et al. 2026, GitHub",
-          "value": "5.6"
+          "value": "5.635"
         },
         "n": 27,
         "record": "n-027",
@@ -573,17 +577,17 @@
           "assurance": "verified",
           "basis": "external",
           "confirmed_by": [
-            "T-045"
+            "T-074"
           ],
-          "note": "(confirmed T-045)",
+          "note": "(confirmed T-074)",
           "recent": true,
           "result": null,
           "results": [
-            "T-045"
+            "T-074"
           ],
-          "source_key": "[wand125 rectangle bounds 2026]",
+          "source_key": "[wand125 rectangle bounds 2026-10-01]",
           "text": "wand125 after Tokoharu, Levy et al. 2026, GitHub",
-          "value": "5.6"
+          "value": "5.7225"
         },
         "n": 28,
         "record": "n-028",
@@ -604,17 +608,17 @@
           "assurance": "verified",
           "basis": "external",
           "confirmed_by": [
-            "T-047"
+            "T-074"
           ],
-          "note": "(confirmed T-047)",
+          "note": "(confirmed T-074)",
           "recent": true,
           "result": null,
           "results": [
-            "T-047"
+            "T-074"
           ],
-          "source_key": "[Tokoharu density 2026]",
-          "text": "Tokoharu after Levy, wand125 et al. 2026, GitHub",
-          "value": "5.71"
+          "source_key": "[wand125 rectangle bounds 2026-10-01]",
+          "text": "wand125 after Tokoharu, Levy et al. 2026, GitHub",
+          "value": "5.7975"
         },
         "n": 29,
         "record": "n-029",
@@ -639,17 +643,17 @@
           "assurance": "verified",
           "basis": "external",
           "confirmed_by": [
-            "T-047"
+            "T-074"
           ],
-          "note": "(confirmed T-047)",
+          "note": "(confirmed T-074)",
           "recent": true,
           "result": null,
           "results": [
-            "T-047"
+            "T-074"
           ],
-          "source_key": "[Tokoharu density 2026]",
-          "text": "Tokoharu after Levy, wand125 et al. 2026, GitHub",
-          "value": "5.71"
+          "source_key": "[wand125 rectangle bounds 2026-10-01]",
+          "text": "wand125 after Tokoharu, Levy et al. 2026, GitHub",
+          "value": "5.875"
         },
         "n": 30,
         "record": "n-030",
@@ -660,17 +664,17 @@
           "assurance": "verified",
           "basis": "external",
           "confirmed_by": [
-            "T-045"
+            "T-074"
           ],
-          "note": "(confirmed T-045)",
+          "note": "(confirmed T-074)",
           "recent": true,
           "result": null,
           "results": [
-            "T-045"
+            "T-074"
           ],
-          "source_key": "[wand125 rectangle bounds 2026]",
+          "source_key": "[wand125 rectangle bounds 2026-10-01]",
           "text": "wand125 after Tokoharu, Levy et al. 2026, GitHub",
-          "value": "5.92"
+          "value": "5.9525"
         },
         "n": 31,
         "record": "n-031",
@@ -775,16 +779,18 @@
         "lower": {
           "assurance": "verified",
           "basis": "external",
-          "confirmed_by": [],
-          "note": null,
-          "recent": false,
+          "confirmed_by": [
+            "T-069"
+          ],
+          "note": "(confirmed T-069)",
+          "recent": true,
           "result": null,
           "results": [
-            "T-007"
+            "T-069"
           ],
-          "source_key": "[Nagamochi 2005]",
-          "text": "Nagamochi 2005, Electron. J. Combin. 12, #R37",
-          "value": "6.09901951359"
+          "source_key": "[wand125 mixed bounds 2026-10-01]",
+          "text": "wand125 after Tokoharu, Levy et al. 2026, GitHub",
+          "value": "6.44"
         },
         "n": 37,
         "record": "n-037",
@@ -804,16 +810,18 @@
         "lower": {
           "assurance": "verified",
           "basis": "external",
-          "confirmed_by": [],
-          "note": null,
-          "recent": false,
+          "confirmed_by": [
+            "T-074"
+          ],
+          "note": "(confirmed T-074)",
+          "recent": true,
           "result": null,
           "results": [
-            "T-007"
+            "T-074"
           ],
-          "source_key": "[Nagamochi 2005]",
-          "text": "Nagamochi 2005, Electron. J. Combin. 12, #R37",
-          "value": "6.19615242271"
+          "source_key": "[wand125 rectangle bounds 2026-10-01]",
+          "text": "wand125 after Tokoharu, Levy et al. 2026, GitHub",
+          "value": "6.545"
         },
         "n": 38,
         "record": "n-038",
@@ -834,17 +842,17 @@
           "assurance": "verified",
           "basis": "external",
           "confirmed_by": [
-            "T-044"
+            "T-074"
           ],
-          "note": "(confirmed T-044)",
+          "note": "(confirmed T-074)",
           "recent": true,
           "result": null,
           "results": [
-            "T-044"
+            "T-074"
           ],
-          "source_key": "[wand125 point bounds 2026]",
-          "text": "wand125 after Levy et al. 2026, GitHub",
-          "value": "6.5"
+          "source_key": "[wand125 rectangle bounds 2026-10-01]",
+          "text": "wand125 after Tokoharu, Levy et al. 2026, GitHub",
+          "value": "6.635"
         },
         "n": 39,
         "record": "n-039",
@@ -865,17 +873,17 @@
           "assurance": "verified",
           "basis": "external",
           "confirmed_by": [
-            "T-044"
+            "T-074"
           ],
-          "note": "(confirmed T-044)",
+          "note": "(confirmed T-074)",
           "recent": true,
           "result": null,
           "results": [
-            "T-044"
+            "T-074"
           ],
-          "source_key": "[wand125 point bounds 2026]",
-          "text": "wand125 after Levy et al. 2026, GitHub",
-          "value": "6.5"
+          "source_key": "[wand125 rectangle bounds 2026-10-01]",
+          "text": "wand125 after Tokoharu, Levy et al. 2026, GitHub",
+          "value": "6.7"
         },
         "n": 40,
         "record": "n-040",
@@ -896,17 +904,17 @@
           "assurance": "verified",
           "basis": "external",
           "confirmed_by": [
-            "T-044"
+            "T-074"
           ],
-          "note": "(confirmed T-044)",
+          "note": "(confirmed T-074)",
           "recent": true,
           "result": null,
           "results": [
-            "T-044"
+            "T-074"
           ],
-          "source_key": "[wand125 point bounds 2026]",
-          "text": "wand125 after Levy et al. 2026, GitHub",
-          "value": "6.5"
+          "source_key": "[wand125 rectangle bounds 2026-10-01]",
+          "text": "wand125 after Tokoharu, Levy et al. 2026, GitHub",
+          "value": "6.76"
         },
         "n": 41,
         "record": "n-041",
@@ -926,16 +934,18 @@
         "lower": {
           "assurance": "verified",
           "basis": "external",
-          "confirmed_by": [],
-          "note": null,
-          "recent": false,
+          "confirmed_by": [
+            "T-074"
+          ],
+          "note": "(confirmed T-074)",
+          "recent": true,
           "result": null,
           "results": [
-            "T-007"
+            "T-074"
           ],
-          "source_key": "[Nagamochi 2005]",
-          "text": "Nagamochi 2005, Electron. J. Combin. 12, #R37",
-          "value": "6.56776436283"
+          "source_key": "[wand125 rectangle bounds 2026-10-01]",
+          "text": "wand125 after Tokoharu, Levy et al. 2026, GitHub",
+          "value": "6.815"
         },
         "n": 42,
         "record": "n-042",
@@ -945,16 +955,18 @@
         "lower": {
           "assurance": "verified",
           "basis": "external",
-          "confirmed_by": [],
-          "note": null,
-          "recent": false,
+          "confirmed_by": [
+            "T-074"
+          ],
+          "note": "(confirmed T-074)",
+          "recent": true,
           "result": null,
           "results": [
-            "T-007"
+            "T-074"
           ],
-          "source_key": "[Nagamochi 2005]",
-          "text": "Nagamochi 2005, Electron. J. Combin. 12, #R37",
-          "value": "6.65685424949"
+          "source_key": "[wand125 rectangle bounds 2026-10-01]",
+          "text": "wand125 after Tokoharu, Levy et al. 2026, GitHub",
+          "value": "6.8875"
         },
         "n": 43,
         "record": "n-043",
@@ -964,16 +976,18 @@
         "lower": {
           "assurance": "verified",
           "basis": "external",
-          "confirmed_by": [],
-          "note": null,
-          "recent": false,
+          "confirmed_by": [
+            "T-074"
+          ],
+          "note": "(confirmed T-074)",
+          "recent": true,
           "result": null,
           "results": [
-            "T-007"
+            "T-074"
           ],
-          "source_key": "[Nagamochi 2005]",
-          "text": "Nagamochi 2005, Electron. J. Combin. 12, #R37",
-          "value": "6.74456264654"
+          "source_key": "[wand125 rectangle bounds 2026-10-01]",
+          "text": "wand125 after Tokoharu, Levy et al. 2026, GitHub",
+          "value": "6.9425"
         },
         "n": 44,
         "record": "n-044",
@@ -1084,16 +1098,18 @@
         "lower": {
           "assurance": "verified",
           "basis": "external",
-          "confirmed_by": [],
-          "note": null,
-          "recent": false,
+          "confirmed_by": [
+            "T-048"
+          ],
+          "note": "(confirmed T-048)",
+          "recent": true,
           "result": null,
           "results": [
-            "T-007"
+            "T-048"
           ],
-          "source_key": "[Nagamochi 2005]",
-          "text": "Nagamochi 2005, Electron. J. Combin. 12, #R37",
-          "value": "7.0827625303"
+          "source_key": "[wand125 point and mixed bounds 2026-09-28]",
+          "text": "wand125 after Daniel et al. 2026, GitHub",
+          "value": "7.4"
         },
         "n": 50,
         "record": "n-050",
@@ -1113,16 +1129,18 @@
         "lower": {
           "assurance": "verified",
           "basis": "external",
-          "confirmed_by": [],
-          "note": null,
-          "recent": false,
+          "confirmed_by": [
+            "T-048"
+          ],
+          "note": "(confirmed T-048)",
+          "recent": true,
           "result": null,
           "results": [
-            "T-007"
+            "T-048"
           ],
-          "source_key": "[Nagamochi 2005]",
-          "text": "Nagamochi 2005, Electron. J. Combin. 12, #R37",
-          "value": "7.16441400297"
+          "source_key": "[wand125 point and mixed bounds 2026-09-28]",
+          "text": "wand125 after Daniel et al. 2026, GitHub",
+          "value": "7.4"
         },
         "n": 51,
         "record": "n-051",
@@ -1143,17 +1161,17 @@
           "assurance": "verified",
           "basis": "external",
           "confirmed_by": [
-            "T-044"
+            "T-070"
           ],
-          "note": "(confirmed T-044)",
+          "note": "(confirmed T-070)",
           "recent": true,
           "result": null,
           "results": [
-            "T-044"
+            "T-070"
           ],
-          "source_key": "[wand125 point bounds 2026]",
-          "text": "wand125 after Levy et al. 2026, GitHub",
-          "value": "7.38"
+          "source_key": "[wand125 rectangle bounds 2026-09-28]",
+          "text": "wand125 after Tokoharu, Levy et al. 2026, GitHub",
+          "value": "7.535"
         },
         "n": 52,
         "record": "n-052",
@@ -1174,17 +1192,17 @@
           "assurance": "verified",
           "basis": "external",
           "confirmed_by": [
-            "T-044"
+            "T-074"
           ],
-          "note": "(confirmed T-044)",
+          "note": "(confirmed T-074)",
           "recent": true,
           "result": null,
           "results": [
-            "T-044"
+            "T-074"
           ],
-          "source_key": "[wand125 point bounds 2026]",
-          "text": "wand125 after Levy et al. 2026, GitHub",
-          "value": "7.38"
+          "source_key": "[wand125 rectangle bounds 2026-10-01]",
+          "text": "wand125 after Tokoharu, Levy et al. 2026, GitHub",
+          "value": "7.6075"
         },
         "n": 53,
         "record": "n-053",
@@ -1204,16 +1222,18 @@
         "lower": {
           "assurance": "verified",
           "basis": "external",
-          "confirmed_by": [],
-          "note": null,
-          "recent": false,
+          "confirmed_by": [
+            "T-074"
+          ],
+          "note": "(confirmed T-074)",
+          "recent": true,
           "result": null,
           "results": [
-            "T-007"
+            "T-074"
           ],
-          "source_key": "[Nagamochi 2005]",
-          "text": "Nagamochi 2005, Electron. J. Combin. 12, #R37",
-          "value": "7.40312423743"
+          "source_key": "[wand125 rectangle bounds 2026-10-01]",
+          "text": "wand125 after Tokoharu, Levy et al. 2026, GitHub",
+          "value": "7.6725"
         },
         "n": 54,
         "record": "n-054",
@@ -1234,17 +1254,17 @@
           "assurance": "verified",
           "basis": "external",
           "confirmed_by": [
-            "T-044"
+            "T-074"
           ],
-          "note": "(confirmed T-044)",
+          "note": "(confirmed T-074)",
           "recent": true,
           "result": null,
           "results": [
-            "T-044"
+            "T-074"
           ],
-          "source_key": "[wand125 point bounds 2026]",
-          "text": "wand125 after Levy et al. 2026, GitHub",
-          "value": "7.54"
+          "source_key": "[wand125 rectangle bounds 2026-10-01]",
+          "text": "wand125 after Tokoharu, Levy et al. 2026, GitHub",
+          "value": "7.7125"
         },
         "n": 55,
         "record": "n-055",
@@ -1265,17 +1285,17 @@
           "assurance": "verified",
           "basis": "external",
           "confirmed_by": [
-            "T-044"
+            "T-074"
           ],
-          "note": "(confirmed T-044)",
+          "note": "(confirmed T-074)",
           "recent": true,
           "result": null,
           "results": [
-            "T-044"
+            "T-074"
           ],
-          "source_key": "[wand125 point bounds 2026]",
-          "text": "wand125 after Levy et al. 2026, GitHub",
-          "value": "7.62"
+          "source_key": "[wand125 rectangle bounds 2026-10-01]",
+          "text": "wand125 after Tokoharu, Levy et al. 2026, GitHub",
+          "value": "7.7825"
         },
         "n": 56,
         "record": "n-056",
@@ -1285,16 +1305,18 @@
         "lower": {
           "assurance": "verified",
           "basis": "external",
-          "confirmed_by": [],
-          "note": null,
-          "recent": false,
+          "confirmed_by": [
+            "T-074"
+          ],
+          "note": "(confirmed T-074)",
+          "recent": true,
           "result": null,
           "results": [
-            "T-007"
+            "T-074"
           ],
-          "source_key": "[Nagamochi 2005]",
-          "text": "Nagamochi 2005, Electron. J. Combin. 12, #R37",
-          "value": "7.63324958071"
+          "source_key": "[wand125 rectangle bounds 2026-10-01]",
+          "text": "wand125 after Tokoharu, Levy et al. 2026, GitHub",
+          "value": "7.7825"
         },
         "n": 57,
         "record": "n-057",
@@ -1304,16 +1326,18 @@
         "lower": {
           "assurance": "verified",
           "basis": "external",
-          "confirmed_by": [],
-          "note": null,
-          "recent": false,
+          "confirmed_by": [
+            "T-074"
+          ],
+          "note": "(confirmed T-074)",
+          "recent": true,
           "result": null,
           "results": [
-            "T-007"
+            "T-074"
           ],
-          "source_key": "[Nagamochi 2005]",
-          "text": "Nagamochi 2005, Electron. J. Combin. 12, #R37",
-          "value": "7.7082039325"
+          "source_key": "[wand125 rectangle bounds 2026-10-01]",
+          "text": "wand125 after Tokoharu, Levy et al. 2026, GitHub",
+          "value": "7.7825"
         },
         "n": 58,
         "record": "n-058",
@@ -1323,16 +1347,18 @@
         "lower": {
           "assurance": "verified",
           "basis": "external",
-          "confirmed_by": [],
-          "note": null,
-          "recent": false,
+          "confirmed_by": [
+            "T-066"
+          ],
+          "note": "(confirmed T-066)",
+          "recent": true,
           "result": null,
           "results": [
-            "T-007"
+            "T-066"
           ],
-          "source_key": "[Nagamochi 2005]",
-          "text": "Nagamochi 2005, Electron. J. Combin. 12, #R37",
-          "value": "7.78232998313"
+          "source_key": "[wand125 exact covers 2026-10-01]",
+          "text": "wand125 after Daniel, Levy et al. 2026, GitHub",
+          "value": "8"
         },
         "n": 59,
         "record": "n-059",
@@ -1342,16 +1368,18 @@
         "lower": {
           "assurance": "verified",
           "basis": "external",
-          "confirmed_by": [],
-          "note": null,
-          "recent": false,
+          "confirmed_by": [
+            "T-062"
+          ],
+          "note": "(confirmed T-062)",
+          "recent": true,
           "result": null,
           "results": [
-            "T-007"
+            "T-062"
           ],
-          "source_key": "[Nagamochi 2005]",
-          "text": "Nagamochi 2005, Electron. J. Combin. 12, #R37",
-          "value": "7.8556546004"
+          "source_key": "[evand square-packing 2026-10-01]",
+          "text": "Daniel after Burns, Massaccesi 2026, GitHub",
+          "value": "8"
         },
         "n": 60,
         "record": "n-060",
@@ -1361,16 +1389,18 @@
         "lower": {
           "assurance": "verified",
           "basis": "external",
-          "confirmed_by": [],
-          "note": null,
-          "recent": false,
+          "confirmed_by": [
+            "T-063"
+          ],
+          "note": "(confirmed T-063)",
+          "recent": true,
           "result": null,
           "results": [
-            "T-007"
+            "T-063"
           ],
-          "source_key": "[Nagamochi 2005]",
-          "text": "Nagamochi 2005, Electron. J. Combin. 12, #R37",
-          "value": "7.92820323028"
+          "source_key": "[evand square-packing 2026-10-01]",
+          "text": "Daniel after Burns, Massaccesi 2026, GitHub",
+          "value": "8"
         },
         "n": 61,
         "record": "n-061",
@@ -1437,16 +1467,18 @@
         "lower": {
           "assurance": "verified",
           "basis": "external",
-          "confirmed_by": [],
-          "note": null,
-          "recent": false,
+          "confirmed_by": [
+            "T-069"
+          ],
+          "note": "(confirmed T-069)",
+          "recent": true,
           "result": null,
           "results": [
-            "T-007"
+            "T-069"
           ],
-          "source_key": "[Nagamochi 2005]",
-          "text": "Nagamochi 2005, Electron. J. Combin. 12, #R37",
-          "value": "8.07106781187"
+          "source_key": "[wand125 mixed bounds 2026-10-01]",
+          "text": "wand125 after Tokoharu, Levy et al. 2026, GitHub",
+          "value": "8.35"
         },
         "n": 65,
         "record": "n-065",
@@ -1466,16 +1498,18 @@
         "lower": {
           "assurance": "verified",
           "basis": "external",
-          "confirmed_by": [],
-          "note": null,
-          "recent": false,
+          "confirmed_by": [
+            "T-069"
+          ],
+          "note": "(confirmed T-069)",
+          "recent": true,
           "result": null,
           "results": [
-            "T-007"
+            "T-069"
           ],
-          "source_key": "[Nagamochi 2005]",
-          "text": "Nagamochi 2005, Electron. J. Combin. 12, #R37",
-          "value": "8.14142842854"
+          "source_key": "[wand125 mixed bounds 2026-10-01]",
+          "text": "wand125 after Tokoharu, Levy et al. 2026, GitHub",
+          "value": "8.42"
         },
         "n": 66,
         "record": "n-066",
@@ -1495,16 +1529,18 @@
         "lower": {
           "assurance": "verified",
           "basis": "external",
-          "confirmed_by": [],
-          "note": null,
-          "recent": false,
+          "confirmed_by": [
+            "T-070"
+          ],
+          "note": "(confirmed T-070)",
+          "recent": true,
           "result": null,
           "results": [
-            "T-007"
+            "T-070"
           ],
-          "source_key": "[Nagamochi 2005]",
-          "text": "Nagamochi 2005, Electron. J. Combin. 12, #R37",
-          "value": "8.21110255093"
+          "source_key": "[wand125 rectangle bounds 2026-09-28]",
+          "text": "wand125 after Tokoharu, Levy et al. 2026, GitHub",
+          "value": "8.455"
         },
         "n": 67,
         "record": "n-067",
@@ -1525,17 +1561,17 @@
           "assurance": "verified",
           "basis": "external",
           "confirmed_by": [
-            "T-044"
+            "T-074"
           ],
-          "note": "(confirmed T-044)",
+          "note": "(confirmed T-074)",
           "recent": true,
           "result": null,
           "results": [
-            "T-044"
+            "T-074"
           ],
-          "source_key": "[wand125 point bounds 2026]",
-          "text": "wand125 after Levy et al. 2026, GitHub",
-          "value": "8.41"
+          "source_key": "[wand125 rectangle bounds 2026-10-01]",
+          "text": "wand125 after Tokoharu, Levy et al. 2026, GitHub",
+          "value": "8.51"
         },
         "n": 68,
         "record": "n-068",
@@ -1560,17 +1596,17 @@
           "assurance": "verified",
           "basis": "external",
           "confirmed_by": [
-            "T-044"
+            "T-074"
           ],
-          "note": "(confirmed T-044)",
+          "note": "(confirmed T-074)",
           "recent": true,
           "result": null,
           "results": [
-            "T-044"
+            "T-074"
           ],
-          "source_key": "[wand125 point bounds 2026]",
-          "text": "wand125 after Levy et al. 2026, GitHub",
-          "value": "8.41"
+          "source_key": "[wand125 rectangle bounds 2026-10-01]",
+          "text": "wand125 after Tokoharu, Levy et al. 2026, GitHub",
+          "value": "8.585"
         },
         "n": 69,
         "record": "n-069",
@@ -1591,17 +1627,17 @@
           "assurance": "verified",
           "basis": "external",
           "confirmed_by": [
-            "T-044"
+            "T-074"
           ],
-          "note": "(confirmed T-044)",
+          "note": "(confirmed T-074)",
           "recent": true,
           "result": null,
           "results": [
-            "T-044"
+            "T-074"
           ],
-          "source_key": "[wand125 point bounds 2026]",
-          "text": "wand125 after Levy et al. 2026, GitHub",
-          "value": "8.55"
+          "source_key": "[wand125 rectangle bounds 2026-10-01]",
+          "text": "wand125 after Tokoharu, Levy et al. 2026, GitHub",
+          "value": "8.625"
         },
         "n": 70,
         "record": "n-070",
@@ -1622,17 +1658,17 @@
           "assurance": "verified",
           "basis": "external",
           "confirmed_by": [
-            "T-044"
+            "T-070"
           ],
-          "note": "(confirmed T-044)",
+          "note": "(confirmed T-070)",
           "recent": true,
           "result": null,
           "results": [
-            "T-044"
+            "T-070"
           ],
-          "source_key": "[wand125 point bounds 2026]",
-          "text": "wand125 after Levy et al. 2026, GitHub",
-          "value": "8.55"
+          "source_key": "[wand125 rectangle bounds 2026-09-28]",
+          "text": "wand125 after Tokoharu, Levy et al. 2026, GitHub",
+          "value": "8.685"
         },
         "n": 71,
         "record": "n-071",
@@ -1653,17 +1689,17 @@
           "assurance": "verified",
           "basis": "external",
           "confirmed_by": [
-            "T-044"
+            "T-070"
           ],
-          "note": "(confirmed T-044)",
+          "note": "(confirmed T-070)",
           "recent": true,
           "result": null,
           "results": [
-            "T-044"
+            "T-070"
           ],
-          "source_key": "[wand125 point bounds 2026]",
-          "text": "wand125 after Levy et al. 2026, GitHub",
-          "value": "8.61"
+          "source_key": "[wand125 rectangle bounds 2026-09-28]",
+          "text": "wand125 after Tokoharu, Levy et al. 2026, GitHub",
+          "value": "8.685"
         },
         "n": 72,
         "record": "n-072",
@@ -1673,16 +1709,18 @@
         "lower": {
           "assurance": "verified",
           "basis": "external",
-          "confirmed_by": [],
-          "note": null,
-          "recent": false,
+          "confirmed_by": [
+            "T-070"
+          ],
+          "note": "(confirmed T-070)",
+          "recent": true,
           "result": null,
           "results": [
-            "T-007"
+            "T-070"
           ],
-          "source_key": "[Nagamochi 2005]",
-          "text": "Nagamochi 2005, Electron. J. Combin. 12, #R37",
-          "value": "8.61577310586"
+          "source_key": "[wand125 rectangle bounds 2026-09-28]",
+          "text": "wand125 after Tokoharu, Levy et al. 2026, GitHub",
+          "value": "8.685"
         },
         "n": 73,
         "record": "n-073",
@@ -1692,16 +1730,18 @@
         "lower": {
           "assurance": "verified",
           "basis": "external",
-          "confirmed_by": [],
-          "note": null,
-          "recent": false,
+          "confirmed_by": [
+            "T-074"
+          ],
+          "note": "(confirmed T-074)",
+          "recent": true,
           "result": null,
           "results": [
-            "T-007"
+            "T-074"
           ],
-          "source_key": "[Nagamochi 2005]",
-          "text": "Nagamochi 2005, Electron. J. Combin. 12, #R37",
-          "value": "8.68114574787"
+          "source_key": "[wand125 rectangle bounds 2026-10-01]",
+          "text": "wand125 after Tokoharu, Levy et al. 2026, GitHub",
+          "value": "8.8475"
         },
         "n": 74,
         "record": "n-074",
@@ -1711,16 +1751,18 @@
         "lower": {
           "assurance": "verified",
           "basis": "external",
-          "confirmed_by": [],
-          "note": null,
-          "recent": false,
+          "confirmed_by": [
+            "T-074"
+          ],
+          "note": "(confirmed T-074)",
+          "recent": true,
           "result": null,
           "results": [
-            "T-007"
+            "T-074"
           ],
-          "source_key": "[Nagamochi 2005]",
-          "text": "Nagamochi 2005, Electron. J. Combin. 12, #R37",
-          "value": "8.74596669241"
+          "source_key": "[wand125 rectangle bounds 2026-10-01]",
+          "text": "wand125 after Tokoharu, Levy et al. 2026, GitHub",
+          "value": "8.9"
         },
         "n": 75,
         "record": "n-075",
@@ -1730,16 +1772,18 @@
         "lower": {
           "assurance": "verified",
           "basis": "external",
-          "confirmed_by": [],
-          "note": null,
-          "recent": false,
+          "confirmed_by": [
+            "T-072"
+          ],
+          "note": "(confirmed T-072)",
+          "recent": true,
           "result": null,
           "results": [
-            "T-007"
+            "T-072"
           ],
-          "source_key": "[Nagamochi 2005]",
-          "text": "Nagamochi 2005, Electron. J. Combin. 12, #R37",
-          "value": "8.81024967591"
+          "source_key": "[wand125 mixed bounds n76 2026-10-02]",
+          "text": "wand125 after Tokoharu, Levy et al. 2026, GitHub",
+          "value": "8.94"
         },
         "n": 76,
         "record": "n-076",
@@ -1749,16 +1793,18 @@
         "lower": {
           "assurance": "verified",
           "basis": "external",
-          "confirmed_by": [],
-          "note": null,
-          "recent": false,
+          "confirmed_by": [
+            "T-067"
+          ],
+          "note": "(confirmed T-067)",
+          "recent": true,
           "result": null,
           "results": [
-            "T-007"
+            "T-067"
           ],
-          "source_key": "[Nagamochi 2005]",
-          "text": "Nagamochi 2005, Electron. J. Combin. 12, #R37",
-          "value": "8.87400787401"
+          "source_key": "[wand125 exact covers 2026-10-01]",
+          "text": "wand125 after Daniel, Levy et al. 2026, GitHub",
+          "value": "9"
         },
         "n": 77,
         "record": "n-077",
@@ -1768,16 +1814,18 @@
         "lower": {
           "assurance": "verified",
           "basis": "external",
-          "confirmed_by": [],
-          "note": null,
-          "recent": false,
+          "confirmed_by": [
+            "T-067"
+          ],
+          "note": "(confirmed T-067)",
+          "recent": true,
           "result": null,
           "results": [
-            "T-007"
+            "T-067"
           ],
-          "source_key": "[Nagamochi 2005]",
-          "text": "Nagamochi 2005, Electron. J. Combin. 12, #R37",
-          "value": "8.93725393319"
+          "source_key": "[wand125 exact covers 2026-10-01]",
+          "text": "wand125 after Daniel, Levy et al. 2026, GitHub",
+          "value": "9"
         },
         "n": 78,
         "record": "n-078",
@@ -1873,16 +1921,18 @@
         "lower": {
           "assurance": "verified",
           "basis": "external",
-          "confirmed_by": [],
-          "note": null,
-          "recent": false,
+          "confirmed_by": [
+            "T-075"
+          ],
+          "note": "(confirmed T-075)",
+          "recent": true,
           "result": null,
           "results": [
-            "T-007"
+            "T-075"
           ],
-          "source_key": "[Nagamochi 2005]",
-          "text": "Nagamochi 2005, Electron. J. Combin. 12, #R37",
-          "value": "9.12403840464"
+          "source_key": "[wand125 mixed bounds afternoon 2026-10-02]",
+          "text": "wand125 after Tokoharu, Levy et al. 2026, GitHub",
+          "value": "9.37"
         },
         "n": 83,
         "record": "n-083",
@@ -1902,16 +1952,18 @@
         "lower": {
           "assurance": "verified",
           "basis": "external",
-          "confirmed_by": [],
-          "note": null,
-          "recent": false,
+          "confirmed_by": [
+            "T-071"
+          ],
+          "note": "(confirmed T-071)",
+          "recent": true,
           "result": null,
           "results": [
-            "T-007"
+            "T-071"
           ],
-          "source_key": "[Nagamochi 2005]",
-          "text": "Nagamochi 2005, Electron. J. Combin. 12, #R37",
-          "value": "9.18535277187"
+          "source_key": "[wand125 mixed bounds 2026-10-02]",
+          "text": "wand125 after Tokoharu, Levy et al. 2026, GitHub",
+          "value": "9.4"
         },
         "n": 84,
         "record": "n-084",
@@ -1931,16 +1983,18 @@
         "lower": {
           "assurance": "verified",
           "basis": "external",
-          "confirmed_by": [],
-          "note": null,
-          "recent": false,
+          "confirmed_by": [
+            "T-075"
+          ],
+          "note": "(confirmed T-075)",
+          "recent": true,
           "result": null,
           "results": [
-            "T-007"
+            "T-075"
           ],
-          "source_key": "[Nagamochi 2005]",
-          "text": "Nagamochi 2005, Electron. J. Combin. 12, #R37",
-          "value": "9.24621125124"
+          "source_key": "[wand125 mixed bounds afternoon 2026-10-02]",
+          "text": "wand125 after Tokoharu, Levy et al. 2026, GitHub",
+          "value": "9.46"
         },
         "n": 85,
         "record": "n-085",
@@ -1960,16 +2014,18 @@
         "lower": {
           "assurance": "verified",
           "basis": "external",
-          "confirmed_by": [],
-          "note": null,
-          "recent": false,
+          "confirmed_by": [
+            "T-075"
+          ],
+          "note": "(confirmed T-075)",
+          "recent": true,
           "result": null,
           "results": [
-            "T-007"
+            "T-075"
           ],
-          "source_key": "[Nagamochi 2005]",
-          "text": "Nagamochi 2005, Electron. J. Combin. 12, #R37",
-          "value": "9.30662386292"
+          "source_key": "[wand125 mixed bounds afternoon 2026-10-02]",
+          "text": "wand125 after Tokoharu, Levy et al. 2026, GitHub",
+          "value": "9.46"
         },
         "n": 86,
         "record": "n-086",
@@ -1989,16 +2045,18 @@
         "lower": {
           "assurance": "verified",
           "basis": "external",
-          "confirmed_by": [],
-          "note": null,
-          "recent": false,
+          "confirmed_by": [
+            "T-075"
+          ],
+          "note": "(confirmed T-075)",
+          "recent": true,
           "result": null,
           "results": [
-            "T-007"
+            "T-075"
           ],
-          "source_key": "[Nagamochi 2005]",
-          "text": "Nagamochi 2005, Electron. J. Combin. 12, #R37",
-          "value": "9.36660026534"
+          "source_key": "[wand125 mixed bounds afternoon 2026-10-02]",
+          "text": "wand125 after Tokoharu, Levy et al. 2026, GitHub",
+          "value": "9.48"
         },
         "n": 87,
         "record": "n-087",
@@ -2018,16 +2076,18 @@
         "lower": {
           "assurance": "verified",
           "basis": "external",
-          "confirmed_by": [],
-          "note": null,
-          "recent": false,
+          "confirmed_by": [
+            "T-075"
+          ],
+          "note": "(confirmed T-075)",
+          "recent": true,
           "result": null,
           "results": [
-            "T-007"
+            "T-075"
           ],
-          "source_key": "[Nagamochi 2005]",
-          "text": "Nagamochi 2005, Electron. J. Combin. 12, #R37",
-          "value": "9.42614977318"
+          "source_key": "[wand125 mixed bounds afternoon 2026-10-02]",
+          "text": "wand125 after Tokoharu, Levy et al. 2026, GitHub",
+          "value": "9.48"
         },
         "n": 88,
         "record": "n-088",
@@ -2047,16 +2107,18 @@
         "lower": {
           "assurance": "verified",
           "basis": "external",
-          "confirmed_by": [],
-          "note": null,
-          "recent": false,
+          "confirmed_by": [
+            "T-074"
+          ],
+          "note": "(confirmed T-074)",
+          "recent": true,
           "result": null,
           "results": [
-            "T-007"
+            "T-074"
           ],
-          "source_key": "[Nagamochi 2005]",
-          "text": "Nagamochi 2005, Electron. J. Combin. 12, #R37",
-          "value": "9.48528137424"
+          "source_key": "[wand125 rectangle bounds 2026-10-01]",
+          "text": "wand125 after Tokoharu, Levy et al. 2026, GitHub",
+          "value": "9.565"
         },
         "n": 89,
         "record": "n-089",
@@ -2076,16 +2138,18 @@
         "lower": {
           "assurance": "verified",
           "basis": "external",
-          "confirmed_by": [],
-          "note": null,
-          "recent": false,
+          "confirmed_by": [
+            "T-069"
+          ],
+          "note": "(confirmed T-069)",
+          "recent": true,
           "result": null,
           "results": [
-            "T-007"
+            "T-069"
           ],
-          "source_key": "[Nagamochi 2005]",
-          "text": "Nagamochi 2005, Electron. J. Combin. 12, #R37",
-          "value": "9.54400374532"
+          "source_key": "[wand125 mixed bounds 2026-10-01]",
+          "text": "wand125 after Tokoharu, Levy et al. 2026, GitHub",
+          "value": "9.6"
         },
         "n": 90,
         "record": "n-090",
@@ -2095,16 +2159,18 @@
         "lower": {
           "assurance": "verified",
           "basis": "external",
-          "confirmed_by": [],
-          "note": null,
-          "recent": false,
+          "confirmed_by": [
+            "T-075"
+          ],
+          "note": "(confirmed T-075)",
+          "recent": true,
           "result": null,
           "results": [
-            "T-007"
+            "T-075"
           ],
-          "source_key": "[Nagamochi 2005]",
-          "text": "Nagamochi 2005, Electron. J. Combin. 12, #R37",
-          "value": "9.60232526704"
+          "source_key": "[wand125 mixed bounds afternoon 2026-10-02]",
+          "text": "wand125 after Tokoharu, Levy et al. 2026, GitHub",
+          "value": "9.7"
         },
         "n": 91,
         "record": "n-091",
@@ -2114,16 +2180,18 @@
         "lower": {
           "assurance": "verified",
           "basis": "external",
-          "confirmed_by": [],
-          "note": null,
-          "recent": false,
+          "confirmed_by": [
+            "T-075"
+          ],
+          "note": "(confirmed T-075)",
+          "recent": true,
           "result": null,
           "results": [
-            "T-007"
+            "T-075"
           ],
-          "source_key": "[Nagamochi 2005]",
-          "text": "Nagamochi 2005, Electron. J. Combin. 12, #R37",
-          "value": "9.66025403784"
+          "source_key": "[wand125 mixed bounds afternoon 2026-10-02]",
+          "text": "wand125 after Tokoharu, Levy et al. 2026, GitHub",
+          "value": "9.75"
         },
         "n": 92,
         "record": "n-092",
@@ -2133,16 +2201,18 @@
         "lower": {
           "assurance": "verified",
           "basis": "external",
-          "confirmed_by": [],
-          "note": null,
-          "recent": false,
+          "confirmed_by": [
+            "T-075"
+          ],
+          "note": "(confirmed T-075)",
+          "recent": true,
           "result": null,
           "results": [
-            "T-007"
+            "T-075"
           ],
-          "source_key": "[Nagamochi 2005]",
-          "text": "Nagamochi 2005, Electron. J. Combin. 12, #R37",
-          "value": "9.71779788708"
+          "source_key": "[wand125 mixed bounds afternoon 2026-10-02]",
+          "text": "wand125 after Tokoharu, Levy et al. 2026, GitHub",
+          "value": "9.75"
         },
         "n": 93,
         "record": "n-093",
@@ -2152,16 +2222,18 @@
         "lower": {
           "assurance": "verified",
           "basis": "external",
-          "confirmed_by": [],
-          "note": null,
-          "recent": false,
+          "confirmed_by": [
+            "T-074"
+          ],
+          "note": "(confirmed T-074)",
+          "recent": true,
           "result": null,
           "results": [
-            "T-007"
+            "T-074"
           ],
-          "source_key": "[Nagamochi 2005]",
-          "text": "Nagamochi 2005, Electron. J. Combin. 12, #R37",
-          "value": "9.77496438739"
+          "source_key": "[wand125 rectangle bounds 2026-10-01]",
+          "text": "wand125 after Tokoharu, Levy et al. 2026, GitHub",
+          "value": "9.805"
         },
         "n": 94,
         "record": "n-094",
@@ -2171,16 +2243,18 @@
         "lower": {
           "assurance": "verified",
           "basis": "external",
-          "confirmed_by": [],
-          "note": null,
-          "recent": false,
+          "confirmed_by": [
+            "T-074"
+          ],
+          "note": "(confirmed T-074)",
+          "recent": true,
           "result": null,
           "results": [
-            "T-007"
+            "T-074"
           ],
-          "source_key": "[Nagamochi 2005]",
-          "text": "Nagamochi 2005, Electron. J. Combin. 12, #R37",
-          "value": "9.83176086633"
+          "source_key": "[wand125 rectangle bounds 2026-10-01]",
+          "text": "wand125 after Tokoharu, Levy et al. 2026, GitHub",
+          "value": "9.8518"
         },
         "n": 95,
         "record": "n-095",
@@ -2190,16 +2264,18 @@
         "lower": {
           "assurance": "verified",
           "basis": "external",
-          "confirmed_by": [],
-          "note": null,
-          "recent": false,
+          "confirmed_by": [
+            "T-075"
+          ],
+          "note": "(confirmed T-075)",
+          "recent": true,
           "result": null,
           "results": [
-            "T-007"
+            "T-075"
           ],
-          "source_key": "[Nagamochi 2005]",
-          "text": "Nagamochi 2005, Electron. J. Combin. 12, #R37",
-          "value": "9.88819441732"
+          "source_key": "[wand125 mixed bounds afternoon 2026-10-02]",
+          "text": "wand125 after Tokoharu, Levy et al. 2026, GitHub",
+          "value": "9.96"
         },
         "n": 96,
         "record": "n-096",
@@ -2209,16 +2285,18 @@
         "lower": {
           "assurance": "verified",
           "basis": "external",
-          "confirmed_by": [],
-          "note": null,
-          "recent": false,
+          "confirmed_by": [
+            "T-064"
+          ],
+          "note": "(confirmed T-064)",
+          "recent": true,
           "result": null,
           "results": [
-            "T-007"
+            "T-064"
           ],
-          "source_key": "[Nagamochi 2005]",
-          "text": "Nagamochi 2005, Electron. J. Combin. 12, #R37",
-          "value": "9.94427191"
+          "source_key": "[evand square-packing 2026-10-01]",
+          "text": "Daniel after Burns, Massaccesi 2026, GitHub",
+          "value": "10"
         },
         "n": 97,
         "record": "n-097",
@@ -2285,14 +2363,18 @@
         "lower": {
           "assurance": "verified",
           "basis": "external",
-          "confirmed_by": [],
-          "note": null,
-          "recent": false,
+          "confirmed_by": [
+            "T-080"
+          ],
+          "note": "(confirmed T-080)",
+          "recent": true,
           "result": null,
-          "results": [],
-          "source_key": "[Nagamochi 2005]",
-          "text": "Nagamochi 2005, Electron. J. Combin. 12, #R37",
-          "value": "10.0553851381"
+          "results": [
+            "T-080"
+          ],
+          "source_key": "[wand125 linear certificates 2026-10-02]",
+          "text": "wand125 after Tokoharu, Levy et al. 2026, GitHub",
+          "value": "10.28"
         },
         "n": 101,
         "record": "n-101",
@@ -2312,14 +2394,18 @@
         "lower": {
           "assurance": "verified",
           "basis": "external",
-          "confirmed_by": [],
-          "note": null,
-          "recent": false,
+          "confirmed_by": [
+            "T-080"
+          ],
+          "note": "(confirmed T-080)",
+          "recent": true,
           "result": null,
-          "results": [],
-          "source_key": "[Nagamochi 2005]",
-          "text": "Nagamochi 2005, Electron. J. Combin. 12, #R37",
-          "value": "10.1104335791"
+          "results": [
+            "T-080"
+          ],
+          "source_key": "[wand125 linear certificates 2026-10-02]",
+          "text": "wand125 after Tokoharu, Levy et al. 2026, GitHub",
+          "value": "10.28"
         },
         "n": 102,
         "record": "n-102",
@@ -2343,14 +2429,18 @@
         "lower": {
           "assurance": "verified",
           "basis": "external",
-          "confirmed_by": [],
-          "note": null,
-          "recent": false,
+          "confirmed_by": [
+            "T-080"
+          ],
+          "note": "(confirmed T-080)",
+          "recent": true,
           "result": null,
-          "results": [],
-          "source_key": "[Nagamochi 2005]",
-          "text": "Nagamochi 2005, Electron. J. Combin. 12, #R37",
-          "value": "10.1651513899"
+          "results": [
+            "T-080"
+          ],
+          "source_key": "[wand125 linear certificates 2026-10-02]",
+          "text": "wand125 after Tokoharu, Levy et al. 2026, GitHub",
+          "value": "10.28"
         },
         "n": 103,
         "record": "n-103",
@@ -2374,14 +2464,18 @@
         "lower": {
           "assurance": "verified",
           "basis": "external",
-          "confirmed_by": [],
-          "note": null,
-          "recent": false,
+          "confirmed_by": [
+            "T-080"
+          ],
+          "note": "(confirmed T-080)",
+          "recent": true,
           "result": null,
-          "results": [],
-          "source_key": "[Nagamochi 2005]",
-          "text": "Nagamochi 2005, Electron. J. Combin. 12, #R37",
-          "value": "10.2195444573"
+          "results": [
+            "T-080"
+          ],
+          "source_key": "[wand125 linear certificates 2026-10-02]",
+          "text": "wand125 after Tokoharu, Levy et al. 2026, GitHub",
+          "value": "10.28"
         },
         "n": 104,
         "record": "n-104",
@@ -2401,14 +2495,18 @@
         "lower": {
           "assurance": "verified",
           "basis": "external",
-          "confirmed_by": [],
-          "note": null,
-          "recent": false,
+          "confirmed_by": [
+            "T-080"
+          ],
+          "note": "(confirmed T-080)",
+          "recent": true,
           "result": null,
-          "results": [],
-          "source_key": "[Nagamochi 2005]",
-          "text": "Nagamochi 2005, Electron. J. Combin. 12, #R37",
-          "value": "10.2736184955"
+          "results": [
+            "T-080"
+          ],
+          "source_key": "[wand125 linear certificates 2026-10-02]",
+          "text": "wand125 after Tokoharu, Levy et al. 2026, GitHub",
+          "value": "10.28"
         },
         "n": 105,
         "record": "n-105",
@@ -2694,14 +2792,18 @@
         "lower": {
           "assurance": "verified",
           "basis": "external",
-          "confirmed_by": [],
-          "note": null,
-          "recent": false,
+          "confirmed_by": [
+            "T-064"
+          ],
+          "note": "(confirmed T-064)",
+          "recent": true,
           "result": null,
-          "results": [],
-          "source_key": "[Nagamochi 2005]",
-          "text": "Nagamochi 2005, Electron. J. Combin. 12, #R37",
-          "value": "10.9498743711"
+          "results": [
+            "T-064"
+          ],
+          "source_key": "[evand square-packing 2026-10-01]",
+          "text": "Daniel after Burns, Massaccesi 2026, GitHub",
+          "value": "11"
         },
         "n": 118,
         "record": "n-118",
@@ -3211,14 +3313,18 @@
         "lower": {
           "assurance": "verified",
           "basis": "external",
-          "confirmed_by": [],
-          "note": null,
-          "recent": false,
+          "confirmed_by": [
+            "T-064"
+          ],
+          "note": "(confirmed T-064)",
+          "recent": true,
           "result": null,
-          "results": [],
-          "source_key": "[Nagamochi 2005]",
-          "text": "Nagamochi 2005, Electron. J. Combin. 12, #R37",
-          "value": "11.9544511501"
+          "results": [
+            "T-064"
+          ],
+          "source_key": "[evand square-packing 2026-10-01]",
+          "text": "Daniel after Burns, Massaccesi 2026, GitHub",
+          "value": "12"
         },
         "n": 141,
         "record": "n-141",
@@ -3772,14 +3878,18 @@
         "lower": {
           "assurance": "verified",
           "basis": "external",
-          "confirmed_by": [],
-          "note": null,
-          "recent": false,
+          "confirmed_by": [
+            "T-064"
+          ],
+          "note": "(confirmed T-064)",
+          "recent": true,
           "result": null,
-          "results": [],
-          "source_key": "[Nagamochi 2005]",
-          "text": "Nagamochi 2005, Electron. J. Combin. 12, #R37",
-          "value": "12.9582607431"
+          "results": [
+            "T-064"
+          ],
+          "source_key": "[evand square-packing 2026-10-01]",
+          "text": "Daniel after Burns, Massaccesi 2026, GitHub",
+          "value": "13"
         },
         "n": 166,
         "record": "n-166",
@@ -4381,14 +4491,18 @@
         "lower": {
           "assurance": "verified",
           "basis": "external",
-          "confirmed_by": [],
-          "note": null,
-          "recent": false,
+          "confirmed_by": [
+            "T-064"
+          ],
+          "note": "(confirmed T-064)",
+          "recent": true,
           "result": null,
-          "results": [],
-          "source_key": "[Nagamochi 2005]",
-          "text": "Nagamochi 2005, Electron. J. Combin. 12, #R37",
-          "value": "13.9614813968"
+          "results": [
+            "T-064"
+          ],
+          "source_key": "[evand square-packing 2026-10-01]",
+          "text": "Daniel after Burns, Massaccesi 2026, GitHub",
+          "value": "14"
         },
         "n": 193,
         "record": "n-193",
@@ -5052,14 +5166,18 @@
         "lower": {
           "assurance": "verified",
           "basis": "external",
-          "confirmed_by": [],
-          "note": null,
-          "recent": false,
+          "confirmed_by": [
+            "T-064"
+          ],
+          "note": "(confirmed T-064)",
+          "recent": true,
           "result": null,
-          "results": [],
-          "source_key": "[Nagamochi 2005]",
-          "text": "Nagamochi 2005, Electron. J. Combin. 12, #R37",
-          "value": "14.9642400438"
+          "results": [
+            "T-064"
+          ],
+          "source_key": "[evand square-packing 2026-10-01]",
+          "text": "Daniel after Burns, Massaccesi 2026, GitHub",
+          "value": "15"
         },
         "n": 222,
         "record": "n-222",
@@ -5767,14 +5885,18 @@
         "lower": {
           "assurance": "verified",
           "basis": "external",
-          "confirmed_by": [],
-          "note": null,
-          "recent": false,
+          "confirmed_by": [
+            "T-064"
+          ],
+          "note": "(confirmed T-064)",
+          "recent": true,
           "result": null,
-          "results": [],
-          "source_key": "[Nagamochi 2005]",
-          "text": "Nagamochi 2005, Electron. J. Combin. 12, #R37",
-          "value": "15.9666295471"
+          "results": [
+            "T-064"
+          ],
+          "source_key": "[evand square-packing 2026-10-01]",
+          "text": "Daniel after Burns, Massaccesi 2026, GitHub",
+          "value": "16"
         },
         "n": 253,
         "record": "n-253",
@@ -6530,14 +6652,18 @@
         "lower": {
           "assurance": "verified",
           "basis": "external",
-          "confirmed_by": [],
-          "note": null,
-          "recent": false,
+          "confirmed_by": [
+            "T-064"
+          ],
+          "note": "(confirmed T-064)",
+          "recent": true,
           "result": null,
-          "results": [],
-          "source_key": "[Nagamochi 2005]",
-          "text": "Nagamochi 2005, Electron. J. Combin. 12, #R37",
-          "value": "16.9687194227"
+          "results": [
+            "T-064"
+          ],
+          "source_key": "[evand square-packing 2026-10-01]",
+          "text": "Daniel after Burns, Massaccesi 2026, GitHub",
+          "value": "17"
         },
         "n": 286,
         "record": "n-286",
@@ -7341,14 +7467,18 @@
         "lower": {
           "assurance": "verified",
           "basis": "external",
-          "confirmed_by": [],
-          "note": null,
-          "recent": false,
+          "confirmed_by": [
+            "T-064"
+          ],
+          "note": "(confirmed T-064)",
+          "recent": true,
           "result": null,
-          "results": [],
-          "source_key": "[Nagamochi 2005]",
-          "text": "Nagamochi 2005, Electron. J. Combin. 12, #R37",
-          "value": "17.9705627485"
+          "results": [
+            "T-064"
+          ],
+          "source_key": "[evand square-packing 2026-10-01]",
+          "text": "Daniel after Burns, Massaccesi 2026, GitHub",
+          "value": "18"
         },
         "n": 321,
         "record": "n-321",

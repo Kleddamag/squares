@@ -73,10 +73,38 @@ FRONTIER_COUNTS: dict[str, tuple[int, int, int]] = {
     # from the n=1..324 reported-open count. T-062 and T-063 report exact values
     # at n=60 and n=61, while T-064 reports the k^2-3 family. Its ten new open
     # instances n=78..321 bring the reported-open count down without changing
-    # the formal-open or Nagamochi-bounded counts.
-    "n=1..100": (61, 57, 38),
-    "n=1..200": (149, 141, 126),
-    "n=1..324": (261, 249, 238),
+    # the formal-open or Nagamochi-bounded counts. 2026-10-01: T-066 and T-067 report
+    # s(59) = 8 and s(77) = 9 from mixed covers not yet replayed here, so both left the
+    # reported-open count in every corpus and stay formal-open. 2026-10-02: 21 merged
+    # rectangle replays (T-045, T-070) took 17 open cases off Nagamochi's bound, and the
+    # zmx2 replays of the s(60) and s(59) mixed covers (T-062, T-063, T-066) proved
+    # n = 59, 60 and 61 in the verified lane; all three were already reported-proved and
+    # none was Nagamochi-bounded, so only formal-open moves. 2026-10-02 later: the
+    # completed zmx2 replay of the s(77) mixed cover (T-067) proved n = 77 and, by its
+    # total below 78, n = 78; both were reported-proved and neither Nagamochi-bounded,
+    # so formal-open falls by two in every corpus. The replayed s(76) >= 447/50 (T-072)
+    # leaves n = 76 open. 2026-10-02, the merged replay of wand125's n = 50 mixed
+    # certificate (T-048) took n = 50 and, by its mass, n = 51 off Nagamochi's bound;
+    # both stay open in both lanes, so only the Nagamochi-bounded count falls by two. The
+    # same day the replayed mixed certificates of T-069 and T-071 took n = 37, 65, 66, 84,
+    # 85, 87, 90 and 92 off it, eight more, all open in both lanes; n = 86 moved too, from
+    # a rectangle certificate. Then the merged replays of wand125's rectangle
+    # certificates of 1 October (T-074) took n = 57, 58, 88, 89, 93 and 94 off it, six
+    # more, all open in both lanes. 2026-10-03: the full replay of Valid7 and the built
+    # Lean reduction proved T-064's s(k^2 - 3) = k, closing n = 97, 118, 141, 166, 193,
+    # 222, 253, 286 and 321; all were reported-proved and Nagamochi-bounded, so the
+    # formal-open and Nagamochi-bounded counts fall together, by one, five and nine. The
+    # same day the replays of wand125's six afternoon mixed certificates (T-075) took
+    # n = 83, 91 and 96 off Nagamochi's bound, all open in both lanes, so only the
+    # Nagamochi-bounded count falls, by three in every corpus. Then the n = 101 linear
+    # certificate's replay of 2 October, recorded as T-080, took n = 101 to 105 off it,
+    # all open in both lanes, so that count falls by five in the two larger corpora. The
+    # same day Daniel's reported s(k^2 - 4) = k (T-081) made n = 96, 117, 140, 165, 192,
+    # 221, 252, 285 and 320 reported-proved and left their verified lanes alone, so only
+    # the reported-open count falls, by one, five and nine.
+    "n=1..100": (55, 54, 1),
+    "n=1..200": (139, 134, 80),
+    "n=1..324": (247, 238, 188),
 }
 #: n = 68, 103, 105, 110 and 131 left the exclusions on 2026-09-29, when their records
 #: moved from UnitSquare renderings to Francisco Couzo's packings (T-056); n = 69 is the
@@ -112,6 +140,7 @@ REPOSITORY_ROOT = PROJECT_ROOT.parent
 WORKBENCH_ROOT = REPOSITORY_ROOT / "packages/workbench"
 ENGINE = PROJECT_ROOT / "sqsearch/target/release/sqsearch"
 EXACT_GEOMETRY_CRATE = PROJECT_ROOT / "sqverify_exact"
+MEASURE_VERIFIER_CRATE = PROJECT_ROOT / "sqverify_fast"
 RESULTS = Path("campaign/series/series-000-smoke-and-calibration/results")
 ACTIVITY_MARKER = PROJECT_ROOT / ".gate-running"
 DEFAULT_CPU_COUNT = 4
@@ -143,6 +172,7 @@ TIER_FLAGS = (
     "sweeps",
     "geometry",
     "typecheck",
+    "measure_verifier",
     "fast",
 )
 TIER_IDS = (*TIER_FLAGS, "full")
@@ -557,10 +587,11 @@ class Step:
     enough that the pull request runs it on its own runner rather than beside the rest.
 
     `fast` says *whether* a pull request runs a step; this field, `frontend`,
-    `suite_a`, `suite_b`, `suite_c`, `suite_d`, `geometry`, and `typecheck` say *which
-    pull-request job* runs it. Every sweep is also `fast`, the nine selections complement
-    `--fast`, and `test_the_pull_request_jobs_partition_the_surface` reads the workflow and
-    checks all nine against what CI actually invokes -- so a step cannot land in no job,
+    `suite_a`, `suite_b`, `suite_c`, `suite_d`, `geometry`, `typecheck`, and
+    `measure_verifier` say *which pull-request job* runs it. Every sweep is also `fast`,
+    the ten selections complement `--fast`, and
+    `test_the_pull_request_jobs_partition_the_surface` reads the workflow and checks all ten
+    against what CI actually invokes -- so a step cannot land in no job,
     and no step is paid for twice.
 
     The boundary is a measurement, not a topic. Four steps carry it, and on CI's
@@ -641,6 +672,17 @@ class Step:
 
     BasedPyright is one process that outer ``--jobs`` cannot divide.  This remains part
     of ``--edit`` locally; the flag changes only which required pull-request job owns it.
+    """
+
+    measure_verifier: bool = False
+    """Assigns the clean-room measure verifier's gate to its own pull-request runner.
+
+    It compiles and tests a Rust crate under fat LTO and then drives the binary through
+    the oracle and the mutation controls, and its sources move on most pushes. In
+    `checks` it read 84.4s of a 168.3s tier on run 37098372802 and 45.3s of a 137.93s
+    tier against 140s on run 37131940076, where every step ran about 1.9x slow. On a
+    runner of its own its compile and its controls stop contending with the perimeter
+    and exact verification, and its cost is a tier with its own ceiling.
     """
 
     geometry: bool = False
@@ -783,6 +825,8 @@ class Step:
             tags.append("suite-d")
         elif self.typecheck:
             tags.append("typecheck")
+        elif self.measure_verifier:
+            tags.append("measure-verifier")
         elif self.geometry:
             tags.append("geometry")
         elif self.fast:
@@ -2469,6 +2513,88 @@ def _rust_quality(context: Context) -> str:
     ).strip()
 
 
+def _rust_measure_verifier(context: Context) -> str:
+    """Lint, test and build the clean-room measure verifier, then hold it to the exact
+    oracle and the mutation controls (`devtools.check_sqverify_fast --quick`).
+
+    The tests build under the crate's `gate-test` profile, release optimisation without
+    fat LTO: under `--release` they cost two fat-LTO links of their own beside the
+    binary's, and on run 37098372802 the step was 84.4s of a 168.3s checks tier."""
+    cargo = shutil.which("cargo", path=context.environment.get("PATH"))
+    if cargo is None:
+        raise StepFailureError("measure verifier gate requires cargo")
+    environment = dict(context.environment)
+    environment["RUSTDOCFLAGS"] = f"{environment.get('RUSTDOCFLAGS', '')} -D warnings".strip()
+    child = replace(
+        context, environment=environment, timeout_seconds=min(context.timeout_seconds, 240)
+    )
+    output = _commands(
+        child,
+        (
+            (cargo, "fmt", "--all", "--check"),
+            (cargo, "clippy", "--locked", "--release", "--all-targets", "--", "-D", "warnings"),
+            (cargo, "test", "--locked", "--profile", "gate-test", "--all-targets", "--quiet"),
+            (cargo, "doc", "--locked", "--no-deps", "--quiet"),
+            (cargo, "build", "--locked", "--release", "--quiet"),
+        ),
+        cwd=MEASURE_VERIFIER_CRATE,
+    )
+    if not sum(int(count) for count in re.findall(r"test result: ok\. (\d+) passed", output)):
+        raise StepFailureError("measure verifier gate ran no passing Rust tests")
+    target = Path(environment.get("CARGO_TARGET_DIR", "target"))
+    if not target.is_absolute():
+        target = MEASURE_VERIFIER_CRATE / target
+    binary = target / "release/sqverify-fast"
+    checks = _run(
+        child,
+        (
+            sys.executable,
+            "-m",
+            "devtools.check_sqverify_fast",
+            "--binary",
+            str(binary),
+            "--quick",
+        ),
+    )
+    _require_text(checks, "SQVERIFY-FAST CHECKS PASSED")
+    return f"{output}\n{checks}"
+
+
+def _rust_measure_verifier_full(context: Context) -> str:
+    """Build the measure verifier and hold it to every oracle comparison and control
+    `devtools.check_sqverify_fast` has, the ones `--quick` leaves out included.
+
+    The quick run is the pull request's; this is the rest of it, deferred on its cost:
+    72.8 s on an idle four-cpu box against about 22 s for the quick set, 56.6 s of it the
+    mixed certificates' exact differentials and near-threshold controls, and single
+    threaded throughout, so it would be the longest unit of the measure verifier's job.
+    """
+    cargo = shutil.which("cargo", path=context.environment.get("PATH"))
+    if cargo is None:
+        raise StepFailureError("measure verifier full controls require cargo")
+    child = replace(context, timeout_seconds=min(context.timeout_seconds, 600))
+    output = _commands(
+        child,
+        ((cargo, "build", "--locked", "--release", "--quiet"),),
+        cwd=MEASURE_VERIFIER_CRATE,
+    )
+    target = Path(context.environment.get("CARGO_TARGET_DIR", "target"))
+    if not target.is_absolute():
+        target = MEASURE_VERIFIER_CRATE / target
+    checks = _run(
+        child,
+        (
+            sys.executable,
+            "-m",
+            "devtools.check_sqverify_fast",
+            "--binary",
+            str(target / "release/sqverify-fast"),
+        ),
+    )
+    _require_text(checks, "SQVERIFY-FAST CHECKS PASSED")
+    return f"{output}\n{checks}"
+
+
 def _rust_exact_geometry(context: Context) -> str:
     """Check the diagnostic exact batch kernel against the Python area oracle."""
     cargo = shutil.which("cargo", path=context.environment.get("PATH"))
@@ -3194,8 +3320,13 @@ def _nagamochi_bounds(context: Context) -> str:
 def _evidence_inventory(context: Context) -> str:
     # Sub-second: it reads one register and re-renders a table. Records tier because it is
     # a generated view of the record, and a generated view that has drifted from its source
-    # is the thing this repository logs defects about most often.
-    return _module(context, "devtools.render_evidence_inventory", "--check")
+    # is the thing this repository logs defects about most often. The verifier registry's
+    # view and each case record's verification-code section are views of the same
+    # evidence, re-rendered beside it.
+    inventory = _module(context, "devtools.render_evidence_inventory", "--check")
+    verifiers = _module(context, "devtools.render_verifiers", "--check")
+    cases = _module(context, "devtools.render_case_verifiers", "--check")
+    return f"{inventory}\n{verifiers}\n{cases}"
 
 
 def _results_register(context: Context) -> str:
@@ -3251,6 +3382,15 @@ def _standing(context: Context) -> str:
     # labelled superseded while the bound it states still stands, or standing while every
     # bound it states is beaten, would pass every other step here (think-nr0y).
     return _module(context, "devtools.check_standing")
+
+
+def _result_requests(context: Context) -> str:
+    # Sub-second: one record, its schema and the register. Records tier because it checks
+    # the record against the register -- that every issue's results name entries that
+    # exist and every reply is a comment on its own issue, the join stage 7 of the result
+    # import process reads to say which author is owed a reply. A reply due is reported,
+    # never failed: it is the owner's next move, not a broken record.
+    return _module(context, "devtools.check_requests")
 
 
 def _case_prose(context: Context) -> str:
@@ -3467,6 +3607,14 @@ _TOOLCHAIN = ("packing/pyproject.toml", "packing/uv.lock", "packing/.python-vers
 # per-file devtools pattern, so it belongs with the shared core rather than repeated.
 _CORE = ("packing/src/sqpack/*", "packing/devtools/__init__.py", *_TOOLCHAIN)
 _ENGINE_SRC = ("packing/sqsearch/*",)
+_MEASURE_VERIFIER_SRC = (
+    "packing/sqverify_fast/*",
+    "packing/devtools/check_sqverify_fast.py",
+    "packing/src/sqpack/rectangle_density.py",
+    "packing/resources/web/wand125-rectangle-certificates-2026-09-27/wand125-rectangles/certificates/rect_n32_L595/*",
+    "packing/resources/web/wand125-rectangle-certificates-2026-10-01/wand125-rectangles/certificates/rect_n41_L676/*",
+    "packing/resources/web/wand125-rectangle-certificates-2026-10-01/receipts/controls/*",
+)
 _EXACT_GEOMETRY_SRC = (
     "packing/sqverify_exact/*",
     "packing/devtools/check_exact_rust_kernel.py",
@@ -3515,9 +3663,9 @@ _WORKBENCH_INPUTS = (
 # tier that has to hold everything a merge would otherwise be the first to check. Since
 # 2026-09-06 a pull request runs it as concurrent jobs rather than one. The current
 # partition is `--checks`, `--frontend`, `--typecheck`, `--geometry`, `--suite-a`,
-# `--suite-b`, `--suite-c`, `--suite-d`, and `--sweeps`, argued on the corresponding
-# `Step` fields; the tier is unchanged and what
-# a pull request waits for is its longest part rather than their sum.
+# `--suite-b`, `--suite-c`, `--suite-d`, `--measure-verifier`, and `--sweeps`, argued on
+# the corresponding `Step` fields; the tier is unchanged and what a pull request waits
+# for is its longest part rather than their sum.
 #
 # The three-way split was the second cut and it was taken on the two-job surface's own
 # measurement (run 34010470187): `checks` 221.70s against `sweeps` 110.66s, badly
@@ -4136,6 +4284,24 @@ STEPS: tuple[Step, ...] = (
             "packing/tests/test_rust_floor_contract.py",
         ),
     ),
+    # The clean-room measure verifier (think-gpe0): its crate's lint, tests and release
+    # build, then the quick differential against the exact oracle and the mutation
+    # controls. Broad for the toolchain, like the exact crate beside it.
+    Step(
+        "measure verifier Rust (sqverify-fast)",
+        _rust_measure_verifier,
+        fast=True,
+        broad=True,
+        measure_verifier=True,
+        touches=_MEASURE_VERIFIER_SRC,
+    ),
+    # The full oracle and control set, deferred on its cost: 72.8 s single threaded on an
+    # idle four-cpu box, against the quick set the pull request runs above.
+    Step(
+        "measure verifier full controls (sqverify-fast)",
+        _rust_measure_verifier_full,
+        touches=_MEASURE_VERIFIER_SRC,
+    ),
     Step(
         "exact rectangle Rust geometry",
         _rust_exact_geometry,
@@ -4623,8 +4789,15 @@ STEPS: tuple[Step, ...] = (
         touches=(
             *_CORE,
             "packing/devtools/render_evidence_inventory.py",
+            "packing/devtools/render_verifiers.py",
+            "packing/devtools/render_case_verifiers.py",
+            "packing/devtools/verifier_registry.py",
             "packing/frontier/evidence.yaml",
+            "packing/frontier/verifiers.yaml",
+            "packing/frontier/results.yaml",
+            "packing/frontier/n-*.md",
             "packing/frontier/INVENTORY.md",
+            "packing/frontier/VERIFIERS.md",
         ),
     ),
     Step(
@@ -4695,6 +4868,21 @@ STEPS: tuple[Step, ...] = (
             "packing/frontier/evidence.yaml",
             "packing/frontier/n-*.md",
             "packing/resources/bibliography.yaml",
+        ),
+    ),
+    Step(
+        "result requests name registered results",
+        _result_requests,
+        fast=True,
+        records=True,
+        touches=(
+            *_CORE,
+            "packing/devtools/check_requests.py",
+            "packing/devtools/result_status.py",
+            "packing/campaign/result-requests.yaml",
+            "packing/campaign/schemas/result-requests.schema.yaml",
+            "packing/frontier/results.yaml",
+            "packing/frontier/evidence.yaml",
         ),
     ),
     Step(
@@ -5093,6 +5281,7 @@ TREE_REUSABLE_FAST_STEPS = frozenset(
         # Locked Rust sources and tracked exact differential fixtures determine the
         # verdict; no repository history, remote state, or stored result is consulted.
         "exact rectangle Rust geometry",
+        "measure verifier Rust (sqverify-fast)",
         "Trump exact branchwise linearized cones",
         "H-041 Stromquist repaired-cover exact certificate",
         "H-010 Stromquist printed-cover exact rejection",
@@ -5131,6 +5320,9 @@ TREE_REUSABLE_FAST_STEPS = frozenset(
         # The register, the bibliography and the case records, read and compared: no
         # clock, no network and no history.
         "standings agree with the bounds their entries state",
+        # One record, its schema and the register; `--report`, `--draft` and `--github`
+        # read git and GitHub, and the step runs none of them.
+        "result requests name registered results",
         "case prose agrees with its own front matter",
         # Reads the register, the reader documents and its own allowlist; the `git grep`
         # in the module belongs to `--retained`, which this step does not run.
@@ -5158,17 +5350,18 @@ def _select_steps(
     suite_d: bool = False,
     geometry: bool = False,
     typecheck: bool = False,
+    measure_verifier: bool = False,
     skip: Sequence[str] = (),
 ) -> list[Step]:
     """The steps a tier and its name filters select.
 
     `--checks`, `--frontend`, `--suite-a`, `--suite-b`, `--suite-c`, `--suite-d`, `--sweeps`,
-    `--geometry`, and `--typecheck` are the parts of `--fast`, and they exist because CI runs
-    them as concurrent GitHub jobs. They are a partition by construction here: eight
-    select their placement field and `--checks` selects fast steps marked with none of
-    them. No step can be in two parts or in none.
+    `--geometry`, `--typecheck`, and `--measure-verifier` are the parts of `--fast`, and they
+    exist because CI runs them as concurrent GitHub jobs. They are a partition by
+    construction here: nine select their placement field and `--checks` selects fast
+    steps marked with none of them. No step can be in two parts or in none.
 
-    Nine jobs could have divided the tier with `--only` and `--skip` instead, and that
+    Ten jobs could have divided the tier with `--only` and `--skip` instead, and that
     was rejected on the register rather than on taste. A subset of a tier has no
     declared cost: `--only` reports no tier at all, and `--skip` reports the tier it
     narrowed, so a part-tier run would have been judged against the whole tier's
@@ -5211,6 +5404,8 @@ def _select_steps(
         selected = [step for step in STEPS if step.geometry]
     elif typecheck:
         selected = [step for step in STEPS if step.typecheck]
+    elif measure_verifier:
+        selected = [step for step in STEPS if step.measure_verifier]
     elif checks:
         selected = [
             step
@@ -5225,6 +5420,7 @@ def _select_steps(
                 or step.suite_d
                 or step.geometry
                 or step.typecheck
+                or step.measure_verifier
             )
         ]
     else:
@@ -5752,7 +5948,7 @@ def _parser() -> ArgumentParser:
         "--checks",
         action="store_true",
         help=(
-            "run the part of --fast that is none of the other eight: the Python and Rust "
+            "run the part of --fast that is none of the other nine: the Python and Rust "
             "record checks, and everything that needs the Rust engine"
         ),
     )
@@ -5798,6 +5994,15 @@ def _parser() -> ArgumentParser:
         help=(
             "run the part of --fast that is the type floor; the pull request gives it "
             "a runner of its own"
+        ),
+    )
+    parser.add_argument(
+        "--measure-verifier",
+        action="store_true",
+        help=(
+            "run the part of --fast that lints, tests and builds the clean-room measure "
+            "verifier and holds it to the oracle and the controls; the pull request gives "
+            "it a runner of its own"
         ),
     )
     parser.add_argument(
@@ -5911,6 +6116,7 @@ def _validate_invocation(
     suite_d: bool = False,
     geometry: bool = False,
     typecheck: bool = False,
+    measure_verifier: bool = False,
     since: str | None = None,
     push: bool = False,
     skip: Sequence[str] = (),
@@ -5926,6 +6132,7 @@ def _validate_invocation(
         suite_d,
         geometry,
         typecheck,
+        measure_verifier,
     )
     parts = any(selections)
     narrowed = only or skip or fast or records or edit or parts or since or push
@@ -5933,7 +6140,7 @@ def _validate_invocation(
         raise UsageError(
             "--strict cannot be combined with --only, --skip, --fast, --checks, "
             "--frontend, --suite-a, --suite-b, --suite-c, --suite-d, --sweeps, --geometry, "
-            "--typecheck, --records, --edit, --push, or --since"
+            "--typecheck, --measure-verifier, --records, --edit, --push, or --since"
         )
     if edit and fast:
         raise UsageError(
@@ -5942,14 +6149,14 @@ def _validate_invocation(
     if sum(selections) > 1:
         raise UsageError(
             "--checks, --frontend, --geometry, --suite-a, --suite-b, --suite-c, --suite-d, "
-            "--sweeps and --typecheck are the nine parts of --fast; ask for --fast to run "
-            "them all, or for one of them to run that part"
+            "--sweeps, --typecheck and --measure-verifier are the ten parts of --fast; ask "
+            "for --fast to run them all, or for one of them to run that part"
         )
     if parts and (fast or records or edit or push):
         raise UsageError(
             "--checks, --frontend, --geometry, --suite-a, --suite-b, --suite-c, --suite-d, "
-            "--sweeps and --typecheck are parts of --fast and are not combined with another "
-            "tier; --fast is all nine of them"
+            "--sweeps, --typecheck and --measure-verifier are parts of --fast and are not "
+            "combined with another tier; --fast is all ten of them"
         )
     if push and (fast or records or edit):
         raise UsageError(
@@ -6019,6 +6226,7 @@ def main(argv: Sequence[str] | None = None) -> int:
             suite_d=namespace.suite_d,
             geometry=namespace.geometry,
             typecheck=namespace.typecheck,
+            measure_verifier=namespace.measure_verifier,
             since=namespace.since,
             push=namespace.push,
             skip=namespace.skip,
@@ -6064,6 +6272,7 @@ def main(argv: Sequence[str] | None = None) -> int:
             suite_d=namespace.suite_d,
             geometry=namespace.geometry,
             typecheck=namespace.typecheck,
+            measure_verifier=namespace.measure_verifier,
             skip=namespace.skip,
         )
         selected = _unless_verified(namespace, selected)

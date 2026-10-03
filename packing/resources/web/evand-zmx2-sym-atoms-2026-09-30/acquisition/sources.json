@@ -1,0 +1,56 @@
+{
+  "format": "external-source-acquisition-v1",
+  "retrieved_at_utc": "2026-10-02T04:50Z",
+  "git_scope": "A blobless clone of the public repository with a sparse checkout of the declared paths at the commit that the s(32) no-fold run's manifest records as its Git HEAD; the rest of the tree is pinned by the commit.",
+  "sources": [
+    {
+      "id": "evand-zmx2-sym-atoms",
+      "source_url": "https://github.com/evand/square-packing",
+      "source_ref": "e4af291cf52711a3ef7cedfea262f001fa2cafe1",
+      "source_commit": "e4af291cf52711a3ef7cedfea262f001fa2cafe1",
+      "committed_utc": "2026-09-30T23:45:14Z",
+      "git_tree": "7608250ebdd909471079b76e8727957d6514903c",
+      "archived_path": "packing/resources/web/evand-zmx2-sym-atoms-2026-09-30/square-packing",
+      "subtree_manifest": "packing/resources/web/evand-zmx2-sym-atoms-2026-09-30/acquisition/upstream-subtree.sha256",
+      "subtree_scope": [
+        "s12/verify2/src/bin/zmx2.rs",
+        "s12/verify2/Cargo.toml",
+        "s12/verify2/Cargo.lock",
+        "s12/verify2/src/main.rs",
+        "s12/search/zmx2_sym_run.sh"
+      ],
+      "subtree_file_count": 5,
+      "subtree_total_bytes": 177912,
+      "retained_file_count": 2,
+      "retained_total_bytes": 80138,
+      "compressed": [],
+      "pinned_only": [
+        {
+          "path": "s12/verify2/Cargo.lock",
+          "bytes": 151,
+          "sha256": "e1daec4d9995e879ddbf4aa5fb89b6f03eaaa23157ef60feb72741e3a0ffa57e",
+          "reason": "byte-identical to the 2026-09-26 evand packet's copy",
+          "identical_to": "packing/resources/web/evand-square-packing-2026-09-26/square-packing/s12/verify2/Cargo.lock"
+        },
+        {
+          "path": "s12/verify2/Cargo.toml",
+          "bytes": 151,
+          "sha256": "4e0f078ea45b32802c21cb71413305e30cd062c3fa371c6ff6e62bda3d07a577",
+          "reason": "byte-identical to the 2026-09-26 evand packet's copy",
+          "identical_to": "packing/resources/web/evand-square-packing-2026-09-26/square-packing/s12/verify2/Cargo.toml"
+        },
+        {
+          "path": "s12/verify2/src/main.rs",
+          "bytes": 97472,
+          "sha256": "94b7d83ecf6aeea64c20aea9d4f5c210c28577fb3870581d79169204c980c12b",
+          "reason": "byte-identical to the 2026-09-26 evand packet's copy",
+          "identical_to": "packing/resources/web/evand-square-packing-2026-09-26/square-packing/s12/verify2/src/main.rs"
+        }
+      ],
+      "license": "MIT (s12/LICENSE, retained by the 2026-10-01 evand packet)",
+      "claims": [
+        "zmx2 cert s32_closed_cover_6.txt --full --pair-points --sym-atoms certifies the s(32) point cover without the D4 fold (the checker that made certificates/s32/zmx2_full_sym of the 2026-10-01 evand packet)"
+      ]
+    }
+  ]
+}

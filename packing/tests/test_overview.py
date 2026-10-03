@@ -2395,12 +2395,14 @@ def test_every_result_shows_its_status_and_its_place_on_the_frontier(
     second proof of a held value says so by its kind; and a result that is no bound is
     marked only where its entry declares a later result that implies it
     (`superseded_by`), whatever its evidence makes its standing. Each mark names the
-    results that supersede it, as links to their rows (think-6zg1). Every chip is the
-    one plain chip (think-ai94)."""
+    results that supersede it, as links to their rows (think-6zg1), and a mark of a
+    result superseded in part is the same `superseded` chip, its standing kept as
+    `superseded-in-part`, with `in part` after it (think-kmi4). Every chip is the one
+    plain chip (think-ai94)."""
     held = render_recent_results.HOLDS
     recent = _recent_table(page)
     status = re.compile(r'<span class="site-chip" data-status="([^"]*)"[^>]*>([^<]+)</span>')
-    standing = re.compile(r'<span class="site-chip" data-standing="[^"]*"[^>]*>([^<]+)</span>')
+    standing = re.compile(r'<span class="site-chip" data-standing="([^"]*)">([^<]+)</span>')
     evidence = records.register.evidence
     for result in overview.results:
         expected = render_recent_results.standing(result.record, records)
@@ -2417,7 +2419,11 @@ def test_every_result_shows_its_status_and_its_place_on_the_frontier(
             assert f'data-status="{result.status}"' in tag, result.id
             assert "data-standing=" not in tag, result.id
             assert status.findall(row) == [(result.status, result.status)], result.id
-            assert standing.findall(row) == marks, result.id
+            # Each mark's chip says `superseded` and carries its own standing.
+            assert standing.findall(row) == [
+                (overview_sections.standing_key(mark), render_recent_results.SUPERSEDED)
+                for mark in marks
+            ], result.id
             line = row.split('<span class="site-standing">', 1)[1]
             assert line.startswith(overview_sections.status_chip(result.status)), result.id
             # The status line is a column of its own since 2026-10-02 (think-ybt5),
@@ -2541,7 +2547,7 @@ def test_every_result_shows_its_kind(
             declared = result.record.get("superseded_by") or []
             whole = any(item["extent"] == "whole" for item in declared)
             assert overview_sections.is_superseded(result) is whole, result.id
-            assert (">superseded<" in marks) is whole, result.id
+            assert ('data-standing="superseded">' in marks) is whole, result.id
     assert ">not a bound<" not in results + recent
     assert 'data-standing="not-a-bound"' not in results + recent
     # The popover's head and a chain's step show the kind beside the rungs, then the
@@ -2555,7 +2561,18 @@ def test_every_result_shows_its_kind(
         f"{overview_sections.kind_chip(t036)} {overview_sections.status_chip('confirmed')} "
         f"{overview_sections.supersession_marks(t036)}"
     )
-    assert ">superseded in part<" in overview_sections.supersession_marks(t036)
+    # Its partial mark's chip says `superseded`, as the whole mark's does, and keeps its
+    # own standing; `in part` leads the quiet text after it, so the line reads as the
+    # register's does, and the status column is no wider than `superseded` (think-kmi4).
+    t060 = f'<a href="{overview_sections.result_url("T-060")}">T-060</a>'
+    marks = overview_sections.supersession_marks(t036)
+    assert marks == (
+        '<span class="site-superseded"><span class="site-chip" '
+        'data-standing="superseded-in-part">superseded</span> '
+        f'<span class="site-cell-quiet">in part by {t060}</span></span>'
+    )
+    (in_part,) = t036.supersessions
+    assert html.unescape(re.sub(r"<[^>]+>", "", marks)) == in_part.words()
     from devtools import result_overview  # noqa: PLC0415
 
     assert ">restricted optimality</span>" in result_overview.result_popover_html(
@@ -2776,9 +2793,13 @@ def test_a_credit_splits_at_what_it_builds_on_and_a_standing_into_its_chips() ->
         'Levy <span class="site-cell-quiet">after Burns, Massaccesi</span>'
     )
     assert overview_sections.credit_cell("A & B") == "A &amp; B"
-    # Of a standing a table draws one chip, `superseded`, the plain one.
+    # Of a standing a table draws one chip, `superseded`, the plain one; the partial
+    # mark's says the same word and keeps its own standing (think-kmi4).
     assert overview_sections.standing_chip("superseded") == (
         '<span class="site-chip" data-standing="superseded">superseded</span>'
+    )
+    assert overview_sections.standing_chip("superseded in part", "superseded") == (
+        '<span class="site-chip" data-standing="superseded-in-part">superseded</span>'
     )
     assert not hasattr(overview_sections, "standing_chips")
 

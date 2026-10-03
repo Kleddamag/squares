@@ -45,7 +45,7 @@ from devtools.render_overview import (
     SITE_PAGES,
     paper_path,
 )
-from devtools.render_recent_results import listed, superseded
+from devtools.render_recent_results import SUPERSEDED, listed, superseded
 from devtools.repo_links import branch_file
 from devtools.result_status import CONFIRMED, STATUSES
 from sqpack.yamlio import safe_load
@@ -86,13 +86,15 @@ def is_superseded(result: Result) -> bool:
     return superseded(result.record, result.standing)
 
 
-def standing_chip(standing: str) -> str:
-    """A result's standing as a chip, the plain gray one. A table draws two,
-    `superseded` and `superseded in part` (`supersession_marks`); it is the kind's and
-    the status's own chip and differs from them only in its word."""
+def standing_chip(standing: str, words: str | None = None) -> str:
+    """A result's standing as a chip, the plain gray one, lettered with the standing or
+    with `words`. A table draws one word, `superseded`, for both its marks: the
+    `superseded in part` mark's chip says `superseded` and keeps its own standing in
+    `data-standing` (`supersession_marks`). It is the kind's and the status's own chip
+    and differs from them only in its word."""
     return (
         f'<span class="site-chip" data-standing="{_esc(standing_key(standing))}">'
-        f"{_esc(standing)}</span>"
+        f"{_esc(standing if words is None else words)}</span>"
     )
 
 
@@ -1238,21 +1240,27 @@ def rung_chips(result: Result) -> str:
 
 
 def supersession_marks(result: Result) -> str:
-    """Whether a result is superseded, and by what, as its status line ends: the
-    `superseded` chip where it is (`is_superseded`), then `superseded in part` where a
-    later result implies some of it, each followed by the results that supersede it as
-    links to their rows (`Result.supersessions`): the results a superseded bound's cases
-    rest on now, or those a result of another kind declares imply it. Each mark and its
-    results are one element, and an id never breaks at its hyphen (`site.css`)."""
+    """Whether a result is superseded, and by what, as its status line ends: `superseded`
+    where it is (`is_superseded`), then `superseded in part` where a later result implies
+    some of it, each followed by the results that supersede it as links to their rows
+    (`Result.supersessions`): the results a superseded bound's cases rest on now, or
+    those a result of another kind declares imply it. Each mark and its results are one
+    element, and an id never breaks at its hyphen (`site.css`).
+
+    The chip is the one word `superseded` for both marks, and `in part` leads the quiet
+    text after it, so the line reads as the register's words do (`Supersession.words`):
+    a chip never wraps, the status column is as wide as its widest chip, and the four
+    words as one chip, 150 pixels, set the column 52 pixels wider than `superseded` does,
+    which the n column paid for (`think-kmi4`). The partial mark's chip keeps its own
+    standing, `data-standing="superseded-in-part"`, and its row stays current."""
     marks = []
     for mark in result.supersessions:
-        by = ""
-        if mark.by:
-            links = [
-                f'<a href="{_esc(result_url(other))}">{_esc(other)}</a>' for other in mark.by
-            ]
-            by = f' <span class="site-cell-quiet">by {listed(links)}</span>'
-        marks.append(f'<span class="site-superseded">{standing_chip(mark.mark)}{by}</span>')
+        links = [f'<a href="{_esc(result_url(other))}">{_esc(other)}</a>' for other in mark.by]
+        extent = _esc(mark.mark.removeprefix(SUPERSEDED).strip())
+        after = " ".join(filter(None, (extent, f"by {listed(links)}" if links else "")))
+        quiet = f' <span class="site-cell-quiet">{after}</span>' if after else ""
+        chip = standing_chip(mark.mark, SUPERSEDED)
+        marks.append(f'<span class="site-superseded">{chip}{quiet}</span>')
     return " ".join(marks)
 
 

@@ -282,7 +282,8 @@ def test_the_chain_on_eleven_squares_says_how_each_result_stands_there(
     # T-036, which T-060 supersedes only in part, is current, and its step says so.
     assert steps["t-036"] != overview_sections.standing_key(SUPERSEDED)
     t036 = bodies[SETTLED].split('data-step="t-036"', 1)[1].split("</li>", 1)[0]
-    assert f'>superseded in part</span> <span class="site-cell-quiet">by {t060}' in t036
+    in_part = 'data-standing="superseded-in-part">superseded</span>'
+    assert f'{in_part} <span class="site-cell-quiet">in part by {t060}' in t036
 
 
 def test_a_chain_names_only_the_successors_on_its_own_cases(bodies: dict[str, str]) -> None:

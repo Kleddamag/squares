@@ -24,7 +24,7 @@ from devtools import check_hull_kernel_mask0 as mask0_tool
 from devtools import pilot_n17_subpattern_bb as bb
 from devtools import verify_n17_bb_certificate as bb_verifier
 from devtools import verify_n17_kernel_certificate as kernel_verifier
-from devtools.check_n17_subpattern import save_certificate
+from devtools.check_n17_subpattern import canonical_bytes, load_certificate, save_certificate
 from sqpack.hull_kernel import Budget, producer
 from sqpack.hull_kernel.frame import make_frame
 
@@ -221,28 +221,56 @@ def add_point_colliding_in_the_first_row_alone(
 W7 = ("corner-SW", "side-N0", "side-W0", "side-W1", "side-W2", "interior-SW", "interior-W")
 
 
+W7_BINS8 = (
+    PACKING
+    / "campaign/explorations/X048-session-168-pilots/audit-verifier-rewrites/fixture-w7-bins8"
+)
+
+
 @cache
 def w7_stall_objects() -> tuple[dict[str, Any], dict[str, Any]]:
     """W7 at 8 bins: a stall of 14 steps and 257 collision regions in which a later live
     partner row cuts a region the first live row does not. On the blind pair the first
     live row's collision set is the tightest in all 16 regions, so a verifier that stopped
     at the first row would be equivalent to the full one there and no doctored blind-pair
-    closure can tell them apart."""
+    closure can tell them apart.
+
+    The objects are the committed fixture, read rather than produced: the production is
+    the test's whole cost, and the verifier's obligation is what a valid certificate holds,
+    not what a fresh one holds. `test_the_w7_fixture_is_what_the_producer_writes` keeps
+    the two equal."""
+    seed, node, _, _ = load_certificate(W7_BINS8)
+    return seed, node
+
+
+@pytest.mark.slow
+def test_the_w7_fixture_is_what_the_producer_writes() -> None:
     frame = mask0_tool.n17_unique_frame()
     mask = sorted(frame.cell_names.index(cell) for cell in W7)
     budget = Budget(time.monotonic() + 600, 5_000_000)
-    production = producer.produce(frame, mask, bins=8, max_rounds=6, budget=budget)
-    return production.seed, production.node
+    production = producer.produce(
+        frame, mask, bins=8, max_rounds=6, budget=budget, node_id="n17-W7-audit-fixture"
+    )
+    _, _, seed_digest, node_digest = load_certificate(W7_BINS8)
+    assert hashlib.sha256(canonical_bytes(production.seed)).hexdigest() == seed_digest
+    assert hashlib.sha256(canonical_bytes(production.node)).hexdigest() == node_digest
+    # The control for the partner-row test below: the undoctored fixture verifies, as a
+    # stall. It lives here, beside the build, so the fast test pays for one replay.
+    assert (
+        kernel_verifier.verify_objects(W7_BINS8, kernel_verifier.cover_cells())["closed"]
+        is False
+    )
 
 
 def test_the_kernel_verifier_checks_every_live_partner_row(tmp_path: Path) -> None:
+    """A point that collides with the first live partner row alone is refused at the
+    collision check of the step it was added to; the undoctored fixture's own passing
+    replay is asserted in `test_the_w7_fixture_is_what_the_producer_writes`."""
     seed, node = w7_stall_objects()
     cells = kernel_verifier.cover_cells()
     doctored = copy.deepcopy(node)
     add_point_colliding_in_the_first_row_alone(doctored, seed, cells)
-    save_certificate(tmp_path / "sound", seed, node)
     save_certificate(tmp_path / "doctored", seed, doctored)
-    assert kernel_verifier.verify_objects(tmp_path / "sound", cells)["closed"] is False
     with pytest.raises(kernel_verifier.VerificationError, match="escapes the collision set"):
         _ = kernel_verifier.verify_objects(tmp_path / "doctored", cells)
 

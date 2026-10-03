@@ -983,6 +983,14 @@ def test_the_slow_marker_is_declared_only_by_measured_nodes() -> None:
         "test_hull_kernel_case2095.py": {
             "test_the_full_replay_reproduces_case_2095",  # 52.38s
         },
+        # The n17 kernel verifier's W7 8-bin fixture rebuilt by the producer and compared
+        # by digest, then replayed undoctored as the control for the partner-row test,
+        # measured 2026-10-03 (Session 168, BC-418) on a quiet four-cpu box. The fast tier
+        # keeps the doctored refusal itself, which reads the committed fixture; the build
+        # had held the quick lane for 13.70s on the hosted runner (run 37087123885).
+        "test_verify_n17_certificates.py": {
+            "test_the_w7_fixture_is_what_the_producer_writes",  # 5.26s
+        },
         # 18s of call time across 3.
         "test_audit_n54_source_formula.py": {
             "test_n54_source_formula_cli_agrees_under_optimization",  # 7.8s

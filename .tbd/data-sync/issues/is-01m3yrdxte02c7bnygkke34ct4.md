@@ -5,7 +5,7 @@ title: Import, confirm and answer every reported result (2 October 2026 effort)
 kind: epic
 status: open
 priority: 1
-version: 44
+version: 45
 labels:
   - result-import
 dependencies: []
@@ -31,7 +31,7 @@ child_order_hints:
   - is-01m3ytdhr6h2xnsvj4f2nc2nk2
   - is-01m3z77bdhk8tn3epx63ywhxft
 created_at: 2026-10-02T16:51:15.917Z
-updated_at: 2026-10-03T17:41:59.861Z
+updated_at: 2026-10-03T18:33:42.978Z
 ---
 Umbrella for the 2 October 2026 effort: PRs #290 -> #292 -> #298 (imports and records), plus a stacked PR for verifier provenance and the independent verifier. Children track each lane; done when every reported result is confirmed or refuted (or has a bead naming exactly what remains), every issue has a current status reply, closeable issues are closed, and all PRs are merged.
 
@@ -124,3 +124,4 @@ Next steps for the next agent, in order:
 2026-10-03 15:40 check-in: #298's full dispatched run 37130939993 on af178efd4 PASSED (every job, slow lane included). #298 now at ee4102e59 (FF merged; RV merge in progress). #311 at b928e0362, pull_request CI running (PR runs trigger on #311). Runners pushed since 14:40: m6 (n87 0-200 receipts, 15:21), w1 (2_3), w2 (6_1), w3 (9_2), w4 (12_1), l83 (0-90 summary), r6/s1/s2 (logs; their queues restarted after the container reclaim). n82b is ALSO blocked: the classifier denied its commit/push of n82 receipts (124-152 and 153-178 done, 179-200 running; receipts only in its container). n82a and n82b both need the user's go-ahead; not worked around. RA ACCEPT on re-review (14:55).
 2026-10-03 16:42 check-in: #298 at d5e77f2e3 (RV as T-079, FF same-implementation fix, all six b00fc70 mixed receipts, the T-079 audit premise fix); dispatched run 37137516681 in progress; the previous run 37134709863 at 39e7254c7 failed six formula-wrap site cases (T-078's comma wraps after T-079's row shifted the table); a local worktree lane is writing the general fix on branch fix-formula-wrap, which the records lane will merge. T-075 records commit (V3/C3) in validation. #311 at 08ca82d7d MERGEABLE, all jobs green except the inherited frontend failure. Runners pushed since 15:40: m6 done (n91 at bcacffbe), l83 (91-152), w3, w4, r6/s1/s2 (logs; queues running). w1/w2 on long runs. n82a/n82b still blocked on classifier denials (user).
 2026-10-03 17:45 check-in: no session waits on a permission (scan 17:36). n82a/n82b unblocked by the owner: 0-90 and 124-200 pushed, 91-123 running. Valid7 w3, w4, w5 done; w2 last run; w1 shard 3. l83 at 153-200; r6, s1, s2 replaying. #292 at c307f646f (CI running), #298 restack local (formula fix merged at 5e8231cfd, T-075 already pushed at 218ebd2ea) validating before push; #311 red on typecheck drift, formula wrap (fix arrives via #298) and one suite-b step (SP2 on it). Owner: stabilize and land now (scope freeze), new imports after; landing procedure in think-yl2j.
+2026-10-03 18:45 Landing done: #292 (with #298) 47569ad50, #311 4043d863e. Both main deploys passed deploy + verify-deployment (runs 37143298451, 37143348932); live site checked. Runner heads: w1 27cf5bc88, w2 c74c31f89, r6 c66ef85cf, l83 104d570b3, n82a 18eb4c39f (91-123 running), n82b 0ce15aeab (done), s1 3096c2a3f, s2 911262e00. New: 7 Valid9 runners (#316 box-9 shards 1-14, branches claude/valid9-r1..r7) launched 18:30. Follow-up PR (n101 + acks + homepage) being prepared by the records lane on the restarted designated branch.

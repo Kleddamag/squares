@@ -540,6 +540,48 @@ multiplicatively, since every term here is count times size times rate.
 | Estimated | every cost figure in section 6; the 35 CPU-hour sweep; the tail count |
 | Conjecture | that a third or more of residue states have an arity-at-most-10 certificate; that the provers close arity 8 to 10 as they closed 6 and 7 |
 
+## Addendum, 2026-10-03: What the Ranked Plan’s First Steps Found
+
+The lanes that took up this plan corrected two of its derivations and settled one rank.
+
+**The second-order core in section 4.1 needs a scale factor.** Lane K2 found that the
+intersection of a row’s two end-angle squares is not inside every intermediate square.
+A point in the mid-angle direction escapes by about $h(1/\cos(\Delta/2)-1)$, where
+$\Delta$ is the row’s angular width.
+For a point $p$ inside both end squares,
+$p\cdot u_\theta \le h\cos(\theta-\mathrm{mid})/\cos(\Delta/2)$, so scaling the octagon
+by $\cos(\Delta/2)$ is enough (lane C1’s derivation).
+K2’s committed core (`d97187d52`) uses $\cos^2(\Delta/2)=(1+\cos\Delta)/2$, which is
+rational in the half-angle chart.
+The loss stays second order: the smallest support is 0.4981 at 16 bins, against the
+envelope core’s 0.4924 at 64. Soundness never rests on the factor, because the checker’s
+`strict_core` re-proves every vertex against every turn in the closed row interval.
+
+**The size lever is linear in rows, not quadratic.** Lane F2’s
+[performance review](review-2026-10-02-n17-cost-reduction-performance.md) measured the
+32-bin and 64-bin receipts.
+The row sweep is linear in rows, and only the collision share is quadratic: 11 per cent
+of the checker and about a sixth of the verifier.
+Halving rows therefore roughly halves a node; it does not quarter it.
+
+**Rank 4 is settled: its falsifier is met.** Lane P2 built the Taylor relaxation with
+exact verifier support (`ff5471e89`). Knuth estimates on the arity-8 classes I8 and N8
+stay above $10^{6}$ nodes in every form tried: interval, Taylor, a coupled McCormick
+form, and pre-split centre boxes.
+P2’s diagnosis is that 80 to 85 per cent of the closable open nodes are held by the
+range of each pair’s separating normal over the angle box.
+That is a per-pair disjunction, and no relaxation of the trigonometric coefficients
+removes it. The branch and bound therefore stays at arity seven and below, and interior
+crowds at arity eight go to the kernel.
+The receipts are in
+[`receipts/bb-rank4/`](../../../packing/campaign/explorations/X048-session-168-pilots/receipts/bb-rank4/).
+
+**Rank 1 and rank 2 are running.** Lane S2’s rank-2 sweep tool (`16ea38d81`) reproduces
+this review’s universe counts at arity 8 and 9. Its first 3,000 classes, the
+highest-coverage arity-8 classes of the first queue, gave one flag: a south-wall crowd
+that removes 539 of the 2,264 residue orbits by itself.
+W7’s re-run at 32 and 16 bins with the octagon core has not yet run.
+
 <!-- This document follows common-doc-guidelines.md.
 See github.com/jlevy/practical-prose and review guidelines before editing.
 -->

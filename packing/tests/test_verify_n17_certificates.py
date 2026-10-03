@@ -12,15 +12,17 @@ import shutil
 import subprocess
 import sys
 import time
-from collections.abc import Callable
+from collections.abc import Callable, Sequence
 from fractions import Fraction as Q
 from functools import cache
+from itertools import combinations_with_replacement
 from pathlib import Path
 from typing import Any
 
 import pytest
 
 from devtools import check_hull_kernel_mask0 as mask0_tool
+from devtools import n11_closed_interval_cover as closed_interval
 from devtools import pilot_n17_subpattern_bb as bb
 from devtools import verify_n17_bb_certificate as bb_verifier
 from devtools import verify_n17_kernel_certificate as kernel_verifier
@@ -687,6 +689,171 @@ def test_the_kernel_verifier_refuses_a_row_cut_to_a_narrower_box(tmp_path: Path)
 
 
 # ---------------------------------------------------------------------------
+# Forged one-row closures: the cover of a segment, and of a one-point section
+# ---------------------------------------------------------------------------
+
+
+def tiny_square(centre: Point) -> list[Point]:
+    x, y = centre
+    r = Q(1, 100)
+    return [(x - r, y - r), (x + r, y - r), (x + r, y + r), (x - r, y + r)]
+
+
+def forged_closure(
+    directory: Path, claimed: list[Point], owned: list[Point], half: Q
+) -> tuple[Path, kernel_verifier.Cells]:
+    """A closure of owner 0 in one step of one row, every pose claimed forbidden.
+
+    Owner 0's cell is `claimed` and owns nothing; each point of `owned` is the one owned
+    point of another owner, whose cell is a square of side 1/50 about it. The seed has
+    one half-angle row, `[0, 1]`, so the legal box is `[1/2, 5/2]^2` and the row's
+    required domain is `claimed` cut by it. The row's core is the square of half-side
+    `half` about the origin, so each forbidden region is the square of half-side `half`
+    about an owned point. The row publishes no residual and no collision region, so its
+    cover alone decides whether the closure stands.
+    """
+    directory.mkdir(parents=True)
+    cap = Q(3)
+    cells = [claimed, *(tiny_square(p) for p in owned)]
+    mask = list(range(len(cells)))
+    box = kernel_verifier.wall_box(Q(0), Q(1), cap)
+    domains = [kernel_verifier.hull(kernel_verifier.intersect_convex(c, box)) for c in cells]
+    groups = {"0": [], **{str(k): encode([p]) for k, p in enumerate(owned, start=1)}}
+    seeded = [{"kind": "wall_seed", "owner": o, "row": 0} for o in mask]
+    seed = {
+        "schema": "generic_wall_seed_v1",
+        "mask_index": None,
+        "mask": mask,
+        "U": str(cap),
+        "B": "1",
+        "bins": 1,
+        "groups": groups,
+        "cells": {
+            str(o): [
+                {
+                    "interval": ["0", "1"],
+                    "residual_polygons": [encode(domains[o])],
+                    "outer_domain": encode(domains[o]),
+                    "outer_bounds": [],
+                    "reference": seeded[o],
+                }
+            ]
+            for o in mask
+        },
+        "world": [encode(c) for c in cells],
+    }
+    reference = {"kind": "phase3", "node": "forged", "step": 0, "row": 0}
+    core = [(-half, -half), (half, -half), (half, half), (-half, half)]
+    row = {
+        "interval": ["0", "1"],
+        "prior_reference": seeded[0],
+        "reference": reference,
+        "core_vertices": encode(core),
+        "collision_regions": [],
+        "residual_polygons": [],
+        "common_core_halfplanes": [],
+        "outer_bounds": [],
+        "outer_domain": [],
+    }
+    final = {"0": [{"reference": reference, "outer_domain": [], "residual_polygons": []}]}
+    for o in mask[1:]:
+        final[str(o)] = [
+            {
+                "reference": seeded[o],
+                "outer_domain": encode(domains[o]),
+                "residual_polygons": [encode(domains[o])],
+            }
+        ]
+    node = {
+        "schema": "exact_generic_owned_hull_v1",
+        "node_id": "forged",
+        "U": str(cap),
+        "B": "1",
+        "mask": mask,
+        "parent": None,
+        "constraints": [],
+        "guard_source": None,
+        "source": {"sha256": hashlib.sha256(canonical(seed)).hexdigest()},
+        "initial": {
+            "groups": groups,
+            "cell_references": {str(o): [seeded[o]] for o in mask},
+        },
+        "steps": [
+            {
+                "index": 0,
+                "owner": 0,
+                "complete": True,
+                "allowed_half_angle": ["0", "1"],
+                "prior_owned_hulls": groups,
+                "prior_partner_pose_covers": {},
+                "rows": [row],
+                "common_owned_kernel": [],
+            }
+        ],
+        "contradiction": {"kind": "all_parent_poses_forbidden", "owner": 0, "step": 0},
+        "final_state": {"groups": groups, "cells": final},
+        "closed": True,
+        "terminal": True,
+        "mask_exclusion_proved": False,
+        "global_optimality_proved": False,
+    }
+    save_certificate(directory / "cert", seed, node)
+    names = [f"cell-{o}" for o in mask]
+    path = cells_file(directory, cap, names, cells)
+    cells_object = kernel_verifier.file_cells(
+        path, hashlib.sha256(path.read_bytes()).hexdigest()
+    )
+    return directory / "cert", cells_object
+
+
+# Owner 0's cell meets the legal box `[1/2, 5/2]^2` in the segment from (1/2, 3/4) to
+# (1/2, 5/4) alone, so the row's required domain has zero area.
+SEGMENT_CELL = [(Q(1, 4), Q(1)), (Q(1, 2), Q(3, 4)), (Q(1, 2), Q(5, 4))]
+SEGMENT_MARKS = [(Q(1, 2), Q(3, 4)), (Q(1, 2), Q(1)), (Q(1, 2), Q(5, 4))]
+
+
+def test_a_segment_row_is_covered_as_a_whole_not_at_its_ends_and_midpoint(
+    tmp_path: Path,
+) -> None:
+    """Forbidden squares of half-side 1/16 about the segment's ends and midpoint leave
+    `(13/16, 15/16)` and `(17/16, 19/16)` of it uncovered; a check of those three points
+    alone accepted the closure. At half-side 1/8 the squares meet at closed seams."""
+    gaps, cells = forged_closure(tmp_path / "gaps", SEGMENT_CELL, SEGMENT_MARKS, Q(1, 16))
+    receipt = kernel_verifier.verify(gaps, cells)
+    assert receipt["status"] == "FAIL"
+    assert receipt["failure"] == "step 0 row 0: degenerate row uncovered"
+    seams, cells = forged_closure(tmp_path / "seams", SEGMENT_CELL, SEGMENT_MARKS, Q(1, 8))
+    receipt = kernel_verifier.verify(seams, cells)
+    assert receipt["status"] == "PASS", receipt["failure"]
+    assert receipt["counts"]["degenerate_cover_checks"] == 1
+
+
+# Owner 0's cell is a wedge inside the legal box whose leftmost point, the vertex (1, 1),
+# is the whole of its section at x = 1.
+WEDGE_CELL = [(Q(1), Q(1)), (Q(13, 10), Q(9, 10)), (Q(13, 10), Q(11, 10))]
+BELOW_THE_VERTEX = (Q(1), Q(1, 2))
+
+
+def test_a_one_point_section_needs_a_span_that_contains_it(tmp_path: Path) -> None:
+    """The square about (13/10, 1) covers the wedge from x = 21/20 on; at x = 1 the only
+    span is the square about (1, 1/2), `[1/4, 3/4]`, wholly below the vertex. The sweep
+    must refuse at the vertex itself, where a merge that let a one-point section through
+    reported the open slab beside it instead; with the square moved to (5/4, 1) its edge
+    at x = 1 holds the vertex and the closure stands."""
+    short, cells = forged_closure(
+        tmp_path / "short", WEDGE_CELL, [(Q(13, 10), Q(1)), BELOW_THE_VERTEX], Q(1, 4)
+    )
+    receipt = kernel_verifier.verify(short, cells)
+    assert receipt["status"] == "FAIL"
+    assert receipt["failure"] == "step 0 row 0: required domain NOT covered (uncovered at x=1)"
+    flush, cells = forged_closure(
+        tmp_path / "flush", WEDGE_CELL, [(Q(5, 4), Q(1)), BELOW_THE_VERTEX], Q(1, 4)
+    )
+    receipt = kernel_verifier.verify(flush, cells)
+    assert receipt["status"] == "PASS", receipt["failure"]
+
+
+# ---------------------------------------------------------------------------
 # The kernel verifier's integer forms, against its Fraction forms
 # ---------------------------------------------------------------------------
 
@@ -842,6 +1009,113 @@ def test_between_lies_strictly_inside_with_small_terms() -> None:
         assert kernel_verifier.ratio_lt(a, (n, d))
         assert kernel_verifier.ratio_lt((n, d), b)
         assert d <= a[1] + b[1]
+
+
+# ---------------------------------------------------------------------------
+# The closed-interval merge and the degenerate cover, held to the n11 review's contract
+# (finding C2: a one-point target is covered only by a span containing it)
+# ---------------------------------------------------------------------------
+
+ENDPOINTS = [Q(value) for value in range(-3, 4)]
+INTERVALS = [(lo, hi) for lo in ENDPOINTS for hi in ENDPOINTS if lo <= hi]
+FAMILIES: list[tuple[tuple[Q, Q], ...]] = [
+    (),
+    *((interval,) for interval in INTERVALS),
+    *combinations_with_replacement(INTERVALS, 2),
+]
+
+
+def section(interval: tuple[Q, Q]) -> kernel_verifier.Section:
+    lo, hi = interval
+    return (lo.numerator, lo.denominator), (hi.numerator, hi.denominator)
+
+
+def merged(target: tuple[Q, Q], spans: Sequence[tuple[Q, Q]]) -> bool:
+    return kernel_verifier.section_covered(section(target), [section(s) for s in spans])
+
+
+def test_the_merge_is_the_corrected_cover_on_the_reviewed_12180_cases() -> None:
+    """Every target and every family of at most two of the 28 closed intervals with
+    integer ends in -3..3, against the review's corrected reference."""
+    assert len(INTERVALS) * len(FAMILIES) == 12_180
+    wrong = [
+        (target, spans)
+        for target in INTERVALS
+        for spans in FAMILIES
+        if merged(target, spans) is not closed_interval.covers_closed_interval(target, spans)
+    ]
+    assert wrong == []
+
+
+def test_the_merge_meets_the_reviews_acceptance_cases() -> None:
+    one, half, gap = Q(1), Q(1, 2), Q(1, 10**50)
+    assert merged((one, one), [(Q(0), Q(0))]) is False
+    assert merged((one, one), []) is False
+    assert merged((one, one), [(Q(-2), Q(-1)), (Q(0), Q(0))]) is False
+    assert merged((one, one), [(Q(0), Q(0)), (half, one)]) is True
+    assert merged((one, one), [(one, one)]) is True
+    assert merged((one, one), [(one, Q(3))]) is True
+    assert merged((Q(0), one), [(half, one), (Q(0), half)]) is True
+    assert merged((Q(0), one), [(Q(0), half), (half + gap, one)]) is False
+    assert merged((Q(0), one), [(Q(0), half - gap), (half, one)]) is False
+    assert merged((Q(0), one), [(gap, one)]) is False
+    assert merged((Q(0), one), [(Q(0), one - gap)]) is False
+
+
+@pytest.mark.parametrize(
+    ("target", "spans"),
+    [
+        (((1, 1), (0, 1)), []),
+        (((0, 1), (1, 1)), [((1, 1), (0, 1))]),
+        (((0, 1), (1, 1)), [((0, 1), (1, 0))]),
+        (((0, 1), (1, 1)), [((-2, -1), (3, 1))]),
+        (((0.0, 1), (1, 1)), []),
+        (((0, 1), (1, 1)), [((0, 1), (math.nan, 1))]),
+        (((False, 1), (True, 1)), [((0, 1), (1, 1))]),
+        ((("0", 1), (1, 1)), [((0, 1), (1, 1))]),
+        (((0, 1), None), [((0, 1), (1, 1))]),
+        (((0, 1), (1, 1), (2, 1)), [((0, 1), (2, 1))]),
+        (((0, 1), (1, 1)), [((0, 1),)]),
+        ((0, 1), [((0, 1), (1, 1))]),
+    ],
+)
+def test_the_merge_refuses_a_malformed_interval(target: Any, spans: Any) -> None:
+    with pytest.raises(kernel_verifier.VerificationError, match="malformed coverage interval"):
+        kernel_verifier.section_covered(target, spans)
+
+
+def box(x0: Q, x1: Q) -> list[Point]:
+    return [(x0, Q(-1)), (x1, Q(-1)), (x1, Q(2)), (x0, Q(2))]
+
+
+def test_a_degenerate_domain_is_covered_only_as_a_whole() -> None:
+    """The segment from (0, 0) to (2, 1), and the point (1, 1), against polygons,
+    segments and points: closed seams join, a positive gap refuses however small, and
+    regions holding the segment's ends and midpoint do not cover the rest of it."""
+    segment = [(Q(0), Q(0)), (Q(1), Q(1, 2)), (Q(2), Q(1))]
+    gap = Q(1, 2**50)
+    covered = kernel_verifier.degenerate_covered
+    assert covered(segment, [box(Q(-1), Q(1)), box(Q(1), Q(3))])
+    assert not covered(segment, [box(Q(-1), Q(1)), box(Q(1) + gap, Q(3))])
+    assert not covered(segment, [box(Q(-1), Q(1) - gap), box(Q(1), Q(3))])
+    marks = [box(x - Q(1, 4), x + Q(1, 4)) for x in (Q(0), Q(1), Q(2))]
+    assert all(
+        any(kernel_verifier.inside(r, p) for r in marks)
+        for p in [(Q(0), Q(0)), (Q(1), Q(1, 2)), (Q(2), Q(1))]
+    )
+    assert not covered(segment, marks)
+    halves = [[(Q(0), Q(0)), (Q(1), Q(1, 2))], [(Q(2), Q(1)), (Q(1), Q(1, 2))]]
+    assert covered(segment, halves)
+    assert not covered(segment, [halves[0], [(Q(2), Q(1)), (Q(1) + gap, Q(1, 2) + gap / 2)]])
+    assert not covered(segment, [halves[0], [(Q(1), Q(1, 2))], [(Q(1), Q(1, 2)), (Q(2), Q(2))]])
+    assert not covered(segment, [])
+    point = [(Q(1), Q(1))]
+    assert covered(point, [[(Q(1), Q(1))]])
+    assert covered(point, [[(Q(0), Q(0)), (Q(2), Q(2))]])
+    assert covered(point, [box(Q(1), Q(3))])
+    assert not covered(point, [[(Q(0), Q(0)), (Q(2), Q(2) + gap)]])
+    assert not covered(point, [box(Q(1) + gap, Q(3))])
+    assert not covered(point, [])
 
 
 def unit_cell() -> list[Point]:

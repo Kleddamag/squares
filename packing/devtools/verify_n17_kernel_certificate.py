@@ -27,7 +27,8 @@ What it re-derives, from scratch:
   region against every live partner row and every facet of the exact Minkowski
   difference, and coverage of the required domain by forbidden, collision and residual
   regions by an exact vertical sweep (every event abscissa, and one probe inside every
-  open slab between two of them);
+  open slab between two of them), or, when the required domain is a point or a segment,
+  by the exact parameter intervals the regions cut from it;
 - the closure: derived after each step and equal to the declared one, with no step after
   it, and the final state equal to the derived one.
 
@@ -493,13 +494,38 @@ def sweep_events(
     return sorted(events, key=lambda r: Q(*r))
 
 
+def well_formed(section: Any) -> bool:
+    """A closed interval of exact ratios: two `(numerator, denominator)` pairs of `int`
+    (not `bool`), positive denominators, and the low end not above the high end."""
+    try:
+        (low_n, low_d), (high_n, high_d) = section
+    except TypeError, ValueError:
+        return False
+    return (
+        type(low_n) is int
+        and type(low_d) is int
+        and type(high_n) is int
+        and type(high_d) is int
+        and low_d > 0
+        and high_d > 0
+        and low_n * high_d <= high_n * low_d
+    )
+
+
 def section_covered(target: Section, spans: list[Section]) -> bool:
     """Whether closed intervals cover the closed target, merging them by lower end.
+
+    `True` is returned only after a span that contains the cursor, which starts at the
+    target's low end, so a single-point target `[a, a]` is covered exactly when some
+    span contains `a`: a span ending below the cursor is skipped, and no span at all
+    covers nothing. Spans that touch join; a positive gap, however small, refuses. A
+    target or span that is not `well_formed` is refused, not merged.
 
     The sort key is the float of each lower end; the order is then confirmed exactly on
     every adjacent pair and redone with exact keys when it fails. The merge is exact,
     and a mis-sorted list could only make it refuse, never accept.
     """
+    require(well_formed(target) and all(map(well_formed, spans)), "malformed coverage interval")
     if len(spans) > 1:
         spans.sort(key=lambda span: span[0][0] / span[0][1])
         if any(ratio_lt(spans[i + 1][0], spans[i][0]) for i in range(len(spans) - 1)):
@@ -515,7 +541,7 @@ def section_covered(target: Section, spans: list[Section]) -> bool:
             cursor = span_high
         if not ratio_lt(cursor, high):
             return True
-    return not ratio_lt(cursor, high)
+    return False
 
 
 def _widen(found: Section | None, low: Ratio, high: Ratio) -> Section:
@@ -579,6 +605,70 @@ def covered_by_sweep(domain: list[Point], regions: list[list[Point]]) -> tuple[b
         if not section_covered(target, spans):
             return False, Q(*probe)
     return True, None
+
+
+def closed_planes(region: list[Point]) -> list[Plane]:
+    """Closed half-planes `a x + b y <= c` whose intersection is the hull of the vertices.
+
+    A polygon gives its edges (`planes_of`); a segment gives its line, both ways, and a
+    cap at each end along its direction; a point gives its four axis bounds.
+    """
+    ends = hull(region)
+    if len(ends) >= 3:
+        return planes_of(ends)
+    if len(ends) == 2:
+        (x0, y0), (x1, y1) = ends
+        dx, dy = x1 - x0, y1 - y0
+        on = dy * x0 - dx * y0
+        return [
+            (dy, -dx, on),
+            (-dy, dx, -on),
+            (dx, dy, dx * x1 + dy * y1),
+            (-dx, -dy, -(dx * x0 + dy * y0)),
+        ]
+    ((x, y),) = ends
+    return [(Q(1), Q(0), x), (Q(-1), Q(0), -x), (Q(0), Q(1), y), (Q(0), Q(-1), -y)]
+
+
+def degenerate_covered(domain: list[Point], regions: list[list[Point]]) -> bool:
+    """Whether closed convex regions cover a domain that is a point or a segment, exactly.
+
+    The domain is `P + t (R - P)` for `t` in `[0, 1]`, with `P` and `R` the ends of its
+    hull (`R = P` for a point). Every region, polygon, segment or point, is the closed
+    hull of its vertices, and the parameters it covers are the closed interval its
+    `closed_planes` cut from `[0, 1]`: with `f` a plane's `a x + b y - c` at `P` and `g`
+    its rate `a dx + b dy` along `R - P`, the plane keeps `t <= -f/g` when `g > 0`,
+    `t >= -f/g` when `g < 0`, and all or nothing by the sign of `f` when `g = 0`. The
+    domain is covered exactly when these intervals cover `[0, 1]`, which `section_covered`
+    decides. For a point every rate is zero, so a region gives all of `[0, 1]` when it
+    holds the point and nothing otherwise. A segment is never decided by sample points:
+    its ends and midpoint can be covered while a stretch between them is not.
+    """
+    ends = hull(domain)
+    require(1 <= len(ends) <= 2, "a degenerate domain is a point or a segment")
+    start, end = ends[0], ends[-1]
+    dx, dy = end[0] - start[0], end[1] - start[1]
+    spans: list[Section] = []
+    for region in regions:
+        if not region:
+            continue
+        lower, upper = Q(0), Q(1)
+        for a, b, c in closed_planes(region):
+            value = a * start[0] + b * start[1] - c
+            rate = a * dx + b * dy
+            if rate > 0:
+                upper = min(upper, -value / rate)
+            elif rate < 0:
+                lower = max(lower, -value / rate)
+            elif value > 0:
+                lower, upper = Q(1), Q(0)
+            if upper < lower:
+                break
+        if lower <= upper:
+            spans.append(
+                ((lower.numerator, lower.denominator), (upper.numerator, upper.denominator))
+            )
+    return section_covered(((0, 1), (1, 1)), spans)
 
 
 @dataclass
@@ -880,17 +970,8 @@ def check_cover(
         ok, probe = covered_by_sweep(hull(required), every)
         require(ok, f"{where}: required domain NOT covered (uncovered at x={probe})")
     else:
-        points = list(required)
-        if len(points) == 2:
-            points.append(
-                ((points[0][0] + points[1][0]) / 2, (points[0][1] + points[1][1]) / 2)
-            )
-        for pt in points:
-            require(
-                any(inside(r, pt) for r in every if len(hull(r)) >= 3)
-                or any(pt in r for r in residual),
-                f"{where}: degenerate row uncovered",
-            )
+        require(degenerate_covered(required, every), f"{where}: degenerate row uncovered")
+        state.tick("degenerate_cover_checks")
     state.tick("cover_checks")
 
 

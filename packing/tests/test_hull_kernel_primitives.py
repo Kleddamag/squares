@@ -3,7 +3,9 @@
 The faster covers, the closed degenerate cover, self-hull cuts, the rational and integer
 universal collision, the support outer domain and the common-core output check are
 compared with the frozen n11 modules on inputs drawn from case 2095's published rows and
-on small exact controls, outputs and refusals alike.
+on small exact controls, outputs and refusals alike. The sweep's slice predicate is the
+one exception: it is held to the corrected closed-interval cover of the n11 review's
+finding C2, not to the frozen routine it was copied from.
 """
 
 from __future__ import annotations
@@ -11,6 +13,7 @@ from __future__ import annotations
 import time
 from collections.abc import Sequence
 from fractions import Fraction
+from itertools import combinations_with_replacement
 from typing import Any
 
 import pytest
@@ -20,6 +23,7 @@ from devtools import check_n11_capture_transition_pilot as frozen_pilot
 from devtools import check_n11_closed_degenerate_cover as frozen_degenerate
 from devtools import check_n11_generic_fresh as frozen
 from devtools import check_n11_optimality_field_mask0 as frozen_geometry
+from devtools import n11_closed_interval_cover as closed_interval
 from devtools import n11_fast_exact_cover as frozen_fast
 from devtools import n11_indexed_exact_cover as frozen_indexed
 from devtools import n11_integer_collision as frozen_integer
@@ -28,7 +32,7 @@ from sqpack.hull_kernel.frame import Frame
 from sqpack.hull_kernel.geometry import Polygon, intersect
 from sqpack.hull_kernel.induction import convex, forbidden_regions, hull, wall_lines
 from sqpack.hull_kernel.rational import Q, as_fraction
-from sqpack.hull_kernel.sweep import exact_union_cover
+from sqpack.hull_kernel.sweep import covers_vertical, exact_union_cover
 
 type RowInputs = tuple[Polygon, list[Polygon], dict[str, Any], Polygon]
 
@@ -91,6 +95,104 @@ def test_the_fast_and_indexed_covers_agree_with_theirs_and_the_reference(
         covers.fast_union_cover(domain, regions[:-3], budget=budget())
     with pytest.raises(RefusalError, match="uncovered"):
         covers.indexed_union_cover(domain, regions[:-3], budget=budget())
+
+
+def slab(interval: tuple[Fraction, Fraction]) -> Polygon:
+    """A polygon whose closed vertical section at x = 0 is exactly `interval`."""
+    lo, hi = Q(interval[0]), Q(interval[1])
+    return [(Q(0), lo), (Q(1), lo), (Q(1), hi), (Q(0), hi)]
+
+
+def slice_covered(
+    target: tuple[Fraction, Fraction], spans: Sequence[tuple[Fraction, Fraction]]
+) -> bool:
+    return covers_vertical(slab(target), [slab(span) for span in spans], Q(0))
+
+
+def test_the_sweep_slice_is_the_corrected_closed_interval_cover() -> None:
+    """Finding C2 of the n11 adversarial review: the frozen slice predicate accepted a
+    one-point section from a span ending below it. The sweep's copy now skips such spans,
+    as the compiled one does; on the review's 12,180 cases (every target and family of at
+    most two of the 28 closed intervals with integer ends in -3..3) it agrees with the
+    corrected reference, and it meets the review's acceptance cases."""
+    ends = [Fraction(value) for value in range(-3, 4)]
+    intervals = [(lo, hi) for lo in ends for hi in ends if lo <= hi]
+    families: list[tuple[tuple[Fraction, Fraction], ...]] = [
+        (),
+        *((interval,) for interval in intervals),
+        *combinations_with_replacement(intervals, 2),
+    ]
+    assert len(intervals) * len(families) == 12_180
+    wrong = [
+        (target, spans)
+        for target in intervals
+        for spans in families
+        if slice_covered(target, spans)
+        is not closed_interval.covers_closed_interval(target, spans)
+    ]
+    assert wrong == []
+    one, half, gap = Fraction(1), Fraction(1, 2), Fraction(1, 10**50)
+    assert slice_covered((one, one), [(Fraction(0), Fraction(0))]) is False
+    historical = frozen_geometry.covers_vertical(
+        fractions_of(slab((one, one))),
+        [fractions_of(slab((Fraction(0), Fraction(0))))],
+        Fraction(0),
+    )
+    assert historical is True
+    assert slice_covered((one, one), [(Fraction(0), Fraction(0)), (half, one)]) is True
+    assert slice_covered((one, one), [(one, Fraction(3))]) is True
+    assert slice_covered((Fraction(0), one), [(half, one), (Fraction(0), half)]) is True
+    assert slice_covered((Fraction(0), one), [(Fraction(0), half), (half + gap, one)]) is False
+    assert slice_covered((Fraction(0), one), [(gap, one)]) is False
+
+
+@pytest.mark.parametrize(
+    "target",
+    [
+        [(Q(0), 0.0), (Q(1), 0.0), (Q(1), 1.0), (Q(0), 1.0)],
+        [(Q(0), Q(0)), (Q(1), Q(0)), (Q(1), float("nan")), (Q(0), float("nan"))],
+        [(Q(0), False), (Q(1), False), (Q(1), True), (Q(0), True)],
+    ],
+)
+def test_the_sweep_slice_refuses_an_inexact_endpoint(target: Any) -> None:
+    with pytest.raises(RefusalError, match="inexact coverage endpoint"):
+        covers_vertical(target, [slab((Fraction(-1), Fraction(2)))], Q(0))
+
+
+def test_the_sweep_refuses_an_uncovered_extreme_vertex_at_the_vertex() -> None:
+    """The review's triangle, whose section at x = 0 is the vertex (0, 1) and whose only
+    region lies below it. The frozen sweep let the vertex through and refused at the slab
+    beside it; the corrected sweep refuses the same domain at the vertex. The verdict is
+    the same, as the closure argument in the module says, and only the abscissa moves."""
+    domain = [(Q(0), Q(1)), (Q(1), Q(0)), (Q(1), Q(2))]
+    below = [(Q(0), Q(-1)), (Q(1), Q(-1)), (Q(1), Q(0)), (Q(0), Q(0))]
+    assert covers_vertical(domain, [below], Q(0)) is False
+    with pytest.raises(RefusalError, match=r"row uncovered at exact x=0$"):
+        exact_union_cover(domain, [below], budget=budget())
+    with pytest.raises(ValueError, match=r"row uncovered at exact x=1/2$"):
+        frozen_geometry.exact_union_cover(
+            fractions_of(domain), [fractions_of(below)], budget=frozen_budget()
+        )
+    for cover in (covers.fast_union_cover, covers.indexed_union_cover):
+        with pytest.raises(RefusalError, match=r"row uncovered at exact x=0$"):
+            cover(domain, [below], budget=budget())
+
+
+def test_the_degenerate_cover_needs_the_whole_segment() -> None:
+    """The checker's cover of a zero-area row: closed regions about the ends and the
+    midpoint of a segment leave the rest of it uncovered, and are refused."""
+    segment = [(Q(0), Q(0)), (Q(2), Q(1))]
+    marks = [
+        [(x - Q(1, 4), Q(-1)), (x + Q(1, 4), Q(-1)), (x + Q(1, 4), Q(2)), (x - Q(1, 4), Q(2))]
+        for x in (Q(0), Q(1), Q(2))
+    ]
+    with pytest.raises(RefusalError, match="uncovered degenerate"):
+        covers.closed_degenerate_cover(segment, marks, budget=budget())
+    wide = [
+        [(x - Q(1, 2), Q(-1)), (x + Q(1, 2), Q(-1)), (x + Q(1, 2), Q(2)), (x - Q(1, 2), Q(2))]
+        for x in (Q(0), Q(1), Q(2))
+    ]
+    assert covers.closed_degenerate_cover(segment, wide, budget=budget())["probes"] == 3
 
 
 def test_the_closed_degenerate_cover_is_the_frozen_one() -> None:

@@ -56,6 +56,11 @@ and the ledger are untouched.
   checks X1 to X5 are sound as far as reading and the committed Taylor tests establish.
   No Taylor certificate is planned for admission, and admitting one would be a review of
   that certificate, not of this digest.
+- **Kernel verifier with the cover fix (section 6, added later): can be listed.** Every
+  listed kernel revision checked a zero-area row only at sample points, and those from
+  `e0b66f07b` on let a one-point section through with no containing span.
+  Neither branch was taken on W7, SW9 or N1, and the fixed verifier passes all three in
+  full.
 
 ## Summary
 
@@ -854,12 +859,239 @@ receipt’s `counts`, so a refined certificate’s shape is visible in the ledge
 the producer’s `max_rows` as the practical ceiling.
 No change to the verifier is needed.
 
+## 6. Addendum (2026-10-03): Closed Coverage of Points and Segments
+
+**Reviewer:** Session 168, lane V1 (soundness).
+**Reviewed:** the kernel verifier at `25c1cdef6`, the revision the ledger lists last,
+and `packing/src/sqpack/hull_kernel/sweep.py`, against finding C2 of the n11 adversarial
+review (`review-2026-10-03-n11-gpt6-pro-review-integration.md`): the n11 slice predicate
+`covers_vertical` accepts a one-point target from a span that ends below it, 616 false
+acceptances in a 12,180-case control.
+The corrected reference is `packing/devtools/n11_closed_interval_cover.py`. The n17
+kernel’s sweep is a copy of that routine, and the verifier’s merge was written after it,
+so both were checked for the same class of defect.
+**Materials:** `audit-verifier-rewrites/cover-soundness/`, with scripts retained as
+`.py.txt`.
+
+**Verdict.** Both n17 copies had the defect class, in three places.
+None of the three can have changed an admitted result: on W7, SW9 and N1 the defective
+branches were never taken, and the closure argument of 6.2 shows that two of them cannot
+change any sweep verdict on a domain of positive area.
+All three are fixed, 23 new tests hold the fixes, and the fixed verifier passes all
+three certificates in full with their admitted counts (6.5).
+
+### 6.1 The Three Defects
+
+1. **The verifier’s merge (`section_covered`)** ended with `return not ratio_lt(cursor,
+   high)`. A one-point target $[a, a]$ with no span at all, or with every span ending
+   below $a$ (the merge skips those), fell through to `True`. Section 2.2 recorded this
+   as a quirk that the sweep makes harmless.
+   It is in every revision from F2’s `e0b66f07b` on; R3’s `556561586` decided coverage
+   by area subtraction, which has no one-point case.
+2. **The verifier’s zero-area branch (`check_cover`).** A required domain of zero area
+   (a point or a segment) was checked only at its listed points and, for a two-point
+   segment, its midpoint, each inside a polygon region or equal to a residual vertex.
+   Covering the ends and the midpoint does not cover the segment.
+   This branch is in every listed kernel revision, `556561586` included.
+3. **The kernel’s `sweep.covers_vertical`** was the n11 routine verbatim, without the
+   skip of spans below the cursor, so it accepted $[1, 1]$ from $[0, 0]$. The compiled
+   form used by the fast and indexed covers (`covers.covers_vertical_compiled`) already
+   skips them.
+
+### 6.2 Whether Any Admitted Result Is Affected
+
+**Argument, for defects 1 and 3.** Both are reached only through a sweep over a domain
+of positive area: `covered_by_sweep` from the positive-area branch of `check_cover`, and
+`exact_union_cover`, which refuses any other domain.
+In a convex domain of positive area a vertical section is a single point only at the
+leftmost or rightmost abscissa.
+The open slab beside it is probed at an interior abscissa, where the section has
+positive length and both forms of the merge decide exactly.
+If that slab is covered, the extreme point is a limit of covered points, and a finite
+union of closed regions contains its limits, so some region’s span contains the point
+and the corrected merge accepts it too.
+Accept and refuse therefore never differ between the two forms; only the abscissa a
+refusal names can move, from the slab to the extreme itself.
+Defect 2 has no such defense: a zero-area branch that passes says nothing about the
+segment between its sample points.
+
+**Measured.** The unfixed verifier (`25c1cdef6`, blob `ea1c7104…` in each record) was
+run in full on each certificate with its `section_covered` and `check_cover` wrapped by
+counters that delegate to the originals (`count_cover_paths.py.txt`,
+`count-unfixed-*.json`). Each run passed.
+
+| Certificate | Cover checks | Zero-area rows | Sections merged | One-point sections | Of those, no containing span | Seconds |
+| --- | --- | --- | --- | --- | --- | --- |
+| W7 | 3,324 | 0 | 626,236 | 1,240 | 0 | 235 |
+| SW9 (`flag3-a9-pending`) | 3,359 | 0 | 554,193 | 1,368 | 0 | 215 |
+| N1 (`N1-state-pending`) | 2,611 | 0 | 834,715 | 564 | 0 | 390 |
+
+Neither defective branch was taken: no zero-area required domain occurs, and each of the
+3,172 one-point sections had a span containing it.
+
+**The kernel’s checker path.** `check_n17_subpattern --check-saved` sends a
+positive-area row to `--cover indexed` by default, whose compiled merge skips spans
+below the cursor, and a zero-area row to `closed_degenerate_cover`, which covers the
+parameter interval $[0, 1]$ and so never has a one-point target.
+The capture pilot calls the same row check with `cover="indexed"`. The defective
+`sweep.covers_vertical` is on neither path; it serves the `reference` backend,
+`node.check_row` and the n11 counting replay.
+The rows’ published `input_domain` (`count_input_domains.py.txt`, `input-domains.log`)
+gives the same split as the verifier: positive area on 3,324, 3,359 and 2,611 rows,
+empty on 388, 3,920 and 13, zero area on none.
+The kernel’s degenerate cover never ran on these certificates either.
+
+**The counters are sensitive.** On the forged closures of 6.4
+(`forged-instrument-check.log`) they report the zero-area row, which the kernel’s exact
+cover refuses while the unfixed verifier passes the closure, and the one-point section
+with no containing span, which the unfixed merge lets through before refusing at
+$x = 22/21$.
+
+### 6.3 The Fixes
+
+**Verifier.**
+
+- `section_covered` returns `False` after the loop, so `True` follows only a span that
+  contains the cursor; a one-point target needs a span containing it.
+  It also refuses, with `malformed coverage interval`, any target or span that is not
+  two `int` `(numerator, denominator)` pairs with positive denominators and low end not
+  above high end (`well_formed`). Every caller builds well-formed intervals, so this
+  guard changes no verdict on a real certificate.
+  A benchmark of 20 spans per call puts its cost near 5 s on a W7 run.
+- The zero-area branch calls `degenerate_covered`. The domain is $P + t(R - P)$,
+  $t \in [0, 1]$, between the ends of its hull.
+  Each region, whether polygon, segment or point, is the closed hull of its vertices
+  written as half-planes (`closed_planes`), and each half-plane bounds $t$ exactly.
+  The resulting closed parameter intervals must cover $[0, 1]$, which `section_covered`
+  decides. It is written from the verifier’s own `hull` and `planes_of` and imports
+  nothing new; the import test still passes.
+  A counter, `degenerate_cover_checks`, enters a receipt only when such a row is
+  checked, so the three receipts keep their counts.
+
+**Kernel.**
+
+- `covers_vertical` skips a span wholly below its cursor, as the compiled form does.
+- `vertical_interval` refuses an ordinate that is not an exact rational (`mpq`, its
+  integer type, `Fraction` or `int`). A float coordinate turns `mpq` arithmetic into
+  `mpfr`, and a NaN would slip through `min` and `max`. This is the n11 contract’s
+  refusal of malformed endpoints, for a routine that takes polygons.
+- **Every certificate is unchanged.** The closure argument of 6.2 makes the verdict of
+  `exact_union_cover` the same for every input of exact rationals.
+  The routine’s callers consume only that verdict and its event and probe counts, which
+  the change does not touch, and the producer’s path uses the indexed cover.
+  The blind-pair digest tests in `test_hull_kernel_octagon.py`, the mask-0 and case-2095
+  full replays and the sequential tests all pass with the change: 137 tests over the
+  `test_hull_kernel_*` files, `test_verify_n17_certificates.py` and
+  `test_n11_closed_interval_cover.py`, in 129 s.
+
+### 6.4 Tests
+
+Seventeen tests in `test_verify_n17_certificates.py` and six in
+`test_hull_kernel_primitives.py`:
+
+- **The review’s 12,180 cases** (every target and every family of at most two of the 28
+  closed intervals with integer ends in −3..3), for the verifier’s merge and for the
+  sweep’s slice through polygons whose section at $x = 0$ is each interval: both agree
+  with the corrected reference on every case.
+- **The acceptance cases:** $[1,1]$ is refused from $[0,0]$ and from no span; a covered
+  one-point target, a closed seam and a containing span are accepted; a gap of
+  $10^{-50}$ at either end or at the seam is refused.
+  Twelve malformed intervals are refused by the merge, and a float, a NaN and a `bool`
+  coordinate by the sweep.
+- **The review’s triangle**, whose section at $x = 0$ is the vertex $(0, 1)$, above its
+  only region: the corrected sweep refuses at $x = 0$, the frozen n11 sweep at
+  $x = 1/2$, and the fast and indexed covers at $x = 0$.
+- **`degenerate_covered`** on a segment and a point against polygons, collinear
+  segments, a crossing segment and points, with seams, gaps of $2^{-50}$, and boxes
+  about the segment’s ends and midpoint that do not cover the rest of it.
+- **Two forged one-row closures** (`forged_closure`): owner 0 claims every pose of its
+  single row forbidden, with no residual and no collision region, so the cover alone
+  decides. In the first, the cell meets the legal box in the segment from $(1/2, 3/4)$ to
+  $(1/2, 5/4)$, and squares of half-side $1/16$ about its ends and midpoint leave
+  $(13/16, 15/16)$ and $(17/16, 19/16)$ uncovered: refused as `degenerate row
+  uncovered`, and passed with half-side $1/8$, where the squares meet at closed seams.
+  In the second, a wedge’s leftmost vertex $(1, 1)$ has only the span $[1/4, 3/4]$ below
+  it: refused at `x=1`, and passed when the covering square is moved so that its edge
+  holds the vertex.
+- **The kernel’s degenerate cover** refusing boxes about a segment’s ends and midpoint
+  and accepting wider ones: a control on a routine that was already right.
+
+**Against the unfixed code** (`run_cover_mutants.py.txt`, `v1_unfixed_plugin.py.txt`,
+`cover-mutants.log`), each run installing one form in place of the fixed one:
+
+| Form installed | New tests that fail |
+| --- | --- |
+| None (the fixed files) | none of 23 |
+| The unfixed verifier (`25c1cdef6`) | all 17 verifier tests |
+| Merge falls through on a one-point target | 3: the 12,180 cases, the acceptance cases, the wedge closure |
+| Zero-area branch by points and midpoint | 1: the segment closure, which the unfixed branch passes |
+| Merge without the interval check | the 12 malformed intervals |
+| The unfixed sweep (`f864a576a`) | 5 of the 6 kernel tests, all but the degenerate-cover control |
+| Slice without the skip | 2: the 12,180 cases, the triangle |
+| Slice without the exact-ordinate check | the 3 inexact coordinates |
+
+### 6.5 Re-Verification With the Fixed Verifier
+
+The fixed verifier’s own command, in full mode, one certificate at a time on a shared
+machine with a load average of 5 to 8 (`full-fixed-*.json`, `full-fixed-*.log`):
+
+| Certificate | Status | Seconds | Against the admitted receipts |
+| --- | --- | --- | --- |
+| W7 | PASS | 260 | counts, closure (owner 5, step 57) and content ids equal to `verification.json` and `verification-5c550f7c.json` (242 s); 30,952,184 inequalities, 3,324 rows |
+| SW9 (`flag3-a9-pending`) | PASS | 199 | equal to `verification.json` (351 s); closure owner 5, step 101; 28,321,424 inequalities, 3,359 rows |
+| N1 (`N1-state-pending`) | PASS | 325 | equal to `verification.json` and `verification-5c550f7c.json` (315 s); closure owner 18, step 81; 16,709,184 inequalities, 2,611 rows |
+
+No row of the three has a zero-area required domain, so no receipt gains the
+`degenerate_cover_checks` counter.
+The times are within the spread of the earlier runs under different load, and the
+interval check’s estimated cost of about 5 s on W7 is below that spread.
+
+### 6.6 The Ledger
+
+**The fixed verifier can be listed.** Beyond what `25c1cdef6` re-derives, by the same
+code, it has two exact checks that can only refuse: the merge’s containing-span rule
+with its interval check, and the parameter cover of a zero-area row.
+It passes W7, SW9 and N1 in full with their admitted counts (6.5). The 23 tests should
+be committed with it, so that a later rewrite meets them, as section 2.8 asked of the
+earlier conditions. The receipts in `cover-soundness/` were written in an uncommitted
+worktree on `f864a576a`, so their provenance has `dirty: true` and names the module by
+its blob, `859b6c56…`. A listing names the commit that carries this patch; these
+receipts serve as its verification if the committed file has that blob, and otherwise a
+full run at the commit does.
+
+Every earlier listed kernel revision has defect 2, and those from `e0b66f07b` on also
+have defect 1. Their receipts for W7, SW9 and N1 stand, by 6.2. For a new admission I
+would accept only the fixed revision: an earlier revision’s pass on a certificate with a
+zero-area row proves nothing about that row.
+Whether to restrict the earlier listings to the entries they already verify is the
+coordinator’s decision.
+
+### 6.7 Elsewhere in the Class
+
+The other interval merges in the n17 kernel and verifiers are exact:
+
+- `covers.covers_vertical_compiled` skips spans below its cursor, and
+  `covers.closed_degenerate_cover` covers the parameter interval $[0, 1]$, never a
+  single point.
+- The branch-and-bound verifier’s `check_pieces_cover` joins closed angle pieces that
+  touch or overlap and asks one joined piece to contain each target, which is exact for
+  a one-point target too.
+- The capacity-one cover’s `_line_gap` merges toward the box side $[LO, HI]$, which has
+  positive length, from cells that lie inside the box.
+- The verifier’s `covered_by_sweep` and `covered_by_area` leave out regions with fewer
+  than three hull vertices, which can only refuse more.
+
+One gap is of completeness, not soundness: on a zero-area row the verifier refuses any
+collision region, since `check_collisions` requires each region to have positive area.
+A sound certificate whose producer put a collision region on such a row would be
+refused. No such row occurs in W7, SW9 or N1.
+
 ## Evidence Status
 
 | Kind | Items |
 | --- | --- |
-| Measured, this review | section 5: the uniform runs under `64474e45`, the two refined closures under both verifiers, 17 doctored refinements, 21 mutants against the committed tests and the doctored refinements; sections 1 to 4: the facet, sweep, `between` and section audits; the W7 full run and the W7 and N1 sampled agreement runs; the 34 doctored certificates; the 21 verifier mutants against three checks; the extended test file against the five mutants it was written for; the blind-pair equivalence of the first-row-only mutant; the sampled agreement run on A; the four crafted enclosure tables; the 35 committed tests, now 39 |
-| Read from code, this review | the diffs of both verifiers; the arguments of sections 2.1 to 2.3 and 3.2 to 3.4 |
+| Measured, this review | section 6: the counted runs of the unfixed verifier on W7, SW9 and N1, the published input domains, the forged closures, the 12,180-case enumerations, the mutants of 6.4, the 137 tests and the three full runs of the fixed verifier; section 5: the uniform runs under `64474e45`, the two refined closures under both verifiers, 17 doctored refinements, 21 mutants against the committed tests and the doctored refinements; sections 1 to 4: the facet, sweep, `between` and section audits; the W7 full run and the W7 and N1 sampled agreement runs; the 34 doctored certificates; the 21 verifier mutants against three checks; the extended test file against the five mutants it was written for; the blind-pair equivalence of the first-row-only mutant; the sampled agreement run on A; the four crafted enclosure tables; the 35 committed tests, now 39 |
+| Read from code, this review | section 6: the closure argument of 6.2, the kernel checker’s cover dispatch and the other interval merges of 6.7; the diffs of both verifiers; the arguments of sections 2.1 to 2.3 and 3.2 to 3.4 |
 | Taken from the record | the admitted W7 receipt and F2’s receipt; N1’s `check-saved.json`; A’s admitted receipt; the prior reviews’ line numbers and mutation lists |
 | Not checked here | the kernel’s checker and producer (reviewed by R3); HiGHS and `mpmath` (nothing in either verifier depends on them); the Taylor producer’s floats (the verifier recomputes every Taylor quantity it uses) |
 

@@ -17,58 +17,82 @@
 
 ## The Squares Project
 
-This Squares Project site collects all known historic research and current new results
-on the square packing problem.
-Work on this problem has exploded in the summer of 2026 thanks to AI-powered research
-efforts.
-
-We and several others have proved new results as part of this project for low values of
-$n$, including $n = 11$, $n = 12$, $n = 17$ and many others.
-As part of a collaborative open effort, several people have built on results from this
-project or developed other new proofs, and this site
-[independently checks and documents](all-results.html#verification-ladders) the proofs
-and certificates behind them.
+Work on the square packing problem has exploded in the summer of 2026 thanks to
+AI-powered research efforts.
+This Squares Project was begun by [Joshua Levy](https://x.com/ojoshe) in August 2026
+with some initial explorations that obtained
+[new lower bounds](papers/n11-lower-bounds-explainer.html) for $n = 11, 17, 18, 19, 20$
+and other low values.
+Now several others have obtained results building on this work, including a landmark new
+proof by Queuingtheorydotcom of the optimality of the famous
+[case of 11 squares](cases/11.html).
+This project now independently tabulates all known new results and does
+[AI-assisted verification](all-results.html#verification-ladders) of the proofs and
+certificates behind them, to encourage open collaboration on open questions and
+formalizations of current proofs.
 
 If you have new results or know of newer results, please
 [file an issue]({{NEW_ISSUE_URL}}) to report them, and we will gladly incorporate them
-and cite your work.
+and cite your work. We also have a group chat.
+Contact [ojoshe](https://x.com/ojoshe) if you wish to join.
+
+<!-- The two paragraphs above are the owner's words of 2026-10-03 (think-a7oa), each
+     fact checked against the record: the project's first packing work is of
+     2026-08-22; its own lower bounds are at
+     n = 11, 12 and 17 to 21 (T-001 to T-034); the explainer the link names is n = 11's,
+     and it lists the bounds at 12, 17 and 19 that its method gave; and the optimality
+     of n = 11 is T-060, Queuingtheorydotcom's. "AI-assisted verification" links the
+     ladders, which say how far each result is checked; the sentence does not say every
+     result is checked, since some are recorded and not yet replayed here. -->
 
 {{PAGE_CARDS}}
 
 ## Recent Results
 
-<!-- One paragraph before the table (the owner, 2026-10-02): the headline of recent
-     progress with its result ids, which check_results.READER_TIER holds to the
-     register, then the star legend and where the table's filters start. README carries
-     its own fuller account of the same progress, and the two stopped being one shared
-     block that day (site_documents, think-ekw5). The ratings, the kinds, the statuses
-     and the dating rule are defined once, on the Results page; a result's rungs, review
-     and retained packet are its row's; and when a bound by others counts as verified is
-     said once, on the Frontier page. -->
-
-Eleven squares is settled: $s(11) = 3.8770835\ldots$, the exact side of Trump’s 1979
-packing, by [T-060](all-results.html#t-060). Seventeen squares is bracketed by
-machine-checked bounds, [T-043](all-results.html#t-043) below and
-[T-065](all-results.html#t-065) above, and [$n = 21$](cases.html#n-21),
-[$32$](cases.html#n-32) and [$45$](cases.html#n-45) have new exact values.
-{{STAR_LEGEND}}
-The chips on a row say how significant the result is (S), how it was originally verified
-(V) and how it has been confirmed (C), each rung defined on the
-[Verification Ladders](all-results.html#verification-ladders).
-The table starts at significance S4 and up, max age 180 days and superseded hidden.
+<!-- The table first, then its one action, then what it shows (the owner, 2026-10-02,
+     think-tgjv; the paragraph stood between the heading and the filter bar until that
+     day). The first paragraph is the headline of recent progress, with its result ids,
+     which check_results.READER_TIER holds to the register, the star legend and where
+     the filters start. The second says what the three ratings on a row mean, rung by
+     rung in brief, and the key under it shows every chip with its short meaning
+     (rung_key); the ladders that define each rung in full, and the ratings' kinds,
+     statuses and dating rule, are the Results page's. README carries its own fuller
+     account of the same progress (site_documents, think-ekw5). -->
 
 {{RECENT}}
 
 <p class="site-action-row site-more"><a class="site-action" href="all-results.html">See all results{{ARROW_RIGHT}}</a></p>
 
+Eleven squares is settled: $s(11) = 3.8770835\ldots$, the exact side of Trump’s 1979
+packing, by [T-060](all-results.html#t-060). Seventeen squares is bracketed by
+machine-checked bounds, [T-043](all-results.html#t-043) below and
+[T-065](all-results.html#t-065) above, and [$n = 21$](cases/21.html),
+[$32$](cases/32.html) and [$45$](cases/45.html) have new exact values.
+{{STAR_LEGEND}}
+The table above starts at significance S4 and up, max age 180 days and superseded
+hidden.
+
+Each row carries three ratings, each a rung of its own ladder.
+Significance, S1 to S5, is how much the result matters, from bookkeeping at S1 to a move
+on a central open case at S5. Verification, V0 to V5, is how it was first established: a
+bare claim at V0, a numerical check at V1, a checkable proof or machine certificate at
+V3, a formal proof at V5. Confirmation, C0 to C5, is how far it has been checked since:
+recorded at C0, read at C1, replayed at C2, replayed by machine at C3, and up to a
+formal confirmation at C5. The key below gives every rung in brief, and the
+[Verification Ladders](all-results.html#verification-ladders) on the Results page define
+each one in full.
+
+{{RUNG_KEY}}
+
 <!-- Verification Ladders stood here, between Recent Results and the atlas, until
      2026-10-02 (the owner, think-hqb3): the section is the Results page's, under its
-     table, and the sentence above says what the chips indicate and links it. Its two
+     table, and Recent Results' second paragraph says what the ratings mean, over a key
+     of every rung (think-tgjv), and links it. Its two
      fragments, #verification-ladders and the older #verification-at-a-glance, are sent
      there by forward.js (overview/forward.js). -->
 
 <!-- This section's fragment was #the-atlas until 2026-10-01. The empty anchor in its
-     heading keeps an old link landing here, as The Frontier Survey keeps its own. -->
+     heading keeps an old link landing here. -->
 
 ## The Atlas of Square Packings<a id="the-atlas"></a>
 
@@ -78,29 +102,16 @@ packing drawn large, with a link to its case record.
 
 {{ATLAS_GRID}}
 
-<!-- This section's fragment was #the-survey until 2026-10-01. The empty anchor in its
-     heading keeps an old link landing here, as Verification Ladders keeps its own. It
-     followed PDFs and Videos until the same day, when the owner set it directly after
-     the atlas. What the survey counts, how a bound comes to count as verified, the
-     audit of its sources and the seventeen-square history before this project are the
-     Frontier page's own prose since 2026-10-02; here the survey is said in one
-     paragraph and its cards lead there. -->
-
-## The Frontier Survey<a id="the-survey"></a>
-
-The frontier survey is the record the atlas is drawn from: for every case, the
-best-known packing and the strongest verified lower bound, each with its source and the
-evidence it rests on.
-The [Frontier](frontier.html) page lists every case, counts the cases that have moved
-since this project began, and says how the survey audits its sources and when a bound by
-others counts as verified.
-
-{{SURVEY_CARDS}}
+<!-- The Frontier Survey stood here, between the atlas and PDFs and Videos, until
+     2026-10-02 (the owner, think-ec5k): its account is the Frontier page's own prose,
+     and its card to that page is one of the page cards under The Squares Project. Its
+     two fragments, #the-frontier-survey and the older #the-survey, are sent to the
+     Frontier page by forward.js (overview/forward.js). -->
 
 <!-- The atlas as files and as a film: the two posters, each opening its PDF, and the
      film. The cards and their note stood under the grid, in The Atlas, until 2026-10-01,
-     and this section followed the atlas directly until the survey moved between them
-     the same day. -->
+     and The Frontier Survey stood between this section and the atlas from that day until
+     2026-10-02. -->
 
 ## PDFs and Videos
 

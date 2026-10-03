@@ -9,14 +9,14 @@ GitHub; then the title; then the credits, in the owner's form (2026-10-01):
 
     Human oversight: **Joshua Levy**
     Agents: **GPT-6 Astra** and **GPT-6 Sol**
-    Draft v0.1.0
-    Original proof September 29, 2026 · Last revised October 1, 2026
+    Draft v0.1.2 (version history)
+    Original proof September 29, 2026 · Last revised October 3, 2026
 
 Names in bold, addresses as plain links, the version plain, a line's space before a
 paper's own credits when it explains someone else's work, and a line's space before the
 dates. A paper without a source begins at its own credits. The version is the paper's
 own, not the site's (`sqpack.release`, the papers' own versions), and the version line
-links the paper's version history where it has one, which is where the explainer's own
+links the paper's version history where it has one, which is where each paper's own
 editions are listed; a paper at its first version has no history to link.
 
 Each paper describes itself as a `PaperFront`, a small record of the values that differ

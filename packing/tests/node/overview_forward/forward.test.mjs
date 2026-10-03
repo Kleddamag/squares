@@ -1,7 +1,7 @@
 // The forwarder, run against a stand-in location and document. On the overview an old
-// link to the results table or to one of its rows goes to the results page, and any
-// other fragment the overview lacks goes to the explainer where it is served now, query
-// string and fragment kept. On a forwarder page, which names where it sends a reader in
+// link to the results table or to one of its rows goes to the results page, one to The
+// Frontier Survey goes to the Frontier page, and any other fragment the overview lacks
+// goes to the explainer where it is served now, query string and fragment kept. On a forwarder page, which names where it sends a reader in
 // `data-moved-to`, every visit goes there, query string and fragment kept.
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
@@ -79,13 +79,16 @@ void test("the ladders' two fragments go to the results page where the section i
   assert.equal(forwarded("#verification-at-a-glance"), "all-results.html#verification-at-a-glance");
 });
 
+void test("the survey's two fragments go to the Frontier page", () => {
+  // The Frontier Survey left the overview on 2026-10-02, its account the Frontier page's
+  // own; it was `#the-survey` until 2026-10-01, and both fragments are sent there.
+  assert.equal(forwarded("#the-frontier-survey"), "frontier.html#the-frontier-survey");
+  assert.equal(forwarded("#the-survey", { search: "?x=1" }), "frontier.html?x=1#the-survey");
+});
+
 void test("a renamed section's old fragment stays while an anchor keeps its id", () => {
-  // The Frontier Survey was `#the-survey`; its heading keeps an empty anchor of that id,
-  // without which the old link would be sent to the explainer.
-  const survey = "#the-survey";
-  assert.equal(forwarded(survey, { ids: ["the-frontier-survey", "the-survey"] }), null);
-  assert.equal(forwarded(survey, { ids: ["the-frontier-survey"] }), `${EXPLAINER}${survey}`);
-  // The Atlas of Square Packings was `#the-atlas`, kept the same way.
+  // The Atlas of Square Packings was `#the-atlas`; its heading keeps an empty anchor of
+  // that id, without which the old link would be sent to the explainer.
   const atlas = "#the-atlas";
   assert.equal(forwarded(atlas, { ids: ["the-atlas-of-square-packings", "the-atlas"] }), null);
   assert.equal(forwarded(atlas, { ids: ["the-atlas-of-square-packings"] }), `${EXPLAINER}${atlas}`);

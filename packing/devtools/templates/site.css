@@ -66,6 +66,9 @@ body {
   --site-font-size-sans-base: calc(var(--kpress-font-size-base) * var(--site-font-scale-sans));
   --site-font-size-support: calc(var(--site-font-size-sans-base) * var(--paper-support-scale));
   --site-font-size-note: calc(var(--site-font-size-sans-base) * var(--paper-note-scale));
+  /* A table's filter bar, its controls and their labels: a step under the table's own
+     text, so the bar reads as the table's tools and not as its content. */
+  --site-font-size-control: calc(var(--site-font-size-sans-base) * 0.8);
   --site-support-color: var(--kpress-doc-muted);
   --site-wide: calc(var(--kpress-measure) + 24rem);
   /* How far a block may bleed past the wide track (the atlas grid, and a data table
@@ -144,6 +147,15 @@ body {
   );
   margin-inline: calc((var(--site-table-wide) - 100%) / -2);
   max-width: var(--site-table-wide);
+}
+/* The tables of results hold eight columns since 2026-10-02 (`think-ybt5`,
+   `think-e4o3`): 1139 pixels at their floors where every row shows, more than the wide
+   track's 1104 at a 1280-pixel window. So they bleed from 74rem (1184 pixels), fit from
+   about 1220, and are 1200 pixels wide at 1280, as wide as the frontier table there;
+   narrower, they scroll in their wrap, as any table does where its floors outrun the
+   window. */
+.site-page .site-wide:has(> .site-table-wrap .site-results) {
+  --site-table-bleed-from: 74rem;
 }
 .site-hero {
   text-align: center;
@@ -226,7 +238,8 @@ body {
    `--site-cards-small`, `-medium` and `-large` are those counts, each stepped by its own
    container queries: n columns of minimum m and n - 1 gaps need (m + 1)n - 1 rem. A card
    that names no size is medium. On screen the cards are one wrapping row that centres
-   every line it does not fill, a short section and the last line of a long one alike.
+   every line it does not fill, a short section and the last line of a long one alike;
+   a section set in lines of its own is one such row per line.
    Print keeps the plain grid of medium columns, filled from the left. A card's popover
    is its sibling but never in the row: closed it is not displayed, and open it is in the
    top layer. */
@@ -242,6 +255,11 @@ body {
   display: grid;
   gap: var(--site-card-gap);
   grid-template-columns: repeat(auto-fill, minmax(16rem, 1fr));
+}
+/* Each line of a section set in lines of its own is a row of its cards, a gap below the
+   line before it. */
+.site-cards + .site-cards {
+  margin-block-start: var(--site-card-gap);
 }
 @container (width >= 25rem) {
   .site-cards {
@@ -320,6 +338,12 @@ body {
   }
   .site-cards > .site-card[data-card-size="large"] {
     --site-cards-line: var(--site-cards-large);
+  }
+  /* A section set in lines of its own (`SECTION_CARD_LINES`) sets no more cards to a
+     line than its longest line holds, so its lines share one column width: the page
+     cards stand one, two and two, at the width of two to a line. */
+  .site-cards[data-cards-most="2"] > .site-card {
+    --site-cards-line: min(var(--site-cards-medium), 2);
   }
 }
 /* A card is a clean summary with square corners. Most cards are a button that opens a
@@ -591,7 +615,7 @@ body {
   --site-popover-max-block: calc(100dvh - 2 * var(--site-popover-window-margin));
 }
 /* A phone keeps the heights it had: a card's or a row's popover up to 80% of the window
-   and 40rem, here; a framed page, the atlas popover and a result overview in their own
+   and 40rem, here; a framed page, the case popover and a result overview in their own
    rules below. */
 @media (max-width: 40rem) {
   :root {
@@ -698,11 +722,6 @@ body {
 .site-popover .site-popover-preview ul {
   padding-inline-start: 1.2rem;
 }
-.site-popover .site-popover-heading {
-  color: var(--kpress-doc-text);
-  font-weight: var(--site-font-weight-sans-medium);
-  margin-block-end: 0.2rem;
-}
 .site-popover .site-popover-more {
   list-style: none;
 }
@@ -746,14 +765,18 @@ body {
   color: var(--kpress-doc-bg);
 }
 /* The row that holds the one action under a table or grid: centred, in the sans at the
-   note size, `--site-action-space` under what it follows and nothing of its own below,
-   where the next heading's space begins. */
-.site-action-row {
+   note size, `--site-action-space` under what it follows, and a table's own space,
+   `--site-table-space`, below it, so text that follows a button stands as clear of it
+   as of a table (the owner, 2026-10-02, `think-0o9u`; nothing below it until then).
+   Where a heading follows, its larger space takes over, the two margins being one.
+   The row is a paragraph, so the rule is scoped to the page to outrank KPress's
+   `.kpress-prose p`, whose 0.75rem stood in for both margins until then. */
+.kpress .site-action-row {
   --site-action-space: 1.2rem;
   font-family: var(--kpress-font-sans);
   font-size: var(--site-font-size-note);
   font-weight: var(--site-font-weight-sans-medium);
-  margin-block: var(--site-action-space) 0;
+  margin-block: var(--site-action-space) var(--site-table-space);
   text-align: center;
 }
 
@@ -836,9 +859,11 @@ body {
      shorter than a select, reads level with the labels beside it, and so does the
      count. */
   align-items: baseline;
-  gap: 0.5rem 1rem;
+  gap: 0.4rem 0.9rem;
   font-family: var(--kpress-font-sans);
-  font-size: var(--site-font-size-support);
+  /* Smaller than the table's text since 2026-10-02 (the owner, `think-gwcu`), the
+     support size until then. */
+  font-size: var(--site-font-size-control);
   font-weight: var(--site-font-weight-sans-light);
   margin-block: var(--site-table-space) 0.5rem;
 }
@@ -877,7 +902,14 @@ body {
   border-radius: var(--kpress-radius-sm, 4px);
   color: var(--kpress-doc-text);
   font: inherit;
-  padding: 0.1rem 0.35rem;
+  padding: 0.05rem 0.3rem;
+}
+/* A touch screen's browser zooms the page into a field whose text is under 16px when it
+   takes focus, so there a control keeps 16px at least; its label stays the bar's size. */
+@media (pointer: coarse) {
+  .site-table-tools :is(select, input:not([type="checkbox"])) {
+    font-size: max(16px, 1em);
+  }
 }
 /* A checkbox is the bar's own control too: the site's accent when checked, never the
    browser's blue, no box of its own around it, and its words on one line beside it. */
@@ -895,16 +927,44 @@ body {
 .site-table-tools input[data-bound="age"] {
   inline-size: 4.5rem;
 }
-.site-table-tools .site-count {
+/* A control at its no-filter value, a select's "All" or an empty field showing its
+   placeholder, is gray; a control that filters is the text colour, so the bar says at a
+   glance what narrows the table (the owner, 2026-10-02, `think-pcei`). It follows the
+   reader's changes with no script: `:checked` is the option shown. A checkbox's words
+   are its value, gray unchecked and the text colour checked. The menu's own options
+   keep the text colour. The labels before the controls stay gray. */
+.site-table-tools select:has(option[value=""]:checked) {
   color: var(--site-support-color);
+}
+.site-table-tools select option {
+  color: var(--kpress-doc-text);
+}
+.site-table-tools input::placeholder {
+  color: var(--site-support-color);
+  opacity: 1;
+}
+.site-table-tools label:has(input[type="checkbox"]:checked) {
+  color: var(--kpress-doc-text);
+}
+/* The count, what the table holds now ("324 cases", "7 of 65 results"), is the bar's
+   one result, so it is the text colour, not the labels' gray. */
+.site-table-tools .site-count {
+  color: var(--kpress-doc-text);
   margin-inline-start: auto;
 }
 .site-table-wrap {
   overflow-x: auto;
 }
+/* The site's tables, the results tables and the frontier table, have no frame: KPress
+   draws a border round every table, and on a long table it was clutter (the owner,
+   2026-10-02, `think-wadm`). The rule under the header and the light rule under each
+   row are all a table's lines. */
 .site-table {
   border-collapse: collapse;
   width: 100%;
+}
+.kpress .site-table {
+  border: 0;
 }
 .site-table thead th {
   position: sticky;
@@ -1016,8 +1076,8 @@ body {
    Every small label on the site is one chip: square corners, the sans face at the note
    size, a solid fill and no border, lettered in the page's own text colour. In light
    mode every fill is light enough for dark text; in dark mode every fill is dark and
-   the text light. A plain chip is a neutral tint; `data-tone="accent"` marks a settled
-   state (a proved case) in an accent tint. A rung chip adds `site-rung-fill`. */
+   the text light. A plain chip is a neutral tint; a status chip takes its status's
+   fill (below). A rung chip adds `site-rung-fill`. */
 .site-chip {
   background: color-mix(in oklch, var(--kpress-doc-muted) 16%, var(--kpress-doc-bg));
   border-radius: 0;
@@ -1036,9 +1096,42 @@ body {
      wide enough for it. */
   white-space: nowrap;
 }
-.site-chip[data-tone="accent"] {
-  background: color-mix(in oklch, var(--kpress-doc-accent) 22%, var(--kpress-doc-bg));
-  color: var(--kpress-doc-text);
+/* A status chip takes a fill from the rung scale (below), so it turns over with the
+   page and keeps the scale's contrast, and one status reads the same wherever it is
+   drawn (the owner, 2026-10-02, `think-c19o`): a case's `proved` is green and its `open`
+   yellow, on the frontier table, a case record and a result's list of cases; a result's
+   `confirmed` is the green of the confirmation rungs, at C3's strength, and its
+   `reviewed` the verification rungs' blue. The other statuses, the kinds and the
+   standings keep the plain chip. `devtools.rung_scale` measures these fills too. */
+.site-chip:is([data-case-status], [data-status="confirmed"], [data-status="reviewed"]) {
+  --rung-chroma-boost: 0;
+  background: oklch(
+    calc(var(--site-rung-base) + var(--rung-level) * var(--site-rung-step))
+      calc(
+        var(--site-rung-chroma-base) +
+        var(--rung-level) *
+        var(--site-rung-chroma-step) +
+        var(--rung-chroma-boost)
+      )
+      var(--rung-hue)
+  );
+}
+.site-chip[data-status="confirmed"] {
+  --rung-hue: 158;
+  --rung-level: 3;
+}
+.site-chip[data-status="reviewed"] {
+  --rung-hue: 250;
+  --rung-level: 2;
+}
+.site-chip[data-case-status="proved"] {
+  --rung-hue: 145;
+  --rung-level: 3;
+}
+.site-chip[data-case-status="open"] {
+  --rung-hue: 95;
+  --rung-level: 2;
+  --rung-chroma-boost: 0.02;
 }
 
 /* A rung's fill moves with its level on its own scale, always behind the page's text
@@ -1118,14 +1211,15 @@ body {
   display: block;
   margin-block-start: 0.3rem;
 }
-/* A result's status sits under its kind, on a line of its own: the status chip, then
-   who has the next move where the register records it, then `superseded` where the
-   result is. The chips wrap between themselves, one under another where the cell is too
-   narrow, and never inside one: the column is as wide as its widest chip. */
+/* A result's status has a column of its own, after the rungs (`think-ybt5`; it sat
+   under the kind until 2026-10-02): the status chip, then who has the next move where
+   the register records it, then `superseded` where the result is. The chips wrap
+   between themselves, one under another where the cell is too narrow, a kind's gap
+   apart, and never inside one: the column is as wide as its widest chip. */
 .site-table .site-standing {
-  display: block;
-  margin-block-start: 0.3rem;
-  white-space: normal;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem;
 }
 
 .kpress .site-table {
@@ -1179,7 +1273,7 @@ body {
   }
   /* As narrow as its widest chip, like the other short columns: the spare width is the
      result's and the credit's. */
-  .site-results .site-rungs {
+  .site-results :is(.site-rungs, .site-col-status, .site-col-details) {
     width: 0;
   }
 }
@@ -1223,9 +1317,16 @@ body {
 .site-results .site-col-result .kpress-math-inline {
   display: inline;
 }
-.site-results .site-col-result .site-records {
-  margin-block-start: 0.3rem;
+/* A result's records, its case link, the register, its evidence, source and reviews, are
+   its Details, a column of their own since 2026-10-02 (`think-e4o3`; they stood on a
+   line under the summary until then): one link to a line, the column as narrow as its
+   widest link, so the result's cell holds the claim alone. On a phone they are a line
+   under the claim again, a dot drawn between two links (below). */
+.site-results .site-col-details .site-records {
   min-width: 0;
+}
+.site-results .site-col-details .site-records a {
+  display: block;
 }
 
 .site-table .site-rungs {
@@ -1240,7 +1341,10 @@ body {
    wrong trade: each row becomes a small card, id, cases and rungs on its first line,
    then the claim with its records under it, and the credit and date; the status line
    sits under the rungs. The results page's table and the overview's recent table are the one
-   table (`.site-results`), so both take it. */
+   table (`.site-results`), so both take it. The card places its cells by class, not by
+   column, and orders them (`order`): the wide table's row opens with the date and sets
+   the credit before the status and the details, so the card reads as it did before the
+   columns were reordered. */
 @media (width < 40rem) {
   .site-results thead {
     display: none;
@@ -1281,14 +1385,18 @@ body {
   .site-results .site-col-n {
     grid-area: 1 / 2;
   }
-  /* The rungs' track is as wide as its content, and a status line of three chips
-     (`recorded`, `waiting on third party`, `superseded`) would take the whole card and
-     leave the cases and the credit no room. So the cell stops at two chips' width, and
-     a third chip wraps under them. */
   .site-results .site-rungs {
     grid-area: 1 / 3;
   }
-  .kpress .site-results td.site-rungs {
+  /* The status stands right under the rungs, in their track, on the card's second line,
+     as it did when it was in their cell. The track is as wide as its content, and a
+     status line of three chips (`recorded`, `waiting on third party`, `superseded`)
+     would take the whole card and leave the cases and the credit no room. So the cell
+     stops at two chips' width, and a third chip wraps under them. */
+  .site-results .site-col-status {
+    grid-area: 2 / 3;
+  }
+  .kpress .site-results td.site-col-status {
     max-width: 14.5rem;
   }
   .site-results td.site-col-n {
@@ -1298,21 +1406,34 @@ body {
     color: var(--kpress-doc-muted);
     content: "n = ";
   }
-  /* A list of five values or more takes a line of its own under the id and the rungs,
-     the card's whole width, and wraps there from the start of the line: between them it
-     had under half of that. */
+  /* A list of five values or more takes a line of its own under the id, the rungs and
+     the status, the card's whole width, and wraps there from the start of the line:
+     between them it had under half of that. */
   .kpress .site-results td.site-col-n:has(.site-n-value:nth-child(5)) {
-    grid-area: 2 / 1 / auto / -1;
+    grid-area: 3 / 1 / auto / -1;
     text-align: start;
   }
-  .site-results :is(.site-col-result, .site-records) {
+  .site-results :is(.site-col-result, .site-col-details) {
     grid-column: 1 / -1;
   }
+  .site-results .site-col-details .site-records a {
+    display: inline;
+  }
+  .site-results .site-col-details .site-records a + a::before {
+    color: var(--kpress-doc-muted);
+    content: "·";
+    display: inline-block;
+    padding-inline: 0.35em;
+  }
+  /* The claim and its details come before the credit and the date, which the wide row
+     sets on either side of them. */
   .site-results .site-col-credit {
     grid-column: 1 / 3;
+    order: 1;
   }
   .site-results .site-col-date {
     grid-column: 3;
+    order: 2;
     text-align: end;
   }
   .site-results .site-date-kind {
@@ -1363,17 +1484,21 @@ body {
    The row is the unit (paper-design.md, Row popovers): a row with detail opens one
    popover, a card's, wherever it is pressed, and no cell expands on its own. Beyond the
    hover wash above, it keeps the wash while it has keyboard focus, with an accent ring
-   inside its edge, and while its popover is open. Once `row-popover.js` has made it the
-   control it shows the pointer anywhere on it; its native trigger, which opens the
-   popover without scripts, reads as the text it wraps. */
-.kpress .site-table tbody tr[data-row-popover]:is(:focus-visible, [aria-expanded="true"]) {
+   inside its edge, and while its popover is open. A frontier row, which opens its case's
+   record in the case popover (`case-popover.js`), is marked the same way. Once its
+   script has made it the control it shows the pointer anywhere on it; its native
+   trigger, which opens the popover without scripts, reads as the text it wraps. */
+.kpress
+  .site-table
+  tbody
+  tr:is([data-row-popover], [data-case-row]):is(:focus-visible, [aria-expanded="true"]) {
   background: var(--site-wash);
 }
-.kpress .site-table tbody tr[data-row-popover]:focus-visible {
+.kpress .site-table tbody tr:is([data-row-popover], [data-case-row]):focus-visible {
   outline: 2px solid var(--kpress-doc-accent);
   outline-offset: -2px;
 }
-.kpress .site-table tbody tr[data-row-ready] {
+.kpress .site-table tbody tr:is([data-row-ready], [data-case-row][aria-controls]) {
   cursor: pointer;
 }
 .kpress .site-table .site-row-open {
@@ -1402,40 +1527,6 @@ body {
 .site-name {
   display: inline-block;
   max-inline-size: 100%;
-}
-
-/* Label and value side by side (`.site-pairs`): the labels in one column as wide as the
-   longest of them, whatever it says and in whatever face, and the values in the rest,
-   wrapping between words. Every list in the block shares the two columns, and a heading
-   runs across both. A phone has no room for two columns, so there the block is laid out
-   as any detail list is, each label above its value. */
-@media (width > 40rem) {
-  .site-pairs {
-    column-gap: 1.1rem;
-    display: grid;
-    grid-template-columns: max-content minmax(0, 1fr);
-  }
-  .site-popover .site-pairs > .site-detail {
-    display: grid;
-    grid-column: 1 / -1;
-    grid-template-columns: subgrid;
-    row-gap: 0.3rem;
-  }
-  .site-popover .site-pairs > .site-detail dd {
-    margin: 0;
-  }
-  .site-popover .site-pairs > .site-popover-heading {
-    grid-column: 1 / -1;
-    margin-block-start: 0.7rem;
-  }
-  .site-popover .site-pairs > .site-popover-heading:first-child {
-    margin-block-start: 0;
-  }
-}
-/* A popover of pairs is as wide as its longest value asks, up to a line of prose and
-   the label column beside it. */
-.site-popover:has(.site-pairs) {
-  max-inline-size: min(46rem, 100vw - 2rem);
 }
 
 /* kpress wraps a wide table in its own full-bleed wrap, sized from the viewport. The
@@ -1714,7 +1805,8 @@ body {
    It bleeds past the wide track as the window grows, up to 140rem, and its cells keep a
    size that reads, so the row holds more cases the wider the screen: four on a phone,
    eleven at 1280 pixels, seventeen at 1920 and twenty at 2560. A cell washes on hover
-   like a card and opens the atlas popover (below). The wash is the cell's background,
+   like a card and opens the case popover (Case records, below). The wash is the cell's
+   background,
    behind the drawing, and it is all that changes: every line keeps the page's ink. */
 .site-page .site-atlas-grid {
   --site-wide: var(--site-bleed-max);
@@ -1882,12 +1974,13 @@ body {
   display: none;
 }
 
-/* The atlas popover: one panel every cell opens, what the ascent film's panel says about
-   the case beside its drawing shown large. It is a card popover in every other way:
-   square corners over the scrim, the caps label, the close cross, and the action
-   button at its foot, here to the case record, with arrows to the neighbouring cases.
-   The two bounds keep the film's colours, scarlet for the proved lower bound and green
-   for the best known side, turned lighter in dark mode. */
+/* The film's panel for a case, which opens every case record as its visual summary
+   (`.site-case-summary`, below) and a result's overview as its case (site-result.css):
+   the gap bar, the bound as one statement, the badges, where each bound comes from and
+   what is open. It was the atlas popover's until 2026-10-03, when the case popover took
+   that popover's place, and keeps its classes. The two bounds keep the film's colours,
+   scarlet for the proved lower bound and green for the best known side, turned lighter
+   in dark mode. */
 :root {
   --site-bound-lower: #a3123f;
   --site-bound-upper: #17794a;
@@ -1895,31 +1988,6 @@ body {
 :root:where([data-kpress-resolved-theme="dark"]) {
   --site-bound-lower: oklch(72% 0.15 12);
   --site-bound-upper: oklch(76% 0.13 155);
-}
-.site-popover.site-atlas-pop {
-  inline-size: min(62rem, 100vw - 2rem);
-  max-block-size: var(--site-popover-max-block);
-  max-inline-size: none;
-}
-.site-atlas-pop .site-atlas-pop-title {
-  font-size: 1.5em;
-  margin-block: 0.1rem 0.9rem;
-}
-.site-atlas-pop-body {
-  align-items: start;
-  display: grid;
-  gap: 1.2rem 1.8rem;
-  grid-template-columns: minmax(0, 22rem) minmax(0, 1fr);
-}
-.site-atlas-pop-figure svg {
-  aspect-ratio: 1;
-  display: block;
-  height: auto;
-  width: 100%;
-}
-.site-atlas-pop-facts {
-  font-size: var(--site-font-size-note);
-  min-inline-size: 0;
 }
 .kpress .site-atlas-pop .site-atlas-pop-head {
   color: var(--kpress-doc-muted);
@@ -1988,6 +2056,29 @@ body {
   justify-content: center;
   line-height: 1;
 }
+/* A case's badges where a case is one line, a table's row or a record's head: the
+   glyphs alone, in a row after the case's status chip, each named for a screen reader
+   and on hover (`result_overview.case_badges`). In a table they are a step smaller, to
+   sit on the row's line. */
+.site-case-badges {
+  display: inline-flex;
+  gap: 0.25rem;
+  margin-inline-start: 0.4rem;
+  vertical-align: middle;
+}
+/* In a table cell the row is its own block under the chip, as tall as its glyphs and no
+   taller, so a row of whole numbers keeps the two lines its drawing is high. Its small
+   margin is under it, matching the chip's line's leading above, so the cell's content
+   is centred on the row. */
+:is(.site-table, .site-result-cases) .site-case-badges {
+  display: flex;
+  margin: 0 0 0.1rem;
+}
+:is(.site-table, .site-result-cases) .site-case-badges .site-atlas-badge {
+  block-size: 1rem;
+  font-size: 0.7rem;
+  inline-size: 1rem;
+}
 .site-atlas-badge[data-style="solid"] {
   background: var(--kpress-doc-muted);
   color: var(--kpress-doc-bg);
@@ -2013,9 +2104,6 @@ body {
   display: table-row;
   line-height: 1.4;
 }
-.site-atlas-pop .site-atlas-pop-cite[hidden] {
-  display: none;
-}
 .site-atlas-pop-which {
   display: table-cell;
   font-weight: var(--site-font-weight-sans-medium);
@@ -2027,52 +2115,12 @@ body {
   color: var(--kpress-doc-muted);
   font-weight: var(--site-font-weight-sans-medium);
 }
-/* The record's button centred like every popover's, with the arrows to the neighbouring
-   cases at the right edge: three columns, the outer two equal. */
-.site-popover.site-atlas-pop .site-popover-actions {
-  display: grid;
-  grid-template-columns: 1fr auto 1fr;
-}
-.site-atlas-pop .site-popover-actions .site-popover-action {
-  grid-column: 2;
-}
-.site-atlas-pop .site-atlas-pop-step {
-  display: inline-flex;
-  gap: 0.4rem;
-  justify-self: end;
-}
-.site-atlas-pop-step button {
-  background: none;
-  border: 1px solid var(--kpress-doc-border);
-  color: var(--kpress-doc-text);
-  cursor: pointer;
-  font-family: var(--kpress-font-sans);
-  font-size: 1.1rem;
-  font-weight: var(--site-font-weight-sans-light);
-  inline-size: 2.75rem;
-  block-size: 2.4rem;
-  transition: background-color var(--site-hover-duration) var(--site-hover-easing);
-}
-.site-atlas-pop-step button:is(:hover, :focus-visible) {
-  background: var(--site-wash);
-}
-.site-atlas-pop-step button:disabled {
-  cursor: default;
-  opacity: 0.35;
-}
-/* The stepper's arrows are the site's arrow, left and right, centred in the button. */
-.site-atlas-pop-step .site-icon-arrow {
-  block-size: 1.1em;
-  display: block;
-  inline-size: 1.1em;
-  margin: auto;
-}
-
 /* The gap bar, as the film draws it: a number line from one below the grid bound to two
    above it, the integers and the values of the two formulas marked in the quiet gray,
    the two bounds as bold rules with their values above in their colours, and the span
-   between them shaded. Its labels are placed by `overview/atlas-grid.js`, which keeps
-   each inside the bar and the two values off each other. */
+   between them shaded. Its labels are placed when the page is rendered
+   (`result_overview.gap_bar`), each centred on its mark, and two values too close to
+   sit side by side are set either side of their marks (`data-anchor`). */
 .site-atlas-gap {
   font-variant-numeric: tabular-nums;
   margin-block: 0 0.4rem;
@@ -2144,59 +2192,68 @@ body {
   inline-size: 3px;
   inset-block-start: -0.4rem;
 }
-@media (max-width: 40rem) {
-  .site-popover.site-atlas-pop {
-    inline-size: calc(100vw - 1rem);
-    max-block-size: calc(100dvh - 1rem);
-  }
-  .site-atlas-pop-body {
-    grid-template-columns: minmax(0, 1fr);
-  }
-  .site-atlas-pop-figure {
-    justify-self: center;
-    inline-size: min(100%, 15rem);
-  }
-  /* Too narrow for the button to sit centred between equal columns: the arrows go under
-     it, centred too. */
-  .site-popover.site-atlas-pop .site-popover-actions {
-    grid-template-columns: minmax(0, 1fr);
-    justify-items: center;
-  }
-  .site-atlas-pop .site-popover-actions .site-popover-action {
-    grid-column: 1;
-  }
-  .site-atlas-pop .site-atlas-pop-step {
-    justify-self: center;
-  }
-  /* The record's button stays in reach at the foot of a panel taller than the phone. */
-  .site-atlas-pop .site-popover-actions {
-    background: var(--kpress-doc-bg);
-    border-block-start: 1px solid var(--kpress-doc-border);
-    inset-block-end: calc(-1 * var(--site-popover-pad));
-    margin-block-end: calc(-1 * var(--site-popover-pad));
-    padding-block: 0.6rem var(--site-popover-pad);
-    position: sticky;
-  }
+/* ---------- Case records ----------
+   One record per case, in its own file at `cases/11.html`, shown by the record page
+   (`cases/`, overview/case-page.js) and by the one case popover every page that links
+   cases carries (overview/case-popover.js). A record opens with its visual summary,
+   the drawing first and large, then the number line of its bounds and the film's facts
+   under it, and the rest of the record follows. */
+.site-case-reader {
+  margin-block-start: 1rem;
+}
+.site-case-reader[hidden] {
+  display: none;
+}
+/* While a record is shown, the page is that record: the title, the account and the
+   index above it step aside until the reader goes back to every case. */
+:root:is([data-case-loading], :has(.site-case-reader:not([hidden]))) .site-case-front {
+  display: none;
+}
+/* The case popover: as large as a result's overview, one scrolling panel, the record
+   in it as its own page shows it. Its action, to the record's own address, stays in
+   reach at the foot of a record taller than the window. */
+.site-popover.site-case-pop {
+  inline-size: min(62rem, 100vw - 2rem);
+  max-inline-size: none;
+}
+.site-popover.site-case-pop:popover-open {
+  block-size: auto;
+  display: block;
+  max-block-size: var(--site-popover-max-block);
+  overflow: hidden auto;
+}
+/* The panel scrolls as a whole, so its close cross is held at its corner as the record
+   scrolls under it, rather than leaving with the record's head: a record runs to many
+   screens, and a phone leaves almost no room outside the panel to press. */
+.site-popover.site-case-pop .site-popover-close {
+  background: var(--kpress-doc-bg);
+  float: inline-end;
+  inset-block-start: var(--site-popover-close-inset);
+  margin-block-start: calc(var(--site-popover-close-inset) - var(--site-popover-pad));
+  margin-inline-end: calc(var(--site-popover-close-inset) - var(--site-popover-pad));
+  position: sticky;
+  z-index: 2;
+}
+.site-popover.site-case-pop .site-popover-close:is(:hover, :focus-visible) {
+  background: var(--site-wash);
 }
 
-/* ---------- Case records ----------
-   One record per case on cases.html, opened from the atlas grid and the frontier atlas
-   in the shared case popover. With scripts (overview/case-view.js) the page shows the
-   record its fragment names, or the index when it names none; without them it lists
-   every record. */
-.site-case {
+.site-case-pop .site-popover-actions {
+  background: var(--kpress-doc-bg);
   border-block-start: 1px solid var(--kpress-doc-border);
-  margin-block-start: 3rem;
-  padding-block-start: 1.5rem;
+  inset-block-end: calc(-1 * var(--site-popover-pad));
+  margin-block-end: calc(-1 * var(--site-popover-pad));
+  padding-block: 0.6rem var(--site-popover-pad);
+  position: sticky;
 }
-:root[data-case-current] .site-case {
-  border-block-start: 0;
-  margin-block-start: 0;
-}
-:root[data-case-view]:not([data-case-current]) .site-case,
-:root[data-case-current] .site-case:not([data-current]),
-:root[data-case-current] .site-case-front {
-  display: none;
+@media (max-width: 40rem) {
+  .site-popover.site-case-pop {
+    inline-size: calc(100vw - 1rem);
+    padding-inline: 0.75rem;
+  }
+  .site-popover.site-case-pop:popover-open {
+    max-block-size: calc(100dvh - 1rem);
+  }
 }
 .site-case-head {
   font-family: var(--kpress-font-sans);
@@ -2226,21 +2283,35 @@ body {
   font-size: calc(var(--site-font-size-sans-base) * 1.25);
   margin-block: 0 1.5rem;
 }
-/* The drawing beside the bounds on a wide screen; stacked, drawing first, when narrow. */
-.site-case-top {
-  align-items: start;
+/* The visual summary: the drawing centred and large, as wide as the reading measure
+   allows up to 28rem, then the number line and the facts under it on the measure. */
+.site-case-summary {
   display: grid;
-  gap: 1.5rem 2rem;
-  grid-template-columns: minmax(0, 20rem) minmax(0, 1fr);
-}
-@media (width < 44rem) {
-  .site-case-top {
-    grid-template-columns: minmax(0, 1fr);
-  }
+  gap: 1.2rem;
+  justify-items: center;
+  margin-block: 0 1.5rem;
 }
 .site-case-figure {
-  margin: 0 auto;
-  max-inline-size: min(20rem, 100%);
+  inline-size: min(28rem, 100%);
+  margin: 0;
+}
+/* In the popover the drawing is a little smaller than on the record's page, so the
+   number line under it is in view when the popover opens on a laptop's window. */
+.site-case-pop .site-case-figure {
+  inline-size: min(24rem, 100%);
+}
+.site-case-summary-facts {
+  font-family: var(--kpress-font-sans);
+  font-size: var(--site-font-size-note);
+  font-weight: var(--site-font-weight-sans-light);
+  inline-size: min(40rem, 100%);
+  min-inline-size: 0;
+}
+.site-case-summary .site-atlas-gap-values span[data-anchor="end"] {
+  transform: translateX(calc(-100% - 0.3rem));
+}
+.site-case-summary .site-atlas-gap-values span[data-anchor="start"] {
+  transform: translateX(0.3rem);
 }
 .site-case-figure svg {
   block-size: auto;
@@ -2313,10 +2384,18 @@ body {
 .site-case-polynomial {
   font-size: var(--site-font-size-note);
 }
-.site-case-more {
+.site-case-data {
+  border-block-start: 1px solid var(--kpress-doc-border);
   font-family: var(--kpress-font-sans);
   font-weight: var(--site-font-weight-sans-light);
-  margin-block-start: 1.5rem;
+}
+/* A long formula in a case file's prose scrolls in the prose, not the case popover's
+   panel or the page, so the drawing, the head and the foot never pan sideways on a
+   phone. */
+.site-case-prose {
+  border-block-start: 1px solid var(--kpress-doc-border);
+  margin-block-start: 2rem;
+  overflow-x: auto;
 }
 .kpress .site-case-heading {
   font-family: var(--kpress-font-sans);
@@ -2389,6 +2468,9 @@ body {
   gap: 0.25rem;
   grid-template-columns: repeat(auto-fill, minmax(2.6rem, 1fr));
   margin-block: 1.5rem;
+}
+.site-case-index[hidden] {
+  display: none;
 }
 .kpress .site-case-index a {
   border: 1px solid var(--kpress-doc-border);

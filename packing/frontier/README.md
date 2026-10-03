@@ -214,50 +214,43 @@ This is an audit of those named sources, not every publication.
 
 ## Adding or Reviewing a Result
 
-This is the procedure for a result from any source, this project’s parallel projects
-included.
-What counts as taken in, integrated and answered, and how a result by others is
-credited, is policy in
-[epistemics.md → Results by Others](../../epistemics.md#results-by-others).
+A result from any source, this project’s parallel projects included, enters these
+records through the [result import process](../campaign/result-import.md), and
+[epistemics.md → Results by Others](../../epistemics.md#results-by-others) is its
+policy. To ask for a registration, open an issue with the
+[registration request form](../../.github/ISSUE_TEMPLATE/result-registration.md).
 
-1. Retain the first-party source at a pinned revision, in a dated packet under
-   [`../resources/web/`](../resources/README.md), and add or update its dated coverage
-   entry.
-2. Give the source a bibliography key with `dated`, `credit` and `lineage`, read from
-   its own attribution files.
-3. Put the literal public claim in the reported lane and give it typed evidence.
-   A result by others that the record acts on gets its `T-NNN` register entry now, at
-   its derived rung, with a `kind`, a `headline`, `attribution` and a `next_rung` naming
-   the replay and review it waits on.
-   Its date is `attribution.published`; `established` is this project’s own results’
-   date and the checker refuses it here.
-   Write the `claim` in short paragraphs: the statement, the certificate, how the source
-   checked it, what was replayed here, and the credit with a link to the source.
-   The revision and digests of the retained copy belong to the evidence entry and the
-   packet, not to the claim or the case record’s prose;
-   [`devtools.check_prose_ceremony`](../devtools/check_prose_ceremony.py) holds both to
-   that. Its [status](../../epistemics.md#status) is derived and reads *recorded* from
-   this step on. Once a replay or review of it is under way here, or a question about it
-   is with its authors, say so in the entry’s `activity`, dated and linked to the bead
-   or issue that shows it, and remove it when the work lands or the answer arrives.
-4. If geometry is available, adapt it once to
-   [`Witness/v2`](../witnesses/witness.schema.yaml), then use `packing-witness inspect`
-   or `check` with explicit arithmetic, precision, and tolerance.
-5. Put a value in the verified lane only after an exact proof, exact witness replay, or
-   rigorous interval certificate discharges its assumptions.
-   For a result by others, that is a complete replay here and a review of its
-   mathematics under [`docs/project/reviews/`](../../docs/project/reviews/). Record
-   external evidence and a local replay separately.
-6. Preserve disagreement as a conflict or typed blocker.
-   Do not edit the source claim to match the checker.
-7. Render the reader views and run the schema, source-coverage, results and exact-replay
-   checks. Then bring the README, synopsis and atlas up to date through the
-   [documentation pass](../campaign/documentation-pass.md), with the source’s credit and
-   the result’s `T-NNN`.
-8. Answer an author who asked for the registration.
-   If they opened an issue here, reply on it, at the owner’s request, with the `T-NNN`,
-   the rung, what was replayed and what remains, and leave it open while work they asked
-   for is still queued.
+The process relies on these rules of the records:
+
+- **The reported lane takes the literal public claim**, with a typed evidence entry of
+  `assurance: reported` whose `novelty` is `previously-published`, which is what the
+  register’s coverage gate reads.
+  Disagreement is preserved as a conflict or a typed blocker; the source’s claim is
+  never edited to match a checker.
+- **The register entry is made when the result is imported**, at its derived rung, with
+  a `kind`, a `headline`, `attribution` and a `next_rung` naming the replay and review
+  it waits on. Its date is `attribution.published`; `established` is this project’s own
+  results’ date and the checker refuses it here.
+  Its [status](../../epistemics.md#status) is derived, and reads *recorded* until a read
+  or a replay of it is on file.
+- **The `claim` is short paragraphs:** the statement, the certificate, how the source
+  checked it, what was replayed here, and the credit with a link to the source.
+  The revision and digests of the retained copy belong to the evidence entry and the
+  packet, not to the claim or the case record’s prose;
+  [`devtools.check_prose_ceremony`](../devtools/check_prose_ceremony.py) holds both to
+  that.
+- **`activity` says who has the next move.** Once a replay or review is under way here,
+  or a question is with the authors, the entry says so, dated and linked to the bead or
+  issue that shows it, and the line is removed when the work lands or the answer
+  arrives.
+- **Geometry is adapted once** to [`Witness/v2`](../witnesses/witness.schema.yaml), and
+  then checked with `packing-witness inspect` or `check` under explicit arithmetic,
+  precision, and tolerance.
+- **The verified lane takes a value only after** an exact proof, exact witness replay,
+  or rigorous interval certificate discharges its assumptions.
+  For a result by others, that is a complete replay here and a review of its mathematics
+  under [`docs/project/reviews/`](../../docs/project/reviews/). External evidence and a
+  local replay are recorded as separate entries.
 
 ## Registering a First-Party Result
 

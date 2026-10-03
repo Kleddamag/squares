@@ -17,13 +17,12 @@ parts.
    them (`result_credit`, through `overview_data.Result`), and the claim, its
    mathematics set as the site sets it (`overview_data.tex_bounds`).
 2. **The case**: for a result about one case, or a few (`render_case_pages.BROAD_RESULT`
-   or fewer), the ascent film's panel for each, as the homepage's atlas popover shows
-   it: the gap bar, the bound as one statement, the badges, the citation and what is
-   open, beside the known-best packing drawn from the atlas. The facts are the film's
-   own (`overview_sections.atlas_film_facts`) and the markup and classes are the atlas
-   popover's (`.site-atlas-pop` in `site.css`), filled here at render time rather than
-   by `overview/atlas-grid.js`, with the gap bar's scale taken from that script
-   (`GAP_INSET`, `GAP_SPAN`). Under it, the case record's verified and reported bounds
+   or fewer), each case's visual summary as its record opens with it
+   (`render_case_pages.visual_summary`): the known-best packing drawn from the atlas,
+   then the film's panel, the gap bar, the bound as one statement, the badges, the
+   citation and what is open. The facts are the film's own
+   (`overview_sections.atlas_film_facts`), placed here at render time (`gap_bar`,
+   `GAP_INSET`, `GAP_SPAN`). Under it, the case record's verified and reported bounds
    and the gap. A result about more cases than that, such as Couzo's 49 packings, gets
    a compact list instead, one row per case linking to its record, and says so.
 3. **The chain**: every register result on the same case, oldest first, each with what
@@ -73,14 +72,13 @@ from devtools.overview_data import (
 )
 from devtools.repo_links import path_kind, repo_url
 
-#: The film's gap bar, as `overview/atlas-grid.js` draws it (`INSET` and `at`): the
-#: inset at each end, in percent of the bar, and the span the bar covers, from one below
-#: the grid bound. `tests/test_result_overview.py` holds both to the script's constants.
+#: The film's gap bar, as every case's visual summary draws it (`gap_bar`; the atlas
+#: popover's script drew its own until 2026-10-03): the inset at each end, in percent of
+#: the bar, and the span the bar covers, from one below the grid bound.
 GAP_INSET = 5
 GAP_SPAN = 2
 #: Two values on the bar closer than this, in percent of it, would overlap centred on
-#: their marks; the lower is then set before its mark and the upper after it, which is
-#: where the script's fitting moves them.
+#: their marks; the lower is then set before its mark and the upper after it.
 GAP_CROWDED = 18
 
 #: A result about this many cases or fewer names them; one about more counts them.
@@ -363,12 +361,35 @@ def film_bound(fact: dict[str, Any]) -> str:
     return f'<p class="site-atlas-pop-bound">{"".join(parts)}</p>'
 
 
+def badge_glyph(glyph: str, style: str, text: str, *, named: bool = False) -> str:
+    """One of the film's badges, the site's one mark for a property of a case (optimal,
+    exact, numerical, rigid, a new result, something open): its glyph in a small square,
+    solid or outlined (`.site-atlas-badge`). `named`, where no word follows it, gives it
+    its word as its name and its tooltip."""
+    name = (
+        f'role="img" aria-label="{_esc(text)}" title="{_esc(text)}"'
+        if named
+        else 'aria-hidden="true"'
+    )
+    return (
+        f'<span class="site-atlas-badge" data-style="{_esc(style)}" {name}>{_esc(glyph)}</span>'
+    )
+
+
 def _badge(glyph: str, style: str, text: str, classes: str = "") -> str:
     item = f"site-atlas-pop-item {classes}".strip()
-    return (
-        f'<li class="{item}"><span class="site-atlas-badge" data-style="{_esc(style)}" '
-        f'aria-hidden="true">{_esc(glyph)}</span>{_esc(text)}</li>'
+    return f'<li class="{item}">{badge_glyph(glyph, style, text)}{_esc(text)}</li>'
+
+
+def case_badges(n: int) -> str:
+    """Case `n`'s property badges as the film draws them, each named, in a row of their
+    own and without their words: the same marks the visual summary lists with words,
+    where a case is one line, as in a table's row or a record's head (think-7cbx)."""
+    marks = "".join(
+        badge_glyph(glyph, style, text, named=True)
+        for glyph, style, text in film_facts()[n]["badges"]
     )
+    return f'<span class="site-case-badges">{marks}</span>' if marks else ""
 
 
 def film_facts_html(fact: dict[str, Any]) -> str:
@@ -396,8 +417,7 @@ def film_facts_html(fact: dict[str, Any]) -> str:
         else ""
     )
     open_items = "".join(_badge("?", "query", text) for text in fact["open"])
-    # `data-atlas-open` is what site.css keys the open items' quiet style on. The atlas
-    # popover's script reads that attribute inside its own popover alone.
+    # `data-atlas-open` is what site.css keys the open items' quiet style on.
     opened = (
         '<div data-atlas-open><p class="site-atlas-pop-head">Open</p>'
         f'<ul class="site-atlas-pop-badges">{open_items}</ul></div>'
@@ -470,13 +490,14 @@ def bounds_table(case: dict[str, Any]) -> str:
 
 
 def case_panel(n: int, overview: Overview, *, label: bool) -> str:
-    """One case as the atlas popover shows it, with the record's bounds under the panel."""
+    """One case as its record opens, the visual summary (`render_case_pages.
+    visual_summary`, the drawing at the atlas's size), with the record's bounds under it
+    and its own link to the record among the overview's links."""
     from devtools.overview_sections import ATLAS_UNITS  # noqa: PLC0415
-    from devtools.render_frontier_page import packing_svg  # noqa: PLC0415
+    from devtools.render_case_pages import visual_summary  # noqa: PLC0415
 
-    fact = film_facts()[n]
     case = overview.cases[n]
-    # The case's n heads its panel as the atlas popover's title does: a caps label would
+    # The case's n heads its panel as a case record's title does: a caps label would
     # set the n of its formula in capitals too.
     head = (
         '<p class="site-popover-value site-result-case-n" data-math-face="serif">'
@@ -486,14 +507,8 @@ def case_panel(n: int, overview: Overview, *, label: bool) -> str:
     )
     return (
         f'<div class="site-atlas-pop site-result-film" data-overview-case="{n}">{head}'
-        '<div class="site-atlas-pop-body">'
-        f'<figure class="site-atlas-pop-figure">{packing_svg(n, units=ATLAS_UNITS)}'
-        f"<figcaption>The best packing known for {n} squares</figcaption></figure>"
-        f'<div class="site-atlas-pop-facts">{gap_bar(fact)}'
-        f'<p class="site-atlas-pop-head">Proven</p>{film_bound(fact)}'
-        f"{film_facts_html(fact)}"
-        f'<p class="site-atlas-pop-head">The case record</p>{bounds_table(case)}'
-        "</div></div></div>"
+        f"{visual_summary(n, units=ATLAS_UNITS)}"
+        f'<p class="site-atlas-pop-head">The case record</p>{bounds_table(case)}</div>'
     )
 
 
@@ -502,6 +517,7 @@ def case_list(cases: Sequence[int], overview: Overview) -> str:
     the case's status, and its record on this site, its row in the frontier atlas and
     its case file on GitHub."""
     from devtools import render_frontier_page as frontier  # noqa: PLC0415
+    from devtools.overview_sections import case_status_chip  # noqa: PLC0415
     from devtools.render_case_pages import case_url  # noqa: PLC0415
 
     facts = film_facts()
@@ -513,7 +529,6 @@ def case_list(cases: Sequence[int], overview: Overview) -> str:
         _, gap_value = frontier.gap(case)
         gap = frontier.decimal_text(Decimal(gap_value).normalize()) if gap_value != "0" else "0"
         status = case["status"]
-        tone = ' data-tone="accent"' if status == "proved" else ""
         star = (
             '<span class="site-star" title="Recent lower bound">\u2605</span>'
             if fact["star"]
@@ -528,7 +543,7 @@ def case_list(cases: Sequence[int], overview: Overview) -> str:
                         f'<span class="is-upper">{_esc(fact["upper"])}</span>', classes="num"
                     ),
                     _cell(_esc(gap), classes="num"),
-                    _cell(f'<span class="site-chip"{tone}>{_esc(status)}</span>'),
+                    _cell(case_status_chip(status) + case_badges(n)),
                     _cell(
                         f'<a href="frontier.html#n-{n}">frontier</a> '
                         f'<a href="{_esc(repo_url(case_file(n)))}">'
@@ -799,13 +814,13 @@ def links_section(result: Result, overview: Overview, cases: Sequence[int]) -> s
         OPTIMALITY_PAPER,
         result_url,
     )
-    from devtools.render_case_pages import case_url  # noqa: PLC0415
+    from devtools.render_case_pages import CASES_HOME, case_url  # noqa: PLC0415
 
     record = result.record
     site: list[str] = []
     if is_broad(cases):
         site.append(_link("frontier.html", "The frontier survey"))
-        site.append(_link("cases.html", "Every case record"))
+        site.append(_link(CASES_HOME, "Every case record"))
     else:
         for n in cases:
             site.append(_link(case_url(n), f"Case record, {math_html(f'n = {n}')}"))
@@ -912,6 +927,7 @@ def check_links(result_id: str, body: str, overview: Overview) -> None:
     """Refuse a body with a link to nothing: a repository path the working tree lacks, a
     commit-pinned repository link, a page the site does not serve, or a fragment no row
     or record carries."""
+    from devtools.render_case_pages import CASES_HOME, case_url  # noqa: PLC0415
     from devtools.render_overview import SITE_PAGES  # noqa: PLC0415
 
     pinned = repo_links.hash_pinned_links(body)
@@ -923,12 +939,12 @@ def check_links(result_id: str, body: str, overview: Overview) -> None:
             missing.append(f"{kind}/{path}")
     ids = {other.id.lower() for other in overview.results}
     fragments = {
-        "cases.html": {f"n-{n}" for n in overview.cases},
         "frontier.html": {f"n-{n}" for n in overview.cases},
         "all-results.html": ids,
     }
+    served = {*SITE_PAGES, CASES_HOME, *(case_url(n) for n in overview.cases)}
     for page, fragment in SITE_LINK.findall(body):
-        if page not in SITE_PAGES:
+        if page not in served:
             missing.append(page)
         elif fragment and fragment not in fragments.get(page, set()):
             missing.append(f"{page}#{fragment}")

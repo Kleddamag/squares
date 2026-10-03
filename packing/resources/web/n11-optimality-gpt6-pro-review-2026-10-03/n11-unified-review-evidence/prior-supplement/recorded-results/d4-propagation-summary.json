@@ -1,0 +1,20 @@
+{
+  "999": {
+    "initial_contradictions": 168,
+    "propagated_contradictions": 47,
+    "survivors": 1,
+    "maximum_operations": 19
+  },
+  "1462": {
+    "initial_contradictions": 198,
+    "propagated_contradictions": 17,
+    "survivors": 1,
+    "maximum_operations": 15
+  },
+  "1659": {
+    "initial_contradictions": 196,
+    "propagated_contradictions": 20,
+    "survivors": 0,
+    "maximum_operations": 7
+  }
+}

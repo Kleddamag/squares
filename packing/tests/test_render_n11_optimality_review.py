@@ -401,6 +401,9 @@ def test_actual_article_renders_all_retained_figures_and_pinned_sources() -> Non
         "D4_BAN_REGIONS",
         "D4_REGIONS",
         "D4_BANS",
+        "LOCAL_RADII_TABLE",
+        "ROLE_MAP_TABLE",
+        "COVER_SITES_TABLE",
     }
     said = " ".join(" ".join(caption.split()) for caption in written)
     for phrase in (
@@ -489,7 +492,10 @@ def test_the_front_is_the_shared_components_in_the_owners_form(
             "<strong>Joshua Levy</strong></a></span>"
         ),
         "<span>Agents: <strong>GPT-6 Astra</strong> and <strong>GPT-6 Sol</strong></span>",
-        f'<span class="edition">{release.OPTIMALITY_REVIEW_EDITION}</span>',
+        (
+            f'<span class="edition">{release.OPTIMALITY_REVIEW_EDITION} '
+            '(<a href="#version-history">version history</a>)</span>'
+        ),
         (
             '<span class="publication-date">'
             f"Original proof {release.OPTIMALITY_PROOF_PUBLISHED} · "
@@ -511,7 +517,7 @@ def test_the_front_is_the_shared_components_in_the_owners_form(
         f"- [{address}](https://{address})\n"
         "- Human oversight: [**Joshua Levy**](https://x.com/ojoshe)\n"
         "- Agents: **GPT-6 Astra** and **GPT-6 Sol**\n"
-        f"- {release.OPTIMALITY_REVIEW_EDITION}\n"
+        f"- {release.OPTIMALITY_REVIEW_EDITION} ([version history](#version-history))\n"
         f"- Original proof {release.OPTIMALITY_PROOF_PUBLISHED} · "
         f"Last revised {release.OPTIMALITY_REVIEW_REVISED}\n\n"
     )
@@ -541,7 +547,9 @@ def test_a_table_keeps_to_the_column_and_scrolls_inside_its_wrap() -> None:
     assert html.index(shared) < html.index(css)
     article = html.split('<article class="kpress kpress-doc kpress-prose cert-page n11-paper">')
     assert len(article) == 2
-    assert len(re.findall(r'<div class="kpress-table-wrap"><table\b', article[1])) == 2
+    # The branch table, the frame legend, the role map, the two tables of Appendix C
+    # and the version history: each is wrapped, and the wrap is what the rule caps.
+    assert len(re.findall(r'<div class="kpress-table-wrap"><table\b', article[1])) == 6
 
 
 @pytest.mark.skipif(
@@ -623,6 +631,11 @@ def test_radical_svg_has_print_geometry(tmp_path: Path) -> None:
             browser.close()
 
 
+#: The diagrams that keep their width on a phone and scroll inside their figure: their
+#: lettering, shrunk to the column, would not read (think-wzc1).
+SCROLLED_ON_A_PHONE = {"n11-diagram n11-capture", "n11-diagram n11-mechanism-charge"}
+
+
 @pytest.mark.skipif(
     os.environ.get("SQPACK_N11_OPTIMALITY_REVIEW_BROWSER") != "1",
     reason="the dedicated T-060 Pages job sets SQPACK_N11_OPTIMALITY_REVIEW_BROWSER=1",
@@ -666,8 +679,20 @@ def test_diagram_labels_keep_publication_sizes_through_viewbox_scale(tmp_path: P
                             media,
                             role,
                         )
+                # On a phone a diagram takes the column where it reasonably can, its
+                # labels shrunk with it, and the two whose lettering would not read so
+                # keep their width and scroll (the owner, 2026-10-03, think-wzc1).
+                scrolled = {
+                    role["name"] for role in roles if role["scrollWidth"] > role["clientWidth"]
+                }
                 if width == 390:
-                    assert any(role["scrollWidth"] > role["clientWidth"] for role in roles)
+                    assert scrolled == SCROLLED_ON_A_PHONE, (width, media, scrolled)
+                    for role in roles:
+                        fitted = role["name"] not in SCROLLED_ON_A_PHONE
+                        assert (role["shrink"] < 1) == fitted, (width, media, role)
+                else:
+                    assert not scrolled, (width, media, scrolled)
+                    assert all(role["shrink"] == 1 for role in roles)
                 page.close()
         finally:
             browser.close()

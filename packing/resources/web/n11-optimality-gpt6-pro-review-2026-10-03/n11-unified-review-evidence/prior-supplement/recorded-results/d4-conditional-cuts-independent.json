@@ -1,0 +1,394 @@
+{
+  "reports": [
+    {
+      "case": 2175,
+      "constraints": 72,
+      "offending_regions": 38,
+      "search_nodes": 131,
+      "queries": [
+        {
+          "forced_region": 38,
+          "nodes": 1,
+          "result": "UNSAT"
+        },
+        {
+          "forced_region": 39,
+          "nodes": 1,
+          "result": "UNSAT"
+        },
+        {
+          "forced_region": 41,
+          "nodes": 1,
+          "result": "UNSAT"
+        },
+        {
+          "forced_region": 48,
+          "nodes": 1,
+          "result": "UNSAT"
+        },
+        {
+          "forced_region": 52,
+          "nodes": 8,
+          "result": "UNSAT"
+        },
+        {
+          "forced_region": 53,
+          "nodes": 1,
+          "result": "UNSAT"
+        },
+        {
+          "forced_region": 86,
+          "nodes": 1,
+          "result": "UNSAT"
+        },
+        {
+          "forced_region": 88,
+          "nodes": 1,
+          "result": "UNSAT"
+        },
+        {
+          "forced_region": 92,
+          "nodes": 1,
+          "result": "UNSAT"
+        },
+        {
+          "forced_region": 93,
+          "nodes": 1,
+          "result": "UNSAT"
+        },
+        {
+          "forced_region": 94,
+          "nodes": 1,
+          "result": "UNSAT"
+        },
+        {
+          "forced_region": 98,
+          "nodes": 1,
+          "result": "UNSAT"
+        },
+        {
+          "forced_region": 99,
+          "nodes": 1,
+          "result": "UNSAT"
+        },
+        {
+          "forced_region": 104,
+          "nodes": 1,
+          "result": "UNSAT"
+        },
+        {
+          "forced_region": 106,
+          "nodes": 1,
+          "result": "UNSAT"
+        },
+        {
+          "forced_region": 107,
+          "nodes": 1,
+          "result": "UNSAT"
+        },
+        {
+          "forced_region": 109,
+          "nodes": 1,
+          "result": "UNSAT"
+        },
+        {
+          "forced_region": 110,
+          "nodes": 1,
+          "result": "UNSAT"
+        },
+        {
+          "forced_region": 112,
+          "nodes": 1,
+          "result": "UNSAT"
+        },
+        {
+          "forced_region": 113,
+          "nodes": 1,
+          "result": "UNSAT"
+        },
+        {
+          "forced_region": 115,
+          "nodes": 1,
+          "result": "UNSAT"
+        },
+        {
+          "forced_region": 120,
+          "nodes": 1,
+          "result": "UNSAT"
+        },
+        {
+          "forced_region": 121,
+          "nodes": 1,
+          "result": "UNSAT"
+        },
+        {
+          "forced_region": 125,
+          "nodes": 1,
+          "result": "UNSAT"
+        },
+        {
+          "forced_region": 126,
+          "nodes": 1,
+          "result": "UNSAT"
+        },
+        {
+          "forced_region": 127,
+          "nodes": 1,
+          "result": "UNSAT"
+        },
+        {
+          "forced_region": 133,
+          "nodes": 1,
+          "result": "UNSAT"
+        },
+        {
+          "forced_region": 152,
+          "nodes": 1,
+          "result": "UNSAT"
+        },
+        {
+          "forced_region": 153,
+          "nodes": 1,
+          "result": "UNSAT"
+        },
+        {
+          "forced_region": 154,
+          "nodes": 87,
+          "result": "UNSAT"
+        },
+        {
+          "forced_region": 155,
+          "nodes": 1,
+          "result": "UNSAT"
+        },
+        {
+          "forced_region": 158,
+          "nodes": 1,
+          "result": "UNSAT"
+        },
+        {
+          "forced_region": 180,
+          "nodes": 1,
+          "result": "UNSAT"
+        },
+        {
+          "forced_region": 181,
+          "nodes": 1,
+          "result": "UNSAT"
+        },
+        {
+          "forced_region": 183,
+          "nodes": 1,
+          "result": "UNSAT"
+        },
+        {
+          "forced_region": 190,
+          "nodes": 1,
+          "result": "UNSAT"
+        },
+        {
+          "forced_region": 191,
+          "nodes": 1,
+          "result": "UNSAT"
+        },
+        {
+          "forced_region": 193,
+          "nodes": 1,
+          "result": "UNSAT"
+        }
+      ],
+      "scope": "Conditional on the 1931 baseline exclusions, this independently verifies the necessary-halfplane mathematics only."
+    },
+    {
+      "case": 2176,
+      "constraints": 73,
+      "offending_regions": 36,
+      "search_nodes": 115,
+      "queries": [
+        {
+          "forced_region": 38,
+          "nodes": 1,
+          "result": "UNSAT"
+        },
+        {
+          "forced_region": 39,
+          "nodes": 1,
+          "result": "UNSAT"
+        },
+        {
+          "forced_region": 59,
+          "nodes": 1,
+          "result": "UNSAT"
+        },
+        {
+          "forced_region": 86,
+          "nodes": 1,
+          "result": "UNSAT"
+        },
+        {
+          "forced_region": 88,
+          "nodes": 1,
+          "result": "UNSAT"
+        },
+        {
+          "forced_region": 92,
+          "nodes": 1,
+          "result": "UNSAT"
+        },
+        {
+          "forced_region": 93,
+          "nodes": 1,
+          "result": "UNSAT"
+        },
+        {
+          "forced_region": 94,
+          "nodes": 1,
+          "result": "UNSAT"
+        },
+        {
+          "forced_region": 98,
+          "nodes": 1,
+          "result": "UNSAT"
+        },
+        {
+          "forced_region": 99,
+          "nodes": 1,
+          "result": "UNSAT"
+        },
+        {
+          "forced_region": 104,
+          "nodes": 1,
+          "result": "UNSAT"
+        },
+        {
+          "forced_region": 106,
+          "nodes": 1,
+          "result": "UNSAT"
+        },
+        {
+          "forced_region": 107,
+          "nodes": 1,
+          "result": "UNSAT"
+        },
+        {
+          "forced_region": 109,
+          "nodes": 1,
+          "result": "UNSAT"
+        },
+        {
+          "forced_region": 110,
+          "nodes": 1,
+          "result": "UNSAT"
+        },
+        {
+          "forced_region": 112,
+          "nodes": 1,
+          "result": "UNSAT"
+        },
+        {
+          "forced_region": 113,
+          "nodes": 1,
+          "result": "UNSAT"
+        },
+        {
+          "forced_region": 120,
+          "nodes": 1,
+          "result": "UNSAT"
+        },
+        {
+          "forced_region": 121,
+          "nodes": 1,
+          "result": "UNSAT"
+        },
+        {
+          "forced_region": 125,
+          "nodes": 1,
+          "result": "UNSAT"
+        },
+        {
+          "forced_region": 126,
+          "nodes": 1,
+          "result": "UNSAT"
+        },
+        {
+          "forced_region": 131,
+          "nodes": 1,
+          "result": "UNSAT"
+        },
+        {
+          "forced_region": 133,
+          "nodes": 1,
+          "result": "UNSAT"
+        },
+        {
+          "forced_region": 152,
+          "nodes": 1,
+          "result": "UNSAT"
+        },
+        {
+          "forced_region": 153,
+          "nodes": 1,
+          "result": "UNSAT"
+        },
+        {
+          "forced_region": 158,
+          "nodes": 1,
+          "result": "UNSAT"
+        },
+        {
+          "forced_region": 166,
+          "nodes": 1,
+          "result": "UNSAT"
+        },
+        {
+          "forced_region": 167,
+          "nodes": 80,
+          "result": "UNSAT"
+        },
+        {
+          "forced_region": 171,
+          "nodes": 1,
+          "result": "UNSAT"
+        },
+        {
+          "forced_region": 178,
+          "nodes": 1,
+          "result": "UNSAT"
+        },
+        {
+          "forced_region": 180,
+          "nodes": 1,
+          "result": "UNSAT"
+        },
+        {
+          "forced_region": 181,
+          "nodes": 1,
+          "result": "UNSAT"
+        },
+        {
+          "forced_region": 183,
+          "nodes": 1,
+          "result": "UNSAT"
+        },
+        {
+          "forced_region": 190,
+          "nodes": 1,
+          "result": "UNSAT"
+        },
+        {
+          "forced_region": 191,
+          "nodes": 1,
+          "result": "UNSAT"
+        },
+        {
+          "forced_region": 193,
+          "nodes": 1,
+          "result": "UNSAT"
+        }
+      ],
+      "scope": "Conditional on the 1931 baseline exclusions, this independently verifies the necessary-halfplane mathematics only."
+    }
+  ],
+  "seconds": 0.3276840970002013,
+  "all_1572_distance_bans_independently_checked": true
+}

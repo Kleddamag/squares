@@ -151,15 +151,15 @@ def test_readmes_introduction_block_is_held_by_the_readme_check() -> None:
         "README.md: the project-intro markers must each appear exactly once"
     ]
     headed = text.replace(
-        "The question is elementary to understand",
-        "## The question\n\nThe question is elementary to understand",
+        "The question of the value of $s(n)$ is simple",
+        "## The question\n\nThe question of the value of $s(n)$ is simple",
     )
     assert check_intro(headed) == [
         "README.md: the project-intro block holds a heading or a comment"
     ]
     central = text.replace(
-        "is an open problem for most $n$.",
-        "is an open problem for most $n$, eleven its central case.",
+        "is simple, but",
+        "is simple, eleven its central case, but",
     )
     assert check_intro(central) == [
         "README.md: the project-intro block calls a case the central one"

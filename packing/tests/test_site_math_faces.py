@@ -20,6 +20,7 @@ from __future__ import annotations
 import html
 import os
 import re
+import socket
 from collections.abc import Iterator, Sequence
 from pathlib import Path
 from typing import Any
@@ -27,19 +28,16 @@ from typing import Any
 import pytest
 
 from devtools import render_case_pages, render_overview
-from devtools import render_frontier_page as frontier
 from devtools.measure_site_pages import MATH_FACES
-from devtools.preview_site import MATH_FACE, press, settle_math
+from devtools.preview_site import MATH_FACE, press, serve, settle_math
 from devtools.render_n11_lower_bounds_explainer_pdf import BROWSER_OVERRIDE
 from tests import site_renders
 
 SANS_TEXT = "Source Sans 3 Variable"
 SERIF_MATH, SANS_MATH = "KPress Math Text", "KPress Math Text Sans"
-#: The cases whose records stand in for the case records page, which is 9 MB whole: the
-#: settled case, with a closed form in every panel, and an open one.
+#: The cases whose records are walked: the settled case, with a closed form in every
+#: panel, and an open one.
 CASES = (11, 29)
-ATLAS_CELL = '[data-atlas-n="11"]'
-CASE_LINK = 'a[data-case="11"]'
 #: A result row's popover headline on the results page, as `row_detail` writes one that
 #: is not mathematics alone (so unmarked): the popover's id and the headline's HTML.
 #: These are the popovers whose headlines have words and a formula; the page and paper
@@ -74,14 +72,19 @@ def root(tmp_path_factory: pytest.TempPathFactory) -> Path:
     return tmp_path_factory.mktemp("site")
 
 
-def walk(browser: Any, address: str, *, presses: Sequence[str], whole: bool) -> Walk:
+def walk(
+    browser: Any, address: str, *, presses: Sequence[str], whole: bool, ready: str = ""
+) -> Walk:
     """Open `address`, press each of `presses`, and walk its formulas. `whole` first
     scrolls the page through to its foot, which places what it lays out lazily and
     typesets all its math; without it the walk reads what the page has typeset by the
-    time the last press's own math is done."""
+    time the last press's own math is done. `ready` names what a page fetches, which the
+    walk waits for first."""
     page = browser.new_page(viewport={"width": 1280, "height": 900})
     try:
         page.goto(address, wait_until="load")
+        if ready:
+            page.locator(ready).wait_for()
         if whole:
             assert settle_math(page) == 0, "math left untypeset"
         for selector in presses:
@@ -103,7 +106,7 @@ def overview_html() -> str:
 def overview(browser: Any, root: Path, overview_html: str) -> Walk:
     path = root / "index.html"
     path.write_text(overview_html, encoding="utf-8")
-    return walk(browser, path.as_uri(), presses=(ATLAS_CELL,), whole=True)
+    return walk(browser, path.as_uri(), presses=(), whole=True)
 
 
 @pytest.fixture(scope="module")
@@ -117,43 +120,66 @@ def results(browser: Any, root: Path) -> Walk:
 def frontier_atlas(browser: Any, root: Path) -> Walk:
     path = root / "frontier.html"
     path.write_text(site_renders.html("frontier.html"), encoding="utf-8")
-    return walk(browser, path.as_uri(), presses=(CASE_LINK,), whole=False)
-
-
-def case_records_page() -> str:
-    """The records of `CASES` as the case records page sets them, without the other 322."""
-    cases = {case["n"]: case for case in frontier.frontier_cases()}
-    recent = frontier.recent_lower_bounds()
-    records = "\n\n".join(
-        render_case_pages.record_markdown(
-            cases[n], recent=recent.get(n, False), first=min(cases), last=max(cases)
-        )
-        for n in CASES
-    )
-    return render_overview.kpress_page(
-        f'<div class="site-case-records" data-case-records>\n\n{records}\n\n</div>',
-        name=render_case_pages.CASES_PAGE,
-        current="frontier",
-        title="Case Records",
-        description="Case records",
-        toc=False,
-        page_scripts=(render_case_pages.CASE_VIEW_SCRIPT,),
-    ).html
+    return walk(browser, path.as_uri(), presses=(), whole=False)
 
 
 @pytest.fixture(scope="module")
-def case_records(browser: Any, root: Path) -> dict[int, Walk]:
-    path = root / "case-records.html"
-    path.write_text(case_records_page(), encoding="utf-8")
-    return {n: walk(browser, f"{path.as_uri()}#n-{n}", presses=(), whole=True) for n in CASES}
+def served(root: Path) -> Iterator[str]:
+    """The frontier page, the record page and the records of `CASES`, served, since a
+    record is fetched; the address, with its closing slash."""
+    files = [
+        site_renders.page("frontier.html"),
+        site_renders.page(render_case_pages.CASES_PAGE),
+        *(
+            render_overview.Page(
+                render_case_pages.case_url(n),
+                site_renders.case_records()[render_case_pages.case_url(n)],
+            )
+            for n in CASES
+        ),
+    ]
+    directory = root / "served"
+    render_overview.write_site(directory, files)
+    with socket.socket() as probe:
+        probe.bind(("127.0.0.1", 0))
+        port = int(probe.getsockname()[1])
+    server = serve(directory, port)
+    try:
+        yield f"http://127.0.0.1:{port}/"
+    finally:
+        server.shutdown()
+        server.server_close()
+
+
+@pytest.fixture(scope="module")
+def case_records(browser: Any, served: str) -> dict[int, Walk]:
+    """Each of `CASES` as a reader opens its record file, shown in the record page."""
+    return {
+        n: walk(
+            browser,
+            f"{served}{render_case_pages.case_url(n)}",
+            presses=(),
+            whole=True,
+            ready=f'[data-case-reader] article.site-case[data-case="{n}"]',
+        )
+        for n in CASES
+    }
+
+
+@pytest.fixture(scope="module")
+def frontier_popover(browser: Any, served: str) -> Walk:
+    """The frontier page with case 11's row pressed: its record in the case popover."""
+    return walk(
+        browser, f"{served}frontier.html", presses=("#n-11 td.site-thumb svg",), whole=False
+    )
 
 
 def test_the_overviews_sans_surfaces_set_sans_math_and_its_math_headline_serif(
     overview: Walk,
 ) -> None:
     """The overview's cards, notes, popovers and tables are sans text with sans math; a
-    popover headline that is mathematics alone is serif, the atlas popover's `n = 11` and
-    each result row's whose summary is one bound; and nothing is set wrongly."""
+    popover headline that is mathematics alone is serif, each result row's whose summary
+    is one bound; and nothing is set wrongly."""
     wrong, rows = overview
     assert wrong == []
     for surface in ("card headline", "card note", "popover headline", "table cell"):
@@ -175,27 +201,36 @@ def test_the_results_table_sets_sans_math(results: Walk) -> None:
     assert all(row["count"] == row["alone"] for row in serif.values())
 
 
-def test_the_case_popovers_headline_is_serif_math(frontier_atlas: Walk) -> None:
-    """The frontier atlas's table is sans math, as is its subtitle's range of cases, and
-    its case popover's headline, set by script as `n = 11`, is typeset and serif."""
+def test_the_frontier_table_sets_sans_math(frontier_atlas: Walk) -> None:
+    """The frontier atlas's table is sans math. The page has no subtitle: its range of
+    cases, set as sans math under the title, went on 2026-10-02 (the owner,
+    `think-wz9d`). Its case popover, which fetches a record, is walked where the
+    records are served (`frontier_popover`)."""
     wrong, rows = frontier_atlas
     assert wrong == []
     assert rows[("table cell", SANS_TEXT, SANS_MATH)]["count"] > 0
-    numbers = [case["n"] for case in frontier.frontier_cases()]
-    subtitle = rows[("subtitle", SANS_TEXT, SANS_MATH)]
-    assert subtitle["count"] == 1
-    assert subtitle["example"] == rf"n = {min(numbers)}, \ldots, {max(numbers)}"
-    assert [key for key in rows if key[0] == "subtitle"] == [("subtitle", SANS_TEXT, SANS_MATH)]
-    headline = rows[("popover headline", SANS_TEXT, SERIF_MATH)]
-    assert headline["count"] == headline["alone"] == 1
-    assert headline["example"] == "n = 11"
+    assert not [key for key in rows if key[0] == "subtitle"]
+
+
+def test_the_case_popover_sets_its_records_math_sans(frontier_popover: Walk) -> None:
+    """A case's record in the frontier's case popover is set as on its own page: its
+    head, panels and visual summary are sans text with sans math, the case file's prose
+    serif with serif math, and nothing is set wrongly. In the popover the probe counts
+    the record's head and panels under the popover's surface."""
+    wrong, rows = frontier_popover
+    assert wrong == []
+    assert rows[("popover", SANS_TEXT, SANS_MATH)]["count"] > 0
+    assert rows[("visual summary", SANS_TEXT, SANS_MATH)]["count"] > 0
+    for surface, text, face in rows:
+        if surface in {"popover", "visual summary"}:
+            assert (text == SANS_TEXT) == (face == SANS_MATH), (surface, text, face)
 
 
 @pytest.mark.parametrize("n", CASES)
 def test_a_case_records_panels_set_sans_math(case_records: dict[int, Walk], n: int) -> None:
     wrong, rows = case_records[n]
     assert wrong == []
-    for surface in ("case head", "case bounds"):
+    for surface in ("case head", "case bounds", "visual summary"):
         assert rows[(surface, SANS_TEXT, SANS_MATH)]["count"] > 0, surface
     assert not [key for key in rows if key[0].startswith("case") and key[2] != SANS_MATH]
 

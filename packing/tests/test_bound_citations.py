@@ -889,8 +889,9 @@ def test_the_project_lower_bounds_are_exactly_those_first_proved_here() -> None:
     # The guard against a vacuous pass was `assert proved` until 2026-10-02, when the
     # merged rectangle replays raised n = 18, 19 and 20 above T-030, T-020 and T-021, the
     # last lower bounds first proved here. The synthetic test above holds a project line's
-    # shape; when a project lower bound stands again, this pin fails and the guard returns.
-    assert proved == set()
+    # shape. A project lower bound stands again since 3 October 2026: n = 12, T-079's
+    # re-weighting of Daniel's points.
+    assert proved == {12}
 
 
 def test_the_star_marks_recent_results_whoever_proved_them() -> None:
@@ -906,8 +907,10 @@ def test_the_star_marks_recent_results_whoever_proved_them() -> None:
     assert lines[11]["recent"]
     assert lines[11]["text"] == "Queuingtheorydotcom after Levy et al. 2026, Web"
     assert lines[12]["recent"]
-    # squarepacker's rescaling of Daniel's certificate since 3 October 2026 (T-078).
-    assert lines[12]["text"] == "squarepacker after Daniel 2026, GitHub"
+    # This project's re-weighting of Daniel's points since 3 October 2026 (T-079), after
+    # squarepacker's rescaling (T-078) earlier that day; a project bound is named as the
+    # project's.
+    assert lines[12]["text"] == "Squares Project (Levy) 2026, result T-079"
     assert lines[18]["recent"]
     assert lines[18]["text"] == "wand125 after Tokoharu, Levy et al. 2026, GitHub"
     assert all(line["recent"] for line in lines.values() if line and line["basis"] == "project")

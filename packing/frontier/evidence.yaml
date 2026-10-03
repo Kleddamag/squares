@@ -197,7 +197,7 @@ evidence:
     assurance: verified
     method: interval-certified
     performed_by: repository
-    relationship_to_generator: independent-implementation
+    relationship_to_generator: same-implementation
     origin: replayed-here
     novelty: previously-published
     source_key: '[wand125 point n61 2026-09-30]'
@@ -250,10 +250,10 @@ evidence:
       boxes, 392,572 certified and 10,649 empty leaves, maximum depth 30, none uncertified
       or capped, 256 s wall on four cores (receipts/n61_zmx2_d4_pairpoints.log); the box
       total and depth equal the source's own run and Daniel's census. The cover is
-      wand125's and the checker is Evan Daniel's, unmodified and external to wand125, as
-      the source's own verify.sh uses it, so the decision is an implementation independent
-      of the cover's producer; it is the same checker as T-062's and T-066's replays, so it
-      adds no method. Only the D4 sweep was run; the --full sweep was not. Two mutated
+      wand125's and the checker is Evan Daniel's, unmodified; the source's own verify.sh
+      pins zmx2 6b7f0f79, so this replay re-runs the checker the source chose, a
+      same-implementation replay, as E-n045-wand125-point-cover-source-replay is. It is
+      also the checker of T-062's and T-066's replays, so it adds no method. Only the D4 sweep was run; the --full sweep was not. Two mutated
       covers, each with one D4 orbit removed, are refused (460 and 452 uncertified boxes in
       one root region each). The value already follows from s(60) = 8 (T-062); this is a
       second route, by points only and a cover built by someone else.
@@ -6241,6 +6241,210 @@ evidence:
       certificates are refuted at the rows where the sweeps refuse them, with admissible
       witnesses of charge below one (receipts/controls/native-*.json). The exact value
       remains open.
+    source_reviewed: '2026-10-02'
+
+  - id: E-n012-levy-15680000-3949423-generator
+    claim: lower-bound
+    scope: {n_values: [12]}
+    assurance: verified
+    method: exact-algebraic
+    performed_by: repository
+    relationship_to_generator: generator
+    origin: audited-here
+    novelty: apparently-novel
+    novelty_basis:
+      corpus: >-
+        T-049 (Evan Daniel's s(12) >= 15680/3951 and its retained evand packet), T-078
+        (squarepacker's rescaling to 31360/7901, jlevy/squares#309, and its packet), and the
+        archived literature behind the n = 12 case record.
+      searched: '2026-10-02, for the 2 October review of this certificate'
+      novel_object: >-
+        New weights for Daniel's 1,736 points, scaled by 3951000/3949423, found by linear
+        programming over their D4 orbits; the points, the verifier and the method are
+        Daniel's, Burns's and Massaccesi's.
+      gaps: >-
+        No wider literature search was run; a later re-weighting of the same points by
+        someone else would not have been seen.
+    source_key: '[evand square-packing 2026]'
+    certificate: cases/n12_beyond_rescaling/certificate.txt.gz
+    replay: >-
+      From packing/: .venv/bin/python3 -m devtools.s12_angle_net_rescale build --work W,
+      which copies the retained s12/verify crate of the 2026-09-26 evand packet and builds
+      it with cargo build --release --locked, once as shipped and once with overflow checks
+      on; then .venv/bin/python3 -m devtools.s12_angle_net_rescale verify --work W
+      --certificate CERT --net 96000 --threads 4 --overflow-checked --output OUT, on the
+      decompressed certificate, which must report VERIFIED over all 39,765 bins
+      (cases/n12_beyond_rescaling/receipts/route-b-source-verifier.json).
+    replay_status: passed
+    limitations: >-
+      The producing run, lane BB's, 2 October 2026: Evan Daniel's 1,736 points of
+      s12_lower_3.9686.txt with every coordinate times 1000 over 3949423, a scale of
+      3951000/3949423, and weights re-solved by devtools.s12_reweight, an LP over the 223 D4
+      orbits whose rows are the source verifier's near-tight cells, rounded up to numerators
+      over 10^7; total 14970347/1250000 = 11.9762776 < 12, 120 weights zero. Daniel's
+      verifier, built unmodified with overflow checks on, decided it over all 39,765 bins
+      of the net N = 96000: VERIFIED, least captured weight 10000045/10^7 at bin 0, 802 s
+      on four threads. An earlier complete sweep had refused it at six bins, which three
+      further LP rounds fixed (receipts/route-b-first-pass-refused.json). Because the LP
+      was fitted against the cells this verifier reports, the verifier is not independent of
+      the generator; the method-distinct check is
+      E-n012-levy-15680000-3949423-native-parent-core. This is the producing lane's own
+      run, so the confirming entries are the review lane's.
+    source_reviewed: '2026-10-02'
+  - id: E-n012-levy-15680000-3949423-source-replay
+    claim: lower-bound
+    scope: {n_values: [12]}
+    assurance: verified
+    method: exact-algebraic
+    performed_by: repository
+    relationship_to_generator: same-implementation
+    origin: replayed-here
+    novelty: apparently-novel
+    novelty_basis:
+      corpus: >-
+        T-049 (Evan Daniel's s(12) >= 15680/3951 and its retained evand packet), T-078
+        (squarepacker's rescaling to 31360/7901, jlevy/squares#309, and its packet), and the
+        archived literature behind the n = 12 case record.
+      searched: '2026-10-02, for the 2 October review of this certificate'
+      novel_object: >-
+        New weights for Daniel's 1,736 points, scaled by 3951000/3949423, found by linear
+        programming over their D4 orbits; the points, the verifier and the method are
+        Daniel's, Burns's and Massaccesi's.
+      gaps: >-
+        No wider literature search was run; a later re-weighting of the same points by
+        someone else would not have been seen.
+    source_key: '[evand square-packing 2026]'
+    certificate: cases/n12_beyond_rescaling/certificate.txt.gz
+    replay: >-
+      From a scratch copy of the retained s12/verify crate (the 2026-09-26 evand packet,
+      main.rs 226ef3f1...): cargo build --release --locked with
+      CARGO_PROFILE_RELEASE_OVERFLOW_CHECKS=true, then, under devtools.replay_receipt,
+      ./verify/target/release/verify cert.txt 12 96000 2 on the decompressed certificate
+      (SHA-256 6823e8e8...), which must print VERIFIED; the verdict line decides, since the
+      verifier exits 0 on NOT VERIFIED
+      (cases/n12_beyond_rescaling/receipts/review-source-verifier-N96000.log).
+    replay_status: passed
+    proof:
+      source: docs/project/reviews/review-2026-10-02-s12-reweighted-certificate.md
+      theorem: Twelve unit squares do not fit in a square of side below 15680000/3949423.
+      scope: Unrestricted square packing with independent rotations, disjoint interiors and boundary contact allowed.
+      pinpoints: >-
+        The review's section 2 (the counting step, the fold to [0, 45] degrees, the net,
+        the shrink lemma, the centre box and the overflow-checked build) and section 3 (the
+        exact checks of the file); Daniel's certificates/FORMAT.md and s12/verify/src/main.rs
+        in the 2026-09-26 evand packet.
+      assumptions:
+        - The weights are nonnegative, the points lie in the closed container, the multiset is D4-invariant and the total is 14970347/1250000 < 12, decided exactly by devtools.audit_s12_reweighted.
+        - A unit square at any angle of bin k contains the concentric square of side sigma_k at the bin's left angle, and its admissible centres lie in the box the verifier sweeps.
+        - The verifier's i128 arithmetic does not overflow at N = 96000, which the overflow-checked build makes a panic rather than a false pass.
+      audit_record: docs/project/reviews/review-2026-10-02-s12-reweighted-certificate.md
+    limitations: >-
+      Replayed on 2 October 2026 by review lane RV, which did not produce the certificate,
+      from a build it made itself: VERIFIED over all 39,765 bins, least captured weight
+      10000045/10^7 at bin 0, 1,642 s wall and 2,913 CPU-s on two threads; the binary's
+      digest equals lane BB's (60279b2c...). It is the producer's verifier on the producer's
+      file, so a same-implementation replay. Both mutated controls are refused by it: the
+      lowered orbit at bin 0 (least 9999845/10^7) and the grid one step larger at bin 7808
+      (least 9764124/10^7).
+    source_reviewed: '2026-10-02'
+  - id: E-n012-levy-15680000-3949423-native-parent-core
+    claim: lower-bound
+    scope: {n_values: [12]}
+    assurance: verified
+    method: interval-certified
+    performed_by: repository
+    relationship_to_generator: independent-implementation
+    origin: audited-here
+    novelty: apparently-novel
+    novelty_basis:
+      corpus: >-
+        T-049 (Evan Daniel's s(12) >= 15680/3951 and its retained evand packet), T-078
+        (squarepacker's rescaling to 31360/7901, jlevy/squares#309, and its packet), and the
+        archived literature behind the n = 12 case record.
+      searched: '2026-10-02, for the 2 October review of this certificate'
+      novel_object: >-
+        New weights for Daniel's 1,736 points, scaled by 3951000/3949423, found by linear
+        programming over their D4 orbits; the points, the verifier and the method are
+        Daniel's, Burns's and Massaccesi's.
+      gaps: >-
+        No wider literature search was run; a later re-weighting of the same points by
+        someone else would not have been seen.
+    source_key: '[evand square-packing 2026]'
+    certificate: cases/n12_beyond_rescaling/certificate.txt.gz
+    replay: >-
+      From packing/, on the decompressed certificate: .venv/bin/python3 -m
+      devtools.verify_evand_angle_net_native --certificate CERT --n 12 --net 96000 --all
+      --workers 2 --output OUT, resumable with --resume and the row journal, which must
+      report PASS_COMPLETE over all 39,765 rows
+      (cases/n12_beyond_rescaling/receipts/review-native-complete.json and its row
+      journal).
+    replay_status: passed
+    proof:
+      source: packing/src/sqpack/fractional/parent_core.py
+      theorem: Twelve independently rotated unit squares cannot fit in a square of side 15680000/3949423; the native theorem gives the strict s(12) > 15680000/3949423, which implies the claim.
+      scope: Unrestricted square packing with disjoint interiors and boundary contact allowed.
+      pinpoints: >-
+        devtools/verify_evand_angle_net_native.py, which reads the certificate file as a case
+        of its own into ParentCoreCertificate rows [k/N, (k+1)/N, k/N, sigma_k] at N = 96000
+        with parent side 1 and minimum charge 1; validate_parent_core and
+        parent_core_interval.py verify_parent_core_rows; the review's section 4 and finding
+        F5, which read the reader.
+      assumptions:
+        - The 1,736 point charges are exact, nonnegative and D4 invariant, and total below 12.
+        - The 39,765 contiguous half-tangent rows cover the folded parent orientations, and each row's closed core of side sigma_k lies strictly inside every unit parent of the row, which validate_parent_core proves in exact rational arithmetic.
+        - Directed-rounding boxes cover each row's whole parent-centre domain and count only sites surely inside the closed core; every row certifies at the exact threshold of one unit with no stalled or exhausted box.
+      audit_record: docs/project/reviews/review-2026-09-22-native-n11-parent-core.md
+    limitations: >-
+      Run by review lane RV on 2 October 2026: PASS_COMPLETE, every one of the 39,765 rows
+      certified at the one-unit threshold, 375,934,771 boxes, no stall, no exhausted budget,
+      no refutation, 11,358 row-CPU-s. The first 9,407 rows ran on clean commit 32cd041c and
+      the rest, after a container restart, on clean commit b1a78984, with the checker's code
+      identical at both. This repository's interval branch and bound shares no code with
+      Daniel's sweep or with the LP that made the weights, which matters here more than for
+      T-049 because the LP was fitted against the sweep's own cells. The two share the
+      certificate, the row decomposition with its sigma_k and the counting step. Both
+      mutated controls are refuted with exact witnesses (receipts/review-native-ctl1.json
+      and -ctl2.json). Lane BB's own native run was a 1,034-row sample
+      (receipts/native-sample.json), finding F1 of the review.
+    source_reviewed: '2026-10-02'
+  - id: E-n012-levy-15680000-3949423-audit
+    claim: derived-structure
+    scope: {n_values: [12]}
+    assurance: verified
+    method: exact-algebraic
+    performed_by: repository
+    relationship_to_generator: independent-implementation
+    origin: audited-here
+    novelty: apparently-novel
+    novelty_basis:
+      corpus: >-
+        T-049 (Evan Daniel's s(12) >= 15680/3951 and its retained evand packet), T-078
+        (squarepacker's rescaling to 31360/7901, jlevy/squares#309, and its packet), and the
+        archived literature behind the n = 12 case record.
+      searched: '2026-10-02, for the 2 October review of this certificate'
+      novel_object: >-
+        New weights for Daniel's 1,736 points, scaled by 3951000/3949423, found by linear
+        programming over their D4 orbits; the points, the verifier and the method are
+        Daniel's, Burns's and Massaccesi's.
+      gaps: >-
+        No wider literature search was run; a later re-weighting of the same points by
+        someone else would not have been seen.
+    source_key: '[evand square-packing 2026]'
+    certificate: cases/n12_beyond_rescaling/certificate.txt.gz
+    replay: >-
+      From packing/: .venv/bin/python3 -m devtools.audit_s12_reweighted --output OUT, which
+      must print PASS for all 18 checks (cases/n12_beyond_rescaling/receipts/review-audit.json);
+      with --control-dir DIR it also writes both controls, whose digests must equal
+      receipts/controls.json.
+    replay_status: passed
+    limitations: >-
+      Well-formedness only, decided in integers and Fraction by review lane RV's own parser,
+      which imports nothing from lane BB's tools: the digest, the header (s =
+      15680000/3949423, D = 3949423, W = 10^7, m = 1,736) and canonical bytes, nonnegative
+      integer weights (120 zero), every point in the closed container, the total
+      14970347/1250000 < 12, each point Daniel's in file order with both coordinates times
+      1000, D4 invariance over 223 orbits, every weight changed from Daniel's, and both
+      controls rebuilt from their descriptions. It decides no coverage; the two sweeps do.
     source_reviewed: '2026-10-02'
 
   - id: E-n021-evand-5000-1001-report

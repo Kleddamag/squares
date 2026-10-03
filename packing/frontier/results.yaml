@@ -5392,8 +5392,8 @@ results:
       8 (T-066) is a second route under the same checker.
 
       So is wand125's separate point-only cover for s(61) = 8, replayed here by zmx2
-      (E-n061-wand125-point-cover-zmx2-replay): an independent implementation of the
-      cover's producer, but the same checker, so no second method. Evan Daniel's reports
+      (E-n061-wand125-point-cover-zmx2-replay): a second route by the source's pinned
+      checker, the same checker as T-062's, so no second method. Evan Daniel's reports
       of certifying that cover with zeromargin.py and zmcheck
       (E-n061-wand125-point-cover-evand-replay-report) are not replayed here.
     reviews:
@@ -6960,3 +6960,115 @@ results:
       the overflow-checked build of verify was not replayed here (F4), and the source's
       "independent checker" is independent of Daniel's code, not of the producer (F5).
       Supersedes T-049 at n = 12, whose certificate this one rescales.
+
+  - id: T-079
+    kind: lower-bound
+    registered: '2026-10-03'
+    headline: "`s(12) ≥ 15680000/3949423 = 3.9702002…`, Daniel's points re-weighted"
+    established: '2026-10-02'
+    claim: >-
+      s(12) >= 15680000/3949423 = 3.97020020..., by re-weighting Evan Daniel's 1,736 points.
+      It raises the verified lower bound by 33774720/31204391123, about 0.0010824, over
+      squarepacker's s(12) >= 31360/7901 (T-078), and leaves a gap of 117692/3949423, about
+      0.0298, to the grid's 4.
+
+      The certificate keeps the points of Daniel's s(12) certificate (T-049), every
+      coordinate scaled by 3951000/3949423, and solves for new weights by linear programming
+      over their 223 D4 orbits, with rows from the near-tight cells Daniel's verifier
+      reports; the total is 14970347/1250000 = 11.9762776 < 12. Every closed unit square in
+      [0, 15680000/3949423]^2, at every angle, captures weight at least one, decided over
+      the rational angle net 2 arctan(k/96000) with Daniel's per-bin shrink.
+
+      It was decided here three ways on 2 and 3 October 2026: by Daniel's verifier, built
+      unmodified with overflow checks on, in the producing run and again by a review lane
+      that did not produce it, both VERIFIED over all 39,765 bins, least captured weight
+      10000045/10^7; and by this repository's parent-core interval branch and bound over all
+      39,765 rows, which shares no code with the sweep or with the LP and gives the strict
+      s(12) > 15680000/3949423. Both checkers refuse two mutated certificates.
+
+      This project's re-weighting, after Evan Daniel's certificate and verifier (T-049),
+      whose method is Burns's and Massaccesi's, and after squarepacker's rescaling of that
+      certificate (T-078), which showed a finer net leaves room for a larger container. The
+      same work rescaled Daniel's certificate whole to s(12) >= 1568000/395039, which this
+      bound implies.
+    scope: {n_values: [12]}
+    verification: V3
+    confirmation: C3
+    significance:
+      score: 3
+      rationale: >-
+        Raises the verified lower bound at n = 12 again, by 0.0016 over Daniel's T-049 and
+        0.0011 over T-078, to within 0.0298 of 4, the best verified bound at n = 12 this
+        repository knows of. T-049, which raised it by 0.0086, is S3, and the step here is
+        new weights on Daniel's geometry, not a rescaling alone. Not S4: the method, a
+        weighted cover re-optimised at a finer net, is Daniel's, Burns's and Massaccesi's.
+        Not S5: pure point covers are capped well short of 4, so the central question at
+        n = 12 does not move.
+      scored: '2026-10-03'
+      by: the 2 October review of the certificate, lane RV (repository; draft, kept)
+    novelty: apparently-novel
+    builds_on:
+      credit: [Daniel]
+      source_keys: ['[evand square-packing 2026]']
+    composition: >-
+      Primary at n = 12: one certificate, no monotonicity. Two methods decide it: Daniel's
+      arrangement sweep (exact-algebraic), run by the producing lane and replayed by the
+      review lane, and this repository's directed-rounding interval coverage of every row
+      (interval-certified); that is C3, with two methods shown beside the rung. The exact
+      audit of the file is well-formedness only. All rest on the certificate, the counting
+      step and the shrink lemma on the net N = 96000, and the native rows are the sweep's
+      bins and sigma_k by design.
+    evidence:
+      - E-n012-levy-15680000-3949423-generator
+      - E-n012-levy-15680000-3949423-source-replay
+      - E-n012-levy-15680000-3949423-native-parent-core
+      - E-n012-levy-15680000-3949423-audit
+    reviews:
+      - path: docs/project/reviews/review-2026-10-02-s12-reweighted-certificate.md
+        kind: adversarial
+        reviewer: Claude (AI review; model unstated), review lane RV of the 2 October result work, which did not produce the result and shares no context with lane BB, which did
+        reviewer_kind: ai
+        relation: project
+        date: '2026-10-02'
+        scope: >-
+          The re-weighted s(12) certificate and the write-up s(12) Beyond Rescaling: the argument from a passing run of Daniel's verifier to a bound at every angle at N = 96000, the certificate checked exactly by the review's own tool, a complete source-verifier replay and a complete first-party parent-core run, both controls, and the attribution and significance.
+        verdict: accepted
+        covers: [T-079]
+    artifacts:
+      - packing/cases/n12_beyond_rescaling/certificate.txt.gz
+      - packing/cases/n12_beyond_rescaling/claim.json
+      - packing/cases/n12_beyond_rescaling/receipts/route-b-source-verifier.json
+      - packing/cases/n12_beyond_rescaling/receipts/review-source-verifier-N96000.log
+      - packing/cases/n12_beyond_rescaling/receipts/review-native-complete.json
+      - packing/cases/n12_beyond_rescaling/receipts/review-native-complete.rows.jsonl.gz
+      - packing/cases/n12_beyond_rescaling/receipts/review-audit.json
+      - packing/cases/n12_beyond_rescaling/receipts/reweight-rounds.jsonl
+      - packing/devtools/s12_reweight.py
+      - packing/devtools/s12_angle_net_rescale.py
+      - packing/devtools/audit_s12_reweighted.py
+      - packing/devtools/verify_evand_angle_net_native.py
+      - docs/project/research/research-2026-10-02-s12-beyond-rescaling.md
+      - docs/project/reviews/review-2026-10-02-s12-reweighted-certificate.md
+    controls:
+      - packing/cases/n12_beyond_rescaling/receipts/controls.json
+      - packing/cases/n12_beyond_rescaling/receipts/review-source-verifier-ctl1.log
+      - packing/cases/n12_beyond_rescaling/receipts/review-source-verifier-ctl2.log
+      - packing/cases/n12_beyond_rescaling/receipts/review-native-ctl1.json
+      - packing/cases/n12_beyond_rescaling/receipts/review-native-ctl2.json
+      - packing/tests/test_audit_s12_reweighted.py
+      - packing/tests/test_s12_angle_net_rescale.py
+    next_rung: >-
+      V4 and C4 need a second adversarial AI review by a distinct reviewer and a human
+      oversight record. Rung 5 needs a proof-assistant formalization reviewed by human
+      experts; Daniel's Lean pose-box-tree checker, which kernel-checks T-049's certificate,
+      could in principle take this one. The same 1,736 points may carry the bound further:
+      the LP total was 0.024 below 12 at this side. The exact value remains open; the
+      conjecture is s(12) = 4.
+    notes: >-
+      Registered from lane RV's review (think-4srr) of lane BB's write-up. The review's
+      finding F1, that lane BB's first-party check was a 1,034-row sample, is resolved by
+      the complete native run this entry cites; F2 to F5 are notes on the write-up, the
+      verifier's header comment and the native reader, none bearing on the bound.
+      Supersedes T-078 at n = 12. squarepacker's rescaling is credited in the claim and not
+      in builds_on: the registered certificate rests on Daniel's points and verifier, and
+      the Route A rescaling it implies is not separately registered.

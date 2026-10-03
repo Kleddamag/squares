@@ -204,19 +204,17 @@
       {
         "lower": {
           "assurance": "verified",
-          "basis": "external",
-          "confirmed_by": [
-            "T-078"
-          ],
-          "note": "(confirmed T-078)",
+          "basis": "project",
+          "confirmed_by": [],
+          "note": null,
           "recent": true,
-          "result": null,
+          "result": "T-079",
           "results": [
-            "T-078"
+            "T-079"
           ],
-          "source_key": "[squarepacker s12 2026]",
-          "text": "squarepacker after Daniel 2026, GitHub",
-          "value": "3.969117"
+          "source_key": null,
+          "text": "Squares Project (Levy) 2026, result T-079",
+          "value": "3.970200"
         },
         "n": 12,
         "record": "n-012",

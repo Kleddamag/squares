@@ -795,8 +795,9 @@ sources:
       by 7902/7901, weights unchanged. Daniel's verifier and the author's indep_check.cpp
       both accepted it here at the angle net N = 24000, and this repository's native
       parent-core interval route decided all 9,942 rows, so s(12) >= 31360/7901 is verified
-      (T-078, V3/C3) and supersedes T-049's 15680/3951. All three checkers refuse two mutated
-      certificates. The one retained review was written by the lane that ran the replays
+      (T-078, V3/C3) and supersedes T-049's 15680/3951; it stays the reported bound at
+      n = 12, and this project's re-weighting of the same points (T-079) holds the verified
+      one since 3 October. All three checkers refuse two mutated certificates. The one retained review was written by the lane that ran the replays
       (its finding F1).
   - id: wand125-point-n61-2026-09-30
     title: Point-only cover for s(61) = 8

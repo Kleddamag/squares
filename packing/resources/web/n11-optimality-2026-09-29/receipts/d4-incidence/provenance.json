@@ -1,0 +1,53 @@
+{
+  "schema": "sqpack.n11-d4-incidence-bridge-receipt.v1",
+  "review": "docs/project/reviews/review-2026-10-03-n11-optimality-adversarial-gpt6-pro.md",
+  "review_section": "S3. Replace the final D4 search by incidence propagation and one distance bound",
+  "source_repository": "https://github.com/Queuingtheorydotcom/11SquaresOptimal",
+  "source_revision": "f9e0de713a0949d1bc6a0fa6b59d96edf6c3d65c",
+  "source_index_sha256": "29d77766160f3f879d240eaf3fef0b488ec2f21e69f7bad1260b31063ecdf096",
+  "input_provenance": "../d4-independent/provenance.json",
+  "objects": {
+    "cover": {
+      "indexed_path": "evidence/research/phase3/current/research/optimality/global_capture/center-cover-symmetric-exact.json",
+      "indexed_decoded_sha256": "df7938d9ba27095a38fabe45f8b26b259a2cc896c2ae4aac6bae874f417adc4e",
+      "decoded_bytes": 773471,
+      "stored_path": "../d4-independent/objects/df7938d9ba27095a38fabe45f8b26b259a2cc896c2ae4aac6bae874f417adc4e.gz",
+      "lfs_oid_sha256": "7c6d14012f06eb892912a50c93cc7408ce1f90524d46693c6178a01ceae71a99",
+      "stored_bytes": 25016
+    },
+    "overlay": {
+      "indexed_path": "evidence/research/phase3/work/phase2/geometry/cover_overlay_exact.json",
+      "indexed_decoded_sha256": "845b5f748843dd60fa7e290a5ea1a304da4e439ae229bd73a841aec816f4e700",
+      "decoded_bytes": 132395,
+      "stored_path": "../d4-independent/objects/845b5f748843dd60fa7e290a5ea1a304da4e439ae229bd73a841aec816f4e700.gz",
+      "lfs_oid_sha256": "4b36026f5f16998929032abf5e730b56a2166a0880d5b6464b3abf9d9ed62bda",
+      "stored_bytes": 8850
+    }
+  },
+  "objects_not_read": {
+    "distance": {
+      "indexed_path": "evidence/research/phase3/work/phase2/geometry/overlay_distance_pairs.json",
+      "indexed_decoded_sha256": "4f960f4001faa6c9c1e7521f3a2344f71e10b41cd38a6425f6821cc1fd2ccd47",
+      "reason": "The 1,572 strict distance bans are not an input of this bridge, which uses one exact distance bound instead. The inventory is not deleted: it remains the premise of the earlier conditional cuts for cases 2175 and 2176, and of the d4-independent receipt."
+    }
+  },
+  "checker_path": "packing/devtools/check_n11_optimality_d4_incidence.py",
+  "checker_sha256": "f31f5a922ca568d7a30cf9bca06a129247311c9eb37aefae8fc6e7876e7fb3e6",
+  "reconstruction_module_path": "packing/devtools/check_n11_optimality_d4.py",
+  "reconstruction_module_sha256": "19f4b0a47afd6acb327e85bd4a98ca2a43d2fdaa49aeb0edd30aa12d1b6aac1d",
+  "reconstruction_module_note": "Equal to checker_sha256 in ../d4-independent/provenance.json: the cover, overlay and canonical-mask builders reused here are the bytes that receipt executed.",
+  "test_path": "packing/tests/test_n11_optimality_d4_incidence.py",
+  "test_sha256": "7ca6d5a2dcfa526d45888cb0111132e26b83c30519591cf59afdf129193ff95f",
+  "result_path": "result.json",
+  "result_sha256": "1027c10e949ebb0b85bb68ef058467cb482e75cb5c1eec2267b72b1485e785c3",
+  "repository_head_commit": "f7a23673c6132c84258708361725e16b5d13cf77",
+  "repository_head_note": "The checker, its test and this receipt were written on top of this commit and were not yet committed when result.json was produced; checker_sha256 and test_sha256 identify the executed bytes.",
+  "executed_from": "repository root",
+  "executed_command": "{ time -p bash packing/resources/web/n11-optimality-2026-09-29/receipts/d4-incidence/replay.sh packing/resources/web/n11-optimality-2026-09-29/receipts/d4-incidence/result.json > /dev/null; } 2> packing/resources/web/n11-optimality-2026-09-29/receipts/d4-incidence/outer-time.txt",
+  "checker_command": "cd packing && .venv/bin/python3 -B -m devtools.check_n11_optimality_d4_incidence --objects resources/web/n11-optimality-2026-09-29/receipts/d4-independent/objects --max-seconds 45 --output <result.json>",
+  "interpreter": "CPython 3.14.7 (packing/.venv)",
+  "platform": "Linux x86_64",
+  "replay_script": "replay.sh",
+  "outer_time": "outer-time.txt",
+  "scope": "Review S3's replacement for the final D4 bridge only. From the cover and overlay objects alone, every one of the 648 source/triple combinations for sources 999, 1462 and 1659 under the hypothesis that no D4 view admits case 438 is contradicted by incidence propagation, by one exact distance bound (the 999 survivor), or by the reflection g1 onto the closed 999 source (the 1462 survivor). The 1,572-ban distance inventory is not read here; it remains the premise of the earlier conditional cuts for cases 2175 and 2176 and is not deleted by this bridge. All prior exclusions (the 2,180 mask exclusions that leave cases 438, 999, 1462 and 1659) and the case-438 capture remain premises; no global optimality is proved."
+}

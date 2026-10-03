@@ -1,0 +1,7 @@
+Checked 118 supplied file identities.
+PASS_HASHES_ONLY — no mathematical replay was performed.
+
+real	0m0.149s
+user	0m0.121s
+sys	0m0.028s
+exit=0

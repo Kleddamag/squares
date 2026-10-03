@@ -1,0 +1,38 @@
+{
+  "all_recorded_comparisons_exact_except_local_seconds": true,
+  "capture_graph_replayed": false,
+  "d4_trace_regenerated": false,
+  "dependency_versions": {
+    "mpmath": "1.3.0",
+    "numpy": "2.3.5",
+    "scipy": "1.17.0",
+    "sympy": "1.14.0"
+  },
+  "field_geometry_rerun": false,
+  "global_optimality_proved": false,
+  "immutable_files_checked": 186,
+  "manifest_sha256": "9d71dd35d3812a1ce781ba3ffc9dbc68816cd34908bb787e90a1a40db9b17720",
+  "prior_eleven_stage_driver_run": false,
+  "prior_source_and_receipt_bytes_unchanged": true,
+  "scope": "Small exact boundary/coverage controls and B retained-dual local reconciliation only. Review A new dual vectors were not supplied and are not verified.",
+  "seconds": 42.562753131000136,
+  "stages": [
+    {
+      "exit_code": 0,
+      "seconds": 0.7407944839997072,
+      "stage": "coverage-controls"
+    },
+    {
+      "exit_code": 0,
+      "seconds": 0.05301698800030863,
+      "stage": "publisher-coverage-controls"
+    },
+    {
+      "exit_code": 0,
+      "seconds": 41.6473008410012,
+      "stage": "local-reconciliation"
+    }
+  ],
+  "status": "PASS_NEW_RECONCILIATION_CHECKS",
+  "whole_global_proof_replayed": false
+}

@@ -3,9 +3,9 @@ type: is
 id: is-01m3zgx0c1edkfwarjxzctvgmp
 title: "Cases: one page per case, the frontier row opens the case's own view, and one standard case view (the drawing large, then the bounds' number line)"
 kind: epic
-status: in_progress
+status: closed
 priority: 2
-version: 7
+version: 8
 spec_path: docs/project/specs/active/plan-2026-09-29-github-pages-overview.md
 labels: []
 dependencies: []
@@ -16,7 +16,11 @@ child_order_hints:
   - is-01m3zgxbsjvpw7gpvgrszbp403
   - is-01m3zgxcbe1bq63k5g089ng0y5
 created_at: 2026-10-02T23:58:55.872Z
-updated_at: 2026-10-03T04:58:07.111Z
+updated_at: 2026-10-03T14:38:06.555Z
+closed_at: 2026-10-03T14:38:06.554Z
+close_reason: Merged in jlevy/squares#312 (c831b4ee0), after a correctness and engineering review round (419a1db5d)
+resolution: null
+duplicate_of: null
 ---
 Owner, 2026-10-02: 'we should find a way to unify the frontier and the case records. there is a lot broken there. we don't need a full page for the cases (cases.html#cases) we need a page for each case and we need a way to put each case into the popover for the frontier page when you click a row. the current popover on the frontier rows is minimal and can go away. it should instead show the case popover, which is the same as the relevant case page for that case. the cases should be cleaner too. the case record should also include the number line visual that we have in the video and in the results table for some values. finally that layout should put the visual of the square first, and large, then have the number line view of the lower and upper bounds. this is the standard view of the square and its upper/lower bounds for a specific case, and it is what should be present also for context on any result page where it makes sense'. Children: a page per case; the standard case view; the frontier popover is that view; the view on results where it fits.
 

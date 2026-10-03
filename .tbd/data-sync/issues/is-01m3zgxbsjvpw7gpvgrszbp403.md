@@ -3,15 +3,19 @@ type: is
 id: is-01m3zgxbsjvpw7gpvgrszbp403
 title: "Frontier: a row opens the case's own view in its popover, and the minimal row popover goes"
 kind: task
-status: in_progress
+status: closed
 priority: 2
-version: 3
+version: 4
 spec_path: docs/project/specs/active/plan-2026-09-29-github-pages-overview.md
 labels: []
 dependencies: []
 parent_id: is-01m3zgx0c1edkfwarjxzctvgmp
 created_at: 2026-10-02T23:59:07.569Z
-updated_at: 2026-10-03T04:58:08.358Z
+updated_at: 2026-10-03T14:38:05.785Z
+closed_at: 2026-10-03T14:38:05.784Z
+close_reason: Merged in jlevy/squares#312 (c831b4ee0), after a correctness and engineering review round (419a1db5d)
+resolution: null
+duplicate_of: null
 ---
 think-t21m: pressing a frontier row opens a popover that shows the case's standard view, the same as its case page, with a way to open that page; the current minimal frontier row popover is retired. Keyboard, Escape, a click outside and the address (frontier.html#n-11) keep working; tests and paper-design.md (Frontier table, Row popovers) follow.
 

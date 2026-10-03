@@ -530,9 +530,7 @@ def _verified_panel(
 
     same = bounds_agree_at_declared_precision(reported, verified)
     note = '<p class="site-case-same">The reported value, verified here.</p>' if same else ""
-    corrected = (
-        f"{corrected_work(corrects)} ({_esc(corrects['result'])})" if corrects else ""
-    )
+    corrected = f"{corrected_work(corrects)} ({_esc(corrects['result'])})" if corrects else ""
     rows = _row("Corrects", corrected) + _row(
         "Evidence", frontier.evidence_links(verified["evidence"])
     )
@@ -741,6 +739,9 @@ def record_head(
     upper, lower = case["reported_upper_bound"], case["reported_lower_bound"]
     evidence = list(dict.fromkeys(case["evidence"]))
     source = f"packing/frontier/n-{n:03d}.md"
+    verified_lower = _verified_panel(
+        "Verified lower bound", case["verified_lower_bound"], lower, corrects
+    )
     return (
         f'<header class="site-case-head" data-kpress-prose-font="sans">'
         f'<nav class="site-case-steps" aria-label="Cases">{previous}'
@@ -758,7 +759,7 @@ def record_head(
         f"{_upper_panel(case)}"
         f"{_verified_panel('Verified upper bound', case['verified_upper_bound'], upper)}"
         f"{_lower_panel(case)}"
-        f"{_verified_panel('Verified lower bound', case['verified_lower_bound'], lower, corrects)}"
+        f"{verified_lower}"
         f"{_gap_panel(case)}</div></div>"
         f'<div class="site-case-more" data-kpress-prose-font="sans">'
         f'<h3 class="site-case-heading">Results in the register</h3>{results_block(n)}'

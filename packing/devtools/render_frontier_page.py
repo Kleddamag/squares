@@ -473,7 +473,8 @@ def corrections_prose() -> str:
     from sqpack.yamlio import safe_load  # noqa: PLC0415
 
     corrected = Counter(
-        (corrects["credit"], corrects["result"]) for corrects in corrected_lower_bounds().values()
+        (corrects["credit"], corrects["result"])
+        for corrects in corrected_lower_bounds().values()
     )
     register = safe_load((PACKING / "frontier" / "results.yaml").read_text(encoding="utf-8"))
     # The register's words, set as the page's prose sets an apostrophe.
@@ -726,7 +727,10 @@ def table_html(cases: list[dict[str, Any]]) -> str:
     head = "".join(_heading(*column) for column in HEADERS)
     built = [
         case_row(
-            case, evidence, recent=recent.get(case["n"], False), corrects=corrected.get(case["n"])
+            case,
+            evidence,
+            recent=recent.get(case["n"], False),
+            corrects=corrected.get(case["n"]),
         )
         for case in cases
     ]

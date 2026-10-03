@@ -537,9 +537,7 @@ def drawn(citation: Mapping[str, Any]) -> str:
     return " ".join(part for part in parts if part)
 
 
-def correction(
-    n: int, results: Sequence[str], register: Register
-) -> dict[str, str] | None:
+def correction(n: int, results: Sequence[str], register: Register) -> dict[str, str] | None:
     """The published work a lower bound corrects, from the results that carry it, or None.
 
     Each result's `corrects` names the corrected work's bibliography key and the register's
@@ -580,7 +578,7 @@ def _checked(n: int, label: str, citation: dict[str, Any]) -> dict[str, Any]:
 
 
 def _lower_fields(
-    n: int, results: Sequence[str], register: Register, recent: bool | None
+    n: int, results: Sequence[str], register: Register, *, recent: bool | None
 ) -> dict[str, Any]:
     """What a lower line carries that an upper one does not: whether it is recent, and the
     published work it corrects. Nothing where `recent` is None, which is an upper line."""
@@ -617,7 +615,7 @@ def _project(
             "results": results,
             "confirmed_by": [],
             "value": value,
-            **_lower_fields(n, results, register, recent),
+            **_lower_fields(n, results, register, recent=recent),
         },
     )
 
@@ -655,7 +653,7 @@ def _external(
     ]
     confirmed_by = results_carrying(n, performed, register.results)
     results = results_carrying(n, own, register.results)
-    lower = _lower_fields(n, results, register, recent)
+    lower = _lower_fields(n, results, register, recent=recent)
     authors, year = credited
     said = note(assurance, confirmed_by)
     asides = [part for part in (corrects_tag(lower.get("corrects")), said) if part]

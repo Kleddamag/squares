@@ -630,7 +630,9 @@ def test_a_bound_whose_results_correct_a_published_work_names_that_work() -> Non
     )
     assert line["recent"] is False
     # An upper line carries neither field: both are the lower bound's alone.
-    upper = citations.upper_citation(7, _synthetic_case(["E-paper"], certificate=True), register)
+    upper = citations.upper_citation(
+        7, _synthetic_case(["E-paper"], certificate=True), register
+    )
     assert upper is not None
     assert "corrects" not in upper
     assert "recent" not in upper
@@ -1046,7 +1048,9 @@ def test_a_lower_bound_corrects_what_the_results_it_lists_say_they_correct() -> 
         line = entry["lower"]
         if line is None:
             continue
-        named = [by_id[rid]["corrects"] for rid in line["results"] if by_id[rid].get("corrects")]
+        named = [
+            by_id[rid]["corrects"] for rid in line["results"] if by_id[rid].get("corrects")
+        ]
         if not named:
             assert line["corrects"] is None, entry["n"]
             continue

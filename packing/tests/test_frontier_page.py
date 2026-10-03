@@ -248,7 +248,8 @@ def test_the_page_says_once_what_the_tag_means_and_links_the_corrected_result(
     sentence = frontier.corrections_prose()
     assert sentence == (
         "Beside 267 of the stars, *corrects Nagamochi 2005* says the bound stands in for "
-        "a published result found unsound, the register\u2019s [T-007](all-results.html#t-007): "
+        "a published result found unsound, the register\u2019s "
+        "[T-007](all-results.html#t-007): "
         "Lemma 1, on which Theorem 2\u2019s proof rests, is false."
     )
     prose = page[: page.index('id="frontier-table"')]

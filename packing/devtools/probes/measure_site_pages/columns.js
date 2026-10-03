@@ -9,8 +9,9 @@
 // In the `table` layout each column is reported under its header's words with its width
 // and what its cells hold: `lines`, the most lines any cell of it takes; `held`, the
 // width of the widest content a cell of it holds, so a column can be held to what it
-// holds; and `tallest`, the tallest row whose height this column's cell sets, with that
-// row's key, its height and the lines the cell takes. A row's height is set by the cell
+// holds, and `held_by`, the key of the row whose cell holds it; and `tallest`, the
+// tallest row whose height this column's cell sets, with that row's key, its height and
+// the lines the cell takes. A row's height is set by the cell
 // whose content is tallest, so a column that never sets one reports no `tallest`. A
 // cell's content is measured as the box around what it holds, with what a negative
 // margin sets past the cell's edge, and its lines as that height over the cell's own
@@ -292,12 +293,17 @@
             item.cell.piece && (best?.cell.piece?.width ?? 0) < item.cell.piece.width ? item : best,
           /** @type {(typeof cellsOf)[number] | null} */ (null),
         );
+        const holds = cellsOf.reduce(
+          (best, item) => (best && best.cell.width >= item.cell.width ? best : item),
+          /** @type {(typeof cellsOf)[number] | null} */ (null),
+        );
         const head = heads[index];
         return {
           column: name,
           width: cards || !head ? null : round(head.getBoundingClientRect().width),
           lines: Math.max(0, ...cellsOf.map(({ cell }) => cell.lines)),
           held: Math.max(0, ...cellsOf.map(({ cell }) => cell.width)),
+          held_by: holds ? holds.row.key : null,
           broken: [...new Set(cellsOf.flatMap(({ cell }) => cell.broken))],
           split: [...new Set(cellsOf.flatMap(({ cell }) => cell.split))],
           cuts: [...new Set(cellsOf.flatMap(({ cell }) => cell.cuts))],

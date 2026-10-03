@@ -1533,12 +1533,12 @@ it.
   The widths follow from each column’s floor and from what the n column asks for.
   The id, the significance, the rungs, the status, the details and the date are as
   narrow as what they hold.
-  The significance is as wide as its widest mark, S5’s five bars and a star, 81 pixels
-  with the cell’s 0.3rem padding either side: its bars are 0.36em wide, 0.2em after the
+  The significance is as wide as its widest mark, S5’s five bars and a star, 77 pixels
+  with the cell’s 0.2rem padding either side: its bars are 0.36em wide, 0.2em after the
   label, and the star takes the cell’s end padding (trimmed on 2026-10-03, `think-r3rd`,
   from 90 pixels, which set the table 7.8 past its frame at 1280). The details are as
-  wide as their widest link, 96 pixels, and a result with many records is the tallest
-  row: T-051’s nine links stand 239 pixels.
+  wide as their widest link, “evidence 10”, 102 pixels, and a result with many records
+  is the tallest row: T-075’s sixteen links stand 410 pixels.
   The rungs column is as wide as its widest chip, since no chip wraps: the two rungs
   share a line, and the widest kind, “restricted optimality”, sets it at 180 where a row
   with one shows. The kind takes a line under the rungs, and the status column is as wide
@@ -1546,7 +1546,7 @@ it.
   The credit column is at least 11.5rem wide, which holds the longest name on one line
   (“Queuingtheorydotcom”, 167 pixels of the 184), so a credit wraps between names and
   never inside one; KPress’s own floor, 6rem, set it a word to a line.
-  The result column is at least 16.75rem, 268 pixels, and no formula holds it wider.
+  The result column is at least 16.55rem, 265 pixels, and no formula holds it wider.
   KaTeX sets a formula as pieces a line cannot end inside, one up to each relation or
   binary operator at its top level, and the widest piece in either table is 249 pixels,
   the numerator of T-033’s quotient.
@@ -1573,13 +1573,13 @@ it.
   column is as narrow as its lists, under 96 pixels, so a single case has no empty
   column beside it. The overview as it opens shows T-056’s list since it starts at S3
   (`think-x60s`). With every row showing, the date, significance, result, n, credit,
-  rungs, status, details and id columns measure 100, 81, 313, 225, 197, 180, 114, 96 and
-  56 pixels at a 1440-pixel window, where the table is 1360 and gives the n column its
-  whole measure: T-056’s list takes 6 lines, a row 165 pixels tall, under the 239 of
-  T-051’s details. At 1280 every column is at its floor, 100, 81, 268, 122, 184, 180,
-  114, 96 and 56, the n column’s being its 120 and the 2 pixels the others’ floors leave
-  it, so the list takes 11 lines there, a row 288 pixels tall; at 1024 and 768 the n
-  column is at 120, the rest the same, and the table runs 254 and 510 pixels past its
+  rungs, status, details and id columns measure 100, 77, 310, 225, 197, 180, 114, 102
+  and 56 pixels at a 1440-pixel window, where the table is 1360 and gives the n column
+  its whole measure: T-056’s list takes 6 lines, a row 165 pixels tall, under the 410 of
+  T-075’s details. At 1280 every column is at its floor, 100, 77, 265, 122, 184, 180,
+  114, 102 and 56, the n column’s being its 120 and the 2 pixels the others’ floors
+  leave it, so the list takes 11 lines there, a row 288 pixels tall; at 1024 and 768 the
+  n column is at 120, the rest the same, and the table runs 254 and 510 pixels past its
   944- and 688-pixel frames.
   The floors come to 1198 pixels, so a table fits its frame down to a window of about
   1278 pixels and scrolls sideways in its wrap below that.

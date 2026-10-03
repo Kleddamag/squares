@@ -1302,7 +1302,7 @@ body {
 }
 /* The result column carries the reading; the rest stay as narrow as their content. */
 .site-table .site-col-result {
-  min-width: 16.75rem;
+  min-width: 16.55rem;
 }
 /* The legend right above a table of results (`overview_sections.rung_legend`): three
    short lines in the support colour at the note size, every significance mark, every
@@ -1343,17 +1343,18 @@ body {
 /* Significance is the second column, narrow but prominent: its mark on one line, and a
    new result's star after the bars, where it stood after the result's text until
    2026-10-03 (`think-m3m4`). The column is as wide as its widest mark, KPress's 6rem
-   floor given up as the cases' is: S5's and a star, 80.6px. The mark was trimmed to
+   floor given up as the cases' is: S5's and a star, 77.4px. The mark was trimmed to
    that the same day (`think-r3rd`), its bars 0.36em wide and 0.2em after its label
-   (`.site-significance`, above), the cell's padding 0.3rem and the star's margin below,
+   (`.site-significance`, above), the cell's padding 0.2rem and the star's margin below,
    from 90.4px, which set the nine columns' floors 7.8px past the 1200 a 1280-pixel
-   window gives the table; now they leave it 2. */
+   window gives the table; now they leave it 2. The padding went from 0.3rem to 0.2rem
+   when two results' tenth evidence links widened the details column by 6.3px. */
 .site-results .site-col-s {
   white-space: nowrap;
 }
 .kpress .site-results :is(th, td).site-col-s {
   min-width: 0;
-  padding-inline: 0.3rem;
+  padding-inline: 0.2rem;
 }
 /* The star takes the cell's end padding and a little of the result's start padding,
    which still keeps it clear of the result's text. */
@@ -1377,7 +1378,7 @@ body {
    word to a line while the result column kept the spare width. The rungs column is as
    wide as its widest chip, since no chip wraps: the two rungs share a line, and the
    widest kind, "restricted optimality", sets it at 180 where a row with one shows. The
-   result column's floor is its 16.75rem (above): the widest piece of a formula a line
+   result column's floor is its 16.55rem (above): the widest piece of a formula a line
    cannot end inside, 248.5px, and the cell's padding are narrower than that, now that a
    long quotient may end a line after its solidus (`overview_data.breakable_quotients`).
    A result's records are its Details column, a link to a line (below). */

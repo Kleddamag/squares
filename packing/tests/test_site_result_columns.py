@@ -75,17 +75,20 @@ SHORT_LISTS = "index.html, one kind of short lists"
 SHORT_LISTS_QUERY = "?s-min=&age=&current=false&kind=rigidity"
 #: The credit column's floor, 11.5rem, in pixels (`site.css`).
 CREDIT_MIN = 184
-#: The result column's floor, 16.75rem, in pixels (`site.css`): its widest piece of
-#: typeset math is 248.5 pixels, plus the cell's padding, 264.5. And what four formulas
-#: no line could end inside held the column to before a long quotient could end one.
-RESULT_MIN = 268
+#: The result column's floor, 16.55rem, in pixels (`site.css`): its widest piece of
+#: typeset math is 248.5 pixels, plus the cell's padding, 264.5, and the floor is that to
+#: the next twentieth of a rem. And what four formulas no line could end inside held the
+#: column to before a long quotient could end one.
+RESULT_MIN = 264.8
 RESULT_WAS = 411
 #: The width a table of results bleeds to at 1280 pixels, from 74rem (`site.css`): the
 #: frontier table's width there.
 TABLE_AT_1280 = 1200
 #: The least room the nine columns' floors leave in that track at 1280 pixels, which the
 #: n column takes: 2.0 measured once the significance mark was trimmed to fit
-#: (2026-10-03, `think-r3rd`; the floors outran the track by 7.8 before).
+#: (2026-10-03, `think-r3rd`; the floors outran the track by 7.8 before), and 2.1 since
+#: T-069's and T-075's tenth evidence links widened the details column by 6.3 and the
+#: result's floor and the significance column's padding gave the room back.
 SPARE_AT_1280 = 2
 #: The width a table of results bleeds to at 1440 pixels: the 1104-pixel wide track and
 #: a pixel for each pixel of window past 74rem.
@@ -116,9 +119,9 @@ LONG_QUOTIENTS = ("T-022", "T-024", "T-026", "T-033")
 #: than the 688-pixel one at 768 (measured with nine columns, 2026-10-03).
 SCROLL_MAX = {1024: 264, 768: 520}
 #: The significance column: under 100 pixels at every width, where its widest mark and
-#: star, S5's, with the cell's padding, 0.3rem either side, is 80.6.
+#: star, S5's, with the cell's padding, 0.2rem either side, is 77.4.
 S_MAX = 100
-S_PADDING = 9.6
+S_PADDING = 6.4
 #: The id column: five characters and the cell's padding, well under KPress's 96.
 ID_MAX = 64
 #: The nine columns of a table of results, as `overview_sections.result_head` names them.
@@ -310,7 +313,7 @@ def test_on_a_phone_a_long_list_of_cases_takes_a_line_of_its_own(
 def test_the_result_column_gives_way_to_its_floor(
     laid: dict[tuple[str, int], Laid], name: str
 ) -> None:
-    """The result column narrows to its 16.75rem floor where the window is short of
+    """The result column narrows to its 16.55rem floor where the window is short of
     room, well under the 411 pixels it was held to, as it is with every row showing at
     1280 and below now the table has nine columns, and with the overview's own filters
     at 1280 too, since they show T-056's long list from S3 up (`think-x60s`). At 1440

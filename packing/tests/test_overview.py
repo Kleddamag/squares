@@ -4916,10 +4916,12 @@ def test_a_result_rows_popover_body_comes_from_one_function(
                 assert term in panel, row.id
 
 
-#: What the two pages that list results may weigh. The result overviews are 2.8 MB
+#: What the two pages that list results may weigh. The result overviews are 4.9 MB
 #: between them; a page that carried them, as both once would have, crosses its ceiling.
-#: The shell every page carries, its faces and math, is about 1.8 MB of each.
-PAGE_CEILINGS = {"index.html": 4_300_000, render_overview.RESULTS_PAGE: 2_800_000}
+#: The shell every page carries, its faces and math, is about 1.8 MB of each. The results
+#: page was 2.77 MB with 81 results on 3 October 2026, and its significance column and
+#: legend added 43 KB that day (`think-m3m4`, `think-42dx`), which took it past 2.8.
+PAGE_CEILINGS = {"index.html": 4_300_000, render_overview.RESULTS_PAGE: 3_000_000}
 
 
 def test_no_page_carries_a_result_overview(

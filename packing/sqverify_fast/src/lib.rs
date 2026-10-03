@@ -90,9 +90,11 @@ fn run_direction_inner(
     limits: Limits,
     confirm: bool,
 ) -> Result<DirectionReport, String> {
-    if index == 0 {
+    // Lemma B5: the vertex sweep needs a measure of rectangles alone.
+    if index == 0 && cert.points.is_empty() && cert.segments.is_empty() {
         let start = std::time::Instant::now();
-        let result = crate::axis::verify_axis(cert, threshold_hi)?;
+        let upper = crate::certificate::domain_upper(cert, 0)?;
+        let result = crate::axis::verify_axis(cert, threshold_hi, &upper)?;
         let seconds = start.elapsed().as_secs_f64();
         let receipt = json!({
             "r": 0,
@@ -112,7 +114,7 @@ fn run_direction_inner(
             receipt,
         });
     }
-    let result = crate::rotated::verify_direction(cert, index, threshold_hi, limits)?;
+    let result = crate::rotated::verify_direction(cert, index, threshold, threshold_hi, limits)?;
     let mut receipt = json!({
         "r": index,
         "method": "interval-branch-and-bound",
@@ -122,6 +124,8 @@ fn run_direction_inner(
         "max_depth": result.max_depth,
         "min_certified_lower_bound": if result.min_lower.is_finite() { json!(result.min_lower) } else { Value::Null },
         "mean_boundary_rectangles": result.mean_boundary,
+        "audits": result.audits,
+        "audit_every": limits.audit_every,
         "seconds": result.seconds,
     });
     if let Some((x, y, dx, dy)) = result.argmin {
@@ -173,8 +177,15 @@ pub fn premises(cert: &Certificate) -> Value {
         "angle_count": cert.angle_count,
         "mass_exact": cert.mass.to_string(),
         "mass_below_n": (BigRational::from_integer(cert.n.into()) - &cert.mass).to_string(),
+        "format": cert.format,
+        "centre_domain": match cert.domain {
+            crate::certificate::Domain::Tokoharu => "tokoharu",
+            crate::certificate::Domain::PerBin => "per-bin",
+        },
         "source_rectangles": cert.source_rectangles,
         "expanded_rectangles": cert.exact.len(),
+        "expanded_points": cert.points.len(),
+        "expanded_segments": cert.segments.len(),
         "input_sha256": cert.input_sha256,
     })
 }

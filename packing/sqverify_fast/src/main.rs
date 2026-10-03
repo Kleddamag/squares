@@ -49,6 +49,8 @@ fn parse_args() -> Result<Options, String> {
         limits: Limits {
             max_nodes: 50_000_000,
             max_depth: 60,
+            audit_every: 1024,
+            inject_fault_at: None,
         },
         receipts: None,
         confirm: false,
@@ -76,6 +78,18 @@ fn parse_args() -> Result<Options, String> {
                 options.limits.max_depth = value()?
                     .parse()
                     .map_err(|_| "--max-depth must be an integer")?;
+            }
+            "--audit-every" => {
+                options.limits.audit_every = value()?
+                    .parse()
+                    .map_err(|_| "--audit-every must be an integer")?;
+            }
+            "--inject-fault-at-node" => {
+                options.limits.inject_fault_at = Some(
+                    value()?
+                        .parse()
+                        .map_err(|_| "--inject-fault-at-node must be an integer")?,
+                );
             }
             "--receipts" => options.receipts = Some(PathBuf::from(value()?)),
             "--confirm" => options.confirm = true,
@@ -133,8 +147,8 @@ fn probe(
         return Err("--probe takes r,x,y or r,x,y,dx,dy".into());
     }
     let index: u32 = parts[0].parse().map_err(|_| "bad probe direction")?;
-    if index == 0 || index >= cert.angle_count {
-        return Err("probe direction must be a rotated net index".into());
+    if index >= cert.angle_count {
+        return Err("probe direction must be a net index".into());
     }
     let numbers: Vec<f64> = parts[1..]
         .iter()
@@ -153,7 +167,8 @@ fn probe(
         &s,
     );
     let centre = sqverify_fast::rotated::centre_lower_bound(cert, index, x, y)?;
-    let mut out = json!({"r": index, "x": x, "y": y, "centre_lower_bound": centre, "exact_coverage": exact.to_string(),
+    let estimate = sqverify_fast::rotated::centre_estimate_up(cert, index, x, y)?;
+    let mut out = json!({"r": index, "x": x, "y": y, "centre_lower_bound": centre, "centre_estimate_up": estimate, "exact_coverage": exact.to_string(),
         "exact_coverage_approx": num_traits::ToPrimitive::to_f64(&exact)});
     if numbers.len() == 4 {
         out["dx"] = json!(numbers[2]);

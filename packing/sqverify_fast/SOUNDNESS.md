@@ -68,8 +68,12 @@ Decimal JSON numbers are their literal values, never the nearest binary64. The e
 multiplies nothing out of order: each image’s exact density is summed when images
 coincide, and the expanded total must integrate back to $M$ exactly.
 
-The coverage threshold $T$ defaults to $1$, which is what N4 needs.
-A larger $T$ (the authors’ checker uses $10001/10000$) only makes acceptance harder.
+The coverage threshold $T$ defaults to the one the certificate declares (format T’s
+`coverage_lower_bound_exact`, $10001/10000$ in every file here; $1$ for formats M and
+L), and is never below $1$, which is what N4 needs.
+A larger $T$ only makes acceptance harder.
+Formats M and L change the measure and, for M, the centre domain; the section
+[Formats M and L](#formats-m-and-l-points-segments-and-domains) states what changes.
 
 ## Reduction of Centres
 
@@ -216,10 +220,91 @@ d_y$, with $F^-$ the sum of inside masses and R2 bounds and $G$ the magnitude of
 interval sum of R4–R5 enclosures, is at least the upper end of $T$’s enclosure.
 The receipt’s minimum certified bound is the least accepted value, a lower bound on
 $\min F$ over the quadrant.
-A box whose centre bound falls below $T - 10^{-7}$ stops the direction as a
-counterexample candidate, which is a refusal; `--confirm` evaluates the candidate centre
-in exact rationals (`oracle::coverage`). Budgets exhausted are `unresolved`, also a
-refusal.
+With points or segments, the box’s atom bound (lemmas B1 to B3) is added after the
+derivative penalty, which it does not enter.
+A box whose centre bound falls below $T - 10^{-9}$, and whose centre still falls below
+it when the atoms are estimated from above (points within `TAU` of the square counted,
+segment parameters widened by `TAU`), stops the direction as a counterexample candidate,
+which is a refusal; `--confirm` evaluates the candidate centre in exact rationals
+(`oracle::coverage`). The estimate decides only which refusal is reported.
+A box at the depth limit is set aside and the search goes on, so that a counterexample
+elsewhere is still found; the first 32 such boxes have their centre’s capture evaluated
+exactly, and one below $T$ is reported as a counterexample candidate, since the
+estimate’s error can hide a band of centres just below the threshold.
+Otherwise the direction is `unresolved`, as it is when the node budget runs out or 4,096
+boxes reach the depth limit.
+Every one of these outcomes is a refusal.
+
+## Formats M and L: Points, Segments and Domains
+
+Formats M and L (spec §1.4) keep the theorem above with three changes: the measure has
+point masses and segments of mass spread uniformly by length beside the rectangles, the
+threshold is $\Gamma = 1$, and format M declares the per-bin centre domain.
+Admission refuses a negative mass, a point or segment endpoint outside $[0, L]^2$, a
+segment of length zero, a nonempty format M `points` list, a format L `net` other than
+step $83/40000$ and last index $200$, and a `total_mass` other than the exact sum.
+Every row is an orbit representative whose eight $D_4$ images carry an eighth of its
+mass each; coincident images are merged by exact key (a segment and its reverse are one
+key), and the merged total must equal $M$.
+
+**Lemma D (domains).** At index $r$ the claim is checked on $[L/2, U_r]^2$ with $U_r = L
+- B(c_r + s_r)/2$ (Tokoharu’s domain, formats T and L) or $U_r = L - \rho(a_r)$, $a_r =
+  \max(0, t_r - D/2)$, $\rho(a) = (1 + 2a - a^2)/(2(1 + a^2))$ (the per-bin domain,
+format M), as spec §1.5 derives; `certificate::domain_upper` computes $U_r$ exactly and
+refuses $U_r \le L/2$. The axis sweep at $r = 0$ takes $U_0$ as its upper end, so a
+format M sweep stops at $L - 1/2$. Lemma C1 applies unchanged.
+
+**Lemma B1 (classification of atoms).** A point is R1’s rectangle with $w_x = w_y = 0$;
+a segment is classified by its bounding box, which contains it.
+Inside means inside every closed square of the box, so the atom’s whole mass counts
+there and in every sub-box; outside is R1’s strict separation by more than `TAU`, so the
+atom meets no square of the box.
+A point or segment on a square’s boundary is never certified outside, which keeps the
+closed-square convention of spec §1.2: such an atom contributes zero, a lower bound.
+
+**Lemma B2 (points).** A straddling point contributes zero to the box bound.
+Points certified inside contribute their enclosure’s lower end.
+
+**Lemma B3 (segments).** For a straddling segment $P(\lambda) = P_0 + \lambda(P_1 -
+P_0)$, the code picks binary64 parameters $0 \le \lambda_0 < \lambda_1 \le 1$ by any
+means (`rotated::lambda_range`, which solves for the parameters within $h - b_u -
+2\tau$ and $h - b_v - 2\tau$ of the box centre along the square’s axes), then proves
+$P(\lambda_0)$ and $P(\lambda_1)$ inside every square of the box by R1 with zero extent.
+Each square is convex, so the whole piece between them is inside, and mass uniform by
+length is uniform in $\lambda$: the segment contributes at least $w(\lambda_1
+- \lambda_0)$, rounded down. If either proof fails after a nudge inward, the segment
+contributes zero. The points tested are computed in binary64 as $x_0 + \lambda(x_1 -
+  x_0)$ from endpoints within a unit in the last place, so they lie within $2 \times
+  10^{-12}$ of the exact $P(\lambda)$; with F2’s $3 \times 10^{-11}$ the decision error
+  stays below `TAU`. `rotated::segment_dn`. The atom bound of a box is the inherited
+  inside mass plus these straddling parts (B0 of spec §1.6: lower bounds of the parts of
+  a measure add), and it bounds the atoms’ capture at every centre of the box, so it is
+  added to R3’s bound for the rectangles.
+
+**Lemma B5 (which method at $r = 0$).** The vertex sweep (A1, A2) assumes a measure of
+rectangles alone. With points or segments present the capture is not bilinear and a
+point’s capture is only upper semicontinuous, so direction zero runs the branch and
+bound with the axis-aligned square (Z1, Z2) and B1–B3. `lib::run_direction_inner`.
+
+**Lemma Z1 (area at $r = 0$).** For the axis-aligned square, $|R \cap Q(p)| =
+o_x(p_x)\, o_y(p_y)$ with $o_x(x) = |[x - h, x + h] \cap [x_1, x_2]|$. With the inner
+representable rectangle and $h^- \le h$, the downward-rounded
+$\max(0, \min(x + h^-, x_2^\downarrow) - \max(x - h^-, x_1^\uparrow))$ is at most
+$o_x(x)$, and so for $o_y$; their downward-rounded product bounds the area.
+`rotated::area_dn_axis`.
+
+**Lemma Z2 (derivative at $r = 0$).** Almost everywhere, $\partial_x |R \cap Q(p)| =
+o_y(p_y)(\mathbf 1[p_x + h \in (x_1, x_2)] - \mathbf 1[p_x - h \in (x_1, x_2)])$: the
+square’s right side gains and its left side loses one unit of $o_x$ per unit moved,
+while that side lies within $R$’s abscissa range, and where $o_x = 0$ both indicators
+vanish. Over the box each indicator is enclosed by $\{1\}$ when $[p_x \pm h]$ provably
+lies in $[x_1, x_2]$ for every $p$ and every $h \in [h^-, h^+]$, by $\{0\}$ when it
+provably misses it, and by $[0, 1]$ otherwise; $o_y$ is unimodal in $p_y$, so over the
+box it lies between its smaller value at the outward-rounded ends and $\min(2h^+, y_2 -
+y_1)$. The interval product, scaled by $\rho$, encloses the derivative; $\partial_y$ is
+the same with the axes exchanged.
+R3 and R6 then apply unchanged.
+`rotated::gradient_axis`.
 
 ## Floating Point
 
@@ -272,15 +357,30 @@ which R2–R5 handle soundly.
   over five directions; a seeded wrong endpoint makes it fail.
 - `interval::tests::steps_reach_the_adjacent_values`: I1 on special values and 100,000
   random bit patterns.
-- The debug build re-derives every box’s incremental centre bound from the full
-  rectangle list (R1’s inheritance) and panics on a difference.
+- `rotated_tests::area_lower_bound_is_below_and_close_to_exact` also runs Z1 at $r =
+  0$.
+- `rotated_tests::gradient_enclosures_contain_difference_quotients`: R4, R5 and Z2
+  against exact difference quotients of the clipped area, which average the derivative
+  over an interval inside the box, at $r \in \{0, 1, 77, 200\}$; reversing Z2’s sign
+  makes it fail.
+- `rotated_tests::atom_bounds_hold_at_every_sampled_centre`: B1–B3 against the exact
+  capture of random points and segments (a third horizontal, a third vertical) at the
+  corners and an interior point of random boxes, and the counterexample estimate above
+  the exact capture at the centre; letting B3 skip its endpoint proofs makes it fail.
+- `rotated_tests::oracle_counts_closed_intersections`: the oracle counts a point on the
+  square’s edge and a segment along it in full, and a segment touching a corner not at
+  all.
+- The release audit (A3) re-derives sampled boxes’ centre bounds and classifications
+  from scratch; `--audit-every 1` re-derives every box’s.
 - `devtools/check_sqverify_fast.py` compares, on retained certificates, the probe’s
   centre and box bounds with `sqpack.rectangle_density`’s exact coverage at sampled
-  centres and box points, and runs the mutation controls; its `--quick` subset runs in
-  the gate step `measure verifier Rust (sqverify-fast)`.
+  centres and box points, and runs the mutation controls; for formats M and L it
+  compares with an exact evaluator of points, segments and rectangles written in the
+  tool, apart from the crate’s oracle, and runs the retained mixed and linear controls.
+  Its `--quick` subset runs in the gate step `measure verifier Rust (sqverify-fast)`.
 - `devtools/sqverify_fast_census.py` verifies every replayed certificate at all 201
   directions and evaluates, in exact rationals, the capture at the centre of each
-  certificate’s least-bound leaf.
+  certificate’s least-bound leaf; `--family mixed` does the same for formats M and L.
 
 ## The First Leg on Its Own Segment
 
@@ -293,9 +393,9 @@ the larger of the two lower bounds holds.
 $G^S_x$ is R5’s enclosure with the centre’s ordinate fixed at $y_0$ (the segment ends’
 offsets enclosed with half-width zero), its abscissa still ranging over the box.
 Any bound valid on the box is valid on the segment, so each segment bound is also capped
-by the box’s. The current build does not use R7: experiments exp-009 and exp-010 found
-that it removes about a third of the boxes but costs as much again in enclosures,
-eagerly or lazily.
+by the box’s. The current build does not use R7: experiments exp-009, exp-010 and
+exp-016 found that it removes about a third of the boxes but costs as much again in
+enclosures, eagerly, lazily, or fused with the box’s own enclosures.
 
 ## Inheritance of Derivative Bounds
 
@@ -304,6 +404,33 @@ sub-box $C' \subseteq C$. So a child may apply R3 with its parent’s bounds, an
 smaller of its parent’s and its own, per axis.
 Skipping a box’s own enclosure is only a choice of where to spend work: it never accepts
 a box (experiment exp-003).
+
+## The Release Audit
+
+**Lemma A3 (what the audit establishes).** At an audited box two things are recomputed
+from scratch, with nothing inherited.
+First, the centre bound by R2 over every rectangle, with no classification: inside
+rectangles enter the incremental sum as their exact mass and the full sum through R2,
+which is within rounding of it.
+Second, the classification of every rectangle, point and segment against the box (R1,
+B1): the mass certified inside and the number of straddling items of each kind.
+On a correct run the sums agree to within `AUDIT_TOLERANCE` (relative $10^{-9}$) and the
+counts exactly, since a sub-box’s fresh classification repeats its ancestors’ decisions
+(a rounding coincidence within $10^{-13}$ of a decision’s slack could break the tie,
+which would be a false refusal, never an acceptance); a disagreement proves the
+incremental bookkeeping wrong at that box or at an ancestor whose decisions it inherits.
+The search then stops with `audit-failed`, a refusal.
+The second comparison is what catches a straddling item wrongly certified inside whose
+whole mass happens to lie in the centre’s own square, which leaves the centre bound
+unchanged and removes only the item’s derivative or its straddling treatment.
+The audit covers R1’s and B1’s decisions and their inheritance, not the derivative
+enclosures or B3’s parameters, which `rotated_tests` and the differential tests check.
+It is sampled (the root and every $K$-th box, $K = 1024$ by default), so a wrong
+decision is caught at any audited box where it is still wrong; `--audit-every 1` audits
+every box, which catches it at the box where it is made.
+`--inject-fault-at-node N` certifies inside the first straddling rectangle at box $N$,
+or the first straddling point or segment when no rectangle straddles, the control of
+spec §4.2; the controls in `devtools/check_sqverify_fast.py` require the refusal.
 
 <!-- This document follows common-doc-guidelines.md.
 See github.com/jlevy/practical-prose and review guidelines before editing.

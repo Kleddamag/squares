@@ -60,6 +60,66 @@ pub struct Rect {
     pub wy: f64,
 }
 
+/// One expanded point mass, exact.
+#[derive(Clone, Debug)]
+pub struct ExactPoint {
+    /// Abscissa.
+    pub x: BigRational,
+    /// Ordinate.
+    pub y: BigRational,
+    /// Mass.
+    pub mass: BigRational,
+}
+
+/// One expanded segment of uniform linear density, exact.
+#[derive(Clone, Debug)]
+pub struct ExactSegment {
+    /// First endpoint.
+    pub p0: (BigRational, BigRational),
+    /// Second endpoint.
+    pub p1: (BigRational, BigRational),
+    /// Mass, spread uniformly by length.
+    pub mass: BigRational,
+}
+
+/// A point mass for the interval search: coordinates within one unit in the
+/// last place (lemma F2's slack covers them), mass enclosed.
+#[derive(Clone, Copy, Debug)]
+pub struct Point {
+    /// Approximate abscissa.
+    pub x: f64,
+    /// Approximate ordinate.
+    pub y: f64,
+    /// Enclosure of the mass.
+    pub mass: Iv,
+}
+
+/// A segment for the interval search.
+#[derive(Clone, Copy, Debug)]
+pub struct Segment {
+    /// Approximate first endpoint.
+    pub x0: f64,
+    /// Approximate first endpoint.
+    pub y0: f64,
+    /// Approximate second endpoint.
+    pub x1: f64,
+    /// Approximate second endpoint.
+    pub y1: f64,
+    /// Enclosure of the mass.
+    pub mass: Iv,
+}
+
+/// Which centre domain the certificate's format declares (spec 1.5).
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub enum Domain {
+    /// Every centre whose shrunk square lies in the container: `[a_r, L - a_r]^2`,
+    /// `a_r = B (c_r + s_r) / 2` (formats T and L).
+    Tokoharu,
+    /// Every centre of a unit square whose orientation the net assigns to the
+    /// node: `[rho(a_r), L - rho(a_r)]^2` (format M).
+    PerBin,
+}
+
 /// An admitted certificate.
 #[derive(Clone, Debug)]
 pub struct Certificate {
@@ -85,6 +145,141 @@ pub struct Certificate {
     pub input_sha256: String,
     /// The coverage threshold the certificate declares, if any.
     pub declared_threshold: Option<BigRational>,
+    /// The format: `T` (Tokoharu rectangles), `M` (mixed rectangles) or `L`
+    /// (points, segments and rectangles).
+    pub format: &'static str,
+    /// The centre domain the format declares.
+    pub domain: Domain,
+    /// Expanded, merged point masses.
+    pub exact_points: Vec<ExactPoint>,
+    /// The same, for the search.
+    pub points: Vec<Point>,
+    /// Expanded, merged segments.
+    pub exact_segments: Vec<ExactSegment>,
+    /// The same, for the search.
+    pub segments: Vec<Segment>,
+}
+
+/// One orbit representative as a format lists it.
+enum Source {
+    Rect([BigRational; 4], BigRational),
+    Point([BigRational; 2], BigRational),
+    Segment([BigRational; 4], BigRational),
+}
+
+fn rationals(value: &Value, count: usize, field: &str) -> Result<Vec<BigRational>, AdmissionError> {
+    let Some(items) = value.as_array().filter(|items| items.len() == count) else {
+        return refuse(format!("{field} needs {count} numbers"));
+    };
+    items.iter().map(|item| rational_of(item, field)).collect()
+}
+
+fn array<'a>(
+    object: &'a serde_json::Map<String, Value>,
+    key: &str,
+) -> Result<&'a Vec<Value>, AdmissionError> {
+    object
+        .get(key)
+        .and_then(Value::as_array)
+        .ok_or_else(|| AdmissionError(format!("missing {key} array")))
+}
+
+/// The orbit representatives of each format, with the format's name, domain
+/// and declared threshold.
+fn sources(
+    object: &serde_json::Map<String, Value>,
+) -> Result<(&'static str, Domain, Vec<Source>), AdmissionError> {
+    let mut out = Vec::new();
+    if object.get("schema").and_then(Value::as_str) == Some("point_line_rectangle_v1") {
+        let net = object
+            .get("net")
+            .and_then(Value::as_object)
+            .ok_or(AdmissionError("format L needs its net block".into()))?;
+        let step = rational_of(net.get("step").unwrap_or(&Value::Null), "net.step")?;
+        if step != ratio(83, 40_000) || net.get("last").and_then(Value::as_u64) != Some(200) {
+            return refuse("format L's net must be step 83/40000, last 200");
+        }
+        for (index, primitive) in array(object, "primitives")?.iter().enumerate() {
+            let field = format!("primitive {index}");
+            let kind = primitive.get("kind").and_then(Value::as_str);
+            let geometry = primitive.get("geometry").unwrap_or(&Value::Null);
+            let mass = rational_of(primitive.get("mass").unwrap_or(&Value::Null), &field)?;
+            out.push(match kind {
+                Some("point") => {
+                    let g = rationals(geometry, 2, &field)?;
+                    Source::Point([g[0].clone(), g[1].clone()], mass)
+                }
+                Some("segment") => {
+                    let g = rationals(geometry, 4, &field)?;
+                    Source::Segment(
+                        [g[0].clone(), g[1].clone(), g[2].clone(), g[3].clone()],
+                        mass,
+                    )
+                }
+                Some("rectangle") => {
+                    let g = rationals(geometry, 4, &field)?;
+                    Source::Rect(
+                        [g[0].clone(), g[1].clone(), g[2].clone(), g[3].clone()],
+                        mass,
+                    )
+                }
+                _ => return refuse(format!("{field} has an unknown kind")),
+            });
+        }
+        return Ok(("L", Domain::Tokoharu, out));
+    }
+    let rows = array(object, "rectangles")?;
+    if rows.first().is_some_and(Value::is_object) {
+        if !array(object, "points")?.is_empty() {
+            return refuse("format M with a nonempty points list is refused (spec 1.4)");
+        }
+        for (index, row) in rows.iter().enumerate() {
+            let field = format!("rectangle {index}");
+            let g = rationals(row.get("rectangle").unwrap_or(&Value::Null), 4, &field)?;
+            let mass = rational_of(row.get("mass").unwrap_or(&Value::Null), &field)?;
+            out.push(Source::Rect(
+                [g[0].clone(), g[1].clone(), g[2].clone(), g[3].clone()],
+                mass,
+            ));
+        }
+        return Ok(("M", Domain::PerBin, out));
+    }
+    let weights = array(object, "weights")?;
+    if rows.len() != weights.len() {
+        return refuse("rectangles and weights differ in length");
+    }
+    for (index, (row, weight)) in rows.iter().zip(weights).enumerate() {
+        let weight = rational_of(weight, &format!("weight {index}"))?;
+        if weight.is_zero() {
+            // A zero weight puts no mass anywhere, so its coordinates cannot matter.
+            if row.as_array().is_none_or(|r| r.len() != 4) {
+                return refuse(format!("rectangle {index} needs four coordinates"));
+            }
+            continue;
+        }
+        let g = rationals(row, 4, &format!("rectangle {index}"))?;
+        out.push(Source::Rect(
+            [g[0].clone(), g[1].clone(), g[2].clone(), g[3].clone()],
+            weight,
+        ));
+    }
+    Ok(("T", Domain::Tokoharu, out))
+}
+
+/// The eight images of a point under the symmetries of `[0, L]^2`.
+fn point_images(side: &BigRational, x: &BigRational, y: &BigRational) -> [[BigRational; 2]; 8] {
+    let rx = side - x;
+    let ry = side - y;
+    [
+        [x.clone(), y.clone()],
+        [rx.clone(), y.clone()],
+        [x.clone(), ry.clone()],
+        [rx.clone(), ry.clone()],
+        [y.clone(), x.clone()],
+        [ry.clone(), x.clone()],
+        [y.clone(), rx.clone()],
+        [ry, rx],
+    ]
 }
 
 /// An admission refusal.
@@ -232,6 +427,38 @@ pub fn d4_images(
     ]
 }
 
+/// The upper end of the reduced centre domain `[L/2, upper]` at net index
+/// `index`, by the certificate's declared domain (spec 1.5).
+///
+/// # Errors
+///
+/// Refuses a domain with no interior (`upper <= L/2`).
+pub fn domain_upper(cert: &Certificate, index: u32) -> Result<BigRational, String> {
+    let two = ratio(2, 1);
+    let one = ratio(1, 1);
+    let upper = match cert.domain {
+        Domain::Tokoharu => {
+            let (c, s) = direction(&cert.step, index);
+            &cert.side - &cert.core * (c + s) / &two
+        }
+        Domain::PerBin => {
+            let t = &cert.step * BigRational::from_integer(BigInt::from(index));
+            let half_step = &cert.step / &two;
+            let a = if t > half_step {
+                t - half_step
+            } else {
+                BigRational::zero()
+            };
+            let rho = (&one + &two * &a - &a * &a) / (&two * (&one + &a * &a));
+            &cert.side - rho
+        }
+    };
+    if upper <= &cert.side / &two {
+        return Err(format!("the centre domain at index {index} is empty"));
+    }
+    Ok(upper)
+}
+
 /// The net direction's exact cosine and sine, `t = r D`, `theta = 2 atan t`.
 #[must_use]
 pub fn direction(step: &BigRational, index: u32) -> (BigRational, BigRational) {
@@ -332,64 +559,93 @@ pub fn admit(
         return refuse("the net overshoots pi/2 (t >= 1)");
     }
 
-    let rows = object
-        .get("rectangles")
-        .and_then(Value::as_array)
-        .ok_or(AdmissionError("missing rectangles array".into()))?;
-    let weights = object
-        .get("weights")
-        .and_then(Value::as_array)
-        .ok_or(AdmissionError("missing weights array".into()))?;
-    if rows.len() != weights.len() {
-        return refuse("rectangles and weights differ in length");
+    let (format, domain, listed) = sources(object)?;
+    if listed.len() > 1_000_000 {
+        return refuse("too many primitives");
     }
-    if rows.len() > 1_000_000 {
-        return refuse("too many rectangles");
-    }
+    let inside = |q: &BigRational| &zero <= q && q <= &side;
     let mut merged: HashMap<[BigRational; 4], BigRational> = HashMap::new();
     let mut order: Vec<[BigRational; 4]> = Vec::new();
+    let mut point_mass: HashMap<[BigRational; 2], BigRational> = HashMap::new();
+    let mut point_order: Vec<[BigRational; 2]> = Vec::new();
+    let mut segment_mass: HashMap<[BigRational; 4], BigRational> = HashMap::new();
+    let mut segment_order: Vec<[BigRational; 4]> = Vec::new();
     let mut mass = BigRational::zero();
     let mut source_rectangles = 0usize;
     let eight = ratio(8, 1);
-    for (index, (row, weight)) in rows.iter().zip(weights).enumerate() {
-        let weight = rational_of(weight, &format!("weight {index}"))?;
-        if weight.is_negative() {
-            return refuse(format!("weight {index} is negative"));
-        }
-        let Some(row) = row.as_array().filter(|r| r.len() == 4) else {
-            return refuse(format!("rectangle {index} needs four coordinates"));
+    for (index, source) in listed.iter().enumerate() {
+        let weight = match source {
+            Source::Rect(_, w) | Source::Point(_, w) | Source::Segment(_, w) => w,
         };
-        // A zero weight puts no mass anywhere, so its coordinates cannot matter.
+        if weight.is_negative() {
+            return refuse(format!("mass of primitive {index} is negative"));
+        }
+        mass += weight;
         if weight.is_zero() {
             continue;
         }
-        let coordinates: Vec<BigRational> = row
-            .iter()
-            .map(|v| rational_of(v, &format!("rectangle {index}")))
-            .collect::<Result<_, _>>()?;
-        let (x1, y1, x2, y2) = (
-            &coordinates[0],
-            &coordinates[1],
-            &coordinates[2],
-            &coordinates[3],
-        );
-        if !(&zero <= x1 && x1 < x2 && x2 <= &side && &zero <= y1 && y1 < y2 && y2 <= &side) {
-            return refuse(format!(
-                "positive rectangle {index} is degenerate or outside [0, L]^2"
-            ));
-        }
-        source_rectangles += 1;
-        let area = (x2 - x1) * (y2 - y1);
-        let density = &weight / (&eight * &area);
-        mass += &weight;
-        for image in d4_images(&side, x1, y1, x2, y2) {
-            if let Some(total) = merged.get_mut(&image) {
-                *total += &density;
-            } else {
-                order.push(image.clone());
-                merged.insert(image, density.clone());
+        let share = weight / &eight;
+        match source {
+            Source::Rect([x1, y1, x2, y2], _) => {
+                if !(inside(x1) && x1 < x2 && inside(x2) && inside(y1) && y1 < y2 && inside(y2)) {
+                    return refuse(format!(
+                        "positive rectangle {index} is degenerate or outside [0, L]^2"
+                    ));
+                }
+                source_rectangles += 1;
+                let density = &share / ((x2 - x1) * (y2 - y1));
+                for image in d4_images(&side, x1, y1, x2, y2) {
+                    if let Some(total) = merged.get_mut(&image) {
+                        *total += &density;
+                    } else {
+                        order.push(image.clone());
+                        merged.insert(image, density.clone());
+                    }
+                }
+            }
+            Source::Point([x, y], _) => {
+                if !(inside(x) && inside(y)) {
+                    return refuse(format!("point {index} is outside [0, L]^2"));
+                }
+                for image in point_images(&side, x, y) {
+                    if let Some(total) = point_mass.get_mut(&image) {
+                        *total += &share;
+                    } else {
+                        point_order.push(image.clone());
+                        point_mass.insert(image, share.clone());
+                    }
+                }
+            }
+            Source::Segment([x0, y0, x1, y1], _) => {
+                if !(inside(x0) && inside(y0) && inside(x1) && inside(y1)) {
+                    return refuse(format!("segment {index} is outside [0, L]^2"));
+                }
+                if x0 == x1 && y0 == y1 {
+                    return refuse(format!("segment {index} has length zero"));
+                }
+                let first = point_images(&side, x0, y0);
+                let second = point_images(&side, x1, y1);
+                for (a, b) in first.into_iter().zip(second) {
+                    // The same segment either way round is one key.
+                    let key = if (&a[0], &a[1]) <= (&b[0], &b[1]) {
+                        [a[0].clone(), a[1].clone(), b[0].clone(), b[1].clone()]
+                    } else {
+                        [b[0].clone(), b[1].clone(), a[0].clone(), a[1].clone()]
+                    };
+                    if let Some(total) = segment_mass.get_mut(&key) {
+                        *total += &share;
+                    } else {
+                        segment_order.push(key.clone());
+                        segment_mass.insert(key, share.clone());
+                    }
+                }
             }
         }
+    }
+    if let Some(declared) = object.get("total_mass")
+        && rational_of(declared, "total_mass")? != mass
+    {
+        return refuse("total_mass is not the exact sum of the masses");
     }
     if !(mass.is_positive() && mass < BigRational::from_integer(BigInt::from(n))) {
         return refuse(format!(
@@ -414,13 +670,51 @@ pub fn admit(
         integrated += image_mass;
         exact.push(rect);
     }
+    let mut exact_points = Vec::with_capacity(point_order.len());
+    let mut points = Vec::with_capacity(point_order.len());
+    for key in point_order {
+        let mass = point_mass[&key].clone();
+        integrated += &mass;
+        let [x, y] = key;
+        points.push(Point {
+            x: crate::exact::approx(&x).map_err(AdmissionError)?,
+            y: crate::exact::approx(&y).map_err(AdmissionError)?,
+            mass: enclose(&mass).map_err(AdmissionError)?,
+        });
+        exact_points.push(ExactPoint { x, y, mass });
+    }
+    let mut exact_segments = Vec::with_capacity(segment_order.len());
+    let mut segments = Vec::with_capacity(segment_order.len());
+    for key in segment_order {
+        let mass = segment_mass[&key].clone();
+        integrated += &mass;
+        let [x0, y0, x1, y1] = key;
+        let approx = |q: &BigRational| crate::exact::approx(q).map_err(AdmissionError);
+        segments.push(Segment {
+            x0: approx(&x0)?,
+            y0: approx(&y0)?,
+            x1: approx(&x1)?,
+            y1: approx(&y1)?,
+            mass: enclose(&mass).map_err(AdmissionError)?,
+        });
+        exact_segments.push(ExactSegment {
+            p0: (x0, y0),
+            p1: (x1, y1),
+            mass,
+        });
+    }
     if integrated != mass {
         return refuse("the D4 expansion does not integrate to the declared mass");
     }
-    let declared_threshold = object
-        .get("coverage_lower_bound_exact")
-        .map(|value| rational_of(value, "coverage_lower_bound_exact"))
-        .transpose()?;
+    // Formats M and L claim coverage one (spec 1.4); T declares its threshold.
+    let declared_threshold = if format == "T" {
+        object
+            .get("coverage_lower_bound_exact")
+            .map(|value| rational_of(value, "coverage_lower_bound_exact"))
+            .transpose()?
+    } else {
+        Some(ratio(1, 1))
+    };
     let input_sha256 = Sha256::digest(raw)
         .iter()
         .fold(String::new(), |mut text, byte| {
@@ -440,6 +734,12 @@ pub fn admit(
         rects,
         input_sha256,
         declared_threshold,
+        format,
+        domain,
+        exact_points,
+        points,
+        exact_segments,
+        segments,
     })
 }
 

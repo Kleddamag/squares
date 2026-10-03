@@ -782,6 +782,7 @@ case or experiment separately.
 | [Soundness of sqverify-fast](packing/sqverify_fast/SOUNDNESS.md) | component scope and use | definitive | maintained | — |
 | [sqverify-fast](packing/sqverify_fast/README.md) | component scope and use | supporting | maintained | — |
 | [Milestone A Census](packing/benchmarks/measure-verifier/census/README.md) | generated status view | generated | generated | — |
+| [Milestone B Census](packing/benchmarks/measure-verifier/census-mixed/README.md) | generated status view | generated | generated | — |
 | [Whole `rect_n32_L595`: c2 Against verify.cpp](packing/benchmarks/measure-verifier/experiments/exp-006-whole-certificate-n32.md) | research synthesis | record | retained | — |
 | [H-005: One Error Budget per Edge](packing/benchmarks/measure-verifier/experiments/exp-007-h005-error-budget.md) | research synthesis | record | retained | — |
 | [H-008: Skipping Hopeless Boxes’ Own Enclosures](packing/benchmarks/measure-verifier/experiments/exp-008-h008-skip-hopeless-own-gradient.md) | research synthesis | record | retained | — |
@@ -792,6 +793,12 @@ case or experiment separately.
 | [c2 Beside verify.cpp, Single Directions](packing/benchmarks/measure-verifier/experiments/exp-011-c2-cells-against-verify-cpp.md) | research synthesis | record | retained | — |
 | [H-010: Reciprocal Node Placement](packing/benchmarks/measure-verifier/experiments/exp-012-h010-reciprocal-node-placement.md) | research synthesis | record | retained | — |
 | [Reciprocals for Node Placement](packing/benchmarks/measure-verifier/hypotheses/H-010-reciprocal-node-placement.md) | implementation plan | supporting | maintained | — |
+| [Starting at the Low Side of a Sign-Definite Axis](packing/benchmarks/measure-verifier/hypotheses/H-011-sign-definite-side-start.md) | implementation plan | supporting | maintained | — |
+| [Fused First-Leg Enclosures](packing/benchmarks/measure-verifier/hypotheses/H-012-fused-first-leg-enclosures.md) | implementation plan | supporting | maintained | — |
+| [H-011: Sign-Definite Side Starts](packing/benchmarks/measure-verifier/experiments/exp-013-h011-sign-definite-side-start.md) | research synthesis | record | retained | — |
+| [The Release Audit’s Price](packing/benchmarks/measure-verifier/experiments/exp-014-release-audit-cost.md) | research synthesis | record | retained | — |
+| [Milestone B’s Price on Rectangle Certificates](packing/benchmarks/measure-verifier/experiments/exp-015-milestone-b-cost.md) | research synthesis | record | retained | — |
+| [H-012: Fused First-Leg Enclosures](packing/benchmarks/measure-verifier/experiments/exp-016-h012-fused-first-leg-enclosures.md) | research synthesis | record | retained | — |
 | [Independence Record for sqverify-fast](packing/sqverify_fast/INDEPENDENCE.md) | research synthesis | record | maintained | — |
 | [PR 127 Integration Checkpoint Evidence](packing/campaign/series/series-000-smoke-and-calibration/results/agenda-030/pr127-checkpoint/README.md) | research synthesis | record | retained | — |
 | [Correction: the stacking capacity bound in lane X3’s box sweep is false](packing/campaign/series/series-000-smoke-and-calibration/results/agenda-034/lane-x3-box-sweep-capacity-correction.md) | dated review record | record | retained | — |

@@ -3,13 +3,40 @@
 //!
 //! The rotated square is clipped against each rectangle by the four
 //! axis-aligned half-planes (Sutherland--Hodgman) in exact rationals and the
-//! clipped polygon's area is the shoelace sum. Nothing here is rounded.
+//! clipped polygon's area is the shoelace sum. A point counts when it lies in
+//! the closed square, a segment by the parametric length of its closed
+//! intersection (spec 1.2). Nothing here is rounded.
 
 use num_bigint::BigInt;
 use num_rational::BigRational;
 use num_traits::{Signed, Zero};
 
 use crate::certificate::{Certificate, ExactRect};
+
+/// Clip `[lo, hi]` to the parameters where `a + lambda b` lies in `[-h, h]`.
+fn clip_parameter(
+    a: &BigRational,
+    b: &BigRational,
+    h: &BigRational,
+    lo: &mut BigRational,
+    hi: &mut BigRational,
+) {
+    if b.is_zero() {
+        if &a.abs() > h {
+            *hi = lo.clone();
+        }
+        return;
+    }
+    let t1 = (-h - a) / b;
+    let t2 = (h - a) / b;
+    let (t_lo, t_hi) = if t1 <= t2 { (t1, t2) } else { (t2, t1) };
+    if t_lo > *lo {
+        *lo = t_lo;
+    }
+    if t_hi < *hi {
+        *hi = t_hi;
+    }
+}
 
 type Point = (BigRational, BigRational);
 
@@ -130,6 +157,29 @@ pub fn coverage(
             continue;
         }
         total += &rect.density * intersection_area(rect, &polygon);
+    }
+    let h = &cert.core / BigRational::from_integer(BigInt::from(2));
+    // Local coordinates along the square's axes u = (c, s) and v = (-s, c).
+    let local = |px: &BigRational, py: &BigRational| {
+        let (dx, dy) = (px - x, py - y);
+        (c * &dx + s * &dy, c * &dy - s * &dx)
+    };
+    for point in &cert.exact_points {
+        let (u, v) = local(&point.x, &point.y);
+        if u.abs() <= h && v.abs() <= h {
+            total += &point.mass;
+        }
+    }
+    for segment in &cert.exact_segments {
+        let (u0, v0) = local(&segment.p0.0, &segment.p0.1);
+        let (u1, v1) = local(&segment.p1.0, &segment.p1.1);
+        let mut lo = BigRational::zero();
+        let mut hi = BigRational::from_integer(BigInt::from(1));
+        clip_parameter(&u0, &(&u1 - &u0), &h, &mut lo, &mut hi);
+        clip_parameter(&v0, &(&v1 - &v0), &h, &mut lo, &mut hi);
+        if hi > lo {
+            total += &segment.mass * (hi - lo);
+        }
     }
     total
 }

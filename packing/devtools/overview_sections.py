@@ -34,7 +34,6 @@ from devtools.overview_data import (
     Overview,
     Result,
     compress,
-    math_html,
     prose_html,
     tex_bounds,
 )
@@ -159,6 +158,17 @@ def is_site_page(href: str) -> bool:
     on this page are not pages."""
     page = href.partition("#")[0].partition("?")[0]
     return page in SITE_PAGES or (page.endswith("/") and f"{page}index.html" in SITE_PAGES)
+
+
+def is_case_record(href: str) -> bool:
+    """Whether `href` is a case's record file, `cases/11.html`, from the site's root
+    (`render_case_pages.case_url`): a page a reader may land on and share, though it is
+    the record alone and not one of `SITE_PAGES`."""
+    from devtools import overview_data  # noqa: PLC0415
+    from devtools.render_case_pages import case_url  # noqa: PLC0415
+
+    page = href.partition("#")[0].partition("?")[0]
+    return page in {case_url(n) for n in overview_data.load().cases}
 
 
 def embed_url(href: str) -> str:
@@ -579,7 +589,8 @@ def result_fragment(result_id: str) -> str:
 #: The site's one star, the mark of a recent lower bound (paper-design.md), as an escape.
 STAR = "\u2605"
 
-#: What a starred result is called, as the film and the atlas popover call a starred case.
+#: What a starred result is called, as the film and a case's visual summary call a starred
+#: case.
 NEW_RESULT = "new result"
 
 
@@ -589,8 +600,8 @@ def new_result_label(result: Result, overview: Overview) -> str:
 
     The rule is the atlas's (`overview_data.starred_results`): the result is the one a
     case's verified lower bound rests on, and that bound is recent, proved or published
-    since `RECENT_SINCE`. It is the star and the "new result" of the film and of the
-    atlas popover, asked of the result instead of the case.
+    since `RECENT_SINCE`. It is the star and the "new result" of the film and of a case's
+    visual summary, asked of the result instead of the case.
     """
     cases = overview.starred.get(result.id)
     if not cases:
@@ -2062,63 +2073,6 @@ def atlas_film_facts() -> list[dict[str, object]]:
     return facts
 
 
-def _atlas_formula(key: str, tex: str) -> str:
-    return (
-        f'<span class="site-atlas-gap-formula" data-atlas-formula="{key}">'
-        f"{math_html(tex)}</span>"
-    )
-
-
-def atlas_popover() -> str:
-    """The one popover every atlas cell opens, filled by `overview/atlas-grid.js` from
-    the page's film facts. Its slots are empty here but for what is the same at every n:
-    the gap bar's two formulas, and the template each value's math is typeset from."""
-    return (
-        '<div class="site-popover site-atlas-pop" id="pop-atlas" popover '
-        'data-go="atlas" data-atlas-popover '
-        'role="dialog" aria-labelledby="pop-atlas-title">'
-        '<button type="button" class="site-popover-close" popovertarget="pop-atlas" '
-        'popovertargetaction="hide" aria-label="Close">\u00d7</button>'
-        '<span class="site-card-label">Best known packing</span>'
-        f'<p class="site-popover-value site-atlas-pop-title" {SERIF_MATH} '
-        'id="pop-atlas-title" data-atlas-title></p>'
-        '<div class="site-atlas-pop-body">'
-        '<div class="site-atlas-pop-figure" data-atlas-figure></div>'
-        '<div class="site-atlas-pop-facts">'
-        '<div class="site-atlas-gap" data-atlas-gap>'
-        '<div class="site-atlas-gap-values" data-atlas-gap-values></div>'
-        '<div class="site-atlas-gap-rail" data-atlas-gap-rail></div>'
-        '<div class="site-atlas-gap-row" data-atlas-gap-integers></div>'
-        '<div class="site-atlas-gap-row" data-atlas-gap-roots></div>'
-        '<div class="site-atlas-gap-row site-atlas-gap-formulas">'
-        + _atlas_formula("area", r"\sqrt{n}")
-        + _atlas_formula("grid", r"\sqrt{n} + 1")
-        + "</div></div>"
-        '<p class="site-atlas-pop-head">Proven</p>'
-        '<p class="site-atlas-pop-bound" data-atlas-bound></p>'
-        '<ul class="site-atlas-pop-badges" data-atlas-badges></ul>'
-        "<div data-atlas-citation>"
-        '<p class="site-atlas-pop-head">Citation '
-        '<span class="site-atlas-pop-record">record <span data-atlas-record></span></span></p>'
-        '<p class="site-atlas-pop-cite" data-atlas-cite="lower"></p>'
-        '<p class="site-atlas-pop-cite" data-atlas-cite="upper"></p></div>'
-        '<div data-atlas-open><p class="site-atlas-pop-head">Open</p>'
-        '<ul class="site-atlas-pop-badges" data-atlas-open-items></ul></div>'
-        "</div></div>"
-        '<p class="site-popover-actions">'
-        '<a class="site-popover-action" data-go="page" data-atlas-expand href="cases.html">'
-        "See All Cases</a>"
-        '<span class="site-atlas-pop-step">'
-        '<button type="button" data-atlas-step="-1" aria-label="Previous case">'
-        f"{step_arrow(back=True)}</button>"
-        '<button type="button" data-atlas-step="1" aria-label="Next case">'
-        f"{step_arrow()}</button>"
-        "</span></p>"
-        f"<template data-atlas-math>{math_html('n')}</template>"
-        "</div>"
-    )
-
-
 #: The directions of the site's one arrow (paper-design.md, Arrows): each is the one
 #: drawing, `--site-arrow` in site.css, turned or mirrored by `data-arrow`.
 #: The arrow's five directions, and the double chevron's two: `double-down` for a control
@@ -2134,11 +2088,6 @@ def arrow_icon(direction: str = "right") -> str:
     if direction not in ARROW_DIRECTIONS:
         raise ValueError(f"unknown arrow direction {direction!r}")
     return f'<span class="site-icon-arrow" data-arrow="{direction}" aria-hidden="true"></span>'
-
-
-def step_arrow(*, back: bool = False) -> str:
-    """The atlas stepper's arrow: the site's arrow, left for the previous case."""
-    return arrow_icon("left" if back else "right")
 
 
 #: The atlas's two views, in tab order: the key the block's `data-atlas-view` and the
@@ -2176,9 +2125,10 @@ def atlas_view_tabs() -> str:
 
 def atlas_grid() -> str:
     """Every tracked case's known-best packing, n = 1 to 324, as a grid of drawings,
-    each a link to its case record. With scripts, `overview/atlas-grid.js` opens a cell
-    in the one atlas popover instead: what the ascent film's panel says about that n,
-    from `atlas_film_facts`, beside the drawing shown large, with a button to the record.
+    each a link to its case record. With scripts, a cell opens the page's one case
+    popover instead (`overview/case-popover.js`), which shows the case's record as its
+    own page does: the visual summary, the drawing large and the bounds' number line,
+    then the record's further data (`render_case_pages`, think-t21m).
 
     The block is rendered in the grid view (`data-atlas-view`), under tabs that switch
     it to the triangle (`atlas_view_tabs`). Both views are one set of tiles: the triangle
@@ -2190,18 +2140,17 @@ def atlas_grid() -> str:
     parses but does not render. The script places the first `ATLAS_FIRST` when the grid
     nears the viewport, so the page opens as fast as it did without them, and the rest
     only when the reader presses the button under the grid, "Show More" with the double
-    chevron down, or steps the popover past the last case shown. The button then reads
+    chevron down. The button then reads
     "Show Less" with the chevron up and collapses the grid again; its name for assistive
     technology says what each does and how many cases that is (`data-name-more`,
     `data-name-less`), it controls the box of tiles (`ATLAS_PANEL`), and it is the site's
     one action under a table or grid (`.site-action`, with "See all results"). Its row
-    ships `hidden`, since without the script it would do nothing. The facts are one JSON
-    element, a tenth the size the same facts would take as markup in every cell.
+    ships `hidden`, since without the script it would do nothing. The atlas popover,
+    filled by the script from a JSON of the film's facts, stood after the block until
+    2026-10-03; the case popover took its place.
     """
-    import json  # noqa: PLC0415
-
     from devtools import render_frontier_page as frontier  # noqa: PLC0415
-    from devtools.render_case_pages import case_url  # noqa: PLC0415
+    from devtools.render_case_pages import case_popover, case_url  # noqa: PLC0415
 
     cases = frontier.frontier_cases()
     cells = []
@@ -2210,12 +2159,12 @@ def atlas_grid() -> str:
         status = case["status"]
         square = " data-atlas-square" if math.isqrt(n) ** 2 == n else ""
         cells.append(
-            f'<a class="site-atlas-cell" href="{case_url(n)}" data-atlas-n="{n}"{square} '
+            f'<a class="site-atlas-cell" href="{case_url(n)}" data-case="{n}" '
+            f'data-atlas-n="{n}"{square} '
             f'data-status="{_esc(status)}" aria-label="n = {n}, {_esc(status)}">'
             f"{frontier.packing_svg(n, units=ATLAS_UNITS)}"
             f'<span class="site-atlas-n">{n}</span></a>'
         )
-    facts = json.dumps(atlas_film_facts(), ensure_ascii=False, separators=(",", ":"))
     more, less = "Show More", "Show Less"
     name_more = f"Show more: all {len(cases)} cases"
     name_less = f"Show less: the first {ATLAS_FIRST}"
@@ -2224,9 +2173,6 @@ def atlas_grid() -> str:
         f"data-atlas-grid>{atlas_view_tabs()}"
         f"<template data-atlas-first>{''.join(cells[:ATLAS_FIRST])}</template>"
         f"<template data-atlas-rest>{''.join(cells[ATLAS_FIRST:])}</template>"
-        '<script type="application/json" data-atlas-facts>'
-        + facts.replace("</", "<\\/")
-        + "</script>"
         # The triangle's one-line key ("Each row ends at a perfect square…") stood here
         # and the line under the expander ("Every case from n = 1 to 324 is also in the
         # frontier survey, and each has a case record.") after it, until 2026-10-02 (the
@@ -2238,5 +2184,5 @@ def atlas_grid() -> str:
         f'aria-label="{name_more}" data-label-more="{more}" data-label-less="{less}" '
         f'data-name-more="{name_more}" data-name-less="{name_less}">'
         f"<span data-atlas-label>{more}</span>{arrow_icon('double-down')}</button></p>"
-        f"</div>{atlas_popover()}"
+        f"</div>{case_popover()}"
     )

@@ -853,8 +853,8 @@ def test_check_requires_a_forwarder_at_every_address_a_page_used_to_have(
 ) -> None:
     """A page that moved or was withdrawn is still served at its old address, as a
     forwarder naming where a visit goes now (`render_overview.MOVED_PAGES`): the three
-    repository documents that left the site, and the papers, which moved under
-    `papers/`. A deploy without one 404s every link written before the change. It fails
+    repository documents that left the site, the papers, which moved under `papers/`,
+    and the one page of every case record, whose records moved under `cases/`. A deploy without one 404s every link written before the change. It fails
     when an old address is gone, when the page there still is the old page, and when a
     forwarder leads anywhere but where a visit should go, in any one of the four places
     it says where that is."""
@@ -866,6 +866,7 @@ def test_check_requires_a_forwarder_at_every_address_a_page_used_to_have(
         "explainer.html",
         "n11-optimality/t-060-explainer.html",
         "n11-optimality/index.html",
+        "cases.html",
     }
     assert not set(moved) & set(render_overview.SITE_PAGES)
     requested: list[str] = []

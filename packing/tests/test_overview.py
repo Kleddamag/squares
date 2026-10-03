@@ -24,6 +24,7 @@ from devtools import (
     render_case_pages,
     render_overview,
     render_recent_results,
+    result_overview,
     result_status,
 )
 from devtools.check_results import scope_values
@@ -61,8 +62,8 @@ def register() -> list[dict]:
 @pytest.fixture(scope="module")
 def rendered() -> Callable[[str], str]:
     """Any site page by name, from the one render of each the test process shares
-    (`tests.site_renders`). Every page is rendered here, during setup, `cases.html` and
-    its 9 MB among them, so no check carries a render in its own call time."""
+    (`tests.site_renders`). Every page is rendered here, during setup, the case record
+    page among them, so no check carries a render in its own call time."""
     site_renders.pages()
     return site_renders.html
 
@@ -119,9 +120,7 @@ def test_the_results_table_has_its_own_page_and_the_overview_points_to_it(
     ) in recent
 
 
-def test_every_link_to_a_result_goes_to_its_row(
-    page: str, results: str, rendered: Callable[[str], str]
-) -> None:
+def test_every_link_to_a_result_goes_to_its_row(page: str, results: str) -> None:
     """The overview's recent table and replay table, and the case records, link a
     result at its row on the results page, never at a fragment of their own page."""
     rows = {row_id for row_id, _, _ in ROW.findall(results)}
@@ -132,9 +131,10 @@ def test_every_link_to_a_result_goes_to_its_row(
     assert set(linked) - rows == {"verification-ladders"}
     assert 'id="verification-ladders"' in results
     assert not re.search(r'href="#t-\d+"', page)
-    cases = rendered("cases.html")
-    assert set(re.findall(r'href="all-results\.html#([^"]+)"', cases)) <= rows
-    assert 'href="index.html#t-' not in cases
+    for record in site_renders.case_records().values():
+        assert set(re.findall(r'href="\.\./all-results\.html#([^"]+)"', record)) <= rows
+        assert 'href="index.html#t-' not in record
+        assert 'href="../index.html#t-' not in record
 
 
 def test_every_moved_fragment_is_one_the_forwarder_sends_on(page: str, results: str) -> None:
@@ -410,7 +410,8 @@ def test_a_site_page_is_a_page_the_site_serves() -> None:
         "workbench/",
         overview_sections.OPTIMALITY_PAPER,
         "frontier.html?recent=true",
-        "cases.html#n-11",
+        "cases/",
+        "cases/#n-11",
         overview_sections.result_url("T-060"),
         *(href for href, *_ in overview_sections.PAGES),
         *(paper.href for paper in overview_sections.PAPERS),
@@ -462,13 +463,14 @@ def test_a_card_hero_is_served_beside_the_page_never_fetched() -> None:
 def test_the_atlas_grid_draws_every_case_and_places_it_lazily(page: str) -> None:
     """One cell per tracked case, each linking to its case record, in two templates the
     script places: the first hundred when the grid comes near, the rest on expanding."""
-    grid = page.split("data-atlas-grid>", 1)[1].split("data-atlas-facts>", 1)[0]
+    grid = page.split("data-atlas-grid>", 1)[1].split('<p class="site-action-row', 1)[0]
 
     def cells(which: str) -> list[int]:
         template = grid.split(f"<template data-atlas-{which}>", 1)[1]
         template = template.split("</template>", maxsplit=1)[0]
         found = re.findall(
-            r'<a class="site-atlas-cell" href="cases\.html#n-(\d+)" data-atlas-n="(\d+)"',
+            r'<a class="site-atlas-cell" href="cases/(\d+)\.html" data-case="\d+" '
+            r'data-atlas-n="(\d+)"',
             template,
         )
         assert all(n == cell for n, cell in found)
@@ -511,8 +513,6 @@ def test_the_atlas_grid_expands_from_100_to_324_with_one_button() -> None:
     assert 'toggleChevron.dataset.arrow = open ? "double-up" : "double-down"' in script
     assert "toggle.textContent" not in script
     assert "rest.append(restTemplate.content.cloneNode(true))" in script
-    step = script[script.index("A case the grid does not show yet") :]
-    assert "expandGrid(true)" in step[: step.index("show(next)")]
 
 
 def test_the_atlas_expander_reuses_the_action_button_and_tokens() -> None:
@@ -598,7 +598,7 @@ def test_the_atlas_marks_each_perfect_square_and_nothing_else_on_a_tile(page: st
     """A perfect square ends its row of the triangle, and its tile says so; that mark is
     all the triangle adds to a tile's markup. Where a tile stands is the script's to
     write, since it follows from the window's width."""
-    grid = page.split("data-atlas-grid>", 1)[1].split("data-atlas-facts>", 1)[0]
+    grid = page.split("data-atlas-grid>", 1)[1].split('<p class="site-action-row', 1)[0]
     squares = re.findall(r'data-atlas-n="(\d+)" data-atlas-square ', grid)
     assert [int(n) for n in squares] == [k * k for k in range(1, 19)]
     assert grid.count("data-atlas-square") == 18
@@ -712,19 +712,13 @@ def test_the_triangle_is_sized_and_timed_by_tokens_the_script_reads() -> None:
         assert sized not in script
 
 
-def _atlas_facts(page: str) -> dict[int, dict]:
-    import json  # noqa: PLC0415
-
-    body = page.split('<script type="application/json" data-atlas-facts>', 1)[1]
-    return {fact["n"]: fact for fact in json.loads(body.split("</script>", 1)[0])}
-
-
-def test_the_atlas_popover_carries_what_the_film_shows_for_each_case(page: str) -> None:
-    """The one atlas popover is filled from the grid's facts: for n = 11, settled by
-    T-060, the exact value, its star and badges and both bounds' sources with this
-    project's notes; for n = 17, still open, the film's chained bound and what is open;
-    all read from the atlas figure and `bound-citations.json`."""
-    facts = _atlas_facts(page)
+def test_a_cases_visual_summary_carries_what_the_film_shows() -> None:
+    """A case's visual summary, which opens its record (`render_case_pages.
+    visual_summary`), is the film's panel for the case: for n = 11, settled by T-060,
+    the exact value, its star and badges and both bounds' sources with this project's
+    notes; for n = 17, still open, the film's chained bound and what is open; all read
+    from the atlas figure and `bound-citations.json` (`atlas_film_facts`)."""
+    facts = result_overview.film_facts()
     assert sorted(facts) == list(range(1, 325))
     eleven = facts[11]
     assert eleven["exact"] is True
@@ -747,23 +741,23 @@ def test_the_atlas_popover_carries_what_the_film_shows_for_each_case(page: str) 
     assert seventeen["open"] == ["optimality"]
     assert seventeen["cite"]["lower"]["note"] == "(confirmed T-043)"
     assert facts[1] == {**facts[1], "exact": True, "upper": "1", "lower": None, "open": []}
-    assert page.count('id="pop-atlas" popover') == 1
-    assert page.count(" data-atlas-popover ") == 1
 
 
-def test_the_atlas_popover_sets_its_math_and_leads_to_the_record(page: str) -> None:
-    """Its math is kpress's own math node (the formulas under the gap bar, and the
-    template every value is typeset from), never raw TeX; its button is Expand to the
-    case record, which the script points at `cases.html#n-N` for the case shown."""
-    popover = page.split('id="pop-atlas" popover', 1)[1].split("</template></div>", 1)[0]
-    assert popover.count('class="kpress-math kpress-math-inline"') == 3
-    assert r"\sqrt{n} + 1" in popover
-    assert "$" not in popover
+def test_the_atlas_grid_opens_each_case_in_the_case_popover(page: str) -> None:
+    """A cell opens the page's one case popover, which fetches the case's record file
+    and shows its record as its own page does (think-t21m). The atlas popover the
+    script filled from a JSON of the film's facts, until 2026-10-03, is gone with its
+    JSON; its button is the case popover's, to the record's own address."""
+    assert page.count('id="pop-case" popover') == 1
+    assert 'id="pop-atlas"' not in page
+    assert "data-atlas-facts" not in page
+    popover = render_case_pages.case_popover()
+    assert popover in page
     (action,) = re.findall(r'<a class="site-popover-action"[^>]*>([^<]*)</a>', popover)
-    assert action == "See All Cases"
-    assert "data-atlas-expand" in popover
+    assert action == "Open the Case Record"
     script = render_overview.ATLAS_GRID_SCRIPT.read_text(encoding="utf-8")
-    assert 'expand.setAttribute("href", cell.getAttribute("href")' in script
+    assert "data-atlas-popover" not in script
+    assert "data-atlas-facts" not in script
     assert "site-atlas-tip" not in page
 
 
@@ -1192,7 +1186,12 @@ def test_the_frontier_survey_is_the_frontier_pages_and_its_card_is_a_page_card(
     frontier = rendered("frontier.html")
     assert "<title>The Frontier Survey · The Squares Project</title>" in frontier
     assert re.search(r'<h1 id="the-frontier-survey"[^>]*>The Frontier Survey</h1>', frontier)
-    for name in ("index.html", "frontier.html", "cases.html", render_overview.RESULTS_PAGE):
+    for name in (
+        "index.html",
+        "frontier.html",
+        render_case_pages.CASES_PAGE,
+        render_overview.RESULTS_PAGE,
+    ):
         # What a reader sees or hears: the page without its inlined styles and programs.
         text = re.sub(r"<(script|style)\b.*?</\1>", "", rendered(name), flags=re.DOTALL)
         assert "frontier atlas" not in text.lower(), name
@@ -1237,7 +1236,7 @@ def test_the_frontier_page_opens_with_the_surveys_account(
     assert "An external certificate counts once it is replayed here in full" in text
     assert "The survey audits what it records." in text
     assert "The earliest published proof of $s(7) = 3$ carries four recorded defects" in text
-    assert 'href="cases.html#n-7"' in prose
+    assert 'href="cases/7.html"' in prose
     # Each repository document is linked on `main`, in a new tab as every link off the
     # site opens.
     for path, words in (
@@ -1273,7 +1272,7 @@ def test_the_frontier_page_opens_with_the_surveys_account(
         assert author in text, author
     assert 'href="all-results.html#t-015">T-015</a>' in prose
     assert 'href="all-results.html#t-016">T-016</a>' in prose
-    assert 'href="cases.html#n-17">seventeen-square record</a>' in prose
+    assert 'href="cases/17.html">seventeen-square record</a>' in prose
     # Neither other page says any of this a second time: the Results page points to the
     # policy for results by others and does not restate when a certificate counts. Each
     # page's prose is read without its rows' popovers, whose detail may say a result
@@ -1591,8 +1590,8 @@ def test_the_document_cards_lead_with_readme_and_epistemics(
     # where a record is shown, the Records column and a result's popover, and from no
     # prose of either page.
     frontier = rendered("frontier.html")
-    assert '<a href="cases.html#n-17">seventeen-square record</a>' in frontier
-    assert '<a href="cases.html#n-7">record for seven squares</a>' in frontier
+    assert '<a href="cases/17.html">seventeen-square record</a>' in frontier
+    assert '<a href="cases/7.html">record for seven squares</a>' in frontier
     frontier_prose = frontier.split("</h1>", 1)[1].split('<div class="site-table-tools', 1)[0]
     overview_prose = re.sub(
         r'<div class="site-popover.*?</div>\s*</div>', "", page, flags=re.DOTALL
@@ -1915,7 +1914,12 @@ def _the_bar(page: str, *, root: str) -> str:
     bars = SITE_NAV_BLOCK.findall(page)
     assert len(bars) == 1, "a page carries exactly one navigation bar"
     assert bars[0].count(' aria-current="page"') == 1, "the bar marks one page current"
-    return bars[0].replace(' aria-current="page"', "").replace(f'href="{root}', 'href="')
+    bar = bars[0].replace(' aria-current="page"', "")
+    if root:
+        # A link to the root itself, written from below it, is the root's directory,
+        # `../`, where the partial writes `{{ROOT}}./`.
+        bar = bar.replace(f'href="{root}"', 'href="./"')
+    return bar.replace(f'href="{root}', 'href="')
 
 
 def _workbench_page() -> str:
@@ -1936,7 +1940,8 @@ def test_every_site_page_carries_the_same_bar(
     if name == "workbench/index.html":
         page, root = _workbench_page(), "../"
     else:
-        page, root = rendered(name), ""
+        # A page in a directory of its own, the case records', reaches the root from it.
+        page, root = rendered(name), "../" * name.count("/")
     partial = (
         render_overview.SITE_NAV.read_text(encoding="utf-8")
         .replace("{{ROOT}}", "")
@@ -2278,13 +2283,14 @@ def test_a_results_rungs_run_significance_first(overview: overview_data.Overview
 
 
 @pytest.mark.parametrize(
-    "name", ["index.html", render_overview.RESULTS_PAGE, "cases.html", "frontier.html"]
+    "name", ["index.html", render_overview.RESULTS_PAGE, "cases/11.html", "frontier.html"]
 )
 def test_every_page_lists_significance_first(name: str, rendered: Callable[[str], str]) -> None:
     """Wherever rung chips sit side by side, on any page, they run S, V, C: a result's
     three in a row, a popover, an overview or a case record, and the V and C of an entry
     awaiting replay. No run repeats a scale or puts a later one first."""
-    runs = [run for run in _rung_runs(rendered(name)) if len(run) > 1]
+    shown = site_renders.case_records()[name] if name.startswith("cases/") else rendered(name)
+    runs = [run for run in _rung_runs(shown) if len(run) > 1]
     if name != "frontier.html":
         assert any(len(run) == len(RUNG_ORDER) for run in runs), name
     for run in runs:
@@ -2988,7 +2994,7 @@ def test_recent_results_opens_with_its_table_and_says_what_it_shows_under_it(
 
 
 def test_recent_results_names_the_headline_results_at_their_rows(
-    page: str, results: str, rendered: Callable[[str], str]
+    page: str, results: str
 ) -> None:
     """The paragraph names the results that settle eleven squares, bracket seventeen and
     give the new exact values, each id at its row on the Results page and each case at
@@ -3006,13 +3012,14 @@ def test_recent_results_names_the_headline_results_at_their_rows(
         assert f'<a href="all-results.html#{result}">{result.upper()}</a>' in lead, result
         assert f'id="{result}"' in results, result
     assert re.findall(r"\bT-\d{3}\b", text) == ["T-060", "T-043", "T-065"]
-    cases = rendered("cases.html")
+    records = site_renders.case_records()
     for n in (21, 32, 45):
-        assert f'<a href="cases.html#n-{n}">' in lead, n
-        assert f'id="n-{n}"' in cases, n
+        assert f'<a href="{render_case_pages.case_url(n)}">' in lead, n
+        assert render_case_pages.case_url(n) in records, n
     hrefs = re.findall(r'href="([^"]+)"', lead)
     for href in hrefs:
-        assert href.partition("#")[0] in render_overview.SITE_PAGES, href
+        page_name = href.partition("#")[0]
+        assert page_name in render_overview.SITE_PAGES or page_name in records, href
     assert site_documents.README in check_results.READER_TIER
     assert render_overview.OVERVIEW_ARTICLE in check_results.READER_TIER
     template = render_overview.OVERVIEW_ARTICLE.read_text(encoding="utf-8")
@@ -3694,10 +3701,10 @@ def test_a_new_result_is_starred_in_both_tables_by_the_atlas_rule(
 ) -> None:
     """A row is starred where the atlas stars its case: the result holds a case's
     verified lower bound now, and that bound is recent (`starred_results`). The starred
-    cases are the ones the atlas popover and the film call a new result, each starred
+    cases are the ones a case's visual summary and the film call a new result, each starred
     result is a current best in scope, and the star is read as well as seen: it has a
     label, the row's name says so, and the prose above each table says what it marks."""
-    atlas = {n for n, fact in _atlas_facts(page).items() if fact["star"]}
+    atlas = {n for n, fact in result_overview.film_facts().items() if fact["star"]}
     assert atlas == set(overview.recent_lower)
     starred = overview.starred
     assert {n for cases in starred.values() for n in cases} == atlas
@@ -4135,7 +4142,7 @@ def test_the_frontier_results_and_papers_pages_carry_no_subtitle(
     assert render_overview.RESULTS_DESCRIPTION
     assert render_overview.PAPERS_DESCRIPTION
     assert render_overview.FRONTIER_DESCRIPTION
-    cases = rendered("cases.html")
+    cases = rendered(render_case_pages.CASES_PAGE)
     assert cases.count('<p class="subtitle">') == 1
 
 
@@ -4145,18 +4152,6 @@ def test_wrapped_chips_never_touch() -> None:
     css = render_overview.SITE_CSS.read_text(encoding="utf-8")
     rule = css[css.index(".site-chip {") :]
     assert "margin-block: 0.15rem;" in rule[: rule.index("}")]
-
-
-def test_the_atlas_stepper_draws_one_arrow_mirrored() -> None:
-    """Both stepper arrows are the site's one arrow, left and right, never the arrow
-    characters, which the site's face lacks and browsers draw from mismatched fallbacks."""
-    popover = overview_sections.atlas_popover()
-    step = popover[popover.index('<span class="site-atlas-pop-step">') :]
-    step = step[: step.index("</span></p>")]
-    assert not ARROW_CHARACTERS.search(step)
-    assert step.count(overview_sections.arrow_icon("right")) == 1
-    assert step.count(overview_sections.arrow_icon("left")) == 1
-    assert overview_sections.step_arrow(back=True) == overview_sections.arrow_icon("left")
 
 
 #: Every arrow a typed character could draw, as characters and as CSS or HTML escapes.
@@ -4303,8 +4298,8 @@ def test_every_popover_shares_one_margin_and_close_target() -> None:
 def test_a_popover_is_as_tall_as_the_window_allows() -> None:
     """A popover's height has one limit, read from one token: the window's height less a
     margin above and below, so a taller window shows more of a long panel. A card's and
-    a row's popover, the atlas popover and a result overview may be that tall, and a
-    framed page, the case popover among them, is that tall. No rule stops a popover at a
+    a row's popover, the case popover and a result overview may be that tall, and a
+    framed page is that tall. No rule stops a popover at a
     fixed height, and none declares `max-height`, which is the same property as
     `max-block-size` and would override it. A phone keeps the heights it had."""
     css = re.sub(
@@ -4319,7 +4314,7 @@ def test_a_popover_is_as_tall_as_the_window_allows() -> None:
     )
     limit = "max-block-size: var(--site-popover-max-block);"
     assert limit in _rule(css, ".site-popover")
-    assert limit in _rule(css, ".site-popover.site-atlas-pop")
+    assert limit in _rule(css, ".site-popover.site-case-pop:popover-open")
     framed = _rule(css, '.site-popover[data-go="page"]:popover-open')
     assert "block-size: var(--site-popover-max-block);" in framed
     assert "max-block-size: none;" in framed
@@ -4342,8 +4337,8 @@ def test_a_popover_is_as_tall_as_the_window_allows() -> None:
     )
     assert any("    block-size: min(88vh, 56rem);" in block for block in phone)
     assert any(
-        "  .site-popover.site-atlas-pop {\n    inline-size: calc(100vw - 1rem);\n"
-        "    max-block-size: calc(100dvh - 1rem);" in block
+        "  .site-popover.site-case-pop:popover-open {\n    max-block-size: calc(100dvh - 1rem);"
+        in block
         for block in phone
     )
 
@@ -4387,19 +4382,13 @@ def test_no_site_text_breaks_inside_a_word() -> None:
 
 
 def test_a_label_column_is_as_wide_as_its_labels() -> None:
-    """No label column has a width of its own. A row's pairs put the labels in a
-    `max-content` column and the values in the rest; the atlas panel's citation rows are
-    table rows, so their label cell is as wide as "lower" or "upper" is drawn; and a name
-    set as code is one box that a line breaks before, never inside."""
+    """No label column has a width of its own. The film panel's citation rows, in a
+    case's visual summary, are table rows, so their label cell is as wide as "lower" or
+    "upper" is drawn; and a name set as code is one box that a line breaks before, never
+    inside. The frontier row's pairs, labels in a `max-content` column, went with its
+    popover on 2026-10-03."""
     css = render_overview.SITE_CSS.read_text(encoding="utf-8")
-    pairs = _rule(css, ".site-pairs")
-    assert "grid-template-columns: max-content minmax(0, 1fr);" in pairs
-    # Two columns only where there is room: a phone lays the block out as a plain list.
-    assert "@media (width > 40rem) {\n  .site-pairs {\n" in css
-    assert css.count(".site-pairs {") == 1
-    assert "grid-template-columns: subgrid;" in _rule(
-        css, ".site-popover .site-pairs > .site-detail"
-    )
+    assert ".site-pairs" not in css
     cite = _rule(css, ".site-atlas-pop .site-atlas-pop-cite")
     assert "display: table-row;" in cite
     assert "padding-inline-start" not in cite
@@ -4454,14 +4443,8 @@ def test_a_headline_that_is_all_math_sets_it_serif(page: str) -> None:
     ) + re.findall(r'<p class="site-popover-value"([^>]*)>(.*?)</p>', page)
     assert len(headlines) > len(overview_sections.DOCUMENTS)
     for attributes, value in headlines:
-        if "data-atlas-title" in attributes:
-            continue
         marked = overview_sections.SERIF_MATH in attributes
         assert marked == overview_sections.is_all_math(value), value
-
-    card = overview_sections.atlas_popover()
-    assert 'data-math-face="serif" id="pop-atlas-title"' in card
-    assert "data-kpress-prose-font" not in card.split(">", 1)[0]
     shell = (
         render_overview.PACKING
         / "devtools"
@@ -4525,7 +4508,6 @@ def test_a_wide_block_keeps_one_gutter_inside_the_pages_content_area() -> None:
         "--site-table-grow: max(0px, 100vw - var(--site-table-bleed-from));",
         "max-width: min(36rem, 100vw - 2rem);",
         "inline-size: min(46rem, 100vw - 2rem);",
-        "max-inline-size: min(46rem, 100vw - 2rem);",
         "inline-size: min(62rem, 100vw - 2rem);",
         "inline-size: calc(100vw - 1rem);",
     ]
@@ -4591,8 +4573,9 @@ def test_every_data_table_is_the_shared_component(page: str, results: str) -> No
 
 # ---------- Row popovers: the row is the unit (think-br9e) ----------
 
-#: The pages whose tables have rows with detail.
-ROW_PAGES = ("index.html", "all-results.html", "frontier.html")
+#: The pages whose tables have rows with detail. The frontier table's rows open the
+#: case popover instead, since 2026-10-03 (`test_case_pages`).
+ROW_PAGES = ("index.html", "all-results.html")
 
 
 class _RowWiring(HTMLParser):
@@ -4702,19 +4685,16 @@ def test_every_row_with_detail_is_wired_to_one_popover(name: str) -> None:
 def test_the_tables_with_row_detail_are_the_ones_named(
     overview: overview_data.Overview,
 ) -> None:
-    """The recent table on the overview, the results table on its page and the frontier
-    atlas: each row's popover is its own, by its key."""
-    from devtools.render_frontier_page import frontier_cases  # noqa: PLC0415
-
+    """The recent table on the overview and the results table on its page: each row's
+    popover is its own, by its key. The frontier table's rows open their case's record
+    in the one case popover instead (think-necq)."""
     recent = {f"pop-result-{r.id.lower()}" for r in overview_sections.recent_results(overview)}
     assert recent
     assert set(_row_wiring("index.html").popovers) == recent
     assert set(_row_wiring("all-results.html").popovers) == {
         f"pop-result-{r.id.lower()}" for r in overview.results
     }
-    assert set(_row_wiring("frontier.html").popovers) == {
-        f"pop-frontier-n-{case['n']}" for case in frontier_cases()
-    }
+    assert not _row_wiring("frontier.html").popovers
 
 
 @pytest.mark.parametrize("name", ROW_PAGES)
@@ -4836,6 +4816,7 @@ def test_the_site_writes_each_result_overview_once_and_drops_a_withdrawn_one(
     assert (tmp_path / "result" / "t-001.html").read_text(encoding="utf-8") == "<p>one</p>\n"
     monkeypatch.setattr(render_overview, "render_all", lambda: files[:1])
     monkeypatch.setattr(render_overview, "result_fragments", lambda: files[1:])
+    monkeypatch.setattr(render_overview, "case_records", list)
     forwarder = render_overview.Page("old.html", "<p>moved</p>")
     monkeypatch.setattr(render_overview, "forwarder_pages", lambda: [forwarder])
     assert [file.name for file in render_overview.render_site()] == [
@@ -5520,6 +5501,7 @@ def test_the_site_writes_its_forwarders_and_checks_them(
     page = render_overview.Page("index.html", "<p>page</p>")
     monkeypatch.setattr(render_overview, "render_all", lambda: [page])
     monkeypatch.setattr(render_overview, "result_fragments", list)
+    monkeypatch.setattr(render_overview, "case_records", list)
     moved = [old for old, _ in render_overview.MOVED_PAGES]
     assert [file.name for file in render_overview.render_site()] == ["index.html", *moved]
     assert {"explainer.html", "n11-optimality/index.html"} < set(moved)
@@ -5543,8 +5525,13 @@ def test_a_cases_status_is_one_chip_wherever_it_is_drawn(
     accent tone it had before."""
     statuses = {case["status"] for case in overview.cases.values()}
     assert statuses == {"proved", "open"}
-    for name in ("frontier.html", "cases.html"):
-        page = rendered(name)
+    records = site_renders.case_records()
+    shown = {
+        "frontier.html": rendered("frontier.html"),
+        # A record draws its own case's status: one solved case and one open one.
+        "case records": records["cases/11.html"] + records["cases/29.html"],
+    }
+    for name, page in shown.items():
         assert 'data-tone="accent"' not in page, name
         drawn = re.findall(
             r'<span class="site-chip" data-case-status="(\w+)">(\w+)</span>', page

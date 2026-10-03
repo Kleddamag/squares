@@ -83,7 +83,6 @@ ATLAS_VIEW_SCRIPT = BROWSER / "atlas-view.js"
 ATLAS_GRID_SCRIPT = BROWSER / "atlas-grid.js"
 EMBED_SCRIPT = BROWSER / "embed.js"
 CASE_POPOVER_SCRIPT = BROWSER / "case-popover.js"
-CASE_VIEW_SCRIPT = BROWSER / "case-view.js"
 #: What starts the Visualize page's film when the page is visited.
 FILM_SCRIPT = BROWSER / "film.js"
 THEME_SCRIPT = BROWSER / "theme.js"
@@ -214,7 +213,7 @@ SITE_PAGES: tuple[str, ...] = (
     "index.html",
     "frontier.html",
     RESULTS_PAGE,
-    "cases.html",
+    "cases/index.html",
     "papers.html",
     paper_path(N11_OPTIMALITY_REVIEW),
     paper_path(N11_LOWER_BOUNDS_EXPLAINER),
@@ -243,12 +242,16 @@ MOVED_PAGES: tuple[tuple[str, str], ...] = (
     ("explainer.html", paper_path(N11_LOWER_BOUNDS_EXPLAINER)),
     ("n11-optimality/t-060-explainer.html", paper_path(N11_OPTIMALITY_REVIEW)),
     ("n11-optimality/index.html", paper_path(N11_OPTIMALITY_REVIEW)),
+    # Every record was one page, each at its fragment, until 2026-10-03 (think-bnw2): the
+    # record page takes `#n-11` and shows that case's record file, `cases/11.html`.
+    ("cases.html", "cases/index.html"),
 )
 #: What a forwarder calls the place it sends a reader, by that place's address. A paper
 #: is called by its title, which its card has (`overview_sections.PAPERS`).
 FORWARDER_TITLES: dict[str, str] = {
     RESULTS_PAGE: "Every Result",
     "frontier.html": "The Frontier Atlas",
+    "cases/index.html": "Case Records",
     repo_url(repo_links.DEFECTS, kind="blob"): "defects.md on GitHub",
 }
 #: Every file that moved and is not a page, the same way: the papers' Markdown and PDF,
@@ -907,6 +910,7 @@ def overview_page() -> Page:
             ROW_POPOVER_SCRIPT,
             ATLAS_VIEW_SCRIPT,
             ATLAS_GRID_SCRIPT,
+            CASE_POPOVER_SCRIPT,
         ),
     )
 
@@ -980,13 +984,24 @@ def frontier_page() -> Page:
         title="The Frontier Survey",
         description=FRONTIER_DESCRIPTION,
         toc=False,
-        page_scripts=(TABLE_SCRIPT, POPOVER_SCRIPT, CASE_POPOVER_SCRIPT, ROW_POPOVER_SCRIPT),
+        page_scripts=(TABLE_SCRIPT, POPOVER_SCRIPT, CASE_POPOVER_SCRIPT),
     )
 
 
 def cases_page() -> Page:
-    """Every case's record, one page, one address per case (`cases.html#n-11`)."""
+    """The record page, `cases/`: the index of every case and the reader that shows one
+    case's record file (`render_case_pages.cases_page`)."""
     from devtools.render_case_pages import cases_page as build  # noqa: PLC0415
+
+    return build()
+
+
+def case_records() -> list[Page]:
+    """Each case's record file, `cases/11.html`, beside the record page: the record
+    alone, which the record page and every case popover fetch
+    (`render_case_pages.case_records`). Like a result's overview, a record file is not
+    among `PAGES`."""
+    from devtools.render_case_pages import case_records as build  # noqa: PLC0415
 
     return build()
 
@@ -1034,7 +1049,7 @@ PAGES: dict[str, Callable[[], Page]] = {
     "index.html": overview_page,
     "frontier.html": frontier_page,
     RESULTS_PAGE: results_page,
-    "cases.html": cases_page,
+    "cases/index.html": cases_page,
     "papers.html": papers_page,
     "tutorial.html": tutorial_page,
     "visualize.html": visualize_page,
@@ -1104,22 +1119,24 @@ def forwarder_pages() -> list[Page]:
 
 
 def render_site() -> list[Page]:
-    """Every file this module writes: the pages, the result fragments, and a forwarder
-    at each address a page used to have."""
-    return [*render_all(), *result_fragments(), *forwarder_pages()]
+    """Every file this module writes: the pages, the result fragments, the case record
+    files, and a forwarder at each address a page used to have."""
+    return [*render_all(), *result_fragments(), *case_records(), *forwarder_pages()]
 
 
 def write_site(output: Path, files: Sequence[Page]) -> None:
-    """Write `files` under `output`, and drop any result fragment already there that is
-    not among them, so a directory built before a result was withdrawn does not keep
-    serving it."""
+    """Write `files` under `output`, and drop any result fragment or case record file
+    already there that is not among them, so a directory built before a result was
+    withdrawn, or a case dropped, does not keep serving it."""
     from devtools.overview_sections import RESULT_FRAGMENTS  # noqa: PLC0415
+    from devtools.render_case_pages import CASES_DIR  # noqa: PLC0415
 
     output.mkdir(parents=True, exist_ok=True)
     kept = {output / file.name for file in files}
-    for stale in sorted((output / RESULT_FRAGMENTS).glob("*.html")):
-        if stale not in kept:
-            stale.unlink()
+    for directory in (RESULT_FRAGMENTS, CASES_DIR):
+        for stale in sorted((output / directory).glob("*.html")):
+            if stale not in kept:
+                stale.unlink()
     for file in files:
         target = output / file.name
         target.parent.mkdir(parents=True, exist_ok=True)

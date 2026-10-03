@@ -1,0 +1,17 @@
+<!doctype html>
+<html lang="en" data-case="{{N}}">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+{{HEAD}}
+<!-- A case's record file (`render_case_pages.case_records`): its own address, title and
+     link preview, and the record itself, plain, for a reader without scripts and for a
+     crawler. A reader with scripts is sent on at once to the record page, `./?n=N`,
+     which fetches this file and shows its record in the site's design
+     (`overview/case-forward.js`); `?raw` keeps a reader here. -->
+<script>{{FORWARD_SCRIPT}}</script>
+</head>
+<body>
+{{RECORD}}
+</body>
+</html>

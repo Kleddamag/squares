@@ -722,11 +722,6 @@ body {
 .site-popover .site-popover-preview ul {
   padding-inline-start: 1.2rem;
 }
-.site-popover .site-popover-heading {
-  color: var(--kpress-doc-text);
-  font-weight: var(--site-font-weight-sans-medium);
-  margin-block-end: 0.2rem;
-}
 .site-popover .site-popover-more {
   list-style: none;
 }
@@ -1530,40 +1525,6 @@ body {
   max-inline-size: 100%;
 }
 
-/* Label and value side by side (`.site-pairs`): the labels in one column as wide as the
-   longest of them, whatever it says and in whatever face, and the values in the rest,
-   wrapping between words. Every list in the block shares the two columns, and a heading
-   runs across both. A phone has no room for two columns, so there the block is laid out
-   as any detail list is, each label above its value. */
-@media (width > 40rem) {
-  .site-pairs {
-    column-gap: 1.1rem;
-    display: grid;
-    grid-template-columns: max-content minmax(0, 1fr);
-  }
-  .site-popover .site-pairs > .site-detail {
-    display: grid;
-    grid-column: 1 / -1;
-    grid-template-columns: subgrid;
-    row-gap: 0.3rem;
-  }
-  .site-popover .site-pairs > .site-detail dd {
-    margin: 0;
-  }
-  .site-popover .site-pairs > .site-popover-heading {
-    grid-column: 1 / -1;
-    margin-block-start: 0.7rem;
-  }
-  .site-popover .site-pairs > .site-popover-heading:first-child {
-    margin-block-start: 0;
-  }
-}
-/* A popover of pairs is as wide as its longest value asks, up to a line of prose and
-   the label column beside it. */
-.site-popover:has(.site-pairs) {
-  max-inline-size: min(46rem, 100vw - 2rem);
-}
-
 /* kpress wraps a wide table in its own full-bleed wrap, sized from the viewport. The
    site's tables already sit in a wide track of their own, so that wrap only has to fill
    it; left to bleed, it runs 20px past a phone's edge. */
@@ -2008,12 +1969,13 @@ body {
   display: none;
 }
 
-/* The atlas popover: one panel every cell opens, what the ascent film's panel says about
-   the case beside its drawing shown large. It is a card popover in every other way:
-   square corners over the scrim, the caps label, the close cross, and the action
-   button at its foot, here to the case record, with arrows to the neighbouring cases.
-   The two bounds keep the film's colours, scarlet for the proved lower bound and green
-   for the best known side, turned lighter in dark mode. */
+/* The film's panel for a case, which opens every case record as its visual summary
+   (`.site-case-summary`, below) and a result's overview as its case (site-result.css):
+   the gap bar, the bound as one statement, the badges, where each bound comes from and
+   what is open. It was the atlas popover's until 2026-10-03, when the case popover took
+   that popover's place, and keeps its classes. The two bounds keep the film's colours,
+   scarlet for the proved lower bound and green for the best known side, turned lighter
+   in dark mode. */
 :root {
   --site-bound-lower: #a3123f;
   --site-bound-upper: #17794a;
@@ -2021,31 +1983,6 @@ body {
 :root:where([data-kpress-resolved-theme="dark"]) {
   --site-bound-lower: oklch(72% 0.15 12);
   --site-bound-upper: oklch(76% 0.13 155);
-}
-.site-popover.site-atlas-pop {
-  inline-size: min(62rem, 100vw - 2rem);
-  max-block-size: var(--site-popover-max-block);
-  max-inline-size: none;
-}
-.site-atlas-pop .site-atlas-pop-title {
-  font-size: 1.5em;
-  margin-block: 0.1rem 0.9rem;
-}
-.site-atlas-pop-body {
-  align-items: start;
-  display: grid;
-  gap: 1.2rem 1.8rem;
-  grid-template-columns: minmax(0, 22rem) minmax(0, 1fr);
-}
-.site-atlas-pop-figure svg {
-  aspect-ratio: 1;
-  display: block;
-  height: auto;
-  width: 100%;
-}
-.site-atlas-pop-facts {
-  font-size: var(--site-font-size-note);
-  min-inline-size: 0;
 }
 .kpress .site-atlas-pop .site-atlas-pop-head {
   color: var(--kpress-doc-muted);
@@ -2153,52 +2090,12 @@ body {
   color: var(--kpress-doc-muted);
   font-weight: var(--site-font-weight-sans-medium);
 }
-/* The record's button centred like every popover's, with the arrows to the neighbouring
-   cases at the right edge: three columns, the outer two equal. */
-.site-popover.site-atlas-pop .site-popover-actions {
-  display: grid;
-  grid-template-columns: 1fr auto 1fr;
-}
-.site-atlas-pop .site-popover-actions .site-popover-action {
-  grid-column: 2;
-}
-.site-atlas-pop .site-atlas-pop-step {
-  display: inline-flex;
-  gap: 0.4rem;
-  justify-self: end;
-}
-.site-atlas-pop-step button {
-  background: none;
-  border: 1px solid var(--kpress-doc-border);
-  color: var(--kpress-doc-text);
-  cursor: pointer;
-  font-family: var(--kpress-font-sans);
-  font-size: 1.1rem;
-  font-weight: var(--site-font-weight-sans-light);
-  inline-size: 2.75rem;
-  block-size: 2.4rem;
-  transition: background-color var(--site-hover-duration) var(--site-hover-easing);
-}
-.site-atlas-pop-step button:is(:hover, :focus-visible) {
-  background: var(--site-wash);
-}
-.site-atlas-pop-step button:disabled {
-  cursor: default;
-  opacity: 0.35;
-}
-/* The stepper's arrows are the site's arrow, left and right, centred in the button. */
-.site-atlas-pop-step .site-icon-arrow {
-  block-size: 1.1em;
-  display: block;
-  inline-size: 1.1em;
-  margin: auto;
-}
-
 /* The gap bar, as the film draws it: a number line from one below the grid bound to two
    above it, the integers and the values of the two formulas marked in the quiet gray,
    the two bounds as bold rules with their values above in their colours, and the span
-   between them shaded. Its labels are placed by `overview/atlas-grid.js`, which keeps
-   each inside the bar and the two values off each other. */
+   between them shaded. Its labels are placed when the page is rendered
+   (`result_overview.gap_bar`), each centred on its mark, and two values too close to
+   sit side by side are set either side of their marks (`data-anchor`). */
 .site-atlas-gap {
   font-variant-numeric: tabular-nums;
   margin-block: 0 0.4rem;
@@ -2270,59 +2167,52 @@ body {
   inline-size: 3px;
   inset-block-start: -0.4rem;
 }
+/* ---------- Case records ----------
+   One record per case, in its own file at `cases/11.html`, shown by the record page
+   (`cases/`, overview/case-page.js) and by the one case popover every page that links
+   cases carries (overview/case-popover.js). A record opens with its visual summary,
+   the drawing first and large, then the number line of its bounds and the film's facts
+   under it, and the rest of the record follows. */
+.site-case-reader {
+  margin-block-start: 1rem;
+}
+.site-case-reader[hidden] {
+  display: none;
+}
+/* While a record is shown, the page is that record: the title, the account and the
+   index above it step aside until the reader goes back to every case. */
+:root:has(.site-case-reader:not([hidden])) .site-case-front {
+  display: none;
+}
+/* The case popover: as large as a result's overview, one scrolling panel, the record
+   in it as its own page shows it. Its action, to the record's own address, stays in
+   reach at the foot of a record taller than the window. */
+.site-popover.site-case-pop {
+  inline-size: min(62rem, 100vw - 2rem);
+  max-inline-size: none;
+}
+.site-popover.site-case-pop:popover-open {
+  block-size: auto;
+  display: block;
+  max-block-size: var(--site-popover-max-block);
+  overflow: auto;
+}
+.site-case-pop .site-popover-actions {
+  background: var(--kpress-doc-bg);
+  border-block-start: 1px solid var(--kpress-doc-border);
+  inset-block-end: calc(-1 * var(--site-popover-pad));
+  margin-block-end: calc(-1 * var(--site-popover-pad));
+  padding-block: 0.6rem var(--site-popover-pad);
+  position: sticky;
+}
 @media (max-width: 40rem) {
-  .site-popover.site-atlas-pop {
+  .site-popover.site-case-pop {
     inline-size: calc(100vw - 1rem);
+    padding-inline: 0.75rem;
+  }
+  .site-popover.site-case-pop:popover-open {
     max-block-size: calc(100dvh - 1rem);
   }
-  .site-atlas-pop-body {
-    grid-template-columns: minmax(0, 1fr);
-  }
-  .site-atlas-pop-figure {
-    justify-self: center;
-    inline-size: min(100%, 15rem);
-  }
-  /* Too narrow for the button to sit centred between equal columns: the arrows go under
-     it, centred too. */
-  .site-popover.site-atlas-pop .site-popover-actions {
-    grid-template-columns: minmax(0, 1fr);
-    justify-items: center;
-  }
-  .site-atlas-pop .site-popover-actions .site-popover-action {
-    grid-column: 1;
-  }
-  .site-atlas-pop .site-atlas-pop-step {
-    justify-self: center;
-  }
-  /* The record's button stays in reach at the foot of a panel taller than the phone. */
-  .site-atlas-pop .site-popover-actions {
-    background: var(--kpress-doc-bg);
-    border-block-start: 1px solid var(--kpress-doc-border);
-    inset-block-end: calc(-1 * var(--site-popover-pad));
-    margin-block-end: calc(-1 * var(--site-popover-pad));
-    padding-block: 0.6rem var(--site-popover-pad);
-    position: sticky;
-  }
-}
-
-/* ---------- Case records ----------
-   One record per case on cases.html, opened from the atlas grid and the frontier atlas
-   in the shared case popover. With scripts (overview/case-view.js) the page shows the
-   record its fragment names, or the index when it names none; without them it lists
-   every record. */
-.site-case {
-  border-block-start: 1px solid var(--kpress-doc-border);
-  margin-block-start: 3rem;
-  padding-block-start: 1.5rem;
-}
-:root[data-case-current] .site-case {
-  border-block-start: 0;
-  margin-block-start: 0;
-}
-:root[data-case-view]:not([data-case-current]) .site-case,
-:root[data-case-current] .site-case:not([data-current]),
-:root[data-case-current] .site-case-front {
-  display: none;
 }
 .site-case-head {
   font-family: var(--kpress-font-sans);
@@ -2352,21 +2242,35 @@ body {
   font-size: calc(var(--site-font-size-sans-base) * 1.25);
   margin-block: 0 1.5rem;
 }
-/* The drawing beside the bounds on a wide screen; stacked, drawing first, when narrow. */
-.site-case-top {
-  align-items: start;
+/* The visual summary: the drawing centred and large, as wide as the reading measure
+   allows up to 28rem, then the number line and the facts under it on the measure. */
+.site-case-summary {
   display: grid;
-  gap: 1.5rem 2rem;
-  grid-template-columns: minmax(0, 20rem) minmax(0, 1fr);
-}
-@media (width < 44rem) {
-  .site-case-top {
-    grid-template-columns: minmax(0, 1fr);
-  }
+  gap: 1.2rem;
+  justify-items: center;
+  margin-block: 0 1.5rem;
 }
 .site-case-figure {
-  margin: 0 auto;
-  max-inline-size: min(20rem, 100%);
+  inline-size: min(28rem, 100%);
+  margin: 0;
+}
+/* In the popover the drawing is a little smaller than on the record's page, so the
+   number line under it is in view when the popover opens on a laptop's window. */
+.site-case-pop .site-case-figure {
+  inline-size: min(24rem, 100%);
+}
+.site-case-summary-facts {
+  font-family: var(--kpress-font-sans);
+  font-size: var(--site-font-size-note);
+  font-weight: var(--site-font-weight-sans-light);
+  inline-size: min(40rem, 100%);
+  min-inline-size: 0;
+}
+.site-case-summary .site-atlas-gap-values span[data-anchor="end"] {
+  transform: translateX(calc(-100% - 0.3rem));
+}
+.site-case-summary .site-atlas-gap-values span[data-anchor="start"] {
+  transform: translateX(0.3rem);
 }
 .site-case-figure svg {
   block-size: auto;
@@ -2439,10 +2343,14 @@ body {
 .site-case-polynomial {
   font-size: var(--site-font-size-note);
 }
-.site-case-more {
+.site-case-data {
+  border-block-start: 1px solid var(--kpress-doc-border);
   font-family: var(--kpress-font-sans);
   font-weight: var(--site-font-weight-sans-light);
-  margin-block-start: 1.5rem;
+}
+.site-case-prose {
+  border-block-start: 1px solid var(--kpress-doc-border);
+  margin-block-start: 2rem;
 }
 .kpress .site-case-heading {
   font-family: var(--kpress-font-sans);

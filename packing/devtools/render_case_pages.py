@@ -1,25 +1,37 @@
-"""Render the case records: every case `n = 1…324` as one record, at one address each.
+"""Render the case records: every case `n = 1…324` as one record, at an address of its own.
 
-A case record is what a reader wants after pointing at a case anywhere on the site: the
-known-best packing drawn large, every bound with its exact form or minimal polynomial as
-math and its credit, the status and the gap, every registered result that concerns the
-case with its rungs, the evidence and sources, and the case file's own prose. The atlas
-grid on the overview and the `n` column of the frontier atlas both open it, in the same
-framed popover (`overview/case-popover.js`), at the same address: `cases.html#n-11`.
+A case record is what a reader wants after pointing at a case anywhere on the site. It
+opens with the case's visual summary (`visual_summary`): the known-best packing drawn
+large, then the number line of its lower and upper bounds, then the bound as one
+statement, its badges, where each bound comes from and what is open, the film's panel
+laid out for a page. Under it come the rest of the record: every bound with its exact
+form or minimal polynomial and its credit, the gap, every registered result that
+concerns the case with its rungs, the evidence and sources, and the case file's own
+prose.
 
-The records are one page, not 324. A site page carries about 1.6 MB of inlined faces
-and KaTeX, since every page is self-contained; 324 copies of that would be over 500 MB.
-One page holds every record, and `overview/case-view.js` shows only the one its
-fragment names, so a frame opened on `#n-11` shows case 11 alone and moving to `#n-12`
-inside it reloads nothing. Without scripts the page lists every record and the fragment
-scrolls to the one asked for.
+Each case has its own address, `cases/11.html` (`case_url`), a plain file of its own:
+its title and link preview, and the record as HTML with no styles or shell, so a reader
+without scripts or a crawler reads it there. With scripts it sends the reader on at
+once to the record page, `cases/` (`cases/index.html`), which fetches the same file,
+shows its record in the site's design and puts `cases/11.html` back in the address bar
+(`overview/case-page.js`). Every page that links a case (the overview's atlas grid, the
+frontier table's rows, the results) opens it in the same popover, which fetches the same
+file (`overview/case-popover.js`), so a case reads the same wherever it is opened.
+
+The record files are not 324 pages. A site page carries about 1.8 MB of inlined faces
+and KaTeX, since every page is self-contained; 324 copies of that would be about 600 MB.
+The record page carries them once, and each record file is the record alone, about 25
+KB. They are cut from one kpress render of every record (`_rendered`), so each record's
+prose, mathematics and links are rendered as the site renders any page, and each
+record's links are then written from the file's own directory (`rebase_links`).
 
 Every value is read from the case's `SquarePackingCase/v2` record and from
 `frontier/results.yaml`, as the frontier atlas reads them. The case files write their
 mathematics in code spans; the prose here sets each span that is mathematics as `$…$`
 (`code_tex`), and leaves identifiers, paths and commands as code.
 
-The page is one of `render_overview.PAGES`; render it with the rest of the site:
+The record page is one of `render_overview.PAGES` and the record files are written
+beside it (`render_overview.case_records`); render them with the rest of the site:
 
     uv run --frozen --all-extras --group dev python -m devtools.render_overview --output DIR
 """
@@ -27,22 +39,32 @@ The page is one of `render_overview.PAGES`; render it with the rest of the site:
 from __future__ import annotations
 
 import html
+import posixpath
 import re
 from functools import cache
 from pathlib import Path
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
 from devtools import render_frontier_page as frontier
 from devtools import render_research_tables as tables
 
+if TYPE_CHECKING:
+    from devtools.render_overview import Page
+
 PACKING = Path(__file__).resolve().parents[1]
 TEMPLATES = PACKING / "devtools" / "templates"
 CASES_ARTICLE = TEMPLATES / "cases-article.md"
-CASE_VIEW_SCRIPT = PACKING / "devtools" / "overview" / "case-view.js"
+CASE_RECORD = TEMPLATES / "case-record.html"
+CASE_PAGE_SCRIPT = PACKING / "devtools" / "overview" / "case-page.js"
 CASE_POPOVER_SCRIPT = PACKING / "devtools" / "overview" / "case-popover.js"
+CASE_FORWARD_SCRIPT = PACKING / "devtools" / "overview" / "case-forward.js"
 
-#: Where the records are served.
-CASES_PAGE = "cases.html"
+#: The directory the records are served from, under the site's root.
+CASES_DIR = "cases"
+#: The record page: the index of every case, and the reader that shows one record.
+CASES_PAGE = f"{CASES_DIR}/index.html"
+#: What a link to the record page names, from the site's root: the directory.
+CASES_HOME = f"{CASES_DIR}/"
 #: The one popover a page opens every case record in.
 CASE_POPOVER_ID = "pop-case"
 
@@ -50,8 +72,10 @@ CASE_POPOVER_ID = "pop-case"
 CASES_INPUTS: tuple[Path, ...] = (
     Path(__file__).resolve(),
     CASES_ARTICLE,
-    CASE_VIEW_SCRIPT,
+    CASE_RECORD,
+    CASE_PAGE_SCRIPT,
     CASE_POPOVER_SCRIPT,
+    CASE_FORWARD_SCRIPT,
 )
 
 #: A case file's minimal polynomial longer than this, in characters, opens on request.
@@ -62,14 +86,15 @@ BROAD_RESULT = 4
 
 
 def case_url(n: int) -> str:
-    """A case record's address, the same from every page that links it."""
-    return f"{CASES_PAGE}#n-{n}"
+    """A case record's address from the site's root, the same from every page that
+    links it: the record file, `cases/11.html`."""
+    return f"{CASES_DIR}/{n}.html"
 
 
 def case_link(n: int, content: str, *, classes: str = "", label: str = "") -> str:
     """A link to case `n`'s record that `case-popover.js` opens in the shared popover.
 
-    Without scripts it is an ordinary link to the record page.
+    Without scripts it is an ordinary link to the record file.
     """
     attributes = f' class="{classes}"' if classes else ""
     if label:
@@ -78,26 +103,61 @@ def case_link(n: int, content: str, *, classes: str = "", label: str = "") -> st
 
 
 def case_popover() -> str:
-    """The one popover a page opens every case record in, framed as a card's page
-    popover is. `case-popover.js` points its frame and its Expand button at the case
-    that was pressed; the frame keeps its page between cases, so a second case only
-    moves its fragment. Its headline is the case, `n = 11`, set as mathematics from the
-    template at its foot, and, being math standing alone, marked for the serif face."""
-    from devtools.overview_sections import SERIF_MATH  # noqa: PLC0415
-
+    """The one popover a page opens every case record in, a card's popover in every
+    other way. `case-popover.js` fetches the record file of the case that was pressed,
+    puts its record in the body, and points the action at the record's own address; the
+    record's steps, and the arrow keys, move it to the neighbouring case in place."""
     return (
-        f'<div class="site-popover" id="{CASE_POPOVER_ID}" popover '
-        'data-go="page" data-case-popover>'
+        f'<div class="site-popover site-case-pop" id="{CASE_POPOVER_ID}" popover '
+        'data-case-popover role="dialog" aria-label="Case record">'
         f'<button type="button" class="site-popover-close" popovertarget="{CASE_POPOVER_ID}" '
         'popovertargetaction="hide" aria-label="Close">\u00d7</button>'
         '<span class="site-card-label">Case record</span>'
-        f'<p class="site-popover-value" {SERIF_MATH} data-case-title>Case record</p>'
-        '<iframe class="site-popover-frame" title="Case record" data-case-frame></iframe>'
+        '<div class="site-case-pop-body" data-case-body></div>'
         '<p class="site-popover-actions"><a class="site-popover-action" data-go="page" '
-        f'data-case-expand href="{CASES_PAGE}">See All Cases</a></p>'
-        f"<template data-case-math>{_math('n')}</template>"
+        f'data-case-open href="{CASES_HOME}">Open the Case Record</a></p>'
         "</div>"
     )
+
+
+#: A script's or a style's whole text, which no rebase touches, or else one `href` or
+#: `src` attribute's value in markup.
+_LINK_OR_RAW = re.compile(
+    r'(<(script|style)\b[^>]*>.*?</\2>)|(\s(?:href|src)=")([^"]*)(")',
+    re.DOTALL | re.IGNORECASE,
+)
+#: A link that names no file of the site by a relative path: a fragment, a scheme, a
+#: host or an absolute path.
+_NOT_RELATIVE = re.compile(r"#|[a-zA-Z][a-zA-Z0-9+.-]*:|/")
+
+
+def rebase_link(url: str, directory: str) -> str:
+    """A link written from the site's root, written again from `directory` under it:
+    from `cases`, `frontier.html#n-11` is `../frontier.html#n-11`, `cases/12.html` is
+    `12.html`, `cases/` is `./` and `./` is `../`. A fragment, a scheme, a host or an
+    absolute path is kept."""
+    if not url or _NOT_RELATIVE.match(url):
+        return url
+    cut = min((i for i in (url.find("?"), url.find("#")) if i >= 0), default=len(url))
+    path, rest = url[:cut], url[cut:]
+    moved = posixpath.relpath(posixpath.normpath(path or "."), directory)
+    if moved == ".":
+        return f"./{rest}"
+    folder = path in {"", "."} or path.endswith("/")
+    return f"{moved}/{rest}" if folder else f"{moved}{rest}"
+
+
+def rebase_links(markup: str, directory: str) -> str:
+    """Every relative `href` and `src` in `markup` written again from `directory`
+    (`rebase_link`), with scripts' and styles' text left as it is."""
+
+    def rebase(match: re.Match[str]) -> str:
+        if match.group(1):
+            return match.group(1)
+        url = rebase_link(html.unescape(match.group(4)), directory)
+        return f"{match.group(3)}{html.escape(url, quote=True)}{match.group(5)}"
+
+    return _LINK_OR_RAW.sub(rebase, markup)
 
 
 # ---------- Mathematics in the case files' code spans ----------
@@ -548,6 +608,24 @@ def _gap_panel(case: dict[str, Any]) -> str:
     )
 
 
+@cache
+def _evidence_entries() -> dict[str, dict[str, Any]]:
+    """The evidence register, read once for every record."""
+    return tables.load_evidence()
+
+
+def _verification(case: dict[str, Any]) -> str:
+    """How the bounds were verified and the case's disposition, as `STATUS.md` writes
+    them (`render_research_tables`): what the frontier row's popover said until it went
+    on 2026-10-03 (think-necq)."""
+    origins = tables.verification_origins(case, _evidence_entries())
+    notes = tables.case_disposition(case)
+    return (
+        '<div class="site-case-note"><span class="site-card-label">Verification</span>'
+        f"<p>{_esc(origins)}</p><p>{_esc(notes)}</p></div>"
+    )
+
+
 def _rigidity(case: dict[str, Any]) -> str:
     rigidity = case.get("rigidity") or {}
     if not rigidity:
@@ -676,8 +754,47 @@ def _sources(case: dict[str, Any]) -> str:
     return f'<ul class="site-case-list site-case-sources">{"".join(items)}</ul>'
 
 
+def visual_summary(n: int, *, units: int = 1000, upper: dict[str, Any] | None = None) -> str:
+    """The case's visual summary, the one view of a case wherever it is shown: the
+    known-best packing drawn large, then the number line of its lower and upper bounds
+    (the film's gap bar), then the bound as one statement, the badges, where each bound
+    comes from and what is open. It is the ascent film's panel for the case
+    (`result_overview.film_facts`), laid out for a page: the drawing above the facts
+    rather than beside them. The record opens with it, and a result about the case
+    shows it too (`result_overview.case_panel`), its drawing drawn at `units`. Given the
+    case's best known packing, `upper`, the drawing is captioned with its side and its
+    credit."""
+    from devtools.result_overview import (  # noqa: PLC0415
+        film_bound,
+        film_facts,
+        film_facts_html,
+        gap_bar,
+    )
+
+    fact = film_facts()[n]
+    figcaption = ""
+    if upper is not None:
+        figcaption = (
+            f"<figcaption>The best packing known for {n} square{'s' if n != 1 else ''}, "
+            f"side {_math(bound_tex(upper))}, "
+            f"{frontier.credit(upper.get('found_by'), upper.get('found_year'))}"
+            "</figcaption>"
+        )
+    return (
+        '<section class="site-case-summary site-atlas-pop" aria-label="Visual summary" '
+        'data-kpress-prose-font="sans">'
+        f'<figure class="site-case-figure">{frontier.packing_svg(n, units=units)}'
+        f"{figcaption}</figure>"
+        f'<div class="site-case-summary-facts">{gap_bar(fact)}'
+        f'<p class="site-atlas-pop-head">Proven</p>{film_bound(fact)}'
+        f"{film_facts_html(fact)}</div></section>"
+    )
+
+
 def record_head(case: dict[str, Any], *, recent: bool, first: int, last: int) -> str:
-    """The record's head and its structured part, as one HTML block."""
+    """The record's head, its visual summary and the rest of its structured part, as
+    one HTML block. Its links are written from the site's root, as every page's are,
+    and each record file writes them again from its own directory (`rebase_links`)."""
     from devtools.overview_sections import arrow_icon, case_status_chip  # noqa: PLC0415
     from devtools.repo_links import branch_file  # noqa: PLC0415
 
@@ -688,12 +805,14 @@ def record_head(case: dict[str, Any], *, recent: bool, first: int, last: int) ->
         chip += f' <span class="site-credit">reported {_esc(case["reported_status"])}</span>'
     star = ' <span class="site-star" title="Recent lower bound">\u2605</span>' if recent else ""
     previous = (
-        f'<a href="#n-{n - 1}" rel="prev">{arrow_icon("left")}n = {n - 1}</a>'
+        f'<a href="{case_url(n - 1)}" rel="prev" data-case-step="{n - 1}">'
+        f"{arrow_icon('left')}n = {n - 1}</a>"
         if n > first
         else ""
     )
     following = (
-        f'<a href="#n-{n + 1}" rel="next">n = {n + 1}{arrow_icon("right")}</a>'
+        f'<a href="{case_url(n + 1)}" rel="next" data-case-step="{n + 1}">'
+        f"n = {n + 1}{arrow_icon('right')}</a>"
         if n < last
         else ""
     )
@@ -703,25 +822,20 @@ def record_head(case: dict[str, Any], *, recent: bool, first: int, last: int) ->
     return (
         f'<header class="site-case-head" data-kpress-prose-font="sans">'
         f'<nav class="site-case-steps" aria-label="Cases">{previous}'
-        f'<a href="#cases">All cases</a>{following}</nav>'
-        '<span class="site-card-label">Case record</span>'
+        f'<a href="{CASES_HOME}" data-case-index>All cases</a>{following}</nav>'
         f'<p class="site-case-title"><b>n = {n}</b> {chip}{star}</p>'
         f'<p class="site-case-interval">{_math(interval_tex(case))}</p></header>'
-        '<div class="site-case-top site-wide">'
-        f'<figure class="site-case-figure">{frontier.packing_svg(n, units=1000)}'
-        f"<figcaption>The best packing known for {n} square{'s' if n != 1 else ''}, side "
-        f"{_math(bound_tex(upper))}, "
-        f"{frontier.credit(upper.get('found_by'), upper.get('found_year'))}"
-        "</figcaption></figure>"
-        f'<div class="site-case-bounds" data-kpress-prose-font="sans">'
+        f"{visual_summary(n, upper=upper)}"
+        '<div class="site-case-data" data-kpress-prose-font="sans">'
+        '<h3 class="site-case-heading">Bounds</h3>'
+        '<div class="site-case-bounds">'
         f"{_upper_panel(case)}"
         f"{_verified_panel('Verified upper bound', case['verified_upper_bound'], upper)}"
         f"{_lower_panel(case)}"
         f"{_verified_panel('Verified lower bound', case['verified_lower_bound'], lower)}"
-        f"{_gap_panel(case)}</div></div>"
-        f'<div class="site-case-more" data-kpress-prose-font="sans">'
+        f"{_gap_panel(case)}</div>"
         f'<h3 class="site-case-heading">Results in the register</h3>{results_block(n)}'
-        f"{_rigidity(case)}{_open_questions(case)}"
+        f"{_verification(case)}{_rigidity(case)}{_open_questions(case)}"
         '<div class="site-case-note"><span class="site-card-label">Evidence and sources</span>'
         f"<details><summary>{len(evidence)} evidence entries</summary>"
         f"<p>{frontier.evidence_links(evidence)}</p></details>{_sources(case)}</div>"
@@ -741,33 +855,50 @@ def _body(n: int) -> tuple[str, str]:
     return heading, rest
 
 
+#: What brackets each record in the one render of every record (`_rendered`), so each
+#: can be cut out whole into its own file.
+_RECORD_OPEN = "<!-- case-record {n} -->"
+_RECORD_CLOSE = "<!-- /case-record -->"
+
+
 def record_markdown(case: dict[str, Any], *, recent: bool, first: int, last: int) -> str:
-    """One case's record: its head and structured part, then the case file's prose."""
+    """One case's record: its head, visual summary and structured part, then the case
+    file's prose, bracketed for cutting out (`_RECORD_OPEN`). It is a `section` here and
+    an `article` in its own file (`_records`)."""
     n = case["n"]
     heading, prose = _body(n)
     shown = prose_markdown(f"# {heading}\n") if heading else ""
     return (
-        f'<section class="site-case" id="n-{n}" data-n="{n}" '
-        f'data-status="{_esc(case["status"])}">\n'
+        f"{_RECORD_OPEN.format(n=n)}\n"
+        f'<section class="site-case" data-case="{n}" data-status="{_esc(case["status"])}">\n'
         f"{record_head(case, recent=recent, first=first, last=last)}\n\n"
-        f"{shown.strip()}\n\n{prose_markdown(prose)}\n\n</section>"
+        '<div class="site-case-prose">\n\n'
+        f"{shown.strip()}\n\n{prose_markdown(prose)}\n\n</div>\n\n</section>\n"
+        f"{_RECORD_CLOSE}"
     )
 
 
 def index_html(cases: list[dict[str, Any]]) -> str:
-    """Every case as a link to its record, marked solved or open."""
+    """Every case as a link to its record file, marked solved or open, which the record
+    page (`case-page.js`) opens in place."""
     links = "".join(
-        f'<a href="#n-{case["n"]}" data-status="{_esc(case["status"])}">{case["n"]}</a>'
+        f'<a href="{case_url(case["n"])}" data-case="{case["n"]}" '
+        f'data-status="{_esc(case["status"])}">{case["n"]}</a>'
         for case in cases
     )
     return (
         '<nav class="site-case-index site-wide" id="cases" aria-label="Every case" '
-        f'data-kpress-prose-font="sans">{links}</nav>'
+        f'data-case-index data-kpress-prose-font="sans">{links}</nav>'
     )
 
 
+#: Where the record page shows one record, in place of every record.
+_READER = '<div class="site-case-reader" data-case-reader hidden></div>'
+
+
 def cases_markdown(fill: Any) -> str:
-    """The article: its prose from the template, the index and every record."""
+    """The article: its prose from the template, the index and every record, each
+    bracketed so it can be cut out (`_rendered`)."""
     cases = frontier.frontier_cases()
     recent = frontier.recent_lower_bounds()
     first, last = min(c["n"] for c in cases), max(c["n"] for c in cases)
@@ -791,15 +922,18 @@ CASES_DESCRIPTION = (
 )
 
 
-def cases_page() -> Any:
-    """The records as one kpress page, with the case files' links made to work here.
+@cache
+def _rendered() -> str:
+    """Every record as one kpress page, with the case files' links made to work, its
+    links written from the site's root. The record page and each record file are cut
+    from it (`cases_page`, `case_records`).
 
     The prose's links are rewritten as a reader document's are (`site_documents`): a
-    link to another case file becomes that case's record on this page, a link to the
-    results register the results table, at the result's row when its text is a result's
-    id (`site_documents.RECORD_PAGES`), a link to a rendered document its page, and
+    link to another case file becomes that case's record file, a link to the results
+    register the results table, at the result's row when its text is a result's id
+    (`site_documents.RECORD_PAGES`), a link to a rendered document its page, and
     anything else its link on `main`; a link the record itself writes to a served page
-    is kept.
+    or to a record file is kept.
     """
     from devtools import render_overview, site_documents  # noqa: PLC0415
     from devtools.repo_links import repository_tree  # noqa: PLC0415
@@ -809,14 +943,16 @@ def cases_page() -> Any:
         CASES_PAGE,
         repository_tree(),
         "packing/frontier",
-        served=frozenset({*render_overview.SITE_PAGES, "./"}),
+        served=frozenset(
+            {*render_overview.SITE_PAGES, "./", CASES_HOME, *(case_url(n) for n in numbers)}
+        ),
         aliases={
             **site_documents.RECORD_PAGES,
-            **{f"packing/frontier/n-{n:03d}.md": f"#n-{n}" for n in numbers},
+            **{f"packing/frontier/n-{n:03d}.md": case_url(n) for n in numbers},
         },
     )
     report = site_documents.LinkReport()
-    page = render_overview.kpress_page(
+    rendered = render_overview.kpress_page(
         cases_markdown(render_overview.fill),
         name=CASES_PAGE,
         current="frontier",
@@ -826,12 +962,90 @@ def cases_page() -> Any:
         rewrite_body=lambda text: site_documents.rewrite_article(
             text, context=context, report=report
         ),
-        page_scripts=(CASE_VIEW_SCRIPT,),
+        page_scripts=(CASE_PAGE_SCRIPT,),
     )
     problems = site_documents.unresolved(
-        {**site_documents.site_documents(), CASES_PAGE: page}, report
+        {**site_documents.site_documents(), CASES_PAGE: rendered}, report
     )
     if problems:
         listing = "\n  ".join(problems)
         raise SystemExit(f"{len(problems)} unresolved links in the case records:\n  {listing}")
-    return page
+    return rendered.html
+
+
+def _records(page: str) -> dict[int, str]:
+    """Each record's markup, cut from the one render of every record, by case, as the
+    article it is in its own file. In the one render it is a `section`: the page's own
+    article holds every record, and the site's link rewriting reads that article to
+    its first close (`site_documents.rewrite_article`)."""
+    found: dict[int, str] = {}
+    for match in re.finditer(
+        r"<!-- case-record (\d+) -->(.*?)" + re.escape(_RECORD_CLOSE), page, re.DOTALL
+    ):
+        record = match.group(2).strip()
+        if not (
+            record.startswith('<section class="site-case"') and record.endswith("</section>")
+        ):
+            raise SystemExit(f"n = {match.group(1)}: the record is not one section")
+        found[int(match.group(1))] = (
+            "<article"
+            + record.removeprefix("<section").removesuffix("</section>")
+            + "</article>"
+        )
+    return found
+
+
+def cases_page() -> Page:
+    """The record page, `cases/index.html`: the template's prose and the index of every
+    case, with a reader in place of the records (`case-page.js`), its links written from
+    its own directory."""
+    from devtools.render_overview import Page  # noqa: PLC0415
+
+    page = _rendered()
+    start = page.index(_RECORD_OPEN.format(n=min(_records(page))))
+    end = page.rindex(_RECORD_CLOSE) + len(_RECORD_CLOSE)
+    return Page(CASES_PAGE, rebase_links(page[:start] + _READER + page[end:], CASES_DIR))
+
+
+def _description(case: dict[str, Any]) -> str:
+    """A record file's own sentence, for a search engine and a shared link's preview."""
+    state = "solved" if case["status"] == "proved" else "open"
+    return (
+        f"The record of packing {case['n']} unit squares in the smallest square, a case "
+        f"{state}: the best packing known, every bound with its credit, and every result "
+        "on the case."
+    )
+
+
+def case_records() -> list[Page]:
+    """Each case's record file, `cases/11.html`: its title, description and link
+    preview, the script that sends a reader with scripts on to the record page
+    (`overview/case-forward.js`), and the record itself, its links written from its own
+    directory. A file is the record alone, with no styles or shell, so a reader without
+    scripts reads it plain; the record page and every popover fetch it."""
+    from devtools.render_overview import (  # noqa: PLC0415
+        Page,
+        PageMeta,
+        _script_text,  # pyright: ignore[reportPrivateUsage]
+        assert_self_contained,
+        fill,
+        head_tags,
+    )
+
+    records = _records(_rendered())
+    template = CASE_RECORD.read_text(encoding="utf-8")
+    pages = []
+    for case in frontier.frontier_cases():
+        n = case["n"]
+        name = case_url(n)
+        meta = PageMeta(f"n = {n} · Case Records", _description(case), name)
+        values = {
+            "N": str(n),
+            "HEAD": head_tags(meta),
+            "FORWARD_SCRIPT": _script_text(CASE_FORWARD_SCRIPT),
+            "RECORD": rebase_links(records[n], CASES_DIR),
+        }
+        page = fill(template, values, where=CASE_RECORD.name)
+        assert_self_contained(name, page)
+        pages.append(Page(name, page))
+    return pages

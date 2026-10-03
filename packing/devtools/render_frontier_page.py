@@ -6,9 +6,8 @@ Every row is read from the case's softschema record, the `packing:` envelope of
 and each file is validated against its declared schema before a cell is written, so an
 invalid record fails the render rather than rendering a blank. Nothing is read from
 `STATUS.md` and nothing is typed by hand: the formatting is `render_research_tables`'s
-(`latex`, `compact_bound`'s exact-form rule, `case_disposition`,
-`verification_origins`), and "shown once" is `bounds_agree_at_declared_precision`, the
-test `STATUS.md` applies.
+(`latex`, `compact_bound`'s exact-form rule), and "shown once" is
+`bounds_agree_at_declared_precision`, the test `STATUS.md` applies.
 
 The page is one of `render_overview.PAGES`; render it with the rest of the site:
 
@@ -87,9 +86,6 @@ def survey_counts(counts: RecentCounts) -> str:
 #: The digits a decimal cell shows before it is cut, with an ellipsis rather than rounded:
 #: a rounded bound can read as a different bound.
 DECIMAL_PLACES = 8
-#: A minimal polynomial longer than this is linked rather than typeset; the longest in the
-#: record runs to 18,000 characters.
-POLYNOMIAL_SHOWN = 160
 #: An exact gap longer than this, in TeX, is shown as its decimal: a difference of two
 #: long closed forms is exact and unreadable.
 GAP_SHOWN = 44
@@ -206,22 +202,6 @@ def bound_approx_html(bound: dict[str, Any]) -> str:
         return ""
     value = exact_value(exact)
     return "" if value.is_Integer else approx_html(value)
-
-
-def polynomial_html(case: dict[str, Any], case_url: str) -> str:
-    """The minimal polynomial behind a decimal, where the record gives one."""
-    upper = case["reported_upper_bound"]
-    polynomial = upper.get("minimal_polynomial")
-    if not polynomial:
-        return ""
-    degree = upper.get("algebraic_degree")
-    if len(polynomial) > POLYNOMIAL_SHOWN:
-        return (
-            f'<dt>Minimal polynomial</dt><dd>degree {degree}, <a href="{case_url}">'
-            "in the case record</a></dd>"
-        )
-    shown = tables.polynomial_latex(polynomial)
-    return f"<dt>Minimal polynomial</dt><dd>{math_html(shown)}</dd>"
 
 
 def credit(names: Iterable[str] | None, year: object) -> str:
@@ -461,77 +441,20 @@ def _verified_cell(verified: dict[str, Any], reported: dict[str, Any]) -> str:
     )
 
 
-def _upper_details(case: dict[str, Any], case_url: str) -> str:
-    upper = case["reported_upper_bound"]
-    construction = html.escape(tables.UB_LABEL[upper["construction_method"]])
-    if upper.get("catalogue_rigid") == "rigid":
-        construction += ", catalogue rigid"
-    return (
-        f"<dt>Construction</dt><dd>{construction}</dd>"
-        f"{polynomial_html(case, case_url)}"
-        f"<dt>Source</dt><dd>{html.escape(upper.get('source_key') or '—')}</dd>"
-    )
-
-
-def _lower_details(lower: dict[str, Any]) -> str:
-    kind = html.escape(tables.LB_LABEL[lower["kind"]].replace("`", ""))
-    return (
-        f"<dt>Kind</dt><dd>{kind}</dd>"
-        f"<dt>Source</dt><dd>{html.escape(lower.get('source_key') or '—')}</dd>"
-    )
-
-
-def _evidence_refs(case: dict[str, Any]) -> list[str]:
-    """The evidence behind a case's four bounds, each once, in the order they are cited."""
-    return list(
-        dict.fromkeys(
-            [
-                *case["reported_upper_bound"]["evidence"],
-                *case["verified_upper_bound"]["evidence"],
-                *case["reported_lower_bound"]["evidence"],
-                *case["verified_lower_bound"]["evidence"],
-            ]
-        )
-    )
-
-
-def frontier_row_popover_body(case: dict[str, Any], evidence: dict[str, dict[str, Any]]) -> str:
-    """The body of a frontier row's popover, the one source of it: how the best known
-    packing was built, the minimal polynomial behind a decimal and its source; the
-    reported lower bound's kind and source; then how the bounds were verified, the case's
-    notes and the evidence entries behind them. The row's cells used to open these one at
-    a time in place."""
-    case_url = repo_url(tables.FRONTIER / f"n-{case['n']:03d}.md")
-    origins = html.escape(tables.verification_origins(case, evidence))
-    notes = html.escape(tables.case_disposition(case))
-    return (
-        '<div class="site-pairs">'
-        '<p class="site-popover-heading">Best known packing</p>'
-        f'<dl class="site-detail">{_upper_details(case, case_url)}</dl>'
-        '<p class="site-popover-heading">Reported lower bound</p>'
-        f'<dl class="site-detail">{_lower_details(case["reported_lower_bound"])}</dl>'
-        '<p class="site-popover-heading">Verification and evidence</p>'
-        f'<dl class="site-detail"><dt>Verification</dt><dd>{origins}</dd>'
-        f"<dt>Notes</dt><dd>{notes}</dd>"
-        f"<dt>Evidence</dt><dd>{evidence_links(_evidence_refs(case))}</dd></dl>"
-        "</div>"
-    )
-
-
-def case_row(
-    case: dict[str, Any], evidence: dict[str, dict[str, Any]], *, recent: bool
-) -> tuple[str, str]:
-    """One table row, every cell from the record, and the popover it opens. Its `n`
-    opens the case's record; anywhere else on the row, the drawing included, opens the
-    popover, whose body is `frontier_row_popover_body` and whose button opens the record
-    too. The cells are in `HEADERS`' order: the drawing, `n`, the star, and then what is
-    known."""
-    from devtools.overview_sections import case_status_chip, row_detail  # noqa: PLC0415
-    from devtools.render_case_pages import case_link  # noqa: PLC0415
-    from devtools.render_case_pages import case_url as record_url  # noqa: PLC0415
+def case_row(case: dict[str, Any], *, recent: bool) -> str:
+    """One table row, every cell from the record. The whole row opens the case's record
+    in the page's one case popover (`overview/case-popover.js`), which shows it as the
+    case's own page does, the visual summary and then the record's further data; its
+    `n` is a link to that record, which is where a reader without scripts goes. The
+    minimal popover each row opened until 2026-10-03, with the construction, the lower
+    bound's kind and the verification notes, went then (think-necq): the record carries
+    all of it. The cells are in `HEADERS`' order: the drawing, `n`, the star, and then
+    what is known."""
+    from devtools.overview_sections import case_status_chip  # noqa: PLC0415
+    from devtools.render_case_pages import case_link, case_url  # noqa: PLC0415
 
     n = case["n"]
-    case_url = repo_url(tables.FRONTIER / f"n-{n:03d}.md")
+    case_file = repo_url(tables.FRONTIER / f"n-{n:03d}.md")
     upper, lower = case["reported_upper_bound"], case["reported_lower_bound"]
     status = case["status"]
     shown_status = case_status_chip(status)
@@ -539,15 +462,6 @@ def case_row(
         shown_status += f" (reported {html.escape(case['reported_status'])})"
     gap_html, gap_value = gap(case)
     star = '<span class="site-star" title="Recent lower bound">★</span>' if recent else ""
-    detail = row_detail(
-        f"pop-frontier-n-{n}",
-        name=f"n = {n}, {status}",
-        trigger="Details",
-        label="Frontier survey",
-        title=f"<var>n</var> = {n}",
-        body=frontier_row_popover_body(case, evidence),
-        action=(record_url(n), f"Open the case record for n = {n}"),
-    )
     cells = [
         _cell(thumbnail_svg(n), classes="site-thumb"),
         _cell(
@@ -562,9 +476,10 @@ def case_row(
         _bound_cell(lower, credit(lower.get("proved_by"), lower.get("proved_year"))),
         _verified_cell(case["verified_lower_bound"], lower),
         _cell(gap_html, value=gap_value, classes="num"),
+        # Two lines, the case file over the record, as the drawing is two lines high.
         _cell(
-            f'<a href="{case_url}">n-{n:03d}.md</a> '
-            f'<span class="site-cell-quiet">{detail.trigger}</span>',
+            f'<a href="{case_file}">n-{n:03d}.md</a> '
+            f"{case_link(n, 'Record', classes='site-cell-quiet')}",
             classes="site-records",
         ),
     ]
@@ -572,9 +487,10 @@ def case_row(
     attributes = (
         f'id="n-{n}" data-n="{n}" data-status="{html.escape(status)}" '
         f'data-open="{flag[status == "open"]}" data-recent="{flag[recent]}" '
-        f"{detail.attributes}"
+        f'data-case-row="{n}" data-case-href="{case_url(n)}" '
+        f'aria-label="n = {n}, {html.escape(status)}: open its case record"'
     )
-    return f"<tr {attributes}>{''.join(cells)}</tr>", detail.popover
+    return f"<tr {attributes}>{''.join(cells)}</tr>"
 
 
 #: The drawing's column has no heading to read; this is its name for a screen reader.
@@ -623,22 +539,19 @@ def _tools(count: int, last: int) -> str:
 
 
 def table_html(cases: list[dict[str, Any]]) -> str:
-    """The controls, the table, each row's popover and the popover its cases open in, as
+    """The controls, the table and the popover its rows open each case's record in, as
     one HTML block with no blank line inside it."""
     from devtools.render_case_pages import case_popover  # noqa: PLC0415
 
-    evidence = tables.load_evidence()
     recent = recent_lower_bounds()
     head = "".join(_heading(*column) for column in HEADERS)
-    built = [case_row(case, evidence, recent=recent.get(case["n"], False)) for case in cases]
-    rows = "\n".join(row for row, _ in built)
-    popovers = "\n".join(popover for _, popover in built)
+    rows = "\n".join(case_row(case, recent=recent.get(case["n"], False)) for case in cases)
     return (
         f"{_tools(len(cases), max(case['n'] for case in cases))}\n"
         '<div class="site-table-wrap site-wide site-frontier" id="frontier-table">\n'
         '<table class="kpress-table site-table">\n'
         f"<thead><tr>{head}</tr></thead>\n<tbody>\n{rows}\n</tbody>\n</table>\n</div>\n"
-        f"{popovers}\n{case_popover()}"
+        f"{case_popover()}"
     )
 
 

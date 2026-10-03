@@ -25,8 +25,8 @@ with some initial explorations that obtained
 and other low values.
 Now several others have obtained results building on this work, including a landmark new
 proof by Queuingtheorydotcom of the optimality of the famous
-[case of 11 squares](cases.html#n-11). This project now independently tabulates all
-known new results and does
+[case of 11 squares](cases/11.html).
+This project now independently tabulates all known new results and does
 [AI-assisted verification](all-results.html#verification-ladders) of the proofs and
 certificates behind them, to encourage open collaboration on open questions and
 formalizations of current proofs.
@@ -66,8 +66,8 @@ Contact [ojoshe](https://x.com/ojoshe) if you wish to join.
 Eleven squares is settled: $s(11) = 3.8770835\ldots$, the exact side of Trump’s 1979
 packing, by [T-060](all-results.html#t-060). Seventeen squares is bracketed by
 machine-checked bounds, [T-043](all-results.html#t-043) below and
-[T-065](all-results.html#t-065) above, and [$n = 21$](cases.html#n-21),
-[$32$](cases.html#n-32) and [$45$](cases.html#n-45) have new exact values.
+[T-065](all-results.html#t-065) above, and [$n = 21$](cases/21.html),
+[$32$](cases/32.html) and [$45$](cases/45.html) have new exact values.
 {{STAR_LEGEND}}
 The table above starts at significance S4 and up, max age 180 days and superseded
 hidden.

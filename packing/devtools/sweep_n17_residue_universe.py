@@ -72,13 +72,20 @@ class Levers:
     process, keyed by its exact mask and budget, so a verdict is the one the uncached search
     gives, byte for byte; `early_stop` and `fast_penalty` change the screen's and the full
     budget's descents, so they change poses at the level of rounding and are measured
-    for verdict equivalence rather than assumed.
+    for verdict equivalence rather than assumed. `resume` lets the full budget continue
+    from the screen's state after its deep starts instead of repeating the warm starts,
+    random starts, hops and deep starts before it. The two budgets share the prefix
+    (`selector.budget_prefix`), which decides the sub-pattern witnesses, the warm starts and
+    every attempt up to that point, and the checkpoint carries the generator's state, so
+    the verdict is the one the full budget gives from scratch, byte for byte; it applies
+    only where the prefixes match, and `resume-check` measures it class by class.
     """
 
     first: selector.Budget | None = None
     cache: bool = False
     early_stop: bool = False
     fast_penalty: bool = False
+    resume: bool = False
 
     def record(self) -> dict[str, Any]:
         return {
@@ -86,6 +93,7 @@ class Levers:
             "cache": self.cache,
             "early_stop": self.early_stop,
             "fast_penalty": self.fast_penalty,
+            "resume": self.resume,
         }
 
 
@@ -97,6 +105,9 @@ LEVERS = {
     "fast-penalty": Levers(fast_penalty=True),
     "combined": Levers(first=FIRST, cache=True),
     "combined-fast": Levers(first=FIRST, cache=True, early_stop=True, fast_penalty=True),
+    "combined-fast-resume": Levers(
+        first=FIRST, cache=True, early_stop=True, fast_penalty=True, resume=True
+    ),
 }
 ARITIES = (8, 9, 10)
 PRIORITY_TESTED = (8, 2)  # the arity-8 priority sweep searched every class up to 2 missing
@@ -296,6 +307,58 @@ def plan(
     return document
 
 
+Cache = dict[tuple[int, selector.Budget], selector.Verdict]
+
+
+def first_stage(
+    geometry: selector.Geometry, mask: int, *, seed: int, levers: Levers
+) -> dict[str, Any] | None:
+    """The random-first stage's row for a class it places; None if it is off or fails."""
+    if levers.first is None:
+        return None
+    stream = np.random.default_rng(np.random.SeedSequence([seed, mask, FIRST_STREAM]))
+    quick = selector.search(geometry, selector.cells_of(mask), stream, levers.first)
+    if not quick.feasible:
+        return None
+    return {
+        "screen": "placed",
+        "screen_attempts": quick.attempts,
+        "status": "placed",
+        "best_penetration": quick.violation,
+        "attempts": quick.attempts,
+        "found_by": "random-first",
+    }
+
+
+def tuned_budgets(
+    screen: selector.Budget, full: selector.Budget, levers: Levers
+) -> tuple[selector.Budget, selector.Budget, bool]:
+    """The screen and the full budget under the descent levers, and whether the full one
+    passes through the screen's state after its deep starts, so that it may resume there."""
+    tuned = {"early_stop": levers.early_stop, "fast_penalty": levers.fast_penalty}
+    screen, full = replace(screen, **tuned), replace(full, **tuned)
+    resumable = (
+        selector.budget_prefix(screen) == selector.budget_prefix(full)
+        and screen.deep_starts <= full.deep_starts
+    )
+    return screen, full, resumable
+
+
+def class_row(screened: dict[str, Any], final: dict[str, Any]) -> dict[str, Any]:
+    """A chunk's row for a class, from the screen's record and the final one."""
+    row: dict[str, Any] = {
+        "screen": screened["status"],
+        "screen_attempts": screened["attempts"],
+        "status": "placed" if final["status"] == "placed" else "flagged",
+        "best_penetration": final["best_penetration"],
+        "attempts": final["attempts"],
+        "found_by": final["found_by"],
+    }
+    if row["status"] == "flagged":
+        row.update(cells=final["cells"], pose=final["pose"], components=final["components"])
+    return row
+
+
 def search_class(
     geometry: selector.Geometry,
     mask: int,
@@ -304,7 +367,7 @@ def search_class(
     screen: selector.Budget,
     full: selector.Budget,
     levers: Levers | None = None,
-    cache: dict[tuple[int, selector.Budget], selector.Verdict] | None = None,
+    cache: Cache | None = None,
 ) -> dict[str, Any]:
     """The screen, then the full budget for a class the screen cannot place.
 
@@ -313,44 +376,225 @@ def search_class(
     """
     clock = time.perf_counter()
     levers = levers or Levers()
-    if levers.first is not None:
-        stream = np.random.default_rng(np.random.SeedSequence([seed, mask, FIRST_STREAM]))
-        quick = selector.search(geometry, selector.cells_of(mask), stream, levers.first)
-        if quick.feasible:
-            return {
-                "screen": "placed",
-                "screen_attempts": quick.attempts,
-                "status": "placed",
-                "best_penetration": quick.violation,
-                "attempts": quick.attempts,
-                "found_by": "random-first",
-                "seconds": round(time.perf_counter() - clock, 3),
-            }
-    tuned = {"early_stop": levers.early_stop, "fast_penalty": levers.fast_penalty}
-    screen, full = replace(screen, **tuned), replace(full, **tuned)
+    quick = first_stage(geometry, mask, seed=seed, levers=levers)
+    if quick is not None:
+        return {**quick, "seconds": round(time.perf_counter() - clock, 3)}
+    screen, full, resumable = tuned_budgets(screen, full, levers)
     kept = cache if levers.cache else None
     screened = selector.recheck_flag(
-        geometry, mask, seed=seed, budget=screen, witness_cache=kept
+        geometry,
+        mask,
+        seed=seed,
+        budget=screen,
+        witness_cache=kept,
+        checkpoint_at=screen.deep_starts if levers.resume and resumable else None,
     )
-    row: dict[str, Any] = {
-        "screen": screened["status"],
-        "screen_attempts": screened["attempts"],
-    }
     final = screened
     if screened["status"] != "placed":
         final = selector.recheck_flag(
-            geometry, mask, seed=seed, budget=full, witness_cache=kept
+            geometry,
+            mask,
+            seed=seed,
+            budget=full,
+            witness_cache=kept,
+            resume=screened.get("checkpoint"),
         )
-    row.update(
-        status="placed" if final["status"] == "placed" else "flagged",
-        best_penetration=final["best_penetration"],
-        attempts=final["attempts"],
-        found_by=final["found_by"],
-        seconds=round(time.perf_counter() - clock, 3),
+    return {**class_row(screened, final), "seconds": round(time.perf_counter() - clock, 3)}
+
+
+def resume_check(
+    geometry: selector.Geometry,
+    mask: int,
+    *,
+    seed: int,
+    screen: selector.Budget,
+    full: selector.Budget,
+    levers: Levers,
+    cache: Cache,
+) -> dict[str, Any]:
+    """The `resume` lever on one class: the full budget from scratch and resumed.
+
+    The screen runs once. A class it or the random-first stage places never reaches the full
+    budget, so the lever cannot change its row. For any other class the full budget runs
+    from scratch and then from the screen's checkpoint, under `levers` otherwise, and the
+    two records are compared field for field, all but `sub_pattern_attempts`, which the
+    resumed search does not repeat. A verdict can survive a wrong trajectory when its best
+    pose comes early, so each arm also keeps its state after the full budget's deep starts,
+    and the two states must agree too (`deep_start_state`): generator, attempts and best
+    pose. Each search is timed in wall and process seconds.
+    """
+    clocks: dict[str, dict[str, float]] = {}
+
+    def timed(name: str, budget: selector.Budget, **options: Any) -> dict[str, Any]:
+        wall, cpu = time.perf_counter(), time.process_time()
+        record = selector.recheck_flag(
+            geometry,
+            mask,
+            seed=seed,
+            budget=budget,
+            witness_cache=cache if levers.cache else None,
+            **options,
+        )
+        clocks[name] = {
+            "attempts": record["attempts"],
+            "seconds": round(time.perf_counter() - wall, 3),
+            "cpu_seconds": round(time.process_time() - cpu, 3),
+        }
+        return record
+
+    line: dict[str, Any] = {"mask": mask, "arity": len(selector.cells_of(mask))}
+    quick = first_stage(geometry, mask, seed=seed, levers=levers)
+    if quick is not None:
+        return {**line, "reached_full": False, "row": quick}
+    screen, full, resumable = tuned_budgets(screen, full, levers)
+    if not resumable:
+        raise ValueError("the full budget does not pass through the screen's checkpoint")
+    screened = timed("screen", screen, checkpoint_at=screen.deep_starts)
+    checkpoint: selector.Checkpoint | None = screened.pop("checkpoint")
+    if screened["status"] == "placed":
+        return {**line, "reached_full": False, "row": class_row(screened, screened), **clocks}
+    assert checkpoint is not None  # an unplaced screen always passes its last deep start
+    scratch = timed("scratch", full, checkpoint_at=full.deep_starts)
+    resumed = timed("resumed", full, checkpoint_at=full.deep_starts, resume=checkpoint)
+    states = scratch.pop("checkpoint"), resumed.pop("checkpoint")
+    differing = sorted(
+        key
+        for key in scratch.keys() | resumed.keys()
+        if key != "sub_pattern_attempts" and scratch.get(key) != resumed.get(key)
     )
-    if row["status"] == "flagged":
-        row.update(cells=final["cells"], pose=final["pose"], components=final["components"])
-    return row
+    if not same_state(*states):
+        differing.append("deep_start_state")
+    return {
+        **line,
+        "reached_full": True,
+        "row": class_row(screened, scratch),
+        "identical": not differing,
+        "differing": differing,
+        "skipped_attempts": checkpoint.attempts,
+        **clocks,
+    }
+
+
+def same_state(first: selector.Checkpoint | None, second: selector.Checkpoint | None) -> bool:
+    """Whether two searches stood in the same state at the same deep start, or both had
+    placed the class by then."""
+    if first is None or second is None:
+        return first is second
+    if first.best is None or second.best is None:
+        same_best = first.best is second.best
+    else:
+        same_best = first.best[0] == second.best[0] and np.array_equal(
+            first.best[1], second.best[1]
+        )
+    return (
+        same_best
+        and first.deep_starts_done == second.deep_starts_done
+        and first.attempts == second.attempts
+        and first.rng_state == second.rng_state
+    )
+
+
+def sweep_rows(directory: Path, masks: set[int]) -> dict[int, dict[str, Any]]:
+    """The rows the sweep wrote for these classes, from the chunks under `directory`."""
+    found: dict[int, dict[str, Any]] = {}
+    for path in sorted(directory.glob("chunk-*.json")):
+        for row in json.loads(path.read_text(encoding="utf-8"))["classes"]:
+            if row["mask"] in masks:
+                _ = found.setdefault(row["mask"], row)
+    return found
+
+
+def resume_bench(
+    directory: Path,
+    masks: Sequence[int],
+    results: Path,
+    *,
+    levers: Levers,
+    seed: int = 1,
+    max_seconds: float = 540.0,
+) -> dict[str, Any]:
+    """`resume_check` on each class, a line each, resuming; then the tally of every line.
+
+    Each line also says whether the from-scratch arm reproduces the row the sweep under
+    `directory` wrote for the class, when there is one, so the comparison is anchored to the
+    sweep's own verdicts and not only to a second run of the same code.
+    """
+    clock = time.perf_counter()
+    done: set[int] = set()
+    if results.exists():
+        done = {
+            json.loads(line)["mask"]
+            for line in results.read_text(encoding="utf-8").splitlines()
+        }
+    old = sweep_rows(directory, set(masks))
+    geometry = selector.cover_geometry()
+    cache: Cache = {}
+    with results.open("a", encoding="utf-8") as stream:
+        for mask in masks:
+            if mask in done:
+                continue
+            if time.perf_counter() - clock > max_seconds:
+                break
+            line = resume_check(
+                geometry,
+                mask,
+                seed=seed,
+                screen=SCREEN,
+                full=FULL,
+                levers=levers,
+                cache=cache,
+            )
+            written = old.get(mask)
+            line["reproduces_sweep"] = (
+                None
+                if written is None
+                else all(written.get(key) == value for key, value in line["row"].items())
+            )
+            line["sweep_status"] = None if written is None else written["status"]
+            _ = stream.write(json.dumps(line) + "\n")
+            stream.flush()
+    return resume_tally(results)
+
+
+def resume_tally(results: Path) -> dict[str, Any]:
+    """Identity and cost over every line: process seconds with the lever and without."""
+    lines = [json.loads(t) for t in results.read_text(encoding="utf-8").splitlines()]
+    full = [line for line in lines if line["reached_full"]]
+
+    def cost(rows: list[dict[str, Any]], arm: str, unit: str) -> float:
+        return round(sum(r["screen"][unit] + r[arm][unit] for r in rows), 1)
+
+    by_status: dict[str, Any] = {}
+    for status in ("flagged", "placed"):
+        mine = [r for r in full if r["row"]["status"] == status]
+        scratch, resumed = (
+            cost(mine, "scratch", "cpu_seconds"),
+            cost(mine, "resumed", "cpu_seconds"),
+        )
+        by_status[status] = {
+            "classes": len(mine),
+            "cpu_seconds_scratch": scratch,
+            "cpu_seconds_resumed": resumed,
+            "saved_share": round(1 - resumed / scratch, 4) if scratch else None,
+            "seconds_scratch": cost(mine, "scratch", "seconds"),
+            "seconds_resumed": cost(mine, "resumed", "seconds"),
+            "attempts_scratch": sum(
+                r["screen"]["attempts"] + r["scratch"]["attempts"] for r in mine
+            ),
+            "attempts_skipped": sum(r["skipped_attempts"] for r in mine),
+        }
+    return {
+        "results": str(results),
+        "classes": len(lines),
+        "reached_full": len(full),
+        "identical": sum(1 for r in full if r["identical"]),
+        "differing": [r["mask"] for r in full if not r["identical"]],
+        "reproduces_sweep": sum(1 for r in lines if r["reproduces_sweep"]),
+        "does_not_reproduce_sweep": [
+            r["mask"] for r in lines if r["reproduces_sweep"] is False
+        ],
+        "reached_full_by_status": by_status,
+    }
 
 
 def sweep(
@@ -651,23 +895,9 @@ def compare(set_path: Path, results: Path) -> dict[str, Any]:
     }
 
 
-def main(argv: list[str] | None = None) -> int:
-    parser = argparse.ArgumentParser(description=__doc__)
-    _ = parser.add_argument(
-        "command", choices=("plan", "sweep", "summary", "bench-set", "bench", "compare")
-    )
-    _ = parser.add_argument("--flags", type=Path, required=True, help="the re-check receipt")
-    _ = parser.add_argument("--directory", type=Path, required=True, help="plan and chunks")
-    _ = parser.add_argument("--levers", choices=sorted(LEVERS), default="baseline")
-    _ = parser.add_argument("--set", type=Path, help="bench: the fixed test set")
-    _ = parser.add_argument("--results", type=Path, help="bench: one line per class")
-    _ = parser.add_argument("--bench-chunks", type=int, default=3)
-    _ = parser.add_argument("--max-seconds", type=float, default=540.0)
-    _ = parser.add_argument("--chunk", type=int, default=500)
-    _ = parser.add_argument("--seed", type=int, default=1)
-    _ = parser.add_argument("--limit-chunks", type=int, default=None)
-    _ = parser.add_argument("--output", type=Path, help="the summary's receipt")
-    arguments = parser.parse_args(argv)
+def measure(arguments: argparse.Namespace) -> int:
+    """The lever-measurement commands: `bench-set`, `bench`, `compare`, `resume-check`."""
+    record: dict[str, Any]
     if arguments.command == "bench-set":
         record = make_bench_set(
             arguments.directory, arguments.flags, chunks=arguments.bench_chunks
@@ -688,10 +918,49 @@ def main(argv: list[str] | None = None) -> int:
         return 0
     if arguments.command == "compare":
         record = compare(arguments.set, arguments.results)
-        if arguments.output is not None:
-            write_atomic(arguments.output, record)
-        print(json.dumps(record, indent=1, sort_keys=True))
-        return 0
+    else:
+        record = resume_bench(
+            arguments.directory,
+            arguments.masks,
+            arguments.results,
+            levers=LEVERS[arguments.levers],
+            seed=arguments.seed,
+            max_seconds=arguments.max_seconds,
+        )
+    if arguments.output is not None:
+        write_atomic(arguments.output, record)
+    print(json.dumps(record, indent=1, sort_keys=True))
+    return 1 if record.get("differing") else 0
+
+
+MEASURE = ("bench-set", "bench", "compare", "resume-check")
+
+
+def main(argv: list[str] | None = None) -> int:
+    parser = argparse.ArgumentParser(description=__doc__)
+    _ = parser.add_argument(
+        "command",
+        choices=("plan", "sweep", "summary", *MEASURE),
+    )
+    _ = parser.add_argument("--flags", type=Path, required=True, help="the re-check receipt")
+    _ = parser.add_argument("--directory", type=Path, required=True, help="plan and chunks")
+    _ = parser.add_argument("--levers", choices=sorted(LEVERS), default="baseline")
+    _ = parser.add_argument("--set", type=Path, help="bench: the fixed test set")
+    _ = parser.add_argument(
+        "--results", type=Path, help="bench, resume-check: one line per class"
+    )
+    _ = parser.add_argument(
+        "--masks", type=int, nargs="*", default=[], help="resume-check: the classes"
+    )
+    _ = parser.add_argument("--bench-chunks", type=int, default=3)
+    _ = parser.add_argument("--max-seconds", type=float, default=540.0)
+    _ = parser.add_argument("--chunk", type=int, default=500)
+    _ = parser.add_argument("--seed", type=int, default=1)
+    _ = parser.add_argument("--limit-chunks", type=int, default=None)
+    _ = parser.add_argument("--output", type=Path, help="the summary's receipt")
+    arguments = parser.parse_args(argv)
+    if arguments.command in MEASURE:
+        return measure(arguments)
     planned = plan(arguments.flags, arguments.directory)
     if arguments.command == "plan":
         print(json.dumps({k: planned[k] for k in ("residue", "universe", "queues", "seconds")}))

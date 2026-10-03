@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import itertools
 import json
+from dataclasses import replace
 from functools import cache
 from pathlib import Path
 from typing import Any
@@ -139,3 +140,77 @@ def test_the_random_first_stage_places_cheaply_and_passes_the_rest_on_unchanged(
     assert crowded["status"] == again["status"] == "flagged"
     assert crowded["best_penetration"] == again["best_penetration"]
     assert crowded["pose"] == again["pose"]
+
+
+RESUME_SCREEN = selector.Budget(starts=4, hops=4, deep_starts=4, deep_hops=4)
+RESUME_FULL = selector.Budget(starts=4, hops=4, deep_starts=12, deep_hops=8)
+
+
+def test_the_full_budget_resumed_from_the_screen_gives_the_same_row() -> None:
+    screen, full = RESUME_SCREEN, RESUME_FULL
+    plain = tool.search_class(toy(), 0b00111, seed=1, screen=screen, full=full)
+    resumed = tool.search_class(
+        toy(), 0b00111, seed=1, screen=screen, full=full, levers=tool.Levers(resume=True)
+    )
+    for row in (plain, resumed):
+        row.pop("seconds")
+    assert plain == resumed
+    assert plain["status"] == "flagged"
+
+
+def test_a_screen_with_another_finish_is_not_resumed() -> None:
+    screen = replace(RESUME_SCREEN, finish=False)
+    _, _, resumable = tool.tuned_budgets(screen, RESUME_FULL, tool.Levers(resume=True))
+    assert not resumable
+    _, _, resumable = tool.tuned_budgets(RESUME_SCREEN, RESUME_FULL, tool.Levers(resume=True))
+    assert resumable
+    plain = tool.search_class(toy(), 0b00111, seed=1, screen=screen, full=RESUME_FULL)
+    resumed = tool.search_class(
+        toy(), 0b00111, seed=1, screen=screen, full=RESUME_FULL, levers=tool.Levers(resume=True)
+    )
+    for row in (plain, resumed):
+        row.pop("seconds")
+    assert plain == resumed
+
+
+def test_the_resume_check_compares_the_two_full_searches_field_for_field(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    levers = tool.LEVERS["combined-fast"]
+    options: dict[str, Any] = {
+        "seed": 1,
+        "screen": RESUME_SCREEN,
+        "full": RESUME_FULL,
+        "levers": levers,
+    }
+    lines = [tool.resume_check(toy(), mask, cache={}, **options) for mask in (0b00011, 0b00111)]
+    assert not lines[0]["reached_full"]
+    crowded = lines[1]
+    assert crowded["reached_full"]
+    assert crowded["identical"]
+    assert crowded["differing"] == []
+    assert crowded["skipped_attempts"] == 3 + 4 + 4 + 4  # warm starts, starts, hops, deep
+    row = tool.search_class(toy(), 0b00111, cache={}, **options)
+    row.pop("seconds")
+    assert crowded["row"] == row
+    # A checkpoint on the wrong generator state must show up as a difference.
+    real = selector.recheck_flag
+
+    def corrupted(*args: Any, **kwargs: Any) -> dict[str, Any]:
+        if kwargs.get("resume") is not None:
+            other = selector.pattern_rng(2, 0b00111).bit_generator.state
+            kwargs["resume"] = replace(kwargs["resume"], rng_state=other)
+        return real(*args, **kwargs)
+
+    monkeypatch.setattr(selector, "recheck_flag", corrupted)
+    broken = tool.resume_check(toy(), 0b00111, cache={}, **options)
+    assert not broken["identical"]
+    assert "deep_start_state" in broken["differing"]
+    results = tmp_path / "resume.jsonl"
+    _ = results.write_text(
+        "".join(json.dumps({**line, "reproduces_sweep": None}) + "\n" for line in lines),
+        encoding="utf-8",
+    )
+    tally = tool.resume_tally(results)
+    assert (tally["classes"], tally["reached_full"], tally["identical"]) == (2, 1, 1)
+    assert tally["reached_full_by_status"]["flagged"]["classes"] == 1

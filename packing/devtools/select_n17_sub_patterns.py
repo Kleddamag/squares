@@ -98,6 +98,7 @@ from __future__ import annotations
 
 import argparse
 import contextlib
+import copy
 import ctypes
 import functools
 import hashlib
@@ -699,8 +700,74 @@ def search(
     warm: list[tuple[int, Floats]] | None = None,
 ) -> Verdict:
     """Try hard to place the pattern; feasible as soon as one pose is within the margin."""
+    return search_resumable(geometry, cells, rng, budget, warm)[0]
+
+
+@dataclass
+class Checkpoint:
+    """A search's state after its first `deep_starts_done` deep starts, still unplaced.
+
+    A budget with the same prefix (`budget_prefix`) and at least as many deep starts, on a
+    generator with the same seed and from the same warm starts, passes through exactly this
+    state: the attempts so far, the best pose, the generator's state and the warm starts are
+    all it carries forward. It may resume here instead of repeating the attempts before it.
+    """
+
+    mask: int
+    prefix: Budget
+    stream: tuple[Any, ...]
+    deep_starts_done: int
+    best: tuple[float, Floats] | None
+    attempts: int
+    rng_state: dict[str, Any]
+    templates: list[tuple[int, Floats]]
+
+
+def budget_prefix(budget: Budget) -> Budget:
+    """The fields that decide a class's search, warm starts included, up to any point in
+    its deep starts: all but the deep stage's length, the deep hops and the wide kick.
+
+    The finish stays in. The class's own search reaches it only after the deep stage, but
+    `recheck_flag` searches the sub-patterns with this budget less its deep stage, finish
+    included, and their witnesses are the class's warm starts.
+    """
+    return replace(budget, deep_starts=0, deep_hops=0, wide_centre=0.0, wide_angle=0.0)
+
+
+def generator_stream(rng: np.random.Generator) -> tuple[Any, ...]:
+    """The seed a generator was made from, which a resumed search must share."""
+    seed = rng.bit_generator.seed_seq
+    if isinstance(seed, np.random.SeedSequence):
+        return (repr(seed.entropy), seed.spawn_key)
+    return (repr(seed),)
+
+
+def search_resumable(
+    geometry: Geometry,
+    cells: tuple[int, ...],
+    rng: np.random.Generator,
+    budget: Budget,
+    warm: list[tuple[int, Floats]] | None = None,
+    *,
+    checkpoint_at: int | None = None,
+    resume: Checkpoint | None = None,
+) -> tuple[Verdict, Checkpoint | None]:
+    """`search`, also returning its state after `checkpoint_at` deep starts (None if it is
+    placed), or continuing from a checkpoint, which holds its own warm starts."""
+    if resume is not None and (
+        warm is not None
+        or resume.mask != mask_of(cells)
+        or resume.prefix != budget_prefix(budget)
+        or resume.stream != generator_stream(rng)
+        or resume.deep_starts_done > budget.deep_starts
+    ):
+        raise ValueError(
+            "the checkpoint was written for another pattern, seed or budget prefix"
+        )
     with single_thread_blas():
-        return _search(geometry, cells, rng, budget, warm)
+        return _search(
+            geometry, cells, rng, budget, warm, checkpoint_at=checkpoint_at, resume=resume
+        )
 
 
 def _search(
@@ -709,10 +776,14 @@ def _search(
     rng: np.random.Generator,
     budget: Budget,
     warm: list[tuple[int, Floats]] | None,
-) -> Verdict:
+    *,
+    checkpoint_at: int | None = None,
+    resume: Checkpoint | None = None,
+) -> tuple[Verdict, Checkpoint | None]:
     problem = Problem(geometry, cells, fast=budget.fast_penalty)
     best: tuple[float, Floats] | None = None
     attempts = 0
+    snapshot: Checkpoint | None = None
 
     def attempt(start: Floats, how: str) -> Verdict | None:
         nonlocal best, attempts
@@ -752,27 +823,51 @@ def _search(
         start[row, 2] = rng.uniform(0.0, np.pi / 2)
         return start
 
-    templates = warm or []
-    for _, start in templates:
-        outcome = attempt(start, "warm")
-        if outcome is not None:
-            return outcome
-    for _ in range(budget.starts):
-        outcome = attempt(problem.random_pose(rng), "random")
-        if outcome is not None:
-            return outcome
-    for _ in range(budget.hops):
-        outcome = attempt(hop(budget.hop_centre, budget.hop_angle), "hop")
-        if outcome is not None:
-            return outcome
-    for index in range(budget.deep_starts):
+    def keep(done: int) -> None:
+        nonlocal snapshot
+        if checkpoint_at != done:
+            return
+        snapshot = Checkpoint(
+            mask_of(cells),
+            budget_prefix(budget),
+            generator_stream(rng),
+            done,
+            best,
+            attempts,
+            dict(copy.deepcopy(rng.bit_generator.state)),
+            templates,
+        )
+
+    if resume is not None:
+        best, attempts = resume.best, resume.attempts
+        rng.bit_generator.state = copy.deepcopy(resume.rng_state)
+        templates = resume.templates
+        first_deep = resume.deep_starts_done
+    else:
+        templates = warm or []
+        first_deep = 0
+        for _, start in templates:
+            outcome = attempt(start, "warm")
+            if outcome is not None:
+                return outcome, None
+        for _ in range(budget.starts):
+            outcome = attempt(problem.random_pose(rng), "random")
+            if outcome is not None:
+                return outcome, None
+        for _ in range(budget.hops):
+            outcome = attempt(hop(budget.hop_centre, budget.hop_angle), "hop")
+            if outcome is not None:
+                return outcome, None
+    keep(first_deep)
+    for index in range(first_deep, budget.deep_starts):
         if templates and index % 2 == 0:
             start, how = redraw(templates[(index // 2) % len(templates)]), "deep-warm"
         else:
             start, how = problem.random_pose(rng), "deep-random"
         outcome = attempt(start, how)
         if outcome is not None:
-            return outcome
+            return outcome, None
+        keep(index + 1)
     for index in range(budget.deep_hops):
         start = (
             hop(budget.hop_centre, budget.hop_angle)
@@ -781,7 +876,7 @@ def _search(
         )
         outcome = attempt(start, "deep-hop")
         if outcome is not None:
-            return outcome
+            return outcome, None
     assert best is not None
     feasible, how = False, "none"
     if budget.finish:
@@ -793,7 +888,7 @@ def _search(
         if finished_value <= budget.margin:
             feasible, how = True, "finish"
     value, pose = best
-    return Verdict(
+    verdict = Verdict(
         mask_of(cells),
         cells,
         feasible=feasible,
@@ -803,6 +898,7 @@ def _search(
         found_by=how,
         components=problem.violations(pose),
     )
+    return verdict, None if feasible else snapshot
 
 
 def pattern_rng(seed: int, mask: int) -> np.random.Generator:
@@ -1471,9 +1567,32 @@ def recheck_flag(
     seed: int,
     budget: Budget,
     witness_cache: dict[tuple[int, Budget], Verdict] | None = None,
+    checkpoint_at: int | None = None,
+    resume: Checkpoint | None = None,
 ) -> dict[str, Any]:
-    """One flagged class searched again: sub-pattern witnesses first, then the class."""
+    """One flagged class searched again: sub-pattern witnesses first, then the class.
+
+    With `checkpoint_at`, the record also holds the class search's `Checkpoint` after that
+    many deep starts (None if it is placed). With `resume`, a checkpoint written here under
+    a budget with the same prefix and seed, the class's search continues from it, and no
+    sub-pattern is searched: the prefix decides the sub-pattern searches, so the warm starts
+    the checkpoint holds are the ones they would give, and the record is the one this budget
+    gives from scratch, but for `sub_pattern_attempts`, which is 0.
+    """
     cells = cells_of(mask)
+    if resume is not None:
+        verdict, checkpoint = search_resumable(
+            geometry,
+            cells,
+            pattern_rng(seed, mask),
+            budget,
+            checkpoint_at=checkpoint_at,
+            resume=resume,
+        )
+        record = recheck_record(geometry, verdict, len(resume.templates), 0)
+        if checkpoint_at is not None:
+            record["checkpoint"] = checkpoint
+        return record
     sub_budget = replace(budget, deep_starts=0, deep_hops=0)
     witnesses: dict[int, Floats] = {}
     sub_attempts = 0
@@ -1493,7 +1612,21 @@ def recheck_flag(
         if found.feasible:
             witnesses[mask_of(sub)] = found.pose
     rng = pattern_rng(seed, mask)
-    verdict = search(geometry, cells, rng, budget, warm_starts(geometry, cells, witnesses, rng))
+    warm = warm_starts(geometry, cells, witnesses, rng)
+    verdict, checkpoint = search_resumable(
+        geometry, cells, rng, budget, warm, checkpoint_at=checkpoint_at
+    )
+    record = recheck_record(geometry, verdict, len(witnesses), sub_attempts)
+    if checkpoint_at is not None:
+        record["checkpoint"] = checkpoint
+    return record
+
+
+def recheck_record(
+    geometry: Geometry, verdict: Verdict, witnesses: int, sub_attempts: int
+) -> dict[str, Any]:
+    """The re-check receipt's entry for one class."""
+    cells = verdict.cells
     return {
         "arity": len(cells),
         "cells": [geometry.names[cell] for cell in cells],
@@ -1503,7 +1636,7 @@ def recheck_flag(
         "components": verdict.components,
         "attempts": verdict.attempts,
         "found_by": verdict.found_by,
-        "sub_pattern_witnesses": len(witnesses),
+        "sub_pattern_witnesses": witnesses,
         "sub_pattern_attempts": sub_attempts,
         "pose": [[float(v) for v in row] for row in verdict.pose],
     }

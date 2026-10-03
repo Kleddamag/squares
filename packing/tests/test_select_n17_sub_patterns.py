@@ -498,3 +498,76 @@ def test_the_witness_cache_changes_no_verdict() -> None:
         assert record["best_penetration"] == plain["best_penetration"]
         assert record["pose"] == plain["pose"]
     assert second["sub_pattern_attempts"] == 0
+
+
+@pytest.mark.parametrize("screen_deep_starts", [0, 4])
+def test_a_full_search_resumed_from_the_screen_is_the_full_search(
+    screen_deep_starts: int,
+) -> None:
+    screen = Budget(starts=4, hops=4, deep_starts=screen_deep_starts, deep_hops=4)
+    full = Budget(starts=4, hops=4, deep_starts=12, deep_hops=8)
+    cells = (0, 1, 2)
+    scratch = search(strip(), cells, pattern_rng(1, 7), full)
+    screened, checkpoint = selector.search_resumable(
+        strip(), cells, pattern_rng(1, 7), screen, checkpoint_at=screen.deep_starts
+    )
+    assert not screened.feasible
+    assert checkpoint is not None
+    assert checkpoint.attempts == 8 + screen_deep_starts
+    resumed, _ = selector.search_resumable(
+        strip(), cells, pattern_rng(1, 7), full, resume=checkpoint
+    )
+    assert resumed.violation == scratch.violation
+    assert resumed.attempts == scratch.attempts
+    assert resumed.found_by == scratch.found_by
+    assert resumed.components == scratch.components
+    assert np.array_equal(resumed.pose, scratch.pose)
+
+
+def test_a_checkpoint_resumes_only_its_own_pattern_seed_and_prefix() -> None:
+    screen = Budget(starts=4, hops=4, deep_starts=4, deep_hops=4)
+    full = Budget(starts=4, hops=4, deep_starts=12, deep_hops=8)
+    _, checkpoint = selector.search_resumable(
+        strip(), (0, 1, 2), pattern_rng(1, 7), screen, checkpoint_at=4
+    )
+    assert checkpoint is not None
+    wrong = {
+        "budget prefix": ((0, 1, 2), pattern_rng(1, 7), replace(full, hops=5), None),
+        "finish": ((0, 1, 2), pattern_rng(1, 7), replace(full, finish=False), None),
+        "seed": ((0, 1, 2), pattern_rng(2, 7), full, None),
+        "pattern": ((0, 1), pattern_rng(1, 7), full, None),
+        "warm starts": ((0, 1, 2), pattern_rng(1, 7), full, []),
+        "deep starts": ((0, 1, 2), pattern_rng(1, 7), replace(full, deep_starts=3), None),
+    }
+    for cells, rng, budget, warm in wrong.values():
+        with pytest.raises(ValueError, match="checkpoint"):
+            _ = selector.search_resumable(strip(), cells, rng, budget, warm, resume=checkpoint)
+    # The finish ends every sub-pattern search, so it decides the warm starts: it is prefix.
+    assert selector.budget_prefix(full) != selector.budget_prefix(replace(full, finish=False))
+    assert selector.budget_prefix(full) == selector.budget_prefix(
+        replace(full, deep_starts=1, deep_hops=1, wide_centre=1.0, wide_angle=1.0)
+    )
+
+
+def test_a_placed_search_leaves_no_checkpoint() -> None:
+    placed, checkpoint = selector.search_resumable(
+        strip(), (0, 1), pattern_rng(1, 3), QUICK, checkpoint_at=QUICK.deep_starts
+    )
+    assert placed.feasible
+    assert checkpoint is None
+
+
+def test_a_recheck_resumed_from_the_screen_is_the_recheck_from_scratch() -> None:
+    screen = Budget(starts=4, hops=4, deep_starts=4, deep_hops=4)
+    full = Budget(starts=4, hops=4, deep_starts=12, deep_hops=8)
+    scratch = recheck_flag(strip(), 0b111, seed=1, budget=full)
+    screened = recheck_flag(strip(), 0b111, seed=1, budget=screen, checkpoint_at=4)
+    checkpoint = screened.pop("checkpoint")
+    assert checkpoint is not None
+    assert len(checkpoint.templates) == 3  # the deep stage redraws warm starts
+    resumed = recheck_flag(strip(), 0b111, seed=1, budget=full, resume=checkpoint)
+    assert resumed["sub_pattern_attempts"] == 0
+    assert scratch["sub_pattern_attempts"] > 0
+    for record in (scratch, resumed):
+        _ = record.pop("sub_pattern_attempts")
+    assert resumed == scratch

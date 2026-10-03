@@ -437,7 +437,7 @@ The programs behind each result, by its cited evidence: who ran each check, how 
   - `E-n012-levy-15680000-3949423-audit`, audited here: `V-audit-s12-reweighted` (first-party, premises)
 - **T-080** — confirmed, reproduced with the producer’s code
   - `E-n101-wand125-linear-1028-report`, the source’s own run: `V-wand125-unified-linear-verify-cpp` (external)
-  - `E-n101-wand125-linear-1028-source-replay`, replayed here, reproduced with the producer’s code: no program held
+  - `E-n101-wand125-linear-1028-source-replay`, replayed here, reproduced with the producer’s code: `V-wand125-unified-linear-verify-cpp` (external); `V-audit-wand125-linear` (first-party, premises)
 
 ## Next actions
 

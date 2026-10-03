@@ -252,10 +252,11 @@ def test_the_table_still_sorts_filters_and_opens(page: Any, laid: dict[int, Any]
     # T-069, T-071, T-074 and s(77), s(78)) made 60; T-064's replay of 3 October, which
     # proved nine k^2 - 3 cases, made 69; T-075's replays the same day took n = 83, 91 and
     # 96 off Nagamochi's bound and made 72; T-080's replayed linear certificate took
-    # n = 101 to 105 off it and made 77, the cases `recent_lower_bounds` names.
+    # n = 101 to 105 off it and made 77; T-076's replayed linear certificate took n = 82
+    # off it and made 78, the cases `recent_lower_bounds` names.
     page.get_by_label("recent only").check()
-    assert page.locator(".site-table-tools .site-count").inner_text() == "77 of 324 cases"
-    assert shown.count() == 77
+    assert page.locator(".site-table-tools .site-count").inner_text() == "78 of 324 cases"
+    assert shown.count() == 78
     assert shown.first.get_attribute("id") == "n-11"
     page.get_by_label("recent only").uncheck()
     assert shown.count() == 324

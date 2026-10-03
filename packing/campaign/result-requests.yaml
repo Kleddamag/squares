@@ -76,7 +76,8 @@ issues:
       reproducible)
     author: squarepacker
     opened: '2026-10-02'
-    state: open
+    state: closed
+    closed: '2026-10-03'
     kind: result-report
     triage: done
     summary: >-
@@ -107,6 +108,16 @@ issues:
         kind: acknowledgement
         reported:
           - result: s12-31360-7901
+      - url: https://github.com/jlevy/squares/issues/309#issuecomment-5972353362
+        date: '2026-10-03'
+        by: jlevy
+        kind: final
+        reported:
+          - result: s12-31360-7901
+            id: T-078
+            verification: V3
+            confirmation: C3
+            status: confirmed
     close_when: >-
       T-078 is confirmed, which it is at V3/C3, and the reply saying so is posted from
       main.
@@ -117,7 +128,8 @@ issues:
       does not establish s(k²+1) ≥ G_k for k ≥ 4
     author: wand125
     opened: '2026-10-02'
-    state: open
+    state: closed
+    closed: '2026-10-03'
     kind: defect-report
     triage: done
     summary: >-
@@ -154,6 +166,13 @@ issues:
         reported:
           - result: green-ds7-theorem9
             id: E-green-ds7-theorem9-reported-lower
+      - url: https://github.com/jlevy/squares/issues/308#issuecomment-5972353969
+        date: '2026-10-03'
+        by: jlevy
+        kind: final
+        reported:
+          - result: green-ds7-theorem9
+            id: E-green-ds7-theorem9-reported-lower
     close_when: >-
       Triage has mapped the claim, the record holds the defect against
       E-green-ds7-theorem9-reported-lower or the report is refuted, and a reply says
@@ -167,7 +186,8 @@ issues:
     title: 'T-064 (s(k² − 3) = k): an independent second checker for Valid7, with public records'
     author: wand125
     opened: '2026-10-02'
-    state: open
+    state: closed
+    closed: '2026-10-03'
     kind: result-report
     triage: done
     summary: >-
@@ -210,6 +230,20 @@ issues:
             confirmation: C3
             status: confirmed
           - result: s78-second-route
+      - url: https://github.com/jlevy/squares/issues/296#issuecomment-5972353872
+        date: '2026-10-03'
+        by: jlevy
+        kind: final
+        reported:
+          - result: valid7-independent
+            id: T-064
+            verification: V3
+            confirmation: C3
+            status: confirmed
+          - result: valid7-independent
+            id: E-k2m3-wand125-valid7-independent
+          - result: s78-second-route
+            id: T-067
     close_when: >-
       T-064 is confirmed (a complete replay of one Valid7 checker, a review of the
       independent checker's method and the Lean reduction built with its axiom receipt) or
@@ -298,7 +332,40 @@ issues:
         register: [T-076]
     beads: [think-m7cm, think-r7yt]
     answer_bead: think-weg6
-    replies: []
+    replies:
+      - url: https://github.com/jlevy/squares/issues/294#issuecomment-5972354653
+        date: '2026-10-03'
+        by: jlevy
+        kind: follow-up
+        reported:
+          - result: n101
+            id: T-073
+            verification: V0
+            confirmation: C1
+            status: reviewed
+          - result: n83
+            id: T-073
+            verification: V0
+            confirmation: C1
+            status: reviewed
+          - result: n82
+            id: T-076
+            verification: V0
+            confirmation: C1
+            status: reviewed
+      - url: https://github.com/jlevy/squares/issues/294#issuecomment-5972549384
+        date: '2026-10-03'
+        by: jlevy
+        kind: follow-up
+        reported:
+          - result: n101
+            id: T-080
+            verification: V3
+            confirmation: C3
+            status: confirmed
+          - result: n83
+            id: T-073
+          - result: n82
     close_when: T-073 is confirmed or refuted, and the n = 82 certificate is imported and settled.
 
   - number: 282
@@ -350,93 +417,13 @@ issues:
         claim: s(96) >= 249/25 = 9.96 (mixed_n96_L996, b00fc70)
         source: https://github.com/jlevy/squares/issues/282#issuecomment-5955463430
         register: [T-075]
-      - key: n95-996
-        claim: s(95) >= 249/25 = 9.96 (mixed_n95_L996, 9933226)
+      - key: oct3-mixed-22
+        claim: >-
+          Twenty-two mixed rectangle-measure certificates posted in comments of 3 October
+          2026, from mixed_n95_L996 (s(95) >= 249/25) to mixed_n69_L8612 (s(69) >=
+          2153/250), at n = 51, 52, 55, 58, 69, 70, 71, 73, 74, 75, 76, 86, 87, 88, 89, 90,
+          91, 92, 93, 94, 95 and 96, 21 above what the record reported at their counts; at n = 96, below T-081's reported s(96) = 10 and above the verified 249/25
         source: https://github.com/jlevy/squares/issues/282#issuecomment-5964806255
-        register: [T-082]
-      - key: n94-992
-        claim: s(94) >= 248/25 = 9.92 (mixed_n94_L992, caabf77)
-        source: https://github.com/jlevy/squares/issues/282#issuecomment-5964970265
-        register: [T-082]
-      - key: n86-950
-        claim: s(86) >= 19/2 = 9.5 (mixed_n86_L950, bbb78b2)
-        source: https://github.com/jlevy/squares/issues/282#issuecomment-5965525458
-        register: [T-082]
-      - key: n87-955
-        claim: s(87) >= 191/20 = 9.55 (mixed_n87_L955, 239e95f)
-        source: https://github.com/jlevy/squares/issues/282#issuecomment-5965608183
-        register: [T-082]
-      - key: n93-986
-        claim: s(93) >= 493/50 = 9.86 (mixed_n93_L986, e11387e)
-        source: https://github.com/jlevy/squares/issues/282#issuecomment-5965785579
-        register: [T-082]
-      - key: n89-965
-        claim: s(89) >= 193/20 = 9.65 (mixed_n89_L965, b1dc461)
-        source: https://github.com/jlevy/squares/issues/282#issuecomment-5965873364
-        register: [T-082]
-      - key: n52-755
-        claim: s(52) >= 151/20 = 7.55 (mixed_n52_L755, 3d365c4)
-        source: https://github.com/jlevy/squares/issues/282#issuecomment-5966383825
-        register: [T-082]
-      - key: n75-892
-        claim: s(75) >= 223/25 = 8.92 (mixed_n75_L892, 216e4b4)
-        source: https://github.com/jlevy/squares/issues/282#issuecomment-5966471175
-        register: [T-082]
-      - key: n51-746
-        claim: s(51) >= 373/50 = 7.46 (mixed_n51_L746, 06a1e9d)
-        source: https://github.com/jlevy/squares/issues/282#issuecomment-5966907664
-        register: [T-082]
-      - key: n88-960
-        claim: s(88) >= 48/5 = 9.6 (mixed_n88_L960, bf23abf)
-        source: https://github.com/jlevy/squares/issues/282#issuecomment-5967152250
-        register: [T-082]
-      - key: n58-7905
-        claim: s(58) >= 1581/200 = 7.905 (mixed_n58_L7905, 7bcfef5)
-        source: https://github.com/jlevy/squares/issues/282#issuecomment-5967170488
-        register: [T-082]
-      - key: n91-975
-        claim: s(91) >= 39/4 = 9.75 (mixed_n91_L975, ee10b72)
-        source: https://github.com/jlevy/squares/issues/282#issuecomment-5967446024
-        register: [T-082]
-      - key: n55-7728
-        claim: s(55) >= 966/125 = 7.728 (mixed_n55_L7728, 2d22930)
-        source: https://github.com/jlevy/squares/issues/282#issuecomment-5968358529
-        register: [T-082]
-      - key: n90-9725
-        claim: s(90) >= 389/40 = 9.725 (mixed_n90_L9725, 4a4f2f8)
-        source: https://github.com/jlevy/squares/issues/282#issuecomment-5968439278
-        register: [T-082]
-      - key: n92-977
-        claim: s(92) >= 977/100 = 9.77 (mixed_n92_L977, 5baaec2)
-        source: https://github.com/jlevy/squares/issues/282#issuecomment-5969312608
-        register: [T-082]
-      - key: n76-896
-        claim: s(76) >= 224/25 = 8.96 (mixed_n76_L896, 3d2089e)
-        source: https://github.com/jlevy/squares/issues/282#issuecomment-5969402336
-        register: [T-082]
-      - key: n74-88675
-        claim: s(74) >= 3547/400 = 8.8675 (mixed_n74_L88675, ce65306)
-        source: https://github.com/jlevy/squares/issues/282#issuecomment-5970827530
-        register: [T-082]
-      - key: n71-8705
-        claim: s(71) >= 1741/200 = 8.705 (mixed_n71_L8705, 044c127)
-        source: https://github.com/jlevy/squares/issues/282#issuecomment-5970961348
-        register: [T-082]
-      - key: n70-86475
-        claim: s(70) >= 3459/400 = 8.6475 (mixed_n70_L86475, 13188dd)
-        source: https://github.com/jlevy/squares/issues/282#issuecomment-5970989651
-        register: [T-082]
-      - key: n73-8809
-        claim: s(73) >= 8809/1000 = 8.809 (mixed_n73_L8809, b780f58)
-        source: https://github.com/jlevy/squares/issues/282#issuecomment-5971102614
-        register: [T-082]
-      - key: n96-997
-        claim: s(96) >= 997/100 = 9.97 (mixed_n96_L997, 1695131)
-        source: https://github.com/jlevy/squares/issues/282#issuecomment-5971628643
-        register: [T-082]
-      - key: n69-8612
-        claim: s(69) >= 2153/250 = 8.612 (mixed_n69_L8612, 2aff207)
-        source: https://github.com/jlevy/squares/issues/282#issuecomment-5971914803
         register: [T-082]
     beads: [think-ye2x, think-fb6h, think-09ag, think-r7yt]
     answer_bead: think-7gop
@@ -444,7 +431,7 @@ issues:
       - url: https://github.com/jlevy/squares/issues/282#issuecomment-5972354526
         date: '2026-10-03'
         by: jlevy
-        kind: confirmation
+        kind: follow-up
         reported:
           - result: mixed-five
             id: T-069
@@ -482,6 +469,7 @@ issues:
             verification: V3
             confirmation: C3
             status: confirmed
+          - result: oct3-mixed-22
     close_when: >-
       T-069, T-071 and T-072 are confirmed or refuted, and every later certificate posted
       here is imported and settled. The thread is a rolling request: each release is
@@ -512,6 +500,21 @@ issues:
         kind: acknowledgement
         reported:
           - result: rect-34
+      - url: https://github.com/jlevy/squares/issues/281#issuecomment-5972354358
+        date: '2026-10-03'
+        by: jlevy
+        kind: follow-up
+        reported:
+          - result: rect-34
+            id: T-074
+            verification: V3
+            confirmation: C3
+            status: confirmed
+          - result: rect-34
+            id: T-068
+            verification: V0
+            confirmation: C1
+            status: reviewed
     close_when: >-
       T-068 is confirmed or refuted at all 34 counts. Counts that pass move to replayed
       entries, as T-045 and T-070 did for T-046; add each such entry to this result.
@@ -520,7 +523,8 @@ issues:
     title: 'Exact value s(59) = 8 (k = 8 of the k² − 5 series): registration request (external certificate)'
     author: wand125
     opened: '2026-10-01'
-    state: open
+    state: closed
+    closed: '2026-10-03'
     kind: result-report
     triage: done
     summary: >-
@@ -541,13 +545,24 @@ issues:
         kind: acknowledgement
         reported:
           - result: s59
+      - url: https://github.com/jlevy/squares/issues/280#issuecomment-5972353759
+        date: '2026-10-03'
+        by: jlevy
+        kind: final
+        reported:
+          - result: s59
+            id: T-066
+            verification: V3
+            confirmation: C3
+            status: confirmed
     close_when: T-066 is confirmed, and the reply saying so is posted from main.
 
   - number: 279
     title: 'Exact value s(77) = 9 (k = 9 of the k² − 4 series): registration request (external certificate)'
     author: wand125
     opened: '2026-10-01'
-    state: open
+    state: closed
+    closed: '2026-10-03'
     kind: result-report
     triage: done
     summary: >-
@@ -562,14 +577,25 @@ issues:
         register: [T-067]
     beads: [think-xujq]
     answer_bead: think-kggn
-    replies: []
+    replies:
+      - url: https://github.com/jlevy/squares/issues/279#issuecomment-5972353629
+        date: '2026-10-03'
+        by: jlevy
+        kind: final
+        reported:
+          - result: s77
+            id: T-067
+            verification: V3
+            confirmation: C3
+            status: confirmed
     close_when: T-067 is confirmed, and the reply saying so is posted from main.
 
   - number: 256
     title: 'Exact value s(60) = 8 (corollary s(61) = 8): registration request (external certificate)'
     author: evand
     opened: '2026-09-30'
-    state: open
+    state: closed
+    closed: '2026-10-03'
     kind: result-report
     triage: done
     summary: >-
@@ -587,17 +613,40 @@ issues:
         register: [T-063]
     beads: [think-x73z]
     answer_bead: think-wm86
-    replies: []
+    replies:
+      - url: https://github.com/jlevy/squares/issues/256#issuecomment-5972353486
+        date: '2026-10-03'
+        by: jlevy
+        kind: final
+        reported:
+          - result: s60
+            id: T-062
+            verification: V3
+            confirmation: C3
+            status: confirmed
+          - result: s61
+            id: T-063
+            verification: V3
+            confirmation: C3
+            status: confirmed
     close_when: T-062 and T-063 are confirmed, and the reply saying so is posted from main.
     notes: >-
       The author's comment of 2 October corrects the issue's citation of Nagamochi's
       general bounds (see #295); nothing in the claim uses them.
 
+      The follow-up of 3 October (issuecomment-5972549384) first said each direction's
+      least bound matched the shipped record, which the linear records cannot show: they
+      carry no per-direction least bound (review finding LC-4). It was edited in place at
+      19:12Z that day, with a visible note, to say the replay matched each direction's
+      status, input digest and node count, so the reply as it stands states nothing
+      outdated.
+
   - number: 247
     title: 'New exact lower bound for s(11): 3.875000003875... with reproducible certificate'
     author: XiaoLiaoShe
     opened: '2026-09-29'
-    state: open
+    state: closed
+    closed: '2026-10-03'
     kind: result-report
     triage: done
     summary: >-
@@ -644,6 +693,17 @@ issues:
         by: jlevy
         kind: follow-up
         reported: []
+      - url: https://github.com/jlevy/squares/issues/247#issuecomment-5972354092
+        date: '2026-10-03'
+        by: jlevy
+        kind: final
+        reported:
+          - result: s11
+            id: T-061
+            verification: V3
+            confirmation: C3
+        corrects:
+          - https://github.com/jlevy/squares/issues/247#issuecomment-5910776488
     close_when: >-
       A correction is posted: the result is T-061, not T-058, at V3/C3, and superseded by
       T-060. Nothing the authors asked for is then queued; the revised Zenodo record they
@@ -653,7 +713,8 @@ issues:
     title: 'Exact values s(21) = 5 and s(32) = 6: registration request (external certificates)'
     author: evand
     opened: '2026-09-27'
-    state: open
+    state: closed
+    closed: '2026-10-03'
     kind: result-report
     triage: done
     summary: >-
@@ -724,6 +785,27 @@ issues:
           - >-
             the Lean theorems are recorded as reports; s13_eq_4 and the conditional s(21)
             and s(32) theorems were built here on 30 September
+      - url: https://github.com/jlevy/squares/issues/238#issuecomment-5972353213
+        date: '2026-10-03'
+        by: jlevy
+        kind: final
+        reported:
+          - result: s32
+            id: T-051
+            verification: V3
+            confirmation: C3
+            status: confirmed
+          - result: s21
+            id: T-052
+            verification: V3
+            confirmation: C3
+            status: confirmed
+          - result: s32-no-fold
+            id: T-051
+          - result: s61-point-route
+            id: T-063
+        corrects:
+          - https://github.com/jlevy/squares/issues/238#issuecomment-5886762729
     close_when: >-
       A follow-up corrects the reply of 29 September (V3/C3 under the ladder of 30
       September, #245 merged, the re-sweeps restarted, the Lean builds) and states the
@@ -732,11 +814,18 @@ issues:
       The comment of 2 October also answers the 1 October review of the anchored-clique
       repair (think-2z60), which belongs to no result this issue reports.
 
+      The final reply of 3 October describes the no-fold run's replay, all 28,800 roots
+      with every census equal to the source's, without naming
+      E-n032-evand-zmx2-full-sym-report or E-n032-evand-zmx2-full-sym-replay, so
+      check_requests keeps one reply due for s32-no-fold. The schema has no way to
+      record a reply that covers a result by describing it, and the owner chose not
+      to post a comment only to name the two ids.
   - number: 227
     title: 102 and 103
     author: franciscouzo
     opened: '2026-09-23'
-    state: open
+    state: closed
+    closed: '2026-10-03'
     kind: result-report
     triage: done
     summary: >-
@@ -779,6 +868,19 @@ issues:
             the interval route is on the branch claude/determined-goldberg-ura2ed; it is on
             main in packing/resources/web/franciscouzo-square-packing-2026-09-27/README.md
           - jlevy/squares#249 is not merged yet; it has merged
+      - url: https://github.com/jlevy/squares/issues/227#issuecomment-5972354234
+        date: '2026-10-03'
+        by: jlevy
+        kind: final
+        reported:
+          - result: couzo-49
+            id: T-056
+            verification: V3
+            confirmation: C3
+            status: confirmed
+        corrects:
+          - https://github.com/jlevy/squares/issues/227#issuecomment-5889876502
+          - https://github.com/jlevy/squares/issues/227#issuecomment-5910782477
     close_when: >-
       A follow-up states V3/C3 under the ladder of 30 September and links the review and
       the interval route on main. Nothing Couzo asked for is then queued: the three
@@ -806,7 +908,16 @@ issues:
         register: [T-044]
     beads: []
     answer_bead: think-75yv
-    replies: []
+    replies:
+      - url: https://github.com/jlevy/squares/issues/170#issuecomment-5972354812
+        date: '2026-10-03'
+        by: jlevy
+        kind: final
+        reported:
+          - result: point-ten
+            id: T-044
+            verification: V3
+            confirmation: C3
     close_when: >-
       Closed by its author on 25 September. A late reply stating T-044 at V3/C3 is owed and
       keeps it closed.

@@ -681,7 +681,8 @@ sources:
       section; the README says parts of the work were produced with AI assistance under
       human direction, and the commit message ends with a co-author trailer naming an AI
       assistant. web/wand125-linear-n82-2026-10-02/acquisition/sources.json pins revision
-      b00fc70f1904e9b1b567afee056d347f911209e8. Dated by that revision, 2026-10-02 UTC.
+      b00fc70f1904e9b1b567afee056d347f911209e8. Dated by that revision, 2026-10-02 UTC. Its
+      complete replay ran here on 2026-10-03, with its receipts in the packet.
   - key: '[wand125 rectangle bounds 2026-10-02]'
     authors: [wand125]
     year: 2026

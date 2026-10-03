@@ -98,10 +98,11 @@ FRONTIER_COUNTS: dict[str, tuple[int, int, int]] = {
     # n = 83, 91 and 96 off Nagamochi's bound, all open in both lanes, so only the
     # Nagamochi-bounded count falls, by three in every corpus. Then the n = 101 linear
     # certificate's replay of 2 October, recorded as T-080, took n = 101 to 105 off it,
-    # all open in both lanes, so that count falls by five in the two larger corpora.
-    "n=1..100": (55, 55, 1),
-    "n=1..200": (139, 139, 80),
-    "n=1..324": (247, 247, 188),
+    # all open in both lanes, so that count falls by five in the two larger corpora; and
+    # the n = 82 linear replay (T-076) took n = 82 off it, by one in every corpus.
+    "n=1..100": (55, 55, 0),
+    "n=1..200": (139, 139, 79),
+    "n=1..324": (247, 247, 187),
 }
 #: n = 68, 103, 105, 110 and 131 left the exclusions on 2026-09-29, when their records
 #: moved from UnitSquare renderings to Francisco Couzo's packings (T-056); n = 69 is the

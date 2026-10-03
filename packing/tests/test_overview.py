@@ -68,6 +68,14 @@ def rendered() -> Callable[[str], str]:
     return site_renders.html
 
 
+@pytest.fixture(scope="module")
+def case_records() -> dict[str, str]:
+    """Every case's record file, by served name, rendered once here during setup: the
+    first render of all 324 takes 20 s on a hosted runner, more than one check may hold
+    the pull-request surface in its own call time (12 s)."""
+    return site_renders.case_records()
+
+
 def test_every_register_entry_is_one_row(results: str, register: list[dict]) -> None:
     rows = ROW.findall(results)
     assert sorted(row_id for row_id, _, _ in rows) == sorted(r["id"].lower() for r in register)
@@ -120,7 +128,9 @@ def test_the_results_table_has_its_own_page_and_the_overview_points_to_it(
     ) in recent
 
 
-def test_every_link_to_a_result_goes_to_its_row(page: str, results: str) -> None:
+def test_every_link_to_a_result_goes_to_its_row(
+    page: str, results: str, case_records: dict[str, str]
+) -> None:
     """The overview's recent table and replay table, and the case records, link a
     result at its row on the results page, never at a fragment of their own page."""
     rows = {row_id for row_id, _, _ in ROW.findall(results)}
@@ -131,7 +141,7 @@ def test_every_link_to_a_result_goes_to_its_row(page: str, results: str) -> None
     assert set(linked) - rows == {"verification-ladders"}
     assert 'id="verification-ladders"' in results
     assert not re.search(r'href="#t-\d+"', page)
-    for record in site_renders.case_records().values():
+    for record in case_records.values():
         assert set(re.findall(r'href="\.\./all-results\.html#([^"]+)"', record)) <= rows
         assert 'href="index.html#t-' not in record
         assert 'href="../index.html#t-' not in record
@@ -2492,11 +2502,13 @@ def test_a_results_rungs_run_significance_first(overview: overview_data.Overview
 @pytest.mark.parametrize(
     "name", ["index.html", render_overview.RESULTS_PAGE, "cases/11.html", "frontier.html"]
 )
-def test_every_page_lists_significance_first(name: str, rendered: Callable[[str], str]) -> None:
+def test_every_page_lists_significance_first(
+    name: str, rendered: Callable[[str], str], case_records: dict[str, str]
+) -> None:
     """Wherever rung chips sit side by side, on any page, they run S, V, C: a result's
     three in a row, a popover, an overview or a case record, and the V and C of an entry
     awaiting replay. No run repeats a scale or puts a later one first."""
-    shown = site_renders.case_records()[name] if name.startswith("cases/") else rendered(name)
+    shown = case_records[name] if name.startswith("cases/") else rendered(name)
     runs = [run for run in _rung_runs(shown) if len(run) > 1]
     if name != "frontier.html":
         assert any(len(run) == len(RUNG_ORDER) for run in runs), name
@@ -3212,7 +3224,7 @@ def test_recent_results_opens_with_its_table_and_says_what_it_shows_under_it(
 
 
 def test_recent_results_names_the_headline_results_at_their_rows(
-    page: str, results: str
+    page: str, results: str, case_records: dict[str, str]
 ) -> None:
     """The paragraph names the results that settle eleven squares, bracket seventeen and
     give the new exact values, each id at its row on the Results page and each case at
@@ -3230,14 +3242,13 @@ def test_recent_results_names_the_headline_results_at_their_rows(
         assert f'<a href="all-results.html#{result}">{result.upper()}</a>' in lead, result
         assert f'id="{result}"' in results, result
     assert re.findall(r"\bT-\d{3}\b", text) == ["T-060", "T-043", "T-065"]
-    records = site_renders.case_records()
     for n in (21, 32, 45):
         assert f'<a href="{render_case_pages.case_url(n)}" data-case="{n}">' in lead, n
-        assert render_case_pages.case_url(n) in records, n
+        assert render_case_pages.case_url(n) in case_records, n
     hrefs = re.findall(r'href="([^"]+)"', lead)
     for href in hrefs:
         page_name = href.partition("#")[0]
-        assert page_name in render_overview.SITE_PAGES or page_name in records, href
+        assert page_name in render_overview.SITE_PAGES or page_name in case_records, href
     assert site_documents.README in check_results.READER_TIER
     assert render_overview.OVERVIEW_ARTICLE in check_results.READER_TIER
     template = render_overview.OVERVIEW_ARTICLE.read_text(encoding="utf-8")
@@ -5766,7 +5777,9 @@ def test_the_site_writes_its_forwarders_and_checks_them(
 
 
 def test_a_cases_status_is_one_chip_wherever_it_is_drawn(
-    rendered: Callable[[str], str], overview: overview_data.Overview
+    rendered: Callable[[str], str],
+    overview: overview_data.Overview,
+    case_records: dict[str, str],
 ) -> None:
     """A case's status, `proved` or `open`, is one chip (`case_status_chip`) on every page
     that draws it, the frontier table and the case records alike, and its fill is the
@@ -5774,11 +5787,10 @@ def test_a_cases_status_is_one_chip_wherever_it_is_drawn(
     accent tone it had before."""
     statuses = {case["status"] for case in overview.cases.values()}
     assert statuses == {"proved", "open"}
-    records = site_renders.case_records()
     shown = {
         "frontier.html": rendered("frontier.html"),
         # A record draws its own case's status: one solved case and one open one.
-        "case records": records["cases/11.html"] + records["cases/29.html"],
+        "case records": case_records["cases/11.html"] + case_records["cases/29.html"],
     }
     for name, page in shown.items():
         assert 'data-tone="accent"' not in page, name

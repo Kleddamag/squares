@@ -20,12 +20,14 @@ import pytest
 from sqpack.release import DATA_REVISION, PUBLICATION_EDITION
 from workbench_tools import capture_video, delivery
 from workbench_tools.build_candidate import (
+    CITATIONS,
     N_MAX,
     checked_version,
     latin_face_covers,
     load_citations,
     page_version,
     same_decimal,
+    stage_spelling,
 )
 from workbench_tools.check_animate_view import citation_steps, cited_lines
 
@@ -75,6 +77,7 @@ def test_the_file_is_carried_by_digest_with_only_the_n_that_cite_something() -> 
     assert entries["16"]["upper"] is None
     assert entries["17"]["upper"] == {
         "text": "Bidwell 1998, Squares in Squares",
+        "corrects": None,
         "note": "(reported)",
         "basis": "external",
         "assurance": "reported",
@@ -84,7 +87,7 @@ def test_the_file_is_carried_by_digest_with_only_the_n_that_cite_something() -> 
     assert entries["17"]["lower"]["text"] == "Guzhou0806 & Mira 2026, GitHub"
     assert entries["17"]["lower"]["note"] == "(confirmed T-032)"
     # Only what the stage draws reaches the page: no source key, results or value.
-    assert set(entries["11"]["lower"]) == {"text", "note", "basis", "assurance"}
+    assert set(entries["11"]["lower"]) == {"text", "corrects", "note", "basis", "assurance"}
     # With the frontier case record the n's bounds are held in, drawn once on the head's line.
     assert entries["17"]["record"] == "n-017"
 
@@ -129,8 +132,12 @@ def test_every_cited_value_is_the_number_the_bound_line_draws() -> None:
             lambda d: d["citations"]["entries"][16]["upper"].update(text=" padded"),
             "one trimmed",
         ),
-        # Outside the embedded faces: a Hungarian double acute, as in Erdős.
-        (lambda d: d["citations"]["entries"][16]["upper"].update(text="Erdős 1975"), "faces"),
+        # Outside the embedded faces with no Latin-1 letter to fold to: a Polish Ł. A
+        # Hungarian double acute, as in Erdős, is folded as the page loads, not refused.
+        (
+            lambda d: d["citations"]["entries"][16]["upper"].update(text="Łukasiewicz 1975"),
+            "faces",
+        ),
         (lambda d: d["citations"]["entries"][16]["upper"].update(basis="folk"), "basis 'folk'"),
         (
             lambda d: d["citations"]["entries"][16]["upper"].update(assurance="certain"),
@@ -261,14 +268,64 @@ def test_the_mp4_carries_the_version_beside_the_page_digest(tmp_path: Path) -> N
 
 def test_the_handover_is_sampled_where_the_section_changes_in_each_way() -> None:
     entries = {str(entry["n"]): entry for entry in _document()["citations"]["entries"]}
-    wainwright = ("Wainwright 1979, Squares in Squares", None)
+    wainwright = ("Wainwright 1979, Squares in Squares", None, None)
     assert cited_lines(entries["19"]) == {"upper": wainwright}
     assert cited_lines(entries["1"]) == {}
     # The one bound that is both reported and confirmed says both in its one note, which is
     # why the note exists: it used to be drawn as two marks in two styles (`think-qzmf`).
     assert cited_lines(entries["29"])["upper"] == (
         "Schadt & Ellsworth, Squares in Squares",
+        None,
         "(reported; confirmed T-009)",
     )
     # 4 is the first n cited at all; 5 gains an upper line, and 18 changes a reference.
     assert citation_steps(entries, N_MAX) == (4, 5, 18)
+
+
+def test_a_lower_bound_names_the_published_work_it_corrects(tmp_path: Path) -> None:
+    """A lower bound standing in for a published result found unsound carries
+    `corrects Nagamochi 2005` on its line, measured with the reference and the note; an
+    upper bound never does, and the tag names outside work, never this register's own."""
+    entries = load_citations(CITATIONS)["entries"]
+    assert entries["150"]["lower"]["corrects"] == "corrects Nagamochi 2005"
+    assert entries["150"]["upper"]["corrects"] is None
+    document = json.loads(CITATIONS.read_text(encoding="utf-8"))
+    rows = {row["n"]: row for row in document["citations"]["entries"]}
+    assert cited_lines(rows[150])["lower"][1] == "corrects Nagamochi 2005"
+
+    def refused(change: dict[str, Any], match: str) -> None:
+        broken = json.loads(json.dumps(document))
+        target = next(row for row in broken["citations"]["entries"] if row["n"] == 150)
+        for bound, value in change.items():
+            target[bound] = {**target[bound], **value}
+        path = tmp_path / "citations.json"
+        path.write_text(json.dumps(broken), encoding="utf-8")
+        with pytest.raises((ValueError, TypeError), match=match):
+            load_citations(path)
+
+    refused({"upper": {"corrects": rows[150]["lower"]["corrects"]}}, "only a lower bound")
+    refused(
+        {"lower": {"corrects": {**rows[150]["lower"]["corrects"], "result": "Nagamochi"}}},
+        "T-NNN",
+    )
+
+
+def test_the_stage_spelling_folds_only_what_the_faces_cannot_draw() -> None:
+    # Karakuş's cedilla is outside the stage's latin faces; Latin-1 accents, dashes and
+    # quotation marks are not folded.
+    assert stage_spelling("Karakuş 2026, arXiv:2609.37410") == "Karakus 2026, arXiv:2609.37410"
+    dash = "\N{EN DASH}"
+    assert stage_spelling(f"Erdős and Göbel {dash} “1979”") == f"Erdos and Göbel {dash} “1979”"
+    assert stage_spelling("Kearney, Shiu 2002") == "Kearney, Shiu 2002"
+
+
+def test_the_fold_is_made_as_the_page_loads_not_in_the_file() -> None:
+    # Review A3 on jlevy/squares#305: the file keeps Karakuş's spelling for the case pages;
+    # the page carries the folded line, and the animate check expects the folded line.
+    document = json.loads(CITATIONS.read_text(encoding="utf-8"))
+    row = next(row for row in document["citations"]["entries"] if row["n"] == 150)
+    assert row["lower"]["text"].startswith("Karakuş 2026")
+    assert load_citations(CITATIONS)["entries"]["150"]["lower"]["text"].startswith(
+        "Karakus 2026"
+    )
+    assert cited_lines(row)["lower"][0].startswith("Karakus 2026")

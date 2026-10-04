@@ -11,7 +11,7 @@ softschema:
   schema: defects.schema.yaml
   envelope: null
   status: enforced
-count: 513
+count: 518
 defects:
 - id: D-001
   title: Fixed-side search never left the grid basin
@@ -17188,3 +17188,248 @@ defects:
     where required. The frontend job of every pull request is now a Linux reading of
     the two files.
   recorded_in: packing/tests/site_browser.py
+- id: D-514
+  title: The Erdős–Graham transcription stated Theorem (1) as a two-sided bound the paper does not prove
+  date: '2026-10-02'
+  layer: docs
+  class: soundness
+  direction: flattering
+  detected_by: inspection
+  latent_for: >-
+    Forty-one days, from the flagged reconstruction of 2026-08-22 (2a0b00d61) to
+    2026-10-02. X-037's lane B listed "Erdős–Graham's Θ versus O" among notes for the
+    owner to file on 2026-09-17, and it was not filed.
+  severity: medium
+  status: fixed
+  bead: think-hzv3
+  what: >-
+    The archive's cleaned transcription of Erdős and Graham 1975 printed Theorem (1) as
+    w(α) = Θ(α^{7/11}), supplied as a flagged reconstruction because the extraction lost
+    the formula. Rendered PDF page 4 (printed page 2) prints W(α) = O(α^{7/11}), an
+    upper bound, and printed page 6 says the authors have no nontrivial lower estimate
+    for W and cannot rule out W(α) = O(1). The proof's two-sided notation is the paper's
+    own capital Omega, defined as bounded above and below by constant multiples; the
+    transcription had modernised it to Θ, so its closing "the total uncovered area of
+    S(α) is just Θ(α^{7/11})" read as a two-sided bound on the waste function when it
+    describes one construction.
+  consequence: >-
+    A reader quoting the archive would credit Erdős and Graham with a lower bound of
+    order α^{7/11} on the wasted area. That is false: the waste is zero at every integer
+    side, and the exponent 3/5 proved since (Bui 2025, McClenagan 2026) is below 7/11.
+    The only lower bound on record is Roth and Vaughan's, of order the square root. No
+    register value rested on the transcription: asymptotic-waste-bounds.yaml and the
+    research document state O(x^{7/11}) as an upper bound.
+  fix: >-
+    Read the theorem, the notation and every use of the symbol off the rendered pages
+    and corrected the cleaned transcription by addition (conventions section 7): (1) now
+    reads W(α) = O(α^{7/11}); the waste function is the printed capital W in its
+    definition, in (1) and in the closing paragraph; and the paper's Ω is restored at
+    the eleven places the transcription carries the symbol, ten printed as Θ and one,
+    the border triangles' area, as O. Three dated NOTE annotations give the transcribed
+    and the printed text and how to read the paper's Ω, beside the original
+    reconstruction note, which is kept. The file's banner and the archive README census
+    rise from 17 to 20. The .raw.md is unchanged. Most passages still marked GARBLED in
+    the proof are legible on the rendered pages and were not re-read.
+  regression: none
+  recorded_in: packing/campaign/explorations/X-049-families-shading-and-the-large-n-limit.md
+- id: D-515
+  title: The McClenagan transcription swapped Montgomery's exponent, and the record then faulted McClenagan for it
+  date: '2026-10-02'
+  layer: docs
+  class: soundness
+  direction: flattering
+  detected_by: inspection
+  latent_for: >-
+    Forty-one days: the transcription (aa1847e0e) and the research document's claim and
+    register note built on it (e8f8fd925) both date from 2026-08-22, and nothing read
+    the rendered page until 2026-10-02.
+  severity: medium
+  status: fixed
+  bead: think-hzv3
+  what: >-
+    The raw extraction of McClenagan 2026 lost the three exponents in its introduction's
+    history paragraph and left their fragments displaced. The cleaned transcription put
+    them back in the wrong order, giving Montgomery's bound as O(x^{(3+sqrt(2))/7}) and
+    the bound "brought back" after the 2020 error as O(x^{(3-sqrt(3))/2} sqrt(log x)).
+    It also wrote sqrt(log x) for Chung and Graham's 2009 factor. Rendered PDF page 1
+    prints Montgomery as O(x^{(3-sqrt(3))/2}) and both other bounds as
+    O(x^{(3+sqrt(2))/7} log x). Only the second exponent carried a GARBLED flag, and it
+    was the wrong one. The research document and asymptotic-waste-bounds.yaml then
+    recorded, from that transcription, that McClenagan misattributes (3+sqrt(2))/7 to
+    Montgomery. The research document listed this as a false claim in its corrections
+    table.
+  consequence: >-
+    The record published a correction against a paper that is right. That credits this
+    project with finding an error McClenagan never made, and it would have misled anyone
+    who repeated the correction. The exponents and verdicts the record itself relies on
+    were unaffected: Montgomery's (3-sqrt(3))/2 + eps, from Roth and Vaughan, and
+    Chung-Graham 2009 with log x, from Wang-Dong-Li, were stated correctly throughout.
+  fix: >-
+    Read the paragraph off the rendered page and corrected by addition (conventions
+    section 7). The transcription now prints the page's three bounds, with two dated NOTE
+    annotations beside the original GARBLED flag; its banner and the archive README
+    census rise from 2 to 4, and the .raw.md is unchanged. The research document's
+    sentence and corrections-table row keep the withdrawn claim struck through, with a
+    dated correction saying what stands, and its status paragraph names the
+    withdrawal. The register's Montgomery and Chung-Graham 2009 notes carry dated
+    corrections.
+  regression: none
+  recorded_in: packing/resources/papers/mcclenagan-2026-optimally-packing-large-square.md
+- id: D-516
+  title: The register held Nagamochi 2005's Theorem 2 as verified and rested 287 case floors on it, though its Lemma 1 is false
+  date: '2026-10-02'
+  layer: record
+  class: soundness
+  direction: flattering
+  detected_by: review
+  latent_for: >-
+    From the frontier's first records, which cited E-nagamochi-lower as a verified
+    published proof, to 2026-10-02. The read of 2026-08-30 judged the paper's spine sound
+    with four named items unverified, and the defect lay in none of them. chelokot's note
+    of 2026-09-04 and Karakuş's preprint of 2026-09-29 were public for 28 and 3 days of
+    that time. wand125 first reported both, and the defect, to this project in
+    jlevy/squares#295 at 02:55 UTC on 2026-10-02; the X-049 literature lane found both the
+    same day.
+  severity: high
+  status: fixed
+  bead: think-xucp
+  what: >-
+    E-nagamochi-lower recorded Nagamochi 2005, Theorem 2, as a verified published proof,
+    and T-007 stood at V3/C1 on it. Lemma 1 of that paper, the per-square scoring
+    assertion Theorem 1 is summed from, is false for every container with a > 3 and
+    b > 2: Karakuş's squares K_t and chelokot's square of side 10001/10000 score below
+    one, recomputed here exactly (T-085). The paper has no other proof of Theorem 1, so
+    Theorem 2 is unproved by it at every N >= 10. The operative verified lower bound of
+    287 case records cited it: 238 open floors, all 17 perfect squares from 4 on, the 16
+    cases k^2 - 1 and the 16 cases k^2 - 2 from 7 on.
+  consequence: >-
+    The register called 287 lower bounds verified on a proof that does not hold. At the
+    238 open cases the verified floor stood above anything proved: Karakuş's replacement
+    is strictly lower at each of them. The exact values s(k^2 - 2) = k from k = 8 on had
+    no other proof the register held. Nothing is disproved: no packing beating any of
+    Nagamochi's values is known, and the perfect squares and k^2 - 1 cases were true at
+    the same values on other proofs.
+  fix: >-
+    Per the review of 2026-10-02: E-nagamochi-lower is now reported, with its external
+    review defect-found, and T-007 stands at V0/C1, status incomplete. The verified floors
+    were re-grounded: the perfect squares on the area bound, s(k^2 - 1) = k on Karakuş's
+    Corollary 1.2 (T-084), and the general floor on his weaker Corollary 6.2 (T-083), all
+    at V3/C1, except at n = 54, 57 and 73, where T-044's registered bounds, masked until
+    then, are stronger; T-085 records Lemma 1's correction. Nagamochi's values stay in the
+    reported lane. The case bodies, the generator, the frontier README and three research
+    reports carry dated corrections, and devtools.check_nagamochi_bounds now re-derives
+    Karakuş's values in the verified lane and Nagamochi's in the reported lane.
+    The k^2 - 2 family rests on chelokot's Lean proof, replayed here with its axiom receipt (T-086), at the same values.
+  regression: >-
+    The soft-schema validation step (devtools.validate_schemas, through
+    sqpack.assurance's bound-evidence check) refuses any verified lane citing
+    E-nagamochi-lower while that record is reported, and
+    tests/test_nagamochi_bounds.py::test_it_covers_the_cases_it_claims_to holds that no
+    verified lower bound cites it. devtools.check_nagamochi_bounds, the step "the borrowed
+    lower bounds re-derive", re-derives every Karakuş floor in the verified lane and
+    every Nagamochi value in the reported lane from its closed form, exactly and, since
+    2026-10-04 (D-517), one-sided, so a floor rounded up above what its source proves
+    fails;
+    tests/test_nagamochi_bounds.py::test_a_floor_rounded_up_is_refused is that control,
+    n = 150's floor rounded up in its last place. None of these can tell whether a
+    published proof is sound; that is still a read.
+  recorded_in: docs/project/reviews/review-2026-10-02-nagamochi-lemma1-karakus.md
+- id: D-517
+  title: Borrowed lower bounds were rounded to nearest, and the checker's two-sided tolerance passed a floor rounded up
+  date: '2026-10-04'
+  layer: tooling
+  class: soundness
+  direction: flattering
+  detected_by: review
+  latent_for: >-
+    From the hand-written records that printed Nagamochi's value to twelve figures, and
+    from 2026-09-07 for every generated record, to 2026-10-04. check_nagamochi_bounds
+    passed them from its first commit on 2026-08-30, when 36 of the 88 verified floors it
+    re-derived were already rounded up. The senior review of PR 305 found the tolerance
+    with its n = 150 mutation, and the one-sided rule then found the 76 reported values.
+  severity: low
+  status: fixed
+  bead: think-4mzm
+  recurrence_of: D-453
+  what: >-
+    devtools.generate_frontier_case's nagamochi_value printed Theorem 2's value to its
+    significant figures rounded to nearest, so 76 generated records at n = 106 to 319
+    carried a reported lower bound one unit in the last place above Theorem 2: n = 106's
+    10.32737905309 against 10.32737905308881... devtools.check_nagamochi_bounds held each
+    borrowed lower bound to its theorem with the two-sided tolerance
+    |expected - recorded| <= 10^-places, which accepted them and would equally have
+    accepted a verified floor rounded up: the review's n = 150 mutation, 12.2579760164
+    against Karakuş's 12.25797601630..., failed no gate but the generator's drift check.
+    Measured since with the one-sided rule: just before the 2026-10-02 correction (the
+    parent of 6200bcf23) the same rounding had put 131 verified floors citing
+    E-nagamochi-lower above Theorem 2, 21 hand-written at n <= 100 and 110 generated, and
+    83 reported values; origin/main at e5a48b310, which does not yet carry that
+    correction, still has 103 such verified floors, all above n = 100, and the 76
+    reported values.
+  consequence: >-
+    Each value claims more than its source states by one unit in a last place of eleven
+    or twelve figures. No status, gap ranking or certificate turns on a difference that
+    small, and the theorem behind these values is itself unproved (D-516). But a verified
+    lane is the register's statement of what is proved, and there the error ran in the
+    flattering direction every time, as a rounding rule that does not know which way a
+    bound points always will (D-453). The checker written to catch a transcription slip in
+    these values could not see this one.
+  fix: >-
+    Fixed in 314355d05. check_nagamochi_bounds is one-sided in both lanes: a record may
+    not exceed its theorem's value and must be within one unit in its own last place below
+    it, decided exactly by squaring the closed form a + sqrt(r) against the record's
+    rational value. nagamochi_value rounds down, as karakus_value already did, and the 76
+    records were redrafted with the generator's --refresh on their own review dates, each
+    changing only that value. On this branch the verified lane cites Karakuş's floors,
+    rounded down, since 2026-10-02 and had no violation; main's 103 are replaced by them
+    when PR 305 merges.
+  regression: >-
+    devtools.check_nagamochi_bounds, the step "the borrowed lower bounds re-derive", now
+    refuses a borrowed floor rounded up in either lane.
+    tests/test_nagamochi_bounds.py::test_a_floor_rounded_up_is_refused is its control,
+    n = 150's floor rounded up in its last place, and
+    test_a_record_is_its_theorem_rounded_down tabulates floors rounded up and down at
+    n = 150, 106 and 99.
+  recorded_in: packing/devtools/check_nagamochi_bounds.py
+- id: D-518
+  title: The Lemma 1 checker's Karakuş ordering tested only k^2 <= N, and the evidence register called it an exact check
+  date: '2026-10-04'
+  layer: tooling
+  class: validity
+  direction: flattering
+  detected_by: review
+  latent_for: >-
+    Two days: from the tool's first commit, 54a0b1704 on 2026-10-02, to the senior review
+    of PR 305 on 2026-10-04.
+  severity: medium
+  status: fixed
+  bead: think-4mzm
+  what: >-
+    devtools.check_nagamochi_lemma1_counterexample's karakus_at_most_nagamochi and
+    karakus_above_area returned k*k <= N, N <= k*k + 2k and N > k*k, the last steps of the
+    by-hand reduction, which hold for every nonsquare N whatever the closed forms are. The
+    "area < Karakus <= Nagamochi" loop in main and
+    test_karakus_bound_is_between_area_and_theorem_two_exactly could not fail, while the
+    E-karakus-strip-lower review note said the tool checks that ordering exactly and the
+    2 October review listed the ordering among what the tool verified in exact
+    arithmetic.
+  consequence: >-
+    A wrong closed form for (6.1) or for Theorem 2 -- a radicand off by a constant, the
+    1/4 dropped, the ceiling branch lost -- would have passed, and the evidence record
+    would have gone on describing a machine check that did not exist. The ordering itself
+    is true, as the review's algebra shows and the exact check now confirms, so no bound
+    and no classification was wrong; what was wrong was the record's account of what had
+    been checked.
+  fix: >-
+    Fixed in faf5b28e0. The tool builds sqrt N, Karakuş's (6.1) and Theorem 2's minimum
+    as exact values a + sqrt(r) and compares them by squaring (RootForm.compare) at every
+    nonsquare N from 8 to 1000. It holds the minimum against check_nagamochi_bounds'
+    theorem_two_form and the printed decimal against the exact form, and checks the
+    measures' totals the note says it replays. The evidence note and the review carry
+    dated corrections.
+  regression: >-
+    tests/test_nagamochi_lemma1_counterexample.py::test_a_wrong_closed_form_is_caught
+    feeds bound_ordering and main four wrong closed forms -- a radicand too large, the 1/4
+    dropped, Nagamochi's root branch without its ceiling, a form below sqrt N -- and
+    requires each to be caught.
+  recorded_in: docs/project/reviews/review-2026-10-02-nagamochi-lemma1-karakus.md

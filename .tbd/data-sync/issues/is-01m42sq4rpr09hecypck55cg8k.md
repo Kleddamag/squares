@@ -5,7 +5,7 @@ title: Stabilize the typecheck wall ceiling (think-4w2g)
 kind: task
 status: in_progress
 priority: 2
-version: 3
+version: 4
 delegate: claude-code@vm
 labels: []
 dependencies: []
@@ -13,7 +13,7 @@ parent_id: is-01m42sq026mszrdm4fwf5r8g8y
 hold: null
 hold_until: null
 created_at: 2026-10-04T06:30:44.246Z
-updated_at: 2026-10-04T07:24:51.416Z
+updated_at: 2026-10-04T08:03:40.281Z
 started_at: 2026-10-04T06:32:15.376Z
 ---
 Hosted typecheck breached the 111 s ceiling with 0 findings on #305 and #323 (readings 59.6-119.6 s). Measure, then set the ceiling or the step per OR-17 so routine runs do not flake. See think-4w2g.
@@ -58,3 +58,5 @@ Next: push and open the PR; the PR's own typecheck job is the first hosted readi
 shape. Re-take the record from that cohort (`read_tier_walls --tier typecheck`), drop the
 pending fields, and tighten the ceiling to within 2x of the new record. Then close
 think-4w2g and this bead.
+
+2026-10-04 08:03 UTC: SUPERSEDED. After review of PR jlevy/squares#338, the coordinator dropped threading (hosted --threads 4 read 90.46 s on run 37185790574 job 111387285346, inside the serial spread; a reviewer's box gave 0.75-0.79x; a dead worker hangs basedpyright until the 900 s timeout; the worker count was uncapped; one test was vacuous). Commit b13c82ad7, on top of fca477d3d and not pushed, restores the serial _type_floor and removes the tests. It records the typecheck tier on the 174-reading serial cohort: measured 86.71 s (geometric mean), band 54/123, measured_on 2026-10-04, ceiling 130 s. The 76.5 s record goes to history, and the pending fields are removed. check_gate_budgets passes. 366 tests passed (gate_budgets, validation_cli, module_boundaries, read_tier_walls, pr_wall, ci_gate_recent_sampling). packing-validate --edit: 54/54 steps. packing-validate --typecheck --jobs 1 --inner-jobs 1 on this slower local 4-cpu box: 0 errors, but 136.95 s fails the 130 s ceiling there (local serial reads 137-152 s against a hosted maximum of 123 s).

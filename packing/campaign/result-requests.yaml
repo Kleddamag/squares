@@ -260,35 +260,36 @@ issues:
       Nagamochi's Lemma 1 is false (chelokot's Lean counterexample, Karakuş's family), so
       the published proof of Theorem 2, which T-007 registers, is incomplete; the bound is
       not shown false. It points to Karakuş's and chelokot's replacement results.
-    read_through: '2026-10-02T02:55:29Z'
+    read_through: '2026-10-04T02:29:32Z'
     results:
       - key: lemma1-false
         claim: >-
           Nagamochi 2005, Lemma 1 is false, so the published proof of Theorem 2 is
           incomplete
         source: body
-        register: [T-007]
-        evidence: [E-nagamochi-lower]
+        register: [T-007, T-085]
+        evidence: [E-nagamochi-lower, E-nagamochi-lemma1-counterexample]
         defect: true
       - key: karakus-2026
         claim: >-
           Karakuş, arXiv:2609.37410: s(k^2 - 1) = k for every k >= 2, and s(N) >= 1/2 +
           sqrt(N - floor(sqrt N) + 1/4) for every nonsquare N >= 8
         source: body
-        not_registered: >-
-          The issue asks the record to consider it as a replacement for T-007; it waits on
-          the owner's decision on the review in jlevy/squares#305.
-        queued: true
+        register: [T-083, T-084]
+        evidence: [E-karakus-strip-lower]
       - key: chelokot-2026
         claim: chelokot, s(n^2 - 2) = n for every n >= 2, kernel-checked in Lean
         source: body
-        not_registered: >-
-          As for Karakuş's: a replacement the issue asks to consider, waiting on the same
-          decision.
-        queued: true
+        register: [T-086, T-085]
+        evidence: [E-chelokot-square-minus-two-lean]
     asks:
       - what: Re-derive the 63 operative values T-007 supplies from the replacements or stronger results
-        state: queued
+        state: done
+        note: >-
+          All 287 verified floors that rested on T-007 were re-derived in jlevy/squares#305
+          (D-516), the 63 at n <= 100 among them: the perfect squares on the area bound,
+          s(k^2 - 1) = k on T-084, s(k^2 - 2) = k on T-086, and the open floors on T-083 or
+          a stronger registered bound. devtools.check_nagamochi_bounds re-derives them.
     beads: [think-bkqm, think-bmze]
     answer_bead: think-bmze
     replies:
@@ -299,6 +300,20 @@ issues:
         reported:
           - result: lemma1-false
             id: T-007
+          - result: karakus-2026
+          - result: chelokot-2026
+      - url: https://github.com/jlevy/squares/issues/295#issuecomment-5975790448
+        date: '2026-10-04'
+        by: jlevy
+        kind: follow-up
+        reported:
+          - result: lemma1-false
+            id: T-007
+            verification: V3
+            confirmation: C1
+            status: reviewed
+          - result: lemma1-false
+            id: E-nagamochi-lower
           - result: karakus-2026
           - result: chelokot-2026
     close_when: >-

@@ -186,6 +186,7 @@ Each entry summarizes one user-level research window. Cycle slots are wall-clock
 | [session-170](agent-sessions/session-170-residual-compatibility.md) | stopped | retrospective | `review-planning-oversight` (insight) | `review-planning-oversight` (correctness) | 4 | think-67ek | Review Draft PR333 and clear current-history certification under think-67ek. Next independent local project is worker-memory supervision; no automatic larger geometry target. |
 | [session-171](agent-sessions/session-171-raw-row-support.md) | stopped | contemporaneous | `pipeline-improvement` (efficiency) | `review-planning-oversight` (correctness) | 6 | think-op6s | Upstream capture/Flag2 remains under think-tmz6. Conditional P01E requires this terminal record and final metadata current-head CI terminal without own failures; no automatic larger run. |
 | [session-172](agent-sessions/session-172-capacity-support.md) | stopped | contemporaneous | `pipeline-improvement` (efficiency) | `review-planning-oversight` (correctness) | 3 | think-2uhz | Observe final metadata current-head CI and close/sync think-2uhz. Conditional P01F is a distinct opt-in shared-tooling project; upstream think-tmz6 and capture/Flag2 remain owned. No raw cap/order ladder. |
+| [session-174](agent-sessions/session-174-core-refinement.md) | stopped | contemporaneous | `research-loop` (correctness) | `review-planning-oversight` (correctness) | 2 | think-0xxc | Publish source/evidence/native record; observe exact source fast/required CI, clear think-0xxc debt, then observe final metadata head. No another research target. |
 
 ### Workflow summary
 
@@ -198,11 +199,11 @@ Declared counts are contemporaneous contracts; retrospective counts are reconstr
 | `insight-iteration` | 28 | 1 | 88 | 4 |
 | `process-review` | 16 | 4 | 64 | 6 |
 | `efficiency-loop` | 11 | 1 | 41 | 1 |
-| `research-loop` | 31 | 4 | 119 | 9 |
+| `research-loop` | 32 | 4 | 120 | 9 |
 | `pipeline-improvement` | 40 | 2 | 211 | 7 |
 | `documentation-pass` | 1 | 0 | 29 | 3 |
 | `remediation` | 2 | 1 | 2 | 3 |
-| `review-planning-oversight` | 7 | 3 | 46 | 6 |
+| `review-planning-oversight` | 7 | 3 | 47 | 6 |
 | `general-improvement` | 1 | 0 | 7 | 1 |
 
 ## Experiment agendas

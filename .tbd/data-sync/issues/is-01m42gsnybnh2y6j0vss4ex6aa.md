@@ -3,9 +3,9 @@ type: is
 id: is-01m42gsnybnh2y6j0vss4ex6aa
 title: N17 raw-piece row-support witnesses without full graph expansion
 kind: task
-status: in_progress
+status: closed
 priority: 1
-version: 2
+version: 3
 spec_path: docs/project/reviews/review-2026-10-02-n17-bulk-exclusion-design.md
 assignee: Guzhou0806
 delegate: guzhou0806-codex-t0
@@ -15,8 +15,41 @@ parent_id: is-01m3xkd6zmq1jqwtn628h2k7zy
 hold: null
 hold_until: null
 created_at: 2026-10-04T03:54:50.186Z
-updated_at: 2026-10-04T03:55:17.451Z
+updated_at: 2026-10-04T05:00:18.232Z
 started_at: 2026-10-04T03:55:17.450Z
+closed_at: 2026-10-04T05:00:18.231Z
+close_reason: |
+  # P01D bounded diagnostic return
+
+  Session171 is stopped with administrative closeout; upstream think-tmz6 ownership is preserved.
+  Source/evidence published to Draft PR333 as `58af8cdedc64cb6fc4695e4e6f677df708fb6672`; its hosted checks are terminal
+  19pass/36skipped, required checks all SUCCESS. Final metadata CI remains to be observed.
+
+  D1:55/96rows,49selections,100000nodes/12069unique pairs,31.553s;41unknown.
+  D2:69/96rows (+14),57selections,76nodes/50000unique pairs,13.529s;27unknown.
+  Root independently replayed D2's855pairs; all49D1selections are an exact prefix and
+  all55D1rows survive. No unsupported row, geometric feasibility or exclusion is claimed.
+  D2 observed worker peak157319168B; independent replay151908352B; every Job cleaned up.
+  44focused tests, Ruff/types and record/doc/synopsis/ledger/clock/gate/integrity/PR-body checks pass.
+  D1 stale completed-delegation CI metadata was corrected without weakening clocks/caps.
+
+  Frozen D2 caps:50000unique pairs,100000nodes,180s,512MiB,240sJob; same raw atoms/predicate.
+  No full graph, producer/kernel/capture/Flag2/checker/admission edits, cap increase or further target.
+  Code:packing/devtools/probe_n17_raw_row_support.py; tests:packing/tests/test_n17_raw_row_support.py.
+  Report/compact receipts:packing/campaign/explorations/X048-session-171-raw-row-support/.
+  Local B packet/progress/Job: runs/p01d-D2-B-packet.json, runs/p01d-D2-B-packet.partial.json,
+  runs/p01d-D2-B-search/; root replay:runs/p01d-D2-independent-replay.json and matchingJobdirectory.
+  Exact executable/cwd/argv and resources are in each Job final.json; portableexamples are in D2_REPORT.md.
+  Native aggregate only:packing/campaign/resource-usage/codex-session-171.yaml,
+  start2026-10-04T03:56:55.800523+00:00,end2026-10-04T04:55:27.9636830+00:00; one interval, privacy-safe aggregates.
+  Live-task and boundary caveats remain; branch attribution is declared, not harness-observed.
+  No native remeasurement is planned; later final metadata/CI observation is outside that lower bound.
+  Recovery:fixedsearch remains default; D1 revisionf0b94b047 and its evidence remain frozen.
+
+  Next:conditional one separately contracted P01E capacity completion only after finalmetadataCI.
+  Rough250k same-mixestimate~68s and20–40MiB cachegrowth is not a measured guarantee.
+resolution: null
+duplicate_of: null
 ---
 # P01D — lazy raw-piece row-support witnesses
 

@@ -62,6 +62,7 @@ import subprocess
 import sys
 from collections.abc import Callable, Iterable, Mapping, Sequence
 from dataclasses import dataclass
+from functools import cache
 from pathlib import Path
 from typing import Any
 
@@ -236,7 +237,17 @@ def commands_run(jobs: Iterable[Mapping[str, Any]]) -> set[Path]:
     return files
 
 
-def _imported_modules(path: Path) -> set[str]:
+def _imported_modules(path: Path) -> frozenset[str]:
+    """The first-party modules `path` imports. Read once per version of the file: every
+    half's closure reaches the same tools (`publish` runs `check_published_site` for all
+    four), and parsing each again per half and per call held the scope's own test over
+    the pull-request surface's per-test ceiling."""
+    stat = path.stat()
+    return _parsed_imports(path, stat.st_mtime_ns, stat.st_size)
+
+
+@cache
+def _parsed_imports(path: Path, _mtime_ns: int, _size: int) -> frozenset[str]:
     tree = ast.parse(path.read_text(encoding="utf-8"), filename=str(path))
     names: set[str] = set()
     for node in ast.walk(tree):
@@ -247,7 +258,7 @@ def _imported_modules(path: Path) -> set[str]:
             # `from devtools import render_n11_lower_bounds_explainer_pdf as pdf` imports a
             # module too.
             names.update(f"{node.module}.{alias.name}" for alias in node.names)
-    return {name for name in names if name.split(".")[0] in LOCAL_PACKAGES}
+    return frozenset(name for name in names if name.split(".")[0] in LOCAL_PACKAGES)
 
 
 def _source_of(module: str) -> Path | None:

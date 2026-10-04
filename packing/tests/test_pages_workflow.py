@@ -41,11 +41,12 @@ OVERLAPPED_PREPARED_PAGE_JOBS = {
     "browser-geometry",
 }
 
-#: Page jobs with a budget entry but no hosted run to measure yet. Their entries carry a
+#: Page jobs with a budget entry but no hosted run of their current shape to measure yet:
+#: `publish` since it began checking the assembled site's heads. Their entries carry a
 #: ceiling and null measurements; the first pull-request run that includes them is the
 #: measurement, and whoever records it removes the name here, so the exception cannot
 #: quietly outlive the reason for it.
-AWAITING_FIRST_RUN = frozenset({"overview", "overview-unchanged"})
+AWAITING_FIRST_RUN = frozenset({"overview", "overview-unchanged", "publish"})
 
 #: The step right before every download by artifact id, reading the same id expression.
 #: With `merge-multiple`, an empty `artifact-ids` downloads every artifact in the run.
@@ -678,8 +679,15 @@ def test_publication_assembles_the_checked_products_and_only_main_uploads_it() -
         "n11-optimality-review",
     }
     steps = publish["steps"]
-    assert steps[0]["name"] == ARTIFACT_ID_GUARD
-    assert steps[0]["env"] == {
+    # The checkout and its Python come first (`test_publication_holds_the_assembled_site_
+    # to_the_head_contract`), then the guard, directly before the first download.
+    guard = _publish_step(steps, ARTIFACT_ID_GUARD)
+    assert [step.get("name") for step in steps[:guard]] == [
+        "Check out the repository",
+        "Install uv and Python 3.14",
+    ]
+    assert steps[guard + 1]["name"] == "Use the prepared page"
+    assert steps[guard]["env"] == {
         "ARTIFACT_ID": "${{ needs.prepare.outputs.prepared_artifact_id }}"
     }
     downloads = [
@@ -799,6 +807,65 @@ def test_the_site_pages_render_twice_beside_prepare_and_agree() -> None:
 
 def _publish_step(steps: list[dict[str, Any]], name: str) -> int:
     return next(index for index, step in enumerate(steps) if step.get("name") == name)
+
+
+#: The command that holds a built site's heads to the contract, as the jobs run it.
+LOCAL_HEAD_CHECK = (
+    "uv run --frozen --group dev python -m devtools.check_published_site --local site"
+)
+
+
+def test_publication_holds_the_assembled_site_to_the_head_contract() -> None:
+    """The `overview` job checks its own build's heads, and that build has no paper and
+    no workbench, so the papers' forwarders were never held to the papers there. The
+    assembled tree is the first that holds every page, so `publish` runs the same check
+    on it, in the `overview` job's setup and form: after the last step that writes into
+    the tree and before anything is uploaded, with nothing that lets it fail quietly. The
+    checkout comes before every download, since a checkout clears its directory."""
+    jobs = load()["jobs"]
+    steps = jobs["publish"]["steps"]
+    checkouts = [
+        index for index, step in enumerate(steps) if "actions/checkout@" in step.get("uses", "")
+    ]
+    setups = [
+        index
+        for index, step in enumerate(steps)
+        if "astral-sh/setup-uv@" in step.get("uses", "")
+    ]
+    downloads = [
+        index
+        for index, step in enumerate(steps)
+        if step.get("uses", "").startswith("actions/download-artifact@")
+    ]
+    assert len(checkouts) == len(setups) == 1
+    assert checkouts[0] < setups[0] < min(downloads)
+    overview = jobs["overview"]["steps"]
+    assert steps[checkouts[0]]["with"] == next(
+        step["with"] for step in overview if "actions/checkout@" in step.get("uses", "")
+    )
+    assert steps[setups[0]]["with"] == next(
+        step["with"] for step in overview if "astral-sh/setup-uv@" in step.get("uses", "")
+    )
+    check = _publish_step(steps, "Check every page's head in the assembled site")
+    step = steps[check]
+    assert step["run"].strip() == LOCAL_HEAD_CHECK
+    assert step["working-directory"] == "packing"
+    assert "if" not in step
+    assert "continue-on-error" not in step
+    writes = (
+        "Put the optimality review beside the other paper, refusing any name already there",
+        "Serve each moved file at its old address too",
+    )
+    assert max(_publish_step(steps, name) for name in writes) < check
+    assert max(downloads) < check
+    upload = next(
+        index
+        for index, step in enumerate(steps)
+        if step.get("uses", "").startswith("actions/upload-pages-artifact@")
+    )
+    assert check < upload
+    # The overview's own build is checked the same way, in its own job.
+    assert any(LOCAL_HEAD_CHECK in step.get("run", "").splitlines() for step in overview)
 
 
 def _assembled(

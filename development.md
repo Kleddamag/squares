@@ -1100,7 +1100,8 @@ The workbench job selects Node 24.18.0, installs the root lockfile with scripts
 disabled, and builds the typed workbench package into the self-contained `/workbench/`
 page, beside `prepare` rather than after it.
 The publish job puts the two papers, the checked PDF, the site’s own pages and the
-workbench back into one tree; only a push to `main` uploads that tree to Pages.
+workbench back into one tree and holds every page’s head in it to the site’s contract
+(`check_published_site --local`); only a push to `main` uploads that tree to Pages.
 
 **An address the site has served keeps working.** The papers moved to `papers/<slug>` on
 2026-10-01, from `explainer.html` and from `n11-optimality/t-060-explainer.html`.
@@ -1108,11 +1109,13 @@ workbench back into one tree; only a push to `main` uploads that tree to Pages.
 writes a forwarder at each old address: a page of a few lines whose script
 (`devtools/overview/forward.js`, the one the overview forwards its own old fragments
 with) sends the reader on with the query string and the fragment they came with, with a
-refresh and a link for a reader without scripts and the new address as its canonical
-URL. `render_overview.MOVED_FILES` lists each file that moved and cannot forward, a
-paper’s Markdown and PDF; the publish job copies each to its old address, and a test
-holds that step to the list.
-Nothing on the site links an old address.
+refresh and a link for a reader without scripts, the new address as its canonical URL,
+and, where it leads to a page of the site, that page’s own link preview, written from
+the record the page’s head is written from, so an old link shared now previews the page
+it leads to as a link to that page would.
+`render_overview.MOVED_FILES` lists each file that moved and cannot forward, a paper’s
+Markdown and PDF; the publish job copies each to its old address, and a test holds that
+step to the list. Nothing on the site links an old address.
 `check_published_site` asks the deployed site for every one of them, and visits each
 forwarder in the pinned browser with a query string and a fragment.
 To move a page again, add it to the list; do not delete an entry.

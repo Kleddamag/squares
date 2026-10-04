@@ -52,7 +52,7 @@ from devtools import render_research_tables as tables
 from devtools.build_bound_citations import CORRECTS
 
 if TYPE_CHECKING:
-    from devtools.render_overview import Page
+    from devtools.render_overview import Page, PageMeta
 
 PACKING = Path(__file__).resolve().parents[1]
 TEMPLATES = PACKING / "devtools" / "templates"
@@ -1000,6 +1000,15 @@ CASES_DESCRIPTION = (
 )
 
 
+def cases_meta() -> PageMeta:
+    """What the record page says of itself in its head (`render_overview.head_tags`): its
+    name, its sentence and its address. The forwarder at its old address, `cases.html`,
+    previews it with the same record (`render_overview.forwarded_metas`)."""
+    from devtools.render_overview import PageMeta  # noqa: PLC0415
+
+    return PageMeta("Case Records", CASES_DESCRIPTION, CASES_PAGE)
+
+
 @cache
 def _rendered() -> str:
     """Every record as one kpress page, with the case files' links made to work, its
@@ -1030,12 +1039,13 @@ def _rendered() -> str:
         },
     )
     report = site_documents.LinkReport()
+    meta = cases_meta()
     rendered = render_overview.kpress_page(
         cases_markdown(render_overview.fill),
-        name=CASES_PAGE,
+        name=meta.path,
         current="frontier",
-        title="Case Records",
-        description=CASES_DESCRIPTION,
+        title=meta.name,
+        description=meta.description,
         toc=False,
         rewrite_body=lambda text: site_documents.rewrite_article(
             text, context=context, report=report
@@ -1161,15 +1171,16 @@ def _without_headings(page: str) -> str:
 def _description(case: dict[str, Any]) -> str:
     """A record file's own sentence, for a search engine and a shared link's preview."""
     state = "solved" if case["status"] == "proved" else "open"
+    squares = "unit square" if case["n"] == 1 else "unit squares"
     return (
-        f"Packing {case['n']} unit squares in the smallest square, a case {state}: the "
+        f"Packing {case['n']} {squares} in the smallest square, a case {state}: the "
         "best packing known, every bound and its credit, and every result on it."
     )
 
 
 def case_records() -> list[Page]:
-    """Each case's record file, `cases/11.html`: its title, description and link
-    preview, the script that sends a reader with scripts on to the record page
+    """Each case's record file, `cases/11.html`: its title, description, link preview
+    and the site's icon, the script that sends a reader with scripts on to the record page
     (`overview/case-forward.js`), and the record itself, its links written from its own
     directory. A file is the record alone, with no styles or shell, so a reader without
     scripts reads it plain; the record page and every popover fetch it."""
@@ -1178,6 +1189,7 @@ def case_records() -> list[Page]:
         PageMeta,
         _script_text,  # pyright: ignore[reportPrivateUsage]
         assert_self_contained,
+        favicon_html,
         fill,
         head_tags,
     )
@@ -1191,7 +1203,7 @@ def case_records() -> list[Page]:
         meta = PageMeta(f"n = {n} · Case Records", _description(case), name)
         values = {
             "N": str(n),
-            "HEAD": head_tags(meta),
+            "HEAD": f"{head_tags(meta)}\n{favicon_html()}",
             "FORWARD_SCRIPT": _script_text(CASE_FORWARD_SCRIPT),
             "RECORD": rebase_links(records[n], CASES_DIR),
         }

@@ -49,11 +49,10 @@ certificate recorder depends on one ordered traversal.
 
 ## Local Integration Run
 
-[The three receipts](results-2026-10-05.jsonl) were recorded on 2026-10-05 in Japan
-(2026-10-04 UTC), at source revision `9bbc3200d`, on arm64 macOS 25.2.0 with Python
-3.14.7. The extension was built with installed Rust 1.99.0; the repository-pinned 1.98.0
-toolchain was unavailable.
-Each arm used a 30-second cap and fresh state.
+[The three receipts](results-2026-10-05.jsonl) were recorded on 2026-10-04 UTC, at
+source revision `9bbc3200d`, on arm64 macOS 25.2.0 with Python 3.14.7. The extension was
+built with installed Rust 1.99.0; the repository-pinned 1.98.0 toolchain was
+unavailable. Each arm used a 30-second cap and fresh state.
 
 | Arm | Workers | Verdict | Nodes | Closed share | CPU s | Wall s |
 | --- | ---: | --- | ---: | ---: | ---: | ---: |

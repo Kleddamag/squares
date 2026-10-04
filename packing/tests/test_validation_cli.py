@@ -1936,61 +1936,6 @@ def test_exact_verification_takes_the_cpus_its_neighbours_leave(
     assert workers == 2
 
 
-@pytest.mark.parametrize(
-    ("jobs", "expected"),
-    [
-        # The pull request's `typecheck` job: one step on a runner of its own.
-        (1, ("--threads", "4")),
-        # Beside two other steps it takes the two cpus they leave.
-        (3, ("--threads", "2")),
-        # A local tier's default `--jobs` fills the box, so the checker runs as it always
-        # did: one process, no flag.
-        (4, ()),
-        (8, ()),
-    ],
-)
-def test_the_type_floor_forks_one_checker_per_cpu_its_neighbours_leave(
-    monkeypatch: pytest.MonkeyPatch, jobs: int, expected: tuple[str, ...]
-) -> None:
-    """`basedpyright --threads` at `_command_workers`' `cpus - jobs + 1`, and serial at one.
-
-    The hosted step read 54 to 123 s serially and over its 111 s ceiling on 8 per cent of
-    174 runs; four forked checkers took a four-cpu box from 143 to 78 s with the same
-    verdict (`think-pr19`). A run that stopped asking for the workers would
-    still pass, so this pins the command rather than trusting the wall to notice.
-    """
-    monkeypatch.setattr(os, "process_cpu_count", lambda: 4)
-    monkeypatch.setattr(validate, "_required_tool", lambda _context, name: f"/bin/{name}")
-    requested: list[tuple[str, ...]] = []
-
-    def record(
-        _context: validate.Context, commands: Sequence[Sequence[str]], **_: object
-    ) -> str:
-        requested.extend(tuple(command) for command in commands)
-        return "0 errors, 0 warnings, 0 notes"
-
-    monkeypatch.setattr(validate, "_commands", record)
-    context = validate.Context(
-        deep=False, strict=False, jobs=jobs, inner_jobs=1, environment={}
-    )
-    assert validate._type_floor(context) == "0 errors, 0 warnings, 0 notes"
-    assert requested == [("/bin/basedpyright", *expected)]
-
-
-def test_the_type_floor_still_fails_on_a_finding_when_it_forks_checkers(
-    monkeypatch: pytest.MonkeyPatch,
-) -> None:
-    """Parallel checking changes the command, not the verdict it is held to."""
-    monkeypatch.setattr(os, "process_cpu_count", lambda: 4)
-    monkeypatch.setattr(validate, "_required_tool", lambda _context, name: f"/bin/{name}")
-    monkeypatch.setattr(
-        validate, "_commands", lambda *_arguments, **_options: "1 error, 0 warnings, 0 notes"
-    )
-    context = validate.Context(deep=False, strict=False, jobs=1, inner_jobs=1, environment={})
-    with pytest.raises(validate.StepFailureError):
-        validate._type_floor(context)
-
-
 def test_multi_command_step_stops_at_first_failure_without_printing_success(
     monkeypatch: pytest.MonkeyPatch, tmp_path: Path
 ) -> None:

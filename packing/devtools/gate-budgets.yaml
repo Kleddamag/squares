@@ -1131,49 +1131,58 @@ tiers:
 
 - id: typecheck
   command: packing-validate --typecheck
-  # BasedPyright is one step outer `--jobs` cannot divide. Inside `checks` it occupied one
-  # of three slots on a four-cpu runner; moving it to a one-step job gives it the runner
-  # without changing the edit tier, which still contains the same type floor.
+  # BasedPyright is one indivisible unit. Inside `checks` it occupied one of three slots
+  # on a four-cpu runner; moving it to a one-step job gives it the runner without changing
+  # the edit tier, which still contains the same type floor.
   #
-  # Since 2026-10-04 the step divides itself: at this tier's `--jobs 1` it runs
-  # `basedpyright --threads 4`, one forked checker per cpu (`_type_floor`, think-pr19).
-  # The serial record below measured a step that no longer runs, so it is in `history`
-  # and the tier is pending its first hosted cohort at the new shape, as the `fast` entry
-  # was cleared when its steps changed underneath it.
+  # 130 s from 2026-10-04, raised on purpose (`OR-17`; think-4w2g, think-pr19). The 111 s
+  # it replaces sat inside the runner pool's routine spread: on the 174 readings below the
+  # step read over 111 s on 8 per cent of runs, and 3 to 6 per cent breached the ceiling
+  # (the gate's figure is 1.5 to 3.4 s under the step time read here). Every breach
+  # think-4w2g records had zero findings, and each cost a full re-run, because a partial
+  # one leaves `check_pr_wall` unable to measure the run. 130 s clears the highest of the
+  # 174 (123 s) by 6 per cent, is 1.50x the record against rule 2's 2.0x (173 s), and
+  # binds before the band's 184.5 s drift edge; with the worst setup seen (44 s), setup
+  # and step at the ceiling come to 174 s, inside OR-14's 180 s.
   #
-  # Why. 174 hosted serial readings of the step from 2026-10-02T07:49Z to 10-04T06:21Z:
-  # the 175 pull-request runs of this workflow that completed (passed or failed, not
-  # cancelled) in that window, less one whose latest attempt had no typecheck job, on 17
-  # branches, read from the jobs API's latest attempt by `devtools.check_pr_wall`'s
-  # per-job split. Median 93.5 s, p90 111 s, maximum 123 s; two regimes with medians 69 s
-  # (73 runs under 85 s) and 104 s (101 runs) and no trend by hour or branch. 14 of 174
-  # step readings (8.0%) exceeded 111 s, 3 (1.7%) 115 s, and none 125 s. The gate's own
-  # figure reads 1.5 to 3.4 s under the API step time (83.52 s against 85 s in run
-  # 37182550037; 119.63 s against 123 s in run 37165485062, PR 323's breach), so between
-  # 5 and 11 of the 14 (3 to 6 per cent of runs) were ceiling breaches; every breach
-  # `think-4w2g` records had zero findings. Setup around the step was a median 32 s (24
-  # to 44 s), so the job, not the step, is what the pull request waits on, and the step
-  # is a median 71 per cent of it. A breach costs a full re-run, because a partial re-run
-  # leaves `check_pr_wall` unable to measure the run, which fails `packing-required`.
-  #
-  # Locally, alternating on one four-cpu box, every run "0 errors, 0 warnings, 0 notes":
-  # serial 143.2 and 151.9 s, `--threads 4` 78.1 and 83.6 s (0.55x), `--threads 2` 88.9
-  # s. Four workers spend about 276 s of cpu against the serial 172 to 195 s, because
-  # each re-evaluates the imports its files share, and peak at 7.7 to 8.2 GiB of summed
-  # resident memory against 3.8 to 4.5 GiB, inside the hosted runner's 16 GB.
-  #
-  # The ceiling stays at 111 s, held on purpose (`OR-17`). At 0.55x the serial maximum
-  # predicts about 68 s and the slow regime's median about 57 s, so 111 s holds the
-  # routine spread with room and still catches the step losing its parallelism. Had the
-  # step stayed serial, the readings above would have argued for about 130 s, over every
-  # one of the 174; that is the fallback if the hosted cohort at the new shape does not
-  # sit well under 111 s, and the cohort, not this forecast, sets the next record.
-  ceiling_seconds: 111.0
-  measured_seconds: null
-  measured_on: null
-  measured_where: null
-  pending_measurement: think-4w2g
-  pending_until: '2026-10-11'
+  # Parallel checking was measured and rejected. `basedpyright --threads 4` read 0.55x of
+  # serial on one local four-cpu box and 0.75 to 0.79x on a reviewer's, but 90.46 s on its
+  # only hosted run (37185790574, job 111387285346), inside the serial spread; and, as
+  # reproduced in review, a worker killed by SIGKILL or the OOM killer leaves BasedPyright
+  # waiting out the step's 900 s timeout instead of failing.
+  ceiling_seconds: 130.0
+  measured_seconds: 86.71
+  measured_on: '2026-10-04'
+  measured_where: >-
+    Geometric mean of 174 hosted walls of the step `Run the required pull-request type
+    floor` in job typecheck at the reference shape, serial: the 175 pull-request runs of
+    Packing validation that completed, passed or failed, from 2026-10-02T07:49Z to
+    2026-10-04T06:21Z, less one whose latest attempt had no typecheck job, on 17 branches,
+    read from the jobs API's latest attempt by `devtools.check_pr_wall`'s per-job split.
+    Median 93.5 s, p90 111 s; the band runs from 54 s (runs 37086168365 and 37098423539)
+    to 123 s (run 37165485062, PR 323). Two runner regimes, medians 69 s (73 runs under
+    85 s) and 104 s (101 runs), with no trend by hour or branch. These are step walls at
+    the API's one-second resolution, 1.5 to 3.4 s above the gate's own `TOTAL (wall)` (85
+    s against 83.52 s in run 37182550037, 123 s against 119.63 s in run 37165485062), so
+    the record and band sit that much above what the gate judges. Setup around the step
+    was a median 32 s (24 to 44 s).
+  measured_band: {low: 54.0, high: 123.0}
+  attribution:
+    cause: >-
+      No step grew. The 76.5 s record it supersedes was eighteen readings on one day, and
+      its 56.67 to 92.27 s band sat under the slow regime the pool has drawn since: 101 of
+      these 174 readings fall in it, at a median of 104 s. 174 readings on 17 branches over
+      two days put the centre at 86.71 s with a 2.28x spread. The rise is a re-centring on
+      more evidence, plus the 1.5 to 3.4 s of start-up the step time includes and the
+      gate's figure omits; the one step's wall is the tier's wall.
+    unit: step-seconds
+    source: >-
+      The jobs API wall of the step `Run the required pull-request type floor` in job
+      typecheck in the 174 runs measured_where describes, against the `TOTAL (wall)`
+      readings behind the 76.5 s record; the tier runs one step, so its wall is that
+      step's.
+    grew:
+    - {name: type floor (basedpyright), before: 76.5, after: 86.71}
   history:
   - measured_seconds: 67.26
     measured_on: '2026-09-16'
@@ -1243,10 +1252,8 @@ tiers:
       (36575687339) and 92.27 (36589358102), the last failing the drift rule at 1.53x
       against 60.16 s. Two runner regimes, about 62 and 86 s, on unchanged steps, carried
       as the band 56.67 to 92.27 s (`think-be1s`, D-472) under the 111 s ceiling held on
-      purpose. Superseded on 2026-10-04 by the change of shape, not by a re-take: the
-      serial step it measured no longer runs (`think-pr19`). By then the serial step read
-      54 to 123 s on 174 hosted runs and over 111 s on 8 per cent of them, 3 to 6 per
-      cent of runs breaching the ceiling, which the entry's comment carries.
+      purpose. Superseded on 2026-10-04 by 174 readings over two days whose slow regime
+      sat above this band (think-pr19).
     attribution:
       cause: >-
         No step grew. The record it superseded, 60.16 s, was the mean of one fast and one
@@ -1264,12 +1271,9 @@ tiers:
   reference: {jobs: 1, inner_jobs: 1, cpus: 4}
   argument: >-
     The type floor, isolated because it is one of the checks queue's largest units and no
-    outer-worker setting divides it; on its own four-cpu runner the step divides itself
-    across four forked checkers instead. The standalone tier changes only CI ownership:
+    outer-worker setting divides it. The standalone tier changes only CI ownership:
     `Step.typecheck` remains part of `--edit`, and the pull-request partition test keeps
-    it inside `--fast` exactly once. Pending its first hosted cohort at that shape under
-    think-4w2g: the gate prints the record to paste from the first reference-shape run,
-    and the cohort replaces the pending fields with its geometric mean and band.
+    it inside `--fast` exactly once.
 
 - id: measure_verifier
   command: packing-validate --measure-verifier

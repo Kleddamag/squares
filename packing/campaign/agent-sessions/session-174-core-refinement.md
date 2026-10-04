@@ -69,11 +69,12 @@ session:
     evidence:
     - packing/campaign/explorations/X048-session-174-core-refinement/README.md
     - packing/campaign/resource-usage/codex-session-174.yaml
-    stop_reason: Fixed combined core enhancement loses72known tuples and retains checked18parentrows;78unknown,
-      no unsupported/exclusion claim. Root scoped acceptance complete; early administrative
-      close retains exact source-hosted certification debt.
-    next_action: Publish source/evidence/native record; observe exact source fast/required CI,
-      clear think-0xxc debt, then observe final metadata head. No another research target.
+    stop_reason: Combined core sensitivity retained18checked parents/78unknown; scoped root
+      acceptance and exact source hosted certification complete. Actual early administrative
+      end/native lower bound unchanged; no unsupported claim or replacement search.
+    next_action: Observe final metadata current-head CI and close/sync think-0xxc. Conditional
+      local H-addon transport only after delivery; any replacement support search needs a new
+      W3/ownership/resources/soundness gate.
   budget:
     wall_minutes: 90
     max_cycles: 4
@@ -121,14 +122,18 @@ session:
     ISO text and same cutoff, one successful artifact only.'
   - Any replacement support search on the enhanced model requires a new scoped GO/gates; no
     automatic refinement or cap ladder.
-  stop_reason: Fixed combined core enhancement loses72known tuples and retains checked18parentrows;78unknown,
-    no unsupported/exclusion claim. Root scoped acceptance complete; early administrative close
-    retains exact source-hosted certification debt.
-  next_action: Publish source/evidence/native record; observe exact source fast/required CI,
-    clear think-0xxc debt, then observe final metadata head. No another research target.
+  - 'full gate: fast at 40fe5f5bf62e6b37488e4d899e555de3bb9a0a5c: passed (hosted partitioned
+    fast gate; packing-required SUCCESS)'
+  - Hosted pages-required and merges-into-main SUCCESS at 40fe5f5bf62e6b37488e4d899e555de3bb9a0a5c;
+    final metadata CI observed separately. No source/guard change or research repeat.
+  stop_reason: Combined core sensitivity retained18checked parents/78unknown; scoped root acceptance
+    and exact source hosted certification complete. Actual early administrative end/native lower
+    bound unchanged; no unsupported claim or replacement search.
+  next_action: Observe final metadata current-head CI and close/sync think-0xxc. Conditional
+    local H-addon transport only after delivery; any replacement support search needs a new
+    W3/ownership/resources/soundness gate.
   ended_at: '2026-10-04T07:31:41.747847+00:00'
   handoff_role: administrative_closeout
-  certification_pending: think-0xxc
   resource_rollups:
   - packing/campaign/resource-usage/codex-session-174.yaml
 ---

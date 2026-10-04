@@ -60,7 +60,7 @@ solution-preserving reasoning on this exact enhanced graph; the other78are unkno
 The earlier96row result applies to its earlier cores, not arbitrary stronger geometry.
 
 Root accepted source soundness and fresh independent retained-support replay.
-Hosted source certification is pending under think-0xxc; final metadata CI is
+Hosted source/evidence certification passes at `40fe5f5bf62e6b37488e4d899e555de3bb9a0a5c`; final metadata CI is
 observed separately. Native usage is one declared privacy aggregate/lower bound;
 later publication/CI and pre-start setup are excluded. No further H target follows.
 

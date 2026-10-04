@@ -5,7 +5,7 @@ title: "Land the T-007 correction stack (#305, #323) and close the result-integr
 kind: epic
 status: in_progress
 priority: 1
-version: 17
+version: 18
 delegate: claude-code@vm
 labels: []
 dependencies: []
@@ -25,10 +25,11 @@ child_order_hints:
   - is-01m42sy0wm8spqcdxa2be3a936
   - is-01m42syx24djsjz7c025wca98m
   - is-01m42tjjknqbpm4n2rxvvn9n9f
+  - is-01m42tnggj81npy5tx1zb18azt
 hold: null
 hold_until: null
 created_at: 2026-10-04T06:30:39.430Z
-updated_at: 2026-10-04T06:45:43.155Z
+updated_at: 2026-10-04T06:47:19.314Z
 started_at: 2026-10-04T06:31:03.480Z
 ---
 Stabilize and merge jlevy/squares#305 (Nagamochi Lemma 1 / T-007 re-grounding, session-168/169) and its stacked jlevy/squares#323 (retained JSON layout), then fix the record gaps found in the 2026-10-04 review of the 11 closed result-integration issues (#170, #227, #238, #247, #256, #279, #280, #294, #296, #308, #309). Owner confirmed merging both PRs in session 2026-10-04.

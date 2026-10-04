@@ -3,9 +3,9 @@ type: is
 id: is-01m43b4tdwyhn8kgjkgyhz56wz
 title: Separate full-interval octagon augmentation from halving on frozen E tuples
 kind: task
-status: in_progress
+status: closed
 priority: 2
-version: 2
+version: 3
 spec_path: docs/project/reviews/review-2026-10-02-n17-bulk-exclusion-design.md
 assignee: graph_gate
 delegate: codex@guzhou
@@ -15,8 +15,12 @@ parent_id: is-01m42d0zw28532d573ersbnzh4
 hold: null
 hold_until: null
 created_at: 2026-10-04T11:35:18.203Z
-updated_at: 2026-10-04T11:35:20.125Z
+updated_at: 2026-10-04T12:13:12.822Z
 started_at: 2026-10-04T11:35:20.125Z
+closed_at: 2026-10-04T12:13:12.821Z
+close_reason: null
+resolution: null
+duplicate_of: null
 ---
 # P02D：全区间核心增强与半区间增强的固定样本机制分解
 

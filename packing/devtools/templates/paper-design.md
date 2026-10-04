@@ -2225,7 +2225,9 @@ HTML file there that is a document (with a doctype, an `<html>` or a `<head>`), 
 case record and any page no list names among them, so a page added later fails the check
 until it carries the set; it holds a forwarder to the page it leads to wherever that
 page is in the directory too.
-`devtools.preview_site` and the Pages workflow’s `overview` job both run it.
+`devtools.preview_site` runs it, and so do two of the Pages workflow’s jobs: `overview`
+on its own build, which has no paper and no workbench, and `publish` on the assembled
+site, where every forwarder is beside the page it leads to.
 `check_published_site --local DIR --inventory` prints what every file’s head carries.
 
 ## Token Ownership

@@ -1053,7 +1053,8 @@ The workbench job selects Node 24.18.0, installs the root lockfile with scripts
 disabled, and builds the typed workbench package into the self-contained `/workbench/`
 page, beside `prepare` rather than after it.
 The publish job puts the two papers, the checked PDF, the site’s own pages and the
-workbench back into one tree; only a push to `main` uploads that tree to Pages.
+workbench back into one tree and holds every page’s head in it to the site’s contract
+(`check_published_site --local`); only a push to `main` uploads that tree to Pages.
 
 **An address the site has served keeps working.** The papers moved to `papers/<slug>` on
 2026-10-01, from `explainer.html` and from `n11-optimality/t-060-explainer.html`.

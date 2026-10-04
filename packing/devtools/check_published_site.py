@@ -70,10 +70,11 @@ the exit status is 0 only when every check passes:
 
 `--local DIR` asks only that last group, of a site built into a directory
 (`devtools.preview_site`, which also runs it on every build, and the Pages workflow's
-`overview` job), and fetches nothing; it holds every HTML file there that is a document,
-every case record and any page this module does not name among them, and each forwarder
-against the page it leads to wherever that page is there too. `--local DIR --inventory`
-prints what every file's head carries and checks nothing.
+`overview` and `publish` jobs, on the overview's build and on the assembled site), and
+fetches nothing; it holds every HTML file there that is a document, every case record
+and any page this module does not name among them, and each forwarder against the page
+it leads to wherever that page is there too. `--local DIR --inventory` prints what
+every file's head carries and checks nothing.
 
 This checks a live deployment, so it is not a step of the source gate;
 `tests/test_check_published_site.py` covers its parsing and failure controls on fixtures.

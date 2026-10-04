@@ -160,12 +160,16 @@ session:
   - Explicit endpoint selection survives; all192 support witnesses pass direct edge/domain verification.
   - Local full validation runner refuses Windows; hosted current-head certification tracked
     by think-67ek.
+  - 'full gate: fast at 4ffb5729af96c8984414bef74fe369f7638dd0a5: passed (hosted partitioned
+    fast gate; packing-required SUCCESS)'
+  - Hosted pages-required and merges-into-main also passed at 4ffb5729af96c8984414bef74fe369f7638dd0a5;
+    later metadata is observed separately.
   resource_rollups:
   - packing/campaign/resource-usage/codex-session-170.yaml
   handoff_role: administrative_closeout
-  certification_pending: think-67ek
   stop_reason: The selected finite abstraction has a complete supported-atom ceiling. Close
     this slice without taking upstream research ownership; hosted certification remains explicit.
+    Current-history hosted fast certification was observed and its exact ancestor is recorded.
   next_action: Review Draft PR333 and clear current-history certification under think-67ek.
     Next independent local project is worker-memory supervision; no automatic larger geometry
     target.

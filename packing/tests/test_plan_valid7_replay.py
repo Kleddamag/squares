@@ -166,6 +166,7 @@ def test_wand125_compares_v2_roots_only_and_knows_the_guard(
     result = pv.compare("wand125", [replay], tmp_path)
     assert result["ok"], result["problems"]
     assert result["roots_matching_published_leaves"] == 1
+    assert (result["leaves"], result["root_hours"]) == (2, round(2.0 / 3600, 2))
     assert (
         pv.region("wand125", (F(0), F(7)), (F(0), F(1, 10)), tmp_path)["priced_cpu_seconds"]
         == 14.0
@@ -235,6 +236,44 @@ def test_the_calibrations_reproduce_published_leaves_and_bound_the_speed() -> No
     assert forkserver < 1.0
     compare = json.loads((WAND_RECEIPTS / "valid7_calibration_compare.json").read_text("utf-8"))
     assert (compare["ok"], compare["roots_matching_published_leaves"]) == (True, 64)
+
+
+def test_the_guarded_wand125_replay_is_complete_and_matches_the_published_leaves() -> None:
+    """The full replay of 2 and 3 October, staged with ``--guard-d1``: every run the plan
+    names has its record, and its last receipt reads VERIFIED with exit 0; no attempt
+    records an uncertified box, a counterexample or a Tier B error, which is how a guard
+    refusal would show; and the committed comparison holds over all 156,800 roots."""
+    plan = json.loads((WAND_RECEIPTS / "valid7_replay_plan.json").read_text("utf-8"))
+    replay = WAND_RECEIPTS / "replay"
+    runs = [
+        Path(cast("str", run["receipt"])).stem
+        for shard in cast("list[dict[str, object]]", plan["shards"])
+        for run in cast("list[dict[str, object]]", shard["runs"])
+    ]
+    assert len(runs) == 33
+    attempts = 0
+    cpu = 0.0
+    for run in runs:
+        assert (replay / f"{run}.jsonl.gz").is_file(), run
+        logs = sorted(replay.glob(f"{run}*.log"))
+        attempts += len(logs)
+        for log in logs:
+            text = log.read_text(encoding="utf-8")
+            for refusal in ("TIERB-ERROR", "UNCERTIFIED", "COUNTEREXAMPLE", "NOT VERIFIED"):
+                assert refusal not in text, (log.name, refusal)
+            assert ("# finished" in text) == (log == logs[-1]), log.name
+        seconds, last = _footer(logs[-1])
+        assert "VERIFIED" in last.splitlines(), logs[-1].name
+        cpu += seconds
+    assert attempts == len(list(replay.glob("*.log"))) == 53
+    assert round(cpu / 3600, 1) == 85.3
+    compare = json.loads((replay / "wand125_replay_compare.json").read_text("utf-8"))
+    assert compare["shards"] == [f"{run}.jsonl.gz" for run in sorted(runs)]
+    assert (compare["ok"], compare["problems"], compare["partial"]) == (True, [], False)
+    assert (compare["roots"], compare["leaves"]) == (156_800, 9_808_968)
+    assert compare["roots_matching_published_leaves"] == 156_800 - pv.WAND125_V1_ROOTS
+    assert compare["roots_not_compared"] == pv.WAND125_V1_ROOTS
+    assert compare["root_hours"] <= plan["host_cpu_hours_estimate"]
 
 
 def test_the_fast_verify_and_the_leaf_recheck_receipts() -> None:

@@ -188,6 +188,90 @@ Its receipts here, written by
   replay at V2, 540.5 priced hours, about 216 CPU-hours here, in fourteen 4-core shards
   of about 4 hours each.
 
+## Full Replay Here, 2 and 3 October 2026
+
+The checker was replayed in full with D-1 guarded, in the fourteen shards of
+[`valid7_replay_plan.json`](receipts/valid7_replay_plan.json), on 4-core cloud runners.
+Each run was staged by `devtools.plan_valid7_replay stage --checker wand125 --guard-d1`
+from the retained V2 `src/` and the October 1 packet’s cover, ran the plan’s command for
+one rectangle of centres under CPython 3.14.7 and python-flint 0.9.0, and was resumed
+from its own record after interruptions.
+The receipts are in [`receipts/replay/`](receipts/replay/), each log written by
+`devtools.replay_receipt`:
+
+- **Records:** `wand125_shardNN_M.jsonl.gz`, one for each of the 33 region runs, as the
+  runners compressed them ([Compressed Files](#compressed-files)).
+- **Receipts:** `wand125_shardNN_M.log` for each run, and `_try2.log` to `_try4.log` for
+  the 20 attempts that resumed an interrupted run, 53 in all.
+  Every run’s last receipt reads `VERIFIED` and exit 0. None records an uncertified box,
+  a counterexample or a Tier B error, so the guard refused nothing.
+  A relaunch of shard 8’s third run overwrote its partial receipt and rebuilt its record
+  from empty, so that one receipt covers the whole run.
+- **Comparison:** `devtools.plan_valid7_replay compare --checker wand125 --guard-d1` on
+  the 33 records, against the release records checked against
+  [`release/records.sha256`](release/records.sha256)
+  ([`wand125_replay_compare.json`](receipts/replay/wand125_replay_compare.json)): `ok`,
+  exactly the 156,800 published roots, each once, in 9,808,968 leaves, and the leaf list
+  of each of the 124,975 roots the source ran under V2 equal to the published one.
+  The 31,825 roots it ran under V1, whose hand-off rule split differently, were certified
+  again and not compared.
+- **Cost:** from 2026-10-02T20:12Z to 2026-10-03T21:18Z.
+  The 33 completing attempts’ receipts give 85.3 CPU-hours for the 76,767 roots they
+  ran; the records’ per-root times, wall time in the worker as the source’s are, sum to
+  205.8 hours over all the roots, against the plan’s 216.2.
+
+This is wand125’s code, not Daniel’s, deciding Valid7 on the cover `T-064` cites, an
+independent implementation by its read log.
+The evidence entry is `E-k2m3-wand125-valid7-independent`.
+No mutated cover was run in the replay; the three refused here are `verify.sh`’s, above.
+
+## Compressed Files
+
+The 33 shard records are receipts, compressed by the runners with `gzip -9n`: 51,005,708
+bytes stored, 988,117,328 decompressed.
+Each row gives the Git blob and SHA-256 of the decompressed bytes, as
+`devtools.retained_data.describe` computes them.
+Five records, shards `01_1`, `07_2`, `09_2`, `12_1` and `14_2`, decompress past the
+64 MiB that `devtools.retained_data` reads, so this packet is outside its generic check;
+`devtools.plan_valid7_replay` reads them unbounded.
+`gunzip -k` on a stored file restores the record beside it.
+
+| Stored file | Origin | Git blob | SHA-256, decompressed |
+| --- | --- | --- | --- |
+| `receipts/replay/wand125_shard01_1.jsonl.gz` | receipt | `ce4db9aa2de06ec1c767521398e3abaab71296f1` | `1e21370e1eba00f1231715e20cd671a3d136b82d9bfc49d9889b722d3923dcf3` |
+| `receipts/replay/wand125_shard01_2.jsonl.gz` | receipt | `0ae936c8f737e3832c1655eda98cdd570f7a5b67` | `6b71972fef41cbbe220ffa1b898e344503c6cbfaa6e5a46de83b408a6ab461da` |
+| `receipts/replay/wand125_shard02_1.jsonl.gz` | receipt | `8722ee32d67a61ef7535de7d261f9d0682306773` | `163ee6b5fff45fe06aa0b01d454f268216e7cdf94eaa3a1a1ee95bc2c4753435` |
+| `receipts/replay/wand125_shard02_2.jsonl.gz` | receipt | `a3ed1e64ad6549936a877278fcf9b3490c88efaf` | `93e6a00d87fd476b2754585b6b190673526bd2111e9891876f472fc42869358a` |
+| `receipts/replay/wand125_shard02_3.jsonl.gz` | receipt | `f9e54aaec0999816883c80206d7c6c6cf0c810b3` | `fba531dec716b1d4611903f943bfb3fc401a34a2ddb8b8a789e0bc46b2171063` |
+| `receipts/replay/wand125_shard03_1.jsonl.gz` | receipt | `afe5e89fa2ca089f03f31b03f2db988f277da349` | `87a6d597c3eea6679673b289738e8d3fcc9c7b5d1cb8edfd941c2805f3bfb321` |
+| `receipts/replay/wand125_shard04_1.jsonl.gz` | receipt | `a27fb9058bc426e44b4331256431da0c989225a4` | `9e7e85e880b4676a70d7e32163e7ebf734fb09a01f4ee46577d3de7dc2dc891b` |
+| `receipts/replay/wand125_shard04_2.jsonl.gz` | receipt | `859fd009a1bb49067ce65884260c3d320637706a` | `7a1afafde625e0d5325979a89d722ab94d29a488f30e0b77c8a84a0a7cdf9f1d` |
+| `receipts/replay/wand125_shard05_1.jsonl.gz` | receipt | `79d7db0d6eafa83655b6dac3fe6ea003c59571ef` | `a1eb6fe59140be6deea895db11267abd9b4fc39bdf7d43664ab8bf2292432dca` |
+| `receipts/replay/wand125_shard05_2.jsonl.gz` | receipt | `6063e48f0bf9613169ca48b31eebfc07a73e3a44` | `7b8583df104e30708baff14dc22793d313a894ab7d8a733fd196d750d972fdac` |
+| `receipts/replay/wand125_shard05_3.jsonl.gz` | receipt | `96a2bb1d61cac290c632031a72788cb18746f716` | `686abc45050c70fb0eb32e1bf237650dd11caea8d9803342c5468e86bd911ded` |
+| `receipts/replay/wand125_shard06_1.jsonl.gz` | receipt | `91d1eff18f85da3abaf3f07a2f3a20a5775fbc72` | `65d05d2b4d54caba6d6b4bebb4111735013167372a586c18eb6f47ef566faf72` |
+| `receipts/replay/wand125_shard06_2.jsonl.gz` | receipt | `b291a2dcd0443ff6024b9744d8afe566354c1e7c` | `9ca7ad20b3cba0830c7d8330904f53a1bb812af16e3b447c9a06f7edd3f1b438` |
+| `receipts/replay/wand125_shard06_3.jsonl.gz` | receipt | `51af6f54937be95f72f63cdfa891f5b9a893b5c5` | `096bbb6095263a8ecc663544dfbe75d8daa2474fb55639a812d7a71b1c0c7e72` |
+| `receipts/replay/wand125_shard07_1.jsonl.gz` | receipt | `a1059df1231600efc44fb94a2a100b8f4f968847` | `3a9cd4c7f67dae367e0ec2c2f10b5ab007eaca21e79de4ee0434033d0d5def4a` |
+| `receipts/replay/wand125_shard07_2.jsonl.gz` | receipt | `622fc01c42fd5e88645c7c37df866f34ade22da8` | `c23860135d23f705d4ba2bde2e7b90f710eb0914e620fa15218f249f5ee5737a` |
+| `receipts/replay/wand125_shard07_3.jsonl.gz` | receipt | `aa3930f16524e30f61d7c31708bf4c1b9d0c569e` | `f28e173f3e8c1c6e030daa6af14a7165bfa0d526dc322aa69b7d812730758174` |
+| `receipts/replay/wand125_shard08_1.jsonl.gz` | receipt | `c87df72a08941a929b97bd03972ee94d2828527e` | `86c937ef8c5c7947c14fae2d475d83706f5f59a6e61580c9b3c807d48b516d84` |
+| `receipts/replay/wand125_shard08_2.jsonl.gz` | receipt | `d9747cfab98d12bc86159b8e3fe89be8fe92c644` | `320d949b3258626d965da9d3cd633a4f6118e586075fa89528987b03e9406bba` |
+| `receipts/replay/wand125_shard08_3.jsonl.gz` | receipt | `6e952d09a73c99efd88a5ba9a4fdc7155fa0476a` | `56fed0530d11232dda561e03c429230b2db8d79cd15d291fc21db54dbe96f4fe` |
+| `receipts/replay/wand125_shard09_1.jsonl.gz` | receipt | `d4ce0746407e2aa51ec1c15863d60b9d75e5b84d` | `4a2f689fe81478dca92780367eee3cd5977931c5844ffbadc47bb6b0cf0a8c19` |
+| `receipts/replay/wand125_shard09_2.jsonl.gz` | receipt | `63547e4fafe7efeef53fd126c07b245f221f4c00` | `326b2417561a114d1348ea03bbd059a746f46e0c578e1e8d232a578e9ffc3665` |
+| `receipts/replay/wand125_shard09_3.jsonl.gz` | receipt | `90931b157c056d5c1cbdf6e4993dd2f1fe64d0ec` | `48f9b37d62666f03187e075cfed8a6a17dc9015e4ce50b95faa7d78a340270d8` |
+| `receipts/replay/wand125_shard10_1.jsonl.gz` | receipt | `58e9cfaca1ffed19c5b7303b325907f52c27d42d` | `168c9f9fe381218ad7da7c9341654b1fbbdd51d09e1aa04385d1c86561d9da64` |
+| `receipts/replay/wand125_shard10_2.jsonl.gz` | receipt | `cd220ec2b1391fd1530d65e3d4ba07f3096402e9` | `cfa65198cb0e9164d5a06c2ef6f3b039b310291ca057a37be7056619e31fee78` |
+| `receipts/replay/wand125_shard10_3.jsonl.gz` | receipt | `8e52ef53161387e79e3877c26f56bccac7394a62` | `9e4a9e3c50b5733474ccc414803aaccdde12d53bebd03b7e3ce253a05675d63e` |
+| `receipts/replay/wand125_shard11_1.jsonl.gz` | receipt | `64a3f09f27669535e1a2abd257f2ce12e96a167d` | `424cce05428085652699f20309cce0d76824034a4b9ed78d0c102a2d4d73bc8b` |
+| `receipts/replay/wand125_shard11_2.jsonl.gz` | receipt | `88bdc8662651cd48a74fb49837d7471f3291a26f` | `6d6f28a8680ed5076a0b7b3ee181ae6534c196c752583a5939b51680fb17aae1` |
+| `receipts/replay/wand125_shard12_1.jsonl.gz` | receipt | `fa1ef31a4a3a952dc5f0b19ab6a110be74015b51` | `236e84784a530f5c22ff76b3b457e25421006ddc9ab28a38cd49ad6f8aef1594` |
+| `receipts/replay/wand125_shard13_1.jsonl.gz` | receipt | `0266be4614b7e53cfc92f70c1c6665caf12edc64` | `d45b0b40743813f5074b406208ed82e3aa8d75e4b3a0ecc54714c715a4295ba9` |
+| `receipts/replay/wand125_shard13_2.jsonl.gz` | receipt | `18cc42be396e943ad1bdf965a652c606a9b0a3c0` | `c3ec2f4e07113c9e7edcc6264ff7450a88a2aa9b6903d24e546f4db97716f52d` |
+| `receipts/replay/wand125_shard14_1.jsonl.gz` | receipt | `5c918252b2c3fdb54d9d1295205c84eb3d20a68c` | `6245cbe00a61ef54a3bcd616ac569968937c1c8c921a830653e279c425c7ccc8` |
+| `receipts/replay/wand125_shard14_2.jsonl.gz` | receipt | `4311818d0ca7ef682ee4396d30a104e659a601de` | `57cf6c70d8deeee379afa9036c59eaea6189f40eaf96013aecef6fefa88e2dc2` |
+
 <!-- This document follows common-doc-guidelines.md.
 See github.com/jlevy/practical-prose and review guidelines before editing.
 -->

@@ -1,0 +1,8 @@
+# command: .venv/bin/python -c 'import multiprocessing, runpy, sys; multiprocessing.set_start_method('"'"'fork'"'"'); sys.argv = sys.argv[1:]; sys.path.insert(0, '"'"'src'"'"'); runpy.run_path(sys.argv[0], run_name='"'"'__main__'"'"')' src/run_all.py cover/L4_k02_box7.txt --centers 31/10 17/5 0 7 --nproc 4 --record runs/wand125_shard07_2.jsonl --resume
+# cwd: work dir staged by plan_valid7_replay --guard-d1
+# python3: W/.venv: CPython 3.14.7, python-flint 0.9.0
+# host: 4 cores; load 1.22 0.39 0.13; started 2026-10-02T23:30:18Z
+roots 6720, already done 5253
+new roots 1467 leaves {'CORE': 78372, 'TIERB2': 54556, 'EMPTY': 238} uncertified 0 counterexamples 0 cpu 10359.7s
+VERIFIED
+# finished 2026-10-03T00:13:43Z; exit 0; wall 2604.603 s; CPU 10258.5 s (user 10257.026 + sys 1.476); load 3.24 3.84 3.77

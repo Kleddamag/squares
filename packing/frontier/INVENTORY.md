@@ -8,8 +8,8 @@ ours, which rest on someone else's argument, and how far each has been checked.
 
 ## The short version
 
-- **247** evidence records. **148** are formal; **142** of those were established here.
-- **90** rest on an argument made elsewhere, of which **7** have been read by nobody here.
+- **247** evidence records. **149** are formal; **143** of those were established here.
+- **89** rest on an argument made elsewhere, of which **7** have been read by nobody here.
 - **40** claim to be first established here. **13** make no novelty statement at all - not assessed, which is not the same as not novel.
 
 A formal claim on an unread external proof is still formal: the proof proves its
@@ -30,7 +30,7 @@ results, it is a statement about what this repository has itself examined.
 | `E-n061-wand125-point-cover-zmx2-replay` | 0 | lower-bound | verified | strict inequalities only | here | informally-verified | previously-published | producer’s code | `V-evand-zmx2`, `V-replay-evand-zmx2`, `V-audit-evand-mixed-covers` |
 | `E-n060-evand-mixed-cover-zmx2-replay` | 2 | lower-bound | verified | strict inequalities only | here | - | previously-published | producer’s code | `V-evand-zmx2`, `V-replay-evand-zmx2`, `V-audit-evand-mixed-covers` |
 | `E-k2m3-evand-family-report` | 10 | lower-bound | reported | - | elsewhere | informally-verified | previously-published | producer’s code | `V-evand-qx2-zm-py`, `V-evand-lean` |
-| `E-k2m3-wand125-valid7-independent` | 0 | lower-bound | reported | - | elsewhere | informally-verified | previously-published | independent | `V-wand125-valid7-checker`, `V-audit-valid7-independent` |
+| `E-k2m3-wand125-valid7-independent` | 0 | lower-bound | verified | equalities and inequalities, no tolerance | here | informally-verified | previously-published | independent | `V-wand125-valid7-checker`, `V-audit-valid7-independent` |
 | `E-k2m3-evand-valid7-qx2-replay` | 9 | lower-bound | verified | equalities and inequalities, no tolerance | here | - | previously-published | producer’s code | `V-evand-qx2-zm-py` |
 | `E-k2m3-evand-bentz-lean-build` | 9 | exact-value | verified | its theorem, against a named kernel | here | - | previously-published | producer’s code | `V-evand-lean` |
 | `E-n011-global-optimality-report` | 1 | lower-bound | reported | - | elsewhere | defect-found | previously-published | no code | `V-queuingtheory-n11-verify` |
@@ -272,8 +272,8 @@ results, it is a statement about what this repository has itself examined.
 
 ## What the register rests on
 
-- **assurance**: numerically-checked 4, reported 95, verified 148
-- **method**: exact-algebraic 88, interval-certified 49, numerical-multiprecision 4, proof-assistant-checked 2, proof-audited 3, published-proof 6, reported 95
+- **assurance**: numerically-checked 4, reported 94, verified 149
+- **method**: exact-algebraic 89, interval-certified 49, numerical-multiprecision 4, proof-assistant-checked 2, proof-audited 3, published-proof 6, reported 94
 - **novelty**: apparently-novel 40, common-knowledge 4, not assessed 13, previously-published 190
 - **relationship to the producer's code**: generator 5, independent-implementation 45, not-applicable 17, same-implementation 167, shared-components 7, unknown-historical 6
 

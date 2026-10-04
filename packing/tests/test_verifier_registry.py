@@ -319,10 +319,7 @@ def test_verifiers_md_lists_every_program_with_what_it_backs() -> None:
     text = render_verifiers.render()
     for verifier_id in VERIFIERS:
         assert f"### `{verifier_id}`" in text
-    row = (
-        "| `E-k2m3-wand125-valid7-independent` | a third party\u2019s run "
-        "| independent | T-064 |"
-    )
+    row = "| `E-k2m3-wand125-valid7-independent` | replayed here | independent | T-064 |"
     assert row in text
 
 

@@ -35,7 +35,7 @@ import itertools
 import math
 import sys
 from collections.abc import Sequence
-from decimal import Decimal
+from decimal import Decimal, InvalidOperation
 from fractions import Fraction
 from functools import cache
 from pathlib import Path
@@ -187,19 +187,23 @@ def floor_decimal(value: sympy.Expr, digits: int = DIGITS) -> str:
     return format(Decimal(floored).scaleb(-scale).normalize(), "f")
 
 
-def verified_floor_exact(n: int) -> sympy.Expr:
-    """The case record's verified lower bound, exactly as its front matter prints it: every
-    record prints a decimal, which `Rational` reads digit for digit."""
+def verified_floor(n: int) -> Decimal:
+    """The case record's verified lower bound, exactly as the record prints it.
+
+    Until 2026-10-04 this was a float, and the two comparisons in `survey` were float
+    comparisons; both are now exact on the printed decimals.
+    """
     text = (FRONTIER / f"n-{n:03d}.md").read_text(encoding="utf-8")
     front = text.split("---", 2)[1]
     block = front.split("verified_lower_bound:", 1)[1]
     value = block.split("value:", 1)[1].splitlines()[0].strip().strip("'\"")
-    return sympy.Rational(value)
-
-
-def verified_floor(n: int) -> float:
-    """The case record's verified lower bound, as a float for display only."""
-    return float(sympy.N(verified_floor_exact(n), 30))
+    try:
+        floor = Decimal(value)
+    except InvalidOperation as error:
+        raise ValueError(f"n = {n}: verified lower bound {value!r} is not a decimal") from error
+    if not floor.is_finite():
+        raise ValueError(f"n = {n}: verified lower bound {value!r} is not a finite decimal")
+    return floor
 
 
 def survey(numbers: Sequence[int]) -> dict[str, Any]:
@@ -207,19 +211,19 @@ def survey(numbers: Sequence[int]) -> dict[str, Any]:
     rows: list[dict[str, Any]] = []
     for n in numbers:
         bound = piercing_bound(n)
+        floor = verified_floor(n)
         decimal = floor_decimal(bound)
-        # The record holds a value rounded down at DIGITS, so the bound holds the floor
-        # where the floor is its printed decimal, and beats it where it is strictly above;
-        # both are decided exactly, the float is for reading only.
-        versus = exact_sign(sympy.Rational(decimal) - verified_floor_exact(n))
         rows.append(
             {
                 "n": n,
                 "bound": str(bound),
                 "decimal": decimal,
-                "verified_lower": verified_floor(n),
-                "holds": versus == 0,
-                "improves": versus > 0,
+                "verified_lower": str(floor),
+                # The record holds a value rounded down, so the bound holds the floor
+                # where its own decimal, rounded down at DIGITS, is the record's, and
+                # beats it where it is strictly above. Both are exact decimal comparisons.
+                "holds": Decimal(decimal) == floor,
+                "improves": Decimal(decimal) > floor,
             }
         )
     return {

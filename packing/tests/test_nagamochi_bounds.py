@@ -20,6 +20,10 @@ Since 2026-10-02 no verified lower bound cites the record at all: Nagamochi's Le
 found false (`T-085`), the record became `reported`, and its values moved to the reported
 lane, where the same relation is held. The verified floors it carried are Karakuş's
 (`E-karakus-strip-lower`) or the area bound, and the checker re-derives Karakuş's too.
+
+"Is the theorem's value" means rounded down, since 2026-10-04: a floor rounded up above
+what its source proves passed the two-sided tolerance that held until then (D-517), so
+the rounded-up `n = 150` floor below is the control that the one-sided check bites.
 """
 
 from __future__ import annotations
@@ -33,7 +37,16 @@ from pathlib import Path
 import pytest
 
 import devtools.check_nagamochi_bounds as nagamochi
-from devtools.check_nagamochi_bounds import RECORD, cases, main, prose_counts, theorem_two
+from devtools.check_nagamochi_bounds import (
+    RECORD,
+    cases,
+    disagreement,
+    karakus_form,
+    main,
+    prose_counts,
+    theorem_two,
+    theorem_two_form,
+)
 from sqpack.fractional.certificate import least_size_certified
 from sqpack.known_best import KNOWN_BEST_CORPUS
 
@@ -92,13 +105,15 @@ def test_it_covers_the_cases_it_claims_to() -> None:
     # The retained packages today: n = 11, 12, 17 and 20, reaching 11, 12, 17-21.
     assert {11, 12, 17, 18, 19, 20, 21} <= reached
     assert not (reached & set(covered)), sorted(reached & set(covered))
-    # Everything still citing the theorem carries the theorem's own value; `main`
-    # re-derives each one, and this is the same statement from the other side.
+    # Everything still citing the theorem carries the theorem's own value rounded down;
+    # `main` re-derives each one, and this is the same statement from the other side.
     for n, case in covered.items():
         value = Decimal(str(case["reported_lower_bound"]["value"]))
         exponent = value.as_tuple().exponent
         places = max(0, -exponent) if isinstance(exponent, int) else 0
-        assert abs(value - theorem_two(n)[0]) <= Decimal(10) ** -places, n
+        exact = theorem_two_form(n)[0]
+        assert not exact.below(Fraction(value)), n
+        assert exact.below(Fraction(value) + Fraction(1, 10**places)), n
 
 
 @pytest.mark.parametrize("n", [4, 7, 8, 9, 14, 15, 16, 99, 100])
@@ -171,19 +186,118 @@ def test_a_wrong_value_is_refused(monkeypatch: pytest.MonkeyPatch) -> None:
     assert nagamochi.main() == 1
 
 
-def test_a_verified_bound_rounded_up_is_refused() -> None:
-    # Review A9 on jlevy/squares#305: within one unit in the last place is a correct
-    # reported rendering, but a verified lower bound must not sit above the theorem.
-    expected, _ = theorem_two(12)  # 1 + sqrt(7) = 3.6457513...
-    up, down = Decimal("3.6458"), Decimal("3.6457")
-    assert nagamochi.disagreement(12, up, expected, is_exact=False, name="T2") is None
-    assert (
-        nagamochi.disagreement(12, down, expected, is_exact=False, name="T2", verified=True)
-        is None
-    )
-    problem = nagamochi.disagreement(12, up, expected, is_exact=False, name="T2", verified=True)
-    assert problem is not None
-    assert "rounded down" in problem
+#: Karakuş's (6.1) at `n = 150` is 12.25797601630484..., recorded to ten places as
+#: 12.2579760163. Rounded up in its last place, 12.2579760164 is within the two-sided
+#: tolerance that held until 2026-10-04 and passed every gate but the generator's drift
+#: check, though it claims more than the source proves.
+N150_FLOOR = "12.2579760163"
+N150_ROUNDED_UP = "12.2579760164"
+
+
+def test_a_floor_rounded_up_is_refused(monkeypatch: pytest.MonkeyPatch) -> None:
+    """The review's mutation: n = 150's verified floor rounded up in its last place."""
+    real = nagamochi.cases
+
+    def rounded_up() -> dict[int, dict]:
+        found = real()
+        lower = found[150]["verified_lower_bound"]
+        # The control has to be about the record it names; if `n = 150` ever leaves
+        # Karakuş's lane, this says so instead of passing on another case.
+        assert lower["evidence"] == [KARAKUS]
+        assert lower["value"] == N150_FLOOR
+        lower["value"] = N150_ROUNDED_UP
+        return found
+
+    monkeypatch.setattr(nagamochi, "cases", rounded_up)
+    assert nagamochi.main() == 1
+
+
+@pytest.mark.parametrize(
+    ("n", "form", "recorded", "refused"),
+    [
+        (150, "karakus", N150_FLOOR, None),
+        (150, "karakus", "12.257976016", None),
+        (150, "karakus", N150_ROUNDED_UP, "never up"),
+        (150, "karakus", "12.2579760162", "rounded down at the record's places"),
+        # Theorem 2 at n = 106 is 10.32737905308881...: the reported value the generator
+        # wrote, rounded to nearest, until 2026-10-04, and the floor it writes now.
+        (106, "nagamochi", "10.32737905309", "never up"),
+        (106, "nagamochi", "10.32737905308", None),
+        # An exact case is the integer itself, and nothing a unit below it.
+        (99, "nagamochi", "10", None),
+        (99, "nagamochi", "9.9", "rounded down at the record's places"),
+        (99, "karakus", "10", None),
+        (99, "karakus", "10.0000000001", "never up"),
+    ],
+)
+def test_a_record_is_its_theorem_rounded_down(
+    n: int, form: str, recorded: str, refused: str | None
+) -> None:
+    exact = (karakus_form if form == "karakus" else theorem_two_form)(n)[0]
+    problem = disagreement(n, Decimal(recorded), exact, name=form)
+    if refused is None:
+        assert problem is None, problem
+    else:
+        assert problem is not None
+        assert refused in problem, problem
+
+
+def test_the_comparison_is_exact_not_rounded() -> None:
+    """Values within 1e-90 of the root are told apart, past any decimal context here."""
+    exact = karakus_form(150)[0]
+    assert exact.radicand == Fraction(4 * (150 - 12) + 1, 4)
+    root = math.isqrt(int(exact.radicand * 4 * 10**180))
+    # `root / (2 * 10^90)` is sqrt(radicand) rounded down at 90 places; one unit above it
+    # is strictly above the true root.
+    just_above = exact.rational + Fraction(root + 1, 2 * 10**90)
+    just_below = exact.rational + Fraction(root, 2 * 10**90)
+    assert exact.below(just_above)
+    assert not exact.below(just_below)
+
+
+@pytest.mark.parametrize(
+    ("left", "right"),
+    [
+        ((1, 4), (3, 0)),
+        ((1, 4), (0, 9)),
+        ((Fraction(1, 2), 1), (0, Fraction(9, 4))),
+        ((0, 2), (0, 2)),
+        ((0, 0), (0, 0)),
+    ],
+)
+def test_compare_finds_equal_values_equal(
+    left: tuple[Fraction | int, Fraction | int], right: tuple[Fraction | int, Fraction | int]
+) -> None:
+    one = nagamochi.RootForm(Fraction(left[0]), Fraction(left[1]))
+    other = nagamochi.RootForm(Fraction(right[0]), Fraction(right[1]))
+    assert one.compare(other) == 0
+    assert other.compare(one) == 0
+
+
+def test_compare_agrees_with_high_precision_decimals() -> None:
+    """Every branch of the sign rule, against 100-digit decimals on a grid of forms."""
+    values = [Fraction(numerator, 4) for numerator in range(0, 41, 3)]
+    forms = [nagamochi.RootForm(a - 3, r) for a in values for r in values]
+    with localcontext() as context:
+        context.prec = 100
+        decimals = {
+            form: Decimal(form.rational.numerator) / form.rational.denominator
+            + (Decimal(form.radicand.numerator) / form.radicand.denominator).sqrt()
+            for form in forms
+        }
+        for one in forms:
+            for other in forms:
+                difference = decimals[one] - decimals[other]
+                if abs(difference) < Decimal("1e-80"):
+                    # A tie, which only an exact rule can call; it must call it a tie.
+                    assert one.compare(other) == 0, (one, other)
+                else:
+                    assert one.compare(other) == (1 if difference > 0 else -1), (one, other)
+
+
+def test_a_negative_radicand_is_refused() -> None:
+    with pytest.raises(ValueError, match="negative"):
+        nagamochi.RootForm(Fraction(0), Fraction(-1))
 
 
 def test_the_prose_counts_agree_with_the_records() -> None:

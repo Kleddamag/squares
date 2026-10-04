@@ -2017,8 +2017,9 @@ ci_gates:
     measured_seconds: 310.0
     measured_on: '2026-10-03'
     measured_where: >-
-      The first hosted dispatch, run 37101062051 (the `deep-gate` label on PR 305 at
-      cbd0e02b1), job 111140659648: 310 s of job wall, 279.98 s of it the step itself.
+      The first hosted dispatch, Deferred checkpoint run 37101088102 (the `deep-gate`
+      label on PR 305 at cbd0e02b1), job 111140659648: 310 s of job wall, 279.98 s of it
+      the step itself.
     spread: 1.00
     ceiling_seconds: 450.0
     argument: >-

@@ -24,10 +24,11 @@ Two further checks support the review that owns this tool
 (`docs/project/reviews/review-2026-10-02-nagamochi-lemma1-karakus.md`):
 
 - Karakus's replacement bound, Corollary 6.2: `s(N) >= 1/2 + sqrt(N - floor(sqrt N) + 1/4)`
-  for every nonsquare `N >= 8`. It is compared with Theorem 2's value and with `sqrt N`
-  as exact surds (`audit_t007_consumers.Surd`, whose Theorem 2 value is cross-checked
-  against `check_nagamochi_bounds.theorem_two`) for every nonsquare `N <= 1000`, and in
-  decimals at named `N`.
+  for every nonsquare `N >= 8`. It is compared with the area bound and with Theorem 2's
+  closed form at every nonsquare `N` from 8 to 1000, exactly, by squaring the closed
+  forms themselves, and in decimals at named `N`. By hand the comparison reduces to
+  `floor(sqrt N)^2 <= N`; until 2026-10-04 the tool tested only that reduction, which
+  holds for any `N` and so could not catch a wrong closed form (D-518).
 - The two obvious local repairs of Nagamochi's measure, each of which rescues `K_t`
   and each of which an axis-parallel square at the same corner then defeats, so that
   neither is a repair. Those squares are the witnesses the review cites.
@@ -40,13 +41,13 @@ Usage, from `packing/`:
 from __future__ import annotations
 
 import math
+from collections.abc import Iterable
 from dataclasses import dataclass
 from decimal import Decimal, localcontext
 from fractions import Fraction
 from typing import Literal
 
-from devtools import audit_t007_consumers as exact
-from devtools.check_nagamochi_bounds import theorem_two
+from devtools.check_nagamochi_bounds import RootForm, theorem_two, theorem_two_form
 
 Point = tuple[Fraction, Fraction]
 Polygon = tuple[Point, ...]
@@ -273,6 +274,30 @@ def karakus_strip_measure(a: Fraction, b: Fraction) -> Measure:
 
 def karakus_total(a: Fraction) -> Fraction:
     return a * a - (a + 1 - math.ceil(a))
+
+
+def check_measure_totals() -> None:
+    """Each measure's total is its printed right-hand side, in every declared container.
+
+    The strip measure is stated for `b >= 3`, so it is checked where the container is
+    that tall, and in the square on each container's first side, which is how Corollary
+    6.1 applies it.
+    """
+    for a, b in DECLARED_CONTAINERS:
+        _require(
+            nagamochi_measure(a, b).total() == nagamochi_total(a, b),
+            f"Nagamochi's total in [0,{a}]x[0,{b}] is not ab - Delta(a) - Delta(b)",
+        )
+        if b >= 3:
+            _require(
+                karakus_strip_measure(a, b).total() == a * b - (a + 1 - math.ceil(a)),
+                f"the strip measure's total in [0,{a}]x[0,{b}] is not ab - Delta(a)",
+            )
+        if a >= 3:
+            _require(
+                karakus_strip_measure(a, a).total() == karakus_total(a),
+                f"the strip measure's total in [0,{a}]^2 is not a^2 - Delta(a)",
+            )
 
 
 Repair = Literal["weight", "slide", "augment"]
@@ -536,47 +561,103 @@ def check_local_repairs(a: Fraction, b: Fraction) -> dict[str, dict[str, Fractio
 # -- the replacement bound ----------------------------------------------------------
 
 
-def karakus_bound(n: int) -> Decimal:
-    """Corollary 6.2 of Karakus: `1/2 + sqrt(N - floor(sqrt N) + 1/4)`, nonsquare `N >= 8`."""
+def _corollary_six_two_applies(n: int) -> int:
+    """`floor(sqrt N)`, once `N` is checked to be in Corollary 6.2's scope."""
     k = math.isqrt(n)
     if k * k == n or n < 8:
         message = f"Corollary 6.2 is stated for nonsquare N >= 8, not N = {n}"
         raise ValueError(message)
+    return k
+
+
+def karakus_bound(n: int) -> Decimal:
+    """Corollary 6.2 of Karakus: `1/2 + sqrt(N - floor(sqrt N) + 1/4)`, nonsquare `N >= 8`."""
+    k = _corollary_six_two_applies(n)
     with localcontext() as context:
         context.prec = DECIMAL_DIGITS
         return (1 + Decimal(4 * n - 4 * k + 1).sqrt()) / 2
 
 
-def _karakus_surd(n: int) -> exact.Surd:
-    value = exact.karakus_bound(n)
-    if value is None:
-        message = f"Corollary 6.2 is stated for nonsquare N >= 8, not N = {n}"
-        raise ValueError(message)
-    return value
+def area_form(n: int) -> RootForm:
+    """The area bound `sqrt N`, exactly."""
+    return RootForm(Fraction(0), Fraction(n))
+
+
+def karakus_form(n: int) -> RootForm:
+    """(6.1) as printed, exactly: `1/2 + sqrt(N - k + 1/4)` with `k = floor(sqrt N)`."""
+    k = _corollary_six_two_applies(n)
+    return RootForm(HALF, Fraction(n - k) + Fraction(1, 4))
+
+
+def nagamochi_form(n: int) -> RootForm:
+    """Theorem 2's closed form `min(ceil(sqrt N), sqrt(N - 2k + 1) + 1)`, exactly.
+
+    The minimum is taken by exact comparison, not by Theorem 2's own case list, so that
+    `bound_ordering` can hold it against `theorem_two_form`'s case list.
+    """
+    k = math.isqrt(n)
+    ceiling = RootForm(Fraction(k if k * k == n else k + 1))
+    root = RootForm(Fraction(1), Fraction(n - 2 * k + 1))
+    return ceiling if ceiling.compare(root) <= 0 else root
 
 
 def karakus_at_most_nagamochi(n: int) -> tuple[bool, bool]:
-    """Exactly: is Karakus's bound at most Theorem 2's value at `n`, and is it equal?
+    """Exactly: is Karakus's bound at most Theorem 2's closed form, and is it equal?
 
-    Both sides are exact surds and the answer is the sign of their difference, so a wrong
-    Theorem 2 value fails here. `audit_t007_consumers.nagamochi_value` builds that value
-    from `theorem_two`'s exactness test and refuses it unless it agrees with
-    `theorem_two`'s decimal to 70 places.
-
-    What the comparison should find, by hand: with `k = floor(sqrt N)`,
-    `u = N - k + 1/4` and `v = N - 2k + 1`, `1/2 + sqrt u <= 1 + sqrt v` iff
-    `u - v - 1/4 <= sqrt v` iff `k - 1 <= sqrt v` iff `k^2 <= N`, strict iff `N` is not a
-    square; and `1/2 + sqrt u <= k + 1 = ceil(sqrt N)` iff `N <= k^2 + 2k`, with equality
-    iff `N = (k + 1)^2 - 1`. The closed form is the minimum of the two, so Karakus is
-    below it with equality exactly at `N = m^2 - 1`.
+    Decided by `RootForm.compare` on the two closed forms themselves. By hand, with
+    `k = floor(sqrt N)`, `u = N - k + 1/4` and `v = N - 2k + 1`:
+    `1/2 + sqrt u <= 1 + sqrt v` iff `u - v - 1/4 <= sqrt v` iff `k - 1 <= sqrt v` iff
+    `k^2 <= N`, strict iff `N` is not a square; and `1/2 + sqrt u <= k + 1 = ceil(sqrt N)`
+    iff `N <= k^2 + 2k`, with equality iff `N = (k + 1)^2 - 1`. The closed form is the
+    minimum of the two, so Karakus should be below it with equality exactly at
+    `N = m^2 - 1`; that is what `main` requires of the computed signs.
     """
-    sign = (_karakus_surd(n) - exact.nagamochi_value(n)).sign()
-    return sign <= 0, sign == 0
+    sign = nagamochi_form(n).compare(karakus_form(n))
+    return sign >= 0, sign == 0
 
 
 def karakus_above_area(n: int) -> bool:
     """Exactly: is `1/2 + sqrt(N - k + 1/4) > sqrt N`? By hand, iff `N > k^2`."""
-    return (_karakus_surd(n) - exact.area_bound(n)).sign() > 0
+    return karakus_form(n).compare(area_form(n)) > 0
+
+
+#: The nonsquare `N` the ordering is checked at, every one the review's table runs to.
+ORDERING_N = range(8, 1001)
+#: How far `karakus_bound`'s printed decimal may sit from the exact form.
+DECIMAL_SLACK = Fraction(1, 10**25)
+
+
+def bound_ordering(numbers: Iterable[int] = ORDERING_N) -> list[str]:
+    """Every nonsquare `N` in `numbers` at which `area < Karakus <= Nagamochi` fails.
+
+    It fails when Karakus is not strictly above the area bound, when it exceeds Theorem
+    2's closed form, when it meets that form anywhere but `N = m^2 - 1` or misses it
+    there, when the closed form is not `theorem_two_form`'s value, or when the decimal
+    `karakus_bound` prints is not the exact form's.
+    """
+    failures: list[str] = []
+    for n in numbers:
+        k = math.isqrt(n)
+        if k * k == n or n < 8:
+            continue
+        karakus = karakus_form(n)
+        nagamochi = nagamochi_form(n)
+        if karakus.compare(area_form(n)) <= 0:
+            failures.append(f"N={n}: Karakus is not above sqrt N")
+        sign = nagamochi.compare(karakus)
+        if sign < 0:
+            failures.append(f"N={n}: Karakus is above Theorem 2's closed form")
+        if (sign == 0) != (n == (k + 1) ** 2 - 1):
+            failures.append(
+                f"N={n}: Karakus meets Theorem 2 exactly here: {sign == 0}; "
+                f"expected only at N = m^2 - 1"
+            )
+        if nagamochi.compare(theorem_two_form(n)[0]) != 0:
+            failures.append(f"N={n}: the closed form is not the gate checker's Theorem 2")
+        printed = Fraction(karakus_bound(n))
+        if karakus.below(printed - DECIMAL_SLACK) or not karakus.below(printed + DECIMAL_SLACK):
+            failures.append(f"N={n}: the printed {printed} is not (6.1)")
+    return failures
 
 
 def compare_bounds(n: int) -> dict[str, Decimal | None]:
@@ -591,8 +672,6 @@ def compare_bounds(n: int) -> dict[str, Decimal | None]:
 
 
 REVIEW_N = (7, 12, 14, 23, 26, 34, 47, 82, 97)
-#: The ordering is checked exactly at every nonsquare `8 <= N <= ORDERING_N_MAX`.
-ORDERING_N_MAX = 1000
 
 
 def main() -> int:
@@ -604,6 +683,8 @@ def main() -> int:
                 f"(= 29/20 + t + t^2/2 + t^3/2), shrunk interior {report['shrunk_interior']} "
                 f"= {float(report['shrunk_interior']):.6f} < 1"
             )
+    check_measure_totals()
+    print("measure totals: Nagamochi's ab - Delta(a) - Delta(b), the strip's ab - Delta(a)")
     chelokot = check_chelokot_instance()
     interior = chelokot["interior"]
     print(f"chelokot in [0,4]^2: interior {interior} = {float(interior):.9f}")
@@ -613,21 +694,13 @@ def main() -> int:
             f"{variant:>9}: total {values['total']}, alpha {float(values['alpha']):.4f}, "
             f"beta {float(values['beta']):.4f}"
         )
-    for n in range(8, ORDERING_N_MAX + 1):
-        if math.isqrt(n) ** 2 == n:
-            continue
-        try:
-            below, equal = karakus_at_most_nagamochi(n)
-            above = karakus_above_area(n)
-        except ValueError as error:
-            print(f"N={n}: the exact comparison could not be made: {error}")
-            return 1
-        if not (below and above) or equal != (n == (math.isqrt(n) + 1) ** 2 - 1):
-            print(f"N={n}: the exact comparison failed")
-            return 1
+    if failures := bound_ordering():
+        for line in failures:
+            print(line)
+        return 1
     print(
-        f"N in [8, {ORDERING_N_MAX}], nonsquare: area < Karakus <= Nagamochi, "
-        "equality only at N = m^2 - 1"
+        f"N in [{ORDERING_N.start}, {ORDERING_N.stop - 1}], nonsquare, exactly: area < "
+        "Karakus <= Nagamochi, equality only at N = m^2 - 1"
     )
     for n in REVIEW_N:
         values = compare_bounds(n)

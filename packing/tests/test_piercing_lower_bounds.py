@@ -4,6 +4,8 @@ from __future__ import annotations
 
 import itertools
 import json
+from decimal import Decimal
+from pathlib import Path
 
 import pytest
 import sympy
@@ -114,3 +116,35 @@ def test_the_retained_survey_is_current() -> None:
     ]
     assert retained["improves"] == []
     assert retained == piercing.survey(range(2, len(retained["cases"]) + 2))
+
+
+def test_holds_and_improves_are_exact_not_float(monkeypatch: pytest.MonkeyPatch) -> None:
+    """Floors a float cannot tell from the bound's decimal are told apart exactly.
+
+    `7.89060495123` is the bound at `n = 61` rounded down; a record 1e-21 either side of
+    it is the same float, and until 2026-10-04 the survey compared floats.
+    """
+    printed = piercing.floor_decimal(piercing.piercing_bound(61))
+    assert printed == "7.89060495123"
+    for record, holds, improves in (
+        (printed, True, False),
+        ("7.890604951230000000001", False, False),
+        ("7.890604951229999999999", False, True),
+    ):
+        assert float(record) == float(printed)
+        monkeypatch.setattr(piercing, "verified_floor", lambda _n, value=record: Decimal(value))
+        (row,) = piercing.survey([61])["cases"]
+        assert (row["holds"], row["improves"]) == (holds, improves), record
+        assert row["verified_lower"] == record
+
+
+def test_a_verified_floor_that_is_not_a_decimal_is_refused(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    (tmp_path / "n-007.md").write_text(
+        "---\npacking:\n  verified_lower_bound:\n    value: '2 + sqrt(2)'\n---\n",
+        encoding="utf-8",
+    )
+    monkeypatch.setattr(piercing, "FRONTIER", tmp_path)
+    with pytest.raises(ValueError, match="not a decimal"):
+        piercing.verified_floor(7)

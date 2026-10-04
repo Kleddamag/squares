@@ -3336,10 +3336,10 @@ def _control_anchors(context: Context) -> str:
 
 
 def _nagamochi_bounds(context: Context) -> str:
-    # Sub-second: a hundred frontmatter blocks and one closed-form per case. Records tier
-    # because it checks the arithmetic of a citation the rest of the register leans on --
-    # 88 of the hundred verified lower bounds come from this one external proof, and
-    # nothing previously re-derived any of them.
+    # Sub-second: every case's frontmatter and one closed form per borrowed bound. Records
+    # tier because it checks the arithmetic of the borrowed floors the register leans on --
+    # Nagamochi's in the reported lane and Karakus's in the verified one since 2026-10-02 --
+    # each rounded down from its theorem's exact value, which nothing re-derived before.
     return _module(context, "devtools.check_nagamochi_bounds")
 
 
@@ -4885,6 +4885,10 @@ STEPS: tuple[Step, ...] = (
             "packing/devtools/check_nagamochi_bounds.py",
             "packing/frontier/n-*.md",
             "packing/frontier/evidence.yaml",
+            # The prose counts it holds to the records: the frontier README's open-case
+            # sentence and the register's own citation counts in results.yaml.
+            "packing/frontier/README.md",
+            "packing/frontier/results.yaml",
         ),
     ),
     Step(
@@ -4952,18 +4956,22 @@ STEPS: tuple[Step, ...] = (
         _t007_consumer_audit,
         fast=True,
         records=True,
+        # Everything the audit reads: the case records, register and prose under
+        # frontier/, the archived sources it cites by line, the documents and generators
+        # it scans, the workbench page's bound citations (`site_data`), and the gate
+        # checker whose case reader and Theorem 2 it imports.
         touches=(
             *_CORE,
             "packing/devtools/audit_t007_consumers.py",
             "packing/devtools/check_nagamochi_bounds.py",
-            "packing/devtools/render_overview.py",
             "packing/campaign/series/series-000-smoke-and-calibration/results/t007-consumer-audit.json",
-            "packing/atlas/known-best/bound-citations.json",
             "packing/frontier/*",
             "packing/resources/papers/*",
             "packing/resources/web/*",
+            "packing/atlas/known-best/bound-citations.json",
             "packing/devtools/templates/*",
             "packing/devtools/generate_frontier_case.py",
+            "packing/devtools/render_overview.py",
             "docs/project/research/*",
             "SYNOPSIS.md",
             "README.md",

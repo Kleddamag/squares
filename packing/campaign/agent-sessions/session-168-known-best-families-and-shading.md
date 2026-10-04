@@ -210,7 +210,7 @@ session:
       blocked layer items on think-bgkz with their reason.
     outcome: 'All four lanes reached their exits and were integrated (dc7867f1f, 6200bcf23 and fixes through
       730f4f2e1, green on every required check). The Lean replay passed, so s(k^2-2) = k stands at V3/C3
-      (T-086); T-007 is V0/C1 and 271 case records are re-grounded (T-083, T-084, T-085, D-516); the homepage
+      (T-086); T-007 is V0/C1 and 287 case records are re-grounded (T-083, T-084, T-085, D-516); the homepage
       toggle, the deferred regularized-views job and the dilation decision (refusal kept) close think-bgkz
       but for its first hosted measurement.'
     evidence:
@@ -319,7 +319,7 @@ session:
       them into families, explains the light shading, or connects the families to the asymptotic waste
       register.
     after: 'X-049 answers the four questions. Nagamochi 2005''s Lemma 1 is false, so T-007 is V0 and
-      271 case records are re-grounded with dated corrections citing D-516; s(k^2-2) = k stands on a
+      287 case records are re-grounded with dated corrections citing D-516; s(k^2-2) = k stands on a
       replayed Lean proof (T-086), the open floors on Karakus (T-083, T-084), n = 37 and 61 on Basic and
       Slivkova (T-087), and each correcting floor says "corrects Nagamochi 2005". The regularized layer
       has its homepage toggle and a measured deferred job. Open: think-wqfw, the owner''s restoring commit.'
@@ -671,7 +671,7 @@ session:
     outcome: 'T-007 to V0/C1 incomplete; E-nagamochi-lower reported with a defect-found review; new
       E-karakus-strip-lower, E-nagamochi-lemma1-counterexample and E-chelokot-square-minus-two-lean; new
       T-083 (Karakus general floor, V3/C1), T-084 (s(k^2-1) = k, V3/C1), T-085 (Lemma 1 correction,
-      V3/C3) and T-086 (s(k^2-2) = k on the replayed Lean proof, V3/C3). 271 case records re-grounded:
+      V3/C3) and T-086 (s(k^2-2) = k on the replayed Lean proof, V3/C3). 287 case records re-grounded:
       perfect squares on the area bound, k^2-1 on Karakus, k^2-2 on the Lean proof (values unchanged),
       238 open floors on Karakus Corollary 6.2, and n = 54, 57, 73 on T-044''s registered monotonicity
       values. No status changed; no verified floor rests on T-007. D-516 records the defect.'

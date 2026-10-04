@@ -1,0 +1,27 @@
+{
+  "status": "PASS_FRESH_MIXED_CORPUS",
+  "diagnostic_only": true,
+  "new_exclusions": 0,
+  "unsupported_rows_verified": false,
+  "cached_profile_module_imported": false,
+  "performance_statistics_verified": false,
+  "packet_sha256": "38276355b77c67d85c16c25a4008702bf9ad98d1813194431df7897b66a9b13e",
+  "input_identity": {
+    "seed_sha256": "c548ed2ed62e6c84276aa7135c956610022874732f195c8c6706b020798282a6",
+    "node_sha256": "5d09ba6c6f5bf45fd35db979a1bac66d42034c622c1ffe9c415b9835cc5140b8",
+    "cold_receipt_sha256": "f00dbb6b69d8ffa6f2f7b2c26489a090ba49a1fff0b86bb7f951109398d68bec"
+  },
+  "derived_inventory_sha256": "c260d51fac02893fcb1a29b164ac870bdfc8db6b3b596ebbcc8a75ca216d9912",
+  "query_count": 371,
+  "compatible_pairs": 281,
+  "collision_pairs": 90,
+  "fresh_pair_checks": 371,
+  "four_answer_arrays_verified": true,
+  "original_B_pair_occurrences": 660,
+  "original_J_edge_occurrences": 298,
+  "wall_seconds": 1.6921346000162885,
+  "worker_peak_bytes": 165289984,
+  "observed_at": "2026-10-04T11:05:15.476918+00:00",
+  "derived_receipt_summary": true,
+  "provenance": "Original independent local receipt retained unchanged; public summary omits any local precommit source-byte identity. Source is named by publication Git revision/path."
+}

@@ -189,6 +189,7 @@ Each entry summarizes one user-level research window. Cycle slots are wall-clock
 | [session-174](agent-sessions/session-174-core-refinement.md) | stopped | contemporaneous | `research-loop` (correctness) | `review-planning-oversight` (correctness) | 2 | think-0xxc | Observe final metadata current-head CI and close/sync think-0xxc. Conditional local H-addon transport only after delivery; any replacement support search needs a new W3/ownership/resources/soundness gate. |
 | [session-175](agent-sessions/session-175-enhanced-support.md) | stopped | contemporaneous | `research-loop` (correctness) | `research-loop` (correctness) | 2 | think-wh57 | Observe final metadata current-head CI, then close/sync think-wh57; next scheduled project requires new frozen phase/ownership and source gate. No A target repeat. |
 | [session-176](agent-sessions/session-176-owner-priority.md) | stopped | contemporaneous | `research-loop` (correctness) | `research-loop` (correctness) | 2 | think-mkgr | Observe final metadata current-head CI, close/sync think-mkgr; any cached-predicate project requires new frozen contract/claim/fetch/source gate. No B repeat. |
+| [session-177](agent-sessions/session-177-cached-collision.md) | stopped | contemporaneous | `research-loop` (correctness) | `research-loop` (correctness) | 2 | think-5sya | think-5sya owner publishes source/evidence, observes exactCI and clears debt onlyafterPASS; no cache retune or search. |
 
 ### Workflow summary
 
@@ -201,7 +202,7 @@ Declared counts are contemporaneous contracts; retrospective counts are reconstr
 | `insight-iteration` | 28 | 1 | 88 | 4 |
 | `process-review` | 16 | 4 | 64 | 6 |
 | `efficiency-loop` | 11 | 1 | 41 | 1 |
-| `research-loop` | 34 | 4 | 124 | 9 |
+| `research-loop` | 35 | 4 | 126 | 9 |
 | `pipeline-improvement` | 40 | 2 | 211 | 7 |
 | `documentation-pass` | 1 | 0 | 29 | 3 |
 | `remediation` | 2 | 1 | 2 | 3 |

@@ -572,6 +572,7 @@ case or experiment separately.
 | [A bounded residual-compatibility diagnostic](packing/campaign/explorations/X048-session-170-compatibility/README.md) | research synthesis | record | retained | — |
 | [Session 171: lazy raw-row support](packing/campaign/explorations/X048-session-171-raw-row-support/README.md) | research synthesis | record | retained | — |
 | [D1: lazy raw-piece row support on the frozen B state](packing/campaign/explorations/X048-session-171-raw-row-support/D1_REPORT.md) | research synthesis | record | retained | — |
+| [D2: forward checking and MRV on the same raw graph](packing/campaign/explorations/X048-session-171-raw-row-support/D2_REPORT.md) | research synthesis | record | retained | — |
 | [X-048 Session 167 Pilots: Receipts](packing/campaign/explorations/X048-session-167-pilots/README.md) | research synthesis | record | retained | — |
 | [X-048 Route Review: Exploratory Receipts](packing/campaign/explorations/X048-route-review/README.md) | research synthesis | record | retained | — |
 | [H259 Mixed-Capacity Census: Independent Output Review](packing/campaign/series/series-000-smoke-and-calibration/results/exp-240-n17-mixed-capacity-census/output-review.md) | dated review record | record | retained | — |

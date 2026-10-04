@@ -184,7 +184,7 @@ Each entry summarizes one user-level research window. Cycle slots are wall-clock
 | [session-167](agent-sessions/session-167-n17-parallel-lanes-after-route-review.md) | stopped | mixed | `review-planning-oversight` (insight) | `research-loop` (correctness) | 2 | think-c7kv | BC-418 (think-tmz6): close H-266's single-state item and H-268's slide bound, then re-record H-261 and H-266; build the H-267 selector and adapt the n11 kernel; pilot the capture contraction rate on the endpoint's occupancy state. Lanes G2 and H left a unique-state cover and the H-268 slide bounds built but unreviewed; H-268 must be re-run on the unique design, and B_W's faces a >= 0, b >= 0 and z <= 1/16 still need a capture-side argument. Hosted certification of this branch is owned by think-iuz2. |
 | [session-169](agent-sessions/session-169-n17-producer-memo.md) | stopped | contemporaneous | `review-planning-oversight` (insight) | `review-planning-oversight` (correctness) | 3 | think-wn6x | Review Draft PR325 under think-wn6x; upstream think-tmz6 remains the research coordinator. No merge or new compute is authorized by this closeout. |
 | [session-170](agent-sessions/session-170-residual-compatibility.md) | stopped | retrospective | `review-planning-oversight` (insight) | `review-planning-oversight` (correctness) | 4 | think-67ek | Review Draft PR333 and clear current-history certification under think-67ek. Next independent local project is worker-memory supervision; no automatic larger geometry target. |
-| [session-171](agent-sessions/session-171-raw-row-support.md) | in_progress | contemporaneous | `pipeline-improvement` (efficiency) | `review-planning-oversight` (correctness) | 3 | think-op6s | Publish D1 and freeze one same-model D2 forward-checking/MRV trial under think-op6s. |
+| [session-171](agent-sessions/session-171-raw-row-support.md) | in_progress | contemporaneous | `pipeline-improvement` (efficiency) | `review-planning-oversight` (correctness) | 6 | think-op6s | Observe source/evidence CI before native terminal record; no D3. |
 
 ### Workflow summary
 
@@ -197,11 +197,11 @@ Declared counts are contemporaneous contracts; retrospective counts are reconstr
 | `insight-iteration` | 28 | 1 | 88 | 4 |
 | `process-review` | 16 | 4 | 64 | 6 |
 | `efficiency-loop` | 11 | 1 | 41 | 1 |
-| `research-loop` | 31 | 4 | 117 | 9 |
-| `pipeline-improvement` | 39 | 2 | 209 | 7 |
+| `research-loop` | 31 | 4 | 118 | 9 |
+| `pipeline-improvement` | 39 | 2 | 210 | 7 |
 | `documentation-pass` | 1 | 0 | 29 | 3 |
 | `remediation` | 2 | 1 | 2 | 3 |
-| `review-planning-oversight` | 7 | 3 | 44 | 6 |
+| `review-planning-oversight` | 7 | 3 | 45 | 6 |
 | `general-improvement` | 1 | 0 | 7 | 1 |
 
 ## Experiment agendas

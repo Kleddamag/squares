@@ -11,6 +11,9 @@ after the 100,000-node ceiling. No unsupported row or exclusion was claimed.
 These are solutions of the frozen binary constraint network, not geometric packings.
 Any further search protocol requires separate preregistration.
 
+[D2 report](D2_REPORT.md) records the separately frozen forward-checking/MRV trial:
+69/96 rows independently supported (+14), 27 unresolved at the unchanged pair ceiling.
+
 <!-- This document follows common-doc-guidelines.md.
 See github.com/jlevy/practical-prose and review guidelines before editing.
 -->

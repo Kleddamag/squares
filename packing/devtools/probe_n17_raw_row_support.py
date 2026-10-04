@@ -126,6 +126,9 @@ class LazySupports:
     unsupported: list[RowKey] = field(default_factory=list)
     nodes: int = 0
     pair_tests: int = 0
+    initial_admitted: int = 0
+    initial_rows: int = 0
+    initial_pairs: int = 0
 
     def compatible(self, left: int, right: int) -> bool:
         a, b = self.atoms[left], self.atoms[right]
@@ -158,6 +161,9 @@ class LazySupports:
             "search_nodes": self.nodes,
             "unique_pair_tests": self.pair_tests,
             "cache_entries": len(self.cache),
+            "initial_selections_revalidated": self.initial_admitted,
+            "initial_supported_rows": self.initial_rows,
+            "initial_unique_pairs": self.initial_pairs,
             "selections": self.selections,
             "row_support": [
                 {"owner": owner, "row": row, "selection_index": index}
@@ -172,7 +178,10 @@ class LazySupports:
         *,
         checkpoint: Callable[[dict[str, Any]], None] | None = None,
         initial_selection: list[int] | None = None,
+        initial_selections: list[list[int]] | None = None,
+        strategy: str = "fixed",
     ) -> dict[str, Any]:
+        require(strategy in {"fixed", "forward-mrv"}, "unknown search strategy")
         owners = sorted({atom.owner for atom in self.atoms})
         choices = {
             owner: sorted(
@@ -187,11 +196,14 @@ class LazySupports:
         }
         rows = sorted({(atom.owner, atom.row) for atom in self.atoms})
 
-        def search(order: list[int], selected: list[int], forced: RowKey) -> list[int] | None:
+        def enter_node() -> None:
             remaining(self.budget)
             if self.nodes >= self.max_nodes:
                 raise IncompleteError("DFS node ceiling")
             self.nodes += 1
+
+        def search(order: list[int], selected: list[int], forced: RowKey) -> list[int] | None:
+            enter_node()
             if not order:
                 return sorted(selected, key=lambda i: self.atoms[i].owner)
             owner = order[0]
@@ -204,26 +216,76 @@ class LazySupports:
                         return found
             return None
 
+        def forward_search(
+            domains: dict[int, list[int]], selected: list[int], forced: RowKey
+        ) -> list[int] | None:
+            enter_node()
+            if not domains:
+                return sorted(selected, key=lambda i: self.atoms[i].owner)
+            owner = (
+                forced[0]
+                if not selected
+                else min(domains, key=lambda value: (len(domains[value]), value))
+            )
+            for candidate in domains[owner]:
+                remaining(self.budget)
+                filtered: dict[int, list[int]] = {}
+                for other_owner in sorted(domains):
+                    if other_owner == owner:
+                        continue
+                    kept = [
+                        other
+                        for other in domains[other_owner]
+                        if self.compatible(candidate, other)
+                    ]
+                    if not kept:
+                        break
+                    filtered[other_owner] = kept
+                else:
+                    found = forward_search(filtered, [*selected, candidate], forced)
+                    if found is not None:
+                        return found
+            return None
+
         try:
-            if initial_selection is not None:
+            initial = ([] if initial_selection is None else [initial_selection]) + (
+                initial_selections or []
+            )
+            for selection in initial:
                 require(
-                    [self.atoms[i].owner for i in initial_selection] == owners,
+                    [self.atoms[i].owner for i in selection] == owners,
                     "initial selection owners",
                 )
                 require(
                     all(
                         self.compatible(a, b)
-                        for pos, a in enumerate(initial_selection)
-                        for b in initial_selection[pos + 1 :]
+                        for pos, a in enumerate(selection)
+                        for b in selection[pos + 1 :]
                     ),
-                    "endpoint selection collision",
+                    "initial selection collision",
                 )
-                self.keep(initial_selection)
+                self.keep(selection)
+                self.initial_admitted += 1
+                self.initial_rows = len(self.supported)
+                self.initial_pairs = self.pair_tests
+            if initial and checkpoint is not None:
+                checkpoint(self.snapshot("RUNNING"))
             for forced in rows:
                 if forced in self.supported:
                     continue
                 order = [forced[0], *(owner for owner in owners if owner != forced[0])]
-                selection = search(order, [], forced)
+                if strategy == "fixed":
+                    selection = search(order, [], forced)
+                else:
+                    domains = {
+                        owner: [
+                            i
+                            for i in choices[owner]
+                            if owner != forced[0] or self.atoms[i].row == forced[1]
+                        ]
+                        for owner in owners
+                    }
+                    selection = forward_search(domains, [], forced)
                 if selection is None:
                     self.unsupported.append(forced)
                 else:
@@ -277,22 +339,32 @@ def packet(
     }
 
 
+def selection_indices(
+    references: list[dict[str, Any]],
+    atoms: list[Atom],
+    document: dict[str, Any],
+) -> list[int]:
+    lookup = {(atom.owner, atom.row, atom.pieces[0]): i for i, atom in enumerate(atoms)}
+    owners = sorted({atom.owner for atom in atoms})
+    selected: list[int] = []
+    for reference in references:
+        key = reference["owner"], reference["row"], reference["piece"]
+        require(all(type(index) is int and index >= 0 for index in key), "invalid atom key")
+        index = lookup[key]
+        atom = atoms[index]
+        require(reference == atom_reference(atom, document), "atom provenance differs")
+        selected.append(index)
+    require([atoms[i].owner for i in selected] == owners, "selection owner inventory differs")
+    return selected
+
+
 def direct_selection(
     references: list[dict[str, Any]],
     atoms: list[Atom],
     document: dict[str, Any],
     budget: Budget,
 ) -> tuple[list[RowKey], int]:
-    lookup = {(atom.owner, atom.row, atom.pieces[0]): atom for atom in atoms}
-    owners = sorted({atom.owner for atom in atoms})
-    selected: list[Atom] = []
-    for reference in references:
-        key = reference["owner"], reference["row"], reference["piece"]
-        require(all(type(index) is int and index >= 0 for index in key), "invalid atom key")
-        atom = lookup[key]
-        require(reference == atom_reference(atom, document), "atom provenance differs")
-        selected.append(atom)
-    require([atom.owner for atom in selected] == owners, "selection owner inventory differs")
+    selected = [atoms[i] for i in selection_indices(references, atoms, document)]
     checks = 0
     for position, left in enumerate(selected):
         for right in selected[position + 1 :]:
@@ -300,6 +372,31 @@ def direct_selection(
             require(not incompatible(left, right, budget), "selection contains collision")
             checks += 1
     return [(atom.owner, atom.row) for atom in selected], checks
+
+
+def seed_selections(
+    value: dict[str, Any],
+    atoms: list[Atom],
+    document: dict[str, Any],
+    identity: dict[str, Any],
+) -> list[list[int]]:
+    require(
+        value["schema"] == SCHEMA and value["predicate"] == PREDICATE,
+        "seed packet grammar differs",
+    )
+    require(value["input_identity"] == identity, "seed input identity differs")
+    require(
+        value["diagnostic_only"] is True and value["new_exclusions"] == 0,
+        "seed claims exclusion",
+    )
+    require(
+        value["raw_atoms"] == len(atoms)
+        and value["live_rows"] == len({(a.owner, a.row) for a in atoms}),
+        "seed inventory differs",
+    )
+    # Only these exact-provenance selections are imported, not search/cache/row claims.
+    # Their edges are checked by run() and charged to its ordinary exact-pair budget.
+    return [selection_indices(refs, atoms, document) for refs in value["selections"]]
 
 
 def verify_packet(
@@ -384,6 +481,8 @@ def main() -> int:
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--verify", type=Path)
     parser.add_argument("--endpoint", action="store_true")
+    parser.add_argument("--strategy", choices=("fixed", "forward-mrv"), default="fixed")
+    parser.add_argument("--seed-packet", type=Path)
     args = parser.parse_args()
     started, cpu = time.monotonic(), time.process_time()
     budget = Budget(started + (120 if args.verify else 180), MAX_NODES)
@@ -408,6 +507,12 @@ def main() -> int:
         else:
             search = LazySupports(atoms, budget)
             initial = endpoint_selection(frame, document, atoms) if args.endpoint else None
+            seed_value = bounded_json(args.seed_packet) if args.seed_packet else None
+            seeds = (
+                seed_selections(seed_value, atoms, document, identity)
+                if seed_value is not None
+                else None
+            )
 
             def checkpoint(snapshot: dict[str, Any]) -> None:
                 write_json(
@@ -417,12 +522,20 @@ def main() -> int:
 
             result.update(
                 packet(
-                    search.run(checkpoint=checkpoint, initial_selection=initial),
+                    search.run(
+                        checkpoint=checkpoint,
+                        initial_selection=initial,
+                        initial_selections=seeds,
+                        strategy=args.strategy,
+                    ),
                     atoms,
                     document,
                     identity,
                 )
             )
+            result["strategy"] = args.strategy
+            if seed_value is not None:
+                result["seed_packet_sha256"] = content_sha256(seed_value)
             if (
                 args.endpoint
                 and initial is not None

@@ -36,7 +36,8 @@ def point_atom(owner: int, row: int) -> raw.Atom:
 
 
 @pytest.mark.parametrize("seed", range(8))
-def test_lazy_rows_agree_with_exhaustive_finite_cases(seed: int) -> None:
+@pytest.mark.parametrize("strategy", ["fixed", "forward-mrv"])
+def test_lazy_rows_agree_with_exhaustive_finite_cases(seed: int, strategy: str) -> None:
     atoms = [point_atom(owner, row) for owner in range(3) for row in range(2)]
     rng = random.Random(seed)
     edges = {
@@ -58,7 +59,7 @@ def test_lazy_rows_agree_with_exhaustive_finite_cases(seed: int) -> None:
     supported = {
         (atoms[index].owner, atoms[index].row) for values in solutions for index in values
     }
-    result = raw.LazySupports(atoms, budget(), predicate=predicate).run()
+    result = raw.LazySupports(atoms, budget(), predicate=predicate).run(strategy=strategy)
     assert {(item["owner"], item["row"]) for item in result["row_support"]} == supported
     assert (
         set(map(tuple, result["exhaustive_unsupported_rows"]))
@@ -218,3 +219,46 @@ def test_cold_receipt_hash_and_packet_size_refusals(tmp_path: Path) -> None:
     path.write_bytes(b" " * (raw.MAX_PACKET_BYTES + 1))
     with pytest.raises(RefusalError, match="exceeds 4 MiB"):
         raw.bounded_json(path)
+
+
+def test_forward_filter_cap_is_incomplete_and_never_cached_unknown() -> None:
+    atoms = [point_atom(owner, row) for owner in range(3) for row in range(2)]
+    search = raw.LazySupports(atoms, budget(), predicate=lambda _a, _b, _c: False, max_pairs=1)
+    result = search.run(strategy="forward-mrv")
+    assert result["status"] == "INCOMPLETE"
+    assert result["exhaustive_unsupported_rows"] == []
+    assert search.nodes == 1
+    assert search.pair_tests == len(search.cache) == 1
+
+
+def test_seed_provenance_is_rebuilt_and_all_edges_charged() -> None:
+    frame, document = fixture_document()
+    atoms = raw.raw_atoms(frame, document)
+    identity = {"node_sha256": raw.content_sha256(document)}
+    retained = raw.packet(raw.LazySupports(atoms, budget()).run(), atoms, document, identity)
+    seeds = raw.seed_selections(retained, atoms, document, identity)
+    search = raw.LazySupports(atoms, budget())
+    result = search.run(initial_selections=seeds, strategy="forward-mrv")
+    assert result["status"] == "ALL_ROWS_SUPPORTED"
+    assert result["initial_selections_revalidated"] == 1
+    assert result["initial_supported_rows"] == 3
+    assert result["initial_unique_pairs"] == result["unique_pair_tests"] == 3
+    assert search.nodes == 0
+    assert result["selections"] == seeds
+    guarded = raw.LazySupports(atoms, budget(), max_pairs=2).run(
+        initial_selections=seeds, strategy="forward-mrv"
+    )
+    assert guarded["status"] == "INCOMPLETE"
+    assert guarded["selections"] == []
+    assert guarded["exhaustive_unsupported_rows"] == []
+    for field in ("piece", "domain_sha256", "core_sha256", "source_reference"):
+        mutated = copy.deepcopy(retained)
+        mutated["selections"][0][0][field] = -1 if field == "piece" else "mutation"
+        with pytest.raises((RefusalError, KeyError)):
+            raw.seed_selections(mutated, atoms, document, identity)
+    with pytest.raises(RefusalError, match="identity"):
+        raw.seed_selections(retained, atoms, document, {"node_sha256": "mutation"})
+    with pytest.raises(RefusalError, match="initial selection collision"):
+        raw.LazySupports(atoms, budget(), predicate=lambda _a, _b, _c: True).run(
+            initial_selections=seeds, strategy="forward-mrv"
+        )

@@ -2949,7 +2949,7 @@ sessions:
   title: "Raw-piece row-support witnesses without dense graph expansion"
   status: in_progress
   primary_bead: think-op6s
-  phases: 3
+  phases: 6
   measured: false
   unmeasured_reason: >-
     declares no resource measurement

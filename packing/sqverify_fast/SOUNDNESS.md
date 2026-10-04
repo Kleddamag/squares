@@ -35,41 +35,37 @@ $t_{\max}^2 + 2 t_{\max} - 1 > 0$, and for every net index $r$ and every centre 
 
 *Proof.*
 
-1. *Net (N1).* With $t_r = rD$, $\tan\frac{\theta_{r+1} - \theta_r}{2} = \frac{D}{1 +
-   t_r t_{r+1}} \le D$, so consecutive net angles differ by at most $2 \arctan D$, and
-   every $\varphi \in [0, \theta_{N_\theta - 1}]$ is within $\arctan D$ of a net angle.
-   The endpoint condition says $\tan(\theta_{\max}/2) > \sqrt 2 - 1 = \tan(\pi/8)$, so
-   $\theta_{\max} > \pi/4$.
+1. *Net (N1).* With $t_r = rD$, consecutive half-angle tangents differ by $D$, so every
+   $t \in [0, t_{\max}]$ lies within $D/2$ of some $t_r$. The endpoint condition says
+   $\tan(\theta_{\max}/2) > \sqrt 2 - 1 = \tan(\pi/8)$, so $\theta_{\max} > \pi/4$.
 
 2. *Orientation (N2).* A unit square’s angle is defined modulo $\pi/2$; take $\varphi
    \in [0, \pi/2)$. If $\varphi > \pi/4$, reflect the whole configuration in the
    diagonal $y = x$, which maps $K$ to itself, preserves $g$, preserves disjointness,
    and sends $\varphi$ to $\pi/2 - \varphi < \pi/4$. So assume $\varphi \in [0,
    \pi/4]$, which N1 places below $\theta_{\max}$, and let $\theta_r$ be a net angle
-   with $|\tan(\varphi/2) - t_r| \le D/2$ (N1), so $\delta = |\varphi - \theta_r| \le
-   \arctan D$. The fold is at $\pi/4$, not at $\theta_{\max}$: lemma D’s per-bin domain
-   (format M) depends on it, since the half-width $\rho$ falls again past $\tan(\pi/8)$
-   and a square folded only above $\theta_{\max}$ could sit at half-angle tangent up to
-   $t_{200} + D/2$, where $\rho$ is below $\rho(a_{200})$. Tokoharu’s domain needs no
-   such care, but the same fold serves it.
+   with $|\tan(\varphi/2) - t_r| \le D/2$ (N1). With $\delta = |\varphi - \theta_r|$,
+   $z = \tan(\delta/2) = |\tan(\varphi/2) - t_r|/(1 + t_r \tan(\varphi/2)) \le D/2$;
+   $\delta$ itself may reach $2\arctan(D/2)$, which exceeds $\arctan D$, so the argument
+   uses only the bound on $z$. The fold is at $\pi/4$, not at $\theta_{\max}$: lemma D’s
+   per-bin domain (format M) depends on it, since the half-width $\rho$ falls again past
+   $\tan(\pi/8)$ and a square folded only above $\theta_{\max}$ could sit at half-angle
+   tangent up to $t_{200} + D/2$, where $\rho$ is below $\rho(a_{200})$. Tokoharu’s
+   domain needs no such care, but the same fold serves it.
 
 3. *Shrink (N3).* The concentric square of side $B$ at angle $\theta_r$, seen in the
-   unit square’s frame, is rotated by $\delta$; its extent along either of the unit
-   square’s axes is
-   $B(\cos\delta + \sin\delta) = B \cos\delta (1 + \tan\delta) \le B(1 +
-   D) < 1$. So it lies in the open unit square, hence in $K$, and its centre lies in
-   $[a_r, L - a_r]^2$, the set of centres whose $B$-square at angle $\theta_r$ lies in
-   $K$. The per-bin domain (format M) assigns half-angle tangents within $D/2$ of $t_r$,
-   so there $\delta$ may reach $2\arctan(D/2)$, whose tangent $D/(1 - D^2/4)$ exceeds
-   $D$. The bound still holds in half-angle form: with
-   $z = \tan(\delta/2) = |t - t_r|/(1 +
-   t t_r) \le D/2$, $\cos\delta + \sin\delta = (1 + 2z - z^2)/(1 + z^2) \le 1 + 2z \le
-   1 + D$, since $(1 + 2z)(1 + z^2) - (1 + 2z - z^2) = 2z^2 + 2z^3 \ge 0$ (spec N2, N3).
-   So $B(1 + D) < 1$ suffices for both domains.
-   Admission checks the stronger tangent form $B(1 + D/(1 - D^2/4)) < 1$ for format M as
-   well, which a proof through $\cos\delta(1 + \tan\delta)$ would need: at
-   $D = 83/40000$ the two limits on $B$ are about $0.99792929671$ and $0.99792929449$,
-   and every retained certificate has $B =
+   unit square’s frame, is rotated by $\delta$; with $z = \tan(\delta/2) \le D/2$ (N2),
+   its extent along either of the unit square’s axes is
+   $B(\cos\delta + \sin\delta) = B(1 + 2z - z^2)/(1 + z^2) \le B(1 + 2z) \le B(1 + D)
+   < 1$, since $(1 + 2z)(1 + z^2) - (1 + 2z - z^2) = 2z^2 + 2z^3 \ge 0$ (spec N2, N3).
+   So it lies in the open unit square, hence in $K$, and its centre lies in $[a_r, L -
+   a_r]^2$, the set of centres whose $B$-square at angle $\theta_r$ lies in $K$. Both
+   domains rest on this half-angle form: Tokoharu’s and the per-bin domain (format M),
+   whose bins are the half-angle tangents within $D/2$ of $t_r$. Admission checks the
+   stronger tangent form $B(1 + D/(1 - D^2/4)) < 1$ for format M as well, which a proof
+   through $\cos\delta(1 + \tan\delta)$ would need: at $D = 83/40000$ the two limits on
+   $B$ are about $0.99792929671$ and $0.99792929449$, and every retained certificate has
+   $B =
    9977/10000$, below both (question of the 3 October testing review).
 
 4. *Counting (N4).* The $n$ unit squares have disjoint interiors, so their $B$-squares
@@ -501,11 +497,16 @@ counts an inside rectangle by its exact mass, while R2 counts its inner represen
 rectangle, and for a sliver of extreme density that difference is large (finding TI-1 of
 the 3 October testing review, whose reproducer the audit refused falsely before).
 The classification comparison is unaffected, and it is what catches a wrong inside
-decision. The counts agree exactly because a sub-box’s fresh classification repeats its
-ancestors’ decisions (a rounding coincidence within $10^{-13}$ of a decision’s slack
-could break the tie, which would be a false refusal, never an acceptance); a
-disagreement proves the incremental bookkeeping wrong at that box or at an ancestor
-whose decisions it inherits.
+decision.
+The slack also weakens the centre-bound comparison where densities are extreme:
+near the $2^{96}$ cap a rectangle’s slack can exceed the bound itself, and there that
+comparison cannot see a bookkeeping error (note R2 of the soundness re-review).
+No acceptance rests on the audit: it only ever refuses, as defense in depth beside the
+lemmas, which carry the proof.
+The counts agree exactly because a sub-box’s fresh classification repeats its ancestors’
+decisions (a rounding coincidence within $10^{-13}$ of a decision’s slack could break
+the tie, which would be a false refusal, never an acceptance); a disagreement proves the
+incremental bookkeeping wrong at that box or at an ancestor whose decisions it inherits.
 The search then stops with `audit-failed`, a refusal.
 The second comparison is what catches a straddling item wrongly certified inside whose
 whole mass happens to lie in the centre’s own square, which leaves the centre bound

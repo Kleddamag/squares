@@ -5,7 +5,7 @@ title: Register links and the results tables' significance column, 2026-10-03 (j
 kind: epic
 status: open
 priority: 2
-version: 17
+version: 19
 labels: []
 dependencies: []
 child_order_hints:
@@ -23,8 +23,10 @@ child_order_hints:
   - is-01m4202j4rsx4m7ejt42tvxpre
   - is-01m4219scr8whmzt1xxq4kb1pn
   - is-01m421pnn9vr4pfhrmc9dwcs8t
+  - is-01m429d8ccyabwn5896f2nf44v
+  - is-01m429d94k357kzb3jdng3tgp8
 created_at: 2026-10-03T17:33:12.496Z
-updated_at: 2026-10-03T23:46:40.509Z
+updated_at: 2026-10-04T01:45:43.826Z
 ---
 The owner's requests of 2026-10-03 afternoon, under one epic: the supersession links (think-xm4t and its children, jlevy/squares#315, with its backfill think-rl2b and gate fixes think-kmi4), and the stacked PR: significance as its own column (think-m3m4), every site colour a named token enforced by a test, the results table bleeding wider on very wide screens, and the 1280 width budget the new column needs.
 

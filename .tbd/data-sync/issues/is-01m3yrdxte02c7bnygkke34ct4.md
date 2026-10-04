@@ -5,7 +5,7 @@ title: Import, confirm and answer every reported result (2 October 2026 effort)
 kind: epic
 status: open
 priority: 1
-version: 48
+version: 49
 labels:
   - result-import
 dependencies: []
@@ -31,7 +31,7 @@ child_order_hints:
   - is-01m3ytdhr6h2xnsvj4f2nc2nk2
   - is-01m3z77bdhk8tn3epx63ywhxft
 created_at: 2026-10-02T16:51:15.917Z
-updated_at: 2026-10-03T23:01:59.640Z
+updated_at: 2026-10-04T01:02:29.669Z
 ---
 Umbrella for the 2 October 2026 effort: PRs #290 -> #292 -> #298 (imports and records), plus a stacked PR for verifier provenance and the independent verifier. Children track each lane; done when every reported result is confirmed or refuted (or has a bead naming exactly what remains), every issue has a current status reply, closeable issues are closed, and all PRs are merged.
 
@@ -128,3 +128,4 @@ Next steps for the next agent, in order:
 2026-10-03 20:25 check-in: the 5-hour limit stopped lanes about 19:20-19:50; resumed at 20:22 the records lane (n82 records, follow-up PR), W2 (census), IM282b, l83, Valid7 w1. Valid7 w2 DONE (all VERIFIED, claude/replay-valid7-w2), w3-w5 done; w1 on shard 3. n82a/n82b done and n82 merged FULL_REPLAY_MATCHES_SHIPPED (records lane 1d8e8bef6). s1 completed (365cc72b0); s2, r6, Valid9 r1-r7 running (no Valid9 branch pushed yet; first shards ~5 h). Merged since 18:13: #320 (eb4f50f46), #322 (79419cdfc). WARNING: a runner shows the seven-day limit at allowed_warning (resets Oct 7 04:00 UTC).
 2026-10-03 21:30 check-in (after a container restart; the local records lane finished before it, W2 done): PR #324 (T-082, 22 wand125 certificates) and PR #327 (T-076 n82 + T-073 n83 to V3/C3, reply records) both green, MERGEABLE CLEAN; merges wait on the owner (tbd policy github-merge unanswered = confirm-every). Runner heads: Valid7 w1 e2a257f75, n83 9598f4d31 (done), s2 3090a87d0, r6 c66ef85cf; Valid9 r1-r7 not pushed yet (first shards due ~23:30). Census evidence (think-3ok2) needs a new records lane (the local one ended with the restart). T-082 replay runners held pending the owner's answer on the weekly limit.
 2026-10-03 23:05 check-in: #324 merged (4949d1439) and #328 merged (0ca18df47; grants effective on main); Pages deploy of 4949d1439 verified, T-082 live. Valid9: r6 pushed shard 11 (3 runs VERIFIED-D4, UNCERT 0, about 16.4 CPU-h) at 22:45; r1-r5, r7 first shards not yet pushed (due about 23:30). Valid7 w1 done (all 14 wand125 shards VERIFIED); records sub-agent recording on claude/t064-valid7-independent-replay (think-e3tq). s2 (n58) and r6-afternoon (n70, n20) still running at 22:01. New bead think-xlxj (typecheck tier at its ceiling).
+2026-10-04 01:05 check-in: #329 merged (eb9fbb730, T-064 independent replay; think-e3tq closed; follow-up on #296) and #331 merged (d303e9ef8, AGENTS.md grants block formatted). Valid9: all 7 first shards VERIFIED and pushed, second shards running, no failed session. r6-afternoon done (n20, n70 VERIFIED; n42 earlier). s2: n58 still running. Next: one batched records lane for T-081 + T-077 + T-046 leftovers once Valid9 and n58 finish.

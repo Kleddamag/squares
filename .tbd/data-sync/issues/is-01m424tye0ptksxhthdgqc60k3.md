@@ -3,9 +3,9 @@ type: is
 id: is-01m424tye0ptksxhthdgqc60k3
 title: The typecheck tier's 111 s wall ceiling sits inside hosted-runner variance
 kind: task
-status: in_progress
+status: closed
 priority: 2
-version: 9
+version: 10
 delegate: claude-code@vm
 labels:
   - ci
@@ -14,8 +14,12 @@ parent_id: null
 hold: null
 hold_until: null
 created_at: 2026-10-04T00:25:48.735Z
-updated_at: 2026-10-04T08:03:08.589Z
+updated_at: 2026-10-04T08:12:20.970Z
 started_at: 2026-10-04T08:03:08.205Z
+closed_at: 2026-10-04T08:12:20.970Z
+close_reason: "Fixed by #338 (merged): ceiling 130 s, record 86.71 s, band 54-123 s."
+resolution: null
+duplicate_of: null
 ---
 Hosted typecheck tier walls (basedpyright alone, --jobs 1) read on 3-4 October 2026 across eight branches: 59.6, 80.7, 81.4, 81.8, 93.8, 96.2, 98.8, 104.0, 105.2, 105.7, 106.6, 107.5, 108.2, 108.2, 108.9, 110.9, 114.9 and 115.2 s against a 111 s ceiling (recorded 76.5 s). The same Python tree read 107.5 s and then 115.2 s on consecutive runs (PR 305 at d56b9f503 and 0952efb57, which differ only in a Markdown record), so the breaches are runner variance, not code: the distribution is bimodal near 80 and 105-115 s. Each breach costs a re-run, and a partial re-run then makes check_pr_wall unmeasurable, which fails packing-required. Decide: re-derive the ceiling from these readings under gate-budgets.yaml's rule, make the typecheck wall advisory like the PR wall (think-g4n9), or reduce basedpyright's cost.
 

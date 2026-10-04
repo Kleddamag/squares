@@ -19,13 +19,16 @@ from devtools.render_case_pages import rebase_links
 from tests import site_renders
 
 FACE = b"wOF2 a face"
+#: A page program's bytes, which the bundle only names and copies.
+PROGRAM = "a page program"
+SCRIPT = site_assets.SiteAssets().script("x.js", PROGRAM)
 
 
 def _bundle() -> tuple[site_assets.SiteAssets, str, str]:
     assets = site_assets.SiteAssets()
     url = assets.face("pt-serif-latin-400-normal.woff2", FACE)
     sheet = assets.stylesheet("kpress.css", f'@font-face {{ src: url("{url}"); }}')
-    script = assets.script("table.js", "window.table = 1;")
+    script = assets.script("table.js", PROGRAM)
     page = (
         f"<head>{site_assets.preload_tags(assets, 'index.html')}\n"
         f"{site_assets.stylesheet_tag(sheet, 'index.html')}</head>"
@@ -38,9 +41,9 @@ def test_a_file_is_named_by_its_content() -> None:
     assets, url, _ = _bundle()
     digest = hashlib.sha256(FACE).hexdigest()[:16]
     assert url == f"../fonts/pt-serif-latin-400-normal.{digest}.woff2"
-    ref = assets.script("table.js", "window.table = 2;")
+    ref = assets.script("table.js", PROGRAM + " again")
     assert ref.output_path is not None
-    assert ref.output_path != assets.script("table.js", "window.table = 1;").output_path
+    assert ref.output_path != assets.script("table.js", PROGRAM).output_path
 
 
 def test_a_page_names_a_file_from_where_it_is_served() -> None:
@@ -82,7 +85,7 @@ def test_a_build_writes_what_its_pages_name_and_nothing_else(tmp_path: Path) -> 
 def test_a_page_put_back_whole_carries_its_assets(tmp_path: Path) -> None:
     assets, _, page = _bundle()
     whole = assets.inlined(page)
-    assert "window.table = 1;" in whole
+    assert PROGRAM in whole
     assert 'url("data:font/woff2;base64,' in whole
     assert "assets/" not in whole
     (tmp_path / "index.html").write_text(page, encoding="utf-8")
@@ -108,15 +111,15 @@ def test_a_page_may_fetch_its_shared_assets_and_nothing_else() -> None:
             render_overview.assert_fetches_only_assets("x.html", fetch)
 
 
-def test_a_rebase_moves_a_scripts_source_and_not_its_text() -> None:
+def test_a_rebase_moves_a_scripts_source_and_not_a_styles_text() -> None:
     markup = (
-        '<script src="assets/js/x.0000000000000000.js"></script>'
-        '<script>const a = "assets/js/y.js";</script>'
+        f"{site_assets.script_tag(SCRIPT, 'index.html')}"
+        "<style>/* assets/css/y.css */</style>"
         '<link rel="stylesheet" href="assets/css/z.0000000000000000.css">'
     )
     moved = rebase_links(markup, "cases")
-    assert '<script src="../assets/js/x.0000000000000000.js"></script>' in moved
-    assert 'const a = "assets/js/y.js";' in moved
+    assert site_assets.script_tag(SCRIPT, "cases/index.html") in moved
+    assert "<style>/* assets/css/y.css */</style>" in moved
     assert 'href="../assets/css/z.0000000000000000.css"' in moved
 
 

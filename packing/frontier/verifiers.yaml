@@ -136,6 +136,11 @@ verifiers:
       - packing/resources/web/wand125-valid7-independent-check-2026-10-02/valid7-independent-check/verify.sh
     versions:
       - {revision: 38dd31b369991b0d96c917a4af0c7139b44a038d, note: "the repository's only commit, and its release records-v1"}
+      - sha256: ba73f6c10f81836f676fde9800c716e6810f4759fa3f1a89753609671a290080
+        note: >-
+          src/tier_b2.py with D-1's accepting line made a refusal, as plan_valid7_replay
+          stage --guard-d1 writes it; the full replay here of 2 and 3 October ran it with
+          the other V2 files unchanged
     independence_record: packing/resources/web/wand125-valid7-independent-check-2026-10-02/valid7-independent-check/READ_LOG.md
     note: >-
       Its read log says Daniel's checker qx2_zm.py and his lemma write-ups were not read;

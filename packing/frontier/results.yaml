@@ -5481,10 +5481,16 @@ results:
       and 32,079 leaves, none uncertified, each root's leaves equal to the published run's,
       which discharges Valid7 for this cover. The Lean reduction was built from retained
       bytes with the pinned toolchain, and bentz_of_valid7 depends only on the standard
-      axioms. Together they prove the theorem here, for every k >= 6. wand125's second
-      checker was reviewed on 2 October and found sound but for one defect in its exact
-      positivity test (D-1), which cannot make a true Valid7 fail; its run was not
-      replayed, and it is reported evidence only.
+      axioms. Together they prove the theorem here, for every k >= 6.
+
+      wand125's second checker was reviewed on 2 October and found sound but for one defect
+      in its exact positivity test (D-1), which cannot make a true Valid7 fail. It was
+      replayed here in full on 2 and 3 October with that test's accepting case made a
+      refusal, in fourteen shards: all 156,800 root boxes certified in 9,808,968 leaves,
+      none uncertified, and each root the source ran under its published code with the
+      published leaves. So Valid7 is decided here by two separately written exact
+      checkers, Daniel's reproduced with the producer's code and wand125's independently
+      re-implemented.
 
       So s(97) = 10, s(118) = 11, s(141) = 12, s(166) = 13, s(193) = 14, s(222) = 15,
       s(253) = 16, s(286) = 17 and s(321) = 18 are proved here, nine cases closed. s(33) =
@@ -5521,9 +5527,10 @@ results:
       (E-k2m3-evand-bentz-lean-build, proof-assistant-checked, with its axiom receipt).
       Each is V3 and C3, so the result is.
 
-      Valid7 has one replayed checker; wand125's
-      separately written one (E-k2m3-wand125-valid7-independent) is reported and not
-      replayed, so it adds no method. No human formalization review is retained, so the
+      Valid7 has a second replayed checker, wand125's separately written one, replayed here
+      in full with D-1 guarded (E-k2m3-wand125-valid7-independent, exact-algebraic,
+      independent-implementation). It is the same method as Daniel's, so it adds no
+      distinct method and moves no rung. No human formalization review is retained, so the
       Lean build does not reach rung 5. The scope lists the cases this record holds, since a
       scope is a set of cases; the theorem's own domain is every k >= 6, and a scope that
       can say so is think-kqi1.
@@ -5555,6 +5562,8 @@ results:
       - packing/resources/web/wand125-valid7-independent-check-2026-10-02/receipts/valid7_verify.log
       - packing/resources/web/wand125-valid7-independent-check-2026-10-02/receipts/valid7_records_audit.json
       - packing/devtools/audit_valid7_independent.py
+      - packing/resources/web/wand125-valid7-independent-check-2026-10-02/receipts/valid7_replay_plan.json
+      - packing/resources/web/wand125-valid7-independent-check-2026-10-02/receipts/replay/wand125_replay_compare.json
       - packing/resources/web/evand-square-packing-2026-10-01/receipts/valid7/qx2_replay_compare.json
       - packing/resources/web/evand-square-packing-2026-10-01/receipts/valid7/qx2_replay_plan.json
       - packing/resources/web/evand-square-packing-2026-10-01/receipts/valid7/k2m3_verify_fast.log
@@ -5569,18 +5578,19 @@ results:
     next_rung: >-
       V4 and C4 need two adversarial AI reviews by distinct reviewers of the claim and a
       human oversight record; the one retained review read the second checker's method and
-      the reduction's statement. A second machine method for Valid7 would be wand125's
-      checker replayed with D-1 guarded (plan_valid7_replay stage --guard-d1, about 216
-      CPU-hours), or the author's fix. Rung 5 needs human formalization reviews of the Lean
+      the reduction's statement. Valid7's two replayed checkers are both exact-algebraic; a
+      checker of another kind, interval-certified or a Lean proof of Valid7, would add a
+      method beside the rung. Rung 5 needs human formalization reviews of the Lean
       statement and a Lean proof of Valid7 itself. think-kqi1 tracks a scope that can state
       an infinite family.
     notes: >-
       V0/C1 until 3 October 2026, when the full qx2_zm.py replay (two shards, think-4k80)
       and lane LL's Lean build were recorded; the 1 October mathematical review and lane
       Y's review of 2 October are the reads. The review's D-1 is recorded on wand125's
-      entry, whose run stays reported evidence until a guarded replay or the author's fix.
-      The source's six adversarial reviews by AI agents are its own and are not retained as
-      review records here.
+      entry, which was reported evidence until its replay with D-1 guarded (fourteen
+      shards, think-e3tq) was recorded on 3 October; that moved no rung. The source's six
+      adversarial reviews by AI agents are its own and are not retained as review records
+      here.
 
   - id: T-065
     kind: upper-bound

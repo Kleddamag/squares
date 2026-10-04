@@ -1100,8 +1100,13 @@ The workbench job selects Node 24.18.0, installs the root lockfile with scripts
 disabled, and builds the typed workbench package into the self-contained `/workbench/`
 page, beside `prepare` rather than after it.
 The publish job puts the two papers, the checked PDF, the site’s own pages and the
-workbench back into one tree and holds every page’s head in it to the site’s contract
-(`check_published_site --local`); only a push to `main` uploads that tree to Pages.
+workbench back into one tree and holds every page’s head in it to the site’s contract,
+and every shared asset a page names to being there whole (`check_published_site
+--local`); only a push to `main` uploads that tree to Pages.
+The site’s own pages link their design system as content-hashed files under `assets/`,
+which the overview job writes with them (`devtools/site_assets.py`;
+`templates/paper-design.md`, Shared Assets); the papers and the workbench still inline
+theirs.
 
 **An address the site has served keeps working.** The papers moved to `papers/<slug>` on
 2026-10-01, from `explainer.html` and from `n11-optimality/t-060-explainer.html`.
@@ -1223,7 +1228,7 @@ owner, 2026-10-01: “the repository version should not go on the papers anymore
 Papers should be individually versioned”). Each paper’s version line prints its own
 version from `release.py`: the explainer’s is `EXPLAINER_VERSION`, the newest entry of
 `EXPLAINER_HISTORY`, and the review’s is `OPTIMALITY_REVIEW_EDITION`, its status and the
-newest entry of `OPTIMALITY_REVIEW_HISTORY` (“Draft v0.1.3”). The top of the explainer
+newest entry of `OPTIMALITY_REVIEW_HISTORY` (“Draft v0.1.4”). The top of the explainer
 reads, on two lines, like “v0.4.2 (version history)” and “First published September 5,
 2026 · Last revised October 1, 2026”: which version of the paper is being read, with a
 link to the paper’s own editions at the foot of the page, then when the paper first

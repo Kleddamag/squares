@@ -10,18 +10,20 @@ from pathlib import Path
 
 import pytest
 
-from devtools import overview_sections, render_case_pages, render_overview
+from devtools import overview_sections, render_case_pages, render_overview, site_assets
 from devtools import render_research_tables as tables
-from devtools.render_overview import assert_self_contained
+from devtools.render_overview import assert_fetches_only_assets
 from devtools.repo_links import DEFAULT_BRANCH, REPO_URL, hash_pinned_links
 from sqpack.probes import probe
 from tests import site_renders
 
 PROBES = Path(__file__).resolve().parent / "probes"
 
-#: The record page carries the site's shell, the account and the index, and no record:
-#: it fetches each record file. Measured at about 1.9 MB on 2026-10-03.
-PAGE_CEILING_BYTES = 2_500_000
+#: The record page carries the account and the index, and no record: it fetches each
+#: record file. Measured at about 1.9 MB on 2026-10-03, when it carried the site's shell
+#: inline, its faces and math, as every page did; at 40,771 bytes on 2026-10-04, once it
+#: linked the shell from the site's shared assets (`site_assets`) instead.
+PAGE_CEILING_BYTES = 100_000
 #: One record file is the record alone, with no styles or shell. Measured on 2026-10-03:
 #: from 16 KB (n = 1) to 217 KB (n = 11, whose prose and results are the longest, and
 #: n = 17 close behind), 10.4 MB for all 324.
@@ -49,8 +51,22 @@ def overview() -> str:
 
 
 @pytest.fixture(scope="module")
+def served() -> dict[str, str]:
+    """The three pages above as a reader's browser assembles them, with every shared
+    asset they link put back in them (`tests.site_renders.served`), by name."""
+    names = (render_case_pages.CASES_PAGE, "frontier.html", "index.html")
+    return {name: site_renders.served(name) for name in names}
+
+
+@pytest.fixture(scope="module")
 def numbers() -> list[int]:
     return sorted(int(path.stem.split("-")[1]) for path in tables.FRONTIER.glob("n-*.md"))
+
+
+def _program_tag(path: Path, name: str) -> str:
+    """The element by which the page `name` loads `path`, a page program: a file of the
+    site's shared assets named by its content (`site_assets`)."""
+    return site_assets.script_tag(site_assets.shared().assets.script_file(path), name)
 
 
 def _record(records: dict[str, str], n: int) -> str:
@@ -94,13 +110,15 @@ def test_a_record_file_names_itself_and_sends_a_reader_with_scripts_on(
     assert f'<meta property="og:url" content="{canonical}">' in text
     assert "Packing 29 unit squares in the smallest square" in text
     forward = render_case_pages.CASE_FORWARD_SCRIPT.read_text(encoding="utf-8")
-    assert text.count("<script>") == 1
+    assert text.count("<script") == text.count("<script>") == 1
     assert forward.strip() in text
     # One small style of its own, for a plain reading, and none of the site's.
     assert text.count("<style>") == 1
     assert ".kpress-math-render{display:none}" in text
     assert "kpress-shell" not in text
-    assert_self_contained("cases/29.html", text)
+    # It fetches nothing, not even the shared assets a site page links.
+    assert_fetches_only_assets("cases/29.html", text)
+    assert f"{site_assets.ASSETS_DIR}/" not in text
 
 
 def test_every_record_file_is_small(records: dict[str, str]) -> None:
@@ -197,22 +215,33 @@ def test_the_atlas_grid_and_the_frontier_table_open_the_same_record(
     assert frontier.count(render_case_pages.case_popover()) == 1
 
 
-def test_the_frontier_rows_minimal_popovers_are_gone(frontier: str) -> None:
+def test_the_frontier_rows_minimal_popovers_are_gone(
+    frontier: str, served: dict[str, str]
+) -> None:
     """The popover each frontier row opened until 2026-10-03, its construction, lower
     bound kind and verification notes, went with think-necq: a row opens the case's
-    record, which carries all of that."""
+    record, which carries all of that. Neither its script nor its styles come with the
+    page as it is served."""
     assert "pop-frontier-n-" not in frontier
     assert not re.search(r"<tr\b[^>]*\sdata-row-popover", frontier)
-    assert render_overview.ROW_POPOVER_SCRIPT.read_text(encoding="utf-8") not in frontier
-    assert "site-pairs" not in frontier
+    whole = served["frontier.html"]
+    assert render_overview.ROW_POPOVER_SCRIPT.read_text(encoding="utf-8") not in whole
+    assert "site-pairs" not in whole
 
 
-def test_both_entry_pages_carry_the_case_popover_script(overview: str, frontier: str) -> None:
-    case_popover = render_case_pages.CASE_POPOVER_SCRIPT.read_text(encoding="utf-8")
-    assert case_popover in overview
-    assert case_popover in frontier
-    assert render_overview.ATLAS_GRID_SCRIPT.read_text(encoding="utf-8") in overview
-    assert "data-atlas-facts" not in overview
+def test_both_entry_pages_carry_the_case_popover_script(
+    overview: str, frontier: str, served: dict[str, str]
+) -> None:
+    """Each links the case popover's program, the overview the atlas grid's too, and
+    each as it is served carries their text."""
+    case_popover = render_case_pages.CASE_POPOVER_SCRIPT
+    for name, page in (("index.html", overview), ("frontier.html", frontier)):
+        assert page.count(_program_tag(case_popover, name)) == 1, name
+        assert case_popover.read_text(encoding="utf-8") in served[name], name
+    assert overview.count(_program_tag(render_overview.ATLAS_GRID_SCRIPT, "index.html")) == 1
+    grid = render_overview.ATLAS_GRID_SCRIPT.read_text(encoding="utf-8")
+    assert grid in served["index.html"]
+    assert "data-atlas-facts" not in served["index.html"]
     assert 'id="pop-atlas"' not in overview
 
 
@@ -225,10 +254,17 @@ def test_the_popover_fetches_the_record_and_opens_its_address() -> None:
     assert "<iframe" not in markup
 
 
-def test_the_record_page_reads_one_record_at_a_time(page: str, numbers: list[int]) -> None:
+def test_the_record_page_reads_one_record_at_a_time(
+    page: str, numbers: list[int], served: dict[str, str]
+) -> None:
     """The record page holds no record: its reader fetches the one the address names,
-    and its index links every record file."""
-    assert render_case_pages.CASE_PAGE_SCRIPT.read_text(encoding="utf-8") in page
+    and its index links every record file. The reader is a shared program, which the
+    page names from `cases/` (`../assets/js/`)."""
+    reader = render_case_pages.CASE_PAGE_SCRIPT
+    tag = _program_tag(reader, render_case_pages.CASES_PAGE)
+    assert tag.startswith('<script src="../assets/js/case-page.')
+    assert page.count(tag) == 1
+    assert reader.read_text(encoding="utf-8") in served[render_case_pages.CASES_PAGE]
     assert "data-case-reader hidden" in page
     assert '<article class="site-case"' not in page
     index = page.split('<nav class="site-case-index', 1)[1].split("</nav>", 1)[0]
@@ -240,8 +276,14 @@ def test_the_record_page_reads_one_record_at_a_time(page: str, numbers: list[int
     assert 'href="../frontier.html"' in page
 
 
-def test_the_page_is_self_contained_and_under_its_ceiling(page: str) -> None:
-    assert_self_contained(render_case_pages.CASES_PAGE, page)
+def test_the_page_fetches_only_the_shared_assets_and_is_under_its_ceiling(page: str) -> None:
+    """The page fetches nothing but the site's shared assets, each a file the build
+    writes, and names every one from `cases/`, where it stands: `../assets/`, never an
+    `assets/` beside it that the site does not have."""
+    assert_fetches_only_assets(render_case_pages.CASES_PAGE, page)
+    assert site_assets.shared().assets.referenced([page])
+    assert '="../assets/' in page
+    assert not re.search(r'(?:href|src)="assets/', page)
     assert len(page.encode()) < PAGE_CEILING_BYTES
 
 

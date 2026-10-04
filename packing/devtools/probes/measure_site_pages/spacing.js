@@ -123,12 +123,7 @@
       continue;
     }
     seen.add(component);
-    // A table of results sets its legend between its bar and its wrap
-    // (`overview_sections.rung_legend`): the bar is the one above the legend.
-    let before = disclosure ? null : wrap.previousElementSibling;
-    while (before?.classList.contains("site-rung-legend")) {
-      before = before.previousElementSibling;
-    }
+    const before = disclosure ? null : wrap.previousElementSibling;
     const bar =
       before instanceof Element && before.matches(".site-table-tools") && shown(before)
         ? before

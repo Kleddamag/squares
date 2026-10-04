@@ -32,6 +32,8 @@ import copy
 import io
 import os
 import re
+import socket
+from collections.abc import Iterator
 from pathlib import Path
 from typing import Any
 
@@ -41,6 +43,7 @@ from PIL import Image
 from devtools import measure_site_pages as measure
 from devtools import render_n11_lower_bounds_explainer, render_overview
 from devtools import render_n11_optimality_review as paper
+from devtools.preview_site import serve
 from devtools.render_n11_lower_bounds_explainer_pdf import BROWSER_OVERRIDE
 from tests import site_renders
 
@@ -350,6 +353,20 @@ def test_text_off_the_shared_tokens_is_named() -> None:
     assert measure.glyph_problems(found | {"reading": False}) == []
 
 
+def test_a_face_of_the_shared_assets_is_shipped_and_not_fetched() -> None:
+    """A face a site page fetches from its shared assets (`site_assets`) is one the page
+    ships, as an inlined face is; any other fetch is still named."""
+    face = {"family": "PT Serif", "weight": "400", "style": "normal", "display": "block"}
+    shared = "http://127.0.0.1:1/assets/fonts/pt-serif-latin-400-normal.4271064a37f3ffc0.woff2"
+    found = entry(
+        font_requests=[shared, "http://127.0.0.1:1/fonts/pt-serif.woff2"],
+        faces=[face | {"status": "loaded", "inlined": False, "shared": True, "faces": 1}],
+    )
+    assert measure.glyph_problems(found) == [
+        "a face is fetched: http://127.0.0.1:1/fonts/pt-serif.woff2"
+    ]
+
+
 def test_a_page_that_fetches_or_fails_is_named() -> None:
     face = {"family": "KaTeX_Main", "weight": "400", "style": "normal", "display": "swap"}
     found = entry(
@@ -364,7 +381,7 @@ def test_a_page_that_fetches_or_fails_is_named() -> None:
         "the page runs KaTeX 0.16.9, not 0.16.45",
         "a face is fetched: https://example.org/a.woff2",
         "a face failed to arrive: https://example.org/a.woff2",
-        "the face KaTeX_Main 400 normal is not inlined",
+        "the face KaTeX_Main 400 normal is neither inlined nor a shared asset",
         "the face KaTeX_Main 400 normal failed to load",
     ]
 
@@ -534,8 +551,9 @@ def chromium() -> None:
 
 @pytest.fixture(scope="module")
 def site(chromium: None, tmp_path_factory: pytest.TempPathFactory) -> Path:  # noqa: ARG001
-    """The two papers and the site's own pages, rendered once, in one directory. The
-    explainer is the unprepared page, which typesets in the client as the others do."""
+    """The two papers and the site's own pages, rendered once, in one directory, with
+    the shared assets the site's pages link. The explainer is the unprepared page, which
+    typesets in the client as the others do."""
     root = tmp_path_factory.mktemp("glyphs")
     explainer = render_n11_lower_bounds_explainer.render(
         render_n11_lower_bounds_explainer.WALKTHROUGH
@@ -551,31 +569,44 @@ def site(chromium: None, tmp_path_factory: pytest.TempPathFactory) -> Path:  # n
     script = render_n11_lower_bounds_explainer.publication_layer()["NATIVE_MATH_METRICS"]
     assert html.count(script) == 1
     (root / "unflagged.html").write_text(html.replace(script, ""), encoding="utf-8")
-    for name in SITE_PAGES:
-        (root / name).write_text(site_renders.html(name), encoding="utf-8")
+    site_renders.write(root, *SITE_PAGES)
     return root
 
 
-def measured(site: Path, pages: tuple[str, ...], **options: Any) -> dict[str, dict[str, Any]]:
+@pytest.fixture(scope="module")
+def served(site: Path) -> Iterator[str]:
+    """That directory served, as `measure_site_pages` serves one it measures; the address,
+    without its closing slash. A site page links its stylesheets, and a page opened from
+    a file may not read the rules of a sheet it links, which the measurement does."""
+    with socket.socket() as probe:
+        probe.bind(("127.0.0.1", 0))
+        port = int(probe.getsockname()[1])
+    server = serve(site, port)
+    try:
+        yield f"http://127.0.0.1:{port}"
+    finally:
+        server.shutdown()
+        server.server_close()
+
+
+def measured(served: str, pages: tuple[str, ...], **options: Any) -> dict[str, dict[str, Any]]:
     """Each of `pages` as `measure_glyphs` reports it at a desktop width, by name."""
-    report = measure.measure_glyphs(
-        site.as_uri(), pages, widths=(1280,), every_ink=False, **options
-    )
+    report = measure.measure_glyphs(served, pages, widths=(1280,), every_ink=False, **options)
     return {found["page"]: found for found in report}
 
 
 @pytest.fixture(scope="module")
-def pages(site: Path) -> dict[str, dict[str, Any]]:
+def pages(served: str) -> dict[str, dict[str, Any]]:
     """Every page as this machine draws it."""
-    return measured(site, (EXPLAINER, PAPER, *SITE_PAGES), tex=(SHARED_FORMULA,))
+    return measured(served, (EXPLAINER, PAPER, *SITE_PAGES), tex=(SHARED_FORMULA,))
 
 
 @pytest.fixture(scope="module")
-def as_platform(site: Path) -> dict[str, dict[str, dict[str, Any]]]:
+def as_platform(served: str) -> dict[str, dict[str, dict[str, Any]]]:
     """The two papers, and the paper with its head script taken out, told they are on
     macOS and told they are not."""
     papers = (EXPLAINER, PAPER, "unflagged.html")
-    return {platform: measured(site, papers, platform=platform) for platform in (MAC, LINUX)}
+    return {platform: measured(served, papers, platform=platform) for platform in (MAC, LINUX)}
 
 
 def test_the_paper_sets_every_shared_role_as_the_explainer_does(
@@ -787,5 +818,5 @@ def test_the_pages_run_one_math_pipeline(pages: dict[str, dict[str, Any]]) -> No
         assert {row["typeset"] for row in found["math"]} == {measure.TYPESET}, name
         assert found["untypeset"] == 0, name
     assert render_overview.MATH_SCRIPT.read_text(encoding="utf-8") in (
-        site_renders.html("tutorial.html")
+        site_renders.served("tutorial.html")
     )

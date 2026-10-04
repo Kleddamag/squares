@@ -1043,11 +1043,11 @@ def table_of_results(overview: Overview, defaults: FilterDefaults, *, here: bool
         popovers.append(popover)
     return (
         f'<div class="site-wide">{result_filters(overview, results, defaults)}'
-        f"{rung_legend(here=here)}"
         '<div class="site-table-wrap">'
         '<table class="kpress-table site-table site-results" data-site-table>'
         f"{result_head()}"
-        f"<tbody>{''.join(body)}</tbody></table></div>{''.join(popovers)}</div>"
+        f"<tbody>{''.join(body)}</tbody></table></div>"
+        f"{rung_legend(here=here)}{''.join(popovers)}</div>"
     )
 
 
@@ -1056,12 +1056,14 @@ LADDERS_SECTION = "verification-ladders"
 
 
 def rung_legend(*, here: bool) -> str:
-    """The legend right above a table of results, three short lines: every significance
+    """The legend under a table of results, boxed, three short lines: every significance
     mark, S1 to S5; every verification and confirmation chip, V0 to C5; and the star,
     with a link to where the ladders define each rung in full, on the results page
     (`here`) or from another page. Each mark and chip is titled with the rubric's
     meaning. It took the place, on 2026-10-03, of the whole ladder grid the overview
-    set under its table (the owner, `think-42dx`)."""
+    set under its table (the owner, `think-42dx`), and stood between the table's bar and
+    the table until 2026-10-04, when the owner moved it under the table in a box of its
+    own, so it reads as a legend and not as more of the filters."""
     meanings = rung_meanings()
     levels = rubric_levels()
 
@@ -2095,7 +2097,7 @@ ATLAS_CARDS: tuple[tuple[str, str, str, str, str], ...] = (
 def atlas_cards() -> str:
     """The atlas's posters and film as three cards side by side, each headed by its
     picture and itself the link: a poster opens its PDF, the film its own page. They
-    are the overview's PDFs and Videos section, under The Atlas."""
+    are the overview's PDFs and Videos section, after Recent Results."""
     return _cards(
         [
             link_card(

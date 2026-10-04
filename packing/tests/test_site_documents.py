@@ -275,7 +275,7 @@ def test_a_forwarder_stands_at_each_address_a_page_used_to_have() -> None:
         assert f'<link rel="canonical" href="{canonical}">' in page, old
         assert f"<script>{script}</script>" in page, old
         assert "{{" not in page, old
-        render_overview.assert_self_contained(old, page)
+        render_overview.assert_fetches_only_assets(old, page)
     assert not set(forwarders) & set(render_overview.PAGES)
 
 
@@ -342,7 +342,7 @@ def test_the_pages_render_self_contained_with_a_toc(
     pages: dict[str, render_overview.Page],
 ) -> None:
     for name, page in pages.items():
-        render_overview.assert_self_contained(name, page.html)
+        render_overview.assert_fetches_only_assets(name, page.html)
         assert "data-kpress-toc" in page.html, name
         assert 'aria-current="page"' in page.html, name
 

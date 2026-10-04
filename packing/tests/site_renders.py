@@ -75,6 +75,36 @@ def html(name: str) -> str:
     return page(name).html
 
 
+def served(name: str) -> str:
+    """That page as a reader's browser assembles it: with every shared asset it links
+    put back in it (`site_assets.SiteAssets.inlined`), for a test of what the page
+    carries rather than of how it names it."""
+    from devtools import site_assets  # noqa: PLC0415
+
+    return site_assets.shared().assets.inlined(html(name))
+
+
+def write(root: Path, *names: str) -> dict[str, Path]:
+    """Write the pages `names` under `root` as the site serves them, with every shared
+    asset they name under `root`'s `assets/`, and return each page's path: a directory a
+    browser can open the pages from, with nothing they link missing. Pages written into
+    the same `root` by several calls keep each other's assets."""
+    from devtools import site_assets  # noqa: PLC0415
+
+    written = {}
+    for name in names:
+        path = root / name
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_text(html(name), encoding="utf-8")
+        written[name] = path
+    files = site_assets.shared().assets.referenced(html(name) for name in names)
+    for output, data in files.items():
+        target = root / site_assets.ASSETS_DIR / output
+        target.parent.mkdir(parents=True, exist_ok=True)
+        target.write_bytes(data)
+    return written
+
+
 def pages() -> dict[str, str]:
     """Every page `render_overview.PAGES` builds, by name."""
     return {name: html(name) for name in render_overview.PAGES}

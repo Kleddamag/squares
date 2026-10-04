@@ -635,8 +635,8 @@ def test_a_built_site_is_held_to_its_heads_and_its_card(
         f"card {SOCIAL_CARD}: not served"
     ]
     (tmp_path / "status.html").unlink()
-    for name in ("index.html", "papers.html"):
-        (tmp_path / name).write_text(pages[name], encoding="utf-8")
+    # Each page with the shared assets it names, which the check holds too.
+    site_renders.write(tmp_path, "index.html", "papers.html")
     for forwarder in render_overview.forwarder_pages():
         # A forwarder stands where its page was, which for a paper was a directory down.
         (tmp_path / forwarder.name).parent.mkdir(parents=True, exist_ok=True)
@@ -802,7 +802,7 @@ def test_a_page_added_later_or_a_record_that_loses_a_tag_fails_the_check(
 
     # The frontier atlas beside a forwarder that names it as the forwarder from
     # `status.html` did, by a name the page no longer had.
-    (tmp_path / "frontier.html").write_text(pages["frontier.html"], encoding="utf-8")
+    site_renders.write(tmp_path, "frontier.html")
     forwarder = next(
         moved.html for moved in render_overview.forwarder_pages() if moved.name == "status.html"
     )

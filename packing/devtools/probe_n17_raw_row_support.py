@@ -181,6 +181,7 @@ class LazySupports:
         initial_selection: list[int] | None = None,
         initial_selections: list[list[int]] | None = None,
         strategy: str = "fixed",
+        row_order: list[RowKey] | None = None,
     ) -> dict[str, Any]:
         require(strategy in {"fixed", "forward-mrv"}, "unknown search strategy")
         owners = sorted({atom.owner for atom in self.atoms})
@@ -196,6 +197,21 @@ class LazySupports:
             for owner in owners
         }
         rows = sorted({(atom.owner, atom.row) for atom in self.atoms})
+        if row_order is not None:
+            require(
+                all(
+                    isinstance(row, tuple)
+                    and len(row) == 2
+                    and all(type(value) is int for value in row)
+                    for row in row_order
+                ),
+                "row order must contain integer owner-row tuples",
+            )
+            require(
+                len(row_order) == len(rows) and set(row_order) == set(rows),
+                "row order must be a full permutation of live rows",
+            )
+            rows = list(row_order)
 
         def enter_node() -> None:
             remaining(self.budget)

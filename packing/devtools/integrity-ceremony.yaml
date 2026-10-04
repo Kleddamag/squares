@@ -25,6 +25,9 @@ mark: '(?i)(?<![a-z])(?:sha\d*s?|(?:hex)?digests?|blake2[bs]?|md5|checksum|hashe
 # file holds no site is refused, so the list cannot outlive the code. The letters cite
 # the audit's inventory.
 allowlist:
+  - path: packing/devtools/probe_n17_scheduled_row_support.py
+    kind: generated-artifact
+    boundary: Frozen A support packets, generated saved inputs and replay receipts bind runtime geometry and parent-row witnesses; source identity uses Git revision and path.
   - path: packing/devtools/probe_n17_enhanced_row_support.py
     kind: generated-artifact
     boundary: Generated saved objects, E and H support packets, baseline receipts and derived half-core references are runtime artifacts; canonical hashes bind their geometry and input identities, not Git source files.

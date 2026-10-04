@@ -1,0 +1,40 @@
+{
+  "status": "PASS_REPLAYED_PARTIAL_SUPPORT",
+  "diagnostic_only": true,
+  "new_exclusions": 0,
+  "unsupported_rows_verified": false,
+  "new_search_or_verify_module_imported": false,
+  "input_identity": {
+    "seed_sha256": "c548ed2ed62e6c84276aa7135c956610022874732f195c8c6706b020798282a6",
+    "node_sha256": "5d09ba6c6f5bf45fd35db979a1bac66d42034c622c1ffe9c415b9835cc5140b8",
+    "cold_receipt_sha256": "f00dbb6b69d8ffa6f2f7b2c26489a090ba49a1fff0b86bb7f951109398d68bec"
+  },
+  "packet_sha256": "2bbbd642423037f4f03c4388937a981e09344cd51e5c163657383cfc82bfc116",
+  "A_packet_sha256": "62a45e47905fdc77a953e4bbab38926c10a1f4abb4f5be7b59edde2c2117a71a",
+  "A_replay_sha256": "53b2056dc02132eccc89def08fae5794020ec0b4d6d5fd8da7775920267f9735",
+  "H_packet_sha256": "611c52644ed22fb9d704dbd56ec24e91e15002185a33e1b0866b17d9d1114395",
+  "derived_inventory_sha256": "c260d51fac02893fcb1a29b164ac870bdfc8db6b3b596ebbcc8a75ca216d9912",
+  "raw_atoms": 2522,
+  "child_atoms": 5044,
+  "live_parent_rows": 96,
+  "supported_parent_rows": 60,
+  "newly_supported_parent_rows": 19,
+  "unknown_parent_rows": 36,
+  "seed_prefix_preserved": 26,
+  "owner_priority": [
+    17,
+    18,
+    19,
+    22,
+    10,
+    8
+  ],
+  "complete_row_schedule_verified": true,
+  "selections_checked": 44,
+  "fresh_pair_checks": 660,
+  "wall_seconds": 1.7259665000019595,
+  "worker_peak_bytes": 163414016,
+  "observed_at": "2026-10-04T10:28:52.663695+00:00",
+  "derived_receipt_summary": true,
+  "provenance": "Independent local replay receipt retained unchanged; this public summary omits local precommit source-byte gate identity. Git source identity is the publication revision and path."
+}

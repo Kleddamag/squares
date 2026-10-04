@@ -780,17 +780,17 @@ RECORDED: dict[int, tuple[tuple[str, str, str] | None, tuple[str, str, str] | No
     # Couzo's certified packing took the case; the synthetic test above keeps that shape.
     132: (
         ("Couzo 2026, GitHub (confirmed T-056)", "external", "verified"),
-        ("Karakus 2026, arXiv:2609.37410 corrects Nagamochi 2005", "external", "verified"),
+        ("Karakuş 2026, arXiv:2609.37410 corrects Nagamochi 2005", "external", "verified"),
     ),
     # A certified ceiling that trails its report by two units of the printed place is
     # still cited as reported, with the register entry that confirms the packing.
     206: (
         ("Couzo 2026, GitHub (reported; confirmed T-056)", "external", "reported"),
-        ("Karakus 2026, arXiv:2609.37410 corrects Nagamochi 2005", "external", "verified"),
+        ("Karakuş 2026, arXiv:2609.37410 corrects Nagamochi 2005", "external", "verified"),
     ),
     211: (
         ("de Winter 2026, GitHub (confirmed T-057)", "external", "verified"),
-        ("Karakus 2026, arXiv:2609.37410 corrects Nagamochi 2005", "external", "verified"),
+        ("Karakuş 2026, arXiv:2609.37410 corrects Nagamochi 2005", "external", "verified"),
     ),
 }
 
@@ -1288,14 +1288,14 @@ def test_every_source_key_the_register_uses_is_defined_once_spelled() -> None:
     assert undefined == {}
 
 
-def test_the_stage_spelling_folds_only_what_the_faces_cannot_draw() -> None:
-    # Karakuş's cedilla is outside the stage's latin faces; Latin-1 accents, dashes and
-    # quotation marks are not folded.
-    assert citations.stage_spelling("Karakuş 2026, arXiv:2609.37410") == (
-        "Karakus 2026, arXiv:2609.37410"
-    )
-    dash = "\N{EN DASH}"
-    assert citations.stage_spelling(f"Erdős and Göbel {dash} “1979”") == (
-        f"Erdos and Göbel {dash} “1979”"
-    )
-    assert citations.stage_spelling("Kearney, Shiu 2002") == "Kearney, Shiu 2002"
+def test_the_file_keeps_the_whole_spelling() -> None:
+    # Review A3 on jlevy/squares#305: the stage's accent fold leaked into this file and
+    # from it onto the case pages. It is the workbench loader's alone now.
+    document = json.loads(citations.RECORD.read_text(encoding="utf-8"))
+    texts = [
+        (entry.get(bound) or {}).get("text") or ""
+        for entry in document["citations"]["entries"]
+        for bound in ("lower", "upper")
+    ]
+    assert any("Karakuş 2026" in text for text in texts)
+    assert not any("Karakus 2026" in text for text in texts)

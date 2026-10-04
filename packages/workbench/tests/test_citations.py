@@ -27,6 +27,7 @@ from workbench_tools.build_candidate import (
     load_citations,
     page_version,
     same_decimal,
+    stage_spelling,
 )
 from workbench_tools.check_animate_view import citation_steps, cited_lines
 
@@ -131,8 +132,12 @@ def test_every_cited_value_is_the_number_the_bound_line_draws() -> None:
             lambda d: d["citations"]["entries"][16]["upper"].update(text=" padded"),
             "one trimmed",
         ),
-        # Outside the embedded faces: a Hungarian double acute, as in Erdős.
-        (lambda d: d["citations"]["entries"][16]["upper"].update(text="Erdős 1975"), "faces"),
+        # Outside the embedded faces with no Latin-1 letter to fold to: a Polish Ł. A
+        # Hungarian double acute, as in Erdős, is folded as the page loads, not refused.
+        (
+            lambda d: d["citations"]["entries"][16]["upper"].update(text="Łukasiewicz 1975"),
+            "faces",
+        ),
         (lambda d: d["citations"]["entries"][16]["upper"].update(basis="folk"), "basis 'folk'"),
         (
             lambda d: d["citations"]["entries"][16]["upper"].update(assurance="certain"),
@@ -303,3 +308,24 @@ def test_a_lower_bound_names_the_published_work_it_corrects(tmp_path: Path) -> N
         {"lower": {"corrects": {**rows[150]["lower"]["corrects"], "result": "Nagamochi"}}},
         "T-NNN",
     )
+
+
+def test_the_stage_spelling_folds_only_what_the_faces_cannot_draw() -> None:
+    # Karakuş's cedilla is outside the stage's latin faces; Latin-1 accents, dashes and
+    # quotation marks are not folded.
+    assert stage_spelling("Karakuş 2026, arXiv:2609.37410") == "Karakus 2026, arXiv:2609.37410"
+    dash = "\N{EN DASH}"
+    assert stage_spelling(f"Erdős and Göbel {dash} “1979”") == f"Erdos and Göbel {dash} “1979”"
+    assert stage_spelling("Kearney, Shiu 2002") == "Kearney, Shiu 2002"
+
+
+def test_the_fold_is_made_as_the_page_loads_not_in_the_file() -> None:
+    # Review A3 on jlevy/squares#305: the file keeps Karakuş's spelling for the case pages;
+    # the page carries the folded line, and the animate check expects the folded line.
+    document = json.loads(CITATIONS.read_text(encoding="utf-8"))
+    row = next(row for row in document["citations"]["entries"] if row["n"] == 150)
+    assert row["lower"]["text"].startswith("Karakuş 2026")
+    assert load_citations(CITATIONS)["entries"]["150"]["lower"]["text"].startswith(
+        "Karakus 2026"
+    )
+    assert cited_lines(row)["lower"][0].startswith("Karakus 2026")

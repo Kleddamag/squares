@@ -37,7 +37,7 @@ from PIL import Image
 from playwright.sync_api import Page, sync_playwright
 
 from workbench_tools import animate_view_contract
-from workbench_tools.build_candidate import CITATIONS
+from workbench_tools.build_candidate import CITATIONS, stage_spelling
 from workbench_tools.build_site import build
 from workbench_tools.probes import probe
 
@@ -548,15 +548,15 @@ def citation_file(session: Session) -> tuple[dict[str, Any] | None, str | None]:
 
 def cited_lines(entry: dict[str, Any] | None) -> dict[str, tuple[str, str | None, str | None]]:
     """What the file says an n's section draws: per bound, its reference, the published work
-    it corrects where it corrects one, and its note."""
+    it corrects where it corrects one, and its note, in the stage's spelling."""
     if entry is None:
         return {}
     return {
         bound: (
-            cited["text"],
+            stage_spelling(cited["text"]),
             None
             if cited.get("corrects") is None
-            else f"corrects {cited['corrects']['credit']}",
+            else f"corrects {stage_spelling(cited['corrects']['credit'])}",
             cited["note"],
         )
         for bound in ("lower", "upper")

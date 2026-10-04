@@ -89,6 +89,10 @@ allowlist:
 # The fourth merge of origin/main on 2026-10-03 (e8aee5177) brought in
 # plan_valid9_replay.py, main's ValidTilt9 replay planner, which pins its record and
 # cover by digest as plan_valid7_replay.py does. Recorded as inherited under think-vre9.
+# The merge of origin/main at e19be6bb0 on 2026-10-04 (PR 305's regularized atlas and
+# chelokot Lean replay, and the published-site stamp check) brought in six sites in four
+# files, written on main where this register does not yet run. Recorded as inherited
+# under think-vre9.
 baseline:
   packages/workbench/tools/workbench_tools/check_candidate.py: 1
   packing/benchmarks/bench_n11_fast_cover.py: 3
@@ -170,9 +174,10 @@ baseline:
   packing/devtools/check_n17_contact_chart.py: 1
   packing/devtools/check_n17_core_stress.py: 1
   packing/devtools/check_n17_endpoint_features.py: 1
-  packing/devtools/check_n17_local_minimum.py: 2
+  packing/devtools/check_n17_local_minimum.py: 1
   packing/devtools/check_n17_root_certificate.py: 1
   packing/devtools/check_pr_wall.py: 1
+  packing/devtools/check_published_site.py: 1
   packing/devtools/compress_threshold_certificate.py: 3
   packing/devtools/core_shrink.py: 1
   packing/devtools/diagnose_n17_bb_losses.py: 2
@@ -202,7 +207,10 @@ baseline:
   packing/devtools/presplit_n17_bb.py: 2
   packing/devtools/prototype_n17_bb_coupled.py: 2
   packing/devtools/read_fixed_core_calibration_profile.py: 1
+  packing/devtools/regularize_axis_components.py: 2
   packing/devtools/render_composite_pdf.py: 2
+  packing/devtools/render_regularized_atlas.py: 2
+  packing/devtools/replay_chelokot_lean.py: 1
   packing/devtools/replay_evand_zmx2.py: 1
   packing/devtools/replay_n17_rational_upper.py: 1
   packing/devtools/run_fixed_core_calibration_profiles.py: 9

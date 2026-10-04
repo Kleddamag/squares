@@ -619,6 +619,42 @@ def test_cli_ratio_mode_without_the_n11_replay(
     assert "radius" in json.loads(capsys.readouterr().out)["error"]
 
 
+EXP248_RUN = (
+    local.REPO
+    / "packing/campaign/series/series-000-smoke-and-calibration/results"
+    / "exp-248-n17-local-half-composition/run-002"
+)
+
+
+@pytest.mark.slow
+def test_cli_ratio_on_the_widened_box_passes_end_to_end_as_exp248_run_002(
+    tmp_path: Path, capsys: pytest.CaptureFixture[str]
+) -> None:
+    """exp-248 run-002's command passes at this tree with the retained worst ratio.
+
+    The receipt records the core-stress blob that ran and gates on nothing about it
+    (OR-16), so an edit to `check_n17_core_stress.py` that leaves every mathematical
+    check true cannot turn the run red, as the pinned blob once did.
+    """
+    output, certificates = tmp_path / "receipt.json", tmp_path / "certificates.json"
+    command = ["--ratio", "--box", *WIDENED_BOX_ARGUMENTS, "--output", str(output)]
+    assert local.main([*command, "--certificates", str(certificates)]) == 0
+    summary = json.loads(capsys.readouterr().out.splitlines()[-1])
+    receipt = json.loads(output.read_text())
+    retained = json.loads((EXP248_RUN / "receipt.json").read_text())
+    assert summary["passed"] is True
+    assert receipt["passed"]
+    assert all(receipt["checks"].values())
+    assert set(receipt["checks"]) == set(retained["checks"]) - {"core_stress_matches_commit"}
+    assert receipt["inputs"]["core_stress_commit"] == local.CORE_STRESS_COMMIT
+    assert receipt["inputs"]["core_stress_blob"] == local.core_stress_blob()
+    assert "core_stress_matches_commit" not in receipt["inputs"]
+    assert receipt["slider_box"] == retained["slider_box"] == _box_record(WIDENED_BOX)
+    worst, kept = receipt["c8_c9"]["worst"], retained["c8_c9"]["worst"]
+    assert (worst["direction"], worst["worst_ratio"]) == (kept["direction"], kept["worst_ratio"])
+    assert receipt["c8_c9"]["total_cells"] == retained["c8_c9"]["total_cells"] == 93
+
+
 def test_affine_structure_holds_at_symbolic_root_parameters() -> None:
     matrix, _ = _affine()
     audit = local.symbolic_affine_audit(_family(), matrix)

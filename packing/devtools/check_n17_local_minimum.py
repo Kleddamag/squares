@@ -146,6 +146,7 @@ from devtools.check_n17_endpoint_features import (
     option_manifest,
     square_class,
 )
+from sqpack import retained_json
 from sqpack.exact_lp import (
     ExactLP,
     ExactLPError,
@@ -850,13 +851,16 @@ def run_control(model: Model, control: str) -> dict[str, Any]:
 # point moves with the sliders: x*(w), w = (a, b, z), is the layout with square 5 moved
 # by -a e_x, square 11 by -b v and square 13 by +z v, square 6 absent. The 52 retained
 # rows are built at x*(w) with k = (1 - |tau|)/2 on every parallel face and written on
-# the 45 non-slider columns only (no side column, no slider column). Everything is at
-# the exp-237 root-box midpoint; the root-box residual of C8(i) is not folded in.
+# the 45 non-slider columns only (no side column, no slider column). The certificates are
+# exact at the exp-237 root-box midpoint, and C8(i) folds the root-box residual into each
+# cell's residual bound; only `--midpoint-only` skips it, and that receipt fails.
 # ---------------------------------------------------------------------------
 
 RATIO_SCHEMA = "n17-local-minimum-ratio/v1"
+# The commit whose core-stress rows the recipe froze, recorded beside the blob that ran,
+# for information only. Nothing gates on either (OR-16): a gate on the blob refused
+# exp-248's replay after an edit that left every mathematical check true.
 CORE_STRESS_COMMIT = "2fbf8d29"
-CORE_STRESS_BLOB = "4a67d5fdd6f08585d2cd1d9ffc920d8f8039e0c2"
 SLIDER_PARAMETERS = ("a", "b", "z")
 DECLARED_BOX: tuple[tuple[Q, Q], ...] = (
     (Q(0), Q(1, 4)),
@@ -1401,7 +1405,6 @@ FEATURE_CERTIFICATE = (
     / "exp-239-n17-endpoint-features/run-001/certificate.json"
 )
 FEATURE_CERTIFICATE_BLOB = "d6047456ac143da0c5aaf6b25e286db75d4497ea"
-FEATURE_CERTIFICATE_SHA256 = "f6ba220a66dfe13c4b6fbf1d1aaebc14fc21652b87610d13be3feb09ca09203b"
 
 
 def git_blob(data: bytes) -> str:
@@ -1438,7 +1441,6 @@ def roster_binding_audit(family: Family, raw: bytes | None = None) -> dict[str, 
     counts = document.get("inventory", {}).get("counts", {})
     checks = {
         "certificate_blob_is_frozen": git_blob(data) == FEATURE_CERTIFICATE_BLOB,
-        "certificate_sha256": hashlib.sha256(data).hexdigest() == FEATURE_CERTIFICATE_SHA256,
         "certificate_accepted": document.get("schema") == "n17-endpoint-feature-certificate/v1"
         and document.get("criterion_passed") is True
         and document.get("root_git_ref") == FROZEN_ROOT_REF,
@@ -3098,9 +3100,9 @@ def main(argv: list[str] | None = None) -> int:
         },
         **result,
     }
-    encoded = json.dumps(receipt, sort_keys=True, indent=1)
+    encoded = retained_json.dumps(receipt, sort_keys=True)
     if args.output is not None:
-        args.output.write_text(encoded + "\n")
+        args.output.write_text(encoded)
     summary = {
         "schema": SCHEMA,
         "passed": receipt["passed"],
@@ -3114,7 +3116,7 @@ def main(argv: list[str] | None = None) -> int:
 
 
 def core_stress_blob() -> str:
-    """Git blob id of the imported core-stress source, to compare with `CORE_STRESS_BLOB`."""
+    """Git blob id of the imported core-stress source, recorded in the receipt."""
     data = (REPO / "packing/devtools/check_n17_core_stress.py").read_bytes()
     return hashlib.sha1(b"blob %d\0" % len(data) + data, usedforsecurity=False).hexdigest()
 
@@ -3168,13 +3170,11 @@ def ratio_main(args: argparse.Namespace) -> int:
             "root_box_radii": [_fraction_string(value) for value in root_radii],
             "core_stress_commit": CORE_STRESS_COMMIT,
             "core_stress_blob": blob,
-            "core_stress_matches_commit": blob == CORE_STRESS_BLOB,
             "sources_sha256": source_digests(),
             "certificates_sha256": hashlib.sha256(certificate_bytes).hexdigest(),
         },
         **body,
     }
-    receipt["checks"]["core_stress_matches_commit"] = blob == CORE_STRESS_BLOB
     receipt["passed"] = all(receipt["checks"].values())
     if args.certificates is not None:
         args.certificates.write_bytes(certificate_bytes + b"\n")

@@ -5,7 +5,7 @@ title: "Merge #305"
 kind: task
 status: open
 priority: 1
-version: 12
+version: 13
 labels: []
 dependencies:
   - type: blocks
@@ -30,8 +30,10 @@ dependencies:
     target: is-01m42vr7yzzvagvf3x4m6qbwxh
   - type: blocks
     target: is-01m42x72xd8ffac00e299fjp0d
+  - type: blocks
+    target: is-01m42x9sy9mvd5sqqs7skwmfkp
 parent_id: is-01m42sq026mszrdm4fwf5r8g8y
 created_at: 2026-10-04T06:30:40.956Z
-updated_at: 2026-10-04T07:31:52.365Z
+updated_at: 2026-10-04T07:33:21.480Z
 ---
 Owner confirmed in session 2026-10-04. Gate: green CI on current head, no conflict, review findings addressed.

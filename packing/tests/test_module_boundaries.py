@@ -1018,6 +1018,13 @@ def test_the_slow_marker_is_declared_only_by_measured_nodes() -> None:
         "test_verify_n17_certificates.py": {
             "test_the_w7_fixture_is_what_the_producer_writes",  # 5.26s
         },
+        # The streamed verifier's W7 8-bin fixture verified with bounded memos and with
+        # none, so a replaced owned hull's dropped regions are exercised; measured
+        # 2026-10-04 (Session 168, lane R8, think-2dpm) on a loaded four-cpu box. The fast
+        # tier keeps the blind and wall pairs, the reader's differential and its refusals.
+        "test_verify_n17_node_stream.py": {
+            "test_the_w7_fixture_replaces_a_hull_and_its_receipt_needs_no_memo",  # 4.54s
+        },
         # 18s of call time across 3.
         "test_audit_n54_source_formula.py": {
             "test_n54_source_formula_cli_agrees_under_optimization",  # 7.8s

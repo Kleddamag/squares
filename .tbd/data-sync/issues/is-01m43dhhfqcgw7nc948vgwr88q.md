@@ -3,9 +3,9 @@ type: is
 id: is-01m43dhhfqcgw7nc948vgwr88q
 title: Compile certificate-preserving selective halving on frozen E witnesses
 kind: task
-status: in_progress
+status: closed
 priority: 2
-version: 2
+version: 3
 spec_path: docs/project/reviews/review-2026-10-02-n17-bulk-exclusion-design.md
 assignee: graph_gate
 delegate: codex@guzhou
@@ -15,8 +15,12 @@ parent_id: is-01m42d0zw28532d573ersbnzh4
 hold: null
 hold_until: null
 created_at: 2026-10-04T12:17:12.182Z
-updated_at: 2026-10-04T12:17:14.528Z
+updated_at: 2026-10-04T12:50:05.505Z
 started_at: 2026-10-04T12:17:14.527Z
+closed_at: 2026-10-04T12:50:05.504Z
+close_reason: null
+resolution: null
+duplicate_of: null
 ---
 # P02E：保留固定证书的选择性半区间模型
 

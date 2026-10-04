@@ -3,9 +3,9 @@ type: is
 id: is-01m436ahr2v1ejzwhgfs93ern7
 title: Bounded least-supported-owner scheduling from accepted enhanced supports
 kind: task
-status: in_progress
+status: closed
 priority: 2
-version: 2
+version: 3
 spec_path: docs/project/reviews/review-2026-10-02-n17-bulk-exclusion-design.md
 assignee: guzhou0806-codex-t0
 delegate: codex@guzhou
@@ -15,8 +15,12 @@ parent_id: is-01m42d0zw28532d573ersbnzh4
 hold: null
 hold_until: null
 created_at: 2026-10-04T10:11:03.041Z
-updated_at: 2026-10-04T10:11:04.957Z
+updated_at: 2026-10-04T10:44:44.217Z
 started_at: 2026-10-04T10:11:04.956Z
+closed_at: 2026-10-04T10:44:44.216Z
+close_reason: ONE frozen target plus independent660pair replay accepted60/96 parents(+19),36unknown; final1b534 source and metadata allrequiredCI green; no negative or causal scheduling claim.
+resolution: null
+duplicate_of: null
 ---
 # P02B：单次 least-supported-owner 调度
 

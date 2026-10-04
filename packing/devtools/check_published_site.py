@@ -210,12 +210,13 @@ WORKBENCH_HOME = re.compile(r'<a\s+href="([^"]+)">the overview</a>')
 RECORD_LINK_SAMPLE = ("T-060", "T-043", "T-023")
 #: The trees a partial checkout omits the directories of, as `pages.yml` writes them.
 OMITTED_TREES = ("packing/resources/", "packing/campaign/")
-#: The pages with a table of results, whose rows each carry their result's record links.
+#: The pages with a table of results, whose rows' popovers each carry their result's
+#: record links.
 RECORD_LINK_PAGES = ("index.html", render_overview.RESULTS_PAGE)
-#: A table's result row from its opening tag on, which names the result as its own
-#: address on the results page (`id`) and as `data-result` anywhere else, and the line of
-#: record links in its result cell.
-_RESULT_ROW = re.compile(r'(?:id|data-result)="(t-\d{3})"')
+#: A result row's popover from its opening tag on, named by its result
+#: (`overview_sections.result_row`), and the line of record links its short form ends
+#: with (`overview_sections._detail`).
+_RESULT_POPOVER = re.compile(r'site-row-pop" id="pop-result-(t-\d{3})"')
 _ROW_RECORDS = re.compile(r'<div class="site-records">(.*?)</div>', re.DOTALL)
 
 
@@ -791,13 +792,14 @@ def absent_links(rendered: str, published: str) -> list[str]:
 
 
 def row_records(page: str) -> dict[str, str]:
-    """The line of record links in each result row of a page's table of results, by the
-    row's name. A row is read from its own opening tag to the next row's, so a row that
-    lost its line is not given its neighbour's."""
+    """The line of record links each result row of a page's table of results opens to,
+    in the short form of the row's popover, by the result's name. A popover is read from
+    its own opening tag to the next popover's, so one that lost its line is not given
+    its neighbour's. The rows carried the line in a Details cell until 2026-10-04."""
     found: dict[str, str] = {}
-    for row in page.split("<tr ")[1:]:
-        named = _RESULT_ROW.match(row)
-        records = _ROW_RECORDS.search(row)
+    for popover in page.split('<div class="site-popover ')[1:]:
+        named = _RESULT_POPOVER.match(popover)
+        records = _ROW_RECORDS.search(popover)
         if named is not None and records is not None:
             found[named.group(1)] = records.group(1)
     return found

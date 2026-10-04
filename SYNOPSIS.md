@@ -278,7 +278,7 @@ hypothesis status and summarizes experiment verdicts, and the
 | --- | ---: | --- |
 | Agendas | 39 | 19 active; 14 completed; 5 paused; 1 superseded |
 | Commitments | 393 | 201 complete; 63 stopped; 71 blocked; 24 ready; 21 tentative; 13 in progress |
-| Sessions | 167 | 104 completed; 62 stopped; 1 nonterminal |
+| Sessions | 167 | 105 completed; 62 stopped; all terminal |
 | Explorations | 47 | 28 linked to proposed hypotheses; 19 uncodified |
 | Hypotheses | 198 | 39 confirmed; 32 refuted; 64 blocked; 17 unresolved; 9 open; 32 open questions; 2 result registered; 2 abandoned; 0 running; 1 exhausted |
 | Experiments | 170 | 53 accepted; 37 rejected; 52 unresolved; 12 baseline; 11 blocked; 4 abandoned; 0 in progress; 1 exhausted |
@@ -1469,6 +1469,20 @@ Its open item is the owner’s restoring commit for the withheld model labels
 (`think-wqfw`); its result identifiers, first T-066 to T-070, then T-080 to T-084 and
 then T-082 to T-086, were renumbered T-083 to T-087 when main took T-066 to T-082. The
 selected next entry above is unchanged.
+
+#### Session 169: One Record per Line for Retained Results
+
+[Session 169](packing/campaign/agent-sessions/session-169-retained-result-layout.md)
+answered the owner’s question whether PR 305 should be 275,273 lines.
+Most of it was generated data in indented JSON, one scalar per line, so a shared writer,
+`sqpack.retained_json`, now writes retained results one record per line, and PR 305 adds
+102,197 lines with no value changed.
+PR 323, stacked on it, moves 31 more retained results onto the writer (1,480,449 lines
+to 155,443) and adds a check that holds every tracked JSON file over 5,000 lines to the
+layout or names its exemption.
+Squashing would save 0.5 MB of a 950 MB repository that is 87% PDF, gzip and PNG, so the
+history stays, and the repository’s growth is left to four owner decisions.
+The selected next entry above is unchanged.
 
 #### Previous n11 Intake and Verification
 
@@ -5588,9 +5602,9 @@ in separate tables: their units differ, and the same work can appear in both.
 
 | Rollups | count | turns | tool calls | errors | one-off code | wall |
 | --- | ---: | ---: | ---: | ---: | ---: | ---: |
-| claimed by a session | 270 | 69,844 | 38,534 | 799 | 5,592 | 595.51 h |
+| claimed by a session | 275 | 73,865 | 40,690 | 860 | 5,798 | 629.1 h |
 | claimed by none | 65 | 14,196 | 8,149 | 185 | 1,184 | 67.13 h |
-| **measured** | **335** | **84,040** | **46,683** | **984** | **6,776** | **662.64 h** |
+| **measured** | **340** | **88,061** | **48,839** | **1,045** | **6,982** | **696.23 h** |
 
 | Session | Phases | Rollups | Turns | Tool calls | Errors | Wall |
 | --- | ---: | ---: | ---: | ---: | ---: | ---: |
@@ -5646,8 +5660,9 @@ in separate tables: their units differ, and the same work can appear in both.
 | [session-159](packing/campaign/agent-sessions/session-159-n17-guzhou-r052-intake.md) | 2 | 6 | 844 | 484 | 10 | 2.34 h |
 | [session-160](packing/campaign/agent-sessions/session-160-n17-4640020-evand-wand125-intake.md) | 3 | 28 | 5,648 | 3,354 | 161 | 42.62 h |
 | [session-161](packing/campaign/agent-sessions/session-161-wand125-update-and-sept-28-intake.md) | 2 | 10 | 2,617 | 1,468 | 27 | 11.09 h |
-| [session-168](packing/campaign/agent-sessions/session-168-known-best-families-and-shading.md) | 9 | 16 | 5,866 | 3,140 | 26 | 38.43 h |
-| *shared by 53 sessions* | — | 8 | 25,382 | 13,685 | 285 | 355.07 h |
+| [session-168](packing/campaign/agent-sessions/session-168-known-best-families-and-shading.md) | 9 | 15 | 3,978 | 2,229 | 20 | 13.73 h |
+| [session-169](packing/campaign/agent-sessions/session-169-retained-result-layout.md) | 2 | 5 | 2,749 | 1,627 | 56 | 14.91 h |
+| *shared by 54 sessions* | — | 9 | 28,542 | 15,125 | 296 | 398.45 h |
 
 | Codex interval receipt | declaring sessions | model responses | agent time | active union | wall window | live lower bound |
 | --- | --- | ---: | ---: | ---: | ---: | --- |
@@ -5724,8 +5739,8 @@ in separate tables: their units differ, and the same work can appear in both.
 
 | Coverage | sessions |
 | --- | ---: |
-| measured | 112 |
-| unmeasured | 55 |
+| measured | 113 |
+| unmeasured | 54 |
 | **total** | **167** |
 
 <!-- END GENERATED: session-close-report -->

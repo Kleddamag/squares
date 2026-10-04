@@ -1,0 +1,778 @@
+{
+  "kind": "wand125-mixed-certificate-audit/v1",
+  "packet": "wand125-mixed-bounds-2026-10-04",
+  "source_revision": "3554616889186f10bff4f14a3e7e194546fc9fca",
+  "certificates": {
+    "n42": {
+      "directory": "certificates/mixed_n42_L68475",
+      "side": "2739/400",
+      "side_float": 6.8475,
+      "core": "9977/10000",
+      "rectangles": 431,
+      "total_mass": "4199999/100000",
+      "budget_gap": "1/100000",
+      "candidate_digest": "9e7eb014afc29e5a35f274a79aeb952acd3669bb5bffb461969d32633a08518d",
+      "checker_sha256": "89b674a6feabe24d91c29431de1624907c4bff83280ceb481475455686693652",
+      "code_files": 10,
+      "code_identical_to_n50": true,
+      "net": {
+        "step": "83/40000",
+        "count": "201",
+        "endpoint_check": "89/40000",
+        "rotated_side_upper": "399908091/400000000",
+        "side_margin": "91909/400000000"
+      },
+      "centre_domains": {
+        "nodes": 200,
+        "eliminated_width_min": "24678449934996538617/204801102240949166420000",
+        "eliminated_width_min_float": 0.00012049959529007936,
+        "eliminated_width_max": "11437689778285417/7030288794430420000",
+        "eliminated_width_max_float": 0.00162691606457855,
+        "axis_domain": "[2739/800, 2539/400]^2"
+      },
+      "certificate_status": "ALL_ANGLES_VERIFIED_AND_REPLAYED",
+      "axis_cells": 8294400,
+      "axis_integer_minimum": 1.0028835196743096,
+      "oblique_nodes": 84154248,
+      "least_lower": 1.00000000038929,
+      "least_lower_at": 151,
+      "tarball": "certificates/mixed_n42_L68475/n42-L6.8475-proof-bundle.tar.gz",
+      "tarball_sha256": "85be7723ccc80d9cfa1b987645642d07121e7c39f973a054d4792375b7eacf06",
+      "source_audit": null,
+      "tarball_binding": {
+        "status": "BOUND_BY_PINNED_DIGEST",
+        "revision": "3554616889186f10bff4f14a3e7e194546fc9fca",
+        "tarball_bytes": 17616206,
+        "readme_claim": "s(42) >= 2739/400 = 6.8475"
+      },
+      "comparison": {
+        "green": "Theorem 10, k=6, from n = 40",
+        "green_interval_float": [
+          6.406135888745854,
+          6.406135888745854
+        ],
+        "side_exceeds_green": true,
+        "source_value_exceeds_green": null,
+        "nagamochi": "1 + sqrt(31)",
+        "side_exceeds_nagamochi": true
+      },
+      "coverage_decided_here": false
+    },
+    "n43": {
+      "directory": "certificates/mixed_n43_L69075",
+      "side": "2763/400",
+      "side_float": 6.9075,
+      "core": "9977/10000",
+      "rectangles": 358,
+      "total_mass": "4299999/100000",
+      "budget_gap": "1/100000",
+      "candidate_digest": "a1e40a0d8c9c5432c8d9221a1ee1ca915be51ea520112d693632600fd6a712e8",
+      "checker_sha256": "89b674a6feabe24d91c29431de1624907c4bff83280ceb481475455686693652",
+      "code_files": 10,
+      "code_identical_to_n50": true,
+      "net": {
+        "step": "83/40000",
+        "count": "201",
+        "endpoint_check": "89/40000",
+        "rotated_side_upper": "399908091/400000000",
+        "side_margin": "91909/400000000"
+      },
+      "centre_domains": {
+        "nodes": 200,
+        "eliminated_width_min": "24678449934996538617/204801102240949166420000",
+        "eliminated_width_min_float": 0.00012049959529007936,
+        "eliminated_width_max": "11437689778285417/7030288794430420000",
+        "eliminated_width_max_float": 0.00162691606457855,
+        "axis_domain": "[2763/800, 2563/400]^2"
+      },
+      "certificate_status": "ALL_ANGLES_VERIFIED_AND_REPLAYED",
+      "axis_cells": 5832225,
+      "axis_integer_minimum": 1.0041643070776043,
+      "oblique_nodes": 94327372,
+      "least_lower": 1.0000000005367042,
+      "least_lower_at": 157,
+      "tarball": "certificates/mixed_n43_L69075/n43-L6.9075-proof-bundle.tar.gz",
+      "tarball_sha256": "d00555a224874da9fc0951c50295ee82d4feb7f4740259ec6a36b1424fcf025f",
+      "source_audit": null,
+      "tarball_binding": {
+        "status": "BOUND_BY_PINNED_DIGEST",
+        "revision": "3554616889186f10bff4f14a3e7e194546fc9fca",
+        "tarball_bytes": 14474874,
+        "readme_claim": "s(43) >= 2763/400 = 6.9075"
+      },
+      "comparison": {
+        "green": "Theorem 10, k=6, from n = 40",
+        "green_interval_float": [
+          6.406135888745854,
+          6.406135888745854
+        ],
+        "side_exceeds_green": true,
+        "source_value_exceeds_green": null,
+        "nagamochi": "1 + sqrt(32)",
+        "side_exceeds_nagamochi": true
+      },
+      "coverage_decided_here": false
+    },
+    "n44": {
+      "directory": "certificates/mixed_n44_L69725",
+      "side": "2789/400",
+      "side_float": 6.9725,
+      "core": "9977/10000",
+      "rectangles": 399,
+      "total_mass": "4399999/100000",
+      "budget_gap": "1/100000",
+      "candidate_digest": "09ee7101528876199acef723b2c45f87fe2c302cc2685a80088a098dbce2d49e",
+      "checker_sha256": "89b674a6feabe24d91c29431de1624907c4bff83280ceb481475455686693652",
+      "code_files": 10,
+      "code_identical_to_n50": true,
+      "net": {
+        "step": "83/40000",
+        "count": "201",
+        "endpoint_check": "89/40000",
+        "rotated_side_upper": "399908091/400000000",
+        "side_margin": "91909/400000000"
+      },
+      "centre_domains": {
+        "nodes": 200,
+        "eliminated_width_min": "24678449934996538617/204801102240949166420000",
+        "eliminated_width_min_float": 0.00012049959529007936,
+        "eliminated_width_max": "11437689778285417/7030288794430420000",
+        "eliminated_width_max_float": 0.00162691606457855,
+        "axis_domain": "[2789/800, 2589/400]^2"
+      },
+      "certificate_status": "ALL_ANGLES_VERIFIED_AND_REPLAYED",
+      "axis_cells": 6953769,
+      "axis_integer_minimum": 1.0045516914701675,
+      "oblique_nodes": 61963016,
+      "least_lower": 1.0000000003387242,
+      "least_lower_at": 65,
+      "tarball": "certificates/mixed_n44_L69725/n44-L6.9725-proof-bundle.tar.gz",
+      "tarball_sha256": "016e64f3b921144c1ae12068db173b2c40e8f9b069aa01b49924e77fb681a5af",
+      "source_audit": null,
+      "tarball_binding": {
+        "status": "BOUND_BY_PINNED_DIGEST",
+        "revision": "3554616889186f10bff4f14a3e7e194546fc9fca",
+        "tarball_bytes": 16301347,
+        "readme_claim": "s(44) >= 2789/400 = 6.9725"
+      },
+      "comparison": {
+        "green": "Theorem 10, k=6, from n = 40",
+        "green_interval_float": [
+          6.406135888745854,
+          6.406135888745854
+        ],
+        "side_exceeds_green": true,
+        "source_value_exceeds_green": null,
+        "nagamochi": "1 + sqrt(33)",
+        "side_exceeds_nagamochi": true
+      },
+      "coverage_decided_here": false
+    },
+    "n51-L747": {
+      "directory": "certificates/mixed_n51_L747",
+      "side": "747/100",
+      "side_float": 7.47,
+      "core": "9977/10000",
+      "rectangles": 489,
+      "total_mass": "5099999/100000",
+      "budget_gap": "1/100000",
+      "candidate_digest": "b3838f4074a9fbe378b8530aff07083b244f2859ca3178ae0d039502da9600f7",
+      "checker_sha256": "89b674a6feabe24d91c29431de1624907c4bff83280ceb481475455686693652",
+      "code_files": 10,
+      "code_identical_to_n50": true,
+      "net": {
+        "step": "83/40000",
+        "count": "201",
+        "endpoint_check": "89/40000",
+        "rotated_side_upper": "399908091/400000000",
+        "side_margin": "91909/400000000"
+      },
+      "centre_domains": {
+        "nodes": 200,
+        "eliminated_width_min": "24678449934996538617/204801102240949166420000",
+        "eliminated_width_min_float": 0.00012049959529007936,
+        "eliminated_width_max": "11437689778285417/7030288794430420000",
+        "eliminated_width_max_float": 0.00162691606457855,
+        "axis_domain": "[747/200, 697/100]^2"
+      },
+      "certificate_status": "ALL_ANGLES_VERIFIED_AND_REPLAYED",
+      "axis_cells": 10666756,
+      "axis_integer_minimum": 1.008708130978039,
+      "oblique_nodes": 73294118,
+      "least_lower": 1.0000000014730677,
+      "least_lower_at": 111,
+      "tarball": "certificates/mixed_n51_L747/n51-L7.47-proof-bundle.tar.gz",
+      "tarball_sha256": "dafc391aec096f27b474c9db03cfea816e24562fc3be2b13d5f1304f4f4273cb",
+      "source_audit": null,
+      "tarball_binding": {
+        "status": "BOUND_BY_PINNED_DIGEST",
+        "revision": "3554616889186f10bff4f14a3e7e194546fc9fca",
+        "tarball_bytes": 19602681,
+        "readme_claim": "s(51) >= 747/100 = 7.47"
+      },
+      "comparison": {
+        "green": "Theorem 9, k=7, from n = 50",
+        "green_interval_float": [
+          7.317426011159063,
+          7.317426011159063
+        ],
+        "side_exceeds_green": true,
+        "source_value_exceeds_green": null,
+        "nagamochi": "1 + sqrt(38)",
+        "side_exceeds_nagamochi": true
+      },
+      "coverage_decided_here": false
+    },
+    "n56": {
+      "directory": "certificates/mixed_n56_L78025",
+      "side": "3121/400",
+      "side_float": 7.8025,
+      "core": "9977/10000",
+      "rectangles": 453,
+      "total_mass": "5599999/100000",
+      "budget_gap": "1/100000",
+      "candidate_digest": "1126c353faeedab0905af5ffd066b0b1c888b0cbc8bd0af56aebb13ff889f07c",
+      "checker_sha256": "89b674a6feabe24d91c29431de1624907c4bff83280ceb481475455686693652",
+      "code_files": 10,
+      "code_identical_to_n50": true,
+      "net": {
+        "step": "83/40000",
+        "count": "201",
+        "endpoint_check": "89/40000",
+        "rotated_side_upper": "399908091/400000000",
+        "side_margin": "91909/400000000"
+      },
+      "centre_domains": {
+        "nodes": 200,
+        "eliminated_width_min": "24678449934996538617/204801102240949166420000",
+        "eliminated_width_min_float": 0.00012049959529007936,
+        "eliminated_width_max": "11437689778285417/7030288794430420000",
+        "eliminated_width_max_float": 0.00162691606457855,
+        "axis_domain": "[3121/800, 2921/400]^2"
+      },
+      "certificate_status": "ALL_ANGLES_VERIFIED_AND_REPLAYED",
+      "axis_cells": 8720209,
+      "axis_integer_minimum": 1.0049777014201027,
+      "oblique_nodes": 95233978,
+      "least_lower": 1.0000000002061535,
+      "least_lower_at": 1,
+      "tarball": "certificates/mixed_n56_L78025/n56-L7.8025-proof-bundle.tar.gz",
+      "tarball_sha256": "e363ae926d722f24784b300e6d2238d897647af2aa233bebac0dfea68b3da2ce",
+      "source_audit": null,
+      "tarball_binding": {
+        "status": "BOUND_BY_PINNED_DIGEST",
+        "revision": "3554616889186f10bff4f14a3e7e194546fc9fca",
+        "tarball_bytes": 18280962,
+        "readme_claim": "s(56) >= 3121/400 = 7.8025"
+      },
+      "comparison": {
+        "green": "Theorem 9, k=7, from n = 50",
+        "green_interval_float": [
+          7.317426011159063,
+          7.317426011159063
+        ],
+        "side_exceeds_green": true,
+        "source_value_exceeds_green": null,
+        "nagamochi": "1 + sqrt(43)",
+        "side_exceeds_nagamochi": true
+      },
+      "coverage_decided_here": false
+    },
+    "n57": {
+      "directory": "certificates/mixed_n57_L78725",
+      "side": "3149/400",
+      "side_float": 7.8725,
+      "core": "9977/10000",
+      "rectangles": 532,
+      "total_mass": "5699999/100000",
+      "budget_gap": "1/100000",
+      "candidate_digest": "8010142da5aa69b4c7aa3e0a1e23cba296a80626e50369a61118377df7ae83a6",
+      "checker_sha256": "89b674a6feabe24d91c29431de1624907c4bff83280ceb481475455686693652",
+      "code_files": 10,
+      "code_identical_to_n50": true,
+      "net": {
+        "step": "83/40000",
+        "count": "201",
+        "endpoint_check": "89/40000",
+        "rotated_side_upper": "399908091/400000000",
+        "side_margin": "91909/400000000"
+      },
+      "centre_domains": {
+        "nodes": 200,
+        "eliminated_width_min": "24678449934996538617/204801102240949166420000",
+        "eliminated_width_min_float": 0.00012049959529007936,
+        "eliminated_width_max": "11437689778285417/7030288794430420000",
+        "eliminated_width_max_float": 0.00162691606457855,
+        "axis_domain": "[3149/800, 2949/400]^2"
+      },
+      "certificate_status": "ALL_ANGLES_VERIFIED_AND_REPLAYED",
+      "axis_cells": 12752041,
+      "axis_integer_minimum": 1.0052281611253358,
+      "oblique_nodes": 92644514,
+      "least_lower": 1.0000000005590681,
+      "least_lower_at": 194,
+      "tarball": "certificates/mixed_n57_L78725/n57-L7.8725-proof-bundle.tar.gz",
+      "tarball_sha256": "4e8df55581814f05bf4a60887bdb7b3e005a09265d22e994e262b826711f8612",
+      "source_audit": null,
+      "tarball_binding": {
+        "status": "BOUND_BY_PINNED_DIGEST",
+        "revision": "3554616889186f10bff4f14a3e7e194546fc9fca",
+        "tarball_bytes": 22186683,
+        "readme_claim": "s(57) >= 3149/400 = 7.8725"
+      },
+      "comparison": {
+        "green": "Theorem 9, k=7, from n = 50",
+        "green_interval_float": [
+          7.317426011159063,
+          7.317426011159063
+        ],
+        "side_exceeds_green": true,
+        "source_value_exceeds_green": null,
+        "nagamochi": "1 + sqrt(44)",
+        "side_exceeds_nagamochi": true
+      },
+      "coverage_decided_here": false
+    },
+    "n67": {
+      "directory": "certificates/mixed_n67_L8475",
+      "side": "339/40",
+      "side_float": 8.475,
+      "core": "9977/10000",
+      "rectangles": 485,
+      "total_mass": "6699999/100000",
+      "budget_gap": "1/100000",
+      "candidate_digest": "83415f601f5b3a23cac24106bffdc4bedb617cffa1dee2cbfc08fe63c33c0bbb",
+      "checker_sha256": "89b674a6feabe24d91c29431de1624907c4bff83280ceb481475455686693652",
+      "code_files": 10,
+      "code_identical_to_n50": true,
+      "net": {
+        "step": "83/40000",
+        "count": "201",
+        "endpoint_check": "89/40000",
+        "rotated_side_upper": "399908091/400000000",
+        "side_margin": "91909/400000000"
+      },
+      "centre_domains": {
+        "nodes": 200,
+        "eliminated_width_min": "24678449934996538617/204801102240949166420000",
+        "eliminated_width_min_float": 0.00012049959529007936,
+        "eliminated_width_max": "11437689778285417/7030288794430420000",
+        "eliminated_width_max_float": 0.00162691606457855,
+        "axis_domain": "[339/80, 319/40]^2"
+      },
+      "certificate_status": "ALL_ANGLES_VERIFIED_AND_REPLAYED",
+      "axis_cells": 10131489,
+      "axis_integer_minimum": 1.007364912414975,
+      "oblique_nodes": 80893626,
+      "least_lower": 1.0000000001997127,
+      "least_lower_at": 199,
+      "tarball": "certificates/mixed_n67_L8475/n67-L8.475-proof-bundle.tar.gz",
+      "tarball_sha256": "c8f49ba971abba068fa51a61ef8c2e421ba812c4640660474d42bb3f930654a1",
+      "source_audit": null,
+      "tarball_binding": {
+        "status": "BOUND_BY_PINNED_DIGEST",
+        "revision": "3554616889186f10bff4f14a3e7e194546fc9fca",
+        "tarball_bytes": 19409082,
+        "readme_claim": "s(67) >= 339/40 = 8.475"
+      },
+      "comparison": {
+        "green": "Theorem 9, k=8, from n = 65",
+        "green_interval_float": [
+          8.289965586284652,
+          8.289965586284652
+        ],
+        "side_exceeds_green": true,
+        "source_value_exceeds_green": null,
+        "nagamochi": "1 + sqrt(52)",
+        "side_exceeds_nagamochi": true
+      },
+      "coverage_decided_here": false
+    },
+    "n72": {
+      "directory": "certificates/mixed_n72_L876",
+      "side": "219/25",
+      "side_float": 8.76,
+      "core": "9977/10000",
+      "rectangles": 488,
+      "total_mass": "7199999/100000",
+      "budget_gap": "1/100000",
+      "candidate_digest": "89c68b03423d9f63f6cb0eb18f39de484cbeff028e89ad504d16cf01157823d9",
+      "checker_sha256": "89b674a6feabe24d91c29431de1624907c4bff83280ceb481475455686693652",
+      "code_files": 10,
+      "code_identical_to_n50": true,
+      "net": {
+        "step": "83/40000",
+        "count": "201",
+        "endpoint_check": "89/40000",
+        "rotated_side_upper": "399908091/400000000",
+        "side_margin": "91909/400000000"
+      },
+      "centre_domains": {
+        "nodes": 200,
+        "eliminated_width_min": "24678449934996538617/204801102240949166420000",
+        "eliminated_width_min_float": 0.00012049959529007936,
+        "eliminated_width_max": "11437689778285417/7030288794430420000",
+        "eliminated_width_max_float": 0.00162691606457855,
+        "axis_domain": "[219/50, 413/50]^2"
+      },
+      "certificate_status": "ALL_ANGLES_VERIFIED_AND_REPLAYED",
+      "axis_cells": 9634816,
+      "axis_integer_minimum": 1.0052632530569092,
+      "oblique_nodes": 120543194,
+      "least_lower": 1.000000000255855,
+      "least_lower_at": 138,
+      "tarball": "certificates/mixed_n72_L876/n72-L8.76-proof-bundle.tar.gz",
+      "tarball_sha256": "36a739ae22aba2dc51726cec1710b9bca83d9c80f87fe7285c267175aa4d6db9",
+      "source_audit": null,
+      "tarball_binding": {
+        "status": "BOUND_BY_PINNED_DIGEST",
+        "revision": "3554616889186f10bff4f14a3e7e194546fc9fca",
+        "tarball_bytes": 20039614,
+        "readme_claim": "s(72) >= 219/25 = 8.76"
+      },
+      "comparison": {
+        "green": "Theorem 9, k=8, from n = 65",
+        "green_interval_float": [
+          8.289965586284652,
+          8.289965586284652
+        ],
+        "side_exceeds_green": true,
+        "source_value_exceeds_green": null,
+        "nagamochi": "1 + sqrt(57)",
+        "side_exceeds_nagamochi": true
+      },
+      "coverage_decided_here": false
+    },
+    "n75-L894": {
+      "directory": "certificates/mixed_n75_L894",
+      "side": "447/50",
+      "side_float": 8.94,
+      "core": "9977/10000",
+      "rectangles": 589,
+      "total_mass": "7499999/100000",
+      "budget_gap": "1/100000",
+      "candidate_digest": "0c068ef9b264c9e22096342e1aa6f010bce70689e881f3d46e527298e82ede07",
+      "checker_sha256": "89b674a6feabe24d91c29431de1624907c4bff83280ceb481475455686693652",
+      "code_files": 10,
+      "code_identical_to_n50": true,
+      "net": {
+        "step": "83/40000",
+        "count": "201",
+        "endpoint_check": "89/40000",
+        "rotated_side_upper": "399908091/400000000",
+        "side_margin": "91909/400000000"
+      },
+      "centre_domains": {
+        "nodes": 200,
+        "eliminated_width_min": "24678449934996538617/204801102240949166420000",
+        "eliminated_width_min_float": 0.00012049959529007936,
+        "eliminated_width_max": "11437689778285417/7030288794430420000",
+        "eliminated_width_max_float": 0.00162691606457855,
+        "axis_domain": "[447/100, 211/25]^2"
+      },
+      "certificate_status": "ALL_ANGLES_VERIFIED_AND_REPLAYED",
+      "axis_cells": 14569489,
+      "axis_integer_minimum": 1.0035068984112805,
+      "oblique_nodes": 120119252,
+      "least_lower": 1.000000000242291,
+      "least_lower_at": 194,
+      "tarball": "certificates/mixed_n75_L894/n75-L8.94-proof-bundle.tar.gz",
+      "tarball_sha256": "a576f4183b0367c2e31ae1f6c8cc806c2d40aea5cb4053f6027eabbb2531bcba",
+      "source_audit": null,
+      "tarball_binding": {
+        "status": "BOUND_BY_PINNED_DIGEST",
+        "revision": "3554616889186f10bff4f14a3e7e194546fc9fca",
+        "tarball_bytes": 25606631,
+        "readme_claim": "s(75) >= 447/50 = 8.94"
+      },
+      "comparison": {
+        "green": "Theorem 9, k=8, from n = 65",
+        "green_interval_float": [
+          8.289965586284652,
+          8.289965586284652
+        ],
+        "side_exceeds_green": true,
+        "source_value_exceeds_green": null,
+        "nagamochi": "1 + sqrt(60)",
+        "side_exceeds_nagamochi": true
+      },
+      "coverage_decided_here": false
+    },
+    "n84-L94075": {
+      "directory": "certificates/mixed_n84_L94075",
+      "side": "3763/400",
+      "side_float": 9.4075,
+      "core": "9977/10000",
+      "rectangles": 569,
+      "total_mass": "8399999/100000",
+      "budget_gap": "1/100000",
+      "candidate_digest": "d2b4a5da8e1424f7588bcffd581da1bb298aa62f3b2c40e6ec95cec0bdf09db2",
+      "checker_sha256": "89b674a6feabe24d91c29431de1624907c4bff83280ceb481475455686693652",
+      "code_files": 10,
+      "code_identical_to_n50": true,
+      "net": {
+        "step": "83/40000",
+        "count": "201",
+        "endpoint_check": "89/40000",
+        "rotated_side_upper": "399908091/400000000",
+        "side_margin": "91909/400000000"
+      },
+      "centre_domains": {
+        "nodes": 200,
+        "eliminated_width_min": "24678449934996538617/204801102240949166420000",
+        "eliminated_width_min_float": 0.00012049959529007936,
+        "eliminated_width_max": "11437689778285417/7030288794430420000",
+        "eliminated_width_max_float": 0.00162691606457855,
+        "axis_domain": "[3763/800, 3563/400]^2"
+      },
+      "certificate_status": "ALL_ANGLES_VERIFIED_AND_REPLAYED",
+      "axis_cells": 14386849,
+      "axis_integer_minimum": 1.0054208378418148,
+      "oblique_nodes": 92867418,
+      "least_lower": 1.000000000096838,
+      "least_lower_at": 75,
+      "tarball": "certificates/mixed_n84_L94075/n84-L9.4075-proof-bundle.tar.gz",
+      "tarball_sha256": "01274b160a5b525918cd35fc54362c08d088d6c1e698b98a947908844f0c0b66",
+      "source_audit": null,
+      "tarball_binding": {
+        "status": "BOUND_BY_PINNED_DIGEST",
+        "revision": "3554616889186f10bff4f14a3e7e194546fc9fca",
+        "tarball_bytes": 23518582,
+        "readme_claim": "s(84) >= 3763/400 = 9.4075"
+      },
+      "comparison": {
+        "green": "Theorem 9, k=9, from n = 82",
+        "green_interval_float": [
+          9.266733533245633,
+          9.266733533245633
+        ],
+        "side_exceeds_green": true,
+        "source_value_exceeds_green": null,
+        "nagamochi": "1 + sqrt(67)",
+        "side_exceeds_nagamochi": true
+      },
+      "coverage_decided_here": false
+    },
+    "n88-L96125": {
+      "directory": "certificates/mixed_n88_L96125",
+      "side": "769/80",
+      "side_float": 9.6125,
+      "core": "9977/10000",
+      "rectangles": 502,
+      "total_mass": "8799999/100000",
+      "budget_gap": "1/100000",
+      "candidate_digest": "b86e90170ae237a25e57940f877f8ffa0451ecdb93b92f06ee73e386364246c5",
+      "checker_sha256": "89b674a6feabe24d91c29431de1624907c4bff83280ceb481475455686693652",
+      "code_files": 10,
+      "code_identical_to_n50": true,
+      "net": {
+        "step": "83/40000",
+        "count": "201",
+        "endpoint_check": "89/40000",
+        "rotated_side_upper": "399908091/400000000",
+        "side_margin": "91909/400000000"
+      },
+      "centre_domains": {
+        "nodes": 200,
+        "eliminated_width_min": "24678449934996538617/204801102240949166420000",
+        "eliminated_width_min_float": 0.00012049959529007936,
+        "eliminated_width_max": "11437689778285417/7030288794430420000",
+        "eliminated_width_max_float": 0.00162691606457855,
+        "axis_domain": "[769/160, 729/80]^2"
+      },
+      "certificate_status": "ALL_ANGLES_VERIFIED_AND_REPLAYED",
+      "axis_cells": 10080625,
+      "axis_integer_minimum": 1.005555488215099,
+      "oblique_nodes": 110846936,
+      "least_lower": 1.0000000000855427,
+      "least_lower_at": 92,
+      "tarball": "certificates/mixed_n88_L96125/n88-L9.6125-proof-bundle.tar.gz",
+      "tarball_sha256": "ca813e22e2756bb71bd69f5b594d349798c0f28da60c0f4b4395d7cde49e2c55",
+      "source_audit": null,
+      "tarball_binding": {
+        "status": "BOUND_BY_PINNED_DIGEST",
+        "revision": "3554616889186f10bff4f14a3e7e194546fc9fca",
+        "tarball_bytes": 20227627,
+        "readme_claim": "s(88) >= 769/80 = 9.6125"
+      },
+      "comparison": {
+        "green": "Theorem 9, k=9, from n = 82",
+        "green_interval_float": [
+          9.266733533245633,
+          9.266733533245633
+        ],
+        "side_exceeds_green": true,
+        "source_value_exceeds_green": null,
+        "nagamochi": "1 + sqrt(71)",
+        "side_exceeds_nagamochi": true
+      },
+      "coverage_decided_here": false
+    },
+    "n93-L988": {
+      "directory": "certificates/mixed_n93_L988",
+      "side": "247/25",
+      "side_float": 9.88,
+      "core": "9977/10000",
+      "rectangles": 501,
+      "total_mass": "9299999/100000",
+      "budget_gap": "1/100000",
+      "candidate_digest": "3f241cbb719b90c99b956293bfd81cfd303c8496b7ffa022d04691943c3c9e8d",
+      "checker_sha256": "89b674a6feabe24d91c29431de1624907c4bff83280ceb481475455686693652",
+      "code_files": 10,
+      "code_identical_to_n50": true,
+      "net": {
+        "step": "83/40000",
+        "count": "201",
+        "endpoint_check": "89/40000",
+        "rotated_side_upper": "399908091/400000000",
+        "side_margin": "91909/400000000"
+      },
+      "centre_domains": {
+        "nodes": 200,
+        "eliminated_width_min": "24678449934996538617/204801102240949166420000",
+        "eliminated_width_min_float": 0.00012049959529007936,
+        "eliminated_width_max": "11437689778285417/7030288794430420000",
+        "eliminated_width_max_float": 0.00162691606457855,
+        "axis_domain": "[247/50, 469/50]^2"
+      },
+      "certificate_status": "ALL_ANGLES_VERIFIED_AND_REPLAYED",
+      "axis_cells": 10660225,
+      "axis_integer_minimum": 1.0038863181990088,
+      "oblique_nodes": 71180134,
+      "least_lower": 1.0000000007671606,
+      "least_lower_at": 184,
+      "tarball": "certificates/mixed_n93_L988/n93-L9.88-proof-bundle.tar.gz",
+      "tarball_sha256": "974382765bbb24e3ad3af98f1c67941f4e2f59ab62da67fe5656c819e6dd69cf",
+      "source_audit": null,
+      "tarball_binding": {
+        "status": "BOUND_BY_PINNED_DIGEST",
+        "revision": "3554616889186f10bff4f14a3e7e194546fc9fca",
+        "tarball_bytes": 20653208,
+        "readme_claim": "s(93) >= 247/25 = 9.88"
+      },
+      "comparison": {
+        "green": "Theorem 9, k=9, from n = 82",
+        "green_interval_float": [
+          9.266733533245633,
+          9.266733533245633
+        ],
+        "side_exceeds_green": true,
+        "source_value_exceeds_green": null,
+        "nagamochi": "1 + sqrt(76)",
+        "side_exceeds_nagamochi": true
+      },
+      "coverage_decided_here": false
+    },
+    "n94-L994": {
+      "directory": "certificates/mixed_n94_L994",
+      "side": "497/50",
+      "side_float": 9.94,
+      "core": "9977/10000",
+      "rectangles": 630,
+      "total_mass": "9399999/100000",
+      "budget_gap": "1/100000",
+      "candidate_digest": "bf8dd4a2909d41f7dc74508cdf85abe563b2e761f7611e7b38c3b9b0636484c5",
+      "checker_sha256": "89b674a6feabe24d91c29431de1624907c4bff83280ceb481475455686693652",
+      "code_files": 10,
+      "code_identical_to_n50": true,
+      "net": {
+        "step": "83/40000",
+        "count": "201",
+        "endpoint_check": "89/40000",
+        "rotated_side_upper": "399908091/400000000",
+        "side_margin": "91909/400000000"
+      },
+      "centre_domains": {
+        "nodes": 200,
+        "eliminated_width_min": "24678449934996538617/204801102240949166420000",
+        "eliminated_width_min_float": 0.00012049959529007936,
+        "eliminated_width_max": "11437689778285417/7030288794430420000",
+        "eliminated_width_max_float": 0.00162691606457855,
+        "axis_domain": "[497/100, 236/25]^2"
+      },
+      "certificate_status": "ALL_ANGLES_VERIFIED_AND_REPLAYED",
+      "axis_cells": 14130081,
+      "axis_integer_minimum": 1.0023446755279655,
+      "oblique_nodes": 82482752,
+      "least_lower": 1.0000000019115551,
+      "least_lower_at": 166,
+      "tarball": "certificates/mixed_n94_L994/n94-L9.94-proof-bundle.tar.gz",
+      "tarball_sha256": "1de580505be19101eee65c6d11425876b08d8cd6a1da2a04c427a2cfba231780",
+      "source_audit": null,
+      "tarball_binding": {
+        "status": "BOUND_BY_PINNED_DIGEST",
+        "revision": "3554616889186f10bff4f14a3e7e194546fc9fca",
+        "tarball_bytes": 26509834,
+        "readme_claim": "s(94) >= 497/50 = 9.94"
+      },
+      "comparison": {
+        "green": "Theorem 9, k=9, from n = 82",
+        "green_interval_float": [
+          9.266733533245633,
+          9.266733533245633
+        ],
+        "side_exceeds_green": true,
+        "source_value_exceeds_green": null,
+        "nagamochi": "1 + sqrt(77)",
+        "side_exceeds_nagamochi": true
+      },
+      "coverage_decided_here": false
+    },
+    "n95-L9965": {
+      "directory": "certificates/mixed_n95_L9965",
+      "side": "1993/200",
+      "side_float": 9.965,
+      "core": "9977/10000",
+      "rectangles": 480,
+      "total_mass": "9499999/100000",
+      "budget_gap": "1/100000",
+      "candidate_digest": "c41da14c19784c764d14e50e8bb6cbb6c845193420ca8ef2b7f407c397d9975f",
+      "checker_sha256": "89b674a6feabe24d91c29431de1624907c4bff83280ceb481475455686693652",
+      "code_files": 10,
+      "code_identical_to_n50": true,
+      "net": {
+        "step": "83/40000",
+        "count": "201",
+        "endpoint_check": "89/40000",
+        "rotated_side_upper": "399908091/400000000",
+        "side_margin": "91909/400000000"
+      },
+      "centre_domains": {
+        "nodes": 200,
+        "eliminated_width_min": "24678449934996538617/204801102240949166420000",
+        "eliminated_width_min_float": 0.00012049959529007936,
+        "eliminated_width_max": "11437689778285417/7030288794430420000",
+        "eliminated_width_max_float": 0.00162691606457855,
+        "axis_domain": "[1993/400, 1893/200]^2"
+      },
+      "certificate_status": "ALL_ANGLES_VERIFIED_AND_REPLAYED",
+      "axis_cells": 7257636,
+      "axis_integer_minimum": 1.0078342043789137,
+      "oblique_nodes": 59167032,
+      "least_lower": 1.000000000398967,
+      "least_lower_at": 23,
+      "tarball": "certificates/mixed_n95_L9965/n95-L9.965-proof-bundle.tar.gz",
+      "tarball_sha256": "1397341b2303d6cafb701ef4449e8baa07c87d8ec944c5d9473891ea0e680698",
+      "source_audit": null,
+      "tarball_binding": {
+        "status": "BOUND_BY_PINNED_DIGEST",
+        "revision": "3554616889186f10bff4f14a3e7e194546fc9fca",
+        "tarball_bytes": 18404631,
+        "readme_claim": "s(95) >= 1993/200 = 9.965"
+      },
+      "comparison": {
+        "green": "Theorem 9, k=9, from n = 82",
+        "green_interval_float": [
+          9.266733533245633,
+          9.266733533245633
+        ],
+        "side_exceeds_green": true,
+        "source_value_exceeds_green": null,
+        "nagamochi": "1 + sqrt(78)",
+        "side_exceeds_nagamochi": true
+      },
+      "coverage_decided_here": false
+    }
+  },
+  "scope": "Exact premises only, from the retained files: pinned digests, the measure's count, side, core, nonnegativity and total n - 1/100000, the candidate digest by the source's rule, the net containment, the checker and code identity, a replay record at threshold one for each of the 201 angles, and the tarball bound by its digest at the pinned tree, the size the acquisition record pins and the README's claim and digest, the source publishing no audit at this revision. Coverage is decided by the source's checker, whose replay is recorded separately."
+}

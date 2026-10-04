@@ -5,7 +5,7 @@ title: "Import wand125: 14+ mixed certificates (#282)"
 kind: task
 status: in_progress
 priority: 1
-version: 3
+version: 4
 delegate: claude-code@vm
 labels:
   - result-import
@@ -14,7 +14,7 @@ parent_id: is-01m41csdc2gp36ry5p6n7c2x2y
 hold: null
 hold_until: null
 created_at: 2026-10-04T07:19:38.704Z
-updated_at: 2026-10-04T07:32:05.750Z
+updated_at: 2026-10-04T07:58:15.194Z
 started_at: 2026-10-04T07:32:04.027Z
 ---
 Mixed rectangle-measure certificates posted on jlevy/squares#282 from 2026-10-03 19:33Z (14 at upstream 3554616; two more at 6832.. and 8aa6.. after 07:00Z). Stages 1-2 on branch import-282-mixed14 (packet wand125-mixed-bounds-2026-10-04, W7 audit binding by pinned digest). Stage 3 (new T-NNN) waits for jlevy/squares#305. Replays (~124 CPU-h for 14) held with think-wpuu. Separate import needed: c56b9b7 (T-066 F1/F2, #280).
@@ -36,3 +36,5 @@ Register action (stage 3): one new entry, scope n = 42, 43, 44, 51, 56, 57, 67, 
 Evidence updates, not new entries: 150939e (OC-1/OC-2 answer) removes completion-audit.json and its two README lines from T-082's 22 directories and T-075's mixed_n96_L996, nothing else (retained in the packet; test holds it). Separate imports needed: c56b9b7 (k2m5_n59_L8, T-066 F1/F2, #280) and 1ebd484 (point_n45_L7, s(45) = 7 verify.sh D4 fix + reference run, #279/#280).
 
 Validation priced: 16 complete 201-direction replays, 130.8 CPU-h by mixed-price, 146.3 planned (x 1.119 observed ratio over 14 merged replays), 180.2 by the source's own oblique seconds; mixed-shard --runners 8 gives ~18.3 CPU-h / 4.6 wall-h per runner. Exact audit and mixed-fetch preflights pass for all 16. W7 done: audit binds bundles without completion-audit.json by the digest at the pin (WITHOUT_SOURCE_AUDIT). Replays held with think-wpuu.
+
+2026-10-04 08:05Z stages 1-2 on PR https://github.com/jlevy/squares/pull/339 (draft), head e6e4fbb3c, hosted CI green (19 pass, 36 skip). Acknowledgement draft for #282 (16 certificates at 8aa6a10, no T-NNN) handed to the coordinator to post. Next: stage 3 after #305 merges.

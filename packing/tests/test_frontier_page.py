@@ -12,9 +12,9 @@ from typing import Any
 import pytest
 
 from devtools import render_frontier_page as frontier
-from devtools import render_overview
+from devtools import render_overview, site_assets
 from devtools import render_research_tables as tables
-from devtools.render_overview import assert_self_contained
+from devtools.render_overview import assert_fetches_only_assets
 from sqpack.assurance import bounds_agree_at_declared_precision
 from sqpack.yamlio import safe_load
 from tests import site_renders
@@ -30,8 +30,11 @@ from tests import site_renders
 #: 2026-10-02 (think-k8xp), which left the page 4,070,117 bytes with the status chips'
 #: fills of the same day. Each row's own popover went on 2026-10-03, when a row came to
 #: open its case's record in the one case popover (think-necq): 3,442,575 bytes, and
-#: 3,498,657 with the case badges of the same day (think-7cbx).
-PAGE_CEILING_BYTES = 4 * 1024 * 1024
+#: 3,498,657 with the case badges of the same day (think-7cbx). The shell, 1,838,406
+#: bytes of the page by 2026-10-04, became the site's shared assets that day
+#: (`site_assets`), which the page links rather than carries: 1,656,135 bytes, with the
+#: ceiling, 4 MiB until then, lowered by as much to keep the room it had.
+PAGE_CEILING_BYTES = 2_350_000
 
 #: The columns as a reader meets them: the drawing under no heading, the case, the star,
 #: and then what is known.
@@ -103,6 +106,13 @@ class Rows(HTMLParser):
 @pytest.fixture(scope="module")
 def page() -> str:
     return site_renders.html("frontier.html")
+
+
+@pytest.fixture(scope="module")
+def served() -> str:
+    """The page as a reader's browser assembles it, with every shared asset it links put
+    back in it (`tests.site_renders.served`)."""
+    return site_renders.served("frontier.html")
 
 
 @pytest.fixture(scope="module")
@@ -337,8 +347,10 @@ def test_an_invalid_record_fails_the_render(tmp_path: Path, monkeypatch) -> None
         frontier.frontier_cases()
 
 
-def test_the_page_is_self_contained_and_under_its_ceiling(page: str) -> None:
-    assert_self_contained("frontier.html", page)
+def test_the_page_fetches_only_the_shared_assets_and_is_under_its_ceiling(page: str) -> None:
+    assert_fetches_only_assets("frontier.html", page)
+    # Each file it names is one the build writes beside it.
+    assert site_assets.shared().assets.referenced([page])
     size = len(page.encode("utf-8"))
     assert size < PAGE_CEILING_BYTES, f"frontier.html is {size:,} bytes"
     # KPress's per-cell column labels, which nothing on the site reads, are dropped.
@@ -346,8 +358,10 @@ def test_the_page_is_self_contained_and_under_its_ceiling(page: str) -> None:
     assert "data-col-index=" not in page
 
 
-def test_the_page_carries_the_table_script_and_its_controls(page: str) -> None:
-    assert frontier.TABLE_SCRIPT.read_text(encoding="utf-8") in page
+def test_the_page_carries_the_table_script_and_its_controls(page: str, served: str) -> None:
+    table = site_assets.shared().assets.script_file(frontier.TABLE_SCRIPT)
+    assert page.count(site_assets.script_tag(table, "frontier.html")) == 1
+    assert frontier.TABLE_SCRIPT.read_text(encoding="utf-8") in served
     assert 'class="site-table-tools" data-table="frontier" hidden' in page
     assert 'aria-current="page" href="frontier.html"' in page
 

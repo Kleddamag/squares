@@ -2095,7 +2095,7 @@ ATLAS_CARDS: tuple[tuple[str, str, str, str, str], ...] = (
 def atlas_cards() -> str:
     """The atlas's posters and film as three cards side by side, each headed by its
     picture and itself the link: a poster opens its PDF, the film its own page. They
-    are the overview's PDFs and Videos section, under The Atlas."""
+    are the overview's PDFs and Videos section, after Recent Results."""
     return _cards(
         [
             link_card(

@@ -26,6 +26,7 @@ from devtools import (
     render_recent_results,
     result_overview,
     result_status,
+    site_assets,
 )
 from devtools.check_results import scope_values
 from devtools.render_n11_lower_bounds_explainer import COMPOSITE_ASSETS, OVERVIEW_FILM_POSTER
@@ -77,6 +78,26 @@ def rendered() -> Callable[[str], str]:
     return site_renders.html
 
 
+@pytest.fixture(scope="module")
+def served() -> Callable[[str], str]:
+    """Any site page by name as a reader's browser assembles it, with every shared asset
+    it links put back in it (`tests.site_renders.served`): for a check of what a page
+    carries, its programs' and stylesheets' text among it, rather than of how it names
+    them. Every page is assembled here, during setup, as `rendered` renders them."""
+    assembled = {name: site_renders.served(name) for name in render_overview.PAGES}
+    return assembled.__getitem__
+
+
+def _asset_tag(path: Path, name: str = "index.html") -> str:
+    """The element by which the page `name` loads `path`, a stylesheet or a page program
+    of the repository's: a file of the site's shared assets named by its content
+    (`site_assets`), so a page holding the element loads this text and no other."""
+    assets = site_assets.shared().assets
+    if path.suffix == ".css":
+        return site_assets.stylesheet_tag(assets.stylesheet_file(path), name)
+    return site_assets.script_tag(assets.script_file(path), name)
+
+
 def test_every_register_entry_is_one_row(results: str, register: list[dict]) -> None:
     rows = ROW.findall(results)
     assert sorted(row_id for row_id, _, _ in rows) == sorted(r["id"].lower() for r in register)
@@ -106,7 +127,7 @@ def test_the_render_is_deterministic(page: str, results: str) -> None:
 
 
 def test_the_results_table_has_its_own_page_and_the_overview_points_to_it(
-    page: str, results: str
+    page: str, results: str, served: Callable[[str], str]
 ) -> None:
     """The table is on `all-results.html`, marked current in the bar, with its sorting
     and filters; the overview keeps no row of it, only a pointer under the recent table."""
@@ -117,7 +138,9 @@ def test_the_results_table_has_its_own_page_and_the_overview_points_to_it(
     assert dict(render_overview.MOVED_PAGES)["results.html"] == "all-results.html"
     assert 'aria-current="page" href="all-results.html">Results</a>' in results
     assert "data-site-table" in results
-    assert render_overview.TABLE_SCRIPT.read_text(encoding="utf-8") in results
+    assert results.count(_asset_tag(render_overview.TABLE_SCRIPT)) == 1
+    table = render_overview.TABLE_SCRIPT.read_text(encoding="utf-8")
+    assert table in served(render_overview.RESULTS_PAGE)
     assert '<h1 id="every-result">' in results
     assert not ROW.findall(page)
     assert 'id="every-result"' not in page
@@ -172,8 +195,20 @@ def test_every_moved_fragment_is_one_the_forwarder_sends_on(page: str, results: 
     assert not [i for i in ID.findall(page) if moved.fullmatch(i)]
 
 
-def test_the_page_fetches_nothing(page: str) -> None:
-    render_overview.assert_self_contained("index.html", page)
+def test_the_page_fetches_only_the_shared_assets(page: str) -> None:
+    """The page fetches what it is drawn with from the site's shared assets and nowhere
+    else, and every file it names is one the build writes beside it. The same page with
+    one program or one stylesheet named from anywhere else is refused."""
+    render_overview.assert_fetches_only_assets("index.html", page)
+    assert site_assets.shared().assets.referenced([page])
+    for shared, elsewhere in (
+        ('<script src="assets/js/', '<script src="js/'),
+        ('<link rel="stylesheet" href="assets/css/', '<link rel="stylesheet" href="css/'),
+    ):
+        moved = page.replace(shared, elsewhere, 1)
+        assert moved != page, shared
+        with pytest.raises(SystemExit):
+            render_overview.assert_fetches_only_assets("index.html", moved)
 
 
 def test_the_bar_leads_with_case_11_beside_the_name(page: str) -> None:
@@ -190,7 +225,9 @@ def test_the_site_icon_is_case_11_and_fetches_nothing(page: str) -> None:
     assert page.count(icon) == 1
     assert icon.startswith('<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,')
     with pytest.raises(SystemExit):
-        render_overview.assert_self_contained("x.html", '<link rel="icon" href="icon.svg">')
+        render_overview.assert_fetches_only_assets(
+            "x.html", '<link rel="icon" href="icon.svg">'
+        )
 
 
 def test_the_hero_draws_its_case_and_links_to_its_row(page: str) -> None:
@@ -214,9 +251,9 @@ def test_the_posters_and_the_film_have_a_section_of_their_own_under_the_atlas(
 ) -> None:
     """The Atlas of Square Packings keeps the grid and its expander, and holds no card.
     The two posters and the film follow under an ordinary section heading, PDFs and
-    Videos, directly after it since The Frontier Survey went on 2026-10-02, with its own
-    id and its entry in the page's contents, and their note, the star, the shorter film,
-    the release and the SVGs, goes with them."""
+    Videos, after Recent Results since the atlas moved above it on 2026-10-04, with its
+    own id and its entry in the page's contents, and their note, the star, the shorter
+    film, the release and the SVGs, goes with them."""
     heading = '<h2 id="pdfs-and-videos">PDFs and Videos</h2>'
     assert page.count(heading) == 1
     atlas = page.split('id="the-atlas-of-square-packings"', 1)[1].split("<h2", 1)[0]
@@ -237,7 +274,7 @@ def test_the_posters_and_the_film_have_a_section_of_their_own_under_the_atlas(
     # The star is keyed once on the page, in the legend over the recent table
     # (`rung_legend`); the note links that table and says it no second time.
     assert note.startswith(
-        'The best packings known, each star a <a href="#recent-results">new result</a>.'
+        'On the posters, each star marks a <a href="#recent-results">new result</a>.'
     )
     assert "22 August" not in note
     assert section.index('class="site-cards-frame') < section.index("site-atlas-note")
@@ -254,10 +291,11 @@ def test_the_atlas_section_is_named_for_its_packings_and_the_sections_run_in_ord
     """The homepage's atlas section is The Atlas of Square Packings, and it was The Atlas
     until 2026-10-01: an empty anchor in the heading keeps `#the-atlas` landing on it.
     The sections run in the owner's order: the problem, the project with its page cards,
-    the recent results, the atlas, then the posters and film, the other projects and the
-    documents. Verification Ladders stood between the recent results and the atlas until
-    2026-10-02, and is the results page's since; The Frontier Survey stood after the
-    atlas until the same day, and its card is a page card since."""
+    the atlas, the recent results, then the posters and film, the other projects and the
+    documents. The atlas stood after the recent results until 2026-10-04. Verification
+    Ladders stood between the recent results and the atlas until 2026-10-02, and is the
+    results page's since; The Frontier Survey stood after the atlas until the same day,
+    and its card is a page card since."""
     heading = (
         '<h2 id="the-atlas-of-square-packings">The Atlas of Square Packings'
         '<a id="the-atlas"></a></h2>'
@@ -272,8 +310,8 @@ def test_the_atlas_section_is_named_for_its_packings_and_the_sections_run_in_ord
     assert re.findall(r'<h2 id="([^"]+)"', page) == [
         "the-problem",
         "the-squares-project",
-        "recent-results",
         "the-atlas-of-square-packings",
+        "recent-results",
         "pdfs-and-videos",
         "other-square-packing-projects",
         "squares-project-documentation",
@@ -471,7 +509,9 @@ def test_a_card_hero_is_served_beside_the_page_never_fetched() -> None:
     assert button.index('class="site-card-hero"') < button.index('class="site-card-label"')
 
 
-def test_the_atlas_grid_draws_every_case_and_places_it_lazily(page: str) -> None:
+def test_the_atlas_grid_draws_every_case_and_places_it_lazily(
+    page: str, served: Callable[[str], str]
+) -> None:
     """One cell per tracked case, each linking to its case record, in two templates the
     script places: the first hundred when the grid comes near, the rest on expanding."""
     grid = page.split("data-atlas-grid>", 1)[1].split('<p class="site-action-row', 1)[0]
@@ -492,7 +532,8 @@ def test_the_atlas_grid_draws_every_case_and_places_it_lazily(page: str) -> None
     assert cells("rest") == list(range(101, 325))
     assert grid.count("<template") == 2
     assert re.findall(r'aria-label="n = 11, [a-z]+"', grid)
-    assert render_overview.ATLAS_GRID_SCRIPT.read_text(encoding="utf-8") in page
+    assert page.count(_asset_tag(render_overview.ATLAS_GRID_SCRIPT)) == 1
+    assert render_overview.ATLAS_GRID_SCRIPT.read_text(encoding="utf-8") in served("index.html")
 
 
 def test_the_atlas_grid_expands_from_100_to_324_with_one_button() -> None:
@@ -553,12 +594,14 @@ def test_the_atlas_expander_reuses_the_action_button_and_tokens() -> None:
     assert ".site-atlas-rest[hidden] {\n  display: none;" in css
 
 
-def test_the_atlas_is_rendered_as_the_grid_under_tabs_that_ship_hidden(page: str) -> None:
+def test_the_atlas_is_rendered_as_the_grid_under_tabs_that_ship_hidden(
+    page: str, served: Callable[[str], str]
+) -> None:
     """The page is rendered in the grid view, the default, with the two view tabs over
     the tiles: a tablist of buttons, Grid selected and the one stop in the tab order,
     each controlling the box of tiles the script places. The strip ships `hidden`, since
     without the script it would do nothing, as the expander's row does. Both scripts are
-    inlined, the views' first: the grid's calls it. `test_site_atlas_views` reads the
+    linked, the views' first: the grid's calls it. `test_site_atlas_views` reads the
     two views in a browser."""
     block = re.findall(r'<div class="site-wide site-atlas-grid" ([^>]*)>', page)
     assert block == ['data-atlas-view="grid" data-atlas-grid']
@@ -598,7 +641,11 @@ def test_the_atlas_is_rendered_as_the_grid_under_tabs_that_ship_hidden(page: str
     assert [key for key, _ in overview_sections.ATLAS_VIEWS] == ["grid", "triangle"]
     view = render_overview.ATLAS_VIEW_SCRIPT.read_text(encoding="utf-8")
     grid = render_overview.ATLAS_GRID_SCRIPT.read_text(encoding="utf-8")
-    assert page.index(view) < page.index(grid)
+    view_tag = _asset_tag(render_overview.ATLAS_VIEW_SCRIPT)
+    grid_tag = _asset_tag(render_overview.ATLAS_GRID_SCRIPT)
+    assert page.index(view_tag) < page.index(grid_tag)
+    whole = served("index.html")
+    assert whole.index(view) < whole.index(grid)
     assert "SiteAtlasView.mount({ block: grid, cells, tabs })" in grid
     assert "tabs.hidden = false;" in grid
     # No tile is written twice for the second view: one drawing a case, as before.
@@ -754,7 +801,9 @@ def test_a_cases_visual_summary_carries_what_the_film_shows() -> None:
     assert facts[1] == {**facts[1], "exact": True, "upper": "1", "lower": None, "open": []}
 
 
-def test_the_atlas_grid_opens_each_case_in_the_case_popover(page: str) -> None:
+def test_the_atlas_grid_opens_each_case_in_the_case_popover(
+    page: str, served: Callable[[str], str]
+) -> None:
     """A cell opens the page's one case popover, which fetches the case's record file
     and shows its record as its own page does (think-t21m). The atlas popover the
     script filled from a JSON of the film's facts, until 2026-10-03, is gone with its
@@ -769,18 +818,25 @@ def test_the_atlas_grid_opens_each_case_in_the_case_popover(page: str) -> None:
     script = render_overview.ATLAS_GRID_SCRIPT.read_text(encoding="utf-8")
     assert "data-atlas-popover" not in script
     assert "data-atlas-facts" not in script
-    assert "site-atlas-tip" not in page
+    # Nor in the page as it is served, its stylesheets and programs with it.
+    assert "site-atlas-tip" not in served("index.html")
 
 
-def test_the_document_is_kpress_viewport_with_its_contents_behaviours(page: str) -> None:
+def test_the_document_is_kpress_viewport_with_its_contents_behaviours(
+    page: str, served: Callable[[str], str]
+) -> None:
     """A site page scrolls the document, so the document is the element kpress watches:
     with `<main>` marked instead, the contents rail's scroll-spy observed a pane that
     never scrolls. kpress's contents-rail and history modules ride on every page, since
-    without them nothing marks the section in view."""
+    without them nothing marks the section in view: one shared file, which the page
+    links."""
     assert page.count("<html data-kpress-viewport ") == 1
     assert '<main class="kpress-page-main kpress-viewport">' in page
+    behaviors = site_assets.script_tag(render_overview.kpress_client_asset(), "index.html")
+    assert page.count(behaviors) == 1
+    whole = served("index.html")
     for module in render_overview.KPRESS_CLIENT_MODULES:
-        assert f"/* kpress: js/{module} */" in page, module
+        assert f"/* kpress: js/{module} */" in whole, module
 
 
 def test_the_big_tables_have_no_outer_border(
@@ -1788,35 +1844,49 @@ def test_register_prose_math_is_found_and_set_in_tex(prose: str, tex: list[str])
 
 @pytest.mark.parametrize("name", sorted(render_overview.PAGES))
 def test_every_site_page_loads_math_through_the_explainers_pipeline(
-    name: str, rendered: Callable[[str], str]
+    name: str, rendered: Callable[[str], str], served: Callable[[str], str]
 ) -> None:
     """One math pipeline: the explainer's KaTeX bundle and host adapter, driven by the
     site's queue, and neither of kpress's whole-page entry points (auto-render and its
-    native initializer), which typeset every formula in one task at DOMContentLoaded."""
+    native initializer), which typeset every formula in one task at DOMContentLoaded.
+    Each page links the pipeline and the queue as shared files."""
     from devtools.render_n11_lower_bounds_explainer import (  # noqa: PLC0415
         katex_js,
         kpress_static,
     )
 
     page = rendered(name)
+    assert page.count(site_assets.script_tag(site_assets.shared().katex_js, name)) == 1
+    assert page.count(_asset_tag(render_overview.MATH_SCRIPT, name)) == 1
+    whole = served(name)
     static = kpress_static()
-    assert katex_js(static) in page
-    assert render_overview.MATH_SCRIPT.read_text(encoding="utf-8") in page
+    assert katex_js(static) in whole
+    assert render_overview.MATH_SCRIPT.read_text(encoding="utf-8") in whole
     for entry in ("katex/auto-render.min.js", "katex/katex-init.js"):
-        assert (static / entry).read_text(encoding="utf-8") not in page, entry
+        assert (static / entry).read_text(encoding="utf-8") not in whole, entry
 
 
 @pytest.mark.parametrize("name", ["index.html", "tutorial.html"])
 def test_every_site_page_carries_the_explainers_text_tokens(
-    name: str, rendered: Callable[[str], str]
+    name: str, rendered: Callable[[str], str], served: Callable[[str], str]
 ) -> None:
     """The type base, measure and heading scale come from the one file the explainer
-    inlines too, after kpress's stylesheets so they win at kpress's own scopes."""
+    carries too, after kpress's stylesheets so they win at kpress's own scopes."""
     page = rendered(name)
+    links = [
+        site_assets.stylesheet_tag(site_assets.shared().kpress_css, name),
+        _asset_tag(render_overview.PAPER_TYPE_CSS, name),
+        _asset_tag(render_overview.SITE_CSS, name),
+    ]
+    assert [page.count(link) for link in links] == [1, 1, 1]
+    assert [page.index(link) for link in links] == sorted(page.index(link) for link in links)
+    whole = served(name)
     tokens = render_overview.PAPER_TYPE_CSS.read_text(encoding="utf-8")
-    assert tokens in page
-    assert page.index(tokens) > page.index("/* kpress: css/style-tokens.css */")
-    assert page.index(tokens) < page.index(render_overview.SITE_CSS.read_text(encoding="utf-8"))
+    assert tokens in whole
+    assert whole.index(tokens) > whole.index("/* kpress: css/style-tokens.css */")
+    assert whole.index(tokens) < whole.index(
+        render_overview.SITE_CSS.read_text(encoding="utf-8")
+    )
 
 
 def test_the_text_tokens_are_declared_in_one_place() -> None:
@@ -1879,14 +1949,15 @@ def test_the_nav_ends_in_an_accessible_theme_control() -> None:
 
 @pytest.mark.parametrize("name", sorted(render_overview.PAGES))
 def test_every_site_page_carries_the_theme_control(
-    name: str, rendered: Callable[[str], str]
+    name: str, rendered: Callable[[str], str], served: Callable[[str], str]
 ) -> None:
     page = rendered(name)
     script = render_overview.THEME_SCRIPT.read_text(encoding="utf-8")
     assert page.count('class="site-theme-button"') == 1
-    assert script in page
-    # kpress's own bootstrap applies the stored choice before first paint, and the
-    # control stores into the key that bootstrap reads.
+    assert page.count(_asset_tag(render_overview.THEME_SCRIPT, name)) == 1
+    assert script in served(name)
+    # kpress's own bootstrap, in the page itself, applies the stored choice before first
+    # paint, and the control stores into the key that bootstrap reads.
     assert 'stored("kpress.theme")' in page
     assert 'storageKey = "kpress.theme"' in script
 
@@ -2131,7 +2202,7 @@ def test_the_film_page_embeds_the_film_at_its_own_proportions(
 
 
 def test_the_film_starts_on_a_visit_to_its_page_and_nowhere_else(
-    rendered: Callable[[str], str],
+    rendered: Callable[[str], str], served: Callable[[str], str]
 ) -> None:
     """Visiting the Visualize page starts its film. The markup mutes it, which a browser
     requires of a film it starts unasked, keeps its controls and its inline playback, and
@@ -2148,11 +2219,14 @@ def test_the_film_starts_on_a_visit_to_its_page_and_nowhere_else(
         assert attribute in attributes, attribute
     assert not {"autoplay", "loop"} & {name.partition("=")[0] for name in attributes}
     script = render_overview.FILM_SCRIPT.read_text(encoding="utf-8")
-    assert page.count(script) == 1
-    assert page.index("</video>") < page.index(script)
+    link = _asset_tag(render_overview.FILM_SCRIPT, "visualize.html")
+    assert page.count(link) == 1
+    assert page.index("</video>") < page.index(link)
+    assert served("visualize.html").count(script) == 1
     for name in render_overview.PAGES:
         if name != "visualize.html":
-            other = rendered(name)
+            # The page as it is served, with every program it links.
+            other = served(name)
             assert script not in other, name
             assert "data-autoplay" not in other, name
             assert not re.search(r"<video\b[^>]*\sautoplay\b", other), name
@@ -3426,7 +3500,7 @@ POPOVER_MARKUP = (
 
 
 def test_the_papers_page_holds_one_large_card_for_each_paper(
-    rendered: Callable[[str], str],
+    rendered: Callable[[str], str], served: Callable[[str], str]
 ) -> None:
     """`papers.html` is one large card per paper and nothing else in cards, in the order of
     the one list that defines them (`overview_sections.PAPERS`), so a new paper is one
@@ -3456,7 +3530,8 @@ def test_the_papers_page_holds_one_large_card_for_each_paper(
     article = papers_article(page)
     for markup in POPOVER_MARKUP:
         assert markup not in article, markup
-    assert render_overview.POPOVER_SCRIPT.read_text(encoding="utf-8") not in page
+    popover = render_overview.POPOVER_SCRIPT.read_text(encoding="utf-8")
+    assert popover not in served("papers.html")
 
 
 def test_a_papers_card_holds_no_link_so_the_introduction_links_what_it_names(
@@ -4865,14 +4940,19 @@ def test_the_tables_with_row_detail_are_the_ones_named(
 
 @pytest.mark.parametrize("name", ROW_PAGES)
 def test_a_page_with_row_detail_carries_the_row_and_popover_scripts(
-    name: str, rendered: Callable[[str], str]
+    name: str, rendered: Callable[[str], str], served: Callable[[str], str]
 ) -> None:
     """The row script makes the row the control, and the popover script typesets a
     popover's math when it opens and closes it when a link inside is followed."""
     page = rendered(name)
-    assert render_overview.ROW_POPOVER_SCRIPT.read_text(encoding="utf-8") in page
-    assert render_overview.POPOVER_SCRIPT.read_text(encoding="utf-8") in page
-    assert render_overview.TABLE_SCRIPT.read_text(encoding="utf-8") in page
+    whole = served(name)
+    for script in (
+        render_overview.ROW_POPOVER_SCRIPT,
+        render_overview.POPOVER_SCRIPT,
+        render_overview.TABLE_SCRIPT,
+    ):
+        assert page.count(_asset_tag(script, name)) == 1, script.name
+        assert script.read_text(encoding="utf-8") in whole, script.name
 
 
 def test_a_result_rows_popover_body_comes_from_one_function(
@@ -4920,10 +5000,13 @@ def test_a_result_rows_popover_body_comes_from_one_function(
 
 #: What the two pages that list results may weigh. The result overviews are 4.9 MB
 #: between them; a page that carried them, as both once would have, crosses its ceiling.
-#: The shell every page carries, its faces and math, is about 1.8 MB of each. The results
-#: page was 2.77 MB with 81 results on 3 October 2026, and its significance column and
-#: legend added 43 KB that day (`think-m3m4`, `think-42dx`), which took it past 2.8.
-PAGE_CEILINGS = {"index.html": 4_300_000, render_overview.RESULTS_PAGE: 3_000_000}
+#: The results page was 2.77 MB with 81 results on 3 October 2026, and its significance
+#: column and legend added 43 KB that day (`think-m3m4`, `think-42dx`), which took it
+#: past 2.8. The shell every page carried then, its faces and math, about 1.8 MB of each,
+#: became the site's shared assets on 4 October 2026 (`site_assets`), which a page links
+#: rather than carries, and each ceiling came down by as much, keeping the room it had:
+#: the overview measured 2.32 MB that day and the results page 1.01 MB.
+PAGE_CEILINGS = {"index.html": 2_500_000, render_overview.RESULTS_PAGE: 1_200_000}
 
 
 def test_no_page_carries_a_result_overview(
@@ -5659,7 +5742,9 @@ def test_each_address_a_paper_had_serves_a_forwarder_to_where_it_is() -> None:
         assert "site-nav" not in page
         assert "<style" not in page
         assert len(page) < 8_000, "a forwarder is a few lines, not a page"
-        render_overview.assert_self_contained(old, page)
+        # It fetches nothing, not even the shared assets a site page links.
+        render_overview.assert_fetches_only_assets(old, page)
+        assert f"{site_assets.ASSETS_DIR}/" not in page, old
     # The script reads the root element's `data-moved-to`.
     assert "movedTo" in script
 

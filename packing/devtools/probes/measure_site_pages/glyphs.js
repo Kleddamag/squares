@@ -17,7 +17,8 @@
 // so the same formula can be compared on two pages.
 //
 // `faces` is every face the document declares (`document.fonts`): family, weight, style,
-// `font-display`, whether its bytes are inlined, and whether it loaded. `root` is what
+// `font-display`, whether its bytes are inlined or a file of the site's shared assets,
+// and whether it loaded. `root` is what
 // the page stamped on `<html>`, `katex` the KaTeX it runs, `publication` whether it
 // carries the papers' publication layer, `reading` whether it has a reading column at
 // all (the workbench and a result overview opened alone have none), `sans` and `prose`
@@ -300,10 +301,13 @@
     });
   }
 
-  /** @type {Map<string, {family: string, weight: string, style: string, display: string, status: string, inlined: boolean, faces: number}>} */
+  /** @type {Map<string, {family: string, weight: string, style: string, display: string, status: string, inlined: boolean, shared: boolean, faces: number}>} */
   const faces = new Map();
   /** @type {Map<string, boolean>} */
   const inlined = new Map();
+  // A face of the site's shared assets, as its stylesheet beside the faces names it.
+  /** @type {Map<string, boolean>} */
+  const shared = new Map();
   for (const sheet of document.styleSheets) {
     for (const rule of sheet.cssRules) {
       if (rule instanceof CSSFontFaceRule) {
@@ -314,6 +318,10 @@
         const slant = rule.style.getPropertyValue("font-style") || "normal";
         const named = `${first(rule.style.getPropertyValue("font-family"))}|${weight}|${slant}`;
         inlined.set(named, (inlined.get(named) ?? true) && !/url\(\s*(?!["']?data:)/.test(src));
+        shared.set(
+          named,
+          (shared.get(named) ?? true) && !/url\(\s*(?!["']?(?:data:|\.\.\/fonts\/))/.test(src),
+        );
       }
     }
   }
@@ -332,6 +340,7 @@
       display: face.display,
       status: face.status,
       inlined: inlined.get(named) ?? false,
+      shared: shared.get(named) ?? false,
       faces: 1,
     });
   }

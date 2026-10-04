@@ -63,8 +63,8 @@ LEVEL = 1.5
 def page(tmp_path_factory: pytest.TempPathFactory) -> Iterator[Any]:
     """The rendered frontier atlas, loaded once with its math typeset."""
     sync_api = site_browser.api()
-    path = Path(tmp_path_factory.mktemp("site")) / "frontier.html"
-    path.write_text(site_renders.html("frontier.html"), encoding="utf-8")
+    root = Path(tmp_path_factory.mktemp("site"))
+    path = site_renders.write(root, "frontier.html")["frontier.html"]
     with sync_api.sync_playwright() as driver:
         browser = site_browser.launch(driver)
         opened = browser.new_page(viewport={"width": WIDTHS[0], "height": 900})

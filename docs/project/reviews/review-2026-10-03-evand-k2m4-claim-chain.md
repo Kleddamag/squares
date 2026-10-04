@@ -2,7 +2,7 @@
 
 **Date:** 2026-10-03. **Lane:** the review lane of the W2 phase that is stage 4 of the
 [result import runbook](../../../packing/campaign/result-import.md) for issue
-[316](https://github.com/jlevy/squares/issues/316), bead `think-8hk1`; the entry is
+[316](https://github.com/jlevy/squares/issues/316), bead `think-4uir`; the entry is
 provisionally `T-081`. **Reviewer:** Claude (AI review; model unstated), claim-chain
 review lane of the 3 October import of #316, separately prompted.
 This lane shared no context with the replay or registering lanes.

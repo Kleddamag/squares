@@ -46,6 +46,8 @@ from __future__ import annotations
 import argparse
 import contextlib
 import functools
+import gzip
+import hashlib
 import itertools
 import os
 import re
@@ -264,8 +266,53 @@ class _Handler(SimpleHTTPRequestHandler):
         pass
 
 
-def serve(output: Path, port: int) -> ThreadingHTTPServer:
-    handler = functools.partial(_Handler, directory=str(output))
+#: What GitHub Pages compresses, by suffix, and the freshness it gives every file: a
+#: browser reuses a file it fetched in the last ten minutes without asking again.
+PAGES_COMPRESSED = frozenset({".html", ".css", ".js", ".mjs", ".json", ".svg", ".md", ".txt"})
+PAGES_CACHE_CONTROL = "max-age=600"
+
+
+class _PagesHandler(_Handler):
+    """`_Handler` answering as GitHub Pages does where a load's cost depends on it: a
+    text file gzipped for a client that accepts it, every file fresh for ten minutes
+    with an `ETag`, and a matching `If-None-Match` answered 304. So a measured load
+    moves the bytes and reuses the cache a reader's browser would."""
+
+    def do_GET(self) -> None:
+        path = Path(self.translate_path(self.path))
+        if path.is_dir():
+            path = path / "index.html"
+        if self.path == "/favicon.ico" or not path.is_file():
+            super().do_GET()
+            return
+        data = path.read_bytes()
+        tag = f'"{hashlib.sha256(data).hexdigest()[:16]}"'
+        if self.headers.get("If-None-Match") == tag:
+            self.send_response(304)
+            self.send_header("ETag", tag)
+            self.send_header("Cache-Control", PAGES_CACHE_CONTROL)
+            self.end_headers()
+            return
+        compress = path.suffix in PAGES_COMPRESSED and "gzip" in self.headers.get(
+            "Accept-Encoding", ""
+        )
+        body = gzip.compress(data, compresslevel=6, mtime=0) if compress else data
+        self.send_response(200)
+        self.send_header("Content-Type", self.guess_type(str(path)))
+        self.send_header("Content-Length", str(len(body)))
+        self.send_header("ETag", tag)
+        self.send_header("Cache-Control", PAGES_CACHE_CONTROL)
+        if compress:
+            self.send_header("Content-Encoding", "gzip")
+            self.send_header("Vary", "Accept-Encoding")
+        self.end_headers()
+        self.wfile.write(body)
+
+
+def serve(output: Path, port: int, *, as_pages: bool = False) -> ThreadingHTTPServer:
+    """Serve `output` on `port` in a thread. `as_pages` answers as GitHub Pages does,
+    gzipped and cacheable (`_PagesHandler`), for a measurement of what a load costs."""
+    handler = functools.partial(_PagesHandler if as_pages else _Handler, directory=str(output))
     server = ThreadingHTTPServer(("127.0.0.1", port), handler)
     threading.Thread(target=server.serve_forever, daemon=True).start()
     return server

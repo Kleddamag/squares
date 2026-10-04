@@ -19,12 +19,13 @@ it in the same popover, which fetches the same file (`overview/case-popover.js`)
 case reads the same wherever it is opened. A result's overview links its cases' record
 files, which a reader opens as pages.
 
-The record files are not 324 pages. A site page carries about 1.8 MB of inlined faces
-and KaTeX, since every page is self-contained; 324 copies of that would be about 600 MB.
-The record page carries them once, and each record file is the record alone, about 25
-KB. They are cut from one kpress render of every record (`_rendered`), so each record's
-prose, mathematics and links are rendered as the site renders any page, and each
-record's links are then written from the file's own directory (`rebase_links`).
+The record files are not 324 pages. Each record file is the record alone, about 25 KB,
+and the record page links the site's shared assets (`site_assets`) as every page does;
+when every page inlined them, about 1.8 MB of faces and KaTeX, 324 pages would have
+come to about 600 MB. They are cut from one kpress render of every record
+(`_rendered`), so each record's prose, mathematics and links are rendered as the site
+renders any page, and each record's links are then written from the file's own
+directory (`rebase_links`).
 
 Every value is read from the case's `SquarePackingCase/v2` record and from
 `frontier/results.yaml`, as the frontier atlas reads them. The case files write their
@@ -168,15 +169,26 @@ def rebase_link(url: str, directory: str) -> str:
     return f"{moved}/{rest}" if folder else f"{moved}{rest}"
 
 
+#: A script element's opening tag and its `src`, which a rebase moves like any link.
+_SCRIPT_SOURCE = re.compile(r'^(<script\b[^>]*\ssrc=")([^"]*)(")', re.IGNORECASE)
+
+
 def rebase_links(markup: str, directory: str) -> str:
     """Every relative `href` and `src` in `markup` written again from `directory`
-    (`rebase_link`), with scripts' and styles' text left as it is."""
+    (`rebase_link`), a script's own `src` among them, with scripts' and styles' text
+    left as it is."""
+
+    def moved(url: str) -> str:
+        return html.escape(rebase_link(html.unescape(url), directory), quote=True)
 
     def rebase(match: re.Match[str]) -> str:
         if match.group(1):
-            return match.group(1)
-        url = rebase_link(html.unescape(match.group(4)), directory)
-        return f"{match.group(3)}{html.escape(url, quote=True)}{match.group(5)}"
+            return _SCRIPT_SOURCE.sub(
+                lambda tag: f"{tag.group(1)}{moved(tag.group(2))}{tag.group(3)}",
+                match.group(1),
+                count=1,
+            )
+        return f"{match.group(3)}{moved(match.group(4))}{match.group(5)}"
 
     return _LINK_OR_RAW.sub(rebase, markup)
 
@@ -1132,7 +1144,7 @@ def case_records() -> list[Page]:
         Page,
         PageMeta,
         _script_text,  # pyright: ignore[reportPrivateUsage]
-        assert_self_contained,
+        assert_fetches_only_assets,
         favicon_html,
         fill,
         head_tags,
@@ -1152,6 +1164,6 @@ def case_records() -> list[Page]:
             "RECORD": rebase_links(records[n], CASES_DIR),
         }
         page = fill(template, values, where=CASE_RECORD.name)
-        assert_self_contained(name, page)
+        assert_fetches_only_assets(name, page)
         pages.append(Page(name, page))
     return pages

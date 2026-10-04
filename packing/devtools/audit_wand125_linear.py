@@ -196,6 +196,7 @@ LINEAR: dict[str, LinearCertificate] = {
         rectangles=rectangles,
         candidate_digest=digest,
         tarball=f"n{n}-L{label}-proof-bundle.tar.gz",
+        source_audit=True,
         points=points,
         segments=segments,
     )

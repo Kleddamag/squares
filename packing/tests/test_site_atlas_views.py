@@ -222,8 +222,8 @@ def _linked(browser: Any, address: str) -> Readings:
 def seen(tmp_path_factory: pytest.TempPathFactory) -> Iterator[Readings]:
     """Everything the four sessions read, by name."""
     sync_api = pytest.importorskip("playwright.sync_api")
-    path = Path(tmp_path_factory.mktemp("site")) / "index.html"
-    path.write_text(site_renders.html("index.html"), encoding="utf-8")
+    root = Path(tmp_path_factory.mktemp("site"))
+    path = site_renders.write(root, "index.html")["index.html"]
     address = path.as_uri()
     with sync_api.sync_playwright() as driver:
         try:

@@ -587,9 +587,10 @@ jobs:
 
       # The pages are not checked in, so a render that does not reproduce itself would
       # show only here: two renders, at once as `prepare`'s are, the second outside
-      # `site/`, have to agree on every file they write. The renderer refuses a page that
-      # would fetch anything at view time and a reader document with a link to a path the
-      # checked-out tree lacks, so those failures stop the build here too.
+      # `site/`, have to agree on every file they write, the shared assets under `assets/`
+      # among them. The renderer refuses a page that would fetch anything at view time but
+      # those assets, and a reader document with a link to a path the checked-out tree
+      # lacks, so those failures stop the build here too.
       - name: Render the site's pages twice and require the renders to agree
         run: |
           twin="$RUNNER_TEMP/render-twin"

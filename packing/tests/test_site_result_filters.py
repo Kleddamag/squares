@@ -70,13 +70,7 @@ def browser() -> Iterator[Any]:
 
 @pytest.fixture(scope="module")
 def pages(tmp_path_factory: pytest.TempPathFactory) -> dict[str, Path]:
-    root = tmp_path_factory.mktemp("site")
-    written: dict[str, Path] = {}
-    for name in PAGES:
-        path = root / name
-        path.write_text(site_renders.html(name), encoding="utf-8")
-        written[name] = path
-    return written
+    return site_renders.write(tmp_path_factory.mktemp("site"), *PAGES)
 
 
 def opened(

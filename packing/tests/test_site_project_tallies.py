@@ -307,8 +307,7 @@ def browser() -> Iterator[Any]:
 def site(tmp_path_factory: pytest.TempPathFactory) -> Path:
     """The overview and the results page side by side, so a link between them works."""
     root = tmp_path_factory.mktemp("site")
-    for name in ("index.html", render_overview.RESULTS_PAGE):
-        (root / name).write_text(site_renders.html(name), encoding="utf-8")
+    site_renders.write(root, "index.html", render_overview.RESULTS_PAGE)
     return root
 
 

@@ -130,8 +130,8 @@ def _readings(page: Any) -> dict[str, Painted]:
 def painted(tmp_path_factory: pytest.TempPathFactory) -> Iterator[Readings]:
     """Every reading of the overview's drawings, by theme and then by state."""
     sync_api = pytest.importorskip("playwright.sync_api")
-    path = Path(tmp_path_factory.mktemp("site")) / "index.html"
-    path.write_text(site_renders.html("index.html"), encoding="utf-8")
+    root = Path(tmp_path_factory.mktemp("site"))
+    path = site_renders.write(root, "index.html")["index.html"]
     with sync_api.sync_playwright() as driver:
         try:
             browser = driver.chromium.launch(executable_path=os.environ.get(BROWSER_OVERRIDE))

@@ -2354,7 +2354,8 @@ def test_every_page_lists_significance_first(
     repeats a scale or puts a later one first."""
     shown = case_pages[name] if name.startswith("cases/") else rendered(name)
     # The legend under a table of results lists every mark of a ladder in a row, by
-    # design, and is no result's rungs (`test_a_table_of_results_has_a_legend_of_every_rungs_mark_under_it`).
+    # design, and is no result's rungs
+    # (`test_a_table_of_results_has_a_legend_of_every_rungs_mark_under_it`).
     shown = re.sub(r'<div class="site-rung-legend".*?</div>', "", shown, flags=re.DOTALL)
     runs = [run for run in _rung_runs(shown) if len(run) > 1]
     if name.startswith("cases/"):

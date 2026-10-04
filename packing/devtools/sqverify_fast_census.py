@@ -55,6 +55,8 @@ from fractions import Fraction
 from pathlib import Path
 from typing import Any
 
+from sqpack import retained_json
+
 PROJECT = Path(__file__).resolve().parents[1]
 WEB = PROJECT / "resources/web"
 PACKETS = ("2026-09-27", "2026-09-28", "2026-10-01", "2026-10-02")
@@ -782,7 +784,7 @@ def main(argv: list[str] | None = None) -> int:
         result["binary_sha256"] = binary_sha
         census["cases"][case.certificate] = result
         census_path.parent.mkdir(parents=True, exist_ok=True)
-        census_path.write_text(json.dumps(census, indent=2, sort_keys=True) + "\n")
+        census_path.write_text(retained_json.dumps(census, sort_keys=True))
         print(
             f"{case.certificate:18} {result['status']} dirs={result['directions_verified']} "
             f"nodes={result['nodes']} least={result['least_certified_bound']} "

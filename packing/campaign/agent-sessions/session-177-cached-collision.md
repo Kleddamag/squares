@@ -69,8 +69,9 @@ session:
     - packing/campaign/explorations/X048-session-177-cached-collision/README.md
     stop_reason: ONE profile and fresh verdict replay accepted; first-use performance NO-GO
       retires adapter-search. Hosted certification remains explicit.
-    next_action: think-5sya owner publishes source/evidence, observes exactCI and clears debt
-      onlyafterPASS; no cache retune or search.
+    next_action: Observe final metadata current-head CI and close/sync think-5sya. Adapter-search
+      retired; full-interval mechanism comparison requires a new frozen W3/claim/fetch/source
+      gate.
   budget:
     wall_minutes: 90
     max_cycles: 4
@@ -108,13 +109,19 @@ session:
   - Native aggregate ONCE exactstart2026-10-04T10:48:46.442294+00:00, cutoff2026-10-04T11:10:40.260096+00:00,
     actualend2026-10-04T11:10:43.340946+00:00; live/boundary lowerbound; later publication/CI
     excluded.
+  - 'full gate: fast at 3348a22ab85b7514aed09d76c0aa82f4f8b51731: passed'
+  - Exact repaired C source55checks terminal19pass36skip/all3requiredSUCCESS; no threshold changes.
+    Real-tree file-cost guard passes.
+  - One profile measured at a60cfc611. Initial hosted browser-script grammar treated Guard.evaluate
+    test lambdas as JavaScript; identifier-only check_pair repair and25controls/embedded-script/Ruff/types
+    pass, no profile rerun.
   stop_reason: ONE profile and fresh verdict replay accepted; first-use performance NO-GO retires
     adapter-search. Hosted certification remains explicit.
-  next_action: think-5sya owner publishes source/evidence, observes exactCI and clears debt
-    onlyafterPASS; no cache retune or search.
+  next_action: Observe final metadata current-head CI and close/sync think-5sya. Adapter-search
+    retired; full-interval mechanism comparison requires a new frozen W3/claim/fetch/source
+    gate.
   ended_at: '2026-10-04T11:10:43.340946+00:00'
   handoff_role: administrative_closeout
-  certification_pending: think-5sya
   resource_rollups:
   - packing/campaign/resource-usage/codex-session-177.yaml
 ---

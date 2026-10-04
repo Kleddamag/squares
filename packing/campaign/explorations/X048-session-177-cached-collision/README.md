@@ -77,8 +77,8 @@ as browser script code. The identifier-only repair renames it to `check_pair` an
 its own call sites;25controls, embedded-script check, Ruff and types pass. The profile
 was not rerun and no timing claim is made for the renamed head.
 
-Source/evidence certification pending under think-5sya; exact-head CI is observed
-separately. One native privacy aggregate is a lower bound; later publication/CI
+Source/evidence `3348a22ab85b7514aed09d76c0aa82f4f8b51731` is observed terminal19pass/36skip
+and all3requiredSUCCESS. Final metadata CI is observed separately. One native privacy aggregate is a lower bound; later publication/CI
 after its cutoff is excluded with operator-declared branch attribution. A new
 distinct research mechanism needs a new W3/ownership/resource/soundness contract.
 

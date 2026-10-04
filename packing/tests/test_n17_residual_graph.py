@@ -20,6 +20,21 @@ def budget() -> Budget:
     return Budget(time.monotonic() + 10, 15_360)
 
 
+@pytest.fixture(autouse=True)
+def isolated_worker_memory(monkeypatch: pytest.MonkeyPatch) -> None:
+    # Pure graph controls share the CI worker with unrelated, larger tests. Its
+    # historical process peak is not the standalone experiment's memory usage.
+    monkeypatch.setattr(graph, "peak_memory_bytes", lambda: 128 * 1024 * 1024)
+
+
+def test_worker_memory_guard_still_refuses_an_over_limit_reading(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    monkeypatch.setattr(graph, "peak_memory_bytes", lambda: graph.MAX_PEAK_BYTES + 1)
+    with pytest.raises(IncompleteError, match="actual worker peak exceeds"):
+        graph.propagate([{0}, {1}], [{1}, {0}], budget(), path=True)
+
+
 def test_path_consistency_detects_a_binary_odd_cycle_that_arc_consistency_misses() -> None:
     domains = [{0, 1}, {2, 3}, {4, 5}]
     edges = [set() for _ in range(6)]

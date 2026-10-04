@@ -330,6 +330,14 @@ OWN_RECORD_CORRECTION = (
     "This register had recorded that proof as verified, its own error, logged as defect "
     "[D-516](../../defects.md)."
 )
+#: The dated note a perfect square carries: its verified floor moved silently from
+#: Nagamochi's Theorem 2 to the area bound on 2026-10-02, at the same value (review A10 on
+#: jlevy/squares#305).
+AREA_CORRECTION = (
+    "**Corrected 4 October 2026:** the verified lower bound cites the area bound, "
+    "`E-basic-area-lower`; until 2 October it cited Nagamochi 2005 (`E-nagamochi-lower`) at "
+    "the same value, whose Lemma 1 is false ([D-516](../../defects.md))."
+)
 UPPER_GAP_BLOCKER = "No formal certificate currently supports the tighter reported upper bound."
 
 #: The gap a UnitSquare case carries instead. The mathematics is the same -- a certified
@@ -2139,6 +2147,8 @@ def render_body(
             f"`{n}` is a perfect square, so the `{side}×{side}` grid is optimal and the "
             "area bound `√n` is already tight."
         )
+        lines.append("")
+        lines.append(AREA_CORRECTION)
     elif karakus:
         lines.extend(karakus_lower_section(n, payload))
     elif lean:

@@ -1257,14 +1257,21 @@ def _strip_trailing_zeros(text: str) -> str:
 
 
 def nagamochi_value(n: int, significant: int) -> str:
-    """Nagamochi's bound for `n`, printed to `significant` figures as the register does."""
+    """Nagamochi's bound for `n` to `significant` figures, rounded down: it is a floor.
+
+    Reported or not, a lower bound printed as a decimal may not claim more than its
+    source does. Until 2026-10-04 this rounded to nearest, and 76 of the generated
+    records carried a value one unit in the last place above Nagamochi's; the hand-written
+    hundred never did. `check_nagamochi_bounds` now refuses either lane rounded up.
+    """
     if is_nagamochi_exact(n):
         return str(grid_ceiling(n))
     with localcontext() as context:
         context.prec = BOUND_PRECISION
         root = math.isqrt(n)
         value = Decimal(n - 2 * root + 1).sqrt() + 1
-    return _strip_trailing_zeros(format(Context(prec=significant).plus(value), "f"))
+    floor = Context(prec=significant, rounding=ROUND_FLOOR)
+    return _strip_trailing_zeros(format(floor.plus(value), "f"))
 
 
 def is_square_minus_one(n: int) -> bool:

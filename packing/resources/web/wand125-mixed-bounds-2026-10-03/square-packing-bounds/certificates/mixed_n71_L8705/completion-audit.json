@@ -1,0 +1,16 @@
+{
+  "status": "AUDITED_AND_PACKAGED",
+  "n": 71,
+  "L": "1741/200",
+  "total_mass": "7099999/100000",
+  "compared_with": "87/10",
+  "compared_note": "our certified n71 8.70 (record 8.685)",
+  "improvement_lower": "1/200",
+  "candidate_digest": "8d8f26610731ec3e553f20d46687339937967b057f4dff725bd4456addabaefa",
+  "all_angles": 201,
+  "certificate_sha256": "dd4c0c94bccb731d7162e49c3f879ff62286cab775716de4b0cd5fca66042b70",
+  "bundle": "n71-L8.705-proof-bundle",
+  "archive_sha256": "a94ffa642007d4e1b4cf5f1ce827b93f12d99750001549efc13f7bc40825706e",
+  "route": "n71 fresh structured Green init n71-8705 at L8.705, rectangles full-net repair, 201-angle verification and replay.",
+  "scope": "All centres at all 201 net angles plus strict core containment for every orientation; independent axis replay, same-algorithm outward-rounded oblique replay."
+}

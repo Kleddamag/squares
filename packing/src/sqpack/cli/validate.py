@@ -101,10 +101,11 @@ FRONTIER_COUNTS: dict[str, tuple[int, int, int]] = {
     # all open in both lanes, so that count falls by five in the two larger corpora. The
     # same day Daniel's reported s(k^2 - 4) = k (T-081) made n = 96, 117, 140, 165, 192,
     # 221, 252, 285 and 320 reported-proved and left their verified lanes alone, so only
-    # the reported-open count falls, by one, five and nine.
-    "n=1..100": (55, 54, 1),
-    "n=1..200": (139, 134, 80),
-    "n=1..324": (247, 238, 188),
+    # the reported-open count falls, by one, five and nine; and the n = 82 linear replay
+    # (T-076) took n = 82 off Nagamochi's bound, by one in every corpus.
+    "n=1..100": (55, 54, 0),
+    "n=1..200": (139, 134, 79),
+    "n=1..324": (247, 238, 187),
 }
 #: n = 68, 103, 105, 110 and 131 left the exclusions on 2026-09-29, when their records
 #: moved from UnitSquare renderings to Francisco Couzo's packings (T-056); n = 69 is the

@@ -186,8 +186,8 @@ runs as 31,304 and 75,686 seconds.
 
 ## Replaying the Certificates
 
-The $n = 101$ certificate has been replayed here in full, on 2 October 2026; the $n = 83$
-certificate has not. The source’s check is
+Both certificates have been replayed here in full, $n = 101$ on 2 October 2026 and
+$n = 83$ on 3 October. The source’s check is
 `code/replay_linear_bundle.py`, run on the unpacked bundle beside `code/`.
 `devtools.audit_wand125_linear` runs the same check split by net angle, through the mixed
 certificates’ range driver, one command per batch:
@@ -237,7 +237,7 @@ stopping unresolved at its depth floor. The receipt is
 [`receipts/n101/control.json`](receipts/n101/control.json); the three runs took 45
 CPU-seconds.
 
-## The Complete Replay of $n = 101$, 2 October 2026
+## The Complete Replays, 2 and 3 October 2026
 
 `linear-replay n101 --range 0-200` ran on 2 October 2026 in one run of four workers on a
 shared 4-core x86-64 Linux container (Intel Xeon at 2.10 GHz, `c++` 13.3.0, one BLAS and
@@ -249,14 +249,17 @@ returned the record the certificate holds, its status, input digest and node cou
 | Certificate | Directions | Runs | Axis CPU-seconds | CPU-hours | Receipts |
 | --- | ---: | ---: | ---: | ---: | --- |
 | `mixed_n101_L1028` | 201 | 2 | 949.5 | 7.69 | [`receipts/n101/`](receipts/n101/) |
+| `mixed_n83_L935` | 201 | 7 | 69.8 | 26.15 | [`receipts/n83/`](receipts/n83/) |
 
 [`receipts/n101/merged.json`](receipts/n101/merged.json) is the merged verdict, and
 `linear-merge n101 --check` re-derives it. The run replays the source’s own checker and
 replay functions, so it confirms the source’s run rather than deciding coverage a second
 way. The certificate’s per-direction records carry no least lower bound, so the receipts
 cannot keep one (the review’s finding LC-4); acceptance at each direction is the
-checker’s own verdict. With the control above, it puts $s(101) \ge 257/25$, and by mass
-$s(102)$ to $s(105)$, in the verified lane (T-080).
+checker’s own verdict. With the control above, $n = 101$’s puts $s(101) \ge 257/25$, and by mass $s(102)$ to
+$s(105)$, in the verified lane (T-080). $n = 83$’s ran on 3 October as the three ranges
+of `linear-plan n83 --parts 3`, after index 50 alone on 2 October; it moves no verified
+bound, since the replayed mixed $937/100$ is higher there (T-075).
 
 ## Where the Request and the Retained Files Differ
 

@@ -3,7 +3,7 @@
 
 `E-nagamochi-lower` is the register's most-cited evidence record, and two different
 counts describe it. 95 of the hundred case records cite this result; it supplies the
-operative verified lower bound in 26 of them. The other 69 citations are context rather
+operative verified lower bound in 25 of them. The other 70 citations are context rather
 than current bounds: seven proved cases that never rested on the theorem; the four open
 cases `n = 17` through `n = 20`, where certificates displaced it; 18 open cases whose
 retained external certificates were replayed on 2026-09-22; `n = 32`, proved on
@@ -16,13 +16,14 @@ certificates of 1 and 2 October took the same day; and `n = 57`, 58, 88, 89, 93 
 94, which its replayed rectangle certificates of 1 October took that day too; and
 `n = 97`, which the replayed `s(k^2 - 3) = k` family (T-064) proved on 2026-10-03; and
 `n = 83`, 91 and 96, which wand125's replayed mixed certificates of the afternoon of 2
-October (T-075) took on 2026-10-03. The next
+October (T-075) took on 2026-10-03; and `n = 82`, which its replayed linear certificate
+(T-076) took the same day. The next
 most-cited evidence record carries two.
 
 Nothing checked that the recorded values were what the theorem gives: `assurance.py`
 verifies that a bound cites verified evidence of the right claim and scope, which is a
 statement about the citation and not about the arithmetic. A transcription slip in any
-one of the 26 operative verified-field values would have passed.
+one of the 25 operative verified-field values would have passed.
 
 Theorem 2, as the evidence record states it and as re-derived here from Theorem 1
 (`nu(a, b) < ab - (a + 1 - ceil(a)) - (b + 1 - ceil(b))` for `a, b >= 2`):

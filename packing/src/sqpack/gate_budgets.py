@@ -639,8 +639,8 @@ def band_problems(tier: TierBudget, policy: Policy) -> list[str]:
     way to switch them off. It must bracket the record it was taken with, and it may be
     no wider than the window the policy already tolerates around a point record
     (`drift_ratio / stale_ratio`). A ceiling under the band's drift edge is not refused:
-    the ceiling then binds first, as it may for a point record (`typecheck`'s 111 s
-    ceiling, held on purpose under `OR-17`, does).
+    the ceiling then binds first, as it may for a point record (`checks`' 140 s ceiling,
+    under its band's 205.65 s drift edge, does).
 
     What a band gives up is sensitivity in its fast regime: a run from the low end can
     grow to the drift edge, `drift_ratio` times the high edge, or to the ceiling if that

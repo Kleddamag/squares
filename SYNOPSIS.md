@@ -273,7 +273,7 @@ hypothesis status and summarizes experiment verdicts, and the
 | --- | ---: | --- |
 | Agendas | 39 | 19 active; 14 completed; 5 paused; 1 superseded |
 | Commitments | 407 | 212 complete; 65 stopped; 70 blocked; 25 ready; 21 tentative; 14 in progress |
-| Sessions | 169 | 103 completed; 66 stopped; all terminal |
+| Sessions | 170 | 103 completed; 66 stopped; 1 nonterminal |
 | Explorations | 46 | 27 linked to proposed hypotheses; 19 uncodified |
 | Hypotheses | 203 | 43 confirmed; 33 refuted; 60 blocked; 19 unresolved; 9 open; 34 open questions; 2 result registered; 2 abandoned; 0 running; 1 exhausted |
 | Experiments | 179 | 57 accepted; 38 rejected; 56 unresolved; 12 baseline; 11 blocked; 4 abandoned; 0 in progress; 1 exhausted |
@@ -570,6 +570,8 @@ case or experiment separately.
 | [X-048 Session 168 Pilots: Receipts](packing/campaign/explorations/X048-session-168-pilots/README.md) | research synthesis | record | retained | — |
 | [Session 169: bounded producer memory investigation](packing/campaign/explorations/X048-session-169-pilots/README.md) | research synthesis | record | retained | — |
 | [A bounded residual-compatibility diagnostic](packing/campaign/explorations/X048-session-170-compatibility/README.md) | research synthesis | record | retained | — |
+| [Session 171: lazy raw-row support](packing/campaign/explorations/X048-session-171-raw-row-support/README.md) | research synthesis | record | retained | — |
+| [D1: lazy raw-piece row support on the frozen B state](packing/campaign/explorations/X048-session-171-raw-row-support/D1_REPORT.md) | research synthesis | record | retained | — |
 | [X-048 Session 167 Pilots: Receipts](packing/campaign/explorations/X048-session-167-pilots/README.md) | research synthesis | record | retained | — |
 | [X-048 Route Review: Exploratory Receipts](packing/campaign/explorations/X048-route-review/README.md) | research synthesis | record | retained | — |
 | [H259 Mixed-Capacity Census: Independent Output Review](packing/campaign/series/series-000-smoke-and-calibration/results/exp-240-n17-mixed-capacity-census/output-review.md) | dated review record | record | retained | — |
@@ -5833,8 +5835,8 @@ in separate tables: their units differ, and the same work can appear in both.
 | Coverage | sessions |
 | --- | ---: |
 | measured | 115 |
-| unmeasured | 54 |
-| **total** | **169** |
+| unmeasured | 55 |
+| **total** | **170** |
 
 <!-- END GENERATED: session-close-report -->
 

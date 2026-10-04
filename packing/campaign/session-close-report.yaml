@@ -7,12 +7,12 @@ softschema:
   schema: schemas/session-close-report.schema.yaml
   envelope: null
   status: enforced
-count: 169
+count: 170
 generated_by: >-
   uv run --frozen --all-extras --group dev python -m devtools.close_session --render
 totals:
   sessions_measured: 115
-  sessions_unmeasured: 54
+  sessions_unmeasured: 55
   attributed:
     rollups: 276
     turns: 66468
@@ -2945,3 +2945,13 @@ sessions:
     active_union_hours: 0.67
     wall_hours: 0.67
     snapshot_incomplete: true
+- id: session-171
+  title: "Raw-piece row-support witnesses without dense graph expansion"
+  status: in_progress
+  primary_bead: think-op6s
+  phases: 3
+  measured: false
+  unmeasured_reason: >-
+    declares no resource measurement
+  rollups: []
+  codex_receipts: []

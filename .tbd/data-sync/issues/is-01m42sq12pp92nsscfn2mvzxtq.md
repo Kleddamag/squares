@@ -5,7 +5,7 @@ title: "#305: senior engineering review (pr-review-requirements: standard) and o
 kind: task
 status: in_progress
 priority: 1
-version: 3
+version: 4
 delegate: claude-code@vm
 labels: []
 dependencies:
@@ -15,7 +15,11 @@ parent_id: is-01m42sq026mszrdm4fwf5r8g8y
 hold: null
 hold_until: null
 created_at: 2026-10-04T06:30:40.470Z
-updated_at: 2026-10-04T06:31:04.222Z
+updated_at: 2026-10-04T06:46:44.643Z
 started_at: 2026-10-04T06:31:04.222Z
 ---
 No GitHub review exists on #305. Run one senior engineering review of the branch diff against main (correctness of the T-007 re-grounding, register/evidence consistency, tool code, tests, CI wiring), then one pass addressing every finding.
+
+## Notes
+
+Review by tbd-strong 2026-10-04 at 498258a9f: no blocking; should-fix: (1) check_nagamochi_bounds two-sided tolerance accepts rounded-up verified floors; (2) deferred checkpoint never completed on the PR (dispatch at post-merge head), gate-budgets.yaml cites wrong run id 37101062051 vs 37101088102; (3) tautological Karakus ordering check in check_nagamochi_lemma1_counterexample cited as evidence. Nits: piercing survey float compares; T-007 audit step touches misses inputs; D-516 regression: none; review doc silent on Bentz 2010 L7(ii)/2016 L2 imports; Lean receipt partial rebuild.

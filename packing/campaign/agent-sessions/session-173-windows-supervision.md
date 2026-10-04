@@ -68,20 +68,17 @@ session:
       limit or30minute source slot.
     fallback: Retain local adopted P01C supervisor; publish scoped obstruction only, no migration
       adoption.
-    outcome: Root critical lifecycle/FFI/platform review and independent80MiB memory guard passed;
-      all5identities signal/OS PIDabsent, bothJobs0/cleanuptrue. Actual terminal record/native
-      aggregate retained once; source certification pending. Narrow Linux/Windows FFI declaration
-      repair also passes20fresh tests and both platform type checks; actual later source-end
-      recorded without backdating.
+    outcome: 20focused native/portable tests pass; root independent80MiB guard and whole-tree
+      cleanup accepted; exact source hosted fast/required certification passed.
     evidence:
     - packing/campaign/explorations/X048-session-173-windows-supervision/README.md
     - packing/campaign/resource-usage/codex-session-173.yaml
-    stop_reason: Opt-in supervisor transfer and independent Windows acceptance complete. Actual
-      early administrative closeout retains source-hosted certification debt under think-v00i;
-      no local launcher adoption/default workflow/research change.
-    next_action: Publish standalone Draft source/evidence/native record; observe exact source
-      gate, clear think-v00i debt, then observe final metadata head. No additional native control
-      unless concrete failure.
+    stop_reason: Opt-in supervisor transfer and independent Windows acceptance complete; exact
+      source hosted fast/required certification passed. Actual source end and earlier native
+      lower-bound cutoff retained. No default workflow or local launcher adoption.
+    next_action: Observe final metadata current-head CI and close/sync think-v00i. A separately
+      frozen local portable input handoff may follow only after F delivery; no research target
+      or default integration.
   budget:
     wall_minutes: 90
     max_cycles: 4
@@ -100,9 +97,8 @@ session:
     metric: Owned-Job actual-worker guard and whole-tree cleanup transfer
     before: Adopted local P01C control/supervise.py detects real descendant123719680B versus
       launcher5492736B and safely cleans whole owned tree; no tracked opt-in WindowsJob tool.
-    after: Opt-in stdlib supervisor preserves lifecycle/FFI/owned identities and actual-worker
-      guards.20tests/Ruff/types pass; fresh96MiB normal/timeout/80MiB-stop controls allJob0/cleanuptrue.
-      Root found/fixed only test identity-output allocation race; independent replay pending.
+    after: 20focused native/portable tests pass; root independent80MiB guard and whole-tree
+      cleanup accepted; exact source hosted fast/required certification passed.
   delegations: []
   outputs:
   - packing/campaign/explorations/X048-session-173-windows-supervision/README.md
@@ -138,15 +134,18 @@ session:
   - New Git worktree required exact-path process-only safe.directory and pinned vendor/kpress
     checkout515f4a08 for existing link checks. No global config, dependency install, submodule
     pointer or source-policy migration.
-  stop_reason: Opt-in supervisor transfer and independent Windows acceptance complete. Actual
-    early administrative closeout retains source-hosted certification debt under think-v00i;
-    no local launcher adoption/default workflow/research change.
-  next_action: Publish standalone Draft source/evidence/native record; observe exact source
-    gate, clear think-v00i debt, then observe final metadata head. No additional native control
-    unless concrete failure.
+  - 'full gate: fast at 130d693d8e4e888efc0346ae007073abb4d696d8: passed (hosted partitioned
+    fast gate; packing-required SUCCESS)'
+  - Hosted pages-required and merges-into-main SUCCESS at 130d693d8e4e888efc0346ae007073abb4d696d8;19pass/36declared
+    skips, no rerun or guard changes. Final metadata head is observed separately.
+  stop_reason: Opt-in supervisor transfer and independent Windows acceptance complete; exact
+    source hosted fast/required certification passed. Actual source end and earlier native lower-bound
+    cutoff retained. No default workflow or local launcher adoption.
+  next_action: Observe final metadata current-head CI and close/sync think-v00i. A separately
+    frozen local portable input handoff may follow only after F delivery; no research target
+    or default integration.
   ended_at: '2026-10-04T06:30:18.688002+00:00'
   handoff_role: administrative_closeout
-  certification_pending: think-v00i
   resource_rollups:
   - packing/campaign/resource-usage/codex-session-173.yaml
 ---

@@ -1,0 +1,43 @@
+{
+  "status": "PASS_REPLAYED_FIXED_CERTIFICATES",
+  "diagnostic_only": true,
+  "new_exclusions": 0,
+  "unsupported_rows_verified": false,
+  "whole_network_equivalence_verified": false,
+  "new_selective_or_full_runner_imported": false,
+  "fresh_pair_calls": 735,
+  "packet_sha256": "13b1b32ab23b4c85048ae13646bd7eb7fa7f05e66b1054713aafc854486c41a6",
+  "input_identity": {
+    "seed_sha256": "c548ed2ed62e6c84276aa7135c956610022874732f195c8c6706b020798282a6",
+    "node_sha256": "5d09ba6c6f5bf45fd35db979a1bac66d42034c622c1ffe9c415b9835cc5140b8",
+    "cold_receipt_sha256": "f00dbb6b69d8ffa6f2f7b2c26489a090ba49a1fff0b86bb7f951109398d68bec"
+  },
+  "mixed_inventory_sha256": "d7ee531c1453c810059ff8858adc35f89eab6d69bab023e232730a6f33faeeb1",
+  "raw_atoms": 2522,
+  "H_atoms": 5044,
+  "mixed_atoms": 2623,
+  "extra_atoms": 101,
+  "selected_parent_rows": [
+    [
+      18,
+      13
+    ],
+    [
+      19,
+      5
+    ]
+  ],
+  "subsets_reenumerated": 64,
+  "restricted_library_minimum_verified": true,
+  "full_cores_rebuilt": 96,
+  "half_containments_checked": 192,
+  "fixed_lost_tuples": 72,
+  "fixed_surviving_tuples": 7,
+  "positive_selections_replayed": 44,
+  "supported_parents": 60,
+  "unknown_parents": 36,
+  "fixed_E79_classification_preserved": true,
+  "wall_seconds": 2.03857330000028,
+  "worker_peak_bytes": 164585472,
+  "observed_at": "2026-10-04T12:36:51.737752+00:00"
+}

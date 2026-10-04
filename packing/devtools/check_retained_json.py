@@ -28,9 +28,11 @@ file over the threshold, and a pending conversion whose file is already in the l
 **Re-laying an existing file never re-runs what produced it.** `--fix PATH...` writes each
 file's re-layout in place and refuses unless the value is unchanged, compared as canonical
 compact JSON -- `json.dumps` with no whitespace, keys in file order, non-ASCII unescaped.
-That is a stricter test than `==`, which takes `1`, `1.0` and `True` for one another, and
-the parse that feeds it refuses a duplicate key, which `json.loads` would otherwise drop
-without a word. It refuses an exempt file whose reason is anything but `pending`.
+That is a stricter test than `==`, which takes `1`, `1.0` and `True` for one another. The
+parse that feeds it refuses what a float parse would lose before the comparison could
+see it: a duplicate key, which `json.loads` drops without a word; a number a float does
+not hold exactly, such as `1e400` or a 23-digit decimal; and `NaN` and `Infinity`, which
+are not JSON. It refuses an exempt file whose reason is anything but `pending`.
 
 Usage, from `packing/`, each after `uv run --frozen --all-extras --group dev`:
     python -m devtools.check_retained_json
@@ -47,10 +49,12 @@ from __future__ import annotations
 
 import argparse
 import json
+import math
 import re
 import sys
-from collections.abc import Callable, Iterable, Sequence
+from collections.abc import Callable, Iterable, Iterator, Sequence
 from dataclasses import dataclass
+from decimal import Decimal
 from functools import cache
 from pathlib import Path
 from typing import Any
@@ -218,16 +222,17 @@ def candidates(
     threshold: int,
     *,
     unread: Callable[[str], bool] | None = None,
-) -> list[Candidate]:
-    """The retained files among `paths` with more than `threshold` lines.
+) -> Iterator[Candidate]:
+    """The retained files among `paths` with more than `threshold` lines, as they are
+    found.
 
     A file of N lines holds at least N bytes, so one no larger than the threshold is
     passed over without being read, and so is any file `unread` declines; that is most of
-    the tree.
+    the tree. `unread` is asked as each file comes up, so it can decline a file on the
+    strength of the candidates already yielded.
     """
     biome = biome_owned(root)
     top = root.resolve()
-    found: list[Candidate] = []
     for path in paths:
         relative = path.resolve().relative_to(top).as_posix()
         if not is_retained(relative, biome) or path.stat().st_size <= threshold:
@@ -237,8 +242,7 @@ def candidates(
         data = path.read_bytes()
         lines = data.count(b"\n")
         if lines > threshold:
-            found.append(Candidate(relative, lines, data))
-    return found
+            yield Candidate(relative, lines, data)
 
 
 def _pairs(pairs: list[tuple[str, Any]]) -> dict[str, Any]:
@@ -252,6 +256,32 @@ def _pairs(pairs: list[tuple[str, Any]]) -> dict[str, Any]:
 def parse(text: str) -> Any:
     """The JSON value of `text`, refusing a duplicate key rather than dropping one."""
     return json.loads(text, object_pairs_hook=_pairs)
+
+
+def _exact_float(token: str) -> float:
+    """`token` as a float, refused unless the float holds its decimal value exactly.
+
+    `json.loads` turns `1e400` into infinity and a 23-digit decimal into the nearest
+    float without a word, and `json.dumps` then writes what it was given; comparing two
+    parses of floats cannot see that. The float's shortest text, read as a decimal, has
+    to equal the token read as one.
+    """
+    value = float(token)
+    if not math.isfinite(value) or Decimal(repr(value)) != Decimal(token):
+        raise ValueError(f"the number {token} does not survive as a float ({value!r})")
+    return value
+
+
+def _no_constant(token: str) -> Any:
+    raise ValueError(f"{token} is not JSON")
+
+
+def parse_exact(text: str) -> Any:
+    """`parse`, refusing too any number a float does not hold exactly, and the
+    `NaN` and `Infinity` that JSON does not have."""
+    return json.loads(
+        text, object_pairs_hook=_pairs, parse_float=_exact_float, parse_constant=_no_constant
+    )
 
 
 def canonical(value: Any) -> str:
@@ -278,7 +308,8 @@ def check(
     policy = policy or _policy_of(root)
     swept = _json_files(root) if paths is None else list(paths)
     # A glob needs one file over the threshold to be live; past that, the files it
-    # exempts -- the whole archive, mostly -- need not be read at all.
+    # exempts -- the whole archive, mostly -- need not be read at all. `candidates`
+    # yields as it goes, so a glob is witnessed before the next file is asked about.
     witnessed: set[Exemption] = set()
 
     def unread(relative: str) -> bool:
@@ -296,8 +327,8 @@ def check(
                 witnessed.add(entry)
             continue
         held += 1
-        text = candidate.data.decode("utf-8")
         try:
+            text = candidate.data.decode("utf-8")
             laid = relayout(text)
         except ValueError as error:
             failures.append(f"{candidate.relative}: not JSON the layout can hold ({error})")
@@ -327,13 +358,21 @@ def _from_packing(candidate: Candidate) -> str:
 def _stale(root: Path, policy: Policy, exempt_over: dict[str, Candidate]) -> list[str]:
     """Every exemption that no longer exempts anything.
 
-    Any entry is stale when it covers no file over the threshold. A pending conversion is
-    stale too once its file is already in the layout; the other reasons name what holds a
-    file's bytes, which a re-layout would break somewhere else first, so they are not
-    re-laid here to ask.
+    Any entry is stale when it covers no file over the threshold, and a path entry is when
+    an earlier glob already covers its path: the first entry that matches is the one that
+    applies. A pending conversion is stale too once its file is already in the layout; the
+    other reasons name what holds a file's bytes, which a re-layout would break somewhere
+    else first, so they are not re-laid here to ask.
     """
     failures: list[str] = []
     for entry in policy.exemptions:
+        shadow = policy.exemption(entry.pattern) if not entry.is_glob else None
+        if shadow is not None and shadow is not entry:
+            failures.append(
+                f"{entry.pattern}: exempt ({entry.reason}) but the earlier glob "
+                f"{shadow.pattern} ({shadow.reason}) already covers it; drop one"
+            )
+            continue
         if entry.is_glob:
             if not any(entry.matches(relative) for relative in exempt_over):
                 failures.append(
@@ -351,8 +390,8 @@ def _stale(root: Path, policy: Policy, exempt_over: dict[str, Candidate]) -> lis
             continue
         if entry.reason != "pending":
             continue
-        text = candidate.data.decode("utf-8")
         try:
+            text = candidate.data.decode("utf-8")
             in_layout = relayout(text) == text
         except ValueError:
             in_layout = False
@@ -376,11 +415,11 @@ def fix(paths: Sequence[Path], root: Path = REPO, *, policy: Policy | None = Non
                 f"{relative}: exempt ({entry.reason}: {entry.bound_by}); not re-laid"
             )
             continue
-        text = path.read_text(encoding="utf-8")
         try:
-            before = canonical(parse(text))
+            text = path.read_bytes().decode("utf-8")
+            before = canonical(parse_exact(text))
             laid = relayout(text)
-            after = canonical(parse(laid))
+            after = canonical(parse_exact(laid))
         except ValueError as error:
             refusals.append(f"{relative}: {error}; not re-laid")
             continue
@@ -408,8 +447,8 @@ def inventory(root: Path = REPO, *, policy: Policy | None = None) -> list[str]:
         candidates(root, _json_files(root), policy.threshold_lines),
         key=lambda item: (-item.lines, item.relative),
     ):
-        text = candidate.data.decode("utf-8")
         try:
+            text = candidate.data.decode("utf-8")
             laid = relayout(text)
         except ValueError as error:
             rows.append(

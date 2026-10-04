@@ -98,10 +98,79 @@ def test_a_hand_edited_line_fails_even_with_the_same_value(tmp_path: Path) -> No
     assert len(_failures(tmp_path, _policy())) == 1
 
 
-def test_a_file_at_or_under_the_threshold_is_never_read_past_its_size(tmp_path: Path) -> None:
-    """The sweep's cost is the tree's few large files, not its thousands of small ones."""
+def _reads(monkeypatch: pytest.MonkeyPatch) -> list[str]:
+    """Every file the sweep reads from here on, by name."""
+    read: list[str] = []
+    original = Path.read_bytes
+
+    def spy(self: Path) -> bytes:
+        read.append(self.name)
+        return original(self)
+
+    monkeypatch.setattr(Path, "read_bytes", spy)
+    return read
+
+
+def test_a_file_at_or_under_the_threshold_in_lines_is_not_held_to_the_layout(
+    tmp_path: Path,
+) -> None:
     _write(tmp_path, "small.json", "{\n" + "  not json at all\n" * (THRESHOLD - 1))
     assert _failures(tmp_path, _policy()) == []
+
+
+def test_a_file_no_larger_than_the_threshold_in_bytes_is_never_read(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    """The sweep's cost is the tree's few large files, not its thousands of small ones: a
+    file of N lines holds at least N bytes, so its size alone passes it over."""
+    _write(tmp_path, "tiny.json", "[\n\n\n1\n]\n")
+    assert (tmp_path / "tiny.json").stat().st_size <= THRESHOLD
+    _write(tmp_path, "results/census.json", _indented())
+    read = _reads(monkeypatch)
+    assert len(_failures(tmp_path, _policy())) == 1
+    assert read == ["census.json"]
+
+
+def test_a_witnessed_glob_s_other_files_are_never_read(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    """One file over the threshold keeps a glob live; the rest it exempts are not read."""
+    for name in ("a", "b", "c"):
+        _write(tmp_path, f"archive/{name}/source.json", _indented())
+    read = _reads(monkeypatch)
+    assert _failures(tmp_path, _policy(_exempt("archive/**", "archive", glob=True))) == []
+    assert read == ["source.json"]
+
+
+def test_a_path_entry_an_earlier_glob_covers_fails(tmp_path: Path) -> None:
+    """The first entry that matches applies, so a path entry after a glob over it is dead
+    config, and the sweep says so rather than calling its file small."""
+    for name in ("a", "b"):
+        _write(tmp_path, f"archive/{name}/source.json", _indented())
+    glob = _exempt("archive/**", "archive", glob=True)
+    path = _exempt("archive/b/source.json")
+    [failure] = _failures(tmp_path, _policy(glob, path))
+    assert failure.startswith("archive/b/source.json: ")
+    assert "the earlier glob archive/** (archive) already covers it" in failure
+    assert _failures(tmp_path, _policy(path, glob)) == []
+
+
+def test_a_file_that_is_not_utf_8_fails_by_name(tmp_path: Path) -> None:
+    """Every tracked JSON file is UTF-8; one that is not is a failure naming it, from the
+    sweep, from `--inventory` and from `--fix`, never a traceback."""
+    path = tmp_path / "results/latin.json"
+    path.parent.mkdir(parents=True)
+    original = _indented().replace('"example/v1"', '"caf\u00e9"').encode("latin-1")
+    path.write_bytes(original)
+    [failure] = _failures(tmp_path, _policy())
+    assert failure.startswith("results/latin.json: not JSON the layout can hold (")
+    assert "utf-8" in failure
+    [row] = sweep.inventory(tmp_path, policy=_policy())
+    assert "unreadable" in row
+    assert row.endswith("results/latin.json")
+    [refusal] = sweep.fix([path], tmp_path, policy=_policy())
+    assert refusal.startswith("results/latin.json: ")
+    assert path.read_bytes() == original
 
 
 def test_ensure_ascii_is_read_off_the_bytes(tmp_path: Path) -> None:
@@ -195,6 +264,40 @@ def test_fix_refuses_a_duplicate_key_rather_than_dropping_it(tmp_path: Path) -> 
     [refusal] = sweep.fix([path], tmp_path, policy=_policy())
     assert "duplicate keys ['n']" in refusal
     assert path.read_text(encoding="utf-8") == original
+
+
+@pytest.mark.parametrize(
+    ("number", "message"),
+    [
+        ("1e400", "the number 1e400 does not survive as a float (inf)"),
+        (
+            "0.12345678901234567890123",
+            "the number 0.12345678901234567890123 does not survive as a float",
+        ),
+        ("NaN", "NaN is not JSON"),
+        ("-Infinity", "-Infinity is not JSON"),
+    ],
+)
+def test_fix_refuses_a_number_a_float_does_not_hold(
+    tmp_path: Path, number: str, message: str
+) -> None:
+    """`1e400` parses to infinity and a 23-digit decimal to the nearest float, and both
+    parse the same way again after the re-layout, so the comparison alone passes them."""
+    original = _indented().replace('"example/v1"', number)
+    path = _write(tmp_path, "results/census.json", original)
+    [refusal] = sweep.fix([path], tmp_path, policy=_policy())
+    assert message in refusal
+    assert refusal.endswith("; not re-laid")
+    assert path.read_text(encoding="utf-8") == original
+
+
+def test_fix_re_lays_a_number_whose_value_a_float_keeps(tmp_path: Path) -> None:
+    """Another writer's spelling of a number a float holds exactly is the same value."""
+    original = _indented().replace('"example/v1"', "[1E5, 2.50, -0.0, 1e-07]")
+    path = _write(tmp_path, "results/census.json", original)
+    assert sweep.fix([path], tmp_path, policy=_policy()) == []
+    respelled = {**RECORDS, "contract": [100000.0, 2.5, -0.0, 1e-07]}
+    assert path.read_text(encoding="utf-8") == _laid(respelled)
 
 
 def test_fix_refuses_a_file_exempt_for_its_bytes(tmp_path: Path) -> None:

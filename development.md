@@ -1666,11 +1666,16 @@ Pass the arguments the old call passed.
 `sort_keys` and `ensure_ascii` decide the bytes, and a `--check` that compares a fresh
 build with the retained file compares those too.
 
-The layout is a function of the parsed value and gives it back exactly, so changing a
-file’s layout never means re-running what produced it.
+The layout is a function of the parsed value, so changing a file’s layout never means
+re-running what produced it.
+It writes back the value Python parsed, which is the file’s own value wherever a float
+holds every number in it: true of any file Python wrote, but `1e400` parses to infinity
+and a 23-digit decimal to the nearest float.
 `python -m devtools.check_retained_json --fix PATH` re-lays a file in place and refuses
 unless the value is unchanged, compared as canonical compact JSON, which tells an
 integer from an equal float and from `true` where `==` does not.
+It also refuses a number a float does not hold exactly, `NaN` and `Infinity`, and a
+duplicate key, none of which that comparison could see.
 A file under `DATA_PATHS` moves `DATA_REVISION` like any data commit, so re-lay those in
 one commit and re-pin once.
 

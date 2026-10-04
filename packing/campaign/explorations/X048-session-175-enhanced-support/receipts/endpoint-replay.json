@@ -1,0 +1,22 @@
+{
+  "diagnostic_only": true,
+  "new_exclusions": 0,
+  "unsupported_rows_verified": false,
+  "status": "PASS_REPLAYED_ALL_PARENT_ROWS",
+  "supported_parent_rows": 24,
+  "live_parent_rows": 24,
+  "new_parent_rows": [],
+  "selections_checked": 15,
+  "fresh_pair_checks": 225,
+  "packet_sha256": "3b57b98273def5f1c6d95b7c509b506f4808315e5438f2525f8e943632d45930",
+  "input_identity": {
+    "seed_sha256": "214210df5ff7f8a5127bca17dda23a7941ca659a0d067243d83d65a5f0c213b7",
+    "node_sha256": "38b3546a3082aa0070ff5c229f84e53c1a073c55c6e50a59ff3363119f861654",
+    "cold_receipt_sha256": "802d96a132b3571e0dc2728733eeeb1b7cf6d56da2a17c7a10038bee0ac62518"
+  },
+  "H_packet_sha256": "9342f65ea06942cbbed51a150558ccfc8ee4b6c5a120d733502fe6567560bcaf",
+  "derived_inventory_sha256": "a7d83c934aa244eaa39be53c8377c7f6f19675686b65026a045674349cec4f9a",
+  "wall_seconds": 0.39545440004440024,
+  "cpu_seconds": 0.40625,
+  "worker_peak_bytes": 144543744
+}

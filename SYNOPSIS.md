@@ -273,7 +273,7 @@ hypothesis status and summarizes experiment verdicts, and the
 | --- | ---: | --- |
 | Agendas | 39 | 19 active; 14 completed; 5 paused; 1 superseded |
 | Commitments | 407 | 212 complete; 65 stopped; 70 blocked; 25 ready; 21 tentative; 14 in progress |
-| Sessions | 172 | 103 completed; 69 stopped; all terminal |
+| Sessions | 173 | 103 completed; 70 stopped; all terminal |
 | Explorations | 46 | 27 linked to proposed hypotheses; 19 uncodified |
 | Hypotheses | 203 | 43 confirmed; 33 refuted; 60 blocked; 19 unresolved; 9 open; 34 open questions; 2 result registered; 2 abandoned; 0 running; 1 exhausted |
 | Experiments | 179 | 57 accepted; 38 rejected; 56 unresolved; 12 baseline; 11 blocked; 4 abandoned; 0 in progress; 1 exhausted |
@@ -575,6 +575,7 @@ case or experiment separately.
 | [D2: forward checking and MRV on the same raw graph](packing/campaign/explorations/X048-session-171-raw-row-support/D2_REPORT.md) | research synthesis | record | retained | — |
 | [Session172: the frozen raw binary graph supports every row](packing/campaign/explorations/X048-session-172-capacity-support/README.md) | research synthesis | record | retained | — |
 | [Fixed-witness half-interval/octagon sensitivity](packing/campaign/explorations/X048-session-174-core-refinement/README.md) | research synthesis | record | retained | — |
+| [Enhanced-model replacement supports](packing/campaign/explorations/X048-session-175-enhanced-support/README.md) | research synthesis | record | retained | — |
 | [X-048 Session 167 Pilots: Receipts](packing/campaign/explorations/X048-session-167-pilots/README.md) | research synthesis | record | retained | — |
 | [X-048 Route Review: Exploratory Receipts](packing/campaign/explorations/X048-route-review/README.md) | research synthesis | record | retained | — |
 | [H259 Mixed-Capacity Census: Independent Output Review](packing/campaign/series/series-000-smoke-and-calibration/results/exp-240-n17-mixed-capacity-census/output-review.md) | dated review record | record | retained | — |
@@ -5767,6 +5768,7 @@ in separate tables: their units differ, and the same work can appear in both.
 | `codex-session-171.yaml` | session-171 | 204 | 1.85 h | 0.98 h | 0.98 h | yes |
 | `codex-session-172.yaml` | session-172 | 52 | 0.56 h | 0.28 h | 0.28 h | yes |
 | `codex-session-174.yaml` | session-174 | 58 | 0.72 h | 0.36 h | 0.36 h | yes |
+| `codex-session-175.yaml` | session-175 | 92 | 0.89 h | 0.45 h | 0.45 h | yes |
 | `codex-task-tree-session-062.yaml` | session-062 | 607 | 2.84 h | 1.46 h | 1.46 h | yes |
 | `codex-task-tree-session-063.yaml` | session-063 | 441 | 2.08 h | 0.85 h | 0.85 h | yes |
 | `codex-task-tree-session-064.yaml` | session-064 | 3,444 | 17.57 h | 9.0 h | 9.0 h | yes |
@@ -5840,9 +5842,9 @@ in separate tables: their units differ, and the same work can appear in both.
 
 | Coverage | sessions |
 | --- | ---: |
-| measured | 118 |
+| measured | 119 |
 | unmeasured | 54 |
-| **total** | **172** |
+| **total** | **173** |
 
 <!-- END GENERATED: session-close-report -->
 

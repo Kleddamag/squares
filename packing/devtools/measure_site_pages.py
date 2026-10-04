@@ -26,8 +26,9 @@ Fifteen measurements, each over pages of a directory `preview_site` has built:
 - `type` reports the reading column's resolved typography, role by role (paragraph,
   h1 to h4, list item, table cell, code, inline math), and every `--kpress-*`,
   `--site-*`, `--paper-*` and `--cert-*` token the root and the column resolve.
-- `faces` needs no browser: it lists every `@font-face` block each page inlines, by
-  family, and whether the block is byte-identical to the explainer's.
+- `faces` needs no browser: it lists every `@font-face` block each page carries, inline
+  or in a shared stylesheet it links, by family, and whether the block is
+  byte-identical to the explainer's.
 - `cards` reports every card section as laid out: its cards in rows, each row's card
   widths and sizes and the slack at its start and end (equal when the row is centred),
   and each card's headline face, weight and size. `--markdown` prints one line a row, and
@@ -1578,10 +1579,13 @@ def _evaluate(
     return results
 
 
-def font_faces(path: Path) -> dict[str, str]:
-    """Every `@font-face` block a page inlines, keyed by its digest, valued by family."""
+def font_faces(site: Path, page: str) -> dict[str, str]:
+    """Every `@font-face` block a page carries, inline or in a shared stylesheet it links
+    (`site_assets.inlined_from`), keyed by its digest, valued by family."""
+    from devtools import site_assets  # noqa: PLC0415
+
     faces: dict[str, str] = {}
-    for block in FONT_FACE.findall(path.read_text(encoding="utf-8")):
+    for block in FONT_FACE.findall(site_assets.inlined_from(site, page)):
         family = FAMILY.search(block)
         name = family.group(1).strip().strip('"') if family else "?"
         faces[hashlib.sha256(block.encode()).hexdigest()[:12]] = name
@@ -1591,11 +1595,10 @@ def font_faces(path: Path) -> dict[str, str]:
 def compare_faces(site: Path, pages: Sequence[str]) -> list[dict[str, Any]]:
     """Per page and family: blocks shared with the explainer, and blocks it lacks or adds."""
     explainer = render_overview.paper_path(render_overview.N11_LOWER_BOUNDS_EXPLAINER)
-    reference = font_faces(site / explainer)
+    reference = font_faces(site, explainer)
     rows: list[dict[str, Any]] = []
     for name in pages:
-        path = site / name.split("#")[0]
-        faces = font_faces(path)
+        faces = font_faces(site, name.split("#")[0])
         families = sorted(set(faces.values()) | set(reference.values()))
         for family in families:
             mine = {digest for digest, value in faces.items() if value == family}

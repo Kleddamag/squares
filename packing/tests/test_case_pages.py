@@ -469,6 +469,17 @@ def test_a_record_files_description_has_room(records: dict[str, str]) -> None:
     assert max(len(text) for text in descriptions) <= render_overview.DESCRIPTION_LIMIT - 15
 
 
+def test_a_record_files_description_counts_its_squares(records: dict[str, str]) -> None:
+    """One square is a unit square, and every other count is squares."""
+    said = {
+        n: re.findall(r'<meta name="description" content="([^"]*)"', records[f"cases/{n}.html"])
+        for n in (1, 2, 11)
+    }
+    assert said[1][0].startswith("Packing 1 unit square in the smallest square, a case ")
+    assert said[2][0].startswith("Packing 2 unit squares in the smallest square, a case ")
+    assert said[11][0].startswith("Packing 11 unit squares in the smallest square, a case ")
+
+
 def test_a_footnote_in_a_case_file_is_refused() -> None:
     """kpress gathers footnotes at the foot of the one render, outside every record, so
     the render refuses one rather than lose it from its record file; the mark it looks

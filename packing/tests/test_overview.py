@@ -5828,10 +5828,12 @@ def test_each_address_a_paper_had_serves_a_forwarder_to_where_it_is() -> None:
     times, and they agree: as its canonical URL, in full; to the forwarding script, on
     the root element; in a refresh for a reader without scripts, inside `<noscript>` so
     it cannot outrun the script and drop the fragment; and in a link. It carries the
-    overview's own forwarding script whole, the paper's preview by its title
+    overview's own forwarding script whole, the paper's preview by the paper's own title
     (`render_overview.forwarder_head`), and nothing else of a site page: no bar, no
     stamp, no stylesheet. `check_published_site` reads a deployed one the same way."""
     from devtools import check_published_site  # noqa: PLC0415
+    from devtools import render_n11_lower_bounds_explainer as explainer  # noqa: PLC0415
+    from devtools import render_n11_optimality_review as review  # noqa: PLC0415
 
     forwarders = {
         forwarder.name: forwarder.html for forwarder in render_overview.forwarder_pages()
@@ -5848,7 +5850,7 @@ def test_each_address_a_paper_had_serves_a_forwarder_to_where_it_is() -> None:
         "n11-optimality/index.html": "papers/n11-optimality-review.html",
     }
     script = render_overview.FORWARD_SCRIPT.read_text(encoding="utf-8")
-    titles = {paper.href: paper.title for paper in overview_sections.PAPERS}
+    titles = {explainer.SITE_PATH: explainer.TITLE, review.SITE_PATH: review.TITLE}
     for old, new in papers.items():
         page = forwarders[old]
         assert new in render_overview.SITE_PAGES, new

@@ -2217,12 +2217,14 @@ A forwarder previews the page it leads to (`render_overview.forwarder_head`). An
 address is still shared, from dated records, other people’s pages and bookmarks, and
 GitHub Pages cannot answer it with a redirect a crawler follows; the crawlers that draw
 link previews run no script and do not reliably follow a refresh.
-So a forwarder to a page of the site carries the whole set at that page’s address: its
-canonical link and `og:url` are where it leads, its name is the page’s
-(`FORWARDER_TITLES`, or a paper’s card title), its description is “This page has moved
-to” and the address in full, and the card and the icon are the site’s. Until 2026-10-03
-a forwarder carried only its title and its canonical link, so a shared old link
-previewed as a bare title or as nothing.
+So a forwarder to a page of the site carries that page’s own identity: its head is
+written from the record the page writes its own head from
+(`render_overview.forwarded_metas`), so its canonical link and `og:url` are where it
+leads, its name, its kind and its description are the page’s, a paper’s dates come with
+them, and the card and the icon are the site’s. Its body still says the page has moved
+and links it.
+Until 2026-10-03 a forwarder carried only its title and its canonical link,
+so a shared old link previewed as a bare title or as nothing.
 The one forwarder that leads off the site, `defects.html` to the defect log on GitHub,
 carries its title and a canonical link to that address, in full, and no card: the site
 does not write the page it leads to, so its preview could not say what that page shows.
@@ -2234,12 +2236,18 @@ Case Records”, and its description a sentence of its own.
 
 `check_published_site` holds the deployed pages to these rules after each deploy: one of
 each tag and the site’s icon, the canonical link and `og:url` equal to the page’s
-address, no description shared by two pages, each forwarder by its rule, and a card that
-is a PNG of the declared size; it reads the case records it samples as pages.
+address, no description shared by two pages (a forwarder, which carries its page’s, is
+not a page), each forwarder by its rule and to the name, kind and description of the
+page it leads to, as that page’s own head gives them, and a card that is a PNG of the
+declared size; it reads the case records it samples as pages.
 `check_published_site --local DIR` asks the same of a built directory, and reads every
-HTML file there with a head, every case record and any page no list names among them, so
-a page added later fails the check until it carries the set.
-`devtools.preview_site` and the Pages workflow’s `overview` job both run it.
+HTML file there that is a document (with a doctype, an `<html>` or a `<head>`), every
+case record and any page no list names among them, so a page added later fails the check
+until it carries the set; it holds a forwarder to the page it leads to wherever that
+page is in the directory too.
+`devtools.preview_site` runs it, and so do two of the Pages workflow’s jobs: `overview`
+on its own build, which has no paper and no workbench, and `publish` on the assembled
+site, where every forwarder is beside the page it leads to.
 `check_published_site --local DIR --inventory` prints what every file’s head carries.
 
 ## Token Ownership

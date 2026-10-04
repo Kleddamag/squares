@@ -107,6 +107,43 @@ def test_the_papers_head_is_the_sites_set_at_the_papers_own_address(
     assert paper_front.revised(paper.FRONT) == release.OPTIMALITY_REVIEW_REVISED
 
 
+def test_the_forwarders_at_the_old_addresses_preview_the_paper_as_it_does(
+    rendered: tuple[str, str],
+) -> None:
+    """The paper was served at `n11-optimality/t-060-explainer.html`, under a directory
+    linked as `n11-optimality/`, until 2026-10-01. Both addresses are still shared, and
+    the forwarder at each previews the paper (`render_overview.forwarder_pages`): by the
+    paper's own title, kind, sentence and date, read here from the rendered page, and at
+    its address. The card's sentence-case title and `website`, which they carried first,
+    previewed the paper as something else."""
+    html, _ = rendered
+    url = render_overview.canonical_url(paper.SITE_PATH)
+    own = check_published_site.read_head(html)
+    moved = dict(render_overview.MOVED_PAGES)
+    forwarders = {
+        forwarder.name: forwarder.html
+        for forwarder in render_overview.forwarder_pages()
+        if moved[forwarder.name] == paper.SITE_PATH
+    }
+    assert sorted(forwarders) == [
+        "n11-optimality/index.html",
+        "n11-optimality/t-060-explainer.html",
+    ]
+    for name, forwarder in forwarders.items():
+        assert check_published_site.forwarder_problems(forwarder, url, html) == [], name
+        head = check_published_site.read_head(forwarder)
+        assert head.titles == own.titles, name
+        assert head.link("canonical") == own.link("canonical") == [url], name
+        for key in (
+            *check_published_site.PREVIEWED,
+            "description",
+            "twitter:title",
+            "article:modified_time",
+        ):
+            assert head.meta(key) == own.meta(key), (name, key)
+        assert head.meta("og:type") == ["article"], name
+
+
 def test_the_paper_ends_with_the_sites_closing_credit_without_its_version(
     rendered: tuple[str, str],
 ) -> None:

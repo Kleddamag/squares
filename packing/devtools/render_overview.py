@@ -251,12 +251,10 @@ MOVED_PAGES: tuple[tuple[str, str], ...] = (
     # record page takes `#n-11` and shows that case's record file, `cases/11.html`.
     ("cases.html", "cases/index.html"),
 )
-#: What a forwarder calls the place it sends a reader, by that place's address. A paper
-#: is called by its title, which its card has (`overview_sections.PAPERS`).
-FORWARDER_TITLES: dict[str, str] = {
-    RESULTS_PAGE: "Every Result",
-    "frontier.html": "The Frontier Atlas",
-    "cases/index.html": "Case Records",
+#: What a forwarder that leads off the site calls the place it sends a reader, by that
+#: place's address. A forwarder to a page of the site calls the page by the page's own
+#: name, from the record the page writes its head from (`forwarded_metas`).
+OFF_SITE_TITLES: dict[str, str] = {
     repo_url(repo_links.DEFECTS, kind="blob"): "defects.md on GitHub",
 }
 #: Every file that moved and is not a page, the same way: the papers' Markdown and PDF,
@@ -355,6 +353,12 @@ class PageMeta(NamedTuple):
     """For a paper that states them, the day it was first published and the day it was
     last revised, as ISO dates (`2026-09-05`)."""
     modified: str = ""
+
+
+#: The records the results page and the frontier atlas write their heads from, named
+#: here because a forwarder to either previews it (`forwarded_metas`).
+RESULTS_META = PageMeta("Every Result", RESULTS_DESCRIPTION, RESULTS_PAGE)
+FRONTIER_META = PageMeta("The Frontier Survey", FRONTIER_DESCRIPTION, "frontier.html")
 
 
 def page_title(name: str) -> str:
@@ -458,8 +462,12 @@ def inputs() -> tuple[Path, ...]:
 
     The page modules are imported here rather than at the top because
     `render_frontier_page` reads `render_n11_lower_bounds_explainer`, which imports this module.
+    The forwarders preview the papers from the papers' own records (`forwarded_metas`), so
+    the files the explainer's sentence is read from are inputs too: its walkthrough's
+    certificates, which name the case, and T-026's record with what it is checked against.
     """
     from devtools import overview_data  # noqa: PLC0415
+    from devtools import render_n11_lower_bounds_explainer as explainer  # noqa: PLC0415
     from devtools.render_case_pages import CASES_INPUTS  # noqa: PLC0415
     from devtools.render_frontier_page import FRONTIER_INPUTS  # noqa: PLC0415
 
@@ -470,6 +478,11 @@ def inputs() -> tuple[Path, ...]:
                 *overview_data.INPUTS,
                 *FRONTIER_INPUTS,
                 *CASES_INPUTS,
+                *explainer.WALKTHROUGH,
+                explainer.THRESHOLD_CERTIFICATE,
+                explainer.THRESHOLD_FINE_CERTIFICATE,
+                explainer.CURRENT_BOUND_RECORD,
+                explainer.THRESHOLD_PROOF,
             )
         )
     )
@@ -948,10 +961,10 @@ def results_page() -> Page:
     )
     return kpress_page(
         markdown,
-        name=RESULTS_PAGE,
+        name=RESULTS_META.path,
         current="results",
-        title="Every Result",
-        description=RESULTS_DESCRIPTION,
+        title=RESULTS_META.name,
+        description=RESULTS_META.description,
         toc=False,
         page_scripts=(TABLE_SCRIPT, POPOVER_SCRIPT, ROW_POPOVER_SCRIPT),
     )
@@ -994,10 +1007,10 @@ def frontier_page() -> Page:
 
     return kpress_page(
         frontier_markdown(fill),
-        name="frontier.html",
+        name=FRONTIER_META.path,
         current="frontier",
-        title="The Frontier Survey",
-        description=FRONTIER_DESCRIPTION,
+        title=FRONTIER_META.name,
+        description=FRONTIER_META.description,
         toc=False,
         rewrite_body=_case_links,
         page_scripts=(TABLE_SCRIPT, POPOVER_SCRIPT, CASE_POPOVER_SCRIPT),
@@ -1107,31 +1120,52 @@ def result_fragments() -> list[Page]:
     ]
 
 
-def forwarder_meta(new: str, title: str) -> PageMeta:
-    """What a forwarder to `new`, a page of the site, says of itself: a preview of where
-    it leads. Its address is `new`'s, so its canonical link and `og:url` are the page's
-    and a consumer that keys a preview by `og:url` files the share under the page; its
-    name is the page's, `title`; and its description is the sentence its body says,
-    with the page's address in full."""
-    return PageMeta(
-        name=title, description=f"This page has moved to {canonical_url(new)}.", path=new
+def forwarded_metas() -> dict[str, PageMeta]:
+    """Each page of the site a forwarder leads to (`MOVED_PAGES`), by its path, with the
+    record that page writes its own head from: the results page's and the frontier
+    atlas's (`RESULTS_META`, `FRONTIER_META`), the record page's
+    (`render_case_pages.cases_meta`), and each paper's `page_meta`, the explainer's as the
+    site publishes it. They are read from the pages' own records and not restated, so a
+    forwarder cannot preview a page by another name, kind or description than the
+    page's own head gives it.
+
+    The renderers are imported here rather than at the top, as in `inputs`, since each of
+    them imports this module."""
+    from devtools import render_case_pages, render_n11_optimality_review  # noqa: PLC0415
+    from devtools import render_n11_lower_bounds_explainer as explainer  # noqa: PLC0415
+
+    metas = (
+        RESULTS_META,
+        FRONTIER_META,
+        render_case_pages.cases_meta(),
+        explainer.published_page_meta(),
+        render_n11_optimality_review.page_meta(),
     )
+    return {meta.path: meta for meta in metas}
 
 
-def forwarder_head(new: str, title: str) -> str:
+def forwarder_head(new: str, meta: PageMeta | None) -> str:
     """A forwarder's identity, by the rule for where it leads (`forwarder_pages`).
 
-    To a page of the site, the site's whole set (`head_tags`, from `forwarder_meta`) and
-    the site's icon, held as any page's head is (`check_published_site.head_problems`).
-    Off the site, its title and a canonical link to that address and nothing else: the
-    site does not write the page it leads to, so a preview could not say what it shows.
+    To a page of the site, the identity that page's own head carries: the site's whole
+    set, written from `meta`, the page's own record (`forwarded_metas`), and the site's
+    icon. Its canonical link and `og:url` are the page's, so a consumer that keys a
+    preview by `og:url` files the share under the page, and its name, its kind, its
+    description and, for a paper, its dates are the page's, so a shared old address
+    previews the page as a share of the page would. It is held as any page's head is
+    (`check_published_site.head_problems`), and against the page's own head wherever the
+    check has that too (`check_published_site.forwarder_problems`).
+
+    Off the site, where `meta` is None, its title (`OFF_SITE_TITLES`) and a canonical
+    link to that address and nothing else: the site does not write the page it leads
+    to, so a preview could not say what it shows.
     """
-    if new.startswith("https://"):
+    if meta is None:
         return (
-            f"<title>{html.escape(title, quote=False)}</title>\n"
+            f"<title>{html.escape(OFF_SITE_TITLES[new], quote=False)}</title>\n"
             f'<link rel="canonical" href="{html.escape(new, quote=True)}">'
         )
-    return f"{head_tags(forwarder_meta(new, title))}\n{favicon_html()}"
+    return f"{head_tags(meta)}\n{favicon_html()}"
 
 
 def forwarder_pages() -> list[Page]:
@@ -1152,24 +1186,24 @@ def forwarder_pages() -> list[Page]:
     one with a redirect a crawler follows, and the crawlers that draw link previews run
     no script and do not reliably follow a refresh, so a forwarder with a title and a
     canonical link alone previewed as a bare title or as nothing (think-esmk,
-    2026-10-03). Its preview
-    names the page it leads to, at that page's address, with the site's card. The one
-    forwarder off the site, the defect log's, carries no preview.
+    2026-10-03). Its preview is the page's own, at the page's address, with the site's
+    card. The one forwarder off the site, the defect log's, carries no preview.
     """
     import posixpath  # noqa: PLC0415
 
-    from devtools.overview_sections import PAPERS  # noqa: PLC0415
-
-    titles = FORWARDER_TITLES | {paper.href: paper.title for paper in PAPERS}
+    metas = forwarded_metas()
     template = FORWARDER.read_text(encoding="utf-8")
     pages = []
     for old, new in MOVED_PAGES:
         external = new.startswith("https://")
         target = new if external else posixpath.relpath(new, posixpath.dirname(old))
+        meta = None if external else metas.get(new)
+        if not external and meta is None:
+            raise SystemExit(f"{old} forwards to {new}, which `forwarded_metas` does not name")
         values = {
             "TARGET": html.escape(target, quote=True),
-            "TITLE": html.escape(titles[new]),
-            "HEAD": forwarder_head(new, titles[new]),
+            "TITLE": html.escape(OFF_SITE_TITLES[new] if meta is None else meta.name),
+            "HEAD": forwarder_head(new, meta),
             "FORWARD_SCRIPT": _script_text(FORWARD_SCRIPT),
         }
         page = fill(template, values, where=FORWARDER.name)

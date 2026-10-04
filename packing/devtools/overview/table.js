@@ -368,17 +368,13 @@
   }
 
   /**
-   * The tools bar a table's wrapper follows: the element right before it, or the one
-   * before the legend a table of results sets between its bar and itself
-   * (`.site-rung-legend`, `overview_sections.rung_legend`). Null where there is none.
+   * The tools bar a table's wrapper follows: the element right before it. Null where
+   * there is none.
    * @param {Element | null} wrap
    * @returns {Element | null}
    */
   function toolsBefore(wrap) {
-    let before = wrap?.previousElementSibling ?? null;
-    while (before?.classList.contains("site-rung-legend")) {
-      before = before.previousElementSibling;
-    }
+    const before = wrap?.previousElementSibling ?? null;
     return before?.classList.contains("site-table-tools") ? before : null;
   }
 

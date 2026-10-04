@@ -235,12 +235,8 @@
     .map((found) => {
       const table = /** @type {HTMLTableElement} */ (found);
       const wrap = table.closest(".site-table-wrap") ?? table;
-      // The bar is right above the table, or above the legend a table of results sets
-      // between them (`overview_sections.rung_legend`).
-      let bar = wrap.previousElementSibling;
-      while (bar?.classList.contains("site-rung-legend")) {
-        bar = bar.previousElementSibling;
-      }
+      // The bar is right above the table.
+      const bar = wrap.previousElementSibling;
       const tools = bar?.classList.contains("site-table-tools") && shown(bar) ? bar : wrap;
       const top = tools.getBoundingClientRect().top;
       const box = table.getBoundingClientRect();

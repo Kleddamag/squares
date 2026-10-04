@@ -76,10 +76,10 @@ $n$.
 
 ## Recent Results
 
-<!-- The table first, with its legend above it, then its one action, then the headline
+<!-- The table first, with its legend under it, then its one action, then the headline
      of recent progress (the owner, 2026-10-02, think-tgjv; 2026-10-03, think-42dx). The
      paragraph's result ids are held to the register by check_results.READER_TIER, and
-     it says where the filters start. The legend over the table (rung_legend) shows every
+     it says where the filters start. The legend under the table (rung_legend) shows every
      mark a row carries and links the ladders; what each rung means, the ratings' kinds,
      statuses and dating rule are the Results page's, and this page no longer explains
      them (the owner, 2026-10-03). README carries its own fuller account of the same
@@ -99,7 +99,7 @@ hidden.
 
 <!-- Verification Ladders stood here, between Recent Results and the atlas, until
      2026-10-02 (the owner, think-hqb3): the section is the Results page's, under its
-     table, and the legend over Recent Results links it (think-42dx). Its two fragments,
+     table, and the legend under Recent Results' table links it (think-42dx). Its two fragments,
      #verification-ladders and the older #verification-at-a-glance, are sent there by
      forward.js (overview/forward.js). -->
 

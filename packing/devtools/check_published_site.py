@@ -64,14 +64,16 @@ the exit status is 0 only when every check passes:
   and its alt text, and the site's icon. The sampled case records are held as pages
   are. No two pages share a description. The card every page names is served at the
   site's root and is a PNG of the size the pages declare. A forwarder to a page of the
-  site previews that page, at that page's address, with a description naming it; the
-  one that leads off the site carries a canonical link to it, in full, and no card.
+  site previews that page, at that page's address, by the name, kind and description
+  that page's own head gives; the one that leads off the site carries a canonical link
+  to it, in full, and no card.
 
 `--local DIR` asks only that last group, of a site built into a directory
-(`devtools.preview_site`, which also runs it on every build), and fetches nothing; it
-holds every HTML file there with a head, every case record and any page this module
-does not name among them. `--local DIR --inventory` prints what every file's head
-carries and checks nothing.
+(`devtools.preview_site`, which also runs it on every build, and the Pages workflow's
+`overview` job), and fetches nothing; it holds every HTML file there that is a document,
+every case record and any page this module does not name among them, and each forwarder
+against the page it leads to wherever that page is there too. `--local DIR --inventory`
+prints what every file's head carries and checks nothing.
 
 This checks a live deployment, so it is not a step of the source gate;
 `tests/test_check_published_site.py` covers its parsing and failure controls on fixtures.
@@ -277,12 +279,20 @@ class _HeadReader(HTMLParser):
         self.metas: list[tuple[str, str]] = []
         self.links: list[tuple[str, str]] = []
         self.done = False
+        #: Whether the text opens a document: a doctype, an `<html>` or a `<head>`.
+        self.document = False
         self._title: list[str] | None = None
+
+    def handle_decl(self, decl: str) -> None:
+        if decl.lower().startswith("doctype"):
+            self.document = True
 
     def handle_starttag(self, tag: str, attrs: list[tuple[str, str | None]]) -> None:
         if self.done:
             return
         values = dict(attrs)
+        if tag in ("html", "head"):
+            self.document = True
         if tag == "html":
             self.lang = values.get("lang")
         elif tag == "title":
@@ -306,6 +316,19 @@ class _HeadReader(HTMLParser):
     def handle_data(self, data: str) -> None:
         if self._title is not None:
             self._title.append(data)
+
+
+def is_document(text: str) -> bool:
+    """Whether `text` is a page rather than a fragment: it has a doctype, an `<html>` or a
+    `<head>`, whatever its head then carries. A result's overview, a block fetched into a
+    popover, has none of them. What a head says is no test, since a page with no `lang`,
+    no title and no named `<meta>` says nothing and is a page all the same."""
+    reader = _HeadReader()
+    for start in range(0, len(text), _HEAD_CHUNK):
+        reader.feed(text[start : start + _HEAD_CHUNK])
+        if reader.document or reader.done:
+            break
+    return reader.document
 
 
 def read_head(text: str) -> PageHead:
@@ -410,21 +433,34 @@ def head_problems(text: str, canonical: str) -> list[str]:
     return problems
 
 
-def forwarder_problems(text: str, canonical: str) -> list[str]:
+#: What a forwarder's preview says of the page it leads to, which the page's own head
+#: says too: its name, its kind and its sentence. The rest of the set either follows from
+#: these (`twitter:title`, the descriptions) or is the site's, which `head_problems` holds.
+PREVIEWED = ("og:title", "og:type", "og:description")
+
+
+def forwarder_problems(text: str, canonical: str, destination: str | None = None) -> list[str]:
     """What is wrong with the head of a page that only sends a reader on to `canonical`,
     by the rule `render_overview.forwarder_head` writes it to.
 
     To a page of the site, it previews that page: the whole set a page's head carries,
     held as one is (`head_problems`), at `canonical`, so its canonical link and `og:url`
-    are where it leads, and a description that names that address. Off the site, it
-    names `canonical`, in full and once, and carries no preview, since the site does not
-    write the page it would describe.
+    are where it leads. `destination` is that page's text where the check has it, and
+    then the forwarder's name, kind and description (`PREVIEWED`) are the ones the page's
+    own head gives, so a shared old address does not preview the page under another
+    name. Off the site, it names `canonical`, in full and once, and carries no preview,
+    since the site does not write the page it would describe.
     """
     if canonical.startswith(render_overview.SITE_URL):
         problems = head_problems(text, canonical)
-        said = read_head(text).meta("description")
-        if len(said) == 1 and canonical not in said[0]:
-            problems.append(f"its description does not name {canonical}: {said[0]!r}")
+        if destination is not None:
+            # A tag the page does not give once is the page's own failure, named there.
+            head, page = read_head(text), read_head(destination)
+            problems += [
+                f"its {key} is {head.meta(key)}, and the page's own is {own}"
+                for key in PREVIEWED
+                if len(own := page.meta(key)) == 1 and head.meta(key) != own
+            ]
         return problems
     head = read_head(text)
     found = head.link("canonical")
@@ -470,7 +506,8 @@ def head_checks(
     (`index.html`, `workbench/index.html`); `records` is each case's record file, by its
     path (`cases/11.html`), held as a page is and reported in one line, since there are
     hundreds; `forwarders` is each page that only sends a reader on, as its text and the
-    canonical address it should name; `card` is the bytes served as the site's card, or
+    canonical address it should name, held to the head of the page at that address when
+    `pages` has it (`forwarder_problems`); `card` is the bytes served as the site's card, or
     `None` when nothing was. The deployed site and a directory a preview built are both
     read through this.
     """
@@ -511,15 +548,20 @@ def head_checks(
             else f"each of {len(described)} pages has a description of its own",
         )
     )
+    # A forwarder to a page of the site is held to that page's own head where it is here.
+    by_address = {render_overview.canonical_url(name): text for name, text in pages.items()}
     for name, (text, canonical) in forwarders.items():
-        problems = forwarder_problems(text, canonical)
+        destination = by_address.get(canonical)
+        problems = forwarder_problems(text, canonical, destination)
         within = canonical.startswith(render_overview.SITE_URL)
         line = (
             f"forwarder {name}: head: {'; '.join(problems)}"
             if problems
-            else f"forwarder {name}: previews {canonical}, the page it leads to"
-            if within
             else f"forwarder {name}: names {canonical} as canonical, and carries no card"
+            if not within
+            else f"forwarder {name}: previews {canonical} as that page's own head does"
+            if destination is not None
+            else f"forwarder {name}: previews {canonical}, whose page is not here to compare"
         )
         results.append((not problems, line))
     address = render_overview.SOCIAL_CARD
@@ -562,13 +604,14 @@ _RECORD_FILE = re.compile(rf"{re.escape(render_case_pages.CASES_DIR)}/\d+\.html"
 def local_head_checks(directory: Path) -> list[tuple[bool, str]]:
     """`head_checks` on a site built into `directory`, as `devtools.preview_site` leaves
     one. A page a build left out is reported and not failed, as a preview that skipped
-    a slow build would otherwise always fail; the card is required wherever a page that
-    names it is there.
+    a slow build would otherwise always fail; the card is required wherever a file that
+    names it is there, a page, a record or a forwarder to a page of the site.
 
-    Every HTML file there with a head is held, not only the pages this module names: a
-    forwarder by its rule, a case's record file as a page, and any other file as the
-    page it is, at the address it is served at, so a page a build adds later fails here
-    until it carries the set. A file with no head, a result's overview, is a fragment.
+    Every HTML file there that is a document (`is_document`) is held, not only the pages
+    this module names: a forwarder by its rule, a case's record file as a page, and any
+    other file as the page it is, at the address it is served at, so a page a build adds
+    later fails here until it carries the set, however little its head says. A file that
+    is no document, a result's overview, is a fragment.
     """
 
     def text(name: str) -> str | None:
@@ -587,17 +630,19 @@ def local_head_checks(directory: Path) -> list[tuple[bool, str]]:
         if name in pages or name in forwarders:
             continue
         found = path.read_text(encoding="utf-8")
-        if read_head(found) == PageHead(None, (), (), ()):
+        if not is_document(found):
             continue
         (records if _RECORD_FILE.fullmatch(name) else built)[name] = found
+    present = {
+        name: (found, to) for name, (found, to) in forwarders.items() if found is not None
+    }
     results = head_checks(
-        built,
-        {name: (found, to) for name, (found, to) in forwarders.items() if found is not None},
-        card.read_bytes() if card.is_file() else None,
-        records,
+        built, present, card.read_bytes() if card.is_file() else None, records
     )
-    if not built and not records and not card.is_file():
-        # The card is written with the site's own pages; a build without them names none.
+    # The card is written with the site's own pages. A build that has none of them, no
+    # record and no forwarder to a page of the site names no card, so it misses none.
+    carded = any(to.startswith(render_overview.SITE_URL) for _, to in present.values())
+    if not built and not records and not carded and not card.is_file():
         results[-1] = (True, f"card {render_overview.SOCIAL_CARD}: not in this build")
     absent = [name for name, found in pages.items() if found is None]
     absent += [name for name, (found, _) in forwarders.items() if found is None]
@@ -614,10 +659,11 @@ def head_inventory(directory: Path) -> list[str]:
     lines: list[str] = []
     fragments = 0
     for path in sorted(directory.rglob("*.html")):
-        head = read_head(path.read_text(encoding="utf-8"))
-        if head == PageHead(None, (), (), ()):
+        text = path.read_text(encoding="utf-8")
+        if not is_document(text):
             fragments += 1
             continue
+        head = read_head(text)
         lines.append(f"{path.relative_to(directory).as_posix()}  lang={head.lang!r}")
         lines += [f"  title: {title}" for title in head.titles]
         lines += [

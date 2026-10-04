@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import hashlib
+import re
 import struct
 from collections.abc import Callable, Sequence
 from pathlib import Path
@@ -75,15 +76,24 @@ CHECKOUT_COMMIT = check_published_site.checkout_commit
 HEAD_CHECKS = check_published_site.head_checks
 
 
+#: The pages a forwarder leads to, by their addresses, each with the record it writes its
+#: own head from. A fixture page there says what the page says, as a deployed one does,
+#: since the check holds each forwarder's preview to the head of the page it leads to.
+FORWARDED = {
+    render_overview.canonical_url(path): meta
+    for path, meta in render_overview.forwarded_metas().items()
+}
+
+
 def head(path: str, *, description: str | None = None) -> str:
     """A page's head as the site writes one (`render_overview.head_tags`, then the
     site's icon), for the page served at `path` under the root, saying something of its
-    own."""
-    meta = render_overview.PageMeta(
-        name=f"Page {path}",
-        description=description or f"What a reader finds at {path}.",
-        path=path,
+    own: a page a forwarder leads to, what its own record says."""
+    meta = FORWARDED.get(render_overview.canonical_url(path)) or render_overview.PageMeta(
+        name=f"Page {path}", description=f"What a reader finds at {path}.", path=path
     )
+    if description is not None:
+        meta = meta._replace(description=description)
     tags = f"{render_overview.head_tags(meta)}{render_overview.favicon_html()}"
     return f'<!doctype html><html lang="en"><head>{tags}</head>'
 
@@ -1067,7 +1077,7 @@ def test_check_holds_every_page_to_its_head_and_the_site_to_its_card(
     assert dict(render_overview.MOVED_PAGES)[landing] == OPTIMALITY_PAPER
     paper_url = render_overview.canonical_url(OPTIMALITY_PAPER)
     assert paper_url == f"{render_overview.SITE_URL}papers/n11-optimality-review.html"
-    assert f"forwarder {landing}: previews {paper_url}, the page it leads to" in lines
+    assert f"forwarder {landing}: previews {paper_url} as that page's own head does" in lines
     defects = dict(render_overview.MOVED_PAGES)["defects.html"]
     assert f"forwarder defects.html: names {defects} as canonical, and carries no card" in lines
     verbs = ("names", "previews")
@@ -1118,6 +1128,45 @@ def test_check_fails_a_page_whose_head_is_not_the_sites(
     (failure,) = found(**same)
     assert (
         failure == f"descriptions shared between pages: papers.html, visualize.html: {said!r}"
+    )
+
+
+#: Where each forwarder to a page of the site leads, as an address in full.
+FORWARDED_URLS = {
+    old: render_overview.canonical_url(new)
+    for old, new in render_overview.MOVED_PAGES
+    if not new.startswith("https://")
+}
+
+
+def test_check_fails_a_forwarder_that_previews_its_page_by_another_name_or_kind(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """A forwarder's preview is held to the head the deploy serves at the address it leads
+    to. The old address of the frontier atlas previewing it by a name the page no longer
+    has, and the explainer's previewing it as a website, as both did, each fail, though
+    each forwarder's own set is whole."""
+    forwarders = {moved.name: moved.html for moved in render_overview.forwarder_pages()}
+
+    def found(name: str, text: str) -> list[str]:
+        assert check_published_site.head_problems(text, FORWARDED_URLS[name]) == []
+        site = fake_site(site_pages(**{name: text.encode()}))
+        return failures(monkeypatch, site, heads=True)
+
+    renamed = forwarders["status.html"].replace("The Frontier Survey", "The Frontier Atlas")
+    (failure,) = found("status.html", renamed)
+    assert failure == (
+        "forwarder status.html: head: its og:title is ['The Frontier Atlas'], and the page's "
+        "own is ['The Frontier Survey']"
+    )
+    dated = re.compile(r'<meta property="article:\w+" content="[^"]*">\n')
+    website = dated.sub("", forwarders["explainer.html"]).replace(
+        'og:type" content="article"', 'og:type" content="website"'
+    )
+    (failure,) = found("explainer.html", website)
+    assert failure == (
+        "forwarder explainer.html: head: its og:type is ['website'], and the page's own is "
+        "['article']"
     )
 
 

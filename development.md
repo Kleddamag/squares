@@ -1062,8 +1062,9 @@ writes a forwarder at each old address: a page of a few lines whose script
 (`devtools/overview/forward.js`, the one the overview forwards its own old fragments
 with) sends the reader on with the query string and the fragment they came with, with a
 refresh and a link for a reader without scripts, the new address as its canonical URL,
-and, where it leads to a page of the site, that page’s link preview, so an old link
-shared now still shows where it goes.
+and, where it leads to a page of the site, that page’s own link preview, written from
+the record the page’s head is written from, so an old link shared now previews the page
+it leads to as a link to that page would.
 `render_overview.MOVED_FILES` lists each file that moved and cannot forward, a paper’s
 Markdown and PDF; the publish job copies each to its old address, and a test holds that
 step to the list. Nothing on the site links an old address.

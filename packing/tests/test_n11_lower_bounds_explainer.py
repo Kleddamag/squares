@@ -578,6 +578,37 @@ def test_the_card_and_the_page_say_the_same_thing(page: str) -> None:
     assert "T-026's historical bound" in description
 
 
+def test_the_forwarder_at_the_old_address_previews_the_page_as_the_page_does(
+    page: str,
+) -> None:
+    """A link to `explainer.html`, where the page was served until 2026-10-01, is still
+    shared, and the forwarder there previews the page (`render_overview.forwarder_pages`):
+    by the page's own title, kind, sentence and dates, read here from the rendered page,
+    and at its address. The card's sentence-case title and `website`, which it carried
+    first, previewed the paper as something else; `check_published_site` holds the
+    deployed forwarder to the deployed page the same way."""
+    forwarder = next(
+        moved.html
+        for moved in render_overview.forwarder_pages()
+        if moved.name == "explainer.html"
+    )
+    assert dict(render_overview.MOVED_PAGES)["explainer.html"] == SITE_PATH
+    assert check_published_site.forwarder_problems(forwarder, PAGE_URL, page) == []
+    head = check_published_site.read_head(forwarder)
+    own = check_published_site.read_head(page)
+    assert head.titles == own.titles
+    assert head.link("canonical") == own.link("canonical") == [PAGE_URL]
+    for key in (
+        *check_published_site.PREVIEWED,
+        "description",
+        "twitter:title",
+        "article:published_time",
+        "article:modified_time",
+    ):
+        assert head.meta(key) == own.meta(key), key
+    assert head.meta("og:type") == ["article"]
+
+
 def test_advanced_section_derives_the_current_lower_bound(document: str) -> None:
     current = current_bound_facts()
     prose = " ".join(document.split())

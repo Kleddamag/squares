@@ -10,6 +10,8 @@ from __future__ import annotations
 import copy
 import hashlib
 import json
+import os
+import sys
 import time
 from pathlib import Path
 from typing import Any
@@ -436,6 +438,49 @@ def test_check_mode_exits_one_on_a_receipt_with_a_fault(
     (tmp_path / replay.LOG_NAME).write_bytes(log)
     assert replay.main(["--check", "--receipt-dir", str(tmp_path)]) == 1
     assert "sorryAx" in capsys.readouterr().err
+
+
+def test_check_mode_exits_one_on_a_valid_receipt_of_a_failed_replay(
+    tmp_path: Path, capsys: pytest.CaptureFixture[str]
+) -> None:
+    # Review A8 on jlevy/squares#305: a well-formed failure receipt validates, and --check
+    # used to exit 0 on it.
+    receipt, log = failed_receipt("build")
+    (tmp_path / replay.RECEIPT_NAME).write_text(json.dumps(receipt))
+    (tmp_path / replay.LOG_NAME).write_bytes(log)
+    assert replay.check_retained(tmp_path) == []
+    assert replay.main(["--check", "--receipt-dir", str(tmp_path)]) == 1
+    assert "FAILED at step build" in capsys.readouterr().out
+
+
+@pytest.mark.skipif(sys.platform == "win32", reason="process groups are POSIX")
+def test_a_timeout_kills_the_command_s_children_too(tmp_path: Path) -> None:
+    # Review A18: the timer killed only the direct child, so a grandchild holding the
+    # pipe kept the read loop waiting. The whole group is killed now.
+    marker = tmp_path / "grandchild.pid"
+    script = f"sleep 300 & echo $! > {marker}; wait"
+    started = time.monotonic()
+    result = replay.run_command(["sh", "-c", script], tmp_path, 1.0)
+    assert time.monotonic() - started < 30
+    assert result.returncode != 0
+    grandchild = int(marker.read_text())
+    for _ in range(50):
+        if not running(grandchild):
+            break
+        time.sleep(0.1)
+    else:
+        pytest.fail(f"grandchild {grandchild} outlived the timeout")
+
+
+def running(pid: int) -> bool:
+    """Is `pid` a live process? A zombie counts as dead: a container's PID 1 may never
+    reap the orphan it inherits."""
+    try:
+        os.kill(pid, 0)
+    except ProcessLookupError:
+        return False
+    stat = Path(f"/proc/{pid}/stat")
+    return not stat.is_file() or stat.read_text().rsplit(")", 1)[-1].split()[0] != "Z"
 
 
 def test_a_missing_receipt_is_one_problem_not_a_traceback(tmp_path: Path) -> None:

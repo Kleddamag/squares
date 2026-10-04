@@ -808,17 +808,18 @@ sources:
     authors: [chelokot]
     year: 2026
     venue: GitHub
-    dated: '2026-09-04'
+    dated: '2026-09-05'
     credit: chelokot
     lineage: independent
     note: >-
       chelokot/square-packing-archive, docs/nagamochi-score-counterexample.md, first added
-      2026-09-04 (UTC) and unchanged to the retained head: a square of side 10001/10000 in
+      2026-09-04 (UTC) and unchanged to the retained head, 753079eb, committed
+      2026-09-05T21:42Z, the date given here: a square of side 10001/10000 in
       the 4 x 4 container scoring 25009470849041/25584000000000 < 1 under Nagamochi 2005's
       Section 3 weights, against that paper's Lemma 1. The author is the handle the
       repository's README and NOTICE name; its ATTRIBUTION.md credits AI-produced research
       and Lean formalizations to an AI system, and the repository does not cite this
-      project (web/chelokot-nagamochi-counterexample-2026-10-02/README.md).
+      project (web/chelokot-nagamochi-counterexample-2026-09-05/README.md).
 # The surname each credited name is cited under, for the names `found_by` and
 # `improved_by` carry. Listed rather than derived from the last word of the name, because
 # a credit can be an organization; a name missing here fails the build instead of being

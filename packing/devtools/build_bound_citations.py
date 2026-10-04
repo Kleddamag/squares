@@ -100,7 +100,6 @@ from __future__ import annotations
 import argparse
 import json
 import sys
-import unicodedata
 from collections import Counter
 from collections.abc import Iterable, Mapping, Sequence
 from dataclasses import dataclass
@@ -413,31 +412,8 @@ def compose(
     """
     who = [authors] if short_authors is None else [authors, short_authors]
     where = [source.venue] if source.short_venue is None else [source.venue, source.short_venue]
-    forms = [stage_spelling(cite(name, year, venue)) for name in who for venue in where]
+    forms = [cite(name, year, venue) for name in who for venue in where]
     return next((text for text in forms if len(text) <= room), forms[-1])
-
-
-def stage_spelling(text: str) -> str:
-    """`text` as the stage's embedded latin faces can set it: a letter outside Latin-1
-    that decomposes to a Latin-1 letter and accents is set as that letter alone.
-
-    The faces draw Latin-1 and little beyond it (`build_candidate.LATIN_RANGE` in the
-    workbench), so Karakuş's `ş` would fall back to whatever system face a browser has.
-    The fold is the stage's alone: the bibliography, the case records and every page keep
-    the whole spelling, as they keep the whole credit where the stage shortens it.
-    Characters with no Latin-1 base, such as dashes and quotation marks, are left for the
-    faces' own ranges to cover or the workbench's check to refuse.
-    """
-    folded = []
-    for character in text:
-        if ord(character) <= 0xFF:
-            folded.append(character)
-            continue
-        decomposed = unicodedata.normalize("NFKD", character)
-        base = "".join(part for part in decomposed if not unicodedata.combining(part))
-        latin = bool(base) and all(ord(part) <= 0xFF for part in base)
-        folded.append(base if latin else character)
-    return "".join(folded)
 
 
 def credit(

@@ -4923,6 +4923,9 @@ STEPS: tuple[Step, ...] = (
         touches=(
             *_CORE,
             "packing/devtools/regularize_axis_components.py",
+            "packing/devtools/census_atlas_contact_shades.py",
+            "packing/devtools/check_rational_witness_independent.py",
+            "packing/devtools/upper_bound_packets.py",
             "packing/atlas/known-best/regularized/*",
             "packing/atlas/known-best/manifest.json",
             "packing/witnesses/*",

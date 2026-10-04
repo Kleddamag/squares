@@ -48,6 +48,7 @@ is the archive's modules from source over the Mathlib cache.
 from __future__ import annotations
 
 import argparse
+import contextlib
 import hashlib
 import json
 import os
@@ -55,6 +56,7 @@ import platform
 import re
 import shlex
 import shutil
+import signal
 import subprocess
 import sys
 import threading
@@ -330,6 +332,13 @@ def tool_environment() -> dict[str, str]:
     return environment
 
 
+def kill_group(process: subprocess.Popen[bytes]) -> None:
+    """Kill the command and everything it started: `lake` runs `lean` as children, and
+    killing only the direct child would leave them holding the output pipe open."""
+    with contextlib.suppress(ProcessLookupError):
+        os.killpg(process.pid, signal.SIGKILL)
+
+
 def run_command(argv: Sequence[str], cwd: Path, timeout: float) -> CommandResult:
     """Run one command, echoing its lines to stderr as they arrive, killing it at timeout."""
     started = time.monotonic()
@@ -341,10 +350,11 @@ def run_command(argv: Sequence[str], cwd: Path, timeout: float) -> CommandResult
             stdin=subprocess.DEVNULL,
             stdout=subprocess.PIPE,
             stderr=subprocess.STDOUT,
+            start_new_session=True,
         )
     except OSError as error:
         return CommandResult(tuple(argv), 127, f"could not start {argv[0]}: {error}", 0.0)
-    timer = threading.Timer(timeout, process.kill)
+    timer = threading.Timer(timeout, kill_group, (process,))
     timer.start()
     chunks: list[bytes] = []
     try:
@@ -992,7 +1002,11 @@ def main(argv: Sequence[str] | None = None) -> int:
                 print(f"replay_chelokot_lean: {problem}", file=sys.stderr)
             return 1
         print(summary(args.receipt_dir))
-        return 0
+        # A well-formed receipt of a failed replay is a valid record, not a pass.
+        status = json.loads((args.receipt_dir / RECEIPT_NAME).read_text(encoding="utf-8"))[
+            "status"
+        ]
+        return 0 if status == "passed" else 1
     if args.workdir is None:
         cli.error("--run needs --workdir")
     workdir = args.workdir.resolve()

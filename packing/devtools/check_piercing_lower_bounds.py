@@ -31,15 +31,19 @@ From `packing/`, with `uv run --frozen --all-extras --group dev` before each:
 from __future__ import annotations
 
 import argparse
+import itertools
+import math
 import sys
 from collections.abc import Sequence
 from decimal import Decimal, InvalidOperation
+from fractions import Fraction
 from functools import cache
 from pathlib import Path
 from typing import Any
 
 import sympy
 
+from devtools.audit_t007_consumers import Surd
 from sqpack import retained_json
 from sqpack.known_best import KNOWN_BEST_CORPUS
 
@@ -60,22 +64,50 @@ SQRT3 = sympy.sqrt(3)
 DIGITS = 12
 
 
-#: Digits a floor is decided at. A value nearer an integer than this is decided exactly.
-PRECISION = 80
+def surd(value: sympy.Expr) -> Surd:
+    """`value` as an exact sum of rational multiples of square roots of integers.
+
+    Every quantity this tool decides is one: the step points are rationals and
+    `(√3/2)j + 2√2 - 1`, and `m`, `B` and the printed digits only scale and shift them.
+    `radsimp` clears the radicals from denominators, so the expanded value is a sum whose
+    terms are `1` or `√r` times a rational, and anything else is refused rather than
+    decided in floating point.
+    """
+    expression = sympy.expand(sympy.radsimp(sympy.expand(sympy.sympify(value))))
+    total = Surd()
+    for summand in sympy.Add.make_args(expression):
+        coefficient, term = summand.as_coeff_Mul()
+        radicand = (
+            term.base
+            if isinstance(term, sympy.Pow) and term.exp == sympy.Rational(1, 2)
+            else None
+        )
+        if not isinstance(coefficient, sympy.Rational) or not (
+            term == 1 or isinstance(radicand, sympy.Integer)
+        ):
+            raise ArithmeticError(f"not an exact surd: {value}")
+        part = Surd.rational(Fraction(int(coefficient.p), int(coefficient.q)))
+        if isinstance(radicand, sympy.Integer):
+            part *= Surd.root(int(radicand))
+        total += part
+    return total
+
+
+def exact_sign(value: sympy.Expr) -> int:
+    """The sign of `value`, exactly: square roots of distinct squarefree integers are
+    linearly independent, so a nonzero sum is separated from zero by refining rational
+    enclosures of its radicals (`Surd.sign`), with no tolerance anywhere."""
+    return surd(value).sign()
 
 
 def exact_floor(value: sympy.Expr) -> int:
-    """`⌊value⌋` for an algebraic `value`, decided at `PRECISION` digits and exactly where
-    the value is within `10^-60` of an integer: `sympy.floor` of an unevaluated sum of
-    surds can round a value a billionth below an integer up to it."""
-    approx = sympy.N(value, PRECISION)
-    nearest = int(sympy.Integer(round(approx)))
-    if abs(approx - nearest) < sympy.Rational(1, 10**60):
-        difference = sympy.nsimplify(sympy.simplify(value - nearest))
-        if difference == 0:
-            return nearest
-        return nearest if difference > 0 else nearest - 1
-    return int(sympy.floor(approx))
+    """`⌊value⌋` for an algebraic `value`, exactly (`Surd.floor`).
+
+    Neither `sympy.floor` of an unevaluated sum of surds, which can round a value a
+    billionth below an integer up to it, nor `nsimplify`, which decides at finite
+    precision, is used: `5 - (√2 - 1)^170` is within `10^-64` of 5 and its floor is 4.
+    """
+    return surd(value).floor()
 
 
 def m_of(x: sympy.Expr) -> int:
@@ -88,7 +120,7 @@ def pierce_bound(x: sympy.Expr) -> int:
     whole = exact_floor(x)
     rows = m_of(x) + 2
     base = whole * rows
-    if x - whole < sympy.Rational(1, 2):
+    if exact_sign(x - whole - sympy.Rational(1, 2)) < 0:
         return base
     return base + rows // 2
 
@@ -108,12 +140,21 @@ def steps(limit: int) -> tuple[sympy.Expr, ...]:
     j = 0
     while True:
         point = SQRT3 / 2 * j + start
-        if point > limit:
+        if exact_sign(point - limit) > 0:
             break
-        points.add(sympy.nsimplify(point))
+        points.add(point)
         j += 1
-    inside = [point for point in points if start <= point <= limit]
-    return tuple(sorted(inside, key=lambda point: sympy.N(point, 50)))
+    inside = [
+        point
+        for point in points
+        if exact_sign(point - start) >= 0 and exact_sign(point - limit) <= 0
+    ]
+    ordered = tuple(sorted(inside, key=lambda point: sympy.N(point, 50)))
+    # The sort key is a decimal; the order it gives is then confirmed exactly.
+    for left, right in itertools.pairwise(ordered):
+        if exact_sign(right - left) <= 0:
+            raise ArithmeticError(f"steps {left} and {right} are not strictly increasing")
+    return ordered
 
 
 @cache
@@ -133,7 +174,14 @@ def piercing_bound(n: int, limit: int = 40) -> sympy.Expr:
 
 def floor_decimal(value: sympy.Expr, digits: int = DIGITS) -> str:
     """`value` rounded down to `digits` significant digits, as the case records print."""
-    magnitude = exact_floor(sympy.log(sympy.N(value, PRECISION), 10))
+    if exact_sign(value) <= 0:
+        raise ValueError(f"only positive values are printed: {value}")
+    # A decimal guess at the magnitude, then corrected exactly: 10^magnitude <= value.
+    magnitude = math.floor(math.log10(float(sympy.N(value, 30))))
+    while exact_sign(value - sympy.Integer(10) ** magnitude) < 0:
+        magnitude -= 1
+    while exact_sign(value - sympy.Integer(10) ** (magnitude + 1)) >= 0:
+        magnitude += 1
     scale = digits - 1 - magnitude
     floored = exact_floor(value * sympy.Integer(10) ** scale)
     return format(Decimal(floored).scaleb(-scale).normalize(), "f")

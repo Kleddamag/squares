@@ -17287,7 +17287,9 @@ defects:
     published proof, to 2026-10-02. The read of 2026-08-30 judged the paper's spine sound
     with four named items unverified, and the defect lay in none of them. chelokot's note
     of 2026-09-04 and Karakuş's preprint of 2026-09-29 were public for 28 and 3 days of
-    that time; the X-049 literature lane found both on 2026-10-02.
+    that time. wand125 first reported both, and the defect, to this project in
+    jlevy/squares#295 at 02:55 UTC on 2026-10-02; the X-049 literature lane found both the
+    same day.
   severity: high
   status: fixed
   bead: think-xucp

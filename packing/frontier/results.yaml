@@ -7663,8 +7663,8 @@ results:
       September 2026; chelokot,
       [square-packing-archive](https://github.com/chelokot/square-packing-archive), 4
       September 2026, the earlier public record, which Karakuş's paper does not cite.
-      wand125 first reported both, and the defect, to this project in
-      [jlevy/squares#295](https://github.com/jlevy/squares/issues/295), 2 October 2026.
+      wand125 first reported both, and the defect, to this project in jlevy/squares#295,
+      2 October 2026.
     scope: {n_min: 10, n_max: 324}
     verification: V3
     confirmation: C3

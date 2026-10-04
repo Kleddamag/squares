@@ -1,0 +1,22 @@
+{
+  "diagnostic_only": true,
+  "new_exclusions": 0,
+  "mode": "pieces",
+  "seed_sha256": "c548ed2ed62e6c84276aa7135c956610022874732f195c8c6706b020798282a6",
+  "node_sha256": "5d09ba6c6f5bf45fd35db979a1bac66d42034c622c1ffe9c415b9835cc5140b8",
+  "atoms_per_owner": {
+    "8": 491,
+    "10": 362,
+    "17": 140,
+    "18": 742,
+    "19": 672,
+    "22": 115
+  },
+  "possible_pair_tests": 2476693,
+  "status": "guard-refused",
+  "reason": "six owners / 32 atoms per owner / 15360 pair ceiling",
+  "pair_tests": 0,
+  "wall_seconds": 0.12311620003310964,
+  "cpu_seconds": 0.125,
+  "worker_peak_bytes": 152145920
+}

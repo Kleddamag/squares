@@ -145,9 +145,8 @@ def test_the_checkbox_starts_at_its_pages_default_and_the_table_with_it(
     # What stays: every standing but superseded, and a result that is no bound whatever
     # its evidence makes its standing, the limit of a method among them (T-003), unless
     # a later result is declared to imply all of it: T-031 goes, and T-036, superseded
-    # only in part, stays. No
-    # result has stood as a reported second certificate since 2 October 2026, when
-    # T-055's replay made it a verified one.
+    # only in part, stays. No result has stood as a reported second certificate since
+    # 2 October 2026, when T-055's replay made it a verified one.
     kept = [result for result in overview.results if result.id.lower() in current]
     assert {result.standing for result in kept} == {
         render_recent_results.HOLDS,

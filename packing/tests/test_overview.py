@@ -3698,7 +3698,8 @@ def test_both_tables_of_results_have_the_same_columns(
     what names the page it is on and nothing else: its key, the result's own address
     (`id`) on the results page and `data-result` on the overview, and `hidden`, which is
     where each table's filters start. So the overview shows each result's records, as
-    the results page does, and no row of one links to the other. Both sort and both
+    the results page does, and a row links to the results page only where its status
+    names the results that supersede it. Both sort and both
     filter. The columns run date, result, cases, credit, rungs, status, details and id,
     the owner's order of 2026-10-02 (`think-t090`, `think-ybt5`, `think-e4o3`): a
     result's records are its Details, a link to a line, and its result cell holds the

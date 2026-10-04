@@ -1,0 +1,21 @@
+{
+  "diagnostic_only": true,
+  "new_exclusions": 0,
+  "status": "PASS_REPLAYED_ALL_ROWS",
+  "supported_rows": 24,
+  "live_rows": 24,
+  "selections_checked": 15,
+  "fresh_pair_checks": 225,
+  "all_rows_supported": true,
+  "unsupported_rows_independently_verified": false,
+  "input_identity": {
+    "seed_sha256": "214210df5ff7f8a5127bca17dda23a7941ca659a0d067243d83d65a5f0c213b7",
+    "node_sha256": "38b3546a3082aa0070ff5c229f84e53c1a073c55c6e50a59ff3363119f861654",
+    "cold_receipt_sha256": "802d96a132b3571e0dc2728733eeeb1b7cf6d56da2a17c7a10038bee0ac62518"
+  },
+  "packet_sha256": "9a38b7d6f18a57ee927196f711a03a7daf75b730288cfb3db47ed8d24a87eecb",
+  "endpoint_exact_presence_replayed": true,
+  "wall_seconds": 0.09921499999472871,
+  "cpu_seconds": 0.109375,
+  "worker_peak_bytes": 144003072
+}

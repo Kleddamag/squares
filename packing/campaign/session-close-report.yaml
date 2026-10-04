@@ -7,11 +7,11 @@ softschema:
   schema: schemas/session-close-report.schema.yaml
   envelope: null
   status: enforced
-count: 170
+count: 171
 generated_by: >-
   uv run --frozen --all-extras --group dev python -m devtools.close_session --render
 totals:
-  sessions_measured: 116
+  sessions_measured: 117
   sessions_unmeasured: 54
   attributed:
     rollups: 276
@@ -35,9 +35,9 @@ totals:
     one_off_code: 6570
     wall_hours: 641.91
 codex_receipts:
-  attributed: 71
+  attributed: 72
   unattributed: 2
-  measured: 73
+  measured: 74
 # Per-session figures below are the logs each session DECLARES. They overlap when
 # sessions share a harness log, so they do not sum to `attributed` above.
 sessions:
@@ -2964,4 +2964,24 @@ sessions:
     agent_hours: 1.85
     active_union_hours: 0.98
     wall_hours: 0.98
+    snapshot_incomplete: true
+- id: session-172
+  title: "One bounded raw-row capacity completion attempt"
+  status: stopped
+  primary_bead: think-2uhz
+  phases: 3
+  measured: true
+  rollups:
+  - packing/campaign/resource-usage/codex-session-172.yaml
+  turns: null
+  tool_calls: null
+  tool_errors: null
+  one_off_code: null
+  wall_hours: null
+  codex_receipts:
+  - path: packing/campaign/resource-usage/codex-session-172.yaml
+    model_responses: 52
+    agent_hours: 0.56
+    active_union_hours: 0.28
+    wall_hours: 0.28
     snapshot_incomplete: true

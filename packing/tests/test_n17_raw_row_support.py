@@ -6,6 +6,7 @@ import copy
 import gzip
 import json
 import random
+import sys
 import time
 from itertools import combinations, product
 from pathlib import Path
@@ -262,3 +263,62 @@ def test_seed_provenance_is_rebuilt_and_all_edges_charged() -> None:
         raw.LazySupports(atoms, budget(), predicate=lambda _a, _b, _c: True).run(
             initial_selections=seeds, strategy="forward-mrv"
         )
+
+
+def test_default_and_explicit_high_pair_cap() -> None:
+    arguments = ["objects", "--checked-receipt", "cold.json", "--output", "out.json"]
+    assert raw.build_parser().parse_args(arguments).max_pairs == 50_000
+    assert (
+        raw.build_parser().parse_args([*arguments, "--max-pairs", "250000"]).max_pairs
+        == 250_000
+    )
+
+
+@pytest.mark.parametrize("value", ["0", "-1", "250001", "not-an-integer"])
+def test_invalid_pair_cap_is_refused(value: str) -> None:
+    with pytest.raises(SystemExit):
+        raw.build_parser().parse_args(
+            ["objects", "--checked-receipt", "cold", "--output", "out", "--max-pairs", value]
+        )
+
+
+@pytest.mark.parametrize("cap", [2, 250_000])
+def test_cli_limit_reaches_search_and_partial_final_packets(
+    cap: int, monkeypatch: pytest.MonkeyPatch, tmp_path: Path
+) -> None:
+    frame, document = fixture_document()
+    identity = {"node_sha256": raw.content_sha256(document)}
+    monkeypatch.setattr(
+        raw, "checked_inputs", lambda _directory, _receipt: (document, identity)
+    )
+    monkeypatch.setattr(raw, "n17_unique_frame", lambda: frame)
+    monkeypatch.setattr(raw, "endpoint_selection", lambda _frame, _doc, _atoms: [0, 1, 2])
+    output = tmp_path / "out.json"
+    arguments = [
+        "probe",
+        "objects",
+        "--checked-receipt",
+        "cold",
+        "--output",
+        str(output),
+        "--strategy",
+        "forward-mrv",
+        "--max-pairs",
+        str(cap),
+    ]
+    if cap == 250_000:
+        arguments.append("--endpoint")
+    monkeypatch.setattr(sys, "argv", arguments)
+    assert raw.main() == 0
+    result = json.loads(output.read_text())
+    assert result["limits"]["unique_pairs"] == cap
+    if cap == 2:
+        assert result["status"] == "INCOMPLETE"
+        assert result["reason"] == "unique exact pair ceiling"
+        assert result["unique_pair_tests"] == cap
+        assert result["exhaustive_unsupported_rows"] == []
+    else:
+        assert result["status"] == "ALL_ROWS_SUPPORTED"
+        partial = json.loads(output.with_suffix(".partial.json").read_text())
+        assert partial["limits"]["unique_pairs"] == cap
+        assert partial["initial_selections_revalidated"] == 1

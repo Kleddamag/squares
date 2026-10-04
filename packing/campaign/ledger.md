@@ -185,6 +185,7 @@ Each entry summarizes one user-level research window. Cycle slots are wall-clock
 | [session-169](agent-sessions/session-169-n17-producer-memo.md) | stopped | contemporaneous | `review-planning-oversight` (insight) | `review-planning-oversight` (correctness) | 3 | think-wn6x | Review Draft PR325 under think-wn6x; upstream think-tmz6 remains the research coordinator. No merge or new compute is authorized by this closeout. |
 | [session-170](agent-sessions/session-170-residual-compatibility.md) | stopped | retrospective | `review-planning-oversight` (insight) | `review-planning-oversight` (correctness) | 4 | think-67ek | Review Draft PR333 and clear current-history certification under think-67ek. Next independent local project is worker-memory supervision; no automatic larger geometry target. |
 | [session-171](agent-sessions/session-171-raw-row-support.md) | stopped | contemporaneous | `pipeline-improvement` (efficiency) | `review-planning-oversight` (correctness) | 6 | think-op6s | Upstream capture/Flag2 remains under think-tmz6. Conditional P01E requires this terminal record and final metadata current-head CI terminal without own failures; no automatic larger run. |
+| [session-172](agent-sessions/session-172-capacity-support.md) | stopped | contemporaneous | `pipeline-improvement` (efficiency) | `review-planning-oversight` (correctness) | 3 | think-2uhz | Publish bounded source/evidence/native terminal record, observe exact new-head fast/required gate, then clear think-2uhz certification debt. Upstream think-tmz6 stays owned; no capacity/order ladder. |
 
 ### Workflow summary
 
@@ -197,11 +198,11 @@ Declared counts are contemporaneous contracts; retrospective counts are reconstr
 | `insight-iteration` | 28 | 1 | 88 | 4 |
 | `process-review` | 16 | 4 | 64 | 6 |
 | `efficiency-loop` | 11 | 1 | 41 | 1 |
-| `research-loop` | 31 | 4 | 118 | 9 |
-| `pipeline-improvement` | 39 | 2 | 210 | 7 |
+| `research-loop` | 31 | 4 | 119 | 9 |
+| `pipeline-improvement` | 40 | 2 | 211 | 7 |
 | `documentation-pass` | 1 | 0 | 29 | 3 |
 | `remediation` | 2 | 1 | 2 | 3 |
-| `review-planning-oversight` | 7 | 3 | 45 | 6 |
+| `review-planning-oversight` | 7 | 3 | 46 | 6 |
 | `general-improvement` | 1 | 0 | 7 | 1 |
 
 ## Experiment agendas

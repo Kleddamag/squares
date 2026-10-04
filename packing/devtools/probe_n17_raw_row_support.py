@@ -28,6 +28,7 @@ from sqpack.hull_kernel.induction import encode
 MAX_ATOMS = 4096
 MAX_ROWS = 128
 MAX_PAIRS = 50_000
+MAX_PAIR_CAP = 250_000
 MAX_NODES = 100_000
 MAX_PEAK_BYTES = 512 * 1024 * 1024
 MAX_PACKET_BYTES = 4 * 1024 * 1024
@@ -316,6 +317,8 @@ def packet(
     atoms: list[Atom],
     document: dict[str, Any],
     identity: dict[str, Any],
+    *,
+    max_pairs: int = MAX_PAIRS,
 ) -> dict[str, Any]:
     return {
         **result,
@@ -327,7 +330,7 @@ def packet(
         "raw_atoms": len(atoms),
         "live_rows": len({(a.owner, a.row) for a in atoms}),
         "limits": {
-            "unique_pairs": MAX_PAIRS,
+            "unique_pairs": max_pairs,
             "DFS_nodes": MAX_NODES,
             "wall_seconds": 180,
             "peak_bytes": MAX_PEAK_BYTES,
@@ -474,7 +477,17 @@ def endpoint_selection(frame: Frame, document: dict[str, Any], atoms: list[Atom]
     return selected
 
 
-def main() -> int:
+def bounded_pair_count(value: str) -> int:
+    try:
+        count = int(value)
+    except ValueError as error:
+        raise argparse.ArgumentTypeError("pair cap must be an integer") from error
+    if not 1 <= count <= MAX_PAIR_CAP:
+        raise argparse.ArgumentTypeError(f"pair cap must be between 1 and {MAX_PAIR_CAP}")
+    return count
+
+
+def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("directory", type=Path)
     parser.add_argument("--checked-receipt", type=Path, required=True)
@@ -483,7 +496,12 @@ def main() -> int:
     parser.add_argument("--endpoint", action="store_true")
     parser.add_argument("--strategy", choices=("fixed", "forward-mrv"), default="fixed")
     parser.add_argument("--seed-packet", type=Path)
-    args = parser.parse_args()
+    parser.add_argument("--max-pairs", type=bounded_pair_count, default=MAX_PAIRS)
+    return parser
+
+
+def main() -> int:
+    args = build_parser().parse_args()
     started, cpu = time.monotonic(), time.process_time()
     budget = Budget(started + (120 if args.verify else 180), MAX_NODES)
     result: dict[str, Any] = {"diagnostic_only": True, "new_exclusions": 0}
@@ -505,7 +523,7 @@ def main() -> int:
                 )
                 result["endpoint_exact_presence_replayed"] = True
         else:
-            search = LazySupports(atoms, budget)
+            search = LazySupports(atoms, budget, max_pairs=args.max_pairs)
             initial = endpoint_selection(frame, document, atoms) if args.endpoint else None
             seed_value = bounded_json(args.seed_packet) if args.seed_packet else None
             seeds = (
@@ -517,7 +535,7 @@ def main() -> int:
             def checkpoint(snapshot: dict[str, Any]) -> None:
                 write_json(
                     args.output.with_suffix(".partial.json"),
-                    packet(snapshot, atoms, document, identity),
+                    packet(snapshot, atoms, document, identity, max_pairs=args.max_pairs),
                 )
 
             result.update(
@@ -531,6 +549,7 @@ def main() -> int:
                     atoms,
                     document,
                     identity,
+                    max_pairs=args.max_pairs,
                 )
             )
             result["strategy"] = args.strategy

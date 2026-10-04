@@ -65,7 +65,8 @@ session:
       measuring PR 305''s history against a squash and the whole repository''s growth (think-nkp0); carry
       the record-per-line layout repo-wide in a pull request stacked on PR 305 (think-k131); and merge
       main into PR 305 after main merged PRs 292 and 311, renumbering this branch''s results to
-      T-080..T-084, and to T-082..T-086 after main merged PRs 320 and 322 (think-ak5w).'
+      T-080..T-084, to T-082..T-086 after main merged PRs 320 and 322, and to T-083..T-087 after main
+      merged PRs 324, 327 and 328 (think-ak5w).'
     bead: think-gmef
     status: in_progress
     entered_by: user_request
@@ -209,8 +210,8 @@ session:
     recording: contemporaneous
     phase: 2
     outcome: 'Merged with all 67 conflicts resolved (e617ae4b1, re-pin bcb8bdba5, record merge 19d5830bd):
-      the register is contiguous T-001..T-086; main''s certificate floors won all 45 cases both sides
-      moved, none resting on Nagamochi; 225 floors still correct Nagamochi 2005 (from 265); T-086 is
+      the register is contiguous T-001..T-087; main''s certificate floors won all 45 cases both sides
+      moved, none resting on Nagamochi; 225 floors still correct Nagamochi 2005 (from 265); T-087 is
       superseded at n = 37 (161/25, T-069) and n = 61 (s(61) = 8, T-063) and stays registered; 247 open and
       77 proved cases. It raised the negative-controls snapshot cap (192 to 224 MiB) and the index page
       test ceiling (4.3 to 4.7 MB), each with a dated reason, and flagged n-034''s stale prose, which the

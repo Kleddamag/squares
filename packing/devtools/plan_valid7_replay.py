@@ -43,7 +43,8 @@ anything runs. This tool decides nothing about a leaf; the checkers do.
     recorded twice; together they hold exactly the published roots; none has an
     uncertified box or a counterexample; and each root's leaf list equals the published
     one. For ``wand125`` that equality is asked of the V2 roots only, since V1 split
-    differently.
+    differently. It also counts the shards' leaves and sums their per-root times
+    (``root_hours``): CPU for ``qx2``, wall time in the worker for ``wand125``.
 
 From ``packing/``::
 
@@ -470,13 +471,16 @@ def compare(
     reference = {root.box: root for root in published(checker, records)}
     problems: list[str] = []
     seen: Counter[Box] = Counter()
-    differ = matched = 0
+    differ = matched = leaves = 0
+    seconds = 0.0
     for path in shards:
         record = read_record(path, checker)
         problems += _header_problems(path.name, record, checker, guarded=guarded)
         problems += _argv_problems(path.name, record.header, checker)
         for root in record.roots:
             seen[root.box] += 1
+            leaves += len(root.leaves)
+            seconds += root.cpu
             if root.bad:
                 problems.append(
                     f"{path.name}: root {[str(v) for v in root.box]} has {root.bad}"
@@ -506,6 +510,8 @@ def compare(
         "roots_matching_published_leaves": matched,
         "roots_not_compared": sum(not r.comparable for r in reference.values()),
         "partial": partial,
+        "leaves": leaves,
+        "root_hours": round(seconds / 3600, 2),
     }
 
 

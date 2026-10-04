@@ -1,10 +1,11 @@
 """Controls for the mixed rectangle-measure certificates of wand125/square-packing-bounds.
 
-`devtools.audit_wand125_point_and_mixed` audits and replays fifteen of them: n = 50
+`devtools.audit_wand125_point_and_mixed` audits and replays 37 of them: n = 50
 (T-048), the five of jlevy/squares#282 (T-069), the two of its comment of 2 October, the
-n = 76 of its later comment that day, and the six of that afternoon pinned at ``b00fc70``,
+n = 76 of its later comment that day, the six of that afternoon pinned at ``b00fc70``,
 two of which supersede certificates at n = 85 and 92 and are named ``n85-L946`` and
-``n92-L975``. Three families of check stand between a certificate and a recorded replay,
+``n92-L975``, and the 22 of 3 October pinned at ``2aff207``, five of them at counts
+already named. Three families of check stand between a certificate and a recorded replay,
 and each is held here to its positive case and to two or more mutated controls that it
 must refuse:
 
@@ -47,6 +48,7 @@ from devtools import audit_wand125_point_and_mixed as audit
 G_PACKET = audit.G_PACKET
 H_PACKET = audit.H_PACKET
 I_PACKET = audit.I_PACKET
+J_PACKET = audit.J_PACKET
 NAMES = sorted(audit.MIXED, key=lambda name: (audit.MIXED[name].n, audit.MIXED[name].side))
 
 
@@ -133,8 +135,10 @@ def test_the_g_packet_matches_its_acquisition_contract() -> None:
     assert acquire_source.check(G_PACKET, acquire_source.REPO) == []
 
 
-@pytest.mark.parametrize("packet", [G_PACKET, H_PACKET, I_PACKET], ids=["g", "h", "i"])
-def test_each_2_october_packet_audit_recomputes_to_its_receipt(packet: Path) -> None:
+@pytest.mark.parametrize(
+    "packet", [G_PACKET, H_PACKET, I_PACKET, J_PACKET], ids=["g", "h", "i", "j"]
+)
+def test_each_october_packet_audit_recomputes_to_its_receipt(packet: Path) -> None:
     receipt = packet / "receipts/mixed-audit.json"
     expected = json.dumps(audit.mixed_audit(packet), indent=2, default=str) + "\n"
     assert receipt.read_text(encoding="utf-8") == expected
@@ -156,6 +160,41 @@ def test_the_h_comparison_is_the_sources_own_rectangle_value(
 
 def test_the_i_packet_matches_its_acquisition_contract() -> None:
     assert acquire_source.check(I_PACKET, acquire_source.REPO) == []
+
+
+def test_the_j_packet_matches_its_acquisition_contract() -> None:
+    assert acquire_source.check(J_PACKET, acquire_source.REPO) == []
+
+
+def test_the_3_october_certificates_take_their_sides_where_a_count_is_named() -> None:
+    later = {name: c for name, c in audit.MIXED.items() if c.packet == J_PACKET}
+    assert len(later) == 22
+    assert {name for name in later if "-L" in name} == {
+        "n76-L896",
+        "n87-L955",
+        "n90-L9725",
+        "n91-L975",
+        "n92-L977",
+        "n96-L997",
+    }
+    assert audit.MIXED["n90-L9725"].tarball == "n90-L9.725-proof-bundle.tar.gz"
+    assert audit.MIXED["n86"].directory.name == "mixed_n86_L950"
+    assert {c.revision for c in later.values()} == {audit.J_REVISION}
+
+
+def test_the_j_comparisons_are_exact_rationals_below_each_side(
+    audits: dict[str, dict[str, Any]],
+) -> None:
+    """None of the 22 compares with a rounded Green value: each compares with a rational,
+    exceeds Green's and Nagamochi's values, and states L minus that rational."""
+    for name, certificate in audit.MIXED.items():
+        if certificate.packet != J_PACKET:
+            continue
+        facts = audits[name]
+        assert facts["source_audit"]["compared_field"] == "compared_with"
+        assert Fraction(facts["source_audit"]["compared_with"]) != Fraction(92667, 10000)
+        assert facts["comparison"]["side_exceeds_green"]
+        assert facts["comparison"]["side_exceeds_nagamochi"]
 
 
 def test_a_later_certificate_at_a_named_count_takes_its_side_as_well() -> None:
@@ -533,6 +572,23 @@ def test_a_plan_splits_every_angle_into_contiguous_ranges(parts: int) -> None:
     shares = [part["share"] for part in plan["parts"]]
     assert sum(shares) == pytest.approx(1, abs=1e-3)
     assert max(shares) <= 1.1 / parts + 0.01
+
+
+@pytest.mark.parametrize("runners", [1, 4, 8])
+def test_a_shard_runs_every_angle_of_every_certificate_once(runners: int) -> None:
+    shard = audit.mixed_shard(J_PACKET, runners)
+    assert len(shard["plan"]) == runners
+    covered: dict[str, list[int]] = {}
+    for runner in shard["plan"]:
+        assert len(runner["commands"]) == len(runner["pieces"])
+        for piece in runner["pieces"]:
+            first, last = piece["range"]
+            covered.setdefault(piece["certificate"], []).extend(range(first, last + 1))
+    assert set(covered) == set(shard["certificates"])
+    assert all(sorted(angles) == list(range(audit.N50_LAST + 1)) for angles in covered.values())
+    loads = [runner["estimated_cpu_hours"] for runner in shard["plan"]]
+    assert sum(loads) == pytest.approx(shard["estimated_cpu_hours"], abs=0.1)
+    assert max(loads) <= 1.15 * sum(loads) / runners + 0.01
 
 
 def test_unpacking_replaces_only_the_work_directory(tmp_path: Path) -> None:

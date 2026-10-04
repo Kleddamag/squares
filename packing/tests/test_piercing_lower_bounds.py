@@ -61,7 +61,7 @@ def test_a_printed_bound_is_rounded_down() -> None:
 
 def test_the_retained_survey_is_current() -> None:
     retained = json.loads(piercing.RESULT.read_text(encoding="utf-8"))
-    # Registered as T-086 on 2026-10-03: the bound holds the verified floor at the two
+    # Registered as T-087 on 2026-10-03: the bound holds the verified floor at the two
     # cases where it beat the floor held before, and beats it nowhere. It also reaches the
     # integer floor at the cases its Theorem 9 reproduces (s(8) = 3 up to s(48) = 7) and
     # at the perfect squares, which other results already hold. Since the merge of the

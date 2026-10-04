@@ -24,7 +24,7 @@ Independent support is kept in separate fields, never merged:
 - chelokot's Lean re-proof of `s(n^2 - 2) = n`, located in his archived note and the
   archived Evand sources that report it. Since 2 October 2026 it is replayed here
   (`devtools.replay_chelokot_lean`, with its axiom receipt) and registered as
-  `E-chelokot-square-minus-two-lean` (`T-085`), so a `k^2 - 2` case's operative bound cites
+  `E-chelokot-square-minus-two-lean` (`T-086`), so a `k^2 - 2` case's operative bound cites
   it like any other verified evidence. This entry says whether the register holds the
   family theorem as verified, read from that evidence record; the individual values the
   same sources list stay reported pointers.
@@ -193,7 +193,7 @@ CHELOKOT = {
         "the archive README and not retained"
     ),
     "evidence": "E-chelokot-square-minus-two-lean",
-    "result": "T-085",
+    "result": "T-086",
     "receipt": (
         "packing/campaign/series/series-000-smoke-and-calibration/results/"
         "chelokot-lean-replay/receipt.json"

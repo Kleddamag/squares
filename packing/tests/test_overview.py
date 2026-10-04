@@ -2826,8 +2826,8 @@ def test_recent_results_is_one_table_not_cards_or_a_list(
     # every closure since: each is a case some row lists. Until 2026-10-02 each was its
     # row's first case; s(78) = 9, proved that day by the s(77) cover's total being below
     # 78, is the second case of T-067's row, which lists 77 and 78. Since 2026-10-02 the
-    # k^2-1 and k^2-2 families count too, whose exact values rest on 2026 results (T-083,
-    # T-085) that each cover a whole family rather than one case.
+    # k^2-1 and k^2-2 families count too, whose exact values rest on 2026 results (T-084,
+    # T-086) that each cover a whole family rather than one case.
     exact = {n for n in overview.recent_lower if overview.cases[n]["status"] == "proved"}
     shown = {n for r in newest for n in scope_values(dict(r.record["scope"]))}
     assert exact <= shown

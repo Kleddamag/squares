@@ -217,9 +217,9 @@ def test_a_fraction_shows_its_decimal_and_a_name_stays_whole(
     # n = 18 until 2026-10-02, when T-045's replay raised its verified bound to the
     # reported 939/200 and the cell became "same", and then n = 19 until T-074's did the
     # same there later that day; n = 51 shows both, 37/5 from n = 50's replayed mixed
-    # certificate below its own reported rectangle certificate.
+    # certificate below its own reported mixed certificate, 373/50 (T-082).
     assert rows["n-51"]["cells"][column("Verified lower")]["approx"] == ["= 7.4"]
-    assert rows["n-51"]["cells"][column("Reported lower")]["approx"] == ["= 7.4425"]
+    assert rows["n-51"]["cells"][column("Reported lower")]["approx"] == ["= 7.46"]
     assert all(cell["approx"] == [] for cell in rows["n-1"]["cells"])
     assert rows["n-11"]["cells"][column("Reported lower")]["broken"] == []
 
@@ -256,10 +256,11 @@ def test_the_table_still_sorts_filters_and_opens(page: Any, laid: dict[int, Any]
     # T-069, T-071, T-074 and s(77), s(78)) made 60; T-064's replay of 3 October, which
     # proved nine k^2 - 3 cases, made 69; T-075's replays the same day took n = 83, 91 and
     # 96 off Nagamochi's bound and made 72; T-080's replayed linear certificate took
-    # n = 101 to 105 off it and made 77, the cases `recent_lower_bounds` names. Since the
-    # correction of 2 October 2026 was merged with those on 3 October, the corrected floors
-    # (Karakus 2026, the Lean s(k^2-2) proof) are recent as well, so the count is read from
-    # the citation record rather than pinned here.
+    # n = 101 to 105 off it and made 77; T-076's replayed linear certificate took n = 82
+    # off it and made 78, the cases `recent_lower_bounds` names. Since the correction of
+    # 2 October 2026 was merged with those on 3 October, the corrected floors (Karakus
+    # 2026, the Lean s(k^2-2) proof) are recent as well, so the count is read from the
+    # citation record rather than pinned here.
     page.get_by_label("recent only").check()
     count = page.locator(".site-table-tools .site-count").inner_text()
     assert count == f"{len(starred)} of 324 cases"

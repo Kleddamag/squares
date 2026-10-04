@@ -201,6 +201,32 @@ $N = 14, 23, 34, 47, 62, 79, 98$. The gate’s `check_nagamochi_bounds` re-deriv
 closed form from the formula and will keep passing; it checks transcription, not truth,
 and says so in its docstring.
 
+Added 4 October 2026: two independent proofs in the register import lemmas from the same
+paper, and neither import passes through the gap.
+$s(13) = 4$ and $s(46) = 7$ rest on
+[Bentz 2010](../../../packing/resources/papers/bentz-2010-optimal-packings-13-and-46.md),
+whose Lemma 1, credited “(Nagamochi \[7\], Stromquist \[8\])”, says that a box with
+centre in $[0,1]^2$ that does not meet the axes contains $(1,1)$, $(0.9,1)$ and
+$(1,0.9)$. That is Nagamochi’s Lemma 7(ii), stated in Section 5.4 for use in Cases 5 to
+7 but proved before them and apart from them: from the corner fact Nagamochi cites to
+Friedman’s survey and from Lemma 7(i), which follows from the chord estimates of Lemma 3
+(at $h = 0.9$) and Lemma 2 (at $h = 0.1$). $s(22) = 5$ and $s(33) = 6$ rest on
+[Bentz 2016](../../../packing/resources/papers/bentz-2016-optimal-packings-22-and-33.md),
+whose Lemma 4, credited “(Nagamochi \[8\])”, says that a line within $(\sqrt2 - 1)/2$ of
+a box’s centre meets the box in more than one unit of length.
+That is Nagamochi’s Lemma 2, whose proof is a direct trigonometric computation that
+cites no other result.
+Each paper also cites Nagamochi in its introduction, for $s(m^2-1) = s(m^2-2) = m$, for
+the earlier general floors and, in 2016, as the precedent for weighted resources: all
+background, none of it used in the proofs.
+Neither import is Lemma 1, Theorem 1 or 2, or Lemma 6, and neither proof passes through
+Case 6; Karakuş himself calls Nagamochi’s Lemmas 2 to 5 chord and cap estimates and
+locates the defect only in Case 6’s use of Lemma 6. One thing still applies to them: the
+trigonometry inside Lemmas 2 and 3 is among what the 30 August read recorded as
+unverified, and nothing here has re-derived it.
+`devtools.audit_t007_consumers` records the same two imports against
+`E-bentz-2010-proof` and `E-bentz-2016-proof`.
+
 ## Repairs in the Literature
 
 ### Karakuş’s strip measure, audited here

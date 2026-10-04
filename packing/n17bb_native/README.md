@@ -19,7 +19,8 @@ uv run --frozen python -m devtools.build_n17_bb_native
 The helper runs rustfmt, Clippy, unit tests, rustdoc, and the locked release build.
 Its last output line is the directory containing `n17bb_native.abi3.so`, or the
 equivalent name on the current platform.
-By default this is `target/python`; `--output-dir` selects another destination.
+From `packing/`, the default is `n17bb_native/target/python`; `--output-dir` selects
+another destination.
 
 The native path is an accelerator rather than independent proof evidence.
 Differential replay checks it bit for bit against the Python LP and tightening loops

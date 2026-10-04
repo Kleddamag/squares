@@ -6756,7 +6756,7 @@ It is contained rather than fixed — such delegations are recorded on completio
 `read_only` flag is better than permitting an empty list that would be ambiguous between
 “writes nothing” and “nobody filled this in”.
 
-122 fixes left no regression check behind.
+121 fixes left no regression check behind.
 [D-300](defects.md) remains open: the yielded session id, output, timeout/final poll,
 and exit survived, but invalid `gdate` precision left the start and end fields empty, so
 [D-202](defects.md), [D-217](defects.md), and `think-b3bm` remain open.

@@ -17318,5 +17318,16 @@ defects:
     reports carry dated corrections, and devtools.check_nagamochi_bounds now re-derives
     Karakuş's values in the verified lane and Nagamochi's in the reported lane.
     The k^2 - 2 family rests on chelokot's Lean proof, replayed here with its axiom receipt (T-086), at the same values.
-  regression: none
+  regression: >-
+    The soft-schema validation step (devtools.validate_schemas, through
+    sqpack.assurance's bound-evidence check) refuses any verified lane citing
+    E-nagamochi-lower while that record is reported, and
+    tests/test_nagamochi_bounds.py::test_it_covers_the_cases_it_claims_to holds that no
+    verified lower bound cites it. devtools.check_nagamochi_bounds, the step "the borrowed
+    lower bounds re-derive", re-derives every Karakuş floor in the verified lane and
+    every Nagamochi value in the reported lane from its closed form, exactly and, since
+    2026-10-04, one-sided, so a floor rounded up above what its source proves fails;
+    tests/test_nagamochi_bounds.py::test_a_floor_rounded_up_is_refused is that control,
+    n = 150's floor rounded up in its last place. None of these can tell whether a
+    published proof is sound; that is still a read.
   recorded_in: docs/project/reviews/review-2026-10-02-nagamochi-lemma1-karakus.md

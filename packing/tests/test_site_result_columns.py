@@ -145,13 +145,12 @@ class Laid(NamedTuple):
 def laid(tmp_path_factory: pytest.TempPathFactory) -> Iterator[dict[tuple[str, int], Laid]]:
     """Each page's table of results and chips as laid out at each width."""
     sync_api = site_browser.api()
-    site = Path(tmp_path_factory.mktemp("site"))
+    written = site_renders.write(Path(tmp_path_factory.mktemp("site")), *PAGES)
     with sync_api.sync_playwright() as driver:
         browser = site_browser.launch(driver)
         found: dict[tuple[str, int], Laid] = {}
         for name in PAGES:
-            path = site / name
-            path.write_text(site_renders.html(name), encoding="utf-8")
+            path = written[name]
             page = browser.new_page(viewport={"width": FITS, "height": 900})
             # The overview opens on its recent, significant, current rows; the columns
             # and chips are measured with every row showing, which the filters' query

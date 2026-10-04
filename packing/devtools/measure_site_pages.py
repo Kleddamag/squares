@@ -110,9 +110,10 @@ Fifteen measurements, each over pages of a directory `preview_site` has built:
   glyphs paint in square em of its own size, measured on a shot at twice its size. Ink
   is the one number that says a formula is drawn thinner when no computed size, weight
   or face differs. With it come the faces the page declares and whether each is
-  inlined and loaded, the KaTeX the page runs, what it stamps on its root, and what the
-  shared text tokens come to. `--tex SOURCE` reports that formula as a row of its own,
-  so one formula can be compared between pages; `--style CSS` adds a stylesheet before
+  inlined or shared and loaded, the KaTeX the page runs, what it stamps on its root,
+  and what the shared text tokens come to. `--tex SOURCE` reports that formula as a
+  row of its own, so one formula can be compared between pages; `--style CSS` adds a
+  stylesheet before
   measuring, to see what one declaration changes; `--platform NAME` tells the page it
   is on that platform. `--view` prints one table: `formulas`, a row a formula sampled;
   `differences`, every property a page sets differently from the first page;
@@ -243,6 +244,8 @@ DEFAULT_PAGES = (
     "index.html",
     "cases/index.html#n-11",
 )
+#: A face fetched from the site's shared assets (`site_assets`), which a page ships.
+_SHARED_FACE = re.compile(r"/assets/fonts/[^/]+\.[0-9a-f]{16}\.woff2$")
 #: How long a load may take to finish its math before it is reported as it stands.
 WAIT_MS = 35_000
 FONT_FACE = re.compile(r"@font-face\s*\{[^}]*\}")
@@ -1030,7 +1033,7 @@ def _glyph_settings(
         named = f"face {face['family']} {face['weight']} {face['style']}"
         # A face no glyph asked for stays unloaded, which says nothing of how a page is
         # drawn; one that failed to load does.
-        source = "inlined" if face["inlined"] else "fetched"
+        source = "inlined" if face["inlined"] else "shared" if face.get("shared") else "fetched"
         failed = ", failed" if face["status"] == "error" else ""
         page.setdefault(named, set()).add(f"{face['display']}, {source}{failed}")
     return settings
@@ -1159,7 +1162,8 @@ def glyph_problems(entry: dict[str, Any], *, katex: str | None = None) -> list[s
     none on a page set as `templates/paper-design.md` describes.
 
     A page: every formula typeset, by the KaTeX `katex` names when one is given; every
-    face inlined and loaded, and nothing fetched. A page of the publication layer: its
+    face inlined or a file of the site's shared assets (`site_assets`), and loaded, and
+    nothing else fetched. A page of the publication layer: its
     platform flag set on macOS and nowhere else. A formula: KaTeX's HTML over MathML; at
     its text's own size and in its text's own colour; at the regular weight of the
     composite it is set in; every glyph from a face the page ships; and rasterised as
@@ -1175,12 +1179,16 @@ def glyph_problems(entry: dict[str, Any], *, katex: str | None = None) -> list[s
         problems.append(f"{entry['untypeset']} formulas are left untypeset")
     if katex is not None and entry["math"] and entry["katex"] != katex:
         problems.append(f"the page runs KaTeX {entry['katex'] or 'not at all'}, not {katex}")
-    problems.extend(f"a face is fetched: {url}" for url in entry["font_requests"])
+    problems.extend(
+        f"a face is fetched: {url}"
+        for url in entry["font_requests"]
+        if not _SHARED_FACE.search(url)
+    )
     problems.extend(f"a face failed to arrive: {url}" for url in entry["failed_requests"])
     for face in entry["faces"]:
         named = f"{face['family']} {face['weight']} {face['style']}"
-        if not face["inlined"]:
-            problems.append(f"the face {named} is not inlined")
+        if not face["inlined"] and not face.get("shared"):
+            problems.append(f"the face {named} is neither inlined nor a shared asset")
         if face["status"] == "error":
             problems.append(f"the face {named} failed to load")
     mac = entry["platform"].startswith("Mac")

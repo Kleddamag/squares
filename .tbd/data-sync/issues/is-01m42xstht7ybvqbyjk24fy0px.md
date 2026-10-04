@@ -5,13 +5,13 @@ title: "PR #305 A4: index page inlines 51 regularized tiles; ceiling raised to 4
 kind: bug
 status: open
 priority: 2
-version: 3
+version: 4
 labels:
   - deferred
 dependencies: []
-parent_id: is-01m42wgqn2mhrknft8gjzq4tcc
+parent_id: null
 created_at: 2026-10-04T07:42:06.394Z
-updated_at: 2026-10-04T07:58:53.163Z
+updated_at: 2026-10-04T09:02:45.847Z
 ---
 Review A finding A4 (Medium) on jlevy/squares#305: https://github.com/jlevy/squares/pull/305#pullrequestreview-5404831349
 

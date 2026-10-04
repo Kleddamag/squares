@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import argparse
 import os
 import shutil
 import subprocess
@@ -69,7 +70,9 @@ def check_probes(crate: Path = CRATE) -> None:
 
 def main() -> None:
     """Run only in the Rust gate, where the pinned compiler is required."""
-    check_probes()
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--crate", type=Path, default=CRATE)
+    check_probes(parser.parse_args().crate)
     print("Rust floor positive control and 4 negative probes passed")
 
 

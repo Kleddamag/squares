@@ -64,7 +64,7 @@ _PAINTS = re.compile(
     r"outline(?:-color)?|fill|stroke|accent-color|caret-color|text-decoration(?:-color)?|"
     r"column-rule(?:-color)?|box-shadow|text-shadow|scrollbar-color|stop-color|"
     r"flood-color|lighting-color|filter|backdrop-filter|-webkit-text-fill-color|"
-    r"-webkit-text-stroke(?:-color)?|mask(?:-image)?)$"
+    r"-webkit-text-stroke(?:-color)?)$"
 )
 _NAMED = """aliceblue antiquewhite aqua aquamarine azure beige bisque black blanchedalmond blue
     blueviolet brown burlywood cadetblue chartreuse chocolate coral cornflowerblue cornsilk

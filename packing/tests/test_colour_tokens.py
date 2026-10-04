@@ -92,6 +92,8 @@ def test_every_property_that_paints_is_read() -> None:
     ]
     assert _problems(".a { filter: drop-shadow(0 1px 2px black); }") == ["named colour black"]
     assert _problems(".a { -webkit-text-fill-color: navy; }") == ["named colour navy"]
+    # A mask paints no colour: its gradient's words only say where the element shows.
+    assert _problems(".a { mask-image: linear-gradient(black, transparent); }") == []
 
 
 def test_a_finding_names_its_line_and_rule() -> None:

@@ -50,7 +50,7 @@ from devtools import render_frontier_page as frontier
 from devtools import render_research_tables as tables
 
 if TYPE_CHECKING:
-    from devtools.render_overview import Page
+    from devtools.render_overview import Page, PageMeta
 
 PACKING = Path(__file__).resolve().parents[1]
 TEMPLATES = PACKING / "devtools" / "templates"
@@ -944,6 +944,15 @@ CASES_DESCRIPTION = (
 )
 
 
+def cases_meta() -> PageMeta:
+    """What the record page says of itself in its head (`render_overview.head_tags`): its
+    name, its sentence and its address. The forwarder at its old address, `cases.html`,
+    previews it with the same record (`render_overview.forwarded_metas`)."""
+    from devtools.render_overview import PageMeta  # noqa: PLC0415
+
+    return PageMeta("Case Records", CASES_DESCRIPTION, CASES_PAGE)
+
+
 @cache
 def _rendered() -> str:
     """Every record as one kpress page, with the case files' links made to work, its
@@ -974,12 +983,13 @@ def _rendered() -> str:
         },
     )
     report = site_documents.LinkReport()
+    meta = cases_meta()
     rendered = render_overview.kpress_page(
         cases_markdown(render_overview.fill),
-        name=CASES_PAGE,
+        name=meta.path,
         current="frontier",
-        title="Case Records",
-        description=CASES_DESCRIPTION,
+        title=meta.name,
+        description=meta.description,
         toc=False,
         rewrite_body=lambda text: site_documents.rewrite_article(
             text, context=context, report=report
@@ -1105,8 +1115,9 @@ def _without_headings(page: str) -> str:
 def _description(case: dict[str, Any]) -> str:
     """A record file's own sentence, for a search engine and a shared link's preview."""
     state = "solved" if case["status"] == "proved" else "open"
+    squares = "unit square" if case["n"] == 1 else "unit squares"
     return (
-        f"Packing {case['n']} unit squares in the smallest square, a case {state}: the "
+        f"Packing {case['n']} {squares} in the smallest square, a case {state}: the "
         "best packing known, every bound and its credit, and every result on it."
     )
 

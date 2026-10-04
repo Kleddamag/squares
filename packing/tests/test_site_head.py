@@ -11,6 +11,7 @@ their modules' tests (`test_n11_lower_bounds_explainer`, `test_render_n11_optima
 
 from __future__ import annotations
 
+import html
 import re
 from pathlib import Path
 
@@ -335,41 +336,52 @@ def test_two_pages_with_one_description_are_named() -> None:
     assert shared_descriptions({"a.html": first, "c.html": third}) == []
 
 
-def test_a_forwarder_previews_the_page_it_leads_to_and_one_off_the_site_carries_none() -> None:
+def test_a_forwarder_previews_the_page_it_leads_to_and_one_off_the_site_carries_none(
+    pages: dict[str, str],
+) -> None:
     """An old address is still shared, and a crawler drawing a preview runs no script and
     does not reliably follow a refresh. So a forwarder to a page of the site
     carries the whole set, at that page's address: its canonical link and `og:url` are
-    where it leads, its name is the page's, its description says where it moved, and the
-    card and the icon are the site's (think-esmk). The one forwarder that leads off the
-    site, the defect log's, names that address and carries no card. Every forwarder is
-    the renderer's, the papers' old addresses among them: the optimality paper's page,
-    the directory it was served from, and the explainer's."""
+    where it leads, the card and the icon are the site's (think-esmk), and its name, its
+    kind and its description are the ones the page's own head gives. Those are read here
+    from the rendered page, not from the record the forwarder is written from: the
+    forwarder from `status.html` named the frontier atlas by a name the page no longer
+    had. The papers are other builds' pages, so their forwarders are held to the
+    rendered papers in those modules' tests. The one forwarder that leads off the site,
+    the defect log's, names that address and carries no card. Every forwarder is the
+    renderer's, the papers' old addresses among them: the optimality paper's page, the
+    directory it was served from, and the explainer's."""
     from devtools import render_n11_lower_bounds_explainer as explainer  # noqa: PLC0415
     from devtools import render_n11_optimality_review as paper  # noqa: PLC0415
 
     named = check_published_site.forwarder_canonicals()
     forwarders = {page.name: page.html for page in render_overview.forwarder_pages()}
     assert set(named) == set(forwarders)
-    titles = render_overview.FORWARDER_TITLES | {
-        card.href: card.title for card in overview_sections.PAPERS
-    }
     moved = dict(render_overview.MOVED_PAGES)
     within = {name for name, url in named.items() if url.startswith(SITE_URL)}
     assert set(named) - within == {"defects.html"}
+    papers = {explainer.SITE_PATH, paper.SITE_PATH}
+    assert {moved[name] for name in within} - set(pages) == papers
     for name, page in forwarders.items():
-        assert forwarder_problems(page, named[name]) == [], name
         assert named[name].startswith("https://"), name
         head = read_head(page)
-        if name in within:
-            assert named[name] == canonical_url(moved[name]), name
-            assert head.meta("og:url") == head.link("canonical") == [named[name]], name
-            assert head.meta("og:title") == [titles[moved[name]]], name
-            said = f"This page has moved to {named[name]}."
-            assert head.meta("description") == head.meta("og:description") == [said], name
-            assert head.meta("og:image") == [render_overview.social_card_url()], name
-        else:
+        if name not in within:
+            assert forwarder_problems(page, named[name]) == [], name
             assert head.link("canonical") == [moved[name]] == [named[name]]
             assert not [key for key, _ in head.metas if key.startswith(("og:", "twitter:"))]
+            continue
+        assert named[name] == canonical_url(moved[name]), name
+        assert head.meta("og:url") == head.link("canonical") == [named[name]], name
+        assert head.meta("og:image") == [render_overview.social_card_url()], name
+        if moved[name] in papers:
+            assert forwarder_problems(page, named[name]) == [], name
+            continue
+        destination = pages[moved[name]]
+        assert forwarder_problems(page, named[name], destination) == [], name
+        own = read_head(destination)
+        assert head.titles == own.titles, name
+        for key in ("og:title", "og:type", "og:description", "description", "twitter:title"):
+            assert head.meta(key) == own.meta(key), (name, key)
     landing = forwarders["n11-optimality/index.html"]
     target = canonical_url(paper.SITE_PATH)
     assert target == SITE_URL + "papers/n11-optimality-review.html"
@@ -419,15 +431,42 @@ def test_a_forwarder_to_a_page_of_the_site_that_drops_a_tag_is_named(
     assert finding in forwarder_problems(dropped, target)
 
 
-def test_a_forwarder_previewing_elsewhere_or_off_the_site_with_a_card_is_named() -> None:
-    """A forwarder's preview is of the page it leads to, so a description that does not
-    name that page is a finding; a forwarder off the site with a card is one too."""
-    page, target = _landing()
-    said = f"This page has moved to {target}."
-    elsewhere = page.replace(said, "The Squares Project's papers.")
-    assert f'its description does not name {target}: "The Squares Project\'s papers."' in (
-        forwarder_problems(elsewhere, target)
+def test_a_forwarder_previewing_its_page_by_another_name_kind_or_sentence_is_named() -> None:
+    """A forwarder's preview is the page's own, so a name, a kind or a description the
+    page's own head does not give is a finding wherever the check has that head, however
+    whole and consistent the forwarder's own set is: the frontier atlas's forwarder named
+    it "The Frontier Atlas" and the papers' took their cards' sentence-case titles as
+    websites. Without the page's head there is nothing to hold it to. A forwarder off the
+    site with a card is a finding too."""
+    forwarder = next(
+        moved.html
+        for moved in render_overview.forwarder_pages()
+        if moved.name == "results.html"
     )
+    target = canonical_url(render_overview.RESULTS_PAGE)
+    destination = document(head_tags(render_overview.RESULTS_META))
+    assert forwarder_problems(forwarder, target, destination) == []
+    said = html.escape(render_overview.RESULTS_DESCRIPTION, quote=True)
+    assert said in forwarder
+    for old, new, finding in (
+        (
+            "Every Result",
+            "All Results",
+            "its og:title is ['All Results'], and the page's own is ['Every Result']",
+        ),
+        (
+            'og:type" content="website"',
+            'og:type" content="article"',
+            "its og:type is ['article'], and the page's own is ['website']",
+        ),
+        (said, "This page has moved.", "its og:description is ['This page has moved.']"),
+    ):
+        changed = forwarder.replace(old, new)
+        assert head_problems(changed, target) == [], old
+        problems = forwarder_problems(changed, target, destination)
+        assert len(problems) == 1, problems
+        assert problems[0].startswith(finding), problems
+        assert forwarder_problems(changed, target) == [], old
     defects = next(
         forwarder.html
         for forwarder in render_overview.forwarder_pages()
@@ -466,6 +505,7 @@ def test_a_results_overview_is_a_fragment_with_no_head() -> None:
     fragment = render_overview.result_fragments()[0]
     assert fragment.html.startswith('<div class="site-result"')
     assert read_head(fragment.html) == check_published_site.PageHead(None, (), (), ())
+    assert not check_published_site.is_document(fragment.html)
     assert "<meta" not in fragment.html
     assert "<title" not in fragment.html
 
@@ -583,9 +623,18 @@ def test_a_built_site_is_held_to_its_heads_and_its_card(
 ) -> None:
     """The local mode reads a directory as the deploy check reads the site: every page
     there, every forwarder there and the card, with what a build left out reported and
-    not failed, and a card that is missing or the wrong picture failed."""
+    not failed, and a card that is missing or the wrong picture failed. A forwarder to a
+    page of the site names the card as a page does."""
     # A build with none of the site's pages names no card, so it misses none.
     assert all(passed for passed, _ in local_head_checks(tmp_path))
+    forwarders = {
+        forwarder.name: forwarder.html for forwarder in render_overview.forwarder_pages()
+    }
+    (tmp_path / "status.html").write_text(forwarders["status.html"], encoding="utf-8")
+    assert [line for passed, line in local_head_checks(tmp_path) if not passed] == [
+        f"card {SOCIAL_CARD}: not served"
+    ]
+    (tmp_path / "status.html").unlink()
     for name in ("index.html", "papers.html"):
         (tmp_path / name).write_text(pages[name], encoding="utf-8")
     for forwarder in render_overview.forwarder_pages():
@@ -663,11 +712,16 @@ def test_every_page_the_site_publishes_carries_its_preview_by_its_kind(published
         assert f"{name}: one of each identity and card tag, agreeing with its address" in lines
     pages = len(render_overview.PAGES) + len(records)
     assert f"each of {pages} pages has a description of its own" in lines
+    # A forwarder to a page this build writes is held to that page's head; the papers'
+    # are other builds' pages, held to theirs where the site is assembled.
     for old, new in render_overview.MOVED_PAGES:
         rule = (
             f"forwarder {old}: names {new} as canonical, and carries no card"
             if new.startswith("https://")
-            else f"forwarder {old}: previews {canonical_url(new)}, the page it leads to"
+            else f"forwarder {old}: previews {canonical_url(new)} as that page's own head does"
+            if new in render_overview.PAGES
+            else f"forwarder {old}: previews {canonical_url(new)}, whose page is not here to "
+            "compare"
         )
         assert rule in lines, old
     held = {
@@ -687,9 +741,11 @@ def test_a_page_added_later_or_a_record_that_loses_a_tag_fails_the_check(
     tmp_path: Path, pages: dict[str, str], card: bytes
 ) -> None:
     """The negative controls: a page no list names that ships with a head and no preview,
-    a record file that loses its image, one without the icon, and a forwarder to a page
-    of the site that carries only its canonical link, as every forwarder did before
-    2026-10-03, are each a failure of the check the overview's job runs."""
+    one whose head says nothing at all, a record file that loses its image, one without
+    the icon, a forwarder to a page of the site that carries only its canonical link, as
+    every forwarder did before 2026-10-03, and one that previews the page beside it by
+    another name than the page's own are each a failure of the check the overview's job
+    runs."""
     record = site_renders.case_records()["cases/11.html"]
     good = {
         "index.html": pages["index.html"],
@@ -705,6 +761,18 @@ def test_a_page_added_later_or_a_record_that_loses_a_tag_fails_the_check(
     (failure,) = [line for passed, line in local_head_checks(tmp_path) if not passed]
     assert failure.startswith("new.html: head: 0 canonical links, not one")
     assert "0 og:image tags, not one" in failure
+    # A page whose head names nothing is a page all the same, not a fragment.
+    bare = (
+        '<!doctype html><html><head><meta charset="utf-8"><style>p{margin:0}</style>'
+        "</head><body><p>New</p></body></html>"
+    )
+    assert read_head(bare) == check_published_site.PageHead(None, (), (), ())
+    assert check_published_site.is_document(bare)
+    assert check_published_site.is_document("<!doctype html><title>New</title><p>New")
+    assert not check_published_site.is_document('<div class="site-result"><p>A</p></div>')
+    (tmp_path / "new.html").write_text(bare, encoding="utf-8")
+    (failure,) = [line for passed, line in local_head_checks(tmp_path) if not passed]
+    assert failure.startswith("new.html: head: lang is None, not 'en'; 0 <title>, not one")
     (tmp_path / "new.html").unlink()
 
     image = f'<meta property="og:image" content="{render_overview.social_card_url()}">'
@@ -730,10 +798,27 @@ def test_a_page_added_later_or_a_record_that_loses_a_tag_fails_the_check(
     assert failure.startswith("forwarder results.html: head: ")
     assert "0 og:url tags, not one" in failure
     assert "0 twitter:card tags, not one" in failure
+    (tmp_path / "results.html").unlink()
+
+    # The frontier atlas beside a forwarder that names it as the forwarder from
+    # `status.html` did, by a name the page no longer had.
+    (tmp_path / "frontier.html").write_text(pages["frontier.html"], encoding="utf-8")
+    forwarder = next(
+        moved.html for moved in render_overview.forwarder_pages() if moved.name == "status.html"
+    )
+    (tmp_path / "status.html").write_text(forwarder, encoding="utf-8")
+    assert all(passed for passed, _ in local_head_checks(tmp_path))
+    renamed = forwarder.replace("The Frontier Survey", "The Frontier Atlas")
+    (tmp_path / "status.html").write_text(renamed, encoding="utf-8")
+    (failure,) = [line for passed, line in local_head_checks(tmp_path) if not passed]
+    assert failure == (
+        "forwarder status.html: head: its og:title is ['The Frontier Atlas'], and the "
+        "page's own is ['The Frontier Survey']"
+    )
 
 
 def test_head_checks_report_one_line_a_page_a_forwarder_and_the_card(card: bytes) -> None:
-    page = document(head_tags(RESULTS))
+    page = document(head_tags(render_overview.RESULTS_META))
     target = SITE_URL + "all-results.html"
     forwarder = next(
         moved.html
@@ -744,5 +829,18 @@ def test_head_checks_report_one_line_a_page_a_forwarder_and_the_card(card: bytes
         {"all-results.html": page}, {"results.html": (forwarder, target)}, card
     )
     assert [passed for passed, _ in results] == [True, True, True, True]
+    assert (
+        results[2][1]
+        == f"forwarder results.html: previews {target} as that page's own head does"
+    )
+    # The same forwarder under another name fails beside the page, and passes alone.
+    renamed = forwarder.replace("Every Result", "All Results")
+    results = head_checks({"all-results.html": page}, {"results.html": (renamed, target)}, card)
+    assert [passed for passed, _ in results] == [True, True, False, True]
+    results = head_checks({}, {"results.html": (renamed, target)}, card)
+    assert results[1] == (
+        True,
+        f"forwarder results.html: previews {target}, whose page is not here to compare",
+    )
     results = head_checks({"papers.html": page}, {"results.html": (forwarder, "x")}, None)
     assert [passed for passed, _ in results] == [False, True, False, False]

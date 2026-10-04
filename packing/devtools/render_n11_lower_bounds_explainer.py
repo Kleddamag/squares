@@ -2226,21 +2226,21 @@ def iso_date(written: str) -> str:
     return paper_front.iso_date(written)
 
 
-def page_meta(headline: Facts, current: CurrentBoundFacts) -> PageMeta:
+def page_meta(n: int, current: CurrentBoundFacts) -> PageMeta:
     """What the page says of itself in its head: its title, its sentence, its address and
-    the two dates its hero prints.
+    the two dates its hero prints. `n` is the case its certificates are for.
 
     The title is the page's own, with no bound after it: one bound beside a title about
     several, in a case T-060 has since settled, would read as the case's current bound.
-    The bound in the sentence is the headline certificate's own, like every other number
-    on the page. The dates are the front's, first published and last revised
-    (`FRONT`, from `sqpack.release`), the same two the hero states.
+    The bound in the sentence is T-026's (`current_bound_facts`). The dates are the
+    front's, first published and last revised (`FRONT`, from `sqpack.release`), the same
+    two the hero states.
     """
     return PageMeta(
         name=TITLE,
         description=(
             "How weighted point and threshold certificates prove T-026's historical bound "
-            f"s({headline.n}) ≥ {current.bounded_side_decimal}, with visual point-only "
+            f"s({n}) ≥ {current.bounded_side_decimal}, with visual point-only "
             "proofs."
         ),
         path=PAGE_URL.removeprefix(SITE_URL),
@@ -2248,6 +2248,20 @@ def page_meta(headline: Facts, current: CurrentBoundFacts) -> PageMeta:
         published=iso_date(FRONT.dates[0].day),
         modified=iso_date(paper_front.revised(FRONT)),
     )
+
+
+def published_page_meta() -> PageMeta:
+    """`page_meta` for the page the site publishes, the walkthrough's (`WALKTHROUGH`), read
+    without deciding its certificates: the case is the one their files name. The
+    forwarder at the page's old address, `explainer.html`, previews the page with it
+    (`render_overview.forwarded_metas`)."""
+    cases = {int(json.loads(path.read_text(encoding="utf-8"))["n"]) for path in WALKTHROUGH}
+    if len(cases) != 1:
+        raise SystemExit(
+            f"the walkthrough's certificates are for {sorted(cases)}, not one case"
+        )
+    (n,) = cases
+    return page_meta(n, current_bound_facts())
 
 
 def card_substitutions(headline: Facts, current: CurrentBoundFacts) -> dict[str, str]:
@@ -2261,7 +2275,7 @@ def card_substitutions(headline: Facts, current: CurrentBoundFacts) -> dict[str,
     crop, which a paper of its own might take again (think-3w07).
     """
     return {
-        "PAGE_HEAD": head_tags(page_meta(headline, current)),
+        "PAGE_HEAD": head_tags(page_meta(headline.n, current)),
         "SITE_FAVICON": favicon_html(),
         "COMPOSITE_ALT": COMPOSITE_ALT,
     }

@@ -136,6 +136,11 @@ exempt:
   reason: digest-bound
   bound_by: >-
     Git blob in docs/project/reviews/review-2026-09-13-bc303-floor-normalized-t2-independent.md.
+- path: packing/campaign/explorations/X048-session-168-pilots/receipts/selector-recheck-90-seed1.json
+  reason: digest-bound
+  bound_by: >-
+    SHA-256 in the flags_source of receipts/selector-fast/bench-set.json and
+    receipts/selector-fast/lever-sample.json, beside it.
 
 # --- Frozen output and open decisions --------------------------------------------------
 - path: packing/atlas/known-best/video/spikes/v2-transitions/transition-stats.json

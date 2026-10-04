@@ -113,6 +113,7 @@ from devtools import check_n17_capacity_one_cover as cover
 from devtools import check_n17_slider_coverage as slider_tool
 from devtools.check_n17_endpoint_feasibility import THETA_LABELS, Box
 from devtools.provenance import provenance
+from sqpack import retained_json
 from sqpack.hull_kernel import n11, node, producer, sequential
 from sqpack.hull_kernel.covers import convex_halfplanes
 from sqpack.hull_kernel.frame import Frame, make_frame
@@ -1934,7 +1935,7 @@ def main(argv: list[str] | None = None) -> int:
         resume=args.resume,
         max_live_for=parse_caps(args.max_live_for),
     )
-    encoded = json.dumps(result, indent=1, sort_keys=True, default=str) + "\n"
+    encoded = retained_json.dumps(result, sort_keys=True, default=str)
     if args.output:
         args.output.parent.mkdir(parents=True, exist_ok=True)
         args.output.write_text(encoded, encoding="utf-8")

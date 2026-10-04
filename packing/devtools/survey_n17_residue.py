@@ -84,6 +84,7 @@ from numpy.typing import NDArray
 
 from devtools import select_n17_sub_patterns as selector
 from devtools.provenance import provenance
+from sqpack import retained_json
 
 SCHEMA = "n17-residue-survey/v1"
 STATUS = (
@@ -1079,8 +1080,8 @@ def population(
 
 def write(path: Path | None, receipt: dict[str, Any]) -> None:
     if path is not None:
-        text = json.dumps(receipt, indent=1, sort_keys=True, default=float)
-        _ = path.write_text(text + "\n", encoding="utf-8")
+        text = retained_json.dumps(receipt, sort_keys=True, default=float)
+        _ = path.write_text(text, encoding="utf-8")
 
 
 def run_survey(

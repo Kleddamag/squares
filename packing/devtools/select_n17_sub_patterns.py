@@ -119,6 +119,7 @@ from scipy.optimize import minimize
 from devtools import check_n17_capacity_one_cover as cover
 from devtools.check_n17_endpoint_feasibility import THETA_LABELS
 from devtools.provenance import provenance
+from sqpack import retained_json
 
 SCHEMA = "n17-sub-pattern-selector/v1"
 COUNT_SCHEMA = "n17-sub-pattern-class-count/v1"
@@ -1772,10 +1773,10 @@ def count_main(arguments: argparse.Namespace) -> int:
         "provenance": PROVENANCE,
         "seconds": round(time.perf_counter() - clock, 3),
     }
-    text = json.dumps(record, indent=1, sort_keys=True)
+    text = retained_json.dumps(record, sort_keys=True)
     if arguments.output is not None:
-        _ = arguments.output.write_text(text + "\n", encoding="utf-8")
-    print(text)
+        _ = arguments.output.write_text(text, encoding="utf-8")
+    print(text, end="")
     return 0
 
 
@@ -1854,9 +1855,9 @@ def main(argv: list[str] | None = None) -> int:
             budget=budget,
             progress=True,
         )
-        text = json.dumps(rechecked, indent=1, sort_keys=True, default=float)
+        text = retained_json.dumps(rechecked, sort_keys=True, default=float)
         if arguments.output is not None:
-            _ = arguments.output.write_text(text + "\n", encoding="utf-8")
+            _ = arguments.output.write_text(text, encoding="utf-8")
         summary = {
             k: rechecked[k] for k in ("placed", "still_flagged", "projections", "seconds")
         }
@@ -1875,9 +1876,9 @@ def main(argv: list[str] | None = None) -> int:
         progress_every=arguments.progress_every,
         max_missing=arguments.max_missing_pairs,
     )
-    text = json.dumps(receipt, indent=1, sort_keys=True, default=float)
+    text = retained_json.dumps(receipt, sort_keys=True, default=float)
     if arguments.output is not None:
-        _ = arguments.output.write_text(text + "\n", encoding="utf-8")
+        _ = arguments.output.write_text(text, encoding="utf-8")
     summary = {
         "status": receipt["status"],
         "controls_passed": receipt["controls"]["passed"],

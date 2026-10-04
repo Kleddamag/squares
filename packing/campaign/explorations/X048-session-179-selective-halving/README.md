@@ -59,8 +59,8 @@ Fresh replay rechecks all retained certificates; runtime fields are excluded fro
 scientific comparison while packet_sha256 binds the complete original packet.
 The measurement CLI omits --verify; this project's one target is already spent.
 
-Source/evidence certification pending under think-ns4t; exact-head CI is observed
-separately. One native privacy aggregate is a live/boundary lower bound; later
+Source/evidence `e2fe7aa8ccbcd3e8121d0c01d1bc93ec9f05855b` is observed terminal19pass/36skip
+and all3requiredSUCCESS. Final metadata CI is observed separately. One native privacy aggregate is a live/boundary lower bound; later
 publication/CI is excluded. Further work needs a new scoped value/ownership gate.
 
 <!-- This document follows common-doc-guidelines.md. -->

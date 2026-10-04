@@ -66,7 +66,8 @@ session:
     evidence:
     - packing\campaign\explorations\X048-session-179-selective-halving\README.md
     stop_reason: ONE fixed-certificate model accepted; hosted certification remains explicit.
-    next_action: think-ns4t owner publishes source/evidence and observes exactCI; no targetrepeat, furtherwork requiresnewscope.
+    next_action: Observe final metadata current-head CI and close/sync think-ns4t; next work
+      is a separate ownPR325 actionability review only, no geometry repeat.
   budget:
     wall_minutes: 90
     max_cycles: 4
@@ -108,11 +109,14 @@ session:
     fourJobs0/cleanuptrue.
   - Native ONCE start2026-10-04T12:16:51.090470+00:00, cutoff2026-10-04T12:37:41.440261+00:00,
     actualend2026-10-04T12:39:26.150481+00:00; live/boundary lowerbound, later publication/CIexcluded.
+  - 'full gate: fast at e2fe7aa8ccbcd3e8121d0c01d1bc93ec9f05855b: passed'
+  - Exact E source55checks terminal19pass36skip/all3requiredSUCCESS; real-tree cost guard passes,
+    no policy changes.
   stop_reason: ONE fixed-certificate model accepted; hosted certification remains explicit.
-  next_action: think-ns4t owner publishes source/evidence and observes exactCI; no targetrepeat, furtherwork requiresnewscope.
+  next_action: Observe final metadata current-head CI and close/sync think-ns4t; next work is
+    a separate ownPR325 actionability review only, no geometry repeat.
   ended_at: '2026-10-04T12:39:26.150481+00:00'
   handoff_role: administrative_closeout
-  certification_pending: think-ns4t
   resource_rollups:
   - packing/campaign/resource-usage/codex-session-179.yaml
 ---

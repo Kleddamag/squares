@@ -191,7 +191,7 @@ Each entry summarizes one user-level research window. Cycle slots are wall-clock
 | [session-176](agent-sessions/session-176-owner-priority.md) | stopped | contemporaneous | `research-loop` (correctness) | `research-loop` (correctness) | 2 | think-mkgr | Observe final metadata current-head CI, close/sync think-mkgr; any cached-predicate project requires new frozen contract/claim/fetch/source gate. No B repeat. |
 | [session-177](agent-sessions/session-177-cached-collision.md) | stopped | contemporaneous | `research-loop` (correctness) | `research-loop` (correctness) | 2 | think-5sya | Observe final metadata current-head CI and close/sync think-5sya. Adapter-search retired; full-interval mechanism comparison requires a new frozen W3/claim/fetch/source gate. |
 | [session-178](agent-sessions/session-178-full-core-ablation.md) | stopped | contemporaneous | `research-loop` (correctness) | `research-loop` (correctness) | 2 | think-abit | Observe final metadata current-head CI and close/sync think-abit; a selective-halving certificate project requires a new frozen contract/claim/fetch/source gate. No D repeat. |
-| [session-179](agent-sessions/session-179-selective-halving.md) | stopped | contemporaneous | `research-loop` (correctness) | `research-loop` (correctness) | 2 | think-ns4t | think-ns4t owner publishes source/evidence and observes exactCI; no targetrepeat, furtherwork requiresnewscope. |
+| [session-179](agent-sessions/session-179-selective-halving.md) | stopped | contemporaneous | `research-loop` (correctness) | `research-loop` (correctness) | 2 | think-ns4t | Observe final metadata current-head CI and close/sync think-ns4t; next work is a separate ownPR325 actionability review only, no geometry repeat. |
 
 ### Workflow summary
 

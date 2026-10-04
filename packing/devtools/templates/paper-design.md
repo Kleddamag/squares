@@ -297,8 +297,9 @@ punctuation face, Source Sans 3, Planetaire Mono Text, the KaTeX faces and KPres
 composites), because every page takes them from the same functions,
 `render_n11_lower_bounds_explainer.kpress_css`, `katex_css` and `relation_face_css`: the
 papers and the workbench inline them, and the site’s pages link them as shared files
-(**Shared Assets**, below). `devtools.measure_site_pages faces` compares them block by
-block, reading a linked stylesheet as the page’s own.
+(**Shared Assets**, below).
+`devtools.measure_site_pages faces` compares them block by block, reading a linked
+stylesheet as the page’s own.
 KPress leads each family token with an embedding host’s hook, `--kpress-host-font-sans`
 and its siblings, so an application embedding a KPress fragment can supply its own face.
 The site does not honor those hooks: a viewer that injects one would draw the page in a
@@ -384,18 +385,18 @@ Linux runner otherwise), and names a paper whose head script is taken out.
 
 The site’s pages link their design system rather than carry it.
 Every page `render_overview.kpress_page` writes names the same stylesheets and scripts:
-KPress’s stylesheets with their faces, KaTeX’s pruned stylesheets and faces, the relation
-glyphs, `paper-type.css`, `site-nav.css`, `site.css` and `site-result.css`, the math
-pipeline, KPress’s flattened client behaviors and the page’s own programs.
+KPress’s stylesheets with their faces, KaTeX’s pruned stylesheets and faces, the
+relation glyphs, `paper-type.css`, `site-nav.css`, `site.css` and `site-result.css`, the
+math pipeline, KPress’s flattened client behaviors and the page’s own programs.
 Inlined, they came to about 1.8 MB a page, 0.95 MB after gzip, and a reader’s browser
 fetched them again on every page, since a page’s own bytes were all it could cache.
 
 - **Where they live.** `devtools/site_assets.py` publishes each as a file under the
   site’s `assets/`, named by its content: `css/site.<hash>.css`,
-  `fonts/pt-serif-latin-400-normal.<hash>.woff2`, `js/table.<hash>.js`, where the hash is
-  the first sixteen hex digits of the bytes’ SHA-256 (KPress’s `content_hash`). A file’s
-  name changes when its bytes do, so a cached copy is never stale, and a reader fetches
-  each once for every page of the site.
+  `fonts/pt-serif-latin-400-normal.<hash>.woff2`, `js/table.<hash>.js`, where the hash
+  is the first sixteen hex digits of the bytes’ SHA-256 (KPress’s `content_hash`). A
+  file’s name changes when its bytes do, so a cached copy is never stale, and a reader
+  fetches each once for every page of the site.
 - **How a page names them.** By a relative path from where the page is served:
   `assets/…` from the root, `../assets/…` from `cases/`. A stylesheet names its faces
   from beside itself, `../fonts/…`, so it reads the same from every page.
@@ -406,11 +407,12 @@ fetched them again on every page, since a page’s own bytes were all it could c
   other source, a CSS import, and a `url()` in the page’s own text that is not a data
   URI or a fragment.
 - **Faces.** Every face keeps `font-display: block`, so a face that arrives late holds
-  the text it draws invisible. The faces a page draws its first screen in, PT Serif’s
-  regular and Source Sans 3’s upright, are preloaded beside the stylesheets
-  (`site_assets.PRELOADED_FACES`), so they are asked for with the stylesheet rather than
-  after layout; the rest are fetched when a page first draws in them, and a face no page
-  draws, a print instance, only when one prints.
+  the text it draws invisible.
+  The faces a page draws its first screen in, PT Serif’s regular and Source Sans 3’s
+  upright, are preloaded beside the stylesheets (`site_assets.PRELOADED_FACES`), so they
+  are asked for with the stylesheet rather than after layout; the rest are fetched when
+  a page first draws in them, and a face no page draws, a print instance, only when one
+  prints.
 - **What a build writes.** `render_overview.write_site` writes exactly the files its
   pages name, with the faces their stylesheets name, and removes any other file under
   `assets/`; `render_overview --check` compares the directory against that set, and
@@ -423,11 +425,11 @@ fetched them again on every page, since a page’s own bytes were all it could c
   from a render, `site_assets.inlined_from` from a built site.
 
 The papers and the workbench still inline their assets: the explainer’s math
-preparation, both papers’ PDFs, `compare_math_fonts` and the workbench’s content-security
-policy read them from the page, and each moves to the shared files with its own tools.
-`devtools.measure_site_pages load --network fast-4g --after index.html` measures what a
-reader’s second page costs; on 2026-10-04 it moved 1.0 to 1.3 MB on every page before
-this change.
+preparation, both papers’ PDFs, `compare_math_fonts` and the workbench’s
+content-security policy read them from the page, and each moves to the shared files with
+its own tools. `devtools.measure_site_pages load --network fast-4g --after index.html`
+measures what a reader’s second page costs; on 2026-10-04 it moved 1.0 to 1.3 MB on
+every page before this change.
 
 ## Math Loading
 
@@ -436,9 +438,8 @@ pipeline, from the same code:
 
 - **Faces and styles.** KaTeX’s faces pruned to those a page can reach, inlined as data
   URIs on the papers and published as shared files for the site’s pages, and switched
-  from `font-display: swap` to `block`, so no formula is drawn in a
-  host face and redrawn; KPress’s math composites; the three relation glyphs
-  (`relation_face_css`).
+  from `font-display: swap` to `block`, so no formula is drawn in a host face and
+  redrawn; KPress’s math composites; the three relation glyphs (`relation_face_css`).
 - **Scripts.** `render_n11_lower_bounds_explainer.katex_js`: KaTeX, KPress’s metric
   tables and shared runtime, and the explainer’s host adapter, `squaresMath`
   (`probes/render_n11_lower_bounds_explainer/host_math_init.js`). KPress’s own entry
@@ -895,9 +896,8 @@ it.
     It shows the address under the note beside the host’s mark (GitHub’s for a GitHub
     URL, otherwise the site’s favicon, saved under `devtools/overview/favicons/` by host
     and inlined, since a page fetches nothing but its shared assets), and opens it in a
-    new tab.
-    An other project’s card ends with its tally of results (**Card foot** and **Other
-    projects**, below).
+    new tab. An other project’s card ends with its tally of results (**Card foot** and
+    **Other projects**, below).
   - When the card leads to a poster’s PDF or to the Visualize page, it is a direct card
     headed by the picture it opens (below).
     A PDF card is typed `application/pdf` and never marked `download`, so the browser
@@ -1479,16 +1479,16 @@ it.
     model’s list of headings, the records’, is emptied on the record page, which has no
     contents rail. A footnote in a case file is refused: kpress gathers footnotes at the
     foot of the one render, outside every record.
-  - **Why not 324 pages.** Until 2026-10-04 every site page inlined its shell, about
-    1.8 MB of faces and KaTeX, so 324 full pages would have carried it 324 times.
+  - **Why not 324 pages.** Until 2026-10-04 every site page inlined its shell, about 1.8
+    MB of faces and KaTeX, so 324 full pages would have carried it 324 times.
     The record page carried it once, 1.9 MB with the index, and the record files are the
     records alone: 16 KB for $n = 1$ to 217 KB for $n = 11$, 10.4 MB for all 324
     (measured 2026-10-03). The shell is now shared (**Shared Assets**, below), and the
     record page is 41 KB; one page of records still keeps a record’s address one
-    fragment of one page, and its popover and its page the same file. Until that day every record was on one page, `cases.html`,
-    which showed the record its fragment named; that address is a forwarder to `cases/`
-    with its fragment kept, so `cases.html#n-11` arrives at case 11 (**Document cards
-    and moved pages**, below).
+    fragment of one page, and its popover and its page the same file.
+    Until that day every record was on one page, `cases.html`, which showed the record
+    its fragment named; that address is a forwarder to `cases/` with its fragment kept,
+    so `cases.html#n-11` arrives at case 11 (**Document cards and moved pages**, below).
 
 - **Atlas cards.** The atlas’s posters and film have a section of their own, **PDFs and
   Videos**, an ordinary `h2`; **The Atlas of Square Packings** keeps the grid, its
@@ -1961,8 +1961,8 @@ pointer and by keyboard, and measures its label at 1280, 768 and 390 pixels.
     A result’s row does this: its short form is the result’s claim, significance and
     novelty, and its file is the result’s whole overview (**Result Overview**, below).
     Besides its shared assets and a page a card’s popover frames, a page fetches one
-    other thing, a case’s record file, into the case popover or the record page
-    (**Case records**, above).
+    other thing, a case’s record file, into the case popover or the record page (**Case
+    records**, above).
 
   `tests/node/overview_rows/` runs the script against a stand-in document, and
   `tests/test_overview.py` holds every row of the two pages to this markup, the frontier
@@ -2354,8 +2354,8 @@ The front is, in order:
 
   Human oversight: **Joshua Levy**
   Agents: **GPT-6 Astra** and **GPT-6 Sol**
-  Draft v0.1.3 (version history)
-  Original proof September 29, 2026 · Last revised October 3, 2026
+  Draft v0.1.4 (version history)
+  Original proof September 29, 2026 · Last revised October 4, 2026
   ```
 
   A paper that explains someone else’s work credits its source first, by the author’s
@@ -2367,7 +2367,7 @@ The front is, in order:
   every page carries names it, and so does the GITHUB chip.
 
 - **The version line.** The paper’s own version, plain: `EXPLAINER_VERSION` for the
-  explainer and `OPTIMALITY_REVIEW_EDITION` (“Draft v0.1.3”) for the review, both from
+  explainer and `OPTIMALITY_REVIEW_EDITION` (“Draft v0.1.4”) for the review, both from
   `sqpack.release`. Never the site’s edition and never the data hash: the site’s version
   goes on no paper (the owner, 2026-10-01: papers are individually versioned, and a
   paper’s version history reflects versions of the paper, not of the website).

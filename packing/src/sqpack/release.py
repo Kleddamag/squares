@@ -203,7 +203,7 @@ COMPOSITES_MAY_TRAIL = True
 #: The last data commit, pinned in full: what `data_revision` returned when it was last
 #: re-pinned. Full rather than six characters so the drift check compares a commit, not
 #: a prefix.
-DATA_REVISION = "188488265f875f5fd1fe2f42682297f4dde8c398"
+DATA_REVISION = "5daa1bcb80fe761a87490c14c35dbd3923b9d910"
 
 #: The version, written the one way it is ever written: `v0.4.1-f5e113`. Semver core,
 #: then the data revision, in the shape a build identifier takes everywhere else.
@@ -348,6 +348,19 @@ EXPLAINER_REVISED = "October 1, 2026"
 #: (think-2cqu).
 OPTIMALITY_REVIEW_HISTORY = (
     PublicationHistoryEntry(
+        version="v0.1.4",
+        first_published="October 4, 2026",
+        result_scope=(
+            "wand125's comment of October 4 is answered: the in-progress Lean 4 "
+            "formalizations are named, with their status as wand125 reports it; the root "
+            "node completes thirteen further updates, not fourteen; Figure 8 and the text "
+            "agree that the symmetry lemma rests on the exhaustive search; and the "
+            "1,931-case premise of cases 2175 and 2176 is stated as a premise of their "
+            "accepted certificates, beside wand125's report of a Lean proof of all 76 "
+            "prior-family cases that does not use it."
+        ),
+    ),
+    PublicationHistoryEntry(
         version="v0.1.3",
         first_published="October 3, 2026",
         result_scope=(
@@ -405,7 +418,7 @@ OPTIMALITY_REVIEW_EDITION = " ".join(
 #: prints, by the rule `EXPLAINER_REVISED` follows -- the author date of the last commit
 #: that changed its article, `n11-optimality-review-article.md`, held to git by
 #: `devtools.artifact_dates`. Change it in the commit that changes the article.
-OPTIMALITY_REVIEW_REVISED = "October 3, 2026"
+OPTIMALITY_REVIEW_REVISED = "October 4, 2026"
 
 #: The day the proof the review explains was published by its source, which the review's
 #: "Original proof" date prints. A fact about someone else's work, so it is typed, and

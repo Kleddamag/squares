@@ -210,7 +210,7 @@ def test_a_wrong_closed_form_is_caught(
     wrong: Callable[[int], RootForm],
     symptom: str,
 ) -> None:
-    """Until 2026-10-04 the ordering tested `k^2 <= N` and could not fail; now it bites."""
+    """Until 2026-10-04 the ordering tested `k^2 <= N` and could not fail (D-518)."""
     monkeypatch.setattr(lemma1, target, wrong)
     failures = lemma1.bound_ordering()
     assert any(symptom in line for line in failures), failures[:5]

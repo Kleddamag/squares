@@ -27,10 +27,11 @@ whichever lane cites it:
 
 "Must be" is one-sided, because a lower bound printed as a decimal is rounded down: the
 record may not exceed the theorem's value, and may fall short of it by less than one unit
-in its own last place. Until 2026-10-04 the tolerance was two-sided, so a verified floor
-rounded *up*, above what its source proves, passed every gate. Both sides are decided
-exactly, by squaring the closed form `a + sqrt(r)` against the record's own rational
-value, so no rounding of the theorem's square root can decide a case either way.
+in its own last place. Until 2026-10-04 the tolerance was two-sided (D-517), so a
+verified floor rounded *up*, above what its source proves, passed every gate. Both
+sides are decided exactly, by squaring the closed form `a + sqrt(r)` against the
+record's own rational value, so no rounding of the theorem's square root can decide a
+case either way.
 
 Theorem 2, as the evidence record states it, from Theorem 1
 (`nu(a, b) < ab - (a + 1 - ceil(a)) - (b + 1 - ceil(b))` for `a, b >= 2`):

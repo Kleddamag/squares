@@ -1261,8 +1261,9 @@ def nagamochi_value(n: int, significant: int) -> str:
 
     Reported or not, a lower bound printed as a decimal may not claim more than its
     source does. Until 2026-10-04 this rounded to nearest, and 76 of the generated
-    records carried a value one unit in the last place above Nagamochi's; the hand-written
-    hundred never did. `check_nagamochi_bounds` now refuses either lane rounded up.
+    records carried a reported value one unit in the last place above Nagamochi's
+    (D-517); until 2026-10-02 the same rounding wrote their verified floor too.
+    `check_nagamochi_bounds` now refuses either lane rounded up.
     """
     if is_nagamochi_exact(n):
         return str(grid_ceiling(n))

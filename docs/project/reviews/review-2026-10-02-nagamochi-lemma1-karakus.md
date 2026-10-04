@@ -303,7 +303,8 @@ values:
 
 At $N = k^2 - 1$ both give $k$ (not in the table; the test checks $k = 3, \dots, 19$).
 
-Corrected 4 October 2026: when this review was written the tool did not make that check.
+Corrected 4 October 2026 ([D-518](../../../defects.md)): when this review was written
+the tool did not make that check.
 It tested only $k^2 \le N$ and $N \le k^2 + 2k$, the last steps of the reduction above,
 which hold for every nonsquare $N$ whatever the closed forms say, so it could not fail.
 It now compares $\sqrt N$, Karakuş’s (6.1) and Nagamochi’s minimum as exact values of

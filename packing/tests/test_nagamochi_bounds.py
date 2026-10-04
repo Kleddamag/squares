@@ -22,8 +22,8 @@ lane, where the same relation is held. The verified floors it carried are Karaku
 (`E-karakus-strip-lower`) or the area bound, and the checker re-derives Karakuş's too.
 
 "Is the theorem's value" means rounded down, since 2026-10-04: a floor rounded up above
-what its source proves passed the two-sided tolerance that held until then, so the
-rounded-up `n = 150` floor below is the control that the one-sided check bites.
+what its source proves passed the two-sided tolerance that held until then (D-517), so
+the rounded-up `n = 150` floor below is the control that the one-sided check bites.
 """
 
 from __future__ import annotations

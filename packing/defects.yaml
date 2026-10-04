@@ -11,7 +11,7 @@ softschema:
   schema: defects.schema.yaml
   envelope: null
   status: enforced
-count: 516
+count: 518
 defects:
 - id: D-001
   title: Fixed-side search never left the grid basin
@@ -17326,8 +17326,108 @@ defects:
     verified lower bound cites it. devtools.check_nagamochi_bounds, the step "the borrowed
     lower bounds re-derive", re-derives every Karakuş floor in the verified lane and
     every Nagamochi value in the reported lane from its closed form, exactly and, since
-    2026-10-04, one-sided, so a floor rounded up above what its source proves fails;
+    2026-10-04 (D-517), one-sided, so a floor rounded up above what its source proves
+    fails;
     tests/test_nagamochi_bounds.py::test_a_floor_rounded_up_is_refused is that control,
     n = 150's floor rounded up in its last place. None of these can tell whether a
     published proof is sound; that is still a read.
+  recorded_in: docs/project/reviews/review-2026-10-02-nagamochi-lemma1-karakus.md
+- id: D-517
+  title: Borrowed lower bounds were rounded to nearest, and the checker's two-sided tolerance passed a floor rounded up
+  date: '2026-10-04'
+  layer: tooling
+  class: soundness
+  direction: flattering
+  detected_by: review
+  latent_for: >-
+    From the hand-written records that printed Nagamochi's value to twelve figures, and
+    from 2026-09-07 for every generated record, to 2026-10-04. check_nagamochi_bounds
+    passed them from its first commit on 2026-08-30, when 36 of the 88 verified floors it
+    re-derived were already rounded up. The senior review of PR 305 found the tolerance
+    with its n = 150 mutation, and the one-sided rule then found the 76 reported values.
+  severity: low
+  status: fixed
+  bead: think-4mzm
+  recurrence_of: D-453
+  what: >-
+    devtools.generate_frontier_case's nagamochi_value printed Theorem 2's value to its
+    significant figures rounded to nearest, so 76 generated records at n = 106 to 319
+    carried a reported lower bound one unit in the last place above Theorem 2: n = 106's
+    10.32737905309 against 10.32737905308881... devtools.check_nagamochi_bounds held each
+    borrowed lower bound to its theorem with the two-sided tolerance
+    |expected - recorded| <= 10^-places, which accepted them and would equally have
+    accepted a verified floor rounded up: the review's n = 150 mutation, 12.2579760164
+    against Karakuş's 12.25797601630..., failed no gate but the generator's drift check.
+    Measured since with the one-sided rule: just before the 2026-10-02 correction (the
+    parent of 6200bcf23) the same rounding had put 131 verified floors citing
+    E-nagamochi-lower above Theorem 2, 21 hand-written at n <= 100 and 110 generated, and
+    83 reported values; origin/main at e5a48b310, which does not yet carry that
+    correction, still has 103 such verified floors, all above n = 100, and the 76
+    reported values.
+  consequence: >-
+    Each value claims more than its source states by one unit in a last place of eleven
+    or twelve figures. No status, gap ranking or certificate turns on a difference that
+    small, and the theorem behind these values is itself unproved (D-516). But a verified
+    lane is the register's statement of what is proved, and there the error ran in the
+    flattering direction every time, as a rounding rule that does not know which way a
+    bound points always will (D-453). The checker written to catch a transcription slip in
+    these values could not see this one.
+  fix: >-
+    Fixed in 314355d05. check_nagamochi_bounds is one-sided in both lanes: a record may
+    not exceed its theorem's value and must be within one unit in its own last place below
+    it, decided exactly by squaring the closed form a + sqrt(r) against the record's
+    rational value. nagamochi_value rounds down, as karakus_value already did, and the 76
+    records were redrafted with the generator's --refresh on their own review dates, each
+    changing only that value. On this branch the verified lane cites Karakuş's floors,
+    rounded down, since 2026-10-02 and had no violation; main's 103 are replaced by them
+    when PR 305 merges.
+  regression: >-
+    devtools.check_nagamochi_bounds, the step "the borrowed lower bounds re-derive", now
+    refuses a borrowed floor rounded up in either lane.
+    tests/test_nagamochi_bounds.py::test_a_floor_rounded_up_is_refused is its control,
+    n = 150's floor rounded up in its last place, and
+    test_a_record_is_its_theorem_rounded_down tabulates floors rounded up and down at
+    n = 150, 106 and 99.
+  recorded_in: packing/devtools/check_nagamochi_bounds.py
+- id: D-518
+  title: The Lemma 1 checker's Karakuş ordering tested only k^2 <= N, and the evidence register called it an exact check
+  date: '2026-10-04'
+  layer: tooling
+  class: validity
+  direction: flattering
+  detected_by: review
+  latent_for: >-
+    Two days: from the tool's first commit, 54a0b1704 on 2026-10-02, to the senior review
+    of PR 305 on 2026-10-04.
+  severity: medium
+  status: fixed
+  bead: think-4mzm
+  what: >-
+    devtools.check_nagamochi_lemma1_counterexample's karakus_at_most_nagamochi and
+    karakus_above_area returned k*k <= N, N <= k*k + 2k and N > k*k, the last steps of the
+    by-hand reduction, which hold for every nonsquare N whatever the closed forms are. The
+    "area < Karakus <= Nagamochi" loop in main and
+    test_karakus_bound_is_between_area_and_theorem_two_exactly could not fail, while the
+    E-karakus-strip-lower review note said the tool checks that ordering exactly and the
+    2 October review listed the ordering among what the tool verified in exact
+    arithmetic.
+  consequence: >-
+    A wrong closed form for (6.1) or for Theorem 2 -- a radicand off by a constant, the
+    1/4 dropped, the ceiling branch lost -- would have passed, and the evidence record
+    would have gone on describing a machine check that did not exist. The ordering itself
+    is true, as the review's algebra shows and the exact check now confirms, so no bound
+    and no classification was wrong; what was wrong was the record's account of what had
+    been checked.
+  fix: >-
+    Fixed in faf5b28e0. The tool builds sqrt N, Karakuş's (6.1) and Theorem 2's minimum
+    as exact values a + sqrt(r) and compares them by squaring (RootForm.compare) at every
+    nonsquare N from 8 to 1000. It holds the minimum against check_nagamochi_bounds'
+    theorem_two_form and the printed decimal against the exact form, and checks the
+    measures' totals the note says it replays. The evidence note and the review carry
+    dated corrections.
+  regression: >-
+    tests/test_nagamochi_lemma1_counterexample.py::test_a_wrong_closed_form_is_caught
+    feeds bound_ordering and main four wrong closed forms -- a radicand too large, the 1/4
+    dropped, Nagamochi's root branch without its ceiling, a form below sqrt N -- and
+    requires each to be caught.
   recorded_in: docs/project/reviews/review-2026-10-02-nagamochi-lemma1-karakus.md

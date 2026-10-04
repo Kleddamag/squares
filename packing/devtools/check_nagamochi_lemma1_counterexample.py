@@ -28,7 +28,7 @@ Two further checks support the review that owns this tool
   closed form at every nonsquare `N` from 8 to 1000, exactly, by squaring the closed
   forms themselves, and in decimals at named `N`. By hand the comparison reduces to
   `floor(sqrt N)^2 <= N`; until 2026-10-04 the tool tested only that reduction, which
-  holds for any `N` and so could not catch a wrong closed form.
+  holds for any `N` and so could not catch a wrong closed form (D-518).
 - The two obvious local repairs of Nagamochi's measure, each of which rescues `K_t`
   and each of which an axis-parallel square at the same corner then defeats, so that
   neither is a repair. Those squares are the witnesses the review cites.

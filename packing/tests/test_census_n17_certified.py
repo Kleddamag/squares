@@ -1,14 +1,19 @@
-"""Controls for the n17 certified census: what it refuses and what it counts."""
+"""Controls for the n17 certified census: what it refuses, what it counts, and the fetch.
+
+Every fixture lives in a temporary directory that is not a Git checkout: the census reads
+no history. Hosted certificate objects are fabricated payloads served from `file://` URLs.
+"""
 
 from __future__ import annotations
 
+import hashlib
 import json
-import subprocess
 from pathlib import Path
 from typing import Any
 
 import pytest
 
+from devtools import hosted_data
 from devtools.census_n17_certified import (
     BB_CERTIFIED,
     BB_SCHEMA,
@@ -22,34 +27,28 @@ from devtools.census_n17_certified import (
     RefusedError,
     census,
     cover_context,
+    main,
 )
+from devtools.select_n17_sub_patterns import SCHEMA as SELECTOR_SCHEMA
 
 W7 = ["corner-SW", "side-N0", "side-W0", "side-W1", "side-W2", "interior-SW", "interior-W"]
 A = ["interior-SW", "interior-NW", "interior-W", "interior-S", "interior-N", "interior-SE"]
-SEED, NODE, MANIFEST = "a" * 64, "b" * 64, "c" * 64
 VERIFIERS = {"kernel": "tools/verify_kernel.py", "branch-and-bound": "tools/verify_bb.py"}
+LISTINGS = {"kernel": "kernel-v1", "branch-and-bound": "bb-v1"}
+MANIFEST = "hosted.yaml"
+EXP250_CENSUS = (
+    REPO
+    / "packing/campaign/series/series-000-smoke-and-calibration/results"
+    / "exp-250-n17-standing-verifier-admissions/census.json"
+)
 
 
-def git(root: Path, *arguments: str) -> str:
-    completed = subprocess.run(
-        ["git", "-C", str(root), *arguments], capture_output=True, text=True, check=True
-    )
-    return completed.stdout.strip()
-
-
-def commit_verifiers(root: Path, text: str) -> str:
-    """The two fabricated verifiers committed under the root with this text; the revision."""
-    if not (root / ".git").exists():
-        _ = git(root, "init", "-q")
-        _ = git(root, "config", "user.email", "census@example.invalid")
-        _ = git(root, "config", "user.name", "census")
-    for path in VERIFIERS.values():
-        (root / path).parent.mkdir(parents=True, exist_ok=True)
-        _ = (root / path).write_text(text, encoding="utf-8")
-    _ = (root / "review.md").write_text("admits the verifiers\n", encoding="utf-8")
-    _ = git(root, "add", "-A")
-    _ = git(root, "commit", "-qm", text, "--no-verify", "--allow-empty")
-    return git(root, "rev-parse", "HEAD")
+def ids(name: str) -> dict[str, str]:
+    """The content ids of entry `name`'s fabricated certificate objects."""
+    return {
+        kind: hashlib.sha256(f"{kind} {name}".encode()).hexdigest()
+        for kind in ("seed", "node", "manifest")
+    }
 
 
 def write_json(root: Path, name: str, document: dict[str, Any]) -> str:
@@ -60,61 +59,92 @@ def write_json(root: Path, name: str, document: dict[str, Any]) -> str:
     return f"receipts/{name}"
 
 
-def kernel_receipt(cells: list[str]) -> dict[str, Any]:
+def kernel_receipt(cells: list[str], name: str = "W7") -> dict[str, Any]:
     return {
         "status": "PASS_SAVED_CLOSED",
         "cells": cells,
         "frame": KERNEL_FRAME,
-        "seed_sha256": SEED,
-        "node_sha256": NODE,
+        "seed_sha256": ids(name)["seed"],
+        "node_sha256": ids(name)["node"],
     }
 
 
-def bb_receipt(cells: list[str], **extra: Any) -> dict[str, Any]:
+def bb_receipt(cells: list[str], name: str = "A", **extra: Any) -> dict[str, Any]:
     return {
         "schema": BB_SCHEMA,
         "design": DESIGN,
         "pattern": cells,
         "verdict": BB_CERTIFIED,
         "control": False,
-        "certificate_manifest": MANIFEST,
+        "certificate_manifest": ids(name)["manifest"],
         **extra,
     }
 
 
-def saved_certificate(root: Path, name: str) -> str:
-    """A certificate directory holding files with the names the receipts give."""
-    directory = root / "certificates" / name
-    directory.mkdir(parents=True, exist_ok=True)
-    for object_name in (f"seed-{SEED}", f"node-{NODE}", MANIFEST):
-        _ = (directory / f"{object_name}.json.gz").write_bytes(b"")
-    return f"certificates/{name}"
+def object_files(name: str, certifier: str) -> list[str]:
+    named = ids(name)
+    if certifier == "kernel":
+        return [f"seed-{named['seed']}.json.gz", f"node-{named['node']}.json.gz"]
+    return [f"{named['manifest']}.json.gz"]
 
 
-def verification(root: Path, name: str, certifier: str, cells: list[str], **extra: Any) -> Any:
-    """A fabricated full, passing verification receipt from the committed verifier, run on
-    unedited bytes at the root's current revision, of the objects `saved_certificate`
-    writes, in the directory of that name."""
+def bare_directory(root: Path, directory: str) -> str:
+    """A certificate directory holding only its small files."""
+    path = root / "certificates" / directory
+    path.mkdir(parents=True, exist_ok=True)
+    _ = (path / "README.txt").write_text("objects hosted elsewhere\n", encoding="utf-8")
+    return f"certificates/{directory}"
+
+
+def saved_certificate(
+    root: Path, directory: str, name: str | None = None, certifier: str = "kernel"
+) -> str:
+    """A certificate directory whose objects the root's manifest lists and a `file://` URL
+    serves; the objects are not placed."""
+    declared = bare_directory(root, directory)
+    manifest = root / MANIFEST
+    records = hosted_data.load_manifest(root, MANIFEST) if manifest.exists() else {}
+    for file_name in object_files(name or directory, certifier):
+        source = root / "hosted" / file_name
+        source.parent.mkdir(parents=True, exist_ok=True)
+        _ = source.write_bytes(f"object {file_name}\n".encode())
+        records[f"{declared}/{file_name}"] = hosted_data.HostedFile(
+            name=file_name,
+            path=f"{declared}/{file_name}",
+            size=source.stat().st_size,
+            sha256=hashlib.sha256(source.read_bytes()).hexdigest(),
+            url=source.as_uri(),
+        )
+    _ = manifest.write_text(hosted_data.render(records.values()), encoding="utf-8")
+    return declared
+
+
+def verification(
+    root: Path, directory: str, certifier: str, cells: list[str], **extra: Any
+) -> dict[str, Any]:
+    """A fabricated full, passing verification receipt from the listed verifier, of the
+    objects `saved_certificate` lists for the entry named by the directory's first part,
+    recording that it ran in that directory; the entry's `verification` field."""
+    named = ids(directory.split("-", maxsplit=1)[0])
     kernel = certifier == "kernel"
     objects = (
-        {"seed_sha256": SEED, "node_sha256": NODE} if kernel else {"manifest_sha256": MANIFEST}
+        {"seed_sha256": named["seed"], "node_sha256": named["node"]}
+        if kernel
+        else {"manifest_sha256": named["manifest"]}
     )
     document = {
         "schema": VERIFICATION_SCHEMA,
         "verifier": certifier,
-        "provenance": {
-            "revision": git(root, "rev-parse", "HEAD"),
-            "dirty": False,
-            "files": {VERIFIERS[certifier]: "0" * 40},
-        },
-        "directory": f"certificates/{name}",
+        "provenance": {"revision": "r1", "dirty": False, "files": {VERIFIERS[certifier]: "0"}},
+        "directory": f"certificates/{directory}",
         "certificate": objects,
         "status": "PASS",
         "mode": "full",
         "cells" if kernel else "pattern": cells,
         **extra,
     }
-    return {"receipt": write_json(root, f"verify-{name}.json", document)}
+    receipt = write_json(root, f"verify-{directory}-{certifier}.json", document)
+    return {"receipt": receipt, "verifier": LISTINGS[certifier]}
 
 
 def entry(name: str, cells: list[str], receipt: str, **fields: Any) -> dict[str, Any]:
@@ -130,36 +160,67 @@ def entry(name: str, cells: list[str], receipt: str, **fields: Any) -> dict[str,
     }
 
 
+def default_listings() -> list[dict[str, Any]]:
+    return [
+        {
+            "id": LISTINGS[certifier],
+            "certifier": certifier,
+            "path": path,
+            "version": "1",
+            "review": "review.md",
+        }
+        for certifier, path in VERIFIERS.items()
+    ]
+
+
 def run_census(
     root: Path,
     entries: list[dict[str, Any]],
-    revisions: list[str] | None = None,
     listings: list[dict[str, Any]] | None = None,
+    **options: Any,
 ) -> dict[str, Any]:
-    """The census of the entries, with each verifier listed at the given revisions (by
-    default the root's first commit, made here when the root has none), or with the given
-    listings in place of those."""
-    if revisions is None:
-        revisions = [
-            git(root, "rev-list", "--max-parents=0", "HEAD")
-            if (root / ".git").exists()
-            else commit_verifiers(root, "the reviewed verifier\n")
-        ]
+    """The census of the entries under the listings (by default one per certifier), with
+    the root's manifest when one was written."""
+    for path in VERIFIERS.values():
+        (root / path).parent.mkdir(parents=True, exist_ok=True)
+        _ = (root / path).write_text("the reviewed verifier\n", encoding="utf-8")
+    _ = (root / "review.md").write_text("admits the verifiers\n", encoding="utf-8")
     ledger = root / "ledger.yaml"
-    document = {
+    document: dict[str, Any] = {
         "schema": LEDGER_SCHEMA,
         "design": DESIGN,
-        "verifiers": listings
-        if listings is not None
-        else [
-            {"path": path, "revision": revision, "review": "review.md"}
-            for path in VERIFIERS.values()
-            for revision in revisions
-        ],
+        "verifiers": default_listings() if listings is None else listings,
         "entries": entries,
     }
+    if (root / MANIFEST).exists():
+        document["data_manifest"] = MANIFEST
     _ = ledger.write_text(json.dumps(document), encoding="utf-8")  # JSON is YAML
-    return census(ledger, root=root, selector_receipts=())
+    return census(ledger, root=root, selector_receipts=(), **options)
+
+
+def admitted_w7(root: Path, checked: dict[str, Any] | None = None) -> dict[str, Any]:
+    return entry(
+        "W7",
+        W7,
+        write_json(root, "w7.json", kernel_receipt(W7)),
+        status="admitted",
+        evidence="review.md",
+        certificate=saved_certificate(root, "W7"),
+        verification=checked or verification(root, "W7", "kernel", W7),
+    )
+
+
+def admitted_a(root: Path) -> dict[str, Any]:
+    return entry(
+        "A",
+        A,
+        write_json(root, "a.json", bb_receipt(A)),
+        certifier="branch-and-bound",
+        status="admitted",
+        evidence="review.md",
+        certificate=saved_certificate(root, "A", certifier="branch-and-bound"),
+        verification=verification(root, "A", "branch-and-bound", A),
+    )
 
 
 def image_names(cells: list[str], element: int) -> list[str]:
@@ -205,24 +266,9 @@ def test_an_entry_excluding_the_endpoint_state_is_refused(tmp_path: Path) -> Non
         _ = run_census(tmp_path, [entry("E", cells, receipt)])
 
 
-def test_only_admitted_entries_are_counted(tmp_path: Path) -> None:
-    _ = commit_verifiers(tmp_path, "the reviewed verifier\n")
-    w7 = write_json(tmp_path, "w7.json", kernel_receipt(W7))
+def test_only_admitted_entries_are_counted_and_need_no_hosted_bytes(tmp_path: Path) -> None:
     a = write_json(tmp_path, "a.json", bb_receipt(A))
-    review = tmp_path / "review.md"
-    _ = review.write_text("admits W7\n", encoding="utf-8")
-    entries = [
-        entry(
-            "W7",
-            W7,
-            w7,
-            status="admitted",
-            evidence="review.md",
-            certificate=saved_certificate(tmp_path, "W7"),
-            verification=verification(tmp_path, "W7", "kernel", W7),
-        ),
-        entry("A", A, a, certifier="branch-and-bound"),
-    ]
+    entries = [admitted_w7(tmp_path), entry("A", A, a, certifier="branch-and-bound")]
     record = run_census(tmp_path, entries)
     # W7 excludes 133,152 states in 16,701 orbits, as its kernel receipt says.
     assert record["certified"]["surviving_states"] == 346104 - 133152
@@ -233,8 +279,13 @@ def test_only_admitted_entries_are_counted(tmp_path: Path) -> None:
     assert both["surviving_states"] == (
         record["certified"]["surviving_states"] - record["entries"][1]["marginal"]["states"]
     )
+    # The count rests on the receipts; the objects are hosted and not in place.
+    assert record["entries"][0]["certificate_data"]["local"] == "absent"
+    assert record["data"]["certificates_not_in_place"] == 1
+    assert record["data"]["full_recheck"] == "needs --fetch"
+    receipt = entries[0]["receipt"]
     with pytest.raises(RefusedError, match="evidence"):
-        _ = run_census(tmp_path, [entry("W7", W7, w7, status="admitted")])
+        _ = run_census(tmp_path, [entry("W7", W7, receipt, status="admitted")])
 
 
 def test_uncertified_or_control_receipts_are_refused(tmp_path: Path) -> None:
@@ -251,6 +302,9 @@ def test_uncertified_or_control_receipts_are_refused(tmp_path: Path) -> None:
         _ = run_census(tmp_path, [entry("A", A, budget, certifier="branch-and-bound")])
 
 
+W7_IDS = ids("W7")
+
+
 @pytest.mark.parametrize(
     ("change", "message"),
     [
@@ -258,27 +312,47 @@ def test_uncertified_or_control_receipts_are_refused(tmp_path: Path) -> None:
         ({"status": "FAIL"}, "did not pass"),
         ({"mode": "sample"}, "sample"),
         ({"verifier": "branch-and-bound"}, "not a kernel verification"),
-        ({"provenance": None}, "needs the entry's verifier"),
+        ({"listing": None}, "names no listed verifier"),
+        ({"listing": "kernel-v9"}, "names no listed verifier"),
+        ({"listing": "bb-v1"}, "checks branch-and-bound"),
         (
-            {"provenance": {"revision": "0" * 40, "dirty": True, "files": {"x.py": "1"}}},
+            {
+                "provenance": {
+                    "revision": "r1",
+                    "dirty": True,
+                    "files": {VERIFIERS["kernel"]: "1"},
+                }
+            },
             "uncommitted",
         ),
-        ({"certificate": {"seed_sha256": "d" * 64, "node_sha256": NODE}}, "other objects"),
-        ({"certificate": {"seed_sha256": SEED}}, "other objects"),
+        (
+            {"provenance": {"revision": "r1", "dirty": False, "files": {"tools/x.py": "1"}}},
+            r"ran tools/x\.py, not tools/verify_kernel\.py",
+        ),
+        (
+            {"certificate": {"seed_sha256": "d" * 64, "node_sha256": W7_IDS["node"]}},
+            "other objects",
+        ),
+        ({"certificate": {"seed_sha256": W7_IDS["seed"]}}, "other objects"),
         ({"certificate": None}, "other objects"),
         ({"checked_cells": A}, "another class"),
         ({"certificate_path": None}, "saved certificate"),
+        ({"unlisted": True}, "lists no seed-"),
     ],
 )
 def test_an_admitted_entry_needs_its_full_passing_reviewed_verification(
     tmp_path: Path, change: dict[str, Any], message: str
 ) -> None:
-    _ = commit_verifiers(tmp_path, "the reviewed verifier\n")
     receipt = write_json(tmp_path, "w7.json", kernel_receipt(W7))
-    fields = {k: v for k, v in change.items() if k != "verification"}
-    certificate = fields.pop("certificate_path", saved_certificate(tmp_path, "W7"))
-    cells = fields.pop("checked_cells", W7)
-    checked = verification(tmp_path, "W7", "kernel", cells, **fields)
+    special = {"verification", "listing", "checked_cells", "certificate_path", "unlisted"}
+    fields = {k: v for k, v in change.items() if k not in special}
+    directory = bare_directory(tmp_path, "W7") if change.get("unlisted") else None
+    certificate = change.get("certificate_path", directory or saved_certificate(tmp_path, "W7"))
+    checked: Any = verification(
+        tmp_path, "W7", "kernel", change.get("checked_cells", W7), **fields
+    )
+    if "listing" in change:
+        checked["verifier"] = change["listing"]
     if "verification" in change:
         checked = change["verification"]
     admitted = entry(
@@ -297,83 +371,56 @@ def test_an_admitted_entry_needs_its_full_passing_reviewed_verification(
 def test_an_admitted_branch_and_bound_entry_counts_with_its_verification(
     tmp_path: Path,
 ) -> None:
-    reviewed = commit_verifiers(tmp_path, "the reviewed verifier\n")
-    receipt = write_json(tmp_path, "a.json", bb_receipt(A))
-    admitted = entry(
-        "A",
-        A,
-        receipt,
-        certifier="branch-and-bound",
-        status="admitted",
-        evidence="review.md",
-        certificate=saved_certificate(tmp_path, "A"),
-        verification=verification(tmp_path, "A", "branch-and-bound", A),
-    )
-    record = run_census(tmp_path, [admitted])
+    record = run_census(tmp_path, [admitted_a(tmp_path)])
     assert record["certified"]["admitted"] == 1
     assert record["certified"]["surviving_states"] == 346104 - 110448
     assert record["certified"]["orbits"] == 43593 - 13897
     assert record["entries"][0]["verification"]["verifier"] == {
+        "id": "bb-v1",
         "path": VERIFIERS["branch-and-bound"],
-        "revision": reviewed,
+        "version": "1",
         "review": "review.md",
     }
+    assert record["entries"][0]["verification"]["ran_at"] == "r1"
 
 
-def admitted_w7(root: Path, checked: dict[str, Any]) -> dict[str, Any]:
-    return entry(
-        "W7",
-        W7,
-        write_json(root, "w7.json", kernel_receipt(W7)),
-        status="admitted",
-        evidence="review.md",
-        certificate=saved_certificate(root, "W7"),
-        verification=checked,
-    )
-
-
-def test_a_verification_counts_at_a_revision_whose_verifier_is_the_reviewed_one(
-    tmp_path: Path,
-) -> None:
-    """A later revision with the verifier's file unchanged counts; an edited verifier does
-    not until its revision is listed; a receipt that predates provenance counts by the
-    revision the entry names for it, and only such a receipt may name one."""
-    reviewed = commit_verifiers(tmp_path, "the reviewed verifier\n")
-    _ = commit_verifiers(tmp_path, "the reviewed verifier\n")
-    later = admitted_w7(tmp_path, verification(tmp_path, "W7", "kernel", W7))
-    assert run_census(tmp_path, [later], [reviewed])["certified"]["admitted"] == 1
-    edited = commit_verifiers(tmp_path, "the verifier, edited\n")
-    unreviewed = admitted_w7(tmp_path, verification(tmp_path, "W7", "kernel", W7))
-    with pytest.raises(RefusedError, match="not a reviewed verifier"):
-        _ = run_census(tmp_path, [unreviewed], [reviewed])
-    assert run_census(tmp_path, [unreviewed], [reviewed, edited])["certified"]["admitted"] == 1
-    named = {"path": VERIFIERS["kernel"], "revision": reviewed}
+def test_a_verification_counts_under_the_listing_its_entry_names(tmp_path: Path) -> None:
+    """The listing is named, not looked up in history: a receipt without provenance counts
+    under the listing its entry names; one whose provenance names another file than the
+    listing's is refused; listings need distinct ids, a known certifier and files that
+    exist. None of it needs Git."""
+    assert not (tmp_path / ".git").exists()
     legacy = verification(tmp_path, "W7", "kernel", W7, provenance=None)
-    record = run_census(tmp_path, [admitted_w7(tmp_path, {**legacy, "verifier": named})])
-    assert record["entries"][0]["verification"]["verifier"]["revision"] == reviewed
-    both = {**verification(tmp_path, "W7", "kernel", W7), "verifier": named}
-    with pytest.raises(RefusedError, match="names none"):
-        _ = run_census(tmp_path, [admitted_w7(tmp_path, both)], [reviewed, edited])
-    with pytest.raises(RefusedError, match="holds no such file"):
-        _ = run_census(tmp_path, [], ["0" * 40])
+    record = run_census(tmp_path, [admitted_w7(tmp_path, legacy)])
+    assert record["entries"][0]["verification"]["ran_at"] is None
+    assert record["entries"][0]["verification"]["verifier"]["id"] == "kernel-v1"
+    second = {**default_listings()[0], "id": "kernel-v2", "path": "tools/verify_kernel_2.py"}
+    (tmp_path / second["path"]).write_text("the rewritten verifier\n", encoding="utf-8")
+    moved = {**verification(tmp_path, "W7", "kernel", W7), "verifier": "kernel-v2"}
+    with pytest.raises(RefusedError, match=r"ran tools/verify_kernel\.py, not"):
+        _ = run_census(tmp_path, [admitted_w7(tmp_path, moved)], [*default_listings(), second])
+    for broken, message in (
+        ({**second, "id": "kernel-v1"}, "distinct"),
+        ({**second, "certifier": "lattice"}, "certifier"),
+        ({**second, "path": "tools/missing.py"}, "does not exist"),
+        ({**second, "revision": "abc"}, "verifiers must be a list"),
+    ):
+        with pytest.raises(RefusedError, match=message):
+            _ = run_census(tmp_path, [], [*default_listings(), broken])
 
 
 def test_a_verification_matches_its_certificate_by_object_ids_not_by_directory(
     tmp_path: Path,
 ) -> None:
-    """A certificate directory renamed after its verification still counts, for either
+    """A certificate whose verification ran in another directory still counts, for either
     certifier, because the receipt names the same seed and node (or manifest) ids; a
     verification of other objects is refused wherever it ran."""
-    _ = commit_verifiers(tmp_path, "the reviewed verifier\n")
     w7 = write_json(tmp_path, "w7.json", kernel_receipt(W7))
     a = write_json(tmp_path, "a.json", bb_receipt(A))
     checked = {
         "W7": verification(tmp_path, "W7-pending", "kernel", W7),
         "A": verification(tmp_path, "A-pending", "branch-and-bound", A),
     }
-    for name in ("W7", "A"):
-        _ = saved_certificate(tmp_path, f"{name}-pending")
-        (tmp_path / "certificates" / f"{name}-pending").rename(tmp_path / "certificates" / name)
     renamed = [
         entry(
             "W7",
@@ -381,7 +428,7 @@ def test_a_verification_matches_its_certificate_by_object_ids_not_by_directory(
             w7,
             status="admitted",
             evidence="review.md",
-            certificate="certificates/W7",
+            certificate=saved_certificate(tmp_path, "W7"),
             verification=checked["W7"],
         ),
         entry(
@@ -391,7 +438,7 @@ def test_a_verification_matches_its_certificate_by_object_ids_not_by_directory(
             certifier="branch-and-bound",
             status="admitted",
             evidence="review.md",
-            certificate="certificates/A",
+            certificate=saved_certificate(tmp_path, "A", certifier="branch-and-bound"),
             verification=checked["A"],
         ),
     ]
@@ -401,7 +448,7 @@ def test_a_verification_matches_its_certificate_by_object_ids_not_by_directory(
         "certificates/W7",
         "certificates/A",
     ]
-    other = {"seed_sha256": SEED, "node_sha256": "e" * 64}
+    other = {"seed_sha256": W7_IDS["seed"], "node_sha256": "e" * 64}
     swapped = {
         **renamed[0],
         "verification": verification(tmp_path, "W7", "kernel", W7, certificate=other),
@@ -421,50 +468,126 @@ def test_a_verification_matches_its_certificate_by_object_ids_not_by_directory(
 def test_a_listing_with_admits_verifies_only_the_entries_it_names(tmp_path: Path) -> None:
     """An older verifier listing kept to the receipts it already wrote, as the kernel
     listings before the closed-cover fix are: its own entry still counts, a new entry
-    verified at it is refused, and the new entry counts once verified at a listing
+    verified under it is refused, and the new entry counts once verified under a listing
     without `admits`."""
-    kernel = VERIFIERS["kernel"]
-    old = commit_verifiers(tmp_path, "the verifier with the zero-area branch\n")
-    first = admitted_w7(tmp_path, verification(tmp_path, "W7", "kernel", W7))
+    base = default_listings()[0]
+    old = {**base, "id": "kernel-old", "admits": ["W7"]}
+    fixed = {**base, "id": "kernel-fixed"}
+    listings = [old, fixed]
+    first = admitted_w7(
+        tmp_path, {**verification(tmp_path, "W7", "kernel", W7), "verifier": "kernel-old"}
+    )
     late = entry(
         "A",
         A,
-        write_json(tmp_path, "a-kernel.json", kernel_receipt(A)),
+        write_json(tmp_path, "a-kernel.json", kernel_receipt(A, "A")),
         status="admitted",
         evidence="review.md",
         certificate=saved_certificate(tmp_path, "A"),
-        verification=verification(tmp_path, "A", "kernel", A),
+        verification={**verification(tmp_path, "A", "kernel", A), "verifier": "kernel-old"},
     )
-    fixed = commit_verifiers(tmp_path, "the verifier with exact closed covers\n")
-    listings = [
-        {"path": kernel, "revision": old, "review": "review.md", "admits": ["W7"]},
-        {"path": kernel, "revision": fixed, "review": "review.md"},
-    ]
-    assert run_census(tmp_path, [first], listings=listings)["certified"]["admitted"] == 1
+    assert run_census(tmp_path, [first], listings)["certified"]["admitted"] == 1
     with pytest.raises(RefusedError, match=r"'A'.*reviewed only for other entries.*admits W7"):
-        _ = run_census(tmp_path, [first, late], listings=listings)
-    late["verification"] = verification(tmp_path, "A", "kernel", A)
-    both = run_census(tmp_path, [first, late], listings=listings)
+        _ = run_census(tmp_path, [first, late], listings)
+    late["verification"] = {**late["verification"], "verifier": "kernel-fixed"}
+    both = run_census(tmp_path, [first, late], listings)
     assert both["certified"]["admitted"] == 2
-    assert [row["verification"]["verifier"]["revision"] for row in both["entries"]] == [
-        old,
-        fixed,
+    assert [row["verification"]["verifier"]["id"] for row in both["entries"]] == [
+        "kernel-old",
+        "kernel-fixed",
     ]
-    closed = [{**listings[0], "admits": []}, listings[1]]
+    closed = [{**old, "admits": []}, fixed]
     with pytest.raises(RefusedError, match=r"'W7'.*admits no entry"):
-        _ = run_census(tmp_path, [first], listings=closed)
+        _ = run_census(tmp_path, [first], closed)
     for malformed in ("W7", [None], None):
         with pytest.raises(RefusedError, match="admits must be a list"):
-            _ = run_census(tmp_path, [first], listings=[{**listings[0], "admits": malformed}])
-    with pytest.raises(RefusedError, match="verifiers must be a list"):
-        _ = run_census(tmp_path, [first], listings=[{**listings[0], "scope": ["W7"]}])
+            _ = run_census(tmp_path, [first], [{**old, "admits": malformed}, fixed])
 
 
-def test_the_committed_ledger_still_counts_its_four_admitted_entries() -> None:
-    """W7, A, SW9 and N1 still count once the kernel listings before the closed-cover fix
-    admit only them. Reads the repository's history, as the census does."""
+def test_fetch_downloads_checks_and_places_the_hosted_objects(tmp_path: Path) -> None:
+    """`fetch` places every absent hosted file of the ledger's certificates, checked against
+    the manifest; the count is the same; a second fetch downloads nothing; a wrong digest
+    or a wrong size is refused and leaves no file behind."""
+    entries = [admitted_w7(tmp_path), admitted_a(tmp_path)]
+    before = run_census(tmp_path, entries)
+    after = run_census(tmp_path, entries, fetch=True)
+    assert after["data"]["fetched"] == 3
+    assert after["data"]["full_recheck"] == "the hosted files are in place"
+    assert {row["certificate_data"]["local"] for row in after["entries"]} == {"present"}
+    assert after["certified"] == before["certified"]
+    placed = tmp_path / "certificates/W7" / object_files("W7", "kernel")[0]
+    assert placed.read_bytes() == (tmp_path / "hosted" / placed.name).read_bytes()
+    assert run_census(tmp_path, entries, fetch=True)["data"]["fetched"] == 0
+    # A placed file of another size is refused before anything counts.
+    _ = placed.write_bytes(b"truncated")
+    with pytest.raises(RefusedError, match="not the manifest's"):
+        _ = run_census(tmp_path, entries)
+    placed.unlink()
+    # A download whose SHA-256 differs from the manifest's is refused and not kept.
+    manifest = tmp_path / MANIFEST
+    text = manifest.read_text(encoding="utf-8")
+    digest = hashlib.sha256(f"object {placed.name}\n".encode()).hexdigest()
+    _ = manifest.write_text(text.replace(digest, "f" * 64), encoding="utf-8")
+    with pytest.raises(RefusedError, match="SHA-256"):
+        _ = run_census(tmp_path, entries, fetch=True)
+    assert sorted(path.name for path in placed.parent.iterdir()) == [
+        "README.txt",
+        object_files("W7", "kernel")[1],
+    ]
+
+
+def test_the_cli_fetches_and_reports(
+    tmp_path: Path, capsys: pytest.CaptureFixture[str]
+) -> None:
+    _ = run_census(tmp_path, [admitted_w7(tmp_path)])
+    flags = {"schema": SELECTOR_SCHEMA, "design": DESIGN, "flagged": []}
+    command = [
+        "--root",
+        str(tmp_path),
+        "--selector-receipt",
+        write_json(tmp_path, "f.json", flags),
+    ]
+    assert main([*command, "--ledger", "ledger.yaml", "--fetch"]) == 0
+    assert json.loads(capsys.readouterr().out)["data"]["fetched"] == 2
+    assert main([*command, "--ledger", "missing.yaml"]) == 2
+    assert "does not exist" in json.loads(capsys.readouterr().out)["refused"]
+
+
+def test_the_manifest_is_refused_when_malformed(tmp_path: Path) -> None:
+    good = {
+        "name": "x.json.gz",
+        "path": "certificates/W7/x.json.gz",
+        "size": 1,
+        "sha256": "a" * 64,
+        "url": "https://example.invalid/tag/x.json.gz",
+    }
+    for change, message in (
+        ({"size": -1}, "byte count"),
+        ({"sha256": "A" * 64}, "hex"),
+        ({"path": "/abs/x.json.gz"}, "repository-relative"),
+        ({"url": "https://example.invalid/tag/y.json.gz"}, "must end in"),
+        ({"extra": 1}, "fields must be"),
+    ):
+        document = {"schema": hosted_data.SCHEMA, "files": [{**good, **change}]}
+        _ = (tmp_path / MANIFEST).write_text(json.dumps(document), encoding="utf-8")
+        with pytest.raises(hosted_data.HostedDataError, match=message):
+            _ = hosted_data.load_manifest(tmp_path, MANIFEST)
+    twice = {"schema": hosted_data.SCHEMA, "files": [good, good]}
+    _ = (tmp_path / MANIFEST).write_text(json.dumps(twice), encoding="utf-8")
+    with pytest.raises(hosted_data.HostedDataError, match="listed twice"):
+        _ = hosted_data.load_manifest(tmp_path, MANIFEST)
+
+
+def test_the_committed_ledger_counts_its_four_admitted_entries_without_the_dumps() -> None:
+    """W7, A, SW9 and N1 count from the committed receipts whether or not the hosted
+    certificate objects are in place, to exp-250's census."""
     record = census(REPO / DEFAULT_LEDGER, selector_receipts=())
     admitted = {row["name"] for row in record["entries"] if row["status"] == "admitted"}
     assert {"W7", "A", "SW9", "N1"} <= admitted
     assert record["certified"]["admitted"] == len(admitted)
     assert record["certified"]["endpoint_survives"]
+    retained = json.loads(EXP250_CENSUS.read_text(encoding="utf-8"))
+    if admitted == {"W7", "A", "SW9", "N1"}:
+        assert record["certified"] == retained["certified"]
+    assert record["data"]["files"] == 92
+    assert record["data"]["bytes"] == 112_285_110

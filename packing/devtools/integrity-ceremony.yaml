@@ -64,6 +64,9 @@ allowlist:
   - path: packing/devtools/check_general_pose_tree_census.py
     kind: external-checkout
     boundary: The general_pose_tree checker, another repository passed by --checker (C3).
+  - path: packing/devtools/hosted_data.py
+    kind: download
+    boundary: Data hosted outside Git, such as release assets, against its manifest's SHA-256.
   - path: packing/devtools/checkpoint_manifest.py
     kind: legacy-manifest
     boundary: The two retained checkpoint manifests; `pack` writes no new sidecar (F6).

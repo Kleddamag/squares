@@ -206,7 +206,14 @@ independent review was running alongside it.
 
 The certificate is in `certificates/W7/`: the gzipped seed and node, each named by the
 SHA-256 of its decompressed canonical JSON, and a `README.txt` giving the format for an
-independent reader. The sharper falsifier is the useful one.
+independent reader. Since 2026-10-04 the gzipped objects of every certificate here are
+hosted outside Git as release assets, listed with size, SHA-256 and URL in
+[`certificates/hosted-data.yaml`](certificates/hosted-data.yaml); the README files and
+verification receipts stay.
+`python -m devtools.census_n17_certified --fetch` puts the objects back at these paths,
+so every command in this record runs as written.
+
+The sharper falsifier is the useful one.
 It runs the same cascade as W7, so it exercises the collision path that closes W7, and
 without side-N0 it plateaus with side-W2 at 48 live rows rather than 12.
 

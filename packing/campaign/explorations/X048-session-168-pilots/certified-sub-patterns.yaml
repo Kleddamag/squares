@@ -6,63 +6,87 @@
 # experiment record holding the full pass of a reviewed standing verifier. The census
 # checks only that `evidence` exists. It is a pointer for readers, not a check; what
 # admits an entry is its `verification`.
-schema: n17-certified-sub-patterns/v2
+schema: n17-certified-sub-patterns/v3
 design: ring-3-voronoi-8-tabbed-unique
-# The standing verifiers, written separately from the producers, at the revisions a review
-# admitted. An admitted entry counts only with a full, passing verification by a listed
-# verifier at a listed revision, or at a later one at which its file is unchanged. A
-# listing with `admits` may verify only the entries it names; the 318c28c42 listing says
-# why the earlier kernel listings carry it. A verification is matched to its certificate
-# by the content ids in the objects' file names (seed and node, or the manifest), not by
+# The certificate objects (about 112 MB of gzip) are hosted outside Git, listed with their
+# sizes, SHA-256 and URLs in this manifest; each certificate directory keeps its small
+# files. The count needs only the committed receipts; `--fetch` downloads the objects so
+# the verifiers can run again.
+data_manifest: packing/campaign/explorations/X048-session-168-pilots/certificates/hosted-data.yaml
+# The standing verifiers, written separately from the producers, as reviews admitted them.
+# Each entry's verification names the listing it ran under by `id`; `version` is the
+# revision the review read, kept for the reader, and nothing resolves it. A listing with
+# `admits` may verify only the entries it names; the closed-cover listing says why the
+# earlier kernel listings carry it. A verification is matched to its certificate by the
+# content ids in the objects' file names (seed and node, or the manifest), not by
 # directory, so a certificate directory can be renamed without verifying it again.
+# Revisions named here were commits on PR 307's branch; they resolve at
+# refs/pull/307/head.
 verifiers:
-  # The review verifiers retained at 556561586: lane R3's for the kernel (W7's receipt),
-  # lane R4's for the branch and bound (A's receipt).
-  - path: packing/devtools/verify_n17_kernel_certificate.py
-    revision: 556561586095f1eaf7952e32199f40a4d3360d20
+  # The review verifiers: lane R3's for the kernel (W7's receipt), lane R4's for the
+  # branch and bound (A's receipt).
+  - id: kernel-review-r3
+    certifier: kernel
+    path: packing/devtools/verify_n17_kernel_certificate.py
+    version: 556561586095f1eaf7952e32199f40a4d3360d20
     review: docs/project/reviews/review-2026-10-02-n17-w7-closure.md
     admits: [W7]
-  - path: packing/devtools/verify_n17_bb_certificate.py
-    revision: 556561586095f1eaf7952e32199f40a4d3360d20
+  - id: bb-review-r4
+    certifier: branch-and-bound
+    path: packing/devtools/verify_n17_bb_certificate.py
+    version: 556561586095f1eaf7952e32199f40a4d3360d20
     review: docs/project/reviews/review-2026-10-02-n17-branch-and-bound-certifier.md
-  # The kernel verifier on homogeneous integers with memoised partner covers (e0b66f07b),
-  # and the branch-and-bound verifier with the 2,400-bit enclosure retry and the opt-in
-  # Taylor checks (ff5471e89), both admitted by the verifier-rewrites review of 2026-10-03.
-  - path: packing/devtools/verify_n17_kernel_certificate.py
-    revision: e0b66f07b1d5daa04da0edc07dd591d7c17d9c47
+  # The kernel verifier on homogeneous integers with memoised partner covers, and the
+  # branch-and-bound verifier with the 2,400-bit enclosure retry and the opt-in Taylor
+  # checks, both admitted by the verifier-rewrites review of 2026-10-03.
+  - id: kernel-homogeneous
+    certifier: kernel
+    path: packing/devtools/verify_n17_kernel_certificate.py
+    version: e0b66f07b1d5daa04da0edc07dd591d7c17d9c47
     review: docs/project/reviews/review-2026-10-03-n17-verifier-rewrites.md
-    admits: []  # no receipt in this ledger ran at this file
-  - path: packing/devtools/verify_n17_bb_certificate.py
-    revision: ff5471e8902aeab0a9247501e9a3de380619d56a
+    admits: []  # no receipt in this ledger ran under this listing
+  - id: bb-enclosure-retry
+    certifier: branch-and-bound
+    path: packing/devtools/verify_n17_bb_certificate.py
+    version: ff5471e8902aeab0a9247501e9a3de380619d56a
     review: docs/project/reviews/review-2026-10-03-n17-verifier-rewrites.md
-  # The kernel verifier on adaptive rows (575795e02): a step's rows partition [0, 1] and
-  # each cites an accepted row that contains it. Admitted by the same review's section 5
-  # once its five condition tests were committed (056de341f; section 5.4).
-  - path: packing/devtools/verify_n17_kernel_certificate.py
-    revision: 575795e029151abc52d892126acd05e23795641d
+  # The kernel verifier on adaptive rows: a step's rows partition [0, 1] and each cites an
+  # accepted row that contains it. Admitted by the same review's section 5 once its five
+  # condition tests were committed (section 5.4).
+  - id: kernel-adaptive-rows
+    certifier: kernel
+    path: packing/devtools/verify_n17_kernel_certificate.py
+    version: 575795e029151abc52d892126acd05e23795641d
     review: docs/project/reviews/review-2026-10-03-n17-verifier-rewrites.md
-    admits: []  # no receipt in this ledger ran at this file
-  # 25c1cdef6 changed only I/O and recording since 575795e02 (no file-name read-back; provenance
-  # for the module digest). Its mathematical checks are unchanged; the 47 condition tests pass.
-  - path: packing/devtools/verify_n17_kernel_certificate.py
-    revision: 25c1cdef690f4c1d398364a13e3cf96281c01c17
+    admits: []  # no receipt in this ledger ran under this listing
+  # Only I/O and recording changed since the adaptive rows (no file-name read-back;
+  # provenance for the module). Its mathematical checks are unchanged; the 47 condition
+  # tests pass. SW9's and N1's receipts ran at fd2c9602e and ae4f5fb43, where the file is
+  # this one (blob ea1c7104 in both receipts).
+  - id: kernel-io-recording
+    certifier: kernel
+    path: packing/devtools/verify_n17_kernel_certificate.py
+    version: 25c1cdef690f4c1d398364a13e3cf96281c01c17
     review: docs/project/reviews/review-2026-10-03-n17-verifier-rewrites.md
-    # SW9's and N1's receipts ran at fd2c9602e and ae4f5fb43, where the file is this one.
     admits: [SW9, N1]
   # The kernel verifier with exact point and segment covers (lane V1, after the n11
-  # review's finding C2). Every earlier listed kernel revision accepts an uncovered
-  # zero-area row, and those from e0b66f07b on also an uncovered one-point section. On W7,
-  # SW9 and N1 neither branch ran (review section 6.2), so their receipts stand, and each
+  # review's finding C2). Every earlier kernel listing accepts an uncovered zero-area row,
+  # and those from the homogeneous one on also an uncovered one-point section. On W7, SW9
+  # and N1 neither branch ran (review section 6.2), so their receipts stand, and each
   # earlier kernel listing admits only the entries whose receipts it wrote. A new entry
-  # must be verified at this revision or a later one at which the file is unchanged.
-  - path: packing/devtools/verify_n17_kernel_certificate.py
-    revision: 318c28c42afaa4128c07dcbc785d717adbaf95a9
+  # must be verified under this listing or a later one.
+  - id: kernel-closed-covers
+    certifier: kernel
+    path: packing/devtools/verify_n17_kernel_certificate.py
+    version: 318c28c42afaa4128c07dcbc785d717adbaf95a9
     review: docs/project/reviews/review-2026-10-03-n17-verifier-rewrites.md
   # The same verifier reading the node a step at a time, with its facet and
-  # forbidden-region memos bounded (lane M1). Its checks are 318c28c42's; it re-verifies
-  # W7, SW9 and N1 in full with their recorded receipts' fields.
-  - path: packing/devtools/verify_n17_kernel_certificate.py
-    revision: 601bbf1107a622b306a3fe1fc57faebc9e28d27f
+  # forbidden-region memos bounded (lane M1). Its checks are the closed-cover listing's;
+  # it re-verifies W7, SW9 and N1 in full with their recorded receipts' fields.
+  - id: kernel-streamed
+    certifier: kernel
+    path: packing/devtools/verify_n17_kernel_certificate.py
+    version: 601bbf1107a622b306a3fe1fc57faebc9e28d27f
     review: docs/project/reviews/review-2026-10-04-n17-streamed-verifier.md
 entries:
   - name: W7
@@ -76,10 +100,8 @@ entries:
     evidence: docs/project/reviews/review-2026-10-02-n17-w7-closure.md
     verification:
       receipt: packing/campaign/explorations/X048-session-168-pilots/certificates/W7/verification.json
-      # Written before receipts recorded their verifier: the kernel verifier at 556561586.
-      verifier:
-        path: packing/devtools/verify_n17_kernel_certificate.py
-        revision: 556561586095f1eaf7952e32199f40a4d3360d20
+      # Written before receipts recorded their verifier: lane R3's kernel verifier.
+      verifier: kernel-review-r3
   - name: A
     cells: [interior-SW, interior-NW, interior-W, interior-S, interior-N, interior-SE]
     certifier: branch-and-bound
@@ -93,11 +115,8 @@ entries:
     evidence: docs/project/reviews/review-2026-10-02-n17-branch-and-bound-certifier.md
     verification:
       receipt: packing/campaign/explorations/X048-session-168-pilots/certificates/A/verification.json
-      # Written before receipts recorded their verifier: the branch-and-bound verifier at
-      # 556561586.
-      verifier:
-        path: packing/devtools/verify_n17_bb_certificate.py
-        revision: 556561586095f1eaf7952e32199f40a4d3360d20
+      # Written before receipts recorded their verifier: lane R4's branch-and-bound verifier.
+      verifier: bb-review-r4
   - name: SW9
     cells: [corner-SW, side-S0, side-N0, side-W0, side-W1, side-W2, interior-SW, interior-NW, interior-S]
     certifier: kernel
@@ -109,6 +128,7 @@ entries:
     evidence: packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-250-h267-n17-standing-verifier-admissions.md
     verification:
       receipt: packing/campaign/explorations/X048-session-168-pilots/certificates/flag3-a9-pending/verification.json
+      verifier: kernel-io-recording
   - name: N1
     cells: [corner-SW, corner-SE, corner-NW, side-S0, side-N0, side-W0, side-E0, side-S1, side-W1, side-S2, side-N2, side-W2, side-E2, interior-W, interior-S, interior-N, interior-E]
     certifier: kernel
@@ -120,3 +140,4 @@ entries:
     evidence: packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-250-h267-n17-standing-verifier-admissions.md
     verification:
       receipt: packing/campaign/explorations/X048-session-168-pilots/certificates/N1-state-pending/verification.json
+      verifier: kernel-io-recording

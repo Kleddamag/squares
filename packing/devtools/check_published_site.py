@@ -602,6 +602,57 @@ def shared_pages() -> tuple[str, ...]:
 _RECORD_FILE = re.compile(rf"{re.escape(render_case_pages.CASES_DIR)}/\d+\.html")
 
 
+#: A shared asset as a page names it (`site_assets`), from wherever the page is served;
+#: a face as a shared stylesheet names it, from beside it; and a shared file's name, which
+#: carries the first sixteen hex digits of its bytes' SHA-256 (`content_hash`).
+_ASSET_REFERENCE = re.compile(r'(?:href|src)="((?:\.\./)*assets/[^"#?]+)"')
+_FACE_REFERENCE = re.compile(r'url\("(\.\./fonts/[^"]+)"\)')
+_HASHED_NAME = re.compile(r"\.([0-9a-f]{16})\.[a-z0-9]+$")
+
+
+def asset_checks(
+    pages: Mapping[str, str], read: Callable[[str], bytes | None]
+) -> list[tuple[bool, str]]:
+    """Every shared asset `pages` name, and every face a named stylesheet names, is
+    served with the bytes its name was given for. `pages` are by their path from the
+    site's root, and `read` gives a file's bytes by its path from there, or `None`
+    where nothing is served. One line, since a site's pages name the same few dozen."""
+    named: dict[str, str] = {}
+    for name, text in pages.items():
+        for href in _ASSET_REFERENCE.findall(text):
+            named.setdefault(
+                posixpath.normpath(posixpath.join(posixpath.dirname(name), href)), name
+            )
+    if not named:
+        return [(True, "shared assets: no page here names one")]
+    problems: list[str] = []
+    served = 0
+    pending = sorted(named)
+    seen: set[str] = set()
+    while pending:
+        path = pending.pop()
+        if path in seen:
+            continue
+        seen.add(path)
+        data = read(path)
+        if data is None:
+            problems.append(f"{path}, named by {named[path]}, is not served")
+            continue
+        stamp = _HASHED_NAME.search(path)
+        if stamp is None or hashlib.sha256(data).hexdigest()[:16] != stamp.group(1):
+            problems.append(f"{path} is not the bytes its name was given for")
+            continue
+        served += 1
+        if path.endswith(".css"):
+            for face in _FACE_REFERENCE.findall(data.decode("utf-8", errors="replace")):
+                target = posixpath.normpath(posixpath.join(posixpath.dirname(path), face))
+                named.setdefault(target, path)
+                pending.append(target)
+    if problems:
+        return [(False, f"shared assets: {'; '.join(problems[:5])}")]
+    return [(True, f"shared assets: each of {served} files the pages name is served whole")]
+
+
 def local_head_checks(directory: Path) -> list[tuple[bool, str]]:
     """`head_checks` on a site built into `directory`, as `devtools.preview_site` leaves
     one. A page a build left out is reported and not failed, as a preview that skipped
@@ -648,7 +699,12 @@ def local_head_checks(directory: Path) -> list[tuple[bool, str]]:
     absent = [name for name, found in pages.items() if found is None]
     absent += [name for name, (found, _) in forwarders.items() if found is None]
     results += [(True, f"{name}: not in this build, so not checked") for name in absent]
-    return results
+
+    def served(path: str) -> bytes | None:
+        found = directory / path
+        return found.read_bytes() if found.is_file() else None
+
+    return results + asset_checks(built, served)
 
 
 def head_inventory(directory: Path) -> list[str]:
@@ -1383,7 +1439,12 @@ def check(
     heads[WORKBENCH_PAGE] = workbench_text
     status, card = fetch(site + render_overview.SOCIAL_CARD, timeout=timeout)
     results.extend(head_checks(heads, forwarded, card if status == 200 else None, record_heads))
-    return results
+
+    def served(path: str) -> bytes | None:
+        status, body = fetch(site + path, timeout=timeout)
+        return body if status == 200 else None
+
+    return results + asset_checks(heads, served)
 
 
 def main(argv: Sequence[str] | None = None) -> int:

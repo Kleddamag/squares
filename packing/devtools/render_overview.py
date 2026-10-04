@@ -53,12 +53,15 @@ from collections.abc import Callable, Sequence
 from datetime import datetime
 from functools import cache
 from pathlib import Path
-from typing import Literal, NamedTuple
+from typing import TYPE_CHECKING, Literal, NamedTuple
 from urllib.parse import quote
 
 from devtools import repo_links
 from devtools.repo_links import repo_url
 from sqpack.release import PUBLICATION_EDITION, PUBLICATION_HISTORY
+
+if TYPE_CHECKING:
+    from kpress.format.assets import AssetRef
 
 PACKING = Path(__file__).resolve().parents[1]
 REPO = PACKING.parent
@@ -310,14 +313,23 @@ RENDER_INPUTS: tuple[Path, ...] = (
     PACKING / "uv.lock",
 )
 
-# The same refusal the explainer makes: a script or stylesheet with a source, a CSS
-# import, or a url() or `<link>` that is not a data URI or a fragment is a fetch.
+#: The one place a site page fetches what it is drawn with: the site's shared assets
+#: (`site_assets`), named by a relative path from wherever the page is served.
+_ASSET_PATH = r"(?:\.\./)*assets/"
+# A fetch a page may not make: a script with a source outside the shared assets, a
+# `<link>` that is not the canonical link, a data URI, or a stylesheet or face preload
+# from the shared assets, a CSS import, or a `url()` in the page's own text that is not a
+# data URI or a fragment. A shared stylesheet's own `url()`s name the faces beside it.
 _EXTERNAL_REFERENCE = re.compile(
-    r"<script[^>]*\ssrc="
-    r'|<link(?![^>]*\srel="canonical")(?![^>]*\shref="data:)[^>]*\shref='
+    rf'<script(?![^>]*\ssrc="{_ASSET_PATH}js/)[^>]*\ssrc='
+    r'|<link(?![^>]*\srel="canonical")(?![^>]*\shref="data:)'
+    rf'(?![^>]*\srel="(?:stylesheet|preload)"[^>]*\shref="{_ASSET_PATH})[^>]*\shref='
     r"|@import\b"
     r"""|url\(\s*(?!["']?(?:data:|#))"""
 )
+#: A page a build writes is named here as if it stood at the site's root, as
+#: `kpress_page` writes every address; a page under a directory is rebased after.
+_FROM_ROOT = "index.html"
 
 
 def canonical_url(name: str) -> str:
@@ -496,47 +508,46 @@ class Page(NamedTuple):
 
 
 def page_assets() -> tuple[str, str]:
-    """The explainer's own inlined assets: head styles and the math pipeline.
+    """The shared assets every site page links, from the site's root: its head's face
+    preloads and stylesheets, and the math pipeline's script.
 
     The stylesheets are the explainer's (`kpress_css`, `katex_css`, `relation_face_css`),
-    faces already inlined as data URIs, so a reader moving between the explainer and
-    these pages sees one design system; `paper-type.css`, the text tokens the explainer
-    also carries, follows them. The script is the explainer's math pipeline,
+    with the same faces, so a reader moving between the explainer and these pages sees
+    one design system; `paper-type.css`, the text tokens the explainer also carries,
+    follows them, then the site's own. The script is the explainer's math pipeline,
     `render_n11_lower_bounds_explainer.katex_js`: KaTeX, kpress's metric tables and shared
     runtime, and the explainer's host adapter (`squaresMath`), without kpress's auto-render
     entry point and its whole-page synchronous pass. `overview/math.js`, which `kpress_page`
     places after it, drives the adapter over kpress's own math markup. The pipeline is described
-    in `templates/paper-design.md`, under Math Loading.
+    in `templates/paper-design.md`, under Math Loading. Each is a file of the site's
+    `assets/` (`site_assets.shared`), fetched by a reader once for every page.
     """
-    from devtools.render_n11_lower_bounds_explainer import (  # noqa: PLC0415
-        katex_css,
-        katex_js,
-        kpress_css,
-        kpress_static,
-        relation_face_css,
+    from devtools import site_assets  # noqa: PLC0415
+
+    bundle = site_assets.shared()
+    own = (PAPER_TYPE_CSS, SITE_NAV_CSS, SITE_CSS, SITE_RESULT_CSS)
+    head = "\n".join(
+        [
+            bundle.head(_FROM_ROOT),
+            *(
+                site_assets.stylesheet_tag(bundle.assets.stylesheet_file(path), _FROM_ROOT)
+                for path in own
+            ),
+        ]
     )
-
-    static = kpress_static()
-    head = (
-        f"<style>{kpress_css(static)}{katex_css(static)}</style>\n"
-        f"<style>{relation_face_css(static)}</style>\n"
-        f"<style>{PAPER_TYPE_CSS.read_text(encoding='utf-8')}</style>\n"
-        f"<style>{SITE_NAV_CSS.read_text(encoding='utf-8')}</style>\n"
-        f"<style>{SITE_CSS.read_text(encoding='utf-8')}</style>\n"
-        f"<style>{SITE_RESULT_CSS.read_text(encoding='utf-8')}</style>"
-    )
-    return head, f"<script>{katex_js(static)}</script>"
+    return head, site_assets.script_tag(bundle.katex_js, _FROM_ROOT)
 
 
-def assert_self_contained(name: str, page: str) -> None:
-    """Refuse a page that would fetch anything to be drawn: a script or stylesheet with
-    a source, a CSS import, or a `url()` or `<link>` that is not a data URI or a
-    fragment. What a reader opens afterwards is fetched then, from the site itself: a
-    page a card's popover frames, and a result's overview (`result_fragments`)."""
+def assert_fetches_only_assets(name: str, page: str) -> None:
+    """Refuse a page that would fetch anything to be drawn but the site's shared assets
+    (`site_assets`): a script or stylesheet with another source, a CSS import, or a
+    `url()` or `<link>` that is not a data URI or a fragment. What a reader opens
+    afterwards is fetched then, from the site itself: a page a card's popover frames,
+    and a result's overview (`result_fragments`)."""
     hit = _EXTERNAL_REFERENCE.search(page)
     if hit:
         excerpt = page[max(hit.start() - 60, 0) : hit.end() + 80]
-        raise SystemExit(f"{name} is not self-contained: ...{excerpt}...")
+        raise SystemExit(f"{name} fetches more than the site's assets: ...{excerpt}...")
 
 
 def nav_html(current: str, *, root: str = "") -> str:
@@ -779,12 +790,18 @@ def kpress_page(
     page = _KPRESS_CELL_LABELS.sub("", page)
     if rewrite_body is not None:
         page = rewrite_body(page)
-    programs = f"\n{kpress_client_script()}" + "".join(
-        f"\n<script>{_script_text(path)}</script>"
-        for path in (THEME_SCRIPT, MATH_SCRIPT, *page_scripts)
+    from devtools import site_assets  # noqa: PLC0415
+
+    assets = site_assets.shared().assets
+    programs = "".join(
+        f"\n{site_assets.script_tag(ref, _FROM_ROOT)}"
+        for ref in (
+            kpress_client_asset(),
+            *(assets.script_file(path) for path in (THEME_SCRIPT, MATH_SCRIPT, *page_scripts)),
+        )
     )
     page = page.replace("</body>", f"{math_scripts}{programs}\n</body>", 1)
-    assert_self_contained(name, page)
+    assert_fetches_only_assets(name, page)
     return Page(name, page)
 
 
@@ -848,12 +865,15 @@ def _document_scrolls(name: str, page: str) -> str:
     return page.replace("<html ", "<html data-kpress-viewport ", 1)
 
 
-def kpress_client_script() -> str:
-    """kpress's contents-rail and history modules as one classic script element.
+def kpress_client_asset() -> AssetRef:
+    """kpress's contents-rail and history modules as one classic script, a file of the
+    site's shared assets.
 
-    Flattened by the explainer's checked flattener, since an inline module would fetch
-    its siblings at view time; see `render_n11_lower_bounds_explainer.kpress_client_js`.
+    Flattened by the explainer's checked flattener, since kpress ships them as modules,
+    which a page read from a file cannot load; see
+    `render_n11_lower_bounds_explainer.kpress_client_js`.
     """
+    from devtools import site_assets  # noqa: PLC0415
     from devtools.render_n11_lower_bounds_explainer import (  # noqa: PLC0415
         kpress_client_js,
         kpress_static,
@@ -865,7 +885,7 @@ def kpress_client_script() -> str:
         api=KPRESS_CLIENT_API,
         frame=KPRESS_CLIENT_FRAME,
     )
-    return f"<script>{script}</script>"
+    return site_assets.shared().assets.script("kpress-behaviors.js", script)
 
 
 def _script_text(path: Path) -> str:
@@ -1207,7 +1227,7 @@ def forwarder_pages() -> list[Page]:
             "FORWARD_SCRIPT": _script_text(FORWARD_SCRIPT),
         }
         page = fill(template, values, where=FORWARDER.name)
-        assert_self_contained(old, page)
+        assert_fetches_only_assets(old, page)
         pages.append(Page(old, page))
     return pages
 
@@ -1218,10 +1238,20 @@ def render_site() -> list[Page]:
     return [*render_all(), *result_fragments(), *case_records(), *forwarder_pages()]
 
 
+def asset_files(files: Sequence[Page]) -> dict[str, bytes]:
+    """The shared assets `files` name, by path under the site's `assets/`
+    (`site_assets.SiteAssets.referenced`)."""
+    from devtools import site_assets  # noqa: PLC0415
+
+    return site_assets.shared().assets.referenced(file.html for file in files)
+
+
 def write_site(output: Path, files: Sequence[Page]) -> None:
-    """Write `files` under `output`, and drop any result fragment or case record file
-    already there that is not among them, so a directory built before a result was
-    withdrawn, or a case dropped, does not keep serving it."""
+    """Write `files` under `output`, with the shared assets they name under `assets/`,
+    and drop any result fragment, case record file or asset already there that is not
+    among them, so a directory built before a result was withdrawn, a case dropped or
+    an asset changed does not keep serving it."""
+    from devtools import site_assets  # noqa: PLC0415
     from devtools.overview_sections import RESULT_FRAGMENTS  # noqa: PLC0415
     from devtools.render_case_pages import CASES_DIR  # noqa: PLC0415
 
@@ -1235,6 +1265,7 @@ def write_site(output: Path, files: Sequence[Page]) -> None:
         target = output / file.name
         target.parent.mkdir(parents=True, exist_ok=True)
         target.write_text(file.html, encoding="utf-8")
+    site_assets.write_assets(output, asset_files(files))
 
 
 def main(argv: Sequence[str] | None = None) -> int:
@@ -1270,6 +1301,11 @@ def main(argv: Sequence[str] | None = None) -> int:
             for path in sorted((output / directory).glob("*.html"))
             if path.relative_to(output).as_posix() not in written
         ]
+        from devtools import site_assets  # noqa: PLC0415
+
+        stale += site_assets.stale_assets(
+            output, asset_files([*pages, *fragments, *records, *forwarders])
+        )
         if stale:
             print(f"stale or missing: {', '.join(stale)}", file=sys.stderr)
             return 1
@@ -1283,6 +1319,11 @@ def main(argv: Sequence[str] | None = None) -> int:
         print(f"wrote {output / page.name} ({len(page.html) // 1024} KB)")
     for forwarder in forwarders:
         print(f"wrote {output / forwarder.name}, a forwarder")
+    shared = asset_files([*pages, *fragments, *records, *forwarders])
+    print(
+        f"wrote {len(shared)} shared assets under {output / 'assets'}/ "
+        f"({sum(len(data) for data in shared.values()) // 1024} KB in all)"
+    )
     total = sum(len(fragment.html.encode("utf-8")) for fragment in fragments)
     places = sorted({(output / fragment.name).parent for fragment in fragments})
     print(

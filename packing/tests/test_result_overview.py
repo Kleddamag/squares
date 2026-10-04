@@ -17,6 +17,7 @@ from devtools import (
     render_overview,
     repo_links,
     result_overview,
+    site_assets,
 )
 from devtools.render_case_pages import BROAD_RESULT
 from devtools.render_recent_results import HOLDS, NO_STANDING, SUPERSEDED
@@ -557,9 +558,19 @@ def test_the_stylesheet_is_its_own_file_on_the_sites_tokens() -> None:
     and no colour of their own, key on no system theme and add no hover timing."""
     css = render_overview.SITE_RESULT_CSS.read_text(encoding="utf-8")
     assert render_overview.SITE_RESULT_CSS.name == "site-result.css"
+    # Each is a shared stylesheet the head links, `site.css` first, and the head with
+    # them put back in it carries their text in that order.
     head, _ = render_overview.page_assets()
+    assets = site_assets.shared().assets
+    links = [
+        site_assets.stylesheet_tag(assets.stylesheet_file(path), "index.html")
+        for path in (render_overview.SITE_CSS, render_overview.SITE_RESULT_CSS)
+    ]
+    assert [head.count(link) for link in links] == [1, 1]
+    assert head.index(links[0]) < head.index(links[1])
+    whole = assets.inlined(head)
     site = render_overview.SITE_CSS.read_text(encoding="utf-8")
-    assert head.index(site) < head.index(css)
+    assert whole.index(site) < whole.index(css)
     assert render_overview.SITE_RESULT_CSS in render_overview.RENDER_INPUTS
     assert "prefers-color-scheme" not in css
     assert "transition" not in css

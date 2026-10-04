@@ -171,6 +171,21 @@ def test_a_wrong_value_is_refused(monkeypatch: pytest.MonkeyPatch) -> None:
     assert nagamochi.main() == 1
 
 
+def test_a_verified_bound_rounded_up_is_refused() -> None:
+    # Review A9 on jlevy/squares#305: within one unit in the last place is a correct
+    # reported rendering, but a verified lower bound must not sit above the theorem.
+    expected, _ = theorem_two(12)  # 1 + sqrt(7) = 3.6457513...
+    up, down = Decimal("3.6458"), Decimal("3.6457")
+    assert nagamochi.disagreement(12, up, expected, is_exact=False, name="T2") is None
+    assert (
+        nagamochi.disagreement(12, down, expected, is_exact=False, name="T2", verified=True)
+        is None
+    )
+    problem = nagamochi.disagreement(12, up, expected, is_exact=False, name="T2", verified=True)
+    assert problem is not None
+    assert "rounded down" in problem
+
+
 def test_the_prose_counts_agree_with_the_records() -> None:
     """The README and the case bodies quote the corpus, not a memory of it (D-430)."""
     assert prose_counts(cases()) == []

@@ -252,9 +252,19 @@ def karakus_bound(n: int) -> tuple[Decimal, bool]:
 
 
 def disagreement(
-    n: int, recorded: Decimal, expected: Decimal, *, is_exact: bool, name: str
+    n: int,
+    recorded: Decimal,
+    expected: Decimal,
+    *,
+    is_exact: bool,
+    name: str,
+    verified: bool = False,
 ) -> str | None:
-    """Why `recorded` is not a correct rendering of `expected`, or `None`."""
+    """Why `recorded` is not a correct rendering of `expected`, or `None`.
+
+    A verified lower bound must also not exceed the theorem's value: a rendering rounded
+    up by a unit in its last place is close, but it is not a bound the theorem proves.
+    """
     with localcontext() as context:
         context.prec = DIGITS
         # The record may carry fewer digits than the theorem's value has; it must be a
@@ -267,6 +277,11 @@ def disagreement(
         places = -exponent
         if abs(expected - recorded) > Decimal(1).scaleb(-places):
             return f"n={n}: record says {recorded}, {name} gives {expected:.{places + 2}f}"
+        if verified and recorded > expected:
+            return (
+                f"n={n}: verified lower bound {recorded} is above {name}'s "
+                f"{expected:.{places + 2}f}; a verified bound is rounded down"
+            )
         if is_exact and recorded != recorded.to_integral_value():
             return f"n={n}: an exact case should carry an integer, not {recorded}"
     return None
@@ -292,7 +307,14 @@ def main() -> int:
             checked[record] += 1
             recorded = Decimal(str(lower["value"]))
             if (
-                problem := disagreement(n, recorded, expected, is_exact=is_exact, name=name)
+                problem := disagreement(
+                    n,
+                    recorded,
+                    expected,
+                    is_exact=is_exact,
+                    name=name,
+                    verified=lane == "verified_lower_bound",
+                )
             ) is not None:
                 problems.append(f"{lane}: {problem}")
                 continue

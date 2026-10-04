@@ -1,0 +1,45 @@
+"""Run one command as a child and print its exit code, wall time and peak resident set.
+
+`wait4`'s `ru_maxrss` is the child's own peak, in KiB on Linux. The child's OOM score is
+raised to 800 so that the long runs sharing the machine are never the ones killed. Its
+output goes to the file named by the first argument.
+
+Usage: python measure.py LOG COMMAND [ARG ...]
+"""
+
+from __future__ import annotations
+
+import json
+import os
+import subprocess
+import sys
+import time
+from pathlib import Path
+
+
+def oom_first() -> None:
+    _ = Path("/proc/self/oom_score_adj").write_text("800")
+
+
+def main() -> int:
+    log, command = Path(sys.argv[1]), sys.argv[2:]
+    start = time.time()
+    with log.open("w") as stream:
+        child = subprocess.Popen(
+            command, stdout=stream, stderr=subprocess.STDOUT, preexec_fn=oom_first
+        )
+        _, status, usage = os.wait4(child.pid, 0)
+    record = {
+        "command": command[-3:],
+        "exit": os.waitstatus_to_exitcode(status),
+        "wall_seconds": round(time.time() - start, 1),
+        "peak_rss_mb": round(usage.ru_maxrss / 1024, 1),
+    }
+    with log.open("a") as stream:
+        stream.write(json.dumps(record) + "\n")
+    print(json.dumps(record), flush=True)
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

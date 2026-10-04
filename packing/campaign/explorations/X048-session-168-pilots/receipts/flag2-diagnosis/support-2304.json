@@ -1,0 +1,230 @@
+{
+ "node_file": "node-3de853f3f8b622addbc81098cb39e1a49b1d017381dc6785c81f0aef29c0408f.json.gz",
+ "provenance": {
+  "dirty": true,
+  "files": {
+   "packing/devtools/diagnose_n17_flag.py": "cc2bfade25a121bdcec621f4144f2b1c50d0e571"
+  },
+  "revision": "e145e6b4dddfec9cd7f501c16f8a8c7fc75a90a0"
+ },
+ "schema": "n17-flag-diagnosis/v1",
+ "seconds": 862.0,
+ "status": "diagnostic, not a certificate: survivors are read from a saved node, placements are float searches, and only the exact check of a rounded placement counts",
+ "support": {
+  "owners": {
+   "corner-SW": {
+    "cut_margin": {
+     "least": 9.097228340160246e-05,
+     "median": 0.0034938071611102517,
+     "tenth_percentile": 0.0005436928233918837
+    },
+    "supported_share": 0.955,
+    "unsupported_by": {
+     "side-S0": {
+      "largest_margin": 9.097228340160246e-05,
+      "median_margin": 9.097228340160246e-05,
+      "poses": 1
+     },
+     "side-W0": {
+      "largest_margin": 0.006217492921197221,
+      "median_margin": 0.0036020226577203607,
+      "poses": 8
+     }
+    }
+   },
+   "interior-NW": {
+    "cut_margin": {
+     "least": 0.0002099942005526767,
+     "median": 0.0024309404627465003,
+     "tenth_percentile": 0.0003161048786340271
+    },
+    "supported_share": 0.89,
+    "unsupported_by": {
+     "interior-W": {
+      "largest_margin": 0.010827958241020896,
+      "median_margin": 0.002689632731013636,
+      "poses": 18
+     },
+     "side-W2": {
+      "largest_margin": 0.006739098444746405,
+      "median_margin": 0.0006766916924251243,
+      "poses": 4
+     }
+    }
+   },
+   "interior-SE": {
+    "cut_margin": {
+     "least": 0.0005783277916544538,
+     "median": 0.0017838260322949884,
+     "tenth_percentile": 0.0006969409236386115
+    },
+    "supported_share": 0.905,
+    "unsupported_by": {
+     "interior-W": {
+      "largest_margin": 0.006843936946063778,
+      "median_margin": 0.0020571286628964236,
+      "poses": 15
+     },
+     "side-S1": {
+      "largest_margin": 0.0021895454343753284,
+      "median_margin": 0.0010097466086940732,
+      "poses": 4
+     }
+    }
+   },
+   "interior-W": {
+    "cut_margin": {
+     "least": 0.00014130260827016627,
+     "median": 0.008219415720593926,
+     "tenth_percentile": 0.0030881570119106307
+    },
+    "supported_share": 0.725,
+    "unsupported_by": {
+     "interior-NW": {
+      "largest_margin": 0.01129081115084729,
+      "median_margin": 0.005295657579700019,
+      "poses": 18
+     },
+     "side-W0": {
+      "largest_margin": 0.03125694080642061,
+      "median_margin": 0.013305739030286756,
+      "poses": 37
+     }
+    }
+   },
+   "side-S0": {
+    "cut_margin": {
+     "least": 9.392408057473656e-05,
+     "median": 0.0030125025401913086,
+     "tenth_percentile": 0.0006592742640650684
+    },
+    "supported_share": 0.53,
+    "unsupported_by": {
+     "side-S1": {
+      "largest_margin": 0.0017608415032438485,
+      "median_margin": 0.0006306540632075031,
+      "poses": 5
+     },
+     "side-W0": {
+      "largest_margin": 0.006310005550100306,
+      "median_margin": 0.0030191001039384657,
+      "poses": 93
+     }
+    }
+   },
+   "side-S1": {
+    "cut_margin": {
+     "least": 3.2444294235323135e-05,
+     "median": 0.00043584446808608845,
+     "tenth_percentile": 0.00011350301368355799
+    },
+    "supported_share": 0.965,
+    "unsupported_by": {
+     "interior-SE": {
+      "largest_margin": 0.0010213946476070879,
+      "median_margin": 0.0002008409853858084,
+      "poses": 4
+     },
+     "interior-W": {
+      "largest_margin": 0.013878141953335588,
+      "median_margin": 0.013878141953335588,
+      "poses": 1
+     },
+     "side-S0": {
+      "largest_margin": 0.003127631462126912,
+      "median_margin": 0.0017817379651065002,
+      "poses": 2
+     },
+     "side-W0": {
+      "largest_margin": 0.0065767173514407196,
+      "median_margin": 0.0065767173514407196,
+      "poses": 1
+     }
+    }
+   },
+   "side-W0": {
+    "cut_margin": {
+     "least": 0.0016227210755490606,
+     "median": 0.004180917166044185,
+     "tenth_percentile": 0.002606478431526982
+    },
+    "supported_share": 0.0,
+    "unsupported_by": {
+     "corner-SW": {
+      "largest_margin": 0.014015406069244007,
+      "median_margin": 0.0031499581218512596,
+      "poses": 27
+     },
+     "interior-W": {
+      "largest_margin": 0.012151547031752585,
+      "median_margin": 0.004400516213132477,
+      "poses": 24
+     },
+     "side-S0": {
+      "largest_margin": 0.009417578378752123,
+      "median_margin": 0.002773068752420671,
+      "poses": 179
+     },
+     "side-W1": {
+      "largest_margin": 0.011113015961687678,
+      "median_margin": 0.0028622619073764843,
+      "poses": 189
+     }
+    }
+   },
+   "side-W1": {
+    "cut_margin": {
+     "least": 0.00017535902248166924,
+     "median": 0.0022403819666337865,
+     "tenth_percentile": 0.0005549509531691976
+    },
+    "supported_share": 0.135,
+    "unsupported_by": {
+     "interior-NW": {
+      "largest_margin": 0.00400724381782136,
+      "median_margin": 0.003638291382568437,
+      "poses": 3
+     },
+     "side-W0": {
+      "largest_margin": 0.00864811711745006,
+      "median_margin": 0.002621218873747111,
+      "poses": 139
+     },
+     "side-W2": {
+      "largest_margin": 0.0027384795470094536,
+      "median_margin": 0.0011596515983733902,
+      "poses": 49
+     }
+    }
+   },
+   "side-W2": {
+    "cut_margin": {
+     "least": 1.5241618727124262e-05,
+     "median": 0.000972733385864677,
+     "tenth_percentile": 0.0002586143882355119
+    },
+    "supported_share": 0.7150000000000001,
+    "unsupported_by": {
+     "side-W1": {
+      "largest_margin": 0.002364981609734862,
+      "median_margin": 0.000972733385864677,
+      "poses": 57
+     }
+    }
+   }
+  },
+  "partner_pool": {
+   "corner-SW": 69918,
+   "interior-NW": 14751,
+   "interior-SE": 419313,
+   "interior-W": 15636,
+   "side-S0": 15285,
+   "side-S1": 1022595,
+   "side-W0": 1914,
+   "side-W1": 12624,
+   "side-W2": 3501
+  },
+  "refine": 200,
+  "samples": 200
+ }
+}

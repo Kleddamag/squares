@@ -863,6 +863,30 @@ These rows are its candidates for the codifier, none registered.
 | 270 | Symmetric atlas families are partly source artifacts | registered | [H-272](hypotheses/H-272-symmetric-kingbird-records-reoptimized.md) | 68 of 97 Kingbird-derived records are symmetric, 0 of 50 optimizer packets; a seeded symmetry-free quench, with the 44 pre-Couzo witnesses as the control, confirms if at least one in ten moves by more than $10^{-9}$. |
 | 271 | A regularized-view layer for the atlas | shaped, think-bgkz | — | The prototype cuts the six named cases’ light green squares from 545 to 242 with exact verification and no change of side; it needs a neighbour non-regression rule first. |
 
+## After PR 265 — the October 1 Checkpoint
+
+The
+[route review](../../docs/project/reviews/review-2026-10-01-n17-route-after-pr265.md)
+kept two Fable extra-high assessments of what PR 265 leaves for an n17 optimality proof,
+with exploratory receipts under
+[`explorations/X048-route-review/`](explorations/X048-route-review/README.md).
+[Agenda 042](agendas/agenda-042-overnight-n11-settlement-and-low-n-angles.md) selected
+these rows as BC-406 to BC-411.
+
+| # | Idea | Status | H | Crux |
+| --- | --- | --- | --- | --- |
+| 272 | The n17 endpoint is a strict local minimum modulo its six slider directions, at an explicit radius | registered | [H-261](hypotheses/H-261-n17-local-minimum-modulo-sliders.md) | Exploratory: the 52 positive H-258 rows have a kernel spanned exactly by the slider and rattler motions, so first order suffices; the first-order radius estimate is 3e-4, about 50 times smaller than n11’s, and becomes the capture target. |
+| 273 | Settled-case cuts plus conditional charge floors leave at most 1e4 occupancy orbits | registered | [H-262](hypotheses/H-262-n17-conditional-charge-occupancy-census.md) | s(6) and s(10) cuts alone leave about 7.7 million of 20.2 million orbits; at 1–2 CPU-hours per geometric leaf, the hybrid route is affordable only if counting removes more than 99.9%. |
+| 274 | A closed cover that keeps the whole endpoint family in one occupancy state | open question | [H-263](hypotheses/H-263-n17-endpoint-adapted-cover.md) | Square 9’s centre is 0.0012 from an H259 seam; candidate covers are compared by survivors, not raw counts. |
+| 275 | The cost of one exact geometric exclusion, on a uniform residue sample at a cap at or above the endpoint | open question | [H-264](hypotheses/H-264-n17-geometric-exclusion-cost-per-leaf.md) | Re-scopes `think-11ma`: a cap below the endpoint leaves sides up to the endpoint uncovered, and hand-picked leaves do not extrapolate. |
+| 276 | The certified chart endpoint is a root of the catalogue’s degree-18 polynomial | registered | [H-265](hypotheses/H-265-n17-catalogue-polynomial-identity.md) | One exact resultant closes a recorded frontier blocker; off the proof’s critical path. |
+| 277 | Capture of the endpoint’s occupancy states into the H-261 neighbourhood | shaped | — | Starts from the n11 case-438 pipeline once the radius and cover exist; must handle a 6-dimensional minimizer family. |
+| 278 | The conditional minimum over all common orientations and sides in [4.66, 4.676] | shaped | — | A grid shows the same derivative signs on the wider side range and the least side over common orientations at the root; worth proving only if capture needs a wider angle target. |
+| 279 | A reusable stress-to-local-minimum instrument for endpoints with translational sliders | shaped | — | The H-261 tool, generalised for n18, n19, n26 and n29 under OR-1. |
+| 280 | A D4-symmetric capacity-one n17 cover of at most 25 cells holding the endpoint family in one state | registered | [H-266](hypotheses/H-266-n17-minimal-capacity-one-cover.md) | The H259 grid counts like a 30-cell cover; n11 used 16 cells for 11 squares. An exploratory 24-cell design has 43,593 orbits, 177 times below the cut H259 count. |
+| 281 | Isolated sub-pattern exclusion leaves at most 10^4 orbits on the minimal cover | registered | [H-267](hypotheses/H-267-n17-isolated-sub-pattern-residue.md) | n11’s field certificates excluded 1,904 of 2,180 cases by containment; an exploratory arity-five proxy leaves 11,939 orbits on the 24-cell design. |
+| 282 | Square 6’s cover cell bounds the slides of squares 5 and 13 inside the box the local theorem certifies | registered | [H-268](hypotheses/H-268-n17-local-theorem-slider-coverage.md) | exp-244 certifies H-261 on a declared slider box; with square 6 dropped the physical slides exceed it, so capture must supply the bound. |
+
 ## Dead ends
 
 Killed without spending a round, with the reason.

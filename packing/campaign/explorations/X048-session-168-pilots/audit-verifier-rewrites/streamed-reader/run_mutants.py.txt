@@ -1,0 +1,216 @@
+"""Mutants of the streamed kernel verifier's new code, and which checks catch each.
+
+Each mutant is one or more textual patches of the verifier at the worktree, each asserted
+to apply exactly once, written to a scratch copy. Against each mutant run:
+
+- `old`: the committed tests of 601bbf110, `tests/test_verify_n17_certificates.py`, whole;
+- `new`: this review's `tests/test_verify_n17_node_stream.py`, whole (slow test included);
+- `diff`: the differential harness `nodestream_differential.py` at 300 cases.
+
+All three bind the mutant through `mutant_plugin` (R8_MUTANT). A mutant is CAUGHT by a
+check when that check fails on it. Prints one JSON line per mutant.
+
+Usage, from the worktree's `packing/` with the worktree on PYTHONPATH:
+    python run_mutants.py SCRATCH_DIR [NAME ...]
+"""
+
+from __future__ import annotations
+
+import json
+import os
+import subprocess
+import sys
+import time
+from pathlib import Path
+
+HERE = Path(__file__).resolve().parent
+PACKING = Path.cwd()
+COMMITTED = PACKING / "devtools" / "verify_n17_kernel_certificate.py"
+PYTHON = "/home/user/squares/packing/.venv/bin/python3"
+
+# (name, what it weakens, [(old text, new text), ...])
+MUTANTS: list[tuple[str, str, list[tuple[str, str]]]] = [
+    (
+        "reader-number-at-buffer-end",
+        "a value ending at the buffer's end is taken whole: a number split between reads "
+        "is cut short",
+        [
+            (
+                "                if self._end or self._text[end : end + 1] in AFTER_VALUE:",
+                "                if True:",
+            )
+        ],
+    ),
+    (
+        "reader-order-unchecked",
+        "a member sorting before steps is accepted after them",
+        [
+            (
+                '            require(name > "steps", f"the node\'s member {name!r} follows its steps")\n',
+                "",
+            )
+        ],
+    ),
+    (
+        "reader-repeats-allowed",
+        "a repeated top-level member is read as json.loads reads it, the last one",
+        [
+            (
+                '        require(name not in self.header, f"the node repeats its member {name!r}")\n',
+                "",
+            )
+        ],
+    ),
+    (
+        "reader-trailing-data",
+        "data after the node's closing brace is ignored",
+        [('        require(self._peek() == "", "data follows the node")\n', "")],
+    ),
+    (
+        "reader-step-separator-free",
+        "any character separates steps",
+        [
+            (
+                '            require(separator in {",", "]"}, "the node\'s steps are not comma-separated")\n',
+                "",
+            )
+        ],
+    ),
+    (
+        "reader-hash-skips-late-members",
+        "the members after steps are left out of the content id",
+        [
+            (
+                '        for key in sorted(key for key in self.header if key > "steps"):\n'
+                '            self._digest.update(b"," + self._member(key))\n',
+                "",
+            )
+        ],
+    ),
+    (
+        "reader-hash-in-file-order",
+        "the members before steps are hashed in file order, not name order",
+        [
+            (
+                '                for key in sorted(key for key in self.header if key < "steps"):',
+                '                for key in [key for key in self.header if key < "steps"]:',
+            )
+        ],
+    ),
+    (
+        "verify-stops-at-the-closure",
+        "the node is not read past the closure step, and its end is not required",
+        [
+            (
+                '            require(next(steps, None) is None, "steps after the closure")\n',
+                "",
+            ),
+            (
+                '    require(stream.sha256 is not None, "the node was not read to its end")\n',
+                "",
+            ),
+        ],
+    ),
+    (
+        "verify-no-end-check",
+        "the read-to-the-end requirement alone is removed (equivalent: the closure path "
+        "reads on with next(), and the stall path ends only when the steps end)",
+        [
+            (
+                '    require(stream.sha256 is not None, "the node was not read to its end")\n',
+                "",
+            )
+        ],
+    ),
+    (
+        "memo-drops-the-new-hull",
+        "the regions of the step's new hull are dropped instead of the replaced one's "
+        "(still safe: a miss recomputes)",
+        [("        stale = tuple(before)", "        stale = tuple(state.groups[owner])")],
+    ),
+    (
+        "memo-forbidden-absent-is-none",
+        "the cover reads the forbidden memo directly, a missing entry as no region",
+        [
+            (
+                "        state.forbidden_region(state.groups[oj], core)\n",
+                "        state.forbidden.get((tuple(state.groups[oj]), tuple(core)), [])\n",
+            )
+        ],
+    ),
+    (
+        "memo-facets-absent-is-none",
+        "the collision check reads the facet memo directly, a missing entry as no facet",
+        [
+            (
+                "            facets = state.difference(cover.core, core_h)\n",
+                "            facets = state.facets.get((cover.core, core_h), [])\n",
+            )
+        ],
+    ),
+    (
+        "memo-facets-absent-is-none-unguarded",
+        "as above, and without the three-facet guard: a vacuous collision check",
+        [
+            (
+                "            facets = state.difference(cover.core, core_h)\n",
+                "            facets = state.facets.get((cover.core, core_h), [])\n",
+            ),
+            (
+                '            require(len(facets) >= 3, f"{where}: degenerate difference")\n',
+                "",
+            ),
+        ],
+    ),
+]
+
+
+def run(command: list[str], env: dict[str, str], timeout: int) -> tuple[bool, str]:
+    try:
+        done = subprocess.run(
+            command, cwd=PACKING, env=env, capture_output=True, text=True, timeout=timeout,
+            check=False,
+        )
+    except subprocess.TimeoutExpired:
+        return False, "timeout"
+    tail = (done.stdout + done.stderr).strip().splitlines()[-3:]
+    return done.returncode == 0, " | ".join(tail)[-400:]
+
+
+def main() -> int:
+    scratch = Path(sys.argv[1])
+    scratch.mkdir(parents=True, exist_ok=True)
+    only = set(sys.argv[2:])
+    source = COMMITTED.read_text()
+    base = {**os.environ, "PYTHONPATH": f"{HERE}:{PACKING / 'src'}:{PACKING}"}
+    for name, weakens, patches in MUTANTS:
+        if only and name not in only:
+            continue
+        text = source
+        for old, new in patches:
+            assert text.count(old) == 1, (name, old)
+            text = text.replace(old, new)
+        path = scratch / f"{name}.py"
+        _ = path.write_text(text)
+        env = {**base, "R8_MUTANT": str(path)}
+        started = time.time()
+        results: dict[str, object] = {}
+        for check, command, timeout in (
+            ("old", [PYTHON, "-m", "pytest", "-q", "-x", "-p", "no:cacheprovider", "-p",
+                     "mutant_plugin", "tests/test_verify_n17_certificates.py"], 900),
+            ("new", [PYTHON, "-m", "pytest", "-q", "-x", "-p", "no:cacheprovider", "-p",
+                     "mutant_plugin", "tests/test_verify_n17_node_stream.py"], 900),
+            ("diff", [PYTHON, "-c", "import mutant_plugin, runpy, sys; sys.argv = ['h', '300', "
+                      f"'11', '{scratch / (name + '.json.gz')}']; "
+                      f"runpy.run_path('{HERE / 'nodestream_differential.py'}', "
+                      "run_name='__main__')"], 900),
+        ):
+            passed, tail = run(command, env, timeout)
+            results[check] = {"caught": not passed, "tail": tail}
+        print(json.dumps({"mutant": name, "weakens": weakens, **results,
+                          "seconds": round(time.time() - started, 1)}), flush=True)
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

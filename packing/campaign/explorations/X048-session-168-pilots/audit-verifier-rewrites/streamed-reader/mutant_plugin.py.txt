@@ -1,0 +1,34 @@
+"""A pytest plugin, and an importable hook, that put a mutant kernel verifier in place of
+the committed one.
+
+With the environment variable R8_MUTANT naming a mutant file, importing this module
+installs that file in `sys.modules` under the committed module's name, so that
+`from devtools import verify_n17_kernel_certificate` anywhere afterwards binds the mutant.
+Loaded into pytest with `-p mutant_plugin`; imported first by the differential harness's
+wrapper. The repository's files are never touched.
+"""
+
+from __future__ import annotations
+
+import importlib.util
+import os
+import sys
+
+NAME = "devtools.verify_n17_kernel_certificate"
+
+
+def _install() -> None:
+    path = os.environ.get("R8_MUTANT")
+    if not path:
+        return
+    import devtools  # noqa: F401 - the package must exist before its submodule is set
+
+    spec = importlib.util.spec_from_file_location(NAME, path)
+    assert spec is not None and spec.loader is not None
+    module = importlib.util.module_from_spec(spec)
+    sys.modules[NAME] = module
+    spec.loader.exec_module(module)
+    sys.modules["devtools"].verify_n17_kernel_certificate = module  # type: ignore[attr-defined]
+
+
+_install()

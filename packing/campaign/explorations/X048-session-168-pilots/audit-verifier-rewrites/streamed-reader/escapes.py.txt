@@ -1,0 +1,71 @@
+"""Which malformed saved nodes escape `verify` without a receipt, at whichever verifier
+`mutant_plugin` binds (R8_MUTANT) or the worktree's own.
+
+Each case is the blind-pair closure with one damage; the outcome is the receipt's status
+and failure, or the exception that escaped `verify`.
+"""
+
+from __future__ import annotations
+
+import gzip
+import json
+import os
+import tempfile
+from pathlib import Path
+
+import mutant_plugin  # noqa: F401 - binds R8_MUTANT, if set, before the verifier is imported
+from devtools import verify_n17_kernel_certificate as kv
+from tests.test_verify_n17_certificates import blind_cells, blind_pair
+
+TMP = Path(tempfile.mkdtemp(dir=os.environ.get("R8_TMP", ".")))
+CELLS = blind_cells(TMP)
+
+
+def outcome(directory: Path) -> str:
+    try:
+        receipt = kv.verify(directory, CELLS)
+    except BaseException as failure:  # noqa: BLE001 - an escape is what is being measured
+        return f"ESCAPED {type(failure).__name__}"
+    return f"{receipt['status']}: {str(receipt['failure'])[:60]}"
+
+
+def damaged(name: str, edit) -> str:  # noqa: ANN001
+    directory = blind_pair(TMP / name)
+    node = next(directory.glob("node-*.json.gz"))
+    _ = node.write_bytes(edit(node.read_bytes()))
+    return outcome(directory)
+
+
+def literal(text: str):  # noqa: ANN201
+    def edit(packed: bytes) -> bytes:
+        raw = gzip.decompress(packed).decode()
+        start = raw.index('"outer_domain":[[') + len('"outer_domain":[[')
+        return gzip.compress((raw[:start] + text + raw[raw.index(",", start) :]).encode())
+
+    return edit
+
+
+def deep(packed: bytes) -> bytes:
+    raw = gzip.decompress(packed).decode()
+    at = raw.index('"steps":[{') + len('"steps":[{')
+    return gzip.compress((raw[:at] + '"deep":' + "[" * 100000 + "]" * 100000 + "," + raw[at:]).encode())
+
+
+def corrupt(packed: bytes) -> bytes:
+    changed = bytearray(packed)
+    changed[40] ^= 0xFF
+    changed[41] ^= 0xFF
+    return bytes(changed)
+
+
+CASES = {
+    "Infinity in an outer domain": literal("Infinity"),
+    "1e400 in an outer domain": literal("1e400"),
+    "NaN in an outer domain": literal("NaN"),
+    "gzip stream cut": lambda packed: packed[:-9],
+    "deflate data corrupted": corrupt,
+    "nesting 100,000 deep in a step": deep,
+    "undamaged": lambda packed: packed,
+}
+
+print(json.dumps({"verifier": kv.__file__, **{name: damaged(name.replace(" ", "-"), edit) for name, edit in CASES.items()}}, indent=1))

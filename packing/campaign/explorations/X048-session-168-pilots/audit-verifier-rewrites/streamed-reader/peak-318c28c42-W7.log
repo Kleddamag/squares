@@ -1,0 +1,2 @@
+{"status": "PASS", "failure": null, "mode": "full", "seconds": 257.534}
+{"command": ["/home/user/squares/packing/.venv/bin/python3", "-c", "import mutant_plugin; from devtools import verify_n17_kernel_certificate as v; raise SystemExit(v.main(['packing/campaign/explorations/X048-session-168-pilots/certificates/W7', '--output', '<scratch>/lanes/r8/runs/old-318c28c42-W7.json']))"], "exit": 0, "wall_seconds": 258.3, "peak_rss_mb": 552.2}

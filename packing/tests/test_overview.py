@@ -685,13 +685,13 @@ def _atlas_template(page: str, which: str) -> str:
 
 
 def test_the_atlas_offers_its_regularized_drawing_under_tabs_beside_the_views(
-    page: str,
+    page: str, served: Callable[[str], str]
 ) -> None:
     """Beside the view tabs, in one row over the tiles, two more choose the drawing:
     House, the default and the one the page is rendered in, and Regularized, which
     carries the badge its tiles carry. The strip is the view tabs' own, a tablist of two
     buttons controlling the box of tiles, and ships `hidden` as they do. The layer's
-    script is inlined between the views' and the grid's, and the grid mounts it."""
+    script is linked between the views' and the grid's, and the grid mounts it."""
     assert [key for key, _ in overview_sections.ATLAS_LAYERS] == ["house", "regularized"]
     mark = overview_sections.atlas_layer_mark()
     assert mark == '<span class="site-atlas-layer-mark" aria-hidden="true"></span>'
@@ -717,7 +717,13 @@ def test_the_atlas_offers_its_regularized_drawing_under_tabs_beside_the_views(
     view = render_overview.ATLAS_VIEW_SCRIPT.read_text(encoding="utf-8")
     layer = render_overview.ATLAS_LAYER_SCRIPT.read_text(encoding="utf-8")
     grid = render_overview.ATLAS_GRID_SCRIPT.read_text(encoding="utf-8")
-    assert page.index(view) < page.index(layer) < page.index(grid)
+    view_tag = _asset_tag(render_overview.ATLAS_VIEW_SCRIPT)
+    layer_tag = _asset_tag(render_overview.ATLAS_LAYER_SCRIPT)
+    grid_tag = _asset_tag(render_overview.ATLAS_GRID_SCRIPT)
+    assert page.count(layer_tag) == 1
+    assert page.index(view_tag) < page.index(layer_tag) < page.index(grid_tag)
+    whole = served("index.html")
+    assert whole.index(view) < whole.index(layer) < whole.index(grid)
     assert (
         "SiteAtlasLayer.mount({ block: grid, cells, tabs: layerTabs, template: layerTemplate })"
         in grid

@@ -2,8 +2,10 @@
 
 from __future__ import annotations
 
+import itertools
 import json
 
+import pytest
 import sympy
 
 from devtools import check_piercing_lower_bounds as piercing
@@ -57,6 +59,32 @@ def test_just_below_the_bound_too_few_points_pierce_and_at_it_enough_do() -> Non
 def test_a_printed_bound_is_rounded_down() -> None:
     assert piercing.floor_decimal(sympy.Rational(2, 3), 4) == "0.6666"
     assert piercing.floor_decimal(sympy.Integer(6)) == "6"
+
+
+def test_a_floor_within_a_tiny_distance_of_an_integer_is_decided_exactly() -> None:
+    # Review A2 on jlevy/squares#305: `5 - (√2 - 1)^170` is within 10^-64 of 5, and
+    # `nsimplify` at 30 digits used to floor it to 5.
+    near = 5 - sympy.expand((sympy.sqrt(2) - 1) ** 170)
+    assert piercing.exact_floor(near) == 4
+    assert piercing.exact_sign(near - 5) == -1
+    assert piercing.exact_floor(10 - near) == 5
+    assert piercing.exact_floor(sympy.Integer(5)) == 5
+    assert piercing.exact_sign(sympy.sqrt(8) - 2 * sympy.sqrt(2)) == 0
+
+
+def test_a_value_outside_exact_surds_is_refused() -> None:
+    with pytest.raises(ArithmeticError, match="not an exact surd"):
+        piercing.exact_floor(sympy.Float("2.5"))
+    with pytest.raises(ArithmeticError, match="not an exact surd"):
+        piercing.exact_floor(sympy.pi)
+
+
+def test_the_steps_are_exact_and_strictly_increasing() -> None:
+    points = piercing.steps(12)
+    assert all(not point.atoms(sympy.Float) for point in points)
+    assert all(
+        piercing.exact_sign(right - left) > 0 for left, right in itertools.pairwise(points)
+    )
 
 
 def test_the_retained_survey_is_current() -> None:

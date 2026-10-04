@@ -1,0 +1,63 @@
+{
+ "best_violation": 0.00980318956432813,
+ "cells": [
+  "corner-SW",
+  "side-S0",
+  "side-W0",
+  "side-S1",
+  "side-W1",
+  "side-W2",
+  "interior-NW",
+  "interior-W",
+  "interior-SE"
+ ],
+ "provenance": {
+  "dirty": true,
+  "files": {
+   "packing/devtools/diagnose_n17_flag.py": "cc2bfade25a121bdcec621f4144f2b1c50d0e571"
+  },
+  "revision": "e145e6b4dddfec9cd7f501c16f8a8c7fc75a90a0"
+ },
+ "schema": "n17-flag-diagnosis/v1",
+ "seconds": 56.5,
+ "source": "packing/campaign/explorations/X048-session-168-pilots/receipts/flag2-diagnosis/place-2304.json",
+ "status": "diagnostic, not a certificate: survivors are read from a saved node, placements are float searches, and only the exact check of a rounded placement counts",
+ "without": {
+  "corner-SW": {
+   "first_unplaced_side": 1.065234375,
+   "placed_side": 1.0642578125
+  },
+  "interior-NW": {
+   "first_unplaced_side": 1.04375,
+   "placed_side": 1.0427734375
+  },
+  "interior-SE": {
+   "first_unplaced_side": 1.0076171875,
+   "placed_side": 1.006640625
+  },
+  "interior-W": {
+   "first_unplaced_side": 1.030078125,
+   "placed_side": 1.0291015625
+  },
+  "side-S0": {
+   "first_unplaced_side": 1.0505859375,
+   "placed_side": 1.049609375
+  },
+  "side-S1": {
+   "first_unplaced_side": 1.0125,
+   "placed_side": 1.0115234375
+  },
+  "side-W0": {
+   "first_unplaced_side": 1.075,
+   "placed_side": 1.0740234375
+  },
+  "side-W1": {
+   "first_unplaced_side": 1.076953125,
+   "placed_side": 1.0759765625
+  },
+  "side-W2": {
+   "first_unplaced_side": 1.073046875,
+   "placed_side": 1.0720703125
+  }
+ }
+}

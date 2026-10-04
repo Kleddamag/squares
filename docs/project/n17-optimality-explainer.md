@@ -340,9 +340,16 @@ Stated without a forecast, because none is on record.
    Adaptive rows closed flag 3 (SW9) but stalled on flag 2 at their cap of 1,152 rows:
    the cap was spent by round 4, the live rows fell from 1,152 to 794 by round 18 and
    then stopped, and three of the nine owners never lost a row.
-   A flag the prover cannot close is either a false flag, in which case the search
-   resumes, or a stall of the engine on a true pattern, which needs finer rows,
-   splitting or the other prover.
+   At 2,304 rows it did not converge before its time share ran out.
+   A [diagnosis](reviews/review-2026-10-04-n17-flag2-diagnosis.md) found no placement
+   within 0.8% of a side, so the flag is likely true.
+   The obstruction is on the west wall, where the per-row losses are as large as the
+   margins an exact cut would need.
+   Interior-SE and side-S1 took 36% of the rows and cannot lose one until the west wall
+   shrinks, so the next run aims its splits at side-W0, W1, S0 and interior-W. A flag
+   the prover cannot close is either a false flag, in which case the search resumes, or
+   a stall of the engine on a true pattern, which needs finer rows, splitting or the
+   other prover.
 2. **A method for the residue.** 15,953 certified orbits remain, and at most 5,084 if
    every flag of arity seven proves; each is a state that no small pattern excludes and
    that must be excluded on its own, as $n = 11$ excluded 276 cases at about 636

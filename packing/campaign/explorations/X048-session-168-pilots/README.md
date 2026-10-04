@@ -356,6 +356,29 @@ reads the receipts. Each is reproduced from `packing/` by
 The slide receipt’s `margins`, `declared_box` and `inside_declared_box` fields compare
 with $B_W$, the slide module’s constant, and are not what the composition uses.
 
+## Flag 2 Diagnosis
+
+Lane K3 built `devtools/diagnose_n17_flag.py`, which reads a stalled kernel node’s
+`final_state` off the front of the saved file, searches for a placement from the
+survivors with the selector’s own machinery, checks any placement exactly, and measures
+which survivors a one-partner cut could still remove.
+The [review](../../../../docs/project/reviews/review-2026-10-04-n17-flag2-diagnosis.md)
+reads the receipts: flag 2 is likely true, missing by about 0.8 per cent of a side, and
+the kernel is held open by the side-W0 knot, whose margins are the size of its row
+losses, while interior-SE and side-S1 wait on it.
+Each is reproduced from `packing/` by `python -m devtools.diagnose_n17_flag` with the
+arguments below, writing to `receipts/flag2-diagnosis/`; the nodes are lane K2’s saved
+objects, named by content id.
+
+| Receipt | Arguments | Outcome |
+| --- | --- | --- |
+| `domains-1152.json` | `domains node-89a19166….json.gz` | the 1,152-row survivors: 794 live rows, interior-SE, side-S1 and interior-NW with every row live |
+| `domains-2304.json` | `domains node-3de853f3….json.gz` | the 2,304-row survivors: 1,381 live rows of 2,138, with row widths, losses and ideal owned regions |
+| `place-2304.json` | `place node-3de853f3….json.gz --seed 1` | no placement; best $9.80\times10^{-3}$ in 613 selector attempts; largest side $0.99197$; interior-SE and side-S1 profiles at least $1.03\times10^{-2}$ and $9.75\times10^{-3}$ |
+| `margins-2304.json` | `margins receipts/flag2-diagnosis/place-2304.json` | the largest side without each cell: $1.0066$ without interior-SE, $1.0115$ without side-S1, $1.029$ to $1.076$ without any other |
+| `support-2304.json` | `support node-3de853f3….json.gz --samples 200` | side-W0 has no supported pose; interior-SE and side-S1 are 90.5 and 96.5 per cent supported |
+| `support-1152.json` | `support node-89a19166….json.gz --samples 200` | at the 1,152-row fixed point the knot is already unsupported (side-W0 27 per cent) by margins below that state’s row losses |
+
 <!-- This document follows common-doc-guidelines.md.
 See github.com/jlevy/practical-prose and review guidelines before editing.
 -->

@@ -65,8 +65,8 @@ Expected retained support:60parents/44cliques/660fresh pairs.
 Replay uses no DFS or pair cache and recomputes parent coverage from exact refs.
 It certifies positive selections, not search exhaustion or search statistics.
 One attempt ended; no automatic ordering/cap ladder follows. A further substantive
-project requires a new W3/ownership/resource contract. Current source/evidence
-certification pending under think-mkgr; exact-head CI is observed separately.
+project requires a new W3/ownership/resource contract. Source/evidence `a647f83f8b37fa65cbc6791064b3704257845802` is observed terminal19pass/36skip
+and all3requiredSUCCESS. Final metadata CI is observed separately.
 
 <!-- This document follows common-doc-guidelines.md.
 See github.com/jlevy/practical-prose and review guidelines before editing.

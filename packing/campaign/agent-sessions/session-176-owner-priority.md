@@ -63,8 +63,8 @@ session:
     - packing/campaign/explorations/X048-session-176-owner-priority/README.md
     stop_reason: ONE bounded target ended and positive replay accepted; hosted certification
       remains explicit.
-    next_action: think-mkgr owner publishes scoped source/evidence; observes exact CI and clears
-      debt only after pass; no target repeat.
+    next_action: Observe final metadata current-head CI, close/sync think-mkgr; any cached-predicate
+      project requires new frozen contract/claim/fetch/source gate. No B repeat.
   budget:
     wall_minutes: 90
     max_cycles: 4
@@ -100,13 +100,15 @@ session:
   - Native aggregate ONCE exactstart2026-10-04T10:10:14.903951+00:00, cutoff2026-10-04T10:29:42.135281+00:00,
     actualend2026-10-04T10:29:45.207858+00:00; live/boundary lower bound; later publication/CI
     excluded.
+  - 'full gate: fast at a647f83f8b37fa65cbc6791064b3704257845802: passed'
+  - Exact B source55checks terminal19pass36skip/all3requiredSUCCESS; no failure or rerun. One
+    real-tree file-cost guard also passes.
   stop_reason: ONE bounded target ended and positive replay accepted; hosted certification remains
     explicit.
-  next_action: think-mkgr owner publishes scoped source/evidence; observes exact CI and clears
-    debt only after pass; no target repeat.
+  next_action: Observe final metadata current-head CI, close/sync think-mkgr; any cached-predicate
+    project requires new frozen contract/claim/fetch/source gate. No B repeat.
   ended_at: '2026-10-04T10:29:45.207858+00:00'
   handoff_role: administrative_closeout
-  certification_pending: think-mkgr
   resource_rollups:
   - packing/campaign/resource-usage/codex-session-176.yaml
 ---

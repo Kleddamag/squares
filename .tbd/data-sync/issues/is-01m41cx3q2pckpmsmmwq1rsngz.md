@@ -3,9 +3,9 @@ type: is
 id: is-01m41cx3q2pckpmsmmwq1rsngz
 title: Shrink PR 305's retained data and set one layout for retained JSON results
 kind: feature
-status: closed
+status: open
 priority: 1
-version: 14
+version: 18
 labels:
   - session-169
 dependencies: []
@@ -21,10 +21,11 @@ child_order_hints:
   - is-01m41hpstenxdv8qt9zzvbk1m9
   - is-01m4206nmmpkyj14ke249x335p
   - is-01m424tye0ptksxhthdgqc60k3
+  - is-01m42dfbtqy8q2sdjjck1sgcsv
 created_at: 2026-10-03T17:27:33.847Z
-updated_at: 2026-10-04T00:37:49.076Z
-closed_at: 2026-10-04T00:37:49.076Z
-close_reason: "Session-169 closed at 99defa2ea: PR 305's retained results one record per line (102,197 added lines), PR 323 re-lays 31 more with a check, history volume measured; the open children are owner decisions."
+updated_at: 2026-10-04T02:56:46.423Z
+closed_at: null
+close_reason: null
 resolution: null
 duplicate_of: null
 ---
@@ -33,3 +34,4 @@ Owner question, 2026-10-03: PR jlevy/squares#305 adds 275,273 lines across 574 f
 ## Notes
 
 2026-10-03 state: think-1uwx done in PR 305 (five files 201,257 -> 27,501 lines; PR 305 275,273 -> about 102,000 added lines before main's merges); think-k131 done in stacked PR #323 (31 files, 1,480,461 -> 155,443 lines, a layout check on every pull request); think-6o0h measured (keep the SVG drawings committed); think-nkp0 measured (squashing saves 0.5 MB; the repository's size is PDFs, gzip and PNG; four owner decisions filed: think-jhgi, think-giqi, think-2pvg, think-l51e). Open: PR 305's second merge with main (think-ak5w), then session-169's close with its rollups and a certifying gate.
+2026-10-04: session-169 closed at 99defa2ea (gate at 0952efb57). This bead was closed then reopened: it stays open as the parent of its six open owner decisions (think-jhgi, think-giqi, think-2pvg, think-l51e, think-5o8i, think-4w2g), since an open bead may not sit under a closed parent (D-025). Close it when they are.

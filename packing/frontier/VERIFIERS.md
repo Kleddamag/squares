@@ -303,13 +303,13 @@ wand125's adapter that expands its point certificates' direction rule and hands 
 Decides Valid7 for Evan Daniel's k = 7 cover: every closed unit square in [0,7]^2, at every centre and angle, has mass at least one, by branch and bound in Fraction and python-flint arithmetic with its own Sturm root isolation.
 
 - Source: [`packing/resources/web/wand125-valid7-independent-check-2026-10-02/valid7-independent-check/src`](../../packing/resources/web/wand125-valid7-independent-check-2026-10-02/valid7-independent-check/src), [`packing/resources/web/wand125-valid7-independent-check-2026-10-02/valid7-independent-check/verify.sh`](../../packing/resources/web/wand125-valid7-independent-check-2026-10-02/valid7-independent-check/verify.sh)
-- Versions run: revision `38dd31b36999` (the repository's only commit, and its release records-v1)
+- Versions run: revision `38dd31b36999` (the repository's only commit, and its release records-v1); SHA-256 `ba73f6c10f81…` (src/tier_b2.py with D-1's accepting line made a refusal, as plan_valid7_replay stage --guard-d1 writes it; the full replay here of 2 and 3 October ran it with the other V2 files unchanged)
 - What its authors read and used: [`packing/resources/web/wand125-valid7-independent-check-2026-10-02/valid7-independent-check/READ_LOG.md`](../../packing/resources/web/wand125-valid7-independent-check-2026-10-02/valid7-independent-check/READ_LOG.md)
 - Note: Its read log says Daniel's checker qx2_zm.py and his lemma write-ups were not read; the two share the statement, the cover and its format specification.
 
 | evidence | run | code | results |
 | --- | --- | --- | --- |
-| `E-k2m3-wand125-valid7-independent` | a third party’s run | independent | T-064 |
+| `E-k2m3-wand125-valid7-independent` | replayed here | independent | T-064 |
 
 ### `V-evand-zmx2`
 
@@ -1413,7 +1413,7 @@ Checks what the Valid7 checker's verify.sh leaves out: the records are the relea
 
 | evidence | run | code | results |
 | --- | --- | --- | --- |
-| `E-k2m3-wand125-valid7-independent` | a third party’s run | independent | T-064 |
+| `E-k2m3-wand125-valid7-independent` | replayed here | independent | T-064 |
 
 <!-- This document follows common-doc-guidelines.md.
 See github.com/jlevy/practical-prose and review guidelines before editing.

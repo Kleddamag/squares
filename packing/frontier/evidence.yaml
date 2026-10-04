@@ -377,15 +377,30 @@ evidence:
   - id: E-k2m3-wand125-valid7-independent
     claim: lower-bound
     scope: {n_values: [33, 46, 61, 78, 97, 118, 141, 166, 193, 222, 253, 286, 321]}
-    assurance: reported
-    reported_method: exact-algebraic
-    performed_by: independent-external
+    assurance: verified
+    method: exact-algebraic
+    performed_by: repository
     relationship_to_generator: independent-implementation
-    origin: external
+    origin: replayed-here
     novelty: previously-published
     source_key: '[wand125 valid7 independent check 2026-10-02]'
     certificate: resources/web/evand-square-packing-2026-10-01/source/s12/certificates/k2m3/L4_k02_box7.txt
-    replay_status: not-attempted
+    replay: >-
+      From packing/: .venv/bin/python3 -m devtools.plan_valid7_replay stage --checker
+      wand125 --work W --guard-d1, which copies the retained V2 src/ of
+      valid7-independent-check and the cover into W, refuses any file whose SHA-256 is not
+      the one full_b.jsonl's header names, and makes the one line of tier_b2.nonneg_open
+      that D-1 names a refusal; then, in W with CPython 3.14 and python-flint 0.9.0, the 33
+      region runs of the fourteen shards of receipts/valid7_replay_plan.json in the wand125
+      packet, each that plan's command, src/run_all.py cover/L4_k02_box7.txt --centers X0
+      X1 Y0 Y1 --nproc 4 --record runs/R.jsonl --resume under the fork start method,
+      resumable from its own record; then .venv/bin/python3 -m devtools.plan_valid7_replay
+      compare --checker wand125 --guard-d1 --records DIR on the 33 records, DIR holding the
+      release's full.jsonl.gz and full_b.jsonl.gz checked against release/records.sha256,
+      which must report ok with all 156,800 roots, the 124,975 the source ran under V2 each
+      with the published leaves (receipts/replay/wand125_replay_compare.json in the wand125
+      packet).
+    replay_status: passed
     verifiers: [V-wand125-valid7-checker, V-audit-valid7-independent]
     limitations: >-
       wand125/valid7-independent-check at 38dd31b369991b0d96c917a4af0c7139b44a038d (its
@@ -393,9 +408,9 @@ evidence:
       written exact-rational checker decides Valid7, the finite statement T-064's lower half
       rests on, for Evan Daniel's k = 7 cover L4_k02_box7.txt, the bytes the 2026-10-01 evand
       packet retains: every closed unit square in [0,7]^2, at every centre and every angle,
-      has mass at least 1. It certified 156,800 root boxes covering centres [0,7]^2 and u =
-      tan(theta/2) in [-1/2, 1/2] with no symmetry reduction, in 9,640,060 leaves, none
-      uncertified and no counterexample, in about 626 core-hours. It decides theta = 0 by a
+      has mass at least 1. Its run certified 156,800 root boxes covering centres [0,7]^2
+      and u = tan(theta/2) in [-1/2, 1/2] with no symmetry reduction, in 9,640,060 leaves,
+      none uncertified and no counterexample, in about 626 core-hours. It decides theta = 0 by a
       closure argument rather than an enumeration, and every decision in Fraction and
       python-flint polynomial arithmetic with its own Sturm-sequence root isolation. Its
       READ_LOG.md says Daniel's checker qx2_zm.py and his lemma write-ups (with zm_mixed.py,
@@ -404,14 +419,13 @@ evidence:
       share the statement, the cover and its format specification; a checker for covers of
       the same kind in another container, possibly written with reference to Daniel's, was
       written at the same time, and only specifications and usage were exchanged with it.
-      Here the source's verify.sh ran as published: RECORD OK on both records, and three
-      covers each lighter by a relative 10^-4 on one tight family refused.
+      On 2 October the source's verify.sh ran here as published: RECORD OK on both records,
+      and three covers each lighter by a relative 10^-4 on one tight family refused.
       devtools.audit_valid7_independent checked what verify.sh leaves out: the records are
       the release's, their roots are the whole pose grid each once with nothing
-      uncertified, and the code each record's header names is the code retained. That is a
-      record check that re-certifies 2,000 sampled Tier A and 300 Tier B leaves, a
-      diagnostic and not a replay: the other 9.6 million leaves stand on the labels the run
-      gave them. There is no Lean proof of Valid7.
+      uncertified, and the code each record's header names is the code retained. That
+      record check re-certifies 2,000 sampled Tier A and 300 Tier B leaves, a diagnostic
+      and not a replay. There is no Lean proof of Valid7.
       The method, in DESIGN.md and every module of src/, was reviewed on 2 October
       (docs/project/reviews/review-2026-10-02-valid7-independent-checker.md, lane Y) and
       found sound, with one implementation defect, D-1: tier_b2.nonneg_open accepts a
@@ -419,12 +433,29 @@ evidence:
       on which the polynomial is negative elsewhere. D-1 cannot make a true Valid7 fail,
       and it could hide a counterexample only where the mass touches 1 from below at
       exactly the sample, an algebraic coincidence; the records keep counts, not pieces,
-      so they cannot show whether it arose. It is non-blocking for T-064, whose Valid7 is
-      replayed by Daniel's checker (E-k2m3-evand-valid7-qx2-replay), and it blocks this
-      run from counting as confirming evidence until a replay with the line guarded
-      (plan_valid7_replay stage --guard-d1) or the author's fix. The review's other
-      findings, D-2 to D-4, are non-blocking, and F-6 notes that the 626 core-hours are
-      wall time.
+      so they cannot show whether it arose. It was non-blocking for T-064, whose Valid7 is
+      replayed by Daniel's checker (E-k2m3-evand-valid7-qx2-replay), and it kept the
+      source's run from counting as confirming evidence until a replay with the line
+      guarded. The review's other findings, D-2 to D-4, are non-blocking, and F-6 notes
+      that the 626 core-hours are wall time.
+      That replay ran here in full on 2 and 3 October 2026, staged with --guard-d1 so that
+      nonneg_open refuses a polynomial vanishing at its sample point, on 4-core cloud
+      runners: the fourteen shards of the plan as 33 region runs of the retained V2
+      run_all.py, each resumed from its own record after interruptions. All 53 receipts
+      are kept, the 20 of interrupted attempts with them; one relaunch overwrote shard
+      8's third run's partial receipt and rebuilt that record from empty. Every run ends
+      VERIFIED with exit 0: 156,800 root boxes, each recorded once, in 9,808,968 leaves,
+      with no uncertified box, no counterexample and no Tier B error in any receipt, so the
+      guard refused nothing. The 33 completing attempts' receipts give 85.3 CPU-hours for
+      the 76,767 roots they ran; the records' per-root times, wall time in the worker as
+      the source's are, sum to 205.8 hours over all of them, against 216.2 planned.
+      devtools.plan_valid7_replay compare found exactly the published roots, and each of
+      the 124,975 the source ran under V2 with leaf list equal to the published one; the
+      31,825 it ran under V1, whose hand-off rule split differently, were certified afresh
+      and not compared (receipts/replay/ in the wand125 packet). This is wand125's code,
+      not Daniel's, deciding Valid7 here, an independent implementation by its read log;
+      it is the same method, exact-algebraic, as the qx2_zm.py replay beside it. No
+      mutated cover was run in this replay; the three refused on 2 October are verify.sh's.
     external_review:
       state: informally-verified
       date: '2026-10-02'
@@ -487,8 +518,9 @@ evidence:
       checker's own count against the published 22.6. devtools.plan_valid7_replay compare
       found every root recorded once, exactly the published roots, and each root's leaf
       list equal to run V3's (receipts/valid7/qx2_replay_compare.json). It is the source's
-      code on the source's cover, a same-implementation replay; it is not wand125's
-      independent checker, whose run is reported and not replayed here. Valid7 is the one
+      code on the source's cover, a same-implementation replay; wand125's independent
+      checker was replayed here in full too, on 2 and 3 October
+      (E-k2m3-wand125-valid7-independent). Valid7 is the one
       hypothesis of the Lean reduction (E-k2m3-evand-bentz-lean-build), and this replay
       discharges it for this cover; it says nothing about the reduction itself. No
       mutated-cover control of qx2_zm.py was run here: wand125's three lighter covers are

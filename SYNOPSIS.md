@@ -272,7 +272,7 @@ hypothesis status and summarizes experiment verdicts, and the
 | --- | ---: | --- |
 | Agendas | 39 | 19 active; 14 completed; 5 paused; 1 superseded |
 | Commitments | 393 | 201 complete; 63 stopped; 71 blocked; 24 ready; 21 tentative; 13 in progress |
-| Sessions | 165 | 103 completed; 62 stopped; all terminal |
+| Sessions | 166 | 103 completed; 63 stopped; all terminal |
 | Explorations | 46 | 27 linked to proposed hypotheses; 19 uncodified |
 | Hypotheses | 195 | 39 confirmed; 32 refuted; 61 blocked; 17 unresolved; 9 open; 32 open questions; 2 result registered; 2 abandoned; 0 running; 1 exhausted |
 | Experiments | 170 | 53 accepted; 37 rejected; 52 unresolved; 12 baseline; 11 blocked; 4 abandoned; 0 in progress; 1 exhausted |
@@ -536,6 +536,7 @@ case or experiment separately.
 
 | Document or collection | Role | Authority | Lifecycle | Current replacement |
 | --- | --- | --- | --- | --- |
+| [Optional Windows owned-Job supervisor](packing/campaign/explorations/X048-session-173-windows-supervision/README.md) | research synthesis | record | retained | — |
 | [Proof Review: wand125’s Point-Only Cover for `s(61) = 8`](docs/project/reviews/review-2026-10-02-wand125-s61-point-cover.md) | dated review record | record | retained | — |
 | [Eleven-Square Optimality Proof: The Delta for the Original Contributor](docs/project/reviews/review-2026-10-03-n11-optimality-upstream-delta.md) | dated review record | record | retained | — |
 | [Unified adversarial review of the tentative optimality proof for eleven squares](docs/project/reviews/review-2026-10-03-n11-optimality-adversarial-gpt6-pro-unified.md) | dated review record | record | retained | — |
@@ -5614,6 +5615,7 @@ in separate tables: their units differ, and the same work can appear in both.
 
 | Codex interval receipt | declaring sessions | model responses | agent time | active union | wall window | live lower bound |
 | --- | --- | ---: | ---: | ---: | ---: | --- |
+| `codex-session-173.yaml` | session-173 | 46 | 0.52 h | 0.26 h | 0.26 h | yes |
 | `codex-task-tree-session-062.yaml` | session-062 | 607 | 2.84 h | 1.46 h | 1.46 h | yes |
 | `codex-task-tree-session-063.yaml` | session-063 | 441 | 2.08 h | 0.85 h | 0.85 h | yes |
 | `codex-task-tree-session-064.yaml` | session-064 | 3,444 | 17.57 h | 9.0 h | 9.0 h | yes |
@@ -5687,9 +5689,9 @@ in separate tables: their units differ, and the same work can appear in both.
 
 | Coverage | sessions |
 | --- | ---: |
-| measured | 111 |
+| measured | 112 |
 | unmeasured | 54 |
-| **total** | **165** |
+| **total** | **166** |
 
 <!-- END GENERATED: session-close-report -->
 

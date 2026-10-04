@@ -7,11 +7,11 @@ softschema:
   schema: schemas/session-close-report.schema.yaml
   envelope: null
   status: enforced
-count: 165
+count: 166
 generated_by: >-
   uv run --frozen --all-extras --group dev python -m devtools.close_session --render
 totals:
-  sessions_measured: 111
+  sessions_measured: 112
   sessions_unmeasured: 54
   attributed:
     rollups: 254
@@ -35,9 +35,9 @@ totals:
     one_off_code: 6272
     wall_hours: 624.21
 codex_receipts:
-  attributed: 68
+  attributed: 69
   unattributed: 2
-  measured: 70
+  measured: 71
 # Per-session figures below are the logs each session DECLARES. They overlap when
 # sessions share a harness log, so they do not sum to `attributed` above.
 sessions:
@@ -2856,4 +2856,24 @@ sessions:
     agent_hours: 13.15
     active_union_hours: 3.96
     wall_hours: 3.96
+    snapshot_incomplete: true
+- id: session-173
+  title: "Opt-in Windows owned-Job actual-worker supervisor"
+  status: stopped
+  primary_bead: think-v00i
+  phases: 2
+  measured: true
+  rollups:
+  - packing/campaign/resource-usage/codex-session-173.yaml
+  turns: null
+  tool_calls: null
+  tool_errors: null
+  one_off_code: null
+  wall_hours: null
+  codex_receipts:
+  - path: packing/campaign/resource-usage/codex-session-173.yaml
+    model_responses: 46
+    agent_hours: 0.52
+    active_union_hours: 0.26
+    wall_hours: 0.26
     snapshot_incomplete: true

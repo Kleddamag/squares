@@ -562,6 +562,7 @@ case or experiment separately.
 | [n17 Cost Reduction by Performance Engineering](docs/project/reviews/review-2026-10-02-n17-cost-reduction-performance.md) | dated review record | record | retained | — |
 | [n17 Verifier Rewrites Review](docs/project/reviews/review-2026-10-03-n17-verifier-rewrites.md) | dated review record | record | retained | — |
 | [n17 Local Theorem at a Larger Radius](docs/project/reviews/review-2026-10-03-n17-local-radius.md) | dated review record | record | retained | — |
+| [n17 Streamed Kernel Verifier Review](docs/project/reviews/review-2026-10-04-n17-streamed-verifier.md) | dated review record | record | retained | — |
 | [Integrity Ceremony Audit](docs/project/reviews/review-2026-10-03-integrity-ceremony-audit.md) | dated review record | record | retained | — |
 | [Session 168 Handoff: Work Stopped Mid-Flight](packing/campaign/explorations/X048-session-168-pilots/handoff/README.md) | research synthesis | record | retained | — |
 | [n17 Optimality Route After PR 265](docs/project/reviews/review-2026-10-01-n17-route-after-pr265.md) | dated review record | record | retained | — |

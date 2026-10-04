@@ -1,0 +1,128 @@
+"""How the kernel verifier's bounded memos behave on a certificate, and what they change.
+
+Modes, each a full verification of one certificate directory:
+
+- `trace`: the verifier as it is, instrumented. It counts the forbidden-region drops
+  (`bound_memos` replacing an owned hull), the entries dropped, and every later lookup
+  of a dropped hull: whether the hull was asked for again at all (as the current hull of
+  some owner) and whether that lookup found an entry or recomputed. It counts facet-memo
+  clears, the largest facet memo seen, and lookups that recomputed a pair computed before
+  a clear. The receipt is printed beside the trace.
+- `none`: no memo at all. `State.difference` and `State.forbidden_region` compute afresh
+  on every call; the receipt must equal the memoised one but for `seconds`.
+- `drop-all`: `bound_memos` empties both memos after every step.
+- `absent-empty`: a mutant in which a dropped forbidden region is read as no region at
+  all, the "absent means not needed" error, to show which way such an error would fail.
+
+Usage: python memo_audit.py MODE DIRECTORY [--cells FILE --cells-sha256 HEX]
+"""
+
+from __future__ import annotations
+
+import json
+import sys
+from pathlib import Path
+from typing import Any
+
+from devtools import verify_n17_kernel_certificate as kv
+
+
+def cells_from(arguments: list[str]) -> kv.Cells:
+    if "--cells" in arguments:
+        path = Path(arguments[arguments.index("--cells") + 1])
+        digest = arguments[arguments.index("--cells-sha256") + 1]
+        return kv.file_cells(path, digest)
+    return kv.cover_cells()
+
+
+def main() -> int:
+    mode, directory = sys.argv[1], Path(sys.argv[2])
+    cells = cells_from(sys.argv[3:])
+    trace: dict[str, Any] = {
+        "forbidden_drops": 0,
+        "forbidden_entries_dropped": 0,
+        "lookups_of_a_dropped_hull": 0,
+        "lookups_of_a_dropped_hull_that_recomputed": 0,
+        "forbidden_lookups": 0,
+        "forbidden_computes": 0,
+        "facet_clears": 0,
+        "largest_facet_memo": 0,
+        "facet_lookups": 0,
+        "facet_computes": 0,
+        "facet_recomputes_after_clear": 0,
+    }
+    dropped_hulls: set[tuple[kv.Point, ...]] = set()
+    cleared_pairs: set[Any] = set()
+    original_bound = kv.bound_memos
+    original_forbidden = kv.State.forbidden_region
+    original_difference = kv.State.difference
+
+    def traced_bound(state: kv.State, owner: int, before: list[kv.Point]) -> None:
+        trace["largest_facet_memo"] = max(trace["largest_facet_memo"], len(state.facets))
+        size, facets = len(state.forbidden), len(state.facets)
+        if state.groups[owner] != before:
+            trace["forbidden_drops"] += 1
+            dropped_hulls.add(tuple(before))
+        if facets > kv.MEMO_PAIRS:
+            cleared_pairs.update(state.facets)
+        original_bound(state, owner, before)
+        trace["forbidden_entries_dropped"] += size - len(state.forbidden)
+        if len(state.facets) < facets:
+            trace["facet_clears"] += 1
+
+    def traced_forbidden(self: kv.State, group: list[kv.Point], core: list[kv.Point]) -> list[kv.Point]:
+        key = (tuple(group), tuple(core))
+        trace["forbidden_lookups"] += 1
+        if key[0] in dropped_hulls:
+            trace["lookups_of_a_dropped_hull"] += 1
+            if key not in self.forbidden:
+                trace["lookups_of_a_dropped_hull_that_recomputed"] += 1
+        if key not in self.forbidden:
+            trace["forbidden_computes"] += 1
+        return original_forbidden(self, group, core)
+
+    def traced_difference(self: kv.State, partner: Any, core: Any) -> list[kv.Facet]:
+        trace["facet_lookups"] += 1
+        if (partner, core) not in self.facets:
+            trace["facet_computes"] += 1
+            if (partner, core) in cleared_pairs:
+                trace["facet_recomputes_after_clear"] += 1
+        return original_difference(self, partner, core)
+
+    if mode == "trace":
+        kv.bound_memos = traced_bound
+        kv.State.forbidden_region = traced_forbidden  # type: ignore[method-assign]
+        kv.State.difference = traced_difference  # type: ignore[method-assign]
+    elif mode == "none":
+        kv.State.forbidden_region = lambda self, group, core: kv.minkowski_diff(group, core)  # type: ignore[method-assign]
+        kv.State.difference = lambda self, partner, core: kv.difference_facets(partner, core)  # type: ignore[method-assign]
+    elif mode == "drop-all":
+
+        def drop_all(state: kv.State, owner: int, before: list[kv.Point]) -> None:
+            state.forbidden.clear()
+            state.facets.clear()
+
+        kv.bound_memos = drop_all
+    elif mode == "absent-empty":
+
+        def forget(state: kv.State, owner: int, before: list[kv.Point]) -> None:
+            if state.groups[owner] != before:
+                dropped_hulls.add(tuple(before))
+            original_bound(state, owner, before)
+
+        def absent_is_empty(self: kv.State, group: list[kv.Point], core: list[kv.Point]) -> list[kv.Point]:
+            if tuple(group) in dropped_hulls:
+                return []
+            return original_forbidden(self, group, core)
+
+        kv.bound_memos = forget
+        kv.State.forbidden_region = absent_is_empty  # type: ignore[method-assign]
+    else:
+        raise SystemExit(f"unknown mode {mode}")
+    receipt = kv.verify(directory, cells)
+    print(json.dumps({"mode": mode, "trace": trace if mode == "trace" else None, "receipt": receipt}))
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

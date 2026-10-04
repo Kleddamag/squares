@@ -1,0 +1,146 @@
+"""Read saved kernel nodes with the verifier's `NodeStream` and hold them to their bytes.
+
+For each `node-<id>.json.gz` given, in one pass and at about a step's memory:
+
+- `raw_sha256`: the SHA-256 of the decompressed bytes, read straight from `gzip`;
+- `stream`: whether `NodeStream` reads the file to its end, and if so its content id,
+  its step count and its member names (before and after `steps`);
+- `byte_identical`: whether the decompressed bytes equal, byte for byte, the canonical
+  JSON re-written from what `NodeStream` yielded (the members before `steps` in name
+  order, each step, then the members after), compared piece by piece against a second
+  `gzip` reader of the same file. When they are equal the file is canonical JSON, its
+  members are in canonical order, and `json.loads` of the file would give exactly what
+  `NodeStream` gave, since canonical JSON of finite numbers, strings, booleans, null,
+  lists and objects reads back as the same values;
+- `name_matches`: whether the content id is the `<id>` in the file name.
+
+The address space is capped (`--limit-mb`, default 2,500) so that an unexpectedly large
+step fails this process rather than the machine.
+
+Usage: python nodestream_saved_check.py [--limit-mb N] NODE.json.gz ...
+"""
+
+from __future__ import annotations
+
+import gzip
+import hashlib
+import json
+import resource
+import sys
+import time
+from collections.abc import Iterator
+from pathlib import Path
+from typing import Any
+
+from devtools import verify_n17_kernel_certificate as kv
+
+
+def canonical(value: Any) -> bytes:
+    return json.dumps(value, sort_keys=True, separators=(",", ":")).encode()
+
+
+def member(name: str, value: Any) -> bytes:
+    return json.dumps(name).encode() + b":" + canonical(value)
+
+
+def raw_digest(path: Path) -> str:
+    digest = hashlib.sha256()
+    with gzip.open(path, "rb") as stream:
+        while block := stream.read(1 << 20):
+            digest.update(block)
+    return digest.hexdigest()
+
+
+def peak_rss_mb() -> float:
+    return round(resource.getrusage(resource.RUSAGE_SELF).ru_maxrss / 1024, 1)
+
+
+def check(path: Path) -> dict[str, Any]:
+    started = time.time()
+    result: dict[str, Any] = {"file": path.name, "size_mb": round(path.stat().st_size / 1e6, 1)}
+    result["raw_sha256"] = raw_digest(path)
+    name_id = path.name.removeprefix("node-").removesuffix(".json.gz")
+    node = kv.NodeStream(path)
+    before = sorted(key for key in node.header if key < "steps")
+    early_after = sorted(key for key in node.header if key > "steps")
+    raw = gzip.open(path, "rb")
+    identical = True
+    offset = 0
+
+    def compare(piece: bytes) -> None:
+        nonlocal identical, offset
+        if not identical:
+            return
+        found = raw.read(len(piece))
+        if found != piece:
+            identical = False
+            result["first_difference_near_byte"] = offset
+        offset += len(piece)
+
+    def pieces_before() -> Iterator[bytes]:
+        yield b"{"
+        for index, key in enumerate(before):
+            yield (b"," if index else b"") + member(key, node.header[key])
+        yield (b"," if before else b"") + b'"steps":['
+
+    for piece in pieces_before():
+        compare(piece)
+    count = 0
+    largest = 0
+    try:
+        for step in node.steps():
+            piece = (b"," if count else b"") + canonical(step)
+            largest = max(largest, len(piece))
+            compare(piece)
+            count += 1
+    except (kv.VerificationError, ValueError, OSError, EOFError) as failure:
+        result["stream"] = f"refused: {type(failure).__name__}: {failure}"
+        raw.close()
+        return result
+    compare(b"]")
+    for key in sorted(key for key in node.header if key > "steps"):
+        compare(b"," + member(key, node.header[key]))
+    compare(b"}")
+    if identical and raw.read(1):
+        identical = False
+        result["first_difference_near_byte"] = offset
+    raw.close()
+    result.update(
+        stream="read to its end",
+        content_id=node.sha256,
+        name_matches=node.sha256 == name_id,
+        raw_matches_content_id=result["raw_sha256"] == node.sha256,
+        byte_identical=identical,
+        steps=count,
+        largest_step_mb=round(largest / 1e6, 2),
+        members_before_steps=before,
+        members_after_steps_read_before_it=early_after,
+        members_after_steps=sorted(key for key in node.header if key > "steps"),
+        seconds=round(time.time() - started, 1),
+        peak_rss_mb=peak_rss_mb(),
+    )
+    return result
+
+
+def main() -> int:
+    arguments = sys.argv[1:]
+    limit_mb = 2500
+    if arguments[:1] == ["--limit-mb"]:
+        limit_mb, arguments = int(arguments[1]), arguments[2:]
+    resource.setrlimit(resource.RLIMIT_AS, (limit_mb << 20, limit_mb << 20))
+    failures = 0
+    for name in arguments:
+        result = check(Path(name))
+        print(json.dumps(result), flush=True)
+        good = (
+            result.get("stream") == "read to its end"
+            and result["name_matches"]
+            and result["raw_matches_content_id"]
+            and result["byte_identical"]
+        )
+        failures += not good
+    return 1 if failures else 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

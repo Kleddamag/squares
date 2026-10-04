@@ -1,0 +1,2 @@
+{"verifier": "verify_n17_kernel_certificate.py", "status": "FAIL", "failure": "field and physical coordinates differ", "node_sha256": null}
+{"verifier": "reader-number-at-buffer-end.py", "status": "FAIL", "failure": "the node's members are not comma-separated", "node_sha256": null}

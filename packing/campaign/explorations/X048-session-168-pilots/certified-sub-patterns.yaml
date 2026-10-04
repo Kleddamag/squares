@@ -58,6 +58,12 @@ verifiers:
   - path: packing/devtools/verify_n17_kernel_certificate.py
     revision: 318c28c42afaa4128c07dcbc785d717adbaf95a9
     review: docs/project/reviews/review-2026-10-03-n17-verifier-rewrites.md
+  # The same verifier reading the node a step at a time, with its facet and
+  # forbidden-region memos bounded (lane M1). Its checks are 318c28c42's; it re-verifies
+  # W7, SW9 and N1 in full with their recorded receipts' fields.
+  - path: packing/devtools/verify_n17_kernel_certificate.py
+    revision: 601bbf1107a622b306a3fe1fc57faebc9e28d27f
+    review: docs/project/reviews/review-2026-10-04-n17-streamed-verifier.md
 entries:
   - name: W7
     cells: [corner-SW, side-N0, side-W0, side-W1, side-W2, interior-SW, interior-W]

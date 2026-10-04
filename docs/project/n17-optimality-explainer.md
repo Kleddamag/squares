@@ -358,12 +358,16 @@ Stated without a forecast, because none is on record.
    The composition of the census, the certificates, the consumer and the capture into
    one argument has not been written down, let alone reviewed, and T-060’s rungs show
    what further assurance costs even then.
-5. **Certificates that fit in memory.** Adaptive rows close classes that uniform rows
-   could not, but flag 2’s node reached 931 MB of JSON. The producer’s own check of it
-   reached 8.6 GB and was killed; the standalone check of the saved objects peaked at
-   about 4.3 GB and took 3,714 s. A streamed or compact certificate format, or a
-   compiled checker, has to come before adaptive rows are used at scale or their cap is
-   raised.
+5. **Certificates that fit in memory: done for the checkers.** Flag 2’s node reached 931
+   MB of JSON. The producer’s own check of it reached 8.6 GB and was killed, and the
+   standalone check peaked at about 4.3 GB. The producer was leaking its replaced rows’
+   partner covers. With that fixed and nodes read a step at a time (7f1db8a42), the same
+   standalone check peaks at 1,230 MB. The standing verifier reads the same way
+   (601bbf110), and an
+   [independent review](reviews/review-2026-10-04-n17-streamed-verifier.md) admitted it:
+   W7, SW9 and N1 re-verify at it with peaks of 199 to 283 MB. A single step can still
+   be large. One step of flag 2’s 2,304-row node is 119 MB of JSON, and reading it alone
+   peaked at about 1 GB.
 6. **Admission at the corrected verifier.** After $n = 11$'s finding C2, the kernel
    verifier’s point and segment covers were made exact (318c28c42). The defect never ran
    on W7, SW9 or N1. New admissions should be verified at that revision or later.

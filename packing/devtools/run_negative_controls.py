@@ -620,7 +620,19 @@ ROOT_DOCUMENTS = (
 # operating headroom at 192 MiB while think-t1lk owns dependency-aware selection.
 # This changes no copied bytes or time limit. At three portable workers the storage
 # ceiling is 576 MiB; the current measured payload remains about 160.05 MiB per tree.
-SNAPSHOT_MAX_BYTES = 192 * 1024 * 1024
+#
+# 2026-10-04, PR 307 (Session 168) after merging main at 0862e6412: hosted `suite-c`
+# read 204,105,742 bytes against 201,326,592. The same tree measures 201,137,934 here,
+# and main alone 196,528,760 (97.6% of the cap) before this branch adds 4.6 MB net,
+# chiefly n17 tools, tests and records. The largest remaining candidates were measured
+# and cannot pay. exp-238's 4.5 MiB certificate is named by `frontier/results.yaml`, so
+# `result_pruned_targets` copies it back. The 5.9 MiB poster SVG is embedded by
+# README.md, as measured on 2026-09-22. The rest of what grows is required evidence the
+# results register and inline links already pull back. As on 2026-09-30, restore about
+# 32 MiB of operating headroom, at 224 MiB, while think-t1lk owns dependency-aware
+# selection. No copied byte or time limit changes; three portable workers are bounded
+# at 672 MiB.
+SNAPSHOT_MAX_BYTES = 224 * 1024 * 1024
 DEFAULT_CONTROL_TIMEOUT_SECONDS = 120.0
 TERMINATION_GRACE_SECONDS = 1.0
 # Directories that must be walked into rather than bulk-copied, because something

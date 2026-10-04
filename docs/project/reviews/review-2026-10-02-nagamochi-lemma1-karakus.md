@@ -277,6 +277,15 @@ values:
 
 At $N = k^2 - 1$ both give $k$ (not in the table; the test checks $k = 3, \dots, 19$).
 
+Corrected 4 October 2026: when this review was written the tool did not make that check.
+It tested only $k^2 \le N$ and $N \le k^2 + 2k$, the last steps of the reduction above,
+which hold for every nonsquare $N$ whatever the closed forms say, so it could not fail.
+It now compares $\sqrt N$, Karakuş’s (6.1) and Nagamochi’s minimum as exact values of
+the form $a + \sqrt r$, by squaring, at every nonsquare $N$ from 8 to 1000, and holds
+that minimum against the gate checker’s Theorem 2; its test feeds it wrong closed forms
+and requires each to be caught.
+The exact check confirms the ordering stated above.
+
 ### chelokot’s Lean archive, reported
 
 The archive claims, in `docs/nagamochi-compensation-proof.md` and

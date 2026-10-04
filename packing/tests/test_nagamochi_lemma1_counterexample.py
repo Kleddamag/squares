@@ -11,12 +11,14 @@ comparison between Karakus's replacement bound and Theorem 2's closed form.
 from __future__ import annotations
 
 import math
+from collections.abc import Callable
 from decimal import Decimal
 from fractions import Fraction
 
 import pytest
 
-from devtools.check_nagamochi_bounds import theorem_two
+import devtools.check_nagamochi_lemma1_counterexample as lemma1
+from devtools.check_nagamochi_bounds import RootForm, theorem_two
 from devtools.check_nagamochi_lemma1_counterexample import (
     CHELOKOT_LEAN_CEILING,
     CHELOKOT_SCORE,
@@ -24,7 +26,9 @@ from devtools.check_nagamochi_lemma1_counterexample import (
     DECLARED_T,
     SIDE_CEILING,
     CounterexampleError,
+    area_form,
     axis_square,
+    bound_ordering,
     centre,
     check_chelokot_instance,
     check_karakus_member,
@@ -34,9 +38,11 @@ from devtools.check_nagamochi_lemma1_counterexample import (
     karakus_at_most_nagamochi,
     karakus_bound,
     karakus_contact_square,
+    karakus_form,
     karakus_strip_measure,
     karakus_total,
     main,
+    nagamochi_form,
     nagamochi_measure,
     nagamochi_total,
     shrink,
@@ -149,6 +155,7 @@ def test_axis_square_helper_is_a_square() -> None:
 
 
 def test_karakus_bound_is_between_area_and_theorem_two_exactly() -> None:
+    assert bound_ordering() == []
     for n in range(8, 1001):
         if math.isqrt(n) ** 2 == n:
             continue
@@ -156,6 +163,58 @@ def test_karakus_bound_is_between_area_and_theorem_two_exactly() -> None:
         assert below
         assert karakus_above_area(n)
         assert equal == (n == (math.isqrt(n) + 1) ** 2 - 1)
+
+
+def test_the_closed_forms_are_the_printed_ones() -> None:
+    """The forms compared are (6.1), sqrt N and Theorem 2's minimum, not stand-ins."""
+    assert karakus_form(50) == RootForm(Fraction(1, 2), Fraction(173, 4))
+    assert area_form(50) == RootForm(Fraction(0), Fraction(50))
+    assert nagamochi_form(50) == RootForm(Fraction(1), Fraction(37))
+    # At N = m^2 - 1 the ceiling branch wins, and at m^2 - 2 the two branches tie.
+    assert nagamochi_form(99) == RootForm(Fraction(10))
+    assert nagamochi_form(98).compare(RootForm(Fraction(10))) == 0
+
+
+@pytest.mark.parametrize(
+    ("target", "wrong", "symptom"),
+    [
+        # A radicand a little too large puts Karakus above Theorem 2 at N = m^2 - 1.
+        (
+            "karakus_form",
+            lambda n: RootForm(Fraction(1, 2), Fraction(n - math.isqrt(n) + 1)),
+            "above Theorem 2",
+        ),
+        # Dropping the 1/4 keeps the ordering but loses the equality at m^2 - 1.
+        (
+            "karakus_form",
+            lambda n: RootForm(Fraction(1, 2), Fraction(n - math.isqrt(n))),
+            "expected only at N = m^2 - 1",
+        ),
+        # Nagamochi's root branch alone, without the ceiling: never equal to Karakus.
+        (
+            "nagamochi_form",
+            lambda n: RootForm(Fraction(1), Fraction(n - 2 * math.isqrt(n) + 1)),
+            "not the gate checker's Theorem 2",
+        ),
+        # A form below the area bound, such as `sqrt(N - k)`.
+        (
+            "karakus_form",
+            lambda n: RootForm(Fraction(0), Fraction(n - math.isqrt(n))),
+            "not above sqrt N",
+        ),
+    ],
+)
+def test_a_wrong_closed_form_is_caught(
+    monkeypatch: pytest.MonkeyPatch,
+    target: str,
+    wrong: Callable[[int], RootForm],
+    symptom: str,
+) -> None:
+    """Until 2026-10-04 the ordering tested `k^2 <= N` and could not fail; now it bites."""
+    monkeypatch.setattr(lemma1, target, wrong)
+    failures = lemma1.bound_ordering()
+    assert any(symptom in line for line in failures), failures[:5]
+    assert lemma1.main() == 1
 
 
 def test_karakus_bound_is_the_integer_at_m_squared_minus_one() -> None:

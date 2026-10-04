@@ -3,9 +3,9 @@ type: is
 id: is-01m42r523gmyza0p0njv6nktaz
 title: "P11: opt-in Windows owned-Job worker supervision"
 kind: task
-status: in_progress
+status: closed
 priority: 1
-version: 2
+version: 3
 spec_path: docs/project/reviews/review-2026-10-02-n17-bulk-exclusion-design.md
 assignee: guzhou0806-codex-t0
 delegate: codex@guzhou
@@ -15,8 +15,12 @@ parent_id: is-01m3xkd6zmq1jqwtn628h2k7zy
 hold: null
 hold_until: null
 created_at: 2026-10-04T06:03:23.119Z
-updated_at: 2026-10-04T06:04:05.945Z
+updated_at: 2026-10-04T06:43:21.907Z
 started_at: 2026-10-04T06:04:05.944Z
+closed_at: 2026-10-04T06:43:21.906Z
+close_reason: Opt-in owned-Windows-Job supervisor independently accepted and published as Draft PR336. Source 130d693d8e4e888efc0346ae007073abb4d696d8 hosted fast/required terminal:19pass/36skips.20focused Windows tests and Linux/Windows types pass. Final metadata CI observed separately; no default integration or research claim.
+resolution: null
+duplicate_of: null
 ---
 # P01F — opt-in Windows owned-Job supervisor transfer
 

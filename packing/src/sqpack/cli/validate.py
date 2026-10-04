@@ -4895,6 +4895,9 @@ STEPS: tuple[Step, ...] = (
         touches=(
             *_CORE,
             "packing/devtools/regularize_axis_components.py",
+            "packing/devtools/census_atlas_contact_shades.py",
+            "packing/devtools/check_rational_witness_independent.py",
+            "packing/devtools/upper_bound_packets.py",
             "packing/atlas/known-best/regularized/*",
             "packing/atlas/known-best/manifest.json",
             "packing/witnesses/*",
@@ -4952,7 +4955,10 @@ STEPS: tuple[Step, ...] = (
         touches=(
             *_CORE,
             "packing/devtools/audit_t007_consumers.py",
+            "packing/devtools/check_nagamochi_bounds.py",
+            "packing/devtools/render_overview.py",
             "packing/campaign/series/series-000-smoke-and-calibration/results/t007-consumer-audit.json",
+            "packing/atlas/known-best/bound-citations.json",
             "packing/frontier/*",
             "packing/resources/papers/*",
             "packing/resources/web/*",

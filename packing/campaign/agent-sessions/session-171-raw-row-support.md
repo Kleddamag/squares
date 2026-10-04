@@ -13,7 +13,7 @@ session:
   deadline_at: '2026-10-04T05:26:55.800523+00:00'
   branch: guzhou/n17-residual-compatibility
   primary_bead: think-op6s
-  status: in_progress
+  status: stopped
   goal: Determine whether every live row in the frozen B raw-piece pair graph has a complete
     support witness, with independent replay.
   workflow_phases:
@@ -147,7 +147,7 @@ session:
     clock_role: work
     objective: Publish scoped D2 evidence, observe self-healed CI and prepare early administrative
       closeout; preserve the planned finalization reserve.
-    status: in_progress
+    status: stopped
     entered_by: evidence_checkpoint
     switch_reason: D2 reached50000unique pairs after76nodes/13.529s;57complete selections independently
       replayed855pairs support69/96rows (+14). All49D1seeds/55rows retained,27unknown,no unsupported
@@ -159,10 +159,17 @@ session:
     validation_command: python -m pytest tests/test_n17_raw_row_support.py -q
     kill_condition: Parent overlap, control failure, resource cap or implementation slot end.
     fallback: Retain partial evidence and do not run the B target.
-    outcome: null
-    evidence: []
-    stop_reason: null
-    next_action: Observe source/evidence CI before native terminal record; no D3.
+    outcome: D2 source/evidence published; hosted current-head checks terminal19pass/36skipped,
+      required checks SUCCESS. One native usage interval retained at actual cutoff; early administrative
+      closeout preserves planned reserve.
+    evidence:
+    - packing/campaign/explorations/X048-session-171-raw-row-support/D2_REPORT.md
+    - packing/campaign/resource-usage/codex-session-171.yaml
+    stop_reason: Scoped publication checkpoint complete; terminal administrative closeout without
+      further target.
+    next_action: Upstream capture/Flag2 remains under think-tmz6. Conditional P01E requires
+      this terminal record and final metadata current-head CI terminal without own failures;
+      no automatic larger run.
   budget:
     wall_minutes: 90
     max_cycles: 6
@@ -232,8 +239,23 @@ session:
   - Actual12:44:59 publication entry is a work checkpoint before the reserved13:11:55 tail;
     original90min endpoint and15min reserve retained. Early terminal closeout does not invent
     tail clocks.
-  stop_reason: null
-  next_action: Observe source/evidence CI before native terminal record; no D3.
+  - 'full gate: fast at 58af8cdedc64cb6fc4695e4e6f677df708fb6672: passed (hosted partitioned
+    fast gate; packing-required SUCCESS)'
+  - Hosted pages-required and merges-into-main SUCCESS at 58af8cdedc64cb6fc4695e4e6f677df708fb6672;
+    final metadata observed separately.
+  - Native task-tree interval starts2026-10-04T03:56:55.800523+00:00 and ends2026-10-04T04:55:27.9636830+00:00.
+    Branch association is operator-declared; live-session/boundary limitations retained; later
+    publication tail is outside this lower bound.
+  stop_reason: One D1 and one D2 bounded diagnostic delivered. D2 adds14 independently replayed
+    rows but27remain unknown; no packing/exclusion result or upstream ownership takeover. Source/evidence
+    hosted fast certification observed; final metadata CI is observed separately.
+  next_action: Upstream capture/Flag2 remains under think-tmz6. Conditional P01E requires this
+    terminal record and final metadata current-head CI terminal without own failures; no automatic
+    larger run.
+  handoff_role: administrative_closeout
+  resource_rollups:
+  - packing/campaign/resource-usage/codex-session-171.yaml
+  ended_at: '2026-10-04T04:59:11.858324+00:00'
 ---
 
 # Raw-piece row-support diagnostic

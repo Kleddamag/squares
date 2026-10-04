@@ -144,5 +144,11 @@
     }
   },
   "new_exclusions": 0,
-  "producer_runs": 0
+  "producer_runs": 0,
+  "independent_D1_preservation_control": {
+    "all_49_selections_exact_prefix": true,
+    "all_55_supported_rows_retained": true,
+    "additional_rows": 14,
+    "reviewer": "coordinator"
+  }
 }

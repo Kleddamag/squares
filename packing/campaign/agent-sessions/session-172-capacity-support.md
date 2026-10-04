@@ -92,17 +92,17 @@ session:
     kill_condition: Parent overlap, limit/seed regression, resource guard or30minute source
       slot.
     fallback: Retain scoped obstruction; do not run the E B target.
-    outcome: Root acceptance of96/96rows; one native privacy aggregate retained. Early administrative
-      closeout uses actual clocks with pending hosted certification, without inventing reserved-tail
-      finalization.
+    outcome: Complete raw-row support evidence and native terminal record published; exact source/evidence
+      hosted fast/required gate passed. Original wall overrun and partial-rerun accounting refusal
+      retained; coherent unchanged workflow pass, no guard weakening.
     evidence:
     - packing/campaign/explorations/X048-session-172-capacity-support/README.md
     - packing/campaign/resource-usage/codex-session-172.yaml
-    stop_reason: Finite whole-row route completed; asynchronous hosted certification remains
-      explicit debt.
-    next_action: Publish bounded source/evidence/native terminal record, observe exact new-head
-      fast/required gate, then clear think-2uhz certification debt. Upstream think-tmz6 stays
-      owned; no capacity/order ladder.
+    stop_reason: Finite-model route and source certification complete; actual administrative
+      end/native cutoff retained.
+    next_action: Observe final metadata current-head CI and close/sync think-2uhz. Conditional
+      P01F is a distinct opt-in shared-tooling project; upstream think-tmz6 and capture/Flag2
+      remain owned. No raw cap/order ladder.
   budget:
     wall_minutes: 90
     max_cycles: 4
@@ -139,15 +139,23 @@ session:
   - 'Native aggregate ONCE: start2026-10-04T05:16:09.608722+00:00, cutoff2026-10-04T05:33:14.2819633+00:00,
     actual administrative end2026-10-04T05:35:00.980646+00:00. Branch association is declared;
     live/boundary caveats and all work after cutoff are outside this lower-bound aggregate.'
-  stop_reason: All96rows independently supported in the frozen binary network; exact whole-row
-    route retired. Source/evidence publication complete locally; hosted source certification
-    remains explicit debt under think-2uhz. No packing/exclusion claim or further target.
-  next_action: Publish bounded source/evidence/native terminal record, observe exact new-head
-    fast/required gate, then clear think-2uhz certification debt. Upstream think-tmz6 stays
-    owned; no capacity/order ladder.
+  - 'full gate: fast at ef8c425472302905c93cf49a9182e06f218b07d2: passed (hosted partitioned
+    fast gate; packing-required SUCCESS)'
+  - Hosted pages-required and merges-into-main SUCCESS at ef8c425472302905c93cf49a9182e06f218b07d2;
+    final metadata head observed separately.
+  - Initial source CI passed2030behavioral tests but suite_d wall132.94s exceeded unchanged131s.
+    Unchanged failed-job rerun passed at123.45s; aggregate correctly refused mixed-attempt wall
+    accounting. A coherent full-workflow rerun then passed. All observations retained locally;
+    no thresholds, tests or source altered.
+  stop_reason: All96rows independently supported; exact frozen binary whole-row route retired.
+    Source/evidence hosted certification passed after unchanged reruns for a wall overrun and
+    mixed-attempt accounting refusal. No geometric packing/exclusion claim; final metadata CI
+    observed separately.
+  next_action: Observe final metadata current-head CI and close/sync think-2uhz. Conditional
+    P01F is a distinct opt-in shared-tooling project; upstream think-tmz6 and capture/Flag2
+    remain owned. No raw cap/order ladder.
   ended_at: '2026-10-04T05:35:00.980646+00:00'
   handoff_role: administrative_closeout
-  certification_pending: think-2uhz
   resource_rollups:
   - packing/campaign/resource-usage/codex-session-172.yaml
 ---

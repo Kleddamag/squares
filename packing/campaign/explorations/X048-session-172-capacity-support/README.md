@@ -81,3 +81,5 @@ different unowned mechanism or a useful standalone capability at a new W3 gate.
 <!-- This document follows common-doc-guidelines.md.
 See github.com/jlevy/practical-prose and review guidelines before editing.
 -->
+
+Source/evidence hosted fast certification passed at `ef8c425472302905c93cf49a9182e06f218b07d2`; final metadata CI is observed separately. The first suite-D run passed2030tests but exceeded the unchanged131s ceiling at132.94s. The unchanged failed-job rerun passed at123.45s; required aggregation refused mixed-attempt wall accounting. A coherent unchanged full-workflow rerun passed. No tests, source or thresholds were altered. Session172's actual administrative end and earlier native cutoff stay unchanged.

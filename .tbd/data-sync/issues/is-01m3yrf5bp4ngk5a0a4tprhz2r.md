@@ -5,7 +5,7 @@ title: "T-046 leftovers: replay the 28 September rectangle certificates n = 51, 
 kind: task
 status: open
 priority: 2
-version: 4
+version: 5
 labels:
   - result-import
 dependencies:
@@ -13,7 +13,7 @@ dependencies:
     target: is-01m3yrzkz80qd1wv5sjr0kkkv0
 parent_id: is-01m3yrdxte02c7bnygkke34ct4
 created_at: 2026-10-02T16:51:56.405Z
-updated_at: 2026-10-03T06:05:04.183Z
+updated_at: 2026-10-04T01:02:27.493Z
 ---
 Dispatched to runners r1 (n72 workers 3, n91) and r2 (n73 workers 2, n51, n57+n58); transfer dirs wand125-rect-sept28-r1-*/-r2-* on branches claude/replay-wand125-rect-oct1-r1/-r2. Merge with audit_wand125_rectangles --packet 2026-09-28 --merge, then records. About 24 CPU-h.
 
@@ -24,3 +24,4 @@ T-046 (wand125's rectangle bounds of 27 and 28 September, V0/C0). After the runn
 ## Notes
 
 2026-10-03 06:05 s1 (n72, n91; claude/replay-wand125-sept28-s1 @8c4f1932) and s2 (n73, n51, n57+n58; sept28-s2 @a57330dd) running since 04:52Z; logs only so far, no verdicts.
+2026-10-04 01:05 s1 done (n72, n91; claude/replay-wand125-sept28-s1, not merged). s2: n73, n51, n57 VERIFIED; n58 still running (claude/replay-wand125-sept28-s2 @0421bd77b). Next: the batched records lane after n58 finishes.

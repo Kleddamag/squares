@@ -1,0 +1,26 @@
+{
+  "schema": "n17.P02A.ci-cost-repair.v1",
+  "repairing_source_head": "e1da957d14f55da2960ac8faedf6939b6d318951",
+  "cost_source_head": "14d131c8aaf2ac94239755f8438ab7d5e0192ef4",
+  "run": 37186951080,
+  "attempt": 1,
+  "hosted_tree": "7973773803e05ab08d36987bb8dc15772b44b747",
+  "cohort_reports": [
+    "runs/p02a-ci-green-cohort/validation-timings-suite-a-1/command-e8d73fb6b2004e53951002f00c33c68b.test-files.json",
+    "runs/p02a-ci-green-cohort/validation-timings-suite-b-1/command-729f3f7459074423a247a0662fde2ea1.test-files.json",
+    "runs/p02a-ci-green-cohort/validation-timings-suite-c-1/command-849dc94da0b242f5b7c03fd610a435a5.test-files.json",
+    "runs/p02a-ci-green-cohort/validation-timings-suite-d-1/command-02ba792c2a3d436c95576652ecbdc596.test-files.json"
+  ],
+  "recorded_before": 522,
+  "recorded_after": 557,
+  "own_new_test_remains_unrecorded": true,
+  "shards": 4,
+  "target_ceiling_seconds": [
+    131.0,
+    154.0,
+    154.0,
+    131.0
+  ],
+  "manual_costs": false,
+  "threshold_policy_changed": false
+}

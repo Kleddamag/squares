@@ -56,6 +56,16 @@ Expected PASS_REPLAYED_PARTIAL_SUPPORT,41parents/26cliques/390fresh pairs.
 Replay performs no DFS or cached pair lookup and recomputes coverage from exact refs.
 It certifies retained positive support; it does not certify search exhaustion/statistics.
 
+Initial source CI found a stale test-file cost inventory: shard4 exceeded the existing
+10% unrecorded-file limit (14/135);2094tests passed and the inventory guard failed.
+The official recorder refused that failed cohort. Costs were regenerated from the
+complete successful14d131 hosted cohort/run37186951080 attempt1, preserving all
+ceilings and policy. Recorded files increased522to557; the new Afile remains
+honestly unrecorded. Seven focused partition/record/real-tree controls pass. Two
+Windows subprocess collection controls hit host ancestor-permission limits; their
+full supported-host gate remains required. No costs were invented, no failed status
+was edited and no tests or thresholds were weakened. See[repair receipt](receipts/CI-cost-repair.json).
+
 This attempt ends at its preregistered cap. No automatic capacity or ordering ladder
 follows. Any next project needs a new W3/ownership/resource contract. Source/evidence
 hosted certification is initially pending under think-wh57; exact-head CI is observed

@@ -7,11 +7,11 @@ softschema:
   schema: schemas/session-close-report.schema.yaml
   envelope: null
   status: enforced
-count: 175
+count: 176
 generated_by: >-
   uv run --frozen --all-extras --group dev python -m devtools.close_session --render
 totals:
-  sessions_measured: 121
+  sessions_measured: 122
   sessions_unmeasured: 54
   attributed:
     rollups: 276
@@ -35,9 +35,9 @@ totals:
     one_off_code: 6570
     wall_hours: 641.91
 codex_receipts:
-  attributed: 76
+  attributed: 77
   unattributed: 2
-  measured: 78
+  measured: 79
 # Per-session figures below are the logs each session DECLARES. They overlap when
 # sessions share a harness log, so they do not sum to `attributed` above.
 sessions:
@@ -3064,4 +3064,24 @@ sessions:
     agent_hours: 0.72
     active_union_hours: 0.36
     wall_hours: 0.36
+    snapshot_incomplete: true
+- id: session-178
+  title: "Full-interval augmentation versus halving on fixed E tuples"
+  status: stopped
+  primary_bead: think-abit
+  phases: 2
+  measured: true
+  rollups:
+  - packing/campaign/resource-usage/codex-session-178.yaml
+  turns: null
+  tool_calls: null
+  tool_errors: null
+  one_off_code: null
+  wall_hours: null
+  codex_receipts:
+  - path: packing/campaign/resource-usage/codex-session-178.yaml
+    model_responses: 73
+    agent_hours: 0.7
+    active_union_hours: 0.35
+    wall_hours: 0.35
     snapshot_incomplete: true

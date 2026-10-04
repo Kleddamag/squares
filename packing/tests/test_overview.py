@@ -271,7 +271,7 @@ def test_the_posters_and_the_film_have_a_section_of_their_own_under_the_atlas(
         overview_sections.ATLAS_CARDS
     )
     note = section.split('<p class="site-wide site-atlas-note">', 1)[1].split("</p>", 1)[0]
-    # The star is keyed once on the page, in the legend over the recent table
+    # The star is keyed once on the page, in the legend under the recent table
     # (`rung_legend`); the note links that table and says it no second time.
     assert note.startswith(
         'On the posters, each star marks a <a href="#recent-results">new result</a>.'
@@ -1375,15 +1375,16 @@ def _ladders(results: str) -> str:
 
 
 def _legend(served: str) -> str:
-    """The legend over a page's table of results (`rung_legend`)."""
+    """The legend under a page's table of results (`rung_legend`)."""
     return served.split('<div class="site-rung-legend"', 1)[1].split("</div>", 1)[0]
 
 
-def test_a_table_of_results_opens_with_a_legend_of_every_rungs_mark(
+def test_a_table_of_results_has_a_legend_of_every_rungs_mark_under_it(
     page: str, results: str
 ) -> None:
-    """Right above each table of results, under its bar, stands a legend of three short
-    lines (the owner, 2026-10-03, `think-42dx`): every significance mark, S1 to S5;
+    """Under each table of results stands a legend of three short lines in a box of its
+    own (the owner, 2026-10-03, `think-42dx`; it stood between the bar and the table
+    until 2026-10-04): every significance mark, S1 to S5;
     every verification and confirmation chip, V0 to C5, each titled with the rubric's
     meaning; and the star, a new result, with a link to the Verification Ladders that
     define each rung in full. It took the place of the key of the ladders' whole grid
@@ -1402,7 +1403,11 @@ def test_a_table_of_results_opens_with_a_legend_of_every_rungs_mark(
         assert served.count('<div class="site-rung-legend"') == 1
         bar = served.index('<div class="site-table-tools')
         at = served.index('<div class="site-rung-legend"')
-        assert bar < at < served.index('<table class="kpress-table site-table site-results"')
+        assert bar < served.index('<table class="kpress-table site-table site-results"')
+        # The legend follows the table's wrap directly, before the rows' popovers.
+        follows = re.search(r'</table>(?:</div>)+<div class="site-rung-legend"', served)
+        assert follows is not None
+        assert follows.end() - len('<div class="site-rung-legend"') == at
         legend = _legend(served)
         assert legend.count("<p>") == 3
         assert RUNG_CHIP.findall(legend) == expected
@@ -1422,7 +1427,7 @@ def test_the_ladders_are_the_results_pages_and_the_overview_points_to_them(
     """Verification Ladders left the overview for the results page on 2026-10-02 (the
     owner, think-hqb3): the section stands under the table there, headed as it was, with
     the empty anchor of its older fragment; the overview has no ladders section, and the
-    legend over its table links the section (think-42dx), its account of the ratings and
+    legend under its table links the section (think-42dx), its account of the ratings and
     its key of every rung gone since 2026-10-03. The results page's
     opening paragraph points at the section, so a reader meets the table first and the
     account of the ratings is written once, as the section's lead."""
@@ -2634,8 +2639,9 @@ def test_every_page_lists_significance_first(
     before them (`test_each_results_row_shows_its_rungs_significance_first`). No run
     repeats a scale or puts a later one first."""
     shown = case_pages[name] if name.startswith("cases/") else rendered(name)
-    # The legend over a table of results lists every mark of a ladder in a row, by
-    # design, and is no result's rungs (`test_a_table_of_results_opens_with_a_legend`).
+    # The legend under a table of results lists every mark of a ladder in a row, by
+    # design, and is no result's rungs
+    # (`test_a_table_of_results_has_a_legend_of_every_rungs_mark_under_it`).
     shown = re.sub(r'<div class="site-rung-legend".*?</div>', "", shown, flags=re.DOTALL)
     runs = [run for run in _rung_runs(shown) if len(run) > 1]
     if name.startswith("cases/"):
@@ -3331,7 +3337,7 @@ def test_the_overviews_first_section_is_readmes_one_block(page: str) -> None:
 def test_recent_results_opens_with_its_table_and_says_what_it_shows_under_it(
     page: str,
 ) -> None:
-    """Recent Results opens with its table, its legend over it, and under the table's one
+    """Recent Results opens with its table, its legend under it, and under the table's one
     action stands one short paragraph (the owner, 2026-10-02, `think-tgjv`; one
     paragraph stood between the heading and the filter bar until then): the headline of
     recent progress and where the filters start. The paragraph on what the ratings mean,
@@ -3362,11 +3368,11 @@ def test_recent_results_opens_with_its_table_and_says_what_it_shows_under_it(
     for gone in ("Each row carries three ratings", "marks a new result", "S1 to S5"):
         assert gone not in _seen(section), gone
     assert "site-ladders" not in section
-    # The bar, the legend, the table, its action, then the paragraph.
+    # The bar, the table, the legend, its action, then the paragraph.
     order = [
         section.index('<div class="site-table-tools'),
-        section.index('<div class="site-rung-legend"'),
         section.index(_recent_table(page)),
+        section.index('<div class="site-rung-legend"'),
         section.index('<p class="site-action-row site-more">'),
         section.index(lead),
     ]
@@ -4215,7 +4221,7 @@ def test_a_new_result_is_starred_in_both_tables_by_the_atlas_rule(
     )
     for served in (page, results):
         assert len(ROW_STAR.findall(served)) == len(starred)
-        # The legend over each table says what the star marks, in two words.
+        # The legend under each table says what the star marks, in two words.
         words = f"<span>{overview_sections.NEW_RESULT}</span>"
         assert f"{overview_sections.STAR}</span> {words}" in _legend(served)
     # The results page says it in full before its table; the overview says no more than
@@ -4526,8 +4532,16 @@ def test_every_table_stands_one_shared_space_from_the_text_around_it() -> None:
     # The rating ladders, which are no table, stand the same space clear of the text.
     ladders = css[css.index("@media screen {\n  .site-ladders-frame {") :]
     assert "margin-block: var(--site-table-space);" in ladders[: ladders.index("}")]
+    # A table of results' legend stands close under its table and takes the table's
+    # space below itself (the owner, 2026-10-04).
+    assert (
+        "  .site-table-wrap:has(+ .site-rung-legend) {\n    margin-block-end: 0.75rem;\n  }"
+    ) in screen
+    assert (
+        "  .site-rung-legend {\n    margin-block-end: var(--site-table-space);\n  }"
+    ) in screen
     # The action row under a table or grid takes it below itself too (think-0o9u).
-    assert css.count("var(--site-table-space)") == 4
+    assert css.count("var(--site-table-space)") == 5
     assert "@media print {\n  .site-nav,\n  .site-table-tools {\n    display: none;" in css
     design = (render_overview.TEMPLATES / "paper-design.md").read_text(encoding="utf-8")
     assert "| Above and below a table | `--site-table-space` | 2rem, 32px |" in design

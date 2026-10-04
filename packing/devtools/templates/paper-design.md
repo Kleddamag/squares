@@ -1693,7 +1693,7 @@ it.
   a case (`overview_data.starred_results`): the verified lower bound of a case rests on
   the result now, and that bound is recent, so a superseded result and an upper bound
   carry no star. The star is never the only signal: it is an image whose name and tooltip
-  say “New result” and the cases, the row’s own name ends “new result”, the legend over
+  say “New result” and the cases, the row’s own name ends “new result”, the legend under
   each table of results shows it as “new result” (`rung_legend`), and the Results page’s
   prose says what it marks (`star_legend`). A superseded result’s row reads quieter, its
   text in the support colour, in every site table, by one rule on
@@ -2000,8 +2000,8 @@ pointer and by keyboard, and measures its label at 1280, 768 and 390 pixels.
   this project, and when a bound by others counts as verified, which is the rule its
   verified columns apply.
   Each table of results keeps its own key to the star, since a star without one reads as
-  decoration: the legend over it shows the star as “new result” (`rung_legend`), and the
-  Results page’s prose says what it marks (`star_legend`). The atlas note links the
+  decoration: the legend under it shows the star as “new result” (`rung_legend`), and
+  the Results page’s prose says what it marks (`star_legend`). The atlas note links the
   recent table, and its legend, in place of a third.
   The Frontier page opens with the survey’s account, its audit, its recent counts and
   the seventeen-square history, and ends its prose with the key to its columns, beside
@@ -2035,11 +2035,12 @@ pointer and by keyboard, and measures its label at 1280, 768 and 390 pixels.
   starts. The homepage no longer explains the ratings (the owner, 2026-10-03,
   `think-42dx`): the paragraph that said what each rating means and the key of every
   rung under the table are gone, and the Results page carries both.
-  The legend right above the table (`rung_legend`, on the results page’s table too) is
-  three short lines in the support colour at the note size: every significance mark, S1
-  to S5; every verification and confirmation chip, V0 to C5, each titled with the
-  rubric’s meaning; and the star, “new result”, with a link, “What each rung means”, to
-  the Verification Ladders on the Results page.
+  The legend under the table (`rung_legend`, on the results page’s table too) is three
+  short lines in the support colour at the note size, in a box framed as a card is (it
+  stood between the bar and the table until 2026-10-04): every significance mark, S1 to
+  S5; every verification and confirmation chip, V0 to C5, each titled with the rubric’s
+  meaning; and the star, “new result”, with a link, “What each rung means”, to the
+  Verification Ladders on the Results page.
   The table is one table, not cards or a list: every result, by the date the table
   shows, newest first, one row each (`recent_table`). It is the results page’s table,
   with its columns, its rows, its sorting and its card-per-row form on a phone
@@ -2373,8 +2374,8 @@ The front is, in order:
 
   Human oversight: **Joshua Levy**
   Agents: **GPT-6 Astra** and **GPT-6 Sol**
-  Draft v0.1.3 (version history)
-  Original proof September 29, 2026 · Last revised October 3, 2026
+  Draft v0.1.4 (version history)
+  Original proof September 29, 2026 · Last revised October 4, 2026
   ```
 
   A paper that explains someone else’s work credits its source first, by the author’s
@@ -2386,7 +2387,7 @@ The front is, in order:
   every page carries names it, and so does the GITHUB chip.
 
 - **The version line.** The paper’s own version, plain: `EXPLAINER_VERSION` for the
-  explainer and `OPTIMALITY_REVIEW_EDITION` (“Draft v0.1.3”) for the review, both from
+  explainer and `OPTIMALITY_REVIEW_EDITION` (“Draft v0.1.4”) for the review, both from
   `sqpack.release`. Never the site’s edition and never the data hash: the site’s version
   goes on no paper (the owner, 2026-10-01: papers are individually versioned, and a
   paper’s version history reflects versions of the paper, not of the website).

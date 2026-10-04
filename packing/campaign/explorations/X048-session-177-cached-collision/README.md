@@ -71,6 +71,12 @@ Expected PASS_FRESH_MIXED_CORPUS,371fresh rational checks. This replay never run
 cached backends or benchmarks. The original measurement command omits --verify;
 this project has already used its one target and does not authorize a repeat.
 
+The one measured source is Git `a60cfc611` at the probe path above. Hosted validation
+then identified a naming collision: `Guard.evaluate` in Python controls was treated
+as browser script code. The identifier-only repair renames it to `check_pair` and
+its own call sites;25controls, embedded-script check, Ruff and types pass. The profile
+was not rerun and no timing claim is made for the renamed head.
+
 Source/evidence certification pending under think-5sya; exact-head CI is observed
 separately. One native privacy aggregate is a lower bound; later publication/CI
 after its cutoff is excluded with operator-declared branch attribution. A new

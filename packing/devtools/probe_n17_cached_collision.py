@@ -59,7 +59,7 @@ class Guard:
     max_calls: int = MAX_CALLS
     calls: int = 0
 
-    def evaluate(self, predicate: Predicate, left: Atom, right: Atom) -> bool:
+    def check_pair(self, predicate: Predicate, left: Atom, right: Atom) -> bool:
         remaining(self.budget)
         require(left.owner < right.owner, "noncanonical directed pair")
         if self.calls >= self.max_calls:
@@ -339,7 +339,7 @@ def profile(
         answers: list[bool] = []
         result["answers"][name] = answers
         for q in queries:
-            answer = guard.evaluate(predicate, inv.atoms[q.left], inv.atoms[q.right])
+            answer = guard.check_pair(predicate, inv.atoms[q.left], inv.atoms[q.right])
             require(answer is q.expected, f"{name} differs from expected class")
             answers.append(answer)
         result["timings"][name + "_seconds"] = time.monotonic() - started
@@ -413,7 +413,7 @@ def replay(
         "profile answer arrays differ",
     )
     actual = [
-        guard.evaluate(incompatible, inv.atoms[q.left], inv.atoms[q.right]) for q in queries
+        guard.check_pair(incompatible, inv.atoms[q.left], inv.atoms[q.right]) for q in queries
     ]
     require(actual == expected, "fresh rational replay disagrees")
     return {

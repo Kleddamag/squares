@@ -98,9 +98,9 @@ def test_guard_checks_both_sides_and_does_not_return_failed_query(
 ) -> None:
     atoms = [atom(0, Q(0)), atom(1, Q(1, 10))]
     guard = probe.Guard(budget(), max_calls=1)
-    assert guard.evaluate(lambda *_: True, *atoms)
+    assert guard.check_pair(lambda *_: True, *atoms)
     with pytest.raises(IncompleteError, match="call ceiling"):
-        guard.evaluate(lambda *_: True, *atoms)
+        guard.check_pair(lambda *_: True, *atoms)
     assert guard.calls == 1
     guard = probe.Guard(budget())
 
@@ -109,11 +109,11 @@ def test_guard_checks_both_sides_and_does_not_return_failed_query(
         return True
 
     with pytest.raises(IncompleteError, match="wall ceiling"):
-        guard.evaluate(overrun, *atoms)
+        guard.check_pair(overrun, *atoms)
     assert guard.calls == 1
     monkeypatch.setattr(probe, "peak_memory_bytes", lambda: probe.MAX_PEAK_BYTES + 1)
     with pytest.raises(IncompleteError, match="peak"):
-        probe.Guard(budget()).evaluate(lambda *_: True, *atoms)
+        probe.Guard(budget()).check_pair(lambda *_: True, *atoms)
 
 
 def test_post_memory_guard_and_exact_bool(monkeypatch: pytest.MonkeyPatch) -> None:
@@ -124,12 +124,12 @@ def test_post_memory_guard_and_exact_bool(monkeypatch: pytest.MonkeyPatch) -> No
         return True
 
     with pytest.raises(IncompleteError, match="peak"):
-        probe.Guard(budget()).evaluate(inflate, *atoms)
+        probe.Guard(budget()).check_pair(inflate, *atoms)
     monkeypatch.setattr(probe, "peak_memory_bytes", lambda: 128 * 1024**2)
     with pytest.raises(RefusalError, match="exact bool"):
-        probe.Guard(budget()).evaluate(lambda *_: 1, *atoms)  # type: ignore[arg-type]
+        probe.Guard(budget()).check_pair(lambda *_: 1, *atoms)  # type: ignore[arg-type]
     with pytest.raises(RefusalError, match="noncanonical"):
-        probe.Guard(budget()).evaluate(lambda *_: True, *reversed(atoms))
+        probe.Guard(budget()).check_pair(lambda *_: True, *reversed(atoms))
 
 
 def bound_fixture(monkeypatch: pytest.MonkeyPatch) -> tuple[Any, ...]:

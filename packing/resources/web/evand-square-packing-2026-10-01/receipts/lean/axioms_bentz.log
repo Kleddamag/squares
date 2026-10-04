@@ -1,0 +1,22 @@
+# command: lake env lean AxiomsBentz.lean
+# cwd: s12/lean staged by stage_evand_bentz_lean
+# python3: not used by this command
+# host: 4 cores; load 1.04 1.02 1.00; started 2026-10-02T20:45:41Z
+SquarePacking.Bentz.bentz_of_valid7 : SquarePacking.Bentz.Valid7 →
+  ∀ (k : ℕ), 6 ≤ k → SquarePacking.minSide (k ^ 2 - 3) = ↑k
+def SquarePacking.Bentz.Valid7 : Prop :=
+∀ (c : ℝ × ℝ) (θ : ℝ),
+  SquarePacking.sq c θ 1 ⊆ SquarePacking.box 7 → 1 ≤ SquarePacking.Bentz.box7Cover.measure (SquarePacking.sq c θ 1)
+def SquarePacking.minSide : ℕ → ℝ :=
+fun n => sInf {s | SquarePacking.Packs n s}
+def SquarePacking.Packs : ℕ → ℝ → Prop :=
+fun n s =>
+  ∃ ctr ang,
+    (∀ (i : Fin n), SquarePacking.sq (ctr i) (ang i) 1 ⊆ SquarePacking.box s) ∧
+      ∀ (i j : Fin n), i ≠ j → Disjoint (SquarePacking.sqInt (ctr i) (ang i) 1) (SquarePacking.sqInt (ctr j) (ang j) 1)
+'SquarePacking.Bentz.bentz_of_valid7' depends on axioms: [propext, Classical.choice, Quot.sound]
+'SquarePacking.Bentz.valid_of_valid7' depends on axioms: [propext, Classical.choice, Quot.sound]
+'SquarePacking.Bentz.box7Cover_measure' depends on axioms: [propext, Classical.choice, Quot.sound]
+'SquarePacking.Bentz.famCover_total' depends on axioms: [propext, Classical.choice, Quot.sound]
+'SquarePacking.Bentz.mass_shift' depends on axioms: [propext, Classical.choice, Quot.sound]
+# finished 2026-10-02T20:46:11Z; exit 0; wall 30.199 s; CPU 21.9 s (user 12.492 + sys 9.424); load 1.02 1.02 1.00

@@ -1,0 +1,634 @@
+{
+  "clean_room": "Dirty side: names the authors' functions. Not an implementer input.",
+  "created": "2026-10-02T18:03:06Z",
+  "families": {
+    "linear": {
+      "callgrind": {
+        "cpu_seconds_under_valgrind": 120.199,
+        "direction": 35,
+        "exclusive": [
+          {
+            "function": "nextafter",
+            "instructions": 11317518560,
+            "percent": 44.79
+          },
+          {
+            "function": "segment_lower(Segment const&, I, I, I, I, I)",
+            "instructions": 6373482504,
+            "percent": 25.22
+          },
+          {
+            "function": "operator*(I, I)",
+            "instructions": 2158304498,
+            "percent": 8.54
+          },
+          {
+            "function": "singular_lower(I, I, I, I, I, std::vector<Atom, std::allocator<Atom> > const&, std::vector<Segment, std::allocator<Segment> > const&)",
+            "instructions": 1344871163,
+            "percent": 5.32
+          },
+          {
+            "function": "operator*(I, I)",
+            "instructions": 844553934,
+            "percent": 3.34
+          },
+          {
+            "function": "segment_lower(Segment const&, I, I, I, I, I)",
+            "instructions": 646602857,
+            "percent": 2.56
+          },
+          {
+            "function": "0x000000000010a320",
+            "instructions": 502592950,
+            "percent": 1.99
+          },
+          {
+            "function": "operator*(I, I)",
+            "instructions": 422276967,
+            "percent": 1.67
+          },
+          {
+            "function": "singular_lower(I, I, I, I, I, std::vector<Atom, std::allocator<Atom> > const&, std::vector<Segment, std::allocator<Segment> > const&)",
+            "instructions": 366316778,
+            "percent": 1.45
+          },
+          {
+            "function": "operator/(I, I)",
+            "instructions": 336469122,
+            "percent": 1.33
+          },
+          {
+            "function": "operator*(I, I)",
+            "instructions": 281517978,
+            "percent": 1.11
+          },
+          {
+            "function": "singular_lower(I, I, I, I, I, std::vector<Atom, std::allocator<Atom> > const&, std::vector<Segment, std::allocator<Segment> > const&)",
+            "instructions": 215692725,
+            "percent": 0.85
+          },
+          {
+            "function": "segment_lower(Segment const&, I, I, I, I, I)",
+            "instructions": 179400000,
+            "percent": 0.71
+          },
+          {
+            "function": "operator/(I, I)",
+            "instructions": 107058357,
+            "percent": 0.42
+          }
+        ],
+        "instructions": 25268251167,
+        "instructions_per_box": 5053650,
+        "instructions_per_box_piece": 511.92,
+        "node_limit": 5000,
+        "nodes": 5000,
+        "note": "Instruction counts of the reviewed build (plus -g); they include input parsing and setup, which a bounded run amortises over fewer boxes."
+      },
+      "gprof": {
+        "build": {
+          "argv": [
+            "g++",
+            "-O2",
+            "-std=c++17",
+            "-fno-fast-math",
+            "-ffp-contract=off",
+            "-g",
+            "-pg",
+            "-static",
+            "unified_linear_verify.cpp",
+            "-o",
+            "checker.pg"
+          ],
+          "binary_sha256": "439af1426cf4fa668e8ca39bc20e9c537e65c3f0bc9e7984abf3e5acb0ac9d02",
+          "seconds": 8.109
+        },
+        "cpu_seconds": 12.607,
+        "direction": 35,
+        "flat_profile": [
+          {
+            "calls": 197503872,
+            "function": "operator*(I, I)",
+            "percent_time": 46.45,
+            "self_seconds": 4.06
+          },
+          {
+            "calls": null,
+            "function": "nextafter",
+            "percent_time": 29.98,
+            "self_seconds": 2.62
+          },
+          {
+            "calls": 143520000,
+            "function": "segment_lower(Segment const&, I, I, I, I, I)",
+            "percent_time": 18.65,
+            "self_seconds": 1.63
+          },
+          {
+            "calls": 20000,
+            "function": "singular_lower(I, I, I, I, I, std::vector<Atom, std::allocator<Atom> > const&, std::vector<Segment, std::allocator<Segment> > const&)",
+            "percent_time": 4.23,
+            "self_seconds": 0.37
+          },
+          {
+            "calls": 63997931,
+            "function": "operator/(I, I)",
+            "percent_time": 0.69,
+            "self_seconds": 0.06
+          },
+          {
+            "calls": 88076,
+            "function": "double __gnu_cxx::__stoa<double, double, char>(double (*)(char const*, char**), char const*, char const*, unsigned long*)",
+            "percent_time": 0.0,
+            "self_seconds": 0.0
+          },
+          {
+            "calls": 44038,
+            "function": "readI(std::istream&)",
+            "percent_time": 0.0,
+            "self_seconds": 0.0
+          },
+          {
+            "calls": 20000,
+            "function": "bound(I, I, I, I, I, I, I, std::vector<R, std::allocator<R> > const&, std::vector<Atom, std::allocator<Atom> > const&, std::vector<Segment, std::allocator<Segment> > const&)",
+            "percent_time": 0.0,
+            "self_seconds": 0.0
+          },
+          {
+            "calls": 104,
+            "function": "slice(I, I, I, I, I, I, I, I, I)",
+            "percent_time": 0.0,
+            "self_seconds": 0.0
+          },
+          {
+            "calls": 26,
+            "function": "area_lower(R const&, I, I, I, I, I)",
+            "percent_time": 0.0,
+            "self_seconds": 0.0
+          },
+          {
+            "calls": 14,
+            "function": "void std::vector<Segment, std::allocator<Segment> >::_M_realloc_insert<Segment const&>(__gnu_cxx::__normal_iterator<Segment*, std::vector<Segment, std::allocator<Segment> > >, Segment const&)",
+            "percent_time": 0.0,
+            "self_seconds": 0.0
+          },
+          {
+            "calls": 13,
+            "function": "void std::vector<Atom, std::allocator<Atom> >::_M_realloc_insert<Atom const&>(__gnu_cxx::__normal_iterator<Atom*, std::vector<Atom, std::allocator<Atom> > >, Atom const&)",
+            "percent_time": 0.0,
+            "self_seconds": 0.0
+          },
+          {
+            "calls": 6,
+            "function": "void std::vector<R, std::allocator<R> >::_M_realloc_insert<R const&>(__gnu_cxx::__normal_iterator<R*, std::vector<R, std::allocator<R> > >, R const&)",
+            "percent_time": 0.0,
+            "self_seconds": 0.0
+          },
+          {
+            "calls": 5,
+            "function": "void std::vector<std::array<double, 4ul>, std::allocator<std::array<double, 4ul> > >::_M_realloc_insert<std::array<double, 4ul> const&>(__gnu_cxx::__normal_iterator<std::array<double, 4ul>*, std::vector<std::array<double, 4ul>, std::allocator<std::array<double, 4ul> > > >, std::array<double, 4ul> const&)",
+            "percent_time": 0.0,
+            "self_seconds": 0.0
+          },
+          {
+            "calls": 2,
+            "function": "std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::basic_string<std::allocator<char> >(char const*, std::allocator<char> const&)",
+            "percent_time": 0.0,
+            "self_seconds": 0.0
+          }
+        ],
+        "node_limit": 20000,
+        "nodes": 20000,
+        "note": "Sampled at 100 Hz on a static -pg build; mcount adds overhead to every non-inlined call, so shares are indicative and seconds exceed the reviewed build's."
+      }
+    },
+    "mixed": {
+      "callgrind": {
+        "cpu_seconds_under_valgrind": 218.887,
+        "direction": 3,
+        "exclusive": [
+          {
+            "function": "nextafter",
+            "instructions": 20138819295,
+            "percent": 57.71
+          },
+          {
+            "function": "operator*(I, I)",
+            "instructions": 3431789060,
+            "percent": 9.83
+          },
+          {
+            "function": "area_lower(R const&, I, I, I, I, I)",
+            "instructions": 1998985914,
+            "percent": 5.73
+          },
+          {
+            "function": "operator*(I, I)",
+            "instructions": 1342873980,
+            "percent": 3.85
+          },
+          {
+            "function": "0x000000000010a320",
+            "instructions": 919515308,
+            "percent": 2.64
+          },
+          {
+            "function": "bound(I, I, I, I, I, I, I, std::vector<R, std::allocator<R> > const&, std::vector<Atom, std::allocator<Atom> > const&)",
+            "instructions": 740330380,
+            "percent": 2.12
+          },
+          {
+            "function": "operator*(I, I)",
+            "instructions": 671436990,
+            "percent": 1.92
+          },
+          {
+            "function": "_int_free",
+            "instructions": 488016650,
+            "percent": 1.4
+          },
+          {
+            "function": "slice(I, I, I, I, I, I, I, I, I)",
+            "instructions": 455946930,
+            "percent": 1.31
+          },
+          {
+            "function": "operator*(I, I)",
+            "instructions": 447624660,
+            "percent": 1.28
+          },
+          {
+            "function": "malloc",
+            "instructions": 406680763,
+            "percent": 1.17
+          },
+          {
+            "function": "operator/(I, I)",
+            "instructions": 406261900,
+            "percent": 1.16
+          },
+          {
+            "function": "cross(P, P, P)",
+            "instructions": 400678768,
+            "percent": 1.15
+          },
+          {
+            "function": "area_lower(R const&, I, I, I, I, I)",
+            "instructions": 323845828,
+            "percent": 0.93
+          },
+          {
+            "function": "cross(P, P, P)",
+            "instructions": 304864280,
+            "percent": 0.87
+          }
+        ],
+        "instructions": 34894649460,
+        "instructions_per_box": 1163155,
+        "instructions_per_box_piece": 458.66,
+        "node_limit": 30000,
+        "nodes": 30000,
+        "note": "Instruction counts of the reviewed build (plus -g); they include input parsing and setup, which a bounded run amortises over fewer boxes."
+      },
+      "gprof": {
+        "build": {
+          "argv": [
+            "g++",
+            "-O2",
+            "-std=c++17",
+            "-fno-fast-math",
+            "-ffp-contract=off",
+            "-g",
+            "-pg",
+            "-static",
+            "mixed_rotated_verify.cpp",
+            "-o",
+            "checker.pg"
+          ],
+          "binary_sha256": "0477bca3f290153d4aca89eebf12daa917f2d23df10348d029f1c26a50a6d301",
+          "seconds": 5.508
+        },
+        "cpu_seconds": 4.946,
+        "direction": 3,
+        "flat_profile": [
+          {
+            "calls": 74604110,
+            "function": "operator*(I, I)",
+            "percent_time": 47.52,
+            "self_seconds": 1.92
+          },
+          {
+            "calls": null,
+            "function": "nextafter",
+            "percent_time": 37.62,
+            "self_seconds": 1.52
+          },
+          {
+            "calls": 1514995,
+            "function": "area_lower(R const&, I, I, I, I, I)",
+            "percent_time": 8.66,
+            "self_seconds": 0.35
+          },
+          {
+            "calls": 30000,
+            "function": "bound(I, I, I, I, I, I, I, std::vector<R, std::allocator<R> > const&, std::vector<Atom, std::allocator<Atom> > const&)",
+            "percent_time": 1.73,
+            "self_seconds": 0.07
+          },
+          {
+            "calls": 5066077,
+            "function": "slice(I, I, I, I, I, I, I, I, I)",
+            "percent_time": 1.24,
+            "self_seconds": 0.05
+          },
+          {
+            "calls": 8710408,
+            "function": "cross(P, P, P)",
+            "percent_time": 0.99,
+            "self_seconds": 0.04
+          },
+          {
+            "calls": null,
+            "function": "_int_free",
+            "percent_time": 0.5,
+            "self_seconds": 0.02
+          },
+          {
+            "calls": null,
+            "function": "malloc",
+            "percent_time": 0.5,
+            "self_seconds": 0.02
+          },
+          {
+            "calls": 5607308,
+            "function": "void std::vector<P, std::allocator<P> >::_M_realloc_insert<P const&>(__gnu_cxx::__normal_iterator<P*, std::vector<P, std::allocator<P> > >, P const&)",
+            "percent_time": 0.25,
+            "self_seconds": 0.01
+          },
+          {
+            "calls": 3404648,
+            "function": "void std::vector<P, std::allocator<P> >::_M_realloc_insert<P>(__gnu_cxx::__normal_iterator<P*, std::vector<P, std::allocator<P> > >, P&&)",
+            "percent_time": 0.25,
+            "self_seconds": 0.01
+          },
+          {
+            "calls": null,
+            "function": "operator delete(void*, unsigned long)",
+            "percent_time": 0.25,
+            "self_seconds": 0.01
+          },
+          {
+            "calls": null,
+            "function": "operator new(unsigned long)",
+            "percent_time": 0.25,
+            "self_seconds": 0.01
+          },
+          {
+            "calls": null,
+            "function": "__memcpy_avx512_unaligned_erms",
+            "percent_time": 0.25,
+            "self_seconds": 0.01
+          },
+          {
+            "calls": 18466450,
+            "function": "operator/(I, I)",
+            "percent_time": 0.0,
+            "self_seconds": 0.0
+          },
+          {
+            "calls": 866127,
+            "function": "void std::__introsort_loop<__gnu_cxx::__normal_iterator<P*, std::vector<P, std::allocator<P> > >, long, __gnu_cxx::__ops::_Iter_comp_iter<area_lower(R const&, I, I, I, I, I)::{lambda(P, P)#1}> >(__gnu_cxx::__normal_iterator<P*, std::vector<P, std::allocator<P> > >, __gnu_cxx::__normal_iterator<P*, std::vector<P, std::allocator<P> > >, long, __gnu_cxx::__ops::_Iter_comp_iter<area_lower(R const&, I, I, I, I, I)::{lambda(P, P)#1}>)",
+            "percent_time": 0.0,
+            "self_seconds": 0.0
+          }
+        ],
+        "node_limit": 30000,
+        "nodes": 30000,
+        "note": "Sampled at 100 Hz on a static -pg build; mcount adds overhead to every non-inlined call, so shares are indicative and seconds exceed the reviewed build's."
+      }
+    },
+    "rectangle": {
+      "callgrind": {
+        "cpu_seconds_under_valgrind": 602.304,
+        "direction": 30,
+        "exclusive": [
+          {
+            "function": "nextafter",
+            "instructions": 62224372114,
+            "percent": 61.92
+          },
+          {
+            "function": "operator*(I, I)",
+            "instructions": 9485085460,
+            "percent": 9.44
+          },
+          {
+            "function": "area_lower(R const&, I, I, I, I, I)",
+            "instructions": 4224099319,
+            "percent": 4.2
+          },
+          {
+            "function": "operator*(I, I)",
+            "instructions": 3711555180,
+            "percent": 3.69
+          },
+          {
+            "function": "0x000000000010a2e0",
+            "instructions": 2812588776,
+            "percent": 2.8
+          },
+          {
+            "function": "slice(I, I, I, I, I, I, I, I, I)",
+            "instructions": 2410613640,
+            "percent": 2.4
+          },
+          {
+            "function": "bound(double, double, double, double, I, I, I, I, std::vector<R, std::allocator<R> > const&)",
+            "instructions": 1893403942,
+            "percent": 1.88
+          },
+          {
+            "function": "operator*(I, I)",
+            "instructions": 1855777590,
+            "percent": 1.85
+          },
+          {
+            "function": "slice(I, I, I, I, I, I, I, I, I)",
+            "instructions": 1607075760,
+            "percent": 1.6
+          },
+          {
+            "function": "operator*(I, I)",
+            "instructions": 1237185060,
+            "percent": 1.23
+          },
+          {
+            "function": "operator/(I, I)",
+            "instructions": 1166285494,
+            "percent": 1.16
+          },
+          {
+            "function": "_int_free",
+            "instructions": 945573931,
+            "percent": 0.94
+          },
+          {
+            "function": "area_lower(R const&, I, I, I, I, I)",
+            "instructions": 883742549,
+            "percent": 0.88
+          },
+          {
+            "function": "malloc",
+            "instructions": 787978486,
+            "percent": 0.78
+          },
+          {
+            "function": "slice(I, I, I, I, I, I, I, I, I)",
+            "instructions": 737098570,
+            "percent": 0.73
+          }
+        ],
+        "instructions": 100497329054,
+        "instructions_per_box": 2880653,
+        "instructions_per_box_piece": 1572.41,
+        "node_limit": null,
+        "nodes": 34887,
+        "note": "Instruction counts of the reviewed build (plus -g); they include input parsing and setup, which a bounded run amortises over fewer boxes."
+      },
+      "gprof": {
+        "build": {
+          "argv": [
+            "g++",
+            "-O2",
+            "-std=c++17",
+            "-fno-fast-math",
+            "-ffp-contract=off",
+            "-g",
+            "-pg",
+            "-static",
+            "verify.cpp",
+            "-o",
+            "checker.pg"
+          ],
+          "binary_sha256": "bff8f99de14e625ae81a8bc483c85f8b9f7a3958645a3ff58b0c61c38fff50b9",
+          "seconds": 3.669
+        },
+        "cpu_seconds": 13.446,
+        "direction": 30,
+        "flat_profile": [
+          {
+            "calls": 206197510,
+            "function": "operator*(I, I)",
+            "percent_time": 43.57,
+            "self_seconds": 4.78
+          },
+          {
+            "calls": null,
+            "function": "nextafter",
+            "percent_time": 38.65,
+            "self_seconds": 4.24
+          },
+          {
+            "calls": 26784596,
+            "function": "slice(I, I, I, I, I, I, I, I, I)",
+            "percent_time": 5.56,
+            "self_seconds": 0.61
+          },
+          {
+            "calls": 6887404,
+            "function": "area_lower(R const&, I, I, I, I, I)",
+            "percent_time": 5.56,
+            "self_seconds": 0.61
+          },
+          {
+            "calls": 34887,
+            "function": "bound(double, double, double, double, I, I, I, I, std::vector<R, std::allocator<R> > const&)",
+            "percent_time": 3.37,
+            "self_seconds": 0.37
+          },
+          {
+            "calls": 53012977,
+            "function": "operator/(I, I)",
+            "percent_time": 1.46,
+            "self_seconds": 0.16
+          },
+          {
+            "calls": 7628186,
+            "function": "void std::vector<P, std::allocator<P> >::_M_realloc_insert<P const&>(__gnu_cxx::__normal_iterator<P*, std::vector<P, std::allocator<P> > >, P const&)",
+            "percent_time": 0.46,
+            "self_seconds": 0.05
+          },
+          {
+            "calls": 9861194,
+            "function": "void std::vector<P, std::allocator<P> >::_M_realloc_insert<P>(__gnu_cxx::__normal_iterator<P*, std::vector<P, std::allocator<P> > >, P&&)",
+            "percent_time": 0.27,
+            "self_seconds": 0.03
+          },
+          {
+            "calls": 709033,
+            "function": "void std::__introsort_loop<__gnu_cxx::__normal_iterator<P*, std::vector<P, std::allocator<P> > >, long, __gnu_cxx::__ops::_Iter_comp_iter<area_lower(R const&, I, I, I, I, I)::{lambda(P, P)#1}> >(__gnu_cxx::__normal_iterator<P*, std::vector<P, std::allocator<P> > >, __gnu_cxx::__normal_iterator<P*, std::vector<P, std::allocator<P> > >, long, __gnu_cxx::__ops::_Iter_comp_iter<area_lower(R const&, I, I, I, I, I)::{lambda(P, P)#1}>)",
+            "percent_time": 0.18,
+            "self_seconds": 0.02
+          },
+          {
+            "calls": null,
+            "function": "malloc",
+            "percent_time": 0.18,
+            "self_seconds": 0.02
+          },
+          {
+            "calls": 7201626,
+            "function": "cross(P, P, P)",
+            "percent_time": 0.09,
+            "self_seconds": 0.01
+          },
+          {
+            "calls": 709033,
+            "function": "frame_dummy",
+            "percent_time": 0.09,
+            "self_seconds": 0.01
+          },
+          {
+            "calls": 1,
+            "function": "main",
+            "percent_time": 0.09,
+            "self_seconds": 0.01
+          },
+          {
+            "calls": null,
+            "function": "operator delete(void*, unsigned long)",
+            "percent_time": 0.09,
+            "self_seconds": 0.01
+          },
+          {
+            "calls": null,
+            "function": "operator new(unsigned long)",
+            "percent_time": 0.09,
+            "self_seconds": 0.01
+          }
+        ],
+        "node_limit": null,
+        "nodes": 34887,
+        "note": "Sampled at 100 Hz on a static -pg build; mcount adds overhead to every non-inlined call, so shares are indicative and seconds exceed the reviewed build's."
+      }
+    }
+  },
+  "host": {
+    "cpu": "Intel(R) Xeon(R) Processor @ 2.10GHz",
+    "gprof": "GNU gprof (GNU Binutils for Ubuntu) 2.42",
+    "gxx": "g++ (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0",
+    "logical_cpus": 4,
+    "perf": null,
+    "platform": "Linux-6.18.44-fc-v51-x86_64-with-glibc2.39",
+    "python": "3.14.7",
+    "valgrind": "valgrind-3.22.0"
+  },
+  "kind": "author-measure-checker-profile/v1",
+  "method": "gprof on a static -pg build, and callgrind on the reviewed build",
+  "perf_on_host": false,
+  "refusals": [],
+  "status": "PROFILE_RETAINED",
+  "tool": "packing/benchmarks/profile_author_measure_checkers.py",
+  "tool_sha256": "bc11dc666dd20b2807aa3dd4f36784d33b2fdffe399c64d41a4ef24f4a8eff49",
+  "workers": 2
+}

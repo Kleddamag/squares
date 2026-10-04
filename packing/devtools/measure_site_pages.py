@@ -782,6 +782,10 @@ def ink(png: bytes, *, color: str, size: float, scale: float = GLYPH_SCALE) -> f
     return round(float(coverage.sum()) / (size * scale) ** 2, 4)
 
 
+#: A DOM text node's `nodeType`.
+TEXT_NODE = 3
+
+
 def _platform_faces(session: Any, root: int, mark: str) -> list[str]:
     """The platform faces Blink drew the marked element's own text with, by name; a face
     the page did not ship is named as the reader's own (`host`)."""
@@ -789,6 +793,35 @@ def _platform_faces(session: Any, root: int, mark: str) -> list[str]:
         "DOM.querySelector", {"nodeId": root, "selector": f'[{GLYPH_MARK}="{mark}"]'}
     )
     fonts = session.send("CSS.getPlatformFontsForNode", {"nodeId": node["nodeId"]})["fonts"]
+    return sorted({_platform_face(font) for font in fonts})
+
+
+def _own_text_faces(session: Any, root: int, mark: str) -> list[str]:
+    """The platform faces Blink drew the marked element's own text nodes with, by name.
+
+    Asked of the element, `CSS.getPlatformFontsForNode` also counts the glyphs of inline
+    children laid out in its line boxes: a result cell with words of its own and a star
+    after them reported the star's host face as the cell's (T-064's row, 2026-10-03),
+    though the star is a run of its own, measured under its own role. A text row stands
+    for the element's own text, so its faces are asked of each of its text nodes.
+    """
+    node = session.send(
+        "DOM.querySelector", {"nodeId": root, "selector": f'[{GLYPH_MARK}="{mark}"]'}
+    )
+    described = session.send("DOM.describeNode", {"nodeId": node["nodeId"], "depth": 1})
+    backend = [
+        child["backendNodeId"]
+        for child in described["node"].get("children", [])
+        if child["nodeType"] == TEXT_NODE and child.get("nodeValue", "").strip()
+    ]
+    if not backend:
+        return _platform_faces(session, root, mark)
+    pushed = session.send("DOM.pushNodesByBackendIdsToFrontend", {"backendNodeIds": backend})
+    fonts = [
+        font
+        for text in pushed["nodeIds"]
+        for font in session.send("CSS.getPlatformFontsForNode", {"nodeId": text})["fonts"]
+    ]
     return sorted({_platform_face(font) for font in fonts})
 
 
@@ -883,7 +916,7 @@ def measure_glyphs(
             session.send("CSS.enable")
             root = session.send("DOM.getDocument", {"depth": 0})["root"]["nodeId"]
             for row in found["text"]:
-                faces = _platform_faces(session, root, row["mark"])
+                faces = _own_text_faces(session, root, row["mark"])
                 row["drawn"], row["host_faces"] = ", ".join(faces), _host_faces(faces)
             stem = f"glyphs-{shot_stem(name)}-{width}-{scheme}"
             for index, row in enumerate(found["math"]):
@@ -1329,8 +1362,11 @@ def chip_rows(report: list[dict[str, Any]]) -> list[dict[str, Any]]:
 
 def column_rows(report: list[dict[str, Any]]) -> list[dict[str, Any]]:
     """A `columns` report as a table, one row a column: the table it belongs to and that
-    table's width, the column's width and the share of the table it takes, the most lines
-    a cell of it takes, how many of its words a line break splits, and the tallest row
+    table's width, the column's width and the share of the table it takes, the width of
+    the widest content a cell of it holds (`held`) and the row whose cell holds it
+    (`held_by`), how many of its cells show something past their own box (`overflows`),
+    the most lines a cell of it takes,
+    how many of its words a line break splits, and the tallest row
     whose height its cell sets, with that row's height and the lines the cell takes
     there; a dash where it sets no row's height. Then what its lines may not do, as
     counts: `split`, the values of a list of cases cut across lines; `wrapped`, the
@@ -1359,6 +1395,9 @@ def column_rows(report: list[dict[str, Any]]) -> list[dict[str, Any]]:
                     "column": column["column"],
                     "col_width": "-" if width is None else f"{width:g}",
                     "share": "-" if width is None else f"{100 * width / table:.0f}%",
+                    "held": f"{column['held']:g}" if "held" in column else "-",
+                    "held_by": column.get("held_by") or "-",
+                    "overflows": len(column.get("overflows", ())),
                     "max_lines": column["lines"],
                     "broken_words": len(column["broken"]),
                     "tallest_row": "-" if tallest is None else tallest["row"],

@@ -1,0 +1,39 @@
+# command: lake env lean AxiomsBentz4.lean
+# cwd: s12/lean of a scratch stage of evand/square-packing 2eb15455 (devtools.stage_evand_bentz4_lean), after lake build Sqpack.ValidSplit9
+# python3: not used by this command
+# host: 4 cores; load 7.44 6.60 5.77; started 2026-10-03T18:16:16Z
+SquarePacking.Bentz4.bentz4_of_validTilt9 : SquarePacking.Bentz4.ValidTilt9 →
+  ∀ (k : ℕ), 8 ≤ k → SquarePacking.minSide (k ^ 2 - 4) = ↑k
+def SquarePacking.Bentz4.ValidTilt9 : Prop :=
+SquarePacking.ValidSplit.ValidTilt 9 SquarePacking.Bentz4.box9Cover.measure
+def SquarePacking.ValidSplit.ValidTilt : ℝ → MeasureTheory.Measure (ℝ × ℝ) → Prop :=
+fun m μ =>
+  ∀ (c : ℝ × ℝ) (u : ℝ),
+    c.1 ∈ Set.Icc 0 (m / 2) →
+      c.2 ∈ Set.Icc 0 (m / 2) →
+        0 < u →
+          u ^ 2 + 2 * u ≤ 1 →
+            SquarePacking.sq c (2 * Real.arctan u) 1 ⊆ SquarePacking.box m →
+              1 ≤ μ (SquarePacking.sq c (2 * Real.arctan u) 1)
+def SquarePacking.Bentz4.Valid9 : Prop :=
+∀ (c : ℝ × ℝ) (θ : ℝ),
+  SquarePacking.sq c θ 1 ⊆ SquarePacking.box 9 → 1 ≤ SquarePacking.Bentz4.box9Cover.measure (SquarePacking.sq c θ 1)
+def SquarePacking.minSide : ℕ → ℝ :=
+fun n => sInf {s | SquarePacking.Packs n s}
+def SquarePacking.Packs : ℕ → ℝ → Prop :=
+fun n s =>
+  ∃ ctr ang,
+    (∀ (i : Fin n), SquarePacking.sq (ctr i) (ang i) 1 ⊆ SquarePacking.box s) ∧
+      ∀ (i j : Fin n), i ≠ j → Disjoint (SquarePacking.sqInt (ctr i) (ang i) 1) (SquarePacking.sqInt (ctr j) (ang j) 1)
+'SquarePacking.Bentz4.bentz4_of_validTilt9' depends on axioms: [propext, Classical.choice, Quot.sound]
+'SquarePacking.Bentz4.valid9_of_tilt' depends on axioms: [propext, Classical.choice, Quot.sound]
+'SquarePacking.Bentz4.valid9_of_tilt_axis' depends on axioms: [propext, Classical.choice, Quot.sound]
+'SquarePacking.Bentz4.validAxis9' depends on axioms: [propext, Classical.choice, Quot.sound]
+'SquarePacking.Bentz4.box9_grid' depends on axioms: [propext, Classical.choice, Quot.sound]
+'SquarePacking.Bentz4.d4_box9' depends on axioms: [propext, Classical.choice, Quot.sound]
+'SquarePacking.Bentz4.bentz4_of_valid9' depends on axioms: [propext, Classical.choice, Quot.sound]
+'SquarePacking.Bentz4.box9Cover_measure' depends on axioms: [propext, Classical.choice, Quot.sound]
+'SquarePacking.Bentz4.famCover_total4' depends on axioms: [propext, Classical.choice, Quot.sound]
+'SquarePacking.ValidSplit.valid_of_tilt_axis' depends on axioms: [propext, Classical.choice, Quot.sound]
+'SquarePacking.ValidSplit.validAxis_packed' depends on axioms: [propext, Classical.choice, Quot.sound]
+# finished 2026-10-03T18:16:26Z; exit 0; wall 10.216 s; CPU 7.5 s (user 3.855 + sys 3.676); load 7.96 6.76 5.83

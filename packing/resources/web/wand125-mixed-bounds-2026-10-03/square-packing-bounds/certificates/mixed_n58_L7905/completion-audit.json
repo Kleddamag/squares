@@ -1,0 +1,16 @@
+{
+  "status": "AUDITED_AND_PACKAGED",
+  "n": 58,
+  "L": "1581/200",
+  "total_mass": "5799999/100000",
+  "compared_with": "789/100",
+  "compared_note": "record n58 7.89",
+  "improvement_lower": "3/200",
+  "candidate_digest": "96727aa1681161ab21e0a9677739fd32badc0ddd8933f8c7daf1d6192ba14754",
+  "all_angles": 201,
+  "certificate_sha256": "dcbbed87261efe3a42bcb2464222fbb71a2eec88e8234e10ef1d617ececff139",
+  "bundle": "n58-L7.905-proof-bundle",
+  "archive_sha256": "d11b4d3fd9e37d535a6d8dced02a036748f94684ee6cc676ddbff847b73d5abe",
+  "route": "n58 fresh structured Green init n58-7905s at L7.905, rectangles full-net repair, 201-angle verification and replay.",
+  "scope": "All centres at all 201 net angles plus strict core containment for every orientation; independent axis replay, same-algorithm outward-rounded oblique replay."
+}

@@ -194,7 +194,7 @@ refuses a `C` above `V` from `C2` up.
 | Entry | Why |
 | --- | --- |
 | T-058 | wand125’s $B \cdot \mathit{UB}(n)$ ceiling. The read of 29 September found a missing premise (`E-wand125-tools-ceiling-report`, `defect-found`), and nothing here has replayed past it. `think-xgjo` is open. |
-| T-059 | wand125’s equality of 12,028 $n = 11$ row minima. The read of 29 September found journal-admission defects (`E-wand125-tools-n11-row-report`, `defect-found`); three sample rows were replayed and the complete replay is queued (`think-11z6`). |
+| T-059 | wand125’s equality of 12,028 $n = 11$ row minima. The read of 29 September found journal-admission defects (`E-wand125-tools-n11-row-report`, `defect-found`); three sample rows were replayed and the complete replay is queued (`think-11z6`). Update, 2 October: the complete replay passed, 12,028 of 12,028 rows equal (`E-wand125-tools-n11-row-replay`), and T-059 is at `V3`/`C3`, confirmed and no longer incomplete. |
 
 Five results cite a read that found a defect and are not incomplete: T-004, T-005, T-006
 and T-008 cite the defect in Bentz’s Lemma 10, which T-005 corrects, and T-060 cites the
@@ -239,7 +239,11 @@ Three things now sit under a result’s rungs, each answering one question.
   It draws its kind and its status, it is not hidden by “Hide superseded”, and
   `render_recent_results.superseded` is the one rule.
   T-004 and T-005 derive *current best*, which was never drawn, so nothing changes for
-  them.
+  them. **Update, 2026-10-03.** Still true of a standing, which marks only a bound; T-003
+  stays unmarked. A result of another kind is now marked where its entry declares a later
+  result that implies it (`superseded_by`): *superseded* for the whole, *superseded in
+  part* for some, as T-060 is of T-036’s bound (think-xm4t). Every mark also names what
+  supersedes it, a bound’s derived from its cases (*superseded by T-060*).
 - **Second certificate** is the kind *simplification*, which T-054 and T-055 carry.
   The mark is gone from the tables.
 - **Reported** is gone as a word.
@@ -319,7 +323,7 @@ blocks nothing. The owner may want some of them.
 
 | Entry | Would be | For what | Since | Evidence, and why it was left out |
 | --- | --- | --- | --- | --- |
-| T-059 | in analysis | The replay of all 12,028 rows | 2026-09-29 | `think-190a` is in progress and `think-11z6`, the replay itself, is open. Inferred: queued, not shown to have begun. |
+| T-059 | in analysis | The replay of all 12,028 rows | 2026-09-29 | `think-190a` is in progress and `think-11z6`, the replay itself, is open. Inferred: queued, not shown to have begun. Update, 2 October: the replay ran and passed, so the row is moot. |
 | T-058 | in analysis | Discharging the missing premises, or replacing the ceiling | 2026-09-29 | `think-xgjo` is open. Inferred: queued. |
 | T-052, T-053 | in analysis | The `zm_mixed.py` re-sweeps | 2026-09-29 | Issue 238 says they “were started here and have not finished”. Inferred from the issue; no receipt or bead says they are running. |
 | T-060 | waiting on owner | The oversight record that rung 4 needs | 2026-09-30 | Its `notes`. Left out: all 54 results at `C3` wait on the same record, which is what “review record pending” in the rung’s name already says. |
@@ -397,7 +401,7 @@ The table is `python -m devtools.result_status --list` with notes added.
 | T-056 | upper bound | current best | confirmed | `C3` |  |  | At $n = 206, 259, 305$ the printed side needs coordinates at higher precision from the source. |
 | T-057 | upper bound | current best | confirmed | `C3` |  |  | The source’s own interval run cannot be replayed until it publishes its boxes; the result no longer depends on it. |
 | T-058 | method limit | none | incomplete | `C1`, and a read that found a defect |  |  | The read found a missing premise in the source’s ceiling; `think-xgjo` is open. |
-| T-059 | audit | none | incomplete | `C1`, and a read that found a defect |  |  | The read found journal-admission defects; the replay of all 12,028 rows is queued (`think-11z6`). |
+| T-059 | audit | none | incomplete | `C1`, and a read that found a defect |  |  | The read found journal-admission defects; the replay of all 12,028 rows is queued (`think-11z6`). Update, 2 October: it passed, and T-059 is `V3`/`C3`, confirmed. |
 | T-060 | optimality | current best | confirmed | `C3` |  |  | Rung 4 waits on the owner’s oversight record and a second adversarial review. |
 | T-061 | lower bound | superseded | confirmed | `C3` | superseded |  | A revised Zenodo release was asked for on issue 247; nothing here depends on it. |
 | T-062 | optimality | current best, reported | reviewed | `C1` |  |  |  |
@@ -524,6 +528,8 @@ significance, 34, with T-055, T-058, T-059 and T-063.
    and showing under “Hide superseded”.
    Recommended as built; the alternative is to mark any result whose evidence derives
    the standing, as before.
+   **Update, 2026-10-03.** Kept for the derived mark; the owner added a declared one for
+   other kinds (`superseded_by`, think-xm4t), which leaves T-003 unmarked.
 7. **Whether a recorded omission makes a result incomplete.** It would need the
    `omissions` list. Recommended: not until the register admits placeholder entries.
 8. **The homepage default.** An unassessed result shows on the homepage only if it is

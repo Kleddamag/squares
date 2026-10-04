@@ -17,7 +17,10 @@ number its claim does not, dates every result of this project by `established`
 and every result by others by `attribution.published`, never both, and requires
 each entry's `registered` date. It requires each entry's `kind`, one of `KINDS`,
 and cross-checks it against the relations the headline and the claim state and
-the claims of the cited evidence (`kind_problems`). It holds a `builds_on`, which
+the claims of the cited evidence (`kind_problems`). It holds a `superseded_by`, the
+later results a result of a kind that is no bound declares imply it in whole or in part,
+to registered results dated no earlier, on a case it shares, and refuses one on a bound,
+whose supersession is derived (`superseded_by_problems`). It holds a `builds_on`, which
 puts `after …` in the credit of a result of this project, to the sources the
 result's own evidence cites. It refuses a rung label in a `claim`, `composition`
 or `next_rung`, or in a case record, that asserts a rung no result the clause is
@@ -44,6 +47,7 @@ from typing import Any
 from devtools.build_bound_citations import RECENT_SINCE
 from devtools.result_status import STATUSES, activity_problems, status
 from devtools.rung_prose import REGISTER_FIELDS, Standing, label_problems
+from devtools.verifier_registry import RANK, confirming_runs, strongest
 from sqpack.assurance import EXTERNAL_ORIGINS, PROOF_METHODS
 from sqpack.yamlio import safe_load
 
@@ -289,6 +293,70 @@ def third_party_replayed(entries: list[dict]) -> bool:
         entry.get("origin") == "independently-external" and _machine_proof_shaped(entry)
         for entry in entries
     )
+
+
+#: The claims that carry each half of an exact value.
+_LOWER_CLAIMS = frozenset({"lower-bound", "exact-value"})
+_UPPER_CLAIMS = frozenset({"upper-bound", "exact-value"})
+
+
+def confirmation_code(
+    record: Mapping[str, Any], entries: Sequence[Mapping[str, Any]]
+) -> str | None:
+    """The attribute shown beside the rung: how the code of the result's confirming runs
+    stands to the code its producer used, as a `relationship_to_generator` value, or
+    nothing where no confirming run is recorded. Never a rung (epistemics.md,
+    Confirmation).
+
+    The runs are the confirming-origin entries with a passing replay, the machine-shaped
+    ones where there are any. Each part of the claim takes the relation furthest from the
+    producer's code among the runs that confirm it, and the result takes the part closest
+    to it: an optimality result is as independent as the less independent of its halves,
+    so the grid replay of an upper half never makes a lower half re-run with the source's
+    own checker read as re-implemented. A bound reads its own runs, and any other kind
+    reads all of them.
+    """
+    runs = confirming_runs(entries)
+    machine = [entry for entry in runs if _machine_proof_shaped(dict(entry))]
+    pool = machine or runs
+    if not pool:
+        return None
+    kind = record.get("kind")
+    if kind in {"lower-bound", "upper-bound"}:
+        own = [entry for entry in pool if entry.get("claim") in {kind, "exact-value"}]
+        return strongest(own or pool)
+    lower = strongest(entry for entry in pool if entry.get("claim") in _LOWER_CLAIMS)
+    upper = strongest(entry for entry in pool if entry.get("claim") in _UPPER_CLAIMS)
+    if lower and upper:
+        return min((lower, upper), key=RANK.__getitem__)
+    return strongest(pool)
+
+
+#: The word whose kind the prose rule asks for, as a verb or a participle; a novelty label
+#: or a status in code is not the word.
+_CONFIRMED = re.compile(r"(?<![\w`])confirmed(?![\w`-])", re.IGNORECASE)
+#: The phrases that say which kind of confirmation a sentence means (epistemics.md,
+#: Confirmation): the producer's own code re-run, a re-implementation sharing its named
+#: components, or an independent re-implementation.
+CONFIRMATION_KINDS = re.compile(
+    r"producer[\u2019']s (?:own )?(?:verification )?code"
+    r"|independent(?:ly)?[ -]re-?implement|independent implementation"
+    r"|shar(?:es|ing|ed) (?:the producer[\u2019']s )?(?:named )?components",
+    re.IGNORECASE,
+)
+_SENTENCE_END = re.compile(r"(?<=[.;:])\s+(?=[A-Z`(\[])")
+
+
+def confirmation_prose_problems(record: Mapping[str, Any]) -> list[str]:
+    """Sentences of a result's `claim`, `composition` or `next_rung` that say "confirmed"
+    without saying which kind of confirmation: the producer's code re-run, shared
+    components, or an independent re-implementation. `notes` is history and exempt."""
+    return [
+        f"{record['id']}: {name} says confirmed without saying how: {sentence[:90]}"
+        for name in ("claim", "composition", "next_rung")
+        for sentence in _SENTENCE_END.split(" ".join(str(record.get(name) or "").split()))
+        if _CONFIRMED.search(sentence) and not CONFIRMATION_KINDS.search(sentence)
+    ]
 
 
 def review_problems(record: dict, document_map: dict) -> list[str]:
@@ -644,6 +712,124 @@ def kind_problems(
     return [f"{rid}: {problem}" for problem in problems]
 
 
+def result_date(record: Mapping[str, Any]) -> str:
+    """The date a result is of: its source's `attribution.published` for a result by
+    others, which may be a year alone, else the day this project `established` it."""
+    attribution = record.get("attribution") or {}
+    return str(attribution.get("published") or record.get("established") or "")
+
+
+def _earlier(date_of: str, than: str) -> bool:
+    """Whether one result's date is strictly before another's, at the precision both
+    give: `1979` is before `2026-09-24`, and `2026` is not before `2026-09-24`."""
+    shared = min(len(date_of), len(than))
+    return date_of[:shared] < than[:shared]
+
+
+def superseded_by_problems(
+    record: dict,
+    dated: Mapping[str, str],
+    scopes: Mapping[str, set[int]],
+    holding: frozenset[str] = frozenset(),
+) -> list[str]:
+    """What is wrong with a result's `superseded_by`, the later results it declares
+    imply it in whole or in part.
+
+    Only a result whose kind is no bound declares it: a bound's supersession is derived
+    from the case records (`render_recent_results.superseding`), and a declaration
+    beside it would be a second account that could disagree. Each named result is in
+    the register, is not this one, appears once, is dated no earlier than this one
+    (`result_date`: when its source published it or this project established it, not
+    when it was registered), and shares a case with it. A result a case bound still
+    rests on is not superseded as a whole, whatever implies it, since the tables would
+    hide the row a case's bound cites; it may be superseded in part. `dated` and
+    `scopes` are every result's date and cases, and `holding` the results a case bound
+    rests on now (`holding_results`).
+    """
+    rid = record["id"]
+    declared = record.get("superseded_by") or []
+    if not declared:
+        return []
+    if record.get("kind") in BOUND_KINDS:
+        return [
+            (
+                f"{rid}: declares superseded_by, but its kind is "
+                f"{kind_label(record['kind'])}, whose supersession is derived from the "
+                "case records and never declared"
+            )
+        ]
+    problems: list[str] = []
+    seen: set[str] = set()
+    for item in declared:
+        other = str(item["result"])
+        if other == rid:
+            problems.append(f"{rid}: superseded_by names the result itself")
+            continue
+        if other in seen:
+            problems.append(f"{rid}: superseded_by names {other} twice")
+            continue
+        seen.add(other)
+        if other not in dated:
+            problems.append(f"{rid}: superseded_by names {other}, which is not registered")
+            continue
+        if _earlier(dated[other], dated[rid]):
+            problems.append(
+                f"{rid}: superseded_by names {other}, dated {dated[other]}, before this "
+                f"result's {dated[rid]}"
+            )
+        if not scopes.get(rid, set()) & scopes.get(other, set()):
+            problems.append(f"{rid}: superseded_by names {other}, which shares no case with it")
+        if item.get("extent") == "whole" and rid in holding:
+            problems.append(
+                f"{rid}: superseded_by names {other} as superseding all of it, but a case "
+                "bound still rests on it"
+            )
+    return problems
+
+
+def superseded_by_cycles(results: Iterable[Mapping[str, Any]]) -> list[str]:
+    """The declared supersessions that lead back to where they start. A result is
+    superseded only by one dated no earlier than itself (`superseded_by_problems`), so
+    two results of one day could each declare the other, and both rows would be hidden
+    for a supersession neither has. Each cycle is named once, from its first result in
+    the register, and a result that names itself is `superseded_by_problems`' to say."""
+    later = {
+        str(record["id"]): [str(item["result"]) for item in record.get("superseded_by") or []]
+        for record in results
+    }
+    problems: list[str] = []
+    found: set[frozenset[str]] = set()
+    for start in later:
+        paths: list[tuple[str, ...]] = [(start,)]
+        while paths:
+            path = paths.pop()
+            for other in later.get(path[-1], []):
+                if other == start and len(path) > 1 and frozenset(path) not in found:
+                    found.add(frozenset(path))
+                    problems.append(
+                        f"{start}: superseded_by leads back to it, "
+                        f"{' to '.join((*path, start))}"
+                    )
+                elif other not in path:
+                    paths.append((*path, other))
+    return problems
+
+
+def holding_results() -> frozenset[str]:
+    """Every result a case bound rests on now, lower or upper, verified or reported:
+    `render_recent_results.held` over every case record. Raises `ValueError` where a
+    case's own lower-bound evidence is carried by no registered result, or by more than
+    one (`render_recent_results.project_result`)."""
+    from devtools.render_recent_results import held, load_records  # noqa: PLC0415
+
+    records = load_records()
+    holders: set[str] = set()
+    for n in records.cases:
+        case = held(n, records)
+        holders |= case.lower_holders | case.upper_holders
+    return frozenset(holders)
+
+
 def established_problems(record: dict, last_reviewed: str) -> list[str]:
     """What is wrong with the date a result carries, given whose result it is.
 
@@ -822,6 +1008,16 @@ def main() -> int:
     if actual_ids != expected_ids:
         problems.append(f"register ids are not contiguous T-001..: {actual_ids}")
     scopes = {record["id"]: scope_values(record["scope"]) for record in results}
+    dated = {record["id"]: result_date(record) for record in results}
+    try:
+        holding = holding_results()
+    except ValueError as error:
+        # A case bound that no registered result carries, or that several do, is named
+        # here and the checks go on, the whole-supersession check without holders, so
+        # every other problem in the register is still reported.
+        holding = frozenset()
+        problems.append(f"which results hold a case bound could not be read: {error}")
+    problems.extend(superseded_by_cycles(results))
 
     standings: dict[str, Standing] = {}
     for record in results:
@@ -851,8 +1047,10 @@ def main() -> int:
         problems.extend(registered_problems(record, str(register["last_reviewed"])))
         problems.extend(headline_problems(record))
         problems.extend(kind_problems(record, cited, scopes))
+        problems.extend(superseded_by_problems(record, dated, scopes, holding))
         problems.extend(established_problems(record, register["last_reviewed"]))
         problems.extend(activity_problems(record, str(register["last_reviewed"])))
+        problems.extend(confirmation_prose_problems(record))
 
         for kind, value in (record.get("produced_by") or {}).items():
             if value not in known_ids.get(kind, set()):
@@ -932,6 +1130,8 @@ def main() -> int:
         f"{len(results)} registered results: every declared rung passes its "
         "structural checks, every path, source and produced_by id resolves, every "
         "headline and date holds, every kind agrees with its claim and evidence, every "
+        "declared supersession names a result no earlier on a shared case, never "
+        "supersedes all of a result a case bound rests on and never leads back, every "
         "recent case lower bound is covered, every reader-tier mention exists; by status, "
         + ", ".join(f"{held.count(name)} {name}" for name in STATUSES)
     )

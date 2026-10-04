@@ -1,0 +1,24 @@
+{
+  "status": "FULL_REPLAY_MATCHES_SHIPPED",
+  "certificate": "n76",
+  "directory": "certificates/mixed_n76_L894",
+  "tarball_sha256": "d804bb88f0fa5fd5cfa11aeccb4977f708a015879917c189c6d6511f1bbbef63",
+  "candidate_digest": "f2c2530552547a56a454c55bee99a196221ae1f4357570c3a0d524eddd5d9cdf",
+  "angles_replayed": 201,
+  "missing": [],
+  "refused": [],
+  "ranges": [
+    {
+      "range": "range-000-200",
+      "runs": 1,
+      "rows": 201
+    }
+  ],
+  "hosts": [
+    "Intel(R) Xeon(R) Processor @ 2.10GHz"
+  ],
+  "axis_cpu_seconds": 10.778,
+  "cpu_hours": 3.638,
+  "cpu_hours_all_rows": 3.638,
+  "scope": "The complete replay, possibly split by angle across sessions: the source's driver preconditions and its per-angle replay functions with its unchanged C++ checker, every angle returning the record the source's certificate holds. The same outward-rounded algorithm as the source's run, not an independent one."
+}

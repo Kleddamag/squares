@@ -1,0 +1,44 @@
+{
+ "cover": "packing/resources/web/evand-square-packing-2026-10-01/source/s12/certificates/s60/s60_mixed_cover_8.txt",
+ "sha256": "2d0e456ea86cceeadc92d9f8fa7d468ba570a16d00d7343ebfbfb0b3b3b12a41",
+ "side": "8",
+ "coordinate_denominator": 1000,
+ "mass_denominator": 100000000,
+ "points": 23744,
+ "segments": 5216,
+ "polygons": 0,
+ "lines_carrying_segments": {
+  "x": [
+   "1",
+   "2",
+   "3",
+   "4",
+   "5",
+   "6",
+   "7"
+  ],
+  "y": [
+   "1",
+   "2",
+   "3",
+   "4",
+   "5",
+   "6",
+   "7"
+  ]
+ },
+ "segment_lengths": {
+  "1/50": 5216
+ },
+ "point_mass": "230976333/12500000",
+ "segment_mass": "129314277/3125000",
+ "total": "748233441/12500000",
+ "total_decimal": "59.858675280",
+ "total_equals_stated": true,
+ "total_below_n": true,
+ "counts_as_stated": true,
+ "d4_invariant_entry_by_entry": true,
+ "d4_invariant_as_measure": true,
+ "points_on_segment_lines": 0,
+ "problems": []
+}

@@ -20,6 +20,7 @@ from devtools.check_certificate_citations import (
     cited_certificates,
     declared_sizes,
     main,
+    method_limit_evidence,
     orphaned_evidence,
     referenced_evidence,
 )
@@ -137,6 +138,29 @@ def test_the_orphan_check_bites() -> None:
         "n = 29 must cite the interval certificate; without it the record is behind its "
         "own evidence, which is what D-398 named"
     )
+
+
+def test_only_a_method_limit_result_stands_in_for_a_case_citation() -> None:
+    """T-058's exact ceilings span n = 1..100 and no case block holds a method limit."""
+    cited = method_limit_evidence(evidence_by_id())
+
+    assert "E-wand125-tools-ceiling-certificates" in cited
+    # A bound-bearing result's certificate must still be cited by its case.
+    assert "E-n029-interval-certified-upper" not in cited
+
+
+def test_a_method_limit_result_cannot_stand_in_for_a_bound() -> None:
+    """Evidence that claims a bound needs a case citation even when a method limit cites it.
+
+    Relabel T-058's ceiling certificates as a lower bound and the exception must let go of
+    them, so the orphan sweep reports them, since no case record cites them.
+    """
+    evidence = dict(evidence_by_id())
+    identifier = "E-wand125-tools-ceiling-certificates"
+    evidence[identifier] = {**evidence[identifier], "claim": "lower-bound"}
+
+    assert identifier not in method_limit_evidence(evidence)
+    assert identifier in orphaned_evidence(evidence)
 
 
 def test_evidence_refs_are_found_wherever_the_schema_puts_them() -> None:

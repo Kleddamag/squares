@@ -1,0 +1,24 @@
+# command: sh verify.sh
+# cwd: root of a scratch copy of the retained valid7-independent-check tree (38dd31b3), with cover/L4_k02_box7.txt from the 2026-10-01 evand packet (same SHA-256 c0a67509) and runs/ holding records.sha256, full.jsonl.gz and full_b.jsonl.gz of release records-v1, downloaded 2026-10-02T07:42Z and checked against records.sha256 before the run, so verify.sh's curl and gunzip steps found the files present and fetched nothing
+# python3: PY=a uv venv of CPython 3.14.7 with python-flint 0.9.0 (wheel cp314-manylinux_2_17_x86_64) from PyPI, as requirements.txt pins
+# host: 4 cores; load 10.82 6.16 4.41; started 2026-10-02T07:44:47Z
+--- sha256 of the downloaded files
+full.jsonl.gz: OK
+full_b.jsonl.gz: OK
+--- decompress and check the uncompressed files
+full.jsonl: OK
+full_b.jsonl: OK
+--- check_record.py on both records (tiling of the whole domain, EMPTY leaves, Tier B leaves, rechecks)
+roots 156800 leaf kinds {'EMPTY': 79927, 'TIERB2': 2886043, 'CORE': 6674090}
+RECORD OK
+--- mutant covers (each must be refused)
+--- M1 (wall), Tier B on [2.9,3.1]x[0.5,0.6], u in (0,1/64) and (-1/64,0): expect ok False
+{'ok': False, 'why': 'value', 'pair': (0, 6), 'at': '1/128', 'pose': {'u': '15344995533/140737488355328', 'x': '29/10', 'y': '19811359625357472785949533143/39614081728069944612351883346', 'mass': '110423134468152982171715755752492384149828413842027994162535583051707605779265106961/110427941548649004992407920949756484958091986175712626772731713091010560000000000000', 'mass_float': 0.9999564686217219}} 0.1s
+{'ok': False, 'why': 'value', 'pair': (0, 6), 'at': '-1/128', 'pose': {'u': '-32684075813/140737488355328', 'x': '29/10', 'y': '19816239309795546138523339943/39614083393629792296635197106', 'mass': '22085588309729705153753396838927020030070918041218187018643760162127671359822270809/22085588309729739878446321501594014301263103927655675540515260217688064000000000000', 'mass_float': 0.9999999999999984}} 0.1s
+--- M2 (Lebesgue), driver on centres [3.5,3.6]^2, u in [0,1/8]: expect COUNTEREXAMPLE
+new roots 2 leaves {} uncertified 0 counterexamples 2 cpu 0.0s
+NOT VERIFIED
+--- M3 (corner), Tier B on [1.45,1.55]^2, u in (0,1/32): expect ok False
+{'ok': False, 'why': 'value', 'pair': (12, 30), 'at': '1/64', 'pose': {'u': '5861500727/70368744177664', 'x': '14856105438672064980517342673/9903520382997423744436050850', 'y': '10508657708035252778443718163652201259215052490102899689/7005693901101205872376284185170012134664702704736208850', 'mass': '17435791429492094408126161153526743526875760960438102042229444196512643771275948221123401068763695975352151/17436628501714652322102395315945694115716611488197466328404822231862592062314979614490337529036800000000000', 'mass_float': 0.9999519934589146}} 8.0s
+verify.sh: done (records OK; inspect the mutant results above: ok False / COUNTEREXAMPLE expected)
+# finished 2026-10-02T07:55:10Z; exit 0; wall 622.565 s; CPU 450.6 s (user 439.551 + sys 11.032); load 9.50 10.40 7.72

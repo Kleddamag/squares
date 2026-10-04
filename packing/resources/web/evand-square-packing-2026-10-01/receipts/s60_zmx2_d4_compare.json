@@ -1,0 +1,34 @@
+{
+ "shipped": "packing/resources/web/evand-square-packing-2026-10-01/source/s12/certificates/s60/zmx2_d4/roots.log",
+ "shipped_sha256": "8a599325e8db3670eff8a3645ae035eb9d125716f10811d651ecc62841c656c8",
+ "replay": "resources/web/evand-square-packing-2026-10-01/receipts/s60_zmx2_d4_roots.log",
+ "replay_sha256": "58f90b89e220fa5ef623ae75a7b48e3bdfe8d6ce5e5181a8f8f96afd0342edf3",
+ "replay_runs": [
+  {
+   "log": "resources/web/evand-square-packing-2026-10-01/receipts/s60_zmx2_d4_roots.log",
+   "line": 1,
+   "region": "x0-39,y0-39,bins0-3",
+   "roots": 6400
+  }
+ ],
+ "not_compared": {
+  "region": "the header field naming the run's limits: a replay joined from region runs, or a partial re-sweep, names its own; the zmx2 command audits their union",
+  "ms": "each ROOT line's wall-clock time"
+ },
+ "headers_equal": true,
+ "headers_identical": true,
+ "shipped_roots": 6400,
+ "replay_roots": 6400,
+ "roots_compared": 6400,
+ "roots_identical": 6400,
+ "roots_whose_census_differs": [],
+ "root_ids_differ": 0,
+ "replay_roots_recorded_more_than_once": 0,
+ "shipped_roots_recorded_more_than_once": 0,
+ "replay_roots_not_in_shipped": 0,
+ "shipped_roots_not_replayed": 0,
+ "shipped_uncert_lines": 0,
+ "replay_uncert_lines": 0,
+ "shipped_unparsed_lines": 0,
+ "replay_unparsed_lines": 0
+}

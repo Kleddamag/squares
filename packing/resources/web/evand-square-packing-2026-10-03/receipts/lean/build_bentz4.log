@@ -1,0 +1,73 @@
+# command: lake build Sqpack.ValidSplit9
+# cwd: s12/lean of a scratch stage of evand/square-packing 2eb15455 (devtools.stage_evand_bentz4_lean); LEAN_NUM_THREADS=1, 10 GB swapfile
+# python3: not used by this command
+# host: 4 cores; load 6.55 3.07 1.28; started 2026-10-03T17:43:44Z
+✔ [8706/8721] Built Sqpack.BentzData (5.1s)
+⚠ [8707/8721] Built Sqpack.Basic (19s)
+warning: Sqpack/Basic.lean:18:100: This line exceeds the 100 character limit, please shorten it!
+
+Note: This linter can be disabled with `set_option linter.style.longLine false`
+warning: Sqpack/Basic.lean:23:12: please avoid 'open (scoped) Classical' statements: this can hide theorem statements which would be better stated with explicit decidability statements.
+Instead, use `open Classical in` for definitions or instances, the `classical` tactic for proofs.
+For theorem statements, either add missing decidability assumptions or use `open Classical in`.
+
+Note: This linter can be disabled with `set_option linter.style.openClassical false`
+warning: Sqpack/Basic.lean:260:100: This line exceeds the 100 character limit, please shorten it!
+
+Note: This linter can be disabled with `set_option linter.style.longLine false`
+✔ [8708/8721] Built Sqpack.Bentz4Data (11s)
+✔ [8709/8721] Built Sqpack.ValidSplitData (3.7s)
+⚠ [8710/8721] Built Sqpack.Chord (18s)
+warning: Sqpack/Chord.lean:40:23: `Set.mem_setOf_eq` has been deprecated: Use `Set.mem_ofPred_eq` instead
+warning: Sqpack/Chord.lean:48:19: `Set.mem_setOf_eq` has been deprecated: Use `Set.mem_ofPred_eq` instead
+warning: Sqpack/Chord.lean:54:19: `Set.mem_setOf_eq` has been deprecated: Use `Set.mem_ofPred_eq` instead
+warning: Sqpack/Chord.lean:245:2: `push_neg` has been deprecated. Prefer using `push Not` instead.
+If you'd rather continue using `push_neg` in your project, you can implement it as follows:
+```
+open Lean.Parser.Tactic in
+macro "push_neg" cfg:optConfig loc:(location)? : tactic =>
+  `(tactic| push $cfg:optConfig Not $[$loc]?)
+```
+warning: Sqpack/Chord.lean:257:4: `push_neg` has been deprecated. Prefer using `push Not` instead.
+If you'd rather continue using `push_neg` in your project, you can implement it as follows:
+```
+open Lean.Parser.Tactic in
+macro "push_neg" cfg:optConfig loc:(location)? : tactic =>
+  `(tactic| push $cfg:optConfig Not $[$loc]?)
+```
+⚠ [8711/8721] Built Sqpack.ZeroMargin (40s)
+warning: Sqpack/ZeroMargin.lean:715:2: `push_neg` has been deprecated. Prefer using `push Not` instead.
+If you'd rather continue using `push_neg` in your project, you can implement it as follows:
+```
+open Lean.Parser.Tactic in
+macro "push_neg" cfg:optConfig loc:(location)? : tactic =>
+  `(tactic| push $cfg:optConfig Not $[$loc]?)
+```
+⚠ [8712/8721] Built Sqpack.D4 (7.2s)
+warning: Sqpack/D4.lean:29:12: please avoid 'open (scoped) Classical' statements: this can hide theorem statements which would be better stated with explicit decidability statements.
+Instead, use `open Classical in` for definitions or instances, the `classical` tactic for proofs.
+For theorem statements, either add missing decidability assumptions or use `open Classical in`.
+
+Note: This linter can be disabled with `set_option linter.style.openClassical false`
+✔ [8713/8721] Built Sqpack.Cover (6.2s)
+✔ [8714/8721] Built Sqpack.S32Data (48s)
+⚠ [8715/8721] Built Sqpack.S32 (86s)
+warning: Sqpack/S32.lean:27:12: please avoid 'open (scoped) Classical' statements: this can hide theorem statements which would be better stated with explicit decidability statements.
+Instead, use `open Classical in` for definitions or instances, the `classical` tactic for proofs.
+For theorem statements, either add missing decidability assumptions or use `open Classical in`.
+
+Note: This linter can be disabled with `set_option linter.style.openClassical false`
+✔ [8716/8721] Built Sqpack.MixedMeasure (18s)
+⚠ [8717/8721] Built Sqpack.Bentz (1487s)
+warning: Sqpack/Bentz.lean:8:100: This line exceeds the 100 character limit, please shorten it!
+
+Note: This linter can be disabled with `set_option linter.style.longLine false`
+warning: Sqpack/Bentz.lean:715:100: This line exceeds the 100 character limit, please shorten it!
+
+Note: This linter can be disabled with `set_option linter.style.longLine false`
+✔ [8718/8721] Built Sqpack.BentzFam (43s)
+✔ [8719/8721] Built Sqpack.Bentz4 (50s)
+✔ [8720/8721] Built Sqpack.ValidSplit (34s)
+✔ [8721/8721] Built Sqpack.ValidSplit9 (41s)
+Build completed successfully (8721 jobs).
+# finished 2026-10-03T18:15:57Z; exit 0; wall 1932.848 s; CPU 1239.5 s (user 653.088 + sys 586.389); load 7.27 6.52 5.73

@@ -5181,6 +5181,14 @@ results:
       record, and a second adversarial review by a reviewer distinct from Astra, restore
       V4/C4.
 
+      2026-10-04: Lean 4 formalizations of this proof are in progress outside this
+      project, in wand125/n11-optimality-lean and Queuingtheorydotcom/11SquaresFormalized.
+      wand125 reports, on jlevy/squares#317, that the 76 prior-family cases and the 173
+      returned cases are already kernel-checked with Lean's standard axioms only, and
+      that the prior-family proof does not use the 1,931-case baseline premise that the
+      accepted certificates of cases 2175 and 2176 carry. This project has not reviewed
+      or replayed either formalization, and no rung rests on them.
+
   - id: T-061
     kind: lower-bound
     registered: '2026-09-30'

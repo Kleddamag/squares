@@ -227,8 +227,8 @@ session:
     repeat is retained separately.
   - A and W7 canonical seed/node bytes, rounds and counts match; saved A checker passes without
     producer import.
-  - 'full gate: fast at 4e91f69392086c48161a61be1c040526fe8b1230: passed (hosted partitioned
-    fast gate; packing-required SUCCESS)'
+  - Historical hosted fast gate at 4e91f69392086c48161a61be1c040526fe8b1230 passed before
+    the layer was reapplied to parent1525d4e03. It is not a fresh gate on the rewritten history.
   - Hosted pages-required and merges-into-main passed at4e91f6939. Final metadata push is checked
     separately before handoff.
   - After parent drift,83 targeted tests passed in18.45s; focused snapshot-size control passed
@@ -242,13 +242,15 @@ session:
   resource_rollups:
   - packing/campaign/resource-usage/codex-session-169.yaml
   handoff_role: administrative_closeout
+  certification_pending: think-wn6x
 ---
 # Bounded producer memory investigation
 
 See [the frozen protocol](../explorations/X048-session-169-pilots/README.md) for the W3
 comparison, ownership map, acceptance, measurements, and limits.
-Native resource usage will be attached at finalization; this active record does not
-claim a passed full gate.
+Native resource usage is attached.
+Parent refresh preserves the measured result; think-wn6x tracks current-history hosted
+certification after the rewrite.
 
 <!-- This document follows common-doc-guidelines.md.
 See github.com/jlevy/practical-prose and review guidelines before editing.

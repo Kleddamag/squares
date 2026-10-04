@@ -214,9 +214,9 @@ def test_the_posters_and_the_film_have_a_section_of_their_own_under_the_atlas(
 ) -> None:
     """The Atlas of Square Packings keeps the grid and its expander, and holds no card.
     The two posters and the film follow under an ordinary section heading, PDFs and
-    Videos, directly after it since The Frontier Survey went on 2026-10-02, with its own
-    id and its entry in the page's contents, and their note, the star, the shorter film,
-    the release and the SVGs, goes with them."""
+    Videos, after Recent Results since the atlas moved above it on 2026-10-04, with its
+    own id and its entry in the page's contents, and their note, the star, the shorter
+    film, the release and the SVGs, goes with them."""
     heading = '<h2 id="pdfs-and-videos">PDFs and Videos</h2>'
     assert page.count(heading) == 1
     atlas = page.split('id="the-atlas-of-square-packings"', 1)[1].split("<h2", 1)[0]
@@ -237,7 +237,7 @@ def test_the_posters_and_the_film_have_a_section_of_their_own_under_the_atlas(
     # The star is keyed once on the page, in the legend over the recent table
     # (`rung_legend`); the note links that table and says it no second time.
     assert note.startswith(
-        'The best packings known, each star a <a href="#recent-results">new result</a>.'
+        'On the posters, each star marks a <a href="#recent-results">new result</a>.'
     )
     assert "22 August" not in note
     assert section.index('class="site-cards-frame') < section.index("site-atlas-note")
@@ -254,10 +254,11 @@ def test_the_atlas_section_is_named_for_its_packings_and_the_sections_run_in_ord
     """The homepage's atlas section is The Atlas of Square Packings, and it was The Atlas
     until 2026-10-01: an empty anchor in the heading keeps `#the-atlas` landing on it.
     The sections run in the owner's order: the problem, the project with its page cards,
-    the recent results, the atlas, then the posters and film, the other projects and the
-    documents. Verification Ladders stood between the recent results and the atlas until
-    2026-10-02, and is the results page's since; The Frontier Survey stood after the
-    atlas until the same day, and its card is a page card since."""
+    the atlas, the recent results, then the posters and film, the other projects and the
+    documents. The atlas stood after the recent results until 2026-10-04. Verification
+    Ladders stood between the recent results and the atlas until 2026-10-02, and is the
+    results page's since; The Frontier Survey stood after the atlas until the same day,
+    and its card is a page card since."""
     heading = (
         '<h2 id="the-atlas-of-square-packings">The Atlas of Square Packings'
         '<a id="the-atlas"></a></h2>'
@@ -272,8 +273,8 @@ def test_the_atlas_section_is_named_for_its_packings_and_the_sections_run_in_ord
     assert re.findall(r'<h2 id="([^"]+)"', page) == [
         "the-problem",
         "the-squares-project",
-        "recent-results",
         "the-atlas-of-square-packings",
+        "recent-results",
         "pdfs-and-videos",
         "other-square-packing-projects",
         "squares-project-documentation",

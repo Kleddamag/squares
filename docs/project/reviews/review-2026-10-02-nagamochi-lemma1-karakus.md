@@ -476,6 +476,18 @@ with four named unverified items, and the defect was elsewhere.
 The register’s rule that a read is `C1` and never more is what kept that judgment from
 being overstated.
 
+## Update, 4 October 2026
+
+Review A on [jlevy/squares#305](https://github.com/jlevy/squares/pull/305) found three
+things in this document to correct, corrected above:
+
+- The tool’s ordering check held by construction, never consulting Theorem 2; it ran to
+  $N = 400$, and its test ran the same check to $N = 1000$. The tool now compares the
+  values as exact surds at every nonsquare $N \le 1000$, and fails when Theorem 2’s
+  value is wrong.
+- Karakuş 2026 is an unrefereed arXiv preprint, not a refereed-venue one.
+- wand125’s issue, the first report of the defect to this project, is now in Sources.
+
 <!-- This document follows common-doc-guidelines.md.
 See github.com/jlevy/practical-prose and review guidelines before editing.
 -->

@@ -9,7 +9,7 @@
   "tarball": {
     "status": "TARBALL_MATCHES_PIN",
     "path": "certificates/mixed_n51_L747/n51-L7.47-proof-bundle.tar.gz",
-    "revision": "3554616889186f10bff4f14a3e7e194546fc9fca",
+    "revision": "8aa6a10b3b8f165d39c85b68982fed1de086516c",
     "sha256": "dafc391aec096f27b474c9db03cfea816e24562fc3be2b13d5f1304f4f4273cb",
     "bytes": 19602681,
     "origin": "supplied",

@@ -14,8 +14,8 @@ in Tokoharu's rectangle format:
 Later revisions add more ``certificates/mixed_n*`` directories of the same kind, with the
 same code byte for byte: n = 37, 65, 66, 90 and 92 at ``1a25a5ed``, n = 84 and 85 at
 ``52af997``, n = 76 at ``7975030``, n = 83, 85, 87, 91, 92 and 96 at ``b00fc70``,
-22 more at ``2aff207``, n = 51 to 96, five of them at counts already named, and 14 more
-at ``3554616``, n = 42 to 95, seven of them at counts already named.
+22 more at ``2aff207``, n = 51 to 96, five of them at counts already named, and 16 more
+at ``8aa6a10``, n = 42 to 95, nine of them at counts already named.
 `MIXED` names each with its packet and the source's statement; a certificate at a count
 an earlier one already names is ``n85-L946``, its count and side. Since ``150939e`` the
 source's directories carry no ``completion-audit.json``, the source's own audit that
@@ -1824,7 +1824,7 @@ I_REVISION = "b00fc70f1904e9b1b567afee056d347f911209e8"
 I_PACKET = WEB / "wand125-mixed-bounds-afternoon-2026-10-02"
 J_REVISION = "2aff2076c492d62340e986c84f60a0a29eb668df"
 J_PACKET = WEB / "wand125-mixed-bounds-2026-10-03"
-K_REVISION = "3554616889186f10bff4f14a3e7e194546fc9fca"
+K_REVISION = "8aa6a10b3b8f165d39c85b68982fed1de086516c"
 K_PACKET = WEB / "wand125-mixed-bounds-2026-10-04"
 
 #: The pinned revisions whose certificate directories carry no ``completion-audit.json``:
@@ -1840,8 +1840,8 @@ WITHOUT_SOURCE_AUDIT = frozenset({K_REVISION})
 #: jlevy/squares#282 (T-069), the two of its comment of 2 October, the n = 76 of its
 #: later comment the same day (pinned at ``7975030``, its own packet), the six the
 #: source added that afternoon (UTC), pinned together at ``b00fc70``, the 22 it added
-#: on 3 October, pinned together at ``2aff207``, and the 14 it added from 3 October
-#: 19:33 UTC to 4 October 06:09 UTC, pinned together at ``3554616``. Each row is the
+#: on 3 October, pinned together at ``2aff207``, and the 16 it added from 3 October
+#: 19:33 UTC to 4 October 07:17 UTC, pinned together at ``8aa6a10``. Each row is the
 #: packet, the pinned revision, n, the side as the directory names it, the side, the
 #: rectangle count and the candidate digest, as the source states them.
 _MIXED_ROWS: tuple[tuple[Path, str, int, str, Fraction, int, str], ...] = (
@@ -2236,6 +2236,15 @@ _MIXED_ROWS: tuple[tuple[Path, str, int, str, Fraction, int, str], ...] = (
     (
         K_PACKET,
         K_REVISION,
+        69,
+        "8.62",
+        Fraction(431, 50),
+        547,
+        "bf02d53b084e32bd585c15aab3e4c8348867ef7f4804e247ce8cb740cf34ad9e",
+    ),
+    (
+        K_PACKET,
+        K_REVISION,
         72,
         "8.76",
         Fraction(219, 25),
@@ -2259,6 +2268,15 @@ _MIXED_ROWS: tuple[tuple[Path, str, int, str, Fraction, int, str], ...] = (
         Fraction(3763, 400),
         569,
         "d2b4a5da8e1424f7588bcffd581da1bb298aa62f3b2c40e6ec95cec0bdf09db2",
+    ),
+    (
+        K_PACKET,
+        K_REVISION,
+        86,
+        "9.503",
+        Fraction(9503, 1000),
+        533,
+        "e0341c92ef882933dcb47a42f3cca61eaaca3ccd7478cb55bd0a2dcae8006e25",
     ),
     (
         K_PACKET,

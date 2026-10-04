@@ -9,7 +9,7 @@
   "tarball": {
     "status": "TARBALL_MATCHES_PIN",
     "path": "certificates/mixed_n44_L69725/n44-L6.9725-proof-bundle.tar.gz",
-    "revision": "3554616889186f10bff4f14a3e7e194546fc9fca",
+    "revision": "8aa6a10b3b8f165d39c85b68982fed1de086516c",
     "sha256": "016e64f3b921144c1ae12068db173b2c40e8f9b069aa01b49924e77fb681a5af",
     "bytes": 16301347,
     "origin": "supplied",

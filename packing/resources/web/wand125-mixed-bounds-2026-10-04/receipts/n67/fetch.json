@@ -9,7 +9,7 @@
   "tarball": {
     "status": "TARBALL_MATCHES_PIN",
     "path": "certificates/mixed_n67_L8475/n67-L8.475-proof-bundle.tar.gz",
-    "revision": "3554616889186f10bff4f14a3e7e194546fc9fca",
+    "revision": "8aa6a10b3b8f165d39c85b68982fed1de086516c",
     "sha256": "c8f49ba971abba068fa51a61ef8c2e421ba812c4640660474d42bb3f930654a1",
     "bytes": 19409082,
     "origin": "supplied",

@@ -9,7 +9,7 @@
   "tarball": {
     "status": "TARBALL_MATCHES_PIN",
     "path": "certificates/mixed_n95_L9965/n95-L9.965-proof-bundle.tar.gz",
-    "revision": "3554616889186f10bff4f14a3e7e194546fc9fca",
+    "revision": "8aa6a10b3b8f165d39c85b68982fed1de086516c",
     "sha256": "1397341b2303d6cafb701ef4449e8baa07c87d8ec944c5d9473891ea0e680698",
     "bytes": 18404631,
     "origin": "supplied",

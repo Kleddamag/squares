@@ -1,12 +1,12 @@
 """Controls for the mixed rectangle-measure certificates of wand125/square-packing-bounds.
 
-`devtools.audit_wand125_point_and_mixed` audits and replays 51 of them: n = 50
+`devtools.audit_wand125_point_and_mixed` audits and replays 53 of them: n = 50
 (T-048), the five of jlevy/squares#282 (T-069), the two of its comment of 2 October, the
 n = 76 of its later comment that day, the six of that afternoon pinned at ``b00fc70``,
 two of which supersede certificates at n = 85 and 92 and are named ``n85-L946`` and
 ``n92-L975``, the 22 of 3 October pinned at ``2aff207``, five of them at counts already
-named, and the 14 posted from 3 October 19:33 UTC to 4 October 06:09 UTC pinned at
-``3554616``, seven of them at counts already named. The last 14 carry no source audit,
+named, and the 16 posted from 3 October 19:33 UTC to 4 October 07:17 UTC pinned at
+``8aa6a10``, nine of them at counts already named. The last 16 carry no source audit,
 so each is bound to its tarball by the digest at the pin, and an earlier certificate is
 refused without its audit. Three families of check stand between a certificate and a
 recorded replay, and each is held here to its positive case and to two or more mutated
@@ -317,11 +317,13 @@ def test_the_k_packet_matches_its_acquisition_contract() -> None:
 
 def test_the_4_october_certificates_take_their_sides_where_a_count_is_named() -> None:
     later = {name: audit.MIXED[name] for name in K_NAMES}
-    assert len(later) == 14
+    assert len(later) == 16
     assert {name for name in later if "-L" in name} == {
         "n51-L747",
+        "n69-L862",
         "n75-L894",
         "n84-L94075",
+        "n86-L9503",
         "n88-L96125",
         "n93-L988",
         "n94-L994",
@@ -491,7 +493,7 @@ OC_ANSWER = {
 
 
 def test_the_oc_answer_removes_only_the_source_audits_and_their_readme_lines() -> None:
-    """Between 2aff207 (b00fc70 for mixed_n96_L996) and 3554616 each of the 23 directories
+    """Between 2aff207 (b00fc70 for mixed_n96_L996) and 8aa6a10 each of the 23 directories
     loses its completion-audit.json, and its README the two lines naming it; every other
     file, the candidate, certificate, manifest and tarball included, keeps its digest."""
     later = audit.read_subtree_manifest(K_PACKET / "acquisition/upstream-subtree.sha256")
@@ -786,12 +788,9 @@ def test_a_plan_splits_every_angle_into_contiguous_ranges(parts: int) -> None:
     assert max(shares) <= 1.1 / parts + 0.01
 
 
-@pytest.mark.parametrize(
-    ("packet", "runners"),
-    [(J_PACKET, 1), (J_PACKET, 4), (J_PACKET, 8), (K_PACKET, 1), (K_PACKET, 4), (K_PACKET, 6)],
-    ids=["j-1", "j-4", "j-8", "k-1", "k-4", "k-6"],
-)
-def test_a_shard_runs_every_angle_of_every_certificate_once(packet: Path, runners: int) -> None:
+@pytest.mark.parametrize("packet", [J_PACKET, K_PACKET], ids=["j", "k"])
+@pytest.mark.parametrize("runners", [1, 4, 8])
+def test_a_shard_runs_every_angle_of_every_certificate_once(runners: int, packet: Path) -> None:
     shard = audit.mixed_shard(packet, runners)
     assert len(shard["plan"]) == runners
     covered: dict[str, list[int]] = {}

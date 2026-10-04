@@ -651,7 +651,8 @@ def test_cli_ratio_on_the_widened_box_passes_end_to_end_as_exp248_run_002(
     assert "core_stress_matches_commit" not in receipt["inputs"]
     assert receipt["slider_box"] == retained["slider_box"] == _box_record(WIDENED_BOX)
     worst, kept = receipt["c8_c9"]["worst"], retained["c8_c9"]["worst"]
-    assert (worst["direction"], worst["worst_ratio"]) == (kept["direction"], kept["worst_ratio"])
+    assert worst["direction"] == kept["direction"]
+    assert worst["worst_ratio"] == kept["worst_ratio"]
     assert receipt["c8_c9"]["total_cells"] == retained["c8_c9"]["total_cells"] == 93
 
 

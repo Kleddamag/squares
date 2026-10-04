@@ -445,7 +445,10 @@ session:
   - packing/campaign/hypotheses/H-268-n17-local-theorem-slider-coverage.md
   - packing/campaign/agendas/agenda-042-overnight-n11-settlement-and-low-n-angles.md
   checks:
-  - 'full gate: fast at e51fce98983dc29beef931b52fd774ed58c976b8: passed (follow-up in Session 168 on PR 307: hosted Packing validation run 36979940992 and Certificate page run 36979940948; this head carries the session''s work unchanged)'
+  - 'On PR 307 a fast gate passed at e51fce98983dc29beef931b52fd774ed58c976b8 (hosted Packing validation run
+    36979940992 and Certificate page run 36979940948; that head carried the session''s work unchanged).
+    The successor branch carries the same work without PR 307''s certificate dumps, so that commit is not
+    in its history (it resolves at refs/pull/307/head); re-certification there is owed under think-g1xy.'
   - Every verdict rests on an independent review in code sharing nothing with the producer and on a clean committed-tree run whose outputs match the lane's run apart from timings.
   - The records tier passed at every integration commit.
   - packing-validate --push on the committed head ba95da0f, in a worktree, failed 8 of 3,562 tests and passed the rest; in the main checkout six of the eight pass (the worktree's symlinked node_modules and lane load), and the remaining two, the process-group reaping tests, fail identically on unchanged origin/main 8aaa411d in this container, as Session 166 recorded.
@@ -454,6 +457,7 @@ session:
   stop_reason: >-
     The owner's three-hour window closed with every dispatched lane reported and
     integrated. Hosted certification of the branch is pending under think-iuz2.
+  certification_pending: think-g1xy
   next_action: >-
     BC-418 (think-tmz6): close H-266's single-state item and H-268's slide bound, then
     re-record H-261 and H-266; build the H-267 selector and adapt the n11 kernel; pilot
@@ -461,7 +465,8 @@ session:
     left a unique-state cover and the H-268 slide bounds built but unreviewed; H-268
     must be re-run on the unique design, and B_W's faces a >= 0, b >= 0 and z <= 1/16 still
     need a capture-side argument. Hosted
-    certification of this branch is owned by think-iuz2.
+    certification of this branch is owned by think-iuz2; its re-certification on PR 307's
+    successor branch, by think-g1xy.
 ---
 # Session 167: n17 Parallel Lanes After the Route Review
 

@@ -17,8 +17,36 @@ softschema:
   status: enforced
 repository: jlevy/squares
 owner: jlevy
-last_reviewed: '2026-10-03'
+last_reviewed: '2026-10-04'
 issues:
+  - number: 317
+    title: Streamline, explain, and formalize n=11 optimality proof
+    author: jlevy
+    opened: '2026-10-03'
+    state: open
+    kind: correction
+    triage: pending
+    summary: >-
+      The owner's umbrella for T-060: the paper, the two adversarial reviews, the delta on
+      the imported proof and the formalization suggestions. wand125's comment of 4 October
+      reports three corrections to the paper v0.1.3 (formalization in progress elsewhere,
+      13 completed root updates rather than 14, Figure 8's caption against the text) and
+      a dependency remark on cases 2175 and 2176.
+    read_through: '2026-10-04T00:43:50Z'
+    results: []
+    asks:
+      - what: >-
+          wand125's three corrections to the paper v0.1.3 and the dependency remark on
+          cases 2175 and 2176
+        state: queued
+        note: https://github.com/jlevy/squares/issues/317#issuecomment-5975093980
+    beads: [think-1gbu, think-nnrx, think-if2i, think-wbpu]
+    answer_bead: think-1gbu
+    replies: []
+    close_when: >-
+      The owner's call: the umbrella's open beads are closed or moved, and wand125's
+      corrections are applied to the paper or answered.
+
   - number: 316
     title: >-
       s(k² − 4) = k for every k ≥ 5: registration request (external certificate + Lean
@@ -34,7 +62,7 @@ issues:
       tilted premise ValidTilt9 qx2_zm.py certifies over 16,200 D4 roots and whose reduction
       bentz4_of_validTilt9 is kernel-checked in Lean; by monotonicity also s(k^2 - 3) = k for
       k >= 5.
-    read_through: '2026-10-03T17:29:23Z'
+    read_through: '2026-10-04T02:29:31Z'
     results:
       - key: k2m4
         claim: s(k^2 - 4) = k for every integer k >= 5
@@ -52,8 +80,8 @@ issues:
           verifier sqverify_fast does not yet cover continuous-angle closed covers; its
           Milestone C (docs/project/specs/active/plan-2026-10-03-measure-verifier-milestone-c.md)
           is the route.
-    beads: [think-8hk1]
-    answer_bead: think-ws87
+    beads: [think-4uir]
+    answer_bead: think-4uir
     replies:
       - url: https://github.com/jlevy/squares/issues/316#issuecomment-5971664755
         date: '2026-10-03'
@@ -62,13 +90,27 @@ issues:
         reported:
           - result: k2m4
           - result: k2m3-by-monotonicity
+      - url: https://github.com/jlevy/squares/issues/316#issuecomment-5975790364
+        date: '2026-10-04'
+        by: jlevy
+        kind: follow-up
+        reported:
+          - result: k2m4
+            id: T-081
+            verification: V0
+            confirmation: C1
+            status: reviewed
+          - result: k2m3-by-monotonicity
+            id: T-064
+            verification: V3
+            confirmation: C3
+            status: confirmed
     close_when: >-
       T-081 is confirmed and the reply saying so is posted from main, and the independent
       check of ValidTilt9 is done or declined.
     notes: >-
       The k^2 - 3 corollary is registered by T-064 for k >= 6, and its k = 5 case, s(22) =
-      5, is Bentz's; the issue's route adds no entry for it. Ids are provisional until
-      merged.
+      5, is Bentz's; the issue's route adds no entry for it.
 
   - number: 309
     title: >-
@@ -194,7 +236,7 @@ issues:
       A second, independently written exact-rational checker of Valid7, the finite
       statement under T-064, certifies the unreduced pose space (156,800 roots, none
       uncertified), with public records; it proposes four changes to T-064.
-    read_through: '2026-10-02T03:02:38Z'
+    read_through: '2026-10-03T23:47:05Z'
     results:
       - key: valid7-independent
         claim: >-
@@ -244,6 +286,18 @@ issues:
             id: E-k2m3-wand125-valid7-independent
           - result: s78-second-route
             id: T-067
+      - url: https://github.com/jlevy/squares/issues/296#issuecomment-5974720283
+        date: '2026-10-03'
+        by: jlevy
+        kind: follow-up
+        reported:
+          - result: valid7-independent
+            id: T-064
+            verification: V3
+            confirmation: C3
+            status: confirmed
+          - result: valid7-independent
+            id: E-k2m3-wand125-valid7-independent
     close_when: >-
       T-064 is confirmed (a complete replay of one Valid7 checker, a review of the
       independent checker's method and the Lean reduction built with its axiom receipt) or
@@ -260,7 +314,7 @@ issues:
       Nagamochi's Lemma 1 is false (chelokot's Lean counterexample, Karakuş's family), so
       the published proof of Theorem 2, which T-007 registers, is incomplete; the bound is
       not shown false. It points to Karakuş's and chelokot's replacement results.
-    read_through: '2026-10-02T02:55:29Z'
+    read_through: '2026-10-04T02:29:32Z'
     results:
       - key: lemma1-false
         claim: >-
@@ -301,6 +355,20 @@ issues:
             id: T-007
           - result: karakus-2026
           - result: chelokot-2026
+      - url: https://github.com/jlevy/squares/issues/295#issuecomment-5975790448
+        date: '2026-10-04'
+        by: jlevy
+        kind: follow-up
+        reported:
+          - result: lemma1-false
+            id: T-007
+            verification: V3
+            confirmation: C1
+            status: reviewed
+          - result: lemma1-false
+            id: E-nagamochi-lower
+          - result: karakus-2026
+          - result: chelokot-2026
     close_when: >-
       The record holds the Lemma 1 defect against T-007, the values it supplies are
       re-derived, and the two replacement sources are registered or declined.
@@ -309,14 +377,15 @@ issues:
     title: 'Linear point/segment certificates: s(101) ≥ 257/25 = 10.28'
     author: wand125
     opened: '2026-10-02'
-    state: open
+    state: closed
+    closed: '2026-10-03'
     kind: result-report
     triage: done
     summary: >-
       Lower bounds from linear measures of points, segments and rectangles, checked by
       unified_linear_verify.cpp: s(101) >= 257/25 in the issue, then s(83) >= 187/20 and
       s(82) >= 233/25 in comments.
-    read_through: '2026-10-02T12:34:09Z'
+    read_through: '2026-10-03T22:35:14Z'
     results:
       - key: n101
         claim: s(101) >= 257/25 = 10.28 (mixed_n101_L1028, af1db07), and s(102..105) by monotonicity
@@ -366,6 +435,26 @@ issues:
           - result: n83
             id: T-073
           - result: n82
+      - url: https://github.com/jlevy/squares/issues/294#issuecomment-5974203335
+        date: '2026-10-03'
+        by: jlevy
+        kind: final
+        reported:
+          - result: n101
+            id: T-080
+            verification: V3
+            confirmation: C3
+            status: confirmed
+          - result: n83
+            id: T-073
+            verification: V3
+            confirmation: C3
+            status: confirmed
+          - result: n82
+            id: T-076
+            verification: V3
+            confirmation: C3
+            status: confirmed
     close_when: T-073 is confirmed or refuted, and the n = 82 certificate is imported and settled.
 
   - number: 282
@@ -379,8 +468,9 @@ issues:
       Mixed rectangle-measure lower bounds checked by mixed_rotated_verify.cpp at five
       counts, then a rolling series of comments adding n = 84, 85, 76, 96, 85 again, 87, 91,
       92 again, 83 and 96 again on 2 October, and 22 more on 3 October, from n = 95 down to
-      n = 69, six of them again at counts already posted (76, 87, 90, 91, 92, 96).
-    read_through: '2026-10-03T18:48:43Z'
+      n = 69, six of them again at counts already posted (76, 87, 90, 91, 92, 96), then 14
+      more from 3 October 19:33 UTC to 4 October 06:09 UTC, at n = 42 to 95.
+    read_through: '2026-10-04T06:09:55Z'
     results:
       - key: mixed-five
         claim: s(37) >= 161/25, s(65) >= 167/20, s(66) >= 421/50, s(90) >= 48/5 and s(92) >= 969/100
@@ -425,7 +515,23 @@ issues:
           91, 92, 93, 94, 95 and 96, 21 above what the record reported at their counts; at n = 96, below T-081's reported s(96) = 10 and above the verified 249/25
         source: https://github.com/jlevy/squares/issues/282#issuecomment-5964806255
         register: [T-082]
-    beads: [think-ye2x, think-fb6h, think-09ag, think-r7yt]
+      - key: oct3-oct4-mixed-14
+        claim: >-
+          Fourteen mixed rectangle-measure certificates posted in comments from 3 October
+          19:33 UTC to 4 October 06:09 UTC: s(93) >= 247/25, s(44) >= 2789/400, s(56) >=
+          3121/400, s(84) >= 3763/400, s(67) >= 339/40, s(88) >= 769/80, s(94) >= 497/50,
+          s(51) >= 747/100, s(75) >= 447/50, s(72) >= 219/25, s(57) >= 3149/400, s(43) >=
+          2763/400, s(42) >= 2739/400 and s(95) >= 1993/200 (b321ac9 to 3554616), each above
+          what the record reports at its count
+        source: https://github.com/jlevy/squares/issues/282#issuecomment-5972753544
+        not_registered: >-
+          Posted after T-082's pin 2aff2076 and not yet imported. The source's head 3554616
+          holds all fourteen, so one new entry at that pin can register them; its preflight
+          needs audit_wand125_point_and_mixed to accept certificates without
+          completion-audit.json, which 150939e removed from the 27 mixed certificates
+          published since 3 October.
+        queued: true
+    beads: [think-ye2x, think-fb6h, think-09ag, think-r7yt, think-wpuu]
     answer_bead: think-7gop
     replies:
       - url: https://github.com/jlevy/squares/issues/282#issuecomment-5972354526
@@ -470,6 +576,16 @@ issues:
             confirmation: C3
             status: confirmed
           - result: oct3-mixed-22
+      - url: https://github.com/jlevy/squares/issues/282#issuecomment-5974294911
+        date: '2026-10-03'
+        by: jlevy
+        kind: follow-up
+        reported:
+          - result: oct3-mixed-22
+            id: T-082
+            verification: V0
+            confirmation: C1
+            status: reviewed
     close_when: >-
       T-069, T-071 and T-072 are confirmed or refuted, and every later certificate posted
       here is imported and settled. The thread is a rolling request: each release is

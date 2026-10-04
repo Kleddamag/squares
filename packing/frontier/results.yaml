@@ -7304,7 +7304,7 @@ results:
         anchor "a reusable technique, bound family", as T-064 is; not S5, since no case it
         settles is central to this project. The score gates nothing.
       scored: '2026-10-03'
-      by: 'think-8hk1 import, registering lane (repository; draft)'
+      by: 'think-4uir import, registering lane (repository; draft)'
     novelty: previously-published
     attribution:
       source_keys: ['[evand square-packing 2026-10-03]']
@@ -7345,7 +7345,7 @@ results:
       - packing/resources/web/evand-square-packing-2026-10-03/receipts/lean/build_bentz4.log
       - packing/resources/web/evand-square-packing-2026-10-03/receipts/lean/axioms_bentz4.log
     next_rung: >-
-      think-8hk1: the full replay of qx2_zm.py on the box-9 cover, about 226 CPU-hours at
+      think-4uir: the full replay of qx2_zm.py on the box-9 cover, about 226 CPU-hours at
       the source, in the shards the packet's replay plan gives, compared root for root with
       the published record; the Lean reduction built from the retained bytes with its axiom
       receipt; the claim chain is reviewed already. Then a replayed entry for each part

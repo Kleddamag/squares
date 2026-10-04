@@ -3,9 +3,9 @@ type: is
 id: is-01m438gc8k2avd4tyyj2qb2x48
 title: Profile exact cached collision on frozen mixed enhanced-atom relations
 kind: task
-status: in_progress
+status: closed
 priority: 2
-version: 2
+version: 3
 spec_path: docs/project/reviews/review-2026-10-02-n17-bulk-exclusion-design.md
 assignee: guzhou0806-codex-t0
 delegate: codex@guzhou
@@ -15,8 +15,12 @@ parent_id: is-01m42d0zw28532d573ersbnzh4
 hold: null
 hold_until: null
 created_at: 2026-10-04T10:49:11.187Z
-updated_at: 2026-10-04T10:49:13.015Z
+updated_at: 2026-10-04T11:31:45.658Z
 started_at: 2026-10-04T10:49:13.015Z
+closed_at: 2026-10-04T11:31:45.657Z
+close_reason: null
+resolution: null
+duplicate_of: null
 ---
 # P02C：缓存碰撞原语的固定混合样本一致性与成本
 

@@ -16,6 +16,8 @@ from fractions import Fraction
 
 import pytest
 
+from devtools import audit_t007_consumers
+from devtools import check_nagamochi_bounds as nagamochi_bounds
 from devtools.check_nagamochi_bounds import theorem_two
 from devtools.check_nagamochi_lemma1_counterexample import (
     CHELOKOT_LEAN_CEILING,
@@ -156,6 +158,35 @@ def test_karakus_bound_is_between_area_and_theorem_two_exactly() -> None:
         assert below
         assert karakus_above_area(n)
         assert equal == (n == (math.isqrt(n) + 1) ** 2 - 1)
+
+
+def test_the_ordering_check_fails_when_theorem_two_is_wrong(
+    monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]
+) -> None:
+    # Review A1 on jlevy/squares#305: the ordering check used to hold by the definition of
+    # isqrt and never consulted Theorem 2. It now compares values, so a broken Theorem 2
+    # fails it.
+    monkeypatch.setattr(nagamochi_bounds, "theorem_two", lambda _n: (Decimal(0), False))
+    assert main() == 1
+    assert "the exact comparison could not be made" in capsys.readouterr().out
+
+
+def test_the_ordering_check_fails_when_theorem_two_drops_below_karakus(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    # A Theorem 2 value equal to the area bound sits below Karakus at every nonsquare N.
+    monkeypatch.setattr(
+        audit_t007_consumers, "nagamochi_value", audit_t007_consumers.area_bound
+    )
+    below, equal = karakus_at_most_nagamochi(12)
+    assert not below
+    assert not equal
+    assert main() == 1
+
+
+def test_the_area_check_compares_values(monkeypatch: pytest.MonkeyPatch) -> None:
+    monkeypatch.setattr(audit_t007_consumers, "area_bound", audit_t007_consumers.Surd.rational)
+    assert not karakus_above_area(12)
 
 
 def test_karakus_bound_is_the_integer_at_m_squared_minus_one() -> None:

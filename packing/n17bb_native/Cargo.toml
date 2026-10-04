@@ -1,0 +1,53 @@
+[package]
+name = "n17bb-native"
+version = "0.1.0"
+edition = "2024"
+rust-version = "1.98"
+publish = false
+description = "Native branch-and-bound kernel for the retained n=17 sub-pattern search"
+
+[lib]
+name = "n17bb_native"
+crate-type = ["cdylib"]
+
+[features]
+# Python extensions omit a libpython dependency. Rust tests turn this feature off so
+# ordinary host builds can link the test harness; the helper handles macOS cross tests.
+default = ["extension-module"]
+extension-module = ["pyo3/extension-module"]
+
+[build-dependencies]
+pyo3-build-config = { version = "=0.27.2", features = ["resolve-config"] }
+
+[dependencies]
+pyo3 = { version = "=0.27.2", features = ["abi3-py314"] }
+
+[lints.rust]
+unsafe_code = "forbid"
+missing_docs = "deny"
+warnings = "deny"
+
+[lints.clippy]
+pedantic = { level = "deny", priority = -1 }
+unwrap_used = "deny"
+# The Python API mirrors mathematical data written as nested tuples and vectors.
+type_complexity = "allow"
+# The retained kernel has several formulas whose direct spelling is easier to audit.
+many_single_char_names = "allow"
+similar_names = "allow"
+too_many_arguments = "allow"
+too_many_lines = "allow"
+# PyO3 extracts Python sequences into owned vectors at the extension boundary.
+needless_pass_by_value = "allow"
+# Its interval layer intentionally controls floating-point comparison and conversion.
+float_cmp = "allow"
+cast_possible_truncation = "allow"
+cast_sign_loss = "allow"
+# These spellings preserve the Python pilot's NaN behavior and operation order.
+neg_cmp_op_on_partial_ord = "allow"
+manual_midpoint = "allow"
+
+[profile.release]
+opt-level = 3
+lto = "fat"
+codegen-units = 1

@@ -4944,7 +4944,10 @@ evidence:
       same-session build of the other 273 from source with Mathlib's prebuilt cache; a
       fresh from-source rebuild in a single run (--fresh-build, about an hour) was not
       repeated. The source scan found 0 sorry, 0 axiom declarations and 0 native_decide
-      in its 277 .lean files, and the archive's 79 axiom assertions pass.
+      in its 277 .lean files, and the archive's 79 axiom assertions pass. The development
+      is not retained here, a departure from result-import stage 2 that the packet README
+      records (2026-10-04): the replay clones it at the pinned commit, so the bytes it
+      built are pinned by that commit and the receipt's blob digests rather than kept.
     source_reviewed: '2026-10-02'
 
   - id: E-basic-slivkova-piercing-lower

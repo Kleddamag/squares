@@ -176,7 +176,7 @@ LITERATURE = (
 SOURCES_PAGE = (
     "packing/resources/web/evand-square-packing-2026-10-01/source/site/www/sources.html"
 )
-CHELOKOT_ARCHIVE = "packing/resources/web/chelokot-nagamochi-counterexample-2026-10-02"
+CHELOKOT_ARCHIVE = "packing/resources/web/chelokot-nagamochi-counterexample-2026-09-05"
 CHELOKOT_NOTE = f"{CHELOKOT_ARCHIVE}/upstream/docs/nagamochi-score-counterexample.md"
 CHELOKOT_README = f"{CHELOKOT_ARCHIVE}/README.md"
 CHELOKOT = {

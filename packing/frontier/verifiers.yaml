@@ -293,7 +293,7 @@ verifiers:
       every n >= 2, by compensating each low-scoring square under Nagamochi's measure from
       other squares of the packing, without his Lemma 1.
     source:
-      - packing/resources/web/chelokot-nagamochi-counterexample-2026-10-02/README.md
+      - packing/resources/web/chelokot-nagamochi-counterexample-2026-09-05/README.md
       - packing/campaign/series/series-000-smoke-and-calibration/results/chelokot-lean-replay/receipt.json
     versions:
       - {revision: 753079eb37d8d16225a5dc1f56e493a3c3b243f4, note: "the build here, with Mathlib's official cache"}

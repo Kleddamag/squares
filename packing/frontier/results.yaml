@@ -7663,6 +7663,8 @@ results:
       September 2026; chelokot,
       [square-packing-archive](https://github.com/chelokot/square-packing-archive), 4
       September 2026, the earlier public record, which Karakuş's paper does not cite.
+      wand125 first reported both, and the defect, to this project in
+      [jlevy/squares#295](https://github.com/jlevy/squares/issues/295), 2 October 2026.
     scope: {n_min: 10, n_max: 324}
     verification: V3
     confirmation: C3
@@ -7683,7 +7685,7 @@ results:
     artifacts:
       - packing/devtools/check_nagamochi_lemma1_counterexample.py
       - packing/resources/papers/karakus-2026-counterexample-nagamochi-scoring-lemma.md
-      - packing/resources/web/chelokot-nagamochi-counterexample-2026-10-02/README.md
+      - packing/resources/web/chelokot-nagamochi-counterexample-2026-09-05/README.md
       - docs/project/reviews/review-2026-10-02-nagamochi-lemma1-karakus.md
     controls:
       - packing/tests/test_nagamochi_lemma1_counterexample.py
@@ -7742,7 +7744,7 @@ results:
     artifacts:
       - packing/campaign/series/series-000-smoke-and-calibration/results/chelokot-lean-replay/receipt.json
       - packing/devtools/replay_chelokot_lean.py
-      - packing/resources/web/chelokot-nagamochi-counterexample-2026-10-02/README.md
+      - packing/resources/web/chelokot-nagamochi-counterexample-2026-09-05/README.md
       - docs/project/reviews/review-2026-10-02-nagamochi-lemma1-karakus.md
     controls:
       - packing/tests/test_replay_chelokot_lean.py

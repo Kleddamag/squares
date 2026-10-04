@@ -6,11 +6,46 @@ cited here as **[chelokot Nagamochi counterexample 2026]**. The note,
 `docs/nagamochi-score-counterexample.md`, exhibits a square of side $1.0001$ in the
 $4 \times 4$ container whose score under the weights of Nagamochi 2005, Section 3, is
 below 1, contradicting that paper’s Lemma 1.
-The X-049 literature lane found it on 2026-10-02 as one of the sources outside this
-archive, and it was retrieved the same day.
+wand125 first reported it to this project, with Karakuş 2026 and the defect they show in
+Nagamochi 2005, in [jlevy/squares#295](https://github.com/jlevy/squares/issues/295)
+(2026-10-02T02:55Z). The X-049 literature lane found it the same day as one of the
+sources outside this archive, and it was retrieved the same day.
 
 It is an unrefereed repository note, cited for what its author says.
-Nothing in it was replayed here: neither its Python checker nor its Lean proof was run.
+Nothing in it was replayed here when it was retrieved: neither its Python checker nor its
+Lean proof was run. The Lean compensation proof was replayed later the same day; see the
+update of 4 October 2026 below.
+
+## Update, 4 October 2026
+
+The Lean development at the pinned head `753079eb` was built here on 2026-10-02 with its
+pinned toolchain and Mathlib’s official cache, and the axioms of
+`Records.NearSquare.squareMinusTwo_isMinimumSide` and its instances are exactly
+`propext`, `Classical.choice` and `Quot.sound`.
+The receipt and its build log are
+[`receipt.json`](../../../campaign/series/series-000-smoke-and-calibration/results/chelokot-lean-replay/receipt.json)
+and `build.log` beside it, written by `devtools.replay_chelokot_lean`, whose `--check`
+validates them offline.
+That replay is what `T-086` (`V3`/`C3`) and `E-chelokot-square-minus-two-lean` rest on,
+and it supersedes the pointer section at the end of this README, which was written before
+it.
+The Python checker is still not run: `T-085` recomputes the note’s square with this
+project’s own exact checker, `devtools.check_nagamochi_lemma1_counterexample`.
+
+Two departures from [result import](../../../campaign/result-import.md) stage 2 are
+recorded here:
+
+- **The Lean development is not retained.** Stage 2 asks a packet to retain every
+  repository its certificate needs, and the replay runs on retained bytes.
+  This packet retains the note, its figure and the data licence only; the development
+  (`formal/` at `753079eb`, Apache-2.0, 277 `.lean` files) is pinned by commit and by the
+  blob digests of the two files the receipt names, and the replay clones it at that
+  commit. Retaining it, and running the replay from the retained copy, is what would
+  close the departure.
+- **The packet was named with its retrieval date.** It was renamed on 4 October 2026 from
+  `chelokot-nagamochi-counterexample-2026-10-02` to the date of its pinned revision,
+  2026-09-05 (UTC), as stage 2 names packets; the bibliography’s `dated` moved from
+  2026-09-04, the note’s first commit, to the same date.
 
 ## What Was Retrieved
 
@@ -81,6 +116,7 @@ $s(n^2 - 2) = n$ for every integer $n \ge 2$, by compensating low-scoring square
 other squares of the packing rather than assuming Lemma 1. Karakuş 2026 says its own
 argument does not establish that identity. The claim is neither retained nor checked
 here; it bears directly on the review of T-007 against Karakuş 2026 (`think-589i`).
+(Since replayed: see the update of 4 October 2026 above.)
 
 <!-- This document follows common-doc-guidelines.md.
 See github.com/jlevy/practical-prose and review guidelines before editing.

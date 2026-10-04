@@ -379,7 +379,7 @@ KARAKUS_RESOURCE: dict[str, Any] = {
 CHELOKOT_RESOURCE: dict[str, Any] = {
     "key": "[chelokot Nagamochi counterexample 2026]",
     "role": "formal-certificate",
-    "local": "web/chelokot-nagamochi-counterexample-2026-10-02",
+    "local": "web/chelokot-nagamochi-counterexample-2026-09-05",
     "url": "https://github.com/chelokot/square-packing-archive",
     "retrieved": True,
 }

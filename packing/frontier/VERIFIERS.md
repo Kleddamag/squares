@@ -468,7 +468,7 @@ Kernel-checks a value of s(n) from a checker-cover hypothesis: for s(13) = 4 the
 
 Kernel-checks Records.NearSquare.squareMinusTwo_isMinimumSide, s(n^2 - 2) = n for every n >= 2, by compensating each low-scoring square under Nagamochi's measure from other squares of the packing, without his Lemma 1.
 
-- Source: [`packing/resources/web/chelokot-nagamochi-counterexample-2026-10-02/README.md`](../../packing/resources/web/chelokot-nagamochi-counterexample-2026-10-02/README.md), [`packing/campaign/series/series-000-smoke-and-calibration/results/chelokot-lean-replay/receipt.json`](../../packing/campaign/series/series-000-smoke-and-calibration/results/chelokot-lean-replay/receipt.json)
+- Source: [`packing/resources/web/chelokot-nagamochi-counterexample-2026-09-05/README.md`](../../packing/resources/web/chelokot-nagamochi-counterexample-2026-09-05/README.md), [`packing/campaign/series/series-000-smoke-and-calibration/results/chelokot-lean-replay/receipt.json`](../../packing/campaign/series/series-000-smoke-and-calibration/results/chelokot-lean-replay/receipt.json)
 - Versions run: revision `753079eb37d8` (the build here, with Mathlib's official cache)
 - Note: The development is pinned by digest in the packet README and not retained; the replay clones it at the pinned commit, and the receipt records the build and the axioms.
 

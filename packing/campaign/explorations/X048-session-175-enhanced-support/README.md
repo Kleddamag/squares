@@ -67,9 +67,9 @@ full supported-host gate remains required. No costs were invented, no failed sta
 was edited and no tests or thresholds were weakened. See[repair receipt](receipts/CI-cost-repair.json).
 
 This attempt ends at its preregistered cap. No automatic capacity or ordering ladder
-follows. Any next project needs a new W3/ownership/resource contract. Source/evidence
-hosted certification is initially pending under think-wh57; exact-head CI is observed
-separately. Native usage is one privacy aggregate/lower bound; later finalization and
+follows. Any next project needs a new W3/ownership/resource contract. Repaired source/evidence
+`217b571669986590937a7b8d85af0b018103dd60` has terminal19pass/36skip and all3requiredSUCCESS.
+Final metadata CI is observed separately; no new A target follows. Native usage is one privacy aggregate/lower bound; later finalization and
 CI after its cutoff are excluded, with declared branch association.
 
 <!-- This document follows common-doc-guidelines.md.

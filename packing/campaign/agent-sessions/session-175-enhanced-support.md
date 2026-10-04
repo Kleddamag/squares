@@ -67,8 +67,8 @@ session:
     - packing/campaign/resource-usage/codex-session-175.yaml
     stop_reason: ONE target reached100kpair cap; independently checked41parents(+23),55unknown.
       Source/evidence accepted; hosted certification remains explicit.
-    next_action: think-wh57 owns publication/certification and will publish scoped source/evidence; observe exact source CI, clear debt only after
-      pass and observe final metadata CI. No target repeat.
+    next_action: Observe final metadata current-head CI, then close/sync think-wh57; next scheduled
+      project requires new frozen phase/ownership and source gate. No A target repeat.
   budget:
     wall_minutes: 90
     max_cycles: 4
@@ -109,13 +109,18 @@ session:
   - Native aggregate ONCE exactstart2026-10-04T08:57:34.275511+00:00, cutoff2026-10-04T09:24:27.705513+00:00,
     actualend2026-10-04T09:24:30.780378+00:00. Declared branch interval; live/boundary lower
     bound. All later publication/CI work excluded.
+  - 'full gate: fast at 217b571669986590937a7b8d85af0b018103dd60: passed'
+  - Exact repaired source217b571 current55checks terminal19pass36skip/all3requiredSUCCESS. Initial
+    source failed only stale-file inventory guard; official lastgreen14d131 coherent cohort
+    refresh preserves existing10%policy/ceilings. Sevenfocused controls pass; full supported-host
+    suite passes. Windows subprocess ancestor permission failures remain classified separately,
+    no host/policy fix.
   stop_reason: ONE target reached100kpair cap; independently checked41parents(+23),55unknown.
     Source/evidence accepted; hosted certification remains explicit.
-  next_action: think-wh57 owns publication/certification and will publish scoped source/evidence; observe exact source CI, clear debt only after
-    pass and observe final metadata CI. No target repeat.
+  next_action: Observe final metadata current-head CI, then close/sync think-wh57; next scheduled
+    project requires new frozen phase/ownership and source gate. No A target repeat.
   ended_at: '2026-10-04T09:24:30.780378+00:00'
   handoff_role: administrative_closeout
-  certification_pending: think-wh57
   resource_rollups:
   - packing/campaign/resource-usage/codex-session-175.yaml
 ---

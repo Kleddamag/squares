@@ -47,6 +47,24 @@ The parallel driver refuses certificate options.
 Certificate recording uses the unchanged single-process Python path because the
 certificate recorder depends on one ordered traversal.
 
+## Local Integration Run
+
+[The three receipts](results-2026-10-05.jsonl) were recorded on 2026-10-05 in Japan
+(2026-10-04 UTC), at source revision `9bbc3200d`, on arm64 macOS 25.2.0 with Python
+3.14.7. The extension was built with installed Rust 1.99.0; the repository-pinned 1.98.0
+toolchain was unavailable.
+Each arm used a 30-second cap and fresh state.
+
+| Arm | Workers | Verdict | Nodes | Closed share | CPU s | Wall s |
+| --- | ---: | --- | ---: | ---: | ---: | ---: |
+| Python | 1 | unresolved-at-budget | 2,388 | 0.020187377929687556 | 23.443 | 30.018 |
+| Native | 1 | unresolved-at-budget | 21,147 | 0.4779340955946184 | 21.677 | 30.003 |
+| Native parallel | 8 | certified-infeasible | 41,958 | 1.0 | 52.440 | 21.686 |
+
+The parallel search CPU was 40.456 seconds; its total also includes coordinator and
+worker startup/shutdown CPU. The capped single-process runs do not measure time to
+completion, so they do not establish a full-run speedup.
+
 ## Retained Measurements
 
 These measurements predate the repository instrument.

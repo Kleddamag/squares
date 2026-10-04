@@ -165,6 +165,7 @@ def check() -> list[str]:
             ("packing", "sqsearch", "target"),
             ("packing", "sqverify_exact", "target"),
             ("packing", "sqverify_fast", "target"),
+            ("packing", "n17bb_native", "target"),
         }
         and not any(
             part in IGNORED_PARTS or part.startswith(".")

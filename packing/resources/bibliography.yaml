@@ -740,6 +740,32 @@ sources:
       direction, and each commit message ends with a co-author trailer naming an AI
       assistant. web/wand125-mixed-bounds-2026-10-03/acquisition/sources.json pins revision
       2aff2076c492d62340e986c84f60a0a29eb668df. Dated by that revision, 2026-10-03 UTC.
+  - key: '[wand125 mixed bounds 2026-10-04]'
+    authors: [wand125]
+    year: 2026
+    venue: GitHub
+    dated: '2026-10-04'
+    credit: wand125 after Tokoharu, Levy, Stromquist, Nagamochi, Burns, Massaccesi
+    short_credit: wand125 after Tokoharu, Levy et al.
+    lineage: builds-on-project
+    note: >-
+      The 14 mixed rectangle-measure certificates that wand125/square-packing-bounds added in
+      14 commits from 2026-10-03 19:33 UTC to 2026-10-04 06:09 UTC, for n = 42, 43, 44, 51,
+      56, 57, 67, 72, 75, 84, 88, 93, 94 and 95 (certificates/mixed_n93_L988 to
+      mixed_n95_L9965), each requested for registration in its own comment on
+      jlevy/squares#282: rectangle densities of mass n - 1/100000 checked at coverage one by
+      code/mixed_rotated_verify.cpp, byte for byte the checker of the source's n = 50
+      certificate and of the [wand125 mixed bounds 2026-10-03] certificates. Seven supersede
+      certificates of earlier keys, mixed_n51_L746, mixed_n75_L892, mixed_n84_L940,
+      mixed_n88_L960, mixed_n93_L986, mixed_n94_L992 and mixed_n95_L996. The directories carry
+      no completion-audit.json; the packet also retains 150939e's removal of it from the 22
+      [wand125 mixed bounds 2026-10-03] directories and mixed_n96_L996, the source's answer to
+      review findings OC-1 and OC-2. Credited as they are, on the root README's Attribution
+      section, which opens "The method is not ours."; the README says parts of the work were
+      produced with AI assistance under human direction, and each commit message ends with a
+      co-author trailer naming an AI assistant.
+      web/wand125-mixed-bounds-2026-10-04/acquisition/sources.json pins revision
+      3554616889186f10bff4f14a3e7e194546fc9fca. Dated by that revision, 2026-10-04 UTC.
   - key: '[franciscouzo square-packing 2026-09-27]'
     authors: [Couzo]
     year: 2026

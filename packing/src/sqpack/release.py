@@ -351,12 +351,13 @@ OPTIMALITY_REVIEW_HISTORY = (
         version="v0.1.4",
         first_published="October 4, 2026",
         result_scope=(
-            "wand125's corrections of October 4 are applied: the in-progress Lean 4 "
+            "wand125's comment of October 4 is answered: the in-progress Lean 4 "
             "formalizations are named, with their status as wand125 reports it; the root "
             "node completes thirteen further updates, not fourteen; Figure 8 and the text "
             "agree that the symmetry lemma rests on the exhaustive search; and the "
-            "1,931-case premise of cases 2175 and 2176 is placed in their accepted "
-            "certificates."
+            "1,931-case premise of cases 2175 and 2176 is stated as a premise of their "
+            "accepted certificates, beside wand125's report of a Lean proof of all 76 "
+            "prior-family cases that does not use it."
         ),
     ),
     PublicationHistoryEntry(

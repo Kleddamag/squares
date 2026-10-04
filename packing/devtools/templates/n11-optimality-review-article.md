@@ -562,7 +562,7 @@ $$
 
 The check compares case identities and dependencies, not only the number 2,180. The
 publisher groups the same excluded set by provenance as $1931+76+173$: its original
-baseline, 76 **prior** cases that extend it, and 173 cases **returned** later.
+baseline, 76 **prior-family** cases that extend it, and 173 cases **returned** later.
 The two groupings divide the same obligation; they are not different totals or
 additional exclusions.[^exclusions]
 
@@ -570,10 +570,11 @@ Some exclusions have extra assumptions that must be discharged.
 Cases 2175 and 2176 use cuts on center positions that are justified by symmetry, and
 that justification assumes the 1,931 exclusions of the publisher’s original baseline:
 the cuts are checked only against the 253 cases the baseline leaves.
-They are two of the publisher’s 76 prior cases, and the only two whose accepted
-certificates carry this premise; it belongs to those certificates rather than to the two
-cases.[^premises] The four-survivor reduction below assumes these two exclusions in
-turn, so their cuts may not use it; the dependency runs one way.
+Cases 2175 and 2176 are two of the publisher’s 76 prior-family cases, and the only two
+whose accepted certificates carry this premise; it is a premise of those
+certificates.[^premises] wand125 reports a Lean proof of all 76 prior-family cases that
+does not use it.[^lean] The four-survivor reduction below assumes these two exclusions
+in turn, so their cuts may not use it; the dependency runs one way.
 Case 1383 requires both sides of a closed center split at $y_{13}=4/3$. Here
 $y_{13}=p_y-U/2$ is the centered physical height of the square assigned to cell 13. Both
 branches and their common parent remain part of the accepted proof, even though the
@@ -618,7 +619,7 @@ This illustration explains the construction used by the
 <a href="../../resources/web/n11-optimality-2026-09-29/receipts/d4-independent/result.json">accepted symmetry check</a>.
 The composed proof’s symmetry lemma rests on that check’s exhaustive assignment search,
 including boundary ties, over {{D4_REGIONS}} closed regions and {{D4_BANS}} bans; the
-shorter proof by one ban is checked beside it and is not a premise.</figcaption>
+shorter proof, which needs one ban, is checked beside it and is not a premise.</figcaption>
 </figure>
 
 For two overlay regions, exact vertex calculations sometimes prove that every pair of
@@ -676,7 +677,8 @@ Before the tree, fourteen **root rounds**, each a parallel update of all eleven 
 from a common prior, establish the root’s ownership; the root node then completes
 thirteen further updates of its own.
 A fourteenth step covers only part of its angle range; it is checked but changes no
-ownership. All of this is verified before the local theorem is invoked.
+ownership. All of this is replayed here, in the capture receipts cited below, before the
+local theorem is invoked.
 
 Three closed splits produce four possibilities.
 Here square subscripts denote owner-cell labels; $y_{15}$ is a centered physical height
@@ -963,12 +965,12 @@ libraries, runtime and executing system.
 Lean 4 formalizations of the proof are in progress elsewhere, in
 [wand125/n11-optimality-lean](https://github.com/wand125/n11-optimality-lean) and
 [Queuingtheorydotcom/11SquaresFormalized](https://github.com/Queuingtheorydotcom/11SquaresFormalized).
-wand125 reports that some components are already kernel-checked using only Lean’s
-standard axioms: the 173 returned cases, whose independent replay against the
-11SquaresFormalized assembly is recorded in
-[that repository’s pull request 7](https://github.com/Queuingtheorydotcom/11SquaresFormalized/pull/7),
-and the 76 prior cases.[^lean] The Squares Project has reviewed neither formalization,
-and T-060’s rungs do not rest on them.
+wand125 reports that the 76 prior-family cases and the 173 returned cases are already
+kernel-checked using only Lean’s standard axioms; an independent replay of the 173
+against the 11SquaresFormalized assembly is recorded in
+[an open pull request to that repository](https://github.com/Queuingtheorydotcom/11SquaresFormalized/pull/7),
+not merged as of October 4.[^lean] The Squares Project has reviewed neither
+formalization, and T-060’s rungs do not rest on them.
 
 The final composition receipt reconciles the completed geometric executions and their
 reviewed dependencies.
@@ -1194,8 +1196,10 @@ beside the accepted ones rather than in their place.
 
 [^premises]: [Non-field case manifest](../../resources/web/n11-optimality-2026-09-29/receipts/nonfield-manifest/manifest.json.gz),
     which records the 1,931-case premise for cases 2175 and 2176 alone among the 76
-    prior cases;
-    [case 2175’s cut report](../../resources/web/n11-optimality-2026-09-29/receipts/generic-case2175-complete/replay-d4-cuts.json);
+    prior-family cases; the cut reports for
+    [case 2175](../../resources/web/n11-optimality-2026-09-29/receipts/generic-case2175-complete/replay-d4-cuts.json)
+    and
+    [case 2176](../../resources/web/n11-optimality-2026-09-29/receipts/generic-case2176-complete/replay-d4-cuts.json);
     [the special adapters and their premises](../../../docs/project/reviews/review-2026-09-29-n11-optimality-census-contract.md#the-three-special-adapters).
 
 [^symmetry]: [Closed-overlay checker](../check_n11_optimality_d4.py),
@@ -1236,7 +1240,11 @@ beside the accepted ones rather than in their place.
     dispositions every finding.
 
 [^lean]: [wand125’s comment of 4 October 2026 on jlevy/squares#317](https://github.com/jlevy/squares/issues/317#issuecomment-5975093980),
-    the source for the formalization status above; this paper does not check it.
+    the source for the formalization status this paper reports, and the
+    [prior-family theorem](https://github.com/wand125/n11-optimality-lean/blob/112f91a0a0a30539472718b88e06e71f64d61694/lean/Sqpack/S11Opt/Split/U2Prior.lean)
+    on the `split` branch of wand125/n11-optimality-lean, pinned at commit `112f91a0a`,
+    which states the exclusion of all 76 cases with no baseline hypothesis.
+    The Squares Project has neither reviewed nor replayed either formalization.
 
 [^reproduce]: [Reproduction guide and disclosed limits](../../resources/web/n11-optimality-2026-09-29/README.md#reproducing-the-independent-checks);
     [tooling overview](../../../docs/project/verification-tooling.md).

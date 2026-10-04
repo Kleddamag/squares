@@ -1157,7 +1157,8 @@ def test_a_band_places_the_stale_rule_at_its_low_edge_and_drift_at_its_high() ->
 
 def test_every_live_band_passes_the_readings_it_was_taken_from() -> None:
     """Each banded tier passes its band's edges and middle: the runs that failed a point
-    record from the other regime (geometry at 58.75 s, typecheck at 92.27 s) now pass."""
+    record from the other regime (geometry at 58.75 s; typecheck at 92.27 s while its serial
+    step carried a band) now pass."""
     register = live()
     banded = [tier for tier in register.tiers if tier.measured_band is not None]
     assert banded, "no live tier records a measured_band"

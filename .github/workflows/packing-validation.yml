@@ -900,8 +900,10 @@ jobs:
           retention-days: 30
 
   typecheck:
-    # BasedPyright is one process outer `--jobs` cannot divide, so the pull request gives
-    # the existing type-floor step an independent required runner.
+    # BasedPyright is one step outer `--jobs` cannot divide, so the pull request gives
+    # the existing type-floor step an independent required runner. At `--jobs 1` the step
+    # forks one checker per cpu (`_type_floor`, think-pr19), 0.55x of the serial wall on
+    # a local four-cpu box; the tier's first hosted readings at that shape are pending.
     if: "github.event_name == 'pull_request'"
     runs-on: ubuntu-latest
     defaults:

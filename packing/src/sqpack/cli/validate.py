@@ -671,8 +671,9 @@ class Step:
     typecheck: bool = False
     """Assigns the type floor to its own pull-request runner.
 
-    BasedPyright is one process that outer ``--jobs`` cannot divide.  This remains part
-    of ``--edit`` locally; the flag changes only which required pull-request job owns it.
+    BasedPyright is one step that outer ``--jobs`` cannot divide; at ``--jobs 1`` it
+    divides itself across the runner's cpus (``_type_floor``).  This remains part of
+    ``--edit`` locally; the flag changes only which required pull-request job owns it.
     """
 
     measure_verifier: bool = False
@@ -1977,8 +1978,28 @@ def _workbench_frontend(context: Context) -> str:
 
 
 def _type_floor(context: Context) -> str:
+    """BasedPyright over the whole program, forking one checker per cpu `--jobs` leaves.
+
+    The worker count is `_command_workers`' `cpus - jobs + 1`, so the pull request's
+    `typecheck` job (`--jobs 1` on four cpus) asks for four and a local tier, where
+    `--jobs` defaults to the cpu count, asks for one and runs exactly as it did before.
+    `--threads` forks worker processes that each check a share of the files and report the
+    same diagnostics the serial checker does; they stay in this command's process group,
+    so a timeout stops them with it.
+
+    Measured on 2026-10-04 on a four-cpu box, alternating, every run "0 errors": serial
+    143.2 s and 151.9 s, four workers 78.1 s and 83.6 s (0.55x), two 88.9 s. The workers
+    re-evaluate the imports their files share, so four spend 276 s of cpu against the
+    serial 172 to 195 s and peak at 7.7 to 8.2 GiB of summed resident memory against 3.8
+    to 4.5 GiB, inside the hosted runner's 16 GB. On 174 hosted serial readings the step
+    read 54 to 123 s with a median of 93.5 s and over 111 s on 8 per cent of them, 3 to 6
+    per cent of runs breaching the tier's 111 s ceiling; every breach `think-4w2g`
+    records had zero findings (`think-pr19`).
+    """
     basedpyright = _required_tool(context, "basedpyright")
-    output = _commands(context, ((basedpyright,),))
+    threads = _command_workers(context.jobs)
+    command = (basedpyright, "--threads", str(threads)) if threads > 1 else (basedpyright,)
+    output = _commands(context, (command,))
     _require_text(output, "0 errors, 0 warnings, 0 notes")
     return output
 

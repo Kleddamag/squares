@@ -5,13 +5,13 @@ title: Import the ten wand125 certificates at b00fc70 (rect n20, 42, 70; linear 
 kind: task
 status: open
 priority: 1
-version: 6
+version: 7
 labels:
   - result-import
 dependencies: []
 parent_id: is-01m3yrdxte02c7bnygkke34ct4
 created_at: 2026-10-02T16:51:52.667Z
-updated_at: 2026-10-04T01:02:26.540Z
+updated_at: 2026-10-04T06:33:45.234Z
 ---
 Lane V: retain at b00fc70, extend audit tools, exact preflights, blind review (review-2026-10-02-wand125-afternoon-certificates.md). Then register at V0 (records lane), push, replay on cloud runners (~74 CPU-h), merge receipts, record. Also: what upstream 23e2284's re-hash of retained bundles and the withdrawal of mixed_n50_L7318 mean for retained packets. Issues #282, #294, #308; the three rectangles have no issue.
 
@@ -22,3 +22,4 @@ Lane V: retain at b00fc70, extend audit tools, exact preflights, blind review (r
 2026-10-03 17:40 n82 unblocked by the owner: n82a pushed claude/replay-wand125-n82-a @18eb4c39f (0-51 RANGE_REPLAYED 52/52, 13,868 CPU-s; 52-90 39/39, 17,073 CPU-s), now running 91-123; n82b pushed claude/replay-wand125-n82-b @0ce15aeab (124-152 29/29, 18,474 CPU-s; 153-178 26/26, 19,723; 179-200 22/22, 23,620), finished. After 91-123: linear-merge n82 and linear-control n82 from both branches, then T-076 to V3/C3.
 2026-10-03 21:05 Follow-up PR #327 (182776349): T-076 n82 linear V3/C3 (six ranges, 30.74 CPU-h; n82 verified 233/25) and T-073 n83 linear V3/C3 (26.15 CPU-h; no case moves, T-075 higher), plus think-sfbj reply records. After merge: final note on #294 to @wand125 (n82, n83 confirmed) and close #294.
 2026-10-04 01:05 Afternoon rectangles replayed in full: n42 (r5), n70 and n20 (r6, done 23:13), each stdout status VERIFIED, receipts on claude/replay-wand125-afternoon-r6 @c2be1d247 (transfer/wand125-rect-afternoon-r5/). Neither r5 nor r6 is merged; T-077 is still V0 on main. Next: one batched records lane (with T-081 and T-046 leftovers) moves T-077 to V3/C3.
+2026-10-04 reconciliation (think-75ti, origin/main e5a48b310): done on main - six mixed certificates T-075 V3/C3; n82 T-076 V3/C3; n83 linear T-073 V3/C3 (n101 T-080 V3/C3); #294 closed 2026-10-03T22:35Z with the final reply; 23e2284 re-hash and mixed_n50_L7318 withdrawal answered by review-2026-10-02-wand125-afternoon-certificates.md AF-7. Remaining (real): T-077 (rect n20, n42, n70) is still V0 on main; its full-replay receipts are on claude/replay-wand125-afternoon-r5 @b829406d (n42) and claude/replay-wand125-afternoon-r6 @c2be1d247 (n70, n20), neither merged. Needs one records lane: merge those receipts, add the source-replay evidence, move T-077 to V3/C3 via devtools.check_results. Close this bead then.

@@ -68,8 +68,8 @@ session:
     - packing\campaign\explorations\X048-session-178-full-core-ablation\README.md
     stop_reason: ONE fixed-sample ablation and independent replay accepted; hosted certification
       remains explicit.
-    next_action: think-abit owner publishes source/evidence and observes exactCI; no targetrepeat,
-      furthermechanism needsnewW3.
+    next_action: Observe final metadata current-head CI and close/sync think-abit; a selective-halving
+      certificate project requires a new frozen contract/claim/fetch/source gate. No D repeat.
   budget:
     wall_minutes: 90
     max_cycles: 4
@@ -108,13 +108,15 @@ session:
     actualend2026-10-04T11:56:07.283634+00:00; live/boundary lowerbound, later publication/CIexcluded.
   - Final test-only shared-pytest memory isolation also patches reused H sampler;26PASS3.75s/Ruff,
     production source unchanged. Later administrative check excluded from native cutoff.
+  - 'full gate: fast at c6972548e98ec356a8d408e9b34518be87a6cf36: passed'
+  - Exact D source55checks terminal19pass36skip/all3requiredSUCCESS; real-tree file-cost guard
+    passes; no threshold changes.
   stop_reason: ONE fixed-sample ablation and independent replay accepted; hosted certification
     remains explicit.
-  next_action: think-abit owner publishes source/evidence and observes exactCI; no targetrepeat,
-    furthermechanism needsnewW3.
+  next_action: Observe final metadata current-head CI and close/sync think-abit; a selective-halving
+    certificate project requires a new frozen contract/claim/fetch/source gate. No D repeat.
   ended_at: '2026-10-04T11:56:07.283634+00:00'
   handoff_role: administrative_closeout
-  certification_pending: think-abit
   resource_rollups:
   - packing/campaign/resource-usage/codex-session-178.yaml
 ---

@@ -57,8 +57,8 @@ the new sampler from historical shared-pytest peaks; production guards and the
 measured source remain unchanged.26controls pass again3.75s/Ruff. This later
 administrative CI preparation is outside the single native cutoff.
 
-Source/evidence certification pending under think-abit; exact-head CI is observed
-separately. One native privacy aggregate is a live/boundary lower bound; later
+Source/evidence `c6972548e98ec356a8d408e9b34518be87a6cf36` is observed terminal19pass/36skip
+and all3requiredSUCCESS. Final metadata CI is observed separately. One native privacy aggregate is a live/boundary lower bound; later
 publication/CI is excluded. Another project needs a new W3/ownership/resource gate.
 
 <!-- This document follows common-doc-guidelines.md. -->

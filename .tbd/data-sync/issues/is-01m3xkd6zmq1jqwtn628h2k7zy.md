@@ -5,7 +5,7 @@ title: "BC-418: coordinate the n17 phase after Session 167 (close H-261/H-266, b
 kind: task
 status: in_progress
 priority: 0
-version: 23
+version: 24
 spec_path: docs/project/reviews/review-2026-10-02-n17-bulk-exclusion-design.md
 delegate: claude-code@vm
 labels: []
@@ -34,7 +34,7 @@ child_order_hints:
 hold: null
 hold_until: null
 created_at: 2026-10-02T06:04:15.220Z
-updated_at: 2026-10-03T22:36:32.401Z
+updated_at: 2026-10-04T01:43:12.239Z
 started_at: 2026-10-03T22:35:58.665Z
 ---
 Selected next entry after Session 167. Lanes: (1) close H-266's single-state item and H-268's slide bound, then re-record H-261 and H-266 for acceptance with independent review; (2) build the H-267 sub-pattern selector as a retained tool and adapt the n11 v9 kernel as prover, with n11 mask 0 as method control; (3) a capture contraction-rate pilot on the endpoint's H-266 occupancy state; (4) optionally the widened-projection dual-sheet certificate on a coarse patching (patch count only). Read the Session 167 record first.
@@ -49,3 +49,10 @@ Selected next entry after Session 167. Lanes: (1) close H-266's single-state ite
 - Flag 2 stalled at the 1,152-row cap (234a07f4e), and a 2,304-row rerun is running.
 - Two captures run from round 13 (uniform 576, and rows by need).
 - Open owner decisions: subagent and GitHub grants (asked in session); slice 6 (think-gzju); PR 307's 115.5 MB of X048 dumps and the bulk-data policy (filed by Session 169).
+
+2026-10-04 01:40 UTC (PR 307 at dd874b02c).
+- Lane R8 admitted the streamed verifier (601bbf110, listed; think-2dpm closed).
+- Lane K3: flag 2 likely true, stalled by west-wall row losses.
+- Main merged twice more (e145e6b4d, 0862e6412, the latter bringing the owner's policy grants).
+- The by-need capture's rounds 15 and 16 are both fine and flat (every ratio under 1/20, no extent down a tenth); round 17 decides the after-pilot falsifier.
+- Bead-tree check fails on Session 169's closed epic think-gmef with six open children (not this session's); reported, not changed.

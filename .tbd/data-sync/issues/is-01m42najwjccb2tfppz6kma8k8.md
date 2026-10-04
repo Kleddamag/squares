@@ -3,9 +3,9 @@ type: is
 id: is-01m42najwjccb2tfppz6kma8k8
 title: N17 one bounded raw-row capacity completion attempt
 kind: task
-status: in_progress
+status: closed
 priority: 1
-version: 2
+version: 3
 spec_path: docs/project/reviews/review-2026-10-02-n17-bulk-exclusion-design.md
 assignee: guzhou0806-codex-t0
 delegate: codex@guzhou
@@ -15,8 +15,23 @@ parent_id: is-01m3xkd6zmq1jqwtn628h2k7zy
 hold: null
 hold_until: null
 created_at: 2026-10-04T05:13:58.417Z
-updated_at: 2026-10-04T05:16:02.624Z
+updated_at: 2026-10-04T05:53:26.117Z
 started_at: 2026-10-04T05:16:02.623Z
+closed_at: 2026-10-04T05:53:26.116Z
+close_reason: |
+  Completed one separately frozen capacity-completion attempt: all96rows of the
+  exact saved B binary network independently supported by79selections/1185fresh
+  replay checks.62361unique pairs/154nodes/17.009s, unchanged algorithm, all57D2seeds
+  retained; no packing/exclusion claim.51focused controls/lint/types pass. Source
+  ef8c425472302905c93cf49a9182e06f218b07d2 hosted coherent fast/required gate passes
+  19checks/36skips after retaining original wall overrun and mixed-attempt refusal;
+  no ceilings/tests/source weakened. Session172 actual stopped/admin-close and native
+  aggregate retained once. Final metadata current-head CI is observed separately.
+  This retires the same-model whole-row route; no capacity/order ladder. Upstream
+  think-tmz6 capture/Flag2 remains owned. Conditional new opt-in Windows-tooling
+  project has its own plan and starts only after final metadata CI passes.
+resolution: null
+duplicate_of: null
 ---
 # P01E — one raw-row capacity completion attempt
 

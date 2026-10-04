@@ -25,6 +25,14 @@ whichever lane cites it:
 - a lower bound, verified or reported, citing `E-nagamochi-lower` must be Theorem 2's;
 - a verified lower bound citing `E-karakus-strip-lower` must be Karakuş's (6.1).
 
+"Must be" is one-sided, because a lower bound printed as a decimal is rounded down: the
+record may not exceed the theorem's value, and may fall short of it by less than one unit
+in its own last place. Until 2026-10-04 the tolerance was two-sided (D-517), so a
+verified floor rounded *up*, above what its source proves, passed every gate. Both
+sides are decided exactly, by squaring the closed form `a + sqrt(r)` against the
+record's own rational value, so no rounding of the theorem's square root can decide a
+case either way.
+
 Theorem 2, as the evidence record states it, from Theorem 1
 (`nu(a, b) < ab - (a + 1 - ceil(a)) - (b + 1 - ceil(b))` for `a, b >= 2`):
 
@@ -53,7 +61,9 @@ from __future__ import annotations
 
 import math
 import re
+from dataclasses import dataclass
 from decimal import Decimal, localcontext
+from fractions import Fraction
 from pathlib import Path
 
 from sqpack.yamlio import safe_load
@@ -89,20 +99,85 @@ _OPERATIVE_COUNT = re.compile(r"operative verified lower bound in (\d+) of them"
 _OPERATIVE_VALUES = re.compile(r"the (\d+) operative verified-field values")
 _OTHER_CITATIONS = re.compile(r"[Tt]he other (\d+) citations")
 
-#: Enough to compare against any decimal the register carries, and pinned rather than
-#: inherited: `decimal`'s context is process-global (see `think-iskp`).
+#: Digits a theorem's value is printed with, well past any decimal the register carries,
+#: and pinned rather than inherited: `decimal`'s context is process-global (see
+#: `think-iskp`). The comparisons themselves are exact and use no decimal.
 DIGITS = 80
+
+
+@dataclass(frozen=True, slots=True)
+class RootForm:
+    """The exact value `rational + sqrt(radicand)`, the shape of every bound checked here.
+
+    A comparison, with a rational or with another such value, is decided by squaring, so
+    it is exact; `decimal` is for printing, at `DIGITS`, and decides nothing.
+    """
+
+    rational: Fraction
+    radicand: Fraction = Fraction(0)
+
+    def __post_init__(self) -> None:
+        if self.radicand < 0:
+            raise ValueError(f"square root of a negative number: {self.radicand}")
+
+    def below(self, value: Fraction) -> bool:
+        """Whether this value is strictly less than `value`.
+
+        `a + sqrt(r) < x` exactly when `x - a` is positive and `(x - a)^2 > r`.
+        """
+        gap = value - self.rational
+        return gap > 0 and gap * gap > self.radicand
+
+    def compare(self, other: RootForm) -> int:
+        """The exact sign of `self - other`: `-1`, `0` or `1`.
+
+        With `c = a - b`, the sign of `c + sqrt(r) - sqrt(s)`. Where `c` and
+        `sqrt(r) - sqrt(s)` (whose sign is that of `r - s`) agree in sign, or one is zero,
+        that is the answer. Otherwise the larger in magnitude wins, and
+        `(sqrt(r) - sqrt(s))^2 - c^2 = t - 2 sqrt(rs)` with `t = r + s - c^2` is decided by
+        squaring once more where `t` is positive.
+        """
+        c = self.rational - other.rational
+        r, s = self.radicand, other.radicand
+        roots = (r > s) - (r < s)
+        offset = (c > 0) - (c < 0)
+        if not roots or not offset or roots == offset:
+            return offset or roots
+        t = r + s - c * c
+        product = r * s
+        if t > 0:
+            difference = t * t - 4 * product
+            larger = (difference > 0) - (difference < 0)
+        else:
+            larger = -1 if (t < 0 or product > 0) else 0
+        if larger > 0:
+            return roots
+        if larger < 0:
+            return offset
+        return 0
+
+    def decimal(self) -> Decimal:
+        with localcontext() as context:
+            context.prec = DIGITS
+            rational = Decimal(self.rational.numerator) / Decimal(self.rational.denominator)
+            if not self.radicand:
+                return rational
+            radicand = Decimal(self.radicand.numerator) / Decimal(self.radicand.denominator)
+            return rational + radicand.sqrt()
+
+
+def theorem_two_form(n: int) -> tuple[RootForm, bool]:
+    """Theorem 2 at `n`, exactly, and whether `n` is one of its exact cases."""
+    root = math.isqrt(n)
+    if any(n == m * m - offset for m in (root, root + 1) for offset in (0, 1, 2)):
+        return RootForm(Fraction(math.isqrt(n - 1) + 1)), True
+    return RootForm(Fraction(1), Fraction(n - 2 * root + 1)), False
 
 
 def theorem_two(n: int) -> tuple[Decimal, bool]:
     """The bound Theorem 2 gives for `n`, and whether `n` is one of its exact cases."""
-    root = math.isqrt(n)
-    exact = any(n == m * m - offset for m in (root, root + 1) for offset in (0, 1, 2))
-    with localcontext() as context:
-        context.prec = DIGITS
-        if exact:
-            return Decimal(math.isqrt(n - 1) + 1), True
-        return Decimal(n - 2 * root + 1).sqrt() + 1, False
+    form, exact = theorem_two_form(n)
+    return form.decimal(), exact
 
 
 def cases() -> dict[int, dict]:
@@ -239,36 +314,49 @@ KARAKUS = "E-karakus-strip-lower"
 LANES = ("verified_lower_bound", "reported_lower_bound")
 
 
-def karakus_bound(n: int) -> tuple[Decimal, bool]:
-    """Karakuş's (6.1) at nonsquare `n >= 8`, and whether it is `m` exactly (`n = m^2 - 1`)."""
+def karakus_form(n: int) -> tuple[RootForm, bool]:
+    """Karakuş's (6.1) at nonsquare `n >= 8`, exactly, and whether it is the integer `m`
+    (`n = m^2 - 1`)."""
     root = math.isqrt(n)
     if n < 8 or root * root == n:
         raise ValueError(f"n={n}: Karakuş's Corollary 6.2 covers nonsquare n >= 8 only")
     if (root + 1) ** 2 - 1 == n:
-        return Decimal(root + 1), True
-    with localcontext() as context:
-        context.prec = DIGITS
-        return Decimal("0.5") + (Decimal(n - root) + Decimal("0.25")).sqrt(), False
+        return RootForm(Fraction(root + 1)), True
+    return RootForm(Fraction(1, 2), Fraction(4 * (n - root) + 1, 4)), False
 
 
-def disagreement(
-    n: int, recorded: Decimal, expected: Decimal, *, is_exact: bool, name: str
-) -> str | None:
-    """Why `recorded` is not a correct rendering of `expected`, or `None`."""
-    with localcontext() as context:
-        context.prec = DIGITS
-        # The record may carry fewer digits than the theorem's value has; it must be a
-        # correct rendering of it, not merely close, so compare at the record's places.
-        # `exponent` is only an int for a finite Decimal, and a bound that is NaN or
-        # infinite is a malformed record rather than a disagreement, so say which.
-        exponent = recorded.as_tuple().exponent
-        if not isinstance(exponent, int):
-            return f"n={n}: recorded lower bound {recorded} is not a finite number"
-        places = -exponent
-        if abs(expected - recorded) > Decimal(1).scaleb(-places):
-            return f"n={n}: record says {recorded}, {name} gives {expected:.{places + 2}f}"
-        if is_exact and recorded != recorded.to_integral_value():
-            return f"n={n}: an exact case should carry an integer, not {recorded}"
+def karakus_bound(n: int) -> tuple[Decimal, bool]:
+    """Karakuş's (6.1) at nonsquare `n >= 8`, and whether it is `m` exactly (`n = m^2 - 1`)."""
+    form, exact = karakus_form(n)
+    return form.decimal(), exact
+
+
+def disagreement(n: int, recorded: Decimal, exact: RootForm, *, name: str) -> str | None:
+    """Why `recorded` is not `exact` rounded down at its own places, or `None`.
+
+    A lower bound is a floor: the record may carry fewer digits than the theorem's value
+    has, but it may never exceed that value, and it must be within one unit in its own
+    last place below it. Both are decided on the record's exact rational value.
+    """
+    # `exponent` is only an int for a finite Decimal, and a bound that is NaN or infinite
+    # is a malformed record rather than a disagreement, so say which.
+    exponent = recorded.as_tuple().exponent
+    if not isinstance(exponent, int):
+        return f"n={n}: recorded lower bound {recorded} is not a finite number"
+    places = -exponent
+    value = Fraction(recorded)
+    unit = Fraction(1, 10**places) if places >= 0 else Fraction(10**-places)
+    shown = f"{exact.decimal():.{max(places, 0) + 2}f}"
+    if exact.below(value):
+        return (
+            f"n={n}: record says {recorded}, above the {shown} {name} gives; a lower bound "
+            "is rounded down, never up"
+        )
+    if not exact.below(value + unit):
+        return (
+            f"n={n}: record says {recorded}, {name} gives {shown}; not that value rounded "
+            "down at the record's places"
+        )
     return None
 
 
@@ -284,16 +372,14 @@ def main() -> int:
             lower = case.get(lane) or {}
             evidence = lower.get("evidence") or []
             if RECORD in evidence:
-                record, (expected, is_exact), name = RECORD, theorem_two(n), "Theorem 2"
+                record, (exact, _), name = RECORD, theorem_two_form(n), "Theorem 2"
             elif KARAKUS in evidence and lane == "verified_lower_bound":
-                record, (expected, is_exact), name = KARAKUS, karakus_bound(n), "Karakuş (6.1)"
+                record, (exact, _), name = KARAKUS, karakus_form(n), "Karakuş (6.1)"
             else:
                 continue
             checked[record] += 1
             recorded = Decimal(str(lower["value"]))
-            if (
-                problem := disagreement(n, recorded, expected, is_exact=is_exact, name=name)
-            ) is not None:
+            if (problem := disagreement(n, recorded, exact, name=name)) is not None:
                 problems.append(f"{lane}: {problem}")
                 continue
             reported = case.get("reported_upper_bound") or {}

@@ -4862,11 +4862,13 @@ evidence:
         were re-derived (its printed range for r was confirmed on the rendered page, the
         text extraction being garbled there), as were both cases of Lemma 5.2(ii),
         Proposition 5.1's three cases for centres in the strip, and the algebra of
-        Corollary 6.2. No gap was found. The bound sits strictly between sqrt(N) and
-        Nagamochi's Theorem 2 at every nonsquare N, touching Theorem 2 exactly at
+        Corollary 6.2. No gap was found. At every nonsquare N the bound is strictly above
+        sqrt(N) and at most Nagamochi's Theorem 2, meeting Theorem 2 exactly at
         N = m^2 - 1; devtools/check_nagamochi_lemma1_counterexample.py checks that ordering
-        exactly and checks the measure's total, which is all it replays. This is a read,
-        not a machine check.
+        on the closed forms themselves, in exact arithmetic, at every nonsquare N from 8 to
+        1000, and checks the measure's total, which is all it replays. Until 2026-10-04 its
+        ordering check tested only floor(sqrt N)^2 <= N, which holds whatever the closed
+        forms are, so it could not fail (D-518). This is a read, not a machine check.
     limitations: >-
       A published, unrefereed preprint, read and re-derived here and not machine-checked.
       Weaker than Nagamochi 2005's Theorem 2 at every nonsquare N other than m^2 - 1; it

@@ -33,7 +33,7 @@ from __future__ import annotations
 import argparse
 import sys
 from collections.abc import Sequence
-from decimal import Decimal
+from decimal import Decimal, InvalidOperation
 from functools import cache
 from pathlib import Path
 from typing import Any
@@ -139,13 +139,23 @@ def floor_decimal(value: sympy.Expr, digits: int = DIGITS) -> str:
     return format(Decimal(floored).scaleb(-scale).normalize(), "f")
 
 
-def verified_floor(n: int) -> float:
-    """The case record's verified lower bound, as a float for comparison only."""
+def verified_floor(n: int) -> Decimal:
+    """The case record's verified lower bound, exactly as the record prints it.
+
+    Until 2026-10-04 this was a float, and the two comparisons in `survey` were float
+    comparisons; both are now exact on the printed decimals.
+    """
     text = (FRONTIER / f"n-{n:03d}.md").read_text(encoding="utf-8")
     front = text.split("---", 2)[1]
     block = front.split("verified_lower_bound:", 1)[1]
     value = block.split("value:", 1)[1].splitlines()[0].strip().strip("'\"")
-    return float(sympy.N(sympy.sympify(value.replace("√", "sqrt")), 30))
+    try:
+        floor = Decimal(value)
+    except InvalidOperation as error:
+        raise ValueError(f"n = {n}: verified lower bound {value!r} is not a decimal") from error
+    if not floor.is_finite():
+        raise ValueError(f"n = {n}: verified lower bound {value!r} is not a finite decimal")
+    return floor
 
 
 def survey(numbers: Sequence[int]) -> dict[str, Any]:
@@ -160,12 +170,12 @@ def survey(numbers: Sequence[int]) -> dict[str, Any]:
                 "n": n,
                 "bound": str(bound),
                 "decimal": decimal,
-                "verified_lower": floor,
-                # The record holds a value rounded down at DIGITS, so the bound holds the
-                # floor where the floor is its printed decimal, and beats it where it is
-                # strictly above.
-                "holds": float(decimal) == floor,
-                "improves": float(decimal) > floor,
+                "verified_lower": str(floor),
+                # The record holds a value rounded down, so the bound holds the floor
+                # where its own decimal, rounded down at DIGITS, is the record's, and
+                # beats it where it is strictly above. Both are exact decimal comparisons.
+                "holds": Decimal(decimal) == floor,
+                "improves": Decimal(decimal) > floor,
             }
         )
     return {

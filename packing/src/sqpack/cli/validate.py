@@ -2567,6 +2567,40 @@ def _rust_quality(context: Context) -> str:
     ).strip()
 
 
+def _rust_n17_bb_native(context: Context) -> str:
+    """Build the optional native pilot and require its differential tests to run."""
+    if shutil.which("cargo", path=context.environment.get("PATH")) is None:
+        raise StepFailureError("n17 native gate requires cargo")
+    crate = PROJECT_ROOT / "n17bb_native"
+    target = Path(context.environment.get("CARGO_TARGET_DIR", "target"))
+    if not target.is_absolute():
+        target = crate / target
+    native_dir = target / "python"
+    environment = dict(context.environment)
+    environment["N17BB_NATIVE_DIR"] = str(native_dir)
+    environment["N17BB_NATIVE_REQUIRED"] = "1"
+    child = replace(
+        context, environment=environment, timeout_seconds=min(context.timeout_seconds, 240)
+    )
+    output = _module(child, "devtools.build_n17_bb_native", "--output-dir", str(native_dir))
+    if not sum(int(count) for count in re.findall(r"test result: ok\. (\d+) passed", output)):
+        raise StepFailureError("n17 native gate ran no passing Rust tests")
+    tests = _run(
+        child,
+        (
+            sys.executable,
+            "-m",
+            "pytest",
+            "-q",
+            "tests/test_n17_bb_native.py",
+            "tests/test_n17_bb_native_edges.py",
+        ),
+    )
+    if "skipped" in tests or not re.search(r"\b[1-9]\d* passed\b", tests):
+        raise StepFailureError("n17 native gate requires passing, unskipped replay tests")
+    return f"{output}\n{tests}"
+
+
 def _rust_measure_verifier(context: Context) -> str:
     """Lint, test and build the clean-room measure verifier, then hold it to the exact
     oracle and the mutation controls (`devtools.check_sqverify_fast --quick`).
@@ -4462,6 +4496,26 @@ STEPS: tuple[Step, ...] = (
         measure_verifier=True,
         touches=_MEASURE_VERIFIER_SRC,
     ),
+    Step(
+        "n17 branch-and-bound native (Rust)",
+        _rust_n17_bb_native,
+        fast=True,
+        broad=True,
+        touches=(
+            *_CORE,
+            "packing/n17bb_native/*",
+            "packing/devtools/build_n17_bb_native.py",
+            "packing/devtools/n17_bb_native.py",
+            "packing/devtools/pilot_n17_subpattern_bb.py",
+            "packing/devtools/check_n17_capacity_one_cover.py",
+            "packing/devtools/select_n17_sub_patterns.py",
+            "packing/tests/test_n17_bb_native.py",
+            "packing/tests/test_n17_bb_native_edges.py",
+            "packing/tests/test_build_n17_bb_native.py",
+            "packing/devtools/check_rust_floor.py",
+            "packing/tests/test_rust_floor_contract.py",
+        ),
+    ),
     # The full oracle and control set, deferred on its cost: 72.8 s single threaded on an
     # idle four-cpu box, against the quick set the pull request runs above.
     Step(
@@ -5547,6 +5601,7 @@ TREE_REUSABLE_FAST_STEPS = frozenset(
         # verdict; no repository history, remote state, or stored result is consulted.
         "exact rectangle Rust geometry",
         "measure verifier Rust (sqverify-fast)",
+        "n17 branch-and-bound native (Rust)",
         "Trump exact branchwise linearized cones",
         "H-041 Stromquist repaired-cover exact certificate",
         "H-010 Stromquist printed-cover exact rejection",

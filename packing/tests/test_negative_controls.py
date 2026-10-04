@@ -808,6 +808,7 @@ def test_a_worker_snapshot_can_be_asked_what_this_repository_tracks(
                 "packing/sqsearch/target",
                 "packing/sqverify_exact/target",
                 "packing/sqverify_fast/target",
+                "packing/n17bb_native/target",
             )
         )
         for name in tracked

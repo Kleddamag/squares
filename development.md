@@ -1463,6 +1463,35 @@ The [tooling overview](docs/project/verification-tooling.md) records the support
 inputs, refusal behavior, golden controls and measured performance limits.
 This crate verifies rectangle geometry, a separate contract from the global n11 proof.
 
+The optional [n17 native kernel](packing/n17bb_native/README.md) accelerates the
+sub-pattern branch-and-bound pilot without editing the pilot.
+From `packing/`:
+
+```bash
+uv run --frozen --all-extras --group dev python -m devtools.build_n17_bb_native
+uv run --frozen --all-extras --group dev python -m devtools.n17_bb_native \
+    --native-dir n17bb_native/target/python \
+    --cells interior-SW,interior-NW,interior-W,interior-S,interior-N,interior-SE \
+    --label A --max-nodes 2000 --output /tmp/n17-native-A.json
+uv run --frozen --all-extras --group dev packing-validate \
+    --only "n17 branch-and-bound native (Rust)"
+```
+
+The build helper runs formatting, Clippy, Rust tests, rustdoc and the locked release
+build, then prints the import directory.
+It honors `CARGO_TARGET_DIR`; pass `--output-dir DIR` to choose the import directory
+explicitly. The build target matches the running Python’s architecture, including arm64
+Python with a Rosetta Rust host.
+The validation step requires the built extension and compares native calls and search
+summaries with Python loops using the same tinylp backend, checks the F7 control, and
+exercises the recorder and Taylor fallbacks.
+The unchanged pilot uses HiGHS; its optimal duals and search tree can differ, so the
+tests separately demonstrate that distinction.
+Ordinary test runs skip the native replay tests with a build instruction when the
+extension is absent.
+The [benchmark instrument](packing/benchmarks/n17-bb-native/README.md) records Python,
+native and parallel runs; the parallel driver is for search and refuses certificates.
+
 The native rectangle CLI has
 [five golden scenarios](packing/tests/golden/rectangle-density-cli/) covering complete,
 partial, capped, counterexample and admission-refusal results.

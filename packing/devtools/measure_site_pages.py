@@ -14,9 +14,15 @@ Fifteen measurements, each over pages of a directory `preview_site` has built:
   and showing. It reports DOMContentLoaded, load, first contentful paint, the first
   frame at which every formula in the first viewport is readable and the first at which
   every displayed formula is, the long tasks and their blocking time over 50 ms, and the
-  document's bytes. Times are milliseconds from navigation start; `--runs` repeats each
-  load and reports the median. An animation frame is an opportunity to paint, not a
-  presented frame, and the per-frame scan is observer overhead every page pays alike.
+  document's bytes, with the bytes the load moved over the network and its requests,
+  every file and the files the cache did not answer. Times are milliseconds from
+  navigation start; `--runs` repeats each load and reports the median. A directory is
+  served as GitHub Pages serves it, gzipped and fresh for ten minutes
+  (`preview_site.serve`), so the bytes are the deployed site's. `--network` throttles
+  each load to a named network (`NETWORKS`), and `--after PAGE` opens that page first in
+  the same browser, so the load measured is a reader's second page. An animation frame
+  is an opportunity to paint, not a presented frame, and the per-frame scan is observer
+  overhead every page pays alike.
 - `type` reports the reading column's resolved typography, role by role (paragraph,
   h1 to h4, list item, table cell, code, inline math), and every `--kpress-*`,
   `--site-*`, `--paper-*` and `--cert-*` token the root and the column resolve.
@@ -246,10 +252,34 @@ def _launch(driver: Any) -> Any:
     return launch_chromium(driver)
 
 
+#: The networks a load can be measured over, as Chromium's emulation takes them: download
+#: and upload throughput in bytes a second, and the latency added to every request in
+#: milliseconds. Named for what they stand for, not for any browser's presets, whose
+#: numbers have changed between releases; these are written here so a reading says what
+#: it was taken over.
+NETWORKS: dict[str, dict[str, float]] = {
+    "slow-4g": {"downloadThroughput": 1.6e6 / 8, "uploadThroughput": 750e3 / 8, "latency": 150},
+    "fast-4g": {"downloadThroughput": 9e6 / 8, "uploadThroughput": 1.5e6 / 8, "latency": 60},
+    "cable": {"downloadThroughput": 50e6 / 8, "uploadThroughput": 10e6 / 8, "latency": 20},
+}
+
+
 def measure_load(
-    base: str, pages: Sequence[str], *, widths: Sequence[int], runs: int
+    base: str,
+    pages: Sequence[str],
+    *,
+    widths: Sequence[int],
+    runs: int,
+    network: str | None = None,
+    after: str | None = None,
 ) -> list[dict[str, Any]]:
-    """Each page's load report at each width, the median of `runs` cold loads."""
+    """Each page's load report at each width, the median of `runs` loads.
+
+    Each load is in a fresh browser context, so its cache starts empty. `after` opens that
+    page first in the same context and waits for it to finish, so the page measured is a
+    reader's second page, with whatever the first left in the cache. `network` throttles
+    the context to one of `NETWORKS` before anything is fetched.
+    """
     from playwright.sync_api import sync_playwright  # noqa: PLC0415
 
     results: list[dict[str, Any]] = []
@@ -262,11 +292,24 @@ def measure_load(
                     context = browser.new_context(viewport={"width": width, "height": 900})
                     context.add_init_script(_INSTRUMENT)
                     page = context.new_page()
+                    if network is not None:
+                        session = context.new_cdp_session(page)
+                        session.send("Network.enable")
+                        session.send(
+                            "Network.emulateNetworkConditions",
+                            {"offline": False, **NETWORKS[network]},
+                        )
+                    if after is not None:
+                        page.goto(f"{base}/{after}", wait_until="load")
+                        page.wait_for_function(_DONE, timeout=WAIT_MS)
                     page.goto(f"{base}/{name}", wait_until="load")
                     page.wait_for_function(_DONE, timeout=WAIT_MS)
                     samples.append(page.evaluate(_REPORT))
                     context.close()
-                results.append({"page": name, "width": width, **_median(samples)})
+                results.append(
+                    {"page": name, "width": width, "network": network, "after": after}
+                    | _median(samples)
+                )
         browser.close()
     return results
 
@@ -1691,6 +1734,17 @@ def main(argv: Sequence[str] | None = None) -> int:
         help="with `popover`: viewport height, 900 by default; repeatable",
     )
     parser.add_argument("--runs", type=int, default=3)
+    parser.add_argument(
+        "--network",
+        choices=sorted(NETWORKS),
+        help="with `load`: throttle each load to this network (`NETWORKS`)",
+    )
+    parser.add_argument(
+        "--after",
+        metavar="PAGE",
+        help="with `load`: open this page first in the same browser, so each page is "
+        "measured as a reader's second page, with the first one's files cached",
+    )
     parser.add_argument("--port", type=int, default=18961)
     parser.add_argument("--json", type=Path, help="read a saved report rather than measuring")
     parser.add_argument("--markdown", action="store_true", help="print a table, not JSON")
@@ -1779,7 +1833,7 @@ def main(argv: Sequence[str] | None = None) -> int:
             parser.error("`faces` reads the built files: give the site's directory")
         report = compare_faces(site, pages)
     else:
-        server = None if served else serve(site, args.port)
+        server = None if served else serve(site, args.port, as_pages=args.mode == "load")
         base = args.site.rstrip("/") if served else f"http://127.0.0.1:{args.port}"
         try:
             if args.mode == "type":
@@ -1830,7 +1884,14 @@ def main(argv: Sequence[str] | None = None) -> int:
                     shots=args.shots,
                 )
             else:
-                report = measure_load(base, pages, widths=widths, runs=args.runs)
+                report = measure_load(
+                    base,
+                    pages,
+                    widths=widths,
+                    runs=args.runs,
+                    network=args.network,
+                    after=args.after,
+                )
         finally:
             if server is not None:
                 server.shutdown()

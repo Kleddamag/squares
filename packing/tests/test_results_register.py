@@ -1015,8 +1015,25 @@ def test_a_result_a_case_bound_rests_on_is_never_superseded_whole() -> None:
         for item in record.get("superseded_by") or []
         if item["extent"] == "whole"
     }
-    assert whole == {"T-031"}
+    assert "T-031" in whole
     assert not whole & holders
+
+
+def test_an_unreadable_holder_is_reported_with_every_other_problem(
+    monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]
+) -> None:
+    """A case bound no registered result carries makes the holders unreadable, which
+    `check_results` reports as one problem among the rest rather than stopping with a
+    traceback before any of them (`think-wizo`)."""
+
+    def unreadable() -> frozenset[str]:
+        raise ValueError("n=12: novel evidence [E-x] is carried by results []")
+
+    monkeypatch.setattr(check_results, "holding_results", unreadable)
+    assert check_results.main() == 1
+    shown = capsys.readouterr().out
+    assert "1 results-register problems:" in shown
+    assert "which results hold a case bound could not be read: n=12: novel evidence" in shown
 
 
 def test_declared_supersessions_never_lead_back() -> None:

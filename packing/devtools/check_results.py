@@ -817,7 +817,9 @@ def superseded_by_cycles(results: Iterable[Mapping[str, Any]]) -> list[str]:
 
 def holding_results() -> frozenset[str]:
     """Every result a case bound rests on now, lower or upper, verified or reported:
-    `render_recent_results.held` over every case record."""
+    `render_recent_results.held` over every case record. Raises `ValueError` where a
+    case's own lower-bound evidence is carried by no registered result, or by more than
+    one (`render_recent_results.project_result`)."""
     from devtools.render_recent_results import held, load_records  # noqa: PLC0415
 
     records = load_records()
@@ -1007,7 +1009,14 @@ def main() -> int:
         problems.append(f"register ids are not contiguous T-001..: {actual_ids}")
     scopes = {record["id"]: scope_values(record["scope"]) for record in results}
     dated = {record["id"]: result_date(record) for record in results}
-    holding = holding_results()
+    try:
+        holding = holding_results()
+    except ValueError as error:
+        # A case bound that no registered result carries, or that several do, is named
+        # here and the checks go on, the whole-supersession check without holders, so
+        # every other problem in the register is still reported.
+        holding = frozenset()
+        problems.append(f"which results hold a case bound could not be read: {error}")
     problems.extend(superseded_by_cycles(results))
 
     standings: dict[str, Standing] = {}

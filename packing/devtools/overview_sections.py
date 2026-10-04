@@ -997,7 +997,8 @@ def table_of_results(overview: Overview, defaults: FilterDefaults, *, here: bool
     `defaults`, where the bar starts, with a row outside them `hidden` in the HTML, so
     the first paint is already filtered; and in `here`, which is the results page, where
     each row is the result's own address (`result_table_row`). Every row shows its
-    records and opens its popover in both, and no row of one links to the other.
+    records and opens its popover in both, and a row links to the results page only
+    where its status names the results that supersede it (`supersession_marks`).
 
     No heading divides the rows. Whose a result is, and what it builds on, is read from
     its credit (`credit_cell`), and the Source filter narrows the table to this

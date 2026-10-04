@@ -286,9 +286,18 @@ positions should begin to move, but side-N2 held at 0.1002, and over 13 rounds n
 two-sided position extent moved off the box.
 The [capture scorer](../../packing/devtools/score_n17_capture.py) reads the falsifier as
 undecided at that cap: side-N2 needs two more bisections, about 528 rows, to pass a
-twentieth. A run at 576 rows resumed from round 13 (modelled at about 2.8 hours a round,
-14 hours to read the falsifier); rows allotted per owner by need would take about 5.6
-hours, but the pilot does not allot them yet (measured to round 13; not yet decided).
+twentieth.
+
+With rows allotted by need (256 per owner; side-N2 576, side-W2 416, side-N0 320),
+resumed from round 13, every owner was under a tenth at round 14 and under a twentieth
+at round 15. Rounds 15, 16 and 17 were all fine and flat: the largest ratio was 0.0499,
+and no two-sided position extent fell below 0.988 of the round before.
+**The review’s falsifier is met.** Positions never began to contract, in 17 rounds
+(measured; the pilot’s own reading and the scorer’s agree).
+That falsifier was written to say the $n = 11$ architecture is wrong for $n = 17$.
+Before that reading is adopted, an independent review is checking that no other producer
+setting, such as the hull cap of 48, the core or the partner pruning, is the limit
+instead, as the row cap was for the first pilot.
 
 The target itself is larger than $1/5000$ per coordinate.
 Following $n = 11$'s two-radius result, a
@@ -356,11 +365,11 @@ Stated without a forecast, because none is on record.
    CPU-seconds each. The kernel has excluded one such state, N1, in 3,723 s, but the
    $n = 17$ per-state method and its price are not established; the
    [residue process review](reviews/review-2026-10-02-n17-residue-process.md) plans one.
-3. **Capture.** At 256 rows the review’s falsifier cannot be read; the 576-row run
-   resumed from round 13 decides whether the architecture holds.
-   If it holds, the per-coordinate target above is the next pilot’s goal, registered as
-   a hypothesis with its vector and box frozen.
-   If it fails, the widened projection theorem is the fallback.
+3. **Capture.** The review’s falsifier is met: with every owner’s rows under a twentieth
+   of its extent for three rounds, no position contracted.
+   Unless the independent review finds another producer limit, the $n = 11$ capture
+   architecture is set aside for $n = 17$ and the widened projection theorem, scoped in
+   Session 167, becomes the route.
 4. **Independent review of everything.** Each piece so far carries one review.
    The composition of the census, the certificates, the consumer and the capture into
    one argument has not been written down, let alone reviewed, and T-060’s rungs show

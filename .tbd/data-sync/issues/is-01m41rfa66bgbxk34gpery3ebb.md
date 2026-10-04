@@ -3,19 +3,19 @@ type: is
 id: is-01m41rfa66bgbxk34gpery3ebb
 title: "N17 Session169: profile and bound obsolete producer PartnerMemo generations"
 kind: task
-status: in_progress
+status: open
 priority: 1
-version: 6
+version: 7
 spec_path: docs/project/reviews/review-2026-10-02-n17-bulk-exclusion-design.md
 assignee: Guzhou0806
-delegate: guzhou0806-codex-t0
+delegate: null
 labels: []
 dependencies: []
 parent_id: is-01m3xkd6zmq1jqwtn628h2k7zy
-hold: null
+hold: paused
 hold_until: null
 created_at: 2026-10-03T20:49:44.645Z
-updated_at: 2026-10-03T21:41:01.043Z
+updated_at: 2026-10-04T14:59:01.940Z
 started_at: 2026-10-03T20:50:09.807Z
 ---
 Own only Session 169's bounded W3/W10 decision and W5 PartnerMemo lifecycle profile on PR 307 head 234a07f4e22edb3b8e4074356236e4137b1ec19d, branch guzhou/n17-p01-partner-memo. Operator Guzhou0806-Codex-T0; one primary executor after the user's token-budget addendum.
@@ -30,4 +30,11 @@ Session A starts 2026-10-04T04:31:41+08:00 and ends by 08:31:41; each command an
 
 ## Notes
 
+PAUSE / HANDOFF — Guzhou explicit authorization, 2026-10-04T14:58:59.902777+00:00
+
+No active executor. No background work, running research, heartbeat, or monitoring. No future slice reserved. Joshua, Fable, and other agents are free to claim follow-up work under a new bead, subject to their normal ownership and safety checks. Historical operator/delegate names, next-W3 suggestions, and expired phase windows below are provenance only and do not constitute a current claim or reservation. The upstream coordination bead think-tmz6 and parent PR #307 are untouched.
+
+Disposition: PR325 review/merge tracking ONLY; retain this bead open until merge as explicitly required by its prior closeout condition. Set status open, hold paused, and clear delegate so it does not represent an active executor. The scoped W5 evidence/instrumentation/regression delivery is complete; this bead reserves no producer, memory, graph, or other future research work. PR325 remains Draft at4c295ad3d2491eb5a59cfe6dca1cd0529a755b1f; final window evidence recorded19 passed/36 skipped and all three required checks SUCCESS, no actionable review comments. The until-merge condition is administrative only and is not permission to merge. References: local handoff/P01_RETURN.md, handoff/P02F_AUDIT_RETURN.md and control/p02-window-final-closure.json.
+
+Historical notes (retained verbatim):
 Final scoped delivery complete. PR325 head d1c1a778c: all reported CI checks terminal, no failures; packing-required/pages-required/merges-into-main SUCCESS.83 targeted current-parent tests pass. Await review/merge; bead intentionally remains open until merge. Session169 administrative closeout preserves parent coordinator think-tmz6. Our layer adds evidence/instrument/regression, no producer or verifier edits versus601bbf110. No active worker, Session B, background computation or merge.

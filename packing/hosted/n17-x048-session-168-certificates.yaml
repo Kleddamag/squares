@@ -492,6 +492,16 @@ objects:
   size: 9389
   sha256: fa09bf395565d326a245f0765de540622bf8607b6ec35cc03f830d5eaa19b157
   description: kernel certificate of s182-bc425-t2 (session 182, BC-425 lane K second tranche, H-267)
+- path: packing/campaign/explorations/X048-session-168-pilots/certificates/s182-bc425-t4/node-a52b9f4442e6cf130822ef86bbeefce459ccf3b35decd9c53231db6c85c2985b.json.gz
+  asset: node-a52b9f4442e6cf130822ef86bbeefce459ccf3b35decd9c53231db6c85c2985b.json.gz
+  size: 21198024
+  sha256: 163879958654bc93afe471ed6bd66878526d41875edf57f8ce19079ea661a737
+  description: kernel certificate of s182-bc425-t4 (session 182, BC-425 lane K second tranche, H-267)
+- path: packing/campaign/explorations/X048-session-168-pilots/certificates/s182-bc425-t4/seed-16b445d615f406f87dfc08778b53a406de023007ae94166abc86c5a618e4343e.json.gz
+  asset: seed-16b445d615f406f87dfc08778b53a406de023007ae94166abc86c5a618e4343e.json.gz
+  size: 9655
+  sha256: 63a890ff814abee94cea6800ff1868384a8f24a70b01dd6bf41da140adad99fb
+  description: kernel certificate of s182-bc425-t4 (session 182, BC-425 lane K second tranche, H-267)
 - path: packing/campaign/explorations/X048-session-168-pilots/certificates/s182-k1/node-98540adf15fc966b0c389adeef310fffe7e1be2fc2c010ae91a2d22824881199.json.gz
   asset: node-98540adf15fc966b0c389adeef310fffe7e1be2fc2c010ae91a2d22824881199.json.gz
   size: 9705863
@@ -622,12 +632,14 @@ objects:
   asset: node-ed786503936075264718549bf37458ad46bb11eb89f4afb73f9abff69a5fb746.json.gz
   size: 103653991
   sha256: 631b7232cd03346978f029ca3b7f0d99343a354cad835a06607dd42c7dec6e2a
-  description: kernel certificate of s182-m3063677-sw9 (session 182, lane A stall under SW9's recipe, H-274)
+  description: kernel certificate of s182-m3063677-sw9 (session 182, lane A stall under SW9's recipe,
+    H-274)
 - path: packing/campaign/explorations/X048-session-168-pilots/certificates/s182-m3063677-sw9/seed-dc8c7938273300711facdaa4f99384c2bec0bfcbf03cb2c1395897a275983dcd.json.gz
   asset: seed-dc8c7938273300711facdaa4f99384c2bec0bfcbf03cb2c1395897a275983dcd.json.gz
   size: 22322
   sha256: db3070dd07b4f3361fbe3a9dd4df5a9914a17e2eab8fa400ebe0f8c00400d217
-  description: kernel certificate of s182-m3063677-sw9 (session 182, lane A stall under SW9's recipe, H-274)
+  description: kernel certificate of s182-m3063677-sw9 (session 182, lane A stall under SW9's recipe,
+    H-274)
 - path: packing/campaign/explorations/X048-session-168-pilots/certificates/s182-m4028335/node-dc6a4636a02c08d8d2c6692aa95757805497da04ffaa0ff6e675a58dcaa83442.json.gz
   asset: node-dc6a4636a02c08d8d2c6692aa95757805497da04ffaa0ff6e675a58dcaa83442.json.gz
   size: 21541509

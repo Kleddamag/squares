@@ -75,6 +75,17 @@ experiment:
       finest at 1/512, closure all_parent_poses_forbidden for interior-W at step 77. The standing verifier at
       cebb5d15a passes it in full mode in 758 s, checking all 7,579 live rows in full and 14,002 collision
       regions by 69,327,180 exact facet checks. Alone it excludes 80,404 states and 10,087 orbits.
+  - shape: determination
+    role: outcome
+    question: Is target 4 (corner-SE, side-E0, side-S1, side-S2, interior-NW, interior-W, interior-S,
+      interior-SE) infeasible at U, by a certificate the kernel's checker accepts and the standing verifier
+      re-proves in full?
+    outcome: criterion_met
+    checked_by: The run (receipts/K/kernel-t4-bc425.json) returns PASS_CERTIFIED_CLOSED in 553 s of wall and
+      379 s of process CPU (producer 310 s, checker 242 s) on 138 steps and 11,323 rows in 18 rounds, rows
+      finest at 1/512, closure all_parent_poses_forbidden for side-E0 at step 137. The standing verifier at
+      cebb5d15a passes it in full mode in 275 s, checking all 4,945 live rows in full and 11,028 collision
+      regions by 34,265,064 exact facet checks. Alone it excludes 80,436 states and 10,090 orbits.
   verdict:
     decision: in-progress
     primary_criterion: Each frozen target run once, a closure admitted only on the standing verifier's full pass
@@ -110,6 +121,7 @@ projected for it alone, because most of what it excludes the first had already e
 | --- | --- | --- | --- | --- |
 | 1, `s182-bc425-t1` | corner-SW, side-N0, side-W0, side-W1, side-W2, interior-NW, interior-W, interior-S | closed in 817 s, 47 steps, 4,043 rows | full pass, 555 s | 60,368 states, 7,668 orbits |
 | 2, `s182-bc425-t2` | corner-SW, side-S0, side-S1, side-S2, interior-NW, interior-W, interior-S, interior-SE | closed in 1,250 s, 78 steps, 8,192 rows | full pass, 758 s | 57,496 states, 7,308 orbits |
+| 4, `s182-bc425-t4` | corner-SE, side-E0, side-S1, side-S2, interior-NW, interior-W, interior-S, interior-SE | closed in 553 s, 138 steps, 11,323 rows | full pass, 275 s | 53,016 states, 6,742 orbits (after lane A’s state 3063677 too) |
 
 The targets and the census they came from are
 [kernel-targets-bc425.txt](../../../explorations/X048-session-182-overnight/kernel-targets-bc425.txt)

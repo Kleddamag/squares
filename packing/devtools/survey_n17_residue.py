@@ -22,6 +22,15 @@ its size, so the oversampling biases nothing. The endpoint's own orbit is a cert
 stratum of one, the positive control. States run control first, then in a seeded random
 order, so a wall ceiling leaves a random subsample.
 
+The frame (`--distance`, `--sample`). By default the sample is drawn from every surviving
+orbit. `--distance D` restricts the frame to the orbits at Hamming distance exactly D
+from the endpoint's orbit; the endpoint's own orbit stays as the control, and the strata,
+the allocation and every extrapolation are then over that frame alone, while a found
+class is still measured against all survivors. `--sample 0` takes every orbit in the
+frame, so the survey is a census of it and each estimate is exact. `--flag-set arity8
+--distance 2 --sample 0` is every one-cell move from the endpoint that the arity-8 flags
+leave.
+
 The measurements, per sampled state:
 
 - Full-state placement at U. The selector's `search` runs on all 17 cells under a stated
@@ -1078,6 +1087,39 @@ def population(
     return Population(flags, alive, representatives, features, strata)
 
 
+def frame_of(pop: Population, apart: int | None) -> Population:
+    """The orbits at Hamming distance `apart` from the endpoint's orbit, and the endpoint's
+    own orbit as the control; the whole population when `apart` is None. The surviving
+    states and the flags stay whole, since a found class is measured against them all."""
+    if apart is None:
+        return pop
+    kept = [
+        mask
+        for mask in pop.representatives
+        if pop.features[mask]["distance"] == apart
+        or pop.features[mask]["stratum"] == ENDPOINT_STRATUM
+    ]
+    strata: dict[str, list[int]] = {}
+    for mask in kept:
+        strata.setdefault(pop.features[mask]["stratum"], []).append(mask)
+    features = {mask: pop.features[mask] for mask in kept}
+    return Population(pop.flags, pop.alive, kept, features, strata)
+
+
+def draw_frame(
+    frame: Population, sample: int, seed: int
+) -> tuple[dict[str, int], list[tuple[str, int]]]:
+    """The seeded weighted draw from the frame's random strata: `sample` orbits, or every
+    orbit in the frame when `sample` is 0. The endpoint's control is not part of it."""
+    if sample < 0:
+        raise ValueError(f"sample {sample}: 0 takes every orbit in the frame")
+    strata = {key: masks for key, masks in frame.strata.items() if key != ENDPOINT_STRATUM}
+    if not strata:
+        raise ValueError("the frame holds no surviving orbit besides the endpoint's")
+    size = sum(len(masks) for masks in strata.values())
+    return draw_sample(strata, sample or size, seed, weighted=True)
+
+
 def write(path: Path | None, receipt: dict[str, Any]) -> None:
     if path is not None:
         text = retained_json.dumps(receipt, sort_keys=True, default=float)
@@ -1383,7 +1425,15 @@ def endpoint_check(
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     _ = parser.add_argument("--flag-set", choices=sorted(FLAG_SETS), default="arity8")
-    _ = parser.add_argument("--sample", type=int, default=60, help="random states drawn")
+    _ = parser.add_argument(
+        "--sample", type=int, default=60, help="random states drawn; 0 takes the whole frame"
+    )
+    _ = parser.add_argument(
+        "--distance",
+        type=int,
+        default=None,
+        help="restrict the frame to the orbits at this Hamming distance from the endpoint's",
+    )
     _ = parser.add_argument("--seed", type=int, default=1)
     _ = parser.add_argument("--workers", type=int, default=1)
     _ = parser.add_argument("--timeout", type=float, default=None, help="wall ceiling, s")
@@ -1445,10 +1495,11 @@ def main(argv: list[str] | None = None) -> int:
     expected = EXPECTED_ORBITS[arguments.flag_set]
     if len(pop.representatives) != expected:
         raise ValueError(f"{len(pop.representatives)} surviving orbits, expected {expected}")
-    random_strata = {k: v for k, v in pop.strata.items() if k != ENDPOINT_STRATUM}
-    allocation, drawn = draw_sample(
-        random_strata, arguments.sample, arguments.seed, weighted=True
-    )
+    frame = frame_of(pop, arguments.distance)
+    try:
+        allocation, drawn = draw_frame(frame, arguments.sample, arguments.seed)
+    except ValueError as error:
+        parser.error(f"--distance {arguments.distance} --sample {arguments.sample}: {error}")
     drawn = [(ENDPOINT_STRATUM, endpoint_rep), *drawn]
     margin = arguments.margin
     finish_on = not arguments.no_finish
@@ -1498,6 +1549,7 @@ def main(argv: list[str] | None = None) -> int:
                 for p in KNOWLEDGE_RECEIPTS
             },
             "sample": arguments.sample,
+            "distance": arguments.distance,
             "seed": arguments.seed,
             "workers": arguments.workers,
             "timeout": arguments.timeout,
@@ -1525,6 +1577,11 @@ def main(argv: list[str] | None = None) -> int:
             "strata": {
                 key: {"orbits": len(pop.strata[key]), "drawn": allocation.get(key, 0)}
                 for key in sorted(pop.strata)
+            },
+            "frame": {
+                "distance": arguments.distance,
+                "orbits": sum(len(v) for k, v in frame.strata.items() if k != ENDPOINT_STRATUM),
+                "drawn": len(drawn) - 1,
             },
         },
     }
@@ -1565,7 +1622,7 @@ def main(argv: list[str] | None = None) -> int:
     header["parameters"]["reduce_fraction"] = arguments.reduce_fraction
     receipt = run_survey(
         plan,
-        pop,
+        frame,
         drawn,
         reduce=reduce,
         seed=arguments.seed,

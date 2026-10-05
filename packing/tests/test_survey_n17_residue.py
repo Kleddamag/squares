@@ -3,10 +3,12 @@
 from __future__ import annotations
 
 import itertools
+import json
 from functools import cache
 from pathlib import Path
 
 import numpy as np
+import pytest
 
 from devtools import select_n17_sub_patterns as selector
 from devtools import survey_n17_residue as survey
@@ -193,3 +195,58 @@ def test_weighted_allocation_oversamples_the_endpoint_neighbourhood() -> None:
     assert weighted["c4/i4/d2"] > plain["c4/i4/d2"]
     assert survey.distance(0b1011, [0b0111, 0b1110000]) == 2
     assert survey.stratum_of({"corner": 4, "side": 9, "interior": 4}, 10) == "c4/i4/d>=8"
+
+
+def test_the_frame_keeps_one_distance_and_the_control() -> None:
+    """`frame_of` keeps the orbits at the given distance and the endpoint's control, with
+    the survivors and flags whole; `draw_frame` with sample 0 takes every frame orbit."""
+    features = {
+        mask: {"distance": apart, "stratum": key}
+        for mask, apart, key in (
+            (1, 0, survey.ENDPOINT_STRATUM),
+            (2, 2, "c4/i4/d2"),
+            (3, 2, "c3/i4/d2"),
+            (4, 2, "c3/i4/d2"),
+            (5, 4, "c4/i4/d4"),
+            (6, 8, "c4/i4/d>=8"),
+        )
+    }
+    strata: dict[str, list[int]] = {}
+    for mask, feature in features.items():
+        strata.setdefault(feature["stratum"], []).append(mask)
+    alive = np.arange(10, dtype=np.int64)
+    pop = survey.Population([7], alive, sorted(features), features, strata)
+    assert survey.frame_of(pop, None) is pop
+    frame = survey.frame_of(pop, 2)
+    assert frame.representatives == [1, 2, 3, 4]
+    assert frame.strata == {
+        survey.ENDPOINT_STRATUM: [1],
+        "c4/i4/d2": [2],
+        "c3/i4/d2": [3, 4],
+    }
+    assert frame.alive is alive
+    assert frame.flags == [7]
+    allocation, drawn = survey.draw_frame(frame, 0, 1)
+    assert allocation == {"c3/i4/d2": 2, "c4/i4/d2": 1}
+    assert sorted(mask for _, mask in drawn) == [2, 3, 4]
+    assert len(survey.draw_frame(frame, 2, 1)[1]) == 2
+    with pytest.raises(ValueError, match="every orbit"):
+        _ = survey.draw_frame(frame, -1, 1)
+    with pytest.raises(ValueError, match="no surviving orbit"):
+        _ = survey.draw_frame(survey.frame_of(pop, 6), 0, 1)
+
+
+def test_distance_two_with_sample_zero_is_every_one_cell_move(tmp_path: Path) -> None:
+    """Under the arity-8 flags, 95 surviving orbits lie at distance 2 from the endpoint's
+    orbit (H-273's frame); `--distance 2 --sample 0` draws all of them after the control."""
+    output = tmp_path / "strata.json"
+    command = ["--flag-set", "arity8", "--distance", "2", "--sample", "0", "--strata-only"]
+    assert survey.main([*command, "--output", str(output)]) == 0
+    header = json.loads(output.read_text(encoding="utf-8"))
+    assert header["population"]["surviving_orbits"] == survey.EXPECTED_ORBITS["arity8"]
+    assert header["population"]["frame"] == {"distance": 2, "orbits": 95, "drawn": 95}
+    assert header["parameters"]["distance"] == 2
+    drawn = header["drawn"]
+    assert drawn[0]["stratum"] == survey.ENDPOINT_STRATUM
+    assert len({row["mask"] for row in drawn[1:]}) == 95
+    assert all(row["stratum"].endswith("/d2") for row in drawn[1:])

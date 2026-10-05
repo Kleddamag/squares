@@ -122,7 +122,8 @@ says in its README that this “does not prove s(17)>4.6605”. Its machine chec
 C028 and C029 paired C++ and BigInt programs that `run_public.js geometry` replays.
 
 These are recorded here as research material, as R068’s C010 was. None carries a bound
-in this record.
+in this record, and their programs and data are pinned by digest rather than retained
+([below](#what-is-retained-and-what-is-not)).
 
 ## Upstream CI
 
@@ -201,39 +202,65 @@ row by row. The two geometry replays decide no bound and are not part of it.
 
 ## What Is Retained, and What Is Not
 
-**Retained byte-identical** under `n17-square-packing/`, at their upstream paths: 153 of
-the 186 files that the two commits changed or added since `815b1626`, which is both
-packages, `R070_PUBLICATION.json` and `R071_PUBLICATION.json`, the workflows
-`.github/workflows/r070.yml` and `r071.yml`, and the nine root files R071 last edited:
-`CHANGELOG.md`, `CITATION.cff`, `NOTICE.md`, `README.md`, `RESULTS.md`,
-`docs/EVIDENCE_MAP.md`, `docs/RELEASE_NOTES.md`, `docs/REPRODUCIBILITY.md` and
-`scripts/check_release_hashes.py`. Every file’s Git blob equals the commit’s;
-`acquisition/upstream-subtree.sha256` lists all 186 files, retained or not, and
-`acquire_source --check` re-derives the packet from it.
-Thirteen large data files are stored as deterministic gzip
-([Compressed Files](#compressed-files)). The `.tree` files under R071’s `followup_c028`
-and `followup_c029` are stored plain, as `acquire_source` stores every file whose suffix
-is not a data suffix.
+The packet retains what the R071 bound, its replay and the audit read, and the
+documents that state the claims and their credit; it pins the rest by digest
+([`OR-18`](../../../../operating-rules.md): bulk data out of Git, retain what the claim
+needs). `acquisition/upstream-subtree.sha256` lists all 186 files the two commits
+changed or added since `815b1626`, retained or not, and `acquire_source --check`
+re-derives the packet from it.
 
-**Pinned by digest only**, 33 files:
+**Retained byte-identical**, 45 files under `n17-square-packing/`, at their upstream
+paths, each Git blob equal to the commit’s:
+
+- R071’s C027 certificate, its completion summary `history/c027/C027_GLOBAL_THEOREM.json`,
+  the launcher `run_public.js` and `check_package.js`, and the package’s documents:
+  `README.md`, `BOUND_PROOF.md`, `GEOMETRY_PROOF.md`, `ATTRIBUTION.md`,
+  `PUBLICATION_STATUS.json`, `REPRODUCIBILITY.md`, `MANIFEST.json` and `SOURCE_MAP.json`.
+- R070’s certificate and its published four-partition C++ and BigInt ledgers with their
+  `THEOREM.json` and `INPUTS.json` under `project/followup_c016/results/target_4.6604427/`,
+  which the audit reads, and the package’s documents, `check_package.js` and
+  `assert_results.js`.
+- `R070_PUBLICATION.json`, `R071_PUBLICATION.json`, the workflows
+  `.github/workflows/r070.yml` and `r071.yml`, and the nine root files R071 last edited:
+  `CHANGELOG.md`, `CITATION.cff`, `NOTICE.md`, `README.md`, `RESULTS.md`,
+  `docs/EVIDENCE_MAP.md`, `docs/RELEASE_NOTES.md`, `docs/REPRODUCIBILITY.md` and
+  `scripts/check_release_hashes.py`.
+
+Nine large data files, R070’s certificate and its eight ledgers, are stored as
+deterministic gzip ([Compressed Files](#compressed-files)).
+
+**Pinned by digest only**, 141 files, each listed with its size, SHA-256 and reason in
+`acquisition/sources.json`:
 
 - The 32 files under each package’s `project/base/upstream/`: the C++ checker
   `verify.cpp`, its kernel `native_geometry.hpp`, the launcher `replay.js`, Kleddamag’s
   BigInt checker `reference/verify_global_variable.js` and the twelve notices, the same
   sixteen in both packages. Each is byte-identical to the copy the R068 packet retains
   under `certificates/R068-C010/upstream/`, which `acquisition/sources.json` names and
-  `--check` compares. They are the code R068’s replay here ran.
-- R070’s `project/followup_c016/results/parent_hull_obstruction_cpp.json`, a 1.98 MB
-  one-line output of the obstruction research, which carries no bound and which its
-  geometry replay regenerates.
+  `--check` compares. They are the code R068’s replay here ran, and R071’s.
+- 95 files of R071’s research, 2.2 MB: the C028 and C029 conditional joint-geometry
+  programs, data trees and frozen outputs under `project/followup_c028/` and
+  `project/followup_c029/`, and the C021 and C026 inputs they reuse. They claim no
+  bound ([above](#the-other-results-none-a-bound)), and neither the C027 bound, its
+  paired replay nor the audit reads them. The 20 `.tree` files among them were 136,452
+  of the packet’s 146,029 lines when it was first retained on 2026-10-05; stage 4 of
+  the import pinned them on the owner’s request the same day.
+- 14 files of R070’s research, 3.8 MB: the C015 model and pose, the same-budget overlay,
+  the overlay and obstruction programs and outputs (among them a 1.98 MB one-line
+  obstruction record), and a research library. None carries a bound or is read by
+  either bound, the replay or the audit.
 
 Every retained file is described by a digest the source published: all 133 entries of
 `R071_PUBLICATION.json` match the pinned bytes, and 51 of the 60 in
 `R070_PUBLICATION.json`; the other nine are the root files above, which that record
 describes as they stood at `8988d933`, versions not retained here. Every entry of both
 packages’ `MANIFEST.json` matches too, the pinned-only files through their digests.
-Restoring R070’s package for `check_package.js` needs the obstruction output from the
-source, and both packages need the `upstream/` files from the R068 packet.
+The source’s `check_package.js`, which `run_public.js` calls first, reads every file of
+its package, so restoring either package for it needs the research files from the
+source at `8c11f696` and the `upstream/` files from the R068 packet;
+[`devtools.replay_guzhou_r071`](../../../devtools/replay_guzhou_r071.py) `stage` does
+both and refuses any byte whose digest is not the manifest’s. The bound itself reads
+only the certificate and the four checker files.
 
 **Not retained:** the rest of the upstream repository, unchanged since `815b1626` and
 covered by the earlier Guzhou packets; `.git/`; and the CI artifacts and logs, which
@@ -263,8 +290,6 @@ and remove the restored copies afterwards.
 
 | Stored file | Origin | Git blob | SHA-256, decompressed |
 | --- | --- | --- | --- |
-| `n17-square-packing/certificates/R070-4.6604427/project/followup_c015/data/lifted_accepted_model.json.gz` | upstream | `5b34261aa8c7a7643306e951edb6ab8497d79d89` | `ff183c5e0c14646ce06b07e0dcda075f09a9a34110e23daee27d16c4488edb13` |
-| `n17-square-packing/certificates/R070-4.6604427/project/followup_c016/data/geometric_overlay_all.json.gz` | upstream | `85ba6bc793faad7b62bddf9e5e6e6d1ea23f5256` | `5c10820e44a7a038dc717f0ca728f07c88b947a908f522ce480f19ada8f0bfa3` |
 | `n17-square-packing/certificates/R070-4.6604427/project/followup_c016/results/target_4.6604427/certificate.json.gz` | upstream | `c2811e355363ef0229280f4c6e38be8824a8d9f0` | `8438cae4da93c98a92b0b96560f95d9da8d0ef47287783f3b18a9cb8208167b9` |
 | `n17-square-packing/certificates/R070-4.6604427/project/followup_c016/results/target_4.6604427/paired_replay/cpp-0.json.gz` | upstream | `6759c5d54de14893f66524ae98d566ec453f1e44` | `2e5374306e7316737f8312413799beae8bd1a9977f91fa09f9e3df65c2ff574c` |
 | `n17-square-packing/certificates/R070-4.6604427/project/followup_c016/results/target_4.6604427/paired_replay/cpp-1.json.gz` | upstream | `879f1a78eec847a3e37adea76ede41de1bea261d` | `a7e65d506c8c4dfcb2c0d374c9904ab3c5d3e0a07032f0a6d70049b6c1cb55bd` |
@@ -274,8 +299,6 @@ and remove the restored copies afterwards.
 | `n17-square-packing/certificates/R070-4.6604427/project/followup_c016/results/target_4.6604427/paired_replay/node-1.json.gz` | upstream | `c523f75bb8296d95cab3a6ecd4e91f8003173bf1` | `7f0fd09fa687e7c9061e07c397e989f3bace317d73cfd5e3e7dca6c753aed9c6` |
 | `n17-square-packing/certificates/R070-4.6604427/project/followup_c016/results/target_4.6604427/paired_replay/node-2.json.gz` | upstream | `5091ff6147f924fb223c98a513a375b176ba0fca` | `da743ccf691f9980ab1184e40100cf7cace597378b7bea3d11e3b6c8714a8e90` |
 | `n17-square-packing/certificates/R070-4.6604427/project/followup_c016/results/target_4.6604427/paired_replay/node-3.json.gz` | upstream | `f9e497c461b959ee98c44f4169076e599f791da3` | `72a6da299375ac89873948124ea278cb0b6dd939361165bd9b3afbb818b6df9f` |
-| `n17-square-packing/certificates/R071-C029/project/followup_c026/data/finite_comparison.json.gz` | upstream | `6c62faf84b79ec4a3c5db9ded5c3142e0edf02de` | `8d00267cddcaa820dccd646969af0724f3ed88add675e00924483028dd372dc4` |
-| `n17-square-packing/certificates/R071-C029/project/followup_c029/data/joint_graph.json.gz` | upstream | `c96e32337d31f846cbcd1a8b441415e0230c04b7` | `fe5623f0c2dc86bfec2a0a0d5b7457508d1e65ee193c5f839f0cfe366602a198` |
 
 ## Retrieval Hashes
 

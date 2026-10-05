@@ -5,18 +5,16 @@ title: "Read evand's #281 comment of 4 October into the record (s(19) closed-cov
 kind: task
 status: closed
 priority: 2
-version: 5
+version: 6
 delegate: claude-code@vm
 labels:
   - result-import
-dependencies:
-  - type: blocks
-    target: is-01m44qz5cez2hhdr2b5p4m1sya
+dependencies: []
 parent_id: is-01m44qz0rxvkakmyqaj7qdgagv
 hold: null
 hold_until: null
 created_at: 2026-10-05T00:38:36.323Z
-updated_at: 2026-10-05T07:19:55.867Z
+updated_at: 2026-10-05T07:51:15.897Z
 started_at: 2026-10-05T00:48:55.402Z
 closed_at: 2026-10-05T07:19:55.867Z
 close_reason: "Done in jlevy/squares#353 / #359 (merged 2026-10-05)"

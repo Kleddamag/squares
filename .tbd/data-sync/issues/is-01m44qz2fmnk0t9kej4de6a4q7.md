@@ -5,20 +5,16 @@ title: "Import wand125: mixed rectangle-measure lower bounds of 4 October at 14 
 kind: task
 status: closed
 priority: 1
-version: 11
+version: 13
 delegate: claude-code@vm
 labels:
   - result-import
-dependencies:
-  - type: blocks
-    target: is-01m44qz4sp4xrmggh6fkwgv2x9
-  - type: blocks
-    target: is-01m44qz5cez2hhdr2b5p4m1sya
+dependencies: []
 parent_id: is-01m44qz0rxvkakmyqaj7qdgagv
 hold: null
 hold_until: null
 created_at: 2026-10-05T00:38:35.764Z
-updated_at: 2026-10-05T07:19:57.490Z
+updated_at: 2026-10-05T07:51:15.264Z
 started_at: 2026-10-05T00:48:54.642Z
 closed_at: 2026-10-05T07:19:57.490Z
 close_reason: "Done in jlevy/squares#353 / #359 (merged 2026-10-05)"

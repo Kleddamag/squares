@@ -44,30 +44,28 @@ from sqpack.workers import worker_count
 GOLDEN_DERIVED_ABOVE_100: dict[str, int] = {"n=1..100": 0, "n=1..200": 31, "n=1..324": 63}
 #: The cases whose retained upstream rendering is the UnitSquare release, per corpus.
 GOLDEN_UNITSQUARE: dict[str, set[int]] = {
-    # 68, 103, 105, 110 and 131 moved onto Francisco Couzo's packet on 2026-09-29.
-    "n=1..100": {69},
-    "n=1..200": {69},
-    "n=1..324": {69},
+    # 68, 103, 105, 110 and 131 moved onto Francisco Couzo's packet on 2026-09-29, and 69
+    # onto the catalogue's later side for the same packing on 2026-10-05 (T-088).
+    "n=1..100": set(),
+    "n=1..200": set(),
+    "n=1..324": set(),
 }
 #: How the corpus splits by source kind at each corpus; a case switching kind fails here.
 GOLDEN_SOURCE_KINDS: dict[str, dict[str, int]] = {
     "n=1..100": {
         "exact-grid": 64,
-        "kingbird-derived-facts": 34,
+        "kingbird-derived-facts": 35,
         "packet-derived-facts": 1,
-        "unitsquare-rendering": 1,
     },
     "n=1..200": {
         "exact-grid": 114,
-        "kingbird-derived-facts": 65,
+        "kingbird-derived-facts": 66,
         "packet-derived-facts": 20,
-        "unitsquare-rendering": 1,
     },
     "n=1..324": {
         "exact-grid": 176,
-        "kingbird-derived-facts": 97,
+        "kingbird-derived-facts": 98,
         "packet-derived-facts": 50,
-        "unitsquare-rendering": 1,
     },
 }
 
@@ -165,6 +163,7 @@ def test_kingbird_sources_are_metadata_only_derived_facts() -> None:
         65,
         66,
         67,
+        69,
         70,
         71,
         82,
@@ -219,12 +218,17 @@ def test_kingbird_sources_are_metadata_only_derived_facts() -> None:
 def test_known_best_rejects_corrupted_retained_unitsquare_svg(
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch
 ) -> None:
+    # No case reports the release since n = 69 moved to the catalogue (T-088), so the
+    # guard is driven through a plan for a record that would: the corpus build no longer
+    # reaches it, and a corrupted retained rendering must still be refused.
     source = SOURCES / "unitsquare/n069.svg"
     monkeypatch.setattr(known_best_builder, "UNITSQUARE_ROOT", tmp_path)
     (tmp_path / "n069.svg").write_bytes(source.read_bytes() + b"\n")
+    plan = _plan_for(_case(69, "8.8272055078159206568807", "[UnitSquare 2026]"))
+    assert plan.path == tmp_path / "n069.svg"
 
     with pytest.raises(ValueError, match="upstream-declared SVG SHA-256"):
-        known_best_builder.expected_outputs()
+        known_best_builder._source_index({69: plan})  # pyright: ignore[reportPrivateUsage]  # noqa: SLF001
 
 
 @pytest.mark.parametrize(

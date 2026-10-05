@@ -92,6 +92,42 @@ def test_a_superseded_report_must_lose_to_the_selected_source() -> None:
     assert any("not the selected source" in error for error in _errors(coverage))
 
 
+def _catalogue_overtakes_the_release() -> dict[str, Any]:
+    """The release's n = 6 report, with no override selected and a catalogue below it."""
+    coverage = _coverage()
+    coverage["sources"].append(
+        {
+            "id": "catalogue",
+            "scope": {"n_min": 1, "n_max": 10},
+            "evidence": [],
+            "disposition": "baseline-current",
+        }
+    )
+    del coverage["selected_overrides"][0]
+    coverage["superseded_reports"].append(
+        {"n": 6, "source_id": "release", "value": "2.9", "superseded_by": "catalogue"}
+    )
+    return coverage
+
+
+def test_a_catalogue_capture_that_overtakes_a_release_supersedes_it() -> None:
+    # n = 69 on 2026-10-05: no override is selected any more, so the baseline is the
+    # report, and the release's claim is held as superseded by it.
+    baseline = {**KINGBIRD, 6: "2.88"}
+    coverage = _catalogue_overtakes_the_release()
+    assert coverage_check.selection_errors(coverage, baseline, CLAIMS) == []
+    behind = coverage_check.selection_errors(coverage, {**KINGBIRD, 6: "2.9"}, CLAIMS)
+    assert behind == [
+        "superseded report n=6 from release is not beaten by the catalogue baseline 2.9"
+    ]
+    # Only the baseline source may stand in for a selected override.
+    coverage["superseded_reports"][-1]["superseded_by"] = "repository"
+    assert any(
+        "not the selected source" in error
+        for error in coverage_check.selection_errors(coverage, baseline, CLAIMS)
+    )
+
+
 def test_every_reparsed_claim_is_accounted_for() -> None:
     coverage = _coverage()
     del coverage["superseded_reports"][1]

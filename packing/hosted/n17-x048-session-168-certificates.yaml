@@ -482,6 +482,16 @@ objects:
   size: 9541
   sha256: 818454ac209ec635118a249d59b20d313c2dad2e01eb62cc00c4d547792395dd
   description: kernel certificate of s182-bc425-t1 (session 182, BC-425 lane K second tranche, H-267)
+- path: packing/campaign/explorations/X048-session-168-pilots/certificates/s182-bc425-t2/node-efa84000c4e7a83a2781654a769401eb5de5fa6585cb60f9b79278bcd2c5dbaa.json.gz
+  asset: node-efa84000c4e7a83a2781654a769401eb5de5fa6585cb60f9b79278bcd2c5dbaa.json.gz
+  size: 35094204
+  sha256: 996913e9fcd3c27a9f5c559514281f3e244d8661556f956bacf7d7a98f1ba621
+  description: kernel certificate of s182-bc425-t2 (session 182, BC-425 lane K second tranche, H-267)
+- path: packing/campaign/explorations/X048-session-168-pilots/certificates/s182-bc425-t2/seed-65d94b2e6c090e9e9d982d3bf980b825bdfacf467492fa144f1a5b4f00366d20.json.gz
+  asset: seed-65d94b2e6c090e9e9d982d3bf980b825bdfacf467492fa144f1a5b4f00366d20.json.gz
+  size: 9389
+  sha256: fa09bf395565d326a245f0765de540622bf8607b6ec35cc03f830d5eaa19b157
+  description: kernel certificate of s182-bc425-t2 (session 182, BC-425 lane K second tranche, H-267)
 - path: packing/campaign/explorations/X048-session-168-pilots/certificates/s182-k1/node-98540adf15fc966b0c389adeef310fffe7e1be2fc2c010ae91a2d22824881199.json.gz
   asset: node-98540adf15fc966b0c389adeef310fffe7e1be2fc2c010ae91a2d22824881199.json.gz
   size: 9705863

@@ -3,9 +3,9 @@ type: is
 id: is-01m32dt0p76c4bvp3amxtmyt2p
 title: "Research block (W1): the Kleddamag n=17 certified bound 461300/99853"
 kind: epic
-status: in_progress
+status: closed
 priority: 1
-version: 9
+version: 10
 delegate: claude-code@vm
 labels: []
 dependencies: []
@@ -20,8 +20,12 @@ child_order_hints:
 hold: null
 hold_until: null
 created_at: 2026-09-21T16:46:53.639Z
-updated_at: 2026-10-05T05:34:33.023Z
+updated_at: 2026-10-05T05:35:35.238Z
 started_at: 2026-10-05T05:34:33.023Z
+closed_at: 2026-10-05T05:35:35.238Z
+close_reason: "Adopted: E-n017-kleddamag-461300-99853-source-replay, its review of 2026-09-21 and the retained packet; n-017.md now carries the whole Kleddamag-to-Guzhou chain."
+resolution: null
+duplicate_of: null
 ---
 External artifact published 2026-09-21 claiming s(17) > 461300/99853 = 4.6197910929..., above both the 461300/99999 = 4.613046 that PR 211 registers and the intermediate 461300/99951 = 4.614154.
 

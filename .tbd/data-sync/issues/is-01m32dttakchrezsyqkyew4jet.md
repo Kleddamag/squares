@@ -3,9 +3,9 @@ type: is
 id: is-01m32dttakchrezsyqkyew4jet
 title: Decide registration of s(17) > 461300/99853 and reconcile it with PR 211
 kind: task
-status: in_progress
+status: closed
 priority: 1
-version: 4
+version: 5
 delegate: claude-code@vm
 labels: []
 dependencies: []
@@ -16,8 +16,12 @@ child_order_hints:
 hold: null
 hold_until: null
 created_at: 2026-09-21T16:47:19.891Z
-updated_at: 2026-10-05T05:34:33.010Z
+updated_at: 2026-10-05T05:35:35.228Z
 started_at: 2026-10-05T05:34:33.010Z
+closed_at: 2026-10-05T05:35:35.228Z
+close_reason: "Adopted: E-n017-kleddamag-461300-99853-source-replay, its review of 2026-09-21 and the retained packet; n-017.md now carries the whole Kleddamag-to-Guzhou chain."
+resolution: null
+duplicate_of: null
 ---
 Blocked on the replay and the proof review.
 

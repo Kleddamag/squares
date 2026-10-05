@@ -1822,6 +1822,297 @@ def test_a_budget_only_failure_prints_a_machine_readable_pass_count() -> None:
     assert "49 of 80 STEPS PASSED (the budget verdict alone failed)" in stdout.getvalue()
 
 
+def _hosted(monkeypatch: pytest.MonkeyPatch, tmp_path: Path, *, hosted: bool) -> Path:
+    """A GitHub step's own environment, or none of it; returns the summary file's path."""
+    summary = tmp_path / "step-summary.md"
+    if hosted:
+        monkeypatch.setenv("GITHUB_ACTIONS", "true")
+        monkeypatch.setenv("GITHUB_STEP_SUMMARY", str(summary))
+    else:
+        monkeypatch.delenv("GITHUB_ACTIONS", raising=False)
+        monkeypatch.delenv("GITHUB_STEP_SUMMARY", raising=False)
+    return summary
+
+
+def _render(summary: validate.RunSummary, *, strict: bool = False) -> tuple[int, list[str]]:
+    stdout = io.StringIO()
+    with redirect_stdout(stdout), redirect_stderr(io.StringIO()):
+        status = validate._render_text(summary, strict=strict)
+    return status, stdout.getvalue().splitlines()
+
+
+def _suite_a_verdict(
+    wall: float, *, failures: tuple[str, ...] = ("the suite_a tier ran over",)
+) -> gate_budgets.Verdict:
+    return gate_budgets.Verdict(
+        tier="suite_a",
+        wall_seconds=wall,
+        status="failed" if failures else "passed",
+        enforced=True,
+        ceiling_seconds=131.0,
+        measured_seconds=114.58,
+        failures=failures,
+    )
+
+
+def test_a_failed_test_is_named_by_the_closing_failure_class(
+    monkeypatch: pytest.MonkeyPatch, tmp_path: Path
+) -> None:
+    """Real pytest output, so a change in pytest's short summary fails here, not in CI."""
+    _ = _hosted(monkeypatch, tmp_path, hosted=False)
+    (tmp_path / "test_demo.py").write_text(
+        dedent(
+            """
+            import pytest
+
+            def test_ok():
+                pass
+
+            def test_bad():
+                assert 1 == 2, "one is not two"
+
+            @pytest.fixture
+            def broken():
+                raise RuntimeError("fixture boom")
+
+            def test_err(broken):
+                pass
+
+            @pytest.mark.parametrize("x", ["a b", "c"])
+            def test_param(x):
+                assert x == "c"
+            """
+        ),
+        encoding="utf-8",
+    )
+    command = (sys.executable, "-m", "pytest", "-q", "-p", "no:cacheprovider", "test_demo.py")
+    completed = subprocess.run(
+        command, cwd=tmp_path, capture_output=True, text=True, check=False
+    )
+    assert completed.returncode == 1
+    reason = f"command exited 1: {' '.join(command)}\n{completed.stdout}"
+    summary = validate.RunSummary(
+        results=[
+            validate.StepResult("lint floor", "passed", 1.0),
+            validate.StepResult("fast behavioral tests, shard A", "failed", 9.0, reason=reason),
+        ],
+        wall_seconds=10.0,
+        selected_count=2,
+        total_count=98,
+        budget=_suite_a_verdict(10.0, failures=()),
+    )
+
+    status, lines = _render(summary)
+
+    assert status == 1
+    assert "1 STEP FAILED:" in lines
+    assert lines[-1] == (
+        "FAILURE CLASS: tests failed (3 failures: test_demo.py::test_bad, "
+        "test_demo.py::test_param[a b], test_demo.py::test_err)"
+    )
+    assert not any(line.startswith("::") for line in lines)
+
+
+@pytest.mark.parametrize("rule", ["ceiling", "floor"])
+def test_a_per_test_wall_failure_is_its_own_class(
+    monkeypatch: pytest.MonkeyPatch, tmp_path: Path, rule: str
+) -> None:
+    """Driven through the raising lanes, so the class follows their own headline."""
+    _ = _hosted(monkeypatch, tmp_path, hosted=False)
+    seconds = "13.40" if rule == "ceiling" else "0.40"
+    output = (
+        "==== slowest durations ====\n"
+        f"{seconds}s call     tests/test_x.py::test_slow\n"
+        "==== slowest observed cpu durations (lower bounds) ====\n"
+    )
+    monkeypatch.setattr(validate, "_run", lambda *_args, **_kwargs: output)
+    context = validate.Context(
+        deep=False, strict=False, jobs=1, inner_jobs=1, environment=os.environ.copy()
+    )
+    lane = (
+        (lambda: validate._fast_tests(context, 1))
+        if rule == "ceiling"
+        else (lambda: validate._slow_tests(context))
+    )
+    with pytest.raises(validate.StepFailureError) as raised:
+        lane()
+    summary = validate.RunSummary(
+        results=[validate.StepResult("a lane", "failed", 20.0, reason=str(raised.value))],
+        wall_seconds=20.0,
+        selected_count=1,
+        total_count=98,
+    )
+
+    status, lines = _render(summary)
+
+    expected = (
+        "per-test wall ceiling failed (1 test at or above 12 s: "
+        "tests/test_x.py::test_slow 13.40 s)"
+        if rule == "ceiling"
+        else "per-test wall floor failed (1 slow-marked test under 1 s: "
+        "tests/test_x.py::test_slow 0.40 s)"
+    )
+    assert status == 1
+    assert lines[-1] == f"FAILURE CLASS: {expected}"
+
+
+@pytest.mark.parametrize("hosted", [True, False])
+def test_a_budget_only_failure_names_the_tier_its_wall_and_its_ceiling(
+    monkeypatch: pytest.MonkeyPatch, tmp_path: Path, *, hosted: bool
+) -> None:
+    """Every step green and the wall over: the class and both numbers, without the log.
+
+    On a hosted step the same line is a warning annotation on the checks page and a block
+    in the job's step summary. The exit status is the one this class always had.
+    """
+    target = _hosted(monkeypatch, tmp_path, hosted=hosted)
+    summary = validate.RunSummary(
+        results=[validate.StepResult("fast behavioral tests, shard A", "passed", 134.0)],
+        wall_seconds=134.2,
+        selected_count=1,
+        total_count=98,
+        budget=_suite_a_verdict(134.2),
+    )
+
+    status, lines = _render(summary)
+
+    verdict = "budget verdict alone failed (tier suite_a: 134.2 s vs ceiling 131 s)"
+    assert status == 1
+    assert "1 of 98 STEPS PASSED (the budget verdict alone failed)" in lines
+    assert lines[-1] == f"FAILURE CLASS: {verdict}"
+    annotation = f"::warning title=budget::{verdict}; every selected step passed"
+    assert (annotation in lines) is hosted
+    assert not any(line.startswith("::error") for line in lines)
+    if hosted:
+        written = target.read_text(encoding="utf-8")
+        assert "### packing-validate failed: tier `suite_a`" in written
+        assert f"**Failure class:** {verdict}" in written
+        assert "  134.20s  wall of a 131s ceiling (102%), recorded 114.58s" in written
+    else:
+        assert not target.exists()
+
+
+def test_a_record_relative_budget_failure_names_the_rule_that_fired(
+    monkeypatch: pytest.MonkeyPatch, tmp_path: Path
+) -> None:
+    _ = _hosted(monkeypatch, tmp_path, hosted=False)
+    summary = validate.RunSummary(
+        results=[],
+        wall_seconds=40.0,
+        selected_count=1,
+        total_count=98,
+        budget=_suite_a_verdict(40.0),
+    )
+
+    _, lines = _render(summary)
+
+    assert lines[-1] == (
+        "FAILURE CLASS: budget verdict alone failed (tier suite_a: 40.0 s vs ceiling 131 s; "
+        "the stale rule against the recorded 114.58 s)"
+    )
+
+
+def test_failing_tests_beside_a_failed_budget_name_both_classes(
+    monkeypatch: pytest.MonkeyPatch, tmp_path: Path
+) -> None:
+    target = _hosted(monkeypatch, tmp_path, hosted=True)
+    reason = (
+        "command exited 1: python -m pytest -q tests\n"
+        "=========================== short test summary info ============================\n"
+        "FAILED tests/test_x.py::test_a - AssertionError: 100% wrong\n"
+        "1 failed, 2000 passed in 133.00s (0:02:13)"
+    )
+    summary = validate.RunSummary(
+        results=[
+            validate.StepResult(
+                "fast behavioral tests, shard A", "failed", 134.0, reason=reason
+            ),
+            validate.StepResult(
+                "lint floor",
+                "failed",
+                900.0,
+                reason="command timed out after 900 seconds: ruff",
+            ),
+        ],
+        wall_seconds=134.2,
+        selected_count=2,
+        total_count=98,
+        budget=_suite_a_verdict(134.2),
+    )
+
+    status, lines = _render(summary)
+
+    assert status == 1
+    assert lines[-1] == (
+        "FAILURE CLASS: tests failed (1 failure: tests/test_x.py::test_a); "
+        "1 step failed (lint floor [timed out after 900 s]); "
+        "budget verdict also failed (tier suite_a: 134.2 s vs ceiling 131 s)"
+    )
+    # Titles escape `:` and `,`; messages escape `%`, the way GitHub's commands require.
+    assert (
+        "::error title=Tests failed%3A 1 failure in fast behavioral tests%2C shard A::"
+        "tests/test_x.py::test_a - AssertionError: 100%25 wrong"
+    ) in lines
+    assert "::error title=Validation step failed%3A lint floor::timed out after 900 s" in lines
+    assert (
+        "::warning title=budget::budget verdict also failed "
+        "(tier suite_a: 134.2 s vs ceiling 131 s)"
+    ) in lines
+    written = target.read_text(encoding="utf-8")
+    assert "- **Tests failed** in fast behavioral tests, shard A: 1" in written
+    assert "  - `tests/test_x.py::test_a`: AssertionError: 100% wrong" in written
+    assert "- **Step failed:** lint floor (timed out after 900 s)" in written
+
+
+def test_a_passing_run_reports_no_failure_class(
+    monkeypatch: pytest.MonkeyPatch, tmp_path: Path
+) -> None:
+    target = _hosted(monkeypatch, tmp_path, hosted=True)
+    summary = validate.RunSummary(
+        results=[validate.StepResult("lint floor", "passed", 1.0)],
+        wall_seconds=1.0,
+        selected_count=1,
+        total_count=1,
+        budget=_suite_a_verdict(1.0, failures=()),
+    )
+
+    status, lines = _render(summary)
+
+    assert status == 0
+    assert not any(line.startswith(("FAILURE CLASS", "::")) for line in lines)
+    assert not target.exists()
+
+
+def test_the_gate_keeps_the_step_summary_from_its_steps(
+    monkeypatch: pytest.MonkeyPatch, tmp_path: Path
+) -> None:
+    """A shard's tests render failing summaries on purpose; none may reach the job's."""
+    target = _hosted(monkeypatch, tmp_path, hosted=True)
+    observed: validate.Context | None = None
+
+    def capture_context(
+        selected: list[validate.Step], context: validate.Context, *_narrowing: object
+    ) -> validate.RunSummary:
+        nonlocal observed
+        observed = context
+        return validate.RunSummary(
+            results=[],
+            wall_seconds=0,
+            selected_count=len(selected),
+            total_count=len(validate.STEPS),
+        )
+
+    monkeypatch.setattr(validate, "_run_selected", capture_context)
+
+    status, _, _ = _invoke("--records")
+
+    assert status == 0
+    assert observed is not None
+    assert "GITHUB_STEP_SUMMARY" not in observed.environment
+    assert os.environ["GITHUB_STEP_SUMMARY"] == str(target)
+    assert not target.exists()
+
+
 @pytest.mark.parametrize("hosted", [True, False])
 def test_an_advisory_budget_verdict_prints_its_findings_and_passes(
     monkeypatch: pytest.MonkeyPatch, *, hosted: bool

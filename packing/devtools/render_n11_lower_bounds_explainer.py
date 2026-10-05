@@ -2353,8 +2353,10 @@ def shared_substitutions(facts: list[Facts], headline: Facts, default: Facts) ->
         figure_end = (
             f"T-060, by {verified.credit}, closes the remaining gap: its independently "
             "checked lower bound "
-            "equals Trump's upper bound at the exact algebraic side $T$. "
-            f"${verified_tex}$ is a truncated decimal display of $T$."
+            "equals Trump's upper bound at the exact algebraic side "
+            '<span class="tex">T</span>. '
+            f'<span class="tex">{verified_tex}</span> is a truncated decimal display of '
+            '<span class="tex">T</span>.'
         )
     else:
         frontier_update = (

@@ -5,7 +5,7 @@ title: "Import David Ellsworth / Allen Chang via the Kingbird catalogue: s(69) <
 kind: task
 status: in_progress
 priority: 1
-version: 4
+version: 5
 delegate: claude-code@vm
 labels:
   - result-import
@@ -16,11 +16,11 @@ parent_id: is-01m44qz0rxvkakmyqaj7qdgagv
 hold: null
 hold_until: null
 created_at: 2026-10-05T00:38:34.584Z
-updated_at: 2026-10-05T01:32:11.316Z
+updated_at: 2026-10-05T02:17:35.482Z
 started_at: 2026-10-05T00:40:48.766Z
 ---
 source-coverage.yaml pending_catalogue_intake lists n = 69, 83, 87: the 2026-09-30 Kingbird capture prints sides below the record. Register (T-088 n=69 Ellsworth; T-089 n=83, 87 Allen Chang), take the sides into the case records, remove the pending entries, witness from evand's parse of the SVGs at evand/square-packing 7ff3b21 site/www/data/p/ (kingbird.myphotos.cc is blocked by this session's egress policy). Stage 4 witness check if cheap.
 
 ## Notes
 
-2026-10-05 progress (claude-code lane kingbird): T-088 (n=69, Ellsworth) and T-089 (n=83, 87, Chang) registered at V0/C0 with reported evidence E-n069-ellsworth-2026-09-report, E-n083-chang-2026-09-report, E-n087-chang-2026-09-report; bibliography keys [Ellsworth n69 2026-09-24], [Chang n83 2026-09-24], [Chang n87 2026-09-24] dated by the page's server date 2026-09-24 (entries say September 2026). Case records take the catalogue sides; pending_catalogue_intake emptied; UnitSquare n=69 now a superseded report (check_source_coverage lets the baseline supersede when no override is selected). Witnesses from evand/square-packing@7ff3b21 site/www/data/p via new derive_kingbird_facts --from-parse (source.revision records the parse); --compare-parse: 90 of 92 comparable counts agree with our own SVG parse to one binary64 ulp (83, 87 differ because their pictures changed). Numerical receipts pass at 1e-8 (also 1e-14). Diagnostic only, not recorded: packing-witness promote robust-rational finds exact rational certificates within ~1e-12 of each printed side in seconds - the cheap stage-4 route. Stage 4 left as next_rung (needs certificate evidence + review).
+2026-10-05 lane kingbird, branch claude/ecstatic-pascal-pothtx-kingbird (not pushed): c023a08f9 tools (derive_kingbird_facts --from-parse/--compare-parse, hand-audited refresh, revision carried through the atlas, check_source_coverage baseline supersession); a79980ef0 records (T-088 n=69 Ellsworth, T-089 n=83,87 Chang, both V0/C0 S2 draft; evidence, coverage, bibliography, case records, witnesses from evand@7ff3b21 parse, atlas data, full translation-escape screen 324/120/1851/302/4492 none excluded, rigidity blocks, censuses, views, tests); dcea820d2 release pin. records tier green. Open: stage 4 for both (promote the retained witnesses to exact rational certificates - trial found them within ~1e-12 of each printed side - plus independent check, receipts, verifiers.yaml, negative controls, and a review under docs/project/reviews/, which then moves the verified upper lanes off the grids); re-derive from the SVGs once kingbird.myphotos.cc is reachable, retaining the degree-672 polynomial for n=83; agenda-005 BC-050 (precise witnesses for n=68/69) is moot for n=69 now.

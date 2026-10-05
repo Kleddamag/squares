@@ -72,10 +72,17 @@ properties:
       - movable_square_count
       - movable_squares
       - n
+      - reported_side
       - separating_square_count
       - square_count
       - stable_across_tolerances
       properties:
+        reported_side:
+          description: >-
+            The manifest's reported side for the record this case screened, so a record
+            replaced after the screen ran is told apart from the one it describes.
+          type: string
+          minLength: 1
         min_container_slack:
           description: Closest approach of any corner to the container boundary.
           $ref: '#/$defs/decimal'
@@ -182,12 +189,13 @@ properties:
     items:
       type: object
       additionalProperties: false
-      required: [bead, n, note, reason, shape_residual, source_kind]
+      required: [bead, n, note, reason, reported_side, shape_residual, source_kind]
       properties:
         bead: {type: string, minLength: 1}
         n: {type: integer, minimum: 1}
         note: {type: string, minLength: 20}
         reason: {const: witness-shape-residual-above-limit}
+        reported_side: {type: string, minLength: 1}
         shape_residual: {$ref: '#/$defs/decimal'}
         source_kind: {type: string, minLength: 1}
   generated_by: {type: string, minLength: 1}

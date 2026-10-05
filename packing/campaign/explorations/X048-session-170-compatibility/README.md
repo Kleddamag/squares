@@ -137,6 +137,13 @@ result does not rule those out.
 The next independently scoped work is local worker-memory supervision, before any larger
 experiment, not automatic expansion of this target.
 
+Commits cited in this record that are not in this branch’s history resolve at the tag
+`archive/guzhou-review-a-333` (Guzhou’s original nine-session branch); those from PR 307
+and PR 325 also resolve at `refs/pull/325/head`. The references are provenance only; no
+code reads them (`OR-18`). “Fresh replay” here means the same implementation re-run in a
+separate process without search; receipt names ending in `-independent-replay.json`
+predate that wording.
+
 <!-- This document follows common-doc-guidelines.md.
 See github.com/jlevy/practical-prose and review guidelines before editing.
 -->

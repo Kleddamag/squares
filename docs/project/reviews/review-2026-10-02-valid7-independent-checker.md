@@ -754,11 +754,24 @@ cannot show whether D-1’s case arose.
 `plan_valid7_replay stage --guard-d1` stages that line as a refusal for a replay.
 The author should be told.
 
+**Update, 5 October 2026.** The author fixed D-1 upstream at `da469ec` (3 October),
+answering evand/square-packing#1: `nonneg_open` now samples again until $p(s) \ne 0$ and
+accepts only on $p(s) > 0$. Against that revision $-(u - \tfrac12)^2$ on $(0, 1)$ is
+refused
+([3 October packet](../../../packing/resources/web/wand125-valid7-independent-check-2026-10-03/README.md)).
+The guarded replay of 2 and 3 October stands; its guard was stricter than the fix and
+refused nothing.
+
 ### D-2. `rf.nonneg_on` misses negativity next to a root at the left end (defect; non-blocking, dead code)
 
 `nonneg_on(u(u - 1), 0, 2)` returns `True` against the retained code, though the value
 at $\tfrac12$ is $-\tfrac14$. Only `tier_b.nonneg` calls it, and nothing calls
 `tier_b.nonneg`. It should be removed or fixed before anyone reuses it.
+
+**Update, 5 October 2026.** Fixed upstream at `da469ec`: `nonneg_on` refuses a root of
+odd multiplicity inside the interval and tests the sign at a point that is not a root,
+so $u(u - 1)$ on $[0, 2]$ is refused
+([3 October packet](../../../packing/resources/web/wand125-valid7-independent-check-2026-10-03/README.md)).
 
 ### D-3. De-duplication by 64-bit hash (non-blocking)
 
@@ -768,6 +781,12 @@ return another point’s mass.
 With about $10^3$ lines per box and $2.9 \times 10^6$ Tier B leaves, the chance of any
 collision in the run is of order $10^{-7}$. Keying by the exact `(str(n), str(d))` pairs
 would cost nothing.
+
+**Update, 5 October 2026.** Fixed upstream at `da469ec`: both caches are keyed by the
+exact canonical text of each value
+([3 October packet](../../../packing/resources/web/wand125-valid7-independent-check-2026-10-03/README.md)).
+The replay of 2 and 3 October ran the earlier code, so this finding’s order-$10^-7$
+estimate still describes it.
 
 ### D-4. `mass_convex` on a degenerate polygon (non-blocking, unreachable)
 

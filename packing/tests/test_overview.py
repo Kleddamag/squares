@@ -14,6 +14,7 @@ from decimal import Decimal
 from html.parser import HTMLParser
 from pathlib import Path
 from typing import cast
+from urllib.parse import urlsplit
 
 import pytest
 
@@ -492,7 +493,7 @@ def test_every_other_direct_card_opens_in_a_new_tab(page: str) -> None:
     poster's PDF, the film, another project."""
     direct = re.findall(r'<a class="site-card[^"]*"[^>]*>', page)
     same_tab = len(overview_sections.PAGES)
-    assert len(direct) == same_tab + len(overview_sections.OTHER_PROJECTS) + len(
+    assert len(direct) == same_tab + len(overview_sections.project_urls()) + len(
         overview_sections.ATLAS_CARDS
     )
     for tag in direct[:same_tab]:
@@ -1122,9 +1123,9 @@ def test_a_cases_visual_summary_carries_what_the_film_shows() -> None:
     }
     seventeen = facts[17]
     assert seventeen["exact"] is False
-    assert (seventeen["lower"], seventeen["upper"]) == ("4.660440", "4.675531")
+    assert (seventeen["lower"], seventeen["upper"]) == ("4.660442", "4.675531")
     assert seventeen["open"] == ["optimality"]
-    assert seventeen["cite"]["lower"]["note"] == "(confirmed T-043)"
+    assert seventeen["cite"]["lower"]["note"] == "(confirmed T-093)"
     # A floor that stands in for Nagamochi 2005's withdrawn bound names the work it corrects.
     assert facts[150]["cite"]["lower"]["corrects"] == "corrects Nagamochi 2005"
     assert facts[150]["cite"]["upper"]["corrects"] is None
@@ -1257,7 +1258,9 @@ _CARDS_TO_A_LINE = re.compile(
 )
 #: Each card size's minimum column, in rem, and the most to a line the stylesheet steps
 #: to: `paper-design.md`, Cards.
-CARD_COLUMNS = {"small": (12, 6), "medium": (16, 5), "large": (21, 4)}
+#: Each size's minimum column in rem and the most cards it sets to a line: four at most for
+#: every size (the owner, 2026-10-05).
+CARD_COLUMNS = {"small": (12, 4), "medium": (16, 4), "large": (21, 4)}
 
 
 def _screen_card_rules() -> str:
@@ -1346,7 +1349,7 @@ def test_every_card_names_one_of_three_sizes(page: str) -> None:
     assert [len(cards) for cards in sections.values()] == [
         len(overview_sections.PAGES),
         len(overview_sections.ATLAS_CARDS),
-        len(overview_sections.OTHER_PROJECTS),
+        len(overview_sections.project_urls()),
         len(overview_sections.DOCUMENTS),
     ]
     for name, cards in sections.items():
@@ -2064,14 +2067,97 @@ def test_other_projects_include_every_source_repository_the_record_reviews() -> 
     assert reviewed <= set(listed)
     assert len(set(listed)) == len(listed)
     assert not any("jlevy/squares" in url for url in listed)
+    assert all(url.startswith("https://github.com/") for url in listed)
+
+
+def test_every_source_the_coverage_register_reviews_has_a_card() -> None:
+    """Every source the source-coverage register reviews, on GitHub or off it, has a card
+    in Other Square Packing Projects: a repository's (a revision or a directory of it
+    names the repository), the catalogue's, a release's or a record's on Zenodo. No
+    address is listed twice."""
+    coverage = safe_load(overview_sections.SOURCE_COVERAGE.read_text(encoding="utf-8"))
+    listed = [
+        overview_sections.source_repository(url) for url in overview_sections.project_urls()
+    ]
+    reviewed = {
+        overview_sections.source_repository(source["url"]) for source in coverage["sources"]
+    }
+    assert reviewed <= set(listed), sorted(reviewed - set(listed))
+    assert len(set(listed)) == len(listed)
+
+
+#: The record's files a website's card must find its address in: the source-coverage
+#: register, the bibliography, the case records, and the retained captures of sources
+#: with their packets' READMEs. A capture counts because the address of Friedman's
+#: original page is the one the catalogue's own header links, as retained.
+CITING_FILES = (
+    "packing/frontier/source-coverage.yaml",
+    "packing/resources/bibliography.yaml",
+    "packing/frontier/n-*.md",
+    "packing/resources/web/*.md",
+    "packing/resources/web/*/README.md",
+)
+
+
+def test_every_website_card_opens_a_place_the_record_cites(
+    page: str, overview: overview_data.Overview
+) -> None:
+    """Each website's card, a catalogue's or another site's, opens an address the record
+    itself cites (`CITING_FILES`), whole, so the list says no more than the record does.
+    David Ellsworth's catalogue, the record's `[Kingbird]`, is there and leads the
+    section, ahead of Friedman's original page and Evan Daniel's atlas, and its card
+    counts exactly the results the register files under the catalogue's venue. No
+    website is on GitHub, and every address `PROJECT_EXTRA_KEYS` and `SOURCE_VENUES`
+    name is listed."""
+    texts = [
+        path.read_text(encoding="utf-8")
+        for pattern in CITING_FILES
+        for path in sorted(overview_data.REPO.glob(pattern))
+    ]
+    assert len(texts) > 300
+    sites = [*overview_sections.CATALOGUE_SITES, *overview_sections.OTHER_SITES]
+    for url, name, author, note in sites:
+        whole = re.compile(re.escape(url) + r"""(?=[\s)\]>"'`|]|$)""", re.MULTILINE)
+        assert any(whole.search(text) for text in texts), url
+        assert urlsplit(url).hostname != "github.com", url
+        assert all((name, author, note)), url
+    assert [urlsplit(url).hostname for url, _, _, _ in overview_sections.CATALOGUE_SITES] == [
+        "kingbird.myphotos.cc",
+        "web.archive.org",
+        "evand.github.io",
+    ]
+    assert overview_sections.CATALOGUE_SITES[0][0] == overview_sections.KINGBIRD
+    (first, tally), *_ = overview_sections.listed_projects(overview)
+    assert first == overview_sections.KINGBIRD
+    bibliography = safe_load(overview_data.BIBLIOGRAPHY.read_text(encoding="utf-8"))
+    filed = {
+        entry["key"]
+        for entry in bibliography["sources"]
+        if entry.get("venue") == overview_sections.SOURCE_VENUES[overview_sections.KINGBIRD]
+    }
+    assert filed <= overview_sections.project_source_keys()[overview_sections.KINGBIRD]
+    own = sorted(
+        result.id
+        for result in overview.results
+        if filed & set((result.record.get("attribution") or {}).get("source_keys") or ())
+    )
+    assert own
+    assert sorted(tally.results) == own
+    section = page.split('id="other-square-packing-projects"', 1)[1].split("<h2", 1)[0]
+    assert section.index(f'href="{overview_sections.KINGBIRD}"') == min(
+        section.index(f'href="{url}"') for url in overview_sections.project_urls()
+    )
+    named = {*overview_sections.PROJECT_EXTRA_KEYS, *overview_sections.SOURCE_VENUES}
+    assert named <= set(overview_sections.project_urls())
 
 
 def test_other_project_cards_are_links_showing_their_address(
     page: str, overview: overview_data.Overview
 ) -> None:
     """Each other project's card links the project, with no popover, and shows its
-    address beside GitHub's mark (or the host's saved favicon). A card with a tally of
-    results is a box around that link and the tally; one with none is the link itself
+    address beside GitHub's mark, or for a website the host's saved favicon or, where
+    none is saved, the globe. A card with a tally of results is a box around that link
+    and the tally; one with none is the link itself
     (`tests/test_site_project_tallies.py` holds the order, the tallies and their links)."""
     section = page.split('id="other-square-packing-projects"', 1)[1].split("<h2", 1)[0]
     cards = re.findall(
@@ -2079,12 +2165,20 @@ def test_other_project_cards_are_links_showing_their_address(
         section,
     )
     assert [url for url, _ in cards] == [
-        url for url, _ in overview_sections.ranked_projects(overview)
+        url for url, _ in overview_sections.listed_projects(overview)
     ]
     assert sorted(url for url, _ in cards) == sorted(overview_sections.project_urls())
+
+    def closed(markup: str) -> str:
+        """`markup` with each empty element closed as kpress writes it, `<path … />`."""
+        return re.sub(r"\s*/>", " />", markup)
+
     for url, body in cards:
-        assert url.removeprefix("https://") in body.replace("<wbr>", ""), url
-        assert 'class="site-link-icon"' in body, url
+        address = url.removeprefix("https://").rstrip("/")
+        assert html.escape(address) in body.replace("<wbr>", ""), url
+        assert closed(overview_sections.link_icon(url)) in closed(body), url
+    assert closed(overview_sections.GITHUB_MARK) in closed(section)
+    assert closed(overview_sections.WEB_MARK) in closed(section)
     assert "popovertarget" not in section
     assert "pop-project-" not in page
 
@@ -3541,12 +3635,12 @@ def test_recent_results_names_the_headline_results_at_their_rows(
     lead = _recent_prose(page)
     text = _rendered_text(lead)
     assert "the exact side of Trump\u2019s 1979 packing" in text
-    assert "Seventeen squares is bracketed by machine-checked bounds, T-043 below" in text
+    assert "Seventeen squares is bracketed by machine-checked bounds, T-093 below" in text
     assert "new exact values" in text
-    for result in ("t-060", "t-043", "t-065"):
+    for result in ("t-060", "t-093", "t-065"):
         assert f'<a href="all-results.html#{result}">{result.upper()}</a>' in lead, result
         assert f'id="{result}"' in results, result
-    assert re.findall(r"\bT-\d{3}\b", text) == ["T-060", "T-043", "T-065"]
+    assert re.findall(r"\bT-\d{3}\b", text) == ["T-060", "T-093", "T-065"]
     records = case_pages
     for n in (21, 32, 45):
         assert f'<a href="{render_case_pages.case_url(n)}" data-case="{n}">' in lead, n
@@ -3558,14 +3652,14 @@ def test_recent_results_names_the_headline_results_at_their_rows(
     assert site_documents.README in check_results.READER_TIER
     assert render_overview.OVERVIEW_ARTICLE in check_results.READER_TIER
     template = render_overview.OVERVIEW_ARTICLE.read_text(encoding="utf-8")
-    for result in ("T-060", "T-043", "T-065"):
+    for result in ("T-060", "T-093", "T-065"):
         assert result in template, result
     # The register's own values, as the rows state them: the exact values the
     # paragraph says are new, and the eleven-square side it writes.
     by_id = {r.id: r for r in overview_data.load().results}
     assert by_id["T-060"].record["kind"] == "optimality"
-    assert [by_id[t].record["scope"]["n_values"] for t in ("T-043", "T-065")] == [[17], [17]]
-    assert by_id["T-043"].record["kind"] == "lower-bound"
+    assert [by_id[t].record["scope"]["n_values"] for t in ("T-093", "T-065")] == [[17], [17]]
+    assert by_id["T-093"].record["kind"] == "lower-bound"
     assert by_id["T-065"].record["kind"] == "upper-bound"
     assert "3.8770835" in by_id["T-060"].record["claim"]
     exact = {
@@ -4300,12 +4394,12 @@ def test_a_new_result_is_starred_in_both_tables_by_the_atlas_rule(
         result = by_id[result_id]
         assert result.standing == render_recent_results.HOLDS, result_id
         assert set(cases) <= set(scope_values(dict(result.record["scope"]))), result_id
-    # T-060 settles n = 11 and T-043 holds n = 17. T-037 is as new and is superseded,
-    # T-007 holds its cases and is from 2005, and T-057 is a new upper bound, which the
-    # atlas does not star.
+    # T-060 settles n = 11 and T-093 holds n = 17 (T-043 until 2026-10-05). T-037 is as
+    # new and is superseded, T-007 holds its cases and is from 2005, and T-057 is a new
+    # upper bound, which the atlas does not star.
     assert starred["T-060"] == (11,)
-    assert starred["T-043"] == (17,)
-    assert not {"T-037", "T-007", "T-057"} & set(starred)
+    assert starred["T-093"] == (17,)
+    assert not {"T-037", "T-007", "T-057", "T-043"} & set(starred)
 
     table = overview_sections.results_table(overview)
     recent = overview_sections.recent_table(overview)
@@ -5347,7 +5441,7 @@ def test_a_result_rows_popover_body_comes_from_one_function(
 #: view, and its house drawing no longer ships, which rendered the page at 2,404,813
 #: bytes with the new-result stars, and the ceiling is 2,500,000 again, without the
 #: fetch think-yozo planned for the second drawings.
-PAGE_CEILINGS = {"index.html": 2_500_000, render_overview.RESULTS_PAGE: 1_200_000}
+PAGE_CEILINGS = {"index.html": 2_600_000, render_overview.RESULTS_PAGE: 1_200_000}
 
 
 def test_no_page_carries_a_result_overview(

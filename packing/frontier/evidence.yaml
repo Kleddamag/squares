@@ -153,6 +153,14 @@ evidence:
       local zmx2 replay of 2 October 2026 is
       E-n060-evand-mixed-cover-zmx2-replay, and zm_mixed.py was not run here.
       No Lean theorem checks this cover. The grid gives the upper bound.
+      Evidence update, 2026-10-05: the source's claims audit (6383ad8,
+      2026-10-02T00:37:52Z), which the 2 October evand packet read, is retained in the 4
+      October packet at 7ff3b211, where the bundle README is unchanged since (think-83zc).
+      It calls zm_mixed.py and zmx2 separately written rather than independent, since
+      zmx2's point test (Lemma P) uses the G0-G3 of zeromargin.py's write-up and
+      zm_mixed.py calls zeromargin.py, which is this entry's review finding F5, and notes,
+      citing Karakuş, that the published proof of Nagamochi's 2005 general result is
+      incomplete. No rung moves.
     source_reviewed: '2026-10-01'
   - id: E-n061-evand-derived-report
     claim: lower-bound
@@ -401,6 +409,23 @@ evidence:
       The fast source script rechecks hashes and recorded coverage; its full
       positive-tilt checker and the Lean build have not run here. The finite
       scope enumerates this corpus's instances, not the theorem's full domain.
+      Evidence update, 2026-10-05: the 4 October evand packet retains, at 7ff3b211, what
+      earlier commits added on this claim (think-83zc). The bundle README as edited on 3
+      October (02629f2 to ca6d988) records wand125's checker as an independent second
+      implementation, which the source reran in a sandbox (RECORD OK over all 156,800
+      roots, three mutant covers refused) and read, finding the measure-zero gap this
+      record's review names D-1; says the D4 reduction and Lemma Z are kernel-checked,
+      leaving ValidTilt7; cites chelokot's Lean s6_eq_three for k = 3; and points at the
+      six adversarial review reports, published at 0f55a52 and retained with it. At
+      bfbdf04 (2026-10-02T14:06:48Z) the source's zmx2 with area density closed the 120
+      D4 boxes at the double germs it had left open: search/ZMX2_AREA.md reports Valid7
+      by cert --first-order, VERIFIED-D4 over 4,900 roots and VERIFIED over all 39,200
+      roots of the unreduced pose space, none uncertified, 399 CPU-seconds, with its run
+      records. That is an interval-certified second implementation by the source's agent,
+      written without opening qx2_zm.py; the source calls its newest lemmas (Lemma U per
+      base cell, Lemma V, Lemma K(d)) the least reviewed, and its README and TODO still
+      call zmx2 partial until a second reader checks them. Nothing was run here, and no
+      rung moves.
     source_reviewed: '2026-10-01'
   - id: E-k2m3-wand125-valid7-independent
     claim: lower-bound
@@ -429,10 +454,10 @@ evidence:
       with the published leaves (receipts/replay/wand125_replay_compare.json in the wand125
       packet).
     replay_status: passed
-    verifiers: [V-wand125-valid7-checker, V-audit-valid7-independent]
+    verifiers: [V-wand125-valid7-checker, V-audit-valid7-independent, V-probe-valid7-fixes]
     limitations: >-
       wand125/valid7-independent-check at 38dd31b369991b0d96c917a4af0c7139b44a038d (its
-      only commit, 2026-10-02T02:49:17Z) and its release records-v1 report that a separately
+      first commit, 2026-10-02T02:49:17Z) and its release records-v1 report that a separately
       written exact-rational checker decides Valid7, the finite statement T-064's lower half
       rests on, for Evan Daniel's k = 7 cover L4_k02_box7.txt, the bytes the 2026-10-01 evand
       packet retains: every closed unit square in [0,7]^2, at every centre and every angle,
@@ -484,6 +509,20 @@ evidence:
       not Daniel's, deciding Valid7 here, an independent implementation by its read log;
       it is the same method, exact-algebraic, as the qx2_zm.py replay beside it. No
       mutated cover was run in this replay; the three refused on 2 October are verify.sh's.
+      Evidence update, 2026-10-05: at da469ecff5da0c71882e894b65d680ce57a0c87e
+      (2026-10-03T23:14:42Z) the author fixed D-1 to D-3 upstream, answering
+      evand/square-packing#1: nonneg_open and the unused rf.nonneg_on now require a
+      positive value at an interior point that is not a root, and tier_b2's line and value
+      caches are keyed by exact text, not Python's hash. check_record.py gained --seed and
+      --claim; the release records were not regenerated. The wand125 packet of 3 October
+      retains that revision. Its verify.sh ran here on 5 October on the unchanged records:
+      RECORD OK with fresh seed 2431791605250748986, the counts of 2 October, and the three
+      lighter covers refused, in 427 s; devtools.probe_valid7_fixes, in the same
+      interpreter, found each finding's example accepted at 38dd31b3 and refused at
+      da469ec. The full replay of 2 and 3 October stands: it ran the first commit's V2 code
+      with D-1's accepting case made a refusal, stricter than the fix, which samples again,
+      and the guard refused nothing; D-3's hash keys were in the code it ran, a collision
+      in the run being of order 1e-7 by the review's count. No rung moves.
     external_review:
       state: informally-verified
       date: '2026-10-02'
@@ -6709,7 +6748,15 @@ evidence:
       find, the first exact value of s(k^2 - 4) for any k >= 4; its CREDITS.md
       says the work was produced with an AI agent under human direction.
       The upper bound 6 is the trivial grid. This entry preserves the source
-      claim; the local replay is recorded separately.
+      claim; the local replay is recorded separately. Evidence update, 2026-10-05:
+      the source's claims audit (6383ad8, 2026-10-02T00:37:52Z), which the 2 October
+      evand packet read, is retained in the 4 October packet at 7ff3b211 with
+      s12/VERIFICATION.md, the README being unchanged since (think-83zc). It calls
+      zmcheck separately written, sharing no code with zeromargin.py but written from
+      its lemmas, so the point-test formulation is common; notes, citing Karakuş, that
+      the published proof of Nagamochi's 2005 general result is incomplete; and records
+      the hypothesis-free s32_eq_6 of 28 September (S32Lower.lean, not built here,
+      think-angg). No rung moves.
     source_reviewed: '2026-09-27'
 
   - id: E-n032-evand-closed-cover-source-run
@@ -7013,7 +7060,13 @@ evidence:
       packing/resources/web/evand-square-packing-2026-10-01/issue-238-author-2026-10-01.json);
       the brief that governed that reading is not public and was not seen here. The zmcheck
       sweeps and the Lean build were not run here, and the checker programs are not
-      formalised.
+      formalised. Evidence update, 2026-10-05: the brief was published at 0f55a52
+      (2026-10-03T20:24:02Z), and the 4 October evand packet retains it at 7ff3b211 as
+      s12/tasks/s21-finish/xcheck.md, dated 27 September, with the plan and audits of the
+      s(21) bundle (think-83zc). It forbids zm_mixed.py, its tests, ZM_MIXED.md and its
+      audits, and permits zmcheck, zeromargin.py, RUNG2.md and ZEROMARGIN.md for the
+      pose-space subdivision and point primitives, as the source said on #238. No rung
+      moves.
     source_reviewed: '2026-10-02'
 
   - id: E-n012-evand-15680-3951-report
@@ -7720,7 +7773,15 @@ evidence:
       Axioms.lean over its default target also printed only the standard axioms
       (receipts/lean/axioms_default.log). The theorem is Bentz's (T-006); this is Evan
       Daniel's case-free proof of it, made with an AI agent under his direction as his
-      CREDITS.md says.
+      CREDITS.md says. Evidence update, 2026-10-05: at c2ae715 (2026-10-02T01:10:00Z)
+      the source added s13_isLeast : IsLeast {s | Packs 13 s} 4 to S13Lower.lean, from
+      its theorem that the infimum is attained for every n >= 1 (isLeast_minSide,
+      Attain.lean). At f7b4430 and 87726c9 its SpecHeadline.lean states the same as s13
+      for a common specification, UnitSquarePacking.Packs, and as s13_fc for
+      formal-conjectures' definitions (open unit squares placed by isometries in the open
+      square), through SpecBridge.lean and SpecFC.lean. The 4 October evand packet
+      retains these files at 7ff3b211 (think-83zc); none was built here. They restate the
+      theorem this entry built for other forms of the definition, and no rung moves.
     source_reviewed: '2026-09-30'
 
   - id: E-n021-evand-mixed-cover-report
@@ -7758,6 +7819,15 @@ evidence:
       its s(32) = 6; its CREDITS.md says the work was produced with an AI agent
       under human direction. The upper bound 5 is the grid. This entry
       preserves the source claim; the local replay is recorded separately.
+      Evidence update, 2026-10-05: the source's claims audit (6383ad8,
+      2026-10-02T00:37:52Z), which the 2 October evand packet read, is retained in the 4
+      October packet at 7ff3b211, where the bundle README is unchanged since
+      (think-83zc). It calls the two checkers separately written rather than independent,
+      since zmx2's point test (Lemma P) uses the G0-G3 of zeromargin.py's write-up and
+      zm_mixed.py calls zeromargin.py, and notes, citing Karakuş, that the published
+      proof of Nagamochi's 2005 general result is incomplete. The brief that set what
+      zmx2's author could read, s12/tasks/s21-finish/xcheck.md, is retained there too.
+      No rung moves.
     source_reviewed: '2026-09-28'
 
   - id: E-n021-evand-mixed-cover-zmx2-replay
@@ -7882,7 +7952,13 @@ evidence:
       1 + sqrt(34) as the earlier bounds; its CREDITS.md says the work was
       produced with an AI agent under human direction. The upper bound 7 is the
       grid. This entry preserves the source claim; the local replay is recorded
-      separately.
+      separately. Evidence update, 2026-10-05: the source's claims audit (6383ad8,
+      2026-10-02T00:37:52Z), which the 2 October evand packet read, is retained in the 4
+      October packet at 7ff3b211, where the bundle README is unchanged since
+      (think-83zc). It calls the two checkers separately written rather than independent,
+      since zmx2's point test (Lemma P) uses the G0-G3 of zeromargin.py's write-up and
+      zm_mixed.py calls zeromargin.py, and notes, citing Karakuş, that the published
+      proof of Nagamochi's 2005 general result is incomplete. No rung moves.
     source_reviewed: '2026-09-28'
 
   - id: E-n045-evand-mixed-cover-zmx2-replay
@@ -8319,7 +8395,8 @@ evidence:
       strict lower bound s(17) > 18641771/4000000 = 4.66044275 for independently
       rotated unit squares with disjoint interiors and boundary contact allowed,
       11/4000000 above R068's 116511/25000. This entry records that source
-      claim; nothing has been replayed here. The certificate (C027, SHA-256
+      claim; the complete paired replay here of 2026-10-05 is recorded
+      separately (E-n017-guzhou-r071-source-replay). The certificate (C027, SHA-256
       15b6bf6a...d469) keeps R068's charge unchanged: all 2,621 point orbits,
       all 889 rule orbits, the budget 17000448944 units of 10^-9 and the
       requested minimum 1000026409 equal R068's, and only the parent side,
@@ -8331,9 +8408,10 @@ evidence:
       charge 1000026844 and surplus 17 x 1000026844 - M = 7404 from a
       completion summary of a three-partition C++ and BigInt run of 1,694 s;
       its row-level partition records are missing, which the source states.
-      That summary names the certificate's digest and, as checker, launcher
-      and executable, the bytes R068's replay here ran (devtools.audit_guzhou_r071
-      summary). The source's own CI replay of it, run 36788162356 on GitHub
+      That summary names the certificate's digest, as BigInt checker and
+      launcher the bytes R068's replay here ran, and as executable the source's
+      own build 8f4d59ac...aa42, which its R068 and R070 runs record; R068's
+      replay here built cf761bb5...19d5 (devtools.audit_guzhou_r071 summary). The source's own CI replay of it, run 36788162356 on GitHub
       Actions, passed in 16 min 43 s; its publisher did not observe it, and its
       artifacts could not be fetched here. R070 at
       8988d933e10fe89709a01d98b602396c29dd7bd1 (2026-09-29T07:56:05Z) claimed
@@ -8348,6 +8426,134 @@ evidence:
       parent within a fixed-weight enhancement class, and R071's conditional
       joint geometry at 9321/2000 inside one first-anchor box, which the source
       says does not prove s(17) > 4.6605.
+    external_review:
+      state: informally-verified
+      date: '2026-10-05'
+      reviewed_by: AI agent, the review lane of the 2026-10-05 stage 4 for T-093 (claude-opus-5-5, tbd-strong tier), separately prompted, blind to the replay; docs/project/reviews/review-2026-10-05-guzhou-r071.md
+      note: >-
+        No mathematical defect. The C027 certificate is R068's charge byte for byte at parent
+        side 18452000/18641771 with every strict core rebuilt over 5,114 intervals refining
+        R068's 4,991 and R070's 5,107; the charge, budget 17000448944, capacity one of all 86
+        patterns, the chain, every core margin (least 1.0001596e-12) and envelope were
+        re-derived in exact arithmetic by code sharing nothing with the source, and the two
+        prose steps are the lemmas proved in the 2026-09-28 review, unchanged. An independent
+        exact sweep returned minimum 1000026844 at 227 sampled rows, the 14 new rows among
+        them, and reproduced 20 published rows of R068 and R070 with their cell counts; the
+        charge at a legal corner centre bounds every row from above. Unchecked there: the
+        exact minimum at the other 4,887 rows, which the source's missing C027 records and
+        unobserved CI do not supply and the complete paired replay decided
+        (E-n017-guzhou-r071-source-replay). RF-1 to RF-9, none blocking.
+    source_reviewed: '2026-10-05'
+
+  - id: E-n017-guzhou-r071-source-replay
+    claim: lower-bound
+    scope: {n_values: [17]}
+    assurance: verified
+    method: exact-algebraic
+    performed_by: repository
+    relationship_to_generator: same-implementation
+    origin: replayed-here
+    novelty: previously-published
+    source_key: '[Guzhou0806 n17 R071]'
+    certificate: resources/web/n17-guzhou-r071-2026-09-30/n17-square-packing/certificates/R071-C029/bounds/c027/certificate.json
+    replay: >-
+      From packing/, with g++ and the Boost 1.83 headers and Node on PATH:
+      .venv/bin/python3 -m devtools.replay_guzhou_r071 stage --work WORK
+      --checkout CLONE, where CLONE is a clone of the source at 8c11f696 that
+      supplies the research files the packet pins by digest (without it the
+      staged package holds every file the bound reads, and run --route paired
+      runs the same commands without the package check); then
+      .venv/bin/python3 -m devtools.replay_guzhou_r071 run --work WORK
+      --cores 2,3, which runs node check_package.js (PASS_BYTES_ONLY) and
+      N17_TIMEOUT_MINUTES=600 node run_public.js bound WORK/bound: it compiles
+      project/base/upstream/cpp/verify.cpp with g++ -O3 -std=c++17, runs
+      replay.js on bounds/c027/certificate.json at two partitions, and must
+      write REPLAY.json PASS_R071_C027_GLOBAL_REPLAY and THEOREM.json
+      PASS_COMPLETE_CPP_AND_BIGINT_EXCLUSION with target 18641771/4000000,
+      minimum 1000026844, budget 17000448944, surplus 7404 and the
+      certificate's digest. Then .venv/bin/python3 -m devtools.audit_guzhou_r071
+      compare R071 WORK/bound/global --published WORK/bound/global must report
+      no mismatch. The controls are .venv/bin/python3 -m
+      devtools.replay_guzhou_r071 control over-claim --work WORK and control
+      drop-rule --work WORK --count 4, each refused by both checkers. The
+      receipts are under
+      packing/resources/web/n17-guzhou-r071-2026-09-30/receipts/r071/.
+    replay_status: passed
+    verifiers: [V-guzhou-n17-verify-cpp, V-kleddamag-n17-verify, V-audit-guzhou-r071, V-replay-guzhou-r071]
+    proof:
+      source: packing/resources/web/n17-guzhou-r071-2026-09-30/n17-square-packing/certificates/R071-C029/BOUND_PROOF.md
+      theorem: Seventeen independently rotated unit squares cannot fit at side 18641771/4000000; compactness gives s(17) > 18641771/4000000.
+      scope: Unrestricted square packing with disjoint interiors and boundary contact allowed.
+      pinpoints: >-
+        The source's BOUND_PROOF.md under certificates/R071-C029/, on R068's PROOF.md and
+        the argument and budget rules of Kleddamag's bounds/4.66001/; sections 3 and 4 of
+        the 2026-09-28 review of R067 and R068, which prove the two steps the source
+        asserts (endpoint sufficiency and the centre envelope), neither of which uses the
+        parent side or the cores; and sections 3 to 6 of the 2026-10-05 review of R071,
+        which re-derive the five premises the new parent side and rebuilt cores touch.
+      assumptions:
+        - The exact nonnegative D4-invariant point, k-of-m threshold, weighted-threshold and winning-subset charges are R068's unchanged, with total budget 17000448944 units of 10^-9.
+        - A weighted threshold with positive integer coefficients a_i and threshold k charges at most floor(sum a_i / k) disjoint cores, and a winning-subset feature whose listed subsets pairwise intersect charges at most one; every one of the 86 distinct rules has capacity one.
+        - The 5114 contiguous rational parent-angle intervals cover every folded orientation up to 207107/500000, with a strictly contained closed core in each at parent side 18452000/18641771.
+        - Each interval's centre envelope contains every legal parent centre, and the exact sweep decides every generic centre cell in it.
+        - Upper semicontinuity of the monotone nonnegative closed-set charges extends the generic bound to boundary and event centres.
+        - Exact arithmetic establishes minimum charge 1000026844, so 17 times that charge exceeds the budget by 7404 units; compactness makes the packing minimum attained.
+      audit_record: docs/project/reviews/review-2026-10-05-guzhou-r071.md
+    external_review:
+      state: informally-verified
+      date: '2026-10-05'
+      reviewed_by: AI agent, the review lane of the 2026-10-05 stage 4 for T-093 (claude-opus-5-5, tbd-strong tier), separately prompted, blind to the replay; docs/project/reviews/review-2026-10-05-guzhou-r071.md
+      note: >-
+        The review, written before and blind to this replay, finds no mathematical defect,
+        re-derives every premise in exact arithmetic by code sharing nothing with the
+        source, and lists in its section 8 what the replay must show; this replay shows all
+        of it. Its independent exact sweep at 227 rows, the 14 rows R071 adds among them,
+        equals the fresh C++ and BigInt ledgers at every one, minimum and cell count (the
+        triples' SHA-256 2b8ebed9...b7de in both), and its least core margin is the fresh
+        C++ header's. RF-1 to RF-9, none blocking; RF-3 to RF-6 are closed at this exit.
+    limitations: >-
+      Replays the source's own run_public.js bound over the retained bytes on
+      2026-10-05, from 04:53:42Z to 05:51:40Z, in the R071 package staged by
+      devtools.replay_guzhou_r071 from the packet (at that time retaining the
+      research files it now pins by digest, which a staging from a clone at
+      8c11f696 reproduces byte for byte), on a shared four-core Linux host at
+      load 5 to 21, pinned to two cores, with g++ 13.3.0 at -O3 -std=c++17,
+      Boost 1.83 headers, Node v22.22.0 and N17_TIMEOUT_MINUTES=600:
+      check_package.js PASS_BYTES_ONLY; the C++ executable built is
+      cf761bb5...19d5, the bytes R068's replay here built from the same
+      verify.cpp (the source's builds are 8f4d59ac...aa42); Guzhou0806's C++
+      checker and Kleddamag's Node BigInt checker (c2209186...49b7, launcher
+      replay.js 1125e596...7712) ran concurrently over all 5,114 intervals in
+      two partitions each, C++ 1,577 s and 1,693 s, BigInt 3,409 s and 3,464 s,
+      and wrote PASS_COMPLETE_CPP_AND_BIGINT_EXCLUSION, target
+      18641771/4000000, budget 17000448944, minimum 1000026844, surplus 7404,
+      certificate 15b6bf6a...d469, and REPLAY.json
+      PASS_R071_C027_GLOBAL_REPLAY, in 3,478 s of wall and 3,238 CPU-seconds.
+      devtools.audit_guzhou_r071 compare finds the two C++ and two BigInt
+      partitions identical row for row, 0 of 4 x 5,114 rows differing, every
+      row at minimum 1000026844, 2,263,809,819,494 cells in all, C++ sites
+      20,860 and signed terms 49,208, least strict core margin
+      15923658553101702964643878656034963576202697/15921117963709509270343578017641703022637690727500000000,
+      just above 10^-12 at row 2647, reduced (interval, minimum, cells)
+      triples SHA-256
+      6c9d72022c548444a5a56201949064eaf81dc24409bb88d03de09549b7f3bfe3. The
+      source retains no partition record of R071, so there is no published
+      ledger to compare with; the comparison is between the two fresh ledgers
+      and with the review's sample. Two mutated certificates are refused by
+      both checkers: the over-claim (parent side 9226/9321, target 9321/2000,
+      cores unchanged) as a non-strict core before any sweep, and the
+      drop-rule (the heaviest rule orbit's weight zeroed and its 198,960,224
+      units taken off the budget) by the sweep at interval 0, minimum
+      950286788 below the requested 1000026409; tests/test_guzhou_r071_packet.py
+      holds both. The C++ checker is Guzhou0806's own and the BigInt checker is
+      Kleddamag's byte for byte; both run one exact event-cell sweep, so C3
+      rather than a method-distinct C4, and the native parent-core route
+      still cannot read the weighted and winning-subset features. This is the
+      first replay of R071 outside its source: its publisher checked file
+      identities and saved records only, its partition records are missing,
+      and its CI run was not observed. Advance over the previous verified
+      116511/25000 (R068, T-043): exactly 11/4000000. No new theorem
+      identifier is created.
     source_reviewed: '2026-10-05'
 
   - id: E-n017-kleddamag-4640020-report
@@ -11462,6 +11668,21 @@ evidence:
       evand/square-packing 7ff3b2113532889708a3baa4d56bc44294022e63, whose side is the
       polynomial's root to 30 digits. That witness's 1e-8 numerical receipt checks the
       parse only and is not recorded here as a replay. No optimality is claimed.
+    external_review:
+      state: informally-verified
+      date: '2026-10-05'
+      reviewed_by: >-
+        AI agent (claude-opus-5-5, tbd-strong tier, reasoning effort xhigh), the review
+        lane of the 2026-10-05 stage 4 for T-088 and T-089, separately prompted, sharing no
+        context with the lanes that registered the results and produced their certificates
+        (docs/project/reviews/review-2026-10-05-kingbird-intake-n69-n83-n87.md)
+      note: >-
+        Side, degree-38 polynomial and credit sentences read against the capture; the
+        polynomial is irreducible and its root 8.8271946557297389149... lies in the printed
+        decimal's last unit, so the printed side is a truncation. The witness equals Evan
+        Daniel's parse square for square. The exact certificate proves s(69) <=
+        8.82719465572975, 1.1e-14 above the root; the printed side and the root are not
+        certified. Unchecked: the SVG's own pose, rigidity, optimality.
     source_reviewed: '2026-10-05'
   - id: E-n083-chang-2026-09-report
     claim: upper-bound
@@ -11485,6 +11706,21 @@ evidence:
       7ff3b2113532889708a3baa4d56bc44294022e63, whose side the printed decimal truncates.
       That witness's 1e-8 numerical receipt checks the parse only and is not recorded here
       as a replay. No optimality is claimed.
+    external_review:
+      state: informally-verified
+      date: '2026-10-05'
+      reviewed_by: >-
+        AI agent (claude-opus-5-5, tbd-strong tier, reasoning effort xhigh), the review
+        lane of the 2026-10-05 stage 4 for T-088 and T-089, separately prompted, sharing no
+        context with the lanes that registered the results and produced their certificates
+        (docs/project/reviews/review-2026-10-05-kingbird-intake-n69-n83-n87.md)
+      note: >-
+        Side, degree lock and credit sentences read against the capture; the degree-672
+        polynomial is in the SVG only and was not checked. The witness equals Evan Daniel's
+        parse square for square, and the printed side truncates its side. The exact
+        certificate proves s(83) <= 9.63475764863195, 8.7e-13 above the parse's side; the
+        printed side is not certified. Unchecked: the polynomial, the SVG's own pose,
+        rigidity, optimality.
     source_reviewed: '2026-10-05'
   - id: E-n087-chang-2026-09-report
     claim: upper-bound
@@ -11507,6 +11743,137 @@ evidence:
       7ff3b2113532889708a3baa4d56bc44294022e63, whose side is the polynomial's root to 30
       digits. That witness's 1e-8 numerical receipt checks the parse only and is not
       recorded here as a replay. No optimality is claimed.
+    external_review:
+      state: informally-verified
+      date: '2026-10-05'
+      reviewed_by: >-
+        AI agent (claude-opus-5-5, tbd-strong tier, reasoning effort xhigh), the review
+        lane of the 2026-10-05 stage 4 for T-088 and T-089, separately prompted, sharing no
+        context with the lanes that registered the results and produced their certificates
+        (docs/project/reviews/review-2026-10-05-kingbird-intake-n69-n83-n87.md)
+      note: >-
+        Side, degree-41 polynomial and credit sentences read against the capture; the
+        polynomial is irreducible and its root 9.8388152699482622602... lies in the printed
+        decimal's last unit. The witness equals Evan Daniel's parse square for square. The
+        exact certificate proves s(87) <= 9.83881526994915, 8.9e-13 above the root; the
+        printed side and the root are not certified. Unchecked: the SVG's own pose,
+        rigidity, optimality.
+    source_reviewed: '2026-10-05'
+  - id: E-n069-ellsworth-2026-09-exact-replay
+    claim: upper-bound
+    scope: {n_values: [69]}
+    assurance: verified
+    method: exact-algebraic
+    performed_by: repository
+    relationship_to_generator: independent-implementation
+    origin: replayed-here
+    novelty: previously-published
+    source_key: '[Ellsworth n69 2026-09-24]'
+    certificate: witnesses/kingbird-2026/n-069-rational.yaml
+    replay: >-
+      uv run --frozen --all-extras --group dev python -m devtools.catalogue_upper_bounds
+      check --replay --n 69, which regenerates the certificate from the retained witness
+      witnesses/known-best/n-069.yaml by robust rational promotion (36 rational digits,
+      side increase at most 1e-9), requires its text to equal the committed one, and
+      decides the committed one again with devtools.check_rational_witness_independent and
+      with sqpack.witness.exact_verify; it must report VERIFIED.
+    replay_status: passed
+    verifiers: [V-upper-bound-promotion, V-check-rational-witness-independent]
+    limitations: >-
+      Proves s(69) <= 8.82719465572975, from an exact rational packing of David Ellsworth's
+      packing, of side 8.827194655729747827194655729740..., decided pair by pair (2346
+      pairs) and wall by wall over Q by the promotion's exact separating-axis test and by an
+      independent Fraction checker that shares no geometry or verification code with it. The
+      certificate is the retained witness, Evan Daniel's binary64 parse of the catalogue's
+      picture, rounded to rationals of 36 digits and dilated about the centre by 1 + 1e-15,
+      the smallest of the promotion's dilations that separates every pair (the undilated
+      rounding leaves 29 pairs overlapping). Its side is 1.78e-14 above the printed
+      8.82719465572973, which cuts short the side the picture gives, 8.9e-15 above it as the
+      parse reads it; the verified value is the certified side rounded up at the printed
+      precision, so neither the printed side nor the picture's side is certified here. The
+      pose is a third party's reading of the picture, not the SVG's own coordinates; were it
+      a misreading, the certificate would still prove the bound for the pose it holds. Two
+      mutations of the n = 69 certificate, its side cut by 1e-15 and square 1 moved by 1e-6,
+      are refused by both checkers
+      (resources/web/known-best-packings/receipts/kingbird-2026-09-negative-controls.json).
+      No optimality, and no interval route on the printed pose: the SVG is not retained.
+    source_reviewed: '2026-10-05'
+  - id: E-n083-chang-2026-09-exact-replay
+    claim: upper-bound
+    scope: {n_values: [83]}
+    assurance: verified
+    method: exact-algebraic
+    performed_by: repository
+    relationship_to_generator: independent-implementation
+    origin: replayed-here
+    novelty: previously-published
+    source_key: '[Chang n83 2026-09-24]'
+    certificate: witnesses/kingbird-2026/n-083-rational.yaml
+    replay: >-
+      uv run --frozen --all-extras --group dev python -m devtools.catalogue_upper_bounds
+      check --replay --n 83, which regenerates the certificate from the retained witness
+      witnesses/known-best/n-083.yaml by robust rational promotion (36 rational digits,
+      side increase at most 1e-9), requires its text to equal the committed one, and
+      decides the committed one again with devtools.check_rational_witness_independent and
+      with sqpack.witness.exact_verify; it must report VERIFIED.
+    replay_status: passed
+    verifiers: [V-upper-bound-promotion, V-check-rational-witness-independent]
+    limitations: >-
+      Proves s(83) <= 9.63475764863195, from an exact rational packing of Allen Chang's
+      packing, optimized by David Ellsworth, of side 9.634757648631945475764863..., decided
+      pair by pair (3403 pairs) and wall by wall over Q by the promotion's exact
+      separating-axis test and by an independent Fraction checker that shares no geometry or
+      verification code with it. The certificate is the retained witness, Evan Daniel's
+      binary64 parse of the catalogue's picture, rounded to rationals of 36 digits and
+      dilated about the centre by 1 + 1e-13, its next step after 1 + 1e-15, which left one
+      pair overlapping. Its side is 8.65e-13 above the printed 9.63475764863108, which cuts
+      short the side the picture gives, 2.0e-15 above it as the parse reads it; the verified
+      value is the certified side rounded up at the printed precision, so neither the
+      printed side nor the picture's side is certified here. The pose is a third party's
+      reading of the picture, not the SVG's own coordinates; were it a misreading, the
+      certificate would still prove the bound for the pose it holds. Two mutations of the n
+      = 69 certificate, its side cut by 1e-15 and square 1 moved by 1e-6, are refused by
+      both checkers
+      (resources/web/known-best-packings/receipts/kingbird-2026-09-negative-controls.json).
+      No optimality, and no interval route on the printed pose: the SVG is not retained.
+    source_reviewed: '2026-10-05'
+  - id: E-n087-chang-2026-09-exact-replay
+    claim: upper-bound
+    scope: {n_values: [87]}
+    assurance: verified
+    method: exact-algebraic
+    performed_by: repository
+    relationship_to_generator: independent-implementation
+    origin: replayed-here
+    novelty: previously-published
+    source_key: '[Chang n87 2026-09-24]'
+    certificate: witnesses/kingbird-2026/n-087-rational.yaml
+    replay: >-
+      uv run --frozen --all-extras --group dev python -m devtools.catalogue_upper_bounds
+      check --replay --n 87, which regenerates the certificate from the retained witness
+      witnesses/known-best/n-087.yaml by robust rational promotion (36 rational digits,
+      side increase at most 1e-9), requires its text to equal the committed one, and
+      decides the committed one again with devtools.check_rational_witness_independent and
+      with sqpack.witness.exact_verify; it must report VERIFIED.
+    replay_status: passed
+    verifiers: [V-upper-bound-promotion, V-check-rational-witness-independent]
+    limitations: >-
+      Proves s(87) <= 9.83881526994915, from an exact rational packing of Allen Chang's
+      packing, of side 9.838815269949144881526994..., decided pair by pair (3741 pairs) and
+      wall by wall over Q by the promotion's exact separating-axis test and by an
+      independent Fraction checker that shares no geometry or verification code with it. The
+      certificate is the retained witness, Evan Daniel's binary64 parse of the catalogue's
+      picture, rounded to rationals of 36 digits and dilated about the centre by 1 + 1e-13,
+      its next step after 1 + 1e-15, which left thirteen pairs overlapping. Its side is
+      8.85e-13 above the printed 9.83881526994826, which cuts short the side the picture
+      gives, 2.3e-15 above it as the parse reads it; the verified value is the certified
+      side rounded up at the printed precision, so neither the printed side nor the
+      picture's side is certified here. The pose is a third party's reading of the picture,
+      not the SVG's own coordinates; were it a misreading, the certificate would still prove
+      the bound for the pose it holds. Two mutations of the n = 69 certificate, its side cut
+      by 1e-15 and square 1 moved by 1e-6, are refused by both checkers
+      (resources/web/known-best-packings/receipts/kingbird-2026-09-negative-controls.json).
+      No optimality, and no interval route on the printed pose: the SVG is not retained.
     source_reviewed: '2026-10-05'
   - id: E-k2m4-evand-family-report
     claim: lower-bound
@@ -11536,7 +11903,14 @@ evidence:
       is the public-claim entry; the source's run and Lean reduction are the two entries
       after it. The scope is the projection onto the cases this record holds, n <= 324,
       which is k = 5 to 18; the reported theorem does not end at k = 18. Nothing here has
-      replayed the positive-tilt run.
+      replayed the positive-tilt run. Evidence update, 2026-10-05: the three adversarial
+      review reports that the bundle README summarises and kept in private notes at this
+      pin were published at 0f55a52 (2026-10-03T20:24:02Z), and the 4 October evand packet
+      retains them at 7ff3b211 (s12/tasks/k2m4-review/, think-83zc). They report no
+      BREAKS. The claim report's one GAP, that the step from the run's D4 region and
+      Lemma Z to Valid9 was argued only in a docstring, is the reduction the source
+      kernel-checks in ValidSplit9.lean (valid9_of_tilt_axis), which the 3 October packet
+      retains. Nothing was run here, and no rung moves.
     external_review:
       state: informally-verified
       date: '2026-10-03'
@@ -14803,4 +15177,88 @@ evidence:
         each returning the certificate's record. Findings OF-1 to OF-5 are not blocking. The
         200 oblique coverage statements and the axis table are the source's until the replay
         here passes.
+    source_reviewed: '2026-10-05'
+  - id: E-n067-wand125-mixed-848-report
+    claim: lower-bound
+    scope: {n_values: [67]}
+    assurance: reported
+    reported_method: interval-certified
+    performed_by: source-author
+    relationship_to_generator: same-implementation
+    origin: external
+    novelty: previously-published
+    source_key: '[wand125 mixed bounds 2026-10-05]'
+    certificate: resources/web/wand125-mixed-bounds-2026-10-05/square-packing-bounds/certificates/mixed_n67_L848/candidate.json.gz
+    replay_status: not-attempted
+    verifiers: [V-wand125-mixed-rotated-verify-cpp, V-wand125-verify-mixed-full-proof-py]
+    limitations: >-
+      wand125/square-packing-bounds at a541afbe7826ff75f6d3848e10279fd524d55af3 (the
+      directory's one commit is 6c0842ed, 2026-10-05T06:06:37Z) reports s(67) >=
+      212/25 = 8.48 from a rectangle density of 536 uniform-density rectangles and no
+      point mass, total mass 6699999/100000, core side B = 9977/10000 and 201 net
+      half-angles of step 83/40000, checked there by code/mixed_rotated_verify.cpp
+      (SHA-256 89b674a6...), the research copy of Tokoharu's verify.cpp that the n =
+      50 certificate uses: it accepts a centre box at lower bound 1 instead of
+      10001/10000, with the axis direction decided by exact integer tables in
+      code/verify_axis_certificate.py, both run by the driver
+      code/verify_mixed_full_proof.py. The least oblique lower bound the source
+      records is 1.0000000005520073, at net index 83, and the axis integer minimum
+      1.0064534322049679 over 13,454,224 cells; its oblique run took 33,475 seconds
+      over 93,610,234 nodes. It exceeds the 339/40 = 8.475 of the source's
+      mixed_n67_L8475 (T-090) by 0.005, and Green's and Nagamochi's values at this
+      count (Theorem 9, k=8, from n = 65; 1 + sqrt(52)), which the audit compares
+      exactly. It supersedes the source's mixed_n67_L8475, which T-090 registers. The
+      directory carries no completion-audit.json at the pin, so the tarball (SHA-256
+      2b45da24...) is bound to the certificate by its digest at the pinned tree and the
+      README's statement of it; it is pinned by digest and not retained. The source
+      says the full replay was run again from the published tarball on a fresh
+      machine, by the same implementation and not an independent one; that was not
+      checked here. Here devtools.audit_wand125_point_and_mixed mixed-audit
+      (receipts/mixed-audit.json in the packet) recomputes the mass, the net, the
+      centre domains and the candidate digest from the retained bytes, and its
+      mixed-fetch checked the pinned tarball, its 621 listed files, the driver's
+      preconditions and that all 200 oblique inputs enclose the exact candidate; none
+      of it decides coverage, and no angle was replayed.
+    source_reviewed: '2026-10-05'
+  - id: E-n084-wand125-mixed-9411-report
+    claim: lower-bound
+    scope: {n_values: [84]}
+    assurance: reported
+    reported_method: interval-certified
+    performed_by: source-author
+    relationship_to_generator: same-implementation
+    origin: external
+    novelty: previously-published
+    source_key: '[wand125 mixed bounds 2026-10-05]'
+    certificate: resources/web/wand125-mixed-bounds-2026-10-05/square-packing-bounds/certificates/mixed_n84_L9411/candidate.json.gz
+    replay_status: not-attempted
+    verifiers: [V-wand125-mixed-rotated-verify-cpp, V-wand125-verify-mixed-full-proof-py]
+    limitations: >-
+      wand125/square-packing-bounds at a541afbe7826ff75f6d3848e10279fd524d55af3 (the
+      directory's one commit is a541afbe, 2026-10-05T06:07:08Z) reports s(84) >=
+      9411/1000 = 9.411 from a rectangle density of 686 uniform-density rectangles and
+      no point mass, total mass 8399999/100000, core side B = 9977/10000 and 201 net
+      half-angles of step 83/40000, checked there by code/mixed_rotated_verify.cpp
+      (SHA-256 89b674a6...), the research copy of Tokoharu's verify.cpp that the n =
+      50 certificate uses: it accepts a centre box at lower bound 1 instead of
+      10001/10000, with the axis direction decided by exact integer tables in
+      code/verify_axis_certificate.py, both run by the driver
+      code/verify_mixed_full_proof.py. The least oblique lower bound the source
+      records is 1.0000000003743108, at net index 127, and the axis integer minimum
+      1.0020008331669186 over 20,738,916 cells; its oblique run took 43,006 seconds
+      over 118,544,320 nodes. It exceeds the 3763/400 = 9.4075 of the source's
+      mixed_n84_L94075 (T-090) by 0.0035, and Green's and Nagamochi's values at this
+      count (Theorem 9, k=9, from n = 82; 1 + sqrt(67)), which the audit compares
+      exactly. It supersedes the source's mixed_n84_L94075, which T-090 registers. The
+      directory carries no completion-audit.json at the pin, so the tarball (SHA-256
+      d38233d7...) is bound to the certificate by its digest at the pinned tree and the
+      README's statement of it; it is pinned by digest and not retained. The source
+      says the full replay was run again from the published tarball on a fresh
+      machine, by the same implementation and not an independent one; that was not
+      checked here. Here devtools.audit_wand125_point_and_mixed mixed-audit
+      (receipts/mixed-audit.json in the packet) recomputes the mass, the net, the
+      centre domains and the candidate digest from the retained bytes, and its
+      mixed-fetch checked the pinned tarball, its 621 listed files, the driver's
+      preconditions and that all 200 oblique inputs enclose the exact candidate; none
+      of it decides coverage, and no angle was replayed.
     source_reviewed: '2026-10-05'

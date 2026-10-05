@@ -134,13 +134,19 @@ verifiers:
     source:
       - packing/resources/web/wand125-valid7-independent-check-2026-10-02/valid7-independent-check/src
       - packing/resources/web/wand125-valid7-independent-check-2026-10-02/valid7-independent-check/verify.sh
+      - packing/resources/web/wand125-valid7-independent-check-2026-10-03/valid7-independent-check/src
     versions:
-      - {revision: 38dd31b369991b0d96c917a4af0c7139b44a038d, note: "the repository's only commit, and its release records-v1"}
+      - {revision: 38dd31b369991b0d96c917a4af0c7139b44a038d, note: "the repository's first commit, and its release records-v1"}
       - sha256: ba73f6c10f81836f676fde9800c716e6810f4759fa3f1a89753609671a290080
         note: >-
           src/tier_b2.py with D-1's accepting line made a refusal, as plan_valid7_replay
           stage --guard-d1 writes it; the full replay here of 2 and 3 October ran it with
           the other V2 files unchanged
+      - revision: da469ecff5da0c71882e894b65d680ce57a0c87e
+        note: >-
+          the second commit, which fixes the 2 October review's D-1 to D-3 and leaves the
+          release records unchanged; its verify.sh ran here on 5 October 2026 on those
+          records
     independence_record: packing/resources/web/wand125-valid7-independent-check-2026-10-02/valid7-independent-check/READ_LOG.md
     note: >-
       Its read log says Daniel's checker qx2_zm.py and his lemma write-ups were not read;
@@ -352,6 +358,9 @@ verifiers:
       - sha256: 2885bb142a31c461084269a2111235140a0628d746d437e572817554665f331a
         path: packing/resources/web/n17-kleddamag-466001-2026-09-27/kleddamag-17-squares-certified-bound/bounds/4.66001/verify.py
         note: '4.66001'
+      - sha256: c22091862df631f8cfd1f1bb8e5013f0b9c216f20be268fcd7104768919c49b7
+        path: packing/resources/web/n17-kleddamag-466001-2026-09-27/kleddamag-17-squares-certified-bound/bounds/4.66001/verify_global_variable.js
+        note: the Node BigInt checker of 4.66001, which Guzhou0806's R067 to R071 bundle byte for byte
     note: Guzhou0806's paired n = 17 launchers run Kleddamag's Node BigInt checker beside their own C++.
 
   - id: V-wang-li-n11-verify
@@ -408,8 +417,19 @@ verifiers:
     source:
       - packing/resources/web/n17-guzhou-r068-2026-09-28/n17-square-packing/certificates/R068-C010/upstream/cpp/verify.cpp
       - packing/resources/web/n17-guzhou-r068-2026-09-28/n17-square-packing/certificates/R067-4.66018/src/verify.cpp
+      - packing/resources/web/n17-guzhou-r071-2026-09-30/n17-square-packing/certificates/R071-C029/run_public.js
     versions:
       - {sha256: 3ba09554cef0ea0ee15444c4d30476f0e2435144e18b1ec2c908970ca306532c, revision: 815b1626, note: identical bytes for R067 and R068}
+      - sha256: 3ba09554cef0ea0ee15444c4d30476f0e2435144e18b1ec2c908970ca306532c
+        revision: 8c11f6962506940c5de67a9fa73b3d1e2e151196
+        note: R071's project/base/upstream/cpp/verify.cpp, pinned in the R071 packet as byte-identical to R068's
+      - sha256: 1125e5969fe0a22e92ea42845ac0dfe68aae5a2a0110550591a01fa43f297712
+        path: packing/resources/web/n17-guzhou-r068-2026-09-28/n17-square-packing/certificates/R068-C010/upstream/cpp/replay.js
+        note: the paired launcher replay.js, the same bytes in R067 to R071
+      - sha256: 45f6ef8e5b5e16b0c32ddc243ae18416b5781de8edc9b4daa11972e76423160f
+        path: packing/resources/web/n17-guzhou-r071-2026-09-30/n17-square-packing/certificates/R071-C029/run_public.js
+        revision: 8c11f6962506940c5de67a9fa73b3d1e2e151196
+        note: R071's public launcher, which checks the package, builds verify.cpp and runs replay.js at two partitions
 
   - id: V-burns-n17-verify-py
     program: verify-n17-lower-bound-4_4811.py
@@ -607,14 +627,16 @@ verifiers:
       was not run.
 
   - id: V-upper-bound-promotion
-    program: devtools.upper_bound_packets, the robust rational promotion and its exact separating-axis test
+    program: >-
+      devtools.upper_bound_packets, the robust rational promotion and its exact
+      separating-axis test, also driven by devtools.catalogue_upper_bounds
     author: Squares Project (Levy)
     provenance: first-party
     language: [Python]
     methods: [exact-algebraic]
     role: decides
     summary: Rounds a source's decimal pose to rationals and decides every pair and wall exactly.
-    source: [packing/devtools/upper_bound_packets.py]
+    source: [packing/devtools/upper_bound_packets.py, packing/devtools/catalogue_upper_bounds.py]
 
   - id: V-upper-bound-intervals
     program: devtools.upper_bound_intervals
@@ -1124,6 +1146,31 @@ verifiers:
     summary: Compares a fresh paired-launcher run's C++ and Node ledgers with the published ones row by row.
     source: [packing/devtools/audit_guzhou_r068.py]
 
+  - id: V-audit-guzhou-r071
+    program: devtools.audit_guzhou_r071
+    author: Squares Project (Levy)
+    provenance: first-party
+    language: [Python]
+    methods: [exact-algebraic]
+    role: premises
+    summary: >-
+      Holds Guzhou0806's R070 and R071 certificates to R068's charge, R070's published
+      ledgers and R071's completion summary to their certificates, and compares a fresh
+      paired run's C++ and BigInt ledgers row by row.
+    source: [packing/devtools/audit_guzhou_r071.py]
+
+  - id: V-replay-guzhou-r071
+    program: devtools.replay_guzhou_r071
+    author: Squares Project (Levy)
+    provenance: first-party
+    language: [Python]
+    methods: [exact-algebraic]
+    role: premises
+    summary: >-
+      Stages R071's package from the retained bytes, refusing any byte whose SHA-256 is
+      not the record's, and runs its paired replay and two mutated-certificate controls.
+    source: [packing/devtools/replay_guzhou_r071.py]
+
   - id: V-audit-valid7-independent
     program: devtools.audit_valid7_independent
     author: Squares Project (Levy)
@@ -1136,3 +1183,17 @@ verifiers:
       release's, their roots cover the pose grid once, and a sample of leaves
       re-certifies. A diagnostic, not a replay.
     source: [packing/devtools/audit_valid7_independent.py]
+
+  - id: V-probe-valid7-fixes
+    program: devtools.probe_valid7_fixes
+    author: Squares Project (Levy)
+    provenance: first-party
+    language: [Python]
+    methods: [exact-algebraic]
+    role: premises
+    summary: >-
+      Runs the 2 October review's demonstrations of D-1, D-2 and D-3 against each retained
+      revision of the Valid7 checker, in the checker's own interpreter, and checks that
+      each finding is present at the first commit and gone at the fix. Decides nothing
+      about Valid7.
+    source: [packing/devtools/probe_valid7_fixes.py]

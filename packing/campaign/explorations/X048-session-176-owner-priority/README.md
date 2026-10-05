@@ -1,7 +1,7 @@
 # Owner-priority enhanced parent supports
 
-This attempt added 19 independently replayed parent supports: the enhanced model has 60
-of 96 parent rows supported, with 36 unknown.
+This attempt added 19 parent supports, each freshly replayed (same implementation, no
+search): the enhanced model has 60 of 96 parent rows supported, with 36 unknown.
 All 26 A selections covering 41 rows are retained.
 The one search stopped at the unique exact pair ceiling.
 It establishes no parent-row unsupportedness, common realizable poses or global proof.
@@ -27,7 +27,7 @@ No failed query is cached.
 | --- | --- | --- |
 | ONE search | 60 parents (+19), 44 cliques, 100000 pairs, 127 DFS nodes | INCOMPLETE; 36 unknown |
 | Cost | 142.535 s protocol; 172961792 B worker peak | 100k pairs/100k nodes/180 s/512 MiB; outer Job 240 s |
-| Independent replay | 44 cliques, 660 fresh pairs; 1.726 s | Full 5044 inventory, A26 prefix, baseline 41 and new coverage reconstructed |
+| Fresh replay (same implementation, no search) | 44 cliques, 660 fresh pairs; 1.726 s | Full 5044 inventory, A26 prefix, baseline 41 and new coverage reconstructed |
 | Endpoint | 24 parents/15 cliques; 225 fresh replay pairs | Full actual angle enclosure lies in selected child interval |
 | Controls | 66 focused tests 2.95 s; Ruff/types pass | Finite exhaustive graphs, default regression, permutations, seeds, provenance and guards |
 
@@ -47,8 +47,9 @@ This is one coverage experiment, not default adoption.
 Published packets are semantically equal to local pretty originals.
 Canonical JSON content hashes identify generated inputs/packets/receipts, not file
 serialization bytes.
-Public independent receipt is explicitly a derived summary; the original local receipt
-is retained. Source identity uses Git revision/path.
+The public fresh-replay receipt is explicitly a derived summary; the original local
+receipt is retained.
+Source identity uses Git revision/path.
 Historical cold saved-object checks are reused; no cold checker or producer reruns.
 All 5 Jobs end empty with confirmed cleanup/no errors.
 OS peaks may miss short-lived children.
@@ -98,6 +99,13 @@ One attempt ended; no automatic ordering/cap ladder follows.
 A further substantive project requires a new W3/ownership/resource contract.
 Source/evidence `a647f83f8b37fa65cbc6791064b3704257845802` is observed terminal 19
 pass/36 skip and all 3 required SUCCESS. Final metadata CI is observed separately.
+
+Commits cited in this record that are not in this branch’s history, including the
+probes’ `BASE_REVISION` values, resolve at the tag `archive/guzhou-review-a-333`
+(Guzhou’s original nine-session branch).
+The references are provenance only; no code reads them (`OR-18`). “Fresh replay” here
+means the same implementation re-run in a separate process without search; receipt names
+ending in `-independent-replay.json` predate that wording.
 
 <!-- This document follows common-doc-guidelines.md.
 See github.com/jlevy/practical-prose and review guidelines before editing.

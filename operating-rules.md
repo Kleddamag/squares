@@ -711,10 +711,12 @@ Prove determinism with a small-instance test in the fast tier (same input, ident
 bytes), never by re-running a retained computation.
 A checksum earns its place only where three answers are written beside it: the boundary
 it crosses, where the independently supplied expected value comes from, and the failure
-it detects; a downloaded packet, an external checker at a revision, and Git ancestry
-qualify, and a file the repository wrote does not.
-The owner set this on 2026-10-03, after a dependency change was priced at the 6,197 s
-n11 native run and a kernel speedup with identical output sent a capture run back to
+it detects. A downloaded packet and an external checker at a revision qualify; Git
+ancestry does not, because under
+[OR-18](#or-18-keep-bulk-data-out-of-git-and-never-bind-code-or-verdicts-to-a-git-commit-or-blob)
+no program may need to resolve a cited revision; and a file the repository wrote does
+not. The owner set this on 2026-10-03, after a dependency change was priced at the 6,197
+s n11 native run and a kernel speedup with identical output sent a capture run back to
 round 0; the
 [integrity-ceremony audit](docs/project/reviews/review-2026-10-03-integrity-ceremony-audit.md)
 inventories every instance, and `devtools.check_integrity_ceremony` holds their count so

@@ -14,7 +14,6 @@ session:
   branch: guzhou/n17-residual-compatibility
   primary_bead: think-67ek
   status: stopped
-  certification_pending: think-q0z7
   goal: Test the retained residual-piece idea cheaply and distinguish finite-model limitations
     from geometric feasibility.
   workflow_phases:
@@ -167,13 +166,16 @@ session:
     fast gate; packing-required SUCCESS)'
   - Hosted pages-required and merges-into-main also passed at 4ffb5729af96c8984414bef74fe369f7638dd0a5;
     later metadata is observed separately.
+  - 'full gate: fast at 405e12a88cb55107a5e136818b033611868ea8d7: passed (hosted Packing validation
+    run 37297540063 on PR 355, the rebuild of PR 333 on PR 347; this head carries the session''s
+    work unchanged)'
   resource_rollups:
   - packing/campaign/resource-usage/codex-session-170.yaml
   handoff_role: administrative_closeout
   stop_reason: The selected finite abstraction has a complete supported-atom ceiling. Close
     this slice without taking upstream research ownership; hosted certification remains explicit.
     Current-history hosted fast certification was observed and its exact ancestor is recorded.
-  next_action: Await Joshua and current-layer required CI under think-q0z7.
+  next_action: Await Joshua's review of the rebuilt layer (PR 355) under think-q0z7.
     No active research executor or reserved follow-up; original intervals are historical.
 ---
 # Bounded residual compatibility

@@ -1,10 +1,11 @@
 # Exact cached collision: agreement, first-use NO-GO
 
-All four predicate paths agree on 371 fixed relations and pass independent rational
-replay. Cached first-use cost missed the preregistered gate: the original path took
-0.574571 s, while preparation plus the first cached pass took 0.680193 s (about 1.184
-times as long; saving −0.105622 s). The adapter-search route was stopped without
-retuning, repeating the profile or starting matched search.
+All four predicate paths agree on 371 fixed relations and pass a fresh rational replay
+(the same rational predicate, without cache or search).
+Cached first-use cost missed the preregistered gate: the original path took 0.574571 s,
+while preparation plus the first cached pass took 0.680193 s (about 1.184 times as long;
+saving −0.105622 s). The adapter-search route was stopped without retuning, repeating
+the profile or starting matched search.
 
 The fixed corpus comes from B’s 44 compatible selections (660 pair occurrences) and J’s
 298 certified collision witnesses.
@@ -34,9 +35,9 @@ preparation covers 5044 atoms.
 
 The one preregistered attempt has ceilings 958 distinct queries/4096 primitive calls/ 30
 s/512 MiB/Job 45. No guard changed and no second profile ran.
-Fresh independent replay rebuilt all 5044 children and the B/J corpus using unchanged
-H/raw functions, then made 371 original rational calls; no new adapter/profile
-implementation was imported.
+A fresh replay (same implementation, no search) rebuilt all 5044 children and the B/J
+corpus using unchanged H/raw functions, then made 371 original rational calls; no new
+adapter/profile implementation was imported.
 It verifies values/provenance, not performance statistics.
 Three scientific Jobs end 0/cleanup true/no errors.
 25 focused tests/Ruff/types pass, including point/ segment, true/false, domain/core
@@ -54,7 +55,7 @@ Published packets and J certificate copy are semantically equal to local origina
 canonical content hashes are not pretty-file byte hashes.
 The J certificate is historical evidence copied unchanged, not a new tuple-level
 negative investigation.
-Public independent receipt is explicitly a derived summary; original local receipt
+The public fresh-replay receipt is explicitly a derived summary; original local receipt
 remains intact. Git revision/path names source.
 No cold checker or producer reran.
 
@@ -111,6 +112,13 @@ pass/36 skip and all 3 required SUCCESS. Final metadata CI is observed separatel
 One native privacy aggregate is a lower bound; later publication/CI after its cutoff is
 excluded with operator-declared branch attribution.
 A new distinct research mechanism needs a new W3/ownership/resource/soundness contract.
+
+Commits cited in this record that are not in this branch’s history, including the
+probes’ `BASE_REVISION` values, resolve at the tag `archive/guzhou-review-a-333`
+(Guzhou’s original nine-session branch).
+The references are provenance only; no code reads them (`OR-18`). “Fresh replay” here
+means the same implementation re-run in a separate process without search; receipt names
+containing `independent-replay` predate that wording.
 
 <!-- This document follows common-doc-guidelines.md.
 See github.com/jlevy/practical-prose and review guidelines before editing.

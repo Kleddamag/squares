@@ -4,8 +4,8 @@ The fixed sample retains all 72 tuple-loss certificates, seven surviving selecti
 the current 44 selections supporting 60 parent rows.
 Only rows (18, 13) and (19, 5) are halved, at original-piece cost 62 + 39 = 101. The
 actual mixed inventory has 2,522 + 101 = 2,623 atoms, versus 5,044 in the full H model.
-Independent replay rebuilt all cores and 64 candidate subsets and made 735 fresh pair
-checks.
+A fresh replay (same implementation, no search) rebuilt all cores and 64 candidate
+subsets and made 735 fresh pair checks.
 
 The minimum is restricted to J58’s retained seven-edge library and its six candidate
 parent rows, with original-piece cost and lexicographic row-list tie break.
@@ -26,17 +26,16 @@ Atom count alone does not establish a memory or speed improvement.
 Old producer/kernel/H/A/B/C/D modules and all archived inputs remain unchanged.
 
 ONE measurement: 735 uncached calls/2.763400 s/157941760 B actual worker peak.
-Independent replay: 735 fresh calls/2.038573 s/164585472 B; imports neither new E nor D
-runner. Each limit remains 1024 calls/45 s/512 MiB/outer Job 60 with 8 GiB free-memory
-guard. 32 controls 3.62 s/Ruff/types/embedded-script pass.
-Both controlled Jobs and target/ independent Jobs report active 0, cleanup true and no
+Fresh replay: 735 calls/2.038573 s/164585472 B; imports neither new E nor D runner.
+Each limit remains 1024 calls/45 s/512 MiB/outer Job 60 with 8 GiB free-memory guard.
+32 controls 3.62 s/Ruff/types/embedded-script pass.
+Both controlled Jobs and the target and replay Jobs report active 0, cleanup true and no
 errors.
 OS sampling can miss short-lived children; receipts do not claim perfect tree RSS
 maxima.
 
-[Packet](receipts/B-mixed-packet.json),
-[independent replay](receipts/independent-replay.json) and
-[summary](receipts/result-summary.json).
+[Packet](receipts/B-mixed-packet.json), [fresh replay](receipts/independent-replay.json)
+and [summary](receipts/result-summary.json).
 Canonical packet content SHA:
 `13b1b32ab23b4c85048ae13646bd7eb7fa7f05e66b1054713aafc854486c41a6`. Generated hashes
 identify canonical JSON content, not pretty-file bytes.
@@ -100,6 +99,13 @@ uv run --frozen --all-extras --group dev python -m devtools.probe_n17_selective_
   --verify "$R/X048-session-179-selective-halving/receipts/B-mixed-packet.json" \
   --output "PATH/TO/NEW-REPLAY.json"
 ```
+
+Commits cited in this record that are not in this branch’s history, including the
+probes’ `BASE_REVISION` values, resolve at the tag `archive/guzhou-review-a-333`
+(Guzhou’s original nine-session branch).
+The references are provenance only; no code reads them (`OR-18`). “Fresh replay” here
+means the same implementation re-run in a separate process without search; receipt names
+containing `independent-replay` predate that wording.
 
 <!-- This document follows common-doc-guidelines.md.
 See github.com/jlevy/practical-prose and review guidelines before editing.

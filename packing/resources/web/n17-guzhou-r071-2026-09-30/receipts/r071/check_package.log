@@ -1,0 +1,6 @@
+# command: node check_package.js
+# cwd: WORK/R071-C029, the R071 package staged by devtools.replay_guzhou_r071 from the packet, byte-identical to certificates/R071-C029/ at 8c11f696
+# python3: not used by this command
+# host: 4 cores; load 5.16 4.06 4.76; started 2026-10-05T04:53:42Z
+PASS_BYTES_ONLY / 仅字节身份通过
+# finished 2026-10-05T04:53:42Z; exit 0; wall 0.101 s; CPU 0.1 s (user 0.031 + sys 0.021); load 5.16 4.06 4.76

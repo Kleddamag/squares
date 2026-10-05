@@ -196,15 +196,16 @@ def catalogue_owed(text: str, catalogue: Mapping[int, _CreditLined]) -> tuple[st
     return tuple(quote for quote in quotations if _comparable(quote) not in body)
 
 
-#: Double quotation marks in either typography. The Markdown formatter curls a straight
-#: quote it finds nested inside a quotation -- the catalogue's `with help from
-#: "TheMagicAnimals"` at `n = 87` -- so a quotation is the same quotation whichever it has.
-_DOUBLE_QUOTES = str.maketrans({"“": '"', "”": '"'})
+#: Quotation marks and apostrophes in either typography. The Markdown formatter curls a
+#: straight quote it finds nested inside a quotation -- the catalogue's `with help from
+#: "TheMagicAnimals"` at `n = 87` -- and an apostrophe or single quote the same way, so a
+#: quotation is the same quotation whichever it has.
+_QUOTES = str.maketrans({"“": '"', "”": '"', "‘": "'", "’": "'"})
 
 
 def _comparable(text: str) -> str:
-    """Text as a quotation is matched: whitespace collapsed, double quotes straightened."""
-    return " ".join(text.split()).translate(_DOUBLE_QUOTES)
+    """Text as a quotation is matched: whitespace collapsed, quotes straightened."""
+    return " ".join(text.split()).translate(_QUOTES)
 
 
 def record_catalogue_entries() -> Mapping[int, _CreditLined]:

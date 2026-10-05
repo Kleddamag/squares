@@ -12,14 +12,13 @@
 // second template, the first time it is pressed, and after that shows or hides them.
 //
 // The tabs over the tiles choose between two views of the one set, the grid and the
-// triangle, which `atlas-view.js` lays out and moves between (`SiteAtlasView.mount`).
-// They ship `hidden` and show once the tiles are placed.
+// triangle, and beside them three sizes of tile, Small, Medium and Large, which
+// `atlas-view.js` lays out and moves between (`SiteAtlasView.mount`). They ship `hidden`,
+// with the key to a tile's marks under them, and show once the tiles are placed.
 //
-// Beside them, where some case has a regularized view, a second pair chooses the drawing,
-// House or Regularized (`SiteAtlasLayer.mount`, `atlas-layer.js`): a case with a
-// regularized view has a second tile in a third template, which stands in for its house
-// tile wherever the grid places one. Either tile opens the same case record, whose
-// drawing is the house one: the regularized layer is the atlas's view, not the record's.
+// A case with a regularized view is drawn from it in its one tile, badged; the House and
+// Regularized tabs that swapped in a second tile for it went on 2026-10-04 (think-k8x9).
+// Either drawing opens the same case record, whose drawing is the house one.
 (() => {
   const grid = document.querySelector("[data-atlas-grid]");
   const template = grid?.querySelector("template[data-atlas-first]");
@@ -27,8 +26,8 @@
   const toggle = grid?.querySelector("[data-atlas-toggle]");
   const tabs = grid?.querySelector("[data-atlas-views]");
   const controls = grid?.querySelector("[data-atlas-controls]");
-  const layerTabs = grid?.querySelector("[data-atlas-layers]");
-  const layerTemplate = grid?.querySelector("template[data-atlas-regularized]");
+  const sizes = grid?.querySelector("[data-atlas-sizes]");
+  const legend = grid?.querySelector("[data-atlas-legend]");
   if (
     !(grid instanceof HTMLElement) ||
     !(template instanceof HTMLTemplateElement) ||
@@ -46,23 +45,19 @@
   rest.className = "site-atlas-rest";
   rest.hidden = true;
 
-  // The view the address names is set here, before any tile is placed, so the page
-  // never shows one view and then the other; and so is the drawing.
-  const views = SiteAtlasView.mount({ block: grid, cells, tabs });
-  const layers =
-    layerTabs instanceof HTMLElement && layerTemplate instanceof HTMLTemplateElement
-      ? SiteAtlasLayer.mount({ block: grid, cells, tabs: layerTabs, template: layerTemplate })
-      : null;
+  // The view and the size the address names are set here, before any tile is placed, so
+  // the page never shows one view or size and then another.
+  const sizeTabs = sizes instanceof HTMLElement ? sizes : null;
+  const views = SiteAtlasView.mount({ block: grid, cells, tabs, sizes: sizeTabs });
 
-  // The tiles go after the row of tabs, and each placed tile is the drawing the block is
-  // in before the box is put in the page.
+  // The tiles go after the row of tabs and the key.
   const place = () => {
     cells.append(template.content.cloneNode(true), rest);
-    layers?.apply();
     (controls instanceof HTMLElement ? controls : tabs).after(cells);
-    tabs.hidden = false;
-    if (layers !== null && layerTabs instanceof HTMLElement) {
-      layerTabs.hidden = false;
+    for (const shown of [tabs, sizeTabs, legend]) {
+      if (shown instanceof HTMLElement) {
+        shown.hidden = false;
+      }
     }
     if (toggle.parentElement) {
       toggle.parentElement.hidden = false;
@@ -103,7 +98,6 @@
   const expandGrid = (open, settle) => {
     if (open && rest.childElementCount === 0) {
       rest.append(restTemplate.content.cloneNode(true));
-      layers?.apply();
     }
     views.change(() => {
       rest.hidden = !open;

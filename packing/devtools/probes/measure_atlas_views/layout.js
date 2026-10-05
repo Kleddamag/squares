@@ -6,9 +6,10 @@
 // left corner, as transformed: a tile in a move is reported where it is drawn. A move is
 // an animation the script started; a tile's hover wash, a CSS transition, is not one.
 //
-// And the drawing it is in: the drawing tabs as the view tabs are reported, the cases
-// that have a regularized drawing (the third template's), and for each tile which
-// drawing it carries, its number's box and its badge's box, `null` where it has none.
+// And the size it is at: the size tabs as the view tabs are reported, the key to a tile's
+// marks under them, and for each tile its number's box and the boxes of the marks it
+// carries, the new-result star and the regularized drawing's badge, each `null` where
+// the tile has none.
 () => {
   /** @param {number} value */
   const round = (value) => Math.round(value * 100) / 100;
@@ -58,16 +59,10 @@
     box: box(tab),
     font_px: round(Number.parseFloat(getComputedStyle(tab).fontSize)),
   });
-  const drawings = block.querySelector("template[data-atlas-regularized]");
+  const legend = block.querySelector("[data-atlas-legend]");
   return {
     view: block.dataset.atlasView ?? null,
-    layer: block.dataset.atlasLayer ?? null,
-    regularized:
-      drawings instanceof HTMLTemplateElement
-        ? [...drawings.content.querySelectorAll(".site-atlas-cell")].map((tile) =>
-            Number(tile instanceof HTMLElement ? tile.dataset.atlasN : Number.NaN),
-          )
-        : [],
+    size: block.dataset.atlasSize ?? null,
     per_line: Number(cells.style.getPropertyValue("--site-atlas-per-line")) || null,
     cells: box(cells),
     block: box(block),
@@ -79,29 +74,46 @@
     tabs: [...block.querySelectorAll("[data-atlas-tab]")].map((tab) =>
       tabReport(tab, tab instanceof HTMLElement ? (tab.dataset.atlasTab ?? null) : null),
     ),
-    layers: [...block.querySelectorAll("[data-atlas-layer-tab]")].map((tab) =>
-      tabReport(tab, tab instanceof HTMLElement ? (tab.dataset.atlasLayerTab ?? null) : null),
+    sizes: [...block.querySelectorAll("[data-atlas-size-tab]")].map((tab) =>
+      tabReport(tab, tab instanceof HTMLElement ? (tab.dataset.atlasSizeTab ?? null) : null),
     ),
+    legend:
+      legend === null
+        ? null
+        : {
+            text: (legend.textContent ?? "").replace(/\s+/g, " ").trim(),
+            shown: legend.getClientRects().length > 0,
+            box: box(legend),
+            font_px: round(Number.parseFloat(getComputedStyle(legend).fontSize)),
+          },
     expanded: toggle?.getAttribute("aria-expanded") ?? null,
     search: location.search,
     hash: location.hash,
+    // A tile by its case, else an element by its id, else a link, as the key's is, by its
+    // text.
     focus:
-      document.activeElement?.getAttribute("data-atlas-n") ?? document.activeElement?.id ?? null,
+      document.activeElement?.getAttribute("data-atlas-n") ??
+      (document.activeElement?.id ||
+        (document.activeElement instanceof HTMLAnchorElement
+          ? document.activeElement.textContent.trim()
+          : null)),
     moving: moving.length,
     overflow: document.documentElement.scrollWidth - document.documentElement.clientWidth,
     tiles: tiles.map((tile) => {
       const drawing = tile.querySelector("svg");
       const number = tile.querySelector(".site-atlas-n");
       const mark = tile.querySelector(".site-atlas-layer-mark");
+      const star = tile.querySelector(".site-star");
       return {
         n: Number(tile instanceof HTMLElement ? tile.dataset.atlasN : Number.NaN),
         ...box(tile),
         drawing: drawing ? box(drawing) : null,
         number_px: number ? round(Number.parseFloat(getComputedStyle(number).fontSize)) : null,
         number_width: number ? round(number.scrollWidth) : null,
-        layer: (tile instanceof HTMLElement ? tile.dataset.atlasLayer : undefined) ?? "house",
+        name: tile.getAttribute("aria-label"),
         number_box: number ? box(number) : null,
         mark: mark ? box(mark) : null,
+        star: star ? box(star) : null,
       };
     }),
   };

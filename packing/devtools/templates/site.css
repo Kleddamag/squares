@@ -1975,8 +1975,8 @@ body {
 
 /* The atlas grid: every case's known-best packing in a square cell, numbered beneath.
    It bleeds past the wide track as the window grows, up to 140rem, and its cells keep a
-   size that reads, so the row holds more cases the wider the screen: four on a phone,
-   eleven at 1280 pixels, seventeen at 1920 and twenty at 2560. A cell washes on hover
+   size that reads, so the row holds more cases the wider the screen: at Medium, four on
+   a phone, ten at 1280 pixels, sixteen at 1920 and twenty at 2560. A cell washes on hover
    like a card and opens the case popover (Case records, below). The wash is the cell's
    background,
    behind the drawing, and it is all that changes: every line keeps the page's ink. */
@@ -1990,6 +1990,11 @@ body {
      all 35 tiles of the eighteenth row stand on one line from a 1024-pixel window up. */
   --site-atlas-tile-min: 1.625rem;
   --site-atlas-tile-max: 4.5rem;
+  /* The grid's least cell at Medium, and the size's scale (overview/atlas-view.js reads
+     it): Small draws a tile two thirds as wide and Large half as wide again, in either
+     view. The block's `data-atlas-size` sets it, below. */
+  --site-atlas-cell-min: 6.4rem;
+  --site-atlas-scale: 1;
   /* The move between the views: one duration and one easing for every tile, read by
      the script. Reduced motion makes the switch instant, as it does every hover. */
   --site-atlas-move-duration: 360ms;
@@ -2010,10 +2015,19 @@ body {
     --site-atlas-move-duration: 0ms;
   }
 }
-/* The view tabs and the drawing tabs: two of the section tabs' strip (site-nav.css), on
+/* The three sizes of tile (think-ht8t): Medium is the scale of 1 above, the size the
+   atlas had before it offered a choice. */
+.site-page .site-atlas-grid[data-atlas-size="small"] {
+  --site-atlas-scale: 0.667;
+}
+.site-page .site-atlas-grid[data-atlas-size="large"] {
+  --site-atlas-scale: 1.5;
+}
+/* The view tabs and the size tabs: two of the section tabs' strip (site-nav.css), on
    the bar's line, so each is as tall here as under the bar. One row centred over the
-   tiles; on a narrow block the drawing tabs wrap under. Each is hidden until the script
-   has tiles to arrange. */
+   tiles, the key to a tile's marks on a line of its own under it; on a narrow block the
+   size tabs wrap under the view tabs. Each is hidden until the script has tiles to
+   arrange. */
 .site-atlas-grid .site-atlas-controls {
   display: flex;
   flex-wrap: wrap;
@@ -2022,29 +2036,65 @@ body {
   margin-block-end: var(--site-atlas-toggle-space);
 }
 .site-atlas-grid .site-atlas-views,
-.site-atlas-grid .site-atlas-layers {
+.site-atlas-grid .site-atlas-sizes {
   line-height: var(--site-nav-line);
   margin: 0;
 }
 .site-atlas-grid .site-atlas-views[hidden],
-.site-atlas-grid .site-atlas-layers[hidden] {
+.site-atlas-grid .site-atlas-sizes[hidden],
+.site-atlas-grid .site-atlas-legend[hidden] {
   display: none;
+}
+/* The key: each mark beside its words, in the support colour at the note size, as the
+   tables of results key their star (`.site-rung-legend`), centred on a line of its own
+   under the tabs. */
+.kpress .site-atlas-grid .site-atlas-legend {
+  color: var(--site-support-color);
+  column-gap: 1.2rem;
+  display: flex;
+  flex-basis: 100%;
+  flex-wrap: wrap;
+  font-family: var(--kpress-font-sans);
+  font-size: var(--site-font-size-note);
+  font-weight: var(--site-font-weight-sans-light);
+  justify-content: center;
+  margin: 0;
+  row-gap: 0.3rem;
+}
+.site-atlas-legend-item {
+  align-items: center;
+  display: inline-flex;
+  gap: 0.3rem;
 }
 /* The two custom properties are the triangle's (below); they are declared here, in the
    rule both views share, because every line of every drawing inherits them, and a
    declaration for the triangle alone would have the browser restyle all of those, some
-   three thousand elements, at each change of view. */
+   three thousand elements, at each change of view. A tile is its line's share of the
+   block, no wider than the most a tile may be, both scaled by the size: Small draws it
+   two thirds as wide, never under the least tile, and Large lets it grow to half as wide
+   again, the script having set fewer to a line. At Medium it is the share alone, no
+   wider than `--site-atlas-tile-max`. The grid's least cell is scaled the same way. */
 .site-atlas-cells {
-  --site-atlas-tile: min(var(--site-atlas-tile-max), calc(100cqi / var(--site-atlas-per-line, 1)));
+  --site-atlas-fit: calc(100cqi / var(--site-atlas-per-line, 1));
+  --site-atlas-share: calc(var(--site-atlas-fit) * min(1, var(--site-atlas-scale)));
+  --site-atlas-most: calc(var(--site-atlas-tile-max) * var(--site-atlas-scale));
+  --site-atlas-tile: clamp(
+    var(--site-atlas-tile-min),
+    var(--site-atlas-share),
+    var(--site-atlas-most)
+  );
+  --site-atlas-cell: calc(var(--site-atlas-cell-min) * var(--site-atlas-scale));
   --site-atlas-row-space: 0.12;
   display: grid;
   gap: 0.5rem;
-  grid-template-columns: repeat(auto-fill, minmax(6.4rem, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(var(--site-atlas-cell), 1fr));
 }
 @media (max-width: 40rem) {
+  .site-page .site-atlas-grid {
+    --site-atlas-cell-min: 4.6rem;
+  }
   .site-atlas-cells {
     gap: 0.35rem;
-    grid-template-columns: repeat(auto-fill, minmax(4.6rem, 1fr));
   }
 }
 /* A tile in a move between the views is scaled about its own corner, which is where the
@@ -2074,6 +2124,8 @@ body {
   height: auto;
   width: 100%;
 }
+/* The number's box is shrunk to the number and centred, so the marks it carries can
+   hang outside it (below) and the number stand where it would without them. */
 .site-atlas-n {
   color: var(--kpress-doc-muted);
   display: block;
@@ -2081,7 +2133,10 @@ body {
   font-size: 0.8rem;
   font-variant-numeric: tabular-nums;
   font-weight: var(--site-font-weight-sans-light);
+  inline-size: fit-content;
   margin-block-start: 0.2rem;
+  margin-inline: auto;
+  position: relative;
 }
 /* Nothing in the atlas transitions its place: the move between the views is the
    script's (overview/atlas-view.js), and the layout a view sets must be the whole of it
@@ -2156,27 +2211,32 @@ body {
   display: none;
 }
 /* The regularized drawing's badge (overview_sections.atlas_layer_mark): a dot in the
-   accent, sized in its text. The Regularized tab carries it before its word, so the tab
-   is the key; a regularized tile hangs it past its number, out of the flow, so the
-   number stays centred as on every other tile. */
+   accent, sized in its text. The atlas's key carries it before its words; a regularized
+   tile hangs it before its number, out of the flow, so the number stays centred as on
+   every other tile. It hung past the number until the new-result star took that side
+   on 2026-10-04 (think-wwtt), and the Regularized tab was its key until then. */
 .site-atlas-layer-mark {
   background: var(--kpress-doc-accent);
   block-size: 0.5em;
   border-radius: 50%;
   display: inline-block;
   inline-size: 0.5em;
-  margin-inline-end: 0.45em;
   vertical-align: 0.08em;
-}
-.site-atlas-cell[data-atlas-layer="regularized"] .site-atlas-n {
-  inline-size: fit-content;
-  margin-inline: auto;
-  position: relative;
 }
 .site-atlas-n > .site-atlas-layer-mark {
   inset-block-start: 50%;
-  inset-inline-start: calc(100% + 0.3em);
-  margin: 0;
+  inset-inline-end: calc(100% + 0.3em);
+  position: absolute;
+  translate: 0 -50%;
+}
+/* A new result's star (overview_sections.atlas_star), the site's one star in its warm
+   ink (`.site-star`), hung past the number's end, out of the flow, a little smaller
+   than the number so it stays inside the smallest tile. */
+.site-atlas-n > .site-star {
+  font-size: 0.8em;
+  inset-block-start: 50%;
+  inset-inline-start: calc(100% + 0.12em);
+  line-height: 1;
   position: absolute;
   translate: 0 -50%;
 }

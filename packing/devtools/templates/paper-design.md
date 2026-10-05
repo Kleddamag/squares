@@ -670,8 +670,9 @@ it.
   The same strip also switches a view in place: there it is a `tablist` of buttons
   (`role="tab"`), each stripped of a button’s own chrome and taking the strip’s type,
   the selected one filled as the current page’s link is.
-  The homepage’s atlas uses it for its Grid and Triangle views (**Atlas views**, below);
-  `site-nav.css` draws both forms, and the header rules above take only the `nav` strip.
+  The homepage’s atlas uses it for its Grid and Triangle views (**Atlas views**, below)
+  and for its Small, Medium and Large tiles (**Atlas sizes**, below); `site-nav.css`
+  draws both forms, and the header rules above take only the `nav` strip.
   From the top, both pages read bar, rule, tabs, content: the tabs stand under the rule
   that runs under the bar, never over it.
   They are in the header slot, whose lower border is that rule, so a header that holds
@@ -1227,13 +1228,15 @@ it.
 - **Atlas grid.** The atlas grid holds every tracked case, n = 1 to 324, as a square
   drawing in the page’s ink with its n beneath.
   The grid bleeds past the wide track as the window grows, to 140rem less the page
-  gutters, and its cells keep a readable size (at least 6.4rem, 4.6rem on a phone), so a
-  wider screen shows more cases per row: 4 at 390 pixels, 11 at 1280, 17 at 1920 and 20
-  at 2560. A cell washes on hover and on keyboard focus, and is a link to its case’s
-  record file, `cases/11.html`, which opens in the page’s one case popover (**Case
-  records**, below). The wash is the cell’s background, behind the drawing, and it is the
-  only thing that changes: every line of the drawing keeps the page’s ink at rest,
-  hovered, focused and pressed, in both themes.
+  gutters, and its cells keep a readable size (at least 6.4rem, 4.6rem on a phone, at
+  the Medium size; **Atlas sizes**, below), so a wider screen shows more cases per row:
+  4 at 390 pixels, 10 at 1280, 16 at 1920 and 20 at 2560 (measured on 2026-10-04; the
+  figures for 1280 and 1920 had read 11 and 17). A cell washes on hover and on keyboard
+  focus, and is a link to its case’s record file, `cases/11.html`, which opens in the
+  page’s one case popover (**Case records**, below).
+  The wash is the cell’s background, behind the drawing, and it is the only thing that
+  changes: every line of the drawing keeps the page’s ink at rest, hovered, focused and
+  pressed, in both themes.
   The drawing sets that colour on itself rather than reading the link’s, which KPress
   lightens on hover (`tests/test_site_drawing_hover.py` reads both in Chromium).
   The cells ship in a `<template>` and are placed only as the grid nears the viewport
@@ -1284,9 +1287,9 @@ it.
   tile’s line and column as custom properties, the stylesheet lays the tiles out from
   them (`grid-area`), and the placement is redone on the frame after a resize and when
   the expander opens or closes.
-  A tile is its line’s share of the block, `100cqi` over the tiles a line holds and no
-  wider than `--site-atlas-tile-max` (4.5rem), with its inset, its number and the space
-  over a row as fractions of it, so the triangle keeps its proportions.
+  At Medium a tile is its line’s share of the block, `100cqi` over the tiles a line
+  holds and no wider than `--site-atlas-tile-max` (4.5rem), with its inset, its number
+  and the space over a row as fractions of it, so the triangle keeps its proportions.
   Measured in Chromium: at 1280 pixels 63px tiles for the hundred and 34px for all 324,
   no row wrapping; at 1024, 50 and 27px; at 768, 36px for the hundred, and 26px for all
   324 with rows 14 to 18 wrapping at 26 to a line; at 390, 45px tiles at eight to a
@@ -1315,25 +1318,64 @@ it.
   420ms; the hundred miss no frame, and all 324 miss ten of 39 at 120Hz, the longest
   18ms.
 
-- **Atlas drawings.** Beside the view tabs, in one row over the tiles that wraps under
-  them on a phone, a second strip of the same tabs chooses the drawing
-  (`atlas_layer_tabs`): **House**, the default, the record’s own rendering, and
-  **Regularized**, the derived view that `atlas/known-best/regularized/` keeps for some
-  cases (X-049), with each square’s shade from the same house rule on the regularized
-  pose. `devtools.render_regularized_atlas` draws those views from the layer’s index, so
-  a view the layer gains joins the atlas at the next render; its `--check` holds the
+- **Atlas sizes.** Beside the view tabs, in one row over the tiles that wraps under them
+  on a phone, a second strip of the same tabs chooses the size of the tiles
+  (`atlas_size_tabs`, think-ht8t): **Small**, **Medium** and **Large**, Medium selected
+  by default and the strip’s one stop in the page’s tab order, with the keys of the view
+  tabs. Medium is the atlas as it was before it offered a choice; the page is rendered at
+  it, and without scripting the strip stays `hidden`. The size is one token,
+  `--site-atlas-scale` on the block (1, Small 0.667, Large 1.5), set by its
+  `data-atlas-size`, and applies in either view.
+  In the grid it scales the least cell, `--site-atlas-cell-min` (6.4rem, 4.6rem on a
+  phone): at 1280 pixels a line holds 15 tiles at Small, 10 at Medium and 7 at Large,
+  and on a phone 6, 4 and 3. In the triangle it scales the most a tile may be and, at
+  Small, the tile’s share of its line, never under the least tile, so Small keeps the
+  tiles a line holds and draws each smaller, centred.
+  Large holds fewer to a line, as many as tiles half as wide again as Medium’s leave
+  room for (`perLineAt`, tested in Node), so where the triangle already fills the block
+  its long rows wrap by the one rule: at 1280 pixels the hundred go from 19 to a line to
+  13, rows 8 to 10 wrapping, and all 324 from 35 to 23; on a phone the hundred go from 8
+  to 5. A block wide enough that Medium’s tiles stop at the most a tile may be lets
+  Large grow them first.
+  A change of size is a change of layout and moves every tile as a change of view does
+  (**Atlas views**, above).
+  The size is in the address as `?size=small` or `?size=large` (Medium has none),
+  written and read as the view is, before any tile is placed.
+  `tests/test_site_atlas_views.py` reads each size in Chromium, and
+  `devtools.measure_atlas_views` measures every layout at every size (`layout`), times
+  the changes of size in each view (`move`) and pictures them (`shots`).
+
+- **Atlas marks.** A tile carries up to two marks beside its number, each hung out of
+  the flow so the number stays centred: the new-result star after it, and the
+  regularized layer’s badge before it.
+  The star is the site’s one star in its warm ink (`atlas_star`, `.site-star`), on every
+  case whose verified lower bound is a new result, the rule the frontier table’s Recent
+  column stars by (`render_frontier_page.recent_lower_bounds`, think-wwtt); it is hidden
+  from assistive technology, and the tile’s name ends “new result” instead, as a starred
+  row’s does in a table of results.
+  A case that `atlas/known-best/regularized/` keeps a derived view of (X-049) is drawn
+  from that view, the record’s exact frame with its nearly axis-aligned squares
+  straightened, each square shaded by the house rule on the regularized pose, and its
+  tile carries the layer’s badge, a dot in the accent, and says “regularized view” in
+  its name; every other case is drawn from its house rendering.
+  `devtools.render_regularized_atlas` draws those views from the layer’s index, so a
+  view the layer gains joins the atlas at the next render; its `--check` holds the
   drawings to the index.
-  A case with a view has a second tile in a third `<template>`, and choosing Regularized
-  swaps it in for the house tile in place, with the tile’s place in the triangle and the
-  keyboard focus carried over, so nothing moves and the two can be compared by flicking
-  between the tabs (`overview/atlas-layer.js`); every other case keeps its house tile.
-  A regularized tile carries the layer’s badge, a dot in the accent hung past its number
-  so the number stays centred, and the Regularized tab carries the same dot as its key.
-  Either tile opens the same case record, whose drawing is the house one: the
-  regularized layer is the atlas’s view, not the record’s. The drawing is in the address
-  as `?layer=regularized` (house has none), read before any tile is placed.
-  `tests/test_site_atlas_views.py` reads the swap in Chromium, and
-  `devtools.measure_atlas_views` measures each layout in both drawings.
+  The tile opens the same case record as any other, whose drawing is the house one: the
+  regularized layer is the atlas’s view, not the record’s. Until 2026-10-04 the house
+  drawing was the default and a **House** and **Regularized** strip swapped a second
+  tile in for each such case; the owner dropped the choice for the regularized drawings
+  alone (think-k8x9), and the page stopped shipping the second set, 264 KB. A key under
+  the two strips, on a line of its own, names both marks in words, each beside its mark
+  as on a tile, “new result” and “regularized view”, the second a link to the atlas
+  README’s section on the layer (`atlas_legend`), in the support colour at the note
+  size, as the tables of results key their star: a star without a key reads as
+  decoration, and a regularized drawing is shown only labelled as one.
+  It ships `hidden` with the strips.
+  At the smallest tile, 26 pixels with a three-figure number, the star is set at 0.8 of
+  the number’s size and both marks stay inside their tile:
+  `devtools.measure_atlas_views` holds every layout to that (`mark_problems`), and
+  `tests/test_site_atlas_views.py` holds which tiles carry which mark to the records.
 
 - **Action under a table or grid.** Where one control follows a table or a grid, it is
   the site’s one action button, `.site-action`, in a centred `.site-action-row`: the

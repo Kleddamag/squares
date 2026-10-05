@@ -790,7 +790,7 @@ consequence in each.
   They run under lane K’s frozen SW9 recipe, which lane K’s passed endpoint7 control
   covers. One slot ran from 16:37, and a second joined at 17:36 when BC-424’s queue
   ended, ahead of lane E’s second worker.
-  By 18:10, four targets had closed and been admitted (t1, t2, t4, t5), and t3 had
+  By 18:04, four targets had closed and been admitted (t1, t2, t4, t5), and t3 had
   stopped at its 24-round cap at 17:52:42 without closing, its node kept for a stall
   diagnosis. The certified census then stood at 50,728 states in 6,453 orbits.
 - **Lane E’s shards differ in size.** Shards 0 to 4 hold 10 distance-2 orbits each and

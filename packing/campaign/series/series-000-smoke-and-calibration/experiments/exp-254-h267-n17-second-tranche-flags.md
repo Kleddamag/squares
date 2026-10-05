@@ -106,6 +106,17 @@ experiment:
       838 s of process CPU, the producer at its 24-round cap with producer time unused (192 steps, 16,810
       rows, finest 1/512); at the last round every owner still had live rows, interior-S 7, interior-SE 8,
       side-E0 5 and side-S1 6 the fewest. A non-closure; its node is kept for a stall diagnosis.
+  - shape: determination
+    role: outcome
+    question: Is target 7 (corner-NW, side-S0, side-W0, side-W1, side-W2, interior-SW, interior-NW, interior-S)
+      infeasible at U, by a certificate the kernel's checker accepts and the standing verifier re-proves in
+      full?
+    outcome: criterion_met
+    checked_by: The run (receipts/K/kernel-t7-bc425.json) returns PASS_CERTIFIED_CLOSED in 482 s of wall and 355 s of
+      process CPU (producer 217 s, checker 263 s) on 32 steps and 2,050 rows in 4 rounds, rows finest at
+      1/128, closure all_parent_poses_forbidden for interior-S at step 31. The standing verifier at cebb5d15a
+      passes it in full mode in 198 s, checking all 2,023 live rows in full and 5,096 collision regions by
+      25,553,964 exact facet checks. Alone it excludes 81,848 states and 10,267 orbits.
   verdict:
     decision: in-progress
     primary_criterion: Each frozen target run once, a closure admitted only on the standing verifier's full pass
@@ -144,6 +155,7 @@ projected for it alone, because most of what it excludes the first had already e
 | 4, `s182-bc425-t4` | corner-SE, side-E0, side-S1, side-S2, interior-NW, interior-W, interior-S, interior-SE | closed in 553 s, 138 steps, 11,323 rows | full pass, 275 s | 53,016 states, 6,742 orbits (after lane A’s state 3063677 too) |
 | 3 | side-S0, side-E0, side-S1, side-S2, interior-NW, interior-W, interior-S, interior-SE | 24-round cap at 1,139 s, not closed | — | — |
 | 5, `s182-bc425-t5` | side-N0, side-S1, side-N1, interior-NW, interior-W, interior-S, interior-N, interior-SE | closed in 327 s, 22 steps, 1,408 rows | full pass, 300 s | 50,728 states, 6,453 orbits |
+| 7, `s182-bc425-t7` | corner-NW, side-S0, side-W0, side-W1, side-W2, interior-SW, interior-NW, interior-S | closed in 482 s, 32 steps, 2,050 rows | full pass, 198 s | 44,316 states, 5,649 orbits |
 
 The targets and the census they came from are
 [kernel-targets-bc425.txt](../../../explorations/X048-session-182-overnight/kernel-targets-bc425.txt)

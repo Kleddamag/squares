@@ -906,7 +906,7 @@ Status: **active**. Turn PR 230's W3 review and the two explorations it led to, 
 
 | id | status | title | rounds | opened because |
 | --- | --- | --- | --- | --- |
-| series-000 | open | S0: smoke and calibration — prove the machinery, establish every baseline metric | 181 | First series. There is no prior instrument, so not |
+| series-000 | open | S0: smoke and calibration — prove the machinery, establish every baseline metric | 182 | First series. There is no prior instrument, so not |
 
 ## Registry
 
@@ -1119,7 +1119,7 @@ Status: **active**. Turn PR 230's W3 review and the two explorations it led to, 
 | H-270 | blocked | search | For some integer k with 18 <= k <= 41, the strip construction of Kearn | k: 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 | 0 |  |  |
 | H-272 | blocked | search | Of the 68 non-grid known-best records whose witness derives from Kingb |  | 0 |  |  |
 | H-273 | open | proof | Each of the 95 orbits at Hamming distance 2 from the endpoint's state  |  | 0 |  |  |
-| H-274 | open | proof | Of the four counted draws of H-264's seed-182 draw that stalled under  |  | 0 |  |  |
+| H-274 | running | proof | Of the four counted draws of H-264's seed-182 draw that stalled under  |  | 1 |  |  |
 
 ## Needs review — held for a human, not decided
 
@@ -1344,11 +1344,12 @@ Status: **active**. Turn PR 230's W3 review and the two explorations it led to, 
 | exp-032 | series-000 | 3 | openai-codex | H-021 | The exact connected and isolated controls pass, every declared conflation fails, and all unsupported floating-point observations remain unresolved. |
 | exp-201 | series-000 | 18 | claude-opus-5 | H-201 | Calibration, not a scored round: it freezes p_perturb = 1.0, perturb_scale = 2 and a flat mu = 5 for exp-202 and exp-203, and it turned up a schedule-length effect that is now registered as H-204 rather than folded into an arm. |
 
-### in-progress (1)
+### in-progress (2)
 
 | id | series | instance | operator | hypotheses | reason |
 | --- | --- | --- | --- | --- | --- |
 | exp-251 | series-000 | 17 | Claude Session 182; the run operator's lane K queue produced and verified each certificate and admitted it in the session checkout | H-267 | Lane K's round is running; each closure is admitted as its verifier passes, and the verdict is written when the target list is exhausted. |
+| exp-253 | series-000 | 17 | Claude Session 182; the run operator's BC-424 queue ran the control beside the first state and the states two at a time in mask order, verified each closure, and admitted it in the session checkout once the control had finished without closing | H-274 | The first frozen state is admitted after the endpoint-state control finished without closing; the others are admitted or recorded as they finish, and the verdict is written when two close or three do not. |
 
 ## Resumable — stopped on the clock, not on an answer
 
@@ -1396,7 +1397,7 @@ Status: **active**. Turn PR 230's W3 review and the two explorations it led to, 
 
 ## Effort
 
-181 rounds, 2512.1 agent-minutes, 4273.1 wall-minutes.
+182 rounds, 2512.1 agent-minutes, 4273.1 wall-minutes.
 
 These totals exclude 4 historical rounds with unrecorded timing; their cost is unknown, not zero.
 

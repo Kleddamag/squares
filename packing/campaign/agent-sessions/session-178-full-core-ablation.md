@@ -33,17 +33,17 @@ session:
     expected_output: packing/campaign/explorations/X048-session-178-full-core-ablation/README.md
     validation_command: Explicit projectPython focused full-core-ablation controls/Ruff/types
       under immutable Jobs.
-    kill_condition: 30min source deadline, overlap, failed provenance/guard or insufficient15min
+    kill_condition: 30 min source deadline, overlap, failed provenance/guard or insufficient 15 min
       finalization reserve.
-    fallback: Retain C NO-GO, B60supports/J72fixed losses and immutable prior evidence; no comparison
+    fallback: Retain C NO-GO, B60 supports/J72 fixed losses and immutable prior evidence; no comparison
       if nesting fails.
-    outcome: 26controlsPASS3.31s/Ruff/types0/embedded-script0; endpoint15tuples/225freshpairs/all24parents;
-      rootsourceGO b30703dc.
+    outcome: 26 controls PASS in 3.31 s/Ruff/types 0/embedded-script 0; endpoint 15 tuples/225 fresh pairs/all 24 parents;
+      root source GO b30703dc.
     evidence:
     - packing/devtools/probe_n17_full_core_ablation.py
     - packing/tests/test_n17_full_core_ablation.py
     stop_reason: Root pretarget source/control GO before ONE B.
-    next_action: ONE fixed-E79 Btarget and independentroot replay, honor nesting/growth earlystops.
+    next_action: ONE fixed-E79 B target and independent root replay, honor nesting/growth early stops.
   - workflow: research-loop
     focus: correctness
     recording: contemporaneous
@@ -52,19 +52,19 @@ session:
       independent fresh classification.
     status: stopped
     entered_by: evidence_checkpoint
-    switch_reason: Root source/control GO and current3339a8b4ef75allrequiredCI green.
+    switch_reason: Root source/control GO and current PR 333 head 9a8b4ef75, all required CI green.
     budget_minutes: 15
     started_at: '2026-10-04T11:49:22.688253+00:00'
     deadline_at: '2026-10-04T12:04:22.688253+00:00'
     expected_output: packing/campaign/explorations/X048-session-178-full-core-ablation/README.md
-    validation_command: Fixed full-core ablation≤1185calls/45s/512MiB/Job60; rootfreshindependent
-      under samebounds.
-    kill_condition: ONE frozen1185/45s/512MiB/Job60 or nesting/zero-growth/monotoniccontradiction
+    validation_command: Fixed full-core ablation≤1185 calls/45 s/512 MiB/Job 60; root fresh independent
+      under same bounds.
+    kill_condition: ONE frozen 1185/45 s/512 MiB/Job 60 or nesting/zero-growth/monotonic contradiction
       stops attempt; no repeat.
-    fallback: Retain C NO-GO, B60supports/J72fixed losses and immutable prior evidence; no comparison
+    fallback: Retain C NO-GO, B60 supports/J72 fixed losses and immutable prior evidence; no comparison
       if nesting fails.
-    outcome: All96fullaug strict positive growth/all192nesting; F71ofE79, H72minusF only58;8fullsurvivors21sample
-      parents. Independent1047freshpairs accepted; B60retained, no rownegative/networkequivalence.
+    outcome: All 96 full-augmentation strict positive growth/all 192 nesting; F71 of E79, H72 minus F only 58; 8 full survivors 21 sample
+      parents. Independent 1047 fresh pairs accepted; B60 retained, no row-negative/network equivalence.
     evidence:
     - packing\campaign\explorations\X048-session-178-full-core-ablation\README.md
     stop_reason: ONE fixed-sample ablation and independent replay accepted; hosted certification
@@ -79,18 +79,18 @@ session:
     slice_minutes: 30
     finalization_minutes: 15
   stop_conditions:
-  - ONE E79/1185uncached directedcalls/45s/512MiB/Job60; no DFS/search/cache/cap/order ladder.
-  - Exact96full strict cores, old containment and full core inside both H child cores; concrete
+  - ONE E79/1185 uncached directed calls/45 s/512 MiB/Job 60; no DFS/search/cache/cap/order ladder.
+  - Exact 96 full strict cores, old containment and full core inside both H child cores; concrete
     failure stops comparison.
   - F subset J72 and all H7 survive; any contradiction stops soundness acceptance.
-  - Fresh root independent classification replay≤1185/45s/Job60 without new diagnostic imports.
-  - No raw/H/A/B/C/kernel/producer mutation, no rowunsupported/global claim;15min reserve/outer14:06:46Z.
+  - Fresh root independent classification replay≤1185/45 s/Job 60 without new diagnostic imports.
+  - No raw/H/A/B/C/kernel/producer mutation, no row unsupported/global claim; 15 min reserve/outer 14:06:46Z.
   progress:
     metric: Full-interval lost tuple set F and J72 minus F
-    before: H bundled halving/octagon loses72 of E79; contribution of full-interval augmentation
+    before: H bundled halving/octagon loses 72 of E79; contribution of full-interval augmentation
       not separated.
-    after: All96fullaug strict positive growth/all192nesting; F71ofE79, H72minusF only58;8fullsurvivors21sample
-      parents. Independent1047freshpairs accepted; B60retained, no rownegative/networkequivalence.
+    after: All 96 full-augmentation strict positive growth/all 192 nesting; F71 of E79, H72 minus F only 58; 8 full survivors 21 sample
+      parents. Independent 1047 fresh pairs accepted; B60 retained, no row-negative/network equivalence.
   delegations: []
   outputs:
   - packing/campaign/explorations/X048-session-178-full-core-ablation/README.md
@@ -99,20 +99,20 @@ session:
   checks:
   - Original gate declarations below are historical branch evidence. The rewritten
     review layer remains uncertified; no source target or mathematical replay was rerun.
-  - C final9a8b4ef75 source/metadataCI55terminal19 pass36 skip/allrequiredSUCCESS; think-5sya
-    closed/synced.
-  - Actual main225d6/PR3071525 and scoped liveownership inspected; no fixed-tuple full-interval
+  - C final 9a8b4ef75 source/metadata CI has 55 terminal checks, 19 pass/36 skip, all required
+    SUCCESS; think-5sya closed/synced.
+  - Actual main 225d6, PR 307 at 1525 and scoped live ownership inspected; no fixed-tuple full-interval
     overlap. think-abit claimed/synced.
   - Sole primary/integrator and root critical review/independent evidence; original B–J/G/I/A/B/C
     retained.
-  - Root source/control and independent fixed-sample replay accepted;26controls/Ruff/types/embedded-script/endpointfresh225PASS.
-    FiveJobs0/cleanuptrue.
-  - Native ONCE start2026-10-04T11:34:51.316411+00:00, cutoff2026-10-04T11:56:03.204643+00:00,
-    actualend2026-10-04T11:56:07.283634+00:00; live/boundary lowerbound, later publication/CIexcluded.
-  - Final test-only shared-pytest memory isolation also patches reused H sampler;26PASS3.75s/Ruff,
+  - Root source/control and independent fixed-sample replay accepted; 26 controls, Ruff, types,
+    embedded-script and the endpoint's 225 fresh pairs PASS. Five Jobs exit 0 with cleanup true.
+  - Native ONCE start 2026-10-04T11:34:51.316411+00:00, cutoff 2026-10-04T11:56:03.204643+00:00,
+    actual end 2026-10-04T11:56:07.283634+00:00; live/boundary lower bound, later publication/CI excluded.
+  - Final test-only shared-pytest memory isolation also patches the reused H sampler; 26 PASS in 3.75 s, Ruff,
     production source unchanged. Later administrative check excluded from native cutoff.
   - 'Historical full gate: fast at c6972548e98ec356a8d408e9b34518be87a6cf36: passed'
-  - Exact D source55checks terminal19 pass36 skip/all 3 requiredSUCCESS; real-tree file-cost guard
+  - Exact D source has 55 checks terminal, 19 pass/36 skip, all 3 required SUCCESS; real-tree file-cost guard
     passes; no threshold changes.
   stop_reason: ONE fixed-sample ablation and independent replay accepted; hosted certification
     remains explicit.

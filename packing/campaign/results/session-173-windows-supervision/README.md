@@ -19,6 +19,8 @@ Linux declared three native skips; those skips were not Windows acceptance.
 | worker-memory-stop | 0.278 | 5517312 | 119164928 | 0 / True |
 
 [Retained control summaries](receipts/controls.json) omit local paths and argv.
+They are `packing.windows-supervisor.v1` receipts, from before Review A, when the review
+threshold also stopped the run; the guide says what version 2 changed.
 All retained live identities were signalled exited and cleanup errors were empty.
 An independent 80 MiB guard observed a 119312384 byte worker versus a 5505024 byte
 launcher, stopping in 0.2769671 seconds.

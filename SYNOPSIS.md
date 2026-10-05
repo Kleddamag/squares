@@ -542,7 +542,7 @@ case or experiment separately.
 
 | Document or collection | Role | Authority | Lifecycle | Current replacement |
 | --- | --- | --- | --- | --- |
-| [Session 173: Windows owned-Job supervision](packing/campaign/explorations/X048-session-173-windows-supervision/README.md) | typed session record | record | retained | — |
+| [Session 173: Windows owned-Job supervision](packing/campaign/results/session-173-windows-supervision/README.md) | typed session record | record | retained | — |
 | [Windows owned-Job supervision](packing/devtools/windows-supervision.md) | engineering and validation rules | current | maintained | — |
 | [Nagamochi’s Lemma 1 Is False: What T-007 Rests On Now](docs/project/reviews/review-2026-10-02-nagamochi-lemma1-karakus.md) | dated review record | record | retained | — |
 | [Proof Review: wand125’s Point-Only Cover for `s(61) = 8`](docs/project/reviews/review-2026-10-02-wand125-s61-point-cover.md) | dated review record | record | retained | — |

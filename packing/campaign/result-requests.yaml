@@ -517,9 +517,9 @@ issues:
       n = 69, six of them again at counts already posted (76, 87, 90, 91, 92, 96), then 14
       more from 3 October 19:33 UTC to 4 October 06:09 UTC, at n = 42 to 95, 14 more from
       4 October 07:04 to 19:04 UTC, at n = 53 to 94, twelve of them again at counts already
-      posted, and two more on 5 October at 06:06 and 06:07 UTC, at n = 67 and 84, both again
-      at counts already posted.
-    read_through: '2026-10-05T06:07:23Z'
+      posted, and three more on 5 October from 06:06 to 08:11 UTC, at n = 67, 84 and 66, all
+      again at counts already posted.
+    read_through: '2026-10-05T08:11:44Z'
     results:
       - key: mixed-five
         claim: s(37) >= 161/25, s(65) >= 167/20, s(66) >= 421/50, s(90) >= 48/5 and s(92) >= 969/100
@@ -598,7 +598,17 @@ issues:
           (T-090), which they supersede
         source: https://github.com/jlevy/squares/issues/282#issuecomment-5989043109
         register: [T-094]
-    beads: [think-ye2x, think-fb6h, think-09ag, think-r7yt, think-wpuu, think-e6ss, think-07s1, think-wrdq, think-0xb8, think-flv5]
+      - key: oct5-n66-843
+        claim: >-
+          s(66) >= 843/100 = 8.43 (mixed_n66_L843, d73ce20), above the source's
+          mixed_n66_L842 = 421/50 (T-069), which it supersedes
+        source: https://github.com/jlevy/squares/issues/282#issuecomment-5990620723
+        not_registered: >-
+          Posted at d73ce20 after the 5 October intake pass pinned a541afb for T-094, so it
+          is outside that packet; it is imported at d73ce20 or a later head.
+        queued: true
+        bead: think-4qit
+    beads: [think-ye2x, think-fb6h, think-09ag, think-r7yt, think-wpuu, think-e6ss, think-07s1, think-wrdq, think-0xb8, think-flv5, think-4qit]
     answer_bead: think-7gop
     replies:
       - url: https://github.com/jlevy/squares/issues/282#issuecomment-5972354526

@@ -3,9 +3,9 @@ type: is
 id: is-01m3ys167s43cwbqecd86pvw5k
 title: "Answer #282: wand125's mixed certificates (T-069, T-071, T-072; later ones queued)"
 kind: task
-status: in_progress
+status: open
 priority: 2
-version: 4
+version: 6
 delegate: claude-code@vm
 labels:
   - result-import
@@ -14,7 +14,7 @@ parent_id: is-01m41csdc2gp36ry5p6n7c2x2y
 hold: null
 hold_until: null
 created_at: 2026-10-02T17:01:47.129Z
-updated_at: 2026-10-05T03:21:48.835Z
+updated_at: 2026-10-05T03:22:49.733Z
 started_at: 2026-10-05T03:21:48.835Z
 ---
 Answer jlevy/squares#282 (wand125, opened 2026-10-01): Mixed rectangle-measure certificates for n = 37, 65, 66, 90, 92 (after T-048): registration request
@@ -38,3 +38,5 @@ Sequence: once the pull request holding the ids above is on main, from packing/ 
 ## Notes
 
 2026-10-03 22:55 T-069, T-071, T-072, T-075 at V3/C3 on main; T-082 (22 certificates of 3 Oct) on main at V0/C1 via #324 (4949d1439); reply with OC-1/OC-2 posted (issuecomment-5974294911). Stays open until T-082's replays are recorded (think-wpuu).
+
+2026-10-05 (intake triage, think-nkzt): think-yl2j landed the stack and closed on 2026-10-03, so that dependency is removed. #282 is a rolling request, and it is not closeable while later certificates are unsettled. It also waits on think-wrdq, the replay of the 14 certificates of 4 October. Their import is think-07s1, on another lane, which also owns the 14 unread comments of 4 October. The next reply follows when T-082 or the 4 October import moves on main.

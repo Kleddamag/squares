@@ -5,7 +5,7 @@ title: "Merge #292, #298, #311 into main bottom-up once each is green and mergea
 kind: task
 status: closed
 priority: 1
-version: 21
+version: 24
 labels:
   - merge
 dependencies:
@@ -32,16 +32,10 @@ dependencies:
   - type: blocks
     target: is-01m3ys14zf9kaxrjz44ksfrhmd
   - type: blocks
-    target: is-01m3ys167s43cwbqecd86pvw5k
-  - type: blocks
-    target: is-01m3ys17qmmqsa0pby2rg6x2hk
-  - type: blocks
-    target: is-01m3xrx8b86kp8t1k6gj71p4ej
-  - type: blocks
     target: is-01m41e1tqg81pgz89snb0whnv4
 parent_id: is-01m41cr1mz526vz5b2a5e4z100
 created_at: 2026-10-03T17:24:58.807Z
-updated_at: 2026-10-03T18:13:03.565Z
+updated_at: 2026-10-05T03:23:08.176Z
 closed_at: 2026-10-03T18:13:03.565Z
 close_reason: null
 resolution: null

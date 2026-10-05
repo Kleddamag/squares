@@ -3,9 +3,9 @@ type: is
 id: is-01m41csdc2gp36ry5p6n7c2x2y
 title: "Follow up on every result-report issue: acknowledge now, final reply from main after the stack lands, close the settled ones"
 kind: epic
-status: in_progress
+status: open
 priority: 1
-version: 26
+version: 28
 delegate: claude-code@vm
 labels:
   - issues
@@ -38,11 +38,13 @@ child_order_hints:
 hold: null
 hold_until: null
 created_at: 2026-10-03T17:25:32.674Z
-updated_at: 2026-10-05T03:21:49.943Z
+updated_at: 2026-10-05T03:23:23.701Z
 started_at: 2026-10-05T03:21:49.943Z
 ---
-Owner instruction 2026-10-03 ~18:00 UTC: 'follow up on all issues'. Acknowledge the issues with no reply yet (#316, #309, #308, #296, #295, #281, #280) without provisional T-ids, linking the PRs. After think-yl2j lands the stack, post one final reply per issue from main with check_requests --draft N, and close the issues check_requests reports closeable. Per-issue answer beads are children.
+Owner instruction 2026-10-03 ~18:00 UTC: 'follow up on all issues'. Acknowledge the issues with no reply yet (#316, #309, #308, #296, #295, #281, #280) without provisional T-ids, linking the PRs. think-yl2j landed the stack on 2026-10-03; from then on, post one final reply per issue from main with check_requests --draft N, and close the issues check_requests reports closeable. Per-issue answer beads are children.
 
 ## Notes
 
 2026-10-03 18:30 Owner: once everything is landed, comment on each issue and tag the contributor (@evand, @wand125, @squarepacker, @XiaoLiaoShe, @franciscouzo as applicable) where their results are imported; one final reply per issue from main with register ids and disposition (check_requests --draft N), evand's #316, #256 and #238 first; close the issues check_requests reports closeable.
+
+2026-10-05 (intake triage, think-nkzt): the stack landed when think-yl2j closed on 2026-10-03. Final replies went out on 3 and 4 October, recorded by think-sfbj and think-x3ls. What is left is in the open children: the answer beads for #282, #281, #295 and #316, the #282 imports, and the 5 October follow-up epic think-05m9. The answer bead for #317 is think-1gbu, outside this epic. Close the epic when no child is open.

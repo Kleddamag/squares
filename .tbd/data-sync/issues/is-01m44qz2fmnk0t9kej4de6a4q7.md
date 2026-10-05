@@ -5,7 +5,7 @@ title: "Import wand125: mixed rectangle-measure lower bounds of 4 October at 14 
 kind: task
 status: in_progress
 priority: 1
-version: 6
+version: 7
 delegate: claude-code@vm
 labels:
   - result-import
@@ -18,7 +18,7 @@ parent_id: is-01m44qz0rxvkakmyqaj7qdgagv
 hold: null
 hold_until: null
 created_at: 2026-10-05T00:38:35.764Z
-updated_at: 2026-10-05T01:06:25.563Z
+updated_at: 2026-10-05T01:52:30.408Z
 started_at: 2026-10-05T00:48:54.642Z
 ---
 14 comments on #282 (2026-10-04T07:04Z..19:04Z), commits 683264c..797bdf6 of wand125/square-packing-bounds. Stages 1-3: claim map against the record, packet at the last commit, register T-090 at V0, read_through on #282. Replay (stage 4) priced and queued, not run: same verifier as mixed_n84_L940, ~7 CPU-h per certificate.
@@ -53,3 +53,5 @@ Register: T-090 (pre-assigned), V0/C0, S3 draft, scope 14 counts, attribution bo
 Replay plan (think-wrdq): 153.3 CPU-h planned (136.9 mixed-price x 1.119 observed ratio; 160.9 by the source's own oblique seconds). mixed-shard wand125-mixed-bounds-evening-2026-10-04 --runners 6: 21.0-22.3 CPU-h, ~5.5 wall-h per runner at 4 workers (130.9 CPU-h for the 12); plus n69-L862 0-200 and n86-L9503 0-200 under the 8aa6a10 packet (12.1 + 10.3 = 22.4 CPU-h, ~5.6 wall-h) unless that packet's own replay (think-e6ss/think-wpuu plan r3, r7, r8) runs them. Then two mutated controls (mixed-control) and a separately prompted review for C1.
 
 Open for the coordinator: the 8aa6a10 packet's entry (think-e6ss planned 16) must now scope to its other 14 (oct3-oct4-mixed-14) since T-090 holds n69 and n86. Acknowledgement draft for #282: received 14 certificates (683264c..797bdf6), pinned at 797bdf6, exact premises and pre-replay checks pass, full 201-angle replays and a review queued; no T-NNN until merged.
+
+2026-10-05 01:55Z validation (commits 861a9f258, 696167be9, 805313037 re-pin DATA_REVISION): records tier fails only check_results' id contiguity (T-088/T-089 not on this branch); with T-090 renumbered to T-088 in a scratch worktree check_results and tests/test_results_register.py, test_result_status.py, test_negative_controls (93 tests) pass. Push tier: ruff, basedpyright, edit checks green; browser floor green once packages/workbench/node_modules is linked (worktree bootstrap gap); reachable tests 5038 passed, 11 failed = 6 contiguity-only, 1 data pin (fixed by 805313037), 2 n11_generic_sequential load timeouts (pass alone), 2 fixed_core_packet process-reaping tests that fail on clean main in this container too. check_requests: every id resolves; #282 reply due (oct3-oct4-mixed-14 ack, T-090), #281 no reply due.

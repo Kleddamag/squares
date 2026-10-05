@@ -9,7 +9,7 @@ description: 'The n17 sub-pattern certificate objects of X-048 session 168, by c
   the interval branch-and-bound certificate of A and the kernel certificates of W7, SW9 (flag 3) and residue
   state N1. The standing verifiers (devtools.verify_n17_bb_certificate, devtools.verify_n17_kernel_certificate)
   re-check them once fetched; devtools.census_n17_certified counts from the committed receipts without
-  them. Session 182 adds the kernel certificates its lane K admits, by directory s182-k<J>.'
+  them. Session 182 adds the kernel certificates its lanes admit, by directory: s182-k<J> for lane K''s flags and s182-m<mask> for lane A''s residue states.'
 objects:
 - path: packing/campaign/explorations/X048-session-168-pilots/certificates/A/00afebeeab777bd3afb8509747520a5d5a174c04a5e9a07a5ba29e86b8ac45d0.json.gz
   asset: 00afebeeab777bd3afb8509747520a5d5a174c04a5e9a07a5ba29e86b8ac45d0.json.gz
@@ -481,3 +481,13 @@ objects:
   size: 7889
   sha256: c5729d2f94d9152dad01d797f7a4eaa463472bdce779413b0b3c4cc2a74fbcbf
   description: kernel certificate of s182-k1 (session 182, lane K target 1)
+- path: packing/campaign/explorations/X048-session-168-pilots/certificates/s182-m5683195/node-59e605864e3301e3687e327f2547a9813921c9496409c75d493b62b1847cef29.json.gz
+  asset: node-59e605864e3301e3687e327f2547a9813921c9496409c75d493b62b1847cef29.json.gz
+  size: 30542844
+  sha256: 953b97dcb104d6ab0396c364be844aa44e762205245e0e3f1909bbe0f3538d43
+  description: kernel certificate of s182-m5683195 (session 182, lane A residue state, H-264)
+- path: packing/campaign/explorations/X048-session-168-pilots/certificates/s182-m5683195/seed-6fff8353c5bcae817dccc28ca49614567cfd424a211b8643bd9264898ea0e6ae.json.gz
+  asset: seed-6fff8353c5bcae817dccc28ca49614567cfd424a211b8643bd9264898ea0e6ae.json.gz
+  size: 10924
+  sha256: 54c70ae570676620be47db0da6936fa41910194059e9c369c292e4024a46b98d
+  description: kernel certificate of s182-m5683195 (session 182, lane A residue state, H-264)

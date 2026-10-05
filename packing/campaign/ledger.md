@@ -903,7 +903,7 @@ Status: **active**. Turn PR 230's W3 review and the two explorations it led to, 
 
 | id | status | title | rounds | opened because |
 | --- | --- | --- | --- | --- |
-| series-000 | open | S0: smoke and calibration — prove the machinery, establish every baseline metric | 180 | First series. There is no prior instrument, so not |
+| series-000 | open | S0: smoke and calibration — prove the machinery, establish every baseline metric | 181 | First series. There is no prior instrument, so not |
 
 ## Registry
 
@@ -1107,7 +1107,7 @@ Status: **active**. Turn PR 230's W3 review and the two explorations it led to, 
 | H-261 | unresolved | proof | For an explicit rational radius r > 0, every packing of 17 unit square |  | 1 |  | 15s wall |
 | H-262 | refuted | proof | On the H259 closed grid at cap 1169/250, the subcontainer cuts from s( |  | 1 |  | 2.2m wall |
 | H-263 | open question | proof | Which closed centre cover with proved cell capacities keeps every endp |  | 0 |  |  |
-| H-264 | open question | proof | On a seeded stratified draw of residue orbits on the H-266 unique-stat |  | 0 |  |  |
+| H-264 | open question | proof | On a seeded stratified draw of residue orbits on the H-266 unique-stat |  | 1 |  |  |
 | H-265 | confirmed | proof | The side S* of the H255 chart root is a root of the degree-18 polynomi |  | 1 |  | 1s wall |
 | H-266 | confirmed | proof | At cap U = 1169/250 there is a D4-symmetric closed cover of the centre |  | 2 |  | 2s wall |
 | H-267 | unresolved | proof | On the H-266 cover, forbidden occupancy sub-patterns of arity at most  |  | 3 |  | 48.2m wall |
@@ -1338,11 +1338,12 @@ Status: **active**. Turn PR 230's W3 review and the two explorations it led to, 
 | exp-032 | series-000 | 3 | openai-codex | H-021 | The exact connected and isolated controls pass, every declared conflation fails, and all unsupported floating-point observations remain unresolved. |
 | exp-201 | series-000 | 18 | claude-opus-5 | H-201 | Calibration, not a scored round: it freezes p_perturb = 1.0, perturb_scale = 2 and a flat mu = 5 for exp-202 and exp-203, and it turned up a schedule-length effect that is now registered as H-204 rather than folded into an arm. |
 
-### in-progress (1)
+### in-progress (2)
 
 | id | series | instance | operator | hypotheses | reason |
 | --- | --- | --- | --- | --- | --- |
 | exp-251 | series-000 | 17 | Claude Session 182; the run operator's lane K queue produced and verified each certificate and admitted it in the session checkout | H-267 | Lane K's round is running; each closure is admitted as its verifier passes, and the verdict is written when the target list is exhausted. |
+| exp-252 | series-000 | 17 | Claude Session 182; the run operator's lane A queue ran the survey, the control and the draws two at a time in the survey's own seeded random order, verified each closure and admitted it in the session checkout | H-264 | Two of the ten counted draws have run, one closed and one did not; the verdict is fixed when five close or six do not, and the remaining runs continue for the cost estimate. |
 
 ## Resumable — stopped on the clock, not on an answer
 
@@ -1390,7 +1391,7 @@ Status: **active**. Turn PR 230's W3 review and the two explorations it led to, 
 
 ## Effort
 
-180 rounds, 2512.1 agent-minutes, 4072.4 wall-minutes.
+181 rounds, 2512.1 agent-minutes, 4072.4 wall-minutes.
 
 These totals exclude 4 historical rounds with unrecorded timing; their cost is unknown, not zero.
 

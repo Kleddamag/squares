@@ -69,7 +69,9 @@ experiment:
     checked_by: With s182-k1 admitted, census_n17_certified counts 102,124 states and 12,929 orbits, the
       endpoint surviving, down from 126,168 and 15,953 at the registration (results/exp-251-n17-overnight-flag-certification/census.json).
       The same tool on a copy of the ledger restricted to the arity-at-most-7 entries (W7, A, s182-k1) counts
-      14,477 orbits, down from exp-249's 17,690, against the threshold of 10^4.
+      14,477 orbits, down from exp-249's 17,690, against the threshold of 10^4. The census file was re-run
+      at 27b787a1c, where the census reads the selector recheck; 86 flags still project, and certifying
+      them all would leave 17,168 states in 2,197 orbits.
   verdict:
     decision: in-progress
     primary_criterion: The certified residue is at most 10^4 orbits with every certificate independently

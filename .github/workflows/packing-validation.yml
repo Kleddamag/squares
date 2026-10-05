@@ -1820,6 +1820,15 @@ jobs:
     # the libcairo breakage was only ever visible after a merge, on a branch nobody was
     # about to fix. At roughly thirty seconds that exclusion no longer buys anything: a
     # check this cheap belongs before the merge, where it can still change the outcome.
+    #
+    # The merge that matters is the one into `main`, so a pull request runs it only when
+    # `main` is its base. A stacked pull request, whose base is the branch below it, is a
+    # layer of a tree the stack's pull request into `main` will check again: on 2026-10-05
+    # the stacks' layers ran 129 macOS jobs (309 macOS minutes) for that one question.
+    # Every other event still runs it -- the push to `main`, the daily schedule, and a
+    # dispatch, which is a request for it. Nothing waits on it: `packing-required` does not
+    # name it, and the wall check treats it as `not_gating`, so a skip changes no verdict.
+    if: "github.event_name != 'pull_request' || github.base_ref == 'main'"
     runs-on: macos-latest
     defaults:
       run:

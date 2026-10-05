@@ -321,7 +321,13 @@ def test_each_review_has_an_independent_required_build(slug: str) -> None:
     assert f"test -s site/papers/{slug}.pdf" in commands
     assert slug in jobs["publish"]["needs"]
     assert slug in jobs["pages-required"]["needs"]
-    assert f"{slug}-unchanged" in jobs["pages-required"]["needs"]
+    # A skipped review is said by `scope`'s skip-notice step, not by a job of its own.
+    notices = next(
+        step["run"]
+        for step in jobs["scope"]["steps"]
+        if step.get("name") == "Say why each skipped page is not built"
+    )
+    assert half in {line.split(" ", 1)[0] for line in notices.splitlines()}
     required = next(
         step["run"]
         for step in jobs["pages-required"]["steps"]

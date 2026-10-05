@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import json
+import os
 import re
 import shlex
 import shutil
@@ -48,9 +49,7 @@ OVERLAPPED_PREPARED_PAGE_JOBS = {
 #: ceiling and null measurements; the first pull-request run that includes them is the
 #: measurement, and whoever records it removes the name here, so the exception cannot
 #: quietly outlive the reason for it.
-AWAITING_FIRST_RUN = frozenset(
-    {"overview", "overview-unchanged", "publish", "n11-threshold-bound-review"}
-)
+AWAITING_FIRST_RUN = frozenset({"overview", "publish", "n11-threshold-bound-review"})
 #: The jobs that build a paper other than the first, one per review, each named by the
 #: paper's slug (`render_overview.PAPERS`).
 REVIEW_JOBS = frozenset(
@@ -77,6 +76,18 @@ ARTIFACT_ID_CHECK = (
     '[[ "$ARTIFACT_ID" =~ ^[1-9][0-9]*$ ]] '
     '|| { echo "::error::the prepared page has no artifact id to download"; exit 1; }'
 )
+
+#: The `scope` step that says why each skipped page is skipped, and what it calls each
+#: page, by the scope output that decides it. It replaced the five `*-unchanged` jobs on
+#: 2026-10-05, one runner allocation per skipped page.
+SKIP_NOTICE_STEP = "Say why each skipped page is not built"
+SKIP_NOTICE_PAGES = {
+    "n11_lower_bounds_explainer": "lower-bounds explainer",
+    "workbench": "workbench",
+    "overview": "overview and the site's own pages",
+    "n11_threshold_bound_review": "threshold-bound review",
+    "n11_optimality_review": "optimality review",
+}
 
 
 def load() -> dict[str, Any]:
@@ -178,9 +189,11 @@ def test_every_pull_request_job_is_scoped_to_its_page_or_says_why() -> None:
     """No browser work runs on a pull request that changed neither page, and none silently.
 
     Every job that builds a page or launches a browser waits on the scope job's verdict
-    for its page; each page has one job that runs only when that page is skipped and
-    fails without a reason; and the scope runs the tool on the pull request's merge
-    commit against its first parent, which a checkout of depth one could not diff.
+    for its page; the scope job itself says why each skipped page is skipped, in a step
+    that reads every page's decision and fails on one with no reason (which
+    `test_the_scope_says_why_each_skipped_page_is_skipped` runs); no job runs only to say
+    so; and the scope runs the tool on the pull request's merge commit against its first
+    parent, which a checkout of depth one could not diff.
     """
     workflow = load()
     jobs = workflow["jobs"]
@@ -221,30 +234,14 @@ def test_every_pull_request_job_is_scoped_to_its_page_or_says_why() -> None:
         "n11_threshold_bound_review": {"n11-threshold-bound-review"},
         "n11_optimality_review": {"n11-optimality-review"},
     }
-    # What each half's notice calls its page. A half that is a paper is named by the
-    # paper's slug, and its jobs spell the slug with its hyphens.
-    called = {
-        "n11_lower_bounds_explainer": "lower-bounds explainer",
-        "workbench": "workbench",
-        "overview": "overview",
-        "n11_threshold_bound_review": "threshold-bound review",
-        "n11_optimality_review": "optimality review",
-    }
-    for half, roots in gated.items():
+    for roots in gated.values():
         assert all(needs_of(jobs[root]) == ["scope"] for root in roots)
-        notices = [
-            name
-            for name, job in jobs.items()
-            if job.get("if") == f"needs.scope.outputs.{half} != 'true'"
-        ]
-        assert notices == [f"{half.replace('_', '-')}-unchanged"], half
-        notice = jobs[notices[0]]
-        assert needs_of(notice) == ["scope"]
-        (step,) = notice["steps"]
-        assert step["env"]["REASON"] == f"${{{{ needs.scope.outputs.{half}_reason }}}}"
-        assert step["run"].splitlines()[0] == 'test -n "$REASON"'
-        assert called[half] in step["run"]
-        assert "not built" in step["run"]
+    # A skip is said in the scope job, not by a runner allocated to print one line: until
+    # 2026-10-05 each page had an `*-unchanged` job that ran only when it was skipped.
+    assert not [name for name, job in jobs.items() if "!= 'true'" in str(job.get("if", ""))]
+    assert set(SKIP_NOTICE_PAGES) == set(halves)
+    steps = [step.get("id") or step.get("name") for step in scope["steps"]]
+    assert steps.index(SKIP_NOTICE_STEP) == steps.index("scope") + 1
 
     builders = (
         r"python -m (devtools\.render_(?:n11_lower_bounds_explainer|overview"
@@ -262,6 +259,60 @@ def test_every_pull_request_job_is_scoped_to_its_page_or_says_why() -> None:
                 upstream(jobs, name) & {"prepare", "workbench", "overview", *REVIEW_JOBS}
                 or directly_scoped
             ), f"{name} does page work on a pull request without waiting for the scope"
+
+
+def skip_notices(decisions: Mapping[str, str]) -> subprocess.CompletedProcess[str]:
+    """Run the scope's skip-notice step as GitHub runs it, on these step outputs."""
+    steps = load()["jobs"]["scope"]["steps"]
+    step = next(item for item in steps if item.get("name") == SKIP_NOTICE_STEP)
+    assert step["env"] == {"DECISIONS": "${{ toJSON(steps.scope.outputs) }}"}
+    bash = shutil.which("bash")
+    if bash is None or shutil.which("jq") is None:
+        pytest.skip("the skip-notice step needs bash and jq, which every hosted runner has")
+    return subprocess.run(
+        (bash, "--noprofile", "--norc", "-eo", "pipefail", "-c", step["run"]),
+        env={"PATH": os.environ.get("PATH", ""), "DECISIONS": json.dumps(dict(decisions))},
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+
+
+def test_the_scope_says_why_each_skipped_page_is_skipped() -> None:
+    """Every skipped page gets one notice with its reason, and a skip without one fails.
+
+    This is what the five `*-unchanged` jobs did, one runner each, until 2026-10-05. The
+    step runs in `scope` on the outputs the decision step wrote, so the decision is read
+    back as the jobs below read it. A page whose output is anything but `true` -- a
+    `false`, or nothing at all -- needs a reason, so an empty output cannot pass for a
+    decision; `pages-required` separately holds every output to `true` or `false`.
+    """
+    halves = tuple(BUILDER_INPUTS)
+    assert set(SKIP_NOTICE_PAGES) == set(halves)
+    for bits in range(2 ** len(halves)):
+        decided = {half: bool(bits >> index & 1) for index, half in enumerate(halves)}
+        outputs: dict[str, str] = {}
+        for half, in_scope in decided.items():
+            outputs[half] = "true" if in_scope else "false"
+            outputs[f"{half}_reason"] = f"reason for {half}"
+        ran = skip_notices(outputs)
+        assert ran.returncode == 0, (decided, ran.stdout, ran.stderr)
+        assert sorted(ran.stdout.splitlines()) == sorted(
+            f"::notice title=The {SKIP_NOTICE_PAGES[half]} is not built::reason for {half}"
+            for half, in_scope in decided.items()
+            if not in_scope
+        ), decided
+    every = dict.fromkeys(halves, "true")
+    for half in halves:
+        page = SKIP_NOTICE_PAGES[half]
+        for broken in (
+            {**every, half: "false", f"{half}_reason": ""},
+            {**every, half: "false"},
+            {key: value for key, value in every.items() if key != half},
+        ):
+            ran = skip_notices(broken)
+            assert ran.returncode == 1, (broken, ran.stdout)
+            assert f"::error title=No reason to skip the {page}::" in ran.stdout, broken
 
 
 def test_the_required_aggregate_passes_a_justified_skip_and_nothing_else() -> None:
@@ -346,9 +397,10 @@ def implicit_success_gaps(jobs: Mapping[str, Mapping[str, Any]], name: str) -> l
 def test_the_deploy_path_does_not_inherit_skips_from_its_ancestors() -> None:
     """From #183 to this fix every push to `main` skipped `deploy`.
 
-    The dispatch-only timing job and one job of each `*-unchanged` pair skip on a push, and
-    `deploy` carried no status function, so its implicit `success()` saw those skips. The
-    conditions are pinned whole, so the fix cannot also drop the push-to-`main` gate.
+    The dispatch-only timing job and one job of each `*-unchanged` pair (folded into
+    `scope` on 2026-10-05) skipped on a push, and `deploy` carried no status function, so
+    its implicit `success()` saw those skips. The conditions are pinned whole, so the fix
+    cannot also drop the push-to-`main` gate.
     """
     jobs = load()["jobs"]
     assert jobs["deploy"]["if"] == (
@@ -1140,8 +1192,9 @@ def pull_request_outcomes(decision: Mapping[str, bool]) -> dict[str, str]:
 def test_every_scope_decision_passes_the_aggregate_and_builds_its_pages() -> None:
     """Thirty-two decisions, from nothing in scope to everything, on a pull request.
 
-    Each build runs exactly when its page is in scope and says why when it is not; the
-    assembly runs only for a whole site, which is every push to `main`; and the required
+    Each build runs exactly when its page is in scope, and no job runs when it is not
+    (`scope` says why itself); the assembly runs only for a whole site, which is every
+    push to `main`; and the required
     aggregate, which sees a skip as a pass only because its scope decided it, passes all
     thirty-two. A pull request that changes only the overview's inputs builds the
     overview and nothing else.
@@ -1173,8 +1226,6 @@ def test_every_scope_decision_passes_the_aggregate_and_builds_its_pages() -> Non
         outcome = pull_request_outcomes(decision)
         for half, build in builds.items():
             assert (outcome[build] == "success") == decision[half], (decision, build)
-            notice = f"{half.replace('_', '-')}-unchanged"
-            assert (outcome[notice] == "success") != decision[half], decision
         assert (outcome["publish"] == "success") == all(decision.values()), decision
         assert outcome["pages-required"] == "success"
         if jq:
@@ -1196,15 +1247,7 @@ def test_every_scope_decision_passes_the_aggregate_and_builds_its_pages() -> Non
     only_overview = pull_request_outcomes({half: half == "overview" for half in halves})
     ran = {name for name, result in only_overview.items() if result == "success"}
     assert "startup-timing" in only_overview, "dispatch-only jobs are modelled as skips"
-    assert ran == {
-        "scope",
-        "overview",
-        "n11-lower-bounds-explainer-unchanged",
-        "workbench-unchanged",
-        "n11-threshold-bound-review-unchanged",
-        "n11-optimality-review-unchanged",
-        "pages-required",
-    }
+    assert ran == {"scope", "overview", "pages-required"}
 
 
 def test_every_page_job_a_pull_request_runs_is_budgeted() -> None:

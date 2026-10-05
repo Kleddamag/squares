@@ -36,9 +36,10 @@ This tool is what lets each half run only on its own inputs. For each half it ta
 A pull request's changed files are the difference between its merge commit and that
 commit's first parent, which is the base branch as GitHub merged it: exactly what the PR
 would change on its base, and the same set GitHub's own `paths:` filter considers. A half
-none of those files touches is skipped, and the workflow says so in a job of its own
-rather than leaving the reader to infer it from grey checks. A push to `main` and a manual
-dispatch build everything; this tool is only ever asked to narrow a pull request.
+none of those files touches is skipped, and the scope job says so in a notice naming the
+half and its reason rather than leaving the reader to infer it from grey checks. A push to
+`main` and a manual dispatch build everything; this tool is only ever asked to narrow a
+pull request.
 
 The failure direction is the safe one. A declared input that is missing from a half makes
 that half run less often, so the tests compare the scope against the builders'

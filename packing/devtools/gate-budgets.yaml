@@ -1572,9 +1572,11 @@ pages:
     measured_where: run 35040456480, run 35039923396, run 35039248281 and run 35039355763
     ceiling_seconds: 32.0
     argument: >-
-      Reads the pull request's changed paths and decides which halves build. It runs on
-      every pull request and gates the rest, so its cost is pure overhead and is checked
-      as such.
+      Reads the pull request's changed paths and decides which halves build, then posts a
+      notice for each skipped half from the decision it wrote (one shell step, no setup;
+      until 2026-10-05 the five `*-unchanged` jobs did this on runners of their own). It
+      runs on every pull request and gates the rest, so its cost is pure overhead and is
+      checked as such.
   - id: prepare
     measured_seconds: 49.6
     measured_on: 2026-09-16
@@ -1708,55 +1710,16 @@ pages:
       that job's own tool; the check took 6 s on a development box on 2026-10-04, `uv run`
       included. The ceiling is about twice their sum until a hosted run gives the job its
       own reading. It runs after `pdf`, so its added setup may lengthen the wall.
-  # Named `explainer-unchanged` until 2026-10-01 (think-cmz6): the same one-step notice
-  # under the paper's slug, so its reading stands.
-  - id: n11-lower-bounds-explainer-unchanged
-    measured_seconds: 4.0
-    measured_on: 2026-09-16
-    measured_where: >-
-      run 35039355763, the scope demonstration, where the job was named
-      `explainer-unchanged`
-    ceiling_seconds: 8.0
-    argument: >-
-      The notice a pull request gets when no declared explainer input changed. It exists
-      so a skipped half is visible rather than silent, and `pages-required` treats it as
-      the pass it is.
-  - id: workbench-unchanged
-    measured_seconds: 4.0
-    measured_on: 2026-09-16
-    measured_where: run 35039355763, the scope demonstration
-    ceiling_seconds: 8.0
-    argument: The same notice for the workbench half.
-  # Named `optimality-unchanged` until 2026-10-01 (think-cmz6).
-  - id: n11-optimality-review-unchanged
-    measured_seconds: 4.0
-    measured_on: 2026-09-16
-    measured_where: >-
-      Proxy from the structurally identical explainer/workbench unchanged notices in
-      run 35039355763; the new T-060 notice has not yet been directly observed as a
-      successful job on a pull request where its inputs did not change.
-    ceiling_seconds: 8.0
-    argument: >-
-      The same scope-reason-only notice as the two existing unchanged jobs. This
-      explicitly borrowed four-second calibration will be replaced by a direct reading
-      when an unrelated pull request first exercises the T-060 skip path (think-x2ln).
-  - id: n11-threshold-bound-review-unchanged
-    measured_seconds: 4.0
-    measured_on: 2026-09-16
-    measured_where: >-
-      Proxy from the structurally identical explainer/workbench unchanged notices in
-      run 35039355763; the T-037 notice is new with the paper (2026-10-05).
-    ceiling_seconds: 8.0
-    argument: >-
-      The same scope-reason-only notice for Part II, borrowing the same four-second
-      calibration until an unrelated pull request first exercises its skip path.
-  # The two entries below are unmeasured, as `publish` above is, because no hosted run of
-  # their jobs exists yet: the plan in
+  # The entry below is unmeasured, as `publish` above is, because no hosted run of its
+  # job exists yet: the plan in
   # `docs/project/specs/active/plan-2026-09-29-github-pages-overview.md` makes the first
   # pull-request run of `overview` its measurement. A cost written before that run would
-  # be a number no runner produced. So each carries a ceiling and no measurement, as the
+  # be a number no runner produced. So it carries a ceiling and no measurement, as the
   # tiers' unmeasured entries do, and the budget test accepts that only when every
-  # measured field is null together; the run that measures them replaces the nulls.
+  # measured field is null together; the run that measures it replaces the nulls.
+  #
+  # The five `*-unchanged` notice jobs had entries here, at 4.0 s and an 8.0 s ceiling
+  # each, until 2026-10-05, when their notices moved into `scope` as one step.
   - id: overview
     measured_seconds: null
     measured_on: null
@@ -1769,14 +1732,6 @@ pages:
       four-cpu development box on 2026-09-29, against the 18 s of `prepare`'s own twin
       render, so the ceiling is `prepare`'s until a hosted run gives this job its own. It
       runs beside `prepare`, not after it, so it is not on the wall's critical path.
-  - id: overview-unchanged
-    measured_seconds: null
-    measured_on: null
-    measured_where: null
-    ceiling_seconds: 8.0
-    argument: >-
-      The same notice for the site's own pages: one shell step, the shape of the two
-      notices above, which measured 4.0 s each, and the same ceiling.
   - id: pages-required
     measured_seconds: 3.0
     measured_on: 2026-09-16

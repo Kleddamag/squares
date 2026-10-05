@@ -41,10 +41,12 @@ from devtools.render_overview import (
     DOCUMENT_PAGES,
     N11_LOWER_BOUNDS_EXPLAINER,
     N11_OPTIMALITY_REVIEW,
+    N11_THRESHOLD_BOUND_REVIEW,
     RESULTS_PAGE,
     SITE_PAGES,
     paper_path,
 )
+from devtools.render_overview import PAPERS as SERIES
 from devtools.render_recent_results import SUPERSEDED, listed, superseded
 from devtools.repo_links import branch_file
 from devtools.result_status import CONFIRMED, STATUSES
@@ -230,14 +232,16 @@ SECTION_CARD_SIZES: dict[str, CardSize] = {
 }
 
 #: A section set in lines of its own, as counts of its cards in order, where one
-#: wrapping row would not set them as they are meant to read: the five page cards stand
-#: one, two and two, the Frontier page alone at the top, then the two papers, then the
-#: tutorial and the workbench (the owner, 2026-10-02, `think-ns3d`; they stood two over
-#: three from `think-ec5k` the same day, the Frontier page's card last). Each line is a
-#: row of its own, and none sets more cards to a line than the longest line holds, so the
-#: lines share one column width, half the frame's. The stylesheet holds each longest line
-#: here to a rule.
-SECTION_CARD_LINES: dict[str, tuple[int, ...]] = {"pages": (1, 2, 2)}
+#: wrapping row would not set them as they are meant to read: the six page cards stand
+#: one, three and two, the Frontier page alone at the top, then the three parts of the
+#: n = 11 series on one line, one card per paper in reading order (the series plan,
+#: 2026-10-05), then the tutorial and the workbench. They stood one, two and two while
+#: the site had two papers (the owner, 2026-10-02, `think-ns3d`; two over three from
+#: `think-ec5k` the same day, the Frontier page's card last). Each line is a row of its
+#: own, and none sets more cards to a line than the longest line holds, so the lines
+#: share one column width, a third of the frame's. The stylesheet holds each longest
+#: line here to a rule.
+SECTION_CARD_LINES: dict[str, tuple[int, ...]] = {"pages": (1, 3, 2)}
 
 
 #: Elements with no end tag, which open nothing a parser must later close.
@@ -1473,20 +1477,13 @@ def document_cards() -> str:
     )
 
 
-#: When the explainer's proofs are from, as its cards say it: T-018 was established on
-#: 4 September 2026 and T-025 and T-026 on 9 September (`results.yaml`), first published
-#: on 5 and 13 September (`sqpack.release.PUBLICATION_HISTORY`). A test holds this phrase
-#: to those dates.
-EXPLAINER_AS_OF = "early September"
-
-
 class Paper(NamedTuple):
     """One of the site's papers, as its card says what it is: where it is served, a caps
-    label naming its kind, its title, one or two sentences on what it is, and the size
-    of its card on the Papers page. The title and description are register prose, so
-    `n = 11` in either is set as math. The card is the link to the paper and holds no
-    other, so what a description names (T-060, the optimality paper) is linked from
-    the Papers page's introduction (`templates/papers-article.md`)."""
+    label naming it, its title, one or two sentences on what it is, and the size of its
+    card on the Papers page. The title and description are register prose, so `n = 11`
+    and a bound in either are set as math. The card is the link to the paper and holds
+    no other, so what a description names (T-060, the series) is linked from the Papers
+    page's introduction (`templates/papers-article.md`)."""
 
     href: str
     label: str
@@ -1495,44 +1492,59 @@ class Paper(NamedTuple):
     size: CardSize = "large"
 
 
-#: Where the two papers are served, under `papers/` by their slugs
-#: (`render_overview.paper_path`): the optimality review, which
-#: `render_n11_optimality_review` builds, and the lower-bounds explainer, which
-#: `render_n11_lower_bounds_explainer` builds. Each renderer's `SITE_PATH` is the same
-#: path from the same slug.
-OPTIMALITY_PAPER = paper_path(N11_OPTIMALITY_REVIEW)
-LOWER_BOUNDS_PAPER = paper_path(N11_LOWER_BOUNDS_EXPLAINER)
-
-#: The site's papers, in the order the Papers page shows them, one large card each
-#: (`paper_cards`). A new paper is one entry here. The optimality paper is first: it
-#: explains the result that stands, T-060, where the explainer proves the lower bounds
-#: T-060 superseded and the tutorial is the background to both. Its title is its
-#: renderer's (`render_n11_optimality_review.TITLE`) in sentence case, and its
-#: description says what T-060's rungs allow, `V3/C3`: an accepted proof, machine-checked
-#: here with its review record pending. The explainer's title is the owner's
-#: (2026-09-30), as `render_n11_lower_bounds_explainer.TITLE` has it in title case; the
-#: tutorial's description is `TUTORIAL.md`'s own opening, its audience and what it owns.
-PAPERS: tuple[Paper, ...] = (
-    Paper(
-        href=OPTIMALITY_PAPER,
-        label="Optimality paper",
-        title="A review of the optimality proof of the Trump packing of 11 squares",
-        description=(
-            "Explains the accepted proof that Trump\u2019s 1979 packing of eleven squares "
-            "is optimal, s(11) = 3.8770835\u2026 (T-060): the exact construction, the "
-            "exhaustive case exclusions, the geometric capture and the local-isolation "
-            "argument, with figures drawn from or checked against the retained proof data."
+#: What each part of the n = 11 series says of itself on its cards and in README, by
+#: slug, in the words of the series plan (`docs/project/specs/active/
+#: plan-2026-10-05-n11-explainer-series.md`, Series Presentation): each title is its
+#: renderer's (`render_overview.PAPERS`) in sentence case, and each line names the result
+#: the paper proves or explains. Part III's line says what T-060's rungs allow, `V3/C3`:
+#: a proof, machine-checked here with its review record pending, never a formal one.
+SERIES_CARDS: dict[str, tuple[str, str]] = {
+    N11_LOWER_BOUNDS_EXPLAINER: (
+        "New lower bounds for square packing for n = 11",
+        (
+            "How weighted points and 2-of-3 threshold atoms prove T-018, T-025 and T-026, "
+            "s(11) >= 3.8264\u2026, with interactive figures."
         ),
     ),
-    Paper(
-        href=LOWER_BOUNDS_PAPER,
-        label="Explainer",
-        title="New lower bounds for square packing for n = 11",
-        description=(
-            "An explainer and proof of certain lower bounds for n = 11. It explains the "
-            f"earlier, simpler proofs as of {EXPLAINER_AS_OF}; newer optimality proofs now "
-            "exist (T-060)."
+    N11_THRESHOLD_BOUND_REVIEW: (
+        "A review of the certified lower bound s(11) > 31/8 for 11 squares",
+        (
+            "Explains Kleddamag\u2019s proof that s(11) > 31/8 (T-037): five-site k-of-m "
+            "charges, threshold charges on shrunken parents with strict cores, and a "
+            "re-optimised certificate over 12,028 angle rows."
         ),
+    ),
+    N11_OPTIMALITY_REVIEW: (
+        "A review of the optimality proof of the Trump packing of 11 squares",
+        (
+            "Explains Queuingtheorydotcom\u2019s proof that Trump\u2019s packing is optimal, "
+            "s(11) = 3.8770835\u2026 (T-060): construction, case exclusions, capture and "
+            "local isolation."
+        ),
+    ),
+}
+
+#: Where each part of the series is served, under `papers/` by its slug
+#: (`render_overview.paper_path`); each renderer's `SITE_PATH` is the same path from the
+#: same slug.
+LOWER_BOUNDS_PAPER = paper_path(N11_LOWER_BOUNDS_EXPLAINER)
+THRESHOLD_BOUND_PAPER = paper_path(N11_THRESHOLD_BOUND_REVIEW)
+OPTIMALITY_PAPER = paper_path(N11_OPTIMALITY_REVIEW)
+
+#: The site's papers, in the order the Papers page shows them, one large card each
+#: (`paper_cards`): the three parts of the n = 11 series in reading order, I, II, III,
+#: each labelled by its part (`render_overview.PAPERS`, the one registry a new paper is
+#: entered in), then the tutorial, the background to all three, whose description is
+#: `TUTORIAL.md`'s own opening, its audience and what it owns.
+PAPERS: tuple[Paper, ...] = (
+    *(
+        Paper(
+            href=paper_path(record.slug),
+            label=record.label,
+            title=SERIES_CARDS[record.slug][0],
+            description=SERIES_CARDS[record.slug][1],
+        )
+        for record in SERIES
     ),
     Paper(
         href="tutorial.html",
@@ -1546,9 +1558,10 @@ PAPERS: tuple[Paper, ...] = (
         ),
     ),
 )
-#: The explainer, whose card reads the same on the overview as on the Papers page.
+#: Each part of the series, whose card reads the same on the overview as on the Papers
+#: page.
 EXPLAINER = next(paper for paper in PAPERS if paper.href == LOWER_BOUNDS_PAPER)
-#: The optimality paper, whose card on the overview carries its label and its title.
+THRESHOLD_REVIEW = next(paper for paper in PAPERS if paper.href == THRESHOLD_BOUND_PAPER)
 OPTIMALITY = next(paper for paper in PAPERS if paper.href == OPTIMALITY_PAPER)
 
 
@@ -1575,11 +1588,10 @@ def paper_cards() -> str:
 #: The site's reading and working pages, as the overview's cards under The Squares
 #: Project show them: the page, a label, its title, and one line on what a reader finds
 #: there. Both are register prose, so a bound in either is written in ASCII
-#: (`s(11) >= 3.8264…`) and set as math. The explainer's card takes its paper's words;
-#: the optimality paper's and the tutorial's keep a shorter line here. The optimality
-#: paper leads the papers, as on the Papers page: it explains the result that stands. Every
-#: address is a full page the site serves, the paper's a directory below the root, so
-#: its card links straight to it. The Frontier page's card is first, on a line of its
+#: (`s(11) >= 3.8264…`) and set as math. The three parts of the n = 11 series stand
+#: together, in reading order, each card in its paper's own words, as on the Papers page.
+#: Every address is a full page the site serves, a paper's a directory below the root,
+#: so its card links straight to it. The Frontier page's card is first, on a line of its
 #: own (`SECTION_CARD_LINES`, `think-ns3d`): it stood in The Frontier Survey section,
 #: beside a card to the recent cases, until the owner dropped that section on 2026-10-02
 #: and moved the card to every case up here (`think-ec5k`), last of the five at first.
@@ -1591,16 +1603,10 @@ PAGES: tuple[tuple[str, str, str, str], ...] = (
         "Every case from n = 1 to 324",
         "Reported and verified bounds side by side, with their sources.",
     ),
-    (
-        OPTIMALITY.href,
-        OPTIMALITY.label,
-        OPTIMALITY.title,
-        (
-            "Explains the accepted proof that Trump\u2019s packing of eleven squares is "
-            "optimal, s(11) = 3.8770835\u2026 (T-060)."
-        ),
+    *(
+        (paper.href, paper.label, paper.title, paper.description)
+        for paper in (EXPLAINER, THRESHOLD_REVIEW, OPTIMALITY)
     ),
-    (EXPLAINER.href, EXPLAINER.label, EXPLAINER.title, EXPLAINER.description),
     (
         "tutorial.html",
         "Tutorial",

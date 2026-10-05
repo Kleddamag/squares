@@ -383,12 +383,13 @@ def _page_card_parts(page: str, href: str) -> tuple[str, str]:
 
 
 def test_each_page_card_is_a_plain_link_to_its_page(page: str) -> None:
-    """The overview's five page cards lead to full pages the site serves, so each card
+    """The overview's six page cards lead to full pages the site serves, so each card
     is the link itself and goes there in the same tab: an `<a href>` with the page icon
     (`data-go="page"`), no popover, no framed preview and no new tab. Each keeps its
-    label, headline, note and size. The optimality paper leads the papers, as on the
-    Papers page: its card carries the Papers card's label and title, a shorter note
-    within what T-060's rungs allow, and an address a directory below the site's root."""
+    label, headline, note and size. The three parts of the n = 11 series stand together
+    in reading order, as on the Papers page: each card carries its Papers card's label,
+    title and line, Part III's within what T-060's rungs allow, and an address a
+    directory below the site's root."""
     cards = _page_cards(page)
     pages = overview_sections.PAGES
     assert [href for href, _, _ in cards] == [href for href, *_ in pages]
@@ -397,16 +398,20 @@ def test_each_page_card_is_a_plain_link_to_its_page(page: str) -> None:
     # `test_the_frontier_survey_is_the_frontier_pages_and_its_card_is_a_page_card`).
     assert [href for href, *_ in pages] == [
         "frontier.html",
-        "papers/n11-optimality-review.html",
         "papers/n11-lower-bounds-explainer.html",
+        "papers/n11-threshold-bound-review.html",
+        "papers/n11-optimality-review.html",
         "tutorial.html",
         "workbench/",
     ]
-    paper = overview_sections.PAPERS[0]
-    assert pages[1][:3] == (overview_sections.OPTIMALITY_PAPER, paper.label, paper.title)
-    assert overview_sections.OPTIMALITY is paper
-    note = pages[1][3]
-    assert note.startswith("Explains the accepted proof that Trump\u2019s packing")
+    for card, paper in zip(pages[1:4], overview_sections.PAPERS[:3], strict=True):
+        assert card == (paper.href, paper.label, paper.title, paper.description)
+    assert [card[1] for card in pages[1:4]] == ["Part I", "Part II", "Part III"]
+    assert overview_sections.OPTIMALITY is overview_sections.PAPERS[2]
+    note = pages[3][3]
+    assert note.startswith(
+        "Explains Queuingtheorydotcom\u2019s proof that Trump\u2019s packing"
+    )
     assert "(T-060)" in note
     assert "formal" not in note.lower()
     served = {*render_overview.SITE_PAGES, "workbench/"}
@@ -420,8 +425,11 @@ def test_each_page_card_is_a_plain_link_to_its_page(page: str) -> None:
         assert f'<span class="site-card-label">{label}</span>' in body, href
         value, shown = _page_card_parts(page, href)
         assert card_text(value) == title, href
-        # A bound's ellipsis is set inside its formula, which reads back as TeX.
-        assert card_text(shown) == note.replace("\u2026", r"\ldots"), href
+        # A bound's relation and ellipsis are set inside its formula, which reads back as
+        # TeX.
+        assert card_text(shown) == note.replace("\u2026", r"\ldots").replace(
+            " >= ", r" \ge "
+        ), href
         assert f'src="{overview_sections.embed_url(href)}"' not in page, href
     assert "pop-page-" not in page
     frame = page.split('<div class="site-cards-frame', 1)[1].split("</div></div>", 1)[0]
@@ -1214,23 +1222,27 @@ def test_every_card_grid_sits_in_a_frame_it_can_measure(page: str) -> None:
 def test_the_page_cards_stand_one_two_and_two_at_one_column_width(
     page: str, monkeypatch: pytest.MonkeyPatch
 ) -> None:
-    """The five page cards stand in three lines: the Frontier page alone at the top, then
-    the two papers, then the tutorial and the workbench (the owner, 2026-10-02,
-    `think-ns3d`; two over three from `think-ec5k` the same day). One wrapping row would
-    set four where the frame fits four and leave the fifth alone. A section set in lines
-    of its own (`SECTION_CARD_LINES`) is one frame holding a grid per line, a gap apart,
+    """The six page cards stand in three lines: the Frontier page alone at the top, then
+    the three parts of the n = 11 series in reading order, one card per paper, then the
+    tutorial and the workbench (the series plan, 2026-10-05; one, two and two while the
+    site had two papers, the owner, 2026-10-02, `think-ns3d`). A section set in lines of
+    its own (`SECTION_CARD_LINES`) is one frame holding a grid per line, a gap apart,
     each marked with its longest line's count, which the stylesheet caps a line of its
     size at, so the lines share one column width and each centres in it. Lines that do
     not count the section's cards are refused."""
-    assert overview_sections.SECTION_CARD_LINES == {"pages": (1, 2, 2)}
-    assert len(overview_sections.PAGES) == 5
+    assert overview_sections.SECTION_CARD_LINES == {"pages": (1, 3, 2)}
+    assert len(overview_sections.PAGES) == 6
     frame = page.split('<div class="site-cards-frame site-wide">', 1)[1]
-    rows = re.findall(r'<div class="site-cards" data-cards-most="2">(.*?)</div>', frame)
+    rows = re.findall(r'<div class="site-cards" data-cards-most="3">(.*?)</div>', frame)
     assert [
         re.findall(r'class="site-card site-card-link" href="([^"]+)"', row) for row in rows
     ] == [
         ["frontier.html"],
-        ["papers/n11-optimality-review.html", "papers/n11-lower-bounds-explainer.html"],
+        [
+            "papers/n11-lower-bounds-explainer.html",
+            "papers/n11-threshold-bound-review.html",
+            "papers/n11-optimality-review.html",
+        ],
         ["tutorial.html", "workbench/"],
     ]
     css = render_overview.SITE_CSS.read_text(encoding="utf-8")
@@ -1245,7 +1257,7 @@ def test_the_page_cards_stand_one_two_and_two_at_one_column_width(
             in rule[: rule.index("}")]
         ), section
     monkeypatch.setitem(overview_sections.SECTION_CARD_LINES, "pages", (2, 2))
-    with pytest.raises(SystemExit, match="pages: 5 cards in lines of"):
+    with pytest.raises(SystemExit, match="pages: 6 cards in lines of"):
         overview_sections.page_cards()
 
 
@@ -3519,7 +3531,9 @@ def test_recent_results_opens_with_its_table_and_says_what_it_shows_under_it(
         "Kleddamag",
     ):
         assert gone not in text, gone
-        assert gone not in _rendered_text(problem), gone
+        # Part II's card, above, names the proof it reviews by its author.
+        if gone != "Kleddamag":
+            assert gone not in _rendered_text(problem), gone
     for gone in ("The project covers the problem at every", "retained packet", "clear Hide"):
         assert gone not in _rendered_text(section), gone
     assert "These are the recent results this project tracks" not in _rendered_text(section)
@@ -3773,11 +3787,13 @@ def card_text(fragment: str) -> str:
     return html.unescape(re.sub(r"<[^>]+>", "", fragment))
 
 
-#: The explainer's card as the owner worded it (2026-09-30), with the date the record gives.
+#: The explainer's card, Part I of the series, in the series plan's words (2026-10-05),
+#: each formula as its TeX. It read "An explainer and proof of certain lower bounds for
+#: n = 11 … as of early September" (the owner, 2026-09-30) until the series.
 EXPLAINER_TITLE = "New lower bounds for square packing for n = 11"
 EXPLAINER_NOTE = (
-    "An explainer and proof of certain lower bounds for n = 11. It explains the earlier, "
-    "simpler proofs as of early September; newer optimality proofs now exist (T-060)."
+    "How weighted points and 2-of-3 threshold atoms prove T-018, T-025 and T-026, "
+    "s(11) \\ge 3.8264\\ldots, with interactive figures."
 )
 
 
@@ -3789,11 +3805,12 @@ def papers_article(papers: str) -> str:
 def test_the_explainer_card_says_what_the_explainer_now_is(
     page: str, results: str, rendered: Callable[[str], str]
 ) -> None:
-    """The explainer proves the earlier, simpler lower bounds, so its card is titled and
-    described as the owner put it, `n = 11` set as math. On the overview and on the
-    Papers page the card is the link to the explainer, so it holds no other; T-060, the
-    optimality proof since registered, is linked from the Papers page's introduction.
-    The wording stays within T-060's rungs: proved, never formally."""
+    """The explainer proves the earlier, simpler lower bounds, so its card is titled as
+    the owner put it and described in the series plan's line for Part I, `n = 11` and
+    the bound set as math. On the overview and on the Papers page the card is the link to
+    the explainer, so it holds no other; T-060, the optimality proof since registered, is
+    linked from the Papers page's introduction. The wording stays within T-060's rungs:
+    proved, never formally."""
     value, note = _page_card_parts(page, overview_sections.LOWER_BOUNDS_PAPER)
     article = papers_article(rendered("papers.html"))
     assert card_text(value) == EXPLAINER_TITLE
@@ -3803,32 +3820,6 @@ def test_the_explainer_card_says_what_the_explainer_now_is(
     assert "formal" not in card_text(value + note).lower()
     assert '<a href="all-results.html#t-060">T-060</a>' in article
     assert 'id="t-060"' in results
-
-
-def test_the_explainer_cards_date_is_the_records(register: list[dict]) -> None:
-    """'Early September' is what the record says of the explainer's proofs: T-018, T-025
-    and T-026 were established in September's first ten days, and the two editions that
-    first published them went live in its first half. The owner's draft said early August,
-    which the record does not support."""
-    from datetime import date, datetime  # noqa: PLC0415
-
-    from sqpack.release import PUBLICATION_HISTORY  # noqa: PLC0415
-
-    assert overview_sections.EXPLAINER_AS_OF == "early September"
-    established = [
-        date.fromisoformat(str(r["established"]))
-        for r in register
-        if r["id"] in {"T-018", "T-025", "T-026"}
-    ]
-    assert len(established) == 3
-    assert all((d.year, d.month) == (2026, 9) and d.day <= 10 for d in established)
-    published = [
-        datetime.strptime(e.first_published, "%B %d, %Y").date()  # noqa: DTZ007
-        for e in PUBLICATION_HISTORY
-        if e.version in {"v0.3.0", "v0.4.0"}
-    ]
-    assert len(published) == 2
-    assert all((d.year, d.month) == (2026, 9) and d.day <= 15 for d in published)
 
 
 #: What a popover card and its popover are made of, none of which the Papers page's
@@ -3857,9 +3848,14 @@ def test_the_papers_page_holds_one_large_card_for_each_paper(
     page = rendered("papers.html")
     papers = overview_sections.PAPERS
     assert [paper.href for paper in papers] == [
-        "papers/n11-optimality-review.html",
         "papers/n11-lower-bounds-explainer.html",
+        "papers/n11-threshold-bound-review.html",
+        "papers/n11-optimality-review.html",
         "tutorial.html",
+    ]
+    assert [paper.label for paper in papers] == ["Part I", "Part II", "Part III", "Tutorial"]
+    assert [paper.href for paper in papers[:3]] == [
+        render_overview.paper_path(record.slug) for record in render_overview.PAPERS
     ]
     assert {paper.size for paper in papers} == {"large"}
     cards = _page_cards(page)
@@ -3884,9 +3880,9 @@ def test_a_papers_card_holds_no_link_so_the_introduction_links_what_it_names(
     rendered: Callable[[str], str],
 ) -> None:
     """A paper's card is the link to its paper, and a link holds no other. What the
-    descriptions name, T-060's row and the optimality paper, is linked from the page's
-    introduction instead, above the cards. A paper's entry is its address, label,
-    title, description and size, with no links of its own."""
+    descriptions name, the three parts of the series and the rows of T-037 and T-060, is
+    linked from the page's introduction instead, above the cards. A paper's entry is its
+    address, label, title, description and size, with no links of its own."""
     assert overview_sections.Paper._fields == (
         "href",
         "label",
@@ -3895,13 +3891,17 @@ def test_a_papers_card_holds_no_link_so_the_introduction_links_what_it_names(
         "size",
     )
     explainer = overview_sections.EXPLAINER
-    assert explainer is overview_sections.PAPERS[1]
+    assert explainer is overview_sections.PAPERS[0]
     assert explainer.href == overview_sections.LOWER_BOUNDS_PAPER
+    assert overview_sections.THRESHOLD_REVIEW is overview_sections.PAPERS[1]
     article = papers_article(rendered("papers.html"))
     introduction, cards = article.split('<div class="site-cards-frame', 1)
     assert re.findall(r'<a href="([^"]+)">([^<]+)</a>', introduction) == [
+        (overview_sections.LOWER_BOUNDS_PAPER, "Part I"),
+        (overview_sections.THRESHOLD_BOUND_PAPER, "Part II"),
+        ("all-results.html#t-037", "T-037"),
+        (overview_sections.OPTIMALITY_PAPER, "Part III"),
         ("all-results.html#t-060", "T-060"),
-        (overview_sections.OPTIMALITY_PAPER, "optimality paper"),
     ]
     for body in re.findall(r"<a\b[^>]*>(.*?)</a>", cards, re.DOTALL):
         assert "<a" not in body
@@ -3941,23 +3941,25 @@ def test_the_papers_page_says_what_each_paper_is(
 def test_the_optimality_papers_card_says_what_t060s_rungs_allow(
     register: list[dict], rendered: Callable[[str], str]
 ) -> None:
-    """The optimality paper is the first card: served where its renderer writes it,
-    titled as its renderer titles it, in sentence case, and described as explaining the
-    accepted proof, T-060, in the words T-060's rungs allow, V3 and C3: a proof, never a
+    """The optimality paper is Part III, the third card: served where its renderer writes
+    it, titled as its renderer titles it, in sentence case, and described as explaining
+    the proof of T-060 in the words T-060's rungs allow, V3 and C3: a proof, never a
     formal one. The card is the link to the paper, in the same tab."""
     from devtools import render_n11_optimality_review as renderer  # noqa: PLC0415
 
-    paper = overview_sections.PAPERS[0]
+    paper = overview_sections.PAPERS[2]
     assert paper.href == overview_sections.OPTIMALITY_PAPER == renderer.SITE_PATH
     assert paper.href in render_overview.SITE_PAGES
     assert paper.title.lower() == renderer.TITLE.lower()
     assert paper.title == "A review of the optimality proof of the Trump packing of 11 squares"
     papers = rendered("papers.html")
-    assert _page_cards(papers)[0][0] == paper.href
+    assert _page_cards(papers)[2][0] == paper.href
     value, note = _page_card_parts(papers, paper.href)
     assert card_text(value) == paper.title
     text = card_text(note)
-    assert text.startswith("Explains the accepted proof that Trump\u2019s 1979 packing")
+    assert text.startswith(
+        "Explains Queuingtheorydotcom\u2019s proof that Trump\u2019s packing"
+    )
     assert "(T-060)" in text
     assert "is optimal" in text
     assert "s(11) = 3.8770835" in text
@@ -3970,22 +3972,25 @@ def test_the_optimality_papers_card_says_what_t060s_rungs_allow(
 def test_the_papers_page_introduces_the_papers_within_t060s_rungs(
     register: list[dict], rendered: Callable[[str], str]
 ) -> None:
-    """The introduction names T-060 with a link to its row, in the words its rungs allow,
+    """The introduction presents the three parts of the n = 11 series in reading order,
+    each linked, and names T-060 with a link to its row, in the words its rungs allow,
     V3 and C3: proved optimal, machine-checked and reviewed with its review record
-    pending, never formally. It links the optimality paper where it says that paper
-    explains the proof. Its template is in the reader tier, so the gate refuses a result
-    it names that the register does not hold."""
+    pending, never formally. It keeps T-060's standing in one sentence: T-060 settles
+    the case, and Part III explains it (the series plan, Owner Decisions). Its template
+    is in the reader tier, so the gate refuses a result it names that the register does
+    not hold."""
     from devtools import check_results  # noqa: PLC0415
 
     article = papers_article(rendered("papers.html"))
     text = card_text(article)
     assert re.search(r"<h1\b[^>]*>Papers</h1>", article)
     assert '<a href="all-results.html#t-060">T-060</a>' in article
-    assert f'<a href="{overview_sections.OPTIMALITY_PAPER}">optimality paper</a>' in article
+    assert f'<a href="{overview_sections.OPTIMALITY_PAPER}">Part III</a>' in article
     assert "proved optimal" in text
     assert "machine-checked and reviewed here" in text
     assert "review record pending" in text
-    assert "the optimality paper explains that proof" in " ".join(text.split())
+    assert "one series on n = 11, read in order" in " ".join(text.split())
+    assert "T-060 settles the case; Part III explains it." in " ".join(text.split())
     assert "formal" not in text.lower()
     t060 = next(r for r in register if r["id"] == "T-060")
     assert (t060["verification"], t060["confirmation"]) == ("V3", "C3")
@@ -6008,13 +6013,19 @@ def test_a_paper_is_named_by_its_slug_in_the_source_and_on_the_site() -> None:
 
     from devtools.pages_scope import BUILDER_INPUTS, load_workflow  # noqa: PLC0415
 
-    slugs = (render_overview.N11_OPTIMALITY_REVIEW, render_overview.N11_LOWER_BOUNDS_EXPLAINER)
-    assert slugs == ("n11-optimality-review", "n11-lower-bounds-explainer")
+    slugs = tuple(paper.slug for paper in render_overview.PAPERS)
+    assert slugs == (
+        "n11-lower-bounds-explainer",
+        "n11-threshold-bound-review",
+        "n11-optimality-review",
+    )
     packing = overview_data.REPO / "packing"
     jobs = load_workflow()["jobs"]
     for slug in slugs:
         name = slug.replace("-", "_")
+        assert render_overview.paper_record(slug).module == f"devtools.render_{name}"
         renderer = importlib.import_module(f"devtools.render_{name}")
+        assert render_overview.paper_record(slug).title == renderer.TITLE
         assert slug == renderer.SLUG
         assert renderer.SITE_PATH == render_overview.paper_path(slug) == f"papers/{slug}.html"
         assert renderer.SITE_PATH in render_overview.SITE_PAGES

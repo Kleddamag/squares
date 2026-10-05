@@ -17,10 +17,13 @@ adds the front door and the pages around it, as the plan in
   popover (`render_case_pages`); `cases.html`, where every record was until 2026-10-03,
   is a forwarder to it;
 - `papers.html`, the Papers section's page: one large card per paper, from the one list
-  `overview_sections.PAPERS`. The optimality review (`papers/n11-optimality-review.html`,
-  `render_n11_optimality_review`), the lower-bounds explainer
-  (`papers/n11-lower-bounds-explainer.html`, `render_n11_lower_bounds_explainer`) and the
-  tutorial are the section's papers, and the bar's Papers entry is current on all four;
+  `overview_sections.PAPERS`. The three parts of the n = 11 series, in reading order
+  (`PAPERS`): the lower-bounds explainer (`papers/n11-lower-bounds-explainer.html`,
+  `render_n11_lower_bounds_explainer`), the threshold-bound review
+  (`papers/n11-threshold-bound-review.html`, `render_n11_threshold_bound_review`) and the
+  optimality review (`papers/n11-optimality-review.html`, `render_n11_optimality_review`),
+  then the tutorial, are the section's papers, and the bar's Papers entry is current on
+  all five;
 - a forwarder at each address a page used to have (`MOVED_PAGES`), the papers' old
   addresses among them, so an old link still arrives, query and fragment kept
   (`forwarder_pages`);
@@ -144,8 +147,8 @@ RESULTS_DESCRIPTION = (
     "and others': its claim, credit, date and ratings, with its records."
 )
 PAPERS_DESCRIPTION = (
-    "The project's papers on packing unit squares in the smallest square: its "
-    "explanations and proofs, written out in full."
+    "The project's papers on packing unit squares in the smallest square: a series of "
+    "three on n = 11, read in order, with proofs written out in full."
 )
 VISUALIZE_DESCRIPTION = (
     "The best packings known of n unit squares, n = 1 to 324, built one square at a "
@@ -200,14 +203,71 @@ PAPERS_DIR = "papers"
 #: The papers' slugs, each naming its case, its subject and its kind of paper. A paper is
 #: `papers/<slug>.html`, with its Markdown and its PDF beside it under the same slug
 #: (`paper_path`), and its renderer, templates and tests carry the slug in their names:
-#: `render_n11_optimality_review`, `render_n11_lower_bounds_explainer`. Both renderers
-#: import this module, so the slugs are written once, here.
-N11_OPTIMALITY_REVIEW = "n11-optimality-review"
+#: `render_n11_lower_bounds_explainer`, `render_n11_threshold_bound_review`,
+#: `render_n11_optimality_review`. Every renderer imports this module, so the slugs are
+#: written once, here.
 N11_LOWER_BOUNDS_EXPLAINER = "n11-lower-bounds-explainer"
 N11_THRESHOLD_BOUND_REVIEW = "n11-threshold-bound-review"
+N11_OPTIMALITY_REVIEW = "n11-optimality-review"
 #: From a paper's page back up to the site's root, which is where the bar's links, the
 #: other pages and the atlas's files are.
 PAPERS_ROOT = "../"
+
+
+class PaperRecord(NamedTuple):
+    """One of the site's papers, as every tool that has to know the papers reads it: its
+    slug, the renderer module that writes it, the label its cards carry, its part in the
+    series, and its title as its page sets it, in title case and plain text."""
+
+    slug: str
+    module: str
+    label: str
+    part: int
+    title: str
+
+
+#: The site's papers, in reading order: the one list a new paper is entered in. They are
+#: one series on n = 11, read I, II, III (the plan of 2026-10-05,
+#: `docs/project/specs/active/plan-2026-10-05-n11-explainer-series.md`): the project's
+#: own lower bounds, the review of Kleddamag's s(11) > 31/8, and the review of the
+#: optimality proof. `SITE_PAGES`, the cards (`overview_sections.PAPERS`), each paper's
+#: series strip (`paper_front.series`), the structure audit (`paper_structure`), the
+#: Pages scope (`pages_scope`), the preview build (`preview_site`) and the deployed-site
+#: check (`check_published_site`) read it, so a new paper is one entry here and its
+#: renderer. Each title is its renderer's `TITLE`, which `tests/test_overview.py` holds
+#: it to; the renderers import this module, so the title is written here rather than read
+#: from them.
+PAPERS: tuple[PaperRecord, ...] = (
+    PaperRecord(
+        slug=N11_LOWER_BOUNDS_EXPLAINER,
+        module="devtools.render_n11_lower_bounds_explainer",
+        label="Part I",
+        part=1,
+        title="New Lower Bounds for Square Packing for n = 11",
+    ),
+    PaperRecord(
+        slug=N11_THRESHOLD_BOUND_REVIEW,
+        module="devtools.render_n11_threshold_bound_review",
+        label="Part II",
+        part=2,
+        title="A Review of the Certified Lower Bound s(11) > 31/8 for 11 Squares",
+    ),
+    PaperRecord(
+        slug=N11_OPTIMALITY_REVIEW,
+        module="devtools.render_n11_optimality_review",
+        label="Part III",
+        part=3,
+        title="A Review of the Optimality Proof of the Trump Packing of 11 Squares",
+    ),
+)
+
+
+def paper_record(slug: str) -> PaperRecord:
+    """The site's paper `slug`; a slug that names no paper of the site is refused."""
+    for paper in PAPERS:
+        if paper.slug == slug:
+            return paper
+    raise ValueError(f"no paper of the site has the slug {slug!r}")
 
 
 def paper_path(slug: str, suffix: str = ".html") -> str:
@@ -224,8 +284,7 @@ SITE_PAGES: tuple[str, ...] = (
     RESULTS_PAGE,
     "cases/index.html",
     "papers.html",
-    paper_path(N11_OPTIMALITY_REVIEW),
-    paper_path(N11_LOWER_BOUNDS_EXPLAINER),
+    *(paper_path(paper.slug) for paper in PAPERS),
     "tutorial.html",
     "visualize.html",
     "workbench/index.html",
@@ -993,12 +1052,14 @@ def results_page() -> Page:
 def papers_page() -> Page:
     """The Papers section's page: a short introduction and one large card per paper,
     each the link to its paper, which is a full page of the site. It has no popover,
-    so it carries no popover script. The introduction's link to the optimality paper is
-    the card's own address, filled from the one constant."""
+    so it carries no popover script. The introduction's links to the three parts of the
+    series are the cards' own addresses, filled from the one constant each."""
     from devtools import overview_sections  # noqa: PLC0415
 
     values = {
         "PAPER_CARDS": overview_sections.paper_cards(),
+        "LOWER_BOUNDS_PAPER": overview_sections.LOWER_BOUNDS_PAPER,
+        "THRESHOLD_BOUND_PAPER": overview_sections.THRESHOLD_BOUND_PAPER,
         "OPTIMALITY_PAPER": overview_sections.OPTIMALITY_PAPER,
     }
     markdown = fill(

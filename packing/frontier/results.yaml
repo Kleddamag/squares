@@ -5679,12 +5679,13 @@ results:
       the reduction's statement. Valid7's two replayed checkers are both exact-algebraic; a
       checker of another kind, interval-certified or a Lean proof of Valid7, would add a
       method beside the rung. Rung 5 needs human formalization reviews of the Lean
-      statement and a Lean proof of Valid7 itself. The source has begun that proof: by 4
-      October its Lean reduces Valid7 to the tilted part ValidTilt7 (bentz_of_validTilt7,
-      with the D4 reduction and the axis face proved) and kernel-checks the 689 LEB and 374
-      CAP leaves of the run's 32,079 with Lemmas U and K, as reported and not built here;
-      the tree that joins the leaves and the 26,829 PIECE and EXACT leaves remain.
-      think-kqi1 tracks a scope that can state an infinite family.
+      statement and a Lean proof of Valid7 itself.
+
+      The source has begun that proof: by 4 October its Lean reduces Valid7 to the tilted
+      part ValidTilt7 (bentz_of_validTilt7, with the D4 reduction and the axis face proved)
+      and kernel-checks the 689 LEB and 374 CAP leaves of the run's 32,079 with Lemmas U and
+      K, as reported and not built here; the tree that joins the leaves and the 26,829 PIECE
+      and EXACT leaves remain. think-kqi1 tracks a scope that can state an infinite family.
     notes: >-
       V0/C1 until 3 October 2026, when the full qx2_zm.py replay (two shards, think-4k80)
       and lane LL's Lean build were recorded; the 1 October mathematical review and lane
@@ -5692,9 +5693,9 @@ results:
       entry, which was reported evidence until its replay with D-1 guarded (fourteen
       shards, think-e3tq) was recorded on 3 October; that moved no rung. The source's six
       adversarial reviews by AI agents are its own and are not retained as review records
-      here. The source's Lean toward ValidTilt7 at 7ff3b211 (LebMass, LebMass7,
-      ValidSplit7) was retained on 5 October 2026 in the evand packet of that date
-      (think-plrl); it moves no rung.
+      here. The source's Lean toward ValidTilt7 (LebMass, LebMass7, ValidSplit7) was
+      retained on 5 October 2026 in the evand packet of 4 October (think-plrl); it moves no
+      rung.
 
   - id: T-065
     kind: upper-bound
@@ -7771,7 +7772,7 @@ results:
       with the open-review pointer the public repository already supports.
     notes: >-
       On 3 October 2026 Evan Daniel's Lean module SpecChelokot restated chelokot's
-      IsMinimumSide from a reading of his Geometry.lean at 753079e, and proved it equivalent
+      IsMinimumSide from a reading of his Geometry.lean, and proved it equivalent
       to minSide n = s for every n >= 1 in Daniel's own statement of the problem. It reads
       chelokot's definitions and builds none of his proofs, so it adds no route and moves no
       rung; it is a second reading of the statement this entry's theorem uses, retained in

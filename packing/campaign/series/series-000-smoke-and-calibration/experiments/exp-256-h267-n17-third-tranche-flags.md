@@ -103,6 +103,15 @@ experiment:
       it in full mode in 120 s, checking all 2,382 live rows in full and 4,632 collision regions by 22,785,964
       exact facet checks. Alone it excludes 109,080 states and 13,752 orbits. The arity-at-most-7 entries then
       leave 64,632 states and 8,191 orbits (receipts/K/census-arity7-after-bc427-t6.json).
+  - shape: determination
+    role: outcome
+    question: Is target 7 (side-W0, side-W1, interior-SW, interior-NW, interior-W, interior-S, interior-N) infeasible
+      at U within the 7,000 s ceiling?
+    outcome: criterion_missed
+    checked_by: The run (receipts/K/kernel-t7-bc427.json) returns PASS_CERTIFIED_STALL in 842 s of wall and 763 s of
+      process CPU, the producer at its 24-round cap (168 steps, 17,907 rows, finest 1/512); at the last round
+      every owner still had live rows, side-W0 20 and interior-W 34 the fewest. A non-closure; its node is
+      kept.
   verdict:
     decision: in-progress
     primary_criterion: The certified residue at arity at most seven is at most 10^4 orbits with every certificate
@@ -148,6 +157,7 @@ No arity-8 flag fills it.
 | 4, `s182-bc427-t4` | side-E1, interior-SW, interior-NW, interior-W, interior-S, interior-N, interior-E | closed in 171 s, 15 steps, 960 rows | full pass, 84 s | 4,874 orbits; 9,990 at arity at most seven |
 | 3 | side-N0, side-W0, side-N1, interior-SW, interior-NW, interior-W, interior-S | 24-round cap at 3,458 s, not closed | — | — |
 | 6, `s182-bc427-t6` | side-S1, side-W1, interior-NW, interior-W, interior-S, interior-SE | closed in 197 s, 40 steps, 2,816 rows | full pass, 120 s | 4,711 orbits; 8,191 at arity at most seven |
+| 7 | side-W0, side-W1, interior-SW, interior-NW, interior-W, interior-S, interior-N | 24-round cap at 842 s, not closed | — | — |
 
 The targets and the census they came from are
 [kernel-targets-bc427.txt](../../../explorations/X048-session-182-overnight/kernel-targets-bc427.txt)

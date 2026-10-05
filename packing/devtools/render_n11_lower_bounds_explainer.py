@@ -2335,12 +2335,11 @@ def shared_substitutions(facts: list[Facts], headline: Facts, default: Facts) ->
             "exact degree-eight packing "
             f"side specified in the [case record]({repo_url(FRONTIER_N11)}). The decimal "
             f"${verified_tex}$ is a truncated display, not the definition of $T$. "
-            "[Part III of this series]({{PAPER:n11-optimality-review}}) explains that "
-            f"proof, and the [mathematical review]({repo_url(OPTIMALITY_REVIEW)}) "
-            "records the independent checks. Kleddamag's T-037, which raised the bound "
-            "to $s(11) \\gt 31/8$ from the T-026 certificate below, is explained in "
-            "[Part II]({{PAPER:n11-threshold-bound-review}}). This article retains the "
-            "earlier T-018, T-025, and T-026 lower-bound proofs below."
+            "[Part III]({{PAPER:n11-optimality-review}}) of this series explains that "
+            f"proof, the [mathematical review]({repo_url(OPTIMALITY_REVIEW)}) records "
+            "its independent checks, and [Part II]({{PAPER:n11-threshold-bound-review}}) "
+            "explains Kleddamag's intermediate $s(11) \\gt 31/8$ (T-037). This article "
+            "retains the earlier T-018, T-025, and T-026 lower-bound proofs below."
         )
         figure_aria = (
             "Number line from 3.75 to 3.90 showing the earlier point and threshold "

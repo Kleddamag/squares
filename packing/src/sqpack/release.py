@@ -293,10 +293,8 @@ EXPLAINER_HISTORY = (
         version="v0.4.4",
         first_published="October 5, 2026",
         result_scope=(
-            "The series revision: the paper is Part I of a three-part series on eleven "
-            "squares, its frontier update names Kleddamag's T-037 and links Part II, "
-            "which explains it, and Part III, which explains T-060, and Further Reading "
-            "lists the series in reading order."
+            "The series revision: the paper is Part I of three; its frontier update and "
+            "Further Reading link Part II, on Kleddamag's T-037, and Part III, on T-060."
         ),
     ),
     PublicationHistoryEntry(
@@ -363,15 +361,11 @@ OPTIMALITY_REVIEW_HISTORY = (
         version="v0.1.5",
         first_published="October 5, 2026",
         result_scope=(
-            "The series revision: the paper is Part III of a three-part series, its "
-            "lineage section defines charge and threshold certificates and names Part "
-            "II's three changes from T-026, and Charge Budgets contrasts capacity one "
-            "with a k-of-m charge's $\\lfloor m/k\\rfloor$; every term is defined before "
-            "its use, a test now holding that, so the receipt, seed, branch, cut and label "
-            "are defined at first use and the frames table, the ban paragraph and Figure 6 "
-            "move after the terms they use; the series notation writes $L_0$, $\\Gamma_i$, "
-            "$\\operatorname{rot}$, $\\mathbf{D}_4$ and $(191/50)/U$ for $S$, $q_i$, the "
-            "quarter-turn $Q$, $D_4$ and $B$."
+            "The series revision: the paper is Part III of three, its lineage names Part "
+            "II's three changes from T-026, Charge Budgets contrasts capacity one with "
+            "$\\lfloor m/k\\rfloor$, a test holds every term to a definition before its "
+            "first use, and the notation follows the series: $L_0$, $\\Gamma_i$, "
+            "$\\operatorname{rot}$, $\\mathbf{D}_4$ and $(191/50)/U$."
         ),
     ),
     PublicationHistoryEntry(

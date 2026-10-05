@@ -139,25 +139,20 @@ complete the contradiction.
 
 ## From Weighted Points to a Global Proof
 
-This paper is Part III of a series on eleven squares, and its first two parts explain
-the lower-bound method it builds on.
-[Part I][earlier] develops that method from weighted points.
-Select a small **core** strictly inside each packed square.
-A certificate places weight in the container, at first on single points, and the
-**charge** a core receives is the weight it collects.
+[Part I][earlier] of this series develops the lower-bound method from weighted points.
+Select a small **core** strictly inside each packed square; the **charge** a core
+receives is the weight it collects.
 If every possible core must receive a charge of at least one, eleven disjoint cores must
 receive at least eleven units.
 A certificate with less than eleven units available proves a contradiction.
 Exact coverage checks turn that idea into a theorem about every position and
-orientation. A **threshold certificate** adds weight that charges a core for holding at
-least $k$ of $m$ charge sites
-([Part II]({{PAPER:n11-threshold-bound-review#from-points-to-k-of-m-charges}})). Part I
-explains the point certificate T-018, the threshold certificate T-025 and T-026’s
+orientation. Part I explains the point certificate T-018, the **threshold certificate**
+T-025, whose charges pay a core holding at least $k$ of $m$ charge sites, and T-026’s
 dilation bound $s(11)\ge3.8264474\ldots$.
-[Part II]({{PAPER:n11-threshold-bound-review}}) explains Kleddamag’s later T-037, which
-establishes $s(11)>31/8=3.875$ with three changes from T-026: five-site k-of-m charges
-(2-of-5 and 3-of-5 beside 2-of-3); threshold charges on shrunken parents with strict
-cores (side A = 764/775 in the container 191/50), a framework inherited through the
+[Part II]({{PAPER:n11-threshold-bound-review}}) explains Kleddamag’s T-037,
+$s(11)>31/8=3.875$, and its three changes from T-026: five-site k-of-m charges (2-of-5
+and 3-of-5 beside 2-of-3); threshold charges on shrunken parents with strict cores (side
+A = 764/775 in the container 191/50), a framework inherited through the
 Levy/Guzhou0806/Mira line; and a re-optimised certificate over 12,028 adaptive angle
 rows, each with its own core.[^lineage]
 
@@ -170,9 +165,8 @@ For the pattern that survives, it proves where every square must be, then applie
 quantitative local theorem at the exact endpoint.
 The earlier bounds are antecedents of the method, not premises of the proof: the proof
 does not infer equality from a sequence of improving lower bounds, and the separate
-tools that check related certificates, wand125’s row-minimum check of T-037 (T-059,
-described in
-[Part II’s closing section]({{PAPER:n11-threshold-bound-review#what-was-verified-and-what-the-verification-means}}))
+tools that check related certificates, wand125’s row-minimum check of T-037
+([T-059, in Part II]({{PAPER:n11-threshold-bound-review#what-was-verified-and-what-the-verification-means}}))
 and Tokoharu’s rectangle-density verifier, do not verify this argument.[^tools]
 
 ## The Construction Gives One Half of the Answer
@@ -359,26 +353,24 @@ Together they are the **invariant**, stated row by row: in every valid packing u
 current assumptions, for every row of an owner whose angle interval contains the owner’s
 actual angle, the owner’s actual center lies in that row’s center polygon; and the rows’
 angle intervals together cover the whole allowed angular range.
-Initial owned points need their own proofs, using open inscribed disks or wall
-inequalities, or come from a **seed**, a set of points whose ownership has its own
-checked proof. The row-by-row form is stronger than saying the pose lies in the union of
-the rows, and the difference matters at a seam: two rows that share an endpoint angle
-both enclose a pose at that angle.
-A **branch** is an argument that assumes one side of a closed split, and a branch that
-restricts the angle to one side may drop the other row’s single shared angle, because
-the retained row already carries the guarantee there.
+This is stronger than saying the pose lies in the union of the rows, and the difference
+matters at a seam: two rows that share an endpoint angle both enclose a pose at that
+angle, so a **branch**, an argument that assumes one side of a closed split, may
+restrict the angle to one side and drop the other row’s single shared angle, because the
+retained row already carries the guarantee there.
 A branch may never drop a point or a segment of a center polygon on that ground; those
 have their own exact treatment.
-Ownership is quantified the same way, over valid packings: an owned hull need not lie
-inside the artificial poses that a deliberately loose outer cover retains, and one
-retained row of the capture proof contains such a pose, in which a seed point falls
-outside an artificial square that the walls already forbid.[^gpt6] An **update** (the
-proof data say *step*) takes one owner’s rows, removes centers that an argument below
-forbids, and records what remains as the **residual** of each row; a row with a nonempty
-residual is **live**. Search programs **propose** rows, residuals and cuts, a cut being
-a closed half-plane condition on a center that an argument assumes; the checker proves
-or refuses them. The same invariant supports case exclusion and, later, capture near the
-construction.
+Initial owned points need their own proofs, using open inscribed disks or wall
+inequalities, or come from a **seed**, a set of points whose ownership has its own
+checked proof. Ownership is quantified the same way, over valid packings: an owned hull
+need not lie inside the artificial poses that a deliberately loose outer cover retains,
+and one retained row of the capture proof contains such a pose, in which a seed point
+falls outside an artificial square that the walls already forbid.[^gpt6] An **update**
+(the proof data say *step*) takes one owner’s rows, removes centers that an argument
+below forbids, and records what remains as the **residual** of each row; a row with a
+nonempty residual is **live**. Search programs **propose** rows, residuals and cuts,
+closed half-plane conditions on a center; the checker proves or refuses them.
+The same invariant supports case exclusion and, later, capture near the construction.
 
 ### Removing poses that force overlap
 
@@ -407,9 +399,9 @@ inside the centered unit square at every angle in the interval.
 After substituting the half-angle formulas, the needed inequalities reduce to signs of
 rational quadratic polynomials.
 Checking endpoints and any interior minimum establishes the inequality over the entire
-interval.
+interval, as
 [Part II’s Strict-core lemma]({{PAPER:n11-threshold-bound-review#parents-cores-and-the-angle-catalogue}})
-checks the same kind of containment for one square core over an angle row.
+does for a square core.
 
 Let $K$ be an owned hull of another square.
 A proposed center $x$ is forbidden if
@@ -535,11 +527,9 @@ but those collision regions pay no charge.[^field] Other certificates use three 
 charge sites, add weighted charges at single points, or combine several such charges;
 each charge contributes its weight to at most one core, and the **budget** $b$ is the
 sum of the weights. A k-of-m charge of
-[Part II]({{PAPER:n11-threshold-bound-review#from-points-to-k-of-m-charges}}), which
-pays a core holding at least $k$ of its $m$ charge sites, can instead pay as many as
-$\lfloor m/k\rfloor$ disjoint cores; when $2k>m$, any core holding $k$ of those sites
-meets the hull of every $k$ of them, so it also receives the median-type charge on the
-same sites, which has capacity one.
+[Part II]({{PAPER:n11-threshold-bound-review#from-points-to-k-of-m-charges}}) can pay as
+many as $\lfloor m/k\rfloor$ disjoint cores; when $2k>m$, a core holding $k$ of its
+sites also receives the median-type charge on them, which has capacity one.
 
 The accepted certificate for mask 0, which Figure 7 draws, is the smallest example.
 It requires owners in cells 0, 1, 2, 3 and 6, whose 55 owned points have their own
@@ -634,9 +624,9 @@ $$
 $$
 
 Together with half-turns these represent the eight symmetries of a square, usually
-called $\mathbf{D}_4$, the group
-[Part I]({{PAPER:n11-lower-bounds-explainer#the-five-conditions-for-a-point-certificate}})
-uses too. Intersect the inverse images of the cells in the four views.
+called $\mathbf{D}_4$
+([Part I]({{PAPER:n11-lower-bounds-explainer#the-five-conditions-for-a-point-certificate}})).
+Intersect the inverse images of the cells in the four views.
 The result is a finite overlay of 220 nonempty closed regions: 212 polygons and eight
 singleton points. A center in one overlay region has a specified allowable label in each
 view.
@@ -989,11 +979,11 @@ The local construction, derivative calculations and exact arithmetic include sha
 first-party primitives.
 The confirmation follows the same mathematical argument, rather than supplying a
 distinct proof method.
-The Squares Project grades each result by rungs on three axes, verification (V),
-confirmation (C) and significance (S), as its [epistemics guide](../../../epistemics.md)
-sets out, and therefore records the result as T-060, S5/V3/C3: significance 5, movement
-on a central open case, with a machine certificate replayed here and its review record
-pending on both the verification and the confirmation axes.
+The Squares Project therefore records the result as T-060, S5/V3/C3, rungs on the
+significance, verification and confirmation axes of its
+[epistemics guide](../../../epistemics.md): significance 5, movement on a central open
+case, with a machine certificate replayed here and its review record pending on both the
+verification and the confirmation axes.
 Under the ladder of 2026-09-30, rung 4 on either axis also needs a second adversarial
 review by a distinct reviewer and a retained human oversight record; the reviews linked
 from this paper that record V4/C5 were written under the ladder in force before that

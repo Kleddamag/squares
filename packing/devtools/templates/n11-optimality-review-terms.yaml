@@ -68,7 +68,7 @@ terms:
   # From Weighted Points to a Global Proof
   - term: core
     uses: '\bcores?\b'
-    defined_by: Select a small core strictly inside each packed square.
+    defined_by: Select a small core strictly inside each packed square;
     anchor: from-weighted-points-to-a-global-proof
     series: core
   - term: charge
@@ -80,8 +80,8 @@ terms:
   - term: threshold certificate
     uses: '\b[Tt]hreshold\b'
     defined_by: >-
-      A threshold certificate adds weight that charges a core for holding at least $k$ of
-      $m$ charge sites
+      the threshold certificate T-025, whose charges pay a core holding at least $k$ of $m$
+      charge sites
     anchor: from-weighted-points-to-a-global-proof
     requires: [charge]
     series: threshold-atom
@@ -188,7 +188,7 @@ terms:
     requires: [owned hull]
   - term: branch
     uses: '(?<!contact )\bbranch(?:es)?\b'
-    defined_by: A branch is an argument that assumes one side of a closed split
+    defined_by: a branch, an argument that assumes one side of a closed split
     anchor: one-geometric-invariant-supports-the-certificates
   - term: update
     uses: '\bupdates?\b'
@@ -212,8 +212,8 @@ terms:
   - term: cut
     uses: '\bcuts?\b'
     defined_by: >-
-      Search programs propose rows, residuals and cuts, a cut being a closed half-plane
-      condition on a center that an argument assumes
+      Search programs propose rows, residuals and cuts, closed half-plane conditions on a
+      center
     anchor: one-geometric-invariant-supports-the-certificates
   - term: partner rows
     uses: '\bpartner rows?\b'
@@ -377,5 +377,5 @@ terms:
   # What Was Verified, and What the Verification Means
   - term: rung
     uses: '\brungs?\b'
-    defined_by: The Squares Project grades each result by rungs on three axes
+    defined_by: rungs on the significance, verification and confirmation axes
     anchor: what-was-verified-and-what-the-verification-means

@@ -51,6 +51,7 @@ exploration:
     - packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-248-h268-n17-local-half-composition.md
     - packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-249-h267-n17-first-certified-sub-patterns.md
     - packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-250-h267-n17-standing-verifier-admissions.md
+    - packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-251-h267-n17-overnight-flag-certification.md
     - packing/campaign/hypotheses/H-261-n17-local-minimum-modulo-sliders.md
     - packing/campaign/hypotheses/H-262-n17-conditional-charge-occupancy-census.md
     - packing/campaign/hypotheses/H-263-n17-endpoint-adapted-cover.md
@@ -567,8 +568,8 @@ replayed (T-093, `V0/C0`). The proof follows the three-part shape of $n = 11$.
 | Cover | 24 closed cells, each of capacity one, cover the centre box; the family lies in one state with margin $0.002112$ | verified, with the depth–width wall lemma proved and reviewed | stack | exp-247, H-266 |
 | Census | $\binom{24}{17} = 346{,}104$ states, 43,593 $D_4$ orbits | verified (Burnside and brute force agree) | stack | exp-247 |
 | Exclusions | W7 (arity 7, kernel), A (arity 6, branch and bound), SW9 (arity 9, kernel, adaptive rows), N1 (a whole 17-cell state, kernel) are infeasible at cap $U$ | machine-certified and admitted; W7 and A by independent verifiers with reviews; SW9 and N1 by the standing kernel verifier’s full pass under OR-16 as amended, with no per-certificate review, and re-passed by the verifier fixed for the closed-cover defect class ([verifier-rewrites review §6.5](../../../docs/project/reviews/review-2026-10-03-n17-verifier-rewrites.md#65-re-verification-with-the-fixed-verifier)) | stack | exp-249, exp-250 |
-| Certified residue | 126,168 states in 15,953 orbits survive, the family’s among them | exact consumer over admitted entries; re-run for this review at `451154f60` with the same counts | stack | census tool; exp-250’s `census.json` |
-| Flags | 87 selector flags stand without certificates; if all certify, 2,197 orbits remain (17,168 states). The census tool reads the recheck receipt by default since lane H’s change in this session and projects these figures; on the pre-recheck receipts it projected 88 and 2,189 | heuristic (float search) | stack | selector receipts, recheck; census tool |
+| Certified residue | 126,168 states in 15,953 orbits survive, the family’s among them | exact consumer over admitted entries; re-run for this review at `451154f60` with the same counts. Later on October 5, exp-251 admitted lane K’s first arity-7 flag, s182-k1, leaving 102,124 states in 12,929 orbits | stack | census tool; exp-250’s `census.json`; exp-251 |
+| Flags | 87 selector flags stand without certificates; if all certify, 2,197 orbits remain (17,168 states). The census tool reads the recheck receipt by default since lane H’s change in this session and projects these figures on exp-250’s four admitted entries; on the pre-recheck receipts it projected 88 and 2,189 | heuristic (float search) | stack | selector receipts, recheck; census tool |
 | Per-state exclusion | N1 closed in 3,723 s wall (producer segment 1,336 s, in-process self-check 2,381 s; 2,521 s of process CPU) at 32 bins and was admitted. The two 45-minute runs, on N1 and F1, ended at the producer’s time cap of $0.5\times2{,}700$ s (producer 1,367 s and 1,355 s), not at a fixed point; F1 has never had the two-hour ceiling | one closure, one time-capped run; H-264’s falsifier needs 10 to 20 states | stack | `handoff/k2/h-N1-2h.json`, `h-N1.json`, `h-F1.json`; exp-250 |
 | Near-endpoint states | states feasible at $U$ but not at $S^\ast$ must be excluded at the capture cap $U'$ | open; a float sample of 44 residue states found none feasible at $U$ (95% bound: at most about 27 of the 95 distance-2 orbits) | stack | residue process review, Q1 survey |
 | Capture | every packing in the family’s state at $U'$ ($U' - S^\ast = 4.49\times10^{-13}$) lies within the local radius | open; pilot 2 met the after-pilot falsifier at round 17 (no two-sided position extent fell by 10% while every widest row was under $1/20$ of its extent); lane R9’s review finds the receipts undecided between a producer limit and the architecture | stack | pilot 2 receipt; [R9 review](../../../docs/project/reviews/review-2026-10-05-n17-capture-r9.md) |
@@ -962,8 +963,9 @@ marked so; #354 to #360 had not yet taken that commit.
   verifier-rewrites review’s §6.5 for the SW9 and N1 re-verification.
 - Corrected by lane H in this session: the census tool projected 88 flags and 2,189
   orbits from the pre-recheck receipts while the records said 87 and 2,197. It now reads
-  the recheck receipt by default and projects 87 flags, 2,197 orbits and 17,168 states;
-  a projection quoted from the tool before the change should say which receipts it used.
+  the recheck receipt by default and projects 87 flags, 2,197 orbits and 17,168 states
+  on exp-250’s four admitted entries, and 86 flags once s182-k1 is admitted; a
+  projection quoted from the tool before the change should say which receipts it used.
 - PR 347’s “63 per cent of the global half’s orbits are excluded” is arithmetic, not
   progress: the residue is the endpoint’s Hamming neighbourhood, where small
   certificates are rare.

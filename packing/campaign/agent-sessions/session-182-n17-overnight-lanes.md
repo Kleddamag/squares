@@ -768,6 +768,23 @@ consequence in each.
   session’s heartbeat now prevents the container from suspending.
   A stall on the endpoint7 node is the control’s pass and releases target 2 for
   admission. A closure would be a soundness alarm.
+- **The branch-and-bound queue stopped under its frozen rule.** It started in BC-423’s
+  slot at 16:16:41. Its endpoint-north control returned unresolved-at-budget in 90 s.
+  The Knuth calibration on A then estimated a mean of 13,532 nodes against the 41,598
+  recorded, 3.07 times low, just outside the factor-of-three band.
+  W7’s estimate was 2.0e9 nodes.
+  The queue wrote BB-MISCALIBRATED and stopped routing, so no branch-and-bound
+  certificate run started.
+  At the coordinator’s direction it stays stopped; recalibration is a decision for the
+  morning.
+- **BC-425, lane K’s second tranche, is registered before its first run.** It takes the
+  ten standing flags with the highest projected gain against the certified line at
+  `18b7c5ae1`, using lane K’s filter widened only in arity: at most 8 cells, at least
+  three wall or corner cells, best penetration at least 0.005. All ten are arity 8, so
+  their closures count for the census but not toward H-267’s arity-at-most-7 criterion.
+  They run under lane K’s frozen SW9 recipe, which lane K’s passed endpoint7 control
+  covers. One slot runs now, and a second follows when BC-424’s queue ends, ahead of lane
+  E’s second worker.
 
 <!-- This document follows common-doc-guidelines.md.
 See github.com/jlevy/practical-prose and review guidelines before editing.

@@ -1798,6 +1798,56 @@ agenda:
       distance-2 draw 1964767 is left out (uncounted, and lane D found it
       consistency-limited). Mechanism and limits are lane D's stall classification, cited
       in H-274.
+  - id: BC-425
+    purpose: research
+    owner_focus: correctness
+    instances:
+    - 17
+    state: in_progress
+    priority: 1
+    question: >-
+      Do the next ten standing flags by projected gain against the certified line at
+      18b7c5ae1 (arity at most 8, at least three wall or corner cells, best penetration
+      at least 0.005) close under lane K's frozen SW9 recipe?
+    hypotheses:
+    - H-267
+    budget: >-
+      At most ten runs of at most 7,000 s each and one verification of at most 4,000 s per
+      closure, on the slot freed after BC-423 and the next slot freed after BC-424, ahead
+      of lane E's second worker.
+    entry: >-
+      The coordinator's re-plan at the 16:30 UTC check-in; this cell and its frozen target
+      list committed before the first run.
+    exit: >-
+      The list exhausted, each run's verdict as observed: a closure re-proved by the
+      standing kernel verifier in full and admitted, one commit each, or a non-closure
+      retained. Any soundness alarm or one verifier FAIL stops the slice.
+    bead: think-035m
+    depends_on:
+    - BC-415
+    next_evidence: packing/campaign/agent-sessions/session-182-n17-overnight-lanes.md
+    workflows:
+    - research-loop
+    program: post-optimality-low-n
+    parallel_group: n17-overnight-182
+    artifacts:
+    - packing/campaign/explorations/X048-session-182-overnight/kernel-targets-bc425.txt
+    - packing/campaign/explorations/X048-session-182-overnight/receipts/K/census-bc425-targets.json
+    note: >-
+      Under BC-418, lane K's second tranche, a future slice added at a check-in. The
+      targets are frozen in kernel-targets-bc425.txt from the census at 18b7c5ae1
+      (receipts/K/census-bc425-targets.json, reading the selector recheck): lane K's
+      filter with the arity widened from 7 to 8, the top ten by projected orbits, 1,494
+      down to 863. All ten are arity 8. Lane K's target 2 is not among them: its recheck
+      penetration, 0.0049995, is under the 0.005 floor, and BC-423 holds it. The
+      instrument is lane K's frozen SW9 recipe exactly (--bins 64 --max-rounds 24
+      --hull-limit 16 --producer-share 0.6 --split-floor 512 --max-rows 1152
+      --split-patience 1 --max-seconds 7000) from the clean run worktree at cebb5d15a, so
+      lane K's endpoint7 control under that recipe (K-control-endpoint7,
+      PASS_CONTROL_STALLED in 1,244 s, receipts/K/kernel-control-endpoint7.json) covers it
+      and no new control runs. An arity-8 closure counts for the certified census but not
+      toward H-267's criterion, which is read at arity at most seven. Evidence record: the
+      next free experiment id when the first closure is admitted.
 ---
 # Agenda 042: The n11 Settlement Ladder and Low-n Angles
 

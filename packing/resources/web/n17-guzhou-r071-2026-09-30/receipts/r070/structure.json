@@ -1,0 +1,57 @@
+{
+  "schema": "GuzhouR071PacketStructure/v1",
+  "release": "R070",
+  "source_commit": "8988d933e10fe89709a01d98b602396c29dd7bd1",
+  "certificate_sha256": "8438cae4da93c98a92b0b96560f95d9da8d0ef47287783f3b18a9cb8208167b9",
+  "r068_certificate_sha256": "cf70f74ddb47071b1d7333d8a43885d2915f43d45f26f6084a106dfdb0c5205f",
+  "target": "46604427/10000000",
+  "parent_side": "46130000/46604427",
+  "r068_parent_side": "115325/116511",
+  "advance_over_r068": "27/10000000",
+  "previous_release": "R068",
+  "advance_over_previous": "27/10000000",
+  "same_as_r068": {
+    "L": true,
+    "coordinate_denominator": true,
+    "weight_denominator": true,
+    "budget_units": true,
+    "minimum_units": true,
+    "point_orbits": true,
+    "threshold_orbits": true
+  },
+  "charge_is_r068s": true,
+  "point_orbits": 2621,
+  "rule_orbits": 889,
+  "budget_units": 17000448944,
+  "requested_minimum_units": 1000026409,
+  "requested_surplus_units": 9,
+  "declared_base_sha256": null,
+  "source_note": "C016 fresh target, unchanged accepted charging weights. All strict cores recomputed; original paired validation required.",
+  "angle_chain_over_r068": {
+    "original_intervals": 4991,
+    "new_intervals": 5107,
+    "pieces_per_original": {
+      "1": 4888,
+      "2": 101,
+      "5": 1,
+      "12": 1
+    },
+    "exact_bisections": 101
+  },
+  "angle_chain_over_previous": {
+    "original_intervals": 4991,
+    "new_intervals": 5107,
+    "pieces_per_original": {
+      "1": 4888,
+      "2": 101,
+      "5": 1,
+      "12": 1
+    },
+    "exact_bisections": 101
+  },
+  "cores_over_previous": {
+    "shared_intervals": 4888,
+    "shared_same_core_angle": 4888,
+    "shared_same_core": 0
+  }
+}

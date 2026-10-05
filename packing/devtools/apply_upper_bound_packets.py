@@ -4,7 +4,9 @@
 """Carry the September 2026 parallel upper bounds into the Frontier records.
 
 `devtools.upper_bound_packets` retains Francisco Couzo's 49 packings, Joost de Winter's
-``s(211)`` packing and Griffin Casson's 39 packings, and certifies the first two here.
+``s(211)`` packing and Griffin Casson's 39 packings, and certifies the first two here;
+it also retains the seven packings Couzo lowered on 3 October (T-092), which take those
+counts from his earlier ones (T-056).
 This tool writes what those packets establish into the records, and is idempotent: a
 second run writes nothing, and ``--check`` reports any record that differs from what it
 would write.
@@ -92,6 +94,8 @@ class Registration:
     repository: str
     #: The method-distinct second route, the source's printed pose decided by intervals.
     interval_replay: str
+    #: The day this intake read its packet into the records.
+    intake: str = INTAKE
 
 
 REGISTRATIONS = (
@@ -114,6 +118,19 @@ REGISTRATIONS = (
         author="Joost de Winter",
         repository="square-packing-211",
         interval_replay="E-n211-de-winter-interval-replay",
+    ),
+    # Couzo's next revision, at the seven counts whose side it lowered. A registration
+    # listed later takes a count from an earlier one, which stays its previous packing.
+    Registration(
+        source=packets.FRANCISCOUZO_2026_10_03,
+        coverage_id="franciscouzo-square-packing-2026-10-03",
+        report="E-franciscouzo-2026-10-03-report",
+        replay="E-franciscouzo-2026-10-03-exact-replay",
+        result="T-092",
+        author="Francisco Couzo",
+        repository="square-packing",
+        interval_replay="E-franciscouzo-2026-10-03-interval-replay",
+        intake="2026-10-05",
     ),
 )
 CASSON_COVERAGE_ID = "casson-square-packing-2026"
@@ -141,6 +158,13 @@ class Plan:
     case: Mapping[str, Any]
     receipt: Mapping[str, Any]
     casson: Mapping[str, Any] | None
+    #: The earlier registration's plan at this count, which this one replaces.
+    previous: Plan | None = None
+
+    @property
+    def chain(self) -> list[Plan]:
+        """Every plan at this count, earliest first, ending with this one."""
+        return [*(self.previous.chain if self.previous else []), self]
 
     @property
     def side(self) -> str:
@@ -161,14 +185,18 @@ class Plan:
 
 
 def plans() -> list[Plan]:
+    """One plan per certified count, the latest registration's, by `n`.
+
+    Where a later registration reports a count an earlier one did, its plan keeps the
+    earlier one as `previous`, and `apply_case` writes that one first.
+    """
     casson = packets.cases(CASSON)
-    return [
-        Plan(
-            n, registration, case, packets.certification(registration.source)[n], casson.get(n)
-        )
-        for registration in REGISTRATIONS
-        for n, case in sorted(packets.cases(registration.source).items())
-    ]
+    latest: dict[int, Plan] = {}
+    for registration in REGISTRATIONS:
+        receipts = packets.certification(registration.source)
+        for n, case in sorted(packets.cases(registration.source).items()):
+            latest[n] = Plan(n, registration, case, receipts[n], casson.get(n), latest.get(n))
+    return [latest[n] for n in sorted(latest)]
 
 
 # --------------------------------------------------------------------------------------
@@ -249,7 +277,7 @@ def reported_upper(plan: Plan, current: Mapping[str, Any]) -> dict[str, Any]:
         "catalogue_pictured": current["catalogue_pictured"],
         "source_key": registration.source.key,
         "source_date": plan.case["current_since_authored_utc"][:10],
-        "retrieved_date": packets.RETRIEVED,
+        "retrieved_date": registration.source.retrieved,
         "witnesses": [f"W-known-best-n{plan.n:03d}"],
         "evidence": [registration.report],
     }
@@ -343,16 +371,21 @@ def resource(source: packets.Source) -> dict[str, Any]:
 def front_matter(plan: Plan, front: str) -> str:
     payload = safe_load(front)["packing"]
     registration = plan.registration
+    # A conflict or blocker an earlier registration at this count wrote is about the
+    # packing this one replaces, so it goes with it.
     ours = {
-        registration.report,
-        registration.replay,
-        registration.interval_replay,
-        CASSON_REPORT,
-    }
+        evidence
+        for step in plan.chain
+        for evidence in (
+            step.registration.report,
+            step.registration.replay,
+            step.registration.interval_replay,
+        )
+    } | {CASSON_REPORT}
     # Never earlier than a later intake's review, the rule
     # `devtools.apply_wand125_rectangles` keeps from the other side: its 1 October
     # registration reviewed n = 68 after this intake did. ISO dates order as text.
-    reviewed = max(str(payload.get("source_reviewed") or ""), INTAKE)
+    reviewed = max(str(payload.get("source_reviewed") or ""), registration.intake)
     front = re.sub(
         r"^  source_reviewed: .*$",
         f"  source_reviewed: '{reviewed}'",
@@ -574,12 +607,28 @@ def _casson_paragraph(plan: Plan) -> str | None:
 
 def _couzo_paragraph(plan: Plan) -> str:
     registration = plan.registration
+    if plan.previous is None:
+        dated = (
+            f"dated {day(plan.case['current_since_authored_utc'])} and unchanged when this "
+            f"record retained the repository on 27 September 2026 ({registration.result})."
+        )
+    else:
+        previous = plan.previous
+        current = (
+            "the revision this record retained"
+            if plan.case["current_since_commit"] == registration.source.revision
+            else "and unchanged at the revision this record retained"
+        )
+        dated = (
+            f"dated {day(plan.case['current_since_authored_utc'])}, {current} "
+            f"({registration.result}). It replaces his packing of side `{previous.side}`, "
+            f"dated {day(previous.case['current_since_authored_utc'])} "
+            f"({previous.registration.result})."
+        )
     return (
         f"Francisco Couzo’s [`square-packing`]({_link(registration.source)}) reports a "
-        f"packing of side `{plan.side}` for this count, dated "
-        f"{day(plan.case['current_since_authored_utc'])} and unchanged when this record "
-        "retained the repository on 27 September 2026 "
-        f"({registration.result}).{_history_sentence(plan)} The repository names no method "
+        f"packing of side `{plan.side}` for this count, "
+        f"{dated}{_history_sentence(plan)} The repository names no method "
         "and no tolerance, and itself states no AI assistance; its author said on "
         f"[issue #227]({ISSUE}) that he found the 102 and 103 packings “with the help of "
         "Claude”."
@@ -637,6 +686,36 @@ def _previous(plan: Plan, old: str, kingbird: str, unitsquare: str | None) -> st
     return f"{lead}\n\n{old.strip()}"
 
 
+def _replaced_marker(plan: Plan) -> str:
+    """How the paragraph on the packing a later registration replaced begins."""
+    assert plan.previous is not None
+    return f"{plan.previous.registration.author}’s earlier packing for this count"
+
+
+def _replaced(plan: Plan, previous: str) -> str:
+    """The previous-packing text of a count a later registration took from an earlier one.
+
+    It leads with the packing replaced, certified here under the earlier registration,
+    and keeps what that registration kept, its opening put in the past. Written over its
+    own output it changes nothing, since the paragraph it leads with is replaced, not added.
+    """
+    earlier = plan.previous
+    assert earlier is not None
+    marker = _replaced_marker(plan)
+    if previous.startswith(marker):
+        previous = previous.split("\n\n", 1)[1] if "\n\n" in previous else ""
+    previous = re.sub(r"^Before\s+this\s+intake\b", "Before that intake", previous)
+    receipts = f"{_link(earlier.registration.source)}#certified-here"
+    paragraph = (
+        f"{marker}, of side `{earlier.side}`, dated "
+        f"{day(earlier.case['current_since_authored_utc'])}, was the best known from this "
+        f"record’s intake of {day(earlier.registration.intake)} until this one "
+        f"({earlier.registration.result}), and this repository certified "
+        f"`s({plan.n}) ≤ {earlier.verified}` from it ([receipt]({receipts}))."
+    )
+    return f"{paragraph}\n\n{previous}".rstrip("\n")
+
+
 def packing_section(plan: Plan, old: str, kingbird: str, unitsquare: str | None) -> str:
     """The rewritten ``## The packing`` section, keeping the earlier paragraph."""
     content = old.split("\n", 1)[1].strip("\n")
@@ -644,9 +723,11 @@ def packing_section(plan: Plan, old: str, kingbird: str, unitsquare: str | None)
         previous = content.split(PREVIOUS_HEADING, 1)[1].strip("\n")
     else:
         previous = _previous(plan, content, kingbird, unitsquare)
+    if plan.previous is not None:
+        previous = _replaced(plan, previous)
     lead = (
         _couzo_paragraph(plan)
-        if plan.registration.source is FRANCISCOUZO
+        if plan.registration.source.layout == "couzo"
         else _de_winter_paragraph(plan)
     )
     parts = [lead, _certificate_paragraph(plan)]
@@ -684,6 +765,11 @@ def body_text(
 
 def _override(plan: Plan, earlier: Mapping[str, str]) -> dict[str, Any]:
     beaten = "the UnitSquare release and " if earlier.get("unitsquare") else ""
+    if plan.previous is not None:
+        beaten = (
+            f"{plan.previous.registration.author}'s earlier side "
+            f"({plan.previous.registration.result}) and " + beaten
+        )
     return {
         "n": plan.n,
         "source_id": plan.registration.coverage_id,
@@ -724,10 +810,11 @@ def coverage_text(
         entry
         for entry in coverage.get("superseded_reports") or []
         if entry["n"] not in by_n
-        or entry["source_id"] not in {UNITSQUARE_COVERAGE_ID, CASSON_COVERAGE_ID}
+        or entry["source_id"] not in {UNITSQUARE_COVERAGE_ID, CASSON_COVERAGE_ID} | ours
     ]
     for plan in selected:
         unitsquare = earliest[plan.n].get("unitsquare")
+        first = plan.chain[0].registration
         if unitsquare is not None:
             superseded.append(
                 {
@@ -736,10 +823,25 @@ def coverage_text(
                     "value": unitsquare,
                     "superseded_by": plan.registration.coverage_id,
                     "reason": (
-                        f"Superseded on {INTAKE} by Francisco Couzo's smaller certified side."
+                        f"Superseded on {first.intake} by Francisco Couzo's smaller certified "
+                        "side."
                     ),
                 }
             )
+        superseded.extend(
+            {
+                "n": plan.n,
+                "source_id": step.registration.coverage_id,
+                "value": step.side,
+                "superseded_by": plan.registration.coverage_id,
+                "reason": (
+                    f"Superseded on {plan.registration.intake} by "
+                    f"{plan.registration.author}'s own later and smaller certified side "
+                    f"({plan.registration.result})."
+                ),
+            }
+            for step in plan.chain[:-1]
+        )
         if plan.casson is not None:
             superseded.append(
                 {
@@ -791,7 +893,12 @@ def evidence_problems(selected: Sequence[Plan]) -> list[str]:
     entries = {entry["id"]: entry for entry in safe_load(EVIDENCE.read_text())["evidence"]}
     problems = []
     for registration in REGISTRATIONS:
-        wanted = sorted(plan.n for plan in selected if plan.registration is registration)
+        # A case a later registration took still cites the earlier one's evidence.
+        wanted = sorted(
+            plan.n
+            for plan in selected
+            if any(step.registration is registration for step in plan.chain)
+        )
         for identifier in (
             registration.report,
             registration.replay,
@@ -812,6 +919,8 @@ def apply_case(plan: Plan, text: str, earlier: Mapping[str, str]) -> str:
     ``devtools.generate_frontier_case`` applies it to its own draft of a certified count,
     since the record is that draft with this intake applied.
     """
+    if plan.previous is not None:
+        text = apply_case(plan.previous, text, earlier)
     _, front, body = text.split("---\n", 2)
     payload = safe_load(front)["packing"]
     # What this writes is prose with code spans; its mathematics becomes math by the

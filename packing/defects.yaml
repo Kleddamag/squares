@@ -11,7 +11,7 @@ softschema:
   schema: defects.schema.yaml
   envelope: null
   status: enforced
-count: 518
+count: 519
 defects:
 - id: D-001
   title: Fixed-side search never left the grid basin
@@ -17433,3 +17433,48 @@ defects:
     dropped, Nagamochi's root branch without its ceiling, a form below sqrt N -- and
     requires each to be caught.
   recorded_in: docs/project/reviews/review-2026-10-02-nagamochi-lemma1-karakus.md
+- id: D-519
+  title: Three Kingbird counts held as pending catalogue intake named no owning bead, and the record trailed the catalogue for five days
+  date: '2026-10-05'
+  layer: record
+  class: bookkeeping
+  direction: conservative
+  detected_by: inspection
+  latent_for: >-
+    Five days: from the catalogue refresh of 2026-09-30 (1d4020e9f) that declared them to
+    the owner's report on 2026-10-05.
+  severity: medium
+  status: fixed
+  bead: think-ywso
+  what: >-
+    The 2026-09-30 refresh held n = 69, 83 and 87, September 2026 results by others, under
+    pending_catalogue_intake, correctly, since the register must hold a result by others
+    before the record takes it. No open bead owned registering them, the plan line that
+    named the work named no bead, check_requests --backlog reads only issues and register
+    entries, and check_source_coverage accepted the declaration however long it stood.
+    The runbook began an import from a GitHub issue or a link, so nothing came back to it.
+  consequence: >-
+    The frontier reported older, larger sides as the best known upper bounds at three
+    counts for five days, and would have gone on doing so; the first sweep found the same
+    gap elsewhere: 15 unread comments on #281 and #282, watched repositories past their
+    pins, an import held until jlevy/squares#305 merged and never resumed (think-e6ss),
+    and two wand125 evidence updates a packet named and did not retain.
+  fix: >-
+    pending_catalogue_intake requires bead and recorded in its schema and in
+    check_source_coverage, and a deferred-conflict claim requires a bead;
+    check_bead_tree fails any deferral whose bead is closed or missing, an open issue's
+    answer_bead included. devtools.intake_sweep, run by make intake, reads GitHub, the
+    watched repositories, the newest catalogue capture from
+    devtools.capture_kingbird_catalogue, the other catalogues and the record's queues,
+    and exits 1 while an item has no open bead or waits on a blocker that has resolved;
+    queued results and asks name their own bead and their blocked_on, and a pin is an
+    acquisition record's commit, never a commit named in prose. result-import.md gains
+    Running an Intake Pass, Intake Sources and Stage 0.
+  regression: >-
+    tests/test_source_coverage.py::test_a_pending_intake_names_the_bead_that_owns_it_and_the_day_it_was_deferred
+    and ::test_the_schema_requires_an_owner_on_every_deferral refuse an unowned entry;
+    tests/test_bead_tree.py::test_a_deferral_whose_bead_is_closed_or_missing_fails_and_a_live_one_passes
+    holds the gate's liveness check; tests/test_intake_sweep.py holds each source's
+    reading, a bead whose stated blocker merged, a queued result with no bead of its own,
+    and, on a real repository, a commit a pin contains that no packet retains.
+  recorded_in: docs/project/postmortems/postmortem-2026-10-05-orphaned-catalogue-intake.md

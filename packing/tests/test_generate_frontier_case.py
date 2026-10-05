@@ -16,14 +16,16 @@ correctness someone already argued:
   reported as the integer, with the three-resource block.
 - `n = 50` -- open, catalogue-sourced, with a certified ceiling that trails the report
   and the `mathematics` blocker that gap requires.
-- `n = 68` and `n = 69` -- open, and sourced from the UnitSquare release rather than the
-  catalogue: a forty-five figure reported side, a `source-evidence` blocker instead of a
-  `mathematics` one, a fourth resource, and a null `conjectured_optimum`. They are the
-  only two records of that shape at `n <= 100`, and `n = 103, 105, 110` and `131` will be
-  generated from the same branch. Since the #227 intake Couzo's certified packing holds
-  `n = 68`'s upper lane, which `devtools.apply_upper_bound_packets` writes over the
-  release draft, so `n = 68` is regenerated as that draft with the intake applied, and
-  `n = 69` is the one record whose upper lane the release branch alone produces.
+- `n = 68` and `n = 69` -- open, and once both sourced from the UnitSquare release rather
+  than the catalogue: a forty-five figure reported side, a `source-evidence` blocker
+  instead of a `mathematics` one, a fourth resource, and a null `conjectured_optimum`.
+  `n = 103, 105, 110` and `131` are generated from the same branch. Since the #227 intake
+  Couzo's certified packing holds `n = 68`'s upper lane, which
+  `devtools.apply_upper_bound_packets` writes over the release draft, so `n = 68` is
+  regenerated as that draft with the intake applied. Since 2026-10-05 `n = 69` reports the
+  catalogue's side for David Ellsworth's optimization of the release's packing (T-088), so
+  it is regenerated from the catalogue branch, with an `n <= 100` record's degree lock and
+  polynomial, and its lower-bound promotion carried as everywhere else.
 
 **Nothing is skipped quietly.** Every key of the front matter is compared. The three
 kinds of mismatch a reader would want to know about are named separately:
@@ -151,8 +153,9 @@ BODY_NOT_REPRODUCED = {
         "packing section, which the #227 intake writes over the release draft, reproduces"
     ),
     69: (
-        "a sentence about the parent's degree-82 polynomial being dropped, written for "
-        "this one case, and a shorter paraphrase of the release's verification claims"
+        "the 2026-10-05 catalogue intake (T-088), which names the release it overtook and "
+        "keeps the release's paragraph as the previous best known packing, and wand125's "
+        "lower-bound intake paragraphs"
     ),
     50: (
         "the 2026-09-28 intake of wand125's reported 37/5, whose replay was still running, "
@@ -736,7 +739,16 @@ def test_the_unitsquare_prose_names_the_parent_the_release_improved_on() -> None
         "Schadt",
         "Ellsworth",
     )
-    assert credited_surnames(_parsed_facts(69).credit_line) == ("Morandi", "Cantrell")
+    # n = 69 reports the catalogue since its 2026-10-05 intake (T-088); the release's
+    # paragraph stays as its previous best known packing, still naming the parent the
+    # capture of 2026-08-22 credits.
+    catalogue = pytest.importorskip("sqpack.kingbird_catalogue")
+    earlier = catalogue.parse_catalogue(drafting_capture(69, _availability(69, UNITSQUARE)))
+    assert credited_surnames(facts_from_catalogue_entry(earlier[69], n=69).credit_line) == (
+        "Morandi",
+        "Cantrell",
+    )
+    assert "Morandi-Cantrell parent" in re.sub(r"\s+", " ", _committed(69)[1])
     sentence = (
         "The UnitSquare Project’s 29 July 2026 release improves the public "  # noqa: RUF001
         "Brendberg-Schadt-Ellsworth parent by $0.0000768618004216131$."
@@ -808,10 +820,12 @@ def test_a_method_named_inside_a_parenthesis_belongs_to_the_ancestor() -> None:
 def test_the_improvement_rule_reproduces_the_hand_transcription() -> None:
     """Measured over every catalogue-sourced pictured record below the register.
 
-    The rule reads a sentence-initial, dated "Improved by <names> in <month> <year>" and
-    nothing else. It reproduces 45 of the 46 records; the miss is `n = 29`, where the
-    hand pass read an "Optimized by" sentence as an improvement and five sibling records
-    read the same sentence as nothing.
+    The rule reads a sentence-initial, dated "Improved by <names> in <month> <year>", or
+    "Improved and optimized by", and nothing else. It reproduces 44 of the 47 records. One
+    miss is `n = 29`, where the hand pass read an "Optimized by" sentence as an
+    improvement and five sibling records read the same sentence as nothing; the other two
+    are `n = 69` and `83`, whose records were transcribed on 2026-10-05 from drafts, which
+    also credit the optimizer the line names nowhere else (T-088, T-089).
     """
     catalogue = _record_facts()
     disagreed: dict[int, tuple[list[str], list[str]]] = {}
@@ -828,8 +842,10 @@ def test_the_improvement_rule_reproduces_the_hand_transcription() -> None:
         if list(facts.improved_by) != list(reported["improved_by"]):
             disagreed[n] = (list(reported["improved_by"]), list(facts.improved_by))
     print(f"compared {compared} record(s); the rule disagrees at {sorted(disagreed)}")
-    assert compared == 46
-    assert set(disagreed) == {29}
+    assert compared == 47
+    assert set(disagreed) == {29, 69, 83}
+    for n in (69, 83):
+        assert disagreed[n][0] == [*disagreed[n][1], *catalogue[n].uncredited_optimizers], n
 
 
 def test_an_entry_with_two_lineages_credits_the_packing_the_decimal_is_of() -> None:
@@ -945,8 +961,9 @@ def test_the_credit_rules_reproduce_the_hand_transcription_below_the_register() 
     """Measured, not asserted: wherever a rule fires below the register, it fires correctly.
 
     The comparison runs over the pictured entries at `n <= 100` that a person transcribed
-    from the catalogue. Where a rule fires it must agree with what they wrote -- 22 cases,
-    and no disagreement anywhere. Where none fires the case stays `unknown`, and those are
+    from the catalogue, and `n = 69`, transcribed from a draft since its 2026-10-05 intake
+    (T-088). Where a rule fires it must agree with what they wrote -- 23 cases, and no
+    disagreement anywhere. Where none fires the case stays `unknown`, and those are
     reported rather than checked: a rule that fired there would be an invention, and the
     count is what a reviewer inherits.
     """
@@ -967,7 +984,7 @@ def test_the_credit_rules_reproduce_the_hand_transcription_below_the_register() 
     print(f"rules fired at {len(fired)} case(s), silent at {len(silent)}: {sorted(silent)}")
     print(f"what the hand transcription called the silent ones: {sorted(set(silent.values()))}")
     assert disagreed == {}
-    assert len(fired) == 22
+    assert len(fired) == 23
     assert all(catalogue[n].analytically_optimized is True for n in fired)
     # Every case no rule reaches is one a person called `hand-construction`, `trivial-grid`
     # or `unknown` -- never one of the four methods the rules are for, which is what makes

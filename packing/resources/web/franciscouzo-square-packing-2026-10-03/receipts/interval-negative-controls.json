@@ -1,0 +1,10 @@
+{
+  "tool": "python -m devtools.upper_bound_intervals certify",
+  "facts": "resources/web/franciscouzo-square-packing-2026-10-03/facts/n-208.yaml",
+  "expectation": "every control is refused",
+  "controls": [
+    {"control": "side-shrunk-1e-15", "n": 208, "digits": 40, "claimed_side": "the extent's lower end - 1e-15", "claimed_side_fits": "refuted", "overlapping_pairs": 0, "first_overlaps": [], "verdict": "REFUSED"},
+    {"control": "square-2-shifted-1e-6", "n": 208, "digits": 40, "claimed_side": null, "claimed_side_fits": null, "overlapping_pairs": 1, "first_overlaps": [[2, 51]], "verdict": "REFUSED"},
+    {"control": "angles-read-as-degrees", "n": 208, "digits": 40, "claimed_side": null, "claimed_side_fits": null, "overlapping_pairs": 82, "first_overlaps": [[2, 145], [4, 181], [14, 22], [14, 143]], "verdict": "REFUSED"}
+  ]
+}

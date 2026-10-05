@@ -17,8 +17,9 @@ from devtools import upper_bound_intervals as intervals
 from devtools import upper_bound_packets as packets
 
 SCALE = 10**40
-#: Where the certified ceiling sits more than one unit above the printed side.
-TRAILING = {206, 259, 305}
+#: Where the certified ceiling sits more than one unit above the printed side: n = 306 is
+#: Couzo's packing of 3 October (T-092), the others his of 26 and 27 September (T-056).
+TRAILING = {206, 259, 305, 306}
 
 
 def _contains(enclosure: intervals.Iv, value: Any, scale: int) -> bool:

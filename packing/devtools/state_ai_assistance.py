@@ -188,12 +188,23 @@ def catalogue_owed(text: str, catalogue: Mapping[int, _CreditLined]) -> tuple[st
     entry = catalogue.get(int(packing.get("n", 0)))
     if upper.get("source_key") != CATALOGUE_KEY or entry is None:
         return ()
-    body = " ".join(" ".join(lines).split())
+    body = _comparable(" ".join(lines))
     quotations = (
         quoted_catalogue_sentence(sentence)
         for sentence in ai_statements_from_credit(entry.credit_line)
     )
-    return tuple(quote for quote in quotations if " ".join(quote.split()) not in body)
+    return tuple(quote for quote in quotations if _comparable(quote) not in body)
+
+
+#: Double quotation marks in either typography. The Markdown formatter curls a straight
+#: quote it finds nested inside a quotation -- the catalogue's `with help from
+#: "TheMagicAnimals"` at `n = 87` -- so a quotation is the same quotation whichever it has.
+_DOUBLE_QUOTES = str.maketrans({"“": '"', "”": '"'})
+
+
+def _comparable(text: str) -> str:
+    """Text as a quotation is matched: whitespace collapsed, double quotes straightened."""
+    return " ".join(text.split()).translate(_DOUBLE_QUOTES)
 
 
 def record_catalogue_entries() -> Mapping[int, _CreditLined]:

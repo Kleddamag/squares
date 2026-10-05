@@ -6,20 +6,22 @@ across the imported `n <= 100` corpus, and what the non-expressible residue has 
 The broad component census already answers "what components are there"; this asks the
 question the partition-instrument design needs, which is **whose geometry they came from**.
 
-That distinction turns out to carry the finding. The corpus has four source strata and
-they are not four samples of one population:
+That distinction turns out to carry the finding. The corpus had four source strata, and
+has three since 2026-10-05, and they are not samples of one population:
 
 - `exact-grid` (64 records) is a row-major subset of an integer grid. Its components are
   not rectangles, and that is the point: a grid *subset* is a rectangle only when `n`
   happens to factor conveniently, so most of them are the very `other-polyomino` shape the
   grammar cannot express. The largest part of the residue is trivial geometry, not exotic.
-- `kingbird-derived-facts` (34 records) is the real packings, and it is where every tilted
+- `kingbird-derived-facts` (35 records) is the real packings, and it is where every tilted
   component lives.
-- `unitsquare-rendering` (1 record) is `n = 69`, whose witness geometry the escape
-  screen also excludes. Every one of its 69 squares is a singleton, and a large share of
-  those singletons is tilted -- so this stratum is not "unstructured because it is a
-  grid", it is unstructured because nothing in it lines up with anything else. `n = 68`
-  was the second record here until 2026-09-29.
+- `unitsquare-rendering` (no record since 2026-10-05) was `n = 69`, whose witness geometry
+  the escape screen also excluded. Every one of its 69 squares was a singleton, and a large
+  share of those singletons tilted -- not "unstructured because it is a grid" but
+  unstructured because nothing in it lined up with anything else, which the six-decimal
+  rendering's own imprecision explains. `n = 68` left it on 2026-09-29, and `n = 69` on
+  2026-10-05 for the catalogue's packing (T-088), whose two corner blocks join the
+  catalogue's others.
 - `packet-derived-facts` (1 record) is `n = 68`, Francisco Couzo's packing from his
   source packet since 2026-09-29. It has chains and bars like the catalogue's packings,
   and one axis-aligned five-square block against a single wall, the only residue

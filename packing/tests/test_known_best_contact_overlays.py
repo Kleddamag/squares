@@ -43,12 +43,13 @@ def test_gallery_selection_is_deterministic_and_source_stratified() -> None:
     entries = document["gallery"]["entries"]
 
     assert (document, renderings) == (replay_document, replay_renderings)
-    # The first UnitSquare rendering is n = 69 since n = 68 moved onto Francisco
-    # Couzo's packet facts on 2026-09-29.
-    assert [entry["n"] for entry in entries] == [11, 28, 40, 69, 89]
+    # The fourth place went to the first UnitSquare rendering until n = 69, the last of
+    # them, moved to the catalogue on 2026-10-05 (T-088); it is now the first source-packet
+    # case, n = 68, Francisco Couzo's packing since 2026-09-29.
+    assert [entry["n"] for entry in entries] == [11, 28, 40, 68, 89]
     assert {entry["source_kind"] for entry in entries} == {
         "kingbird-derived-facts",
-        "unitsquare-rendering",
+        "packet-derived-facts",
     }
     assert len(renderings) == 5
     for entry in entries:

@@ -895,9 +895,10 @@ it.
     the optimality paper’s citations are the one exception (**Papers page**, below).
   - When the card leads to another project off the site, it is a direct card.
     It shows the address under the note beside the host’s mark (GitHub’s for a GitHub
-    URL, otherwise the site’s favicon, saved under `devtools/overview/favicons/` by host
-    and inlined, since a page fetches nothing but its shared assets), and opens it in a
-    new tab. An other project’s card ends with its tally of results (**Card foot** and
+    URL, otherwise the site’s favicon where one is saved under
+    `devtools/overview/favicons/` by host and inlined, since a page fetches nothing but
+    its shared assets, and a globe, `WEB_MARK`, where none is), and opens it in a new
+    tab. An other project’s card ends with its tally of results (**Card foot** and
     **Other projects**, below).
   - When the card leads to a poster’s PDF or to the Visualize page, it is a direct card
     headed by the picture it opens (below).
@@ -943,8 +944,8 @@ it.
   `data-card-size`; a card that names none is medium.
   Each size is as wide as a column of the grid of its own minimum column the frame fits,
   with 1rem gaps, so cards of one size line up as a grid at every width:
-  - `small`, 12rem columns, for a headline and one line, under 80 characters: five to a
-    line at 1280 pixels (208px each), four at 1024 (236px) and three at 768 (235px).
+  - `small`, 12rem columns, for a headline and one line, under 80 characters: four to a
+    line at 1280 pixels (264px each), four at 1024 (236px) and three at 768 (235px).
   - `medium`, 16rem columns, for a headline and a sentence, 80 to 159 characters: four
     to a line at 1280 pixels (264px), three at 1024 (320px) and two at 768 (360px).
   - `large`, 21rem columns, for a paragraph or a list, 160 characters or more: three to
@@ -953,7 +954,9 @@ it.
   On a phone every card takes the whole line.
   The count to a line is `--site-cards-small`, `-medium` or `-large`, each stepped by
   its own container queries: n columns of minimum m and n − 1 gaps need (m + 1)n − 1
-  rem, so medium steps at 33, 50, 67 and 84rem, as the grid did.
+  rem, so medium steps at 33, 50 and 67rem and small at 25, 38 and 51rem. No size sets
+  more than four cards to a line (the owner, 2026-10-05), so medium stops at four, small
+  at four and large at four.
   A section declares one size for all its cards, in `SECTION_CARD_SIZES`
   (`overview_sections.py`), so its lines are one grid; the size is the one its typical
   card’s text asks for, the median card’s, which for an even count is the mean of the
@@ -993,20 +996,27 @@ it.
   The cards’ widths, rows and centring are the same with a foot as without
   (`measure_site_pages cards`, at 1280, 1024, 768 and 390).
 
-- **Other projects.** The overview’s Other Square Packing Projects section orders its
-  cards by the significance of the results the register cites from each project (the
-  owner, 2026-10-01): by how many of its results stand at S5, then at S4, and so on down
-  the scale, more first at each level and compared in that order, so one result at S5
-  stands before any number below it.
+- **Other projects.** The overview’s Other Square Packing Projects section leads with
+  three websites, the catalogues of the record packings, in the order `CATALOGUE_SITES`
+  writes them: David Ellsworth’s Squares in Squares (the record’s `[Kingbird]`), Erich
+  Friedman’s original page at the archived address the catalogue links, and Evan
+  Daniel’s Square Packing Atlas (the owner, 2026-10-05). Every other card, a repository
+  on GitHub (`OTHER_PROJECTS`) or a place off it the record cites results from
+  (`OTHER_SITES`: posts, a release, a Zenodo record), follows them, ordered by the
+  significance of the results the register cites from each project (the owner,
+  2026-10-01): by how many of its results stand at S5, then at S4, and so on down the
+  scale, more first at each level and compared in that order, so one result at S5 stands
+  before any number below it.
   Projects level on every count stand by their newest result, the most recent first, and
   then by repository name; a project with no registered result comes last, by name.
   The order is computed from `results.yaml` when the page is rendered
   (`overview_sections.ranked_projects`, over `project_tallies` and `project_order`) and
   is kept nowhere by hand; the section’s introduction says the rule in a sentence.
   A result is a project’s where its `attribution.source_keys` names a bibliography key
-  the source-coverage register gives a source at the project’s repository
-  (`project_source_keys`; `PROJECT_EXTRA_KEYS` adds the one key two repositories share),
-  and a result attributed to sources of several listed projects counts for each.
+  the source-coverage register gives a source at the project’s address
+  (`project_source_keys`; `PROJECT_EXTRA_KEYS` adds a key two places share, and
+  `SOURCE_VENUES` every key the bibliography files under the catalogue’s venue), and a
+  result attributed to sources of several listed projects counts for each.
   This project’s own results, and results by others from a source no listed project
   holds, count for none.
   Each card with a result ends with its tally (**Card foot**, above), in the form “6

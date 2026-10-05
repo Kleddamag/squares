@@ -1,15 +1,19 @@
 // The front of a paper as laid out: the formats row's chips, then each line of the
-// credits, so the two papers can be held to one front in the browser, where the cascade
-// decides what a reader sees. One row an item, in reading order.
+// credits, the series strip's among them, so every paper can be held to one front in the
+// browser, where the cascade decides what a reader sees. One row an item, in reading
+// order.
 //
 // A chip's row carries its words, where it goes, its font size, its weight and its box's
-// height. A credit line's row carries its words; the weight the line is set at; `bold`,
+// height. A credit line's row carries its words; `kind`, the line's class, which names
+// what it is where the line carries one (`credits-source`, `credits-own`, `edition`,
+// `publication-date`, `series`); the weight the line is set at; `bold`,
 // the weights of the names set in `strong` in it, space-separated; `links`, the weight
 // of each link's words in it (the name's where the link carries one, with `(name)` after
 // it, so an address can be told from a name); `gap`, the space from the bottom of the
 // line above to the top of
 // this one, in the credits' line heights, which is the grid's own gap between most lines
-// and a line's space more before a paper's own credits and before the dates; `lines`,
+// and a line's space more before a paper's own credits, before the dates and before the
+// series strip; `lines`,
 // how many lines its words take; and `width_share`, its box's width over the reading
 // column's, which is one for a credits grid of one column the width of the page.
 () => {
@@ -27,6 +31,7 @@
     const box = chip.getBoundingClientRect();
     rows.push({
       part: "chip",
+      kind: "chip",
       index,
       text: (chip.textContent ?? "").trim(),
       href: chip.getAttribute("href") ?? "",
@@ -54,6 +59,7 @@
     const box = line.getBoundingClientRect();
     rows.push({
       part: "credit",
+      kind: line.getAttribute("class") ?? "",
       index,
       text: (line.textContent ?? "").trim(),
       href: "",

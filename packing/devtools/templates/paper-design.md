@@ -1363,10 +1363,10 @@ it.
   So nothing changes at 1280 pixels or narrower, and on a large screen a table’s text
   columns wrap less. The frontier table, whose own track is 86rem, is the page’s content
   area less its gutters up to 1456 pixels and goes from 1376 to 1600 above that.
-  The tables of results are the one exception: they bleed from 74rem, 1184 pixels,
-  which they needed while they held nine columns (eight from 2026-10-02, `think-ybt5`,
-  `think-e4o3`, nine with the significance’s from 2026-10-03, `think-m3m4`), whose floors
-  came to 1198 pixels, more than the 1104 of the wide track.
+  The tables of results are the one exception: they bleed from 74rem, 1184 pixels, which
+  they needed while they held nine columns (eight from 2026-10-02, `think-ybt5`,
+  `think-e4o3`, nine with the significance’s from 2026-10-03, `think-m3m4`), whose
+  floors came to 1198 pixels, more than the 1104 of the wide track.
   Since the Details column moved into the row’s popover on 2026-10-04 (`think-46fw`)
   they hold eight, whose floors come to 1095.5 pixels with every row showing.
   They fit from about 1176, are 1200 pixels wide at 1280, as the frontier table is
@@ -1656,25 +1656,25 @@ it.
   column beside it. The overview as it opens shows T-056’s list since it starts at S3
   (`think-x60s`). With every row showing, the date, significance, result, n, credit,
   rungs, status and id columns measure 100, 77, 389, 225, 220, 180, 114 and 56 pixels at
-  a 1440-pixel window, where the table is 1360 and gives the n column its whole
-  measure: T-056’s list takes 6 lines, a row 165 pixels tall, under the 182 of T-044’s
-  row. At 1280 the result and credit columns are at their floors, 265 and 184, and the
-  n column still has its whole measure, 225, so the list takes 6 lines there too; at
-  1024 and 768 every column is at its floor, the n column at 120 and its list on 12
-  lines, and the table runs 151.5 and 407.5 pixels past its 944- and 688-pixel frames.
+  a 1440-pixel window, where the table is 1360 and gives the n column its whole measure:
+  T-056’s list takes 6 lines, a row 165 pixels tall, under the 182 of T-044’s row.
+  At 1280 the result and credit columns are at their floors, 265 and 184, and the n
+  column still has its whole measure, 225, so the list takes 6 lines there too; at 1024
+  and 768 every column is at its floor, the n column at 120 and its list on 12 lines,
+  and the table runs 151.5 and 407.5 pixels past its 944- and 688-pixel frames.
   The floors come to 1095.5 pixels, so a table fits its frame down to a window of about
-  1176 pixels and scrolls sideways in its wrap below that (measured 2026-10-04).
-  A result’s records, its case files, register entry, evidence, sources and reviews,
-  are the last entry of its row’s popover, one line with a dot between two links; the
-  overview the popover fetches links each of them again. They were a Details column,
-  a link to a line, from 2026-10-02 to 2026-10-04 (`think-46fw`): a column of links
-  made every row harder to read for what most readers open a row to see.
-  `devtools.measure_site_pages columns` and `chips` measure all of this on a built site:
-  each column’s width, the most lines a cell takes, the words a line break splits and
-  the tallest row a column sets; the values of a list of cases cut across lines, the
-  widest piece of typeset math, the formulas a line ends inside anywhere but after a
-  relation or a binary operator, and the punctuation that begins a line; and every
-  chip’s font size, box and lines.
+  1176 pixels and scrolls sideways in its wrap below that (measured 2026-10-04). A
+  result’s records, its case files, register entry, evidence, sources and reviews, are
+  the last entry of its row’s popover, one line with a dot between two links; the
+  overview the popover fetches links each of them again.
+  They were a Details column, a link to a line, from 2026-10-02 to 2026-10-04
+  (`think-46fw`): a column of links made every row harder to read for what most readers
+  open a row to see. `devtools.measure_site_pages columns` and `chips` measure all of
+  this on a built site: each column’s width, the most lines a cell takes, the words a
+  line break splits and the tallest row a column sets; the values of a list of cases cut
+  across lines, the widest piece of typeset math, the formulas a line ends inside
+  anywhere but after a relation or a binary operator, and the punctuation that begins a
+  line; and every chip’s font size, box and lines.
   `tests/test_site_result_columns.py` holds both tables to it in a browser.
   Secondary content in a cell, such as a credit or an “after …” list, takes
   `.site-cell-quiet`, which sets it in the support colour and the sans face.

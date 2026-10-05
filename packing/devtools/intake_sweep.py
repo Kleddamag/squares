@@ -7,33 +7,45 @@ arrived any other way waited on someone remembering it. On 2026-09-30 a Kingbird
 found three September improvements and held them as `pending_catalogue_intake`, a plan
 listed registering them, and no open bead owned the work. `check_requests --backlog`
 reads issues and the register, `check_source_coverage` accepted the deferral with no end
-date, and the record trailed the catalogue for five days until the owner noticed. This
-command reads every source the process takes results from and every queue the record
-keeps, and says for each item which open bead owns it, or that none does.
+date, and the record trailed the catalogue for five days until the owner noticed. The
+same week an import held "until jlevy/squares#305 merges" stayed queued after #305
+merged, and two evidence updates a packet README named as imports of their own were
+never imported. This command reads every source the process takes results from and
+every queue the record keeps, and says for each item which open bead owns it, or that
+none does, or that what it waits on has already happened.
 
 The sources, one section of the report each:
 
 - **GitHub issues**: `check_requests --github`'s comparison through `gh`: issues the
   record lacks, replies missing from it, and comments after an entry's `read_through`.
 - **Watched repositories**: every repository the source register, a packet's acquisition
-  record or README, or the site's list of other projects names. `git ls-remote` reads each
-  head. A head that no packet pins and that `campaign/intake-watch.yaml` has not read is
-  new to the record, and a commit-only fetch counts and dates the commits past the pins.
+  record, or the site's list of other projects names. `git ls-remote` reads each head,
+  and a fetch of commits and trees (no blobs) reads two things. Commits past every
+  packet's pin and every read in `campaign/intake-watch.yaml` are new to the record.
+  Commits a packet's pin already contains but whose changed paths no packet at or after
+  them retains are evidence nobody took in, such as wand125's `c56b9b7` and `1ebd484`.
+  A pin is structured, an acquisition record's commit or a revision in a register
+  source's address; a commit named only in prose pins nothing.
 - **The Kingbird catalogue**: the newest capture `devtools.capture_kingbird_catalogue`
   wrote, when it is newer than the record's, compared count by count through
   `devtools.diff_kingbird_catalogue`. A count it moves below its record is an intake.
 - **Other catalogues**: the register's other catalogue and release sources, which no
   command reads, with the day each was last reviewed.
 - **Record-side queues**: counts pending catalogue intake, deferred conflicts, the
-  triage, results, asks and replies open issues are owed, and the validation backlog.
+  results and asks queued on open issues (each needs its own bead; the answer bead owns
+  the reply, not the import), triage and replies owed, and the validation backlog.
+- **Blocked imports**: a queued result or ask's `blocked_on`, and what an open
+  `result-import` bead says it waits on, in a sentence with a waiting word, or through a
+  `blocks` dependency. A pull request or issue that has merged or closed, or a bead that
+  has closed, is a blocker that has resolved, and nothing resumes the wait on its own.
 - **Manual reports**: they have no machine source. The runbook makes each a bead
   labelled `result-import` first, so the open ones are listed as the bead queue.
 
-An item **needs an owner** when the record is behind a source and no open bead owns the
-difference, or when the bead a deferral names is no longer open. The command then exits 1.
-Items an open bead owns, the backlog and the bead queue are listed and do not fail it. A
-source this run could not read is listed under **Not checked**, so a quiet report is not
-mistaken for a clean one.
+An item **needs action** when the record is behind a source and no open bead owns the
+difference, when the bead a deferral names is no longer open, or when a wait's blocker
+has resolved. The command then exits 1. Items an open bead owns, the backlog and the bead
+queue are listed and do not fail it. A source this run could not read is listed under
+**Not Checked**, so a quiet report is not mistaken for a clean one.
 
 Usage, from `packing/`, or `make intake` at the root, which captures the catalogue first::
 
@@ -41,7 +53,7 @@ Usage, from `packing/`, or `make intake` at the root, which captures the catalog
     uv run --frozen --all-extras --group dev python -m devtools.intake_sweep --offline
     uv run --frozen --all-extras --group dev python -m devtools.intake_sweep --json
 
-`--offline` skips GitHub and the remote heads, the two network steps; everything else
+`--offline` skips GitHub and the remote repositories, the network steps; everything else
 reads the tree, the bead store and the capture directory. The command writes nothing
 outside a temporary directory, and no validation tier runs it: refreshing a public source
 is a dated research survey, not a network operation inside ordinary validation
@@ -60,7 +72,7 @@ import sys
 import tempfile
 from collections.abc import Callable, Iterable, Mapping, Sequence
 from concurrent.futures import ThreadPoolExecutor
-from dataclasses import asdict, dataclass, field
+from dataclasses import asdict, dataclass, field, replace
 from datetime import UTC, date, datetime
 from decimal import Decimal
 from pathlib import Path
@@ -80,17 +92,29 @@ WATCH = ROOT / "campaign" / "intake-watch.yaml"
 PACKETS = ROOT / "resources" / "web"
 
 NEEDS_OWNER = "needs an owner"
+RESOLVED = "blocker resolved"
 OWNED = "owned"
 LISTED = "listed"
+#: The states that make the sweep exit 1: work nobody owns, or a wait that is over.
+ACTION = frozenset({NEEDS_OWNER, RESOLVED})
 
 #: The register's roles for a source that publishes many results and is read as a whole.
 CATALOGUE_ROLES = frozenset({"current-catalogue", "first-party-release"})
 KINGBIRD = "kingbird-current"
 IMPORT_LABEL = "result-import"
-SHA = re.compile(r"\b[0-9a-f]{40}\b")
 _GITHUB = re.compile(r"https://github\.com/([\w.-]+)/([\w.-]+)")
 _GIST = re.compile(r"https://gist\.github\.com/(?:[\w.-]+/)?([0-9a-f]+)(?:\.git)?")
+_TREE = re.compile(r"/tree/([0-9a-f]{40})\b")
 _CAPTURE_DIR = re.compile(rf"{re.escape(CAPTURE_PREFIX)}(\d{{4}}-\d{{2}}-\d{{2}})")
+#: A sentence that says something waits: the blockers it names are read as blockers.
+_WAITING = re.compile(
+    r"\b(?:waits?|waiting|until|blocked|held|holds?|pending)\b"
+    r"|\bafter\b(?=[^.;]*\b(?:merges|lands|closes)\b)",
+    re.IGNORECASE,
+)
+_ISSUE_REF = re.compile(r"(?<![\w/#])(?:(?P<repo>[\w.-]+/[\w.-]+))?#(?P<number>\d+)\b")
+_BEAD_REF = re.compile(r"\bthink-[a-z0-9]{4}\b")
+_SENTENCE = re.compile(r"(?<=[.;!?])\s+|\n+")
 NETWORK_TIMEOUT_SECONDS = 60
 #: Read without a terminal, so a repository that has gone private fails instead of asking.
 GIT_ENV = {**os.environ, "GIT_TERMINAL_PROMPT": "0"}
@@ -121,11 +145,22 @@ class Section:
 
 
 @dataclass(frozen=True)
+class QueuedBead:
+    """An open `result-import` bead: its alias, status, title and what it says."""
+
+    alias: str
+    status: str
+    title: str
+    text: str
+    blocked_by: tuple[str, ...] = ()
+
+
+@dataclass(frozen=True)
 class Beads:
     """Bead states by `think-` alias, and the open beads labelled `result-import`."""
 
     states: dict[str, str]
-    queue: tuple[tuple[str, str, str], ...]
+    queue: tuple[QueuedBead, ...]
 
     @classmethod
     def load(cls) -> Beads | None:
@@ -133,18 +168,36 @@ class Beads:
         if found is None:
             return None
         beads, _, aliases = found
-        by_tail = {str(b["id"]).rpartition("-")[2]: b for b in beads}
-        states: dict[str, str] = {}
-        queue: list[tuple[str, str, str]] = []
-        for short, tail in aliases.items():
-            bead = by_tail.get(tail)
-            if bead is None:
-                continue
-            alias, status = f"think-{short}", str(bead.get("status"))
-            states[alias] = status
-            if status in check_bead_tree.LIVE and IMPORT_LABEL in (bead.get("labels") or ()):
-                queue.append((alias, status, str(bead.get("title", ""))))
-        return cls(states, tuple(sorted(queue)))
+        alias_of = {tail: f"think-{short}" for short, tail in aliases.items()}
+        alias_by_id = {
+            str(b["id"]): alias_of.get(str(b["id"]).rpartition("-")[2], str(b["id"]))
+            for b in beads
+        }
+        blocked_by: dict[str, list[str]] = {}
+        for bead in beads:
+            for dependency in bead.get("dependencies") or ():
+                if dependency.get("type") == "blocks" and dependency.get("target"):
+                    target = alias_by_id.get(str(dependency["target"]), "")
+                    blocked_by.setdefault(target, []).append(alias_by_id[str(bead["id"])])
+        states = {alias_by_id[str(b["id"])]: str(b.get("status")) for b in beads}
+        queue = tuple(
+            sorted(
+                (
+                    QueuedBead(
+                        alias=alias_by_id[str(b["id"])],
+                        status=str(b.get("status")),
+                        title=str(b.get("title", "")),
+                        text=f"{b.get('title', '')}\n{b.get(check_bead_tree.BODY, '')}",
+                        blocked_by=tuple(blocked_by.get(alias_by_id[str(b["id"])], ())),
+                    )
+                    for b in beads
+                    if str(b.get("status")) in check_bead_tree.LIVE
+                    and IMPORT_LABEL in (b.get("labels") or ())
+                ),
+                key=lambda queued: queued.alias,
+            )
+        )
+        return cls(states, queue)
 
     def state(self, alias: str) -> str:
         return self.states.get(alias, "no such bead")
@@ -171,6 +224,77 @@ def age(since: str, today: date) -> str:
     except ValueError:
         return since
     return f"{since[:10]} ({days} day{'' if days == 1 else 's'} ago)"
+
+
+# -- Blockers -------------------------------------------------------------------------
+
+
+def stated_blockers(text: str, repository: str, own: str = "") -> list[str]:
+    """The pull requests, issues and beads a text says something waits on.
+
+    Only a sentence with a waiting word counts ("waits for jlevy/squares#305", "held until
+    think-ab12 closes", "after #305 merges"), so an issue the text merely cites is not
+    read as a blocker. A bare `#N` is on `repository`.
+    """
+    found: list[str] = []
+    for sentence in _SENTENCE.split(text):
+        if not _WAITING.search(sentence):
+            continue
+        found.extend(
+            f"{match['repo'] or repository}#{match['number']}"
+            for match in _ISSUE_REF.finditer(sentence)
+        )
+        found.extend(bead for bead in _BEAD_REF.findall(sentence) if bead != own)
+    return list(dict.fromkeys(found))
+
+
+IssueFetch = Callable[[str], Mapped]
+
+
+@dataclass
+class Blockers:
+    """Whether each blocker has resolved, read once each: beads from the store, pull
+    requests and issues through `gh`, unless the run is offline."""
+
+    beads: Beads | None
+    fetch: IssueFetch | None
+    seen: dict[str, str | None] = field(default_factory=dict)
+    unread: set[str] = field(default_factory=set)
+
+    def resolution(self, ref: str) -> str | None:
+        """How `ref` resolved ("merged 2026-10-04"), "" while it holds, None if unknown."""
+        if ref not in self.seen:
+            self.seen[ref] = self._read(ref)
+        return self.seen[ref]
+
+    def _read(self, ref: str) -> str | None:
+        if _BEAD_REF.fullmatch(ref):
+            return self._bead(ref)
+        if self.fetch is None:
+            self.unread.add(ref)
+            return None
+        repository, _, number = ref.partition("#")
+        try:
+            issue = self.fetch(f"repos/{repository}/issues/{number}")
+        except subprocess.CalledProcessError, OSError, ValueError:
+            self.unread.add(ref)
+            return None
+        merged = str((issue.get("pull_request") or {}).get("merged_at") or "")
+        if merged:
+            return f"merged {merged[:10]}"
+        if issue.get("state") == "closed":
+            return f"closed {str(issue.get('closed_at') or '')[:10]}".strip()
+        return ""
+
+    def _bead(self, alias: str) -> str | None:
+        state = None if self.beads is None else self.beads.state(alias)
+        if state is None or state == "no such bead":
+            return None
+        return "" if state in check_bead_tree.LIVE else state
+
+    def resolved(self, refs: Iterable[str]) -> list[str]:
+        """Each of `refs` that has resolved, with how."""
+        return [f"{ref}, {how}" for ref in refs if (how := self.resolution(ref))]
 
 
 # -- GitHub issues --------------------------------------------------------------------
@@ -222,13 +346,34 @@ def repository(url: str) -> str | None:
     return None
 
 
+@dataclass(frozen=True)
+class Packet:
+    """A retained copy of a repository: where it is, the commit it pins, and the paths it
+    retains there. An empty path retains the whole tree, which is what a packet without
+    a declared scope is taken to do, so it can only hide a change, never invent one."""
+
+    name: str
+    pin: str
+    scope: tuple[str, ...] = ("",)
+
+    def retains(self, path: str) -> bool:
+        return any(
+            not prefix or path == prefix or path.startswith(prefix.rstrip("/") + "/")
+            for prefix in self.scope
+        )
+
+
 @dataclass
 class Watched:
-    """A repository the record cites, and every commit of it the record retains."""
+    """A repository the record cites, and every packet that pins a commit of it."""
 
     url: str
-    pins: set[str] = field(default_factory=set)
+    packets: list[Packet] = field(default_factory=list)
     cited_by: set[str] = field(default_factory=set)
+
+    @property
+    def pins(self) -> set[str]:
+        return {packet.pin for packet in self.packets}
 
 
 def _acquisition_sources(packets: Path) -> Iterable[tuple[str, Mapped]]:
@@ -238,39 +383,44 @@ def _acquisition_sources(packets: Path) -> Iterable[tuple[str, Mapped]]:
             yield path.parent.parent.name, source
 
 
+def _scope(source: Mapped) -> tuple[str, ...]:
+    if source.get("subtree_scope"):
+        return tuple(str(path) for path in source["subtree_scope"])
+    if source.get("files"):
+        return tuple(str(entry["path"]) for entry in source["files"] if entry.get("path"))
+    return ("",)
+
+
 def watched_repositories(
     coverage: Mapped, packets: Path = PACKETS, projects: Iterable[str] | None = None
 ) -> dict[str, Watched]:
-    """Every repository the record names, keyed in lower case, with the commits it pins.
+    """Every repository the record names, keyed in lower case, with the packets that pin it.
 
-    A pin is a full commit id the record gives for the repository: a packet's acquisition
-    record, a commit in a register source's address or notes, or one in the README of a
-    packet that names the repository. A commit of another repository counted here by a
-    README that names two is harmless, since it never equals this one's head.
+    A pin is structured: the commit a packet's acquisition record names, with the paths
+    it declares, or a revision in a register source's address, taken as the whole tree.
+    A commit a README or a note names in prose pins nothing, since prose that names a
+    commit is as likely to say it was not taken in.
     """
     found: dict[str, Watched] = {}
 
-    def watch(url: str | None, cited_by: str, pins: Iterable[str] = ()) -> None:
+    def watch(url: str | None, cited_by: str) -> Watched | None:
         if url is None:
-            return
+            return None
         entry = found.setdefault(url.lower(), Watched(url))
         entry.cited_by.add(cited_by)
-        entry.pins.update(pins)
+        return entry
 
     for source in coverage["sources"]:
-        text = f"{source['url']} {source.get('notes', '')}"
-        watch(repository(source["url"]), source["id"], SHA.findall(text))
-    for packet, source in _acquisition_sources(packets):
-        commit = source.get("source_commit") or source.get("source_ref") or ""
-        watch(repository(str(source.get("source_url", ""))), packet, SHA.findall(commit))
+        entry = watch(repository(source["url"]), source["id"])
+        if entry is not None and (pin := _TREE.search(source["url"])):
+            entry.packets.append(Packet(source["id"], pin[1]))
+    for name, source in _acquisition_sources(packets):
+        entry = watch(repository(str(source.get("source_url", ""))), name)
+        commit = str(source.get("source_commit") or source.get("source_ref") or "")
+        if entry is not None and re.fullmatch(r"[0-9a-f]{40}", commit):
+            entry.packets.append(Packet(name, commit, _scope(source)))
     for url in projects if projects is not None else (u for u, _, _ in OTHER_PROJECTS):
         watch(repository(url), "the site's other projects")
-    for readme in sorted(packets.glob("*/README.md")):
-        text = readme.read_text(encoding="utf-8", errors="replace")
-        named = {repository(m.group(0)) for m in _GITHUB.finditer(text)}
-        for url in named:
-            if url is not None and url.lower() in found:
-                found[url.lower()].pins.update(SHA.findall(text))
     return found
 
 
@@ -291,29 +441,38 @@ def remote_head(url: str) -> str:
 
 
 @dataclass(frozen=True)
-class NewCommits:
-    """The commits a head holds past every retained pin present in its history."""
+class RepoHistory:
+    """What a repository's history holds that the record has not taken in.
+
+    `count` commits, dated `first` to `last`, are past every pin and read in the head's
+    history (`pins_in_history` of them are in it). `unretained` are commits the pins
+    already contain whose changes no packet at or after them retains and no read covers,
+    each as its short id and subject.
+    """
 
     count: int
     first: str
     last: str
     subjects: tuple[str, ...]
     pins_in_history: int
+    unretained: tuple[str, ...] = ()
 
 
-def new_commits(url: str, head: str, known: Iterable[str]) -> NewCommits:
-    """Count and date the commits past the pins, from a commit-only fetch; network.
+def read_history(
+    url: str, head: str, packets: Sequence[Packet], reads: Iterable[str]
+) -> RepoHistory:
+    """Read a repository's commits and trees, never its blobs, and compare them; network.
 
-    `--filter=tree:0` fetches commits and no trees or blobs, about a second and half a
-    megabyte for a repository of 560 commits, into a directory removed on return. Which
-    pins are in the head's history is read from the fetched commit list, never by asking
-    for an object: in a partial clone a missing object is fetched from the remote, one
-    round trip per pin, which made the first version of this sweep take minutes.
+    `--filter=blob:none` takes about two seconds and under a megabyte for a repository of
+    560 commits, into a directory removed on return. Which pins and reads the head's
+    history holds is read from its commit list, never by asking for an object, since a
+    partial clone fetches a missing object from the remote, one round trip each: the first
+    version of this sweep did that and took minutes.
     """
     with tempfile.TemporaryDirectory(prefix="intake-sweep-") as scratch:
 
-        def git(*arguments: str) -> subprocess.CompletedProcess[str]:
-            return subprocess.run(
+        def git(*arguments: str) -> str:
+            shown = subprocess.run(
                 ("git", "-C", scratch, *arguments),
                 capture_output=True,
                 text=True,
@@ -321,26 +480,63 @@ def new_commits(url: str, head: str, known: Iterable[str]) -> NewCommits:
                 env=GIT_ENV,
                 check=False,
             )
+            if shown.returncode:
+                raise RuntimeError((shown.stderr.strip().splitlines() or ["git failed"])[-1])
+            return shown.stdout
 
         git("init", "--quiet", "--bare")
-        fetched = git("fetch", "--quiet", "--no-tags", "--filter=tree:0", url, head)
-        if fetched.returncode:
-            raise RuntimeError((fetched.stderr.strip().splitlines() or ["fetch failed"])[-1])
-        history = set(git("rev-list", head).stdout.split())
-        present = sorted(pin for pin in set(known) if pin in history)
-        listed = git("log", "--format=%cI%x09%s", head, "--not", *present, "--")
-        lines = [line.split("\t", 1) for line in listed.stdout.splitlines() if "\t" in line]
-        return NewCommits(
+        git("fetch", "--quiet", "--no-tags", "--filter=blob:none", url, head)
+        history = set(git("rev-list", head).split())
+        pinned = [packet for packet in packets if packet.pin in history]
+        read = sorted({commit for commit in reads if commit in history})
+        stops = sorted({packet.pin for packet in pinned} | set(read))
+        listed = git("log", "--format=%cI%x09%s", head, "--not", *stops, "--")
+        lines = [line.split("\t", 1) for line in listed.splitlines() if "\t" in line]
+        return RepoHistory(
             count=len(lines),
             first=lines[-1][0][:10] if lines else "",
             last=lines[0][0][:10] if lines else "",
             subjects=tuple(subject for _, subject in lines[:3]),
-            pins_in_history=len(present),
+            pins_in_history=len({packet.pin for packet in pinned}),
+            unretained=_unretained(git, pinned, read),
         )
 
 
+def _unretained(
+    git: Callable[..., str], pinned: Sequence[Packet], read: Sequence[str]
+) -> tuple[str, ...]:
+    """Commits between the oldest and newest pins whose changed paths nothing retains.
+
+    A change is retained when a packet whose pin contains the commit declares its path; a
+    read in `intake-watch.yaml` that contains the commit covers it either way. Commits
+    before the oldest pin are the history the first packet took as given.
+    """
+    pins = sorted({packet.pin for packet in pinned})
+    if not pins:
+        return ()
+    reach = {pin: set(git("rev-list", pin).split()) for pin in pins}
+    covered = set().union(*(set(git("rev-list", commit).split()) for commit in read))
+    oldest = min(pins, key=lambda pin: len(reach[pin]))
+    log = git(
+        "log", "--no-renames", "--name-only", "--format=%x1e%H%x09%s", *pins, "--not", oldest
+    )
+    found: list[str] = []
+    for block in log.split("\x1e")[1:]:
+        header, _, names = block.partition("\n")
+        commit, _, subject = header.partition("\t")
+        if commit in covered:
+            continue
+        paths = [path for path in names.splitlines() if path]
+        if any(
+            not any(commit in reach[p.pin] and p.retains(path) for p in pinned)
+            for path in paths
+        ):
+            found.append(f"{commit[:7]} {subject}")
+    return tuple(found)
+
+
 Heads = Callable[[str], str]
-History = Callable[[str, str, Iterable[str]], NewCommits]
+History = Callable[[str, str, Sequence[Packet], Iterable[str]], RepoHistory]
 
 
 def repositories_section(
@@ -350,13 +546,15 @@ def repositories_section(
     *,
     offline: bool,
     heads: Heads = remote_head,
-    history: History = new_commits,
+    history: History = read_history,
     packets: Path = PACKETS,
     projects: Iterable[str] | None = None,
 ) -> Section:
     repos = watched_repositories(coverage, packets, projects)
     section = Section(f"Watched repositories ({len(repos)})")
-    reads = {str(entry["url"]).lower(): entry for entry in watch.get("repositories") or ()}
+    reads: dict[str, list[Mapped]] = {}
+    for entry in watch.get("repositories") or ():
+        reads.setdefault(str(entry["url"]).lower(), []).append(entry)
     section.unchecked.extend(
         f"intake-watch.yaml reads {url}, which no record cites; remove the entry"
         for url in sorted(set(reads) - set(repos))
@@ -364,49 +562,46 @@ def repositories_section(
     if offline:
         section.unchecked.append(f"{len(repos)} repository heads: skipped by --offline")
         return section
+    keys = sorted(repos)
     with ThreadPoolExecutor(max_workers=8) as pool:
-        results = dict(
-            zip(repos, pool.map(_try(heads), (r.url for r in repos.values())), strict=True)
+        found = dict(
+            zip(keys, pool.map(_try(heads), (repos[k].url for k in keys)), strict=True)
+        )
+        jobs = [
+            (repos[k], head, [str(r["read_through"]) for r in reads.get(k, ())])
+            for k in keys
+            if isinstance(head := found[k], str)
+        ]
+        histories = dict(
+            zip(
+                [entry.url.lower() for entry, _, _ in jobs],
+                pool.map(lambda job: _try_history(history, *job), jobs),
+                strict=True,
+            )
         )
     current = 0
-    behind: list[tuple[Watched, str, set[str], Mapped | None]] = []
-    for key, entry in sorted(repos.items()):
-        head = results[key]
+    for key in keys:
+        entry, head = repos[key], found[key]
         if isinstance(head, Exception):
             section.unchecked.append(f"{entry.url}: `git ls-remote` failed: {head}")
             continue
-        read = reads.get(key)
+        commits = histories[key]
+        if isinstance(commits, Exception):
+            section.unchecked.append(f"{entry.url}: its history could not be read: {commits}")
+        matching = [r for r in reads.get(key, ()) if str(r["read_through"]) == head]
         if head in entry.pins:
             current += 1
-            if read is not None:
-                section.notes.append(
-                    f"{entry.url}: a packet now pins the head, so intake-watch.yaml's read of "
-                    f"{str(read['read_through'])[:12]} can be removed."
-                )
-            continue
-        if read is not None and str(read["read_through"]) == head:
-            if read.get("bead"):
-                section.items.append(
-                    owned(
-                        f"{entry.url} at {head[:12]}: {read['note']}",
-                        str(read["bead"]),
-                        beads,
-                        since=str(read["read_on"]),
-                        step="import it: a packet at the head, then stages 2 and 3",
-                    )
-                )
-            else:
-                section.notes.append(
-                    f"{entry.url}: read through {head[:12]} on {read['read_on']}, "
-                    "nothing to import."
-                )
-            continue
-        known = entry.pins | ({str(read["read_through"])} if read is not None else set())
-        behind.append((entry, head, known, read))
-    with ThreadPoolExecutor(max_workers=8) as pool:
-        section.items.extend(
-            pool.map(lambda job: _new_head(job[0], job[1], job[2], job[3], history), behind)
-        )
+            section.notes.extend(
+                f"{entry.url}: a packet now pins {head[:12]}, so intake-watch.yaml's read of "
+                "it can be removed."
+                for _ in matching
+            )
+        elif matching:
+            section.items.extend(_read_item(entry.url, head, read, beads) for read in matching)
+        else:
+            section.items.append(_new_head(entry, head, commits, reads.get(key, ())))
+        if isinstance(commits, RepoHistory) and commits.unretained:
+            section.items.append(_unretained_item(entry.url, commits.unretained))
     section.notes.insert(0, f"{current} of {len(repos)} heads are a commit a packet pins.")
     return section
 
@@ -421,21 +616,46 @@ def _try(function: Callable[[str], str]) -> Callable[[str], str | Exception]:
     return attempt
 
 
-def _new_head(
-    entry: Watched, head: str, known: set[str], read: Mapped | None, history: History
-) -> Item:
-    past = "the last pass's read" if read is not None else "every retained pin"
+def _try_history(
+    history: History, entry: Watched, head: str, reads: list[str]
+) -> RepoHistory | Exception:
     try:
-        commits = history(entry.url, head, known)
+        return history(entry.url, head, entry.packets, reads)
     except (RuntimeError, OSError, subprocess.SubprocessError) as error:
-        what = (
-            f"{entry.url}: head {head[:12]} is past {past}; the commits could not be read "
-            f"({error})"
+        return error
+
+
+def _read_item(url: str, head: str, read: Mapped, beads: Beads | None) -> Item:
+    if read.get("bead"):
+        return owned(
+            f"{url} at {head[:12]}: {read['note']}",
+            str(read["bead"]),
+            beads,
+            since=str(read["read_on"]),
+            step="import it: a packet at the head, then stages 2 and 3",
         )
-        return Item(what, NEEDS_OWNER, step=_REPOSITORY_NEXT)
-    if not known:
+    return Item(
+        f"{url}: read through {head[:12]} on {read['read_on']}, nothing to import",
+        LISTED,
+        since=str(read["read_on"]),
+    )
+
+
+_REPOSITORY_STEP = (
+    "read it: an import bead and a packet for a new result, else a read in intake-watch.yaml"
+)
+
+
+def _new_head(
+    entry: Watched, head: str, commits: RepoHistory | Exception, reads: Sequence[Mapped]
+) -> Item:
+    past = "the last pass's read" if reads else "every retained pin"
+    if isinstance(commits, Exception):
+        what = f"{entry.url}: head {head[:12]} is past {past}; its commits could not be read"
+        return Item(what, NEEDS_OWNER, step=_REPOSITORY_STEP)
+    if not entry.packets and not reads:
         where = "no packet pins it"
-    elif commits.pins_in_history:
+    elif commits.pins_in_history or reads:
         where = f"{commits.count} commit{'' if commits.count == 1 else 's'} past {past}"
     else:
         where = "no retained pin is in its history"
@@ -449,13 +669,19 @@ def _new_head(
         f"{entry.url}: head {head[:12]}, {where}{span}{newest}",
         NEEDS_OWNER,
         since=commits.first,
-        step=_REPOSITORY_NEXT,
+        step=_REPOSITORY_STEP,
     )
 
 
-_REPOSITORY_NEXT = (
-    "read it: an import bead and a packet for a new result, else a read in intake-watch.yaml"
-)
+def _unretained_item(url: str, unretained: Sequence[str]) -> Item:
+    shown = "; ".join(unretained[:3]) + ("; …" if len(unretained) > 3 else "")
+    count = len(unretained)
+    return Item(
+        f"{url}: {count} commit{'' if count == 1 else 's'} a pin contains changed paths no "
+        f"packet at or after {'it' if count == 1 else 'them'} retains: {shown}",
+        NEEDS_OWNER,
+        step="an evidence update or an import bead for each, else a read in intake-watch.yaml",
+    )
 
 
 # -- The Kingbird catalogue and the other catalogues ----------------------------------
@@ -556,7 +782,9 @@ def queues_section(
     record: Mapped,
     register: check_requests.Register,
     beads: Beads | None,
+    *,
     today: date,
+    blockers: Blockers,
 ) -> Section:
     section = Section("Record-side queues")
     for entry in coverage.get("pending_catalogue_intake") or ():
@@ -579,34 +807,127 @@ def queues_section(
                     beads,
                 )
             )
+    repository = str(record.get("repository", ""))
     for issue in record["issues"]:
         if issue["state"] != "open":
             continue
+        number = issue["number"]
+        for result in issue.get("results") or ():
+            if result.get("queued"):
+                section.items.append(
+                    _queued(
+                        f"#{number} queued result {result['key']}",
+                        result,
+                        str(result.get("not_registered") or ""),
+                        repository,
+                        beads=beads,
+                        blockers=blockers,
+                        since=str(issue["opened"]),
+                    )
+                )
+        for ask in issue.get("asks") or ():
+            if ask["state"] == "queued":
+                section.items.append(
+                    _queued(
+                        f"#{number} queued ask: {ask['what']}",
+                        ask,
+                        str(ask.get("note") or ""),
+                        repository,
+                        beads=beads,
+                        blockers=blockers,
+                        since=str(issue["opened"]),
+                    )
+                )
         state = check_requests.issue_state(issue, register)
         owed = [
             *(["triage"] if issue["triage"] == "pending" else []),
-            *(
-                f"queued result {r.key}"
-                for r in state.results
-                if r.state == check_requests.QUEUED
-            ),
-            *(
-                f"queued ask: {a['what']}"
-                for a in issue.get("asks", ())
-                if a["state"] == "queued"
-            ),
             *(["a reply"] if state.replies_due else []),
         ]
         if owed:
             section.items.append(
                 owned(
-                    f"#{issue['number']} owes {'; '.join(owed)}",
+                    f"#{number} owes {' and '.join(owed)}",
                     str(issue["answer_bead"]),
                     beads,
                     since=str(issue["opened"]),
-                    step="the stage it waits on; draft a reply with check_requests --draft",
+                    step="triage by stage 1; draft the reply with check_requests --draft",
                 )
             )
+    return section
+
+
+def _queued(
+    what: str,
+    entry: Mapped,
+    text: str,
+    repository: str,
+    *,
+    beads: Beads | None,
+    blockers: Blockers,
+    since: str,
+) -> Item:
+    """A queued result or ask: owned by its own bead, and held by what it waits on.
+
+    The issue's answer bead owns the reply, not the import, and `beads` may name several,
+    so an item with no bead of its own is unowned. Its blockers are its `blocked_on`, or
+    what its text says it waits on.
+    """
+    refs = list(entry.get("blocked_on") or ()) or stated_blockers(text, repository)
+    item = owned(
+        what,
+        str(entry.get("bead") or ""),
+        beads,
+        since=since,
+        step="name the bead that imports it, as `bead` on the entry",
+    )
+    if resolved := blockers.resolved(refs):
+        detail = f"{item.what}; it waits on {'; '.join(resolved)}"
+        state = RESOLVED if item.state == OWNED else item.state
+        return replace(
+            item, what=detail, state=state, step="resume it, or say what it waits on"
+        )
+    return item
+
+
+def blocked_section(beads: Beads | None, blockers: Blockers, repository: str) -> Section:
+    """Open import beads whose stated blocker has merged, closed or been closed.
+
+    A blocker the bead's text names counts once it resolves, since the sentence that
+    names it says the bead waits on it. Its `blocks` dependencies count once all of them
+    have closed, because a bead with several children waits on the last.
+    """
+    section = Section("Blocked imports")
+    if beads is None:
+        section.unchecked.append("blocked imports: no bead store")
+        return section
+    waiting = 0
+    for queued in beads.queue:
+        stated = stated_blockers(queued.text, repository, queued.alias)
+        if not stated and not queued.blocked_by:
+            continue
+        waiting += 1
+        resolved = blockers.resolved(stated)
+        dependencies = blockers.resolved(queued.blocked_by)
+        if len(dependencies) == len(queued.blocked_by):
+            resolved += [ref for ref in dependencies if ref not in resolved]
+        if resolved:
+            section.items.append(
+                Item(
+                    f"{queued.alias} ({queued.title}) waits on {'; '.join(resolved)}",
+                    RESOLVED,
+                    bead=queued.alias,
+                    bead_state=queued.status,
+                    step="resume it, or rewrite what the bead says it waits on",
+                )
+            )
+    section.notes.append(
+        f"{waiting} open `{IMPORT_LABEL}` bead{'' if waiting == 1 else 's'} name a blocker; "
+        f"{len(section.items)} of them name one that has resolved."
+    )
+    if blockers.unread:
+        section.unchecked.append(
+            f"blockers not read: {', '.join(sorted(blockers.unread))} (offline, or `gh` failed)"
+        )
     return section
 
 
@@ -637,8 +958,8 @@ def bead_queue_section(beads: Beads | None) -> Section:
         )
         return section
     section.items.extend(
-        Item(title, LISTED, bead=alias, bead_state=status)
-        for alias, status, title in beads.queue
+        Item(queued.title, LISTED, bead=queued.alias, bead_state=queued.status)
+        for queued in beads.queue
     )
     return section
 
@@ -654,12 +975,15 @@ def sweep(
     beads: Beads | None,
     compare_github: Callable[[Mapped], list[str]] = check_requests.compare_github,
     heads: Heads = remote_head,
-    history: History = new_commits,
+    history: History = read_history,
+    fetch: IssueFetch | None = check_requests.gh_fetch,
 ) -> list[Section]:
     coverage = safe_load(COVERAGE.read_text(encoding="utf-8"))
     watch = safe_load(WATCH.read_text(encoding="utf-8"))
     record = check_requests.load_record()
     register = check_requests.load_register()
+    blockers = Blockers(beads, None if offline else fetch)
+    repository = str(record["repository"])
     return [
         github_section(record, offline=offline, compare_github=compare_github),
         repositories_section(
@@ -667,14 +991,15 @@ def sweep(
         ),
         kingbird_section(coverage, beads, today, capture=capture),
         catalogues_section(coverage, today),
-        queues_section(coverage, record, register, beads, today),
+        queues_section(coverage, record, register, beads, today=today, blockers=blockers),
+        blocked_section(beads, blockers, repository),
         backlog_section(record, register, beads),
         bead_queue_section(beads),
     ]
 
 
-def needing_owner(sections: Sequence[Section]) -> list[Item]:
-    return [item for section in sections for item in section.items if item.state == NEEDS_OWNER]
+def needing_action(sections: Sequence[Section]) -> list[Item]:
+    return [item for section in sections for item in section.items if item.state in ACTION]
 
 
 def _count(number: int, noun: str) -> str:
@@ -686,26 +1011,28 @@ def _cell(text: str) -> str:
 
 
 def markdown(sections: Sequence[Section], today: date) -> str:
-    """The report: what needs an owner and what was not checked first, then each source."""
-    orphans = [(s.title, i) for s in sections for i in s.items if i.state == NEEDS_OWNER]
+    """The report: what needs action and what was not checked first, then each source."""
+    action = [(s.title, i) for s in sections for i in s.items if i.state in ACTION]
+    orphans = sum(item.state == NEEDS_OWNER for _, item in action)
     owned_count = sum(item.state == OWNED for s in sections for item in s.items)
     unchecked = [line for section in sections for line in section.unchecked]
     summary = (
-        f"{_count(len(orphans), 'item')} without an open bead to own it, "
-        f"{_count(owned_count, 'item')} owned by one, and "
+        f"{_count(orphans, 'item')} without an open bead to own it, "
+        f"{_count(len(action) - orphans, 'item')} whose blocker has resolved, "
+        f"{_count(owned_count, 'item')} owned by an open bead, and "
         f"{_count(len(unchecked), 'source')} not checked."
     )
     lines = [f"# Intake Sweep, {today.isoformat()}", "", summary, ""]
-    if orphans:
+    if action:
         lines += [
-            "## Needs an Owner",
+            "## Needs Action",
             "",
-            "| source | item | since | next |",
-            "| --- | --- | --- | --- |",
+            "| source | item | state | since | next |",
+            "| --- | --- | --- | --- | --- |",
         ]
         lines += [
-            f"| {title} | {_cell(i.what)} | {i.since} | {_cell(i.step)} |"
-            for title, i in orphans
+            f"| {title} | {_cell(i.what)} | {i.state} | {i.since} | {_cell(i.step)} |"
+            for title, i in action
         ]
         lines.append("")
     if unchecked:
@@ -713,12 +1040,10 @@ def markdown(sections: Sequence[Section], today: date) -> str:
     for section in sections:
         lines += [f"## {section.title}", ""]
         lines += [*section.notes, ""] if section.notes else []
-        shown = [item for item in section.items if item.state != NEEDS_OWNER]
+        shown = [item for item in section.items if item.state not in ACTION]
         if len(shown) < len(section.items):
-            lines += [
-                f"{_count(len(section.items) - len(shown), 'item')} above need an owner.",
-                "",
-            ]
+            hidden = len(section.items) - len(shown)
+            lines += [f"{_count(hidden, 'item')} above need action.", ""]
         if shown:
             lines += ["| item | state | bead | since |", "| --- | --- | --- | --- |"]
             for item in shown:
@@ -746,7 +1071,6 @@ def parser() -> argparse.ArgumentParser:
 def main(argv: Sequence[str] | None = None) -> int:
     args = parser().parse_args(argv)
     today = args.today or datetime.now(UTC).date()
-    capture = None
     if args.capture is not None:
         match = _CAPTURE_DIR.search(args.capture.name)
         capture = (match[1] if match else today.isoformat(), args.capture / f"{STEM}.md")
@@ -756,14 +1080,14 @@ def main(argv: Sequence[str] | None = None) -> int:
     if args.json:
         document = {
             "date": today.isoformat(),
-            "needs_owner": len(needing_owner(sections)),
+            "needs_action": len(needing_action(sections)),
             "sections": [asdict(section) for section in sections],
         }
         json.dump(document, sys.stdout, indent=2, ensure_ascii=False)
         sys.stdout.write("\n")
     else:
         sys.stdout.write(markdown(sections, today))
-    return 1 if needing_owner(sections) else 0
+    return 1 if needing_action(sections) else 0
 
 
 if __name__ == "__main__":

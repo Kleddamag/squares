@@ -1,15 +1,17 @@
 """The intake sweep: every source read, every item owned by an open bead or reported.
 
-The miss it exists for: on 2026-09-30 three Kingbird counts were held as pending intake
-with no bead, nothing listed them, and the record trailed the catalogue for five days.
-These pin each source's reading on fixtures small enough to read, with the two network
-steps replaced, and pin that `--offline` makes no network call at all.
+The misses it exists for, all in the week of 2026-09-30: three Kingbird counts held as
+pending intake with no bead, an import held until a pull request merged and never
+resumed, and two evidence updates a packet named as imports of their own and nobody
+took in. These pin each source's reading on fixtures small enough to read, with the
+network replaced, and pin that `--offline` makes no network call at all.
 """
 
 from __future__ import annotations
 
 import gzip
 import json
+import subprocess
 from datetime import date
 from pathlib import Path
 from typing import Any
@@ -27,8 +29,8 @@ PIN = "b" * 40
 LATER = "c" * 40
 
 
-def _beads(**states: str) -> sweep.Beads:
-    return sweep.Beads(dict(states), ())
+def _beads(*queue: sweep.QueuedBead, **states: str) -> sweep.Beads:
+    return sweep.Beads(dict(states), tuple(queue))
 
 
 def _coverage(**extra: Any) -> dict[str, Any]:
@@ -38,7 +40,7 @@ def _coverage(**extra: Any) -> dict[str, Any]:
                 "id": "repo-source",
                 "role": "source-repository",
                 "url": f"https://github.com/someone/packings/tree/{PIN}",
-                "notes": "Retained at its head.",
+                "notes": f"Retained at its head; {LATER} is an import of its own.",
             },
             {
                 "id": "release",
@@ -66,30 +68,38 @@ def test_a_repository_is_named_without_its_revision_path_or_git_suffix() -> None
     assert sweep.repository("https://doi.org/10.5281/zenodo.1") is None
 
 
-def test_pins_come_from_the_register_acquisition_records_and_packet_readmes(
-    tmp_path: Path,
-) -> None:
+def test_a_pin_is_structured_and_a_commit_named_in_prose_pins_nothing(tmp_path: Path) -> None:
+    """A README that names a commit as "an import of its own" must not make it current."""
     packet = tmp_path / "someone-packings-2026-10-01"
     (packet / "acquisition").mkdir(parents=True)
     record = {
         "sources": [
-            {"source_url": "https://github.com/someone/packings", "source_commit": LATER}
+            {
+                "source_url": "https://github.com/someone/packings",
+                "source_commit": HEAD,
+                "subtree_scope": ["certificates/n59"],
+            }
         ]
     }
     (packet / "acquisition" / "sources.json.gz").write_bytes(
         gzip.compress(json.dumps(record).encode())
     )
-    readme = tmp_path / "other-2026-09-01"
-    readme.mkdir()
-    (readme / "README.md").write_text(
-        f"Retained from https://github.com/Other/Thing at {HEAD}.\n", encoding="utf-8"
+    (packet / "README.md").write_text(
+        f"https://github.com/someone/packings at {LATER} is an import of its own.\n",
+        encoding="utf-8",
     )
     found = sweep.watched_repositories(
         _coverage(), tmp_path, projects=["https://github.com/Other/Thing"]
     )
-    assert found["https://github.com/someone/packings"].pins == {PIN, LATER}
-    assert found["https://github.com/other/thing"].pins == {HEAD}
+    packets = found["https://github.com/someone/packings"].packets
+    assert [(p.name, p.pin, p.scope) for p in packets] == [
+        ("repo-source", PIN, ("",)),
+        ("someone-packings-2026-10-01", HEAD, ("certificates/n59",)),
+    ]
+    assert found["https://github.com/other/thing"].packets == []
     assert found["https://github.com/other/thing"].url == "https://github.com/Other/Thing"
+    assert packets[1].retains("certificates/n59/README.md")
+    assert not packets[1].retains("certificates/n590/README.md")
 
 
 def _repositories(
@@ -99,14 +109,15 @@ def _repositories(
     beads: sweep.Beads | None = None,
     *,
     offline: bool = False,
+    unretained: tuple[str, ...] = (),
 ) -> sweep.Section:
     def heads(_url: str) -> str:
         if isinstance(head, Exception):
             raise head
         return head
 
-    def history(_url: str, _at: str, _known: Any) -> sweep.NewCommits:
-        return sweep.NewCommits(3, "2026-10-03", "2026-10-04", ("new records",), 1)
+    def history(_url: str, _head: str, _packets: Any, _reads: Any) -> sweep.RepoHistory:
+        return sweep.RepoHistory(3, "2026-10-03", "2026-10-04", ("new records",), 1, unretained)
 
     return sweep.repositories_section(
         _coverage(),
@@ -135,7 +146,15 @@ def test_a_head_a_packet_pins_is_current_and_a_moved_head_needs_an_owner(
     )
 
 
-def test_a_read_head_is_owned_by_its_bead_or_closed_with_nothing_to_import(
+def test_commits_a_pin_contains_but_no_packet_retains_need_an_owner(tmp_path: Path) -> None:
+    section = _repositories(tmp_path, PIN, unretained=("c56b9b7 s(59) >= 8: run records",))
+    (item,) = section.items
+    assert item.state == sweep.NEEDS_OWNER
+    assert "1 commit a pin contains changed paths no packet at or after it retains" in item.what
+    assert item.what.endswith("c56b9b7 s(59) >= 8: run records")
+
+
+def test_a_read_head_is_owned_by_its_bead_or_listed_with_nothing_to_import(
     tmp_path: Path,
 ) -> None:
     read = {"url": "https://github.com/someone/packings", "read_through": HEAD}
@@ -155,8 +174,9 @@ def test_a_read_head_is_owned_by_its_bead_or_closed_with_nothing_to_import(
     assert closed.items[0].state == sweep.NEEDS_OWNER
     nothing = {**read, "read_on": "2026-10-05", "note": "README edits"}
     quiet = _repositories(tmp_path, HEAD, {"repositories": [nothing]})
-    assert quiet.items == []
-    assert quiet.notes[-1].endswith("nothing to import.")
+    assert [(i.state, i.what.endswith("nothing to import")) for i in quiet.items] == [
+        (sweep.LISTED, True)
+    ]
     later = _repositories(tmp_path, LATER, {"repositories": [nothing]})
     assert "past the last pass's read" in later.items[0].what
 
@@ -174,6 +194,59 @@ def test_an_unreadable_head_and_offline_are_reported_as_not_checked(tmp_path: Pa
     assert "which no record cites" in section.unchecked[0]
 
 
+def _commit(repo: Path, path: str, text: str) -> str:
+    target = repo / path
+    target.parent.mkdir(parents=True, exist_ok=True)
+    target.write_text(text, encoding="utf-8")
+    environment = {
+        "GIT_AUTHOR_NAME": "t",
+        "GIT_AUTHOR_EMAIL": "t@example.org",
+        "GIT_COMMITTER_NAME": "t",
+        "GIT_COMMITTER_EMAIL": "t@example.org",
+        "GIT_AUTHOR_DATE": "2026-10-04T00:00:00Z",
+        "GIT_COMMITTER_DATE": "2026-10-04T00:00:00Z",
+        "GIT_CONFIG_NOSYSTEM": "1",
+        "HOME": str(repo.parent),
+        "PATH": "/usr/bin:/bin",
+    }
+    for arguments in (("add", "-A"), ("commit", "-q", "--no-verify", "-m", f"change {path}")):
+        subprocess.run(("git", "-C", str(repo), *arguments), check=True, env=environment)
+    return subprocess.run(
+        ("git", "-C", str(repo), "rev-parse", "HEAD"),
+        check=True,
+        capture_output=True,
+        text=True,
+    ).stdout.strip()
+
+
+def test_the_history_reads_commits_past_the_pins_and_changes_no_packet_retains(
+    tmp_path: Path,
+) -> None:
+    """A real repository, read through `file://`: the network step with no network.
+
+    `first` is the oldest pin, which retains everything; `second` changes a path the
+    later packet does not retain, so only a read can cover it; `head` is past both.
+    """
+    repo = tmp_path / "upstream"
+    subprocess.run(("git", "init", "-q", str(repo)), check=True)
+    subprocess.run(
+        ("git", "-C", str(repo), "config", "uploadpack.allowFilter", "true"), check=True
+    )
+    first = _commit(repo, "certificates/a/cert.txt", "1")
+    second = _commit(repo, "certificates/b/cert.txt", "2")
+    pinned = _commit(repo, "certificates/a/cert.txt", "3")
+    head = _commit(repo, "README.md", "4")
+    packets = [
+        sweep.Packet("whole", first),
+        sweep.Packet("scoped", pinned, ("certificates/a",)),
+    ]
+    found = sweep.read_history(f"file://{repo}", head, packets, ())
+    assert (found.count, found.first, found.pins_in_history) == (1, "2026-10-04", 2)
+    assert found.unretained == (f"{second[:7]} change certificates/b/cert.txt",)
+    read = sweep.read_history(f"file://{repo}", head, packets, (second,))
+    assert read.unretained == ()
+
+
 def test_github_differences_each_need_an_owner_and_a_failure_is_not_checked() -> None:
     record = {"repository": "jlevy/squares"}
     differences = ["#350 is not in the record: New result", "#282: unread comment URL (x, t)"]
@@ -189,6 +262,69 @@ def test_github_differences_each_need_an_owner_and_a_failure_is_not_checked() ->
     assert failed.unchecked == ["GitHub issues: `gh api` failed: gh: not found"]
     skipped = sweep.github_section(record, offline=True, compare_github=refused)
     assert skipped.unchecked == ["GitHub issues: skipped by --offline"]
+
+
+def test_a_blocker_is_read_only_from_a_sentence_that_says_something_waits() -> None:
+    text = (
+        "Certificates posted on jlevy/squares#282 from 3 October. Stage 3 (new T-NNN) "
+        "waits for jlevy/squares#305. Replays held with think-wpuu; see #290.\n"
+        "Taken over after #312 merges. Owned by think-e6ss."
+    )
+    assert sweep.stated_blockers(text, "jlevy/squares", own="think-e6ss") == [
+        "jlevy/squares#305",
+        "think-wpuu",
+        "jlevy/squares#312",
+    ]
+
+
+ISSUES = {
+    "repos/jlevy/squares/issues/305": {
+        "state": "closed",
+        "closed_at": "2026-10-04T23:00:00Z",
+        "pull_request": {"merged_at": "2026-10-04T23:00:00Z"},
+    },
+    "repos/jlevy/squares/issues/400": {"state": "open"},
+}
+
+
+def _blockers(beads: sweep.Beads | None) -> sweep.Blockers:
+    return sweep.Blockers(beads, ISSUES.__getitem__)
+
+
+def test_an_import_bead_whose_stated_blocker_merged_is_reported() -> None:
+    """think-e6ss held stage 3 until #305 merged; #305 merged and nothing resumed it."""
+    stalled = sweep.QueuedBead(
+        "think-e6ss", "in_progress", "Import wand125", "Stage 3 waits for jlevy/squares#305."
+    )
+    waiting = sweep.QueuedBead("think-aaaa", "open", "Import x", "Held until #400 merges.")
+    children = sweep.QueuedBead(
+        "think-bbbb", "open", "Epic", "", blocked_by=("think-cccc", "think-dddd")
+    )
+    beads = _beads(
+        stalled, waiting, children, **{"think-cccc": "closed", "think-dddd": "in_progress"}
+    )
+    section = sweep.blocked_section(beads, _blockers(beads), "jlevy/squares")
+    (item,) = section.items
+    assert item.state == sweep.RESOLVED
+    assert (
+        item.what == "think-e6ss (Import wand125) waits on jlevy/squares#305, merged 2026-10-04"
+    )
+    assert section.notes == [
+        "3 open `result-import` beads name a blocker; 1 of them name one that has resolved."
+    ]
+    done = _beads(children, **{"think-cccc": "closed", "think-dddd": "closed"})
+    (last,) = sweep.blocked_section(done, _blockers(done), "jlevy/squares").items
+    assert last.what.endswith("think-cccc, closed; think-dddd, closed")
+
+
+def test_offline_blockers_on_github_are_not_checked() -> None:
+    queued = sweep.QueuedBead("think-e6ss", "open", "Import", "Waits for jlevy/squares#305.")
+    beads = _beads(queued)
+    section = sweep.blocked_section(beads, sweep.Blockers(beads, None), "jlevy/squares")
+    assert section.items == []
+    assert section.unchecked == [
+        "blockers not read: jlevy/squares#305 (offline, or `gh` failed)"
+    ]
 
 
 #: A count the retained transcription prints once, and a later capture moves below it.
@@ -272,37 +408,68 @@ def _issue(**extra: Any) -> dict[str, Any]:
         "results": [
             {"key": "later", "claim": "a bound", "not_registered": "not yet", "queued": True}
         ],
-        "asks": [{"what": "a correction", "state": "queued"}],
+        "asks": [{"what": "a correction", "state": "queued", "bead": "think-aaaa"}],
         "replies": [],
         **extra,
     }
 
 
-def test_a_pending_intake_and_an_open_issue_are_owned_while_their_beads_are_open() -> None:
-    coverage = _coverage(
-        pending_catalogue_intake=[
-            {
-                "n": 69,
-                "catalogue_value": "8.82",
-                "record_value": "8.83",
-                "bead": "think-aaaa",
-                "recorded": "2026-09-30",
-            }
-        ]
-    )
+def _queues(issues: list[dict[str, Any]], beads: sweep.Beads, **coverage: Any) -> sweep.Section:
     register = check_requests.Register(results={}, evidence={})
-    beads = _beads(**{"think-aaaa": "in_progress", "think-bbbb": "closed"})
-    section = sweep.queues_section(coverage, {"issues": [_issue()]}, register, beads, TODAY)
-    intake, issue = section.items
-    assert (intake.state, intake.since) == (sweep.OWNED, "2026-09-30 (5 days ago)")
-    assert issue.state == sweep.NEEDS_OWNER
-    assert issue.what == "#300 owes queued result later; queued ask: a correction; a reply"
-    orphan = {**coverage["pending_catalogue_intake"][0]}
-    del orphan["bead"]
-    bare = sweep.queues_section(
-        _coverage(pending_catalogue_intake=[orphan]), {"issues": []}, register, beads, TODAY
+    return sweep.queues_section(
+        _coverage(**coverage),
+        {"repository": "jlevy/squares", "issues": issues},
+        register,
+        beads,
+        today=TODAY,
+        blockers=_blockers(beads),
     )
-    assert bare.items[0].state == sweep.NEEDS_OWNER
+
+
+def test_a_queued_result_or_ask_needs_its_own_bead_beside_the_answer_bead() -> None:
+    """#282's queued result named no bead, and the answer bead owns only the reply."""
+    beads = _beads(**{"think-aaaa": "in_progress", "think-bbbb": "open"})
+    result, ask, reply = _queues([_issue()], beads).items
+    assert (result.what, result.state) == ("#300 queued result later", sweep.NEEDS_OWNER)
+    assert (ask.state, ask.bead) == (sweep.OWNED, "think-aaaa")
+    assert (reply.what, reply.state, reply.bead) == (
+        "#300 owes a reply",
+        sweep.OWNED,
+        "think-bbbb",
+    )
+
+
+def test_a_queued_item_whose_blocker_merged_is_reported() -> None:
+    beads = _beads(**{"think-aaaa": "open", "think-bbbb": "open"})
+    held = {
+        "key": "later",
+        "claim": "a bound",
+        "not_registered": "Stage 3 waits for jlevy/squares#305.",
+        "queued": True,
+        "bead": "think-aaaa",
+    }
+    result = _queues([_issue(results=[held])], beads).items[0]
+    assert result.state == sweep.RESOLVED
+    assert result.what.endswith("it waits on jlevy/squares#305, merged 2026-10-04")
+    structured = {**held, "not_registered": "not yet", "blocked_on": ["jlevy/squares#400"]}
+    still = _queues([_issue(results=[structured])], beads).items[0]
+    assert still.state == sweep.OWNED
+
+
+def test_a_pending_intake_is_owned_while_its_bead_is_open() -> None:
+    entry = {
+        "n": 69,
+        "catalogue_value": "8.82",
+        "record_value": "8.83",
+        "bead": "think-aaaa",
+        "recorded": "2026-09-30",
+    }
+    beads = _beads(**{"think-aaaa": "in_progress"})
+    (intake,) = _queues([], beads, pending_catalogue_intake=[entry]).items
+    assert (intake.state, intake.since) == (sweep.OWNED, "2026-09-30 (5 days ago)")
+    orphan = {key: value for key, value in entry.items() if key != "bead"}
+    (bare,) = _queues([], beads, pending_catalogue_intake=[orphan]).items
+    assert bare.state == sweep.NEEDS_OWNER
 
 
 def test_offline_reads_no_network_and_reports_what_it_skipped() -> None:
@@ -317,6 +484,7 @@ def test_offline_reads_no_network_and_reports_what_it_skipped() -> None:
         compare_github=network,
         heads=network,
         history=network,
+        fetch=network,
     )
     unchecked = [line for section in sections for line in section.unchecked]
     assert "GitHub issues: skipped by --offline" in unchecked
@@ -326,12 +494,13 @@ def test_offline_reads_no_network_and_reports_what_it_skipped() -> None:
     assert "## Not Checked" in report
 
 
-def test_the_report_leads_with_what_needs_an_owner() -> None:
+def test_the_report_leads_with_what_needs_action() -> None:
     sections = [
         sweep.Section(
             "Source",
             items=[
                 sweep.Item("orphan", sweep.NEEDS_OWNER, step="open a bead"),
+                sweep.Item("stalled", sweep.RESOLVED, step="resume it"),
                 sweep.Item("held", sweep.OWNED, bead="think-aaaa", bead_state="open"),
             ],
             unchecked=["a source: skipped"],
@@ -339,13 +508,14 @@ def test_the_report_leads_with_what_needs_an_owner() -> None:
     ]
     report = sweep.markdown(sections, TODAY)
     assert (
-        "1 item without an open bead to own it, 1 item owned by one, and 1 source not" in report
+        "1 item without an open bead to own it, 1 item whose blocker has resolved, "
+        "1 item owned by an open bead, and 1 source not checked." in report
     )
-    assert report.index("## Needs an Owner") < report.index("## Not Checked")
+    assert report.index("## Needs Action") < report.index("## Not Checked")
     assert report.index("## Not Checked") < report.index("## Source")
-    assert "| Source | orphan |  | open a bead |" in report
+    assert "| Source | orphan | needs an owner |  | open a bead |" in report
     assert "| held | owned | think-aaaa (open) |  |" in report
-    assert sweep.needing_owner(sections) == [sections[0].items[0]]
+    assert sweep.needing_action(sections) == sections[0].items[:2]
 
 
 def test_a_capture_holds_the_page_its_transcription_under_the_archive_header_and_a_receipt(

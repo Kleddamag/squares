@@ -8,8 +8,9 @@
 
 **Scope:** the Kingbird catalogue’s September 2026 improvements at $n = 69, 83, 87$,
 held as `pending_catalogue_intake` from 2026-09-30 until the owner asked about them on
-2026-10-05 ([D-519](../../../defects.md)), and the intake process that let them wait
-with no owner.
+2026-10-05 ([D-519](../../../defects.md)); two more instances found the same day, an
+import held past the pull request it waited for and two evidence updates a packet named
+and did not retain; and the intake process that let all three wait with no owner.
 
 ## What happened
 
@@ -60,6 +61,28 @@ The catalogue refresh contributed: it was a hand-run `curl` and `html2text`, des
 as a dated research survey, with no command anyone would run to ask whether the
 catalogue had moved again.
 
+## Two more of the same, found the same day
+
+The coordinator of the 2026-10-05 follow-up found the gap twice more while this
+postmortem was being written.
+
+**A wait that outlived its blocker.** `think-e6ss` imported wand125’s 16 mixed
+certificates of 4 October as far as a packet (`wand125-mixed-bounds-2026-10-04`, merged
+in PR #339) and held stage 3 “until jlevy/squares#305 merges”.
+#305 merged at 23:00 UTC that evening, and nothing resumed the import: #282’s
+`oct3-oct4-mixed-14` stayed `queued: true`, owned by no bead of its own, since the
+issue’s answer bead owns the reply and its `beads` list did not name `think-e6ss`.
+
+**Evidence a packet named and nobody took in.** The same packet’s README says wand125’s
+`c56b9b7` and `1ebd484`, evidence updates to the $s(59) = 8$ and $s(45) = 7$ covers, are
+not retained by it. Both commits are ancestors of its pin, so no count of commits past
+the pin could see them, and no bead was opened for either.
+`3f063bd` and `781afb3`, later updates to $s(77)$ and $s(21)$, came after the pin and
+went unread as well.
+
+All three have one shape: the record could hold work back and had no place that listed
+what it held.
+
 ## What has changed
 
 | Change | Guards against |
@@ -70,6 +93,9 @@ catalogue had moved again.
 | [`devtools.capture_kingbird_catalogue`](../../../packing/devtools/capture_kingbird_catalogue.py) captures the page into `attic/intake/`; given either retained HTML file, it reproduces that capture’s transcription body byte for byte | A capture that only a by-hand command could make |
 | [`intake-watch.yaml`](../../../packing/campaign/intake-watch.yaml) records a repository read past its packets, with the bead that owns what it holds or a note that nothing does | A repository read and found empty looking the same as one never read |
 | [result-import.md](../../../packing/campaign/result-import.md) gains Running an Intake Pass, Intake Sources and Stage 0: Sweep | A process that started only from an issue or a link |
+| A queued result or ask in `result-requests.yaml` takes its own `bead` and a `blocked_on`; `check_bead_tree` fails a named bead that has closed, and the sweep reports a queued item with no bead of its own | An import that only an issue’s answer bead was said to own |
+| The sweep reports an open import bead, or a queued item, whose stated blocker has merged or closed: `blocked_on`, a sentence such as “waits for jlevy/squares#305”, or a `blocks` dependency once all have closed | A wait that outlives its blocker |
+| A pin is structured, an acquisition record’s commit or a revision in a register source’s address; the sweep reads trees as well as commits and reports commits a pin contains whose changed paths no packet at or after them retains | Evidence a packet names in prose and does not retain |
 
 Three repairs were needed to make the sweep run.
 `check_requests --github` paged with `gh api --paginate`, which follows GitHub’s
@@ -85,9 +111,13 @@ sync branch, 17 s, where the shared sync worktree takes 0.6 s.
 
 Every list in the records that holds work back for later was checked for the same gap:
 
-- **An open issue’s queued results and asks** are owned by its `answer_bead`, which the
-  schema requires. Whether that bead is open was never checked; `check_bead_tree` now
-  checks it, and every open issue passed on 2026-10-05.
+- **An open issue’s queued results and asks** were taken to be owned by its
+  `answer_bead`, which the schema requires and nobody checked.
+  `check_bead_tree` now checks every open issue’s answer bead, and every one passed on
+  2026-10-05. The answer bead owns the reply, not the import, so a queued item now names
+  its own `bead`. The schema leaves it optional until the three queued items open on
+  2026-10-05, which other lanes are importing, carry one; the sweep reports each until
+  then.
 - **A register entry’s `activity`** expires: `check_results` refuses one more than 30
   days older than `last_reviewed`. It may link a branch or a file rather than a bead, so
   it is left to that rule.
@@ -102,9 +132,12 @@ Every list in the records that holds work back for later was checked for the sam
 
 ## The first sweep
 
-The first sweep, on 2026-10-05 and before that day’s three intake lanes merged, found 24
-items with no owner besides the three counts: 15 comments on #282 and #281 after their
-entries’ `read_through`, and 9 watched repositories whose heads no packet pins.
+The sweep, run on 2026-10-05 before that day’s intake lanes merged, found 29 items with
+no owner besides the three counts: 15 comments on #282 and #281 after their entries’
+`read_through`, 11 watched-repository items (heads past every pin, and wand125’s two
+unretained commits), and the 3 queued items with no bead of their own.
+It found 8 open import beads waiting on a pull request or bead that had already merged
+or closed, `think-e6ss` among them.
 The other channels had the same gap; the catalogue was only where it showed first.
 
 ## The rules this yields
@@ -115,6 +148,10 @@ cannot resolve is the same orphan as no name.
 **R2. One command reads every source, and says which it could not read.** A quiet report
 from a sweep that skipped a source is not a clean one, so the source is listed as not
 checked rather than left out.
+
+**R3. A wait names what it waits on, and something reads it.** A blocker written only in
+prose resolves silently; the sweep reads the prose, and `blocked_on` saves it the
+guessing.
 
 <!-- This document follows common-doc-guidelines.md.
 See github.com/jlevy/practical-prose and review guidelines before editing.

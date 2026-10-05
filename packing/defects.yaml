@@ -17456,8 +17456,9 @@ defects:
   consequence: >-
     The frontier reported older, larger sides as the best known upper bounds at three
     counts for five days, and would have gone on doing so; the first sweep found the same
-    gap on two other channels, 15 unread comments on #281 and #282 and 9 watched
-    repositories whose heads no packet pins.
+    gap elsewhere: 15 unread comments on #281 and #282, watched repositories past their
+    pins, an import held until jlevy/squares#305 merged and never resumed (think-e6ss),
+    and two wand125 evidence updates a packet named and did not retain.
   fix: >-
     pending_catalogue_intake requires bead and recorded in its schema and in
     check_source_coverage, and a deferred-conflict claim requires a bead;
@@ -17465,12 +17466,15 @@ defects:
     answer_bead included. devtools.intake_sweep, run by make intake, reads GitHub, the
     watched repositories, the newest catalogue capture from
     devtools.capture_kingbird_catalogue, the other catalogues and the record's queues,
-    and exits 1 while an item has no open bead. result-import.md gains Running an Intake
-    Pass, Intake Sources and Stage 0.
+    and exits 1 while an item has no open bead or waits on a blocker that has resolved;
+    queued results and asks name their own bead and their blocked_on, and a pin is an
+    acquisition record's commit, never a commit named in prose. result-import.md gains
+    Running an Intake Pass, Intake Sources and Stage 0.
   regression: >-
     tests/test_source_coverage.py::test_a_pending_intake_names_the_bead_that_owns_it_and_the_day_it_was_deferred
     and ::test_the_schema_requires_an_owner_on_every_deferral refuse an unowned entry;
     tests/test_bead_tree.py::test_a_deferral_whose_bead_is_closed_or_missing_fails_and_a_live_one_passes
     holds the gate's liveness check; tests/test_intake_sweep.py holds each source's
-    reading.
+    reading, a bead whose stated blocker merged, a queued result with no bead of its own,
+    and, on a real repository, a commit a pin contains that no packet retains.
   recorded_in: docs/project/postmortems/postmortem-2026-10-05-orphaned-catalogue-intake.md

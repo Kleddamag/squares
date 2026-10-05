@@ -21,7 +21,8 @@ A third invariant joins the tree to the records:
 3. **Every deferral a record declares names a bead that is still open.** A deferral is
    work the record knows it has not done: a Kingbird count pending intake, a
    beyond-horizon claim held as a deferred conflict, a watched repository read past its
-   newest packet, an issue still open. Each names its owning bead (`deferrals`). The
+   newest packet, an issue still open, a result or ask queued on one. Each names its
+   owning bead (`deferrals`). The
    three counts pending intake from 2026-09-30 named none, nothing listed them, and the
    record called the older sides best known for five days; a bead closed under a live
    deferral is the same orphan by another route.
@@ -75,15 +76,23 @@ IN_PROGRESS = "in_progress"
 TERMINAL_STATES = frozenset({"complete", "stopped"})
 
 
+#: The key under which a parsed bead carries its Markdown body: the description and
+#: notes `devtools.intake_sweep` reads for the blocker a bead says it waits on.
+BODY = "_body"
+
+
 def _parse(text: str) -> dict[str, Any] | None:
-    """Pull the YAML frontmatter off one bead file."""
+    """Pull the YAML frontmatter off one bead file, with the body under `BODY`."""
     if not text.startswith("---\n"):
         return None
     end = text.find("\n---\n", 4)
     if end < 0:
         return None
     front = safe_load(text[4:end])
-    return front if isinstance(front, dict) and "id" in front else None
+    if not isinstance(front, dict) or "id" not in front:
+        return None
+    front[BODY] = text[end + 5 :]
+    return front
 
 
 def parse_aliases(text: str) -> dict[str, str]:
@@ -275,11 +284,22 @@ def deferrals(
         for entry in source.get("beyond_horizon_claims") or ()
         if entry.get("disposition") == "deferred-conflict" and entry.get("bead")
     )
-    named.extend(
-        (f"result-requests.yaml open issue #{issue.get('number')}", str(issue["answer_bead"]))
-        for issue in _records(requests).get("issues") or ()
-        if issue.get("state") == "open" and issue.get("answer_bead")
-    )
+    for issue in _records(requests).get("issues") or ():
+        if issue.get("state") != "open":
+            continue
+        where = f"result-requests.yaml open issue #{issue.get('number')}"
+        if issue.get("answer_bead"):
+            named.append((where, str(issue["answer_bead"])))
+        named.extend(
+            (f"{where} queued result {result.get('key')}", str(result["bead"]))
+            for result in issue.get("results") or ()
+            if result.get("queued") and result.get("bead")
+        )
+        named.extend(
+            (f"{where} queued ask", str(ask["bead"]))
+            for ask in issue.get("asks") or ()
+            if ask.get("state") == "queued" and ask.get("bead")
+        )
     named.extend(
         (
             (

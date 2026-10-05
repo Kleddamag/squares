@@ -109,7 +109,11 @@ def test_every_deferral_a_record_declares_is_collected_with_its_bead(tmp_path: P
     requests = _write(
         tmp_path / "requests.yaml",
         "issues:\n"
-        "  - {number: 282, state: open, answer_bead: think-cccc}\n"
+        "  - number: 282\n"
+        "    state: open\n"
+        "    answer_bead: think-cccc\n"
+        "    results: [{key: later, queued: true, bead: think-ffff}, {key: done}]\n"
+        "    asks: [{what: a fix, state: queued, bead: think-gggg}]\n"
         "  - {number: 170, state: closed, answer_bead: think-dddd}\n",
     )
     watch = _write(
@@ -123,8 +127,11 @@ def test_every_deferral_a_record_declares_is_collected_with_its_bead(tmp_path: P
         "think-aaaa",
         "think-bbbb",
         "think-cccc",
+        "think-ffff",
+        "think-gggg",
         "think-eeee",
     ]
+    assert named[3][0] == "result-requests.yaml open issue #282 queued result later"
     assert named[0][0] == "source-coverage.yaml pending_catalogue_intake n=69"
     assert deferrals(tmp_path / "absent", tmp_path / "absent", tmp_path / "absent") == []
 

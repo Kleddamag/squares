@@ -537,7 +537,7 @@ case or experiment separately.
 
 | Document or collection | Role | Authority | Lifecycle | Current replacement |
 | --- | --- | --- | --- | --- |
-| [Retained n17 diagnostics](packing/devtools/n17-diagnostics.md) | engineering and validation rules | normative | maintained | — |
+| [Retained n17 diagnostics](packing/devtools/n17-diagnostics.md) | engineering and validation rules | current | maintained | — |
 | [The n = 17 Optimality Proof, Explained](docs/project/n17-optimality-explainer.md) | first-principles tutorial | supporting | maintained | — |
 | [Proof Review: wand125’s Point-Only Cover for `s(61) = 8`](docs/project/reviews/review-2026-10-02-wand125-s61-point-cover.md) | dated review record | record | retained | — |
 | [Eleven-Square Optimality Proof: The Delta for the Original Contributor](docs/project/reviews/review-2026-10-03-n11-optimality-upstream-delta.md) | dated review record | record | retained | — |

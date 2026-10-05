@@ -9,7 +9,15 @@ counts on a fixture small enough to read.
 
 from __future__ import annotations
 
-from devtools.check_bead_tree import check, parse_aliases, staleness
+from pathlib import Path
+
+from devtools.check_bead_tree import (
+    check,
+    deferral_problems,
+    deferrals,
+    parse_aliases,
+    staleness,
+)
 
 
 def _bead(bead_id: str, status: str, title: str) -> dict[str, object]:
@@ -60,12 +68,16 @@ def test_only_in_progress_beads_are_reported() -> None:
 
 
 def test_the_alias_table_is_read_without_yaml_retyping() -> None:
-    table = "schema_version: 1\n---\n1e10: 01aaaa\nnull: 01bbbb\n# note\nrh18: 01cccc\n"
+    table = (
+        "schema_version: 1\n---\n1e10: 01aaaa\nnull: 01bbbb\n# note\nrh18: 01cccc\n"
+        '"48e1": 01dddd\n'
+    )
     assert parse_aliases(table) == {
         "schema_version": "1",
         "1e10": "01aaaa",
         "null": "01bbbb",
         "rh18": "01cccc",
+        "48e1": "01dddd",
     }
 
 
@@ -77,3 +89,70 @@ def test_a_bead_without_an_alias_is_reported_by_its_id() -> None:
 def test_the_report_does_not_change_the_gate_verdict() -> None:
     """Both shapes are reports; the tree's two invariants still decide pass or fail."""
     assert check([FINISHED, OUTSIDE]) == []
+
+
+def _write(path: Path, text: str) -> Path:
+    path.write_text(text, encoding="utf-8")
+    return path
+
+
+def test_every_deferral_a_record_declares_is_collected_with_its_bead(tmp_path: Path) -> None:
+    """Pending intakes, deferred conflicts, open issues and watched-repository reads."""
+    coverage = _write(
+        tmp_path / "coverage.yaml",
+        "pending_catalogue_intake:\n"
+        "  - {n: 69, bead: think-aaaa, recorded: '2026-09-30'}\n"
+        "beyond_horizon_claims:\n"
+        "  - {n: 400, disposition: deferred-conflict, bead: think-bbbb}\n"
+        "  - {n: 401, disposition: superseded}\n",
+    )
+    requests = _write(
+        tmp_path / "requests.yaml",
+        "issues:\n"
+        "  - {number: 282, state: open, answer_bead: think-cccc}\n"
+        "  - {number: 170, state: closed, answer_bead: think-dddd}\n",
+    )
+    watch = _write(
+        tmp_path / "watch.yaml",
+        "repositories:\n"
+        "  - {url: 'https://github.com/a/b', read_through: 7ff3b2113532, bead: think-eeee}\n"
+        "  - {url: 'https://github.com/a/c', read_through: 0123456789ab}\n",
+    )
+    named = deferrals(coverage, requests, watch)
+    assert [alias for _, alias in named] == [
+        "think-aaaa",
+        "think-bbbb",
+        "think-cccc",
+        "think-eeee",
+    ]
+    assert named[0][0] == "source-coverage.yaml pending_catalogue_intake n=69"
+    assert deferrals(tmp_path / "absent", tmp_path / "absent", tmp_path / "absent") == []
+
+
+def test_a_deferral_whose_bead_is_closed_or_missing_fails_and_a_live_one_passes() -> None:
+    """The orphan the 2026-09-30 intakes became, by a closed bead instead of none."""
+    beads = [
+        _bead("is-01aaaa", "open", "the intake"),
+        _bead("is-01bbbb", "closed", "an intake closed under its deferral"),
+        _bead("is-01cccc", "blocked", "waiting on a source"),
+    ]
+    aliases = {"aaaa": "01aaaa", "bbbb": "01bbbb", "cccc": "01cccc"}
+    named = [
+        ("pending n=69", "think-aaaa"),
+        ("pending n=83", "think-bbbb"),
+        ("issue #1", "think-cccc"),
+        ("pending n=87", "think-zzzz"),
+    ]
+    problems = deferral_problems(beads, aliases, named)
+    assert [(p["parent"], p["status"]) for p in problems] == [
+        ("pending n=83", "closed"),
+        ("pending n=87", "no such bead"),
+    ]
+    assert {p["kind"] for p in problems} == {"dead_deferral"}
+
+
+def test_the_live_records_deferrals_are_all_well_formed_aliases() -> None:
+    """What the gate resolves against the store is at least a bead alias."""
+    for where, alias in deferrals():
+        assert alias.startswith("think-"), where
+        assert len(alias) == len("think-aaaa"), where

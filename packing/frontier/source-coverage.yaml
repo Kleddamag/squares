@@ -1607,6 +1607,8 @@ pending_catalogue_intake:
     record_value: '8.827205507815920656880680735618736931225314831'
     catalogue_value: '8.82719465572973'
     capture: '2026-08-22'
+    bead: think-s1xt
+    recorded: '2026-09-30'
     reason: >-
       The capture of 2026-09-30 prints David Ellsworth's September 2026 packing, which in the
       catalogue's words refound the UnitSquare Project's July 2026 improvement starting from
@@ -1619,6 +1621,8 @@ pending_catalogue_intake:
     record_value: '9.63482562092335'
     catalogue_value: '9.63475764863108'
     capture: '2026-08-22'
+    bead: think-s1xt
+    recorded: '2026-09-30'
     reason: >-
       The capture of 2026-09-30 prints Allen Chang's September 2026 improvement of the Hajba and
       Cantrell packing, optimized by David Ellsworth in September 2026, with a degree-672 root
@@ -1629,6 +1633,8 @@ pending_catalogue_intake:
     record_value: '9.83881743996618'
     catalogue_value: '9.83881526994826'
     capture: '2026-08-22'
+    bead: think-s1xt
+    recorded: '2026-09-30'
     reason: >-
       The capture of 2026-09-30 prints Allen Chang's September 2026 improvement and
       optimization of the Ellsworth and Cantrell packing, a degree-41 root, with help the

@@ -4326,8 +4326,17 @@ STEPS: tuple[Step, ...] = (
         fast=True,
         records=True,
         # The bead data lives in a sync worktree, not the tracked tree, so a bead-only
-        # change produces no changed path at all -- which selects the whole gate.
-        touches=(*_CORE, ".tbd/*", "packing/devtools/check_bead_tree.py"),
+        # change produces no changed path at all -- which selects the whole gate. The
+        # records are read for the deferrals they declare, each of which must name an
+        # open bead.
+        touches=(
+            *_CORE,
+            ".tbd/*",
+            "packing/devtools/check_bead_tree.py",
+            "packing/frontier/source-coverage.yaml",
+            "packing/campaign/result-requests.yaml",
+            "packing/campaign/intake-watch.yaml",
+        ),
     ),
     # 0.51s on the fast path, which is what runs without `--deep`.
     Step(

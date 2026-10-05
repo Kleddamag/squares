@@ -10,9 +10,9 @@ from pathlib import Path
 from xml.etree import ElementTree as ET
 
 import pytest
-import yaml
 
 from devtools import paper_figures as pf
+from sqpack.yamlio import load_yaml
 
 SVG = f"{{{pf.SVG_NS}}}"
 
@@ -126,7 +126,7 @@ def test_the_ladder_has_every_rung_in_order_evenly_spaced(ladder: ET.Element) ->
 
 
 def test_the_ladders_values_are_the_registers_headlines(ladder: ET.Element) -> None:
-    register = yaml.safe_load(pf.RESULTS.read_text(encoding="utf-8"))
+    register = load_yaml(pf.RESULTS.read_text(encoding="utf-8"))
     headlines = {row["id"]: row["headline"] for row in register["results"]}
     values = {
         node.attrib["data-value"]: node.text

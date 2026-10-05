@@ -51,9 +51,8 @@ from html.parser import HTMLParser
 from pathlib import Path
 from typing import Literal, cast
 
-import yaml
-
 from devtools import paper_links
+from sqpack.yamlio import load_yaml
 
 TEMPLATES = Path(__file__).with_name("templates")
 #: The series registry: shared concepts, their owners, and the symbol clashes allowed.
@@ -483,7 +482,7 @@ def parse_registry(data: object, *, where: str = "registry") -> Registry:
 def load_registry(slug: str, *, templates: Path = TEMPLATES) -> Registry:
     """A paper's registry from `templates/<slug>-terms.yaml`."""
     path = templates / f"{slug}-terms.yaml"
-    registry = parse_registry(yaml.safe_load(path.read_text(encoding="utf-8")), where=path.name)
+    registry = parse_registry(load_yaml(path.read_text(encoding="utf-8")), where=path.name)
     if registry.paper != slug:
         raise RegistryError(f"{path.name}: names paper {registry.paper!r}, not {slug!r}")
     return registry
@@ -514,7 +513,7 @@ def parse_series(data: object, *, where: str = "series") -> Series:
 
 
 def load_series(path: Path = SERIES) -> Series:
-    return parse_series(yaml.safe_load(path.read_text(encoding="utf-8")), where=path.name)
+    return parse_series(load_yaml(path.read_text(encoding="utf-8")), where=path.name)
 
 
 # --- the rules ---

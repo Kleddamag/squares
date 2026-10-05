@@ -36,7 +36,7 @@ from html import escape
 from pathlib import Path
 from typing import Any
 
-import yaml
+from sqpack.yamlio import load_yaml
 
 PACKING = Path(__file__).resolve().parents[1]
 RESULTS = PACKING / "frontier/results.yaml"
@@ -430,8 +430,7 @@ _SURD = re.compile(r"`s\(11\) ≥ (\d+) \+ (\d+)/√(\d+)`")
 
 def ladder_records(path: Path = RESULTS) -> dict[str, dict[str, str]]:
     """The headline and claim of every rung's result, from the register."""
-    loader = getattr(yaml, "CSafeLoader", yaml.SafeLoader)
-    register: dict[str, Any] = yaml.load(path.read_text(encoding="utf-8"), Loader=loader)
+    register: dict[str, Any] = load_yaml(path.read_text(encoding="utf-8"))
     wanted = {identifier for rung in LADDER_RUNGS for identifier in rung}
     records: dict[str, dict[str, str]] = {}
     for row in register["results"]:

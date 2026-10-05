@@ -3,12 +3,12 @@ its sibling papers per edition, and agrees with the register on every result num
 
 from __future__ import annotations
 
+import json
 import re
 from fractions import Fraction
 from pathlib import Path
 
 import pytest
-from yaml import safe_load
 
 from devtools import (
     check_published_site,
@@ -21,6 +21,7 @@ from devtools import render_n11_threshold_bound_review as paper
 from devtools.render_n11_lower_bounds_explainer import assert_self_contained
 from sqpack import release
 from sqpack.fractional.parent_core import load_kleddamag_parent_core
+from sqpack.yamlio import load_yaml
 
 ARTICLE = paper.ARTICLE
 REVISION = "a" * 40
@@ -78,7 +79,7 @@ def certificate_facts() -> dict[str, str]:
     certificate = load_kleddamag_parent_core(CERTIFICATE, expected_sha256=CERTIFICATE_SHA256)
     gamma = certificate.minimum_charge
     budget = certificate.budget
-    raw = safe_load(CERTIFICATE.read_text(encoding="utf-8"))
+    raw = json.loads(CERTIFICATE.read_text(encoding="utf-8"))
     features = sum(len(orbit["sets"]) for orbit in raw["charge_orbits"] if orbit["weight"])
     charge_orbits = sum(1 for orbit in raw["charge_orbits"] if orbit["weight"])
     sites = {(atom.x, atom.y) for atom in certificate.atoms}
@@ -483,7 +484,7 @@ def test_the_actual_article_renders_every_slot_once_with_pinned_sources(
     assert "<pre><code><svg" not in html
     # Every heading the registry and the forward links name is on the page.
     ids = set(re.findall(r'<h2[^>]*\bid="([^"]+)"', html))
-    registry = safe_load(paper.TERMS.read_text(encoding="utf-8"))
+    registry = load_yaml(paper.TERMS.read_text(encoding="utf-8"))
     assert registry["paper"] == paper.SLUG
     for entry in registry["terms"]:
         assert entry["anchor"] in ids, entry["term"]
@@ -501,7 +502,7 @@ def test_every_bold_run_of_the_prose_is_a_registered_definition() -> None:
     article = ARTICLE.read_text(encoding="utf-8")
     body = article.split("## Appendix A", 1)[0]
     body = re.sub(r"<figcaption>.*?</figcaption>", "", body, flags=re.DOTALL)
-    registry = safe_load(paper.TERMS.read_text(encoding="utf-8"))
+    registry = load_yaml(paper.TERMS.read_text(encoding="utf-8"))
     assert registry["paper"] == paper.SLUG
     definitions = [" ".join(entry["defined_by"].split()) for entry in registry["terms"]]
     for run in re.findall(r"\*\*([^*]+)\*\*", body):
@@ -541,7 +542,7 @@ def test_register_consistency_with_t037(published: tuple[str, str]) -> None:
     assert (facts["CERT_SITES"], facts["CERT_POINT_SITES"]) == ("5,284", "496")
     assert (facts["CERT_ORBITS"], facts["CERT_CHARGE_ORBITS"]) == ("679", "284")
     assert facts["CERT_FEATURES"] == "2,220"
-    register = safe_load(REGISTER.read_text(encoding="utf-8"))
+    register = load_yaml(REGISTER.read_text(encoding="utf-8"))
     record = next(entry for entry in register["results"] if entry["id"] == "T-037")
     claim = record["claim"]
     for stated in (

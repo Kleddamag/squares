@@ -5,15 +5,15 @@
   "surviving_states": 346104
  },
  "certified": {
-  "admitted": 27,
+  "admitted": 28,
   "endpoint_survives": true,
-  "orbits": 5287,
-  "surviving_states": 41456
+  "orbits": 5087,
+  "surviving_states": 39884
  },
  "data": {
-  "bytes": 746773564,
+  "bytes": 778319796,
   "certificates_not_in_place": 4,
-  "files": 138,
+  "files": 140,
   "full_recheck": "run python -m devtools.hosted_data fetch --manifest hosted/n17-x048-session-168-certificates.yaml from packing/",
   "note": "the count rests on the committed producer and verification receipts; re-running a verifier needs the hosted certificate objects"
  },
@@ -44,8 +44,8 @@
    },
    "evidence": "docs/project/reviews/review-2026-10-02-n17-w7-closure.md",
    "marginal": {
-    "orbits": 1815,
-    "states": 14452
+    "orbits": 1794,
+    "states": 14284
    },
    "name": "W7",
    "receipt": "packing/campaign/series/series-000-smoke-and-calibration/results/exp-249-n17-first-certified-sub-patterns/run-001/receipt.json",
@@ -734,8 +734,8 @@
    },
    "evidence": "packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-251-h267-n17-overnight-flag-certification.md",
    "marginal": {
-    "orbits": 256,
-    "states": 1988
+    "orbits": 227,
+    "states": 1772
    },
    "name": "s182-k8",
    "receipt": "packing/campaign/explorations/X048-session-182-overnight/receipts/K/kernel-k8.json",
@@ -1743,8 +1743,8 @@
    },
    "evidence": "packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-254-h267-n17-second-tranche-flags.md",
    "marginal": {
-    "orbits": 546,
-    "states": 4356
+    "orbits": 217,
+    "states": 1728
    },
    "name": "s182-bc425-t7",
    "receipt": "packing/campaign/explorations/X048-session-182-overnight/receipts/K/kernel-t7-bc425.json",
@@ -1810,8 +1810,8 @@
    },
    "evidence": "packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-254-h267-n17-second-tranche-flags.md",
    "marginal": {
-    "orbits": 362,
-    "states": 2860
+    "orbits": 259,
+    "states": 2052
    },
    "name": "s182-bc425-t8",
    "receipt": "packing/campaign/explorations/X048-session-182-overnight/receipts/K/kernel-t8-bc425.json",
@@ -1822,6 +1822,73 @@
     "mode": "full",
     "ran_at": "cebb5d15aaa17d0cc13aa302ecbd750a54bfc57d",
     "receipt": "packing/campaign/explorations/X048-session-168-pilots/certificates/s182-bc425-t8/verification.json",
+    "status": "PASS",
+    "verifier": {
+     "id": "kernel-streamed",
+     "path": "packing/devtools/verify_n17_kernel_certificate.py",
+     "review": "docs/project/reviews/review-2026-10-04-n17-streamed-verifier.md",
+     "version": "601bbf1107a622b306a3fe1fc57faebc9e28d27f"
+    }
+   },
+   "verified": true
+  },
+  {
+   "alone": {
+    "orbits": 8109,
+    "states": 64500
+   },
+   "cells": [
+    "corner-SW",
+    "side-W0",
+    "side-W1",
+    "side-W2",
+    "interior-SW",
+    "interior-NW",
+    "interior-S",
+    "interior-N"
+   ],
+   "certificate_data": {
+    "bytes": 31546232,
+    "files": 2,
+    "local": "present"
+   },
+   "certifier": "kernel",
+   "certifier_provenance": {
+    "dirty": false,
+    "files": {
+     "packing/devtools/check_n17_subpattern.py": "cb34edb4f4afd6a4564547ecb72d9f839aaf70f6",
+     "packing/src/sqpack/hull_kernel/__init__.py": "21b43f54fbdd95e2c48a10435edb38891f56074b",
+     "packing/src/sqpack/hull_kernel/collision.py": "e01a610c1862b411f092abdcbd942ea1aad415c1",
+     "packing/src/sqpack/hull_kernel/counting.py": "3cd1b1ae5d75a007e235db34823fcd2004ded855",
+     "packing/src/sqpack/hull_kernel/covers.py": "8f8ef29fda05750f31d7cefa7e2125bb8f32a581",
+     "packing/src/sqpack/hull_kernel/frame.py": "1117fec009404ff9d4ffc1cd4f1752e1467e006b",
+     "packing/src/sqpack/hull_kernel/geometry.py": "8c60af724c1940f2dceef8b2ca7fd7f96ca46384",
+     "packing/src/sqpack/hull_kernel/induction.py": "a847b9ab1d11dd85f1fbe606afb1dc247af4a2a6",
+     "packing/src/sqpack/hull_kernel/n11.py": "df3aba0a17ddc31fac1f771a0d9d9eb950a5c754",
+     "packing/src/sqpack/hull_kernel/n17.py": "683e9361b54bb003283103fe6b716828fa13d71a",
+     "packing/src/sqpack/hull_kernel/node.py": "a8df7478b3e38a7bc8d93aa482d65a7c4c04eaff",
+     "packing/src/sqpack/hull_kernel/ownership.py": "3a4c135e81014aa64750cd5ac05984bf89c0cab5",
+     "packing/src/sqpack/hull_kernel/producer.py": "d5e700eb33b74ceda3b286edaf9146bba252a762",
+     "packing/src/sqpack/hull_kernel/rational.py": "c1143fb28e65efdb0f513d2b8d2cb50c33d97c6b",
+     "packing/src/sqpack/hull_kernel/sequential.py": "ac5e74cae444f6486e5f2f40f9c7579e4b1c9a6f",
+     "packing/src/sqpack/hull_kernel/sweep.py": "0f976d2b774d4a6e2252128571bce6435d0e5b77"
+    },
+    "revision": "cebb5d15aaa17d0cc13aa302ecbd750a54bfc57d"
+   },
+   "evidence": "packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-254-h267-n17-second-tranche-flags.md",
+   "marginal": {
+    "orbits": 200,
+    "states": 1572
+   },
+   "name": "s182-bc425-t9",
+   "receipt": "packing/campaign/explorations/X048-session-182-overnight/receipts/K/kernel-t9-bc425.json",
+   "receipt_status": "PASS_CERTIFIED_CLOSED",
+   "status": "admitted",
+   "verification": {
+    "certificate": "packing/campaign/explorations/X048-session-168-pilots/certificates/s182-bc425-t9",
+    "mode": "full",
+    "ran_at": "cebb5d15aaa17d0cc13aa302ecbd750a54bfc57d",
+    "receipt": "packing/campaign/explorations/X048-session-168-pilots/certificates/s182-bc425-t9/verification.json",
     "status": "PASS",
     "verifier": {
      "id": "kernel-streamed",
@@ -1855,28 +1922,8 @@
     ],
     "in_ledger": null,
     "projected_gain": {
-     "orbits": 913,
-     "states": 7292
-    },
-    "selector_receipt": "packing/campaign/explorations/X048-session-168-pilots/receipts/selector-recheck-90-seed1.json"
-   },
-   {
-    "arity": 8,
-    "best_penetration": 0.0020179385890251034,
-    "cells": [
-     "side-S0",
-     "side-N0",
-     "side-W0",
-     "side-N1",
-     "side-W1",
-     "interior-SW",
-     "interior-NW",
-     "interior-W"
-    ],
-    "in_ledger": null,
-    "projected_gain": {
-     "orbits": 504,
-     "states": 4024
+     "orbits": 802,
+     "states": 6408
     },
     "selector_receipt": "packing/campaign/explorations/X048-session-168-pilots/receipts/selector-recheck-90-seed1.json"
    },
@@ -1941,6 +1988,26 @@
    },
    {
     "arity": 8,
+    "best_penetration": 0.0020179385890251034,
+    "cells": [
+     "side-S0",
+     "side-N0",
+     "side-W0",
+     "side-N1",
+     "side-W1",
+     "interior-SW",
+     "interior-NW",
+     "interior-W"
+    ],
+    "in_ledger": null,
+    "projected_gain": {
+     "orbits": 403,
+     "states": 3220
+    },
+    "selector_receipt": "packing/campaign/explorations/X048-session-168-pilots/receipts/selector-recheck-90-seed1.json"
+   },
+   {
+    "arity": 8,
     "best_penetration": 0.0001853803843537838,
     "cells": [
      "side-N0",
@@ -1973,8 +2040,8 @@
     ],
     "in_ledger": null,
     "projected_gain": {
-     "orbits": 381,
-     "states": 2988
+     "orbits": 357,
+     "states": 2800
     },
     "selector_receipt": "packing/campaign/explorations/X048-session-168-pilots/receipts/selector-recheck-90-seed1.json"
    },
@@ -2014,26 +2081,6 @@
     "projected_gain": {
      "orbits": 217,
      "states": 1728
-    },
-    "selector_receipt": "packing/campaign/explorations/X048-session-168-pilots/receipts/selector-recheck-90-seed1.json"
-   },
-   {
-    "arity": 8,
-    "best_penetration": 0.011921492710241344,
-    "cells": [
-     "corner-SW",
-     "side-W0",
-     "side-W1",
-     "side-W2",
-     "interior-SW",
-     "interior-NW",
-     "interior-S",
-     "interior-N"
-    ],
-    "in_ledger": null,
-    "projected_gain": {
-     "orbits": 200,
-     "states": 1572
     },
     "selector_receipt": "packing/campaign/explorations/X048-session-168-pilots/receipts/selector-recheck-90-seed1.json"
    },
@@ -2294,26 +2341,6 @@
    },
    {
     "arity": 8,
-    "best_penetration": 0.014256768780408269,
-    "cells": [
-     "side-S1",
-     "side-N1",
-     "interior-SW",
-     "interior-NW",
-     "interior-S",
-     "interior-N",
-     "interior-SE",
-     "interior-NE"
-    ],
-    "in_ledger": null,
-    "projected_gain": {
-     "orbits": 122,
-     "states": 948
-    },
-    "selector_receipt": "packing/campaign/explorations/X048-session-168-pilots/receipts/selector-recheck-90-seed1.json"
-   },
-   {
-    "arity": 8,
     "best_penetration": 0.002834073364814338,
     "cells": [
      "side-W0",
@@ -2507,6 +2534,26 @@
     "projected_gain": {
      "orbits": 71,
      "states": 568
+    },
+    "selector_receipt": "packing/campaign/explorations/X048-session-168-pilots/receipts/selector-recheck-90-seed1.json"
+   },
+   {
+    "arity": 8,
+    "best_penetration": 0.014256768780408269,
+    "cells": [
+     "side-S1",
+     "side-N1",
+     "interior-SW",
+     "interior-NW",
+     "interior-S",
+     "interior-N",
+     "interior-SE",
+     "interior-NE"
+    ],
+    "in_ledger": null,
+    "projected_gain": {
+     "orbits": 72,
+     "states": 560
     },
     "selector_receipt": "packing/campaign/explorations/X048-session-168-pilots/receipts/selector-recheck-90-seed1.json"
    },
@@ -3274,14 +3321,14 @@
  "pending_all_projection": {
   "endpoint_survives": true,
   "entries": 0,
-  "orbits": 5287,
-  "surviving_states": 41456
+  "orbits": 5087,
+  "surviving_states": 39884
  },
  "pending_verified_projection": {
   "endpoint_survives": true,
   "entries": 0,
-  "orbits": 5287,
-  "surviving_states": 41456
+  "orbits": 5087,
+  "surviving_states": 39884
  },
  "provenance": {
   "dirty": false,
@@ -3291,13 +3338,13 @@
   "ledger": {
    "dirty": true,
    "files": {
-    "packing/campaign/explorations/X048-session-168-pilots/certified-sub-patterns.yaml": "3966bbab520352976cc4e9041e80cf1fe2f0105a"
+    "packing/campaign/explorations/X048-session-168-pilots/certified-sub-patterns.yaml": "2c07ba5a75dba762f6e10cd285fa4a1d113519da"
    },
-   "revision": "0e6a5ac00e95f81aa4690250ec3502c6dc396b71"
+   "revision": "f99df45891f1f31cae032605ea24b7e7aae555ae"
   },
-  "revision": "0e6a5ac00e95f81aa4690250ec3502c6dc396b71"
+  "revision": "f99df45891f1f31cae032605ea24b7e7aae555ae"
  },
  "schema": "n17-certified-census/v1",
- "seconds": 5.254,
+ "seconds": 5.278,
  "status": "exact census under admitted sub-pattern certificates; the pending and flagged lines are projections and never enter the certified count"
 }

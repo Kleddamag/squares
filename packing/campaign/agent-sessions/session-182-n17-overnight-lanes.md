@@ -292,6 +292,9 @@ Certificate objects stay out of Git (OR-18).
 
 ## Notes for the Morning Record
 
+- For exp-251’s reviewer: lane K’s first target, K-k1, started at 09:07:12 UTC, after
+  the registration commit `cebb5d15a` but about four minutes before its push; the commit
+  hash, which every receipt names, still fixes the order.
 - A container restart at about 10:32 UTC killed every process.
   Three jobs without receipts (A-m1964767, A-m2878207, K-k6) re-ran from scratch; every
   closure already had its verification receipt, and the queues resumed by skipping
@@ -300,6 +303,9 @@ Certificate objects stay out of Git (OR-18).
   free lever for lane K’s stalls; BC-423 tests it with lane D’s settings.
 - Lane D diagnosed the per-state stall nodes at 100 poses per owner instead of 400,
   because 400 did not finish inside its 1,200 s ceiling at the night’s load.
+- exp-252 (H-264) is accepted, confirmed with corrections by its W2 factual review; the
+  review’s F1 corrects the attribution in the message of `6717b0b11`: state 5500414’s
+  orbit was already excluded by SW9 (exp-250), not by lane K’s flags.
 - Slices added at check-ins, each registered before its first run: BC-423 (K-k2 with
   lane D’s settings), H-273 and BC-421 (lane E, on slot 4, with the survey’s new
   `--shard`), and H-274 and BC-424 (lane A’s counted stalls under SW9’s recipe).

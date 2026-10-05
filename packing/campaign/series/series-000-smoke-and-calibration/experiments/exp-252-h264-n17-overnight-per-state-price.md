@@ -167,13 +167,14 @@ experiment:
       by the standing kernel verifier, which meets the criterion of at least half; every
       closure cost under 900 s of process CPU and every verification under 700 s, far inside
       two CPU-hours. The other five counted draws reached producer fixed points inside the
-      ceiling, as did both distance-2 draws. Held for the W2 review the plan requires before
-      X-048 or the frontier states the verdict.
-    needs_review: true
+      ceiling, as did both distance-2 draws. The W2 factual review
+      (docs/project/reviews/review-2026-10-05-exp-252-h264.md) confirmed the verdict with
+      corrections to bookkeeping and attribution, which this record carries.
+    needs_review: false
     commit: dfd38187c
   effort:
     timebox: 7,000 s per state and 4,000 s per verification, one worker per job
-    wall_seconds: 11744
+    wall_seconds: 12041
     stopped_by: criterion
 ---
 # exp-252: Session 182 Lane A, the Per-State Price
@@ -184,28 +185,77 @@ orbits the 17-owner kernel excludes by a certificate the standing verifier re-pr
 and at what cost per state.
 This round is lane A of the
 [n17 overnight plan](../../../../../docs/project/specs/active/plan-2026-10-05-n17-overnight.md)
-(BC-419). It is in progress, and gains a row per draw until all twelve have run.
+(BC-419). All twelve draws have run.
 
 ## Verdict
 
 The criterion is met: five of the ten counted draws closed within N1’s 7,000 s ceiling,
 and the standing verifier re-proved each in full, so the falsifier (fewer than half) did
 not fire.
-A closed state cost 351 to 868 s of process CPU and its verification 151 to 676
-s; the four counted states that did not close each reached a producer fixed point in 634
-to 924 s, well inside the ceiling, so more time would not have closed them under this
-recipe (H-274 asks whether adaptive rows do).
-The wall of 11,744 s runs from the survey’s start at 08:46 UTC to the fifth verification
-at 12:02 UTC, through a container restart.
-The verdict waits for the W2 review the plan requires before X-048 or the frontier says
-so. All twelve draws have now run: the last counted draw (index 6) and the distance-2
-draw at index 9 reached producer fixed points too.
+A closed state cost 352 to 869 s of process CPU and its verification 151 to 676
+s; the five counted states that did not close each reached a producer fixed point in 634
+to 1,297 s, well inside the ceiling, so more time would not have closed them under this
+recipe (H-274 asks whether adaptive rows close the first four; index 6 stalled after it
+was registered). The wall of 12,041 s runs from the survey’s start at 08:46 UTC to the
+last draw’s receipt at 12:07 UTC, through a container restart at 10:32 UTC; the verdict
+was fixed at the fifth verification, at 12:02 UTC. The
+[W2 factual review](../../../../../docs/project/reviews/review-2026-10-05-exp-252-h264.md)
+the plan requires before X-048 or the frontier states the verdict confirmed it, with
+corrections to bookkeeping and attribution (its F1 to F4, applied here) and one gap, the
+extrapolation over the drawn strata (its F5, below).
+All twelve draws have run: the last counted draw (index 6) and the distance-2 draw at
+index 9 reached producer fixed points too.
+
+## Extrapolation Over the Drawn Strata
+
+H-264 asks what the closures extrapolate to over the frame’s drawn strata, and requires
+the strata the draw does not reach to be reported as unsampled.
+The survey’s strata cross corners, interior cells and distance to the endpoint’s orbit;
+its receipt (receipts/A/survey-seed182.json) gives each stratum’s size.
+The ten counted draws come from 8 strata holding 1,354 of the frame’s 2,255 non-endpoint
+orbits:
+
+| Stratum | Orbits | Counted draws | Closed | Process CPU per state, mean |
+| --- | ---: | ---: | ---: | ---: |
+| c3/i4/d4 | 182 | 2 | 1 | 752 s |
+| c3/i<=3/d4 | 64 | 1 | 0 | 828 s |
+| c4/i4/d4 | 258 | 2 | 1 | 824 s |
+| c4/i<=3/d4 | 135 | 1 | 0 | 828 s |
+| c4/i>=5/d4 | 86 | 1 | 1 | 545 s |
+| c3/i4/d6 | 253 | 1 | 1 | 594 s |
+| c4/i4/d6 | 249 | 1 | 0 | 925 s |
+| c4/i>=5/d6 | 127 | 1 | 1 | 396 s |
+
+Weighting each stratum’s closed share by its size gives a point estimate of about 686 of
+those 1,354 orbits closing under this recipe, about half, and a size-weighted mean of
+about 730 s of process CPU per state run.
+The statement is bounded, and holds per stratum.
+Six of the eight strata rest on a single draw, so each of their shares is 0 or 1, and
+the other two rest on two draws.
+The estimate is a description of these draws scaled to the strata they came from, not a
+measured closure rate for any stratum.
+The draw is weighted toward distances 2 and 4 (Sainte-Laguë weights 4 and 2), so the raw
+5 of 10 is not a frame-wide rate either; the verdict does not depend on that rate, since
+the criterion counts draws.
+
+The two distance-2 draws, reported apart, come from 2 strata holding 74 orbits (c4/i4/d2
+and c4/i<=3/d2); neither closed.
+
+**Unsampled:** 21 strata holding 827 orbits, reported as unsampled and not extrapolated:
+430 orbits in the 9 strata at distance 8 or more, and 397 in 12 strata at distances 2 to
+6 (c3/i4/d2 13, c3/i<=3/d2 8, c3/i>=5/d4 46, c3/i>=5/d6 52, c3/i<=3/d6 70, c4/i<=3/d6
+82, and the six strata with at most two corners, 126 between them).
+H-264’s regime gave the unsampled set as “every distance-8-or-more stratum, 430 of 2,256
+orbits”, which holds only if strata are read as distance bands; under the survey’s own
+strata it understates the unsampled set by 397 orbits.
+No price for the residue tail is claimed: the tail includes the unsampled 827 orbits,
+and the drawn strata carry too few draws each to price it.
 
 ## Per-State Table
 
 | Index | Mask | Distance | Stratum | Outcome | Wall | Process CPU | Verifier |
 | --- | --- | --- | --- | --- | ---: | ---: | --- |
-| control | 1900015 (endpoint) | 0 | endpoint | stalled, as it must | 333 s | 321 s | — |
+| control | 3439615 (the endpoint’s state, orbit 1900015) | 0 | endpoint | stalled, as it must | 333 s | 321 s | — |
 | 2 | 5683195 | 4 | c3/i4/d4 | closed, 8 rounds, admitted | 2,147 s | 869 s | full pass, 676 s |
 | 4 | 2817021 | 4 | c3/i<=3/d4 | producer fixed point after 11 rounds | 2,072 s | 827 s | — |
 | 1 | 3063677 | 4 | c3/i4/d4 | producer fixed point after 6 rounds | 1,129 s | 634 s | — |
@@ -219,17 +269,18 @@ draw at index 9 reached producer fixed points too.
 | 6 | 1949551 | 4 | c4/i4/d4 | producer fixed point after 13 rounds | 1,613 s | 1,297 s | — |
 | 9 | 851903 | 2 | c4/i<=3/d2 | producer fixed point after 2 rounds (not counted) | 88 s | 77 s | — |
 
-State 5500414’s orbit was already excluded by lane K’s flag certificates, so its
-admission leaves the count unchanged, while states 7844815, 4028335 and 2601983 each
-remove their own orbit.
-With every draw admitted so far, the certified census counts 72,272 states in 9,165
+State 5500414’s orbit was already excluded by SW9’s certificate (flag 3, arity 9,
+admitted in exp-250), so its admission leaves the count unchanged, while states 7844815,
+4028335 and 2601983 each remove their own orbit.
+With all five closures admitted, the certified census counts 72,272 states in 9,165
 orbits, the endpoint surviving
 ([census](../results/exp-252-n17-overnight-per-state-price/census.json)).
 
 The draws run in the survey’s own seeded random order (indices 2, 4, 1, 5, 8, 10, 3, 12,
 11, 6, 7, 9). The receipt’s `index` field is the stratified draw position, not that
-order. Wall exceeds process CPU by about 2.5 times here because other agents’ test runs
-held the host at a load near 10; the per-state price is read from process CPU.
+order. Wall exceeds process CPU by up to about 2.5 times here (1.9 times over the 13
+kernel runs) because other agents’ test runs held the host at a load near 10; the
+per-state price is read from process CPU.
 
 The receipts are under
 [receipts/A](../../../explorations/X048-session-182-overnight/receipts/A/), the admitted

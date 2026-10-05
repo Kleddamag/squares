@@ -588,6 +588,7 @@ case or experiment separately.
 | [n17 Flag 2 Diagnosis](docs/project/reviews/review-2026-10-04-n17-flag2-diagnosis.md) | dated review record | record | retained | — |
 | [n17 Capture Route After Pilot 2](docs/project/reviews/review-2026-10-05-n17-capture-r9.md) | dated review record | record | retained | — |
 | [n17 Stall Classification](docs/project/reviews/review-2026-10-05-n17-stall-classification.md) | dated review record | record | retained | — |
+| [exp-252 Factual Review](docs/project/reviews/review-2026-10-05-exp-252-h264.md) | dated review record | record | retained | — |
 | [Integrity Ceremony Audit](docs/project/reviews/review-2026-10-03-integrity-ceremony-audit.md) | dated review record | record | retained | — |
 | [Session 168 Handoff: Work Stopped Mid-Flight](packing/campaign/explorations/X048-session-168-pilots/handoff/README.md) | research synthesis | record | retained | — |
 | [n17 Optimality Route After PR 265](docs/project/reviews/review-2026-10-01-n17-route-after-pr265.md) | dated review record | record | retained | — |
@@ -5625,7 +5626,7 @@ round that names the hypothesis, control roles included.
 | [H-261](packing/campaign/hypotheses/H-261-n17-local-minimum-modulo-sliders.md) | unresolved | The n17 endpoint is a strict local minimum modulo its slider directions; certified at r = 1/5000 over a declared slider box, but the claim names the whole physical slider domain | 1 | exp-244 unresolved: worst ratio 0.925818 on the declared box; H-268 owes the slide bound |
 | [H-262](packing/campaign/hypotheses/H-262-n17-conditional-charge-occupancy-census.md) | refuted | Settled-case cuts and per-cell charge floors leave at most 10^4 of the 20,155,518 occupancy orbits; one symmetric linear floor vector leaves at least 30,966 by theorem | 1 | exp-243 rejected: R068 at U excludes nothing; 7,703,312 orbits survive the cuts |
 | [H-263](packing/campaign/hypotheses/H-263-n17-endpoint-adapted-cover.md) | open question | Which closed cover keeps the whole endpoint family inside one occupancy state and leaves the fewest survivors (BC-410) | 0 | — |
-| [H-264](packing/campaign/hypotheses/H-264-n17-geometric-exclusion-cost-per-leaf.md) | open question | The cost of one exact geometric exclusion per residue state, on the seed-182 draw of 12 states from the survey’s arity8 frame at a cap above the endpoint; rewritten by Session 182 | 1 | exp-252 accepted, held for W2 review: five of the 10 counted draws closed on the standing verifier’s full pass, four did not |
+| [H-264](packing/campaign/hypotheses/H-264-n17-geometric-exclusion-cost-per-leaf.md) | open question | The cost of one exact geometric exclusion per residue state, on the seed-182 draw of 12 states from the survey’s arity8 frame at a cap above the endpoint; rewritten by Session 182 | 1 | exp-252 accepted, W2 review confirmed with corrections: five of the 10 counted draws closed on the standing verifier’s full pass, four did not |
 | [H-265](packing/campaign/hypotheses/H-265-n17-catalogue-polynomial-identity.md) | confirmed | The certified chart endpoint is a root of the catalogue’s irreducible degree-18 polynomial | 1 | exp-245 accepted: identical with unit 1; irreducible over Q |
 | [H-266](packing/campaign/hypotheses/H-266-n17-minimal-capacity-one-cover.md) | confirmed | A D4-symmetric capacity-one cover of at most 25 cells holds the endpoint family in one occupancy state; the unique-state 24-cell cover replaces the H259 grid | 2 | exp-247 accepted: 43,593 orbits; unique state, margin 0.002112 |
 | [H-267](packing/campaign/hypotheses/H-267-n17-isolated-sub-pattern-residue.md) | unresolved | Isolated sub-pattern certificates of arity at most seven leave at most 10^4 orbits on the H-266 cover; the selector flags 44 classes and projects 5,084 orbits | 3 | exp-251 in progress: lane K’s arity-7 flags s182-k1, s182-k3, s182-k4, s182-k5, s182-k6, s182-k7, s182-k8 and s182-k9 admitted on the standing verifier’s full pass; 9,168 certified orbits, 10,173 under arity-at-most-7 entries |
@@ -5973,7 +5974,7 @@ The relevant generator writes the receipt, and the entry fills in on the next
 
 There are 181 rounds registered in `series-000`.
 
-They record 2512.1 agent-minutes and 4268.2 wall-minutes.
+They record 2512.1 agent-minutes and 4273.1 wall-minutes.
 These totals exclude four historical annealing rounds with unrecorded timing; their wall
 and operator costs are unknown, not zero.
 Exp129 closed as blocked without invocation and contributes zero scientific elapsed
@@ -6195,7 +6196,7 @@ archive beside it.
 | [exp-249](packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-249-h267-n17-first-certified-sub-patterns.md) | 17 | target | H-267 | Two flagged sub-patterns certified by two independent provers, each re-proved in full by an independent verifier | W7 and A forbidden at U; 17,690 certified orbits, endpoint surviving | unresolved |
 | [exp-250](packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-250-h267-n17-standing-verifier-admissions.md) | 17 | target | H-267 | Flag 3 at arity 9 and the residue state N1, closed by the kernel and admitted on the standing verifier’s full pass, nothing re-run | SW9 and N1 forbidden at U; 15,953 certified orbits, endpoint surviving | unresolved |
 | [exp-251](packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-251-h267-n17-overnight-flag-certification.md) | 17 | target | H-267 | Session 182 lane K: the nine heaviest arity-7 standing flags under SW9’s adaptive-row kernel recipe, each closure admitted on the standing verifier’s full pass | In progress: s182-k1, s182-k3, s182-k4, s182-k5, s182-k6, s182-k7, s182-k8 and s182-k9 forbidden at U; 9,168 certified orbits, endpoint surviving | in-progress |
-| [exp-252](packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-252-h264-n17-overnight-per-state-price.md) | 17 | target | H-264 | Session 182 lane A: H-264’s seed-182 draw of residue states through the 17-owner kernel at 32 bins, each closure admitted on the standing verifier’s full pass | Five of the ten counted draws forbidden at U on the standing verifier’s full pass, the criterion met; held for W2 review; 9,165 certified orbits, endpoint surviving | accepted |
+| [exp-252](packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-252-h264-n17-overnight-per-state-price.md) | 17 | target | H-264 | Session 182 lane A: H-264’s seed-182 draw of residue states through the 17-owner kernel at 32 bins, each closure admitted on the standing verifier’s full pass | Five of the ten counted draws forbidden at U on the standing verifier’s full pass, the criterion met; W2 review confirmed with corrections; 9,165 certified orbits, endpoint surviving | accepted |
 
 ### Cost and provenance
 
@@ -6381,11 +6382,11 @@ archive beside it.
 | exp-249 | 1800 seconds per run; one worker | 2055.6 s | — | criterion | `15df68ab1`; two clean runs at 15df68ab |
 | exp-250 | 7000 seconds per verification; one worker | 836.0 s | — | criterion | `fd2c9602e`; two full verifications, at fd2c9602e and ae4f5fb4 |
 | exp-251 | 7,000 s per kernel target and 4,000 s per verification; one worker | — | — | — | in progress at `cebb5d15a` |
-| exp-252 | 7,000 s per state and 4,000 s per verification, one worker per job | 11744.0 s | — | criterion | `dfd38187c`; five of the ten counted draws closed, held for W2 review |
+| exp-252 | 7,000 s per state and 4,000 s per verification, one worker per job | 12041.0 s | — | criterion | `dfd38187c`; five of the ten counted draws closed; W2 review confirmed with corrections |
 
 ### What the 181 rounds jointly establish
 
-The 181 rounds use 2512.1 agent-minutes and 4268.2 wall-minutes under the campaign’s
+The 181 rounds use 2512.1 agent-minutes and 4273.1 wall-minutes under the campaign’s
 retained effort accounting.
 The never-invoked exp129 adds no scientific result or execution time.
 Exp-114 contributes 2.46 seconds of target/replay effort; its readiness work is recorded

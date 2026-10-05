@@ -8291,7 +8291,8 @@ evidence:
       strict lower bound s(17) > 18641771/4000000 = 4.66044275 for independently
       rotated unit squares with disjoint interiors and boundary contact allowed,
       11/4000000 above R068's 116511/25000. This entry records that source
-      claim; nothing has been replayed here. The certificate (C027, SHA-256
+      claim; the complete paired replay here of 2026-10-05 is recorded
+      separately (E-n017-guzhou-r071-source-replay). The certificate (C027, SHA-256
       15b6bf6a...d469) keeps R068's charge unchanged: all 2,621 point orbits,
       all 889 rule orbits, the budget 17000448944 units of 10^-9 and the
       requested minimum 1000026409 equal R068's, and only the parent side,
@@ -8303,9 +8304,10 @@ evidence:
       charge 1000026844 and surplus 17 x 1000026844 - M = 7404 from a
       completion summary of a three-partition C++ and BigInt run of 1,694 s;
       its row-level partition records are missing, which the source states.
-      That summary names the certificate's digest and, as checker, launcher
-      and executable, the bytes R068's replay here ran (devtools.audit_guzhou_r071
-      summary). The source's own CI replay of it, run 36788162356 on GitHub
+      That summary names the certificate's digest, as BigInt checker and
+      launcher the bytes R068's replay here ran, and as executable the source's
+      own build 8f4d59ac...aa42, which its R068 and R070 runs record; R068's
+      replay here built cf761bb5...19d5 (devtools.audit_guzhou_r071 summary). The source's own CI replay of it, run 36788162356 on GitHub
       Actions, passed in 16 min 43 s; its publisher did not observe it, and its
       artifacts could not be fetched here. R070 at
       8988d933e10fe89709a01d98b602396c29dd7bd1 (2026-09-29T07:56:05Z) claimed
@@ -8320,6 +8322,134 @@ evidence:
       parent within a fixed-weight enhancement class, and R071's conditional
       joint geometry at 9321/2000 inside one first-anchor box, which the source
       says does not prove s(17) > 4.6605.
+    external_review:
+      state: informally-verified
+      date: '2026-10-05'
+      reviewed_by: AI agent, the review lane of the 2026-10-05 stage 4 for T-093 (claude-opus-5-5, tbd-strong tier), separately prompted, blind to the replay; docs/project/reviews/review-2026-10-05-guzhou-r071.md
+      note: >-
+        No mathematical defect. The C027 certificate is R068's charge byte for byte at parent
+        side 18452000/18641771 with every strict core rebuilt over 5,114 intervals refining
+        R068's 4,991 and R070's 5,107; the charge, budget 17000448944, capacity one of all 86
+        patterns, the chain, every core margin (least 1.0001596e-12) and envelope were
+        re-derived in exact arithmetic by code sharing nothing with the source, and the two
+        prose steps are the lemmas proved in the 2026-09-28 review, unchanged. An independent
+        exact sweep returned minimum 1000026844 at 227 sampled rows, the 14 new rows among
+        them, and reproduced 20 published rows of R068 and R070 with their cell counts; the
+        charge at a legal corner centre bounds every row from above. Unchecked there: the
+        exact minimum at the other 4,887 rows, which the source's missing C027 records and
+        unobserved CI do not supply and the complete paired replay decided
+        (E-n017-guzhou-r071-source-replay). RF-1 to RF-9, none blocking.
+    source_reviewed: '2026-10-05'
+
+  - id: E-n017-guzhou-r071-source-replay
+    claim: lower-bound
+    scope: {n_values: [17]}
+    assurance: verified
+    method: exact-algebraic
+    performed_by: repository
+    relationship_to_generator: same-implementation
+    origin: replayed-here
+    novelty: previously-published
+    source_key: '[Guzhou0806 n17 R071]'
+    certificate: resources/web/n17-guzhou-r071-2026-09-30/n17-square-packing/certificates/R071-C029/bounds/c027/certificate.json
+    replay: >-
+      From packing/, with g++ and the Boost 1.83 headers and Node on PATH:
+      .venv/bin/python3 -m devtools.replay_guzhou_r071 stage --work WORK
+      --checkout CLONE, where CLONE is a clone of the source at 8c11f696 that
+      supplies the research files the packet pins by digest (without it the
+      staged package holds every file the bound reads, and run --route paired
+      runs the same commands without the package check); then
+      .venv/bin/python3 -m devtools.replay_guzhou_r071 run --work WORK
+      --cores 2,3, which runs node check_package.js (PASS_BYTES_ONLY) and
+      N17_TIMEOUT_MINUTES=600 node run_public.js bound WORK/bound: it compiles
+      project/base/upstream/cpp/verify.cpp with g++ -O3 -std=c++17, runs
+      replay.js on bounds/c027/certificate.json at two partitions, and must
+      write REPLAY.json PASS_R071_C027_GLOBAL_REPLAY and THEOREM.json
+      PASS_COMPLETE_CPP_AND_BIGINT_EXCLUSION with target 18641771/4000000,
+      minimum 1000026844, budget 17000448944, surplus 7404 and the
+      certificate's digest. Then .venv/bin/python3 -m devtools.audit_guzhou_r071
+      compare R071 WORK/bound/global --published WORK/bound/global must report
+      no mismatch. The controls are .venv/bin/python3 -m
+      devtools.replay_guzhou_r071 control over-claim --work WORK and control
+      drop-rule --work WORK --count 4, each refused by both checkers. The
+      receipts are under
+      packing/resources/web/n17-guzhou-r071-2026-09-30/receipts/r071/.
+    replay_status: passed
+    verifiers: [V-guzhou-n17-verify-cpp, V-kleddamag-n17-verify, V-audit-guzhou-r071, V-replay-guzhou-r071]
+    proof:
+      source: packing/resources/web/n17-guzhou-r071-2026-09-30/n17-square-packing/certificates/R071-C029/BOUND_PROOF.md
+      theorem: Seventeen independently rotated unit squares cannot fit at side 18641771/4000000; compactness gives s(17) > 18641771/4000000.
+      scope: Unrestricted square packing with disjoint interiors and boundary contact allowed.
+      pinpoints: >-
+        The source's BOUND_PROOF.md under certificates/R071-C029/, on R068's PROOF.md and
+        the argument and budget rules of Kleddamag's bounds/4.66001/; sections 3 and 4 of
+        the 2026-09-28 review of R067 and R068, which prove the two steps the source
+        asserts (endpoint sufficiency and the centre envelope), neither of which uses the
+        parent side or the cores; and sections 3 to 6 of the 2026-10-05 review of R071,
+        which re-derive the five premises the new parent side and rebuilt cores touch.
+      assumptions:
+        - The exact nonnegative D4-invariant point, k-of-m threshold, weighted-threshold and winning-subset charges are R068's unchanged, with total budget 17000448944 units of 10^-9.
+        - A weighted threshold with positive integer coefficients a_i and threshold k charges at most floor(sum a_i / k) disjoint cores, and a winning-subset feature whose listed subsets pairwise intersect charges at most one; every one of the 86 distinct rules has capacity one.
+        - The 5114 contiguous rational parent-angle intervals cover every folded orientation up to 207107/500000, with a strictly contained closed core in each at parent side 18452000/18641771.
+        - Each interval's centre envelope contains every legal parent centre, and the exact sweep decides every generic centre cell in it.
+        - Upper semicontinuity of the monotone nonnegative closed-set charges extends the generic bound to boundary and event centres.
+        - Exact arithmetic establishes minimum charge 1000026844, so 17 times that charge exceeds the budget by 7404 units; compactness makes the packing minimum attained.
+      audit_record: docs/project/reviews/review-2026-10-05-guzhou-r071.md
+    external_review:
+      state: informally-verified
+      date: '2026-10-05'
+      reviewed_by: AI agent, the review lane of the 2026-10-05 stage 4 for T-093 (claude-opus-5-5, tbd-strong tier), separately prompted, blind to the replay; docs/project/reviews/review-2026-10-05-guzhou-r071.md
+      note: >-
+        The review, written before and blind to this replay, finds no mathematical defect,
+        re-derives every premise in exact arithmetic by code sharing nothing with the
+        source, and lists in its section 8 what the replay must show; this replay shows all
+        of it. Its independent exact sweep at 227 rows, the 14 rows R071 adds among them,
+        equals the fresh C++ and BigInt ledgers at every one, minimum and cell count (the
+        triples' SHA-256 2b8ebed9...b7de in both), and its least core margin is the fresh
+        C++ header's. RF-1 to RF-9, none blocking; RF-3 to RF-6 are closed at this exit.
+    limitations: >-
+      Replays the source's own run_public.js bound over the retained bytes on
+      2026-10-05, from 04:53:42Z to 05:51:40Z, in the R071 package staged by
+      devtools.replay_guzhou_r071 from the packet (at that time retaining the
+      research files it now pins by digest, which a staging from a clone at
+      8c11f696 reproduces byte for byte), on a shared four-core Linux host at
+      load 5 to 21, pinned to two cores, with g++ 13.3.0 at -O3 -std=c++17,
+      Boost 1.83 headers, Node v22.22.0 and N17_TIMEOUT_MINUTES=600:
+      check_package.js PASS_BYTES_ONLY; the C++ executable built is
+      cf761bb5...19d5, the bytes R068's replay here built from the same
+      verify.cpp (the source's builds are 8f4d59ac...aa42); Guzhou0806's C++
+      checker and Kleddamag's Node BigInt checker (c2209186...49b7, launcher
+      replay.js 1125e596...7712) ran concurrently over all 5,114 intervals in
+      two partitions each, C++ 1,577 s and 1,693 s, BigInt 3,409 s and 3,464 s,
+      and wrote PASS_COMPLETE_CPP_AND_BIGINT_EXCLUSION, target
+      18641771/4000000, budget 17000448944, minimum 1000026844, surplus 7404,
+      certificate 15b6bf6a...d469, and REPLAY.json
+      PASS_R071_C027_GLOBAL_REPLAY, in 3,478 s of wall and 3,238 CPU-seconds.
+      devtools.audit_guzhou_r071 compare finds the two C++ and two BigInt
+      partitions identical row for row, 0 of 4 x 5,114 rows differing, every
+      row at minimum 1000026844, 2,263,809,819,494 cells in all, C++ sites
+      20,860 and signed terms 49,208, least strict core margin
+      15923658553101702964643878656034963576202697/15921117963709509270343578017641703022637690727500000000,
+      just above 10^-12 at row 2647, reduced (interval, minimum, cells)
+      triples SHA-256
+      6c9d72022c548444a5a56201949064eaf81dc24409bb88d03de09549b7f3bfe3. The
+      source retains no partition record of R071, so there is no published
+      ledger to compare with; the comparison is between the two fresh ledgers
+      and with the review's sample. Two mutated certificates are refused by
+      both checkers: the over-claim (parent side 9226/9321, target 9321/2000,
+      cores unchanged) as a non-strict core before any sweep, and the
+      drop-rule (the heaviest rule orbit's weight zeroed and its 198,960,224
+      units taken off the budget) by the sweep at interval 0, minimum
+      950286788 below the requested 1000026409; tests/test_guzhou_r071_packet.py
+      holds both. The C++ checker is Guzhou0806's own and the BigInt checker is
+      Kleddamag's byte for byte; both run one exact event-cell sweep, so C3
+      rather than a method-distinct C4, and the native parent-core route
+      still cannot read the weighted and winning-subset features. This is the
+      first replay of R071 outside its source: its publisher checked file
+      identities and saved records only, its partition records are missing,
+      and its CI run was not observed. Advance over the previous verified
+      116511/25000 (R068, T-043): exactly 11/4000000. No new theorem
+      identifier is created.
     source_reviewed: '2026-10-05'
 
   - id: E-n017-kleddamag-4640020-report

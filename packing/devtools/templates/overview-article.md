@@ -91,7 +91,7 @@ $n$.
 
 Eleven squares is settled: $s(11) = 3.8770835\ldots$, the exact side of Trump’s 1979
 packing, by [T-060](all-results.html#t-060). Seventeen squares is bracketed by
-machine-checked bounds, [T-043](all-results.html#t-043) below and
+machine-checked bounds, [T-093](all-results.html#t-093) below and
 [T-065](all-results.html#t-065) above, and [$n = 21$](cases/21.html),
 [$32$](cases/32.html) and [$45$](cases/45.html) have new exact values.
 The table above starts at significance S3 and up, max age 180 days and superseded

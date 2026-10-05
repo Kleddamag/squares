@@ -119,13 +119,17 @@ separate record.
 Guzhou0806’s R068 of 28 September, continuing that charge with one added
 four-site point orbit over 4,991 intervals, proves $s(17) > 116511/25000 = 4.66044$,
 exactly $0.00043$ higher; its two checkers’ complete replays pass here and agree with
-the published ledgers, at `V3/C3`, and it supplies the verified bound, $0.0151$ below
-Bidwell’s packing
+the published ledgers, at `V3/C3`, and it supplied the verified bound until 5 October
 ([review](docs/project/reviews/review-2026-09-28-n17-guzhou-r067-r068.md)). R067,
 $233009/50000$, was replayed beside it.
-Each now has an entry in the results register (`T-038` to `T-043`), which since 29
-September 2026 holds every result by others that this record acts on, with the source’s
-credit beside this repository’s `V` and `C`.
+Guzhou0806’s R071 of 30 September keeps R068’s charge and rebuilds its cores over 5,114
+intervals for $s(17) > 18641771/4000000 = 4.66044275$, $11/4000000$ higher; its complete
+replay passed here on 5 October at `V3/C3`, and it supplies the verified bound now,
+$0.0151$ below Bidwell’s packing
+([review](docs/project/reviews/review-2026-10-05-guzhou-r071.md)). Each now has an entry
+in the results register (`T-038` to `T-043`, and `T-093`), which since 29 September 2026
+holds every result by others that this record acts on, with the source’s credit beside
+this repository’s `V` and `C`.
 
 The same intake took in three more sources.
 Evan Daniel’s `evand/square-packing`, building on Sam Burns’s and Gustavo Massaccesi’s
@@ -250,9 +254,9 @@ action for each are in [`frontier/RESULTS.md`](packing/frontier/RESULTS.md); the
 | [T-059](packing/frontier/RESULTS.md) | 11 | `V3` | `C3` | `S2` | `previously-published` | wand125/square-packing-tools reports that its exact general_pose_tree checker reproduces all 12028 per-row core minima of Kleddamag’s n11 certificate, release v1.0.2, with global row minimum 999962528 units and all witnesses replayed. |
 | [T-061](packing/frontier/RESULTS.md) | 11 | `V3` | `C3` | `S2` | `previously-published` | s(11) > 3875000000/999999999 = 3.875000003875000003875 …, by Ke Wang and Can Li’s Zenodo record of 29 September 2026, reported on jlevy/squares#247. |
 | [T-078](packing/frontier/RESULTS.md) | 12 | `V3` | `C3` | `S2` | `previously-published` | s(12) >= 31360/7901 = 3.96911783 …, by squarepacker (Ryu Sungjoon) after Evan Daniel, published on 2 October 2026 and reported on jlevy/squares#309. |
+| [T-093](packing/frontier/RESULTS.md) | 17 | `V3` | `C3` | `S2` | `previously-published` | s(17) > 18641771/4000000 = 4.66044275, by Guzhou0806 / N17 project’s R071 release of 30 September 2026, on the charge of R068 (T-043). |
 | [T-088](packing/frontier/RESULTS.md) | 69 | `V0` | `C0` | `S2` | `previously-published` | s(69) <= 8.827194655729738914 …, the root near 8.82719465572973 of the degree-38 polynomial the Kingbird catalogue prints for this count, by David Ellsworth’s packing of 69 unit squares in a square of that side. |
 | [T-089](packing/frontier/RESULTS.md) | 83, 87 | `V0` | `C0` | `S2` | `previously-published` | s(83) <= 9.634757648631082029 …, a root of degree 672, and s(87) <= 9.838815269948262260 …, the root near 9.83881526994826 of the degree-41 polynomial the Kingbird catalogue prints for that count: two packings by Allen Chang, the first optimized by David Ellsworth. |
-| [T-093](packing/frontier/RESULTS.md) | 17 | `V0` | `C0` | `S2` | `previously-published` | s(17) > 18641771/4000000 = 4.66044275, by Guzhou0806 / N17 project’s R071 release of 30 September 2026, on the charge of R068 (T-043). |
 | [T-063](packing/frontier/RESULTS.md) | 61 | `V3` | `C3` | `S1` | `previously-published` | s(61) = 8, as a corollary of s(60) = 8 (T-062), which Evan Daniel published with it on 28 September 2026. |
 
 | Significance | What [`epistemics.md`](epistemics.md#significance-and-novelty) anchors it to |
@@ -554,6 +558,7 @@ case or experiment separately.
 | [Unified adversarial review of the tentative optimality proof for eleven squares](docs/project/reviews/review-2026-10-03-n11-optimality-adversarial-gpt6-pro-unified.md) | dated review record | record | retained | — |
 | [Changes in v0.1.4 of the Eleven-Square Optimality Review, for Its W2 Exposition Review](docs/project/reviews/review-2026-10-04-n11-optimality-paper-v0.1.4-changes.md) | dated review record | record | retained | — |
 | [wand125 Certificates of 3 and 4 October: Review of 28 Mixed Rectangle-Measure Bounds From `n = 42` to `n = 95`](docs/project/reviews/review-2026-10-05-wand125-october-4-certificates.md) | dated review record | record | retained | — |
+| [Proof Review: Guzhou0806’s R071, `s(17) > 18641771/4000000 = 4.66044275`](docs/project/reviews/review-2026-10-05-guzhou-r071.md) | dated review record | record | retained | — |
 | [Integration of GPT-6 Pro’s Adversarial Review of the Eleven-Square Optimality Proof](docs/project/reviews/review-2026-10-03-n11-gpt6-pro-review-integration.md) | dated review record | record | retained | — |
 | [Eleven-Square Optimality Paper: Adversarial Review](docs/project/reviews/review-2026-10-03-n11-optimality-paper-adversarial.md) | dated review record | record | retained | — |
 | [Review: The Site’s Documentation Cards and the Records Behind Them](docs/project/reviews/review-2026-10-01-site-documentation-records.md) | dated review record | record | retained | — |

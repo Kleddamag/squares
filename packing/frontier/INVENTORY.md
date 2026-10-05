@@ -8,7 +8,7 @@ ours, which rest on someone else's argument, and how far each has been checked.
 
 ## The short version
 
-- **287** evidence records. **154** are formal; **147** of those were established here.
+- **288** evidence records. **155** are formal; **148** of those were established here.
 - **125** rest on an argument made elsewhere, of which **7** have been read by nobody here.
 - **40** claim to be first established here. **13** make no novelty statement at all - not assessed, which is not the same as not novel.
 
@@ -195,9 +195,10 @@ results, it is a statement about what this repository has itself examined.
 | `E-n017-kleddamag-466001-report` | 0 | lower-bound | reported | - | elsewhere | - | previously-published | producer’s code | `V-kleddamag-n17-verify` |
 | `E-n017-kleddamag-466001-source-replay` | 0 | lower-bound | verified | equalities and inequalities, no tolerance | here | informally-verified | previously-published | producer’s code | `V-kleddamag-n17-verify` |
 | `E-n017-guzhou-r068-report` | 0 | lower-bound | reported | - | elsewhere | - | previously-published | producer’s code | `V-guzhou-n17-verify-cpp`, `V-kleddamag-n17-verify` |
-| `E-n017-guzhou-r068-source-replay` | 1 | lower-bound | verified | equalities and inequalities, no tolerance | here | informally-verified | previously-published | producer’s code | `V-guzhou-n17-verify-cpp`, `V-kleddamag-n17-verify`, `V-audit-guzhou-r068` |
+| `E-n017-guzhou-r068-source-replay` | 0 | lower-bound | verified | equalities and inequalities, no tolerance | here | informally-verified | previously-published | producer’s code | `V-guzhou-n17-verify-cpp`, `V-kleddamag-n17-verify`, `V-audit-guzhou-r068` |
 | `E-n017-guzhou-r067-source-replay` | 0 | lower-bound | verified | equalities and inequalities, no tolerance | here | informally-verified | previously-published | producer’s code | `V-guzhou-n17-verify-cpp`, `V-kleddamag-n17-verify`, `V-audit-guzhou-r068` |
-| `E-n017-guzhou-r071-report` | 1 | lower-bound | reported | - | elsewhere | - | previously-published | producer’s code | `V-guzhou-n17-verify-cpp`, `V-kleddamag-n17-verify` |
+| `E-n017-guzhou-r071-report` | 1 | lower-bound | reported | - | elsewhere | informally-verified | previously-published | producer’s code | `V-guzhou-n17-verify-cpp`, `V-kleddamag-n17-verify` |
+| `E-n017-guzhou-r071-source-replay` | 1 | lower-bound | verified | equalities and inequalities, no tolerance | here | informally-verified | previously-published | producer’s code | `V-guzhou-n17-verify-cpp`, `V-kleddamag-n17-verify`, `V-audit-guzhou-r071`, `V-replay-guzhou-r071` |
 | `E-n017-kleddamag-4640020-report` | 0 | lower-bound | reported | - | elsewhere | - | previously-published | producer’s code | `V-kleddamag-n17-verify` |
 | `E-n017-kleddamag-4640020-source-replay` | 0 | lower-bound | verified | equalities and inequalities, no tolerance | here | informally-verified | previously-published | producer’s code | `V-kleddamag-n17-verify` |
 | `E-n017-guzhou-r012-source-replay` | 0 | lower-bound | verified | equalities and inequalities, no tolerance | here | informally-verified | previously-published | producer’s code | `V-guzhou-r012-verify-py` |
@@ -312,10 +313,10 @@ results, it is a statement about what this repository has itself examined.
 
 ## What the register rests on
 
-- **assurance**: numerically-checked 4, reported 129, verified 154
-- **method**: exact-algebraic 91, interval-certified 50, numerical-multiprecision 4, proof-assistant-checked 3, proof-audited 3, published-proof 7, reported 129
-- **novelty**: apparently-novel 40, common-knowledge 4, not assessed 13, previously-published 230
-- **relationship to the producer's code**: generator 5, independent-implementation 48, not-applicable 19, same-implementation 202, shared-components 7, unknown-historical 6
+- **assurance**: numerically-checked 4, reported 129, verified 155
+- **method**: exact-algebraic 92, interval-certified 50, numerical-multiprecision 4, proof-assistant-checked 3, proof-audited 3, published-proof 7, reported 129
+- **novelty**: apparently-novel 40, common-knowledge 4, not assessed 13, previously-published 231
+- **relationship to the producer's code**: generator 5, independent-implementation 48, not-applicable 19, same-implementation 203, shared-components 7, unknown-historical 6
 
 The `cases` column is how many frontier records cite each piece of evidence, and it is the reason to read this table rather than count records. Ranked below are the *formal* records only: a `reported` record cited across the frontier may be a shared catalogue and is labelled as such, which is the register working rather than risk. The risk is a verified claim resting on an argument nobody has examined.
 

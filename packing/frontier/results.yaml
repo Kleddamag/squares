@@ -3724,6 +3724,8 @@ results:
       reproduced nine sampled rows; completing and retaining it would make the exact leg this
       repository's own but is the same method. Rung 5 needs a proof-assistant formalization
       reviewed by human experts.
+      Superseded as the verified lower bound on 2026-10-05 by Guzhou0806's R071 (T-093),
+      which keeps this charge; stays true as stated.
 
   - id: T-044
     kind: lower-bound
@@ -8284,75 +8286,95 @@ results:
     headline: "`s(17) > 18641771/4000000 = 4.66044275`"
     claim: >-
       s(17) > 18641771/4000000 = 4.66044275, by Guzhou0806 / N17 project's R071 release of
-      30 September 2026, on the charge of R068 (T-043). It is 11/4000000 above T-043's
-      116511/25000, the verified lower bound, and would leave 0.0150873 to Bidwell's
+      30 September 2026, on the charge of R068 (T-043). It raised the verified bound by
+      exactly 11/4000000 over T-043's 116511/25000 and leaves 0.0150873 to Bidwell's
       4.67553009.
 
       The certificate keeps every point orbit, rule orbit and weight of R068, and its budget
       of 17000448944 units of 10^-9, and rebuilds every strict core for the smaller parent
       side 18452000/18641771 in the container 4613/1000, over 5,114 parent-angle intervals
-      that refine R068's 4,991. The source reports minimum core charge 1000026844 on every
-      interval, so seventeen cores exceed the budget by 7404. It refines R070 of the day
-      before, s(17) > 46604427/10000000 = 4.6604427 over 5,107 intervals, which it
+      that refine R068's 4,991. The source reports a least core charge of 1000026844 over all
+      5,114 intervals, so seventeen cores exceed the budget by 7404. It refines R070 of the
+      day before, s(17) > 46604427/10000000 = 4.6604427 over 5,107 intervals, which it
       supersedes.
 
-      The source checked it with a three-partition run of Guzhou0806's C++ checker and
-      Kleddamag's Node BigInt checker, of which it retains a completion summary and says the
-      row records are missing; its GitHub Actions replay passed, unobserved by its
-      publisher. Nothing has been replayed here. devtools.audit_guzhou_r071 found the
-      charge equal to R068's and the summary consistent with the certificate, naming the
-      checker bytes T-043's replay ran.
+      It was replayed here in full on 5 October 2026, the first replay of it outside its
+      source: the source retains a completion summary of its own run and says the row
+      records are missing, and its GitHub Actions replay passed unobserved by its publisher.
+      The source's run_public.js ran Guzhou0806's C++ checker and Kleddamag's Node BigInt
+      checker over every interval, and devtools.audit_guzhou_r071 found the two fresh
+      ledgers identical row for row, every row at 1000026844; the two checkers are T-043's
+      byte for byte and one event-cell method. Both refuse two mutated certificates.
 
       Guzhou0806 / N17 project,
       [n17-square-packing](https://github.com/Guzhou0806/n17-square-packing/tree/8c11f6962506940c5de67a9fa73b3d1e2e151196/certificates/R071-C029),
-      on Kleddamag's charge. The package credits Kleddamag for the 4.66001 framework, proof
-      and BigInt checker (Kleddamag building on Squares Project (Joshua Levy), Mira and
-      Guzhou0806), and discloses AI assistance.
+      on R068's continuation of Kleddamag's 4.66001 charge. The package credits Kleddamag
+      for the 4.66001 framework, proof and BigInt checker (Kleddamag building on Squares
+      Project (Joshua Levy), Mira and Guzhou0806), and discloses AI assistance.
     scope: {n_values: [17]}
-    verification: V0
-    confirmation: C0
+    verification: V3
+    confirmation: C3
     significance:
       score: 2
       rationale: >-
-        Scored as a claim: the strongest reported lower bound at n = 17, 11/4000000 over
-        T-043 from T-043's charge unchanged, a finer catalogue and rebuilt cores, the
-        construction of T-042, which is S2. If replayed it would hold the verified field,
-        which argues for S3 by the T-039 precedent; it is drafted at S2 because it adds no
-        charge feature, rule or method and moves the bound by under three parts in a
-        million. The reviewing lane confirms or changes it.
+        The case's verified lower bound, 2.75 x 10^-6 above T-043 from T-043's charge
+        unchanged, a finer catalogue and rebuilt cores: the construction of T-042, which is
+        S2, adding no orbit, rule, weight or method. T-043's step was 156 times this one and
+        T-039's, the S3 precedent the draft weighed, 83 times; R070's obstruction shows the
+        charge cannot reach 1/40000000 further, so this is the end of a recipe rather than
+        an opening. Holding the verified field is a fact about the frontier, not the claim;
+        a reader who weighs it above the size of the step would score S3 by T-039, and the
+        score gates nothing.
       scored: '2026-10-05'
-      by: think-1qms import, registering lane (repository; draft)
+      by: think-1qms stage-4 review lane, review-2026-10-05-guzhou-r071 (repository)
     novelty: previously-published
     attribution:
       source_keys: ['[Guzhou0806 n17 R071]']
       published: '2026-09-30'
     evidence:
       - E-n017-guzhou-r071-report
+      - E-n017-guzhou-r071-source-replay
     artifacts:
       - packing/resources/web/n17-guzhou-r071-2026-09-30/README.md
       - packing/resources/web/n17-guzhou-r071-2026-09-30/n17-square-packing/certificates/R071-C029/BOUND_PROOF.md
       - packing/resources/web/n17-guzhou-r071-2026-09-30/receipts/r071/structure.json
       - packing/resources/web/n17-guzhou-r071-2026-09-30/receipts/r071/summary.json
+      - packing/resources/web/n17-guzhou-r071-2026-09-30/receipts/r071/compare.json
+      - packing/resources/web/n17-guzhou-r071-2026-09-30/receipts/r071/replay/THEOREM.json
       - packing/resources/web/n17-guzhou-r071-2026-09-30/receipts/ci/r071-actions-run.json
       - packing/devtools/audit_guzhou_r071.py
-    next_rung: >-
-      think-1qms: the complete paired replay of the certificate by the source's own
-      run_public.js bound, Guzhou0806's C++ checker and Kleddamag's Node BigInt checker over
-      all 5,114 intervals at two partitions, priced in the packet at about 70 CPU-minutes
-      and 80 minutes' wall here from T-043's measured run, with the Boost headers this
-      container lacks; then devtools.audit_guzhou_r071 compare R071 on the fresh ledgers,
-      and a review of what differs from T-043, the parent side, the added intervals and the
-      rebuilt cores, since the charge and both checkers are T-043's byte for byte. Recorded
-      as replayed-here evidence, that replay is what raises the rungs and moves the
-      verified field.
-
-      The r071-bound artifact of the source's CI run, which expires on 2026-12-29 and
-      could not be fetched here, holds fresh partitions that could be compared row by row
-      first, as a diagnostic. V4 and C4 then need what T-043's next_rung names.
+      - packing/devtools/replay_guzhou_r071.py
+      - docs/project/reviews/review-2026-10-05-guzhou-r071.md
+    controls:
+      - packing/tests/test_guzhou_r071_packet.py
+      - packing/tests/test_retained_data.py
+    reviews:
+      - path: docs/project/reviews/review-2026-10-05-guzhou-r071.md
+        kind: adversarial
+        reviewer: AI agent, the review lane of the 2026-10-05 stage 4 for T-093, prompted separately from the registering and replay lanes with no shared context, blind to the replay; claude-opus-5-5, tbd-strong tier (configured reasoning xhigh)
+        reviewer_kind: ai
+        relation: project
+        date: '2026-10-05'
+        scope: >-
+          Guzhou0806 / N17 project's R071 C027 certificate for s(17) > 18641771/4000000, pinned at 8c11f696, against T-043's charge and checker bytes: the argument from certificate to bound with every hypothesis the two checkers assume; the charge, budget, capacities, chain, every strict core margin and envelope re-derived in exact arithmetic by code sharing nothing with the source; an independent exact sweep at 227 rows, the 14 rows R071 adds among them, with 20 control rows of R068 and R070 matching their published ledgers; the corner charge at every row; what changed from R068 and R070; the missing C027 records and the source's CI; R070's handling and the results that carry no bound; credit, the AI statement and the date; blind to the replay.
+        verdict: accepted
     notes: >-
-      V0 because the one cited entry is the source's report: assurance reported, replay not
-      attempted. C0 because nothing here has read the mathematics: the pre-replay audit
-      checks the certificate's structure against R068's and the source's own records, and
-      decides no interval. R070, published the day before and superseded by this release,
-      stays in the packet and the case record without an entry of its own, as a publication
-      record never replayed. Ids here are provisional until merged.
+      V3/C3: the complete paired replay here (E-n017-guzhou-r071-source-replay) is
+      confirming-origin exact-algebraic evidence with a certificate, replay command and
+      passing status, and the controls are the two mutated certificates both checkers
+      refuse. Not V4/C4: one adversarial AI review is retained, rung 4 needs two by distinct
+      reviewers and a human oversight record, and T-043 stands at V3/C3 for the same want.
+      R070, published the day before and superseded by this release, stays in the packet
+      and the case record without an entry of its own, as a publication record never
+      replayed; it would have been the fallback had this replay failed (review RF-8). Ids
+      here are provisional until merged.
+    next_rung: >-
+      V4 and C4 need a second adversarial AI review by a distinct reviewer and a human
+      oversight record, as T-043's next_rung says; a second machine method needs the native
+      parent-core route to read the weighted and winning-subset features, which it still
+      cannot. The r071-bound artifact of the source's CI run, which expires on 2026-12-29
+      and could not be fetched here, holds a third ledger that could be compared row by row
+      with the fresh ones; it would add a comparison, not a rung. R070's obstruction puts
+      the reach of this charge below 186417711/40000000 (review RF-7), so a higher bound
+      needs a new charge or an argument across parents. Rung 5 needs a proof-assistant
+      formalization reviewed by human experts.

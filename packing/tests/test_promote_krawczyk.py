@@ -261,15 +261,20 @@ def one_transcription_serves_three_arithmetics() -> None:
     symbol, which is how the symbolic route was unavailable without anything reporting it.
     """
     angle = 37
-    numeric = mp.sin(mp.radians(angle))
+    # The float value and the comparison run above the enclosure's 40 digits, whatever
+    # precision an earlier test left on `mp.mp`: at about 30 digits the float's own rounding
+    # error is wider than the enclosure, and the check fails on arithmetic, not on the branch.
+    with mp.workdps(60):
+        numeric = mp.sin(mp.radians(angle))
 
     saved = mp.iv.dps
     mp.iv.dps = 40
     try:
         enclosure = sin_degrees(interval(angle))
-        assert mp.mpf(enclosure.a) <= numeric <= mp.mpf(enclosure.b), (
-            "the interval branch does not enclose the float branch's value"
-        )
+        with mp.workdps(60):
+            assert mp.mpf(enclosure.a) <= numeric <= mp.mpf(enclosure.b), (
+                "the interval branch does not enclose the float branch's value"
+            )
     finally:
         mp.iv.dps = saved
 

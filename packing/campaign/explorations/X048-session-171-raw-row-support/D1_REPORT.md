@@ -70,9 +70,9 @@ source and witness mutations, omitted row claims and bounded packet input.
 Pure graph tests isolate the shared CI process’s historical memory counter; the actual
 standalone CLI memory guard is separately tested.
 
-Existing endpoint6: 148 raw atoms and 24 rows; all rows supported after 90 unique pairs
-and 91 nodes. A fresh process checked 14 selections and 210 pairs, replaying the exact
-endpoint enclosure’s row/piece inclusion.
+Existing `endpoint6`: 148 raw atoms and 24 rows; all rows supported after 90 unique
+pairs and 91 nodes. A fresh process checked 14 selections and 210 pairs, replaying the
+exact endpoint enclosure’s row/piece inclusion.
 Search/replay actual worker peaks were 142,917,632 B / 143,577,088 B; each whole Job
 took 3.328 seconds.
 
@@ -121,6 +121,18 @@ $ColdReceipt = 'PATH/TO/COLD-RECEIPT.json'
 $Out = 'PATH/TO/OUT.json'
 & $ProjectPython -m devtools.probe_n17_raw_row_support $InputObjects --checked-receipt $ColdReceipt --output $Out
 & $ProjectPython -m devtools.probe_n17_raw_row_support $InputObjects --checked-receipt $ColdReceipt --verify $Out --output 'PATH/TO/REPLAY.json'
+```
+
+On Linux, from `packing/` with the project’s Python 3.14 environment.
+Each run requires the cold saved-check receipt (`--checked-receipt`) for the same saved
+seed and node:
+
+```sh
+uv run --frozen --all-extras --group dev python -m devtools.probe_n17_raw_row_support \
+  PATH/TO/SAVED-OBJECTS --checked-receipt PATH/TO/COLD-RECEIPT.json --output PATH/TO/OUT.json
+uv run --frozen --all-extras --group dev python -m devtools.probe_n17_raw_row_support \
+  PATH/TO/SAVED-OBJECTS --checked-receipt PATH/TO/COLD-RECEIPT.json \
+  --verify PATH/TO/OUT.json --output PATH/TO/REPLAY.json
 ```
 
 Source/test editing began after session readiness at 11:56:55 +08; control checkpoint

@@ -96,7 +96,7 @@ The Job’s committed-memory counter is another metric, not interchangeable with
   impossibility. Search-cap exhaustion cannot be reported as an unsupported atom.
 - The retained W7 fixture checks complete group membership and vertex coverage,
   including added point and segment pieces.
-- A cold-checked endpoint6, four-bin, one-round state retains its exact six-owner pose
+- A cold-checked `endpoint6`, four-bin, one-round state retains its exact six-owner pose
   selection through the two-cover collision graph and propagation.
   All selected atoms and pair edges survive.
   The small-graph mutation control removes a selected atom; the witness check detects

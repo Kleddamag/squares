@@ -33,12 +33,12 @@ session:
     validation_command: python -m pytest tests/test_n17_residual_graph.py -q
     kill_condition: Ownership overlap, failed control, explicit guard or slot ceiling.
     fallback: Retain guard/refusal and no new mathematical claim.
-    outcome: PR325 required checks passed; parent1525d4e03 has no hull-kernel drift from601bbf110;
+    outcome: PR 325 required checks passed; parent 1525d4e03 has no hull-kernel drift from 601bbf110;
       one reviewer supports the bounded diagnostic.
     evidence:
     - packing/campaign/explorations/X048-session-170-compatibility/README.md
     stop_reason: Bounded decision retained; historical phase boundaries reconstructed from logs.
-    next_action: Review Draft PR333 under think-67ek; no target expansion or merge.
+    next_action: Review Draft PR 333 under think-67ek; no target expansion or merge.
   - workflow: pipeline-improvement
     focus: correctness
     recording: retrospective
@@ -54,12 +54,12 @@ session:
     validation_command: python -m pytest tests/test_n17_residual_graph.py -q
     kill_condition: Ownership overlap, failed control, explicit guard or slot ceiling.
     fallback: Retain guard/refusal and no new mathematical claim.
-    outcome: Raw pieces guard-refused before pair tests. Two-cover removes163 pair edges but
-      no atom or row. Endpoint witness survives;16 initial focused tests pass.
+    outcome: Raw pieces guard-refused before pair tests. Two-cover removes 163 pair edges but
+      no atom or row. Endpoint witness survives; 16 initial focused tests pass.
     evidence:
     - packing/campaign/explorations/X048-session-170-compatibility/README.md
     stop_reason: Bounded decision retained; historical phase boundaries reconstructed from logs.
-    next_action: Review Draft PR333 under think-67ek; no target expansion or merge.
+    next_action: Review Draft PR 333 under think-67ek; no target expansion or merge.
   - workflow: research-loop
     focus: insight
     recording: retrospective
@@ -76,12 +76,12 @@ session:
     validation_command: python -m pytest tests/test_n17_residual_graph.py -q
     kill_condition: Ownership overlap, failed control, explicit guard or slot ceiling.
     fallback: Retain guard/refusal and no new mathematical claim.
-    outcome: All192 atoms supported by directly verified six-owner witnesses after1152 search
-      nodes;17 focused tests pass. This establishes a finite-model limitation, not packing feasibility.
+    outcome: All 192 atoms supported by directly verified six-owner witnesses after 1152 search
+      nodes; 17 focused tests pass. This establishes a finite-model limitation, not packing feasibility.
     evidence:
     - packing/campaign/explorations/X048-session-170-compatibility/README.md
     stop_reason: Bounded decision retained; historical phase boundaries reconstructed from logs.
-    next_action: Review Draft PR333 under think-67ek; no target expansion or merge.
+    next_action: Review Draft PR 333 under think-67ek; no target expansion or merge.
   - workflow: review-planning-oversight
     focus: correctness
     recording: retrospective
@@ -98,12 +98,12 @@ session:
     validation_command: python -m pytest tests/test_n17_residual_graph.py -q
     kill_condition: Ownership overlap, failed control, explicit guard or slot ceiling.
     fallback: Retain guard/refusal and no new mathematical claim.
-    outcome: PR325 refresh required jobs passed at347fc6246; PR333 code is published at ee7e0161b.
+    outcome: PR 325 refresh required jobs passed at 347fc6246; PR 333 code is published at ee7e0161b.
       Metadata and current-head CI are tracked by think-67ek.
     evidence:
     - packing/campaign/explorations/X048-session-170-compatibility/README.md
     stop_reason: Bounded decision retained; historical phase boundaries reconstructed from logs.
-    next_action: Review Draft PR333 under think-67ek; no target expansion or merge.
+    next_action: Review Draft PR 333 under think-67ek; no target expansion or merge.
   budget:
     wall_minutes: 65
     max_cycles: 8
@@ -113,14 +113,14 @@ session:
     finalization_minutes: 30
   stop_conditions:
   - No producer/verifier/admission changes or parent-branch writes.
-  - Six owners,32 atoms per owner,15360 pairs,300seconds,512MiB worker peak.
-  - Support search at most10000 nodes and60seconds; cap is never an exhaustive negative.
+  - Six owners, 32 atoms per owner, 15360 pairs, 300 seconds, 512 MiB worker peak.
+  - Support search at most 10000 nodes and 60 seconds; cap is never an exhaustive negative.
   - No automatic larger target after the retained finite-model ceiling.
   progress:
     metric: Bounded graph decisions with reproducible controls and retained witnesses
     before: Residual-piece candidate was untested.
     after: Raw guard refusal, two-cover bounded negative, and complete support witnesses for
-      all192 atoms.
+      all 192 atoms.
   delegations:
   - task: Residual compatibility strategy and soundness gate
     operator: Codex GPT-6.1 Sol xhigh
@@ -159,8 +159,8 @@ session:
   - Original gate declarations below are historical branch evidence. The rewritten
     review layer remains uncertified; no source target or mathematical replay was rerun.
   - 17 focused tests pass; Ruff and BasedPyright have zero findings.
-  - B and endpoint6 cold saved checks are PASS_SAVED_STALL with producer absent.
-  - Explicit endpoint selection survives; all192 support witnesses pass direct edge/domain verification.
+  - B and `endpoint6` cold saved checks are PASS_SAVED_STALL with producer absent.
+  - Explicit endpoint selection survives; all 192 support witnesses pass direct edge/domain verification.
   - Local full validation runner refuses Windows; hosted current-head certification tracked
     by think-67ek.
   - 'Historical full gate: fast at 4ffb5729af96c8984414bef74fe369f7638dd0a5: passed (hosted partitioned
@@ -181,8 +181,8 @@ session:
 See
 [the retained protocol and decisions](../explorations/X048-session-170-compatibility/README.md).
 This administrative closeout preserves upstream think-tmz6 ownership.
-The user subsequently authorized a six-hour autonomous window
-ending2026-10-04T16:50:13+08:00; each next project requires its own bounded contract.
+The user subsequently authorized a six-hour autonomous window ending
+2026-10-04T16:50:13+08:00; each next project requires its own bounded contract.
 The session phase boundaries above are retrospective log reconstruction, not a claim
 that metadata was written before the work.
 

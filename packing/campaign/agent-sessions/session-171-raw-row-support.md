@@ -34,8 +34,8 @@ session:
     validation_command: python -m pytest tests/test_n17_raw_row_support.py -q
     kill_condition: Parent overlap, control failure, resource cap or implementation slot end.
     fallback: Retain partial evidence and do not run the B target.
-    outcome: 34 focused controls pass; Ruff/typecheck clean; endpoint148atoms/24rows all supported
-      and fresh replayed (210pairs), exact endpoint retained. Coordinator reviewed canonical
+    outcome: 34 focused controls pass; Ruff/typecheck clean; endpoint 148 atoms/24 rows all supported
+      and fresh replayed (210 pairs), exact endpoint retained. Coordinator reviewed canonical
       pair direction, complete DFS, provenance and independent replay; no blocking defect.
     evidence:
     - packing/campaign/explorations/X048-session-171-raw-row-support/README.md
@@ -50,8 +50,8 @@ session:
       witnesses.
     status: completed
     entered_by: evidence_checkpoint
-    switch_reason: 34 focused controls pass; Ruff/typecheck clean; endpoint148atoms/24rows all
-      supported and fresh replayed (210pairs), exact endpoint retained. Coordinator reviewed
+    switch_reason: 34 focused controls pass; Ruff/typecheck clean; endpoint 148 atoms/24 rows all
+      supported and fresh replayed (210 pairs), exact endpoint retained. Coordinator reviewed
       canonical pair direction, complete DFS, provenance and independent replay; no blocking
       defect.
     budget_minutes: 15
@@ -61,8 +61,8 @@ session:
     validation_command: python -m pytest tests/test_n17_raw_row_support.py -q
     kill_condition: Parent overlap, control failure, resource cap or implementation slot end.
     fallback: Retain partial evidence and do not run the B target.
-    outcome: B guard-refused at100000DFS nodes after12069unique pairs and31.553seconds;49complete
-      selections support55of96rows. Independent fresh replay passed735pair checks;41rows unresolved
+    outcome: B guard-refused at 100000 DFS nodes after 12069 unique pairs and 31.553 seconds; 49 complete
+      selections support 55 of 96 rows. Independent fresh replay passed 735 pair checks; 41 rows unresolved
       and no exhaustively unsupported row. All Job cleanup confirmed.
     evidence:
     - packing/campaign/explorations/X048-session-171-raw-row-support/README.md
@@ -77,8 +77,8 @@ session:
       improvement.
     status: completed
     entered_by: evidence_checkpoint
-    switch_reason: B guard-refused at100000DFS nodes after12069unique pairs and31.553seconds;49complete
-      selections support55of96rows. Independent fresh replay passed735pair checks;41rows unresolved
+    switch_reason: B guard-refused at 100000 DFS nodes after 12069 unique pairs and 31.553 seconds; 49 complete
+      selections support 55 of 96 rows. Independent fresh replay passed 735 pair checks; 41 rows unresolved
       and no exhaustively unsupported row. All Job cleanup confirmed.
     budget_minutes: 30
     started_at: '2026-10-04T04:12:27.845314+00:00'
@@ -111,7 +111,7 @@ session:
     kill_condition: Parent overlap, control failure, resource cap or implementation slot end.
     fallback: Retain partial evidence and do not run the B target.
     outcome: 'Root independent source/control gate PASS: 44 tests, Ruff/types clean, FC/MRV
-      endpoint24/24 fresh replayed; exact provenance and budgeted seed admission reviewed.'
+      endpoint 24/24 fresh replayed; exact provenance and budgeted seed admission reviewed.'
     evidence:
     - packing/devtools/probe_n17_raw_row_support.py
     - packing/tests/test_n17_raw_row_support.py
@@ -126,7 +126,7 @@ session:
     status: completed
     entered_by: evidence_checkpoint
     switch_reason: 'Root independent source/control gate PASS: 44 tests, Ruff/types clean, FC/MRV
-      endpoint24/24 fresh replayed; exact provenance and budgeted seed admission reviewed.'
+      endpoint 24/24 fresh replayed; exact provenance and budgeted seed admission reviewed.'
     budget_minutes: 10
     started_at: '2026-10-04T04:38:37.439938+00:00'
     deadline_at: '2026-10-04T04:48:37.439938+00:00'
@@ -134,8 +134,8 @@ session:
     validation_command: python -m pytest tests/test_n17_raw_row_support.py -q
     kill_condition: Parent overlap, control failure, resource cap or implementation slot end.
     fallback: Retain partial evidence and do not run the B target.
-    outcome: D2 reached50000unique pairs after76nodes/13.529s;57complete selections independently
-      replayed855pairs support69/96rows (+14). All49D1seeds/55rows retained,27unknown,no unsupported
+    outcome: D2 reached 50000 unique pairs after 76 nodes/13.529 s; 57 complete selections independently
+      replayed 855 pairs support 69/96 rows (+14). All 49 D1 seeds/55 rows retained, 27 unknown, no unsupported
       claim.
     evidence:
     - packing/campaign/explorations/X048-session-171-raw-row-support/receipts/D2_result-summary.json
@@ -150,8 +150,8 @@ session:
       closeout; preserve the planned finalization reserve.
     status: stopped
     entered_by: evidence_checkpoint
-    switch_reason: D2 reached50000unique pairs after76nodes/13.529s;57complete selections independently
-      replayed855pairs support69/96rows (+14). All49D1seeds/55rows retained,27unknown,no unsupported
+    switch_reason: D2 reached 50000 unique pairs after 76 nodes/13.529 s; 57 complete selections independently
+      replayed 855 pairs support 69/96 rows (+14). All 49 D1 seeds/55 rows retained, 27 unknown, no unsupported
       claim.
     budget_minutes: 20
     started_at: '2026-10-04T04:44:59.188263+00:00'
@@ -160,7 +160,7 @@ session:
     validation_command: python -m pytest tests/test_n17_raw_row_support.py -q
     kill_condition: Parent overlap, control failure, resource cap or implementation slot end.
     fallback: Retain partial evidence and do not run the B target.
-    outcome: D2 source/evidence published; hosted current-head checks terminal19 pass/36 skipped,
+    outcome: D2 source/evidence published; hosted current-head checks terminal 19 pass/36 skipped,
       required checks SUCCESS. One native usage interval retained at actual cutoff; early administrative
       closeout preserves planned reserve.
     evidence:
@@ -180,14 +180,14 @@ session:
     finalization_minutes: 15
   stop_conditions:
   - No producer/kernel/standing-checker/admission or parent edits.
-  - 50000 unique pairs,100000 nodes,180seconds,512MiB worker; input64MiB,4096atoms,128rows,6owners.
+  - 50000 unique pairs, 100000 nodes, 180 seconds, 512 MiB worker; input 64 MiB, 4096 atoms, 128 rows, 6 owners.
   - A cap is incomplete, not an unsupported row; no full graph continuation.
-  - User outer six-hour deadline2026-10-04T16:50:13+08:00 remains.
+  - User outer six-hour deadline 2026-10-04T16:50:13+08:00 remains.
   progress:
     metric: Independently checked complete raw-piece supports for live owner-angle rows
-    before: B has2522rawpieces and96rows; dense rawgraph was guard-refused before any pairs.
-    after: D2 reached50000unique pairs after76nodes/13.529s;57complete selections independently
-      replayed855pairs support69/96rows (+14). All49D1seeds/55rows retained,27unknown,no unsupported
+    before: B has 2522 raw pieces and 96 rows; dense raw graph was guard-refused before any pairs.
+    after: D2 reached 50000 unique pairs after 76 nodes/13.529 s; 57 complete selections independently
+      replayed 855 pairs support 69/96 rows (+14). All 49 D1 seeds/55 rows retained, 27 unknown, no unsupported
       claim.
   delegations:
   - task: 'Sole primary executor: raw-piece row-support diagnostic'
@@ -201,8 +201,8 @@ session:
     - packing/devtools/probe_n17_raw_row_support.py
     - packing/tests/test_n17_raw_row_support.py
     checks:
-    - 34 focused tests; Ruff and types pass; endpoint24rows; B55/96rows independently replayed
-    uncertainty: D1 remaining41rows are unresolved, no unsupported claim.
+    - 34 focused tests; Ruff and types pass; endpoint 24 rows; B 55/96 rows independently replayed
+    uncertainty: D1 remaining 41 rows are unresolved, no unsupported claim.
     elapsed_seconds: null
     elapsed_quality: unavailable
     next_action: D2 is now sole-primary integration work, not a continuing D1 delegation.
@@ -215,7 +215,7 @@ session:
     kill_condition: Overlap, failed control or bounded slot.
     fallback: Return scoped obstruction.
     write_scope:
-    - New probe_n17_raw_row_support.py and its focused tests; session171 report and compact
+    - New probe_n17_raw_row_support.py and its focused tests; session 171 report and compact
       receipts; local p01d run artifacts.
     excluded_commands:
     - No producer rerun, standing verifier edit, full graph, Git/bead/PR mutation, parent edit
@@ -228,29 +228,29 @@ session:
   checks:
   - Original gate declarations below are historical branch evidence. The rewritten
     review layer remains uncertified; no source target or mathematical replay was rerun.
-  - Prior PR333526a6c3a3 current required CI all terminal SUCCESS; local supervisor v2 independently
+  - Prior PR 333 head 526a6c3a3 current required CI all terminal SUCCESS; local supervisor v2 independently
     accepted.
-  - D1:34 focused tests pass; Ruff and typecheck zero findings; endpoint24rows replayed.
-  - Coordinator fresh B replay checks49selections/735pairs:55rows supported,41unresolved; no
+  - D1:34 focused tests pass; Ruff and typecheck zero findings; endpoint 24 rows replayed.
+  - Coordinator fresh B replay checks 49 selections/735 pairs; 55 rows supported, 41 unresolved; no
     exclusion.
   - 'D1 f0b94b047 hosted CI terminal: sole validation failure was completed-D1 delegation left
     active past deadline; corrected without changing any ceiling.'
-  - D2 contemporaneous replan reserves six workflow phases (taskbook ceiling8); original90minute
+  - D2 contemporaneous replan reserves six workflow phases (taskbook ceiling 8); original 90 minute
     endpoint and all target caps unchanged.
-  - D2:44 focused tests, Ruff/types pass; endpoint24rows and exact endpoint replayed. Root fresh
-    B replay57selections/855pairs:69rows supported,27unresolved.
-  - Actual12:44:59 publication entry is a work checkpoint before the reserved13:11:55 tail;
-    original90min endpoint and15min reserve retained. Early terminal closeout does not invent
+  - D2:44 focused tests, Ruff/types pass; endpoint 24 rows and exact endpoint replayed. Root fresh
+    B replay 57 selections/855 pairs; 69 rows supported, 27 unresolved.
+  - Actual 12:44:59 publication entry is a work checkpoint before the reserved 13:11:55 tail;
+    original 90 min endpoint and 15 min reserve retained. Early terminal closeout does not invent
     tail clocks.
   - 'Historical full gate: fast at 58af8cdedc64cb6fc4695e4e6f677df708fb6672: passed (hosted partitioned
     fast gate; packing-required SUCCESS)'
   - Hosted pages-required and merges-into-main SUCCESS at 58af8cdedc64cb6fc4695e4e6f677df708fb6672;
     final metadata observed separately.
-  - Native task-tree interval starts2026-10-04T03:56:55.800523+00:00 and ends2026-10-04T04:55:27.9636830+00:00.
+  - Native task-tree interval starts 2026-10-04T03:56:55.800523+00:00 and ends 2026-10-04T04:55:27.9636830+00:00.
     Branch association is operator-declared; live-session/boundary limitations retained; later
     publication tail is outside this lower bound.
-  stop_reason: One D1 and one D2 bounded diagnostic delivered. D2 adds14 independently replayed
-    rows but27remain unknown; no packing/exclusion result or upstream ownership takeover. Source/evidence
+  stop_reason: One D1 and one D2 bounded diagnostic delivered. D2 adds 14 independently replayed
+    rows but 27 remain unknown; no packing/exclusion result or upstream ownership takeover. Source/evidence
     hosted fast certification observed; final metadata CI is observed separately.
   next_action: Await Joshua and current-layer required CI under think-q0z7.
     No active research executor or reserved follow-up; original intervals are historical.

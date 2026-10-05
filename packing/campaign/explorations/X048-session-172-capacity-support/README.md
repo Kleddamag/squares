@@ -13,13 +13,13 @@ no producer, kernel, capture/Flag2, standing-checker or admission path changed.
 
 ## Protocol and result
 
-Same raw2,522 atoms, accepted strict cores, sorted-owner `universal_collision` predicate
-and forward-MRV order.
-All57D2 selections were rebuilt from exact provenance and checked through the ordinary
-budgeted cache:329unique seed pairs, all 69D2 rows retained.
-The retained selections begin with that exact57selection prefix.
+Same raw 2,522 atoms, accepted strict cores, sorted-owner `universal_collision`
+predicate and forward-MRV order.
+All 57 D2 selections were rebuilt from exact provenance and checked through the ordinary
+budgeted cache: 329 unique seed pairs, all 69 D2 rows retained.
+The retained selections begin with that exact 57 selection prefix.
 Search covered missing rows only.
-CLI default50,000 remains; this one target explicitly declared250,000.
+CLI default 50,000 remains; this one target explicitly declared 250,000.
 
 | Quantity | Actual |
 | --- | ---: |
@@ -31,9 +31,9 @@ CLI default50,000 remains; this one target explicitly declared250,000.
 
 The coordinator’s separate replay reconstructed atoms and directly tested every
 selection without DFS/cache.
-`PASS_REPLAYED_ALL_ROWS`:0.4501 s protocol,3.687 s Job, 153,677,824 B worker.
+`PASS_REPLAYED_ALL_ROWS`: 0.4501 s protocol, 3.687 s Job, 153,677,824 B worker.
 No unsupported row or exclusion was claimed.
-All Job receipts report Job0 and confirmed tree cleanup.
+All Job receipts report Job 0 and confirmed tree cleanup.
 Per-process working-set observations and Job committed memory are separately labelled in
 [the summary](receipts/result-summary.json).
 
@@ -46,20 +46,20 @@ realisable pose; stronger geometry is a different model.
 
 ## Bounds and controls
 
-Frozen target ceilings:250,000unique pairs,100,000 nodes,180protocol seconds,512 MiB
-worker; Job240 s, available RAM>=8 GiB. Inventory4,096 atoms/six owners/128 rows,
-input64 MiB decompressed and packet4 MiB. No limit was changed after measurement.
+Frozen target ceilings: 250,000 unique pairs, 100,000 nodes, 180 protocol seconds, 512
+MiB worker; Job 240 s, available RAM>=8 GiB. Inventory 4,096 atoms/six owners/128 rows,
+input 64 MiB decompressed and packet 4 MiB. No limit was changed after measurement.
 All rows were supported well before capacity; no further target or cap ladder followed.
 
-51focused tests passed in2.94 s; Ruff/types clean.
+51 focused tests passed in 2.94 s; Ruff/types clean.
 Controls retain the earlier exact finite-model, seed/provenance and guard regressions,
 plus default/invalid/high-cap parsing and actual search/partial/final limit propagation.
-Endpoint24 rows and its exact endpoint survive;15 selections were freshly replayed
-with225 pairs.
+The `endpoint6` state’s 24 rows and its exact endpoint survive; 15 selections were
+freshly replayed with 225 pairs.
 
-Planning extrapolated ~68 s at250k and20–40 MiB additional cache memory from D2’s 50k
+Planning extrapolated ~68 s at 250k and 20–40 MiB additional cache memory from D2’s 50k
 measurement. These were estimates.
-Completion at62,361 pairs means250k runtime and memory were not measured; no scaling
+Completion at 62,361 pairs means 250k runtime and memory were not measured; no scaling
 guarantee or cold speedup is inferred.
 
 ## Retained witnesses and replay
@@ -92,9 +92,9 @@ standalone capability at a new W3 gate.
 
 Source/evidence hosted fast certification passed at
 `ef8c425472302905c93cf49a9182e06f218b07d2`; final metadata CI is observed separately.
-The first suite-D run passed2030 tests but exceeded the unchanged131 s ceiling at132.94
-s. The unchanged failed-job rerun passed at123.45 s; required aggregation refused
-mixed-attempt wall accounting.
+The first suite-D run passed 2030 tests but exceeded the unchanged 131 s ceiling at
+132.94 s. The unchanged failed-job rerun passed at 123.45 s; required aggregation
+refused mixed-attempt wall accounting.
 A coherent unchanged full-workflow rerun passed.
 No tests, source or thresholds were altered.
 Session 172’s actual administrative end and earlier native cutoff stay unchanged.
@@ -104,16 +104,25 @@ Its timing, host and other metadata are not part of input identity; seed/node co
 and the stalled-state checks remain mandatory.
 Historical receipts stay historical evidence.
 
-POSIX replay, from `packing/` with the existing Python 3.14 environment:
+Every run needs a cold saved-check receipt for the saved seed and node:
+`--checked-receipt` is a required argument, and the probe refuses a receipt whose seed
+or node digest differs from the objects it is given.
+
+The same search and replay on Linux, from `packing/` with the project’s Python 3.14
+environment:
 
 ```sh
 SAVED_OBJECTS="PATH/TO/SAVED-OBJECTS"
 COLD_RECEIPT="PATH/TO/VALID-COLD-RECEIPT.json"
-OUT="PATH/TO/NEW-REPLAY.json"
+D2_PACKET=campaign/explorations/X048-session-171-raw-row-support/receipts/D2_B-support-packet.json
+OUT="PATH/TO/E_OUT.json"
+uv run --frozen --all-extras --group dev python -m devtools.probe_n17_raw_row_support \
+  "$SAVED_OBJECTS" --checked-receipt "$COLD_RECEIPT" --strategy forward-mrv \
+  --seed-packet "$D2_PACKET" --max-pairs 250000 --output "$OUT"
 uv run --frozen --all-extras --group dev python -m devtools.probe_n17_raw_row_support \
   "$SAVED_OBJECTS" --checked-receipt "$COLD_RECEIPT" \
   --verify campaign/explorations/X048-session-172-capacity-support/receipts/B-support-packet.json \
-  --output "$OUT"
+  --output "PATH/TO/NEW-REPLAY.json"
 ```
 
 <!-- This document follows common-doc-guidelines.md.

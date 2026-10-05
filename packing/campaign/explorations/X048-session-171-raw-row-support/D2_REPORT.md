@@ -39,7 +39,7 @@ predicates or changed atoms.
 44 focused tests passed in 2.90 seconds; Ruff and types were clean.
 Controls compare both strategies with exhaustive tiny models, exercise a mid-filter cap,
 and reject mutated seeds or collisions.
-Endpoint6 retained all 24 rows and the exact endpoint; its 14 selections were freshly
+`endpoint6` retained all 24 rows and the exact endpoint; its 14 selections were freshly
 replayed with 210 pair checks.
 
 The coordinator independently rebuilt B atoms and directly checked all **57 selections /
@@ -77,6 +77,20 @@ $D1Packet = 'PATH/TO/D1_B-support-packet.json'
 $Out = 'PATH/TO/D2_OUT.json'
 & $ProjectPython -m devtools.probe_n17_raw_row_support $InputObjects --checked-receipt $ColdReceipt --strategy forward-mrv --seed-packet $D1Packet --output $Out
 & $ProjectPython -m devtools.probe_n17_raw_row_support $InputObjects --checked-receipt $ColdReceipt --verify $Out --output 'PATH/TO/REPLAY.json'
+```
+
+On Linux, from `packing/` with the project’s Python 3.14 environment.
+Each run requires the cold saved-check receipt (`--checked-receipt`) for the same saved
+seed and node:
+
+```sh
+uv run --frozen --all-extras --group dev python -m devtools.probe_n17_raw_row_support \
+  PATH/TO/SAVED-OBJECTS --checked-receipt PATH/TO/COLD-RECEIPT.json --strategy forward-mrv \
+  --seed-packet campaign/explorations/X048-session-171-raw-row-support/receipts/D1_B-support-packet.json \
+  --output PATH/TO/D2_OUT.json
+uv run --frozen --all-extras --group dev python -m devtools.probe_n17_raw_row_support \
+  PATH/TO/SAVED-OBJECTS --checked-receipt PATH/TO/COLD-RECEIPT.json \
+  --verify PATH/TO/D2_OUT.json --output PATH/TO/REPLAY.json
 ```
 
 The frozen run additionally used the declared local Job supervisor.

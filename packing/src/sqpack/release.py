@@ -425,6 +425,36 @@ OPTIMALITY_REVIEW_REVISED = "October 4, 2026"
 #: held by `devtools.artifact_dates` to the day the register records for T-060.
 OPTIMALITY_PROOF_PUBLISHED = "September 29, 2026"
 
+#: Every edition of Part II, the review of Kleddamag's certified lower bound
+#: `s(11) > 31/8` (T-037), newest first, as `OPTIMALITY_REVIEW_HISTORY` is Part III's.
+THRESHOLD_REVIEW_HISTORY = (
+    PublicationHistoryEntry(
+        version="v0.1.0",
+        first_published="October 5, 2026",
+        result_scope=(
+            "The first edition: Part II of the series, the review of T-037's proof, with "
+            "its figures."
+        ),
+    ),
+)
+
+#: Part II's status and version line, on the papers' one credits form, as
+#: `OPTIMALITY_REVIEW_EDITION` is Part III's.
+THRESHOLD_REVIEW_STATUS = "Draft"
+THRESHOLD_REVIEW_VERSION = THRESHOLD_REVIEW_HISTORY[0].version
+THRESHOLD_REVIEW_EDITION = " ".join(
+    part for part in (THRESHOLD_REVIEW_STATUS, THRESHOLD_REVIEW_VERSION) if part
+)
+
+#: When Part II's text last changed, by the rule `OPTIMALITY_REVIEW_REVISED` follows: the
+#: author date of the last commit that changed `n11-threshold-bound-review-article.md`,
+#: held to git by `devtools.artifact_dates`.
+THRESHOLD_REVIEW_REVISED = "October 5, 2026"
+
+#: The day Kleddamag published the proof Part II reviews (v1.0.2 of
+#: 11-squares-certified-bound), which its "Original proof" date prints.
+THRESHOLD_PROOF_PUBLISHED = "September 22, 2026"
+
 #: The commit the committed claim documents link to
 #: (`render_n11_lower_bounds_explainer.edition_file`), at this repository's short length. It is
 #: pinned for the reason `DATA_REVISION` is: those documents are compared byte for byte with a

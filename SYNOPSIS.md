@@ -575,6 +575,7 @@ case or experiment separately.
 | [Session 168 Handoff: Work Stopped Mid-Flight](packing/campaign/explorations/X048-session-168-pilots/handoff/README.md) | research synthesis | record | retained | — |
 | [n17 Optimality Route After PR 265](docs/project/reviews/review-2026-10-01-n17-route-after-pr265.md) | dated review record | record | retained | — |
 | [X-048 Session 168 Pilots: Receipts](packing/campaign/explorations/X048-session-168-pilots/README.md) | research synthesis | record | retained | — |
+| [Session 180: Bounded Producer Memory Investigation](packing/campaign/explorations/X048-session-169-pilots/README.md) | research synthesis | record | retained | — |
 | [X-048 Session 167 Pilots: Receipts](packing/campaign/explorations/X048-session-167-pilots/README.md) | research synthesis | record | retained | — |
 | [X-048 Route Review: Exploratory Receipts](packing/campaign/explorations/X048-route-review/README.md) | research synthesis | record | retained | — |
 | [H259 Mixed-Capacity Census: Independent Output Review](packing/campaign/series/series-000-smoke-and-calibration/results/exp-240-n17-mixed-capacity-census/output-review.md) | dated review record | record | retained | — |

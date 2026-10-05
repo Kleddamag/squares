@@ -97,6 +97,11 @@ DECLARED_CONSUMERS = {
         "and blocker wherever that trails the report; it reads the field as a ceiling and "
         "never as s(n)"
     ),
+    "packing/devtools/catalogue_upper_bounds.py": (
+        "writes the ceiling the exact certificates of the catalogue's n = 69, 83 and 87 "
+        "packings prove, the certified side rounded up, and the blocker saying it trails the "
+        "printed side; it reads the field as a ceiling and never as s(n)"
+    ),
     "packing/devtools/render_stack_results.py": (
         "counts the case records whose verified_upper_bound value differs between two "
         "revisions, for a pull request's description; it compares the stored strings and "

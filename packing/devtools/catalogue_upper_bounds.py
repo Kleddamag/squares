@@ -60,11 +60,14 @@ from typing import Any
 
 from strif import atomic_write_text
 
+from devtools import apply_upper_bound_packets as intake
 from devtools import check_rational_witness_independent as independent
 from devtools import upper_bound_packets as packets
 from devtools.check_source_coverage import parse_kingbird
+from sqpack.assurance import bounds_agree_at_declared_precision
 from sqpack.kingbird_catalogue import CATALOGUE_HTML
 from sqpack.witness import exact_verify, load_witness, promote_rational, witness_document
+from sqpack.yamlio import safe_load
 
 ROOT = Path(__file__).resolve().parent.parent
 WITNESSES = ROOT / "witnesses"
@@ -78,6 +81,14 @@ CAPTURE = "2026-09-30"
 
 #: The counts certified here, and the register entry each belongs to.
 RESULTS: dict[int, str] = {69: "T-088", 83: "T-089", 87: "T-089"}
+#: The replay evidence entry each count's verified upper lane cites.
+REPLAY_EVIDENCE: dict[int, str] = {
+    69: "E-n069-ellsworth-2026-09-exact-replay",
+    83: "E-n083-chang-2026-09-exact-replay",
+    87: "E-n087-chang-2026-09-exact-replay",
+}
+#: The blocker a drafted catalogue case carries while its verified upper lane is the grid.
+GRID_GAP_DETAIL = "No formal certificate currently supports the tighter reported upper bound."
 #: The certificate the negative controls mutate, and the square the second one moves:
 #: square 1 sits against the left wall and touches square 2 on its right.
 CONTROL_N = 69
@@ -212,6 +223,82 @@ def _write_json(path: Path, value: object) -> None:
 def certification() -> dict[int, dict[str, Any]]:
     record = json.loads(CERTIFICATION.read_text(encoding="utf-8"))
     return {int(row["n"]): row for row in record["cases"]}
+
+
+def dilation_words(value: str) -> str:
+    """A receipt's ``center_dilation`` as the case records write it: ``1 + 1e-15``."""
+    excess = Fraction(value) - 1
+    if excess == 0:
+        return "1"
+    exponent = len(str(excess.denominator)) - 1
+    if excess != Fraction(1, 10**exponent):
+        raise ValueError(f"dilation {value} is not 1 + 10^-k")
+    return f"1 + 1e-{exponent}"
+
+
+def trailing_blocker(n: int, row: Mapping[str, Any], evidence: Sequence[str]) -> dict[str, Any]:
+    """The ``mathematics`` blocker of a count whose certified value trails the printed side.
+
+    Its evidence is the reported lane's, the evidence of the side it falls short of.
+    """
+    verified, printed = str(row["verified_value"]), str(row["printed_side"])
+    return {
+        "kind": "mathematics",
+        "detail": (
+            f"verified_upper_bound is {REPLAY_EVIDENCE[n]}'s certified side rounded up, "
+            f"{verified}, which trails the report {printed} by "
+            f"{intake.difference(verified, printed)}, more than the one unit of the last "
+            "place bounds_agree_at_declared_precision allows. The certificate is a binary64 "
+            "parse of the catalogue's picture, dilated by "
+            f"{dilation_words(str(row['center_dilation']))}; closing the gap needs the SVG's "
+            "own pose, or this one refined on its active contacts."
+        ),
+        "evidence": list(evidence),
+    }
+
+
+def apply_case(n: int, text: str) -> str:
+    """A case record with its verified upper lane on ``n``'s exact certificate.
+
+    Unchanged at a count not certified here. The verified upper bound becomes the receipt's
+    verified value and exact form, citing the replay; the grid-gap blocker a draft carries
+    gives way to one saying how far that value trails the printed side, or to none where it
+    agrees with it. The body is the case record's own, and is left as it is.
+    ``devtools.generate_frontier_case`` applies this to its drafts of these counts, as it
+    applies ``devtools.apply_upper_bound_packets`` to the counts T-056 and T-057 certified.
+    """
+    if n not in RESULTS:
+        return text
+    row = certification()[n]
+    _, front, body = text.split("---\n", 2)
+    payload = safe_load(front)["packing"]
+    verified = {
+        "value": str(row["verified_value"]),
+        "exact_form": str(row["exact_form"]),
+        "evidence": [REPLAY_EVIDENCE[n]],
+    }
+    front = intake.set_block(front, "verified_upper_bound", verified)
+    reported = payload["reported_upper_bound"]
+    trails = not bounds_agree_at_declared_precision(reported, verified)
+    replacement = trailing_blocker(n, row, reported["evidence"]) if trails else None
+    blockers: list[dict[str, Any]] = []
+    placed = False
+    for blocker in payload.get("blockers") or []:
+        ours = blocker.get("kind") == "mathematics" and (
+            blocker.get("detail") == GRID_GAP_DETAIL
+            or str(blocker.get("detail", "")).startswith(
+                f"verified_upper_bound is {REPLAY_EVIDENCE[n]}'s"
+            )
+        )
+        if not ours:
+            blockers.append(blocker)
+        elif replacement is not None and not placed:
+            blockers.append(replacement)
+            placed = True
+    if replacement is not None and not placed:
+        blockers.append(replacement)
+    front = intake.set_block(front, "blockers", blockers)
+    return f"---\n{front}---\n{body}"
 
 
 def certify(numbers: set[int] | None) -> None:

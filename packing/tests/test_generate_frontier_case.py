@@ -25,7 +25,9 @@ correctness someone already argued:
   regenerated as that draft with the intake applied. Since 2026-10-05 `n = 69` reports the
   catalogue's side for David Ellsworth's optimization of the release's packing (T-088), so
   it is regenerated from the catalogue branch, with an `n <= 100` record's degree lock and
-  polynomial, and its lower-bound promotion carried as everywhere else.
+  polynomial, and its lower-bound promotion carried as everywhere else; its verified upper
+  lane and blocker are the exact certificate's, which `devtools.catalogue_upper_bounds`
+  writes over the draft as the packet intake does at `n = 68`.
 
 **Nothing is skipped quietly.** Every key of the front matter is compared. The three
 kinds of mismatch a reader would want to know about are named separately:

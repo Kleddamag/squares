@@ -58,10 +58,20 @@ def test_each_case_record_carries_its_receipts_verified_value_and_says_it_trails
         assert case["reported_upper_bound"]["value"] == row["printed_side"], n
         assert case["verified_upper_bound"]["value"] == row["verified_value"], n
         assert case["verified_upper_bound"]["exact_form"] == row["exact_form"], n
-        assert case["verified_upper_bound"]["evidence"] == [
-            f"E-n{n:03d}-{'ellsworth' if n == 69 else 'chang'}-2026-09-exact-replay"
-        ], n
+        assert case["verified_upper_bound"]["evidence"] == [catalogue.REPLAY_EVIDENCE[n]], n
         assert not bounds_agree_at_declared_precision(
             case["reported_upper_bound"], case["verified_upper_bound"]
         ), n
         assert any(blocker["kind"] == "mathematics" for blocker in case["blockers"]), n
+
+
+def test_apply_case_writes_each_committed_records_upper_lane_and_blockers() -> None:
+    """Applied to a committed record, the generator's adoption step changes nothing in it."""
+    for n in catalogue.RESULTS:
+        text = (catalogue.ROOT / "frontier" / f"n-{n:03d}.md").read_text(encoding="utf-8")
+        applied = catalogue.apply_case(n, text)
+        assert safe_load(applied.split("---\n")[1]) == safe_load(text.split("---\n")[1]), n
+        assert applied.split("---\n", 2)[2] == text.split("---\n", 2)[2], n
+    assert catalogue.apply_case(68, "---\npacking: {}\n---\nbody\n") == (
+        "---\npacking: {}\n---\nbody\n"
+    )

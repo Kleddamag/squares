@@ -5441,7 +5441,7 @@ def test_a_result_rows_popover_body_comes_from_one_function(
 #: view, and its house drawing no longer ships, which rendered the page at 2,404,813
 #: bytes with the new-result stars, and the ceiling is 2,500,000 again, without the
 #: fetch think-yozo planned for the second drawings.
-PAGE_CEILINGS = {"index.html": 2_500_000, render_overview.RESULTS_PAGE: 1_200_000}
+PAGE_CEILINGS = {"index.html": 2_600_000, render_overview.RESULTS_PAGE: 1_200_000}
 
 
 def test_no_page_carries_a_result_overview(

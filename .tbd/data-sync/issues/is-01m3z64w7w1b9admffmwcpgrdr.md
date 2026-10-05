@@ -3,9 +3,9 @@ type: is
 id: is-01m3z64w7w1b9admffmwcpgrdr
 title: "Cost reduction to hundreds of CPU-hours: performance engineering review (lane F2)"
 kind: task
-status: in_progress
+status: closed
 priority: 1
-version: 8
+version: 9
 spec_path: docs/project/reviews/review-2026-10-02-n17-bulk-exclusion-design.md
 delegate: claude-code@vm
 labels: []
@@ -14,8 +14,12 @@ parent_id: is-01m3xkd6zmq1jqwtn628h2k7zy
 hold: null
 hold_until: null
 created_at: 2026-10-02T20:50:59.452Z
-updated_at: 2026-10-03T22:35:26.802Z
+updated_at: 2026-10-05T05:35:40.288Z
 started_at: 2026-10-03T22:35:21.360Z
+closed_at: 2026-10-05T05:35:40.288Z
+close_reason: "Review written (30a6c9753, docs/project/reviews/review-2026-10-02-n17-cost-reduction-performance.md, in #347); the gmpy2 port (c401c81d6) and the memory fix (7f1db8a42) are integrated; the compiled backend continues as think-ui2y."
+resolution: null
+duplicate_of: null
 ---
 Owner request, Session 168: profile the kernel, branch and bound and verifiers (pure-Python exact arithmetic), estimate gains from integer arithmetic, gmpy2/flint, Rust kernels, caching, parallelism, under the soundness and verifier-independence rules. Deliverable: docs/project/reviews/review-2026-10-02-n17-cost-reduction-performance.md (uncommitted until reported).
 

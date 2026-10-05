@@ -5,7 +5,7 @@ title: "Import wand125: 14+ mixed certificates (#282)"
 kind: task
 status: in_progress
 priority: 1
-version: 5
+version: 6
 delegate: claude-code@vm
 labels:
   - result-import
@@ -14,7 +14,7 @@ parent_id: is-01m41csdc2gp36ry5p6n7c2x2y
 hold: null
 hold_until: null
 created_at: 2026-10-04T07:19:38.704Z
-updated_at: 2026-10-05T01:53:55.471Z
+updated_at: 2026-10-05T02:11:18.485Z
 started_at: 2026-10-04T07:32:04.027Z
 ---
 Mixed rectangle-measure certificates posted on jlevy/squares#282 from 2026-10-03 19:33Z (14 at upstream 3554616; two more at 6832.. and 8aa6.. after 07:00Z). Stages 1-2 on branch import-282-mixed14 (packet wand125-mixed-bounds-2026-10-04, W7 audit binding by pinned digest). Stage 3 (new T-NNN) waits for jlevy/squares#305. Replays (~124 CPU-h for 14) held with think-wpuu. Separate import needed: c56b9b7 (T-066 F1/F2, #280).
@@ -22,3 +22,11 @@ Mixed rectangle-measure certificates posted on jlevy/squares#282 from 2026-10-03
 ## Notes
 
 2026-10-05: #305 merged 2026-10-04T23:00Z, so stage 3 is unblocked; taken by the follow-up epic think-05m9 (wand125 lane, T-090).
+
+
+The parent of this bead is:
+## Notes
+
+2026-10-03 18:30 Owner: once everything is landed, comment on each issue and tag the contributor (@evand, @wand125, @squarepacker, @XiaoLiaoShe, @franciscouzo as applicable) where their results are imported; one final reply per issue from main with register ids and disposition (check_requests --draft N), evand's #316, #256 and #238 first; close the issues check_requests reports closeable.
+
+2026-10-05 02:45Z stage 3 done on branch claude/ecstatic-pascal-pothtx-wand125 (tbd-moderate wand125 lane, re-scoped by the coordinator), commit 905621e8b: T-090 registers the 16 at 8aa6a10 (n = 42, 43, 44, 51, 56, 57, 67, 69, 72, 75, 84, 86, 88, 93, 94, 95) at V0/C0, S3 draft; 16 report evidence entries; coverage entry wand125-mixed-bounds-2026-10-04; reported lanes of 14 case records (n88/n94 report T-091's later 481/50 and 199/20; T-090 keeps its claim there). #282 results oct3-oct4-mixed-14 and oct4-n86-n69 map to T-090. The 150939e OC-1/OC-2 answer is recorded as an evidence update on T-082's 22 report entries and T-075's two mixed_n96_L996 entries. Replays (146.5 CPU-h planned, mixed-shard --runners 8) stay with think-wpuu. Blind review not done: this lane had no sub-agent tool; brief ready for the coordinator. Not pushed.

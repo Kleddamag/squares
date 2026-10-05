@@ -218,7 +218,9 @@ hosted outside Git as assets of the release
 the README files and verification receipts stay.
 `python -m devtools.hosted_data fetch --manifest hosted/n17-x048-session-168-certificates.yaml`,
 run from `packing/`, puts the objects back at these paths, so every command in this
-record runs as written.
+record runs as written; development.md’s
+[Publishing Hosted Data](../../../../development.md#publishing-hosted-data) is the
+procedure.
 
 The sharper falsifier is the useful one.
 It runs the same cascade as W7, so it exercises the collision path that closes W7, and

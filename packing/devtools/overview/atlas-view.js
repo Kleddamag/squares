@@ -34,12 +34,25 @@
 // default, has no parameter. A query parameter and not a fragment: `forward.js` sends a
 // fragment the overview does not have to the explainer.
 //
+// The tiles come in three sizes, Small, Medium and Large, chosen by a second strip of
+// tabs beside the view tabs, in either view (think-ht8t). The size is an attribute of the
+// block too, `data-atlas-size`, and the stylesheet scales a tile by it
+// (`--site-atlas-scale`): the grid's least cell, and in the triangle the most a tile may
+// be and its share of a line, never under the least tile. Small keeps the tiles a line
+// holds and draws each smaller; Large holds fewer, as many as tiles that much wider than
+// Medium's leave room for (`perLineAt`), so where the triangle already filled the block
+// its long rows wrap, by the one rule. A change of size is a change of layout like a
+// change of view, moved the same way, and it is in the address as `?size=small` or
+// `?size=large`; Medium, the default, has no parameter.
+//
 // The pure functions are published on `globalThis.SiteAtlasView` for the Node tests and
 // for `atlas-grid.js`, which places the tiles and calls `mount`.
 
 (() => {
   /** The query parameter that names the view. */
   const PARAM = "atlas";
+  /** The query parameter that names the size. */
+  const SIZE_PARAM = "size";
 
   /**
    * The triangle's row for case `n`: the k with (k - 1)^2 < n <= k^2.
@@ -80,6 +93,30 @@
       return Math.max(1, most);
     }
     return Math.max(1, Math.min(most, Math.floor(width / least)));
+  }
+
+  /**
+   * How many tiles a line holds at a size whose tile is `scale` times Medium's. At Medium
+   * and below it is `perLine`'s answer: a smaller size draws the same tiles smaller. Above
+   * it, a line holds as many tiles as have room at `scale` times the width a Medium tile
+   * has, its share of the line and no more than `largest`, rounded to the nearest whole
+   * tile, at least one and never more than at Medium. So a triangle that fills the block
+   * at Medium wraps its long rows at Large, and one that a wide block leaves room around
+   * grows into that room first.
+   * @param {number} width
+   * @param {number} least
+   * @param {number} largest
+   * @param {number} most
+   * @param {number} scale
+   * @returns {number}
+   */
+  function perLineAt(width, least, largest, most, scale) {
+    const medium = perLine(width, least, most);
+    if (!(scale > 1) || !(width > 0)) {
+      return medium;
+    }
+    const tile = largest > 0 ? Math.min(largest, width / medium) : width / medium;
+    return Math.max(1, Math.min(medium, Math.round(width / (scale * tile))));
   }
 
   /**
@@ -134,14 +171,77 @@
    * @returns {string}
    */
   function searchFor(search, view) {
+    return searchWith(search, PARAM, view === "triangle" ? "triangle" : null);
+  }
+
+  /**
+   * The size a word names: small or large, else medium.
+   * @param {string | null | undefined} word
+   * @returns {AtlasSize}
+   */
+  function asSize(word) {
+    return word === "small" || word === "large" ? word : "medium";
+  }
+
+  /**
+   * The size a query string asks for: small or large when it says so, else medium.
+   * @param {string} search
+   * @returns {AtlasSize}
+   */
+  function sizeOf(search) {
+    return asSize(new URLSearchParams(search).get(SIZE_PARAM));
+  }
+
+  /**
+   * `search` with the size written into it: the parameter for small and large, none for
+   * medium, and every other parameter kept in its place.
+   * @param {string} search
+   * @param {AtlasSize} size
+   * @returns {string}
+   */
+  function searchForSize(search, size) {
+    return searchWith(search, SIZE_PARAM, size === "medium" ? null : size);
+  }
+
+  /**
+   * `search` with parameter `name` set to `value`, or removed where `value` is null, and
+   * every other parameter kept in its place.
+   * @param {string} search
+   * @param {string} name
+   * @param {string | null} value
+   * @returns {string}
+   */
+  function searchWith(search, name, value) {
     const params = new URLSearchParams(search);
-    if (view === "triangle") {
-      params.set(PARAM, "triangle");
+    if (value === null) {
+      params.delete(name);
     } else {
-      params.delete(PARAM);
+      params.set(name, value);
     }
     const text = params.toString();
     return text === "" ? "" : `?${text}`;
+  }
+
+  /**
+   * The tab a key moves the focus to, from tab `from` of `count`: Right and Left to the
+   * next and the previous, wrapping, and Home and End to the ends; -1 for any other key.
+   * @param {string} key
+   * @param {number} from
+   * @param {number} count
+   * @returns {number}
+   */
+  function stepTo(key, from, count) {
+    if (count < 1 || from < 0 || from >= count) {
+      return -1;
+    }
+    /** @type {Record<string, number>} */
+    const to = {
+      ArrowRight: (from + 1) % count,
+      ArrowLeft: (from + count - 1) % count,
+      Home: 0,
+      End: count - 1,
+    };
+    return to[key] ?? -1;
   }
 
   /**
@@ -203,15 +303,56 @@
   }
 
   /**
-   * Wire the view tabs of one atlas block. `cells` holds the tiles, which `atlas-grid.js`
-   * places; `tabs` is the tablist the page ships.
+   * The buttons of a tablist, in order.
+   * @param {HTMLElement} list
+   * @returns {HTMLButtonElement[]}
+   */
+  function tabsOf(list) {
+    return [...list.querySelectorAll('[role="tab"]')].filter(
+      (tab) => tab instanceof HTMLButtonElement,
+    );
+  }
+
+  /**
+   * Make a tablist act: a press of a tab selects it, and the tabs are one stop in the
+   * page's tab order, the arrow keys, Home and End moving between them and selecting the
+   * tab the focus lands on at once, since showing a view or a size costs nothing.
+   * @param {HTMLElement} list
+   * @param {(tab: HTMLButtonElement) => void} select
+   */
+  function wire(list, select) {
+    const buttons = tabsOf(list);
+    list.addEventListener("click", (event) => {
+      const tab = event.target instanceof Element ? event.target.closest('[role="tab"]') : null;
+      if (tab instanceof HTMLButtonElement && list.contains(tab)) {
+        select(tab);
+      }
+    });
+    list.addEventListener("keydown", (event) => {
+      const focused = document.activeElement;
+      const from = focused instanceof HTMLButtonElement ? buttons.indexOf(focused) : -1;
+      if (from < 0 || event.altKey || event.ctrlKey || event.metaKey) {
+        return;
+      }
+      const next = buttons[stepTo(event.key, from, buttons.length)];
+      if (next === undefined) {
+        return;
+      }
+      event.preventDefault();
+      next.focus();
+      select(next);
+    });
+  }
+
+  /**
+   * Wire the view tabs and the size tabs of one atlas block. `cells` holds the tiles,
+   * which `atlas-grid.js` places; `tabs` and `sizes` are the tablists the page ships.
    * @param {SiteAtlasParts} parts
    * @returns {SiteAtlasViews}
    */
-  function mount({ block, cells, tabs }) {
-    const buttons = [...tabs.querySelectorAll('[role="tab"]')].filter(
-      (tab) => tab instanceof HTMLButtonElement,
-    );
+  function mount({ block, cells, tabs, sizes }) {
+    const buttons = tabsOf(tabs);
+    const sizeButtons = sizes === null ? [] : tabsOf(sizes);
     /** The tiles a line holds and the last case shown, as last arranged. */
     let arranged = "";
     /** @type {Animation[]} */
@@ -219,6 +360,8 @@
 
     /** @returns {AtlasView} */
     const view = () => (block.dataset.atlasView === "triangle" ? "triangle" : "grid");
+    /** @returns {AtlasSize} */
+    const size = () => asSize(block.dataset.atlasSize);
 
     /** The tiles that show: the first hundred, and the rest once the grid is expanded. */
     const shown = () =>
@@ -232,7 +375,8 @@
     // triangle reads them, but they are kept current in the grid too, so a change of
     // view writes nothing: a tile's properties are inherited by every line of its
     // drawing, and writing them restyles all of those. Nothing is written while
-    // neither the tiles a line holds nor the last case shown has changed.
+    // neither the tiles a line holds nor the last case shown has changed. The size's
+    // scale is the stylesheet's (`--site-atlas-scale`), read as the tiles are arranged.
     const arrange = () => {
       const tiles = shown();
       const last = Number(tiles.at(-1)?.dataset.atlasN);
@@ -240,11 +384,12 @@
         return;
       }
       const root = Number.parseFloat(getComputedStyle(document.documentElement).fontSize);
-      const least = lengthPx(
-        getComputedStyle(cells).getPropertyValue("--site-atlas-tile-min"),
-        root,
-      );
-      const per = perLine(cells.getBoundingClientRect().width, least, widest(last));
+      const style = getComputedStyle(cells);
+      const least = lengthPx(style.getPropertyValue("--site-atlas-tile-min"), root);
+      const largest = lengthPx(style.getPropertyValue("--site-atlas-tile-max"), root);
+      const scale = Number.parseFloat(style.getPropertyValue("--site-atlas-scale"));
+      const width = cells.getBoundingClientRect().width;
+      const per = perLineAt(width, least, largest, widest(last), scale);
       const key = `${per}:${last}`;
       if (key === arranged) {
         return;
@@ -424,50 +569,48 @@
       }
     };
 
+    /** @param {AtlasSize} current */
+    const markSize = (current) => {
+      block.dataset.atlasSize = current;
+      for (const tab of sizeButtons) {
+        const on = tab.dataset.atlasSizeTab === current;
+        tab.setAttribute("aria-selected", String(on));
+        tab.tabIndex = on ? 0 : -1;
+      }
+    };
+
+    /** @param {string} search */
+    const readdress = (search) => {
+      history.replaceState(history.state, "", `${location.pathname}${search}${location.hash}`);
+    };
+
     /** @param {AtlasView} next */
     const select = (next) => {
       if (next === view()) {
         return;
       }
       change(() => mark(next));
-      const address = `${location.pathname}${searchFor(location.search, next)}${location.hash}`;
-      history.replaceState(history.state, "", address);
+      readdress(searchFor(location.search, next));
+    };
+
+    /** @param {AtlasSize} next */
+    const selectSize = (next) => {
+      if (next === size()) {
+        return;
+      }
+      change(() => markSize(next));
+      readdress(searchForSize(location.search, next));
     };
 
     cells.id = tabs.dataset.atlasPanel ?? "";
     cells.setAttribute("role", "tabpanel");
     mark(viewOf(location.search));
+    markSize(sizeOf(location.search));
 
-    tabs.addEventListener("click", (event) => {
-      const tab = event.target instanceof Element ? event.target.closest('[role="tab"]') : null;
-      if (tab instanceof HTMLButtonElement && tabs.contains(tab)) {
-        select(tab.dataset.atlasTab === "triangle" ? "triangle" : "grid");
-      }
-    });
-    // The tabs are one stop in the page's tab order: the arrow keys, Home and End move
-    // between them, and the tab focus lands on is selected at once, since showing a
-    // view costs nothing.
-    tabs.addEventListener("keydown", (event) => {
-      const focused = document.activeElement;
-      const from = focused instanceof HTMLButtonElement ? buttons.indexOf(focused) : -1;
-      if (from < 0 || event.altKey || event.ctrlKey || event.metaKey) {
-        return;
-      }
-      /** @type {Record<string, number>} */
-      const to = {
-        ArrowRight: (from + 1) % buttons.length,
-        ArrowLeft: (from + buttons.length - 1) % buttons.length,
-        Home: 0,
-        End: buttons.length - 1,
-      };
-      const next = buttons[to[event.key] ?? -1];
-      if (next === undefined) {
-        return;
-      }
-      event.preventDefault();
-      next.focus();
-      select(next.dataset.atlasTab === "triangle" ? "triangle" : "grid");
-    });
+    wire(tabs, (tab) => select(tab.dataset.atlasTab === "triangle" ? "triangle" : "grid"));
+    if (sizes !== null) {
+      wire(sizes, (tab) => selectSize(asSize(tab.dataset.atlasSizeTab)));
+    }
 
     // The tiles a line holds follow the block's width. A resize is settled on the next
     // frame, at most once a frame, and placed without a move: the window is already
@@ -492,9 +635,13 @@
     row,
     widest,
     perLine,
+    perLineAt,
     place,
     viewOf,
     searchFor,
+    sizeOf,
+    searchForSize,
+    stepTo,
     lengthPx,
     milliseconds,
     moveFrom,

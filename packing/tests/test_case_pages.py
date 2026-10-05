@@ -6,11 +6,13 @@ from __future__ import annotations
 
 import html
 import re
+from fractions import Fraction
 from pathlib import Path
 
 import pytest
 
 from devtools import overview_sections, render_case_pages, render_overview, site_assets
+from devtools import render_frontier_page as frontier_page
 from devtools import render_research_tables as tables
 from devtools.render_overview import assert_fetches_only_assets
 from devtools.repo_links import DEFAULT_BRANCH, REPO_URL, hash_pinned_links
@@ -190,17 +192,20 @@ def test_the_atlas_grid_and_the_frontier_table_open_the_same_record(
 ) -> None:
     """Both entry points name each case's record file and open it in the one case
     popover: the atlas grid's cells and the frontier table's `n` are links marked
-    `data-case`, and a frontier row names its record for the popover to open. A case's
-    regularized tile, its second drawing, links the same record as its house tile."""
+    `data-case`, and a frontier row names its record for the popover to open. A case
+    drawn from its regularized view, the atlas's one tile for it since the House and
+    Regularized tabs went (think-k8x9), links the same record, whose drawing is the
+    house one."""
     grid = overview_sections.atlas_grid()
-    house, regularized = grid.split("<template data-atlas-regularized>", 1)
+    assert "<template data-atlas-regularized>" not in grid
     link = r'href="cases/(\d+)\.html" data-case="(\d+)" data-atlas-n="(\d+)"'
-    cells = re.findall(link, house)
+    cells = re.findall(link, grid)
     assert [int(n) for n, _, _ in cells] == numbers
     assert all(a == b == c for a, b, c in cells)
-    second = re.findall(link, regularized)
-    assert [int(n) for n, _, _ in second] == list(overview_sections.atlas_regularized())
-    assert all(a == b == c for a, b, c in second)
+    for n in overview_sections.atlas_regularized():
+        tile = re.findall(rf'<a class="site-atlas-cell" href="cases/{n}\.html"[^>]*>', grid)
+        assert len(tile) == 1, n
+        assert ", regularized view, " in tile[0], n
     assert grid.count(render_case_pages.case_popover()) == 1
     links = re.findall(
         r'<a aria-label="n = \d+: open its case record" href="cases/(\d+)\.html" '
@@ -316,6 +321,58 @@ def test_a_result_about_one_case_shows_the_same_visual_summary() -> None:
     assert body.index('<figure class="site-case-figure') < body.index(
         '<div class="site-atlas-gap"'
     )
+
+
+def _declarations(css: str, selector: str) -> str:
+    """The declarations of every rule in `css` whose selector is exactly `selector`."""
+    rules = re.sub(r"/\*.*?\*/", "", css, flags=re.DOTALL)
+    found = re.findall(rf"(?:^|}}|{{)\s*{re.escape(selector)} {{([^}}]*)}}", rules)
+    assert found, selector
+    return "".join(found)
+
+
+@pytest.mark.parametrize("units", [1000, overview_sections.ATLAS_UNITS])
+def test_the_drawing_fills_the_case_popover_at_its_own_line_weight(units: int) -> None:
+    """In the case popover the visual summary's drawing is as wide as the panel, short
+    of the panel's height less the room its caption and actions take (`think-u214`), and
+    its lines keep the weight they have at 12rem however large it is shown
+    (`think-pkz0`): the stylesheet draws them in the page's units (`non-scaling-stroke`)
+    at the share of the drawing's width the drawing gives them up to 12rem across. The
+    shares are read here from the drawing itself, at the record's units and a result
+    overview's, so the stylesheet and the drawing cannot part."""
+    css = render_overview.SITE_CSS.read_text(encoding="utf-8")
+    assert "inline-size: min(100%, var(--site-popover-max-block) - 8rem);" in _declarations(
+        css, ".site-case-pop .site-case-figure"
+    )
+    figure = _declarations(css, ".site-case-figure")
+    assert "container-type: inline-size;" in figure
+    assert "--site-case-figure-lines: min(100cqi, 12rem);" in figure
+    assert "vector-effect: non-scaling-stroke;" in _declarations(
+        css, ".site-case-figure > svg :is(rect, path)"
+    )
+    # The figure's rules name its drawing alone: a caption's typeset radical is an `svg`.
+    assert not re.search(r"\.site-case-figure svg\b", css)
+    svg = frontier_page.packing_svg(11, units=units)
+    box = re.search(r'viewBox="\S+ \S+ (\S+) \S+"', svg)
+    frame = re.search(r'<rect [^>]*stroke-width="([\d.]+)"', svg)
+    lines = re.search(r'<g [^>]*stroke-width="([\d.]+)"', svg)
+    assert box is not None
+    assert frame is not None
+    assert lines is not None
+    width = Fraction(box.group(1))
+    for selector, drawn in (
+        (".site-case-figure > svg > rect", frame),
+        (".site-case-figure > svg path", lines),
+    ):
+        share = re.search(
+            r"stroke-width: calc\(var\(--site-case-figure-lines\) \* ([\d.]+) / ([\d.]+)\);",
+            _declarations(css, selector),
+        )
+        assert share, selector
+        assert (
+            Fraction(share.group(1)) / Fraction(share.group(2))
+            == Fraction(drawn.group(1)) / width
+        )
 
 
 def test_no_math_is_left_as_source_text(records: dict[str, str]) -> None:

@@ -1,5 +1,5 @@
-"""The homepage's atlas in its two views, the grid and the triangle, and its two
-drawings, house and regularized, in a browser.
+"""The homepage's atlas in its two views, the grid and the triangle, at its three sizes
+of tile, and the marks its tiles carry, in a browser.
 
 The atlas is one set of tiles under two tabs (`templates/paper-design.md`, Atlas views).
 The grid is the stylesheet's alone. The triangle sets row k as the 2k - 1 cases a square
@@ -9,11 +9,14 @@ the views. `tests/node/overview_atlas_view` holds the script's arithmetic; what 
 gets is the browser's to say, so this opens the rendered overview in Chromium and reads
 it: where every tile stands in each view at a desktop width and on a phone, what a press
 of a tab starts, what the keyboard does, what the address says, and what a reader who
-asks for reduced motion sees. The drawing tabs beside the view tabs swap each case that
-has a regularized view for that drawing, badged, in place (`overview/atlas-layer.js`):
-the fixture reads that the swap moves nothing, holds through a change of view and the
-expander, follows the keyboard and the address, and that a regularized tile is the link
-to its case's record, as the house tile is.
+asks for reduced motion sees. The size tabs beside the view tabs make every tile
+smaller or larger in either view (think-ht8t): the fixture reads that a change of size
+moves the tiles as a change of view does, sets the sizes in order, follows the keyboard
+and the address, and holds every layout to the same rules. A tile carries the
+new-result star after its number where its case has a new result (think-wwtt), and the
+regularized badge before it where it is drawn from its regularized view, the atlas's
+one drawing of such a case since the House and Regularized tabs went (think-k8x9); the
+fixture reads both against the records, with the key that names them.
 
 One fixture drives the page through all of it and keeps what it read, so no test waits
 on a browser in its own time. The layouts are read with the measuring tool's probe and
@@ -47,7 +50,7 @@ ACTIONS = probe(PROBES, "site_atlas_views/actions")
 DRAWING = probe(PROBES, "site_drawing_hover/drawing")
 
 GRID, TRIANGLE = atlas.tab("grid"), atlas.tab("triangle")
-HOUSE, REGULARIZED = atlas.layer_tab("house"), atlas.layer_tab("regularized")
+SMALL, MEDIUM, LARGE = (atlas.size_tab(size) for size in atlas.SIZES)
 #: The case whose tile is hovered and pressed.
 CELL = '.site-atlas-cell[data-atlas-n="11"]'
 
@@ -80,12 +83,15 @@ LAYOUTS = {
     "phone, grid": "grid",
     "reduced motion": "triangle",
     "linked": "triangle",
-    "drawings, house": "grid",
-    "drawings, regularized": "grid",
-    "drawings, regularized triangle": "triangle",
-    "drawings, house triangle": "triangle",
-    "drawings, regularized every case": "triangle",
-    "phone, regularized": "triangle",
+    "sizes, medium": "grid",
+    "grid, large": "grid",
+    "grid, small": "grid",
+    "triangle, small": "triangle",
+    "triangle, large": "triangle",
+    "triangle, large, every case": "triangle",
+    "triangle, medium, every case": "triangle",
+    "phone, large": "triangle",
+    "phone, small grid": "grid",
 }
 
 type Readings = dict[str, Any]
@@ -146,7 +152,7 @@ def _desktop(browser: Any, address: str) -> Readings:
         atlas.settle(page)
         seen.setdefault("keys", []).append((key, atlas.layout(page)))
     order = []
-    for _ in range(3):
+    for _ in range(4):
         page.keyboard.press("Tab")
         order.append(atlas.layout(page)["focus"])
     seen["tab order"] = order
@@ -231,67 +237,64 @@ def _linked(browser: Any, address: str) -> Readings:
     return seen
 
 
-def _drawings(browser: Any, address: str) -> Readings:
-    """A desktop reader who changes the drawing: to Regularized and back in the grid and
-    in the triangle, with every case shown, by the keyboard, and who presses a
-    regularized tile and then a house one."""
+def _sizes(browser: Any, address: str) -> Readings:
+    """A desktop reader who changes the size: to Large and to Small in the grid, to the
+    triangle at Small, to Large there, every case shown, by the keyboard, and back to
+    Medium."""
     seen: Readings = {}
     page = atlas.open_atlas(browser, address, **DESKTOP)
     atlas.top(page)
-    seen["drawings, house"] = atlas.layout(page)
-    seen["press regularized"] = page.evaluate(PRESSED, {"press": REGULARIZED})
+    seen["sizes, medium"] = atlas.layout(page)
+    seen["press large"] = page.evaluate(PRESSED, {"press": LARGE})
     atlas.settle(page)
-    seen["drawings, regularized"] = atlas.layout(page)
+    seen["grid, large"] = atlas.layout(page)
+    atlas.top(page)
+    seen["press small"] = page.evaluate(PRESSED, {"press": SMALL})
+    atlas.settle(page)
+    seen["grid, small"] = atlas.layout(page)
     page.locator(TRIANGLE).click()
     atlas.settle(page)
-    seen["drawings, regularized triangle"] = atlas.layout(page)
-    seen["press house"] = page.evaluate(PRESSED, {"press": HOUSE})
+    seen["triangle, small"] = atlas.layout(page)
+    seen["press large, triangle"] = page.evaluate(PRESSED, {"press": LARGE})
     atlas.settle(page)
-    seen["drawings, house triangle"] = atlas.layout(page)
-    page.locator(REGULARIZED).click()
+    seen["triangle, large"] = atlas.layout(page)
     page.locator(atlas.EXPANDER).scroll_into_view_if_needed()
     atlas.expand(page)
-    seen["drawings, regularized every case"] = atlas.layout(page)
+    seen["triangle, large, every case"] = atlas.layout(page)
 
-    page.locator(REGULARIZED).focus()
-    for key in ("ArrowLeft", "ArrowRight", "Home", "End"):
+    page.locator(LARGE).focus()
+    for key in ("ArrowLeft", "ArrowRight", "Home", "End", "ArrowRight"):
         page.keyboard.press(key)
         atlas.settle(page)
-        seen.setdefault("drawing keys", []).append((key, atlas.layout(page)))
-
-    # A regularized tile is the link to its case's record, as a house tile is (above).
-    first = min(seen["drawings, regularized"]["regularized"])
-    tile = page.locator(f'.site-atlas-cell[data-atlas-n="{first}"]')
-    seen["regularized tile link"] = {
-        "n": first,
-        "href": tile.get_attribute("href"),
-        "case": tile.get_attribute("data-case"),
-        "layer": tile.get_attribute("data-atlas-layer"),
-    }
+        seen.setdefault("size keys", []).append((key, atlas.layout(page)))
+    page.locator(MEDIUM).click()
+    atlas.settle(page)
+    seen["triangle, medium, every case"] = atlas.layout(page)
     page.close()
     return seen
 
 
-def _phone_drawings(browser: Any, address: str) -> Readings:
-    """A phone opened on an address that names the triangle and the regularized drawing."""
+def _phone_sizes(browser: Any, address: str) -> Readings:
+    """A phone opened on an address that names the triangle at Large, and then the grid
+    at Small."""
     seen: Readings = {}
     page = atlas.open_atlas(
-        browser,
-        address,
-        view="triangle",
-        layer="regularized",
-        init_script=applied(WATCH),
-        **PHONE,
+        browser, address, view="triangle", size="large", init_script=applied(WATCH), **PHONE
     )
-    seen["phone, regularized, first placed"] = page.evaluate(SEEN)
-    seen["phone, regularized"] = atlas.layout(page)
+    seen["phone, large, first placed"] = page.evaluate(SEEN)
+    seen["phone, large"] = atlas.layout(page)
+    page.locator(GRID).click()
+    atlas.settle(page)
+    page.locator(SMALL).click()
+    atlas.settle(page)
+    seen["phone, small grid"] = atlas.layout(page)
     page.close()
     return seen
 
 
 @pytest.fixture(scope="module")
 def seen(tmp_path_factory: pytest.TempPathFactory) -> Iterator[Readings]:
-    """Everything the four sessions read, by name."""
+    """Everything the sessions read, by name."""
     sync_api = pytest.importorskip("playwright.sync_api")
     root = Path(tmp_path_factory.mktemp("site"))
     path = site_renders.write(root, "index.html")["index.html"]
@@ -302,7 +305,7 @@ def seen(tmp_path_factory: pytest.TempPathFactory) -> Iterator[Readings]:
         except sync_api.Error as error:
             pytest.skip(f"no Chromium to launch: {error.message.splitlines()[0]}")
         found: Readings = {}
-        for session in (_desktop, _phone, _reduced, _linked, _drawings, _phone_drawings):
+        for session in (_desktop, _phone, _reduced, _linked, _sizes, _phone_sizes):
             found.update(session(browser, address))
         browser.close()
         yield found
@@ -428,10 +431,10 @@ def test_the_arrow_keys_move_between_the_tabs_and_select_the_one_focused(
 
 
 def test_the_tiles_follow_the_tabs_in_the_tab_order_in_case_order(seen: Readings) -> None:
-    """From the view tabs, in the triangle, Tab goes to the drawing tabs' one stop, House,
-    and then to n = 1 and n = 2: the tiles keep the order of the cases whichever way
-    they are set."""
-    assert seen["tab order"] == ["atlas-layer-house", "1", "2"]
+    """From the view tabs, in the triangle, Tab goes to the size tabs' one stop, Medium,
+    then to the key's link, and then to n = 1 and n = 2: the tiles keep the order of the
+    cases whichever way they are set."""
+    assert seen["tab order"] == ["atlas-size-medium", "regularized view", "1", "2"]
 
 
 def test_the_address_names_the_triangle_and_keeps_what_else_it_holds(seen: Readings) -> None:
@@ -466,14 +469,7 @@ def test_a_linked_triangle_is_the_triangle_before_a_tile_is_drawn(seen: Readings
     arranged and nothing in a move, at the moment its tiles are first put in the page:
     the grid is never shown first."""
     assert seen["phone, first placed"] == [
-        {
-            "view": "triangle",
-            "layer": "house",
-            "per_line": "8",
-            "tiles": 100,
-            "regularized": 0,
-            "moving": 0,
-        }
+        {"view": "triangle", "size": "medium", "per_line": "8", "tiles": 100, "moving": 0}
     ]
 
 
@@ -631,130 +627,174 @@ def test_a_triangle_tile_is_the_link_to_its_case_record(seen: Readings) -> None:
     assert seen["tile link"] == {"href": "cases/11.html", "case": "11"}
 
 
-def _layers(report: dict[str, Any]) -> dict[str, dict[str, Any]]:
-    return {tab["key"]: tab for tab in report["layers"]}
+def _size_tabs(report: dict[str, Any]) -> dict[str, dict[str, Any]]:
+    return {tab["key"]: tab for tab in report["sizes"]}
 
 
-def _drawn(report: dict[str, Any]) -> list[int]:
-    """The cases a layout shows in their regularized drawing."""
-    return [tile["n"] for tile in report["tiles"] if tile["layer"] == "regularized"]
+def _width(report: dict[str, Any]) -> float:
+    """The width most of a layout's tiles have."""
+    widths = sorted(tile["width"] for tile in report["tiles"])
+    return widths[len(widths) // 2]
 
 
-def test_the_drawing_tabs_stand_beside_the_view_tabs_and_open_on_house(seen: Readings) -> None:
-    """A plain address shows the house drawings, under a second strip on the view tabs'
-    line and in their type: House selected and the strip's one stop in the tab order,
-    Regularized after it, both controlling the box of tiles. The page has regularized
-    drawings to offer, and none is shown."""
-    house = seen["drawings, house"]
-    assert (house["layer"], house["search"]) == ("house", "")
-    layers = _layers(house)
-    assert list(layers) == ["house", "regularized"]
-    assert [tab["label"] for tab in layers.values()] == ["House", "Regularized"]
-    assert (layers["house"]["selected"], layers["house"]["tabindex"]) == ("true", 0)
-    assert (layers["regularized"]["selected"], layers["regularized"]["tabindex"]) == (
-        "false",
-        -1,
-    )
-    assert all(tab["shown"] and tab["controls"] == "atlas-cells" for tab in layers.values())
-    views = _tabs(house)
-    assert {tab["font_px"] for tab in layers.values()} == {views["grid"]["font_px"]}
-    assert layers["house"]["box"]["top"] == views["grid"]["box"]["top"]
-    assert layers["house"]["box"]["left"] > views["triangle"]["box"]["right"]
-    assert house["regularized"], "the page offers no regularized drawing"
-    assert _drawn(house) == []
+def test_the_size_tabs_stand_beside_the_view_tabs_and_open_on_medium(seen: Readings) -> None:
+    """A plain address is at Medium, under a second strip on the view tabs' line, in
+    their type and at their height: Small, Medium and Large, Medium selected and the
+    strip's one stop in the tab order, each controlling the box of tiles. The key to a
+    tile's marks stands under both strips and over the tiles, and the grid at Medium is
+    the grid the atlas had before it had sizes."""
+    medium = seen["sizes, medium"]
+    assert (medium["size"], medium["search"]) == ("medium", "")
+    sizes = _size_tabs(medium)
+    assert list(sizes) == ["small", "medium", "large"]
+    assert [tab["label"] for tab in sizes.values()] == ["Small", "Medium", "Large"]
+    assert (sizes["medium"]["selected"], sizes["medium"]["tabindex"]) == ("true", 0)
+    for key in ("small", "large"):
+        assert (sizes[key]["selected"], sizes[key]["tabindex"]) == ("false", -1), key
+    assert all(tab["shown"] and tab["controls"] == "atlas-cells" for tab in sizes.values())
+    views = _tabs(medium)
+    assert {tab["font_px"] for tab in sizes.values()} == {views["grid"]["font_px"]}
+    assert sizes["small"]["box"]["top"] == views["grid"]["box"]["top"]
+    assert sizes["small"]["box"]["height"] == views["grid"]["box"]["height"]
+    assert sizes["small"]["box"]["left"] > views["triangle"]["box"]["right"]
+    legend = medium["legend"]
+    assert legend["shown"]
+    assert legend["text"] == "★ new result regularized view"
+    # The note step, as the tables' legend is set, which is the tabs' step too.
+    assert legend["font_px"] == 17.48
+    assert legend["box"]["top"] >= views["grid"]["box"]["bottom"]
+    assert legend["box"]["bottom"] <= medium["cells"]["top"]
+    assert _same_places(medium, seen["grid"])
 
 
-def test_pressing_regularized_swaps_the_drawings_in_place_and_moves_nothing(
+def test_a_change_of_size_moves_the_tiles_as_a_change_of_view_does(seen: Readings) -> None:
+    """A press of a size tab, in either view, starts one move a tile in the window, each
+    an animation of `transform` and nothing else, timed by the same tokens, and leaves
+    the view as it was."""
+    for press, view, size in (
+        ("press large", "grid", "large"),
+        ("press small", "grid", "small"),
+        ("press large, triangle", "triangle", "large"),
+    ):
+        started = seen[press]
+        assert (started["view"], started["size"]) == (view, size), press
+        assert 0 < started["moving"] <= 100, press
+        assert started["properties"] == ["transform"], press
+        assert started["duration"] == 360, press
+        assert started["easing"] == "cubic-bezier(0.2, 0, 0, 1)", press
+
+
+def test_the_grid_holds_more_and_smaller_tiles_at_small_and_fewer_and_larger_at_large(
     seen: Readings,
 ) -> None:
-    """A press of Regularized starts no move, of a tile or of anything after the tiles,
-    and leaves every tile where it stood. Each shown case with a regularized view now
-    shows it, badged, and every other case its house drawing; the address says so."""
-    pressed = seen["press regularized"]
-    assert (pressed["view"], pressed["moving"], pressed["followers"]) == ("grid", 0, 0)
-    regularized = seen["drawings, regularized"]
-    assert (regularized["layer"], regularized["search"]) == (
-        "regularized",
-        "?layer=regularized",
-    )
-    assert _same_places(regularized, seen["drawings, house"])
-    shown = [n for n in regularized["regularized"] if n <= 100]
-    assert shown, "no regularized view among the first hundred cases"
-    assert _drawn(regularized) == shown
-    assert _layers(regularized)["regularized"]["selected"] == "true"
-    assert atlas.layout_problems(regularized) == []
+    """At 1280 pixels the grid holds fifteen tiles to a line at Small, ten at Medium and
+    seven at Large, each size's tiles larger than the last; on a phone, six at Small and
+    four at Medium. The address names the size, and Medium has no parameter."""
+    names = ("grid, small", "sizes, medium", "grid, large")
+    assert [atlas.summary(seen[name])["per_line"] for name in names] == [15, 10, 7]
+    widths = [_width(seen[name]) for name in names]
+    assert widths == sorted(widths)
+    assert len(set(widths)) == 3
+    assert [seen[name]["search"] for name in names] == ["?size=small", "", "?size=large"]
+    assert atlas.summary(seen["phone, grid"])["per_line"] == 4
+    small = seen["phone, small grid"]
+    assert (small["size"], small["search"]) == ("small", "?size=small")
+    assert atlas.summary(small)["per_line"] == 6
 
 
-def test_the_drawing_holds_through_a_change_of_view_and_house_puts_the_tiles_back(
+def test_the_triangle_shrinks_at_small_and_wraps_its_long_rows_at_large(seen: Readings) -> None:
+    """At 1280 pixels Small keeps the hundred's nineteen to a line, drawn smaller and
+    centred in the block; Large sets thirteen to a line, its tiles larger, so rows 8 to
+    10 wrap by the one rule, and all 324 twenty-three. Back at Medium every case stands
+    where the triangle had it before any size was chosen."""
+    small, medium, large = seen["triangle, small"], seen["triangle"], seen["triangle, large"]
+    assert (small["per_line"], medium["per_line"], large["per_line"]) == (19, 19, 13)
+    assert _width(small) < _width(medium) < _width(large)
+    assert atlas.summary(small)["wrapped"] == []
+    assert atlas.summary(large)["wrapped"] == [8, 9, 10]
+    left = min(tile["left"] for tile in small["tiles"]) - small["cells"]["left"]
+    right = small["cells"]["right"] - max(tile["right"] for tile in small["tiles"])
+    assert left > 100
+    assert abs(left - right) <= 1, (left, right)
+    assert small["search"] == "?size=small&atlas=triangle"
+    assert large["search"] == "?size=large&atlas=triangle"
+    every = seen["triangle, large, every case"]
+    assert (every["per_line"], len(every["tiles"])) == (23, 324)
+    back = seen["triangle, medium, every case"]
+    assert (back["size"], back["search"], back["per_line"]) == ("medium", "?atlas=triangle", 35)
+    assert _same_places(back, seen["triangle, every case"])
+
+
+def test_the_arrow_keys_move_between_the_size_tabs_and_select_the_one_focused(
     seen: Readings,
 ) -> None:
-    """In the triangle the regularized tiles stand where the triangle places their cases,
-    and House puts the house tiles back exactly there, with no move; the address keeps
-    the view while the drawing comes and goes."""
-    triangle = seen["drawings, regularized triangle"]
-    assert (triangle["view"], triangle["layer"]) == ("triangle", "regularized")
-    assert triangle["search"] == "?layer=regularized&atlas=triangle"
-    assert _drawn(triangle) == [n for n in triangle["regularized"] if n <= 100]
-    assert seen["press house"]["moving"] == 0
-    house = seen["drawings, house triangle"]
-    assert (house["layer"], house["search"]) == ("house", "?atlas=triangle")
-    assert _drawn(house) == []
-    assert _same_places(house, triangle)
-
-
-def test_tiles_placed_later_take_the_drawing_the_block_is_in(seen: Readings) -> None:
-    """The rest of the cases, placed when the expander is first pressed, arrive in the
-    regularized drawing when the block is in it: every case with a view shows it."""
-    every = seen["drawings, regularized every case"]
-    assert (every["layer"], every["expanded"]) == ("regularized", "true")
-    assert len(every["tiles"]) == 324
-    assert _drawn(every) == sorted(every["regularized"])
-
-
-def test_the_arrow_keys_move_between_the_drawing_tabs_and_select_the_one_focused(
-    seen: Readings,
-) -> None:
-    keys = [(key, report["layer"]) for key, report in seen["drawing keys"]]
+    """The size tabs' keys are the view tabs': Right and Left to the next and the last,
+    wrapping, Home and End to the ends, and the tab the focus lands on is selected."""
+    keys = [(key, report["size"]) for key, report in seen["size keys"]]
     assert keys == [
-        ("ArrowLeft", "house"),
-        ("ArrowRight", "regularized"),
-        ("Home", "house"),
-        ("End", "regularized"),
+        ("ArrowLeft", "medium"),
+        ("ArrowRight", "large"),
+        ("Home", "small"),
+        ("End", "large"),
+        ("ArrowRight", "small"),
     ]
-    for key, report in seen["drawing keys"]:
-        current = _layers(report)[report["layer"]]
+    for key, report in seen["size keys"]:
+        sizes = _size_tabs(report)
+        current = sizes.pop(report["size"])
         assert current["focused"], key
         assert (current["selected"], current["tabindex"]) == ("true", 0), key
+        for other in sizes.values():
+            assert (other["selected"], other["tabindex"], other["focused"]) == (
+                "false",
+                -1,
+                False,
+            ), key
+        assert report["focus"] == current["id"]
 
 
-def test_a_regularized_tile_is_the_link_to_the_same_case_record(seen: Readings) -> None:
-    """A regularized tile opens the record its house tile opens: the record's drawing is
-    the house one, and the regularized layer is only the atlas's view of it."""
-    tile = seen["regularized tile link"]
-    n = tile["n"]
-    assert tile == {"n": n, "href": f"cases/{n}.html", "case": str(n), "layer": "regularized"}
-
-
-def test_a_linked_regularized_atlas_is_regularized_before_a_tile_is_drawn(
-    seen: Readings,
-) -> None:
-    """Opened on an address that names the regularized drawing, the tiles are already
-    the regularized ones when they are first put in the page, and the phone's layout of
-    them, badges and all, has nothing wrong with it."""
-    phone = seen["phone, regularized"]
-    shown = len([n for n in phone["regularized"] if n <= 100])
-    assert seen["phone, regularized, first placed"] == [
-        {
-            "view": "triangle",
-            "layer": "regularized",
-            "per_line": "8",
-            "tiles": 100,
-            "regularized": shown,
-            "moving": 0,
-        }
+def test_a_linked_size_is_that_size_before_a_tile_is_drawn(seen: Readings) -> None:
+    """Opened on an address that names the triangle at Large, the block is at Large, its
+    tiles arranged five to a line on a phone, at the moment they are first put in the
+    page; the phone's layout is larger than at Medium and runs past nothing, with the size
+    tabs beside the view tabs or under them."""
+    assert seen["phone, large, first placed"] == [
+        {"view": "triangle", "size": "large", "per_line": "5", "tiles": 100, "moving": 0}
     ]
+    phone = seen["phone, large"]
     assert phone["overflow"] == 0
-    views, layers = _tabs(phone), _layers(phone)
-    beside = layers["house"]["box"]["left"] >= views["triangle"]["box"]["right"]
-    under = layers["house"]["box"]["top"] >= views["grid"]["box"]["bottom"]
+    assert _width(phone) > _width(seen["phone"])
+    views, sizes = _tabs(phone), _size_tabs(phone)
+    beside = sizes["small"]["box"]["left"] >= views["triangle"]["box"]["right"]
+    under = sizes["small"]["box"]["top"] >= views["grid"]["box"]["bottom"]
     assert beside or under
+    assert phone["legend"]["box"]["right"] <= phone["block"]["right"] + atlas.EDGE
+
+
+@pytest.mark.parametrize(
+    "name", ["triangle, large, every case", "triangle, medium, every case", "phone, large"]
+)
+def test_a_tile_carries_the_star_of_a_new_result_and_the_badge_of_its_regularized_view(
+    seen: Readings, name: str
+) -> None:
+    """A case whose verified lower bound is a new result, the frontier table's rule,
+    carries the star after its number, and its tile's name ends "new result"; a case
+    drawn from its regularized view, the atlas's one drawing of it, carries the badge
+    before its number, and its name says so; no other tile carries either. Where each
+    stands is `mark_problems`', which every layout is held to above."""
+    from devtools import overview_sections, render_frontier_page  # noqa: PLC0415
+
+    new = {n for n, recent in render_frontier_page.recent_lower_bounds().items() if recent}
+    regularized = set(overview_sections.atlas_regularized())
+    assert new
+    assert regularized
+    tiles = seen[name]["tiles"]
+    for tile in tiles:
+        n = tile["n"]
+        assert (tile["star"] is not None) == (n in new), n
+        assert tile["name"].endswith(", new result") == (n in new), n
+        assert (tile["mark"] is not None) == (n in regularized), n
+        assert ("regularized view" in tile["name"]) == (n in regularized), n
+    shown = {tile["n"] for tile in tiles}
+    assert shown & new
+    if len(tiles) == 324:
+        assert shown & regularized == regularized

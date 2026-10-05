@@ -409,7 +409,7 @@ def test_the_43050ed_pin_audits_n66_and_leaves_the_declared_net_to_sqverify_fast
     candidate = json.loads(read_retained_bytes(retained / "candidate.json"))
     assert candidate["proof_net"] == {"step": "1/1001", "last": 415}
     assert (candidate["B"], candidate["total_mass"]) == ("0.999", "1799999/100000")
-    assert audit.MIXED_CORE != Fraction(candidate["B"])
+    assert Fraction(candidate["B"]) != audit.MIXED_CORE
 
 
 @pytest.mark.parametrize("name", ["n69-L862", "n86-L9503"])

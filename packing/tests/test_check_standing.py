@@ -231,6 +231,23 @@ def test_a_superseded_entry_whose_bound_still_stands_is_refused(records: view.Re
     assert check_standing.problems(tied, view.SUPERSEDED, records)
 
 
+def test_a_superseded_report_is_held_to_the_reported_lane_alone(records: view.Records) -> None:
+    """T-046 reports wand125's rectangle certificates at C0. Its replays (T-045, T-070)
+    hold verified bounds equal to some of its values, and others are above the verified
+    bound where no replay has run, but every one is beaten in the reported lane, so it is
+    superseded without a problem. The same entry at a replayed rung would be refused."""
+    record = records.results["T-046"]
+    assert record["confirmation"] in check_standing.UNREPLAYED
+    assert view.standing(record, records) == view.SUPERSEDED
+    assert check_standing.problems(record, view.SUPERSEDED, records) == []
+    assert "equals the verified bound" in check_standing.summary(
+        record, view.SUPERSEDED, records
+    )
+    replayed = _entry(records, "T-046", confirmation="C3")
+    (problem,) = check_standing.problems(replayed, view.SUPERSEDED, records)
+    assert "no worse than the verified one" in problem
+
+
 def test_a_standing_entry_whose_every_bound_is_beaten_is_refused(records: view.Records) -> None:
     """The mismatch the other way: not marked superseded, and no longer the best at any
     case. T-001's 4.426213 is below the verified and the reported bound at n = 17."""

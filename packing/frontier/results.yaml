@@ -8582,3 +8582,159 @@ results:
       together at one revision; a later revision than T-091's, so a separate entry. At n =
       67 and 84 it raises T-090's values, which keep their claim. The proof-bundle tarballs
       are pinned by digest and not retained. Ids here are provisional until merged.
+
+  - id: T-096
+    kind: lower-bound
+    registered: '2026-10-05'
+    headline: "Mixed rectangle-measure lower bound reported at `n = 18`, on a net the certificate declares"
+    claim: >-
+      wand125/square-packing-bounds reports s(18) >= 47/10 = 4.7, by a rectangle-density
+      certificate published on 5 October 2026.
+
+      The certificate is a density of 136 uniform rectangles in D4 orbits, and no point
+      mass, of total mass 1799999/100000, on a net it declares itself: core side 999/1000
+      and 416 half-angle tangents of step 1/1001. The source's earlier mixed certificates,
+      from T-069 on, use core side 9977/10000 on 201 tangents of step 83/40000. Since
+      999/1000 (1 + 1/1001) = 500499/500500 < 1, every unit square contains a concentric
+      core of side 999/1000 at a net angle strictly in its interior. The source reports
+      every such core capturing mass at least one: at all 415 oblique net angles by
+      code/mixed_rotated_verify.cpp, its research copy of Tokoharu's verify.cpp at coverage
+      threshold one, run by the same driver as T-069's certificates, and at the axis by
+      exact integer tables.
+
+      The value is above the 939/200 = 4.695 of the source's rectangle certificate
+      rect_n18_L4695 (T-045), the reported and verified lower bound at n = 18, by 0.005. Its
+      mass is below 19 too, but the record holds more there.
+
+      Here the source was retained and its exact premises, those of the declared net among
+      them, were recomputed from the retained bytes, and the source's shipped runs were
+      bound record by record to the declared net. None of it decides coverage. This
+      repository's clean-room verifier sqverify-fast, extended to read a declared net,
+      decided all 416 directions here, but it is not yet a registered verifier and no rung
+      rests on it. The value stands as reported, and the verified lower bound is unchanged.
+
+      wand125 after Tokoharu and Levy,
+      [square-packing-bounds](https://github.com/wand125/square-packing-bounds/tree/43050edc5bdf5116fc5a073283128edd6749946b/certificates/mixed_n18_L470).
+      Registration was requested in jlevy/squares#366. The source says parts of the work
+      were produced with AI assistance under human direction.
+    scope: {n_values: [18]}
+    verification: V0
+    confirmation: C0
+    significance:
+      score: 3
+      rationale: >-
+        Scored as a claim: if the replay passes, the strongest verified lower bound on
+        record at n = 18, by 0.005, and the strongest reported. The certificate kind and
+        checker of T-069 and later, on a finer net that the same driver reads from the
+        candidate; a small extension, no new technique, at S3 as those are. The score gates
+        nothing.
+      scored: '2026-10-05'
+      by: 'issue-366 import, registering lane B of the 5 October evening intake (repository; draft)'
+    novelty: previously-published
+    attribution:
+      source_keys: ['[wand125 mixed bounds finer net 2026-10-05]']
+      published: '2026-10-05'
+    composition: >-
+      One primary certificate on one reported entry, at V0/C0: retained and audited for its
+      exact premises, not reviewed and not replayed. Coverage is decided by the source's C++
+      checker alone, byte for byte the checker the 28 September and 2, 3 and 5 October
+      reviews read; the axis tables are a second implementation for one direction and not a
+      second method.
+    evidence:
+      - E-n018-wand125-mixed-470-report
+    artifacts:
+      - packing/resources/web/wand125-mixed-bounds-finer-net-2026-10-05/README.md
+      - packing/resources/web/wand125-mixed-bounds-finer-net-2026-10-05/receipts/n18-L470/audit.json
+      - packing/resources/web/wand125-mixed-bounds-finer-net-2026-10-05/receipts/n18-L470/bundle.json
+      - packing/devtools/audit_wand125_declared_net.py
+      - packing/sqverify_fast/SOUNDNESS.md
+    next_rung: >-
+      A review of the certificate and of the declared net it rests on, as the 5 October
+      reviews read T-090 and T-091, and the complete replay of the bundle's own driver, about 2.7 CPU-hours by the source's own
+      oblique seconds, compared record by record with the shipped run by
+      devtools.audit_wand125_declared_net compare; the verified lower bound at n = 18 moves
+      when the replay returns the certificate's own record at all 416 directions and the
+      review finds no blocking defect.
+    notes: >-
+      V0 because the cited entry is the source's claim: assurance reported, replay not yet
+      complete. C0 because nothing here has yet read the certificate's mathematics: the
+      exact audit and the bundle binding decide no direction. A later revision than
+      T-094's, and its own issue, so its own entry. The proof-bundle tarball is pinned by
+      digest and not retained. Ids here are provisional until merged.
+    activity:
+      state: in-analysis
+      what: >-
+        The complete replay of the bundle's own driver at two workers, and a review of the
+        certificate and the declared net, run separately.
+      since: '2026-10-05'
+      link: think-8qo9
+
+  - id: T-097
+    kind: lower-bound
+    registered: '2026-10-05'
+    headline: "Mixed rectangle-measure lower bound reported at `n = 66`"
+    claim: >-
+      wand125/square-packing-bounds reports s(66) >= 843/100 = 8.43, by a rectangle-density
+      certificate published on 5 October 2026, after those of T-094.
+
+      The certificate is a density of 713 uniform rectangles in D4 orbits, and no point
+      mass, of total mass 6599999/100000, at core side 9977/10000 on 201 net half-angles of
+      step 83/40000, of the kind and checker of T-069 and later. The source reports it
+      accepted at all 200 oblique net angles by code/mixed_rotated_verify.cpp, its research
+      copy of Tokoharu's verify.cpp at coverage threshold one, and at the axis by exact
+      integer tables. It supersedes the source's mixed_n66_L842 (T-069).
+
+      The value is above T-069's 421/50 = 8.42, the reported and verified lower bound at n =
+      66, by 0.01. Its mass is below 67 too, but the record holds more there.
+
+      Here the source was retained, its exact premises were recomputed from the retained
+      bytes, and the replay's checks before its first angle were run on the pinned tarball.
+      None of it decides coverage. This repository's clean-room verifier sqverify-fast
+      decided all 201 directions here, but it is not yet a registered verifier and no rung
+      rests on it. The value stands as reported, and the verified lower bound is unchanged.
+
+      wand125 after Tokoharu and Levy,
+      [square-packing-bounds](https://github.com/wand125/square-packing-bounds/tree/43050edc5bdf5116fc5a073283128edd6749946b/certificates/mixed_n66_L843).
+      Registration was requested in a comment of 5 October 2026 on jlevy/squares#282. The
+      source says parts of the work were produced with AI assistance under human direction.
+    scope: {n_values: [66]}
+    verification: V0
+    confirmation: C0
+    significance:
+      score: 3
+      rationale: >-
+        Scored as a claim: if the replay passes, the strongest verified lower bound on
+        record at n = 66, by 0.01, and the strongest reported. A further size from the
+        generator and checker of T-069 and later, with no new technique, at S3 as those are;
+        the score gates nothing.
+      scored: '2026-10-05'
+      by: 'issue-282 October 5 import, registering lane B of the 5 October evening intake (repository; draft)'
+    novelty: previously-published
+    attribution:
+      source_keys: ['[wand125 mixed bounds finer net 2026-10-05]']
+      published: '2026-10-05'
+    composition: >-
+      One primary certificate on one reported entry, at V0/C0: retained and audited for its
+      exact premises, not reviewed and not replayed. Coverage is decided by the source's C++
+      checker alone, byte for byte the checker the 28 September and 2, 3 and 5 October
+      reviews read; the axis tables are a second implementation for one direction and not a
+      second method.
+    evidence:
+      - E-n066-wand125-mixed-843-report
+    artifacts:
+      - packing/resources/web/wand125-mixed-bounds-finer-net-2026-10-05/README.md
+      - packing/resources/web/wand125-mixed-bounds-finer-net-2026-10-05/receipts/mixed-audit.json
+      - packing/resources/web/wand125-mixed-bounds-finer-net-2026-10-05/receipts/n66-L843/fetch.json
+      - packing/devtools/audit_wand125_point_and_mixed.py
+    next_rung: >-
+      A review of the certificate, as the 5 October reviews read T-090 and T-091, for C1;
+      and the complete replay, about 15.5 CPU-hours planned (16.2 by the source's own
+      oblique seconds), with devtools.audit_wand125_point_and_mixed mixed-replay n66-L843
+      over ranges and mixed-merge, before the verified lower bound at n = 66 moves; it
+      moves when the replay returns the certificate's own record at all 201 directions.
+    notes: >-
+      V0 because the cited entry is the source's claim: assurance reported, replay not
+      attempted. C0 because nothing here has yet read the certificate's mathematics: the
+      exact audit and the pre-replay checks decide no direction. A later revision than
+      T-094's, so its own entry. The proof-bundle tarball is pinned by digest and not
+      retained. Ids here are provisional until merged.

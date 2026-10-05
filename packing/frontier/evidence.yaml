@@ -15234,3 +15234,90 @@ evidence:
       preconditions and that all 200 oblique inputs enclose the exact candidate; none
       of it decides coverage, and no angle was replayed.
     source_reviewed: '2026-10-05'
+  - id: E-n066-wand125-mixed-843-report
+    claim: lower-bound
+    scope: {n_values: [66]}
+    assurance: reported
+    reported_method: interval-certified
+    performed_by: source-author
+    relationship_to_generator: same-implementation
+    origin: external
+    novelty: previously-published
+    source_key: '[wand125 mixed bounds finer net 2026-10-05]'
+    certificate: resources/web/wand125-mixed-bounds-finer-net-2026-10-05/square-packing-bounds/certificates/mixed_n66_L843/candidate.json.gz
+    replay_status: not-attempted
+    verifiers: [V-wand125-mixed-rotated-verify-cpp, V-wand125-verify-mixed-full-proof-py]
+    limitations: >-
+      wand125/square-packing-bounds at 43050edc5bdf5116fc5a073283128edd6749946b (the
+      directory's one commit is d73ce20d, posted on jlevy/squares#282 at
+      2026-10-05T08:11:44Z, and its tree is unchanged at the pin) reports s(66) >=
+      843/100 = 8.43 from a rectangle density of 713 uniform-density rectangles and no
+      point mass, total mass 6599999/100000, core side B = 9977/10000 and 201 net
+      half-angles of step 83/40000, checked there by code/mixed_rotated_verify.cpp
+      (SHA-256 89b674a6...), the research copy of Tokoharu's verify.cpp that the n =
+      50 certificate uses: it accepts a centre box at lower bound 1 instead of
+      10001/10000, with the axis direction decided by exact integer tables in
+      code/verify_axis_certificate.py, both run by the driver
+      code/verify_mixed_full_proof.py. The least oblique lower bound the source
+      records is 1.0000000007136982, at net index 157, and the axis integer minimum
+      1.0051859714394813 over 21,622,500 cells; its oblique run took 58,309 seconds
+      over 120,072,600 nodes. It exceeds the 421/50 = 8.42 of the source's
+      mixed_n66_L842 (T-069), which it supersedes, by 0.01, and Green's and
+      Nagamochi's values at this count (Theorem 9, k=8, from n = 65; 1 + sqrt(51)),
+      which the audit compares exactly. The directory carries no
+      completion-audit.json at the pin, so the tarball (SHA-256 be0b8476...) is bound
+      to the certificate by its digest at the pinned tree and the README's statement
+      of it; it is pinned by digest and not retained. The source says the full replay
+      was run again from the published tarball on a fresh machine, by the same
+      implementation and not an independent one; that was not checked here. Here
+      devtools.audit_wand125_point_and_mixed mixed-audit (receipts/mixed-audit.json in
+      the packet) recomputes the mass, the net, the centre domains and the candidate
+      digest from the retained bytes, and its mixed-fetch checked the pinned tarball,
+      its 621 listed files, the driver's preconditions and that all 200 oblique inputs
+      enclose the exact candidate; none of it decides coverage.
+    source_reviewed: '2026-10-05'
+  - id: E-n018-wand125-mixed-470-report
+    claim: lower-bound
+    scope: {n_values: [18]}
+    assurance: reported
+    reported_method: interval-certified
+    performed_by: source-author
+    relationship_to_generator: same-implementation
+    origin: external
+    novelty: previously-published
+    source_key: '[wand125 mixed bounds finer net 2026-10-05]'
+    certificate: resources/web/wand125-mixed-bounds-finer-net-2026-10-05/square-packing-bounds/certificates/mixed_n18_L470/candidate.json.gz
+    replay_status: not-attempted
+    verifiers: [V-wand125-mixed-rotated-verify-cpp, V-wand125-verify-mixed-full-proof-py]
+    limitations: >-
+      wand125/square-packing-bounds at 43050edc5bdf5116fc5a073283128edd6749946b
+      (committed 2026-10-05T09:21:25Z, and registration requested in
+      jlevy/squares#366 a minute later) reports s(18) >= 47/10 = 4.7 from a rectangle
+      density of 136 uniform-density rectangles and no point mass, total mass
+      1799999/100000, on a net the candidate declares itself: core side B = 999/1000
+      and 416 half-angle tangents of step 1/1001 (proof_net, last index 415), where
+      every earlier mixed certificate of the source has B = 9977/10000 and 201
+      tangents of step 83/40000. B (1 + 1/1001) = 500499/500500 < 1, and the last
+      tangent 415/1001 is past tan(pi/8). It is checked there by the same driver
+      code/verify_mixed_full_proof.py and checker code/mixed_rotated_verify.cpp
+      (SHA-256 89b674a6...), byte for byte the n = 50 copies, which read the net from
+      the candidate: every shipped per-angle record names t = r/1001 and the per-bin
+      centre domain at half-step 1/2002. The least oblique lower bound the source
+      records is 1.000000000165181, at net index 161, and the axis integer minimum
+      1.0174496711115353 over 725,904 cells; its oblique run took 9,819 seconds over
+      37,874,941 nodes, on macOS (arm64) by the bundle's own record. It exceeds the
+      939/200 = 4.695 of the source's rectangle certificate rect_n18_L4695 (T-045) by
+      0.005. The directory carries no completion-audit.json at the pin, so the tarball
+      (SHA-256 6c30eb73...) is bound to the certificate by its digest at the pinned
+      tree and the README's statement of it; it is pinned by digest and not retained.
+      The source says the full replay was run again from the published tarball on a
+      fresh machine, by the same implementation, and #366 reports a check by a copy of
+      this repository's sqverify-fast changed to read the declared net; neither was
+      checked here. Here devtools.audit_wand125_declared_net audit
+      (receipts/n18-L470/audit.json in the packet) recomputes the mass, lemma N0's
+      premises on the declared net, the net blocks the manifest and certificate state
+      and the candidate digest from the retained bytes, and its bundle check binds the
+      pinned tarball's 1,266 listed files to the packet and every shipped record and
+      input to the declared net's tangent, per-bin domain and threshold; none of it
+      decides coverage.
+    source_reviewed: '2026-10-05'

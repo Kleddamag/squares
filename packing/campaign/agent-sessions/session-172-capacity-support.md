@@ -132,7 +132,7 @@ session:
   - Original gate declarations below are historical branch evidence. The rewritten
     review layer remains uncertified; no source target or mathematical replay was rerun.
   - Session 171 and think-op6s closed; source 58af8cded and final metadata 1a7f2ad99 CI both terminal 19 pass/36 skipped,
-    all requiredSUCCESS.
+    all required SUCCESS.
   - Live parent think-tmz6 remains in_progress/claude-code@vm; unrelated think-0qcu is H099Trump/n11
     support dual, no raw-row source overlap.
   - Immediately before planning, parent PR 307 was fetched at 1525d4e03; relevant engine/probe files unchanged.

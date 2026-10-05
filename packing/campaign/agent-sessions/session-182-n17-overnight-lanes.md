@@ -805,6 +805,12 @@ consequence in each.
   The closest miss is mask 3963647, at penetration 0.00027. BC-421 is complete.
 - **BC-425’s target 6 also stopped at its round cap**, at 18:15:37, without closing; its
   node is kept for a stall diagnosis.
+- **BC-425 is complete**
+  ([exp-254](../series/series-000-smoke-and-calibration/experiments/exp-254-h267-n17-second-tranche-flags.md),
+  unresolved for H-267). Targets 8, 9 and 10 closed and were admitted, the last verified
+  at 18:43:02. In all, eight of ten closed and two stopped at the round cap.
+  The certified census stands at 39,656 states in 5,057 orbits, the endpoint surviving,
+  and the manifest at 142 objects, 799,004,544 bytes.
 - **The saved-node re-check of BC-423’s control found no closure, but target 2 stays
   voided.** It returned PASS_SAVED_STALL at 17:40:21 in 4,793 s on the endpoint7 node:
   its cells and its seed and node ids are those of the kept control, and it checked the

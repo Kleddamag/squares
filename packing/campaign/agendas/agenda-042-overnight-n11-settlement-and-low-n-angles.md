@@ -1811,7 +1811,7 @@ agenda:
     owner_focus: correctness
     instances:
     - 17
-    state: in_progress
+    state: complete
     priority: 1
     question: >-
       Do the next ten standing flags by projected gain against the certified line at
@@ -1841,6 +1841,7 @@ agenda:
     artifacts:
     - packing/campaign/explorations/X048-session-182-overnight/kernel-targets-bc425.txt
     - packing/campaign/explorations/X048-session-182-overnight/receipts/K/census-bc425-targets.json
+    - packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-254-h267-n17-second-tranche-flags.md
     note: >-
       Under BC-418, lane K's second tranche, a future slice added at a check-in. The
       targets are frozen in kernel-targets-bc425.txt from the census at 18b7c5ae1

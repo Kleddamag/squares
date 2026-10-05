@@ -160,15 +160,22 @@ experiment:
       cebb5d15a passes it in full mode in 241 s, checking all 4,451 live rows in full and 11,101 collision
       regions by 29,302,976 exact facet checks. Alone it excludes 70,440 states and 8,850 orbits.
   verdict:
-    decision: in-progress
+    decision: unresolved
     primary_criterion: Each frozen target run once, a closure admitted only on the standing verifier's full pass
       with the endpoint surviving; descriptive for the census, and an arity-8 closure does not count toward
       H-267's criterion, which is read at arity at most seven.
-    reason: The tranche is running; each closure is admitted as its verifier passes, and the verdict is written
-      when the list is exhausted or a stop rule fires.
-  lease:
-    expires: '2026-10-06T08:14:04Z'
-    host: Session 182 remote container
+    reason: >-
+      Eight of the ten frozen arity-8 flags closed under lane K's frozen SW9 recipe and
+      were admitted on the standing verifier's full pass, and two stopped at its 24-round
+      cap. The certified census fell from 72,248 states in 9,162 orbits to 39,656 states
+      in 5,057 orbits with the endpoint surviving, but arity-8 classes bear on H-267's
+      arity-seven criterion only as progress on the census, so H-267 is unresolved by
+      this round.
+    needs_review: false
+  effort:
+    timebox: 7,000 s per target and 4,000 s per verification, one worker per job, one slot and then two
+    wall_seconds: 7543
+    stopped_by: criterion
 ---
 # exp-254: Session 182 BC-425, Lane K’s Second Tranche
 
@@ -184,6 +191,12 @@ All ten are arity 8. A closure removes its orbits from the certified census but 
 count toward H-267’s criterion, which is read at arity at most seven.
 
 ## Runs
+
+The list is exhausted: eight targets closed and were admitted, and targets 3 and 6
+stopped at the 24-round cap.
+The round’s wall, 7,543 s, runs from the launch at 16:37:19 UTC to the last verification
+at 18:43:02. BC-426 re-ran the two stalls under BC-423’s recipe, and both closed there;
+those closures are held for the user’s ruling and are not counted here.
 
 The first closure took 1,494 orbits and 11,880 states off the certified line, exactly
 its projected gain.

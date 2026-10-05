@@ -1,0 +1,75 @@
+#!/bin/bash
+# Lane D stall diagnosis queue (session 182).
+# usage: run-diagnosis.sh ID NODE_FILE [ID NODE_FILE ...]
+# For each pair, waits until the 1-minute load average is below LOAD_MAX (default 6),
+# or until OVERRIDE_AT (epoch seconds; default: 45 minutes after the script starts)
+# has passed with the load still high, then runs the plan's two frozen commands, one at
+# a time, at nice 19 with a 1,200 s wall ceiling each. CPU and wall per job are logged.
+set -u
+SCRATCH=/tmp/claude-0/-home-user-squares/6b1ed85f-ba08-5540-8095-4fd66881916f/scratchpad
+RUN=$SCRATCH/s182-run/packing
+OUT=$SCRATCH/s182/D
+PY=$RUN/.venv/bin/python3
+LOG=$OUT/run.log
+LOAD_MAX=${LOAD_MAX:-6}
+OVERRIDE_AT=${OVERRIDE_AT:-$(( $(date +%s) + 45*60 ))}
+SAMPLES=${SAMPLES:-400}
+REFINE=${REFINE:-200}
+SUFFIX=${SUFFIX:-}
+
+log() { echo "$(date -u +%FT%TZ) $*" | tee -a "$LOG"; }
+
+wait_for_load() {
+  local waited=0
+  while true; do
+    local load1
+    load1=$(cut -d' ' -f1 /proc/loadavg)
+    if awk -v l="$load1" -v m="$LOAD_MAX" 'BEGIN{exit !(l < m)}'; then
+      log "load $load1 below $LOAD_MAX; proceeding (waited ${waited}s)"
+      return 0
+    fi
+    if [ "$(date +%s)" -ge "$OVERRIDE_AT" ]; then
+      log "OVERRIDE: load $load1 still at or above $LOAD_MAX past the 45-minute deadline; running one diagnosis anyway at nice 19 (waited ${waited}s)"
+      return 1
+    fi
+    sleep 60; waited=$((waited+60))
+  done
+}
+
+run_job() {
+  local label=$1; shift
+  local outfile=$1; shift
+  local t0 t1 rc
+  log "start $label"
+  t0=$(date +%s)
+  # bash's `time` keyword reports the child tree's user and sys CPU in seconds.
+  { TIMEFORMAT='user=%U sys=%S real=%R'; time nice -n 19 timeout -k 60 1200 "$@" > "$outfile.stdout" 2> "$outfile.stderr"; rc=$?; } 2> "$outfile.time"
+  t1=$(date +%s)
+  local cpu
+  cpu=$(awk '{for(i=1;i<=NF;i++){split($i,kv,"="); if(kv[1]=="user")u=kv[2]; if(kv[1]=="sys")s=kv[2]}} END{printf "%.1f", u+s}' "$outfile.time" 2>/dev/null)
+  log "end $label rc=$rc wall=$((t1-t0))s cpu=${cpu}s output=$([ -s "$outfile" ] && echo present || echo MISSING)"
+  return $rc
+}
+
+cd "$RUN" || exit 1
+while [ $# -ge 2 ]; do
+  ID=$1; NODE=$2; shift 2
+  if [ ! -f "$NODE" ]; then log "skip $ID: node file $NODE missing"; continue; fi
+  SHA=$(basename "$NODE" | sed -E 's/^node-([0-9a-f]+)\.json\.gz$/\1/')
+  log "queue $ID node=$SHA"
+  if [ -s "$OUT/domains-$ID$SUFFIX.json" ]; then
+    log "skip domains-$ID$SUFFIX: receipt already present"
+  else
+    wait_for_load
+    run_job "domains-$ID$SUFFIX" "$OUT/domains-$ID$SUFFIX.json" \
+      "$PY" -m devtools.diagnose_n17_flag domains "$NODE" --output "$OUT/domains-$ID$SUFFIX.json"
+  fi
+  if [ -s "$OUT/support-$ID$SUFFIX.json" ]; then
+    log "skip support-$ID$SUFFIX: receipt already present"
+  else
+    wait_for_load
+    run_job "support-$ID$SUFFIX" "$OUT/support-$ID$SUFFIX.json" \
+      "$PY" -m devtools.diagnose_n17_flag support "$NODE" --samples "$SAMPLES" --refine "$REFINE" --seed 1 --output "$OUT/support-$ID$SUFFIX.json"
+  fi
+done
+log "queue done"

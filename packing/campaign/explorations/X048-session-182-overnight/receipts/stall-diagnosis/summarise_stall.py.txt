@@ -1,0 +1,162 @@
+"""Lane D (session 182): turn a stall's receipts into the review's table rows.
+
+Reads the kernel receipt (`kernel-*.json`), the `domains` receipt and the `support`
+receipt of one stalled node and prints, as Markdown, the per-owner table (live rows,
+finest live row, support share, cut margins, first-order losses) and the classification
+under the plan's rule:
+
+- loss-limited: some owner has a supported share below 10 per cent and a median cut
+  margin above the run's first-order losses at its finest row;
+- consistency-limited: every owner is at least half supported;
+- anything else is reported as mixed, with the owners that fall between.
+
+The first-order losses at the finest row are computed from the row width exactly as
+`devtools.diagnose_n17_flag.row_losses` does (envelope core: `1/2 - 1/(2(cos(D/2) +
+sin(D/2)))` for an angular width `D`; wall: the spread of the half-extent over the row,
+at most `D/2`), at the chart position that maximises them (`t = 0`, where `D = 2 atan(w)`
+for a chart width `w`). A diagnostic summary, not a certificate.
+
+usage: python3 summarise_stall.py ID KERNEL_RECEIPT DOMAINS_JSON [SUPPORT_JSON]
+"""
+
+from __future__ import annotations
+
+import json
+import math
+import sys
+from fractions import Fraction
+from pathlib import Path
+
+
+def finest_row_losses(width: Fraction) -> tuple[float, float]:
+    """(core, wall) first-order losses of a row of chart width `width` at `t = 0`."""
+    big_d = 2.0 * math.atan(float(width))
+    core = 0.5 - 0.5 / (math.cos(big_d / 2) + math.sin(big_d / 2))
+    wall = big_d / 2  # max |h'(theta)| = 1/2 over [0, pi/2]
+    return core, wall
+
+
+def parse_width(label: str) -> Fraction:
+    return Fraction(label)
+
+
+def main(argv: list[str]) -> int:
+    ident, kernel_path, domains_path = argv[1], Path(argv[2]), Path(argv[3])
+    support_path = Path(argv[4]) if len(argv) > 4 and Path(argv[4]).exists() else None
+    kernel = json.loads(kernel_path.read_text())
+    domains = json.loads(domains_path.read_text())
+    support = json.loads(support_path.read_text())["support"] if support_path else None
+
+    cells = kernel.get("cells") or list(domains["owners"])
+    rounds = len(kernel["rounds"]) if "rounds" in kernel else kernel.get("rounds_run", "?")
+    if "final_extents" in kernel:
+        total_rows = sum(int(e["rows"]) for e in kernel["final_extents"])
+        total_live = sum(int(e["live_rows"]) for e in kernel["final_extents"])
+    else:
+        total_rows, total_live = domains.get("rows", "?"), domains.get("live_rows", "?")
+    widths_live = sorted(
+        {Fraction(w) for o in domains["owners"].values() for w in o.get("live_rows_by_chart_width", {})}
+    )
+    finest = kernel.get("finest_row") or (str(widths_live[0]) if widths_live else f"1/{kernel.get('bins', '?')}")
+    finest_w = parse_width(finest)
+    core_f, wall_f = finest_row_losses(finest_w)
+
+    print(f"### {ident}")
+    print()
+    print(
+        f"- cells ({len(cells)}): {', '.join(cells)}; bins {kernel.get('bins')}; core {kernel.get('core')};"
+        f" split {kernel.get('split')}"
+    )
+    print(
+        f"- producer outcome `{kernel.get('producer_outcome')}` after {rounds} rounds and"
+        f" {len(kernel.get('steps', []))} steps; rows {total_live} live of {total_rows};"
+        f" wall {kernel.get('wall_seconds', 0):.0f} s, process CPU {kernel.get('process_cpu_seconds', 0):.0f} s"
+        f" (producer {kernel.get('producer_seconds', 0):.0f} s, checker {kernel.get('checker_seconds', 0):.0f} s)"
+    )
+    print(
+        f"- finest row {finest} in t: first-order losses at that width, envelope core"
+        f" {core_f:.5f}, wall at most {wall_f:.5f} (sum {core_f + wall_f:.5f})"
+    )
+    print(f"- node {kernel.get('node_sha256') or domains.get('node_file')}")
+    if support_path:
+        rec = json.loads(support_path.read_text())
+        print(
+            f"- support receipt: samples {support['samples']}, refine {support['refine']},"
+            f" {rec.get('seconds')} s; partner pools {support['partner_pool']}"
+        )
+    print()
+    header = (
+        "| Owner | Rows (live) | Live rows by width | Live angle (deg) | Centre box of live residuals"
+        " | Owned hull | Ideal owned | Largest live core / wall loss | Supported | Cut margin least / p10 / median"
+        " | Unsupported by (poses, median margin) |"
+    )
+    print(header)
+    print("| --- | ---: | --- | ---: | --- | ---: | ---: | --- | ---: | --- | --- |")
+    shares: dict[str, float] = {}
+    medians: dict[str, float | None] = {}
+    for name in cells:
+        o = domains["owners"][name]
+        live = o["live_rows"]
+        widths = ", ".join(f"{k}: {v}" for k, v in o.get("live_rows_by_chart_width", {}).items())
+        box = (
+            f"[{o['x'][0]:.3f}, {o['x'][1]:.3f}] x [{o['y'][0]:.3f}, {o['y'][1]:.3f}]"
+            if "x" in o
+            else "—"
+        )
+        losses = (
+            f"{o.get('largest_core_loss', 0):.4f} / {o.get('largest_wall_loss', 0):.4f}"
+            if live
+            else "—"
+        )
+        sup = "—"
+        cut = "—"
+        unsup = "—"
+        if support and name in support["owners"]:
+            s = support["owners"][name]
+            shares[name] = s["supported_share"]
+            sup = f"{100 * s['supported_share']:.1f}%"
+            cm = s["cut_margin"]
+            medians[name] = cm["median"] if cm else None
+            if cm:
+                cut = f"{cm['least']:.4f} / {cm['tenth_percentile']:.4f} / {cm['median']:.4f}"
+            else:
+                cut = "none unsupported"
+            unsup = "; ".join(
+                f"{p} ({v['poses']}, {v['median_margin']:.4f})" for p, v in s["unsupported_by"].items()
+            ) or "—"
+        print(
+            f"| {name} | {o['rows']} ({live}) | {widths} | {o.get('live_degrees', 0):.1f} | {box}"
+            f" | {o.get('owned_hull_area', 0):.3f} | {o.get('ideal_owned_area', 0):.3f} | {losses}"
+            f" | {sup} | {cut} | {unsup} |"
+        )
+    print()
+    if support:
+        low = [n for n, v in shares.items() if v < 0.10]
+        mid = [n for n, v in shares.items() if 0.10 <= v < 0.50]
+        print(f"- owners below 10% supported: {low or 'none'}; between 10% and 50%: {mid or 'none'};"
+              f" all at least half supported: {all(v >= 0.5 for v in shares.values())}")
+        for n in low:
+            m = medians[n]
+            o = domains["owners"][n]
+            wall_owner = o.get("largest_wall_loss", 0) > 0
+            floor_loss = core_f + (wall_f if wall_owner else 0.0)
+            verdict = "above" if (m is not None and m > floor_loss) else "below"
+            print(
+                f"- {n}: median cut margin {m:.4f} is {verdict} the finest-row losses"
+                f" {floor_loss:.4f} ({'core + wall' if wall_owner else 'core only'})"
+            )
+        if low:
+            above = [n for n in low if medians[n] is not None and medians[n] > core_f + (wall_f if domains['owners'][n].get('largest_wall_loss', 0) > 0 else 0.0)]
+            if above:
+                print(f"- classification: LOSS-LIMITED (aimable at the current floor) via {above}")
+            else:
+                print(f"- classification: LOSS-LIMITED but margins below the finest-row losses (needs a finer floor or a sharper core, not aim alone) via {low}")
+        elif all(v >= 0.5 for v in shares.values()):
+            print("- classification: CONSISTENCY-LIMITED (every owner at least half supported)")
+        else:
+            print(f"- classification: MIXED (no owner under 10%, but {mid} under half)")
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main(sys.argv))

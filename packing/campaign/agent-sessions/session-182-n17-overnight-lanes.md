@@ -171,79 +171,80 @@ session:
     - Edits in the run worktree; changes to the wtn17stack or wt307fix worktrees.
   - task: Lane R, the capture route (lane R9, think-g2qn), from committed receipts
     operator: Fable sub-agent at max effort
-    status: queued
+    status: completed
     recording: contemporaneous
-    outcome: null
-    evidence: null
-    files: null
-    checks: null
-    uncertainty: null
-    elapsed_seconds: null
-    elapsed_quality: unavailable
-    next_action: A written verdict of one of the plan's three kinds.
-    phase: 2
-    budget_minutes: 180
-    validation_command: >-
-      cd packing && uv run --frozen --all-extras --group dev packing-validate --edit
-    kill_condition: The receipts cannot decide between a producer limit and the architecture.
-    fallback: Specify the single cheapest discriminating measurement for a later W7 slice.
-    expected_output: docs/project/reviews/review-2026-10-05-n17-capture-r9.md
-    write_scope:
+    outcome: >-
+      Undecidable from the receipts with most of the question decided: none of the four
+      named producer candidates is the limit, and an unnamed producer loss (the owned-hull
+      compression toward the vertex mean, about 1.22e-4 at unit scale) is present and
+      quantified; the review specifies the discriminating measurement for a later slice.
+    evidence:
     - docs/project/reviews/review-2026-10-05-n17-capture-r9.md
-    excluded_commands:
-    - Commits, pushes and new measurements; score_n17_capture is the one sanctioned tool.
-  - task: Lane D, classification of lane K's kernel stalls
-    operator: Fable sub-agent at extra-high effort
-    status: queued
-    recording: contemporaneous
-    outcome: null
-    evidence: null
-    files: null
-    checks: null
-    uncertainty: null
+    files:
+    - docs/project/reviews/review-2026-10-05-n17-capture-r9.md
+    - packing/campaign/explorations/X048-session-182-overnight/receipts/R9/score-pilot2-need-r9.json
+    - packing/campaign/explorations/X048-session-182-overnight/receipts/R9/score-pilot2-need-r9.txt
+    checks:
+    - One run of devtools.score_n17_capture at 451154f60 reproduced the committed score table.
+    uncertainty: >-
+      The verdict rests on committed receipts; the measurement it specifies has not run.
     elapsed_seconds: null
     elapsed_quality: unavailable
-    next_action: Diagnose each lane-K stall node at nice 19 while the load is below 4.5.
+    next_action: The coordinator codifies any candidate at the morning W10.
     phase: 2
-    budget_minutes: 120
-    validation_command: >-
-      cd packing && uv run --frozen --all-extras --group dev packing-validate --edit
-    kill_condition: No lane-K stall node exists, or the load stays at 4.5 or above.
-    fallback: Classify the stalls already diagnosed and assess C2 and C5 on those.
-    expected_output: docs/project/reviews/review-2026-10-05-n17-stall-classification.md
-    write_scope:
+  - task: Lane D, classification of lane K's and lane A's kernel stalls
+    operator: Fable sub-agent at extra-high effort
+    status: completed
+    recording: contemporaneous
+    outcome: >-
+      K-k2 is loss-limited (knot owners interior-NW and interior-W at 0.5 and 4.5 per cent
+      support, median cut margins near 0.010 against the 1/512 core loss), stopped at its
+      round cap with producer time unused. The distance-4 and distance-6 per-state stalls
+      share a wall knot whose margins (about 0.011 to 0.015) sit below the 1/32 losses of
+      N1's recipe but above a 1/512 cut; the distance-2 draw 1964767 is
+      consistency-limited at a true fixed point. C2 (aimed splits) is selected before C5.
+    evidence:
+    - docs/project/reviews/review-2026-10-05-n17-stall-classification.md
+    files:
     - docs/project/reviews/review-2026-10-05-n17-stall-classification.md
     - packing/campaign/explorations/X048-session-182-overnight/receipts/stall-diagnosis/
-    excluded_commands:
-    - Commits, pushes and shared records.
-  - task: Lane H, census reads the recheck, the survey distance filter, and the X-048 addition
-    operator: Opus sub-agent at high effort
-    status: queued
-    recording: contemporaneous
-    outcome: null
-    evidence: null
-    files: null
-    checks: null
-    uncertainty: null
+    checks:
+    - diagnose_n17_flag support and domains on each stall node, at nice 19 while the one-minute load was below 6.
+    uncertainty: >-
+      Deviation: the per-state nodes were diagnosed at 100 poses per owner, not 400, because
+      400 did not finish inside the 1,200 s ceiling at the night's load (the receipts are
+      suffixed -s100); the share estimates widen to about 5 percentage points.
     elapsed_seconds: null
     elapsed_quality: unavailable
-    next_action: H1 to H3 handed back with --push passing; the coordinator commits.
+    next_action: BC-423 and BC-424 test its two readings; the nodes were deleted once its receipts named them.
     phase: 2
-    expected_output: >-
-      H1 and H2 with their tests, and the corrected X-048 addition, passing --push.
-    budget_minutes: 240
-    validation_command: >-
-      cd packing && uv run --frozen --all-extras --group dev packing-validate --push
-    kill_condition: A change outside the write set is needed, or --push fails on something the lane cannot repair.
-    fallback: Hand back what passes and name the blocker; the coordinator commits.
-    write_scope:
+  - task: Lane H, census reads the recheck, the survey distance filter, and the X-048 addition
+    operator: Opus sub-agent at high effort
+    status: completed
+    recording: contemporaneous
+    outcome: >-
+      H1, the census projects the selector recheck's still-flagged classes by default; H2,
+      survey_n17_residue --distance D with --sample 0; H3, the X-048 October 5 status
+      addition. The coordinator committed and merged them on the session branch.
+    evidence:
+    - packing/devtools/census_n17_certified.py
+    - packing/devtools/survey_n17_residue.py
+    - packing/campaign/explorations/X-048-n17-optimality-after-n11.md
+    files:
     - packing/devtools/census_n17_certified.py
     - packing/devtools/survey_n17_residue.py
     - packing/tests/test_census_n17_certified.py
     - packing/tests/test_survey_n17_residue.py
     - packing/campaign/explorations/X-048-n17-optimality-after-n11.md
-    excluded_commands:
-    - Commits and pushes.
+    checks:
+    - The census and survey test files pass on the session branch.
+    uncertainty: >-
+      The survey later gained --shard K/N in this session (504a84464) for lane E, outside
+      lane H's own commits.
+    elapsed_seconds: null
+    elapsed_quality: unavailable
+    next_action: None for the lane.
+    phase: 2
   outputs:
   - packing/campaign/hypotheses/H-264-n17-geometric-exclusion-cost-per-leaf.md
   - packing/campaign/agendas/agenda-042-overnight-n11-settlement-and-low-n-angles.md
@@ -288,6 +289,23 @@ Lanes A and K run only from a detached run worktree at the registration commit, 
 never edited. Every closure is re-proved there by a standing verifier in full before the
 coordinator admits it in the session checkout.
 Certificate objects stay out of Git (OR-18).
+
+## Notes for the Morning Record
+
+- A container restart at about 10:32 UTC killed every process.
+  Three jobs without receipts (A-m1964767, A-m2878207, K-k6) re-ran from scratch; every
+  closure already had its verification receipt, and the queues resumed by skipping
+  completed receipts.
+- K-k2 stopped at its 24-round cap with producer time unused, so `--max-rounds` is a
+  free lever for lane K’s stalls; BC-423 tests it with lane D’s settings.
+- Lane D diagnosed the per-state stall nodes at 100 poses per owner instead of 400,
+  because 400 did not finish inside its 1,200 s ceiling at the night’s load.
+- Slices added at check-ins, each registered before its first run: BC-423 (K-k2 with
+  lane D’s settings), H-273 and BC-421 (lane E, on slot 4, with the survey’s new
+  `--shard`), and H-274 and BC-424 (lane A’s counted stalls under SW9’s recipe).
+- The branch-and-bound queue’s Knuth list is frozen in `s182/K/bb/knuth-targets.txt`:
+  the 34 flags with at most two wall cells (the recheck’s placed flag excluded) and
+  kernel target 2. It waits for the slot after BC-423.
 
 <!-- This document follows common-doc-guidelines.md.
 See github.com/jlevy/practical-prose and review guidelines before editing.

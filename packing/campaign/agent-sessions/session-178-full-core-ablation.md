@@ -14,7 +14,6 @@ session:
   branch: guzhou/n17-residual-compatibility
   primary_bead: think-abit
   status: stopped
-  certification_pending: think-q0z7
   goal: Separate full-interval octagon augmentation and halving on frozen E79; exact nesting
     first, fixed-tuple classification only.
   workflow_phases:
@@ -114,9 +113,12 @@ session:
   - 'Historical full gate: fast at c6972548e98ec356a8d408e9b34518be87a6cf36: passed'
   - Exact D source has 55 checks terminal, 19 pass/36 skip, all 3 required SUCCESS; real-tree file-cost guard
     passes; no threshold changes.
+  - 'full gate: fast at 3b5edcdd9a7c3f75344c2c16a161969ed62cfdb9: passed (hosted Packing validation
+    run 37305598332 on PR 360, the rebuild of PR 352 on PR 347; this head carries the session''s
+    work unchanged)'
   stop_reason: ONE fixed-sample ablation and independent replay accepted; hosted certification
     remains explicit.
-  next_action: Await Joshua and current-layer required CI under think-q0z7.
+  next_action: Await Joshua's review of the rebuilt layer (PR 360) under think-q0z7.
     No active research executor or reserved follow-up; original intervals are historical.
   ended_at: '2026-10-04T11:56:07.283634+00:00'
   handoff_role: administrative_closeout

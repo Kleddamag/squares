@@ -140,13 +140,20 @@ def build(output_dir: Path | None = None) -> Path:
     print("Rust floor positive control and 4 negative probes passed", flush=True)
     _run((cargo, "fmt", "--all", "--check"), environment)
     test_environment = dict(environment)
-    if platform.system() == "Darwin":
-        library_directory = sysconfig.get_config_var("LIBDIR")
-        if isinstance(library_directory, str) and library_directory:
+    library_directory = sysconfig.get_config_var("LIBDIR")
+    if isinstance(library_directory, str) and library_directory:
+        if platform.system() == "Darwin":
             rust_flags = test_environment.get("RUSTFLAGS", "")
             test_environment["RUSTFLAGS"] = (
                 f"{rust_flags} -L native={library_directory}"
             ).strip()
+        else:
+            # The test binary links libpython, which a uv-managed interpreter keeps in
+            # its own LIBDIR rather than on the loader's default path.
+            loader_path = test_environment.get("LD_LIBRARY_PATH", "")
+            test_environment["LD_LIBRARY_PATH"] = (
+                f"{library_directory}:{loader_path}" if loader_path else library_directory
+            )
     _run(
         (
             cargo,

@@ -226,8 +226,10 @@ def test_superseded_is_marked_on_a_bound_and_where_a_later_result_is_declared() 
     # superseded Daniel's s(12) >= 15680/3951 (T-049); thirty-three since the merge of the
     # same day, when the replays recorded in parallel (T-063, T-069) beat Bašić and
     # Slivková's piercing bound (T-087) at both of its counts; thirty-four since 5 October,
-    # when R071's replay (T-093) superseded R068 (T-043) at n = 17.
-    assert len(derived) == 34
+    # when R071's replay (T-093) superseded R068 (T-043) at n = 17; thirty-five later that
+    # day, when wand125's n = 84 certificate of 5 October (T-094), decided here by
+    # sqverify-fast, superseded T-071 at the last count it held.
+    assert len(derived) == 35
     assert {"T-020", "T-021", "T-030", "T-043", "T-044", "T-047", "T-049", "T-087"} <= set(
         derived
     )

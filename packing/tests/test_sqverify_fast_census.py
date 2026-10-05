@@ -38,6 +38,15 @@ EVIDENCE = census.PROJECT / "frontier/evidence.yaml"
 VERIFIER = "V-sqverify-fast"
 #: The receipt whose exact capture is recomputed here from the candidate.
 RECOMPUTED = "mixed_n67_L848"
+#: The `source_sha256` of builds whose crate source is the one the two reviews of 3
+#: October accepted at 4ddf37d9c: `src/`, `Cargo.lock` and `build.rs` unchanged, and
+#: `Cargo.toml` changed only by the gate's test profile (IR-4 of the 5 October review).
+REVIEWED_SOURCES = frozenset(
+    {
+        "9985c465116631570c873ecc33af126adc6f14c7429a5ed44d922254d3c7f8a7",
+        "7c49cf79f2408e745d5a0759caf85768d92c502bb574b95dbc12b81a36e50300",
+    }
+)
 
 
 @cache
@@ -106,6 +115,39 @@ def test_every_entry_the_verifier_decides_has_a_verified_case_and_a_refused_cont
         assert entries()[name]["status"] == "VERIFIED", evidence_id
         assert name in controls(), f"{evidence_id}: no control receipt for {name}"
         assert controls()[name]["status"] == "CONTROLS_REFUSED", evidence_id
+
+
+def test_every_entry_the_verifier_decides_is_within_what_its_review_accepted() -> None:
+    """The per-certificate conditions of the review of 5 October (Carrying the Route).
+
+    A certificate outside them (points or segments, another core side, net, domain or
+    threshold, a fault injected, or a crate source other than the reviewed one) needs
+    another review before an evidence entry may rest on its census row.
+    """
+    for evidence_id, name in cited().items():
+        entry = entries()[name]
+        premises = entry["premises"]
+        n = int(premises["n"])
+        assert (n, premises["L"]) == (entry["n"], entry["L"]), evidence_id
+        assert premises["format"] == "M", evidence_id
+        assert premises["centre_domain"] == "per-bin", evidence_id
+        assert (premises["angle_count"], premises["D"], premises["B"]) == (
+            201,
+            "83/40000",
+            "9977/10000",
+        ), evidence_id
+        assert Fraction(premises["mass_exact"]) == n - Fraction(1, 100000), evidence_id
+        assert premises["expanded_points"] == premises["expanded_segments"] == 0, evidence_id
+        assert entry["threshold"] == "1", evidence_id
+        assert entry["refused_directions"] == [], evidence_id
+        assert entry["build"]["source_sha256"] in REVIEWED_SOURCES, evidence_id
+        assert (entry["build"]["profile"], entry["build"]["rustc"].split()[1]) == (
+            "release",
+            "1.98.0",
+        ), evidence_id
+        receipt = FOLDER / entry["packet"] / f"{name}.jsonl.gz"
+        summary = json.loads(gzip.decompress(receipt.read_bytes()).splitlines()[-1])
+        assert summary["fault_injected_at_box"] is None, evidence_id
 
 
 @pytest.mark.parametrize("name", sorted(controls()))

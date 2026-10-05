@@ -5,7 +5,7 @@ title: "Import Francisco Couzo: new records at franciscouzo/square-packing 6042c
 kind: task
 status: in_progress
 priority: 1
-version: 3
+version: 4
 delegate: claude-code@vm
 labels:
   - result-import
@@ -14,7 +14,7 @@ parent_id: is-01m44qz0rxvkakmyqaj7qdgagv
 hold: null
 hold_until: null
 created_at: 2026-10-05T03:09:42.834Z
-updated_at: 2026-10-05T03:15:25.091Z
+updated_at: 2026-10-05T03:39:48.217Z
 started_at: 2026-10-05T03:10:47.110Z
 ---
 
@@ -37,3 +37,9 @@ All seven improve the record; Couzo (T-056) held all seven. Casson's sides (2026
 Register action: a later release that lowers an earlier entry's values -> new entry (T-092 on this branch), T-056 keeps its claim; case records decide which is current.
 
 Validation plan: T-056's two routes on the seven new poses, minutes: devtools.upper_bound_packets certify (robust-rational promotion + independent Fraction checker, ~15 CPU-min) and devtools.upper_bound_intervals certify (seconds). Both exist; the tooling needs a second Couzo source (W7 slice inside this import). Kingbird live page denied by the proxy (403), so no live-catalogue receipt.
+
+Stages 2-4 (2026-10-05, same branch):
+- Stage 2: packet packing/resources/web/franciscouzo-square-packing-2026-10-03/ (facts for the seven, all 99 upstream files pinned by SHA-256, history; no raw bytes, no licence). Key [franciscouzo square-packing 2026-10-03], dated 2026-10-03. Tooling: upper_bound_packets Source gains layout/retrieved/control/supersedes; apply_upper_bound_packets chains a later registration over an earlier one at a count.
+- Stage 4 replay (both T-056 routes): exact certify 264 s wall on 4 workers, all seven at centre dilation 1, both checkers pass; interval certify 1 s, all VERIFIED at 40 digits, agrees with exact at every count. Controls on n = 208 (side -1e-15, square 2 +1e-6, degrees) refused. Verified = printed at 228/272/303, +1 unit at 208/209/263, +2 units at 306 (conflict + mathematics blocker, as T-056 at 206/259/305).
+- Stage 3: T-092 registered V3/C3 (derived from replayed-here exact-algebraic + interval-certified evidence with controls), S3 draft. Case records n-208..306 written by devtools.apply_upper_bound_packets; coverage source franciscouzo-square-packing-2026-10-03 with seven overrides, T-056's seven sides superseded.
+- Still open in this bead: the stage 4 review lane (a mapped review of the seven certificates under docs/project/reviews/), not run in this lane; stage 7 has no issue to answer.

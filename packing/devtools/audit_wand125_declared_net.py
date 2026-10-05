@@ -32,14 +32,18 @@ by digest.
 
   This binds the source's own runs to the declared net. It decides no coverage either.
 - ``compare`` reads a copy of the bundle after the bundle's own driver has replayed it,
-  as its README says, and compares every regenerated record with the shipped one.
+  as its README says, with the run's own record. It requires the run to have happened
+  (exit zero, the driver's progress at every node, its binary in the copy, every record
+  written after the start), and every regenerated record, and the rewritten certificate
+  as a mapping, to equal the shipped and retained ones (finding DN-1 of the 5 October
+  review, which found the first version matching a copy where nothing ran).
 
 From ``packing/``::
 
     .venv/bin/python3 -m devtools.audit_wand125_declared_net audit --check
     .venv/bin/python3 -m devtools.audit_wand125_declared_net bundle --bundle DIR
     .venv/bin/python3 -m devtools.audit_wand125_declared_net compare \\
-        --shipped DIR --fresh RUN_DIR
+        --shipped DIR --fresh RUN_DIR --meta RUN_META
 """
 
 from __future__ import annotations
@@ -48,6 +52,7 @@ import argparse
 import hashlib
 import json
 import sys
+from datetime import datetime
 from fractions import Fraction
 from pathlib import Path
 from typing import Any
@@ -439,44 +444,106 @@ def bundle(root: Path, directory: Path = DIRECTORY) -> dict[str, Any]:
     }
 
 
-#: Files the bundle's driver writes in its copy of the bundle besides each node's record.
-DRIVER_OUTPUTS = ("bundle.json", "files-sha256.json", "proof/replay-progress.json")
+#: Files the bundle's driver writes in its copy of the bundle, besides each node's
+#: record: compared by their content, never by their bytes.
+DRIVER_OUTPUTS = frozenset(
+    {"bundle.json", "files-sha256.json", "proof/replay-progress.json", "proof/certificate.json"}
+)
+#: What the driver builds and leaves in its copy: present only where it ran.
+DRIVER_BINARY = "proof/replay-verify"
 
 
-def compare(shipped: Path, fresh: Path, directory: Path = DIRECTORY) -> dict[str, Any]:
-    """Every record the driver's replay regenerated, against the shipped one."""
-    candidate, _certificate, _manifest = read_directory(directory)
+def read_meta(path: Path) -> dict[str, str]:
+    """The run's own record (`key: value` lines, as the replay's runner writes them)."""
+    meta: dict[str, str] = {}
+    for line in path.read_text(encoding="utf-8").splitlines():
+        key, separator, value = line.partition(": ")
+        if separator and key and not key.startswith(" "):
+            meta.setdefault(key, value)
+    return meta
+
+
+def record_name(r: int) -> str:
+    return "proof/axis/replayed.json" if r == 0 else f"proof/net{r:03d}/replayed.json"
+
+
+def compare(
+    shipped: Path, fresh: Path, meta: Path, directory: Path = DIRECTORY
+) -> dict[str, Any]:
+    """A replay by the bundle's own driver, in a copy of the bundle, against the shipped
+    run: that the run happened, and that every record it regenerated is the shipped one.
+
+    The run happened when its runner's record says it started and exited zero, the
+    driver's progress record counts every node done, the driver's binary is in the copy,
+    and every node's record was written after the run started. Every regenerated record
+    equals the shipped one and the retained certificate's, field by field; the copy's
+    certificate, if the driver rewrote it, equals the retained one as a mapping, whatever
+    its order; the copy's `bundle.json` reports the replay; and every other shipped file
+    is unchanged.
+    """
+    candidate, certificate, _manifest = read_directory(directory)
     count = int(candidate["proof_net"]["last"]) + 1
+    run = read_meta(meta)
     differing: list[str] = []
+    if run.get("exit") != "0":
+        differing.append(f"the run did not exit zero: {run.get('exit')}")
+    started = run.get("start", "")
+    start_time = datetime.fromisoformat(started).timestamp() if started else None
+    progress_path = fresh / "proof/replay-progress.json"
+    progress = json.loads(progress_path.read_text()) if progress_path.is_file() else {}
+    if progress != {"done": count, "total": count}:
+        differing.append(f"the driver's progress record is {progress or 'missing'}")
+    if not (fresh / DRIVER_BINARY).is_file() or (shipped / DRIVER_BINARY).exists():
+        differing.append("the driver's binary is not in the copy alone")
     matching = 0
     for r in range(count):
-        name = "proof/axis/replayed.json" if r == 0 else f"proof/net{r:03d}/replayed.json"
-        before, after = shipped / name, fresh / name
-        if not after.is_file() or after.stat().st_mtime <= before.stat().st_mtime:
-            differing.append(f"{name}: not regenerated")
-        elif json.loads(after.read_text()) != json.loads(before.read_text()):
-            differing.append(f"{name}: differs")
+        name = record_name(r)
+        after = fresh / name
+        if not after.is_file():
+            differing.append(f"{name}: missing")
+            continue
+        if start_time is None or after.stat().st_mtime < start_time:
+            differing.append(f"{name}: not written by this run")
+            continue
+        regenerated = load_json(after.read_bytes())
+        if regenerated != load_json((shipped / name).read_bytes()):
+            differing.append(f"{name}: differs from the shipped record")
+        elif regenerated != certificate["results"][str(r)]:
+            differing.append(f"{name}: differs from the retained certificate's record")
         else:
             matching += 1
-    unchanged = []
+    rewritten = fresh / "proof/certificate.json"
+    if rewritten.is_file() and load_json(rewritten.read_bytes()) != certificate:
+        differing.append("proof/certificate.json: differs from the retained certificate")
+    fresh_bundle = json.loads((fresh / "bundle.json").read_text())
+    if (fresh_bundle.get("status"), fresh_bundle.get("certificate")) != (
+        "REPLAYED_PROOF_BUNDLE",
+        "ALL_ANGLES_VERIFIED_AND_REPLAYED",
+    ):
+        differing.append(f"bundle.json reports {fresh_bundle}")
+    unchanged = 0
     for path in sorted(shipped.rglob("*")):
         name = path.relative_to(shipped).as_posix()
-        if path.is_file() and not name.endswith("replayed.json") and name not in DRIVER_OUTPUTS:
-            other = fresh / name
-            if not other.is_file() or other.read_bytes() != path.read_bytes():
-                differing.append(f"{name}: changed by the replay")
-            else:
-                unchanged.append(name)
-    fresh_bundle = json.loads((fresh / "bundle.json").read_text())
+        if not path.is_file() or name.endswith("replayed.json") or name in DRIVER_OUTPUTS:
+            continue
+        other = fresh / name
+        if not other.is_file() or other.read_bytes() != path.read_bytes():
+            differing.append(f"{name}: changed by the replay")
+        else:
+            unchanged += 1
     return {
-        "kind": "wand125-declared-net-compare/v1",
+        "kind": "wand125-declared-net-compare/v2",
         "certificate": "mixed_n18_L470",
         "status": "FULL_REPLAY_MATCHES_SHIPPED" if not differing else "MISMATCH",
+        "run": {key: run.get(key) for key in ("start", "end", "exit")},
+        "progress": progress,
         "fresh_status": fresh_bundle.get("certificate"),
         "fresh_bundle_status": fresh_bundle.get("status"),
+        "certificate_rewritten": rewritten.is_file()
+        and rewritten.read_bytes() != (shipped / "proof/certificate.json").read_bytes(),
         "records_matching": matching,
         "records": count,
-        "unchanged_shipped_files": len(unchanged),
+        "unchanged_shipped_files": unchanged,
         "differing": differing,
         "certificate_sha256": sha256(read_retained_bytes(directory / "certificate.json")),
     }
@@ -508,6 +575,9 @@ def main(argv: list[str] | None = None) -> int:
     compare_parser = commands.add_parser("compare", help="compare a replay with the shipped")
     compare_parser.add_argument("--shipped", type=Path, required=True)
     compare_parser.add_argument("--fresh", type=Path, required=True)
+    compare_parser.add_argument(
+        "--meta", type=Path, required=True, help="the run's own record: start, exit, end"
+    )
     compare_parser.add_argument("--out", type=Path, default=RECEIPTS / "full/compare.json")
     args = parser.parse_args(argv)
     try:
@@ -515,7 +585,7 @@ def main(argv: list[str] | None = None) -> int:
             return write_or_check(args.out, audit(), check=args.check)
         if args.command == "bundle":
             return write_or_check(args.out, bundle(args.bundle), check=False)
-        result = compare(args.shipped, args.fresh)
+        result = compare(args.shipped, args.fresh, args.meta)
         write_or_check(args.out, result, check=False)
         return 0 if result["status"] == "FULL_REPLAY_MATCHES_SHIPPED" else 1
     except AuditError as error:

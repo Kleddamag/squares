@@ -12,6 +12,7 @@ from __future__ import annotations
 import json
 import math
 import os
+import shutil
 from fractions import Fraction
 from pathlib import Path
 from typing import Any
@@ -109,48 +110,96 @@ def test_a_changed_copy_is_refused(
         declared.audit(directory)
 
 
-def fake_replay(root: Path, *, regenerated: bool, record: dict[str, Any]) -> None:
-    """A bundle tree holding only the records ``compare`` reads."""
+def shipped_tree(root: Path) -> dict[str, Any]:
+    """A bundle tree holding what ``compare`` reads, the records being the retained
+    certificate's; file times are a day before any run."""
+    certificate = json.loads(read_retained_bytes(declared.DIRECTORY / "certificate.json"))
     for r in range(416):
-        name = "proof/axis/replayed.json" if r == 0 else f"proof/net{r:03d}/replayed.json"
-        path = root / name
+        path = root / declared.record_name(r)
         path.parent.mkdir(parents=True, exist_ok=True)
-        path.write_text(json.dumps({**record, "index": r}), encoding="utf-8")
-        if not regenerated:
-            os.utime(path, (1_000_000_000, 1_000_000_000))
-    (root / "proof/input-like.txt").write_text("unchanged", encoding="utf-8")
-    (root / "bundle.json").write_text(
-        json.dumps({"status": "REPLAYED_PROOF_BUNDLE", "certificate": "ALL"}), encoding="utf-8"
+        path.write_text(json.dumps(certificate["results"][str(r)]), encoding="utf-8")
+    (root / "proof/certificate.json").write_bytes(
+        read_retained_bytes(declared.DIRECTORY / "certificate.json")
     )
+    (root / "proof/net001/input.txt").write_text("unchanged", encoding="utf-8")
+    (root / "bundle.json").write_text(
+        json.dumps(
+            {
+                "status": "REPLAYED_PROOF_BUNDLE",
+                "certificate": "ALL_ANGLES_VERIFIED_AND_REPLAYED",
+            }
+        ),
+        encoding="utf-8",
+    )
+    for path in root.rglob("*"):
+        os.utime(path, (1_790_000_000, 1_790_000_000))
+    return certificate
 
 
-def test_a_replay_matches_only_when_every_record_is_regenerated_and_equal(
+def replay(shipped: Path, fresh: Path, certificate: dict[str, Any]) -> Path:
+    """A copy of ``shipped`` after a complete run: every record written again, the
+    certificate rewritten in another order, the progress record, the driver's binary and
+    the runner's record. Returns the runner's record."""
+    shutil.copytree(shipped, fresh)
+    for r in range(416):
+        (fresh / declared.record_name(r)).write_text(
+            json.dumps(certificate["results"][str(r)]), encoding="utf-8"
+        )
+    reordered = {**certificate, "results": dict(reversed(certificate["results"].items()))}
+    (fresh / "proof/certificate.json").write_text(json.dumps(reordered), encoding="utf-8")
+    (fresh / "proof/replay-progress.json").write_text('{"done": 416, "total": 416}')
+    (fresh / declared.DRIVER_BINARY).write_bytes(b"binary")
+    meta = fresh.parent / "run.meta"
+    meta.write_text("start: 2026-10-05T17:16:28Z\nexit: 0\nend: 2026-10-05T22:00:00Z\n")
+    return meta
+
+
+def test_a_complete_replay_matches_whatever_order_it_rewrites_the_certificate_in(
     tmp_path: Path,
 ) -> None:
+    """Finding DN-1's second probe: the driver rewrites the certificate with its records
+    in another order, which is the same certificate."""
     shipped, fresh = tmp_path / "shipped", tmp_path / "fresh"
-    fake_replay(shipped, regenerated=False, record={"status": "ANGLE_RESULT_REPLAYED"})
-    fake_replay(fresh, regenerated=True, record={"status": "ANGLE_RESULT_REPLAYED"})
-    result = declared.compare(shipped, fresh)
-    assert result["status"] == "FULL_REPLAY_MATCHES_SHIPPED"
+    certificate = shipped_tree(shipped)
+    meta = replay(shipped, fresh, certificate)
+    result = declared.compare(shipped, fresh, meta)
+    assert result["status"] == "FULL_REPLAY_MATCHES_SHIPPED", result["differing"]
     assert result["records_matching"] == 416
-    changed = fresh / "proof/net207/replayed.json"
-    changed.write_text(json.dumps({"status": "ANGLE_RESULT_REPLAYED", "index": 0}))
-    result = declared.compare(shipped, fresh)
-    assert result["status"] == "MISMATCH"
-    assert result["differing"] == ["proof/net207/replayed.json: differs"]
-    os.utime(changed, (1_000_000_000, 1_000_000_000))
-    assert declared.compare(shipped, fresh)["differing"] == [
-        "proof/net207/replayed.json: not regenerated"
-    ]
+    assert result["certificate_rewritten"]
 
 
-def test_a_replay_that_changes_a_shipped_file_does_not_match(tmp_path: Path) -> None:
+def test_a_copy_on_which_nothing_ran_does_not_match(tmp_path: Path) -> None:
+    """Finding DN-1's first probe: a copy made without keeping file times, on which no
+    replay ran, has every record newer than the shipped one and equal to it."""
     shipped, fresh = tmp_path / "shipped", tmp_path / "fresh"
-    fake_replay(shipped, regenerated=False, record={"status": "ANGLE_RESULT_REPLAYED"})
-    fake_replay(fresh, regenerated=True, record={"status": "ANGLE_RESULT_REPLAYED"})
-    (fresh / "proof/input-like.txt").write_text("changed", encoding="utf-8")
-    result = declared.compare(shipped, fresh)
-    assert result["differing"] == ["proof/input-like.txt: changed by the replay"]
+    shipped_tree(shipped)
+    shutil.copytree(shipped, fresh, copy_function=shutil.copy)
+    meta = tmp_path / "run.meta"
+    meta.write_text("start: 2026-10-05T17:16:28Z\nexit: 0\n")
+    result = declared.compare(shipped, fresh, meta)
+    assert result["status"] == "MISMATCH"
+    assert any("progress record" in line for line in result["differing"])
+    assert any("binary" in line for line in result["differing"])
+
+
+def test_a_replay_with_a_changed_or_stale_record_does_not_match(tmp_path: Path) -> None:
+    shipped, fresh = tmp_path / "shipped", tmp_path / "fresh"
+    certificate = shipped_tree(shipped)
+    meta = replay(shipped, fresh, certificate)
+    changed = fresh / declared.record_name(207)
+    changed.write_text(json.dumps({**certificate["results"]["207"], "nodes": 1}))
+    assert declared.compare(shipped, fresh, meta)["differing"] == [
+        "proof/net207/replayed.json: differs from the shipped record"
+    ]
+    os.utime(changed, (1_790_000_000, 1_790_000_000))
+    assert declared.compare(shipped, fresh, meta)["differing"] == [
+        "proof/net207/replayed.json: not written by this run"
+    ]
+    (fresh / "proof/net001/input.txt").write_text("changed", encoding="utf-8")
+    meta.write_text("start: 2026-10-05T17:16:28Z\nexit: 1\n")
+    differing = declared.compare(shipped, fresh, meta)["differing"]
+    assert "the run did not exit zero: 1" in differing
+    assert "proof/net001/input.txt: changed by the replay" in differing
 
 
 def enclosing_lines(candidate: dict[str, Any]) -> list[str]:

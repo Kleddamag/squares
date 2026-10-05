@@ -3,15 +3,19 @@ type: is
 id: is-01m3ys167s43cwbqecd86pvw5k
 title: "Answer #282: wand125's mixed certificates (T-069, T-071, T-072; later ones queued)"
 kind: task
-status: open
+status: in_progress
 priority: 2
-version: 3
+version: 4
+delegate: claude-code@vm
 labels:
   - result-import
 dependencies: []
 parent_id: is-01m41csdc2gp36ry5p6n7c2x2y
+hold: null
+hold_until: null
 created_at: 2026-10-02T17:01:47.129Z
-updated_at: 2026-10-03T22:47:14.145Z
+updated_at: 2026-10-05T03:21:48.835Z
+started_at: 2026-10-05T03:21:48.835Z
 ---
 Answer jlevy/squares#282 (wand125, opened 2026-10-01): Mixed rectangle-measure certificates for n = 37, 65, 66, 90, 92 (after T-048): registration request
 

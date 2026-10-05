@@ -5,15 +5,19 @@ title: "Import Daniel: the s(32) no-fold run and the checker provenance answer (
 kind: task
 status: in_progress
 priority: 2
-version: 6
+version: 7
 spec_path: docs/project/specs/active/plan-2026-10-01-result-import-first-application.md
+delegate: claude-code@vm
 labels:
   - packing
   - result-import
 dependencies: []
 parent_id: is-01m3wvgebtkjqb3km59h7768zx
+hold: null
+hold_until: null
 created_at: 2026-10-01T23:55:37.681Z
-updated_at: 2026-10-02T04:45:19.677Z
+updated_at: 2026-10-05T03:21:47.656Z
+started_at: 2026-10-05T03:21:47.656Z
 ---
 Result import process, an evidence update to T-051 with no new entry: retain zmx2_full_sym from 2bf33bc3 in the 2026-10-01 packet, replay zmx2 cert --full --pair-points --sym-atoms (11,592 CPU-s at the source), rewrite the composition and limitations on what the two checkers share, answer the comment of 2026-10-01 and correct the stale statements of the 29 September reply. The s(21), s(45) re-sweeps restart from nothing (think-l6la, think-mx3k).
 

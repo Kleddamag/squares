@@ -3,15 +3,19 @@ type: is
 id: is-01m3ys17qmmqsa0pby2rg6x2hk
 title: "Answer #281: wand125's 34 raised rectangle bounds (T-068)"
 kind: task
-status: open
+status: in_progress
 priority: 2
-version: 2
+version: 3
+delegate: claude-code@vm
 labels:
   - result-import
 dependencies: []
 parent_id: is-01m41csdc2gp36ry5p6n7c2x2y
+hold: null
+hold_until: null
 created_at: 2026-10-02T17:01:48.659Z
-updated_at: 2026-10-03T17:27:04.878Z
+updated_at: 2026-10-05T03:21:50.515Z
+started_at: 2026-10-05T03:21:50.515Z
 ---
 Answer jlevy/squares#281 (wand125, opened 2026-10-01): Rectangle-density lower bounds raised since T-046 (34 counts in n = 19…95): registration request
 

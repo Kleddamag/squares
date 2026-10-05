@@ -1349,7 +1349,7 @@ Status: **active**. Turn PR 230's W3 review and the two explorations it led to, 
 | id | series | instance | operator | hypotheses | reason |
 | --- | --- | --- | --- | --- | --- |
 | exp-251 | series-000 | 17 | Claude Session 182; the run operator's lane K queue produced and verified each certificate and admitted it in the session checkout | H-267 | Lane K's round is running; each closure is admitted as its verifier passes, and the verdict is written when the target list is exhausted. |
-| exp-253 | series-000 | 17 | Claude Session 182; the run operator's BC-424 queue ran the control beside the first state and the states two at a time in mask order, verified each closure, and admitted it in the session checkout once the control had finished without closing | H-274 | The first frozen state is admitted after the endpoint-state control finished without closing; the others are admitted or recorded as they finish, and the verdict is written when two close or three do not. |
+| exp-253 | series-000 | 17 | Claude Session 182; the run operator's BC-424 queue ran the control beside the first state and the states two at a time in mask order, verified each closure, and admitted it in the session checkout once the control had finished without closing | H-274 | The first two frozen states are admitted after the endpoint-state control finished without closing, which reaches the criterion's two; the verdict is written in its own commit, and the other two states are recorded as they finish. |
 
 ## Resumable — stopped on the clock, not on an answer
 

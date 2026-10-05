@@ -67,14 +67,26 @@ experiment:
       at cebb5d15a passes it in full mode in 782 s, checking all 7,420 live rows in full and 20,918 collision
       regions by 113,168,864 exact facet checks. It excludes its own 8 states, one orbit. Under N1's recipe
       the same state reached a producer fixed point after 828 s of process CPU (exp-252).
+  - shape: determination
+    role: outcome
+    question: Is the state with mask 2817021 (lane A's draw at index 4, distance 4, stalled under N1's recipe)
+      infeasible at U, by a certificate the kernel's checker accepts and the standing verifier re-proves in
+      full?
+    outcome: criterion_met
+    checked_by: The run (receipts/A/kernel-m2817021-sw9.json) returns PASS_CERTIFIED_CLOSED in 2,154 s of wall
+      and 2,100 s of process CPU (producer 1,133 s, checker 1,020 s) on 134 steps and 8,960 rows in 8 rounds,
+      rows finest at 1/128, closure all_parent_poses_forbidden for interior-NW at step 133. The standing
+      verifier at cebb5d15a passes it in full mode in 911 s, checking all 8,707 live rows in full and 25,457
+      collision regions by 136,159,832 exact facet checks. It excludes its own 8 states, one orbit. Under N1's
+      recipe the same state reached a producer fixed point after 828 s of process CPU (exp-252).
   verdict:
     decision: in-progress
     primary_criterion: At least two of the four frozen states close within the 7,000 s ceiling, each re-proved
       in full by the standing kernel verifier; rejected if fewer than two do, and void if the endpoint-state
       control closes.
-    reason: The first frozen state is admitted after the endpoint-state control finished without closing; the
-      others are admitted or recorded as they finish, and the verdict is written when two close or three do
-      not.
+    reason: The first two frozen states are admitted after the endpoint-state control finished without
+      closing, which reaches the criterion's two; the verdict is written in its own commit, and the other two
+      states are recorded as they finish.
   lease:
     expires: '2026-10-06T08:14:04Z'
     host: Session 182 remote container
@@ -105,6 +117,7 @@ Each closed state removes only its own orbit.
 | --- | --- | --- | --- | --- | --- |
 | control | 0 | stalled in 333 s | 24-round cap, not closed | 6,299 s | — |
 | 2784767 | 4 | fixed point, 828 s | closed, 7 rounds, admitted | 1,675 s | full pass, 782 s |
+| 2817021 | 4 | fixed point, 828 s | closed, 8 rounds, admitted | 2,100 s | full pass, 911 s |
 
 The receipts are under
 [receipts/A](../../../explorations/X048-session-182-overnight/receipts/A/), each

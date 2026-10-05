@@ -1,54 +1,123 @@
-"""The two papers share one structure, and cannot drift apart without this failing.
+"""The site's papers share one structure, and cannot drift apart without this failing.
 
 The owner asked on 2026-10-01 that the papers' "formats, formatting, and all structure
 should be similar". `devtools.paper_structure` reads each rendered paper on every
-structural axis and `devtools.paper_front` writes both papers' fronts from one record;
-these tests render both papers and hold every form axis equal, and hold the credits of
-each to the owner's dictated form (think-2cqu).
+structural axis and `devtools.paper_front` writes every paper's front from one record;
+these tests render every paper of the site (`render_overview.PAPERS`, the three parts of
+the n = 11 series) and hold every form axis of each equal to the first paper's, and hold
+the credits of each to the owner's dictated form (think-2cqu) with the series strip
+under them (the series plan, 2026-10-05).
+
+A review's renderer is modelled on the optimality review's
+(`render_n11_optimality_review`): each is rendered here through the same entry points,
+`render`, `ARTICLE`, `render_all_figures` and `render_all_facts`.
 """
 
 from __future__ import annotations
 
+import importlib
 from pathlib import Path
+from types import ModuleType
 
 import pytest
 
-from devtools import paper_front, paper_structure, render_n11_lower_bounds_explainer
+from devtools import (
+    paper_front,
+    paper_structure,
+    render_n11_lower_bounds_explainer,
+    render_overview,
+)
 from devtools import render_n11_optimality_review as paper
-from devtools.render_overview import paper_path
+from devtools.render_overview import (
+    N11_THRESHOLD_BOUND_REVIEW,
+    PAPERS,
+    paper_path,
+    paper_record,
+)
 from sqpack import release
 
 EXPLAINER = render_n11_lower_bounds_explainer.SLUG
+THRESHOLD = N11_THRESHOLD_BOUND_REVIEW
 REVIEW = paper.SLUG
+#: Every review, in reading order: the papers after the first.
+REVIEWS = tuple(record.slug for record in PAPERS[1:])
+#: Each review's source, as the first two lines of its credits name it.
+SOURCES = {
+    THRESHOLD: ("Kleddamag", "https://github.com/Kleddamag/11-squares-certified-bound"),
+    REVIEW: ("Queuingtheorydotcom", "https://github.com/Queuingtheorydotcom/11SquaresOptimal"),
+}
+#: Each paper's own version line and dates line, from `sqpack.release`.
+VERSIONS = {
+    EXPLAINER: release.EXPLAINER_VERSION,
+    THRESHOLD: release.THRESHOLD_REVIEW_EDITION,
+    REVIEW: release.OPTIMALITY_REVIEW_EDITION,
+}
+DATES = {
+    EXPLAINER: (
+        f"First published {release.EXPLAINER_FIRST_PUBLISHED} · "
+        f"Last revised {release.EXPLAINER_REVISED}"
+    ),
+    THRESHOLD: (
+        f"Original proof {release.THRESHOLD_PROOF_PUBLISHED} · "
+        f"Last revised {release.THRESHOLD_REVIEW_REVISED}"
+    ),
+    REVIEW: (
+        f"Original proof {release.OPTIMALITY_PROOF_PUBLISHED} · "
+        f"Last revised {release.OPTIMALITY_REVIEW_REVISED}"
+    ),
+}
+
+
+def renderer(slug: str) -> ModuleType:
+    """The renderer the site's registry names for the paper `slug`."""
+    return importlib.import_module(paper_record(slug).module)
+
+
+def rendered(slug: str) -> tuple[str, str]:
+    """A paper's page and Markdown edition as this checkout renders them."""
+    if slug == EXPLAINER:
+        found = render_n11_lower_bounds_explainer.render(
+            render_n11_lower_bounds_explainer.WALKTHROUGH
+        )
+        return found.page, found.markdown
+    module = renderer(slug)
+    return module.render(
+        module.ARTICLE.read_text(encoding="utf-8"),
+        figures=module.render_all_figures(),
+        facts=module.render_all_facts(),
+        revision="a" * 40,
+    )
 
 
 @pytest.fixture(scope="module")
-def structures() -> dict[str, paper_structure.Structure]:
-    """Both papers as this checkout renders them, read as a reader meets them."""
-    explainer = render_n11_lower_bounds_explainer.render(
-        render_n11_lower_bounds_explainer.WALKTHROUGH
-    )
-    html, markdown = paper.render(
-        paper.ARTICLE.read_text(encoding="utf-8"),
-        figures=paper.render_all_figures(),
-        facts=paper.render_all_facts(),
-        revision="a" * 40,
-    )
+def renders() -> dict[str, tuple[str, str]]:
+    """Every paper as this checkout renders it, by slug, in reading order."""
+    return {record.slug: rendered(record.slug) for record in PAPERS}
+
+
+@pytest.fixture(scope="module")
+def structures(renders: dict[str, tuple[str, str]]) -> dict[str, paper_structure.Structure]:
+    """Every paper, read as a reader meets it."""
     return {
-        EXPLAINER: paper_structure.read(EXPLAINER, explainer.page, explainer.markdown),
-        REVIEW: paper_structure.read(REVIEW, html, markdown),
+        slug: paper_structure.read(slug, html, markdown)
+        for slug, (html, markdown) in renders.items()
     }
 
 
 @pytest.fixture(scope="module")
 def rows(structures: dict[str, paper_structure.Structure]) -> list[dict[str, object]]:
-    return paper_structure.compare(structures[EXPLAINER], structures[REVIEW])
+    return paper_structure.compare(*structures.values())
 
 
-def test_every_form_axis_is_the_same_on_both_papers(rows: list[dict[str, object]]) -> None:
+def test_the_audit_reads_every_paper_of_the_site_in_reading_order() -> None:
+    assert paper_structure.PAPERS == (EXPLAINER, THRESHOLD, REVIEW)
+    assert paper_structure.CREDIT_KINDS[-1] == "series"
+
+
+def test_every_form_axis_is_the_same_on_every_paper(rows: list[dict[str, object]]) -> None:
     """The head, the formats row, the title, the credits' weights and links, the version
-    and dates lines' form, the heading case, the captions, the footnotes, the colophon
-    and the Markdown edition's opening: one way on both."""
+    and dates lines' form, the series strip, the heading case, the captions, the
+    footnotes, the colophon and the Markdown edition's opening: one way on every paper."""
     assert paper_structure.differences(rows) == []
     forms = {str(row["axis"]) for row in rows if row["compared"] == "form"}
     assert {
@@ -61,6 +130,7 @@ def test_every_form_axis_is_the_same_on_both_papers(rows: list[dict[str, object]
         "credits: names bold",
         "credits: addresses plain",
         "credits: dates end with",
+        "series: strip",
         "sections: h2 case",
         "sections: h3 case",
         "figures: captions",
@@ -81,6 +151,19 @@ def test_the_shared_form_is_the_one_the_design_names(rows: list[dict[str, object
     assert found["credits: names bold"] == "yes"
     assert found["credits: addresses plain"] == "yes"
     assert found["credits: dates end with"] == paper_front.REVISED
+    assert found["series: strip"] == (
+        "Part N of M, then each other part by number and title, linked"
+    )
+    assert [
+        found_row[slug]
+        for found_row in rows
+        if found_row["axis"] == "series: part"
+        for slug in (EXPLAINER, THRESHOLD, REVIEW)
+    ] == [
+        "Part I of 3",
+        "Part II of 3",
+        "Part III of 3",
+    ]
     assert found["sections: h2 case"] == "Title Case"
     assert found["sections: h3 case"] == "sentence case"
     assert found["figures: captions"] == "Figure N. lead, numbered from 1"
@@ -93,25 +176,28 @@ def test_the_shared_form_is_the_one_the_design_names(rows: list[dict[str, object
 def test_each_papers_credits_follow_the_owners_form(
     structures: dict[str, paper_structure.Structure],
 ) -> None:
-    """The review credits its source first, by name in bold and address as a plain link,
+    """Each review credits its source first, by name in bold and address as a plain link,
     then its own credits after a line's space; the explainer, which explains the
-    project's own proofs, begins at its own. Both: oversight, agents, the version plain,
-    then the dates, ending with when the paper was last revised."""
-    explainer, review = structures[EXPLAINER].credits, structures[REVIEW].credits
-    assert [line.kind for line in review] == list(paper_structure.CREDIT_KINDS)
-    assert [line.kind for line in explainer] == list(paper_structure.CREDIT_KINDS[2:])
-    source, address = review[:2]
-    assert source.text == "From the original proof by Queuingtheorydotcom"
-    assert source.bold == ("Queuingtheorydotcom",)
-    assert address.bold == ()
-    assert address.links == (
-        (
-            "github.com/Queuingtheorydotcom/11SquaresOptimal",
-            "https://github.com/Queuingtheorydotcom/11SquaresOptimal",
-        ),
-    )
-    for lines in (explainer, review):
-        oversight, agents, version, dates = lines[-4:]
+    project's own proofs, begins at its own. Every paper: oversight, agents, the version
+    plain, the dates, ending with when the paper was last revised, then the series
+    strip, which part of three it is and the other two parts by title, each linking its
+    paper's page."""
+    strip = len(PAPERS)
+    for slug, structure in structures.items():
+        kinds = [line.kind for line in structure.credits]
+        own = list(paper_structure.CREDIT_KINDS[2:-1]) + ["series"] * strip
+        assert kinds == (
+            list(paper_structure.CREDIT_KINDS[:2]) + own if slug in SOURCES else own
+        )
+    for slug, (author, address) in SOURCES.items():
+        source, shown = structures[slug].credits[:2]
+        assert source.text == f"From the original proof by {author}"
+        assert source.bold == (author,)
+        assert shown.bold == ()
+        assert shown.links == ((address.removeprefix("https://"), address),)
+    for slug, structure in structures.items():
+        lines = structure.credits
+        oversight, agents, version, dates = lines[-4 - strip : -strip]
         assert oversight.text == "Human oversight: Joshua Levy"
         assert oversight.bold == ("Joshua Levy",)
         assert oversight.links == (("Joshua Levy", "https://x.com/ojoshe"),)
@@ -125,26 +211,31 @@ def test_each_papers_credits_follow_the_owners_form(
         assert version.bold == ()
         assert dates.bold == ()
         assert dates.links == ()
-        assert dates.text.endswith(
-            f"{paper_front.REVISED} {release.EXPLAINER_REVISED}"
-        ) or dates.text.endswith(f"{paper_front.REVISED} {release.OPTIMALITY_REVIEW_REVISED}")
-    # Each paper's version line is its own version (the owner, 2026-10-01), never the
-    # site's edition or the data hash.
-    assert explainer[-2].text == f"{release.EXPLAINER_VERSION} (version history)"
-    assert explainer[-2].links == (("version history", "#version-history"),)
-    assert review[-2].text == f"{release.OPTIMALITY_REVIEW_EDITION} (version history)"
-    assert review[-2].links == (("version history", "#version-history"),)
-    for lines in (explainer, review):
-        assert release.PUBLICATION_EDITION not in lines[-2].text
-        assert release.DATA_REVISION[: release.DATA_REVISION_LENGTH] not in lines[-2].text
-    assert explainer[-1].text == (
-        f"First published {release.EXPLAINER_FIRST_PUBLISHED} · "
-        f"Last revised {release.EXPLAINER_REVISED}"
-    )
-    assert review[-1].text == (
-        f"Original proof {release.OPTIMALITY_PROOF_PUBLISHED} · "
-        f"Last revised {release.OPTIMALITY_REVIEW_REVISED}"
-    )
+        # Each paper's version line is its own version (the owner, 2026-10-01), never the
+        # site's edition or the data hash.
+        assert release.PUBLICATION_EDITION not in version.text
+        assert release.DATA_REVISION[: release.DATA_REVISION_LENGTH] not in version.text
+        assert dates.text == DATES[slug], slug
+        assert version.text.startswith(VERSIONS[slug]), slug
+        # The series strip: which part, then each other part by its title, linked.
+        part = paper_record(slug).part
+        head, *others = lines[-strip:]
+        assert head.text == f"Part {paper_front.numeral(part)} of {strip} in the n = 11 series"
+        assert head.links == head.bold == ()
+        assert [line.text for line in others] == [
+            f"Part {paper_front.numeral(record.part)}: {record.title}"
+            for record in PAPERS
+            if record.slug != slug
+        ]
+        assert [line.links for line in others] == [
+            ((record.title, f"{record.slug}.html"),) for record in PAPERS if record.slug != slug
+        ]
+    explainer, review = structures[EXPLAINER].credits, structures[REVIEW].credits
+    assert explainer[-1 - strip].text.startswith("First published")
+    assert explainer[-2 - strip].text == f"{release.EXPLAINER_VERSION} (version history)"
+    assert explainer[-2 - strip].links == (("version history", "#version-history"),)
+    assert review[-2 - strip].text == f"{release.OPTIMALITY_REVIEW_EDITION} (version history)"
+    assert review[-2 - strip].links == (("version history", "#version-history"),)
 
 
 def test_the_markdown_editions_open_as_the_pages_do(
@@ -161,12 +252,20 @@ def test_the_markdown_editions_open_as_the_pages_do(
             for bold in line.bold:
                 assert f"**{bold}**" in item, (name, item)
             for text, href in line.links:
-                assert f"]({href})" in item, (name, item)
+                # A link to another paper is page-relative on the page and the site's
+                # address in the Markdown edition, which is read away from the site.
+                address = (
+                    render_overview.SITE_URL + paper_path(href.removesuffix(".html"))
+                    if line.kind == "series"
+                    else href
+                )
+                assert f"]({address})" in item, (name, item)
                 assert text in item, (name, item)
         assert "chip" not in " ".join(head)
 
 
 def test_the_tool_prints_the_audit_of_a_built_site(
+    renders: dict[str, tuple[str, str]],
     structures: dict[str, paper_structure.Structure],
     tmp_path: Path,
     capsys: pytest.CaptureFixture[str],
@@ -174,33 +273,31 @@ def test_the_tool_prints_the_audit_of_a_built_site(
     """`python -m devtools.paper_structure SITE --markdown` prints the table and exits
     0 when every form axis agrees, names the axes that differ when one does, and
     refuses a site that lacks a paper."""
-    explainer = render_n11_lower_bounds_explainer.render(
-        render_n11_lower_bounds_explainer.WALKTHROUGH
-    )
-    html, markdown = paper.render(
-        paper.ARTICLE.read_text(encoding="utf-8"),
-        figures=paper.render_all_figures(),
-        facts=paper.render_all_facts(),
-        revision="a" * 40,
-    )
-    for slug, page, document in (
-        (EXPLAINER, explainer.page, explainer.markdown),
-        (REVIEW, html, markdown),
-    ):
+    for slug, (page, document) in renders.items():
         (tmp_path / paper_path(slug)).parent.mkdir(parents=True, exist_ok=True)
         (tmp_path / paper_path(slug)).write_text(page, encoding="utf-8")
         (tmp_path / paper_path(slug, ".md")).write_text(document, encoding="utf-8")
     assert paper_structure.main([str(tmp_path), "--markdown"]) == 0
     out = capsys.readouterr().out
     assert "| axis |" in out
-    assert "| head: title | form | name · project | name · project | True |" in out
+    assert (
+        "| head: title | form | name · project | name · project | name · project | True |"
+        in out
+    )
     assert structures[REVIEW].pdf == {}
 
     # A paper whose credits set a name plain is a form difference, and the tool says so.
+    html = renders[REVIEW][0]
     broken = html.replace("<strong>Queuingtheorydotcom</strong>", "Queuingtheorydotcom")
     (tmp_path / paper_path(REVIEW)).write_text(broken, encoding="utf-8")
     assert paper_structure.main([str(tmp_path)]) == 1
     assert "credits: names bold" in capsys.readouterr().err
+    # A paper whose series strip drops a part is one too.
+    title = paper_record(EXPLAINER).title
+    unlisted = html.replace(f'<a href="{EXPLAINER}.html">{title}</a>', title)
+    (tmp_path / paper_path(REVIEW)).write_text(unlisted, encoding="utf-8")
+    assert paper_structure.main([str(tmp_path)]) == 1
+    assert "series: strip" in capsys.readouterr().err
     (tmp_path / paper_path(REVIEW)).unlink()
     with pytest.raises(SystemExit, match=r"has no papers/n11-optimality-review\.html"):
         paper_structure.main([str(tmp_path)])
@@ -234,6 +331,14 @@ def test_the_pdf_is_read_for_its_title_size_and_dates() -> None:
         (("The Result and Proof Roadmap", "From a Continuum of Angles to 181"), "Title Case"),
         (("T-025: a direct certificate at 3.82", "Keeping everything else"), "sentence case"),
         (("The Result", "Keeping everything else"), "mixed"),
+        (
+            (
+                "A Review of the Certified Lower Bound s(11) > 31/8 for 11 Squares",
+                "From Points to k-of-m Charges",
+            ),
+            "Title Case",
+        ),
+        (("Why k-of-m charges pay", "The bound s(11) > 31/8"), "sentence case"),
         ((), "none"),
     ],
 )
@@ -259,6 +364,8 @@ def test_the_front_record_is_refused_where_it_departs_from_the_form() -> None:
     front = paper.FRONT
     good = paper_front.check(front)
     assert good is front
+    series = front.series
+    assert series is not None
     for broken, refusal in (
         (front._replace(version="**Draft v0.1.0**"), "plain text"),
         (front._replace(dates=front.dates[:1]), "ends with 'Last revised'"),
@@ -271,6 +378,19 @@ def test_the_front_record_is_refused_where_it_departs_from_the_form() -> None:
         (front._replace(source=paper_front.Source("Q", "http://example.com")), "https"),
         (front._replace(history="Version History"), "by its id"),
         (front._replace(slug="papers/x"), "slug"),
+        (front._replace(series=series._replace(part=1)), "names this paper as its part"),
+        (
+            front._replace(series=series._replace(parts=series.parts[::-1])),
+            "numbered 1, 2",
+        ),
+        (
+            front._replace(
+                series=series._replace(
+                    parts=tuple(part._replace(title=" ") for part in series.parts)
+                )
+            ),
+            "named by its title",
+        ),
     ):
         with pytest.raises(ValueError, match=refusal):
             paper_front.check(broken)
@@ -280,3 +400,32 @@ def test_the_front_record_is_refused_where_it_departs_from_the_form() -> None:
         paper_front.fill("no slot here", front)
     with pytest.raises(ValueError, match="does not carry the paper's front once"):
         paper_front.published("no front here", front)
+
+
+def test_each_paper_takes_its_series_strip_from_the_one_registry() -> None:
+    """The strip is written from the site's list of papers, so every paper names the
+    others the same way: its parts are the registry's, in reading order, and its part is
+    the paper's own. A paper the site does not list has no strip to take."""
+    for record in PAPERS:
+        series = paper_front.series(record.slug)
+        assert series.name == paper_front.SERIES_NAME == "the n = 11 series"
+        assert series.part == record.part
+        assert [(part.number, part.slug, part.title) for part in series.parts] == [
+            (other.part, other.slug, other.title) for other in PAPERS
+        ]
+    for module in (render_n11_lower_bounds_explainer, paper):
+        assert module.FRONT.series == paper_front.series(module.SLUG)
+    with pytest.raises(ValueError, match="no paper of the site"):
+        paper_front.series("n11-no-such-paper")
+    assert [paper_front.numeral(n) for n in (1, 2, 3)] == ["I", "II", "III"]
+    with pytest.raises(ValueError, match="no numeral"):
+        paper_front.numeral(0)
+
+
+def test_every_registered_renderer_writes_its_front_with_the_strip() -> None:
+    """Each renderer the registry names titles its paper as the registry does and
+    writes its front with the strip, Part II's among them."""
+    for record in PAPERS:
+        module = renderer(record.slug)
+        assert record.title == module.TITLE, record.slug
+        assert module.FRONT.series == paper_front.series(record.slug), record.slug

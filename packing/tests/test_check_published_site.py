@@ -20,17 +20,22 @@ from devtools.check_published_site import (
     OPTIMALITY_PAPER,
     OPTIMALITY_PAPER_FILES,
     OPTIMALITY_PAPER_MARKDOWN,
+    PAPER_VERSIONS,
     PAPERS_CURRENT,
     RECORD_FILE_SAMPLE,
     RECORD_LINK_PAGES,
     RECORD_LINK_SAMPLE,
+    REVIEW_PAPERS,
     SERVED,
     SITE_PAGES,
     WORKBENCH_HOME,
     WORKBENCH_REVISION,
     RecordLinks,
     absent_links,
+    cross_paper_link_checks,
+    heading_ids,
     paper_citations,
+    paper_files,
     pdf_pages,
     record_link_checks,
     rendered_record_links,
@@ -203,16 +208,21 @@ def results_table(*, here: bool) -> bytes:
     return f"<table><tbody>{rows}</tbody></table>".encode()
 
 
-def optimality_paper(*, ref: str = COMMIT, link: str = "README.md") -> bytes:
-    """The optimality paper's page as the check reads one: the bar with Papers current,
-    its own version, and one citation, which the paper pins to the commit it was built
-    from."""
+def review_paper(review: str, *, ref: str = COMMIT, link: str = "README.md") -> bytes:
+    """A review's page as the check reads one: the bar with Papers current, its own
+    version, and one citation, which the paper pins to the commit it was built from."""
+    slug = review.removeprefix("papers/").removesuffix(".html")
     return (
-        head(OPTIMALITY_PAPER)
+        head(review)
         + PAPERS_CURRENT
-        + f"Papers</a><p>({OPTIMALITY_REVIEW_EDITION})</p>"
+        + f"Papers</a><p>({PAPER_VERSIONS[slug]})</p>"
         + f'<a href="{REPO_URL}/blob/{ref}/{link}#anchor">Receipt</a>'
     ).encode()
+
+
+def optimality_paper(*, ref: str = COMMIT, link: str = "README.md") -> bytes:
+    """The optimality paper's page as the check reads one (`review_paper`)."""
+    return review_paper(OPTIMALITY_PAPER, ref=ref, link=link)
 
 
 def optimality_markdown(*, ref: str = COMMIT, link: str = "README.md") -> bytes:
@@ -239,8 +249,9 @@ def site_naming(named: Sequence[str], /, **overrides: bytes) -> dict[str, bytes]
         pages[render_case_pages.case_url(n)] = case_record(n)
     for address in OVERVIEWS:
         pages[address] = result_overview(address.rsplit("/", 1)[1].removesuffix(".html"))
-    pages[OPTIMALITY_PAPER] = optimality_paper()
-    pages[OPTIMALITY_PAPER_MARKDOWN] = optimality_markdown()
+    for review in REVIEW_PAPERS:
+        pages[review] = review_paper(review)
+        pages[paper_files(review)[0]] = optimality_markdown()
     pages[LOWER_BOUNDS_MARKDOWN] = b"the Markdown edition\n"
     pages[render_overview.SOCIAL_CARD] = card()
     # What keeps the links written before the papers moved: the forwarders the
@@ -668,39 +679,122 @@ def test_the_sample_cites_the_archive_and_the_campaign_whatever_the_checkout(
     assert rendered_record_links() == expected
 
 
-def test_check_requires_the_optimality_paper_where_the_papers_card_points(
-    monkeypatch: pytest.MonkeyPatch,
+@pytest.mark.parametrize(
+    ("review", "label"),
+    [
+        ("papers/n11-threshold-bound-review.html", "Part II"),
+        ("papers/n11-optimality-review.html", "Part III"),
+    ],
+)
+def test_check_requires_each_review_where_its_papers_card_points(
+    monkeypatch: pytest.MonkeyPatch, review: str, label: str
 ) -> None:
-    """The Papers page's first card opens the optimality paper, which another build
-    writes under `papers/`: a deploy without it, or with a page there whose bar does not
-    mark Papers, fails, and so does one without its Markdown or its PDF."""
+    """The Papers page's cards open each review, which a build of its own writes under
+    `papers/`: a deploy without it, or with a page there whose bar does not mark Papers,
+    or that lacks its own version, fails, and so does one without its Markdown or its
+    PDF."""
+    assert review in REVIEW_PAPERS
     assert OPTIMALITY_PAPER == "papers/n11-optimality-review.html"
-    assert OPTIMALITY_PAPER in render_overview.SITE_PAGES
     assert OPTIMALITY_PAPER_FILES == (
         "papers/n11-optimality-review.md",
         "papers/n11-optimality-review.pdf",
     )
+    assert review in render_overview.SITE_PAGES
+    files = paper_files(review)
     requested: list[str] = []
     assert failures(monkeypatch, fake_site(site_pages(), requested=requested)) == []
-    for name in (OPTIMALITY_PAPER, *OPTIMALITY_PAPER_FILES):
+    for name in (review, *files):
         assert f"https://example.org/{name}" in requested, name
 
-    (failure,) = failures(monkeypatch, fake_site(site_pages(), lost=(OPTIMALITY_PAPER,)))
-    assert failure.startswith(f"optimality paper {OPTIMALITY_PAPER}: HTTP 404, ")
+    (failure,) = failures(monkeypatch, fake_site(site_pages(), lost=(review,)))
+    assert failure.startswith(f"{label} {review}: HTTP 404, ")
     assert failure.endswith("Papers is not the bar's current entry")
 
-    bare = site_pages(
-        **{OPTIMALITY_PAPER: optimality_paper().replace(b' aria-current="page"', b"")}
-    )
+    bare = site_pages(**{review: review_paper(review).replace(b' aria-current="page"', b"")})
     (failure,) = failures(monkeypatch, fake_site(bare))
-    assert failure.startswith(f"optimality paper {OPTIMALITY_PAPER}: HTTP 200, ")
+    assert failure.startswith(f"{label} {review}: HTTP 200, ")
     assert failure.endswith("Papers is not the bar's current entry")
 
-    # A lost file is also what its old address was to be a copy of.
-    for name in OPTIMALITY_PAPER_FILES:
+    slug = review.removeprefix("papers/").removesuffix(".html")
+    unversioned = site_pages(
+        **{review: review_paper(review).replace(PAPER_VERSIONS[slug].encode(), b"v0")}
+    )
+    (failure,) = failures(monkeypatch, fake_site(unversioned))
+    assert failure == f"version {PAPER_VERSIONS[slug]!r} is not on {review}"
+
+    # A lost file is also what its old address was to be a copy of, where it had one.
+    for name in files:
         found = failures(monkeypatch, fake_site(site_pages(), lost=(f"/{name}",)))
         assert found[0] == f"served {name}: HTTP 404", name
         assert all(line.startswith("moved file ") for line in found[1:]), found
+
+
+def test_the_versions_the_check_holds_are_the_papers_own() -> None:
+    """Every paper of the site has the version its front prints, and only those."""
+    assert set(PAPER_VERSIONS) == {paper.slug for paper in render_overview.PAPERS}
+    assert PAPER_VERSIONS[render_overview.N11_OPTIMALITY_REVIEW] == OPTIMALITY_REVIEW_EDITION
+    assert PAPER_VERSIONS[render_overview.N11_LOWER_BOUNDS_EXPLAINER] == EXPLAINER_VERSION
+
+
+def _paper_page(*headings: str, links: str = "") -> str:
+    """A paper's page as the link check reads it: its headings, each with its id, and
+    its links."""
+    return "".join(f'<h2 id="{anchor}">{anchor}</h2>' for anchor in headings) + links
+
+
+def test_every_link_between_papers_names_a_paper_and_a_heading_it_has() -> None:
+    """A link from one paper to another (`devtools.paper_links`) names a paper the site
+    serves and, with an anchor, a heading of that paper, on the page and in the Markdown
+    edition alike. A link to a paper not in the build is reported and not failed; one to
+    a paper the site does not serve, or to a heading the paper does not have, fails."""
+    explainer, threshold, optimality = (
+        render_overview.paper_path(paper.slug) for paper in render_overview.PAPERS
+    )
+    site = render_overview.SITE_URL + "papers/"
+    pages = {
+        explainer: _paper_page(
+            "the-result-and-proof-roadmap",
+            links='<a href="n11-threshold-bound-review.html#the-result">II</a>'
+            '<a href="n11-optimality-review.html">III</a><a href="papers.html">Papers</a>',
+        ),
+        threshold: _paper_page("the-result", "what-is-new"),
+        optimality: _paper_page(
+            "the-result",
+            links=(
+                '<a href="n11-lower-bounds-explainer.html#the-result-and-proof-roadmap">I</a>'
+            ),
+        ),
+    }
+    markdowns = {
+        paper_files(optimality)[0]: (
+            f"[I]({site}n11-lower-bounds-explainer.html#the-result-and-proof-roadmap) "
+            f"[II]({site}n11-threshold-bound-review.html#what-is-new)\n"
+        ),
+    }
+    assert heading_ids(pages[threshold]) == {"the-result", "what-is-new"}
+    found = cross_paper_link_checks(pages, markdowns)
+    assert [passed for passed, _ in found] == [True, True, True]
+    assert found[0][1] == (
+        f"{explainer}: 2 links to other papers, "
+        "each to a paper served here and a heading it has"
+    )
+    assert paper_files(optimality)[0] in found[2][1]
+
+    broken = {
+        **pages,
+        explainer: pages[explainer].replace("#the-result", "#no-such-heading"),
+    }
+    (failure, *_) = cross_paper_link_checks(broken, {})
+    assert not failure[0]
+    assert f"{threshold}#no-such-heading, no heading of that paper" in failure[1]
+    stray = {paper_files(optimality)[0]: f"[x]({site}n11-no-such-paper.html)\n"}
+    ((_, line),) = [found for found in cross_paper_link_checks(pages, stray) if not found[0]]
+    assert line.startswith(paper_files(optimality)[0])
+    assert "n11-no-such-paper.html, no paper of the site" in line
+    unbuilt = {name: text for name, text in pages.items() if name != threshold}
+    (first, *_) = cross_paper_link_checks(unbuilt, {})
+    assert first[0]
+    assert "not in this build, so not checked" in first[1]
 
 
 def test_the_optimality_papers_citations_name_the_deployed_commit(
@@ -1055,7 +1149,7 @@ def test_check_holds_every_page_to_its_head_and_the_site_to_its_card(
     assert failures(monkeypatch, fetch, heads=True) == []
     assert requested.count(f"https://example.org/{render_overview.SOCIAL_CARD}") == 1
     landing = "n11-optimality/index.html"
-    for name in (*SITE_PAGES[1:], EXPLAINER, OPTIMALITY_PAPER, landing):
+    for name in (*SITE_PAGES[1:], EXPLAINER, *REVIEW_PAPERS, landing):
         assert requested.count(f"https://example.org/{name}") == 1, name
 
     monkeypatch.setattr(check_published_site, "fetch", fetch)
@@ -1068,7 +1162,11 @@ def test_check_holds_every_page_to_its_head_and_the_site_to_its_card(
     ]
     clean = "one of each identity and card tag, agreeing with its address"
     shared = check_published_site.shared_pages()
-    assert shared == (*SITE_PAGES, EXPLAINER, OPTIMALITY_PAPER, "workbench/index.html")
+    assert shared == (*SITE_PAGES, EXPLAINER, *REVIEW_PAPERS, "workbench/index.html")
+    assert REVIEW_PAPERS == (
+        "papers/n11-threshold-bound-review.html",
+        "papers/n11-optimality-review.html",
+    )
     # The record files the check samples are pages a reader shares too.
     records = [
         render_case_pages.case_url(n)

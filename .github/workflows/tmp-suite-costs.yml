@@ -1,6 +1,6 @@
 # Temporary: rebuilds packing/devtools/suite-file-costs.json from the per-file cost
-# reports of this PR's packing-validation run 37292469840 (the four suite shards of
-# head a4d917e12) and commits it to the branch, for a session whose network cannot
+# reports of packing-validation run 37283814485, the last green pull-request cohort
+# (PR 362, since merged into main), and commits it to the branch, for a session whose network cannot
 # reach the artifact store. Removed in the next commit (think-92ar).
 name: Temporary suite-cost record
 
@@ -34,10 +34,10 @@ jobs:
         working-directory: packing
         run: uv sync --frozen --all-extras --group dev
 
-      - name: Download the shard timing artifacts of run 37292469840
+      - name: Download the shard timing artifacts of run 37283814485
         uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
         with:
-          run-id: 37292469840
+          run-id: 37283814485
           github-token: ${{ github.token }}
           pattern: validation-timings-suite-*
           path: ${{ runner.temp }}/reports
@@ -57,6 +57,6 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add packing/devtools/suite-file-costs.json
-          git commit -m "validation: rebuild the suite-file record from the four shards of run 37292469840 (think-92ar)" \
-            -m "Shards 3/4 and 4/4 were over the 10% unrecorded share after this PR added five test files. Rebuilt with devtools.suite_files record from the suite-a to suite-d per-file reports of run 37292469840 (head a4d917e12), at the 131/154/154/131 s ceilings."
+          git commit -m "validation: rebuild the suite-file record from the four shards of run 37283814485 (think-92ar)" \
+            -m "Shards 3/4 and 4/4 were over the 10% unrecorded share after this PR added five test files to the files main had added since the last rebuild. Rebuilt with devtools.suite_files record from the suite-a to suite-d per-file reports of run 37283814485, the last green pull-request cohort (PR 362, merged into main), at the 131/154/154/131 s ceilings; this PR's five files remain on the path hash until the next rebuild."
           git push origin HEAD:claude/nifty-newton-o6kr0b

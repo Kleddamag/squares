@@ -797,6 +797,14 @@ consequence in each.
   shards 5 to 9 hold 9, each with the endpoint’s control besides.
   After shard 8, 86 of the 95 orbits were searched with no placement, and every control
   placed.
+- **Lane E is complete, and H-273 is unresolved**
+  ([exp-255](../series/series-000-smoke-and-calibration/experiments/exp-255-h273-n17-distance-two-survey.md)).
+  Shard 9 ended at 18:10:46. All 95 distance-2 orbits were searched, and none placed,
+  while every shard’s control placed.
+  Under the frozen criterion that is no placement in 95 searches, not a proof.
+  The closest miss is mask 3963647, at penetration 0.00027. BC-421 is complete.
+- **BC-425’s target 6 also stopped at its round cap**, at 18:15:37, without closing; its
+  node is kept for a stall diagnosis.
 
 <!-- This document follows common-doc-guidelines.md.
 See github.com/jlevy/practical-prose and review guidelines before editing.

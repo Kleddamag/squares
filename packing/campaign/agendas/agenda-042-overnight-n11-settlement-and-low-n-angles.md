@@ -1634,7 +1634,7 @@ agenda:
     owner_focus: correctness
     instances:
     - 17
-    state: in_progress
+    state: complete
     priority: 1
     question: >-
       Does any of the 95 distance-2 orbits of the arity8 frame pack at U, which would make
@@ -1661,6 +1661,8 @@ agenda:
     parallel_group: n17-overnight-182
     artifacts:
     - docs/project/specs/active/plan-2026-10-05-n17-overnight.md
+    - packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-255-h273-n17-distance-two-survey.md
+    - packing/campaign/explorations/X048-session-182-overnight/receipts/E
     note: >-
       Under BC-418, lane E of the n17 overnight plan (the backfill). The plan's run line
       named shards of 30 on two workers at a 3,600 s ceiling; the survey had no way to

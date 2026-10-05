@@ -897,7 +897,7 @@ Status: **active**. Turn PR 230's W3 review and the two explorations it led to, 
 | BC-418 | research | 17 | ready | 0 | think-tmz6 | packing/campaign/agent-sessions/session-167-n17-parallel-lanes-after-route-review.md |
 | BC-419 | research | 17 | complete | 0 | think-z8an | packing/campaign/agent-sessions/session-182-n17-overnight-lanes.md |
 | BC-420 | research | 17 | in_progress | 0 | think-035m | packing/campaign/agent-sessions/session-182-n17-overnight-lanes.md |
-| BC-421 | research | 17 | in_progress | 1 | think-tmz6 | packing/campaign/agent-sessions/session-182-n17-overnight-lanes.md |
+| BC-421 | research | 17 | complete | 1 | think-tmz6 | packing/campaign/agent-sessions/session-182-n17-overnight-lanes.md |
 | BC-422 | tool_validation | 17 | in_progress | 1 | think-9ntw | packing/campaign/agent-sessions/session-182-n17-overnight-lanes.md |
 | BC-423 | research | 17 | in_progress | 0 | think-035m | packing/campaign/agent-sessions/session-182-n17-overnight-lanes.md |
 | BC-424 | research | 17 | complete | 1 | think-z8an | packing/campaign/agent-sessions/session-182-n17-overnight-lanes.md |
@@ -907,7 +907,7 @@ Status: **active**. Turn PR 230's W3 review and the two explorations it led to, 
 
 | id | status | title | rounds | opened because |
 | --- | --- | --- | --- | --- |
-| series-000 | open | S0: smoke and calibration — prove the machinery, establish every baseline metric | 183 | First series. There is no prior instrument, so not |
+| series-000 | open | S0: smoke and calibration — prove the machinery, establish every baseline metric | 184 | First series. There is no prior instrument, so not |
 
 ## Registry
 
@@ -1119,7 +1119,7 @@ Status: **active**. Turn PR 230's W3 review and the two explorations it led to, 
 | H-269 | blocked | proof | A fixed-profile periodic measure of the form behind T-064 (a corner mo | family: k^2-4 k^2-5 | 0 |  |  |
 | H-270 | blocked | search | For some integer k with 18 <= k <= 41, the strip construction of Kearn | k: 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 | 0 |  |  |
 | H-272 | blocked | search | Of the 68 non-grid known-best records whose witness derives from Kingb |  | 0 |  |  |
-| H-273 | open | proof | Each of the 95 orbits at Hamming distance 2 from the endpoint's state  |  | 0 |  |  |
+| H-273 | unresolved | proof | Each of the 95 orbits at Hamming distance 2 from the endpoint's state  |  | 1 |  | 225.8m wall |
 | H-274 | confirmed | proof | Of the four counted draws of H-264's seed-182 draw that stalled under  |  | 1 |  | 196.1m wall |
 
 ## Needs review — held for a human, not decided
@@ -1188,7 +1188,7 @@ Status: **active**. Turn PR 230's W3 review and the two explorations it led to, 
 | exp-162 | series-000 | 20 | Cursor session-140 | H-218 | The Session-140 research wall expired with no RETAINABLE freeze on the H-218 sweep. Closest masses were leftover n=20 971/200 at 19.910044 unconverged and leftover n=12 3969/1000 at 12.091168 after crossing 12. T-028 at n=18 does not confirm H-218. The unfinished float LPs remain unresolved; their objectives do not refute their site sets. |
 | exp-231 | series-000 | 11 | Claude Session 156, Opus extra-high lane and coordinator | H-236 | The declared caps ran out with 58 of 256 subtrees open and no counterexample candidate, so H-236 is neither confirmed nor refuted; the remaining subtrees are a bounded computation for the unchanged frozen instrument. |
 
-### unresolved (56)
+### unresolved (57)
 
 | id | series | instance | operator | hypotheses | reason |
 | --- | --- | --- | --- | --- | --- |
@@ -1248,6 +1248,7 @@ Status: **active**. Turn PR 230's W3 review and the two explorations it led to, 
 | exp-246 | series-000 | 17 | Claude Session 167; lane G built the instrument, the coordinator ran it from a clean worktree | H-266 | The cover itself is certified and the lemma reviewed, so the census of 43,593 orbits stands. The single-state purpose of the claim is not met while square 13 also lies in side cell S1, and square 6's domain is declared. Moving the tab or shrinking S1 by a few thousandths, and deriving square 6's range, would close both. |
 | exp-249 | series-000 | 17 | Claude Session 168; lanes K2 and P2 built the provers, lanes R3 and R4 reviewed them, the coordinator ran both from a clean worktree | H-267 | Both certificates are sound and admitted, and the endpoint survives, but 2 of 44 flagged classes leave 17,690 orbits. A was certified by an interval branch and bound, which H-267's claim does not name among its instruments; the independent review admits it as an equivalent certificate, and that is a recorded deviation in the instrument, not in the threshold. |
 | exp-250 | series-000 | 17 | Claude Session 168; lane K2 produced both certificates and ran both full verifications, lane A3 admitted them and wrote this record | H-267 | Both certificates pass the standing verifier in full and are admitted, and the endpoint survives, but 15,953 orbits remain, and an arity-9 class and a whole state bear on H-267's arity-seven criterion only as progress on the census. |
+| exp-255 | series-000 | 17 | Claude Session 182; the run operator's lane E queue ran the ten shards on a second clean run worktree in the slot left after the kernel lanes | H-273 | All 95 distance-2 orbits were searched and none placed, while every shard's control placed. Under the frozen criterion that is no placement in 95 searches, not a proof of infeasibility, so H-273 stays unresolved. The 0.00027 near miss on mask 3963647 is the orbit a later exact or longer search would take first. |
 
 ### blocked (11)
 
@@ -1399,7 +1400,7 @@ Status: **active**. Turn PR 230's W3 review and the two explorations it led to, 
 
 ## Effort
 
-183 rounds, 2512.1 agent-minutes, 4469.2 wall-minutes.
+184 rounds, 2512.1 agent-minutes, 4695.1 wall-minutes.
 
 These totals exclude 4 historical rounds with unrecorded timing; their cost is unknown, not zero.
 

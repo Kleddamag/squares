@@ -117,6 +117,15 @@ experiment:
       1/128, closure all_parent_poses_forbidden for interior-S at step 31. The standing verifier at cebb5d15a
       passes it in full mode in 198 s, checking all 2,023 live rows in full and 5,096 collision regions by
       25,553,964 exact facet checks. Alone it excludes 81,848 states and 10,267 orbits.
+  - shape: determination
+    role: outcome
+    question: Is target 6 (side-N0, side-S1, side-W2, interior-NW, interior-W, interior-S, interior-N,
+      interior-SE) infeasible at U within the 7,000 s ceiling?
+    outcome: criterion_missed
+    checked_by: The run (receipts/K/kernel-t6-bc425.json) returns PASS_CERTIFIED_STALL in 1,374 s of wall and
+      1,093 s of process CPU, the producer at its 24-round cap with producer time unused (192 steps, 17,378
+      rows, finest 1/512); at the last round every owner still had live rows, interior-S 5 and interior-N 7
+      the fewest. A non-closure; its node is kept for a stall diagnosis.
   verdict:
     decision: in-progress
     primary_criterion: Each frozen target run once, a closure admitted only on the standing verifier's full pass
@@ -154,6 +163,7 @@ projected for it alone, because most of what it excludes the first had already e
 | 2, `s182-bc425-t2` | corner-SW, side-S0, side-S1, side-S2, interior-NW, interior-W, interior-S, interior-SE | closed in 1,250 s, 78 steps, 8,192 rows | full pass, 758 s | 57,496 states, 7,308 orbits |
 | 4, `s182-bc425-t4` | corner-SE, side-E0, side-S1, side-S2, interior-NW, interior-W, interior-S, interior-SE | closed in 553 s, 138 steps, 11,323 rows | full pass, 275 s | 53,016 states, 6,742 orbits (after lane A’s state 3063677 too) |
 | 3 | side-S0, side-E0, side-S1, side-S2, interior-NW, interior-W, interior-S, interior-SE | 24-round cap at 1,139 s, not closed | — | — |
+| 6 | side-N0, side-S1, side-W2, interior-NW, interior-W, interior-S, interior-N, interior-SE | 24-round cap at 1,374 s, not closed | — | — |
 | 5, `s182-bc425-t5` | side-N0, side-S1, side-N1, interior-NW, interior-W, interior-S, interior-N, interior-SE | closed in 327 s, 22 steps, 1,408 rows | full pass, 300 s | 50,728 states, 6,453 orbits |
 | 7, `s182-bc425-t7` | corner-NW, side-S0, side-W0, side-W1, side-W2, interior-SW, interior-NW, interior-S | closed in 482 s, 32 steps, 2,050 rows | full pass, 198 s | 44,316 states, 5,649 orbits |
 

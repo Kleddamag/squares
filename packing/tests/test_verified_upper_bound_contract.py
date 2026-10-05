@@ -42,6 +42,9 @@ from sqpack.known_best import KNOWN_BEST_CORPUS
 #: 3 units of the printed fifteenth decimal; de Winter's n = 211 (T-057) moved a report
 #: and its ceiling together off the grid. Raised on 2026-10-05 by one: Couzo's packing of 3
 #: October at n = 306 (T-092) certifies only 2 units of the fifteenth decimal above its side.
+#: Unchanged by n = 69, 83 and 87 leaving the grid for exact certificates of the catalogue's
+#: packings (T-088, T-089), which still trail their printed sides by 2 to 89 units of the
+#: fourteenth decimal.
 TRAILING_BY_CORPUS: dict[str, int] = {"n=1..100": 16, "n=1..200": 47, "n=1..324": 83}
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
@@ -96,6 +99,11 @@ DECLARED_CONSUMERS = {
         "and blocker wherever that trails the report; it reads the field as a ceiling and "
         "never as s(n)"
     ),
+    "packing/devtools/catalogue_upper_bounds.py": (
+        "writes the ceiling the exact certificates of the catalogue's n = 69, 83 and 87 "
+        "packings prove, the certified side rounded up, and the blocker saying it trails the "
+        "printed side; it reads the field as a ceiling and never as s(n)"
+    ),
     "packing/devtools/render_stack_results.py": (
         "counts the case records whose verified_upper_bound value differs between two "
         "revisions, for a pull request's description; it compares the stored strings and "
@@ -104,6 +112,10 @@ DECLARED_CONSUMERS = {
     "packing/tests/test_render_stack_results.py": (
         "builds two case records whose ceiling is the same and checks the rendered count of "
         "changed ceilings is zero; it asserts nothing about s(n)"
+    ),
+    "packing/tests/test_catalogue_upper_bounds.py": (
+        "checks that n = 69, 83 and 87 carry the ceiling their exact certificates' receipts "
+        "derive and that it still trails the printed side; it asserts nothing about s(n)"
     ),
     "packing/tests/test_upper_bound_packets.py": (
         "checks that each certified case's ceiling cites its replay and agrees with the "
@@ -144,6 +156,10 @@ DECLARED_CONSUMERS = {
         "the T-092 review, explaining why n = 306 carries a verified ceiling two units of "
         "the fifteenth decimal above the printed side, as the 29 September review did for "
         "n = 206, 259 and 305; it reads the field as the certified ceiling, not as s(n)"
+    "docs/project/reviews/review-2026-10-05-kingbird-intake-n69-n83-n87.md": (
+        "a dated review saying what n = 69, 83 and 87's verified upper lanes may state: the "
+        "exact certificates' sides rounded up, above the printed sides, and never s(n) or "
+        "the catalogue's roots"
     ),
     "packing/tests/test_evand_square_packing.py": (
         "pins n = 32's ceiling to the trivial grid's 6, which with the verified lower bound "
@@ -413,15 +429,17 @@ def test_a_third_of_the_corpus_certifies_a_weaker_bound_than_it_reports() -> Non
     assert worst > Decimal("0.42")
 
     # And in those cases `exact_form` is exact about the ceiling and says nothing about
-    # s(n): for all but five it is literally the integer grid bound. n = 29 carries an
-    # interval certificate's endpoint, and n = 206, 259, 305 and 306 the rounded-up side of
-    # an exact rational certificate of Couzo's packing (T-056; T-092 at 306).
+    # s(n): for all but eight it is literally the integer grid bound. n = 29 carries an
+    # interval certificate's endpoint, n = 206, 259, 305 and 306 the rounded-up side of an
+    # exact rational certificate of Couzo's packing (T-056; T-092 at 306), and n = 69, 83
+    # and 87 that of the catalogue's September 2026 packings, certified from a binary64
+    # parse of their pictures (T-088, T-089).
     grids = {
         n
         for n in trailing
         if loaded_cases[n]["verified_upper_bound"]["exact_form"] == str(math.isqrt(n - 1) + 1)
     }
-    assert sorted(set(trailing) - grids) == [29, 206, 259, 305, 306]
+    assert sorted(set(trailing) - grids) == [29, 69, 83, 87, 206, 259, 305, 306]
 
     # Every case carrying an exact_form on the ceiling, split by whether s(n) is known.
     exact_forms = sum(

@@ -74,17 +74,6 @@ repositories:
       tests and .gitignore: the certificate ladder's step and termination rules, and a run
       log. No certificate, proof or verifier changes. Its message reports a faster n = 29
       ladder run but publishes no certificate. Nothing to import.
-  - url: https://github.com/wand125/valid7-independent-check
-    read_through: da469ecff5da0c71882e894b65d680ce57a0c87e
-    read_on: '2026-10-05'
-    bead: think-uu60
-    note: >-
-      One commit past 38dd31b3, the wand125-valid7-independent-check-2026-10-02 packet's
-      pin, of 3 October. It fixes the review's D-1 to D-3 in tier_b2.py, rf.py and
-      check_record.py, and adds a --seed option to check_record.py, answering
-      evand/square-packing#1. With the fixed code the author reports RECORD OK on the
-      unchanged records-v1. This is an evidence update to T-064, owned by think-uu60, and
-      no rung moves.
   - url: https://github.com/Kleddamag/17-squares-certified-bound
     read_through: 17d18245114cd78645b70b20e0b5c9afc8d95ed8
     read_on: '2026-10-05'

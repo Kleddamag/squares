@@ -159,13 +159,43 @@ PRUNE = frozenset(
         # leave any snapshot. They stay so the list reads as one class. What the
         # composites actually want is a link scan that tolerates a pruned target, which is
         # `think-t1lk`'s problem and not a line to add here.
+        #
+        # 2026-10-05: both composite vectors join the list, because the reason above has
+        # gone. `e4ad5cedd` (2026-09-30) trimmed the root `README.md` to point at the
+        # published site, and it now links neither vector nor any of the four exports.
+        # The links that remain are in `atlas/README.md`, `atlas/known-best/README.md` and
+        # `FIGURE-PLAYBOOK.md`, which `linked_pruned_targets` does not scan and no control
+        # link-checks: `check_links` runs on the root README and SYNOPSIS only, and the
+        # ledger's `dead_links` on `campaign/` only. A pruned vector now leaves the worker,
+        # and the four exports above stopped being inert on the same commit.
+        #
+        # Both are generator-owned: `build_known_best_atlas` writes them and its `--check`
+        # compares them in full in the `known-best atlas records and sample` step, which
+        # runs outside any worker. Traced, not inferred: all 170 registered controls were
+        # run in their worker trees under `strace -f -e trace=%file` at e62bed3a6 (PR 360,
+        # whose `controls.yaml` and harness match this branch's), and all 170 fired. Four
+        # open both vectors, all of them `check_readme` controls, and only through
+        # `scan_retired_workflow_identifiers`, which reads every text file the worker's
+        # own index tracks, looking for a retired token. A pruned vector is absent from
+        # that index, so it leaves the sweep rather than going missing from it. One more,
+        # `check_generated_markdown`, lists the directory and keeps only `*.md`. No other
+        # control stats, opens or lists either file; none drives an atlas step; and the
+        # full-suite control still refuses at collection. With both pruned, all 170
+        # controls fire, and unmutated `check_readme`, `ledger check`, `validate_schemas`
+        # and `check_generated_markdown` print byte-identical output in a worker with the
+        # vectors and in one without them.
+        #
+        # 8,559,777 bytes. The n=17 stack's top layer (PR 360) measured 201,854,760 against
+        # the 201,326,592 cap and measures 193,294,983 with them pruned.
         ROOT / "atlas/known-best/contact-overlays",
         ROOT / "atlas/known-best/known-best-1-100-card.png",
         ROOT / "atlas/known-best/known-best-1-100.pdf",
         ROOT / "atlas/known-best/known-best-1-100.png",
+        ROOT / "atlas/known-best/known-best-1-100.svg",
         ROOT / "atlas/known-best/known-best-1-100@2x.png",
         ROOT / "atlas/known-best/known-best-1-324.pdf",
         ROOT / "atlas/known-best/known-best-1-324.png",
+        ROOT / "atlas/known-best/known-best-1-324.svg",
         ROOT / "atlas/known-best/rendering",
         # The regularized layer's 51 drawings (think-bgkz, 2026-10-02), 11 MB of generated
         # SVG that `regularized atlas drawings match their index` re-renders and compares,
@@ -641,6 +671,17 @@ ROOT_DOCUMENTS = (
 # 17 MB out of this surface -- the chunk census, the escape screen, exp-042 and the
 # other files the snapshot copies -- without pruning anything, so the cap returns to
 # 192 MiB rather than keeping a raise the bytes no longer need.
+# 2026-10-05, the n=17 stack: PR 360 at e62bed3a6 measured 201,854,760 bytes, 528,168
+# over 192 MiB, and hosted suite-b read the same figure (run 37298541719). No one layer
+# broke it. Main's dee22b882 measures 193,929,477; the five layers add 4,688,427 (PR 347),
+# 432,986, 882,399, 520,210 and 1,401,261 (PR 360), almost all of it X-048 session
+# receipts and their probes and tests, which are evidence and stay. Answered by
+# `think-t1lk`'s option (b) rather than by raising: the two composite vectors join
+# `PRUNE` above, traced as no control's input, for 8,559,777 bytes. That leaves PR 360
+# at 193,294,983 and this branch at 190,058,127, both before this change's own 4.5 KB
+# of comment and test, under an unchanged cap. PR 360 separately prunes its Sessions
+# 169-179 exploration folders (93a6839ca, net 2,122,114 bytes); the two prunes are
+# independent, and together they leave that layer about 9.7 MiB under the cap.
 SNAPSHOT_MAX_BYTES = 192 * 1024 * 1024
 DEFAULT_CONTROL_TIMEOUT_SECONDS = 120.0
 TERMINATION_GRACE_SECONDS = 1.0

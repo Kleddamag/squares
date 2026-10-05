@@ -97,6 +97,7 @@ FRONT = paper_front.check(
             paper_front.Dated(paper_front.REVISED, OPTIMALITY_REVIEW_REVISED),
         ),
         history="version-history",
+        series=paper_front.series(SLUG),
     )
 )
 FIGURE_KEYS = (

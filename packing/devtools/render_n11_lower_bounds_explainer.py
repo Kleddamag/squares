@@ -2240,6 +2240,7 @@ FRONT = paper_front.check(
             paper_front.Dated(paper_front.REVISED, EXPLAINER_REVISED),
         ),
         history="version-history",
+        series=paper_front.series(SLUG),
     )
 )
 

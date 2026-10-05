@@ -16,7 +16,8 @@ The rules:
   made. The commit records its offset, so every machine reads the same day.
 - **A paper's "revised" date is the date of the last commit that changed its article**,
   merges excluded (`sqpack.release.last_change_date`). It is stated in `sqpack.release`,
-  where the paper's front reads it (`EXPLAINER_REVISED`, `OPTIMALITY_REVIEW_REVISED`),
+  where the paper's front reads it (`EXPLAINER_REVISED`, `THRESHOLD_REVIEW_REVISED`,
+  `OPTIMALITY_REVIEW_REVISED`),
   and held to git here, so it is changed in the commit that changes the article and
   cannot stand still under one.
 - **A poster's dateline is the date of the data commit it was drawn from**, which the
@@ -32,6 +33,8 @@ Usage, from `packing/`:
     uv run --frozen --all-extras --group dev python -m devtools.artifact_dates --check
     uv run --frozen --all-extras --group dev python -m devtools.artifact_dates \
         --pdf site/papers/n11-optimality-review.pdf --revised optimality
+    uv run --frozen --all-extras --group dev python -m devtools.artifact_dates \
+        --pdf site/papers/n11-threshold-bound-review.pdf --revised threshold
 
 With no option it prints the table. `--check` exits 1 when a derived date is not what
 its rule gives; where git cannot answer, a row says so and fails nothing. `--pdf` holds
@@ -55,12 +58,14 @@ from sqpack.yamlio import safe_load
 PACKING = Path(__file__).resolve().parents[1]
 REPO = PACKING.parent
 TEMPLATES = PACKING / "devtools/templates"
-#: The two papers' articles: the text whose last change is a paper's "revised" date.
+#: The papers' articles: the text whose last change is a paper's "revised" date.
 EXPLAINER_ARTICLE = TEMPLATES / "n11-lower-bounds-explainer-article.md"
+THRESHOLD_ARTICLE = TEMPLATES / "n11-threshold-bound-review-article.md"
 OPTIMALITY_ARTICLE = TEMPLATES / "n11-optimality-review-article.md"
 RESULTS = PACKING / "frontier/results.yaml"
 SYNOPSIS = REPO / "SYNOPSIS.md"
-#: The result the optimality paper reviews, whose publication is its "Original proof".
+#: The result each review reviews, whose publication is its "Original proof".
+THRESHOLD_RESULT = "T-037"
 OPTIMALITY_RESULT = "T-060"
 SYNOPSIS_DATE = re.compile(r"^\*\*Date:\*\* (\d{4}-\d{2}-\d{2})$", re.MULTILINE)
 
@@ -86,6 +91,18 @@ def optimality_dates() -> tuple[str, str]:
 def optimality_revised() -> date:
     """The day the optimality paper says it was last revised."""
     return written_date(optimality_dates()[1])
+
+
+def threshold_dates() -> tuple[str, str]:
+    """The threshold-bound review's two dates as its front states them, as the
+    optimality paper's are: the day Kleddamag published the proof it reviews, then the
+    day the review was last revised, both from `sqpack.release`."""
+    return release.THRESHOLD_PROOF_PUBLISHED, release.THRESHOLD_REVIEW_REVISED
+
+
+def threshold_revised() -> date:
+    """The day the threshold-bound review says it was last revised."""
+    return written_date(threshold_dates()[1])
 
 
 def published(result: str) -> str:
@@ -178,6 +195,8 @@ def _paper_rows() -> list[Row]:
     explainer_changed = last_change(EXPLAINER_ARTICLE)
     proof, review = optimality_dates()
     optimality_changed = last_change(OPTIMALITY_ARTICLE)
+    threshold_proof, threshold_review = threshold_dates()
+    threshold_changed = last_change(THRESHOLD_ARTICLE)
     unknown = "git cannot date the article here"
     return [
         Row(
@@ -204,6 +223,28 @@ def _paper_rows() -> list[Row]:
                 "built at deploy; render_n11_lower_bounds_explainer_pdf --check-artifact "
                 "refuses another"
             ),
+        ),
+        Row(
+            "threshold-bound review, Original proof",
+            threshold_proof,
+            "release.THRESHOLD_PROOF_PUBLISHED",
+            f"the day the register says {THRESHOLD_RESULT} was published",
+            long_date(published(THRESHOLD_RESULT)),
+        ),
+        Row(
+            "threshold-bound review, Last revised",
+            threshold_review,
+            "release.THRESHOLD_REVIEW_REVISED",
+            f"the last commit that changed {THRESHOLD_ARTICLE.name}",
+            None if threshold_changed is None else long_date(threshold_changed),
+            unknown,
+        ),
+        Row(
+            "threshold-bound review PDF CreationDate, ModDate",
+            publication_date_text(written_date(threshold_review)),
+            "set by render_n11_threshold_bound_review --pdf",
+            "Last revised, at noon UTC",
+            held_by="built at deploy; artifact_dates --pdf holds a built file",
         ),
         Row(
             "optimality paper, Original proof",
@@ -287,11 +328,11 @@ def check_pdf(pdf: Path, paper: str) -> int:
     """Hold one built PDF's dates to the revised date of the paper it is."""
     from devtools.render_n11_lower_bounds_explainer_pdf import date_problem  # noqa: PLC0415
 
-    day = (
-        written_date(release.EXPLAINER_REVISED)
-        if paper == "explainer"
-        else optimality_revised()
-    )
+    day = {
+        "explainer": lambda: written_date(release.EXPLAINER_REVISED),
+        "threshold": threshold_revised,
+        "optimality": optimality_revised,
+    }[paper]()
     problem = date_problem(pdf.read_bytes(), day)
     if problem is not None:
         print(f"FAIL: {pdf}: {problem}", file=sys.stderr)
@@ -308,7 +349,7 @@ def main(argv: Sequence[str] | None = None) -> int:
     parser.add_argument("--pdf", type=Path, help="a built PDF whose dates to hold")
     parser.add_argument(
         "--revised",
-        choices=("explainer", "optimality"),
+        choices=("explainer", "threshold", "optimality"),
         help="with --pdf: the paper whose revised date the PDF's dates must be",
     )
     arguments = parser.parse_args(argv)

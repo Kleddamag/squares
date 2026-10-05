@@ -1204,7 +1204,9 @@ def test_the_credits_print_the_papers_own_version_and_not_the_sites(
     # chip's, in the credits of neither paper (think-2cqu).
     assert render_n11_lower_bounds_explainer.FRONT.source is None
     block = page.split('<div class="credits centred">', 1)[1].split("</div>", 1)[0]
-    assert block.count("<span") == 4
+    # Four lines of credits, then the series strip (`paper_front.series`).
+    assert block.count("<span") - block.count('<span class="series">') == 4
+    assert block.count('<span class="series">') == 3
     assert "github.com/jlevy/squares" not in block
     assert block.lstrip().startswith('<span class="credits-own">Human oversight: ')
     # The version line is the paper's own, plain: no status, no data hash.

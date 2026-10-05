@@ -29,6 +29,7 @@ other browser tools read it.
 from __future__ import annotations
 
 import copy
+import importlib
 import io
 import os
 import re
@@ -48,8 +49,15 @@ from devtools.render_n11_lower_bounds_explainer_pdf import BROWSER_OVERRIDE
 from tests import site_renders
 
 TEMPLATES = Path(render_n11_lower_bounds_explainer.__file__).with_name("templates")
-#: The two papers as this module writes them into one directory, each under its slug.
+#: The papers as this module writes them into one directory, each under its slug: the
+#: explainer, the reference, and the two reviews, Part III (`PAPER`, the optimality
+#: review, whose formulas once came out lighter) and Part II (`THRESHOLD`).
 EXPLAINER, PAPER = "n11-lower-bounds-explainer.html", "n11-optimality-review.html"
+THRESHOLD = "n11-threshold-bound-review.html"
+#: Every paper of the site, in reading order, as written here.
+PAPERS = (EXPLAINER, THRESHOLD, PAPER)
+#: The figures each review draws (Part II's twelve, the series plan's §6.2).
+REVIEW_FIGURES = {PAPER: 11, THRESHOLD: 12}
 #: The site's own pages measured here: a long report, whose headings, tables and block
 #: quotes hold formulas, and the homepage, whose cards, chips and tables do.
 SITE_PAGES = ("tutorial.html", "index.html")
@@ -566,6 +574,18 @@ def site(chromium: None, tmp_path_factory: pytest.TempPathFactory) -> Path:  # n
         revision="a" * 40,
     )
     (root / PAPER).write_text(html, encoding="utf-8")
+    # Part II, rendered as the optimality review is, by the renderer the site's registry
+    # names for it.
+    threshold = importlib.import_module(
+        render_overview.paper_record(render_overview.N11_THRESHOLD_BOUND_REVIEW).module
+    )
+    threshold_html, _ = threshold.render(
+        threshold.ARTICLE.read_text(encoding="utf-8"),
+        figures=threshold.render_all_figures(),
+        facts=threshold.render_all_facts(),
+        revision="a" * 40,
+    )
+    (root / THRESHOLD).write_text(threshold_html, encoding="utf-8")
     script = render_n11_lower_bounds_explainer.publication_layer()["NATIVE_MATH_METRICS"]
     assert html.count(script) == 1
     (root / "unflagged.html").write_text(html.replace(script, ""), encoding="utf-8")
@@ -598,7 +618,7 @@ def measured(served: str, pages: tuple[str, ...], **options: Any) -> dict[str, d
 @pytest.fixture(scope="module")
 def pages(served: str) -> dict[str, dict[str, Any]]:
     """Every page as this machine draws it."""
-    return measured(served, (EXPLAINER, PAPER, *SITE_PAGES), tex=(SHARED_FORMULA,))
+    return measured(served, (*PAPERS, *SITE_PAGES), tex=(SHARED_FORMULA,))
 
 
 @pytest.fixture(scope="module")
@@ -609,17 +629,18 @@ def as_platform(served: str) -> dict[str, dict[str, dict[str, Any]]]:
     return {platform: measured(served, papers, platform=platform) for platform in (MAC, LINUX)}
 
 
+@pytest.mark.parametrize("review", [THRESHOLD, PAPER])
 def test_the_paper_sets_every_shared_role_as_the_explainer_does(
-    pages: dict[str, dict[str, Any]],
+    pages: dict[str, dict[str, Any]], review: str
 ) -> None:
     differences = [
         row
-        for row in measure.glyph_differences([pages[EXPLAINER], pages[PAPER]])
+        for row in measure.glyph_differences([pages[EXPLAINER], pages[review]])
         if row["part"] == "text" and row["role"] in SHARED_ROLES and row["property"] != "color"
     ]
     assert differences == []
     for role in STRUCTURAL_ROLES:
-        for name in (EXPLAINER, PAPER):
+        for name in (EXPLAINER, review):
             assert any(row["role"] == role for row in pages[name]["text"]), (name, role)
 
 
@@ -684,7 +705,7 @@ def test_a_paper_without_the_head_script_is_named_on_macos(
     ]
 
 
-@pytest.mark.parametrize("name", [EXPLAINER, PAPER, *SITE_PAGES])
+@pytest.mark.parametrize("name", [*PAPERS, *SITE_PAGES])
 def test_a_page_is_drawn_as_the_shared_layers_set_it(
     pages: dict[str, dict[str, Any]], name: str
 ) -> None:
@@ -700,11 +721,11 @@ def test_a_page_is_drawn_as_the_shared_layers_set_it(
 
 @pytest.fixture(scope="module")
 def figures(site: Path) -> list[dict[str, Any]]:
-    """Every figure of the two papers, at a desktop and a phone width."""
-    return measure.measure_figures(site.as_uri(), (EXPLAINER, PAPER), widths=(1280, 390))
+    """Every figure of every paper, at a desktop and a phone width."""
+    return measure.measure_figures(site.as_uri(), PAPERS, widths=(1280, 390))
 
 
-def test_both_papers_set_every_figure_one_way(figures: list[dict[str, Any]]) -> None:
+def test_every_paper_sets_every_figure_one_way(figures: list[dict[str, Any]]) -> None:
     """A figure is its drawing, centred in the column, with its caption under it as a
     `figcaption`. Nothing is lettered into a drawing but its labels: no title, no
     sentence, no run most of the drawing wide. A wide diagram scrolls sideways on a
@@ -712,10 +733,11 @@ def test_both_papers_set_every_figure_one_way(figures: list[dict[str, Any]]) -> 
     stands on the column's centre within a pixel, and what it paints with it."""
     counted = {
         (name, width): sum(1 for row in figures if (row["page"], row["width"]) == (name, width))
-        for name in (EXPLAINER, PAPER)
+        for name in PAPERS
         for width in (1280, 390)
     }
-    assert counted[(PAPER, 1280)] == counted[(PAPER, 390)] == 11
+    for review, count in REVIEW_FIGURES.items():
+        assert counted[(review, 1280)] == counted[(review, 390)] == count, review
     assert counted[(EXPLAINER, 1280)] == counted[(EXPLAINER, 390)] >= 7
     problems = [
         f"{row['page']} at {row['width']}: {problem}"
@@ -748,24 +770,25 @@ def test_the_first_figure_is_the_drawing_alone_at_the_first_papers_width(
 
 @pytest.fixture(scope="module")
 def fronts(site: Path) -> list[dict[str, Any]]:
-    """The formats row and the credits of the two papers, at a desktop and a phone
-    width, as laid out."""
-    return measure.measure_credits(site.as_uri(), (EXPLAINER, PAPER), widths=(1280, 390))
+    """The formats row and the credits of every paper, at a desktop and a phone width,
+    as laid out."""
+    return measure.measure_credits(site.as_uri(), PAPERS, widths=(1280, 390))
 
 
 @pytest.mark.parametrize("width", [1280, 390])
-def test_both_papers_lay_the_front_out_one_way(
+def test_every_paper_lays_the_front_out_one_way(
     fronts: list[dict[str, Any]], width: int
 ) -> None:
-    """Both papers write their front from one record (`devtools.paper_front`), and the
+    """Every paper writes its front from one record (`devtools.paper_front`), and the
     browser lays it out one way: the same three chips at the same size and weight; the
     credits one column the width of the page, every line at the regular weight with
     its names at the bold and its addresses at the regular; the grid's own gap between
-    lines, a line's space more before the dates on both, and before the review's own
-    credits, which follow the proof it reviews."""
+    lines, a line's space more before the dates, before a review's own credits, which
+    follow the proof it reviews, and before the series strip, whose lines name the
+    other parts by title, each a link at the regular weight."""
     rows = {
         name: [row for row in fronts if (row["page"], row["width"]) == (name, width)]
-        for name in (EXPLAINER, PAPER)
+        for name in PAPERS
     }
     chips = {
         name: [
@@ -775,39 +798,50 @@ def test_both_papers_lay_the_front_out_one_way(
         ]
         for name, found in rows.items()
     }
-    assert chips[EXPLAINER] == chips[PAPER]
+    for name in PAPERS:
+        assert chips[name] == chips[EXPLAINER], name
     assert [chip[0] for chip in chips[PAPER]] == ["MD", "PDF", "GITHUB"]
     lines_of = {
         name: [r for r in found if r["part"] == "credit"] for name, found in rows.items()
     }
-    assert len(lines_of[EXPLAINER]) == 4
-    assert len(lines_of[PAPER]) == 6
+    strip = len(PAPERS)
+    assert len(lines_of[EXPLAINER]) == 4 + strip
+    assert len(lines_of[PAPER]) == len(lines_of[THRESHOLD]) == 6 + strip
     regular, bold = "410", "680"
     reference = lines_of[EXPLAINER][0]
     for name, lines in lines_of.items():
         assert {line["weight"] for line in lines} == {regular}, name
         assert {line["font_size"] for line in lines} == {reference["font_size"]}, name
         assert {line["width_share"] for line in lines} == {reference["width_share"]}, name
-        oversight, agents, version, dates = lines[-4:]
+        oversight, agents, version, dates = lines[-4 - strip : -strip]
         assert oversight["bold"] == bold
         assert oversight["links"] == f"{bold} (name)"
         assert set(agents["bold"].split()) == {bold}
         assert version["bold"] == ""
         assert dates["bold"] == ""
         assert dates["links"] == ""
-    source, address = lines_of[PAPER][:2]
-    assert source["bold"] == bold
-    assert address["bold"] == ""
-    assert address["links"] == regular
+        head, *others = lines[-strip:]
+        assert {line["kind"] for line in (head, *others)} == {"series"}, name
+        assert head["bold"] == head["links"] == "", name
+        assert [line["links"] for line in others] == [regular] * (strip - 1), name
+        assert {line["bold"] for line in others} == {""}, name
+    for review in (THRESHOLD, PAPER):
+        source, address = lines_of[review][:2]
+        assert source["bold"] == bold
+        assert address["bold"] == ""
+        assert address["links"] == regular
     # The space between lines is the grid's gap, a fraction of a line; a line's space
-    # more stands before the dates on both papers and before the review's own credits.
+    # more stands before the dates on every paper, before a review's own credits and
+    # before the series strip.
     gaps = {name: [line["gap"] for line in lines] for name, lines in lines_of.items()}
     small = gaps[EXPLAINER][1]
     assert 0 < small < 0.3
-    assert gaps[EXPLAINER] == pytest.approx([0, small, small, small + 1], abs=0.05)
-    assert gaps[PAPER] == pytest.approx(
-        [0, small, small + 1, small, small, small + 1], abs=0.05
-    )
+    series = [small + 1, small, small]
+    assert gaps[EXPLAINER] == pytest.approx([0, small, small, small + 1, *series], abs=0.05)
+    for review in (THRESHOLD, PAPER):
+        assert gaps[review] == pytest.approx(
+            [0, small, small + 1, small, small, small + 1, *series], abs=0.05
+        ), review
 
 
 def test_the_pages_run_one_math_pipeline(pages: dict[str, dict[str, Any]]) -> None:

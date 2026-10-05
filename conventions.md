@@ -155,14 +155,17 @@ A new result takes the same names with its own id.
 
 **A paper is named by its slug, in the repository and on the site.** [checked] The slug
 says the case, the subject and the kind of paper: `n11-lower-bounds-explainer`,
-`n11-optimality-review`. The site serves the paper at `papers/<slug>.html` with its
-Markdown and its PDF beside it under the same slug, and the source carries it too: the
-renderer (`render_n11_optimality_review.py`), its templates
-(`n11-optimality-review-article.md`), its tests and its Pages job.
-A paper may cover several results, so it is not named for one; until 2026-10-01 the
-first paper’s Markdown was published as `t-018-explainer.md`, and that address still
-serves a copy. A paper’s address does not change once it is published; if it has to, the
-old address keeps working, as a forwarder for a page and a copy for a file
+`n11-threshold-bound-review`, `n11-optimality-review`. The site serves the paper at
+`papers/<slug>.html` with its Markdown and its PDF beside it under the same slug, and
+the source carries it too: the renderer (`render_n11_optimality_review.py`), its
+templates (`n11-optimality-review-article.md`), its tests and its Pages job.
+Each paper is one entry in `render_overview.PAPERS`, the site’s list of papers in
+reading order, by slug, renderer, label, part and title; the three on $n = 11$ are one
+series, Parts I, II and III. A paper may cover several results, so it is not named for
+one; until 2026-10-01 the first paper’s Markdown was published as `t-018-explainer.md`,
+and that address still serves a copy.
+A paper’s address does not change once it is published; if it has to, the old address
+keeps working, as a forwarder for a page and a copy for a file
 (`render_overview.MOVED_PAGES`, `MOVED_FILES`).
 
 Use [`repren`](https://github.com/jlevy/repren) for renames—it moves files and rewrites

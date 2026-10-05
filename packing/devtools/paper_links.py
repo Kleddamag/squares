@@ -22,14 +22,9 @@ from devtools import render_overview
 #: One cross-paper link: a paper's slug and an optional heading anchor.
 PAPER_LINK = re.compile(r"\{\{PAPER:(?P<slug>[a-z0-9-]+)(?:#(?P<anchor>[A-Za-z0-9_-]+))?\}\}")
 
-#: The site's papers, by slug. A placeholder naming any other slug is refused.
-PAPER_SLUGS: frozenset[str] = frozenset(
-    {
-        render_overview.N11_LOWER_BOUNDS_EXPLAINER,
-        render_overview.N11_THRESHOLD_BOUND_REVIEW,
-        render_overview.N11_OPTIMALITY_REVIEW,
-    }
-)
+#: The site's papers, by slug, from the one registry (`render_overview.PAPERS`). A
+#: placeholder naming any other slug is refused.
+PAPER_SLUGS: frozenset[str] = frozenset(paper.slug for paper in render_overview.PAPERS)
 
 Edition = Literal["page", "markdown"]
 

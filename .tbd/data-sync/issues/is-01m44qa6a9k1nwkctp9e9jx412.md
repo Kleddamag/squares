@@ -3,14 +3,18 @@ type: is
 id: is-01m44qa6a9k1nwkctp9e9jx412
 title: "PR #336 A3 (Low): the author's machine policy is hard-coded."
 kind: task
-status: open
+status: in_progress
 priority: 2
-version: 1
+version: 2
+delegate: graph_gate
 labels: []
 dependencies: []
 parent_id: is-01m44qa2mz6hseqc8b10neq6b3
+hold: null
+hold_until: null
 created_at: 2026-10-05T00:27:11.560Z
-updated_at: 2026-10-05T00:27:11.560Z
+updated_at: 2026-10-05T02:30:55.206Z
+started_at: 2026-10-05T02:30:55.205Z
 ---
 https://github.com/jlevy/squares/pull/336#pullrequestreview-5408660754
 

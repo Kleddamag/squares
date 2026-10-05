@@ -130,6 +130,12 @@ The evidence layer at `4c295ad3d` passed all required hosted checks after refres
 parent to `1525d4e03`. The retained A/W7 objects agree with that parent; the earlier
 single-variable measurements remain historical evidence.
 
+PR 307 was later closed and rebuilt from main as PR 347, without the certificate dumps
+that `OR-18` keeps out of Git history.
+This layer was rebuilt onto PR 347 by cherry-picking the same commits, so the retained
+objects and receipts are byte-identical to those at `56d5b6eaa`. The rebuilt head is
+certified by its own hosted checks; the `4c295ad3d` result above is historical.
+
 The local full runner refuses Windows, so focused controls use the separate Windows Job
 supervisor. Supported-host CI certifies the branch.
 Session 180 records this investigation; the frozen exploration directory keeps its

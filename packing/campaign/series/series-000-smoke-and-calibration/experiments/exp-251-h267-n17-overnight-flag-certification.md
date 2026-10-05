@@ -160,9 +160,10 @@ experiment:
       counts 72,296 states and 9,168 orbits, the endpoint surviving, down from 126,168 and
       15,953 at the registration (results/exp-251-n17-overnight-flag-certification/census.json, reading the
       selector recheck; 79 flags still project, and certifying them all would leave
-      17,160 states in 2,196 orbits). The same tool on a copy of the ledger restricted to
-      the arity-at-most-7 entries (W7, A, s182-k1, s182-k3, s182-k4, s182-k5, s182-k6, s182-k7, s182-k8, s182-k9) counts 10,173 orbits, down
-      from exp-249's 17,690, against the threshold of 10^4.
+      17,160 states in 2,196 orbits). The same tool on the ledger restricted to
+      the arity-at-most-7 entries (W7, A, s182-k1, s182-k3, s182-k4, s182-k5, s182-k6, s182-k7, s182-k8, s182-k9) counts 80,260 states and 10,173 orbits, down
+      from exp-249's 17,690, against the threshold of 10^4 (receipts/K/census-arity7-after-k9.json, on
+      the derived ledger receipts/K/ledger-arity7-after-k9.yaml, whose header names the command that writes it).
   verdict:
     decision: in-progress
     primary_criterion: The certified residue is at most 10^4 orbits with every certificate independently
@@ -207,6 +208,17 @@ orbits; `s182-k5` 1,464 states and 186 orbits; `s182-k6` 1,812 states and 228 or
 `s182-k7` 1,020 states and 129 orbits; `s182-k8` 5,616 states and 712 orbits; `s182-k9`
 940 states and 123 orbits.
 The first is exactly the census’s projected gain for that flag.
+
+H-267’s threshold is read at arity at most seven, so the guard also counts the ledger
+with only those entries: 80,260 states and 10,173 orbits after `s182-k9`, 173 orbits
+above $10^4$. That count is
+[census-arity7-after-k9.json](../../../explorations/X048-session-182-overnight/receipts/K/census-arity7-after-k9.json),
+run on
+[ledger-arity7-after-k9.yaml](../../../explorations/X048-session-182-overnight/receipts/K/ledger-arity7-after-k9.yaml),
+the ledger of record filtered to entries of at most seven cells by the one-line command
+in its header.
+Its census, certified and entry blocks are identical to the count taken in
+scratch at the 11:21 UTC admission, which this file replaces as the record.
 The receipts are under
 [receipts/K](../../../explorations/X048-session-182-overnight/receipts/K/), the
 certificate’s small files under the X048 certificates folder, and its objects in the

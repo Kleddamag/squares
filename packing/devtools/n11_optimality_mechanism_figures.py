@@ -339,7 +339,7 @@ def _row_svg() -> str:
         )
     )
     body += [
-        _text(35, 295, "D: field center region", note=True),
+        _text(35, 295, "D: file center region", note=True),
         _text(35, 585, "3 obstacles; 7 miss D", note=True),
         _text(395, 585, "Triangle magnified", note=True),
     ]
@@ -402,12 +402,12 @@ def _charge_svg() -> str:
         _text(28, 393, "Required owners O = {0,1,2,3,6}"),
         _text(28, 422, "Mask J = {0,…,10}; O ⊆ J"),
         _text(28, 451, "Charged cells P ∩ J = {1,2}"),
-        _text(28, 480, "q₁ = q₂ = 1; budget b = 1"),
+        _text(28, 480, "Γ₁ = Γ₂ = 1; budget b = 1"),
         (
             '<rect x="450" y="385" width="240" height="113" rx="9" '
             'fill="#dcebef" stroke="#1d7874" stroke-width="2"/>'
         ),
-        _text(570, 440, "q₁ + q₂ = 2 > 1 = b", anchor="middle"),
+        _text(570, 440, "Γ₁ + Γ₂ = 2 > 1 = b", anchor="middle"),
         "</g>",
     ]
     return _svg(

@@ -122,6 +122,15 @@ direction exists in either corner branch.
 [H-261](../../../hypotheses/H-261-n17-local-minimum-modulo-sliders.md), the local
 minimum modulo the slider cone, takes this as its process prerequisite.
 
+## Annotation, 2026-10-05: the engine commit is unreachable from this history
+
+The engine commit `2fbf8d2933e6a8f51268b87be111a5c03d9f95cf` was made on PR 307’s
+branch. This record reached `main` on that PR’s successor, which carries the same work
+without PR 307’s history, so that the history’s certificate dumps stay out of Git; the
+commit is therefore unreachable from here and resolves at `refs/pull/307/head` on
+GitHub. The receipts above were written by the code at that commit, and nothing
+executable resolves it.
+
 <!-- This document follows common-doc-guidelines.md.
 See github.com/jlevy/practical-prose and review guidelines before editing.
 -->

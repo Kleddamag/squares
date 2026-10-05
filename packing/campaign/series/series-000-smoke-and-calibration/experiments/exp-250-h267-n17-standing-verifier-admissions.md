@@ -160,6 +160,15 @@ one, so the drop is progress on the census rather than evidence on the threshold
 For H-264, N1 is one sampled state closed within two CPU-hours, of the 10 to 20 its
 falsifier needs.
 
+## Annotation, 2026-10-05: the engine commit is unreachable from this history
+
+The engine commit `fd2c9602eb4e96e1dcdfd2ac8ac8a637a3ab2b44` was made on PR 307’s
+branch. This record reached `main` on that PR’s successor, which carries the same work
+without PR 307’s history, so that the history’s certificate dumps stay out of Git; the
+commit is therefore unreachable from here and resolves at `refs/pull/307/head` on
+GitHub. The receipts above were written by the code at that commit, and nothing
+executable resolves it.
+
 <!-- This document follows common-doc-guidelines.md.
 See github.com/jlevy/practical-prose and review guidelines before editing.
 -->

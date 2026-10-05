@@ -1002,6 +1002,12 @@ def test_the_slow_marker_is_declared_only_by_measured_nodes() -> None:
         "test_n17_endpoint_features.py": {
             "test_symbolic_zero_options_and_displacement_refusal",  # 28.33s
         },
+        # exp-248 run-002's ratio command end to end over B_W', measured 2026-10-05 on a
+        # four-cpu box (PR 307's review, finding A2); the fast tier keeps the stubbed CLI
+        # wiring test on the same box and every component the run composes.
+        "test_n17_local_minimum.py": {
+            "test_cli_ratio_on_the_widened_box_passes_end_to_end_as_exp248_run_002",  # 18.73s
+        },
         # The fully substituted H-258 ring proof, measured 2026-10-02 (Session 167).
         "test_n17_core_stress.py": {
             "test_substituted_normalized_identity_completes_within_wall_bound",  # 7.10s

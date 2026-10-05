@@ -91,6 +91,15 @@ This closes the identification half of the blocker recorded in
 `packing/frontier/n-017.md`. The frontier text is unchanged in this session, and its
 update is tracked separately.
 
+## Annotation, 2026-10-05: the engine commit is unreachable from this history
+
+The engine commit `603d5cb36ed3c9195513956cd5b5c20e5f2cddda` was made on PR 307’s
+branch. This record reached `main` on that PR’s successor, which carries the same work
+without PR 307’s history, so that the history’s certificate dumps stay out of Git; the
+commit is therefore unreachable from here and resolves at `refs/pull/307/head` on
+GitHub. The receipts above were written by the code at that commit, and nothing
+executable resolves it.
+
 <!-- This document follows common-doc-guidelines.md.
 See github.com/jlevy/practical-prose and review guidelines before editing.
 -->

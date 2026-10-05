@@ -126,6 +126,15 @@ be a retune.
 The review’s scripts are retained under
 [`audit/`](../results/exp-248-n17-local-half-composition/audit/).
 
+## Annotation, 2026-10-05: the engine commit is unreachable from this history
+
+The engine commit `9c26793c157cf52c2f202d5d4b2162e8b4a31328` was made on PR 307’s
+branch. This record reached `main` on that PR’s successor, which carries the same work
+without PR 307’s history, so that the history’s certificate dumps stay out of Git; the
+commit is therefore unreachable from here and resolves at `refs/pull/307/head` on
+GitHub. The receipts above were written by the code at that commit, and nothing
+executable resolves it.
+
 <!-- This document follows common-doc-guidelines.md.
 See github.com/jlevy/practical-prose and review guidelines before editing.
 -->

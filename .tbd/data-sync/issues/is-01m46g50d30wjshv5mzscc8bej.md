@@ -5,7 +5,7 @@ title: Verify the wand125 mixed backlog (T-090, T-091, T-094; n != 17) with sqve
 kind: task
 status: in_progress
 priority: 1
-version: 3
+version: 4
 delegate: claude-code@vm
 labels:
   - result-import
@@ -14,7 +14,7 @@ parent_id: is-01m46g4yac7ewc22drc7twjhy5
 hold: null
 hold_until: null
 created_at: 2026-10-05T17:00:30.498Z
-updated_at: 2026-10-05T17:19:52.518Z
+updated_at: 2026-10-05T19:39:23.354Z
 started_at: 2026-10-05T17:06:26.474Z
 ---
 
@@ -37,3 +37,10 @@ What a verified-lane move needs (frontier/README.md, epistemics.md "Integrated",
 Is a review required:
 - T-090, T-091: the 5 October review (separately prompted, accepted) is the review of their mathematics. T-082: the 3 October review. T-094: none, so required (think-flv5's review lane).
 - Neither review saw a sqverify_fast replay (both were written for source-checker replays). One separately prompted adversarial review covering T-094's mathematics and the sqverify_fast replays of the whole batch is run by this lane.
+
+## Progress
+
+- 2026-10-05 18:36 e38b78165: T-094's two certificates VERIFIED by sqverify-fast at all 201 directions (n67 1,388 CPU-s / 2,122 s wall; n84 1,878 / 2,765, two threads, load 3-17); controls refused; census tool learns the 3-5 October packets, --control, --evidence; V-sqverify-fast registered; tests/test_sqverify_fast_census.py.
+- 2026-10-05 18:51 review-2026-10-05-wand125-october-5-and-independent-replays.md (separate claude -p tbd-strong, claude-opus-5-5, detached worktree, removed): accepted, IR-1..IR-5 notes; route carries to T-082/T-090/T-091 per certificate (checklist in its "Carrying the Route").
+- 2026-10-05 19:35 e020eb1e2 records (T-094 V3/C3; n67 -> 212/25, n84 -> 9411/1000; IR-2 amends result-import.md), eb3404c31 re-pin.
+- Queue: T-091 (evening 10-04 packet) running since 18:35; n53 VERIFIED 1,352 CPU-s / 2,176 s wall.

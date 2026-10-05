@@ -1,9 +1,11 @@
 """The other projects' order, their tallies of results, and the links the tallies carry.
 
-The overview's Other Square Packing Projects section lists each project by the
-significance of the results the register cites from it (the owner, 2026-10-01), and each
-card ends with a tally, `6 results (3 at S4, 3 at S3)`, whose total opens the results
-table on that project's results and whose counts open it at one significance level.
+The overview's Other Square Packing Projects section leads with the catalogues of the
+record packings (the owner, 2026-10-05) and then lists each project, on GitHub or off
+it, by the significance of the results the register cites from it (the owner,
+2026-10-01). A card with registered results ends with a tally, `6 results (3 at S4, 3 at
+S3)`, whose total opens the results table on that project's results and whose counts
+open it at one significance level.
 
 The order is one small function over the register, tested here on a synthetic register
 with a tie at each step, and the rendered page is held to it. The tallies are held to the
@@ -16,6 +18,7 @@ environment supplies.
 
 from __future__ import annotations
 
+import html
 import itertools
 import os
 import re
@@ -116,13 +119,24 @@ def page() -> str:
 def _attributed(overview: overview_data.Overview, url: str) -> list[overview_data.Result]:
     """A project's results, read from the register here and not through the mapping the
     page uses: those whose attribution names a key the coverage register gives a source
-    at the project's repository, or the one key `PROJECT_EXTRA_KEYS` adds."""
+    at the project's address, a key `PROJECT_EXTRA_KEYS` adds, or a key the bibliography
+    files under the project's venue in `SOURCE_VENUES`."""
     coverage = safe_load(overview_sections.SOURCE_COVERAGE.read_text(encoding="utf-8"))
-    keys = {
-        source["source_key"]
-        for source in coverage["sources"]
-        if re.sub(r"/tree/.*", "", source["url"]) == url
-    } | set(overview_sections.PROJECT_EXTRA_KEYS.get(url, ()))
+    bibliography = safe_load(overview_data.BIBLIOGRAPHY.read_text(encoding="utf-8"))
+    venue = overview_sections.SOURCE_VENUES.get(url)
+    keys = (
+        {
+            source["source_key"]
+            for source in coverage["sources"]
+            if re.sub(r"/tree/.*", "", source["url"]).rstrip("/") == url.rstrip("/")
+        }
+        | set(overview_sections.PROJECT_EXTRA_KEYS.get(url, ()))
+        | {
+            entry["key"]
+            for entry in bibliography["sources"]
+            if venue and entry.get("venue") == venue
+        }
+    )
     return [
         result
         for result in overview.results
@@ -146,13 +160,18 @@ def _cards(page: str) -> list[tuple[str, str]]:
 def test_the_page_lists_the_projects_in_the_functions_order(
     page: str, overview: overview_data.Overview
 ) -> None:
-    """The rendered order is `ranked_projects`, computed from the register; the list in
-    the source keeps no order of its own. Checked against the register directly: the
+    """The rendered order is the catalogues as `CATALOGUE_SITES` writes them, then
+    `ranked_projects`, computed from the register; the lists in the source keep no
+    order of their own. Checked against the register directly: after the catalogues the
     tuple of counts never rises down the page, and the projects with no registered
     result come last, by name."""
     ranked = overview_sections.ranked_projects(overview)
-    assert [url for url, _ in _cards(page)] == [url for url, _ in ranked]
-    assert {url for url, _ in ranked} == set(overview_sections.project_urls())
+    catalogues = [url for url, _, _, _ in overview_sections.CATALOGUE_SITES]
+    assert [url for url, _ in _cards(page)] == [*catalogues, *(url for url, _ in ranked)]
+    assert [url for url, _ in overview_sections.listed_projects(overview)] == [
+        url for url, _ in _cards(page)
+    ]
+    assert {*catalogues, *(url for url, _ in ranked)} == set(overview_sections.project_urls())
     keys = []
     for url, _ in ranked:
         own = _attributed(overview, url)
@@ -166,7 +185,7 @@ def test_the_page_lists_the_projects_in_the_functions_order(
         if counts == after and sum(counts):
             assert newest >= older
     empty = [
-        overview_sections.repository_name(url).lower()
+        overview_sections.project_headline(url).lower()
         for (url, _), (counts, _) in zip(ranked, keys, strict=True)
         if not sum(counts)
     ]
@@ -225,9 +244,8 @@ def test_a_tally_link_selects_exactly_its_projects_rows(
         assert re.fullmatch(r"[a-z0-9]+(?:-[a-z0-9]+)*", slug), slug
         rows = sorted(row for row, listed in facets.items() if slug in listed.split())
         assert rows == sorted(result.id.lower() for result in _attributed(overview, url)), url
-        assert (
-            f'<option value="{slug}">{overview_sections.project_name(url)}</option>' in results
-        )
+        name = html.escape(overview_sections.project_name(url))
+        assert f'<option value="{slug}">{name}</option>' in results
     assert overview_sections.FilterDefaults() == overview_sections.RESULTS_DEFAULTS
     assert not re.search(r"<tr id=\"t-\d+\"[^>]*\shidden", results)
     bar = results.split('<div class="site-table-tools site-result-filters">', 1)[1]

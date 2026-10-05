@@ -1,0 +1,34 @@
+# Temporary: prints the per-file cost reports of this PR's packing-validation run
+# 37292469840 into the job log, so the suite-file record can be rebuilt from a hosted
+# cohort by a session whose network cannot reach the artifact store. Removed in the
+# next commit (think-92ar).
+name: Temporary suite-cost export
+
+on:
+  push:
+    branches: [claude/nifty-newton-o6kr0b]
+    paths: [.github/workflows/tmp-suite-costs.yml]
+
+permissions:
+  actions: read
+  contents: read
+
+jobs:
+  export:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download the shard timing artifacts of run 37292469840
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
+        with:
+          run-id: 37292469840
+          github-token: ${{ github.token }}
+          pattern: validation-timings-suite-*
+          path: reports
+      - name: Print each report as gzip+base64 between markers
+        run: |
+          find reports -type f | sort
+          for f in $(find reports -type f -name '*.json' | sort); do
+            echo "=====BEGIN $f"
+            gzip -9c "$f" | base64 -w 120
+            echo "=====END $f"
+          done

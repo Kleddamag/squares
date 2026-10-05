@@ -14,7 +14,8 @@ pose rounded to rationals of 36 digits, dilated about the container's centre by 
 first of ``1, 1 + 10^-31, 1 + 10^-29, ...`` that makes every pair and wall pass
 ``sqpack.witness``'s exact separating-axis test, with the side the extent of the result
 and at most ``1e-9`` above the witness's. Each certificate is then decided again by
-`devtools.check_rational_witness_independent`, which shares no code with the promotion.
+`devtools.check_rational_witness_independent`, which shares no geometry or verification
+code with the promotion.
 
 The subcommands, run from ``packing/``:
 

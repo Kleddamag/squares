@@ -613,14 +613,16 @@ verifiers:
       was not run.
 
   - id: V-upper-bound-promotion
-    program: devtools.upper_bound_packets, the robust rational promotion and its exact separating-axis test
+    program: >-
+      devtools.upper_bound_packets, the robust rational promotion and its exact
+      separating-axis test, also driven by devtools.catalogue_upper_bounds
     author: Squares Project (Levy)
     provenance: first-party
     language: [Python]
     methods: [exact-algebraic]
     role: decides
     summary: Rounds a source's decimal pose to rationals and decides every pair and wall exactly.
-    source: [packing/devtools/upper_bound_packets.py]
+    source: [packing/devtools/upper_bound_packets.py, packing/devtools/catalogue_upper_bounds.py]
 
   - id: V-upper-bound-intervals
     program: devtools.upper_bound_intervals

@@ -11263,6 +11263,21 @@ evidence:
       evand/square-packing 7ff3b2113532889708a3baa4d56bc44294022e63, whose side is the
       polynomial's root to 30 digits. That witness's 1e-8 numerical receipt checks the
       parse only and is not recorded here as a replay. No optimality is claimed.
+    external_review:
+      state: informally-verified
+      date: '2026-10-05'
+      reviewed_by: >-
+        AI agent (claude-opus-5-5, tbd-strong tier, reasoning effort xhigh), the review
+        lane of the 2026-10-05 stage 4 for T-088 and T-089, separately prompted, sharing no
+        context with the lanes that registered the results and produced their certificates
+        (docs/project/reviews/review-2026-10-05-kingbird-intake-n69-n83-n87.md)
+      note: >-
+        Side, degree-38 polynomial and credit sentences read against the capture; the
+        polynomial is irreducible and its root 8.8271946557297389149... lies in the printed
+        decimal's last unit, so the printed side is a truncation. The witness equals Evan
+        Daniel's parse square for square. The exact certificate proves s(69) <=
+        8.82719465572975, 1.1e-14 above the root; the printed side and the root are not
+        certified. Unchecked: the SVG's own pose, rigidity, optimality.
     source_reviewed: '2026-10-05'
   - id: E-n083-chang-2026-09-report
     claim: upper-bound
@@ -11286,6 +11301,21 @@ evidence:
       7ff3b2113532889708a3baa4d56bc44294022e63, whose side the printed decimal truncates.
       That witness's 1e-8 numerical receipt checks the parse only and is not recorded here
       as a replay. No optimality is claimed.
+    external_review:
+      state: informally-verified
+      date: '2026-10-05'
+      reviewed_by: >-
+        AI agent (claude-opus-5-5, tbd-strong tier, reasoning effort xhigh), the review
+        lane of the 2026-10-05 stage 4 for T-088 and T-089, separately prompted, sharing no
+        context with the lanes that registered the results and produced their certificates
+        (docs/project/reviews/review-2026-10-05-kingbird-intake-n69-n83-n87.md)
+      note: >-
+        Side, degree lock and credit sentences read against the capture; the degree-672
+        polynomial is in the SVG only and was not checked. The witness equals Evan Daniel's
+        parse square for square, and the printed side truncates its side. The exact
+        certificate proves s(83) <= 9.63475764863195, 8.7e-13 above the parse's side; the
+        printed side is not certified. Unchecked: the polynomial, the SVG's own pose,
+        rigidity, optimality.
     source_reviewed: '2026-10-05'
   - id: E-n087-chang-2026-09-report
     claim: upper-bound
@@ -11308,6 +11338,137 @@ evidence:
       7ff3b2113532889708a3baa4d56bc44294022e63, whose side is the polynomial's root to 30
       digits. That witness's 1e-8 numerical receipt checks the parse only and is not
       recorded here as a replay. No optimality is claimed.
+    external_review:
+      state: informally-verified
+      date: '2026-10-05'
+      reviewed_by: >-
+        AI agent (claude-opus-5-5, tbd-strong tier, reasoning effort xhigh), the review
+        lane of the 2026-10-05 stage 4 for T-088 and T-089, separately prompted, sharing no
+        context with the lanes that registered the results and produced their certificates
+        (docs/project/reviews/review-2026-10-05-kingbird-intake-n69-n83-n87.md)
+      note: >-
+        Side, degree-41 polynomial and credit sentences read against the capture; the
+        polynomial is irreducible and its root 9.8388152699482622602... lies in the printed
+        decimal's last unit. The witness equals Evan Daniel's parse square for square. The
+        exact certificate proves s(87) <= 9.83881526994915, 8.9e-13 above the root; the
+        printed side and the root are not certified. Unchecked: the SVG's own pose,
+        rigidity, optimality.
+    source_reviewed: '2026-10-05'
+  - id: E-n069-ellsworth-2026-09-exact-replay
+    claim: upper-bound
+    scope: {n_values: [69]}
+    assurance: verified
+    method: exact-algebraic
+    performed_by: repository
+    relationship_to_generator: independent-implementation
+    origin: replayed-here
+    novelty: previously-published
+    source_key: '[Ellsworth n69 2026-09-24]'
+    certificate: witnesses/kingbird-2026/n-069-rational.yaml
+    replay: >-
+      uv run --frozen --all-extras --group dev python -m devtools.catalogue_upper_bounds
+      check --replay --n 69, which regenerates the certificate from the retained witness
+      witnesses/known-best/n-069.yaml by robust rational promotion (36 rational digits,
+      side increase at most 1e-9), requires its text to equal the committed one, and
+      decides the committed one again with devtools.check_rational_witness_independent and
+      with sqpack.witness.exact_verify; it must report VERIFIED.
+    replay_status: passed
+    verifiers: [V-upper-bound-promotion, V-check-rational-witness-independent]
+    limitations: >-
+      Proves s(69) <= 8.82719465572975, from an exact rational packing of David Ellsworth's
+      packing, of side 8.827194655729747827194655729740..., decided pair by pair (2346
+      pairs) and wall by wall over Q by the promotion's exact separating-axis test and by an
+      independent Fraction checker that shares no geometry or verification code with it. The
+      certificate is the retained witness, Evan Daniel's binary64 parse of the catalogue's
+      picture, rounded to rationals of 36 digits and dilated about the centre by 1 + 1e-15,
+      the smallest of the promotion's dilations that separates every pair (the undilated
+      rounding leaves 29 pairs overlapping). Its side is 1.78e-14 above the printed
+      8.82719465572973, which cuts short the side the picture gives, 8.9e-15 above it as the
+      parse reads it; the verified value is the certified side rounded up at the printed
+      precision, so neither the printed side nor the picture's side is certified here. The
+      pose is a third party's reading of the picture, not the SVG's own coordinates; were it
+      a misreading, the certificate would still prove the bound for the pose it holds. Two
+      mutations of the n = 69 certificate, its side cut by 1e-15 and square 1 moved by 1e-6,
+      are refused by both checkers
+      (resources/web/known-best-packings/receipts/kingbird-2026-09-negative-controls.json).
+      No optimality, and no interval route on the printed pose: the SVG is not retained.
+    source_reviewed: '2026-10-05'
+  - id: E-n083-chang-2026-09-exact-replay
+    claim: upper-bound
+    scope: {n_values: [83]}
+    assurance: verified
+    method: exact-algebraic
+    performed_by: repository
+    relationship_to_generator: independent-implementation
+    origin: replayed-here
+    novelty: previously-published
+    source_key: '[Chang n83 2026-09-24]'
+    certificate: witnesses/kingbird-2026/n-083-rational.yaml
+    replay: >-
+      uv run --frozen --all-extras --group dev python -m devtools.catalogue_upper_bounds
+      check --replay --n 83, which regenerates the certificate from the retained witness
+      witnesses/known-best/n-083.yaml by robust rational promotion (36 rational digits,
+      side increase at most 1e-9), requires its text to equal the committed one, and
+      decides the committed one again with devtools.check_rational_witness_independent and
+      with sqpack.witness.exact_verify; it must report VERIFIED.
+    replay_status: passed
+    verifiers: [V-upper-bound-promotion, V-check-rational-witness-independent]
+    limitations: >-
+      Proves s(83) <= 9.63475764863195, from an exact rational packing of Allen Chang's
+      packing, optimized by David Ellsworth, of side 9.634757648631945475764863..., decided
+      pair by pair (3403 pairs) and wall by wall over Q by the promotion's exact
+      separating-axis test and by an independent Fraction checker that shares no geometry or
+      verification code with it. The certificate is the retained witness, Evan Daniel's
+      binary64 parse of the catalogue's picture, rounded to rationals of 36 digits and
+      dilated about the centre by 1 + 1e-13, its next step after 1 + 1e-15, which left one
+      pair overlapping. Its side is 8.65e-13 above the printed 9.63475764863108, which cuts
+      short the side the picture gives, 2.0e-15 above it as the parse reads it; the verified
+      value is the certified side rounded up at the printed precision, so neither the
+      printed side nor the picture's side is certified here. The pose is a third party's
+      reading of the picture, not the SVG's own coordinates; were it a misreading, the
+      certificate would still prove the bound for the pose it holds. Two mutations of the n
+      = 69 certificate, its side cut by 1e-15 and square 1 moved by 1e-6, are refused by
+      both checkers
+      (resources/web/known-best-packings/receipts/kingbird-2026-09-negative-controls.json).
+      No optimality, and no interval route on the printed pose: the SVG is not retained.
+    source_reviewed: '2026-10-05'
+  - id: E-n087-chang-2026-09-exact-replay
+    claim: upper-bound
+    scope: {n_values: [87]}
+    assurance: verified
+    method: exact-algebraic
+    performed_by: repository
+    relationship_to_generator: independent-implementation
+    origin: replayed-here
+    novelty: previously-published
+    source_key: '[Chang n87 2026-09-24]'
+    certificate: witnesses/kingbird-2026/n-087-rational.yaml
+    replay: >-
+      uv run --frozen --all-extras --group dev python -m devtools.catalogue_upper_bounds
+      check --replay --n 87, which regenerates the certificate from the retained witness
+      witnesses/known-best/n-087.yaml by robust rational promotion (36 rational digits,
+      side increase at most 1e-9), requires its text to equal the committed one, and
+      decides the committed one again with devtools.check_rational_witness_independent and
+      with sqpack.witness.exact_verify; it must report VERIFIED.
+    replay_status: passed
+    verifiers: [V-upper-bound-promotion, V-check-rational-witness-independent]
+    limitations: >-
+      Proves s(87) <= 9.83881526994915, from an exact rational packing of Allen Chang's
+      packing, of side 9.838815269949144881526994..., decided pair by pair (3741 pairs) and
+      wall by wall over Q by the promotion's exact separating-axis test and by an
+      independent Fraction checker that shares no geometry or verification code with it. The
+      certificate is the retained witness, Evan Daniel's binary64 parse of the catalogue's
+      picture, rounded to rationals of 36 digits and dilated about the centre by 1 + 1e-13,
+      its next step after 1 + 1e-15, which left thirteen pairs overlapping. Its side is
+      8.85e-13 above the printed 9.83881526994826, which cuts short the side the picture
+      gives, 2.3e-15 above it as the parse reads it; the verified value is the certified
+      side rounded up at the printed precision, so neither the printed side nor the
+      picture's side is certified here. The pose is a third party's reading of the picture,
+      not the SVG's own coordinates; were it a misreading, the certificate would still prove
+      the bound for the pose it holds. Two mutations of the n = 69 certificate, its side cut
+      by 1e-15 and square 1 moved by 1e-6, are refused by both checkers
+      (resources/web/known-best-packings/receipts/kingbird-2026-09-negative-controls.json).
+      No optimality, and no interval route on the printed pose: the SVG is not retained.
     source_reviewed: '2026-10-05'
   - id: E-k2m4-evand-family-report
     claim: lower-bound

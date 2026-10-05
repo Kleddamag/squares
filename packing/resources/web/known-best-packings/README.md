@@ -85,7 +85,8 @@ Each pose is rounded to rationals of 36 digits and dilated about the centre by
 the first factor that makes every pair and wall pass the promotion’s exact
 separating-axis test.
 Each certificate is then decided again by `devtools.check_rational_witness_independent`,
-which shares no code with the promotion.
+which shares no geometry or verification code with the promotion, only Python’s
+integers and `Fraction` and the YAML layer.
 The certificates are in [`witnesses/kingbird-2026/`](../../../witnesses/kingbird-2026/)
 and the receipts in [`receipts/`](receipts/):
 [`kingbird-2026-09-certification.json`](receipts/kingbird-2026-09-certification.json),
@@ -101,16 +102,22 @@ moved by $10^{-6}$, which both checkers refuse
 
 Each certificate proves $s(n)$ at most its own side, which lies above the printed side
 at all three counts, for two reasons.
-The catalogue prints each side cut short, so the root it truncates is already above it,
-by $8.9 \times 10^{-15}$, $2.0 \times 10^{-15}$ and $2.3 \times 10^{-15}$. And a
-binary64 pose of a packing whose squares touch overlaps by rounding, so the promotion
+The catalogue prints each side cut short, so the side the picture gives is already above
+it, by $8.9 \times 10^{-15}$, about $2.0 \times 10^{-15}$ and $2.3 \times 10^{-15}$:
+at $n = 69$ and $87$ the root of the printed polynomial, and at $n = 83$ the parse’s
+side, since the degree-672 polynomial is not retained.
+And a binary64 pose of a packing whose squares touch overlaps by rounding, so the promotion
 has to dilate it: at $n = 69$ by $1 + 10^{-15}$, which adds $8.9 \times 10^{-15}$ to the
 side, and at $n = 83$ and $87$, where $1 + 10^{-15}$ left one and thirteen pairs
 overlapping, by $1 + 10^{-13}$, which adds about $8.7 \times 10^{-13}$. The verified
 value is the certified side rounded up at the printed precision, the rule T-056 uses,
 and at none of the three counts is it the printed side.
 The SVG’s own 30-digit pose, or a pose refined on its active contacts, would close most
-of the gap.
+of the gap. So would a finer dilation ladder at $n = 83$ and $87$: the promotion’s steps
+are a factor of 100 apart, and at $1 + 2 \times 10^{-15}$ both pass, 2 units above the
+printed sides
+([review of 2026-10-05](../../../../docs/project/reviews/review-2026-10-05-kingbird-intake-n69-n83-n87.md),
+KB-3).
 
 ## Retained UnitSquare Renderings
 

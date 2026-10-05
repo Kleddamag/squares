@@ -7,7 +7,9 @@ from fractions import Fraction
 
 from devtools import catalogue_upper_bounds as catalogue
 from devtools import upper_bound_packets as packets
+from sqpack.assurance import bounds_agree_at_declared_precision
 from sqpack.witness import load_witness
+from sqpack.yamlio import safe_load
 
 
 def test_the_certificates_and_receipts_agree() -> None:
@@ -46,3 +48,20 @@ def test_both_negative_controls_are_refused_by_both_checkers() -> None:
         "side-shrunk-1e-15",
         f"square-{catalogue.CONTROL_SHIFT_SQUARE}-shifted-1e-6",
     ]
+
+
+def test_each_case_record_carries_its_receipts_verified_value_and_says_it_trails() -> None:
+    """The verified lane is the certificate's, and it trails the printed side at all three."""
+    for n, row in catalogue.certification().items():
+        text = (catalogue.ROOT / "frontier" / f"n-{n:03d}.md").read_text(encoding="utf-8")
+        case = safe_load(text.split("---\n")[1])["packing"]
+        assert case["reported_upper_bound"]["value"] == row["printed_side"], n
+        assert case["verified_upper_bound"]["value"] == row["verified_value"], n
+        assert case["verified_upper_bound"]["exact_form"] == row["exact_form"], n
+        assert case["verified_upper_bound"]["evidence"] == [
+            f"E-n{n:03d}-{'ellsworth' if n == 69 else 'chang'}-2026-09-exact-replay"
+        ], n
+        assert not bounds_agree_at_declared_precision(
+            case["reported_upper_bound"], case["verified_upper_bound"]
+        ), n
+        assert any(blocker["kind"] == "mathematics" for blocker in case["blockers"]), n

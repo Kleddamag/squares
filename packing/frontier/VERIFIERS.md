@@ -26,7 +26,7 @@ second implementation agrees.
 ## The Short Version
 
 - **79** programs: **31** external and **48** first-party; **64** decide claims and **15** check premises.
-- **257** of **283** evidence entries name the programs that verified them: 195 reproduced with the producer’s code, 46 independently re-implemented, 9 no relation: a proof, a derivation or a report, 7 re-implemented, sharing the producer’s components.
+- **260** of **286** evidence entries name the programs that verified them: 195 reproduced with the producer’s code, 49 independently re-implemented, 9 no relation: a proof, a derivation or a report, 7 re-implemented, sharing the producer’s components.
 
 ## Programs
 
@@ -66,9 +66,9 @@ second implementation agrees.
 | [`V-check-basic-bounds`](#v-check-basic-bounds) | devtools.check_basic_bounds | Squares Project (Levy) | first-party | decides | 3 | 14 |
 | [`V-optimal-moduli`](#v-optimal-moduli) | cases.small_n.optimal_moduli | Squares Project (Levy) | first-party | decides | 1 | 0 |
 | [`V-sqpack-verify`](#v-sqpack-verify) | sqpack.verify | Squares Project (Levy) | first-party | decides | 12 | 2 |
-| [`V-check-rational-witness-independent`](#v-check-rational-witness-independent) | devtools.check_rational_witness_independent | Squares Project (Levy) | first-party | decides | 4 | 3 |
+| [`V-check-rational-witness-independent`](#v-check-rational-witness-independent) | devtools.check_rational_witness_independent | Squares Project (Levy) | first-party | decides | 7 | 5 |
 | [`V-check-nagamochi-lemma1-counterexample`](#v-check-nagamochi-lemma1-counterexample) | devtools.check_nagamochi_lemma1_counterexample | Squares Project (Levy) | first-party | decides | 1 | 1 |
-| [`V-upper-bound-promotion`](#v-upper-bound-promotion) | devtools.upper_bound_packets | Squares Project (Levy) | first-party | decides | 2 | 2 |
+| [`V-upper-bound-promotion`](#v-upper-bound-promotion) | devtools.upper_bound_packets | Squares Project (Levy) | first-party | decides | 5 | 4 |
 | [`V-upper-bound-intervals`](#v-upper-bound-intervals) | devtools.upper_bound_intervals | Squares Project (Levy) | first-party | decides | 2 | 2 |
 | [`V-sqpack-cover`](#v-sqpack-cover) | sqpack.cover | Squares Project (Levy) | first-party | decides | 4 | 8 |
 | [`V-green17-interval-audit`](#v-green17-interval-audit) | cases.green17.interval_audit | Squares Project (Levy) | first-party | decides | 1 | 3 |
@@ -819,6 +819,9 @@ Decides a rational-corner witness pair by pair and wall by wall in Fraction arit
 | `E-n029-schadt-rational-upper` | replayed here | independent | - |
 | `E-franciscouzo-2026-09-27-exact-replay` | replayed here | independent | T-056 |
 | `E-n211-de-winter-exact-replay` | replayed here | independent | T-057 |
+| `E-n069-ellsworth-2026-09-exact-replay` | replayed here | independent | T-088 |
+| `E-n083-chang-2026-09-exact-replay` | replayed here | independent | T-089 |
+| `E-n087-chang-2026-09-exact-replay` | replayed here | independent | T-089 |
 
 ### `V-check-nagamochi-lemma1-counterexample`
 
@@ -837,17 +840,20 @@ Scores Karakuş's squares K_t and chelokot's square against Nagamochi 2005's mea
 
 ### `V-upper-bound-promotion`
 
-**devtools.upper_bound_packets, the robust rational promotion and its exact separating-axis test** · Squares Project (Levy) · first-party · decides · Python · exact-algebraic
+**devtools.upper_bound_packets, the robust rational promotion and its exact separating-axis test, also driven by devtools.catalogue_upper_bounds** · Squares Project (Levy) · first-party · decides · Python · exact-algebraic
 
 Rounds a source's decimal pose to rationals and decides every pair and wall exactly.
 
-- Source: [`packing/devtools/upper_bound_packets.py`](../../packing/devtools/upper_bound_packets.py)
+- Source: [`packing/devtools/upper_bound_packets.py`](../../packing/devtools/upper_bound_packets.py), [`packing/devtools/catalogue_upper_bounds.py`](../../packing/devtools/catalogue_upper_bounds.py)
 - Versions run: this repository's commits, which Git holds
 
 | evidence | run | code | results |
 | --- | --- | --- | --- |
 | `E-franciscouzo-2026-09-27-exact-replay` | replayed here | independent | T-056 |
 | `E-n211-de-winter-exact-replay` | replayed here | independent | T-057 |
+| `E-n069-ellsworth-2026-09-exact-replay` | replayed here | independent | T-088 |
+| `E-n083-chang-2026-09-exact-replay` | replayed here | independent | T-089 |
+| `E-n087-chang-2026-09-exact-replay` | replayed here | independent | T-089 |
 
 ### `V-upper-bound-intervals`
 

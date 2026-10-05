@@ -930,28 +930,30 @@ sources:
   - key: '[Ellsworth n69 2026-09-24]'
     authors: [Ellsworth]
     year: 2026
-    venue: Kingbird
+    venue: Squares in Squares
     dated: '2026-09-24'
-    credit: Ellsworth after hmbelvedere, Schadt, Morandi
+    credit: Ellsworth after hmbelvedere, Cantrell, Schadt, Morandi
     short_credit: Ellsworth after hmbelvedere et al.
     lineage: independent
     note: >-
       David Ellsworth's s(69) <= 8.82719465572973, a root of a degree-38 polynomial, as the
       Kingbird catalogue prints it in the capture of 2026-09-30, whose page the server
       dates 2026-09-24, the date given here; the entry itself says only "September 2026".
-      Its credit line (web/kingbird-squares-in-squares.md): "Improved by hmbelvedere in
+      Its credit line (web/kingbird-squares-in-squares.md): "Found by Maurizio Morandi in
+      June 2010. Improved by David W. Cantrell in August 2023. Improved by hmbelvedere in
       July 2026, using an undisclosed iterative method (probably with AI). Refound by
       David Ellsworth in September 2026, using his modified version of Thomas Schadt's
       simulated annealing program, starting from s(69) found by Maurizio Morandi in June
       2010. Optimized by David Ellsworth in September 2026." So the packing is the one
-      hmbelvedere's UnitSquare release reported at 8.8272055078..., found again with
-      Schadt's program from Morandi's and optimized; it says nothing of AI in Ellsworth's
+      hmbelvedere's UnitSquare release reported at 8.8272055078..., improving Cantrell's
+      improvement of Morandi's packing, found again with Schadt's program from Morandi's
+      and optimized; it says nothing of AI in Ellsworth's
       steps and nothing of this project. The capture of 2026-08-22 printed Morandi's and
       Cantrell's side instead.
   - key: '[Chang n83 2026-09-24]'
     authors: [Chang, Ellsworth]
     year: 2026
-    venue: Kingbird
+    venue: Squares in Squares
     dated: '2026-09-24'
     credit: Chang, Ellsworth after Cantrell, Hajba, Stenlund, Bidwell
     short_credit: Chang, Ellsworth after Cantrell et al.
@@ -969,12 +971,12 @@ sources:
       is printed only in the SVG, which this session could not fetch. Nothing in it
       concerns this project.
   - key: '[Chang n87 2026-09-24]'
-    authors: [Chang, TheMagicAnimals]
+    authors: [Chang]
     year: 2026
-    venue: Kingbird
+    venue: Squares in Squares
     dated: '2026-09-24'
-    credit: Chang, TheMagicAnimals after Ellsworth, Cantrell, Schadt, Hajba, DeVincentis
-    short_credit: Chang, TheMagicAnimals after Ellsworth et al.
+    credit: Chang after Ellsworth, Cantrell, Schadt, Hajba, DeVincentis
+    short_credit: Chang after Ellsworth et al.
     lineage: independent
     note: >-
       Allen Chang's s(87) <= 9.83881526994826, a root of a degree-41 polynomial, as the
@@ -987,8 +989,10 @@ sources:
       Schadt's simulated annealing program, starting from the s(87) found by David
       Ellsworth in December 2024. Optimized by David Ellsworth in February 2026. Improved
       and optimized by Allen Chang in September 2026, working with GPT-6 Astra, with help
-      from "TheMagicAnimals"." TheMagicAnimals is credited by the handle the catalogue
-      quotes. Nothing in it concerns this project.
+      from "TheMagicAnimals"." The help is kept in the catalogue's words and not made
+      authorship, since the catalogue names joint finders as authors ("Found by David
+      Ellsworth and David W. Cantrell") and help otherwise; the case record's
+      improved_by agrees. Nothing in it concerns this project.
   - key: '[chelokot Nagamochi counterexample 2026]'
     authors: [chelokot]
     year: 2026

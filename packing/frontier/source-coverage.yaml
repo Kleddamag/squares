@@ -1186,6 +1186,9 @@ sources:
       - E-n069-ellsworth-2026-09-report
       - E-n083-chang-2026-09-report
       - E-n087-chang-2026-09-report
+      - E-n069-ellsworth-2026-09-exact-replay
+      - E-n083-chang-2026-09-exact-replay
+      - E-n087-chang-2026-09-exact-replay
     notes: >
       Captured again on 2026-09-30; the server dates the page 2026-09-24. The capture of
       2026-08-22, which the 2026-08-25 review found byte-identical to a fresh retrieval, is

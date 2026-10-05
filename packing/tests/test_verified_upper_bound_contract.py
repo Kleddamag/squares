@@ -40,7 +40,9 @@ from sqpack.known_best import KNOWN_BEST_CORPUS
 #: Lowered on 2026-09-29 by 46: Francisco Couzo's 49 packings (T-056) replaced 49 trailing
 #: reports with certified ones, three of which, n = 206, 259 and 305, still trail by 2 or
 #: 3 units of the printed fifteenth decimal; de Winter's n = 211 (T-057) moved a report
-#: and its ceiling together off the grid.
+#: and its ceiling together off the grid. Unchanged on 2026-10-05: n = 69, 83 and 87 left
+#: the grid for exact certificates of the catalogue's packings (T-088, T-089), which still
+#: trail their printed sides by 2 to 89 units of the fourteenth decimal.
 TRAILING_BY_CORPUS: dict[str, int] = {"n=1..100": 16, "n=1..200": 47, "n=1..324": 82}
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
@@ -104,6 +106,10 @@ DECLARED_CONSUMERS = {
         "builds two case records whose ceiling is the same and checks the rendered count of "
         "changed ceilings is zero; it asserts nothing about s(n)"
     ),
+    "packing/tests/test_catalogue_upper_bounds.py": (
+        "checks that n = 69, 83 and 87 carry the ceiling their exact certificates' receipts "
+        "derive and that it still trails the printed side; it asserts nothing about s(n)"
+    ),
     "packing/tests/test_upper_bound_packets.py": (
         "checks that each certified case's ceiling cites its replay and agrees with the "
         "report exactly where the receipt says it does; it asserts nothing about s(n)"
@@ -138,6 +144,11 @@ DECLARED_CONSUMERS = {
         "a dated review explaining why n = 206, 259 and 305 carry a verified ceiling above "
         "the printed side; it reads the field as the certified ceiling and says it is "
         "neither s(n) nor a different packing"
+    ),
+    "docs/project/reviews/review-2026-10-05-kingbird-intake-n69-n83-n87.md": (
+        "a dated review saying what n = 69, 83 and 87's verified upper lanes may state: the "
+        "exact certificates' sides rounded up, above the printed sides, and never s(n) or "
+        "the catalogue's roots"
     ),
     "packing/tests/test_evand_square_packing.py": (
         "pins n = 32's ceiling to the trivial grid's 6, which with the verified lower bound "
@@ -407,15 +418,17 @@ def test_a_third_of_the_corpus_certifies_a_weaker_bound_than_it_reports() -> Non
     assert worst > Decimal("0.42")
 
     # And in those cases `exact_form` is exact about the ceiling and says nothing about
-    # s(n): for all but four it is literally the integer grid bound. n = 29 carries an
-    # interval certificate's endpoint, and n = 206, 259 and 305 the rounded-up side of an
-    # exact rational certificate of Couzo's packing (T-056).
+    # s(n): for all but seven it is literally the integer grid bound. n = 29 carries an
+    # interval certificate's endpoint, n = 206, 259 and 305 the rounded-up side of an
+    # exact rational certificate of Couzo's packing (T-056), and n = 69, 83 and 87 that of
+    # the catalogue's September 2026 packings, certified from a binary64 parse of their
+    # pictures (T-088, T-089).
     grids = {
         n
         for n in trailing
         if loaded_cases[n]["verified_upper_bound"]["exact_form"] == str(math.isqrt(n - 1) + 1)
     }
-    assert sorted(set(trailing) - grids) == [29, 206, 259, 305]
+    assert sorted(set(trailing) - grids) == [29, 69, 83, 87, 206, 259, 305]
 
     # Every case carrying an exact_form on the ceiling, split by whether s(n) is known.
     exact_forms = sum(

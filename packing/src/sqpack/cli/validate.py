@@ -2456,8 +2456,30 @@ def _independent_lp(context: Context) -> str:
     return output
 
 
+#: The records whose deferrals each name the bead that owns them (`check_bead_tree`).
+DEFERRAL_RECORDS = (
+    "packing/frontier/source-coverage.yaml",
+    "packing/campaign/result-requests.yaml",
+    "packing/campaign/intake-watch.yaml",
+)
+
+
 def _bead_tree(context: Context) -> str:
-    output = _module(context, "devtools.check_bead_tree")
+    """The bead tree's invariants, and a dead deferral only where the change made one.
+
+    Whether a deferral's bead is open is read from the bead store, which a full-history
+    checkout fetches as `origin/tbd-sync` and which changes with no tracked change. So a
+    dead deferral fails only a change that touches a record declaring deferrals, the
+    change against `origin/main` as `changed_paths` reads it, and is a warning anywhere
+    else: closing a bead a record names must not turn every pull request and `main` red.
+    A checkout where `origin/main` does not resolve cannot say what changed, and fails it.
+    """
+    try:
+        touched = set(changed_paths("origin/main")).intersection(DEFERRAL_RECORDS)
+    except UsageError:
+        touched = set(DEFERRAL_RECORDS)
+    arguments = () if touched else ("--warn-dead-deferrals",)
+    output = _module(context, "devtools.check_bead_tree", *arguments)
     if output.startswith("SKIP"):
         raise StepSkippedError("no bead store is reachable", output=output)
     return output
@@ -4336,9 +4358,8 @@ STEPS: tuple[Step, ...] = (
             *_CORE,
             ".tbd/*",
             "packing/devtools/check_bead_tree.py",
-            "packing/frontier/source-coverage.yaml",
-            "packing/campaign/result-requests.yaml",
-            "packing/campaign/intake-watch.yaml",
+            "packing/devtools/bead_state.py",
+            *DEFERRAL_RECORDS,
         ),
     ),
     # 0.51s on the fast path, which is what runs without `--deep`.

@@ -959,15 +959,16 @@ def _retained_retrieval(retained: Mapping[str, Any]) -> str:
     return str(recorded) if recorded else RETRIEVED_DATE
 
 
-def _retained_revision(retained: Mapping[str, Any]) -> str | None:
+def _retained_revision(retained: Mapping[str, Any], field: str = "revision") -> str | None:
     """The third party's pinned parse the retained facts were read from, if any.
 
     `devtools.derive_kingbird_facts --from-parse` records it for a count whose SVG this
-    repository could not fetch; a witness read from the SVG itself records none, and a
-    rebuild keeps whichever the retained witness says.
+    repository could not fetch, with the parse file's digest as `revision_sha256`; a
+    witness read from the SVG itself records neither, and a rebuild keeps whatever the
+    retained witness says.
     """
     source = retained.get("source")
-    recorded = source.get("revision") if isinstance(source, Mapping) else None
+    recorded = source.get(field) if isinstance(source, Mapping) else None
     return str(recorded) if recorded else None
 
 
@@ -990,6 +991,7 @@ def _build_witness(case: FrontierCase, plan: SourcePlan) -> dict:
                 source_url=plan.url,
                 retrieved=_retained_retrieval(retained),
                 revision=_retained_revision(retained),
+                revision_sha256=_retained_revision(retained, "revision_sha256"),
             )
         if plan.kind == PACKET_KIND:
             retained = load_witness(plan.path, fallback_schema=WITNESS_SCHEMA)

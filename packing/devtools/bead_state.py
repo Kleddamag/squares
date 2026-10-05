@@ -19,12 +19,19 @@ import subprocess
 from collections.abc import Callable, Iterable, Mapping
 from pathlib import Path
 
-from devtools.check_bead_tree import ISSUES, MAPPINGS, REFS, parse_aliases
 from sqpack.yamlio import safe_load
 
 REPO = Path(__file__).resolve().parent.parent.parent
+#: Where `tbd` keeps the bead files, on the sync branch and in its worktree.
+ISSUES = ".tbd/data-sync/issues"
+#: The store's alias table: short code -> the ULID tail of the bead's id. An agenda's
+#: `bead: think-rh18` names the bead whose id ends in the table's entry for `rh18`.
+MAPPINGS = ".tbd/data-sync/mappings/ids.yml"
+#: The sync branch, local first, then as CI's full-history checkout fetches it.
+REFS = ("tbd-sync", "origin/tbd-sync")
 
-#: The bead states that still track work.
+#: The bead states that still track work. `tbd`'s `deferred` and `closed` are not among
+#: them: a deferred bead has been set aside, and nothing it names is being done.
 LIVE = frozenset({"open", "in_progress", "blocked"})
 
 #: Reads one repository-relative path from the bead store, or None when it is absent.
@@ -33,6 +40,22 @@ Reader = Callable[[str], str | None]
 
 class UnavailableError(RuntimeError):
     """No bead store is reachable, so no tracker can be resolved either way."""
+
+
+def parse_aliases(text: str) -> dict[str, str]:
+    """The alias table, short code -> ULID tail.
+
+    Read line by line rather than as YAML: a four-character code such as `1e10`, `null`
+    or `true` is a float, None or bool to a YAML loader and a key to `tbd`. `tbd` itself
+    writes such a code quoted, `"48e1": ...`, and the quotes are not part of it.
+    """
+    aliases: dict[str, str] = {}
+    for line in text.splitlines():
+        short, sep, tail = line.partition(":")
+        short = short.strip().strip("\"'")
+        if sep and not line.lstrip().startswith("#") and short and tail.strip():
+            aliases[short] = tail.strip()
+    return aliases
 
 
 def _git(*arguments: str) -> subprocess.CompletedProcess[str]:

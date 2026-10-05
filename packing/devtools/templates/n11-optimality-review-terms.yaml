@@ -1,0 +1,381 @@
+# Part III's terms, each defined before it is used, in reading order.
+#
+# Read by `devtools.paper_terms` against the rendered page, and held to it by
+# `tests/test_paper_terms.py`; the module's docstring states the six rules. Seeded from
+# the define-before-use audit of the series plan
+# (docs/project/specs/active/plan-2026-10-05-n11-explainer-series.md, §7.2) and from
+# every bold definition in the article.
+#
+# Fields: `term`; `uses`, a regular expression over prose, or over a formula's TeX when
+# `symbol` is true; `defined_by`, an exact substring of the defining sentence as the page
+# reads, with each formula written $TeX$; `anchor`, the heading id of the section that
+# sentence stands in; `requires`, terms defined first; `forward`, earlier uses allowed,
+# each an exact substring with its reason (roadmap, heading, link-to-definition);
+# `series`, the shared concept the term recaps (templates/n11-series-terms.yaml).
+
+paper: n11-optimality-review
+
+banned:
+  - pattern: '(?<!number )(?<!charge )\bfield\b(?! certificates?\b)'
+    reason: >-
+      "field" has three senses here; write number field, field certificate or charge
+      field, and file coordinates for the certificate files' frame (§3, §7.2)
+  - pattern: '(?<![Bb]ound )\bgap between\b'
+    reason: the distance between two bounds is the bound gap (conventions.md §5)
+  - pattern: '\bthreshold one\b'
+    reason: a cell's floor is a required charge, not a threshold (§3)
+  - pattern: '(?<![A-Za-z\\])q_i\b'
+    symbol: true
+    reason: the per-cell charge floor is Γ_i, mirroring Part II's Γ (§3)
+  - pattern: '(?<![A-Za-z\\{])B(?![A-Za-z])'
+    symbol: true
+    reason: the file scale is written (191/50)/U; B is Part I's and Part II's core side (§3)
+  - pattern: '(?<![A-Za-z\\{])S(?![A-Za-z])'
+    symbol: true
+    reason: the side under test is L₀, as in Part I (§3)
+  - pattern: '\bD_4\b'
+    symbol: true
+    reason: the symmetry group is bold, \mathbf{D}_4, as in Part I (§3)
+  - pattern: '\bQ(?:\^\{-1\}|\(x,y\))'
+    symbol: true
+    reason: the quarter-turn is rot; Q is a convex core (§3)
+
+terms:
+  # The Result
+  - term: s(11)
+    symbol: true
+    uses: 's\(11\)'
+    defined_by: Write $s(11)$ for the smallest such side
+    anchor: the-result
+    series: s-n
+  - term: L_0
+    symbol: true
+    uses: 'L_0|L_\{0\}'
+    defined_by: and $L_0$ for the side of a container under test
+    anchor: the-result
+    series: container-side
+  - term: receipt
+    uses: '\breceipts?\b'
+    defined_by: 'Each accepted execution is retained as a receipt:'
+    anchor: the-result
+    series: receipt
+  - term: composer
+    uses: '\bcomposer\b'
+    defined_by: A program called the composer reads a fixed set of receipts by hash
+    anchor: the-result
+    requires: [receipt]
+
+  # From Weighted Points to a Global Proof
+  - term: core
+    uses: '\bcores?\b'
+    defined_by: Select a small core strictly inside each packed square.
+    anchor: from-weighted-points-to-a-global-proof
+    series: core
+  - term: charge
+    uses: '\bcharges?\b'
+    defined_by: the charge a core receives is the weight it collects
+    anchor: from-weighted-points-to-a-global-proof
+    requires: [core]
+    series: charge
+  - term: threshold certificate
+    uses: '\b[Tt]hreshold\b'
+    defined_by: >-
+      A threshold certificate adds weight that charges a core for holding at least $k$ of
+      $m$ charge sites
+    anchor: from-weighted-points-to-a-global-proof
+    requires: [charge]
+    series: threshold-atom
+    forward:
+      - text: threshold-certificate method
+        reason: roadmap
+
+  # The Construction Gives One Half of the Answer
+  - term: gap
+    uses: '(?<!bound )\bgaps?\b'
+    defined_by: call the distance between the two projection intervals the gap in that direction
+    anchor: the-construction-gives-one-half-of-the-answer
+  - term: weak separating axis
+    uses: '\bweak separating ax[ie]s\b'
+    defined_by: nonnegative gap, a weak separating axis;
+    anchor: the-construction-gives-one-half-of-the-answer
+    requires: [gap]
+  - term: number field
+    uses: '\bnumber fields?\b'
+    defined_by: The calculations take place in the number field $\mathbb Q(u)$
+    anchor: the-construction-gives-one-half-of-the-answer
+  - term: wall contact
+    uses: '\bwall contacts?\b'
+    defined_by: every wall contact, a square touching a side of the container,
+    anchor: the-construction-gives-one-half-of-the-answer
+
+  # Sixteen Regions Cover All Possible Centers
+  - term: cap
+    uses: '\bcap\b'
+    defined_by: This cap is slightly larger than the proposed optimum.
+    anchor: sixteen-regions-cover-all-possible-centers
+  - term: file coordinates
+    uses: '\bfile coordinates?\b'
+    defined_by: The certificate files record a center $p$ as the scaled file coordinates
+    anchor: sixteen-regions-cover-all-possible-centers
+    requires: [cap]
+  - term: cell
+    uses: '\bcells?\b'
+    defined_by: The resulting closed Voronoi cells cover the whole square.
+    anchor: sixteen-regions-cover-all-possible-centers
+  - term: Center-cover lemma
+    uses: '\b[Cc]enter-cover\b'
+    defined_by: >-
+      Center-cover lemma. A physical cell contains at most one packed-square center.
+    anchor: sixteen-regions-cover-all-possible-centers
+    requires: [cell]
+  - term: label
+    uses: '\blabel(?:s|ed|ing|ings)?\b'
+    defined_by: A center’s label is the index of a cell containing it
+    anchor: sixteen-regions-cover-all-possible-centers
+    requires: [cell]
+  - term: mask
+    uses: '\bmasks?\b'
+    defined_by: possible subsets, called masks.
+    anchor: sixteen-regions-cover-all-possible-centers
+    requires: [label]
+  - term: case
+    uses: '\b[Cc]ases?\b'
+    defined_by: >-
+      Choosing one representative from each half-turn pair leaves 2,184 cases, each a
+      representative mask together with everything the proof derives for it.
+    anchor: sixteen-regions-cover-all-possible-centers
+    requires: [mask]
+  - term: row
+    uses: '\brows?\b'
+    defined_by: >-
+      it works in rows, each a closed interval of $t$ for one square together with the
+      centers allowed over that interval
+    anchor: sixteen-regions-cover-all-possible-centers
+    forward:
+      - text: 12,028 adaptive angle rows
+        reason: link-to-definition
+      - text: wand125’s row-minimum check of T-037
+        reason: link-to-definition
+
+  # One Geometric Invariant Supports the Certificates
+  - term: pose
+    uses: '\bposes?\b'
+    defined_by: A pose is a square’s center and angle.
+    anchor: one-geometric-invariant-supports-the-certificates
+  - term: owner
+    uses: '\bowners?\b'
+    defined_by: An owner is the square assigned to an occupied cell.
+    anchor: one-geometric-invariant-supports-the-certificates
+    requires: [cell]
+  - term: outer pose cover
+    uses: '\b(?:outer )?pose covers?\b'
+    defined_by: An outer pose cover contains every pose still possible for that square
+    anchor: one-geometric-invariant-supports-the-certificates
+    requires: [pose, row]
+  - term: owned hull
+    uses: '\bowned (?:inner )?hulls?\b'
+    defined_by: An owned hull is a convex polygon that lies strictly inside the square
+    anchor: one-geometric-invariant-supports-the-certificates
+  - term: invariant
+    uses: '\binvariant\b'
+    defined_by: Together they are the invariant, stated row by row
+    anchor: one-geometric-invariant-supports-the-certificates
+    requires: [outer pose cover, owned hull]
+  - term: seed
+    uses: '\bseeds?\b'
+    defined_by: or come from a seed, a set of points whose ownership has its own checked proof
+    anchor: one-geometric-invariant-supports-the-certificates
+    requires: [owned hull]
+  - term: branch
+    uses: '(?<!contact )\bbranch(?:es)?\b'
+    defined_by: A branch is an argument that assumes one side of a closed split
+    anchor: one-geometric-invariant-supports-the-certificates
+  - term: update
+    uses: '\bupdates?\b'
+    defined_by: An update (the proof data say step) takes one owner’s rows
+    anchor: one-geometric-invariant-supports-the-certificates
+    requires: [owner, row]
+  - term: residual
+    uses: '\bresiduals?\b'
+    defined_by: records what remains as the residual of each row
+    anchor: one-geometric-invariant-supports-the-certificates
+    requires: [update]
+  - term: live
+    uses: '\blive\b'
+    defined_by: a row with a nonempty residual is live
+    anchor: one-geometric-invariant-supports-the-certificates
+    requires: [residual]
+  - term: propose
+    uses: '\bpropos(?:e|es|al|als)\b'
+    defined_by: Search programs propose rows, residuals and cuts
+    anchor: one-geometric-invariant-supports-the-certificates
+  - term: cut
+    uses: '\bcuts?\b'
+    defined_by: >-
+      Search programs propose rows, residuals and cuts, a cut being a closed half-plane
+      condition on a center that an argument assumes
+    anchor: one-geometric-invariant-supports-the-certificates
+  - term: partner rows
+    uses: '\bpartner rows?\b'
+    defined_by: its partner rows
+    anchor: one-geometric-invariant-supports-the-certificates
+    requires: [outer pose cover]
+  - term: predecessor
+    uses: '\bpredecessors?\b'
+    defined_by: the row’s domain in the accepted predecessor state, the state the update starts from
+    anchor: keeping-everything-else
+    requires: [update]
+  - term: common core
+    uses: '\bcommon[- ]core\b'
+    defined_by: the points that lie strictly inside the square for every surviving pose, the common core,
+    anchor: keeping-everything-else
+  - term: compression
+    uses: '\bcompress(?:ed|ion)\b'
+    defined_by: The hull may then be compressed to fewer vertices by exact convex combinations
+    anchor: keeping-everything-else
+  - term: Pose-preservation lemma
+    uses: '\b[Pp]ose-preservation\b'
+    defined_by: >-
+      Pose-preservation lemma. Starting from a valid outer cover and valid ownership
+    anchor: keeping-everything-else
+    requires: [update]
+  - term: common prior
+    uses: '\bcommon prior\b'
+    defined_by: declared common prior
+    anchor: keeping-everything-else
+
+  # Charge Budgets Exclude Many Patterns at Once
+  - term: field certificate
+    uses: '\bfield certificates?\b'
+    defined_by: A field certificate assigns a charge to every strict inner core
+    anchor: charge-budgets-exclude-many-patterns-at-once
+    requires: [charge]
+  - term: charge field
+    uses: '\bcharge field\b'
+    defined_by: form its charge field
+    anchor: charge-budgets-exclude-many-patterns-at-once
+    requires: [field certificate]
+  - term: Γ_i
+    symbol: true
+    uses: '\\Gamma_i'
+    defined_by: must receive charge at least $\Gamma_i$
+    anchor: charge-budgets-exclude-many-patterns-at-once
+  - term: capacity
+    uses: '\bcapacity\b'
+    defined_by: >-
+      The charge therefore has capacity one: over any family of disjoint cores it sums to
+      at most one.
+    anchor: charge-budgets-exclude-many-patterns-at-once
+    series: capacity
+  - term: budget
+    uses: '\b[Bb]udgets?\b'
+    defined_by: the budget $b$ is the sum of the weights
+    anchor: charge-budgets-exclude-many-patterns-at-once
+    forward:
+      - text: Charge Budgets Exclude Many Patterns at Once
+        reason: heading
+  - term: b
+    symbol: true
+    uses: '(?<![A-Za-z\\])b(?![A-Za-z])'
+    defined_by: the budget $b$ is the sum of the weights
+    anchor: charge-budgets-exclude-many-patterns-at-once
+  - term: prior-family
+    uses: '\bprior-family\b'
+    defined_by: 76 prior-family cases that extend it
+    anchor: charge-budgets-exclude-many-patterns-at-once
+    requires: [case]
+  - term: returned
+    uses: '\breturned\b'
+    defined_by: 173 cases returned later
+    anchor: charge-budgets-exclude-many-patterns-at-once
+    requires: [case]
+
+  # Symmetry Reduces the Four Survivors to One
+  - term: D_4
+    symbol: true
+    uses: '\\mathbf\{D\}_4'
+    defined_by: usually called $\mathbf{D}_4$
+    anchor: symmetry-reduces-the-four-survivors-to-one
+    series: d4
+  - term: ban
+    uses: '\bbans?\b|\bbanned\b'
+    defined_by: The check retains 1,572 strict distance bans
+    anchor: symmetry-reduces-the-four-survivors-to-one
+  - term: Symmetry lemma
+    uses: '\b[Ss]ymmetry lemma\b'
+    defined_by: Symmetry lemma. Once the 2,180 exclusions hold
+    anchor: symmetry-reduces-the-four-survivors-to-one
+    requires: [case]
+
+  # Capture Forces Case 438 Near the Construction
+  - term: node
+    uses: '\bnodes?\b'
+    defined_by: The proof is a tree of nodes.
+    anchor: capture-forces-case-438-near-the-construction
+  - term: leaf
+    uses: '\bleaf\b'
+    defined_by: each leaf ends either in a contradiction
+    anchor: capture-forces-case-438-near-the-construction
+    requires: [node]
+  - term: far leaf
+    uses: '\bfar (?:leaf|leaves)\b'
+    defined_by: a far leaf,
+    anchor: capture-forces-case-438-near-the-construction
+    requires: [leaf]
+  - term: near leaf
+    uses: '\bnear (?:leaf|state|node)\b'
+    defined_by: or in an enclosure, the near leaf
+    anchor: capture-forces-case-438-near-the-construction
+    requires: [leaf]
+  - term: root
+    uses: '\broot node\b'
+    defined_by: The root carries no assumption.
+    anchor: capture-forces-case-438-near-the-construction
+    requires: [node]
+  - term: root round
+    uses: '\broot rounds?\b'
+    defined_by: fourteen root rounds, each a parallel update of all eleven owners from a common prior
+    anchor: capture-forces-case-438-near-the-construction
+    requires: [root, common prior]
+
+  # The Local Argument Excludes Every Nonzero Motion
+  - term: working box
+    uses: '\bworking box\b'
+    defined_by: All radii lie within the working box
+    anchor: the-local-argument-excludes-every-nonzero-motion
+  - term: separation feature
+    uses: '\bseparation features?\b'
+    defined_by: A separation feature of a pair chooses which square supplies the axis
+    anchor: covering-all-possible-local-contact-patterns
+  - term: available
+    uses: '\b(?:un)?available features?\b'
+    defined_by: A feature is available when its conjunction holds at the construction
+    anchor: covering-all-possible-local-contact-patterns
+    requires: [separation feature]
+  - term: contact branch
+    uses: '\bcontact branch(?:es)?\b'
+    defined_by: the contact branches
+    anchor: covering-all-possible-local-contact-patterns
+    requires: [available]
+  - term: tied
+    uses: '\btied\b'
+    defined_by: A contact branch keeps only the inequalities that are tied at the construction
+    anchor: covering-all-possible-local-contact-patterns
+    requires: [contact branch]
+  - term: Local-isolation lemma
+    uses: '\b[Ll]ocal-isolation lemma\b'
+    defined_by: Local-isolation lemma. The zero perturbation is the only feasible packing
+    anchor: from-a-linear-obstruction-to-a-finite-neighborhood
+
+  # Closing the Gap Between the Rational Cap and the Exact Optimum
+  - term: rot
+    symbol: true
+    uses: '\\operatorname\{rot\}'
+    defined_by: $\operatorname{rot}(x,y)=(-y,x)$ be that quarter-turn
+    anchor: closing-the-gap-between-the-rational-cap-and-the-exact-optimum
+
+  # What Was Verified, and What the Verification Means
+  - term: rung
+    uses: '\brungs?\b'
+    defined_by: The Squares Project grades each result by rungs on three axes
+    anchor: what-was-verified-and-what-the-verification-means

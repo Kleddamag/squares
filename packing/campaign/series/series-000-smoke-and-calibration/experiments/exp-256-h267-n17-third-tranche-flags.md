@@ -92,6 +92,17 @@ experiment:
       process CPU, the producer at its 24-round cap (168 steps, 18,675 rows, finest 1/512); at the last round
       every owner still had live rows, interior-NW 55 and side-N0 68 the fewest. A non-closure; its node is
       kept.
+  - shape: determination
+    role: outcome
+    question: Is target 6 (side-S1, side-W1, interior-NW, interior-W, interior-S, interior-SE) infeasible at U, by a
+      certificate the kernel's checker accepts and the standing verifier re-proves in full?
+    outcome: criterion_met
+    checked_by: The run (receipts/K/kernel-t6-bc427.json) returns PASS_CERTIFIED_CLOSED in 197 s of wall and 179 s of
+      process CPU (producer 105 s, checker 91 s) on 40 steps and 2,816 rows in 7 rounds, rows finest at 1/256,
+      closure all_parent_poses_forbidden for interior-W at step 39. The standing verifier at cebb5d15a passes
+      it in full mode in 120 s, checking all 2,382 live rows in full and 4,632 collision regions by 22,785,964
+      exact facet checks. Alone it excludes 109,080 states and 13,752 orbits. The arity-at-most-7 entries then
+      leave 64,632 states and 8,191 orbits (receipts/K/census-arity7-after-bc427-t6.json).
   verdict:
     decision: in-progress
     primary_criterion: The certified residue at arity at most seven is at most 10^4 orbits with every certificate
@@ -136,6 +147,7 @@ No arity-8 flag fills it.
 | 1 | side-N1, side-E1, interior-SW, interior-W, interior-S, interior-N, interior-E | producer fixed point after 16 rounds at 3,773 s, not closed | — | — |
 | 4, `s182-bc427-t4` | side-E1, interior-SW, interior-NW, interior-W, interior-S, interior-N, interior-E | closed in 171 s, 15 steps, 960 rows | full pass, 84 s | 4,874 orbits; 9,990 at arity at most seven |
 | 3 | side-N0, side-W0, side-N1, interior-SW, interior-NW, interior-W, interior-S | 24-round cap at 3,458 s, not closed | — | — |
+| 6, `s182-bc427-t6` | side-S1, side-W1, interior-NW, interior-W, interior-S, interior-SE | closed in 197 s, 40 steps, 2,816 rows | full pass, 120 s | 4,711 orbits; 8,191 at arity at most seven |
 
 The targets and the census they came from are
 [kernel-targets-bc427.txt](../../../explorations/X048-session-182-overnight/kernel-targets-bc427.txt)

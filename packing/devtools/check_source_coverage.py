@@ -61,6 +61,8 @@ COVERAGE = FRONTIER / "source-coverage.yaml"
 EVIDENCE = FRONTIER / "evidence.yaml"
 #: The acquisition record `devtools.upper_bound_packets` writes into a packet.
 ACQUISITION_FORMAT = "external-source-acquisition-v1"
+#: The disposition of the source whose values every case reports unless overridden.
+BASELINE_DISPOSITION = "baseline-current"
 
 #: Significant digits the exact-form reconciliation agrees to. The catalogue prints 14
 #: places, and a wrong radical usually agrees to the printed precision, so comparing at
@@ -491,13 +493,21 @@ def selection_errors(
     baseline it replaces, and, where the source's claims are reparsed here, equal the
     side the source itself prints. A superseded report is a retained claim that a
     selected override at the same `n` beats: it must equal its own source's printed side
-    and exceed the override's. Every reparsed claim is then accounted for exactly once,
-    as a selected override, a superseded report, or a claim tracked beyond the corpus.
+    and exceed the override's. Where no override is selected the report may instead name
+    the catalogue baseline, which must then print a side below it -- what a later capture
+    of the catalogue does when it overtakes a release (`n = 69`, 2026-10-05, T-088). Every
+    reparsed claim is then accounted for exactly once, as a selected override, a
+    superseded report, or a claim tracked beyond the corpus.
     """
     errors: list[str] = []
     n_min = coverage["case_corpus"]["n_min"]
     n_max = coverage["case_corpus"]["n_max"]
     sources = {source["id"]: source for source in coverage["sources"]}
+    baselines = {
+        source["id"]
+        for source in coverage["sources"]
+        if source.get("disposition") == BASELINE_DISPOSITION
+    }
     overrides = {entry["n"]: entry for entry in coverage["selected_overrides"]}
     if len(overrides) != len(coverage["selected_overrides"]):
         errors.append("selected override n values are not unique")
@@ -535,7 +545,13 @@ def selection_errors(
         accounted.setdefault(source_id, set()).add(n)
         errors.extend(_claim_errors(where, source_id, n, entry["value"], claims))
         selected = overrides.get(n)
-        if selected is None or selected["source_id"] != entry["superseded_by"]:
+        if selected is None and entry["superseded_by"] in baselines:
+            # No override is selected, so the catalogue baseline is the case's report and
+            # what beat this claim: a later capture printing a smaller side.
+            printed = kingbird.get(n)
+            if printed is None or Decimal(printed) >= Decimal(entry["value"]):
+                errors.append(f"{where} is not beaten by the catalogue baseline {printed}")
+        elif selected is None or selected["source_id"] != entry["superseded_by"]:
             errors.append(f"{where} names {entry['superseded_by']}, not the selected source")
         elif Decimal(selected["value"]) >= Decimal(entry["value"]):
             errors.append(f"{where} is not beaten by the selected {selected['value']}")

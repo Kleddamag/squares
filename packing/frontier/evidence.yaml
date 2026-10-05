@@ -11187,6 +11187,27 @@ evidence:
       packet's acquisition/sources.json. This is the public-claim entry; the exact replay
       here is E-franciscouzo-2026-10-03-exact-replay. No optimality is claimed by the
       source or here.
+    external_review:
+      state: informally-verified
+      date: '2026-10-05'
+      reviewed_by: >-
+        Claude (AI review; model unstated), the stage-4 review lane of the 2026-10-05
+        import, prompted separately from the lane that retained the packet, certified the
+        seven packings and registered the entry, after the replay
+        (docs/project/reviews/review-2026-10-05-couzo-6042c56.md)
+      note: >-
+        No blocking defect. The review ran both routes again (the exact replay regenerated
+        all seven certificates byte for byte and the independent checker accepted each;
+        the interval check decided every case and control as recorded), regenerated the
+        exact-route controls equal to their receipt, and decided all seven packings a third
+        way with its own code, an exact Fraction checker with its own parser and mpmath
+        intervals at 60 digits, which agrees with every receipt figure. It cloned the
+        source at 6042c56 and found the 99 pins, the seven facts files, each count's history,
+        the dates and the absence of a licence as the packet records them. At n = 306 the
+        printed side is not certified and the record's conflict and blocker are the right
+        handling. The source publishes no code, so both replays are independently
+        re-implemented by necessity. Findings 2 to 7 are not blocking; finding 3, the
+        claim's opening sentence, was reworded with the review.
     source_reviewed: '2026-10-05'
 
   - id: E-franciscouzo-2026-10-03-exact-replay
@@ -11272,8 +11293,11 @@ evidence:
       (receipts/interval-negative-controls.json). The program, its method and its common
       mode with the exact entry are those of E-franciscouzo-2026-09-27-interval-replay,
       whose review is docs/project/reviews/review-2026-09-30-interval-route-t056-t057.md;
-      only its source records changed to read this packet, and no review of this run is
-      retained. The program is not formally verified. No optimality at any count.
+      only its source records changed to read this packet. This run, and that change, are
+      reviewed in docs/project/reviews/review-2026-10-05-couzo-6042c56.md, which decided
+      the seven printed poses again with mpmath intervals at 60 digits and agrees with
+      every row of the receipt. The program is not formally verified. No optimality at any
+      count.
     source_reviewed: '2026-10-05'
 
   - id: E-n211-de-winter-report

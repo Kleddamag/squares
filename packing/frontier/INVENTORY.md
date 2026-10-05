@@ -245,7 +245,7 @@ results, it is a statement about what this repository has itself examined.
 | `E-franciscouzo-2026-09-27-report` | 42 | upper-bound | reported | - | elsewhere | - | previously-published | producer’s code | *none held* |
 | `E-franciscouzo-2026-09-27-exact-replay` | 42 | upper-bound | verified | equalities and inequalities, no tolerance | here | - | previously-published | independent | `V-upper-bound-promotion`, `V-check-rational-witness-independent` |
 | `E-franciscouzo-2026-09-27-interval-replay` | 42 | upper-bound | verified | strict inequalities only | here | - | previously-published | independent | `V-upper-bound-intervals` |
-| `E-franciscouzo-2026-10-03-report` | 7 | upper-bound | reported | - | elsewhere | - | previously-published | producer’s code | *none held* |
+| `E-franciscouzo-2026-10-03-report` | 7 | upper-bound | reported | - | elsewhere | informally-verified | previously-published | producer’s code | *none held* |
 | `E-franciscouzo-2026-10-03-exact-replay` | 7 | upper-bound | verified | equalities and inequalities, no tolerance | here | - | previously-published | independent | `V-upper-bound-promotion`, `V-check-rational-witness-independent` |
 | `E-franciscouzo-2026-10-03-interval-replay` | 7 | upper-bound | verified | strict inequalities only | here | - | previously-published | independent | `V-upper-bound-intervals` |
 | `E-n211-de-winter-report` | 1 | upper-bound | reported | - | elsewhere | - | previously-published | producer’s code | *none held* |

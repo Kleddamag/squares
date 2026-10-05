@@ -3,9 +3,9 @@ type: is
 id: is-01m3bsc3bsdbq1jk7xnx6p0hev
 title: "Session 159: intake Guzhou0806 R052 (s(17) > 231001/50000) and R042/R043/R050; fact-check the public n=17 record"
 kind: epic
-status: closed
+status: open
 priority: 1
-version: 12
+version: 13
 delegate: claude-code@vm
 labels: []
 dependencies: []
@@ -22,10 +22,14 @@ child_order_hints:
 hold: null
 hold_until: null
 created_at: 2026-09-25T08:02:10.422Z
-updated_at: 2026-10-05T05:35:37.277Z
+updated_at: 2026-10-05T05:40:47.028Z
 started_at: 2026-10-05T05:34:33.067Z
-closed_at: 2026-10-05T05:35:37.276Z
-close_reason: "Landed: E-n017-guzhou-r052-source-replay, with its review of 2026-09-25."
+closed_at: null
+close_reason: null
 resolution: null
 duplicate_of: null
 ---
+
+## Notes
+
+Reopened: Reopened 2026-10-05: closing it left open children under a closed parent, which devtools.check_bead_tree refuses. The parent's own work is adopted (see the close reason), but its open children need their own disposition before it closes.

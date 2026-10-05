@@ -5,7 +5,7 @@ title: "Close Session 168: session record, rollups, PR description, SYNOPSIS han
 kind: task
 status: in_progress
 priority: 0
-version: 5
+version: 6
 spec_path: docs/project/reviews/review-2026-10-02-n17-bulk-exclusion-design.md
 delegate: claude-code@vm
 labels: []
@@ -14,7 +14,7 @@ parent_id: is-01m3xkd6zmq1jqwtn628h2k7zy
 hold: null
 hold_until: null
 created_at: 2026-10-02T20:51:02.660Z
-updated_at: 2026-10-05T01:35:29.165Z
+updated_at: 2026-10-05T05:36:45.869Z
 started_at: 2026-10-03T22:36:09.340Z
 ---
 Session 168 ran from about 07:40 to past 21:00 UTC on 2026-10-02 with lanes R1, K1, H2, A3, S1, K2 (slices a-h), R2, P2, S2, R3, R4, T1, Q1, Q2, C1, R5, F1, F2. Write packing/campaign/agent-sessions/session-168-*.md with delegations (durations from the session transcript task notifications), run devtools.close_session --update/--render for rollups (redact model keys), update SYNOPSIS current handoff and the PR body (render_pr_rollup), and certify with a full gate. Experiments recorded: exp-247, exp-248, exp-249.
@@ -26,3 +26,5 @@ Session 168 ran from about 07:40 to past 21:00 UTC on 2026-10-02 with lanes R1, 
 2026-10-04. Session id: main now holds session-168 and session-169 (PR 305), so this session's record cannot be session-168. Write it under the next id free when it is written: main holds through session-169, and Guzhou0806's draft PRs claim session-169 through session-179 (#325, #333, #336), so today that is session-180. "Session 168" stays a working label in PR 307's records and its X048-session-168-pilots folder. The work moved from PR 307 to its successor branch claude/n17-sessions-167-168 (certificate dumps hosted outside Git); write the record there, and close think-g1xy (Sessions 166 and 167 re-certification) in the same pass if it is still open.
 
 2026-10-05. #325 moved its record to session-180, so the open drafts now claim session-169 through session-180 and the next free id is session-181 today. Take whatever is free when the record is written. The successor PR is jlevy/squares#347.
+
+2026-10-05 (PR 347 status survey). session-181 is confirmed free across every remote ref; the highest id any open draft claims is session-180.

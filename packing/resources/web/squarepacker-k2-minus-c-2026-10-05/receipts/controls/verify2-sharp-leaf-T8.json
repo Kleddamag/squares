@@ -1,0 +1,17 @@
+{
+ "checked": 1,
+ "ok": 0,
+ "fail": [
+  {
+   "idx": 0,
+   "kind": "closed",
+   "U": 9
+  }
+ ],
+ "maxU": 8,
+ "next": 1,
+ "pieces": 4097,
+ "rig_pieces": 7544,
+ "finished": true,
+ "n_lines": 1
+}

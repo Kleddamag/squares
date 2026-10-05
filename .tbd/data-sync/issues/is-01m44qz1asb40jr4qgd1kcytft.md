@@ -5,7 +5,7 @@ title: "Import David Ellsworth / Allen Chang via the Kingbird catalogue: s(69) <
 kind: task
 status: in_progress
 priority: 1
-version: 5
+version: 6
 delegate: claude-code@vm
 labels:
   - result-import
@@ -16,11 +16,11 @@ parent_id: is-01m44qz0rxvkakmyqaj7qdgagv
 hold: null
 hold_until: null
 created_at: 2026-10-05T00:38:34.584Z
-updated_at: 2026-10-05T02:17:35.482Z
+updated_at: 2026-10-05T03:27:38.407Z
 started_at: 2026-10-05T00:40:48.766Z
 ---
 source-coverage.yaml pending_catalogue_intake lists n = 69, 83, 87: the 2026-09-30 Kingbird capture prints sides below the record. Register (T-088 n=69 Ellsworth; T-089 n=83, 87 Allen Chang), take the sides into the case records, remove the pending entries, witness from evand's parse of the SVGs at evand/square-packing 7ff3b21 site/www/data/p/ (kingbird.myphotos.cc is blocked by this session's egress policy). Stage 4 witness check if cheap.
 
 ## Notes
 
-2026-10-05 lane kingbird, branch claude/ecstatic-pascal-pothtx-kingbird (not pushed): c023a08f9 tools (derive_kingbird_facts --from-parse/--compare-parse, hand-audited refresh, revision carried through the atlas, check_source_coverage baseline supersession); a79980ef0 records (T-088 n=69 Ellsworth, T-089 n=83,87 Chang, both V0/C0 S2 draft; evidence, coverage, bibliography, case records, witnesses from evand@7ff3b21 parse, atlas data, full translation-escape screen 324/120/1851/302/4492 none excluded, rigidity blocks, censuses, views, tests); dcea820d2 release pin. records tier green. Open: stage 4 for both (promote the retained witnesses to exact rational certificates - trial found them within ~1e-12 of each printed side - plus independent check, receipts, verifiers.yaml, negative controls, and a review under docs/project/reviews/, which then moves the verified upper lanes off the grids); re-derive from the SVGs once kingbird.myphotos.cc is reachable, retaining the degree-672 polynomial for n=83; agenda-005 BC-050 (precise witnesses for n=68/69) is moot for n=69 now.
+2026-10-05 lane kingbird, branch claude/ecstatic-pascal-pothtx-kingbird (not pushed): c023a08f9 tools; a79980ef0 records (T-088 n=69 Ellsworth, T-089 n=83,87 Chang, V0/C0, S2 draft); 326cd66f7 fixes found by the reachable tests (AI quotation vs formatter curled quotes; coverage wrap; chunk coverage pin); d21084b38 data pin. records tier green. Witnesses from evand/square-packing@7ff3b21 site/www/data/p parse (source.revision); --compare-parse: 90/90 agree to 1 ulp now (before intake 90/92, the two differing were 83/87 whose pictures had changed). Open: stage 4 for T-088/T-089 (rational promotion of the retained witnesses, which a scratch trial found within ~1e-12 of each printed side; independent check; receipts; verifiers; negative controls; review under docs/project/reviews/), re-derive from the SVGs when kingbird.myphotos.cc is reachable (and retain n=83's degree-672 polynomial); agenda-005 BC-050 (precise n=68/69 witnesses) is moot for n=69.

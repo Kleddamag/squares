@@ -1818,7 +1818,13 @@ The host list is `GITHUB_DIRECT_HOSTS` in `.claude/scripts/ensure-gh-cli.sh`. In
 session, a `git push` of a tag can be refused with 403 by the session’s ref-scoped
 credential broker. `publish` pushes no tag, since `gh release create` makes it through
 the API; to make one by hand, run
-`gh api repos/OWNER/REPO/git/refs -f ref=refs/tags/TAG -f sha=SHA`.
+`gh api repos/OWNER/REPO/git/refs -f ref=refs/tags/TAG -f sha=SHA`. Uploads go to
+`uploads.github.com`, which a cloud environment’s network access must allow.
+Where it does not, the first upload is refused with HTTP 403 (the egress reply names
+`host_not_allowed`), and the agent proxy refuses a binary upload as well.
+The release `publish` created stays, without assets; once the host is allowed, `publish`
+again uploads every asset it lacks.
+That happened on the first real run, on 2026-10-05, for PR 347’s certificate dumps.
 
 **Precedent.** Release [`v0.4.2`](https://github.com/jlevy/squares/releases/tag/v0.4.2)
 hosts two ascent films, of 40 MB and 216 MB, with their JSON receipts.

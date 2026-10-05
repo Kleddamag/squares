@@ -1499,54 +1499,74 @@ run.
 
 No bound, frontier field or open status changed.
 
-**Selected next entry:** `think-tmz6`, the BC-418 coordinator.
-It first closes H-266’s single-state item and H-268’s slide bound, then re-records H-261
-and H-266 with review.
-In parallel it builds the H-267 selector and adapts n11’s kernel as prover, with n11’s
-mask 0 as the method control, and pilots the capture contraction rate on the endpoint’s
-occupancy state. Two closing tools are already built and await review.
-One is a unique-state 24-cell cover with 43,593 orbits.
-The other proves the H-268 slide bounds $a\le21/100$, $z\ge-1/20$ and $b\le3/40$ on the
-earlier design’s square-6 cell, and must be re-run on the unique design.
-The certified slider box’s faces $a\ge0$, $b\ge0$ and $z\le1/16$ still need their own
-argument. Hosted certification of Sessions 166 and 167 passed on PR 307. In Session 168,
-H-266 is accepted on the unique-state design
-([exp-247](packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-247-h266-n17-unique-state-cover.md)).
-H-268 is accepted
-([exp-248](packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-248-h268-n17-local-half-composition.md)):
-square 6’s cell bounds every slide inside a widened box $B_W'$, over which the local
-theorem passes, so the local half is the capture-target theorem of the
-[composition review](docs/project/reviews/review-2026-10-02-n17-local-half-composition.md).
-H-261 stays unresolved as worded.
-The first two sub-pattern exclusions are certified and admitted
-([exp-249](packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-249-h267-n17-first-certified-sub-patterns.md)):
-W7 by the kernel and A by an independent interval branch and bound, leaving 17,690
-certified orbits of 43,593. The
-[residue process review](docs/project/reviews/review-2026-10-02-n17-residue-process.md)
-plans the rest, and the [n17 explainer](docs/project/n17-optimality-explainer.md)
-explains the case from first principles.
+**Selected next entry:** `think-tmz6`, the BC-418 coordinator, continuing.
+Its first decision is the capture route.
+Lane R9 reads capture pilot 2’s met falsifier and either names another producer limit
+for a third pilot, or confirms that n11’s capture architecture is wrong for n17. In the
+second case the widened projection theorem needs a hypothesis and a bead.
+Beside it, H-264’s pilot runs 10 to 20 residue states to price the per-state method
+(`think-e17c`). That decides whether certifying the 87 flags that survive the selector’s
+finish-stage recheck is worth it (`think-j6qy`).
 
-Session 168 is still open at this handoff.
-Its later results:
-- the [residue survey](packing/campaign/explorations/X048-session-168-pilots/README.md)
-  finds no surviving state feasible at the cap, and that each needs its own failing
-  sub-pattern of arity 8 to 15;
-- the first capture pilot met its falsifier, and its
-  [review](docs/project/reviews/review-2026-10-02-n17-capture-after-pilot.md) finds that
-  producer-limited;
-- standing independent verifiers now gate the certified census, and
-  [exp-250](packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-250-h267-n17-standing-verifier-admissions.md)
-  admits flag 3 (arity 9) and the residue state N1 on the standing verifier’s full pass,
-  leaving 15,953 certified orbits.
+Session 168 ran BC-418’s lanes.
+Its record is not yet written and will take session-181 (`think-wcqs`). Hosted
+certification of Sessions 166 and 167 passed again on this branch at `c0941ba4e`
+(Packing validation run 37247106436).
 
-In flight, each tracked by a bead under `think-tmz6`: capture pilot 2 (`think-g2qn`),
-the H-264 per-state pilot (`think-e17c`), the selector’s finish stage and flag re-search
-(`think-gygy`), two cost-reduction reviews aiming at hundreds of CPU-hours
-(`think-pqya`, `think-3jp4`), certifying the remaining flags (`think-j6qy`), and closing
-the session (`think-wcqs`).
+- **Accepted.** H-266, on the unique-state 24-cell cover
+  ([exp-247](packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-247-h266-n17-unique-state-cover.md)):
+  43,593 orbits, with the family in one state.
+  H-268
+  ([exp-248](packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-248-h268-n17-local-half-composition.md)):
+  square 6’s cell bounds every slide inside a widened box $B_W'$, over which the local
+  theorem passes. The local half is therefore the capture-target theorem of the
+  [composition review](docs/project/reviews/review-2026-10-02-n17-local-half-composition.md).
+  H-261 stays unresolved as worded.
+- **Admitted.** Four exclusions, each by an independent or standing verifier’s full
+  pass. W7 was closed by the kernel and A by an interval branch and bound
+  ([exp-249](packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-249-h267-n17-first-certified-sub-patterns.md)),
+  then flag 3 (SW9, arity 9) and the whole residue state N1
+  ([exp-250](packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-250-h267-n17-standing-verifier-admissions.md)).
+  The certified census is 126,168 states in 15,953 orbits.
+  The selector’s finish-stage recheck placed one of its 90 flags (an arity-8 false
+  flag), so 87 flags stand uncertified.
+  If all of them certify, 2,197 orbits remain.
+- **Measured.** The
+  [residue survey](packing/campaign/explorations/X048-session-168-pilots/README.md)
+  finds no sampled state feasible at the cap; each needs its own failing sub-pattern of
+  arity 8 to 15. Flag 2 (arity 9) stalled at 1,152 adaptive rows, and its 2,304-row
+  check stopped incomplete at its time ceiling.
+  Its [diagnosis](docs/project/reviews/review-2026-10-04-n17-flag2-diagnosis.md) reads
+  it as a true pattern held by west-wall row losses.
+  Capture pilot 1 met its falsifier, which the
+  [after-pilot review](docs/project/reviews/review-2026-10-02-n17-capture-after-pilot.md)
+  found producer-limited.
+  Pilot 2, with rows allotted by need, met that review’s sharper falsifier at round 17:
+  no position contracted.
+  Lane R9’s reading is not yet written.
+- **Infrastructure.** Standing verifiers gate the census, and the streamed kernel
+  verifier (`601bbf110`) is admitted.
+  The 92 certificate objects (112,285,110 bytes) are hosted outside Git under OR-18 and
+  listed in `packing/hosted/n17-x048-session-168-certificates.yaml`. Their release
+  exists and awaits the uploads, which the cloud environment’s egress refused
+  (`think-jhgi`). Lanes F1 and F2 wrote the two cost-reduction reviews.
 
-This branch’s Session 168 is a working label: main’s Sessions 168 and 169, below, merged
-first and hold those ids, so its record takes the next id free when it is written.
+No bound or open status changed.
+The frontier page now records H-265’s identity (`think-yjgk`).
+
+In flight under `think-tmz6`:
+
+- R9 and the capture route (`think-g2qn`);
+- flag certification (`think-j6qy`);
+- the census’s flag list after the recheck, and the residue-universe sweep
+  (`think-gygy`, paused at chunk 61 of 848);
+- the H-264 pilot (`think-e17c`);
+- the compiled checker (`think-ui2y`);
+- closing the session (`think-wcqs`).
+
+This branch’s Session 168 is a working label.
+Main’s Sessions 168 and 169, below, hold those ids, and the open drafts claim
+session-170 to session-180, so its record takes session-181.
 
 #### Session 168: Families, the T-007 Correction and T-087
 

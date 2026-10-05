@@ -108,6 +108,45 @@ void test("a line holds as many least tiles as fit, and no more than the longest
   assert.equal(atlas.perLine(358, Number.NaN, 19), 19);
 });
 
+void test("Small and Medium hold the same tiles to a line, and Large fewer", () => {
+  // Medium is `perLine`, and Small draws the same tiles smaller.
+  /** @type {[number, number, number][]} */
+  const blocks = [
+    [1200, 26, 19],
+    [1200, 26, 35],
+    [688, 26, 35],
+    [358, 40, 19],
+  ];
+  for (const [width, least, most] of blocks) {
+    const medium = atlas.perLine(width, least, most);
+    assert.equal(atlas.perLineAt(width, least, 72, most, 1), medium);
+    assert.equal(atlas.perLineAt(width, least, 72, most, 0.667), medium);
+  }
+  // Large: as many as tiles half as wide again as Medium's leave room for. A desktop
+  // block's hundred go from 19 to a line to 13, and all 324 from 35 to 23; a 768-pixel
+  // window's 324 from 26 to 17, and a phone's hundred from 8 to 5.
+  assert.equal(atlas.perLineAt(1200, 26, 72, 19, 1.5), 13);
+  assert.equal(atlas.perLineAt(1200, 26, 72, 35, 1.5), 23);
+  assert.equal(atlas.perLineAt(944, 26, 72, 35, 1.5), 23);
+  assert.equal(atlas.perLineAt(688, 26, 72, 35, 1.5), 17);
+  assert.equal(atlas.perLineAt(358, 40, 72, 19, 1.5), 5);
+  // A block so wide that Medium's tiles stop at the most a tile may be grows them first:
+  // at 140rem the hundred keep their nineteen to a line at Large.
+  assert.equal(atlas.perLineAt(2240, 26, 72, 19, 1.5), 19);
+  // Never more than at Medium, never none, and with no scale or no most to go by, the
+  // line's share alone.
+  assert.equal(atlas.perLineAt(10, 40, 72, 19, 1.5), 1);
+  assert.equal(atlas.perLineAt(1200, 26, 72, 19, Number.NaN), 19);
+  assert.equal(atlas.perLineAt(1200, 26, Number.NaN, 19, 1.5), 13);
+  for (let width = 300; width <= 2400; width += 7) {
+    for (const most of [19, 35]) {
+      const medium = atlas.perLine(width, 26, most);
+      const large = atlas.perLineAt(width, 26, 72, most, 1.5);
+      assert.ok(large >= 1 && large <= medium, `${width}, ${most}`);
+    }
+  }
+});
+
 void test("where every row fits, row k is line k and ends at the last column", () => {
   for (const [last, per] of /** @type {[number, number][]} */ ([
     [100, 19],
@@ -290,6 +329,55 @@ void test("writing the view keeps every other parameter, and round-trips", () =>
       assert.equal(atlas.viewOf(atlas.searchFor(search, view)), view);
     }
   }
+});
+
+void test("the address names Small and Large and says nothing for Medium", () => {
+  assert.equal(atlas.sizeOf(""), "medium");
+  assert.equal(atlas.sizeOf("?size=small"), "small");
+  assert.equal(atlas.sizeOf("?size=large"), "large");
+  assert.equal(atlas.sizeOf("?size=medium"), "medium");
+  assert.equal(atlas.sizeOf("?size=Large"), "medium");
+  assert.equal(atlas.sizeOf("?size=huge"), "medium");
+  assert.equal(atlas.sizeOf("?atlas=triangle&size=large&age=180"), "large");
+  assert.equal(atlas.searchForSize("", "large"), "?size=large");
+  assert.equal(atlas.searchForSize("?size=large", "medium"), "");
+  assert.equal(atlas.searchForSize("?size=large", "small"), "?size=small");
+  assert.equal(atlas.searchForSize("", "medium"), "");
+  for (const search of ["", "?age=180", "?size=small", "?x=1&size=medium"]) {
+    for (const size of /** @type {AtlasSize[]} */ (["small", "medium", "large"])) {
+      assert.equal(atlas.sizeOf(atlas.searchForSize(search, size)), size);
+    }
+  }
+});
+
+void test("the view and the size are two parameters that never overwrite each other", () => {
+  let search = "?age=180";
+  search = atlas.searchFor(search, "triangle");
+  search = atlas.searchForSize(search, "large");
+  assert.equal(search, "?age=180&atlas=triangle&size=large");
+  assert.equal(atlas.viewOf(search), "triangle");
+  assert.equal(atlas.sizeOf(search), "large");
+  search = atlas.searchFor(search, "grid");
+  assert.equal(search, "?age=180&size=large");
+  assert.equal(atlas.sizeOf(search), "large");
+  search = atlas.searchForSize(search, "medium");
+  assert.equal(search, "?age=180");
+  assert.equal(atlas.viewOf(search), "grid");
+});
+
+void test("the arrow keys wrap between the tabs, Home and End go to the ends", () => {
+  for (const count of [2, 3]) {
+    assert.equal(atlas.stepTo("ArrowRight", count - 1, count), 0);
+    assert.equal(atlas.stepTo("ArrowLeft", 0, count), count - 1);
+    assert.equal(atlas.stepTo("Home", count - 1, count), 0);
+    assert.equal(atlas.stepTo("End", 0, count), count - 1);
+  }
+  assert.equal(atlas.stepTo("ArrowRight", 0, 3), 1);
+  assert.equal(atlas.stepTo("ArrowLeft", 2, 3), 1);
+  assert.equal(atlas.stepTo("ArrowDown", 0, 2), -1);
+  assert.equal(atlas.stepTo("Enter", 0, 2), -1);
+  assert.equal(atlas.stepTo("ArrowRight", -1, 2), -1);
+  assert.equal(atlas.stepTo("ArrowRight", 0, 0), -1);
 });
 
 void test("a length token is read in rem or pixels, and nothing else", () => {

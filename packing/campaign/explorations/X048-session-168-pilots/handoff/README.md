@@ -46,7 +46,8 @@ It follows the capture-after-pilot review’s specification.
 - `*.frozen.py.txt` are the exact tool bytes those runs imported.
 
 Next: apply the patch, finish and test it, and rerun at 128 and 256 rows against the
-review’s falsifier.
+review’s falsifier. *Done:* pilot 2 ran at 128 and 256 rows and by need; see the pilots
+README.
 
 ## Selector Finish Stage (`think-gygy`)
 
@@ -56,6 +57,9 @@ It adds a long-descent finish stage, so a flag must survive one long descent fro
 best pose. `s2/explore.py.txt` is its exploration script.
 
 The re-search of all 90 flags and the full arity-8 sweep were not run.
+*Later:* the re-search ran (`receipts/selector-recheck-90-seed1.json`, `16ea38d81`): 89
+still flagged, one arity-8 class placed.
+The residue-universe sweep is paused at chunk 61 of 848.
 
 ## Cost Reduction (`think-pqya`, `think-3jp4`)
 
@@ -63,7 +67,9 @@ Lane F1’s pruning review is complete and filed at
 `docs/project/reviews/review-2026-10-02-n17-cost-reduction-pruning.md`.
 
 Lane F2’s performance review was not written.
-Its profiles and micro-benchmarks are in `f2/`:
+*Later:* written as
+`docs/project/reviews/review-2026-10-02-n17-cost-reduction-performance.md`. Its profiles
+and micro-benchmarks are in `f2/`:
 
 - cProfile summaries and stdout for the kernel at 16 bins and W7’s first round;
 - 60 s of the branch and bound on A, and a branch-and-bound verifier sample;
@@ -71,6 +77,7 @@ Its profiles and micro-benchmarks are in `f2/`:
 - `rustbench/`, a Rust micro-benchmark’s sources and build log.
 
 Next: write the performance review from these measurements.
+*Done:* see above.
 
 <!-- This document follows common-doc-guidelines.md.
 See github.com/jlevy/practical-prose and review guidelines before editing.

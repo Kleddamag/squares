@@ -10,7 +10,7 @@ particular
 [§9, How an Optimality Proof Is Built](../../TUTORIAL.md#9-how-an-optimality-proof-is-built),
 and wants the $n = 17$ case itself: its numbers, its records and its status.
 
-**Owns:** the account of the proof in progress, as of 2026-10-02. Every number below is
+**Owns:** the account of the proof in progress, as of 2026-10-05. Every number below is
 taken from a linked record, and each claim is labelled by its evidential status:
 *proved* (an exact argument, machine-checked and reviewed), *verified* (an exact or
 outward-interval computation with a replay and a review), *projected* (an exact
@@ -37,8 +37,7 @@ two. It is not rigid.
 Square 6 is free in its hole, and squares 5, 11 and 13 slide without changing the side,
 so the object to be proved optimal is a **family**, not a pose.
 
-The frontier page and the register still carry the wording from before exp-245
-identified the side with the catalogue polynomial; their update is tracked separately.
+The frontier page and T-065 were brought in line with exp-245 on 2026-10-05.
 
 ## The Three Parts
 
@@ -47,11 +46,11 @@ The proof follows the shape that settled $n = 11$
 [Three parts](../../TUTORIAL.md#three-parts) says why a counting certificate cannot do
 it.
 
-| Part | What it must show for $n = 17$ | Status on 2026-10-02 |
+| Part | What it must show for $n = 17$ | Status on 2026-10-05 |
 | --- | --- | --- |
 | Local half | Every packing of side at most $S^{\ast}$ in the known occupancy state, with its 45 non-slider coordinates within $1/5000$ of the family’s, lies on the family and has side $S^{\ast}$ | **proved**, as the capture-target theorem below |
-| Global half | Every packing of side at most $S^{\ast}$ lies in one of 346,104 occupancy states, and every state but the known one is impossible | the census is **verified**; two sub-pattern certificates are **verified and admitted** ([exp-249](../../packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-249-h267-n17-first-certified-sub-patterns.md)); the rest is open |
-| Capture | Every packing in the known state at the capture cap lies within $1/5000$ of the family | a pilot is running and has not reported |
+| Global half | Every packing of side at most $S^{\ast}$ lies in one of 346,104 occupancy states, and every state but the known one is impossible | the census is **verified**; four exclusions are **verified and admitted**, W7 and A ([exp-249](../../packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-249-h267-n17-first-certified-sub-patterns.md)) and SW9 and the whole state N1 ([exp-250](../../packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-250-h267-n17-standing-verifier-admissions.md)), leaving 15,953 orbits; the rest is open |
+| Capture | Every packing in the known state at the capture cap lies within $1/5000$ of the family | pilot 2 met the after-pilot falsifier: in rounds 15 to 17 every widest row was under $1/20$ of its extent and no position contracted. Lane R9’s reading of it is not yet written, so the route is undecided |
 
 ## The Cap
 
@@ -343,9 +342,10 @@ obvious speed-up; it is unbuilt and its gain unmeasured.
 
 Stated without a forecast, because none is on record.
 
-1. **Certify or refute the remaining flags.** W7, A and SW9 are admitted, and 88 flagged
-   classes have no certificate.
-   Uniform rows stalled on several.
+1. **Certify or refute the remaining flags.** W7, A and SW9 are admitted.
+   Of the selector’s other flags, the finish-stage recheck
+   (`selector-recheck-90-seed1.json`) placed one arity-8 class, so 87 stand without a
+   certificate. Uniform rows stalled on several.
    Adaptive rows closed flag 3 (SW9) but stalled on flag 2 at their cap of 1,152 rows:
    the cap was spent by round 4, the live rows fell from 1,152 to 794 by round 18 and
    then stopped, and three of the nine owners never lost a row.
@@ -405,7 +405,7 @@ $n = 17$ lower-bound results and holds the bracket’s lower end.
 | Projected | Nothing at present beyond the heuristic lines below |
 | Heuristic | Every selector flag, every best-penetration figure, and every orbit count conditional on flags proving |
 | Modelled | The feasible-set radii at the two caps; the capture cost table and its falsifier thresholds |
-| Not started or not reported | The capture pilot’s result; a per-state method for the residue; the composed proof and its review |
+| Not decided | The capture route after pilot 2 (R9’s review); a per-state method for the residue; the composed proof and its review |
 
 <!-- This document follows common-doc-guidelines.md.
 See github.com/jlevy/practical-prose and review guidelines before editing.

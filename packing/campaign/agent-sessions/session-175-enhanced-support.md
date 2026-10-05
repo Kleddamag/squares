@@ -16,7 +16,7 @@ session:
   status: stopped
   certification_pending: think-q0z7
   goal: Find additional parent-row cliques in frozen half/octagon enhanced-core model using
-    all raw pieces, or honest bounded unknown. No rownegative/admission/globalproof.
+    all raw pieces, or honest bounded unknown. No row-negative/admission/global proof.
   workflow_phases:
   - workflow: research-loop
     focus: correctness
@@ -58,7 +58,7 @@ session:
     expected_output: packing/campaign/explorations/X048-session-175-enhanced-support/README.md
     validation_command: ONE explicit project Python enhanced support CLI; immutable Job 240 s;
       root direct independent replay Job 150 s
-    kill_condition: 100k unique pairs/100k nodes/180 s/512 MiB or Job 240 s ends attempt; no rerun/capladder.
+    kill_condition: 100k unique pairs/100k nodes/180 s/512 MiB or Job 240 s ends attempt; no rerun/cap ladder.
     fallback: Retain 18 enhanced parent supports/72 fixed tuple loss evidence, all other 78 rows unknown;
       no cap ladder.
     outcome: 26 cliques support 41/96 parents (+23), 55 unknown; 100k pairs/134 DFS/157.625 s, 170758144 B.
@@ -83,7 +83,7 @@ session:
     unchanged.
   - Endpoint exact angle-containing children and root pretarget source/control GO; root fresh
     replay 120 s/512 MiB/Job 150.
-  - No oldraw/H/kernel/producer edits, adaptive partition/capture/Flag2/admission or global proof
+  - No old raw/H/kernel/producer edits, adaptive partition/capture/Flag2/admission or global proof
     claim.
   - Project 15 min reserve, outer 14:36:46Z and 30 min window final reserve binding; no retrospective
     deadline extension.

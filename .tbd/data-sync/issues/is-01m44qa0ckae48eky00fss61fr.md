@@ -3,14 +3,18 @@ type: is
 id: is-01m44qa0ckae48eky00fss61fr
 title: "PR #333 A7 (Low): single-line receipts."
 kind: task
-status: open
+status: in_progress
 priority: 2
-version: 1
+version: 2
+delegate: graph_gate
 labels: []
 dependencies: []
 parent_id: is-01m44q9st2e0jh0h0cztp6hnv8
+hold: null
+hold_until: null
 created_at: 2026-10-05T00:27:05.490Z
-updated_at: 2026-10-05T00:27:05.490Z
+updated_at: 2026-10-05T00:54:30.342Z
+started_at: 2026-10-05T00:54:30.342Z
 ---
 https://github.com/jlevy/squares/pull/333#pullrequestreview-5408660716
 

@@ -805,6 +805,16 @@ consequence in each.
   The closest miss is mask 3963647, at penetration 0.00027. BC-421 is complete.
 - **BC-425’s target 6 also stopped at its round cap**, at 18:15:37, without closing; its
   node is kept for a stall diagnosis.
+- **The saved-node re-check of BC-423’s control found no closure, but target 2 stays
+  voided.** It returned PASS_SAVED_STALL at 17:40:21 in 4,793 s on the endpoint7 node:
+  its cells and its seed and node ids are those of the kept control, and it checked the
+  producer’s 65 steps.
+  The queue’s identity comparison then failed on a JSON formatting difference and left
+  target 2 voided. Releasing it by hand is the user’s decision, and the receipt is filed
+  beside the other lane K receipts.
+- **BC-426 re-runs BC-425’s two round-cap stalls under BC-423’s recipe**, registered
+  before its runs. Any closure is verified and held, not admitted, because its only
+  control evidence is the same receipt target 2 waits on.
 
 <!-- This document follows common-doc-guidelines.md.
 See github.com/jlevy/practical-prose and review guidelines before editing.

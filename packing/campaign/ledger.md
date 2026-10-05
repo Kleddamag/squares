@@ -902,6 +902,7 @@ Status: **active**. Turn PR 230's W3 review and the two explorations it led to, 
 | BC-423 | research | 17 | in_progress | 0 | think-035m | packing/campaign/agent-sessions/session-182-n17-overnight-lanes.md |
 | BC-424 | research | 17 | complete | 1 | think-z8an | packing/campaign/agent-sessions/session-182-n17-overnight-lanes.md |
 | BC-425 | research | 17 | in_progress | 1 | think-035m | packing/campaign/agent-sessions/session-182-n17-overnight-lanes.md |
+| BC-426 | research | 17 | in_progress | 1 | think-035m | packing/campaign/agent-sessions/session-182-n17-overnight-lanes.md |
 
 ## Series
 

@@ -1757,7 +1757,11 @@ agenda:
       the checker alone re-checks the kept control node with --check-saved at a 14,000 s
       ceiling; only a stall there releases target 2 for admission, and a closure is a
       soundness alarm. The receipt and the producer's progress records are in
-      receipts/K of X048-session-182-overnight.
+      receipts/K of X048-session-182-overnight. The re-check returned PASS_SAVED_STALL at
+      17:40:21 on the endpoint7 node (cells and seed and node ids those of the kept
+      control, receipts/K/kernel-control-endpoint7-bc423-check.json), but the queue's
+      identity comparison failed on a JSON formatting difference and left target 2
+      voided; target 2 awaits the user's ruling.
   - id: BC-424
     purpose: research
     owner_focus: correctness
@@ -1852,6 +1856,58 @@ agenda:
       and no new control runs. An arity-8 closure counts for the certified census but not
       toward H-267's criterion, which is read at arity at most seven. Evidence record
       exp-254, written at the first admission.
+  - id: BC-426
+    purpose: research
+    owner_focus: correctness
+    instances:
+    - 17
+    state: in_progress
+    priority: 1
+    question: >-
+      Do BC-425's two round-cap stalls, targets 3 and 6, close under BC-423's recipe, the
+      one that took lane K's target 2 from a round-cap stall to a closure?
+    hypotheses:
+    - H-267
+    budget: >-
+      Two runs of at most 7,000 s each on the two slots free at 18:25 UTC, behind BC-425's
+      remaining targets, and one verification of at most 4,000 s per closure.
+    entry: >-
+      The coordinator's re-plan at the 18:25 UTC check-in; this cell committed before
+      either run.
+    exit: >-
+      Both targets run once, verdict as observed: a closure re-proved by the standing
+      kernel verifier in full and held as a verified candidate, or a non-closure retained.
+      No closure is admitted before the user rules on the control evidence for this
+      recipe. A soundness alarm stops the slice.
+    bead: think-035m
+    depends_on:
+    - BC-415
+    next_evidence: packing/campaign/agent-sessions/session-182-n17-overnight-lanes.md
+    workflows:
+    - research-loop
+    program: post-optimality-low-n
+    parallel_group: n17-overnight-182
+    artifacts:
+    - packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-254-h267-n17-second-tranche-flags.md
+    - packing/campaign/explorations/X048-session-182-overnight/receipts/K/kernel-control-endpoint7-bc423-check.json
+    note: >-
+      Under BC-418, a future slice added at a check-in, citing BC-423 and exp-254. The
+      targets are BC-425's target 3 (side-S0 side-E0 side-S1 side-S2 interior-NW
+      interior-W interior-S interior-SE) and target 6 (side-N0 side-S1 side-W2 interior-NW
+      interior-W interior-S interior-N interior-SE), both stopped at SW9's 24-round cap with
+      producer time unused (exp-254). The recipe is BC-423's verbatim. The argv, from
+      packing/ of the clean run worktree at cebb5d15a, is nice -n 10 timeout -k 120 7600
+      .venv/bin/python3 -m devtools.check_n17_subpattern --cells CELLS --bins 64
+      --max-rounds 48 --hull-limit 16 --producer-share 0.6 --split-floor 512 --max-rows
+      2304 --split-patience 1 --core octagon --max-seconds 7000 --save-objects DIR --output
+      FILE. Like BC-423's, it differs from SW9's in --max-rounds 48, --max-rows 2304 and
+      --core octagon. The only control under this recipe is BC-423's endpoint7 control,
+      whose run ended INCOMPLETE and whose saved node the checker alone then found
+      PASS_SAVED_STALL (receipts/K/kernel-control-endpoint7-bc423-check.json). Lane K's
+      target 2 rests on the same receipt and awaits the user's ruling, so every BC-426
+      closure is verified and held, not admitted, until that ruling. Both targets are
+      arity 8: a closure would count for the census but not toward H-267's arity-7
+      criterion.
 ---
 # Agenda 042: The n11 Settlement Ladder and Low-n Angles
 

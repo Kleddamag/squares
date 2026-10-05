@@ -5,7 +5,7 @@ title: "Intake pass 2026-10-05 07:30Z: #358 (n17 work plan), two new wand125 com
 kind: task
 status: in_progress
 priority: 1
-version: 3
+version: 4
 delegate: claude-code@vm
 labels:
   - result-import
@@ -14,7 +14,7 @@ parent_id: is-01m44qz0rxvkakmyqaj7qdgagv
 hold: null
 hold_until: null
 created_at: 2026-10-05T07:34:29.926Z
-updated_at: 2026-10-05T08:28:36.102Z
+updated_at: 2026-10-05T08:32:54.517Z
 started_at: 2026-10-05T07:35:01.094Z
 ---
 
@@ -36,3 +36,8 @@ Validation:
 - reachable_tests --since 5c1a7145e --run -n 2 selected 181 of 555 files: 5182 passed, 3 failed, 12 skipped.
   - test_overview::test_no_page_carries_a_result_overview is caused by this branch. index.html is 2,503,016 bytes against its 2,500,000 ceiling, up from 2,492,464 at 5c1a7145e: +10,552 bytes for T-094's row (2.6 KB) and its popover (7.6 KB). Every result adds about 10 KB, so the ceiling binds on any new result, and all-results.html is at 1,157,363 of 1,200,000. Raising the ceiling, or trimming what a row's popover inlines, is the owner's or coordinator's call.
   - The two process-group reaping tests (test_fixed_core_packet::test_nonzero_leader_exit_reaps_a_sigterm_ignoring_grandchild and test_fixed_core_packet_calibration::test_timeout_kills_and_reaps_a_termination_resistant_process_group) fail alone here too. Their code is unchanged since 5c1a7145e, so this is environmental: PID 1 is process_api.
+
+2026-10-05 08:45Z: the sweep after the pass's commits found three new items, all now owned, in 1c346a1d0:
+- #282 comment 5990620723 and wand125 head d73ce20 (s(66) >= 843/100): queued under think-4qit.
+- squarepacker/s12-lower-bound 98ffe37 and 7a96bec (v1.1, s(12) >= 7943/2000, above T-079's verified bound): think-d135.
+make intake then exits 0, with nothing under Needs Action.

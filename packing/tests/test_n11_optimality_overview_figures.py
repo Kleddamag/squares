@@ -44,7 +44,7 @@ def test_overview_figures_are_complete_static_svg_with_distinct_roles() -> None:
     assert "2,184 case classes" in roadmap
     assert "2,180 excluded" in roadmap
     assert "fixed-T rectangle" in roadmap
-    assert "No packing has S < T" in roadmap
+    assert "No packing has L₀ < T" in roadmap
     # A diagram's title is its figure's caption, not a line of the drawing.
     assert "Two routes to the exact optimum" not in roadmap.replace(
         "Two routes to the exact eleven-square optimum", ""
@@ -79,7 +79,7 @@ def test_overview_figures_are_complete_static_svg_with_distinct_roles() -> None:
     assert "same packing" in endpoint
     assert "No physical shrinking" in endpoint
     assert "Fixed-T local theorem" in endpoint
-    assert "T > S: contradiction" in endpoint
+    assert "T > L₀: contradiction" in endpoint
 
 
 LOCAL_RADII_TABLE = """\

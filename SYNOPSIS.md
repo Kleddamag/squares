@@ -92,6 +92,8 @@ The
 [complete native n11 decision](docs/project/reviews/review-2026-09-22-native-n11-parent-core.md)
 adds a distinct interval coverage method for Kleddamag’s strict $3.875$ bound (T-037,
 `V3/C3`), with no new bound.
+[Part II of the n = 11 series](https://jlevy.github.io/squares/papers/n11-threshold-bound-review.html)
+explains that proof and what it inherits.
 The
 [R052 review of 25 September](docs/project/reviews/review-2026-09-25-n17-guzhou-r052.md)
 verifies Guzhou0806’s strict $s(17) > 231001/50000 = 4.62002$, built with AI assistance
@@ -555,6 +557,8 @@ case or experiment separately.
 | --- | --- | --- | --- | --- |
 | [Retained n17 diagnostics](packing/devtools/n17-diagnostics.md) | engineering and validation rules | current | maintained | — |
 | [The n = 17 Optimality Proof, Explained](docs/project/n17-optimality-explainer.md) | first-principles tutorial | supporting | maintained | — |
+| [N11: A Three-Paper Explainer Series](docs/project/specs/active/plan-2026-10-05-n11-explainer-series.md) | implementation plan | current | transient | — |
+| [Eleven-Square Threshold-Bound Paper: Exposition Reviews and Their Disposition](docs/project/reviews/review-2026-10-05-n11-threshold-bound-review.md) | dated review record | record | retained | — |
 | [Nagamochi’s Lemma 1 Is False: What T-007 Rests On Now](docs/project/reviews/review-2026-10-02-nagamochi-lemma1-karakus.md) | dated review record | record | retained | — |
 | [Proof Review: wand125’s Point-Only Cover for `s(61) = 8`](docs/project/reviews/review-2026-10-02-wand125-s61-point-cover.md) | dated review record | record | retained | — |
 | [Eleven-Square Optimality Proof: The Delta for the Original Contributor](docs/project/reviews/review-2026-10-03-n11-optimality-upstream-delta.md) | dated review record | record | retained | — |
@@ -1688,10 +1692,17 @@ T-037’s verified $s(11) > 31/8$ and T-059’s reported row-minimum equality re
 separate scopes. PR 246 merged with the verified result; the next handoff is a bounded
 fresh-ensemble replay entry point.
 
-The
-[dedicated optimality paper](packing/devtools/templates/n11-optimality-review-article.md)
-explains that complete argument from first principles, separately from the historical
-lower-bound explainer.
+The n = 11 papers form one series, read in order
+([plan](docs/project/specs/active/plan-2026-10-05-n11-explainer-series.md)):
+[Part I](https://jlevy.github.io/squares/papers/n11-lower-bounds-explainer.html), the
+project’s lower bounds T-018, T-025 and T-026;
+[Part II](https://jlevy.github.io/squares/papers/n11-threshold-bound-review.html), a
+review of Kleddamag’s $s(11) > 31/8$ (T-037), its k-of-m charges, shrunken parents with
+strict cores and exact sweep
+([source](packing/devtools/templates/n11-threshold-bound-review-article.md)); and
+[Part III](https://jlevy.github.io/squares/papers/n11-optimality-review.html), the
+[dedicated optimality paper](packing/devtools/templates/n11-optimality-review-article.md),
+which explains that complete argument from first principles.
 Its
 [simplification review](docs/project/reviews/review-2026-09-30-n11-expository-simplification.md)
 consolidates the proof dependencies and geometric invariant without removing required

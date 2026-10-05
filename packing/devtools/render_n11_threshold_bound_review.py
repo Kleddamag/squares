@@ -1,21 +1,25 @@
-"""Publish the T-060 paper as an offline HTML page and readable Markdown.
+"""Publish Part II, the review of T-037, as an offline HTML page and readable Markdown.
 
-The article and exact-data figures are maintained separately. This renderer only
-substitutes the declared reviewed figure slots, gives repository citations immutable
-links, and uses KPress for Markdown, math, footnotes, typography, and PDF print.
+The article and its exact-data figures are maintained separately. This renderer only
+substitutes the declared figure slots and caption facts, fills the links to the other two
+papers, gives repository citations immutable links, and uses KPress for Markdown, math,
+footnotes, typography and PDF print, as `render_n11_optimality_review` does for Part III,
+on which it is modelled.
 
-The page is one of the site's papers (`overview_sections.PAPERS`), so it carries the
-site's navigation bar, with Papers current, as the explainer does: the shared partial
-and stylesheet through `render_overview.nav_html`, the gear's program, and the script
-that drops the bar when the page is framed in a card's popover. The bar is hidden in
-print.
+The page is one of the site's papers, so it carries the site's navigation bar with
+Papers current, the shared publication layer and the site's math pipeline, all through
+the same helpers Part III uses. Its slug is `n11-threshold-bound-review`
+(`render_overview.N11_THRESHOLD_BOUND_REVIEW`), and that is its name everywhere: this
+module, its templates and tests, and what it writes. Given the site's root (`--site`),
+it writes `papers/n11-threshold-bound-review.html` and `.md`, and with `--pdf` the
+`.pdf` beside them.
 
-Its slug is `n11-optimality-review`, and that is its name everywhere: this module, its
-templates and tests, and what it writes. Given the site's root (`--site`), it writes
-`papers/n11-optimality-review.html` and `.md`, and with `--pdf` the `.pdf` beside them.
-A paper is served a level below the site's root, so the bar's links climb one. Until
-2026-10-01 it was served at `n11-optimality/t-060-explainer.html`, which
-`render_overview` now serves as a forwarder.
+The figures come from `devtools.n11_threshold_figures` (`render_figures`,
+`caption_facts`, `FIGURE_INPUTS`), drawn only on the real render path, so the tests can
+pass a fake figures dict and fake facts, as Part III's do. `FIGURE_KEYS` and
+`CAPTION_FACT_KEYS` below are the contract between the article and that module: every
+slot is used exactly once, every fact at least once, and a fact the article does not use
+is refused.
 """
 
 from __future__ import annotations
@@ -31,12 +35,24 @@ from kpress.format.pdf import _await_print_fonts  # pyright: ignore[reportPrivat
 from kpress.output import write_bytes_atomic
 from strif import atomic_output_file
 
-from devtools import artifact_dates, paper_front, paper_links, render_n11_lower_bounds_explainer
+from devtools import (
+    n11_threshold_figures,
+    paper_front,
+    paper_links,
+    render_n11_lower_bounds_explainer,
+)
 from devtools.render_n11_lower_bounds_explainer_pdf import dated
+from devtools.render_n11_optimality_review import (
+    ABSOLUTE_LINKS,
+    MATH_WAIT_MS,
+    TYPESET_ALL,
+    caption_math,
+    math_scripts,
+)
 from devtools.render_overview import (
     EMBED_SCRIPT,
     MATH_SCRIPT,
-    N11_OPTIMALITY_REVIEW,
+    N11_THRESHOLD_BOUND_REVIEW,
     PAPER_TYPE_CSS,
     PAPERS_ROOT,
     SITE_NAV,
@@ -50,236 +66,286 @@ from devtools.render_overview import (
     nav_html,
     paper_path,
 )
-from sqpack.probes import probe
 from sqpack.release import (
-    OPTIMALITY_PROOF_PUBLISHED,
-    OPTIMALITY_REVIEW_EDITION,
-    OPTIMALITY_REVIEW_HISTORY,
-    OPTIMALITY_REVIEW_REVISED,
+    THRESHOLD_PROOF_PUBLISHED,
+    THRESHOLD_REVIEW_EDITION,
+    THRESHOLD_REVIEW_HISTORY,
+    THRESHOLD_REVIEW_REVISED,
 )
 
 PACKING = Path(__file__).resolve().parents[1]
 REPO = PACKING.parent
 TEMPLATES = Path(__file__).with_name("templates")
-ARTICLE = TEMPLATES / "n11-optimality-review-article.md"
-SHELL = TEMPLATES / "n11-optimality-review-shell.html"
-STYLE = TEMPLATES / "n11-optimality-review.css"
-FIGURES_MODULE = Path(__file__).with_name("n11_optimality_figures.py")
+ARTICLE = TEMPLATES / "n11-threshold-bound-review-article.md"
+SHELL = TEMPLATES / "n11-threshold-bound-review-shell.html"
+STYLE = TEMPLATES / "n11-threshold-bound-review.css"
+#: The paper's term registry, read by the define-before-use gate (`devtools.paper_terms`).
+TERMS = TEMPLATES / "n11-threshold-bound-review-terms.yaml"
+FIGURES_MODULE = Path(__file__).with_name("n11_threshold_figures.py")
 #: The site's root as this build writes it; the paper goes under `papers/` in it.
 SITE = PACKING / "site"
 #: The paper's slug, which names its page, its Markdown and its PDF.
-SLUG = N11_OPTIMALITY_REVIEW
+SLUG = N11_THRESHOLD_BOUND_REVIEW
 #: Where the paper is served, from the site's root, and the way back up to the root.
 SITE_PATH = paper_path(SLUG)
 SITE_ROOT = PAPERS_ROOT
-TITLE = "A Review of the Optimality Proof of the Trump Packing of 11 Squares"
+#: The title, plain, for the head and the Markdown edition; the hero sets its one
+#: formula as the page's own math span, as Part I's does for `n = 11`.
+TITLE = "A Review of the Certified Lower Bound s(11) > 31/8 for 11 Squares"
+HERO_TITLE = TITLE.replace("s(11) > 31/8", '<span class="tex">s(11) \\gt 31/8</span>')
+#: One line of at most 160 characters, the §8 one-liner cut to the head's limit.
 DESCRIPTION = (
-    "A review of Queuingtheorydotcom's computer-assisted proof that Trump's 1979 packing "
-    "of eleven unit squares is optimal, explained step by step."
+    "Explains Kleddamag's proof that s(11) > 31/8 (T-037): five-site k-of-m charges, "
+    "strict cores on shrunken parents, and a certificate over 12,028 angle rows."
 )
-#: The paper's front, in the two papers' one form (`devtools.paper_front`): the proof it
+#: The archived copy of the source proof, which the article cites file by file, and this
+#: project's receipts of its replay and audit beside it.
+ARCHIVE = PACKING / "resources/web/external-square-certificates-2026-09-22/kleddamag-11"
+RECEIPTS = PACKING / "resources/web/external-square-certificates-2026-09-22/receipts/n11"
+#: The paper's front, in the papers' one form (`devtools.paper_front`): the proof it
 #: explains, credited first by its author and address; then who oversaw the review and
-#: which agents wrote it; its own version, a draft, which links its version history at
-#: the foot of the page, and never the site's edition; and its dates, the day the source
-#: published the proof and the day the article last changed, all from `sqpack.release`.
-#: The head states the second to a link preview (`page_meta`).
+#: which agents wrote it; its own version, which links its version history at the foot
+#: of the page; and its dates, the day the source published the proof and the day the
+#: article last changed, all from `sqpack.release`.
 FRONT = paper_front.check(
     paper_front.PaperFront(
         slug=SLUG,
-        title=TITLE,
+        title=HERO_TITLE,
         source=paper_front.Source(
-            "Queuingtheorydotcom", "https://github.com/Queuingtheorydotcom/11SquaresOptimal"
+            "Kleddamag", "https://github.com/Kleddamag/11-squares-certified-bound"
         ),
         oversight=(paper_front.Person("Joshua Levy", "https://x.com/ojoshe"),),
-        agents=("GPT-6 Astra", "GPT-6 Sol"),
-        version=OPTIMALITY_REVIEW_EDITION,
+        agents=("Fable 5.1", "Opus 5.5"),
+        version=THRESHOLD_REVIEW_EDITION,
         dates=(
-            paper_front.Dated("Original proof", OPTIMALITY_PROOF_PUBLISHED),
-            paper_front.Dated(paper_front.REVISED, OPTIMALITY_REVIEW_REVISED),
+            paper_front.Dated("Original proof", THRESHOLD_PROOF_PUBLISHED),
+            paper_front.Dated(paper_front.REVISED, THRESHOLD_REVIEW_REVISED),
         ),
         history="version-history",
         series=paper_front.series(SLUG),
     )
 )
+#: The twelve figures, plan figures II.1 to II.12 in reading order; the figure module
+#: supplies exactly these and the article uses each exactly once.
 FIGURE_KEYS = (
-    "WITNESS_SVG",
-    "ROADMAP_SVG",
+    "CHANGES_SVG",
     "LADDER_SVG",
-    "COVER_SVG",
-    "MASK_SVG",
-    "CAPACITY_SVG",
-    "POSE_SVG",
-    "ROW_SVG",
+    "ROADMAP_SVG",
     "CHARGE_SVG",
-    "SYMMETRY_SVG",
-    "CAPTURE_SVG",
-    "LOCAL_SVG",
-    "ENDPOINT_SVG",
+    "BUDGET_SVG",
+    "FAMILIES_SVG",
+    "CORE_SVG",
+    "CATALOGUE_SVG",
+    "ENVELOPE_SVG",
+    "SIGNED_SVG",
+    "FIELD_SVG",
+    "MINIMA_SVG",
 )
-MATH_WAIT_MS = 15_000
-#: Asks the page's math driver for every formula at once, before a print.
-TYPESET_ALL = probe(
-    render_n11_lower_bounds_explainer.PROBES, "render_n11_optimality_review/typeset_all"
+#: Facts about the whole certificate, which the prose and several captions name.
+CERTIFICATE_FACT_KEYS = (
+    "CERT_GAMMA",
+    "CERT_M",
+    "CERT_ELEVEN_GAMMA",
+    "CERT_SURPLUS_UNITS",
+    "CERT_ROWS",
+    "CERT_SITES",
+    "CERT_POINT_SITES",
+    "CERT_ORBITS",
+    "CERT_CHARGE_ORBITS",
+    "CERT_FEATURES",
+    "CERT_A",
+    "CERT_L0",
+    "CERT_BOUND",
 )
-#: Rewrites the page's relative links against its published address before a print, so
-#: the PDF's links to the site and to the other papers of the series do not point at the
-#: build machine's disk; the explainer's PDF does the same.
-ABSOLUTE_LINKS = probe(
-    render_n11_lower_bounds_explainer.PROBES,
-    "render_n11_lower_bounds_explainer_pdf/absolute_links",
+#: Every caption fact the article names, `<FIGURE>_<FACT>` for a fact about one figure
+#: and `CERT_<FACT>` for one about the whole certificate. `caption_facts()` supplies
+#: exactly these.
+CAPTION_FACT_KEYS = (
+    *CERTIFICATE_FACT_KEYS,
+    # Figure 1: what changed from T-026 to T-037.
+    "CHANGES_T026_POINTS",
+    "CHANGES_T026_TRIPLES",
+    "CHANGES_T026_POINT_SHARE",
+    "CHANGES_T037_POINT_SHARE",
+    "CHANGES_T026_B",
+    "CHANGES_T026_NET",
+    # Figure 2: the series bound ladder, and the bound gap the prose states.
+    "LADDER_GAP",
+    # Figure 4: one k-of-m charge, orbit 72.
+    "CHARGE_ORBIT",
+    "CHARGE_WEIGHT",
+    "CHARGE_SITES",
+    "CHARGE_ROW",
+    # Figure 5: budget bars.
+    "BUDGET_POINTS",
+    "BUDGET_TWO_OF_THREE",
+    "BUDGET_TWO_OF_FIVE",
+    "BUDGET_THREE_OF_FIVE",
+    "BUDGET_M",
+    "BUDGET_SURPLUS",
+    "BUDGET_RATIO",
+    # Figure 6: the site system, the census and the gallery.
+    "FAMILIES_POINT_ORBITS",
+    "FAMILIES_POINT_ONLY",
+    "FAMILIES_SHARED",
+    "FAMILIES_CHARGE_ONLY",
+    "FAMILIES_IN_CHARGE",
+    "FAMILIES_NEAR_ORBITS",
+    "FAMILIES_NEAR_SHARE",
+    "FAMILIES_WIDE_SHARE",
+    "FAMILIES_POINT_MAX",
+    "FAMILIES_POINT_MAX_SITE",
+    "FAMILIES_TABLE",
+    "FAMILIES_TRIPLE_ORBIT",
+    "FAMILIES_TRIPLE_WEIGHT",
+    "FAMILIES_TRIPLE_CENTRE",
+    "FAMILIES_PAIR_ORBIT",
+    "FAMILIES_PAIR_WEIGHT",
+    # Figure 7: parent and core.
+    "CORE_EXAGGERATION",
+    # Figure 8: the catalogue strip.
+    "CATALOGUE_ROWS",
+    "CATALOGUE_END",
+    "CATALOGUE_B_MIN",
+    "CATALOGUE_B_MAX",
+    "CATALOGUE_TIGHT_ROW",
+    "CATALOGUE_TIGHT_ANGLES",
+    "CATALOGUE_TIGHT_MIN",
+    "CATALOGUE_PAIR_ROWS",
+    "CATALOGUE_PAIR_ANGLES",
+    "CATALOGUE_PAIR_MIN",
+    # Figure 9: signed rectangles, and the expansion's weight.
+    "SIGNED_ORBIT",
+    "SIGNED_ABS_SUMS",
+    "SIGNED_EXPANSION_WEIGHT",
+    # Figure 10: the envelope.
+    "ENVELOPE_RHO",
+    "ENVELOPE_HALF",
+    # Figure 11: the charge field.
+    "FIELD_ROW",
+    "FIELD_MIN",
+    "FIELD_WITNESS",
+    "FIELD_GRID",
+    # Figure 12: per-row minima and the native band.
+    "MINIMA_VALUES",
+    "MINIMA_TOP",
+    "MINIMA_TOP_ROWS",
+    "MINIMA_NATIVE_BELOW_ONE",
+    "MINIMA_NATIVE_EQUAL",
+    "MINIMA_NATIVE_MIN",
 )
 FIGURE_SLOT = re.compile(r"\{\{([A-Z_]+_SVG)\}\}")
-#: A figure's caption, and a formula in one. A caption is an HTML block, where KPress
-#: leaves `$…$` as it is written, so the renderer typesets a caption's formulas itself.
-FIGCAPTION = re.compile(r"<figcaption>.*?</figcaption>", re.DOTALL)
-CAPTION_MATH = re.compile(r"\$([^$\n]+)\$")
 LEFTOVER_SLOT = re.compile(r"\{\{[A-Z][A-Z_]*\}\}")
 RELATIVE_LINK = re.compile(r"(?P<start>\]\()(?P<url>\.\.?/[^\s)]+)(?P<end>\))")
 RELATIVE_REFERENCE = re.compile(r"(?m)^(?P<start>\[[^\]\n]+\]:[ \t]*)(?P<url>\.\.?/[^\s]+)")
 RELATIVE_ANCHOR = re.compile(r'(?P<start><a\b[^>]*\bhref=")(?P<url>\.\.?/[^"]+)(?P<end>")')
-ARCHIVED_CITATION_SOURCES = (
-    PACKING / "resources/papers/kingbird-square-11-provenance.svg",
-    PACKING / "resources/web/external-square-certificates-2026-09-22/kleddamag-11/README.md",
+#: Words that address a reader who has the page in front of them, which a paper's prose
+#: never does (Part I's publisher refuses the same words in its Markdown edition).
+ONLY_ON_SCREEN = re.compile(
+    r"\b(?:chooser|hover|tap|drag|click|button|slider|toggle)\b", re.IGNORECASE
 )
-RENDER_INPUTS = (
-    Path(__file__),
-    ARTICLE,
-    SHELL,
-    STYLE,
-    *ARCHIVED_CITATION_SOURCES,
-    # The front of the paper is written by the component both papers share.
-    PACKING / "devtools" / "paper_front.py",
-    render_n11_lower_bounds_explainer.PUBLICATION_STYLE,
-    FIGURES_MODULE,
-    # The series bound ladder, drawn from the register's headlines.
-    PACKING / "devtools/paper_figures.py",
-    PACKING / "frontier/results.yaml",
-    PACKING / "devtools/n11_optimality_overview_figures.py",
-    PACKING / "devtools/n11_optimality_mechanism_figures.py",
-    PACKING / "devtools" / "check_n11_optimality_d4.py",
-    PACKING / "devtools" / "render_n11_lower_bounds_explainer.py",
-    PACKING / "devtools" / "n11-lower-bounds-explainer" / "diagram-labels.js",
-    PACKING / "devtools" / "render_overview.py",
-    PACKING / "devtools" / "render_frontier_page.py",
-    PAPER_TYPE_CSS,
-    SITE_NAV,
-    SITE_NAV_CSS,
-    THEME_SCRIPT,
-    EMBED_SCRIPT,
-    MATH_SCRIPT,
-    render_n11_lower_bounds_explainer.INLINE_SCRIPT_ASSETS["NATIVE_MATH_METRICS"],
-    render_n11_lower_bounds_explainer.PROBES
-    / "render_n11_lower_bounds_explainer"
-    / "host_math_init.js",
-    render_n11_lower_bounds_explainer.PROBES
-    / "render_n11_optimality_review"
-    / "typeset_all.js",
-    PACKING / "atlas" / "rendering" / "trump11-overview.svg",
-    PACKING / "devtools" / "packing_render_adapters.py",
-    PACKING / "src" / "sqpack" / "render",
-    # The front prints the paper's own version and dates, which are declared here.
-    PACKING / "src" / "sqpack" / "release.py",
-    PACKING / "cases" / "trump11" / "packing.py",
-    PACKING / "resources/web/n11-optimality-2026-09-29/receipts/final-composition.json",
-    PACKING / "resources/web/n11-optimality-2026-09-29/receipts/d4-independent/result.json",
-    PACKING / "resources/web/n11-optimality-2026-09-29/receipts/d4-independent/objects",
-    PACKING / "resources/web/n11-optimality-2026-09-29/receipts/source-graph/result.json",
-    PACKING / "resources/web/n11-optimality-2026-09-29/receipts/exclusion-inventory.json",
-    PACKING / "resources/web/n11-optimality-2026-09-29/receipts/local-isolation/result.json",
-    PACKING / "resources/web/n11-optimality-2026-09-29/receipts/pose-inclusion/result.json",
-    # The paper's exact tables: the role guard and the focused rectangle's radii.
-    PACKING / "resources/web/n11-optimality-2026-09-29/receipts/pose-inclusion/guard.json",
-    PACKING / "resources/web/n11-optimality-2026-09-29/receipts/local-dual-residual/objects",
-    PACKING / "devtools/check_n11_generic_fresh.py",
-    PACKING / "devtools/check_n11_optimality_field_mask0.py",
-    PACKING
-    / "resources/web/n11-optimality-2026-09-29/receipts/generic-mask2095-intake"
-    / "provenance.json",
-    PACKING
-    / "resources/web/n11-optimality-2026-09-29/receipts/generic-mask2095-intake"
-    / "full-result.json",
-    PACKING
-    / "resources/web/n11-optimality-2026-09-29/receipts/generic-mask2095-intake/objects",
-    PACKING / "resources/web/n11-optimality-2026-09-29/receipts/field-mask0/result.json",
-    PACKING / "resources/web/n11-optimality-2026-09-29/receipts/field-mask0/objects",
-    REPO / "vendor" / "kpress",
+#: The archived Kleddamag files the article links, each pinned to a repository blob.
+ARCHIVED_CITATION_SOURCES = (
+    ARCHIVE / "README.md",
+    ARCHIVE / "PROOF.md",
+    ARCHIVE / "ATTRIBUTION.md",
+    ARCHIVE / "AUTHORS.md",
+    ARCHIVE / "VERIFIED.json",
+    ARCHIVE / "global-certificate.json",
+    ARCHIVE / "exact_mixed.py",
+    ARCHIVE / "integer_sweep.py",
+    ARCHIVE / "independent_controls.py",
+    ARCHIVE / "verify_threshold_algebra.py",
+    ARCHIVE / "threshold-algebra.json",
+    ARCHIVE / "NOTICES/Mira-ATTRIBUTION.md",
+    ARCHIVE / "NOTICES/Guzhou-NOTICE.md",
+    ARCHIVE / "evidence/portable/python.json",
+    ARCHIVE / "evidence/portable/controls.json",
+)
+#: Every file the page is built from: the Pages workflow's path filter and the scope
+#: job read it (`devtools.pages_scope`). The figure module's own data inputs are its
+#: `FIGURE_INPUTS`, repository-relative; a file both lists name is declared once.
+RENDER_INPUTS = tuple(
+    dict.fromkeys(
+        (
+            Path(__file__),
+            ARTICLE,
+            SHELL,
+            STYLE,
+            TERMS,
+            *ARCHIVED_CITATION_SOURCES,
+            # The front of the paper is written by the component the papers share, and the
+            # links between papers by the shared placeholder.
+            PACKING / "devtools" / "paper_front.py",
+            PACKING / "devtools" / "paper_links.py",
+            render_n11_lower_bounds_explainer.PUBLICATION_STYLE,
+            FIGURES_MODULE,
+            PACKING / "devtools" / "paper_figures.py",
+            *(REPO / path for path in n11_threshold_figures.FIGURE_INPUTS),
+            PACKING / "devtools" / "render_n11_optimality_review.py",
+            PACKING / "devtools" / "render_n11_lower_bounds_explainer.py",
+            PACKING / "devtools" / "n11-lower-bounds-explainer" / "diagram-labels.js",
+            PACKING / "devtools" / "render_overview.py",
+            PACKING / "devtools" / "render_frontier_page.py",
+            PAPER_TYPE_CSS,
+            SITE_NAV,
+            SITE_NAV_CSS,
+            THEME_SCRIPT,
+            EMBED_SCRIPT,
+            MATH_SCRIPT,
+            render_n11_lower_bounds_explainer.INLINE_SCRIPT_ASSETS["NATIVE_MATH_METRICS"],
+            render_n11_lower_bounds_explainer.PROBES
+            / "render_n11_lower_bounds_explainer"
+            / "host_math_init.js",
+            render_n11_lower_bounds_explainer.PROBES
+            / "render_n11_optimality_review"
+            / "typeset_all.js",
+            # The front prints the paper's own version and dates, which are declared here.
+            PACKING / "src" / "sqpack" / "release.py",
+            # The certificate and the loader the figures and the register test read it through.
+            PACKING / "src" / "sqpack" / "fractional" / "parent_core.py",
+            # The retained evidence the paper cites and the figures draw from.
+            ARCHIVE / "evidence/portable/RESULT.json",
+            ARCHIVE / "evidence/portable/secondary/RESULT.json",
+            RECEIPTS / "full-replay/RESULT.json",
+            RECEIPTS / "independent-audit.json",
+            PACKING / "resources/web/wand125-tools-2026-09-29/README.md",
+            PACKING
+            / "resources/web/wand125-tools-2026-09-29/receipts/n11-bound-full-summary.json",
+            PACKING / "campaign/agent-sessions/session-153-native-full.json",
+            PACKING / "campaign/agent-sessions/session-153-native-reconciliation.json",
+            REPO / "vendor" / "kpress",
+        )
+    )
 )
 
 
 def version_history_markdown() -> str:
     """The paper's own editions, newest first, each with the day it was first published
-    and what changed in the paper: `sqpack.release.OPTIMALITY_REVIEW_HISTORY`."""
+    and what changed in the paper: `sqpack.release.THRESHOLD_REVIEW_HISTORY`."""
     return "\n".join(
         f"- **{entry.version} — {entry.first_published}.** {entry.result_scope}"
-        for entry in OPTIMALITY_REVIEW_HISTORY
+        for entry in THRESHOLD_REVIEW_HISTORY
     )
 
 
 def render_all_figures() -> dict[str, str]:
-    """Load the figure renderers only in a full publication checkout. The bound ladder
-    is the series' (`paper_figures.bound_ladder`), with this paper's result lit."""
-    from devtools import paper_figures  # noqa: PLC0415
-    from devtools.n11_optimality_figures import render_figures  # noqa: PLC0415
-    from devtools.n11_optimality_mechanism_figures import (  # noqa: PLC0415
-        render_mechanism_figures,
-    )
-    from devtools.n11_optimality_overview_figures import (  # noqa: PLC0415
-        render_overview_figures,
-    )
-
-    groups = (
-        render_figures(),
-        render_overview_figures(),
-        render_mechanism_figures(),
-        {"LADDER_SVG": paper_figures.bound_ladder("T-060")},
-    )
-    figures: dict[str, str] = {}
-    for group in groups:
-        if figures.keys() & group.keys():
-            raise ValueError("figure renderers supplied duplicate slots")
-        figures.update(group)
-    return figures
+    """The twelve figures, drawn from their hash-pinned inputs."""
+    return dict(n11_threshold_figures.render_figures())
 
 
 def render_all_facts() -> dict[str, str]:
-    """What the captions say of the figures that is data, from the modules that draw
-    them: each value comes from the receipt its figure is drawn from, once that receipt
-    checks, so a caption can name a count and cannot retype one."""
-    from devtools import (  # noqa: PLC0415
-        n11_optimality_figures,
-        n11_optimality_mechanism_figures,
-        n11_optimality_overview_figures,
-    )
-
-    groups = (
-        n11_optimality_figures.caption_facts(),
-        n11_optimality_overview_figures.caption_facts(),
-        n11_optimality_mechanism_figures.caption_facts(),
-    )
-    facts: dict[str, str] = {}
-    for group in groups:
-        if facts.keys() & group.keys():
-            raise ValueError("figure modules supplied duplicate caption facts")
-        facts.update(group)
+    """What the captions and the prose say of the certificate that is data, from the
+    module that draws the figures: each value is read from the hash-pinned file its
+    figure is drawn from, so the article can name a number and cannot retype one."""
+    facts = dict(n11_threshold_figures.caption_facts())
+    if set(facts) != set(CAPTION_FACT_KEYS):
+        missing = sorted(set(CAPTION_FACT_KEYS) - set(facts))
+        extra = sorted(set(facts) - set(CAPTION_FACT_KEYS))
+        raise ValueError(
+            f"caption facts differ from the article's: missing {missing}, extra {extra}"
+        )
     return facts
-
-
-def caption_math(markdown: str) -> str:
-    """The article with each caption's `$…$` formulas in KPress's own math markup.
-
-    A figure and its caption are an HTML block, where KPress leaves `$…$` literal, so a
-    caption used to write its mathematics as text (`17/32 ≤ t ≤ 9/16`, `tᵢ = tan(θᵢ/2)`),
-    in characters the sans face does not carry and the reader's machine drew. A caption
-    writes LaTeX as the prose does, the page's math pipeline typesets it in the
-    caption's own face, and the Markdown edition keeps the `$…$` as written."""
-    from devtools.render_frontier_page import math_html  # noqa: PLC0415
-
-    return FIGCAPTION.sub(
-        lambda caption: CAPTION_MATH.sub(
-            lambda formula: math_html(formula.group(1)), caption.group(0)
-        ),
-        markdown,
-    )
 
 
 def link_revision() -> str:
@@ -319,6 +385,8 @@ def _fill(
 
 
 def _repository_links(markdown: str, *, source: Path, revision: str) -> str:
+    """Every relative link pinned to a blob of the repository at `revision`; a link to a
+    file that is not in the repository, or outside it, is refused."""
     if not re.fullmatch(r"[0-9a-f]{40}", revision):
         raise ValueError("repository-link revision must be a full lowercase Git commit ID")
 
@@ -352,6 +420,18 @@ def _repository_links(markdown: str, *, source: Path, revision: str) -> str:
     )
 
 
+def refuse_screen_only_prose(markdown: str, *, source: Path) -> None:
+    """A paper has no apparatus, so a sentence that tells its reader to hover or tap is
+    wrong in every edition; it is refused rather than stripped, because the fix belongs
+    in the article."""
+    leaked = [line for line in markdown.split("\n") if ONLY_ON_SCREEN.search(line)]
+    if leaked:
+        joined = "\n  ".join(leaked[:5])
+        raise ValueError(
+            f"{source.name}: prose addresses a reader who has the page:\n  {joined}"
+        )
+
+
 def expanded_markdown(
     source: str,
     *,
@@ -361,12 +441,10 @@ def expanded_markdown(
     facts: Mapping[str, str] | None = None,
     edition: paper_links.Edition = "page",
 ) -> str:
-    """Fill the paper's front, the declared figure slots and the caption facts, and pin
-    local source citations to a Git commit. A fact the article does not use is refused,
-    as a slot it does not fill is: the two lists are the article's and the figure
-    modules' alike. A link to another paper of the series (`{{PAPER:<slug>#<anchor>}}`)
-    is filled for `edition` before the pinning, which would otherwise refuse it as a
-    file the repository does not hold (`devtools.paper_links`)."""
+    """Fill the paper's front, the declared figure slots, the caption facts and the
+    links to the other papers for `edition`, and pin local source citations to a Git
+    commit. A fact the article does not use is refused, as a slot it does not fill is:
+    the two lists are the article's and the figure module's alike."""
     facts = facts or {}
     source = paper_front.fill(source, FRONT)
     unused = sorted(key for key in facts if "{{" + key + "}}" not in source)
@@ -387,49 +465,22 @@ def expanded_markdown(
             re.IGNORECASE,
         ):
             raise ValueError(f"{key} contains active or remote SVG content")
+    refuse_screen_only_prose(source, source=article)
+    # The links to the other papers are filled before the repository pinning, so a
+    # sibling paper's page is never mistaken for a file of the repository.
+    linked = paper_links.fill_paper_links(source, edition=edition)
     filled = _fill(
-        source,
+        linked,
         {**figures, **facts, "VERSION_HISTORY": version_history_markdown()},
         source=article,
     )
-    filled = paper_links.fill_paper_links(filled, edition=edition)
     return _repository_links(filled, source=article, revision=revision)
-
-
-def _script(text: str, *, name: str) -> str:
-    """A program's text, refused if it would close its own script element early."""
-    if "</script" in text.lower():
-        raise ValueError(f"{name} closes its inline script")
-    return text
-
-
-def math_scripts(static: Path) -> dict[str, str]:
-    """The paper's mathematics, typeset as every page of the site typesets its own.
-
-    `KATEX_JS` is the explainer's pipeline (`render_n11_lower_bounds_explainer.katex_js`):
-    KaTeX, KPress's metric tables and shared runtime, and the host adapter `squaresMath`.
-    `SITE_MATH` is the site pages' driver (`overview/math.js`), which runs the adapter over
-    KPress's math markup and marks the page `math-ready`. So a formula here gets what it gets on
-    the explainer and on every other page: the one-mu kern after a function's name, the face of
-    the text it sits in read from that text's computed face, and a reveal only once the faces
-    its glyphs need have loaded, so a formula that asks for a face the page does not ship keeps
-    its MathML and fails the PDF rather than being drawn from the reader's machine. KPress's own
-    entry points, `auto-render.min.js` and `katex-init.js`, which the paper used to inline, do
-    none of the three.
-    """
-    return {
-        "KATEX_JS": _script(
-            render_n11_lower_bounds_explainer.katex_js(static), name="the math pipeline"
-        ),
-        "SITE_MATH": _script(MATH_SCRIPT.read_text(encoding="utf-8"), name=MATH_SCRIPT.name),
-    }
 
 
 def page_meta() -> PageMeta:
     """What the page says of itself in its head (`render_overview.head_tags`): its title,
     its sentence, the address it is served at, and the day its front says it was last
-    revised. It states no first publication: the review has one version, and the day
-    it first went live is not recorded (think-2cqu lists the question)."""
+    revised. It states no first publication, as Part III does not."""
     return PageMeta(
         name=TITLE,
         description=DESCRIPTION,
@@ -449,18 +500,17 @@ def render(
 ) -> tuple[str, str]:
     """Return self-contained HTML and the Markdown edition of the same document.
 
-    The page typesets the expanded article, its front included; the edition is that
-    document with its front in the Markdown edition's form (`paper_front.published`):
-    the title as a heading and the credits as a list, and no formats row, which is the
-    page's navigation. The rest, the figures as their SVG among it, is kept whole. A link
-    to another paper is page-relative on the page and the site's address in the edition,
-    which is read away from the site."""
+    The page typesets the expanded article with page-relative links to the other papers;
+    the edition is the same document with those links absolute, since it is read away
+    from the site, and with its front in the Markdown edition's form
+    (`paper_front.published`). The rest, the figures as their SVG among it, is kept
+    whole."""
     from kpress.format.markdown import parse_markdown  # noqa: PLC0415
 
     page_markdown = expanded_markdown(
         source, figures=figures, article=article, revision=revision, facts=facts
     )
-    markdown = expanded_markdown(
+    edition_markdown = expanded_markdown(
         source,
         figures=figures,
         article=article,
@@ -502,7 +552,7 @@ def render(
     }
     page = _fill(SHELL.read_text(encoding="utf-8"), values, source=SHELL, strict=True)
     render_n11_lower_bounds_explainer.assert_self_contained(page)
-    return page, paper_front.published(markdown, FRONT)
+    return page, paper_front.published(edition_markdown, FRONT)
 
 
 def output_files(site: Path, html: str, markdown: str) -> dict[Path, str]:
@@ -519,10 +569,13 @@ def _print_pdf(html_path: Path, pdf_path: Path) -> None:
 
     The document's two date fields are set to the day the article says the review was
     last revised, not left at the second Chromium printed it
-    (`render_n11_lower_bounds_explainer_pdf.dated`, `devtools.artifact_dates`).
+    (`render_n11_lower_bounds_explainer_pdf.dated`).
     """
+    from datetime import date  # noqa: PLC0415
+
     from playwright.sync_api import expect, sync_playwright  # noqa: PLC0415
 
+    revised = date.fromisoformat(paper_front.iso_date(paper_front.revised(FRONT)))
     with sync_playwright() as playwright:
         browser = playwright.chromium.launch()
         page = None
@@ -534,8 +587,6 @@ def _print_pdf(html_path: Path, pdf_path: Path) -> None:
             hosts = page.locator(".kpress-math")
             if hosts.count() == 0:
                 raise ValueError("the paper has no typeset math")
-            # The driver leaves the formulas far from the window to idle time; a print
-            # asks for them all, so the wait below is for work already under way.
             page.evaluate(TYPESET_ALL)
             try:
                 expect(page.locator(".kpress-math:not(:has(.katex))")).to_have_count(
@@ -547,7 +598,7 @@ def _print_pdf(html_path: Path, pdf_path: Path) -> None:
                 raise ValueError("the paper contains a math rendering error")
             _await_print_fonts(page)  # pyright: ignore[reportArgumentType]
             drawn = page.pdf(format="Letter", prefer_css_page_size=True, print_background=True)
-            write_bytes_atomic(pdf_path, dated(drawn, artifact_dates.optimality_revised()))
+            write_bytes_atomic(pdf_path, dated(drawn, revised))
         finally:
             if page is not None:
                 page.close()

@@ -1,7 +1,7 @@
 """What every page says of itself in its head, and the one card they all name.
 
 `render_overview.head_tags` writes a page's title, description, canonical link and link
-preview from a small record, for every page kind: the site's own pages, the two papers
+preview from a small record, for every page kind: the site's own pages, the papers
 and the workbench. These hold the function, the pages it is rendered into here, the
 checks the deployed site gets from `check_published_site`, and the card
 `devtools.social_card` draws. The papers' and the workbench's own heads are held in
@@ -194,15 +194,18 @@ def test_every_page_of_the_site_carries_the_set_once_at_its_own_address(
 
 
 def test_every_page_has_a_description_of_its_own(pages: dict[str, str]) -> None:
-    """No two pages say the same thing of themselves, the workbench and the two papers
+    """No two pages say the same thing of themselves, the workbench and the reviews
     among them, and none is the site-wide sentence under another page's name."""
-    from devtools import render_n11_optimality_review as paper  # noqa: PLC0415
+    import importlib  # noqa: PLC0415
+
     from workbench_tools import build_site  # noqa: PLC0415
 
     assert shared_descriptions(pages) == []
     described = {name: read_head(page).meta("description")[0] for name, page in pages.items()}
     described["workbench/index.html"] = build_site.PAGE.description
-    described[paper.SITE_PATH] = paper.DESCRIPTION
+    for record in render_overview.PAPERS[1:]:
+        review = importlib.import_module(record.module)
+        described[review.SITE_PATH] = review.DESCRIPTION
     assert len(set(described.values())) == len(described)
     for name, description in described.items():
         assert 20 <= len(description) <= DESCRIPTION_LIMIT, (name, len(description))
@@ -653,6 +656,7 @@ def test_a_built_site_is_held_to_its_heads_and_its_card(
     assert "each of 2 pages has a description of its own" in lines
     assert f"card {SOCIAL_CARD}: a PNG of 1200x630, {len(card)} bytes" in lines
     assert "papers/n11-lower-bounds-explainer.html: not in this build, so not checked" in lines
+    assert "papers/n11-threshold-bound-review.html: not in this build, so not checked" in lines
     assert "papers/n11-optimality-review.html: not in this build, so not checked" in lines
     assert "workbench/index.html: not in this build, so not checked" in lines
     assert check_published_site.main(["--local", str(tmp_path)]) == 0

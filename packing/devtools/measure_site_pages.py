@@ -137,10 +137,11 @@ Fifteen measurements, each over pages of a directory `preview_site` has built:
   Figures).
 - `credits` reports the front of each page, once its math is typeset, at each `--width`,
   one row an item: each chip of the formats row with its size and weight, then each line
-  of the credits with the weight it is set at, the weights of the names and the links in
-  it, the space above it in line heights, the lines its words take and its width as a
-  share of the column's. This is the tool the two papers' fronts are held together
-  with in the browser (`templates/paper-design.md`, The Papers' Front).
+  of the credits, the series strip's lines last, with what the line is (its class), the
+  weight it is set at, the weights of the names and the links in it, the space above it
+  in line heights, the lines its words take and its width as a share of the column's.
+  This is the tool the papers' fronts are held together with in the browser
+  (`templates/paper-design.md`, The Papers' Front).
 
 Every mode but `faces` also takes, in place of the directory, the address a site is
 served at, and measures the published pages as they are.
@@ -170,6 +171,7 @@ Usage, from `packing/`:
         --width 1280 --height 900 --height 1200 --height 1440 --markdown
     uv run --frozen --all-extras --group dev python -m devtools.measure_site_pages glyphs \
         SITE --page papers/n11-lower-bounds-explainer.html \
+        --page papers/n11-threshold-bound-review.html \
         --page papers/n11-optimality-review.html \
         --width 1280 --width 390 --scheme light --scheme dark --view differences --markdown
     uv run --frozen --all-extras --group dev python -m devtools.measure_site_pages glyphs \
@@ -177,8 +179,13 @@ Usage, from `packing/`:
         --view problems --markdown
     uv run --frozen --all-extras --group dev python -m devtools.measure_site_pages figures \
         SITE --page papers/n11-lower-bounds-explainer.html \
+        --page papers/n11-threshold-bound-review.html \
         --page papers/n11-optimality-review.html \
         --width 1280 --width 390 --shots DIR --markdown
+    uv run --frozen --all-extras --group dev python -m devtools.measure_site_pages credits \
+        SITE --page papers/n11-lower-bounds-explainer.html \
+        --page papers/n11-threshold-bound-review.html \
+        --page papers/n11-optimality-review.html --width 1280 --width 390 --markdown
 
 `SITE` is a directory holding the whole site, as `devtools.preview_site` builds it: the
 kpress pages and the papers under `papers/`. Set
@@ -244,6 +251,11 @@ DEFAULT_PAGES = (
     "index.html",
     "cases/index.html#n-11",
 )
+#: The pages a mode that compares papers takes by default (`credits`, `figures`): every
+#: paper of the site, in reading order (`render_overview.PAPERS`).
+PAPER_PAGES = tuple(render_overview.paper_path(paper.slug) for paper in render_overview.PAPERS)
+#: The modes that compare the papers' own parts, and so take `PAPER_PAGES` by default.
+PAPER_MODES = frozenset({"credits", "figures"})
 #: A face fetched from the site's shared assets (`site_assets`), which a page ships.
 _SHARED_FACE = re.compile(r"/assets/fonts/[^/]+\.[0-9a-f]{16}\.woff2$")
 #: How long a load may take to finish its math before it is reported as it stands.
@@ -714,14 +726,14 @@ def measure_credits(
 ) -> list[dict[str, Any]]:
     """The front of each page at each width, once its math is typeset, one row an item
     (`probes/measure_site_pages/credits.js`): each chip of the formats row, then each
-    line of the credits with the weight it is set at, the weights of the names and the
-    links in it, the space above it in line heights, the lines its words take and its
-    width as a share of the column's. This is what `tests/test_site_glyphs.py` holds
-    the two papers' fronts together with, in the browser; `devtools.paper_structure`
-    reads the same front from the markup. With `shots`, the page is measured in the
-    light and the dark scheme, each row says which, and the front, from the top of the
-    page to the foot of the credits, is shot there at each width in each:
-    `front-<page>-<width>-<scheme>.png`."""
+    line of the credits, the series strip's last, with what it is, the weight it is set
+    at, the weights of the names and the links in it, the space above it in line heights,
+    the lines its words take and its width as a share of the column's. This is what
+    `tests/test_site_glyphs.py` holds the papers' fronts together with, in the browser;
+    `devtools.paper_structure` reads the same front from the markup. With `shots`, the
+    page is measured in the light and the dark scheme, each row says which, and the
+    front, from the top of the page to the foot of the credits, is shot there at each
+    width in each: `front-<page>-<width>-<scheme>.png`."""
     from playwright.sync_api import sync_playwright  # noqa: PLC0415
 
     schemes = ("light", "dark") if shots is not None else ("light",)
@@ -1835,7 +1847,7 @@ def main(argv: Sequence[str] | None = None) -> int:
     args = parser.parse_args(argv)
     served = args.site.startswith(("http://", "https://"))
     site = Path(args.site).resolve()
-    pages = tuple(args.page or DEFAULT_PAGES)
+    pages = tuple(args.page or (PAPER_PAGES if args.mode in PAPER_MODES else DEFAULT_PAGES))
     widths = tuple(args.width or (1280,))
     if args.json is not None:
         report: list[dict[str, Any]] = json.loads(args.json.read_text(encoding="utf-8"))

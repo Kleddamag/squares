@@ -1,0 +1,54 @@
+# Part I's terms, in the registry form every paper of the series uses.
+#
+# Part I is advisory under the define-before-use gate (series plan §9.4): it is published
+# and older than the rule, and its page stamps figures per certificate, so
+# `tests/test_paper_terms.py` reports its findings without failing on them. It registers
+# the concepts it owns for the series (templates/n11-series-terms.yaml), which is what
+# the other papers' recaps link to. The fields are those of
+# `n11-optimality-review-terms.yaml`; `devtools.paper_terms` states the rules.
+
+paper: n11-lower-bounds-explainer
+
+terms:
+  - term: s(n)
+    symbol: true
+    uses: 's(?:\\mkern1mu)?\(n\)'
+    defined_by: >-
+      The square packing problem asks, for each $n$, for the side $s\mkern1mu(n)$ of the
+      smallest square that holds $n$ unit squares
+    anchor: the-square-packing-problem
+    series: s-n
+  - term: L_0
+    symbol: true
+    uses: 'L_0'
+    defined_by: Write $L_0$ for a container side under consideration.
+    anchor: the-square-packing-problem
+    series: container-side
+  - term: core
+    uses: '\bcores?\b'
+    defined_by: A core is a smaller square selected strictly inside one of the packed unit squares.
+    anchor: the-result-and-proof-roadmap
+    series: core
+  - term: D_4
+    symbol: true
+    uses: '\\mathbf\{D\}_4'
+    defined_by: symmetry group $\mathbf{D}_4$
+    anchor: the-five-conditions-for-a-point-certificate
+    series: d4
+  - term: atom
+    uses: '(?<!threshold )(?<!point )\batoms?\b'
+    defined_by: An atom is a point in the container with a nonnegative rational weight
+    anchor: atoms-mass-and-the-budget
+    series: point-charge
+  - term: mass
+    uses: '\bmass\b'
+    defined_by: The mass $\mu(R)$ of a region is the sum of the weights of the atoms in it
+    anchor: atoms-mass-and-the-budget
+    requires: [atom]
+    series: mass
+  - term: threshold atom
+    uses: '\bthreshold atoms?\b'
+    defined_by: A threshold atom is a finite set $S$ of distinct points
+    anchor: proof-of-the-new-lower-bound
+    requires: [atom, core]
+    series: threshold-atom

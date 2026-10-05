@@ -266,32 +266,6 @@ PRUNE = frozenset(
         # whole; linked Markdown still returns through `linked_pruned_targets`.
         ROOT / "campaign/explorations/X048-session-167-pilots",
         ROOT / "campaign/explorations/X048-session-168-pilots",
-        # 2026-10-05, PR 360 (the rebuild of Guzhou's #352 on PR 347's stack): the snapshot
-        # read 201,854,760 bytes against the same cap, over by 528,168, and failed suite B
-        # (run 37298541719). The four layers' exploration folders for Sessions 169-179
-        # are 2,859,175 bytes of receipts, reports and copied probe output, and this
-        # layer's three (1,272,418) are what tipped it over. Like Sessions 167 and 168,
-        # they are research outputs that `controls.yaml` never names and no checker run
-        # in a worker reads. They are pruned whole, every Sessions 169-179 folder at
-        # once, so the next small receipt does not reopen this. The 34 files the
-        # synopsis and the records link (735,624 bytes, every Markdown file among them)
-        # still return through `linked_pruned_targets`; net 2,122,114 bytes, leaving
-        # 199,732,646 and 1.5 MiB under the unchanged cap.
-        *(
-            ROOT / "campaign/explorations" / name
-            for name in (
-                "X048-session-169-pilots",
-                "X048-session-170-compatibility",
-                "X048-session-171-raw-row-support",
-                "X048-session-172-capacity-support",
-                "X048-session-174-core-refinement",
-                "X048-session-175-enhanced-support",
-                "X048-session-176-owner-priority",
-                "X048-session-177-cached-collision",
-                "X048-session-178-full-core-ablation",
-                "X048-session-179-selective-halving",
-            )
-        ),
         ROOT / "campaign/series/series-000-smoke-and-calibration/results/agenda-024",
         ROOT / "campaign/series/series-000-smoke-and-calibration/results/agenda-025",
         ROOT / "campaign/series/series-000-smoke-and-calibration/results/agenda-026",

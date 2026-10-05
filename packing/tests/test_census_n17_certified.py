@@ -20,19 +20,23 @@ from devtools.census_n17_certified import (
     BB_SCHEMA,
     CENSUS,
     DEFAULT_LEDGER,
+    DEFAULT_SELECTOR_RECEIPTS,
     DESIGN,
     KERNEL_FRAME,
     LEDGER_SCHEMA,
+    PILOTS,
     REPO,
     VERIFICATION_SCHEMA,
     RefusedError,
     census,
     cover_context,
+    flagged_classes,
     hosted_files,
     main,
 )
 from devtools.select_n17_sub_patterns import SCHEMA as SELECTOR_SCHEMA
 from sqpack.hosted_data import CONTRACT, fetch_command
+from sqpack.yamlio import load_yaml
 
 W7 = ["corner-SW", "side-N0", "side-W0", "side-W1", "side-W2", "interior-SW", "interior-W"]
 A = ["interior-SW", "interior-NW", "interior-W", "interior-S", "interior-N", "interior-SE"]
@@ -53,6 +57,12 @@ EXP250_CENSUS = (
     / "packing/campaign/series/series-000-smoke-and-calibration/results"
     / "exp-250-n17-standing-verifier-admissions/census.json"
 )
+RECHECK = f"{PILOTS}/receipts/selector-recheck-90-seed1.json"
+EARLIER_FLAGS = (
+    f"{PILOTS}/receipts/selector-arity7-seed1.json",
+    f"{PILOTS}/receipts/selector-arity8-seed1-restricted.json",
+)
+EXP250_ADMITTED = {"W7", "A", "SW9", "N1"}
 
 
 def ids(name: str) -> dict[str, str]:
@@ -620,3 +630,52 @@ def test_the_committed_ledger_counts_its_four_admitted_entries_without_the_dumps
         assert record["certified"] == retained["certified"]
     assert record["data"]["files"] == 92
     assert record["data"]["bytes"] == 112_285_110
+
+
+def exp250_ledger(tmp_path: Path) -> Path:
+    """The committed ledger cut to the four entries exp-250 admitted, so that a later
+    admission does not move the projection pinned here."""
+    document = load_yaml((REPO / DEFAULT_LEDGER).read_text(encoding="utf-8"))
+    document["entries"] = [e for e in document["entries"] if e["name"] in EXP250_ADMITTED]
+    ledger = tmp_path / "ledger.yaml"
+    _ = ledger.write_text(json.dumps(document), encoding="utf-8")  # JSON is YAML
+    return ledger
+
+
+def test_the_census_projects_the_recheck_flags_by_default(tmp_path: Path) -> None:
+    """The recheck leaves 89 classes flagged, two of which the ledger admits: 87 projected
+    flags, whose certification would leave 17,168 states in 2,197 orbits with the
+    endpoint's state among them. The certified line stays exp-250's."""
+    assert DEFAULT_SELECTOR_RECEIPTS == (RECHECK,)
+    record = census(exp250_ledger(tmp_path))
+    admitted = {row["name"] for row in record["entries"] if row["status"] == "admitted"}
+    assert admitted == EXP250_ADMITTED
+    flagged = record["flagged_uncertified"]
+    assert flagged["selector_receipts"] == [RECHECK]
+    assert len(flagged["classes"]) == 87
+    assert {row["selector_receipt"] for row in flagged["classes"]} == {RECHECK}
+    assert flagged["all_certified_projection"] == {
+        "surviving_states": 17168,
+        "orbits": 2197,
+        "endpoint_survives": True,
+    }
+    retained = json.loads(EXP250_CENSUS.read_text(encoding="utf-8"))
+    assert record["certified"] == retained["certified"]
+    assert record["certified"]["endpoint_survives"]
+
+
+def test_a_recheck_withdraws_the_class_it_placed_from_earlier_flags(tmp_path: Path) -> None:
+    """The earlier sweeps flagged 90 classes; the recheck placed one arity-8 class, and read
+    after them it withdraws that class, leaving its own 89. Any other schema is refused."""
+    cover = cover_context()
+    earlier = flagged_classes(cover, REPO, EARLIER_FLAGS)
+    rechecked = flagged_classes(cover, REPO, (RECHECK,))
+    both = flagged_classes(cover, REPO, (*EARLIER_FLAGS, RECHECK))
+    assert (len(earlier), len(rechecked)) == (90, 89)
+    assert set(both) == set(rechecked) < set(earlier)
+    (placed,) = set(earlier) - set(rechecked)
+    assert placed.bit_count() == 8
+    assert {row["selector_receipt"] for row in both.values()} == {RECHECK}
+    other = write_json(tmp_path, "other.json", {"schema": "other/v1", "design": DESIGN})
+    with pytest.raises(RefusedError, match="not a selector or recheck receipt"):
+        _ = flagged_classes(cover, tmp_path, [other])

@@ -90,6 +90,13 @@ selector flagged in the given receipts and the ledger does not admit is listed w
 states and orbits it would remove from the certified survivors, and the survivors if all
 of them were certified. Those are heuristic projections and never enter the certified
 count. The report's `evidence_note` repeats that `evidence` is checked only to exist.
+
+The flags come from selector receipts (`n17-sub-pattern-selector/v1`) or from a recheck
+of earlier flags (`n17-sub-pattern-recheck/v1`), whose `flagged` list is the set still
+flagged after the longer search. Receipts are read in the order given; a class a recheck
+placed is withdrawn from the flags read before it. The default is the recheck of all 90
+flags of the arity-7 and restricted arity-8 sweeps, `selector-recheck-90-seed1.json`,
+which placed one arity-8 class and left 89 flagged.
 """
 
 from __future__ import annotations
@@ -128,10 +135,8 @@ STATUS = (
 REPO = Path(__file__).resolve().parents[2]
 PILOTS = "packing/campaign/explorations/X048-session-168-pilots"
 DEFAULT_LEDGER = f"{PILOTS}/certified-sub-patterns.yaml"
-DEFAULT_SELECTOR_RECEIPTS = (
-    f"{PILOTS}/receipts/selector-arity7-seed1.json",
-    f"{PILOTS}/receipts/selector-arity8-seed1-restricted.json",
-)
+DEFAULT_SELECTOR_RECEIPTS = (f"{PILOTS}/receipts/selector-recheck-90-seed1.json",)
+FLAG_SCHEMAS = (selector.SCHEMA, selector.RECHECK_SCHEMA)
 DESIGN = selector.DEFAULT_DESIGN
 CENSUS = {"states": 346104, "orbits": 43593}
 CERTIFIERS = ("kernel", "branch-and-bound")
@@ -558,15 +563,28 @@ def removal(cover: Cover, alive: States, mask: int) -> dict[str, int]:
 def flagged_classes(
     cover: Cover, root: Path, receipts: Sequence[str]
 ) -> dict[int, dict[str, Any]]:
-    """Every class the selector flagged in the receipts, with its latest record."""
+    """Every class the receipts leave flagged, with its latest record.
+
+    A selector receipt's `flagged` list is what its sweep could not place; a recheck
+    receipt's is what is still flagged after the longer search, and a class it placed is
+    withdrawn from the flags of the receipts before it.
+    """
+    group = cover.geometry.group
     flags: dict[int, dict[str, Any]] = {}
     for declared in receipts:
         path = resolve(root, declared, "selector receipt")
         receipt = json.loads(path.read_text(encoding="utf-8"))
-        if receipt.get("schema") != selector.SCHEMA or receipt.get("design") != DESIGN:
-            raise RefusedError(f"{declared}: not a selector receipt on {DESIGN}")
+        if receipt.get("schema") not in FLAG_SCHEMAS or receipt.get("design") != DESIGN:
+            raise RefusedError(f"{declared}: not a selector or recheck receipt on {DESIGN}")
+        placed = [
+            row["indices"]
+            for row in receipt.get("rechecked", [])
+            if receipt["schema"] == selector.RECHECK_SCHEMA and row["status"] == "placed"
+        ]
+        for indices in placed:
+            _ = flags.pop(selector.canonical(selector.mask_of(indices), group), None)
         for flag in receipt["flagged"]:
-            mask = selector.canonical(selector.mask_of(flag["indices"]), cover.geometry.group)
+            mask = selector.canonical(selector.mask_of(flag["indices"]), group)
             flags[mask] = {
                 "cells": flag["cells"],
                 "arity": flag["arity"],
@@ -667,7 +685,10 @@ def main(argv: list[str] | None = None) -> int:
         "--selector-receipt",
         action="append",
         default=None,
-        help="a selector receipt whose flags are projected (repeatable)",
+        help=(
+            "a selector or recheck receipt whose flags are projected (repeatable, read in "
+            "order; default: the recheck of the 90 earlier flags)"
+        ),
     )
     _ = parser.add_argument(
         "--root", type=Path, default=REPO, help="what the ledger's paths are relative to"

@@ -207,11 +207,14 @@ independent review was running alongside it.
 The certificate is in `certificates/W7/`: the gzipped seed and node, each named by the
 SHA-256 of its decompressed canonical JSON, and a `README.txt` giving the format for an
 independent reader. Since 2026-10-04 the gzipped objects of every certificate here are
-hosted outside Git as release assets (OR-18), listed with asset, size and SHA-256 in
-[`certificates/hosted-data.yaml`](certificates/hosted-data.yaml); the README files and
-verification receipts stay.
-`python -m devtools.hosted_data fetch --manifest` with that file’s path puts the objects
-back at these paths, so every command in this record runs as written.
+hosted outside Git as assets of the release
+[`data/n17-x048-session-168-certificates-v1`](https://github.com/jlevy/squares/releases/tag/data/n17-x048-session-168-certificates-v1)
+(OR-18), listed with asset, size and SHA-256 in
+[`packing/hosted/n17-x048-session-168-certificates.yaml`](../../../hosted/n17-x048-session-168-certificates.yaml);
+the README files and verification receipts stay.
+`python -m devtools.hosted_data fetch --manifest hosted/n17-x048-session-168-certificates.yaml`,
+run from `packing/`, puts the objects back at these paths, so every command in this
+record runs as written.
 
 The sharper falsifier is the useful one.
 It runs the same cascade as W7, so it exercises the collision path that closes W7, and

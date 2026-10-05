@@ -3,9 +3,9 @@ type: is
 id: is-01m32dt0p76c4bvp3amxtmyt2p
 title: "Research block (W1): the Kleddamag n=17 certified bound 461300/99853"
 kind: epic
-status: closed
+status: open
 priority: 1
-version: 10
+version: 11
 delegate: claude-code@vm
 labels: []
 dependencies: []
@@ -20,10 +20,10 @@ child_order_hints:
 hold: null
 hold_until: null
 created_at: 2026-09-21T16:46:53.639Z
-updated_at: 2026-10-05T05:35:35.238Z
+updated_at: 2026-10-05T05:40:47.002Z
 started_at: 2026-10-05T05:34:33.023Z
-closed_at: 2026-10-05T05:35:35.238Z
-close_reason: "Adopted: E-n017-kleddamag-461300-99853-source-replay, its review of 2026-09-21 and the retained packet; n-017.md now carries the whole Kleddamag-to-Guzhou chain."
+closed_at: null
+close_reason: null
 resolution: null
 duplicate_of: null
 ---
@@ -45,3 +45,7 @@ Entry point W1 research-survey, opened at the owner's request during the session
 landed the agenda-040 overnight stack. Correctness blocks follow this one.
 
 Not yet adjudicated. No bound moves until the proof review and the replay both report.
+
+## Notes
+
+Reopened: Reopened 2026-10-05: closing it left open children under a closed parent, which devtools.check_bead_tree refuses. The parent's own work is adopted (see the close reason), but its open children need their own disposition before it closes.

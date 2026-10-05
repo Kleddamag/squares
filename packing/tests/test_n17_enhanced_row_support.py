@@ -268,7 +268,9 @@ def test_actual_guards_and_failed_post_query_are_not_cached(
 ) -> None:
     inv = fixture()[2]
     monkeypatch.setattr(
-        bounded_diagnostics, "current_memory_bytes", lambda: enhanced.MAX_PEAK_BYTES + 1
+        bounded_diagnostics,
+        "current_memory_bytes",
+        lambda: bounded_diagnostics.MAX_MEMORY_BYTES + 1,
     )
     with pytest.raises(IncompleteError, match="worker current RSS"):
         enhanced.remaining(budget())
@@ -278,7 +280,9 @@ def test_actual_guards_and_failed_post_query_are_not_cached(
 
     def late(*_: Any) -> bool:
         monkeypatch.setattr(
-            bounded_diagnostics, "current_memory_bytes", lambda: enhanced.MAX_PEAK_BYTES + 1
+            bounded_diagnostics,
+            "current_memory_bytes",
+            lambda: bounded_diagnostics.MAX_MEMORY_BYTES + 1,
         )
         return False
 

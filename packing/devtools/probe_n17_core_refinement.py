@@ -17,6 +17,7 @@ from pathlib import Path
 from typing import Any
 
 from devtools.bounded_diagnostics import (
+    MAX_MEMORY_BYTES,
     check_budget,
     same_inputs,
 )
@@ -53,7 +54,6 @@ MODEL = "half-chart-octagon-hull-old-core-frozen-domain-v1"
 MAX_SELECTIONS = 79
 MAX_PAIRS = 4740
 MAX_ASSIGNMENTS = 5056
-MAX_PEAK_BYTES = 512 * 1024 * 1024
 WALL_SECONDS = 30
 type RowKey = tuple[int, int]
 type ChildKey = tuple[int, int]
@@ -341,7 +341,7 @@ def packet(
             "unique_pairs": MAX_PAIRS,
             "assignments": MAX_ASSIGNMENTS,
             "wall_seconds": WALL_SECONDS,
-            "peak_bytes": MAX_PEAK_BYTES,
+            "peak_bytes": MAX_MEMORY_BYTES,
         },
         "enhanced_selections": selections,
         "supported_parent_rows": parents,

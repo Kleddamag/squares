@@ -290,7 +290,9 @@ def test_endpoint_children_contain_exact_angle_enclosure(
 
 def test_production_memory_and_time_guards(monkeypatch: pytest.MonkeyPatch) -> None:
     monkeypatch.setattr(
-        bounded_diagnostics, "current_memory_bytes", lambda: core.MAX_PEAK_BYTES + 1
+        bounded_diagnostics,
+        "current_memory_bytes",
+        lambda: bounded_diagnostics.MAX_MEMORY_BYTES + 1,
     )
     with pytest.raises(IncompleteError, match="512 MiB"):
         core.remaining(budget())

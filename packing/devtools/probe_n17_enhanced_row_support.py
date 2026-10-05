@@ -16,6 +16,7 @@ from pathlib import Path
 from typing import Any
 
 from devtools.bounded_diagnostics import (
+    MAX_MEMORY_BYTES,
     check_budget,
     retained_matches,
     same_header,
@@ -48,7 +49,6 @@ MAX_CHILD_ATOMS = 8192
 MAX_PARENT_ROWS = 128
 MAX_PAIRS = 100_000
 MAX_NODES = 100_000
-MAX_PEAK_BYTES = 512 * 1024**2
 WALL_SECONDS = 180
 REPLAY_SECONDS = 120
 BASE_REVISION = "14d131c8aaf2ac94239755f8438ab7d5e0192ef4"
@@ -267,7 +267,7 @@ def header(
             "unique_pairs": MAX_PAIRS,
             "nodes": MAX_NODES,
             "wall_seconds": WALL_SECONDS,
-            "peak_bytes": MAX_PEAK_BYTES,
+            "peak_bytes": MAX_MEMORY_BYTES,
         },
     }
 

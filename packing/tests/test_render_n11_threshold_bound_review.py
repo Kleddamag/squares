@@ -201,7 +201,14 @@ def test_the_front_is_the_shared_components_in_the_owners_form(
         f"Last revised {release.THRESHOLD_REVIEW_REVISED}</span>"
     )
     assert html.index('<div class="doc-links screen-only">') < html.index('<div class="hero">')
-    assert '<span class="tex">s(11) \\gt 31/8</span>' in html
+    # The title's formula is typeset on the page, never printed as TeX.
+    heading = re.search(r"<h1[^>]*>(.*?)</h1>", html, re.DOTALL)
+    assert heading is not None
+    assert 'class="kpress-math kpress-math-inline"' in heading.group(1)
+    assert "\\gt" not in heading.group(1)
+    assert '<span class="tex">' not in heading.group(1)
+    # The shared rule keeps the hero's caps off the formula (`paper-publication.css`).
+    assert ".hero h1 .tex,\n.hero h1 .kpress-math {" in html
     assert markdown.startswith(
         f"# {paper.HERO_TITLE}\n\n- From the original proof by **Kleddamag**\n"
     )
@@ -461,7 +468,10 @@ def test_the_actual_article_renders_every_slot_once_with_pinned_sources(
     actual: tuple[str, str],
 ) -> None:
     html, markdown = actual
-    assert f"<h1>{paper.HERO_TITLE}</h1>" in html or paper.HERO_TITLE in html
+    heading = re.search(r"<h1[^>]*>(.*?)</h1>", html, re.DOTALL)
+    assert heading is not None
+    assert "kpress-math" in heading.group(1)
+    assert "\\gt" not in heading.group(1)
     assert len(re.findall(r"<figure\b", html)) == len(paper.FIGURE_KEYS) == 12
     captions = re.findall(r"<figcaption[^>]*>(.*?)</figcaption>", html, re.DOTALL)
     assert len(captions) == 12

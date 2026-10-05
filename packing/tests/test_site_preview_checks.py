@@ -604,9 +604,9 @@ def test_the_builds_are_named_for_what_they_build(
         "n11-threshold-bound-review",
         "n11-optimality-review",
     )
-    assert tuple(
-        paper.slug for paper in render_overview.PAPERS[1:]
-    ) == preview_site.OTHER_PAPERS
+    assert (
+        tuple(paper.slug for paper in render_overview.PAPERS[1:]) == preview_site.OTHER_PAPERS
+    )
     ran: list[tuple[str, ...]] = []
     monkeypatch.setattr(preview_site, "_run", lambda *args: ran.append(args))
     for slug in preview_site.OTHER_PAPERS:

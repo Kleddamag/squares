@@ -60,12 +60,12 @@ its own; the atlas films are the ones cut for the
 The site’s [papers](https://jlevy.github.io/squares/papers.html) explain the proofs.
 Three of them form one series on $n = 11$, read in order:
 
-1. [**New Lower Bounds for Square Packing for $n = 11$**](https://jlevy.github.io/squares/papers/n11-lower-bounds-explainer.html):
+1. [**New Lower Bounds for Square Packing for n = 11**](https://jlevy.github.io/squares/papers/n11-lower-bounds-explainer.html):
    how weighted points and 2-of-3 threshold atoms prove T-018, T-025 and T-026,
    $s(11) \ge 3.8264\ldots$, with interactive figures
    ([PDF](https://jlevy.github.io/squares/papers/n11-lower-bounds-explainer.pdf),
    [source](packing/devtools/templates/n11-lower-bounds-explainer-article.md)).
-2. [**A Review of the Certified Lower Bound $s(11) > 31/8$ for 11 Squares**](https://jlevy.github.io/squares/papers/n11-threshold-bound-review.html):
+2. [**A Review of the Certified Lower Bound s(11) > 31/8 for 11 Squares**](https://jlevy.github.io/squares/papers/n11-threshold-bound-review.html):
    explains Kleddamag’s proof that $s(11) > 31/8$ (T-037): five-site k-of-m charges,
    threshold charges on shrunken parents with strict cores, and a re-optimised
    certificate over 12,028 angle rows

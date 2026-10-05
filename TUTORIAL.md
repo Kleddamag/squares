@@ -1499,13 +1499,13 @@ primitive element $\alpha$. And the neighbouring research reports use $\theta$ f
 this document calls $a$, and $u_i$ for a per-square half-angle parameter rather than a
 single primitive element.
 
-[Part II of the $n = 11$ series](https://jlevy.github.io/squares/papers/n11-threshold-bound-review.html),
-the review of Kleddamag’s $s(11) > 31/8$, defines a few symbols of its own, which are
-local to it: the parent side $A$, the least charge $\Gamma$ of an assigned core, the
-total budget $M$, and a row $(a, b, t, B)$, an interval $[a, b]$ of parent half-angle
-tangents with its core’s direction $t$ and side $B$. Its $B$ is the shrunken side above,
-one for each row; its $a$ and $b$ are a row’s ends, not the angle-class angle $a$ of
-this card.
+[Part II](https://jlevy.github.io/squares/papers/n11-threshold-bound-review.html) of the
+$n = 11$ series, the review of Kleddamag’s $s(11) > 31/8$, defines a few symbols of its
+own, which are local to it: the parent side $A$, the least charge $\Gamma$ of an
+assigned core, the total budget $M$, and a row $(a, b, t, B)$, an interval $[a, b]$ of
+parent half-angle tangents with its core’s direction $t$ and side $B$. Its $B$ is the
+shrunken side above, one for each row; its $a$ and $b$ are a row’s ends, not the
+angle-class angle $a$ of this card.
 
 ## 11. Further Reading
 

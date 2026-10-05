@@ -5,7 +5,7 @@ title: "Import squarepacker #363: s(12) >= 7943/2000 (v1.1 at 98ffe37/7a96bec), 
 kind: task
 status: in_progress
 priority: 1
-version: 5
+version: 6
 delegate: claude-code@vm
 labels:
   - result-import
@@ -14,7 +14,7 @@ parent_id: is-01m46g4yac7ewc22drc7twjhy5
 hold: null
 hold_until: null
 created_at: 2026-10-05T17:00:29.093Z
-updated_at: 2026-10-05T18:30:23.367Z
+updated_at: 2026-10-05T23:54:06.045Z
 started_at: 2026-10-05T17:06:28.130Z
 ---
 
@@ -48,3 +48,15 @@ running since 17:21Z in /home/user/squares-lanes/s12-review).
 - Native parent-core --case s12-v11 --all --workers 2 started 18:27Z at 3ddd47d3a (pid 16828); at the
   current load ~1.8 rows/s, about 6 h wall, ~5 CPU-h. indep_check N = 96000/192000 and its two
   controls follow it (2-thread cap). The verified-lane move waits for the native decision.
+
+2026-10-05 23:55Z, lane A (think-3kd9), stage 4 exit committed (547cae278; pin f7f424e21).
+- Native parent-core --case s12-v11 --all --workers 2 at 3ddd47d3: PASS_COMPLETE, 39,765/39,765 rows,
+  340,090,115 boxes, 0 stalled/exhausted/refuted; 16,344 s wall, 12,980 CPU-s.
+- indep_check N = 96000 and 192000: VERIFIED, least 10000050/10^7, outputs = source logs (305, 608 CPU-s);
+  controls refused (9999850, 6737611), outputs = source's.
+- Zenodo 10.5281/zenodo.23157015 retained (record, files list, per-file digests): its zip's 68 files equal
+  the pinned tree byte for byte (cbee0a83a).
+- T-095 at V3/C3, S3 kept by the review; T-079 superseded, true as stated; n = 12 verified lower
+  bound 7943/2000. Review F1 (no computation) in notes and next_rung.
+- Open: V4/C4 needs a second distinct review (ideally one that executes its own exact checks) and a
+  human oversight record; replies are lane E's.

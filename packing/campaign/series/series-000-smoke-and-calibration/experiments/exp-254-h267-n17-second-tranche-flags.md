@@ -97,6 +97,15 @@ experiment:
       closure all_parent_poses_forbidden for interior-S at step 21. The standing verifier at cebb5d15a passes
       it in full mode in 300 s, checking all 1,408 live rows in full and 4,158 collision regions by 27,723,164
       exact facet checks. Alone it excludes 66,232 states and 8,319 orbits.
+  - shape: determination
+    role: outcome
+    question: Is target 3 (side-S0, side-E0, side-S1, side-S2, interior-NW, interior-W, interior-S,
+      interior-SE) infeasible at U within the 7,000 s ceiling?
+    outcome: criterion_missed
+    checked_by: The run (receipts/K/kernel-t3-bc425.json) returns PASS_CERTIFIED_STALL in 1,139 s of wall and
+      838 s of process CPU, the producer at its 24-round cap with producer time unused (192 steps, 16,810
+      rows, finest 1/512); at the last round every owner still had live rows, interior-S 7, interior-SE 8,
+      side-E0 5 and side-S1 6 the fewest. A non-closure; its node is kept for a stall diagnosis.
   verdict:
     decision: in-progress
     primary_criterion: Each frozen target run once, a closure admitted only on the standing verifier's full pass
@@ -133,6 +142,7 @@ projected for it alone, because most of what it excludes the first had already e
 | 1, `s182-bc425-t1` | corner-SW, side-N0, side-W0, side-W1, side-W2, interior-NW, interior-W, interior-S | closed in 817 s, 47 steps, 4,043 rows | full pass, 555 s | 60,368 states, 7,668 orbits |
 | 2, `s182-bc425-t2` | corner-SW, side-S0, side-S1, side-S2, interior-NW, interior-W, interior-S, interior-SE | closed in 1,250 s, 78 steps, 8,192 rows | full pass, 758 s | 57,496 states, 7,308 orbits |
 | 4, `s182-bc425-t4` | corner-SE, side-E0, side-S1, side-S2, interior-NW, interior-W, interior-S, interior-SE | closed in 553 s, 138 steps, 11,323 rows | full pass, 275 s | 53,016 states, 6,742 orbits (after lane A’s state 3063677 too) |
+| 3 | side-S0, side-E0, side-S1, side-S2, interior-NW, interior-W, interior-S, interior-SE | 24-round cap at 1,139 s, not closed | — | — |
 | 5, `s182-bc425-t5` | side-N0, side-S1, side-N1, interior-NW, interior-W, interior-S, interior-N, interior-SE | closed in 327 s, 22 steps, 1,408 rows | full pass, 300 s | 50,728 states, 6,453 orbits |
 
 The targets and the census they came from are

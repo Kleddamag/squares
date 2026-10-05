@@ -146,19 +146,16 @@ If every possible core must receive a charge of at least one, eleven disjoint co
 receive at least eleven units.
 A certificate with less than eleven units available proves a contradiction.
 Exact coverage checks turn that idea into a theorem about every position and
-orientation. Part I explains the point certificate T-018, the **threshold certificate**
-T-025, whose charges pay a core holding at least $k$ of $m$ charge sites, and T-026’s
-dilation bound $s(11)\ge3.8264474\ldots$.
+orientation. Part I explains the point certificate T-018, the threshold certificate
+T-025, whose $k$-of-$m$ charges pay a core holding at least $k$ of its $m$ charge sites,
+and T-026’s dilation bound $s(11)\ge3.8264474\ldots$.
 [Part II]({{PAPER:n11-threshold-bound-review}}) explains Kleddamag’s T-037,
-$s(11)>31/8=3.875$, and its three changes from T-026: five-site k-of-m charges (2-of-5
-and 3-of-5 beside 2-of-3); threshold charges on shrunken parents with strict cores (side
-A = 764/775 in the container 191/50), a framework inherited through the
-Levy/Guzhou0806/Mira line; and a re-optimised certificate over 12,028 adaptive angle
-rows, each with its own core.[^lineage] Figure 3 places these bounds in order.
+$s(11)>31/8=3.875$, and what it changes in T-026’s certificate.[^lineage] Figure 3
+places these bounds in order.
 
 <figure>
 {{LADDER_SVG}}
-<figcaption><strong>Figure 3.</strong> The bound ladder of the series: the verified lower
+<figcaption><strong>Figure 3.</strong> The series bound ladder: the verified lower
 bounds for eleven squares, from Stromquist’s T-010 to T-060’s exact optimum $T$, with
 values from the result register. Rungs are evenly spaced, not to scale; T-061 reweights
 T-037’s certificate and stands $3.9\times10^{-9}$ above it.</figcaption>
@@ -216,8 +213,8 @@ vertices on all four walls, so the construction’s horizontal and vertical span
 exactly $T$; the last step of the proof uses this fact.
 
 The defining polynomial of $u$ is itself one of the fourteen contacts.
-If $u$ is treated as a free parameter in Appendix A, every wall contact, a square
-touching a side of the container, and thirteen of the square contacts hold identically.
+If $u$ is treated as a free parameter in Appendix A, every wall contact (a square
+touching a side of the container) and thirteen of the square contacts hold identically.
 The remaining one, between square 2, $A(x_0,T-1)$, and square 10, the image of
 $A(\eta+2,-\zeta)$, has gap $p(u)/\bigl(2u(1-u^4)(1+2u-u^2)\bigr)$, which vanishes
 exactly at the root; for smaller $u$ the two squares overlap.[^adversarial] On the
@@ -376,8 +373,8 @@ and one retained row of the capture proof contains such a pose, in which a seed 
 falls outside an artificial square that the walls already forbid.[^gpt6] An **update**
 (the proof data say *step*) takes one owner’s rows, removes centers that an argument
 below forbids, and records what remains as the **residual** of each row; a row with a
-nonempty residual is **live**. Search programs **propose** rows, residuals and cuts,
-closed half-plane conditions on a center; the checker proves or refuses them.
+nonempty residual is **live**. Search programs **propose** rows, residuals and **cuts**
+(closed half-plane conditions on a center); the checker proves or refuses them.
 The same invariant supports case exclusion and, later, capture near the construction.
 
 ### Removing poses that force overlap
@@ -407,9 +404,9 @@ inside the centered unit square at every angle in the interval.
 After substituting the half-angle formulas, the needed inequalities reduce to signs of
 rational quadratic polynomials.
 Checking endpoints and any interior minimum establishes the inequality over the entire
-interval, as
+interval, as the independent control beside
 [Part II’s Strict-core lemma]({{PAPER:n11-threshold-bound-review#parents-cores-and-the-angle-catalogue}})
-does for a square core.
+does for square cores.
 
 Let $K$ be an owned hull of another square.
 A proposed center $x$ is forbidden if
@@ -795,7 +792,7 @@ algebraic illustration of the
 <a href="../../resources/web/n11-optimality-2026-09-29/receipts/local-isolation/result.json">accepted exact inequalities</a>,
 {{LOCAL_MARGINS}} exact margins over {{LOCAL_BRANCHES}} linear systems,
 not a projection of the 33-dimensional feasible set. The theorem applies in the checked
-rectangle inside the fixed side-T container, which capture and inclusion reach first.</figcaption>
+rectangle inside the fixed side-$T$ container, which capture and inclusion reach first.</figcaption>
 </figure>
 
 ### Covering all possible local contact patterns
@@ -937,11 +934,11 @@ Together with the exact witness, it proves $s(11)=T$.[^endpoint]
 {{ENDPOINT_SVG}}
 <figcaption><strong>Figure 12.</strong> Why the rational cap settles the exact endpoint.
 The same hypothetical side-$L_0$ container, with $L_0 < T$, fits concentrically inside the cap
-and then inside the fixed side-T container after the checked rigid alignment. Its
+and then inside the fixed side-$T$ container after the checked rigid alignment. Its
 unit squares keep their size. Capture and
 <a href="../../resources/web/n11-optimality-2026-09-29/receipts/pose-inclusion/result.json">pose inclusion</a>
 put the packing in the local rectangle; isolation forces the construction, whose span
-T contradicts its containment in side $L_0$. Gaps are exaggerated for visibility;
+$T$ contradicts its containment in side $L_0$. Gaps are exaggerated for visibility;
 the drawing does not depict a feasible smaller packing.</figcaption>
 </figure>
 

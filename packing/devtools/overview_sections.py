@@ -1510,8 +1510,8 @@ SERIES_CARDS: dict[str, tuple[str, str]] = {
         "A review of the certified lower bound s(11) > 31/8 for 11 squares",
         (
             "Explains Kleddamag\u2019s proof that s(11) > 31/8 (T-037): five-site k-of-m "
-            "charges, threshold charges on shrunken parents with strict cores, and a "
-            "re-optimised certificate over 12,028 angle rows."
+            "charges, k-of-m charges on shrunken parents with strict cores, and a "
+            "reoptimized certificate over 12,028 angle rows."
         ),
     ),
     N11_OPTIMALITY_REVIEW: (

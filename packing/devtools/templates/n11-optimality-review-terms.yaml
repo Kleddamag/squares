@@ -80,8 +80,8 @@ terms:
   - term: threshold certificate
     uses: '\b[Tt]hreshold\b'
     defined_by: >-
-      the threshold certificate T-025, whose charges pay a core holding at least $k$ of $m$
-      charge sites
+      the threshold certificate T-025, whose $k$-of-$m$ charges pay a core holding at least
+      $k$ of its $m$ charge sites
     anchor: from-weighted-points-to-a-global-proof
     requires: [charge]
     series: threshold-atom
@@ -105,7 +105,7 @@ terms:
     anchor: the-construction-gives-one-half-of-the-answer
   - term: wall contact
     uses: '\bwall contacts?\b'
-    defined_by: every wall contact, a square touching a side of the container,
+    defined_by: every wall contact (a square touching a side of the container)
     anchor: the-construction-gives-one-half-of-the-answer
 
   # Sixteen Regions Cover All Possible Centers
@@ -152,8 +152,6 @@ terms:
       centers allowed over that interval
     anchor: sixteen-regions-cover-all-possible-centers
     forward:
-      - text: 12,028 adaptive angle rows
-        reason: link-to-definition
       - text: wand125’s row-minimum check of T-037
         reason: link-to-definition
 
@@ -212,8 +210,8 @@ terms:
   - term: cut
     uses: '\bcuts?\b'
     defined_by: >-
-      Search programs propose rows, residuals and cuts, closed half-plane conditions on a
-      center
+      Search programs propose rows, residuals and cuts (closed half-plane conditions on a
+      center)
     anchor: one-geometric-invariant-supports-the-certificates
   - term: partner rows
     uses: '\bpartner rows?\b'

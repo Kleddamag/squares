@@ -538,7 +538,7 @@ def _facts(src: Sources) -> dict[str, str]:
         "CHARGE_ORBIT": str(CHARGE_ORBIT),
         "CHARGE_WEIGHT": pf.exact_decimal(charge.weight),
         "CHARGE_SITES": ", ".join(_coordinates(src.sites[i]) for i in charge.members),
-        "CHARGE_ROW": pf.count(CHARGE_ROW),
+        "CHARGE_ROW": str(CHARGE_ROW),
         # II.5
         "BUDGET_POINTS": pf.exact_decimal(families["point"][2]),
         "BUDGET_TWO_OF_THREE": pf.exact_decimal(families["2-of-3"][2]),
@@ -776,24 +776,25 @@ def _changes_svg(src: Sources, facts: dict[str, str]) -> str:
 
 
 def _roadmap_svg(facts: dict[str, str]) -> str:
+    # Each card names a section by its heading's words and gives the section's answer.
     cards = (
-        ("What does a k-of-m charge pay?", "Section 3 · the Budget lemma"),
+        ("From Points to k-of-m Charges", "the Budget lemma"),
         (
-            "Why can\N{RIGHT SINGLE QUOTATION MARK}t eleven parents fit?",
-            f"Section 4 · {facts['CERT_ELEVEN_GAMMA']} > {facts['CERT_M']}",
+            "Parents and the One Inequality",
+            f"{facts['CERT_ELEVEN_GAMMA']} > {facts['CERT_M']}",
         ),
         (
-            "What is in the certificate?",
-            f"Section 5 · {facts['CERT_SITES']} sites, {facts['CERT_FEATURES']} charges",
+            "The Certificate\N{RIGHT SINGLE QUOTATION MARK}s Charges",
+            f"{facts['CERT_SITES']} sites, {facts['CERT_FEATURES']} charges",
         ),
-        ("Which core does a parent get?", f"Section 6 · {facts['CERT_ROWS']} angle rows"),
-        ("Is every centre charged enough?", "Section 7 · an exact sweep"),
-        ("Why is the bound strict?", "Section 8 · attainment"),
-        ("What was checked?", "Section 9 · replays and receipts"),
+        ("Parents, Cores and the Angle Catalogue", f"{facts['CERT_ROWS']} angle rows"),
+        ("Legal Centers Collect Enough Charge", "an exact sweep"),
+        ("The Contradiction and the Strict Bound", "attainment"),
+        ("What Was Verified", "replays and receipts"),
     )
     parts: list[str] = []
     top, step, height = 12, 66, 52
-    for index, (question, detail) in enumerate(cards):
+    for index, (heading, detail) in enumerate(cards):
         y = top + step * index
         accent = index in (1, 4)
         parts.append(
@@ -807,7 +808,7 @@ def _roadmap_svg(facts: dict[str, str]) -> str:
                 attributes='stroke-width="1.5" rx="8"',
             )
         )
-        parts.append(pf.text(24, y + 22, question))
+        parts.append(pf.text(24, y + 22, heading))
         parts.append(pf.text(24, y + 42, detail, note=True))
         if index < len(cards) - 1:
             parts.append(pf.line(180, y + height, 180, y + step, stroke=pf.MUTED, width=1.5))
@@ -817,10 +818,11 @@ def _roadmap_svg(facts: dict[str, str]) -> str:
             )
     return pf.svg(
         "threshold-roadmap",
-        "The reader's questions, in order",
-        "A schematic of the proof's route: what a k-of-m charge pays; why eleven parents "
-        "cannot fit; what the certificate holds; which core each parent receives; why "
-        "every legal centre is charged enough; why the bound is strict; what was checked.",
+        "The proof's route, section by section",
+        "A schematic of the proof's route, one card per section: what a k-of-m charge "
+        "pays; why eleven parents cannot fit; what the certificate holds; which core each "
+        "parent receives; why every legal center is charged enough; why the bound is "
+        "strict; what was checked.",
         width=WIDTH,
         height=top + step * (len(cards) - 1) + height + 12,
         body="".join(parts),
@@ -1094,7 +1096,7 @@ def _families_svg(src: Sources, facts: dict[str, str]) -> str:
     cx, cy = small(centre)
     parts.append(pf.line(cx - 6, cy, cx + 6, cy, stroke=pf.INK, width=1.5))
     parts.append(pf.line(cx, cy - 6, cx, cy + 6, stroke=pf.INK, width=1.5))
-    parts.append(pf.text(cx, cy + 44, "centre", note=True, anchor="middle"))
+    parts.append(pf.text(cx, cy + 44, "center", note=True, anchor="middle"))
     parts.append(pf.line(cx, cy + 8, cx, cy + 30, stroke=pf.RULE))
     triple_points = [small(src.sites[i]) for i in triple.members]
     parts.append(
@@ -1144,7 +1146,7 @@ def _families_svg(src: Sources, facts: dict[str, str]) -> str:
         "area proportional to weight, split by whether the site is also in a k-of-m "
         "charge, and sites in k-of-m charges only as small squares; dashed lines are "
         "x and y equal to A and to the container side minus A. (b) The largest 2-of-3 "
-        "charge beside the container's centre. (c) The largest 2-of-5 charge with two "
+        "charge beside the container's center. (c) The largest 2-of-5 charge with two "
         "disjoint cores of one catalogue row, each holding two of its sites.",
         width=WIDTH,
         height=646,
@@ -1259,7 +1261,7 @@ def _core_svg(src: Sources, facts: dict[str, str]) -> str:
         "threshold-core",
         "A parent and its row's core",
         "Two catalogue rows, the first and the tightest. Each parent is drawn at the "
-        "row's right end, with the row's core about the same centre. The mismatch d "
+        "row's right end, with the row's core about the same center. The mismatch d "
         f"between parent and core is drawn {facts['CORE_EXAGGERATION']} times too large "
         "and the core shrunk to fit; at true scale the two differ by less than a pixel.",
         width=WIDTH,
@@ -1401,8 +1403,8 @@ def _envelope_svg(src: Sources, facts: dict[str, str]) -> str:
     # Axes of the core frame, in which every capture set is an axis-aligned rectangle.
     parts.append(pf.line(20, 170, 340, 170, stroke=pf.RULE))
     parts.append(pf.line(180, 14, 180, 326, stroke=pf.RULE))
-    parts.append(pf.text(338, 164, "u", note=True, anchor="end"))
-    parts.append(pf.text(186, 24, "v", note=True))
+    parts.append(pf.text(338, 164, "x\N{PRIME}", note=True, anchor="end"))
+    parts.append(pf.text(186, 24, "y\N{PRIME}", note=True))
     # The inset, from a container wall to the domain, along the wall's normal.
     wall = core_frame((side / 2, Fraction(0)))
     inner = core_frame((side / 2, radius))
@@ -1452,7 +1454,9 @@ def _envelope_svg(src: Sources, facts: dict[str, str]) -> str:
     parts.append(
         pf.rect(12, top - 6, 336, 140, fill="#f8fafc", stroke=pf.RULE, attributes='rx="8"')
     )
-    parts.append(pf.text(24, top + 14, "charge along u through the minimiser", note=True))
+    parts.append(
+        pf.text(24, top + 14, "charge along x\N{PRIME} through the minimizer", note=True)
+    )
 
     def y_of(value: Fraction) -> float:
         return top + 116 - vertical * float(value - low + (high - low) / 6)
@@ -1480,11 +1484,11 @@ def _envelope_svg(src: Sources, facts: dict[str, str]) -> str:
     parts.append(pf.text(30, top + 130, "filled: value on the event", note=True))
     return pf.svg(
         "threshold-envelope",
-        "The centre domain in the core frame",
-        "The container and, hatched, the union of legal parent centres over the tightest "
+        "The center domain in the core frame",
+        "The container and, hatched, the union of legal parent centers over the tightest "
         "row, drawn in the coordinates of the row's core, where every capture set is an "
         "axis-aligned rectangle. Inset: the charge along the core's first axis through "
-        "the row's minimiser; at each jump the closed core takes the larger value.",
+        "the row's minimizer; at each jump the closed core takes the larger value.",
         width=WIDTH,
         height=top + 142,
         body="".join(parts),
@@ -1570,7 +1574,7 @@ def _signed_svg(src: Sources, facts: dict[str, str]) -> str:
                 )
             parts.append(
                 pf.text(
-                    x0 + size / 2, y0 + size + 20, "sum: 1 or 0", note=True, anchor="middle"
+                    x0 + size / 2, y0 + size + 20, "sum: 0 or 1", note=True, anchor="middle"
                 )
             )
         middle = frame((sum(u for u, _ in sites) / 3, sum(v for _, v in sites) / 3))
@@ -1595,11 +1599,11 @@ def _signed_svg(src: Sources, facts: dict[str, str]) -> str:
     for held in range(4):
         total = sum(_coefficient(triple.threshold, j) * comb(held, j) for j in range(2, 4))
         _require(total == int(held >= triple.threshold), "the signed expansion is wrong")
-    parts.append(pf.text(14, 12, f"orbit {TRIPLE_ORBIT}: three capture squares", note=True))
+    parts.append(pf.text(14, 12, f"orbit {TRIPLE_ORBIT}: three capture rectangles", note=True))
     return pf.svg(
         "threshold-signed",
         "A 2-of-3 charge as signed rectangles",
-        f"The capture squares of charge orbit {facts['SIGNED_ORBIT']}'s three sites in "
+        f"The capture rectangles of charge orbit {facts['SIGNED_ORBIT']}'s three sites in "
         "the core frame of the tightest row. Each pair's intersection enters with "
         "coefficient +1 and the triple's with -2; summed, they give 1 exactly where a "
         "core holds at least two of the three sites and 0 elsewhere.",
@@ -1705,7 +1709,7 @@ def _field_svg(src: Sources, facts: dict[str, str]) -> str:
     size = 300.0
     cell = size / FIELD_GRID
     left, top = 30.0, 24.0
-    parts = [pf.text(left, 14, f"row {TIGHT_ROW}: charge over the centre domain", note=True)]
+    parts = [pf.text(left, 14, f"row {TIGHT_ROW}: charge over the center domain", note=True)]
     parts.append(_raster(values, levels, left, top, cell))
     parts.append(
         pf.rect(
@@ -1748,9 +1752,9 @@ def _field_svg(src: Sources, facts: dict[str, str]) -> str:
     return pf.svg(
         "threshold-field",
         "The charge field of the tightest row",
-        f"The charge of the row's core at every legal centre, sampled on a {FIELD_GRID} by "
+        f"The charge of the row's core at every legal center, sampled on a {FIELD_GRID} by "
         f"{FIELD_GRID} grid and shaded in seven bands, darker for less charge. The ring is "
-        f"the row's exact minimiser, replayed by T-059, of charge {facts['FIELD_MIN']}.",
+        f"the row's exact minimizer, replayed by T-059, of charge {facts['FIELD_MIN']}.",
         width=WIDTH,
         height=legend_top + 40,
         body="".join(parts),

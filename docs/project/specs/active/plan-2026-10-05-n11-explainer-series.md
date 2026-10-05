@@ -60,7 +60,7 @@ Why it is warranted:
 | I’s Figure 3 | **Unchanged.** The series bound ladder appears in II and in III’s lineage section | I’s Fig 3 is a linear number line with its own guards; a T-037 tick would sit about 0.002 from T |
 | Home cards | Three paper cards on one line: `SECTION_CARD_LINES = {"pages": (1, 3, 2)}` | Keeps one card per paper |
 | III and I edits | Ship in this PR: III v0.1.5, I v0.4.4 | One-PR requirement |
-| Three-change wording | Fixed in §5.2 Section 1 and reused verbatim in III’s lineage and on the Papers card | One wording, checked against §4 |
+| Three-change wording | Fixed in §5.2 Section 1 and reused on the Papers card; III’s lineage links to II instead of repeating the list (series review of 2026-10-05) | One wording, checked against §4; a second copy in III was duplication |
 
 ## 1. Series Principles
 

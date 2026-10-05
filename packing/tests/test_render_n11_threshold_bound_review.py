@@ -565,7 +565,6 @@ def test_register_consistency_with_t037(published: tuple[str, str]) -> None:
         facts["CERT_GAMMA"],
         facts["CERT_M"],
         facts["CERT_ELEVEN_GAMMA"],
-        "0.000107864",
         facts["CERT_SURPLUS_UNITS"],
         facts["CERT_ROWS"],
         "764/775",
@@ -576,7 +575,7 @@ def test_register_consistency_with_t037(published: tuple[str, str]) -> None:
         assert number in markdown, number
     article = ARTICLE.read_text(encoding="utf-8")
     # The literal values the prose carries are the certificate's, where it repeats them.
-    for literal in ("0.000107864", "12,028", "31/8", "764/775", "191/50"):
+    for literal in ("12,028", "31/8", "764/775", "191/50"):
         assert literal in article, literal
     assert "katex-error" not in html.split("<article", 1)[1].split("</article>", 1)[0]
 
@@ -645,10 +644,10 @@ def test_the_actual_article_renders_with_the_real_figures(published: tuple[str, 
     for phrase in (
         f"weight {facts['CHARGE_WEIGHT']} on the five sites {facts['CHARGE_SITES']}",
         f"Γ={facts['CERT_GAMMA']}".replace("Γ", "\\Gamma"),
-        f"a surplus of $11\\Gamma-M=0.000107864$, which is {facts['CERT_SURPLUS_UNITS']} units",
+        f"a surplus of {facts['CERT_SURPLUS_UNITS']} units",
         f"drawn {facts['CORE_EXAGGERATION']} times its true size",
         f"row {facts['CATALOGUE_TIGHT_ROW']}, at {facts['CATALOGUE_TIGHT_ANGLES']}",
-        f"their absolute sums are {facts['SIGNED_ABS_SUMS']}",
+        f"which is {facts['SIGNED_ABS_SUMS']} for the three families",
     ):
         assert phrase in said, phrase
     # The family census is the figure module's table, not a retyped one.

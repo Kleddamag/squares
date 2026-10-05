@@ -40,6 +40,25 @@ walls advisory on 2026-09-17 under `think-g4n9`, after five hosted Packing walls
 `devtools.check_gate_budgets` refuses an advisory wall whose bead is closed or does not
 exist.
 
+Two kinds of unmeasurable run are not judged at all and exit 0 with a warning, when the
+cause is the only thing wrong with them. Every line says `NOT JUDGED`.
+
+* `infrastructure`: a run, not itself cancelled, in which GitHub cancelled a gating job
+  before any runner took it. Its wall is the hosted pool's queue, not the pull
+  request's, and the aggregator's own result step already fails on that job's
+  `cancelled` result, so a second red step would repeat it under the name of a budget.
+  On 2026-10-05 from about 19:17 UTC, 96 jobs were cancelled this way after 15 to 35
+  minutes queued (run 37362926042 is the recorded fixture), and their pull requests read
+  red with no test failed.
+* `partial-rerun`: a second or later attempt that repeated only the failed jobs. The jobs
+  it kept report their first attempt's times, so the attempt has no whole-run wall. The
+  aggregator's result step still requires every prerequisite's success. Before this,
+  run 37371803139's second attempt, a `gh run rerun --failed` after starvation, passed
+  every job and failed `packing-required` on this step alone, so no partial re-run could
+  ever pass.
+
+Any other reason left beside either cause keeps the run `unmeasurable`.
+
 It runs under the project's pinned Python through `uv`, with an exact PyYAML version and
 a sparse checkout, so the aggregator does not sync the project environment.
 
@@ -136,13 +155,23 @@ RUN_FIELDS = (
     "head_branch",
     "head_sha",
 )
-JOB_FIELDS = ("name", "status", "conclusion", "created_at", "started_at", "completed_at")
+JOB_FIELDS = (
+    "name",
+    "status",
+    "conclusion",
+    "created_at",
+    "started_at",
+    "completed_at",
+    "runner_name",
+)
 STEP_FIELDS = ("name", "conclusion", "started_at", "completed_at")
 #: How long an aggregator waits for the API to report a prerequisite it has already been
 #: told finished. The jobs endpoint can lag the `needs` graph by a moment.
 SETTLE_ATTEMPTS = 3
 SETTLE_SECONDS = 3.0
 WALL_STEP = "Hold the pull request's wall to its budget"
+#: How a reason says a job's times came from an earlier attempt than the run's.
+MIXED_ATTEMPTS = "the jobs API mixed a prior attempt into a partial rerun"
 #: What a wall's size verdict does to the run. Absent means `enforcing`.
 ENFORCEMENT = ("enforcing", "advisory")
 #: A bead alias, the only thing an advisory wall may name as its tracker.
@@ -245,13 +274,27 @@ class Measurement:
     aggregator_queue_seconds: float | None = None
     #: Checkout and tool setup inside the aggregator, before this check begins.
     aggregator_setup_seconds: float | None = None
+    #: Gating jobs GitHub cancelled before a runner took them, in a run that went on.
+    never_acquired: tuple[str, ...] = ()
+    #: Gating jobs a partial re-run did not repeat, reported with a prior attempt's times.
+    prior_attempt: tuple[str, ...] = ()
+    #: The `unmeasurable` reasons that those two account for; the rest are unexplained.
+    explained: tuple[str, ...] = ()
+
+    @property
+    def unexplained(self) -> tuple[str, ...]:
+        return tuple(reason for reason in self.unmeasurable if reason not in self.explained)
 
 
 @dataclass(frozen=True)
 class WallVerdict:
     #: `advisory` is a wall that failed a size rule on a workflow whose enforcement is
     #: advisory: the failures are real and reported, and the run is not failed for them.
-    status: Literal["passed", "failed", "advisory", "unmeasurable"]
+    #: `infrastructure` is a run GitHub did not schedule in full, and `partial-rerun` an
+    #: attempt that repeated only some jobs; in both, nothing was judged.
+    status: Literal[
+        "passed", "failed", "advisory", "unmeasurable", "infrastructure", "partial-rerun"
+    ]
     failures: tuple[str, ...] = ()
     notes: tuple[str, ...] = ()
     #: Rules that were not applied, and why. They render as warnings, because a rule that
@@ -447,6 +490,21 @@ def _gates(job: dict[str, Any], workflow: WorkflowWall, aggregator: str) -> bool
     return job["name"] != aggregator and _job_id(str(job["name"])) not in workflow.not_gating
 
 
+def never_acquired_a_runner(job: dict[str, Any]) -> bool:
+    """A job GitHub cancelled before any runner took it: no runner name and no steps.
+
+    The jobs API reports such a job with an empty or null `runner_name` and an empty step
+    list, after the scheduler's own "not acquired by Runner of type hosted even after
+    multiple attempts" cancellation. Asking for both keeps a cancelled job recorded before
+    `runner_name` was kept by `--dump` from reading as one: a job that ran has steps.
+    """
+    return (
+        job.get("conclusion") == "cancelled"
+        and not job.get("runner_name")
+        and not job.get("steps")
+    )
+
+
 def _timing(job: dict[str, Any], policy: WallPolicy) -> JobTiming:
     setup = work = 0.0
     for step in job.get("steps") or []:
@@ -484,6 +542,8 @@ def measure(
     bound can make a wall larger, never make an over-budget wall pass.
     """
     reasons: list[str] = []
+    #: Reasons a partial re-run or a job the pool never served accounts for.
+    explained: list[str] = []
     start = _instant(run.get("run_started_at") or run.get("created_at"))
     if run.get("conclusion") == "cancelled":
         reasons.append("the run was cancelled, so its wall is not the wall of a finished run")
@@ -494,14 +554,28 @@ def measure(
     ]
     if not gating:
         reasons.append("no gating job ran")
+    # A cancelled run cancels its queued jobs too, and that is supersession, not the pool;
+    # only a run that went on can have a job the pool never served.
+    never_acquired = (
+        ()
+        if run.get("conclusion") == "cancelled"
+        else tuple(str(job["name"]) for job in gating if never_acquired_a_runner(job))
+    )
+    prior_attempt: list[str] = []
+    # Only a second or later attempt can carry jobs from an earlier one.
+    rerun = isinstance(run.get("run_attempt"), int) and run["run_attempt"] > 1
     for job in gating:
+        mark = len(reasons)
         job_start = _instant(job.get("started_at"))
         job_end = _instant(job.get("completed_at"))
         if start is not None and job_start is not None and job_start < start:
             reasons.append(
                 f"`{job['name']}` started before this attempt at {run.get('run_started_at')}; "
-                "the jobs API mixed a prior attempt into a partial rerun"
+                f"{MIXED_ATTEMPTS}"
             )
+            if rerun:
+                prior_attempt.append(str(job["name"]))
+                explained.append(reasons[-1])
         if job_start is None:
             reasons.append(f"`{job['name']}` has no start time")
         if job.get("status") == "completed" and job_end is None:
@@ -522,6 +596,8 @@ def measure(
                 f"`{job['name']}` concluded {job.get('conclusion')}, so the run's wall is "
                 "not comparable with a run that did its whole work"
             )
+        if job["name"] in never_acquired:
+            explained.extend(reasons[mark:])
     finished = sorted(
         (instant, str(job["name"]))
         for job in gating
@@ -541,13 +617,12 @@ def measure(
     if start is not None and aggregator_start is not None and aggregator_start < start:
         reasons.append(
             f"`{workflow.aggregator}` started before this attempt at "
-            f"{run.get('run_started_at')}; the jobs API mixed a prior attempt into a "
-            "partial rerun"
+            f"{run.get('run_started_at')}; {MIXED_ATTEMPTS}"
         )
     if start is not None and wall_step_start is not None and wall_step_start < start:
         reasons.append(
             f"`{WALL_STEP}` started before this attempt at {run.get('run_started_at')}; "
-            "the jobs API mixed a prior attempt into a partial rerun"
+            f"{MIXED_ATTEMPTS}"
         )
     if wall_step_start is not None:
         end, ends_at = wall_step_start, f"the start of `{WALL_STEP}`"
@@ -605,6 +680,9 @@ def measure(
             if aggregator and wall_step
             else None
         ),
+        never_acquired=never_acquired,
+        prior_attempt=tuple(prior_attempt),
+        explained=tuple(dict.fromkeys(explained)),
     )
 
 
@@ -632,7 +710,49 @@ def judge(measurement: Measurement, workflow: WorkflowWall, policy: WallPolicy) 
     An advisory workflow's size failures are kept word for word and marked `advisory`.
     An unmeasurable run stays `unmeasurable` whatever the enforcement, because the
     relaxation covers the wall's size and not the evidence it is read from.
+
+    Two causes of an unmeasurable run are not judged at all, when they are its only
+    causes. A gating job the hosted pool never served makes it `infrastructure`, failed by
+    the aggregator's own result step instead. A partial re-run makes it `partial-rerun`:
+    the jobs it did not repeat keep their first attempt's times, so the attempt has no
+    whole-run wall, and the aggregator's result step decides it on every job's result.
+    Any other reason left over keeps the run `unmeasurable`.
     """
+    if (measurement.never_acquired or measurement.prior_attempt) and not (
+        measurement.unexplained
+    ):
+        mixed = tuple(
+            reason for reason in measurement.explained if reason.endswith(MIXED_ATTEMPTS)
+        )
+        if measurement.never_acquired:
+            return WallVerdict(
+                status="infrastructure",
+                unjudged=(
+                    *(
+                        f"infrastructure: `{name}` never acquired a runner (cancelled "
+                        "before start)"
+                        for name in measurement.never_acquired
+                    ),
+                    *mixed,
+                    (
+                        "infrastructure: this run's wall is the hosted pool's queue, not "
+                        "the pull request's; neither the budget nor the regression rule "
+                        "was applied, and the aggregator's result step is what fails the run"
+                    ),
+                ),
+            )
+        return WallVerdict(
+            status="partial-rerun",
+            unjudged=(
+                *mixed,
+                (
+                    "partial re-run: the jobs this attempt did not repeat keep an earlier "
+                    "attempt's times, so it has no whole-run wall; neither the budget nor "
+                    "the regression rule was applied, and the aggregator's result step "
+                    "decides the run"
+                ),
+            ),
+        )
     if measurement.unmeasurable or measurement.wall_seconds is None:
         return WallVerdict(
             status="unmeasurable",
@@ -746,7 +866,11 @@ def render(measurement: Measurement, verdict: WallVerdict) -> list[str]:
 def summary_markdown(measurement: Measurement, verdict: WallVerdict) -> str:
     """The same verdict, for `$GITHUB_STEP_SUMMARY`."""
     heading = verdict.status
-    if verdict.status == "advisory" and verdict.advisory is not None:
+    if verdict.status == "infrastructure":
+        heading = "not judged (infrastructure)"
+    elif verdict.status == "partial-rerun":
+        heading = "not judged (partial re-run)"
+    elif verdict.status == "advisory" and verdict.advisory is not None:
         heading = f"advisory (failed, not enforced under `{verdict.advisory.tracking_bead}`)"
     rows = [
         f"### Pull-request wall: {heading}",
@@ -885,8 +1009,13 @@ def exit_status(verdict: WallVerdict) -> int:
 
     An `advisory` verdict exits 0: its failures are size verdicts the register has switched
     off under a named bead. `unmeasurable` exits 1 on every workflow, advisory or not.
+    `infrastructure` and `partial-rerun` exit 0 because neither is this step's to decide:
+    the aggregator's result step fails on a prerequisite the hosted pool never served, and
+    passes a re-run only when every prerequisite, repeated or kept, succeeded.
     """
-    return 0 if verdict.status in ("passed", "advisory") else 1
+    return (
+        0 if verdict.status in ("passed", "advisory", "infrastructure", "partial-rerun") else 1
+    )
 
 
 def _reported_job_ids(jobs: Sequence[dict[str, Any]], workflow: WorkflowWall) -> set[str]:
@@ -947,14 +1076,23 @@ def _admit_live_step_upper_bound(
         for job in jobs
         if _gates(job, workflow, workflow.aggregator) and job.get("conclusion") != "skipped"
     ]
+    rerun = int(attempt) > 1
+
+    def fits(job: dict[str, Any]) -> bool:
+        finished = _instant(job.get("completed_at"))
+        if job.get("status") != "completed" or finished is None:
+            return False
+        if start <= finished <= bound:
+            return True
+        # A job a partial re-run kept from an earlier attempt, wholly before this one.
+        # `measure` names it and the verdict is `partial-rerun`, never `passed`, so the
+        # bound it is admitted beside cannot understate a judged wall.
+        begun = _instant(job.get("started_at"))
+        return rerun and begun is not None and begun <= finished < start
+
     # Matrix jobs share a prerequisite key but have distinct full display names.
     names = [str(job["name"]) for job in gating]
-    if len(names) != len(set(names)) or not all(
-        job.get("status") == "completed"
-        and (finished := _instant(job.get("completed_at"))) is not None
-        and start <= finished <= bound
-        for job in gating
-    ):
+    if len(names) != len(set(names)) or not all(fits(job) for job in gating):
         raise WallError(
             "the live prerequisite cohort is duplicated, unfinished or outside this attempt"
         )

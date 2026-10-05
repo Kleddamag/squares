@@ -273,7 +273,9 @@ def test_the_required_aggregate_passes_a_justified_skip_and_nothing_else() -> No
     """
     jobs = load()["jobs"]
     aggregate = jobs["pages-required"]
-    assert aggregate["if"] == "always()"
+    # `!cancelled()`, not `always()`: a superseded run reports nothing here, as D-380 made
+    # `packing-required` do; a failed or cancelled job in a run that goes on still fails it.
+    assert aggregate["if"] == "!cancelled()"
     assert set(needs_of(aggregate)) == set(jobs) - {"pages-required", *DEPLOY_PATH}
     step = next(
         item
@@ -1101,8 +1103,9 @@ def pull_request_outcomes(decision: Mapping[str, bool]) -> dict[str, str]:
     """Every pull-request job's result, for one scope decision, when nothing fails.
 
     GitHub's rule, for the forms this workflow uses: a job whose condition has no status
-    function runs only when every need succeeded; `always()` runs regardless; a scope gate
-    reads the decision; a dispatch-only job skips on a pull request.
+    function runs only when every need succeeded; `always()` and `!cancelled()` run
+    regardless in a run nobody cancelled; a scope gate reads the decision; a dispatch-only
+    job skips on a pull request.
     """
     workflow = load()
     jobs = workflow["jobs"]
@@ -1118,7 +1121,7 @@ def pull_request_outcomes(decision: Mapping[str, bool]) -> dict[str, str]:
             job = jobs[name]
             needs = needs_of(job)
             condition = str(job.get("if", ""))
-            if condition == "always()":
+            if condition in {"always()", "!cancelled()"}:
                 runs = True
             elif condition == "github.event_name == 'workflow_dispatch'":
                 runs = False

@@ -12,7 +12,13 @@ So the fixtures here are four real runs of that spiral, recorded from the GitHub
 * `34921505934`, 2026-09-15, the same workflow at 295 s;
 * `34993754160`, the certificate page at 543 s, from before its `pr-wall` job existed;
 * `34996541230`, a run superseded by the next push, which is the case a wall check must
-  refuse to judge rather than pass.
+  refuse to judge rather than pass;
+* `37362926042` attempt 1, 2026-10-05, a run that went on while GitHub cancelled three of
+  its prerequisites after 17 to 20 minutes without assigning a runner, which is the case a
+  wall check must leave unjudged without adding a red step of its own;
+* `37371803139` attempt 2, the same evening, a `gh run rerun --failed` after starvation
+  in which every job passed and six prerequisites kept their first attempt's times, which
+  a wall check must also leave unjudged, or no partial re-run could ever pass.
 
 The budgets a test needs to bind are fabricated in `tmp_path`, so a test never pins a
 figure the live register is free to re-measure. The two things read from the live register
@@ -54,6 +60,12 @@ IN_BAND = 34023121156
 OVER_BUDGET = 34921505934
 PAGES = 34993754160
 SUPERSEDED = 34996541230
+STARVED = 37362926042
+PARTIAL_RERUN = 37371803139
+#: The six prerequisites `PARTIAL_RERUN`'s second attempt kept from its first, in API order.
+KEPT_JOBS = ("geometry", "suite-c", "typecheck", "suite-d", "suite-b", "sweeps")
+#: The three prerequisites of `STARVED` the hosted pool never served, in the API's order.
+STARVED_JOBS = ("frontend", "suite-a", "suite-b")
 
 
 def recorded(run_id: int) -> tuple[dict[str, Any], list[dict[str, Any]]]:
@@ -209,6 +221,245 @@ def test_a_cancelled_run_is_not_judged_and_says_so(tmp_path: Path) -> None:
     assert exit_status(verdict) == 1
 
 
+def test_a_prerequisite_the_pool_never_served_is_not_judged_and_exits_zero(
+    tmp_path: Path,
+) -> None:
+    """The 2026-10-05 stall: seven prerequisites passed, three never acquired a runner.
+
+    The aggregator's result step already fails on `cancelled`, which is right: a required
+    check must not go green on work that did not run. The wall check exiting 1 as well put
+    a second red step under the name of a budget, on a run whose wall was GitHub's queue.
+    So the verdict is `infrastructure`, every line says `NOT JUDGED`, and it exits 0.
+    """
+    measurement, verdict = verdict_of(register(tmp_path, median=110.0), STARVED)
+    assert measurement.never_acquired == STARVED_JOBS
+    assert verdict.status == "infrastructure"
+    assert verdict.failures == ()
+    assert verdict.notes == ()
+    assert all(note.startswith("infrastructure: ") for note in verdict.unjudged)
+    assert exit_status(verdict) == 0
+    lines = render(measurement, verdict)
+    for name in STARVED_JOBS:
+        assert (
+            f"  NOT JUDGED: infrastructure: `{name}` never acquired a runner "
+            "(cancelled before start)"
+        ) in lines
+    assert lines[-1] == "  verdict: infrastructure"
+    assert summary_markdown(measurement, verdict).startswith(
+        "### Pull-request wall: not judged (infrastructure)\n"
+    )
+    # An advisory register changes nothing: no size rule was applied to relax.
+    _, advisory = verdict_of(advisory_register(tmp_path), STARVED)
+    assert advisory.status == "infrastructure"
+    assert advisory.advisory is None
+
+
+def test_only_a_cancellation_without_a_runner_in_a_live_run_is_infrastructure(
+    tmp_path: Path,
+) -> None:
+    """Each half of the rule, removed, leaves the run unmeasurable and failing.
+
+    A cancelled run cancels its queued jobs too, which is supersession and not the pool.
+    A job that had a runner and was cancelled ran, so its wall is a wall of less work.
+    """
+    walls = load_walls(register(tmp_path))
+    entry = walls.workflow("packing-validation")
+    run, jobs = recorded(STARVED)
+
+    superseded = {**run, "conclusion": "cancelled"}
+    verdict = judge(
+        measure(superseded, jobs, entry, walls.policy, kind="main"), entry, walls.policy
+    )
+    assert verdict.status == "unmeasurable"
+    assert exit_status(verdict) == 1
+
+    served = deepcopy(jobs)
+    for job in served:
+        if job["name"] in STARVED_JOBS:
+            job["runner_name"] = "GitHub Actions 1000106700"
+            job["steps"] = [
+                {
+                    "name": "Set up job",
+                    "conclusion": "success",
+                    "started_at": job["started_at"],
+                    "completed_at": job["started_at"],
+                }
+            ]
+    verdict = judge(measure(run, served, entry, walls.policy, kind="main"), entry, walls.policy)
+    assert verdict.status == "unmeasurable"
+    assert any("concluded cancelled" in note for note in verdict.unjudged)
+    assert exit_status(verdict) == 1
+
+    # A recording from before `runner_name` was kept: a job that ran still has its steps.
+    _, old = verdict_of(register(tmp_path), SUPERSEDED)
+    assert old.status == "unmeasurable"
+
+
+def test_the_live_aggregator_reports_a_starved_prerequisite_as_infrastructure(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]
+) -> None:
+    """The 19:48 `packing-required` of run 37362926042, replayed through `main`.
+
+    It exited 1 with a wall failure; it now exits 0, raises no error annotation, and warns
+    once per starved prerequisite, so the result step's `cancelled` is the run's only red.
+    """
+    run, jobs = recorded(STARVED)
+    run["status"], run["conclusion"] = "in_progress", None
+    aggregate = next(job for job in jobs if job["name"] == "packing-required")
+    aggregate["status"], aggregate["conclusion"], aggregate["completed_at"] = (
+        "in_progress",
+        None,
+        None,
+    )
+    monkeypatch.setenv("GITHUB_RUN_ID", str(STARVED))
+    monkeypatch.setenv("GITHUB_RUN_ATTEMPT", "1")
+    monkeypatch.setenv("GITHUB_JOB", "packing-required")
+    monkeypatch.setenv("GITHUB_BASE_REF", "claude/n17-residual-compatibility")
+    needs = (
+        "validate",
+        "frontend",
+        "typecheck",
+        "geometry",
+        "suite-a",
+        "suite-b",
+        "suite-c",
+        "suite-d",
+        "sweeps",
+        "measure-verifier",
+    )
+    monkeypatch.setenv("EXPECTED_PREREQUISITES", json.dumps({name: {} for name in needs}))
+    path = register(tmp_path, budget=1.0)
+    status, summary = run_main(tmp_path, monkeypatch, ["--register", str(path)], run, jobs)
+    printed = capsys.readouterr().out.splitlines()
+    assert status == 0
+    assert not any(line.startswith("::error") for line in printed)
+    warnings = [
+        line
+        for line in printed
+        if line.startswith("::warning title=Pull-request wall not judged::infrastructure: ")
+    ]
+    assert len(warnings) == len(STARVED_JOBS) + 1
+    assert "  verdict: infrastructure" in printed
+    assert summary.startswith("### Pull-request wall: not judged (infrastructure)\n")
+
+
+def test_a_partial_rerun_in_which_every_job_passed_is_not_judged_and_exits_zero(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]
+) -> None:
+    """Run 37371803139's second attempt: every job passed, and the wall step alone failed.
+
+    Six prerequisites were not repeated, so the latest-job view reports them with the
+    first attempt's times, and the attempt has no whole-run wall. That was reported as
+    unmeasurable and exited 1, which an advisory wall does not relax, so no partial re-run
+    -- the listener's, or a person's -- could pass `packing-required`.
+    """
+    run, jobs = recorded(PARTIAL_RERUN)
+    assert run["run_attempt"] == 2
+    assert all(
+        job["conclusion"] in {"success", "skipped"}
+        for job in jobs
+        if job["name"] != "packing-required"
+    )
+    measurement, verdict = verdict_of(advisory_register(tmp_path), PARTIAL_RERUN)
+    assert measurement.prior_attempt == KEPT_JOBS
+    assert measurement.unexplained == ()
+    assert verdict.status == "partial-rerun"
+    assert verdict.failures == verdict.notes == ()
+    assert exit_status(verdict) == 0
+    lines = render(measurement, verdict)
+    for name in KEPT_JOBS:
+        assert any(
+            line.startswith(f"  NOT JUDGED: `{name}` started before this attempt")
+            for line in lines
+        )
+    assert lines[-1] == "  verdict: partial-rerun"
+
+    status, summary = run_main(
+        tmp_path, monkeypatch, historical(register(tmp_path), PARTIAL_RERUN), run, jobs
+    )
+    printed = capsys.readouterr().out.splitlines()
+    assert status == 0
+    assert not any(line.startswith("::error") for line in printed)
+    assert (
+        sum(
+            line.startswith("::warning title=Pull-request wall not judged::")
+            for line in printed
+        )
+        == len(KEPT_JOBS) + 1
+    )
+    assert summary.startswith("### Pull-request wall: not judged (partial re-run)\n")
+
+
+def test_a_partial_rerun_with_anything_else_wrong_still_fails(tmp_path: Path) -> None:
+    """The re-run is excused only from the times it kept; every other rule still holds."""
+    walls = load_walls(register(tmp_path))
+    entry = walls.workflow("packing-validation")
+    run, jobs = recorded(PARTIAL_RERUN)
+
+    def verdict(changed: list[dict[str, Any]], of_run: dict[str, Any] = run):
+        return judge(
+            measure(of_run, changed, entry, walls.policy, kind="main"), entry, walls.policy
+        )
+
+    failed = deepcopy(jobs)
+    next(job for job in failed if job["name"] == "validate")["conclusion"] = "failure"
+    unfinished = deepcopy(jobs)
+    next(job for job in unfinished if job["name"] == "suite-a")["completed_at"] = None
+    for changed in (failed, unfinished):
+        assert verdict(changed).status == "unmeasurable"
+        assert exit_status(verdict(changed)) == 1
+    # A first attempt cannot carry an earlier attempt's jobs.
+    first = verdict(jobs, {**run, "run_attempt": 1})
+    assert first.status == "unmeasurable"
+    assert exit_status(first) == 1
+
+
+def test_the_live_bound_admits_jobs_a_partial_rerun_kept(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    """When the API hides the active wall step, the kept jobs must not make it an error."""
+    run, jobs = recorded(PARTIAL_RERUN)
+    run["status"], run["conclusion"] = "in_progress", None
+    aggregate = next(job for job in jobs if job["name"] == "packing-required")
+    aggregate["status"], aggregate["conclusion"], aggregate["completed_at"] = (
+        "in_progress",
+        None,
+        None,
+    )
+    aggregate["steps"] = [
+        step for step in aggregate["steps"] if step["name"] != check_pr_wall.WALL_STEP
+    ]
+    begun = check_pr_wall._instant(aggregate["started_at"])
+    assert begun is not None
+    entry = load_walls(register(tmp_path)).workflow("packing-validation")
+    for attempt, admitted in (("2", True), ("1", False)):
+        monkeypatch.setenv("GITHUB_RUN_ID", str(PARTIAL_RERUN))
+        monkeypatch.setenv("GITHUB_RUN_ATTEMPT", attempt)
+        monkeypatch.setenv("GITHUB_JOB", "packing-required")
+        live = {**run, "run_attempt": int(attempt)}
+        bound = begun + timedelta(seconds=10)
+        if admitted:
+            check_pr_wall._admit_live_step_upper_bound(live, jobs, entry, PARTIAL_RERUN, bound)
+            verdict = judge(
+                measure(
+                    live,
+                    jobs,
+                    entry,
+                    load_walls(register(tmp_path)).policy,
+                    kind="main",
+                    live_step_upper_bound=bound,
+                ),
+                entry,
+                load_walls(register(tmp_path)).policy,
+            )
+            assert verdict.status == "partial-rerun"
+        else:
+            with pytest.raises(WallError, match="outside this attempt"):
+                check_pr_wall._admit_live_step_upper_bound(
+                    live, jobs, entry, PARTIAL_RERUN, bound
+                )
+
+
 def test_only_a_measured_passing_verdict_exits_successfully(tmp_path: Path) -> None:
     _, passed = verdict_of(register(tmp_path), IN_BAND)
     _, failed = verdict_of(register(tmp_path), OVER_BUDGET)
@@ -288,7 +539,12 @@ def test_a_prerequisite_still_running_is_unmeasurable(tmp_path: Path) -> None:
 def test_a_partial_rerun_cannot_reuse_old_jobs_to_report_a_near_zero_wall(
     tmp_path: Path,
 ) -> None:
-    """GitHub's latest-job view may mix carried successes into a later attempt."""
+    """GitHub's latest-job view may mix carried successes into a later attempt.
+
+    Such an attempt is `partial-rerun`: not judged, so its near-zero wall is neither a pass
+    nor a note inside the budget. The same timestamps on a first attempt, which cannot
+    carry an earlier attempt's jobs, are unmeasurable and fail.
+    """
     walls = load_walls(register(tmp_path))
     entry = walls.workflow("packing-validation")
     run, jobs = recorded(IN_BAND)
@@ -298,8 +554,14 @@ def test_a_partial_rerun_cannot_reuse_old_jobs_to_report_a_near_zero_wall(
     partial["run_started_at"] = aggregator["started_at"]
     measurement = measure(partial, jobs, entry, walls.policy, kind="main")
     verdict = judge(measurement, entry, walls.policy)
-    assert verdict.status == "unmeasurable"
+    assert verdict.status == "partial-rerun"
+    assert verdict.failures == verdict.notes == ()
     assert any("partial rerun" in note for note in verdict.unjudged)
+    assert exit_status(verdict) == 0
+
+    first = {**partial, "run_attempt": 1}
+    verdict = judge(measure(first, jobs, entry, walls.policy, kind="main"), entry, walls.policy)
+    assert verdict.status == "unmeasurable"
     assert exit_status(verdict) == 1
 
 
@@ -961,7 +1223,9 @@ def test_an_advisory_wall_over_its_budget_warns_names_its_bead_and_exits_zero(
     assert f"- **Enforcement:** the wall is advisory under {TRACKER}" in summary
 
 
-@pytest.mark.parametrize("evidence", ["cancelled", "partial rerun", "prerequisite running"])
+@pytest.mark.parametrize(
+    "evidence", ["cancelled", "times before a first attempt", "prerequisite running"]
+)
 def test_an_advisory_wall_still_fails_a_run_it_cannot_measure(
     tmp_path: Path,
     monkeypatch: pytest.MonkeyPatch,
@@ -976,9 +1240,9 @@ def test_an_advisory_wall_still_fails_a_run_it_cannot_measure(
     path = advisory_register(tmp_path)
     run_id = SUPERSEDED if evidence == "cancelled" else OVER_BUDGET
     run, jobs = recorded(run_id)
-    if evidence == "partial rerun":
+    if evidence == "times before a first attempt":
         aggregator = next(job for job in jobs if job["name"] == "packing-required")
-        run["run_attempt"], run["run_started_at"] = 2, aggregator["started_at"]
+        run["run_attempt"], run["run_started_at"] = 1, aggregator["started_at"]
     elif evidence == "prerequisite running":
         suite = next(job for job in jobs if job["name"] == "suite")
         suite["status"], suite["conclusion"], suite["completed_at"] = "in_progress", None, None

@@ -1709,6 +1709,10 @@ jobs:
     # below. This job runs under `!cancelled()`, so it is reached even when a prerequisite
     # failed, and it is the shell that decides -- a job named in `needs` and missing from
     # the script is an advisory check nothing blocks on.
+    #
+    # `!cancelled()` is about the run. A prerequisite GitHub cancelled because no hosted
+    # runner took it reaches this job as `cancelled` in a run that is not, and still fails
+    # it; the step after the verdict names that class as infrastructure.
     if: "!cancelled() && github.event_name == 'pull_request'"
     needs:
       [validate, frontend, typecheck, geometry, suite-a, suite-b, suite-c, suite-d, sweeps,
@@ -1741,6 +1745,29 @@ jobs:
           test "$SUITE_D_RESULT" = "success"
           test "$SWEEPS_RESULT" = "success"
           test "$MEASURE_VERIFIER_RESULT" = "success"
+
+      # A prerequisite cancelled while this run went on was never given a runner: GitHub
+      # cancels a queued job it cannot place ("not acquired by Runner of type hosted even
+      # after multiple attempts"), and on 2026-10-05 it did so to 96 jobs (run 37362926042).
+      # The step above has already failed on that `cancelled`, and must: a required check
+      # does not go green on work that never ran. This step only names the class, so the
+      # red reads as infrastructure rather than as a test, and `rerun-starved.yml` re-runs
+      # the run's failed jobs once. It runs only after a failure, so a green run pays
+      # nothing for it, and a fault here cannot hide the verdict above.
+      - name: Name every prerequisite that never acquired a runner
+        if: failure()
+        env:
+          NEEDS: ${{ toJSON(needs) }}
+        run: |
+          jq -r '
+            [to_entries[] | select(.value.result == "cancelled") | .key] as $starved
+            | ($starved[] | "::error title=Infrastructure::\(.) never acquired a runner (cancelled before start)"),
+              if ($starved | length) > 0
+              then "FAILURE CLASS: infrastructure (\($starved | length) of \(length) prerequisites never acquired a runner: \($starved | join(", ")))"
+              else empty end
+          ' <<< "$NEEDS" > "$RUNNER_TEMP/infrastructure"
+          cat "$RUNNER_TEMP/infrastructure"
+          grep '^FAILURE CLASS: ' "$RUNNER_TEMP/infrastructure" >> "$GITHUB_STEP_SUMMARY" || true
 
       - name: Check out the wall budget and its register
         if: always() && github.event_name == 'pull_request'

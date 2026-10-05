@@ -1,0 +1,100 @@
+name: Re-run starved jobs
+
+# GitHub cancels a queued job it could not hand to a hosted runner ("The job was not
+# acquired by Runner of type hosted even after multiple attempts"), and the run goes on
+# without it. The required aggregators then fail on that job's `cancelled` result, which
+# is right, and the pull request reads red with no test failed. On 2026-10-05 from about
+# 19:17 UTC, 96 jobs were cancelled this way after 15 to 35 minutes queued (run
+# 37362926042); the hand re-runs that followed were cancelled by the next push.
+#
+# This listener re-runs such a run's failed jobs, which include the cancelled ones, once.
+# A job cannot re-run its own run while that run is in progress, which is why this is a
+# separate workflow rather than a step in the aggregators. `devtools/rerun_starved.py`
+# decides, from the API's JSON, and writes every condition to the step summary: a
+# pull-request or push run, concluded `failure`, on its first attempt, with a job
+# cancelled without a runner, and no newer run of the workflow for the same commit, or
+# for the same branch and event. The last condition matters because a re-run joins the
+# run's concurrency group, and re-running an older pull-request run would cancel the
+# newer push's run in progress.
+#
+# It checks out only the decision script, from the default branch -- `workflow_run`
+# always runs the default branch's copy of this file, and the checkout takes no `ref:`,
+# so nothing from the run under judgement is executed. Branch names reach the shell
+# through `env`, never through an expression in the script.
+
+"on":
+  workflow_run:
+    workflows: [Packing validation, Certificate page]
+    types: [completed]
+
+permissions:
+  actions: write
+  contents: read
+
+concurrency:
+  # One decision per completed run, never two racing to re-run it.
+  group: rerun-starved-${{ github.event.workflow_run.id }}
+  cancel-in-progress: false
+
+jobs:
+  rerun-starved:
+    # The payload's own fields, checked again by the script from a fresh read. Testing them
+    # here first means the routine completion of every run costs no runner, which matters
+    # most during a stall, when this job is queueing for the same pool.
+    if: >-
+      github.event.workflow_run.conclusion == 'failure'
+      && github.event.workflow_run.run_attempt == 1
+      && (github.event.workflow_run.event == 'pull_request'
+      || github.event.workflow_run.event == 'push')
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Check out the decision script
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          filter: blob:none
+          sparse-checkout: |
+            packing/devtools/rerun_starved.py
+          sparse-checkout-cone-mode: false
+          persist-credentials: false
+
+      - name: Install uv and Python 3.14
+        uses: astral-sh/setup-uv@c771a70e6277c0a99b617c7a806ffedaca235ff9 # v9.0.0
+        with:
+          version: "0.12.8"
+          python-version: "3.14.7"
+          enable-cache: false
+
+      - name: Read the run, its first attempt's jobs, and the runs that could supersede it
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RUN_ID: ${{ github.event.workflow_run.id }}
+          WORKFLOW_ID: ${{ github.event.workflow_run.workflow_id }}
+          HEAD_SHA: ${{ github.event.workflow_run.head_sha }}
+          HEAD_BRANCH: ${{ github.event.workflow_run.head_branch }}
+        run: |
+          mkdir -p "$RUNNER_TEMP/starved"
+          gh api "repos/$GITHUB_REPOSITORY/actions/runs/$RUN_ID" > "$RUNNER_TEMP/starved/run.json"
+          gh api --paginate "repos/$GITHUB_REPOSITORY/actions/runs/$RUN_ID/attempts/1/jobs?per_page=100" \
+            --jq '.jobs[]' > "$RUNNER_TEMP/starved/jobs.jsonl"
+          gh api -X GET "repos/$GITHUB_REPOSITORY/actions/workflows/$WORKFLOW_ID/runs" \
+            -f head_sha="$HEAD_SHA" -f per_page=100 \
+            --jq '.workflow_runs[]' > "$RUNNER_TEMP/starved/runs.jsonl"
+          gh api -X GET "repos/$GITHUB_REPOSITORY/actions/workflows/$WORKFLOW_ID/runs" \
+            -f branch="$HEAD_BRANCH" -f per_page=100 \
+            --jq '.workflow_runs[]' >> "$RUNNER_TEMP/starved/runs.jsonl"
+
+      - name: Decide whether the run was starved, and log why
+        id: decide
+        run: >-
+          uv run --no-project --python 3.14.7 python packing/devtools/rerun_starved.py
+          --run "$RUNNER_TEMP/starved/run.json"
+          --jobs "$RUNNER_TEMP/starved/jobs.jsonl"
+          --runs "$RUNNER_TEMP/starved/runs.jsonl"
+
+      - name: Re-run the failed and starved jobs once
+        if: steps.decide.outputs.rerun == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RUN_ID: ${{ github.event.workflow_run.id }}
+        run: gh run rerun "$RUN_ID" --failed --repo "$GITHUB_REPOSITORY"

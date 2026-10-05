@@ -1662,7 +1662,10 @@ OTHER_PROJECTS: tuple[tuple[str, str, str], ...] = (
     (
         "https://github.com/evand/square-packing",
         "Evan Daniel",
-        "Exact weighted certificates and zero-margin closed covers, closing n = 21, 32 and 45.",
+        (
+            "Exact covers settling n = 21, 32, 45 and 60, and s(k\u00b2 \u2212 3) = k for every"
+            " k \u2265 6; s(k\u00b2 \u2212 4) = k awaits its replay here."
+        ),
     ),
     (
         "https://github.com/squarepacker/s12-lower-bound",

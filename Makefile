@@ -41,6 +41,22 @@ hooks-install:
 lint-fix:
 	./node_modules/.bin/biome check --write --unsafe .
 
+## Run the sweep that starts an intake pass (packing/campaign/result-import.md, Running an
+## Intake Pass): capture the Kingbird catalogue into attic/intake/, then list every input
+## the record has not taken in, with the bead that owns it or none. It reads the network,
+## github.com and kingbird.myphotos.cc. A capture that fails does not stop the sweep, which
+## reports the catalogue as not checked. `make intake INTAKE_ARGS=--offline` reads only the
+## record, the bead store and the captures already taken.
+INTAKE_ARGS ?=
+PACKING_MODULE := cd packing && uv run --frozen --all-extras --group dev python -m
+
+.PHONY: intake
+intake:
+ifeq (,$(findstring --offline,$(INTAKE_ARGS)))
+	-$(PACKING_MODULE) devtools.capture_kingbird_catalogue
+endif
+	$(PACKING_MODULE) devtools.intake_sweep $(INTAKE_ARGS)
+
 # ---------------------------------------------------------------------------
 # Hand-written agent skills.
 # ---------------------------------------------------------------------------

@@ -34,10 +34,10 @@ def test_known_best_chunk_evidence_profile_replays_byte_for_byte() -> None:
         "coverage_threshold_cases": {
             "at_least_50_percent": 35,
             "at_least_75_percent": 33,
-            "at_least_90_percent": 27,
+            "at_least_90_percent": 28,
         },
         "fully_structured_cases": 10,
-        "internal_slide_dof": 859,
+        "internal_slide_dof": 869,
         "narrow_partition_status_counts": {
             "established": 3,
             "not-established": 23,
@@ -45,22 +45,26 @@ def test_known_best_chunk_evidence_profile_replays_byte_for_byte() -> None:
             "outside-registered-budget": 2,
         },
         "sensitivity_comparison": {
-            "changed_case_count": 3,
-            "changed_ns": [68, 69, 71],
-            "primary_structured_square_count": 1782,
+            "changed_case_count": 2,
+            "changed_ns": [68, 71],
+            "primary_structured_square_count": 1792,
             "sensitivity_structured_square_count": 1797,
-            "within_budget_flip_ns": [69],
+            "within_budget_flip_ns": [],
         },
         "source_strata": [
+            # n = 69 left its UnitSquare rendering on 2026-10-05 for the catalogue's later
+            # side for the same packing (T-088), read from a binary64 parse of the SVG; the
+            # rendering stratum is empty and is not listed. n = 83 and 87 stay here with
+            # their new packings (T-089).
             {
-                "case_count": 34,
+                "case_count": 35,
                 "fully_structured_cases": 10,
                 "sensitivity_changed_ns": [71],
                 "source_kind": "kingbird-derived-facts",
-                "square_count": 1723,
-                "structured_fraction": "0.96691816599",
-                "structured_square_count": 1666,
-                "within_six_components_and_three_free_cases": 25,
+                "square_count": 1792,
+                "structured_fraction": "0.967075892857",
+                "structured_square_count": 1733,
+                "within_six_components_and_three_free_cases": 26,
             },
             # n = 68 moved from its UnitSquare rendering onto Francisco Couzo's
             # packet facts on 2026-09-29.
@@ -74,21 +78,11 @@ def test_known_best_chunk_evidence_profile_replays_byte_for_byte() -> None:
                 "structured_square_count": 59,
                 "within_six_components_and_three_free_cases": 0,
             },
-            {
-                "case_count": 1,
-                "fully_structured_cases": 0,
-                "sensitivity_changed_ns": [69],
-                "source_kind": "unitsquare-rendering",
-                "square_count": 69,
-                "structured_fraction": "0.826086956522",
-                "structured_square_count": 57,
-                "within_six_components_and_three_free_cases": 0,
-            },
         ],
         "square_count": 1860,
-        "structured_fraction": "0.958064516129",
-        "structured_square_count": 1782,
-        "within_six_components_and_three_free_cases": 25,
+        "structured_fraction": "0.963440860215",
+        "structured_square_count": 1792,
+        "within_six_components_and_three_free_cases": 26,
     }
     assert "DESCRIPTIVE · NO VERDICT" in rendering
     assert "Connectedness is not rigidity" in rendering
@@ -109,11 +103,13 @@ def test_known_best_chunk_evidence_profile_preserves_outliers_and_sensitivity() 
     assert by_n[28]["primary"]["structured_square_count"] == 28
     assert by_n[89]["primary"]["largest_component_size"] == 49
     assert by_n[68]["sensitivity_delta"]["structured_square_count"] == 5
+    # n = 69's six-decimal UnitSquare rendering moved ten squares between the two contact
+    # tolerances; the catalogue packing that replaced it on 2026-10-05 (T-088) moves none.
     assert by_n[69]["sensitivity_delta"] == {
         "contact_component_count": 0,
-        "free_square_count": -10,
-        "structured_square_count": 10,
-        "within_budget_changed": True,
+        "free_square_count": 0,
+        "structured_square_count": 0,
+        "within_budget_changed": False,
     }
     assert by_n[71]["sensitivity_delta"]["contact_component_count"] == -1
 

@@ -1,0 +1,24 @@
+{
+  "status": "BUNDLE_BYTES_VERIFIED",
+  "files": 75130,
+  "manifest_sha256": "b0d1dcb1bdd0d93a3723df5c8a034828cd686c647599604fad5b16bc676eb098",
+  "archive_sha256": "199e5aeff1be31a9dd800445aa666a6a307c2542d67f4e0259210ceb4e675931",
+  "archive_bytes": 455327325,
+  "parts": 14,
+  "unpack_script_sha256": "3a6cb1315a05bef432a2c17de0ad2645b0fae9714ffbd3a1109d7d7daf1563fa",
+  "roundtrip_exit_code": 0,
+  "mathematical_verification_performed": false,
+  "package": "the rebuilt distribution (this directory)",
+  "extracted": "a fresh empty directory",
+  "date": "2026-10-04",
+  "previous_roundtrip": {
+    "manifest_sha256": "bb2883c5d05e3073011267f95cccd3301c2f97dd4c1e1d64fc4c6e46c8ec9c6c",
+    "archive_sha256": "aeba18074b7fc9c8893d4fa9cd4ca796952a3b2274060404fc31a3a6b495442e",
+    "archive_bytes": 463568316,
+    "parts": 14,
+    "unpack_script_sha256": "3a6cb1315a05bef432a2c17de0ad2645b0fae9714ffbd3a1109d7d7daf1563fa",
+    "roundtrip_exit_code": 0,
+    "unpack_tests_passed": 5
+  },
+  "path_relativization_note": "The archive was rebuilt with relative paths; previous values are kept above; see ../path-relativization-map.json"
+}

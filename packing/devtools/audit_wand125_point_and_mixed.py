@@ -14,8 +14,9 @@ in Tokoharu's rectangle format:
 Later revisions add more ``certificates/mixed_n*`` directories of the same kind, with the
 same code byte for byte: n = 37, 65, 66, 90 and 92 at ``1a25a5ed``, n = 84 and 85 at
 ``52af997``, n = 76 at ``7975030``, n = 83, 85, 87, 91, 92 and 96 at ``b00fc70``,
-22 more at ``2aff207``, n = 51 to 96, five of them at counts already named, and 16 more
-at ``8aa6a10``, n = 42 to 95, nine of them at counts already named.
+22 more at ``2aff207``, n = 51 to 96, five of them at counts already named, 16 more
+at ``8aa6a10``, n = 42 to 95, nine of them at counts already named, and 12 more at
+``797bdf6``, n = 53 to 94, ten of them at counts already named.
 `MIXED` names each with its packet and the source's statement; a certificate at a count
 an earlier one already names is ``n85-L946``, its count and side. Since ``150939e`` the
 source's directories carry no ``completion-audit.json``, the source's own audit that
@@ -1826,6 +1827,8 @@ J_REVISION = "2aff2076c492d62340e986c84f60a0a29eb668df"
 J_PACKET = WEB / "wand125-mixed-bounds-2026-10-03"
 K_REVISION = "8aa6a10b3b8f165d39c85b68982fed1de086516c"
 K_PACKET = WEB / "wand125-mixed-bounds-2026-10-04"
+L_REVISION = "797bdf6e10eba5f9dccca9da06f8352e81ba9dde"
+L_PACKET = WEB / "wand125-mixed-bounds-evening-2026-10-04"
 
 #: The pinned revisions whose certificate directories carry no ``completion-audit.json``:
 #: the source removed it from every directory of 3 October onward at ``150939e`` and
@@ -1833,15 +1836,16 @@ K_PACKET = WEB / "wand125-mixed-bounds-2026-10-04"
 #: tarball's digest at the pinned tree, which `devtools.acquire_source` bound to the
 #: tarball's Git blob at the pinned commit, by the size the acquisition record pins, and by
 #: the digest its README states; every other row still needs the source's audit.
-WITHOUT_SOURCE_AUDIT = frozenset({K_REVISION})
+WITHOUT_SOURCE_AUDIT = frozenset({K_REVISION, L_REVISION})
 
 
 #: Every mixed certificate this tool audits and replays: n = 50 (T-048), the five of
 #: jlevy/squares#282 (T-069), the two of its comment of 2 October, the n = 76 of its
 #: later comment the same day (pinned at ``7975030``, its own packet), the six the
 #: source added that afternoon (UTC), pinned together at ``b00fc70``, the 22 it added
-#: on 3 October, pinned together at ``2aff207``, and the 16 it added from 3 October
-#: 19:33 UTC to 4 October 07:17 UTC, pinned together at ``8aa6a10``. Each row is the
+#: on 3 October, pinned together at ``2aff207``, the 16 it added from 3 October
+#: 19:33 UTC to 4 October 07:17 UTC, pinned together at ``8aa6a10``, and the 12 it added
+#: from 4 October 07:51 UTC to 19:03 UTC, pinned together at ``797bdf6``. Each row is the
 #: packet, the pinned revision, n, the side as the directory names it, the side, the
 #: rectangle count and the candidate digest, as the source states them.
 _MIXED_ROWS: tuple[tuple[Path, str, int, str, Fraction, int, str], ...] = (
@@ -2313,6 +2317,114 @@ _MIXED_ROWS: tuple[tuple[Path, str, int, str, Fraction, int, str], ...] = (
         Fraction(1993, 200),
         480,
         "c41da14c19784c764d14e50e8bb6cbb6c845193420ca8ef2b7f407c397d9975f",
+    ),
+    (
+        L_PACKET,
+        L_REVISION,
+        53,
+        "7.6275",
+        Fraction(3051, 400),
+        505,
+        "796fcf86fa805b3d7c746aac1dd60f83b25bb0bcbee2ec3b3caf7f5f2532bd5a",
+    ),
+    (
+        L_PACKET,
+        L_REVISION,
+        54,
+        "7.685",
+        Fraction(1537, 200),
+        364,
+        "50b804a1cd90fd4b2195457a9e2bb573993057df4b0f444eb2ce57f237ef0711",
+    ),
+    (
+        L_PACKET,
+        L_REVISION,
+        58,
+        "7.935",
+        Fraction(1587, 200),
+        543,
+        "4c217e1c2ac9501de1375a6af9e598defafd2175066166a0b98adf96f0203014",
+    ),
+    (
+        L_PACKET,
+        L_REVISION,
+        70,
+        "8.6575",
+        Fraction(3463, 400),
+        513,
+        "b3205458ad9527c78d82da762cad749f029d62f43e0c33412ef3c201ba589186",
+    ),
+    (
+        L_PACKET,
+        L_REVISION,
+        71,
+        "8.721",
+        Fraction(8721, 1000),
+        529,
+        "d971e25537ee0208f8765bf049803e9d90554fc380bea468eb967279c814e3e2",
+    ),
+    (
+        L_PACKET,
+        L_REVISION,
+        73,
+        "8.813",
+        Fraction(8813, 1000),
+        462,
+        "d3bf25e43d9462b93103415e8e30d0fe58893ed1bb0254afa03a2ada3d7fcb8a",
+    ),
+    (
+        L_PACKET,
+        L_REVISION,
+        76,
+        "8.965",
+        Fraction(1793, 200),
+        312,
+        "8ffc457439cc2c7135ae4067e49f0cdafe9bdf810fa798ddf35d4fed4c8bf35f",
+    ),
+    (
+        L_PACKET,
+        L_REVISION,
+        87,
+        "9.58",
+        Fraction(479, 50),
+        594,
+        "f239f41ce512a6649c147553e820ffcd5319a1a8387b0b690f9e51cb9f3da929",
+    ),
+    (
+        L_PACKET,
+        L_REVISION,
+        88,
+        "9.62",
+        Fraction(481, 50),
+        562,
+        "28d92dc904d52d1451275d5e9b1634619762df47156bafdb300728635b33ac4f",
+    ),
+    (
+        L_PACKET,
+        L_REVISION,
+        90,
+        "9.73",
+        Fraction(973, 100),
+        525,
+        "7f1e3e26371b4041672241971c2dc6e77f5024563c74080c8720d6b9af0ed158",
+    ),
+    (
+        L_PACKET,
+        L_REVISION,
+        91,
+        "9.7625",
+        Fraction(781, 80),
+        438,
+        "7e22dda8bb3296f402b8165868a17f36906e60338cc57d72ed2ed57b06b778a6",
+    ),
+    (
+        L_PACKET,
+        L_REVISION,
+        94,
+        "9.95",
+        Fraction(199, 20),
+        853,
+        "85213e6c8d6ade1e6be86648f569c5b931b08b2d19b39308ce1cd2b578acc185",
     ),
 )
 

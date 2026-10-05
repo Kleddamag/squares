@@ -69,12 +69,36 @@ a retained witness whose side still agrees with the catalogue is left alone -- a
 
 The source is one person's personal site. Fetches are sequential by default, each
 followed by a pause, and `--jobs` is capped low on purpose.
+
+**A refresh reaches the hand-audited hundred too.** The 34 Kingbird witnesses at
+`n <= 100` predate the source map, so a refresh plans one of them from the retained
+catalogue itself (`_hand_audited_entry`): the picture that serves the count and the
+counts it holds. Nothing at `n <= 100` is derived except to replace a retained witness.
+
+**When the SVG cannot be fetched, a pinned parse of it can stand in**, and says so.
+`--from-parse DIR --parse-revision REV` reads each picture from a third party's parse
+instead of fetching it: Evan Daniel's `evand/square-packing` exports a parse of every
+catalogue SVG (`site/www/data/p/square-<n>.json`, side as a decimal string, poses in
+binary64), read by his own `site/tools/parse_svg.py` at 50 digits. `--compare-parse`
+measures how far to trust it: on 2026-10-05, at commit `7ff3b21`, his parse agreed with
+this repository's own at 90 of the 92 counts where a retained witness was read from the
+picture -- the same side, and every pose to one binary64 ulp, square for square and in
+the same order -- and the two that differed, `n = 83` and `87`, were counts whose
+picture had changed since their witness was read. The parse must print a
+side the catalogue's printed decimal truncates, digit for digit, and passes every check
+a fetched picture does; the witness records `REV` and the file in `source.revision`,
+and its limitations say the numbers are that parse's and not the SVG's::
+
+    uv run --frozen --all-extras --group dev python -m devtools.derive_kingbird_facts \
+        --n 69 --refresh --retrieved 2026-10-05 --from-parse PATH/site/www/data/p \
+        --parse-revision evand/square-packing@<commit>:site/www/data/p
 """
 
 from __future__ import annotations
 
 import argparse
 import json
+import math
 import time
 import urllib.error
 import urllib.request
@@ -99,7 +123,9 @@ from devtools.build_known_best_atlas import (
 )
 from sqpack.kingbird_catalogue import CatalogueEntry, default_catalogue_path, parse_catalogue
 from sqpack.known_best import (
+    KINGBIRD_BASE_URL,
     KINGBIRD_TOLERANCE,
+    KingbirdGeometry,
     SourceGeometryError,
     SquarePose,
     kingbird_derived_witness,
@@ -123,6 +149,15 @@ SUMMARY = (
 CATALOGUE_SOURCE_KEY = "kingbird-current-catalogue"
 #: How a frontier record names the catalogue as the source of its reported side.
 CATALOGUE_RECORD_KEY = "[Kingbird]"
+#: The hand-audited hundred, whose 34 Kingbird witnesses predate the source map. A count
+#: here is planned from the catalogue itself, and only to refresh a retained witness.
+HAND_AUDITED_MAX = 100
+#: The one parse format `--from-parse` reads: Evan Daniel's per-picture export, whose
+#: `site/tools/parse_svg.py` reads the catalogue SVG at 50 digits and whose
+#: `site/tools/export.py` writes `{"s": ..., "n": ..., "squares": [[cx, cy, angle], ...]}`
+#: with the side as a decimal string and each pose in binary64, angles in degrees modulo
+#: 90, in the y-up frame of the container `[0, s]^2` -- this repository's own convention.
+PARSE_FILE_SUFFIX = ".json"
 
 #: The date this acquisition pass read the catalogue, recorded in every witness it
 #: writes. Not `sqpack.known_best.RETRIEVED_DATE`, which belongs to the 2026-08-26 pass
@@ -217,6 +252,29 @@ def _grid_covered(n: int, side: str) -> bool:
     return value.denominator == 1 and value.numerator * value.numerator >= n
 
 
+def _hand_audited_entry(n: int, catalogued: dict[int, CatalogueEntry]) -> dict[str, Any] | None:
+    """A source-map entry for a count of the hand-audited hundred, read off the catalogue.
+
+    The source map covers `101..324`; the 34 Kingbird witnesses at `n <= 100` were derived
+    in August 2026 by a pass that left no map. A refresh of one of them -- the page was
+    captured again and prints a new side -- needs the same four facts the map gives, and
+    the retained catalogue states all of them: which picture serves the count, which
+    counts that picture holds, and so where it lives. `None` where the page pictures no
+    packing for the count, which the caller refuses like any count outside the map.
+    """
+    listed = catalogued.get(n)
+    if listed is None or listed.svg_path is None:
+        return None
+    return {
+        "n": n,
+        "source_key": CATALOGUE_SOURCE_KEY,
+        "source_n": listed.n,
+        "listed_n": list(listed.listed_n),
+        "source_path": listed.svg_path,
+        "source_url": f"{KINGBIRD_BASE_URL}/{listed.svg_path}",
+    }
+
+
 def _cross_check(n: int, entry: dict[str, Any], catalogued: CatalogueEntry) -> None:
     """Refuse where the source map and the reparsed catalogue disagree about a case.
 
@@ -290,6 +348,8 @@ def _plan_one(
     side for the count, so the retained numbers describe a packing it no longer shows.
     """
     entry = entries.get(n)
+    if entry is None and n <= HAND_AUDITED_MAX and refresh:
+        entry = _hand_audited_entry(n, catalogued)
     if entry is None:
         raise DerivationRefusedError(
             "no-availability-entry", f"n={n}: outside the audited 101..324 source map"
@@ -453,6 +513,171 @@ def frontier_reported_side(n: int, *, frontier_root: Path | None = None) -> str 
     return None if upper is None else str(upper["value"])
 
 
+def _float_text(value: object) -> str:
+    """One binary64 coordinate as the shortest decimal that reads back to it.
+
+    Written the way the SVG adapter writes a number (`sqpack.known_best._format`): fixed
+    notation, `0` for zero and `2.0` for two, so a witness read from a parse differs from
+    one read from the picture only in the digits the parse does not carry.
+    """
+    if isinstance(value, bool) or not isinstance(value, int | float):
+        raise DerivationRefusedError("parse-unreadable", f"{value!r} is not a number")
+    number = Decimal(repr(float(value)))
+    if not number.is_finite():
+        raise DerivationRefusedError("parse-unreadable", f"{value!r} is not finite")
+    return "0" if number.is_zero() else format(number, "f")
+
+
+def parse_record_name(plan: DerivationPlan) -> str:
+    """The parse file that holds this plan's picture: `square-69.svg` is `square-69.json`."""
+    return Path(plan.source_path).stem + PARSE_FILE_SUFFIX
+
+
+def geometry_from_parse(text: str, *, expected_n: int, where: str) -> KingbirdGeometry:
+    """Read one picture's parse (`PARSE_FILE_SUFFIX`) as the geometry an SVG parse gives.
+
+    The parse is a third party's reading of the same SVG, so it is held to the same
+    checks a fetched picture is: the side and the square count, here, and the catalogue's
+    printed side and the frontier record's, in `derive_witness`. Each pose is kept at the
+    binary64 precision the parse publishes, never padded with digits it does not carry.
+    """
+    try:
+        record = json.loads(text)
+    except json.JSONDecodeError as error:
+        raise DerivationRefusedError("parse-unreadable", f"{where}: {error}") from error
+    if not isinstance(record, dict) or not isinstance(record.get("squares"), list):
+        raise DerivationRefusedError("parse-unreadable", f"{where}: no squares list")
+    side = record.get("s")
+    if not isinstance(side, str) or not Decimal(side).is_finite() or Decimal(side) <= 0:
+        raise DerivationRefusedError("parse-unreadable", f"{where}: side {side!r}")
+    squares = record["squares"]
+    if record.get("n") != expected_n or len(squares) != expected_n:
+        raise DerivationRefusedError(
+            "square-count-mismatch",
+            f"{where} holds {len(squares)} squares under n={record.get('n')}, not {expected_n}",
+        )
+    poses: list[SquarePose] = []
+    for index, square in enumerate(squares, start=1):
+        if not isinstance(square, list) or len(square) != 3:
+            raise DerivationRefusedError(
+                "parse-unreadable", f"{where}: square {index} is not [cx, cy, angle]"
+            )
+        center_x, center_y, angle = (_float_text(value) for value in square)
+        if not Decimal(0) <= Decimal(angle) < Decimal(90):
+            raise DerivationRefusedError(
+                "parse-unreadable", f"{where}: square {index} angle {angle} is not in [0, 90)"
+            )
+        poses.append(SquarePose(center_x, center_y, angle))
+    return KingbirdGeometry(side=side, poses=tuple(poses))
+
+
+def _assert_printed_truncation(printed: str, actual: str, *, n: int) -> None:
+    """Refuse a parse whose side the catalogue's printed decimal does not truncate.
+
+    The page prints its side cut short, never rounded, so a parse of the picture it
+    shows must begin with exactly those digits. The `_sides_agree` tolerance alone would
+    accept another version of the picture within 1e-8; this does not.
+    """
+    lower = Decimal(printed)
+    exponent = lower.as_tuple().exponent
+    if not isinstance(exponent, int):
+        raise DerivationRefusedError("side-mismatch", f"n={n}: {printed} is not a decimal")
+    step = Decimal(1).scaleb(exponent)
+    if not lower <= Decimal(actual) < lower + step:
+        raise DerivationRefusedError(
+            "side-mismatch",
+            f"n={n}: the parse's side {actual} does not begin with the catalogue's {printed}",
+        )
+
+
+@dataclass(frozen=True)
+class ParseAgreement:
+    """How one parse compares with the witness this repository read from the same SVG."""
+
+    n: int
+    same_side: bool
+    #: The largest difference of a centre coordinate or an angle, square for square, in
+    #: units in the last place of binary64 at the larger of the two values and 1. At most
+    #: one is the parse being this repository's own numbers, rounded to the parse.
+    worst: float
+
+
+def compare_parse(n: int, parse_text: str, witness_path: Path) -> ParseAgreement:
+    """Compare a parse with a retained witness read from the SVG, at binary64.
+
+    The measurement behind trusting `--from-parse`: where this repository read the
+    picture itself, the third party's parse should be the same numbers rounded to the
+    parse's precision, in the same order. Retained facts read from a parse are not a
+    comparison and are refused.
+    """
+    witness = safe_load(witness_path.read_text(encoding="utf-8"))["witness"]
+    if (witness.get("source") or {}).get("revision"):
+        raise DerivationRefusedError(
+            "not-independent", f"{_relative(witness_path)} was itself read from a parse"
+        )
+    geometry = geometry_from_parse(parse_text, expected_n=n, where=f"n={n}")
+    ours = [
+        (float(square["center"][0]), float(square["center"][1]), float(square["angle"]))
+        for square in witness["squares"]
+    ]
+    theirs = [
+        (float(pose.center_x), float(pose.center_y), float(pose.angle_degrees))
+        for pose in geometry.poses
+    ]
+    worst = max(
+        abs(left - right) / math.ulp(max(abs(left), abs(right), 1.0))
+        for mine, other in zip(ours, theirs, strict=True)
+        for left, right in zip(mine, other, strict=True)
+    )
+    return ParseAgreement(
+        n=n,
+        same_side=float(witness["side"]) == float(geometry.side),
+        worst=worst,
+    )
+
+
+def compare_parses(numbers: Sequence[int], root: Path, *, out_root: Path) -> int:
+    """`--compare-parse`: report how a parse directory agrees with the retained corpus.
+
+    Counts are compared where the retained witness was read from the catalogue's own
+    picture of that count -- center-angle, not a subpacking, not itself read from a parse
+    -- and the parse holds the picture. Exit 0 only where every compared count agrees,
+    side exactly at binary64 and every pose to one unit in its last place; anything else
+    is printed with its difference.
+    """
+    catalogued = parse_catalogue()
+    compared = disagreeing = 0
+    for n in numbers:
+        listed = catalogued.get(n)
+        witness_path = out_root / f"n-{n:03d}.yaml"
+        if listed is None or listed.svg_path is None or listed.n != n:
+            continue
+        if not witness_path.is_file():
+            continue
+        witness = safe_load(witness_path.read_text(encoding="utf-8"))["witness"]
+        from_parse = bool((witness.get("source") or {}).get("revision"))
+        if witness.get("representation") != "center-angle" or from_parse:
+            continue
+        if not str((witness.get("source") or {}).get("url", "")).endswith(listed.svg_path):
+            continue
+        parse = root / (Path(listed.svg_path).stem + PARSE_FILE_SUFFIX)
+        if not parse.is_file():
+            continue
+        agreement = compare_parse(n, parse.read_text(encoding="utf-8"), witness_path)
+        compared += 1
+        if not agreement.same_side or agreement.worst > 1:
+            disagreeing += 1
+            print(
+                f"  n={n:<3} differs  side {'agrees' if agreement.same_side else 'differs'}, "
+                f"largest pose difference {agreement.worst:.3g} ulp"
+            )
+    print(
+        f"compared {compared} count{'' if compared == 1 else 's'}: "
+        f"{compared - disagreeing} agree to one binary64 ulp, {disagreeing} differ"
+    )
+    return 1 if disagreeing or not compared else 0
+
+
 def derive_witness(
     plan: DerivationPlan,
     source_text: str,
@@ -460,19 +685,31 @@ def derive_witness(
     catalogue_text: str,
     retrieved: str = DERIVED_RETRIEVED_DATE,
     frontier_root: Path | None = None,
+    parse_revision: str | None = None,
 ) -> dict[str, Any]:
     """Parse one fetched SVG and return the checked `Witness/v2` record for one `n`.
 
     The retained shape is assembled here; every claim, source and certificate field is
     written by `kingbird_derived_witness`, which is the same code that rechecks the 34
     existing rows on every build.
+
+    With `parse_revision`, `source_text` is not an SVG but a third party's parse of it
+    (`geometry_from_parse`), pinned at that revision; the witness names it and says its
+    numbers are that parse's, and the parse must reproduce the page's printed side digit
+    for digit.
     """
-    try:
-        geometry = parse_kingbird_svg(source_text, expected_n=plan.source_n)
-    except SourceGeometryError as error:
-        raise DerivationRefusedError(
-            error.kind, f"n={plan.n} from {plan.source_path}: {error}"
-        ) from error
+    if parse_revision is None:
+        try:
+            geometry = parse_kingbird_svg(source_text, expected_n=plan.source_n)
+        except SourceGeometryError as error:
+            raise DerivationRefusedError(
+                error.kind, f"n={plan.n} from {plan.source_path}: {error}"
+            ) from error
+        revision = None
+    else:
+        revision = f"{parse_revision}/{parse_record_name(plan)}"
+        geometry = geometry_from_parse(source_text, expected_n=plan.source_n, where=revision)
+        _assert_printed_truncation(plan.catalogue_side, geometry.side, n=plan.n)
     _assert_side_matches(plan.catalogue_side, geometry.side, what="the catalogue", n=plan.n)
     recorded = frontier_reported_side(plan.n, frontier_root=frontier_root)
     if recorded is not None:
@@ -509,6 +746,7 @@ def derive_witness(
             source_path=_relative(SOURCE_MANIFEST),
             source_url=plan.url,
             retrieved=retrieved,
+            revision=revision,
         )
     except (SourceGeometryError, ValueError) as error:
         raise DerivationRefusedError("witness-rejected", f"n={plan.n}: {error}") from error
@@ -524,6 +762,21 @@ def _write(path: Path, text: str) -> None:
         temporary.write_text(text, encoding="utf-8")
 
 
+def _parts_below_checkout(path: Path) -> tuple[str, ...]:
+    """The path's parts below the checkout's root, or all of them for a path outside it.
+
+    Where the checkout itself lives is the person's choice and says nothing about what the
+    repository retains: a worktree named `kingbird` holds no Kingbird asset by being so
+    named.
+    """
+    resolved = path.resolve()
+    checkout = ROOT.resolve().parent
+    try:
+        return resolved.relative_to(checkout).parts
+    except ValueError:
+        return resolved.parts
+
+
 def assert_no_raw_retention(out_root: Path) -> None:
     """The two ways this pass could start leaving source bytes behind, refused up front."""
     if KINGBIRD_RAW_ROOT.exists():
@@ -532,7 +785,7 @@ def assert_no_raw_retention(out_root: Path) -> None:
             f"{_relative(KINGBIRD_RAW_ROOT)} exists; the retention policy keeps no raw "
             "Kingbird asset, so this pass will not add derived facts beside one",
         )
-    if any(part.lower() == "kingbird" for part in out_root.resolve().parts):
+    if any(part.lower() == "kingbird" for part in _parts_below_checkout(out_root)):
         raise DerivationRefusedError(
             "output-under-kingbird-directory",
             f"{out_root} is inside a directory named kingbird; witnesses are derived "
@@ -560,6 +813,24 @@ def fetch_pictures(
     return fetched, failures
 
 
+def read_parses(
+    plans: Sequence[DerivationPlan], root: Path
+) -> tuple[dict[str, str], dict[str, DerivationRefusedError]]:
+    """Read each distinct picture's parse from `root`, keyed by the picture's URL as
+    `fetch_pictures` keys what it fetches, so the rest of a pass is the same either way."""
+    read: dict[str, str] = {}
+    failures: dict[str, DerivationRefusedError] = {}
+    for plan in plans:
+        path = root / parse_record_name(plan)
+        if path.is_file():
+            read[plan.url] = path.read_text(encoding="utf-8")
+        else:
+            failures[plan.url] = DerivationRefusedError(
+                "parse-missing", f"{path} holds no parse of {plan.source_path}"
+            )
+    return read, failures
+
+
 def derive(
     numbers: Sequence[int],
     *,
@@ -569,8 +840,20 @@ def derive(
     retrieved: str = DERIVED_RETRIEVED_DATE,
     fetch: Callable[[str], str] = fetch_svg,
     refresh: bool = False,
+    from_parse: Path | None = None,
+    parse_revision: str | None = None,
 ) -> int:
-    """Run one acquisition pass and report it. Returns the process exit status."""
+    """Run one acquisition pass and report it. Returns the process exit status.
+
+    With `from_parse`, nothing is fetched: each picture's numbers are read from a third
+    party's parse of it in that directory, pinned at `parse_revision`, which every
+    witness written names. That is for a count whose SVG this session cannot reach; the
+    checks a fetched picture passes are the same.
+    """
+    if (from_parse is None) != (parse_revision is None):
+        raise DerivationRefusedError(
+            "parse-unpinned", "a parse directory and its pinned revision go together"
+        )
     assert_no_raw_retention(out_root)
     plans, skipped, refusals = derivation_plans(numbers, out_root=out_root, refresh=refresh)
     for case in skipped:
@@ -593,7 +876,10 @@ def derive(
         return 1 if refusals else 0
 
     catalogue_text = default_catalogue_path().read_text(encoding="utf-8")
-    sources, failures = fetch_pictures(plans, jobs=jobs, fetch=fetch)
+    if from_parse is None:
+        sources, failures = fetch_pictures(plans, jobs=jobs, fetch=fetch)
+    else:
+        sources, failures = read_parses(plans, from_parse)
     derived: list[DerivedCase] = []
     for index, plan in enumerate(plans, start=1):
         source_text = sources.get(plan.url)
@@ -610,6 +896,7 @@ def derive(
                 source_text,
                 catalogue_text=catalogue_text,
                 retrieved=retrieved,
+                parse_revision=parse_revision,
             )
         except DerivationRefusedError as error:
             refusals.append((plan.n, error))
@@ -629,8 +916,8 @@ def derive(
         )
     existing = sum(1 for case in skipped if case.reason in {"existing", "current"})
     print(
-        f"derived {len(derived)}, fetched {len(sources)} picture"
-        f"{'' if len(sources) == 1 else 's'}, skipped {len(skipped)} "
+        f"derived {len(derived)}, {'fetched' if from_parse is None else 'read the parse of'} "
+        f"{len(sources)} picture{'' if len(sources) == 1 else 's'}, skipped {len(skipped)} "
         f"({existing} already retained), refused {len(refusals)}"
     )
     for n, refusal in refusals:
@@ -677,6 +964,32 @@ def parser() -> argparse.ArgumentParser:
         default=DERIVED_RETRIEVED_DATE,
         help=f"the retrieval date written witnesses record (default: {DERIVED_RETRIEVED_DATE})",
     )
+    command.add_argument(
+        "--from-parse",
+        type=Path,
+        default=None,
+        help=(
+            "read each picture from a third party's parse of it in this directory "
+            "(square-<n>.json, Evan Daniel's export format) instead of fetching the SVG"
+        ),
+    )
+    command.add_argument(
+        "--parse-revision",
+        default=None,
+        help=(
+            "where --from-parse's files live upstream, pinned: repository, commit and "
+            "directory, e.g. evand/square-packing@<commit>:site/www/data/p"
+        ),
+    )
+    command.add_argument(
+        "--compare-parse",
+        type=Path,
+        default=None,
+        help=(
+            "derive nothing: compare a parse directory with the retained witnesses this "
+            "repository read from the SVGs themselves, count by count"
+        ),
+    )
     return command
 
 
@@ -695,6 +1008,8 @@ def main(argv: Sequence[str] | None = None) -> int:
             command.error("--n takes a positive count")
         numbers = [args.n]
     try:
+        if args.compare_parse is not None:
+            return compare_parses(numbers, args.compare_parse, out_root=args.out)
         return derive(
             numbers,
             out_root=args.out,
@@ -702,6 +1017,8 @@ def main(argv: Sequence[str] | None = None) -> int:
             dry_run=args.dry_run,
             retrieved=args.retrieved,
             refresh=args.refresh,
+            from_parse=args.from_parse,
+            parse_revision=args.parse_revision,
         )
     except DerivationRefusedError as error:
         print(f"refused: {error}")

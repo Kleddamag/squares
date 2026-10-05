@@ -386,8 +386,10 @@ sources:
       David Ellsworth's catalogue and Erich Friedman's survey, and its analysis and 2026
       results to the repository; its open-problems page, problems.html, was added on 4
       October 2026. Its "verified on jlevy/squares" marks cite this record's register. The
-      deployed site was not fetched; the packet web/evand-square-packing-2026-10-04/
-      retains the pages, their scripts and data, and the floors table.
+      packet web/evand-square-packing-2026-10-04/ retains the pages, their scripts and
+      data, and the floors table; the deployed site, fetched on 2026-10-05 after the
+      session that made the packet could not reach it, serves those files byte for byte
+      (the packet's receipts/deployed-site-2026-10-05.json).
   - key: '[squarepacker s12 2026]'
     authors: [Ryu]
     year: 2026
@@ -430,6 +432,10 @@ sources:
       and the computation for Lemma 4.10, and that it is not peer reviewed. Code and data
       MIT, the paper CC BY 4.0. Retained whole in
       web/squarepacker-k2-minus-c-2026-10-05/; dated by that revision, 2026-10-05 UTC.
+      The three Zenodo records, read on 2026-10-05 after the session that made the packet
+      could not reach Zenodo, are kept in its zenodo/ with their digests: 23164302
+      (v1.0) is tag v1.0 (0eb29d44) byte for byte, and its preprint PDF is retained;
+      23165736 (v1.1) is tag v1.1; and 23165916 is the v1.1 preprint alone.
   - key: '[Kleddamag n11 2026]'
     authors: [Kleddamag]
     year: 2026
@@ -1045,7 +1051,10 @@ sources:
       improvement of Morandi's packing, found again with Schadt's program from Morandi's
       and optimized; it says nothing of AI in Ellsworth's
       steps and nothing of this project. The capture of 2026-08-22 printed Morandi's and
-      Cantrell's side instead.
+      Cantrell's side instead. The SVG, which the session that registered it could not
+      fetch, was read on 2026-10-05 (web/known-best-packings/receipts/kingbird-2026-10-05-pictures.json): its comment dates the last step, "Optimized by
+      David Ellsworth on September 7, 2026, with exact polynomial root solution", and the
+      server dates the picture 2026-09-10.
   - key: '[Chang n83 2026-09-24]'
     authors: [Chang, Ellsworth]
     year: 2026
@@ -1064,8 +1073,16 @@ sources:
       Bidwell in 1998. Improved by Allen Chang in September 2026, with GPT-5.6 Sol and
       GPT-6 Astra. Optimized by David Ellsworth in September 2026. Polynomial root
       solution found by Allen Chang in September 2026 (see SVG source)." The polynomial
-      is printed only in the SVG, which this session could not fetch. Nothing in it
-      concerns this project.
+      is printed only in the SVG, which the session that registered it could not fetch.
+      Read on 2026-10-05 (web/known-best-packings/receipts/kingbird-2026-10-05-pictures.json), the SVG's comment holds it as a Mathematica Root object
+      of 343,237 characters, with the four equations in the side and three angles that it
+      solves and their solution to 100 digits, and dates the steps: "Improved by Allen
+      Chang on September 4, 2026, with help from" (the sentence ends there), "Optimized
+      by David Ellsworth on Septemeber 9, 2026, with exact analytic solution", "Exact
+      polynomial root solution found by Allen Chang on September 10, 2026, working with
+      GPT-5.6 Sol and/or GPT-6 Astra" and "Verified by David Ellsworth on September 10,
+      2026 to match analytic solution to 1000000 digits". The server dates the picture
+      2026-09-24. Nothing in it concerns this project.
   - key: '[Chang n87 2026-09-24]'
     authors: [Chang]
     year: 2026
@@ -1088,7 +1105,14 @@ sources:
       from "TheMagicAnimals"." The help is kept in the catalogue's words and not made
       authorship, since the catalogue names joint finders as authors ("Found by David
       Ellsworth and David W. Cantrell") and help otherwise; the case record's
-      improved_by agrees. Nothing in it concerns this project.
+      improved_by agrees. Nothing in it concerns this project. The SVG, which the session
+      that registered it could not fetch, was read on 2026-10-05 (web/known-best-packings/receipts/kingbird-2026-10-05-pictures.json): its comment says
+      "Improved and optimized by Allen Chang on September 10, 2026, with GPT-5.6 Sol
+      and/or GPT-6 Astra, with exact analytic solution, and exact polynomial root
+      solution for "s"" and "Reconstructed by David Ellsworth on September 16, 2026, with
+      full exact polynomial root solution", naming GPT-5.6 Sol and/or GPT-6 Astra where
+      the page names GPT-6 Astra and "TheMagicAnimals". The server dates the picture
+      2026-09-17.
   - key: '[chelokot Nagamochi counterexample 2026]'
     authors: [chelokot]
     year: 2026

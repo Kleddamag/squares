@@ -830,6 +830,23 @@ sources:
       assistance.
       Only derived facts are retained
       (web/franciscouzo-square-packing-2026-09-27/README.md). Dated by that revision.
+  - key: '[franciscouzo square-packing 2026-10-03]'
+    authors: [Couzo]
+    year: 2026
+    venue: GitHub
+    dated: '2026-10-03'
+    credit: Couzo
+    lineage: independent
+    note: >-
+      franciscouzo/square-packing at 6042c56b, 2026-10-03 ("new records"), the revision
+      after [franciscouzo square-packing 2026-09-27]: it lowers the packings for n = 208,
+      209, 228, 263, 272, 303 and 306 and leaves the other 42 unchanged. Still no LICENSE,
+      and the README still names no author and no prior work, so the author is read from
+      the commit metadata ("Francisco Couzo") and nothing is credited after him. The
+      repository states no AI assistance; its author said on jlevy/squares#227 that he
+      found the 102 and 103 packings "with the help of Claude". Only derived facts for the
+      seven changed counts are retained
+      (web/franciscouzo-square-packing-2026-10-03/README.md). Dated by that revision.
   - key: '[de Winter n211 2026-09-16]'
     authors: [de Winter]
     year: 2026

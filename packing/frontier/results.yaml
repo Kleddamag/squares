@@ -2,7 +2,7 @@ softschema:
   contract: packing.squares:ResultsRegister/v1
   schema: results.schema.yaml
   status: enforced
-last_reviewed: '2026-10-03'
+last_reviewed: '2026-10-05'
 results:
   - id: T-001
     kind: lower-bound
@@ -4925,7 +4925,10 @@ results:
       adversarial AI reviews by distinct reviewers and a retained human oversight record
       (epistemics.md, No Blind Trust); none is retained for this result, so it stands at
       V3/C3: machine-checked, review record pending. The oversight record restores the
-      rung.
+      rung. 2026-10-05: Couzo's revision of 3 October lowered seven of these sides
+      (T-092), and the case records at n = 208, 209, 228, 263, 272, 303 and 306 now carry
+      those; this entry's bounds there are its own receipt's, from the sides of 26 and 27
+      September.
     next_rung: >-
       V4 and C4 need two adversarial AI reviews by distinct reviewers of the complete claim
       and a human oversight record; the two reviews so far, of 2026-09-29 and 2026-09-30, are
@@ -7832,3 +7835,87 @@ results:
       replayed cover proving s(61) = 8 (T-063), both replayed here on 2 October 2026. This
       result stays true as stated and keeps its rungs: a proof of both bounds that uses
       nothing of Nagamochi 2005 and no computer search.
+
+  - id: T-092
+    kind: upper-bound
+    registered: '2026-10-05'
+    headline: "Smaller packings again at seven counts from `n = 208` to `306`, each certified two independent ways"
+    claim: >-
+      For seven counts, s(n) is at most the side of Francisco Couzo's packing as published on
+      3 October 2026: s(208) <= 14.926534459703512, s(209) <= 14.953939011860643, s(228) <=
+      15.604602454552252, s(263) <= 16.742270262031792, s(272) <= 16.968165867864400, s(303)
+      <= 17.924341009860250 and s(306) <= 17.963438139777141.
+
+      Each bound is the side the source prints, or where the printed pose's own side rounds
+      up past it, that side plus one unit of its fifteenth decimal at n = 208, 209 and 263
+      and two units at n = 306. Each printed side is below the one Couzo published at the
+      same count on 26 or 27 September (T-056), by 8.3e-6 at n = 303 up to 0.0105 at n =
+      208, and below the Kingbird catalogue as captured on 30 September 2026.
+
+      Each bound is certified here twice, by T-056's two methods, which share no geometry
+      code. The first is an exact rational packing, the source's decimal pose rounded to
+      rationals at centre dilation 1, decided pair by pair and wall by wall over Q by two
+      checkers that share no code. The second is outward-rounded interval arithmetic on the
+      source's own pose as printed, with the true cosine and sine of each angle, which
+      decides every pair and wall at 40 digits.
+
+      Francisco Couzo,
+      [franciscouzo/square-packing](https://github.com/franciscouzo/square-packing/tree/6042c56b43b64c09fe5a32c64879e698f399beaf).
+      The author said on jlevy/squares#227 that he found the 102 and 103 packings "with the
+      help of Claude", and the repository itself states no AI assistance.
+    scope: {n_values: [208, 209, 228, 263, 272, 303, 306]}
+    verification: V3
+    confirmation: C3
+    significance:
+      score: 3
+      rationale: >-
+        Seven substantive case results: each moves both the best known side and the verified
+        ceiling at its count, by 8.3e-6 to 0.0105, below the packings that held them
+        (T-056). S3 by the anchor "a substantive case result", as T-056; the source
+        publishes no method, so nothing here is a reusable technique.
+      scored: '2026-10-05'
+      by: think-ipbg import, registering lane (repository; draft)
+    novelty: previously-published
+    attribution:
+      source_keys: ['[franciscouzo square-packing 2026-10-03]']
+      published: '2026-10-03'
+    evidence:
+      - E-franciscouzo-2026-10-03-report
+      - E-franciscouzo-2026-10-03-exact-replay
+      - E-franciscouzo-2026-10-03-interval-replay
+    artifacts:
+      - packing/resources/web/franciscouzo-square-packing-2026-10-03/README.md
+      - packing/resources/web/franciscouzo-square-packing-2026-10-03/acquisition/sources.json
+      - packing/resources/web/franciscouzo-square-packing-2026-10-03/receipts/certification.json
+      - packing/resources/web/franciscouzo-square-packing-2026-10-03/receipts/interval-certification.json
+      - packing/devtools/upper_bound_packets.py
+      - packing/devtools/check_rational_witness_independent.py
+      - packing/devtools/upper_bound_intervals.py
+      - packing/devtools/apply_upper_bound_packets.py
+    controls:
+      - packing/resources/web/franciscouzo-square-packing-2026-10-03/receipts/negative-controls.json
+      - packing/resources/web/franciscouzo-square-packing-2026-10-03/receipts/interval-negative-controls.json
+      - packing/tests/test_upper_bound_packets.py
+      - packing/tests/test_upper_bound_intervals.py
+    composition: >-
+      Both machine entries decide all seven bounds, each at its case's verified value, by
+      different methods (exact-algebraic on a rational rounding of each pose;
+      interval-certified on the printed pose), so every load-bearing part is C3, with two
+      machine methods shown beside the rung. Their common mode is stated in
+      E-franciscouzo-2026-10-03-interval-replay. The comparisons with Couzo's earlier sides
+      and the retained catalogue are recorded values and set no rung.
+    next_rung: >-
+      The review lane of the import: a mapped review of these seven certificates and their
+      records under docs/project/reviews/, which the reviews of T-056's two routes, of
+      2026-09-29 and 2026-09-30, do not cover; queued in think-ipbg. V4 and C4 then need two
+      adversarial AI reviews by distinct reviewers of the complete claim and a human
+      oversight record. At n = 306 both routes refute the printed side for the printed
+      pose, so the printed side itself needs a pose refined beyond the source's binary64
+      digits, or coordinates the source prints at higher precision; that would be a new
+      packing, not a replay.
+    notes: >-
+      Registered on 5 October 2026 by the import that the intake sweep's report of
+      franciscouzo/square-packing, one commit past T-056's pin, opened (think-ipbg). A
+      later release that lowers an earlier entry's values is a new entry: T-056 keeps its
+      claim, and the case records at these seven counts now carry this one. The live
+      catalogue was not read: kingbird.myphotos.cc was unreachable from the session.

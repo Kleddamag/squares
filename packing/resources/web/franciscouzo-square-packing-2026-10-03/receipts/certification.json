@@ -1,0 +1,193 @@
+{
+  "tool": "python -m devtools.upper_bound_packets certify",
+  "promotion": {
+    "strategy": "robust-rational",
+    "rational_digits": 36,
+    "max_side_increase": "1e-9"
+  },
+  "independent_checker": "devtools.check_rational_witness_independent",
+  "cases": [
+    {
+      "n": 208,
+      "printed_side": "14.926534459703511",
+      "certificate": "witnesses/franciscouzo-2026-10-03/n-208-rational.yaml.gz",
+      "certificate_sha256": "2012de83cd8135de687e81bcd65eb595001fbd5dcf7bd2f2eaf14fe1db8a2cf0",
+      "stored_sha256": "10bd8b737d6385d41bd7f63885be11852f96d0c92915a08d8675b570f5b1e956",
+      "certified_side": "5830677523321684159042904331472521829722381120138091031630398537776880557365763331225076003971194059897312715489760955910182292313880222119242140866299069840564651627606737976283197685968082659314988155479742357041562799/390625000000000000000000000000068967772916534205199103755863077325742577160901217500822435884506203617659565400286392617455977085852688824617461858018565460072019804316371354495670010575375000012220639209000000000000000",
+      "certified_side_decimal": "14.9265344597035114471498350885670204925014",
+      "side_increase": "4.471e-16",
+      "center_dilation": "1",
+      "pairs_tested": 21528,
+      "promotion": "certificate-produced",
+      "independent": {
+        "verification_passed": true,
+        "pairs_tested": 21528,
+        "minimum_containment_clearance": "0",
+        "failures": []
+      },
+      "units_above_printed": 1,
+      "verified_value": "14.926534459703512",
+      "exact_form": "1865816807462939/125000000000000",
+      "wall_seconds": {
+        "promote": 15.9,
+        "independent": 39.4
+      }
+    },
+    {
+      "n": 209,
+      "printed_side": "14.953939011860642",
+      "certificate": "witnesses/franciscouzo-2026-10-03/n-209-rational.yaml.gz",
+      "certificate_sha256": "c6ae36230d88d928e0e5d3934cf3aa41c5ab717ab13d944310d49ce06bbd143f",
+      "stored_sha256": "770a2b3aa6dbafe825854aeaa1177d67d945d80b1419b25ce6590c1c21021f10",
+      "certified_side": "233655297060322535746982290372394219502027972790311121915323409585010174325001722702727640534715162531805554226485517276146158505640257058419807471315726789907072452507868482079345861845575098480316467656482711263020085679/15625000000000000000000000000022449975989697366002926412883387760033711671553094722027673981592554963583270329795480227064409175650586253018015257673177999965864244816474619980204798567250000000823747401000000000000000000",
+      "certified_side_decimal": "14.9539390118606422878068665838117442515367",
+      "side_increase": "2.878e-16",
+      "center_dilation": "1",
+      "pairs_tested": 21736,
+      "promotion": "certificate-produced",
+      "independent": {
+        "verification_passed": true,
+        "pairs_tested": 21736,
+        "minimum_containment_clearance": "0",
+        "failures": []
+      },
+      "units_above_printed": 1,
+      "verified_value": "14.953939011860643",
+      "exact_form": "14953939011860643/1000000000000000",
+      "wall_seconds": {
+        "promote": 17.1,
+        "independent": 38.1
+      }
+    },
+    {
+      "n": 228,
+      "printed_side": "15.604602454552252",
+      "certificate": "witnesses/franciscouzo-2026-10-03/n-228-rational.yaml.gz",
+      "certificate_sha256": "4f2b34c2bd893ec01bce65c9e8c82ae84a8a0cc1de71cf97633313d4b8b82de6",
+      "stored_sha256": "b07159a49e109bd18b558c2ca5ad917dbecb8d8030c791e19f916c0dca685b7f",
+      "certified_side": "975287653409515734149935192287919463910390733991586854715383014156097267499669569508010087568513517470238981681841401613570038682326256057277177723539775760227364902637691562718479049858277545554925818167835858565401575807/62500000000000000000000000000998831632410768128101709354115785969436739054634658263026405199021456134855301514715414584472792427815502169329487043667496032971088059304771796498735901122029743490853038169000000000000000000",
+      "certified_side_decimal": "15.6046024545522517463989630763573294938815",
+      "side_increase": "-2.536e-16",
+      "center_dilation": "1",
+      "pairs_tested": 25878,
+      "promotion": "certificate-produced",
+      "independent": {
+        "verification_passed": true,
+        "pairs_tested": 25878,
+        "minimum_containment_clearance": "0",
+        "failures": []
+      },
+      "units_above_printed": 0,
+      "verified_value": "15.604602454552252",
+      "exact_form": "3901150613638063/250000000000000",
+      "wall_seconds": {
+        "promote": 19.9,
+        "independent": 45.4
+      }
+    },
+    {
+      "n": 263,
+      "printed_side": "16.742270262031791",
+      "certificate": "witnesses/franciscouzo-2026-10-03/n-263-rational.yaml.gz",
+      "certificate_sha256": "9ff4b833f882635b516001e876442792d2fbcccfa083cffbc6201d77b258fc1d",
+      "stored_sha256": "e971ee4469af123253cd385b7a84fe0c30d0bbb000895f064498ecde41256c28",
+      "certified_side": "837113513101589579299294597448272608891170886628473238149072847357085080098020140224751999034019155777910959993295961801389452140603877858993725673634663940950847443366526121375327397801453/50000000000000000000000000000001687710268509743724648055569624852477716857222988457930573576822560388290422623709818348991558677301293019190490902611046662717163162972640645000000000000000",
+      "certified_side_decimal": "16.7422702620317915859858919489648870557947",
+      "side_increase": "5.860e-16",
+      "center_dilation": "1",
+      "pairs_tested": 34453,
+      "promotion": "certificate-produced",
+      "independent": {
+        "verification_passed": true,
+        "pairs_tested": 34453,
+        "minimum_containment_clearance": "0",
+        "failures": []
+      },
+      "units_above_printed": 1,
+      "verified_value": "16.742270262031792",
+      "exact_form": "1046391891376987/62500000000000",
+      "wall_seconds": {
+        "promote": 26.5,
+        "independent": 71.5
+      }
+    },
+    {
+      "n": 272,
+      "printed_side": "16.968165867864400",
+      "certificate": "witnesses/franciscouzo-2026-10-03/n-272-rational.yaml.gz",
+      "certificate_sha256": "0b51dbd6c9aea6f73aaac2445a7c712fdf99e09c5cec619e271f08a23016b1c2",
+      "stored_sha256": "0b8f5967f05a45c84f9655079a1c2744a112f7cfb91dfeb98e896cfebd2c752b",
+      "certified_side": "135745326942915198285532687330616204420221493469879149041659355481073578824580713064635499935310905937047876258383577139087803430477031457931996309678773162061725455458915761925317675176154134805132483132518717942872085274301/8000000000000000000000000000000328079020774482695831229686453952221747532173533950987054007974413852440320879767849132579768547374562072002709445035692652484170827081194706760689185173924600000000000152904500000000000000000",
+      "certified_side_decimal": "16.9681658678643997856915859163263296901225",
+      "side_increase": "-2.143e-16",
+      "center_dilation": "1",
+      "pairs_tested": 36856,
+      "promotion": "certificate-produced",
+      "independent": {
+        "verification_passed": true,
+        "pairs_tested": 36856,
+        "minimum_containment_clearance": "0",
+        "failures": []
+      },
+      "units_above_printed": 0,
+      "verified_value": "16.968165867864400",
+      "exact_form": "42420414669661/2500000000000",
+      "wall_seconds": {
+        "promote": 25.8,
+        "independent": 72.7
+      }
+    },
+    {
+      "n": 303,
+      "printed_side": "17.924341009860250",
+      "certificate": "witnesses/franciscouzo-2026-10-03/n-303-rational.yaml.gz",
+      "certificate_sha256": "6a8d8697f0a616b4eb2cc0e50855fadea1f25eea0baebbcdb7fe6722fbf22556",
+      "stored_sha256": "0f5eaf39c4c393d46a31081a51dbdc422bad865a566c21eb22f17fa840584193",
+      "certified_side": "8962170504930124225162026925235385092026135074592233831448048190275265274550309762501323455706905360276769732230486828439594650324754935181155646417931722928023299351340773965536005495068072253082927498680777399757043/500000000000000000000000000006849312003261998120377684778030209285843941650678276640089879563801940926476527165874321203801341242963682246994908285229579305422238868200606650312973371936097015453110125000000000000000",
+      "certified_side_decimal": "17.9243410098602484503240538502252313759935",
+      "side_increase": "-1.550e-15",
+      "center_dilation": "1",
+      "pairs_tested": 45753,
+      "promotion": "certificate-produced",
+      "independent": {
+        "verification_passed": true,
+        "pairs_tested": 45753,
+        "minimum_containment_clearance": "0",
+        "failures": []
+      },
+      "units_above_printed": 0,
+      "verified_value": "17.924341009860250",
+      "exact_form": "71697364039441/4000000000000",
+      "wall_seconds": {
+        "promote": 34.1,
+        "independent": 92.4
+      }
+    },
+    {
+      "n": 306,
+      "printed_side": "17.963438139777139",
+      "certificate": "witnesses/franciscouzo-2026-10-03/n-306-rational.yaml.gz",
+      "certificate_sha256": "11a9b51ea14b889a4d2f46554bd717e30dd96e2fefba7561eb11aff2f11173e5",
+      "stored_sha256": "34073ced6277c3b254b61bc1a0d3caced7609806c7a34d48e8e878da8d32dce8",
+      "certified_side": "350848401167522280358532019536958615305578932556918848766473689975043231724321858159405633543057789072069570885702877912132582512799639923849887343039530158313326771107299779768291863679779756877392912526164256241764081/19531250000000000000000000000048148248609680896228939936915295246581223153094091793374896055053562127719960153600663206826699571430858296045002040795852703202016868147200019873965327781657440683350064500000000000000000",
+      "certified_side_decimal": "17.9634381397771407543568394002479978096712",
+      "side_increase": "1.754e-15",
+      "center_dilation": "1",
+      "pairs_tested": 46665,
+      "promotion": "certificate-produced",
+      "independent": {
+        "verification_passed": true,
+        "pairs_tested": 46665,
+        "minimum_containment_clearance": "0",
+        "failures": []
+      },
+      "units_above_printed": 2,
+      "verified_value": "17.963438139777141",
+      "exact_form": "17963438139777141/1000000000000000",
+      "wall_seconds": {
+        "promote": 23.1,
+        "independent": 67.1
+      }
+    }
+  ]
+}

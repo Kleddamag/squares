@@ -627,6 +627,12 @@ verifiers:
       Decides a source's printed pose as printed, by outward-rounded decimal interval
       arithmetic with each angle's cosine and sine enclosed.
     source: [packing/devtools/upper_bound_intervals.py]
+    independence_record: packing/devtools/upper_bound_intervals.py
+    note: >-
+      Its module statement lists the three things it shares with the exact route (the
+      retained facts, the packet tool's source and acquisition records, and the exact
+      receipt read only to compare values), none of them geometry;
+      packing/tests/test_upper_bound_intervals.py holds its imports to those.
 
   - id: V-sqpack-cover
     program: sqpack.cover, the Bentz-lemma cell certifier, run by each case's verify_cover module

@@ -227,6 +227,7 @@ action for each are in [`frontier/RESULTS.md`](packing/frontier/RESULTS.md); the
 | [T-080](packing/frontier/RESULTS.md) | 101, 102, 103, 104, 105 | `V3` | `C3` | `S3` | `previously-published` | A measure of points, segments and rectangles that wand125/square-packing-bounds published on 2 October 2026 proves s(101) >= 257/25 = 10.28. |
 | [T-085](packing/frontier/RESULTS.md) | 10-324 | `V3` | `C3` | `S3` | `previously-published` | Lemma 1 of Nagamochi 2005 -- every square of side in (1, 1.01] inside [0,a] x [0,b] scores more than one against the paper’s unavoidable set -- is false for every container with a > 3 and b > 2. |
 | [T-086](packing/frontier/RESULTS.md) | 7, 14, 23, 34, 47, 62, 79, 98, 119, 142, 167, 194, 223, 254, 287, 322 | `V3` | `C3` | `S3` | `previously-published` | s(k^2 - 2) = k for every integer k >= 2: chelokot’s Lean theorem Records.NearSquare.squareMinusTwo_isMinimumSide, kernel-checked here. |
+| [T-092](packing/frontier/RESULTS.md) | 208, 209, 228, 263, 272, 303, 306 | `V3` | `C3` | `S3` | `previously-published` | For seven counts, s(n) is at most the side of Francisco Couzo’s packing as published on 3 October 2026: s(208) <= 14.926534459703512, s(209) <= 14.953939011860643, s(228) <= 15.604602454552252, s(263) <= 16.742270262031792, s(272) <= 16.968165867864400, s(303) <= 17.924341009860250 and s(306) <= 17.963438139777141. |
 | [T-036](packing/frontier/RESULTS.md) | 11 | `V3` | `C2` | `S3` | `apparently-novel` | Every packing of eleven unit squares in a square container, six at orientation 0 and five sharing one orientation modulo pi/2 with half-tangent in [91442076901/250000000000, 73154061521/200000000000] (an interval containing [t* - 10^-6, t* + 10^-6] for Trump’s exact half-tangent t*), has container side at least U = 3.877083590022814 …, the exact side of Trump’s packing, and a packing in the family has side exactly U only if it is a quarter-turn image of Trump’s pose with the squares relabelled within the two classes. |
 | [T-007](packing/frontier/RESULTS.md) | 4-100 | `V0` | `C1` | `S3` | `previously-published` | For every integer 4 <= N <= 100, Nagamochi 2005, Theorem 2 gives s(N) >= min(ceil(sqrt(N)), sqrt(N - 2*floor(sqrt(N)) + 1) + 1). |
 | [T-068](packing/frontier/RESULTS.md) | 19, 20, 26, 27, 28, 29, 30, 31, 38, 39, 40, 41, 42, 43, 44, 53, 54, 55, 56, 66, 68, 69, 70, 74, 75, 76, 86, 87, 88, 89, 90, 93, 94, 95 | `V0` | `C1` | `S3` | `previously-published` | wand125/square-packing-bounds reports a higher standing rectangle-density certificate at each of 34 counts from n = 19 to n = 95, published between 29 September and 1 October 2026. |
@@ -282,7 +283,7 @@ hypothesis status and summarizes experiment verdicts, and the
 | Explorations | 47 | 28 linked to proposed hypotheses; 19 uncodified |
 | Hypotheses | 198 | 39 confirmed; 32 refuted; 64 blocked; 17 unresolved; 9 open; 32 open questions; 2 result registered; 2 abandoned; 0 running; 1 exhausted |
 | Experiments | 170 | 53 accepted; 37 rejected; 52 unresolved; 12 baseline; 11 blocked; 4 abandoned; 0 in progress; 1 exhausted |
-| Frontier results | 87 | 87 registered, 58 by others |
+| Frontier results | 88 | 88 registered, 59 by others |
 
 <!-- END CURRENT-RESEARCH-STATUS -->
 

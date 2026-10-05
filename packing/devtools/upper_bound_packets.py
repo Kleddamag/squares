@@ -11,6 +11,10 @@ recorded, and issue #227 asked for the first of them to be registered:
 - ``griffcass/square-packing`` at ``82661bc`` (23 September 2026, UTC-6), 39 packings
   for ``n = 103..307``, by Griffin Casson.
 
+Couzo's next revision, ``6042c56`` (3 October 2026), lowered seven of his 49 sides; its
+packet keeps those seven alone and names the first as the packet it follows
+(`Source.supersedes`).
+
 The first two publish no licence, so their packets keep only derived Witness/v2 facts
 and metadata, never the upstream bytes (``raw_asset_retained: false``), on the
 known-best retention policy of ``resources/web/known-best-packings/README.md``. Casson
@@ -92,11 +96,13 @@ ROOT = Path(__file__).resolve().parent.parent
 WEB = ROOT / "resources/web"
 WITNESSES = ROOT / "witnesses"
 WITNESS_SCHEMA = WITNESSES / "witness.schema.yaml"
+#: When the first three packets were retrieved; a later packet carries its own date.
 RETRIEVED = "2026-09-29"
 #: The promotion the research lane ran and this tool repeats, byte for byte.
 RATIONAL_DIGITS = 36
 MAX_SIDE_INCREASE = "1e-9"
-#: The certificate the negative controls mutate: the smallest, so they run in seconds.
+#: The certificate the 27 September packet's negative controls mutate, the smallest so
+#: they run in seconds, and the square they move. A packet's own pair is `Source.control`.
 CONTROL_N = 68
 CONTROL_SHIFT_SQUARE = 31
 FORMAT = "external-source-acquisition-v1"
@@ -119,6 +125,17 @@ class Source:
     retain_raw: bool
     #: Where exact certificates go, for a source whose packings are certified here.
     witness_directory: str | None
+    #: How its packing files are written: ``couzo`` (a ``# n`` and ``# s`` header and
+    #: ``x y theta`` rows), ``de-winter`` (one JSON record) or ``casson``.
+    layout: str
+    #: The day the clone the packet was written from was taken.
+    retrieved: str = RETRIEVED
+    #: The certificate the exact route's negative controls mutate, and the square they
+    #: move right by ``1e-6``; None where the packet keeps no exact-route controls.
+    control: tuple[int, int] | None = None
+    #: The id of the earlier packet of the same repository that this one follows. Such a
+    #: packet retains only the counts whose printed side changed since that one's pin.
+    supersedes: str | None = None
 
     @property
     def packet(self) -> Path:
@@ -172,6 +189,27 @@ FRANCISCOUZO = Source(
     licence=None,
     retain_raw=False,
     witness_directory="franciscouzo-2026",
+    layout="couzo",
+    control=(CONTROL_N, CONTROL_SHIFT_SQUARE),
+)
+#: The same repository at its next revision, ``6042c56`` of 3 October 2026, which lowered
+#: seven of the 49 sides. Its controls mutate ``n = 208``, the smallest of the seven, and
+#: move square 2, the first whose move right by ``1e-6`` makes an overlap (with square 51).
+FRANCISCOUZO_2026_10_03 = Source(
+    id="franciscouzo-square-packing-2026-10-03",
+    short="franciscouzo-2026-10-03",
+    directory="franciscouzo-square-packing-2026-10-03",
+    key="[franciscouzo square-packing 2026-10-03]",
+    url="https://github.com/franciscouzo/square-packing",
+    revision="6042c56b43b64c09fe5a32c64879e698f399beaf",
+    author="Francisco Couzo",
+    licence=None,
+    retain_raw=False,
+    witness_directory="franciscouzo-2026-10-03",
+    layout="couzo",
+    retrieved="2026-10-05",
+    control=(208, 2),
+    supersedes="franciscouzo-square-packing",
 )
 DE_WINTER = Source(
     id="de-winter-square-packing-211",
@@ -184,6 +222,7 @@ DE_WINTER = Source(
     licence=None,
     retain_raw=False,
     witness_directory="de-winter-2026",
+    layout="de-winter",
 )
 CASSON = Source(
     id="casson-square-packing",
@@ -196,8 +235,9 @@ CASSON = Source(
     licence="MIT (code); CC BY 4.0 (packings, figures and paper)",
     retain_raw=True,
     witness_directory=None,
+    layout="casson",
 )
-SOURCES = (FRANCISCOUZO, DE_WINTER, CASSON)
+SOURCES = (FRANCISCOUZO, FRANCISCOUZO_2026_10_03, DE_WINTER, CASSON)
 BY_ID = {source.id: source for source in SOURCES}
 CERTIFIED = tuple(source for source in SOURCES if source.witness_directory is not None)
 
@@ -394,7 +434,7 @@ def _witness(
             "key": source.key,
             "path": source.sources_json.relative_to(ROOT).as_posix(),
             "url": source.blob_url(upstream),
-            "retrieved": RETRIEVED,
+            "retrieved": source.retrieved,
             "revision": source.revision,
         },
     }
@@ -424,21 +464,28 @@ COUZO_CLAIM = {
 }
 
 
-def acquire_couzo(clone: Path) -> dict[str, Any]:
-    """Facts and history for every ``nNNN.txt`` at the pinned revision."""
-    source = FRANCISCOUZO
+def acquire_couzo(clone: Path, source: Source = FRANCISCOUZO) -> dict[str, Any]:
+    """Facts and history for every ``nNNN.txt`` at the pinned revision.
+
+    A packet that follows an earlier one of the same repository (`Source.supersedes`)
+    takes facts only where the printed side differs from that packet's, and pins every
+    upstream file by digest as the first did.
+    """
     if _git(clone, "rev-parse", "HEAD").strip() != source.revision:
         raise ValueError(f"{clone} is not checked out at {source.revision}")
+    earlier = cases(BY_ID[source.supersedes]) if source.supersedes else None
     files = sorted(
         (path.name for path in clone.iterdir() if path.is_file()),
         key=lambda name: (re.sub(r"\d+", "", name), int(re.sub(r"\D", "", name) or 0)),
     )
-    cases = []
+    cases_found = []
     for name in (name for name in files if re.fullmatch(r"n\d+\.txt", name)):
         n, side, rows = parse_couzo((clone / name).read_text(encoding="utf-8"))
+        if earlier is not None and n in earlier and earlier[n]["side"] == side:
+            continue
         history = couzo_history(clone, n)
         current = next(entry for entry in history if entry["side"] == side)
-        cases.append(
+        cases_found.append(
             {
                 "n": n,
                 "side": side,
@@ -456,10 +503,22 @@ def acquire_couzo(clone: Path) -> dict[str, Any]:
             n,
             _witness(source, n=n, side=side, rows=rows, claim=COUZO_CLAIM, upstream=name),
         )
+    follows = (
+        {
+            "supersedes": {
+                "packet": BY_ID[source.supersedes].directory,
+                "source_commit": BY_ID[source.supersedes].revision,
+                "retained_here": "the counts whose printed side changed since that pin",
+            }
+        }
+        if source.supersedes
+        else {}
+    )
     return {
         "id": source.id,
         "source_url": source.url,
         **_commit(clone, source.revision),
+        **follows,
         "author": source.author,
         "author_read_from": "commit metadata; the repository has no LICENSE and its README "
         "names no author",
@@ -474,7 +533,7 @@ def acquire_couzo(clone: Path) -> dict[str, Any]:
             "note": "The repository itself states no AI assistance.",
         },
         "files": [_file_record(clone, name, retained=False) for name in files],
-        "cases": sorted(cases, key=lambda case: case["n"]),
+        "cases": sorted(cases_found, key=lambda case: case["n"]),
     }
 
 
@@ -622,6 +681,7 @@ def acquire_casson(clone: Path) -> dict[str, Any]:
 
 ACQUIRE = {
     FRANCISCOUZO.id: acquire_couzo,
+    FRANCISCOUZO_2026_10_03.id: lambda clone: acquire_couzo(clone, FRANCISCOUZO_2026_10_03),
     DE_WINTER.id: acquire_de_winter,
     CASSON.id: acquire_casson,
 }
@@ -630,7 +690,7 @@ ACQUIRE = {
 def acquire(source: Source, clone: Path) -> None:
     record = {
         "format": FORMAT,
-        "retrieved": RETRIEVED,
+        "retrieved": source.retrieved,
         "sources": [ACQUIRE[source.id](clone)],
     }
     _write_json(source.sources_json, record)
@@ -793,7 +853,7 @@ def certify(sources: Sequence[Source], numbers: set[int] | None, workers: int) -
             },
         )
         print(f"{source.id}: certified {sorted(mine)}")
-        if CONTROL_N in mine:
+        if source.control is not None and source.control[0] in mine:
             _write_json(source.controls, negative_controls(source))
             print(f"{source.id}: negative controls written")
 
@@ -841,13 +901,13 @@ def shift_square(text: str, square: int, shift: Fraction) -> str:
 
 
 def negative_controls(source: Source) -> dict[str, Any]:
-    """Two mutations of the committed ``n = 68`` certificate, each of which must fail."""
-    text = gzip.decompress(source.certificate(CONTROL_N).read_bytes()).decode("utf-8")
+    """Two mutations of the packet's control certificate, each of which must fail."""
+    assert source.control is not None
+    control_n, square = source.control
+    text = gzip.decompress(source.certificate(control_n).read_bytes()).decode("utf-8")
     controls = {
         "side-shrunk-1e-15": shrink_side(text),
-        f"square-{CONTROL_SHIFT_SQUARE}-shifted-1e-6": shift_square(
-            text, CONTROL_SHIFT_SQUARE, Fraction(1, 10**6)
-        ),
+        f"square-{square}-shifted-1e-6": shift_square(text, square, Fraction(1, 10**6)),
     }
     rows = []
     for name, mutated in controls.items():
@@ -859,7 +919,7 @@ def negative_controls(source: Source) -> dict[str, Any]:
         rows.append(
             {
                 "control": name,
-                "n": CONTROL_N,
+                "n": control_n,
                 "independent_passed": verdict["verification_passed"],
                 "independent_failures": [failure[:160] for failure in verdict["failures"]],
                 "exact_verify_passed": report.valid,
@@ -867,7 +927,7 @@ def negative_controls(source: Source) -> dict[str, Any]:
         )
     return {
         "tool": "python -m devtools.upper_bound_packets certify",
-        "certificate": source.certificate(CONTROL_N).relative_to(ROOT).as_posix(),
+        "certificate": source.certificate(control_n).relative_to(ROOT).as_posix(),
         "expectation": "every control is refused by both checkers",
         "controls": rows,
     }
@@ -929,7 +989,7 @@ def fast_problems(source: Source) -> list[str]:
             for row in rows
         ):
             problems.append(f"{source.id}: a case is not below the live catalogue it records")
-    if CONTROL_N in receipts:
+    if source.control is not None and source.control[0] in receipts:
         controls = json.loads(source.controls.read_text(encoding="utf-8"))["controls"]
         if not controls or any(
             row["independent_passed"] or row["exact_verify_passed"] for row in controls
@@ -1000,7 +1060,7 @@ LIVE_URL = "https://kingbird.myphotos.cc/packing/squares_in_squares.html"
 
 
 def live_receipt(source: Source) -> Path:
-    return source.receipts / f"live-catalogue-{RETRIEVED}.json"
+    return source.receipts / f"live-catalogue-{source.retrieved}.json"
 
 
 def record_live(catalogue: Path) -> None:
@@ -1029,7 +1089,7 @@ def record_live(catalogue: Path) -> None:
             {
                 "tool": "python -m devtools.upper_bound_packets live",
                 "url": LIVE_URL,
-                "retrieved": RETRIEVED,
+                "retrieved": source.retrieved,
                 "page_sha256": digest,
                 "page_retained": False,
                 "note": "An unpictured count takes the catalogue's stated grid side.",
@@ -1057,8 +1117,51 @@ def _earlier_sides() -> dict[int, tuple[str, str]]:
     }
 
 
+def superseding_table(source: Source) -> str:
+    """A later packet's per-case table: each side beside the one it replaces.
+
+    The live catalogue is not read here: the column beside it is the retained capture
+    that the records compare with, and refreshing that is a dated survey of its own.
+    """
+    from devtools.check_source_coverage import parse_kingbird  # noqa: PLC0415
+    from sqpack.kingbird_catalogue import CATALOGUE_HTML  # noqa: PLC0415
+
+    assert source.supersedes is not None
+    before = BY_ID[source.supersedes]
+    replaced, replaced_receipts = cases(before), certification(before)
+    receipts = certification(source)
+    kingbird = parse_kingbird(ROOT / CATALOGUE_HTML, 1, 324)
+    casson = cases(CASSON)
+    header = (
+        "| n | Side printed | Authored (UTC) | Certified side | Verified here | "
+        "Side it replaces | Verified before | Lower by | Kingbird, 2026-09-30 | "
+        "Casson, 2026-09-23 |"
+    )
+    lines = [header, "| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |"]
+    for n, case in sorted(cases(source).items()):
+        row = receipts[n]
+        verified = row["verified_value"]
+        units = int(row["units_above_printed"])
+        plural = "" if units == 1 else "s"
+        mark = "" if verified == case["side"] else f" (+{units} unit{plural})"
+        old = replaced[n]["side"]
+        lower = Decimal(old) - Decimal(case["side"])
+        lines.append(
+            f"| {n} | `{case['side']}` | "
+            f"{case['current_since_authored_utc'][:16].replace('T', ' ')} | "
+            f"`{row['certified_side_decimal'][: len(case['side']) + 5]}…` | "
+            f"`{verified}`{mark} | `{old}` | `{replaced_receipts[n]['verified_value']}` | "
+            f"`{lower:.3e}` | `{kingbird[n]}` | "
+            + (f"`{casson[n]['side']}`" if n in casson else "—")
+            + " |"
+        )
+    return "\n".join(lines) + "\n"
+
+
 def table(source: Source) -> str:
     """The packet README's per-case table, from the retained records."""
+    if source.supersedes is not None:
+        return superseding_table(source)
     earlier = _earlier_sides()
     receipts = certification(source)
     live = {

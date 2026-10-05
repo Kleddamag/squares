@@ -90,9 +90,12 @@ def test_retained_census_reports_source_stratified_coverage() -> None:
     non_grid = registered["summary"]["non_grid"]
     assert non_grid["records"] == 36
     # 1782, not 1780, since the #227 intake: Couzo's n = 68 (T-056) structures two more
-    # squares at the registered tolerance than the UnitSquare packing it replaced.
-    assert (non_grid["structured_squares"], non_grid["total_squares"]) == (1782, 1860)
-    assert non_grid["within_six_chunks_and_three_free"] == 25
+    # squares at the registered tolerance than the UnitSquare packing it replaced. 1792
+    # since 2026-10-05: the catalogue's packing at n = 69 (T-088) structures ten more
+    # squares than the rendering it replaced and fits six chunks with at most three free;
+    # the new packings at n = 83 and 87 (T-089) leave both counts where they were.
+    assert (non_grid["structured_squares"], non_grid["total_squares"]) == (1792, 1860)
+    assert non_grid["within_six_chunks_and_three_free"] == 26
 
     # The relaxed sweep still structures more of n = 68 and merges its angle classes; the
     # counts are Couzo's packing's, where the UnitSquare one gave 57 and 60, 13 and 7.

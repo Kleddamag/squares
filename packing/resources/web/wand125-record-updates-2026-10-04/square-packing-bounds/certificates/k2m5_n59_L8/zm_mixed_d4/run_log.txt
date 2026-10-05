@@ -1,0 +1,124 @@
+zeromargin.py sha256 640fe453c1a32f4aa580ca2b1261c6406923a4d7c131f65604a432c7fc2086ab (= pinned)
+sha256 ee3e2915349b8795128417bca6414b205d526db9f01f88cd4cd32c32e8d760ac  zm_mixed.py
+sha256 bb89de15ecf5821dd7e1a36ebab8a50d792a406b7fb0f5cb38059f99ef74aae5  mixed_cover.py
+sha256 640fe453c1a32f4aa580ca2b1261c6406923a4d7c131f65604a432c7fc2086ab  zeromargin.py
+sha256 6f4d2b64f9a88ae49546f05fa28752382f9ebfa8b7f8b6e6c6f1a8e693177e19  input (/opt/sp/runs/m8c/cand/s59_mixed_candidate_8.txt)
+argv: search/zm_mixed.py cert /opt/sp/runs/m8c/cand/s59_mixed_candidate_8.txt --d4 --cert-mode --disj --chain-from 0 --depth 24 --pitch 1/20 --ubins 16 --nproc 6 --progress 1000 --resume /opt/sp/runs/m8c/cand/zm_mixed_d4/roots.jsonl --manifest /opt/sp/runs/m8c/cand/zm_mixed_d4/manifest.json
+settings: {"cert_mode": true, "chain": true, "chain_from": 0, "clip": true, "depth": 24, "lemma_L": true, "lemma_T": true, "mode": "D4", "pitch": "1/20", "reach": "442/625", "region": {"cx_hi": null, "cx_lo": null, "cy_hi": null, "cy_lo": null, "u_hi": null, "u_lo": null}, "split": true, "split_maxchain": 400, "theta_bias": 4, "tprime": false, "ubins": 16}
+CERT MODE: Corollary T' and polygon code disabled (0 points on segment lines are treated as ordinary points)
+container [0,8]^2, 26308 points, 5240 segments on 14 lines, 0 polygons; total 1474762899/25000000 = 58.990515960
+D4: measure invariant under x -> m-x and x <-> y; roots [0,m/2]^2 x u in [0,1/2]
+102400 root boxes x 1 cover(s), depth limit 24, pitch 1/20, u-bins 16, CHAIN on, Lemma T on, Lemma L on
+  1000/102400 roots, 1000 boxes, uncert 0, 0s
+  2000/102400 roots, 2000 boxes, uncert 0, 0s
+  3000/102400 roots, 3000 boxes, uncert 0, 0s
+  4000/102400 roots, 4000 boxes, uncert 0, 0s
+  5000/102400 roots, 5000 boxes, uncert 0, 0s
+  6000/102400 roots, 6000 boxes, uncert 0, 1s
+  7000/102400 roots, 7000 boxes, uncert 0, 1s
+  8000/102400 roots, 8000 boxes, uncert 0, 1s
+  9000/102400 roots, 9000 boxes, uncert 0, 1s
+  10000/102400 roots, 10000 boxes, uncert 0, 1s
+  11000/102400 roots, 11000 boxes, uncert 0, 1s
+  12000/102400 roots, 12000 boxes, uncert 0, 1s
+  13000/102400 roots, 13012 boxes, uncert 0, 2s
+  14000/102400 roots, 14162 boxes, uncert 0, 11s
+  15000/102400 roots, 16972 boxes, uncert 0, 97s
+  16000/102400 roots, 20662 boxes, uncert 0, 162s
+  17000/102400 roots, 23070 boxes, uncert 0, 218s
+  18000/102400 roots, 27220 boxes, uncert 0, 375s
+  19000/102400 roots, 30270 boxes, uncert 0, 491s
+  20000/102400 roots, 32120 boxes, uncert 0, 528s
+  21000/102400 roots, 33120 boxes, uncert 0, 537s
+  22000/102400 roots, 34120 boxes, uncert 0, 547s
+  23000/102400 roots, 35120 boxes, uncert 0, 559s
+  24000/102400 roots, 36120 boxes, uncert 0, 567s
+  25000/102400 roots, 37120 boxes, uncert 0, 576s
+  26000/102400 roots, 38120 boxes, uncert 0, 585s
+  27000/102400 roots, 39126 boxes, uncert 0, 597s
+  28000/102400 roots, 40140 boxes, uncert 0, 611s
+  29000/102400 roots, 41282 boxes, uncert 0, 639s
+  30000/102400 roots, 42872 boxes, uncert 0, 704s
+  31000/102400 roots, 47520 boxes, uncert 0, 1062s
+  32000/102400 roots, 140844 boxes, uncert 0, 4574s
+  33000/102400 roots, 249836 boxes, uncert 0, 8229s
+  34000/102400 roots, 314846 boxes, uncert 0, 11032s
+  35000/102400 roots, 373478 boxes, uncert 0, 13879s
+  36000/102400 roots, 427594 boxes, uncert 6, 15924s
+  37000/102400 roots, 521322 boxes, uncert 6, 19726s
+  38000/102400 roots, 591130 boxes, uncert 6, 22113s
+  39000/102400 roots, 625778 boxes, uncert 6, 23527s
+  40000/102400 roots, 674892 boxes, uncert 6, 26080s
+  41000/102400 roots, 704862 boxes, uncert 6, 27895s
+  42000/102400 roots, 712816 boxes, uncert 6, 28298s
+  43000/102400 roots, 721072 boxes, uncert 6, 28754s
+  44000/102400 roots, 728866 boxes, uncert 6, 29215s
+  45000/102400 roots, 734000 boxes, uncert 6, 29494s
+  46000/102400 roots, 738170 boxes, uncert 6, 29673s
+  47000/102400 roots, 740724 boxes, uncert 6, 29763s
+  48000/102400 roots, 743652 boxes, uncert 6, 29879s
+  49000/102400 roots, 746608 boxes, uncert 6, 30031s
+  50000/102400 roots, 750638 boxes, uncert 6, 30239s
+  51000/102400 roots, 753638 boxes, uncert 6, 30368s
+  52000/102400 roots, 755994 boxes, uncert 6, 30494s
+  53000/102400 roots, 758292 boxes, uncert 6, 30581s
+  54000/102400 roots, 760092 boxes, uncert 6, 30656s
+  55000/102400 roots, 763048 boxes, uncert 6, 30848s
+  56000/102400 roots, 768432 boxes, uncert 6, 31245s
+  57000/102400 roots, 782762 boxes, uncert 6, 32083s
+  58000/102400 roots, 797754 boxes, uncert 6, 32626s
+  59000/102400 roots, 840510 boxes, uncert 6, 34802s
+  60000/102400 roots, 865136 boxes, uncert 6, 36454s
+  61000/102400 roots, 887526 boxes, uncert 6, 37918s
+  62000/102400 roots, 924558 boxes, uncert 6, 39880s
+  63000/102400 roots, 947432 boxes, uncert 6, 40975s
+  64000/102400 roots, 992828 boxes, uncert 6, 43162s
+  65000/102400 roots, 1016056 boxes, uncert 6, 44404s
+  66000/102400 roots, 1031116 boxes, uncert 6, 45321s
+  67000/102400 roots, 1050910 boxes, uncert 6, 46606s
+  68000/102400 roots, 1064454 boxes, uncert 6, 47454s
+  69000/102400 roots, 1074780 boxes, uncert 6, 48131s
+  70000/102400 roots, 1081764 boxes, uncert 6, 48562s
+  71000/102400 roots, 1087888 boxes, uncert 6, 48973s
+  72000/102400 roots, 1093294 boxes, uncert 6, 49315s
+  73000/102400 roots, 1099506 boxes, uncert 6, 49746s
+  74000/102400 roots, 1104288 boxes, uncert 6, 50055s
+  75000/102400 roots, 1108444 boxes, uncert 6, 50433s
+  76000/102400 roots, 1115298 boxes, uncert 6, 50797s
+  77000/102400 roots, 1124006 boxes, uncert 6, 51461s
+  78000/102400 roots, 1133332 boxes, uncert 6, 52225s
+  79000/102400 roots, 1139268 boxes, uncert 6, 52596s
+  80000/102400 roots, 1144122 boxes, uncert 6, 53008s
+  81000/102400 roots, 1151370 boxes, uncert 6, 53509s
+  82000/102400 roots, 1164360 boxes, uncert 6, 54599s
+  83000/102400 roots, 1181258 boxes, uncert 6, 55581s
+  84000/102400 roots, 1202756 boxes, uncert 6, 56832s
+  85000/102400 roots, 1222120 boxes, uncert 6, 58341s
+  86000/102400 roots, 1243290 boxes, uncert 6, 59945s
+  87000/102400 roots, 1265326 boxes, uncert 6, 61412s
+  88000/102400 roots, 1305202 boxes, uncert 6, 63032s
+  89000/102400 roots, 1324558 boxes, uncert 6, 64192s
+  90000/102400 roots, 1341222 boxes, uncert 6, 64906s
+  91000/102400 roots, 1368134 boxes, uncert 6, 66148s
+  92000/102400 roots, 1389886 boxes, uncert 6, 67253s
+  93000/102400 roots, 1402274 boxes, uncert 6, 68047s
+  94000/102400 roots, 1416448 boxes, uncert 6, 69044s
+  95000/102400 roots, 1431766 boxes, uncert 6, 70194s
+  96000/102400 roots, 1450056 boxes, uncert 6, 71726s
+  97000/102400 roots, 1467670 boxes, uncert 6, 72424s
+  98000/102400 roots, 1474224 boxes, uncert 6, 72999s
+  99000/102400 roots, 1481882 boxes, uncert 6, 73585s
+  100000/102400 roots, 1491634 boxes, uncert 6, 74367s
+  101000/102400 roots, 1502744 boxes, uncert 6, 75228s
+  102000/102400 roots, 1510890 boxes, uncert 6, 75833s
+done in 76108s: boxes 1514784, max depth 24, CPU 455030 s
+  leaves: PIECE 8470  ADM 346399  P1 0  MIX 0  CHAIN 217278  SPLIT 206137  EMPTY 30302  UNCERTIFIED 6   (leaves where Lemma T / Lemma L raised the piece bound: 159571 / 617572; closed by Lemma T with line points: 0)
+uncertified boxes (cover cx0 cx1 cy0 cy1 theta0 theta1 deg):
+   - 1.381445 1.381641 1.340430 1.340625 29.5684 29.5814
+   - 1.396289 1.396484 1.311523 1.311719 30.6641 30.6771
+   - 1.396484 1.396680 1.311328 1.311523 30.5860 30.5990
+   - 1.396484 1.396680 1.311328 1.311523 30.5990 30.6120
+   - 1.396484 1.396680 1.311328 1.311523 30.6120 30.6250
+   - 1.396484 1.396680 1.311328 1.311523 30.6250 30.6380
+NOT VERIFIED
+manifest written to /opt/sp/runs/m8c/cand/zm_mixed_d4/manifest.json

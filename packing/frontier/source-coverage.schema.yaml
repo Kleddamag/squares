@@ -41,10 +41,11 @@ properties:
         reason: {type: string, minLength: 1}
   superseded_reports:
     description: >-
-      Retained claims a selected override at the same n beats. Each names its own
-      source, the side that source prints, and the source whose selected report
-      supersedes it; check_source_coverage holds the first to the source's reparsed
-      record and requires the second to be strictly smaller.
+      Retained claims a selected override at the same n beats, or, where none is
+      selected, the catalogue baseline beats. Each names its own source, the side that
+      source prints, and the source whose report supersedes it; check_source_coverage
+      holds the first to the source's reparsed record and requires the second to be
+      strictly smaller.
     type: array
     items:
       type: object
@@ -65,23 +66,34 @@ properties:
       check_source_coverage reads that capture for the count, requires the record to
       carry a source-evidence blocker naming pending_catalogue_intake and the newer side,
       and fails the declaration once either capture or the record stops agreeing with it.
+      A deferral is work, so each also names the open bead that owns the intake and the
+      day it was recorded: the three entries of 2026-09-30 named neither, and sat five
+      days with nothing listing them. check_bead_tree fails an entry whose bead is not
+      open, and devtools.intake_sweep reports each with its age.
     type: array
     items:
       type: object
       additionalProperties: false
-      required: [n, record_value, catalogue_value, capture, reason]
+      required: [n, record_value, catalogue_value, capture, reason, bead, recorded]
       properties:
         n: {type: integer, minimum: 1}
         record_value: {type: string, pattern: '^[0-9]+(?:\.[0-9]+)?$'}
         catalogue_value: {type: string, pattern: '^[0-9]+(?:\.[0-9]+)?$'}
         capture: {type: string, pattern: '^\d{4}-\d{2}-\d{2}$'}
         reason: {type: string, minLength: 1}
+        bead: {$ref: '#/$defs/bead'}
+        recorded: {type: string, pattern: '^\d{4}-\d{2}-\d{2}$'}
   beyond_horizon_claims:
     type: array
     items:
       type: object
       additionalProperties: false
       required: [n, source_id, claim, value, assurance, disposition]
+      description: >-
+        A `deferred-conflict` is a deferral, like a pending intake, so it names the open
+        bead that owns resolving it.
+      if: {properties: {disposition: {const: deferred-conflict}}}
+      then: {required: [bead]}
       properties:
         n: {type: integer, minimum: 1}
         source_id: {type: string, pattern: '^[a-z0-9-]+$'}
@@ -89,7 +101,11 @@ properties:
         value: {type: string, pattern: '^[0-9]+(?:\.[0-9]+)?$'}
         assurance: {enum: [reported, numerically-checked, verified]}
         disposition: {enum: [tracked-outside-case-corpus, deferred-conflict, superseded]}
+        bead: {$ref: '#/$defs/bead'}
 $defs:
+  bead:
+    type: string
+    pattern: '^think-[a-z0-9]{4}$'
   scope:
     oneOf:
       - type: object

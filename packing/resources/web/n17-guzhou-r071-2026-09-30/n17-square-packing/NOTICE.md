@@ -1,0 +1,75 @@
+# R071：4.66044275证书与条件联合几何 / Certificate at4.66044275 and conditional joint geometry
+
+保留C027的4.66044275完整证书；C029新增固定锚点条件下17条冲突、2条强制空点及9≤Vmax≤11，不是4.6605全局下界。本次仅核对文件和已有记录，最终C++/BigInt复验交Actions，结果未观察。 / The retained C027 certificate states4.66044275. C029 adds17 conflicts,2 forced holes and9≤Vmax≤11 under a fixed-anchor condition, not a global bound of4.6605. Reception checked files and saved records only; final C++/BigInt replay is delegated to Actions and its outcome is unobserved.
+
+[证明、数据与复验 / Proof, data and replay](certificates/R071-C029/README.md)
+
+> 以下为历史发布记录，状态按其发布日期理解。 / Below are historical publications; status statements refer to their publication dates.
+
+# R070：4.6604427 / R070: 4.6604427
+
+最新公开完整证明材料为s(17)>4.6604427，附5107区间双实现记录、319同预算增强规则及限定的方法类障碍。接收仅核对身份和记录，最终几何复验交Actions，结果未观察。 / The latest published complete proof materials state s(17)>4.6604427, with5107 paired interval records,319 same-budget enhanced rules and a scoped method-class obstruction. Reception checked identities and records only; final geometry replay is delegated to Actions and outcomes are unobserved.
+
+[证明、数据与复验 / Proof, data and replay](certificates/R070-4.6604427/README.md)
+
+> 以下为历史发布内容，状态按各次发布时间解释。 / The following material is historical; status statements refer to each publication date.
+
+# R068 / C010：提交最终CI复验 / Submitted for final CI replay
+
+公开C009保留的4.66044完整证明材料及C010的局部连续方法；C010没有新增更高全域下界。本次不做额外本地科学验证，最终复验交给Actions，尚未观察其结果；原R067的本地接受状态保持。 / This publishes C009's retained complete proof materials for4.66044 and C010's local continuous method; C010 adds no higher global bound. No additional local scientific validation was run; final replay is delegated to Actions and its outcome has not been observed. R067 retains its previous local acceptance status.
+
+[证明与复验 / Proof and replay](certificates/R068-C010/README.md) · [工作流 / Workflow](.github/workflows/r068-c010.yml)
+
+> 以下为此前发布内容，状态按各次发布当时解释。 / The following material belongs to earlier publications; status statements refer to those publication dates.
+
+# R067：4.66018 / R067: 4.66018
+
+Kleddamag4.66001收费保持不变，新的严格核与2808个角区间完成4.66018；旧证书包保留。 / Retaining Kleddamag's 4.66001 charge, new strict cores and2808 angular intervals establish4.66018; earlier certificate packages remain intact.
+
+[证明与复验 / Proof and replay](certificates/R067-4.66018/README.md) · [来源 / Attribution](certificates/R067-4.66018/ATTRIBUTION.md)
+
+> 以下为历史发布记录，关于内部结果、未公开状态或尚未证明目标的文字仅描述各次发布当时的状态，不是当前结论；当前已接受R067的4.66018及Kleddamag公开4.66001基线。 / The following historical release records describe the status at their respective publication dates, including private results and then-unproved targets; they are not current conclusions. The current accepted result is R067 at4.66018, continuing Kleddamag's public4.66001 baseline.
+
+# Attribution and licensing scope / 来源与许可范围
+
+## R052 延续 / R052 continuation
+
+4.62003延续由Guzhou0806 / N17 project在AI辅助下完成；通过已公开R052基线的精确点位变形推进端点，继续保留Kleddamag混合证书架构及上游来源的署名。 / The 4.62003 continuation is produced by Guzhou0806 / N17 project with AI assistance, improving the endpoint by exact site deformation of published R052 while retaining credit for Kleddamag's mixed-certificate architecture and upstream sources.
+
+Kleddamag的内部4.62001仍归Kleddamag，其未公开证明不在本包中，也未在此独验；本发布不声明全球最优、外部优先权或真人同行评审。 / Kleddamag retains credit for the internal 4.62001; its unpublished proof is neither included nor independently verified here. This release makes no claim of global optimality, external priority or human peer review.
+
+[来源 / Sources](certificates/R052-4.62003/SOURCE_NOTICES.md) · [许可范围 / Licence scope](certificates/R052-4.62003/LICENSE_SCOPE.md)
+
+## R052
+
+R052 由 Guzhou0806 / N17 project 在 AI 辅助下完成，延续 Kleddamag 的公开混合证书架构并扩大资源字典。 / R052 is produced by Guzhou0806 / N17 project with AI assistance, continuing Kleddamag's public mixed-certificate architecture with enlarged resources.
+
+Kleddamag 的内部 4.62001 结果仍归其所有，未包含或独验于本发布；R052 不声明外部优先权或真人同行评审。 / Kleddamag retains credit for the internal 4.62001 result, which is not included or independently verified here; R052 claims neither external priority nor human peer review.
+
+[来源 / Sources](certificates/R052/SOURCE_NOTICES.md) · [许可范围 / Licence scope](certificates/R052/LICENSE_SCOPE.md)
+
+## R050
+
+R050 由 Guzhou0806 / N17 project 在 AI 辅助下发布，延续 Kleddamag 的混合证书架构及 R043，以固定资源和权重、细分角区间与严格内核证明新端点。 / R050 is published by Guzhou0806 / N17 project with AI assistance, continuing Kleddamag's mixed-certificate architecture and R043 with fixed resources and weights, refined angular intervals and strict cores at a new endpoint.
+
+**R050 已不是目前已知的最优下界：据维护者获知的信息，Kleddamag 已取得尚未公开的 4.62001 下界。该成果属于 Kleddamag，不属于本项目；其证明不包含在本发布中，本发布也未独立验证该证明。** / **R050 is no longer the best currently known lower bound: according to information received by the maintainer, Kleddamag has obtained an unpublished lower bound of 4.62001. That result belongs to Kleddamag, not this project; its proof is neither included nor independently verified in this release.**
+
+详见 [R050 来源 / R050 sources](certificates/R050/SOURCE_NOTICES.md) 与 [许可边界 / licence scope](certificates/R050/LICENSE_SCOPE.md)。 / See the linked source and licensing records.
+
+## R043
+
+R043 is published by **Guzhou0806 / N17 project, with AI assistance**, and directly continues the frozen R042 mixed-certificate architecture. / R043 由 **Guzhou0806 / N17 project（使用 AI 辅助）** 发布，并直接延续冻结的 R042 混合证书架构。
+
+The primary upstream architecture remains **Kleddamag/17-squares-certified-bound** v1.0.0 at commit `a499e2c739ce7853fa04c8bcdc85caf1c2b01b37`. / 主要上游架构继续锁定 **Kleddamag/17-squares-certified-bound** v1.0.0 提交 `a499e2c739ce7853fa04c8bcdc85caf1c2b01b37`。
+
+R043 introduces no new third-party point or threshold coordinates and changes no threshold orbit. / R043 不引入新的第三方 point 或 threshold 坐标，也不改变 threshold orbit。
+
+The source-distinct BigInt checker is reconstructed at replay time from a SHA-pinned public R038 source file plus a deterministic byte-edit recipe, and the reconstructed checker bytes are not redistributed. / 不同源码的 BigInt 检查器在复演时从 SHA 锁定的公开 R038 来源文件与确定性字节编辑配方重建，重建后的检查器字节不被重新分发。
+
+See [R043 attribution / R043 来源](certificates/R043/ATTRIBUTION.md), [proof / 证明](certificates/R043/PROOF.md), and [license scope / 许可范围](certificates/R043/LICENSE_SCOPE.md). / 详细来源、证明与许可边界见对应文件。
+
+## Earlier publications / 早期发布
+
+R042, R038, R012, and M19 retain their existing attribution and redistribution boundaries. / R042、R038、R012 与 M19 继续保留各自已有的来源与再分发边界。
+
+R050 does not broaden any historical or third-party grant. / R050 不扩展任何历史或第三方授权。

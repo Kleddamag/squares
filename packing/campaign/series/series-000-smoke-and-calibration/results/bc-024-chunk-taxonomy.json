@@ -2,10 +2,10 @@
   "residue": {
     "by_source": {
       "exact-grid": 44,
-      "kingbird-derived-facts": 65,
+      "kingbird-derived-facts": 67,
       "packet-derived-facts": 1
     },
-    "components": 110,
+    "components": 112,
     "detail": [
       {
         "is_the_whole_record": true,
@@ -545,6 +545,22 @@
       },
       {
         "is_the_whole_record": false,
+        "n": 69,
+        "size": 21,
+        "source": "kingbird-derived-facts",
+        "tilted": false,
+        "walls_touched": 2
+      },
+      {
+        "is_the_whole_record": false,
+        "n": 69,
+        "size": 28,
+        "source": "kingbird-derived-facts",
+        "tilted": false,
+        "walls_touched": 2
+      },
+      {
+        "is_the_whole_record": false,
         "n": 70,
         "size": 21,
         "source": "kingbird-derived-facts",
@@ -898,11 +914,11 @@
       "16": 1,
       "18": 2,
       "19": 2,
-      "21": 8,
+      "21": 9,
       "22": 1,
       "23": 1,
       "24": 1,
-      "28": 6,
+      "28": 7,
       "31": 1,
       "32": 2,
       "33": 1,
@@ -947,7 +963,7 @@
     "tilted": 0,
     "walls_touched": {
       "1": 1,
-      "2": 65,
+      "2": 67,
       "4": 44
     },
     "whole_record": 44
@@ -961,7 +977,7 @@
     },
     "bar": {
       "10": 1,
-      "2": 75,
+      "2": 83,
       "3": 11,
       "4": 1,
       "5": 1,
@@ -979,11 +995,11 @@
       "16": 1,
       "18": 2,
       "19": 2,
-      "21": 8,
+      "21": 9,
       "22": 1,
       "23": 1,
       "24": 1,
-      "28": 6,
+      "28": 7,
       "31": 1,
       "32": 2,
       "33": 1,
@@ -1046,7 +1062,7 @@
       "90": 1
     },
     "singleton": {
-      "1": 301
+      "1": 236
     }
   },
   "strata": {
@@ -1063,16 +1079,16 @@
       "tilted_components": 0
     },
     "kingbird-derived-facts": {
-      "components": 387,
-      "records": 34,
+      "components": 401,
+      "records": 35,
       "shapes": {
         "L": 31,
-        "bar": 82,
-        "other-polyomino": 65,
+        "bar": 90,
+        "other-polyomino": 67,
         "rectangle": 12,
-        "singleton": 197
+        "singleton": 201
       },
-      "tilted_components": 237
+      "tilted_components": 247
     },
     "packet-derived-facts": {
       "components": 45,
@@ -1082,14 +1098,6 @@
         "bar": 9,
         "other-polyomino": 1,
         "singleton": 34
-      },
-      "tilted_components": 25
-    },
-    "unitsquare-rendering": {
-      "components": 69,
-      "records": 1,
-      "shapes": {
-        "singleton": 69
       },
       "tilted_components": 25
     }
@@ -1146,14 +1154,14 @@
       "4": 1
     },
     "bar": {
-      "0": 79,
-      "1": 4,
+      "0": 86,
+      "1": 5,
       "2": 8,
       "3": 1
     },
     "other-polyomino": {
       "1": 1,
-      "2": 65,
+      "2": 67,
       "4": 44
     },
     "rectangle": {
@@ -1163,9 +1171,9 @@
       "4": 9
     },
     "singleton": {
-      "0": 223,
-      "1": 40,
-      "2": 37,
+      "0": 159,
+      "1": 37,
+      "2": 39,
       "4": 1
     }
   }

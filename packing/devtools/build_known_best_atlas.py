@@ -874,6 +874,8 @@ def _source_index(plans: dict[int, SourcePlan]) -> dict:
         if plan.kind == "exact-grid":
             continue
         if plan.kind == "kingbird-derived-facts":
+            retained = load_witness(plan.path, fallback_schema=WITNESS_SCHEMA)
+            revision = _retained_revision(retained)
             sources.append(
                 {
                     "attribution": KINGBIRD_ATTRIBUTION,
@@ -883,9 +885,8 @@ def _source_index(plans: dict[int, SourcePlan]) -> dict:
                     "n": n,
                     "raw_asset_retained": False,
                     "retention_policy": KINGBIRD_RETENTION_POLICY,
-                    "retrieved": _retained_retrieval(
-                        load_witness(plan.path, fallback_schema=WITNESS_SCHEMA)
-                    ),
+                    "retrieved": _retained_retrieval(retained),
+                    **({"revision": revision} if revision is not None else {}),
                     "source_n": plan.source_n,
                     "url": plan.url,
                 }
@@ -905,7 +906,7 @@ def _source_index(plans: dict[int, SourcePlan]) -> dict:
                     "path": _relative(plan.path),
                     "raw_asset_retained": False,
                     "retention_policy": KINGBIRD_RETENTION_POLICY,
-                    "retrieved": packets.RETRIEVED,
+                    "retrieved": packet.retrieved,
                     "source_n": plan.source_n,
                     "url": plan.url,
                 }
@@ -958,6 +959,18 @@ def _retained_retrieval(retained: Mapping[str, Any]) -> str:
     return str(recorded) if recorded else RETRIEVED_DATE
 
 
+def _retained_revision(retained: Mapping[str, Any]) -> str | None:
+    """The third party's pinned parse the retained facts were read from, if any.
+
+    `devtools.derive_kingbird_facts --from-parse` records it for a count whose SVG this
+    repository could not fetch; a witness read from the SVG itself records none, and a
+    rebuild keeps whichever the retained witness says.
+    """
+    source = retained.get("source")
+    recorded = source.get("revision") if isinstance(source, Mapping) else None
+    return str(recorded) if recorded else None
+
+
 def _build_witness(case: FrontierCase, plan: SourcePlan) -> dict:
     frontier_path = _relative(case.path)
     if plan.kind == "exact-grid":
@@ -976,6 +989,7 @@ def _build_witness(case: FrontierCase, plan: SourcePlan) -> dict:
                 source_path=_relative(SOURCE_MANIFEST),
                 source_url=plan.url,
                 retrieved=_retained_retrieval(retained),
+                revision=_retained_revision(retained),
             )
         if plan.kind == PACKET_KIND:
             retained = load_witness(plan.path, fallback_schema=WITNESS_SCHEMA)
@@ -985,7 +999,7 @@ def _build_witness(case: FrontierCase, plan: SourcePlan) -> dict:
                 retained,
                 source_key=case.reported_source_key,
                 source_path=_relative(plan.path),
-                retrieved=packets.RETRIEVED,
+                retrieved=PACKET_SOURCES[case.reported_source_key].retrieved,
             )
         source_text = plan.path.read_text(encoding="utf-8")
         source_path = _relative(plan.path)

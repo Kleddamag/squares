@@ -1,0 +1,55 @@
+{
+  "schema": "GuzhouR071PacketStructure/v1",
+  "release": "R071",
+  "source_commit": "8c11f6962506940c5de67a9fa73b3d1e2e151196",
+  "certificate_sha256": "15b6bf6a936eba71338c9ea3e3b9966ae21db8116a6f5a92a8b5da5ccabed469",
+  "r068_certificate_sha256": "cf70f74ddb47071b1d7333d8a43885d2915f43d45f26f6084a106dfdb0c5205f",
+  "target": "18641771/4000000",
+  "parent_side": "18452000/18641771",
+  "r068_parent_side": "115325/116511",
+  "advance_over_r068": "11/4000000",
+  "previous_release": "R070",
+  "advance_over_previous": "1/20000000",
+  "same_as_r068": {
+    "L": true,
+    "coordinate_denominator": true,
+    "weight_denominator": true,
+    "budget_units": true,
+    "minimum_units": true,
+    "point_orbits": true,
+    "threshold_orbits": true
+  },
+  "charge_is_r068s": true,
+  "point_orbits": 2621,
+  "rule_orbits": 889,
+  "budget_units": 17000448944,
+  "requested_minimum_units": 1000026409,
+  "requested_surplus_units": 9,
+  "declared_base_sha256": "8438cae4da93c98a92b0b96560f95d9da8d0ef47287783f3b18a9cb8208167b9",
+  "source_note": "C027 candidate 4.66044275. All 5111 core intervals rebuilt; complete paired verification required.",
+  "angle_chain_over_r068": {
+    "original_intervals": 4991,
+    "new_intervals": 5114,
+    "pieces_per_original": {
+      "1": 4885,
+      "2": 104,
+      "5": 1,
+      "16": 1
+    },
+    "exact_bisections": 104
+  },
+  "angle_chain_over_previous": {
+    "original_intervals": 5107,
+    "new_intervals": 5114,
+    "pieces_per_original": {
+      "1": 5100,
+      "2": 7
+    },
+    "exact_bisections": 7
+  },
+  "cores_over_previous": {
+    "shared_intervals": 5100,
+    "shared_same_core_angle": 5100,
+    "shared_same_core": 0
+  }
+}

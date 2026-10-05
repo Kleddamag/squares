@@ -1,9 +1,12 @@
 # The Result Import Process: Runbook
 
-An import starts from one thing: a GitHub issue, or a link to a result someone else has
-published.
-Everything below follows from that input, and ends with the result registered,
-validated and rated in this record and its author answered.
+An import starts from an input: an issue or a comment on this repository, a message from
+the owner, a count the Kingbird catalogue moves, a new release of another catalogue, or
+a commit in a repository whose results the record carries.
+Everything below follows from that input, and ends with the result registered, validated
+and rated in this record and its author answered.
+[Intake Sources](#intake-sources) says where inputs arrive and how each is read, and an
+[intake pass](#running-an-intake-pass) reads all of them at once.
 
 This page holds the sequence, and the few rules that belong to no single record.
 The rest has an owner, and is not repeated here:
@@ -17,10 +20,113 @@ The rest has an owner, and is not repeated here:
 - [New Result Publication](documentation-pass.md#new-result-publication) owns the
   commands that render and check a changed record.
 
+## Running an Intake Pass
+
+An intake pass brings the record up to date with every source at once.
+It runs when the owner asks for one (“run the intake”), not on a schedule, and it is one
+W1 phase on one branch:
+
+1. **Sweep.** From the repository root, run `make intake`. It captures the Kingbird
+   catalogue into `attic/intake/`, then runs
+   [`devtools.intake_sweep`](../devtools/intake_sweep.py), which reads every source in
+   [the table below](#intake-sources) and prints each item the record has not taken in.
+   It exits nonzero while any item lacks an open bead to own it, or waits on something
+   that has already happened.
+   Read **Needs Action** first, then **Not Checked**: a source the sweep could not read
+   is not a clean source.
+2. **Own each item** as [stage 0](#stage-0-sweep) says: a bead for each new result, a
+   recorded read where there is nothing to import, a new owner for any deferral whose
+   bead has closed, and a restart for any wait whose blocker has resolved.
+3. **Import** each new result through stages 1 to 3 on the same branch.
+   A stage 4 replay the source prices at minutes can run in the same branch; a longer
+   one waits in its bead for a budget the owner sets.
+4. **Validate** from `packing/` with `packing-validate --records`, then `--push`.
+5. **Open one draft pull request** with `tbd shortcut create-or-update-pr-simple`. It
+   lists each item with its bead and the stage it reached, and every source under Not
+   Checked.
+6. **Draft the replies** each issue is owed, in its answer bead.
+   They are posted after the merge, from `main`, by the owner or at the owner’s request
+   ([stage 7](#stage-7-answer)).
+7. **Sweep again** with `make intake`, after the branch’s changes to the records.
+   The pass is done when nothing needs action, or when the pull request says why each
+   remaining item waits.
+
+The pass needs network access to `github.com`, for Git and for the API through `gh`;
+`kingbird.myphotos.cc`, for the catalogue capture; `evand.github.io`, for imports from
+Evan Daniel’s site, which his repository builds; and `pypi.org` with
+`files.pythonhosted.org`, for the pinned transcriber.
+A source the environment denies is reported as not checked, and the pull request says
+so. On 2026-10-05 the agent sessions reached GitHub and PyPI and nothing else.
+
+A pass never merges, never posts, edits or closes anything on an issue without the
+owner’s word, never pushes to `main`, and never starts a replay measured in CPU-hours
+without a budget the owner has set.
+
+### The Prompt
+
+A session asked to run the intake takes this as its instruction:
+
+```text
+Run an intake pass on jlevy/squares by packing/campaign/result-import.md, section
+"Running an Intake Pass". Work on a new branch from origin/main named
+claude/intake-YYYY-MM-DD, with today's date.
+
+1. Bootstrap the clone as AGENTS.md, "A fresh clone", says; run `tbd prime` and
+   `tbd policy show`.
+2. From the repository root run `make intake`. Read the report: "Needs Action"
+   first, then "Not Checked".
+3. For each item that needs an owner, look for an open bead that already covers it
+   (`tbd list --label result-import`). Otherwise open one bead per new result,
+   labelled result-import and titled "Import <author>: <claim> (#<issue>)", or
+   "(no issue)" when nothing on GitHub asked. A watched repository whose new commits
+   hold nothing to import gets a read in packing/campaign/intake-watch.yaml instead,
+   with a note saying what changed. A deferral whose bead has closed gets a new owner
+   or is resolved. An item whose blocker has resolved is resumed on this branch, or
+   its bead says what it waits on now. Run `tbd sync`.
+4. Take each new result through stages 1 to 3 of the runbook on this branch: triage,
+   retain the source in a packet at a pinned revision, register it as reported. Run a
+   stage 4 replay only when the source prices it at minutes; otherwise record it in
+   the bead for a budget.
+5. From packing/, run `uv run --frozen --all-extras --group dev packing-validate
+   --records`, then `--push`, and fix what fails.
+6. Commit, push the branch, and open one draft pull request with
+   `tbd shortcut create-or-update-pr-simple`. List every item with its bead and the
+   stage it reached, and every source the sweep could not check.
+7. Draft each reply an issue is owed in its answer bead. Do not post it.
+8. Run `make intake` again and report every item that still needs action.
+
+Never merge, never push to main, never post, edit or close anything on a GitHub issue
+without the owner's word, and never start a replay measured in CPU-hours without a
+budget the owner has set. If github.com, kingbird.myphotos.cc or evand.github.io is
+unreachable, say so in the pull request and continue with the rest.
+```
+
+## Intake Sources
+
+Every input reaches the record through one of these sources, and the sweep reads each.
+
+| Source | How it is read | What an item becomes |
+| --- | --- | --- |
+| GitHub issues and comments | `check_requests --github` lists the issues `result-requests.yaml` lacks, the replies missing from it, and the comments after an entry’s `read_through` | A new issue: an entry with `triage: pending` and an import bead. A comment: its claims mapped into its issue’s entry, and `read_through` moved |
+| Owner and other manual reports | Nothing reads them: a message, a link pasted to an agent, a result named in a review | A bead labelled `result-import` first, titled with `(no issue)`; then stage 1. The sweep lists the open ones |
+| The Kingbird catalogue | [`devtools.capture_kingbird_catalogue`](../devtools/capture_kingbird_catalogue.py) fetches and transcribes it into `attic/intake/`; the sweep compares the newest capture with the record’s, count by count | A count whose side drops below its record: an import, or a `pending_catalogue_intake` entry with its bead. Other changes: classified when the retained capture is refreshed. None when nothing moved |
+| Other catalogues and releases | Read by hand: the register’s other `current-catalogue` and `first-party-release` sources, UnitSquare’s release today. The sweep prints when each was last reviewed | A later release: an import. Nothing new: the source’s `reviewed` date moves |
+| Watched repositories | Every repository the source register, a packet’s acquisition record, or the site’s list of other projects names. `git ls-remote` reads each head, and a fetch of commits and trees finds the commits past every pin and every read, and the commits a pin contains whose changed paths no packet at or after them retains | A new result: an import bead, then a packet at the head. New evidence for a registered entry: an evidence update. Nothing to import: a read in [`intake-watch.yaml`](intake-watch.yaml) |
+| The record’s own queues | Counts pending catalogue intake, deferred conflicts, results and asks queued on open issues, triage and replies owed, the validation backlog | Nothing new: each names an open bead, and one whose bead has closed gets a new owner |
+| Blocked imports | A queued result’s or ask’s `blocked_on`, and what an open `result-import` bead says it waits on or depends on, read through `gh` and the bead store | A blocker that merged or closed: the wait resumes, or the bead says what it waits on now |
+
+The capture is the network half of the dated research survey that refreshes the retained
+catalogue ([the frontier README](../frontier/README.md#source-coverage-and-freshness));
+it writes only to `attic/`, and taking a capture into the record stays a W1 change of
+its own. No validation tier runs either command.
+From `packing/`, `python -m devtools.intake_sweep --offline` skips the two network
+steps, and `--json` prints the whole sweep.
+
 ## The Sequence
 
 | Stage | Workflow | Exit |
 | --- | --- | --- |
+| 0. Sweep | W1 | Every input the sweep lists has an open bead, or a read that records nothing to import |
 | 1. Triage | W1 | A claim map and a priced validation plan in the import’s bead; the author acknowledged |
 | 2. Retain | W1 | The source in a packet at a pinned revision, with its bibliography key |
 | 3. Record | W1 | The claim registered as reported, with its coverage entry, and merged: *imported* |
@@ -29,22 +135,57 @@ The rest has an owner, and is not repeated here:
 | 6. Explain | W8, with a W2 review | A review paper, for the results that warrant one |
 | 7. Answer | The owner | The reply on the issue: *answered* |
 
-Stages 1 to 3 are the import, stage 4 is the correctness part, and stages 5 to 7 are the
-publication.
-It is a sequence of ordinary workflow phases, not a workflow of its own, and
-each phase is declared as any other is.
+Stage 0 finds the inputs, stages 1 to 3 are the import, stage 4 is the correctness part,
+and stages 5 to 7 are the publication.
+It is a sequence of ordinary workflow phases, not a workflow of its own, and each phase
+is declared as any other is.
 
 Two rules shape every import:
 
 - **One bead.** Each import has a bead labelled `result-import`, titled
-  `Import <author>: <claim> (#<issue>)`, that holds the claim map and stays open until
-  the author is answered, or until the result is integrated where no author asked.
+  `Import <author>: <claim> (#<issue>)`, or `(no issue)` when nothing on GitHub asked,
+  that holds the claim map and stays open until the author is answered, or until the
+  result is integrated where no author asked.
 - **Two pull requests.** Stages 1 to 3 merge on the day the result is first seen.
   Stage 4 merges when its replay and review are done, which can be days later.
   A reported result is then visible while it waits, and no branch holds an unmerged
   `T-NNN` for long. That is the separable boundary for which
   [`OR-9`](../../operating-rules.md#or-9-a-pull-request-leads-with-what-the-branch-cost)
   allows a second pull request.
+
+## Stage 0: Sweep
+
+The sweep finds the inputs and decides nothing about them.
+Its exit is that every item it lists has an owner and nothing waits on what has
+happened:
+
+- **A new result gets a bead** labelled `result-import` and titled by the convention
+  above. Look for an open one first, since another session may have opened it.
+- **A watched repository with nothing to import gets a read** in
+  [`intake-watch.yaml`](intake-watch.yaml): the head, the date, and a note saying what
+  the commits changed, so the next sweep starts there.
+  A read that names a bead holds a result back for later, and is removed once a packet
+  pins that commit. A pin is an acquisition record’s commit or a revision in a register
+  source’s address. A commit a README names in prose pins nothing, because prose that
+  names a commit is as likely to say it was left for an import of its own, as the 4
+  October wand125 packet said of `c56b9b7` and `1ebd484`.
+- **A Kingbird count that drops below its record** is a result by others, imported like
+  any other. Where the register cannot take it yet, it is declared under
+  `pending_catalogue_intake`, with its bead and the day it was recorded.
+- **A deferral names an open bead.** Whatever the record holds back for later names the
+  bead that owns it: a pending catalogue intake, a deferred conflict, a read with
+  something to import, an open issue’s `answer_bead`, and a queued result or ask, which
+  names its own `bead` because the answer bead owns the reply and not the import.
+  The schemas refuse a pending intake or a deferred conflict without one, and
+  `check_bead_tree` fails any deferral whose bead has closed or does not exist.
+  The three Kingbird counts held on 2026-09-30 named none, and the record trailed the
+  catalogue for five days
+  ([the postmortem](../../docs/project/postmortems/postmortem-2026-10-05-orphaned-catalogue-intake.md)).
+- **A wait names what it waits on.** A queued result or ask gives it as `blocked_on`, a
+  pull request or issue as `owner/name#N` or a bead; a bead says it in a sentence such
+  as “waits for jlevy/squares#305”, or through a `blocks` dependency.
+  Nothing resumes a wait when its blocker resolves, so the sweep reports it: wand125’s 4
+  October certificates waited for #305, which merged that evening, and stayed queued.
 
 ## Stage 1: Triage
 
@@ -215,8 +356,9 @@ The process adds when and how:
 a result, a defect or a correction.
 It records what the issue reports, and for each reported result the register and
 evidence ids it maps to, or why it is not registered and whether it is queued.
-It also names the beads that track the issue, the bead that answers it, every reply
-posted with the state that reply reported, and when the issue can close.
+A queued result or ask names the bead that does it as `bead`, and what it waits on as
+`blocked_on`. It also names the beads that track the issue, the bead that answers it,
+every reply posted with the state that reply reported, and when the issue can close.
 It records no current rung.
 [`devtools.check_requests`](../devtools/check_requests.py) derives each result’s state
 from the register:

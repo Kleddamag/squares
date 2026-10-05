@@ -434,6 +434,12 @@ start.
 | --- | ---: | --- | --- | --- |
 | Catalogue sides newer than the record | 3: $n = 69, 83, 87$ | David Ellsworth; Allen Chang with Ellsworth; Chang, all September 2026, as the Kingbird catalogue’s capture of 30 September prints them | `source-coverage.yaml` lists them under `pending_catalogue_intake`: “the register holds it before the record takes it” | A bibliography key for each with `dated`, `credit` and `lineage`. The catalogue gives a month, and `attribution.published` takes a day or a year; and the three witnesses have to be taken in. |
 
+Update, 2026-10-05: the three catalogue sides were registered as T-088 ($n = 69$) and
+T-089 ($n = 83, 87$), each with its own bibliography key dated by the page’s server
+date, 24 September 2026, since the entries give only the month.
+Their witnesses are read from Evan Daniel’s pinned parse of the SVGs, which that session
+could not fetch.
+
 **Reported in a case record and outside the register’s scope:**
 
 | What | Cases | Source |

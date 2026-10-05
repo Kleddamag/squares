@@ -2,7 +2,7 @@ softschema:
   contract: packing.squares:ResultsRegister/v1
   schema: results.schema.yaml
   status: enforced
-last_reviewed: '2026-10-03'
+last_reviewed: '2026-10-05'
 results:
   - id: T-001
     kind: lower-bound
@@ -4925,7 +4925,10 @@ results:
       adversarial AI reviews by distinct reviewers and a retained human oversight record
       (epistemics.md, No Blind Trust); none is retained for this result, so it stands at
       V3/C3: machine-checked, review record pending. The oversight record restores the
-      rung.
+      rung. 2026-10-05: Couzo's revision of 3 October lowered seven of these sides
+      (T-092), and the case records at n = 208, 209, 228, 263, 272, 303 and 306 now carry
+      those; this entry's bounds there are its own receipt's, from the sides of 26 and 27
+      September.
     next_rung: >-
       V4 and C4 need two adversarial AI reviews by distinct reviewers of the complete claim
       and a human oversight record; the two reviews so far, of 2026-09-29 and 2026-09-30, are
@@ -5667,6 +5670,9 @@ results:
       - packing/devtools/plan_valid7_replay.py
       - packing/devtools/stage_evand_bentz_lean.py
       - docs/project/reviews/review-2026-10-02-valid7-independent-checker.md
+      - packing/resources/web/evand-square-packing-2026-10-04/README.md
+      - packing/resources/web/evand-square-packing-2026-10-04/square-packing/s12/notes/lean-leb-mass.md
+      - packing/resources/web/evand-square-packing-2026-10-04/square-packing/s12/lean/Sqpack/LebMass7.lean
     controls:
       - packing/tests/test_plan_valid7_replay.py
       - packing/tests/test_stage_evand_bentz_lean.py
@@ -5676,8 +5682,13 @@ results:
       the reduction's statement. Valid7's two replayed checkers are both exact-algebraic; a
       checker of another kind, interval-certified or a Lean proof of Valid7, would add a
       method beside the rung. Rung 5 needs human formalization reviews of the Lean
-      statement and a Lean proof of Valid7 itself. think-kqi1 tracks a scope that can state
-      an infinite family.
+      statement and a Lean proof of Valid7 itself.
+
+      The source has begun that proof: by 4 October its Lean reduces Valid7 to the tilted
+      part ValidTilt7 (bentz_of_validTilt7, with the D4 reduction and the axis face proved)
+      and kernel-checks the 689 LEB and 374 CAP leaves of the run's 32,079 with Lemmas U and
+      K, as reported and not built here; the tree that joins the leaves and the 26,829 PIECE
+      and EXACT leaves remain. think-kqi1 tracks a scope that can state an infinite family.
     notes: >-
       V0/C1 until 3 October 2026, when the full qx2_zm.py replay (two shards, think-4k80)
       and lane LL's Lean build were recorded; the 1 October mathematical review and lane
@@ -5685,7 +5696,9 @@ results:
       entry, which was reported evidence until its replay with D-1 guarded (fourteen
       shards, think-e3tq) was recorded on 3 October; that moved no rung. The source's six
       adversarial reviews by AI agents are its own and are not retained as review records
-      here.
+      here. The source's Lean toward ValidTilt7 (LebMass, LebMass7, ValidSplit7) was
+      retained on 5 October 2026 in the evand packet of 4 October (think-plrl); it moves no
+      rung.
 
   - id: T-065
     kind: upper-bound
@@ -5851,9 +5864,9 @@ results:
       V4 and C4 need two adversarial AI reviews by distinct reviewers and a human oversight
       record; one adversarial review is retained. A complete zm_mixed.py sweep, about 127
       CPU-hours at the source, recorded as a second, exact-algebraic entry, would give the
-      lower half a second machine method and regenerate the per-root records the source
-      does not publish (finding F1; think-mx3k). V5 would need a Lean statement for this
-      cover and a human expert's review of the formalization.
+      lower half a second machine method; the per-root records the source published on 4
+      October in answer to finding F1 can be checked against it (think-mx3k). V5 would need
+      a Lean statement for this cover and a human expert's review of the formalization.
     notes: >-
       Raised from V0/C0 on 2 October 2026, when the zmx2 replay (think-oy3i) and the review
       of the s(59) and s(77) covers landed with no defect blocking the claim. The source's
@@ -5861,6 +5874,11 @@ results:
       logs (finding F2), so its two zmx2 steps were run as this repository's own sequence.
       For the author: publishing the two zm_mixed.py root records and logs, or the six
       boxes with their root, would make the exact route checkable.
+
+      The source published them on 4 October, with an exact checker of the records and a
+      checksum file that lists exactly the published files, answering findings F1 and F2;
+      the report entry records the update. Neither the records nor the source's new
+      verify.sh has been run here, so the rungs do not move.
 
   - id: T-067
     kind: optimality
@@ -5979,6 +5997,10 @@ results:
       names unpublished run logs (finding F2), so its two zmx2 steps were run as this
       repository's own sequence. For the author: publishing the run logs the checksum file
       lists would let the source's own script pass and allow a root-for-root comparison.
+
+      The source published them on 4 October, with a full replay record and a hardened
+      verify.sh, answering finding F2; the report entry records the update. The root-for-root
+      comparison has not been run here, so the rungs do not move.
 
   - id: T-068
     kind: lower-bound
@@ -7531,6 +7553,7 @@ results:
       - packing/devtools/audit_wand125_point_and_mixed.py
       - docs/project/reviews/review-2026-10-03-wand125-october-3-certificates.md
       - docs/project/reviews/review-2026-09-28-wand125-n50-mixed-verifier.md
+      - packing/resources/web/wand125-mixed-bounds-2026-10-04/README.md
     next_rung: >-
       The complete replays, about 162 CPU-hours planned (179 by the source's own oblique
       seconds), with devtools.audit_wand125_point_and_mixed mixed-shard
@@ -7545,8 +7568,13 @@ results:
       separately from the lane that retained the packet and registered the entry. One entry
       for the 22, all pinned at one revision, as T-075 is for its six; a later revision than
       T-075's, so a separate entry. The review's OC-1 is in the n = 88 and 93 entries'
-      limitations: the source's improvement figures there are not lower bounds. The
-      proof-bundle tarballs are pinned by digest and not retained.
+      limitations: the source's improvement figures there are not lower bounds.
+
+      The source
+      answered OC-1 and OC-2 on 4 October by removing every completion audit and changing
+      nothing else; the 4 October packet retains the answer, and each report entry records it
+      as an evidence update that moves no rung. The proof-bundle tarballs are pinned by
+      digest and not retained.
   - id: T-083
     kind: lower-bound
     registered: '2026-10-02'
@@ -7760,6 +7788,13 @@ results:
       Rung 4 needs two adversarial AI reviews by distinct reviewers and a human oversight
       record; rung 5 needs a named human expert's review of the formalization, and C5 two,
       with the open-review pointer the public repository already supports.
+    notes: >-
+      On 3 October 2026 Evan Daniel's Lean module SpecChelokot restated chelokot's
+      IsMinimumSide from a reading of his Geometry.lean, and proved it equivalent
+      to minSide n = s for every n >= 1 in Daniel's own statement of the problem. It reads
+      chelokot's definitions and builds none of his proofs, so it adds no route and moves no
+      rung; it is a second reading of the statement this entry's theorem uses, retained in
+      the 2026-10-04 evand packet (think-plrl).
   - id: T-087
     kind: lower-bound
     registered: '2026-10-03'
@@ -7815,3 +7850,530 @@ results:
       replayed cover proving s(61) = 8 (T-063), both replayed here on 2 October 2026. This
       result stays true as stated and keeps its rungs: a proof of both bounds that uses
       nothing of Nagamochi 2005 and no computer search.
+  - id: T-088
+    kind: upper-bound
+    registered: '2026-10-05'
+    headline: "`s(69) ≤ 8.82719465572973…`, the July 2026 packing refound and optimized to a degree-38 root"
+    claim: >-
+      s(69) <= 8.827194655729738914..., the root near 8.82719465572973 of the degree-38
+      polynomial the Kingbird catalogue prints for this count, by David Ellsworth's packing
+      of 69 unit squares in a square of that side. The catalogue prints the side cut short,
+      as 8.82719465572973.
+
+      In the catalogue's words, the packing was "Refound by David Ellsworth in September
+      2026, using his modified version of Thomas Schadt's simulated annealing program,
+      starting from s(69) found by Maurizio Morandi in June 2010", and "Optimized by David
+      Ellsworth in September 2026". It is the packing whose side hmbelvedere's UnitSquare
+      release reported in July 2026 as 8.8272055078..., which the catalogue lists as
+      "Improved by hmbelvedere in July 2026, using an undisclosed iterative method
+      (probably with AI)"; the optimization lowers that side by about 1.1e-5.
+
+      The catalogue states no checker. Nothing has been replayed here: the retained
+      witness is a third party's binary64 parse of the catalogue's picture, whose side
+      agrees with the polynomial's root to 30 digits, and only its tolerance-bounded
+      numerical check has run.
+
+      David Ellsworth, September 2026, in the
+      [Squares in Squares catalogue](https://kingbird.myphotos.cc/packing/squares_in_squares.html).
+    scope: {n_values: [69]}
+    verification: V0
+    confirmation: C0
+    significance:
+      score: 2
+      rationale: >-
+        Lowers the best known side at one count by about 1.1e-5, by optimizing a packing
+        already reported, and moves no verified bound, which stays the 9 x 9 grid. S2 by
+        the anchor "a citable detail that changes no theorem".
+      scored: '2026-10-05'
+      by: Kingbird catalogue intake (repository; draft)
+    novelty: previously-published
+    attribution:
+      source_keys: ['[Ellsworth n69 2026-09-24]']
+      published: '2026-09-24'
+    evidence:
+      - E-n069-ellsworth-2026-09-report
+      - E-kingbird-upper-register
+    artifacts:
+      - packing/resources/web/kingbird-squares-in-squares.md
+      - packing/witnesses/known-best/n-069.yaml
+      - packing/devtools/derive_kingbird_facts.py
+    notes: >-
+      Recorded at V0: the catalogue prints the side and the polynomial it is a root of,
+      and names no checker, certificate or tolerance, and its SVG, which holds the pose,
+      could not be fetched from the session that registered it. The page is dated 24
+      September 2026 by its server and the entry September 2026, so the page's date is
+      this result's. The record moved from the UnitSquare release's side to this one on
+      registration.
+    next_rung: >-
+      V3 and C3 need a machine certificate replayed here: the retained parse promoted to an
+      exact rational packing and decided again by an independent checker, as for T-056, or
+      the SVG's own 30-digit pose certified by interval arithmetic once it is fetched. A
+      review of that certificate under docs/project/reviews/ then moves the verified upper
+      lane off the grid.
+  - id: T-089
+    kind: upper-bound
+    registered: '2026-10-05'
+    headline: "`s(83) ≤ 9.63475764863108…` and `s(87) ≤ 9.83881526994826…`, Allen Chang's packings"
+    claim: >-
+      s(83) <= 9.634757648631082029..., a root of degree 672, and s(87) <=
+      9.838815269948262260..., the root near 9.83881526994826 of the degree-41 polynomial
+      the Kingbird catalogue prints for that count: two packings by Allen Chang, the first
+      optimized by David Ellsworth. The catalogue prints the sides cut short, as
+      9.63475764863108 and 9.83881526994826, and leaves the degree-672 polynomial to the
+      picture's source; the first side above is the picture's, as a third party's parse of
+      it reads it.
+
+      In the catalogue's words, s(83) was "Improved by Allen Chang in September 2026, with
+      GPT-5.6 Sol and GPT-6 Astra", "Optimized by David Ellsworth in September 2026", and
+      its "Polynomial root solution found by Allen Chang in September 2026", improving the
+      Hajba and Cantrell packing by about 6.8e-5; s(87) was "Improved and optimized by Allen
+      Chang in September 2026, working with GPT-6 Astra, with help from 'TheMagicAnimals'",
+      improving Ellsworth's packing of February 2026 by about 2.2e-6.
+
+      The catalogue states no checker. Nothing has been replayed here: each retained
+      witness is a third party's binary64 parse of the catalogue's picture, and only its
+      tolerance-bounded numerical check has run.
+
+      Allen Chang, David Ellsworth and TheMagicAnimals, September 2026, in the
+      [Squares in Squares catalogue](https://kingbird.myphotos.cc/packing/squares_in_squares.html).
+    scope: {n_values: [83, 87]}
+    verification: V0
+    confirmation: C0
+    significance:
+      score: 2
+      rationale: >-
+        Lowers the best known side at two counts, by about 6.8e-5 and 2.2e-6, and moves no
+        verified bound, which stays the 10 x 10 grid at both. S2 by the anchor "a citable
+        detail that changes no theorem".
+      scored: '2026-10-05'
+      by: Kingbird catalogue intake (repository; draft)
+    novelty: previously-published
+    attribution:
+      source_keys: ['[Chang n83 2026-09-24]', '[Chang n87 2026-09-24]']
+      published: '2026-09-24'
+    evidence:
+      - E-n083-chang-2026-09-report
+      - E-n087-chang-2026-09-report
+      - E-kingbird-upper-register
+    artifacts:
+      - packing/resources/web/kingbird-squares-in-squares.md
+      - packing/witnesses/known-best/n-083.yaml
+      - packing/witnesses/known-best/n-087.yaml
+      - packing/devtools/derive_kingbird_facts.py
+    notes: >-
+      Recorded at V0: the catalogue prints both sides with their degree locks, and the
+      polynomial at n = 87, and names no checker, certificate or tolerance; the SVGs, which
+      hold the poses and the degree-672 polynomial, could not be fetched from the session
+      that registered it. The page is dated 24 September 2026 by its server and both
+      entries September 2026, so the page's date is this result's. One entry holds both
+      counts because they are bounds of one kind by the same author in one release; the
+      credit of each is its own bibliography key.
+    next_rung: >-
+      V3 and C3 need a machine certificate replayed here for each count: the retained
+      parse promoted to an exact rational packing and decided again by an independent
+      checker, as for T-056, or the SVG's own 30-digit pose certified by interval
+      arithmetic once it is fetched, which would also retain the degree-672 polynomial. A
+      review of those certificates under docs/project/reviews/ then moves the verified
+      upper lane off the grid.
+  - id: T-090
+    kind: lower-bound
+    registered: '2026-10-05'
+    headline: "Mixed rectangle-measure lower bounds reported at 16 counts in `n = 42…95`"
+    claim: >-
+      wand125/square-packing-bounds reports 16 rectangle-density certificates published on 3
+      and 4 October 2026: s(42) >= 2739/400 = 6.8475, s(43) >= 2763/400 = 6.9075, s(44) >=
+      2789/400 = 6.9725, s(51) >= 747/100 = 7.47, s(56) >= 3121/400 = 7.8025, s(57) >=
+      3149/400 = 7.8725, s(67) >= 339/40 = 8.475, s(69) >= 431/50 = 8.62, s(72) >= 219/25 =
+      8.76, s(75) >= 447/50 = 8.94, s(84) >= 3763/400 = 9.4075, s(86) >= 9503/1000 = 9.503,
+      s(88) >= 769/80 = 9.6125, s(93) >= 247/25 = 9.88, s(94) >= 497/50 = 9.94 and s(95) >=
+      1993/200 = 9.965.
+
+      Each is a density of 358 to 630 uniform rectangles in D4 orbits and no point mass, of
+      total mass n - 1/100000, at core side 9977/10000 on 201 net half-angles of step
+      83/40000, of the kind and checker of T-082. The source reports each accepted at all 200
+      oblique net angles by code/mixed_rotated_verify.cpp, its research copy of Tokoharu's
+      verify.cpp at coverage threshold one, and at the axis by exact integer tables. Nine
+      supersede the source's certificates at the same count: eight of T-082's, and at n = 84
+      T-071's, which this record holds verified. At the other seven they are the source's
+      first mixed certificates.
+
+      All 16 values were above what the record reported at their counts, by 0.003 to 0.0375:
+      over T-082 at eight counts, T-071 at n = 84, and the source's rectangle certificates
+      (T-046, T-068, T-077) at seven. At n = 88 and 94 the source's certificates of later
+      that day (T-091) are higher, and the case records report those. A packing of n + 1
+      squares contains one of n, but at each next count the record already reports more, so
+      none carries further.
+
+      Here the source was retained, its exact premises were recomputed from the retained
+      bytes, and the replay's checks before its first angle were run on each pinned tarball.
+      None of it decides coverage, and no angle was replayed. The values stand as reported,
+      and the verified lower bounds are unchanged.
+
+      wand125 after Tokoharu and Levy,
+      [square-packing-bounds](https://github.com/wand125/square-packing-bounds/tree/8aa6a10b3b8f165d39c85b68982fed1de086516c/certificates).
+      Registration was requested in 16 comments of 3 and 4 October 2026 on jlevy/squares#282.
+      The source says parts of the work were produced with AI assistance under human
+      direction.
+    scope: {n_values: [42, 43, 44, 51, 56, 57, 67, 69, 72, 75, 84, 86, 88, 93, 94, 95]}
+    verification: V0
+    confirmation: C1
+    significance:
+      score: 3
+      rationale: >-
+        Scored as a claim: if the replays pass, the strongest verified lower bounds on record
+        at 16 counts from n = 42 to 95, and the strongest reported at 14 of them. Further
+        sizes from the generator and checker of T-069, T-071, T-072, T-075 and T-082, with
+        no new technique, at S3 as those are; the score gates nothing.
+      scored: '2026-10-05'
+      by: 'issue-282 October 4 import, registering lane (repository; draft)'
+    novelty: previously-published
+    attribution:
+      source_keys: ['[wand125 mixed bounds 2026-10-04]']
+      published: '2026-10-04'
+    composition: >-
+      16 primary certificates, each on its own reported entry, at V0/C1: read by the 5
+      October review of these certificates, and not replayed. Coverage is decided by the
+      source's C++ checker alone, byte for byte the checker the 28 September, 2 October and 3
+      October reviews read; the axis tables are a second implementation for one direction
+      and not a second method.
+    evidence:
+      - E-n042-wand125-mixed-68475-report
+      - E-n043-wand125-mixed-69075-report
+      - E-n044-wand125-mixed-69725-report
+      - E-n051-wand125-mixed-747-report
+      - E-n056-wand125-mixed-78025-report
+      - E-n057-wand125-mixed-78725-report
+      - E-n067-wand125-mixed-8475-report
+      - E-n069-wand125-mixed-862-report
+      - E-n072-wand125-mixed-876-report
+      - E-n075-wand125-mixed-894-report
+      - E-n084-wand125-mixed-94075-report
+      - E-n086-wand125-mixed-9503-report
+      - E-n088-wand125-mixed-96125-report
+      - E-n093-wand125-mixed-988-report
+      - E-n094-wand125-mixed-994-report
+      - E-n095-wand125-mixed-9965-report
+    reviews:
+      - path: docs/project/reviews/review-2026-10-05-wand125-october-4-certificates.md
+        kind: adversarial
+        reviewer: AI agent, the review lane of the 2026-10-05 import, prompted separately from the lane that retained the packets and registered the entries, after retention and blind to any replay; model unstated
+        reviewer_kind: ai
+        relation: project
+        date: '2026-10-05'
+        scope: >-
+          The 28 certificates wand125/square-packing-bounds published on 3 and 4 October, the 16 of T-090 pinned at 8aa6a10b and the 12 of T-091 at 797bdf6e, against checkers byte-identical to ones already reviewed: the argument from certificate to bound, the tarball binding without the source's completion audit, the comparisons and margins in exact arithmetic, the supersessions at n = 88 and 94 and the two certificates both packets pin, what the new measures add, their sizes, structure and records, and the platforms the bundles record; blind to any replay and not to retention.
+        verdict: accepted
+        covers: [T-090, T-091]
+    artifacts:
+      - packing/resources/web/wand125-mixed-bounds-2026-10-04/README.md
+      - packing/resources/web/wand125-mixed-bounds-2026-10-04/receipts/mixed-audit.json
+      - packing/devtools/audit_wand125_point_and_mixed.py
+      - docs/project/reviews/review-2026-10-05-wand125-october-4-certificates.md
+    next_rung: >-
+      The complete replays, about 146 CPU-hours planned (180 by the source's own oblique
+      seconds), with devtools.audit_wand125_point_and_mixed mixed-shard
+      wand125-mixed-bounds-2026-10-04 --runners 8 for the ranges, mixed-replay on each and
+      mixed-merge per certificate, before any verified lower bound is raised; a count's
+      verified lower bound moves when its replay returns the certificate's own record at all
+      201 directions.
+    notes: >-
+      V0 because each cited entry is the source's claim: assurance reported, replay not
+      attempted. C1 because the 5 October review of these certificates is recorded as each
+      report entry's external_review, with no blocking defect. That review was prompted
+      separately from the lane that retained the packets and registered the entry.
+
+      One entry for the 16 pinned together at one revision, as T-082 is for its 22; mixed_n86_L9503 and
+      mixed_n69_L862 were requested after the other fourteen and before the pin. A later
+      revision than T-082's, so a separate entry. At n = 88 and 94 the later T-091 raises
+      the reported bound, and this entry keeps its claim there. The packet also retains the
+      source's answer to findings OC-1 and OC-2 of the review of T-082, recorded on T-082's
+      and T-075's evidence. The proof-bundle tarballs are pinned by digest and not retained.
+  - id: T-091
+    kind: lower-bound
+    registered: '2026-10-05'
+    headline: "Mixed rectangle-measure lower bounds reported at 12 counts in `n = 53…94`"
+    claim: >-
+      wand125/square-packing-bounds reports 12 rectangle-density certificates published on 4
+      October 2026, after those of T-090: s(53) >= 3051/400 = 7.6275, s(54) >= 1537/200 =
+      7.685, s(58) >= 1587/200 = 7.935, s(70) >= 3463/400 = 8.6575, s(71) >= 8721/1000 =
+      8.721, s(73) >= 8813/1000 = 8.813, s(76) >= 1793/200 = 8.965, s(87) >= 479/50 = 9.58,
+      s(88) >= 481/50 = 9.62, s(90) >= 973/100 = 9.73, s(91) >= 781/80 = 9.7625 and s(94) >=
+      199/20 = 9.95.
+
+      Each is a density of 312 to 853 uniform rectangles in D4 orbits and no point mass, of
+      total mass n - 1/100000, at core side 9977/10000 on 201 net half-angles of step
+      83/40000, of the kind and checker of T-082 and T-090. The source reports each accepted
+      at all 200 oblique net angles by code/mixed_rotated_verify.cpp, its research copy of
+      Tokoharu's verify.cpp at coverage threshold one, and at the axis by exact integer
+      tables. Ten supersede the source's certificates at the same count: eight of T-082's,
+      and at n = 88 and 94 two of T-090's of earlier that day. At n = 53 and 54 they are the
+      source's first mixed certificates.
+
+      All 12 values are above what the record reported at their counts, by 0.004 to 0.03:
+      over T-082 at eight counts, T-090 at n = 88 and 94, and the source's rectangle
+      certificates (T-068, T-074) at n = 53 and 54. A packing of n + 1 squares contains one
+      of n, but at each next count the record already reports more, or holds a value of this
+      entry, so none carries further.
+
+      Here the source was retained, its exact premises were recomputed from the retained
+      bytes, and the replay's checks before its first angle were run on each pinned tarball.
+      None of it decides coverage, and no angle was replayed. The values stand as reported,
+      and the verified lower bounds are unchanged.
+
+      wand125 after Tokoharu and Levy,
+      [square-packing-bounds](https://github.com/wand125/square-packing-bounds/tree/797bdf6e10eba5f9dccca9da06f8352e81ba9dde/certificates).
+      Registration was requested in 12 comments of 4 October 2026 on jlevy/squares#282. The
+      source says parts of the work were produced with AI assistance under human direction.
+    scope: {n_values: [53, 54, 58, 70, 71, 73, 76, 87, 88, 90, 91, 94]}
+    verification: V0
+    confirmation: C1
+    significance:
+      score: 3
+      rationale: >-
+        Scored as a claim: if the replays pass, the strongest verified lower bounds on record
+        at 12 counts from n = 53 to 94, and the strongest reported at all 12. Further sizes
+        from the generator and checker of T-069, T-071, T-072, T-075, T-082 and T-090, with
+        no new technique, at S3 as those are; the score gates nothing.
+      scored: '2026-10-05'
+      by: 'issue-282 October 4 import, registering lane (repository; draft)'
+    novelty: previously-published
+    attribution:
+      source_keys: ['[wand125 mixed bounds evening 2026-10-04]']
+      published: '2026-10-04'
+    composition: >-
+      12 primary certificates, each on its own reported entry, at V0/C1: read by the 5
+      October review of these certificates, and not replayed. Coverage is decided by the
+      source's C++ checker alone, byte for byte the checker the 28 September, 2 October and 3
+      October reviews read; the axis tables are a second implementation for one direction
+      and not a second method.
+    evidence:
+      - E-n053-wand125-mixed-76275-report
+      - E-n054-wand125-mixed-7685-report
+      - E-n058-wand125-mixed-7935-report
+      - E-n070-wand125-mixed-86575-report
+      - E-n071-wand125-mixed-8721-report
+      - E-n073-wand125-mixed-8813-report
+      - E-n076-wand125-mixed-8965-report
+      - E-n087-wand125-mixed-958-report
+      - E-n088-wand125-mixed-962-report
+      - E-n090-wand125-mixed-973-report
+      - E-n091-wand125-mixed-97625-report
+      - E-n094-wand125-mixed-995-report
+    reviews:
+      - path: docs/project/reviews/review-2026-10-05-wand125-october-4-certificates.md
+        kind: adversarial
+        reviewer: AI agent, the review lane of the 2026-10-05 import, prompted separately from the lane that retained the packets and registered the entries, after retention and blind to any replay; model unstated
+        reviewer_kind: ai
+        relation: project
+        date: '2026-10-05'
+        scope: >-
+          The 28 certificates wand125/square-packing-bounds published on 3 and 4 October, the 16 of T-090 pinned at 8aa6a10b and the 12 of T-091 at 797bdf6e, against checkers byte-identical to ones already reviewed: the argument from certificate to bound, the tarball binding without the source's completion audit, the comparisons and margins in exact arithmetic, the supersessions at n = 88 and 94 and the two certificates both packets pin, what the new measures add, their sizes, structure and records, and the platforms the bundles record; blind to any replay and not to retention.
+        verdict: accepted
+        covers: [T-090, T-091]
+    artifacts:
+      - packing/resources/web/wand125-mixed-bounds-evening-2026-10-04/README.md
+      - packing/resources/web/wand125-mixed-bounds-evening-2026-10-04/receipts/mixed-audit.json
+      - packing/devtools/audit_wand125_point_and_mixed.py
+      - docs/project/reviews/review-2026-10-05-wand125-october-4-certificates.md
+    next_rung: >-
+      The complete replays, about 131 CPU-hours planned (138 by the source's own oblique
+      seconds), with devtools.audit_wand125_point_and_mixed mixed-shard
+      wand125-mixed-bounds-evening-2026-10-04 --runners 6 for the ranges, mixed-replay on
+      each and mixed-merge per certificate, before any verified lower bound is raised; a
+      count's verified lower bound moves when its replay returns the certificate's own record
+      at all 201 directions. Five of the bundles record their proof run on macOS arm64, and
+      their replays must return those records exactly.
+    notes: >-
+      V0 because each cited entry is the source's claim: assurance reported, replay not
+      attempted. C1 because the 5 October review of these certificates is recorded as each
+      report entry's external_review, with no blocking defect. That review was prompted
+      separately from the lane that retained the packets and registered the entry. One entry
+      for the 12 pinned together at one revision; the evening packet also pins two of
+      T-090's certificates, mixed_n86_L9503 and mixed_n69_L862, unchanged, and they stay
+      T-090's. A later revision than T-090's, so a separate entry; at n = 88 and 94 it
+      raises T-090's values, which keep their claim. The proof-bundle tarballs are pinned
+      by digest and not retained.
+
+  - id: T-092
+    kind: upper-bound
+    registered: '2026-10-05'
+    headline: "Smaller packings again at seven counts from `n = 208` to `306`, each certified two independent ways"
+    claim: >-
+      For seven counts, s(n) is at most the bound certified here from Francisco Couzo's
+      packing as published on 3 October 2026: s(208) <= 14.926534459703512, s(209) <=
+      14.953939011860643, s(228) <=
+      15.604602454552252, s(263) <= 16.742270262031792, s(272) <= 16.968165867864400, s(303)
+      <= 17.924341009860250 and s(306) <= 17.963438139777141.
+
+      Each bound is the side the source prints, or where the printed pose's own side rounds
+      up past it, that side plus one unit of its fifteenth decimal at n = 208, 209 and 263
+      and two units at n = 306. Each printed side is below the one Couzo published at the
+      same count on 26 or 27 September (T-056), by 8.3e-6 at n = 303 up to 0.0105 at n =
+      208, and below the Kingbird catalogue as captured on 30 September 2026.
+
+      Each bound is certified here twice, by T-056's two methods, which share no geometry
+      code. The first is an exact rational packing, the source's decimal pose rounded to
+      rationals at centre dilation 1, decided pair by pair and wall by wall over Q by two
+      checkers that share no code. The second is outward-rounded interval arithmetic on the
+      source's own pose as printed, with the true cosine and sine of each angle, which
+      decides every pair and wall at 40 digits.
+
+      Francisco Couzo,
+      [franciscouzo/square-packing](https://github.com/franciscouzo/square-packing/tree/6042c56b43b64c09fe5a32c64879e698f399beaf).
+      The author said on jlevy/squares#227 that he found the 102 and 103 packings "with the
+      help of Claude", and the repository itself states no AI assistance.
+    scope: {n_values: [208, 209, 228, 263, 272, 303, 306]}
+    verification: V3
+    confirmation: C3
+    significance:
+      score: 3
+      rationale: >-
+        Seven substantive case results: each moves both the best known side and the verified
+        ceiling at its count, by 8.3e-6 to 0.0105, below the packings that held them
+        (T-056). S3 by the anchor "a substantive case result", as T-056; the source
+        publishes no method, so nothing here is a reusable technique. Kept by the review
+        of 2026-10-05, beside T-056 (S3, 49 such results) and T-088 and T-089 (S2, which
+        move a best known side and no verified bound).
+      scored: '2026-10-05'
+      by: docs/project/reviews/review-2026-10-05-couzo-6042c56.md (repository; confirms the registering lane's draft)
+    novelty: previously-published
+    attribution:
+      source_keys: ['[franciscouzo square-packing 2026-10-03]']
+      published: '2026-10-03'
+    evidence:
+      - E-franciscouzo-2026-10-03-report
+      - E-franciscouzo-2026-10-03-exact-replay
+      - E-franciscouzo-2026-10-03-interval-replay
+    reviews:
+      - path: docs/project/reviews/review-2026-10-05-couzo-6042c56.md
+        kind: adversarial
+        reviewer: Claude (AI review; model unstated), the stage-4 review lane of the 2026-10-05 import, prompted separately from the lane that retained the packet, certified the seven packings and registered the entry, after the replay
+        reviewer_kind: ai
+        relation: project
+        date: '2026-10-05'
+        scope: >-
+          The seven upper bounds of franciscouzo/square-packing 6042c56: the argument from each exact certificate and each printed pose to its bound, both routes and their controls run again, a third decision of all seven with the review's own code, the n = 306 conflict and blocker, the provenance, credit, licence and dates against a fresh clone, the tooling that carries a later packet over an earlier one at a count (chaining, supersession, the regularizer's certificate, the interval route's independence record), T-056's seven sides as history, and the significance.
+        verdict: accepted
+    artifacts:
+      - packing/resources/web/franciscouzo-square-packing-2026-10-03/README.md
+      - packing/resources/web/franciscouzo-square-packing-2026-10-03/acquisition/sources.json
+      - packing/resources/web/franciscouzo-square-packing-2026-10-03/receipts/certification.json
+      - packing/resources/web/franciscouzo-square-packing-2026-10-03/receipts/interval-certification.json
+      - packing/devtools/upper_bound_packets.py
+      - packing/devtools/check_rational_witness_independent.py
+      - packing/devtools/upper_bound_intervals.py
+      - packing/devtools/apply_upper_bound_packets.py
+      - docs/project/reviews/review-2026-10-05-couzo-6042c56.md
+    controls:
+      - packing/resources/web/franciscouzo-square-packing-2026-10-03/receipts/negative-controls.json
+      - packing/resources/web/franciscouzo-square-packing-2026-10-03/receipts/interval-negative-controls.json
+      - packing/tests/test_upper_bound_packets.py
+      - packing/tests/test_upper_bound_intervals.py
+    composition: >-
+      Both machine entries decide all seven bounds, each at its case's verified value, by
+      different methods (exact-algebraic on a rational rounding of each pose;
+      interval-certified on the printed pose), so every load-bearing part is C3, with two
+      machine methods shown beside the rung. Their common mode is stated in
+      E-franciscouzo-2026-10-03-interval-replay. The comparisons with Couzo's earlier sides
+      and the retained catalogue are recorded values and set no rung.
+    next_rung: >-
+      V4 and C4 need a second adversarial AI review of the complete claim by a reviewer
+      distinct from the one of 2026-10-05, and a human oversight record. At n = 306 both
+      routes refute the printed side for the printed pose, so the printed side itself needs
+      a pose refined beyond the source's binary64 digits, or coordinates the source prints
+      at higher precision; that would be a new packing, not a replay.
+    notes: >-
+      Registered on 5 October 2026 by the import that the intake sweep's report of
+      franciscouzo/square-packing, one commit past T-056's pin, opened (think-ipbg). A
+      later release that lowers an earlier entry's values is a new entry: T-056 keeps its
+      claim, and the case records at these seven counts now carry this one. The live
+      catalogue was not read: kingbird.myphotos.cc was unreachable from the session, and
+      from the review's.
+
+      Reviewed on 5 October 2026 by the import's stage-4 lane, prompted separately from
+      the registering lane (docs/project/reviews/review-2026-10-05-couzo-6042c56.md): no
+      blocking defect. It ran both routes and their controls again, decided all seven
+      packings a third way with its own code, checked the packet against a fresh clone of
+      the source, and kept S3. Its one change to this entry is the claim's opening, which
+      called the listed bounds the side of Couzo's packing where four of them are that side
+      rounded up. V3 and C3 stand: rung 4 needs a second distinct review and a human
+      oversight record.
+
+  - id: T-093
+    kind: lower-bound
+    registered: '2026-10-05'
+    headline: "`s(17) > 18641771/4000000 = 4.66044275`"
+    claim: >-
+      s(17) > 18641771/4000000 = 4.66044275, by Guzhou0806 / N17 project's R071 release of
+      30 September 2026, on the charge of R068 (T-043). It is 11/4000000 above T-043's
+      116511/25000, the verified lower bound, and would leave 0.0150873 to Bidwell's
+      4.67553009.
+
+      The certificate keeps every point orbit, rule orbit and weight of R068, and its budget
+      of 17000448944 units of 10^-9, and rebuilds every strict core for the smaller parent
+      side 18452000/18641771 in the container 4613/1000, over 5,114 parent-angle intervals
+      that refine R068's 4,991. The source reports minimum core charge 1000026844 on every
+      interval, so seventeen cores exceed the budget by 7404. It refines R070 of the day
+      before, s(17) > 46604427/10000000 = 4.6604427 over 5,107 intervals, which it
+      supersedes.
+
+      The source checked it with a three-partition run of Guzhou0806's C++ checker and
+      Kleddamag's Node BigInt checker, of which it retains a completion summary and says the
+      row records are missing; its GitHub Actions replay passed, unobserved by its
+      publisher. Nothing has been replayed here. devtools.audit_guzhou_r071 found the
+      charge equal to R068's and the summary consistent with the certificate, naming the
+      checker bytes T-043's replay ran.
+
+      Guzhou0806 / N17 project,
+      [n17-square-packing](https://github.com/Guzhou0806/n17-square-packing/tree/8c11f6962506940c5de67a9fa73b3d1e2e151196/certificates/R071-C029),
+      on Kleddamag's charge. The package credits Kleddamag for the 4.66001 framework, proof
+      and BigInt checker (Kleddamag building on Squares Project (Joshua Levy), Mira and
+      Guzhou0806), and discloses AI assistance.
+    scope: {n_values: [17]}
+    verification: V0
+    confirmation: C0
+    significance:
+      score: 2
+      rationale: >-
+        Scored as a claim: the strongest reported lower bound at n = 17, 11/4000000 over
+        T-043 from T-043's charge unchanged, a finer catalogue and rebuilt cores, the
+        construction of T-042, which is S2. If replayed it would hold the verified field,
+        which argues for S3 by the T-039 precedent; it is drafted at S2 because it adds no
+        charge feature, rule or method and moves the bound by under three parts in a
+        million. The reviewing lane confirms or changes it.
+      scored: '2026-10-05'
+      by: think-1qms import, registering lane (repository; draft)
+    novelty: previously-published
+    attribution:
+      source_keys: ['[Guzhou0806 n17 R071]']
+      published: '2026-09-30'
+    evidence:
+      - E-n017-guzhou-r071-report
+    artifacts:
+      - packing/resources/web/n17-guzhou-r071-2026-09-30/README.md
+      - packing/resources/web/n17-guzhou-r071-2026-09-30/n17-square-packing/certificates/R071-C029/BOUND_PROOF.md
+      - packing/resources/web/n17-guzhou-r071-2026-09-30/receipts/r071/structure.json
+      - packing/resources/web/n17-guzhou-r071-2026-09-30/receipts/r071/summary.json
+      - packing/resources/web/n17-guzhou-r071-2026-09-30/receipts/ci/r071-actions-run.json
+      - packing/devtools/audit_guzhou_r071.py
+    next_rung: >-
+      think-1qms: the complete paired replay of the certificate by the source's own
+      run_public.js bound, Guzhou0806's C++ checker and Kleddamag's Node BigInt checker over
+      all 5,114 intervals at two partitions, priced in the packet at about 70 CPU-minutes
+      and 80 minutes' wall here from T-043's measured run, with the Boost headers this
+      container lacks; then devtools.audit_guzhou_r071 compare R071 on the fresh ledgers,
+      and a review of what differs from T-043, the parent side, the added intervals and the
+      rebuilt cores, since the charge and both checkers are T-043's byte for byte. Recorded
+      as replayed-here evidence, that replay is what raises the rungs and moves the
+      verified field.
+
+      The r071-bound artifact of the source's CI run, which expires on 2026-12-29 and
+      could not be fetched here, holds fresh partitions that could be compared row by row
+      first, as a diagnostic. V4 and C4 then need what T-043's next_rung names.
+    notes: >-
+      V0 because the one cited entry is the source's report: assurance reported, replay not
+      attempted. C0 because nothing here has read the mathematics: the pre-replay audit
+      checks the certificate's structure against R068's and the source's own records, and
+      decides no interval. R070, published the day before and superseded by this release,
+      stays in the packet and the case record without an entry of its own, as a publication
+      record never replayed. Ids here are provisional until merged.

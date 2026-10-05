@@ -1,0 +1,136 @@
+{
+  "format": "external-source-acquisition-v1",
+  "retrieved_at_utc": "2026-10-05T00:44:42Z",
+  "git_scope": "A blobless clone of the single public branch with its history, sparsely checked out at this commit: the directories of the s(59) = 8 and s(77) = 9 mixed covers and of the s(45) = 7 point cover, whole, and the 17 files of point_n21_L5 that 781afb3 changed other than its 14 bundle parts, which archive-index.json and distribution.json list with their digests. Every file in that scope is digested; the rest of the tree is pinned by the commit.",
+  "sources": [
+    {
+      "id": "wand125-record-updates",
+      "source_url": "https://github.com/wand125/square-packing-bounds",
+      "source_ref": "refs/heads/main",
+      "source_commit": "797bdf6e10eba5f9dccca9da06f8352e81ba9dde",
+      "committed_utc": "2026-10-04T19:03:58Z",
+      "git_tree": "2f4a2d442ea6c8568f8bd2f6a4a9f5b483157d37",
+      "archived_path": "packing/resources/web/wand125-record-updates-2026-10-04/square-packing-bounds",
+      "subtree_manifest": "packing/resources/web/wand125-record-updates-2026-10-04/acquisition/upstream-subtree.sha256",
+      "subtree_scope": [
+        "certificates/k2m5_n59_L8",
+        "certificates/k2m4_n77_L9",
+        "point_n45_L7",
+        "point_n21_L5/PROOF-LEMMAS.md",
+        "point_n21_L5/PUBLICATION.md",
+        "point_n21_L5/README.md",
+        "point_n21_L5/acceptance/README.md",
+        "point_n21_L5/acceptance/distribution-build.json",
+        "point_n21_L5/acceptance/distribution-roundtrip.json",
+        "point_n21_L5/acceptance/m1-collection-check.json",
+        "point_n21_L5/acceptance/m1-distribution-binding.json",
+        "point_n21_L5/acceptance/m1-full-linkage.json.gz",
+        "point_n21_L5/acceptance/m1-full-replay.json",
+        "point_n21_L5/acceptance/split-linkage.json.gz",
+        "point_n21_L5/acceptance/split-replay.json",
+        "point_n21_L5/archive-index.json",
+        "point_n21_L5/distribution.json",
+        "point_n21_L5/lemma-code-map.json",
+        "point_n21_L5/path-relativization-map.json",
+        "point_n21_L5/verifier-source/src/nagamochi_research/mixed_proof_pipeline.py"
+      ],
+      "subtree_file_count": 57,
+      "subtree_total_bytes": 18543921,
+      "retained_file_count": 45,
+      "retained_total_bytes": 1106276,
+      "compressed": [
+        "square-packing-bounds/certificates/k2m4_n77_L9/record/zm_mixed_run.txt.gz",
+        "square-packing-bounds/certificates/k2m4_n77_L9/record/zmx2_full_run.txt.gz",
+        "square-packing-bounds/certificates/k2m4_n77_L9/zm_mixed_d4/run.txt.gz",
+        "square-packing-bounds/certificates/k2m4_n77_L9/zmx2_full/run.txt.gz",
+        "square-packing-bounds/certificates/k2m5_n59_L8/zmx2_full/run_log.txt.gz",
+        "square-packing-bounds/point_n45_L7/reference/roots.txt.gz"
+      ],
+      "pinned_only": [
+        {
+          "path": "certificates/k2m4_n77_L9/n77_mixed_cover_9.txt",
+          "bytes": 845159,
+          "sha256": "47b57cfe38cbfdbcf5320e59caffe712f4ef32df8aad42b0d7f697de6d26cdd7",
+          "reason": "unchanged since 1a25a5ed, retained by the 2026-10-01 packet",
+          "identical_to": "packing/resources/web/wand125-point-and-mixed-2026-10-01/square-packing-bounds/certificates/k2m4_n77_L9/n77_mixed_cover_9.txt"
+        },
+        {
+          "path": "certificates/k2m4_n77_L9/record/zm_mixed_roots.jsonl.gz",
+          "bytes": 2015971,
+          "sha256": "cf0efa1c7c65ceb1e2e021d6c17f10a27a5f1ad91581e1543a1ec51137549fb9",
+          "reason": "an upstream gzip file, which the archive cannot retain beside its own compression"
+        },
+        {
+          "path": "certificates/k2m4_n77_L9/record/zmx2_d4_roots.txt.gz",
+          "bytes": 91231,
+          "sha256": "25b17101fe3d1be27d27d11ab0399fb1bf644873d7f933283be4d2bc2277d5c9",
+          "reason": "an upstream gzip file, which the archive cannot retain beside its own compression"
+        },
+        {
+          "path": "certificates/k2m4_n77_L9/record/zmx2_full_roots.txt.gz",
+          "bytes": 758108,
+          "sha256": "2c4e694a795e51a8b28252ef46f75ebb338b3ce22dd021c1d6d36cbd908b1d58",
+          "reason": "an upstream gzip file, which the archive cannot retain beside its own compression"
+        },
+        {
+          "path": "certificates/k2m5_n59_L8/n59_mixed_cover_8.txt",
+          "bytes": 552155,
+          "sha256": "6f4d2b64f9a88ae49546f05fa28752382f9ebfa8b7f8b6e6c6f1a8e693177e19",
+          "reason": "unchanged since 1a25a5ed, retained by the 2026-10-01 packet",
+          "identical_to": "packing/resources/web/wand125-point-and-mixed-2026-10-01/square-packing-bounds/certificates/k2m5_n59_L8/n59_mixed_cover_8.txt"
+        },
+        {
+          "path": "certificates/k2m5_n59_L8/zm_mixed_d4/roots.jsonl.gz",
+          "bytes": 1654112,
+          "sha256": "eac7061c693760a62d7fb45216e98cc66842f98dafc5e65431e277fd751a7fae",
+          "reason": "an upstream gzip file, which the archive cannot retain beside its own compression"
+        },
+        {
+          "path": "certificates/k2m5_n59_L8/zmx2_d4/roots_log.txt.gz",
+          "bytes": 64274,
+          "sha256": "c7279174cd72a9ba016ce7cefa93804d877b94c444e268a7edd70d6ad1289b6f",
+          "reason": "an upstream gzip file, which the archive cannot retain beside its own compression"
+        },
+        {
+          "path": "certificates/k2m5_n59_L8/zmx2_full/roots_log.txt.gz",
+          "bytes": 537423,
+          "sha256": "1f2bfa796ab5a1c18dfc4274f62da1e55c5218d5a3cf17b073edbb623132231d",
+          "reason": "an upstream gzip file, which the archive cannot retain beside its own compression"
+        },
+        {
+          "path": "point_n21_L5/acceptance/m1-full-linkage.json.gz",
+          "bytes": 5302637,
+          "sha256": "a8862552946a906799b53aa9035883ac02b7f9a820ffcdb0868c909125b00562",
+          "reason": "an upstream gzip file, which the archive cannot retain beside its own compression"
+        },
+        {
+          "path": "point_n21_L5/acceptance/split-linkage.json.gz",
+          "bytes": 5314372,
+          "sha256": "e83b8042fa77e0aba95782b07da7143ac8e4c794648d71b7b5bea63b3b0c52f7",
+          "reason": "an upstream gzip file, which the archive cannot retain beside its own compression"
+        },
+        {
+          "path": "point_n45_L7/check_cover.py",
+          "bytes": 1223,
+          "sha256": "bca2bf4c059acfca0ebc009bd1cad8e87a9e10564aaa972b96c9212059592530",
+          "reason": "unchanged since 39d8ecc7, retained by the 2026-09-28 packet",
+          "identical_to": "packing/resources/web/wand125-point-and-mixed-2026-09-28/square-packing-bounds/point_n45_L7/check_cover.py"
+        },
+        {
+          "path": "point_n45_L7/cover.txt",
+          "bytes": 300980,
+          "sha256": "f7d706aa07506c351d9c4b76082cc391ae3f1fd20f6759496bd7c601bb0ca192",
+          "reason": "unchanged since 39d8ecc7, retained by the 2026-09-28 packet",
+          "identical_to": "packing/resources/web/wand125-point-and-mixed-2026-09-28/square-packing-bounds/point_n45_L7/cover.txt"
+        }
+      ],
+      "license": "MIT, Copyright (c) 2026 wand125 (root LICENSE)",
+      "claims": [
+        "certificates/k2m5_n59_L8 (s(59) = 8, cover unchanged): the zm_mixed per-root records, check_records.py, which checks them in exact rational arithmetic, the zmx2 per-root logs, a toolchain record and the run logs; SHA256SUMS lists exactly the published files (c56b9b7, answering review findings F1 and F2)",
+        "point_n45_L7 (s(45) = 7, cover unchanged): verify.sh judges D4 invariance from the '^D4: measure invariant' line, runs under set -euo pipefail and writes toolchain.txt; reference/ holds the original reference run, which a fresh per-root log is compared with (1ebd484)",
+        "certificates/k2m4_n77_L9 (s(77) = 9, cover unchanged): run logs, a full replay record ending N77_COVER_VERIFIED, a hardened verify.sh judging D4 from the same line, and SHA256SUMS listing exactly the tracked files (3f063bd)",
+        "point_n21_L5 (s(21) = 5, certificate unchanged): absolute machine paths removed from the records in the archive and the acceptance linkage files, embedded hashes updated, path-relativization-map.json listing each edited file's digest before and after, English status messages in mixed_proof_pipeline.py, and lemma-code-map.json listing the 27 files the checking path runs; a fresh replay of the rebuilt archive reported FRESH_ALL_DOMAIN_REPLAY_VERIFIED (781afb3)"
+      ]
+    }
+  ]
+}

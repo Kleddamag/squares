@@ -493,27 +493,37 @@ def test_the_actual_article_renders_every_slot_once_with_pinned_sources(
 
 
 def test_every_bold_run_of_the_prose_is_a_registered_definition() -> None:
-    """The define-before-use gate holds every bold run of the body to be some term's
-    definition; the registry names each, and each definition's substring occurs once."""
+    """The define-before-use gate (`devtools.paper_terms`) holds every bold run of the
+    body to be some term's definition on the rendered page; here the registry is held
+    to the article's source: each bold run is part of a registered definition, each
+    prerequisite is registered, each forward allowance has one of the three reasons,
+    and the series tags name the concepts the plan gives this paper."""
     article = ARTICLE.read_text(encoding="utf-8")
     body = article.split("## Appendix A", 1)[0]
     body = re.sub(r"<figcaption>.*?</figcaption>", "", body, flags=re.DOTALL)
-    bold = re.findall(r"\*\*[^*]+\*\*", body)
     registry = safe_load(paper.TERMS.read_text(encoding="utf-8"))
-    definitions = [entry["defined_by"] for entry in registry["terms"]]
-    # A forward use is quoted from the prose as the scanner reads it, footnote marks
-    # left out, so a sentence that ends in a citation still matches.
-    prose = re.sub(r"\[\^[^\]]+\]", "", article)
-    for run in bold:
-        assert any(run in definition for definition in definitions), run
-    for definition in definitions:
-        assert article.count(definition) == 1, definition
+    assert registry["paper"] == paper.SLUG
+    definitions = [" ".join(entry["defined_by"].split()) for entry in registry["terms"]]
+    for run in re.findall(r"\*\*([^*]+)\*\*", body):
+        words = " ".join(run.split())
+        if words.endswith((".", ":")):
+            continue  # a run-in head, such as a lemma's name
+        assert any(words in definition for definition in definitions), run
+    names = {entry["term"] for entry in registry["terms"]}
+    assert len(names) == len(registry["terms"])
     for entry in registry["terms"]:
-        for required in entry["requires"]:
-            assert any(other["term"] == required for other in registry["terms"]), required
-        for forward in entry["forward"]:
-            assert forward["text"] in prose, forward
+        for required in entry.get("requires", []):
+            assert required in names, (entry["term"], required)
+        for forward in entry.get("forward", []):
             assert forward["reason"] in {"roadmap", "heading", "link-to-definition"}
+    tagged = {
+        entry["term"]: entry["series"] for entry in registry["terms"] if "series" in entry
+    }
+    assert tagged["charge"] == "charge"
+    assert tagged["budget"] == "k-of-m-budget"
+    assert tagged["Strict-core lemma"] == "strict-core"
+    assert tagged["k-of-m charge"] == "threshold-atom"
+    assert {"A", "\u03c1", "C"} <= names
 
 
 def test_register_consistency_with_t037(published: tuple[str, str]) -> None:

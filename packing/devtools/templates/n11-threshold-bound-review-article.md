@@ -18,7 +18,9 @@ A **packing** of unit squares in a **container**, a larger square with sides par
 the axes, is a placement in which every unit square lies inside the container and no two
 unit squares have a common interior point; their boundaries may touch.
 Write $s(11)$ for the smallest container side that admits a packing of eleven unit
-squares; the Attainment lemma in the closing section shows that a smallest side exists.
+squares, and $L_0$ for the side of a container under test, both as
+[Paper I]({{PAPER:n11-lower-bounds-explainer#the-square-packing-problem}}) does; the
+Attainment lemma in the closing section shows that a smallest side exists.
 A square is unchanged by a quarter-turn, so its angle is only defined modulo $\pi/2$,
 and this paper takes every angle in $[0,\pi/2)$.
 
@@ -228,8 +230,8 @@ even $3.82$.[^register]
 
 ## Parents and the One Inequality
 
-A **parent** is a square of side $A=764/775$ inside the container $[0,L_0]^2$ of side
-$L_0=191/50$. Parents may rotate independently and touch; their interiors must be
+A **parent** is a square of side $A=764/775$ inside the container $[0,L_0]^2$, whose
+side is $L_0=191/50$. Parents may rotate independently and touch; their interiors must be
 disjoint.[^parents]
 
 **Scaling lemma.** Eleven parents fit in a container of side $L_0$ exactly when eleven
@@ -280,7 +282,9 @@ and recomputed from the certificate.</figcaption>
 ## The Certificate’s Charges
 
 The container has eight symmetries, the four rotations and four reflections of the
-square, which form the group $\mathbf{D}_4$. The **orbit** of a site is the set of its
+square, which form the group $\mathbf{D}_4$ of Paper I’s
+[Condition 1]({{PAPER:n11-lower-bounds-explainer#the-five-conditions-for-a-point-certificate}}).
+The **orbit** of a site is the set of its
 images under the eight symmetries, of size one, four or eight, and the orbit of a
 $k$-of-$m$ charge is the set of the eight image charges on the image sites.
 A certificate is **$\mathbf{D}_4$-invariant** when every point charge and every

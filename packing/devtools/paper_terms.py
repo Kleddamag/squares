@@ -33,9 +33,16 @@ reported by its number:
    owner and the anchor of its derivation. A paper that does not own a concept it uses
    first meets it in a block that links the owner's page, and a symbol two papers define
    with different meanings is refused unless the series registry lists that clash.
+7. Every formula is typeset. No TeX reaches the reader as text: a `$` or a TeX command
+   (`\\gt`, `\\binom`) in the prose, the captions or the title means a formula the page's
+   math pipeline never saw, such as a display formula run into its sentence or a
+   caption's `$...$` in an HTML block that is not passed to it. A display formula is a
+   Markdown `$$` block in every paper, so every display has the same spacing, overflow
+   and print behaviour; Part I's `.tex-d` wrapper is refused.
 
-`check_paper` runs rules 1-5 on one page; `check_series` runs rule 6 on any number of
-pages; `check_paper_anchors` checks that every cross-paper link (`devtools.paper_links`)
+`check_paper` runs rules 1-5 on one page; `check_math` runs rule 7 on one page's HTML,
+the hero title included; `check_series` runs rule 6 on any number of pages;
+`check_paper_anchors` checks that every cross-paper link (`devtools.paper_links`)
 names a heading the target paper has. `tests/test_paper_terms.py` runs them on every
 paper, one entry per paper.
 """
@@ -62,7 +69,7 @@ FORWARD_REASONS = frozenset({"roadmap", "heading", "link-to-definition"})
 #: The section a paper's version history stands in: a record of earlier editions, read as
 #: a record, not exposition.
 HISTORY_SECTION = "version-history"
-Rule = Literal[1, 2, 3, 4, 5, 6]
+Rule = Literal[1, 2, 3, 4, 5, 6, 7]
 
 _BLOCKS = frozenset(
     {"h1", "h2", "h3", "h4", "h5", "h6", "p", "li", "td", "th", "figcaption", "dt", "dd"}
@@ -762,6 +769,44 @@ def check_paper_anchors(
     return findings, pending
 
 
+#: TeX as the reader would see it in prose: a math delimiter or a control word.
+_RAW_TEX = re.compile(r"\\[A-Za-z]+|\$")
+#: A display formula wrapped by hand rather than written as a `$$` block.
+_HAND_DISPLAY = re.compile(
+    r'<[a-z]+\b[^>]*\bclass="[^"]*\btex-d\b[^"]*"[^>]*>(.*?)</', re.DOTALL
+)
+#: The paper's title, which the exposition reader skips with the rest of the front.
+_HERO_TITLE = re.compile(r'<div class="hero">\s*(<h1\b.*?</h1>)', re.DOTALL)
+
+
+def _raw_tex(page: Page, where: str) -> list[Finding]:
+    findings: list[Finding] = []
+    for block in page.blocks:
+        for found in _RAW_TEX.finditer(block.prose):
+            context = _WHITESPACE.sub(
+                " ", block.text[max(0, found.start() - 40) : found.end() + 40]
+            ).strip()
+            section = block.sections[-1] if block.sections else where
+            findings.append(
+                Finding(7, found.group(0), f"TeX printed as text in {section}: ...{context}...")
+            )
+    return findings
+
+
+def check_math(html: str) -> list[Finding]:
+    """Rule 7 on one rendered paper: no TeX in its prose, captions or title, and every
+    display formula a `$$` block."""
+    findings = _raw_tex(read_page(html), "the exposition")
+    for display in _HAND_DISPLAY.finditer(html):
+        context = _WHITESPACE.sub(" ", display.group(1))[:60].strip()
+        findings.append(
+            Finding(7, "tex-d", f"display formula outside a $$ block: {context}...")
+        )
+    for title in _HERO_TITLE.finditer(html):
+        findings.extend(_raw_tex(read_page(title.group(1)), "the title"))
+    return findings
+
+
 def report(findings: Iterable[Finding]) -> str:
     return "\n".join(str(finding) for finding in findings)
 
@@ -788,9 +833,11 @@ def main(argv: Sequence[str] | None = None) -> int:
         if not path.is_file():
             print(f"{slug}: not built at {path}", file=sys.stderr)
             continue
-        pages[slug] = read_page(path.read_text(encoding="utf-8"))
+        html = path.read_text(encoding="utf-8")
+        pages[slug] = read_page(html)
         registries[slug] = load_registry(slug)
         found = check_paper(pages[slug], registries[slug])
+        found += [replace(finding, paper=slug) for finding in check_math(html)]
         findings.extend(found)
         print(f"{slug}: {len(found)} findings")
     findings.extend(check_series(pages, registries, load_series()))

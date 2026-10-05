@@ -25,7 +25,9 @@ the squares to rotate but not to overlap in their interiors.
 Write $L$ for the exact value below.
 We prove
 
-<p class="centred"><span class="tex-d">s(11) \;\ge\; L = {{CURRENT_BOUND_TEX}} = {{CURRENT_BOUND_DEC}}.</span></p>
+$$
+s(11) \;\ge\; L = {{CURRENT_BOUND_TEX}} = {{CURRENT_BOUND_DEC}}.
+$$
 
 Thus eleven unit squares cannot fit in any square whose side is smaller than $L$. This
 is T-026’s historical lower bound, explained in this v0.4 proof edition.

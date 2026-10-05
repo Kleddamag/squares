@@ -899,7 +899,9 @@ def scan(repo: Path, policy: Policy) -> tuple[dict[str, list[Site]], list[str], 
 
     def one(path: str) -> list[Site] | str:
         try:
-            return scan_source(path, (repo / path).read_text(encoding="utf-8"), policy)
+            # utf-8-sig, as CPython reads source: a leading byte-order mark is valid there
+            # and appears in retained third-party files, which are never edited.
+            return scan_source(path, (repo / path).read_text(encoding="utf-8-sig"), policy)
         except (SyntaxError, UnicodeDecodeError, ValueError) as error:
             return f"{path}: cannot be read as Python: {error}"
 

@@ -299,6 +299,20 @@ Certificate objects stay out of Git (OR-18).
   Three jobs without receipts (A-m1964767, A-m2878207, K-k6) re-ran from scratch; every
   closure already had its verification receipt, and the queues resumed by skipping
   completed receipts.
+- A second container restart killed every process: they stopped writing at about 12:45
+  UTC and the container rebooted at 13:24:55. BC-423’s endpoint7 control (started 11:29,
+  its producer done and its checker mid-run), BC-424’s endpoint-state control (started
+  12:07) and lane E’s shard 3 left no receipts and re-ran from scratch at 13:29.
+- Procedure changed at the coordinator’s direction after that restart: BC-423’s and
+  BC-424’s controls now run beside their first target instead of before it, and
+  admission, not launch, is gated on the control.
+  A closure verified while its lane’s control is still running waits until the control
+  finishes without closing; a control closure is still a soundness alarm that stops the
+  instrument and voids the lane’s closures.
+  Every soundness gate is kept.
+  The reason: two container restarts in a day, and controls under the 48-round settings
+  run to near their 7,000 s ceiling, so running controls serially doubled each lane’s
+  exposure to a restart.
 - K-k2 stopped at its 24-round cap with producer time unused, so `--max-rounds` is a
   free lever for lane K’s stalls; BC-423 tests it with lane D’s settings.
 - Lane D diagnosed the per-state stall nodes at 100 poses per owner instead of 400,

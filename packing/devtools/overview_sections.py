@@ -2242,25 +2242,49 @@ def arrow_icon(direction: str = "right") -> str:
 #: the page is rendered in; `overview/atlas-view.js` lays the other out.
 ATLAS_VIEWS: tuple[tuple[str, str], ...] = (("grid", "Grid"), ("triangle", "Triangle"))
 
-#: The id the script gives the box of tiles, which each view tab controls.
+#: The atlas's three sizes of tile, in tab order: the key the block's `data-atlas-size`
+#: and the address's `?size=` take, and the tab's label. Medium is the size the atlas had
+#: before it offered a choice, the default and the one the page is rendered in; site.css
+#: scales a tile by each (`--site-atlas-scale`), and `overview/atlas-view.js` rearranges
+#: the tiles for it (think-ht8t).
+ATLAS_SIZES: tuple[tuple[str, str], ...] = (
+    ("small", "Small"),
+    ("medium", "Medium"),
+    ("large", "Large"),
+)
+
+#: The size the page is rendered in.
+ATLAS_SIZE = "medium"
+
+#: The id the script gives the box of tiles, which each view and size tab controls.
 ATLAS_PANEL = "atlas-cells"
 
-#: The atlas's two drawings of a case, in tab order: the key the block's
-#: `data-atlas-layer` and the address's `?layer=` take, and the tab's label. The house
-#: drawing is the record's own rendering; the regularized one is the derived view
-#: `atlas/known-best/regularized/` keeps for some cases (X-049, Exact Regularization),
-#: and its key is the word the layer's index says every drawing of it must carry. The
-#: first is the default and the one the page is rendered in; `overview/atlas-layer.js`
-#: swaps the other in, and a case with no regularized view keeps its house tile.
-ATLAS_LAYERS: tuple[tuple[str, str], ...] = (("house", "House"), ("regularized", "Regularized"))
+#: The word every regularized drawing carries: the label the layer's index says each of
+#: its drawings must be shown with (`atlas_regularized`), which a regularized tile's name
+#: and the atlas's key say in words. The regularized layer is the derived view
+#: `atlas/known-best/regularized/` keeps for some cases (X-049, Exact Regularization).
+ATLAS_REGULARIZED = "regularized"
+
+#: Where a reader learns what a regularized view is: the atlas README's section on the
+#: layer, which the atlas's key links.
+ATLAS_REGULARIZED_README = REPO / "packing" / "atlas" / "known-best" / "README.md"
 
 
 def atlas_layer_mark() -> str:
     """The regularized layer's badge: one dot in the accent, drawn by site.css and hidden
     from assistive technology, whose names say "regularized" in words. A regularized
-    tile carries it after its number, and the Regularized tab carries it before its word,
-    so the tab is the key to the tiles."""
+    tile carries it before its number, and the atlas's key carries it before its words,
+    so the key names the tiles' mark (`atlas_legend`)."""
     return '<span class="site-atlas-layer-mark" aria-hidden="true"></span>'
+
+
+def atlas_star() -> str:
+    """The new-result star on a tile: the site's one star (`STAR`, `.site-star`), as the
+    frontier table's Recent column and the tables of results draw it, after the case's
+    number. It is hidden from assistive technology because the tile's name ends with
+    what it says, "new result" (`NEW_RESULT`), as a starred row's name does
+    (`result_row`); the atlas's key says it in words (`atlas_legend`)."""
+    return f'<span class="site-star" aria-hidden="true">{STAR}</span>'
 
 
 def atlas_regularized() -> tuple[int, ...]:
@@ -2276,8 +2300,7 @@ def atlas_regularized() -> tuple[int, ...]:
     from devtools import render_frontier_page as frontier  # noqa: PLC0415
 
     index = json.loads(frontier.REGULARIZED_INDEX.read_text(encoding="utf-8"))
-    label = ATLAS_LAYERS[1][0]
-    if index.get("label") != label:
+    if index.get("label") != ATLAS_REGULARIZED:
         raise SystemExit(f"the regularized index labels its drawings {index.get('label')!r}")
     listed = tuple(sorted(e["n"] for e in index["entries"] if e["status"] == "regularized"))
     drawn = tuple(
@@ -2296,53 +2319,61 @@ def atlas_regularized() -> tuple[int, ...]:
     return listed
 
 
-def atlas_layer_tabs() -> str:
-    """The tabs that choose the atlas's drawing, House or Regularized: the same strip as
-    the view tabs (`atlas_view_tabs`), beside them over the tiles, a tablist of two
-    buttons that swap a case's tile for its other drawing in place. House is selected
-    and is the only tab in the page's tab order; the Regularized tab carries the badge
-    its tiles carry (`atlas_layer_mark`). It ships `hidden`, as the view tabs do."""
-    default = ATLAS_LAYERS[0][0]
-    tabs = "".join(
-        f'<button type="button" role="tab" id="atlas-layer-{key}" data-atlas-layer-tab="{key}" '
-        f'aria-selected="{"true" if key == default else "false"}" '
-        f'aria-controls="{ATLAS_PANEL}"{"" if key == default else ' tabindex="-1"'}>'
-        f"{'' if key == default else atlas_layer_mark()}{_esc(label)}</button>"
-        for key, label in ATLAS_LAYERS
-    )
-    return (
-        '<div class="site-tabs site-atlas-layers" role="tablist" aria-label="Atlas drawings" '
-        f"data-atlas-layers hidden>{tabs}</div>"
-    )
-
-
-def _atlas_cell(n: int, status: str, *, regularized: bool = False) -> str:
+def _atlas_cell(n: int, status: str, *, regularized: bool = False, new: bool = False) -> str:
     """One case's tile: its drawing, a link to its case record, and its number under it.
 
-    A regularized tile is the same tile drawn from the regularized rendering, marked
-    `data-atlas-layer="regularized"`, named as the regularized view, and badged after its
-    number. It reduces its drawing by `packing_svg`, as a house tile does, so the two
-    differ only where the view moved a square or changed a square's shade.
+    A case with a regularized view is drawn from that view, the house renderer's picture
+    of the record's frame straightened, reduced by `packing_svg` as a house drawing is;
+    its tile says so in its name and carries the layer's badge before its number
+    (`atlas_layer_mark`). The atlas showed the house drawing too, under a House tab,
+    until 2026-10-04, when the owner dropped the choice (think-k8x9); the case record's
+    own drawing is still the house one. A case whose verified lower bound is a new
+    result, the frontier table's rule (`render_frontier_page.recent_lower_bounds`),
+    carries the star after its number (`atlas_star`), and its name ends "new result"
+    (think-wwtt).
     """
     from devtools import render_frontier_page as frontier  # noqa: PLC0415
     from devtools.render_case_pages import case_url  # noqa: PLC0415
 
     square = " data-atlas-square" if math.isqrt(n) ** 2 == n else ""
-    if regularized:
-        layer = f' data-atlas-layer="{ATLAS_LAYERS[1][0]}"'
-        name = f"n = {n}, {ATLAS_LAYERS[1][0]} view, {_esc(status)}"
-        drawing = frontier.packing_svg(
-            n, units=ATLAS_UNITS, root=frontier.REGULARIZED_RENDERINGS
-        )
-        badge = atlas_layer_mark()
-    else:
-        layer, name, badge = "", f"n = {n}, {_esc(status)}", ""
-        drawing = frontier.packing_svg(n, units=ATLAS_UNITS)
+    root = frontier.REGULARIZED_RENDERINGS if regularized else frontier.RENDERINGS
+    drawing = frontier.packing_svg(n, units=ATLAS_UNITS, root=root)
+    view = f", {ATLAS_REGULARIZED} view" if regularized else ""
+    name = f"n = {n}{view}, {_esc(status)}{f', {NEW_RESULT}' if new else ''}"
+    badge = atlas_layer_mark() if regularized else ""
+    star = atlas_star() if new else ""
     return (
         f'<a class="site-atlas-cell" href="{case_url(n)}" data-case="{n}" '
-        f'data-atlas-n="{n}"{square}{layer} '
+        f'data-atlas-n="{n}"{square} '
         f'data-status="{_esc(status)}" aria-label="{name}">'
-        f'{drawing}<span class="site-atlas-n">{n}{badge}</span></a>'
+        f'{drawing}<span class="site-atlas-n">{badge}{n}{star}</span></a>'
+    )
+
+
+def _atlas_tablist(
+    choices: Sequence[tuple[str, str]],
+    *,
+    default: str,
+    ids: str,
+    data: str,
+    classes: str,
+    name: str,
+    extra: str = "",
+) -> str:
+    """One strip of the atlas's tabs: a tablist of buttons, `default` selected and the
+    strip's one stop in the tab order, each controlling the box of tiles. It ships
+    `hidden`, as the expander's row does: without the script it would do nothing, and
+    the script shows it once the tiles are placed."""
+    tabs = "".join(
+        f'<button type="button" role="tab" id="{ids}-{key}" {data}="{key}" '
+        f'aria-selected="{"true" if key == default else "false"}" '
+        f'aria-controls="{ATLAS_PANEL}"{"" if key == default else ' tabindex="-1"'}>'
+        f"{_esc(label)}</button>"
+        for key, label in choices
+    )
+    return (
+        f'<div class="site-tabs {classes}" role="tablist" aria-label="{_esc(name)}" '
+        f"{extra}hidden>{tabs}</div>"
     )
 
 
@@ -2352,21 +2383,61 @@ def atlas_view_tabs() -> str:
     one set of tiles in place, where the Visualize section's are links to two pages.
 
     The first view is selected and is the only tab in the page's tab order; the arrow
-    keys move between the two (`overview/atlas-view.js`). The strip ships `hidden`, as
-    the expander's row does: without the script it would do nothing, and the script
-    shows it once the tiles are placed.
+    keys move between the two (`overview/atlas-view.js`). The strip ships `hidden`
+    (`_atlas_tablist`).
     """
-    default = ATLAS_VIEWS[0][0]
-    tabs = "".join(
-        f'<button type="button" role="tab" id="atlas-view-{key}" data-atlas-tab="{key}" '
-        f'aria-selected="{"true" if key == default else "false"}" '
-        f'aria-controls="{ATLAS_PANEL}"{"" if key == default else ' tabindex="-1"'}>'
-        f"{_esc(label)}</button>"
-        for key, label in ATLAS_VIEWS
+    return _atlas_tablist(
+        ATLAS_VIEWS,
+        default=ATLAS_VIEWS[0][0],
+        ids="atlas-view",
+        data="data-atlas-tab",
+        classes="site-atlas-views",
+        name="Atlas layout",
+        extra=f'data-atlas-views data-atlas-panel="{ATLAS_PANEL}" ',
+    )
+
+
+def atlas_size_tabs() -> str:
+    """The tabs beside the view tabs that choose the size of the tiles, Small, Medium
+    or Large (think-ht8t): the view tabs' strip, a tablist of three buttons that resize
+    the one set of tiles in place, in either view. Medium is selected and is the strip's
+    one stop in the tab order; the arrow keys move between the three
+    (`overview/atlas-view.js`), and the strip ships `hidden`, as the view tabs do."""
+    return _atlas_tablist(
+        ATLAS_SIZES,
+        default=ATLAS_SIZE,
+        ids="atlas-size",
+        data="data-atlas-size-tab",
+        classes="site-atlas-sizes",
+        name="Atlas tile size",
+        extra="data-atlas-sizes ",
+    )
+
+
+def atlas_legend(*, regularized: bool) -> str:
+    """The key to a tile's marks, under the atlas's tabs: the star, "new result", and,
+    where some case is drawn from its regularized view, the layer's badge, "regularized
+    view", linked to the atlas README's section on the layer. A star without a key reads
+    as decoration, which is why each table of results keeps one (paper-design.md), and a
+    regularized drawing is only ever shown labelled as one (the atlas README); the
+    Regularized tab keyed the badge until the owner dropped the choice of drawing on
+    2026-10-04 (think-k8x9). Each mark's words are a span of their own, as in the
+    tables' legend (`rung_legend`): no shipped face carries the star. It ships `hidden`
+    with the tabs, since it keys tiles only the script places."""
+    star = (
+        f'<span class="site-atlas-legend-item">{atlas_star()} <span>{NEW_RESULT}</span></span>'
+    )
+    view = (
+        f' <span class="site-atlas-legend-item">{atlas_layer_mark()}'
+        f'<a href="{branch_file(ATLAS_REGULARIZED_README, "#the-regularized-views")}">'
+        f"{ATLAS_REGULARIZED} view</a></span>"
+        if regularized
+        else ""
     )
     return (
-        '<div class="site-tabs site-atlas-views" role="tablist" aria-label="Atlas layout" '
-        f'data-atlas-views data-atlas-panel="{ATLAS_PANEL}" hidden>{tabs}</div>'
+        '<p class="site-atlas-legend" role="note" '
+        f'aria-label="What a tile{APOSTROPHE}s marks mean" data-atlas-legend hidden>'
+        f"{star}{view}</p>"
     )
 
 
@@ -2381,7 +2452,9 @@ def atlas_grid() -> str:
     it to the triangle (`atlas_view_tabs`). Both views are one set of tiles: the triangle
     places each by properties the script writes, so a tile's markup is the same in both.
     A perfect square's tile is marked `data-atlas-square`: it ends its row of the
-    triangle, on the right edge, and the triangle numbers it in the text's colour.
+    triangle, on the right edge, and the triangle numbers it in the text's colour. The
+    block is rendered at the medium size (`data-atlas-size`), under tabs beside the view
+    tabs that make every tile smaller or larger (`atlas_size_tabs`), in either view.
 
     The cells, about a megabyte of SVG, sit in two `<template>`s, which the browser
     parses but does not render. The script places the first `ATLAS_FIRST` when the grid
@@ -2396,41 +2469,46 @@ def atlas_grid() -> str:
     filled by the script from a JSON of the film's facts, stood after the block until
     2026-10-03; the case popover took its place.
 
-    The block is rendered with the house drawings (`data-atlas-layer`), under tabs beside
-    the view tabs that switch it to the regularized ones (`atlas_layer_tabs`). The cases
-    with a regularized view (`atlas_regularized`) have a second tile each, in a third
-    `<template>`, which `overview/atlas-layer.js` swaps for the house tile in place; every
-    other case keeps its house tile in both. Where no case has a view, the block has no
-    third template and no layer tabs. The two strips stand in one row over the tiles
-    (`.site-atlas-controls`), which the script places the tiles after.
+    A case with a regularized view (`atlas_regularized`) is drawn from it, badged, and
+    every other case from its house rendering: one tile a case. Until 2026-10-04 the
+    house tiles were the default and a third `<template>` held a second tile for each
+    regularized case, which House and Regularized tabs swapped in place; the owner
+    dropped the choice for the regularized drawings alone (think-k8x9), and with it the
+    second set. A case whose verified lower bound is a new result carries the star
+    (think-wwtt). The two strips stand in one row over the tiles, the key to the marks
+    under them (`atlas_legend`), all in one box (`.site-atlas-controls`), which the
+    script places the tiles after.
     """
     from devtools import render_frontier_page as frontier  # noqa: PLC0415
     from devtools.render_case_pages import case_popover  # noqa: PLC0415
 
     cases = frontier.frontier_cases()
-    status = {case["n"]: case["status"] for case in cases}
-    cells = [_atlas_cell(case["n"], case["status"]) for case in cases]
+    tracked = {case["n"] for case in cases}
     regularized = atlas_regularized()
-    if not set(regularized) <= set(status):
-        untracked = sorted(set(regularized) - set(status))
+    if not set(regularized) <= tracked:
+        untracked = sorted(set(regularized) - tracked)
         raise SystemExit(f"regularized views of untracked cases: {untracked}")
-    layer_cells = "".join(_atlas_cell(n, status[n], regularized=True) for n in regularized)
-    layers = (
-        (atlas_layer_tabs(), f"<template data-atlas-regularized>{layer_cells}</template>")
-        if regularized
-        else ("", "")
-    )
+    new = frontier.recent_lower_bounds()
+    cells = [
+        _atlas_cell(
+            case["n"],
+            case["status"],
+            regularized=case["n"] in regularized,
+            new=new.get(case["n"], False),
+        )
+        for case in cases
+    ]
     more, less = "Show More", "Show Less"
     name_more = f"Show more: all {len(cases)} cases"
     name_less = f"Show less: the first {ATLAS_FIRST}"
     return (
         f'<div class="site-wide site-atlas-grid" data-atlas-view="{ATLAS_VIEWS[0][0]}" '
-        f'data-atlas-layer="{ATLAS_LAYERS[0][0]}" data-atlas-grid>'
+        f'data-atlas-size="{ATLAS_SIZE}" data-atlas-grid>'
         '<div class="site-atlas-controls" data-atlas-controls>'
-        f"{atlas_view_tabs()}{layers[0]}</div>"
+        f"{atlas_view_tabs()}{atlas_size_tabs()}"
+        f"{atlas_legend(regularized=bool(regularized))}</div>"
         f"<template data-atlas-first>{''.join(cells[:ATLAS_FIRST])}</template>"
         f"<template data-atlas-rest>{''.join(cells[ATLAS_FIRST:])}</template>"
-        f"{layers[1]}"
         # The triangle's one-line key ("Each row ends at a perfect square…") stood here
         # and the line under the expander ("Every case from n = 1 to 324 is also in the
         # frontier survey, and each has a case record.") after it, until 2026-10-02 (the

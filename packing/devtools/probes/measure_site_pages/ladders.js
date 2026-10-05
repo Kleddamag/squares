@@ -3,8 +3,9 @@
 // how many columns its rungs stand in, and every rung with its label, the ladder it
 // belongs to, its column and its cell's height, then its description: the words, the
 // box's width and height, the line height, how many lines the words take, how far they
-// run past the box (0 when they fit), and whether the box sits beside the chip or under
-// it. A significance rung's mark (`.site-significance`) stands for its chip throughout,
+// run past the box (0 when they fit), whether the box sits beside the chip or under
+// it, and `clear`, how far the box starts after the chip's right edge (negative where
+// they overlap). A significance rung's mark (`.site-significance`) stands for its chip throughout,
 // its label read from the mark's words. A chip's title is reported as it reads, and
 // `parts` counts what the rung holds: two, its chip and its description. `head_rules` and `row_rules` are the distinct widths of
 // the rule under a column's head and of the rules a cell draws above and below itself,
@@ -77,6 +78,7 @@
           lines: meaning ? lines(meaning) : 0,
           overflow: meaning ? Math.max(0, meaning.scrollHeight - meaning.clientHeight) : 0,
           beside: (words?.left ?? 0) >= (chip?.getBoundingClientRect().right ?? 0),
+          clear: round((words?.left ?? 0) - (chip?.getBoundingClientRect().right ?? 0)),
           title: chip?.getAttribute("title") ?? "",
           parts: cell.querySelector(".site-ladders-rung")?.children.length ?? 0,
         };

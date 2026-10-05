@@ -9,9 +9,9 @@ overview's until 2026-10-02) and measures the diagram
 with the probe `devtools.measure_site_pages ladders` reports from, at the widths the
 design is shot at and at the ones where a description is narrowest: 716 pixels, the least
 window that sets three columns, and 715, where the ladders stack; 768, where the page's
-margin widens and the wide track is 4 pixels more than at 716; 973, the least that sets
-a rung's description beside its chip in three columns, and 972, the widest that sets it
-under; and on a phone 360, 320 and 318, the least that sets it beside, with 317 under. At
+margin widens and the wide track is 4 pixels more than at 716; 980, the least that sets
+a rung's description beside its chip in three columns, and 979, the widest that sets it
+under; and on a phone 360 and 320, the least that sets it beside, with 319 under. At
 each the diagram also stands inside whatever clips the page sideways, with the wide
 track's gutter either side.
 
@@ -38,23 +38,23 @@ from tests import site_renders
 WIDTHS = {
     1280: 3,
     1024: 3,
-    973: 3,
-    972: 3,
+    980: 3,
+    979: 3,
     768: 3,
     716: 3,
     715: 1,
     390: 1,
     360: 1,
     320: 1,
-    318: 1,
-    317: 1,
+    319: 1,
 }
-#: The widths at which a cell has 17.85rem, the widest rail's, significance's, with the
+#: The widths at which a cell has 18rem, the widest rail's, significance's, with the
 #: gap and the least description, so a rung's description stands beside its chip; at
 #: the others it lies under the chip, across the cell. The cells turned at 16.5rem, the
 #: chips' rail's, from a 908-pixel window and on a phone from 296, until significance
-#: took marks in a wider rail (2026-10-03).
-BESIDE = frozenset({1280, 1024, 973, 715, 390, 360, 320, 318})
+#: took marks in a wider rail (2026-10-03), and from 973 and 318 until that rail grew from
+#: 3.6rem to 3.75rem to hold S5's mark (2026-10-05).
+BESIDE = frozenset({1280, 1024, 980, 715, 390, 360, 320})
 #: A rung's height in pixels where its description stands beside its chip, and where it
 #: lies under it: the two lines, or the chip's line and the two, and 0.4rem
 #: (`--site-ladders-row-space`) above and below, which is all that parts the rows.
@@ -64,16 +64,19 @@ HEAD_RULE = 1
 #: `--site-ladders-meaning-min`, 13.5rem, in pixels: the narrowest a description is set.
 MEANING_MIN = 216
 #: How much narrower a significance description is than the others where it stands
-#: beside its rail: its rail, `--site-ladders-significance-rail`, 3.6rem, over the chips',
-#: `--site-ladders-rail`, 2.25rem, in pixels.
-SIGNIFICANCE_RAIL_MORE = 21.6
+#: beside its rail: its rail, `--site-ladders-significance-rail`, 3.75rem, over the
+#: chips', `--site-ladders-rail`, 2.25rem, in pixels.
+SIGNIFICANCE_RAIL_MORE = 24
+#: `--site-ladders-gap`, 0.75rem, in pixels: the least room between a chip or mark and the
+#: description beside it.
+GAP = 12
 #: `--site-wide-gutter`, 0.5rem, in pixels: the least room either side of a wide block.
 GUTTER = 8
 
 
 @pytest.fixture(scope="module")
-def diagrams(tmp_path_factory: pytest.TempPathFactory) -> Iterator[dict[int, dict[str, Any]]]:
-    """The overview's one ladder diagram as laid out at each of `WIDTHS`."""
+def results_page(tmp_path_factory: pytest.TempPathFactory) -> Iterator[Any]:
+    """The rendered results page, loaded once in Chromium at 1280 pixels."""
     sync_api = pytest.importorskip("playwright.sync_api")
     # The diagram is the results page's since 2026-10-02, under its table.
     root = Path(tmp_path_factory.mktemp("site"))
@@ -86,13 +89,33 @@ def diagrams(tmp_path_factory: pytest.TempPathFactory) -> Iterator[dict[int, dic
         page = browser.new_page(viewport={"width": 1280, "height": 900})
         page.goto(path.as_uri(), wait_until="load")
         page.wait_for_timeout(300)
-        found: dict[int, dict[str, Any]] = {}
-        for width in WIDTHS:
-            page.set_viewport_size({"width": width, "height": 900})
-            page.wait_for_timeout(100)
-            (found[width],) = page.evaluate(LADDERS)
+        yield page
         browser.close()
-        yield found
+
+
+@pytest.fixture(scope="module")
+def diagrams(results_page: Any) -> dict[int, dict[str, Any]]:
+    """The overview's one ladder diagram as laid out at each of `WIDTHS`."""
+    found: dict[int, dict[str, Any]] = {}
+    for width in WIDTHS:
+        results_page.set_viewport_size({"width": width, "height": 900})
+        results_page.wait_for_timeout(100)
+        (found[width],) = results_page.evaluate(LADDERS)
+    return found
+
+
+@pytest.fixture(scope="module")
+def widened(results_page: Any, diagrams: dict[int, dict[str, Any]]) -> dict[str, Any]:
+    """The diagram at 1280 pixels with every significance mark set a sixth wider than
+    the page's face sets it, as a wider face does: S5's mark, 58.8 pixels in the page's
+    face, is 65 in the fallback face and more in some system faces. Taken after
+    `diagrams`, since the style stays on the page."""
+    assert diagrams
+    results_page.set_viewport_size({"width": 1280, "height": 900})
+    results_page.add_style_tag(content=".site-significance-label { letter-spacing: 0.3em; }")
+    results_page.wait_for_timeout(100)
+    (found,) = results_page.evaluate(LADDERS)
+    return found
 
 
 @pytest.mark.parametrize("width", WIDTHS)
@@ -129,6 +152,8 @@ def test_every_rung_is_one_height_and_its_description_two_lines(
         assert rung["meaning_width"] >= MEANING_MIN - 0.5, rung
         assert 1 <= rung["lines"] <= 2, rung
         assert rung["overflow"] == 0, rung
+        if rung["beside"]:
+            assert rung["clear"] >= GAP - 0.5, rung
 
 
 @pytest.mark.parametrize("width", WIDTHS)
@@ -186,3 +211,17 @@ def test_the_diagram_stands_inside_what_clips_the_page_with_a_gutter_either_side
     assert diagram["gutter_left"] >= GUTTER - 0.5, diagram["frame"]
     assert diagram["gutter_right"] >= GUTTER - 0.5, diagram["frame"]
     assert diagram["gutter_left"] == pytest.approx(diagram["gutter_right"], abs=0.5)
+
+
+def test_a_wider_mark_never_runs_into_its_description(widened: dict[str, Any]) -> None:
+    """A significance mark wider than its rail widens the rail rather than running into
+    the description beside it (the owner, 2026-10-05: the words beside S5 overlapped its
+    mark): every description still starts the gap clear of its mark, and still takes no
+    third line."""
+    rungs = [rung for rung in widened["rungs"] if rung["ladder"] == "S"]
+    assert rungs
+    for rung in rungs:
+        assert rung["beside"], rung
+        assert rung["clear"] >= GAP - 0.5, rung
+        assert 1 <= rung["lines"] <= 2, rung
+        assert rung["overflow"] == 0, rung

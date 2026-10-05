@@ -275,19 +275,16 @@ body {
 }
 
 /* One transition for every hover and every replaced readout: the site's one hover
-   timing (site-nav.css, paper-design.md Motion), fast and the same everywhere. The
-   scripts set `.swap` on a readout whose text they replace, so it fades in rather than
-   flicking. */
+   transition (`--site-hover-transition`, site-nav.css, paper-design.md Motion), fast
+   and the same everywhere. The scripts set `.swap` on a readout whose text they
+   replace, so it fades in rather than flicking. */
 .cert-page a,
 .cert-page button,
 .cert-page .verdict,
 .cert-page .mass-dec,
 .cert-page .kpress-footnote-ref a,
 .cert-page a.kpress-footnote-backref {
-  transition:
-    color var(--site-hover-duration) var(--site-hover-easing),
-    background-color var(--site-hover-duration) var(--site-hover-easing),
-    border-color var(--site-hover-duration) var(--site-hover-easing);
+  transition: var(--site-hover-transition);
 }
 @keyframes cert-swap {
   from {

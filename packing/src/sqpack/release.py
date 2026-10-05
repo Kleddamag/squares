@@ -362,7 +362,8 @@ OPTIMALITY_REVIEW_HISTORY = (
         first_published="October 5, 2026",
         result_scope=(
             "The series revision: the paper is Part III of three, its lineage names Part "
-            "II's three changes from T-026, Charge Budgets contrasts capacity one with "
+            "II's three changes from T-026 and draws the series bound ladder as Figure 3, "
+            "Charge Budgets contrasts capacity one with "
             "$\\lfloor m/k\\rfloor$, a test holds every term to a definition before its "
             "first use, and the notation follows the series: $L_0$, $\\Gamma_i$, "
             "$\\operatorname{rot}$, $\\mathbf{D}_4$ and $(191/50)/U$."

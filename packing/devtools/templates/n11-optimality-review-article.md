@@ -154,7 +154,15 @@ $s(11)>31/8=3.875$, and its three changes from T-026: five-site k-of-m charges (
 and 3-of-5 beside 2-of-3); threshold charges on shrunken parents with strict cores (side
 A = 764/775 in the container 191/50), a framework inherited through the
 Levy/Guzhou0806/Mira line; and a re-optimised certificate over 12,028 adaptive angle
-rows, each with its own core.[^lineage]
+rows, each with its own core.[^lineage] Figure 3 places these bounds in order.
+
+<figure>
+{{LADDER_SVG}}
+<figcaption><strong>Figure 3.</strong> The bound ladder of the series: the verified lower
+bounds for eleven squares, from Stromquist’s T-010 to T-060’s exact optimum $T$, with
+values from the result register. Rungs are evenly spaced, not to scale; T-061 reweights
+T-037’s certificate and stands $3.9\times10^{-9}$ above it.</figcaption>
+</figure>
 
 The bound gap between $3.875$ and $T$ is small, but closeness of two numbers supplies no
 geometric information about a hypothetical packing in between.
@@ -246,7 +254,7 @@ $$
 Choose sixteen rational cover sites.
 Assign each point of $[0,1]^2$ to any nearest cover site, keeping ties.
 The resulting **closed Voronoi cells** cover the whole square.
-They are the polygons in Figure 3, rather than the squares of a uniform grid: a grid
+They are the polygons in Figure 4, rather than the squares of a uniform grid: a grid
 cell would have physical diameter $1.017$, too large for the lemma below, while the
 largest of these cells has physical diameter $0.975$. The exact checker reconstructs
 them from nearest-site halfplanes and proves
@@ -269,7 +277,7 @@ admits is excluded on its own below.[^cover]
 {{COVER_SVG}}
 {{MASK_SVG}}
 </div>
-<figcaption><strong>Figure 3.</strong> Left: the sixteen closed Voronoi cells, drawn
+<figcaption><strong>Figure 4.</strong> Left: the sixteen closed Voronoi cells, drawn
 from rational vertices bound by the
 <a href="../../resources/web/n11-optimality-2026-09-29/receipts/d4-independent/result.json">retained cover receipt</a>.
 Right: the eleven cells that the
@@ -279,7 +287,7 @@ be; it is not a small square. Shared cell boundaries remain in the proof.</figca
 
 <figure>
 {{CAPACITY_SVG}}
-<figcaption><strong>Figure 4.</strong> Why a center cell holds at most one center. Two
+<figcaption><strong>Figure 5.</strong> Why a center cell holds at most one center. Two
 hypothetical centers in the same cell would be less than one unit apart, so their open
 radius-1/2 disks would overlap. Each disk lies inside its unit square, independent of
 the square’s angle, so the squares’ interiors would overlap too. The selected cell,
@@ -382,7 +390,7 @@ All other positions remain available until a further argument excludes them.
 
 <figure>
 {{POSE_SVG}}
-<figcaption><strong>Figure 5.</strong> A schematic of one safe exclusion. A possible-center
+<figcaption><strong>Figure 6.</strong> A schematic of one safe exclusion. A possible-center
 region records uncertainty; a guaranteed inner region records what a valid packing must
 contain. A translated strict core meeting the other square’s owned hull forces overlap:
 if $x \in K - Q$, a core point meets the owned hull $K$. $Q$ stays strictly inside the
@@ -470,7 +478,7 @@ The certificate consumers check these dependencies as well as the local inequali
 
 <figure>
 {{ROW_SVG}}
-<figcaption><strong>Figure 6.</strong> One accepted row: case 2095, its second update
+<figcaption><strong>Figure 7.</strong> One accepted row: case 2095, its second update
 (step 1 in the zero-based proof data), owner 10, row 17, over the complete interval
 $17/32 \le t \le 9/16$. The panels use retained exact
 geometry, rounded only for display, and distinguish the file coordinates of centers
@@ -531,7 +539,7 @@ sum of the weights. A k-of-m charge of
 many as $\lfloor m/k\rfloor$ disjoint cores; when $2k>m$, a core holding $k$ of its
 sites also receives the median-type charge on them, which has capacity one.
 
-The accepted certificate for mask 0, which Figure 7 draws, is the smallest example.
+The accepted certificate for mask 0, which Figure 8 draws, is the smallest example.
 It requires owners in cells 0, 1, 2, 3 and 6, whose 55 owned points have their own
 proofs, and requires a charge of one in each of cells 1 and 2 against a budget of one.
 Cell 1 is covered by 67 rows and cell 2 by 69. In the first row of cell 1, over the
@@ -545,7 +553,7 @@ them.[^field]
 
 <figure>
 {{CHARGE_SVG}}
-<figcaption><strong>Figure 7.</strong> Median-projection charge as a capacity argument.
+<figcaption><strong>Figure 8.</strong> Median-projection charge as a capacity argument.
 In a separating direction, two disjoint strict cores have disjoint projection
 intervals, so both cannot contain the same median. Receiving charge one requires the
 median condition in every direction; a single projection illustrates the capacity
@@ -638,7 +646,7 @@ The check retains 1,572 strict distance bans; a distance equal to one is not ban
 
 <figure>
 {{SYMMETRY_SVG}}
-<figcaption><strong>Figure 8.</strong> Four views of a center against the fixed cell
+<figcaption><strong>Figure 9.</strong> Four views of a center against the fixed cell
 cover. The point changes position under square symmetries; the irregular cell polygons
 are not permuted by those transformations. An overlay region records the allowed
 cell labels in every view. One strict distance ban, for illustration: the maximum
@@ -722,7 +730,7 @@ The overlap is harmless and prevents a missing boundary branch.
 
 <figure>
 {{CAPTURE_SVG}}
-<figcaption><strong>Figure 9.</strong> The accepted ten-node capture ancestry.
+<figcaption><strong>Figure 10.</strong> The accepted ten-node capture ancestry.
 Intermediate nodes propagate a checked state; three far leaves end in contradiction
 and the near leaf encloses every surviving pose. Edges denote proof dependencies,
 not trajectories of moving squares. Here $y_{15} = p_y - U/2$ is a physical centered height
@@ -779,7 +787,7 @@ throughout that interval, $c_j\tau^2<\tau$.
 
 <figure>
 {{LOCAL_SVG}}
-<figcaption><strong>Figure 10.</strong> The local contradiction. The upper line is
+<figcaption><strong>Figure 11.</strong> The local contradiction. The upper line is
 $\tau$ and the lower curve is $c\tau^2$, with a coefficient $c$ below one, on
 $0 < \tau \le 1$. A feasible nonzero displacement would require the line to lie at or
 below the curve, so there is none. This is an
@@ -880,7 +888,7 @@ M_j<2(r_j-\epsilon_jR),
 $$
 
 which is the same conclusion in the form $\tau\le c_j\tau^2$ with
-$c_j=M_j/(2(r_j-\epsilon_jR))<1$, the form Figure 10 draws.
+$c_j=M_j/(2(r_j-\epsilon_jR))<1$, the form Figure 11 draws.
 The largest certified $c_j$ is approximately $0.676505208$; the proof uses exact strict
 comparisons, not this rounded display value, and the two ratios $(\eta+M_j/2)/r_j$ and
 $c_j$ are different numbers.[^gpt6]
@@ -927,7 +935,7 @@ Together with the exact witness, it proves $s(11)=T$.[^endpoint]
 
 <figure>
 {{ENDPOINT_SVG}}
-<figcaption><strong>Figure 11.</strong> Why the rational cap settles the exact endpoint.
+<figcaption><strong>Figure 12.</strong> Why the rational cap settles the exact endpoint.
 The same hypothetical side-$L_0$ container, with $L_0 < T$, fits concentrically inside the cap
 and then inside the fixed side-T container after the checked rigid alignment. Its
 unit squares keep their size. Capture and

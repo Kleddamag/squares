@@ -410,13 +410,13 @@ def test_actual_article_renders_all_retained_figures_and_pinned_sources() -> Non
         revision=REVISION,
     )
     assert "A Review of the Optimality Proof of the Trump Packing of 11 Squares" in html
-    assert len(re.findall(r"<figure\b", html)) == 11
-    assert len(re.findall(r"<figcaption\b", html)) == 11
+    assert len(re.findall(r"<figure\b", html)) == 12
+    assert len(re.findall(r"<figcaption\b", html)) == 12
     assert (
         html.count("<svg") >= len(paper.FIGURE_KEYS) + 1
     )  # article figures and KPress icon sprite
     captions = re.findall(r"<figcaption[^>]*>(.*?)</figcaption>", html, re.DOTALL)
-    assert len(captions) == 11
+    assert len(captions) == 12
     assert all("$" not in caption for caption in captions)
     # A caption's formulas are KPress math, typeset by the page as the prose's are, and
     # the Markdown edition keeps them as LaTeX; none is written as text any more.

@@ -102,6 +102,7 @@ FRONT = paper_front.check(
 FIGURE_KEYS = (
     "WITNESS_SVG",
     "ROADMAP_SVG",
+    "LADDER_SVG",
     "COVER_SVG",
     "MASK_SVG",
     "CAPACITY_SVG",
@@ -141,6 +142,9 @@ RENDER_INPUTS = (
     PACKING / "devtools" / "paper_front.py",
     render_n11_lower_bounds_explainer.PUBLICATION_STYLE,
     FIGURES_MODULE,
+    # The series bound ladder, drawn from the register's headlines.
+    PACKING / "devtools/paper_figures.py",
+    PACKING / "frontier/results.yaml",
     PACKING / "devtools/n11_optimality_overview_figures.py",
     PACKING / "devtools/n11_optimality_mechanism_figures.py",
     PACKING / "devtools" / "check_n11_optimality_d4.py",
@@ -203,7 +207,9 @@ def version_history_markdown() -> str:
 
 
 def render_all_figures() -> dict[str, str]:
-    """Load the figure renderers only in a full publication checkout."""
+    """Load the figure renderers only in a full publication checkout. The bound ladder
+    is the series' (`paper_figures.bound_ladder`), with this paper's result lit."""
+    from devtools import paper_figures  # noqa: PLC0415
     from devtools.n11_optimality_figures import render_figures  # noqa: PLC0415
     from devtools.n11_optimality_mechanism_figures import (  # noqa: PLC0415
         render_mechanism_figures,
@@ -212,7 +218,12 @@ def render_all_figures() -> dict[str, str]:
         render_overview_figures,
     )
 
-    groups = (render_figures(), render_overview_figures(), render_mechanism_figures())
+    groups = (
+        render_figures(),
+        render_overview_figures(),
+        render_mechanism_figures(),
+        {"LADDER_SVG": paper_figures.bound_ladder("T-060")},
+    )
     figures: dict[str, str] = {}
     for group in groups:
         if figures.keys() & group.keys():

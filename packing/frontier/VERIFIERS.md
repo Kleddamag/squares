@@ -25,7 +25,7 @@ second implementation agrees.
 
 ## The Short Version
 
-- **81** programs: **31** external and **50** first-party; **64** decide claims and **17** check premises.
+- **82** programs: **31** external and **51** first-party; **64** decide claims and **18** check premises.
 - **267** of **294** evidence entries name the programs that verified them: 200 reproduced with the producer’s code, 51 independently re-implemented, 9 no relation: a proof, a derivation or a report, 7 re-implemented, sharing the producer’s components.
 
 ## Programs
@@ -107,6 +107,7 @@ second implementation agrees.
 | [`V-replay-evand-zmx2`](#v-replay-evand-zmx2) | devtools.replay_evand_zmx2 | Squares Project (Levy) | first-party | premises | 5 | 5 |
 | [`V-audit-evand-mixed-covers`](#v-audit-evand-mixed-covers) | devtools.audit_evand_mixed_covers | Squares Project (Levy) | first-party | premises | 9 | 8 |
 | [`V-audit-s12-reweighted`](#v-audit-s12-reweighted) | devtools.audit_s12_reweighted | Squares Project (Levy) | first-party | premises | 1 | 1 |
+| [`V-audit-s12-v11`](#v-audit-s12-v11) | devtools.audit_s12_v11_certificate | Squares Project (Levy) | first-party | premises | 0 | 0 |
 | [`V-compare-evand-s32-sweep`](#v-compare-evand-s32-sweep) | devtools.compare_evand_s32_sweep | Squares Project (Levy) | first-party | premises | 1 | 1 |
 | [`V-audit-guzhou-r068`](#v-audit-guzhou-r068) | devtools.audit_guzhou_r068 | Squares Project (Levy) | first-party | premises | 2 | 2 |
 | [`V-audit-guzhou-r071`](#v-audit-guzhou-r071) | devtools.audit_guzhou_r071 | Squares Project (Levy) | first-party | premises | 1 | 1 |
@@ -1456,6 +1457,18 @@ Decides everything the re-weighted s(12) certificate rests on but coverage, in i
 | evidence | run | code | results |
 | --- | --- | --- | --- |
 | `E-n012-levy-15680000-3949423-audit` | audited here | no code | T-079 |
+
+### `V-audit-s12-v11`
+
+**devtools.audit_s12_v11_certificate** · Squares Project (Levy) · first-party · checks premises · Python · exact-algebraic
+
+Decides everything squarepacker's v1.1 s(12) certificate rests on but coverage, in integers and Fraction: its bytes, the header and side, a one-to-one match of its points to Daniel's dilated within the stated rounding, positivity, containment, D4 invariance and orbits, the total below 12, the corner points, and the source's two controls rebuilt byte for byte.
+
+- Source: [`packing/devtools/audit_s12_v11_certificate.py`](../../packing/devtools/audit_s12_v11_certificate.py)
+- Versions run: this repository's commits, which Git holds
+- Note: It shares only the file reader and the D4 test with devtools.audit_s12_rescaled_certificate, and nothing with the source's tools.
+
+No evidence entry names it yet.
 
 ### `V-compare-evand-s32-sweep`
 

@@ -2501,6 +2501,9 @@ body {
   background: var(--kpress-doc-bg);
   float: inline-end;
   inset-block-start: var(--site-popover-close-inset);
+  /* Held at the top alone: the card's `inset-inline-end`, read by a sticky box as a
+     second limit, set it a padding's width in from the corner, over the steps. */
+  inset-inline-end: auto;
   margin-block-start: calc(var(--site-popover-close-inset) - var(--site-popover-pad));
   margin-inline-end: calc(var(--site-popover-close-inset) - var(--site-popover-pad));
   position: sticky;
@@ -2508,6 +2511,16 @@ body {
 }
 .site-popover.site-case-pop .site-popover-close:is(:hover, :focus-visible) {
   background: var(--site-wash);
+}
+/* The record's steps are the first line the cross stands beside once it is held at the
+   corner, so they keep clear of it as the label above them does: the next case's link
+   ended under the cross (`think-0dxa`). */
+.site-case-pop .site-case-steps {
+  padding-inline-end: calc(
+    var(--site-popover-close) +
+    var(--site-popover-close-inset) -
+    var(--site-popover-pad)
+  );
 }
 
 .site-case-pop .site-popover-actions {
@@ -2522,6 +2535,13 @@ body {
   .site-popover.site-case-pop {
     inline-size: calc(100vw - 1rem);
     padding-inline: 0.75rem;
+  }
+  /* Its cross and its steps keep to that narrower padding. */
+  .site-popover.site-case-pop .site-popover-close {
+    margin-inline-end: calc(var(--site-popover-close-inset) - 0.75rem);
+  }
+  .site-case-pop .site-case-steps {
+    padding-inline-end: calc(var(--site-popover-close) + var(--site-popover-close-inset) - 0.75rem);
   }
   .site-popover.site-case-pop:popover-open {
     max-block-size: calc(100dvh - 1rem);

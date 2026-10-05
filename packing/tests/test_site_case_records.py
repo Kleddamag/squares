@@ -26,6 +26,7 @@ from tests import site_browser, site_renders
 
 PROBES = Path(__file__).resolve().parent / "probes"
 FIGURE = probe(PROBES, "case_popover_figure/figure")
+CROSS = probe(PROBES, "case_popover_head/cross")
 
 
 def _free_port() -> int:
@@ -207,6 +208,29 @@ def test_the_popovers_drawing_fills_its_width_at_its_own_line_weight(
         assert drawn["outline"] == pytest.approx(lines * 0.6 / 102, abs=0.01), drawn
         assert drawn["page_width"] <= drawn["window_width"], drawn
         assert drawn["popover_right"] <= drawn["window_width"], drawn
+
+
+@pytest.mark.parametrize("width", [1280, 390])
+def test_the_popovers_cross_stands_in_its_corner_clear_of_the_steps(
+    browser: Any, served: str, width: int
+) -> None:
+    """On a laptop's window and a phone's, the case popover's close cross stands inside
+    the panel at its corner, and the record's steps end before it: the next case's link
+    once ended under the cross, which the card's horizontal inset, read by the sticky
+    cross as a second limit, had set a padding's width in from the corner
+    (`think-0dxa`)."""
+    with _page(browser, width=width) as page:
+        page.goto(f"{served}frontier.html", wait_until="load")
+        row = page.locator("#n-10")
+        row.scroll_into_view_if_needed()
+        row.locator("td.site-thumb svg").click()
+        popover = page.locator("#pop-case")
+        popover.locator('[data-case-body] article.site-case[data-case="10"]').wait_for()
+        head = page.evaluate(CROSS)
+        assert head is not None
+        assert head["cross_right"] <= head["panel_right"] + 0.5, head
+        assert head["panel_right"] - head["cross_right"] <= 16, head
+        assert head["next_right"] <= head["cross_left"] + 0.5, head
 
 
 def test_a_record_file_shows_in_the_record_page_at_its_own_address(

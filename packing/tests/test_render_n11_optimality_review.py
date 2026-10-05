@@ -410,13 +410,13 @@ def test_actual_article_renders_all_retained_figures_and_pinned_sources() -> Non
         revision=REVISION,
     )
     assert "A Review of the Optimality Proof of the Trump Packing of 11 Squares" in html
-    assert len(re.findall(r"<figure\b", html)) == 11
-    assert len(re.findall(r"<figcaption\b", html)) == 11
+    assert len(re.findall(r"<figure\b", html)) == 12
+    assert len(re.findall(r"<figcaption\b", html)) == 12
     assert (
         html.count("<svg") >= len(paper.FIGURE_KEYS) + 1
     )  # article figures and KPress icon sprite
     captions = re.findall(r"<figcaption[^>]*>(.*?)</figcaption>", html, re.DOTALL)
-    assert len(captions) == 11
+    assert len(captions) == 12
     assert all("$" not in caption for caption in captions)
     # A caption's formulas are KPress math, typeset by the page as the prose's are, and
     # the Markdown edition keeps them as LaTeX; none is written as text any more.
@@ -449,7 +449,7 @@ def test_actual_article_renders_all_retained_figures_and_pinned_sources() -> Non
         f"{facts['ROW_CASE_UPDATES']} complete updates exclude case 2095",
         f"overlay regions {facts['D4_BAN_REGIONS']} is below 1",
         f"over {facts['D4_REGIONS']} closed regions and {facts['D4_BANS']} bans",
-        f"{facts['LOCAL_MARGINS']} exact margins over {facts['LOCAL_BRANCHES']} branches",
+        f"{facts['LOCAL_MARGINS']} exact margins over {facts['LOCAL_BRANCHES']} linear systems",
     ):
         assert phrase in said, phrase
     # The first figure is set as the first paper sets its own: the drawing alone in a
@@ -541,6 +541,16 @@ def test_the_front_is_the_shared_components_in_the_owners_form(
             f"Original proof {release.OPTIMALITY_PROOF_PUBLISHED} · "
             f"Last revised {release.OPTIMALITY_REVIEW_REVISED}</span>"
         ),
+        # The series strip: Part III of the n = 11 series, after Parts I and II.
+        '<span class="series">Part III of 3 in the n = 11 series</span>',
+        (
+            '<span class="series">Part I: <a href="n11-lower-bounds-explainer.html">'
+            "New Lower Bounds for Square Packing for n = 11</a></span>"
+        ),
+        (
+            '<span class="series">Part II: <a href="n11-threshold-bound-review.html">'
+            "A Review of the Certified Lower Bound s(11) &gt; 31/8 for 11 Squares</a></span>"
+        ),
     ]
     assert html.index('<div class="doc-links screen-only">') < html.index('<div class="hero">')
     shared = paper.render_n11_lower_bounds_explainer.PUBLICATION_STYLE.read_text(
@@ -549,8 +559,8 @@ def test_the_front_is_the_shared_components_in_the_owners_form(
     assert "  grid-template-columns: minmax(0, 1fr);\n" in shared
     assert ".credits a {\n  overflow-wrap: anywhere;\n}" in shared
     assert (
-        ".credits .credits-source + .credits-own,\n.credits .publication-date {\n"
-        "  margin-block-start: 1lh;\n}"
+        ".credits .credits-source + .credits-own,\n.credits .publication-date,\n"
+        ".credits .publication-date + .series {\n  margin-block-start: 1lh;\n}"
     ) in shared
     assert markdown.startswith(
         f"# {paper.TITLE}\n\n- From the original proof by **Queuingtheorydotcom**\n"
@@ -559,7 +569,12 @@ def test_the_front_is_the_shared_components_in_the_owners_form(
         "- Agents: **GPT-6 Astra** and **GPT-6 Sol**\n"
         f"- {release.OPTIMALITY_REVIEW_EDITION} ([version history](#version-history))\n"
         f"- Original proof {release.OPTIMALITY_PROOF_PUBLISHED} · "
-        f"Last revised {release.OPTIMALITY_REVIEW_REVISED}\n\n"
+        f"Last revised {release.OPTIMALITY_REVIEW_REVISED}\n"
+        "- Part III of 3 in the n = 11 series\n"
+        "- Part I: [New Lower Bounds for Square Packing for n = 11]"
+        "(https://jlevy.github.io/squares/papers/n11-lower-bounds-explainer.html)\n"
+        "- Part II: [A Review of the Certified Lower Bound s(11) > 31/8 for 11 Squares]"
+        "(https://jlevy.github.io/squares/papers/n11-threshold-bound-review.html)\n\n"
     )
     assert "doc-links" not in markdown
     assert '<div class="hero">' not in markdown

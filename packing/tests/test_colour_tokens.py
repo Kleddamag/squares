@@ -27,6 +27,7 @@ def test_every_served_stylesheet_paints_with_tokens_alone() -> None:
         "site-result.css",
         "paper-publication.css",
         "n11-optimality-review.css",
+        "n11-threshold-bound-review.css",
     }
 
 

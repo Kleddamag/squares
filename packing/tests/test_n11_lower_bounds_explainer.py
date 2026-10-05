@@ -20,7 +20,12 @@ from urllib.parse import urljoin
 import pytest
 import tinycss2
 
-from devtools import check_published_site, render_n11_lower_bounds_explainer, render_overview
+from devtools import (
+    check_published_site,
+    paper_links,
+    render_n11_lower_bounds_explainer,
+    render_overview,
+)
 from devtools.render_n11_lower_bounds_explainer import (
     ATLAS,
     BEST_RENDERING,
@@ -1061,6 +1066,8 @@ def test_every_relative_link_in_the_page_names_a_file_the_deploy_serves(page: st
         *(asset.name for asset in COMPOSITE_ASSETS),
         *SITE_PAGES,
         *(page.removesuffix("index.html") or "./" for page in SITE_PAGES),
+        # The series' other papers, which the page links (`devtools.paper_links`).
+        *(render_overview.paper_path(slug) for slug in paper_links.PAPER_SLUGS),
     }
     # Markup only. The page inlines KaTeX and kpress's client, and a minified
     # `'+a(this.src)+'` in one of them reads as an attribute to a regex that does not
@@ -1197,7 +1204,9 @@ def test_the_credits_print_the_papers_own_version_and_not_the_sites(
     # chip's, in the credits of neither paper (think-2cqu).
     assert render_n11_lower_bounds_explainer.FRONT.source is None
     block = page.split('<div class="credits centred">', 1)[1].split("</div>", 1)[0]
-    assert block.count("<span") == 4
+    # Four lines of credits, then the series strip (`paper_front.series`).
+    assert block.count("<span") - block.count('<span class="series">') == 4
+    assert block.count('<span class="series">') == 3
     assert "github.com/jlevy/squares" not in block
     assert block.lstrip().startswith('<span class="credits-own">Human oversight: ')
     # The version line is the paper's own, plain: no status, no data hash.

@@ -64,7 +64,7 @@ from typing import Any, Final, NamedTuple, TypedDict
 
 from strif import atomic_output_file
 
-from devtools import paper_front, repo_links
+from devtools import paper_front, paper_links, repo_links
 from devtools.build_bound_citations import RECENT_SINCE
 from devtools.build_composite_figure_data import load_record as load_figure_record
 from devtools.measure_net_coarsening import largest_admissible_side
@@ -2240,6 +2240,7 @@ FRONT = paper_front.check(
             paper_front.Dated(paper_front.REVISED, EXPLAINER_REVISED),
         ),
         history="version-history",
+        series=paper_front.series(SLUG),
     )
 )
 
@@ -2335,9 +2336,12 @@ def shared_substitutions(facts: list[Facts], headline: Facts, default: Facts) ->
             "exact degree-eight packing "
             f"side specified in the [case record]({repo_url(FRONTIER_N11)}). The decimal "
             f"${verified_tex}$ is a truncated display, not the definition of $T$. "
-            f"The [mathematical review]({repo_url(OPTIMALITY_REVIEW)}) "
-            "records the independent checks. This article retains the earlier T-018, "
-            "T-025, and T-026 lower-bound proofs below."
+            "[Part II]({{PAPER:n11-threshold-bound-review}}) of this series explains "
+            "Kleddamag's intermediate $s(11) \\gt 31/8$ (T-037), "
+            "[Part III]({{PAPER:n11-optimality-review}}) explains that proof, and the "
+            f"[mathematical review]({repo_url(OPTIMALITY_REVIEW)}) records its "
+            "independent checks. This article retains the earlier T-018, T-025, and T-026 "
+            "lower-bound proofs below."
         )
         figure_aria = (
             "Number line from 3.75 to 3.90 showing the earlier point and threshold "
@@ -3209,7 +3213,12 @@ def render(certificate_paths: tuple[Path, ...], *, full_sweep: bool = False) -> 
     headline_values = per_certificate[facts.index(headline)]
     source = markdown_source(per_certificate, headline_values, shared, claimed=claimed)
     _refuse_stacked_inline_math(source)
-    prose = markdown_body(source, title=f"s({shared['N']}) >= {shared['HEADLINE_L_FRAC']}")
+    # A link to another paper of the series is page-relative on the page and the site's
+    # address in the Markdown edition, which is read away from the site.
+    prose = markdown_body(
+        paper_links.fill_paper_links(source, edition="page"),
+        title=f"s({shared['N']}) >= {shared['HEADLINE_L_FRAC']}",
+    )
     # The sprite leads the body the way kpress's own renderer places it: the copy
     # button on a code block draws its glyph from a fragment of it.
     body = f"{icon_sprite(static)}\n{prose}"
@@ -3218,7 +3227,13 @@ def render(certificate_paths: tuple[Path, ...], *, full_sweep: bool = False) -> 
     )
     page = fill(shell, shell_substitutions(static, shared, body), where=TEMPLATE.name)
     assert_self_contained(page)
-    return Render(page=page, markdown=published_markdown(source, default_slug=slug(facts[0])))
+    return Render(
+        page=page,
+        markdown=published_markdown(
+            paper_links.fill_paper_links(source, edition="markdown"),
+            default_slug=slug(facts[0]),
+        ),
+    )
 
 
 def main(argv: Sequence[str] | None = None) -> int:

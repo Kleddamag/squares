@@ -1015,15 +1015,33 @@ The survey posters are not redrawn for a result; they are
 [release assets](#release-assets-are-drawn-at-a-version-bump-or-on-demand).
 That sequence also applies when no explainer edition changes.
 
-**The site’s two papers are served under `papers/`, each by its slug**, and the slug is
-the paper’s name in the source too (see
-[conventions.md → Naming](conventions.md#2-naming)): `n11-lower-bounds-explainer`, “New
-lower bounds for square packing for n = 11”, and `n11-optimality-review`, “A review of
-the optimality proof of the Trump packing of 11 squares”.
+**The site’s three papers are served under `papers/`, each by its slug**, and the slug
+is the paper’s name in the source too (see
+[conventions.md → Naming](conventions.md#2-naming)). They are one series on n = 11, read
+in order:
+
+| Part | Slug | Title | Renderer |
+| --- | --- | --- | --- |
+| I | `n11-lower-bounds-explainer` | New Lower Bounds for Square Packing for n = 11 | `render_n11_lower_bounds_explainer` |
+| II | `n11-threshold-bound-review` | A Review of the Certified Lower Bound s(11) > 31/8 for 11 Squares | `render_n11_threshold_bound_review` |
+| III | `n11-optimality-review` | A Review of the Optimality Proof of the Trump Packing of 11 Squares | `render_n11_optimality_review` |
+
 Each is `papers/<slug>.html` with `papers/<slug>.md` and `papers/<slug>.pdf` beside it.
-A renderer is given the site’s root (`--site`, by default `packing/site/`) and writes
-its paper there, where it is served, so every check reads the page at its published path
-and the publication renames nothing.
+**The list of papers is written once**, as `render_overview.PAPERS` (slug, renderer
+module, card label, part and title, in reading order).
+`SITE_PAGES`, the Papers page and home cards, each paper’s series strip
+(`paper_front.series`), the slugs a link between papers may name (`paper_links`), the
+structure audit (`paper_structure`), the Pages scope (`pages_scope`), the preview build
+(`preview_site`) and the deployed-site check (`check_published_site`) read it.
+Adding a paper is one entry there and its renderer, modeled on
+`render_n11_optimality_review.py`; then its own Pages job and `-unchanged` notice in
+`pages.yml` with a scope output, a staged step in `publish` and a clause in
+`pages-required`, budgets for both jobs in `gate-budgets.yaml`, its version and dates in
+`sqpack.release`, its rows in `devtools.artifact_dates`, and its version in
+`check_published_site.PAPER_VERSIONS`. The workflow tests name each step that is
+missing. A renderer is given the site’s root (`--site`, by default `packing/site/`) and
+writes its paper there, where it is served, so every check reads the page at its
+published path and the publication renames nothing.
 
 The explainer at
 <https://jlevy.github.io/squares/papers/n11-lower-bounds-explainer.html> is not checked
@@ -1048,8 +1066,28 @@ a job named for the reason.
 `pages-required` is the aggregate a branch rule would require; it passes such a skip and
 nothing else.
 
-The separate **T-060 optimality paper** lives at `/papers/n11-optimality-review.html`.
-Its source is
+**Part II, the T-037 threshold-bound review**, lives at
+`/papers/n11-threshold-bound-review.html` and is built as Part III is, from
+[`n11-threshold-bound-review-article.md`](packing/devtools/templates/n11-threshold-bound-review-article.md)
+by
+[`render_n11_threshold_bound_review.py`](packing/devtools/render_n11_threshold_bound_review.py),
+with its figures from `n11_threshold_figures.py`, drawn in the roles `paper_figures.py`
+shares with Part III. From `packing/`:
+
+```bash
+uv run --frozen --all-extras --group dev python -m devtools.render_n11_threshold_bound_review --pdf
+```
+
+The outputs are `site/papers/n11-threshold-bound-review.html`, `.md`, and `.pdf`;
+`--site`, `--check` and `--revision` work as Part III’s do.
+Its Pages job, `n11-threshold-bound-review`, checks out the archived Kleddamag proof,
+the T-059 replay journal and the native verifier’s row journal beside the code, runs the
+figure and renderer tests, and renders and checks the page, the Markdown and the PDF;
+its `-unchanged` notice says why when no input of it changed.
+It explains accepted evidence and reruns no sweep.
+
+The separate **T-060 optimality paper**, Part III, lives at
+`/papers/n11-optimality-review.html`. Its source is
 [`n11-optimality-review-article.md`](packing/devtools/templates/n11-optimality-review-article.md);
 [`render_n11_optimality_review.py`](packing/devtools/render_n11_optimality_review.py)
 uses the same KPress fonts and
@@ -1099,7 +1137,7 @@ Deployment waits for all of them.
 The workbench job selects Node 24.18.0, installs the root lockfile with scripts
 disabled, and builds the typed workbench package into the self-contained `/workbench/`
 page, beside `prepare` rather than after it.
-The publish job puts the two papers, the checked PDF, the site’s own pages and the
+The publish job puts the three papers, the checked PDF, the site’s own pages and the
 workbench back into one tree and holds every page’s head in it to the site’s contract,
 and every shared asset a page names to being there whole (`check_published_site
 --local`); only a push to `main` uploads that tree to Pages.
@@ -1167,10 +1205,11 @@ pin the verifier at the edition’s revision
 uv run --frozen --all-extras --group dev python -m devtools.check_published_site --commit <merge commit>
 ```
 
-It fetches the live pages, both papers with their Markdown editions and PDFs, the assets
-and the workbench. It checks the explainer edition, verifies that repository links name
-and resolve at the expected commit, and requires the PDF source receipt to match the
-exact served HTML bytes and its page count to match the publication.
+It fetches the live pages, every paper with its Markdown edition and PDF, the assets and
+the workbench, and holds every link from one paper to another to a heading the target
+paper has. It checks the explainer edition, verifies that repository links name and
+resolve at the expected commit, and requires the PDF source receipt to match the exact
+served HTML bytes and its page count to match the publication.
 It also requires the workbench’s exact source revision, starts its public API in pinned
 Chromium, and follows its project-relative link to the overview.
 It asks for every address a paper used to have, as the paragraph above says.
@@ -1191,9 +1230,12 @@ The whole check also runs on a build before it is deployed.
 directory and serves it at `http://127.0.0.1:8765/`, and
 `python -m devtools.check_published_site --site http://127.0.0.1:8765/ --commit <the commit the build was made from>`
 asks it the same questions; a local address is the one kind that is not https and is
-still asked. A preview has the first paper’s PDF only if one is put there: that PDF is
-drawn from `packing/site/` by `render_n11_lower_bounds_explainer_pdf`, which a preview
-never writes.
+still asked. It is how the links between papers are checked before a new paper is live,
+since only a build that holds every paper can answer them; `--local DIR` asks them of a
+built directory too.
+A preview has the first paper’s PDF only if one is put there: that PDF is drawn from
+`packing/site/` by `render_n11_lower_bounds_explainer_pdf`, which a preview never
+writes.
 
 **One version, shared by the site and its data** (the owner, 2026-09-22): every site
 page’s footer and the workbench stage print `PUBLICATION_EDITION` from
@@ -1227,15 +1269,16 @@ A reader finds it in `release.py` and here.
 owner, 2026-10-01: “the repository version should not go on the papers anymore.
 Papers should be individually versioned”). Each paper’s version line prints its own
 version from `release.py`: the explainer’s is `EXPLAINER_VERSION`, the newest entry of
-`EXPLAINER_HISTORY`, and the review’s is `OPTIMALITY_REVIEW_EDITION`, its status and the
-newest entry of `OPTIMALITY_REVIEW_HISTORY` (“Draft v0.1.4”). The top of the explainer
-reads, on two lines, like “v0.4.2 (version history)” and “First published September 5,
-2026 · Last revised October 1, 2026”: which version of the paper is being read, with a
-link to the paper’s own editions at the foot of the page, then when the paper first
-reached a reader and when the article last changed.
-Both papers write their front, the formats row, the title and the credits, from one
-component (`devtools.paper_front`), and `devtools.paper_structure` compares the two
-rendered papers axis by axis
+`EXPLAINER_HISTORY`; each review’s is its status and the newest entry of its history,
+`THRESHOLD_REVIEW_EDITION` (“Draft v0.1.0”) and `OPTIMALITY_REVIEW_EDITION` (“Draft
+v0.1.5”). The top of the explainer reads, on two lines, like “v0.4.2 (version history)”
+and “First published September 5, 2026 · Last revised October 1, 2026”: which version of
+the paper is being read, with a link to the paper’s own editions at the foot of the
+page, then when the paper first reached a reader and when the article last changed.
+Every paper writes its front, the formats row, the title, the credits and the series
+strip (which part of the series it is, and the other parts by title), from one component
+(`devtools.paper_front`), and `devtools.paper_structure` compares every rendered paper
+with Part I axis by axis
 ([paper-design.md → The Papers’ Front](packing/devtools/templates/paper-design.md#the-papers-front)).
 The first date is `EXPLAINER_FIRST_PUBLISHED`, the paper’s oldest edition’s, so it does
 not move.
@@ -1246,7 +1289,7 @@ rule. The colophon on a paper is the site’s two lines without the version part
 credit to Flowmark and KPress.
 `PUBLICATION_EDITION`, `PUBLICATION_STAMP` and the data hash appear on no paper page, in
 no Markdown edition and in no PDF; `tests/test_n11_lower_bounds_explainer.py` and the
-review’s tests hold that, and `check_published_site` refuses a served paper that carries
+reviews’ tests hold that, and `check_published_site` refuses a served paper that carries
 the site’s edition or lacks its own.
 
 **A paper’s history lists the editions in which the paper changed, and nothing else.** A
@@ -1343,10 +1386,11 @@ its source and whether it is what the rule gives:
 - A date derived from a commit is the commit’s author date, on the author’s own
   calendar.
 - A paper’s “revised” date is the date of the last commit that changed its article.
-  The explainer’s is `EXPLAINER_REVISED` and the optimality paper’s is
-  `OPTIMALITY_REVIEW_REVISED`, both in `release.py`, where each paper’s front reads it
-  (`devtools.paper_front`). Change it in the commit that changes the article;
-  `tests/test_artifact_dates.py` fails when it stands still.
+  The explainer’s is `EXPLAINER_REVISED`, the threshold-bound review’s
+  `THRESHOLD_REVIEW_REVISED` and the optimality paper’s `OPTIMALITY_REVIEW_REVISED`, all
+  in `release.py`, where each paper’s front reads it (`devtools.paper_front`). Change it
+  in the commit that changes the article; `tests/test_artifact_dates.py` fails when it
+  stands still.
 - A poster’s dateline is the date of the data commit it was drawn from.
 - A PDF’s `CreationDate` and `ModDate` are the date on its face, at noon UTC, and never
   the build clock.
@@ -1404,8 +1448,9 @@ It is one edit, in the commit that makes the change, with no command:
    `October 2, 2026`, and one sentence on what changed in the paper.
    The number is the paper’s own and is not the site’s; a number already published is
    never changed.
-2. Set `EXPLAINER_REVISED` (or `OPTIMALITY_REVIEW_REVISED`) to the commit’s date, as any
-   change to the article requires; `python -m devtools.artifact_dates --check` and
+2. Set `EXPLAINER_REVISED` (or `THRESHOLD_REVIEW_REVISED`, or
+   `OPTIMALITY_REVIEW_REVISED`) to the commit’s date, as any change to the article
+   requires; `python -m devtools.artifact_dates --check` and
    `tests/test_artifact_dates.py` hold it to git.
 3. Where the entry points name the paper’s version, update them: TUTORIAL.md names the
    explainer’s (`test_reader_facing_version_references_follow_release_metadata`).

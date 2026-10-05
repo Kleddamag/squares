@@ -10,6 +10,8 @@ from __future__ import annotations
 
 from pathlib import Path
 
+import pytest
+
 from devtools import render_overview
 from devtools.measure_site_pages import (
     card_rows,
@@ -586,13 +588,30 @@ def test_a_moved_file_is_copied_to_its_old_address(tmp_path: Path) -> None:
     ]
 
 
-def test_the_builds_are_named_for_what_they_build() -> None:
-    """`--skip` takes a paper by its slug, as everything else names it."""
-    from devtools.preview_site import BUILDS  # noqa: PLC0415
+def test_the_builds_are_named_for_what_they_build(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """`--skip` takes a paper by its slug, as everything else names it, and every paper
+    of the site is a build (`render_overview.PAPERS`): the first, then the site's pages
+    and the workbench, then each review, built by the renderer the registry names for it
+    with its PDF, as its Pages job builds it."""
+    from devtools import preview_site  # noqa: PLC0415
 
-    assert BUILDS == (
+    assert preview_site.BUILDS == (
         "n11-lower-bounds-explainer",
         "pages",
         "workbench",
+        "n11-threshold-bound-review",
         "n11-optimality-review",
     )
+    assert (
+        tuple(paper.slug for paper in render_overview.PAPERS[1:]) == preview_site.OTHER_PAPERS
+    )
+    ran: list[tuple[str, ...]] = []
+    monkeypatch.setattr(preview_site, "_run", lambda *args: ran.append(args))
+    for slug in preview_site.OTHER_PAPERS:
+        preview_site.build_paper(slug, Path("/site"))
+    assert ran == [
+        ("devtools.render_n11_threshold_bound_review", "--site", "/site", "--pdf"),
+        ("devtools.render_n11_optimality_review", "--site", "/site", "--pdf"),
+    ]

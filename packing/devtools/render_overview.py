@@ -53,12 +53,15 @@ from collections.abc import Callable, Sequence
 from datetime import datetime
 from functools import cache
 from pathlib import Path
-from typing import Literal, NamedTuple
+from typing import TYPE_CHECKING, Literal, NamedTuple
 from urllib.parse import quote
 
 from devtools import repo_links
 from devtools.repo_links import repo_url
 from sqpack.release import PUBLICATION_EDITION, PUBLICATION_HISTORY
+
+if TYPE_CHECKING:
+    from kpress.format.assets import AssetRef
 
 PACKING = Path(__file__).resolve().parents[1]
 REPO = PACKING.parent
@@ -83,6 +86,8 @@ MATH_SCRIPT = BROWSER / "math.js"
 POPOVER_SCRIPT = BROWSER / "popover.js"
 ROW_POPOVER_SCRIPT = BROWSER / "row-popover.js"
 ATLAS_VIEW_SCRIPT = BROWSER / "atlas-view.js"
+#: The atlas's two drawings, House and Regularized, and the swap between them.
+ATLAS_LAYER_SCRIPT = BROWSER / "atlas-layer.js"
 ATLAS_GRID_SCRIPT = BROWSER / "atlas-grid.js"
 EMBED_SCRIPT = BROWSER / "embed.js"
 CASE_POPOVER_SCRIPT = BROWSER / "case-popover.js"
@@ -249,12 +254,10 @@ MOVED_PAGES: tuple[tuple[str, str], ...] = (
     # record page takes `#n-11` and shows that case's record file, `cases/11.html`.
     ("cases.html", "cases/index.html"),
 )
-#: What a forwarder calls the place it sends a reader, by that place's address. A paper
-#: is called by its title, which its card has (`overview_sections.PAPERS`).
-FORWARDER_TITLES: dict[str, str] = {
-    RESULTS_PAGE: "Every Result",
-    "frontier.html": "The Frontier Atlas",
-    "cases/index.html": "Case Records",
+#: What a forwarder that leads off the site calls the place it sends a reader, by that
+#: place's address. A forwarder to a page of the site calls the page by the page's own
+#: name, from the record the page writes its head from (`forwarded_metas`).
+OFF_SITE_TITLES: dict[str, str] = {
     repo_url(repo_links.DEFECTS, kind="blob"): "defects.md on GitHub",
 }
 #: Every file that moved and is not a page, the same way: the papers' Markdown and PDF,
@@ -295,6 +298,10 @@ RENDER_INPUTS: tuple[Path, ...] = (
     # The card every page's head names is drawn beside the pages, in the page's colours.
     PACKING / "devtools" / "social_card.py",
     PACKING / "devtools" / "rung_scale.py",
+    # The atlas's regularized layer: which cases have a view, and their drawings
+    # (`overview_sections.atlas_regularized`, `render_frontier_page.packing_svg`).
+    PACKING / "atlas" / "known-best" / "regularized" / "index.json",
+    PACKING / "atlas" / "known-best" / "regularized" / "rendering",
     REPO / repo_links.TUTORIAL,
     REPO / repo_links.README,
     REPO / repo_links.SYNOPSIS,
@@ -306,14 +313,23 @@ RENDER_INPUTS: tuple[Path, ...] = (
     PACKING / "uv.lock",
 )
 
-# The same refusal the explainer makes: a script or stylesheet with a source, a CSS
-# import, or a url() or `<link>` that is not a data URI or a fragment is a fetch.
+#: The one place a site page fetches what it is drawn with: the site's shared assets
+#: (`site_assets`), named by a relative path from wherever the page is served.
+_ASSET_PATH = r"(?:\.\./)*assets/"
+# A fetch a page may not make: a script with a source outside the shared assets, a
+# `<link>` that is not the canonical link, a data URI, or a stylesheet or face preload
+# from the shared assets, a CSS import, or a `url()` in the page's own text that is not a
+# data URI or a fragment. A shared stylesheet's own `url()`s name the faces beside it.
 _EXTERNAL_REFERENCE = re.compile(
-    r"<script[^>]*\ssrc="
-    r'|<link(?![^>]*\srel="canonical")(?![^>]*\shref="data:)[^>]*\shref='
+    rf'<script(?![^>]*\ssrc="{_ASSET_PATH}js/)[^>]*\ssrc='
+    r'|<link(?![^>]*\srel="canonical")(?![^>]*\shref="data:)'
+    rf'(?![^>]*\srel="(?:stylesheet|preload)"[^>]*\shref="{_ASSET_PATH})[^>]*\shref='
     r"|@import\b"
     r"""|url\(\s*(?!["']?(?:data:|#))"""
 )
+#: A page a build writes is named here as if it stood at the site's root, as
+#: `kpress_page` writes every address; a page under a directory is rebased after.
+_FROM_ROOT = "index.html"
 
 
 def canonical_url(name: str) -> str:
@@ -349,6 +365,12 @@ class PageMeta(NamedTuple):
     """For a paper that states them, the day it was first published and the day it was
     last revised, as ISO dates (`2026-09-05`)."""
     modified: str = ""
+
+
+#: The records the results page and the frontier atlas write their heads from, named
+#: here because a forwarder to either previews it (`forwarded_metas`).
+RESULTS_META = PageMeta("Every Result", RESULTS_DESCRIPTION, RESULTS_PAGE)
+FRONTIER_META = PageMeta("The Frontier Survey", FRONTIER_DESCRIPTION, "frontier.html")
 
 
 def page_title(name: str) -> str:
@@ -452,8 +474,12 @@ def inputs() -> tuple[Path, ...]:
 
     The page modules are imported here rather than at the top because
     `render_frontier_page` reads `render_n11_lower_bounds_explainer`, which imports this module.
+    The forwarders preview the papers from the papers' own records (`forwarded_metas`), so
+    the files the explainer's sentence is read from are inputs too: its walkthrough's
+    certificates, which name the case, and T-026's record with what it is checked against.
     """
     from devtools import overview_data  # noqa: PLC0415
+    from devtools import render_n11_lower_bounds_explainer as explainer  # noqa: PLC0415
     from devtools.render_case_pages import CASES_INPUTS  # noqa: PLC0415
     from devtools.render_frontier_page import FRONTIER_INPUTS  # noqa: PLC0415
 
@@ -464,6 +490,11 @@ def inputs() -> tuple[Path, ...]:
                 *overview_data.INPUTS,
                 *FRONTIER_INPUTS,
                 *CASES_INPUTS,
+                *explainer.WALKTHROUGH,
+                explainer.THRESHOLD_CERTIFICATE,
+                explainer.THRESHOLD_FINE_CERTIFICATE,
+                explainer.CURRENT_BOUND_RECORD,
+                explainer.THRESHOLD_PROOF,
             )
         )
     )
@@ -477,47 +508,46 @@ class Page(NamedTuple):
 
 
 def page_assets() -> tuple[str, str]:
-    """The explainer's own inlined assets: head styles and the math pipeline.
+    """The shared assets every site page links, from the site's root: its head's face
+    preloads and stylesheets, and the math pipeline's script.
 
     The stylesheets are the explainer's (`kpress_css`, `katex_css`, `relation_face_css`),
-    faces already inlined as data URIs, so a reader moving between the explainer and
-    these pages sees one design system; `paper-type.css`, the text tokens the explainer
-    also carries, follows them. The script is the explainer's math pipeline,
+    with the same faces, so a reader moving between the explainer and these pages sees
+    one design system; `paper-type.css`, the text tokens the explainer also carries,
+    follows them, then the site's own. The script is the explainer's math pipeline,
     `render_n11_lower_bounds_explainer.katex_js`: KaTeX, kpress's metric tables and shared
     runtime, and the explainer's host adapter (`squaresMath`), without kpress's auto-render
     entry point and its whole-page synchronous pass. `overview/math.js`, which `kpress_page`
     places after it, drives the adapter over kpress's own math markup. The pipeline is described
-    in `templates/paper-design.md`, under Math Loading.
+    in `templates/paper-design.md`, under Math Loading. Each is a file of the site's
+    `assets/` (`site_assets.shared`), fetched by a reader once for every page.
     """
-    from devtools.render_n11_lower_bounds_explainer import (  # noqa: PLC0415
-        katex_css,
-        katex_js,
-        kpress_css,
-        kpress_static,
-        relation_face_css,
+    from devtools import site_assets  # noqa: PLC0415
+
+    bundle = site_assets.shared()
+    own = (PAPER_TYPE_CSS, SITE_NAV_CSS, SITE_CSS, SITE_RESULT_CSS)
+    head = "\n".join(
+        [
+            bundle.head(_FROM_ROOT),
+            *(
+                site_assets.stylesheet_tag(bundle.assets.stylesheet_file(path), _FROM_ROOT)
+                for path in own
+            ),
+        ]
     )
-
-    static = kpress_static()
-    head = (
-        f"<style>{kpress_css(static)}{katex_css(static)}</style>\n"
-        f"<style>{relation_face_css(static)}</style>\n"
-        f"<style>{PAPER_TYPE_CSS.read_text(encoding='utf-8')}</style>\n"
-        f"<style>{SITE_NAV_CSS.read_text(encoding='utf-8')}</style>\n"
-        f"<style>{SITE_CSS.read_text(encoding='utf-8')}</style>\n"
-        f"<style>{SITE_RESULT_CSS.read_text(encoding='utf-8')}</style>"
-    )
-    return head, f"<script>{katex_js(static)}</script>"
+    return head, site_assets.script_tag(bundle.katex_js, _FROM_ROOT)
 
 
-def assert_self_contained(name: str, page: str) -> None:
-    """Refuse a page that would fetch anything to be drawn: a script or stylesheet with
-    a source, a CSS import, or a `url()` or `<link>` that is not a data URI or a
-    fragment. What a reader opens afterwards is fetched then, from the site itself: a
-    page a card's popover frames, and a result's overview (`result_fragments`)."""
+def assert_fetches_only_assets(name: str, page: str) -> None:
+    """Refuse a page that would fetch anything to be drawn but the site's shared assets
+    (`site_assets`): a script or stylesheet with another source, a CSS import, or a
+    `url()` or `<link>` that is not a data URI or a fragment. What a reader opens
+    afterwards is fetched then, from the site itself: a page a card's popover frames,
+    and a result's overview (`result_fragments`)."""
     hit = _EXTERNAL_REFERENCE.search(page)
     if hit:
         excerpt = page[max(hit.start() - 60, 0) : hit.end() + 80]
-        raise SystemExit(f"{name} is not self-contained: ...{excerpt}...")
+        raise SystemExit(f"{name} fetches more than the site's assets: ...{excerpt}...")
 
 
 def nav_html(current: str, *, root: str = "") -> str:
@@ -628,7 +658,7 @@ def site_logo() -> str:
 
 
 @cache
-def favicon_html() -> str:
+def favicon_url() -> str:
     """The site's icon: case 11, Trump's packing of eleven squares, drawn small as a
     data URI, so it costs no fetch. It names its ink and paper, since a tab has no page
     colour to inherit."""
@@ -636,7 +666,14 @@ def favicon_html() -> str:
 
     svg = packing_svg(11, units=200, ink="#17202a", paper="#ffffff", frame_px=FAVICON_PX)
     svg = svg.replace("<svg ", '<svg xmlns="http://www.w3.org/2000/svg" ', 1)
-    return f'<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,{quote(svg)}">'
+    return f"data:image/svg+xml,{quote(svg)}"
+
+
+def favicon_html() -> str:
+    """The site's icon as the link every page's head carries once: the site's pages, the
+    two papers, the workbench, each case's record file and each forwarder to a page of
+    the site (`check_published_site.head_problems`)."""
+    return f'<link rel="icon" type="image/svg+xml" href="{favicon_url()}">'
 
 
 def colophon_lines(*, edition: str = PUBLICATION_EDITION) -> str:
@@ -753,12 +790,18 @@ def kpress_page(
     page = _KPRESS_CELL_LABELS.sub("", page)
     if rewrite_body is not None:
         page = rewrite_body(page)
-    programs = f"\n{kpress_client_script()}" + "".join(
-        f"\n<script>{_script_text(path)}</script>"
-        for path in (THEME_SCRIPT, MATH_SCRIPT, *page_scripts)
+    from devtools import site_assets  # noqa: PLC0415
+
+    assets = site_assets.shared().assets
+    programs = "".join(
+        f"\n{site_assets.script_tag(ref, _FROM_ROOT)}"
+        for ref in (
+            kpress_client_asset(),
+            *(assets.script_file(path) for path in (THEME_SCRIPT, MATH_SCRIPT, *page_scripts)),
+        )
     )
     page = page.replace("</body>", f"{math_scripts}{programs}\n</body>", 1)
-    assert_self_contained(name, page)
+    assert_fetches_only_assets(name, page)
     return Page(name, page)
 
 
@@ -822,12 +865,15 @@ def _document_scrolls(name: str, page: str) -> str:
     return page.replace("<html ", "<html data-kpress-viewport ", 1)
 
 
-def kpress_client_script() -> str:
-    """kpress's contents-rail and history modules as one classic script element.
+def kpress_client_asset() -> AssetRef:
+    """kpress's contents-rail and history modules as one classic script, a file of the
+    site's shared assets.
 
-    Flattened by the explainer's checked flattener, since an inline module would fetch
-    its siblings at view time; see `render_n11_lower_bounds_explainer.kpress_client_js`.
+    Flattened by the explainer's checked flattener, since kpress ships them as modules,
+    which a page read from a file cannot load; see
+    `render_n11_lower_bounds_explainer.kpress_client_js`.
     """
+    from devtools import site_assets  # noqa: PLC0415
     from devtools.render_n11_lower_bounds_explainer import (  # noqa: PLC0415
         kpress_client_js,
         kpress_static,
@@ -839,7 +885,7 @@ def kpress_client_script() -> str:
         api=KPRESS_CLIENT_API,
         frame=KPRESS_CLIENT_FRAME,
     )
-    return f"<script>{script}</script>"
+    return site_assets.shared().assets.script("kpress-behaviors.js", script)
 
 
 def _script_text(path: Path) -> str:
@@ -884,9 +930,7 @@ def overview_page() -> Page:
         "ATLAS_CARDS": overview_sections.atlas_cards(),
         "PAGE_CARDS": overview_sections.page_cards(),
         "RECENT": overview_sections.recent_table(overview),
-        "STAR_LEGEND": overview_sections.star_legend(),
         "ARROW_RIGHT": overview_sections.arrow_icon("right"),
-        "RUNG_KEY": overview_sections.rung_key(),
     }
     markdown = fill(
         OVERVIEW_ARTICLE.read_text(encoding="utf-8"), values, where=OVERVIEW_ARTICLE.name
@@ -912,6 +956,7 @@ def overview_page() -> Page:
             POPOVER_SCRIPT,
             ROW_POPOVER_SCRIPT,
             ATLAS_VIEW_SCRIPT,
+            ATLAS_LAYER_SCRIPT,
             ATLAS_GRID_SCRIPT,
             CASE_POPOVER_SCRIPT,
         ),
@@ -936,10 +981,10 @@ def results_page() -> Page:
     )
     return kpress_page(
         markdown,
-        name=RESULTS_PAGE,
+        name=RESULTS_META.path,
         current="results",
-        title="Every Result",
-        description=RESULTS_DESCRIPTION,
+        title=RESULTS_META.name,
+        description=RESULTS_META.description,
         toc=False,
         page_scripts=(TABLE_SCRIPT, POPOVER_SCRIPT, ROW_POPOVER_SCRIPT),
     )
@@ -982,10 +1027,10 @@ def frontier_page() -> Page:
 
     return kpress_page(
         frontier_markdown(fill),
-        name="frontier.html",
+        name=FRONTIER_META.path,
         current="frontier",
-        title="The Frontier Survey",
-        description=FRONTIER_DESCRIPTION,
+        title=FRONTIER_META.name,
+        description=FRONTIER_META.description,
         toc=False,
         rewrite_body=_case_links,
         page_scripts=(TABLE_SCRIPT, POPOVER_SCRIPT, CASE_POPOVER_SCRIPT),
@@ -1095,6 +1140,54 @@ def result_fragments() -> list[Page]:
     ]
 
 
+def forwarded_metas() -> dict[str, PageMeta]:
+    """Each page of the site a forwarder leads to (`MOVED_PAGES`), by its path, with the
+    record that page writes its own head from: the results page's and the frontier
+    atlas's (`RESULTS_META`, `FRONTIER_META`), the record page's
+    (`render_case_pages.cases_meta`), and each paper's `page_meta`, the explainer's as the
+    site publishes it. They are read from the pages' own records and not restated, so a
+    forwarder cannot preview a page by another name, kind or description than the
+    page's own head gives it.
+
+    The renderers are imported here rather than at the top, as in `inputs`, since each of
+    them imports this module."""
+    from devtools import render_case_pages, render_n11_optimality_review  # noqa: PLC0415
+    from devtools import render_n11_lower_bounds_explainer as explainer  # noqa: PLC0415
+
+    metas = (
+        RESULTS_META,
+        FRONTIER_META,
+        render_case_pages.cases_meta(),
+        explainer.published_page_meta(),
+        render_n11_optimality_review.page_meta(),
+    )
+    return {meta.path: meta for meta in metas}
+
+
+def forwarder_head(new: str, meta: PageMeta | None) -> str:
+    """A forwarder's identity, by the rule for where it leads (`forwarder_pages`).
+
+    To a page of the site, the identity that page's own head carries: the site's whole
+    set, written from `meta`, the page's own record (`forwarded_metas`), and the site's
+    icon. Its canonical link and `og:url` are the page's, so a consumer that keys a
+    preview by `og:url` files the share under the page, and its name, its kind, its
+    description and, for a paper, its dates are the page's, so a shared old address
+    previews the page as a share of the page would. It is held as any page's head is
+    (`check_published_site.head_problems`), and against the page's own head wherever the
+    check has that too (`check_published_site.forwarder_problems`).
+
+    Off the site, where `meta` is None, its title (`OFF_SITE_TITLES`) and a canonical
+    link to that address and nothing else: the site does not write the page it leads
+    to, so a preview could not say what it shows.
+    """
+    if meta is None:
+        return (
+            f"<title>{html.escape(OFF_SITE_TITLES[new], quote=False)}</title>\n"
+            f'<link rel="canonical" href="{html.escape(new, quote=True)}">'
+        )
+    return f"{head_tags(meta)}\n{favicon_html()}"
+
+
 def forwarder_pages() -> list[Page]:
     """A forwarder at each address a page used to have (`MOVED_PAGES`), so no link written
     before the change breaks.
@@ -1107,25 +1200,34 @@ def forwarder_pages() -> list[Page]:
     bar, no stamp and no styles, and is not among `PAGES`. A target is written as the
     old path's reader must follow it: relative for a page of the site, climbing out of
     the old path's directory where it has one, and whole for an address off it.
+
+    A forwarder to a page of the site also carries a link preview of that page
+    (`forwarder_head`), since an old address is still shared: GitHub Pages cannot answer
+    one with a redirect a crawler follows, and the crawlers that draw link previews run
+    no script and do not reliably follow a refresh, so a forwarder with a title and a
+    canonical link alone previewed as a bare title or as nothing (think-esmk,
+    2026-10-03). Its preview is the page's own, at the page's address, with the site's
+    card. The one forwarder off the site, the defect log's, carries no preview.
     """
     import posixpath  # noqa: PLC0415
 
-    from devtools.overview_sections import PAPERS  # noqa: PLC0415
-
-    titles = FORWARDER_TITLES | {paper.href: paper.title for paper in PAPERS}
+    metas = forwarded_metas()
     template = FORWARDER.read_text(encoding="utf-8")
     pages = []
     for old, new in MOVED_PAGES:
         external = new.startswith("https://")
         target = new if external else posixpath.relpath(new, posixpath.dirname(old))
+        meta = None if external else metas.get(new)
+        if not external and meta is None:
+            raise SystemExit(f"{old} forwards to {new}, which `forwarded_metas` does not name")
         values = {
             "TARGET": html.escape(target, quote=True),
-            "TITLE": html.escape(titles[new]),
-            "CANONICAL_URL": html.escape(new if external else canonical_url(new), quote=True),
+            "TITLE": html.escape(OFF_SITE_TITLES[new] if meta is None else meta.name),
+            "HEAD": forwarder_head(new, meta),
             "FORWARD_SCRIPT": _script_text(FORWARD_SCRIPT),
         }
         page = fill(template, values, where=FORWARDER.name)
-        assert_self_contained(old, page)
+        assert_fetches_only_assets(old, page)
         pages.append(Page(old, page))
     return pages
 
@@ -1136,10 +1238,20 @@ def render_site() -> list[Page]:
     return [*render_all(), *result_fragments(), *case_records(), *forwarder_pages()]
 
 
+def asset_files(files: Sequence[Page]) -> dict[str, bytes]:
+    """The shared assets `files` name, by path under the site's `assets/`
+    (`site_assets.SiteAssets.referenced`)."""
+    from devtools import site_assets  # noqa: PLC0415
+
+    return site_assets.shared().assets.referenced(file.html for file in files)
+
+
 def write_site(output: Path, files: Sequence[Page]) -> None:
-    """Write `files` under `output`, and drop any result fragment or case record file
-    already there that is not among them, so a directory built before a result was
-    withdrawn, or a case dropped, does not keep serving it."""
+    """Write `files` under `output`, with the shared assets they name under `assets/`,
+    and drop any result fragment, case record file or asset already there that is not
+    among them, so a directory built before a result was withdrawn, a case dropped or
+    an asset changed does not keep serving it."""
+    from devtools import site_assets  # noqa: PLC0415
     from devtools.overview_sections import RESULT_FRAGMENTS  # noqa: PLC0415
     from devtools.render_case_pages import CASES_DIR  # noqa: PLC0415
 
@@ -1153,6 +1265,7 @@ def write_site(output: Path, files: Sequence[Page]) -> None:
         target = output / file.name
         target.parent.mkdir(parents=True, exist_ok=True)
         target.write_text(file.html, encoding="utf-8")
+    site_assets.write_assets(output, asset_files(files))
 
 
 def main(argv: Sequence[str] | None = None) -> int:
@@ -1188,6 +1301,11 @@ def main(argv: Sequence[str] | None = None) -> int:
             for path in sorted((output / directory).glob("*.html"))
             if path.relative_to(output).as_posix() not in written
         ]
+        from devtools import site_assets  # noqa: PLC0415
+
+        stale += site_assets.stale_assets(
+            output, asset_files([*pages, *fragments, *records, *forwarders])
+        )
         if stale:
             print(f"stale or missing: {', '.join(stale)}", file=sys.stderr)
             return 1
@@ -1201,6 +1319,11 @@ def main(argv: Sequence[str] | None = None) -> int:
         print(f"wrote {output / page.name} ({len(page.html) // 1024} KB)")
     for forwarder in forwarders:
         print(f"wrote {output / forwarder.name}, a forwarder")
+    shared = asset_files([*pages, *fragments, *records, *forwarders])
+    print(
+        f"wrote {len(shared)} shared assets under {output / 'assets'}/ "
+        f"({sum(len(data) for data in shared.values()) // 1024} KB in all)"
+    )
     total = sum(len(fragment.html.encode("utf-8")) for fragment in fragments)
     places = sorted({(output / fragment.name).parent for fragment in fragments})
     print(

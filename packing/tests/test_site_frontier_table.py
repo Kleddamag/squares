@@ -30,6 +30,7 @@ from typing import Any
 import pytest
 
 from devtools.preview_site import settle_math
+from devtools.render_frontier_page import recent_lower_bounds
 from sqpack.probes import probe
 from tests import site_browser, site_renders
 from tests.test_frontier_page import COLUMNS, column
@@ -63,8 +64,8 @@ LEVEL = 1.5
 def page(tmp_path_factory: pytest.TempPathFactory) -> Iterator[Any]:
     """The rendered frontier atlas, loaded once with its math typeset."""
     sync_api = site_browser.api()
-    path = Path(tmp_path_factory.mktemp("site")) / "frontier.html"
-    path.write_text(site_renders.html("frontier.html"), encoding="utf-8")
+    root = Path(tmp_path_factory.mktemp("site"))
+    path = site_renders.write(root, "frontier.html")["frontier.html"]
     with sync_api.sync_playwright() as driver:
         browser = site_browser.launch(driver)
         opened = browser.new_page(viewport={"width": WIDTHS[0], "height": 900})
@@ -216,9 +217,9 @@ def test_a_fraction_shows_its_decimal_and_a_name_stays_whole(
     # n = 18 until 2026-10-02, when T-045's replay raised its verified bound to the
     # reported 939/200 and the cell became "same", and then n = 19 until T-074's did the
     # same there later that day; n = 51 shows both, 37/5 from n = 50's replayed mixed
-    # certificate below its own reported rectangle certificate.
+    # certificate below its own reported mixed certificate, 373/50 (T-082).
     assert rows["n-51"]["cells"][column("Verified lower")]["approx"] == ["= 7.4"]
-    assert rows["n-51"]["cells"][column("Reported lower")]["approx"] == ["= 7.4425"]
+    assert rows["n-51"]["cells"][column("Reported lower")]["approx"] == ["= 7.46"]
     assert all(cell["approx"] == [] for cell in rows["n-1"]["cells"])
     assert rows["n-11"]["cells"][column("Reported lower")]["broken"] == []
 
@@ -236,7 +237,10 @@ def test_the_table_still_sorts_filters_and_opens(page: Any, laid: dict[int, Any]
     assert shown.first.get_attribute("data-recent") == "false"
     recent.click()
     assert recent.get_attribute("aria-sort") == "descending"
-    assert shown.first.get_attribute("id") == "n-11"
+    # Which floors are recent is the citation record's to say, not this test's: since
+    # 2026-10-02 the open floors rest on Karakus 2026 and s(k^2-2) on a 2026 Lean proof.
+    starred = sorted(n for n, is_recent in recent_lower_bounds().items() if is_recent)
+    assert shown.first.get_attribute("id") == f"n-{starred[0]}"
     number = page.locator("#frontier-table thead th.site-col-n")
     number.click()
     number.click()
@@ -252,11 +256,16 @@ def test_the_table_still_sorts_filters_and_opens(page: Any, laid: dict[int, Any]
     # T-069, T-071, T-074 and s(77), s(78)) made 60; T-064's replay of 3 October, which
     # proved nine k^2 - 3 cases, made 69; T-075's replays the same day took n = 83, 91 and
     # 96 off Nagamochi's bound and made 72; T-080's replayed linear certificate took
-    # n = 101 to 105 off it and made 77, the cases `recent_lower_bounds` names.
+    # n = 101 to 105 off it and made 77; T-076's replayed linear certificate took n = 82
+    # off it and made 78, the cases `recent_lower_bounds` names. Since the correction of
+    # 2 October 2026 was merged with those on 3 October, the corrected floors (Karakus
+    # 2026, the Lean s(k^2-2) proof) are recent as well, so the count is read from the
+    # citation record rather than pinned here.
     page.get_by_label("recent only").check()
-    assert page.locator(".site-table-tools .site-count").inner_text() == "77 of 324 cases"
-    assert shown.count() == 77
-    assert shown.first.get_attribute("id") == "n-11"
+    count = page.locator(".site-table-tools .site-count").inner_text()
+    assert count == f"{len(starred)} of 324 cases"
+    assert shown.count() == len(starred)
+    assert shown.first.get_attribute("id") == f"n-{starred[0]}"
     page.get_by_label("recent only").uncheck()
     assert shown.count() == 324
 

@@ -39,10 +39,12 @@ from devtools.register_prose import LINK, paragraphs
 from devtools.render_recent_results import (
     RecentCounts,
     Row,
+    Supersession,
     load_records,
     recent_counts,
     recent_rows,
     standing,
+    supersessions,
 )
 from devtools.render_research_tables import load_cases
 from devtools.repo_links import path_kind, repo_url
@@ -223,9 +225,13 @@ def prose_html(text: object, *, between: str = "<br><br>") -> str:
 
 
 def _line_of(path: Path, needle: str) -> int:
-    """The 1-based line of the first line containing `needle`, for a line anchor."""
+    """The 1-based line of the first line containing `needle` whole, for a line anchor:
+    not followed by another letter, digit, `_` or `-`, so `id: E-n020-fractional-certificate`
+    is not found in `id: E-n020-fractional-certificate-97-20`, the line before it, where
+    T-020's first evidence link pointed until 2026-10-04."""
+    whole = re.compile(re.escape(needle) + r"(?![\w-])")
     for number, line in enumerate(path.read_text(encoding="utf-8").splitlines(), start=1):
-        if needle in line:
+        if whole.search(line):
             return number
     raise SystemExit(f"{path.name} has no line containing {needle!r}")
 
@@ -260,6 +266,10 @@ class Result:
     status: str = ""
     """How far this project's workflow has taken the result: recorded, reviewed,
     confirmed or incomplete (`result_status.status`), the word `RESULTS.md` prints."""
+    supersessions: tuple[Supersession, ...] = ()
+    """Whether the result is superseded, wholly or in part, and by which results
+    (`render_recent_results.supersessions`): what a table's status line names after
+    its status, as `RESULTS.md` names it."""
 
     @property
     def activity(self) -> str:
@@ -451,8 +461,9 @@ def load() -> Overview:
                 credit=credit_line(r, sources).replace(r"\|", "|"),
                 ours=not r.get("attribution"),
                 records=_records(r, evidence),
-                standing=standing(r, records),
+                standing=(stands := standing(r, records)),
                 status=result_status.status(r, evidence),
+                supersessions=tuple(supersessions(r, stands, records)),
             )
             for r in members
         ]

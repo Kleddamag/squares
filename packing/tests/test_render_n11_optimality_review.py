@@ -107,6 +107,43 @@ def test_the_papers_head_is_the_sites_set_at_the_papers_own_address(
     assert paper_front.revised(paper.FRONT) == release.OPTIMALITY_REVIEW_REVISED
 
 
+def test_the_forwarders_at_the_old_addresses_preview_the_paper_as_it_does(
+    rendered: tuple[str, str],
+) -> None:
+    """The paper was served at `n11-optimality/t-060-explainer.html`, under a directory
+    linked as `n11-optimality/`, until 2026-10-01. Both addresses are still shared, and
+    the forwarder at each previews the paper (`render_overview.forwarder_pages`): by the
+    paper's own title, kind, sentence and date, read here from the rendered page, and at
+    its address. The card's sentence-case title and `website`, which they carried first,
+    previewed the paper as something else."""
+    html, _ = rendered
+    url = render_overview.canonical_url(paper.SITE_PATH)
+    own = check_published_site.read_head(html)
+    moved = dict(render_overview.MOVED_PAGES)
+    forwarders = {
+        forwarder.name: forwarder.html
+        for forwarder in render_overview.forwarder_pages()
+        if moved[forwarder.name] == paper.SITE_PATH
+    }
+    assert sorted(forwarders) == [
+        "n11-optimality/index.html",
+        "n11-optimality/t-060-explainer.html",
+    ]
+    for name, forwarder in forwarders.items():
+        assert check_published_site.forwarder_problems(forwarder, url, html) == [], name
+        head = check_published_site.read_head(forwarder)
+        assert head.titles == own.titles, name
+        assert head.link("canonical") == own.link("canonical") == [url], name
+        for key in (
+            *check_published_site.PREVIEWED,
+            "description",
+            "twitter:title",
+            "article:modified_time",
+        ):
+            assert head.meta(key) == own.meta(key), (name, key)
+        assert head.meta("og:type") == ["article"], name
+
+
 def test_the_paper_ends_with_the_sites_closing_credit_without_its_version(
     rendered: tuple[str, str],
 ) -> None:
@@ -447,9 +484,12 @@ def test_a_diagram_drawn_in_fixed_ink_keeps_a_light_ground_on_the_dark_theme() -
     assert fixed, "no diagram carries fixed ink: the ground rule has nothing to hold"
     assert themed, "no diagram follows the theme: the rule would apply to every diagram"
     css = paper.STYLE.read_text(encoding="utf-8")
+    # The ground is a token, as every colour is (`devtools.check_colour_tokens`,
+    # 2026-10-03), and the token is white.
+    assert "--n11-diagram-ground: oklch(100% 0 0);" in css
     rule = re.search(
         r':root\[data-kpress-resolved-theme="dark"\]\s+\.n11-paper\s+:is\(([^)]*)\)\s*'
-        r"\{\s*background: #fff;\s*\}",
+        r"\{\s*background: var\(--n11-diagram-ground\);\s*\}",
         css,
     )
     assert rule is not None

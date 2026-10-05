@@ -307,8 +307,7 @@ def browser() -> Iterator[Any]:
 def site(tmp_path_factory: pytest.TempPathFactory) -> Path:
     """The overview and the results page side by side, so a link between them works."""
     root = tmp_path_factory.mktemp("site")
-    for name in ("index.html", render_overview.RESULTS_PAGE):
-        (root / name).write_text(site_renders.html(name), encoding="utf-8")
+    site_renders.write(root, "index.html", render_overview.RESULTS_PAGE)
     return root
 
 
@@ -322,8 +321,12 @@ def _follow(browser: Any, site: Path, overview: overview_data.Overview, link: st
     target = opened.locator(f'.site-card-foot a[href="{link}"]')
     assert target.count() == 1, link
     target.scroll_into_view_if_needed()
-    with opened.expect_navigation(wait_until="load"):
-        target.click()
+    target.click()
+    # The results page's own load, not the navigation's: `expect_navigation` can return
+    # while the new document is still parsing, and the page's programs are shared files
+    # (`site_assets`) its parser waits on, so a read then finds the table unfiltered.
+    opened.wait_for_url(f"**/{link}", wait_until="load")
+    opened.wait_for_load_state("load")
     return opened
 
 

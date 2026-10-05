@@ -13,9 +13,15 @@ in Tokoharu's rectangle format:
 
 Later revisions add more ``certificates/mixed_n*`` directories of the same kind, with the
 same code byte for byte: n = 37, 65, 66, 90 and 92 at ``1a25a5ed``, n = 84 and 85 at
-``52af997``, n = 76 at ``7975030``, and n = 83, 85, 87, 91, 92 and 96 at ``b00fc70``.
+``52af997``, n = 76 at ``7975030``, n = 83, 85, 87, 91, 92 and 96 at ``b00fc70``,
+22 more at ``2aff207``, n = 51 to 96, five of them at counts already named, and 16 more
+at ``8aa6a10``, n = 42 to 95, nine of them at counts already named.
 `MIXED` names each with its packet and the source's statement; a certificate at a count
-an earlier one already names is ``n85-L946``, its count and side. The linear certificates
+an earlier one already names is ``n85-L946``, its count and side. Since ``150939e`` the
+source's directories carry no ``completion-audit.json``, the source's own audit that
+bound each certificate to its tarball, so a certificate pinned at or after it is bound to
+its bundle by the tarball's digest at the pinned tree alone (`WITHOUT_SOURCE_AUDIT`); a
+certificate pinned before it is still refused without that audit. The linear certificates
 of ``af1db07``, ``0c35d90`` and ``b00fc70``, which another checker decides, are
 `devtools.audit_wand125_linear`'s.
 
@@ -84,6 +90,7 @@ Usage, from ``packing/`` with the project interpreter::
     .venv/bin/python3 -m devtools.audit_wand125_point_and_mixed mixed-merge n84 [--check]
     .venv/bin/python3 -m devtools.audit_wand125_point_and_mixed mixed-plan n84 --parts 3
     .venv/bin/python3 -m devtools.audit_wand125_point_and_mixed mixed-price
+    .venv/bin/python3 -m devtools.audit_wand125_point_and_mixed mixed-shard PACKET --runners 8
     .venv/bin/python3 -m devtools.audit_wand125_point_and_mixed mixed-compare n84 BUNDLE --out F
     .venv/bin/python3 -m devtools.audit_wand125_point_and_mixed mixed-control n37 --work W
 
@@ -1726,12 +1733,14 @@ MIXED_REQUIREMENTS = SOURCE / N50["L740"] / "requirements.txt"
 MIXED_CORE = Fraction(9977, 10000)
 #: Each mixed measure's total is ``n`` less this.
 MIXED_GAP = Fraction(1, 100000)
+#: The source's own audit of a certificate, which binds its certificate and tarball digests.
+SOURCE_AUDIT = "completion-audit.json"
 #: The small files of a certificate directory that a packet retains and the audit reads.
 MIXED_FILES = (
     "candidate.json",
     "certificate.json",
     "manifest.json",
-    "completion-audit.json",
+    SOURCE_AUDIT,
     "README.md",
 )
 AXIS_REPLAYED = "AXIS_CERTIFICATE_REPLAYED"
@@ -1746,6 +1755,9 @@ class MixedCertificate:
     ``side``, ``rectangles`` and ``candidate_digest`` are the source's statements, which
     the audit holds the retained bytes to. The tarball's digest and size are read from the
     packet's acquisition files and never written here, so the pin has one home.
+    ``source_audit`` says whether the directory at the pinned revision carries the source's
+    ``completion-audit.json``; it follows from the revision (`WITHOUT_SOURCE_AUDIT`), never
+    from whether the file is found.
     """
 
     name: str
@@ -1757,6 +1769,14 @@ class MixedCertificate:
     rectangles: int
     candidate_digest: str
     tarball: str
+    source_audit: bool
+
+    @property
+    def files(self) -> tuple[str, ...]:
+        """The small files the packet retains for this certificate and the audit reads."""
+        if self.source_audit:
+            return MIXED_FILES
+        return tuple(name for name in MIXED_FILES if name != SOURCE_AUDIT)
 
     @property
     def source(self) -> Path:
@@ -1802,12 +1822,26 @@ H_REVISION = "7975030a192607ef27edd1559aee4e98bd93047b"
 H_PACKET = WEB / "wand125-mixed-bounds-n76-2026-10-02"
 I_REVISION = "b00fc70f1904e9b1b567afee056d347f911209e8"
 I_PACKET = WEB / "wand125-mixed-bounds-afternoon-2026-10-02"
+J_REVISION = "2aff2076c492d62340e986c84f60a0a29eb668df"
+J_PACKET = WEB / "wand125-mixed-bounds-2026-10-03"
+K_REVISION = "8aa6a10b3b8f165d39c85b68982fed1de086516c"
+K_PACKET = WEB / "wand125-mixed-bounds-2026-10-04"
+
+#: The pinned revisions whose certificate directories carry no ``completion-audit.json``:
+#: the source removed it from every directory of 3 October onward at ``150939e`` and
+#: published none after. A certificate pinned at one is bound to its bundle by the
+#: tarball's digest at the pinned tree, which `devtools.acquire_source` bound to the
+#: tarball's Git blob at the pinned commit, by the size the acquisition record pins, and by
+#: the digest its README states; every other row still needs the source's audit.
+WITHOUT_SOURCE_AUDIT = frozenset({K_REVISION})
 
 
 #: Every mixed certificate this tool audits and replays: n = 50 (T-048), the five of
 #: jlevy/squares#282 (T-069), the two of its comment of 2 October, the n = 76 of its
-#: later comment the same day (pinned at ``7975030``, its own packet), and the six the
-#: source added that afternoon (UTC), pinned together at ``b00fc70``. Each row is the
+#: later comment the same day (pinned at ``7975030``, its own packet), the six the
+#: source added that afternoon (UTC), pinned together at ``b00fc70``, the 22 it added
+#: on 3 October, pinned together at ``2aff207``, and the 16 it added from 3 October
+#: 19:33 UTC to 4 October 07:17 UTC, pinned together at ``8aa6a10``. Each row is the
 #: packet, the pinned revision, n, the side as the directory names it, the side, the
 #: rectangle count and the candidate digest, as the source states them.
 _MIXED_ROWS: tuple[tuple[Path, str, int, str, Fraction, int, str], ...] = (
@@ -1938,6 +1972,348 @@ _MIXED_ROWS: tuple[tuple[Path, str, int, str, Fraction, int, str], ...] = (
         279,
         "a0cbba40370f94a0125f323c839c75dcb5b6145c32b1b81e80665fb75f27d561",
     ),
+    (
+        J_PACKET,
+        J_REVISION,
+        51,
+        "7.46",
+        Fraction(373, 50),
+        446,
+        "503278fd59bd1f04d7563a77cb16d80aec47df36e1a9b79e329c6cbd97334872",
+    ),
+    (
+        J_PACKET,
+        J_REVISION,
+        52,
+        "7.55",
+        Fraction(151, 20),
+        455,
+        "bc1ec3a1934ae09852d588da55b6a11183287000246c2522b2cdbbc72ded684d",
+    ),
+    (
+        J_PACKET,
+        J_REVISION,
+        55,
+        "7.728",
+        Fraction(966, 125),
+        303,
+        "6131cd0a67d3499df1ca62abe1088a1b9d3bc5961b69656fb0f0cedb72a6e605",
+    ),
+    (
+        J_PACKET,
+        J_REVISION,
+        58,
+        "7.905",
+        Fraction(1581, 200),
+        319,
+        "96727aa1681161ab21e0a9677739fd32badc0ddd8933f8c7daf1d6192ba14754",
+    ),
+    (
+        J_PACKET,
+        J_REVISION,
+        69,
+        "8.612",
+        Fraction(2153, 250),
+        556,
+        "9965c638aa6dadaeb5fd08eadd905529c175116ff6c3d1d87447d947f20d1a1e",
+    ),
+    (
+        J_PACKET,
+        J_REVISION,
+        70,
+        "8.6475",
+        Fraction(3459, 400),
+        495,
+        "41af9ea74a3bf12d1971832120fdba2526b899b789068ef706475f38c8312ab2",
+    ),
+    (
+        J_PACKET,
+        J_REVISION,
+        71,
+        "8.705",
+        Fraction(1741, 200),
+        471,
+        "8d8f26610731ec3e553f20d46687339937967b057f4dff725bd4456addabaefa",
+    ),
+    (
+        J_PACKET,
+        J_REVISION,
+        73,
+        "8.809",
+        Fraction(8809, 1000),
+        450,
+        "5684ebfd1f061a11ab9ae84c3568d22586a0acc3df1192df3dd08e2af38144f9",
+    ),
+    (
+        J_PACKET,
+        J_REVISION,
+        74,
+        "8.8675",
+        Fraction(3547, 400),
+        505,
+        "d9b1c057c7e9337e041e96f662aa5c7b63de4124624aa69b70308487e8841d48",
+    ),
+    (
+        J_PACKET,
+        J_REVISION,
+        75,
+        "8.92",
+        Fraction(223, 25),
+        340,
+        "cea59cc4cde834867b66a5c5b64d0affd9718172cee53ae92557c2874fed984e",
+    ),
+    (
+        J_PACKET,
+        J_REVISION,
+        76,
+        "8.96",
+        Fraction(224, 25),
+        341,
+        "c990078499a592dccb6336f69b956077046ca1fde498577f511c8c43f2c78a40",
+    ),
+    (
+        J_PACKET,
+        J_REVISION,
+        86,
+        "9.50",
+        Fraction(19, 2),
+        509,
+        "a042af995541097298a2c6b44970d072a1b7eb7bcbcc41d0e4d8965c3dcb82fa",
+    ),
+    (
+        J_PACKET,
+        J_REVISION,
+        87,
+        "9.55",
+        Fraction(191, 20),
+        509,
+        "f1e27ede3e2b29a87f4da9493d17a2258334a28c01b81ecffd157d2b0eda6b76",
+    ),
+    (
+        J_PACKET,
+        J_REVISION,
+        88,
+        "9.60",
+        Fraction(48, 5),
+        443,
+        "7a0f3594ce03191207646bcc2db5af878c5bbc390641625b7e0837d0d2ebb9ab",
+    ),
+    (
+        J_PACKET,
+        J_REVISION,
+        89,
+        "9.65",
+        Fraction(193, 20),
+        416,
+        "fff74c43cbd5fe435f70b45b157b4d5da9fbd7bb17a11202bad37dab1a42aa77",
+    ),
+    (
+        J_PACKET,
+        J_REVISION,
+        90,
+        "9.725",
+        Fraction(389, 40),
+        571,
+        "a251cc29c19c2a27b3458e2dac67aad8190050317d9f19c7f47099a45b924bd8",
+    ),
+    (
+        J_PACKET,
+        J_REVISION,
+        91,
+        "9.75",
+        Fraction(39, 4),
+        457,
+        "c4c175eb7af4a7964758e89dc33d91bd3e375b35765b6511f4b33c8d8d28ff9d",
+    ),
+    (
+        J_PACKET,
+        J_REVISION,
+        92,
+        "9.77",
+        Fraction(977, 100),
+        345,
+        "d1aafdd22771b24ada660b6f741044a6564a7921aaae95bb8bf5cb8d59bbb4d9",
+    ),
+    (
+        J_PACKET,
+        J_REVISION,
+        93,
+        "9.86",
+        Fraction(493, 50),
+        443,
+        "dd3da64f729a011c79c9e570d53a4986bba80572d1cf42c15fc4b14d3cd0a858",
+    ),
+    (
+        J_PACKET,
+        J_REVISION,
+        94,
+        "9.92",
+        Fraction(248, 25),
+        488,
+        "f974716d36c4a841610e80585b8d4d8ef5c62080a75d7bd770afbfd37f359ff9",
+    ),
+    (
+        J_PACKET,
+        J_REVISION,
+        95,
+        "9.96",
+        Fraction(249, 25),
+        438,
+        "9e3220d8e292b7aa693cadf50b24c998f8a9d348c23afca9bb38e16d359a866e",
+    ),
+    (
+        J_PACKET,
+        J_REVISION,
+        96,
+        "9.97",
+        Fraction(997, 100),
+        376,
+        "5e89a1ae869f6f4a12b2fadfffd7996048e856c1ec5206939fbb8ff9d6cf5b69",
+    ),
+    (
+        K_PACKET,
+        K_REVISION,
+        42,
+        "6.8475",
+        Fraction(2739, 400),
+        431,
+        "9e7eb014afc29e5a35f274a79aeb952acd3669bb5bffb461969d32633a08518d",
+    ),
+    (
+        K_PACKET,
+        K_REVISION,
+        43,
+        "6.9075",
+        Fraction(2763, 400),
+        358,
+        "a1e40a0d8c9c5432c8d9221a1ee1ca915be51ea520112d693632600fd6a712e8",
+    ),
+    (
+        K_PACKET,
+        K_REVISION,
+        44,
+        "6.9725",
+        Fraction(2789, 400),
+        399,
+        "09ee7101528876199acef723b2c45f87fe2c302cc2685a80088a098dbce2d49e",
+    ),
+    (
+        K_PACKET,
+        K_REVISION,
+        51,
+        "7.47",
+        Fraction(747, 100),
+        489,
+        "b3838f4074a9fbe378b8530aff07083b244f2859ca3178ae0d039502da9600f7",
+    ),
+    (
+        K_PACKET,
+        K_REVISION,
+        56,
+        "7.8025",
+        Fraction(3121, 400),
+        453,
+        "1126c353faeedab0905af5ffd066b0b1c888b0cbc8bd0af56aebb13ff889f07c",
+    ),
+    (
+        K_PACKET,
+        K_REVISION,
+        57,
+        "7.8725",
+        Fraction(3149, 400),
+        532,
+        "8010142da5aa69b4c7aa3e0a1e23cba296a80626e50369a61118377df7ae83a6",
+    ),
+    (
+        K_PACKET,
+        K_REVISION,
+        67,
+        "8.475",
+        Fraction(339, 40),
+        485,
+        "83415f601f5b3a23cac24106bffdc4bedb617cffa1dee2cbfc08fe63c33c0bbb",
+    ),
+    (
+        K_PACKET,
+        K_REVISION,
+        69,
+        "8.62",
+        Fraction(431, 50),
+        547,
+        "bf02d53b084e32bd585c15aab3e4c8348867ef7f4804e247ce8cb740cf34ad9e",
+    ),
+    (
+        K_PACKET,
+        K_REVISION,
+        72,
+        "8.76",
+        Fraction(219, 25),
+        488,
+        "89c68b03423d9f63f6cb0eb18f39de484cbeff028e89ad504d16cf01157823d9",
+    ),
+    (
+        K_PACKET,
+        K_REVISION,
+        75,
+        "8.94",
+        Fraction(447, 50),
+        589,
+        "0c068ef9b264c9e22096342e1aa6f010bce70689e881f3d46e527298e82ede07",
+    ),
+    (
+        K_PACKET,
+        K_REVISION,
+        84,
+        "9.4075",
+        Fraction(3763, 400),
+        569,
+        "d2b4a5da8e1424f7588bcffd581da1bb298aa62f3b2c40e6ec95cec0bdf09db2",
+    ),
+    (
+        K_PACKET,
+        K_REVISION,
+        86,
+        "9.503",
+        Fraction(9503, 1000),
+        533,
+        "e0341c92ef882933dcb47a42f3cca61eaaca3ccd7478cb55bd0a2dcae8006e25",
+    ),
+    (
+        K_PACKET,
+        K_REVISION,
+        88,
+        "9.6125",
+        Fraction(769, 80),
+        502,
+        "b86e90170ae237a25e57940f877f8ffa0451ecdb93b92f06ee73e386364246c5",
+    ),
+    (
+        K_PACKET,
+        K_REVISION,
+        93,
+        "9.88",
+        Fraction(247, 25),
+        501,
+        "3f241cbb719b90c99b956293bfd81cfd303c8496b7ffa022d04691943c3c9e8d",
+    ),
+    (
+        K_PACKET,
+        K_REVISION,
+        94,
+        "9.94",
+        Fraction(497, 50),
+        630,
+        "bf8dd4a2909d41f7dc74508cdf85abe563b2e761f7611e7b38c3b9b0636484c5",
+    ),
+    (
+        K_PACKET,
+        K_REVISION,
+        95,
+        "9.965",
+        Fraction(1993, 200),
+        480,
+        "c41da14c19784c764d14e50e8bb6cbb6c845193420ca8ef2b7f407c397d9975f",
+    ),
 )
 
 
@@ -1957,6 +2333,7 @@ def _mixed_table() -> dict[str, MixedCertificate]:
             rectangles=count,
             candidate_digest=digest,
             tarball=f"n{n}-L{label}-proof-bundle.tar.gz",
+            source_audit=revision not in WITHOUT_SOURCE_AUDIT,
         )
     return table
 
@@ -1972,18 +2349,20 @@ def mixed_retained(certificate: MixedCertificate) -> dict[str, bytes]:
     """The retained small files of one certificate directory, decompressed."""
     return {
         name: read_retained_bytes(certificate.source / certificate.directory / name)
-        for name in MIXED_FILES
+        for name in certificate.files
     }
 
 
-def green_facts(n: int, side: Fraction, compared: Fraction) -> dict[str, Any]:
+def green_facts(n: int, side: Fraction, compared: Fraction | None) -> dict[str, Any]:
     """Side and the source's comparison value against Green's and Nagamochi's bounds.
 
     Green's is the strongest value of the DS7 envelope at ``n`` (Theorem 9 or 10, or a
     usable Table 2 row), from `devtools.audit_ds7_lower_bounds`, enclosed to 60 digits
     or as many more as a comparison needs.
     Nagamochi's is ``1 + sqrt(n - 2 floor(sqrt n) + 1)``, compared exactly by squaring.
-    Imported here so a replay never loads the algebra system.
+    Imported here so a replay never loads the algebra system. A certificate with no
+    source audit states no comparison value in a file the audit reads, so ``compared`` is
+    then ``None`` and so is ``source_value_exceeds_green``.
     """
     ds7 = importlib.import_module("devtools.audit_ds7_lower_bounds")
     green = ds7.best_candidate(n)
@@ -2003,7 +2382,7 @@ def green_facts(n: int, side: Fraction, compared: Fraction) -> dict[str, Any]:
         "green": f"{green.label}, from n = {green.base_n}",
         "green_interval_float": [float(low), float(high)],
         "side_exceeds_green": sign(side) > 0,
-        "source_value_exceeds_green": sign(compared) > 0,
+        "source_value_exceeds_green": None if compared is None else sign(compared) > 0,
         "nagamochi": f"1 + sqrt({radicand})",
         "side_exceeds_nagamochi": side > 1 and (side - 1) ** 2 > radicand,
     }
@@ -2082,6 +2461,83 @@ def _code_facts(certificate: MixedCertificate, tree: Mapping[Path, str]) -> dict
     return {"code_files": len(listed), "code_identical_to_n50": True}
 
 
+def _source_audit_facts(
+    certificate: MixedCertificate,
+    files: Mapping[str, bytes],
+    archive: str,
+    digest: str,
+    total: Fraction,
+) -> tuple[dict[str, Any], Fraction]:
+    """The source's ``completion-audit.json``: the measure, the certificate and the tarball.
+
+    It must name the recomputed candidate digest, state the measure and all 201 angles,
+    bind the retained certificate's digest and the tarball's pinned digest, and state its
+    improvement as the side less the value it compares with, which is returned.
+    """
+    audit = json.loads(files[SOURCE_AUDIT])
+    n, side = certificate.n, certificate.side
+    _require(audit["candidate_digest"] == digest, "recomputed candidate digest differs")
+    _require(
+        audit["status"] == "AUDITED_AND_PACKAGED"
+        and audit["n"] == n
+        and Fraction(audit["L"]) == side
+        and Fraction(audit["total_mass"]) == total
+        and audit["all_angles"] == N50_LAST + 1,
+        "the source's audit states another measure",
+    )
+    _require(
+        audit["certificate_sha256"] == _sha256(files["certificate.json"]),
+        "the source's audit binds another certificate",
+    )
+    _require(audit["archive_sha256"] == archive, "the source's audit binds another tarball")
+    field = "green_upper" if "green_upper" in audit else "compared_with"
+    compared = Fraction(audit[field])
+    improvement = Fraction(audit["improvement_lower"])
+    _require(improvement == side - compared > 0, "the source's improvement is not L - value")
+    facts = {
+        "status": audit["status"],
+        "certificate_sha256_matches": True,
+        "archive_sha256_matches": True,
+        "compared_field": field,
+        "compared_with": str(compared),
+        "compared_note": audit.get("compared_note"),
+        "improvement_lower": str(improvement),
+    }
+    return facts, compared
+
+
+def _pinned_bundle_facts(
+    certificate: MixedCertificate, files: Mapping[str, bytes], tree: Mapping[Path, str]
+) -> dict[str, Any]:
+    """A certificate with no source audit, bound to its tarball by the digest at the pin.
+
+    The pinned tree must hold no ``completion-audit.json`` in the directory, so a row is
+    never read without an audit its tree carries. The tarball's digest at the pinned tree
+    must be the one the acquisition record pins with its size, and the README must state
+    the claim, the tarball's name and that digest. A fetched bundle is then bound to the
+    retained candidate, certificate and manifest by `bundle_bindings`, as for any row.
+    """
+    directory = certificate.directory
+    _require(
+        directory / SOURCE_AUDIT not in tree,
+        f"the pinned tree holds a {SOURCE_AUDIT} that this certificate's revision does not",
+    )
+    archive = tree[certificate.upstream_tarball]
+    pinned, size = tarball_pin(certificate)
+    _require(pinned == archive, "the acquisition record pins another tarball")
+    readme = files["README.md"].decode()
+    side = certificate.side
+    claim = f"# s({certificate.n}) >= {side.numerator}/{side.denominator} "
+    _require(readme.startswith(claim), "the README states another claim")
+    _require(f"`{certificate.tarball}`" in readme, "the README names another tarball")
+    return {
+        "status": "BOUND_BY_PINNED_DIGEST",
+        "revision": certificate.revision,
+        "tarball_bytes": size,
+        "readme_claim": readme.splitlines()[0].removeprefix("# "),
+    }
+
+
 def mixed_certificate(
     certificate: MixedCertificate,
     files: Mapping[str, bytes] | None = None,
@@ -2096,19 +2552,25 @@ def mixed_certificate(
     name. The net must be the 201-node net whose containment is recomputed here, the
     checker the one ``89b674a6...`` names, and code/ the retained n = 50 copy. The
     certificate must carry a replay record at threshold one for every angle, and the
-    source's audit must bind the certificate's and the tarball's digests.
+    README must state the tarball's pinned digest. Where the source published an audit,
+    it must bind the certificate's and the tarball's digests (`_source_audit_facts`);
+    where it did not, the tarball is bound by its digest at the pin
+    (`_pinned_bundle_facts`), and a missing audit is refused for every other row.
     """
     tree = tree if tree is not None else read_subtree_manifest(certificate.subtree)
     files = files if files is not None else mixed_retained(certificate)
     directory = certificate.directory
-    for name in MIXED_FILES:
+    for name in certificate.files:
+        _require(
+            name in files and directory / name in tree,
+            f"{name} is missing, and this certificate's revision publishes it",
+        )
         _require(
             _sha256(files[name]) == tree[directory / name], f"{name} is not the pinned file"
         )
     data = json.loads(files["candidate.json"])
     manifest = json.loads(files["manifest.json"])
     replay = json.loads(files["certificate.json"])
-    audit = json.loads(files["completion-audit.json"])
     side, core, items = _n50_measure(data)
     n = certificate.n
     _require(
@@ -2126,8 +2588,7 @@ def mixed_certificate(
         digest
         == certificate.candidate_digest
         == manifest["candidate_digest"]
-        == replay["candidate_digest"]
-        == audit["candidate_digest"],
+        == replay["candidate_digest"],
         "recomputed candidate digest differs",
     )
     _require(
@@ -2159,24 +2620,14 @@ def mixed_certificate(
     )
     axis, oblique = _angle_records(replay, digest)
     archive = tree[certificate.upstream_tarball]
-    _require(
-        audit["status"] == "AUDITED_AND_PACKAGED"
-        and audit["n"] == n
-        and Fraction(audit["L"]) == side
-        and Fraction(audit["total_mass"]) == total
-        and audit["all_angles"] == N50_LAST + 1,
-        "the source's audit states another measure",
-    )
-    _require(
-        audit["certificate_sha256"] == _sha256(files["certificate.json"]),
-        "the source's audit binds another certificate",
-    )
-    _require(audit["archive_sha256"] == archive, "the source's audit binds another tarball")
+    compared: Fraction | None = None
+    binding: dict[str, Any] = {}
+    if certificate.source_audit:
+        source_audit, compared = _source_audit_facts(certificate, files, archive, digest, total)
+    else:
+        source_audit = None
+        binding = {"tarball_binding": _pinned_bundle_facts(certificate, files, tree)}
     _require(archive in files["README.md"].decode(), "the README states another tarball")
-    field = "green_upper" if "green_upper" in audit else "compared_with"
-    compared = Fraction(audit[field])
-    improvement = Fraction(audit["improvement_lower"])
-    _require(improvement == side - compared > 0, "the source's improvement is not L - value")
     return {
         "directory": directory.as_posix(),
         "side": str(side),
@@ -2196,15 +2647,8 @@ def mixed_certificate(
         **oblique,
         "tarball": certificate.upstream_tarball.as_posix(),
         "tarball_sha256": archive,
-        "source_audit": {
-            "status": audit["status"],
-            "certificate_sha256_matches": True,
-            "archive_sha256_matches": True,
-            "compared_field": field,
-            "compared_with": str(compared),
-            "compared_note": audit.get("compared_note"),
-            "improvement_lower": str(improvement),
-        },
+        "source_audit": source_audit,
+        **binding,
         "comparison": green_facts(n, side, compared),
         "coverage_decided_here": False,
     }
@@ -2216,6 +2660,15 @@ def mixed_audit(packet: Path) -> dict[str, Any]:
     _require(bool(chosen), f"no mixed certificate is registered for {packet.name}")
     revision = json.loads(chosen[0].record.read_text())["sources"][0]["source_commit"]
     _require(all(c.revision == revision for c in chosen), "the packet pins another revision")
+    binding = (
+        "the source audit's certificate and tarball digests"
+        if revision not in WITHOUT_SOURCE_AUDIT
+        else (
+            "the tarball bound by its digest at the pinned tree, the size the acquisition "
+            "record pins and the README's claim and digest, the source publishing no audit "
+            "at this revision"
+        )
+    )
     return {
         "kind": "wand125-mixed-certificate-audit/v1",
         "packet": packet.name,
@@ -2225,9 +2678,9 @@ def mixed_audit(packet: Path) -> dict[str, Any]:
             "Exact premises only, from the retained files: pinned digests, the measure's "
             "count, side, core, nonnegativity and total n - 1/100000, the candidate digest "
             "by the source's rule, the net containment, the checker and code identity, a "
-            "replay record at threshold one for each of the 201 angles, and the source "
-            "audit's certificate and tarball digests. Coverage is decided by the source's "
-            "checker, whose replay is recorded separately."
+            "replay record at threshold one for each of the 201 angles, and "
+            f"{binding}. Coverage is decided by the source's checker, whose replay is "
+            "recorded separately."
         ),
     }
 
@@ -3142,6 +3595,106 @@ def mixed_plan(certificate: MixedCertificate, parts: int) -> dict[str, Any]:
     }
 
 
+def observed_ratio() -> tuple[float | None, list[dict[str, Any]]]:
+    """Measured replay CPU-hours over `estimated_cpu_hours`, over every merged replay.
+
+    Each certificate whose ``merged.json`` holds a complete replay contributes its own
+    measured CPU-hours, so the ratio is the record's, and moves as replays are merged.
+    """
+    rows = []
+    for name, certificate in sorted(MIXED.items(), key=lambda item: item[1].n):
+        merged = certificate.receipts / "merged.json"
+        if not merged.is_file():
+            continue
+        result = json.loads(merged.read_text())
+        if result.get("status") != "FULL_REPLAY_MATCHES_SHIPPED":
+            continue
+        rows.append(
+            {
+                "certificate": name,
+                "measured_cpu_hours": result["cpu_hours"],
+                "estimated_cpu_hours": round(estimated_cpu_hours(certificate), 2),
+            }
+        )
+    if not rows:
+        return None, rows
+    measured = sum(row["measured_cpu_hours"] for row in rows)
+    estimated = sum(row["estimated_cpu_hours"] for row in rows)
+    return measured / estimated, rows
+
+
+def mixed_shard(
+    packet: Path, runners: int, workers: int = MAX_REPLAY_WORKERS
+) -> dict[str, Any]:
+    """Split every complete replay a packet needs across ``runners`` hosts of equal load.
+
+    Each certificate is priced by `estimated_cpu_hours` scaled by `observed_ratio`; one
+    larger than a quarter of a runner's share is cut by `balanced_ranges` into pieces of
+    about a quarter of that share, and the pieces go, largest first, to the runner with
+    the least load. Each runner's commands run one after another at ``workers`` workers;
+    a certificate is merged once every piece of it has run.
+    """
+    chosen = [c for c in MIXED.values() if c.packet == packet]
+    _require(bool(chosen), f"no mixed certificate is registered for {packet.name}")
+    _require(runners >= 1, "runners must be at least 1")
+    ratio, basis = observed_ratio()
+    scale = ratio if ratio is not None else 1.0
+    hours = {c.name: estimated_cpu_hours(c) * scale for c in chosen}
+    share = sum(hours.values()) / runners
+    pieces: list[tuple[float, str, int, int]] = []
+    for certificate in chosen:
+        costs = direction_costs(certificate)
+        total = sum(costs)
+        parts = max(1, min(len(costs), round(4 * hours[certificate.name] / share)))
+        for first, stop in balanced_ranges(costs, parts):
+            piece = hours[certificate.name] * sum(costs[first:stop]) / total
+            pieces.append((piece, certificate.name, first, stop - 1))
+    loads = [0.0] * runners
+    assigned: list[list[tuple[float, str, int, int]]] = [[] for _ in range(runners)]
+    for piece in sorted(pieces, key=lambda item: (-item[0], item[1], item[2])):
+        target = loads.index(min(loads))
+        assigned[target].append(piece)
+        loads[target] += piece[0]
+    prefix = "uv run --frozen --all-extras --group dev python -m "
+    tool = "devtools.audit_wand125_point_and_mixed"
+    plan = []
+    for index, batch in enumerate(assigned, start=1):
+        batch.sort(key=lambda item: (MIXED[item[1]].n, MIXED[item[1]].side, item[2]))
+        plan.append(
+            {
+                "runner": index,
+                "estimated_cpu_hours": round(loads[index - 1], 2),
+                "estimated_wall_hours": round(loads[index - 1] / workers, 2),
+                "commands": [
+                    f"{prefix}{tool} mixed-replay {name} --range {first}-{last} "
+                    f"--work /tmp/wand125-{name} --workers {workers} --via git"
+                    for _, name, first, last in batch
+                ],
+                "pieces": [
+                    {"certificate": name, "range": [first, last], "cpu_hours": round(cost, 2)}
+                    for cost, name, first, last in batch
+                ],
+            }
+        )
+    return {
+        "packet": packet.name,
+        "runners": runners,
+        "workers_per_runner": workers,
+        "estimated_cpu_hours": round(sum(hours.values()), 1),
+        "unscaled_cpu_hours": round(sum(estimated_cpu_hours(c) for c in chosen), 1),
+        "observed_ratio": None if ratio is None else round(ratio, 3),
+        "ratio_basis": basis,
+        "certificates": {name: round(value, 2) for name, value in hours.items()},
+        "plan": plan,
+        "merges": [f"{prefix}{tool} mixed-merge {c.name}" for c in chosen],
+        "scope": (
+            "An estimate: mixed-price's rate, scaled by the ratio of measured to estimated "
+            "CPU-hours over every replay already merged. Wall hours assume all workers "
+            "stay busy; a rerun of any command replays only what has not passed."
+        ),
+    }
+
+
 def mixed_merge(certificate: MixedCertificate, receipts: Path) -> dict[str, Any]:
     """Merge every range's receipts into the complete replay's verdict, or refuse it.
 
@@ -3515,6 +4068,10 @@ def _add_mixed_commands(commands: Any) -> None:
     planning.add_argument("certificate", choices=names)
     planning.add_argument("--parts", type=int, default=1)
     commands.add_parser("mixed-price", help="estimate every replay's CPU-hours")
+    sharding = commands.add_parser("mixed-shard", help="split a packet's replays by runner")
+    sharding.add_argument("packet", help="the packet's directory name under resources/web/")
+    sharding.add_argument("--runners", type=int, required=True)
+    sharding.add_argument("--workers", type=int, default=MAX_REPLAY_WORKERS)
 
 
 def write_or_check(path: Path, result: dict[str, Any], *, check: bool) -> int:
@@ -3578,6 +4135,9 @@ def _mixed_main(args: argparse.Namespace) -> dict[str, Any] | int:
 def _run_mixed(args: argparse.Namespace) -> int:
     if args.command == "mixed-price":
         print(json.dumps(mixed_price(), indent=2))
+        return 0
+    if args.command == "mixed-shard":
+        print(json.dumps(mixed_shard(WEB / args.packet, args.runners, args.workers), indent=2))
         return 0
     outcome = _mixed_main(args)
     if isinstance(outcome, int):

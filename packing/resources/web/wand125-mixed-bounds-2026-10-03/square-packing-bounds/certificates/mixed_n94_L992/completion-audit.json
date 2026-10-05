@@ -1,0 +1,16 @@
+{
+  "status": "AUDITED_AND_PACKAGED",
+  "n": 94,
+  "L": "248/25",
+  "total_mass": "9399999/100000",
+  "compared_with": "247/25",
+  "compared_note": "our certified n94 9.88 (record 9.805)",
+  "improvement_lower": "1/25",
+  "candidate_digest": "f974716d36c4a841610e80585b8d4d8ef5c62080a75d7bd770afbfd37f359ff9",
+  "all_angles": 201,
+  "certificate_sha256": "9f6ba1d4de5b583b1730be451aa185565e7a7865f8147f1820b10d9e66434456",
+  "bundle": "n94-L9.92-proof-bundle",
+  "archive_sha256": "b866b117904cf01f2c50cc8d9b988c103cb54145bcce5249719acb7ce879f45f",
+  "route": "n94 fresh structured Green init n94-992s at L9.92, rectangles full-net repair, 201-angle verification and replay.",
+  "scope": "All centres at all 201 net angles plus strict core containment for every orientation; independent axis replay, same-algorithm outward-rounded oblique replay."
+}

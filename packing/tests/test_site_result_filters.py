@@ -70,13 +70,7 @@ def browser() -> Iterator[Any]:
 
 @pytest.fixture(scope="module")
 def pages(tmp_path_factory: pytest.TempPathFactory) -> dict[str, Path]:
-    root = tmp_path_factory.mktemp("site")
-    written: dict[str, Path] = {}
-    for name in PAGES:
-        path = root / name
-        path.write_text(site_renders.html(name), encoding="utf-8")
-        written[name] = path
-    return written
+    return site_renders.write(tmp_path_factory.mktemp("site"), *PAGES)
 
 
 def opened(
@@ -120,7 +114,8 @@ def test_the_checkbox_starts_at_its_pages_default_and_the_table_with_it(
     as its HTML has it; the rows showing are the ones that page's defaults keep, and
     the count is theirs. The rows that carry the flag are, on both pages, every result
     that is not superseded: the current bests, the second certificates and the results
-    that claim no bound, which have no standing."""
+    that claim no bound, which have no standing, but for one the register declares a
+    later result implies whole (T-031, superseded by T-060)."""
     defaults = PAGES[name]
     page = opened(browser, pages[name], overview)
     try:
@@ -142,9 +137,10 @@ def test_the_checkbox_starts_at_its_pages_default_and_the_table_with_it(
     )
     assert sorted(found["current"]) == current
     # What stays: every standing but superseded, and a result that is no bound whatever
-    # its evidence makes its standing, the limit of a method among them (T-003). No
-    # result has stood as a reported second certificate since 2 October 2026, when
-    # T-055's replay made it a verified one.
+    # its evidence makes its standing, the limit of a method among them (T-003), unless
+    # a later result is declared to imply all of it: T-031 goes, and T-036, superseded
+    # only in part, stays. No result has stood as a reported second certificate since
+    # 2 October 2026, when T-055's replay made it a verified one.
     kept = [result for result in overview.results if result.id.lower() in current]
     assert {result.standing for result in kept} == {
         render_recent_results.HOLDS,
@@ -154,6 +150,8 @@ def test_the_checkbox_starts_at_its_pages_default_and_the_table_with_it(
         render_recent_results.SUPERSEDED,
     }
     assert [result.id for result in kept if result.standing == "superseded"] == ["T-003"]
+    assert "t-031" not in current
+    assert "t-036" in current
     if defaults.hide_superseded:
         assert set(found["shown"]) < set(found["current"])
     else:
@@ -241,9 +239,12 @@ def test_it_composes_with_status_and_neither_sets_the_other(
         by_status.setdefault(result.status, []).append(result.id.lower())
         if overview_sections.is_superseded(result):
             superseded.add(result.id.lower())
-    # No result has been incomplete since 2 October 2026, when the replays of T-058 and
-    # T-059 confirmed the last two, and Status offers only the statuses some result has.
-    assert set(by_status) == set(result_status.STATUSES) - {result_status.INCOMPLETE}
+    # No result was incomplete from 2 October 2026, when the replays of T-058 and T-059
+    # confirmed the last two, until the same day's finding that Nagamochi's Lemma 1 is
+    # false (T-085) left T-007 at V0 with its C1 read, merged here on 3 October 2026; it is
+    # the one incomplete result since. Status offers only the statuses some result has.
+    assert set(by_status) == set(result_status.STATUSES)
+    assert by_status[result_status.INCOMPLETE] == ["t-007"]
     offered = [status for status in result_status.STATUSES if status in by_status]
     # Some confirmed results are superseded and some are not, so the two controls differ.
     assert set(by_status["confirmed"]) & superseded

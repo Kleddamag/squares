@@ -8,7 +8,7 @@
 // inner edge and `to` says so.
 //
 // A table is measured as the component a reader sees: its filter bar, when it has one,
-// and its wrap; a table inside a disclosure is measured as the disclosure, open or
+// the legend under the bar where it has one, and its wrap; a table inside a disclosure is measured as the disclosure, open or
 // closed, with the space inside it reported apart. Beside the space above and below it,
 // a table has its side gutters: how far its wrap, and its bar's, sit from the edges of
 // the window, or of the popover that holds it. A grid marked up with a table's roles, as

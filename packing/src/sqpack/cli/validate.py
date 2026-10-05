@@ -101,10 +101,18 @@ FRONTIER_COUNTS: dict[str, tuple[int, int, int]] = {
     # all open in both lanes, so that count falls by five in the two larger corpora. The
     # same day Daniel's reported s(k^2 - 4) = k (T-081) made n = 96, 117, 140, 165, 192,
     # 221, 252, 285 and 320 reported-proved and left their verified lanes alone, so only
-    # the reported-open count falls, by one, five and nine.
-    "n=1..100": (55, 54, 1),
-    "n=1..200": (139, 134, 80),
-    "n=1..324": (247, 238, 188),
+    # the reported-open count falls, by one, five and nine; and the n = 82 linear replay
+    # (T-076) took n = 82 off Nagamochi's bound, by one in every corpus, on the line
+    # that had not yet taken the correction. 0 Nagamochi-bounded since 2026-10-02,
+    # independently: Nagamochi's Lemma 1 is false (think-589i), so no verified floor
+    # rests on T-007 any more; the open cases' floors are Karakus 2026's, and
+    # s(k^2-2) = k rests on the replayed Lean proof (T-086), so no case opened. The lines
+    # merged on 2026-10-03: the formal-open and reported-open counts are the replays' and
+    # reports' above, and the Nagamochi-bounded count is the correction's, zero; T-076
+    # raised n = 82 from Karakus's floor instead, which moves none of the three counts.
+    "n=1..100": (55, 54, 0),
+    "n=1..200": (139, 134, 0),
+    "n=1..324": (247, 238, 0),
 }
 #: n = 68, 103, 105, 110 and 131 left the exclusions on 2026-09-29, when their records
 #: moved from UnitSquare renderings to Francisco Couzo's packings (T-056); n = 69 is the
@@ -2253,6 +2261,24 @@ def _known_best_chunk_census(context: Context) -> str:
     return output
 
 
+def _known_best_family_and_shade_censuses(context: Context) -> str:
+    """Re-derive X-049's two descriptive censuses of the n=1..324 atlas.
+
+    Both read every known-best witness and compare their retained JSON byte for byte: the
+    family census (sides, offsets, L chains, closed forms, symmetry) and the contact-shade
+    census (why axis-aligned squares render light, against the committed renderings).
+    Neither emits a verdict; the check is that the published numbers still follow from
+    the record.
+    """
+    families = _module(context, "devtools.classify_known_best_families", "--check")
+    _require_text(families, f"family census check passed: {KNOWN_BEST_CORPUS.count} records")
+    shades = _module(context, "devtools.census_atlas_contact_shades", "--check")
+    _require_text(
+        shades, f"contact-shade census check passed: {KNOWN_BEST_CORPUS.count} records"
+    )
+    return f"{families.rstrip()}\n{shades}"
+
+
 def _prospective_source_map(context: Context) -> str:
     """The audited source map for the prospective range, whose size it declares itself."""
     output = _module(context, "devtools.map_prospective_sources", "--check")
@@ -3310,11 +3336,72 @@ def _control_anchors(context: Context) -> str:
 
 
 def _nagamochi_bounds(context: Context) -> str:
-    # Sub-second: a hundred frontmatter blocks and one closed-form per case. Records tier
-    # because it checks the arithmetic of a citation the rest of the register leans on --
-    # 88 of the hundred verified lower bounds come from this one external proof, and
-    # nothing previously re-derived any of them.
+    # Sub-second: every case's frontmatter and one closed form per borrowed bound. Records
+    # tier because it checks the arithmetic of the borrowed floors the register leans on --
+    # Nagamochi's in the reported lane and Karakus's in the verified one since 2026-10-02 --
+    # each rounded down from its theorem's exact value, which nothing re-derived before.
     return _module(context, "devtools.check_nagamochi_bounds")
+
+
+def _t007_consumer_audit(context: Context) -> str:
+    # About a second. Records tier for the same reason as the step above: Karakus 2026
+    # (arXiv:2609.37410) showed Nagamochi's published proof incomplete, and this keeps the
+    # inventory of every bound and document resting on T-007 in step with the record
+    # until the think-589i review settles what each one rests on now.
+    output = _module(context, "devtools.audit_t007_consumers", "--check")
+    _require_text(output, f"T-007 consumer audit current: {KNOWN_BEST_CORPUS.count} cases")
+    return output
+
+
+def _regularized_atlas(context: Context) -> str:
+    # About a tenth of a second: the derived regularized views (X-049, think-bgkz) are
+    # compared with their index and their source witnesses by digest, re-verifying
+    # nothing. Re-deriving them exactly is `--verify-atlas`, about five minutes, which
+    # belongs to a deferred checkpoint rather than here.
+    output = _module(context, "devtools.regularize_axis_components", "--check-atlas")
+    _require_text(output, "regularized atlas check passed")
+    return output
+
+
+def _regularized_atlas_verify(context: Context) -> str:
+    """Re-derive every regularized view from its witness and require the layer to match.
+
+    The complement of `regularized atlas views match their index`, not a sample of it:
+    that step compares digests and re-verifies nothing, and this one runs the whole
+    regularization again for all 324 records -- the exact frame, the straightening and
+    compaction, the non-regression rounds, both exact verifications over `Q` and the
+    census's shades of each file -- and requires every index record and every retained
+    view to come out byte-identical. It is the only check that the verdicts the index
+    records were earned by the code that now ships.
+
+    Deferred on its own measurement: about 800 cpu-seconds on a four-cpu host, 223s of
+    wall at four workers, against the 0.1s digest check that stays on every pull
+    request. The tool's pool follows `PACK_JOBS`, so the `regularized-views` jobs run it
+    alone at `--inner-jobs 4`, as the screen is run; the readings at one, two and four
+    workers are in `development.md`'s deep-gate section.
+    """
+    output = _module(context, "devtools.regularize_axis_components", "--verify-atlas")
+    _require_text(output, "regularized atlas verification passed")
+    return output
+
+
+def _regularized_atlas_drawings(context: Context) -> str:
+    # About seven seconds: the homepage's regularized drawings are re-rendered from
+    # index.json by the house renderer and compared with the retained SVGs, so a view
+    # added, changed or dropped by the layer cannot leave a stale drawing behind.
+    output = _module(context, "devtools.render_regularized_atlas", "--check")
+    _require_text(output, "regularized renderings check passed")
+    return output
+
+
+def _chelokot_lean_replay(context: Context) -> str:
+    # Milliseconds: the retained receipt of the Lean replay that s(k^2-2) = k rests on
+    # (think-ym34) is re-read offline -- the pinned commit, toolchain and Mathlib, the
+    # theorem's statement, exactly the three standard axioms, and the build log's digest.
+    # The replay itself takes about an hour and 9 GB and is run by hand.
+    output = _module(context, "devtools.replay_chelokot_lean", "--check")
+    _require_text(output, "replay passed")
+    return output
 
 
 def _evidence_inventory(context: Context) -> str:
@@ -3364,6 +3451,15 @@ def _class_record_claims(context: Context) -> str:
     # `C-n011-fractional-96-25` (review finding L3). That one is exempt by name with its
     # reason, and the exemption fails if it ever stops applying.
     return _module(context, "devtools.check_class_record_claims")
+
+
+def _retained_json_layout(context: Context) -> str:
+    # About 1.5s: a line count of every tracked JSON larger than the threshold, then a
+    # parse and re-layout of the few over it that no exemption names. Records tier for the
+    # reason the class-record sweep above is: it checks retained bytes against the writer
+    # that owns them, so a tool that goes back to `indent=2` fails here on its first
+    # commit and not after a hundred thousand lines have landed (think-k131).
+    return _module(context, "devtools.check_retained_json")
 
 
 def _rung_figures(context: Context) -> str:
@@ -4002,6 +4098,25 @@ STEPS: tuple[Step, ...] = (
             "packing/resources/*",
         ),
     ),
+    # X-049's two censuses, 8.8s and 7.6s locally. A sweep because each re-derives a
+    # retained artifact from all 324 witnesses; on the sweeps runner it runs beside the
+    # prospective seed, which takes about 100s, so it adds to that job's CPU, not its wall.
+    Step(
+        "known-best family and contact-shade censuses",
+        _known_best_family_and_shade_censuses,
+        fast=True,
+        broad=True,
+        sweep=True,
+        touches=(
+            *_CORE,
+            "packing/devtools/classify_known_best_families.py",
+            "packing/devtools/census_atlas_contact_shades.py",
+            "packing/atlas/known-best/manifest.json",
+            "packing/atlas/known-best/rendering/*",
+            "packing/witnesses/*",
+            "packing/campaign/explorations/X049-families-data/*",
+        ),
+    ),
     # 0.39s locally, against 88.37s for the seed it used to share a step with. It is not
     # a sweep and does not belong on the second runner: it reads one source map.
     Step(
@@ -4253,6 +4368,21 @@ STEPS: tuple[Step, ...] = (
             # is this module's answer and not the check's own.
             "packing/devtools/repo_scope.py",
             "packing/src/sqpack/fractional/corner_clip.py",
+        ),
+    ),
+    Step(
+        "retained JSON is one record per line",
+        _retained_json_layout,
+        fast=True,
+        records=True,
+        touches=(
+            # Any tracked JSON can cross the threshold, and `biome.json` says which are
+            # Biome's rather than a retained result's.
+            "*.json",
+            "packing/devtools/check_retained_json.py",
+            "packing/devtools/retained-json.yaml",
+            "packing/devtools/repo_scope.py",
+            "packing/src/sqpack/retained_json.py",
         ),
     ),
     Step(
@@ -4779,6 +4909,97 @@ STEPS: tuple[Step, ...] = (
             "packing/devtools/check_nagamochi_bounds.py",
             "packing/frontier/n-*.md",
             "packing/frontier/evidence.yaml",
+            # The prose counts it holds to the records: the frontier README's open-case
+            # sentence and the register's own citation counts in results.yaml.
+            "packing/frontier/README.md",
+            "packing/frontier/results.yaml",
+        ),
+    ),
+    Step(
+        "regularized atlas views match their index",
+        _regularized_atlas,
+        fast=True,
+        records=True,
+        touches=(
+            *_CORE,
+            "packing/devtools/regularize_axis_components.py",
+            "packing/devtools/census_atlas_contact_shades.py",
+            "packing/devtools/check_rational_witness_independent.py",
+            "packing/devtools/upper_bound_packets.py",
+            "packing/atlas/known-best/regularized/*",
+            "packing/atlas/known-best/manifest.json",
+            "packing/witnesses/*",
+        ),
+    ),
+    # The whole re-derivation behind the digest check above, deferred on its measured
+    # cost (about 800 cpu-seconds). It reads everything the regularizer imports as well
+    # as what the check above compares, so its patterns are a superset of that step's.
+    Step(
+        "regularized atlas views re-derive exactly",
+        _regularized_atlas_verify,
+        touches=(
+            *_CORE,
+            "packing/devtools/regularize_axis_components.py",
+            "packing/devtools/census_atlas_contact_shades.py",
+            "packing/devtools/check_rational_witness_independent.py",
+            "packing/devtools/upper_bound_packets.py",
+            "packing/atlas/known-best/regularized/*",
+            "packing/atlas/known-best/manifest.json",
+            "packing/witnesses/*",
+        ),
+    ),
+    Step(
+        "regularized atlas drawings match their index",
+        _regularized_atlas_drawings,
+        fast=True,
+        records=True,
+        touches=(
+            *_CORE,
+            "packing/devtools/render_regularized_atlas.py",
+            "packing/devtools/render_frontier_page.py",
+            "packing/devtools/build_known_best_atlas.py",
+            "packing/devtools/regularize_axis_components.py",
+            "packing/src/sqpack/render/*",
+            "packing/atlas/known-best/regularized/*",
+            "packing/witnesses/known-best/*",
+        ),
+    ),
+    Step(
+        "the Lean replay receipt for s(k^2-2) = k holds",
+        _chelokot_lean_replay,
+        fast=True,
+        records=True,
+        touches=(
+            *_CORE,
+            "packing/devtools/replay_chelokot_lean.py",
+            "packing/campaign/series/series-000-smoke-and-calibration/results/chelokot-lean-replay/*",
+        ),
+    ),
+    Step(
+        "the register's reliance on T-007 is inventoried",
+        _t007_consumer_audit,
+        fast=True,
+        records=True,
+        # Everything the audit reads: the case records, register and prose under
+        # frontier/, the archived sources it cites by line, the documents and generators
+        # it scans, the workbench page's bound citations (`site_data`), and the gate
+        # checker whose case reader and Theorem 2 it imports.
+        touches=(
+            *_CORE,
+            "packing/devtools/audit_t007_consumers.py",
+            "packing/devtools/check_nagamochi_bounds.py",
+            "packing/campaign/series/series-000-smoke-and-calibration/results/t007-consumer-audit.json",
+            "packing/frontier/*",
+            "packing/resources/papers/*",
+            "packing/resources/web/*",
+            "packing/atlas/known-best/bound-citations.json",
+            "packing/devtools/templates/*",
+            "packing/devtools/generate_frontier_case.py",
+            "packing/devtools/render_overview.py",
+            "docs/project/research/*",
+            "SYNOPSIS.md",
+            "README.md",
+            "TUTORIAL.md",
         ),
     ),
     Step(
@@ -5257,6 +5478,7 @@ TREE_REUSABLE_FAST_STEPS = frozenset(
         "deterministic SVG rendering",
         "known-best atlas records and sample",
         "known-best chunk census",
+        "known-best family and contact-shade censuses",
         "prospective n=101..324 source map",
         "prospective n=101..324 safe seed",
         "translation escape screen records and sample",
@@ -5272,6 +5494,9 @@ TREE_REUSABLE_FAST_STEPS = frozenset(
         # A pure function of the tracked JSON: it reads the retained records and nothing
         # else, so a pull-request run over this exact tree has already decided it.
         "class records do not claim the unconditional bound",
+        # The same shape: the tracked JSON, its own policy and `biome.json`, and the
+        # writer it re-lays them with. No clock, no network, no history.
+        "retained JSON is one record per line",
         # The same shape: it reads the tracked Markdown under `packing/resources/` and
         # compares three numbers found in those bytes. No clock, no network, no history.
         "archive annotation census agrees with the archive",
@@ -5312,6 +5537,10 @@ TREE_REUSABLE_FAST_STEPS = frozenset(
         "the branch cost rollup renders",
         "control anchors still resolve",
         "the borrowed lower bounds re-derive",
+        "the register's reliance on T-007 is inventoried",
+        "regularized atlas views match their index",
+        "regularized atlas drawings match their index",
+        "the Lean replay receipt for s(k^2-2) = k holds",
         "the inventory agrees with the register",
         "results rungs are earned and the view agrees",
         "the synopsis headline carries every result",

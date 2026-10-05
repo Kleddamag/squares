@@ -59,6 +59,8 @@ name: Certificate page
       - packing/atlas/known-best/composite-figure.json
       - packing/atlas/known-best/bound-citations.json
       - packing/atlas/known-best/rendering/**
+      - packing/atlas/known-best/regularized/index.json
+      - packing/atlas/known-best/regularized/rendering/**
       - packing/witnesses/known-best/**
       - packing/devtools/templates/n11-lower-bounds-explainer-shell.html
       - packing/devtools/templates/paper-publication.css
@@ -587,9 +589,10 @@ jobs:
 
       # The pages are not checked in, so a render that does not reproduce itself would
       # show only here: two renders, at once as `prepare`'s are, the second outside
-      # `site/`, have to agree on every file they write. The renderer refuses a page that
-      # would fetch anything at view time and a reader document with a link to a path the
-      # checked-out tree lacks, so those failures stop the build here too.
+      # `site/`, have to agree on every file they write, the shared assets under `assets/`
+      # among them. The renderer refuses a page that would fetch anything at view time but
+      # those assets, and a reader document with a link to a path the checked-out tree
+      # lacks, so those failures stop the build here too.
       - name: Render the site's pages twice and require the renders to agree
         run: |
           twin="$RUNNER_TEMP/render-twin"
@@ -608,7 +611,8 @@ jobs:
       # and the card to its size, on the files about to be shared: the checks the deployed
       # site gets from `check_published_site`, before anything is deployed. The explainer,
       # the paper and the workbench are other jobs' pages, so they are reported as not in
-      # this build; `verify-deployment` reads all of them.
+      # this build; `publish` checks them in the assembled site, and `verify-deployment`
+      # reads all of them as deployed.
       - name: Draw the link preview's card twice, and check every page's head
         run: |
           twin="$RUNNER_TEMP/render-twin"
@@ -1574,8 +1578,9 @@ jobs:
   # root with the forwarders at the papers' old addresses (`overview`), the workbench at
   # `/workbench/` (`workbench`), and the optimality review with its Markdown and PDF under
   # `/papers/` (`n11-optimality-review`). It runs on pull requests too -- a missing artifact fails
-  # review rather than the next deploy -- and lists every file with its size and digest
-  # so the tree can be compared across runs; only a push to `main` uploads it for Pages.
+  # review rather than the next deploy -- lists every file with its size and digest so
+  # the tree can be compared across runs, and holds every page's head in it to the site's
+  # contract (`check_published_site --local`); only a push to `main` uploads it for Pages.
   # It needs the producers and not the checks, so on a pull request it finishes beside
   # the checks rather than after them.
   #
@@ -1589,6 +1594,31 @@ jobs:
     needs: [prepare, pdf, overview, workbench, n11-optimality-review]
     runs-on: ubuntu-latest
     steps:
+      # The assembled site is held to the head contract once it is whole, with the
+      # checkout's own tool: the same partial checkout and the same uv and Python as the
+      # `overview` job, which runs that check on its own build. The checkout comes before
+      # the downloads, since a checkout clears the directory it checks out into.
+      - name: Check out the repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          submodules: true
+          persist-credentials: false
+          filter: blob:none
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /*
+            !/packing/resources/*/
+            !/packing/campaign/*/
+
+      - name: Install uv and Python 3.14
+        uses: astral-sh/setup-uv@c771a70e6277c0a99b617c7a806ffedaca235ff9 # v9.0.0
+        with:
+          version: "0.12.8"
+          python-version: "3.14.7"
+          working-directory: packing
+          enable-cache: true
+          cache-dependency-glob: uv.lock
+
       # With `merge-multiple`, an empty `artifact-ids` downloads every artifact in the
       # run into `packing/site`, the workbench's `index.html` among them. Refuse it here.
       - name: Require the prepared page's artifact id
@@ -1696,6 +1726,14 @@ jobs:
       - name: List what the publication holds
         working-directory: packing/site
         run: find . -type f -printf '%P\n' | sort | while read -r file; do printf '%10s  %s  %s\n' "$(stat -c %s "$file")" "$(sha256sum "$file" | cut -c1-16)" "$file"; done
+
+      # Every page's head, as the `overview` job checks its own build's, but on the tree
+      # that is published: the first that holds the papers and the workbench beside the
+      # site's pages. So each of them is read with the rest, and each forwarder is held to
+      # the head of the page it leads to, the papers' included. It fetches nothing.
+      - name: Check every page's head in the assembled site
+        working-directory: packing
+        run: uv run --frozen --group dev python -m devtools.check_published_site --local site
 
       - name: Upload the page artifact
         if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'

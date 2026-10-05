@@ -38,6 +38,7 @@ import subprocess
 import sys
 import tempfile
 import time
+import unicodedata
 from contextlib import contextmanager
 from fractions import Fraction
 from pathlib import Path
@@ -1224,6 +1225,29 @@ def latin_face_covers(text: str) -> bool:
     return all(any(low <= ord(ch) <= high for low, high in spans) for ch in text)
 
 
+def stage_spelling(text: str) -> str:
+    """`text` as the embedded latin faces can set it: a letter outside Latin-1 that
+    decomposes to a Latin-1 letter and accents is set as that letter alone.
+
+    The faces draw Latin-1 and little beyond it (`LATIN_RANGE`), so Karakuş's `ş` would
+    fall back to whatever system face a browser has. The fold is the stage's alone and is
+    made here, as the page loads its citations: `bound-citations.json`, the bibliography,
+    the case records and every other page keep the whole spelling. Characters with no
+    Latin-1 base, such as dashes and quotation marks, are left for the faces' own ranges to
+    cover or `latin_face_covers` to refuse.
+    """
+    folded = []
+    for character in text:
+        if ord(character) <= 0xFF:
+            folded.append(character)
+            continue
+        decomposed = unicodedata.normalize("NFKD", character)
+        base = "".join(part for part in decomposed if not unicodedata.combining(part))
+        latin = bool(base) and all(ord(part) <= 0xFF for part in base)
+        folded.append(base if latin else character)
+    return "".join(folded)
+
+
 def same_decimal(cited: str, drawn: str) -> bool:
     """Whether a citation's value names the number the stage draws, where both are decimals.
 
@@ -1247,12 +1271,17 @@ def _citation(value: Any, n: int, bound: str) -> dict[str, str | None] | None:
     text, basis, assurance = value.get("text"), value.get("basis"), value.get("assurance")
     if not isinstance(text, str) or not text or text != text.strip() or "\n" in text:
         raise ValueError(f"{where}: the reference must be one trimmed line, not {text!r}")
+    text = stage_spelling(text)
     # Everything this project has to say about the bound is one parenthesis after the
     # reference, and the two share the column's one line, so they are measured together.
     note = value.get("note")
     if note is not None and not (isinstance(note, str) and CITATION_NOTE.fullmatch(note)):
         raise ValueError(f"{where}: the note {note!r} is not one parenthesis of text")
-    line = " ".join(part for part in (text, note) if part)
+    # A lower bound that stands in for a published result found unsound names that work
+    # between its reference and its note, `corrects Nagamochi 2005` (the owner,
+    # 2026-10-02); it shares the one line, so it is measured with them.
+    corrects = _corrects_tag(value.get("corrects"), where, bound)
+    line = " ".join(part for part in (text, corrects, note) if part)
     if len(line) > CITATION_TEXT_MAX:
         raise ValueError(
             f"{where}: {line!r} is {len(line)} characters, over the {CITATION_TEXT_MAX} the "
@@ -1271,7 +1300,27 @@ def _citation(value: Any, n: int, bound: str) -> dict[str, str | None] | None:
         raise TypeError(f"{where}: source_key {key!r} is not a string")
     if not isinstance(value.get("value"), str):
         raise TypeError(f"{where}: the value it cites is not a string: {value.get('value')!r}")
-    return {"text": text, "note": note, "basis": basis, "assurance": assurance}
+    return {
+        "text": text,
+        "corrects": corrects,
+        "note": note,
+        "basis": basis,
+        "assurance": assurance,
+    }
+
+
+def _corrects_tag(value: Any, where: str, bound: str) -> str | None:
+    """`corrects Nagamochi 2005` for a citation naming the published work it corrects."""
+    if value is None:
+        return None
+    if bound != "lower":
+        raise ValueError(f"{where}: only a lower bound corrects a published result")
+    if not isinstance(value, dict) or not isinstance(value.get("credit"), str):
+        raise TypeError(f"{where}: corrects is an object with a credit, not {value!r}")
+    result = value.get("result")
+    if not (isinstance(result, str) and RESULT_ID.fullmatch(result)):
+        raise ValueError(f"{where}: corrects names result {result!r}, not a T-NNN identifier")
+    return f"corrects {stage_spelling(value['credit'])}"
 
 
 def load_citations(

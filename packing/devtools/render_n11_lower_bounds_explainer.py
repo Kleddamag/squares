@@ -54,7 +54,7 @@ import shutil
 import struct
 import sys
 from collections import Counter
-from collections.abc import Mapping, Sequence
+from collections.abc import Callable, Mapping, Sequence
 from dataclasses import dataclass
 from fractions import Fraction
 from functools import cache
@@ -490,8 +490,19 @@ def kpress_static() -> Path:
     return static
 
 
+#: Where a stylesheet's faces go: given a face's file name and its bytes, the URL the
+#: stylesheet names it by. `inline_face` makes the face a data URI, so the page that
+#: carries the stylesheet fetches nothing; `site_assets.SiteAssets.face` writes it as a
+#: content-hashed file beside the site's shared stylesheets, which every page links.
+FaceSink = Callable[[str, bytes], str]
+
+
+def inline_face(name: str, data: bytes) -> str:  # noqa: ARG001 - a `FaceSink`
+    return f"data:font/woff2;base64,{base64.b64encode(data).decode()}"
+
+
 def data_uri(path: Path) -> str:
-    return f"data:font/woff2;base64,{base64.b64encode(path.read_bytes()).decode()}"
+    return inline_face(path.name, path.read_bytes())
 
 
 #: A `@font-face` block, and a woff2 `url()` inside one, quoted or bare. kpress writes
@@ -504,13 +515,20 @@ FONT_URL = re.compile(r"""url\(\s*(["']?)([^"')]+\.woff2)\1\s*\)""")
 
 
 def inline_font_urls(css: str, stylesheet_dir: Path) -> str:
-    """Rewrite every relative woff2 `url()` to a data URI, so the page fetches nothing.
+    """Rewrite every relative woff2 `url()` to a data URI, so the page fetches nothing:
+    `resolve_font_urls` with `inline_face`."""
+    return resolve_font_urls(css, stylesheet_dir, inline_face)
+
+
+def resolve_font_urls(css: str, stylesheet_dir: Path, faces: FaceSink) -> str:
+    """Rewrite every relative woff2 `url()` to the URL `faces` gives the face.
 
     Resolved against `stylesheet_dir`, the directory the stylesheet is served from,
     so a stylesheet's own relative references land where the browser would land.
     A reference that does not resolve to a file fails the render: an absent face
     would otherwise fall through to whatever the reader's machine supplies.
     """
+    given: set[str] = set()
 
     def rewrite(match: re.Match[str]) -> str:
         target = match.group(2)
@@ -519,18 +537,19 @@ def inline_font_urls(css: str, stylesheet_dir: Path) -> str:
         path = (stylesheet_dir / target).resolve()
         if not path.is_file():
             raise SystemExit(f"{stylesheet_dir}: stylesheet names {target}, which is not there")
-        return f'url("{data_uri(path)}")'
+        url = faces(path.name, path.read_bytes())
+        given.add(url)
+        return f'url("{url}")'
 
-    inlined = FONT_URL.sub(rewrite, css)
-    # "The page fetches nothing" has to hold for every source a kept block names,
-    # not only the woff2 ones the rewrite recognises: a woff or ttf fallback that
-    # kpress or KaTeX added would otherwise ship as a path beside a file that has
-    # no such neighbour.
-    for block in FONT_FACE_BLOCK.findall(inlined):
+    resolved = FONT_URL.sub(rewrite, css)
+    # Every source a kept block names has to be one `faces` gave, not only the woff2
+    # ones the rewrite recognises: a woff or ttf fallback that kpress or KaTeX added
+    # would otherwise ship as a path beside a file that has no such neighbour.
+    for block in FONT_FACE_BLOCK.findall(resolved):
         for source in re.findall(r"""url\(\s*["']?([^"')]+)""", block):
-            if not source.startswith("data:"):
+            if not source.startswith("data:") and source not in given:
                 raise SystemExit(f"{stylesheet_dir}: a face still fetches {source}; inline it")
-    return inlined
+    return resolved
 
 
 @cache
@@ -671,8 +690,9 @@ def mono_stylesheets() -> tuple[str, ...]:
     return tuple(mono_css_assets(mono_font=MONO_FONT, mono_weights=MONO_WEIGHTS))
 
 
-def kpress_css(static: Path) -> str:
-    """The kpress design system as one stylesheet, its webfonts inlined.
+def kpress_css(static: Path, faces: FaceSink = inline_face) -> str:
+    """The kpress design system as one stylesheet, its webfonts given their URLs by
+    `faces`: inlined by default.
 
     Taken whole rather than reimplemented: the reading measure, the type ramp,
     the heading and list treatments, the color roles and both themes are the
@@ -703,7 +723,7 @@ def kpress_css(static: Path) -> str:
         parts.append(f"/* kpress: {name} */")
         # Each stylesheet resolves its own references, from its own directory, so
         # a kpress stylesheet added outside `css/` would still find its faces.
-        parts.append(inline_font_urls(pruned, (static / name).parent))
+        parts.append(resolve_font_urls(pruned, (static / name).parent, faces))
     return "\n".join(parts)
 
 
@@ -1024,8 +1044,9 @@ def _font_face_reachable(block: str) -> bool:
     )
 
 
-def katex_css(static: Path) -> str:
-    """KaTeX's stylesheets with the reachable faces inlined and the rest dropped.
+def katex_css(static: Path, faces: FaceSink = inline_face) -> str:
+    """KaTeX's stylesheets with the reachable faces kept, given their URLs by `faces`
+    (inlined by default), and the rest dropped.
 
     Two of them, in kpress's order: the vendored `katex.min.css`, and kpress's own
     `katex-text-face.css`, which declares the composite that draws the letters and
@@ -1060,7 +1081,9 @@ def katex_css(static: Path) -> str:
             lambda match: match.group(0) if _font_face_reachable(match.group(0)) else "", css
         )
         parts.append(f"/* kpress: {name} */")
-        parts.append(_blocking_faces(inline_font_urls(pruned, (static / name).parent), name))
+        parts.append(
+            _blocking_faces(resolve_font_urls(pruned, (static / name).parent, faces), name)
+        )
     return "\n".join(parts)
 
 
@@ -1213,7 +1236,7 @@ def _relation_families_reachable(css: str) -> None:
         )
 
 
-def relation_face_css(static: Path) -> str:
+def relation_face_css(static: Path, faces: FaceSink = inline_face) -> str:
     """The relation glyphs as `@font-face` rules on the families the page already ships.
 
     Subset out of KaTeX_Main at render time rather than vendored: the source is the same
@@ -1270,10 +1293,10 @@ def relation_face_css(static: Path) -> str:
         buffer = io.BytesIO()
         font.flavor = "woff2"
         font.save(buffer)
-        encoded = base64.b64encode(buffer.getvalue()).decode()
+        url = faces(f"{face}-relations.woff2", buffer.getvalue())
         rules.extend(
             f'@font-face {{ font-family: "{family}";\n'
-            f'  src: url("data:font/woff2;base64,{encoded}") format("woff2");\n'
+            f'  src: url("{url}") format("woff2");\n'
             f"  font-weight: {weights}; font-style: normal; font-display: block;\n"
             f"  size-adjust: {RELATION_SIZE_ADJUST}%;\n"
             f"  unicode-range: {ranges}; }}"
@@ -2226,21 +2249,21 @@ def iso_date(written: str) -> str:
     return paper_front.iso_date(written)
 
 
-def page_meta(headline: Facts, current: CurrentBoundFacts) -> PageMeta:
+def page_meta(n: int, current: CurrentBoundFacts) -> PageMeta:
     """What the page says of itself in its head: its title, its sentence, its address and
-    the two dates its hero prints.
+    the two dates its hero prints. `n` is the case its certificates are for.
 
     The title is the page's own, with no bound after it: one bound beside a title about
     several, in a case T-060 has since settled, would read as the case's current bound.
-    The bound in the sentence is the headline certificate's own, like every other number
-    on the page. The dates are the front's, first published and last revised
-    (`FRONT`, from `sqpack.release`), the same two the hero states.
+    The bound in the sentence is T-026's (`current_bound_facts`). The dates are the
+    front's, first published and last revised (`FRONT`, from `sqpack.release`), the same
+    two the hero states.
     """
     return PageMeta(
         name=TITLE,
         description=(
             "How weighted point and threshold certificates prove T-026's historical bound "
-            f"s({headline.n}) ≥ {current.bounded_side_decimal}, with visual point-only "
+            f"s({n}) ≥ {current.bounded_side_decimal}, with visual point-only "
             "proofs."
         ),
         path=PAGE_URL.removeprefix(SITE_URL),
@@ -2248,6 +2271,20 @@ def page_meta(headline: Facts, current: CurrentBoundFacts) -> PageMeta:
         published=iso_date(FRONT.dates[0].day),
         modified=iso_date(paper_front.revised(FRONT)),
     )
+
+
+def published_page_meta() -> PageMeta:
+    """`page_meta` for the page the site publishes, the walkthrough's (`WALKTHROUGH`), read
+    without deciding its certificates: the case is the one their files name. The
+    forwarder at the page's old address, `explainer.html`, previews the page with it
+    (`render_overview.forwarded_metas`)."""
+    cases = {int(json.loads(path.read_text(encoding="utf-8"))["n"]) for path in WALKTHROUGH}
+    if len(cases) != 1:
+        raise SystemExit(
+            f"the walkthrough's certificates are for {sorted(cases)}, not one case"
+        )
+    (n,) = cases
+    return page_meta(n, current_bound_facts())
 
 
 def card_substitutions(headline: Facts, current: CurrentBoundFacts) -> dict[str, str]:
@@ -2261,7 +2298,7 @@ def card_substitutions(headline: Facts, current: CurrentBoundFacts) -> dict[str,
     crop, which a paper of its own might take again (think-3w07).
     """
     return {
-        "PAGE_HEAD": head_tags(page_meta(headline, current)),
+        "PAGE_HEAD": head_tags(page_meta(headline.n, current)),
         "SITE_FAVICON": favicon_html(),
         "COMPOSITE_ALT": COMPOSITE_ALT,
     }

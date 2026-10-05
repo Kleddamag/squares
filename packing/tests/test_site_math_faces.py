@@ -98,28 +98,20 @@ def walk(
 
 
 @pytest.fixture(scope="module")
-def overview_html() -> str:
-    return site_renders.html("index.html")
-
-
-@pytest.fixture(scope="module")
-def overview(browser: Any, root: Path, overview_html: str) -> Walk:
-    path = root / "index.html"
-    path.write_text(overview_html, encoding="utf-8")
+def overview(browser: Any, root: Path) -> Walk:
+    path = site_renders.write(root, "index.html")["index.html"]
     return walk(browser, path.as_uri(), presses=(), whole=True)
 
 
 @pytest.fixture(scope="module")
 def results(browser: Any, root: Path) -> Walk:
-    path = root / render_overview.RESULTS_PAGE
-    path.write_text(site_renders.html(render_overview.RESULTS_PAGE), encoding="utf-8")
+    path = site_renders.write(root, render_overview.RESULTS_PAGE)[render_overview.RESULTS_PAGE]
     return walk(browser, path.as_uri(), presses=(), whole=True)
 
 
 @pytest.fixture(scope="module")
 def frontier_atlas(browser: Any, root: Path) -> Walk:
-    path = root / "frontier.html"
-    path.write_text(site_renders.html("frontier.html"), encoding="utf-8")
+    path = site_renders.write(root, "frontier.html")["frontier.html"]
     return walk(browser, path.as_uri(), presses=(), whole=False)
 
 
@@ -248,6 +240,8 @@ def test_the_walk_catches_serif_math_in_a_sans_headline(browser: Any, root: Path
     )
     plain = f'<p class="site-popover-value" id="{target}-title">'
     assert results.count(plain) == 1
+    # Beside the results page as the site writes it, so the assets it names are there.
+    site_renders.write(root, render_overview.RESULTS_PAGE)
     marked = root / "marked.html"
     marked.write_text(
         results.replace(plain, plain.replace(" id=", ' data-math-face="serif" id=', 1)),

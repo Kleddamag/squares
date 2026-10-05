@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import hashlib
+import re
 import struct
 from collections.abc import Callable, Sequence
 from pathlib import Path
@@ -75,15 +76,26 @@ CHECKOUT_COMMIT = check_published_site.checkout_commit
 HEAD_CHECKS = check_published_site.head_checks
 
 
+#: The pages a forwarder leads to, by their addresses, each with the record it writes its
+#: own head from. A fixture page there says what the page says, as a deployed one does,
+#: since the check holds each forwarder's preview to the head of the page it leads to.
+FORWARDED = {
+    render_overview.canonical_url(path): meta
+    for path, meta in render_overview.forwarded_metas().items()
+}
+
+
 def head(path: str, *, description: str | None = None) -> str:
-    """A page's head as the site writes one (`render_overview.head_tags`), for the page
-    served at `path` under the root, saying something of its own."""
-    meta = render_overview.PageMeta(
-        name=f"Page {path}",
-        description=description or f"What a reader finds at {path}.",
-        path=path,
+    """A page's head as the site writes one (`render_overview.head_tags`, then the
+    site's icon), for the page served at `path` under the root, saying something of its
+    own: a page a forwarder leads to, what its own record says."""
+    meta = FORWARDED.get(render_overview.canonical_url(path)) or render_overview.PageMeta(
+        name=f"Page {path}", description=f"What a reader finds at {path}.", path=path
     )
-    return f'<!doctype html><html lang="en"><head>{render_overview.head_tags(meta)}</head>'
+    if description is not None:
+        meta = meta._replace(description=description)
+    tags = f"{render_overview.head_tags(meta)}{render_overview.favicon_html()}"
+    return f'<!doctype html><html lang="en"><head>{tags}</head>'
 
 
 def card(width: int = render_overview.SOCIAL_CARD_WIDTH, height: int = 630) -> bytes:
@@ -172,17 +184,21 @@ EXPECTED_RECORDS = RecordLinks(
 
 
 def result_row(row: str, *, here: bool, records: bool = True) -> str:
-    """A result's row as a table of results writes it: named by `id` on the results page
-    (`here`) and by `data-result` anywhere else, with its line of record links."""
+    """A result's row and the popover it opens, as a table of results writes them: the
+    row named by `id` on the results page (`here`) and by `data-result` anywhere else,
+    and its popover, whose short form ends with its line of record links."""
     link = f'<a href="{RECORD}">register</a>' if records else ""
     return (
         f'<tr {"id" if here else "data-result"}="{row}" data-s="3"><td>{row}</td>'
-        f'<td class="site-col-result">A result<div class="site-records">{link}</div></td></tr>'
+        '<td class="site-col-result">A result</td></tr>'
+        f'<div class="site-popover site-row-pop" id="pop-result-{row}" popover role="dialog">'
+        f'<dl class="site-detail"><dt>Records</dt><dd><div class="site-records">{link}</div>'
+        "</dd></dl></div>"
     )
 
 
 def results_table(*, here: bool) -> bytes:
-    """The table of results on a page, every row with its record link."""
+    """The table of results on a page, every row's popover with its record link."""
     rows = "".join(result_row(row, here=here) for row in EXPECTED_RECORDS.rows)
     return f"<table><tbody>{rows}</tbody></table>".encode()
 
@@ -549,10 +565,12 @@ def test_absent_links_names_what_a_deploy_dropped_and_rows_are_read_one_by_one()
             '<div class="site-records"></div>', ""
         )
         + result_row("t-002", here=True)
-        + '<tr id="replay-n-18"><td><div class="site-records">not a result</div></td></tr>'
         + "</tbody></table>"
+        + '<div class="site-popover site-row-pop" id="pop-case-18" popover>'
+        + '<div class="site-records">not a result</div></div>'
     )
-    # A row without its line is not given the next row's, and only result rows are read.
+    # A popover without its line is not given the next one's, and only result rows'
+    # popovers are read.
     assert row_records(table) == {"t-002": f'<a href="{RECORD}">register</a>'}
     assert row_records(result_row("t-007", here=False)) == {
         "t-007": f'<a href="{RECORD}">register</a>'
@@ -1027,10 +1045,11 @@ def test_check_holds_every_page_to_its_head_and_the_site_to_its_card(
 ) -> None:
     """Every page that can be shared is read for what it says of itself: the site's
     pages, the explainer, the optimality paper and the workbench, each at the address it
-    is served at. The forwarders, the paper's landing address among them, are read for
-    their canonical link, and the card is fetched from the site under test. A good
-    deploy passes, and the head checks cost one request, the card's: the pages are read
-    from the text already fetched."""
+    is served at, and the sampled case records, in one line. The forwarders, the paper's
+    landing address among them, are read by their rule: a preview of the page each leads
+    to, or, for the one that leads off the site, a canonical link and no card. The card is
+    fetched from the site under test. A good deploy passes, and the head checks cost one
+    request, the card's: the pages are read from the text already fetched."""
     requested: list[str] = []
     fetch = fake_site(site_pages(), requested=requested)
     assert failures(monkeypatch, fetch, heads=True) == []
@@ -1055,17 +1074,22 @@ def test_check_holds_every_page_to_its_head_and_the_site_to_its_card(
         render_case_pages.case_url(n)
         for n in sorted({1, check_published_site.RECORD_FILE_SAMPLE, CASE_COUNT})
     ]
-    for name in (*shared, *records):
+    for name in shared:
         assert f"{name}: {clean}" in lines, name
+    assert f"case records: each of {len(records)} carries {clean}" in lines
     pages = len(shared) + len(records)
     assert f"each of {pages} pages has a description of its own" in lines
     # The address the paper's directory had is one of the renderer's forwarders now.
     assert dict(render_overview.MOVED_PAGES)[landing] == OPTIMALITY_PAPER
     paper_url = render_overview.canonical_url(OPTIMALITY_PAPER)
     assert paper_url == f"{render_overview.SITE_URL}papers/n11-optimality-review.html"
-    assert f"forwarder {landing}: names {paper_url} as canonical, and carries no card" in lines
+    assert f"forwarder {landing}: previews {paper_url} as that page's own head does" in lines
+    defects = dict(render_overview.MOVED_PAGES)["defects.html"]
+    assert f"forwarder defects.html: names {defects} as canonical, and carries no card" in lines
+    verbs = ("names", "previews")
     for forwarder in render_overview.forwarder_pages():
-        assert any(line.startswith(f"forwarder {forwarder.name}: names ") for line in lines)
+        starts = tuple(f"forwarder {forwarder.name}: {verb} " for verb in verbs)
+        assert any(line.startswith(starts) for line in lines), forwarder.name
     assert f"card {render_overview.SOCIAL_CARD}: a PNG of 1200x630, 29 bytes" in lines
 
 
@@ -1113,6 +1137,45 @@ def test_check_fails_a_page_whose_head_is_not_the_sites(
     )
 
 
+#: Where each forwarder to a page of the site leads, as an address in full.
+FORWARDED_URLS = {
+    old: render_overview.canonical_url(new)
+    for old, new in render_overview.MOVED_PAGES
+    if not new.startswith("https://")
+}
+
+
+def test_check_fails_a_forwarder_that_previews_its_page_by_another_name_or_kind(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """A forwarder's preview is held to the head the deploy serves at the address it leads
+    to. The old address of the frontier atlas previewing it by a name the page no longer
+    has, and the explainer's previewing it as a website, as both did, each fail, though
+    each forwarder's own set is whole."""
+    forwarders = {moved.name: moved.html for moved in render_overview.forwarder_pages()}
+
+    def found(name: str, text: str) -> list[str]:
+        assert check_published_site.head_problems(text, FORWARDED_URLS[name]) == []
+        site = fake_site(site_pages(**{name: text.encode()}))
+        return failures(monkeypatch, site, heads=True)
+
+    renamed = forwarders["status.html"].replace("The Frontier Survey", "The Frontier Atlas")
+    (failure,) = found("status.html", renamed)
+    assert failure == (
+        "forwarder status.html: head: its og:title is ['The Frontier Atlas'], and the page's "
+        "own is ['The Frontier Survey']"
+    )
+    dated = re.compile(r'<meta property="article:\w+" content="[^"]*">\n')
+    website = dated.sub("", forwarders["explainer.html"]).replace(
+        'og:type" content="article"', 'og:type" content="website"'
+    )
+    (failure,) = found("explainer.html", website)
+    assert failure == (
+        "forwarder explainer.html: head: its og:type is ['website'], and the page's own is "
+        "['article']"
+    )
+
+
 def test_check_fails_a_card_that_is_missing_or_not_the_declared_size(
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
@@ -1133,8 +1196,8 @@ def test_check_fails_a_forwarder_whose_canonical_link_is_not_its_targets_address
 ) -> None:
     """The paper's landing address once named the paper by its file name alone, which a
     crawler has no base to resolve; a forwarder names its target's address in full. A
-    relative one fails twice: it is not the address the forwarder should name, and it is
-    not an address in full."""
+    relative one fails twice: where the forwarder says it sends a visit is not the address
+    it should name, and its preview's canonical link is not the page it leads to."""
     name = "n11-optimality/index.html"
     landing = site_pages()[name].decode()
     target = render_overview.canonical_url(OPTIMALITY_PAPER)
@@ -1146,5 +1209,5 @@ def test_check_fails_a_forwarder_whose_canonical_link_is_not_its_targets_address
     says, heads = failures(monkeypatch, fake_site(site_pages(**{name: relative})), heads=True)
     assert says.startswith(f"forwarder {name}: HTTP 200, says ")
     assert heads.startswith(
-        f"forwarder {name}: head: its canonical links are ['../papers/n11-optimality-review"
+        f"forwarder {name}: head: the canonical link is '../papers/n11-optimality-review"
     )

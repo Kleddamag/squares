@@ -26,6 +26,7 @@ from devtools import (
     render_recent_results,
     result_overview,
     result_status,
+    site_assets,
 )
 from devtools.check_results import scope_values
 from devtools.render_n11_lower_bounds_explainer import COMPOSITE_ASSETS, OVERVIEW_FILM_POSTER
@@ -77,6 +78,26 @@ def rendered() -> Callable[[str], str]:
     return site_renders.html
 
 
+@pytest.fixture(scope="module")
+def served() -> Callable[[str], str]:
+    """Any site page by name as a reader's browser assembles it, with every shared asset
+    it links put back in it (`tests.site_renders.served`): for a check of what a page
+    carries, its programs' and stylesheets' text among it, rather than of how it names
+    them. Every page is assembled here, during setup, as `rendered` renders them."""
+    assembled = {name: site_renders.served(name) for name in render_overview.PAGES}
+    return assembled.__getitem__
+
+
+def _asset_tag(path: Path, name: str = "index.html") -> str:
+    """The element by which the page `name` loads `path`, a stylesheet or a page program
+    of the repository's: a file of the site's shared assets named by its content
+    (`site_assets`), so a page holding the element loads this text and no other."""
+    assets = site_assets.shared().assets
+    if path.suffix == ".css":
+        return site_assets.stylesheet_tag(assets.stylesheet_file(path), name)
+    return site_assets.script_tag(assets.script_file(path), name)
+
+
 def test_every_register_entry_is_one_row(results: str, register: list[dict]) -> None:
     rows = ROW.findall(results)
     assert sorted(row_id for row_id, _, _ in rows) == sorted(r["id"].lower() for r in register)
@@ -106,7 +127,7 @@ def test_the_render_is_deterministic(page: str, results: str) -> None:
 
 
 def test_the_results_table_has_its_own_page_and_the_overview_points_to_it(
-    page: str, results: str
+    page: str, results: str, served: Callable[[str], str]
 ) -> None:
     """The table is on `all-results.html`, marked current in the bar, with its sorting
     and filters; the overview keeps no row of it, only a pointer under the recent table."""
@@ -117,7 +138,9 @@ def test_the_results_table_has_its_own_page_and_the_overview_points_to_it(
     assert dict(render_overview.MOVED_PAGES)["results.html"] == "all-results.html"
     assert 'aria-current="page" href="all-results.html">Results</a>' in results
     assert "data-site-table" in results
-    assert render_overview.TABLE_SCRIPT.read_text(encoding="utf-8") in results
+    assert results.count(_asset_tag(render_overview.TABLE_SCRIPT)) == 1
+    table = render_overview.TABLE_SCRIPT.read_text(encoding="utf-8")
+    assert table in served(render_overview.RESULTS_PAGE)
     assert '<h1 id="every-result">' in results
     assert not ROW.findall(page)
     assert 'id="every-result"' not in page
@@ -172,8 +195,20 @@ def test_every_moved_fragment_is_one_the_forwarder_sends_on(page: str, results: 
     assert not [i for i in ID.findall(page) if moved.fullmatch(i)]
 
 
-def test_the_page_fetches_nothing(page: str) -> None:
-    render_overview.assert_self_contained("index.html", page)
+def test_the_page_fetches_only_the_shared_assets(page: str) -> None:
+    """The page fetches what it is drawn with from the site's shared assets and nowhere
+    else, and every file it names is one the build writes beside it. The same page with
+    one program or one stylesheet named from anywhere else is refused."""
+    render_overview.assert_fetches_only_assets("index.html", page)
+    assert site_assets.shared().assets.referenced([page])
+    for shared, elsewhere in (
+        ('<script src="assets/js/', '<script src="js/'),
+        ('<link rel="stylesheet" href="assets/css/', '<link rel="stylesheet" href="css/'),
+    ):
+        moved = page.replace(shared, elsewhere, 1)
+        assert moved != page, shared
+        with pytest.raises(SystemExit):
+            render_overview.assert_fetches_only_assets("index.html", moved)
 
 
 def test_the_bar_leads_with_case_11_beside_the_name(page: str) -> None:
@@ -190,7 +225,9 @@ def test_the_site_icon_is_case_11_and_fetches_nothing(page: str) -> None:
     assert page.count(icon) == 1
     assert icon.startswith('<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,')
     with pytest.raises(SystemExit):
-        render_overview.assert_self_contained("x.html", '<link rel="icon" href="icon.svg">')
+        render_overview.assert_fetches_only_assets(
+            "x.html", '<link rel="icon" href="icon.svg">'
+        )
 
 
 def test_the_hero_draws_its_case_and_links_to_its_row(page: str) -> None:
@@ -214,9 +251,9 @@ def test_the_posters_and_the_film_have_a_section_of_their_own_under_the_atlas(
 ) -> None:
     """The Atlas of Square Packings keeps the grid and its expander, and holds no card.
     The two posters and the film follow under an ordinary section heading, PDFs and
-    Videos, directly after it since The Frontier Survey went on 2026-10-02, with its own
-    id and its entry in the page's contents, and their note, the star, the shorter film,
-    the release and the SVGs, goes with them."""
+    Videos, after Recent Results since the atlas moved above it on 2026-10-04, with its
+    own id and its entry in the page's contents, and their note, the star, the shorter
+    film, the release and the SVGs, goes with them."""
     heading = '<h2 id="pdfs-and-videos">PDFs and Videos</h2>'
     assert page.count(heading) == 1
     atlas = page.split('id="the-atlas-of-square-packings"', 1)[1].split("<h2", 1)[0]
@@ -234,10 +271,10 @@ def test_the_posters_and_the_film_have_a_section_of_their_own_under_the_atlas(
         overview_sections.ATLAS_CARDS
     )
     note = section.split('<p class="site-wide site-atlas-note">', 1)[1].split("</p>", 1)[0]
-    # The star is explained once on the page, above the recent table (`star_legend`);
-    # the note links that legend and says it no second time.
+    # The star is keyed once on the page, in the legend under the recent table
+    # (`rung_legend`); the note links that table and says it no second time.
     assert note.startswith(
-        'The best packings known, each star a <a href="#recent-results">new result</a>.'
+        'On the posters, each star marks a <a href="#recent-results">new result</a>.'
     )
     assert "22 August" not in note
     assert section.index('class="site-cards-frame') < section.index("site-atlas-note")
@@ -254,10 +291,11 @@ def test_the_atlas_section_is_named_for_its_packings_and_the_sections_run_in_ord
     """The homepage's atlas section is The Atlas of Square Packings, and it was The Atlas
     until 2026-10-01: an empty anchor in the heading keeps `#the-atlas` landing on it.
     The sections run in the owner's order: the problem, the project with its page cards,
-    the recent results, the atlas, then the posters and film, the other projects and the
-    documents. Verification Ladders stood between the recent results and the atlas until
-    2026-10-02, and is the results page's since; The Frontier Survey stood after the
-    atlas until the same day, and its card is a page card since."""
+    the atlas, the recent results, then the posters and film, the other projects and the
+    documents. The atlas stood after the recent results until 2026-10-04. Verification
+    Ladders stood between the recent results and the atlas until 2026-10-02, and is the
+    results page's since; The Frontier Survey stood after the atlas until the same day,
+    and its card is a page card since."""
     heading = (
         '<h2 id="the-atlas-of-square-packings">The Atlas of Square Packings'
         '<a id="the-atlas"></a></h2>'
@@ -272,8 +310,8 @@ def test_the_atlas_section_is_named_for_its_packings_and_the_sections_run_in_ord
     assert re.findall(r'<h2 id="([^"]+)"', page) == [
         "the-problem",
         "the-squares-project",
-        "recent-results",
         "the-atlas-of-square-packings",
+        "recent-results",
         "pdfs-and-videos",
         "other-square-packing-projects",
         "squares-project-documentation",
@@ -471,9 +509,13 @@ def test_a_card_hero_is_served_beside_the_page_never_fetched() -> None:
     assert button.index('class="site-card-hero"') < button.index('class="site-card-label"')
 
 
-def test_the_atlas_grid_draws_every_case_and_places_it_lazily(page: str) -> None:
+def test_the_atlas_grid_draws_every_case_and_places_it_lazily(
+    page: str, served: Callable[[str], str]
+) -> None:
     """One cell per tracked case, each linking to its case record, in two templates the
-    script places: the first hundred when the grid comes near, the rest on expanding."""
+    script places: the first hundred when the grid comes near, the rest on expanding. A
+    third holds the second drawing of each case that has a regularized view, which the
+    script swaps in only when the reader asks for that drawing."""
     grid = page.split("data-atlas-grid>", 1)[1].split('<p class="site-action-row', 1)[0]
 
     def cells(which: str) -> list[int]:
@@ -490,9 +532,11 @@ def test_the_atlas_grid_draws_every_case_and_places_it_lazily(page: str) -> None
 
     assert cells("first") == list(range(1, 101))
     assert cells("rest") == list(range(101, 325))
-    assert grid.count("<template") == 2
+    assert cells("regularized") == list(overview_sections.atlas_regularized())
+    assert grid.count("<template") == 3
     assert re.findall(r'aria-label="n = 11, [a-z]+"', grid)
-    assert render_overview.ATLAS_GRID_SCRIPT.read_text(encoding="utf-8") in page
+    assert page.count(_asset_tag(render_overview.ATLAS_GRID_SCRIPT)) == 1
+    assert render_overview.ATLAS_GRID_SCRIPT.read_text(encoding="utf-8") in served("index.html")
 
 
 def test_the_atlas_grid_expands_from_100_to_324_with_one_button() -> None:
@@ -553,15 +597,17 @@ def test_the_atlas_expander_reuses_the_action_button_and_tokens() -> None:
     assert ".site-atlas-rest[hidden] {\n  display: none;" in css
 
 
-def test_the_atlas_is_rendered_as_the_grid_under_tabs_that_ship_hidden(page: str) -> None:
+def test_the_atlas_is_rendered_as_the_grid_under_tabs_that_ship_hidden(
+    page: str, served: Callable[[str], str]
+) -> None:
     """The page is rendered in the grid view, the default, with the two view tabs over
     the tiles: a tablist of buttons, Grid selected and the one stop in the tab order,
     each controlling the box of tiles the script places. The strip ships `hidden`, since
     without the script it would do nothing, as the expander's row does. Both scripts are
-    inlined, the views' first: the grid's calls it. `test_site_atlas_views` reads the
+    linked, the views' first: the grid's calls it. `test_site_atlas_views` reads the
     two views in a browser."""
     block = re.findall(r'<div class="site-wide site-atlas-grid" ([^>]*)>', page)
-    assert block == ['data-atlas-view="grid" data-atlas-grid']
+    assert block == ['data-atlas-view="grid" data-atlas-layer="house" data-atlas-grid']
     tabs = overview_sections.atlas_view_tabs()
     assert tabs == (
         '<div class="site-tabs site-atlas-views" role="tablist" aria-label="Atlas layout" '
@@ -598,11 +644,18 @@ def test_the_atlas_is_rendered_as_the_grid_under_tabs_that_ship_hidden(page: str
     assert [key for key, _ in overview_sections.ATLAS_VIEWS] == ["grid", "triangle"]
     view = render_overview.ATLAS_VIEW_SCRIPT.read_text(encoding="utf-8")
     grid = render_overview.ATLAS_GRID_SCRIPT.read_text(encoding="utf-8")
-    assert page.index(view) < page.index(grid)
+    view_tag = _asset_tag(render_overview.ATLAS_VIEW_SCRIPT)
+    grid_tag = _asset_tag(render_overview.ATLAS_GRID_SCRIPT)
+    assert page.index(view_tag) < page.index(grid_tag)
+    whole = served("index.html")
+    assert whole.index(view) < whole.index(grid)
     assert "SiteAtlasView.mount({ block: grid, cells, tabs })" in grid
     assert "tabs.hidden = false;" in grid
-    # No tile is written twice for the second view: one drawing a case, as before.
-    assert page.count('class="site-atlas-cell"') == 324
+    # No tile is written twice for the second view: one house drawing a case, as before,
+    # and a second drawing only for a case with a regularized view.
+    tiles = re.findall(r'<a class="site-atlas-cell" [^>]*>', page)
+    assert len([tile for tile in tiles if "data-atlas-layer=" not in tile]) == 324
+    assert len(tiles) == 324 + len(overview_sections.atlas_regularized())
 
 
 def test_the_atlas_marks_each_perfect_square_and_nothing_else_on_a_tile(page: str) -> None:
@@ -615,6 +668,189 @@ def test_the_atlas_marks_each_perfect_square_and_nothing_else_on_a_tile(page: st
     assert grid.count("data-atlas-square") == 18
     assert "style=" not in grid.split("<template data-atlas-first>", 1)[1].split("<svg", 1)[0]
     assert 'class="site-atlas-key"' not in page
+
+
+def _regularized_index() -> dict:
+    import json  # noqa: PLC0415
+
+    from devtools import render_frontier_page  # noqa: PLC0415
+
+    return json.loads(render_frontier_page.REGULARIZED_INDEX.read_text(encoding="utf-8"))
+
+
+def _atlas_template(page: str, which: str) -> str:
+    """One of the atlas block's templates, from a page or from `atlas_grid` itself."""
+    grid = page.split("data-atlas-grid>", 1)[1].split('<p class="site-action-row', 1)[0]
+    return grid.split(f"<template data-atlas-{which}>", 1)[1].split("</template>", 1)[0]
+
+
+def test_the_atlas_offers_its_regularized_drawing_under_tabs_beside_the_views(
+    page: str, served: Callable[[str], str]
+) -> None:
+    """Beside the view tabs, in one row over the tiles, two more choose the drawing:
+    House, the default and the one the page is rendered in, and Regularized, which
+    carries the badge its tiles carry. The strip is the view tabs' own, a tablist of two
+    buttons controlling the box of tiles, and ships `hidden` as they do. The layer's
+    script is linked between the views' and the grid's, and the grid mounts it."""
+    assert [key for key, _ in overview_sections.ATLAS_LAYERS] == ["house", "regularized"]
+    mark = overview_sections.atlas_layer_mark()
+    assert mark == '<span class="site-atlas-layer-mark" aria-hidden="true"></span>'
+    tabs = overview_sections.atlas_layer_tabs()
+    assert tabs == (
+        '<div class="site-tabs site-atlas-layers" role="tablist" aria-label="Atlas drawings" '
+        "data-atlas-layers hidden>"
+        '<button type="button" role="tab" id="atlas-layer-house" data-atlas-layer-tab="house" '
+        'aria-selected="true" aria-controls="atlas-cells">House</button>'
+        '<button type="button" role="tab" id="atlas-layer-regularized" '
+        'data-atlas-layer-tab="regularized" aria-selected="false" aria-controls="atlas-cells" '
+        f'tabindex="-1">{mark}Regularized</button>'
+        "</div>"
+    )
+    assert page.count(tabs) == 1
+    controls = (
+        '<div class="site-atlas-controls" data-atlas-controls>'
+        f"{overview_sections.atlas_view_tabs()}{tabs}</div>"
+    )
+    assert page.count(controls) == 1
+    atlas = page.split('id="the-atlas-of-square-packings"', 1)[1].split("<h2", 1)[0]
+    assert atlas.index(controls) < atlas.index("<template data-atlas-first>")
+    view = render_overview.ATLAS_VIEW_SCRIPT.read_text(encoding="utf-8")
+    layer = render_overview.ATLAS_LAYER_SCRIPT.read_text(encoding="utf-8")
+    grid = render_overview.ATLAS_GRID_SCRIPT.read_text(encoding="utf-8")
+    view_tag = _asset_tag(render_overview.ATLAS_VIEW_SCRIPT)
+    layer_tag = _asset_tag(render_overview.ATLAS_LAYER_SCRIPT)
+    grid_tag = _asset_tag(render_overview.ATLAS_GRID_SCRIPT)
+    assert page.count(layer_tag) == 1
+    assert page.index(view_tag) < page.index(layer_tag) < page.index(grid_tag)
+    whole = served("index.html")
+    assert whole.index(view) < whole.index(layer) < whole.index(grid)
+    assert (
+        "SiteAtlasLayer.mount({ block: grid, cells, tabs: layerTabs, template: layerTemplate })"
+        in grid
+    )
+    # The tiles go after the row of tabs, and are the address's drawing before they are
+    # put in the page, and again whenever the rest are placed.
+    assert "(controls instanceof HTMLElement ? controls : tabs).after(cells);" in grid
+    # Read by pattern, not quoted as JavaScript: each placing of tiles is followed at
+    # once by the swap, and the swap comes before the box is put in the page.
+    for placed in ("cells.append(template", "rest.append(restTemplate"):
+        after = grid[grid.index(placed) :].split("\n", 2)[1].strip()
+        assert after == "layers?.apply();", placed
+    assert grid.index("layers?.apply();") < grid.index(".after(cells);")
+    assert re.search(r'\bPARAM = "layer";', layer)
+    assert "history.replaceState(history.state" in layer
+
+
+def test_a_regularized_tile_is_its_house_tile_drawn_from_the_view() -> None:
+    """Each case with a regularized view has a second tile: the same link, number and
+    status, marked as the regularized drawing, named so, and badged after its number.
+    Its drawing is the regularized rendering reduced by `packing_svg`, the code that
+    reduces a house rendering, so it differs from the house tile's only where the view
+    moved a square or changed a square's shade; and for every case it does differ. Read
+    from the generator's own markup, before the page's renderer normalizes it."""
+    from devtools import render_frontier_page as frontier  # noqa: PLC0415
+
+    page = overview_sections.atlas_grid()
+    regularized = overview_sections.atlas_regularized()
+    house = _atlas_template(page, "first") + _atlas_template(page, "rest")
+    second = _atlas_template(page, "regularized")
+    tile = re.compile(
+        r'(<a class="site-atlas-cell" [^>]*>)(<svg .*?</svg>)(<span class=.*?)</a>'
+    )
+    houses = {
+        int(re.findall(r'data-atlas-n="(\d+)"', a)[0]): (a, d, n)
+        for a, d, n in tile.findall(house)
+    }
+    drawn = {
+        int(re.findall(r'data-atlas-n="(\d+)"', a)[0]): (a, d, n)
+        for a, d, n in tile.findall(second)
+    }
+    assert list(drawn) == list(regularized)
+    assert len(houses) == 324
+    mark = overview_sections.atlas_layer_mark()
+    for n in regularized:
+        (house_open, house_drawing, house_number), (open_tag, drawing, number) = (
+            houses[n],
+            drawn[n],
+        )
+        status = re.findall(r'data-status="([^"]+)"', house_open)[0]
+        assert open_tag == (
+            f'<a class="site-atlas-cell" href="cases/{n}.html" data-case="{n}" '
+            f'data-atlas-n="{n}" '
+            f'data-atlas-layer="regularized" data-status="{status}" '
+            f'aria-label="n = {n}, regularized view, {status}">'
+        ), n
+        assert house_number == f'<span class="site-atlas-n">{n}</span>'
+        assert number == f'<span class="site-atlas-n">{n}{mark}</span>'
+        assert drawing == frontier.packing_svg(
+            n, units=overview_sections.ATLAS_UNITS, root=frontier.REGULARIZED_RENDERINGS
+        )
+        assert house_drawing == frontier.packing_svg(n, units=overview_sections.ATLAS_UNITS)
+        assert drawing != house_drawing, n
+    assert "data-atlas-layer" not in house
+    assert mark not in house
+
+
+def test_the_regularized_set_is_the_layer_index_and_refuses_a_stale_drawing(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    """The cases are the ones the layer's index lists as regularized, never a list kept
+    here, so a view the layer gains joins the atlas at the next render. A drawing the
+    index does not ask for, or one it asks for that is missing, refuses the page; so
+    does an index that labels its drawings with another word than the badge's."""
+    import json  # noqa: PLC0415
+
+    from devtools import render_frontier_page as frontier  # noqa: PLC0415
+
+    index = _regularized_index()
+    listed = tuple(entry["n"] for entry in index["entries"] if entry["status"] == "regularized")
+    assert overview_sections.atlas_regularized() == listed
+    assert listed, "the atlas has no regularized view to offer"
+    drawings = tmp_path / "rendering"
+    drawings.mkdir()
+    for n in listed[:2]:
+        (drawings / f"n-{n:03d}.svg").write_text("", encoding="utf-8")
+    copy = tmp_path / "index.json"
+    copy.write_text(json.dumps(index), encoding="utf-8")
+    monkeypatch.setattr(frontier, "REGULARIZED_INDEX", copy)
+    monkeypatch.setattr(frontier, "REGULARIZED_RENDERINGS", drawings)
+    with pytest.raises(SystemExit, match=r"stale \(missing \["):
+        overview_sections.atlas_regularized()
+    for n in listed[2:]:
+        (drawings / f"n-{n:03d}.svg").write_text("", encoding="utf-8")
+    assert overview_sections.atlas_regularized() == listed
+    (drawings / "n-001.svg").write_text("", encoding="utf-8")
+    with pytest.raises(SystemExit, match=r"unexpected \[1\]"):
+        overview_sections.atlas_regularized()
+    (drawings / "n-001.svg").unlink()
+    copy.write_text(json.dumps({**index, "label": "tidied"}), encoding="utf-8")
+    with pytest.raises(SystemExit, match="labels its drawings 'tidied'"):
+        overview_sections.atlas_regularized()
+
+
+def test_the_regularized_badge_is_a_dot_that_leaves_the_number_centred() -> None:
+    """The badge is one dot in the accent, sized in the text it stands with. On a tile it
+    is out of the flow past the number's end, the number box shrunk to the number and
+    centred, so a regularized tile's number stands where a house tile's does."""
+    css = render_overview.SITE_CSS.read_text(encoding="utf-8")
+    dot = _rule(css, ".site-atlas-layer-mark")
+    for declaration in (
+        "background: var(--kpress-doc-accent);",
+        "block-size: 0.5em;",
+        "inline-size: 0.5em;",
+        "border-radius: 50%;",
+    ):
+        assert declaration in dot, declaration
+    number = _rule(css, '.site-atlas-cell[data-atlas-layer="regularized"] .site-atlas-n')
+    for declaration in (
+        "inline-size: fit-content;",
+        "margin-inline: auto;",
+        "position: relative;",
+    ):
+        assert declaration in number, declaration
+    hung = _rule(css, ".site-atlas-n > .site-atlas-layer-mark")
+    for declaration in ("position: absolute;", "inset-inline-start: calc(100% + 0.3em);"):
+        assert declaration in hung, declaration
 
 
 def test_the_view_tabs_are_the_section_tabs_strip() -> None:
@@ -645,11 +881,25 @@ def test_the_view_tabs_are_the_section_tabs_strip() -> None:
     ):
         assert declaration in button
     css = render_overview.SITE_CSS.read_text(encoding="utf-8")
-    placed = _rule(css, ".site-atlas-grid .site-atlas-views")
+    placed = _rule(
+        css, ".site-atlas-grid .site-atlas-views,\n.site-atlas-grid .site-atlas-layers"
+    )
     assert "line-height: var(--site-nav-line);" in placed
-    assert "margin: 0 auto var(--site-atlas-toggle-space);" in placed
-    assert "display: none;" in _rule(css, ".site-atlas-grid .site-atlas-views[hidden]")
+    assert "margin: 0;" in placed
+    hidden = ".site-atlas-grid .site-atlas-views[hidden],\n"
+    assert "display: none;" in _rule(
+        css, hidden + ".site-atlas-grid .site-atlas-layers[hidden]"
+    )
     assert "font-size" not in placed
+    # The two strips are one row over the tiles, centred, that wraps on a narrow block.
+    row = _rule(css, ".site-atlas-grid .site-atlas-controls")
+    for declaration in (
+        "display: flex;",
+        "flex-wrap: wrap;",
+        "justify-content: center;",
+        "margin-block-end: var(--site-atlas-toggle-space);",
+    ):
+        assert declaration in row, declaration
 
 
 def test_the_triangle_is_sized_and_timed_by_tokens_the_script_reads() -> None:
@@ -740,10 +990,12 @@ def test_a_cases_visual_summary_carries_what_the_film_shows() -> None:
     assert eleven["record"] == "n-011"
     assert eleven["cite"]["lower"] == {
         "text": "Queuingtheorydotcom after Levy et al. 2026, Web",
+        "corrects": None,
         "note": "(confirmed T-060)",
     }
     assert eleven["cite"]["upper"] == {
         "text": "Trump 1979, Squares in Squares",
+        "corrects": None,
         "note": "(confirmed T-011)",
     }
     seventeen = facts[17]
@@ -751,10 +1003,20 @@ def test_a_cases_visual_summary_carries_what_the_film_shows() -> None:
     assert (seventeen["lower"], seventeen["upper"]) == ("4.660440", "4.675531")
     assert seventeen["open"] == ["optimality"]
     assert seventeen["cite"]["lower"]["note"] == "(confirmed T-043)"
+    # A floor that stands in for Nagamochi 2005's withdrawn bound names the work it corrects.
+    assert facts[150]["cite"]["lower"]["corrects"] == "corrects Nagamochi 2005"
+    assert facts[150]["cite"]["upper"]["corrects"] is None
+    # The summary draws it between the reference and the note, as the frontier does.
+    summary = result_overview.film_facts_html(facts[150])
+    tag = '<span class="site-corrects">corrects Nagamochi 2005</span>'
+    assert summary.count(tag) == 1
+    assert "site-corrects" not in result_overview.film_facts_html(eleven)
     assert facts[1] == {**facts[1], "exact": True, "upper": "1", "lower": None, "open": []}
 
 
-def test_the_atlas_grid_opens_each_case_in_the_case_popover(page: str) -> None:
+def test_the_atlas_grid_opens_each_case_in_the_case_popover(
+    page: str, served: Callable[[str], str]
+) -> None:
     """A cell opens the page's one case popover, which fetches the case's record file
     and shows its record as its own page does (think-t21m). The atlas popover the
     script filled from a JSON of the film's facts, until 2026-10-03, is gone with its
@@ -769,18 +1031,25 @@ def test_the_atlas_grid_opens_each_case_in_the_case_popover(page: str) -> None:
     script = render_overview.ATLAS_GRID_SCRIPT.read_text(encoding="utf-8")
     assert "data-atlas-popover" not in script
     assert "data-atlas-facts" not in script
-    assert "site-atlas-tip" not in page
+    # Nor in the page as it is served, its stylesheets and programs with it.
+    assert "site-atlas-tip" not in served("index.html")
 
 
-def test_the_document_is_kpress_viewport_with_its_contents_behaviours(page: str) -> None:
+def test_the_document_is_kpress_viewport_with_its_contents_behaviours(
+    page: str, served: Callable[[str], str]
+) -> None:
     """A site page scrolls the document, so the document is the element kpress watches:
     with `<main>` marked instead, the contents rail's scroll-spy observed a pane that
     never scrolls. kpress's contents-rail and history modules ride on every page, since
-    without them nothing marks the section in view."""
+    without them nothing marks the section in view: one shared file, which the page
+    links."""
     assert page.count("<html data-kpress-viewport ") == 1
     assert '<main class="kpress-page-main kpress-viewport">' in page
+    behaviors = site_assets.script_tag(render_overview.kpress_client_asset(), "index.html")
+    assert page.count(behaviors) == 1
+    whole = served("index.html")
     for module in render_overview.KPRESS_CLIENT_MODULES:
-        assert f"/* kpress: js/{module} */" in page, module
+        assert f"/* kpress: js/{module} */" in whole, module
 
 
 def test_the_big_tables_have_no_outer_border(
@@ -1051,14 +1320,42 @@ def test_a_card_without_a_declared_size_takes_its_texts() -> None:
 #: A cell of the rating-ladder diagram: the ladder it belongs to, then, where it holds a
 #: rung, the chip's title, scale, level and label, and the description. Nothing follows
 #: the description, so a cell with a tally in it is no match.
-_LADDER_CELL = re.compile(
+_LADDER_CELL_RE = re.compile(
     r'<div class="site-ladders-cell(?P<empty> site-ladders-empty)?" role="cell" '
     r'data-ladder="(?P<ladder>[SVC])">'
     r'(?:<div class="site-ladders-rung">'
-    r'<span class="site-chip site-rung-fill" title="(?P<title>[^"]*)" '
-    r'data-rung="(?P<scale>[SVC])" data-level="(?P<level>\d)">(?P<label>[SVC]\d)</span>'
+    r'(?:<span class="site-chip site-rung-fill" title="(?P<title>[^"]*)" '
+    r'data-rung="(?P<scale>[VC])" data-level="(?P<level>\d)">(?P<label>[VC]\d)</span>'
+    r'|<span class="site-significance" data-level="(?P<s_level>\d)" role="img" '
+    r'aria-label="Significance S(?P=s_level) of 5" title="(?P<s_title>[^"]*)">'
+    r'<span class="site-significance-label" aria-hidden="true">(?P<s_label>S\d)</span>'
+    r'<span class="site-significance-bars" aria-hidden="true">'
+    r'(?P<bars>(?:<span class="site-significance-bar"></span>)*)</span></span>)'
     r'<span class="site-ladders-meaning">(?P<meaning>[^<]*)</span></div>)?</div>'
 )
+
+
+class _LADDER_CELL:  # noqa: N801
+    """The ladder diagram's cells, a chip's (V and C) and a significance mark's (S) read
+    alike: `ladder`, `label`, `scale`, `level`, `title` and `meaning`, and for a mark
+    the bars it draws, one per level."""
+
+    @staticmethod
+    def finditer(text: str) -> list[dict[str, str | None]]:
+        cells = []
+        for match in _LADDER_CELL_RE.finditer(text):
+            cell = match.groupdict()
+            if cell["s_label"]:
+                bars = (cell["bars"] or "").count("site-significance-bar")
+                assert bars == int(cell["s_level"] or 0), cell
+                cell |= {
+                    "label": cell["s_label"],
+                    "scale": "S",
+                    "level": cell["s_level"],
+                    "title": cell["s_title"],
+                }
+            cells.append(cell)
+        return cells
 
 
 def _seen(page: str) -> str:
@@ -1077,34 +1374,51 @@ def _ladders(results: str) -> str:
     return section.split('<div class="site-ladders-frame site-wide">', 1)[1].split("<p", 1)[0]
 
 
-def test_recent_results_keys_every_rung_with_its_chip_and_short_meaning(page: str) -> None:
-    """Under Recent Results' account of the ratings stands a key to them (the owner,
-    2026-10-02, `think-tgjv`): the rating ladders' grid, a column per rating headed by
-    its name and its letter alone, a row per level with the highest at the top, each
-    rung the chip the table draws beside its short meaning. Its cells are the ladders'
-    own (`_ladder_cell`), so the key and the Results page's diagram never disagree; what
-    each rating asks, and the links to `epistemics.md`, are the diagram's alone."""
-    key = overview_sections.rung_key()
-    assert key.startswith('<div class="site-ladders-frame site-ladders-key site-wide">')
-    heads = re.findall(r'<span class="site-ladders-name">([^<]+)</span>', key)
-    assert heads == ["Significance (S)", "Verification (V)", "Confirmation (C)"]
-    assert "href=" not in key
-    assert "site-ladders-question" not in key
-    meanings = overview_sections.rung_short_meanings()
-    cells = re.findall(r'<div class="site-ladders-cell" role="cell".*?</div></div>', key)
-    assert len(cells) == len(meanings) == 17
-    for label, meaning in meanings.items():
-        assert f">{label}</span>" in key, label
-        assert (
-            f'<span class="site-ladders-meaning">{html.escape(meaning, quote=False)}</span>'
-            in (key)
-        ), label
-    diagram = overview_sections.verification_block()
-    assert cells == re.findall(
-        r'<div class="site-ladders-cell" role="cell".*?</div></div>', diagram
-    )
-    section = page.split('id="recent-results"', 1)[1].split("<h2", 1)[0]
-    assert section.count(" site-ladders-key ") == 1
+def _legend(served: str) -> str:
+    """The legend under a page's table of results (`rung_legend`)."""
+    return served.split('<div class="site-rung-legend"', 1)[1].split("</div>", 1)[0]
+
+
+def test_a_table_of_results_has_a_legend_of_every_rungs_mark_under_it(
+    page: str, results: str
+) -> None:
+    """Under each table of results stands a legend of three short lines in a box of its
+    own (the owner, 2026-10-03, `think-42dx`; it stood between the bar and the table
+    until 2026-10-04): every significance mark, S1 to S5;
+    every verification and confirmation chip, V0 to C5, each titled with the rubric's
+    meaning; and the star, a new result, with a link to the Verification Ladders that
+    define each rung in full. It took the place of the key of the ladders' whole grid
+    the homepage set under its table."""
+    assert not hasattr(overview_sections, "rung_key")
+    meanings = overview_sections.rung_meanings()
+    expected = [
+        f"{scale}{level}"
+        for scale in "SVC"
+        for level, _ in sorted(overview_sections.rubric_levels()[scale])
+    ]
+    for served, href in (
+        (page, "all-results.html#verification-ladders"),
+        (results, "#verification-ladders"),
+    ):
+        assert served.count('<div class="site-rung-legend"') == 1
+        bar = served.index('<div class="site-table-tools')
+        at = served.index('<div class="site-rung-legend"')
+        assert bar < served.index('<table class="kpress-table site-table site-results"')
+        # The legend follows the table's wrap directly, before the rows' popovers.
+        follows = re.search(r'</table>(?:</div>)+<div class="site-rung-legend"', served)
+        assert follows is not None
+        assert follows.end() - len('<div class="site-rung-legend"') == at
+        legend = _legend(served)
+        assert legend.count("<p>") == 3
+        assert RUNG_CHIP.findall(legend) == expected
+        for label in expected:
+            assert f'title="{html.escape(meanings[label], quote=True)}"' in legend, label
+        assert f'<a href="{href}">What each rung means</a>' in legend
+        # The star's words are a span of their own, so the face they are drawn in is
+        # measured apart from the star's, which no shipped face carries.
+        words = f"<span>{overview_sections.NEW_RESULT}</span>"
+        assert f"{overview_sections.STAR}</span> {words}" in legend
+    assert "site-ladders-key" not in page
 
 
 def test_the_ladders_are_the_results_pages_and_the_overview_points_to_them(
@@ -1112,10 +1426,9 @@ def test_the_ladders_are_the_results_pages_and_the_overview_points_to_them(
 ) -> None:
     """Verification Ladders left the overview for the results page on 2026-10-02 (the
     owner, think-hqb3): the section stands under the table there, headed as it was, with
-    the empty anchor of its older fragment; the overview has no ladders section, and its
-    Recent Results says what the three ratings on a row mean, links the section, and
-    shows every rung in a key, the ladders' grid without their questions or links
-    (think-tgjv). The results page's
+    the empty anchor of its older fragment; the overview has no ladders section, and the
+    legend under its table links the section (think-42dx), its account of the ratings and
+    its key of every rung gone since 2026-10-03. The results page's
     opening paragraph points at the section, so a reader meets the table first and the
     account of the ratings is written once, as the section's lead."""
     heading = (
@@ -1156,17 +1469,10 @@ def test_the_ladders_are_the_results_pages_and_the_overview_points_to_them(
         '<a class="site-ladders-name"',
     ):
         assert gone not in page, gone
-    assert page.count('class="site-ladders"') == 1
-    assert page.count('<div class="site-ladders-frame site-ladders-key site-wide">') == 1
-    # The overview names the ladders once, in the chips' sentence, and nowhere else a
-    # reader sees: its inlined stylesheet and the templates' comments name them too.
-    assert _seen(page).count("Verification Ladders") == 1
-    ladders = "the Verification Ladders on the Results page define each one in full."
-    assert ladders in _rendered_text(_recent_prose(page))
-    assert (
-        '<a href="all-results.html#verification-ladders">Verification Ladders</a>'
-        in _recent_prose(page)
-    )
+    assert 'class="site-ladders"' not in page
+    # The overview names the ladders nowhere a reader sees: its legend links them.
+    assert _seen(page).count("Verification Ladders") == 0
+    assert '<a href="all-results.html#verification-ladders">' in _legend(page)
     for scale, _, _, question in overview_sections.DIMENSIONS:
         assert question in results, scale
 
@@ -1396,8 +1702,8 @@ def test_the_ladder_diagram_says_what_the_rubric_says(results: str) -> None:
     assert set(cells) == set(meanings)
     for label, cell in cells.items():
         assert (cell["ladder"], cell["scale"], cell["level"]) == (label[0], label[0], label[1])
-        assert html.unescape(cell["title"]) == meanings[label], label
-        assert html.unescape(cell["meaning"]) == short[label], label
+        assert html.unescape(cell["title"] or "") == meanings[label], label
+        assert html.unescape(cell["meaning"] or "") == short[label], label
 
 
 def test_every_rung_has_a_description_that_fits_two_lines(
@@ -1476,7 +1782,7 @@ def test_every_rung_chip_in_the_diagram_is_titled_with_the_rubrics_meaning(
     title, the 2026-09-30 meanings included, and the tables' chips stay bare."""
     meanings = overview_sections.rung_meanings()
     titled = {
-        cell["label"]: html.unescape(cell["title"])
+        cell["label"]: html.unescape(cell["title"] or "")
         for cell in _LADDER_CELL.finditer(_ladders(results))
         if cell["label"]
     }
@@ -1492,8 +1798,9 @@ def test_every_rung_chip_in_the_diagram_is_titled_with_the_rubrics_meaning(
 def test_the_ladder_diagram_is_its_own_component_on_the_shared_tokens() -> None:
     """The diagram's rules are its own (`.site-ladders`), and its measures agree with one
     another: the description's box is two lines and is never clipped; a rung sets its
-    description beside the rail only where the cell holds the rail, the gap and the least
-    description; and three columns stand only where each still holds that least. It
+    description beside the rail only where the cell holds the widest rail, the gap and
+    the least description; and three columns stand only where each still holds that
+    least. It
     stands the tables' space clear of the text. Its one rule is under the column heads:
     no cell and no row carries a border, and the rows are kept apart by space alone."""
     css = render_overview.SITE_CSS.read_text(encoding="utf-8")
@@ -1513,11 +1820,15 @@ def test_the_ladder_diagram_is_its_own_component_on_the_shared_tokens() -> None:
         return float(found.group(1))
 
     rail, gap, least, inset = rem("rail"), rem("gap"), rem("meaning-min"), rem("inset")
+    # Significance's marks take a wider rail than the chips, and every cell turns at the
+    # one width, so the widest rail sets it.
+    widest = max(rail, rem("significance-rail"))
+    assert widest > rail
     beside = re.search(r"@container \(inline-size >= ([\d.]+)rem\)", rules)
     columns = re.search(r"@container site-ladders \(inline-size < ([\d.]+)rem\)", rules)
     assert beside, "no query sets a description beside its rail"
     assert columns, "no query stacks the ladders"
-    assert float(beside.group(1)) == rail + gap + least
+    assert float(beside.group(1)) == pytest.approx(widest + gap + least)
     assert float(columns.group(1)) / len(overview_sections.DIMENSIONS) - inset >= least
 
     def body(selector: str) -> str:
@@ -1751,35 +2062,49 @@ def test_register_prose_math_is_found_and_set_in_tex(prose: str, tex: list[str])
 
 @pytest.mark.parametrize("name", sorted(render_overview.PAGES))
 def test_every_site_page_loads_math_through_the_explainers_pipeline(
-    name: str, rendered: Callable[[str], str]
+    name: str, rendered: Callable[[str], str], served: Callable[[str], str]
 ) -> None:
     """One math pipeline: the explainer's KaTeX bundle and host adapter, driven by the
     site's queue, and neither of kpress's whole-page entry points (auto-render and its
-    native initializer), which typeset every formula in one task at DOMContentLoaded."""
+    native initializer), which typeset every formula in one task at DOMContentLoaded.
+    Each page links the pipeline and the queue as shared files."""
     from devtools.render_n11_lower_bounds_explainer import (  # noqa: PLC0415
         katex_js,
         kpress_static,
     )
 
     page = rendered(name)
+    assert page.count(site_assets.script_tag(site_assets.shared().katex_js, name)) == 1
+    assert page.count(_asset_tag(render_overview.MATH_SCRIPT, name)) == 1
+    whole = served(name)
     static = kpress_static()
-    assert katex_js(static) in page
-    assert render_overview.MATH_SCRIPT.read_text(encoding="utf-8") in page
+    assert katex_js(static) in whole
+    assert render_overview.MATH_SCRIPT.read_text(encoding="utf-8") in whole
     for entry in ("katex/auto-render.min.js", "katex/katex-init.js"):
-        assert (static / entry).read_text(encoding="utf-8") not in page, entry
+        assert (static / entry).read_text(encoding="utf-8") not in whole, entry
 
 
 @pytest.mark.parametrize("name", ["index.html", "tutorial.html"])
 def test_every_site_page_carries_the_explainers_text_tokens(
-    name: str, rendered: Callable[[str], str]
+    name: str, rendered: Callable[[str], str], served: Callable[[str], str]
 ) -> None:
     """The type base, measure and heading scale come from the one file the explainer
-    inlines too, after kpress's stylesheets so they win at kpress's own scopes."""
+    carries too, after kpress's stylesheets so they win at kpress's own scopes."""
     page = rendered(name)
+    links = [
+        site_assets.stylesheet_tag(site_assets.shared().kpress_css, name),
+        _asset_tag(render_overview.PAPER_TYPE_CSS, name),
+        _asset_tag(render_overview.SITE_CSS, name),
+    ]
+    assert [page.count(link) for link in links] == [1, 1, 1]
+    assert [page.index(link) for link in links] == sorted(page.index(link) for link in links)
+    whole = served(name)
     tokens = render_overview.PAPER_TYPE_CSS.read_text(encoding="utf-8")
-    assert tokens in page
-    assert page.index(tokens) > page.index("/* kpress: css/style-tokens.css */")
-    assert page.index(tokens) < page.index(render_overview.SITE_CSS.read_text(encoding="utf-8"))
+    assert tokens in whole
+    assert whole.index(tokens) > whole.index("/* kpress: css/style-tokens.css */")
+    assert whole.index(tokens) < whole.index(
+        render_overview.SITE_CSS.read_text(encoding="utf-8")
+    )
 
 
 def test_the_text_tokens_are_declared_in_one_place() -> None:
@@ -1842,14 +2167,15 @@ def test_the_nav_ends_in_an_accessible_theme_control() -> None:
 
 @pytest.mark.parametrize("name", sorted(render_overview.PAGES))
 def test_every_site_page_carries_the_theme_control(
-    name: str, rendered: Callable[[str], str]
+    name: str, rendered: Callable[[str], str], served: Callable[[str], str]
 ) -> None:
     page = rendered(name)
     script = render_overview.THEME_SCRIPT.read_text(encoding="utf-8")
     assert page.count('class="site-theme-button"') == 1
-    assert script in page
-    # kpress's own bootstrap applies the stored choice before first paint, and the
-    # control stores into the key that bootstrap reads.
+    assert page.count(_asset_tag(render_overview.THEME_SCRIPT, name)) == 1
+    assert script in served(name)
+    # kpress's own bootstrap, in the page itself, applies the stored choice before first
+    # paint, and the control stores into the key that bootstrap reads.
     assert 'stored("kpress.theme")' in page
     assert 'storageKey = "kpress.theme"' in script
 
@@ -2094,7 +2420,7 @@ def test_the_film_page_embeds_the_film_at_its_own_proportions(
 
 
 def test_the_film_starts_on_a_visit_to_its_page_and_nowhere_else(
-    rendered: Callable[[str], str],
+    rendered: Callable[[str], str], served: Callable[[str], str]
 ) -> None:
     """Visiting the Visualize page starts its film. The markup mutes it, which a browser
     requires of a film it starts unasked, keeps its controls and its inline playback, and
@@ -2111,11 +2437,14 @@ def test_the_film_starts_on_a_visit_to_its_page_and_nowhere_else(
         assert attribute in attributes, attribute
     assert not {"autoplay", "loop"} & {name.partition("=")[0] for name in attributes}
     script = render_overview.FILM_SCRIPT.read_text(encoding="utf-8")
-    assert page.count(script) == 1
-    assert page.index("</video>") < page.index(script)
+    link = _asset_tag(render_overview.FILM_SCRIPT, "visualize.html")
+    assert page.count(link) == 1
+    assert page.index("</video>") < page.index(link)
+    assert served("visualize.html").count(script) == 1
     for name in render_overview.PAGES:
         if name != "visualize.html":
-            other = rendered(name)
+            # The page as it is served, with every program it links.
+            other = served(name)
             assert script not in other, name
             assert "data-autoplay" not in other, name
             assert not re.search(r"<video\b[^>]*\sautoplay\b", other), name
@@ -2255,9 +2584,15 @@ def test_every_small_label_is_one_chip(name: str, rendered: Callable[[str], str]
 
 
 #: A rung chip, and what may stand between two chips of one run: white space.
+#: A rung as the site draws it, its label the one group: a V or C chip, or the
+#: significance mark, S1 to S5 with its bars (`overview_sections.significance_mark`).
 RUNG_CHIP = re.compile(
-    r'<span class="site-chip site-rung-fill" data-rung="([SVC])" data-level="(\d)">'
-    r"([SVC]\d)</span>"
+    r'<span class="(?:site-chip site-rung-fill"(?: title="[^"]*")? data-rung="[VC]" '
+    r'data-level="\d'
+    r'|site-significance" data-level="\d" role="img" aria-label="[^"]*"(?: title="[^"]*")?>'
+    r'<span class="site-significance-label" aria-hidden="true)">([SVC]\d)</span>'
+    r'(?:<span class="site-significance-bars" aria-hidden="true">'
+    r'(?:<span class="site-significance-bar"></span>)*</span></span>)?'
 )
 #: The order the site lists a result's rungs in: significance first (think-ucon).
 RUNG_ORDER = "SVC"
@@ -2269,9 +2604,9 @@ def _rung_runs(html: str) -> list[list[str]]:
     end = None
     for match in RUNG_CHIP.finditer(html):
         if end is not None and not html[end : match.start()].strip():
-            runs[-1].append(match.group(3))
+            runs[-1].append(match.group(1))
         else:
-            runs.append([match.group(3)])
+            runs.append([match.group(1)])
         end = match.end()
     return runs
 
@@ -2289,7 +2624,7 @@ def test_a_results_rungs_run_significance_first(overview: overview_data.Overview
             record["confirmation"],
         )
         chips = overview_sections.rung_chips(result)
-        assert [label for _, _, label in RUNG_CHIP.findall(chips)] == list(rungs)
+        assert RUNG_CHIP.findall(chips) == list(rungs)
         assert overview_sections.status_chips(result).startswith(chips)
 
 
@@ -2299,12 +2634,17 @@ def test_a_results_rungs_run_significance_first(overview: overview_data.Overview
 def test_every_page_lists_significance_first(
     name: str, rendered: Callable[[str], str], case_pages: dict[str, str]
 ) -> None:
-    """Wherever rung chips sit side by side, on any page, they run S, V, C: a result's
-    three in a row, a popover, an overview or a case record, and the V and C of an entry
-    awaiting replay. No run repeats a scale or puts a later one first."""
+    """Wherever rungs sit side by side, on any page, they run S, V, C: a case record's
+    three, and the V and C of a table's row, whose significance is a column of its own
+    before them (`test_each_results_row_shows_its_rungs_significance_first`). No run
+    repeats a scale or puts a later one first."""
     shown = case_pages[name] if name.startswith("cases/") else rendered(name)
+    # The legend under a table of results lists every mark of a ladder in a row, by
+    # design, and is no result's rungs
+    # (`test_a_table_of_results_has_a_legend_of_every_rungs_mark_under_it`).
+    shown = re.sub(r'<div class="site-rung-legend".*?</div>', "", shown, flags=re.DOTALL)
     runs = [run for run in _rung_runs(shown) if len(run) > 1]
-    if name != "frontier.html":
+    if name.startswith("cases/"):
         assert any(len(run) == len(RUNG_ORDER) for run in runs), name
     for run in runs:
         places = [RUNG_ORDER.index(label[0]) for label in run]
@@ -2314,8 +2654,9 @@ def test_every_page_lists_significance_first(
 def test_each_results_row_shows_its_rungs_significance_first(
     page: str, results: str, overview: overview_data.Overview
 ) -> None:
-    """The Rungs cell of the results table and of Recent Results opens with the result's
-    S, V and C chips, in that order."""
+    """A row of the results table and of Recent Results shows the result's significance
+    in its own column, the second, and its V and C chips open its Rungs cell, so its
+    rungs still read S, V, C across the row (`think-m3m4`)."""
     recent = {result.id for result in overview_sections.recent_results(overview)}
     assert recent
     table = _recent_table(page)
@@ -2327,12 +2668,19 @@ def test_each_results_row_shows_its_rungs_significance_first(
         return row[found.end() :]
 
     for result in overview.results:
-        chips = overview_sections.rung_chips(result)
-        assert cell(_row(results, result.id), "site-rungs").startswith(chips), result.id
+        chips = overview_sections.ladder_chips(result)
+        level = overview_sections.significance(result)
+        mark = overview_sections.significance_mark(
+            level, overview_sections.rung_meanings()[f"S{level}"]
+        )
+        rows = [_row(results, result.id)]
         if result.id in recent:
-            assert cell(_recent_row(table, result.id), "site-rungs").startswith(chips), (
-                result.id
-            )
+            rows.append(_recent_row(table, result.id))
+        for row in rows:
+            assert cell(row, "site-rungs").startswith(chips), result.id
+            assert cell(row, "site-col-s").startswith(mark), result.id
+            assert row.index('class="site-col-s"') < row.index('class="site-rungs"')
+            assert RUNG_CHIP.findall(row) == list(overview_sections.result_rungs(result))
     for title in re.findall(
         r'<th[^>]* title="([^"]*whether a case bound[^"]*)"', page + results
     ):
@@ -2406,25 +2754,37 @@ def test_every_result_shows_its_status_and_its_place_on_the_frontier(
     (`render_recent_results.superseded`), and that is all a row shows of a standing.
     That a bound is only reported is the status `recorded` and no chip of its own; a
     second proof of a held value says so by its kind; and a result that is no bound is
-    never marked superseded, whatever its evidence makes its standing. Every chip is
-    the one plain chip (think-ai94)."""
+    marked only where its entry declares a later result that implies it
+    (`superseded_by`), whatever its evidence makes its standing. Each mark names the
+    results that supersede it, as links to their rows (think-6zg1), and a mark of a
+    result superseded in part is the same `superseded` chip, its standing kept as
+    `superseded-in-part`, with `in part` after it (think-kmi4). Every chip is the one
+    plain chip (think-ai94)."""
     held = render_recent_results.HOLDS
     recent = _recent_table(page)
     status = re.compile(r'<span class="site-chip" data-status="([^"]*)"[^>]*>([^<]+)</span>')
-    standing = re.compile(r'<span class="site-chip" data-standing="[^"]*"[^>]*>([^<]+)</span>')
+    standing = re.compile(r'<span class="site-chip" data-standing="([^"]*)">([^<]+)</span>')
     evidence = records.register.evidence
     for result in overview.results:
         expected = render_recent_results.standing(result.record, records)
         assert result.standing == expected, result.id
         assert result.status == result_status.status(result.record, evidence), result.id
-        marks = render_recent_results.position_marks(result.record, expected)
-        assert overview_sections.is_superseded(result) is bool(marks), result.id
+        found = render_recent_results.supersessions(result.record, expected, records)
+        assert result.supersessions == tuple(found), result.id
+        marks = [mark.mark for mark in found]
+        assert overview_sections.is_superseded(result) is (
+            render_recent_results.SUPERSEDED in marks
+        ), result.id
         for row in (_row(results, result.id), _recent_row(recent, result.id)):
             tag = row.split(">", 1)[0]
             assert f'data-status="{result.status}"' in tag, result.id
             assert "data-standing=" not in tag, result.id
             assert status.findall(row) == [(result.status, result.status)], result.id
-            assert standing.findall(row) == marks, result.id
+            # Each mark's chip says `superseded` and carries its own standing.
+            assert standing.findall(row) == [
+                (overview_sections.standing_key(mark), render_recent_results.SUPERSEDED)
+                for mark in marks
+            ], result.id
             line = row.split('<span class="site-standing">', 1)[1]
             assert line.startswith(overview_sections.status_chip(result.status)), result.id
             # The status line is a column of its own since 2026-10-02 (think-ybt5),
@@ -2443,11 +2803,22 @@ def test_every_result_shows_its_status_and_its_place_on_the_frontier(
     assert {result.status for result in overview.results} <= set(result_status.STATUSES)
     assert any(result.standing == held for result in overview.results)
     # A method's limit cites the bound it measures and derives `superseded`; it is no
-    # bound, so nothing supersedes it and its row is not marked.
+    # bound, and declares no later result that implies it, so its row is not marked.
     by_id = {result.id: result for result in overview.results}
     assert by_id["T-003"].standing == render_recent_results.SUPERSEDED
     assert not overview_sections.is_superseded(by_id["T-003"])
     assert overview_sections.is_superseded(by_id["T-037"])
+    # A superseded bound names the result its case's bound rests on now, as a link to
+    # that result's row; a result of another kind that a later one implies in part
+    # names it the same way, and stays current (think-6zg1, think-7df0).
+    t060 = f'by <a href="{overview_sections.result_url("T-060")}">T-060</a>'
+    assert t060 in _row(results, "T-037")
+    assert not overview_sections.is_superseded(by_id["T-036"])
+    in_part = render_recent_results.SUPERSEDED_IN_PART
+    assert by_id["T-036"].supersessions == (
+        render_recent_results.Supersession(in_part, ("T-060",)),
+    )
+    assert t060 in _row(results, "T-036")
     for second in ("T-054", "T-055"):
         assert by_id[second].record["kind"] == "simplification"
         assert "second certificate" not in _row(results, second), second
@@ -2524,7 +2895,7 @@ def test_every_result_shows_its_kind(
         assert chip == f'<span class="site-chip" data-kind="{kind}">{label}</span>'
         assert "data-tone" not in chip
         marks = overview_sections.status_marks(result)
-        under = f'{overview_sections.rung_chips(result)}<span class="site-kind">{chip}</span>'
+        under = f'{overview_sections.ladder_chips(result)}<span class="site-kind">{chip}</span>'
         for row in (_row(results, result.id), _recent_row(recent, result.id)):
             assert f' data-kind="{kind}" ' in row.split(">", 1)[0], result.id
             assert f">{under}</td>" in row, result.id
@@ -2532,8 +2903,12 @@ def test_every_result_shows_its_kind(
         if result.standing == render_recent_results.NO_STANDING:
             assert kind not in check_results.BOUND_KINDS, result.id
         if kind not in check_results.BOUND_KINDS:
-            assert not overview_sections.is_superseded(result), result.id
-            assert ">superseded<" not in marks, result.id
+            # Superseded only where the entry declares a later result that implies the
+            # whole of it (`superseded_by`, think-nlo0).
+            declared = result.record.get("superseded_by") or []
+            whole = any(item["extent"] == "whole" for item in declared)
+            assert overview_sections.is_superseded(result) is whole, result.id
+            assert ('data-standing="superseded">' in marks) is whole, result.id
     assert ">not a bound<" not in results + recent
     assert 'data-standing="not-a-bound"' not in results + recent
     # The popover's head and a chain's step show the kind beside the rungs, then the
@@ -2544,8 +2919,21 @@ def test_every_result_shows_its_kind(
         f"{overview_sections.status_marks(t036)}"
     )
     assert overview_sections.kind_and_status(t036) == (
-        f"{overview_sections.kind_chip(t036)} {overview_sections.status_chip('confirmed')}"
+        f"{overview_sections.kind_chip(t036)} {overview_sections.status_chip('confirmed')} "
+        f"{overview_sections.supersession_marks(t036)}"
     )
+    # Its partial mark's chip says `superseded`, as the whole mark's does, and keeps its
+    # own standing; `in part` leads the quiet text after it, so the line reads as the
+    # register's does, and the status column is no wider than `superseded` (think-kmi4).
+    t060 = f'<a href="{overview_sections.result_url("T-060")}">T-060</a>'
+    marks = overview_sections.supersession_marks(t036)
+    assert marks == (
+        '<span class="site-superseded"><span class="site-chip" '
+        'data-standing="superseded-in-part">superseded</span> '
+        f'<span class="site-cell-quiet">in part by {t060}</span></span>'
+    )
+    (in_part,) = t036.supersessions
+    assert html.unescape(re.sub(r"<[^>]+>", "", marks)) == in_part.words()
     from devtools import result_overview  # noqa: PLC0415
 
     assert ">restricted optimality</span>" in result_overview.result_popover_html(
@@ -2576,8 +2964,9 @@ def test_recent_results_is_one_table_not_cards_or_a_list(
     page: str, overview: overview_data.Overview
 ) -> None:
     """The section is one `.site-table` of the recent results, one row each, with the
-    columns every table of results has; no row links across to the results page, no card
-    or list is left in it, and its only popovers are its rows' own. What a row's popover
+    columns every table of results has; a row links across to the results page only
+    where its status names the results that supersede it, no card or list is left in
+    it, and its only popovers are its rows' own. What a row's popover
     holds is the popover's own business, so the section is read without them."""
     section = page.split('id="recent-results"', 1)[1].split("<h2", 1)[0]
     recent = _recent_table(page)
@@ -2597,14 +2986,18 @@ def test_recent_results_is_one_table_not_cards_or_a_list(
     # The script that sorts and filters the results page's table wires this one too.
     assert "data-site-table" in recent
     heads = re.findall(r"<th[^>]*>([^<]+)</th>", recent.split("</thead>", 1)[0])
-    assert heads == ["Date", "Result", "n", "Credit", "Rungs", "Status", "Details", "ID"]
+    assert heads == ["Date", "S", "Result", "n", "Credit", "Rungs", "Status", "ID"]
     newest = overview_sections.recent_results(overview)
     assert re.findall(r'<tr data-result="(t-\d+)"', recent) == [r.id.lower() for r in newest]
     for result in newest:
         row = _recent_row(recent, result.id)
         # The row is the result's own here too, so nothing in it leads to its row on
-        # the results page: the summary is plain, as it is there.
-        assert "all-results.html" not in row, result.id
+        # the results page: the summary is plain, as it is there. A superseded result
+        # links the rows of the results that supersede it, and only those.
+        assert overview_sections.result_url(result.id) not in row, result.id
+        linked = re.findall(r'href="all-results\.html#(t-\d+)"', row)
+        named = {other.lower() for mark in result.supersessions for other in mark.by}
+        assert set(linked) == named, result.id
         # The id, in its own cell, is the row's native trigger, which opens its popover
         # unscripted; the result's cell holds the result and no id.
         assert (
@@ -2618,23 +3011,25 @@ def test_recent_results_is_one_table_not_cards_or_a_list(
     # Evan Daniel's three exact values, the closures the exact-value cards used to show, and
     # every closure since: each is a case some row lists. Until 2026-10-02 each was its
     # row's first case; s(78) = 9, proved that day by the s(77) cover's total being below
-    # 78, is the second case of T-067's row, which lists 77 and 78.
+    # 78, is the second case of T-067's row, which lists 77 and 78. Since 2026-10-02 the
+    # k^2-1 and k^2-2 families count too, whose exact values rest on 2026 results (T-084,
+    # T-086) that each cover a whole family rather than one case.
     exact = {n for n in overview.recent_lower if overview.cases[n]["status"] == "proved"}
     shown = {n for r in newest for n in scope_values(dict(r.record["scope"]))}
     assert exact <= shown
 
 
-def test_the_recent_table_lists_every_result_less_the_superseded_at_s4_and_180_days(
+def test_the_recent_table_lists_every_result_less_the_superseded_at_s3_and_180_days(
     page: str, overview: overview_data.Overview
 ) -> None:
     """Every result is a row, and no date or standing the page fixes leaves one out:
-    what makes the table recent is where its bar starts, Significance at S4 and up, Max
+    what makes the table recent is where its bar starts, Significance at S3 and up, Max
     age at 180 days and Hide superseded checked. The rows outside those are hidden in
     the HTML, their age measured from the register's own reference date, and the count
     is already written, so the first paint is the filtered table."""
     defaults = overview_sections.RECENT_DEFAULTS
     assert defaults == overview_sections.FilterDefaults(
-        significance=4, max_age=180, hide_superseded=True
+        significance=3, max_age=180, hide_superseded=True
     )
     assert not hasattr(overview_sections, "RECENT_FROM")
     recent = _recent_table(page)
@@ -2648,8 +3043,8 @@ def test_the_recent_table_lists_every_result_less_the_superseded_at_s4_and_180_d
     assert '<label>Significance <select data-filter="s" data-bound="min">' in tools
     significance = tools.split('data-filter="s"', 1)[1].split("</select>", 1)[0]
     options = re.findall(r'<option value="(\d?)"( selected)?>([^<]+)</option>', significance)
-    assert ("4", " selected", "S4 and up") in options
-    assert ("3", "", "S3 and up") in options
+    assert ("3", " selected", "S3 and up") in options
+    assert ("4", "", "S4 and up") in options
     assert options[0] == ("", "", "All")
     assert (
         '<label>Max age <input type="number" data-filter="date" data-bound="age" '
@@ -2667,7 +3062,7 @@ def test_the_recent_table_lists_every_result_less_the_superseded_at_s4_and_180_d
         assert f'data-date="{dated}"' in row, result.id
         current = not overview_sections.is_superseded(result)
         assert f'data-current="{"true" if current else "false"}"' in row, result.id
-        keeps = score >= 4 and dated >= cutoff and current
+        keeps = score >= 3 and dated >= cutoff and current
         assert (" hidden>" in row.split(">", 1)[0] + ">") == (not keeps), result.id
         shown += keeps
     assert 0 < shown < len(overview.results)
@@ -2679,7 +3074,7 @@ def test_the_recent_table_lists_every_result_less_the_superseded_at_s4_and_180_d
     # Where the bar starts, said once, in the bar's own words; the sentence on clearing
     # the filters left with the rest of the detail on 2026-10-02.
     starts = (
-        "The table above starts at significance S4 and up, max age 180 days and "
+        "The table above starts at significance S3 and up, max age 180 days and "
         "superseded hidden."
     )
     assert text.count(starts) == 1
@@ -2723,9 +3118,9 @@ def test_the_html_measures_an_age_from_the_register_and_never_from_the_clock(
     every = overview_sections.RESULTS_DEFAULTS
     assert every == overview_sections.FilterDefaults(significance=None, max_age=None)
     day = date(2026, 9, 30)
-    assert shows(result("2026-04-03", 4), recent, day)
+    assert shows(result("2026-04-03", 3), recent, day)
     assert not shows(result("2026-04-02", 5), recent, day)
-    assert not shows(result("2026-09-29", 3), recent, day)
+    assert not shows(result("2026-09-29", 2), recent, day)
     assert not shows(result("1979", 5), recent, day)
     # A result dated after the reference is no older than any age.
     assert shows(result("2026-10-15", 4), recent, day)
@@ -2744,8 +3139,9 @@ def test_the_html_measures_an_age_from_the_register_and_never_from_the_clock(
         assert shows(bound, hiding, day) == current, standing
         assert shows(result("2026-09-29", 5, standing), recent, day) == current, standing
         assert shows(bound, every, day), standing
-    # A result that is no bound is never superseded, whatever standing its evidence
-    # gives it: no later bound supersedes the limit of a method.
+    # A result that is no bound is not superseded by its standing, whatever its
+    # evidence gives it: no later bound supersedes the limit of a method. Only a
+    # declared later result does (`superseded_by`).
     for kind in sorted(set(check_results.KINDS) - check_results.BOUND_KINDS):
         other = result("1979", 2, "superseded", kind)
         assert not overview_sections.is_superseded(other), kind
@@ -2764,9 +3160,13 @@ def test_a_credit_splits_at_what_it_builds_on_and_a_standing_into_its_chips() ->
         'Levy <span class="site-cell-quiet">after Burns, Massaccesi</span>'
     )
     assert overview_sections.credit_cell("A & B") == "A &amp; B"
-    # Of a standing a table draws one chip, `superseded`, the plain one.
+    # Of a standing a table draws one chip, `superseded`, the plain one; the partial
+    # mark's says the same word and keeps its own standing (think-kmi4).
     assert overview_sections.standing_chip("superseded") == (
         '<span class="site-chip" data-standing="superseded">superseded</span>'
+    )
+    assert overview_sections.standing_chip("superseded in part", "superseded") == (
+        '<span class="site-chip" data-standing="superseded-in-part">superseded</span>'
     )
     assert not hasattr(overview_sections, "standing_chips")
 
@@ -2810,11 +3210,11 @@ def _intro(page: str) -> str:
 
 
 def _recent_prose(page: str) -> str:
-    """Recent Results' two paragraphs, the markup under its table's action and over its
-    key to the ratings (`rung_key`)."""
+    """Recent Results' paragraph, the markup under its table's action, the comments
+    after it set aside."""
     section = page.split('id="recent-results"', 1)[1].split("<h2", 1)[0]
     after = section.split('<p class="site-action-row site-more">', 1)[1].split("</p>", 1)[1]
-    return after.split('<div class="site-ladders-frame site-ladders-key', 1)[0]
+    return re.sub(r"<!--.*?-->", "", after, flags=re.DOTALL).strip()
 
 
 #: One formula as kpress writes it: the TeX for KaTeX, then its MathML.
@@ -2937,16 +3337,15 @@ def test_the_overviews_first_section_is_readmes_one_block(page: str) -> None:
 def test_recent_results_opens_with_its_table_and_says_what_it_shows_under_it(
     page: str,
 ) -> None:
-    """Recent Results opens with its table, and under the table's one action stand two
-    short paragraphs and a key (the owner, 2026-10-02, `think-tgjv`; one paragraph stood
-    between the heading and the filter bar until then). The first is the headline of
-    recent progress, the star legend and where the filters start; the second says what
-    the three ratings on a row mean, rung by rung in brief, links the Verification
-    Ladders on the Results page, and leads to the key (`rung_key`), which shows every
-    chip with its short meaning. What stood there before 2026-10-02, README's two
-    paragraphs and a paragraph on the table, is gone from the page: the rungs, review,
-    packet and defects of T-060 are its row's, and the kinds and statuses the Results
-    page's."""
+    """Recent Results opens with its table, its legend under it, and under the table's one
+    action stands one short paragraph (the owner, 2026-10-02, `think-tgjv`; one
+    paragraph stood between the heading and the filter bar until then): the headline of
+    recent progress and where the filters start. The paragraph on what the ratings mean,
+    the star's sentence and the key of every rung went on 2026-10-03 (`think-42dx`): the
+    legend shows every mark, and the Results page explains them. What stood there before
+    2026-10-02, README's two paragraphs and a paragraph on the table, is gone from the
+    page: the rungs, review, packet and defects of T-060 are its row's, and the kinds and
+    statuses the Results page's."""
     problem = page.split('id="the-problem"', 1)[1].split('id="recent-results"', 1)[0]
     section = page.split('id="recent-results"', 1)[1].split("<h2", 1)[0]
     head = section.split("</h2>", 1)[1]
@@ -2958,35 +3357,27 @@ def test_recent_results_opens_with_its_table_and_says_what_it_shows_under_it(
     assert before.strip() == '<div class="site-wide">'
     lead = _recent_prose(page)
     paragraphs = re.findall(r"<p>(.*?)</p>", lead, re.DOTALL)
-    assert len(paragraphs) == 2
-    first, second = (_rendered_text(paragraph) for paragraph in paragraphs)
+    assert len(paragraphs) == 1
+    first = _rendered_text(paragraphs[0])
     assert first.startswith("Eleven squares is settled: $s(11) = 3.8770835\\ldots$")
     assert first.endswith(
-        "The table above starts at significance S4 and up, max age 180 days and "
+        "The table above starts at significance S3 and up, max age 180 days and "
         "superseded hidden."
     )
-    assert 50 <= len(first.split()) <= 100, len(first.split())
-    legend = re.sub(r"<[^>]+>", "", overview_sections.star_legend())
-    assert first.index("T-065") < first.index(legend) < first.index("The table above")
-    assert second.startswith("Each row carries three ratings, each a rung of its own ladder.")
-    for scale in (
-        "Significance, S1 to S5,",
-        "Verification, V0 to V5,",
-        "Confirmation, C0 to C5,",
-    ):
-        assert scale in second, scale
-    assert second.endswith("on the Results page define each one in full.")
-    assert len(second.split()) <= 130, len(second.split())
-    # The table, its action, the two paragraphs, then the key.
+    assert 40 <= len(first.split()) <= 100, len(first.split())
+    for gone in ("Each row carries three ratings", "marks a new result", "S1 to S5"):
+        assert gone not in _seen(section), gone
+    assert "site-ladders" not in section
+    # The bar, the table, the legend, its action, then the paragraph.
     order = [
         section.index('<div class="site-table-tools'),
         section.index(_recent_table(page)),
+        section.index('<div class="site-rung-legend"'),
         section.index('<p class="site-action-row site-more">'),
         section.index(lead),
-        section.index('<div class="site-ladders-frame site-ladders-key'),
     ]
     assert order == sorted(order)
-    text = first + " " + second
+    text = first
     # The section's prose is the lead; its bar and rows name sources and credits of
     # their own (Guzhou0806 is a Source option, Kleddamag a credit), so they are read
     # out of the lead and the sections before it only.
@@ -3330,7 +3721,7 @@ POPOVER_MARKUP = (
 
 
 def test_the_papers_page_holds_one_large_card_for_each_paper(
-    rendered: Callable[[str], str],
+    rendered: Callable[[str], str], served: Callable[[str], str]
 ) -> None:
     """`papers.html` is one large card per paper and nothing else in cards, in the order of
     the one list that defines them (`overview_sections.PAPERS`), so a new paper is one
@@ -3360,7 +3751,8 @@ def test_the_papers_page_holds_one_large_card_for_each_paper(
     article = papers_article(page)
     for markup in POPOVER_MARKUP:
         assert markup not in article, markup
-    assert render_overview.POPOVER_SCRIPT.read_text(encoding="utf-8") not in page
+    popover = render_overview.POPOVER_SCRIPT.read_text(encoding="utf-8")
+    assert popover not in served("papers.html")
 
 
 def test_a_papers_card_holds_no_link_so_the_introduction_links_what_it_names(
@@ -3601,12 +3993,13 @@ def test_both_tables_of_results_have_the_same_columns(
     each result the same row and the same popover. A row differs between the two in
     what names the page it is on and nothing else: its key, the result's own address
     (`id`) on the results page and `data-result` on the overview, and `hidden`, which is
-    where each table's filters start. So the overview shows each result's records, as
-    the results page does, and no row of one links to the other. Both sort and both
-    filter. The columns run date, result, cases, credit, rungs, status, details and id,
-    the owner's order of 2026-10-02 (`think-t090`, `think-ybt5`, `think-e4o3`): a
-    result's records are its Details, a link to a line, and its result cell holds the
-    claim and its star alone."""
+    where each table's filters start. So a row on the overview opens to its records, as
+    one on the results page does, and a row links to the results page only where its
+    status names the results that supersede it. Both sort and both filter. The columns
+    run date, significance, result, cases, credit, rungs, status and id, the owner's
+    order of 2026-10-02 (`think-t090`, `think-ybt5`, `think-e4o3`): the result cell
+    holds the claim and its star alone, and a result's records are the last entry of
+    the popover its row opens, a Details column no longer (`think-46fw`)."""
     table = overview_sections.results_table(overview)
     recent = overview_sections.recent_table(overview)
     head = overview_sections.result_head()
@@ -3615,16 +4008,16 @@ def test_both_tables_of_results_have_the_same_columns(
     heads = re.findall(r"<th([^>]*)>([^<]+)</th>", head)
     assert [words for _, words in heads] == [
         "Date",
+        "S",
         "Result",
         "n",
         "Credit",
         "Rungs",
         "Status",
-        "Details",
         "ID",
     ]
     sorts = ["data-sort=" in attributes for attributes, _ in heads]
-    assert sorts == [True, False, True, True, True, True, False, True]
+    assert sorts == [True, True, False, True, True, True, True, True]
     # As each page serves it, after KPress has labelled the cells.
     served = re.compile(r"<th[^>]*>([^<]+)</th>")
     on_overview = served.findall(_recent_table(page).split("</thead>", 1)[0])
@@ -3643,35 +4036,43 @@ def test_both_tables_of_results_have_the_same_columns(
         assert classes.findall(here) == classes.findall(there), result.id
         assert classes.findall(here) == [
             "site-col-date",
+            "site-col-s",
             "site-col-result",
             overview_sections.case_cell_class(result),
             "site-col-credit",
             "site-rungs",
             "site-col-status",
-            "site-col-details",
             "site-col-id",
         ]
-        # The records are the Details cell, after the status and before the id, a link
-        # to a line with no dots between; the result's cell holds none of them.
-        assert here.count('<div class="site-records">') == 1, result.id
-        assert re.search(
-            r'<td class="site-col-details"><div class="site-records">(<a [^>]*>[^<]+</a>)+'
-            r'</div></td><td class="site-col-id"',
-            here,
-        ), result.id
+        # The row carries no record link; its popover's short form ends with them, every
+        # link the result has, in the register's order.
+        assert '<div class="site-records">' not in here, result.id
+        popover = _row_popover(table, f"pop-result-{result.id.lower()}")
+        records = re.search(
+            r'<dt>Records</dt><dd><div class="site-records">((?:<a [^>]*>[^<]+</a>)+)'
+            r"</div></dd></dl>",
+            popover,
+        )
+        assert records is not None, result.id
+        assert re.findall(r'href="([^"]+)"', records.group(1)) == [
+            link.url for link in result.records
+        ], result.id
         result_cell = here.split('<td class="site-col-result">', 1)[1].split("</td>", 1)[0]
         assert "<a " not in result_cell, result.id
         assert " · " not in here, result.id
         assert f'<tr id="{result.id.lower()}" ' in here
         assert f'<tr data-result="{result.id.lower()}" ' in there
         # The row is the same markup on both pages, as written and as each page serves
-        # it, apart from what names the page; and no row links to the other table.
+        # it, apart from what names the page; and no row links to its own row in the
+        # other table. A superseded result's row links the rows of the results that
+        # supersede it, which are on the results page wherever the row is.
         assert anywhere(here) != here
         assert anywhere(here) == anywhere(there), result.id
         served_here = _row(results, result.id)
         served_there = _recent_row(_recent_table(page), result.id)
         assert anywhere(served_here) == anywhere(served_there), result.id
-        assert "all-results.html" not in there + served_there, result.id
+        own = overview_sections.result_url(result.id)
+        assert own not in there + served_there, result.id
         # The popover a row opens is the same panel too.
         target = f"pop-result-{result.id.lower()}"
         assert _row_popover(recent, target) == _row_popover(table, target), result.id
@@ -3786,7 +4187,13 @@ def test_a_new_result_is_starred_in_both_tables_by_the_atlas_rule(
     for result in overview.results:
         # Each row, and where its star stands: after the result's own text, the last
         # thing in its cell, since its records are a Details column (think-e4o3).
-        placed_here = overview_sections.result_text(result) + "{star}</td>"
+        # The star follows the significance mark, in the significance cell, since
+        # 2026-10-03 (`think-m3m4`); the result's cell holds its text alone.
+        level = overview_sections.significance(result)
+        mark = overview_sections.significance_mark(
+            level, overview_sections.rung_meanings()[f"S{level}"]
+        )
+        placed_here = mark + "{star}</td>"
         rows = (
             (_row(table, result.id), placed_here),
             (_recent_row(recent, result.id), placed_here),
@@ -3816,23 +4223,22 @@ def test_a_new_result_is_starred_in_both_tables_by_the_atlas_rule(
         "case rests on it now, and it was proved or published on or after 22 August 2026."
     )
     for served in (page, results):
-        assert legend in re.sub(r"<[^>]+>", "", served)
         assert len(ROW_STAR.findall(served)) == len(starred)
-    # The results page says it before its table; the overview, under its table since
-    # 2026-10-02 (think-tgjv), with the rest of what the table shows.
+        # The legend under each table says what the star marks, in two words.
+        words = f"<span>{overview_sections.NEW_RESULT}</span>"
+        assert f"{overview_sections.STAR}</span> {words}" in _legend(served)
+    # The results page says it in full before its table; the overview says no more than
+    # its legend since 2026-10-03 (think-42dx).
+    assert legend in re.sub(r"<[^>]+>", "", results)
     assert results.index("marks a new result") < results.index('<div class="site-table-tools')
-    assert page.index(_recent_table(page)) < page.index("marks a new result")
+    assert legend not in re.sub(r"<[^>]+>", "", page)
     css = render_overview.SITE_CSS.read_text(encoding="utf-8")
-    assert ".site-star {\n  color: oklch(52% 0.19 25);\n}" in css
-    # The star hangs after the text's last character: with no width it cannot wrap to a
-    # line of its own, and its cell keeps room for it, as a table's cell and as a card's.
-    hang = css[css.index("\n.site-results .site-col-result .site-star {") :]
-    hang = hang[: hang.index("}")]
-    assert "display: inline-block;" in hang
-    assert "width: 0;" in hang
-    room = ".kpress .site-results td.site-col-result:has(.site-star) {\n"
-    assert room + "  padding-inline-end: calc(0.5rem + 1.1em);" in css
-    assert "  " + room + "    padding-inline-end: 1.1em;" in css
+    # The star's colour is a token (`think-zhlc`), and it sits after the significance
+    # mark's bars in the significance cell, no longer hung after the result's text.
+    assert ".site-star {\n  color: var(--site-new-result);\n}" in css
+    assert ".site-results .site-col-s .site-star {" in css
+    assert ".site-col-result .site-star" not in css
+    assert "td.site-col-result:has(.site-star)" not in css
     assert "\u00a0" not in table + recent
 
 
@@ -4129,8 +4535,16 @@ def test_every_table_stands_one_shared_space_from_the_text_around_it() -> None:
     # The rating ladders, which are no table, stand the same space clear of the text.
     ladders = css[css.index("@media screen {\n  .site-ladders-frame {") :]
     assert "margin-block: var(--site-table-space);" in ladders[: ladders.index("}")]
+    # A table of results' legend stands close under its table and takes the table's
+    # space below itself (the owner, 2026-10-04).
+    assert (
+        "  .site-table-wrap:has(+ .site-rung-legend) {\n    margin-block-end: 0.75rem;\n  }"
+    ) in screen
+    assert (
+        "  .site-rung-legend {\n    margin-block-end: var(--site-table-space);\n  }"
+    ) in screen
     # The action row under a table or grid takes it below itself too (think-0o9u).
-    assert css.count("var(--site-table-space)") == 4
+    assert css.count("var(--site-table-space)") == 5
     assert "@media print {\n  .site-nav,\n  .site-table-tools {\n    display: none;" in css
     design = (render_overview.TEMPLATES / "paper-design.md").read_text(encoding="utf-8")
     assert "| Above and below a table | `--site-table-space` | 2rem, 32px |" in design
@@ -4758,14 +5172,19 @@ def test_the_tables_with_row_detail_are_the_ones_named(
 
 @pytest.mark.parametrize("name", ROW_PAGES)
 def test_a_page_with_row_detail_carries_the_row_and_popover_scripts(
-    name: str, rendered: Callable[[str], str]
+    name: str, rendered: Callable[[str], str], served: Callable[[str], str]
 ) -> None:
     """The row script makes the row the control, and the popover script typesets a
     popover's math when it opens and closes it when a link inside is followed."""
     page = rendered(name)
-    assert render_overview.ROW_POPOVER_SCRIPT.read_text(encoding="utf-8") in page
-    assert render_overview.POPOVER_SCRIPT.read_text(encoding="utf-8") in page
-    assert render_overview.TABLE_SCRIPT.read_text(encoding="utf-8") in page
+    whole = served(name)
+    for script in (
+        render_overview.ROW_POPOVER_SCRIPT,
+        render_overview.POPOVER_SCRIPT,
+        render_overview.TABLE_SCRIPT,
+    ):
+        assert page.count(_asset_tag(script, name)) == 1, script.name
+        assert script.read_text(encoding="utf-8") in whole, script.name
 
 
 def test_a_result_rows_popover_body_comes_from_one_function(
@@ -4811,10 +5230,21 @@ def test_a_result_rows_popover_body_comes_from_one_function(
                 assert term in panel, row.id
 
 
-#: What the two pages that list results may weigh. The result overviews are 2.8 MB
+#: What the two pages that list results may weigh. The result overviews are 4.9 MB
 #: between them; a page that carried them, as both once would have, crosses its ceiling.
-#: The shell every page carries, its faces and math, is about 1.8 MB of each.
-PAGE_CEILINGS = {"index.html": 4_300_000, render_overview.RESULTS_PAGE: 2_800_000}
+#: The results page was 2.77 MB with 81 results on 3 October 2026, and its significance
+#: column and legend added 43 KB that day (`think-m3m4`, `think-42dx`), which took it
+#: past 2.8. The shell every page carried then, its faces and math, about 1.8 MB of each,
+#: became the site's shared assets on 4 October 2026 (`site_assets`), which a page links
+#: rather than carries, and each ceiling came down by as much, keeping the room it had:
+#: the overview measured 2.32 MB that day and the results page 1.01 MB.
+#: index.html's ceiling was 4,300,000 before that, and PR 305 raised it to 4,700,000 on
+#: 2026-10-03 for the 51 regularized atlas drawings it inlines (285,963 bytes): its merge
+#: with main then rendered the page at 4,448,100 bytes. Lowered by the same 1.8 MB, that
+#: is 2,900,000 here; the merge of main into PR 305 on 2026-10-04 rendered the page at
+#: 2,670,052 bytes, over 2,500,000 by less than the drawings weigh. Fetching the drawings
+#: when the regularized layer is first chosen (think-yozo) returns it to 2,500,000.
+PAGE_CEILINGS = {"index.html": 2_900_000, render_overview.RESULTS_PAGE: 1_200_000}
 
 
 def test_no_page_carries_a_result_overview(
@@ -5157,7 +5587,7 @@ def test_both_tables_of_results_carry_the_identical_filter_set(page: str, result
     assert HIDE_SUPERSEDED.format(checked="") in there
     assert here.count(" checked") == 1
     assert " checked" not in there
-    assert dict(_SELECTED.findall(here)) == everything | {"s": "4"}
+    assert dict(_SELECTED.findall(here)) == everything | {"s": "3"}
     assert dict(_SELECTED.findall(there)) == everything
     started = r'<input\b[^>]*data-bound="([a-z]+)"[^>]* value="([^"]*)"'
     assert re.findall(started, here) == [("age", "180")]
@@ -5313,10 +5743,11 @@ def test_hide_superseded_starts_checked_on_the_overview_and_clear_on_the_results
 ) -> None:
     """Hide superseded is one checkbox of the shared bar, checked in the overview's HTML
     and clear in the results page's, from each table's `FilterDefaults`. What it hides is
-    the register's own standing: a row's `data-current` is `false` exactly where its
-    standing is `superseded`, and `true` for every other, a current best, a second
-    certificate and a result that claims no bound, which has no standing, alike. So on
-    the overview no row shown
+    the superseded mark: a row's `data-current` is `false` exactly where a bound's
+    standing is `superseded` or a result of another kind declares a later result that
+    implies the whole of it (`superseded_by`, think-rl2b), and `true` for every other, a
+    current best, a second certificate and a result that claims no bound and declares
+    none, alike. So on the overview no row shown
     is superseded and the count is of the rest, and on the results page the same rows
     carry the flag but none is hidden. No result a star marks is superseded, so the
     default never hides a new result."""
@@ -5334,10 +5765,14 @@ def test_hide_superseded_starts_checked_on_the_overview_and_clear_on_the_results
     kept = set()
     for result in overview.results:
         superseded = overview_sections.is_superseded(result)
-        assert superseded == (
-            result.standing == render_recent_results.SUPERSEDED
-            and result.record["kind"] in check_results.BOUND_KINDS
-        ), result.id
+        if result.record["kind"] in check_results.BOUND_KINDS:
+            assert superseded == (result.standing == render_recent_results.SUPERSEDED), (
+                result.id
+            )
+        else:
+            declared = result.record.get("superseded_by") or []
+            whole = any(item["extent"] == "whole" for item in declared)
+            assert superseded == whole, result.id
         flag = f'data-current="{"false" if superseded else "true"}"'
         ours = _recent_row(recent, result.id).split(">", 1)[0] + ">"
         theirs = _row(results, result.id).split(">", 1)[0] + ">"
@@ -5353,10 +5788,11 @@ def test_hide_superseded_starts_checked_on_the_overview_and_clear_on_the_results
         if result.id in overview.starred:
             assert not superseded, result.id
     # Every standing stays, and so does a result with none: nothing but a superseded
-    # bound is hidden for it. The one result that derives `superseded` and stays is the
-    # limit of a method, which is no bound. No result has stood as a reported second
-    # certificate since 2026-10-02, when T-055's replay was recorded; when one does again,
-    # this pin fails and the standing returns to the set.
+    # bound, or a result of another kind declared superseded as a whole, is hidden for
+    # it. The one result that derives `superseded` and stays is the limit of a method,
+    # which is no bound. No result has stood as a reported second certificate since
+    # 2026-10-02, when T-055's replay was recorded; when one does again, this pin fails
+    # and the standing returns to the set.
     assert kept == {
         *render_recent_results.STANDINGS,
         render_recent_results.NO_STANDING,
@@ -5498,9 +5934,12 @@ def test_each_address_a_paper_had_serves_a_forwarder_to_where_it_is() -> None:
     times, and they agree: as its canonical URL, in full; to the forwarding script, on
     the root element; in a refresh for a reader without scripts, inside `<noscript>` so
     it cannot outrun the script and drop the fragment; and in a link. It carries the
-    overview's own forwarding script whole, and nothing of a site page: no bar, no
+    overview's own forwarding script whole, the paper's preview by the paper's own title
+    (`render_overview.forwarder_head`), and nothing else of a site page: no bar, no
     stamp, no stylesheet. `check_published_site` reads a deployed one the same way."""
     from devtools import check_published_site  # noqa: PLC0415
+    from devtools import render_n11_lower_bounds_explainer as explainer  # noqa: PLC0415
+    from devtools import render_n11_optimality_review as review  # noqa: PLC0415
 
     forwarders = {
         forwarder.name: forwarder.html for forwarder in render_overview.forwarder_pages()
@@ -5517,7 +5956,7 @@ def test_each_address_a_paper_had_serves_a_forwarder_to_where_it_is() -> None:
         "n11-optimality/index.html": "papers/n11-optimality-review.html",
     }
     script = render_overview.FORWARD_SCRIPT.read_text(encoding="utf-8")
-    titles = {paper.href: paper.title for paper in overview_sections.PAPERS}
+    titles = {explainer.SITE_PATH: explainer.TITLE, review.SITE_PATH: review.TITLE}
     for old, new in papers.items():
         page = forwarders[old]
         assert new in render_overview.SITE_PAGES, new
@@ -5534,11 +5973,16 @@ def test_each_address_a_paper_had_serves_a_forwarder_to_where_it_is() -> None:
             f'<noscript><meta http-equiv="refresh" content="0; url={climbs}{new}"></noscript>'
         )
         assert refresh in page
-        assert f"<title>{html.escape(titles[new])}</title>" in page
+        title = render_overview.page_title(titles[new])
+        assert f"<title>{html.escape(title, quote=False)}</title>" in page
+        assert f'<meta property="og:title" content="{html.escape(titles[new])}">' in page
+        assert f">{html.escape(titles[new])}</a>.</p>" in page
         assert "site-nav" not in page
         assert "<style" not in page
         assert len(page) < 8_000, "a forwarder is a few lines, not a page"
-        render_overview.assert_self_contained(old, page)
+        # It fetches nothing, not even the shared assets a site page links.
+        render_overview.assert_fetches_only_assets(old, page)
+        assert f"{site_assets.ASSETS_DIR}/" not in page, old
     # The script reads the root element's `data-moved-to`.
     assert "movedTo" in script
 
@@ -5638,3 +6082,18 @@ def test_a_cases_status_is_one_chip_wherever_it_is_drawn(
         assert {word for _, word in drawn} == statuses, name
         for status in statuses:
             assert page.count(overview_sections.case_status_chip(status)) >= 1, (name, status)
+
+
+def test_a_line_link_finds_an_id_whole_and_not_as_the_start_of_a_longer_one() -> None:
+    """`overview_data.line_link` anchors the first line naming an id whole: T-020's first
+    evidence entry, `E-n020-fractional-certificate`, comes after the entry whose id it
+    begins, `E-n020-fractional-certificate-97-20`, and its link pointed there until
+    2026-10-04 (`think-46fw`)."""
+    lines = overview_data.EVIDENCE.read_text(encoding="utf-8").splitlines()
+    for entry in ("E-n020-fractional-certificate", "E-n020-fractional-certificate-97-20"):
+        own = lines.index(f"  - id: {entry}") + 1
+        assert overview_data.line_link(overview_data.EVIDENCE, f"id: {entry}").endswith(
+            f"#L{own}"
+        ), entry
+    longer = lines.index("  - id: E-n020-fractional-certificate-97-20")
+    assert longer < lines.index("  - id: E-n020-fractional-certificate")

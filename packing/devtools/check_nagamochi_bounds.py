@@ -1,30 +1,39 @@
 #!/usr/bin/env python3
-"""Re-derive every lower bound the register attributes to [Nagamochi 2005].
+"""Re-derive every lower bound the register borrows from [Nagamochi 2005] and [Karakuş 2026].
 
 `E-nagamochi-lower` is the register's most-cited evidence record, and two different
-counts describe it. 95 of the hundred case records cite this result; it supplies the
-operative verified lower bound in 26 of them. The other 69 citations are context rather
-than current bounds: seven proved cases that never rested on the theorem; the four open
-cases `n = 17` through `n = 20`, where certificates displaced it; 18 open cases whose
-retained external certificates were replayed on 2026-09-22; `n = 32`, proved on
-2026-09-27 by a replayed external closed cover; `n = 21` and `n = 45`, proved on
-2026-09-29 by replayed external mixed covers; and 17 open cases whose rectangle-density
-certificates, replayed in cloud batches on 2026-09-29, were merged on 2026-10-02; and
-`n = 50` and `n = 51`, which wand125's replayed mixed certificate for `n = 50` took on
-2026-10-02; `n = 37`, 65, 66, 84, 85, 87, 90 and 92, which wand125's replayed mixed
-certificates of 1 and 2 October took the same day; and `n = 57`, 58, 88, 89, 93 and
-94, which its replayed rectangle certificates of 1 October took that day too; and
-`n = 97`, which the replayed `s(k^2 - 3) = k` family (T-064) proved on 2026-10-03; and
-`n = 83`, 91 and 96, which wand125's replayed mixed certificates of the afternoon of 2
-October (T-075) took on 2026-10-03. The next
-most-cited evidence record carries two.
+counts describe it. 95 of the hundred case records cite this result; since 2026-10-02 it
+supplies the operative verified lower bound in 0 of them. Until that date it supplied 63
+there and 287 in the whole corpus: an adversarial review found the paper's Lemma 1, from
+which its Theorem 1 is summed, false for every container with `a > 3` and `b > 2`
+(Karakuş 2026, chelokot 2026; `T-085`), the evidence record became `reported`, and its
+values moved to the reported lane. The verified floors were re-grounded on the area bound
+at the perfect squares and on Karakuş's Corollaries 1.2 and 6.2 elsewhere
+(`E-karakus-strip-lower`, `T-083`, `T-084`).
 
-Nothing checked that the recorded values were what the theorem gives: `assurance.py`
-verifies that a bound cites verified evidence of the right claim and scope, which is a
-statement about the citation and not about the arithmetic. A transcription slip in any
-one of the 26 operative verified-field values would have passed.
+Replayed certificates recorded in parallel on 2 and 3 October 2026, and merged with the
+correction on 3 October, have since raised 51 of those 287 floors above the corrected
+ones: wand125's rectangle-density, mixed and linear certificates, Daniel's and wand125's mixed
+covers proving `s(59) = s(60) = s(61) = 8` and `s(77) = s(78) = 9`, and the replayed
+`s(k^2 - 3) = k` family (`T-064`). None of them rests on Nagamochi 2005.
 
-Theorem 2, as the evidence record states it and as re-derived here from Theorem 1
+Nothing checked that the recorded values were what the theorems give: `assurance.py`
+verifies that a bound cites evidence of the right claim and scope, which is a statement
+about the citation and not about the arithmetic. So each value is re-derived here, in
+whichever lane cites it:
+
+- a lower bound, verified or reported, citing `E-nagamochi-lower` must be Theorem 2's;
+- a verified lower bound citing `E-karakus-strip-lower` must be Karakuş's (6.1).
+
+"Must be" is one-sided, because a lower bound printed as a decimal is rounded down: the
+record may not exceed the theorem's value, and may fall short of it by less than one unit
+in its own last place. Until 2026-10-04 the tolerance was two-sided (D-517), so a
+verified floor rounded *up*, above what its source proves, passed every gate. Both
+sides are decided exactly, by squaring the closed form `a + sqrt(r)` against the
+record's own rational value, so no rounding of the theorem's square root can decide a
+case either way.
+
+Theorem 2, as the evidence record states it, from Theorem 1
 (`nu(a, b) < ab - (a + 1 - ceil(a)) - (b + 1 - ceil(b))` for `a, b >= 2`):
 
 - `N` in `{m^2, m^2 - 1, m^2 - 2}` gives `s(N) >= m`. Put `a = b = m` in Theorem 1: it
@@ -34,7 +43,12 @@ Theorem 2, as the evidence record states it and as re-derived here from Theorem 
   and choose `t` so that `(k + t)^2 - 2t = N`; then `k + t` is the bound.
 
 The two collapse to `min(ceil(sqrt(N)), sqrt(N - 2*floor(sqrt(N)) + 1) + 1)`, and this
-checks that form against the record rather than assuming it.
+checks that form against the record rather than assuming it. The algebra is sound; it is
+Theorem 1 that has no proof.
+
+Karakuş's (6.1), for nonsquare `N >= 8` with `k = floor(sqrt(N))`, is
+`1/2 + sqrt(N - k + 1/4)`: his Theorem 1.1 at a square of side `t` with `t^2 - (t - k) = N`.
+It is exactly `m` at `N = m^2 - 1`, which is his Corollary 1.2.
 
 Also checks the direction that would be a soundness defect rather than a bookkeeping one:
 a lower bound may never exceed the reported upper bound for the same `n`.
@@ -47,7 +61,9 @@ from __future__ import annotations
 
 import math
 import re
+from dataclasses import dataclass
 from decimal import Decimal, localcontext
+from fractions import Fraction
 from pathlib import Path
 
 from sqpack.yamlio import safe_load
@@ -83,20 +99,85 @@ _OPERATIVE_COUNT = re.compile(r"operative verified lower bound in (\d+) of them"
 _OPERATIVE_VALUES = re.compile(r"the (\d+) operative verified-field values")
 _OTHER_CITATIONS = re.compile(r"[Tt]he other (\d+) citations")
 
-#: Enough to compare against any decimal the register carries, and pinned rather than
-#: inherited: `decimal`'s context is process-global (see `think-iskp`).
+#: Digits a theorem's value is printed with, well past any decimal the register carries,
+#: and pinned rather than inherited: `decimal`'s context is process-global (see
+#: `think-iskp`). The comparisons themselves are exact and use no decimal.
 DIGITS = 80
+
+
+@dataclass(frozen=True, slots=True)
+class RootForm:
+    """The exact value `rational + sqrt(radicand)`, the shape of every bound checked here.
+
+    A comparison, with a rational or with another such value, is decided by squaring, so
+    it is exact; `decimal` is for printing, at `DIGITS`, and decides nothing.
+    """
+
+    rational: Fraction
+    radicand: Fraction = Fraction(0)
+
+    def __post_init__(self) -> None:
+        if self.radicand < 0:
+            raise ValueError(f"square root of a negative number: {self.radicand}")
+
+    def below(self, value: Fraction) -> bool:
+        """Whether this value is strictly less than `value`.
+
+        `a + sqrt(r) < x` exactly when `x - a` is positive and `(x - a)^2 > r`.
+        """
+        gap = value - self.rational
+        return gap > 0 and gap * gap > self.radicand
+
+    def compare(self, other: RootForm) -> int:
+        """The exact sign of `self - other`: `-1`, `0` or `1`.
+
+        With `c = a - b`, the sign of `c + sqrt(r) - sqrt(s)`. Where `c` and
+        `sqrt(r) - sqrt(s)` (whose sign is that of `r - s`) agree in sign, or one is zero,
+        that is the answer. Otherwise the larger in magnitude wins, and
+        `(sqrt(r) - sqrt(s))^2 - c^2 = t - 2 sqrt(rs)` with `t = r + s - c^2` is decided by
+        squaring once more where `t` is positive.
+        """
+        c = self.rational - other.rational
+        r, s = self.radicand, other.radicand
+        roots = (r > s) - (r < s)
+        offset = (c > 0) - (c < 0)
+        if not roots or not offset or roots == offset:
+            return offset or roots
+        t = r + s - c * c
+        product = r * s
+        if t > 0:
+            difference = t * t - 4 * product
+            larger = (difference > 0) - (difference < 0)
+        else:
+            larger = -1 if (t < 0 or product > 0) else 0
+        if larger > 0:
+            return roots
+        if larger < 0:
+            return offset
+        return 0
+
+    def decimal(self) -> Decimal:
+        with localcontext() as context:
+            context.prec = DIGITS
+            rational = Decimal(self.rational.numerator) / Decimal(self.rational.denominator)
+            if not self.radicand:
+                return rational
+            radicand = Decimal(self.radicand.numerator) / Decimal(self.radicand.denominator)
+            return rational + radicand.sqrt()
+
+
+def theorem_two_form(n: int) -> tuple[RootForm, bool]:
+    """Theorem 2 at `n`, exactly, and whether `n` is one of its exact cases."""
+    root = math.isqrt(n)
+    if any(n == m * m - offset for m in (root, root + 1) for offset in (0, 1, 2)):
+        return RootForm(Fraction(math.isqrt(n - 1) + 1)), True
+    return RootForm(Fraction(1), Fraction(n - 2 * root + 1)), False
 
 
 def theorem_two(n: int) -> tuple[Decimal, bool]:
     """The bound Theorem 2 gives for `n`, and whether `n` is one of its exact cases."""
-    root = math.isqrt(n)
-    exact = any(n == m * m - offset for m in (root, root + 1) for offset in (0, 1, 2))
-    with localcontext() as context:
-        context.prec = DIGITS
-        if exact:
-            return Decimal(math.isqrt(n - 1) + 1), True
-        return Decimal(n - 2 * root + 1).sqrt() + 1, False
+    form, exact = theorem_two_form(n)
+    return form.decimal(), exact
 
 
 def cases() -> dict[int, dict]:
@@ -227,44 +308,83 @@ def prose_counts(found: dict[int, dict]) -> list[str]:
     return problems
 
 
+#: The verified lower bound that replaced Theorem 2 on 2026-10-02 (`T-083`, `T-084`).
+KARAKUS = "E-karakus-strip-lower"
+#: The lanes a borrowed lower bound may sit in, and the theorem each record's values obey.
+LANES = ("verified_lower_bound", "reported_lower_bound")
+
+
+def karakus_form(n: int) -> tuple[RootForm, bool]:
+    """Karakuş's (6.1) at nonsquare `n >= 8`, exactly, and whether it is the integer `m`
+    (`n = m^2 - 1`)."""
+    root = math.isqrt(n)
+    if n < 8 or root * root == n:
+        raise ValueError(f"n={n}: Karakuş's Corollary 6.2 covers nonsquare n >= 8 only")
+    if (root + 1) ** 2 - 1 == n:
+        return RootForm(Fraction(root + 1)), True
+    return RootForm(Fraction(1, 2), Fraction(4 * (n - root) + 1, 4)), False
+
+
+def karakus_bound(n: int) -> tuple[Decimal, bool]:
+    """Karakuş's (6.1) at nonsquare `n >= 8`, and whether it is `m` exactly (`n = m^2 - 1`)."""
+    form, exact = karakus_form(n)
+    return form.decimal(), exact
+
+
+def disagreement(n: int, recorded: Decimal, exact: RootForm, *, name: str) -> str | None:
+    """Why `recorded` is not `exact` rounded down at its own places, or `None`.
+
+    A lower bound is a floor: the record may carry fewer digits than the theorem's value
+    has, but it may never exceed that value, and it must be within one unit in its own
+    last place below it. Both are decided on the record's exact rational value.
+    """
+    # `exponent` is only an int for a finite Decimal, and a bound that is NaN or infinite
+    # is a malformed record rather than a disagreement, so say which.
+    exponent = recorded.as_tuple().exponent
+    if not isinstance(exponent, int):
+        return f"n={n}: recorded lower bound {recorded} is not a finite number"
+    places = -exponent
+    value = Fraction(recorded)
+    unit = Fraction(1, 10**places) if places >= 0 else Fraction(10**-places)
+    shown = f"{exact.decimal():.{max(places, 0) + 2}f}"
+    if exact.below(value):
+        return (
+            f"n={n}: record says {recorded}, above the {shown} {name} gives; a lower bound "
+            "is rounded down, never up"
+        )
+    if not exact.below(value + unit):
+        return (
+            f"n={n}: record says {recorded}, {name} gives {shown}; not that value rounded "
+            "down at the record's places"
+        )
+    return None
+
+
 def main() -> int:
     problems: list[str] = []
-    checked = 0
+    checked = {RECORD: 0, KARAKUS: 0}
     inversions: list[str] = []
     found = cases()
     prose = prose_counts(found)
 
     for n, case in sorted(found.items()):
-        lower = case.get("verified_lower_bound") or {}
-        if RECORD not in (lower.get("evidence") or []):
-            continue
-        checked += 1
-
-        expected, is_exact = theorem_two(n)
-        recorded = Decimal(str(lower["value"]))
-        with localcontext() as context:
-            context.prec = DIGITS
-            # The record may carry fewer digits than the theorem's value has; it must be a
-            # correct rendering of it, not merely close, so compare at the record's places.
-            # `exponent` is only an int for a finite Decimal, and a bound that is NaN or
-            # infinite is a malformed record rather than a disagreement, so say which.
-            exponent = recorded.as_tuple().exponent
-            if not isinstance(exponent, int):
-                problems.append(
-                    f"n={n}: recorded lower bound {recorded} is not a finite number"
-                )
+        for lane in LANES:
+            lower = case.get(lane) or {}
+            evidence = lower.get("evidence") or []
+            if RECORD in evidence:
+                record, (exact, _), name = RECORD, theorem_two_form(n), "Theorem 2"
+            elif KARAKUS in evidence and lane == "verified_lower_bound":
+                record, (exact, _), name = KARAKUS, karakus_form(n), "Karakuş (6.1)"
+            else:
                 continue
-            places = -exponent
-            if abs(expected - recorded) > Decimal(1).scaleb(-places):
-                problems.append(
-                    f"n={n}: record says {recorded}, Theorem 2 gives {expected:.{places + 2}f}"
-                )
-            if is_exact and recorded != recorded.to_integral_value():
-                problems.append(f"n={n}: an exact case should carry an integer, not {recorded}")
-
-        reported = case.get("reported_upper_bound") or {}
-        if (upper := reported.get("value")) is not None and recorded > Decimal(str(upper)):
-            inversions.append(f"n={n}: lower {recorded} exceeds reported upper {upper}")
+            checked[record] += 1
+            recorded = Decimal(str(lower["value"]))
+            if (problem := disagreement(n, recorded, exact, name=name)) is not None:
+                problems.append(f"{lane}: {problem}")
+                continue
+            reported = case.get("reported_upper_bound") or {}
+            if (upper := reported.get("value")) is not None and recorded > Decimal(str(upper)):
+                inversions.append(f"n={n}: {lane} {recorded} exceeds reported upper {upper}")
 
     if inversions:
         print("SOUNDNESS: a lower bound exceeds the upper bound it sits under:")
@@ -272,7 +392,8 @@ def main() -> int:
             print(f"  {line}")
         return 1
     if problems:
-        print(f"{len(problems)} of {checked} Nagamochi-derived bounds disagree with Theorem 2:")
+        total = sum(checked.values())
+        print(f"{len(problems)} of {total} borrowed bounds disagree with their theorem:")
         for line in problems:
             print(f"  {line}")
         return 1
@@ -285,9 +406,10 @@ def main() -> int:
 
     cited, operative = register_counts(found)
     print(
-        f"{checked} lower bounds re-derived from Theorem 2, all agreeing, none inverted; "
-        f"the README, case-body, citation ({cited}) and operative ({operative}) counts "
-        "agree with the records"
+        f"{checked[RECORD]} lower bounds re-derived from Nagamochi's Theorem 2 and "
+        f"{checked[KARAKUS]} from Karakuş's (6.1), all agreeing, none inverted; the README, "
+        f"case-body, citation ({cited}) and operative ({operative}) counts agree with the "
+        "records"
     )
     return 0
 

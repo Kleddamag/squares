@@ -88,10 +88,12 @@ Page colors that are not the accent take their hues from it:
 | --- | --- | --- | --- |
 | Verification rung (`V`) | 250 | Rises with the level | The blue square, `#166eac` |
 | Confirmation rung (`C`) | 158 | Rises with the level | The green square, `#158655` |
-| Significance rung (`S`) | 250 | 0.008 at every level | Gray |
+| Significance (`S`) | 205 | One ink, the same at every level | Between the blue and the green |
 
 Every chip carries the page’s own text colour, black in light mode, on a light fill, and
 in dark mode light text on a dark fill.
+Significance is no chip (the owner, 2026-10-03, `think-m3m4`): its rung is drawn on the
+page in its own ink, a dark teal (**Significance**, below).
 A plain chip is a 16% tint of the muted gray over the page background, and an accent
 chip a 22% tint of the accent.
 
@@ -111,14 +113,12 @@ them:
 | `--site-rung-chroma-base`, the chroma at level 0 | 0.015 | 0.012 |
 | `--site-rung-chroma-step`, what a level adds to it | 0.024 | 0.019 |
 
-Significance is gray by design: it takes the lightness steps and no chroma step, so a
-higher level is darker in light mode and lighter in dark, never coloured.
 No chip has a value of its own; a level’s fill is always these tokens at that level.
 
 The text is the page’s own at every step, with no switch to a second text colour: the
 scale stops where that text still reads.
 Every fill is inside sRGB, so a browser shows the chroma written here, and the text’s
-contrast on it is 6.0:1 or better in light mode and 5.3:1 or better in dark, against the
+contrast on it is 6.1:1 or better in light mode and 5.3:1 or better in dark, against the
 4.5:1 that WCAG AA asks of body text.
 The fills and ratios below are what `devtools.rung_scale` computes from the tokens in
 `site.css` and KPress’s page colours; run it after changing a token.
@@ -127,11 +127,6 @@ every ratio to 4.5:1.
 
 | Rung | Light fill | Text contrast | Dark fill | Text contrast |
 | --- | --- | --- | --- | --- |
-| `S1` | `oklch(89.5% 0.008 250)` `#d8dde2` | 13.0:1 | `oklch(29.6% 0.008 250)` `#2a2d31` | 11.7:1 |
-| `S2` | `oklch(84.0% 0.008 250)` `#c7cbd0` | 10.9:1 | `oklch(34.2% 0.008 250)` `#35393d` | 9.9:1 |
-| `S3` | `oklch(78.5% 0.008 250)` `#b5b9be` | 9.0:1 | `oklch(38.8% 0.008 250)` `#414549` | 8.2:1 |
-| `S4` | `oklch(73.0% 0.008 250)` `#a4a8ad` | 7.4:1 | `oklch(43.4% 0.008 250)` `#4e5155` | 6.8:1 |
-| `S5` | `oklch(67.5% 0.008 250)` `#93979c` | 6.0:1 | `oklch(48.0% 0.008 250)` `#5a5e62` | 5.5:1 |
 | `V0` | `oklch(95.0% 0.015 250)` `#e7f0f8` | 15.4:1 | `oklch(25.0% 0.012 250)` `#1d2227` | 13.6:1 |
 | `V1` | `oklch(89.5% 0.039 250)` `#cadff6` | 13.0:1 | `oklch(29.6% 0.031 250)` `#212e3c` | 11.7:1 |
 | `V2` | `oklch(84.0% 0.063 250)` `#accef3` | 10.9:1 | `oklch(34.2% 0.050 250)` `#243a51` | 9.9:1 |
@@ -162,7 +157,46 @@ table to its output and every ratio to 4.5:1.
 | `proved` | `oklch(78.5% 0.087 145)` `#96c897` | 9.3:1 | `oklch(38.8% 0.069 145)` `#2b4e2d` | 8.0:1 |
 | `open` | `oklch(84.0% 0.083 95)` `#dbcb8c` | 10.9:1 | `oklch(34.2% 0.070 95)` `#443800` | 9.9:1 |
 
-The recent-bound star is the one warm mark, `oklch(52% 0.19 25)`.
+### Significance and the Other Inks
+
+A significance rung is drawn in an ink of its own on the page, not on a chip:
+`--site-significance`, a dark teal at hue 205, between the confirmation green and the
+verification blue so it reads as neither, and darker and bluer than the accent so it
+never reads as a link; it is light in dark mode.
+The rung is its letter and level, `S4`, at the sans medium weight, then as many short
+bars in the same ink as its level, one to five, so a column of them reads as a meter
+(`overview_sections.significance_mark`). It is the second column of a table of results,
+narrow, with a new result’s star after the bars, and it stands first among the rungs in
+a result’s overview, a case record and the rating ladders.
+
+The recent-bound star is the one warm mark, `--site-new-result`, lighter in dark mode so
+it keeps its contrast there.
+`devtools.rung_scale` measures both inks against the page’s background in each theme,
+and `tests/test_rung_scale.py` holds this table to its output: the significance ink is
+text, held to 4.5:1, and the star a symbol, held to 3:1, both inside sRGB.
+
+| Ink | Light | Against the page | Dark | Against the page |
+| --- | --- | --- | --- | --- |
+| `--site-significance` | `oklch(42.0% 0.070 205)` `#05585f` | 8.2:1 | `oklch(80.0% 0.085 205)` `#77ced8` | 10.2:1 |
+| `--site-new-result` | `oklch(52.0% 0.190 25)` `#be222a` | 6.1:1 | `oklch(66.0% 0.170 25)` `#e8605b` | 5.5:1 |
+
+### Every Colour Is a Token
+
+Every colour the site and its papers paint with is a custom property, so a colour is
+tried and changed in one place, and a dark theme or a print sheet redefines the token
+rather than every rule that uses it (the owner, 2026-10-03, `think-zhlc`). A rule says
+`var(--site-shadow)`, never `oklch(0% 0 0 / 0.15)`; a mix of the page’s own colours
+stays in the rule that paints with it, since a token resolves where it is declared and
+the dark theme’s page colours are set below the root, and its ratio is the token:
+`color-mix(in oklch, var(--kpress-doc-muted) var(--site-chip-tint),
+var(--kpress-doc-bg))`. `devtools.check_colour_tokens` holds every served stylesheet to
+this: no hex colour, no colour function that names a number of its own, and no named
+colour in a property that paints, outside a custom property, and every token a rule
+paints with is declared.
+Two declarations are allowed, each with its reason in the checker, and an allowance that
+names nothing fails: the folio’s ink in a printed paper’s `@page` margin boxes.
+`tests/test_colour_tokens.py` holds the stylesheets to it, with a negative control for
+each rule.
 
 Every hover, a table’s group row and a targeted row take one gentle wash, `--site-wash`,
 defined in `site-nav.css` because every page carries it: KPress’s hover surface in light
@@ -258,11 +292,14 @@ with these exceptions:
 | Chip | The papers’ format chips at 16.15px, the site’s at 17.48px | Two components |
 | Table head | 650, and 550 for a group row | KPress’s head; the site’s group rows are medium |
 
-**Faces.** Every page inlines byte-identical `@font-face` blocks (PT Serif and its
+**Faces.** Every page carries byte-identical `@font-face` blocks (PT Serif and its
 punctuation face, Source Sans 3, Planetaire Mono Text, the KaTeX faces and KPress’s math
 composites), because every page takes them from the same functions,
-`render_n11_lower_bounds_explainer.kpress_css`, `katex_css` and `relation_face_css`;
-`devtools.measure_site_pages faces` compares them block by block.
+`render_n11_lower_bounds_explainer.kpress_css`, `katex_css` and `relation_face_css`: the
+papers and the workbench inline them, and the site’s pages link them as shared files
+(**Shared Assets**, below).
+`devtools.measure_site_pages faces` compares them block by block, reading a linked
+stylesheet as the page’s own.
 KPress leads each family token with an embedding host’s hook, `--kpress-host-font-sans`
 and its siblings, so an application embedding a KPress fragment can supply its own face.
 The site does not honor those hooks: a viewer that injects one would draw the page in a
@@ -344,15 +381,65 @@ square em), and with `auto` alone added the paper’s came within 0.2% of the ex
 ink, tells each paper it is on macOS and that it is not (the difference never shows on a
 Linux runner otherwise), and names a paper whose head script is taken out.
 
+## Shared Assets
+
+The site’s pages link their design system rather than carry it.
+Every page `render_overview.kpress_page` writes names the same stylesheets and scripts:
+KPress’s stylesheets with their faces, KaTeX’s pruned stylesheets and faces, the
+relation glyphs, `paper-type.css`, `site-nav.css`, `site.css` and `site-result.css`, the
+math pipeline, KPress’s flattened client behaviors and the page’s own programs.
+Inlined, they came to about 1.8 MB a page, 0.95 MB after gzip, and a reader’s browser
+fetched them again on every page, since a page’s own bytes were all it could cache.
+
+- **Where they live.** `devtools/site_assets.py` publishes each as a file under the
+  site’s `assets/`, named by its content: `css/site.<hash>.css`,
+  `fonts/pt-serif-latin-400-normal.<hash>.woff2`, `js/table.<hash>.js`, where the hash
+  is the first sixteen hex digits of the bytes’ SHA-256 (KPress’s `content_hash`). A
+  file’s name changes when its bytes do, so a cached copy is never stale, and a reader
+  fetches each once for every page of the site.
+- **How a page names them.** By a relative path from where the page is served:
+  `assets/…` from the root, `../assets/…` from `cases/`. A stylesheet names its faces
+  from beside itself, `../fonts/…`, so it reads the same from every page.
+  `kpress_page` writes every address from the root, and `render_case_pages.rebase_links`
+  moves a script’s `src` with every other link when a page stands in a directory.
+- **What a page may fetch.** Its shared assets and nothing else to be drawn:
+  `render_overview.assert_fetches_only_assets` refuses a script or stylesheet with any
+  other source, a CSS import, and a `url()` in the page’s own text that is not a data
+  URI or a fragment.
+- **Faces.** Every face keeps `font-display: block`, so a face that arrives late holds
+  the text it draws invisible.
+  The faces a page draws its first screen in, PT Serif’s regular and Source Sans 3’s
+  upright, are preloaded beside the stylesheets (`site_assets.PRELOADED_FACES`), so they
+  are asked for with the stylesheet rather than after layout; the rest are fetched when
+  a page first draws in them, and a face no page draws, a print instance, only when one
+  prints.
+- **What a build writes.** `render_overview.write_site` writes exactly the files its
+  pages name, with the faces their stylesheets name, and removes any other file under
+  `assets/`; `render_overview --check` compares the directory against that set, and
+  fails a page that names a file no build wrote.
+- **What the deploy checks.** `check_published_site`, live and with `--local`, holds
+  every file a page names, and every face a named stylesheet names, to being served with
+  the bytes its name was given for.
+- **A page whole.** A tool or test that reads a page as one file, or opens it with
+  nothing beside it, puts the shared files back in it: `site_assets.SiteAssets.inlined`
+  from a render, `site_assets.inlined_from` from a built site.
+
+The papers and the workbench still inline their assets: the explainer’s math
+preparation, both papers’ PDFs, `compare_math_fonts` and the workbench’s
+content-security policy read them from the page, and each moves to the shared files with
+its own tools. `devtools.measure_site_pages load --network fast-4g --after index.html`
+measures what a reader’s second page costs; on 2026-10-04 it moved 1.0 to 1.3 MB on
+every page before this change.
+
 ## Math Loading
 
 Every page, the optimality paper included, loads its mathematics through the explainer’s
 pipeline, from the same code:
 
 - **Faces and styles.** KaTeX’s faces pruned to those a page can reach, inlined as data
-  URIs and switched from `font-display: swap` to `block`, so no formula is drawn in a
-  host face and redrawn; KPress’s math composites; the three relation glyphs
-  (`relation_face_css`).
+  URIs on the papers and published as shared files for the site’s pages, and switched
+  from `font-display: swap` to `block`, so no formula is drawn in a host face and
+  redrawn; KPress’s math composites; the three relation glyphs (`relation_face_css`).
 - **Scripts.** `render_n11_lower_bounds_explainer.katex_js`: KaTeX, KPress’s metric
   tables and shared runtime, and the explainer’s host adapter, `squaresMath`
   (`probes/render_n11_lower_bounds_explainer/host_math_init.js`). KPress’s own entry
@@ -808,9 +895,9 @@ it.
   - When the card leads to another project off the site, it is a direct card.
     It shows the address under the note beside the host’s mark (GitHub’s for a GitHub
     URL, otherwise the site’s favicon, saved under `devtools/overview/favicons/` by host
-    and inlined, since the page fetches nothing), and opens it in a new tab.
-    An other project’s card ends with its tally of results (**Card foot** and **Other
-    projects**, below).
+    and inlined, since a page fetches nothing but its shared assets), and opens it in a
+    new tab. An other project’s card ends with its tally of results (**Card foot** and
+    **Other projects**, below).
   - When the card leads to a poster’s PDF or to the Visualize page, it is a direct card
     headed by the picture it opens (below).
     A PDF card is typed `application/pdf` and never marked `download`, so the browser
@@ -950,9 +1037,11 @@ it.
   width. A rung chip adds `.site-rung-fill` with `data-rung` and `data-level`, and its
   fill strengthens and saturates with the level (Color, The Rung Scale).
   Significance is listed first: wherever a result’s rungs are shown together, in a table
-  row, a popover, a result’s overview or a case record, they run S, V, C, from the one
-  function that sets the order, `overview_sections.rung_chips`. The generated register
-  documents keep their own order, verification first.
+  row, a popover, a result’s overview or a case record, they run S, V, C: the
+  significance mark, then the V and C chips (`overview_sections.rung_chips`). A table
+  row draws the mark in a column of its own before the Rungs column’s V and C
+  (`significance_cell`, `ladder_chips`). The generated register documents keep their own
+  order, verification first.
   A kind chip (`kind_chip`) says what a result is, in the rubric’s words, `lower bound`
   or `case exclusion`, and carries `data-kind`. Every result draws one: on a line of its
   own under its rungs in a table, and after the rungs in a popover’s head and a chain’s
@@ -966,11 +1055,22 @@ it.
   move (`data-activity`): `in analysis` for a replay or review under way here,
   `waiting on source` for a request with another party; its title says what is in hand
   and since when. Last is `superseded` (`data-standing`), on a bound that no case bound
-  rests on now. A result that still stands draws no chip for that: `current best` is the
-  default, so it is left unsaid.
-  That a bound is only reported is no chip of its own: it is the status `recorded`. A
-  second proof of a value another result holds says so by its kind, `simplification`,
-  and a result that bounds nothing by its kind too.
+  rests on now, followed in quiet type by the results that supersede it, each a link to
+  its row: “by T-060”, the results its cases’ bounds rest on now
+  (`overview_sections.supersession_marks`). A result of a kind that is no bound draws it
+  only where its entry declares a later result that implies it (`superseded_by`), and
+  `superseded in part` where that result implies some of it, as `T-060` does `T-036`’s
+  bound and not its equality case.
+  That mark’s chip says `superseded` too, and `in part` leads the quiet text after it,
+  so the line reads “superseded in part by T-060”, the register’s words; the chip keeps
+  its own standing, `data-standing="superseded-in-part"`, and the row stays current.
+  The four words as one chip were 150 pixels, the widest chip of the status line, and
+  set the column 52 pixels wider than `superseded` does (`think-kmi4`). An id never
+  breaks at its hyphen.
+  A result that still stands draws no chip for that: `current best` is the default, so
+  it is left unsaid. That a bound is only reported is no chip of its own: it is the
+  status `recorded`. A second proof of a value another result holds says so by its kind,
+  `simplification`, and a result that bounds nothing by its kind too.
   Each of these chips adds no style of its own, so every one is the same plain gray
   chip, one font size, line height and height, and they differ only in their words.
   The Rungs column is as wide as its widest chip, so in a table each chip of the status
@@ -1029,12 +1129,13 @@ it.
   table, since 2026-10-02 (the owner, `think-hqb3`); it was the homepage’s section
   between Recent Results and the atlas before that (**Results page**, below, for its
   place and its lead).
-  The homepage keeps a key of the same grid under Recent Results (`rung_key`, the same
-  day, `think-tgjv`), its heads the ratings’ names and letters alone (**Recent
-  results**, below). Its diagram, `.site-ladders`, is one diagram, which is neither a set
-  of cards nor the shared data table: a column for each scored dimension of the rubric,
-  in the order Significance, Verification, Confirmation, and a row for each level, the
-  highest at the top, so the rungs of the three ladders line up across a row.
+  A table of results carries a legend of every rung’s mark right above it, which links
+  this section (**Recent results**, below; `think-42dx`, in place of the key of the same
+  grid the homepage kept under its table from 2026-10-02). Its diagram, `.site-ladders`,
+  is one diagram, which is neither a set of cards nor the shared data table: a column
+  for each scored dimension of the rubric, in the order Significance, Verification,
+  Confirmation, and a row for each level, the highest at the top, so the rungs of the
+  three ladders line up across a row.
   A column is headed by the dimension’s name, which links to its section of
   `epistemics.md`, and the question it answers, with no caps label.
   A cell holds the rung’s chip and a description of exactly two lines, and nothing else:
@@ -1060,13 +1161,19 @@ it.
     wrap to two lines of 25 characters (`SHORT_MEANING_LINE`) stops the build until it
     is given a shorter form.
   - **Rows.** Every rung is the same height at any one width, since each is a chip and a
-    two-line box. A cell arranges the two by its own width.
-    With 16.5rem or more it sets the chip in a 2.25rem rail, the chip’s own width, and
+    two-line box; a significance mark stands as tall as a chip, the chip’s line height
+    and margin. A cell arranges the two by its own width.
+    With 17.85rem or more it sets the chip in a rail, 2.25rem, the chip’s own width, or
+    3.6rem for significance, the widest mark’s (`--site-ladders-significance-rail`), and
     the description beside it, 0.75rem on, 64.1px a row: at 1280 and 1024 pixels, down
-    to a 908-pixel window, and on a phone down to 296 pixels.
-    Narrower, it sets the chip on a line of its own and the description under it across
-    the cell, 91.8px a row, from 907 pixels down to 716, so at 768. A description is
-    never set narrower than 13.5rem (`--site-ladders-meaning-min`).
+    to a 973-pixel window, and on a phone down to 318 pixels.
+    Every cell turns at the widest rail’s width, so a row’s rungs stay one height and a
+    significance description, 1.35rem narrower than the others beside its wider rail, is
+    never under its least: at 16.5rem, the chips’ rail’s, it was set 21.6px short and
+    took a third line (2026-10-03). Narrower, it sets the chip on a line of its own and
+    the description under it across the cell, 91.8px a row, from 972 pixels down to 716,
+    so at 768 and 908. A description is never set narrower than 13.5rem
+    (`--site-ladders-meaning-min`).
   - **Columns.** The three columns are equal, and each keeps 0.75rem
     (`--site-ladders-inset`) clear after its words, before the next column’s chip.
     Three columns therefore need 42.75rem: three times the least description and its
@@ -1185,6 +1292,26 @@ it.
   420ms; the hundred miss no frame, and all 324 miss ten of 39 at 120Hz, the longest
   18ms.
 
+- **Atlas drawings.** Beside the view tabs, in one row over the tiles that wraps under
+  them on a phone, a second strip of the same tabs chooses the drawing
+  (`atlas_layer_tabs`): **House**, the default, the record’s own rendering, and
+  **Regularized**, the derived view that `atlas/known-best/regularized/` keeps for some
+  cases (X-049), with each square’s shade from the same house rule on the regularized
+  pose. `devtools.render_regularized_atlas` draws those views from the layer’s index, so
+  a view the layer gains joins the atlas at the next render; its `--check` holds the
+  drawings to the index.
+  A case with a view has a second tile in a third `<template>`, and choosing Regularized
+  swaps it in for the house tile in place, with the tile’s place in the triangle and the
+  keyboard focus carried over, so nothing moves and the two can be compared by flicking
+  between the tabs (`overview/atlas-layer.js`); every other case keeps its house tile.
+  A regularized tile carries the layer’s badge, a dot in the accent hung past its number
+  so the number stays centred, and the Regularized tab carries the same dot as its key.
+  Either tile opens the same case record, whose drawing is the house one: the
+  regularized layer is the atlas’s view, not the record’s. The drawing is in the address
+  as `?layer=regularized` (house has none), read before any tile is placed.
+  `tests/test_site_atlas_views.py` reads the swap in Chromium, and
+  `devtools.measure_atlas_views` measures each layout in both drawings.
+
 - **Action under a table or grid.** Where one control follows a table or a grid, it is
   the site’s one action button, `.site-action`, in a centred `.site-action-row`: the
   look of a popover’s action (**Popovers**, the accent fill with the page’s background
@@ -1236,12 +1363,17 @@ it.
   So nothing changes at 1280 pixels or narrower, and on a large screen a table’s text
   columns wrap less. The frontier table, whose own track is 86rem, is the page’s content
   area less its gutters up to 1456 pixels and goes from 1376 to 1600 above that.
-  The tables of results are the one exception: since they hold eight columns
-  (2026-10-02, `think-ybt5`, `think-e4o3`), their floors come to 1139 pixels with every
-  row showing, more than the 1104 of the wide track, so they bleed from 74rem, 1184
-  pixels. They fit from about 1220, are 1200 pixels wide at 1280, as the frontier table
-  is there, 1520 at 1600 and 1600 from about 1680 up, and below 1220 they scroll in
-  their wrap: by 195 pixels at 1024 and 451 at 768 with every row showing.
+  The tables of results are the one exception: they bleed from 74rem, 1184 pixels, which
+  they needed while they held nine columns (eight from 2026-10-02, `think-ybt5`,
+  `think-e4o3`, nine with the significance’s from 2026-10-03, `think-m3m4`), whose
+  floors came to 1198 pixels, more than the 1104 of the wide track.
+  Since the Details column moved into the row’s popover on 2026-10-04 (`think-46fw`)
+  they hold eight, whose floors come to 1095.5 pixels with every row showing.
+  They fit from about 1176, are 1200 pixels wide at 1280, as the frontier table is
+  there, with 104.5 to spare, 1360 at 1440 and 1520 at 1600, and they go on past the
+  1600 other tables stop at, to a cap of their own, `--site-results-table-max` (112rem):
+  1792 pixels at 1920 (`think-bcmc`). Below 1176 they scroll in their wrap: by 151.5
+  pixels at 1024 and 407.5 at 768 with every row showing.
   The rule takes any `.site-wide` that is or holds a `.site-table-wrap`, so a new table
   bleeds with no rule of its own.
 
@@ -1289,12 +1421,13 @@ it.
   and every way to a case opens that record: an atlas tile, a frontier row and a link
   (the owner, 2026-10-02 and 03, `think-t21m`).
   - **The record file.** `cases/N.html`, one for each case, is a plain page: its own
-    head, a name (“n = 11 · Case Records”), a description, a canonical link and a link
-    preview (**Page Metadata and Social Cards**, below), no site shell, and the record
-    itself as HTML, an `article.site-case` that names its case in `data-case`, as the
-    root element does. A reader without scripts, and a crawler, reads the record there,
-    plain, under one small style of its own: a reading column, the drawing at the record
-    page’s size and each formula once, as its MathML. One inlined script in its head
+    head, a name (“n = 11 · Case Records”), a description, a canonical link, a link
+    preview and the site’s icon (**Page Metadata and Social Cards**, below), no site
+    shell, and the record itself as HTML, an `article.site-case` that names its case in
+    `data-case`, as the root element does.
+    A reader without scripts, and a crawler, reads the record there, plain, under one
+    small style of its own: a reading column, the drawing at the record page’s size and
+    each formula once, as its MathML. One inlined script in its head
     (`overview/case-forward.js`) sends a reader with scripts on at once to the record
     page, `./?n=11`, with the fragment they came with; `?raw` keeps a reader on the
     file, and so does a file read from disk.
@@ -1368,14 +1501,16 @@ it.
     model’s list of headings, the records’, is emptied on the record page, which has no
     contents rail. A footnote in a case file is refused: kpress gathers footnotes at the
     foot of the one render, outside every record.
-  - **Why not 324 pages.** Every site page inlines its shell, about 1.8 MB of faces and
-    KaTeX, so 324 full pages would carry it 324 times.
-    The record page carries it once, 1.9 MB with the index, and the record files are the
+  - **Why not 324 pages.** Until 2026-10-04 every site page inlined its shell, about 1.8
+    MB of faces and KaTeX, so 324 full pages would have carried it 324 times.
+    The record page carried it once, 1.9 MB with the index, and the record files are the
     records alone: 16 KB for $n = 1$ to 217 KB for $n = 11$, 10.4 MB for all 324
-    (measured 2026-10-03). Until that day every record was on one page, `cases.html`,
-    which showed the record its fragment named; that address is a forwarder to `cases/`
-    with its fragment kept, so `cases.html#n-11` arrives at case 11 (**Document cards
-    and moved pages**, below).
+    (measured 2026-10-03). The shell is now shared (**Shared Assets**, below), and the
+    record page is 41 KB; one page of records still keeps a record’s address one
+    fragment of one page, and its popover and its page the same file.
+    Until that day every record was on one page, `cases.html`, which showed the record
+    its fragment named; that address is a forwarder to `cases/` with its fragment kept,
+    so `cases.html#n-11` arrives at case 11 (**Document cards and moved pages**, below).
 
 - **Atlas cards.** The atlas’s posters and film have a section of their own, **PDFs and
   Videos**, an ordinary `h2`; **The Atlas of Square Packings** keeps the grid, its
@@ -1448,41 +1583,52 @@ it.
   The two tables of results, the overview’s recent table and the results page’s, are one
   table: one header (`result_head`) and one row (`result_table_row`), so the same
   columns in the same order.
-  They are the date; the result, its summary whole, method and all, and its star; the
-  cases, n; the credit, the finder first and “after …”, what the result builds on, quiet
-  after it, in full; the rungs, with the kind on a line under them; the status line, its
-  chips one under another (**Chips**, above); the details, the result’s records (its
-  case link, the register, its evidence, source and reviews), a link to a line; and the
-  id, the last column and the row’s trigger, as narrow as an id, under the 6rem KPress
-  keeps a cell to. The owner set that order on 2026-10-02: the id led and the date closed
-  the row until then (`think-t090`); the status line stood under the kind
-  (`think-ybt5`); and the records stood on a quiet line under the summary, a dot between
-  two links, where the result’s cell holds the claim alone now (`think-e4o3`). The
-  status cell sorts on the status word; the details do not sort.
+  They are the date; the significance, S, its mark (**Significance and the Other Inks**,
+  above) and a new result’s star after it; the result, its summary whole, method and
+  all; the cases, n; the credit, the finder first and “after …”, what the result builds
+  on, quiet after it, in full; the rungs, verification and confirmation, with the kind
+  on a line under them; the status line, its chips one under another (**Chips**, above);
+  the details, the result’s records (its case link, the register, its evidence, source
+  and reviews), a link to a line; and the id, the last column and the row’s trigger, as
+  narrow as an id, under the 6rem KPress keeps a cell to.
+  The owner set that order on 2026-10-02: the id led and the date closed the row until
+  then (`think-t090`); the status line stood under the kind (`think-ybt5`); and the
+  records stood on a quiet line under the summary, a dot between two links, where the
+  result’s cell holds the claim alone now (`think-e4o3`). Significance left the rungs
+  for a column of its own, the second, on 2026-10-03, and a new result’s star left the
+  result’s text for it (`think-m3m4`). The status cell sorts on the status word; the
+  details do not sort.
   On a phone each row is a card that places its cells by class, not by column, so the
-  card reads as before: the id, the cases and the rungs on its first line, the status
-  under the rungs, the claim with its details on a line under it, a dot drawn between
-  two links, then the credit and the date.
+  card reads as before: the id, the cases and the rungs on its first line, the
+  significance under the id and the status under the rungs, the claim with its details
+  on a line under it, a dot drawn between two links, then the credit and the date.
   The tables are two filters of one table, and differ only in where the filter bar
   starts, which sets the rows that begin `hidden` and the count, and in a row’s key: on
   the results page a row is the result’s own address (`id="t-018"`), and on the overview
   it names the result as `data-result`. Every other byte of a row and of its popover is
-  the same, so each shows the result’s records in its details, each opens its popover
-  from the id, and no row of one links to the other.
-  The line under the overview’s table, “See all results”, is the one link between them.
+  the same, so each shows the result’s records in its details and each opens its popover
+  from the id. The line under the overview’s table, “See all results”, links the overview
+  to the results page, and so does a status line that names the results superseding its
+  own: each named result links to its row on the results page
+  (`overview_sections.result_url`), in place there and across from the overview.
   Both sort on any column whose header carries the sort pair.
   The widths follow from each column’s floor and from what the n column asks for.
-  The id, the rungs, the status, the details and the date are as narrow as what they
-  hold. The details are as wide as their widest link, 96 pixels, and a result with many
-  records is the tallest row: T-051’s nine links stand 239 pixels.
-  The rungs column is as wide as its widest chip, since no chip wraps: the three rungs
-  at 114 pixels, and the widest kind, “restricted optimality”, at 180 where a row with
-  one shows. The kind takes a line under the rungs, and the status column is as wide as
-  its widest chip, its chips one under another.
+  The id, the significance, the rungs, the status, the details and the date are as
+  narrow as what they hold.
+  The significance is as wide as its widest mark, S5’s five bars and a star, 77 pixels
+  with the cell’s 0.2rem padding either side: its bars are 0.36em wide, 0.2em after the
+  label, and the star takes the cell’s end padding (trimmed on 2026-10-03, `think-r3rd`,
+  from 90 pixels, which set the table 7.8 past its frame at 1280). The details are as
+  wide as their widest link, “evidence 10”, 102 pixels, and a result with many records
+  is the tallest row: T-075’s sixteen links stand 410 pixels.
+  The rungs column is as wide as its widest chip, since no chip wraps: the two rungs
+  share a line, and the widest kind, “restricted optimality”, sets it at 180 where a row
+  with one shows. The kind takes a line under the rungs, and the status column is as wide
+  as its widest chip, 114 pixels, its chips one under another.
   The credit column is at least 11.5rem wide, which holds the longest name on one line
   (“Queuingtheorydotcom”, 167 pixels of the 184), so a credit wraps between names and
   never inside one; KPress’s own floor, 6rem, set it a word to a line.
-  The result column is at least 18rem, 288 pixels, and no formula holds it wider.
+  The result column is at least 16.55rem, 265 pixels, and no formula holds it wider.
   KaTeX sets a formula as pieces a line cannot end inside, one up to each relation or
   binary operator at its top level, and the widest piece in either table is 249 pixels,
   the numerator of T-033’s quotient.
@@ -1505,29 +1651,30 @@ it.
   The table gives the n column its measure before the result and the credit share the
   spare width, and where the window is short of room the n column narrows first, to half
   its measure at the least, a range and a count to a line.
-  Where no row showing holds a long list, as on the overview when it opens, the column
-  is as narrow as its lists, 85 pixels, so a single case has no empty column beside it.
-  With every row showing, the id, n, result, credit, rungs and date columns measure 56,
-  225, 342, 200, 180 and 100 pixels at a 1280-pixel window, where T-056’s list takes 6
-  lines, and 56, 135, 288, 184, 180 and 100 at 1024, where it takes 11; the table fits
-  its frame at both, with 14 pixels to spare at 1024 before the n column reaches its
-  floor. At 768 they measure 56, 120, 288, 184, 180 and 100, the list takes 11 lines, and
-  the table runs 242 pixels past its 688-pixel frame.
-  The floors come to 930 pixels, so a table fits its frame down to a window of about
-  1010 pixels and scrolls sideways in its wrap below that.
-  The measure is a trade against the result column: each 2ch of it takes about 13 pixels
-  from the result at a 1280-pixel window and adds about 75 to the height of the results
-  page’s table, whose summaries carry their records.
-  At 24ch the longest list sets a row 165 pixels tall, under the 171 the tallest summary
-  sets there. The records are no column of their own, which would set a link to a line:
-  they sit under the summary, a line or two of links.
-  Both tables show them.
-  `devtools.measure_site_pages columns` and `chips` measure all of this on a built site:
-  each column’s width, the most lines a cell takes, the words a line break splits and
-  the tallest row a column sets; the values of a list of cases cut across lines, the
-  widest piece of typeset math, the formulas a line ends inside anywhere but after a
-  relation or a binary operator, and the punctuation that begins a line; and every
-  chip’s font size, box and lines.
+  Where no row showing holds a long list, as in a view of one kind of short lists, the
+  column is as narrow as its lists, under 96 pixels, so a single case has no empty
+  column beside it. The overview as it opens shows T-056’s list since it starts at S3
+  (`think-x60s`). With every row showing, the date, significance, result, n, credit,
+  rungs, status and id columns measure 100, 77, 389, 225, 220, 180, 114 and 56 pixels at
+  a 1440-pixel window, where the table is 1360 and gives the n column its whole measure:
+  T-056’s list takes 6 lines, a row 165 pixels tall, under the 182 of T-044’s row.
+  At 1280 the result and credit columns are at their floors, 265 and 184, and the n
+  column still has its whole measure, 225, so the list takes 6 lines there too; at 1024
+  and 768 every column is at its floor, the n column at 120 and its list on 12 lines,
+  and the table runs 151.5 and 407.5 pixels past its 944- and 688-pixel frames.
+  The floors come to 1095.5 pixels, so a table fits its frame down to a window of about
+  1176 pixels and scrolls sideways in its wrap below that (measured 2026-10-04). A
+  result’s records, its case files, register entry, evidence, sources and reviews, are
+  the last entry of its row’s popover, one line with a dot between two links; the
+  overview the popover fetches links each of them again.
+  They were a Details column, a link to a line, from 2026-10-02 to 2026-10-04
+  (`think-46fw`): a column of links made every row harder to read for what most readers
+  open a row to see. `devtools.measure_site_pages columns` and `chips` measure all of
+  this on a built site: each column’s width, the most lines a cell takes, the words a
+  line break splits and the tallest row a column sets; the values of a list of cases cut
+  across lines, the widest piece of typeset math, the formulas a line ends inside
+  anywhere but after a relation or a binary operator, and the punctuation that begins a
+  line; and every chip’s font size, box and lines.
   `tests/test_site_result_columns.py` holds both tables to it in a browser.
   Secondary content in a cell, such as a credit or an “after …” list, takes
   `.site-cell-quiet`, which sets it in the support colour and the sans face.
@@ -1536,21 +1683,25 @@ it.
   (**Spacing**, above).
   Wide tables bleed on large screens, as **Wide bleed** above describes.
   On a phone, a table of results becomes one card per row: the id, the cases and the
-  rungs on its first line, and a list of five values or more on a line of its own under
-  them, the card’s width.
-  A date cell leads with the date and then says what it dates, `published` or
-  `established`, in the support colour (`date_cell`): under the date on a wide table,
-  which keeps the column narrow, and beside it on a phone.
-  In both tables of results the star follows the text of a new result
-  (`new_result_star`). It hangs after the last character: it takes no width, so it never
-  wraps to a line by itself, and its cell keeps 1.1em for it at the end of every line.
-  The rule is the atlas’s, asked of a result instead of a case
-  (`overview_data.starred_results`): the verified lower bound of a case rests on the
-  result now, and that bound is recent, so a superseded result and an upper bound carry
-  no star. The star is never the only signal: it is an image whose name and tooltip say
-  “New result” and the cases, the row’s own name ends “new result”, and the prose above
-  each table says what it marks (`star_legend`). A superseded result’s row reads
-  quieter, its text in the support colour, in every site table, by one rule on
+  rungs on its first line, the significance under the id and the status under the rungs
+  on its second, and a list of five values or more, or a long one, on a line of its own
+  under them, the card’s width.
+  The significance stood on the first line until review found the cases left no width
+  beside it on 34 of 70 cards (`think-uer5`), and no cell of a card shows anything past
+  its own box (`test_on_a_phone_each_row_is_a_card_that_fits`). A date cell leads with
+  the date and then says what it dates, `published` or `established`, in the support
+  colour (`date_cell`): under the date on a wide table, which keeps the column narrow,
+  and beside it on a phone.
+  In both tables of results a new result’s star follows its significance mark, in the S
+  column (`new_result_star`, `significance_cell`), where it hung after the result’s text
+  until 2026-10-03 (`think-m3m4`). The rule is the atlas’s, asked of a result instead of
+  a case (`overview_data.starred_results`): the verified lower bound of a case rests on
+  the result now, and that bound is recent, so a superseded result and an upper bound
+  carry no star. The star is never the only signal: it is an image whose name and tooltip
+  say “New result” and the cases, the row’s own name ends “new result”, the legend under
+  each table of results shows it as “new result” (`rung_legend`), and the Results page’s
+  prose says what it marks (`star_legend`). A superseded result’s row reads quieter, its
+  text in the support colour, in every site table, by one rule on
   `tr[data-current="false"]`; its chips keep their fills.
   A row reached by its address (`frontier.html#n-11`, `all-results.html#t-018`) takes
   the wash, in every site table.
@@ -1692,13 +1843,18 @@ Max age is a number of days, and empty is no limit. There is no date range.
 
 - **Hide superseded.** One checkbox, straight after Status, hides exactly the superseded
   results: the bounds no case bound rests on now, because a later or a stronger result
-  holds the case (`overview_sections.is_superseded`). Every other result stays: one that
-  still holds a bound, verified or reported, and a result of a kind that is no bound,
-  such as a rigidity, a simplification or the limit of a method, which no better bound
-  supersedes. A result that holds one case of several is not superseded.
-  The word is derived from the case records (`render_recent_results.standing`), so the
-  checkbox and the `superseded` chip cannot disagree, and `devtools.check_standing`
-  holds it to the bounds each entry states.
+  holds the case (`overview_sections.is_superseded`), and the results of other kinds
+  whose entries declare a later result that implies the whole of them.
+  Every other result stays: one that still holds a bound, verified or reported, a result
+  of a kind that is no bound, such as a rigidity, a simplification or the limit of a
+  method, which no better bound supersedes, and one superseded only in part.
+  A result that holds one case of several is not superseded.
+  For a bound the word is derived from the case records
+  (`render_recent_results.standing`), so the checkbox and the `superseded` chip cannot
+  disagree, and `devtools.check_standing` holds it to the bounds each entry states.
+  A result superseded in part draws the same `superseded` chip with “in part” after it,
+  and the checkbox keeps its row: the chip’s `data-standing`, `superseded-in-part`,
+  tells the two marks apart.
   A row carries the answer as `data-current`, `false` where it is superseded.
   Superseded is the result’s place on the frontier and no status, so the checkbox and
   Status ask different questions and compose as every pair of controls does: a confirmed
@@ -1712,9 +1868,10 @@ Max age is a number of days, and empty is no limit. There is no date range.
 
 - **Defaults.** The caller passes them (`FilterDefaults`), and they are the one thing
   that differs between the two bars.
-  Recent Results on the overview starts at significance S4 and up, a maximum age of 180
-  days and Hide superseded checked (`RECENT_DEFAULTS`); the results page starts at All,
-  no maximum age and the box clear (`RESULTS_DEFAULTS`), so every result shows.
+  Recent Results on the overview starts at significance S3 and up (S4 until 2026-10-03,
+  `think-x60s`), a maximum age of 180 days and Hide superseded checked
+  (`RECENT_DEFAULTS`); the results page starts at All, no maximum age and the box clear
+  (`RESULTS_DEFAULTS`), so every result shows.
   Every other control starts at All on both.
   The bar has no reset control: a control’s default is its state in the HTML, which a
   fresh load of the page returns to.
@@ -1828,8 +1985,9 @@ pointer and by keyboard, and measures its label at 1280, 768 and 390 pixels.
     network, the short form stays, and the next opening asks again.
     A result’s row does this: its short form is the result’s claim, significance and
     novelty, and its file is the result’s whole overview (**Result Overview**, below).
-    Besides a page a card’s popover frames, a page fetches one other thing, a case’s
-    record file, into the case popover or the record page (**Case records**, above).
+    Besides its shared assets and a page a card’s popover frames, a page fetches one
+    other thing, a case’s record file, into the case popover or the record page (**Case
+    records**, above).
 
   `tests/node/overview_rows/` runs the script against a stand-in document, and
   `tests/test_overview.py` holds every row of the two pages to this markup, the frontier
@@ -1846,9 +2004,10 @@ pointer and by keyboard, and measures its label at 1280, 768 and 390 pixels.
   Frontier page’s counts, its audit of its sources, the seventeen-square history before
   this project, and when a bound by others counts as verified, which is the rule its
   verified columns apply.
-  Each table keeps its own star legend, since a star without one reads as decoration,
-  and one function writes it (`star_legend`); the atlas note links the legend under the
-  recent table in place of a third.
+  Each table of results keeps its own key to the star, since a star without one reads as
+  decoration: the legend under it shows the star as “new result” (`rung_legend`), and
+  the Results page’s prose says what it marks (`star_legend`). The atlas note links the
+  recent table, and its legend, in place of a third.
   The Frontier page opens with the survey’s account, its audit, its recent counts and
   the seventeen-square history, and ends its prose with the key to its columns, beside
   the table. The way onward follows the section’s shape: a section whose key element is a
@@ -1877,20 +2036,16 @@ pointer and by keyboard, and measures its label at 1280, 768 and 390 pixels.
   The first paragraph, 50 to 100 words, is the headline of recent progress, eleven
   squares settled by T-060, seventeen squares bracketed by T-043 and T-065, the new
   exact values at $n = 21$, $32$ and $45$, each id linked to its row and held to the
-  register by `check_results.READER_TIER`; then the star legend (`star_legend`); then
-  one sentence on where the table above starts.
-  The second, at most 130 words, says what the three ratings on a row mean, a sentence
-  to each: significance, S1 to S5, how much the result matters; verification, V0 to V5,
-  how it was first established; confirmation, C0 to C5, how far it has been checked
-  since; each with its lowest and highest rungs, and V3 and C1 to C3 between, in the
-  rubric’s words shortened.
-  It links the Verification Ladders on the Results page, which define each rung in full
-  (`think-hqb3` moved them there the same day).
-  The key under it (`rung_key`) is the ladders’ grid (**Rating ladders**, above) without
-  their questions or links: a column per rating headed by its name and its letter, a row
-  per level with the highest at the top, each rung the chip the table draws beside its
-  short meaning, the same cells as the ladders’ own, so the two never disagree; it
-  stacks a rating to a block on a narrow screen, as the ladders do.
+  register by `check_results.READER_TIER`; then one sentence on where the table above
+  starts. The homepage no longer explains the ratings (the owner, 2026-10-03,
+  `think-42dx`): the paragraph that said what each rating means and the key of every
+  rung under the table are gone, and the Results page carries both.
+  The legend under the table (`rung_legend`, on the results page’s table too) is three
+  short lines in the support colour at the note size, in a box framed as a card is (it
+  stood between the bar and the table until 2026-10-04): every significance mark, S1 to
+  S5; every verification and confirmation chip, V0 to C5, each titled with the rubric’s
+  meaning; and the star, “new result”, with a link, “What each rung means”, to the
+  Verification Ladders on the Results page.
   The table is one table, not cards or a list: every result, by the date the table
   shows, newest first, one row each (`recent_table`). It is the results page’s table,
   with its columns, its rows, its sorting and its card-per-row form on a phone
@@ -1901,7 +2056,7 @@ pointer and by keyboard, and measures its label at 1280, 768 and 390 pixels.
   README’s two paragraphs on the same progress opened the section until that day and are
   README’s own now (**Page headings**, above).
   The results page’s tools bar sits above it (**Result filters**, above), starting at
-  significance S4 and up, a maximum age of 180 days and Hide superseded checked, with
+  significance S3 and up, a maximum age of 180 days and Hide superseded checked, with
   the count of rows shown out of the total at the bar’s end.
   Those three defaults are all that make the table recent and current: no result is left
   out of it by a date or a status the page fixes, and none is listed anywhere but in it.
@@ -1991,8 +2146,9 @@ pointer and by keyboard, and measures its label at 1280, 768 and 390 pixels.
   `n11-optimality/t-060-explainer.html` with its directory, each serve a forwarder: a
   page of a few lines that sends a reader on with the query string and the fragment they
   came with (`overview/forward.js`, which reads the root element’s `data-moved-to`),
-  with a refresh and a link for a reader without scripts and the new address as its
-  canonical URL. Nothing on the site links an old address.
+  with a refresh and a link for a reader without scripts, the new address as its
+  canonical URL, and the paper’s link preview (**Page Metadata and Social Cards**,
+  below). Nothing on the site links an old address.
   The optimality paper has its own renderer, shell and Pages job
   (`render_n11_optimality_review`), and takes the publication layer and the site’s math
   pipeline from the shared functions (**Math**, above); it carries the bar as the
@@ -2022,7 +2178,7 @@ pointer and by keyboard, and measures its label at 1280, 768 and 390 pixels.
 A result’s row, in Recent Results and in the results table, opens a popover with the
 full overview of that result.
 `devtools/result_overview.py` writes the popover’s body, `result_popover_html`, and
-[site-result.css](site-result.css) holds its styles, apart from `site.css` and inlined
+[site-result.css](site-result.css) holds its styles, apart from `site.css` and linked
 after it on every page.
 The body is one `.site-result` block with no ids, no script and no `<table>`, so it does
 not depend on the popover around it.
@@ -2044,11 +2200,14 @@ names.
 
 - **Head.** The popover’s own caps label, the result’s id, and its headline, the
   result’s summary, stand above the body and are in the page, so they do not change when
-  the overview lands. The body opens with the S, V and C rung chips, the kind chip and
-  the status line, as the tables show them; then the date and what it dates, in the
-  tables’ order (`date_cell`), the credit and the cases, in the support colour; the
-  claim at the note size; and a closed disclosure with the significance, composition,
-  next rung and novelty.
+  the overview lands. The body opens with the significance mark, the V and C rung chips,
+  the kind chip and the status line, as the tables show them; then the date and what it
+  dates, in the tables’ order (`date_cell`), the credit and the cases, in the support
+  colour; the claim at the note size; where the entry declares a later result that
+  implies it (`superseded_by`), a paragraph under the claim that opens “Superseded in
+  part by T-060.”, the later result linked, and says what it implies and what still
+  stands; and a closed disclosure with the significance, composition, next rung and
+  novelty.
 - **The case.** A result about one case, or up to four, shows each case’s visual summary
   as the case’s record opens with it (**Visual summary**, above), smaller and with no
   caption under the drawing: the packing drawn at the atlas’s scale
@@ -2106,24 +2265,52 @@ these tags itself, so the set cannot differ between page kinds.
 | `og:image:type`, `og:image:width`, `og:image:height` | `image/png`, 1200 and 630 |
 | `og:image:alt`, `twitter:image:alt` | What the card shows |
 | `twitter:card` | `summary_large_image` |
+| `link rel="icon"` | The site’s icon, once (`render_overview.favicon_html`), which each shell writes beside the set |
 
 The card is the overview’s hero, the best packing known of 53 squares, at 1200 by 630:
 the hero’s own drawing in the light theme’s ink on its background, with the project’s
 name under it as the bar sets the site’s name, drawn as outlines so no machine’s fonts
 decide it. `devtools.social_card` draws it when the site is built, and it is not checked
-in. Every page uses the one image.
+in. Every page uses the one image, the two papers included: their previews differ by
+title and description, and the alt text stays what the card shows, since Open Graph’s
+`og:image:alt` describes the picture and not the page.
 
-A forwarder carries a canonical link to the address it sends a reader to, in full, and
-no card. A result’s overview is a fragment fetched into a popover and has no head.
-A case’s record file is the record alone but has the whole set, since it is the address
-a case is shared by (**Case records**, above): its own name is “n = 11 · Case Records”,
-and its description a sentence of its own.
+A forwarder previews the page it leads to (`render_overview.forwarder_head`). An old
+address is still shared, from dated records, other people’s pages and bookmarks, and
+GitHub Pages cannot answer it with a redirect a crawler follows; the crawlers that draw
+link previews run no script and do not reliably follow a refresh.
+So a forwarder to a page of the site carries that page’s own identity: its head is
+written from the record the page writes its own head from
+(`render_overview.forwarded_metas`), so its canonical link and `og:url` are where it
+leads, its name, its kind and its description are the page’s, a paper’s dates come with
+them, and the card and the icon are the site’s. Its body still says the page has moved
+and links it.
+Until 2026-10-03 a forwarder carried only its title and its canonical link,
+so a shared old link previewed as a bare title or as nothing.
+The one forwarder that leads off the site, `defects.html` to the defect log on GitHub,
+carries its title and a canonical link to that address, in full, and no card: the site
+does not write the page it leads to, so its preview could not say what that page shows.
+
+A result’s overview is a fragment fetched into a popover and has no head.
+A case’s record file is the record alone but has the whole set and the icon, since it is
+the address a case is shared by (**Case records**, above): its own name is “n = 11 ·
+Case Records”, and its description a sentence of its own.
 
 `check_published_site` holds the deployed pages to these rules after each deploy: one of
-each tag, the canonical link and `og:url` equal to the page’s address, no description
-shared by two pages, and a card that is a PNG of the declared size.
-`check_published_site --local DIR` asks the same of a built directory;
-`devtools.preview_site` and the Pages workflow’s `overview` job both run it.
+each tag and the site’s icon, the canonical link and `og:url` equal to the page’s
+address, no description shared by two pages (a forwarder, which carries its page’s, is
+not a page), each forwarder by its rule and to the name, kind and description of the
+page it leads to, as that page’s own head gives them, and a card that is a PNG of the
+declared size; it reads the case records it samples as pages.
+`check_published_site --local DIR` asks the same of a built directory, and reads every
+HTML file there that is a document (with a doctype, an `<html>` or a `<head>`), every
+case record and any page no list names among them, so a page added later fails the check
+until it carries the set; it holds a forwarder to the page it leads to wherever that
+page is in the directory too.
+`devtools.preview_site` runs it, and so do two of the Pages workflow’s jobs: `overview`
+on its own build, which has no paper and no workbench, and `publish` on the assembled
+site, where every forwarder is beside the page it leads to.
+`check_published_site --local DIR --inventory` prints what every file’s head carries.
 
 ## Token Ownership
 
@@ -2192,8 +2379,8 @@ The front is, in order:
 
   Human oversight: **Joshua Levy**
   Agents: **GPT-6 Astra** and **GPT-6 Sol**
-  Draft v0.1.3 (version history)
-  Original proof September 29, 2026 · Last revised October 3, 2026
+  Draft v0.1.4 (version history)
+  Original proof September 29, 2026 · Last revised October 4, 2026
   ```
 
   A paper that explains someone else’s work credits its source first, by the author’s
@@ -2205,7 +2392,7 @@ The front is, in order:
   every page carries names it, and so does the GITHUB chip.
 
 - **The version line.** The paper’s own version, plain: `EXPLAINER_VERSION` for the
-  explainer and `OPTIMALITY_REVIEW_EDITION` (“Draft v0.1.3”) for the review, both from
+  explainer and `OPTIMALITY_REVIEW_EDITION` (“Draft v0.1.4”) for the review, both from
   `sqpack.release`. Never the site’s edition and never the data hash: the site’s version
   goes on no paper (the owner, 2026-10-01: papers are individually versioned, and a
   paper’s version history reflects versions of the paper, not of the website).

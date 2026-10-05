@@ -19,12 +19,13 @@ it in the same popover, which fetches the same file (`overview/case-popover.js`)
 case reads the same wherever it is opened. A result's overview links its cases' record
 files, which a reader opens as pages.
 
-The record files are not 324 pages. A site page carries about 1.8 MB of inlined faces
-and KaTeX, since every page is self-contained; 324 copies of that would be about 600 MB.
-The record page carries them once, and each record file is the record alone, about 25
-KB. They are cut from one kpress render of every record (`_rendered`), so each record's
-prose, mathematics and links are rendered as the site renders any page, and each
-record's links are then written from the file's own directory (`rebase_links`).
+The record files are not 324 pages. Each record file is the record alone, about 25 KB,
+and the record page links the site's shared assets (`site_assets`) as every page does;
+when every page inlined them, about 1.8 MB of faces and KaTeX, 324 pages would have
+come to about 600 MB. They are cut from one kpress render of every record
+(`_rendered`), so each record's prose, mathematics and links are rendered as the site
+renders any page, and each record's links are then written from the file's own
+directory (`rebase_links`).
 
 Every value is read from the case's `SquarePackingCase/v2` record and from
 `frontier/results.yaml`, as the frontier atlas reads them. The case files write their
@@ -42,15 +43,17 @@ from __future__ import annotations
 import html
 import posixpath
 import re
+from collections.abc import Mapping
 from functools import cache
 from pathlib import Path
 from typing import TYPE_CHECKING, Any
 
 from devtools import render_frontier_page as frontier
 from devtools import render_research_tables as tables
+from devtools.build_bound_citations import CORRECTS
 
 if TYPE_CHECKING:
-    from devtools.render_overview import Page
+    from devtools.render_overview import Page, PageMeta
 
 PACKING = Path(__file__).resolve().parents[1]
 TEMPLATES = PACKING / "devtools" / "templates"
@@ -168,15 +171,26 @@ def rebase_link(url: str, directory: str) -> str:
     return f"{moved}/{rest}" if folder else f"{moved}{rest}"
 
 
+#: A script element's opening tag and its `src`, which a rebase moves like any link.
+_SCRIPT_SOURCE = re.compile(r'^(<script\b[^>]*\ssrc=")([^"]*)(")', re.IGNORECASE)
+
+
 def rebase_links(markup: str, directory: str) -> str:
     """Every relative `href` and `src` in `markup` written again from `directory`
-    (`rebase_link`), with scripts' and styles' text left as it is."""
+    (`rebase_link`), a script's own `src` among them, with scripts' and styles' text
+    left as it is."""
+
+    def moved(url: str) -> str:
+        return html.escape(rebase_link(html.unescape(url), directory), quote=True)
 
     def rebase(match: re.Match[str]) -> str:
         if match.group(1):
-            return match.group(1)
-        url = rebase_link(html.unescape(match.group(4)), directory)
-        return f"{match.group(3)}{html.escape(url, quote=True)}{match.group(5)}"
+            return _SCRIPT_SOURCE.sub(
+                lambda tag: f"{tag.group(1)}{moved(tag.group(2))}{tag.group(3)}",
+                match.group(1),
+                count=1,
+            )
+        return f"{match.group(3)}{moved(match.group(4))}{match.group(5)}"
 
     return _LINK_OR_RAW.sub(rebase, markup)
 
@@ -581,12 +595,38 @@ def _upper_panel(case: dict[str, Any]) -> str:
     return _panel("Best known packing", _value_block(upper), rows, long_polynomial)
 
 
-def _verified_panel(label: str, verified: dict[str, Any], reported: dict[str, Any]) -> str:
+def corrected_work(corrects: Mapping[str, str]) -> str:
+    """The published work a lower bound corrects, `Nagamochi 2005`, linked to the
+    register's record of it in the results table."""
+    from devtools.overview_sections import result_url  # noqa: PLC0415
+
+    return f'<a href="{_esc(result_url(corrects["result"]))}">{_esc(corrects["credit"])}</a>'
+
+
+def corrects_tag(corrects: Mapping[str, str] | None) -> str:
+    """The tag beside a correcting lower bound's star in a record's head, `corrects
+    Nagamochi 2005`, with the work linked; nothing for a bound that corrects nothing."""
+    if not corrects:
+        return ""
+    return f' <span class="site-corrects">{CORRECTS} {corrected_work(corrects)}</span>'
+
+
+def _verified_panel(
+    label: str,
+    verified: dict[str, Any],
+    reported: dict[str, Any],
+    corrects: Mapping[str, str] | None = None,
+) -> str:
+    """A verified bound's panel. The lower bound's names the published result it
+    corrects, where it corrects one, ahead of its evidence (the owner, 2026-10-02)."""
     from sqpack.assurance import bounds_agree_at_declared_precision  # noqa: PLC0415
 
     same = bounds_agree_at_declared_precision(reported, verified)
     note = '<p class="site-case-same">The reported value, verified here.</p>' if same else ""
-    rows = _row("Evidence", frontier.evidence_links(verified["evidence"]))
+    corrected = f"{corrected_work(corrects)} ({_esc(corrects['result'])})" if corrects else ""
+    rows = _row("Corrects", corrected) + _row(
+        "Evidence", frontier.evidence_links(verified["evidence"])
+    )
     return _panel(label, _value_block(verified) + note, rows)
 
 
@@ -812,10 +852,19 @@ def visual_summary(n: int, *, units: int = 1000, upper: dict[str, Any] | None = 
     )
 
 
-def record_head(case: dict[str, Any], *, recent: bool, first: int, last: int) -> str:
+def record_head(
+    case: dict[str, Any],
+    *,
+    recent: bool,
+    first: int,
+    last: int,
+    corrects: Mapping[str, str] | None = None,
+) -> str:
     """The record's head, its visual summary and the rest of its structured part, as
     one HTML block. Its links are written from the site's root, as every page's are,
-    and each record file writes them again from its own directory (`rebase_links`)."""
+    and each record file writes them again from its own directory (`rebase_links`). A
+    recent lower bound's star in the head is followed, where the bound corrects a
+    published result, by the tag naming that work (`corrects_tag`)."""
     from devtools.overview_sections import arrow_icon, case_status_chip  # noqa: PLC0415
     from devtools.repo_links import branch_file  # noqa: PLC0415
     from devtools.result_overview import case_badges  # noqa: PLC0415
@@ -826,6 +875,7 @@ def record_head(case: dict[str, Any], *, recent: bool, first: int, last: int) ->
     if case["reported_status"] != status:
         chip += f' <span class="site-credit">reported {_esc(case["reported_status"])}</span>'
     star = ' <span class="site-star" title="Recent lower bound">\u2605</span>' if recent else ""
+    star += corrects_tag(corrects)
     previous = (
         f'<a href="{case_url(n - 1)}" rel="prev" data-case-step="{n - 1}">'
         f"{arrow_icon('left')}n = {n - 1}</a>"
@@ -841,6 +891,9 @@ def record_head(case: dict[str, Any], *, recent: bool, first: int, last: int) ->
     upper, lower = case["reported_upper_bound"], case["reported_lower_bound"]
     evidence = list(dict.fromkeys(case["evidence"]))
     source = f"packing/frontier/n-{n:03d}.md"
+    verified_lower = _verified_panel(
+        "Verified lower bound", case["verified_lower_bound"], lower, corrects
+    )
     return (
         f'<header class="site-case-head" data-kpress-prose-font="sans">'
         f'<nav class="site-case-steps" aria-label="Cases">{previous}'
@@ -854,7 +907,7 @@ def record_head(case: dict[str, Any], *, recent: bool, first: int, last: int) ->
         f"{_upper_panel(case)}"
         f"{_verified_panel('Verified upper bound', case['verified_upper_bound'], upper)}"
         f"{_lower_panel(case)}"
-        f"{_verified_panel('Verified lower bound', case['verified_lower_bound'], lower)}"
+        f"{verified_lower}"
         f"{_gap_panel(case)}</div>"
         f'<h3 class="site-case-heading">Results in the register</h3>{results_block(n)}'
         f"{_verification(case)}{_rigidity(case)}{_open_questions(case)}"
@@ -883,17 +936,25 @@ _RECORD_OPEN = "<!-- case-record {n} -->"
 _RECORD_CLOSE = "<!-- /case-record -->"
 
 
-def record_markdown(case: dict[str, Any], *, recent: bool, first: int, last: int) -> str:
+def record_markdown(
+    case: dict[str, Any],
+    *,
+    recent: bool,
+    first: int,
+    last: int,
+    corrects: Mapping[str, str] | None = None,
+) -> str:
     """One case's record: its head, visual summary and structured part, then the case
     file's prose, bracketed for cutting out (`_RECORD_OPEN`). It is a `section` here and
     an `article` in its own file (`_records`)."""
     n = case["n"]
     heading, prose = _body(n)
     shown = prose_markdown(f"# {heading}\n") if heading else ""
+    head = record_head(case, recent=recent, first=first, last=last, corrects=corrects)
     return (
         f"{_RECORD_OPEN.format(n=n)}\n"
         f'<section class="site-case" data-case="{n}" data-status="{_esc(case["status"])}">\n'
-        f"{record_head(case, recent=recent, first=first, last=last)}\n\n"
+        f"{head}\n\n"
         '<div class="site-case-prose">\n\n'
         f"{shown.strip()}\n\n{prose_markdown(prose)}\n\n</div>\n\n</section>\n"
         f"{_RECORD_CLOSE}"
@@ -923,9 +984,16 @@ def cases_markdown(fill: Any) -> str:
     bracketed so it can be cut out (`_rendered`)."""
     cases = frontier.frontier_cases()
     recent = frontier.recent_lower_bounds()
+    corrected = frontier.corrected_lower_bounds()
     first, last = min(c["n"] for c in cases), max(c["n"] for c in cases)
     records = "\n\n".join(
-        record_markdown(case, recent=recent.get(case["n"], False), first=first, last=last)
+        record_markdown(
+            case,
+            recent=recent.get(case["n"], False),
+            first=first,
+            last=last,
+            corrects=corrected.get(case["n"]),
+        )
         for case in cases
     )
     values = {
@@ -942,6 +1010,15 @@ CASES_DESCRIPTION = (
     "Every tracked case of packing n unit squares in the smallest square, one record "
     "each: the best packing known, every bound and its credit, and its results."
 )
+
+
+def cases_meta() -> PageMeta:
+    """What the record page says of itself in its head (`render_overview.head_tags`): its
+    name, its sentence and its address. The forwarder at its old address, `cases.html`,
+    previews it with the same record (`render_overview.forwarded_metas`)."""
+    from devtools.render_overview import PageMeta  # noqa: PLC0415
+
+    return PageMeta("Case Records", CASES_DESCRIPTION, CASES_PAGE)
 
 
 @cache
@@ -974,12 +1051,13 @@ def _rendered() -> str:
         },
     )
     report = site_documents.LinkReport()
+    meta = cases_meta()
     rendered = render_overview.kpress_page(
         cases_markdown(render_overview.fill),
-        name=CASES_PAGE,
+        name=meta.path,
         current="frontier",
-        title="Case Records",
-        description=CASES_DESCRIPTION,
+        title=meta.name,
+        description=meta.description,
         toc=False,
         rewrite_body=lambda text: site_documents.rewrite_article(
             text, context=context, report=report
@@ -1105,15 +1183,16 @@ def _without_headings(page: str) -> str:
 def _description(case: dict[str, Any]) -> str:
     """A record file's own sentence, for a search engine and a shared link's preview."""
     state = "solved" if case["status"] == "proved" else "open"
+    squares = "unit square" if case["n"] == 1 else "unit squares"
     return (
-        f"Packing {case['n']} unit squares in the smallest square, a case {state}: the "
+        f"Packing {case['n']} {squares} in the smallest square, a case {state}: the "
         "best packing known, every bound and its credit, and every result on it."
     )
 
 
 def case_records() -> list[Page]:
-    """Each case's record file, `cases/11.html`: its title, description and link
-    preview, the script that sends a reader with scripts on to the record page
+    """Each case's record file, `cases/11.html`: its title, description, link preview
+    and the site's icon, the script that sends a reader with scripts on to the record page
     (`overview/case-forward.js`), and the record itself, its links written from its own
     directory. A file is the record alone, with no styles or shell, so a reader without
     scripts reads it plain; the record page and every popover fetch it."""
@@ -1121,7 +1200,8 @@ def case_records() -> list[Page]:
         Page,
         PageMeta,
         _script_text,  # pyright: ignore[reportPrivateUsage]
-        assert_self_contained,
+        assert_fetches_only_assets,
+        favicon_html,
         fill,
         head_tags,
     )
@@ -1135,11 +1215,11 @@ def case_records() -> list[Page]:
         meta = PageMeta(f"n = {n} · Case Records", _description(case), name)
         values = {
             "N": str(n),
-            "HEAD": head_tags(meta),
+            "HEAD": f"{head_tags(meta)}\n{favicon_html()}",
             "FORWARD_SCRIPT": _script_text(CASE_FORWARD_SCRIPT),
             "RECORD": rebase_links(records[n], CASES_DIR),
         }
         page = fill(template, values, where=CASE_RECORD.name)
-        assert_self_contained(name, page)
+        assert_fetches_only_assets(name, page)
         pages.append(Page(name, page))
     return pages

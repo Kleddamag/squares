@@ -1,0 +1,16 @@
+{
+  "status": "AUDITED_AND_PACKAGED",
+  "n": 96,
+  "L": "997/100",
+  "total_mass": "9599999/100000",
+  "compared_with": "249/25",
+  "compared_note": "our published n96 9.96",
+  "improvement_lower": "1/100",
+  "candidate_digest": "5e89a1ae869f6f4a12b2fadfffd7996048e856c1ec5206939fbb8ff9d6cf5b69",
+  "all_angles": 201,
+  "certificate_sha256": "2b2f299b61c95997a1c353372774bdd4cd36b1d7ceb6522c858f053320160ce1",
+  "bundle": "n96-L9.97-proof-bundle",
+  "archive_sha256": "486bad8c9932a53ccdb16b39f627801c5871692b201f729ee23046f022b53303",
+  "route": "n96 fresh structured Green init n96-997h at L9.97, rectangles full-net repair, 201-angle verification and replay.",
+  "scope": "All centres at all 201 net angles plus strict core containment for every orientation; independent axis replay, same-algorithm outward-rounded oblique replay."
+}

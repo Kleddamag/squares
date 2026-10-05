@@ -1,12 +1,16 @@
 """Controls for the mixed rectangle-measure certificates of wand125/square-packing-bounds.
 
-`devtools.audit_wand125_point_and_mixed` audits and replays fifteen of them: n = 50
+`devtools.audit_wand125_point_and_mixed` audits and replays 53 of them: n = 50
 (T-048), the five of jlevy/squares#282 (T-069), the two of its comment of 2 October, the
-n = 76 of its later comment that day, and the six of that afternoon pinned at ``b00fc70``,
+n = 76 of its later comment that day, the six of that afternoon pinned at ``b00fc70``,
 two of which supersede certificates at n = 85 and 92 and are named ``n85-L946`` and
-``n92-L975``. Three families of check stand between a certificate and a recorded replay,
-and each is held here to its positive case and to two or more mutated controls that it
-must refuse:
+``n92-L975``, the 22 of 3 October pinned at ``2aff207``, five of them at counts already
+named, and the 16 posted from 3 October 19:33 UTC to 4 October 07:17 UTC pinned at
+``8aa6a10``, nine of them at counts already named. The last 16 carry no source audit,
+so each is bound to its tarball by the digest at the pin, and an earlier certificate is
+refused without its audit. Three families of check stand between a certificate and a
+recorded replay, and each is held here to its positive case and to two or more mutated
+controls that it must refuse:
 
 - **the retained files**: the exact premises the source's statements rest on, from the
   packet's bytes alone;
@@ -43,10 +47,14 @@ import pytest
 
 from devtools import acquire_source
 from devtools import audit_wand125_point_and_mixed as audit
+from devtools.retained_data import read_retained_bytes
 
 G_PACKET = audit.G_PACKET
 H_PACKET = audit.H_PACKET
 I_PACKET = audit.I_PACKET
+J_PACKET = audit.J_PACKET
+K_PACKET = audit.K_PACKET
+K_NAMES = sorted(name for name, c in audit.MIXED.items() if c.packet == K_PACKET)
 NAMES = sorted(audit.MIXED, key=lambda name: (audit.MIXED[name].n, audit.MIXED[name].side))
 
 
@@ -133,8 +141,12 @@ def test_the_g_packet_matches_its_acquisition_contract() -> None:
     assert acquire_source.check(G_PACKET, acquire_source.REPO) == []
 
 
-@pytest.mark.parametrize("packet", [G_PACKET, H_PACKET, I_PACKET], ids=["g", "h", "i"])
-def test_each_2_october_packet_audit_recomputes_to_its_receipt(packet: Path) -> None:
+@pytest.mark.parametrize(
+    "packet",
+    [G_PACKET, H_PACKET, I_PACKET, J_PACKET, K_PACKET],
+    ids=["g", "h", "i", "j", "k"],
+)
+def test_each_october_packet_audit_recomputes_to_its_receipt(packet: Path) -> None:
     receipt = packet / "receipts/mixed-audit.json"
     expected = json.dumps(audit.mixed_audit(packet), indent=2, default=str) + "\n"
     assert receipt.read_text(encoding="utf-8") == expected
@@ -156,6 +168,41 @@ def test_the_h_comparison_is_the_sources_own_rectangle_value(
 
 def test_the_i_packet_matches_its_acquisition_contract() -> None:
     assert acquire_source.check(I_PACKET, acquire_source.REPO) == []
+
+
+def test_the_j_packet_matches_its_acquisition_contract() -> None:
+    assert acquire_source.check(J_PACKET, acquire_source.REPO) == []
+
+
+def test_the_3_october_certificates_take_their_sides_where_a_count_is_named() -> None:
+    later = {name: c for name, c in audit.MIXED.items() if c.packet == J_PACKET}
+    assert len(later) == 22
+    assert {name for name in later if "-L" in name} == {
+        "n76-L896",
+        "n87-L955",
+        "n90-L9725",
+        "n91-L975",
+        "n92-L977",
+        "n96-L997",
+    }
+    assert audit.MIXED["n90-L9725"].tarball == "n90-L9.725-proof-bundle.tar.gz"
+    assert audit.MIXED["n86"].directory.name == "mixed_n86_L950"
+    assert {c.revision for c in later.values()} == {audit.J_REVISION}
+
+
+def test_the_j_comparisons_are_exact_rationals_below_each_side(
+    audits: dict[str, dict[str, Any]],
+) -> None:
+    """None of the 22 compares with a rounded Green value: each compares with a rational,
+    exceeds Green's and Nagamochi's values, and states L minus that rational."""
+    for name, certificate in audit.MIXED.items():
+        if certificate.packet != J_PACKET:
+            continue
+        facts = audits[name]
+        assert facts["source_audit"]["compared_field"] == "compared_with"
+        assert Fraction(facts["source_audit"]["compared_with"]) != Fraction(92667, 10000)
+        assert facts["comparison"]["side_exceeds_green"]
+        assert facts["comparison"]["side_exceeds_nagamochi"]
 
 
 def test_a_later_certificate_at_a_named_count_takes_its_side_as_well() -> None:
@@ -259,6 +306,212 @@ def test_an_audit_naming_another_tarball_is_refused() -> None:
     files["completion-audit.json"] = json.dumps(source_audit).encode()
     with pytest.raises(ValueError, match="binds another tarball"):
         audit.mixed_certificate(certificate, files, _repinned(certificate, files))
+
+
+# ------------------------------------------------------------- certificates without an audit
+
+
+def test_the_k_packet_matches_its_acquisition_contract() -> None:
+    assert acquire_source.check(K_PACKET, acquire_source.REPO) == []
+
+
+def test_the_4_october_certificates_take_their_sides_where_a_count_is_named() -> None:
+    later = {name: audit.MIXED[name] for name in K_NAMES}
+    assert len(later) == 16
+    assert {name for name in later if "-L" in name} == {
+        "n51-L747",
+        "n69-L862",
+        "n75-L894",
+        "n84-L94075",
+        "n86-L9503",
+        "n88-L96125",
+        "n93-L988",
+        "n94-L994",
+        "n95-L9965",
+    }
+    assert audit.MIXED["n95-L9965"].tarball == "n95-L9.965-proof-bundle.tar.gz"
+    assert audit.MIXED["n42"].directory.name == "mixed_n42_L68475"
+    assert {c.revision for c in later.values()} == {audit.K_REVISION}
+    assert not any(c.source_audit for c in later.values())
+    assert all(c.source_audit for c in audit.MIXED.values() if c.packet != K_PACKET)
+
+
+@pytest.mark.parametrize("name", K_NAMES)
+def test_each_k_certificate_is_bound_by_its_digest_at_the_pin(
+    audits: dict[str, dict[str, Any]], name: str
+) -> None:
+    """No source audit: the pinned tree holds none, and the tarball's digest at the pin is
+    the acquisition record's, with its size, and the one the README states."""
+    certificate = audit.MIXED[name]
+    facts = audits[name]
+    tree = audit.read_subtree_manifest(certificate.subtree)
+    digest, size = audit.tarball_pin(certificate)
+    assert certificate.directory / audit.SOURCE_AUDIT not in tree
+    assert audit.SOURCE_AUDIT not in audit.mixed_retained(certificate)
+    assert facts["source_audit"] is None
+    assert facts["tarball_sha256"] == digest == tree[certificate.upstream_tarball]
+    binding = facts["tarball_binding"]
+    assert binding["status"] == "BOUND_BY_PINNED_DIGEST"
+    assert (binding["revision"], binding["tarball_bytes"]) == (audit.K_REVISION, size)
+    side = certificate.side
+    assert binding["readme_claim"].startswith(
+        f"s({certificate.n}) >= {side.numerator}/{side.denominator} = "
+    )
+    assert facts["comparison"]["source_value_exceeds_green"] is None
+    assert facts["comparison"]["side_exceeds_nagamochi"]
+
+
+@pytest.mark.parametrize("name", K_NAMES)
+def test_each_k_pre_replay_receipt_is_bound_to_the_pin(name: str) -> None:
+    """``mixed-fetch`` on each pinned tarball: the pin, the bundle and all 200 inputs."""
+    certificate = audit.MIXED[name]
+    record = json.loads((certificate.receipts / "fetch.json").read_text())
+    digest, size = audit.tarball_pin(certificate)
+    assert record["status"] == "BUNDLE_READY"
+    assert record["certificate"] == name
+    assert (record["tarball"]["sha256"], record["tarball"]["bytes"]) == (digest, size)
+    assert record["tarball"]["revision"] == audit.K_REVISION
+    assert record["bindings"] == {
+        "status": "BUNDLE_BOUND_TO_PACKET",
+        "listed_files": 621,
+        "code_files": 10,
+    }
+    assert record["preconditions"]["candidate_digest"] == certificate.candidate_digest
+    assert record["preconditions"]["checker_sha256"] == audit.N50_CHECKER_SHA256
+    assert record["inputs"]["status"] == "ALL_INPUTS_ENCLOSE_THE_CANDIDATE"
+    assert record["inputs"]["inputs"] == 200
+    assert record["inputs"]["rectangle_images"] == 8 * certificate.rectangles
+    assert record["bundle_records"]["frontier_boxes"] == 0
+
+
+def test_a_k_certificate_with_a_heavier_rectangle_is_refused_even_when_repinned() -> None:
+    certificate = audit.MIXED["n42"]
+    files = audit.mixed_retained(certificate)
+    files["candidate.json"] = _with_heavier_rectangle(files["candidate.json"])
+    with pytest.raises(ValueError, match="total mass differs"):
+        audit.mixed_certificate(certificate, files, _repinned(certificate, files))
+    with pytest.raises(ValueError, match="not the pinned file"):
+        audit.mixed_certificate(certificate, files)
+
+
+def test_a_k_certificate_with_an_angle_below_one_is_refused_even_when_repinned() -> None:
+    """With no source audit to re-bind, a forged record still fails at its angle."""
+    certificate = audit.MIXED["n95-L9965"]
+    files = audit.mixed_retained(certificate)
+    replay = json.loads(files["certificate.json"])
+    replay["results"]["23"]["lower"] = 0.9999999999
+    files["certificate.json"] = json.dumps(replay).encode()
+    with pytest.raises(ValueError, match="angle 23 is not a replayed record"):
+        audit.mixed_certificate(certificate, files, _repinned(certificate, files))
+
+
+def test_a_k_readme_stating_another_tarball_is_refused_even_when_repinned() -> None:
+    certificate = audit.MIXED["n84-L94075"]
+    files = audit.mixed_retained(certificate)
+    digest, _ = audit.tarball_pin(certificate)
+    files["README.md"] = files["README.md"].replace(digest.encode(), b"0" * 64)
+    with pytest.raises(ValueError, match="the README states another tarball"):
+        audit.mixed_certificate(certificate, files, _repinned(certificate, files))
+
+
+def test_a_k_readme_stating_another_claim_is_refused_even_when_repinned() -> None:
+    certificate = audit.MIXED["n88-L96125"]
+    files = audit.mixed_retained(certificate)
+    files["README.md"] = files["README.md"].replace(b"# s(88) >= 769/80", b"# s(88) >= 77/8")
+    with pytest.raises(ValueError, match="the README states another claim"):
+        audit.mixed_certificate(certificate, files, _repinned(certificate, files))
+
+
+def test_a_k_tree_pinning_another_tarball_is_refused() -> None:
+    """The tarball's digest at the pin must be the one the acquisition record pins."""
+    certificate = audit.MIXED["n57"]
+    tree = dict(audit.read_subtree_manifest(certificate.subtree))
+    tree[certificate.upstream_tarball] = "0" * 64
+    with pytest.raises(ValueError, match="the acquisition record pins another tarball"):
+        audit.mixed_certificate(certificate, tree=tree)
+
+
+def test_a_k_tree_holding_a_source_audit_is_refused() -> None:
+    """A row read without an audit is refused when its pinned tree holds one."""
+    certificate = audit.MIXED["n43"]
+    tree = dict(audit.read_subtree_manifest(certificate.subtree))
+    tree[certificate.directory / audit.SOURCE_AUDIT] = "0" * 64
+    with pytest.raises(ValueError, match=f"holds a {audit.SOURCE_AUDIT}"):
+        audit.mixed_certificate(certificate, tree=tree)
+
+
+@pytest.mark.parametrize("name", ["n37", "n96-L997"])
+def test_an_earlier_certificate_without_its_source_audit_is_refused(name: str) -> None:
+    """The pinned-digest path is chosen by the row's revision, never by a missing file."""
+    certificate = audit.MIXED[name]
+    files = audit.mixed_retained(certificate)
+    del files[audit.SOURCE_AUDIT]
+    tree = dict(audit.read_subtree_manifest(certificate.subtree))
+    with pytest.raises(ValueError, match=f"{audit.SOURCE_AUDIT} is missing"):
+        audit.mixed_certificate(certificate, files, tree)
+    del tree[certificate.directory / audit.SOURCE_AUDIT]
+    with pytest.raises(ValueError, match=f"{audit.SOURCE_AUDIT} is missing"):
+        audit.mixed_certificate(certificate, files, tree)
+
+
+def test_a_k_bundle_with_another_certificate_is_refused_even_when_listed(
+    tmp_path: Path,
+) -> None:
+    real = audit.MIXED["n72"]
+    files = _bundle_files(real)
+    replay = json.loads(files["proof/certificate.json"])
+    replay["results"]["138"]["nodes"] += 1
+    files["proof/certificate.json"] = json.dumps(replay).encode()
+    bundle = _write_bundle(tmp_path / real.bundle, _listed(files))
+    with pytest.raises(ValueError, match=r"proof/certificate\.json is not the retained"):
+        audit.bundle_bindings(real, bundle)
+
+
+def test_a_k_bundle_with_another_candidate_is_refused_even_when_listed(tmp_path: Path) -> None:
+    real = audit.MIXED["n67"]
+    files = _bundle_files(real)
+    files["proof/candidate.json"] = _with_heavier_rectangle(files["proof/candidate.json"])
+    bundle = _write_bundle(tmp_path / real.bundle, _listed(files))
+    with pytest.raises(ValueError, match=r"proof/candidate\.json is not the retained"):
+        audit.bundle_bindings(real, bundle)
+
+
+def _lines(path: Path) -> list[str]:
+    return read_retained_bytes(path).decode().splitlines()
+
+
+#: The directories 150939e changed, the 22 of T-082 and T-075's ``mixed_n96_L996``, with
+#: the packet that retains each as it was before.
+OC_ANSWER = {
+    **{
+        certificate.directory: J_PACKET
+        for certificate in audit.MIXED.values()
+        if certificate.packet == J_PACKET
+    },
+    Path("certificates/mixed_n96_L996"): I_PACKET,
+}
+
+
+def test_the_oc_answer_removes_only_the_source_audits_and_their_readme_lines() -> None:
+    """Between 2aff207 (b00fc70 for mixed_n96_L996) and 8aa6a10 each of the 23 directories
+    loses its completion-audit.json, and its README the two lines naming it; every other
+    file, the candidate, certificate, manifest and tarball included, keeps its digest."""
+    later = audit.read_subtree_manifest(K_PACKET / "acquisition/upstream-subtree.sha256")
+    assert len(OC_ANSWER) == 23
+    for directory, packet in OC_ANSWER.items():
+        earlier = audit.read_subtree_manifest(packet / "acquisition/upstream-subtree.sha256")
+        before = {p: d for p, d in earlier.items() if p.parent.is_relative_to(directory)}
+        after = {p: d for p, d in later.items() if p.parent.is_relative_to(directory)}
+        readme = directory / "README.md"
+        assert set(before) - set(after) == {directory / audit.SOURCE_AUDIT}
+        assert set(after) <= set(before)
+        assert {p for p in after if after[p] != before[p]} == {readme}
+        old = _lines(packet / "square-packing-bounds" / readme)
+        new = _lines(K_PACKET / "square-packing-bounds" / readme)
+        removed = [line for line in old if line not in new]
+        assert [line for line in new if line not in old] == []
+        assert len(removed) == 2
+        assert "`completion-audit.json`" in removed[0]
 
 
 # --------------------------------------------------------------------------- tarball, bundle
@@ -533,6 +786,24 @@ def test_a_plan_splits_every_angle_into_contiguous_ranges(parts: int) -> None:
     shares = [part["share"] for part in plan["parts"]]
     assert sum(shares) == pytest.approx(1, abs=1e-3)
     assert max(shares) <= 1.1 / parts + 0.01
+
+
+@pytest.mark.parametrize("packet", [J_PACKET, K_PACKET], ids=["j", "k"])
+@pytest.mark.parametrize("runners", [1, 4, 8])
+def test_a_shard_runs_every_angle_of_every_certificate_once(runners: int, packet: Path) -> None:
+    shard = audit.mixed_shard(packet, runners)
+    assert len(shard["plan"]) == runners
+    covered: dict[str, list[int]] = {}
+    for runner in shard["plan"]:
+        assert len(runner["commands"]) == len(runner["pieces"])
+        for piece in runner["pieces"]:
+            first, last = piece["range"]
+            covered.setdefault(piece["certificate"], []).extend(range(first, last + 1))
+    assert set(covered) == set(shard["certificates"])
+    assert all(sorted(angles) == list(range(audit.N50_LAST + 1)) for angles in covered.values())
+    loads = [runner["estimated_cpu_hours"] for runner in shard["plan"]]
+    assert sum(loads) == pytest.approx(shard["estimated_cpu_hours"], abs=0.1)
+    assert max(loads) <= 1.15 * sum(loads) / runners + 0.01
 
 
 def test_unpacking_replaces_only_the_work_directory(tmp_path: Path) -> None:

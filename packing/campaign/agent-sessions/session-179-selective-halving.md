@@ -14,7 +14,6 @@ session:
   branch: guzhou/n17-residual-compatibility
   primary_bead: think-ns4t
   status: stopped
-  certification_pending: think-q0z7
   goal: Minimum added atom cost within frozen J58 six-row edge library, actual mixed inventory
     retaining E72 losses/E7 survivors and all B44/60 positives; no search/network equivalence.
   workflow_phases:
@@ -116,8 +115,11 @@ session:
   - 'Historical full gate: fast at e2fe7aa8ccbcd3e8121d0c01d1bc93ec9f05855b: passed'
   - Exact E source has 55 checks terminal, 19 pass/36 skip, all 3 required SUCCESS; real-tree cost guard passes,
     no policy changes.
+  - 'full gate: fast at 3b5edcdd9a7c3f75344c2c16a161969ed62cfdb9: passed (hosted Packing validation
+    run 37305598332 on PR 360, the rebuild of PR 352 on PR 347; this head carries the session''s
+    work unchanged)'
   stop_reason: ONE fixed-certificate model accepted; hosted certification remains explicit.
-  next_action: Await Joshua and current-layer required CI under think-q0z7.
+  next_action: Await Joshua's review of the rebuilt layer (PR 360) under think-q0z7.
     No active research executor or reserved follow-up; original intervals are historical.
   ended_at: '2026-10-04T12:39:26.150481+00:00'
   handoff_role: administrative_closeout

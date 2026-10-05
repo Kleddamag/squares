@@ -14,7 +14,6 @@ session:
   branch: guzhou/n17-residual-compatibility
   primary_bead: think-5sya
   status: stopped
-  certification_pending: think-q0z7
   goal: Measure exact answer agreement and descriptive first-use/warm costs on frozen B-positive/J-collision
     corpus; no search-speedup or new geometry claim.
   workflow_phases:
@@ -119,9 +118,12 @@ session:
   - One profile measured at a60cfc611. Initial hosted browser-script grammar treated Guard.evaluate
     test lambdas as JavaScript; identifier-only check_pair repair and 25 controls/embedded-script/Ruff/types
     pass, no profile rerun.
+  - 'full gate: fast at 3b5edcdd9a7c3f75344c2c16a161969ed62cfdb9: passed (hosted Packing validation
+    run 37305598332 on PR 360, the rebuild of PR 352 on PR 347; this head carries the session''s
+    work unchanged)'
   stop_reason: ONE profile and fresh verdict replay accepted; first-use performance NO-GO retires
     adapter-search. Hosted certification remains explicit.
-  next_action: Await Joshua and current-layer required CI under think-q0z7.
+  next_action: Await Joshua's review of the rebuilt layer (PR 360) under think-q0z7.
     No active research executor or reserved follow-up; original intervals are historical.
   ended_at: '2026-10-04T11:10:43.340946+00:00'
   handoff_role: administrative_closeout

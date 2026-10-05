@@ -1143,6 +1143,7 @@ def kingbird_derived_witness(
     source_url: str,
     retrieved: str = RETRIEVED_DATE,
     revision: str | None = None,
+    revision_sha256: str | None = None,
 ) -> dict[str, Any]:
     """Recheck retained Kingbird numerical facts without requiring the source SVG.
 
@@ -1156,7 +1157,16 @@ def kingbird_derived_witness(
     ``devtools.derive_kingbird_facts --from-parse`` writes it, for a count whose SVG this
     repository could not fetch. It is kept in ``source.revision`` and stated in the
     limitations, so the witness says whose reading of the picture its numbers are.
+    ``revision_sha256`` is the SHA-256 of that parse file's bytes, required with a
+    revision and kept in ``source.revision_sha256``: the parse is not retained here, so
+    its digest is what ties the witness to the bytes it was read from.
     """
+    if revision is not None and not re.fullmatch(r"[0-9a-f]{64}", revision_sha256 or ""):
+        raise ValueError(
+            "a witness read from a parse records the parse's revision_sha256, 64 hex digits"
+        )
+    if revision is None and revision_sha256 is not None:
+        raise ValueError("revision_sha256 is the digest of a revision's file; none is named")
     expected_id = f"W-known-best-n{n:03d}"
     if retained_witness.get("id") != expected_id or retained_witness.get("n") != n:
         raise ValueError("retained Kingbird witness identity does not match requested n")
@@ -1206,6 +1216,7 @@ def kingbird_derived_witness(
         "url": source_url,
         "retrieved": retrieved,
         **({"revision": revision} if revision is not None else {}),
+        **({"revision_sha256": revision_sha256} if revision_sha256 is not None else {}),
     }
     witness.pop("certificate", None)
     return _checked_witness(witness, tolerance=KINGBIRD_TOLERANCE, witness_path=witness_path)

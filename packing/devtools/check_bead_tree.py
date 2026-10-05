@@ -22,10 +22,20 @@ A third invariant joins the tree to the records:
    work the record knows it has not done: a Kingbird count pending intake, a
    beyond-horizon claim held as a deferred conflict, a watched repository read past its
    newest packet, an issue still open, a result or ask queued on one. Each names its
-   owning bead (`deferrals`). The
-   three counts pending intake from 2026-09-30 named none, nothing listed them, and the
-   record called the older sides best known for five days; a bead closed under a live
-   deferral is the same orphan by another route.
+   owning bead (`deferrals`), and a bead is still open while its state is one
+   `devtools.bead_state.LIVE` holds: `closed` and `deferred` are not. The three counts
+   pending intake from 2026-09-30 named none, nothing listed them, and the record called
+   the older sides best known for five days; a bead closed under a live deferral is the
+   same orphan by another route.
+
+   The third reads the bead store, which changes with no tracked change at all, so in
+   the gate it fails only a change to a record that declares deferrals: the gate passes
+   `--warn-dead-deferrals` otherwise, and a dead deferral is printed as a warning. A
+   continuous-integration checkout fetches `origin/tbd-sync`, so closing a bead a record
+   names would otherwise turn every pull request and `main` red on a change that touched
+   nothing. Closing such a bead therefore takes a record edit in the same change, and
+   the next change to the record fails until it has one. Run directly, with no flag, the
+   check fails a dead deferral wherever it is, as `devtools.intake_sweep` lists it.
 
 None needs the `tbd` binary. The beads are Markdown-with-frontmatter files, and this
 reads them straight out of git, preferring the local sync worktree so it works offline.
@@ -39,9 +49,10 @@ outside the agenda layer. Both lists are printed with their bead ids. Cells name
 through the agenda's `bead` field, a `think-` alias that the store's `mappings/ids.yml`
 resolves to the bead's id.
 
-Run with `--json` for machine-readable output. Exits 0 when clean, 1 on a violation,
-and 0 with a loud skip when no bead store can be found -- a checkout without the
-`tbd-sync` branch is a normal state, not a failure.
+Run with `--json` for machine-readable output, and `--warn-dead-deferrals` to report a
+dead deferral without failing on it. Exits 0 when clean, 1 on a violation, and 0 with a
+loud skip when no bead store can be found -- a checkout without the `tbd-sync` branch is
+a normal state, not a failure.
 """
 
 from __future__ import annotations
@@ -50,25 +61,22 @@ import json
 import subprocess
 import sys
 from collections import defaultdict
+from collections.abc import Sequence
 from pathlib import Path
 from typing import Any
 
+from devtools.bead_state import ISSUES, LIVE, MAPPINGS, REFS, parse_aliases
 from sqpack.yamlio import safe_load
 
 REPO = Path(__file__).resolve().parents[2]
-ISSUES = ".tbd/data-sync/issues"
-# The store's alias table: short code -> the ULID tail of the bead's id. An agenda's
-# `bead: think-rh18` names the bead whose id ends in the table's entry for `rh18`.
-MAPPINGS = ".tbd/data-sync/mappings/ids.yml"
 # `tbd` materializes the sync branch here; using it keeps the check offline.
 WORKTREE = REPO / ".git" / "tbd" / "data-sync-worktree" / ISSUES
-REFS = ("tbd-sync", "origin/tbd-sync")
 AGENDAS = REPO / "packing" / "campaign" / "agendas"
 COVERAGE = REPO / "packing" / "frontier" / "source-coverage.yaml"
 REQUESTS = REPO / "packing" / "campaign" / "result-requests.yaml"
 INTAKE_WATCH = REPO / "packing" / "campaign" / "intake-watch.yaml"
-#: The bead states that still own work, as `devtools.bead_state` reads them.
-LIVE = frozenset({"open", "in_progress", "blocked"})
+#: The flag the gate passes when the change touches none of the three records above.
+WARN_DEAD_DEFERRALS = "--warn-dead-deferrals"
 # The agenda schema's `bead` pattern is `^think-[a-z0-9]+$`; the part after the prefix
 # is the alias table's key.
 ALIAS_PREFIX = "think-"
@@ -93,22 +101,6 @@ def _parse(text: str) -> dict[str, Any] | None:
         return None
     front[BODY] = text[end + 5 :]
     return front
-
-
-def parse_aliases(text: str) -> dict[str, str]:
-    """The alias table, short code -> ULID tail.
-
-    Read line by line rather than as YAML: a four-character code such as `1e10`, `null`
-    or `true` is a float, None or bool to a YAML loader and a key to `tbd`. `tbd` itself
-    writes such a code quoted, `"48e1": ...`, and the quotes are not part of it.
-    """
-    aliases: dict[str, str] = {}
-    for line in text.splitlines():
-        short, sep, tail = line.partition(":")
-        short = short.strip().strip("\"'")
-        if sep and not line.lstrip().startswith("#") and short and tail.strip():
-            aliases[short] = tail.strip()
-    return aliases
 
 
 def _worktree() -> Path:
@@ -264,10 +256,13 @@ def _records(path: Path) -> dict[str, Any]:
 def deferrals(
     coverage: Path = COVERAGE, requests: Path = REQUESTS, watch: Path = INTAKE_WATCH
 ) -> list[tuple[str, str]]:
-    """Every deferral the records declare, as (where, the bead alias it names).
+    """Every deferral the records declare that names a bead, as (where, the bead alias).
 
-    A deferral without a bead is refused by its record's own schema, so only what is
-    named is collected here; this check asks whether what is named still owns the work.
+    This check asks whether what is named still owns the work; whether one is named is
+    the records' own business. Their schemas require a bead of a pending intake, a
+    deferred conflict and an issue's `answer_bead`. A queued result or ask may still
+    name none, which `devtools.intake_sweep` reports as unowned, and a read in
+    `intake-watch.yaml` without a bead found nothing to import, so it defers nothing.
     """
     named: list[tuple[str, str]] = []
     source = _records(coverage)
@@ -368,8 +363,10 @@ def check(beads: list[dict[str, Any]]) -> list[dict[str, str]]:
     return problems
 
 
-def main() -> int:
-    as_json = "--json" in sys.argv
+def main(argv: Sequence[str] | None = None) -> int:
+    arguments = sys.argv[1:] if argv is None else argv
+    as_json = "--json" in arguments
+    warn_deferrals = WARN_DEAD_DEFERRALS in arguments
     found = load()
     if found is None:
         msg = "SKIP no bead store found (no tbd-sync worktree or branch); bead tree unchecked"
@@ -377,7 +374,9 @@ def main() -> int:
         return 0
 
     beads, source, aliases = found
-    problems = check(beads) + deferral_problems(beads, aliases, deferrals())
+    dead = deferral_problems(beads, aliases, deferrals())
+    problems = check(beads) + ([] if warn_deferrals else dead)
+    warnings = dead if warn_deferrals else []
     report = staleness(beads, aliases, agenda_cells() if AGENDAS.is_dir() else [])
     if as_json:
         print(
@@ -387,6 +386,7 @@ def main() -> int:
                     "source": source,
                     "beads": len(beads),
                     "problems": problems,
+                    "warnings": warnings,
                     "staleness": report,
                 }
             )
@@ -404,6 +404,12 @@ def main() -> int:
             )
         else:
             print(f"  FAIL two open beads titled {p['bead']!r} under {p['parent']!r}")
+    for p in warnings:
+        print(
+            f"  WARN {p['parent']} names {p['bead']} ({p['status']}); the change touches no "
+            "record that declares a deferral, so this does not fail it, and the next change "
+            "to the record must name an open bead"
+        )
     # Reported, never failed on: see the module docstring for why.
     stale, untracked = report["stale"], report["untracked"]
     print(f"  report {len(stale)} in-progress bead(s) named only by terminal agenda cells")
@@ -418,8 +424,12 @@ def main() -> int:
         )
         return 1
     print(
-        "  ok  no open bead under a closed parent, no duplicate open siblings, every "
-        "deferral owned by an open bead"
+        "  ok  no open bead under a closed parent, no duplicate open siblings, "
+        + (
+            f"{len(warnings)} deferral(s) whose bead is not open, reported above"
+            if warnings
+            else "every deferral owned by an open bead"
+        )
     )
     return 0
 

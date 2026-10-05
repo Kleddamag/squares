@@ -12,6 +12,7 @@ from __future__ import annotations
 import gzip
 import json
 import subprocess
+import sys
 from datetime import date
 from pathlib import Path
 from typing import Any
@@ -21,6 +22,7 @@ import pytest
 from devtools import capture_kingbird_catalogue as capture_tool
 from devtools import check_requests
 from devtools import intake_sweep as sweep
+from devtools.check_bead_tree import BODY
 from sqpack.yamlio import safe_load
 
 TODAY = date(2026, 10, 5)
@@ -100,6 +102,50 @@ def test_a_pin_is_structured_and_a_commit_named_in_prose_pins_nothing(tmp_path: 
     assert found["https://github.com/other/thing"].url == "https://github.com/Other/Thing"
     assert packets[1].retains("certificates/n59/README.md")
     assert not packets[1].retains("certificates/n590/README.md")
+
+
+def _acquisition(packets: Path, name: str, commit: str, scope: list[str] | None) -> None:
+    """A packet's acquisition record pinning `commit`, retaining `scope` or the whole tree."""
+    (packets / name / "acquisition").mkdir(parents=True)
+    source: dict[str, Any] = {
+        "source_url": "https://github.com/someone/packings",
+        "source_commit": commit,
+    }
+    if scope is not None:
+        source["subtree_scope"] = scope
+    (packets / name / "acquisition" / "sources.json").write_text(
+        json.dumps({"sources": [source]}), encoding="utf-8"
+    )
+
+
+def test_a_register_pin_on_a_commit_a_packet_pins_takes_the_packets_scope(
+    tmp_path: Path,
+) -> None:
+    """The register cited wand125's 797bdf6 as a whole tree, which retained every path.
+
+    Its two packets at that commit retain twenty paths between them, so the register's
+    pin there is dropped for theirs; a register address with a path is a pin of that path.
+    """
+    _acquisition(tmp_path, "someone-packings-2026-10-01", PIN, ["certificates/n59"])
+    coverage = _coverage()
+    coverage["sources"].append(
+        {
+            "id": "scoped-source",
+            "role": "source-repository",
+            "url": f"https://github.com/someone/packings/tree/{LATER}/certificates/n60/",
+        }
+    )
+    found = sweep.watched_repositories(coverage, tmp_path, projects=[])
+    packets = found["https://github.com/someone/packings"].packets
+    assert sorted((p.name, p.pin, p.scope) for p in packets) == [
+        ("scoped-source", LATER, ("certificates/n60",)),
+        ("someone-packings-2026-10-01", PIN, ("certificates/n59",)),
+    ]
+    assert found["https://github.com/someone/packings"].cited_by == {
+        "repo-source",
+        "scoped-source",
+        "someone-packings-2026-10-01",
+    }
 
 
 def _repositories(
@@ -227,15 +273,7 @@ def test_the_history_reads_commits_past_the_pins_and_changes_no_packet_retains(
     `first` is the oldest pin, which retains everything; `second` changes a path the
     later packet does not retain, so only a read can cover it; `head` is past both.
     """
-    repo = tmp_path / "upstream"
-    subprocess.run(("git", "init", "-q", str(repo)), check=True)
-    subprocess.run(
-        ("git", "-C", str(repo), "config", "uploadpack.allowFilter", "true"), check=True
-    )
-    first = _commit(repo, "certificates/a/cert.txt", "1")
-    second = _commit(repo, "certificates/b/cert.txt", "2")
-    pinned = _commit(repo, "certificates/a/cert.txt", "3")
-    head = _commit(repo, "README.md", "4")
+    repo, (first, second, pinned, head) = _upstream(tmp_path)
     packets = [
         sweep.Packet("whole", first),
         sweep.Packet("scoped", pinned, ("certificates/a",)),
@@ -245,6 +283,41 @@ def test_the_history_reads_commits_past_the_pins_and_changes_no_packet_retains(
     assert found.unretained == (f"{second[:7]} change certificates/b/cert.txt",)
     read = sweep.read_history(f"file://{repo}", head, packets, (second,))
     assert read.unretained == ()
+
+
+def _upstream(tmp_path: Path) -> tuple[Path, tuple[str, str, str, str]]:
+    """Four commits: `a`, then `b`, then `a` again, then the README."""
+    repo = tmp_path / "upstream"
+    subprocess.run(("git", "init", "-q", str(repo)), check=True)
+    subprocess.run(
+        ("git", "-C", str(repo), "config", "uploadpack.allowFilter", "true"), check=True
+    )
+    return repo, (
+        _commit(repo, "certificates/a/cert.txt", "1"),
+        _commit(repo, "certificates/b/cert.txt", "2"),
+        _commit(repo, "certificates/a/cert.txt", "3"),
+        _commit(repo, "README.md", "4"),
+    )
+
+
+def test_a_register_pin_beside_a_scoped_packet_does_not_hide_what_the_packet_left_out(
+    tmp_path: Path,
+) -> None:
+    """The review's reproduction, in small: wand125's register pinned the head as a whole
+    tree, so 1ebd484 and c56b9b7 were reported only with the register's pins removed."""
+    repo, (first, second, pinned, head) = _upstream(tmp_path)
+    packets = tmp_path / "web"
+    _acquisition(packets, "early", first, None)
+    _acquisition(packets, "scoped", pinned, ["certificates/a"])
+    register = {
+        "sources": [
+            {"id": "register", "url": f"https://github.com/someone/packings/tree/{pinned}"}
+        ]
+    }
+    watched = sweep.watched_repositories(register, packets, projects=[])
+    entry = watched["https://github.com/someone/packings"]
+    found = sweep.read_history(f"file://{repo}", head, entry.packets, ())
+    assert found.unretained == (f"{second[:7]} change certificates/b/cert.txt",)
 
 
 def test_github_differences_each_need_an_owner_and_a_failure_is_not_checked() -> None:
@@ -275,6 +348,58 @@ def test_a_blocker_is_read_only_from_a_sentence_that_says_something_waits() -> N
         "think-wpuu",
         "jlevy/squares#312",
     ]
+
+
+def test_a_sentence_that_says_what_a_wait_was_names_no_blocker() -> None:
+    """think-e6ss was reported from its own account of a wait that had ended."""
+    text = (
+        "Stage 3 (new T-NNN) was held for jlevy/squares#305, which merged 2026-10-04; it "
+        "is done as T-090 on PR 353. Replays (~124 CPU-h for 14) held with think-wpuu. "
+        "The packet waited on #290 until it merged. Stage 2 has been blocked on #291."
+    )
+    assert sweep.stated_blockers(text, "jlevy/squares", own="think-e6ss") == [
+        "think-wpuu",
+        "jlevy/squares#291",
+    ]
+
+
+def test_a_beads_notes_are_history_and_only_a_blocked_on_line_there_declares_a_wait() -> None:
+    """think-o430's notes recorded the sweep's own example, "think-e6ss/#305", and the
+    sweep read it as that bead waiting on think-e6ss."""
+    body = (
+        "Combine every intake source into one report.\n\n## Notes\n\n"
+        "2026-10-05: adds Blocked imports (a bead whose stated blocker merged/closed: "
+        "think-e6ss/#305), held until review.\n"
+    )
+    bead = {"id": "is-01aaaa", "status": "in_progress", "title": "Sweep", BODY: body}
+    queued = sweep.queued_bead(bead, "think-o430")
+    assert queued.text == "Sweep\nCombine every intake source into one report.\n\n"
+    assert "think-e6ss/#305" in queued.notes
+    beads = _beads(queued, **{"think-e6ss": "closed"})
+    quiet = sweep.blocked_section(beads, _blockers(beads), "jlevy/squares")
+    assert quiet.items == []
+
+    declared = sweep.queued_bead(
+        {**bead, BODY: body + "\nblocked_on: jlevy/squares#305, think-e6ss\n"}, "think-o430"
+    )
+    beads = _beads(declared, **{"think-e6ss": "closed"})
+    (item,) = sweep.blocked_section(beads, _blockers(beads), "jlevy/squares").items
+    assert item.what.endswith(
+        "waits on jlevy/squares#305, merged 2026-10-04; think-e6ss, closed"
+    )
+
+    waiting = "Stage 3 waits for jlevy/squares#305.\n\n## Notes\n\n"
+    ended = sweep.queued_bead(
+        {**bead, BODY: waiting + "blocked_on: #400\n\nlater:\nblocked_on: none\n"}, "think-o430"
+    )
+    assert sweep.declared_blockers(ended, "jlevy/squares") == []
+    moved = sweep.queued_bead({**bead, BODY: waiting + "blocked_on: #400\n"}, "think-o430")
+    assert sweep.declared_blockers(moved, "jlevy/squares") == ["jlevy/squares#400"]
+    prose = sweep.queued_bead({**bead, BODY: waiting}, "think-o430")
+    assert sweep.declared_blockers(prose, "jlevy/squares") is None
+    beads = _beads(prose)
+    (item,) = sweep.blocked_section(beads, _blockers(beads), "jlevy/squares").items
+    assert item.what.endswith("waits on jlevy/squares#305, merged 2026-10-04")
 
 
 ISSUES = {
@@ -456,6 +581,27 @@ def test_a_queued_item_whose_blocker_merged_is_reported() -> None:
     assert still.state == sweep.OWNED
 
 
+def test_a_queued_item_waits_until_every_blocker_it_declares_has_resolved() -> None:
+    """The schema's `blocked_on`: "the wait is over once every one has" -- not any one."""
+    beads = _beads(**{"think-aaaa": "open", "think-bbbb": "open", "think-cccc": "closed"})
+    held = {
+        "key": "later",
+        "claim": "a bound",
+        "not_registered": "not yet",
+        "queued": True,
+        "bead": "think-aaaa",
+        "blocked_on": ["jlevy/squares#305", "jlevy/squares#400"],
+    }
+    one_open = _queues([_issue(results=[held])], beads).items[0]
+    assert (one_open.what, one_open.state) == ("#300 queued result later", sweep.OWNED)
+    done = {**held, "blocked_on": ["jlevy/squares#305", "think-cccc"]}
+    resolved = _queues([_issue(results=[done])], beads).items[0]
+    assert resolved.state == sweep.RESOLVED
+    assert resolved.what.endswith(
+        "it waits on jlevy/squares#305, merged 2026-10-04; think-cccc, closed"
+    )
+
+
 def test_a_pending_intake_is_owned_while_its_bead_is_open() -> None:
     entry = {
         "n": 69,
@@ -537,3 +683,55 @@ def test_a_capture_holds_the_page_its_transcription_under_the_archive_header_and
     receipt = json.loads((out / "capture.json").read_text(encoding="utf-8"))
     assert receipt["html_bytes"] == capture.html_bytes == len(b"<html>page</html>")
     assert sweep.newest_capture(tmp_path) == ("2026-10-05", out / f"{capture_tool.STEM}.md")
+
+
+def test_a_capture_whose_transcription_fails_writes_nothing(tmp_path: Path) -> None:
+    """The page used to be written before the transcriber ran, so a failed transcription
+    left a capture directory holding a page and no transcription."""
+
+    def refused(_page: Path) -> str:
+        raise capture_tool.TranscriptionError("the transcriber exited 1")
+
+    out = tmp_path / "kingbird-2026-10-05"
+    with pytest.raises(capture_tool.TranscriptionError):
+        capture_tool.write_capture(
+            b"<html>page</html>",
+            url="https://kingbird.myphotos.cc/packing/squares_in_squares.html",
+            retrieved_utc="2026-10-05T06:00:00Z",
+            last_modified=None,
+            out=out,
+            transcriber=refused,
+        )
+    assert not out.exists()
+    assert sweep.newest_capture(tmp_path) is None
+
+
+@pytest.mark.parametrize(
+    ("command", "says"),
+    [
+        (("no-such-transcriber-on-path",), "is not installed"),
+        (("false",), "exited 1"),
+        ((sys.executable, "-c", "import time; time.sleep(5)"), "took longer than"),
+    ],
+)
+def test_a_transcriber_that_is_missing_fails_or_hangs_is_a_typed_refusal(
+    monkeypatch: pytest.MonkeyPatch, tmp_path: Path, command: tuple[str, ...], says: str
+) -> None:
+    monkeypatch.setattr(capture_tool, "TRANSCRIBER", command)
+    monkeypatch.setattr(capture_tool, "TRANSCRIBE_TIMEOUT_SECONDS", 0.2)
+    page = tmp_path / "page.html"
+    page.write_bytes(b"<html>page</html>")
+    with pytest.raises(capture_tool.TranscriptionError, match=says):
+        capture_tool.transcribe(page)
+
+
+def test_the_capture_command_reports_a_failed_transcription_and_exits_1(
+    monkeypatch: pytest.MonkeyPatch, tmp_path: Path, capsys: pytest.CaptureFixture[str]
+) -> None:
+    monkeypatch.setattr(capture_tool, "TRANSCRIBER", ("no-such-transcriber-on-path",))
+    page = tmp_path / "page.html"
+    page.write_bytes(b"<html>page</html>")
+    out = tmp_path / "capture"
+    assert capture_tool.main(["--html", str(page), "--out", str(out)]) == 1
+    assert "capture failed:" in capsys.readouterr().err
+    assert not out.exists()

@@ -8,7 +8,7 @@ ours, which rest on someone else's argument, and how far each has been checked.
 
 ## The short version
 
-- **288** evidence records. **155** are formal; **148** of those were established here.
+- **291** evidence records. **158** are formal; **151** of those were established here.
 - **125** rest on an argument made elsewhere, of which **7** have been read by nobody here.
 - **40** claim to be first established here. **14** make no novelty statement at all - not assessed, which is not the same as not novel.
 
@@ -31,7 +31,7 @@ results, it is a statement about what this repository has itself examined.
 | `E-n061-wand125-point-cover-zmx2-replay` | 0 | lower-bound | verified | strict inequalities only | here | informally-verified | previously-published | producer’s code | `V-evand-zmx2`, `V-replay-evand-zmx2`, `V-audit-evand-mixed-covers` |
 | `E-n060-evand-mixed-cover-zmx2-replay` | 2 | lower-bound | verified | strict inequalities only | here | - | previously-published | producer’s code | `V-evand-zmx2`, `V-replay-evand-zmx2`, `V-audit-evand-mixed-covers` |
 | `E-k2m3-evand-family-report` | 10 | lower-bound | reported | - | elsewhere | informally-verified | previously-published | producer’s code | `V-evand-qx2-zm-py`, `V-evand-lean` |
-| `E-k2m3-wand125-valid7-independent` | 0 | lower-bound | verified | equalities and inequalities, no tolerance | here | informally-verified | previously-published | independent | `V-wand125-valid7-checker`, `V-audit-valid7-independent` |
+| `E-k2m3-wand125-valid7-independent` | 0 | lower-bound | verified | equalities and inequalities, no tolerance | here | informally-verified | previously-published | independent | `V-wand125-valid7-checker`, `V-audit-valid7-independent`, `V-probe-valid7-fixes` |
 | `E-k2m3-evand-valid7-qx2-replay` | 9 | lower-bound | verified | equalities and inequalities, no tolerance | here | - | previously-published | producer’s code | `V-evand-qx2-zm-py` |
 | `E-k2m3-evand-bentz-lean-build` | 9 | exact-value | verified | its theorem, against a named kernel | here | - | previously-published | producer’s code | `V-evand-lean` |
 | `E-n011-global-optimality-report` | 1 | lower-bound | reported | - | elsewhere | defect-found | previously-published | no code | `V-queuingtheory-n11-verify` |
@@ -115,7 +115,7 @@ results, it is a statement about what this repository has itself examined.
 | `E-kingbird-upper-register` | 178 | upper-bound | reported | - | - | - | previously-published | producer’s code | - |
 | `E-kingbird-grid-completeness` | 96 | upper-bound | reported | - | - | - | previously-published | producer’s code | - |
 | `E-unitsquare-release1-report` | 0 | upper-bound | reported | - | - | - | previously-published | producer’s code | *none held* |
-| `E-basic-grid-upper` | 254 | upper-bound | verified | equalities and inequalities, no tolerance | here | - | common-knowledge | independent | `V-check-basic-bounds` |
+| `E-basic-grid-upper` | 251 | upper-bound | verified | equalities and inequalities, no tolerance | here | - | common-knowledge | independent | `V-check-basic-bounds` |
 | `E-basic-area-lower` | 18 | lower-bound | verified | equalities and inequalities, no tolerance | here | - | common-knowledge | independent | `V-check-basic-bounds` |
 | `E-nagamochi-lower` | 175 | lower-bound | reported | - | elsewhere | defect-found | previously-published | no code | - |
 | `E-karakus-strip-lower` | 203 | lower-bound | verified | whatever its theorem states | elsewhere | informally-verified | previously-published | no code | - |
@@ -253,9 +253,12 @@ results, it is a statement about what this repository has itself examined.
 | `E-n211-de-winter-exact-replay` | 1 | upper-bound | verified | equalities and inequalities, no tolerance | here | - | previously-published | independent | `V-upper-bound-promotion`, `V-check-rational-witness-independent` |
 | `E-n211-de-winter-interval-replay` | 1 | upper-bound | verified | strict inequalities only | here | - | previously-published | independent | `V-upper-bound-intervals` |
 | `E-casson-2026-09-23-report` | 0 | upper-bound | reported | - | elsewhere | - | previously-published | producer’s code | *none held* |
-| `E-n069-ellsworth-2026-09-report` | 0 | upper-bound | reported | - | elsewhere | - | previously-published | producer’s code | - |
-| `E-n083-chang-2026-09-report` | 0 | upper-bound | reported | - | elsewhere | - | previously-published | producer’s code | - |
-| `E-n087-chang-2026-09-report` | 0 | upper-bound | reported | - | elsewhere | - | previously-published | producer’s code | - |
+| `E-n069-ellsworth-2026-09-report` | 0 | upper-bound | reported | - | elsewhere | informally-verified | previously-published | producer’s code | - |
+| `E-n083-chang-2026-09-report` | 0 | upper-bound | reported | - | elsewhere | informally-verified | previously-published | producer’s code | - |
+| `E-n087-chang-2026-09-report` | 0 | upper-bound | reported | - | elsewhere | informally-verified | previously-published | producer’s code | - |
+| `E-n069-ellsworth-2026-09-exact-replay` | 1 | upper-bound | verified | equalities and inequalities, no tolerance | here | - | previously-published | independent | `V-upper-bound-promotion`, `V-check-rational-witness-independent` |
+| `E-n083-chang-2026-09-exact-replay` | 1 | upper-bound | verified | equalities and inequalities, no tolerance | here | - | previously-published | independent | `V-upper-bound-promotion`, `V-check-rational-witness-independent` |
+| `E-n087-chang-2026-09-exact-replay` | 1 | upper-bound | verified | equalities and inequalities, no tolerance | here | - | previously-published | independent | `V-upper-bound-promotion`, `V-check-rational-witness-independent` |
 | `E-k2m4-evand-family-report` | 9 | lower-bound | reported | - | elsewhere | informally-verified | previously-published | producer’s code | `V-evand-qx2-zm-py`, `V-evand-lean` |
 | `E-k2m4-evand-validtilt9-qx2-report` | 0 | lower-bound | reported | - | elsewhere | - | previously-published | producer’s code | `V-evand-qx2-zm-py` |
 | `E-k2m4-evand-lean-report` | 0 | lower-bound | reported | - | elsewhere | - | previously-published | producer’s code | `V-evand-lean` |
@@ -313,10 +316,10 @@ results, it is a statement about what this repository has itself examined.
 
 ## What the register rests on
 
-- **assurance**: numerically-checked 4, reported 129, verified 155
-- **method**: exact-algebraic 92, interval-certified 50, numerical-multiprecision 4, proof-assistant-checked 3, proof-audited 3, published-proof 7, reported 129
-- **novelty**: apparently-novel 40, common-knowledge 4, not assessed 14, previously-published 230
-- **relationship to the producer's code**: generator 5, independent-implementation 48, not-applicable 19, same-implementation 203, shared-components 7, unknown-historical 6
+- **assurance**: numerically-checked 4, reported 129, verified 158
+- **method**: exact-algebraic 95, interval-certified 50, numerical-multiprecision 4, proof-assistant-checked 3, proof-audited 3, published-proof 7, reported 129
+- **novelty**: apparently-novel 40, common-knowledge 4, not assessed 14, previously-published 233
+- **relationship to the producer's code**: generator 5, independent-implementation 51, not-applicable 19, same-implementation 203, shared-components 7, unknown-historical 6
 
 The `cases` column is how many frontier records cite each piece of evidence, and it is the reason to read this table rather than count records. Ranked below are the *formal* records only: a `reported` record cited across the frontier may be a shared catalogue and is labelled as such, which is the register working rather than risk. The risk is a verified claim resting on an argument nobody has examined.
 
@@ -371,7 +374,7 @@ The `n` column is what each covers and `cases` is how many frontier records cite
 
 | evidence | cases | whose work | read here |
 | --- | ---: | --- | --- |
-| `E-basic-grid-upper` | 254 | here | - |
+| `E-basic-grid-upper` | 251 | here | - |
 | `E-karakus-strip-lower` | 203 | elsewhere | informally-verified |
 | `E-franciscouzo-2026-09-27-exact-replay` | 42 | here | - |
 | `E-franciscouzo-2026-09-27-interval-replay` | 42 | here | - |

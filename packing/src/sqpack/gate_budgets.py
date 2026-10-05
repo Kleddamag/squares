@@ -207,6 +207,24 @@ class Advisory:
 
     tracking_bead: str
     reason: str
+    #: What is relaxed, and what still fails a pull-request run under the relaxation, as
+    #: the sentence `advisory_note` renders. The defaults are the drift and stale rules'.
+    rules: str = "the drift and stale rules"
+    still_fails: str = "Only the ceiling fails a pull-request run."
+
+
+@dataclass(frozen=True)
+class CeilingAdvisory:
+    """The ceiling's relaxation on hosted pull-request runs, with the hang detector it keeps.
+
+    A tier wall above `hang_ratio` times its ceiling, or one test call of at least
+    `per_test_hang_seconds`, still fails the run: what the relaxation gives up is the
+    verdict on runner speed, not the verdict on a run that has stopped making progress.
+    """
+
+    advisory: Advisory
+    hang_ratio: float
+    per_test_hang_seconds: float
 
 
 @dataclass(frozen=True)
@@ -223,8 +241,11 @@ class Policy:
     #: Records dated before this are history the rule did not exist for: shown, not failed.
     attribution_required_from: str | None = None
     #: Set when the register declares the drift and stale rules advisory on hosted
-    #: pull-request runs; None is enforcing. The ceiling is outside this and always applies.
+    #: pull-request runs; None is enforcing. The ceiling is outside this.
     pull_request_relative_rules: Advisory | None = None
+    #: Set when the register declares the ceiling, and the per-test call-wall rule,
+    #: advisory on hosted pull-request runs up to a hang detector; None is enforcing.
+    pull_request_ceiling: CeilingAdvisory | None = None
 
 
 @dataclass(frozen=True)
@@ -536,6 +557,48 @@ def _relative_rules_from(raw: object) -> Advisory | None:
     return Advisory(tracking_bead=bead.strip(), reason=" ".join(reason.split()))
 
 
+def _ceiling_rule_from(raw: object) -> CeilingAdvisory | None:
+    """The ceiling's enforcement on pull requests: None when enforcing.
+
+    Held to the contract of `policy.pull_request_relative_rules` -- an advisory declaration
+    names its tracking bead and its reason, an enforcing one names neither -- and it must
+    also declare the hang detector that keeps failing a run the relaxation should not hide.
+    """
+    where = "policy.pull_request_ceiling"
+    if raw is None:
+        return None
+    entry = _require_mapping(raw, where)
+    relaxed = _relative_rules_from(
+        {key: entry.get(key) for key in ("enforcement", "tracking_bead", "advisory_reason")}
+        | {"enforcement": entry.get("enforcement", "enforcing")}
+    )
+    hang, per_test = entry.get("hang_ratio"), entry.get("per_test_hang_seconds")
+    if relaxed is None:
+        if hang is not None or per_test is not None:
+            raise BudgetError(
+                f"{where} is enforcing and still declares a hang detector; remove "
+                "hang_ratio and per_test_hang_seconds when enforcement returns"
+            )
+        return None
+    ratio = _positive(hang, f"{where}.hang_ratio")
+    if ratio <= 1.0:
+        raise BudgetError(f"{where}.hang_ratio must exceed 1, found {ratio:g}")
+    return CeilingAdvisory(
+        advisory=Advisory(
+            tracking_bead=relaxed.tracking_bead,
+            reason=relaxed.reason,
+            rules="the tier ceilings and the per-test call-wall rule",
+            still_fails=(
+                f"A wall above {ratio:g}x its ceiling, or a test call of "
+                f"{_positive(per_test, f'{where}.per_test_hang_seconds'):g}s or more, "
+                "still fails a pull-request run."
+            ),
+        ),
+        hang_ratio=ratio,
+        per_test_hang_seconds=_positive(per_test, f"{where}.per_test_hang_seconds"),
+    )
+
+
 def load(path: Path | None = None) -> Register:
     """Read the tier register, refusing anything a rule could not be applied to."""
     source = BUDGETS if path is None else path
@@ -564,6 +627,7 @@ def load(path: Path | None = None) -> Register:
         pull_request_relative_rules=_relative_rules_from(
             policy_entry.get("pull_request_relative_rules")
         ),
+        pull_request_ceiling=_ceiling_rule_from(policy_entry.get("pull_request_ceiling")),
     )
     raw_tiers = document.get("tiers")
     if not isinstance(raw_tiers, list) or not raw_tiers:
@@ -1264,6 +1328,15 @@ def judge(
     if advisory is not None and found.relative:
         failures = list(found.ceiling)
         advisory_failures = found.relative
+    ceiling_rule = policy.pull_request_ceiling if pull_request and not force else None
+    if (
+        ceiling_rule is not None
+        and found.ceiling
+        and wall_seconds <= ceiling_rule.hang_ratio * tier.ceiling_seconds
+    ):
+        failures = [failure for failure in failures if failure not in found.ceiling]
+        advisory_failures = (*found.ceiling, *advisory_failures)
+        advisory = ceiling_rule.advisory
 
     if failures and not enforced:
         notes.extend(failures)
@@ -1316,8 +1389,8 @@ def advisory_note(advisory: Advisory) -> str:
     """The sentence every rendering of an advisory finding carries."""
     reason = advisory.reason if advisory.reason.endswith(".") else f"{advisory.reason}."
     return (
-        f"the drift and stale rules are advisory on pull requests under "
-        f"{advisory.tracking_bead}: {reason} Only the ceiling fails a pull-request run."
+        f"{advisory.rules} are advisory on pull requests under "
+        f"{advisory.tracking_bead}: {reason} {advisory.still_fails}"
     )
 
 

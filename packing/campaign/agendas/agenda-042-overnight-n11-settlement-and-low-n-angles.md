@@ -1907,7 +1907,11 @@ agenda:
       target 2 rests on the same receipt and awaits the user's ruling, so every BC-426
       closure is verified and held, not admitted, until that ruling. Both targets are
       arity 8: a closure would count for the census but not toward H-267's arity-7
-      criterion.
+      criterion. Both closed, and both are held. Target 6 closed at 18:30:04 in 202 s of
+      wall (9 rounds, finest row 1/128), and target 3 at 18:35:35 in 538 s (13 rounds,
+      finest row 1/256). The standing verifier at cebb5d15a passed each in full, in 124 s
+      and 293 s. Both wait in ADMIT-AFTER-CONTROL for the user's ruling, with their
+      receipts in receipts/K.
 ---
 # Agenda 042: The n11 Settlement Ladder and Low-n Angles
 

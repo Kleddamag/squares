@@ -815,6 +815,11 @@ consequence in each.
 - **BC-426 re-runs BC-425’s two round-cap stalls under BC-423’s recipe**, registered
   before its runs. Any closure is verified and held, not admitted, because its only
   control evidence is the same receipt target 2 waits on.
+  Both re-runs closed: target 6 at 18:30:04 in 202 s of wall, and target 3 at 18:35:35
+  in 538 s, each where SW9’s recipe had stopped at its 24-round cap.
+  The standing verifier passed both in full (124 s and 293 s). They are held with target
+  2 for the user’s ruling, so they change neither the census nor the manifest.
+  Alone they would exclude 71,448 and 81,052 states.
 
 <!-- This document follows common-doc-guidelines.md.
 See github.com/jlevy/practical-prose and review guidelines before editing.

@@ -9,6 +9,7 @@ import shlex
 import shutil
 import subprocess
 import sys
+import tempfile
 import time
 from datetime import datetime, timedelta
 from pathlib import Path
@@ -847,30 +848,56 @@ def test_a_worker_snapshot_can_be_asked_what_this_repository_tracks(
     )
 
 
-def test_the_readme_check_reads_the_directory_inside_a_worker(
-    control_snapshot: tuple[Path, set[Path]],
-) -> None:
-    """The README controls rehearse drift, so the check must get past "no index" here.
+#: Control commands whose unmutated baseline is held green in a worker. A control is scored
+#: "exited non-zero and printed its expected message", with no green baseline demanded, so
+#: a checker already red in the worker lets its controls pass for a reason that is not
+#: their mutation (think-nns5). Measured 2026-10-05 by running every distinct command in
+#: `controls.yaml` unmutated in a fresh worker: these two were red there, on root files and
+#: the pull-request template the snapshot did not carry, and back the 4 README and 35
+#: ledger controls. Two remain red and are not listed: `validate_schemas`, on verifier
+#: registry paths under the pruned `resources/web/`, and
+#: `tests/test_change_scoped_selection.py`, on `vendor/kpress`, which no worker carries.
+GREEN_BASELINE_COMMANDS = (
+    "python3 -m devtools.check_readme",
+    "python3 -m sqpack.campaign.ledger check",
+)
 
-    `check_readme` is not green in a worker and is not expected to be: the snapshot
-    carries a bounded source surface, so the layout tree draws root-level tooling the
-    snapshot does not hold. What must not appear is the refusal, which is what the four
-    README controls got instead of the drift they mutate for.
+
+@pytest.mark.parametrize("command", GREEN_BASELINE_COMMANDS)
+def test_a_control_command_is_green_unmutated_in_a_worker(
+    control_snapshot: tuple[Path, set[Path]], command: str
+) -> None:
+    """The registry's own command, in the environment `run_one` gives it, with no edit.
+
+    For `check_readme` this also holds what the README controls first lost on
+    2026-09-21: an exit of 0 is past the "no index" refusal (`NO_INDEX`) they read in place
+    of the drift they mutate for.
     """
+    spec = safe_load((ROOT / "devtools/controls.yaml").read_text(encoding="utf-8"))
+    assert command in {control["run"] for control in spec["controls"]}
     tree, _copied = control_snapshot
-    work = tree / HERE
-    completed = subprocess.run(
-        [sys.executable, "-m", "devtools.check_readme"],
-        cwd=work,
-        env={
-            **os.environ,
-            "PYTHONPATH": os.pathsep.join((str(work / "src"), str(work))),
-        },
-        capture_output=True,
-        text=True,
-        check=False,
-    )
-    assert NO_INDEX not in completed.stdout + completed.stderr
+    with tempfile.TemporaryDirectory(prefix="negctl-pycache-", dir=tree) as pycache:
+        outcome = run_control_command(
+            command,
+            cwd=tree / HERE,
+            environment=controls.control_environment(tree, Path(pycache)),
+            timeout_seconds=controls.DEFAULT_CONTROL_TIMEOUT_SECONDS,
+        )
+    assert not outcome.timed_out
+    output = outcome.stdout + outcome.stderr
+    assert NO_INDEX not in output
+    assert outcome.returncode == 0, output
+
+
+def test_the_root_files_reach_every_worker(control_snapshot: tuple[Path, set[Path]]) -> None:
+    """Every file tracked at the repository root is in the worker, byte for byte."""
+    tree, _copied = control_snapshot
+    root = controls.root_files()
+    assert controls.REPO / "Makefile" in root
+    assert controls.REPO / ".gitmodules" in root
+    for path in (*root, *COPY_SEPARATELY):
+        relative = path.relative_to(controls.REPO)
+        assert (tree / relative).read_bytes() == path.read_bytes(), relative
 
 
 def test_unmutated_results_checker_is_green_inside_a_worker(

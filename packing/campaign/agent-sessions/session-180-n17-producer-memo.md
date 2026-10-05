@@ -33,7 +33,7 @@ session:
     validation_command: uv run --frozen --all-extras --group dev packing-ledger check
     kill_condition: Ownership overlap, invalid equivalence, resource guard, or deadline.
     fallback: Retain the measured limitation without a scientific or speedup claim.
-    outcome: PR325/stack326 and think-wn6x expose ownership. Direct lane deferred for overlap;
+    outcome: PR 325 / stack 326 and think-wn6x expose ownership. Direct lane deferred for overlap;
       finite residual graph deferred; memo lifetime selected for measurement.
     evidence:
     - packing/campaign/explorations/X048-session-169-pilots/README.md
@@ -90,7 +90,7 @@ session:
     evidence: *id001
     stop_reason: Bounded deliverable achieved; final metadata receives a separate current-head
       CI observation.
-    next_action: Review Draft PR325 under think-wn6x; upstream think-tmz6 remains the research
+    next_action: Review Draft PR 325 under think-wn6x; upstream think-tmz6 remains the research
       coordinator. No merge or new compute is authorized by this closeout.
   budget:
     wall_minutes: 74.47967373333333
@@ -228,20 +228,20 @@ session:
   - A and W7 canonical seed/node bytes, rounds and counts match; saved A checker passes without
     producer import.
   - Historical hosted fast gate at 4e91f69392086c48161a61be1c040526fe8b1230 passed before the
-    layer was reapplied to parent1525d4e03. It is not a fresh gate on the rewritten history.
+    layer was reapplied to parent 1525d4e03. It is not a fresh gate on the rewritten history.
   - Hosted pages-required and merges-into-main passed at 4e91f6939. Final metadata push is checked
     separately before handoff.
-  - After parent drift,83 targeted tests passed in18.45s; focused snapshot-size control passed
+  - After parent drift, 83 targeted tests passed in 18.45 s; focused snapshot-size control passed
     after large A objects were retained outside Git.
   - 'full gate: fast at 347fc624652af90cb547195371e06dcf40790940: passed (hosted partitioned
     fast gate; packing-required SUCCESS)'
   - Hosted pages-required and merges-into-main also passed at 347fc624652af90cb547195371e06dcf40790940;
     later metadata is observed separately.
   stop_reason: Scoped W5 result achieved and hosted fast CI passed. This evidence-only layer
-    closes its own administration without replacing the live PR307 coordinator handoff or taking
+    closes its own administration without replacing the live PR 307 coordinator handoff or taking
     another research lane. Current-history hosted fast certification was observed and its exact
     ancestor is recorded.
-  next_action: Review Draft PR325 under think-wn6x; upstream think-tmz6 remains the research
+  next_action: Review Draft PR 325 under think-wn6x; upstream think-tmz6 remains the research
     coordinator. No merge or new compute is authorized by this closeout.
   ended_at: '2026-10-03T21:31:17.791691+00:00'
   resource_rollups:

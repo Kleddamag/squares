@@ -14,7 +14,6 @@ session:
   branch: guzhou/n17-p01-partner-memo
   primary_bead: think-wn6x
   status: stopped
-  certification_pending: think-i45l
   goal: Measure obsolete producer memo retention and adopt only a byte-equivalent, materially
     better bounded change.
   workflow_phases:
@@ -241,14 +240,17 @@ session:
     later metadata is observed separately.
   - Rebuilt on 2026-10-05 onto PR 347 (claude/n17-sessions-167-168), which replaces PR 307 without
     its certificate dumps, by cherry-picking this layer's commits; retained objects and receipts
-    are byte-identical. Certification on the rebuilt history is pending under think-i45l.
+    are byte-identical.
+  - 'full gate: fast at a11029e567560b861e371b262db09466df026b3f: passed (hosted Packing validation
+    run 37266352906, attempt 3, on PR 354, the rebuild of PR 325 on PR 347; this head carries the
+    session''s work unchanged)'
   stop_reason: Scoped W5 result achieved and hosted fast CI passed. This evidence-only layer
     closes its own administration without replacing the live PR 307 coordinator handoff or taking
     another research lane. Current-history hosted fast certification was observed and its exact
     ancestor is recorded.
-  next_action: Review the rebuilt layer that replaces Draft PR 325 under think-wn6x; its hosted
-    certification on the rebuilt history is owned by think-i45l. Upstream think-tmz6 remains
-    the research coordinator. No merge or new compute is authorized by this closeout.
+  next_action: Review the rebuilt layer that replaces Draft PR 325 under think-wn6x; upstream
+    think-tmz6 remains the research coordinator. No merge or new compute is authorized by this
+    closeout.
   ended_at: '2026-10-03T21:31:17.791691+00:00'
   resource_rollups:
   - packing/campaign/resource-usage/codex-session-180.yaml

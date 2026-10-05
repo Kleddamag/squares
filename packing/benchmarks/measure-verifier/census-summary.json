@@ -1787,7 +1787,7 @@
     },
     {
       "L": "843/100",
-      "authors_replay_here": "none",
+      "authors_replay_here": "partial (12 of 201)",
       "binary_sha256": "7da1326cc1dcb437f148c03a710a76fb3ddb68ab8295b80997bc8e135309dbbe",
       "candidate": "packing/resources/web/wand125-mixed-bounds-finer-net-2026-10-05/square-packing-bounds/certificates/mixed_n66_L843/candidate.json.gz",
       "candidate_sha256": "d898bf92cea56d8c5ccc343fcc534517a2028a1204a5cdbdb0687254810d179b",

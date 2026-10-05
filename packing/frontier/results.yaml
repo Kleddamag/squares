@@ -8705,8 +8705,11 @@ results:
 
       Here the source was retained, its exact premises were recomputed from the retained
       bytes, and the replay's checks before its first angle were run on the pinned tarball.
-      The 5 October review of the certificate found no defect. None of it decides coverage.
-      This repository's clean-room verifier sqverify-fast decided all 201 directions here, but it is not yet a registered verifier and no rung
+      The 5 October review of the certificate found no defect. The source's own checker was
+      replayed here at 12 of the 201 directions, the axis, the first, middle and last pairs
+      and the pairs holding the two least recorded bounds, and returned the certificate's
+      own record at each; a sample is a diagnostic and decides no other direction. This
+      repository's clean-room verifier sqverify-fast decided all 201 directions here, but it is not yet a registered verifier and no rung
       rests on it. The value stands as reported, and the verified lower bound is unchanged.
 
       wand125 after Tokoharu and Levy,
@@ -8754,6 +8757,7 @@ results:
       - packing/resources/web/wand125-mixed-bounds-finer-net-2026-10-05/receipts/n66-L843/fetch.json
       - packing/devtools/audit_wand125_point_and_mixed.py
       - packing/benchmarks/measure-verifier/census-mixed/wand125-mixed-bounds-finer-net-2026-10-05/mixed_n66_L843.jsonl.gz
+      - packing/resources/web/wand125-mixed-bounds-finer-net-2026-10-05/receipts/n66-L843/range-156-157/summary.json
       - docs/project/reviews/review-2026-10-05-wand125-declared-net-n18-n66.md
     next_rung: >-
       The complete replay, about 15.5 CPU-hours planned (16.2 by the source's own
@@ -8764,5 +8768,13 @@ results:
       V0 because the cited entry is the source's claim: assurance reported, no complete
       replay. C1 because the 5 October review of the certificate is recorded as the report
       entry's external_review, with no defect. The exact audit and the pre-replay checks
-      decide no direction. A later revision than T-094's, so its own entry. The proof-bundle tarball is pinned by digest and not
+      decide no direction. The sample replay of 5 October (think-8qo9) ran
+      devtools.audit_wand125_point_and_mixed mixed-replay n66-L843 on six two-direction
+      ranges, 0-1, 24-25, 100-101, 147-148, 156-157 and 199-200, at one worker: 12
+      directions, each REPLAYED and matching the certificate, 4,628 CPU-seconds against
+      the source's 3,741 on them (receipts/n66-L843/range-*/ in the packet). The complete
+      replay was priced at 15.5 CPU-hours, above the lane's budget; with the sample and the
+      complete sqverify-fast pass the review holds the entry at V0/C1 and the verified
+      lower bound at 421/50, as stage 4 and the verifier plan now stand. A later revision
+      than T-094's, so its own entry. The proof-bundle tarball is pinned by digest and not
       retained. Ids here are provisional until merged.

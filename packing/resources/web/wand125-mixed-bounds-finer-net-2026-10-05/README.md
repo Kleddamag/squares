@@ -193,10 +193,41 @@ has the checker’s SHA-256 `89b674a6…`.
 The source’s seconds are each bundle’s own record of its oblique run, summed over its
 `proof/net*/result.json`.
 
+## Replaying the Certificates
+
+**`n66-L843`: a sample.** The complete replay is priced above at 15.5 CPU-hours, more
+than the importing lane’s budget, so the source’s own checker was replayed here at 12 of
+the 201 directions by the audit tool’s `mixed-replay`, at one worker under `nice`, on 5
+October 2026 from 18:52 to 20:56 UTC:
+
+```sh
+# from packing/, one command per range
+uv run --frozen --all-extras --group dev python -m devtools.audit_wand125_point_and_mixed \
+  mixed-replay n66-L843 --range 156-157 --work W --workers 1 --tarball TARBALL
+```
+
+The ranges are 0–1 (the axis and the first oblique direction), 24–25, 100–101, 147–148
+and 156–157 (the pairs holding the two least recorded bounds, at 148 and 157), and
+199–200 (the last). Every direction was `REPLAYED`, returning the certificate’s own
+record, in 4,628 CPU-seconds against the source’s 3,741 on the same directions. The
+receipts are [`receipts/n66-L843/range-*/`](receipts/n66-L843/). A sample is a
+diagnostic: it decides no other direction, and `mixed-merge` has not been run.
+
+**`n18-L470`: the bundle’s own driver, in full.** See the receipts under
+[`receipts/n18-L470/full/`](receipts/n18-L470/) once the run completes.
+
+**`sqverify-fast`.** This repository’s clean-room verifier, with lemma N0 for the
+declared net, verified both certificates at every direction of their nets: `n18-L470` at
+416 directions in 168 CPU-seconds and `n66-L843` at 201 in 2,167, recorded in the
+[Milestone B census](../../../benchmarks/measure-verifier/census-mixed/README.md). On the
+12 directions above it took 132 CPU-seconds where the source’s checker took 4,628. No
+rung rests on it.
+
 ## Limitations
 
 - **Coverage is decided by the source’s C++ alone** for the source’s own runs; the replays
-  and `sqverify-fast` runs here are recorded separately.
+  and `sqverify-fast` runs here are recorded separately. At $n = 66$ only a sample of 12
+  directions has been replayed with the source’s checker.
 - **No source audit.** Neither directory carries the source’s `completion-audit.json`, so
   nothing the source publishes binds a certificate to its tarball but the README’s digest
   and the commit. The binding here is the pinned tree’s digest and each bundle’s own file

@@ -89,21 +89,24 @@ def sha256(path: Path) -> str:
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
-def test_every_mixed_census_case_is_verified_at_all_201_directions() -> None:
+def test_every_mixed_census_case_is_verified_at_every_direction_of_its_net() -> None:
+    """All 201 directions of the standard net, or every node of the net a certificate
+    declares (`mixed_n18_L470`'s 416)."""
     assert entries()
     for name, entry in entries().items():
         least = entry["least_bound_leaf_exact"]
+        case = cases()[name]
+        total = census.net_directions(case)
         assert entry["status"] == "VERIFIED", name
         assert entry["returncode"] == 0, name
-        assert entry["directions_verified"] == 201, name
+        assert entry["directions_verified"] == total, name
         assert least["clears_threshold"] is True, name
         assert Fraction(least["exact_coverage"]) >= Fraction(entry["threshold"]), name
-        case = cases()[name]
         assert entry["candidate_sha256"] == sha256(case.candidate), name
         receipt = FOLDER / case.packet / f"{name}.jsonl.gz"
         rows = [json.loads(line) for line in gzip.decompress(receipt.read_bytes()).splitlines()]
         directions = [row for row in rows if "r" in row]
-        assert sorted(int(row["r"]) for row in directions) == list(range(201)), name
+        assert sorted(int(row["r"]) for row in directions) == list(range(total)), name
         assert all(row["verdict"] == "verified" for row in directions), name
         summary = rows[-1]
         assert summary["kind"] == "sqverify-fast-summary/v1", name

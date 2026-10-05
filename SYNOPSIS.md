@@ -227,6 +227,7 @@ action for each are in [`frontier/RESULTS.md`](packing/frontier/RESULTS.md); the
 | [T-080](packing/frontier/RESULTS.md) | 101, 102, 103, 104, 105 | `V3` | `C3` | `S3` | `previously-published` | A measure of points, segments and rectangles that wand125/square-packing-bounds published on 2 October 2026 proves s(101) >= 257/25 = 10.28. |
 | [T-085](packing/frontier/RESULTS.md) | 10-324 | `V3` | `C3` | `S3` | `previously-published` | Lemma 1 of Nagamochi 2005 -- every square of side in (1, 1.01] inside [0,a] x [0,b] scores more than one against the paper’s unavoidable set -- is false for every container with a > 3 and b > 2. |
 | [T-086](packing/frontier/RESULTS.md) | 7, 14, 23, 34, 47, 62, 79, 98, 119, 142, 167, 194, 223, 254, 287, 322 | `V3` | `C3` | `S3` | `previously-published` | s(k^2 - 2) = k for every integer k >= 2: chelokot’s Lean theorem Records.NearSquare.squareMinusTwo_isMinimumSide, kernel-checked here. |
+| [T-092](packing/frontier/RESULTS.md) | 208, 209, 228, 263, 272, 303, 306 | `V3` | `C3` | `S3` | `previously-published` | For seven counts, s(n) is at most the bound certified here from Francisco Couzo’s packing as published on 3 October 2026: s(208) <= 14.926534459703512, s(209) <= 14.953939011860643, s(228) <= 15.604602454552252, s(263) <= 16.742270262031792, s(272) <= 16.968165867864400, s(303) <= 17.924341009860250 and s(306) <= 17.963438139777141. |
 | [T-036](packing/frontier/RESULTS.md) | 11 | `V3` | `C2` | `S3` | `apparently-novel` | Every packing of eleven unit squares in a square container, six at orientation 0 and five sharing one orientation modulo pi/2 with half-tangent in [91442076901/250000000000, 73154061521/200000000000] (an interval containing [t* - 10^-6, t* + 10^-6] for Trump’s exact half-tangent t*), has container side at least U = 3.877083590022814 …, the exact side of Trump’s packing, and a packing in the family has side exactly U only if it is a quarter-turn image of Trump’s pose with the squares relabelled within the two classes. |
 | [T-007](packing/frontier/RESULTS.md) | 4-100 | `V0` | `C1` | `S3` | `previously-published` | For every integer 4 <= N <= 100, Nagamochi 2005, Theorem 2 gives s(N) >= min(ceil(sqrt(N)), sqrt(N - 2*floor(sqrt(N)) + 1) + 1). |
 | [T-068](packing/frontier/RESULTS.md) | 19, 20, 26, 27, 28, 29, 30, 31, 38, 39, 40, 41, 42, 43, 44, 53, 54, 55, 56, 66, 68, 69, 70, 74, 75, 76, 86, 87, 88, 89, 90, 93, 94, 95 | `V0` | `C1` | `S3` | `previously-published` | wand125/square-packing-bounds reports a higher standing rectangle-density certificate at each of 34 counts from n = 19 to n = 95, published between 29 September and 1 October 2026. |
@@ -235,6 +236,8 @@ action for each are in [`frontier/RESULTS.md`](packing/frontier/RESULTS.md); the
 | [T-083](packing/frontier/RESULTS.md) | 8, 10, 11, 12, 13, 14, 15, 17, 18, 19, 20, 21, 22, 23, 24, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112, 113, 114, 115, 116, 117, 118, 119, 120, 122, 123, 124, 125, 126, 127, 128, 129, 130, 131, 132, 133, 134, 135, 136, 137, 138, 139, 140, 141, 142, 143, 145, 146, 147, 148, 149, 150, 151, 152, 153, 154, 155, 156, 157, 158, 159, 160, 161, 162, 163, 164, 165, 166, 167, 168, 170, 171, 172, 173, 174, 175, 176, 177, 178, 179, 180, 181, 182, 183, 184, 185, 186, 187, 188, 189, 190, 191, 192, 193, 194, 195, 197, 198, 199, 200, 201, 202, 203, 204, 205, 206, 207, 208, 209, 210, 211, 212, 213, 214, 215, 216, 217, 218, 219, 220, 221, 222, 223, 224, 226, 227, 228, 229, 230, 231, 232, 233, 234, 235, 236, 237, 238, 239, 240, 241, 242, 243, 244, 245, 246, 247, 248, 249, 250, 251, 252, 253, 254, 255, 257, 258, 259, 260, 261, 262, 263, 264, 265, 266, 267, 268, 269, 270, 271, 272, 273, 274, 275, 276, 277, 278, 279, 280, 281, 282, 283, 284, 285, 286, 287, 288, 290, 291, 292, 293, 294, 295, 296, 297, 298, 299, 300, 301, 302, 303, 304, 305, 306, 307, 308, 309, 310, 311, 312, 313, 314, 315, 316, 317, 318, 319, 320, 321, 322, 323 | `V3` | `C1` | `S3` | `previously-published` | For every nonsquare integer 8 <= N <= 324, Karakuş 2026, Corollary 6.2 gives s(N) >= 1/2 + sqrt(N - floor(sqrt(N)) + 1/4), which is strictly above sqrt(N). |
 | [T-084](packing/frontier/RESULTS.md) | 8, 15, 24, 35, 48, 63, 80, 99, 120, 143, 168, 195, 224, 255, 288, 323 | `V3` | `C1` | `S3` | `previously-published` | s(k^2 - 1) = k for every integer k >= 3: Karakuş 2026, Corollary 1.2. |
 | [T-087](packing/frontier/RESULTS.md) | 37, 61 | `V3` | `C1` | `S3` | `previously-published` | Bašić and Slivková 2018, Theorem 7 with Proposition 8: no more than B(x) unit squares fit in a square of side x, where B(x) counts the points of an equilateral-lattice piercing set, floor(x)(m + 2) plus floor((m + 2)/2) when frac(x) >= 1/2, with m = floor((2/sqrt 3)(x + 1 - 2 sqrt 2)). |
+| [T-090](packing/frontier/RESULTS.md) | 42, 43, 44, 51, 56, 57, 67, 69, 72, 75, 84, 86, 88, 93, 94, 95 | `V0` | `C1` | `S3` | `previously-published` | wand125/square-packing-bounds reports 16 rectangle-density certificates published on 3 and 4 October 2026: s(42) >= 2739/400 = 6.8475, s(43) >= 2763/400 = 6.9075, s(44) >= 2789/400 = 6.9725, s(51) >= 747/100 = 7.47, s(56) >= 3121/400 = 7.8025, s(57) >= 3149/400 = 7.8725, s(67) >= 339/40 = 8.475, s(69) >= 431/50 = 8.62, s(72) >= 219/25 = 8.76, s(75) >= 447/50 = 8.94, s(84) >= 3763/400 = 9.4075, s(86) >= 9503/1000 = 9.503, s(88) >= 769/80 = 9.6125, s(93) >= 247/25 = 9.88, s(94) >= 497/50 = 9.94 and s(95) >= 1993/200 = 9.965. |
+| [T-091](packing/frontier/RESULTS.md) | 53, 54, 58, 70, 71, 73, 76, 87, 88, 90, 91, 94 | `V0` | `C1` | `S3` | `previously-published` | wand125/square-packing-bounds reports 12 rectangle-density certificates published on 4 October 2026, after those of T-090: s(53) >= 3051/400 = 7.6275, s(54) >= 1537/200 = 7.685, s(58) >= 1587/200 = 7.935, s(70) >= 3463/400 = 8.6575, s(71) >= 8721/1000 = 8.721, s(73) >= 8813/1000 = 8.813, s(76) >= 1793/200 = 8.965, s(87) >= 479/50 = 9.58, s(88) >= 481/50 = 9.62, s(90) >= 973/100 = 9.73, s(91) >= 781/80 = 9.7625 and s(94) >= 199/20 = 9.95. |
 | [T-046](packing/frontier/RESULTS.md) | 18, 19, 20, 26, 27, 28, 29, 30, 31, 37, 38, 39, 40, 41, 42, 43, 44, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 86, 88, 89, 90, 91, 94, 95 | `V0` | `C0` | `S3` | `previously-published` | wand125/square-packing-bounds reports one standing rectangle-density certificate for each of 48 counts from n = 18 to n = 95, added or raised between 26 and 28 September 2026. |
 | [T-003](packing/frontier/RESULTS.md) | 17, 18 | `V3` | `C3` | `S2` | `apparently-novel` | The sixteen-point set’s unavoidability ceiling lies in [4426213/1000000, 4427/1000): certification at the left endpoint, an exact escaping pose at the right, with the top strips’ a + 2b <= 2*sqrt(2) hypothesis identifying the closing mechanism at 753/250 + sqrt(2), inside the bracket. |
 | [T-005](packing/frontier/RESULTS.md) | 13 | `V3` | `C3` | `S2` | `apparently-novel` | Bentz 2010, Lemma 10 is false as printed -- the middle replacement point (1, 1.74) is refuted by an exact escape certificate, and the published page image carries the same transposed text -- and true under the corrected reading (1.74, 1), with all three corrected replacement covers certified exactly. |
@@ -247,6 +250,9 @@ action for each are in [`frontier/RESULTS.md`](packing/frontier/RESULTS.md); the
 | [T-059](packing/frontier/RESULTS.md) | 11 | `V3` | `C3` | `S2` | `previously-published` | wand125/square-packing-tools reports that its exact general_pose_tree checker reproduces all 12028 per-row core minima of Kleddamag’s n11 certificate, release v1.0.2, with global row minimum 999962528 units and all witnesses replayed. |
 | [T-061](packing/frontier/RESULTS.md) | 11 | `V3` | `C3` | `S2` | `previously-published` | s(11) > 3875000000/999999999 = 3.875000003875000003875 …, by Ke Wang and Can Li’s Zenodo record of 29 September 2026, reported on jlevy/squares#247. |
 | [T-078](packing/frontier/RESULTS.md) | 12 | `V3` | `C3` | `S2` | `previously-published` | s(12) >= 31360/7901 = 3.96911783 …, by squarepacker (Ryu Sungjoon) after Evan Daniel, published on 2 October 2026 and reported on jlevy/squares#309. |
+| [T-088](packing/frontier/RESULTS.md) | 69 | `V0` | `C0` | `S2` | `previously-published` | s(69) <= 8.827194655729738914 …, the root near 8.82719465572973 of the degree-38 polynomial the Kingbird catalogue prints for this count, by David Ellsworth’s packing of 69 unit squares in a square of that side. |
+| [T-089](packing/frontier/RESULTS.md) | 83, 87 | `V0` | `C0` | `S2` | `previously-published` | s(83) <= 9.634757648631082029 …, a root of degree 672, and s(87) <= 9.838815269948262260 …, the root near 9.83881526994826 of the degree-41 polynomial the Kingbird catalogue prints for that count: two packings by Allen Chang, the first optimized by David Ellsworth. |
+| [T-093](packing/frontier/RESULTS.md) | 17 | `V0` | `C0` | `S2` | `previously-published` | s(17) > 18641771/4000000 = 4.66044275, by Guzhou0806 / N17 project’s R071 release of 30 September 2026, on the charge of R068 (T-043). |
 | [T-063](packing/frontier/RESULTS.md) | 61 | `V3` | `C3` | `S1` | `previously-published` | s(61) = 8, as a corollary of s(60) = 8 (T-062), which Evan Daniel published with it on 28 September 2026. |
 
 | Significance | What [`epistemics.md`](epistemics.md#significance-and-novelty) anchors it to |
@@ -282,7 +288,7 @@ hypothesis status and summarizes experiment verdicts, and the
 | Explorations | 47 | 28 linked to proposed hypotheses; 19 uncodified |
 | Hypotheses | 206 | 43 confirmed; 33 refuted; 63 blocked; 19 unresolved; 9 open; 34 open questions; 2 result registered; 2 abandoned; 0 running; 1 exhausted |
 | Experiments | 179 | 57 accepted; 38 rejected; 56 unresolved; 12 baseline; 11 blocked; 4 abandoned; 0 in progress; 1 exhausted |
-| Frontier results | 87 | 87 registered, 58 by others |
+| Frontier results | 93 | 93 registered, 64 by others |
 
 <!-- END CURRENT-RESEARCH-STATUS -->
 
@@ -549,6 +555,8 @@ case or experiment separately.
 | [Eleven-Square Optimality Proof: The Delta for the Original Contributor](docs/project/reviews/review-2026-10-03-n11-optimality-upstream-delta.md) | dated review record | record | retained | — |
 | [Unified adversarial review of the tentative optimality proof for eleven squares](docs/project/reviews/review-2026-10-03-n11-optimality-adversarial-gpt6-pro-unified.md) | dated review record | record | retained | — |
 | [Changes in v0.1.4 of the Eleven-Square Optimality Review, for Its W2 Exposition Review](docs/project/reviews/review-2026-10-04-n11-optimality-paper-v0.1.4-changes.md) | dated review record | record | retained | — |
+| [wand125 Certificates of 3 and 4 October: Review of 28 Mixed Rectangle-Measure Bounds From `n = 42` to `n = 95`](docs/project/reviews/review-2026-10-05-wand125-october-4-certificates.md) | dated review record | record | retained | — |
+| [Review: Couzo’s Revision of 3 October 2026, Seven Lower Sides From `n = 208` to `306` (T-092)](docs/project/reviews/review-2026-10-05-couzo-6042c56.md) | dated review record | record | retained | — |
 | [Integration of GPT-6 Pro’s Adversarial Review of the Eleven-Square Optimality Proof](docs/project/reviews/review-2026-10-03-n11-gpt6-pro-review-integration.md) | dated review record | record | retained | — |
 | [Eleven-Square Optimality Paper: Adversarial Review](docs/project/reviews/review-2026-10-03-n11-optimality-paper-adversarial.md) | dated review record | record | retained | — |
 | [Review: The Site’s Documentation Cards and the Records Behind Them](docs/project/reviews/review-2026-10-01-site-documentation-records.md) | dated review record | record | retained | — |
@@ -1163,6 +1171,7 @@ case or experiment separately.
 | [sqverify-fast: Adversarial Testing and Independence Audit](docs/project/reviews/review-2026-10-03-sqverify-fast-testing-and-independence.md) | dated review record | record | retained | — |
 | [wand125 Certificates of 3 October: Review of 22 Mixed Rectangle-Measure Bounds From `n = 51` to `n = 96`](docs/project/reviews/review-2026-10-03-wand125-october-3-certificates.md) | dated review record | record | retained | — |
 | [Claim-Chain Review: Evan Daniel’s `s(k² − 4) = k` for Every `k ≥ 5`](docs/project/reviews/review-2026-10-03-evand-k2m4-claim-chain.md) | dated review record | record | retained | — |
+| [Evan Daniel’s Square Packing Atlas: Site Review and Import](docs/project/reviews/review-2026-10-05-evand-square-packing-atlas.md) | dated review record | record | retained | — |
 | [Density Solvers Compared: Tokoharu’s and wand125’s Rectangle-Density Tools Against This Repository’s Certificate Stack](docs/project/reviews/review-2026-09-28-density-solver-comparison.md) | dated review record | record | retained | — |
 | [Proof Review: Guzhou0806’s R067 and R068, `s(17) > 233009/50000` and `s(17) > 116511/25000`](docs/project/reviews/review-2026-09-28-n17-guzhou-r067-r068.md) | dated review record | record | retained | — |
 | [Proof Review: wand125’s Point-Only Certificates for `s(45) = 7` and `s(21) = 5`](docs/project/reviews/review-2026-09-28-wand125-point-only-s21-s45.md) | dated review record | record | retained | — |
@@ -1198,6 +1207,7 @@ case or experiment separately.
 | [Handoff: Basin Identity and the Integrated PR Reviews](docs/project/handoff-2026-08-23-basin-identity-and-two-reviews.md) | dated handoff record | record | superseded | [Synopsis: The `s(n)` Program](SYNOPSIS.md) |
 | [Handoff: Where the Square-Packing Loop Stands](docs/project/handoff-2026-08-23-quench-spine.md) | dated handoff record | record | superseded | [Synopsis: The `s(n)` Program](SYNOPSIS.md) |
 | [Postmortem: The Soundness Class, and the Perimeter That Let D-014 Through](docs/project/postmortems/postmortem-2026-08-23-soundness-class.md) | failure analysis and lessons | supporting | maintained | — |
+| [Postmortem: Three Catalogue Intakes Nobody Owned](docs/project/postmortems/postmortem-2026-10-05-orphaned-catalogue-intake.md) | failure analysis and lessons | record | retained | — |
 | [Proof Verification Consolidation and Independent n11 Completion](docs/project/specs/active/plan-2026-09-29-proof-verification-consolidation.md) | implementation plan | current | transient | — |
 | [Feature: Minimal Packing Toolkit](docs/project/specs/active/plan-2026-08-22-minimal-packing-toolkit.md) | implementation plan | current | transient | — |
 | [Feature: Unattended Square-Packing Research Readiness](docs/project/specs/active/plan-2026-08-23-overnight-cartography-run.md) | implementation plan | current | transient | — |
@@ -1307,9 +1317,12 @@ routine task.
 
 ### Result Import and Efficient Confirmation
 
-A result published by others, arriving as an issue or a link, enters the record through
-the [result import process](packing/campaign/result-import.md), a standard sequence of
-phases and not a workflow of its own.
+A result published by others enters the record through the
+[result import process](packing/campaign/result-import.md), a standard sequence of
+phases and not a workflow of its own, from whichever source delivers it: an issue or a
+comment, an owner’s message, the Kingbird catalogue or another catalogue, or a watched
+repository. An intake pass, run when the owner asks, sweeps every source at once, and
+whatever the record defers names the open bead that owns it.
 That runbook owns the stages and their exits; this section says what W1 and W2 each
 contribute.
 
@@ -6561,14 +6574,14 @@ table above.
 
 Kept with the same discipline as the experiment record, because the aggregate says
 things no individual bug report can.
-The log contains 518 defects, [one line each](defects.md), generated from `defects.yaml`
+The log contains 519 defects, [one line each](defects.md), generated from `defects.yaml`
 and checked in the gate.
 
 | Class | Count | The system … |
 | --- | ---: | --- |
 | soundness | 108 | asserted something false about the mathematics |
 | validity | 128 | was correct, but the measurement did not bear on the question |
-| bookkeeping | 193 | recorded something its own evidence contradicts |
+| bookkeeping | 194 | recorded something its own evidence contradicts |
 | robustness | 70 | did not finish, or finished only by luck |
 | performance | 19 | worked, but cost far more than it should |
 
@@ -6594,7 +6607,7 @@ Two observations the log exists to make.
 error looks like a success.
 That is the dangerous class, and it is the majority of it.
 
-**The automated gate has caught eighty-two defects in 518, and no soundness defect
+**The automated gate has caught eighty-two defects in 519, and no soundness defect
 ever.** Every soundness failure was found by a control cell whose answer was known in
 advance, a rule written down before the measurement, a generated view contradicting its
 source, or someone reading carefully.

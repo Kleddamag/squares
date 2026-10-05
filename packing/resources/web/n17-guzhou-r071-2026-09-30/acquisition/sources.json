@@ -1,0 +1,292 @@
+{
+  "format": "external-source-acquisition-v1",
+  "retrieved_at_utc": "2026-10-05T03:11Z",
+  "git_scope": "A blobless clone of the public repository, fetched at 2026-10-05T03:11Z when main was this commit; the declared paths are every path the two commits since the R068 pin 815b16261f852e389968513eec94b4b9e5b3206d (R070 at 8988d933e10fe89709a01d98b602396c29dd7bd1 and R071 at this commit) changed or added, and the rest of the tree is pinned by the commit.",
+  "sources": [
+    {
+      "id": "guzhou-n17-square-packing",
+      "source_url": "https://github.com/Guzhou0806/n17-square-packing",
+      "source_ref": "main",
+      "source_commit": "8c11f6962506940c5de67a9fa73b3d1e2e151196",
+      "committed_utc": "2026-09-30T22:53:43Z",
+      "git_tree": "bf552164d6eb3c99a46f6508cc83fdabc3c99106",
+      "archived_path": "packing/resources/web/n17-guzhou-r071-2026-09-30/n17-square-packing",
+      "subtree_manifest": "packing/resources/web/n17-guzhou-r071-2026-09-30/acquisition/upstream-subtree.sha256",
+      "subtree_scope": [
+        ".github/workflows/r070.yml",
+        ".github/workflows/r071.yml",
+        "CHANGELOG.md",
+        "CITATION.cff",
+        "NOTICE.md",
+        "R070_PUBLICATION.json",
+        "R071_PUBLICATION.json",
+        "README.md",
+        "RESULTS.md",
+        "docs/EVIDENCE_MAP.md",
+        "docs/RELEASE_NOTES.md",
+        "docs/REPRODUCIBILITY.md",
+        "scripts/check_release_hashes.py",
+        "certificates/R070-4.6604427",
+        "certificates/R071-C029"
+      ],
+      "subtree_file_count": 186,
+      "subtree_total_bytes": 9476703,
+      "retained_file_count": 153,
+      "retained_total_bytes": 7325400,
+      "compressed": [
+        "n17-square-packing/certificates/R070-4.6604427/project/followup_c015/data/lifted_accepted_model.json.gz",
+        "n17-square-packing/certificates/R070-4.6604427/project/followup_c016/data/geometric_overlay_all.json.gz",
+        "n17-square-packing/certificates/R070-4.6604427/project/followup_c016/results/target_4.6604427/certificate.json.gz",
+        "n17-square-packing/certificates/R070-4.6604427/project/followup_c016/results/target_4.6604427/paired_replay/cpp-0.json.gz",
+        "n17-square-packing/certificates/R070-4.6604427/project/followup_c016/results/target_4.6604427/paired_replay/cpp-1.json.gz",
+        "n17-square-packing/certificates/R070-4.6604427/project/followup_c016/results/target_4.6604427/paired_replay/cpp-2.json.gz",
+        "n17-square-packing/certificates/R070-4.6604427/project/followup_c016/results/target_4.6604427/paired_replay/cpp-3.json.gz",
+        "n17-square-packing/certificates/R070-4.6604427/project/followup_c016/results/target_4.6604427/paired_replay/node-0.json.gz",
+        "n17-square-packing/certificates/R070-4.6604427/project/followup_c016/results/target_4.6604427/paired_replay/node-1.json.gz",
+        "n17-square-packing/certificates/R070-4.6604427/project/followup_c016/results/target_4.6604427/paired_replay/node-2.json.gz",
+        "n17-square-packing/certificates/R070-4.6604427/project/followup_c016/results/target_4.6604427/paired_replay/node-3.json.gz",
+        "n17-square-packing/certificates/R071-C029/project/followup_c026/data/finite_comparison.json.gz",
+        "n17-square-packing/certificates/R071-C029/project/followup_c029/data/joint_graph.json.gz"
+      ],
+      "pinned_only": [
+        {
+          "path": "certificates/R070-4.6604427/project/base/upstream/cpp/native_geometry.hpp",
+          "bytes": 9692,
+          "sha256": "ade0091aa238e2d6dd078f89c9877dce6e0d80f3bb22aedc7e19d6fd85a7ec22",
+          "reason": "byte-identical to R068's C++ checker and paired launcher, which the R068 packet retains and its replay ran",
+          "identical_to": "packing/resources/web/n17-guzhou-r068-2026-09-28/n17-square-packing/certificates/R068-C010/upstream/cpp/native_geometry.hpp"
+        },
+        {
+          "path": "certificates/R070-4.6604427/project/base/upstream/cpp/reference/verify_global_variable.js",
+          "bytes": 9991,
+          "sha256": "c22091862df631f8cfd1f1bb8e5013f0b9c216f20be268fcd7104768919c49b7",
+          "reason": "byte-identical to R068's bundled copy of Kleddamag's BigInt checker, which the R068 packet retains and its replay ran",
+          "identical_to": "packing/resources/web/n17-guzhou-r068-2026-09-28/n17-square-packing/certificates/R068-C010/upstream/cpp/reference/verify_global_variable.js"
+        },
+        {
+          "path": "certificates/R070-4.6604427/project/base/upstream/cpp/replay.js",
+          "bytes": 5166,
+          "sha256": "1125e5969fe0a22e92ea42845ac0dfe68aae5a2a0110550591a01fa43f297712",
+          "reason": "byte-identical to R068's C++ checker and paired launcher, which the R068 packet retains and its replay ran",
+          "identical_to": "packing/resources/web/n17-guzhou-r068-2026-09-28/n17-square-packing/certificates/R068-C010/upstream/cpp/replay.js"
+        },
+        {
+          "path": "certificates/R070-4.6604427/project/base/upstream/cpp/verify.cpp",
+          "bytes": 14133,
+          "sha256": "3ba09554cef0ea0ee15444c4d30476f0e2435144e18b1ec2c908970ca306532c",
+          "reason": "byte-identical to R068's C++ checker and paired launcher, which the R068 packet retains and its replay ran",
+          "identical_to": "packing/resources/web/n17-guzhou-r068-2026-09-28/n17-square-packing/certificates/R068-C010/upstream/cpp/verify.cpp"
+        },
+        {
+          "path": "certificates/R070-4.6604427/project/base/upstream/notices/ATTRIBUTION.md",
+          "bytes": 5530,
+          "sha256": "b6f041d5ec47d076a9d1a629e203957c1f48a1f9b957afd96331474d183732bb",
+          "reason": "byte-identical to the upstream notices the R068 packet retains",
+          "identical_to": "packing/resources/web/n17-guzhou-r068-2026-09-28/n17-square-packing/certificates/R068-C010/upstream/notices/ATTRIBUTION.md"
+        },
+        {
+          "path": "certificates/R070-4.6604427/project/base/upstream/notices/AUTHORS.md",
+          "bytes": 2786,
+          "sha256": "f762d47d1b3d06c02d06e2b4c4743584993e35c31f9f1dfd25b653a997eaa617",
+          "reason": "byte-identical to the upstream notices the R068 packet retains",
+          "identical_to": "packing/resources/web/n17-guzhou-r068-2026-09-28/n17-square-packing/certificates/R068-C010/upstream/notices/AUTHORS.md"
+        },
+        {
+          "path": "certificates/R070-4.6604427/project/base/upstream/notices/LICENSE",
+          "bytes": 1083,
+          "sha256": "3658a57c304f53d0c2be0009232e3622fab7013a13bebea180cfbe8c7608f31c",
+          "reason": "byte-identical to the upstream notices the R068 packet retains",
+          "identical_to": "packing/resources/web/n17-guzhou-r068-2026-09-28/n17-square-packing/certificates/R068-C010/upstream/notices/LICENSE"
+        },
+        {
+          "path": "certificates/R070-4.6604427/project/base/upstream/notices/LICENSING.md",
+          "bytes": 2686,
+          "sha256": "4b16777736049d84fda497b8524d41bfdf38705353b5da77b7966e13c481079a",
+          "reason": "byte-identical to the upstream notices the R068 packet retains",
+          "identical_to": "packing/resources/web/n17-guzhou-r068-2026-09-28/n17-square-packing/certificates/R068-C010/upstream/notices/LICENSING.md"
+        },
+        {
+          "path": "certificates/R070-4.6604427/project/base/upstream/notices/NOTICES/Guzhou-NOTICE.md",
+          "bytes": 3009,
+          "sha256": "489f1de680a1ff9fb46c06a64445b12ce1fc3fda1146d6c408614b3ba5f0c690",
+          "reason": "byte-identical to the upstream notices the R068 packet retains",
+          "identical_to": "packing/resources/web/n17-guzhou-r068-2026-09-28/n17-square-packing/certificates/R068-C010/upstream/notices/NOTICES/Guzhou-NOTICE.md"
+        },
+        {
+          "path": "certificates/R070-4.6604427/project/base/upstream/notices/NOTICES/Joshua-Levy-LICENSE-source.txt",
+          "bytes": 21153,
+          "sha256": "7428341239cf4ee78c4b951b7fd8a2284b24835aeb0ede82f032b2e95e92cc00",
+          "reason": "byte-identical to the upstream notices the R068 packet retains",
+          "identical_to": "packing/resources/web/n17-guzhou-r068-2026-09-28/n17-square-packing/certificates/R068-C010/upstream/notices/NOTICES/Joshua-Levy-LICENSE-source.txt"
+        },
+        {
+          "path": "certificates/R070-4.6604427/project/base/upstream/notices/NOTICES/Joshua-Levy-MIT.txt",
+          "bytes": 1068,
+          "sha256": "134d213f268cce96daf2099396d727c38efd705bcc1613497d62c21f53d19c75",
+          "reason": "byte-identical to the upstream notices the R068 packet retains",
+          "identical_to": "packing/resources/web/n17-guzhou-r068-2026-09-28/n17-square-packing/certificates/R068-C010/upstream/notices/NOTICES/Joshua-Levy-MIT.txt"
+        },
+        {
+          "path": "certificates/R070-4.6604427/project/base/upstream/notices/NOTICES/Mira-ATTRIBUTION.md",
+          "bytes": 4427,
+          "sha256": "c0d09e0f0b4a12823a61003d2e3317b56010a020b4948f017aed90d029aa980a",
+          "reason": "byte-identical to the upstream notices the R068 packet retains",
+          "identical_to": "packing/resources/web/n17-guzhou-r068-2026-09-28/n17-square-packing/certificates/R068-C010/upstream/notices/NOTICES/Mira-ATTRIBUTION.md"
+        },
+        {
+          "path": "certificates/R070-4.6604427/project/base/upstream/notices/NOTICES/R038-ATTRIBUTION.md",
+          "bytes": 2740,
+          "sha256": "fbb381886deb10d1059cd6e9ad1800f7e8b9f5f1d15f7c78883d2ea2133c6418",
+          "reason": "byte-identical to the upstream notices the R068 packet retains",
+          "identical_to": "packing/resources/web/n17-guzhou-r068-2026-09-28/n17-square-packing/certificates/R068-C010/upstream/notices/NOTICES/R038-ATTRIBUTION.md"
+        },
+        {
+          "path": "certificates/R070-4.6604427/project/base/upstream/notices/NOTICES/R038-LICENSE_SCOPE.md",
+          "bytes": 680,
+          "sha256": "16da95bd766adbe5c4b2ddea644e378299bc5eb6e5fb0b554d0d0d5687d46a9d",
+          "reason": "byte-identical to the upstream notices the R068 packet retains",
+          "identical_to": "packing/resources/web/n17-guzhou-r068-2026-09-28/n17-square-packing/certificates/R068-C010/upstream/notices/NOTICES/R038-LICENSE_SCOPE.md"
+        },
+        {
+          "path": "certificates/R070-4.6604427/project/base/upstream/notices/NOTICES/R038-SOURCE_PIN.json",
+          "bytes": 467,
+          "sha256": "e7a6c0f7a665a8a44fecb411e1cb2146bf15b17824d236143446636acf4dc18f",
+          "reason": "byte-identical to the upstream notices the R068 packet retains",
+          "identical_to": "packing/resources/web/n17-guzhou-r068-2026-09-28/n17-square-packing/certificates/R068-C010/upstream/notices/NOTICES/R038-SOURCE_PIN.json"
+        },
+        {
+          "path": "certificates/R070-4.6604427/project/base/upstream/notices/NOTICES/README.md",
+          "bytes": 1258,
+          "sha256": "f9bc19e134efd913c8fdbd8dc4453bea2636c02ac0f4d7f0fa0563528e1ef47e",
+          "reason": "byte-identical to the upstream notices the R068 packet retains",
+          "identical_to": "packing/resources/web/n17-guzhou-r068-2026-09-28/n17-square-packing/certificates/R068-C010/upstream/notices/NOTICES/README.md"
+        },
+        {
+          "path": "certificates/R070-4.6604427/project/followup_c016/results/parent_hull_obstruction_cpp.json",
+          "bytes": 1979565,
+          "sha256": "60e0609d0a9ad0952963c76f621c9a7bcc613981e2e345e1b5423a762761cd9c",
+          "reason": "a 1.98 MB one-line output of R070's obstruction research, which carries no bound; its geometry replay regenerates it and no premise of either bound reads it"
+        },
+        {
+          "path": "certificates/R071-C029/project/base/upstream/cpp/native_geometry.hpp",
+          "bytes": 9692,
+          "sha256": "ade0091aa238e2d6dd078f89c9877dce6e0d80f3bb22aedc7e19d6fd85a7ec22",
+          "reason": "byte-identical to R068's C++ checker and paired launcher, which the R068 packet retains and its replay ran",
+          "identical_to": "packing/resources/web/n17-guzhou-r068-2026-09-28/n17-square-packing/certificates/R068-C010/upstream/cpp/native_geometry.hpp"
+        },
+        {
+          "path": "certificates/R071-C029/project/base/upstream/cpp/reference/verify_global_variable.js",
+          "bytes": 9991,
+          "sha256": "c22091862df631f8cfd1f1bb8e5013f0b9c216f20be268fcd7104768919c49b7",
+          "reason": "byte-identical to R068's bundled copy of Kleddamag's BigInt checker, which the R068 packet retains and its replay ran",
+          "identical_to": "packing/resources/web/n17-guzhou-r068-2026-09-28/n17-square-packing/certificates/R068-C010/upstream/cpp/reference/verify_global_variable.js"
+        },
+        {
+          "path": "certificates/R071-C029/project/base/upstream/cpp/replay.js",
+          "bytes": 5166,
+          "sha256": "1125e5969fe0a22e92ea42845ac0dfe68aae5a2a0110550591a01fa43f297712",
+          "reason": "byte-identical to R068's C++ checker and paired launcher, which the R068 packet retains and its replay ran",
+          "identical_to": "packing/resources/web/n17-guzhou-r068-2026-09-28/n17-square-packing/certificates/R068-C010/upstream/cpp/replay.js"
+        },
+        {
+          "path": "certificates/R071-C029/project/base/upstream/cpp/verify.cpp",
+          "bytes": 14133,
+          "sha256": "3ba09554cef0ea0ee15444c4d30476f0e2435144e18b1ec2c908970ca306532c",
+          "reason": "byte-identical to R068's C++ checker and paired launcher, which the R068 packet retains and its replay ran",
+          "identical_to": "packing/resources/web/n17-guzhou-r068-2026-09-28/n17-square-packing/certificates/R068-C010/upstream/cpp/verify.cpp"
+        },
+        {
+          "path": "certificates/R071-C029/project/base/upstream/notices/ATTRIBUTION.md",
+          "bytes": 5530,
+          "sha256": "b6f041d5ec47d076a9d1a629e203957c1f48a1f9b957afd96331474d183732bb",
+          "reason": "byte-identical to the upstream notices the R068 packet retains",
+          "identical_to": "packing/resources/web/n17-guzhou-r068-2026-09-28/n17-square-packing/certificates/R068-C010/upstream/notices/ATTRIBUTION.md"
+        },
+        {
+          "path": "certificates/R071-C029/project/base/upstream/notices/AUTHORS.md",
+          "bytes": 2786,
+          "sha256": "f762d47d1b3d06c02d06e2b4c4743584993e35c31f9f1dfd25b653a997eaa617",
+          "reason": "byte-identical to the upstream notices the R068 packet retains",
+          "identical_to": "packing/resources/web/n17-guzhou-r068-2026-09-28/n17-square-packing/certificates/R068-C010/upstream/notices/AUTHORS.md"
+        },
+        {
+          "path": "certificates/R071-C029/project/base/upstream/notices/LICENSE",
+          "bytes": 1083,
+          "sha256": "3658a57c304f53d0c2be0009232e3622fab7013a13bebea180cfbe8c7608f31c",
+          "reason": "byte-identical to the upstream notices the R068 packet retains",
+          "identical_to": "packing/resources/web/n17-guzhou-r068-2026-09-28/n17-square-packing/certificates/R068-C010/upstream/notices/LICENSE"
+        },
+        {
+          "path": "certificates/R071-C029/project/base/upstream/notices/LICENSING.md",
+          "bytes": 2686,
+          "sha256": "4b16777736049d84fda497b8524d41bfdf38705353b5da77b7966e13c481079a",
+          "reason": "byte-identical to the upstream notices the R068 packet retains",
+          "identical_to": "packing/resources/web/n17-guzhou-r068-2026-09-28/n17-square-packing/certificates/R068-C010/upstream/notices/LICENSING.md"
+        },
+        {
+          "path": "certificates/R071-C029/project/base/upstream/notices/NOTICES/Guzhou-NOTICE.md",
+          "bytes": 3009,
+          "sha256": "489f1de680a1ff9fb46c06a64445b12ce1fc3fda1146d6c408614b3ba5f0c690",
+          "reason": "byte-identical to the upstream notices the R068 packet retains",
+          "identical_to": "packing/resources/web/n17-guzhou-r068-2026-09-28/n17-square-packing/certificates/R068-C010/upstream/notices/NOTICES/Guzhou-NOTICE.md"
+        },
+        {
+          "path": "certificates/R071-C029/project/base/upstream/notices/NOTICES/Joshua-Levy-LICENSE-source.txt",
+          "bytes": 21153,
+          "sha256": "7428341239cf4ee78c4b951b7fd8a2284b24835aeb0ede82f032b2e95e92cc00",
+          "reason": "byte-identical to the upstream notices the R068 packet retains",
+          "identical_to": "packing/resources/web/n17-guzhou-r068-2026-09-28/n17-square-packing/certificates/R068-C010/upstream/notices/NOTICES/Joshua-Levy-LICENSE-source.txt"
+        },
+        {
+          "path": "certificates/R071-C029/project/base/upstream/notices/NOTICES/Joshua-Levy-MIT.txt",
+          "bytes": 1068,
+          "sha256": "134d213f268cce96daf2099396d727c38efd705bcc1613497d62c21f53d19c75",
+          "reason": "byte-identical to the upstream notices the R068 packet retains",
+          "identical_to": "packing/resources/web/n17-guzhou-r068-2026-09-28/n17-square-packing/certificates/R068-C010/upstream/notices/NOTICES/Joshua-Levy-MIT.txt"
+        },
+        {
+          "path": "certificates/R071-C029/project/base/upstream/notices/NOTICES/Mira-ATTRIBUTION.md",
+          "bytes": 4427,
+          "sha256": "c0d09e0f0b4a12823a61003d2e3317b56010a020b4948f017aed90d029aa980a",
+          "reason": "byte-identical to the upstream notices the R068 packet retains",
+          "identical_to": "packing/resources/web/n17-guzhou-r068-2026-09-28/n17-square-packing/certificates/R068-C010/upstream/notices/NOTICES/Mira-ATTRIBUTION.md"
+        },
+        {
+          "path": "certificates/R071-C029/project/base/upstream/notices/NOTICES/R038-ATTRIBUTION.md",
+          "bytes": 2740,
+          "sha256": "fbb381886deb10d1059cd6e9ad1800f7e8b9f5f1d15f7c78883d2ea2133c6418",
+          "reason": "byte-identical to the upstream notices the R068 packet retains",
+          "identical_to": "packing/resources/web/n17-guzhou-r068-2026-09-28/n17-square-packing/certificates/R068-C010/upstream/notices/NOTICES/R038-ATTRIBUTION.md"
+        },
+        {
+          "path": "certificates/R071-C029/project/base/upstream/notices/NOTICES/R038-LICENSE_SCOPE.md",
+          "bytes": 680,
+          "sha256": "16da95bd766adbe5c4b2ddea644e378299bc5eb6e5fb0b554d0d0d5687d46a9d",
+          "reason": "byte-identical to the upstream notices the R068 packet retains",
+          "identical_to": "packing/resources/web/n17-guzhou-r068-2026-09-28/n17-square-packing/certificates/R068-C010/upstream/notices/NOTICES/R038-LICENSE_SCOPE.md"
+        },
+        {
+          "path": "certificates/R071-C029/project/base/upstream/notices/NOTICES/R038-SOURCE_PIN.json",
+          "bytes": 467,
+          "sha256": "e7a6c0f7a665a8a44fecb411e1cb2146bf15b17824d236143446636acf4dc18f",
+          "reason": "byte-identical to the upstream notices the R068 packet retains",
+          "identical_to": "packing/resources/web/n17-guzhou-r068-2026-09-28/n17-square-packing/certificates/R068-C010/upstream/notices/NOTICES/R038-SOURCE_PIN.json"
+        },
+        {
+          "path": "certificates/R071-C029/project/base/upstream/notices/NOTICES/README.md",
+          "bytes": 1258,
+          "sha256": "f9bc19e134efd913c8fdbd8dc4453bea2636c02ac0f4d7f0fa0563528e1ef47e",
+          "reason": "byte-identical to the upstream notices the R068 packet retains",
+          "identical_to": "packing/resources/web/n17-guzhou-r068-2026-09-28/n17-square-packing/certificates/R068-C010/upstream/notices/NOTICES/README.md"
+        }
+      ],
+      "license": "No repository-wide licence. Each package's ATTRIBUTION.md says that repackaging does not expand third-party licences and that attribution is not endorsement; the inherited upstream notices under project/base/upstream/notices/ keep their own scopes, Kleddamag's MIT LICENSE among them.",
+      "claims": [
+        "R070: s(17) > 46604427/10000000 = 4.6604427, R068's charge (budget 17000448944 units of 10^-9) at parent side 46130000/46604427 in the container 4613/1000 over 5,107 angle intervals, minimum core charge 1000026844 and surplus 7404, with complete four-partition C++ and BigInt records (certificates/R070-4.6604427/PROOF.md, project/followup_c016/results/target_4.6604427/)",
+        "R070: a same-budget geometric overlay of 319 orbits and 2,552 images, and a parent-separation obstruction at 186417711/40000000 within a fixed-weight enhancement class, which the source says establish no higher global bound (certificates/R070-4.6604427/GEOMETRIC_RESULTS.md)",
+        "R071: s(17) > 18641771/4000000 = 4.66044275, the retained C027 certificate on the same charge at parent side 18452000/18641771 over 5,114 angle intervals, minimum core charge 1000026844 and surplus 7404; its partition records are missing and a completion summary is retained (certificates/R071-C029/BOUND_PROOF.md, history/c027/C027_GLOBAL_THEOREM.json)",
+        "R071: C028 cover prerequisites and C029 conditional joint geometry at 9321/2000 inside one first-anchor box, 17 conflict edges, 2 forced holes and 9 <= Vmax <= 11 with 8 component pairs unresolved, which the source says does not prove s(17) > 4.6605 (certificates/R071-C029/GEOMETRY_PROOF.md)"
+      ]
+    }
+  ]
+}

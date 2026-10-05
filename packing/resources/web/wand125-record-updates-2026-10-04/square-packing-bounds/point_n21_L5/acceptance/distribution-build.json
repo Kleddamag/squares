@@ -1,0 +1,13 @@
+{
+  "status": "BYTE_PRESERVING_DISTRIBUTION_BUILT",
+  "files": 75130,
+  "raw_bytes": 2536284342,
+  "original_files": 133134,
+  "source_assembly_sha256": "6f8b2b3531d73d36d46642f1a1201489836974942cb1edbbd818296bc78e4112",
+  "distribution_manifest_sha256": "b0d1dcb1bdd0d93a3723df5c8a034828cd686c647599604fad5b16bc676eb098",
+  "numerical_replay_performed_by_builder": false,
+  "published": false,
+  "previous_distribution_manifest_sha256": "bb2883c5d05e3073011267f95cccd3301c2f97dd4c1e1d64fc4c6e46c8ec9c6c",
+  "previous_raw_bytes": 2540625860,
+  "path_relativization_note": "Hashes of the linkage records were updated after absolute paths in them were made relative; previous -> current values are listed in ../path-relativization-map.json"
+}

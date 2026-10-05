@@ -115,23 +115,26 @@ FRONTIER_COUNTS: dict[str, tuple[int, int, int]] = {
     "n=1..324": (247, 238, 0),
 }
 #: n = 68, 103, 105, 110 and 131 left the exclusions on 2026-09-29, when their records
-#: moved from UnitSquare renderings to Francisco Couzo's packings (T-056); n = 69 is the
-#: one rendering left.
+#: moved from UnitSquare renderings to Francisco Couzo's packings (T-056), and n = 69, the
+#: last rendering, on 2026-10-05, when its record moved to the catalogue's packing (T-088),
+#: whose retained witness is a binary64 parse of the SVG with unit squares to its precision.
 SCREEN_EXCLUDED: dict[str, tuple[str, ...]] = {
-    "n=1..100": ("n=69",),
-    "n=1..200": ("n=69",),
-    "n=1..324": ("n=69",),
+    "n=1..100": (),
+    "n=1..200": (),
+    "n=1..324": (),
 }
 #: (records with a separating square, those squares, records with any translating
 #: square, those squares). Re-measured on 2026-09-29 for the 50 records T-056 and T-057
 #: moved onto Couzo's and de Winter's packings, whose optimized poses leave fewer squares
 #: free to separate than the catalogue packings they replaced. Re-measured again on
 #: 2026-09-30 for the live corpus after the catalogue refresh moved n = 126 and 179 onto
-#: de Winter's and Stead's packings; the two smaller corpora are not re-measured.
+#: de Winter's and Stead's packings, and on 2026-10-05 after n = 69, 83 and 87 took the
+#: catalogue's September 2026 packings (T-088, T-089), when n = 69 was screened for the first
+#: time; the two smaller corpora are not re-measured.
 SCREEN_FINDINGS: dict[str, tuple[int, int, int, int]] = {
     "n=1..100": (26, 87, 85, 518),
     "n=1..200": (65, 606, 181, 1883),
-    "n=1..324": (119, 1850, 301, 4475),
+    "n=1..324": (120, 1851, 302, 4492),
 }
 UNDETERMINED_BY_MISS = (28,)
 #: The cases the two sampled sweeps re-derive on every pull request, computed here from
@@ -2425,7 +2428,7 @@ def _screen_findings() -> str:
         f"{screened} records screened, "
         f"{separating} with a square that separates ({separating_squares} squares), "
         f"{translating} with a square that translates at all ({translating_squares} squares), "
-        f"excluded: {', '.join(excluded)}"
+        f"excluded: {', '.join(excluded) or 'none'}"
     )
 
 
@@ -4363,8 +4366,17 @@ STEPS: tuple[Step, ...] = (
         fast=True,
         records=True,
         # The bead data lives in a sync worktree, not the tracked tree, so a bead-only
-        # change produces no changed path at all -- which selects the whole gate.
-        touches=(*_CORE, ".tbd/*", "packing/devtools/check_bead_tree.py"),
+        # change produces no changed path at all -- which selects the whole gate. The
+        # records are read for the deferrals they declare, each of which must name an
+        # open bead.
+        touches=(
+            *_CORE,
+            ".tbd/*",
+            "packing/devtools/check_bead_tree.py",
+            "packing/frontier/source-coverage.yaml",
+            "packing/campaign/result-requests.yaml",
+            "packing/campaign/intake-watch.yaml",
+        ),
     ),
     # 0.51s on the fast path, which is what runs without `--deep`.
     Step(

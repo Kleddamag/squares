@@ -160,6 +160,7 @@ verifiers:
     source:
       - packing/resources/web/evand-square-packing-2026-09-28/square-packing/s12/verify2/src/bin/zmx2.rs
       - packing/resources/web/evand-zmx2-sym-atoms-2026-09-30/square-packing/s12/verify2/src/bin/zmx2.rs
+      - packing/resources/web/evand-square-packing-2026-10-04/square-packing/s12/verify2/src/bin/zmx2.rs
     versions:
       - sha256: 6b7f0f79466bf25c9a85f8fe2f3866de734935f0521ea188136818c2fb5b3fed
         note: the 2026-09-28 packet's post-audit parser, which made the shipped records and which wand125's verify.sh pins
@@ -167,6 +168,13 @@ verifiers:
         revision: e4af291cf52711a3ef7cedfea262f001fa2cafe1
         path: packing/resources/web/evand-zmx2-sym-atoms-2026-09-30/square-packing/s12/verify2/src/bin/zmx2.rs
         note: the --sym-atoms version, for the unreduced s(32) sweep
+      - sha256: e2bb84e9e05938db416940ad608d2583ca9a0c248d59820937c4ce59d607ead7
+        revision: b8157df7a7c71996704c6c3e91483126ba8ddae5
+        path: packing/resources/web/evand-square-packing-2026-10-04/square-packing/s12/verify2/src/bin/zmx2.rs
+        note: >-
+          the version that accepts a side that is not a multiple of 1/10, with which the
+          source checked its s(20) point cover at side 2443/500; unchanged at 7ff3b211 and
+          not run here
     note: >-
       wand125 verified its own covers with zmx2 as well, so a zmx2 replay of a wand125
       cover is a replay of the producer's code.
@@ -619,6 +627,12 @@ verifiers:
       Decides a source's printed pose as printed, by outward-rounded decimal interval
       arithmetic with each angle's cosine and sine enclosed.
     source: [packing/devtools/upper_bound_intervals.py]
+    independence_record: packing/devtools/upper_bound_intervals.py
+    note: >-
+      Its module statement lists the three things it shares with the exact route (the
+      retained facts, the packet tool's source and acquisition records, and the exact
+      receipt read only to compare values), none of them geometry;
+      packing/tests/test_upper_bound_intervals.py holds its imports to those.
 
   - id: V-sqpack-cover
     program: sqpack.cover, the Bentz-lemma cell certifier, run by each case's verify_cover module

@@ -52,20 +52,20 @@
         "wall_seating_edge_count": 24
       },
       {
-        "component_count": 17,
-        "contact_edge_count": 78,
-        "free_square_count": 12,
-        "internal_slide_dof": 29,
-        "n": 69,
-        "rendering": "contact-overlays/n-069.svg",
-        "selection_rule": "first retained UnitSquare rendering-derived geometry",
-        "source_kind": "unitsquare-rendering",
+        "component_count": 16,
+        "contact_edge_count": 85,
+        "free_square_count": 9,
+        "internal_slide_dof": 33,
+        "n": 68,
+        "rendering": "contact-overlays/n-068.svg",
+        "selection_rule": "first source-packet-derived geometry, a parallel project's packing",
+        "source_kind": "packet-derived-facts",
         "topology_counts": {
           "contact-chain": 2,
-          "contact-patch": 3,
-          "singleton": 12
+          "contact-patch": 5,
+          "singleton": 9
         },
-        "wall_seating_edge_count": 31
+        "wall_seating_edge_count": 26
       },
       {
         "component_count": 5,

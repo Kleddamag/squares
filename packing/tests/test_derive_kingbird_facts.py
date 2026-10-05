@@ -529,3 +529,188 @@ def test_a_refused_plan_exits_nonzero_without_fetching(tmp_path: Path) -> None:
 
     assert status == 1
     assert list(tmp_path.iterdir()) == []
+
+
+# --------------------------------------------------------------------------------------
+# A pinned third-party parse in place of the picture (`--from-parse`)
+# --------------------------------------------------------------------------------------
+
+#: The picture's own poses as Evan Daniel's export writes them, binary64 `[cx, cy, angle]`.
+SYNTHETIC_PARSE = (
+    '{"name": "square-4.svg", "s": "2.5", "n": 4, '
+    '"squares": [[0.5, 2.0, 0.0], [0.5, 1.0, 0.0], [1.5, 2.0, 0.0], [1.5, 1.0, 0.0]]}'
+)
+PARSE_REVISION = "evand/square-packing@0123abc:site/www/data/p"
+
+
+def write_parse(directory: Path, text: str = SYNTHETIC_PARSE) -> Path:
+    directory.mkdir(parents=True, exist_ok=True)
+    (directory / "square-4.json").write_text(text, encoding="utf-8")
+    return directory
+
+
+def test_a_parse_stands_in_for_the_picture_and_the_witness_says_whose_it_is(
+    tmp_path: Path,
+) -> None:
+    plan = synthetic_plan(4, source_n=4, out_root=tmp_path)
+
+    witness = derive_tool.derive_witness(
+        plan,
+        SYNTHETIC_PARSE,
+        catalogue_text=REMOVAL_LICENCE,
+        retrieved="2026-10-05",
+        frontier_root=tmp_path,
+        parse_revision=PARSE_REVISION,
+    )
+
+    assert [tuple(square["center"]) for square in witness["squares"]] == [
+        tuple(center) for center in SYNTHETIC_CENTERS
+    ]
+    assert {square["angle"] for square in witness["squares"]} == {"0"}
+    assert witness["source"]["revision"] == f"{PARSE_REVISION}/square-4.json"
+    assert witness["source"]["url"] == SYNTHETIC_URL
+    assert (
+        "a third party's binary64 parse of the catalogue SVG"
+        in (witness["claim"]["limitations"])
+    )
+    assert witness["certificate"]["result"]["check_passed"] is True
+
+
+def test_a_parse_the_printed_side_does_not_truncate_is_refused(tmp_path: Path) -> None:
+    # 2.4999999999 is within the 1e-8 a fetched picture is held to, and is still not a
+    # picture whose side the page prints as 2.5: the page cuts its digits short.
+    plan = synthetic_plan(4, source_n=4, out_root=tmp_path)
+    below = SYNTHETIC_PARSE.replace('"s": "2.5"', '"s": "2.4999999999"')
+
+    with pytest.raises(DerivationRefusedError) as refusal:
+        derive_tool.derive_witness(
+            plan,
+            below,
+            catalogue_text=REMOVAL_LICENCE,
+            frontier_root=tmp_path,
+            parse_revision=PARSE_REVISION,
+        )
+
+    assert refusal.value.kind == "side-mismatch"
+
+
+@pytest.mark.parametrize(
+    ("text", "kind"),
+    [
+        ("not json", "parse-unreadable"),
+        ('{"s": "2.5", "n": 4, "squares": [[0.5, 2.0, 0.0]]}', "square-count-mismatch"),
+        (SYNTHETIC_PARSE.replace("[1.5, 1.0, 0.0]", "[1.5, 1.0, 90.0]"), "parse-unreadable"),
+        (SYNTHETIC_PARSE.replace("[1.5, 1.0, 0.0]", '[1.5, "1.0", 0.0]'), "parse-unreadable"),
+    ],
+)
+def test_a_parse_that_is_not_the_export_shape_is_refused(text: str, kind: str) -> None:
+    with pytest.raises(DerivationRefusedError) as refusal:
+        derive_tool.geometry_from_parse(text, expected_n=4, where="square-4.json")
+
+    assert refusal.value.kind == kind
+
+
+def test_a_parse_without_its_pinned_revision_is_refused(tmp_path: Path) -> None:
+    with pytest.raises(DerivationRefusedError) as refusal:
+        derive_tool.derive([4], out_root=tmp_path, from_parse=write_parse(tmp_path / "p"))
+
+    assert refusal.value.kind == "parse-unpinned"
+
+
+@pytest.mark.usefixtures("synthetic_corpus")
+def test_a_pass_from_a_parse_fetches_nothing_and_writes_the_revision(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    def no_network(*_arguments: object, **_options: object) -> FakeResponse:
+        raise AssertionError("a pass from a parse must not fetch")
+
+    monkeypatch.setattr(urllib.request, "urlopen", no_network)
+    out = tmp_path / "out"
+
+    status = derive_tool.main(
+        [
+            "--n",
+            "4",
+            "--out",
+            str(out),
+            "--retrieved",
+            "2026-10-05",
+            "--from-parse",
+            str(write_parse(tmp_path / "parse")),
+            "--parse-revision",
+            PARSE_REVISION,
+        ]
+    )
+
+    assert status == 0
+    written = safe_load((out / "n-004.yaml").read_text(encoding="utf-8"))["witness"]
+    assert written["source"]["revision"] == f"{PARSE_REVISION}/square-4.json"
+    assert written["source"]["retrieved"] == "2026-10-05"
+
+
+@pytest.mark.usefixtures("synthetic_corpus")
+def test_a_missing_parse_is_a_refusal(tmp_path: Path) -> None:
+    status = derive_tool.derive(
+        [4],
+        out_root=tmp_path / "out",
+        from_parse=tmp_path / "empty",
+        parse_revision=PARSE_REVISION,
+    )
+
+    assert status == 1
+    assert not (tmp_path / "out").exists()
+
+
+def test_a_refresh_plans_a_hand_audited_count_from_the_catalogue(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    """The 34 witnesses at `n <= 100` have no source-map row; the page names their picture."""
+    monkeypatch.setattr(derive_tool, "availability_entries", dict)
+    monkeypatch.setattr(
+        derive_tool, "parse_catalogue", lambda: {4: catalogue_entry(4, (4,), SYNTHETIC_SIDE)}
+    )
+    monkeypatch.setattr(derive_tool, "FRONTIER", tmp_path / "no-such-frontier")
+    (tmp_path / "n-004.yaml").write_text("witness:\n  side: '2.6'\n", encoding="utf-8")
+
+    plans, _skipped, refusals = derive_tool.derivation_plans(
+        [4], out_root=tmp_path, refresh=True
+    )
+    _plans, _skipped, refused_without = derive_tool.derivation_plans([4], out_root=tmp_path)
+
+    assert refusals == []
+    assert [(plan.n, plan.source_path, plan.url) for plan in plans] == [
+        (4, "square-4.svg", f"{derive_tool.KINGBIRD_BASE_URL}/square-4.svg")
+    ]
+    assert [(n, refusal.kind) for n, refusal in refused_without] == [
+        (4, "no-availability-entry")
+    ]
+
+
+def test_a_checkout_named_kingbird_is_not_a_kingbird_directory(
+    monkeypatch: pytest.MonkeyPatch, tmp_path: Path
+) -> None:
+    # The guard is about what the repository retains, not where a person cloned it.
+    checkout = tmp_path / "kingbird"
+    monkeypatch.setattr(derive_tool, "ROOT", checkout / "packing")
+
+    derive_tool.assert_no_raw_retention(checkout / "packing" / "witnesses" / "known-best")
+    with pytest.raises(DerivationRefusedError):
+        derive_tool.assert_no_raw_retention(checkout / "packing" / "kingbird" / "witnesses")
+
+
+def test_a_parse_is_compared_with_a_witness_read_from_the_same_picture(tmp_path: Path) -> None:
+    plan = synthetic_plan(4, source_n=4, out_root=tmp_path)
+    witness = derive_tool.derive_witness(
+        plan, SYNTHETIC_SVG, catalogue_text=REMOVAL_LICENCE, frontier_root=tmp_path
+    )
+    path = tmp_path / "n-004.yaml"
+    path.write_text(derive_tool.witness_document(witness, schema="x"), encoding="utf-8")
+
+    same = derive_tool.compare_parse(4, SYNTHETIC_PARSE, path)
+    moved = derive_tool.compare_parse(
+        4, SYNTHETIC_PARSE.replace("[1.5, 1.0, 0.0]", "[1.5, 1.0000001, 0.0]"), path
+    )
+
+    assert same.same_side
+    assert same.worst == 0
+    assert moved.worst > 1

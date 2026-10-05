@@ -5,7 +5,7 @@
   "source_ref": "7a96bec36bc6811c3715ef581598f22ff9b7ba3a",
   "source_commit": "7a96bec36bc6811c3715ef581598f22ff9b7ba3a",
   "retrieved_at_utc": "2026-10-05T17:07Z",
-  "git_scope": "A complete clone of the public repository, fetched when main and the lightweight tag v1.1 were this commit; the manifest covers every file of the tree, and the v1.0 files that v1.1 leaves unchanged are pinned to the 2026-10-02 packet's copies.",
+  "git_scope": "A complete clone of the public repository, fetched when main and the lightweight tag v1.1 were this commit; the manifest covers every file of the tree, and the v1.0 files that v1.1 leaves unchanged are pinned to the 2026-10-02 packet's copies. The Zenodo record of tag v1.1, 10.5281/zenodo.23157015, read at 2026-10-05T22:46Z, holds one file, squarepacker/s12-lower-bound-v1.1.zip (478,011 bytes, MD5 096de4f2c604be3d419710610eefb68f as Zenodo lists it, SHA-256 bfaae73d48b69f523396f8cd58ce6fb50cdca4260095392944e872001a2ead7c), whose archive comment is this commit and whose 68 files equal this manifest byte for byte, the paper PDF among them.",
   "archived_dir": "s12-lower-bound",
   "license": "MIT: LICENSE reproduces Evan Daniel's MIT licence for the material derived from evand/square-packing at 7d6f46d9 (the points of every certificate) and releases the rest of the repository under the same terms, Copyright (c) 2026 Ryu Sungjoon",
   "claims": [

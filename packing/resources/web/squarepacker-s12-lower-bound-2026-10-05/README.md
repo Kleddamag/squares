@@ -30,9 +30,9 @@ The earlier v1.0 release, `s(12) ≥ 31360/7901` (`T-078`), is the
 | Source | <https://github.com/squarepacker/s12-lower-bound> |
 | Revision | [`7a96bec36bc6811c3715ef581598f22ff9b7ba3a`](https://github.com/squarepacker/s12-lower-bound/tree/7a96bec36bc6811c3715ef581598f22ff9b7ba3a), `main` and the lightweight tag `v1.1` when fetched, tree `2bfa3159` |
 | Committed | 2026-10-05T08:31:05Z (`17:31:05+09:00` by the author’s clock). Its parent [`98ffe373`](https://github.com/squarepacker/s12-lower-bound/commit/98ffe37334c63df8ab209f1f43f4c5642d5d2ee2), “Add v1.1: s(12) >= 7943/2000”, at 08:26:42Z, adds every v1.1 file; the pin adds only `.zenodo.json` |
-| Release | GitHub release `v1.1`, “s(12) >= 7943/2000 (v1.1)”, published 2026-10-05T08:37:31Z with no uploaded assets; its API record is retained as [`github-release-v1.1.json`](github-release-v1.1.json) |
-| Archive | Zenodo [10.5281/zenodo.23157015](https://doi.org/10.5281/zenodo.23157015), as the issue gives it; the concept DOI in the source’s README is `10.5281/zenodo.23106581`. Zenodo refused the session’s proxy (HTTP 403) on 2026-10-05, so neither the record nor its archive was read |
-| Retrieved | 2026-10-05T17:07Z, a complete clone |
+| Release | GitHub release `v1.1`, “s(12) >= 7943/2000 (v1.1)”, published 2026-10-05T08:37:31Z with no uploaded assets; its API record is retained as [`github-release-v1.1.json`](github-release-v1.1.json). The Zenodo record below was created three seconds later, and its archive is the tag’s GitHub archive, named for the commit and carrying it as its comment, so the release and the record hold the same 68 files |
+| Archive | Zenodo [10.5281/zenodo.23157015](https://doi.org/10.5281/zenodo.23157015), version `v1.1`, “squarepacker/s12-lower-bound: s(12) >= 7943/2000 (v1.1)”, published 2026-10-05 (record created 08:37:34Z), creator “Ryu, Sungjoon”, MIT; concept DOI `10.5281/zenodo.23106581`, the v1.0 record’s; related identifier `https://github.com/squarepacker/s12-lower-bound/tree/v1.1`. Its one file, `squarepacker/s12-lower-bound-v1.1.zip`, 478,011 bytes, has the MD5 Zenodo lists, `096de4f2c604be3d419710610eefb68f`, and SHA-256 `bfaae73d48b69f523396f8cd58ce6fb50cdca4260095392944e872001a2ead7c`; its archive comment is the pinned commit, and its 68 files equal this packet’s manifest byte for byte, the paper PDF (`4da8741d…`) among them ([per-file digests](receipts/zenodo-23157015-archive.sha256)) |
+| Retrieved | 2026-10-05T17:07Z, a complete clone; the Zenodo record and its archive at 22:46Z, when the proxy first answered for `zenodo.org` |
 | Licence | MIT. `LICENSE` reproduces Daniel’s MIT licence for the material derived from `evand/square-packing` at `7d6f46d9`, which v1.1 extends to `s12_lower_3.9715.txt` and `controls/3.9715/`, and releases the other v1.1 files (`paper/`, `logs/`, `search/`, `tools/`, `.zenodo.json`) under the same terms, copyright Ryu Sungjoon |
 | Request | [jlevy/squares#363](https://github.com/jlevy/squares/issues/363) |
 
@@ -72,6 +72,12 @@ and the record [`acquisition/sources.json`](acquisition/sources.json), both writ
 | `tools/indep_scan.cpp`, `tools/indep_dump.cpp`, `tools/exact_pose.py`, `tools/search/` | The checker restricted to a bin range, a lister of near-tight cells, an exact evaluator of actual unit squares, and the search scripts, which the source says hold the paths of the machine they ran on |
 | `logs/control_scaled_further_31360_7900_N96000.log`, `logs/exact_pose_*.log` | Added to the v1.0 logs: the `31360/7900` control at `N = 96000` and the two exact-pose checks behind the source’s clarification of #309 |
 | `README.md`, `LICENSE`, `SHA256SUMS`, `.zenodo.json` | The claim and its argument, the licence, the author’s digests of every file but these and `paper/`, the archive metadata |
+
+The Zenodo API responses for the record and its files are retained as
+[`zenodo-23157015.json`](zenodo-23157015.json) and
+[`zenodo-23157015-files.json`](zenodo-23157015-files.json); the archive itself is not,
+since its files are the pinned tree’s, and the acquisition record states the
+comparison.
 
 From `packing/`,
 `uv run --frozen --all-extras --group dev python -m devtools.acquire_source squarepacker-s12-lower-bound-2026-10-05 --check`

@@ -3,9 +3,9 @@ type: is
 id: is-01m45189mq6av7xe334we2vtyr
 title: "Import wand125: valid7 checker fix of D-1 to D-3 at da469ec, an evidence update to T-064 (no issue)"
 kind: task
-status: in_progress
+status: closed
 priority: 2
-version: 3
+version: 4
 delegate: claude-code@vm
 labels:
   - result-import
@@ -15,8 +15,12 @@ parent_id: is-01m44qz0rxvkakmyqaj7qdgagv
 hold: null
 hold_until: null
 created_at: 2026-10-05T03:20:55.191Z
-updated_at: 2026-10-05T04:43:43.852Z
+updated_at: 2026-10-05T07:19:54.069Z
 started_at: 2026-10-05T04:23:01.955Z
+closed_at: 2026-10-05T07:19:54.068Z
+close_reason: "Done in jlevy/squares#353 / #359 (merged 2026-10-05)"
+resolution: null
+duplicate_of: null
 ---
 Found by the intake sweep of 2026-10-05 (think-nkzt). wand125/valid7-independent-check moved from 38dd31b369991b0d96c917a4af0c7139b44a038d, which the wand125-valid7-independent-check-2026-10-02 packet pins, to da469ecff5da0c71882e894b65d680ce57a0c87e (2026-10-03T23:14:42Z, Hiroaki Hosono): "Fix the three points raised in evand/square-packing#1 (no change to any certified result)". It changes src/check_record.py, src/cover.py, src/rf.py and src/tier_b2.py (60 lines added, 20 removed). Nothing on jlevy/squares asked for it. It answers evand/square-packing#1, closed 2026-10-03, whose points are this record's review findings.
 

@@ -3,9 +3,9 @@ type: is
 id: is-01m454q7ty21aq6qkdt692c7jj
 title: "Stage 4 for T-088 and T-089: exact rational certificates for n = 69, 83, 87, receipts, controls and a separate review"
 kind: task
-status: in_progress
+status: closed
 priority: 1
-version: 5
+version: 6
 delegate: claude-code@vm
 labels:
   - result-import
@@ -14,8 +14,12 @@ parent_id: is-01m44qz0rxvkakmyqaj7qdgagv
 hold: null
 hold_until: null
 created_at: 2026-10-05T04:21:30.590Z
-updated_at: 2026-10-05T06:13:25.913Z
+updated_at: 2026-10-05T07:19:53.582Z
 started_at: 2026-10-05T04:23:01.170Z
+closed_at: 2026-10-05T07:19:53.582Z
+close_reason: "Done in jlevy/squares#353 / #359 (merged 2026-10-05)"
+resolution: null
+duplicate_of: null
 ---
 
 ## Notes

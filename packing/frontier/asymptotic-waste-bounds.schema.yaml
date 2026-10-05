@@ -4,7 +4,8 @@ title: AsymptoticWasteBounds
 description: >
   Bounds on W(x), the wasted area when a square of side x is packed with unit
   squares. Upper bounds are a chain of successive improvements; the lower-bound
-  side has exactly one result.
+  side holds Roth and Vaughan's bound, which vanishes as the side approaches an
+  integer, and Ryu's 2026 preprint bound for exactly that limit.
 type: object
 additionalProperties: false
 required: [quantity, definition, open_problem, upper_bounds, lower_bounds, relevance_to_small_n]

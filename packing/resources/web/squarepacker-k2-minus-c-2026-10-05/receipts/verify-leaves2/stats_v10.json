@@ -1,0 +1,116 @@
+{
+ "boxes_text": "$30{,}365$ accepted boxes without a side and $48{,}308$ with a side",
+ "verify_text": "all $78{,}673$ boxes confirmed, with $59{,}238$ further bisections and largest rigorous bound $9$",
+ "complete": true,
+ "fails": 0,
+ "maxU": 9,
+ "n_leaves": 78673,
+ "pieces": 59238,
+ "rig_pieces": 66967,
+ "rows": [
+  {
+   "file": "bnb_n1_T9_0of1_final_leaves.jsonl",
+   "leaves": 1,
+   "verified": 1,
+   "verify_finished": true,
+   "coverage_ok": true,
+   "ok": true
+  },
+  {
+   "file": "bnb_n2_T9_0of1_final_leaves.jsonl",
+   "leaves": 48,
+   "verified": 48,
+   "verify_finished": true,
+   "coverage_ok": true,
+   "ok": true
+  },
+  {
+   "file": "bnb_n3_T9_0of1_final_leaves.jsonl",
+   "leaves": 1894,
+   "verified": 1894,
+   "verify_finished": true,
+   "coverage_ok": true,
+   "ok": true
+  },
+  {
+   "file": "bnb_n4_T9_0of2_final_leaves.jsonl",
+   "leaves": 4597,
+   "verified": 4597,
+   "verify_finished": true,
+   "coverage_ok": true,
+   "ok": true
+  },
+  {
+   "file": "bnb_n4_T9_1of2_final_leaves.jsonl",
+   "leaves": 5694,
+   "verified": 5694,
+   "verify_finished": true,
+   "coverage_ok": true,
+   "ok": true
+  },
+  {
+   "file": "bnb_n5_T9_0of2_final_leaves.jsonl",
+   "leaves": 7536,
+   "verified": 7536,
+   "verify_finished": true,
+   "coverage_ok": true,
+   "ok": true
+  },
+  {
+   "file": "bnb_n5_T9_1of2_final_leaves.jsonl",
+   "leaves": 10595,
+   "verified": 10595,
+   "verify_finished": true,
+   "coverage_ok": true,
+   "ok": true
+  },
+  {
+   "file": "bnbw_n1_T9_0of1_final_leaves.jsonl",
+   "leaves": 4,
+   "verified": 4,
+   "verify_finished": true,
+   "coverage_ok": true,
+   "ok": true
+  },
+  {
+   "file": "bnbw_n2_T9_0of1_final_leaves.jsonl",
+   "leaves": 684,
+   "verified": 684,
+   "verify_finished": true,
+   "coverage_ok": true,
+   "ok": true
+  },
+  {
+   "file": "bnbw_n3_T9_0of1_final_leaves.jsonl",
+   "leaves": 6382,
+   "verified": 6382,
+   "verify_finished": true,
+   "coverage_ok": true,
+   "ok": true
+  },
+  {
+   "file": "bnbw_n4_T9_0of2_final_leaves.jsonl",
+   "leaves": 9504,
+   "verified": 9504,
+   "verify_finished": true,
+   "coverage_ok": true,
+   "ok": true
+  },
+  {
+   "file": "bnbw_n4_T9_1of2_final_leaves.jsonl",
+   "leaves": 5720,
+   "verified": 5720,
+   "verify_finished": true,
+   "coverage_ok": true,
+   "ok": true
+  },
+  {
+   "file": "bnbw_n5_T9_0of1_final_leaves.jsonl",
+   "leaves": 26014,
+   "verified": 26014,
+   "verify_finished": true,
+   "coverage_ok": true,
+   "ok": true
+  }
+ ]
+}

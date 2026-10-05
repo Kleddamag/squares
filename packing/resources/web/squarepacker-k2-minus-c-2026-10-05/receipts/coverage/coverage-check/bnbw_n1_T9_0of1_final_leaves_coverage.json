@@ -1,0 +1,16 @@
+{
+ "file": "bnbw_n1_T9_0of1_final_leaves.jsonl",
+ "n": 1,
+ "wall": true,
+ "task": 0,
+ "ntask": 1,
+ "leaves": 4,
+ "nodes": 4,
+ "unused": 0,
+ "overused": 0,
+ "duplicates": 0,
+ "volume_equal": true,
+ "pruned_fraction": 0.0,
+ "edge_boxes": 1,
+ "ok": true
+}

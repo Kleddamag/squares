@@ -1,0 +1,6 @@
+# command: nice -n 10 /tmp/claude-0/-home-user-squares/1fb2d4ab-96d0-5b24-9e36-157598bdbf06/scratchpad/k2c/replay-venv/bin/python verify_leaves2.py bnb_n2_T9_0of1_final_leaves.jsonl 9 0 1
+# cwd: the sharp-leaf control (devtools.write_k2_minus_c_controls) beside the pinned code/verify_leaves2.py and its imports
+# python3: CPython 3.12.3 (/usr/bin/python3.12) in a scratch venv: python-flint 0.9.0, mpmath 1.3.0, numpy 2.5.3
+# host: 4 cores; load 17.49 14.37 9.44; started 2026-10-05T17:32:00Z
+RESULT bnb_n2_T9_0of1_final_leaves.jsonl checked 1 ok 1 fail 0 maxU 9 rig 1
+# finished 2026-10-05T17:32:01Z; exit 0; wall 1.000 s; CPU 0.3 s (user 0.273 + sys 0.015); load 17.69 14.46 9.49

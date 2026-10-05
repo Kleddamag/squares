@@ -1,0 +1,39 @@
+# command: nice -n 10 /tmp/claude-0/-home-user-squares/1fb2d4ab-96d0-5b24-9e36-157598bdbf06/scratchpad/k2c/replay-venv/bin/python coverage_lowmem.py ../.. ../../lowmem_n2.jsonl --slabs 32 --only 0,2
+# cwd: code/ of squarepacker/k2-minus-c 25f645e8 with the n = 2 no-side box list (as retained), from code/coverage_independent/recursive_cover
+# python3: CPython 3.12.3 (/usr/bin/python3.12) in a scratch venv: python-flint 0.9.0, mpmath 1.3.0, numpy 2.5.3
+# host: 4 cores; load 17.19 15.61 11.02; started 2026-10-05T17:35:47Z
+start: avail inf MB, floor 1024.0 MB, slabs 32
+[    0.0s] wall=False n=2 slab 1/32: leaves 1/48 gaps=0 nodes=1 contained=1 unordered=0 min_avail=infMB peak_private=-1.0MB
+[    0.0s] wall=False n=2 slab 2/32: leaves 1/48 gaps=0 nodes=1 contained=1 unordered=0 min_avail=infMB peak_private=-1.0MB
+[    0.0s] wall=False n=2 slab 3/32: leaves 1/48 gaps=0 nodes=1 contained=1 unordered=0 min_avail=infMB peak_private=-1.0MB
+[    0.0s] wall=False n=2 slab 4/32: leaves 1/48 gaps=0 nodes=1 contained=1 unordered=0 min_avail=infMB peak_private=-1.0MB
+[    0.0s] wall=False n=2 slab 5/32: leaves 4/48 gaps=0 nodes=9 contained=5 unordered=0 min_avail=infMB peak_private=-1.0MB
+[    0.0s] wall=False n=2 slab 6/32: leaves 4/48 gaps=0 nodes=9 contained=5 unordered=0 min_avail=infMB peak_private=-1.0MB
+[    0.0s] wall=False n=2 slab 7/32: leaves 4/48 gaps=0 nodes=9 contained=5 unordered=0 min_avail=infMB peak_private=-1.0MB
+[    0.0s] wall=False n=2 slab 8/32: leaves 4/48 gaps=0 nodes=9 contained=5 unordered=0 min_avail=infMB peak_private=-1.0MB
+[    0.0s] wall=False n=2 slab 9/32: leaves 6/48 gaps=0 nodes=11 contained=6 unordered=0 min_avail=infMB peak_private=-1.0MB
+[    0.0s] wall=False n=2 slab 10/32: leaves 6/48 gaps=0 nodes=11 contained=6 unordered=0 min_avail=infMB peak_private=-1.0MB
+[    0.0s] wall=False n=2 slab 11/32: leaves 6/48 gaps=0 nodes=11 contained=6 unordered=0 min_avail=infMB peak_private=-1.0MB
+[    0.0s] wall=False n=2 slab 12/32: leaves 6/48 gaps=0 nodes=11 contained=6 unordered=0 min_avail=infMB peak_private=-1.0MB
+[    0.0s] wall=False n=2 slab 13/32: leaves 6/48 gaps=0 nodes=11 contained=6 unordered=0 min_avail=infMB peak_private=-1.0MB
+[    0.0s] wall=False n=2 slab 14/32: leaves 6/48 gaps=0 nodes=11 contained=6 unordered=0 min_avail=infMB peak_private=-1.0MB
+[    0.0s] wall=False n=2 slab 15/32: leaves 6/48 gaps=0 nodes=11 contained=6 unordered=0 min_avail=infMB peak_private=-1.0MB
+[    0.0s] wall=False n=2 slab 16/32: leaves 6/48 gaps=0 nodes=11 contained=6 unordered=0 min_avail=infMB peak_private=-1.0MB
+[    0.0s] wall=False n=2 slab 17/32: leaves 6/48 gaps=0 nodes=11 contained=6 unordered=0 min_avail=infMB peak_private=-1.0MB
+[    0.0s] wall=False n=2 slab 18/32: leaves 6/48 gaps=0 nodes=11 contained=6 unordered=0 min_avail=infMB peak_private=-1.0MB
+[    0.0s] wall=False n=2 slab 19/32: leaves 6/48 gaps=0 nodes=11 contained=6 unordered=0 min_avail=infMB peak_private=-1.0MB
+[    0.0s] wall=False n=2 slab 20/32: leaves 6/48 gaps=0 nodes=11 contained=6 unordered=0 min_avail=infMB peak_private=-1.0MB
+[    0.0s] wall=False n=2 slab 21/32: leaves 6/48 gaps=0 nodes=11 contained=6 unordered=0 min_avail=infMB peak_private=-1.0MB
+[    0.0s] wall=False n=2 slab 22/32: leaves 6/48 gaps=0 nodes=11 contained=6 unordered=0 min_avail=infMB peak_private=-1.0MB
+[    0.0s] wall=False n=2 slab 23/32: leaves 6/48 gaps=0 nodes=11 contained=6 unordered=0 min_avail=infMB peak_private=-1.0MB
+[    0.0s] wall=False n=2 slab 24/32: leaves 6/48 gaps=0 nodes=11 contained=6 unordered=0 min_avail=infMB peak_private=-1.0MB
+[    0.0s] wall=False n=2 slab 25/32: leaves 4/48 gaps=0 nodes=9 contained=5 unordered=0 min_avail=infMB peak_private=-1.0MB
+[    0.0s] wall=False n=2 slab 26/32: leaves 4/48 gaps=0 nodes=9 contained=5 unordered=0 min_avail=infMB peak_private=-1.0MB
+[    0.0s] wall=False n=2 slab 27/32: leaves 4/48 gaps=0 nodes=9 contained=5 unordered=0 min_avail=infMB peak_private=-1.0MB
+[    0.0s] wall=False n=2 slab 28/32: leaves 4/48 gaps=0 nodes=9 contained=5 unordered=0 min_avail=infMB peak_private=-1.0MB
+[    0.0s] wall=False n=2 slab 29/32: leaves 1/48 gaps=0 nodes=1 contained=1 unordered=0 min_avail=infMB peak_private=-1.0MB
+[    0.0s] wall=False n=2 slab 30/32: leaves 1/48 gaps=0 nodes=1 contained=1 unordered=0 min_avail=infMB peak_private=-1.0MB
+[    0.0s] wall=False n=2 slab 31/32: leaves 1/48 gaps=0 nodes=1 contained=1 unordered=0 min_avail=infMB peak_private=-1.0MB
+[    0.0s] wall=False n=2 slab 32/32: leaves 1/48 gaps=0 nodes=1 contained=1 unordered=0 min_avail=infMB peak_private=-1.0MB
+FINISHED
+# finished 2026-10-05T17:35:47Z; exit 0; wall 0.169 s; CPU 0.1 s (user 0.043 + sys 0.009); load 17.19 15.61 11.02

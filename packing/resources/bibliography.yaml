@@ -408,6 +408,28 @@ sources:
       assistant from Anthropic. MIT, derived material under Daniel's licence. Retained
       whole in web/squarepacker-s12-lower-bound-2026-10-02/; dated by that revision,
       2026-10-02 UTC.
+  - key: '[squarepacker k2-minus-c 2026]'
+    authors: [Ryu]
+    year: 2026
+    venue: GitHub
+    dated: '2026-10-05'
+    credit: squarepacker after Roth, Vaughan
+    lineage: independent
+    note: >-
+      squarepacker/k2-minus-c at 25f645e8fcadb3c2768f4da42d80e977fb1a508d
+      (2026-10-05T15:15:50Z), the preprint "Packing k^2 - c unit squares: s(k^2 - c) = k
+      for all large k", version 1.1, by Sungjoon Ryu (GitHub squarepacker), archived as
+      Zenodo 10.5281/zenodo.23165736 (v1.1; v1.0 is 10.5281/zenodo.23164302), and
+      reported on jlevy/squares#368. It claims k^2 - M(k) >= 0.033 log k for every
+      integer k >= 2, where M(k) is the largest closed packing of unit squares in
+      [0,k]^2, hence s(k^2 - c) = k for every fixed c and all large k; the constant uses
+      the computer-assisted Lemma 4.10, without which the proof gives 0.027. Its method
+      sharpens the fundamental lemma of Roth and Vaughan (1978). The README and the
+      preprint name Ryu as sole author and say the work was developed with extensive
+      assistance from Claude (Anthropic), including the proofs, the text, the programs
+      and the computation for Lemma 4.10, and that it is not peer reviewed. Code and data
+      MIT, the paper CC BY 4.0. Retained whole in
+      web/squarepacker-k2-minus-c-2026-10-05/; dated by that revision, 2026-10-05 UTC.
   - key: '[Kleddamag n11 2026]'
     authors: [Kleddamag]
     year: 2026

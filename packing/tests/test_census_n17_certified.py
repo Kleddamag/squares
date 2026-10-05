@@ -618,5 +618,7 @@ def test_the_committed_ledger_counts_its_four_admitted_entries_without_the_dumps
     retained = json.loads(EXP250_CENSUS.read_text(encoding="utf-8"))
     if admitted == {"W7", "A", "SW9", "N1"}:
         assert record["certified"] == retained["certified"]
-    assert record["data"]["files"] == 92
-    assert record["data"]["bytes"] == 112_285_110
+    # Session 182 staged s182-k1's seed and node (exp-251): 92 files and 112,285,110
+    # bytes before it.
+    assert record["data"]["files"] == 94
+    assert record["data"]["bytes"] == 121_998_862

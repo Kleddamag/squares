@@ -862,6 +862,16 @@ consequence in each.
   recounts). Target 8 stalled at a producer fixed point at 22:02:37, the last run.
   Of the ten run, targets 4 and 6 closed, six stopped at the round cap and two at fixed
   points; targets 11 to 16 were not run.
+- **The session checkout’s certificate copies are hard-linked to the run worktree’s**,
+  at the coordinator’s direction, after the coordinator cleared finished pytest temp
+  runs. Each of the 56 objects present on both sides (the seeds and nodes of the 28
+  certificates admitted tonight) had its SHA-256 checked against the hosted-data
+  manifest on both sides before linking.
+  None mismatched, and 752,602,970 bytes were freed.
+  Every certificate object stays in place, and the 92 objects of #347’s manifest are not
+  present on this host.
+  Stall nodes are kept; the coordinator decides any deletion if free space falls below
+  3.5 GB.
 
 <!-- This document follows common-doc-guidelines.md.
 See github.com/jlevy/practical-prose and review guidelines before editing.

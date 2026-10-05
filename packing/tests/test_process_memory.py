@@ -11,6 +11,12 @@ import pytest
 
 from devtools.process_memory import current_memory_bytes, peak_memory_bytes
 
+CURRENT_RSS_HOSTS = {"linux", "win32"}
+requires_current_rss = pytest.mark.skipif(
+    sys.platform not in CURRENT_RSS_HOSTS,
+    reason="current RSS is measured on Linux and Windows only; other hosts refuse by design",
+)
+
 
 def test_ungated_platform_refuses_current_memory(monkeypatch: pytest.MonkeyPatch) -> None:
     monkeypatch.setattr(sys, "platform", "darwin")
@@ -18,11 +24,13 @@ def test_ungated_platform_refuses_current_memory(monkeypatch: pytest.MonkeyPatch
         current_memory_bytes()
 
 
+@requires_current_rss
 def test_live_memory_sample_is_positive() -> None:
     assert current_memory_bytes() > 0
     assert peak_memory_bytes() > 0
 
 
+@requires_current_rss
 def test_released_allocation_does_not_leave_current_memory_above_guard() -> None:
     result = subprocess.run(
         [

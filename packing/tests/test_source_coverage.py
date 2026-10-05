@@ -7,7 +7,10 @@ import json
 from pathlib import Path
 from typing import Any
 
+from jsonschema_rs import Draft202012Validator
+
 from devtools import check_source_coverage as coverage_check
+from sqpack.yamlio import safe_load
 
 
 def _coverage() -> dict[str, Any]:
@@ -89,6 +92,42 @@ def test_a_superseded_report_must_lose_to_the_selected_source() -> None:
     assert any("not the selected source" in error for error in _errors(coverage))
 
 
+def _catalogue_overtakes_the_release() -> dict[str, Any]:
+    """The release's n = 6 report, with no override selected and a catalogue below it."""
+    coverage = _coverage()
+    coverage["sources"].append(
+        {
+            "id": "catalogue",
+            "scope": {"n_min": 1, "n_max": 10},
+            "evidence": [],
+            "disposition": "baseline-current",
+        }
+    )
+    del coverage["selected_overrides"][0]
+    coverage["superseded_reports"].append(
+        {"n": 6, "source_id": "release", "value": "2.9", "superseded_by": "catalogue"}
+    )
+    return coverage
+
+
+def test_a_catalogue_capture_that_overtakes_a_release_supersedes_it() -> None:
+    # n = 69 on 2026-10-05: no override is selected any more, so the baseline is the
+    # report, and the release's claim is held as superseded by it.
+    baseline = {**KINGBIRD, 6: "2.88"}
+    coverage = _catalogue_overtakes_the_release()
+    assert coverage_check.selection_errors(coverage, baseline, CLAIMS) == []
+    behind = coverage_check.selection_errors(coverage, {**KINGBIRD, 6: "2.9"}, CLAIMS)
+    assert behind == [
+        "superseded report n=6 from release is not beaten by the catalogue baseline 2.9"
+    ]
+    # Only the baseline source may stand in for a selected override.
+    coverage["superseded_reports"][-1]["superseded_by"] = "repository"
+    assert any(
+        "not the selected source" in error
+        for error in coverage_check.selection_errors(coverage, baseline, CLAIMS)
+    )
+
+
 def test_every_reparsed_claim_is_accounted_for() -> None:
     coverage = _coverage()
     del coverage["superseded_reports"][1]
@@ -124,6 +163,8 @@ PENDING = {
     "catalogue_value": "2.85",
     "capture": coverage_check.INTAKE_CAPTURE_DATE,
     "reason": "a result the register holds first",
+    "bead": "think-ab12",
+    "recorded": "2026-09-30",
 }
 CURRENT = {5: "2.9", 6: "2.85", 7: "3"}
 EARLIER = {5: "2.9", 6: "3", 7: "3"}
@@ -179,6 +220,51 @@ def test_a_pending_intake_needs_a_capture_that_changed_and_a_side_that_beats() -
     )
     assert beaten[0] == "pending catalogue intake n=6: 2.95 does not beat the record"
     assert "the one retained earlier capture" in _pending_errors(capture="2026-01-01")[0]
+
+
+def test_a_pending_intake_names_the_bead_that_owns_it_and_the_day_it_was_deferred() -> None:
+    """The three of 2026-09-30 named no owner, and nothing listed them for five days."""
+    orphan = {key: value for key, value in PENDING.items() if key not in {"bead", "recorded"}}
+    errors = coverage_check.pending_intake_errors([orphan], CURRENT, EARLIER, CASES)
+    assert errors == [
+        (
+            "pending catalogue intake n=6 names no bead (none); a deferral names the open "
+            "bead that owns the intake"
+        ),
+        "pending catalogue intake n=6 records no date (none) it was deferred on",
+    ]
+    assert "names no bead (bd-12)" in _pending_errors(bead="bd-12")[0]
+    assert "records no date (last week)" in _pending_errors(recorded="last week")[0]
+
+
+def test_the_schema_requires_an_owner_on_every_deferral() -> None:
+    """The same rule in the schema, so `validate_schemas` refuses it on its own."""
+    schema = safe_load(
+        coverage_check.COVERAGE.with_name("source-coverage.schema.yaml").read_text()
+    )
+    validator = Draft202012Validator(schema)
+    document = safe_load(coverage_check.COVERAGE.read_text(encoding="utf-8"))
+    document.pop("softschema")
+    document["pending_catalogue_intake"] = [dict(PENDING)]
+    assert validator.is_valid(document)
+    for key in ("bead", "recorded"):
+        document["pending_catalogue_intake"] = [
+            {name: value for name, value in PENDING.items() if name != key}
+        ]
+        assert not validator.is_valid(document), key
+    conflict = {
+        "n": 400,
+        "source_id": "kingbird-current",
+        "claim": "upper-bound",
+        "value": "20.5",
+        "assurance": "reported",
+        "disposition": "deferred-conflict",
+    }
+    document["pending_catalogue_intake"] = []
+    document["beyond_horizon_claims"] = [conflict]
+    assert not validator.is_valid(document)
+    document["beyond_horizon_claims"] = [{**conflict, "bead": "think-ab12"}]
+    assert validator.is_valid(document)
 
 
 def test_the_recorded_coverage_reconciles() -> None:

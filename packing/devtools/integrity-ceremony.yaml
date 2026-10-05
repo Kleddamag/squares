@@ -104,6 +104,11 @@ allowlist:
 # chelokot Lean replay, and the published-site stamp check) brought in six sites in four
 # files, written on main where this register does not yet run. Recorded as inherited
 # under think-vre9.
+# The merge of origin/main at 62f81e3a6 on 2026-10-05 (PR 353, Guzhou0806's R070 and
+# R071) brought in audit_guzhou_r071.py, whose five sites hold the source's release
+# certificate and the R068 checker bytes its completion summary names against the
+# source's recorded digests, as audit_guzhou_r068.py does. Recorded as inherited under
+# think-vre9, which decides whether it joins the allowlist as a download.
 baseline:
   packages/workbench/tools/workbench_tools/check_candidate.py: 1
   packing/benchmarks/bench_n11_fast_cover.py: 3
@@ -141,6 +146,7 @@ baseline:
   packing/cases/unitsquare_precision/refusal/verify.py: 3
   packing/devtools/acquire_source.py: 3
   packing/devtools/admit_threshold_compression.py: 1
+  packing/devtools/audit_guzhou_r071.py: 5
   packing/devtools/audit_kleddamag_n11_native.py: 1
   packing/devtools/audit_n17_endpoint_features.py: 1
   packing/devtools/audit_n17_endpoint_receipt.py: 1

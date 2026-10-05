@@ -38,6 +38,18 @@ $defs:
   bead:
     type: string
     pattern: "^think-[a-z0-9]{4}$"
+  blocked_on:
+    type: array
+    minItems: 1
+    uniqueItems: true
+    description: >-
+      What a queued result or ask waits on: a pull request or issue as owner/name#N, or
+      a bead. `devtools.intake_sweep` reports the item once every one of them has merged,
+      closed or been closed, since nothing else resumes it: wand125's 4 October
+      certificates waited on jlevy/squares#305, which merged, and the import stayed queued.
+    items:
+      type: string
+      pattern: "^(think-[a-z0-9]{4}|[\\w.-]+/[\\w.-]+#[0-9]+)$"
   issue:
     type: object
     additionalProperties: false
@@ -97,6 +109,12 @@ $defs:
             what: {type: string, minLength: 1}
             state: {enum: [queued, done, declined]}
             note: {type: string, minLength: 1}
+            bead:
+              $ref: '#/$defs/bead'
+              description: >-
+                The open bead that does what a queued ask asks. The answer bead owns the
+                reply, not the work, so a queued ask without one is reported as unowned.
+            blocked_on: {$ref: '#/$defs/blocked_on'}
       beads:
         type: array
         uniqueItems: true
@@ -157,6 +175,13 @@ $defs:
       queued:
         type: boolean
         description: With `not_registered`, whether an import of it is queued.
+      bead:
+        $ref: '#/$defs/bead'
+        description: >-
+          The open bead that imports a queued result. The issue's `beads` may name several
+          and its answer bead owns only the reply, so a queued result without one is
+          reported as unowned, and `check_bead_tree` fails one whose bead has closed.
+      blocked_on: {$ref: '#/$defs/blocked_on'}
     oneOf:
       - anyOf:
           - required: [register]

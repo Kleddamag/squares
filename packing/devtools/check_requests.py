@@ -40,6 +40,7 @@ merges and a reply links only to `main`. ``--github`` reads the live issues thro
 from __future__ import annotations
 
 import argparse
+import itertools
 import json
 import re
 import subprocess
@@ -721,8 +722,24 @@ def _issue_section(issue: Mapped, state: IssueState, on_main: set[str] | None) -
     return lines
 
 
-def backlog(record: Mapped, register: Register) -> list[str]:
-    """Every register entry below V3 or C3: its next rung, activity, beads and issues."""
+@dataclass(frozen=True, slots=True)
+class BacklogRow:
+    """One register entry below `V3` or `C3`, as the backlog lists it."""
+
+    id: str
+    rungs: str
+    status: str
+    activity: str
+    beads: tuple[str, ...]
+    issues: tuple[int, ...]
+    next_rung: str
+
+
+def backlog_rows(record: Mapped, register: Register) -> list[BacklogRow]:
+    """Every register entry below V3 or C3: its next rung, activity, beads and issues.
+
+    The beads are those its `next_rung` and its activity's link name; `devtools.
+    intake_sweep` reads the same rows, so the backlog has one definition."""
     serves: dict[str, list[int]] = {}
     for issue in record["issues"]:
         for result in issue.get("results", ()):
@@ -730,35 +747,51 @@ def backlog(record: Mapped, register: Register) -> list[str]:
                 serves.setdefault(ident, [])
                 if issue["number"] not in serves[ident]:
                     serves[ident].append(issue["number"])
-    lines = [
-        "# Validation Backlog",
-        "",
-        "| id | rungs | status | activity | beads | issues |",
-        "| --- | --- | --- | --- | --- | --- |",
-    ]
-    below = [
-        record_
-        for record_ in register.results.values()
-        if _rank(record_["verification"]) < CONFIRMED_RANK
-        or _rank(record_["confirmation"]) < CONFIRMED_RANK
-    ]
-    for entry in below:
+    rows: list[BacklogRow] = []
+    for entry in register.results.values():
+        if (
+            _rank(entry["verification"]) >= CONFIRMED_RANK
+            and _rank(entry["confirmation"]) >= CONFIRMED_RANK
+        ):
+            continue
         ident = str(entry["id"])
         activity = entry.get("activity") or {}
         doing = result_status.activity_label(activity)
         if doing:
             doing = f"{doing} since {activity.get('since')}"
         text = f"{entry.get('next_rung', '')} {activity.get('link', '')}"
-        beads = sorted(set(BEAD.findall(text)), key=text.index)
-        issues = ", ".join(f"#{number}" for number in serves.get(ident, ()))
+        rows.append(
+            BacklogRow(
+                id=ident,
+                rungs=f"{entry['verification']}/{entry['confirmation']}",
+                status=result_status.status(entry, register.evidence),
+                activity=doing,
+                beads=tuple(sorted(set(BEAD.findall(text)), key=text.index)),
+                issues=tuple(serves.get(ident, ())),
+                next_rung=str(entry.get("next_rung", "")).strip(),
+            )
+        )
+    return rows
+
+
+def backlog(record: Mapped, register: Register) -> list[str]:
+    """Every register entry below V3 or C3: its next rung, activity, beads and issues."""
+    lines = [
+        "# Validation Backlog",
+        "",
+        "| id | rungs | status | activity | beads | issues |",
+        "| --- | --- | --- | --- | --- | --- |",
+    ]
+    rows = backlog_rows(record, register)
+    for row in rows:
+        issues = ", ".join(f"#{number}" for number in row.issues)
         lines.append(
-            f"| {ident} | {entry['verification']}/{entry['confirmation']} "
-            f"| {result_status.status(entry, register.evidence)} | {doing} "
-            f"| {', '.join(beads)} | {issues} |"
+            f"| {row.id} | {row.rungs} | {row.status} | {row.activity} "
+            f"| {', '.join(row.beads)} | {issues} |"
         )
     lines.append("")
-    for entry in below:
-        lines += [f"**{entry['id']}.** {_cell(str(entry.get('next_rung', '')).strip())}", ""]
+    for row in rows:
+        lines += [f"**{row.id}.** {_cell(row.next_rung)}", ""]
     return lines
 
 
@@ -904,18 +937,34 @@ def _still_queued(issue: Mapped, state: IssueState, register: Register) -> list[
 Fetch = Callable[[str], Any]
 
 
-def gh_fetch(path: str) -> Any:
-    """One read-only GitHub API path, every page, through the `gh` CLI."""
-    shown = subprocess.run(
-        ("gh", "api", "--paginate", "--slurp", path),
-        capture_output=True,
-        text=True,
-        check=True,
-    )
-    pages = json.loads(shown.stdout)
-    if pages and all(isinstance(page, list) for page in pages):
-        return [item for page in pages for item in page]
-    return pages[0] if len(pages) == 1 else pages
+_PER_PAGE = re.compile(r"[?&]per_page=(\d+)")
+
+
+def _gh_api(path: str) -> Any:
+    shown = subprocess.run(("gh", "api", path), capture_output=True, text=True, check=True)
+    return json.loads(shown.stdout)
+
+
+def gh_fetch(path: str, api: Fetch = _gh_api) -> Any:
+    """One read-only GitHub API path, every page, through the `gh` CLI.
+
+    A listing is read page by page, by number, until a page comes back short. `gh api
+    --paginate` follows the `Link` header instead, whose next page GitHub addresses as
+    `repositories/{id}/...`, and a proxy that refuses numeric-id paths, as the agent
+    session's did on 2026-10-05, then fails the whole read on the second request.
+    """
+    size = _PER_PAGE.search(path)
+    if size is None:
+        return api(path)
+    items: list[Any] = []
+    for page in itertools.count(1):
+        batch = api(f"{path}&page={page}")
+        if not isinstance(batch, list):
+            return batch
+        items.extend(batch)
+        if len(batch) < int(size.group(1)):
+            break
+    return items
 
 
 def _is_reply(comment: Mapped, owner: str, issue_author: str) -> bool:

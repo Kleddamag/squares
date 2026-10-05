@@ -34,12 +34,14 @@ from sqpack.witness import load_witness
 #: more fill since the #227 intake: `n = 68` became Couzo's packing, so the contact-overlay
 #: stratum "first retained UnitSquare rendering-derived geometry" moved to `n = 69`.
 #: n=1..324 gained 51 files and 10,616 fills on 2026-10-02: the regularized layer's
-#: drawings (think-bgkz), drawn by the house renderer under the same contract. The two
-#: smaller corpora are not re-measured.
+#: drawings (think-bgkz), drawn by the house renderer under the same contract. One fill
+#: fewer on 2026-10-05: `n = 69` left its rendering for the catalogue's packing (T-088), so
+#: that contact-overlay stratum, now "first source-packet-derived geometry", is `n = 68`.
+#: The two smaller corpora are not re-measured.
 GOLDEN_INDEXED: dict[str, tuple[int, int]] = {
     "n=1..100": (211, 32017),
     "n=1..200": (311, 47067),
-    "n=1..324": (385, 68618),
+    "n=1..324": (385, 68617),
 }
 #: The largest number of distinct angle classes any one frame carries, and the case that
 #: carries it, per corpus. Per frame rather than corpus-wide because the colorizer
@@ -56,8 +58,9 @@ GOLDEN_MAX_ANGLE_CLASSES: dict[str, tuple[int, int]] = {
 #: How many frames carry more classes than there are unpinned hue slots, so that their
 #: registrations wrap and two classes in one drawing share a colour. None at all when
 #: the corpus stopped at 100; 37 of 324, not 32, since the #227 intake's 50 packings, and
-#: 36 since the 2026-09-30 catalogue refresh moved n = 126 and 179 onto new packings.
-GOLDEN_WRAPPED_CASES: dict[str, int] = {"n=1..100": 0, "n=1..200": 12, "n=1..324": 36}
+#: 36 since the 2026-09-30 catalogue refresh moved n = 126 and 179 onto new packings, and
+#: 35 since Couzo's packing of 3 October at n = 208 (T-092) carries 16 classes, not 21.
+GOLDEN_WRAPPED_CASES: dict[str, int] = {"n=1..100": 0, "n=1..200": 12, "n=1..324": 35}
 
 ROOT = Path(__file__).resolve().parents[1]
 ATLAS = ROOT / "atlas"

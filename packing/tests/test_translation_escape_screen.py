@@ -37,20 +37,44 @@ from devtools.screen_translation_escape import (
     shape_residual,
     translated,
 )
-from sqpack.known_best import KNOWN_BEST_CORPUS
+from sqpack.known_best import KNOWN_BEST_CORPUS, parse_unitsquare_svg, unitsquare_witness
 from sqpack.verify import float_sign, verify_packing
+from sqpack.witness import witness_document
 
 FRONTIER = ROOT / "frontier"
-GOLDEN_SCREENED = {"n=1..100": 99, "n=1..200": 199, "n=1..324": 323}
+GOLDEN_SCREENED = {"n=1..100": 100, "n=1..200": 200, "n=1..324": 324}
 #: The UnitSquare renderings expose six-decimal polygon coordinates, so their shape
 #: residual exceeds the screen's limit and they are excluded by measurement (think-ecqk).
 #: n = 68, 103, 105, 110 and 131 were excluded the same way until their records moved to
-#: Couzo's binary64 packings (T-056) on 2026-09-29; n = 69 is the one rendering left.
-GOLDEN_EXCLUDED = {
-    "n=1..100": [69],
-    "n=1..200": [69],
-    "n=1..324": [69],
+#: Couzo's binary64 packings (T-056) on 2026-09-29, and n = 69, the last, until its record
+#: moved to the catalogue's packing (T-088) on 2026-10-05. None is excluded now; the
+#: retained rendering of n = 69 is still what the exclusion is tested on.
+GOLDEN_EXCLUDED: dict[str, list[int]] = {
+    "n=1..100": [],
+    "n=1..200": [],
+    "n=1..324": [],
 }
+#: The retained UnitSquare rendering the exclusion controls are built from.
+RENDERING = ROOT / "resources/web/known-best-packings/unitsquare/n069.svg"
+
+
+def _rendering_entry(directory: Path) -> dict[str, Any]:
+    """A manifest entry for the n = 69 rendering's witness, written where the test says.
+
+    The corpus no longer draws on a rendering, so the control the screen's exclusion needs
+    is built from the retained bytes, exactly as the atlas built n = 69 until 2026-10-05.
+    """
+    geometry = parse_unitsquare_svg(RENDERING.read_text(encoding="utf-8"), expected_n=69)
+    witness = unitsquare_witness(
+        69, geometry, source_path=str(RENDERING), source_url="https://example.invalid/n069.svg"
+    )
+    path = directory / "n-069-rendering.yaml"
+    path.write_text(
+        witness_document(witness, schema="../witness.schema.yaml"), encoding="utf-8"
+    )
+    return {"n": 69, "witness": {"path": str(path)}, "source": {"kind": "unitsquare-rendering"}}
+
+
 #: Cases whose movable-square count differs between the screen's four tolerances; each
 #: still carries a replayed hit at the primary tolerance. Couzo's and de Winter's poses
 #: carry binary64 coordinates, so a contact gap near the tightest tolerance moves more
@@ -226,13 +250,19 @@ def test_no_record_the_catalogue_calls_rigid_has_any_play() -> None:
         assert cases[n]["movable_square_count"] == 0, f"n={n} is flagged rigid but has play"
 
 
-def test_exclusions_are_measured_rather_than_asserted() -> None:
-    """n=69 is dropped by a measurement, and it is not a close call."""
+def test_exclusions_are_measured_rather_than_asserted(tmp_path: Path) -> None:
+    """A rendering is dropped by a measurement, and it is not a close call."""
     excluded = _screen()["excluded"]
     assert [item["n"] for item in excluded] == GOLDEN_EXCLUDED[KNOWN_BEST_CORPUS.label]
     for item in excluded:
         assert item["bead"] == "think-ecqk"
         assert mp.mpf(item["shape_residual"]) > mp.mpf("1e-9")
+    screened, exclusion = screen_translation_escape._screen_entry(  # pyright: ignore[reportPrivateUsage]  # noqa: SLF001
+        _rendering_entry(tmp_path)
+    )
+    assert screened is False
+    assert exclusion["bead"] == "think-ecqk"
+    assert mp.mpf(exclusion["shape_residual"]) > mp.mpf("1e-9")
     squares, _, _ = load_record(27)
     assert shape_residual(squares) < SHAPE_RESIDUAL_LIMIT
 
@@ -327,7 +357,7 @@ def test_schema_is_declared_where_the_artifact_says_it_is() -> None:
     )
 
 
-def test_a_pool_worker_screens_at_the_same_precision_as_this_process() -> None:
+def test_a_pool_worker_screens_at_the_same_precision_as_this_process(tmp_path: Path) -> None:
     """The corpus is screened across processes, and the precision is per-process state.
 
     `mp.mp.dps` is a global that a `forkserver` or `spawn` child does not inherit, and a
@@ -352,7 +382,8 @@ def test_a_pool_worker_screens_at_the_same_precision_as_this_process() -> None:
         mp.mp.dps = DIGITS
     assert lowered != at_working_precision
 
-    entries = [entry for entry in manifest_entries() if entry["n"] in {10, 69}]
+    entries = [entry for entry in manifest_entries() if entry["n"] == 10]
+    entries.append(_rendering_entry(tmp_path))
     original = screen_translation_escape.manifest_entries
     screen_translation_escape.manifest_entries = lambda: entries
     try:

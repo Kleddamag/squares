@@ -1,0 +1,11 @@
+{
+  "status": "COLLECTED_FULL_REPLAY_BINDINGS_VERIFIED",
+  "source_files": 75130,
+  "output_files": 45446,
+  "result_sha256": "872f3ef597e5ea83a8c24877d2e92a5c90d99e485d7f394e1eeac039e32d6adc",
+  "linkage_sha256": "694d43bc2f14afaa77597f5c1aaef594757a444a05908ffc86a38db9074dfcb4",
+  "numerical_replay_performed_by_collector": false,
+  "full_runner_status": "FRESH_ALL_DOMAIN_REPLAY_VERIFIED",
+  "archive_sha256": "ba02b2db304e774fe4c0f9af3a214cce5485f549409406d902b6c4eb9c61d308",
+  "path_relativization_note": "Hashes of the linkage records were updated after absolute paths in them were made relative; previous -> current values are listed in ../path-relativization-map.json"
+}

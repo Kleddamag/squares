@@ -2,7 +2,7 @@
 
 # Defect log
 
-518 defects recorded across the packing toolchain.
+519 defects recorded across the packing toolchain.
 One line each here; the narrative lives in the artifact named by every row.
 Source of truth is [`defects.yaml`](packing/defects.yaml).
 
@@ -20,12 +20,12 @@ Source of truth is [`defects.yaml`](packing/defects.yaml).
 | `control_cell` | 29 | a cell of the sweep whose answer is known in advance |
 | `review` | 305 | a human or agent reading the work against a checklist |
 | `anomaly` | 16 | a result that made no sense, chased down |
-| `inspection` | 65 | reading the code or the design with intent |
+| `inspection` | 66 | reading the code or the design with intent |
 | `drift_check` | 17 | a generated view disagreeing with its source |
 | `design` | 1 | caught while designing, before it reached data |
 | `gate` | 82 | the automated test suite |
 
-The line worth reading twice: **the automated gate caught 82 of 518, and none of the 108 soundness defects.** Gates confirm what you already thought to check. The rest were found by a device built to be *surprised* — a control cell, a pre-registered rule, a generated view contradicting itself — or by someone reading carefully.
+The line worth reading twice: **the automated gate caught 82 of 519, and none of the 108 soundness defects.** Gates confirm what you already thought to check. The rest were found by a device built to be *surprised* — a control cell, a pre-registered rule, a generated view contradicting itself — or by someone reading carefully.
 
 ## Where they arise
 
@@ -34,7 +34,7 @@ The line worth reading twice: **the automated gate caught 82 of 518, and none of
 | engine | 11 |
 | quench | 23 |
 | verifier | 14 |
-| record | 160 |
+| record | 161 |
 | tooling | 194 |
 | docs | 116 |
 
@@ -44,7 +44,7 @@ The line worth reading twice: **the automated gate caught 82 of 518, and none of
 | --- | ---: |
 | soundness | 108 |
 | validity | 128 |
-| bookkeeping | 193 |
+| bookkeeping | 194 |
 | robustness | 70 |
 | performance | 19 |
 
@@ -776,6 +776,7 @@ This is the actionable list.
 | [D-516](docs/project/reviews/review-2026-10-02-nagamochi-lemma1-karakus.md) | 2026-10-02 | record | soundness | flattering | `review` | high | fixed | The register held Nagamochi 2005's Theorem 2 as verified and rested 287 case floors on it, though its Lemma 1 is false |
 | [D-517](packing/devtools/check_nagamochi_bounds.py) | 2026-10-04 | tooling | soundness | flattering | `review` | low | fixed | Borrowed lower bounds were rounded to nearest, and the checker's two-sided tolerance passed a floor rounded up |
 | [D-518](docs/project/reviews/review-2026-10-02-nagamochi-lemma1-karakus.md) | 2026-10-04 | tooling | validity | flattering | `review` | medium | fixed | The Lemma 1 checker's Karakuş ordering tested only k^2 <= N, and the evidence register called it an exact check |
+| [D-519](docs/project/postmortems/postmortem-2026-10-05-orphaned-catalogue-intake.md) | 2026-10-05 | record | bookkeeping | conservative | `inspection` | medium | fixed | Three Kingbird counts held as pending catalogue intake named no owning bead, and the record trailed the catalogue for five days |
 
 <!-- This document follows common-doc-guidelines.md.
 See github.com/jlevy/practical-prose and review guidelines before editing.

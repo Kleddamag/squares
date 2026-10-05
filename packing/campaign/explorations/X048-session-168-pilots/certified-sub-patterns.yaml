@@ -289,3 +289,17 @@ entries:
     verification:
       receipt: packing/campaign/explorations/X048-session-168-pilots/certificates/s182-m7844815/verification.json
       verifier: kernel-streamed
+  - name: s182-m4028335
+    cells: [corner-SW, corner-SE, corner-NW, corner-NE, side-N0, side-E0, side-S1, side-N1, side-W1, side-S2, side-N2, side-W2, interior-SW, interior-W, interior-S, interior-N, interior-E]
+    certifier: kernel
+    # Session 182 lane A's draw at index 11 (distance 4, stratum c4/i>=5/d4) of
+    # H-264's seed-182 draw: a whole 17-cell residue state, closed at 32 bins with N1's
+    # parameters in 857 s of wall from the clean run worktree at cebb5d15a.
+    # Admitted in exp-252 by the standing verifier's full pass there.
+    receipt: packing/campaign/explorations/X048-session-182-overnight/receipts/A/kernel-m4028335.json
+    certificate: packing/campaign/explorations/X048-session-168-pilots/certificates/s182-m4028335
+    status: admitted
+    evidence: packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-252-h264-n17-overnight-per-state-price.md
+    verification:
+      receipt: packing/campaign/explorations/X048-session-168-pilots/certificates/s182-m4028335/verification.json
+      verifier: kernel-streamed

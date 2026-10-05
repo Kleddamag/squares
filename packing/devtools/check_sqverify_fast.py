@@ -21,6 +21,13 @@ Two checks of `sqverify-fast` (`packing/sqverify_fast`), both refusable:
   and linear n101 certificates, a scaling to one part in a million below the threshold
   at each witness, and a fault injected at an early box of the linear certificate at
   an oblique direction and at direction zero, where it runs by branch and bound.
+- `declared-net`: the format M certificate of jlevy/squares#366 on its own net
+  (`proof_net`: step 1/1001, 416 directions; SOUNDNESS.md, lemma N0). The original must
+  verify on the declared net; every corrupted declaration (a step that breaks
+  `B (1 + D) < 1`, a net short of pi/4, an unknown field, a count that disagrees,
+  metadata that changes the net, and the declaration removed) must be refused at
+  admission; and the masses scaled by 0.985 must be refused, each refused direction with
+  an exact witness below the threshold.
 
 Prints one line per check and `SQVERIFY-FAST CHECKS PASSED` when every check passes;
 exits 1 otherwise. From `packing/`, after `cargo build --release` in
@@ -60,6 +67,13 @@ STEP = Fraction(83, 40000)
 MIXED_CONTROLS = (
     ("wand125-point-and-mixed-2026-10-01", "n37"),
     ("wand125-linear-certificates-2026-10-02", "n101"),
+)
+# The format M certificate on a declared net (jlevy/squares#366): its candidate and n.
+DECLARED_NET = (
+    WEB
+    / "wand125-mixed-bounds-finer-net-2026-10-05/square-packing-bounds/certificates"
+    / "mixed_n18_L470/candidate.json.gz",
+    18,
 )
 
 
@@ -695,10 +709,100 @@ def mixed(
     return outcomes
 
 
+def summary_of(result: subprocess.CompletedProcess[str]) -> dict[str, Any]:
+    """The summary line of a run, or an empty dict."""
+    for line in reversed(result.stdout.splitlines()):
+        if line.startswith("{") and '"sqverify-fast-summary/v1"' in line:
+            value: dict[str, Any] = json.loads(line)
+            return value
+    return {}
+
+
+def declared_net(binary: Path, scratch: Path, *, quick: bool) -> list[tuple[bool, str]]:
+    """Lemma N0 on the retained certificate whose file declares its own net."""
+    path, n = DECLARED_NET
+    raw = read_raw(path)
+    net = raw["proof_net"]
+    outcomes: list[tuple[bool, str]] = []
+    directions = "415" if quick else "0,1,207,415"
+    result = run_binary(binary, path, n, "--directions", directions)
+    premises = summary_of(result).get("premises") or {}
+    ok = (
+        result.returncode == 0
+        and premises.get("net_origin") == "proof_net"
+        and premises.get("D") == "1/1001"
+        and premises.get("angle_count") == 416
+        and premises.get("shrink_bound") == "500499/500500"
+    )
+    outcomes.append(
+        (
+            ok,
+            (
+                f"declared net mixed_n18_L470 r={directions}: verified on its own net"
+                f" (D {premises.get('D')}, {premises.get('angle_count')} directions,"
+                f" B (1 + D) = {premises.get('shrink_bound')})"
+            ),
+        )
+    )
+    corruptions: list[tuple[str, dict[str, Any] | None, dict[str, Any] | None]] = [
+        ("step 1/999, B (1 + D) = 1", {**net, "step": "1/999"}, None),
+        ("last 414, short of pi/4", {**net, "last": 414}, None),
+        ("an unknown field", {**net, "offset": "1/2002"}, None),
+        ("a count other than last + 1", {**net, "count": 415}, None),
+        ("metadata changing the step", net, {"D": "83/40000"}),
+        ("metadata changing the count", net, {"angle_count": 417}),
+        ("the declaration removed (the standard net)", None, None),
+    ]
+    for name, declared, metadata in corruptions:
+        copy = json.loads(json.dumps(raw))
+        if declared is None:
+            del copy["proof_net"]
+        else:
+            copy["proof_net"] = declared
+        if metadata is not None:
+            copy["certificate"] = metadata
+        mutant = write(copy, scratch, f"n18-net-{len(outcomes)}")
+        refused = run_binary(binary, mutant, n, "--directions", "1")
+        outcomes.append(
+            (
+                refused.returncode == 2,
+                (
+                    f"declared net: admission refuses {name} (exit {refused.returncode}:"
+                    f" {refused.stderr.strip()[:80]})"
+                ),
+            )
+        )
+    mutant = write(mixed_mutant(raw, factor=Fraction(985, 1000)), scratch, "n18-scaled-0985")
+    scaled_directions = "415" if quick else "all"
+    result = run_binary(binary, mutant, n, "--directions", scaled_directions, "--confirm")
+    rows = [
+        json.loads(line)
+        for line in result.stdout.splitlines()
+        if line.startswith("{") and '"r"' in line
+    ]
+    refused_rows = [row for row in rows if row.get("verdict") != "verified"]
+    witnessed = [
+        row for row in refused_rows if (row.get("witness") or {}).get("exact_below_threshold")
+    ]
+    outcomes.append(
+        (
+            result.returncode == 1
+            and bool(refused_rows)
+            and len(witnessed) == len(refused_rows),
+            (
+                f"declared net: masses scaled by 0.985 refused at {len(refused_rows)} of"
+                f" {len(rows)} directions, each with an exact witness below 1"
+                f" ({len(witnessed)})"
+            ),
+        )
+    )
+    return outcomes
+
+
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=(__doc__ or "").splitlines()[0])
     parser.add_argument("--binary", type=Path, required=True)
-    parser.add_argument("--only", choices=("differential", "controls", "mixed"))
+    parser.add_argument("--only", choices=("differential", "controls", "mixed", "declared-net"))
     parser.add_argument(
         "--quick",
         action="store_true",
@@ -718,6 +822,9 @@ def main(argv: list[str] | None = None) -> int:
             outcomes += mixed(
                 binary, Path(scratch), random.Random(args.seed + 1), quick=args.quick
             )
+    if args.only in (None, "declared-net"):
+        with tempfile.TemporaryDirectory(prefix="sqverify-fast-declared-net-") as scratch:
+            outcomes += declared_net(binary, Path(scratch), quick=args.quick)
     for ok, line in outcomes:
         print(("  ok   " if ok else "  FAIL ") + line, flush=True)
     if all(ok for ok, _ in outcomes):

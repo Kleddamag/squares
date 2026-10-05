@@ -2,10 +2,12 @@
 
 A clean-room verifier for measure-capture lower-bound certificates: given a nonnegative
 measure on $[0, L]^2$ of mass below $n$, it checks that every shrunk square of side $B$,
-at each of the 201 net directions and every centre, captures at least the threshold,
-which proves $s(n) \ge L$. It is lane W2 of `think-gpe0`, written without reading the
-authors’ checkers ([INDEPENDENCE.md](INDEPENDENCE.md)), with every lemma it relies on
-proved in [SOUNDNESS.md](SOUNDNESS.md).
+at each net direction and every centre, captures at least the threshold, which proves
+$s(n) \ge L$. The net is the standard one, 201 half-angle tangents of step $83/40000$,
+unless a format M file declares its own.
+It is lane W2 of `think-gpe0`, written without reading the authors’ checkers
+([INDEPENDENCE.md](INDEPENDENCE.md)), with every lemma it relies on proved in
+[SOUNDNESS.md](SOUNDNESS.md).
 
 Milestones A and B are implemented: exact admission of formats T (Tokoharu’s rectangle
 densities), M (rectangle rows, per-bin centre domain) and L (points, segments and
@@ -13,6 +15,23 @@ rectangles); the axis direction of a rectangle measure by an exact-event vertex 
 every other direction, and direction zero of a measure with points or segments, by
 interval branch and bound.
 Continuous-angle covers (formats D and P) are not.
+
+**Declared nets.** A format M file may carry
+`"proof_net": {"step": "1/1001", "last": 415}`, a uniform half-angle net of its own
+(jlevy/squares#366). Admission reads it in place of the standard net and holds it to
+every premise the standard net meets, all in exact rationals:
+
+- $B(1 + D) < 1$, so that the core fits strictly inside every unit square it stands for;
+- the last tangent past $\tan(\pi/8)$ and at most $1/2$;
+- at most $2^{16}$ directions;
+- format M’s tangent form $B(1 + D/(1 - D^2/4)) < 1$.
+
+Lemma N0 of [SOUNDNESS.md](SOUNDNESS.md#declared-nets) proves that this is enough.
+A declaration with an unknown field, a `proof_net` in a format T or L file, and
+certificate metadata that changes the declared net are refused.
+The summary’s `premises` record the net’s `net_origin` (`standard`, `proof_net` or
+`metadata`), its last tangent and $B(1 + D)$. Format L’s `net` block must still be the
+standard net.
 
 ## Use
 
@@ -46,8 +65,8 @@ F3 rules out for an admitted certificate) and `fault-injected`; the axis sweep s
   build, then `devtools.check_sqverify_fast --quick` (differential against
   `sqpack.rectangle_density` and the mutation controls).
   Without `--quick` the check covers more certificates and directions.
-- `devtools.sqverify_fast_census`: every replayed certificate at all 201 directions;
-  results and the generated tables are in
+- `devtools.sqverify_fast_census`: every replayed certificate at every direction of its
+  net; results and the generated tables are in
   [`benchmarks/measure-verifier/census/`](../benchmarks/measure-verifier/census/)
   (format T) and
   [`benchmarks/measure-verifier/census-mixed/`](../benchmarks/measure-verifier/census-mixed/)

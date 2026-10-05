@@ -79,6 +79,45 @@ lanes:
       timing. It read the review sections and receipt summaries listed above, more than
       section 2.2 allows, and has disclosed each; nothing in the crate comes from them
       beyond the mathematics the specification also states.
+  - lane: B (2026-10-05 evening intake)
+    role: implementer
+    bead: think-8qo9
+    scope: the declared net of format M (proof_net, SOUNDNESS.md lemma N0), for jlevy/squares#366
+    sessions:
+      - session_01NeZ3ofjKFC4rydmZMTkhSq (coordinating session; the trailer on every commit)
+    harness: Claude Code, Agent SDK sub-agent in its own git worktree
+    period: {from: "2026-10-05T17:05:00Z", to: null}
+    reads:
+      - {path: packing/sqverify_fast/, lines: "INDEPENDENCE.md, README.md, SOUNDNESS.md, Cargo.toml, build.rs, independence-record.yaml, src/certificate.rs, src/lib.rs, src/main.rs 140-295, parts of src/rotated_tests.rs and tests/adversarial.rs"}
+      - {path: packing/devtools/check_sqverify_fast.py, lines: all}
+      - {path: packing/devtools/sqverify_fast_census.py, lines: "all but 420-470"}
+      - {path: packing/src/sqpack/cli/validate.py, lines: "_rust_measure_verifier, _rust_measure_verifier_full"}
+      - {path: docs/project/specs/active/plan-2026-10-02-independent-measure-verifier.md, lines: "25-80, 780-880"}
+      - {path: "https://github.com/jlevy/squares/issues/366", lines: "body (no comments); prose, no code"}
+      - {path: "wand125/square-packing-bounds@43050ed certificates/{mixed_n18_L470,mixed_n66_L843}/{README.md,manifest.json}", lines: all}
+      - {path: "wand125/square-packing-bounds@43050ed certificates/{mixed_n18_L470,mixed_n66_L843}/candidate.json", lines: "top-level keys, proof_net, two rows"}
+      - {path: "wand125/square-packing-bounds@43050ed certificates/{mixed_n18_L470,mixed_n66_L843}/certificate.json", lines: "top-level keys, net, per-angle status, lower and nodes"}
+      - {path: "wand125/square-packing-bounds@43050ed README.md", lines: "the two sections added since a541afb"}
+      - {path: "n18-L4.7-proof-bundle (unpacked)", lines: "README.md, bundle.json, files-sha256.json, proof/summary.json, proof/net001/result.json fields; every angle's seconds and nodes"}
+      - {path: "n66-L8.43-proof-bundle (unpacked by mixed-fetch)", lines: "every angle's seconds, nodes and lower"}
+      - {path: packing/devtools/audit_wand125_point_and_mixed.py, lines: "--help texts, module docstring, 1826-1870, 2425-2476 (packet constants and certificate rows)"}
+      - {path: packing/tests/test_wand125_mixed_rectangles.py, lines: "52-70, 148-160, 336-460"}
+      - {path: "packing/resources/web/wand125-point-and-mixed-2026-09-28/receipts/n50/full/compare.json", lines: "field names and status"}
+    fetched:
+      - "github.com/wand125/square-packing-bounds (blobless clone; the two certificate directories and three root files checked out at 43050ed)"
+      - "github.com/jlevy/squares/issues/366 (body)"
+    forbidden_hits: []
+    never_opened:
+      - "every code/ file of both directories and bundles, and each bundle's proof/verify.cpp: Git blob ids and SHA-256 compared with the retained mixed_n50_L740 copies only"
+      - "the #366 reporter's patch to this crate: never requested or fetched"
+      - "the checker-driving internals of devtools/audit_wand125_point_and_mixed.py"
+    declaration: >-
+      Lane B wrote the declared-net admission (certificate::declared_net, the net checks of
+      certificate::admit, net_origin) and lemma N0 from the certificate format and the
+      net-and-shrink mathematics already proved in SOUNDNESS.md. It never opened an
+      author's checker or the #366 reporter's patch, and ran the source's driver and the
+      audit tool only as black boxes, by their help texts and the commands the bundle's
+      README and the packet READMEs give.
   - lane: W1
     role: spec-author
     dirty_inputs: [the authors' checkers, built and profiled, as the specification's section 3.1 describes]

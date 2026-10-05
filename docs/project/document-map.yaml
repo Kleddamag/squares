@@ -52,6 +52,9 @@ documents:
   - {path: packing/campaign/explorations/X048-session-174-core-refinement/README.md, role: research-report, authority: record, lifecycle: retained}
   - {path: packing/campaign/explorations/X048-session-175-enhanced-support/README.md, role: research-report, authority: record, lifecycle: retained}
   - {path: packing/campaign/explorations/X048-session-176-owner-priority/README.md, role: research-report, authority: record, lifecycle: retained}
+  - {path: packing/campaign/explorations/X048-session-177-cached-collision/README.md, role: research-report, authority: record, lifecycle: retained}
+  - {path: packing/campaign/explorations/X048-session-178-full-core-ablation/README.md, role: research-report, authority: record, lifecycle: retained}
+  - {path: packing/campaign/explorations/X048-session-179-selective-halving/README.md, role: research-report, authority: record, lifecycle: retained}
   - {path: packing/campaign/explorations/X048-session-167-pilots/README.md, role: research-report, authority: record, lifecycle: retained}
   - {path: packing/campaign/explorations/X048-route-review/README.md, role: research-report, authority: record, lifecycle: retained}
   - {path: packing/campaign/series/series-000-smoke-and-calibration/results/exp-240-n17-mixed-capacity-census/output-review.md, role: review, authority: record, lifecycle: retained}

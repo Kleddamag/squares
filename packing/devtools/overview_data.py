@@ -225,9 +225,13 @@ def prose_html(text: object, *, between: str = "<br><br>") -> str:
 
 
 def _line_of(path: Path, needle: str) -> int:
-    """The 1-based line of the first line containing `needle`, for a line anchor."""
+    """The 1-based line of the first line containing `needle` whole, for a line anchor:
+    not followed by another letter, digit, `_` or `-`, so `id: E-n020-fractional-certificate`
+    is not found in `id: E-n020-fractional-certificate-97-20`, the line before it, where
+    T-020's first evidence link pointed until 2026-10-04."""
+    whole = re.compile(re.escape(needle) + r"(?![\w-])")
     for number, line in enumerate(path.read_text(encoding="utf-8").splitlines(), start=1):
-        if needle in line:
+        if whole.search(line):
             return number
     raise SystemExit(f"{path.name} has no line containing {needle!r}")
 

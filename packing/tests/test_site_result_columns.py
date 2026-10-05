@@ -6,7 +6,7 @@ say, from the faces, the typeset formulas and the floors `site.css` gives the co
 this opens both rendered pages in Chromium and measures each table with the probes
 `devtools.measure_site_pages columns` and `chips` report from: at 1920 pixels, where the
 table bleeds further than any other table; at 1440, where it bleeds to 1360 pixels; at
-1280, where it bleeds to 1200 pixels and its nine columns' floors fit; at 1024 and 768,
+1280, where it bleeds to 1200 pixels and its eight columns' floors fit; at 1024 and 768,
 where those floors outrun the window and it scrolls sideways in its wrap; and at 390,
 where each row is a card.
 
@@ -19,8 +19,8 @@ than the tallest stack of details; the result column gives way to its floor, whi
 widest formula fits, and a formula ends a line only after a relation or a binary
 operator; the credit column keeps room for its longest name, so no credit breaks inside
 a word; the rungs column holds its widest kind chip and the status column its widest
-status chip; both tables show each result's records, a link to a line in the Details
-column; and every chip on either page is one line high, every kind and standing chip
+status chip; no row carries a result's records, which its popover holds; and every
+chip on either page is one line high, every kind and standing chip
 one size.
 
 Each page is rendered and loaded once, in a module fixture, with every row showing, its
@@ -51,7 +51,7 @@ from tests import site_browser, site_renders
 #: The pages that hold a table of results.
 PAGES = ("index.html", render_overview.RESULTS_PAGE)
 #: The widths a table is laid out at as a table: a very wide window; one where the table
-#: has room for a long list of cases; the one its nine columns' floors fit; and two
+#: has room for a long list of cases; the one its eight columns' floors fit; and two
 #: where they do not, so the table scrolls. Then the one where its rows are cards.
 WIDEST = 1920
 ROOMY = 1440
@@ -84,12 +84,11 @@ RESULT_WAS = 411
 #: The width a table of results bleeds to at 1280 pixels, from 74rem (`site.css`): the
 #: frontier table's width there.
 TABLE_AT_1280 = 1200
-#: The least room the nine columns' floors leave in that track at 1280 pixels, which the
-#: n column takes: 2.0 measured once the significance mark was trimmed to fit
-#: (2026-10-03, `think-r3rd`; the floors outran the track by 7.8 before), and 2.1 since
-#: T-069's and T-075's tenth evidence links widened the details column by 6.3 and the
-#: result's floor and the significance column's padding gave the room back.
-SPARE_AT_1280 = 2
+#: The least room the eight columns' floors leave in that track at 1280 pixels: 104.5
+#: measured once the Details column left the table for the row's popover (2026-10-04,
+#: `think-46fw`); the nine columns' floors had left 2, with the long list of cases at its
+#: floor there.
+SPARE_AT_1280 = 100
 #: The width a table of results bleeds to at 1440 pixels: the 1104-pixel wide track and
 #: a pixel for each pixel of window past 74rem.
 TABLE_AT_1440 = 1360
@@ -104,10 +103,9 @@ REM = 16
 #: the table's face, with the cell's padding, in pixels; the least the column narrows
 #: to, half the measure; and the most lines the longest list, T-056's 23 values, takes
 #: at 1440 pixels with every row showing, where the 1360-pixel table leaves the list its
-#: whole measure. At 1280 the nine columns' floors leave it its floor and the pixels
-#: they spare, 122 of its 225, and it takes 11 lines there, taller than any stack of
-#: details; it took eight at 1280 in 181 pixels with eight columns, before the
-#: significance had a column of its own (2026-10-03, `think-m3m4`).
+#: whole measure. At 1280 the eight columns' floors leave it the whole measure too, so
+#: it takes six lines there as well, since the Details column left the table
+#: (2026-10-04, `think-46fw`); with nine columns it had its floor there and 11 lines.
 CASES_MEASURE = 224.8
 CASES_MIN = 120.4
 CASES_LINES = 6
@@ -115,17 +113,18 @@ CASES_LINES = 6
 MOST_CASES = "T-056"
 LONG_QUOTIENTS = ("T-022", "T-024", "T-026", "T-033")
 #: How far a table of results may run past its frame, with every row showing: at its
-#: floors it is 1198 pixels, 254 more than the 944-pixel frame at 1024 and 510 more
-#: than the 688-pixel one at 768 (measured with nine columns, 2026-10-03).
-SCROLL_MAX = {1024: 264, 768: 520}
+#: floors it is 1095.5 pixels, 151.5 more than the 944-pixel frame at 1024 and 407.5
+#: more than the 688-pixel one at 768 (measured with eight columns, 2026-10-04; nine
+#: columns' floors came to 1198).
+SCROLL_MAX = {1024: 160, 768: 416}
 #: The significance column: under 100 pixels at every width, where its widest mark and
 #: star, S5's, with the cell's padding, 0.2rem either side, is 77.4.
 S_MAX = 100
 S_PADDING = 6.4
 #: The id column: five characters and the cell's padding, well under KPress's 96.
 ID_MAX = 64
-#: The nine columns of a table of results, as `overview_sections.result_head` names them.
-COLUMNS_SHOWN = ["Date", "S", "Result", "n", "Credit", "Rungs", "Status", "Details", "ID"]
+#: The eight columns of a table of results, as `overview_sections.result_head` names them.
+COLUMNS_SHOWN = ["Date", "S", "Result", "n", "Credit", "Rungs", "Status", "ID"]
 #: A cell's padding either side, 0.5rem, in pixels.
 PADDING = 16
 
@@ -203,10 +202,10 @@ def test_a_table_of_results_fits_its_track_at_1280(
     laid: dict[tuple[str, int], Laid], name: str
 ) -> None:
     """At a 1280-pixel window the table bleeds to 1200 pixels, as wide as its track and
-    no wider, so nothing scrolls sideways, with every row showing: its nine columns'
-    floors, 1198 pixels, the table's width where it scrolls, leave two to spare, which
-    the long list of cases takes. They outran the track by 7.8 pixels until the
-    significance mark was trimmed to fit (2026-10-03, `think-r3rd`)."""
+    no wider, so nothing scrolls sideways, with every row showing: its eight columns'
+    floors, 1095.5 pixels, the table's width where it scrolls, leave 104.5 to spare. With
+    nine columns they left two, until the Details column moved into the row's popover
+    (2026-10-04, `think-46fw`)."""
     table = laid[name, FITS].table
     assert table["layout"] == "table"
     assert table["scrolls"] == 0, table["table_width"]
@@ -239,11 +238,12 @@ def test_a_table_of_results_bleeds_further_than_other_tables_on_a_wide_window(
 def test_a_table_of_results_scrolls_at_1024_and_768_no_further_than_its_floors(
     laid: dict[tuple[str, int], Laid], name: str
 ) -> None:
-    """Below 1278 pixels the nine columns' floors outrun the frame, so the table scrolls
-    sideways in its wrap, every column at its floor and no further: by 254 pixels at
-    1024 and 510 at 768. It fitted at 1024 with six columns, before the status and the
-    details had columns of their own (2026-10-02, `think-ybt5`, `think-e4o3`), and the
-    significance its own the day after (`think-m3m4`)."""
+    """Below about 1176 pixels the eight columns' floors outrun the frame, so the table
+    scrolls sideways in its wrap, every column at its floor and no further: by 151.5
+    pixels at 1024 and 407.5 at 768. It fitted at 1024 with six columns, before the
+    status and the details had columns of their own (2026-10-02, `think-ybt5`,
+    `think-e4o3`) and the significance its own the day after (`think-m3m4`); the
+    details left again for the row's popover on 2026-10-04 (`think-46fw`)."""
     for width, most in SCROLL_MAX.items():
         table = laid[name, width].table
         assert table["layout"] == "table", width
@@ -256,25 +256,24 @@ def test_a_table_of_results_scrolls_at_1024_and_768_no_further_than_its_floors(
 def test_a_long_list_of_cases_wraps_in_its_measure(
     laid: dict[tuple[str, int], Laid], name: str
 ) -> None:
-    """With every row showing at 1440 pixels, where the table bleeds to 1360, the n
-    column takes what the other eight columns' floors leave it, between its floor and
-    its measure, which is the whole measure there, and the longest list, T-056's 23
-    values, takes six lines in it, where a column as narrow as one value set them on
-    fifteen. So the tallest row the list sets is those six lines, no taller than the
-    tallest stack of a result's details. At 1280 the floors leave the column its own
-    floor and the two pixels they spare, so it sits at its floor and the list is taller
-    than the details there. At no width is a value cut across two lines: a range keeps
-    to one."""
-    cases = _column(laid[name, ROOMY].table, "n")
-    assert CASES_MIN < cases["width"] <= CASES_MEASURE + 0.5
-    assert cases["lines"] == CASES_LINES
-    longest = cases["tallest"]
-    details = _column(laid[name, ROOMY].table, "Details")["tallest"]
-    assert (longest["row"], longest["lines"]) == (MOST_CASES.lower(), CASES_LINES)
-    assert longest["height"] <= details["height"]
-    spare = TABLE_AT_1280 - laid[name, SCROLLS[0]].table["table_width"]
-    at_floor = _column(laid[name, FITS].table, "n")
-    assert at_floor["width"] == pytest.approx(CASES_MIN + spare, abs=0.5)
+    """With every row showing at 1440 and at 1280 pixels, where the table bleeds to
+    1360 and 1200, the n column takes what the other seven columns' floors leave it,
+    between its floor and its measure, which is the whole measure at both, and the
+    longest list, T-056's 23 values, takes six lines in it, where a column as narrow as
+    one value set them on fifteen. So the tallest row the list sets is those six lines,
+    no taller than the table's tallest row, which another column sets. Where the table
+    scrolls the column is at its floor and the list takes more lines. At no width is a
+    value cut across two lines: a range keeps to one."""
+    for width in (ROOMY, FITS):
+        table = laid[name, width].table
+        cases = _column(table, "n")
+        assert CASES_MIN < cases["width"] <= CASES_MEASURE + 0.5, width
+        assert cases["lines"] == CASES_LINES, width
+        longest = cases["tallest"]
+        assert (longest["row"], longest["lines"]) == (MOST_CASES.lower(), CASES_LINES)
+        assert longest["height"] <= table["tallest_row"]["height"], width
+    at_floor = _column(laid[name, SCROLLS[0]].table, "n")
+    assert at_floor["width"] == pytest.approx(CASES_MIN, abs=1)
     assert at_floor["lines"] > CASES_LINES
     for width in TABLE_WIDTHS:
         column = _column(laid[name, width].table, "n")
@@ -314,7 +313,7 @@ def test_the_result_column_gives_way_to_its_floor(
 ) -> None:
     """The result column narrows to its 16.55rem floor where the window is short of
     room, well under the 411 pixels it was held to, as it is with every row showing at
-    1280 and below now the table has nine columns, and with the overview's own filters
+    1280 and below now the table has eight columns, and with the overview's own filters
     at 1280 too, since they show T-056's long list from S3 up (`think-x60s`). At 1440
     it has room to spare either way. Its widest piece of typeset math, the numerator of
     T-033's quotient, fits that floor with the cell's padding: so nothing the column
@@ -410,7 +409,7 @@ def test_a_long_quotient_may_end_a_line_after_its_solidus() -> None:
 def test_both_tables_lay_out_the_same_columns(
     laid: dict[tuple[str, int], Laid], name: str, width: int
 ) -> None:
-    """Both tables are laid out with the nine columns in one order. The significance's,
+    """Both tables are laid out with the eight columns in one order. The significance's,
     the second, is narrow: no wider than its widest mark and a new result's star with
     the cell's padding, and under 100 pixels however wide the window, so a wide window's
     spare width goes to the result and the credit. The id's is as narrow as an id; the
@@ -434,22 +433,19 @@ def test_both_tables_lay_out_the_same_columns(
 
 
 @pytest.mark.parametrize("width", WIDTHS)
-def test_both_tables_show_each_results_records(
-    laid: dict[tuple[str, int], Laid], width: int
-) -> None:
-    """A result's records are a line under its summary at every width, on the results
-    page and on the overview alike, which is the same table under other filters: one
-    line of records to each row showing. So with every row showing the two tables are
-    laid out the same, column for column and row for row."""
+def test_no_row_shows_a_results_records(laid: dict[tuple[str, int], Laid], width: int) -> None:
+    """No row shows a result's records at any width, on the results page or on the
+    overview, which is the same table under other filters: the records are the last
+    entry of the popover the row opens (`think-46fw`). So with every row showing the two
+    tables are laid out the same, column for column and row for row."""
     recent = laid["index.html", width]
     results = laid[render_overview.RESULTS_PAGE, width]
-    assert recent.records == recent.table["shown_rows"] > 0
-    assert results.records == results.table["shown_rows"] > 0
+    assert recent.records == results.records == 0
+    assert recent.table["shown_rows"] == results.table["shown_rows"] > 0
     assert recent.table["columns"] == results.table["columns"]
     assert recent.table["tallest_row"] == results.table["tallest_row"]
     if (AS_OPENED, width) in laid:
-        opened = laid[AS_OPENED, width]
-        assert opened.records == opened.table["shown_rows"] > 0
+        assert laid[AS_OPENED, width].records == 0
 
 
 @pytest.mark.parametrize("width", TABLE_WIDTHS)

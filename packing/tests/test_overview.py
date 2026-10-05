@@ -2986,7 +2986,7 @@ def test_recent_results_is_one_table_not_cards_or_a_list(
     # The script that sorts and filters the results page's table wires this one too.
     assert "data-site-table" in recent
     heads = re.findall(r"<th[^>]*>([^<]+)</th>", recent.split("</thead>", 1)[0])
-    assert heads == ["Date", "S", "Result", "n", "Credit", "Rungs", "Status", "Details", "ID"]
+    assert heads == ["Date", "S", "Result", "n", "Credit", "Rungs", "Status", "ID"]
     newest = overview_sections.recent_results(overview)
     assert re.findall(r'<tr data-result="(t-\d+)"', recent) == [r.id.lower() for r in newest]
     for result in newest:
@@ -3993,13 +3993,13 @@ def test_both_tables_of_results_have_the_same_columns(
     each result the same row and the same popover. A row differs between the two in
     what names the page it is on and nothing else: its key, the result's own address
     (`id`) on the results page and `data-result` on the overview, and `hidden`, which is
-    where each table's filters start. So the overview shows each result's records, as
-    the results page does, and a row links to the results page only where its status
-    names the results that supersede it. Both sort and both
-    filter. The columns run date, result, cases, credit, rungs, status, details and id,
-    the owner's order of 2026-10-02 (`think-t090`, `think-ybt5`, `think-e4o3`): a
-    result's records are its Details, a link to a line, and its result cell holds the
-    claim and its star alone."""
+    where each table's filters start. So a row on the overview opens to its records, as
+    one on the results page does, and a row links to the results page only where its
+    status names the results that supersede it. Both sort and both filter. The columns
+    run date, significance, result, cases, credit, rungs, status and id, the owner's
+    order of 2026-10-02 (`think-t090`, `think-ybt5`, `think-e4o3`): the result cell
+    holds the claim and its star alone, and a result's records are the last entry of
+    the popover its row opens, a Details column no longer (`think-46fw`)."""
     table = overview_sections.results_table(overview)
     recent = overview_sections.recent_table(overview)
     head = overview_sections.result_head()
@@ -4014,11 +4014,10 @@ def test_both_tables_of_results_have_the_same_columns(
         "Credit",
         "Rungs",
         "Status",
-        "Details",
         "ID",
     ]
     sorts = ["data-sort=" in attributes for attributes, _ in heads]
-    assert sorts == [True, True, False, True, True, True, True, False, True]
+    assert sorts == [True, True, False, True, True, True, True, True]
     # As each page serves it, after KPress has labelled the cells.
     served = re.compile(r"<th[^>]*>([^<]+)</th>")
     on_overview = served.findall(_recent_table(page).split("</thead>", 1)[0])
@@ -4043,17 +4042,21 @@ def test_both_tables_of_results_have_the_same_columns(
             "site-col-credit",
             "site-rungs",
             "site-col-status",
-            "site-col-details",
             "site-col-id",
         ]
-        # The records are the Details cell, after the status and before the id, a link
-        # to a line with no dots between; the result's cell holds none of them.
-        assert here.count('<div class="site-records">') == 1, result.id
-        assert re.search(
-            r'<td class="site-col-details"><div class="site-records">(<a [^>]*>[^<]+</a>)+'
-            r'</div></td><td class="site-col-id"',
-            here,
-        ), result.id
+        # The row carries no record link; its popover's short form ends with them, every
+        # link the result has, in the register's order.
+        assert '<div class="site-records">' not in here, result.id
+        popover = _row_popover(table, f"pop-result-{result.id.lower()}")
+        records = re.search(
+            r'<dt>Records</dt><dd><div class="site-records">((?:<a [^>]*>[^<]+</a>)+)'
+            r"</div></dd></dl>",
+            popover,
+        )
+        assert records is not None, result.id
+        assert re.findall(r'href="([^"]+)"', records.group(1)) == [
+            link.url for link in result.records
+        ], result.id
         result_cell = here.split('<td class="site-col-result">', 1)[1].split("</td>", 1)[0]
         assert "<a " not in result_cell, result.id
         assert " · " not in here, result.id
@@ -6079,3 +6082,18 @@ def test_a_cases_status_is_one_chip_wherever_it_is_drawn(
         assert {word for _, word in drawn} == statuses, name
         for status in statuses:
             assert page.count(overview_sections.case_status_chip(status)) >= 1, (name, status)
+
+
+def test_a_line_link_finds_an_id_whole_and_not_as_the_start_of_a_longer_one() -> None:
+    """`overview_data.line_link` anchors the first line naming an id whole: T-020's first
+    evidence entry, `E-n020-fractional-certificate`, comes after the entry whose id it
+    begins, `E-n020-fractional-certificate-97-20`, and its link pointed there until
+    2026-10-04 (`think-46fw`)."""
+    lines = overview_data.EVIDENCE.read_text(encoding="utf-8").splitlines()
+    for entry in ("E-n020-fractional-certificate", "E-n020-fractional-certificate-97-20"):
+        own = lines.index(f"  - id: {entry}") + 1
+        assert overview_data.line_link(overview_data.EVIDENCE, f"id: {entry}").endswith(
+            f"#L{own}"
+        ), entry
+    longer = lines.index("  - id: E-n020-fractional-certificate-97-20")
+    assert longer < lines.index("  - id: E-n020-fractional-certificate")

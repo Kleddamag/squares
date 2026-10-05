@@ -7,11 +7,11 @@ softschema:
   schema: schemas/session-close-report.schema.yaml
   envelope: null
   status: enforced
-count: 170
+count: 173
 generated_by: >-
   uv run --frozen --all-extras --group dev python -m devtools.close_session --render
 totals:
-  sessions_measured: 116
+  sessions_measured: 119
   sessions_unmeasured: 54
   attributed:
     rollups: 297
@@ -35,9 +35,9 @@ totals:
     one_off_code: 7280
     wall_hours: 713.93
 codex_receipts:
-  attributed: 69
+  attributed: 72
   unattributed: 2
-  measured: 71
+  measured: 74
 # Per-session figures below are the logs each session DECLARES. They overlap when
 # sessions share a harness log, so they do not sum to `attributed` above.
 sessions:
@@ -2953,6 +2953,66 @@ sessions:
   one_off_code: 343
   wall_hours: 58.29
   codex_receipts: []
+- id: session-170
+  title: "Bounded residual compatibility and finite-model ceiling"
+  status: stopped
+  primary_bead: think-67ek
+  phases: 4
+  measured: true
+  rollups:
+  - packing/campaign/resource-usage/codex-session-170.yaml
+  turns: null
+  tool_calls: null
+  tool_errors: null
+  one_off_code: null
+  wall_hours: null
+  codex_receipts:
+  - path: packing/campaign/resource-usage/codex-session-170.yaml
+    model_responses: 85
+    agent_hours: 0.76
+    active_union_hours: 0.67
+    wall_hours: 0.67
+    snapshot_incomplete: true
+- id: session-171
+  title: "Raw-piece row-support witnesses without dense graph expansion"
+  status: stopped
+  primary_bead: think-op6s
+  phases: 6
+  measured: true
+  rollups:
+  - packing/campaign/resource-usage/codex-session-171.yaml
+  turns: null
+  tool_calls: null
+  tool_errors: null
+  one_off_code: null
+  wall_hours: null
+  codex_receipts:
+  - path: packing/campaign/resource-usage/codex-session-171.yaml
+    model_responses: 204
+    agent_hours: 1.85
+    active_union_hours: 0.98
+    wall_hours: 0.98
+    snapshot_incomplete: true
+- id: session-172
+  title: "One bounded raw-row capacity completion attempt"
+  status: stopped
+  primary_bead: think-2uhz
+  phases: 3
+  measured: true
+  rollups:
+  - packing/campaign/resource-usage/codex-session-172.yaml
+  turns: null
+  tool_calls: null
+  tool_errors: null
+  one_off_code: null
+  wall_hours: null
+  codex_receipts:
+  - path: packing/campaign/resource-usage/codex-session-172.yaml
+    model_responses: 52
+    agent_hours: 0.56
+    active_union_hours: 0.28
+    wall_hours: 0.28
+    snapshot_incomplete: true
 - id: session-180
   title: "Bounded n17 producer memo retention investigation"
   status: stopped

@@ -1,0 +1,25 @@
+{
+  "tool": "python -m devtools.catalogue_upper_bounds certify",
+  "certificate": "witnesses/kingbird-2026/n-069-rational.yaml",
+  "expectation": "every control is refused by both checkers",
+  "controls": [
+    {
+      "control": "side-shrunk-1e-15",
+      "n": 69,
+      "independent_passed": false,
+      "independent_failures": [
+        "container penetration -1/1000000000000000"
+      ],
+      "exact_verify_passed": false
+    },
+    {
+      "control": "square-1-shifted-1e-6",
+      "n": 69,
+      "independent_passed": false,
+      "independent_failures": [
+        "1 overlapping pairs; worst exact gap -999999999/1000000000000000"
+      ],
+      "exact_verify_passed": false
+    }
+  ]
+}

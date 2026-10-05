@@ -133,11 +133,16 @@ it was larger than his earlier one.
 Couzo publishes nothing at `n = 69, 83` or `87`, the three counts whose catalogue sides
 wait on their own intake.
 
+## Review
+
+The import’s review lane read this packet, its certificates and records, and the tooling
+changes on 5 October 2026, with no blocking defect:
+[review-2026-10-05-couzo-6042c56.md](../../../../docs/project/reviews/review-2026-10-05-couzo-6042c56.md).
+It ran both replays and the controls again, decided all seven packings a third way with
+its own code, and checked this packet against a fresh clone of the source at the pin.
+
 ## Not Done Here
 
-- The review lane of the import: a mapped review of these seven certificates and their
-  records. The reviews of the two routes on the earlier packet, of 29 and 30 September,
-  read the same programs on other poses and are not a review of this run.
 - `n = 306` needs a pose refined beyond the source’s binary64 digits, or
   higher-precision coordinates from the source, before its printed side certifies.
 

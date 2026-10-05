@@ -5,8 +5,10 @@
 # remote head with the commits the packets pin. A head no packet pins is new to the
 # record. An entry here says a pass read it: with `bead`, what the commits hold is
 # owned by that open bead until a packet pins it; without one, there was nothing to
-# import, and `note` says what changed. The runbook is campaign/result-import.md,
-# Running an Intake Pass.
+# import, and `note` says what changed. A read through a commit a pin already contains
+# covers it and every commit before it, whose changed paths no packet retains: the
+# sweep reports such commits until a packet retains the paths or a read says why none
+# needs to. The runbook is campaign/result-import.md, Running an Intake Pass.
 softschema:
   contract: packing.squares:IntakeWatch/v1
   schema: schemas/intake-watch.schema.yaml
@@ -74,17 +76,6 @@ repositories:
       tests and .gitignore: the certificate ladder's step and termination rules, and a run
       log. No certificate, proof or verifier changes. Its message reports a faster n = 29
       ladder run but publishes no certificate. Nothing to import.
-  - url: https://github.com/wand125/valid7-independent-check
-    read_through: da469ecff5da0c71882e894b65d680ce57a0c87e
-    read_on: '2026-10-05'
-    bead: think-uu60
-    note: >-
-      One commit past 38dd31b3, the wand125-valid7-independent-check-2026-10-02 packet's
-      pin, of 3 October. It fixes the review's D-1 to D-3 in tier_b2.py, rf.py and
-      check_record.py, and adds a --seed option to check_record.py, answering
-      evand/square-packing#1. With the fixed code the author reports RECORD OK on the
-      unchanged records-v1. This is an evidence update to T-064, owned by think-uu60, and
-      no rung moves.
   - url: https://github.com/Kleddamag/17-squares-certified-bound
     read_through: 17d18245114cd78645b70b20e0b5c9afc8d95ed8
     read_on: '2026-10-05'
@@ -99,3 +90,48 @@ repositories:
       unfinished routes and claims no bound, and ATTRIBUTION.md and AUTHORS.md were
       reworded, naming 11SquaresOptimal as an influence on the research. Nothing to import;
       n-017 mentions the bound as an unretained report.
+
+  # Commits a packet's pin contains whose changed paths no packet retains, which the sweep
+  # reported once a register address stopped counting as the whole tree (2026-10-05).
+  # Each was left out on purpose, as the packet README cited says.
+  - url: https://github.com/wand125/square-packing-bounds
+    read_through: 781afb3b6061bdd27c83cdc81c98d00da9d1c2bd
+    read_on: '2026-10-05'
+    note: >-
+      781afb3 (4 October) rebuilt the s(21) = 5 archive under point_n21_L5, T-055. The
+      wand125-record-updates-2026-10-04 packet retains the 17 other files it changed and
+      leaves out its 14 parts point_n21_L5/data/bundle.tar.gz.part-000 to -013, 455 MB:
+      the retained archive-index.json and distribution.json list each part with its size
+      and SHA-256, and the commit pins them, as that packet's README says under Scope.
+      Nothing to import.
+  - url: https://github.com/Guzhou0806/n17-square-packing
+    read_through: 815b16261f852e389968513eec94b4b9e5b3206d
+    read_on: '2026-10-05'
+    note: >-
+      The seven s(17) releases b1e060e (R042) to 815b162 (R068), 23 to 28 September. The
+      n17-guzhou-r052-2026-09-25, n17-guzhou-r052-continuation-2026-09-26 and
+      n17-guzhou-r068-2026-09-28 packets retain their publication records, workflows and
+      root files and carry no acquisition record, so only the register's certificate paths
+      pin them here. The R042, R043, R050 and R052-4.62003 packages are superseded and
+      left out on purpose, each pinned by its publication record's digests (the R052 and
+      continuation packets' READMEs). n-017.md cites every release. Nothing to import.
+  - url: https://github.com/evand/square-packing
+    read_through: 40e442f35e55c4d1bd4a4defb9304f9672e5c08f
+    read_on: '2026-10-05'
+    note: >-
+      The 41 commits from 27dd68a (1 October) to 40e442f (4 October), the parent of the
+      7ff3b211 pin, whose changed paths no packet retained (think-83zc). Where one bears on
+      a registered entry, the evand-square-packing-2026-10-04 packet now retains the file
+      at the pin, each an evidence update that moves no rung: the k2m3 bundle README of
+      02629f2 to ca6d988 and the k2m3 review reports (T-064); zmx2's area-density run
+      deciding Valid7 at bfbdf04 (T-064); the k2m4 review reports (T-081); the claims
+      audit of 6383ad8 and the s(21) bundle's brief and audits (T-051, T-052, T-053,
+      T-062); and the Lean of f7b4430, 87726c9 and c2ae715, the specification bridges,
+      isLeast_minSide and s13_isLeast (T-006, T-086). The rest is working material the
+      packet README leaves out: the TODO and Completed lists, the task briefs, the rest of
+      what 0f55a52 published (session reviews, status notes, TODO archives, reviewers'
+      scratch code and logs), the research notes and scripts (SOS probe, S2
+      insertable LPs, seam capacity, qx2 margin studies, the s(20) generator tools, the
+      dual_exact doc pointers of 27dd68a), the literature and proof-anatomy notes,
+      QUADRANT_EXACT.md's pointer to the now-public reviews, S3Lower.lean's toy s3_eq_2 and
+      Average.lean's averaging lemma, which bounds nothing. Nothing else to import.

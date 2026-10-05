@@ -258,6 +258,14 @@ sources:
       chelokot's definitions one on T-086; neither moves a rung. The site's history lists
       Guzhou0806's R070 and R071 for s(17), above the verified 116511/25000; they are an
       import of their own from Guzhou0806's repository (think-1qms). Nothing was replayed.
+      On 5 October the intake pass (think-83zc) added, from the same clone and commit, the
+      files that earlier commits changed, that no packet retained and that bear on entries
+      here: the k2m3 bundle README and the k2m3 and k2m4 review reports (T-064, T-081);
+      zmx2's area-density run deciding Valid7 (T-064); the claims audit's bundle READMEs
+      and the s(21) bundle's brief and audits (T-051, T-052, T-053, T-062); and the Lean
+      attainment theorem and specification bridges (T-006, T-086). Each is an evidence
+      update that moves no rung; the rest of those commits is a read in
+      campaign/intake-watch.yaml.
   - id: kleddamag-n17-466001-2026
     title: Seventeen unit squares — a certified lower bound, 4.66001 package
     role: source-repository
@@ -1116,6 +1124,29 @@ sources:
       full with the review's D-1 guarded, fourteen shards, every root certified and every
       V2 root's leaves equal to the published ones (receipts/replay/ in the packet).
       The scope is T-064's projection of the family onto the cases this record holds.
+  - id: wand125-valid7-independent-check-2026-10-03
+    title: Independent exact checker of Valid7, with the 2 October review's D-1 to D-3 fixed
+    role: source-repository
+    url: https://github.com/wand125/valid7-independent-check/tree/da469ecff5da0c71882e894b65d680ce57a0c87e
+    local: resources/web/wand125-valid7-independent-check-2026-10-03/
+    source_key: '[wand125 valid7 independent check 2026-10-03]'
+    scope: {n_values: [33, 46, 61, 78, 97, 118, 141, 166, 193, 222, 253, 286, 321]}
+    reviewed: '2026-10-05'
+    source_date: '2026-10-03'
+    disposition: current-report
+    replay_disposition: case-specific
+    represented_by: [frontier/evidence.yaml]
+    evidence:
+      - E-k2m3-wand125-valid7-independent
+    notes: >-
+      Revision da469ecff5da0c71882e894b65d680ce57a0c87e, retrieved at 2026-10-05T04:23Z,
+      with the unchanged release records-v1. It fixes the 2 October review's D-1 to D-3 in
+      the checker and adds check_record.py's --seed and --claim options; no certified
+      result changes and the records were not regenerated. On 5 October its verify.sh ran
+      here on the retained bytes, RECORD OK with three mutant covers refused, and
+      devtools.probe_valid7_fixes showed each finding present at 38dd31b3 and gone here.
+      Recorded as an evidence update to T-064, which moves no rung. The scope is T-064's,
+      as for the 2 October packet.
   - id: franciscouzo-square-packing-2026
     title: Square packings better than the published records
     role: source-repository
@@ -1224,6 +1255,9 @@ sources:
       - E-n069-ellsworth-2026-09-report
       - E-n083-chang-2026-09-report
       - E-n087-chang-2026-09-report
+      - E-n069-ellsworth-2026-09-exact-replay
+      - E-n083-chang-2026-09-exact-replay
+      - E-n087-chang-2026-09-exact-replay
     notes: >
       Captured again on 2026-09-30; the server dates the page 2026-09-24. The capture of
       2026-08-22, which the 2026-08-25 review found byte-identical to a fresh retrieval, is

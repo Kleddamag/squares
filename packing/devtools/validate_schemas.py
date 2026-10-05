@@ -76,6 +76,8 @@ CONTACT_SCAFFOLD_ATLAS = (
     FRONTIER.parent / "atlas" / "enumerated" / "contact-scaffolds-size5.json"
 )
 CONTACT_STRUCTURES = FRONTIER.parent / "atlas" / "known-best" / "contact-structures.json"
+#: Hosted-data manifests (OR-18): one per release that holds bulk data outside Git.
+HOSTED = FRONTIER.parent / "hosted"
 
 
 def load_schema(name: str) -> dict:
@@ -324,6 +326,9 @@ def corpus_paths() -> tuple[list[pathlib.Path], list[pathlib.Path]]:
     datasets.append(INTAKE_WATCH)
     datasets += sorted(
         path for path in STRATEGIES.glob("*.yaml") if not path.name.endswith(".schema.yaml")
+    )
+    datasets += sorted(
+        path for path in HOSTED.glob("*.yaml") if not path.name.endswith(".schema.yaml")
     )
     return md, datasets
 

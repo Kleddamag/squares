@@ -474,13 +474,68 @@ def test_a_timeout_kills_the_command_s_children_too(tmp_path: Path) -> None:
 
 def running(pid: int) -> bool:
     """Is `pid` a live process? A zombie counts as dead: a container's PID 1 may never
-    reap the orphan it inherits."""
+    reap the orphan it inherits.
+
+    The killed grandchild can be reaped at any moment between the signal probe and the
+    read of its `/proc` entry. A `stat` file whose process is reaped after the open
+    raises `ProcessLookupError` on the read, which means dead. One reaped before the
+    open is missing, and so is every entry on a platform without `/proc`, so a missing
+    entry is settled by probing once more.
+    """
     try:
         os.kill(pid, 0)
     except ProcessLookupError:
         return False
-    stat = Path(f"/proc/{pid}/stat")
-    return not stat.is_file() or stat.read_text().rsplit(")", 1)[-1].split()[0] != "Z"
+    try:
+        stat = Path(f"/proc/{pid}/stat").read_text()
+    except ProcessLookupError:
+        return False
+    except FileNotFoundError:
+        try:
+            os.kill(pid, 0)
+        except ProcessLookupError:
+            return False
+        return True
+    return stat.rsplit(")", 1)[-1].split()[0] != "Z"
+
+
+def _race(monkeypatch: pytest.MonkeyPatch, read_error: type[OSError], *, gone: bool) -> None:
+    """Find the process at the first probe, fail the read of its /proc entry with
+    `read_error`, and answer any later probe as if it were `gone` by then."""
+    probes: list[int] = []
+
+    def kill(pid: int, _signal: int) -> None:
+        probes.append(pid)
+        if len(probes) > 1 and gone:
+            raise ProcessLookupError(3, "No such process")
+
+    def read_text(_self: Path, *_args: object, **_kwargs: object) -> str:
+        raise read_error(3, "No such process")
+
+    monkeypatch.setattr(os, "kill", kill)
+    monkeypatch.setattr(Path, "read_text", read_text)
+
+
+@pytest.mark.parametrize(
+    "read_error",
+    [ProcessLookupError, FileNotFoundError],
+    ids=["reaped-after-open", "reaped-before-open"],
+)
+def test_a_process_reaped_between_probe_and_read_is_not_running(
+    monkeypatch: pytest.MonkeyPatch, read_error: type[OSError]
+) -> None:
+    # Run 37272714147, suite-b: the grandchild was reaped after `os.kill(pid, 0)` found
+    # it and before /proc/<pid>/stat was read, and the read's ProcessLookupError escaped
+    # the helper as the test's failure instead of answering "not running".
+    _race(monkeypatch, read_error, gone=True)
+    # This process's own pid, so its /proc entry is really there to be found.
+    assert not running(os.getpid())
+
+
+def test_a_live_process_with_no_proc_entry_runs(monkeypatch: pytest.MonkeyPatch) -> None:
+    # A platform without /proc has no entry for a live process either.
+    _race(monkeypatch, FileNotFoundError, gone=False)
+    assert running(os.getpid())
 
 
 def test_a_missing_receipt_is_one_problem_not_a_traceback(tmp_path: Path) -> None:

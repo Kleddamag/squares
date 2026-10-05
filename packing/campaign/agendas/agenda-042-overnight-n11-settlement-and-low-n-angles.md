@@ -1627,6 +1627,45 @@ agenda:
       endpoint7 control runs first at 3,600 s and must not close. The branch-and-bound
       queue routes on the Knuth estimate's mean with A and W7 as calibration controls and
       certifies classes of at most 1.5e5 nodes. Evidence record exp-251.
+  - id: BC-421
+    purpose: research
+    owner_focus: correctness
+    instances:
+    - 17
+    state: in_progress
+    priority: 1
+    question: >-
+      Does any of the 95 distance-2 orbits of the arity8 frame pack at U, which would make
+      the near-endpoint stage non-empty?
+    hypotheses:
+    - H-273
+    budget: >-
+      At most 6 CPU-hours on slot 4: ten shards of 9 or 10 orbits, each at a 3,600 s
+      survey ceiling under a hard timeout of 3,900 s.
+    entry: >-
+      H-273 registered with the survey's shard option at its registration commit, a
+      second clean run worktree at that commit, and slot 4 open at the coordinator's word.
+    exit: >-
+      All 95 orbits searched, or a placement found, which stops the lane for an exact
+      check and the coordinator. A shard whose endpoint control fails to place stops the
+      lane as an instrument failure.
+    bead: think-tmz6
+    depends_on:
+    - BC-415
+    next_evidence: packing/campaign/agent-sessions/session-182-n17-overnight-lanes.md
+    workflows:
+    - research-loop
+    program: post-optimality-low-n
+    parallel_group: n17-overnight-182
+    artifacts:
+    - docs/project/specs/active/plan-2026-10-05-n17-overnight.md
+    note: >-
+      Under BC-418, lane E of the n17 overnight plan (the backfill). The plan's run line
+      named shards of 30 on two workers at a 3,600 s ceiling; the survey had no way to
+      shard, so 504a84464 adds --shard K/N, and on one slot the same ceiling holds ten
+      shards of 9 or 10. A positive result needs exclusion at U' in the composed argument;
+      a negative is recorded as no placement in that many searches. Evidence record
+      exp-253 or the next free id when it is written.
   - id: BC-422
     purpose: tool_validation
     owner_focus: efficiency
@@ -1659,7 +1698,7 @@ agenda:
       sessions terminal since session-180's efficiency-loop phase). The prior per-row
       reading is 0.91 s for the producer's self-check against 0.18 s for the standing
       verifier on N1. CPU is tonight's bottleneck, so the block adds no gate run while
-      the compute lanes hold the CPUs. BC-421 stays reserved for lane E.
+      the compute lanes hold the CPUs. BC-421 is lane E's.
   - id: BC-423
     purpose: research
     owner_focus: correctness
@@ -1821,11 +1860,11 @@ under BC-418, with three cells registered before the first target run.
 | --- | --- | --- |
 | BC-419 / H-264: per-state price | A, two compute slots | H-264 rewritten in place with `instrument_ready: true`; the seed-182 draw of 12 states, 10 counted. |
 | BC-420 / H-267: flag certification | K, one compute slot, two when slot 4 opens | Nine kernel targets frozen in projected-gain order; the branch-and-bound queue waits for slot 4. |
+| BC-421 / H-273: distance-2 orbits at the cap | Slot 4, one worker | Ten shards of the 95 distance-2 orbits through the float survey; a placement stops the lane for an exact check. |
 | BC-422: OR-12 efficiency block | No compute | Gate walls from the registration’s validation runs; per-row costs from the lanes’ receipts. |
 | BC-423 / H-267: K-k2 with lane D’s settings | Lane K’s freed slot | Added at the 11:27 check-in: 48 rounds, 2,304 rows, octagon core; the endpoint7 control first under the same settings. |
 
-BC-421 is reserved for lane E (H-273, near-endpoint sizing), registered only when it
-launches.
+BC-421 is lane E (H-273, near-endpoint sizing), registered when slot 4 opened.
 
 <!-- This document follows common-doc-guidelines.md.
 See github.com/jlevy/practical-prose and review guidelines before editing.

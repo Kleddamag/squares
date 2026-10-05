@@ -283,10 +283,10 @@ hypothesis status and summarizes experiment verdicts, and the
 | Record | Count | State at the cutoff |
 | --- | ---: | --- |
 | Agendas | 39 | 19 active; 14 completed; 5 paused; 1 superseded |
-| Commitments | 411 | 212 complete; 65 stopped; 70 blocked; 25 ready; 21 tentative; 18 in progress |
+| Commitments | 412 | 212 complete; 65 stopped; 70 blocked; 25 ready; 21 tentative; 19 in progress |
 | Sessions | 180 | 105 completed; 74 stopped; 1 nonterminal |
 | Explorations | 47 | 28 linked to proposed hypotheses; 19 uncodified |
-| Hypotheses | 206 | 43 confirmed; 33 refuted; 63 blocked; 19 unresolved; 9 open; 34 open questions; 2 result registered; 2 abandoned; 0 running; 1 exhausted |
+| Hypotheses | 207 | 43 confirmed; 33 refuted; 63 blocked; 19 unresolved; 10 open; 34 open questions; 2 result registered; 2 abandoned; 0 running; 1 exhausted |
 | Experiments | 181 | 57 accepted; 38 rejected; 56 unresolved; 12 baseline; 11 blocked; 4 abandoned; 2 in progress; 1 exhausted |
 | Frontier results | 93 | 93 registered, 64 by others |
 
@@ -5622,6 +5622,7 @@ round that names the hypothesis, control roles included.
 | [H-269](packing/campaign/hypotheses/H-269-periodic-certificates-k2-minus-4-and-5.md) | blocked | A periodic measure of T-064’s form proves $s(k^2-4)=k$ and $s(k^2-5)=k$ for all large $k$; the go/no-go is an exact corner deficit $D>1$ (X-049). Since 3 October 2026 T-081 reports the $d=4$ cell at $D\approx 1.074$, pending its replay (`think-8hk1`); $d=5$ stays open | 0 | — |
 | [H-270](packing/campaign/hypotheses/H-270-k2-plus-1-crossover-kearney-shiu-strip.md) | blocked | Some $k$ in 18..41 has a Kearney–Shiu strip packing of $k^2+1$ squares below the plateau $k+5/\sqrt2-3$ (X-049) | 0 | — |
 | [H-272](packing/campaign/hypotheses/H-272-symmetric-kingbird-records-reoptimized.md) | blocked | At least 7 of the 68 symmetric Kingbird-derived records re-optimize without symmetry to a verified smaller side (X-049) | 0 | — |
+| [H-273](packing/campaign/hypotheses/H-273-n17-distance-two-infeasible-at-cap.md) | open | Each of the 95 distance-2 orbits of the arity8 frame is infeasible at U; a float survey refutes it with one placement and cannot confirm it (Session 182, lane E) | 0 | — |
 
 ### Confirmed
 

@@ -8766,8 +8766,10 @@ results:
     next_rung: >-
       The complete replay, about 15.5 CPU-hours planned (16.2 by the source's own
       oblique seconds), with devtools.audit_wand125_point_and_mixed mixed-replay n66-L843
-      over ranges and mixed-merge, before the verified lower bound at n = 66 moves; it
-      moves when the replay returns the certificate's own record at all 201 directions.
+      over the remaining ranges (the six sampled are done) and mixed-merge, before the
+      verified lower bound at n = 66 moves; it moves when the replay returns the
+      certificate's own record at all 201 directions. think-0fkt holds it for a compute
+      budget.
     notes: >-
       V0 because the cited entry is the source's claim: assurance reported, no complete
       replay. C1 because the 5 October review of the certificate is recorded as the report

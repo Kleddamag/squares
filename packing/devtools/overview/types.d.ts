@@ -45,6 +45,9 @@ declare function enhanceMath(): Promise<void> | undefined;
 /** The atlas's two views (`atlas-view.js`): the grid, and the triangle of rows by k. */
 type AtlasView = "grid" | "triangle";
 
+/** The atlas's three sizes of tile (`atlas-view.js`), Medium the default. */
+type AtlasSize = "small" | "medium" | "large";
+
 /**
  * Where a case stands in the triangle for the tiles a line holds: its row k, its line
  * from the top of the triangle, its column from the left, and whether its line opens a
@@ -76,9 +79,13 @@ interface SiteAtlasViewApi {
   row(n: number): number;
   widest(last: number): number;
   perLine(width: number, least: number, most: number): number;
+  perLineAt(width: number, least: number, largest: number, most: number, scale: number): number;
   place(n: number, per: number): AtlasTrianglePlace;
   viewOf(search: string): AtlasView;
   searchFor(search: string, view: AtlasView): string;
+  sizeOf(search: string): AtlasSize;
+  searchForSize(search: string, size: AtlasSize): string;
+  stepTo(key: string, from: number, count: number): number;
   lengthPx(text: string, rootPx: number): number;
   milliseconds(text: string): number;
   moveFrom(first: AtlasBox, last: AtlasBox, holder: AtlasBox): AtlasMove;
@@ -86,16 +93,3 @@ interface SiteAtlasViewApi {
 }
 
 declare var SiteAtlasView: SiteAtlasViewApi;
-
-/** The atlas's two drawings of a case (`atlas-layer.js`): the record's own, and the
- * regularized derived view, which only some cases have. */
-type AtlasLayer = "house" | "regularized";
-
-/** The pure functions of `atlas-layer.js`, which the Node tests run with no document. */
-interface SiteAtlasLayerApi {
-  layerOf(search: string): AtlasLayer;
-  searchFor(search: string, layer: AtlasLayer): string;
-  stepTo(key: string, from: number, count: number): number;
-}
-
-declare var SiteAtlasLayer: SiteAtlasLayerApi;

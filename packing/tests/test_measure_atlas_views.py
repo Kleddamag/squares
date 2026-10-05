@@ -5,8 +5,8 @@ wrong with a layout (`layout_problems`). The browser tests (`test_site_atlas_vie
 on that judgement, so this holds it: the triangle's rows and the lines a wrapped row is
 cut into, written here independently of the page's script, and each fault a layout may
 have, planted in a layout that is otherwise right and required to be named. The same
-goes for the drawing a layout shows (`layer_problems`): the wrong drawing for the layer,
-and a regularized tile's badge missing, over its number or out of its tile.
+goes for the marks a tile carries (`mark_problems`): a new-result star or a regularized
+badge over its number or out of its tile, and a number pushed off its tile's centre.
 """
 
 from __future__ import annotations
@@ -202,23 +202,40 @@ def test_a_grid_is_held_to_order_and_room_and_not_to_the_triangle() -> None:
 def test_the_views_and_their_controls_are_named_one_way() -> None:
     assert atlas.query_for("grid") == ""
     assert atlas.query_for("triangle") == "?atlas=triangle"
-    assert atlas.query_for("grid", "regularized") == "?layer=regularized"
-    assert atlas.query_for("triangle", "regularized") == "?atlas=triangle&layer=regularized"
-    assert atlas.query_for("triangle", "house") == "?atlas=triangle"
+    assert atlas.query_for("grid", "large") == "?size=large"
+    assert atlas.query_for("triangle", "small") == "?atlas=triangle&size=small"
+    assert atlas.query_for("triangle", "medium") == "?atlas=triangle"
     assert atlas.tab("triangle") == '[data-atlas-tab="triangle"]'
-    assert atlas.layer_tab("regularized") == '[data-atlas-layer-tab="regularized"]'
-    assert atlas.LAYERS == ("house", "regularized")
+    assert atlas.size_tab("large") == '[data-atlas-size-tab="large"]'
+    assert atlas.SIZES == ("small", "medium", "large")
+    assert atlas.MEDIUM in atlas.SIZES
+    assert not hasattr(atlas, "LAYERS")
     for name in (atlas.query_for, atlas.tab):
         with pytest.raises(ValueError, match="no view"):
             name("pyramid")
-    with pytest.raises(ValueError, match="no drawing"):
-        atlas.layer_tab("tidied")
-    with pytest.raises(ValueError, match="no drawing"):
-        atlas.query_for("grid", "tidied")
-    # Every change `move` times is one a reader makes, and each is named once.
+    with pytest.raises(ValueError, match="no size"):
+        atlas.size_tab("huge")
+    with pytest.raises(ValueError, match="no size"):
+        atlas.query_for("grid", "huge")
+    # Every change `move` times is one a reader makes, and each is named once; a change
+    # of size is timed in both views, and the page is put back at Medium after each.
     named = [change for change, _, _ in atlas.CHANGES if change is not None]
     assert len({(change, shown) for change, shown, _ in atlas.CHANGES if change}) == len(named)
     assert {shown for _, shown, _ in atlas.CHANGES} == {100, 324}
+    sized = [change for change, _, press in atlas.CHANGES if change and "size-tab" in press]
+    assert sized == [
+        "grid, medium to large",
+        "grid, large to small",
+        "triangle, medium to large",
+        "triangle, large to small",
+    ]
+    for index, (change, _, _) in enumerate(atlas.CHANGES):
+        if change is not None and change.endswith("large to small"):
+            assert atlas.CHANGES[index + 1] == (
+                None,
+                atlas.CHANGES[index][1],
+                atlas.size_tab("medium"),
+            )
 
 
 def test_runs_are_reported_as_their_median_and_their_most_long_tasks() -> None:
@@ -261,40 +278,44 @@ def test_a_page_that_is_not_built_is_refused(tmp_path: Path) -> None:
     assert atlas.page_address(built, render=False) == built.resolve().as_uri()
 
 
-#: The cases the page offers a regularized drawing of, in the planted layouts.
-VIEWED = [5, 7]
+#: The cases that carry a star, and the ones that carry the badge, in the planted layouts.
+STARRED, BADGED = [5, 6, 7], [5, 8]
 
 
-def _drawn(report: dict[str, Any], layer: str) -> dict[str, Any]:
-    """`report` in drawing `layer`: in the regularized layer each viewed case's tile is
-    drawn so, with its number centred under its drawing and its badge just past it."""
+def _marked(report: dict[str, Any]) -> dict[str, Any]:
+    """`report` with each tile's number centred under its drawing, a star just past the
+    number of each starred case and a badge just before the number of each badged one."""
     tiles = []
     for tile in report["tiles"]:
         centre = (tile["left"] + tile["right"]) / 2
         number = {"left": centre - 6, "right": centre + 6, "top": tile["bottom"] - 10}
         number["bottom"] = tile["bottom"] - 2
-        drawn = layer == "regularized" and tile["n"] in VIEWED
+        star = (
+            {
+                "left": number["right"] + 1,
+                "right": number["right"] + 7,
+                "top": tile["bottom"] - 9,
+                "bottom": tile["bottom"] - 3,
+                "width": 6,
+                "height": 6,
+            }
+            if tile["n"] in STARRED
+            else None
+        )
         mark = (
             {
-                "left": number["right"] + 2,
-                "right": number["right"] + 6,
+                "left": number["left"] - 6,
+                "right": number["left"] - 2,
                 "top": tile["bottom"] - 8,
                 "bottom": tile["bottom"] - 4,
                 "width": 4,
                 "height": 4,
             }
-            if drawn
+            if tile["n"] in BADGED
             else None
         )
-        tiles.append(
-            {
-                **tile,
-                "layer": "regularized" if drawn else "house",
-                "number_box": number,
-                "mark": mark,
-            }
-        )
-    return {**report, "layer": layer, "regularized": VIEWED, "tiles": tiles}
+        tiles.append({**tile, "number_box": number, "star": star, "mark": mark})
+    return {**report, "size": "medium", "tiles": tiles}
 
 
 def _changed(report: dict[str, Any], n: int, **fields: Any) -> dict[str, Any]:
@@ -302,47 +323,38 @@ def _changed(report: dict[str, Any], n: int, **fields: Any) -> dict[str, Any]:
     return {**report, "tiles": tiles}
 
 
-def test_each_fault_of_a_drawing_is_named() -> None:
-    """A right layout in either drawing has no problem, and a page with no drawing layer
-    is not asked for one. Each fault is planted alone and must be named: a viewed case
-    in its house drawing in the regularized layer, any regularized tile in the house
-    layer, a badge on a house tile, a regularized tile with no badge, a badge over its
-    number or outside its tile, and a number moved off its tile's centre."""
-    for layer in atlas.LAYERS:
-        assert atlas.layout_problems(_drawn(_triangle(100, 8), layer)) == []
-        assert atlas.layout_problems(_drawn(_grid(100, 10), layer)) == []
-    assert atlas.layer_problems(_grid(100, 10)) == []
-    right = _drawn(_grid(100, 10), "regularized")
+def test_each_fault_of_a_tiles_marks_is_named() -> None:
+    """A right layout with its marks has no problem, in either view, and a report with
+    no number's box is not asked about marks. Each fault is planted alone and must be
+    named: a star or a badge with no size, over its number or outside its tile, and a
+    number moved off its tile's centre."""
+    assert atlas.layout_problems(_marked(_triangle(100, 8))) == []
+    assert atlas.layout_problems(_marked(_grid(100, 10))) == []
+    assert atlas.mark_problems(_grid(100, 10)) == []
+    right = _marked(_grid(100, 10))
 
     def problems(report: dict[str, Any]) -> list[str]:
-        return atlas.layer_problems(report)
+        return atlas.mark_problems(report)
 
-    assert problems(_changed(right, 5, layer="house", mark=None)) == [
-        "n = 5 is drawn house in the regularized layer"
-    ]
-    assert problems(_changed(right, 6, layer="regularized")) == [
-        "n = 6 is drawn regularized in the regularized layer",
-        "n = 6 has no badge",
-    ]
-    house = _drawn(_grid(100, 10), "house")
-    assert problems({**house, "tiles": right["tiles"]}) == [
-        "n = 5 is drawn regularized in the house layer",
-        "n = 7 is drawn regularized in the house layer",
-    ]
-    badge = next(tile["mark"] for tile in right["tiles"] if tile["n"] == 5)
-    assert problems(_changed(right, 6, mark=badge)) == [
-        "n = 6 carries the badge in its house drawing"
-    ]
-    assert problems(_changed(right, 5, mark=None)) == ["n = 5 has no badge"]
-    over = {**badge, "left": badge["left"] - 6, "right": badge["right"] - 6}
-    assert problems(_changed(right, 5, mark=over)) == ["n = 5's badge runs over its number"]
     tile = next(tile for tile in right["tiles"] if tile["n"] == 5)
-    out = {**badge, "left": tile["right"] - 1, "right": tile["right"] + 3}
+    star, badge, number = tile["star"], tile["mark"], tile["number_box"]
+    assert problems(_changed(right, 5, star={**star, "width": 0})) == [
+        "n = 5's star has no size"
+    ]
+    assert problems(_changed(right, 5, mark={**badge, "height": 0})) == [
+        "n = 5's badge has no size"
+    ]
+    over = {**star, "left": star["left"] - 4, "right": star["right"] - 4}
+    assert problems(_changed(right, 5, star=over)) == ["n = 5's star runs over its number"]
+    over = {**badge, "left": badge["left"] + 4, "right": badge["right"] + 4}
+    assert problems(_changed(right, 5, mark=over)) == ["n = 5's badge runs over its number"]
+    out = {**star, "left": tile["right"] - 1, "right": tile["right"] + 5}
+    assert problems(_changed(right, 5, star=out)) == ["n = 5's star stands outside its tile"]
+    out = {**badge, "left": tile["left"] - 3, "right": tile["left"] + 1}
     assert problems(_changed(right, 5, mark=out)) == ["n = 5's badge stands outside its tile"]
-    number = tile["number_box"]
     moved = {**number, "left": number["left"] - 4, "right": number["right"] - 4}
-    assert problems(_changed(right, 5, number_box=moved)) == [
-        "n = 5's number is off its tile's centre"
+    assert problems(_changed(right, 6, number_box=moved)) == [
+        "n = 6's number is off its tile's centre"
     ]
     found = atlas.summary(right)
-    assert (found["layer"], found["regularized"]) == ("regularized", 2)
+    assert (found["size"], found["starred"], found["badged"]) == ("medium", 3, 2)

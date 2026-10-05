@@ -9,6 +9,10 @@ sub-patterns and certifies none, and the kernel has not yet closed one.
 Until an independent prover certifies a pattern infeasible, nothing it flags excludes a
 case.
 
+*Updated 2026-10-05:* W7 and A were admitted in exp-249, and SW9 and N1 in exp-250.
+[`certified-sub-patterns.yaml`](certified-sub-patterns.yaml) is the live source.
+The sections below record the pilots as they ran.
+
 ## H-267: The Sub-Pattern Selector
 
 `devtools/select_n17_sub_patterns.py` (SHA-256 `a40f34fb…`), built by lane S1, Opus at
@@ -177,7 +181,7 @@ selector predicted for the class.
 Every checker module is byte-identical to `214601ac`; only the producer differs.
 
 The closure is not admitted, and nothing in the census uses it yet.
-Four things must come first:
+(*Later:* admitted in exp-249.) Four things must come first:
 - The seed and node objects were not saved; the receipt holds their SHA-256 (node
   `2d516d00…`, seed `8949a798…`). A re-run must reproduce them and save them, and a
   fresh process must re-check them.
@@ -207,11 +211,14 @@ independent review was running alongside it.
 The certificate is in `certificates/W7/`: the gzipped seed and node, each named by the
 SHA-256 of its decompressed canonical JSON, and a `README.txt` giving the format for an
 independent reader. Since 2026-10-04 the gzipped objects of every certificate here are
-hosted outside Git as release assets (OR-18), listed with asset, size and SHA-256 in
-[`certificates/hosted-data.yaml`](certificates/hosted-data.yaml); the README files and
-verification receipts stay.
-`python -m devtools.hosted_data fetch --manifest` with that file’s path puts the objects
-back at these paths, so every command in this record runs as written.
+hosted outside Git as assets of the release
+[`data/n17-x048-session-168-certificates-v1`](https://github.com/jlevy/squares/releases/tag/data/n17-x048-session-168-certificates-v1)
+(OR-18), listed with asset, size and SHA-256 in
+[`packing/hosted/n17-x048-session-168-certificates.yaml`](../../../hosted/n17-x048-session-168-certificates.yaml);
+the README files and verification receipts stay.
+`python -m devtools.hosted_data fetch --manifest hosted/n17-x048-session-168-certificates.yaml`,
+run from `packing/`, puts the objects back at these paths, so every command in this
+record runs as written.
 
 The sharper falsifier is the useful one.
 It runs the same cascade as W7, so it exercises the collision path that closes W7, and
@@ -262,6 +269,8 @@ Farkas multipliers and bound certificates in exact rationals, with a format READ
 own exact re-check passes all 4,504 Farkas closures, 639,609 bound certificates and
 324,934 cuts. It is held outside the repository until the independent review decides
 admission; the run is deterministic and regenerates it from these bytes.
+*Later:* admitted in exp-249. Its objects are hosted under OR-18; see the manifest named
+above.
 
 The two provers complement each other.
 The kernel closes W7 and stalls on A, and the branch and bound closes A and does not
@@ -385,6 +394,35 @@ objects, named by content id.
 | `margins-2304.json` | `margins receipts/flag2-diagnosis/place-2304.json` | the largest side without each cell: $1.0066$ without interior-SE, $1.0115$ without side-S1, $1.029$ to $1.076$ without any other |
 | `support-2304.json` | `support node-3de853f3….json.gz --samples 200` | side-W0 has no supported pose; interior-SE and side-S1 are 90.5 and 96.5 per cent supported |
 | `support-1152.json` | `support node-89a19166….json.gz --samples 200` | at the 1,152-row fixed point the knot is already unsupported (side-W0 27 per cent) by margins below that state’s row losses |
+
+## Adaptive Rows: Flags 2 and 3
+
+Lane K2’s adaptive rows (non-uniform row splits, `think-ljxn`) ran at 64 bins.
+
+| Receipt | Class | Outcome |
+| --- | --- | --- |
+| `receipts/kernel-flag3-a9-bins64.json`, `receipts/kernel-flag2-a9-bins64.json` | flags 3 and 2 on uniform rows | `PASS_CERTIFIED_STALL` for both |
+| `receipts/kernel-split-flag3-a9-bins64.json` | flag 3 (SW9) on adaptive rows | `PASS_CERTIFIED_CLOSED`; admitted in exp-250 |
+| `receipts/kernel-split-W7-bins64.json` | W7 on adaptive rows | `PASS_CERTIFIED_CLOSED`, the control |
+| `receipts/kernel-split-flag2-a9-bins64.json` | flag 2 at a cap of 1,152 rows | `PASS_SAVED_STALL` at the row cap |
+| `receipts/kernel-split2304-flag2-a9-bins64.json` | flag 2 at a cap of 2,304 rows | `INCOMPLETE`: the row sweep checked 5,625 of 17,633 rows before its 12,000 s ceiling |
+
+The [Flag 2 Diagnosis](#flag-2-diagnosis) above reads the two flag-2 nodes.
+
+## Capture Pilot 2
+
+Capture pilot 2 lifted the live-row cap, as the
+[after-pilot review](../../../../docs/project/reviews/review-2026-10-02-n17-capture-after-pilot.md)
+asked (`think-g2qn`).
+
+| Receipt | Rows | Outcome |
+| --- | --- | --- |
+| `receipts/capture-pilot2-box1024-128.json` | 128 | `MEASURED_STALLED_AT_ROW_CAP` |
+| `receipts/capture-pilot2-box1024-256/` | 256 | undecided at round 13, then resumed by need |
+| `receipts/capture-pilot2-box1024-need/` | allotted by need | the review’s falsifier is met at round 17 (`score.txt`): every widest row under $1/20$ of its extent for three rounds, no position contracted; `receipt.json` records `outcome: falsified` |
+
+Lane R9’s reading of the met falsifier is not yet written, so the capture route is
+undecided.
 
 <!-- This document follows common-doc-guidelines.md.
 See github.com/jlevy/practical-prose and review guidelines before editing.

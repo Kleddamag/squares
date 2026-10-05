@@ -61,6 +61,11 @@ allowlist:
   - path: packing/devtools/build_known_best_atlas.py
     kind: download
     boundary: Upstream's declared digest of a known-best packing it publishes (H9).
+  - path: packing/src/sqpack/hosted_data.py
+    kind: download
+    boundary: >-
+      Release assets of bulk data hosted outside Git (OR-18), each downloaded and held
+      against the SHA-256 its committed manifest names; from main's PR 349.
   - path: packing/devtools/check_general_pose_tree_census.py
     kind: external-checkout
     boundary: The general_pose_tree checker, another repository passed by --checker (C3).

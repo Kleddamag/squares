@@ -1,8 +1,9 @@
 # Session 172: the frozen raw binary graph supports every row
 
-All **96 live owner-angle rows** have independently replayed complete six-owner
-supports. The one preregistered capacity completion attempt closes whole-row deletion by
-this exact binary network on the saved B16-bin/2-round state.
+All **96 live owner-angle rows** have freshly replayed (same implementation, no search)
+complete six-owner supports.
+The one preregistered capacity completion attempt closes whole-row deletion by this
+exact binary network on the saved B16-bin/2-round state.
 It does not establish actual geometric poses, feasibility of a packing or global
 optimality.
 
@@ -65,8 +66,8 @@ guarantee or cold speedup is inferred.
 ## Retained witnesses and replay
 
 [B packet](receipts/B-support-packet.json),
-[independent replay](receipts/B-independent-replay.json) and endpoint packets retain
-exact piece/domain/core/source references.
+[fresh replay](receipts/B-independent-replay.json) and endpoint packets retain exact
+piece/domain/core/source references.
 Compact copies were checked JSON-equal to local pretty originals.
 Receipt hashes identify canonical JSON content.
 Large inputs and local full/partial/Job logs remain outside Git.
@@ -124,6 +125,13 @@ uv run --frozen --all-extras --group dev python -m devtools.probe_n17_raw_row_su
   --verify campaign/explorations/X048-session-172-capacity-support/receipts/B-support-packet.json \
   --output "PATH/TO/NEW-REPLAY.json"
 ```
+
+Commits cited in this record that are not in this branch’s history resolve at the tag
+`archive/guzhou-review-a-333` (Guzhou’s original nine-session branch); those from PR 307
+and PR 325 also resolve at `refs/pull/325/head`. The references are provenance only; no
+code reads them (`OR-18`). “Fresh replay” here means the same implementation re-run in a
+separate process without search; receipt names ending in `-independent-replay.json`
+predate that wording.
 
 <!-- This document follows common-doc-guidelines.md.
 See github.com/jlevy/practical-prose and review guidelines before editing.

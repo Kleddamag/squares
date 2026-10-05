@@ -69,7 +69,6 @@ GRANDFATHERED_INDEPENDENCE = frozenset(
         "E-basic-grid-upper",
         "E-bentz13-figure2-audit",
         "E-bentz46-theorem8-audit",
-        "E-franciscouzo-2026-09-27-interval-replay",
         "E-gobel-family-upper",
         "E-gobel-offcentre-upper",
         "E-gobel-strip-upper",
@@ -95,7 +94,6 @@ GRANDFATHERED_INDEPENDENCE = frozenset(
         "E-n040-gobel-upper",
         "E-n061-wand125-point-cover-evand-replay-report",
         "E-n082-gobel-l-upper",
-        "E-n211-de-winter-interval-replay",
         "E-wand125-tools-n11-row-report",
     }
 )

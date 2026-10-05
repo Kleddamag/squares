@@ -174,11 +174,13 @@ def _selected_entries(
                 [
                     entry
                     for entry in non_grid
-                    if source_kinds[entry["n"]] == "unitsquare-rendering"
+                    if source_kinds[entry["n"]] == "packet-derived-facts"
                 ],
                 key=lambda entry: entry["n"],
             ),
-            "first retained UnitSquare rendering-derived geometry",
+            # The first retained UnitSquare rendering held this place until n = 69, the
+            # last of them, left for the catalogue on 2026-10-05 (T-088).
+            "first source-packet-derived geometry, a parallel project's packing",
         ),
         (
             max(

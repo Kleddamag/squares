@@ -15,8 +15,9 @@ from sqpack.assurance import bounds_agree_at_declared_precision
 from sqpack.witness import witness_document
 from sqpack.yamlio import safe_load
 
-#: Where the certified ceiling sits above the printed side, measured on 2026-09-29.
-TRAILING = {206, 259, 305}
+#: Where the certified ceiling sits above the printed side: n = 206, 259 and 305, measured
+#: on 2026-09-29, and n = 306 at Couzo's revision of 3 October, measured on 2026-10-05.
+TRAILING = {206, 259, 305, 306}
 
 
 def test_the_verified_value_is_the_larger_of_the_printed_and_certified_sides() -> None:
@@ -87,7 +88,7 @@ def test_each_retained_packet_is_consistent_with_its_receipts(source: packets.So
     assert packets.fast_problems(source) == []
 
 
-def test_every_certificate_verifies_and_the_trailing_cases_are_the_measured_three() -> None:
+def test_every_certificate_verifies_and_the_trailing_cases_are_the_measured_four() -> None:
     trailing = set()
     for source in packets.CERTIFIED:
         for n, row in packets.certification(source).items():
@@ -198,7 +199,7 @@ def test_issue_227_dates_a_claim_only_at_the_shared_count_it_names() -> None:
 def test_couzos_ai_statement_is_quoted_for_the_counts_it_names() -> None:
     """Issue #227 speaks of the 102 and 103 packings, never of all 49."""
     for plan in apply.plans():
-        if plan.registration.source is not packets.FRANCISCOUZO:
+        if plan.registration.source.layout != "couzo":
             continue
         body = (apply.FRONTIER / f"n-{plan.n:03d}.md").read_text(encoding="utf-8")
         flat = " ".join(body.split())
@@ -206,3 +207,46 @@ def test_couzos_ai_statement_is_quoted_for_the_counts_it_names() -> None:
         assert quoted in flat, plan.n
         assert "itself states no AI assistance" in flat, plan.n
         assert "found the packings" not in flat, plan.n
+
+
+def test_the_october_packet_keeps_exactly_the_sides_couzo_lowered() -> None:
+    """The 3 October packet follows the 27 September one and keeps each count whose side
+    changed, each below the side it replaces, and no other."""
+    later = packets.FRANCISCOUZO_2026_10_03
+    assert later.supersedes == packets.FRANCISCOUZO.id
+    earlier = packets.cases(packets.FRANCISCOUZO)
+    kept = packets.cases(later)
+    assert sorted(kept) == [208, 209, 228, 263, 272, 303, 306]
+    for n, case in kept.items():
+        assert Decimal(case["side"]) < Decimal(earlier[n]["side"]), n
+        assert [entry["side"] for entry in case["history"]][-2:] == [
+            earlier[n]["side"],
+            case["side"],
+        ], n
+    pinned = {entry["path"] for entry in packets.acquisition(later)["files"]}
+    first = packets.acquisition(packets.FRANCISCOUZO)["files"]
+    assert pinned == {entry["path"] for entry in first}
+
+
+def test_a_later_registration_takes_a_count_and_keeps_the_earlier_packing() -> None:
+    """At each count the October packet lowered, the record reports and verifies its side,
+    still cites the September evidence, and states the packing it replaced."""
+    taken = [plan for plan in apply.plans() if plan.previous is not None]
+    assert sorted(plan.n for plan in taken) == [208, 209, 228, 263, 272, 303, 306]
+    for plan in taken:
+        earlier = plan.previous
+        assert earlier is not None
+        assert earlier.registration.result == "T-056"
+        assert plan.registration.result == "T-092"
+        text = (apply.FRONTIER / f"n-{plan.n:03d}.md").read_text(encoding="utf-8")
+        _, front, body = text.split("---\n", 2)
+        case = safe_load(front)["packing"]
+        assert case["reported_upper_bound"]["value"] == plan.side, plan.n
+        assert case["verified_upper_bound"]["value"] == plan.verified, plan.n
+        assert earlier.registration.replay in case["evidence"], plan.n
+        flat = " ".join(Reading.of(body).text.split())
+        assert f"It replaces his packing of side `{earlier.side}`" in flat, plan.n
+        assert flat.count("earlier packing for this count") == 1, plan.n
+        assert f"certified `s({plan.n}) ≤ {earlier.verified}` from it" in flat, plan.n
+        assert "Before that intake" in flat, plan.n
+        assert "Before this intake" not in flat, plan.n

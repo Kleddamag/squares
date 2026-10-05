@@ -3,7 +3,7 @@ softschema:
   schema: source-coverage.schema.yaml
   status: enforced
 
-last_reviewed: '2026-10-02'
+last_reviewed: '2026-10-05'
 coverage_scope: >
   Current public upper-bound catalogues and first-party result releases known to this
   project, the Schadt n=29 witness-contract regression source, and the September 2026
@@ -229,6 +229,35 @@ sources:
       reduction is in Lean. The bundle, the run's record and the Lean closure are retained.
       The fast verify.sh passed here; the full run has not been replayed. The cases k = 10
       to 18 move in the reported lane only.
+  - id: evand-square-packing-2026-10-04
+    title: square-packing and its Square Packing Atlas site, with the open-problems page
+    role: source-repository
+    url: https://github.com/evand/square-packing/tree/7ff3b2113532889708a3baa4d56bc44294022e63
+    local: resources/web/evand-square-packing-2026-10-04/square-packing/
+    source_key: '[evand square-packing 2026-10-04]'
+    scope: {n_min: 1, n_max: 324}
+    reviewed: '2026-10-05'
+    source_date: '2026-10-04'
+    disposition: current-report
+    replay_disposition: case-specific
+    represented_by: [frontier/n-020.md, frontier/results.yaml]
+    evidence: [E-n020-evand-point-cover-4886-report]
+    notes: >-
+      Revision 7ff3b2113532889708a3baa4d56bc44294022e63, retrieved at 2026-10-05T00:34Z,
+      when it was main: the Square Packing Atlas as its Pages workflow deploys it to
+      https://evand.github.io/square-packing/, cited as [evand square packing atlas
+      2026-10-04], with the open-problems page added on 4 October, and what the repository
+      added after the 2eb15455 packet. The site's floors table for n <= 100 equals this
+      record's verified lower bound at 99 counts and its reported one at n = 96, the k = 10
+      case of T-081; every floor it marks verified, and every count past 100 its overview
+      rings for s(k^2 - c) = k with c = 1, 2, 3, is a value the verified lane holds
+      (receipts/site_floors_compare.json in the packet). The repository's s(20) point cover
+      at side 2443/500 is below the verified s(20) >= 1959/400 and is kept as a report only.
+      Its pure-cover ceilings for n = 17 to 20 bound a method and move no case. Its Lean for
+      the LEB and CAP leaves of ValidTilt7 is an evidence note on T-064, and its bridge to
+      chelokot's definitions one on T-086; neither moves a rung. The site's history lists
+      Guzhou0806's R070 and R071 for s(17), above the verified 116511/25000; they are an
+      import of their own from Guzhou0806's repository (think-1qms). Nothing was replayed.
   - id: kleddamag-n17-466001-2026
     title: Seventeen unit squares — a certified lower bound, 4.66001 package
     role: source-repository
@@ -282,7 +311,38 @@ sources:
       for byte) matched the published ledgers on every one of 4,991 rows.
       One event-cell method, so V4/C3 and no method-distinct C4; the native
       parent-core route cannot represent the weighted-threshold and
-      winning-subset features.
+      winning-subset features. It still holds the verified field; R071
+      (guzhou-n17-r071-2026) reports 11/4000000 more on the same charge and is
+      not yet replayed.
+  - id: guzhou-n17-r071-2026
+    title: N17 square packing, R071 strict lower bound 4.66044275
+    role: source-repository
+    url: https://github.com/Guzhou0806/n17-square-packing/tree/8c11f6962506940c5de67a9fa73b3d1e2e151196/certificates/R071-C029
+    local: resources/web/n17-guzhou-r071-2026-09-30/n17-square-packing/
+    source_key: '[Guzhou0806 n17 R071]'
+    scope: {n_values: [17]}
+    reviewed: '2026-10-05'
+    source_date: '2026-09-30'
+    disposition: current-report
+    replay_disposition: case-specific
+    represented_by: [frontier/n-017.md, frontier/results.yaml]
+    evidence: [E-n017-guzhou-r071-report]
+    notes: >-
+      Guzhou0806 / N17 project's R071 release at
+      8c11f6962506940c5de67a9fa73b3d1e2e151196, R068's charge unchanged at a
+      smaller parent over 5,114 intervals, retained on 2026-10-05 as 153 of
+      the 186 files the R070 and R071 commits changed or added since 815b1626,
+      the other 33 pinned by digest, 32 of them the R068 packet's checker and
+      notices byte for byte. It carries the case's reported lower bound,
+      18641771/4000000. Its partition records are missing and a completion
+      summary is retained; the source's CI replay passed and was not observed
+      by its publisher. Not replayed here: the paired replay is priced at about
+      70 CPU-minutes in the packet README. R070 at
+      8988d933e10fe89709a01d98b602396c29dd7bd1, 46604427/10000000 over 5,107
+      intervals with complete published ledgers that agree row by row, is in
+      the same packet and superseded by R071, which is built on it; neither
+      release's research material (R070's overlay and fixed-class obstruction,
+      R071's conditional joint geometry at 9321/2000) carries a bound.
   - id: guzhou-n17-r067-2026
     title: N17 square packing, R067 strict lower bound 4.66018
     role: source-repository
@@ -914,6 +974,117 @@ sources:
       pass on all 22; no angle was replayed, and the proof-bundle tarballs are pinned by
       digest and not retained. Every comparison in the source's audits is with an exact
       rational; six name an unpublished value of the source's own.
+  - id: wand125-mixed-bounds-2026-10-04
+    title: Mixed rectangle-measure certificates of 3 and 4 October 2026 for 16 counts in n = 42 to 95
+    role: source-repository
+    url: https://github.com/wand125/square-packing-bounds/tree/8aa6a10b3b8f165d39c85b68982fed1de086516c
+    local: resources/web/wand125-mixed-bounds-2026-10-04/
+    source_key: '[wand125 mixed bounds 2026-10-04]'
+    scope: {n_values: [42, 43, 44, 51, 56, 57, 67, 69, 72, 75, 84, 86, 88, 93, 94, 95]}
+    reviewed: '2026-10-05'
+    source_date: '2026-10-04'
+    disposition: current-report
+    replay_disposition: case-specific
+    represented_by: [frontier/n-042.md, frontier/n-043.md, frontier/n-044.md, frontier/n-051.md, frontier/n-056.md, frontier/n-057.md, frontier/n-067.md, frontier/n-069.md, frontier/n-072.md, frontier/n-075.md, frontier/n-084.md, frontier/n-086.md, frontier/n-088.md, frontier/n-093.md, frontier/n-094.md, frontier/n-095.md]
+    evidence:
+      - E-n042-wand125-mixed-68475-report
+      - E-n043-wand125-mixed-69075-report
+      - E-n044-wand125-mixed-69725-report
+      - E-n051-wand125-mixed-747-report
+      - E-n056-wand125-mixed-78025-report
+      - E-n057-wand125-mixed-78725-report
+      - E-n067-wand125-mixed-8475-report
+      - E-n069-wand125-mixed-862-report
+      - E-n072-wand125-mixed-876-report
+      - E-n075-wand125-mixed-894-report
+      - E-n084-wand125-mixed-94075-report
+      - E-n086-wand125-mixed-9503-report
+      - E-n088-wand125-mixed-96125-report
+      - E-n093-wand125-mixed-988-report
+      - E-n094-wand125-mixed-994-report
+      - E-n095-wand125-mixed-9965-report
+    notes: >-
+      Revision 8aa6a10b3b8f165d39c85b68982fed1de086516c, retrieved at about 2026-10-04T07:21Z
+      for 16 comments of 3 and 4 October on jlevy/squares#282. 16 rectangle densities checked
+      at coverage one by the source's research copy of Tokoharu's verify.cpp, byte for byte
+      the checker of its n = 50 certificate, each of mass n - 1/100000 and added by its own
+      commit, pinned together at the last. All 16 are recorded as reported lower bounds
+      (T-090), each above what the record reported at its count; at n = 88 and 94 the
+      source's certificates of later that day (T-091, the evening packet) are higher, and
+      the case records report those. Nine supersede certificates this record holds: eight of
+      T-082 and mixed_n84_L940 (T-071). The directories carry no completion-audit.json, so
+      each tarball is bound by its digest at the pinned tree. The exact audit and the
+      replay's checks before its first angle pass on all 16; no angle was replayed, and the
+      proof-bundle tarballs are pinned by digest and not retained. The packet also retains
+      150939e9, which removed completion-audit.json from the 22 T-082 directories and
+      mixed_n96_L996 (T-075), the source's answer to that review's findings OC-1 and OC-2.
+  - id: wand125-mixed-bounds-evening-2026-10-04
+    title: Mixed rectangle-measure certificates of 4 October 2026 for 12 counts in n = 53 to 94
+    role: source-repository
+    url: https://github.com/wand125/square-packing-bounds/tree/797bdf6e10eba5f9dccca9da06f8352e81ba9dde
+    local: resources/web/wand125-mixed-bounds-evening-2026-10-04/
+    source_key: '[wand125 mixed bounds evening 2026-10-04]'
+    scope: {n_values: [53, 54, 58, 70, 71, 73, 76, 87, 88, 90, 91, 94]}
+    reviewed: '2026-10-05'
+    source_date: '2026-10-04'
+    disposition: current-report
+    replay_disposition: case-specific
+    represented_by: [frontier/n-053.md, frontier/n-054.md, frontier/n-058.md, frontier/n-070.md, frontier/n-071.md, frontier/n-073.md, frontier/n-076.md, frontier/n-087.md, frontier/n-088.md, frontier/n-090.md, frontier/n-091.md, frontier/n-094.md]
+    evidence:
+      - E-n053-wand125-mixed-76275-report
+      - E-n054-wand125-mixed-7685-report
+      - E-n058-wand125-mixed-7935-report
+      - E-n070-wand125-mixed-86575-report
+      - E-n071-wand125-mixed-8721-report
+      - E-n073-wand125-mixed-8813-report
+      - E-n076-wand125-mixed-8965-report
+      - E-n087-wand125-mixed-958-report
+      - E-n088-wand125-mixed-962-report
+      - E-n090-wand125-mixed-973-report
+      - E-n091-wand125-mixed-97625-report
+      - E-n094-wand125-mixed-995-report
+    notes: >-
+      Revision 797bdf6e10eba5f9dccca9da06f8352e81ba9dde, retrieved at 2026-10-05T00:44Z for
+      12 comments of 4 October on jlevy/squares#282. 12 rectangle densities checked at
+      coverage one by the source's research copy of Tokoharu's verify.cpp, byte for byte the
+      checker of its n = 50 certificate, each of mass n - 1/100000 and added by its own
+      commit, pinned together at the last. All 12 are recorded as reported lower bounds
+      (T-091), each above what the record reported at its count; at n = 88 and 94 they raise
+      the source's certificates of earlier that day (T-090). The packet also pins
+      mixed_n86_L9503 and mixed_n69_L862 of the 4 October packet, unchanged here; they are
+      T-090's. The directories carry no completion-audit.json, so each tarball is bound by
+      its digest at the pinned tree. The exact audit and the replay's checks before its
+      first angle pass on all 12; no angle was replayed, and the proof-bundle tarballs are
+      pinned by digest and not retained. The revision also changes certificates/k2m4_n77_L9
+      (3f063bd: run logs, a replay record and a hardened verify.sh, the cover unchanged;
+      T-067) and point_n21_L5 (781afb3: relativized paths and a corrected lemma-code map,
+      the certificate unchanged; T-055), which the record-updates packet retains.
+  - id: wand125-record-updates-2026-10-04
+    title: Record and script updates of 4 October 2026 to wand125's s(21), s(45), s(59) and s(77) certificates
+    role: source-repository
+    url: https://github.com/wand125/square-packing-bounds/tree/797bdf6e10eba5f9dccca9da06f8352e81ba9dde
+    local: resources/web/wand125-record-updates-2026-10-04/
+    source_key: '[wand125 record updates 2026-10-04]'
+    scope: {n_values: [21, 45, 59, 77]}
+    reviewed: '2026-10-05'
+    source_date: '2026-10-04'
+    disposition: current-report
+    replay_disposition: case-specific
+    represented_by: [frontier/evidence.yaml]
+    evidence:
+      - E-n021-wand125-point-endpoint-report
+      - E-n045-wand125-point-cover-report
+      - E-n059-wand125-mixed-cover-report
+      - E-n077-wand125-mixed-cover-report
+    notes: >-
+      Revision 797bdf6e10eba5f9dccca9da06f8352e81ba9dde, retrieved at 2026-10-05T00:44Z.
+      Four commits of 4 October change the records, logs or scripts around certificates this
+      record holds and no certificate: c56b9b7a for the s(59) = 8 cover (T-066, answering
+      review findings F1 and F2), 1ebd4845 for the s(45) = 7 point cover (T-054), 3f063bd5
+      for the s(77) = 9 cover (T-067) and 781afb3b for the s(21) = 5 archive (T-055). Each
+      is recorded as an evidence update on its entry's report evidence, and none moves a
+      rung; nothing new was run here. The s(21) = 5 bundle parts, 455 MB, are pinned
+      through the retained archive index rather than digested here.
   - id: wand125-valid7-independent-check-2026-10-02
     title: Independent exact checker of Valid7 for s(k^2 - 3) = k
     role: source-repository
@@ -963,6 +1134,30 @@ sources:
       ceiling sits 2 to 3 units of the fifteenth decimal above the printed side, kept
       as conflicts. At n = 68, 103, 105, 110 and 131 it supersedes the UnitSquare
       release, and at 39 counts it beats Griffin Casson's packings of 2026-09-23.
+  - id: franciscouzo-square-packing-2026-10-03
+    title: Square packings better than the published records
+    role: source-repository
+    url: https://github.com/franciscouzo/square-packing/tree/6042c56b43b64c09fe5a32c64879e698f399beaf
+    local: resources/web/franciscouzo-square-packing-2026-10-03/
+    claims_record: resources/web/franciscouzo-square-packing-2026-10-03/acquisition/sources.json
+    source_key: '[franciscouzo square-packing 2026-10-03]'
+    scope: {n_values: [208, 209, 228, 263, 272, 303, 306]}
+    reviewed: '2026-10-05'
+    source_date: '2026-10-03'
+    disposition: current-report
+    replay_disposition: case-specific
+    represented_by: [frontier/n-208.md through frontier/n-306.md, witnesses/franciscouzo-2026-10-03/]
+    evidence: [E-franciscouzo-2026-10-03-report, E-franciscouzo-2026-10-03-exact-replay, E-franciscouzo-2026-10-03-interval-replay]
+    notes: >-
+      Francisco Couzo's repository at 6042c56b43b64c09fe5a32c64879e698f399beaf, the
+      revision after franciscouzo-square-packing-2026, retained on 2026-10-05 as derived
+      Witness/v2 facts for the seven counts it changed, with upstream digests for all 99
+      files and the per-case commit history, because it still carries no licence. Each of
+      the seven sides is below Couzo's own earlier side, which it supersedes, and below the
+      retained Kingbird capture of 2026-09-30; each certifies exactly over Q here at centre
+      dilation 1 and again by interval arithmetic on the printed pose (T-092). The other 42
+      counts are unchanged from the earlier revision. The live catalogue was not read:
+      kingbird.myphotos.cc was unreachable from the session.
   - id: de-winter-square-packing-211-2026
     title: square-packing-211
     role: source-repository
@@ -1018,17 +1213,27 @@ sources:
     disposition: baseline-current
     replay_disposition: case-specific
     represented_by: [frontier/n-001.md through frontier/n-324.md]
-    evidence: [E-kingbird-upper-register]
+    evidence:
+      - E-kingbird-upper-register
+      - E-n069-ellsworth-2026-09-report
+      - E-n083-chang-2026-09-report
+      - E-n087-chang-2026-09-report
     notes: >
       Captured again on 2026-09-30; the server dates the page 2026-09-24. The capture of
       2026-08-22, which the 2026-08-25 review found byte-identical to a fresh retrieval, is
       kept beside it as kingbird-squares-in-squares-2026-08-22, because the UnitSquare and
       certified-packet intakes read it. devtools.diff_kingbird_catalogue compares the two:
       41 counts at n <= 324 print a new side, all of them lower. At 36 a certified packet
-      already reports a smaller side; n = 126 and 179 now take the catalogue's new side;
-      n = 69, 83 and 87 are pending intake below. The two that moved were published
-      before 22 August 2026, so the register's rule for results by others does not hold
-      them back. n = 126 is Joost de Winter's packing: the retained de Winter packet
+      already reports a smaller side; n = 126 and 179 took the catalogue's new side on
+      2026-09-30; n = 69, 83 and 87 took it on 2026-10-05, when their September 2026
+      results by others were registered as T-088 (David Ellsworth, n = 69) and T-089
+      (Allen Chang, n = 83 and 87), each with its own reported evidence entry. Their SVGs
+      were not reachable from that session, so their witnesses are Evan Daniel's parse of
+      the pictures (evand/square-packing 7ff3b2113532889708a3baa4d56bc44294022e63,
+      site/www/data/p), which agrees with this repository's own parse to one binary64 ulp
+      at the 90 counts where both read the same picture. The two that moved on
+      2026-09-30 were published before 22 August 2026, so the register's rule for results
+      by others did not hold them back. n = 126 is Joost de Winter's packing: the retained de Winter packet
       (resources/web/de-winter-improved-packings-2026/results.json, observed 2026-09-05,
       before the catalogue carried it) records his report "Improved packings of 68, 126
       and 206 unit squares in a square", dated 2026-08-14, with s(126) =
@@ -1051,7 +1256,7 @@ sources:
     scope: {n_values: [68, 69, 103, 105, 110, 131]}
     reviewed: '2026-08-25'
     source_date: '2026-07-29'
-    disposition: current-report
+    disposition: superseded-covered
     replay_disposition: public-certificate-missing
     represented_by: [frontier/n-068.md, frontier/n-069.md, frontier/n-103.md, frontier/n-105.md, frontier/n-110.md, frontier/n-131.md]
     evidence: [E-unitsquare-release1-report]
@@ -1061,7 +1266,9 @@ sources:
       verified; four further claims are retained below without creating empty case files.
       On 2026-09-29 Francisco Couzo's certified packings (franciscouzo-square-packing-2026)
       superseded its reports at n = 68, 103, 105, 110 and 131, which are listed under
-      superseded_reports; n = 69 remains its current report.
+      superseded_reports. On 2026-10-05 the catalogue's David Ellsworth packing (T-088), an
+      optimization of the release's own n = 69 packing, superseded its last current report,
+      also listed there.
   - id: schadt-n29-2025
     title: Squares-packing S(29) — New Record
     role: source-repository
@@ -1087,11 +1294,6 @@ selected_overrides:
     evidence: E-franciscouzo-2026-09-27-report
     reason: Newer reported upper bound, certified here (T-056), below the UnitSquare release and
       the Kingbird baseline.
-  - n: 69
-    source_id: unitsquare-release1
-    value: '8.827205507815920656880680735618736931225314831'
-    evidence: E-unitsquare-release1-report
-    reason: Newer first-party reported upper bound than the Kingbird baseline.
   - n: 102
     source_id: franciscouzo-square-packing-2026
     value: '10.607174680178947'
@@ -1202,15 +1404,17 @@ selected_overrides:
     evidence: E-franciscouzo-2026-09-27-report
     reason: Newer reported upper bound, certified here (T-056), below the Kingbird baseline.
   - n: 208
-    source_id: franciscouzo-square-packing-2026
-    value: '14.937018796984567'
-    evidence: E-franciscouzo-2026-09-27-report
-    reason: Newer reported upper bound, certified here (T-056), below the Kingbird baseline.
+    source_id: franciscouzo-square-packing-2026-10-03
+    value: '14.926534459703511'
+    evidence: E-franciscouzo-2026-10-03-report
+    reason: Newer reported upper bound, certified here (T-092), below Francisco Couzo's earlier
+      side (T-056) and the Kingbird baseline.
   - n: 209
-    source_id: franciscouzo-square-packing-2026
-    value: '14.955041639430016'
-    evidence: E-franciscouzo-2026-09-27-report
-    reason: Newer reported upper bound, certified here (T-056), below the Kingbird baseline.
+    source_id: franciscouzo-square-packing-2026-10-03
+    value: '14.953939011860642'
+    evidence: E-franciscouzo-2026-10-03-report
+    reason: Newer reported upper bound, certified here (T-092), below Francisco Couzo's earlier
+      side (T-056) and the Kingbird baseline.
   - n: 210
     source_id: franciscouzo-square-packing-2026
     value: '14.973001116591412'
@@ -1222,10 +1426,11 @@ selected_overrides:
     evidence: E-n211-de-winter-report
     reason: Newer reported upper bound, certified here (T-057), below the Kingbird baseline.
   - n: 228
-    source_id: franciscouzo-square-packing-2026
-    value: '15.604638007678682'
-    evidence: E-franciscouzo-2026-09-27-report
-    reason: Newer reported upper bound, certified here (T-056), below the Kingbird baseline.
+    source_id: franciscouzo-square-packing-2026-10-03
+    value: '15.604602454552252'
+    evidence: E-franciscouzo-2026-10-03-report
+    reason: Newer reported upper bound, certified here (T-092), below Francisco Couzo's earlier
+      side (T-056) and the Kingbird baseline.
   - n: 236
     source_id: franciscouzo-square-packing-2026
     value: '15.872219025616040'
@@ -1262,10 +1467,11 @@ selected_overrides:
     evidence: E-franciscouzo-2026-09-27-report
     reason: Newer reported upper bound, certified here (T-056), below the Kingbird baseline.
   - n: 263
-    source_id: franciscouzo-square-packing-2026
-    value: '16.742280159187313'
-    evidence: E-franciscouzo-2026-09-27-report
-    reason: Newer reported upper bound, certified here (T-056), below the Kingbird baseline.
+    source_id: franciscouzo-square-packing-2026-10-03
+    value: '16.742270262031791'
+    evidence: E-franciscouzo-2026-10-03-report
+    reason: Newer reported upper bound, certified here (T-092), below Francisco Couzo's earlier
+      side (T-056) and the Kingbird baseline.
   - n: 268
     source_id: franciscouzo-square-packing-2026
     value: '16.878814821018413'
@@ -1287,10 +1493,11 @@ selected_overrides:
     evidence: E-franciscouzo-2026-09-27-report
     reason: Newer reported upper bound, certified here (T-056), below the Kingbird baseline.
   - n: 272
-    source_id: franciscouzo-square-packing-2026
-    value: '16.968279785326896'
-    evidence: E-franciscouzo-2026-09-27-report
-    reason: Newer reported upper bound, certified here (T-056), below the Kingbird baseline.
+    source_id: franciscouzo-square-packing-2026-10-03
+    value: '16.968165867864400'
+    evidence: E-franciscouzo-2026-10-03-report
+    reason: Newer reported upper bound, certified here (T-092), below Francisco Couzo's earlier
+      side (T-056) and the Kingbird baseline.
   - n: 273
     source_id: franciscouzo-square-packing-2026
     value: '16.983925962660670'
@@ -1317,10 +1524,11 @@ selected_overrides:
     evidence: E-franciscouzo-2026-09-27-report
     reason: Newer reported upper bound, certified here (T-056), below the Kingbird baseline.
   - n: 303
-    source_id: franciscouzo-square-packing-2026
-    value: '17.924349265547932'
-    evidence: E-franciscouzo-2026-09-27-report
-    reason: Newer reported upper bound, certified here (T-056), below the Kingbird baseline.
+    source_id: franciscouzo-square-packing-2026-10-03
+    value: '17.924341009860250'
+    evidence: E-franciscouzo-2026-10-03-report
+    reason: Newer reported upper bound, certified here (T-092), below Francisco Couzo's earlier
+      side (T-056) and the Kingbird baseline.
   - n: 304
     source_id: franciscouzo-square-packing-2026
     value: '17.934650018395903'
@@ -1332,10 +1540,11 @@ selected_overrides:
     evidence: E-franciscouzo-2026-09-27-report
     reason: Newer reported upper bound, certified here (T-056), below the Kingbird baseline.
   - n: 306
-    source_id: franciscouzo-square-packing-2026
-    value: '17.963449907261179'
-    evidence: E-franciscouzo-2026-09-27-report
-    reason: Newer reported upper bound, certified here (T-056), below the Kingbird baseline.
+    source_id: franciscouzo-square-packing-2026-10-03
+    value: '17.963438139777139'
+    evidence: E-franciscouzo-2026-10-03-report
+    reason: Newer reported upper bound, certified here (T-092), below Francisco Couzo's earlier
+      side (T-056) and the Kingbird baseline.
   - n: 307
     source_id: franciscouzo-square-packing-2026
     value: '17.981030548643712'
@@ -1347,6 +1556,12 @@ superseded_reports:
     value: '8.803383074716108386903836683375989697670063329'
     superseded_by: franciscouzo-square-packing-2026
     reason: Superseded on 2026-09-29 by Francisco Couzo's smaller certified side.
+  - n: 69
+    source_id: unitsquare-release1
+    value: '8.827205507815920656880680735618736931225314831'
+    superseded_by: kingbird-current
+    reason: Superseded on 2026-10-05 by the catalogue's side for David Ellsworth's optimization
+      of the same packing (T-088), which the case now reports from the catalogue baseline.
   - n: 103
     source_id: casson-square-packing-2026
     value: '10.70377984436967189'
@@ -1454,15 +1669,27 @@ superseded_reports:
   - n: 208
     source_id: casson-square-packing-2026
     value: '14.93761283595916289'
-    superseded_by: franciscouzo-square-packing-2026
+    superseded_by: franciscouzo-square-packing-2026-10-03
     reason: Larger than Francisco Couzo's side at this count; the case record states both sources'
       dates and values.
+  - n: 208
+    source_id: franciscouzo-square-packing-2026
+    value: '14.937018796984567'
+    superseded_by: franciscouzo-square-packing-2026-10-03
+    reason: Superseded on 2026-10-05 by Francisco Couzo's own later and smaller certified side
+      (T-092).
   - n: 209
     source_id: casson-square-packing-2026
     value: '14.95856148981292932'
-    superseded_by: franciscouzo-square-packing-2026
+    superseded_by: franciscouzo-square-packing-2026-10-03
     reason: Larger than Francisco Couzo's side at this count; the case record states both sources'
       dates and values.
+  - n: 209
+    source_id: franciscouzo-square-packing-2026
+    value: '14.955041639430016'
+    superseded_by: franciscouzo-square-packing-2026-10-03
+    reason: Superseded on 2026-10-05 by Francisco Couzo's own later and smaller certified side
+      (T-092).
   - n: 210
     source_id: casson-square-packing-2026
     value: '14.97381035691250695'
@@ -1472,9 +1699,15 @@ superseded_reports:
   - n: 228
     source_id: casson-square-packing-2026
     value: '15.60895620815939289'
-    superseded_by: franciscouzo-square-packing-2026
+    superseded_by: franciscouzo-square-packing-2026-10-03
     reason: Larger than Francisco Couzo's side at this count; the case record states both sources'
       dates and values.
+  - n: 228
+    source_id: franciscouzo-square-packing-2026
+    value: '15.604638007678682'
+    superseded_by: franciscouzo-square-packing-2026-10-03
+    reason: Superseded on 2026-10-05 by Francisco Couzo's own later and smaller certified side
+      (T-092).
   - n: 236
     source_id: casson-square-packing-2026
     value: '15.87606262597991957'
@@ -1517,6 +1750,12 @@ superseded_reports:
     superseded_by: franciscouzo-square-packing-2026
     reason: Larger than Francisco Couzo's side at this count; the case record states both sources'
       dates and values.
+  - n: 263
+    source_id: franciscouzo-square-packing-2026
+    value: '16.742280159187313'
+    superseded_by: franciscouzo-square-packing-2026-10-03
+    reason: Superseded on 2026-10-05 by Francisco Couzo's own later and smaller certified side
+      (T-092).
   - n: 268
     source_id: casson-square-packing-2026
     value: '16.87895510935973675'
@@ -1544,9 +1783,15 @@ superseded_reports:
   - n: 272
     source_id: casson-square-packing-2026
     value: '16.96944950195848989'
-    superseded_by: franciscouzo-square-packing-2026
+    superseded_by: franciscouzo-square-packing-2026-10-03
     reason: Larger than Francisco Couzo's side at this count; the case record states both sources'
       dates and values.
+  - n: 272
+    source_id: franciscouzo-square-packing-2026
+    value: '16.968279785326896'
+    superseded_by: franciscouzo-square-packing-2026-10-03
+    reason: Superseded on 2026-10-05 by Francisco Couzo's own later and smaller certified side
+      (T-092).
   - n: 273
     source_id: casson-square-packing-2026
     value: '16.98811467146214582'
@@ -1574,9 +1819,15 @@ superseded_reports:
   - n: 303
     source_id: casson-square-packing-2026
     value: '17.93105636462953001'
-    superseded_by: franciscouzo-square-packing-2026
+    superseded_by: franciscouzo-square-packing-2026-10-03
     reason: Larger than Francisco Couzo's side at this count; the case record states both sources'
       dates and values.
+  - n: 303
+    source_id: franciscouzo-square-packing-2026
+    value: '17.924349265547932'
+    superseded_by: franciscouzo-square-packing-2026-10-03
+    reason: Superseded on 2026-10-05 by Francisco Couzo's own later and smaller certified side
+      (T-092).
   - n: 304
     source_id: casson-square-packing-2026
     value: '17.94880191214547338'
@@ -1592,9 +1843,15 @@ superseded_reports:
   - n: 306
     source_id: casson-square-packing-2026
     value: '17.96846609160515484'
-    superseded_by: franciscouzo-square-packing-2026
+    superseded_by: franciscouzo-square-packing-2026-10-03
     reason: Larger than Francisco Couzo's side at this count; the case record states both sources'
       dates and values.
+  - n: 306
+    source_id: franciscouzo-square-packing-2026
+    value: '17.963449907261179'
+    superseded_by: franciscouzo-square-packing-2026-10-03
+    reason: Superseded on 2026-10-05 by Francisco Couzo's own later and smaller certified side
+      (T-092).
   - n: 307
     source_id: casson-square-packing-2026
     value: '17.98205200143469895'
@@ -1602,36 +1859,4 @@ superseded_reports:
     reason: Larger than Francisco Couzo's side at this count; the case record states both sources'
       dates and values.
 beyond_horizon_claims: []
-pending_catalogue_intake:
-  - n: 69
-    record_value: '8.827205507815920656880680735618736931225314831'
-    catalogue_value: '8.82719465572973'
-    capture: '2026-08-22'
-    reason: >-
-      The capture of 2026-09-30 prints David Ellsworth's September 2026 packing, which in the
-      catalogue's words refound the UnitSquare Project's July 2026 improvement starting from
-      Morandi's s(69) and optimized it to a degree-38 root below the release's side. A result
-      by others after 2026-08-22 that would become this count's reported upper bound, so the
-      register holds it before the record takes it (epistemics.md, Results by Others); the
-      record also moves from the release to the catalogue, which the UnitSquare prose does not
-      yet say.
-  - n: 83
-    record_value: '9.63482562092335'
-    catalogue_value: '9.63475764863108'
-    capture: '2026-08-22'
-    reason: >-
-      The capture of 2026-09-30 prints Allen Chang's September 2026 improvement of the Hajba and
-      Cantrell packing, optimized by David Ellsworth in September 2026, with a degree-672 root
-      whose polynomial the catalogue leaves to the SVG source. A result by others after
-      2026-08-22 that would become this count's reported upper bound, so the register holds it
-      before the record takes it (epistemics.md, Results by Others).
-  - n: 87
-    record_value: '9.83881743996618'
-    catalogue_value: '9.83881526994826'
-    capture: '2026-08-22'
-    reason: >-
-      The capture of 2026-09-30 prints Allen Chang's September 2026 improvement and
-      optimization of the Ellsworth and Cantrell packing, a degree-41 root, with help the
-      catalogue credits to "TheMagicAnimals". A result by others after 2026-08-22 that would
-      become this count's reported upper bound, so the register holds it before the record
-      takes it (epistemics.md, Results by Others).
+pending_catalogue_intake: []

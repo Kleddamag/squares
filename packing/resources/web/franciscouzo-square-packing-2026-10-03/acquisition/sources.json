@@ -1,0 +1,965 @@
+{
+  "format": "external-source-acquisition-v1",
+  "retrieved": "2026-10-05",
+  "sources": [
+    {
+      "id": "franciscouzo-square-packing-2026-10-03",
+      "source_url": "https://github.com/franciscouzo/square-packing",
+      "source_commit": "6042c56b43b64c09fe5a32c64879e698f399beaf",
+      "git_tree": "bb542bf7fc3ad77123b1658eb6a9ad99c8780c9b",
+      "commit_author": "Francisco Couzo",
+      "authored_utc": "2026-10-03T12:33:31Z",
+      "committed_utc": "2026-10-03T12:33:31Z",
+      "supersedes": {
+        "packet": "franciscouzo-square-packing-2026-09-27",
+        "source_commit": "f3c5a529c255b546db18605702b8da298132309f",
+        "retained_here": "the counts whose printed side changed since that pin"
+      },
+      "author": "Francisco Couzo",
+      "author_read_from": "commit metadata; the repository has no LICENSE and its README names no author",
+      "licence": null,
+      "retention_policy": "metadata-and-derived-numerical-facts-only",
+      "raw_asset_retained": false,
+      "ai_statement": {
+        "text": "I found better solutions with the help of Claude for the 102 and 103 problems: https://github.com/franciscouzo/square-packing",
+        "where": "https://github.com/jlevy/squares/issues/227",
+        "opened_utc": "2026-09-23T02:48:35Z",
+        "note": "The repository itself states no AI assistance."
+      },
+      "files": [
+        {
+          "path": "README.md",
+          "bytes": 3482,
+          "sha256": "d6f38368d698527dfdec3d236bee304563cdba1a305691e2d8ffe0ca4c832dde",
+          "raw_asset_retained": false
+        },
+        {
+          "path": "n68.svg",
+          "bytes": 9133,
+          "sha256": "6ab03fd008342635607b131e3b7ad04395377813d76a5a41d2db368ea13460c0",
+          "raw_asset_retained": false
+        },
+        {
+          "path": "n102.svg",
+          "bytes": 13584,
+          "sha256": "19eb1a4dc5b05e9d14aaf6c8151410e3432e1e7be9f3fb01d691b4730d4faa34",
+          "raw_asset_retained": false
+        },
+        {
+          "path": "n103.svg",
+          "bytes": 13722,
+          "sha256": "6970825c49321f3ae2997a3f7a6c54df31bffd5fe3e10de4071e8fd25c87020c",
+          "raw_asset_retained": false
+        },
+        {
+          "path": "n105.svg",
+          "bytes": 13984,
+          "sha256": "e642e815040c26c548e60af1e9df8e304cc2fd426f0b95daeddeb8afaa6ec72e",
+          "raw_asset_retained": false
+        },
+        {
+          "path": "n106.svg",
+          "bytes": 14115,
+          "sha256": "a89ae731a48c7e3060a75f7340532188e545293675adbb5b17f9ce36921ce97d",
+          "raw_asset_retained": false
+        },
+        {
+          "path": "n110.svg",
+          "bytes": 14639,
+          "sha256": "f6d20a9c9280848ea25e66e83e89a6b0ce8cb72aa76f82caf2675197733b2ffc",
+          "raw_asset_retained": false
+        },
+        {
+          "path": "n123.svg",
+          "bytes": 16338,
+          "sha256": "98c83b316790799a7f465343c97ae33d5a99db0ae66de94bad0f8fede405fb34",
+          "raw_asset_retained": false
+        },
+        {
+          "path": "n130.svg",
+          "bytes": 17270,
+          "sha256": "1f3403f127692942d8f0c72e304bf7ae5c90a1381c5a9b3e5d041a6be2902037",
+          "raw_asset_retained": false
+        },
+        {
+          "path": "n131.svg",
+          "bytes": 17388,
+          "sha256": "6480b68b6a31753f9fab16048fc3ba6cac4c6ba18f71a8f5e6eb24cb0a414cba",
+          "raw_asset_retained": false
+        },
+        {
+          "path": "n132.svg",
+          "bytes": 17522,
+          "sha256": "d5ee80acc58c29d2a2025e606f4d9028fd13faabf55246b75bc73352384fbb6c",
+          "raw_asset_retained": false
+        },
+        {
+          "path": "n152.svg",
+          "bytes": 20078,
+          "sha256": "766eaa1fb86c6c48956f18bfe71e5160f5744be17588c4563384a72198f10663",
+          "raw_asset_retained": false
+        },
+        {
+          "path": "n154.svg",
+          "bytes": 20349,
+          "sha256": "0c6b015cda62e314257e0ff4ee509bcc5a78badfd1e4f3e1b6c8df8c238ac4e0",
+          "raw_asset_retained": false
+        },
+        {
+          "path": "n155.svg",
+          "bytes": 20476,
+          "sha256": "4367aabed5ccbbb60cf4691851294b762f11ff2a790a6164cb1055486373c1ab",
+          "raw_asset_retained": false
+        },
+        {
+          "path": "n156.svg",
+          "bytes": 20611,
+          "sha256": "bccfb014d436fb4bbbba361070c5200d515ff4403b37a8b3efcf1317d4709d19",
+          "raw_asset_retained": false
+        },
+        {
+          "path": "n172.svg",
+          "bytes": 22707,
+          "sha256": "ade41fad0929d73322b8abe40c42aa7cb4d4dc03d26bdee17cb8fe72928dc15b",
+          "raw_asset_retained": false
+        },
+        {
+          "path": "n177.svg",
+          "bytes": 23346,
+          "sha256": "4052547705fa700663b19084e6635ef883b5117fb6f00d0cdaa333147af09c43",
+          "raw_asset_retained": false
+        },
+        {
+          "path": "n180.svg",
+          "bytes": 23748,
+          "sha256": "1840ddfecf057c566feba216898bb21040a44e8c68847991dba4c5efad963e4a",
+          "raw_asset_retained": false
+        },
+        {
+          "path": "n181.svg",
+          "bytes": 23880,
+          "sha256": "6b731aabea9963950a377b2cb0e25c3ed33a61e9e0aaaf649566572a4c73fe22",
+          "raw_asset_retained": false
+        },
+        {
+          "path": "n182.svg",
+          "bytes": 24004,
+          "sha256": "7263b02f521e0c25b8949d1796de340a9318b42f0fe862158a18749d483df89f",
+          "raw_asset_retained": false
+        },
+        {
+          "path": "n199.svg",
+          "bytes": 26225,
+          "sha256": "599cfeeb83a2dcc729b6f27296347cd81b9e8fc4848c7e12dd92279b9011cb73",
+          "raw_asset_retained": false
+        },
+        {
+          "path": "n206.svg",
+          "bytes": 27148,
+          "sha256": "0c252d2c8aaf798d8224c9c3e51fc601ba54691404e5813c9321df6d2b878a1e",
+          "raw_asset_retained": false
+        },
+        {
+          "path": "n207.svg",
+          "bytes": 27277,
+          "sha256": "b7291a52eb7b33b9ffc29c49c7b42f4f246927b6ae705228dbc4017a7aacbaf2",
+          "raw_asset_retained": false
+        },
+        {
+          "path": "n208.svg",
+          "bytes": 27422,
+          "sha256": "a3169a6b6ff826fdb0a11c46d95b96e060e3bff575a76e7e88d45cbcadd4ce7d",
+          "raw_asset_retained": false
+        },
+        {
+          "path": "n209.svg",
+          "bytes": 27542,
+          "sha256": "e9385752d33ed5e909cf1676a44de0835217bd538eadf1a7c8fe0a783829401c",
+          "raw_asset_retained": false
+        },
+        {
+          "path": "n210.svg",
+          "bytes": 27674,
+          "sha256": "032a98cdbae3476eb6657404b349ac120c4075b0266f757cb861b1a0eee8da46",
+          "raw_asset_retained": false
+        },
+        {
+          "path": "n228.svg",
+          "bytes": 30026,
+          "sha256": "9c51aa04dcd51eee6b3f182bb5a4135f62892bce2d3d06f1d8bfdf7a1ae37a53",
+          "raw_asset_retained": false
+        },
+        {
+          "path": "n236.svg",
+          "bytes": 31079,
+          "sha256": "4d9e29b67c378b98bbe9b3755f6a434dff8b4d9ef1cc31704abb94d2518e587f",
+          "raw_asset_retained": false
+        },
+        {
+          "path": "n237.svg",
+          "bytes": 31211,
+          "sha256": "6dc267a15998117423f99b1e9b2fb67081bed2a5aae3fa3badd1c09e32ae3864",
+          "raw_asset_retained": false
+        },
+        {
+          "path": "n238.svg",
+          "bytes": 31343,
+          "sha256": "37274c8cc1c91b8bc31c110f90e610050dca8de1ed3a0bd411fbc2fe9aa5e960",
+          "raw_asset_retained": false
+        },
+        {
+          "path": "n239.svg",
+          "bytes": 31484,
+          "sha256": "c941c421e47f72df3adc4a2d48312b9336ccbbf5a0d76dfbc4582b44d9f9e019",
+          "raw_asset_retained": false
+        },
+        {
+          "path": "n240.svg",
+          "bytes": 31606,
+          "sha256": "a4424f9288b19484db9f5bb73fef802098c06f92602cf995a52f81b2ea24d4e2",
+          "raw_asset_retained": false
+        },
+        {
+          "path": "n241.svg",
+          "bytes": 31745,
+          "sha256": "f7f740d88c07f4f9a720ad7fb456860d68b0e3cf0211b6d23b245793acd12d83",
+          "raw_asset_retained": false
+        },
+        {
+          "path": "n259.svg",
+          "bytes": 34088,
+          "sha256": "601c8eaaae55fa458ea828333c2ab3182fa7a39bd3b9de7c948d516825c8c43f",
+          "raw_asset_retained": false
+        },
+        {
+          "path": "n263.svg",
+          "bytes": 34615,
+          "sha256": "039ff545caccd359b086e44d89a4bca621c2b7ac4db1c6519211a83613524faa",
+          "raw_asset_retained": false
+        },
+        {
+          "path": "n268.svg",
+          "bytes": 35269,
+          "sha256": "4993157388b5fa20a446de8a1271c93c09be81cc8bdee66a7b2e71e9f3fcaeca",
+          "raw_asset_retained": false
+        },
+        {
+          "path": "n269.svg",
+          "bytes": 35412,
+          "sha256": "8e9f1fcd17d4a1056be6afa74052d1ee7b509838c29df027db2014181e871c62",
+          "raw_asset_retained": false
+        },
+        {
+          "path": "n270.svg",
+          "bytes": 35544,
+          "sha256": "76322006dd4b79934ef2cd0c61bfa11337c974250b34a858daf6157197699cd2",
+          "raw_asset_retained": false
+        },
+        {
+          "path": "n271.svg",
+          "bytes": 35676,
+          "sha256": "c63b60b7d18631011b40d8894b9b6052f809e9d7aea267204533df9727c1a904",
+          "raw_asset_retained": false
+        },
+        {
+          "path": "n272.svg",
+          "bytes": 35800,
+          "sha256": "624535ff2893c87a3761a5a04bab19aa22d92d2164de6376863a1ac19a7d51a1",
+          "raw_asset_retained": false
+        },
+        {
+          "path": "n273.svg",
+          "bytes": 35927,
+          "sha256": "24f738da7253b8d6668ea2b2d0f2e4f1fed12d2678b6428f821e467e786d0eae",
+          "raw_asset_retained": false
+        },
+        {
+          "path": "n292.svg",
+          "bytes": 38410,
+          "sha256": "60a5e31bfdfd7949e845f5d8bf6de459bbcc6dc86dd52d7b5f5f46235c78639e",
+          "raw_asset_retained": false
+        },
+        {
+          "path": "n297.svg",
+          "bytes": 39064,
+          "sha256": "e33ee8908f6a7a5566168fbf23594733a736392f67494df88cd9f0b762bb3914",
+          "raw_asset_retained": false
+        },
+        {
+          "path": "n301.svg",
+          "bytes": 39606,
+          "sha256": "ad4c961562c7e674fa03a6baa6a663a8d8136aafe938bc4f26b75fc795e7828f",
+          "raw_asset_retained": false
+        },
+        {
+          "path": "n302.svg",
+          "bytes": 39717,
+          "sha256": "b60bf1e5f0f9be8b38d71e4965e9f17e053da19483206ae50dc1fab6a95c2b35",
+          "raw_asset_retained": false
+        },
+        {
+          "path": "n303.svg",
+          "bytes": 39849,
+          "sha256": "e0737bf3292a5ea229dd0ba51a1e385383ba130789d41c947010885d2f239ac3",
+          "raw_asset_retained": false
+        },
+        {
+          "path": "n304.svg",
+          "bytes": 39986,
+          "sha256": "6e7ec3a0be1687dee107c0b5871f3253bc0995c76c9de51cf7eaae00974734d1",
+          "raw_asset_retained": false
+        },
+        {
+          "path": "n305.svg",
+          "bytes": 40111,
+          "sha256": "232b956285bedc8d618cb6b75d197ea281f72d8913b6515c29974e6d4eec1158",
+          "raw_asset_retained": false
+        },
+        {
+          "path": "n306.svg",
+          "bytes": 40244,
+          "sha256": "75449346eb48198dd6c46011b2c0ce485063731eb51fe8ddda1abea4fa2967ad",
+          "raw_asset_retained": false
+        },
+        {
+          "path": "n307.svg",
+          "bytes": 40379,
+          "sha256": "10da774432eb0727ace172854492c984ff4be0802bcd529a8541c672458dc023",
+          "raw_asset_retained": false
+        },
+        {
+          "path": "n68.txt",
+          "bytes": 4982,
+          "sha256": "425ec02ce3b608649223d21b2e5e80cd1a53e9e7cfd48c3e4b1640b2e2d0b770",
+          "raw_asset_retained": false
+        },
+        {
+          "path": "n102.txt",
+          "bytes": 7438,
+          "sha256": "240bed2ac8429ee8b71be7a652f6a462234766e0a73e115fae04a74b9b85813c",
+          "raw_asset_retained": false
+        },
+        {
+          "path": "n103.txt",
+          "bytes": 7529,
+          "sha256": "09c60e32e9d3d518af8d574667658c4d2252d220598aa7e70a2516a95215f378",
+          "raw_asset_retained": false
+        },
+        {
+          "path": "n105.txt",
+          "bytes": 7695,
+          "sha256": "de3c54073df607ece142d9b2b294759f3b5d19d15ca2f349542db39f16da0ff7",
+          "raw_asset_retained": false
+        },
+        {
+          "path": "n106.txt",
+          "bytes": 7721,
+          "sha256": "a48fe63a2c48168b4f0c1f4a2a9a663c72e1e4a11802fbbfe0d664e6b0dbd58e",
+          "raw_asset_retained": false
+        },
+        {
+          "path": "n110.txt",
+          "bytes": 8016,
+          "sha256": "8a97279f09a9e7f0be0478e76372ddde8afbe38469f70c52c2cbe3b229850315",
+          "raw_asset_retained": false
+        },
+        {
+          "path": "n123.txt",
+          "bytes": 8976,
+          "sha256": "ad2748df3fc4862c235d6d18cc821370e9b4d9c01f428ba51d285d4ac1a8c5c5",
+          "raw_asset_retained": false
+        },
+        {
+          "path": "n130.txt",
+          "bytes": 9412,
+          "sha256": "d440c7fd47ff5ea72fa06587b2050d745f17fe36e8208c6903357e0a2b33f744",
+          "raw_asset_retained": false
+        },
+        {
+          "path": "n131.txt",
+          "bytes": 9553,
+          "sha256": "c8fed9ce6fec8b97ffcef58ccb5601f55172dea1e46199bac788a79d5b329812",
+          "raw_asset_retained": false
+        },
+        {
+          "path": "n132.txt",
+          "bytes": 9637,
+          "sha256": "22aa434a6edc232704bdd90538f24bd74396ed4a38821f79c151f14d7b04efcb",
+          "raw_asset_retained": false
+        },
+        {
+          "path": "n152.txt",
+          "bytes": 11055,
+          "sha256": "1dc8af69a0ca71a075aec93dcf1bb160ac5651cf9d40fb0aba831f0056da2c2f",
+          "raw_asset_retained": false
+        },
+        {
+          "path": "n154.txt",
+          "bytes": 11235,
+          "sha256": "277f83d052730098301916d249b79fefe998af2faeb5119c5d7c206ab8cad5f7",
+          "raw_asset_retained": false
+        },
+        {
+          "path": "n155.txt",
+          "bytes": 11306,
+          "sha256": "a546edfdd3d42834c05e17d3e2cf2d01e7ce28a97c4011dccb4c576c806738d1",
+          "raw_asset_retained": false
+        },
+        {
+          "path": "n156.txt",
+          "bytes": 11418,
+          "sha256": "8f5d4d5f0facbbea547ad5ad4cd8211f8f6101326c27ef2fbc303fd2aabe7528",
+          "raw_asset_retained": false
+        },
+        {
+          "path": "n172.txt",
+          "bytes": 12518,
+          "sha256": "229c1c5504164920188ac286cbc07c91e90d199e09fac5b72c665c0d9e3c01ad",
+          "raw_asset_retained": false
+        },
+        {
+          "path": "n177.txt",
+          "bytes": 12869,
+          "sha256": "279debca7fffad55ee020148ad4d3134cf51e21eddcae45ed9b26ddc07b8a066",
+          "raw_asset_retained": false
+        },
+        {
+          "path": "n180.txt",
+          "bytes": 13105,
+          "sha256": "cf4dfb9a2931746de255a0729cc2afd712c5eaa216891b939b7ac421cddb4798",
+          "raw_asset_retained": false
+        },
+        {
+          "path": "n181.txt",
+          "bytes": 13184,
+          "sha256": "608cfa342cd124c8fa7d9751f5d2ab8cc7b5bae28e832cf6c2acbddfcb37c71f",
+          "raw_asset_retained": false
+        },
+        {
+          "path": "n182.txt",
+          "bytes": 13211,
+          "sha256": "ed6a9f92996791ee47664e63fd6bf844a11322bb2407e8ae2b22a8f67a80606b",
+          "raw_asset_retained": false
+        },
+        {
+          "path": "n199.txt",
+          "bytes": 14380,
+          "sha256": "1fd5a2ce4c01685cd7d5b52a21013e299e0089c193a567b628e13f86bb04946e",
+          "raw_asset_retained": false
+        },
+        {
+          "path": "n206.txt",
+          "bytes": 15025,
+          "sha256": "25457e92968d4cfd1fb91e9c53776a3cb52e5b902ed29821d2057220bae1f5f1",
+          "raw_asset_retained": false
+        },
+        {
+          "path": "n207.txt",
+          "bytes": 15079,
+          "sha256": "0b28b63ad5c7de197322a317faac42425fce51159eafe56204f1495786971e09",
+          "raw_asset_retained": false
+        },
+        {
+          "path": "n208.txt",
+          "bytes": 15123,
+          "sha256": "fe756c5c01f4d19fffc7e18b8303fdfab1e33a7c3575e4d686a4263d65eb408e",
+          "raw_asset_retained": false
+        },
+        {
+          "path": "n209.txt",
+          "bytes": 15221,
+          "sha256": "f0c24f987bfebb043897159f2b0beced4ed450c8c3286143a058945e5af674b5",
+          "raw_asset_retained": false
+        },
+        {
+          "path": "n210.txt",
+          "bytes": 15273,
+          "sha256": "e055e5a62849e49184e78af61221e74cdfae6fb0468bd04641e878e2a57759fe",
+          "raw_asset_retained": false
+        },
+        {
+          "path": "n228.txt",
+          "bytes": 16591,
+          "sha256": "3b7521774ced6ae3eb3c51134bca174c935fec40caa6377582f807dfc7c2fad5",
+          "raw_asset_retained": false
+        },
+        {
+          "path": "n236.txt",
+          "bytes": 17240,
+          "sha256": "cb514ad83b2b41e55ef95efd867b49701c1143aa8b08aafb93eb21fd9c11ca11",
+          "raw_asset_retained": false
+        },
+        {
+          "path": "n237.txt",
+          "bytes": 17158,
+          "sha256": "12c1a33e1766c630c0317df039a00192c8cc83a38ab84f1571374678d98c237a",
+          "raw_asset_retained": false
+        },
+        {
+          "path": "n238.txt",
+          "bytes": 17297,
+          "sha256": "c2ddcb33429b3c7ad68a442bfac27dac6a9b04214b909066a0ffaa6ff8509271",
+          "raw_asset_retained": false
+        },
+        {
+          "path": "n239.txt",
+          "bytes": 17388,
+          "sha256": "60ebdb6c02c6b53c225b1a483a36886a07b28a2d0a54e78c2c71a1e79ea71b08",
+          "raw_asset_retained": false
+        },
+        {
+          "path": "n240.txt",
+          "bytes": 17486,
+          "sha256": "c6c5dbe130fed461733db283b786238c6aec4257d79985a2d8a7b1bcba85ce9f",
+          "raw_asset_retained": false
+        },
+        {
+          "path": "n241.txt",
+          "bytes": 17527,
+          "sha256": "aaa69063d4e6e598637d2cb7353c346573f034609ae8790302493b2cfe52de11",
+          "raw_asset_retained": false
+        },
+        {
+          "path": "n259.txt",
+          "bytes": 18813,
+          "sha256": "9bd3252fc25ad326b68585cd4f9c4d41c6081af8553f7b65792ad902f7974131",
+          "raw_asset_retained": false
+        },
+        {
+          "path": "n263.txt",
+          "bytes": 19135,
+          "sha256": "9c0c000da38ccb22c2266a53c8102f64f7b28dea70ea169ce06d3326ce18f5c6",
+          "raw_asset_retained": false
+        },
+        {
+          "path": "n268.txt",
+          "bytes": 19515,
+          "sha256": "a28fbccb5f0cf0343bd58e715279b205ba81e167a5421465b89ccdc5e90a4cc0",
+          "raw_asset_retained": false
+        },
+        {
+          "path": "n269.txt",
+          "bytes": 19548,
+          "sha256": "1f9809b75ce7be41ca8517f6f73f6f20313ca6d9c804b8f22a23ff5ff5b65ad4",
+          "raw_asset_retained": false
+        },
+        {
+          "path": "n270.txt",
+          "bytes": 19632,
+          "sha256": "933d8f8940f98e82bef75ebdfa6ea5068d33478d0b89002fc54bbb414bd774d2",
+          "raw_asset_retained": false
+        },
+        {
+          "path": "n271.txt",
+          "bytes": 19720,
+          "sha256": "cbbdd4ea0c13977571a43cef16eb0e8a452b6d97259f82242ff5a920fe7cc4bb",
+          "raw_asset_retained": false
+        },
+        {
+          "path": "n272.txt",
+          "bytes": 19757,
+          "sha256": "435a49bb56b449747bb45be4f16320bb8e11e9ba346320f13627871c26ad9e38",
+          "raw_asset_retained": false
+        },
+        {
+          "path": "n273.txt",
+          "bytes": 19843,
+          "sha256": "9e699ce6015dce534923f444bf0af9e660d8b6f1cba267c1020c85cb3ee983d8",
+          "raw_asset_retained": false
+        },
+        {
+          "path": "n292.txt",
+          "bytes": 21193,
+          "sha256": "fd97fbe4d52c941547e9803c8e2821945c3457bb654516ec955986d131d3dc11",
+          "raw_asset_retained": false
+        },
+        {
+          "path": "n297.txt",
+          "bytes": 21607,
+          "sha256": "48f9e7036751ffd2a9c895e65ba2a7116f2820699903b66bf4df3cdd04f0927e",
+          "raw_asset_retained": false
+        },
+        {
+          "path": "n301.txt",
+          "bytes": 21968,
+          "sha256": "532633ea20fb43475c7a2f1ca2c6ecaa0be4efb21e4c813b1302e6bae4246db0",
+          "raw_asset_retained": false
+        },
+        {
+          "path": "n302.txt",
+          "bytes": 21952,
+          "sha256": "12ddd66f3c69d4a37f56f5050e34e76f127b7b294f21fa276b0b016cb6068504",
+          "raw_asset_retained": false
+        },
+        {
+          "path": "n303.txt",
+          "bytes": 22010,
+          "sha256": "2b4e167062253e947390505442c0f916ea4751fd95313870b5637cd8a154c2d1",
+          "raw_asset_retained": false
+        },
+        {
+          "path": "n304.txt",
+          "bytes": 22079,
+          "sha256": "33abcdcf68e659c8c5021c000d29cad7e8ccd42782e034c1be3c1b6c4d203561",
+          "raw_asset_retained": false
+        },
+        {
+          "path": "n305.txt",
+          "bytes": 22161,
+          "sha256": "583d705f26d7e944e948b39d9dd02be5403448b0a02008ca83895c3247513025",
+          "raw_asset_retained": false
+        },
+        {
+          "path": "n306.txt",
+          "bytes": 22290,
+          "sha256": "6f87aee3e34198871996656b873275e5a1e69e7d918a0d5c9f9af5d2e3a69726",
+          "raw_asset_retained": false
+        },
+        {
+          "path": "n307.txt",
+          "bytes": 22282,
+          "sha256": "3dd3f114fae508ec117dec0acf3c601aa0d4bf77eb84a6e008b8de2e5fce8d99",
+          "raw_asset_retained": false
+        }
+      ],
+      "cases": [
+        {
+          "n": 208,
+          "side": "14.926534459703511",
+          "file": "n208.txt",
+          "first_authored_utc": "2026-09-24T10:28:24Z",
+          "first_side": "14.937471987089294",
+          "current_since_authored_utc": "2026-10-03T12:33:31Z",
+          "current_since_committed_utc": "2026-10-03T12:33:31Z",
+          "current_since_commit": "6042c56b43b64c09fe5a32c64879e698f399beaf",
+          "history": [
+            {
+              "commit": "801915fdcd49c73f831f0867ae1ded3b5921a4e5",
+              "path": "n208.txt",
+              "authored_utc": "2026-09-24T10:28:24Z",
+              "committed_utc": "2026-09-24T10:34:57Z",
+              "side": "14.937471987089294"
+            },
+            {
+              "commit": "45896fd4c60b31ec0660fb83d9c502b6e5551f4f",
+              "path": "n208.txt",
+              "authored_utc": "2026-09-25T07:17:05Z",
+              "committed_utc": "2026-09-25T07:17:05Z",
+              "side": "14.937325444623752"
+            },
+            {
+              "commit": "3bfc47e4f53ab474cd7702cb81f831faf2f5846a",
+              "path": "n208.txt",
+              "authored_utc": "2026-09-26T03:27:13Z",
+              "committed_utc": "2026-09-26T03:27:13Z",
+              "side": "14.937042137057924"
+            },
+            {
+              "commit": "2083b05f2c2f1a06e6d97c59b5fc05345b9dda3b",
+              "path": "n208.txt",
+              "authored_utc": "2026-09-26T22:21:57Z",
+              "committed_utc": "2026-09-26T22:21:57Z",
+              "side": "14.937018796984567"
+            },
+            {
+              "commit": "6042c56b43b64c09fe5a32c64879e698f399beaf",
+              "path": "n208.txt",
+              "authored_utc": "2026-10-03T12:33:31Z",
+              "committed_utc": "2026-10-03T12:33:31Z",
+              "side": "14.926534459703511"
+            }
+          ]
+        },
+        {
+          "n": 209,
+          "side": "14.953939011860642",
+          "file": "n209.txt",
+          "first_authored_utc": "2026-09-24T10:28:24Z",
+          "first_side": "14.955093967300398",
+          "current_since_authored_utc": "2026-10-03T12:33:31Z",
+          "current_since_committed_utc": "2026-10-03T12:33:31Z",
+          "current_since_commit": "6042c56b43b64c09fe5a32c64879e698f399beaf",
+          "history": [
+            {
+              "commit": "801915fdcd49c73f831f0867ae1ded3b5921a4e5",
+              "path": "n209.txt",
+              "authored_utc": "2026-09-24T10:28:24Z",
+              "committed_utc": "2026-09-24T10:34:57Z",
+              "side": "14.955093967300398"
+            },
+            {
+              "commit": "3bfc47e4f53ab474cd7702cb81f831faf2f5846a",
+              "path": "n209.txt",
+              "authored_utc": "2026-09-26T03:27:13Z",
+              "committed_utc": "2026-09-26T03:27:13Z",
+              "side": "14.955041639430016"
+            },
+            {
+              "commit": "6042c56b43b64c09fe5a32c64879e698f399beaf",
+              "path": "n209.txt",
+              "authored_utc": "2026-10-03T12:33:31Z",
+              "committed_utc": "2026-10-03T12:33:31Z",
+              "side": "14.953939011860642"
+            }
+          ]
+        },
+        {
+          "n": 228,
+          "side": "15.604602454552252",
+          "file": "n228.txt",
+          "first_authored_utc": "2026-09-24T10:28:24Z",
+          "first_side": "15.608976525083040",
+          "current_since_authored_utc": "2026-10-03T12:33:31Z",
+          "current_since_committed_utc": "2026-10-03T12:33:31Z",
+          "current_since_commit": "6042c56b43b64c09fe5a32c64879e698f399beaf",
+          "history": [
+            {
+              "commit": "801915fdcd49c73f831f0867ae1ded3b5921a4e5",
+              "path": "n228.txt",
+              "authored_utc": "2026-09-24T10:28:24Z",
+              "committed_utc": "2026-09-24T10:34:57Z",
+              "side": "15.608976525083040"
+            },
+            {
+              "commit": "45896fd4c60b31ec0660fb83d9c502b6e5551f4f",
+              "path": "n228.txt",
+              "authored_utc": "2026-09-25T07:17:05Z",
+              "committed_utc": "2026-09-25T07:17:05Z",
+              "side": "15.608961725409724"
+            },
+            {
+              "commit": "3bfc47e4f53ab474cd7702cb81f831faf2f5846a",
+              "path": "n228.txt",
+              "authored_utc": "2026-09-26T03:27:13Z",
+              "committed_utc": "2026-09-26T03:27:13Z",
+              "side": "15.604695696903802"
+            },
+            {
+              "commit": "2083b05f2c2f1a06e6d97c59b5fc05345b9dda3b",
+              "path": "n228.txt",
+              "authored_utc": "2026-09-26T22:21:57Z",
+              "committed_utc": "2026-09-26T22:21:57Z",
+              "side": "15.604638120446106"
+            },
+            {
+              "commit": "f3c5a529c255b546db18605702b8da298132309f",
+              "path": "n228.txt",
+              "authored_utc": "2026-09-27T21:46:41Z",
+              "committed_utc": "2026-09-27T21:46:41Z",
+              "side": "15.604638007678682"
+            },
+            {
+              "commit": "6042c56b43b64c09fe5a32c64879e698f399beaf",
+              "path": "n228.txt",
+              "authored_utc": "2026-10-03T12:33:31Z",
+              "committed_utc": "2026-10-03T12:33:31Z",
+              "side": "15.604602454552252"
+            }
+          ]
+        },
+        {
+          "n": 263,
+          "side": "16.742270262031791",
+          "file": "n263.txt",
+          "first_authored_utc": "2026-09-24T10:28:24Z",
+          "first_side": "16.742448478819039",
+          "current_since_authored_utc": "2026-10-03T12:33:31Z",
+          "current_since_committed_utc": "2026-10-03T12:33:31Z",
+          "current_since_commit": "6042c56b43b64c09fe5a32c64879e698f399beaf",
+          "history": [
+            {
+              "commit": "801915fdcd49c73f831f0867ae1ded3b5921a4e5",
+              "path": "n263.txt",
+              "authored_utc": "2026-09-24T10:28:24Z",
+              "committed_utc": "2026-09-24T10:34:57Z",
+              "side": "16.742448478819039"
+            },
+            {
+              "commit": "45896fd4c60b31ec0660fb83d9c502b6e5551f4f",
+              "path": "n263.txt",
+              "authored_utc": "2026-09-25T07:17:05Z",
+              "committed_utc": "2026-09-25T07:17:05Z",
+              "side": "16.742425152343785"
+            },
+            {
+              "commit": "3bfc47e4f53ab474cd7702cb81f831faf2f5846a",
+              "path": "n263.txt",
+              "authored_utc": "2026-09-26T03:27:13Z",
+              "committed_utc": "2026-09-26T03:27:13Z",
+              "side": "16.742282471230084"
+            },
+            {
+              "commit": "2083b05f2c2f1a06e6d97c59b5fc05345b9dda3b",
+              "path": "n263.txt",
+              "authored_utc": "2026-09-26T22:21:57Z",
+              "committed_utc": "2026-09-26T22:21:57Z",
+              "side": "16.742282466354222"
+            },
+            {
+              "commit": "f3c5a529c255b546db18605702b8da298132309f",
+              "path": "n263.txt",
+              "authored_utc": "2026-09-27T21:46:41Z",
+              "committed_utc": "2026-09-27T21:46:41Z",
+              "side": "16.742280159187313"
+            },
+            {
+              "commit": "6042c56b43b64c09fe5a32c64879e698f399beaf",
+              "path": "n263.txt",
+              "authored_utc": "2026-10-03T12:33:31Z",
+              "committed_utc": "2026-10-03T12:33:31Z",
+              "side": "16.742270262031791"
+            }
+          ]
+        },
+        {
+          "n": 272,
+          "side": "16.968165867864400",
+          "file": "n272.txt",
+          "first_authored_utc": "2026-09-24T10:28:24Z",
+          "first_side": "16.969484711401012",
+          "current_since_authored_utc": "2026-10-03T12:33:31Z",
+          "current_since_committed_utc": "2026-10-03T12:33:31Z",
+          "current_since_commit": "6042c56b43b64c09fe5a32c64879e698f399beaf",
+          "history": [
+            {
+              "commit": "801915fdcd49c73f831f0867ae1ded3b5921a4e5",
+              "path": "n272.txt",
+              "authored_utc": "2026-09-24T10:28:24Z",
+              "committed_utc": "2026-09-24T10:34:57Z",
+              "side": "16.969484711401012"
+            },
+            {
+              "commit": "45896fd4c60b31ec0660fb83d9c502b6e5551f4f",
+              "path": "n272.txt",
+              "authored_utc": "2026-09-25T07:17:05Z",
+              "committed_utc": "2026-09-25T07:17:05Z",
+              "side": "16.969110928481630"
+            },
+            {
+              "commit": "3bfc47e4f53ab474cd7702cb81f831faf2f5846a",
+              "path": "n272.txt",
+              "authored_utc": "2026-09-26T03:27:13Z",
+              "committed_utc": "2026-09-26T03:27:13Z",
+              "side": "16.968630107272219"
+            },
+            {
+              "commit": "2083b05f2c2f1a06e6d97c59b5fc05345b9dda3b",
+              "path": "n272.txt",
+              "authored_utc": "2026-09-26T22:21:57Z",
+              "committed_utc": "2026-09-26T22:21:57Z",
+              "side": "16.968474705968760"
+            },
+            {
+              "commit": "f3c5a529c255b546db18605702b8da298132309f",
+              "path": "n272.txt",
+              "authored_utc": "2026-09-27T21:46:41Z",
+              "committed_utc": "2026-09-27T21:46:41Z",
+              "side": "16.968279785326896"
+            },
+            {
+              "commit": "6042c56b43b64c09fe5a32c64879e698f399beaf",
+              "path": "n272.txt",
+              "authored_utc": "2026-10-03T12:33:31Z",
+              "committed_utc": "2026-10-03T12:33:31Z",
+              "side": "16.968165867864400"
+            }
+          ]
+        },
+        {
+          "n": 303,
+          "side": "17.924341009860250",
+          "file": "n303.txt",
+          "first_authored_utc": "2026-09-24T10:28:24Z",
+          "first_side": "17.928562541013548",
+          "current_since_authored_utc": "2026-10-03T12:33:31Z",
+          "current_since_committed_utc": "2026-10-03T12:33:31Z",
+          "current_since_commit": "6042c56b43b64c09fe5a32c64879e698f399beaf",
+          "history": [
+            {
+              "commit": "801915fdcd49c73f831f0867ae1ded3b5921a4e5",
+              "path": "n303.txt",
+              "authored_utc": "2026-09-24T10:28:24Z",
+              "committed_utc": "2026-09-24T10:34:57Z",
+              "side": "17.928562541013548"
+            },
+            {
+              "commit": "45896fd4c60b31ec0660fb83d9c502b6e5551f4f",
+              "path": "n303.txt",
+              "authored_utc": "2026-09-25T07:17:05Z",
+              "committed_utc": "2026-09-25T07:17:05Z",
+              "side": "17.927204787910910"
+            },
+            {
+              "commit": "3bfc47e4f53ab474cd7702cb81f831faf2f5846a",
+              "path": "n303.txt",
+              "authored_utc": "2026-09-26T03:27:13Z",
+              "committed_utc": "2026-09-26T03:27:13Z",
+              "side": "17.926999367320654"
+            },
+            {
+              "commit": "2083b05f2c2f1a06e6d97c59b5fc05345b9dda3b",
+              "path": "n303.txt",
+              "authored_utc": "2026-09-26T22:21:57Z",
+              "committed_utc": "2026-09-26T22:21:57Z",
+              "side": "17.926520579287331"
+            },
+            {
+              "commit": "f3c5a529c255b546db18605702b8da298132309f",
+              "path": "n303.txt",
+              "authored_utc": "2026-09-27T21:46:41Z",
+              "committed_utc": "2026-09-27T21:46:41Z",
+              "side": "17.924349265547932"
+            },
+            {
+              "commit": "6042c56b43b64c09fe5a32c64879e698f399beaf",
+              "path": "n303.txt",
+              "authored_utc": "2026-10-03T12:33:31Z",
+              "committed_utc": "2026-10-03T12:33:31Z",
+              "side": "17.924341009860250"
+            }
+          ]
+        },
+        {
+          "n": 306,
+          "side": "17.963438139777139",
+          "file": "n306.txt",
+          "first_authored_utc": "2026-09-25T07:17:05Z",
+          "first_side": "17.963835795982291",
+          "current_since_authored_utc": "2026-10-03T12:33:31Z",
+          "current_since_committed_utc": "2026-10-03T12:33:31Z",
+          "current_since_commit": "6042c56b43b64c09fe5a32c64879e698f399beaf",
+          "history": [
+            {
+              "commit": "45896fd4c60b31ec0660fb83d9c502b6e5551f4f",
+              "path": "n306.txt",
+              "authored_utc": "2026-09-25T07:17:05Z",
+              "committed_utc": "2026-09-25T07:17:05Z",
+              "side": "17.963835795982291"
+            },
+            {
+              "commit": "3bfc47e4f53ab474cd7702cb81f831faf2f5846a",
+              "path": "n306.txt",
+              "authored_utc": "2026-09-26T03:27:13Z",
+              "committed_utc": "2026-09-26T03:27:13Z",
+              "side": "17.963567079526221"
+            },
+            {
+              "commit": "2083b05f2c2f1a06e6d97c59b5fc05345b9dda3b",
+              "path": "n306.txt",
+              "authored_utc": "2026-09-26T22:21:57Z",
+              "committed_utc": "2026-09-26T22:21:57Z",
+              "side": "17.963449907261179"
+            },
+            {
+              "commit": "6042c56b43b64c09fe5a32c64879e698f399beaf",
+              "path": "n306.txt",
+              "authored_utc": "2026-10-03T12:33:31Z",
+              "committed_utc": "2026-10-03T12:33:31Z",
+              "side": "17.963438139777139"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

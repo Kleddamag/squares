@@ -214,9 +214,11 @@ be disjoint.[^parents]
 
 **Scaling lemma.** Eleven parents fit in a container of side $L_0$ exactly when eleven
 unit squares fit in a container of side $L_0/A$, and
+
 $$
 \frac{L_0}{A}=\frac{191/50}{764/775}=\frac{191\cdot775}{50\cdot764}=\frac{31}{8},
 $$
+
 because $764=4\cdot191$ and $775=31\cdot25$. Scaling a packing by $1/A$ about the
 container’s corner sends parents to unit squares and preserves containment and disjoint
 interiors, and scaling by $A$ sends them back.[^parents]
@@ -311,9 +313,11 @@ from the
 
 Angles are kept in half-angle coordinates.
 For an angle $\theta$, write $t=\tan(\theta/2)$; then
+
 $$
 \cos\theta=\frac{1-t^2}{1+t^2},\qquad \sin\theta=\frac{2t}{1+t^2},
 $$
+
 so a rational $t$ gives a rational cosine and sine, and every comparison the checkers
 make is between rational numbers.
 A parent’s angle is written $\varphi$, as Part I writes a packed square’s, and its
@@ -348,9 +352,11 @@ to {{CATALOGUE_B_MAX}}; the two cores of Figure 4 are row {{CHARGE_ROW}}’s.[^c
 The **mismatch** $d$ between a parent and its core is the angle $\varphi-2\arctan t$. A
 concentric square of side $B$ at angle $d$ to a square of side $A$ lies strictly inside
 it exactly when
+
 $$
 B\,(\cos d+|\sin d|)<A,
 $$
+
 since $B(\cos d+|\sin d|)$ is the width of the tilted square’s projection on the
 parent’s axes. Part I meets the same expression as $B(\cos d+\sin d)<1$ under its
 [Condition 4]({{PAPER:n11-lower-bounds-explainer#the-five-conditions-for-a-point-certificate}}).
@@ -412,9 +418,11 @@ function of its center alone, and the question is where the center can be.
 
 A parent at angle $\varphi$ fits in the container exactly when its center lies in the
 **legal center domain**
+
 $$
 \bigl[\tfrac{A}{2}(\cos\varphi+\sin\varphi),\;L_0-\tfrac{A}{2}(\cos\varphi+\sin\varphi)\bigr]^2,
 $$
+
 because $A(\cos\varphi+\sin\varphi)$ is the width of the parent’s projection on either
 axis.[^envelope]
 
@@ -447,10 +455,12 @@ The source uses an identity that T-025 introduced for the same purpose.
 
 **Signed-expansion lemma.** Let $x_1,\ldots,x_m$ be the capture indicators of the $m$
 sites, each $0$ or $1$. Then
+
 $$
-\mathbf 1\Bigl[\textstyle\sum_i x_i\ge k\Bigr]
+\mathbf 1\Bigl[{\textstyle\sum_i x_i}\ge k\Bigr]
 =\sum_{j=k}^{m}(-1)^{j-k}\binom{j-1}{k-1}\sum_{|J|=j}\;\prod_{i\in J}x_i,
 $$
+
 the inner sum over the $j$-element subsets $J$ of the sites.
 Each product is the indicator of the intersection of $j$ capture rectangles, so the
 right side is a signed sum of rectangle indicators, and the $k$-of-$m$ charge is $w$
@@ -459,27 +469,35 @@ times it.[^signed]
 Proof. Let $h$ be the number of captured sites.
 A product over $J$ is $1$ exactly when $J$ is a subset of the captured sites, so the
 inner sum is the number of $j$-subsets of an $h$-set, and the right side is
+
 $$
 S(h)=\sum_{j=k}^{h}(-1)^{j-k}\binom{j-1}{k-1}\binom{h}{j},
 $$
+
 which is $0$ for $h<k$, as the left side is.
 For $h\ge k$ take the first difference $S(h)-S(h-1)$. Pascal’s identity
 $\binom hj-\binom{h-1}j=\binom{h-1}{j-1}$ gives
+
 $$
 S(h)-S(h-1)=\sum_{j=k}^{h}(-1)^{j-k}\binom{j-1}{k-1}\binom{h-1}{j-1}.
 $$
+
 The two binomial coefficients combine.
 Writing both as factorials,
+
 $$
 \binom{j-1}{k-1}\binom{h-1}{j-1}
 =\frac{(h-1)!}{(k-1)!\,(j-k)!\,(h-j)!}
 =\binom{h-1}{k-1}\binom{h-k}{j-k},
 $$
+
 which is the step the source’s proof leaves out.
 Substituting and setting $i=j-k$,
+
 $$
 S(h)-S(h-1)=\binom{h-1}{k-1}\sum_{i=0}^{h-k}(-1)^i\binom{h-k}{i},
 $$
+
 and the alternating sum is $(1-1)^{h-k}$: it is $1$ when $h=k$ and $0$ when $h>k$. So
 $S(k)=S(k-1)+1=1$ and $S(h)=S(h-1)=1$ for every $h>k$, which is the left side.
 

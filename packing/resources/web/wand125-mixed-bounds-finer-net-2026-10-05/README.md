@@ -121,6 +121,13 @@ its manifest without one.
 | `n66-L843` | $s(66) \ge 843/100$ | 713 | $9977/10000$ | step $83/40000$, 201 nodes | its earlier `mixed_n66_L842` (8.42), and Green’s reported 8.2900… | $1.0000000007136982$ (157) | 21,622,500, $1.0051859714394813$ |
 | `n18-L470` | $s(18) \ge 47/10$ | 136 | $999/1000$ | step $1/1001$, 416 nodes | its rectangle certificate `rect_n18_L4695` (4.695) | $1.000000000165181$ (161) | 725,904, $1.0174496711115353$ |
 
+The source’s READMEs round two figures up: `mixed_n18_L470`’s gives its least oblique
+bound as “1.0000000002” for the $1.000000000165181$ its certificate records, and
+`mixed_n66_L843`’s gives Green’s value as “8.2900…” for $2\sqrt 2 + 71/13 =
+8.2899656\ldots$ (finding DN-9 of the
+[5 October review](../../../../docs/project/reviews/review-2026-10-05-wand125-declared-net-n18-n66.md)).
+The records here cite the exact values.
+
 Both are rectangle densities with no point mass: each `candidate.json` has an empty
 `points` list and a `scaling_factor` of `1`. Each has total mass $n - 1/100000$ and
 coverage threshold $1$. Each `certificate.json` has status

@@ -51,8 +51,8 @@ $t_{\max}^2 + 2 t_{\max} - 1 > 0$, and for every net index $r$ and every centre 
    uses only the bound on $z$. The fold is at $\pi/4$, not at $\theta_{\max}$: lemma D’s
    per-bin domain (format M) depends on it, since the half-width $\rho$ falls again past
    $\tan(\pi/8)$ and a square folded only above $\theta_{\max}$ could sit at half-angle
-   tangent up to $t_{200} + D/2$, where $\rho$ is below $\rho(a_{200})$. Tokoharu’s
-   domain needs no such care, but the same fold serves it.
+   tangent up to $t_{\max} + D/2$, where $\rho$ is below the last node’s $\rho(a_r)$.
+   Tokoharu’s domain needs no such care, but the same fold serves it.
 
 3. *Shrink (N3).* The concentric square of side $B$ at angle $\theta_r$, seen in the
    unit square’s frame, is rotated by $\delta$; with $z = \tan(\delta/2) \le D/2$ (N2),
@@ -151,7 +151,8 @@ $\square$
 For $B = 999/1000$ and $D = 1/1001$, (b) gives $B(1 + D) = 500499/500500$, so the margin
 is $1/500500$. For (c), $t_{\max} = 415/1001$ and
 $t_{\max}^2 + 2t_{\max} - 1 = 1054/1002001$. For (d), $415/1001 < 1/2$. For (e),
-$B(1 + D/(1 - D^2/4)) \approx 0.999998001$.
+$B(1 + D/(1 - D^2/4)) = 1335998331/1336001000 \approx 0.99999800225$ (corrected from
+$0.999998001$ by finding DN-4 of the 5 October review).
 
 Admission also refuses these declarations:
 
@@ -163,6 +164,10 @@ Admission also refuses these declarations:
   than ignored.
 - Certificate metadata (`certificate.D`, `certificate.angle_count`) that changes the
   declared net. As for the standard net (finding TI-3), metadata may restate it.
+
+A net declaration this reader would not use is refused and not ignored: a `proof_net`
+outside format M, and format L’s `net` block outside format L (finding DN-5 of the 5
+October review).
 
 Without a declaration, a format M file is on the standard net.
 `mixed_n18_L470` without its `proof_net` is refused, since $B(1 + 83/40000) > 1$.
@@ -518,10 +523,13 @@ of the 3 October soundness review, whose reproducers are in `tests/adversarial.r
 - `tests/declared_net.rs`, for lemma N0: a declared net replaces the standard one (the
   direction at the last index and the per-bin domain at four indices read the declared
   step exactly); without its declaration $B = 999/1000$ is refused on the standard net;
-  thirteen corrupted declarations are refused, each by the premise it breaks; metadata
-  may restate a declared net and never change it; a `proof_net` in format T or L is
-  refused; and the tangent-form premise refuses a $B$ between its two limits at
-  $D = 1/1001$.
+  eighteen corrupted declarations are refused, each by the premise it breaks, four of
+  them paths finding DN-6 of the 5 October review found untested (`last` $0$, a reaching
+  net past $2^{16}$ directions, `last` past the `u32` range and `last` in exponent
+  form); a duplicate key inside the declaration, the fifth, is refused by the reader;
+  metadata may restate a declared net and never change it; a `proof_net` in format T or
+  L, and a `net` block outside format L, are refused; and the tangent-form premise
+  refuses a $B$ between its two limits at $D = 1/1001$.
 - `interval::tests::nan_is_never_dropped`: every interval primitive keeps a `NaN`
   endpoint, and an overflowing directed step is `NaN`.
 - `rotated_tests::oracle_counts_closed_intersections`: the oracle counts a point on the
@@ -535,8 +543,9 @@ of the 3 October soundness review, whose reproducers are in `tests/adversarial.r
   compares with an exact evaluator of points, segments and rectangles written in the
   tool, apart from the crate’s oracle, and runs the retained mixed and linear controls.
   Its `declared-net` group holds `mixed_n18_L470` to lemma N0: the original verified,
-  every one of its corrupted net declarations refused at admission, and its masses
-  scaled by $0.985$ refused with an exact witness below the threshold.
+  every one of its corrupted net declarations refused at admission with a message naming
+  the premise it breaks, and its masses scaled by $0.985$ refused with an exact witness
+  below the threshold.
   Its `--quick` subset runs in the gate step `measure verifier Rust (sqverify-fast)`.
 - `devtools/sqverify_fast_census.py` verifies every replayed certificate at every
   direction of its net and evaluates, in exact rationals, the capture at the centre of

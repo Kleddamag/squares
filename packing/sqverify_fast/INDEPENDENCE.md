@@ -231,6 +231,15 @@ Files read for the change:
   Also lines 52–70, 148–160 and 336–460 of `tests/test_wand125_mixed_rectangles.py`.
 - The receipt `receipts/n50/full/compare.json` of the 28 September packet (its field
   names and status).
+- After the change, the lane’s review,
+  `docs/project/reviews/review-2026-10-05-wand125-declared-net-n18-n66.md`, except its
+  section “What the Authors’ Code Shows” (lines 418–451), which compares the change with
+  the source’s code and was skipped for that reason.
+  Its findings DN-4 to DN-6 on this crate were then fixed from the findings’ own text: a
+  `net` block outside format L is refused, five untested refusals are tested, and the
+  controls match refusal messages.
+  The finding DN-1 names two functions of `devtools/audit_wand125_point_and_mixed.py` as
+  models; they were not opened.
 
 Never opened: any file under a `code/` folder or `proof/verify.cpp` of a bundle.
 Those files were checked out and unpacked, and only their Git blob ids and SHA-256

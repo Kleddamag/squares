@@ -25,9 +25,10 @@ Two checks of `sqverify-fast` (`packing/sqverify_fast`), both refusable:
   (`proof_net`: step 1/1001, 416 directions; SOUNDNESS.md, lemma N0). The original must
   verify on the declared net; every corrupted declaration (a step that breaks
   `B (1 + D) < 1`, a net short of pi/4, an unknown field, a count that disagrees,
-  metadata that changes the net, and the declaration removed) must be refused at
-  admission; and the masses scaled by 0.985 must be refused, each refused direction with
-  an exact witness below the threshold.
+  metadata that changes the net, the declaration removed, and format L's net block beside
+  it) must be refused at admission, by the premise it breaks; and the masses scaled by
+  0.985 must be refused, each refused direction with an exact witness below the
+  threshold.
 
 Prints one line per check and `SQVERIFY-FAST CHECKS PASSED` when every check passes;
 exits 1 otherwise. From `packing/`, after `cargo build --release` in
@@ -744,19 +745,32 @@ def declared_net(binary: Path, scratch: Path, *, quick: bool) -> list[tuple[bool
             ),
         )
     )
-    corruptions: list[tuple[str, dict[str, Any] | None, dict[str, Any] | None]] = [
-        ("step 1/999, B (1 + D) = 1", {**net, "step": "1/999"}, None),
-        ("last 414, short of pi/4", {**net, "last": 414}, None),
-        ("an unknown field", {**net, "offset": "1/2002"}, None),
-        ("a count other than last + 1", {**net, "count": 415}, None),
-        ("metadata changing the step", net, {"D": "83/40000"}),
-        ("metadata changing the count", net, {"angle_count": 417}),
-        ("the declaration removed (the standard net)", None, None),
+    # Each corruption, and the refusal that must name the premise it breaks: a control
+    # refused for another reason would not hold its rule (finding DN-6 of the 5 October
+    # review). The metadata step 1/1000 meets every net premise, so only the rule that
+    # metadata may not change a declared net refuses it.
+    corruptions: list[tuple[str, dict[str, Any] | None, dict[str, Any] | None, str, str]] = [
+        ("step 1/999, B (1 + D) = 1", {**net, "step": "1/999"}, None, "net-key", "B (1 + D)"),
+        ("last 414, short of pi/4", {**net, "last": 414}, None, "net-key", "pi/4"),
+        ("an unknown field", {**net, "offset": "1/2002"}, None, "net-key", "does not know"),
+        ("a count other than last + 1", {**net, "count": 415}, None, "net-key", "count"),
+        (
+            "metadata changing the step",
+            net,
+            {"D": "1/1000", "angle_count": 416},
+            "net-key",
+            "may not change it",
+        ),
+        ("metadata changing the count", net, {"angle_count": 417}, "net-key", "may not change"),
+        ("the declaration removed (the standard net)", None, None, "net-key", "B (1 + D)"),
+        ("a format L net block beside it", net, None, "net", "net block"),
     ]
-    for name, declared, metadata in corruptions:
+    for name, declared, metadata, where, expected in corruptions:
         copy = json.loads(json.dumps(raw))
         if declared is None:
             del copy["proof_net"]
+        elif where == "net":
+            copy["net"] = {"step": "83/40000", "last": 200}
         else:
             copy["proof_net"] = declared
         if metadata is not None:
@@ -765,10 +779,10 @@ def declared_net(binary: Path, scratch: Path, *, quick: bool) -> list[tuple[bool
         refused = run_binary(binary, mutant, n, "--directions", "1")
         outcomes.append(
             (
-                refused.returncode == 2,
+                refused.returncode == 2 and expected in refused.stderr,
                 (
-                    f"declared net: admission refuses {name} (exit {refused.returncode}:"
-                    f" {refused.stderr.strip()[:80]})"
+                    f"declared net: admission refuses {name} for its own premise"
+                    f" (exit {refused.returncode}: {refused.stderr.strip()[:80]})"
                 ),
             )
         )

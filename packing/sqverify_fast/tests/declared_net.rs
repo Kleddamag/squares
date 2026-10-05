@@ -79,7 +79,7 @@ fn without_its_declaration_the_core_does_not_fit_the_standard_net() {
 
 #[test]
 fn a_corrupted_declaration_is_refused() {
-    let variants: [(&str, Value, &str); 13] = [
+    let variants: [(&str, Value, &str); 18] = [
         // B (1 + D) = 999/1000 * 1000/999 = 1 exactly: the core need not fit.
         (
             "step 1/999",
@@ -132,6 +132,31 @@ fn a_corrupted_declaration_is_refused() {
             "does not know",
         ),
         ("not an object", json!(["1/1001", 415]), "object"),
+        // One direction: the net needs at least two (lemma N0 (a)).
+        ("last 0", json!({"step": "1/1001", "last": 0}), "directions"),
+        // A net that reaches past pi/4, but at 414,215 directions, past F3's 2^16 cap.
+        (
+            "a reaching net above 2^16 directions",
+            json!({"step": "1/1000000", "last": 414_214}),
+            "directions",
+        ),
+        // 2^32: the count last + 1 leaves u32.
+        (
+            "last above the u32 range",
+            json!({"step": "1/1001", "last": 4_294_967_296_u64}),
+            "proof_net.last",
+        ),
+        (
+            "last 2^40",
+            json!({"step": "1/1001", "last": 1_099_511_627_776_u64}),
+            "proof_net.last",
+        ),
+        // An exponent is not a JSON integer, even when its value is one.
+        (
+            "last in exponent form",
+            serde_json::from_str(r#"{"step": "1/1001", "last": 4.15e2}"#).expect("JSON"),
+            "proof_net.last",
+        ),
     ];
     for (name, net, expected) in variants {
         let error = admit_value(&mixed("999/1000", Some(net)), 2)
@@ -201,4 +226,39 @@ fn the_per_bin_tangent_form_is_checked_on_the_declared_step() {
     // The certificate's own B = 999/1000 clears both forms.
     let b = ratio(999, 1000);
     assert!(&b * (&one + &tangent) < one);
+}
+
+#[test]
+fn a_duplicate_key_inside_the_declaration_is_refused_by_the_reader() {
+    // Two readers could disagree about which `last` a file declares.
+    let dir = std::env::temp_dir().join(format!("sqverify-net-{}", std::process::id()));
+    std::fs::create_dir_all(&dir).unwrap();
+    let path = dir.join("dup-net.json");
+    std::fs::write(
+        &path,
+        r#"{"n": 2, "L": "3", "B": "999/1000", "points": [],
+            "rectangles": [{"rectangle": [0, 0, 1, 1], "mass": 1}],
+            "proof_net": {"step": "1/1001", "last": 415, "last": 600}}"#,
+    )
+    .unwrap();
+    let error = sqverify_fast::certificate::read_json(&path).unwrap_err();
+    assert!(error.0.contains("duplicate JSON key"), "{error}");
+    std::fs::remove_dir_all(&dir).unwrap();
+}
+
+#[test]
+fn a_net_block_outside_format_l_is_refused_not_ignored() {
+    // Finding DN-5 of the 5 October review: format L's net block in a format M or T
+    // file would otherwise be ignored.
+    let mut both = mixed("999/1000", Some(fine()));
+    both["net"] = json!({"step": "83/40000", "last": 200});
+    let error = admit_value(&both, 2).unwrap_err();
+    assert!(error.contains("net block"), "{error}");
+    let standard = json!({"n": 2, "L": "3", "B": "9/10", "points": [],
+        "rectangles": [{"rectangle": [0, 0, 1, 1], "mass": 1}],
+        "net": {"step": "83/40000", "last": 200}});
+    assert!(admit_value(&standard, 2).unwrap_err().contains("net block"));
+    let tokoharu = json!({"L": "3", "B": "9/10", "rectangles": [[0, 0, 1, 1]], "weights": [1],
+        "net": {"step": "83/40000", "last": 200}});
+    assert!(admit_value(&tokoharu, 2).unwrap_err().contains("net block"));
 }

@@ -27,8 +27,9 @@ every premise the standard net meets, all in exact rationals:
 - format M’s tangent form $B(1 + D/(1 - D^2/4)) < 1$.
 
 Lemma N0 of [SOUNDNESS.md](SOUNDNESS.md#declared-nets) proves that this is enough.
-A declaration with an unknown field, a `proof_net` in a format T or L file, and
-certificate metadata that changes the declared net are refused.
+A declaration with an unknown field, a `proof_net` in a format T or L file, a format L
+`net` block in a format T or M file, and certificate metadata that changes the declared
+net are refused: a net declaration this reader would not use is never ignored.
 The summary’s `premises` record the net’s `net_origin` (`standard`, `proof_net` or
 `metadata`), its last tangent and $B(1 + D)$. Format L’s `net` block must still be the
 standard net.

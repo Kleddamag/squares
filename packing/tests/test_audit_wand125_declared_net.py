@@ -10,6 +10,7 @@ shipped one.
 from __future__ import annotations
 
 import json
+import math
 import os
 from fractions import Fraction
 from pathlib import Path
@@ -150,3 +151,42 @@ def test_a_replay_that_changes_a_shipped_file_does_not_match(tmp_path: Path) -> 
     (fresh / "proof/input-like.txt").write_text("changed", encoding="utf-8")
     result = declared.compare(shipped, fresh)
     assert result["differing"] == ["proof/input-like.txt: changed by the replay"]
+
+
+def enclosing_lines(candidate: dict[str, Any]) -> list[str]:
+    """Rectangle lines in the input's layout that enclose the expanded candidate."""
+    side = Fraction(candidate["L"])
+    lines = []
+    for row in candidate["rectangles"]:
+        corners = [Fraction(value) for value in row["rectangle"]]
+        area = (corners[2] - corners[0]) * (corners[3] - corners[1])
+        density = Fraction(row["mass"]) / 8 / area
+        for image in declared.orbit(side, corners):
+            fields = []
+            for exact in (*image, density):
+                value = float(exact)
+                fields += [
+                    math.nextafter(value, -math.inf).hex(),
+                    math.nextafter(value, math.inf).hex(),
+                ]
+            lines.append(" ".join(fields))
+    return [*lines, "0"]
+
+
+def test_rectangle_lines_must_enclose_every_image_of_every_row() -> None:
+    candidate = json.loads(read_retained_bytes(declared.DIRECTORY / "candidate.json"))
+    lines = enclosing_lines(candidate)
+    declared.rectangle_block(candidate, lines)
+    record = json.loads((declared.RECEIPTS / "bundle.json").read_text(encoding="utf-8"))
+    assert record["rectangle_lines"] == "ENCLOSE_THE_EXPANDED_CANDIDATE"
+    heavier = list(lines)
+    fields = heavier[0].split()
+    fields[8:10] = [(float.fromhex(fields[9]) * 2).hex(), (float.fromhex(fields[9]) * 3).hex()]
+    heavier[0] = " ".join(fields)
+    with pytest.raises(declared.AuditError, match="encloses none of its images"):
+        declared.rectangle_block(candidate, heavier)
+    with pytest.raises(declared.AuditError, match="point count"):
+        declared.rectangle_block(candidate, [*lines[:-1], "1"])
+    twice = [lines[0], *lines[0:7], *lines[8:]]
+    with pytest.raises(declared.AuditError, match="encloses none of its images"):
+        declared.rectangle_block(candidate, twice)

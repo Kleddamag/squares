@@ -6,8 +6,9 @@
   "code_files": 10,
   "oblique_inputs": 415,
   "rectangle_images": 1088,
+  "rectangle_lines": "ENCLOSE_THE_EXPANDED_CANDIDATE",
   "upstream_oblique_seconds": 9818.835798568995,
   "upstream_oblique_nodes": 37874941,
   "axis": {"cells":725904,"integer_minimum":"17479652251/17179869184","seconds":1.6098854539995955},
-  "scope": "The bundle's files against its own list and the packet, and every shipped record and input against the declared net's tangent, per-bin domain and threshold. No coverage is decided here."
+  "scope": "The bundle's files against its own list and the packet, every shipped record and input header against the declared net's tangent, per-bin domain and threshold, and every input's rectangle lines against the expanded candidate. No coverage is decided here."
 }

@@ -25,8 +25,9 @@ by digest.
     checker ``89b674a6...``;
   - at every oblique node, the shipped record's net index, tangent, bin floor and
     per-bin centre domain are lemma N0's exactly, and its input's first lines enclose
-    the side, core, domain half-width, cosine and sine exactly, with threshold one and
-    eight images of every row;
+    the side, core, domain half-width, cosine and sine exactly, with threshold one; its
+    rectangle lines enclose the eight images of every row of the candidate, with their
+    densities, and list no point mass;
   - the axis record is at threshold one, with no unresolved cell.
 
   This binds the source's own runs to the declared net. It decides no coverage either.
@@ -252,6 +253,58 @@ def enclosure(line: str) -> tuple[Fraction, Fraction]:
     return Fraction(float.fromhex(low)), Fraction(float.fromhex(high))
 
 
+def orbit(side: Fraction, row: list[Fraction]) -> list[tuple[Fraction, ...]]:
+    """The eight images of ``[x1, y1, x2, y2]`` under the container's symmetries."""
+    x1, y1, x2, y2 = row
+    return [
+        (left, bottom, right, top)
+        for a1, b1, a2, b2 in ((x1, y1, x2, y2), (y1, x1, y2, x2))
+        for left, right in ((a1, a2), (side - a2, side - a1))
+        for bottom, top in ((b1, b2), (side - b2, side - b1))
+    ]
+
+
+def rectangle_block(candidate: dict[str, Any], lines: list[str]) -> None:
+    """An input's rectangle lines enclose the expanded candidate, row by row.
+
+    After the header, an input lists eight lines per candidate row, each the enclosures
+    of an image's ``x1, y1, x2, y2`` and density, then the count of point masses. Each
+    row's eight lines must enclose its eight images, matched as a multiset, with
+    density ``mass / 8 / area``; no point mass is listed.
+    """
+    side = Fraction(candidate["L"])
+    rows = candidate["rectangles"]
+    require(len(lines) == 8 * len(rows) + 1 and lines[-1].strip() == "0", "the point count")
+    for index, row in enumerate(rows):
+        corners = [Fraction(value) for value in row["rectangle"]]
+        area = (corners[2] - corners[0]) * (corners[3] - corners[1])
+        density = Fraction(row["mass"]) / 8 / area
+        expected = [(*image, density) for image in orbit(side, corners)]
+        for line in lines[8 * index : 8 * index + 8]:
+            tokens = line.split()
+            require(
+                len(tokens) == 10, f"row {index}: a rectangle line has {len(tokens)} fields"
+            )
+            bounds = [
+                (Fraction(float.fromhex(tokens[k])), Fraction(float.fromhex(tokens[k + 1])))
+                for k in range(0, 10, 2)
+            ]
+            match = next(
+                (
+                    image
+                    for image in expected
+                    if all(
+                        low <= exact <= high
+                        for (low, high), exact in zip(bounds, image, strict=True)
+                    )
+                ),
+                None,
+            )
+            if match is None:
+                raise AuditError(f"row {index}: a line encloses none of its images")
+            expected.remove(match)
+
+
 def bundle(root: Path, directory: Path = DIRECTORY) -> dict[str, Any]:
     """Bind an unpacked proof bundle to the packet and its records to the declared net."""
     listed: dict[str, str] = json.loads((root / "files-sha256.json").read_text())
@@ -290,6 +343,7 @@ def bundle(root: Path, directory: Path = DIRECTORY) -> dict[str, Any]:
     count = int(candidate["proof_net"]["last"]) + 1
     digest = candidate["scaling_source_digest"]
     images = 8 * len(candidate["rectangles"])
+    block: list[str] | None = None
     seconds = 0.0
     nodes = 0
     for r in range(1, count):
@@ -334,6 +388,12 @@ def bundle(root: Path, directory: Path = DIRECTORY) -> dict[str, Any]:
             low_end, high_end = enclosure(lines[position])
             require(low_end <= exact <= high_end, f"node {r}: input line {position + 1}")
         require(int(lines[6]) == images, f"node {r}: the input lists {lines[6]} rectangles")
+        # The rectangle lines are the same at every node: checked against the expanded
+        # candidate once, and held byte for byte to that at every other node.
+        if block is None:
+            rectangle_block(candidate, lines[7:])
+            block = lines[7:]
+        require(lines[7:] == block, f"node {r}: the rectangle lines differ from node 1's")
         record = certificate["results"][str(r)]
         require(
             (int(record["nodes"]), float(record["lower"]))
@@ -362,6 +422,7 @@ def bundle(root: Path, directory: Path = DIRECTORY) -> dict[str, Any]:
         "code_files": len(code),
         "oblique_inputs": count - 1,
         "rectangle_images": images,
+        "rectangle_lines": "ENCLOSE_THE_EXPANDED_CANDIDATE",
         "upstream_oblique_seconds": seconds,
         "upstream_oblique_nodes": nodes,
         "axis": {
@@ -370,9 +431,10 @@ def bundle(root: Path, directory: Path = DIRECTORY) -> dict[str, Any]:
             "seconds": axis["seconds"],
         },
         "scope": (
-            "The bundle's files against its own list and the packet, and every shipped"
-            " record and input against the declared net's tangent, per-bin domain and"
-            " threshold. No coverage is decided here."
+            "The bundle's files against its own list and the packet, every shipped record"
+            " and input header against the declared net's tangent, per-bin domain and"
+            " threshold, and every input's rectangle lines against the expanded candidate."
+            " No coverage is decided here."
         ),
     }
 

@@ -644,9 +644,17 @@ pub fn admit(
     }
 
     let (format, domain, listed) = sources(object)?;
+    // A net declaration this reader would not use is refused, not ignored: a
+    // proof_net outside format M, and format L's net block outside format L.
     if declared.is_some() && format != "M" {
         return refuse(format!(
             "format {format} declares no proof_net; only format M may (a declaration \
+             this reader would not use is refused, not ignored)"
+        ));
+    }
+    if format != "L" && object.contains_key("net") {
+        return refuse(format!(
+            "format {format} declares no net block; only format L does (a declaration \
              this reader would not use is refused, not ignored)"
         ));
     }

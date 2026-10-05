@@ -103,6 +103,7 @@ lanes:
       - {path: packing/devtools/audit_wand125_point_and_mixed.py, lines: "--help texts, module docstring, 1826-1870, 2425-2476 (packet constants and certificate rows)"}
       - {path: packing/tests/test_wand125_mixed_rectangles.py, lines: "52-70, 148-160, 336-460"}
       - {path: "packing/resources/web/wand125-point-and-mixed-2026-09-28/receipts/n50/full/compare.json", lines: "field names and status"}
+      - {path: docs/project/reviews/review-2026-10-05-wand125-declared-net-n18-n66.md, lines: "1-417, 452-638 (all but What the Authors' Code Shows)"}
     fetched:
       - "github.com/wand125/square-packing-bounds (blobless clone; the two certificate directories and three root files checked out at 43050ed)"
       - "github.com/jlevy/squares/issues/366 (body)"

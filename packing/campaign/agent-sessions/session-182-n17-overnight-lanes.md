@@ -826,6 +826,13 @@ consequence in each.
   The standing verifier passed both in full (124 s and 293 s). They are held with target
   2 for the user’s ruling, so they change neither the census nor the manifest.
   Alone they would exclude 71,448 and 81,052 states.
+- **BC-427, lane K’s third tranche, is registered before its first run**, with exp-256.
+  It takes the sixteen remaining flags of arity at most seven with the most projected
+  gain against the certified line at `71b1d0363`: fourteen of arity 7 and two of arity
+  6, with target 2 left out.
+  They run under lane K’s frozen SW9 recipe on two workers, aimed at H-267 independently
+  of target 2. Without target 2, any one of ten listed flags would take the arity-7
+  count below $10^4$ alone.
 
 <!-- This document follows common-doc-guidelines.md.
 See github.com/jlevy/practical-prose and review guidelines before editing.

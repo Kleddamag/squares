@@ -1913,6 +1913,63 @@ agenda:
       finest row 1/256). The standing verifier at cebb5d15a passed each in full, in 124 s
       and 293 s. Both wait in ADMIT-AFTER-CONTROL for the user's ruling, with their
       receipts in receipts/K.
+  - id: BC-427
+    purpose: research
+    owner_focus: correctness
+    instances:
+    - 17
+    state: in_progress
+    priority: 1
+    question: >-
+      Do the remaining standing flags of arity at most seven, the sixteen with the most
+      projected gain against the certified line at 71b1d0363, close under lane K's frozen
+      SW9 recipe?
+    hypotheses:
+    - H-267
+    budget: >-
+      At most sixteen runs of at most 7,000 s each and one verification of at most 4,000 s
+      per closure, on two workers, to the run operator's delegation deadline at
+      2026-10-06T07:14:04Z.
+    entry: >-
+      The coordinator's re-plan at the 18:55 UTC check-in; this cell, exp-256 and the
+      frozen target list committed before the first run.
+    exit: >-
+      The list exhausted, each run's verdict as observed: a closure re-proved by the
+      standing kernel verifier in full and admitted, one commit each, or a non-closure
+      retained with its node kept. Any soundness alarm or one verifier FAIL stops the
+      slice.
+    bead: think-035m
+    depends_on:
+    - BC-415
+    next_evidence: packing/campaign/agent-sessions/session-182-n17-overnight-lanes.md
+    workflows:
+    - research-loop
+    program: post-optimality-low-n
+    parallel_group: n17-overnight-182
+    artifacts:
+    - packing/campaign/explorations/X048-session-182-overnight/kernel-targets-bc427.txt
+    - packing/campaign/explorations/X048-session-182-overnight/receipts/K/census-bc427-targets.json
+    - packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-256-h267-n17-third-tranche-flags.md
+    note: >-
+      Under BC-418, lane K's third tranche, a future slice added at a check-in and aimed at
+      H-267 independently of lane K's target 2. The census at 71b1d0363
+      (receipts/K/census-bc427-targets.json, 39,656 states in 5,057 orbits) flags 34
+      classes of arity at most seven, target 2 among them. The other 33 are more than the
+      sixteen-target cap, so the list is the top sixteen of them by projected orbits
+      against that line, 509 down to 43: fourteen of arity 7 and two of arity 6, frozen in
+      kernel-targets-bc427.txt. No arity-8 flag fills it. Target 2 is left out because
+      BC-423 holds it. H-267's count at arity at most seven is 10,173 orbits
+      (receipts/K/census-arity7-after-k9.json, unchanged since s182-k9). Reaching its
+      threshold of at most 10^4 needs 173 orbits off that line, and going below it needs
+      174. With target 2 admitted, which projects 1,372 there, none more is needed.
+      Without it, any one of the ten listed flags that project at least 174 orbits
+      against the arity-7 line (183 to 1,799) would suffice alone. The instrument is lane
+      K's frozen SW9 recipe exactly (--bins 64 --max-rounds 24 --hull-limit 16
+      --producer-share 0.6 --split-floor 512 --max-rows 1152 --split-patience 1
+      --max-seconds 7000) from the clean run worktree at cebb5d15a, so lane K's endpoint7
+      control (K-control-endpoint7, PASS_CONTROL_STALLED in 1,244 s,
+      receipts/K/kernel-control-endpoint7.json) covers it. A stall stays a stall, with its
+      node kept; none is re-run under BC-423's recipe. Evidence record exp-256.
 ---
 # Agenda 042: The n11 Settlement Ladder and Low-n Angles
 

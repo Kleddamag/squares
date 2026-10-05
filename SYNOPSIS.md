@@ -288,11 +288,11 @@ hypothesis status and summarizes experiment verdicts, and the
 | Record | Count | State at the cutoff |
 | --- | ---: | --- |
 | Agendas | 39 | 19 active; 14 completed; 5 paused; 1 superseded |
-| Commitments | 415 | 216 complete; 65 stopped; 70 blocked; 25 ready; 21 tentative; 18 in progress |
+| Commitments | 416 | 216 complete; 65 stopped; 70 blocked; 25 ready; 21 tentative; 19 in progress |
 | Sessions | 180 | 105 completed; 74 stopped; 1 nonterminal |
 | Explorations | 47 | 28 linked to proposed hypotheses; 19 uncodified |
 | Hypotheses | 208 | 44 confirmed; 33 refuted; 63 blocked; 20 unresolved; 9 open; 34 open questions; 2 result registered; 2 abandoned; 0 running; 1 exhausted |
-| Experiments | 184 | 59 accepted; 38 rejected; 58 unresolved; 12 baseline; 11 blocked; 4 abandoned; 1 in progress; 1 exhausted |
+| Experiments | 185 | 59 accepted; 38 rejected; 58 unresolved; 12 baseline; 11 blocked; 4 abandoned; 2 in progress; 1 exhausted |
 | Frontier results | 94 | 94 registered, 65 by others |
 
 <!-- END CURRENT-RESEARCH-STATUS -->
@@ -5630,7 +5630,7 @@ round that names the hypothesis, control roles included.
 | [H-264](packing/campaign/hypotheses/H-264-n17-geometric-exclusion-cost-per-leaf.md) | open question | The cost of one exact geometric exclusion per residue state, on the seed-182 draw of 12 states from the survey’s arity8 frame at a cap above the endpoint; rewritten by Session 182 | 1 | exp-252 accepted, W2 review confirmed with corrections: five of the 10 counted draws closed on the standing verifier’s full pass, four did not |
 | [H-265](packing/campaign/hypotheses/H-265-n17-catalogue-polynomial-identity.md) | confirmed | The certified chart endpoint is a root of the catalogue’s irreducible degree-18 polynomial | 1 | exp-245 accepted: identical with unit 1; irreducible over Q |
 | [H-266](packing/campaign/hypotheses/H-266-n17-minimal-capacity-one-cover.md) | confirmed | A D4-symmetric capacity-one cover of at most 25 cells holds the endpoint family in one occupancy state; the unique-state 24-cell cover replaces the H259 grid | 2 | exp-247 accepted: 43,593 orbits; unique state, margin 0.002112 |
-| [H-267](packing/campaign/hypotheses/H-267-n17-isolated-sub-pattern-residue.md) | unresolved | Isolated sub-pattern certificates of arity at most seven leave at most 10^4 orbits on the H-266 cover; the selector flags 44 classes and projects 5,084 orbits | 4 | exp-251 in progress: lane K’s arity-7 flags s182-k1, s182-k3, s182-k4, s182-k5, s182-k6, s182-k7, s182-k8 and s182-k9 admitted on the standing verifier’s full pass; 10,173 orbits under arity-at-most-7 entries. exp-254 unresolved: BC-425’s eight arity-8 closures admitted, 5,057 certified orbits |
+| [H-267](packing/campaign/hypotheses/H-267-n17-isolated-sub-pattern-residue.md) | unresolved | Isolated sub-pattern certificates of arity at most seven leave at most 10^4 orbits on the H-266 cover; the selector flags 44 classes and projects 5,084 orbits | 5 | exp-251 in progress: lane K’s arity-7 flags s182-k1, s182-k3, s182-k4, s182-k5, s182-k6, s182-k7, s182-k8 and s182-k9 admitted on the standing verifier’s full pass; 10,173 orbits under arity-at-most-7 entries. exp-254 unresolved: BC-425’s eight arity-8 closures admitted, 5,057 certified orbits. exp-256 registered: BC-427’s sixteen remaining flags of arity at most seven |
 | [H-268](packing/campaign/hypotheses/H-268-n17-local-theorem-slider-coverage.md) | confirmed | With square 6 in its H-266 cell, the slides of squares 5 and 13 stay inside the box exp-244 certifies; b can go negative, so the local theorem was re-run over the widened box B_W′ | 1 | exp-248 accepted: a ≤ 23/200, z ≥ −49/1000, b ≥ −1.685r; B_W′ worst ratio 0.925931 |
 | [H-269](packing/campaign/hypotheses/H-269-periodic-certificates-k2-minus-4-and-5.md) | blocked | A periodic measure of T-064’s form proves $s(k^2-4)=k$ and $s(k^2-5)=k$ for all large $k$; the go/no-go is an exact corner deficit $D>1$ (X-049). Since 3 October 2026 T-081 reports the $d=4$ cell at $D\approx 1.074$, pending its replay (`think-8hk1`); $d=5$ stays open | 0 | — |
 | [H-270](packing/campaign/hypotheses/H-270-k2-plus-1-crossover-kearney-shiu-strip.md) | blocked | Some $k$ in 18..41 has a Kearney–Shiu strip packing of $k^2+1$ squares below the plateau $k+5/\sqrt2-3$ (X-049) | 0 | — |
@@ -5973,7 +5973,7 @@ The relevant generator writes the receipt, and the entry fills in on the next
 
 ## Experiments Conducted
 
-There are 184 rounds registered in `series-000`.
+There are 185 rounds registered in `series-000`.
 
 They record 2512.1 agent-minutes and 4820.8 wall-minutes.
 These totals exclude four historical annealing rounds with unrecorded timing; their wall
@@ -6201,6 +6201,7 @@ archive beside it.
 | [exp-253](packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-253-h274-n17-stalls-under-adaptive-rows.md) | 17 | target | H-274 | Session 182 BC-424: H-274’s four frozen lane A stalls as whole 17-cell states under SW9’s adaptive-row kernel recipe, each closure admitted on the standing verifier’s full pass | Two of the four frozen stalls forbidden at U on the standing verifier’s full pass (s182-m2784767-sw9, s182-m2817021-sw9), the criterion met, and the other two (s182-m2878207-sw9, s182-m3063677-sw9) admitted after it, all four closed; W2 review confirmed with corrections; 7,307 certified orbits, endpoint surviving | accepted |
 | [exp-254](packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-254-h267-n17-second-tranche-flags.md) | 17 | target | H-267 | Session 182 BC-425: lane K’s second tranche, the next ten standing flags by projected gain (all arity 8) under the frozen SW9 recipe, each closure admitted on the standing verifier’s full pass | Eight of ten arity-8 flags forbidden at U on the standing verifier’s full pass (s182-bc425-t1, t2, t4, t5, t7, t8, t9, t10), two at the 24-round cap; 5,057 certified orbits, endpoint surviving; arity 8, so H-267 unresolved | unresolved |
 | [exp-255](packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-255-h273-n17-distance-two-survey.md) | 17 | target | H-273 | Session 182 lane E: every distance-2 orbit of the arity8 frame searched for a float placement at U, ten shards each with the endpoint’s state as its positive control | No placement in 95 searches, every control placed; the closest miss at penetration 0.00027 | unresolved |
+| [exp-256](packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-256-h267-n17-third-tranche-flags.md) | 17 | target | H-267 | Session 182 BC-427: lane K’s third tranche, the sixteen remaining flags of arity at most seven with the most projected gain, under the frozen SW9 recipe, each closure admitted on the standing verifier’s full pass | In progress: registered before its first run; 5,057 certified orbits, 10,173 under arity-at-most-7 entries | in-progress |
 
 ### Cost and provenance
 
@@ -6390,10 +6391,11 @@ archive beside it.
 | exp-253 | 7,000 s per state and for the control, 4,000 s per verification, one worker each | 11768.0 s | — | criterion | `3396efda0`; two of the four frozen states closed, the other two admitted after the verdict; W2 review confirmed with corrections |
 | exp-254 | 7,000 s per target and 4,000 s per verification; one worker per job | 7543.0 s | — | criterion | `72c343904`; eight of ten closed and admitted, two at the round cap |
 | exp-255 | 3,600 s per shard under a 3,900 s hard timeout, one or two workers | 13549.0 s | — | criterion | `f7b45bdbb`; 95 of 95 orbits searched, none placed |
+| exp-256 | 7,000 s per target and 4,000 s per verification; one worker per job, two workers | — | — | — | in progress at `cebb5d15a` |
 
-### What the 184 rounds jointly establish
+### What the 185 rounds jointly establish
 
-The 184 rounds use 2512.1 agent-minutes and 4820.8 wall-minutes under the campaign’s
+The 185 rounds use 2512.1 agent-minutes and 4820.8 wall-minutes under the campaign’s
 retained effort accounting.
 The never-invoked exp129 adds no scientific result or execution time.
 Exp-114 contributes 2.46 seconds of target/replay effort; its readiness work is recorded

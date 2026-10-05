@@ -165,8 +165,8 @@ name: Certificate page
       - .github/workflows/pages.yml
   # A pull request builds and checks the pages without deploying them, so a change that
   # breaks a render fails review rather than the next deploy. It has no `paths:` filter:
-  # the `scope` job below decides, per page, from each builder's declared inputs, and a
-  # page it skips is skipped by a named job that says why. A filter here would be a third
+  # the `scope` job below decides, per page, from each builder's declared inputs, and
+  # names each page it skips in a notice that says why. A filter here would be a third
   # hand-kept list of the same inputs, and a pull request it excluded would carry no
   # Certificate page checks at all, which a reader cannot tell from a missing run.
   pull_request:
@@ -181,12 +181,7 @@ concurrency:
 
 # The job graph, and why it has this shape.
 #
-#   scope ─┬─ n11-lower-bounds-explainer-unchanged (only when that paper is skipped)
-#          ├─ workbench-unchanged                  (only when the workbench is skipped)
-#          ├─ overview-unchanged                   (only when the overview is skipped)
-#          ├─ n11-threshold-bound-review-unchanged (only when that paper is skipped)
-#          ├─ n11-optimality-review-unchanged      (only when that paper is skipped)
-#          ├─ n11-threshold-bound-review ──────────────┤
+#   scope ─┬─ n11-threshold-bound-review ──────────────┤
 #          ├─ n11-optimality-review ───────────────────┤
 #          ├─ workbench ───────────────────────────────┐
 #          ├─ overview ────────────────────────────────┤
@@ -199,6 +194,9 @@ concurrency:
 #          ├─ font-loading (ff, wk) ── wait artifact ──┤           │
 #          └─ browser-geometry (ff, wk) ─ wait artifact┘           │
 #                                                      └───────────┴─ deploy ─ verify-deployment
+#
+# A page `scope` leaves out has no job of its own: `scope` posts a notice naming it and
+# the reason, and every job of that page is skipped.
 #
 # A pull request waits for its slowest job, so what sets its wall is the longest chain,
 # and until 2026-09-15 that chain was `prepare` then one `build` job running about 300 s
@@ -284,73 +282,33 @@ jobs:
             uv run --frozen --all-extras --group dev python -m devtools.pages_scope --all "a $EVENT event"
           fi
 
-  # A skipped page is skipped by a job with a name, not by a row of grey checks a reader
-  # has to interpret. These run only when their page is out of scope, and they fail if
-  # the scope job gave no reason, so an empty output cannot pass for a decision.
-  n11-lower-bounds-explainer-unchanged:
-    needs: scope
-    if: needs.scope.outputs.n11_lower_bounds_explainer != 'true'
-    runs-on: ubuntu-latest
-    steps:
-      - name: Say why the lower-bounds explainer is not built
+      # A skipped page is skipped with a reason, not by a row of grey checks a reader has
+      # to interpret. The step above writes every page's decision and reason to this job's
+      # summary; this one puts a notice per skipped page on the run, where the checks list
+      # shows it, and fails if the scope left a page out without a reason, so an empty
+      # output cannot pass for a decision. Until 2026-10-05 each page had a `*-unchanged`
+      # job of its own for this: up to five runner allocations per pull request, each to
+      # print one line, and 20 to 25 of the first wave's allocations in each of that day's
+      # stack cascades, against a pool of about 40.
+      - name: Say why each skipped page is not built
         env:
-          REASON: ${{ needs.scope.outputs.n11_lower_bounds_explainer_reason }}
+          DECISIONS: ${{ toJSON(steps.scope.outputs) }}
         run: |
-          test -n "$REASON"
-          echo "The lower-bounds explainer is not built or checked on this run: $REASON."
-          echo "The lower-bounds explainer is not built or checked on this run: $REASON." >> "$GITHUB_STEP_SUMMARY"
-
-  workbench-unchanged:
-    needs: scope
-    if: needs.scope.outputs.workbench != 'true'
-    runs-on: ubuntu-latest
-    steps:
-      - name: Say why the workbench is not built
-        env:
-          REASON: ${{ needs.scope.outputs.workbench_reason }}
-        run: |
-          test -n "$REASON"
-          echo "The workbench is not built on this run: $REASON."
-          echo "The workbench is not built on this run: $REASON." >> "$GITHUB_STEP_SUMMARY"
-
-  overview-unchanged:
-    needs: scope
-    if: needs.scope.outputs.overview != 'true'
-    runs-on: ubuntu-latest
-    steps:
-      - name: Say why the overview is not built
-        env:
-          REASON: ${{ needs.scope.outputs.overview_reason }}
-        run: |
-          test -n "$REASON"
-          echo "The overview and the site's own pages are not built on this run: $REASON."
-          echo "The overview and the site's own pages are not built on this run: $REASON." >> "$GITHUB_STEP_SUMMARY"
-
-  n11-threshold-bound-review-unchanged:
-    needs: scope
-    if: needs.scope.outputs.n11_threshold_bound_review != 'true'
-    runs-on: ubuntu-latest
-    steps:
-      - name: Say why the threshold-bound review is not built
-        env:
-          REASON: ${{ needs.scope.outputs.n11_threshold_bound_review_reason }}
-        run: |
-          test -n "$REASON"
-          echo "The threshold-bound review is not built or checked on this run: $REASON."
-          echo "The threshold-bound review is not built or checked on this run: $REASON." >> "$GITHUB_STEP_SUMMARY"
-
-  n11-optimality-review-unchanged:
-    needs: scope
-    if: needs.scope.outputs.n11_optimality_review != 'true'
-    runs-on: ubuntu-latest
-    steps:
-      - name: Say why the optimality review is not built
-        env:
-          REASON: ${{ needs.scope.outputs.n11_optimality_review_reason }}
-        run: |
-          test -n "$REASON"
-          echo "The optimality review is not built or checked on this run: $REASON."
-          echo "The optimality review is not built or checked on this run: $REASON." >> "$GITHUB_STEP_SUMMARY"
+          while read -r half page; do
+            [ "$(jq -r --arg half "$half" '.[$half] // ""' <<< "$DECISIONS")" = true ] && continue
+            reason="$(jq -r --arg key "${half}_reason" '.[$key] // ""' <<< "$DECISIONS")"
+            if [ -z "$reason" ]; then
+              echo "::error title=No reason to skip the $page::the scope did not put the $page in scope and gave no reason"
+              exit 1
+            fi
+            echo "::notice title=The $page is not built::$reason"
+          done <<'PAGES'
+          n11_lower_bounds_explainer lower-bounds explainer
+          workbench workbench
+          overview overview and the site's own pages
+          n11_threshold_bound_review threshold-bound review
+          n11_optimality_review optimality review
+          PAGES
 
   n11-optimality-review:
     needs: scope
@@ -1890,15 +1848,17 @@ jobs:
   # upstream job is also needed here, so its own failure is what fails the aggregate. The
   # scope's five outputs must be exactly `true` or `false`, so a scope that wrote nothing
   # cannot pass as a decision to skip everything.
+  #
+  # `!cancelled()` rather than `always()`, as `packing-required` has had since D-380. With
+  # `always()` a run superseded by the next push still queued this job against its
+  # cancelled prerequisites: 14 such aggregators on 2026-10-05, four of them waiting about
+  # 19 minutes for a runner. A cancelled run now reports nothing here and the check stays
+  # pending until the replacement run supplies it. A failed or cancelled prerequisite in a
+  # run that goes on is not `cancelled()`, so this job still runs and still fails.
   pages-required:
-    if: always()
+    if: "!cancelled()"
     needs:
       - scope
-      - n11-lower-bounds-explainer-unchanged
-      - workbench-unchanged
-      - overview-unchanged
-      - n11-threshold-bound-review-unchanged
-      - n11-optimality-review-unchanged
       - prepare
       - workbench
       - overview
@@ -1930,6 +1890,29 @@ jobs:
             and (.scope.outputs.n11_optimality_review != "true" or .["n11-optimality-review"].result == "success")
             and ([.[].result] | all(. == "success" or . == "skipped"))
           ' <<< "$NEEDS" > /dev/null
+
+      # A prerequisite cancelled while this run went on was never given a runner: GitHub
+      # cancels a queued job it cannot place ("not acquired by Runner of type hosted even
+      # after multiple attempts"), and on 2026-10-05 it did so to 96 jobs (run 37362926042).
+      # The step above has already failed on that `cancelled`, and must: a required check
+      # does not go green on work that never ran. This step only names the class, so the
+      # red reads as infrastructure rather than as a test, and `rerun-starved.yml` re-runs
+      # the run's failed jobs once. It runs only after a failure, so a green run pays
+      # nothing for it, and a fault here cannot hide the verdict above.
+      - name: Name every prerequisite that never acquired a runner
+        if: failure()
+        env:
+          NEEDS: ${{ toJSON(needs) }}
+        run: |
+          jq -r '
+            [to_entries[] | select(.value.result == "cancelled") | .key] as $starved
+            | ($starved[] | "::error title=Infrastructure::\(.) never acquired a runner (cancelled before start)"),
+              if ($starved | length) > 0
+              then "FAILURE CLASS: infrastructure (\($starved | length) of \(length) prerequisites never acquired a runner: \($starved | join(", ")))"
+              else empty end
+          ' <<< "$NEEDS" > "$RUNNER_TEMP/infrastructure"
+          cat "$RUNNER_TEMP/infrastructure"
+          grep '^FAILURE CLASS: ' "$RUNNER_TEMP/infrastructure" >> "$GITHUB_STEP_SUMMARY" || true
 
       # The wall-check step's start is the stable end of the measured wall: every job
       # above is settled, and this aggregator's checkout and setup are included while the
@@ -1965,8 +1948,9 @@ jobs:
 
   # A job with no status function in its `if:` implicitly requires `success()`, which
   # GitHub evaluates over every ancestor, not just `needs:`. The dispatch-only timing job
-  # and one job of each `*-unchanged` pair skip on every push, so without explicit result
-  # checks these two jobs skip too: from 2026-09-16 no push to `main` deployed.
+  # skips on every push (as each page's `*-unchanged` notice job did until 2026-10-05), so
+  # without explicit result checks these two jobs skip too: from 2026-09-16 no push to
+  # `main` deployed.
   deploy:
     needs: [publish, pages-required]
     if: >-

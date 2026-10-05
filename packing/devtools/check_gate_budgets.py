@@ -306,18 +306,31 @@ def relative_rule_problems(
     this is the same liveness question `advisory_problems` asks of a wall, with the same
     answer when no store is reachable: fail under `CI`, skip loudly on a laptop.
     """
-    declared = register.policy.pull_request_relative_rules
-    if declared is None:
+    ceiling = register.policy.pull_request_ceiling
+    declarations = [
+        (key, advisory)
+        for key, advisory in (
+            ("pull_request_relative_rules", register.policy.pull_request_relative_rules),
+            ("pull_request_ceiling", ceiling.advisory if ceiling is not None else None),
+        )
+        if advisory is not None
+    ]
+    if not declarations:
         return []
-    label = "the drift and stale rules are advisory on pull requests under {}"
     store = read if read is not None else bead_state.store()
     if store is None:
-        return unconfirmed_problems([label.format(declared.tracking_bead)])
+        return unconfirmed_problems(
+            [
+                f"{advisory.rules} are advisory on pull requests under {advisory.tracking_bead}"
+                for _key, advisory in declarations
+            ]
+        )
     return [
-        f"{label.format(fault)}, so nothing tracks switching them back on; set "
-        "policy.pull_request_relative_rules.enforcement to enforcing and drop its tracker, "
-        "or name the open bead that will re-enforce them"
-        for fault in bead_state.dead_trackers([declared.tracking_bead], store)
+        f"{advisory.rules} are advisory on pull requests under {fault}, so nothing tracks "
+        f"switching them back on; set policy.{key}.enforcement to enforcing and drop its "
+        "tracker, or name the open bead that will re-enforce them"
+        for key, advisory in declarations
+        for fault in bead_state.dead_trackers([advisory.tracking_bead], store)
     ]
 
 
@@ -454,12 +467,16 @@ def main(argv: Sequence[str] | None = None) -> int:
         print(f"note: {note}")
     # Reached with no store only off CI, where the trackers were skipped rather than read.
     tracked = "live bead" if store is not None else "unchecked bead"
-    relaxed = register.policy.pull_request_relative_rules
-    if relaxed is not None:
-        print(
-            f"note: the drift and stale rules are advisory on pull requests under {tracked} "
-            f"{relaxed.tracking_bead}: {relaxed.reason}"
-        )
+    ceiling = register.policy.pull_request_ceiling
+    for relaxed in (
+        register.policy.pull_request_relative_rules,
+        ceiling.advisory if ceiling is not None else None,
+    ):
+        if relaxed is not None:
+            print(
+                f"note: {relaxed.rules} are advisory on pull requests under {tracked} "
+                f"{relaxed.tracking_bead}: {relaxed.reason}"
+            )
     for workflow in load_walls(REGISTER).workflows:
         if workflow.advisory is not None:
             print(

@@ -18,8 +18,10 @@ Package metadata, Ruff, and BasedPyright express the broader `3.14`-only compati
 boundary; `uv.lock` pins dependencies, not the interpreter.
 macOS and Linux are supported development hosts.
 Pull requests run the bounded Linux fast surface; integration events run the ordinary
-full checkpoint on Linux and four focused portability checks on macOS. The Rust search
-engine uses the stable Cargo toolchain.
+full checkpoint on Linux.
+Four focused portability checks run on macOS on every event except a stacked pull
+request, one whose base is another branch rather than `main`. The Rust search engine
+uses the stable Cargo toolchain.
 
 From the repository root, then from `packing/`:
 
@@ -382,6 +384,15 @@ A missing or undersampled median produces an explicit warning while the absolute
 still applies. Partial reruns, missing jobs or required timestamps, an incomplete
 jobs-API page, and non-finite register values cannot produce a passing measurement.
 
+Two causes are not judged at all, when they are the only thing wrong with a run: each
+prints `NOT JUDGED`, raises a warning, and exits 0. A prerequisite GitHub cancelled
+before any runner took it is `infrastructure`; the aggregator’s result step already
+fails on its `cancelled` result.
+A later attempt that repeated only the failed jobs is `partial-rerun`: the jobs it kept
+report their first attempt’s times, so the attempt has no whole-run wall, and the result
+step still requires every prerequisite’s success.
+Any other reason left beside either cause keeps the run unmeasurable.
+
 **Both walls are currently advisory under `think-g4n9`.** Each workflow’s entry in
 `pull_request_walls` declares its `enforcement`. Absent means `enforcing`: a wall over
 the budget or the regression ratio fails `packing-required` or `pages-required`. An
@@ -413,6 +424,31 @@ licenses reuse only for fast steps named in the positive `TREE_REUSABLE_FAST_STE
 allowlist. Every deferred step and every unclassified fast step repeats after merge;
 missing artifacts, expired artifacts, API errors, fork runs, and incomplete checks all
 fall back to the complete surface.
+
+### A job no runner took
+
+GitHub cancels a queued job it cannot hand to a hosted runner (“The job was not acquired
+by Runner of type hosted even after multiple attempts”), and the run goes on without it.
+On 2026-10-05 from about 19:17 UTC this happened to 96 jobs after 15 to 35 minutes
+queued (run 37362926042), and the pull requests read red with no test failed.
+Three things answer it:
+
+- `packing-required` and `pages-required` still fail on the `cancelled` result, since a
+  required check does not go green on work that never ran, and then print
+  `FAILURE CLASS: infrastructure` with one `Infrastructure` error annotation per
+  prerequisite that never acquired a runner.
+- `pages-required` runs under `!cancelled()`, as `packing-required` has since `D-380`,
+  so a superseded run no longer queues an aggregator against its cancelled jobs.
+- [`rerun-starved.yml`](.github/workflows/rerun-starved.yml) re-runs the failed jobs of
+  a starved run once. [`rerun_starved.py`](packing/devtools/rerun_starved.py) decides
+  from the API’s JSON and writes every condition to the step summary.
+  The run must be a pull-request or push run, concluded `failure`, on its first attempt,
+  with a job cancelled without a runner, and with no newer run of the workflow for the
+  same commit, or for the same branch and event.
+  The last condition exists because a re-run joins the run’s concurrency group, and
+  re-running an older pull-request run would cancel the newer push’s run.
+  Do not re-run such a run by hand while the pool is not assigning runners; every hand
+  re-run on 2026-10-05 between 19:48 and 20:39 was cancelled or still queued at 20:45.
 
 ### The behavioural lanes
 
@@ -873,16 +909,16 @@ baseline. A `null` baseline leaves those ratio checks unarmed; a measurement pri
 CI does not update the file automatically.
 
 **On a hosted pull-request run the drift and stale rules are advisory under
-`think-be1s`, since 2026-10-01; the ceiling is not.** The register’s
-`policy.pull_request_relative_rules` declares it, the way `pull_request_walls` declares
-an advisory wall: `enforcing` when absent, and `advisory` only with a `tracking_bead`
-and an `advisory_reason`, which `devtools.check_gate_budgets` refuses when the bead is
-closed or unknown. The gate detects the run from the runner’s own `GITHUB_ACTIONS` and
-`GITHUB_EVENT_NAME`, computes both rules as before, prints each finding as
-`FAIL (advisory, not enforced)` with the bead, raises a warning annotation on the run,
-and passes; a run over its ceiling still fails, and `--enforce-budget` overrides the
-relaxation for an operator asking on purpose.
-Off a pull request nothing changes.
+`think-be1s`, since 2026-10-01; since 2026-10-05 the ceiling is too, up to a hang
+detector, under `think-6erz`.** The register’s `policy.pull_request_relative_rules`
+declares it, the way `pull_request_walls` declares an advisory wall: `enforcing` when
+absent, and `advisory` only with a `tracking_bead` and an `advisory_reason`, which
+`devtools.check_gate_budgets` refuses when the bead is closed or unknown.
+The gate detects the run from the runner’s own `GITHUB_ACTIONS` and `GITHUB_EVENT_NAME`,
+computes both rules as before, prints each finding as `FAIL (advisory, not enforced)`
+with the bead, raises a warning annotation on the run, and passes; a run over its
+ceiling still fails, and `--enforce-budget` overrides the relaxation for an operator
+asking on purpose. Off a pull request nothing changes.
 The measurement behind it, 2026-09-30, is retained with every reading’s verdict in
 `packing/tests/fixtures/tier-walls/hosted-readings-2026-09-30.yaml` and replayed by
 `test_the_day_of_2026_09_30_is_judged_on_code_not_on_the_runner`: on unchanged steps the
@@ -895,6 +931,20 @@ What can is a median over several hosted readings, which the wall register alrea
 judges and `think-be1s` owns for the tiers, or a wall normalised by the runner’s
 measured speed; until one of those judges a pull request, the ceiling is the rule a pull
 request is held to.
+
+**The ceiling and the per-test call-wall rule followed on 2026-10-05.**
+`policy.pull_request_ceiling` declares it under the same contract, plus a hang detector:
+on a hosted pull-request run a tier wall over its ceiling, or a test call of 12 s or
+more, is printed with its bead and a `Cost` warning annotation and does not fail the
+run, but a wall above `hang_ratio` (2) times the ceiling, or one call of
+`per_test_hang_seconds` (45) or more, still does.
+Main, scheduled and deep runs keep the ceiling enforced, and `--enforce-budget` again
+overrides it on purpose.
+The evidence is that day’s CI stabilization evaluation: 28 of 36 red pushes to stack
+pull requests failed on a wall verdict alone with every test green, and the +9% raise of
+`3d89c6fa5` was breached again within hours, shard C at 171.2 s against 168 s on #356.
+`think-6erz` returns the ceiling to enforcement when it is judged against a median or a
+runner-normalised wall.
 
 A different CPU/worker shape reports the budget result without failing, unless
 explicitly enforced.
@@ -938,6 +988,10 @@ as the runs it would report on, because the defect *is* that no run is created.
 A `push` event fires off the branch tip, which exists whatever the base is doing, and
 its check run is keyed to the head commit — so it appears on the pull request, where the
 missing runs would have been.
+It merges against the base of the branch’s open pull request, which is the merge GitHub
+builds, and against `main` when the branch has no open pull request.
+Until 2026-10-05 it always used `main`, which put a false red on every push to a stacked
+branch (46 on that day alone), whose pull request targets the branch below it.
 
 When it fails, it is telling you one thing: **no `pull_request` run will be created for
 this branch until the conflict is resolved**, so the pull request’s checks will sit
@@ -1034,10 +1088,10 @@ module, card label, part and title, in reading order).
 structure audit (`paper_structure`), the Pages scope (`pages_scope`), the preview build
 (`preview_site`) and the deployed-site check (`check_published_site`) read it.
 Adding a paper is one entry there and its renderer, modeled on
-`render_n11_optimality_review.py`; then its own Pages job and `-unchanged` notice in
-`pages.yml` with a scope output, a staged step in `publish` and a clause in
-`pages-required`, budgets for both jobs in `gate-budgets.yaml`, its version and dates in
-`sqpack.release`, its rows in `devtools.artifact_dates`, and its version in
+`render_n11_optimality_review.py`; then its own Pages job in `pages.yml` with a scope
+output and a line in `scope`’s skipped-page notices, a staged step in `publish` and a
+clause in `pages-required`, a budget for the job in `gate-budgets.yaml`, its version and
+dates in `sqpack.release`, its rows in `devtools.artifact_dates`, and its version in
 `check_published_site.PAPER_VERSIONS`. The workflow tests name each step that is
 missing. A renderer is given the site’s root (`--site`, by default `packing/site/`) and
 writes its paper there, where it is served, so every check reads the page at its
@@ -1061,8 +1115,8 @@ A pull request runs the same build without deploying, so a render that breaks fa
 review rather than the next deploy.
 It builds only the pages its changes can affect: the workflow’s `scope` job runs
 `devtools.pages_scope`, which reads each builder’s `RENDER_INPUTS` and the tools the
-workflow runs for that page, and a page none of the changed files touches is skipped by
-a job named for the reason.
+workflow runs for that page, and a page none of the changed files touches is skipped,
+with a notice from `scope` naming the page and the reason.
 `pages-required` is the aggregate a branch rule would require; it passes such a skip and
 nothing else.
 
@@ -1083,7 +1137,7 @@ The outputs are `site/papers/n11-threshold-bound-review.html`, `.md`, and `.pdf`
 Its Pages job, `n11-threshold-bound-review`, checks out the archived Kleddamag proof,
 the T-059 replay journal and the native verifier’s row journal beside the code, runs the
 figure and renderer tests, and renders and checks the page, the Markdown and the PDF;
-its `-unchanged` notice says why when no input of it changed.
+`scope`’s notice says why when no input of it changed.
 It explains accepted evidence and reruns no sweep.
 
 The separate **T-060 optimality paper**, Part III, lives at

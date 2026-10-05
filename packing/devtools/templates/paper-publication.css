@@ -378,11 +378,15 @@ body {
 .hero {
   padding-block-start: calc(var(--kpress-font-size-base) * 3);
 }
-/* The heading is set in caps by kpress; its math run, `n = 11`, is mathematics and keeps
-   both mathematical italic and lowercase rather than inheriting the heading transform.
-   It also stays on one line: KaTeX allows a break after a relation, and at phone width
-   the title ended one line on `n =` and began the next with `11`. */
-.hero h1 .tex {
+/* The heading is set in caps by kpress; a formula in a title is mathematics and keeps
+   both mathematical italic and lowercase rather than inheriting the heading transform,
+   which would print Part I's `n = 11` as `N = 11` and Part II's `s(11)` as `S(11)`,
+   different symbols. It also stays on one line: KaTeX allows a break after a relation,
+   and at phone width the title ended one line on `n =` and began the next with `11`.
+   Part I's prepared math is a `.tex` run; Parts II and III write `$...$`, which KPress
+   sets as `.kpress-math`. One rule holds both. */
+.hero h1 .tex,
+.hero h1 .kpress-math {
   letter-spacing: 0;
   text-transform: none;
   white-space: nowrap;

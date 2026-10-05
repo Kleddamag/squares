@@ -24,13 +24,13 @@ with the record; the page runs after that gate instead.
 
 from __future__ import annotations
 
+import bisect
 import html
 import json
 import re
 from collections import Counter
 from collections.abc import Mapping, Sequence
 from dataclasses import dataclass, field
-from functools import cache
 from pathlib import Path
 from typing import Any
 
@@ -225,34 +225,56 @@ def prose_html(text: object, *, between: str = "<br><br>") -> str:
     return between.join(tex_bounds(paragraph) for paragraph in paragraphs(text))
 
 
-@cache
-def _text(path: Path, mtime_ns: int, size: int) -> str:
-    """`path`'s text, read once per version of the file: the key carries its modification
-    time and size, so an edited file is read again."""
-    del mtime_ns, size
-    return path.read_text(encoding="utf-8")
+@dataclass(frozen=True)
+class LineIndex:
+    """One file's text and where each of its lines starts, read once for many anchors.
 
+    `load` asks for 386 anchors into the register and the evidence file, which are 0.5
+    and 1.0 MB. Reading and splitting the file again for each, and testing every line in
+    Python, was two thirds of `load`'s time and most of the overview's (2.41 of 3.63 s
+    measured 2026-10-05); one read, one split and one regex search per anchor is not.
+    """
 
-def _line_of(path: Path, needle: str) -> int:
-    """The 1-based line of the first line containing `needle` whole, for a line anchor:
-    not followed by another letter, digit, `_` or `-`, so `id: E-n020-fractional-certificate`
-    is not found in `id: E-n020-fractional-certificate-97-20`, the line before it, where
-    T-020's first evidence link pointed until 2026-10-04."""
-    # One search over the text, not one per line: the first match is on the first line
-    # holding the needle, and the newlines before it number that line. The page asks
-    # for some four hundred of these, and a loop over lines was a quarter of its render.
-    stat = path.stat()
-    text = _text(path, stat.st_mtime_ns, stat.st_size)
-    found = re.search(re.escape(needle) + r"(?![\w-])", text)
-    if found is None:
-        raise SystemExit(f"{path.name} has no line containing {needle!r}")
-    return text.count("\n", 0, found.start()) + 1
+    path: Path
+    text: str
+    starts: tuple[int, ...]
+
+    @classmethod
+    def read(cls, path: Path) -> LineIndex:
+        text = path.read_text(encoding="utf-8")
+        starts: list[int] = []
+        offset = 0
+        for line in text.splitlines(keepends=True):
+            starts.append(offset)
+            offset += len(line)
+        return cls(path, text, tuple(starts))
+
+    def line_of(self, needle: str) -> int:
+        """The 1-based line of the first line containing `needle` whole, for a line
+        anchor: not followed by another letter, digit, `_` or `-`, so
+        `id: E-n020-fractional-certificate` is not found in
+        `id: E-n020-fractional-certificate-97-20`, the line before it, where T-020's
+        first evidence link pointed until 2026-10-04.
+
+        Lines are `str.splitlines`'s, as they were when each line was searched alone. A
+        needle holds no line break, so the first match in the whole text lies on the first
+        line holding one; and no line break is a letter, digit, `_` or `-`, so the end of
+        a line ends a needle there as the end of the line alone did.
+        """
+        match = re.compile(re.escape(needle) + r"(?![\w-])").search(self.text)
+        if match is None or len(needle.splitlines()) > 1:
+            raise SystemExit(f"{self.path.name} has no line containing {needle!r}")
+        return bisect.bisect_right(self.starts, match.start())
+
+    def link(self, needle: str) -> str:
+        """A link on `main` to the line where `needle` first appears."""
+        return f"{repo_url(self.path)}?plain=1#L{self.line_of(needle)}"
 
 
 def line_link(path: Path, needle: str) -> str:
     """A link on `main` to the line of `path` where `needle` first appears, as it is
     in the tree the page is rendered from."""
-    return f"{repo_url(path)}?plain=1#L{_line_of(path, needle)}"
+    return LineIndex.read(path).link(needle)
 
 
 @dataclass(frozen=True)
@@ -392,7 +414,12 @@ def _repo_path(path: str) -> Path | None:
     return None
 
 
-def _records(record: dict, evidence: dict[str, dict]) -> list[Link]:
+def _records(
+    record: dict,
+    evidence: dict[str, dict],
+    register_lines: LineIndex,
+    evidence_lines: LineIndex,
+) -> list[Link]:
     """The places a reader checks a result: case files, evidence, sources, reviews."""
     links: list[Link] = []
     scope = record["scope"]
@@ -404,7 +431,7 @@ def _records(record: dict, evidence: dict[str, dict]) -> list[Link]:
         )
     else:
         links.append(Link(f"n = {scope['n_min']}{EN_DASH}{scope['n_max']}", "frontier.html"))
-    links.append(Link("register", line_link(RESULTS, f"id: {record['id']}"), record["id"]))
+    links.append(Link("register", register_lines.link(f"id: {record['id']}"), record["id"]))
     seen: set[str] = set()
     extra: list[Link] = []
     for number, evidence_id in enumerate(record["evidence"], start=1):
@@ -412,7 +439,7 @@ def _records(record: dict, evidence: dict[str, dict]) -> list[Link]:
         if entry is None:
             continue
         links.append(
-            Link(f"evidence {number}", line_link(EVIDENCE, f"id: {evidence_id}"), evidence_id)
+            Link(f"evidence {number}", evidence_lines.link(f"id: {evidence_id}"), evidence_id)
         )
         proof = entry.get("proof") or {}
         for label, path in (
@@ -464,6 +491,7 @@ def load() -> Overview:
     sources = render_results.load_sources()
     evidence = _evidence()
     records = load_records()
+    register_lines, evidence_lines = LineIndex.read(RESULTS), LineIndex.read(EVIDENCE)
     results: list[Result] = []
     groups: list[tuple[str, list[Result]]] = []
     for title, members in render_results.grouped_results(register, sources):
@@ -473,7 +501,7 @@ def load() -> Overview:
                 group=title,
                 credit=credit_line(r, sources).replace(r"\|", "|"),
                 ours=not r.get("attribution"),
-                records=_records(r, evidence),
+                records=_records(r, evidence, register_lines, evidence_lines),
                 standing=(stands := standing(r, records)),
                 status=result_status.status(r, evidence),
                 supersessions=tuple(supersessions(r, stands, records)),

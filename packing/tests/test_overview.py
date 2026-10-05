@@ -6129,6 +6129,11 @@ def test_a_paper_is_named_by_its_slug_in_the_source_and_on_the_site() -> None:
     )
     packing = overview_data.REPO / "packing"
     jobs = load_workflow()["jobs"]
+    skip_notices = next(
+        step["run"]
+        for step in jobs["scope"]["steps"]
+        if step.get("name") == "Say why each skipped page is not built"
+    )
     for slug in slugs:
         name = slug.replace("-", "_")
         assert render_overview.paper_record(slug).module == f"devtools.render_{name}"
@@ -6146,7 +6151,7 @@ def test_a_paper_is_named_by_its_slug_in_the_source_and_on_the_site() -> None:
             tests / f"test_{name}.py"
         ).is_file(), slug
         assert name in BUILDER_INPUTS, slug
-        assert f"{slug}-unchanged" in jobs, slug
+        assert name in {line.split(" ", 1)[0] for line in skip_notices.splitlines()}, slug
     assert render_overview.paper_path("a-b", ".pdf") == "papers/a-b.pdf"
 
 
@@ -6304,6 +6309,22 @@ def test_a_cases_status_is_one_chip_wherever_it_is_drawn(
         assert {word for _, word in drawn} == statuses, name
         for status in statuses:
             assert page.count(overview_sections.case_status_chip(status)) >= 1, (name, status)
+
+
+def test_an_indexed_line_anchor_is_the_line_a_line_by_line_search_finds() -> None:
+    """`LineIndex` searches a file once rather than line by line, and must land where the
+    line-by-line search did for every id an overview links, so no anchor moves."""
+    for path, key in ((overview_data.RESULTS, "results"), (overview_data.EVIDENCE, "evidence")):
+        ids = [entry["id"] for entry in safe_load(path.read_text(encoding="utf-8"))[key]]
+        lines = path.read_text(encoding="utf-8").splitlines()
+        index = overview_data.LineIndex.read(path)
+        assert ids
+        for entry in ids:
+            whole = re.compile(re.escape(f"id: {entry}") + r"(?![\w-])")
+            expected = next(n for n, line in enumerate(lines, start=1) if whole.search(line))
+            assert index.line_of(f"id: {entry}") == expected, (path.name, entry)
+    with pytest.raises(SystemExit, match="has no line containing"):
+        index.line_of("id: E-no-such-entry")
 
 
 def test_a_line_link_finds_an_id_whole_and_not_as_the_start_of_a_longer_one() -> None:

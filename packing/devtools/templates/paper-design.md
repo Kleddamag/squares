@@ -2589,6 +2589,16 @@ keeps.
   defines nothing registered; `templates/n11-series-terms.yaml` names each shared
   concept’s owner, and a symbol that means two things in two papers fails unless the
   plan lists the clash.
+- **Every formula is typeset, the same way in every paper.** A formula is LaTeX the
+  page’s math pipeline sees, so no TeX ever reaches the reader as text: a display
+  formula is a `$$` block in every paper, with a blank line before and after, never run
+  into its sentence and never hand-wrapped; a caption in an HTML block writes its math
+  the way its paper’s pipeline reads it there (`$…$` in Parts II and III, which
+  `caption_math` typesets; a `<span class="tex">` run in Part I); and a title’s formula
+  is math, which one shared rule (`.hero h1 .tex, .hero h1 .kpress-math` in
+  `paper-publication.css`) keeps out of the hero’s caps.
+  `devtools.paper_terms` rule 7 fails any `$` or TeX command left in a paper’s prose,
+  captions or title, and any display formula outside a `$$` block.
 - **Credit is accurate and early.** A review says in its first two sections what the
   source added and what it inherited, each item named by result id or source file.
 - **One notation.** Part I’s symbols are fixed, because it is published and oldest; Part

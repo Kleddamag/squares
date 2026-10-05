@@ -84,9 +84,15 @@ ADVISORY = frozenset(case.slug for case in PAPERS if case.advisory)
 
 
 @pytest.fixture(scope="module")
-def pages() -> dict[str, paper_terms.Page]:
+def html() -> dict[str, str]:
+    """Every paper's rendered page, rendered once."""
+    return {case.slug: case.render() for case in PAPERS}
+
+
+@pytest.fixture(scope="module")
+def pages(html: dict[str, str]) -> dict[str, paper_terms.Page]:
     """Every paper's rendered page, read once."""
-    return {case.slug: paper_terms.read_page(case.render()) for case in PAPERS}
+    return {slug: paper_terms.read_page(page) for slug, page in html.items()}
 
 
 @pytest.fixture(scope="module")
@@ -111,6 +117,13 @@ def test_every_term_is_defined_once_before_its_first_use(
     """Rules 1-5 on the paper's rendered page."""
     findings = paper_terms.check_paper(pages[case.slug], registries[case.slug])
     _hold(findings, advisory=case.advisory)
+
+
+@pytest.mark.parametrize("case", PAPERS, ids=[case.slug for case in PAPERS])
+def test_every_formula_is_typeset(case: PaperCase, html: dict[str, str]) -> None:
+    """Rule 7 on every paper, Part I included: no TeX reaches the reader as text, in the
+    prose, the captions or the title."""
+    _hold(paper_terms.check_math(html[case.slug]), advisory=False)
 
 
 def test_the_series_links_each_concept_to_its_owner(
@@ -366,6 +379,34 @@ def test_rule_6_a_cross_paper_link_names_a_heading_of_its_target() -> None:
     findings, pending = paper_terms.check_paper_anchors(sources, pages)
     assert [finding.subject for finding in findings] == ["n11-lower-bounds-explainer#nowhere"]
     assert pending == [("n11-optimality-review", "n11-threshold-bound-review", "the-result")]
+
+
+def test_rule_7_tex_printed_as_text_is_refused_in_prose_captions_and_title() -> None:
+    assert paper_terms.check_math(PAGE) == []
+    # A display formula run into its sentence is never typeset, and its TeX is prose.
+    run_in = PAGE.replace(
+        "<p>A roadmap names",
+        "<p>so that\n$$\n\\frac{L_0}{A}=\\frac{31}{8},\n$$\nholds. A roadmap names",
+    )
+    assert {finding.subject for finding in paper_terms.check_math(run_in)} == {"$", "\\frac"}
+    # A caption's formula written as `$...$` inside an HTML block.
+    caption = PAGE.replace("A core.</figcaption>", "the side $T$.</figcaption>")
+    assert caption != PAGE
+    assert _rules(paper_terms.check_math(caption)) == [7, 7]
+    # The title is read too, though the exposition reader skips the front.
+    title = PAGE.replace(
+        '<h1 id="t">Title</h1>',
+        '<h1 id="t">Bound <span class="tex">s(11) \\gt 31/8</span></h1>',
+    )
+    assert paper_terms.check_math(title) == []
+    raw_title = PAGE.replace('<h1 id="t">Title</h1>', '<h1 id="t">Bound s(11) \\gt 31/8</h1>')
+    assert [finding.subject for finding in paper_terms.check_math(raw_title)] == ["\\gt"]
+    # A display formula is a `$$` block, never a hand-wrapped `.tex-d` run.
+    hand = PAGE.replace(
+        "<p>A roadmap names",
+        '<p class="centred"><span class="tex-d">s(11) \\ge L</span></p><p>A roadmap names',
+    )
+    assert [finding.subject for finding in paper_terms.check_math(hand)] == ["tex-d"]
 
 
 def test_a_registry_out_of_form_is_refused() -> None:

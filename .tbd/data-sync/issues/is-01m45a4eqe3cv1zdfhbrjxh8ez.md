@@ -3,9 +3,9 @@ type: is
 id: is-01m45a4eqe3cv1zdfhbrjxh8ez
 title: "N11 three-paper explainer series: Paper II (T-037 review), linked series, define-before-use gate"
 kind: epic
-status: in_progress
+status: closed
 priority: 1
-version: 11
+version: 12
 spec_path: docs/project/specs/active/plan-2026-10-05-n11-explainer-series.md
 delegate: claude-code@vm
 labels: []
@@ -23,7 +23,11 @@ child_order_hints:
 hold: null
 hold_until: null
 created_at: 2026-10-05T05:56:06.509Z
-updated_at: 2026-10-05T06:00:40.150Z
+updated_at: 2026-10-05T16:58:05.096Z
 started_at: 2026-10-05T06:00:40.150Z
+closed_at: 2026-10-05T16:58:05.096Z
+close_reason: null
+resolution: null
+duplicate_of: null
 ---
 One PR: Paper II n11-threshold-bound-review, series registry/strip/links, term gate, I/III updates, site references, docs. Plan: docs/project/specs/active/plan-2026-10-05-n11-explainer-series.md

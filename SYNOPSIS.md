@@ -1121,6 +1121,7 @@ case or experiment separately.
 | [sqverify-fast: Adversarial Testing and Independence Audit](docs/project/reviews/review-2026-10-03-sqverify-fast-testing-and-independence.md) | dated review record | record | retained | — |
 | [wand125 Certificates of 3 October: Review of 22 Mixed Rectangle-Measure Bounds From `n = 51` to `n = 96`](docs/project/reviews/review-2026-10-03-wand125-october-3-certificates.md) | dated review record | record | retained | — |
 | [Claim-Chain Review: Evan Daniel’s `s(k² − 4) = k` for Every `k ≥ 5`](docs/project/reviews/review-2026-10-03-evand-k2m4-claim-chain.md) | dated review record | record | retained | — |
+| [Evan Daniel’s Square Packing Atlas: Site Review and Import](docs/project/reviews/review-2026-10-05-evand-square-packing-atlas.md) | dated review record | record | retained | — |
 | [Density Solvers Compared: Tokoharu’s and wand125’s Rectangle-Density Tools Against This Repository’s Certificate Stack](docs/project/reviews/review-2026-09-28-density-solver-comparison.md) | dated review record | record | retained | — |
 | [Proof Review: Guzhou0806’s R067 and R068, `s(17) > 233009/50000` and `s(17) > 116511/25000`](docs/project/reviews/review-2026-09-28-n17-guzhou-r067-r068.md) | dated review record | record | retained | — |
 | [Proof Review: wand125’s Point-Only Certificates for `s(45) = 7` and `s(21) = 5`](docs/project/reviews/review-2026-09-28-wand125-point-only-s21-s45.md) | dated review record | record | retained | — |

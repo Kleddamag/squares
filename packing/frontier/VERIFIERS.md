@@ -26,7 +26,7 @@ second implementation agrees.
 ## The Short Version
 
 - **78** programs: **31** external and **47** first-party; **64** decide claims and **14** check premises.
-- **228** of **251** evidence entries name the programs that verified them: 166 reproduced with the producer’s code, 46 independently re-implemented, 9 no relation: a proof, a derivation or a report, 7 re-implemented, sharing the producer’s components.
+- **229** of **252** evidence entries name the programs that verified them: 167 reproduced with the producer’s code, 46 independently re-implemented, 9 no relation: a proof, a derivation or a report, 7 re-implemented, sharing the producer’s components.
 
 ## Programs
 
@@ -39,8 +39,8 @@ second implementation agrees.
 | [`V-wand125-verify-portable-py`](#v-wand125-verify-portable-py) | verify_portable.py | wand125 | external | decides | 2 | 1 |
 | [`V-wand125-check-with-sqpack`](#v-wand125-check-with-sqpack) | check_with_sqpack.py | wand125 | external | decides | 5 | 1 |
 | [`V-wand125-valid7-checker`](#v-wand125-valid7-checker) | valid7-independent-check (Tier A, Tier B and the record checker) | wand125 | external | decides | 1 | 1 |
-| [`V-evand-zmx2`](#v-evand-zmx2) | zmx2 | Evan Daniel | external | decides | 18 | 9 |
-| [`V-evand-zm-mixed-py`](#v-evand-zm-mixed-py) | zm_mixed.py | Evan Daniel | external | decides | 5 | 6 |
+| [`V-evand-zmx2`](#v-evand-zmx2) | zmx2 | Evan Daniel | external | decides | 19 | 9 |
+| [`V-evand-zm-mixed-py`](#v-evand-zm-mixed-py) | zm_mixed.py | Evan Daniel | external | decides | 6 | 6 |
 | [`V-evand-zeromargin-py`](#v-evand-zeromargin-py) | zeromargin.py | Evan Daniel | external | decides | 4 | 2 |
 | [`V-evand-angle-net-verify`](#v-evand-angle-net-verify) | verify (the angle-net arrangement sweep) | Evan Daniel | external | decides | 8 | 4 |
 | [`V-evand-xcheck-py`](#v-evand-xcheck-py) | xcheck.py | Evan Daniel | external | decides | 4 | 2 |
@@ -317,8 +317,8 @@ Decides Valid7 for Evan Daniel's k = 7 cover: every closed unit square in [0,7]^
 
 Decides a zero-margin point-and-segment cover by branch and bound over centre and angle boxes, each acceptance an exact integer test on outward-rounded binary64 enclosures, over the D4 region (--d4) or the unreduced pose space (--full).
 
-- Source: [`packing/resources/web/evand-square-packing-2026-09-28/square-packing/s12/verify2/src/bin/zmx2.rs`](../../packing/resources/web/evand-square-packing-2026-09-28/square-packing/s12/verify2/src/bin/zmx2.rs), [`packing/resources/web/evand-zmx2-sym-atoms-2026-09-30/square-packing/s12/verify2/src/bin/zmx2.rs`](../../packing/resources/web/evand-zmx2-sym-atoms-2026-09-30/square-packing/s12/verify2/src/bin/zmx2.rs)
-- Versions run: SHA-256 `6b7f0f79466b…` (the 2026-09-28 packet's post-audit parser, which made the shipped records and which wand125's verify.sh pins); SHA-256 `92a4cfe87b4e…`, revision `e4af291cf527` (the --sym-atoms version, for the unreduced s(32) sweep; of `zmx2.rs`)
+- Source: [`packing/resources/web/evand-square-packing-2026-09-28/square-packing/s12/verify2/src/bin/zmx2.rs`](../../packing/resources/web/evand-square-packing-2026-09-28/square-packing/s12/verify2/src/bin/zmx2.rs), [`packing/resources/web/evand-zmx2-sym-atoms-2026-09-30/square-packing/s12/verify2/src/bin/zmx2.rs`](../../packing/resources/web/evand-zmx2-sym-atoms-2026-09-30/square-packing/s12/verify2/src/bin/zmx2.rs), [`packing/resources/web/evand-square-packing-2026-10-04/square-packing/s12/verify2/src/bin/zmx2.rs`](../../packing/resources/web/evand-square-packing-2026-10-04/square-packing/s12/verify2/src/bin/zmx2.rs)
+- Versions run: SHA-256 `6b7f0f79466b…` (the 2026-09-28 packet's post-audit parser, which made the shipped records and which wand125's verify.sh pins); SHA-256 `92a4cfe87b4e…`, revision `e4af291cf527` (the --sym-atoms version, for the unreduced s(32) sweep; of `zmx2.rs`); SHA-256 `e2bb84e9e059…`, revision `b8157df7a7c7` (the version that accepts a side that is not a multiple of 1/10, with which the source checked its s(20) point cover at side 2443/500; unchanged at 7ff3b211 and not run here; of `zmx2.rs`)
 - Note: wand125 verified its own covers with zmx2 as well, so a zmx2 replay of a wand125 cover is a replay of the producer's code.
 
 | evidence | run | code | results |
@@ -341,6 +341,7 @@ Decides a zero-margin point-and-segment cover by branch and bound over centre an
 | `E-n021-evand-mixed-cover-zmx2-replay` | replayed here | producer’s code | T-052 |
 | `E-n045-evand-mixed-cover-report` | the source’s own run | producer’s code | T-053 |
 | `E-n045-evand-mixed-cover-zmx2-replay` | replayed here | producer’s code | T-053 |
+| `E-n020-evand-point-cover-4886-report` | the source’s own run | producer’s code | - |
 
 ### `V-evand-zm-mixed-py`
 
@@ -359,6 +360,7 @@ The source's exact mixed point-and-segment cover checker, the predecessor zmx2 w
 | `E-n077-wand125-mixed-cover-report` | the source’s own run | producer’s code | T-067 |
 | `E-n021-evand-mixed-cover-report` | the source’s own run | producer’s code | T-052 |
 | `E-n045-evand-mixed-cover-report` | the source’s own run | producer’s code | T-053 |
+| `E-n020-evand-point-cover-4886-report` | the source’s own run | producer’s code | - |
 
 ### `V-evand-zeromargin-py`
 

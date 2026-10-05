@@ -413,8 +413,8 @@ sources:
     year: 2026
     venue: GitHub
     dated: '2026-10-05'
-    credit: squarepacker after Daniel and the Squares Project
-    lineage: independent
+    credit: squarepacker after Daniel, Levy
+    lineage: builds-on-project
     note: >-
       squarepacker/s12-lower-bound release v1.1 at 7a96bec36bc6811c3715ef581598f22ff9b7ba3a
       (2026-10-05T08:31:05Z; its parent 98ffe373 adds every v1.1 file), by Ryu Sungjoon

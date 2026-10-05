@@ -8582,3 +8582,83 @@ results:
       together at one revision; a later revision than T-091's, so a separate entry. At n =
       67 and 84 it raises T-090's values, which keep their claim. The proof-bundle tarballs
       are pinned by digest and not retained. Ids here are provisional until merged.
+
+  - id: T-095
+    kind: lower-bound
+    registered: '2026-10-05'
+    headline: "`s(12) ≥ 7943/2000 = 3.9715`, Daniel's points dilated and re-weighted"
+    claim: >-
+      s(12) >= 7943/2000 = 3.9715, by squarepacker (Ryu Sungjoon) after Evan Daniel and this
+      project's Route B (T-079), published on 5 October 2026 as release v1.1 of
+      squarepacker/s12-lower-bound and reported on jlevy/squares#363. It is
+      10266889/7898846000, about 0.0013, above T-079's 15680000/3949423, and would leave
+      57/2000 = 0.0285 to the grid's 4.
+
+      The certificate keeps Daniel's 1,736 points of T-049, dilated by 31382793/31360000 to
+      the container 7943/2000 and rounded to the grid 1/4000000 one D4 orbit at a time,
+      every coordinate within 11/39200000 of its exact image, with new weights found by
+      linear programming: all 223 orbits positive, total 119974808/10^7 = 11.9974808 < 12.
+      It claims that every closed unit square in [0, 7943/2000]^2, at every angle, captures
+      weight at least one, decided over the rational angle net 2 arctan(k/96000) with
+      Daniel's per-bin shrink. The source reports Daniel's verifier, built with overflow
+      checks, and its own indep_check.cpp accepting it at N = 96000, least captured weight
+      10000050/10^7 at bin 0, and refusing it at 24000; a pass at one net is a complete
+      check, so the refusals are not counterexamples.
+
+      Here the source was retained and its exact premises audited; no coverage has been
+      decided here yet, and the verified lower bound is unchanged.
+
+      squarepacker (Ryu Sungjoon),
+      [s12-lower-bound](https://github.com/squarepacker/s12-lower-bound/tree/7a96bec36bc6811c3715ef581598f22ff9b7ba3a),
+      archived as [Zenodo 10.5281/zenodo.23157015](https://doi.org/10.5281/zenodo.23157015),
+      after Evan Daniel's points and verifier (T-049) and this project's re-weighting of
+      them (T-079), whose tool the source says guided its own scripts, written from scratch.
+      The source says the rescaling, the re-weighting, the verification runs and its tools
+      were prepared with the help of Claude (Anthropic).
+    scope: {n_values: [12]}
+    verification: V0
+    confirmation: C0
+    significance:
+      score: 3
+      rationale: >-
+        Scored as a claim: if confirmed, it raises the verified lower bound at n = 12 by
+        0.0013 over T-079, the largest step since T-049. New weights on Daniel's points by
+        T-079's recipe, Route B, with a complete scan in every cycle of the search, so no
+        new technique and not S4; T-078, a rescaling, is S2, and T-079, new weights, is S3.
+      scored: '2026-10-05'
+      by: think-3kd9 registering lane (repository; draft)
+    novelty: previously-published
+    attribution:
+      source_keys: ['[squarepacker s12 2026-10-05]']
+      published: '2026-10-05'
+    composition: >-
+      Primary at n = 12: one certificate, no monotonicity, at V0/C0: retained and audited
+      for its exact premises, not reviewed and not replayed here. The source's two checkers,
+      Daniel's verify and squarepacker's indep_check.cpp, are one angle-net method in two
+      implementations, and the second was built into the search for the weights.
+    evidence:
+      - E-n012-squarepacker-7943-2000-report
+    artifacts:
+      - packing/resources/web/squarepacker-s12-lower-bound-2026-10-05/README.md
+      - packing/resources/web/squarepacker-s12-lower-bound-2026-10-05/s12-lower-bound/s12_lower_3.9715.txt.gz
+      - packing/resources/web/squarepacker-s12-lower-bound-2026-10-05/s12-lower-bound/README.md
+      - packing/resources/web/squarepacker-s12-lower-bound-2026-10-05/s12-lower-bound/paper/s12_lower_3.9715.pdf
+      - packing/resources/web/squarepacker-s12-lower-bound-2026-10-05/receipts/preflight.json
+      - packing/devtools/audit_s12_v11_certificate.py
+    activity:
+      state: in-analysis
+      what: >-
+        Stage 4 of the import: Daniel's verifier with overflow checks and indep_check.cpp
+        at N = 96000, the native parent-core decision of all 39,765 rows, both controls,
+        and a separately prompted adversarial review.
+      since: '2026-10-05'
+      link: think-3kd9
+    next_rung: >-
+      The stage-4 replays and review, under way in think-3kd9: a complete replay of the
+      source's checkers, a method-distinct decision of every row and a separately prompted
+      adversarial review.
+    notes: >-
+      V0 because the cited entry is the source's claim: assurance reported, replay not yet
+      attempted. C0 because nothing here has read the certificate's mathematics; the exact
+      audit decides no coverage. A later release than T-078's, from the same repository, so
+      an entry of its own; T-078 keeps its claim. Ids here are provisional until merged.

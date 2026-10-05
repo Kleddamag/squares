@@ -126,11 +126,18 @@ def test_counts_are_the_declared_rungs(register: list[dict]) -> None:
     assert stats.cases_1_100_proved + stats.cases_1_100_open == 100
 
 
-def test_the_render_is_deterministic(page: str, results: str) -> None:
+@pytest.mark.parametrize(
+    ("render", "shared"),
+    [(render_overview.overview_page, "page"), (render_overview.results_page, "results")],
+    ids=["overview", "results"],
+)
+def test_the_render_is_deterministic(
+    render: Callable[[], render_overview.Page], shared: str, request: pytest.FixtureRequest
+) -> None:
     """A fresh render of each page is the shared one, byte for byte, which is what lets
-    every other check read the shared render."""
-    assert render_overview.overview_page().html == page
-    assert render_overview.results_page().html == results
+    every other check read the shared render. One page per node: the two fresh renders
+    together held one node past the per-test ceiling (12.25 s on run 37372707772)."""
+    assert render().html == request.getfixturevalue(shared)
 
 
 def test_the_results_table_has_its_own_page_and_the_overview_points_to_it(

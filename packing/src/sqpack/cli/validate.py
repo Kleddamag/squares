@@ -130,11 +130,13 @@ SCREEN_EXCLUDED: dict[str, tuple[str, ...]] = {
 #: 2026-09-30 for the live corpus after the catalogue refresh moved n = 126 and 179 onto
 #: de Winter's and Stead's packings, and on 2026-10-05 after n = 69, 83 and 87 took the
 #: catalogue's September 2026 packings (T-088, T-089), when n = 69 was screened for the first
-#: time; the two smaller corpora are not re-measured.
+#: time, and again that day after Couzo's 3 October packings at n = 208, 209, 228, 263, 272,
+#: 303 and 306 (T-092), which their import left unscreened; the two smaller corpora are not
+#: re-measured.
 SCREEN_FINDINGS: dict[str, tuple[int, int, int, int]] = {
     "n=1..100": (26, 87, 85, 518),
     "n=1..200": (65, 606, 181, 1883),
-    "n=1..324": (120, 1851, 302, 4492),
+    "n=1..324": (120, 1867, 302, 4511),
 }
 UNDETERMINED_BY_MISS = (28,)
 #: The cases the two sampled sweeps re-derive on every pull request, computed here from

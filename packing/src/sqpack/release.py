@@ -257,6 +257,8 @@ FIRST_PUBLISHED = PUBLICATION_HISTORY[-1].first_published
 #: from the article's history between the deployments listed above `PUBLICATION_HISTORY`
 #: on 2026-10-02:
 #:
+#:   v0.4.4  the paper becomes Part I of the n = 11 series: the frontier update names
+#:           T-037 and links Parts II and III, and Further Reading lists the series
 #:   v0.4.3  the frontier update of September 30 records T-060's proof that s(11) is
 #:           Trump's side, the T-026 rating moves from V4/C5 to V3/C3 under the ladder
 #:           of 2026-09-30, Figure 3 marks the settled endpoint, and a footnote records
@@ -287,6 +289,14 @@ FIRST_PUBLISHED = PUBLICATION_HISTORY[-1].first_published
 #:                                            on October 1 and 2, so the substantive
 #:                                            day is the one recorded
 EXPLAINER_HISTORY = (
+    PublicationHistoryEntry(
+        version="v0.4.4",
+        first_published="October 5, 2026",
+        result_scope=(
+            "The series revision: the paper is Part I of three; its frontier update and "
+            "Further Reading link Part II, on Kleddamag's T-037, and Part III, on T-060."
+        ),
+    ),
     PublicationHistoryEntry(
         version="v0.4.3",
         first_published="October 1, 2026",
@@ -339,7 +349,7 @@ EXPLAINER_FIRST_PUBLISHED = EXPLAINER_HISTORY[-1].first_published
 #: `PUBLICATION_DATE`, the day the edition was first published, which stood still while
 #: the article changed under it: merging is the whole publish, so the text a reader sees
 #: moves between editions. Change it in the commit that changes the article.
-EXPLAINER_REVISED = "October 1, 2026"
+EXPLAINER_REVISED = "October 5, 2026"
 
 #: The optimality review's own editions, newest first, each with the day it was first
 #: published and what changed in the paper: the review's history, as `EXPLAINER_HISTORY`
@@ -347,6 +357,18 @@ EXPLAINER_REVISED = "October 1, 2026"
 #: the commit that published it (620ffff54); the day it first went live is not recorded
 #: (think-2cqu).
 OPTIMALITY_REVIEW_HISTORY = (
+    PublicationHistoryEntry(
+        version="v0.1.5",
+        first_published="October 5, 2026",
+        result_scope=(
+            "The series revision: the paper is Part III of three, its lineage names Part "
+            "II's three changes from T-026 and draws the series bound ladder as Figure 3, "
+            "Charge Budgets contrasts capacity one with "
+            "$\\lfloor m/k\\rfloor$, a test holds every term to a definition before its "
+            "first use, and the notation follows the series: $L_0$, $\\Gamma_i$, "
+            "$\\operatorname{rot}$, $\\mathbf{D}_4$ and $(191/50)/U$."
+        ),
+    ),
     PublicationHistoryEntry(
         version="v0.1.4",
         first_published="October 4, 2026",
@@ -418,7 +440,7 @@ OPTIMALITY_REVIEW_EDITION = " ".join(
 #: prints, by the rule `EXPLAINER_REVISED` follows -- the author date of the last commit
 #: that changed its article, `n11-optimality-review-article.md`, held to git by
 #: `devtools.artifact_dates`. Change it in the commit that changes the article.
-OPTIMALITY_REVIEW_REVISED = "October 4, 2026"
+OPTIMALITY_REVIEW_REVISED = "October 5, 2026"
 
 #: The day the proof the review explains was published by its source, which the review's
 #: "Original proof" date prints. A fact about someone else's work, so it is typed, and

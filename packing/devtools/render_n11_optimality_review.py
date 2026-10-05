@@ -31,7 +31,7 @@ from kpress.format.pdf import _await_print_fonts  # pyright: ignore[reportPrivat
 from kpress.output import write_bytes_atomic
 from strif import atomic_output_file
 
-from devtools import artifact_dates, paper_front, render_n11_lower_bounds_explainer
+from devtools import artifact_dates, paper_front, paper_links, render_n11_lower_bounds_explainer
 from devtools.render_n11_lower_bounds_explainer_pdf import dated
 from devtools.render_overview import (
     EMBED_SCRIPT,
@@ -102,6 +102,7 @@ FRONT = paper_front.check(
 FIGURE_KEYS = (
     "WITNESS_SVG",
     "ROADMAP_SVG",
+    "LADDER_SVG",
     "COVER_SVG",
     "MASK_SVG",
     "CAPACITY_SVG",
@@ -141,6 +142,9 @@ RENDER_INPUTS = (
     PACKING / "devtools" / "paper_front.py",
     render_n11_lower_bounds_explainer.PUBLICATION_STYLE,
     FIGURES_MODULE,
+    # The series bound ladder, drawn from the register's headlines.
+    PACKING / "devtools/paper_figures.py",
+    PACKING / "frontier/results.yaml",
     PACKING / "devtools/n11_optimality_overview_figures.py",
     PACKING / "devtools/n11_optimality_mechanism_figures.py",
     PACKING / "devtools" / "check_n11_optimality_d4.py",
@@ -203,7 +207,9 @@ def version_history_markdown() -> str:
 
 
 def render_all_figures() -> dict[str, str]:
-    """Load the figure renderers only in a full publication checkout."""
+    """Load the figure renderers only in a full publication checkout. The bound ladder
+    is the series' (`paper_figures.bound_ladder`), with this paper's result lit."""
+    from devtools import paper_figures  # noqa: PLC0415
     from devtools.n11_optimality_figures import render_figures  # noqa: PLC0415
     from devtools.n11_optimality_mechanism_figures import (  # noqa: PLC0415
         render_mechanism_figures,
@@ -212,7 +218,12 @@ def render_all_figures() -> dict[str, str]:
         render_overview_figures,
     )
 
-    groups = (render_figures(), render_overview_figures(), render_mechanism_figures())
+    groups = (
+        render_figures(),
+        render_overview_figures(),
+        render_mechanism_figures(),
+        {"LADDER_SVG": paper_figures.bound_ladder("T-060")},
+    )
     figures: dict[str, str] = {}
     for group in groups:
         if figures.keys() & group.keys():
@@ -339,11 +350,14 @@ def expanded_markdown(
     article: Path = ARTICLE,
     revision: str,
     facts: Mapping[str, str] | None = None,
+    edition: paper_links.Edition = "page",
 ) -> str:
     """Fill the paper's front, the declared figure slots and the caption facts, and pin
     local source citations to a Git commit. A fact the article does not use is refused,
     as a slot it does not fill is: the two lists are the article's and the figure
-    modules' alike."""
+    modules' alike. A link to another paper of the series (`{{PAPER:<slug>#<anchor>}}`)
+    is filled for `edition` before the pinning, which would otherwise refuse it as a
+    file the repository does not hold (`devtools.paper_links`)."""
     facts = facts or {}
     source = paper_front.fill(source, FRONT)
     unused = sorted(key for key in facts if "{{" + key + "}}" not in source)
@@ -369,6 +383,7 @@ def expanded_markdown(
         {**figures, **facts, "VERSION_HISTORY": version_history_markdown()},
         source=article,
     )
+    filled = paper_links.fill_paper_links(filled, edition=edition)
     return _repository_links(filled, source=article, revision=revision)
 
 
@@ -428,14 +443,24 @@ def render(
     The page typesets the expanded article, its front included; the edition is that
     document with its front in the Markdown edition's form (`paper_front.published`):
     the title as a heading and the credits as a list, and no formats row, which is the
-    page's navigation. The rest, the figures as their SVG among it, is kept whole."""
+    page's navigation. The rest, the figures as their SVG among it, is kept whole. A link
+    to another paper is page-relative on the page and the site's address in the edition,
+    which is read away from the site."""
     from kpress.format.markdown import parse_markdown  # noqa: PLC0415
 
-    markdown = expanded_markdown(
+    page_markdown = expanded_markdown(
         source, figures=figures, article=article, revision=revision, facts=facts
     )
+    markdown = expanded_markdown(
+        source,
+        figures=figures,
+        article=article,
+        revision=revision,
+        facts=facts,
+        edition="markdown",
+    )
     document = parse_markdown(
-        caption_math(markdown), title=TITLE, trust_mode="trusted", math="auto"
+        caption_math(page_markdown), title=TITLE, trust_mode="trusted", math="auto"
     )
     errors = [item.message for item in document.diagnostics if item.severity == "error"]
     if errors:

@@ -219,7 +219,8 @@ def test_a_change_to_the_record_or_the_reader_documents_builds_only_the_overview
     tutorial are the overview's alone, so a pull request changing only those
     runs its job and no explainer Chromium. The register itself is read by the explainer
     too, and so is n = 11's case record, whose exact T-060 endpoint Figure 3 checks
-    (`render_n11_lower_bounds_explainer.n11_solved`); the renderer module by all three, since it
+    (`render_n11_lower_bounds_explainer.n11_solved`), and the register by the optimality
+    paper, whose bound ladder reads it; the renderer module by all three, since it
     also writes the navigation bar the Visualizer's build takes (`nav_shell`); and kpress by all
     three.
     """
@@ -233,10 +234,16 @@ def test_a_change_to_the_record_or_the_reader_documents_builds_only_the_overview
         "packing/devtools/templates/overview-article.md",
     ):
         assert in_scope([changed], declared) == {"overview"}, changed
-    for shared in ("packing/frontier/results.yaml", "packing/frontier/n-011.md"):
-        assert in_scope([shared], declared) == {"n11_lower_bounds_explainer", "overview"}, (
-            shared
-        )
+    assert in_scope(["packing/frontier/n-011.md"], declared) == {
+        "n11_lower_bounds_explainer",
+        "overview",
+    }
+    # The register is also the optimality paper's: its bound ladder reads the headlines.
+    assert in_scope(["packing/frontier/results.yaml"], declared) == {
+        "n11_lower_bounds_explainer",
+        "n11_optimality_review",
+        "overview",
+    }
     assert in_scope(["packing/devtools/render_overview.py"], declared) == set(
         pages_scope.BUILDER_INPUTS
     )

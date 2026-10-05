@@ -410,13 +410,13 @@ def test_actual_article_renders_all_retained_figures_and_pinned_sources() -> Non
         revision=REVISION,
     )
     assert "A Review of the Optimality Proof of the Trump Packing of 11 Squares" in html
-    assert len(re.findall(r"<figure\b", html)) == 11
-    assert len(re.findall(r"<figcaption\b", html)) == 11
+    assert len(re.findall(r"<figure\b", html)) == 12
+    assert len(re.findall(r"<figcaption\b", html)) == 12
     assert (
         html.count("<svg") >= len(paper.FIGURE_KEYS) + 1
     )  # article figures and KPress icon sprite
     captions = re.findall(r"<figcaption[^>]*>(.*?)</figcaption>", html, re.DOTALL)
-    assert len(captions) == 11
+    assert len(captions) == 12
     assert all("$" not in caption for caption in captions)
     # A caption's formulas are KPress math, typeset by the page as the prose's are, and
     # the Markdown edition keeps them as LaTeX; none is written as text any more.
@@ -449,7 +449,7 @@ def test_actual_article_renders_all_retained_figures_and_pinned_sources() -> Non
         f"{facts['ROW_CASE_UPDATES']} complete updates exclude case 2095",
         f"overlay regions {facts['D4_BAN_REGIONS']} is below 1",
         f"over {facts['D4_REGIONS']} closed regions and {facts['D4_BANS']} bans",
-        f"{facts['LOCAL_MARGINS']} exact margins over {facts['LOCAL_BRANCHES']} branches",
+        f"{facts['LOCAL_MARGINS']} exact margins over {facts['LOCAL_BRANCHES']} linear systems",
     ):
         assert phrase in said, phrase
     # The first figure is set as the first paper sets its own: the drawing alone in a

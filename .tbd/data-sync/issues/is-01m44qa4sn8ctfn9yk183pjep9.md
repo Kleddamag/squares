@@ -3,9 +3,9 @@ type: is
 id: is-01m44qa4sn8ctfn9yk183pjep9
 title: "PR #336 A1 (Medium): no gate exercises the native path."
 kind: task
-status: in_progress
+status: closed
 priority: 2
-version: 2
+version: 3
 delegate: graph_gate
 labels: []
 dependencies: []
@@ -13,8 +13,12 @@ parent_id: is-01m44qa2mz6hseqc8b10neq6b3
 hold: null
 hold_until: null
 created_at: 2026-10-05T00:27:10.005Z
-updated_at: 2026-10-05T02:30:53.819Z
+updated_at: 2026-10-05T02:56:29.348Z
 started_at: 2026-10-05T02:30:53.819Z
+closed_at: 2026-10-05T02:56:29.347Z
+close_reason: "Review A fixed in 49613a52f: 21 local controls, three hosted native cases, lint/types/docs, all current required checks PASS; await Joshua, no follow-up reserved."
+resolution: null
+duplicate_of: null
 ---
 https://github.com/jlevy/squares/pull/336#pullrequestreview-5408660754
 

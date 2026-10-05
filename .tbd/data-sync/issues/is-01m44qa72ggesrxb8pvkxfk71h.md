@@ -3,9 +3,9 @@ type: is
 id: is-01m44qa72ggesrxb8pvkxfk71h
 title: "PR #336 A4 (Low): reporting and private APIs."
 kind: task
-status: in_progress
+status: closed
 priority: 2
-version: 2
+version: 3
 delegate: graph_gate
 labels: []
 dependencies: []
@@ -13,8 +13,12 @@ parent_id: is-01m44qa2mz6hseqc8b10neq6b3
 hold: null
 hold_until: null
 created_at: 2026-10-05T00:27:12.335Z
-updated_at: 2026-10-05T02:30:55.898Z
+updated_at: 2026-10-05T02:56:31.435Z
 started_at: 2026-10-05T02:30:55.897Z
+closed_at: 2026-10-05T02:56:31.435Z
+close_reason: "Review A fixed in 49613a52f: 21 local controls, three hosted native cases, lint/types/docs, all current required checks PASS; await Joshua, no follow-up reserved."
+resolution: null
+duplicate_of: null
 ---
 https://github.com/jlevy/squares/pull/336#pullrequestreview-5408660754
 

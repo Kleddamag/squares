@@ -8,7 +8,7 @@ softschema:
 agenda:
   id: agenda-042
   title: Overnight n11 Settlement Ladder and Low-n Angles After PR 230
-  updated: '2026-10-01'
+  updated: '2026-10-05'
   status: active
   objective: 'Turn PR 230''s W3 review and the two explorations it led to, X-046 and X-047, into one night
     of bounded work. At n11 no counting certificate can prove equality and Kleddamag''s certificate has
@@ -1542,6 +1542,124 @@ agenda:
     note: >-
       Selected next entry after Session 167. Read that session record, the capture,
       bulk-exclusion and local-theorem instrument reviews, and exp-244 and exp-246 first.
+  - id: BC-419
+    purpose: research
+    owner_focus: correctness
+    instances:
+    - 17
+    state: in_progress
+    priority: 0
+    question: >-
+      Do at least half of the ten counted seed-182 draws close under the 17-owner kernel
+      within the 7,000 s ceiling, and what does a verified closure cost per state?
+    hypotheses:
+    - H-264
+    budget: >-
+      At most 26 CPU-hours on two compute slots: 2,700 s for the endpoint-state control
+      and 7,000 s per state, each under a hard timeout of 7,600 s.
+    entry: >-
+      H-264 rewritten with instrument_ready true in the session-182 registration commit,
+      and the run worktree synced at that commit.
+    exit: >-
+      All twelve draws run, each closure re-proved by the standing kernel verifier in
+      full and admitted, and the verdict fixed by the arithmetic; or a soundness alarm
+      (the kernel closes the endpoint's own state), which stops the instrument.
+    bead: think-z8an
+    depends_on:
+    - BC-415
+    next_evidence: packing/campaign/agent-sessions/session-182-n17-overnight-lanes.md
+    workflows:
+    - research-loop
+    program: post-optimality-low-n
+    parallel_group: n17-overnight-182
+    artifacts:
+    - docs/project/specs/active/plan-2026-10-05-n17-overnight.md
+    note: >-
+      Under BC-418, lane A of the n17 overnight plan. The float pre-screen (survey seed 182, sample 12,
+      two workers) runs first and also places the endpoint as its positive control; a
+      draw it places leaves the count as a candidate near-endpoint state. Then the
+      kernel control on the endpoint's own state, then the draws in the survey's index
+      order, two at a time, at 32 bins. A run at its ceiling with process CPU below
+      6,300 s is re-run once. Stop rules: a soundness alarm, or three consecutive
+      crashes or refusals; the verdict stops nothing. Evidence record exp-252.
+  - id: BC-420
+    purpose: research
+    owner_focus: correctness
+    instances:
+    - 17
+    state: in_progress
+    priority: 0
+    question: >-
+      Do the standing flags with the most census weight close under the frozen SW9
+      adaptive-row kernel recipe, or under the branch and bound where its tree can be
+      admitted tonight?
+    hypotheses:
+    - H-267
+    budget: >-
+      Kernel at most 17 CPU-hours at 7,000 s per target; branch and bound at most 14
+      CPU-hours at 300 s per Knuth estimate and 5,400 s per certificate run. One compute
+      slot, and a second when slot 4 opens.
+    entry: >-
+      The session-182 registration commit with the kernel target list frozen, and the
+      run worktree synced at that commit.
+    exit: >-
+      The target list exhausted, each closure re-proved by a standing verifier in full
+      and admitted; or a soundness alarm (endpoint7 closes, or the branch and bound
+      certifies an endpoint control). A verifier FAIL stops admissions from that
+      producer until a review.
+    bead: think-035m
+    depends_on:
+    - BC-415
+    next_evidence: packing/campaign/agent-sessions/session-182-n17-overnight-lanes.md
+    workflows:
+    - research-loop
+    program: post-optimality-low-n
+    parallel_group: n17-overnight-182
+    artifacts:
+    - docs/project/specs/active/plan-2026-10-05-n17-overnight.md
+    - packing/campaign/explorations/X048-session-182-overnight/kernel-targets.txt
+    note: >-
+      Under BC-418, lane K of the n17 overnight plan. Targets: arity at most seven, at least three wall
+      or corner cells, best penetration at least 5e-3, in projected-gain order, from the
+      census at the registration commit (nine classes, frozen in kernel-targets.txt).
+      Frozen recipe, SW9's: --bins 64 --max-rounds 24 --hull-limit 16 --producer-share
+      0.6 --split-floor 512 --max-rows 1152 --split-patience 1 --max-seconds 7000. The
+      endpoint7 control runs first at 3,600 s and must not close. The branch-and-bound
+      queue routes on the Knuth estimate's mean with A and W7 as calibration controls and
+      certifies classes of at most 1.5e5 nodes. Evidence record exp-251.
+  - id: BC-422
+    purpose: tool_validation
+    owner_focus: efficiency
+    instances:
+    - 17
+    state: in_progress
+    priority: 1
+    question: >-
+      With a W5 block due under OR-12, do packing-validate --edit and --push stay within
+      their 240 s and 1,800 s ceilings on this container, and what does the kernel
+      producer's in-process self-check cost per row against the standing kernel verifier
+      on tonight's closures?
+    budget: >-
+      No dedicated compute. The gate walls are read from the session-182 registration's
+      own validation runs, and the per-row costs from lane A and lane K receipts.
+    entry: The OR-12 count read at session-182's W10 phase is at least eight.
+    exit: >-
+      Both gate walls recorded against their ceilings, and the self-check-to-verifier
+      ratio per row from at least one verified closure, or a record that none came back.
+    bead: think-9ntw
+    depends_on: []
+    next_evidence: packing/campaign/agent-sessions/session-182-n17-overnight-lanes.md
+    workflows:
+    - efficiency-loop
+    program: post-optimality-low-n
+    parallel_group: n17-overnight-182
+    note: >-
+      Under BC-418, added at session-182's W10 phase because the count read from the agenda records is past
+      eight: 34 cells terminal since BC-369, the last cell declaring efficiency-loop (nine
+      sessions terminal since session-180's efficiency-loop phase). The prior per-row
+      reading is 0.91 s for the producer's self-check against 0.18 s for the standing
+      verifier on N1. CPU is tonight's bottleneck, so the block adds no gate run while
+      the compute lanes hold the CPUs. BC-421 stays reserved for lane E.
 ---
 # Agenda 042: The n11 Settlement Ladder and Low-n Angles
 
@@ -1646,6 +1764,21 @@ holds the assessment, the evidence status and the handoff reading order.
 
 The capture prototype and any strengthening of the conditional theorem wait for H-261’s
 radius and the BC-410 cover.
+
+## October 5 n17 Overnight
+
+[Session 182](../agent-sessions/session-182-n17-overnight-lanes.md) runs the
+[n17 overnight plan](../../../docs/project/specs/active/plan-2026-10-05-n17-overnight.md)
+under BC-418, with three cells registered before the first target run.
+
+| Cell | Lane | Disposition |
+| --- | --- | --- |
+| BC-419 / H-264: per-state price | A, two compute slots | H-264 rewritten in place with `instrument_ready: true`; the seed-182 draw of 12 states, 10 counted. |
+| BC-420 / H-267: flag certification | K, one compute slot, two when slot 4 opens | Nine kernel targets frozen in projected-gain order; the branch-and-bound queue waits for slot 4. |
+| BC-422: OR-12 efficiency block | No compute | Gate walls from the registration’s validation runs; per-row costs from the lanes’ receipts. |
+
+BC-421 is reserved for lane E (H-273, near-endpoint sizing), registered only when it
+launches.
 
 <!-- This document follows common-doc-guidelines.md.
 See github.com/jlevy/practical-prose and review guidelines before editing.

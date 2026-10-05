@@ -194,6 +194,7 @@ Each entry summarizes one user-level research window. Cycle slots are wall-clock
 | [session-178](agent-sessions/session-178-full-core-ablation.md) | stopped | contemporaneous | `research-loop` (correctness) | `research-loop` (correctness) | 2 | think-abit | Await Joshua and current-layer required CI under think-q0z7. No active research executor or reserved follow-up; original intervals are historical. |
 | [session-179](agent-sessions/session-179-selective-halving.md) | stopped | contemporaneous | `research-loop` (correctness) | `research-loop` (correctness) | 2 | think-ns4t | Await Joshua and current-layer required CI under think-q0z7. No active research executor or reserved follow-up; original intervals are historical. |
 | [session-180](agent-sessions/session-180-n17-producer-memo.md) | stopped | contemporaneous | `review-planning-oversight` (insight) | `review-planning-oversight` (correctness) | 3 | think-wn6x | Review the rebuilt layer that replaces Draft PR 325 under think-wn6x; upstream think-tmz6 remains the research coordinator. No merge or new compute is authorized by this closeout. |
+| [session-182](agent-sessions/session-182-n17-overnight-lanes.md) | in_progress | contemporaneous | `review-planning-oversight` (insight) | `research-loop` (correctness) | 2 | think-tmz6 | Run lanes A and K's queues from the run worktree, admit verified closures, and write the morning handoff at 14:30 UTC without stopping the run. |
 
 ### Workflow summary
 
@@ -206,11 +207,11 @@ Declared counts are contemporaneous contracts; retrospective counts are reconstr
 | `insight-iteration` | 29 | 1 | 90 | 4 |
 | `process-review` | 16 | 4 | 64 | 6 |
 | `efficiency-loop` | 11 | 1 | 41 | 1 |
-| `research-loop` | 37 | 4 | 130 | 9 |
+| `research-loop` | 37 | 4 | 131 | 9 |
 | `pipeline-improvement` | 41 | 2 | 213 | 7 |
 | `documentation-pass` | 1 | 0 | 29 | 3 |
 | `remediation` | 2 | 1 | 6 | 3 |
-| `review-planning-oversight` | 7 | 3 | 49 | 6 |
+| `review-planning-oversight` | 8 | 3 | 50 | 6 |
 | `general-improvement` | 1 | 0 | 7 | 1 |
 
 ## Experiment agendas
@@ -894,6 +895,9 @@ Status: **active**. Turn PR 230's W3 review and the two explorations it led to, 
 | BC-416 | research | 17 | in_progress | 1 | think-1s3i | packing/campaign/hypotheses/H-267-n17-isolated-sub-pattern-residue.md |
 | BC-417 | research | 17 | complete | 0 | think-set0 | packing/campaign/hypotheses/H-268-n17-local-theorem-slider-coverage.md |
 | BC-418 | research | 17 | ready | 0 | think-tmz6 | packing/campaign/agent-sessions/session-167-n17-parallel-lanes-after-route-review.md |
+| BC-419 | research | 17 | in_progress | 0 | think-z8an | packing/campaign/agent-sessions/session-182-n17-overnight-lanes.md |
+| BC-420 | research | 17 | in_progress | 0 | think-035m | packing/campaign/agent-sessions/session-182-n17-overnight-lanes.md |
+| BC-422 | tool_validation | 17 | in_progress | 1 | think-9ntw | packing/campaign/agent-sessions/session-182-n17-overnight-lanes.md |
 
 ## Series
 
@@ -1103,7 +1107,7 @@ Status: **active**. Turn PR 230's W3 review and the two explorations it led to, 
 | H-261 | unresolved | proof | For an explicit rational radius r > 0, every packing of 17 unit square |  | 1 |  | 15s wall |
 | H-262 | refuted | proof | On the H259 closed grid at cap 1169/250, the subcontainer cuts from s( |  | 1 |  | 2.2m wall |
 | H-263 | open question | proof | Which closed centre cover with proved cell capacities keeps every endp |  | 0 |  |  |
-| H-264 | open question | proof | On 10 to 20 closed-assignment D4 orbits drawn uniformly from the resid |  | 0 |  |  |
+| H-264 | open question | proof | On a seeded stratified draw of residue orbits on the H-266 unique-stat |  | 0 |  |  |
 | H-265 | confirmed | proof | The side S* of the H255 chart root is a root of the degree-18 polynomi |  | 1 |  | 1s wall |
 | H-266 | confirmed | proof | At cap U = 1169/250 there is a D4-symmetric closed cover of the centre |  | 2 |  | 2s wall |
 | H-267 | unresolved | proof | On the H-266 cover, forbidden occupancy sub-patterns of arity at most  |  | 2 |  | 48.2m wall |

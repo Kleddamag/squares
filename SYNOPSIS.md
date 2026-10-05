@@ -283,8 +283,8 @@ hypothesis status and summarizes experiment verdicts, and the
 | Record | Count | State at the cutoff |
 | --- | ---: | --- |
 | Agendas | 39 | 19 active; 14 completed; 5 paused; 1 superseded |
-| Commitments | 407 | 212 complete; 65 stopped; 70 blocked; 25 ready; 21 tentative; 14 in progress |
-| Sessions | 179 | 105 completed; 74 stopped; all terminal |
+| Commitments | 410 | 212 complete; 65 stopped; 70 blocked; 25 ready; 21 tentative; 17 in progress |
+| Sessions | 180 | 105 completed; 74 stopped; 1 nonterminal |
 | Explorations | 47 | 28 linked to proposed hypotheses; 19 uncodified |
 | Hypotheses | 206 | 43 confirmed; 33 refuted; 63 blocked; 19 unresolved; 9 open; 34 open questions; 2 result registered; 2 abandoned; 0 running; 1 exhausted |
 | Experiments | 179 | 57 accepted; 38 rejected; 56 unresolved; 12 baseline; 11 blocked; 4 abandoned; 0 in progress; 1 exhausted |
@@ -670,6 +670,7 @@ case or experiment separately.
 | [Plan: An Independent, Fast Verifier for Measure-Capture Certificates](docs/project/specs/active/plan-2026-10-02-independent-measure-verifier.md) | implementation plan | current | transient | — |
 | [Plan: The First Application of the Result Import Process](docs/project/specs/active/plan-2026-10-01-result-import-first-application.md) | implementation plan | current | transient | — |
 | [Measure Verifier Milestone C: The Continuous-Angle Family](docs/project/specs/active/plan-2026-10-03-measure-verifier-milestone-c.md) | implementation plan | current | transient | — |
+| [Plan: n = 17 Overnight, 5 October 2026](docs/project/specs/active/plan-2026-10-05-n17-overnight.md) | implementation plan | current | transient | — |
 | [Feature: A Top-Level Overview Page for the Published Site](docs/project/specs/active/plan-2026-09-29-github-pages-overview.md) | implementation plan | current | transient | — |
 | [BC329 Calibration Reader: Source-Distinct Review](docs/project/reviews/review-2026-09-13-n11-bc329-source-distinct-reader.md) | dated review record | record | retained | — |
 | [BC329 Reader Repair: Exact-Commit Rereview](docs/project/reviews/review-2026-09-13-n11-bc329-reader-rereview.md) | dated review record | record | retained | — |
@@ -5939,8 +5940,8 @@ in separate tables: their units differ, and the same work can appear in both.
 | Coverage | sessions |
 | --- | ---: |
 | measured | 125 |
-| unmeasured | 54 |
-| **total** | **179** |
+| unmeasured | 55 |
+| **total** | **180** |
 
 <!-- END GENERATED: session-close-report -->
 

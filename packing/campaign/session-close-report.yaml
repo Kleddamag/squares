@@ -7,12 +7,12 @@ softschema:
   schema: schemas/session-close-report.schema.yaml
   envelope: null
   status: enforced
-count: 179
+count: 180
 generated_by: >-
   uv run --frozen --all-extras --group dev python -m devtools.close_session --render
 totals:
   sessions_measured: 125
-  sessions_unmeasured: 54
+  sessions_unmeasured: 55
   attributed:
     rollups: 297
     turns: 76355
@@ -3153,3 +3153,13 @@ sessions:
     active_union_hours: 0.99
     wall_hours: 0.99
     snapshot_incomplete: true
+- id: session-182
+  title: "n17 Overnight Lanes"
+  status: in_progress
+  primary_bead: think-tmz6
+  phases: 2
+  measured: false
+  unmeasured_reason: >-
+    declares no resource measurement
+  rollups: []
+  codex_receipts: []

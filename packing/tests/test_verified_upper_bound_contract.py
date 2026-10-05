@@ -140,6 +140,11 @@ DECLARED_CONSUMERS = {
         "the printed side; it reads the field as the certified ceiling and says it is "
         "neither s(n) nor a different packing"
     ),
+    "docs/project/reviews/review-2026-10-05-couzo-6042c56.md": (
+        "the T-092 review, explaining why n = 306 carries a verified ceiling two units of "
+        "the fifteenth decimal above the printed side, as the 29 September review did for "
+        "n = 206, 259 and 305; it reads the field as the certified ceiling, not as s(n)"
+    ),
     "packing/tests/test_evand_square_packing.py": (
         "pins n = 32's ceiling to the trivial grid's 6, which with the verified lower bound "
         "6 is what makes that case proved; it reads the field as a ceiling, not as s(n)"

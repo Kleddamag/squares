@@ -143,14 +143,22 @@ experiment:
       7,051 collision regions by 12,940,716 exact facet checks. It excludes its own 8 states,
       one orbit.
   verdict:
-    decision: in-progress
+    decision: accepted
     primary_criterion: At least half of the counted draws excluded within two CPU-hours each, with N1's 7,000 s
       wall ceiling standing in for that limit; falsified by six non-closures of the ten counted.
-    reason: 9 of the ten counted draws have run, 5 closed and 4 not closed; the verdict is fixed when
-      five close or six do not, and the remaining runs continue for the cost estimate.
-  lease:
-    expires: '2026-10-06T08:14:04Z'
-    host: Session 182 remote container
+    reason: >-
+      Five of the ten counted draws closed within the 7,000 s ceiling, each re-proved in full
+      by the standing kernel verifier, which meets the criterion of at least half; every
+      closure cost under 900 s of process CPU and every verification under 700 s, far inside
+      two CPU-hours. The remaining counted draw (index 6) and the distance-2 draw at index 9
+      run on for the cost estimate. Held for the W2 review the plan requires before X-048 or
+      the frontier states the verdict.
+    needs_review: true
+    commit: dfd38187c
+  effort:
+    timebox: 7,000 s per state and 4,000 s per verification, one worker per job
+    wall_seconds: 11744
+    stopped_by: criterion
 ---
 # exp-252: Session 182 Lane A, the Per-State Price
 
@@ -162,7 +170,21 @@ This round is lane A of the
 [n17 overnight plan](../../../../../docs/project/specs/active/plan-2026-10-05-n17-overnight.md)
 (BC-419). It is in progress, and gains a row per draw until all twelve have run.
 
-## Per-State Table So Far
+## Verdict
+
+The criterion is met: five of the ten counted draws closed within N1’s 7,000 s ceiling,
+and the standing verifier re-proved each in full, so the falsifier (fewer than half) did
+not fire.
+A closed state cost 351 to 868 s of process CPU and its verification 151 to 676
+s; the four counted states that did not close each reached a producer fixed point in 634
+to 924 s, well inside the ceiling, so more time would not have closed them under this
+recipe (H-274 asks whether adaptive rows do).
+The wall of 11,744 s runs from the survey’s start at 08:46 UTC to the fifth verification
+at 12:02 UTC, through a container restart.
+The verdict waits for the W2 review the plan requires before X-048 or the frontier says
+so. The extrapolation over the drawn strata follows when the last two draws are in.
+
+## Per-State Table
 
 | Index | Mask | Distance | Stratum | Outcome | Wall | Process CPU | Verifier |
 | --- | --- | --- | --- | --- | ---: | ---: | --- |

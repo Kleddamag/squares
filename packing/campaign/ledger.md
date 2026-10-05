@@ -1110,7 +1110,7 @@ Status: **active**. Turn PR 230's W3 review and the two explorations it led to, 
 | H-261 | unresolved | proof | For an explicit rational radius r > 0, every packing of 17 unit square |  | 1 |  | 15s wall |
 | H-262 | refuted | proof | On the H259 closed grid at cap 1169/250, the subcontainer cuts from s( |  | 1 |  | 2.2m wall |
 | H-263 | open question | proof | Which closed centre cover with proved cell capacities keeps every endp |  | 0 |  |  |
-| H-264 | open question | proof | On a seeded stratified draw of residue orbits on the H-266 unique-stat |  | 1 |  |  |
+| H-264 | open question | proof | On a seeded stratified draw of residue orbits on the H-266 unique-stat |  | 1 |  | 195.7m wall |
 | H-265 | confirmed | proof | The side S* of the H255 chart root is a root of the degree-18 polynomi |  | 1 |  | 1s wall |
 | H-266 | confirmed | proof | At cap U = 1169/250 there is a D4-symmetric closed cover of the centre |  | 2 |  | 2s wall |
 | H-267 | unresolved | proof | On the H-266 cover, forbidden occupancy sub-patterns of arity at most  |  | 3 |  | 48.2m wall |
@@ -1126,6 +1126,7 @@ Status: **active**. Turn PR 230's W3 review and the two explorations it led to, 
 | id | hypotheses | decision | why it was not decided |
 | --- | --- | --- | --- |
 | exp-050 | H-054 | unresolved | The authorized source-semantics measurement stops at ordered E1 reason 3, attribution-unbound, with zero cells. This leaves H-054 unresolved and instrument_ready false; the terminal decision awaits BC-120/BC-121 review. |
+| exp-252 | H-264 | accepted | Five of the ten counted draws closed within the 7,000 s ceiling, each re-proved in full by the standing kernel verifier, which meets the criterion of at least half; every closure cost under 900 s of process CPU and every verification under 700 s, far inside two CPU-hours. The remaining counted draw (index 6) and the distance-2 draw at index 9 run on for the cost estimate. Held for the W2 review the plan requires before X-048 or the frontier states the verdict. |
 
 ## Rounds
 
@@ -1264,7 +1265,7 @@ Status: **active**. Turn PR 230's W3 review and the two explorations it led to, 
 | exp-158 | series-000 | 11 | Codex BC303 T2 charge-sweep agent | H-160 | The September 14 strategy reset paused this route before the target charge ran; no target receipt or scientific verdict exists. |
 | exp-160 | series-000 | 11 | Codex BC303 H-162 retained-receipt analyst | H-162 | The September 14 strategy reset paused this route with no exp-158 target receipt; no H-162 comparison or scientific verdict exists. |
 
-### accepted (57)
+### accepted (58)
 
 | id | series | instance | operator | hypotheses | reason |
 | --- | --- | --- | --- | --- | --- |
@@ -1325,6 +1326,7 @@ Status: **active**. Turn PR 230's W3 review and the two explorations it led to, 
 | exp-245 | series-000 | 17 | Claude Session 167; lane C built the instrument, the coordinator ran it from a clean worktree | H-265 | Every clause holds. S* is an algebraic number of degree 18 with the catalogue's polynomial as its minimal polynomial. No packing, feasibility or optimality claim; the admitted rational ceiling and the open status of s(17) are unchanged. |
 | exp-247 | series-000 | 17 | Claude Session 168; lane G2 built the design in Session 167, the coordinator ran it from a clean worktree | H-266 | Every criterion item holds for the unique-state design, which keeps the 43,593-orbit census. The exp-246 tabbed design stays unresolved; this round supersedes it for H-266. |
 | exp-248 | series-000 | 17 | Claude Session 168; lanes H, H2 and A3 built the tools, the coordinator ran both from a clean worktree | H-268 | Every criterion item holds with strict margin, and the composition with the B_W' local theorem and the H-266 cover gives the capture-target theorem. The deviation is recorded; H-261, whose claim names the whole physical slider domain, stays unresolved. |
+| exp-252 | series-000 | 17 | Claude Session 182; the run operator's lane A queue ran the survey, the control and the draws two at a time in the survey's own seeded random order, verified each closure and admitted it in the session checkout | H-264 | Five of the ten counted draws closed within the 7,000 s ceiling, each re-proved in full by the standing kernel verifier, which meets the criterion of at least half; every closure cost under 900 s of process CPU and every verification under 700 s, far inside two CPU-hours. The remaining counted draw (index 6) and the distance-2 draw at index 9 run on for the cost estimate. Held for the W2 review the plan requires before X-048 or the frontier states the verdict. |
 
 ### baseline (12)
 
@@ -1343,12 +1345,11 @@ Status: **active**. Turn PR 230's W3 review and the two explorations it led to, 
 | exp-032 | series-000 | 3 | openai-codex | H-021 | The exact connected and isolated controls pass, every declared conflation fails, and all unsupported floating-point observations remain unresolved. |
 | exp-201 | series-000 | 18 | claude-opus-5 | H-201 | Calibration, not a scored round: it freezes p_perturb = 1.0, perturb_scale = 2 and a flat mu = 5 for exp-202 and exp-203, and it turned up a schedule-length effect that is now registered as H-204 rather than folded into an arm. |
 
-### in-progress (2)
+### in-progress (1)
 
 | id | series | instance | operator | hypotheses | reason |
 | --- | --- | --- | --- | --- | --- |
 | exp-251 | series-000 | 17 | Claude Session 182; the run operator's lane K queue produced and verified each certificate and admitted it in the session checkout | H-267 | Lane K's round is running; each closure is admitted as its verifier passes, and the verdict is written when the target list is exhausted. |
-| exp-252 | series-000 | 17 | Claude Session 182; the run operator's lane A queue ran the survey, the control and the draws two at a time in the survey's own seeded random order, verified each closure and admitted it in the session checkout | H-264 | 9 of the ten counted draws have run, 5 closed and 4 not closed; the verdict is fixed when five close or six do not, and the remaining runs continue for the cost estimate. |
 
 ## Resumable — stopped on the clock, not on an answer
 
@@ -1396,7 +1397,7 @@ Status: **active**. Turn PR 230's W3 review and the two explorations it led to, 
 
 ## Effort
 
-181 rounds, 2512.1 agent-minutes, 4072.4 wall-minutes.
+181 rounds, 2512.1 agent-minutes, 4268.2 wall-minutes.
 
 These totals exclude 4 historical rounds with unrecorded timing; their cost is unknown, not zero.
 

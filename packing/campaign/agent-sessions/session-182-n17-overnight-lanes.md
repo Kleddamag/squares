@@ -858,6 +858,10 @@ consequence in each.
   recipe on two workers to the deadline.
   H-275 is a new hypothesis because H-264’s claim fixes its draw and its 32-bin
   instrument.
+- **BC-427 is complete** (exp-256 accepted, needs_review false on exp-251’s W2
+  recounts). Target 8 stalled at a producer fixed point at 22:02:37, the last run.
+  Of the ten run, targets 4 and 6 closed, six stopped at the round cap and two at fixed
+  points; targets 11 to 16 were not run.
 
 <!-- This document follows common-doc-guidelines.md.
 See github.com/jlevy/practical-prose and review guidelines before editing.

@@ -5,7 +5,7 @@ title: "Import Francisco Couzo: new records at franciscouzo/square-packing 6042c
 kind: task
 status: in_progress
 priority: 1
-version: 4
+version: 5
 delegate: claude-code@vm
 labels:
   - result-import
@@ -14,7 +14,7 @@ parent_id: is-01m44qz0rxvkakmyqaj7qdgagv
 hold: null
 hold_until: null
 created_at: 2026-10-05T03:09:42.834Z
-updated_at: 2026-10-05T03:39:48.217Z
+updated_at: 2026-10-05T04:33:07.043Z
 started_at: 2026-10-05T03:10:47.110Z
 ---
 
@@ -43,3 +43,7 @@ Stages 2-4 (2026-10-05, same branch):
 - Stage 4 replay (both T-056 routes): exact certify 264 s wall on 4 workers, all seven at centre dilation 1, both checkers pass; interval certify 1 s, all VERIFIED at 40 digits, agrees with exact at every count. Controls on n = 208 (side -1e-15, square 2 +1e-6, degrees) refused. Verified = printed at 228/272/303, +1 unit at 208/209/263, +2 units at 306 (conflict + mathematics blocker, as T-056 at 206/259/305).
 - Stage 3: T-092 registered V3/C3 (derived from replayed-here exact-algebraic + interval-certified evidence with controls), S3 draft. Case records n-208..306 written by devtools.apply_upper_bound_packets; coverage source franciscouzo-square-packing-2026-10-03 with seven overrides, T-056's seven sides superseded.
 - Still open in this bead: the stage 4 review lane (a mapped review of the seven certificates under docs/project/reviews/), not run in this lane; stage 7 has no issue to answer.
+
+Committed 2026-10-05 on claude/ecstatic-pascal-pothtx-couzo (not pushed): 78dfeb79e (import, T-092) and 52951e145 (DATA_REVISION re-pin). Validation: --records fails only on register id contiguity (T-092 before T-088..T-091 merge); with T-092 renumbered to T-088 in a throwaway edit, check_results and --records pass and 399 targeted tests pass. --push (1575 s): contiguity, the two environmental test_fixed_core_packet* reaping tests, and two real findings fixed before the final commit (bound-citations.json stale; render-colors wrapped-frame count 36 -> 35 because n = 208 now carries 16 angle classes). Exact replay `upper_bound_packets check --replay --source franciscouzo-square-packing-2026-10-03 --workers 4`: 7/7 VERIFIED, regenerated identical, 91 s. Sweep after import: franciscouzo/square-packing no longer under Needs Action (head 6042c56 is pinned).
+
+Remaining: the stage 4 review lane (mapped review of T-092 under docs/project/reviews/). No issue asked, so no answer is owed; issue #227 (T-056) has no reply due by the requests rule since T-056's id and rungs are unchanged.

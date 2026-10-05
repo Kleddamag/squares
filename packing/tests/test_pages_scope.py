@@ -384,6 +384,27 @@ def test_membership_follows_needs_and_leaves_out_what_a_pull_request_never_runs(
     }
 
 
+def test_a_cancelled_guard_runs_past_a_skip_unless_it_needs_that_skip_to_succeed() -> None:
+    """`pages-required` moved from `always()` to `!cancelled()`; it still runs on a pull
+    request, and `verify-deployment`, which asks for `deploy`'s success, still does not."""
+    workflow = {
+        "jobs": {
+            "build": {},
+            "deploy": {"needs": "build", "if": "github.event_name != 'pull_request'"},
+            "timing": {"if": "github.event_name == 'workflow_dispatch'"},
+            "required": {"needs": ["build", "timing"], "if": "!cancelled()"},
+            "verify": {
+                "needs": "deploy",
+                "if": "${{ !cancelled() && needs.deploy.result == 'success' }}",
+            },
+        }
+    }
+    assert pull_request_jobs(workflow) == {"build", "required"}
+    live = pull_request_jobs(load_workflow())
+    assert "pages-required" in live
+    assert not live & {"deploy", "verify-deployment", "startup-timing"}
+
+
 def test_a_gate_on_an_undeclared_page_is_refused() -> None:
     workflow = {"jobs": {"x": {"if": "needs.scope.outputs.atlas == 'true'"}}}
     with pytest.raises(SystemExit, match="unknown half 'atlas'"):

@@ -382,6 +382,15 @@ A missing or undersampled median produces an explicit warning while the absolute
 still applies. Partial reruns, missing jobs or required timestamps, an incomplete
 jobs-API page, and non-finite register values cannot produce a passing measurement.
 
+Two causes are not judged at all, when they are the only thing wrong with a run: each
+prints `NOT JUDGED`, raises a warning, and exits 0. A prerequisite GitHub cancelled
+before any runner took it is `infrastructure`; the aggregator’s result step already
+fails on its `cancelled` result.
+A later attempt that repeated only the failed jobs is `partial-rerun`: the jobs it kept
+report their first attempt’s times, so the attempt has no whole-run wall, and the result
+step still requires every prerequisite’s success.
+Any other reason left beside either cause keeps the run unmeasurable.
+
 **Both walls are currently advisory under `think-g4n9`.** Each workflow’s entry in
 `pull_request_walls` declares its `enforcement`. Absent means `enforcing`: a wall over
 the budget or the regression ratio fails `packing-required` or `pages-required`. An
@@ -413,6 +422,31 @@ licenses reuse only for fast steps named in the positive `TREE_REUSABLE_FAST_STE
 allowlist. Every deferred step and every unclassified fast step repeats after merge;
 missing artifacts, expired artifacts, API errors, fork runs, and incomplete checks all
 fall back to the complete surface.
+
+### A job no runner took
+
+GitHub cancels a queued job it cannot hand to a hosted runner (“The job was not acquired
+by Runner of type hosted even after multiple attempts”), and the run goes on without it.
+On 2026-10-05 from about 19:17 UTC this happened to 96 jobs after 15 to 35 minutes
+queued (run 37362926042), and the pull requests read red with no test failed.
+Three things answer it:
+
+- `packing-required` and `pages-required` still fail on the `cancelled` result, since a
+  required check does not go green on work that never ran, and then print
+  `FAILURE CLASS: infrastructure` with one `Infrastructure` error annotation per
+  prerequisite that never acquired a runner.
+- `pages-required` runs under `!cancelled()`, as `packing-required` has since `D-380`,
+  so a superseded run no longer queues an aggregator against its cancelled jobs.
+- [`rerun-starved.yml`](.github/workflows/rerun-starved.yml) re-runs the failed jobs of
+  a starved run once. [`rerun_starved.py`](packing/devtools/rerun_starved.py) decides
+  from the API’s JSON and writes every condition to the step summary.
+  The run must be a pull-request or push run, concluded `failure`, on its first attempt,
+  with a job cancelled without a runner, and with no newer run of the workflow for the
+  same commit, or for the same branch and event.
+  The last condition exists because a re-run joins the run’s concurrency group, and
+  re-running an older pull-request run would cancel the newer push’s run.
+  Do not re-run such a run by hand while the pool is not assigning runners; every hand
+  re-run on 2026-10-05 between 19:48 and 20:39 was cancelled or still queued at 20:45.
 
 ### The behavioural lanes
 

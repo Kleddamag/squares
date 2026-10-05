@@ -1,0 +1,1099 @@
+{
+ "run": {
+  "id": 37371803139,
+  "name": "Packing validation",
+  "path": ".github/workflows/packing-validation.yml",
+  "event": "pull_request",
+  "status": "completed",
+  "conclusion": "failure",
+  "created_at": "2026-10-05T20:46:19Z",
+  "run_started_at": "2026-10-05T21:09:24Z",
+  "run_attempt": 2,
+  "head_branch": "claude/n17-sessions-167-168",
+  "head_sha": "80488bf279a98ecffc4f46d513f559a94f39fd31"
+ },
+ "jobs": [
+  {
+   "name": "validate",
+   "status": "completed",
+   "conclusion": "success",
+   "created_at": "2026-10-05T21:09:26Z",
+   "started_at": "2026-10-05T21:20:03Z",
+   "completed_at": "2026-10-05T21:22:37Z",
+   "runner_name": "GitHub Actions 1000107460",
+   "steps": [
+    {
+     "name": "Set up job",
+     "conclusion": "success",
+     "started_at": "2026-10-05T21:20:03Z",
+     "completed_at": "2026-10-05T21:20:06Z"
+    },
+    {
+     "name": "Check out the repository",
+     "conclusion": "success",
+     "started_at": "2026-10-05T21:20:06Z",
+     "completed_at": "2026-10-05T21:20:31Z"
+    },
+    {
+     "name": "Install uv and Python 3.14",
+     "conclusion": "success",
+     "started_at": "2026-10-05T21:20:31Z",
+     "completed_at": "2026-10-05T21:20:35Z"
+    },
+    {
+     "name": "Synchronize the locked development environment",
+     "conclusion": "success",
+     "started_at": "2026-10-05T21:20:35Z",
+     "completed_at": "2026-10-05T21:20:38Z"
+    },
+    {
+     "name": "Record the tree this pull-request run validates",
+     "conclusion": "success",
+     "started_at": "2026-10-05T21:20:38Z",
+     "completed_at": "2026-10-05T21:20:38Z"
+    },
+    {
+     "name": "Publish the validated tree id",
+     "conclusion": "success",
+     "started_at": "2026-10-05T21:20:38Z",
+     "completed_at": "2026-10-05T21:20:39Z"
+    },
+    {
+     "name": "Install Node",
+     "conclusion": "skipped",
+     "started_at": "2026-10-05T21:20:39Z",
+     "completed_at": "2026-10-05T21:20:39Z"
+    },
+    {
+     "name": "Install the pinned browser toolchain",
+     "conclusion": "skipped",
+     "started_at": "2026-10-05T21:20:39Z",
+     "completed_at": "2026-10-05T21:20:39Z"
+    },
+    {
+     "name": "Cache the Playwright browser for the complete post-merge gate",
+     "conclusion": "skipped",
+     "started_at": "2026-10-05T21:20:39Z",
+     "completed_at": "2026-10-05T21:20:39Z"
+    },
+    {
+     "name": "Install Chromium for the complete post-merge gate",
+     "conclusion": "skipped",
+     "started_at": "2026-10-05T21:20:39Z",
+     "completed_at": "2026-10-05T21:20:39Z"
+    },
+    {
+     "name": "Key the engine cache on its sources and its compiler",
+     "conclusion": "success",
+     "started_at": "2026-10-05T21:20:39Z",
+     "completed_at": "2026-10-05T21:20:49Z"
+    },
+    {
+     "name": "Cache the Rust build for the engine",
+     "conclusion": "success",
+     "started_at": "2026-10-05T21:20:49Z",
+     "completed_at": "2026-10-05T21:20:50Z"
+    },
+    {
+     "name": "Populate the engine cache for this exact tree",
+     "conclusion": "skipped",
+     "started_at": "2026-10-05T21:20:50Z",
+     "completed_at": "2026-10-05T21:20:50Z"
+    },
+    {
+     "name": "Date the engine sources before the build restored for them",
+     "conclusion": "success",
+     "started_at": "2026-10-05T21:20:50Z",
+     "completed_at": "2026-10-05T21:20:50Z"
+    },
+    {
+     "name": "Key the exact verifier cache on its sources and compiler",
+     "conclusion": "success",
+     "started_at": "2026-10-05T21:20:50Z",
+     "completed_at": "2026-10-05T21:20:50Z"
+    },
+    {
+     "name": "Restore the exact verifier build",
+     "conclusion": "success",
+     "started_at": "2026-10-05T21:20:50Z",
+     "completed_at": "2026-10-05T21:20:51Z"
+    },
+    {
+     "name": "Date exact verifier sources before their identical cached build",
+     "conclusion": "success",
+     "started_at": "2026-10-05T21:20:51Z",
+     "completed_at": "2026-10-05T21:20:51Z"
+    },
+    {
+     "name": "Key the measure verifier cache on its sources and compiler",
+     "conclusion": "skipped",
+     "started_at": "2026-10-05T21:20:51Z",
+     "completed_at": "2026-10-05T21:20:51Z"
+    },
+    {
+     "name": "Restore the measure verifier build",
+     "conclusion": "skipped",
+     "started_at": "2026-10-05T21:20:51Z",
+     "completed_at": "2026-10-05T21:20:51Z"
+    },
+    {
+     "name": "Populate the measure verifier build for this exact tree",
+     "conclusion": "skipped",
+     "started_at": "2026-10-05T21:20:51Z",
+     "completed_at": "2026-10-05T21:20:51Z"
+    },
+    {
+     "name": "Date measure verifier sources before their identical cached build",
+     "conclusion": "skipped",
+     "started_at": "2026-10-05T21:20:51Z",
+     "completed_at": "2026-10-05T21:20:51Z"
+    },
+    {
+     "name": "Run the required pull-request checks",
+     "conclusion": "success",
+     "started_at": "2026-10-05T21:20:51Z",
+     "completed_at": "2026-10-05T21:22:33Z"
+    },
+    {
+     "name": "Find the pull-request run that already passed this tree",
+     "conclusion": "skipped",
+     "started_at": "2026-10-05T21:22:33Z",
+     "completed_at": "2026-10-05T21:22:33Z"
+    },
+    {
+     "name": "Run the complete integration surface",
+     "conclusion": "skipped",
+     "started_at": "2026-10-05T21:22:33Z",
+     "completed_at": "2026-10-05T21:22:33Z"
+    },
+    {
+     "name": "Save the Rust build for the exact engine tree",
+     "conclusion": "skipped",
+     "started_at": "2026-10-05T21:22:33Z",
+     "completed_at": "2026-10-05T21:22:33Z"
+    },
+    {
+     "name": "Save the exact verifier build intermediates",
+     "conclusion": "skipped",
+     "started_at": "2026-10-05T21:22:33Z",
+     "completed_at": "2026-10-05T21:22:33Z"
+    },
+    {
+     "name": "Save the measure verifier build intermediates",
+     "conclusion": "skipped",
+     "started_at": "2026-10-05T21:22:33Z",
+     "completed_at": "2026-10-05T21:22:33Z"
+    },
+    {
+     "name": "Preserve validation timings and partial logs",
+     "conclusion": "success",
+     "started_at": "2026-10-05T21:22:33Z",
+     "completed_at": "2026-10-05T21:22:34Z"
+    },
+    {
+     "name": "Post Install uv and Python 3.14",
+     "conclusion": "success",
+     "started_at": "2026-10-05T21:22:34Z",
+     "completed_at": "2026-10-05T21:22:34Z"
+    },
+    {
+     "name": "Post Check out the repository",
+     "conclusion": "success",
+     "started_at": "2026-10-05T21:22:34Z",
+     "completed_at": "2026-10-05T21:22:34Z"
+    },
+    {
+     "name": "Complete job",
+     "conclusion": "success",
+     "started_at": "2026-10-05T21:22:34Z",
+     "completed_at": "2026-10-05T21:22:35Z"
+    }
+   ]
+  },
+  {
+   "name": "measure-verifier",
+   "status": "completed",
+   "conclusion": "success",
+   "created_at": "2026-10-05T21:09:26Z",
+   "started_at": "2026-10-05T21:19:59Z",
+   "completed_at": "2026-10-05T21:21:24Z",
+   "runner_name": "GitHub Actions 1000107461",
+   "steps": [
+    {
+     "name": "Set up job",
+     "conclusion": "success",
+     "started_at": "2026-10-05T21:20:00Z",
+     "completed_at": "2026-10-05T21:20:02Z"
+    },
+    {
+     "name": "Check out the repository",
+     "conclusion": "success",
+     "started_at": "2026-10-05T21:20:02Z",
+     "completed_at": "2026-10-05T21:20:24Z"
+    },
+    {
+     "name": "Install uv and Python 3.14",
+     "conclusion": "success",
+     "started_at": "2026-10-05T21:20:24Z",
+     "completed_at": "2026-10-05T21:20:30Z"
+    },
+    {
+     "name": "Synchronize the locked development environment",
+     "conclusion": "success",
+     "started_at": "2026-10-05T21:20:30Z",
+     "completed_at": "2026-10-05T21:20:32Z"
+    },
+    {
+     "name": "Key the measure verifier cache on its sources and compiler",
+     "conclusion": "success",
+     "started_at": "2026-10-05T21:20:32Z",
+     "completed_at": "2026-10-05T21:20:43Z"
+    },
+    {
+     "name": "Restore the measure verifier build",
+     "conclusion": "success",
+     "started_at": "2026-10-05T21:20:43Z",
+     "completed_at": "2026-10-05T21:20:46Z"
+    },
+    {
+     "name": "Populate the measure verifier build for this exact tree",
+     "conclusion": "skipped",
+     "started_at": "2026-10-05T21:20:46Z",
+     "completed_at": "2026-10-05T21:20:46Z"
+    },
+    {
+     "name": "Date measure verifier sources before their identical cached build",
+     "conclusion": "success",
+     "started_at": "2026-10-05T21:20:46Z",
+     "completed_at": "2026-10-05T21:20:46Z"
+    },
+    {
+     "name": "Run the required pull-request measure verifier tier",
+     "conclusion": "success",
+     "started_at": "2026-10-05T21:20:46Z",
+     "completed_at": "2026-10-05T21:21:21Z"
+    },
+    {
+     "name": "Save the measure verifier build intermediates",
+     "conclusion": "skipped",
+     "started_at": "2026-10-05T21:21:21Z",
+     "completed_at": "2026-10-05T21:21:21Z"
+    },
+    {
+     "name": "Preserve validation timings and partial logs",
+     "conclusion": "success",
+     "started_at": "2026-10-05T21:21:21Z",
+     "completed_at": "2026-10-05T21:21:22Z"
+    },
+    {
+     "name": "Post Install uv and Python 3.14",
+     "conclusion": "success",
+     "started_at": "2026-10-05T21:21:22Z",
+     "completed_at": "2026-10-05T21:21:22Z"
+    },
+    {
+     "name": "Post Check out the repository",
+     "conclusion": "success",
+     "started_at": "2026-10-05T21:21:22Z",
+     "completed_at": "2026-10-05T21:21:22Z"
+    },
+    {
+     "name": "Complete job",
+     "conclusion": "success",
+     "started_at": "2026-10-05T21:21:22Z",
+     "completed_at": "2026-10-05T21:21:22Z"
+    }
+   ]
+  },
+  {
+   "name": "macos-portability",
+   "status": "completed",
+   "conclusion": "success",
+   "created_at": "2026-10-05T21:09:26Z",
+   "started_at": "2026-10-05T21:09:35Z",
+   "completed_at": "2026-10-05T21:11:24Z",
+   "runner_name": "GitHub Actions 1000107436",
+   "steps": [
+    {
+     "name": "Set up job",
+     "conclusion": "success",
+     "started_at": "2026-10-05T21:09:35Z",
+     "completed_at": "2026-10-05T21:09:37Z"
+    },
+    {
+     "name": "Check out the repository",
+     "conclusion": "success",
+     "started_at": "2026-10-05T21:09:37Z",
+     "completed_at": "2026-10-05T21:09:58Z"
+    },
+    {
+     "name": "Install uv and Python 3.14",
+     "conclusion": "success",
+     "started_at": "2026-10-05T21:09:58Z",
+     "completed_at": "2026-10-05T21:10:07Z"
+    },
+    {
+     "name": "Synchronize the locked development environment",
+     "conclusion": "success",
+     "started_at": "2026-10-05T21:10:07Z",
+     "completed_at": "2026-10-05T21:10:08Z"
+    },
+    {
+     "name": "The package builds and imports on arm64 macOS",
+     "conclusion": "success",
+     "started_at": "2026-10-05T21:10:08Z",
+     "completed_at": "2026-10-05T21:10:10Z"
+    },
+    {
+     "name": "Results a second architecture could disagree about",
+     "conclusion": "success",
+     "started_at": "2026-10-05T21:10:10Z",
+     "completed_at": "2026-10-05T21:11:18Z"
+    },
+    {
+     "name": "Preserve validation timings and partial logs",
+     "conclusion": "success",
+     "started_at": "2026-10-05T21:11:18Z",
+     "completed_at": "2026-10-05T21:11:20Z"
+    },
+    {
+     "name": "Post Install uv and Python 3.14",
+     "conclusion": "success",
+     "started_at": "2026-10-05T21:11:20Z",
+     "completed_at": "2026-10-05T21:11:20Z"
+    },
+    {
+     "name": "Post Check out the repository",
+     "conclusion": "success",
+     "started_at": "2026-10-05T21:11:20Z",
+     "completed_at": "2026-10-05T21:11:21Z"
+    },
+    {
+     "name": "Complete job",
+     "conclusion": "success",
+     "started_at": "2026-10-05T21:11:21Z",
+     "completed_at": "2026-10-05T21:11:21Z"
+    }
+   ]
+  },
+  {
+   "name": "frontend",
+   "status": "completed",
+   "conclusion": "success",
+   "created_at": "2026-10-05T21:09:26Z",
+   "started_at": "2026-10-05T21:15:09Z",
+   "completed_at": "2026-10-05T21:19:09Z",
+   "runner_name": "GitHub Actions 1000107452",
+   "steps": [
+    {
+     "name": "Set up job",
+     "conclusion": "success",
+     "started_at": "2026-10-05T21:15:10Z",
+     "completed_at": "2026-10-05T21:15:12Z"
+    },
+    {
+     "name": "Check out the repository",
+     "conclusion": "success",
+     "started_at": "2026-10-05T21:15:12Z",
+     "completed_at": "2026-10-05T21:15:42Z"
+    },
+    {
+     "name": "Install uv and Python 3.14",
+     "conclusion": "success",
+     "started_at": "2026-10-05T21:15:42Z",
+     "completed_at": "2026-10-05T21:15:47Z"
+    },
+    {
+     "name": "Synchronize the locked development environment",
+     "conclusion": "success",
+     "started_at": "2026-10-05T21:15:47Z",
+     "completed_at": "2026-10-05T21:15:50Z"
+    },
+    {
+     "name": "Install Node 24",
+     "conclusion": "success",
+     "started_at": "2026-10-05T21:15:50Z",
+     "completed_at": "2026-10-05T21:15:58Z"
+    },
+    {
+     "name": "Cache the Playwright browser",
+     "conclusion": "success",
+     "started_at": "2026-10-05T21:15:58Z",
+     "completed_at": "2026-10-05T21:16:00Z"
+    },
+    {
+     "name": "Install the npm toolchain and the pinned Chromium shell",
+     "conclusion": "success",
+     "started_at": "2026-10-05T21:16:00Z",
+     "completed_at": "2026-10-05T21:16:38Z"
+    },
+    {
+     "name": "Run the frontend source and built-page contracts",
+     "conclusion": "success",
+     "started_at": "2026-10-05T21:16:38Z",
+     "completed_at": "2026-10-05T21:19:03Z"
+    },
+    {
+     "name": "Preserve validation timings and partial logs",
+     "conclusion": "success",
+     "started_at": "2026-10-05T21:19:03Z",
+     "completed_at": "2026-10-05T21:19:04Z"
+    },
+    {
+     "name": "Post Cache the Playwright browser",
+     "conclusion": "success",
+     "started_at": "2026-10-05T21:19:04Z",
+     "completed_at": "2026-10-05T21:19:05Z"
+    },
+    {
+     "name": "Post Install Node 24",
+     "conclusion": "success",
+     "started_at": "2026-10-05T21:19:05Z",
+     "completed_at": "2026-10-05T21:19:05Z"
+    },
+    {
+     "name": "Post Install uv and Python 3.14",
+     "conclusion": "success",
+     "started_at": "2026-10-05T21:19:05Z",
+     "completed_at": "2026-10-05T21:19:05Z"
+    },
+    {
+     "name": "Post Check out the repository",
+     "conclusion": "success",
+     "started_at": "2026-10-05T21:19:05Z",
+     "completed_at": "2026-10-05T21:19:05Z"
+    },
+    {
+     "name": "Complete job",
+     "conclusion": "success",
+     "started_at": "2026-10-05T21:19:05Z",
+     "completed_at": "2026-10-05T21:19:05Z"
+    }
+   ]
+  },
+  {
+   "name": "suite-a",
+   "status": "completed",
+   "conclusion": "success",
+   "created_at": "2026-10-05T21:09:26Z",
+   "started_at": "2026-10-05T21:19:37Z",
+   "completed_at": "2026-10-05T21:21:47Z",
+   "runner_name": "GitHub Actions 1000107462",
+   "steps": [
+    {
+     "name": "Set up job",
+     "conclusion": "success",
+     "started_at": "2026-10-05T21:19:38Z",
+     "completed_at": "2026-10-05T21:19:39Z"
+    },
+    {
+     "name": "Check out the repository",
+     "conclusion": "success",
+     "started_at": "2026-10-05T21:19:39Z",
+     "completed_at": "2026-10-05T21:20:07Z"
+    },
+    {
+     "name": "Install uv and Python 3.14",
+     "conclusion": "success",
+     "started_at": "2026-10-05T21:20:07Z",
+     "completed_at": "2026-10-05T21:20:11Z"
+    },
+    {
+     "name": "Synchronize the locked development environment",
+     "conclusion": "success",
+     "started_at": "2026-10-05T21:20:11Z",
+     "completed_at": "2026-10-05T21:20:15Z"
+    },
+    {
+     "name": "Run required pull-request behavioral shard A",
+     "conclusion": "success",
+     "started_at": "2026-10-05T21:20:15Z",
+     "completed_at": "2026-10-05T21:21:43Z"
+    },
+    {
+     "name": "Preserve validation timings and partial logs",
+     "conclusion": "success",
+     "started_at": "2026-10-05T21:21:43Z",
+     "completed_at": "2026-10-05T21:21:44Z"
+    },
+    {
+     "name": "Post Install uv and Python 3.14",
+     "conclusion": "success",
+     "started_at": "2026-10-05T21:21:44Z",
+     "completed_at": "2026-10-05T21:21:44Z"
+    },
+    {
+     "name": "Post Check out the repository",
+     "conclusion": "success",
+     "started_at": "2026-10-05T21:21:44Z",
+     "completed_at": "2026-10-05T21:21:44Z"
+    },
+    {
+     "name": "Complete job",
+     "conclusion": "success",
+     "started_at": "2026-10-05T21:21:44Z",
+     "completed_at": "2026-10-05T21:21:44Z"
+    }
+   ]
+  },
+  {
+   "name": "geometry",
+   "status": "completed",
+   "conclusion": "success",
+   "created_at": "2026-10-05T21:09:26Z",
+   "started_at": "2026-10-05T21:01:50Z",
+   "completed_at": "2026-10-05T21:03:47Z",
+   "runner_name": "GitHub Actions 1000107379",
+   "steps": [
+    {
+     "name": "Set up job",
+     "conclusion": "success",
+     "started_at": "2026-10-05T21:01:51Z",
+     "completed_at": "2026-10-05T21:01:52Z"
+    },
+    {
+     "name": "Check out the repository",
+     "conclusion": "success",
+     "started_at": "2026-10-05T21:01:52Z",
+     "completed_at": "2026-10-05T21:02:14Z"
+    },
+    {
+     "name": "Install uv and Python 3.14",
+     "conclusion": "success",
+     "started_at": "2026-10-05T21:02:14Z",
+     "completed_at": "2026-10-05T21:02:19Z"
+    },
+    {
+     "name": "Synchronize the locked development environment",
+     "conclusion": "success",
+     "started_at": "2026-10-05T21:02:19Z",
+     "completed_at": "2026-10-05T21:02:23Z"
+    },
+    {
+     "name": "Run the required pull-request geometry checks",
+     "conclusion": "success",
+     "started_at": "2026-10-05T21:02:23Z",
+     "completed_at": "2026-10-05T21:03:43Z"
+    },
+    {
+     "name": "Preserve validation timings and partial logs",
+     "conclusion": "success",
+     "started_at": "2026-10-05T21:03:43Z",
+     "completed_at": "2026-10-05T21:03:44Z"
+    },
+    {
+     "name": "Post Install uv and Python 3.14",
+     "conclusion": "success",
+     "started_at": "2026-10-05T21:03:44Z",
+     "completed_at": "2026-10-05T21:03:44Z"
+    },
+    {
+     "name": "Post Check out the repository",
+     "conclusion": "success",
+     "started_at": "2026-10-05T21:03:44Z",
+     "completed_at": "2026-10-05T21:03:45Z"
+    },
+    {
+     "name": "Complete job",
+     "conclusion": "success",
+     "started_at": "2026-10-05T21:03:45Z",
+     "completed_at": "2026-10-05T21:03:45Z"
+    }
+   ]
+  },
+  {
+   "name": "exhaustive-2",
+   "status": "completed",
+   "conclusion": "skipped",
+   "created_at": "2026-10-05T21:09:26Z",
+   "started_at": "2026-10-05T21:09:26Z",
+   "completed_at": "2026-10-05T20:46:21Z",
+   "runner_name": null,
+   "steps": []
+  },
+  {
+   "name": "regularized-views",
+   "status": "completed",
+   "conclusion": "skipped",
+   "created_at": "2026-10-05T21:09:26Z",
+   "started_at": "2026-10-05T21:09:26Z",
+   "completed_at": "2026-10-05T20:46:21Z",
+   "runner_name": null,
+   "steps": []
+  },
+  {
+   "name": "screen",
+   "status": "completed",
+   "conclusion": "skipped",
+   "created_at": "2026-10-05T21:09:26Z",
+   "started_at": "2026-10-05T21:09:26Z",
+   "completed_at": "2026-10-05T20:46:21Z",
+   "runner_name": null,
+   "steps": []
+  },
+  {
+   "name": "exhaustive-3",
+   "status": "completed",
+   "conclusion": "skipped",
+   "created_at": "2026-10-05T21:09:26Z",
+   "started_at": "2026-10-05T21:09:26Z",
+   "completed_at": "2026-10-05T20:46:21Z",
+   "runner_name": null,
+   "steps": []
+  },
+  {
+   "name": "deferred-atlas-grid",
+   "status": "completed",
+   "conclusion": "skipped",
+   "created_at": "2026-10-05T21:09:26Z",
+   "started_at": "2026-10-05T21:09:26Z",
+   "completed_at": "2026-10-05T20:46:21Z",
+   "runner_name": null,
+   "steps": []
+  },
+  {
+   "name": "deferred-threshold-720-rigidity",
+   "status": "completed",
+   "conclusion": "skipped",
+   "created_at": "2026-10-05T21:09:26Z",
+   "started_at": "2026-10-05T21:09:26Z",
+   "completed_at": "2026-10-05T20:46:21Z",
+   "runner_name": null,
+   "steps": []
+  },
+  {
+   "name": "suite-c",
+   "status": "completed",
+   "conclusion": "success",
+   "created_at": "2026-10-05T21:09:26Z",
+   "started_at": "2026-10-05T20:57:44Z",
+   "completed_at": "2026-10-05T21:00:31Z",
+   "runner_name": "GitHub Actions 1000107352",
+   "steps": [
+    {
+     "name": "Set up job",
+     "conclusion": "success",
+     "started_at": "2026-10-05T20:57:45Z",
+     "completed_at": "2026-10-05T20:57:46Z"
+    },
+    {
+     "name": "Check out the repository",
+     "conclusion": "success",
+     "started_at": "2026-10-05T20:57:46Z",
+     "completed_at": "2026-10-05T20:58:14Z"
+    },
+    {
+     "name": "Install uv and Python 3.14",
+     "conclusion": "success",
+     "started_at": "2026-10-05T20:58:14Z",
+     "completed_at": "2026-10-05T20:58:18Z"
+    },
+    {
+     "name": "Synchronize the locked development environment",
+     "conclusion": "success",
+     "started_at": "2026-10-05T20:58:18Z",
+     "completed_at": "2026-10-05T20:58:21Z"
+    },
+    {
+     "name": "Run required pull-request behavioral shard C",
+     "conclusion": "success",
+     "started_at": "2026-10-05T20:58:21Z",
+     "completed_at": "2026-10-05T21:00:28Z"
+    },
+    {
+     "name": "Preserve validation timings and partial logs",
+     "conclusion": "success",
+     "started_at": "2026-10-05T21:00:28Z",
+     "completed_at": "2026-10-05T21:00:29Z"
+    },
+    {
+     "name": "Post Install uv and Python 3.14",
+     "conclusion": "success",
+     "started_at": "2026-10-05T21:00:29Z",
+     "completed_at": "2026-10-05T21:00:29Z"
+    },
+    {
+     "name": "Post Check out the repository",
+     "conclusion": "success",
+     "started_at": "2026-10-05T21:00:29Z",
+     "completed_at": "2026-10-05T21:00:29Z"
+    },
+    {
+     "name": "Complete job",
+     "conclusion": "success",
+     "started_at": "2026-10-05T21:00:29Z",
+     "completed_at": "2026-10-05T21:00:29Z"
+    }
+   ]
+  },
+  {
+   "name": "typecheck",
+   "status": "completed",
+   "conclusion": "success",
+   "created_at": "2026-10-05T21:09:26Z",
+   "started_at": "2026-10-05T20:48:11Z",
+   "completed_at": "2026-10-05T20:50:19Z",
+   "runner_name": "GitHub Actions 1000107271",
+   "steps": [
+    {
+     "name": "Set up job",
+     "conclusion": "success",
+     "started_at": "2026-10-05T20:48:12Z",
+     "completed_at": "2026-10-05T20:48:13Z"
+    },
+    {
+     "name": "Check out the repository",
+     "conclusion": "success",
+     "started_at": "2026-10-05T20:48:13Z",
+     "completed_at": "2026-10-05T20:48:35Z"
+    },
+    {
+     "name": "Install uv and Python 3.14",
+     "conclusion": "success",
+     "started_at": "2026-10-05T20:48:35Z",
+     "completed_at": "2026-10-05T20:48:39Z"
+    },
+    {
+     "name": "Synchronize the locked development environment",
+     "conclusion": "success",
+     "started_at": "2026-10-05T20:48:39Z",
+     "completed_at": "2026-10-05T20:48:42Z"
+    },
+    {
+     "name": "Run the required pull-request type floor",
+     "conclusion": "success",
+     "started_at": "2026-10-05T20:48:42Z",
+     "completed_at": "2026-10-05T20:50:15Z"
+    },
+    {
+     "name": "Preserve validation timings and partial logs",
+     "conclusion": "success",
+     "started_at": "2026-10-05T20:50:15Z",
+     "completed_at": "2026-10-05T20:50:16Z"
+    },
+    {
+     "name": "Post Install uv and Python 3.14",
+     "conclusion": "success",
+     "started_at": "2026-10-05T20:50:16Z",
+     "completed_at": "2026-10-05T20:50:16Z"
+    },
+    {
+     "name": "Post Check out the repository",
+     "conclusion": "success",
+     "started_at": "2026-10-05T20:50:16Z",
+     "completed_at": "2026-10-05T20:50:16Z"
+    },
+    {
+     "name": "Complete job",
+     "conclusion": "success",
+     "started_at": "2026-10-05T20:50:16Z",
+     "completed_at": "2026-10-05T20:50:16Z"
+    }
+   ]
+  },
+  {
+   "name": "slow-lane",
+   "status": "completed",
+   "conclusion": "skipped",
+   "created_at": "2026-10-05T21:09:32Z",
+   "started_at": "2026-10-05T21:09:32Z",
+   "completed_at": "2026-10-05T20:46:21Z",
+   "runner_name": null,
+   "steps": []
+  },
+  {
+   "name": "exhaustive-1",
+   "status": "completed",
+   "conclusion": "skipped",
+   "created_at": "2026-10-05T21:09:33Z",
+   "started_at": "2026-10-05T21:09:33Z",
+   "completed_at": "2026-10-05T20:46:21Z",
+   "runner_name": null,
+   "steps": []
+  },
+  {
+   "name": "deferred-controls-finer",
+   "status": "completed",
+   "conclusion": "skipped",
+   "created_at": "2026-10-05T21:09:33Z",
+   "started_at": "2026-10-05T21:09:33Z",
+   "completed_at": "2026-10-05T20:46:21Z",
+   "runner_name": null,
+   "steps": []
+  },
+  {
+   "name": "suite-d",
+   "status": "completed",
+   "conclusion": "success",
+   "created_at": "2026-10-05T21:09:33Z",
+   "started_at": "2026-10-05T20:52:54Z",
+   "completed_at": "2026-10-05T20:55:48Z",
+   "runner_name": "GitHub Actions 1000107312",
+   "steps": [
+    {
+     "name": "Set up job",
+     "conclusion": "success",
+     "started_at": "2026-10-05T20:52:55Z",
+     "completed_at": "2026-10-05T20:52:57Z"
+    },
+    {
+     "name": "Check out the repository",
+     "conclusion": "success",
+     "started_at": "2026-10-05T20:52:57Z",
+     "completed_at": "2026-10-05T20:53:27Z"
+    },
+    {
+     "name": "Install uv and Python 3.14",
+     "conclusion": "success",
+     "started_at": "2026-10-05T20:53:27Z",
+     "completed_at": "2026-10-05T20:53:32Z"
+    },
+    {
+     "name": "Synchronize the locked development environment",
+     "conclusion": "success",
+     "started_at": "2026-10-05T20:53:32Z",
+     "completed_at": "2026-10-05T20:53:36Z"
+    },
+    {
+     "name": "Run required pull-request behavioral shard D",
+     "conclusion": "success",
+     "started_at": "2026-10-05T20:53:36Z",
+     "completed_at": "2026-10-05T20:55:44Z"
+    },
+    {
+     "name": "Preserve validation timings and partial logs",
+     "conclusion": "success",
+     "started_at": "2026-10-05T20:55:44Z",
+     "completed_at": "2026-10-05T20:55:45Z"
+    },
+    {
+     "name": "Post Install uv and Python 3.14",
+     "conclusion": "success",
+     "started_at": "2026-10-05T20:55:45Z",
+     "completed_at": "2026-10-05T20:55:45Z"
+    },
+    {
+     "name": "Post Check out the repository",
+     "conclusion": "success",
+     "started_at": "2026-10-05T20:55:45Z",
+     "completed_at": "2026-10-05T20:55:46Z"
+    },
+    {
+     "name": "Complete job",
+     "conclusion": "success",
+     "started_at": "2026-10-05T20:55:46Z",
+     "completed_at": "2026-10-05T20:55:46Z"
+    }
+   ]
+  },
+  {
+   "name": "suite-b",
+   "status": "completed",
+   "conclusion": "success",
+   "created_at": "2026-10-05T21:09:34Z",
+   "started_at": "2026-10-05T20:54:45Z",
+   "completed_at": "2026-10-05T20:58:08Z",
+   "runner_name": "GitHub Actions 1000107323",
+   "steps": [
+    {
+     "name": "Set up job",
+     "conclusion": "success",
+     "started_at": "2026-10-05T20:54:46Z",
+     "completed_at": "2026-10-05T20:54:46Z"
+    },
+    {
+     "name": "Check out the repository",
+     "conclusion": "success",
+     "started_at": "2026-10-05T20:54:46Z",
+     "completed_at": "2026-10-05T20:55:14Z"
+    },
+    {
+     "name": "Install uv and Python 3.14",
+     "conclusion": "success",
+     "started_at": "2026-10-05T20:55:14Z",
+     "completed_at": "2026-10-05T20:55:18Z"
+    },
+    {
+     "name": "Synchronize the locked development environment",
+     "conclusion": "success",
+     "started_at": "2026-10-05T20:55:18Z",
+     "completed_at": "2026-10-05T20:55:20Z"
+    },
+    {
+     "name": "Run required pull-request behavioral shard B",
+     "conclusion": "success",
+     "started_at": "2026-10-05T20:55:20Z",
+     "completed_at": "2026-10-05T20:58:05Z"
+    },
+    {
+     "name": "Preserve validation timings and partial logs",
+     "conclusion": "success",
+     "started_at": "2026-10-05T20:58:05Z",
+     "completed_at": "2026-10-05T20:58:06Z"
+    },
+    {
+     "name": "Post Install uv and Python 3.14",
+     "conclusion": "success",
+     "started_at": "2026-10-05T20:58:06Z",
+     "completed_at": "2026-10-05T20:58:06Z"
+    },
+    {
+     "name": "Post Check out the repository",
+     "conclusion": "success",
+     "started_at": "2026-10-05T20:58:06Z",
+     "completed_at": "2026-10-05T20:58:06Z"
+    },
+    {
+     "name": "Complete job",
+     "conclusion": "success",
+     "started_at": "2026-10-05T20:58:06Z",
+     "completed_at": "2026-10-05T20:58:07Z"
+    }
+   ]
+  },
+  {
+   "name": "deferred-threshold-1440",
+   "status": "completed",
+   "conclusion": "skipped",
+   "created_at": "2026-10-05T21:09:34Z",
+   "started_at": "2026-10-05T21:09:34Z",
+   "completed_at": "2026-10-05T20:46:21Z",
+   "runner_name": null,
+   "steps": []
+  },
+  {
+   "name": "sweeps",
+   "status": "completed",
+   "conclusion": "success",
+   "created_at": "2026-10-05T21:09:34Z",
+   "started_at": "2026-10-05T20:54:27Z",
+   "completed_at": "2026-10-05T20:56:14Z",
+   "runner_name": "GitHub Actions 1000107326",
+   "steps": [
+    {
+     "name": "Set up job",
+     "conclusion": "success",
+     "started_at": "2026-10-05T20:54:27Z",
+     "completed_at": "2026-10-05T20:54:28Z"
+    },
+    {
+     "name": "Check out the repository",
+     "conclusion": "success",
+     "started_at": "2026-10-05T20:54:28Z",
+     "completed_at": "2026-10-05T20:54:40Z"
+    },
+    {
+     "name": "Install uv and Python 3.14",
+     "conclusion": "success",
+     "started_at": "2026-10-05T20:54:40Z",
+     "completed_at": "2026-10-05T20:54:43Z"
+    },
+    {
+     "name": "Synchronize the locked development environment",
+     "conclusion": "success",
+     "started_at": "2026-10-05T20:54:43Z",
+     "completed_at": "2026-10-05T20:54:45Z"
+    },
+    {
+     "name": "Run the required pull-request record sweeps",
+     "conclusion": "success",
+     "started_at": "2026-10-05T20:54:45Z",
+     "completed_at": "2026-10-05T20:56:12Z"
+    },
+    {
+     "name": "Preserve validation timings and partial logs",
+     "conclusion": "success",
+     "started_at": "2026-10-05T20:56:12Z",
+     "completed_at": "2026-10-05T20:56:12Z"
+    },
+    {
+     "name": "Post Install uv and Python 3.14",
+     "conclusion": "success",
+     "started_at": "2026-10-05T20:56:12Z",
+     "completed_at": "2026-10-05T20:56:12Z"
+    },
+    {
+     "name": "Post Check out the repository",
+     "conclusion": "success",
+     "started_at": "2026-10-05T20:56:12Z",
+     "completed_at": "2026-10-05T20:56:13Z"
+    },
+    {
+     "name": "Complete job",
+     "conclusion": "success",
+     "started_at": "2026-10-05T20:56:13Z",
+     "completed_at": "2026-10-05T20:56:13Z"
+    }
+   ]
+  },
+  {
+   "name": "packing-required",
+   "status": "completed",
+   "conclusion": "failure",
+   "created_at": "2026-10-05T21:22:37Z",
+   "started_at": "2026-10-05T21:22:50Z",
+   "completed_at": "2026-10-05T21:23:02Z",
+   "runner_name": "GitHub Actions 1000107486",
+   "steps": [
+    {
+     "name": "Set up job",
+     "conclusion": "success",
+     "started_at": "2026-10-05T21:22:51Z",
+     "completed_at": "2026-10-05T21:22:52Z"
+    },
+    {
+     "name": "Require every pull-request prerequisite",
+     "conclusion": "success",
+     "started_at": "2026-10-05T21:22:52Z",
+     "completed_at": "2026-10-05T21:22:53Z"
+    },
+    {
+     "name": "Check out the wall budget and its register",
+     "conclusion": "success",
+     "started_at": "2026-10-05T21:22:53Z",
+     "completed_at": "2026-10-05T21:22:55Z"
+    },
+    {
+     "name": "Install uv and Python 3.14",
+     "conclusion": "success",
+     "started_at": "2026-10-05T21:22:55Z",
+     "completed_at": "2026-10-05T21:22:56Z"
+    },
+    {
+     "name": "Hold the pull request's wall to its budget",
+     "conclusion": "failure",
+     "started_at": "2026-10-05T21:22:56Z",
+     "completed_at": "2026-10-05T21:23:00Z"
+    },
+    {
+     "name": "Post Install uv and Python 3.14",
+     "conclusion": "skipped",
+     "started_at": "2026-10-05T21:23:00Z",
+     "completed_at": "2026-10-05T21:23:00Z"
+    },
+    {
+     "name": "Post Check out the wall budget and its register",
+     "conclusion": "success",
+     "started_at": "2026-10-05T21:23:00Z",
+     "completed_at": "2026-10-05T21:23:00Z"
+    },
+    {
+     "name": "Complete job",
+     "conclusion": "success",
+     "started_at": "2026-10-05T21:23:00Z",
+     "completed_at": "2026-10-05T21:23:00Z"
+    }
+   ]
+  },
+  {
+   "name": "post-merge-required",
+   "status": "completed",
+   "conclusion": "skipped",
+   "created_at": "2026-10-05T21:22:37Z",
+   "started_at": "2026-10-05T21:22:37Z",
+   "completed_at": "2026-10-05T21:22:37Z",
+   "runner_name": null,
+   "steps": []
+  }
+ ]
+}

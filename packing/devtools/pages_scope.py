@@ -91,6 +91,9 @@ _HALF_GATE = re.compile(r"needs\.scope\.outputs\.(\w+)\s*==\s*'true'")
 _NOT_ON_PULL_REQUESTS = re.compile(
     r"github\.event_name\s*(?:!=\s*'pull_request'|==\s*'workflow_dispatch')"
 )
+#: The status functions that let a job run past a skipped need: `always()`, and the
+#: `!cancelled()` the required aggregators use so a superseded run reports nothing.
+_RUNS_PAST_A_SKIP = re.compile(r"always\(\)|!\s*cancelled\(\)")
 
 
 def half_name(slug: str) -> str:
@@ -150,6 +153,11 @@ def pull_request_jobs(workflow: Mapping[str, Any]) -> set[str]:
     Only these contribute tools to a half's inputs. `verify-deployment` runs
     `check_published_site`, which imports the PDF exporter; counting it would put every
     explainer tool into the workbench's scope for a job no pull request ever starts.
+
+    A job that needs one of those is left out too, unless its status function runs it past
+    the skip and its condition does not ask for that need's success: `pages-required`
+    runs on every pull request under `!cancelled()`, while `verify-deployment`'s
+    `!cancelled() && needs.deploy.result == 'success'` never does.
     """
     jobs: Mapping[str, Mapping[str, Any]] = workflow["jobs"]
     excluded = {
@@ -162,11 +170,11 @@ def pull_request_jobs(workflow: Mapping[str, Any]) -> set[str]:
         grew = False
         for name, job in jobs.items():
             condition = str(job.get("if", ""))
-            if (
-                name not in excluded
-                and "always()" not in condition
-                and any(need in excluded for need in needs_of(job))
-            ):
+            skipped = [need for need in needs_of(job) if need in excluded]
+            runs_anyway = _RUNS_PAST_A_SKIP.search(condition) is not None and not any(
+                f"needs.{need}.result == 'success'" in condition for need in skipped
+            )
+            if name not in excluded and skipped and not runs_anyway:
                 excluded.add(name)
                 grew = True
     return set(jobs) - excluded

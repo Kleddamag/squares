@@ -31,7 +31,7 @@ here. What the record makes of the claim is in
 | Revision | [`25f645e8fcadb3c2768f4da42d80e977fb1a508d`](https://github.com/squarepacker/k2-minus-c/tree/25f645e8fcadb3c2768f4da42d80e977fb1a508d), `main` when fetched, tree `d384face` |
 | Committed | 2026-10-05T15:15:50Z (`2026-10-06T00:15:50+09:00` by the author’s clock). Seven commits in all. The first, `987c8068` at 14:00:55Z, adds the preprint, every program and the data |
 | Versions | Tag `v1.0` is `0eb29d44` (released 14:07Z). Tag `v1.1` is `525da4e3` (released 15:10Z). The pin is `v1.1` plus the DOI line in `README.md`. Version 1.1 adds `code/coverage_independent/` and one sentence in the proof of Lemma 4.10, and changes the preprint’s date line. The README says “The mathematics is unchanged”, and the diff of `paper/paper.tex` bears that out |
-| Archive | Zenodo, as the source’s `README.md` gives it: [10.5281/zenodo.23165736](https://doi.org/10.5281/zenodo.23165736) for `v1.1` and [10.5281/zenodo.23164302](https://doi.org/10.5281/zenodo.23164302) for `v1.0`, which the issue cites; the concept DOI is `10.5281/zenodo.23164301`. Zenodo was not reachable from this session (the proxy refused the connection), so neither record was read |
+| Archive | Zenodo, as the source’s `README.md` gives it: [10.5281/zenodo.23165736](https://doi.org/10.5281/zenodo.23165736) for `v1.1` and [10.5281/zenodo.23164302](https://doi.org/10.5281/zenodo.23164302) for `v1.0`, which the issue cites; the concept DOI is `10.5281/zenodo.23164301`, and the preprint alone is [10.5281/zenodo.23165916](https://doi.org/10.5281/zenodo.23165916). The session that made this packet could not reach Zenodo; the three records were read from 22:54Z the same day, [below](#the-zenodo-records) |
 | Retrieved | 2026-10-05T17:10Z, a complete clone; tags at 17:15Z |
 | Licence | MIT for `code/` and `data/` (`LICENSE`, copyright Sungjoon Ryu). CC BY 4.0 for `paper/paper.tex` and `paper/paper.pdf` (`paper/LICENSE`) |
 | Request | [jlevy/squares#368](https://github.com/jlevy/squares/issues/368) |
@@ -73,6 +73,76 @@ and itself, as its README says.
 From `packing/`,
 `uv run --frozen --all-extras --group dev python -m devtools.acquire_source squarepacker-k2-minus-c-2026-10-05 --check`
 re-derives the packet from its manifest.
+
+## The Zenodo Records
+
+Zenodo was read from 2026-10-05T22:54Z, after the environment’s egress policy was widened
+(bead `think-cdzc`), by
+[`devtools.capture_web_source`](../../../devtools/capture_web_source.py) `zenodo`.
+For each record it kept the record and its files listing as Zenodo served them, checked
+each deposited file’s size and MD5 against the record, and compared each archive’s
+members with the trees named below.
+The archives themselves are not retained: they are pinned by digest here and the DOIs
+serve them.
+Everything is under [`zenodo/`](zenodo/).
+
+| Record | Version, created | Deposited file | Bytes | MD5, as stated and as computed | SHA-256 |
+| --- | --- | --- | ---: | --- | --- |
+| [23164302](https://doi.org/10.5281/zenodo.23164302), the DOI #368 cites | 1.0, 2026-10-05T14:07:11Z | `squarepacker/k2-minus-c-v1.0.zip` | 1,083,690 | `8fab14ded131e118a8d0f78f26bd8598` | `d65623cf799b1615a76f52e376aceb929b926ce2a1b7045e7c84e8680e297bfa` |
+| [23165736](https://doi.org/10.5281/zenodo.23165736) | 1.1, 2026-10-05T15:10:45Z | `squarepacker/k2-minus-c-v1.1.zip` | 1,130,274 | `6d2d1b0633a8e35f26b8de514addd3ba` | `c9d3f6de5ff7693a3f6f69a07bf753e16c91462ff662191bd29139a3547a40d6` |
+| [23165916](https://doi.org/10.5281/zenodo.23165916), the preprint, CC BY 4.0 | none, 2026-10-05T15:24:25Z | `paper.pdf` | 556,058 | `d83b37b0f77b19dceb9f73a4c41cb858` | `71c4d6b627cf7674b3557d433a0613fb3be502d2b5e41072ed470f50891041bf` |
+
+The concept DOI `10.5281/zenodo.23164301` resolves to version 1.1, and Zenodo lists no
+third version. Version 1.1 names record 23165916 as its preprint.
+
+**What each record holds.**
+
+- **Version 1.0 is tag `v1.0`, `0eb29d44`, byte for byte.** Its archive is GitHub’s
+  release archive of that commit: 55 files under one directory
+  `squarepacker-k2-minus-c-0eb29d4`, each equal to the tag’s
+  ([`zenodo-23164302.sha256`](zenodo/zenodo-23164302.sha256),
+  [receipt](zenodo/zenodo-23164302-receipt.json)).
+- **Against this packet’s pin, version 1.0 differs in six files and lacks 23.** It lacks
+  `code/coverage_independent/`, the two independent coverage checks. It differs in
+  `paper/paper.pdf`, `paper/paper.tex`, `README.md`, `reviews/REVIEWS.md`,
+  `.zenodo.json` and `SHA256SUMS`. The other 49 files are the same: `data/kw9_data.zip`,
+  the certificate, and every program the replay above ran except the two of
+  `code/coverage_independent/`. So the certificate the replay re-verified is the one
+  version 1.0 deposits, and so is the checker that re-verified it.
+- **The two papers differ in two places, and the mathematics does not.** In
+  `paper.tex` the date line gains “version 1.1”. In the proof of Lemma 4.10, version
+  1.0’s “The computation has not been reproduced by an independent implementation” is
+  replaced by a sentence saying the coverage was confirmed by two independent checks and
+  the Arb re-verification of the boxes has not yet been reproduced. Both PDFs have 25
+  pages; their extracted text differs in those two places and in the reflow of page 16.
+  The version 1.0 PDF is retained as
+  [`zenodo/zenodo-23164302/paper/paper.pdf`](zenodo/zenodo-23164302/paper/paper.pdf),
+  555,663 bytes, SHA-256
+  `da00630c891919e5fdc6e6065da83c8ac638eb07d8cfe4e74e43c11f129d9789`, under the paper’s CC
+  BY 4.0 licence. `reviews/REVIEWS.md` gains the row for the blank-slate review of
+  “v10”, and `README.md` its version 1.1 notes.
+- **Version 1.1 is tag `v1.1`, `525da4e3`, byte for byte,** 78 files. Against this
+  packet’s pin it differs only in `README.md`, by the DOI line the pin adds
+  ([`zenodo-23165736.sha256`](zenodo/zenodo-23165736.sha256),
+  [receipt](zenodo/zenodo-23165736-receipt.json)).
+- **Record 23165916’s `paper.pdf` is this packet’s `paper/paper.pdf`,** the version 1.1
+  preprint, byte for byte ([receipt](zenodo/zenodo-23165916-receipt.json)).
+
+From `packing/`, with `V10` and `V11` checkouts of the two tags, the records are read
+again with:
+
+```bash
+P=resources/web/squarepacker-k2-minus-c-2026-10-05
+uv run --frozen --all-extras --group dev python -m devtools.capture_web_source zenodo 23164302 \
+  --out $P/zenodo --extract paper/paper.pdf --compare-manifest $P/acquisition/upstream-subtree.sha256 \
+  --compare-dir "squarepacker/k2-minus-c tag v1.0, 0eb29d4468dd1ed6c8a06841d4d6f0fd83945e0f=V10"
+uv run --frozen --all-extras --group dev python -m devtools.capture_web_source zenodo 23165736 \
+  --out $P/zenodo --compare-manifest $P/acquisition/upstream-subtree.sha256 \
+  --compare-dir "squarepacker/k2-minus-c tag v1.1, 525da4e301cb8dd86778fba944de461a82877a6e=V11"
+uv run --frozen --all-extras --group dev python -m devtools.capture_web_source zenodo 23165916 \
+  --out $P/zenodo --compare-manifest $P/acquisition/upstream-subtree.sha256 \
+  --compare-manifest $P/zenodo/zenodo-23164302.sha256
+```
 
 ## The Replay of Lemma 4.10
 

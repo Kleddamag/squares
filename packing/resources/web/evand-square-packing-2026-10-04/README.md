@@ -31,11 +31,24 @@ explains how each claim is mapped.
 | Licence | MIT, `LICENSE` and `s12/LICENSE`. The root `README.md` says that `site/www/data/` is derived from David Ellsworth’s SVG catalogue, quotes his attribution text, and is not covered by the MIT licence |
 | Request | The owner’s request of 5 October 2026; bead `think-plrl`, and `think-kqc3` for the homepage link |
 
-**The deployed pages were not fetched.**
-This session’s egress policy blocks `evand.github.io`.
-The pages retained here are the files the Pages workflow copies from this commit.
-The workflow runs on every push to `main` that touches `site/www/`, and this commit
-does.
+**The deployed pages are this commit’s files.**
+The session that made this packet could not reach `evand.github.io`, so it retained the
+files the Pages workflow copies from this commit; the workflow runs on every push to
+`main` that touches `site/www/`, and this commit does.
+On 2026-10-05 at 22:56Z, after the egress policy was widened (bead `think-cdzc`),
+[`devtools.capture_web_source`](../../../devtools/capture_web_source.py) `pages` fetched
+the deployed site as [`acquisition/deployed-site.json`](acquisition/deployed-site.json)
+declares it: the eight pages, the stylesheet, the six scripts, the six data files, the
+seven write-ups and the six covers the workflow copies, and the three parse files under
+`data/p/` that this record’s witnesses at $n = 69, 83$ and $87$ were read from.
+All 37 answered 200 and each is byte-identical to its source file at this commit; the 28
+this packet’s manifest covers match it too
+([receipt](receipts/deployed-site-2026-10-05.json)).
+Every page is served with `Last-Modified: Sun, 04 Oct 2026 20:18:03 GMT`, 25 s after
+this commit, and the two later commits, `ab2bf47` and `13ee36e`, change nothing the
+workflow copies, so no build has replaced this one.
+The three parse files are the bytes each witness names in `source.revision_sha256`.
+So the pages the review of 5 October read are the pages the site served.
 
 **Credit and AI assistance.** `s12/CREDITS.md` has not changed since the October 3
 packet.

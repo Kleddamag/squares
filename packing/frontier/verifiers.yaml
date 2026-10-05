@@ -45,7 +45,8 @@ verifiers:
     methods: [interval-certified]
     role: decides
     summary: >-
-      Decides a mixed point-and-rectangle certificate at each of the 201 net directions,
+      Decides a mixed point-and-rectangle certificate at each direction of the
+      certificate's net, 201 on the standard net or the 416 that mixed_n18_L470 declares,
       returning the direction's own record of cells and lower bound.
     source:
       - packing/resources/web/wand125-point-and-mixed-2026-09-28/square-packing-bounds/certificates/mixed_n50_L740/code/mixed_rotated_verify.cpp

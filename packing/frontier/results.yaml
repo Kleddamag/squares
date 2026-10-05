@@ -8608,7 +8608,8 @@ results:
 
       Here the source was retained and its exact premises, those of the declared net among
       them, were recomputed from the retained bytes, and the source's shipped runs were
-      bound record by record to the declared net. None of it decides coverage. This
+      bound record by record to the declared net. The 5 October review of the certificate
+      and the declared net found no defect in either. None of it decides coverage. This
       repository's clean-room verifier sqverify-fast, extended to read a declared net,
       decided all 416 directions here, but it is not yet a registered verifier and no rung
       rests on it. The value stands as reported, and the verified lower bound is unchanged.
@@ -8619,7 +8620,7 @@ results:
       were produced with AI assistance under human direction.
     scope: {n_values: [18]}
     verification: V0
-    confirmation: C0
+    confirmation: C1
     significance:
       score: 3
       rationale: >-
@@ -8635,31 +8636,46 @@ results:
       source_keys: ['[wand125 mixed bounds finer net 2026-10-05]']
       published: '2026-10-05'
     composition: >-
-      One primary certificate on one reported entry, at V0/C0: retained and audited for its
-      exact premises, not reviewed and not replayed. Coverage is decided by the source's C++
+      One primary certificate on one reported entry, at V0/C1: retained, audited for its
+      exact premises and reviewed, not replayed. Coverage is decided by the source's C++
       checker alone, byte for byte the checker the 28 September and 2, 3 and 5 October
       reviews read; the axis tables are a second implementation for one direction and not a
       second method.
     evidence:
       - E-n018-wand125-mixed-470-report
+    reviews:
+      - path: docs/project/reviews/review-2026-10-05-wand125-declared-net-n18-n66.md
+        kind: adversarial
+        reviewer: AI agent, the review lane of the 2026-10-05 evening intake's lane B (T-096, T-097 and the sqverify-fast declared net), separately prompted, sharing no context with the lane that retained and registered the results, changed the verifier and is replaying the certificates, after registration and before any complete replay; model claude-opus-5-5 (tbd-strong tier)
+        reviewer_kind: ai
+        relation: project
+        date: '2026-10-05'
+        scope: >-
+          wand125's mixed_n18_L470 (s(18) >= 47/10, on the net its candidate declares, core 999/1000 and 416 half-angle tangents of step 1/1001) and mixed_n66_L843 (s(66) >= 843/100, on the standard net), pinned at 43050edc, and sqverify-fast's declared-net change of f007d7afd: the argument from certificate to bound with the declared net re-derived in exact arithmetic, lemma N0 and the admission of a declared net, the tests and controls, the source's runs on the declared net, every number in the records, the first-party audit tools and the check_standing change, and what a sqverify-fast pass supports; before any complete replay.
+        verdict: accepted
+        covers: [T-096, T-097]
     artifacts:
       - packing/resources/web/wand125-mixed-bounds-finer-net-2026-10-05/README.md
       - packing/resources/web/wand125-mixed-bounds-finer-net-2026-10-05/receipts/n18-L470/audit.json
       - packing/resources/web/wand125-mixed-bounds-finer-net-2026-10-05/receipts/n18-L470/bundle.json
       - packing/devtools/audit_wand125_declared_net.py
       - packing/sqverify_fast/SOUNDNESS.md
+      - packing/benchmarks/measure-verifier/census-mixed/wand125-mixed-bounds-finer-net-2026-10-05/mixed_n18_L470.jsonl.gz
+      - docs/project/reviews/review-2026-10-05-wand125-declared-net-n18-n66.md
     next_rung: >-
-      A review of the certificate and of the declared net it rests on, as the 5 October
-      reviews read T-090 and T-091, and the complete replay of the bundle's own driver, about 2.7 CPU-hours by the source's own
-      oblique seconds, compared record by record with the shipped run by
-      devtools.audit_wand125_declared_net compare; the verified lower bound at n = 18 moves
-      when the replay returns the certificate's own record at all 416 directions and the
-      review finds no blocking defect.
+      The complete replay of the bundle's own driver, about 2.7 CPU-hours by the source's
+      own oblique seconds, compared record by record with the shipped run by
+      devtools.audit_wand125_declared_net compare as fixed for the review's finding DN-1
+      (it must check that the run happened and compare the rewritten certificate field by
+      field); the verified lower bound at n = 18 moves when the replay returns the
+      certificate's own record at all 416 directions.
     notes: >-
       V0 because the cited entry is the source's claim: assurance reported, replay not yet
-      complete. C0 because nothing here has yet read the certificate's mathematics: the
-      exact audit and the bundle binding decide no direction. A later revision than
-      T-094's, and its own issue, so its own entry. The proof-bundle tarball is pinned by
+      complete. C1 because the 5 October review of the certificate, the declared net and
+      lemma N0 is recorded as the report entry's external_review, with no defect in the
+      certificate; its one blocking finding, DN-1, is in this repository's comparison tool
+      and blocks only the exit. The exact audit and the bundle binding decide no
+      direction. A later revision than T-094's, and its own issue, so its own entry. The proof-bundle tarball is pinned by
       digest and not retained. Ids here are provisional until merged.
     activity:
       state: in-analysis
@@ -8689,8 +8705,8 @@ results:
 
       Here the source was retained, its exact premises were recomputed from the retained
       bytes, and the replay's checks before its first angle were run on the pinned tarball.
-      None of it decides coverage. This repository's clean-room verifier sqverify-fast
-      decided all 201 directions here, but it is not yet a registered verifier and no rung
+      The 5 October review of the certificate found no defect. None of it decides coverage.
+      This repository's clean-room verifier sqverify-fast decided all 201 directions here, but it is not yet a registered verifier and no rung
       rests on it. The value stands as reported, and the verified lower bound is unchanged.
 
       wand125 after Tokoharu and Levy,
@@ -8699,7 +8715,7 @@ results:
       source says parts of the work were produced with AI assistance under human direction.
     scope: {n_values: [66]}
     verification: V0
-    confirmation: C0
+    confirmation: C1
     significance:
       score: 3
       rationale: >-
@@ -8714,27 +8730,39 @@ results:
       source_keys: ['[wand125 mixed bounds finer net 2026-10-05]']
       published: '2026-10-05'
     composition: >-
-      One primary certificate on one reported entry, at V0/C0: retained and audited for its
-      exact premises, not reviewed and not replayed. Coverage is decided by the source's C++
+      One primary certificate on one reported entry, at V0/C1: retained, audited for its
+      exact premises and reviewed, not replayed. Coverage is decided by the source's C++
       checker alone, byte for byte the checker the 28 September and 2, 3 and 5 October
       reviews read; the axis tables are a second implementation for one direction and not a
       second method.
     evidence:
       - E-n066-wand125-mixed-843-report
+    reviews:
+      - path: docs/project/reviews/review-2026-10-05-wand125-declared-net-n18-n66.md
+        kind: adversarial
+        reviewer: AI agent, the review lane of the 2026-10-05 evening intake's lane B (T-096, T-097 and the sqverify-fast declared net), separately prompted, sharing no context with the lane that retained and registered the results, changed the verifier and is replaying the certificates, after registration and before any complete replay; model claude-opus-5-5 (tbd-strong tier)
+        reviewer_kind: ai
+        relation: project
+        date: '2026-10-05'
+        scope: >-
+          wand125's mixed_n18_L470 (s(18) >= 47/10, on the net its candidate declares, core 999/1000 and 416 half-angle tangents of step 1/1001) and mixed_n66_L843 (s(66) >= 843/100, on the standard net), pinned at 43050edc, and sqverify-fast's declared-net change of f007d7afd: the argument from certificate to bound with the declared net re-derived in exact arithmetic, lemma N0 and the admission of a declared net, the tests and controls, the source's runs on the declared net, every number in the records, the first-party audit tools and the check_standing change, and what a sqverify-fast pass supports; before any complete replay.
+        verdict: accepted
+        covers: [T-096, T-097]
     artifacts:
       - packing/resources/web/wand125-mixed-bounds-finer-net-2026-10-05/README.md
       - packing/resources/web/wand125-mixed-bounds-finer-net-2026-10-05/receipts/mixed-audit.json
       - packing/resources/web/wand125-mixed-bounds-finer-net-2026-10-05/receipts/n66-L843/fetch.json
       - packing/devtools/audit_wand125_point_and_mixed.py
+      - packing/benchmarks/measure-verifier/census-mixed/wand125-mixed-bounds-finer-net-2026-10-05/mixed_n66_L843.jsonl.gz
+      - docs/project/reviews/review-2026-10-05-wand125-declared-net-n18-n66.md
     next_rung: >-
-      A review of the certificate, as the 5 October reviews read T-090 and T-091, for C1;
-      and the complete replay, about 15.5 CPU-hours planned (16.2 by the source's own
+      The complete replay, about 15.5 CPU-hours planned (16.2 by the source's own
       oblique seconds), with devtools.audit_wand125_point_and_mixed mixed-replay n66-L843
       over ranges and mixed-merge, before the verified lower bound at n = 66 moves; it
       moves when the replay returns the certificate's own record at all 201 directions.
     notes: >-
-      V0 because the cited entry is the source's claim: assurance reported, replay not
-      attempted. C0 because nothing here has yet read the certificate's mathematics: the
-      exact audit and the pre-replay checks decide no direction. A later revision than
-      T-094's, so its own entry. The proof-bundle tarball is pinned by digest and not
+      V0 because the cited entry is the source's claim: assurance reported, no complete
+      replay. C1 because the 5 October review of the certificate is recorded as the report
+      entry's external_review, with no defect. The exact audit and the pre-replay checks
+      decide no direction. A later revision than T-094's, so its own entry. The proof-bundle tarball is pinned by digest and not
       retained. Ids here are provisional until merged.

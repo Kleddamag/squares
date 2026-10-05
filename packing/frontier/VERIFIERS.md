@@ -145,7 +145,7 @@ Decides a rectangle-density covering certificate over every net direction by out
 
 **mixed_rotated_verify.cpp, with the source's per-angle replay functions** · wand125 · external · decides · C++, Python · interval-certified
 
-Decides a mixed point-and-rectangle certificate at each of the 201 net directions, returning the direction's own record of cells and lower bound.
+Decides a mixed point-and-rectangle certificate at each direction of the certificate's net, 201 on the standard net or the 416 that mixed_n18_L470 declares, returning the direction's own record of cells and lower bound.
 
 - Source: [`packing/resources/web/wand125-point-and-mixed-2026-09-28/square-packing-bounds/certificates/mixed_n50_L740/code/mixed_rotated_verify.cpp`](../../packing/resources/web/wand125-point-and-mixed-2026-09-28/square-packing-bounds/certificates/mixed_n50_L740/code/mixed_rotated_verify.cpp)
 - Versions run: SHA-256 `89b674a6feab…`; revision `7975030a` (the n = 76 bundle's tarball, fetched by Git and pinned by its own SHA-256)

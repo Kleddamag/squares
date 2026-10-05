@@ -15275,6 +15275,19 @@ evidence:
       digest from the retained bytes, and its mixed-fetch checked the pinned tarball,
       its 621 listed files, the driver's preconditions and that all 200 oblique inputs
       enclose the exact candidate; none of it decides coverage.
+    external_review:
+      state: informally-verified
+      date: '2026-10-05'
+      reviewed_by: >-
+        AI agent, the review lane of the 2026-10-05 evening intake's lane B, separately prompted, model claude-opus-5-5 (tbd-strong tier)
+        (docs/project/reviews/review-2026-10-05-wand125-declared-net-n18-n66.md)
+      note: >-
+        No defect. The certificate is of T-069's kind on the standard net, checked by the
+        same checker byte for byte; every exact premise readable from the retained files
+        holds, the candidate digest is reproduced here, and the side exceeds T-069's 421/50 by
+        1/100 and Green's and Nagamochi's values in exact arithmetic. The 200 oblique
+        coverage statements and the axis tables are the source's until the complete replay
+        here passes.
     source_reviewed: '2026-10-05'
   - id: E-n018-wand125-mixed-470-report
     claim: lower-bound
@@ -15315,9 +15328,23 @@ evidence:
       this repository's sqverify-fast changed to read the declared net; neither was
       checked here. Here devtools.audit_wand125_declared_net audit
       (receipts/n18-L470/audit.json in the packet) recomputes the mass, lemma N0's
-      premises on the declared net, the net blocks the manifest and certificate state
-      and the candidate digest from the retained bytes, and its bundle check binds the
-      pinned tarball's 1,266 listed files to the packet and every shipped record and
-      input to the declared net's tangent, per-bin domain and threshold; none of it
-      decides coverage.
+      premises on the declared net and the net blocks the manifest and certificate state
+      from the retained bytes, and checks that one candidate digest is stated throughout
+      (the 5 October review recomputed it by the source's rule); its bundle check binds
+      the pinned tarball's 1,266 listed files to the packet, every shipped record and
+      input header to the declared net's tangent, per-bin domain and threshold, and every
+      input's rectangle lines to the expanded candidate; none of it decides coverage.
+    external_review:
+      state: informally-verified
+      date: '2026-10-05'
+      reviewed_by: >-
+        AI agent, the review lane of the 2026-10-05 evening intake's lane B, separately prompted, model claude-opus-5-5 (tbd-strong tier)
+        (docs/project/reviews/review-2026-10-05-wand125-declared-net-n18-n66.md)
+      note: >-
+        No defect in the certificate. The declared net's premises hold in exact arithmetic
+        (B (1 + 1/1001) = 500499/500500 < 1, t_415^2 + 2 t_415 - 1 = 1054/1002001 > 0, the
+        per-bin domain at half-step 1/2002 at all 416 nodes), as do the mass, rows and digest,
+        and lemma N0 is correct. The 415 oblique coverage statements and the axis tables are
+        the source's until the replay here passes; the comparison tool for it must be fixed
+        first (finding DN-1, blocking for the exit).
     source_reviewed: '2026-10-05'

@@ -887,6 +887,7 @@ these rows as BC-406 to BC-411.
 | 281 | Isolated sub-pattern exclusion leaves at most 10^4 orbits on the minimal cover | registered | [H-267](hypotheses/H-267-n17-isolated-sub-pattern-residue.md) | n11’s field certificates excluded 1,904 of 2,180 cases by containment; an exploratory arity-five proxy leaves 11,939 orbits on the 24-cell design. |
 | 282 | Square 6’s cover cell bounds the slides of squares 5 and 13 inside the box the local theorem certifies | registered | [H-268](hypotheses/H-268-n17-local-theorem-slider-coverage.md) | exp-244 certifies H-261 on a declared slider box; with square 6 dropped the physical slides exceed it, so capture must supply the bound. |
 | 283 | Every one-cell move from the n17 endpoint that the arity-8 flags leave is infeasible at the cap | registered | [H-273](hypotheses/H-273-n17-distance-two-infeasible-at-cap.md) | Session 182’s lane E: the float survey of all 95 distance-2 orbits refutes the claim with one placement and cannot confirm it; a placement makes the near-endpoint stage non-empty. |
+| 284 | n17 residue states that stall at 32 uniform bins close under adaptive rows | registered | [H-274](hypotheses/H-274-n17-per-state-closure-under-adaptive-rows.md) | Lane D found the distance-4 per-state stalls share a north-wall knot whose margins sit between the uniform rows’ losses and a 1/512 collision cut. |
 
 ## Dead ends
 

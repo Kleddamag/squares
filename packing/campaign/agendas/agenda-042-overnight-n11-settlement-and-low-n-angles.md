@@ -1745,6 +1745,48 @@ agenda:
       the hull side of a cut may still need the rows. Target 2 projects 2,917 orbits and
       the arity-at-most-7 residue stands at 10,173, so a closure would bear on H-267's
       threshold; any verdict change gets a W2 review. Evidence record exp-251.
+  - id: BC-424
+    purpose: research
+    owner_focus: correctness
+    instances:
+    - 17
+    state: ready
+    priority: 1
+    question: >-
+      Do at least two of the four counted lane A stalls (masks 2817021, 3063677, 2878207
+      and 2784767) close under SW9's frozen adaptive-row recipe?
+    hypotheses:
+    - H-274
+    budget: >-
+      Five runs of at most 7,000 s (the endpoint-state control, then the four states in
+      mask order) and a verification of at most 4,000 s per closure, in the slots lane A
+      frees when its draws are done.
+    entry: >-
+      H-274 registered with the frozen list before its first run, and lane A's remaining
+      draws finished; after BC-423 and lane E in the freed-slot order.
+    exit: >-
+      All four states run once, each closure re-proved by the standing verifier in full
+      and admitted (each removes its own orbit), and the verdict read; or a soundness
+      alarm (the endpoint-state control closes).
+    bead: think-z8an
+    depends_on:
+    - BC-415
+    next_evidence: packing/campaign/agent-sessions/session-182-n17-overnight-lanes.md
+    workflows:
+    - research-loop
+    program: post-optimality-low-n
+    parallel_group: n17-overnight-182
+    artifacts:
+    - packing/campaign/hypotheses/H-274-n17-per-state-closure-under-adaptive-rows.md
+    note: >-
+      Under BC-418, a future slice added at a check-in; H-264 keeps running to its own
+      verdict on N1's recipe. Recipe: --bins 64 --max-rounds 24 --hull-limit 16
+      --producer-share 0.6 --split-floor 512 --max-rows 1152 --split-patience 1
+      --max-seconds 7000, from the clean run worktree at cebb5d15a. The list is frozen
+      at this registration: the four counted draws that had stalled by then. The
+      distance-2 draw 1964767 is left out (uncounted, and lane D found it
+      consistency-limited). Mechanism and limits are lane D's stall classification, cited
+      in H-274.
 ---
 # Agenda 042: The n11 Settlement Ladder and Low-n Angles
 
@@ -1863,6 +1905,7 @@ under BC-418, with three cells registered before the first target run.
 | BC-421 / H-273: distance-2 orbits at the cap | Slot 4, one worker | Ten shards of the 95 distance-2 orbits through the float survey; a placement stops the lane for an exact check. |
 | BC-422: OR-12 efficiency block | No compute | Gate walls from the registration’s validation runs; per-row costs from the lanes’ receipts. |
 | BC-423 / H-267: K-k2 with lane D’s settings | Lane K’s freed slot | Added at the 11:27 check-in: 48 rounds, 2,304 rows, octagon core; the endpoint7 control first under the same settings. |
+| BC-424 / H-274: lane A’s stalls under adaptive rows | Lane A’s freed slots, after BC-423 and lane E | The four counted stalls frozen at registration, the endpoint-state control first under SW9’s recipe. |
 
 BC-421 is lane E (H-273, near-endpoint sizing), registered when slot 4 opened.
 

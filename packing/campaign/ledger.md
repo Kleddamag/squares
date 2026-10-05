@@ -900,6 +900,7 @@ Status: **active**. Turn PR 230's W3 review and the two explorations it led to, 
 | BC-421 | research | 17 | in_progress | 1 | think-tmz6 | packing/campaign/agent-sessions/session-182-n17-overnight-lanes.md |
 | BC-422 | tool_validation | 17 | in_progress | 1 | think-9ntw | packing/campaign/agent-sessions/session-182-n17-overnight-lanes.md |
 | BC-423 | research | 17 | in_progress | 0 | think-035m | packing/campaign/agent-sessions/session-182-n17-overnight-lanes.md |
+| BC-424 | research | 17 | ready | 1 | think-z8an | packing/campaign/agent-sessions/session-182-n17-overnight-lanes.md |
 
 ## Series
 
@@ -1118,6 +1119,7 @@ Status: **active**. Turn PR 230's W3 review and the two explorations it led to, 
 | H-270 | blocked | search | For some integer k with 18 <= k <= 41, the strip construction of Kearn | k: 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 | 0 |  |  |
 | H-272 | blocked | search | Of the 68 non-grid known-best records whose witness derives from Kingb |  | 0 |  |  |
 | H-273 | open | proof | Each of the 95 orbits at Hamming distance 2 from the endpoint's state  |  | 0 |  |  |
+| H-274 | open | proof | Of the four counted draws of H-264's seed-182 draw that stalled under  |  | 0 |  |  |
 
 ## Needs review — held for a human, not decided
 

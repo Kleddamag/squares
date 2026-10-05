@@ -2,7 +2,7 @@
 
 # Agenda map
 
-412 agenda commitments across 39 agendas, as declared in each agenda's own frontmatter.
+413 agenda commitments across 39 agendas, as declared in each agenda's own frontmatter.
 Source of truth is [`agendas/`](agendas/); this view is regenerated, never edited.
 
 An agenda's queue owns priority ordering, so this map preserves each agenda's
@@ -10,7 +10,7 @@ order rather than imposing one across them.
 
 ## The short version
 
-- **19** in_progress, **25** ready, **21** tentative, **70** blocked, **65** stopped, **212** complete.
+- **19** in_progress, **26** ready, **21** tentative, **70** blocked, **65** stopped, **212** complete.
 
 - **27 blocked commitments carry a manual condition** (`BC-016`, `BC-025`, `BC-033`, `BC-050`, `BC-115`, `BC-170`, `BC-204`, `BC-205`, `BC-212`, `BC-207`, `BC-208`, `BC-209`, `BC-215`, `BC-217`, `BC-221`, `BC-238`, `BC-248`, `BC-270`, `BC-306`, `BC-337`, `BC-327`, `BC-329`, `BC-330`, `BC-358`, `BC-364`, `BC-365`, `BC-396`). Dependency edges alone cannot make these ready; each condition is named in the table below and must be explicitly cleared.
 
@@ -81,6 +81,7 @@ Commitments a session may take now, in each agenda's declared order.
 | agenda-042 | `BC-416` | in_progress | 1 | correctness | research | Do certified isolated sub-patterns of arity at most seven leave at most 1e4 orbits on the H-266 cover? | `think-1s3i` |
 | agenda-042 | `BC-421` | in_progress | 1 | correctness | research | Does any of the 95 distance-2 orbits of the arity8 frame pack at U, which would make the near-endpoint stage… | `think-tmz6` |
 | agenda-042 | `BC-422` | in_progress | 1 | efficiency | tool_validation | With a W5 block due under OR-12, do packing-validate --edit and --push stay within their 240 s and 1,800 s… | `think-9ntw` |
+| agenda-042 | `BC-424` | ready | 1 | correctness | research | Do at least two of the four counted lane A stalls (masks 2817021, 3063677, 2878207 and 2784767) close under… | `think-z8an` |
 | agenda-042 | `BC-389` | ready | 2 | insight | research | Does a two-class parent-core counting certificate close the rung-1 box at 20 degrees, half-tangent [0.1758,… | `think-nho8` |
 | agenda-042 | `BC-390` | ready | 2 | correctness | research | Does the unchanged rung-0 instrument prove H-236's statement on the half-tangent box of half-width 10^-4… | `think-7c17` |
 | agenda-042 | `BC-395` | ready | 2 | insight | research | Does the rectangle-density ladder from the trivial seed pass Daniel's 3.968616 at n = 12 and reach 399/100? | `think-ujwy` |
@@ -223,7 +224,7 @@ A commitment whose exit another agenda's commitment satisfied. Recorded as an ed
 | agenda-037 | active | 1 |  | 1 | 1 | 1 | 1 | 5 |
 | agenda-040 | active |  | 1 |  | 2 | 1 | 3 | 7 |
 | agenda-041 | active | 4 |  |  |  |  | 2 | 6 |
-| agenda-042 | active | 6 | 9 |  | 2 | 4 | 29 | 50 |
+| agenda-042 | active | 6 | 10 |  | 2 | 4 | 29 | 51 |
 
 ## By program
 
@@ -541,8 +542,9 @@ Open frontier: `BC-306`.
 | agenda-042 | `BC-421` | in_progress | Does any of the 95 distance-2 orbits of the arity8 frame pack at U, which would make the… |
 | agenda-042 | `BC-422` | in_progress | With a W5 block due under OR-12, do packing-validate --edit and --push stay within their 240 s and… |
 | agenda-042 | `BC-423` | in_progress | Does lane K's target 2 (corner-SW, side-N0, side-W0, side-W1, interior-SW, interior-NW, interior-W)… |
+| agenda-042 | `BC-424` | ready | Do at least two of the four counted lane A stalls (masks 2817021, 3063677, 2878207 and 2784767)… |
 
-Open frontier: `BC-416`, `BC-418`, `BC-419`, `BC-420`, `BC-421`, `BC-422`, `BC-423`.
+Open frontier: `BC-416`, `BC-418`, `BC-419`, `BC-420`, `BC-421`, `BC-422`, `BC-423`, `BC-424`.
 
 ### `reach-table-ladder`
 

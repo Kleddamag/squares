@@ -1,0 +1,30 @@
+{
+  "tool": "python -m devtools.probe_valid7_fixes",
+  "interpreter": {
+    "python": "3.14.7",
+    "python_flint": "0.9.0"
+  },
+  "review": "docs/project/reviews/review-2026-10-02-valid7-independent-checker.md",
+  "trees": {
+    "38dd31b369991b0d96c917a4af0c7139b44a038d": "resources/web/wand125-valid7-independent-check-2026-10-02/valid7-independent-check",
+    "da469ecff5da0c71882e894b65d680ce57a0c87e": "resources/web/wand125-valid7-independent-check-2026-10-03/valid7-independent-check"
+  },
+  "answers": {
+    "38dd31b369991b0d96c917a4af0c7139b44a038d": {
+      "d1_nonneg_open_neg_square_at_sample": true,
+      "d2_nonneg_on_review_example": true,
+      "d2_nonneg_on_author_example": true,
+      "control_nonneg_open_square": true,
+      "control_nonneg_on_cap": true,
+      "d3_tier_b2_calls_hash": true
+    },
+    "da469ecff5da0c71882e894b65d680ce57a0c87e": {
+      "d1_nonneg_open_neg_square_at_sample": false,
+      "d2_nonneg_on_review_example": false,
+      "d2_nonneg_on_author_example": false,
+      "control_nonneg_open_square": true,
+      "control_nonneg_on_cap": true,
+      "d3_tier_b2_calls_hash": false
+    }
+  }
+}

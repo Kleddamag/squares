@@ -5659,6 +5659,10 @@ results:
       - packing/devtools/audit_valid7_independent.py
       - packing/resources/web/wand125-valid7-independent-check-2026-10-02/receipts/valid7_replay_plan.json
       - packing/resources/web/wand125-valid7-independent-check-2026-10-02/receipts/replay/wand125_replay_compare.json
+      - packing/resources/web/wand125-valid7-independent-check-2026-10-03/README.md
+      - packing/resources/web/wand125-valid7-independent-check-2026-10-03/receipts/valid7_verify.log
+      - packing/resources/web/wand125-valid7-independent-check-2026-10-03/receipts/valid7_fix_probe.json
+      - packing/devtools/probe_valid7_fixes.py
       - packing/resources/web/evand-square-packing-2026-10-01/receipts/valid7/qx2_replay_compare.json
       - packing/resources/web/evand-square-packing-2026-10-01/receipts/valid7/qx2_replay_plan.json
       - packing/resources/web/evand-square-packing-2026-10-01/receipts/valid7/k2m3_verify_fast.log
@@ -5673,6 +5677,7 @@ results:
     controls:
       - packing/tests/test_plan_valid7_replay.py
       - packing/tests/test_stage_evand_bentz_lean.py
+      - packing/tests/test_probe_valid7_fixes.py
     next_rung: >-
       V4 and C4 need two adversarial AI reviews by distinct reviewers of the claim and a
       human oversight record; the one retained review read the second checker's method and
@@ -5696,6 +5701,10 @@ results:
       here. The source's Lean toward ValidTilt7 (LebMass, LebMass7, ValidSplit7) was
       retained on 5 October 2026 in the evand packet of 4 October (think-plrl); it moves no
       rung.
+
+      wand125 fixed the review's D-1 to D-3 upstream on 3 October; that revision's
+      verify.sh ran here on 5 October on the unchanged records, an evidence update on
+      E-k2m3-wand125-valid7-independent that moves no rung (think-uu60).
 
   - id: T-065
     kind: upper-bound

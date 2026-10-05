@@ -381,7 +381,7 @@ The programs behind each result, by its cited evidence: who ran each check, how 
   - `E-k2m3-evand-family-report`, the source’s own run: `V-evand-qx2-zm-py`, `V-evand-lean` (external)
   - `E-k2m3-evand-valid7-qx2-replay`, replayed here, reproduced with the producer’s code: `V-evand-qx2-zm-py` (external)
   - `E-k2m3-evand-bentz-lean-build`, replayed here, reproduced with the producer’s code: `V-evand-lean` (external)
-  - `E-k2m3-wand125-valid7-independent`, replayed here, independently re-implemented: `V-wand125-valid7-checker` (external); `V-audit-valid7-independent` (first-party, premises)
+  - `E-k2m3-wand125-valid7-independent`, replayed here, independently re-implemented: `V-wand125-valid7-checker` (external); `V-audit-valid7-independent`, `V-probe-valid7-fixes` (first-party, premises)
   - `E-basic-grid-upper`, replayed here, independently re-implemented: `V-check-basic-bounds` (first-party)
 - **T-065** — confirmed, independently re-implemented
   - `E-n017-kleddamag-rational-upper`, replayed here, independently re-implemented: `V-check-rational-witness-independent` (first-party)

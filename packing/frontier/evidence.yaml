@@ -401,10 +401,10 @@ evidence:
       with the published leaves (receipts/replay/wand125_replay_compare.json in the wand125
       packet).
     replay_status: passed
-    verifiers: [V-wand125-valid7-checker, V-audit-valid7-independent]
+    verifiers: [V-wand125-valid7-checker, V-audit-valid7-independent, V-probe-valid7-fixes]
     limitations: >-
       wand125/valid7-independent-check at 38dd31b369991b0d96c917a4af0c7139b44a038d (its
-      only commit, 2026-10-02T02:49:17Z) and its release records-v1 report that a separately
+      first commit, 2026-10-02T02:49:17Z) and its release records-v1 report that a separately
       written exact-rational checker decides Valid7, the finite statement T-064's lower half
       rests on, for Evan Daniel's k = 7 cover L4_k02_box7.txt, the bytes the 2026-10-01 evand
       packet retains: every closed unit square in [0,7]^2, at every centre and every angle,
@@ -456,6 +456,20 @@ evidence:
       not Daniel's, deciding Valid7 here, an independent implementation by its read log;
       it is the same method, exact-algebraic, as the qx2_zm.py replay beside it. No
       mutated cover was run in this replay; the three refused on 2 October are verify.sh's.
+      Evidence update, 2026-10-05: at da469ecff5da0c71882e894b65d680ce57a0c87e
+      (2026-10-03T23:14:42Z) the author fixed D-1 to D-3 upstream, answering
+      evand/square-packing#1: nonneg_open and the unused rf.nonneg_on now require a
+      positive value at an interior point that is not a root, and tier_b2's line and value
+      caches are keyed by exact text, not Python's hash. check_record.py gained --seed and
+      --claim; the release records were not regenerated. The wand125 packet of 3 October
+      retains that revision. Its verify.sh ran here on 5 October on the unchanged records:
+      RECORD OK with fresh seed 2431791605250748986, the counts of 2 October, and the three
+      lighter covers refused, in 427 s; devtools.probe_valid7_fixes, in the same
+      interpreter, found each finding's example accepted at 38dd31b3 and refused at
+      da469ec. The full replay of 2 and 3 October stands: it ran the first commit's V2 code
+      with D-1's accepting case made a refusal, stricter than the fix, which samples again,
+      and the guard refused nothing; D-3's hash keys were in the code it ran, a collision
+      in the run being of order 1e-7 by the review's count. No rung moves.
     external_review:
       state: informally-verified
       date: '2026-10-02'

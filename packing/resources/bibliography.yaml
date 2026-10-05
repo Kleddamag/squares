@@ -681,6 +681,23 @@ sources:
       READ_LOG.md. web/wand125-valid7-independent-check-2026-10-02/acquisition/sources.json
       pins the revision, and the release records are pinned by SHA-256. Dated by that
       revision, 2026-10-02 UTC.
+  - key: '[wand125 valid7 independent check 2026-10-03]'
+    authors: [wand125]
+    year: 2026
+    venue: GitHub
+    dated: '2026-10-03'
+    credit: wand125 after Daniel
+    lineage: independent
+    note: >-
+      wand125/valid7-independent-check at da469ecff5da0c71882e894b65d680ce57a0c87e, the
+      repository's second commit (2026-10-03T23:14:42Z; its author name is Hiroaki
+      Hosono): "Fix the three points raised in evand/square-packing#1 (no change to any
+      certified result)". It fixes findings D-1 to D-3 of this repository's method review
+      of 2 October in tier_b2.py and rf.py, and adds check_record.py's --seed and --claim
+      options; the release records-v1 are unchanged. Nothing on jlevy/squares asked for
+      it. The repository has no credit or AI-assistance statement beyond LICENSE, NOTICE
+      and READ_LOG.md. web/wand125-valid7-independent-check-2026-10-03/acquisition/sources.json
+      pins the revision. Dated by that revision, 2026-10-03 UTC.
   - key: '[wand125 Green DS7 Theorem 9 2026-10-02]'
     authors: [wand125]
     year: 2026

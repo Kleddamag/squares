@@ -30,7 +30,7 @@ results, it is a statement about what this repository has itself examined.
 | `E-n061-wand125-point-cover-zmx2-replay` | 0 | lower-bound | verified | strict inequalities only | here | informally-verified | previously-published | producer’s code | `V-evand-zmx2`, `V-replay-evand-zmx2`, `V-audit-evand-mixed-covers` |
 | `E-n060-evand-mixed-cover-zmx2-replay` | 2 | lower-bound | verified | strict inequalities only | here | - | previously-published | producer’s code | `V-evand-zmx2`, `V-replay-evand-zmx2`, `V-audit-evand-mixed-covers` |
 | `E-k2m3-evand-family-report` | 10 | lower-bound | reported | - | elsewhere | informally-verified | previously-published | producer’s code | `V-evand-qx2-zm-py`, `V-evand-lean` |
-| `E-k2m3-wand125-valid7-independent` | 0 | lower-bound | verified | equalities and inequalities, no tolerance | here | informally-verified | previously-published | independent | `V-wand125-valid7-checker`, `V-audit-valid7-independent` |
+| `E-k2m3-wand125-valid7-independent` | 0 | lower-bound | verified | equalities and inequalities, no tolerance | here | informally-verified | previously-published | independent | `V-wand125-valid7-checker`, `V-audit-valid7-independent`, `V-probe-valid7-fixes` |
 | `E-k2m3-evand-valid7-qx2-replay` | 9 | lower-bound | verified | equalities and inequalities, no tolerance | here | - | previously-published | producer’s code | `V-evand-qx2-zm-py` |
 | `E-k2m3-evand-bentz-lean-build` | 9 | exact-value | verified | its theorem, against a named kernel | here | - | previously-published | producer’s code | `V-evand-lean` |
 | `E-n011-global-optimality-report` | 1 | lower-bound | reported | - | elsewhere | defect-found | previously-published | no code | `V-queuingtheory-n11-verify` |

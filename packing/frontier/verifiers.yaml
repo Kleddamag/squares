@@ -134,13 +134,19 @@ verifiers:
     source:
       - packing/resources/web/wand125-valid7-independent-check-2026-10-02/valid7-independent-check/src
       - packing/resources/web/wand125-valid7-independent-check-2026-10-02/valid7-independent-check/verify.sh
+      - packing/resources/web/wand125-valid7-independent-check-2026-10-03/valid7-independent-check/src
     versions:
-      - {revision: 38dd31b369991b0d96c917a4af0c7139b44a038d, note: "the repository's only commit, and its release records-v1"}
+      - {revision: 38dd31b369991b0d96c917a4af0c7139b44a038d, note: "the repository's first commit, and its release records-v1"}
       - sha256: ba73f6c10f81836f676fde9800c716e6810f4759fa3f1a89753609671a290080
         note: >-
           src/tier_b2.py with D-1's accepting line made a refusal, as plan_valid7_replay
           stage --guard-d1 writes it; the full replay here of 2 and 3 October ran it with
           the other V2 files unchanged
+      - revision: da469ecff5da0c71882e894b65d680ce57a0c87e
+        note: >-
+          the second commit, which fixes the 2 October review's D-1 to D-3 and leaves the
+          release records unchanged; its verify.sh ran here on 5 October 2026 on those
+          records
     independence_record: packing/resources/web/wand125-valid7-independent-check-2026-10-02/valid7-independent-check/READ_LOG.md
     note: >-
       Its read log says Daniel's checker qx2_zm.py and his lemma write-ups were not read;
@@ -1119,3 +1125,17 @@ verifiers:
       release's, their roots cover the pose grid once, and a sample of leaves
       re-certifies. A diagnostic, not a replay.
     source: [packing/devtools/audit_valid7_independent.py]
+
+  - id: V-probe-valid7-fixes
+    program: devtools.probe_valid7_fixes
+    author: Squares Project (Levy)
+    provenance: first-party
+    language: [Python]
+    methods: [exact-algebraic]
+    role: premises
+    summary: >-
+      Runs the 2 October review's demonstrations of D-1, D-2 and D-3 against each retained
+      revision of the Valid7 checker, in the checker's own interpreter, and checks that
+      each finding is present at the first commit and gone at the fix. Decides nothing
+      about Valid7.
+    source: [packing/devtools/probe_valid7_fixes.py]

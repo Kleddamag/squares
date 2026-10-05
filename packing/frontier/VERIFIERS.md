@@ -25,7 +25,7 @@ second implementation agrees.
 
 ## The Short Version
 
-- **78** programs: **31** external and **47** first-party; **64** decide claims and **14** check premises.
+- **79** programs: **31** external and **48** first-party; **64** decide claims and **15** check premises.
 - **257** of **283** evidence entries name the programs that verified them: 195 reproduced with the producer’s code, 46 independently re-implemented, 9 no relation: a proof, a derivation or a report, 7 re-implemented, sharing the producer’s components.
 
 ## Programs
@@ -110,6 +110,7 @@ second implementation agrees.
 | [`V-compare-evand-s32-sweep`](#v-compare-evand-s32-sweep) | devtools.compare_evand_s32_sweep | Squares Project (Levy) | first-party | premises | 1 | 1 |
 | [`V-audit-guzhou-r068`](#v-audit-guzhou-r068) | devtools.audit_guzhou_r068 | Squares Project (Levy) | first-party | premises | 2 | 2 |
 | [`V-audit-valid7-independent`](#v-audit-valid7-independent) | devtools.audit_valid7_independent | Squares Project (Levy) | first-party | premises | 1 | 1 |
+| [`V-probe-valid7-fixes`](#v-probe-valid7-fixes) | devtools.probe_valid7_fixes | Squares Project (Levy) | first-party | premises | 1 | 1 |
 
 ## By Program
 
@@ -358,8 +359,8 @@ wand125's adapter that expands its point certificates' direction rule and hands 
 
 Decides Valid7 for Evan Daniel's k = 7 cover: every closed unit square in [0,7]^2, at every centre and angle, has mass at least one, by branch and bound in Fraction and python-flint arithmetic with its own Sturm root isolation.
 
-- Source: [`packing/resources/web/wand125-valid7-independent-check-2026-10-02/valid7-independent-check/src`](../../packing/resources/web/wand125-valid7-independent-check-2026-10-02/valid7-independent-check/src), [`packing/resources/web/wand125-valid7-independent-check-2026-10-02/valid7-independent-check/verify.sh`](../../packing/resources/web/wand125-valid7-independent-check-2026-10-02/valid7-independent-check/verify.sh)
-- Versions run: revision `38dd31b36999` (the repository's only commit, and its release records-v1); SHA-256 `ba73f6c10f81…` (src/tier_b2.py with D-1's accepting line made a refusal, as plan_valid7_replay stage --guard-d1 writes it; the full replay here of 2 and 3 October ran it with the other V2 files unchanged)
+- Source: [`packing/resources/web/wand125-valid7-independent-check-2026-10-02/valid7-independent-check/src`](../../packing/resources/web/wand125-valid7-independent-check-2026-10-02/valid7-independent-check/src), [`packing/resources/web/wand125-valid7-independent-check-2026-10-02/valid7-independent-check/verify.sh`](../../packing/resources/web/wand125-valid7-independent-check-2026-10-02/valid7-independent-check/verify.sh), [`packing/resources/web/wand125-valid7-independent-check-2026-10-03/valid7-independent-check/src`](../../packing/resources/web/wand125-valid7-independent-check-2026-10-03/valid7-independent-check/src)
+- Versions run: revision `38dd31b36999` (the repository's first commit, and its release records-v1); SHA-256 `ba73f6c10f81…` (src/tier_b2.py with D-1's accepting line made a refusal, as plan_valid7_replay stage --guard-d1 writes it; the full replay here of 2 and 3 October ran it with the other V2 files unchanged); revision `da469ecff5da` (the second commit, which fixes the 2 October review's D-1 to D-3 and leaves the release records unchanged; its verify.sh ran here on 5 October 2026 on those records)
 - What its authors read and used: [`packing/resources/web/wand125-valid7-independent-check-2026-10-02/valid7-independent-check/READ_LOG.md`](../../packing/resources/web/wand125-valid7-independent-check-2026-10-02/valid7-independent-check/READ_LOG.md)
 - Note: Its read log says Daniel's checker qx2_zm.py and his lemma write-ups were not read; the two share the statement, the cover and its format specification.
 
@@ -1467,6 +1468,19 @@ Compares a fresh paired-launcher run's C++ and Node ledgers with the published o
 Checks what the Valid7 checker's verify.sh leaves out: the records are the release's, their roots cover the pose grid once, and a sample of leaves re-certifies. A diagnostic, not a replay.
 
 - Source: [`packing/devtools/audit_valid7_independent.py`](../../packing/devtools/audit_valid7_independent.py)
+- Versions run: this repository's commits, which Git holds
+
+| evidence | run | code | results |
+| --- | --- | --- | --- |
+| `E-k2m3-wand125-valid7-independent` | replayed here | independent | T-064 |
+
+### `V-probe-valid7-fixes`
+
+**devtools.probe_valid7_fixes** · Squares Project (Levy) · first-party · checks premises · Python · exact-algebraic
+
+Runs the 2 October review's demonstrations of D-1, D-2 and D-3 against each retained revision of the Valid7 checker, in the checker's own interpreter, and checks that each finding is present at the first commit and gone at the fix. Decides nothing about Valid7.
+
+- Source: [`packing/devtools/probe_valid7_fixes.py`](../../packing/devtools/probe_valid7_fixes.py)
 - Versions run: this repository's commits, which Git holds
 
 | evidence | run | code | results |

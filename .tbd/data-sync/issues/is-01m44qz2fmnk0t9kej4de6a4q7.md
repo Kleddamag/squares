@@ -5,7 +5,7 @@ title: "Import wand125: mixed rectangle-measure lower bounds of 4 October at 14 
 kind: task
 status: in_progress
 priority: 1
-version: 6
+version: 10
 delegate: claude-code@vm
 labels:
   - result-import
@@ -18,38 +18,23 @@ parent_id: is-01m44qz0rxvkakmyqaj7qdgagv
 hold: null
 hold_until: null
 created_at: 2026-10-05T00:38:35.764Z
-updated_at: 2026-10-05T01:06:25.563Z
+updated_at: 2026-10-05T03:56:22.545Z
 started_at: 2026-10-05T00:48:54.642Z
 ---
 14 comments on #282 (2026-10-04T07:04Z..19:04Z), commits 683264c..797bdf6 of wand125/square-packing-bounds. Stages 1-3: claim map against the record, packet at the last commit, register T-090 at V0, read_through on #282. Replay (stage 4) priced and queued, not run: same verifier as mixed_n84_L940, ~7 CPU-h per certificate.
 
 ## Notes
 
-2026-10-05 01:05Z stages 1-3 and 5 (tbd-moderate lane, branch claude/ecstatic-pascal-pothtx-wand125, commits 861a9f258 and 696167be9; not pushed).
+2026-10-05 re-scope (coordinator): this bead's import is now T-091 = the 12 certificates at 797bdf6 (n = 53, 54, 58, 70, 71, 73, 76, 87, 88, 90, 91, 94); n69 L862 and n86 L9503 moved to T-090 (the 16 at 8aa6a10, think-e6ss). Branch claude/ecstatic-pascal-pothtx-wand125, commits 861a9f258 (packet + audit rows + tests), 696167be9 (first registration), 805313037 (re-pin), 905621e8b (T-090/T-091 split), 76e73f5ab (think-aigs updates), d5271d182 (re-pin). Not pushed.
 
-Pin: wand125/square-packing-bounds 797bdf6e10eba5f9dccca9da06f8352e81ba9dde (head; committed 2026-10-04T19:03:58Z; ls-remote: one branch, no tags). Nothing after it. Between 8aa6a10 and 797bdf6: 12 certificate commits, plus 3f063bd (k2m4_n77_L9: run logs, full replay record, hardened verify.sh, cover unchanged; evidence update for T-067, #279/#280 review points) and 781afb3 (point_n21_L5: relativized paths, English status messages, lemma-code map fixed, certificate unchanged; evidence update for T-055). Neither is a new claim; both are separate evidence-update imports, not retained here.
+Pin: 797bdf6e10eba5f9dccca9da06f8352e81ba9dde (head, 2026-10-04T19:03:58Z, nothing later). Packet packing/resources/web/wand125-mixed-bounds-evening-2026-10-04, key [wand125 mixed bounds evening 2026-10-04]; acquire_source --check PACKET_MATCHES_ITS_CONTRACT; mixed-audit all 12 pass; mixed-fetch all 12 BUNDLE_READY.
 
-Claim map (record before this import -> T-090):
-- n53 3051/400 (62ff7b2) > 3043/400 rect_n53_L76075 (T-068 rep, T-074 ver)
-- n54 1537/200 (d62b47f) > 3069/400 rect_n54_L76725 (T-068 rep, T-074 ver)
-- n58 1587/200 (797bdf6) > 1581/200 mixed_n58_L7905 (T-082); ver 3113/400 (T-074)
-- n69 431/50 (8aa6a10) > 2153/250 mixed_n69_L8612 (T-082); ver 1717/200 (T-074)
-- n70 3463/400 (4df6bcc) > 3459/400 (T-082); ver 69/8 (T-074)
-- n71 8721/1000 (5d09521) > 1741/200 (T-082); ver 1737/200 (T-070)
-- n73 8813/1000 (23e75da) > 8809/1000 (T-082); ver 1737/200 (T-070)
-- n76 1793/200 (a2cbd0f) > 224/25 (T-082); ver 447/50 (T-072)
-- n86 9503/1000 (683264c) > 19/2 (T-082); ver 473/50 (T-075)
-- n87 479/50 (98bb266) > 191/20 (T-082); ver 237/25 (T-075)
-- n88 481/50 (9a26e8d) > 48/5 (T-082) and the unregistered mixed_n88_L96125 769/80 (8aa6a10 packet); ver 237/25 (T-075)
-- n90 973/100 (324c189) > 389/40 (T-082); ver 48/5 (T-069)
-- n91 781/80 (02f981a) > 39/4 (T-082); ver 97/10 (T-075)
-- n94 199/20 (8a81f65) > 248/25 (T-082) and the unregistered mixed_n94_L994 497/50; ver 1961/200 (T-074)
-None carries to n+1 by monotonicity.
+Claim map for T-091 (prior reported value, holder): n53 3051/400 > 3043/400 rect (T-068/T-074); n54 1537/200 > 3069/400 rect (T-068/T-074); n58 1587/200 > 1581/200 (T-082); n70 3463/400 > 3459/400 (T-082); n71 8721/1000 > 1741/200 (T-082); n73 8813/1000 > 8809/1000 (T-082); n76 1793/200 > 224/25 (T-082); n87 479/50 > 191/20 (T-082); n88 481/50 > 769/80 (T-090; T-082 48/5 before); n90 973/100 > 389/40 (T-082); n91 781/80 > 39/4 (T-082); n94 199/20 > 497/50 (T-090; T-082 248/25 before). Margins 0.004-0.03; none carries by monotonicity.
 
-Packet: packing/resources/web/wand125-mixed-bounds-evening-2026-10-04 ([wand125 mixed bounds evening 2026-10-04]); retains the 12 new dirs, pins mixed_n69_L862 and mixed_n86_L9503 identical_to the 8aa6a10 packet's copies (they stay registered from that packet; no duplicate audit rows). acquire_source --check: PACKET_MATCHES_ITS_CONTRACT. mixed-audit: all 12 pass; mixed-fetch: all 12 BUNDLE_READY (2.5 min wall, 2 parallel).
+T-091: V0/C0, S3 draft, published 2026-10-04. #282 result oct4-mixed-12 -> T-091. Replay (think-wrdq): 130.8 CPU-h planned (116.9 x 1.119; 137.7 by the source's oblique seconds), mixed-shard wand125-mixed-bounds-evening-2026-10-04 --runners 6 (~21-22 CPU-h, ~5.5 wall-h per runner at 4 workers). Blind review pending: brief at the coordinator.
 
-Register: T-090 (pre-assigned), V0/C0, S3 draft, scope 14 counts, attribution both keys, published 2026-10-04. check_results fails only on id contiguity until T-088/T-089 merge.
+Validation: records tier fails only on id contiguity (T-088/T-089 on the Kingbird lane); renumbered to T-088/T-089 in a scratch worktree, check_results and 93 register tests pass. See the final report for the push tier.
 
-Replay plan (think-wrdq): 153.3 CPU-h planned (136.9 mixed-price x 1.119 observed ratio; 160.9 by the source's own oblique seconds). mixed-shard wand125-mixed-bounds-evening-2026-10-04 --runners 6: 21.0-22.3 CPU-h, ~5.5 wall-h per runner at 4 workers (130.9 CPU-h for the 12); plus n69-L862 0-200 and n86-L9503 0-200 under the 8aa6a10 packet (12.1 + 10.3 = 22.4 CPU-h, ~5.6 wall-h) unless that packet's own replay (think-e6ss/think-wpuu plan r3, r7, r8) runs them. Then two mutated controls (mixed-control) and a separately prompted review for C1.
+2026-10-05 03:30Z validation at 2bcc69791: records tier fails only id contiguity; push tier: lint, types, browser floor and edit checks green; its reachable-tests step ran the whole suite (the retained check_records.py is Python outside the mapped roots) and hit the 1800 s limit under load. The reachable selection without that file (179 files) ran 5080 passed, 13 failed: 6 contiguity, 2 fixed_core_packet reaping tests that fail on clean main here, 2 n11 and 2 validation_cli tests that pass alone (load), and test_site_frontier_table's pinned n = 51 value, fixed in 2bcc69791. Renumbered to T-088/T-089 in a scratch worktree, check_results and 93 register tests pass.
 
-Open for the coordinator: the 8aa6a10 packet's entry (think-e6ss planned 16) must now scope to its other 14 (oct3-oct4-mixed-14) since T-090 holds n69 and n86. Acknowledgement draft for #282: received 14 certificates (683264c..797bdf6), pinned at 797bdf6, exact premises and pre-replay checks pass, full 201-angle replays and a review queued; no T-NNN until merged.
+2026-10-05 04:00Z blind review (separately prompted reviewer, commit 64d710577, not pushed): docs/project/reviews/review-2026-10-05-wand125-october-4-certificates.md accepts T-090 and T-091 (28 certificates) with no blocking defect; OF-1..OF-5 non-blocking. OF-2: five T-091 bundles (n53, n54, n58-L7935, n70-L86575, n88-L962) record their proof run on macOS arm64 (Python 3.14.7, NumPy 2.5.3); the replay receipts should name that platform, and the x86-64 replay must return those records exactly (n58-L7935 index 197 did, 587 s here). Spot replays: n58-L7935 index 197 and n88-L96125 index 92 from regenerated inputs, both returned their records. T-091 now V0/C1 (external_review on its 12 report entries, reviews entry covers T-090 and T-091, next_rung = replays only). S3 confirmed. Records tier fails only id contiguity.

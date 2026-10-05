@@ -5,7 +5,8 @@ title: Import, confirm and answer every reported result (2 October 2026 effort)
 kind: epic
 status: open
 priority: 1
-version: 49
+version: 51
+delegate: claude-code@vm
 labels:
   - result-import
 dependencies: []
@@ -30,8 +31,11 @@ child_order_hints:
   - is-01m3yrzmzcpq964zt2kr14w8jv
   - is-01m3ytdhr6h2xnsvj4f2nc2nk2
   - is-01m3z77bdhk8tn3epx63ywhxft
+hold: null
+hold_until: null
 created_at: 2026-10-02T16:51:15.917Z
-updated_at: 2026-10-04T01:02:29.669Z
+updated_at: 2026-10-05T03:23:42.848Z
+started_at: 2026-10-05T03:21:47.047Z
 ---
 Umbrella for the 2 October 2026 effort: PRs #290 -> #292 -> #298 (imports and records), plus a stacked PR for verifier provenance and the independent verifier. Children track each lane; done when every reported result is confirmed or refuted (or has a bead naming exactly what remains), every issue has a current status reply, closeable issues are closed, and all PRs are merged.
 
@@ -44,10 +48,10 @@ Stack: #290 -> #292 -> #298 (branch claude/zealous-gauss-jem7l9, draft) -> stack
 ### On #298's branch (pushed, 41ae96c22)
 s(77)=9 and s(78)=9 at V3/C3 (T-067); s(76)>=447/50 at V3/C3 (T-072); earlier: s(59), s(60), s(61) V3/C3, T-070, T-045, s(32) replay.
 
-### Finished lane branches waiting to merge into #298 (records lane is merging them; all pushed)
+### Finished lane branches for #298 (the records lane merged them; all pushed)
 - claude/lane-q-issue-tracking: packing/campaign/result-requests.yaml + devtools/check_requests.py (--report/--backlog/--draft/--github), gate step, stage-7 docs.
 - claude/lane-z-s21-s50-receipts-controls: T-048 (s(50) L740) and T-055 (point s(21)) replay receipts + n21 mutation controls.
-- claude/lane-t-green-ds7: #308 — check_green_ds7 (exact): Green's DS7 Thm 9 pattern fails k=2 and k=4..17, holds k=3; E-green-* defect-found; no verified bound affected.
+- claude/lane-t-green-ds7: #308 — check_green_ds7 (exact): Green's DS7 Thm 9 pattern fails k=2 and k=4..17, survives at k=3; E-green-* defect-found; no verified bound affected.
 - claude/replay-wand125-afternoon-inputs: ten new wand125 certificates at b00fc70 retained + preflight + blind review (register at V0; mixed entry before rectangles, finding AF-6).
 - claude/lane-cc-t036-replay: T-036 replay mode; stays C2 (composition note).
 - claude/lane-dd-t058-ceiling: T-058 ceiling proved/corrected, V3/C3; review its check_certificate_citations change.
@@ -117,7 +121,7 @@ Next steps for the next agent, in order:
 - 2026-10-03 04:55 Session limit hit again at ~01:30-01:48 UTC (reset 03:40); everything stopped. Old runners (m1, r2, the s(77) runner, and r1/r4/m3 by the same rule) REFUSED follow-up jobs sent by message (they accept only their initial prompt's job): replaced at 01:48 by new runners whose initial prompt is the job: n82a session_015CiPn4iFQWzpznZyFdwuZL (linear n82 0-123, claude/replay-wand125-n82-a), n82b session_01DrdQyssm1DBDH88Brh3yAq (124-200, -n82-b), m6 session_01Bm7LCpB7yJjWhTBogEq3ni (mixed n83 0-135, n87, n91; claude/replay-wand125-afternoon-m6), s1 session_01QMRbn2cefpcbee1ce4LshT (T-046 n72, n91; claude/replay-wand125-sept28-s1), s2 session_01FjniKWBCgBfQSm7URfWSi7 (n73, n51, n57, n58; -s2), l83 session_01PADmST5bjm6g2wbCbc2gbK (T-073 linear n83 + merge + control; claude/replay-wand125-linear-n83). Ignore the old runners' pending confirmation requests. All active sessions were sent resume messages at 04:52, plus the records lane (finishing the T-064 merge, MERGE_HEAD 9e8e66f63) and W2.
 - 04:52 FF done (claude/lane-ff-s61-point @dcfe0e627): wand125 point-only s(61) cover VERIFIED-D4 by zmx2 6b7f0f79 (6,400/6,400 roots), controls refused; second route for T-063. RV done (claude/lane-rv-s12-review @4b3c0573): our s(12) >= 15680000/3949423 ACCEPTED (Route B; Route A implied), Daniel's verify rebuilt and native parent-core PASS_COMPLETE (39,765 rows) as an independent first-party check; draft S3, apparently-novel; to register as a new Levy result superseding T-078. Both queued for the records lane after T-064.
 - 05:00 Stacked verifier PR opened as draft: jlevy/squares#311 (branch claude/verifier-provenance-and-independent-verifier, base claude/zealous-gauss-jem7l9; lane SP session_01Hqz93p1waL3UQYW44eKsWd). Lanes X, W1, W2 (through Milestone B) merged; backfill re-run on the base's evidence.yaml (188 entries name their programs, 0 unclassified); 4 new registry entries; two independence_record judgments flagged in the body for review. Each time #298's records move, merge the new base into #311 and re-run devtools.backfill_verifier_relation instead of hand-merging evidence.yaml.
-- 2026-10-03 ~05:30 T-064 at V3/C3 (pushed 19cb367ba): qx2 replay compare ok (9,800 roots, 32,079 leaves equal to the source's V3 record, none uncertified; E-k2m3-evand-valid7-qx2-replay, same-implementation) + Lean reduction built (E-k2m3-evand-bentz-lean-build, proof-assistant-checked, axioms propext/Classical.choice/Quot.sound). Nine more cases proved: n = 97, 118, 141, 166, 193, 222, 253, 286, 321; counts 77 proved / 247 open. Remaining on T-064: wand125's independent Valid7 checker replay with --guard-d1 (runners w1-w5, ~216 CPU-h), which would add an independent-implementation route and close D-1. The verifiers field waits for #311.
+- 2026-10-03 ~05:30 T-064 at V3/C3 (pushed 19cb367ba): qx2 replay compare ok (9,800 roots, 32,079 leaves equal to the source's V3 record, none uncertified; E-k2m3-evand-valid7-qx2-replay, same-implementation) + Lean reduction built (E-k2m3-evand-bentz-lean-build, proof-assistant-checked, axioms propext/Classical.choice/Quot.sound). Nine more cases proved: n = 97, 118, 141, 166, 193, 222, 253, 286, 321; counts 77 proved / 247 open. Remaining on T-064: wand125's independent Valid7 checker replay with --guard-d1 (runners w1-w5, ~216 CPU-h), which would add an independent-implementation route and close D-1. The verifiers field waited for #311 (merged 2026-10-03).
 2026-10-03 06:16 check-in: pushed since 04:52: m4 (done @6dfa6b9e), m6 @8c889f2d (n83 0-86), w1-w5 (w5 done @8cfcb5aa), r5 @b829406d (n42 PASS; replaced by r6 for n70/n20), s1/s2 logs only, l83 nothing yet, n82b nothing yet, n82a BLOCKED by a classifier denial on commit/push (needs the user). RA/RB done; W2 pushed RA S1-S4 fix @cfb653a2f (RB's TI items and the format-M question pending); RV, FF done and queued in the records lane; SP done, SP2 driving #311. #298 head 19cb367ba: real conflict with main (#310) being merged by the records lane; dispatched run 37101013522 on 8371ca135 failed on n-012 (fixed) and the slow-lane atlas pin (REBUILT_EQUALITIES lacks 97 from T-064; sent to the records lane).
 2026-10-03 14:45 check-in (07:16 trigger read late): the account's 5-hour limit stopped every lane about 06:20-08:20 UTC (reset 09:50); nothing ran 08:20-14:38. Resumed at 14:40: records lane (main merge 00375def0 committed locally, unpushed; atlas 97 fix in progress), W2 (pushed 82332fee4; TI-2 in progress), SP2 (#311 at 38a35b63e), runners r6, l83 (pushed f3b9c7ea2), s1, s2, m6, n82b, w1-w4 (w4 pushed 6a3dcde2b). n82a still blocked on the classifier denial of committing its receipts into packing/resources/web; it needs the user. r5 is superseded by r6.
 2026-10-03 15:00 #298 merged origin/main (00375def0; #310's eight-column tables kept, site-n-wraps re-applied because T-075's n cell otherwise scrolls 242 px at 1024 px; 399 site tests pass) and the atlas 97 pin (af178efd4); records and edit tiers pass; pin already at the last data commit. Branch-mergeability check green on af178efd4; full dispatched run 37130939993 in progress. GitHub still reports #298 CONFLICTING against its base claude/import-2026-10-01-requests although the base is an ancestor and merge-tree is clean (the known false-dirty state; PR runs do not trigger, so CI is dispatched). #290 and #292 are MERGEABLE/CLEAN. Main moved again to c831b4ee0 (#312, site review round); #298 still merges cleanly into it.
@@ -129,3 +133,12 @@ Next steps for the next agent, in order:
 2026-10-03 21:30 check-in (after a container restart; the local records lane finished before it, W2 done): PR #324 (T-082, 22 wand125 certificates) and PR #327 (T-076 n82 + T-073 n83 to V3/C3, reply records) both green, MERGEABLE CLEAN; merges wait on the owner (tbd policy github-merge unanswered = confirm-every). Runner heads: Valid7 w1 e2a257f75, n83 9598f4d31 (done), s2 3090a87d0, r6 c66ef85cf; Valid9 r1-r7 not pushed yet (first shards due ~23:30). Census evidence (think-3ok2) needs a new records lane (the local one ended with the restart). T-082 replay runners held pending the owner's answer on the weekly limit.
 2026-10-03 23:05 check-in: #324 merged (4949d1439) and #328 merged (0ca18df47; grants effective on main); Pages deploy of 4949d1439 verified, T-082 live. Valid9: r6 pushed shard 11 (3 runs VERIFIED-D4, UNCERT 0, about 16.4 CPU-h) at 22:45; r1-r5, r7 first shards not yet pushed (due about 23:30). Valid7 w1 done (all 14 wand125 shards VERIFIED); records sub-agent recording on claude/t064-valid7-independent-replay (think-e3tq). s2 (n58) and r6-afternoon (n70, n20) still running at 22:01. New bead think-xlxj (typecheck tier at its ceiling).
 2026-10-04 01:05 check-in: #329 merged (eb9fbb730, T-064 independent replay; think-e3tq closed; follow-up on #296) and #331 merged (d303e9ef8, AGENTS.md grants block formatted). Valid9: all 7 first shards VERIFIED and pushed, second shards running, no failed session. r6-afternoon done (n20, n70 VERIFIED; n42 earlier). s2: n58 still running. Next: one batched records lane for T-081 + T-077 + T-046 leftovers once Valid9 and n58 finish.
+
+### Update 2026-10-05 (intake triage, think-nkzt)
+All four pull requests of the stack merged on 2026-10-03: #290, #298, #292 and #311. #308 closed the same day. The intake sweep read the sentences above that name them as waits on blockers that had resolved, so those sentences are now in the past tense, with no change of meaning. What is left is in the open children:
+- think-gpe0: the independent verifier.
+- think-r7yt: the ten b00fc70 certificates.
+- think-or93 and think-jl4z: the validation and answer epics.
+- think-6ei5: T-068's four unreplayed counts, which need an owner decision.
+- think-4r1m, think-j8f1 and think-3tgc.
+Close the epic when no child is open.

@@ -3,14 +3,22 @@ type: is
 id: is-01m44qa5hztx05awpgj6ed28w5
 title: "PR #336 A2 (Low/Medium): a general devtool is filed as n17 research."
 kind: task
-status: open
+status: closed
 priority: 2
-version: 1
+version: 3
+delegate: graph_gate
 labels: []
 dependencies: []
 parent_id: is-01m44qa2mz6hseqc8b10neq6b3
+hold: null
+hold_until: null
 created_at: 2026-10-05T00:27:10.782Z
-updated_at: 2026-10-05T00:27:10.782Z
+updated_at: 2026-10-05T02:56:30.035Z
+started_at: 2026-10-05T02:30:54.502Z
+closed_at: 2026-10-05T02:56:30.034Z
+close_reason: "Review A fixed in 49613a52f: 21 local controls, three hosted native cases, lint/types/docs, all current required checks PASS; await Joshua, no follow-up reserved."
+resolution: null
+duplicate_of: null
 ---
 https://github.com/jlevy/squares/pull/336#pullrequestreview-5408660754
 

@@ -5,7 +5,7 @@ title: "N17 Session169: profile and bound obsolete producer PartnerMemo generati
 kind: task
 status: open
 priority: 1
-version: 7
+version: 8
 spec_path: docs/project/reviews/review-2026-10-02-n17-bulk-exclusion-design.md
 assignee: Guzhou0806
 delegate: null
@@ -15,7 +15,7 @@ parent_id: is-01m3xkd6zmq1jqwtn628h2k7zy
 hold: paused
 hold_until: null
 created_at: 2026-10-03T20:49:44.645Z
-updated_at: 2026-10-04T14:59:01.940Z
+updated_at: 2026-10-05T02:53:20.382Z
 started_at: 2026-10-03T20:50:09.807Z
 ---
 Own only Session 169's bounded W3/W10 decision and W5 PartnerMemo lifecycle profile on PR 307 head 234a07f4e22edb3b8e4074356236e4137b1ec19d, branch guzhou/n17-p01-partner-memo. Operator Guzhou0806-Codex-T0; one primary executor after the user's token-budget addendum.
@@ -30,6 +30,17 @@ Session A starts 2026-10-04T04:31:41+08:00 and ends by 08:31:41; each command an
 
 ## Notes
 
+Review A maintenance, 2026-10-05: scoped findings A1–A6 fixed in own PR325
+17d43af14/56d5b6eaa. Session 180 avoids the published Session 169 ID; shared memory,
+real W7 regression and formatting controls pass. Current head 56d5b6eaa has terminal
+parent/main mergeability failure, so packing/pages required workflows cannot start;
+no current-head supported-host certification is claimed. Earlier green heads below
+are historical only. Keep this bead open, paused, delegate null until merge.
+No active executor and no follow-up reserved. Do not merge on this tracking condition.
+The Windows current-RSS helper has local native evidence but no repository Windows
+gate; PR336's native gate does not certify it. Research stays paused.
+
+Historical tracking notes (preserved):
 PAUSE / HANDOFF — Guzhou explicit authorization, 2026-10-04T14:58:59.902777+00:00
 
 No active executor. No background work, running research, heartbeat, or monitoring. No future slice reserved. Joshua, Fable, and other agents are free to claim follow-up work under a new bead, subject to their normal ownership and safety checks. Historical operator/delegate names, next-W3 suggestions, and expired phase windows below are provenance only and do not constitute a current claim or reservation. The upstream coordination bead think-tmz6 and parent PR #307 are untouched.

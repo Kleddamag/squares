@@ -8,14 +8,14 @@
 # admits an entry is its `verification`.
 schema: n17-certified-sub-patterns/v3
 design: ring-3-voronoi-8-tabbed-unique
-# The certificate objects (about 112 MB of gzip) are hosted outside Git, listed with their
-# sizes, SHA-256 and URLs in this manifest; each certificate directory keeps its small
-# files. The count needs only the committed receipts; `--fetch` downloads the objects so
-# the verifiers can run again.
+# The certificate objects (about 112 MB of gzip) are hosted outside Git (OR-18), listed
+# with their sizes, SHA-256 and URLs in this manifest; each certificate directory keeps
+# its small files. The count needs only the committed receipts; `--fetch` downloads the
+# objects so the verifiers can run again.
 data_manifest: packing/campaign/explorations/X048-session-168-pilots/certificates/hosted-data.yaml
 # The standing verifiers, written separately from the producers, as reviews admitted them.
 # Each entry's verification names the listing it ran under by `id`; `version` is the
-# revision the review read, kept for the reader, and nothing resolves it. A listing with
+# revision the review read, kept for the reader, and nothing resolves it (OR-18). A listing with
 # `admits` may verify only the entries it names; the closed-cover listing says why the
 # earlier kernel listings carry it. A verification is matched to its certificate by the
 # content ids in the objects' file names (seed and node, or the manifest), not by

@@ -755,9 +755,14 @@ def test_roster_is_bound_to_the_accepted_h257_inventory() -> None:
     tampered = local.roster_binding_audit(
         _family(), raw.replace(b'"pairs": 21', b'"pairs": 22')
     )
-    assert not tampered["checks"]["certificate_blob_is_frozen"]
     assert not tampered["checks"]["manifest_reproduces_counts"]
     assert not tampered["passed"]
+    # Re-laying the certificate's bytes is not a change to it (OR-18): the blob moves,
+    # is recorded, and nothing refuses it.
+    relaid = json.dumps(json.loads(raw), indent=2, sort_keys=True).encode()
+    moved = local.roster_binding_audit(_family(), relaid)
+    assert moved["passed"]
+    assert moved["certificate_blob"] != audit["certificate_blob"]
 
 
 def test_restoring_the_non_tight_9_11_row_fails_slide_invariance() -> None:

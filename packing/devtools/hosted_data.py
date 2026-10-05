@@ -1,7 +1,8 @@
 """Data kept outside Git: a manifest of where each file is hosted, and a verified fetch.
 
 Some retained data is too large to belong in the repository's history, such as the n17
-sub-pattern certificate dumps, about 112 MB of gzip. Its small records stay in Git: the
+sub-pattern certificate dumps, about 112 MB of gzip; OR-18 keeps such bulk data out of
+Git. Its small records stay in Git: the
 producer receipts, the verification receipts and the verdicts that cite them. The bytes
 are hosted elsewhere, for instance as release assets, and a repository-relative manifest
 lists every hosted file:

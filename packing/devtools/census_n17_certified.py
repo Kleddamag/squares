@@ -35,7 +35,7 @@ counts under the listing its entry names when the listing checks the entry's kin
 certificate, and, where the receipt records which file ran (`devtools.provenance`), when
 that file is the listing's path and its bytes were not recorded as uncommitted. That the
 receipt ran the listed version is the reviewer's claim, recorded in the ledger; the
-census reads no history.
+census reads no history (OR-18).
 
 A listing may also carry `admits`, the names of the only entries it may verify; a
 verification under it for any other entry is refused. This keeps a version later found
@@ -70,8 +70,9 @@ hashed. The directory the verification ran in is not compared, so a certificate
 directory can be renamed without verifying it again, while a verification of other
 objects is refused.
 
-The data. The count rests on the committed producer and verification receipts, so it
-does not need the hosted objects. Re-running a verifier does: each entry's
+The data. The certificate objects are bulk data, hosted outside Git under OR-18. The
+count rests on the committed producer and verification receipts, so it does not need
+the hosted objects. Re-running a verifier does: each entry's
 `certificate_data` says whether its objects are in place, and the report's `data` line
 says how many are absent. `--fetch` downloads them to their paths, checking each against
 the manifest's size and SHA-256, after which every verification command in the record

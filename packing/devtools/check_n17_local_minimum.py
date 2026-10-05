@@ -1404,7 +1404,6 @@ FEATURE_CERTIFICATE = (
     / "packing/campaign/series/series-000-smoke-and-calibration/results"
     / "exp-239-n17-endpoint-features/run-001/certificate.json"
 )
-FEATURE_CERTIFICATE_BLOB = "d6047456ac143da0c5aaf6b25e286db75d4497ea"
 
 
 def git_blob(data: bytes) -> str:
@@ -1415,12 +1414,13 @@ def git_blob(data: bytes) -> str:
 def roster_binding_audit(family: Family, raw: bytes | None = None) -> dict[str, Any]:
     """C1: the 52-row roster is the accepted H-257 inventory minus the dropped items.
 
-    The exp-239 feature certificate (H-257) must be the frozen blob at
-    `FROZEN_FEATURE_REF`, pass its criterion and carry the inventory counts the
-    feature manifest reproduces. The roster's pairs must be H-257's zero pairs minus
-    2/3 and 9/11, its walls the 15 active wall incidences minus 5-right and 6-bottom,
-    and its rows one per wall corner pair (two, except 9's smooth left wall), two per
-    face and one per nonparallel identity option.
+    The exp-239 feature certificate (H-257) must be an accepted feature certificate of
+    the frozen root, pass its criterion and carry the inventory counts the feature
+    manifest reproduces; its Git blob is recorded, never compared (OR-18). The
+    roster's pairs must be H-257's zero pairs minus 2/3 and 9/11, its walls the 15
+    active wall incidences minus 5-right and 6-bottom, and its rows one per wall corner
+    pair (two, except 9's smooth left wall), two per face and one per nonparallel
+    identity option.
     """
     data = FEATURE_CERTIFICATE.read_bytes() if raw is None else raw
     document = json.loads(data, object_pairs_hook=_object_unique)
@@ -1440,7 +1440,6 @@ def roster_binding_audit(family: Family, raw: bytes | None = None) -> dict[str, 
     )
     counts = document.get("inventory", {}).get("counts", {})
     checks = {
-        "certificate_blob_is_frozen": git_blob(data) == FEATURE_CERTIFICATE_BLOB,
         "certificate_accepted": document.get("schema") == "n17-endpoint-feature-certificate/v1"
         and document.get("criterion_passed") is True
         and document.get("root_git_ref") == FROZEN_ROOT_REF,

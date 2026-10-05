@@ -34,3 +34,54 @@ repositories:
     note: >-
       The head is the commit the n17-github-certificates-2026 packet retains the tree of;
       nothing new to import.
+
+  # The intake pass of 2026-10-05 read five heads past their pins (think-nkzt).
+  - url: https://gist.github.com/9e5f27e25607c0966c4f91bc1253ce8b
+    read_through: 904178e3bc8443c09a318e59377023f9330aed78
+    read_on: '2026-10-05'
+    note: >-
+      One commit past the wand125-green-ds7-theorem9-2026-10-02 packet's 9d6de784, of 4
+      October. It rewrites one sentence of green-theorem9.md. The k = 4 square's centre is
+      now said to be in container coordinates, as drawn in Figure 1, and the slack is now
+      given as 0.00544 (0.0054494…, rounded to 0.00545 in the table). That is the reading
+      the 2 October review's note G9-4 gave, and no claim changes. Nothing to import.
+  - url: https://github.com/ahyangyi/17squares
+    read_through: 1a320e7f54a411ac7f44523d7bcde076d0130dfd
+    read_on: '2026-10-05'
+    note: >-
+      The head is v1.1.1 of 23 September, the commit n-017.md cites and records as reported
+      and not retained: 184547267428061/40000000000000 ≈ 4.6136817, below the verified
+      bound. Its author's commit message says it is not frontier any more. Nothing to
+      import.
+  - url: https://github.com/BalthasarStrauss/Squares-packing_S-29-_New-Record
+    read_through: 71ea2ee9166fb7ffcefb6f9bea6124fab6ad95c3
+    read_on: '2026-10-05'
+    note: >-
+      Thomas Schadt's n = 29 repository, hosted under the BalthasarStrauss account, with
+      eight commits, all of 8 December 2025 and all by Thomas Schadt. The register source
+      schadt-n29-2025, n-029.md and both Schadt witnesses cite the repository with no
+      revision, and the schadt-s29-2025 packet has no acquisition record. That packet's
+      five files are byte-identical to this head's tree, which also holds a .gitignore.
+      So the head is what the packet retains, and this read is the pin the packet lacks.
+      The record's credit to Thomas Schadt matches the README and the commits. Nothing to
+      import.
+  - url: https://github.com/tokoharu/square-packing-density-bounds
+    read_through: 84bebef51856d46a19c145b035664324ba9572d3
+    read_on: '2026-10-05'
+    note: >-
+      One commit past b543990f, the pin of the external-square-certificates-2026-09-22
+      packet, of 23 September, by Hiroaki Hosono (wand125). It changes only src/push.py, its
+      tests and .gitignore: the certificate ladder's step and termination rules, and a run
+      log. No certificate, proof or verifier changes. Its message reports a faster n = 29
+      ladder run but publishes no certificate. Nothing to import.
+  - url: https://github.com/wand125/valid7-independent-check
+    read_through: da469ecff5da0c71882e894b65d680ce57a0c87e
+    read_on: '2026-10-05'
+    bead: think-uu60
+    note: >-
+      One commit past 38dd31b3, the wand125-valid7-independent-check-2026-10-02 packet's
+      pin, of 3 October. It fixes the review's D-1 to D-3 in tier_b2.py, rf.py and
+      check_record.py, and adds a --seed option to check_record.py, answering
+      evand/square-packing#1. With the fixed code the author reports RECORD OK on the
+      unchanged records-v1. This is an evidence update to T-064, owned by think-uu60, and
+      no rung moves.

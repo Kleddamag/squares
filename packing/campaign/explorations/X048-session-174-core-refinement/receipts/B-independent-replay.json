@@ -1,0 +1,17 @@
+{
+  "diagnostic_only": true,
+  "new_exclusions": 0,
+  "status": "PASS_REPLAYED_PARTIAL_SUPPORT",
+  "supported_parent_rows": 18,
+  "live_parent_rows": 96,
+  "observed_supported_child_rows": 18,
+  "selections_checked": 7,
+  "fresh_pair_checks": 105,
+  "packet_sha256": "611c52644ed22fb9d704dbd56ec24e91e15002185a33e1b0866b17d9d1114395",
+  "input_identity": {"seed_sha256":"c548ed2ed62e6c84276aa7135c956610022874732f195c8c6706b020798282a6","node_sha256":"5d09ba6c6f5bf45fd35db979a1bac66d42034c622c1ffe9c415b9835cc5140b8","cold_receipt_sha256":"f00dbb6b69d8ffa6f2f7b2c26489a090ba49a1fff0b86bb7f951109398d68bec"},
+  "endpoint_angle_children_replayed": false,
+  "unsupported_rows_verified": false,
+  "wall_seconds": 0.41673250001622364,
+  "cpu_seconds": 0.40625,
+  "worker_peak_bytes": 154959872
+}

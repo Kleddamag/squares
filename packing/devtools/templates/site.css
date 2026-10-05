@@ -2512,16 +2512,6 @@ body {
 .site-popover.site-case-pop .site-popover-close:is(:hover, :focus-visible) {
   background: var(--site-wash);
 }
-/* The record's steps are the first line the cross stands beside once it is held at the
-   corner, so they keep clear of it as the label above them does: the next case's link
-   ended under the cross (`think-0dxa`). */
-.site-case-pop .site-case-steps {
-  padding-inline-end: calc(
-    var(--site-popover-close) +
-    var(--site-popover-close-inset) -
-    var(--site-popover-pad)
-  );
-}
 
 .site-case-pop .site-popover-actions {
   background: var(--kpress-doc-bg);
@@ -2536,12 +2526,9 @@ body {
     inline-size: calc(100vw - 1rem);
     padding-inline: 0.75rem;
   }
-  /* Its cross and its steps keep to that narrower padding. */
+  /* Its cross keeps to that narrower padding, as its steps do (below). */
   .site-popover.site-case-pop .site-popover-close {
     margin-inline-end: calc(var(--site-popover-close-inset) - 0.75rem);
-  }
-  .site-case-pop .site-case-steps {
-    padding-inline-end: calc(var(--site-popover-close) + var(--site-popover-close-inset) - 0.75rem);
   }
   .site-popover.site-case-pop:popover-open {
     max-block-size: calc(100dvh - 1rem);
@@ -2558,6 +2545,21 @@ body {
   gap: 1rem;
   justify-content: space-between;
   margin-block-end: 1rem;
+}
+/* The record's steps are the first line the cross stands beside once it is held at the
+   corner, so they keep clear of it as the label above them does: the next case's link
+   ended under the cross (`think-0dxa`). */
+.site-case-pop .site-case-steps {
+  padding-inline-end: calc(
+    var(--site-popover-close) +
+    var(--site-popover-close-inset) -
+    var(--site-popover-pad)
+  );
+}
+@media (max-width: 40rem) {
+  .site-case-pop .site-case-steps {
+    padding-inline-end: calc(var(--site-popover-close) + var(--site-popover-close-inset) - 0.75rem);
+  }
 }
 .kpress .site-case-title {
   font-size: calc(var(--site-font-size-sans-base) * 1.6);

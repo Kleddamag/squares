@@ -43,7 +43,7 @@ SOURCE = """{{FRONT_MATTER}}
 An exact formula is $x^2$.[^proof] See the
 [review](../../../docs/project/reviews/review-2026-09-22-kleddamag-n11-mathematics.md),
 the [record][register] and
-[Paper I]({{PAPER:n11-lower-bounds-explainer#the-result-and-proof-roadmap}}).
+[Part I]({{PAPER:n11-lower-bounds-explainer#the-result-and-proof-roadmap}}).
 
 <figure>
 {{CHARGE_SVG}}
@@ -168,7 +168,7 @@ def test_the_front_is_the_shared_components_in_the_owners_form(
     repository's address as a plain link; this review's own credits a line's space
     below; the draft's version linking the version history; then the dates from
     `sqpack.release`'s `THRESHOLD_*` names. The hero sets the title's formula as the
-    page's own math span, as Paper I does, and the head keeps the title plain."""
+    page's own math span, as Part I does, and the head keeps the title plain."""
     article = ARTICLE.read_text(encoding="utf-8")
     assert article.count("{{FRONT_MATTER}}") == 1
     assert '<div class="credits' not in article
@@ -411,7 +411,7 @@ def test_cross_paper_links_are_filled_per_edition(rendered: tuple[str, str]) -> 
         + render_overview.paper_path(render_overview.N11_LOWER_BOUNDS_EXPLAINER)
         + f"#{anchor}"
     )
-    assert f"[Paper I]({site_target})" in markdown
+    assert f"[Part I]({site_target})" in markdown
     assert f"]({page_target}" not in markdown
     assert "{{PAPER:" not in html + markdown
     assert "/blob/" + REVISION + "/n11-lower-bounds-explainer" not in html + markdown
@@ -426,7 +426,7 @@ def test_cross_paper_links_are_filled_per_edition(rendered: tuple[str, str]) -> 
 
 def test_the_actual_article_links_only_known_papers_at_stable_anchors() -> None:
     """The article links Papers I and III by their slugs, each with an anchor, and never
-    links a data-dependent heading of Paper I, which is no link target."""
+    links a data-dependent heading of Part I, which is no link target."""
     targets = paper_links.paper_link_targets(ARTICLE.read_text(encoding="utf-8"))
     assert targets
     assert {slug for slug, _ in targets} == {
@@ -659,7 +659,7 @@ def test_the_actual_article_renders_with_the_real_figures(published: tuple[str, 
 def test_every_diagram_drawn_in_fixed_ink_keeps_a_light_ground_on_the_dark_theme() -> None:
     """Every figure of this paper is drawn by the series' roles in fixed ink, so each needs
     the light ground on the dark theme; the stylesheet's list is exactly those diagrams,
-    keyed on KPress's resolved theme (Paper III's rule and test)."""
+    keyed on KPress's resolved theme (Part III's rule and test)."""
     fixed, themed = set(), set()
     for svg in paper.render_all_figures().values():
         found = re.match(r'<svg\b[^>]*\bclass="n11-diagram (n11-[a-z-]+)"', svg)

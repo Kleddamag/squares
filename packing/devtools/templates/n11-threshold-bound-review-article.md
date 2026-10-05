@@ -9,7 +9,7 @@ at the reviewed release, v1.0.2, retained in this project’s
 [archive](../../resources/web/external-square-certificates-2026-09-22/kleddamag-11/README.md).
 Its `AUTHORS.md` says OpenAI Codex developed the mathematics and computation under
 Kleddamag’s direction; the certificate develops this project’s T-026 certificate, the
-subject of [Paper I]({{PAPER:n11-lower-bounds-explainer}}).[^authors]
+subject of [Part I]({{PAPER:n11-lower-bounds-explainer}}).[^authors]
 
 ## The Result
 
@@ -19,7 +19,7 @@ the axes, is a placement in which every unit square lies inside the container an
 unit squares have a common interior point; their boundaries may touch.
 Write $s(11)$ for the smallest container side that admits a packing of eleven unit
 squares, and $L_0$ for the side of a container under test, both as
-[Paper I]({{PAPER:n11-lower-bounds-explainer#the-square-packing-problem}}) does; the
+[Part I]({{PAPER:n11-lower-bounds-explainer#the-square-packing-problem}}) does; the
 Attainment lemma in the closing section shows that a smallest side exists.
 A square is unchanged by a quarter-turn, so its angle is only defined modulo $\pi/2$,
 and this paper takes every angle in $[0,\pi/2)$.
@@ -27,13 +27,13 @@ and this paper takes every angle in $[0,\pi/2)$.
 **Theorem.** $s(11)>31/8=3.875$: no packing of eleven unit squares fits in a container
 of side $31/8$, and so none fits in any smaller container.[^statement]
 
-The method is Paper I’s: weighted positions in the container, arranged so that a small
+The method is Part I’s: weighted positions in the container, arranged so that a small
 square placed anywhere must enclose at least a fixed amount of weight while the total
 available is less than eleven times that amount, so eleven squares with disjoint
 interiors cannot all be paid.
 The source changes three things, in order of importance:
 
-1. **five-site k-of-m charges**: charges of the kinds 2-of-5 and 3-of-5 beside Paper I’s
+1. **five-site k-of-m charges**: charges of the kinds 2-of-5 and 3-of-5 beside Part I’s
    2-of-3, each paying a core that holds at least $k$ of its $m$ sites (defined in the
    next section and formally in [the section after it](#from-points-to-k-of-m-charges));
 2. **threshold charges on shrunken parents with strict cores**: the squares are shrunk
@@ -67,15 +67,15 @@ was ${{LADDER_GAP}}$ after this proof, down from $0.0506362$ after T-026.[^regis
 result was superseded within a week: on 2026-09-29 Ke Wang and Can Li reweighted and
 scaled this same certificate to $s(11)>3875000000/999999999$, a step of about
 $3.9\times10^{-9}$ (T-061), and Queuingtheorydotcom proved $s(11)=T$ by different
-machinery (T-060), which [Paper III]({{PAPER:n11-optimality-review}}) reviews.
-It is still the furthest the charge method reached, and Paper III’s field certificates,
+machinery (T-060), which [Part III]({{PAPER:n11-optimality-review}}) reviews.
+It is still the furthest the charge method reached, and Part III’s field certificates,
 which charge cores in the same way, are easiest to follow against it.
 
 <figure>
 {{LADDER_SVG}}
 <figcaption><strong>Figure 2.</strong> The series bound ladder: the rungs of
 the lower bound for eleven squares, from Stromquist’s $2+4/\sqrt5$ (T-010)
-through Paper I’s T-018, T-025 and T-026, T-033, this paper’s T-037 with T-061 beside it,
+through Part I’s T-018, T-025 and T-026, T-033, this paper’s T-037 with T-061 beside it,
 to T-060 at Trump’s $T$. The rungs are evenly spaced and labelled with the values the
 <a href="../../frontier/results.yaml">register</a> holds; on a linear axis the last
 three would be indistinguishable.</figcaption>
@@ -106,7 +106,7 @@ registered. The source’s own attribution claims no invention of the weighted-c
 threshold-counting methods.[^credit]
 
 A **site** is a position in the container.
-Paper I places a weight at each site and pays it to any small square that contains the
+Part I places a weight at each site and pays it to any small square that contains the
 site; Kleddamag’s certificate also uses charges that pay only for a group.
 Take the charge the source numbers {{CHARGE_ORBIT}}, the heaviest in the certificate:
 weight {{CHARGE_WEIGHT}} on the five sites {{CHARGE_SITES}}, rounded here from their
@@ -135,7 +135,7 @@ were checked exactly against the
 The inventory:
 
 - The general $k$-of-$m$ charge, its budget $w\lfloor m/k\rfloor$, and the rule that
-  budgets add across charges that share sites are inherited from Paper I, where T-025
+  budgets add across charges that share sites are inherited from Part I, where T-025
   states them as the general threshold atom and uses the case 2-of-3.[^credit]
 - The signed inclusion–exclusion of a $k$-of-$m$ indicator into rectangle terms, and the
   integer difference sweep that evaluates it, are T-025’s; the source’s coefficients are
@@ -173,13 +173,13 @@ ablation that attributes the gain to any one of them.[^audit]
 
 ## From Points to k-of-m Charges
 
-A **point charge**, which Paper I calls an atom, is a site with a nonnegative
+A **point charge**, which Part I calls an atom, is a site with a nonnegative
 **weight**.[^paper-one] A **core** is a closed square strictly inside a packed square,
 and a core **captures** a site when the site lies in the core.
 The **charge** $C(Q)$ of a core $Q$ is the total it is paid: for point charges alone,
-the sum of the weights of the sites it captures, which Paper I calls the **mass**
+the sum of the weights of the sites it captures, which Part I calls the **mass**
 $\mu(Q)$ of the core.
-Paper I’s [Conditions 1 to 5]({{PAPER:n11-lower-bounds-explainer#the-five-conditions-for-a-point-certificate}})
+Part I’s [Conditions 1 to 5]({{PAPER:n11-lower-bounds-explainer#the-five-conditions-for-a-point-certificate}})
 say that the point charges are symmetric under the container’s symmetries, that their
 total is below eleven, that a finite net of directions reaches $\pi/4$, that the core is
 small enough to fit at every angle between net directions, and that every core at every
@@ -187,7 +187,7 @@ net direction captures mass at least one.
 Eleven packed squares then hold eleven disjoint cores of mass at least one each, which
 is more than the total; that is the contradiction.
 
-The single generalisation is Paper I’s
+The single generalisation is Part I’s
 [threshold atom]({{PAPER:n11-lower-bounds-explainer#proof-of-the-new-lower-bound}})
 with its 2 and 3 replaced by $k$ and $m$.
 A **k-of-m charge** $(S,k,w)$ is a set $S$ of $m=|S|$ distinct sites, an integer
@@ -203,7 +203,7 @@ $S$, and $rk\le m$. The charge therefore pays at most $\lfloor m/k\rfloor$ of an
 of pairwise disjoint cores, and at most $w\lfloor m/k\rfloor$ in total, its
 **budget**.[^charges]
 
-Two consequences are used here that Paper I does not state.
+Two consequences are used here that Part I does not state.
 First, the inequalities add when charges share sites: each one is valid on its own, so
 the total paid to any family of disjoint cores is at most the sum of the budgets, with
 no requirement that the charges have disjoint supports.
@@ -225,7 +225,7 @@ something.
 Single points carry 79% of T-026’s budget and 20% of T-037’s.
 There is also a reason the points could not have done it alone: T-025’s exact ceiling
 family shows that no point measure of mass below eleven with the container’s full
-symmetry exists at the side $191/50$, so no certificate of Paper I’s point form reaches
+symmetry exists at the side $191/50$, so no certificate of Part I’s point form reaches
 even $3.82$.[^register]
 
 ## Parents and the One Inequality
@@ -243,8 +243,8 @@ because $764=4\cdot191$ and $775=31\cdot25$. Scaling a packing by $1/A$ about th
 container’s corner sends parents to unit squares and preserves containment and disjoint
 interiors, and scaling by $A$ sends them back.[^parents]
 
-This is Paper I’s [rational dilation]({{PAPER:n11-lower-bounds-explainer#t-026-finer-directions-and-the-new-lower-bound}})
-read the other way: Paper I scales the certificate up by $q$ and leaves the squares at
+This is Part I’s [rational dilation]({{PAPER:n11-lower-bounds-explainer#t-026-finer-directions-and-the-new-lower-bound}})
+read the other way: Part I scales the certificate up by $q$ and leaves the squares at
 side one; here the squares are scaled down to side $A$ and the certificate stays at
 $191/50$. Both compare a certificate at side $191/50$ with unit squares in a container
 of another side.
@@ -282,7 +282,7 @@ and recomputed from the certificate.</figcaption>
 ## The Certificate’s Charges
 
 The container has eight symmetries, the four rotations and four reflections of the
-square, which form the group $\mathbf{D}_4$ of Paper I’s
+square, which form the group $\mathbf{D}_4$ of Part I’s
 [Condition 1]({{PAPER:n11-lower-bounds-explainer#the-five-conditions-for-a-point-certificate}}).
 The **orbit** of a site is the set of its
 images under the eight symmetries, of size one, four or eight, and the orbit of a
@@ -338,13 +338,13 @@ $$
 $$
 so a rational $t$ gives a rational cosine and sine, and every comparison the checkers
 make is between rational numbers.
-A parent’s angle is written $\varphi$, as Paper I writes a packed square’s, and its
+A parent’s angle is written $\varphi$, as Part I writes a packed square’s, and its
 half-tangent $\tan(\varphi/2)$ ranges over $[0,1)$ as $\varphi$ ranges over
 $[0,\pi/2)$.[^catalogue]
 
 **Folding lemma.** Every parent may be assumed to have angle in $[0,\pi/4]$, one parent
 at a time, without assuming anything about the packing.
-Paper I’s [contradiction argument]({{PAPER:n11-lower-bounds-explainer#the-contradiction-argument}})
+Part I’s [contradiction argument]({{PAPER:n11-lower-bounds-explainer#the-contradiction-argument}})
 proves this for unit squares: a square whose angle lies past $\pi/4$ is reflected across
 the container’s diagonal, which is one of the eight symmetries; the image is a square in
 the container with angle in $[0,\pi/4]$; its core is chosen there and reflected back;
@@ -373,7 +373,7 @@ B\,(\cos d+|\sin d|)<A,
 $$
 since $B(\cos d+|\sin d|)$ is the width of the tilted square’s projection on the
 parent’s axes.
-Paper I meets the same expression as $B(\cos d+\sin d)<1$ under its
+Part I meets the same expression as $B(\cos d+\sin d)<1$ under its
 [Condition 4]({{PAPER:n11-lower-bounds-explainer#the-five-conditions-for-a-point-certificate}}).
 
 **Strict-core lemma.** For every row and every parent angle $\varphi$ with
@@ -639,7 +639,7 @@ and it attains its minimum.[^conclusion]
 
 A packing exists at side $s(11)$, and none exists at side $31/8$, so $s(11)\ne31/8$;
 and since any packing at a side below $31/8$ would also fit in side $31/8$, $s(11)>31/8$.
-Paper I stops at $s(11)\ge L$ because that is what its verifier’s theorem states,
+Part I stops at $s(11)\ge L$ because that is what its verifier’s theorem states,
 and remarks that compactness gives the strict form; here the source states the strict
 form and the lemma above is its proof.[^statement]
 
@@ -712,22 +712,22 @@ and the
 <a href="../../campaign/agent-sessions/session-153-native-full.rows.jsonl">native row journal</a>.</figcaption>
 </figure>
 
-## What Paper III Adds
+## What Part III Adds
 
 T-060 closed the case with different machinery, and
-[Paper III]({{PAPER:n11-optimality-review}}) reviews it; four facts connect the two.
+[Part III]({{PAPER:n11-optimality-review}}) reviews it; four facts connect the two.
 First, when $2k>m$, any two $k$-subsets of an $m$-set intersect, so a core that captures
 $k$ of $m$ sites meets the convex hull of every $k$ of them, and therefore receives
-Paper III’s [median-type charge]({{PAPER:n11-optimality-review#charge-budgets-exclude-many-patterns-at-once}})
-on the same sites, which also has budget $w$: Paper III’s charge pays at least as many
+Part III’s [median-type charge]({{PAPER:n11-optimality-review#charge-budgets-exclude-many-patterns-at-once}})
+on the same sites, which also has budget $w$: Part III’s charge pays at least as many
 cores for the same price.
 The 2-of-3 and 3-of-5 charges are such cases; the 2-of-5 charge, with budget $2w$, has
 no counterpart there.
-Second, this paper’s $\Gamma$ and $M$ play the roles of Paper III’s per-cell floors
+Second, this paper’s $\Gamma$ and $M$ play the roles of Part III’s per-cell floors
 $\Gamma_i$ and budget $b$. Third, this paper folds every angle into $[0,\pi/4]$ because
-its certificate has the whole $\mathbf{D}_4$ symmetry; Paper III works on $[0,\pi/2]$
+its certificate has the whole $\mathbf{D}_4$ symmetry; Part III works on $[0,\pi/2]$
 because its cover of the centres has only the half-turn symmetry.
-Fourth, Paper III’s rows are also closed intervals of the half-tangent $t$, each with the
+Fourth, Part III’s rows are also closed intervals of the half-tangent $t$, each with the
 centres allowed over it.
 
 ## Appendix A: Certificate Schema
@@ -849,7 +849,7 @@ supply.
     and the
     [verified summary](../../resources/web/external-square-certificates-2026-09-22/kleddamag-11/VERIFIED.json);
     the [T-037 record](../../frontier/results.yaml) holds the claim as stated here.
-    Paper I’s remark on compactness is in its
+    Part I’s remark on compactness is in its
     [contradiction argument]({{PAPER:n11-lower-bounds-explainer#the-contradiction-argument}}).
 
 [^register]: [Result register](../../frontier/results.yaml): T-037’s claim, significance
@@ -867,7 +867,7 @@ supply.
     threshold-counting methods is claimed (lines 18–22); the
     [source identity section](../../resources/web/external-square-certificates-2026-09-22/kleddamag-11/ATTRIBUTION.md#L24-L38)
     on the reconstructed JavaScript.
-    Paper I’s [threshold atom]({{PAPER:n11-lower-bounds-explainer#proof-of-the-new-lower-bound}});
+    Part I’s [threshold atom]({{PAPER:n11-lower-bounds-explainer#proof-of-the-new-lower-bound}});
     the [T-025 proof](../../cases/n11_threshold_certificate/t-025-threshold-certificate-proof.md)
     and its [theorem review](../../../docs/project/reviews/review-2026-09-09-threshold-certificate-theorem.md),
     whose finding F6 is the signed expansion and its integer difference array;
@@ -900,10 +900,10 @@ supply.
     The controls’ scope is in the
     [portable controls record](../../resources/web/external-square-certificates-2026-09-22/kleddamag-11/evidence/portable/controls.json).
 
-[^paper-one]: Paper I’s
+[^paper-one]: Part I’s
     [atoms, mass and budget]({{PAPER:n11-lower-bounds-explainer#atoms-mass-and-the-budget}})
     and [core]({{PAPER:n11-lower-bounds-explainer#proof-of-the-new-lower-bound}}),
-    which this paragraph recaps; Paper I derives them in full.
+    which this paragraph recaps; Part I derives them in full.
 
 [^charges]: [Original proof, charges and their budgets](../../resources/web/external-square-certificates-2026-09-22/kleddamag-11/PROOF.md#L31-L39);
     the budget computation in
@@ -956,7 +956,7 @@ supply.
     one sentence; the invariance it rests on is checked in
     [`exact_mixed.py`](../../resources/web/external-square-certificates-2026-09-22/kleddamag-11/exact_mixed.py#L16-L41)
     and in the native premise validator of
-    [`parent_core.py`](../../src/sqpack/fractional/parent_core.py); Paper I proves the
+    [`parent_core.py`](../../src/sqpack/fractional/parent_core.py); Part I proves the
     point case in its
     [contradiction argument]({{PAPER:n11-lower-bounds-explainer#the-contradiction-argument}}).
 

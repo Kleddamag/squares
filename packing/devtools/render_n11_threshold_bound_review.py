@@ -88,7 +88,7 @@ SLUG = N11_THRESHOLD_BOUND_REVIEW
 SITE_PATH = paper_path(SLUG)
 SITE_ROOT = PAPERS_ROOT
 #: The title, plain, for the head and the Markdown edition; the hero sets its one
-#: formula as the page's own math span, as Paper I's does for `n = 11`.
+#: formula as the page's own math span, as Part I's does for `n = 11`.
 TITLE = "A Review of the Certified Lower Bound s(11) > 31/8 for 11 Squares"
 HERO_TITLE = TITLE.replace("s(11) > 31/8", '<span class="tex">s(11) \\gt 31/8</span>')
 #: One line of at most 160 characters, the §8 one-liner cut to the head's limit.
@@ -114,7 +114,7 @@ FRONT = paper_front.check(
             "Kleddamag", "https://github.com/Kleddamag/11-squares-certified-bound"
         ),
         oversight=(paper_front.Person("Joshua Levy", "https://x.com/ojoshe"),),
-        agents=("Claude Fable 5.1",),
+        agents=("Fable 5.1", "Opus 5.5"),
         version=THRESHOLD_REVIEW_EDITION,
         dates=(
             paper_front.Dated("Original proof", THRESHOLD_PROOF_PUBLISHED),
@@ -238,7 +238,7 @@ RELATIVE_LINK = re.compile(r"(?P<start>\]\()(?P<url>\.\.?/[^\s)]+)(?P<end>\))")
 RELATIVE_REFERENCE = re.compile(r"(?m)^(?P<start>\[[^\]\n]+\]:[ \t]*)(?P<url>\.\.?/[^\s]+)")
 RELATIVE_ANCHOR = re.compile(r'(?P<start><a\b[^>]*\bhref=")(?P<url>\.\.?/[^"]+)(?P<end>")')
 #: Words that address a reader who has the page in front of them, which a paper's prose
-#: never does (Paper I's publisher refuses the same words in its Markdown edition).
+#: never does (Part I's publisher refuses the same words in its Markdown edition).
 ONLY_ON_SCREEN = re.compile(
     r"\b(?:chooser|hover|tap|drag|click|button|slider|toggle)\b", re.IGNORECASE
 )

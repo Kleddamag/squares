@@ -14,7 +14,6 @@ session:
   branch: guzhou/n17-residual-compatibility
   primary_bead: think-2uhz
   status: stopped
-  certification_pending: think-q0z7
   goal: Complete independently replayed support for all 96 rows of the SAME frozen B raw graph
     under one 250000 pair capacity; a cap leaves unknowns and ends the attempt.
   workflow_phases:
@@ -150,11 +149,14 @@ session:
     Unchanged failed-job rerun passed at 123.45 s; aggregate correctly refused mixed-attempt wall
     accounting. A coherent full-workflow rerun then passed. All observations retained locally;
     no thresholds, tests or source altered.
+  - 'full gate: fast at 405e12a88cb55107a5e136818b033611868ea8d7: passed (hosted Packing validation
+    run 37297540063 on PR 355, the rebuild of PR 333 on PR 347; this head carries the session''s
+    work unchanged)'
   stop_reason: All 96 rows independently supported; exact frozen binary whole-row route retired.
     Source/evidence hosted certification passed after unchanged reruns for a wall overrun and
     mixed-attempt accounting refusal. No geometric packing/exclusion claim; final metadata CI
     observed separately.
-  next_action: Await Joshua and current-layer required CI under think-q0z7.
+  next_action: Await Joshua's review of the rebuilt layer (PR 355) under think-q0z7.
     No active research executor or reserved follow-up; original intervals are historical.
   ended_at: '2026-10-04T05:35:00.980646+00:00'
   handoff_role: administrative_closeout

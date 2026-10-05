@@ -235,3 +235,16 @@ entries:
     verification:
       receipt: packing/campaign/explorations/X048-session-168-pilots/certificates/s182-k7/verification.json
       verifier: kernel-streamed
+  - name: s182-k8
+    cells: [corner-SW, side-W0, side-W1, side-W2, interior-SW, interior-NW, interior-W]
+    certifier: kernel
+    # Session 182 lane K's target 8 (arity 7), closed with SW9's adaptive-row recipe at
+    # 64 bins in 118 s from the clean run worktree at cebb5d15a. Admitted in
+    # exp-251 by the standing verifier's full pass there.
+    receipt: packing/campaign/explorations/X048-session-182-overnight/receipts/K/kernel-k8.json
+    certificate: packing/campaign/explorations/X048-session-168-pilots/certificates/s182-k8
+    status: admitted
+    evidence: packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-251-h267-n17-overnight-flag-certification.md
+    verification:
+      receipt: packing/campaign/explorations/X048-session-168-pilots/certificates/s182-k8/verification.json
+      verifier: kernel-streamed

@@ -1983,7 +1983,7 @@ PROJECT_EXTRA_KEYS: dict[str, tuple[str, ...]] = {
 #: catalogue registers counts without an edit here. The catalogue's own key, `[Kingbird]`,
 #: is the baseline and attributes no result; each registered packing it carries has a
 #: key of its own whose venue is the catalogue (T-088 and T-089).
-SOURCE_VENUES: dict[str, str] = {KINGBIRD: "Kingbird"}
+SOURCE_VENUES: dict[str, str] = {KINGBIRD: "Squares in Squares"}
 
 #: The source-coverage register: each source repository the record reviews, with the
 #: bibliography key its results are attributed under.

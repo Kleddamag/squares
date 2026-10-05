@@ -2129,7 +2129,9 @@ def test_every_website_card_opens_a_place_the_record_cites(
     assert first == overview_sections.KINGBIRD
     bibliography = safe_load(overview_data.BIBLIOGRAPHY.read_text(encoding="utf-8"))
     filed = {
-        entry["key"] for entry in bibliography["sources"] if entry.get("venue") == "Kingbird"
+        entry["key"]
+        for entry in bibliography["sources"]
+        if entry.get("venue") == overview_sections.SOURCE_VENUES[overview_sections.KINGBIRD]
     }
     assert filed <= overview_sections.project_source_keys()[overview_sections.KINGBIRD]
     own = sorted(

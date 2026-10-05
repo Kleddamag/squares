@@ -156,6 +156,7 @@ DECLARED_CONSUMERS = {
         "the T-092 review, explaining why n = 306 carries a verified ceiling two units of "
         "the fifteenth decimal above the printed side, as the 29 September review did for "
         "n = 206, 259 and 305; it reads the field as the certified ceiling, not as s(n)"
+    ),
     "docs/project/reviews/review-2026-10-05-kingbird-intake-n69-n83-n87.md": (
         "a dated review saying what n = 69, 83 and 87's verified upper lanes may state: the "
         "exact certificates' sides rounded up, above the printed sides, and never s(n) or "

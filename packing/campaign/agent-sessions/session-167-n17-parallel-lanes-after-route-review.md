@@ -448,7 +448,10 @@ session:
   - 'On PR 307 a fast gate passed at e51fce98983dc29beef931b52fd774ed58c976b8 (hosted Packing validation run
     36979940992 and Certificate page run 36979940948; that head carried the session''s work unchanged).
     The successor branch carries the same work without PR 307''s certificate dumps, so that commit is not
-    in its history (it resolves at refs/pull/307/head); re-certification there is owed under think-g1xy.'
+    in its history (it resolves at refs/pull/307/head); the line below re-certifies the handover there
+    (think-g1xy).'
+  - 'full gate: fast at c0941ba4ee131f230e5a1eb52bbee2c5946cbb25: passed (hosted Packing validation run 37247106436, attempt 3, on PR 347,
+    the successor of PR 307; this head carries the session''s work unchanged)'
   - Every verdict rests on an independent review in code sharing nothing with the producer and on a clean committed-tree run whose outputs match the lane's run apart from timings.
   - The records tier passed at every integration commit.
   - packing-validate --push on the committed head ba95da0f, in a worktree, failed 8 of 3,562 tests and passed the rest; in the main checkout six of the eight pass (the worktree's symlinked node_modules and lane load), and the remaining two, the process-group reaping tests, fail identically on unchanged origin/main 8aaa411d in this container, as Session 166 recorded.
@@ -457,7 +460,6 @@ session:
   stop_reason: >-
     The owner's three-hour window closed with every dispatched lane reported and
     integrated. Hosted certification of the branch is pending under think-iuz2.
-  certification_pending: think-g1xy
   next_action: >-
     BC-418 (think-tmz6): close H-266's single-state item and H-268's slide bound, then
     re-record H-261 and H-266; build the H-267 selector and adapt the n11 kernel; pilot

@@ -2502,10 +2502,10 @@ body {
   inline-size: min(28rem, 100%);
   margin: 0;
 }
-/* In the popover the drawing is a little smaller than on the record's page, so the
-   number line under it is in view when the popover opens on a laptop's window. */
+/* In the popover the drawing fills the panel's width and grows and shrinks with it,
+   square at every width (the owner, 2026-10-04, `think-u214`). */
 .site-case-pop .site-case-figure {
-  inline-size: min(24rem, 100%);
+  inline-size: 100%;
 }
 .site-case-summary-facts {
   font-family: var(--kpress-font-sans);
@@ -2520,11 +2520,36 @@ body {
 .site-case-summary .site-atlas-gap-values span[data-anchor="start"] {
   transform: translateX(0.3rem);
 }
-.site-case-figure svg {
+/* The drawing is the figure's own `svg`. A caption's typeset math draws a radical as an
+   `svg` of its own, which KaTeX sizes; sized as the drawing, it collapsed to nothing,
+   and a side such as 3 + ½√2 read as 3 + ½ 2. */
+.site-case-figure > svg {
   block-size: auto;
   color: var(--kpress-doc-text);
   display: block;
   inline-size: 100%;
+}
+/* The drawing's lines are as heavy as the drawing draws them up to 24rem across, the
+   size it was drawn at in the popover, and no heavier however large it is shown
+   (`think-pkz0`). The drawing strokes its frame 1.2 and each square's outline 0.6 of
+   the 102 units its box is wide (`render_frontier_page.packing_svg`), so those lines
+   scale with it: the popover's drawing, 58rem across on a laptop, drew them two and a
+   half times as heavy as at 24rem. Here they are drawn in the page's own units instead
+   (`non-scaling-stroke`), at the same share of the drawing's width (`100cqi`, the
+   figure's) up to 24rem, so a smaller drawing, a result overview's or a phone's, keeps
+   its lines as they were. */
+.site-case-figure {
+  --site-case-figure-lines: min(100cqi, 24rem);
+  container-type: inline-size;
+}
+.site-case-figure > svg :is(rect, path) {
+  vector-effect: non-scaling-stroke;
+}
+.site-case-figure > svg > rect {
+  stroke-width: calc(var(--site-case-figure-lines) * 1.2 / 102);
+}
+.site-case-figure > svg path {
+  stroke-width: calc(var(--site-case-figure-lines) * 0.6 / 102);
 }
 .site-case-figure figcaption {
   color: var(--site-support-color);

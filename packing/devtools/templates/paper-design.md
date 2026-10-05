@@ -1415,10 +1415,23 @@ it.
   note; and what is OPEN. A citation line is a table row of two cells, the label
   (“lower” or “upper”) and the source, so the label column is as wide as the wider label
   however it is drawn, and the source wraps between words beside it.
-  The drawing is as wide as the column allows up to 28rem on the record page, 24rem in
-  the case popover, so the number line under it is in view when the popover opens in a
-  laptop’s window, and 18rem in a result overview; the facts under it keep to 40rem, in
-  the sans face at the note size.
+  The drawing is as wide as the column allows up to 28rem on the record page and 18rem
+  in a result overview, and in the case popover it fills the panel’s width, growing and
+  shrinking with the panel and square at every width (the owner, 2026-10-04,
+  `think-u214`; 24rem until then, so the number line under it was in view when the
+  popover opened in a laptop’s window, where it now follows a scroll of the panel); the
+  facts under it keep to 40rem, in the sans face at the note size.
+  Its lines keep the weight they have at 24rem across, however large it is shown
+  (`think-pkz0`): the drawing strokes its frame 1.2 and each square’s outline 0.6 of the
+  102 units its box is wide (`render_frontier_page.packing_svg`), weights that grow with
+  the drawing, so the popover’s drawing, 58rem across on a laptop, drew them about two
+  and a half times as heavy.
+  The stylesheet draws them in the page’s own units instead
+  (`vector-effect: non-scaling-stroke`), at the same share of the figure’s width
+  (`100cqi`) up to 24rem (`--site-case-figure-lines`): 4.5 and 2.3 pixels from 24rem up,
+  and as before below it, in a result overview and on a phone.
+  `tests/test_case_pages.py` reads the two shares from the drawing itself, so the
+  stylesheet and the drawing cannot part.
   All of it is written when the page is rendered, from the film’s own facts
   (`atlas_film_facts`, read from the atlas figure and `bound-citations.json`), its math
   as kpress’s markup; the gap bar’s labels are placed then too

@@ -21,7 +21,11 @@ import pytest
 
 from devtools import render_case_pages, render_overview
 from devtools.preview_site import serve, settle_math
+from sqpack.probes import probe
 from tests import site_browser, site_renders
+
+PROBES = Path(__file__).resolve().parent / "probes"
+FIGURE = probe(PROBES, "case_popover_figure/figure")
 
 
 def _free_port() -> int:
@@ -154,6 +158,50 @@ def test_an_atlas_cell_opens_the_same_record(browser: Any, served: str) -> None:
         page.keyboard.press("Escape")
         assert not popover.is_visible()
         sync_api.expect(cell).to_be_focused()
+
+
+@pytest.mark.parametrize("width", [1280, 390])
+@pytest.mark.parametrize("opener", ["frontier", "atlas"])
+def test_the_popovers_drawing_fills_its_width_at_its_own_line_weight(
+    browser: Any, served: str, opener: str, width: int
+) -> None:
+    """Opened from a frontier row or an atlas cell, on a laptop's window and a phone's,
+    the case popover's drawing is as wide as the panel's body and square (`think-u214`),
+    and the page is no wider than the window. Its frame and outlines are drawn in the
+    page's own units, as heavy as at the drawing's own share of its width up to 24rem
+    across and no heavier (`think-pkz0`): 4.5 and 2.3 pixels in a 58rem panel, not the
+    11 and 5.5 the drawing's own units would give them. Case 10's caption, side
+    3 + ½√2, keeps its radical, which the drawing's sizing once collapsed."""
+    with _page(browser, width=width) as page:
+        if opener == "frontier":
+            page.goto(f"{served}frontier.html", wait_until="load")
+            row = page.locator("#n-10")
+            row.scroll_into_view_if_needed()
+            row.locator("td.site-thumb svg").click()
+        else:
+            page.goto(served, wait_until="load")
+            page.locator("[data-atlas-grid]").scroll_into_view_if_needed()
+            cell = page.locator('.site-atlas-cell[data-case="10"]')
+            cell.wait_for()
+            cell.scroll_into_view_if_needed()
+            cell.click()
+        popover = page.locator("#pop-case")
+        popover.locator('[data-case-body] article.site-case[data-case="10"]').wait_for()
+        popover.locator(".site-case-figure > figcaption .katex svg").first.wait_for()
+        drawn = page.evaluate(FIGURE)
+        assert drawn is not None
+        assert drawn["caption_math"], drawn
+        assert min(drawn["caption_math"]) > 0.5 * drawn["rem"], drawn
+        assert drawn["width"] == pytest.approx(drawn["body"], abs=1), drawn
+        assert drawn["height"] == pytest.approx(drawn["width"], abs=0.5), drawn
+        if width == 1280:
+            assert drawn["width"] > 2 * 24 * drawn["rem"], drawn
+        assert drawn["frame_effect"] == drawn["outline_effect"] == "non-scaling-stroke"
+        lines = min(drawn["width"], 24 * drawn["rem"])
+        assert drawn["frame"] == pytest.approx(lines * 1.2 / 102, abs=0.01), drawn
+        assert drawn["outline"] == pytest.approx(lines * 0.6 / 102, abs=0.01), drawn
+        assert drawn["page_width"] <= drawn["window_width"], drawn
+        assert drawn["popover_right"] <= drawn["window_width"], drawn
 
 
 def test_a_record_file_shows_in_the_record_page_at_its_own_address(

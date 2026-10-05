@@ -18,8 +18,10 @@ Package metadata, Ruff, and BasedPyright express the broader `3.14`-only compati
 boundary; `uv.lock` pins dependencies, not the interpreter.
 macOS and Linux are supported development hosts.
 Pull requests run the bounded Linux fast surface; integration events run the ordinary
-full checkpoint on Linux and four focused portability checks on macOS. The Rust search
-engine uses the stable Cargo toolchain.
+full checkpoint on Linux.
+Four focused portability checks run on macOS on every event except a stacked pull
+request, one whose base is another branch rather than `main`. The Rust search engine
+uses the stable Cargo toolchain.
 
 From the repository root, then from `packing/`:
 
@@ -387,6 +389,15 @@ A missing or undersampled median produces an explicit warning while the absolute
 still applies. Partial reruns, missing jobs or required timestamps, an incomplete
 jobs-API page, and non-finite register values cannot produce a passing measurement.
 
+Two causes are not judged at all, when they are the only thing wrong with a run: each
+prints `NOT JUDGED`, raises a warning, and exits 0. A prerequisite GitHub cancelled
+before any runner took it is `infrastructure`; the aggregator’s result step already
+fails on its `cancelled` result.
+A later attempt that repeated only the failed jobs is `partial-rerun`: the jobs it kept
+report their first attempt’s times, so the attempt has no whole-run wall, and the result
+step still requires every prerequisite’s success.
+Any other reason left beside either cause keeps the run unmeasurable.
+
 **Both walls are currently advisory under `think-g4n9`.** Each workflow’s entry in
 `pull_request_walls` declares its `enforcement`. Absent means `enforcing`: a wall over
 the budget or the regression ratio fails `packing-required` or `pages-required`. An
@@ -418,6 +429,31 @@ licenses reuse only for fast steps named in the positive `TREE_REUSABLE_FAST_STE
 allowlist. Every deferred step and every unclassified fast step repeats after merge;
 missing artifacts, expired artifacts, API errors, fork runs, and incomplete checks all
 fall back to the complete surface.
+
+### A job no runner took
+
+GitHub cancels a queued job it cannot hand to a hosted runner (“The job was not acquired
+by Runner of type hosted even after multiple attempts”), and the run goes on without it.
+On 2026-10-05 from about 19:17 UTC this happened to 96 jobs after 15 to 35 minutes
+queued (run 37362926042), and the pull requests read red with no test failed.
+Three things answer it:
+
+- `packing-required` and `pages-required` still fail on the `cancelled` result, since a
+  required check does not go green on work that never ran, and then print
+  `FAILURE CLASS: infrastructure` with one `Infrastructure` error annotation per
+  prerequisite that never acquired a runner.
+- `pages-required` runs under `!cancelled()`, as `packing-required` has since `D-380`,
+  so a superseded run no longer queues an aggregator against its cancelled jobs.
+- [`rerun-starved.yml`](.github/workflows/rerun-starved.yml) re-runs the failed jobs of
+  a starved run once. [`rerun_starved.py`](packing/devtools/rerun_starved.py) decides
+  from the API’s JSON and writes every condition to the step summary.
+  The run must be a pull-request or push run, concluded `failure`, on its first attempt,
+  with a job cancelled without a runner, and with no newer run of the workflow for the
+  same commit, or for the same branch and event.
+  The last condition exists because a re-run joins the run’s concurrency group, and
+  re-running an older pull-request run would cancel the newer push’s run.
+  Do not re-run such a run by hand while the pool is not assigning runners; every hand
+  re-run on 2026-10-05 between 19:48 and 20:39 was cancelled or still queued at 20:45.
 
 ### The behavioural lanes
 
@@ -957,6 +993,10 @@ as the runs it would report on, because the defect *is* that no run is created.
 A `push` event fires off the branch tip, which exists whatever the base is doing, and
 its check run is keyed to the head commit — so it appears on the pull request, where the
 missing runs would have been.
+It merges against the base of the branch’s open pull request, which is the merge GitHub
+builds, and against `main` when the branch has no open pull request.
+Until 2026-10-05 it always used `main`, which put a false red on every push to a stacked
+branch (46 on that day alone), whose pull request targets the branch below it.
 
 When it fails, it is telling you one thing: **no `pull_request` run will be created for
 this branch until the conflict is resolved**, so the pull request’s checks will sit
@@ -1053,10 +1093,10 @@ module, card label, part and title, in reading order).
 structure audit (`paper_structure`), the Pages scope (`pages_scope`), the preview build
 (`preview_site`) and the deployed-site check (`check_published_site`) read it.
 Adding a paper is one entry there and its renderer, modeled on
-`render_n11_optimality_review.py`; then its own Pages job and `-unchanged` notice in
-`pages.yml` with a scope output, a staged step in `publish` and a clause in
-`pages-required`, budgets for both jobs in `gate-budgets.yaml`, its version and dates in
-`sqpack.release`, its rows in `devtools.artifact_dates`, and its version in
+`render_n11_optimality_review.py`; then its own Pages job in `pages.yml` with a scope
+output and a line in `scope`’s skipped-page notices, a staged step in `publish` and a
+clause in `pages-required`, a budget for the job in `gate-budgets.yaml`, its version and
+dates in `sqpack.release`, its rows in `devtools.artifact_dates`, and its version in
 `check_published_site.PAPER_VERSIONS`. The workflow tests name each step that is
 missing. A renderer is given the site’s root (`--site`, by default `packing/site/`) and
 writes its paper there, where it is served, so every check reads the page at its
@@ -1080,8 +1120,8 @@ A pull request runs the same build without deploying, so a render that breaks fa
 review rather than the next deploy.
 It builds only the pages its changes can affect: the workflow’s `scope` job runs
 `devtools.pages_scope`, which reads each builder’s `RENDER_INPUTS` and the tools the
-workflow runs for that page, and a page none of the changed files touches is skipped by
-a job named for the reason.
+workflow runs for that page, and a page none of the changed files touches is skipped,
+with a notice from `scope` naming the page and the reason.
 `pages-required` is the aggregate a branch rule would require; it passes such a skip and
 nothing else.
 
@@ -1102,7 +1142,7 @@ The outputs are `site/papers/n11-threshold-bound-review.html`, `.md`, and `.pdf`
 Its Pages job, `n11-threshold-bound-review`, checks out the archived Kleddamag proof,
 the T-059 replay journal and the native verifier’s row journal beside the code, runs the
 figure and renderer tests, and renders and checks the page, the Markdown and the PDF;
-its `-unchanged` notice says why when no input of it changed.
+`scope`’s notice says why when no input of it changed.
 It explains accepted evidence and reruns no sweep.
 
 The separate **T-060 optimality paper**, Part III, lives at

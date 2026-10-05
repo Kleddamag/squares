@@ -112,6 +112,10 @@ allowlist:
 # threshold certificate's bindings against pinned digests, and paper_figures.py, whose one
 # site holds the bound ladder's register records against a digest. Recorded as inherited
 # under think-29r8, which decides each against OR-16.
+# The merge of origin/main at 4d0c12129 on 2026-10-05 brought in rerun_starved.py (#376),
+# whose one site compares a workflow run's head_sha with another run's to find a newer run
+# of the same commit: run identity from the Actions API, not a content digest. Recorded as
+# inherited under think-29r8 with main's other inherited sites.
 baseline:
   packages/workbench/tools/workbench_tools/check_candidate.py: 1
   packing/benchmarks/bench_n11_fast_cover.py: 3
@@ -236,6 +240,7 @@ baseline:
   packing/devtools/replay_evand_zmx2.py: 1
   packing/devtools/replay_guzhou_r071.py: 2
   packing/devtools/replay_n17_rational_upper.py: 1
+  packing/devtools/rerun_starved.py: 1
   packing/devtools/run_fixed_core_calibration_profiles.py: 9
   packing/devtools/run_n11_nonfield_batch.py: 1
   packing/devtools/s12_angle_net_rescale.py: 1

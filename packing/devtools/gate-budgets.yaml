@@ -62,9 +62,9 @@ policy:
   # both rules computed, printed word for word and annotated on the run, and does not fail
   # the run for them; it must name a `tracking_bead` and an `advisory_reason`, and
   # `devtools.check_gate_budgets` refuses one whose bead is closed or unknown, as it does
-  # for an advisory pull-request wall. Rule 1, the ceiling, is outside this block and is
-  # never relaxed (`OR-17`); `--enforce-budget` overrides the relaxation for an operator
-  # asking on purpose, and nothing a contributor runs by hand is a pull-request run.
+  # for an advisory pull-request wall. Rule 1, the ceiling, is outside this block; its own
+  # relaxation is `pull_request_ceiling` below. `--enforce-budget` overrides both for an
+  # operator asking on purpose, and nothing a contributor runs by hand is a pull-request run.
   #
   # The measurement, 2026-09-30, read from the job logs of thirty-four pull-request runs
   # on twelve branches (`tests/fixtures/tier-walls/hosted-readings-2026-09-30.yaml`): the
@@ -91,6 +91,25 @@ policy:
       every test green. On a pull request both rules report and do not fail until
       think-be1s arms them against run-to-run spread -- a median over hosted samples or a
       runner-normalised wall -- rather than one reading; the ceiling is enforced throughout.
+  # Rule 1 and the per-test call-wall rule on a hosted pull-request run. `enforcing` when
+  # absent. `advisory` reports a ceiling breach, and a test call of 12 s or more, word for
+  # word with a `Cost` warning, and does not fail the run for them, up to a hang detector:
+  # a tier wall above `hang_ratio` times its ceiling, or one test call of
+  # `per_test_hang_seconds` or more, still fails it. Main, scheduled and deep runs keep the
+  # ceiling enforced, so the record and the ceiling still move only with evidence.
+  pull_request_ceiling:
+    enforcement: advisory
+    tracking_bead: think-6erz
+    hang_ratio: 2.0
+    per_test_hang_seconds: 45.0
+    advisory_reason: >-
+      Owner decision 2026-10-05 in session 182. Of 36 red pushes to stack pull requests that
+      day, 28 failed on a wall verdict alone with every test green (CI stabilization
+      evaluation, 2026-10-05); the +9% raise of 3d89c6fa5 was breached again within hours,
+      shard C at 171.2 s against 168 s on #356 (run 37380844925); hosted runner speed varies
+      1.6 to 1.8x (think-g4n9) and 2.3x on identical code (think-53a2). A single hosted wall
+      cannot tell a slow runner from a slow change, so on a pull request it reports until
+      think-6erz judges the ceiling against a median or a runner-normalised wall.
 
 # One entry per tier `packing-validate` can select as a whole. A tier with no entry here
 # fails `devtools.check_gate_budgets`, so a new tier cannot arrive without a ceiling.

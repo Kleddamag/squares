@@ -1594,6 +1594,18 @@ def _quick_lane_command(jobs: int, shard: int) -> tuple[str, ...]:
     )
 
 
+def _pull_request_ceiling() -> gate_budgets.CeilingAdvisory | None:
+    """The register's ceiling relaxation for hosted pull requests, or None to enforce.
+
+    An unreadable register enforces: the relaxation is a declared exception, and a run
+    that cannot read the declaration is held to the rule it relaxes.
+    """
+    try:
+        return gate_budgets.load().policy.pull_request_ceiling
+    except gate_budgets.BudgetError:
+        return None
+
+
 def _fast_tests(context: Context, shard: int) -> str:
     """Enforce call wall time; retain CPU counters as diagnostics without attribution."""
     output = _run(context, _quick_lane_command(context.jobs, shard))
@@ -1605,6 +1617,20 @@ def _fast_tests(context: Context, shard: int) -> str:
         for entry in _call_durations(output)
         if entry[0] >= QUICK_TEST_WALL_BACKSTOP_SECONDS
     ]
+    relaxed = _pull_request_ceiling() if waiting and _hosted_pull_request() else None
+    if relaxed is not None:
+        hung = [entry for entry in waiting if entry[0] >= relaxed.per_test_hang_seconds]
+        if not hung:
+            print(
+                f"{len(waiting)} test(s) held the pull-request surface for "
+                f"{QUICK_TEST_WALL_BACKSTOP_SECONDS:g}s or more of call wall time, "
+                f"reported and not failed:\n{_render_durations(waiting)}\n"
+                f"  {gate_budgets.advisory_note(relaxed.advisory)}"
+            )
+            for seconds, node in waiting:
+                print(f"::warning title=Cost::{node} took {seconds:.2f}s of call wall time")
+            return output
+        waiting = hung
     if waiting:
         raise StepFailureError(
             f"{len(waiting)} test(s) held the pull-request surface for "
@@ -6068,6 +6094,10 @@ def _render_budgets(register: gate_budgets.Register) -> None:
     if policy.pull_request_relative_rules is not None:
         print(
             f"  enforcement: {gate_budgets.advisory_note(policy.pull_request_relative_rules)}"
+        )
+    if policy.pull_request_ceiling is not None:
+        print(
+            f"  enforcement: {gate_budgets.advisory_note(policy.pull_request_ceiling.advisory)}"
         )
     for tier in register.tiers:
         recorded = (

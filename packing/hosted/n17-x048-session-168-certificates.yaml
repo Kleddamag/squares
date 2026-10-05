@@ -492,6 +492,16 @@ objects:
   size: 8329
   sha256: 34b4ca69a1f69e832c53cb4e2ef4764af7a94b89bcd0d47b5419ab54d1360697
   description: kernel certificate of s182-k3 (session 182, lane K target 3)
+- path: packing/campaign/explorations/X048-session-168-pilots/certificates/s182-k4/node-262872026b1ef3f66519ac28ed57282d2379c5cc1d30dda63ff3ec954973decb.json.gz
+  asset: node-262872026b1ef3f66519ac28ed57282d2379c5cc1d30dda63ff3ec954973decb.json.gz
+  size: 17175229
+  sha256: f15da8fa69d016f2dce89f938b67a420a1c80b4d1397de4ca93cf507aa2d25f7
+  description: kernel certificate of s182-k4 (session 182, lane K target 4)
+- path: packing/campaign/explorations/X048-session-168-pilots/certificates/s182-k4/seed-86c954d5f78a7ece88e162a5e68492748e6c5756b2833df054324a2a2fe887da.json.gz
+  asset: seed-86c954d5f78a7ece88e162a5e68492748e6c5756b2833df054324a2a2fe887da.json.gz
+  size: 7697
+  sha256: 5b54ee927cd9cd31ffd9f0760d57e3858b661128fd034a108e0ae1658a541b01
+  description: kernel certificate of s182-k4 (session 182, lane K target 4)
 - path: packing/campaign/explorations/X048-session-168-pilots/certificates/s182-m5683195/node-59e605864e3301e3687e327f2547a9813921c9496409c75d493b62b1847cef29.json.gz
   asset: node-59e605864e3301e3687e327f2547a9813921c9496409c75d493b62b1847cef29.json.gz
   size: 30542844

@@ -197,6 +197,13 @@ carry a `source-evidence` blocker naming `pending_catalogue_intake` and the newe
 soon as either capture or the record stops bearing it out, so an entry is removed in the
 commit that takes the side.
 
+Each entry also names the open bead that owns the intake and the day it was recorded,
+and `check_bead_tree` fails one whose bead has closed: three counts held with no owner
+trailed the catalogue from 2026-09-30 until the owner noticed on 2026-10-05. An
+[intake pass](../campaign/result-import.md#running-an-intake-pass) captures the
+catalogue into scratch and compares it with the retained capture; taking a new capture
+into the record remains the dated survey above.
+
 ```shell
 uv run --frozen python -m devtools.check_source_coverage
 ```

@@ -1156,6 +1156,7 @@ case or experiment separately.
 | [Handoff: Basin Identity and the Integrated PR Reviews](docs/project/handoff-2026-08-23-basin-identity-and-two-reviews.md) | dated handoff record | record | superseded | [Synopsis: The `s(n)` Program](SYNOPSIS.md) |
 | [Handoff: Where the Square-Packing Loop Stands](docs/project/handoff-2026-08-23-quench-spine.md) | dated handoff record | record | superseded | [Synopsis: The `s(n)` Program](SYNOPSIS.md) |
 | [Postmortem: The Soundness Class, and the Perimeter That Let D-014 Through](docs/project/postmortems/postmortem-2026-08-23-soundness-class.md) | failure analysis and lessons | supporting | maintained | — |
+| [Postmortem: Three Catalogue Intakes Nobody Owned](docs/project/postmortems/postmortem-2026-10-05-orphaned-catalogue-intake.md) | failure analysis and lessons | record | retained | — |
 | [Proof Verification Consolidation and Independent n11 Completion](docs/project/specs/active/plan-2026-09-29-proof-verification-consolidation.md) | implementation plan | current | transient | — |
 | [Feature: Minimal Packing Toolkit](docs/project/specs/active/plan-2026-08-22-minimal-packing-toolkit.md) | implementation plan | current | transient | — |
 | [Feature: Unattended Square-Packing Research Readiness](docs/project/specs/active/plan-2026-08-23-overnight-cartography-run.md) | implementation plan | current | transient | — |
@@ -1265,9 +1266,12 @@ routine task.
 
 ### Result Import and Efficient Confirmation
 
-A result published by others, arriving as an issue or a link, enters the record through
-the [result import process](packing/campaign/result-import.md), a standard sequence of
-phases and not a workflow of its own.
+A result published by others enters the record through the
+[result import process](packing/campaign/result-import.md), a standard sequence of
+phases and not a workflow of its own, from whichever source delivers it: an issue or a
+comment, an owner’s message, the Kingbird catalogue or another catalogue, or a watched
+repository. An intake pass, run when the owner asks, sweeps every source at once, and
+whatever the record defers names the open bead that owns it.
 That runbook owns the stages and their exits; this section says what W1 and W2 each
 contribute.
 
@@ -6358,14 +6362,14 @@ table above.
 
 Kept with the same discipline as the experiment record, because the aggregate says
 things no individual bug report can.
-The log contains 518 defects, [one line each](defects.md), generated from `defects.yaml`
+The log contains 519 defects, [one line each](defects.md), generated from `defects.yaml`
 and checked in the gate.
 
 | Class | Count | The system … |
 | --- | ---: | --- |
 | soundness | 108 | asserted something false about the mathematics |
 | validity | 128 | was correct, but the measurement did not bear on the question |
-| bookkeeping | 193 | recorded something its own evidence contradicts |
+| bookkeeping | 194 | recorded something its own evidence contradicts |
 | robustness | 70 | did not finish, or finished only by luck |
 | performance | 19 | worked, but cost far more than it should |
 
@@ -6391,7 +6395,7 @@ Two observations the log exists to make.
 error looks like a success.
 That is the dangerous class, and it is the majority of it.
 
-**The automated gate has caught eighty-two defects in 518, and no soundness defect
+**The automated gate has caught eighty-two defects in 519, and no soundness defect
 ever.** Every soundness failure was found by a control cell whose answer was known in
 advance, a rule written down before the measurement, a generated view contradicting its
 source, or someone reading carefully.

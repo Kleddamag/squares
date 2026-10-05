@@ -6,13 +6,15 @@ Both keep R068’s charge unchanged and rebuild its strict cores for a smaller p
 R070 claims `46604427/10000000 = 4.6604427` over 5,107 angle intervals, and R071 claims
 `18641771/4000000 = 4.66044275` over 5,114.
 R071 is the strongest public claim for this case the record has seen, `11/4000000`
-above R068’s verified `116511/25000`.
-Neither has been replayed here.
+above R068’s `116511/25000`.
+R071 was replayed here in full on 5 October 2026 and passed
+([Stage 4 Replay of R071](#stage-4-replay-of-r071)); R070 was not replayed.
 
-This packet holds the source bytes, the source’s CI metadata, and a pre-replay audit of
-both certificates against R068’s.
-Retaining it registers no result and moves no bound; registration and review are
-separate records.
+This packet holds the source bytes, the source’s CI metadata, a pre-replay audit of both
+certificates against R068’s, and the receipts of R071’s replay and its two controls.
+Retaining it registers no result and moves no bound; the register entry (`T-093`), the
+[stage 4 review](../../../../docs/project/reviews/review-2026-10-05-guzhou-r071.md) and
+the case record are separate records.
 
 ## Provenance
 
@@ -75,6 +77,7 @@ The container side stays `L = 4613/1000`; the parent sides are
 | `17Γ − M` | 7404 | 7404 | 7404 |
 | Angle intervals | 4,991 | 5,107 | 5,114 |
 | Row-level records published | 2 + 2 partitions | 4 + 4 partitions | none |
+| Replayed here | 2026-09-28 | no | 2026-10-05 |
 
 Every proof step is R068’s with the new `A`: the same charge, the same budget rules, the
 same contradiction `17Γ − M = 7404 > 0` and the same compactness step for the strict
@@ -148,7 +151,8 @@ certificate digest above.
 The artifacts expire on 28 and 29 December 2026.
 The artifact and job-log downloads redirect to an Azure blob host this session’s egress
 refuses (HTTP 403), so the fresh partition records the `r071-bound` artifact holds, the
-only row-level record of R071, are not retained here.
+source’s only row-level record of R071, are not retained here; the replay here
+regenerated both ledgers ([below](#stage-4-replay-of-r071)).
 A passing CI run is the source’s own replay on the source’s own runner, not a replay
 here.
 
@@ -175,30 +179,60 @@ processes, a C++ and a BigInt checker on each of three partitions, all exiting 0
 executable digest is the one R068’s and R070’s own runs record.
 It is a summary: the rows behind it are the missing C027 partitions.
 
-## Pricing the Replay
+## Stage 4 Replay of R071
 
-The replay that would decide R071 is the source’s own `run_public.js bound`, or its
-equivalent with the R068 commands: build `verify.cpp`, run `replay.js` on the
-certificate at two partitions, and compare the fresh C++ and BigInt ledgers with each
-other through `audit_guzhou_r071 compare R071 FRESH --published FRESH`.
-It needs `g++`, the Boost headers and Node.
+R071 was replayed here on 5 October 2026 by its own launcher, from 04:53:42Z to
+05:51:40Z, with [`devtools.replay_guzhou_r071`](../../../devtools/replay_guzhou_r071.py)
+staging the package and keeping the receipts in [`receipts/r071/`](receipts/r071/).
 
-- **Measured here, for R068**: 4,093.0 CPU-seconds and 4,648.5 s wall on two cores
-  shared with three other lanes, over 2,210,145,745,763 cells (the
-  [R068 packet’s replay record](../n17-guzhou-r068-2026-09-28/receipts/replays.json)).
-- **Published for R070**: 2,260,759,562,719 cells, 2.3% more than R068; R071 adds seven
-  bisected intervals to R070’s 5,107.
-- **Estimated for R071 here**: about 4,200 CPU-seconds, 70 CPU-minutes, and about 80
-  minutes’ wall on two contended cores; R070 would cost the same.
-- **Reported by the source**: 1,694 s wall at three partitions for C027, 869 s at four
-  for R070, both on machines the source does not describe; and the CI’s `bound` job, 16
-  min 43 s on a GitHub-hosted runner at two partitions.
+- **Staging.** `stage` writes the 123 files of `certificates/R071-C029/`, refusing any
+  whose SHA-256 is not the subtree manifest’s: the retained ones from this packet and
+  the sixteen pinned `upstream/` files from the R068 packet. The run staged the research
+  files from this packet, which then retained them; since the packet pins them, `stage
+  --checkout` takes them from a clone at `8c11f696`, and that staging is byte-identical
+  to the one the run used.
+- **The package check.** `node check_package.js`: `PASS_BYTES_ONLY`
+  ([`check_package.log`](receipts/r071/check_package.log)).
+- **The replay.** `N17_TIMEOUT_MINUTES=600 taskset -c 2,3 node run_public.js bound`
+  ([`bound.log`](receipts/r071/bound.log)) built `verify.cpp` with g++ 13.3.0 at `-O3
+  -std=c++17` against the Boost 1.83 headers, giving executable `cf761bb5…19d5`, the
+  bytes R068’s replay here built from the same source, and ran it beside Kleddamag’s
+  BigInt checker under `replay.js` at two partitions with Node v22.22.0, on a shared
+  four-core host at load 5 to 21. The C++ partitions took 1,577 s and 1,693 s and the
+  BigInt ones 3,409 s and 3,464 s; the whole took 3,478 s of wall and 3,238 CPU-seconds,
+  about a fifth less than the 4,200 the import priced. `run_public.js` wrote
+  [`REPLAY.json`](receipts/r071/replay/REPLAY.json) `PASS_R071_C027_GLOBAL_REPLAY`, and
+  `replay.js` wrote [`THEOREM.json`](receipts/r071/replay/THEOREM.json)
+  `PASS_COMPLETE_CPP_AND_BIGINT_EXCLUSION` with target `18641771/4000000`, 5,114
+  intervals, budget `17000448944`, minimum `1000026844`, surplus `7404` and the
+  certificate’s digest.
+- **The rows.** `audit_guzhou_r071 compare R071 FRESH --published FRESH`
+  ([`compare.json`](receipts/r071/compare.json)) finds the two C++ and two BigInt
+  partitions identical, 0 of 4 × 5,114 rows differing: every row at minimum
+  `1000026844`, 2,263,809,819,494 cells in all, 20,860 sites and 49,208 signed terms,
+  least strict core margin just above `10⁻¹²` at row 2647, reduced triples SHA-256
+  `6c9d7202…bfe3`. The source retains no row of R071, so this compares the two fresh
+  ledgers with each other. The stage 4 review’s own sweep of 227 rows, written before
+  this replay and sharing no code with the source, equals them at every one of those
+  rows, minimum and cell count, and its least core margin is the C++ header’s.
+- **The controls** ([`receipts/r071/controls/`](receipts/r071/controls/)). `control`
+  feeds two mutated copies of the certificate to the built C++ checker and the BigInt
+  checker. The over-claim keeps every core and shrinks the parent to target
+  `9321/2000`: both refuse it before any sweep, as a non-strict core. The drop-rule
+  zeroes the heaviest rule orbit’s weight and takes its 198,960,224 units off the
+  budget, which still passes the counting check: both refuse it by the sweep at interval
+  0, minimum 950,286,788 against the requested 1,000,026,409.
+  `tests/test_guzhou_r071_packet.py` holds both refusals, the replay’s values and the
+  row agreement.
 
-The checker sources are byte-identical to R068’s, which were reviewed with R068, so the
-replay needs no new reading of the checkers. The Boost headers are not installed in this
-container, and R068’s replay installed `libboost1.83-dev` for its run.
-R070 needs no replay of its own once R071’s passes; its published ledgers already agree
-row by row. The two geometry replays decide no bound and are not part of it.
+The partition records are stored as deterministic gzip
+([Compressed Files](#compressed-files)). In the logs and `REPLAY.json` the scratch
+directory is written `WORK`; the partition records, `THEOREM.json` and `INPUTS.json`
+name no path and are byte for byte as written.
+The run measured here replaces the import’s estimate, which scaled R068’s measured
+4,093 CPU-seconds by R070’s published cells. R070 needs no replay of its own; its
+published ledgers already agree row by row, and its geometry, like R071’s, decides no
+bound.
 
 ## What Is Retained, and What Is Not
 
@@ -299,6 +333,10 @@ and remove the restored copies afterwards.
 | `n17-square-packing/certificates/R070-4.6604427/project/followup_c016/results/target_4.6604427/paired_replay/node-1.json.gz` | upstream | `c523f75bb8296d95cab3a6ecd4e91f8003173bf1` | `7f0fd09fa687e7c9061e07c397e989f3bace317d73cfd5e3e7dca6c753aed9c6` |
 | `n17-square-packing/certificates/R070-4.6604427/project/followup_c016/results/target_4.6604427/paired_replay/node-2.json.gz` | upstream | `5091ff6147f924fb223c98a513a375b176ba0fca` | `da743ccf691f9980ab1184e40100cf7cace597378b7bea3d11e3b6c8714a8e90` |
 | `n17-square-packing/certificates/R070-4.6604427/project/followup_c016/results/target_4.6604427/paired_replay/node-3.json.gz` | upstream | `f9e497c461b959ee98c44f4169076e599f791da3` | `72a6da299375ac89873948124ea278cb0b6dd939361165bd9b3afbb818b6df9f` |
+| `receipts/r071/replay/cpp-0.json.gz` | receipt | `27609e7cf774afeeb5c26cb5e4a024a8768df15a` | `0d1d6d6281e6c6990c980469096fdcb4f98935f74af602a43fd99111e96333dd` |
+| `receipts/r071/replay/cpp-1.json.gz` | receipt | `9ca802b96266ac9c7d395491170c4e642e92259a` | `969bd5e3f433038415baac7cceab42b3644b92d01ead0e6aecf7791bc10a57b1` |
+| `receipts/r071/replay/node-0.json.gz` | receipt | `a00dc36c11952c48feaed9070ab0d59d8eb8d456` | `d272e71ba8f856987ba8bc30aab6589c9be2b1fe710ea8ad7735d2531459a66d` |
+| `receipts/r071/replay/node-1.json.gz` | receipt | `8dc9ac377da4f7b775226286c3a787f909052726` | `d87012f1edaef49cea43971f9b53fd2d2df3f93ccc072f5dbc6e0769bf05f381` |
 
 ## Retrieval Hashes
 

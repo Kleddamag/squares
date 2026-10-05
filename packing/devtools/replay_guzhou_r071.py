@@ -263,7 +263,8 @@ def control(kind: str, work: Path, start: int, count: int) -> list[dict[str, obj
     label = (
         f"{package}, the staged R071 package; certificate {_sha256(data)}, the {kind} "
         f"mutation of {CERTIFICATE_SHA256} ({CERTIFICATE}): {change}; "
-        f"intervals {start} to {start + count - 1}"
+        f"intervals {start} to {start + count - 1}; C++ executable "
+        f"{_sha256(executable.read_bytes())}"
     )
     commands = {
         "cpp": [
@@ -295,13 +296,24 @@ def control(kind: str, work: Path, start: int, count: int) -> list[dict[str, obj
     ]
 
 
+def _copy(source: Path, target: Path, work: Path) -> None:
+    """Copy one record, writing the scratch directory as ``WORK`` in a text receipt."""
+    data = source.read_bytes()
+    if source.suffix == ".log" or source.name == "REPLAY.json":
+        data = data.replace(str(work).encode(), b"WORK")
+    target.write_bytes(data)
+
+
 def retain(work: Path) -> list[str]:
     """Copy the run's records and receipts into the packet; return the table rows.
 
     The replay's records go to ``receipts/r071/replay/``, its receipts to
     ``receipts/r071/``, and each control's receipts and checker outputs to
     ``receipts/r071/controls/``; the mutated certificates are not kept, since
-    `mutate` re-derives them from the retained one.
+    `mutate` re-derives them from the retained one. The scratch directory is written
+    ``WORK`` in the logs and ``REPLAY.json``, as R068's replay record writes it; the
+    partition records, ``THEOREM.json`` and ``INPUTS.json`` name no path and are kept
+    byte for byte.
     """
     run_dir = work / "bound"
     replay = RECEIPTS / "replay"
@@ -313,14 +325,14 @@ def retain(work: Path) -> list[str]:
         target = replay / f"{name}.json"
         shutil.copyfile(run_dir / "global" / f"{name}.json", target)
         rows.append(describe(PACKET, compress(target), "receipt").markdown())
-        shutil.copyfile(run_dir / "global" / f"{name}.log", replay / f"{name}.log")
+        _copy(run_dir / "global" / f"{name}.log", replay / f"{name}.log", work)
     for name in ("THEOREM.json", "INPUTS.json"):
         shutil.copyfile(run_dir / "global" / name, replay / name)
     if (run_dir / "REPLAY.json").is_file():
-        shutil.copyfile(run_dir / "REPLAY.json", replay / "REPLAY.json")
+        _copy(run_dir / "REPLAY.json", replay / "REPLAY.json", work)
     for log in sorted((work / "receipts").glob("*.log")):
         folder = controls if log.name.startswith("control-") else RECEIPTS
-        shutil.copyfile(log, folder / log.name)
+        _copy(log, folder / log.name, work)
     for kind in sorted(MUTATIONS):
         for output, checker in (("cpp.json", "cpp"), ("node.json", "bigint")):
             source = work / "controls" / kind / output

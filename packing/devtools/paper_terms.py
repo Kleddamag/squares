@@ -36,7 +36,9 @@ reported by its number:
 7. Every formula is typeset. No TeX reaches the reader as text: a `$` or a TeX command
    (`\\gt`, `\\binom`) in the prose, the captions or the title means a formula the page's
    math pipeline never saw, such as a display formula run into its sentence or a
-   caption's `$...$` in an HTML block that is not passed to it.
+   caption's `$...$` in an HTML block that is not passed to it. A display formula is a
+   Markdown `$$` block in every paper, so every display has the same spacing, overflow
+   and print behaviour; Part I's `.tex-d` wrapper is refused.
 
 `check_paper` runs rules 1-5 on one page; `check_math` runs rule 7 on one page's HTML,
 the hero title included; `check_series` runs rule 6 on any number of pages;
@@ -769,6 +771,10 @@ def check_paper_anchors(
 
 #: TeX as the reader would see it in prose: a math delimiter or a control word.
 _RAW_TEX = re.compile(r"\\[A-Za-z]+|\$")
+#: A display formula wrapped by hand rather than written as a `$$` block.
+_HAND_DISPLAY = re.compile(
+    r'<[a-z]+\b[^>]*\bclass="[^"]*\btex-d\b[^"]*"[^>]*>(.*?)</', re.DOTALL
+)
 #: The paper's title, which the exposition reader skips with the rest of the front.
 _HERO_TITLE = re.compile(r'<div class="hero">\s*(<h1\b.*?</h1>)', re.DOTALL)
 
@@ -788,8 +794,14 @@ def _raw_tex(page: Page, where: str) -> list[Finding]:
 
 
 def check_math(html: str) -> list[Finding]:
-    """Rule 7 on one rendered paper: no TeX in its prose, captions or title."""
+    """Rule 7 on one rendered paper: no TeX in its prose, captions or title, and every
+    display formula a `$$` block."""
     findings = _raw_tex(read_page(html), "the exposition")
+    for display in _HAND_DISPLAY.finditer(html):
+        context = _WHITESPACE.sub(" ", display.group(1))[:60].strip()
+        findings.append(
+            Finding(7, "tex-d", f"display formula outside a $$ block: {context}...")
+        )
     for title in _HERO_TITLE.finditer(html):
         findings.extend(_raw_tex(read_page(title.group(1)), "the title"))
     return findings

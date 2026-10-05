@@ -401,6 +401,12 @@ def test_rule_7_tex_printed_as_text_is_refused_in_prose_captions_and_title() -> 
     assert paper_terms.check_math(title) == []
     raw_title = PAGE.replace('<h1 id="t">Title</h1>', '<h1 id="t">Bound s(11) \\gt 31/8</h1>')
     assert [finding.subject for finding in paper_terms.check_math(raw_title)] == ["\\gt"]
+    # A display formula is a `$$` block, never a hand-wrapped `.tex-d` run.
+    hand = PAGE.replace(
+        "<p>A roadmap names",
+        '<p class="centred"><span class="tex-d">s(11) \\ge L</span></p><p>A roadmap names',
+    )
+    assert [finding.subject for finding in paper_terms.check_math(hand)] == ["tex-d"]
 
 
 def test_a_registry_out_of_form_is_refused() -> None:

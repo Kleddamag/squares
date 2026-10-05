@@ -168,7 +168,8 @@ def test_title_block_names_the_result_without_a_subtitle(page: str, document: st
     assert "Weighted Certificates for Square Packing" not in page
     current = current_bound_facts()
     theorem = (
-        f"$$s(11) \\;\\ge\\; L = {current.bounded_side_tex} = {current.bounded_side_decimal}.$$"
+        "$$\ns(11) \\;\\ge\\; L = "
+        f"{current.bounded_side_tex} = {current.bounded_side_decimal}.\n$$"
     )
     assert theorem in document
 

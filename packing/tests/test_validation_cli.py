@@ -1185,21 +1185,65 @@ def test_neither_durations_section_is_read_as_the_other() -> None:
     assert validate._DURATION_HEADER not in validate._CPU_DURATION_HEADER
 
 
-def test_a_test_expensive_by_waiting_is_caught_by_the_wall_backstop(
-    monkeypatch: pytest.MonkeyPatch,
-) -> None:
-    """Long call wall time fails even when observed CPU is negligible."""
-    backstop = validate.QUICK_TEST_WALL_BACKSTOP_SECONDS
-    output = (
+def _one_slow_call(seconds: float) -> str:
+    """Quick-lane output with one test call of `seconds` wall and negligible CPU."""
+    return (
         "============================= slowest durations ==========================\n"
-        f"{backstop + 4.0:.2f}s call     tests/test_probe.py::test_that_waits\n"
+        f"{seconds:.2f}s call     tests/test_probe.py::test_that_waits\n"
         "=============== slowest observed cpu durations (lower bounds) ============\n"
         "Incomplete descendant accounting; do not use for total CPU thresholds.\n"
         + _cpu_duration_line(0.02, "call", "tests/test_probe.py::test_that_waits")
         + "\n"
         "1904 passed in 61.00s"
     )
+
+
+def test_a_slow_call_on_a_hosted_pull_request_is_reported_below_the_hang_limit(
+    monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]
+) -> None:
+    """Under `policy.pull_request_ceiling` (think-6erz) a 16 s call on a pull request is
+    reported with a Cost warning and does not fail the shard."""
+    relaxed = validate._pull_request_ceiling()
+    assert relaxed is not None, "the live register no longer relaxes the per-test rule"
+    output = _one_slow_call(validate.QUICK_TEST_WALL_BACKSTOP_SECONDS + 4.0)
     monkeypatch.setattr(validate, "_run", lambda *_a, **_k: output)
+    monkeypatch.setattr(validate, "_hosted_pull_request", lambda *_a, **_k: True)
+    context = validate.Context(
+        deep=False, strict=False, jobs=1, inner_jobs=1, environment=os.environ.copy()
+    )
+
+    assert validate._fast_tests(context, 0) == output
+    printed = capsys.readouterr().out
+    assert "reported and not failed" in printed
+    assert "::warning title=Cost::tests/test_probe.py::test_that_waits" in printed
+    assert relaxed.advisory.tracking_bead in printed
+
+
+def test_a_hung_call_on_a_hosted_pull_request_still_fails(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """The relaxation keeps the hang detector: a call at the per-test hang limit fails."""
+    relaxed = validate._pull_request_ceiling()
+    assert relaxed is not None
+    output = _one_slow_call(relaxed.per_test_hang_seconds + 1.0)
+    monkeypatch.setattr(validate, "_run", lambda *_a, **_k: output)
+    monkeypatch.setattr(validate, "_hosted_pull_request", lambda *_a, **_k: True)
+    context = validate.Context(
+        deep=False, strict=False, jobs=1, inner_jobs=1, environment=os.environ.copy()
+    )
+
+    with pytest.raises(validate.StepFailureError, match="test_that_waits"):
+        validate._fast_tests(context, 0)
+
+
+def test_a_test_expensive_by_waiting_is_caught_by_the_wall_backstop(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """Long call wall time fails even when observed CPU is negligible, on any run that is
+    not a hosted pull request (the only run the register's relaxation reaches)."""
+    output = _one_slow_call(validate.QUICK_TEST_WALL_BACKSTOP_SECONDS + 4.0)
+    monkeypatch.setattr(validate, "_run", lambda *_a, **_k: output)
+    monkeypatch.setattr(validate, "_hosted_pull_request", lambda *_a, **_k: False)
     context = validate.Context(
         deep=False, strict=False, jobs=1, inner_jobs=1, environment=os.environ.copy()
     )

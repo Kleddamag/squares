@@ -878,16 +878,16 @@ baseline. A `null` baseline leaves those ratio checks unarmed; a measurement pri
 CI does not update the file automatically.
 
 **On a hosted pull-request run the drift and stale rules are advisory under
-`think-be1s`, since 2026-10-01; the ceiling is not.** The register’s
-`policy.pull_request_relative_rules` declares it, the way `pull_request_walls` declares
-an advisory wall: `enforcing` when absent, and `advisory` only with a `tracking_bead`
-and an `advisory_reason`, which `devtools.check_gate_budgets` refuses when the bead is
-closed or unknown. The gate detects the run from the runner’s own `GITHUB_ACTIONS` and
-`GITHUB_EVENT_NAME`, computes both rules as before, prints each finding as
-`FAIL (advisory, not enforced)` with the bead, raises a warning annotation on the run,
-and passes; a run over its ceiling still fails, and `--enforce-budget` overrides the
-relaxation for an operator asking on purpose.
-Off a pull request nothing changes.
+`think-be1s`, since 2026-10-01; since 2026-10-05 the ceiling is too, up to a hang
+detector, under `think-6erz`.** The register’s `policy.pull_request_relative_rules`
+declares it, the way `pull_request_walls` declares an advisory wall: `enforcing` when
+absent, and `advisory` only with a `tracking_bead` and an `advisory_reason`, which
+`devtools.check_gate_budgets` refuses when the bead is closed or unknown.
+The gate detects the run from the runner’s own `GITHUB_ACTIONS` and `GITHUB_EVENT_NAME`,
+computes both rules as before, prints each finding as `FAIL (advisory, not enforced)`
+with the bead, raises a warning annotation on the run, and passes; a run over its
+ceiling still fails, and `--enforce-budget` overrides the relaxation for an operator
+asking on purpose. Off a pull request nothing changes.
 The measurement behind it, 2026-09-30, is retained with every reading’s verdict in
 `packing/tests/fixtures/tier-walls/hosted-readings-2026-09-30.yaml` and replayed by
 `test_the_day_of_2026_09_30_is_judged_on_code_not_on_the_runner`: on unchanged steps the
@@ -900,6 +900,20 @@ What can is a median over several hosted readings, which the wall register alrea
 judges and `think-be1s` owns for the tiers, or a wall normalised by the runner’s
 measured speed; until one of those judges a pull request, the ceiling is the rule a pull
 request is held to.
+
+**The ceiling and the per-test call-wall rule followed on 2026-10-05.**
+`policy.pull_request_ceiling` declares it under the same contract, plus a hang detector:
+on a hosted pull-request run a tier wall over its ceiling, or a test call of 12 s or
+more, is printed with its bead and a `Cost` warning annotation and does not fail the
+run, but a wall above `hang_ratio` (2) times the ceiling, or one call of
+`per_test_hang_seconds` (45) or more, still does.
+Main, scheduled and deep runs keep the ceiling enforced, and `--enforce-budget` again
+overrides it on purpose.
+The evidence is that day’s CI stabilization evaluation: 28 of 36 red pushes to stack
+pull requests failed on a wall verdict alone with every test green, and the +9% raise of
+`3d89c6fa5` was breached again within hours, shard C at 171.2 s against 168 s on #356.
+`think-6erz` returns the ceiling to enforcement when it is judged against a median or a
+runner-normalised wall.
 
 A different CPU/worker shape reports the budget result without failing, unless
 explicitly enforced.

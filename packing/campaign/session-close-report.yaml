@@ -2905,21 +2905,21 @@ sessions:
   one_off_code: 274
   wall_hours: 12.68
   codex_receipts: []
-- id: session-169
+- id: session-180
   title: "Bounded n17 producer memo retention investigation"
   status: stopped
   primary_bead: think-wn6x
   phases: 3
   measured: true
   rollups:
-  - packing/campaign/resource-usage/codex-session-169.yaml
+  - packing/campaign/resource-usage/codex-session-180.yaml
   turns: null
   tool_calls: null
   tool_errors: null
   one_off_code: null
   wall_hours: null
   codex_receipts:
-  - path: packing/campaign/resource-usage/codex-session-169.yaml
+  - path: packing/campaign/resource-usage/codex-session-180.yaml
     model_responses: 195
     agent_hours: 1.52
     active_union_hours: 0.99

@@ -1,12 +1,12 @@
 ---
-title: Session 169 — bounded n17 producer memo retention
+title: Session 180 — bounded n17 producer memo retention
 softschema:
   contract: packing.squares:AgentSession/v2
   schema: ../schemas/agent-session.schema.yaml
   envelope: session
   status: enforced
 session:
-  id: session-169
+  id: session-180
   title: Bounded n17 producer memo retention investigation
   date: '2026-10-04'
   started_at: '2026-10-03T20:31:41Z'
@@ -56,9 +56,9 @@ session:
     validation_command: uv run --frozen --all-extras --group dev packing-ledger check
     kill_condition: Ownership overlap, invalid equivalence, resource guard, or deadline.
     fallback: Retain the measured limitation without a scientific or speedup claim.
-    outcome: The frozen one-variable candidate reduced producer peak21.0% with identical A/W7
-      objects and73 passing controls. M1 landed an equivalent fix during execution; duplicate
-      implementation was removed after rebase to601bbf110. Fresh parent A reproduction is byte-identical
+    outcome: The frozen one-variable candidate reduced producer peak 21.0% with identical A/W7
+      objects and 73 passing controls. M1 landed an equivalent fix during execution; duplicate
+      implementation was removed after rebase to 601bbf110. Fresh parent A reproduction is byte-identical
       and its controls passed.
     evidence: &id001
     - packing/campaign/explorations/X048-session-169-pilots/README.md
@@ -86,7 +86,7 @@ session:
     fallback: Retain the measured limitation without a scientific or speedup claim.
     outcome: Removed duplicate implementation after live M1 drift; fixed own document-map/generated-view
       omissions and snapshot-size failure without changing guards; all required jobs passed
-      at4e91f6939.
+      at 4e91f6939.
     evidence: *id001
     stop_reason: Bounded deliverable achieved; final metadata receives a separate current-head
       CI observation.
@@ -217,7 +217,7 @@ session:
     excluded_commands: *id006
   outputs:
   - packing/campaign/explorations/X048-session-169-pilots/README.md
-  - packing/campaign/resource-usage/codex-session-169.yaml
+  - packing/campaign/resource-usage/codex-session-180.yaml
   - packing/devtools/profile_n17_partner_memo.py
   - packing/tests/test_hull_kernel_caches.py
   checks:
@@ -229,7 +229,7 @@ session:
     producer import.
   - Historical hosted fast gate at 4e91f69392086c48161a61be1c040526fe8b1230 passed before the
     layer was reapplied to parent1525d4e03. It is not a fresh gate on the rewritten history.
-  - Hosted pages-required and merges-into-main passed at4e91f6939. Final metadata push is checked
+  - Hosted pages-required and merges-into-main passed at 4e91f6939. Final metadata push is checked
     separately before handoff.
   - After parent drift,83 targeted tests passed in18.45s; focused snapshot-size control passed
     after large A objects were retained outside Git.
@@ -245,7 +245,7 @@ session:
     coordinator. No merge or new compute is authorized by this closeout.
   ended_at: '2026-10-03T21:31:17.791691+00:00'
   resource_rollups:
-  - packing/campaign/resource-usage/codex-session-169.yaml
+  - packing/campaign/resource-usage/codex-session-180.yaml
   handoff_role: administrative_closeout
 ---
 # Bounded producer memory investigation

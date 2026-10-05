@@ -1,4 +1,4 @@
-# Session 169: bounded producer memory investigation
+# Session 180: Bounded Producer Memory Investigation
 
 Owner: `Guzhou0806-Codex-T0`, bead `think-wn6x`, branch `guzhou/n17-p01-partner-memo`.
 Base: PR #307 at `234a07f4`. This is an efficiency investigation, not a new mathematical
@@ -124,18 +124,17 @@ A fresh check on parent `601bbf110` reproduced the same seed/node bytes, 42 step
 672 rows, with 130,387,968 bytes producer peak and 135,819,264 bytes pipeline peak.
 That run confirms compatibility; it is not a new isolated optimization comparison.
 
-## Validation status
+## Validation Status
 
-The clean-base ledger check passed.
-The full fast gate at `234a07f4` failed before useful validation: its bounded subprocess
-runner explicitly refuses Windows.
-This is an environment limitation, not a proof failure.
-Targeted runs use a separately smoke-tested Windows Job supervisor.
-The branch remains uncertified until a supported-host full gate passes.
-Initial hosted validation passed the test shards but rejected this new README’s missing
-document-map entry; that narrow metadata omission is fixed in this layer.
-The initial main-mergeability failure names the inherited `SYNOPSIS.md` conflict.
-No new scientific exclusion or full optimality result is claimed.
+The evidence layer at `4c295ad3d` passed all required hosted checks after refreshing its
+parent to `1525d4e03`. The retained A/W7 objects agree with that parent; the earlier
+single-variable measurements remain historical evidence.
+
+The local full runner refuses Windows, so focused controls use the separate Windows Job
+supervisor. Supported-host CI certifies the branch.
+Session 180 records this investigation; the frozen exploration directory keeps its
+existing name so downstream fixture references remain valid.
+No new scientific exclusion or optimality result is claimed.
 
 <!-- This document follows common-doc-guidelines.md.
 See github.com/jlevy/practical-prose and review guidelines before editing.

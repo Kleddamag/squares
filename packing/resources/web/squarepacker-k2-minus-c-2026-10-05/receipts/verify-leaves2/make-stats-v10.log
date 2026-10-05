@@ -1,0 +1,19 @@
+# command: nice -n 10 /tmp/claude-0/-home-user-squares/1fb2d4ab-96d0-5b24-9e36-157598bdbf06/scratchpad/k2c/replay-venv/bin/python make_stats_v10.py
+# cwd: code/ of squarepacker/k2-minus-c 25f645e8 with data/kw9_data.zip's 13 *_final_leaves.jsonl and this replay's verify2 outputs beside it
+# python3: CPython 3.12.3 (/usr/bin/python3.12) in a scratch venv: python-flint 0.9.0, mpmath 1.3.0, numpy 2.5.3
+# host: 4 cores; load 13.24 12.86 12.96; started 2026-10-05T19:51:03Z
+OK    bnb_n1_T9_0of1_final_leaves.jsonl: leaves 1, verified(v2) 1, finished True, coverage True
+OK    bnb_n2_T9_0of1_final_leaves.jsonl: leaves 48, verified(v2) 48, finished True, coverage True
+OK    bnb_n3_T9_0of1_final_leaves.jsonl: leaves 1894, verified(v2) 1894, finished True, coverage True
+OK    bnb_n4_T9_0of2_final_leaves.jsonl: leaves 4597, verified(v2) 4597, finished True, coverage True
+OK    bnb_n4_T9_1of2_final_leaves.jsonl: leaves 5694, verified(v2) 5694, finished True, coverage True
+OK    bnb_n5_T9_0of2_final_leaves.jsonl: leaves 7536, verified(v2) 7536, finished True, coverage True
+OK    bnb_n5_T9_1of2_final_leaves.jsonl: leaves 10595, verified(v2) 10595, finished True, coverage True
+OK    bnbw_n1_T9_0of1_final_leaves.jsonl: leaves 4, verified(v2) 4, finished True, coverage True
+OK    bnbw_n2_T9_0of1_final_leaves.jsonl: leaves 684, verified(v2) 684, finished True, coverage True
+OK    bnbw_n3_T9_0of1_final_leaves.jsonl: leaves 6382, verified(v2) 6382, finished True, coverage True
+OK    bnbw_n4_T9_0of2_final_leaves.jsonl: leaves 9504, verified(v2) 9504, finished True, coverage True
+OK    bnbw_n4_T9_1of2_final_leaves.jsonl: leaves 5720, verified(v2) 5720, finished True, coverage True
+OK    bnbw_n5_T9_0of1_final_leaves.jsonl: leaves 26014, verified(v2) 26014, finished True, coverage True
+COMPLETE | fails 0 | maxU 9 | rig pieces 66967 | $30{,}365$ accepted boxes without a side and $48{,}308$ with a side | all $78{,}673$ boxes confirmed, with $59{,}238$ further bisections and largest rigorous bound $9$
+# finished 2026-10-05T19:51:03Z; exit 0; wall 0.114 s; CPU 0.1 s (user 0.067 + sys 0.008); load 13.24 12.86 12.96

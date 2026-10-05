@@ -1868,6 +1868,7 @@ packing unit squares into a large square of side `x`.
 | Chung–Graham (2020), upper — **claim withdrawn in effect** | `O(x^{3/5})` | 0.6000 |
 | Bui (2025), McClenagan (2026), upper | `O(x^{3/5})` | 0.6000 |
 | **Roth–Vaughan (1978), lower** | `w(α) ≫ (‖α‖·α)^{1/2}` when `α(α−[α]) > 1/6`; `‖α‖` = distance to the nearest integer | ≥ 0.5 at half-integers |
+| Ryu (2026, unrefereed preprint), lower, as `x → k⁻` for integer `k` | `k² − M(k) ≥ 0.033 log k`, the limit of `W(x)` there | — (order `log k`) |
 
 The Erdős–Graham result is the historical origin of the insight that **tilted** unit
 squares beat axis-aligned ones — the same phenomenon that makes `n = 11` interesting,
@@ -1942,12 +1943,31 @@ is at most `10⁻¹⁰` — and it has since been shown that for computing the a
 growth of wasted space it suffices to consider packings with only good squares
 **[Good-Squares 2025]**.
 
+**Integer sides from below (added 2026-10-05).** Roth and Vaughan’s bound tends to zero
+as `α → k⁻`, and at `α = k` the `k × k` grid wastes nothing.
+Sungjoon Ryu’s preprint of 5 October 2026 treats exactly that limit
+**[squarepacker k2-minus-c 2026]**. Let `M(k)` be the largest number of unit squares in
+`[0,k]²` that are pairwise disjoint as closed sets.
+Then `s(n) < k` exactly when `n ≤ M(k)`, and the preprint proves
+`k² − M(k) ≥ 0.033 log k` for every integer `k ≥ 2`. So `s(k² − c) = k` for every fixed
+`c` and all large `k`. The method sharpens Roth and Vaughan’s fundamental lemma with
+explicit constants. The bound says nothing at any reachable `k`: below `k = 10¹³` it is
+the elementary `k² − M(k) ≥ 1`, and it gives `s(k² − 4) = k` only for `log k > 120.24`.
+The constant `0.033` rests on a computer-assisted lemma, whose certificate this
+repository re-ran in full with the author’s own programs; without the lemma the proof
+gives `0.027`. One AI review here read the proof and found no blocking defect.
+No human has refereed it, and the author states that it was developed with extensive
+assistance from Claude (Anthropic).
+[`asymptotic-waste-bounds.yaml`](../../../packing/frontier/asymptotic-waste-bounds.yaml)
+records the bound and what was checked.
+
 **Why this is irrelevant to `n = 11`.** These are asymptotic statements with unspecified
 constants — Roth and Vaughan’s bound is stated with Vinogradov `≫` and never evaluates
 its implied constant at all.
-They describe behaviour as `x → ∞` and carry no information at `x ≈ 3.88`. The
-small-case and asymptotic branches of this subject share an origin and a moral (tilting
-helps) but are methodologically disjoint.
+Ryu’s constants are explicit, and his bound is the elementary `k² − M(k) ≥ 1` below
+`k = 10¹³`. They describe behaviour as `x → ∞` and carry no information at `x ≈ 3.88`.
+The small-case and asymptotic branches of this subject share an origin and a moral
+(tilting helps) but are methodologically disjoint.
 No asymptotic improvement will ever settle `n = 11`.
 
 ### Corrections to common summaries

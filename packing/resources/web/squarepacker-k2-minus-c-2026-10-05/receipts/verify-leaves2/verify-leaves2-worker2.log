@@ -1,0 +1,5 @@
+# command: nice -n 10 /tmp/claude-0/-home-user-squares/1fb2d4ab-96d0-5b24-9e36-157598bdbf06/scratchpad/k2c/replay-venv/bin/python run_v2.py 2
+# cwd: code/ of squarepacker/k2-minus-c 25f645e8 with data/kw9_data.zip's 13 *_final_leaves.jsonl unpacked beside it
+# python3: CPython 3.12.3 (/usr/bin/python3.12) in a scratch venv: python-flint 0.9.0, mpmath 1.3.0, numpy 2.5.3
+# host: 4 cores; load 10.58 10.25 10.55; started 2026-10-05T18:28:16Z
+# finished 2026-10-05T19:49:33Z; exit 0; wall 4877.556 s; CPU 1557.0 s (user 1555.388 + sys 1.660); load 13.93 12.78 12.94

@@ -14,8 +14,9 @@ definition: >
   squares that fit.
 open_problem: >
   The precise asymptotic growth rate is unknown, even for half-integer side
-  lengths. Upper bounds stand at O(x^{3/5}); the only lower bound is Omega(sqrt(x))
-  at worst-case x.
+  lengths. Upper bounds stand at O(x^{3/5}); the only lower bound at worst-case x is
+  Omega(sqrt(x)). Just below an integer side k, where that bound vanishes, a 2026
+  preprint, unrefereed, reports a lower bound of order log k.
 
 upper_bounds:
   - bound: O(x^{7/11})
@@ -140,6 +141,85 @@ lower_bounds:
       considered as an asymptotic one." Göbel cites Roth and Vaughan for the bound
       and gives no source for the value. DS7 and McClenagan 2026 (PDF page 1) print
       it as an explicit factor, McClenagan as W(x) > 10^{-100} sqrt(x - floor(x)).
+  - bound: >
+      k^2 - M(k) >= 0.033 log k for every integer k >= 2, where M(k) is the largest
+      number of unit squares in [0,k]^2 that are pairwise disjoint as closed sets and
+      log is the natural logarithm. As s(n) < k exactly when n <= M(k) (Lemma 2.1),
+      every x < k has W(x) >= x^2 - M(k) >= x^2 - k^2 + 0.033 log k, and the waste
+      just below an integer side, the limit of W(x) as x -> k from below, equals
+      k^2 - M(k).
+    side_condition: >
+      x below an integer side k >= 2, in the limit x -> k^-. At x = k itself the k x k
+      grid gives W(k) = 0; the bound is about closed packings, which is what fitting
+      in a square of side less than k amounts to.
+    authors: [Sungjoon Ryu]
+    year: 2026
+    source_key: "[squarepacker k2-minus-c 2026]"
+    local: web/squarepacker-k2-minus-c-2026-10-05/k2-minus-c/paper/paper
+    retrieved: true
+    confidence: verified_against_primary
+    kernel: log k, at integer sides approached from below
+    constant: >
+      0.033 for every k >= 2 (Theorem 1.1), and (0.99977 log k + 0.3819)/30.147 for
+      k >= 10^13. Below 10^13 the bound is under 0.99 and the theorem is the
+      elementary k^2 - M(k) >= 1 (Corollary 3.3); the constant 0.0331... is the limit
+      0.99977/30.147. Both constants use the computer-assisted Lemma 4.10, at most 9
+      Roth-Vaughan rectangles of nearly touching pairs overlapping at an uncovered
+      point; with the analytic 13 of Lemma 4.9 the same proof gives 0.027 (Remark 7.5).
+    corollary: >
+      c*(k) := max{c : s(k^2 - c) = k} >= 0.033 log k - 1, so for every fixed c,
+      s(k^2 - c) = k for all large k (Corollary 1.2). As k^2 - M(k) is an integer, the
+      k >= 10^13 formula gives s(k^2 - c) = k once log k > (30.147c - 0.3819)/0.99977:
+      log k > 120.24 for c = 4 (Remark 7.4), log k > 150.39 for c = 5. With the upper
+      bound W(x) = O(x^{3/5}) applied below k, c*(k) lies between order log k and
+      O(k^{3/5}).
+    complementary_case: >
+      Roth and Vaughan's bound, the entry above, is (||x|| x)^{1/2} up to an
+      unevaluated constant and tends to 0 as x -> k^-, where ||x|| -> 0; this bound is
+      for exactly that limit. It says nothing at any k within computational reach.
+    note: >
+      RECORDED 2026-10-05 from Sungjoon Ryu's preprint "Packing k^2 - c unit squares:
+      s(k^2 - c) = k for all large k", version 1.1 (squarepacker/k2-minus-c at 25f645e8,
+      retained whole in web/squarepacker-k2-minus-c-2026-10-05/), reported on
+      jlevy/squares#368. The statements above are its Theorem 1.1, Corollary 1.2 and
+      Remarks 7.4 and 7.5, read in the primary. It is not refereed, and the author states
+      that it was developed with extensive assistance from Claude (Anthropic), including
+      the proofs, the programs and the computation for Lemma 4.10.
+      CHECKED HERE 2026-10-05 (think-8nv9). (1) The certificate of Lemma 4.10, all 78,673
+      boxes, was re-verified on the retained bytes by the source's own
+      code/verify_leaves2.py, in Arb ball arithmetic through python-flint 0.9.0: no
+      failure, largest rigorous bound 9, 59,238 further bisections, and each of its 52
+      output records equal to the author's; 6,038 CPU seconds. The source's three
+      coverage programs, coverage_check.py (which shares the search's split rule) and the
+      exact-volume and recursive-cover checks of code/coverage_independent/, found no
+      gap, and the source's verify_v10.py passed its 132 checks on these outputs. This
+      reproduces the computation with the producer's code; the labelling of the boxes
+      has one implementation, and no independent one has run (review finding RF-1).
+      (2) Two controls were refused: the box holding the nine-pair configuration, at
+      threshold 8, and the n = 2 box list without that box (receipts/controls/).
+      (3) Every numerical step from the lemmas' stated inputs to the constants was
+      re-decided on intervals by cases/asymptotic/ryu_k2_minus_c_constants.py, written
+      from the text: all hold, for 9 and for 13. (4) One separately prompted AI review,
+      docs/project/reviews/review-2026-10-05-squarepacker-k2-minus-c.md, re-derived the
+      proof and accepted it with nine non-blocking findings. No human has checked it.
+      RUNGS, read by the epistemics.md ladder: V3/C1. The proof is public and its
+      computational lemma is a machine certificate that replays (V3); this project's
+      confirmation of the whole is one AI read of the analytic chain (C1), with Lemma
+      4.10's computation reproduced with the producer's code, which would be C3 for that
+      part alone. V4 and C4 need a second adversarial AI review by a distinct reviewer
+      and a named human's oversight record; nothing here reaches rung 5. The checker does
+      not derive these rungs, because the result is not in the register.
+      NOT IN THE REGISTER: results.yaml and source-coverage.yaml hold results by the
+      counts n <= 324 they settle, every scope names at least one, and this theorem
+      settles none. For k <= 18 its bound is below 1, the elementary k^2 - M(k) >= 1, and
+      its first consequence beyond the c <= 4 already reported needs log k > 150.39. A
+      register scope for such a family is think-kqi1.
+      AGAINST T-081, Evan Daniel's reported s(k^2 - 4) = k for every k >= 5 (V0/C1): that
+      is c*(k) >= 4 at every k >= 5, one deficit at every k; this is c*(k) -> infinity,
+      every deficit at astronomically large k. If T-081 holds it contains this preprint's
+      c = 4 case; T-081 says nothing about c >= 5, and this preprint says nothing about
+      any count the record holds. Neither implies the other; they share only the
+      reduction of Lemma 2.1.
 
 related_results:
   - result: >

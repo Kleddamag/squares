@@ -193,7 +193,8 @@ def _orbit_change(
     return change
 
 
-def _chain(entries: list[list[str]]) -> list[tuple[Fraction, Fraction]]:
+def angle_chain(entries: list[list[str]]) -> list[tuple[Fraction, Fraction]]:
+    """A certificate's half-angle intervals, held to cover ``[0, 207107/500000]`` gaplessly."""
     chain = [(Fraction(entry[0]), Fraction(entry[1])) for entry in entries]
     _require(chain[0][0] == 0, "the angle chain does not start at zero")
     _require(
@@ -272,7 +273,7 @@ def structure(name: str) -> dict[str, Any]:
     point_delta = sum(c["budget_units"] - c.get("old_budget_units", 0) for c in changes)
     budget_delta = cert["budget_units"] - base["budget_units"]
     rules_unchanged = rules == base["threshold_orbits"]
-    new_chain = _chain(cert["entries"])
+    new_chain = angle_chain(cert["entries"])
     _require(len(new_chain) == release.intervals, "the interval count is not the claim")
     return {
         "schema": "GuzhouR068PacketStructure/v1",
@@ -297,7 +298,7 @@ def structure(name: str) -> dict[str, Any]:
         "budget_delta_accounted": rules_unchanged and budget_delta == point_delta,
         "requested_minimum_units": cert["minimum_units"],
         "requested_surplus_units": N * cert["minimum_units"] - cert["budget_units"],
-        "angle_chain": refinement(_chain(base["entries"]), new_chain),
+        "angle_chain": refinement(angle_chain(base["entries"]), new_chain),
     }
 
 
@@ -365,9 +366,15 @@ def cpp_header(records: list[dict[str, Any]]) -> dict[str, Any]:
     return {"sites": sites, "signed_terms": terms, "minimum_strict_margin": margin}
 
 
-def compare(name: str, fresh: Path, published: Path | None = None) -> dict[str, Any]:
-    """Every fresh and published ledger row by row, against the published C++ one."""
-    release = RELEASES[name]
+def compare(
+    name: str, fresh: Path, published: Path | None = None, *, release: Release | None = None
+) -> dict[str, Any]:
+    """Every fresh and published ledger row by row, against the published C++ one.
+
+    ``release`` defaults to ``RELEASES[name]``; `devtools.audit_guzhou_r071` passes its
+    own, from a later packet.
+    """
+    release = release or RELEASES[name]
     cert = load_json(release.certificate, release.sha256)
     sets = {"fresh": partitions(fresh), "published": partitions(published or release.published)}
     ledgers = {

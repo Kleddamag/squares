@@ -85,3 +85,17 @@ repositories:
       evand/square-packing#1. With the fixed code the author reports RECORD OK on the
       unchanged records-v1. This is an evidence update to T-064, owned by think-uu60, and
       no rung moves.
+  - url: https://github.com/Kleddamag/17-squares-certified-bound
+    read_through: 17d18245114cd78645b70b20e0b5c9afc8d95ed8
+    read_on: '2026-10-05'
+    note: >-
+      One commit past the 4.66001 pin 57519bb7, of 2026-09-29, "Publish certified bound
+      4.6601 and full-proof research checkpoint": bounds/4.6601/ claims s(17) > 46601/10000
+      on the 4.66001 charge unchanged (budget 17000402008, minimum 1000026844, surplus 54340)
+      over 2,543 intervals, with its Python and BigInt ledgers, as the untagged v1.2.0 of
+      CURRENT_BOUND.json. That is below R067 and R068 and below the verified 116511/25000
+      (T-043), and asks for no work. Its research/ checkpoint (global anchors, a one-square
+      pose atlas, joint geometry, a fixed-angle LP) states conditional exclusions and
+      unfinished routes and claims no bound, and ATTRIBUTION.md and AUTHORS.md were
+      reworded, naming 11SquaresOptimal as an influence on the research. Nothing to import;
+      n-017 mentions the bound as an unretained report.

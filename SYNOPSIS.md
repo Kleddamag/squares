@@ -252,6 +252,7 @@ action for each are in [`frontier/RESULTS.md`](packing/frontier/RESULTS.md); the
 | [T-078](packing/frontier/RESULTS.md) | 12 | `V3` | `C3` | `S2` | `previously-published` | s(12) >= 31360/7901 = 3.96911783 …, by squarepacker (Ryu Sungjoon) after Evan Daniel, published on 2 October 2026 and reported on jlevy/squares#309. |
 | [T-088](packing/frontier/RESULTS.md) | 69 | `V0` | `C0` | `S2` | `previously-published` | s(69) <= 8.827194655729738914 …, the root near 8.82719465572973 of the degree-38 polynomial the Kingbird catalogue prints for this count, by David Ellsworth’s packing of 69 unit squares in a square of that side. |
 | [T-089](packing/frontier/RESULTS.md) | 83, 87 | `V0` | `C0` | `S2` | `previously-published` | s(83) <= 9.634757648631082029 …, a root of degree 672, and s(87) <= 9.838815269948262260 …, the root near 9.83881526994826 of the degree-41 polynomial the Kingbird catalogue prints for that count: two packings by Allen Chang, the first optimized by David Ellsworth. |
+| [T-093](packing/frontier/RESULTS.md) | 17 | `V0` | `C0` | `S2` | `previously-published` | s(17) > 18641771/4000000 = 4.66044275, by Guzhou0806 / N17 project’s R071 release of 30 September 2026, on the charge of R068 (T-043). |
 | [T-063](packing/frontier/RESULTS.md) | 61 | `V3` | `C3` | `S1` | `previously-published` | s(61) = 8, as a corollary of s(60) = 8 (T-062), which Evan Daniel published with it on 28 September 2026. |
 
 | Significance | What [`epistemics.md`](epistemics.md#significance-and-novelty) anchors it to |
@@ -287,7 +288,7 @@ hypothesis status and summarizes experiment verdicts, and the
 | Explorations | 47 | 28 linked to proposed hypotheses; 19 uncodified |
 | Hypotheses | 198 | 39 confirmed; 32 refuted; 64 blocked; 17 unresolved; 9 open; 32 open questions; 2 result registered; 2 abandoned; 0 running; 1 exhausted |
 | Experiments | 170 | 53 accepted; 37 rejected; 52 unresolved; 12 baseline; 11 blocked; 4 abandoned; 0 in progress; 1 exhausted |
-| Frontier results | 92 | 92 registered, 63 by others |
+| Frontier results | 93 | 93 registered, 64 by others |
 
 <!-- END CURRENT-RESEARCH-STATUS -->
 

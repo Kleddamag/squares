@@ -26,7 +26,7 @@ second implementation agrees.
 ## The Short Version
 
 - **78** programs: **31** external and **47** first-party; **64** decide claims and **14** check premises.
-- **259** of **286** evidence entries name the programs that verified them: 195 reproduced with the producer’s code, 48 independently re-implemented, 9 no relation: a proof, a derivation or a report, 7 re-implemented, sharing the producer’s components.
+- **260** of **287** evidence entries name the programs that verified them: 196 reproduced with the producer’s code, 48 independently re-implemented, 9 no relation: a proof, a derivation or a report, 7 re-implemented, sharing the producer’s components.
 
 ## Programs
 
@@ -49,11 +49,11 @@ second implementation agrees.
 | [`V-evand-lean`](#v-evand-lean) | The source's Lean development (lean/) | Evan Daniel | external | decides | 7 | 5 |
 | [`V-chelokot-lean`](#v-chelokot-lean) | The source's Lean development (formal/) | chelokot | external | decides | 1 | 1 |
 | [`V-kleddamag-n11-verify`](#v-kleddamag-n11-verify) | verify.py | Kleddamag | external | decides | 4 | 2 |
-| [`V-kleddamag-n17-verify`](#v-kleddamag-n17-verify) | verify.py | Kleddamag | external | decides | 9 | 5 |
+| [`V-kleddamag-n17-verify`](#v-kleddamag-n17-verify) | verify.py | Kleddamag | external | decides | 10 | 6 |
 | [`V-wang-li-n11-verify`](#v-wang-li-n11-verify) | verify.py of the Zenodo release | Wang and Li | external | decides | 2 | 1 |
 | [`V-guzhou-r012-verify-py`](#v-guzhou-r012-verify-py) | certificates/R012/verify.py | Guzhou0806 | external | decides | 1 | 1 |
 | [`V-guzhou-r052-verify-py`](#v-guzhou-r052-verify-py) | certificates/R052/verify.py | Guzhou0806 | external | decides | 2 | 1 |
-| [`V-guzhou-n17-verify-cpp`](#v-guzhou-n17-verify-cpp) | verify.cpp | Guzhou0806 | external | decides | 3 | 2 |
+| [`V-guzhou-n17-verify-cpp`](#v-guzhou-n17-verify-cpp) | verify.cpp | Guzhou0806 | external | decides | 4 | 3 |
 | [`V-burns-n17-verify-py`](#v-burns-n17-verify-py) | verify-n17-lower-bound-4_4811.py | Burns | external | decides | 1 | 0 |
 | [`V-massaccesi-n17-verify-py`](#v-massaccesi-n17-verify-py) | verify-n17-lower-bound-4_5058.py | Massaccesi | external | decides | 1 | 2 |
 | [`V-mira-17squares-point-checker`](#v-mira-17squares-point-checker) | verify_certificate.py | Mira | external | decides | 1 | 0 |
@@ -569,6 +569,7 @@ Decides an n = 17 certified-bound charge certificate by a Python sweep and a Jav
 | `E-n017-guzhou-r068-report` | the source’s own run | producer’s code | T-043 |
 | `E-n017-guzhou-r068-source-replay` | replayed here | producer’s code | T-043 |
 | `E-n017-guzhou-r067-source-replay` | replayed here | producer’s code | T-042 |
+| `E-n017-guzhou-r071-report` | the source’s own run | producer’s code | T-093 |
 | `E-n017-kleddamag-4640020-report` | the source’s own run | producer’s code | T-040 |
 | `E-n017-kleddamag-4640020-source-replay` | replayed here | producer’s code | T-040 |
 
@@ -627,6 +628,7 @@ The source's C++ exclusion checker, run interval by interval beside Kleddamag's 
 | `E-n017-guzhou-r068-report` | the source’s own run | producer’s code | T-043 |
 | `E-n017-guzhou-r068-source-replay` | replayed here | producer’s code | T-043 |
 | `E-n017-guzhou-r067-source-replay` | replayed here | producer’s code | T-042 |
+| `E-n017-guzhou-r071-report` | the source’s own run | producer’s code | T-093 |
 
 ### `V-burns-n17-verify-py`
 

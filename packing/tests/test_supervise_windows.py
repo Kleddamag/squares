@@ -71,14 +71,14 @@ def test_non_windows_execution_refuses_without_launch_or_receipt(
         ("--interval", "0.09"),
         ("--interval", "5.1"),
         ("--worker-memory-gib", "0"),
-        ("--worker-memory-gib", "16.1"),
+        ("--worker-memory-gib", "-1"),
         ("--review-memory-gib", "0"),
-        ("--review-memory-gib", "12.1"),
-        ("--min-available-gib", "7.9"),
+        ("--review-memory-gib", "-1"),
+        ("--min-available-gib", "-1"),
         ("--min-available-gib", "inf"),
     ],
 )
-def test_numeric_guards_can_only_be_tightened(
+def test_numeric_guards_refuse_invalid_limits(
     option: str,
     value: str,
     tmp_path: Path,
@@ -96,6 +96,28 @@ def test_default_guards_and_explicit_absolute_argv(tmp_path: Path) -> None:
     assert parsed.command == [sys.executable, "-c", "pass"]
     owner = cast(subprocess.Popen[bytes], SimpleNamespace(_handle=123))
     assert supervisor.process_handle(owner) == 123
+
+
+def test_memory_policy_is_configurable_and_finite_products_do_not_overflow(
+    tmp_path: Path,
+) -> None:
+    parsed = supervisor.validated_arguments(
+        arguments(
+            tmp_path,
+            "--worker-memory-gib",
+            "32",
+            "--review-memory-gib",
+            "64",
+            "--min-available-gib",
+            "0",
+        )
+    )
+    assert parsed.worker_memory_gib == 32
+    assert parsed.review_memory_gib == 64
+    assert parsed.min_available_gib == 0
+    assert supervisor.gib_bytes(0.25) == 256 * 1024**2
+    assert supervisor.gib_bytes(0.0) == 0
+    assert supervisor.gib_bytes(1e300) > 0
 
 
 def test_command_requires_an_existing_absolute_executable(tmp_path: Path) -> None:
@@ -160,6 +182,8 @@ def test_native_venv_worker_and_grandchild_are_owned_and_reaped(
         cap,
         "--review-memory-gib",
         "0.25",
+        "--min-available-gib",
+        "0.25",
         "--",
         sys.executable,
         str(worker),
@@ -177,6 +201,11 @@ def test_native_venv_worker_and_grandchild_are_owned_and_reaped(
     assert receipt["job_active_processes"] == 0
     assert receipt["tree_cleanup_confirmed"] is True
     assert receipt["cleanup_errors"] == []
+    if mode == "normal":
+        assert receipt["root_status"] == "exited-zero"
+        assert receipt["root_exited_before_cleanup"] is True
+        assert receipt["live_descendants_before_cleanup"] >= 1
+        assert receipt["descendants_termination_requested"] is True
     assert all(item["exit_signalled"] for item in receipt["cleanup_process_identity_checks"])
     assert receipt["peak_observed_worker_working_set_bytes"] >= 96 * 1024**2
     assert (

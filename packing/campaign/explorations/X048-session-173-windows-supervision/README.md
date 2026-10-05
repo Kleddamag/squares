@@ -1,82 +1,43 @@
-# Optional Windows owned-Job supervisor
+# Session 173: Windows owned-Job supervision
 
-The opt-in [supervisor](../../../devtools/supervise_windows.py) starts an explicit
-executable suspended, assigns it to a kill-on-close Windows Job, confirms the owned
-root can be measured, then resumes it. It enumerates only that Job, verifies each
-opened handle's membership and creation identity, and applies current/observed OS peak
-working-set guards to every owned live process. This catches the venv launcher's real
-allocating worker, whose memory can be much larger than the launcher.
+This retained session transferred a local Windows supervisor into a standalone, opt-in
+devtool. The maintained interface, policy and platform limitations are in
+[Windows owned-Job supervision](../../../devtools/windows-supervision.md).
+This record describes the original measurement, rather than current usage policy.
 
-This standalone layer transfers an adopted local prototype. It changes no default
-workflow, CI configuration, dependency or Windows full-validation refusal. Import/help
-are portable and load no Windows DLL; execution on non-Windows explicitly refuses
-without launching a child. Root independently accepted the migrated tool after lifecycle/FFI review and a fresh small native replay.
+The original 20 focused tests passed in 3.64 seconds after a narrow cross-host FFI
+annotation repair.
+Three native controls used a venv launcher, a 96 MiB allocating worker
+and a harmless grandchild.
+Each stayed below the 128 MiB allocation contract and 30 second command bound.
+Linux declared three native skips; those skips were not Windows acceptance.
 
-The numeric guards retain timeout<=1800s, interval0.1..5s, worker<=16GiB,
-review<=12GiB and available physical memory>=8GiB. Smaller memory/time limits are
-accepted. A receipt directory must be empty; prior evidence is never overwritten.
-Interruptions, monitor failures and guards all reach owned-tree cleanup; a successful
-cleanup requires both Job0 and retained process identities signalled exited. Cleanup
-failures override the outcome.
-
-## Bounded controls
-
-20focused tests pass in3.64s after a narrow cross-host FFI annotation repair; Ruff and targeted Linux/Windows BasedPyright report no findings. Three actual
-Windows controls launch the project venv redirector, allocate96MiB in its real worker
-and create a harmless grandchild. Each stays below the128MiB allocation contract and
-30s command bound, serial under the immutable outer supervisor's60s/512MiB guard.
-
-| Control status | Job wall seconds | Launcher peak bytes | Actual worker peak bytes | Remaining Job / cleanup |
+| Historical control | Job wall seconds | Launcher peak bytes | Actual worker peak bytes | Remaining Job / cleanup |
 | --- | ---: | ---: | ---: | --- |
 | success | 1.106 | 5517312 | 119164928 | 0 / True |
 | timeout | 1.258 | 5517312 | 118910976 | 0 / True |
 | worker-memory-stop | 0.278 | 5517312 | 119164928 | 0 / True |
 
+[Retained control summaries](receipts/controls.json) omit local paths and argv.
 All retained live identities were signalled exited and cleanup errors were empty.
-[Small control receipts](receipts/controls.json) omit local paths/argv; the test file
-retains the reconstructible worker and exact command. The identity line is flushed
-before allocation so a correctly early memory stop cannot race the evidence output.
-Linux CI skips the3native controls by declared platform; those skips are not Windows
-acceptance. Portable import/help/refusal/guard/evidence controls run on both hosts.
+An independent 80 MiB guard observed a 119312384 byte worker versus a 5505024 byte
+launcher, stopping in 0.2769671 seconds.
+Five retained identities signalled exit; independent OS checks found their PIDs absent.
+Both nested Jobs ended empty with confirmed cleanup.
+The deliberate inner guard returned 2, so the outer command-failed classification was
+expected.
 
-## Use and limits
+The original source/evidence head `130d693d8e4e888efc0346ae007073abb4d696d8` and
+metadata head `8896be292f8b3ac14744ad2658fdd78a8a258c70` each had 19 passing checks, 36
+declared skips and successful required jobs.
+These are historical certifications, not certification of later maintenance changes.
+The recorded session clocks and native task-tree lower bound remain unchanged.
 
-From `packing/`, choose the project's interpreter and a new output directory:
-
-```powershell
-$ProjectPython = (Resolve-Path .venv/Scripts/python.exe).Path
-$WorkDirectory = (Get-Location).Path
-$OutputDirectory = Join-Path $WorkDirectory 'supervision-output'
-& $ProjectPython -m devtools.supervise_windows --cwd $WorkDirectory `
-  --output-dir $OutputDirectory --timeout 30 --interval 0.1 `
-  --worker-memory-gib 0.5 --review-memory-gib 0.5 -- `
-  $ProjectPython -c 'print("bounded supervised command")'
-```
-
-`start.json`, `heartbeat.json`, `samples.jsonl`, `stdout.log`, `stderr.log` and
-`final.json` retain execution/guard/cleanup evidence. Return0 means success,
-124timeout,130interruption,2other failure/guard. The tool has no shell fallback.
-Only this owned Job is terminated, even when nested under a separate outer Job.
-
-Observed per-process OS peaks do not form a perfect maximum for the whole tree:
-processes starting/exiting between samples can be missed. Shared-page working-set
-sums overcount physical memory; Job committed memory is separately labelled. The
-per-worker guard is sampled, so it is not an allocation-enforcing kernel limit.
-No process outside the owned Job is admitted to measurement or cleanup by PID alone.
-Windows-native checks and root safety review govern publication; non-Windows CI alone
-cannot establish the FFI/lifecycle behavior. The adopted local P01C supervisor remains
-the recovery path. No packing/research result is claimed.
-
-Base main79419cdfc0da0f253f3fbc8dc622fe85c676b8ec; parent3071525d4e03 observed
-without a matching WindowsJob mechanism. Session173's separate contract and actual
-clocks precede editing; no dependency on the completed PR333 graph diagnostic.
+The initial base was main `79419cdfc0da0f253f3fbc8dc622fe85c676b8ec`; parent PR307
+`1525d4e03` had no matching Windows Job mechanism.
+This tool has no code dependency on the PR333 diagnostics.
+No packing or mathematical result is claimed.
 
 <!-- This document follows common-doc-guidelines.md.
 See github.com/jlevy/practical-prose and review guidelines before editing.
 -->
-
-The independent80MiB control observed worker119312384B versus launcher5505024B and stopped in0.2769671s. All5retained identities signalled exit; fresh independent OS checks found their PIDs absent. Inner and outer Jobs ended empty with confirmed cleanup/no errors. The deliberate inner guard returns2, so the outer command-failed classification is expected. No additional replay was needed. Hosted exact-head certification remains a separate gate.
-
-Cross-host type checking exposed Linux stubs omitting Windows-only constructor attributes/APIs. The confined repair declares the dynamic native ABI and resolves named ctypes functions only in guarded execution paths; signatures/layout/lifecycle are unchanged. Missing native APIs still fail before child launch. A fresh focused native check passes; prior independent replay remains valid by unchanged ABI/lifecycle and root acceptance.
-
-Source/evidence hosted fast certification passed at `130d693d8e4e888efc0346ae007073abb4d696d8`:19checks pass,36declared skips, all required jobs succeed. No rerun or threshold change. Final metadata CI is observed separately. Session173's actual source end and earlier native lower-bound cutoff remain unchanged.

@@ -26,6 +26,12 @@ GIB = 1024**3
 MEASUREMENT_FAILURE_LIMIT = 3
 
 
+def gib_bytes(value: float) -> int:
+    """Convert finite configured GiB without overflowing a floating-point product."""
+    numerator, denominator = value.as_integer_ratio()
+    return numerator * GIB // denominator
+
+
 def utc_now():
     return datetime.now(UTC).isoformat()
 
@@ -508,13 +514,17 @@ def supervise(args):
         "cwd": str(args.cwd.resolve()),
         "timeout_seconds": args.timeout,
         "sample_interval_seconds": args.interval,
-        "worker_memory_stop_bytes": int(args.worker_memory_gib * GIB),
-        "worker_memory_review_stop_bytes": int(args.review_memory_gib * GIB),
+        "worker_memory_stop_bytes": gib_bytes(args.worker_memory_gib),
+        "worker_memory_review_stop_bytes": gib_bytes(args.review_memory_gib),
         "worker_measurement_failure_limit": MEASUREMENT_FAILURE_LIMIT,
-        "system_available_stop_bytes": int(args.min_available_gib * GIB),
+        "system_available_stop_bytes": gib_bytes(args.min_available_gib),
         "supervisor_pid": os.getpid(),
         "pid": None,
         "status": "starting",
+        "root_status": "not-started",
+        "root_exited_before_cleanup": None,
+        "live_descendants_before_cleanup": None,
+        "descendants_termination_requested": None,
         "assigned_to_job": False,
         "termination_scope": "owned Windows Job Object including descendants",
         "memory_scope": (
@@ -661,6 +671,18 @@ def supervise(args):
                 cleanup_handles = job.cleanup_handles()
                 before = job.accounting()
                 receipt["active_processes_before_cleanup"] = before["job_active_processes"]
+                receipt["root_exited_before_cleanup"] = (
+                    process is not None and process.poll() is not None
+                )
+                root_pid = None if process is None else process.pid
+                receipt["live_descendants_before_cleanup"] = sum(
+                    pid != root_pid and not job.handle_exited(handle)
+                    for pid, _, handle in cleanup_handles
+                )
+                receipt["descendants_termination_requested"] = bool(
+                    before["job_active_processes"]
+                    and receipt["live_descendants_before_cleanup"]
+                )
                 if before["job_active_processes"]:
                     job.terminate()
                 cleanup_deadline = time.monotonic() + 10
@@ -720,6 +742,15 @@ def supervise(args):
             ended_at=utc_now(),
             wall_seconds=time.monotonic() - started,
             returncode=None if process is None else process.returncode,
+            root_status=(
+                "not-started"
+                if process is None
+                else "exit-unconfirmed"
+                if process.returncode is None
+                else "exited-zero"
+                if process.returncode == 0
+                else "exited-nonzero"
+            ),
             peak_root_working_set_bytes=peak_root,
             peak_job_committed_bytes=peak_job,
             peak_observed_worker_working_set_bytes=peak_worker,
@@ -761,9 +792,14 @@ def build_parser() -> argparse.ArgumentParser:
         "--review-memory-gib",
         type=float,
         default=12.0,
-        help="Conservatively stop for review at this per-owned-worker peak",
+        help="Early review stop; hard-stop label wins if one sample crosses both limits",
     )
-    parser.add_argument("--min-available-gib", type=float, default=8.0)
+    parser.add_argument(
+        "--min-available-gib",
+        type=float,
+        default=8.0,
+        help="Available physical-memory floor (>=0); default 8 GiB is conservative",
+    )
     parser.add_argument("command", nargs=argparse.REMAINDER)
     return parser
 
@@ -788,13 +824,9 @@ def validated_arguments(arguments: list[str] | None = None) -> argparse.Namespac
         parser.error("all numeric guards must be finite")
     if not 0 < args.timeout <= 1800 or not 0.1 <= args.interval <= 5:
         parser.error("timeout must be in (0,1800] and interval in [0.1,5]")
-    if (
-        not 0 < args.worker_memory_gib <= 16
-        or not 0 < args.review_memory_gib <= 12
-        or args.min_available_gib < 8
-    ):
+    if args.worker_memory_gib <= 0 or args.review_memory_gib <= 0 or args.min_available_gib < 0:
         parser.error(
-            "memory guards may only be tightened: worker<=16GiB, review<=12GiB, available>=8GiB"
+            "worker/review limits must be positive; available-memory floor must be >=0"
         )
     return args
 

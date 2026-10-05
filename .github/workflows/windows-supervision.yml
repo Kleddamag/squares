@@ -1,0 +1,48 @@
+name: Windows supervision
+
+"on":
+  pull_request: {}
+  push:
+    branches: [main]
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+
+concurrency:
+  group: windows-supervision-${{ github.event_name }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+jobs:
+  native-owned-job:
+    name: Native Windows owned-Job controls
+    runs-on: windows-latest
+    timeout-minutes: 10
+    defaults:
+      run:
+        working-directory: packing
+        shell: pwsh
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          submodules: true
+      - name: Install locked uv and Python
+        uses: astral-sh/setup-uv@c771a70e6277c0a99b617c7a806ffedaca235ff9 # v9.0.0
+        with:
+          version: "0.12.8"
+          python-version: "3.14.7"
+          working-directory: packing
+          enable-cache: true
+          cache-dependency-glob: uv.lock
+      - name: Synchronize locked development dependencies
+        run: uv sync --frozen --group dev
+      - name: Execute all three bounded native modes
+        run: |
+          uv run --frozen --group dev python -m pytest tests/test_supervise_windows.py -k native_venv_worker_and_grandchild -q --junitxml=native-windows-controls.xml
+          if ($LASTEXITCODE -ne 0) { throw 'Native control failed' }
+          [xml]$NativeControlReport = Get-Content native-windows-controls.xml -Raw
+          $NativeControlSuite = $NativeControlReport.testsuites.testsuite
+          if ([int]$NativeControlSuite.tests -ne 3 -or [int]$NativeControlSuite.skipped -ne 0 -or [int]$NativeControlSuite.failures -ne 0 -or [int]$NativeControlSuite.errors -ne 0) {
+            throw 'Exactly three native cases must execute and pass; skips are not acceptance'
+          }

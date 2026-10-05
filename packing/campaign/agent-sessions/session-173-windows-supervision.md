@@ -149,12 +149,11 @@ session:
   resource_rollups:
   - packing/campaign/resource-usage/codex-session-173.yaml
 ---
-
 # Optional Windows process supervision
 
-The contract and clocks precede source editing. One Sol primary owns think-v00i; root
-reviews safety and independently replays one tiny control. The adopted P01C launcher
-remains immutable until separate acceptance.
+The contract and clocks precede source editing.
+One Sol primary owns think-v00i; root reviews safety and independently replays one tiny
+control. The adopted P01C launcher remains immutable until separate acceptance.
 
 <!-- This document follows common-doc-guidelines.md.
 See github.com/jlevy/practical-prose and review guidelines before editing.

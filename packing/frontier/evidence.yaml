@@ -7533,6 +7533,50 @@ evidence:
       rungs rest on those two.
     source_reviewed: '2026-10-02'
 
+  - id: E-n012-squarepacker-7943-2000-report
+    claim: lower-bound
+    scope: {n_values: [12]}
+    assurance: reported
+    reported_method: exact-algebraic
+    performed_by: source-author
+    relationship_to_generator: same-implementation
+    origin: external
+    novelty: previously-published
+    source_key: '[squarepacker s12 2026-10-05]'
+    certificate: resources/web/squarepacker-s12-lower-bound-2026-10-05/s12-lower-bound/s12_lower_3.9715.txt.gz
+    replay_status: not-attempted
+    verifiers: [V-evand-angle-net-verify, V-squarepacker-indep-check-cpp]
+    limitations: >-
+      squarepacker/s12-lower-bound release v1.1 at 7a96bec36bc6811c3715ef581598f22ff9b7ba3a
+      (Zenodo 10.5281/zenodo.23157015; the certificate first committed at 98ffe373 on
+      2026-10-05T08:26:42Z) claims s(12) >= 7943/2000 = 3.9715 from s12_lower_3.9715.txt:
+      Evan Daniel's 1,736 points of T-049 dilated by 31382793/31360000 and rounded to the
+      grid 1/4000000 one D4 orbit at a time, with weights re-solved by linear programming,
+      all 223 orbits positive, total 119974808/10^7 < 12. The source reports Daniel's
+      verify at 7d6f46d, built with overflow checks, accepting it at N = 96000 (least
+      10000050/10^7 at bin 0) and refusing it at 24000 (6737611/10^7), and its own
+      indep_check.cpp, which sweeps [0, 90] degrees with no symmetry, accepting it at 96000
+      and 192000 and refusing it at 24000 and 48000; and two altered copies refused. It
+      says the v1.1 weight search stopped when a range-restricted version of indep_check
+      found no violation on [0, 45] degrees. The exact premises were audited here
+      (receipts/preflight.json, 21 checks); this entry preserves the source claim, and the
+      local replays are recorded separately.
+    source_reviewed: '2026-10-05'
+    external_review:
+      state: informally-verified
+      date: '2026-10-05'
+      reviewed_by: An AI agent of this project (claude-opus-5-5, tbd-strong tier), the separately prompted stage-4 review lane for T-095, sharing no context with the registering and replay lanes and blind to the replay (docs/project/reviews/review-2026-10-05-s12-v11-certificate.md).
+      note: >-
+        No mathematical defect and no blocking finding: the reduction, the D4 fold, the
+        rational net, the shrink lemma with Daniel's rounding, the admissible centre box and
+        the cell-closure lemma re-derive, and indep_check.cpp was read line by line. A
+        reading review: the lane's tool permissions refused every command that runs a
+        program, so it read no certificate integer and decided no bin (its F1), and the
+        bound rests on the replays. Its F3: the v1.1 search stopped when indep_check's
+        range-restricted twin found no violation on [0, 45] degrees, so the producer's
+        indep_check runs are producer evidence and the confirmation is Daniel's verify,
+        replayed in full, and the native route.
+
   - id: E-n021-evand-5000-1001-report
     claim: lower-bound
     scope: {n_values: [21]}

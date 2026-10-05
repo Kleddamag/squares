@@ -918,6 +918,29 @@ sources:
       n = 12, and this project's re-weighting of the same points (T-079) holds the verified
       one since 3 October. All three checkers refuse two mutated certificates. The one retained review was written by the lane that ran the replays
       (its finding F1).
+  - id: squarepacker-s12-lower-bound-2026-10-05
+    title: Daniel's s(12) points dilated to 7943/2000 and re-weighted (v1.1)
+    role: source-repository
+    url: https://github.com/squarepacker/s12-lower-bound/tree/7a96bec36bc6811c3715ef581598f22ff9b7ba3a
+    local: resources/web/squarepacker-s12-lower-bound-2026-10-05/
+    source_key: '[squarepacker s12 2026-10-05]'
+    scope: {n_values: [12]}
+    reviewed: '2026-10-05'
+    source_date: '2026-10-05'
+    disposition: current-report
+    replay_disposition: case-specific
+    represented_by: [frontier/n-012.md]
+    evidence:
+      - E-n012-squarepacker-7943-2000-report
+    notes: >-
+      Release v1.1, revision 7a96bec36bc6811c3715ef581598f22ff9b7ba3a by Ryu Sungjoon
+      (squarepacker), archived as Zenodo 10.5281/zenodo.23157015, retained for
+      jlevy/squares#363; the v1.0 files it leaves unchanged are pinned to the 2 October
+      packet. Evan Daniel's 1,736 points (T-049) dilated to the container 7943/2000 and
+      re-weighted by linear programming, after this project's Route B (T-079). The source
+      reports Daniel's verifier and its own indep_check.cpp accepting it at the angle net
+      N = 96000. Registered as reported (T-095); the exact premises pass here, and the
+      replays and the review are stage 4 of think-3kd9.
   - id: wand125-point-n61-2026-09-30
     title: Point-only cover for s(61) = 8
     role: source-repository

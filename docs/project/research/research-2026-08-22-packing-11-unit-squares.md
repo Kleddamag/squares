@@ -915,7 +915,7 @@ Use the structured form to query or plot; use these tables to read.
 
 | `n` | best reported `s(n)` | how | deg | reported lower bound | from | gap |
 | --- | --- | --- | --- | --- | --- | --- |
-| 12 | 4 | grid | — | 3.969117 | counting | 0.0309 |
+| 12 | 4 | grid | — | 3.9715 | counting | 0.0285 |
 | 17 | 4.67553009 | hand | 18 | 4.660443 | counting | 0.0151 |
 | 18 | `(7/2) + (1/2)√7` = 4.82287566 | hand | — | 4.7 | counting | 0.1229 |
 | 19 | `3 + (4/3)√2` = 4.88561808 | hand | — | 4.8175 | counting | 0.0681 |

@@ -200,15 +200,18 @@ def test_the_table_fits_its_track_at_1280_and_scrolls_in_its_wrap_below(
 def test_a_fraction_shows_its_decimal_and_a_name_stays_whole(
     laid: dict[int, dict[str, Any]],
 ) -> None:
-    """The reported lower bound of n = 12 is `31360/7901` (`15680/3951` until 3 October
-    2026), and the cell prints its decimal under it: the fraction's value cut after eight
-    places, which is not the `3.969117` the record holds. The row's other closed form is
-    its gap. A credit's longest name, in the row above, is set on one line."""
+    """The verified lower bound of n = 12 is `15680000/3949423` (T-079), and the cell
+    prints its decimal under it: the fraction's value cut after eight places, which is not
+    the `3.970200` the record holds. The example was the reported lower bound,
+    `31360/7901`, until T-095's `7943/2000` took that cell on 5 October 2026. The row's
+    other closed forms are that reported bound and its gap. A credit's longest name, in
+    the row above, is set on one line."""
     rows = {row["id"]: row for row in laid[1280]["rows"]}
-    lower = rows["n-12"]["cells"][column("Reported lower")]["approx"]
-    assert lower == ["≈ 3.96911783…"]
-    exact, shown = Fraction(31360, 7901), Fraction(lower[0][2:-1])
+    lower = rows["n-12"]["cells"][column("Verified lower")]["approx"]
+    assert lower == ["≈ 3.97020020…"]
+    exact, shown = Fraction(15680000, 3949423), Fraction(lower[0][2:-1])
     assert 0 < exact - shown < Fraction(1, 10**8)
+    assert rows["n-12"]["cells"][column("Reported lower")]["approx"] == ["= 3.9715"]
     # Three closed forms since 3 October 2026, when T-079's verified lower bound parted
     # from the reported one: the two lower bounds and the gap.
     assert [cell["approx"] for cell in rows["n-12"]["cells"]].count([]) == len(COLUMNS) - 3

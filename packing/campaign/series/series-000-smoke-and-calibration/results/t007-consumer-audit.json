@@ -629,7 +629,7 @@
       "n": 12,
       "nagamochi": {"basis":"nagamochi-theorem-2","decimal":"3.645751311064","exact":"1 + sqrt(7)","exact_case":false},
       "operative_lower_bound": {"cites_t007":false,"evidence":["E-n012-levy-15680000-3949423-source-replay","E-n012-levy-15680000-3949423-native-parent-core"],"exact_form":"15680000/3949423","results":["T-079"],"t007_scope_covers_n":true,"value":"3.970200"},
-      "reported_lower_bound": {"cites_t007":false,"evidence":["E-n012-squarepacker-31360-7901-report"],"value":"3.969117"},
+      "reported_lower_bound": {"cites_t007":false,"evidence":["E-n012-squarepacker-7943-2000-report"],"value":"3.9715"},
       "reported_status": "open",
       "status": "open",
       "support": {
@@ -638,8 +638,8 @@
         "chelokot_lean": null,
         "karakus_explicit_bound": {"basis":"karakus-6.1","decimal":"3.541381265149","exact":"1/2 + (1/2)*sqrt(37)","reaches_nagamochi":false,"shortfall_below_nagamochi":"0.104370045915"},
         "karakus_k2_minus_1": null,
-        "other_registered_results_at_n": [{"confirmation":"C3","id":"T-017","kind":"lower-bound","verification":"V3"},{"confirmation":"C3","id":"T-049","kind":"lower-bound","verification":"V3"},{"confirmation":"C3","id":"T-078","kind":"lower-bound","verification":"V3"},{"confirmation":"C3","id":"T-079","kind":"lower-bound","verification":"V3"},{"confirmation":"C1","id":"T-083","kind":"lower-bound","verification":"V3"},{"confirmation":"C3","id":"T-085","kind":"correction","verification":"V3"}],
-        "registered_reported": {"basis":"exact-form","decimal":"3.969117833185","exact":"31360/7901","reaches_nagamochi":true,"shortfall_below_nagamochi":"-0.323366522122","sources":[{"evidence":["E-n012-squarepacker-31360-7901-report"],"n":12,"proved_by":["squarepacker (Ryu Sungjoon)"],"results":["T-078"],"via":"direct"}]},
+        "other_registered_results_at_n": [{"confirmation":"C3","id":"T-017","kind":"lower-bound","verification":"V3"},{"confirmation":"C3","id":"T-049","kind":"lower-bound","verification":"V3"},{"confirmation":"C3","id":"T-078","kind":"lower-bound","verification":"V3"},{"confirmation":"C3","id":"T-079","kind":"lower-bound","verification":"V3"},{"confirmation":"C1","id":"T-083","kind":"lower-bound","verification":"V3"},{"confirmation":"C3","id":"T-085","kind":"correction","verification":"V3"},{"confirmation":"C1","id":"T-095","kind":"lower-bound","verification":"V0"}],
+        "registered_reported": {"basis":"exact-form","decimal":"3.971500000000","exact":"7943/2000","reaches_nagamochi":true,"shortfall_below_nagamochi":"-0.325748688936","sources":[{"evidence":["E-n012-squarepacker-7943-2000-report"],"n":12,"proved_by":["squarepacker (Ryu Sungjoon)"],"results":["T-095"],"via":"direct"}]},
         "registered_verified": {"basis":"exact-form","decimal":"3.970200203928","exact":"15680000/3949423","reaches_nagamochi":true,"shortfall_below_nagamochi":"-0.324448892864","sources":[{"evidence":["E-n012-levy-15680000-3949423-source-replay","E-n012-levy-15680000-3949423-native-parent-core"],"n":12,"results":["T-079"],"via":"direct"}]}
       },
       "weakened_to": null,

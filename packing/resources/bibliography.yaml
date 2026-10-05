@@ -430,6 +430,30 @@ sources:
       and the computation for Lemma 4.10, and that it is not peer reviewed. Code and data
       MIT, the paper CC BY 4.0. Retained whole in
       web/squarepacker-k2-minus-c-2026-10-05/; dated by that revision, 2026-10-05 UTC.
+  - key: '[squarepacker s12 2026-10-05]'
+    authors: [Ryu]
+    year: 2026
+    venue: GitHub
+    dated: '2026-10-05'
+    credit: squarepacker after Daniel, Levy
+    lineage: builds-on-project
+    note: >-
+      squarepacker/s12-lower-bound release v1.1 at 7a96bec36bc6811c3715ef581598f22ff9b7ba3a
+      (2026-10-05T08:31:05Z; its parent 98ffe373 adds every v1.1 file), by Ryu Sungjoon
+      (GitHub squarepacker), archived as Zenodo 10.5281/zenodo.23157015 (v1.1, published
+      2026-10-05; its archive of the tag holds the pinned tree's 68 files byte for byte),
+      and reported on jlevy/squares#363. It claims s(12) >=
+      7943/2000 = 3.9715 from s12_lower_3.9715.txt: Evan Daniel's 1,736 points dilated to
+      the container 7943/2000 and rounded one orbit at a time, with weights re-solved by
+      linear programming, total 11.9974808 < 12, verified by Daniel's verifier with
+      overflow checks and by the author's indep_check.cpp at the angle net N = 96000, with
+      a write-up, paper/s12_lower_3.9715.pdf. Its README credits the points, the verifier,
+      the reduction and its Lean formalisation to Daniel and the re-weighting idea to this
+      project's Route B (T-079), and says the rescaling, the re-weighting, the verification
+      runs and the tools were prepared with the help of Claude (Anthropic). MIT, derived
+      material under Daniel's licence. Retained in
+      web/squarepacker-s12-lower-bound-2026-10-05/, the v1.0 files it leaves unchanged
+      pinned to the 2 October packet; dated by that revision, 2026-10-05 UTC.
   - key: '[Kleddamag n11 2026]'
     authors: [Kleddamag]
     year: 2026

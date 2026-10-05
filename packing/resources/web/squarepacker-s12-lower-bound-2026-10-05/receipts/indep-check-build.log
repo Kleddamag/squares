@@ -1,0 +1,5 @@
+# command: nice -n 10 g++ -O2 -o /tmp/claude-0/-home-user-squares/1fb2d4ab-96d0-5b24-9e36-157598bdbf06/scratchpad/laneA/indep/indep_check tools/indep_check.cpp
+# cwd: the 2026-10-02 packet's s12-lower-bound/ (tools/indep_check.cpp sha256 21527e8d, which v1.1 leaves unchanged and the 2026-10-05 packet pins to that copy), output to scratch
+# python3: not used by this command
+# host: 4 cores; load 12.34 9.78 5.94; started 2026-10-05T17:24:21Z
+# finished 2026-10-05T17:24:25Z; exit 0; wall 4.611 s; CPU 2.8 s (user 2.420 + sys 0.387); load 12.34 9.78 5.94

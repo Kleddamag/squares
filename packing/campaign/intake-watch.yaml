@@ -138,12 +138,3 @@ repositories:
 
   # Heads read by the intake pass of 2026-10-05 08:00Z (think-i5qd) that arrived after it
   # pinned its packets; each is held for an import of its own.
-  - url: https://github.com/squarepacker/s12-lower-bound
-    read_through: 7a96bec36bc6811c3715ef581598f22ff9b7ba3a
-    read_on: '2026-10-05'
-    bead: think-3kd9
-    note: >-
-      Two commits past 8c53049, the squarepacker-s12-lower-bound-2026-10-02 packet's pin:
-      98ffe37, "Add v1.1: s(12) >= 7943/2000", a new certificate s12_lower_3.9715.txt with
-      its logs, controls, paper and SHA256SUMS, above the verified 15680000/3949423 (T-079),
-      and 7a96bec, which adds only .zenodo.json. To be imported at this head.

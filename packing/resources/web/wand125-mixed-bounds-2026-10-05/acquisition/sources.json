@@ -1,0 +1,220 @@
+{
+  "format": "external-source-acquisition-v1",
+  "retrieved_at_utc": "2026-10-05T07:36:39Z",
+  "git_scope": "A blobless clone of the single public branch with its history, sparsely checked out at this commit: the two claim directories added since 797bdf6 and the three root files. Every file under those two directories is digested, with the three root files; the rest of the tree is pinned by the commit.",
+  "sources": [
+    {
+      "id": "wand125-mixed-bounds",
+      "source_url": "https://github.com/wand125/square-packing-bounds",
+      "source_ref": "refs/heads/main",
+      "source_commit": "a541afbe7826ff75f6d3848e10279fd524d55af3",
+      "committed_utc": "2026-10-05T06:07:08Z",
+      "git_tree": "95cfb20f47f713f8d8c340f487dd5069961e0e77",
+      "archived_path": "packing/resources/web/wand125-mixed-bounds-2026-10-05/square-packing-bounds",
+      "subtree_manifest": "packing/resources/web/wand125-mixed-bounds-2026-10-05/acquisition/upstream-subtree.sha256",
+      "subtree_scope": [
+        "README.md",
+        "LICENSE",
+        ".gitignore",
+        "certificates/mixed_n67_L848",
+        "certificates/mixed_n84_L9411"
+      ],
+      "subtree_file_count": 35,
+      "subtree_total_bytes": 51185977,
+      "retained_file_count": 9,
+      "retained_total_bytes": 563684,
+      "compressed": [
+        "square-packing-bounds/certificates/mixed_n67_L848/candidate.json.gz",
+        "square-packing-bounds/certificates/mixed_n67_L848/certificate.json.gz",
+        "square-packing-bounds/certificates/mixed_n84_L9411/candidate.json.gz",
+        "square-packing-bounds/certificates/mixed_n84_L9411/certificate.json.gz"
+      ],
+      "pinned_only": [
+        {
+          "path": ".gitignore",
+          "bytes": 132,
+          "sha256": "0a31c24fe622ff8b4b012fbf790686063a84da3dd306d47e7283aad434653308",
+          "reason": "a retained .gitignore would act on this repository's tree; the 2026-10-01 packet README quotes it"
+        },
+        {
+          "path": "LICENSE",
+          "bytes": 1064,
+          "sha256": "c0dd43e7892932c81335f74a2fdbf1a98f5977bab14c0c4c30e3abcc97c34904",
+          "reason": "retained byte-identical by the 2026-09-27 rectangle packet",
+          "identical_to": "packing/resources/web/wand125-rectangle-certificates-2026-09-27/wand125-rectangles/LICENSE"
+        },
+        {
+          "path": "certificates/mixed_n67_L848/code/endpoint_cells.py",
+          "bytes": 3030,
+          "sha256": "090c336dec73d94998df5b402d58801dc0c647673df1750eda099562706554d9",
+          "reason": "byte-identical to the mixed_n50_L740/code/ file of the same name, retained by the 2026-09-28 packet",
+          "identical_to": "packing/resources/web/wand125-point-and-mixed-2026-09-28/square-packing-bounds/certificates/mixed_n50_L740/code/endpoint_cells.py"
+        },
+        {
+          "path": "certificates/mixed_n67_L848/code/mixed_axis_cells.py",
+          "bytes": 2173,
+          "sha256": "9243ba6c7605f1989f36124f01786400f0da0c6a01ff17ff82512700c3e87406",
+          "reason": "byte-identical to the mixed_n50_L740/code/ file of the same name, retained by the 2026-09-28 packet",
+          "identical_to": "packing/resources/web/wand125-point-and-mixed-2026-09-28/square-packing-bounds/certificates/mixed_n50_L740/code/mixed_axis_cells.py"
+        },
+        {
+          "path": "certificates/mixed_n67_L848/code/mixed_density_check.py",
+          "bytes": 4528,
+          "sha256": "22cc5cd626c0e56e65c88a610663689fb92d36d29f5fad09929dbaa859efefbb",
+          "reason": "byte-identical to the mixed_n50_L740/code/ file of the same name, retained by the 2026-09-28 packet",
+          "identical_to": "packing/resources/web/wand125-point-and-mixed-2026-09-28/square-packing-bounds/certificates/mixed_n50_L740/code/mixed_density_check.py"
+        },
+        {
+          "path": "certificates/mixed_n67_L848/code/mixed_net_audit.py",
+          "bytes": 3908,
+          "sha256": "ac95a85685b24caba90bc742685f4eaa48f2b913467dc1e3a870a4058ebea62d",
+          "reason": "byte-identical to the mixed_n50_L740/code/ file of the same name, retained by the 2026-09-28 packet",
+          "identical_to": "packing/resources/web/wand125-point-and-mixed-2026-09-28/square-packing-bounds/certificates/mixed_n50_L740/code/mixed_net_audit.py"
+        },
+        {
+          "path": "certificates/mixed_n67_L848/code/mixed_rotated_verify.cpp",
+          "bytes": 7894,
+          "sha256": "89b674a6feabe24d91c29431de1624907c4bff83280ceb481475455686693652",
+          "reason": "byte-identical to the mixed_n50_L740/code/ file of the same name, retained by the 2026-09-28 packet",
+          "identical_to": "packing/resources/web/wand125-point-and-mixed-2026-09-28/square-packing-bounds/certificates/mixed_n50_L740/code/mixed_rotated_verify.cpp"
+        },
+        {
+          "path": "certificates/mixed_n67_L848/code/mixed_rotated_verify.py",
+          "bytes": 4302,
+          "sha256": "a5aef414bf3aaf3cb79da9423c44a6ceba7a76e05c59b8da6ac75b970fcb88c1",
+          "reason": "byte-identical to the mixed_n50_L740/code/ file of the same name, retained by the 2026-09-28 packet",
+          "identical_to": "packing/resources/web/wand125-point-and-mixed-2026-09-28/square-packing-bounds/certificates/mixed_n50_L740/code/mixed_rotated_verify.py"
+        },
+        {
+          "path": "certificates/mixed_n67_L848/code/score.py",
+          "bytes": 2930,
+          "sha256": "fa8c293a81815971df11e8fe258ef2b451589a88e4200491e81e7bcf141909bc",
+          "reason": "byte-identical to the mixed_n50_L740/code/ file of the same name, retained by the 2026-09-28 packet",
+          "identical_to": "packing/resources/web/wand125-point-and-mixed-2026-09-28/square-packing-bounds/certificates/mixed_n50_L740/code/score.py"
+        },
+        {
+          "path": "certificates/mixed_n67_L848/code/verify_axis_certificate.py",
+          "bytes": 4427,
+          "sha256": "ed68a256c614b44cdd5e04b075845dc7e17014eeab0ce181900f5dc355c03c91",
+          "reason": "byte-identical to the mixed_n50_L740/code/ file of the same name, retained by the 2026-09-28 packet",
+          "identical_to": "packing/resources/web/wand125-point-and-mixed-2026-09-28/square-packing-bounds/certificates/mixed_n50_L740/code/verify_axis_certificate.py"
+        },
+        {
+          "path": "certificates/mixed_n67_L848/code/verify_mixed_full_proof.py",
+          "bytes": 3602,
+          "sha256": "2719e482cfdd87da2b64b50af626bbd0a68d58d95b746cf27467b2a7aca83648",
+          "reason": "byte-identical to the mixed_n50_L740/code/ file of the same name, retained by the 2026-09-28 packet",
+          "identical_to": "packing/resources/web/wand125-point-and-mixed-2026-09-28/square-packing-bounds/certificates/mixed_n50_L740/code/verify_mixed_full_proof.py"
+        },
+        {
+          "path": "certificates/mixed_n67_L848/code/verify_rotated_result.py",
+          "bytes": 1820,
+          "sha256": "dace4a5f941c926da388702ab8a8e7b196d782501205d6642be7667ab1306082",
+          "reason": "byte-identical to the mixed_n50_L740/code/ file of the same name, retained by the 2026-09-28 packet",
+          "identical_to": "packing/resources/web/wand125-point-and-mixed-2026-09-28/square-packing-bounds/certificates/mixed_n50_L740/code/verify_rotated_result.py"
+        },
+        {
+          "path": "certificates/mixed_n67_L848/n67-L8.48-proof-bundle.tar.gz",
+          "bytes": 21960517,
+          "sha256": "2b45da24c08eeb539af72e5d1ff5267984190f1a00ce38de5f46a94b4d53d6d0",
+          "reason": "complete proof bundle (22.0 and 28.6 MB)"
+        },
+        {
+          "path": "certificates/mixed_n67_L848/requirements.txt",
+          "bytes": 6,
+          "sha256": "e09f656c130b9c08b2c5ab7187c891295e449ed77febea2a6ceee9cc98ccb0fc",
+          "reason": "byte-identical to mixed_n50_L740/requirements.txt, retained by the 2026-09-28 packet",
+          "identical_to": "packing/resources/web/wand125-point-and-mixed-2026-09-28/square-packing-bounds/certificates/mixed_n50_L740/requirements.txt"
+        },
+        {
+          "path": "certificates/mixed_n84_L9411/code/endpoint_cells.py",
+          "bytes": 3030,
+          "sha256": "090c336dec73d94998df5b402d58801dc0c647673df1750eda099562706554d9",
+          "reason": "byte-identical to the mixed_n50_L740/code/ file of the same name, retained by the 2026-09-28 packet",
+          "identical_to": "packing/resources/web/wand125-point-and-mixed-2026-09-28/square-packing-bounds/certificates/mixed_n50_L740/code/endpoint_cells.py"
+        },
+        {
+          "path": "certificates/mixed_n84_L9411/code/mixed_axis_cells.py",
+          "bytes": 2173,
+          "sha256": "9243ba6c7605f1989f36124f01786400f0da0c6a01ff17ff82512700c3e87406",
+          "reason": "byte-identical to the mixed_n50_L740/code/ file of the same name, retained by the 2026-09-28 packet",
+          "identical_to": "packing/resources/web/wand125-point-and-mixed-2026-09-28/square-packing-bounds/certificates/mixed_n50_L740/code/mixed_axis_cells.py"
+        },
+        {
+          "path": "certificates/mixed_n84_L9411/code/mixed_density_check.py",
+          "bytes": 4528,
+          "sha256": "22cc5cd626c0e56e65c88a610663689fb92d36d29f5fad09929dbaa859efefbb",
+          "reason": "byte-identical to the mixed_n50_L740/code/ file of the same name, retained by the 2026-09-28 packet",
+          "identical_to": "packing/resources/web/wand125-point-and-mixed-2026-09-28/square-packing-bounds/certificates/mixed_n50_L740/code/mixed_density_check.py"
+        },
+        {
+          "path": "certificates/mixed_n84_L9411/code/mixed_net_audit.py",
+          "bytes": 3908,
+          "sha256": "ac95a85685b24caba90bc742685f4eaa48f2b913467dc1e3a870a4058ebea62d",
+          "reason": "byte-identical to the mixed_n50_L740/code/ file of the same name, retained by the 2026-09-28 packet",
+          "identical_to": "packing/resources/web/wand125-point-and-mixed-2026-09-28/square-packing-bounds/certificates/mixed_n50_L740/code/mixed_net_audit.py"
+        },
+        {
+          "path": "certificates/mixed_n84_L9411/code/mixed_rotated_verify.cpp",
+          "bytes": 7894,
+          "sha256": "89b674a6feabe24d91c29431de1624907c4bff83280ceb481475455686693652",
+          "reason": "byte-identical to the mixed_n50_L740/code/ file of the same name, retained by the 2026-09-28 packet",
+          "identical_to": "packing/resources/web/wand125-point-and-mixed-2026-09-28/square-packing-bounds/certificates/mixed_n50_L740/code/mixed_rotated_verify.cpp"
+        },
+        {
+          "path": "certificates/mixed_n84_L9411/code/mixed_rotated_verify.py",
+          "bytes": 4302,
+          "sha256": "a5aef414bf3aaf3cb79da9423c44a6ceba7a76e05c59b8da6ac75b970fcb88c1",
+          "reason": "byte-identical to the mixed_n50_L740/code/ file of the same name, retained by the 2026-09-28 packet",
+          "identical_to": "packing/resources/web/wand125-point-and-mixed-2026-09-28/square-packing-bounds/certificates/mixed_n50_L740/code/mixed_rotated_verify.py"
+        },
+        {
+          "path": "certificates/mixed_n84_L9411/code/score.py",
+          "bytes": 2930,
+          "sha256": "fa8c293a81815971df11e8fe258ef2b451589a88e4200491e81e7bcf141909bc",
+          "reason": "byte-identical to the mixed_n50_L740/code/ file of the same name, retained by the 2026-09-28 packet",
+          "identical_to": "packing/resources/web/wand125-point-and-mixed-2026-09-28/square-packing-bounds/certificates/mixed_n50_L740/code/score.py"
+        },
+        {
+          "path": "certificates/mixed_n84_L9411/code/verify_axis_certificate.py",
+          "bytes": 4427,
+          "sha256": "ed68a256c614b44cdd5e04b075845dc7e17014eeab0ce181900f5dc355c03c91",
+          "reason": "byte-identical to the mixed_n50_L740/code/ file of the same name, retained by the 2026-09-28 packet",
+          "identical_to": "packing/resources/web/wand125-point-and-mixed-2026-09-28/square-packing-bounds/certificates/mixed_n50_L740/code/verify_axis_certificate.py"
+        },
+        {
+          "path": "certificates/mixed_n84_L9411/code/verify_mixed_full_proof.py",
+          "bytes": 3602,
+          "sha256": "2719e482cfdd87da2b64b50af626bbd0a68d58d95b746cf27467b2a7aca83648",
+          "reason": "byte-identical to the mixed_n50_L740/code/ file of the same name, retained by the 2026-09-28 packet",
+          "identical_to": "packing/resources/web/wand125-point-and-mixed-2026-09-28/square-packing-bounds/certificates/mixed_n50_L740/code/verify_mixed_full_proof.py"
+        },
+        {
+          "path": "certificates/mixed_n84_L9411/code/verify_rotated_result.py",
+          "bytes": 1820,
+          "sha256": "dace4a5f941c926da388702ab8a8e7b196d782501205d6642be7667ab1306082",
+          "reason": "byte-identical to the mixed_n50_L740/code/ file of the same name, retained by the 2026-09-28 packet",
+          "identical_to": "packing/resources/web/wand125-point-and-mixed-2026-09-28/square-packing-bounds/certificates/mixed_n50_L740/code/verify_rotated_result.py"
+        },
+        {
+          "path": "certificates/mixed_n84_L9411/n84-L9.411-proof-bundle.tar.gz",
+          "bytes": 28583340,
+          "sha256": "d38233d75efba438ab2807480d871f247f07c310628a223b0e76ed1e6ae59f80",
+          "reason": "complete proof bundle (22.0 and 28.6 MB)"
+        },
+        {
+          "path": "certificates/mixed_n84_L9411/requirements.txt",
+          "bytes": 6,
+          "sha256": "e09f656c130b9c08b2c5ab7187c891295e449ed77febea2a6ceee9cc98ccb0fc",
+          "reason": "byte-identical to mixed_n50_L740/requirements.txt, retained by the 2026-09-28 packet",
+          "identical_to": "packing/resources/web/wand125-point-and-mixed-2026-09-28/square-packing-bounds/certificates/mixed_n50_L740/requirements.txt"
+        }
+      ],
+      "license": "MIT, Copyright (c) 2026 wand125 (root LICENSE)",
+      "claims": [
+        "s(67) >= 212/25 (certificates/mixed_n67_L848)",
+        "s(84) >= 9411/1000 (certificates/mixed_n84_L9411)"
+      ]
+    }
+  ]
+}

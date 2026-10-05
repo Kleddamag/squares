@@ -11274,6 +11274,39 @@ evidence:
       same implementation as the claim. A build here from the retained bytes is recorded in
       the packet, and is not cited until stage 4.
     source_reviewed: '2026-10-03'
+  - id: E-n020-evand-point-cover-4886-report
+    claim: lower-bound
+    scope: {n_values: [20]}
+    assurance: reported
+    reported_method: exact-algebraic
+    performed_by: source-author
+    relationship_to_generator: same-implementation
+    origin: external
+    novelty: previously-published
+    source_key: '[evand square-packing 2026-10-04]'
+    certificate: resources/web/evand-square-packing-2026-10-04/square-packing/s12/search/s20lb_cover_4886.txt.gz
+    replay_status: not-attempted
+    verifiers: [V-evand-zmx2, V-evand-zm-mixed-py]
+    limitations: >-
+      evand/square-packing at 7ff3b2113532889708a3baa4d56bc44294022e63 (the cover was
+      committed in 2010d63, 2026-10-04T09:43:45Z) reports s(20) >= 2443/500 = 4.886, and so
+      s(20) > 3 + 4 sqrt(2)/3, the side of Wainwright's packing of 19 squares, since
+      (3/4)(2443/500 - 3) = 2829/2000 and 2829^2 > 2 x 2000^2. The certificate is a point
+      measure on [0, 2443/500]^2: 12,864 distinct points, exactly D4-invariant, total
+      249862891/12500000 = 19.98903128 < 20. The source reports it accepted by zmx2 at
+      b8157df (--d4 and --full, each with and without --sym-atoms, none uncertified) and by
+      the unmodified zm_mixed.py, SHA-256 1fd20346..., with --cert-mode at pitch 2443/50000
+      over the D4 region and the full pose space. That zmx2 is a change made for this cover:
+      at a side that is not a multiple of 1/10 its root cells cover [0, ceil(10s)/10] and
+      its grid-line atoms are mirrored to x = s - k; it is retained in the packet, blob
+      d42cbde2. The source's REPORT.md, by an agent it calls independent, re-ran every check
+      box for box, refused the mutants and found no soundness defect, with three wording
+      errors in the note fixed and a latent gap in zeromargin.roots() that this run does
+      not reach. The value is below this record's verified s(20) >= 1959/400 (T-074) and the
+      reported 49/10, which already exceed 3 + 4 sqrt(2)/3, and the source keeps it as an
+      independent confirmation. By the result-import runbook it asks for no work: it is not
+      registered and nothing here replayed it.
+    source_reviewed: '2026-10-05'
   - id: E-n051-wand125-mixed-746-report
     claim: lower-bound
     scope: {n_values: [51]}

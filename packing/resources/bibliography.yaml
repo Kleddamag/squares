@@ -323,6 +323,37 @@ sources:
       Claude (Anthropic) in a single session under human direction. The packet
       web/evand-square-packing-2026-10-03/ retains the bundle, the record and the Lean
       closure; the bundle's fast verify.sh was run here and the full run was not.
+  - key: '[evand square-packing 2026-10-04]'
+    authors: [Daniel]
+    year: 2026
+    venue: GitHub
+    dated: '2026-10-04'
+    credit: Daniel after Burns, Massaccesi
+    lineage: independent
+    note: >-
+      evand/square-packing at 7ff3b2113532889708a3baa4d56bc44294022e63
+      (2026-10-04T20:17:38Z): what the repository added after 2eb15455, among it the
+      point cover for s(20) > 3 + 4 sqrt(2)/3 with the source's review of it, the exact
+      pure-cover ceilings for n = 17 to 20, Lean for the LEB and CAP leaves of ValidTilt7,
+      and a Lean bridge to chelokot's definitions. Its CREDITS.md still says the work was
+      produced by Claude (Anthropic) in a single session under human direction. The packet
+      web/evand-square-packing-2026-10-04/ retains these files with the site; nothing was
+      replayed.
+  - key: '[evand square packing atlas 2026-10-04]'
+    authors: [Daniel]
+    year: 2026
+    venue: Square Packing Atlas
+    dated: '2026-10-04'
+    lineage: independent
+    note: >-
+      Evan Daniel's Square Packing Atlas, https://evand.github.io/square-packing/, as
+      evand/square-packing builds it at 7ff3b2113532889708a3baa4d56bc44294022e63: site/www/
+      is the Pages root and s12/docs/ is served under it. Its pages credit the packings to
+      David Ellsworth's catalogue and Erich Friedman's survey, and its analysis and 2026
+      results to the repository; its open-problems page, problems.html, was added on 4
+      October 2026. Its "verified on jlevy/squares" marks cite this record's register. The
+      deployed site was not fetched; the packet web/evand-square-packing-2026-10-04/
+      retains the pages, their scripts and data, and the floors table.
   - key: '[squarepacker s12 2026]'
     authors: [Ryu]
     year: 2026

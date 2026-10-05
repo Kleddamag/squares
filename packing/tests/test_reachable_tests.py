@@ -31,6 +31,15 @@ def _isolate_parent_reachable_receipt(monkeypatch: pytest.MonkeyPatch) -> None:
     monkeypatch.delenv("PACKING_REACHABLE_TEST_RUN_ID", raising=False)
 
 
+@pytest.fixture(scope="module", autouse=True)
+def _one_static_tree() -> None:
+    """Every question here is put to one static tree, whose parse `select_tests` memoizes
+    for the life of the process. Pay that parse once, in this module's setup, rather than
+    in whichever test happens to run first: on jlevy/squares#353 it pushed the first one
+    past the 12 s per-test rule while the call itself takes well under a second."""
+    select_tests(["packing/src/sqpack/cli/validate.py"])
+
+
 def test_a_change_to_validate_selects_the_tests_that_pinned_it() -> None:
     """The D-381 pair: both stale-pin failures lived in these two files."""
     selection = select_tests(["packing/src/sqpack/cli/validate.py"])

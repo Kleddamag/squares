@@ -43,6 +43,8 @@ WITNESSES = FRONTIER.parent / "witnesses"
 STRATEGIES = FRONTIER.parent / "strategies"
 RESOURCE_USAGE = FRONTIER.parent / "campaign" / "resource-usage"
 SESSION_CLOSE_REPORT = RESOURCE_USAGE.parent / "session-close-report.yaml"
+#: How far an intake pass read each watched repository past its packets.
+INTAKE_WATCH = RESOURCE_USAGE.parent / "intake-watch.yaml"
 DOCUMENT_MAP = FRONTIER.parent.parent / "docs" / "project" / "document-map.yaml"
 COMPOSITE_FIGURE = FRONTIER.parent / "atlas" / "known-best" / "composite-figure.json"
 BOUND_CITATIONS = FRONTIER.parent / "atlas" / "known-best" / "bound-citations.json"
@@ -319,6 +321,7 @@ def corpus_paths() -> tuple[list[pathlib.Path], list[pathlib.Path]]:
     # because a report that silently dropped an unmeasured session would total a fraction
     # of the campaign and read as all of it.
     datasets.append(SESSION_CLOSE_REPORT)
+    datasets.append(INTAKE_WATCH)
     datasets += sorted(
         path for path in STRATEGIES.glob("*.yaml") if not path.name.endswith(".schema.yaml")
     )

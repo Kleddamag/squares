@@ -1,0 +1,37 @@
+# How far an intake pass has read each watched repository beyond the packets that pin it.
+#
+# The watched repositories are derived, not listed here: every repository the source
+# register, a packet's acquisition record or the site's list of other projects names
+# (`devtools.intake_sweep`). A packet's pin is the ordinary record of what was taken in.
+# This file holds only what a pin cannot say: that a pass read a repository through a
+# later commit and either found nothing to import or handed what it found to a bead.
+$schema: https://json-schema.org/draft/2020-12/schema
+$id: packing.squares:IntakeWatch/v1
+title: Intake watch
+type: object
+additionalProperties: false
+required: [repositories]
+properties:
+  repositories:
+    type: array
+    items: {$ref: '#/$defs/read'}
+$defs:
+  read:
+    type: object
+    additionalProperties: false
+    required: [url, read_through, read_on, note]
+    description: >-
+      One repository read past its newest packet. With `bead`, the commits hold
+      something to import and that open bead owns it, so the entry is a deferral and
+      `check_bead_tree` fails it once the bead closes; remove the entry when a packet
+      pins the commit. Without `bead`, the pass found nothing to import, and `note`
+      says what the commits changed.
+    properties:
+      url:
+        type: string
+        pattern: "^https://(gist\\.)?github\\.com/[\\w.-]+(/[\\w.-]+)?$"
+        description: The repository as the sweep names it, without a revision.
+      read_through: {type: string, pattern: "^[0-9a-f]{40}$"}
+      read_on: {type: string, pattern: '^\d{4}-\d{2}-\d{2}$'}
+      bead: {type: string, pattern: "^think-[a-z0-9]{4}$"}
+      note: {type: string, minLength: 1}

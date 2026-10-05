@@ -19,12 +19,12 @@ Existing geometry is read-only.
 | Evidence | Measured result | Limit/interpretation |
 | --- | --- | --- |
 | B target | 1460 unique refined pairs, 4619 assignments, 5.116 s protocol/9.047 s Job | 4740 pairs/5056 assignments/30 s/512 MiB; no guard |
-| Independent B replay | 7 tuples, 105 fresh checks, 18 parent rows/18 observed child rows, 0.417 s protocol/3.687 s Job | Certifies retained support/coverage; not enumeration loss or search statistics |
+| Fresh B replay (same implementation, no search) | 7 tuples, 105 fresh checks, 18 parent rows/18 observed child rows, 0.417 s protocol/3.687 s Job | Certifies retained support/coverage; not enumeration loss or search statistics |
 | Endpoint control | 24/24 parent rows, 15 tuples, 90 unique pairs; 225 fresh replay checks | Exact angle-containing children preserve the endpoint witness |
 | Focused controls | 29 tests 2.94 s; Ruff/types clean | Split/containment, identity/tampering, finite exhaustive graphs, guards/cache and endpoint enclosures |
 
-B worker peak 153608192 B, independent replay 154959872 B. Every retained Job ends empty
-with confirmed cleanup/no errors.
+B worker peak 153608192 B, fresh replay 154959872 B. Every retained Job ends empty with
+confirmed cleanup/no errors.
 Child coverage is an observed lower bound: enumeration stops at the first compatible
 assignment per original tuple.
 Unknown child rows are never called unsupported.
@@ -83,12 +83,19 @@ supported parents cannot be deleted completely by sound solution-preserving reas
 this exact enhanced graph; the other 78 are unknown.
 The earlier 96 row result applies to its earlier cores, not arbitrary stronger geometry.
 
-Root accepted source soundness and fresh independent retained-support replay.
-Hosted source/evidence certification passes at
+Root accepted source soundness and a fresh retained-support replay (same implementation,
+no search). Hosted source/evidence certification passes at
 `40fe5f5bf62e6b37488e4d899e555de3bb9a0a5c`; final metadata CI is observed separately.
 Native usage is one declared privacy aggregate/lower bound; later publication/CI and
 pre-start setup are excluded.
 No further H target follows.
+
+Commits cited in this record that are not in this branch’s history, including the
+probes’ `BASE_REVISION` values, resolve at the tag `archive/guzhou-review-a-333`
+(Guzhou’s original nine-session branch).
+The references are provenance only; no code reads them (`OR-18`). “Fresh replay” here
+means the same implementation re-run in a separate process without search; receipt names
+ending in `-independent-replay.json` predate that wording.
 
 <!-- This document follows common-doc-guidelines.md.
 See github.com/jlevy/practical-prose and review guidelines before editing.

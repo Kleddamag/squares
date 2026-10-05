@@ -9,7 +9,8 @@ description: 'The n17 sub-pattern certificate objects of X-048 session 168, by c
   the interval branch-and-bound certificate of A and the kernel certificates of W7, SW9 (flag 3) and residue
   state N1. The standing verifiers (devtools.verify_n17_bb_certificate, devtools.verify_n17_kernel_certificate)
   re-check them once fetched; devtools.census_n17_certified counts from the committed receipts without
-  them. Session 182 adds the kernel certificates its lanes admit, by directory: s182-k<J> for lane K''s flags and s182-m<mask> for lane A''s residue states.'
+  them. Session 182 adds the kernel certificates its lanes admit, by directory: s182-k<J> for lane K''s
+  flags and s182-m<mask> for lane A''s residue states.'
 objects:
 - path: packing/campaign/explorations/X048-session-168-pilots/certificates/A/00afebeeab777bd3afb8509747520a5d5a174c04a5e9a07a5ba29e86b8ac45d0.json.gz
   asset: 00afebeeab777bd3afb8509747520a5d5a174c04a5e9a07a5ba29e86b8ac45d0.json.gz
@@ -481,6 +482,16 @@ objects:
   size: 7889
   sha256: c5729d2f94d9152dad01d797f7a4eaa463472bdce779413b0b3c4cc2a74fbcbf
   description: kernel certificate of s182-k1 (session 182, lane K target 1)
+- path: packing/campaign/explorations/X048-session-168-pilots/certificates/s182-k3/node-7b2496f5853e22328b69ed9f53b41aa951442aef5d0356c1e318aaca114472b5.json.gz
+  asset: node-7b2496f5853e22328b69ed9f53b41aa951442aef5d0356c1e318aaca114472b5.json.gz
+  size: 6586259
+  sha256: 79c5f854280c348a4bee63a005aac3ff61dd09009511d5bb67e5cc4f755f0b2e
+  description: kernel certificate of s182-k3 (session 182, lane K target 3)
+- path: packing/campaign/explorations/X048-session-168-pilots/certificates/s182-k3/seed-e8c61d26ff08ab72425877a5fe54d0e382924875ca429679f4f43d8cc6e54a0a.json.gz
+  asset: seed-e8c61d26ff08ab72425877a5fe54d0e382924875ca429679f4f43d8cc6e54a0a.json.gz
+  size: 8329
+  sha256: 34b4ca69a1f69e832c53cb4e2ef4764af7a94b89bcd0d47b5419ab54d1360697
+  description: kernel certificate of s182-k3 (session 182, lane K target 3)
 - path: packing/campaign/explorations/X048-session-168-pilots/certificates/s182-m5683195/node-59e605864e3301e3687e327f2547a9813921c9496409c75d493b62b1847cef29.json.gz
   asset: node-59e605864e3301e3687e327f2547a9813921c9496409c75d493b62b1847cef29.json.gz
   size: 30542844

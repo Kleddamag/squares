@@ -125,9 +125,37 @@ def test_r070_published_ledgers_agree_row_by_row() -> None:
     assert result["intervals_at_minimum"] == 5107
     assert result["surplus_units"] == 7404
     assert all(result["theorem_agrees"].values())
+    assert result["consistent"]
     assert len(set(result["triples_sha256"].values())) == 1
     recorded = json.loads((RECEIPTS / "r070/published-ledgers.json").read_text())
     assert recorded == result
+
+
+def test_a_theorem_that_disagrees_with_its_ledgers_fails_the_command(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]
+) -> None:
+    """Rows that agree are not enough: a THEOREM.json reporting another status fails."""
+    release = audit.RELEASES["R070"]
+    for stored in release.published.iterdir():
+        (tmp_path / stored.name).write_bytes(stored.read_bytes())
+    theorem = json.loads((tmp_path / "THEOREM.json").read_text(encoding="utf-8"))
+    theorem["status"] = "FAIL"
+    (tmp_path / "THEOREM.json").write_text(json.dumps(theorem), encoding="utf-8")
+    moved = audit.Release(
+        release.commit,
+        release.package,
+        release.certificate,
+        release.sha256,
+        tmp_path,
+        release.target,
+        release.intervals,
+    )
+    monkeypatch.setitem(audit.RELEASES, "R070", moved)
+    assert audit.main(["ledgers"]) == 1
+    printed = json.loads(capsys.readouterr().out)
+    assert printed["mismatches"] == 0
+    assert printed["theorem_agrees"]["status"] is False
+    assert printed["consistent"] is False
 
 
 def test_r071_summary_names_r068s_checkers() -> None:
@@ -175,3 +203,4 @@ def test_a_summary_for_another_certificate_is_inconsistent(
     result = audit.summary()
     assert not result["consistent"]
     assert not result["checks"]["certificate"]
+

@@ -57,11 +57,14 @@ GOLDEN_RECONCILED: dict[str, tuple[int, int]] = {
     # them at n <= 200, off the catalogue, and de Winter's (T-057) took n = 211's grid.
     # Lowered by one on 2026-09-30, when the page was captured again: n = 126's new entry
     # prints no degree lock or polynomial (-2) and n = 179's prints a lock and a polynomial
-    # where it printed a closed form (+1). n = 69, 83 and 87, pending intake, are still
-    # reconciled against the capture of 2026-08-22.
-    "n=1..100": (60, 206),
-    "n=1..200": (99, 392),
-    "n=1..324": (139, 614),
+    # where it printed a closed form (+1). n = 69, 83 and 87 were reconciled against the
+    # capture of 2026-08-22 while pending intake; on 2026-10-05 their records took the
+    # current capture (T-088, T-089): n = 69 leaves the UnitSquare release for a catalogue
+    # block (+1 case), and the three new blocks print one more fact between them than the
+    # facts the three records were held to before (+1).
+    "n=1..100": (61, 207),
+    "n=1..200": (100, 393),
+    "n=1..324": (140, 615),
 }
 
 #: A block whose printed form uses LaTeX this parser does not read. It must raise rather

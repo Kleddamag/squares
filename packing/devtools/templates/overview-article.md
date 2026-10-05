@@ -127,6 +127,11 @@ These are the open projects on GitHub that the research frontier cites, ordered 
 significance of their results in the [register](all-results.html): most at S5 first,
 then S4, and so on down, newest first among equals.
 Each card ends with a count that opens those results.
+Evan Daniel also publishes the
+[Square Packing Atlas](https://evand.github.io/square-packing/), which draws every
+record packing beside the proven floor beneath it, and a page of
+[open problems](https://evand.github.io/square-packing/problems.html) about the patterns
+that span many $n$.
 
 {{OTHER_PROJECTS}}
 

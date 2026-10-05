@@ -1,0 +1,12 @@
+{
+  "status": "M1_FULL_RUN_READS_PRESENT_BYTE_IDENTICAL_IN_DISTRIBUTION",
+  "source_reads": 75130,
+  "distribution_manifest_sha256": "b0d1dcb1bdd0d93a3723df5c8a034828cd686c647599604fad5b16bc676eb098",
+  "result_sha256": "872f3ef597e5ea83a8c24877d2e92a5c90d99e485d7f394e1eeac039e32d6adc",
+  "linkage_sha256": "694d43bc2f14afaa77597f5c1aaef594757a444a05908ffc86a38db9074dfcb4",
+  "compressed_linkage_sha256": "a8862552946a906799b53aa9035883ac02b7f9a820ffcdb0868c909125b00562",
+  "seconds": 8577.313336874999,
+  "scope": "Full numerical run used the original frozen bundle; all actual reads were preserved byte-for-byte in the trimmed distribution with manifest bb2883c5d05e3073011267f95cccd3301c2f97dd4c1e1d64fc4c6e46c8ec9c6c. In the current distribution 54 of those files differ only by relative instead of absolute paths (JSON records) or translated strings in one unused source; see ../path-relativization-map.json. This staging check performs no numerical replay.",
+  "previous_distribution_manifest_sha256": "bb2883c5d05e3073011267f95cccd3301c2f97dd4c1e1d64fc4c6e46c8ec9c6c",
+  "path_relativization_note": "Hashes of the linkage records were updated after absolute paths in them were made relative; previous -> current values are listed in ../path-relativization-map.json"
+}

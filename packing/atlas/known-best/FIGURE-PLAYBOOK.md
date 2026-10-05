@@ -166,21 +166,26 @@ tiling argument**. It no longer means the corpus is silent about the packing.
 `frontier/n-NNN.md` now carries a first-party `rigidity` block for every $n$, written by
 `devtools/assess_frontier_rigidity.py` from two sound arguments:
 
-- **301 records are positively NOT rigid** across the corpus, 85 of them in the figure’s
+- **302 records are positively NOT rigid** across the corpus, 86 of them in the figure’s
   hundred. The translation escape screen exhibits a square, a direction and an exact
   distance, which is a certificate of motion.
   In the hundred the smallest certified slide is `2.03e-4` against witness coordinates
   carrying 28 or more digits, except at $n = 68$, whose witness is Francisco Couzo’s
   binary64 pose since 2026-09-29 and whose smallest slide, `8.6e-11`, is still five
-  orders of magnitude above that pose’s rounding; every record also has a square that
-  slides at least $0.048$. None of these is numerical noise.
+  orders of magnitude above that pose’s rounding, and at $n = 69, 83$ and $87$, whose
+  witnesses since 2026-10-05 are a binary64 parse of the catalogue’s pictures and whose
+  smallest slides, $0.040$, `3.7e-4` and `2.8e-3`, are further above it still; every
+  record also has a square that slides at least $0.048$. None of these is numerical
+  noise.
 - **Eighteen are rigid by exact tiling**, the same eighteen the poster badges and the
   first ten of which the figure badges.
-- **Three are `undetermined`**, which is a result rather than an absence: $n = 28, 40$
+- **Two are `undetermined`**, which is a result rather than an absence: $n = 28, 40$
   because the screen finds no single-square translation but cannot rule out rotation or
-  coordinated motion, and $n = 69$ because its witness geometry is excluded.
-  $n = 68, 103, 105, 110$ and $131$ were excluded too until their records moved from
-  UnitSquare renderings to Couzo’s packings (T-056), which the screen reads.
+  coordinated motion. $n = 69$ was the third, its rendering’s geometry excluded, until
+  its record moved on 2026-10-05 to the catalogue’s packing (T-088), which the screen
+  reads and finds a translating square in; $n = 68, 103, 105, 110$ and $131$ were
+  excluded too until their records moved from UnitSquare renderings to Couzo’s packings
+  (T-056).
 - **Two are the assessment tool’s own refusals**, $n = 5$ and $n = 11$, which it leaves
   to a stronger argument and which now carry one.
   $n = 5$ held `undetermined` on a first-party exact argument rather than on a screen

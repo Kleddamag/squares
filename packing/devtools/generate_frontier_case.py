@@ -70,8 +70,9 @@ not apply -- it is scoped out, and the hand-written unpictured grid cases (`n = 
 catalogue states neither as a field; both live in the prose under the picture, which
 `CatalogueEntry.credit_line` now carries verbatim. The table below is not a guess at what
 the page means -- it is measured against the sixty catalogue-sourced pictured entries at
-`n <= 100` that a person transcribed by hand. A rule fires on 22 of them and agrees with
-the transcription on every one; on the other 38 no rule fires, and the transcription
+`n <= 100` that a person transcribed by hand, and `n = 69`, transcribed from a draft on
+2026-10-05 (T-088). A rule fires on 23 of them and agrees with the transcription on every
+one; on the other 38 no rule fires, and the transcription
 called those `hand-construction` (21), `trivial-grid` (14) or `unknown` (3), never one of
 the four methods a rule is for. The counts are the number of entries each rule reaches:
 
@@ -81,7 +82,7 @@ the four methods a rule is for. The counts are the number of entries each rule r
 | `[Explore group](squares_in_squares__Göbel_squares.html)` | `hand-construction` | 3 | 8 |
 | `Adds <count> "L"s to`, opening the line | `extension` | 0 | 14 |
 | `combining` or `Combines two copies`, opening the line | `composition` | 0 | 3 |
-| `simulated annealing` | `simulated-annealing` | 10 | 34 |
+| `simulated annealing` | `simulated-annealing` | 11 | 34 |
 | `Extends the` or `Unextends the` | `extension` | 3 | 13 |
 | none of the above | `unknown` | 38 | 45 |
 
@@ -541,14 +542,18 @@ _SENTENCE_BREAK = re.compile(r"(?<!\b[A-Z])\.\s+")
 _PARENTHESISED = re.compile(r"(?<!\])\([^()]*\)")
 
 #: The one improvement form the corpus reads, and the only one it reads consistently: a
-#: sentence-initial "Improved by <names> in <month> <year>". Measured over the 46
-#: catalogue-sourced pictured records at `n <= 100`, it reproduces 45 of them; the miss
-#: is `n = 29`, where the hand pass read an "Optimized by" sentence as an improvement and
-#: `n = 39, 41, 50, 51, 71` did not read the same sentence that way. "Improved
-#: independently by both ..." at `n = 88` is not this form and is not recorded, which is
-#: also what the hand pass did.
+#: sentence-initial "Improved by <names> in <month> <year>", or "Improved and optimized
+#: by", which the capture of 2026-09-30 prints for Allen Chang at `n = 68` and `87` and
+#: which is an improvement too. Measured over the 47 catalogue-sourced pictured records
+#: at `n <= 100`, it reproduces 44 of them. One miss is `n = 29`, where the hand pass read
+#: an "Optimized by" sentence as an improvement and `n = 39, 41, 50, 51, 71` did not read
+#: the same sentence that way; the other two are `n = 69` and `83`, transcribed on
+#: 2026-10-05 from drafts, which also credit the optimizer the line names nowhere else
+#: (`_OPTIMIZED_BY`). "Improved independently by both ..." at `n = 88` is not this form
+#: and is not recorded, which is also what the hand pass did.
 _IMPROVED_BY = re.compile(
-    r"^Improved by\s+(?P<names>.+?)\s+in\s+(?P<when>(?:[A-Za-z-]+\s+)*)(?P<year>\d{4})\b"
+    r"^Improved (?:and optimized )?by\s+(?P<names>.+?)\s+in\s+"
+    r"(?P<when>(?:[A-Za-z-]+\s+)*)(?P<year>\d{4})\b"
 )
 
 #: A sentence-initial "Optimized by <names> in <date>": the page's word for an analytic

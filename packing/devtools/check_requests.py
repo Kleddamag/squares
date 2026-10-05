@@ -938,6 +938,8 @@ Fetch = Callable[[str], Any]
 
 
 _PER_PAGE = re.compile(r"[?&]per_page=(\d+)")
+#: The largest page GitHub's REST API serves; a larger `per_page` is cut to it.
+GITHUB_MAX_PER_PAGE = 100
 
 
 def _gh_api(path: str) -> Any:
@@ -952,17 +954,29 @@ def gh_fetch(path: str, api: Fetch = _gh_api) -> Any:
     --paginate` follows the `Link` header instead, whose next page GitHub addresses as
     `repositories/{id}/...`, and a proxy that refuses numeric-id paths, as the agent
     session's did on 2026-10-05, then fails the whole read on the second request.
+
+    The page size must be one GitHub serves, 1 to 100: a page of 100 under `per_page=250`
+    would read as the short last page, and `per_page=0` as never short. A first page that
+    is not a list is the answer itself, such as an error; a later one would lose the
+    pages already read, and is refused with `ValueError`.
     """
     size = _PER_PAGE.search(path)
     if size is None:
         return api(path)
+    per_page = int(size.group(1))
+    if not 1 <= per_page <= GITHUB_MAX_PER_PAGE:
+        raise ValueError(
+            f"{path}: per_page={per_page}; GitHub serves 1 to {GITHUB_MAX_PER_PAGE} a page"
+        )
     items: list[Any] = []
     for page in itertools.count(1):
         batch = api(f"{path}&page={page}")
         if not isinstance(batch, list):
-            return batch
+            if page == 1:
+                return batch
+            raise ValueError(f"{path}: page {page} is not a list: {str(batch)[:200]}")
         items.extend(batch)
-        if len(batch) < int(size.group(1)):
+        if len(batch) < per_page:
             break
     return items
 

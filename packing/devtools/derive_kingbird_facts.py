@@ -87,7 +87,10 @@ the same order -- and the two that differed, `n = 83` and `87`, were counts whos
 picture had changed since their witness was read. The parse must print a
 side the catalogue's printed decimal truncates, digit for digit, and passes every check
 a fetched picture does; the witness records `REV` and the file in `source.revision`,
-and its limitations say the numbers are that parse's and not the SVG's::
+and the SHA-256 of the file's bytes in `source.revision_sha256`, since the parse is not
+retained here and a revision alone does not say which bytes were read. `REV` must be
+`owner/name@<full commit>:<directory>`, and its limitations say the numbers are that
+parse's and not the SVG's::
 
     uv run --frozen --all-extras --group dev python -m devtools.derive_kingbird_facts \
         --n 69 --refresh --retrieved 2026-10-05 --from-parse PATH/site/www/data/p \
@@ -97,15 +100,17 @@ and its limitations say the numbers are that parse's and not the SVG's::
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 import math
+import re
 import time
 import urllib.error
 import urllib.request
 from collections.abc import Callable, Sequence
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from dataclasses import dataclass
-from decimal import Decimal
+from decimal import Decimal, InvalidOperation
 from fractions import Fraction
 from pathlib import Path
 from typing import Any
@@ -158,6 +163,8 @@ HAND_AUDITED_MAX = 100
 #: with the side as a decimal string and each pose in binary64, angles in degrees modulo
 #: 90, in the y-up frame of the container `[0, s]^2` -- this repository's own convention.
 PARSE_FILE_SUFFIX = ".json"
+#: A pinned parse: `owner/name@<full commit>:<directory>`, the directory the files are in.
+PARSE_REVISION = re.compile(r"^[\w.-]+/[\w.-]+@[0-9a-f]{40}:\S+$")
 
 #: The date this acquisition pass read the catalogue, recorded in every witness it
 #: writes. Not `sqpack.known_best.RETRIEVED_DATE`, which belongs to the 2026-08-26 pass
@@ -528,6 +535,15 @@ def _float_text(value: object) -> str:
     return "0" if number.is_zero() else format(number, "f")
 
 
+def _positive_decimal(text: str) -> bool:
+    """Whether `text` is a finite decimal above zero; text that is no decimal is not."""
+    try:
+        value = Decimal(text)
+    except InvalidOperation:
+        return False
+    return value.is_finite() and value > 0
+
+
 def parse_record_name(plan: DerivationPlan) -> str:
     """The parse file that holds this plan's picture: `square-69.svg` is `square-69.json`."""
     return Path(plan.source_path).stem + PARSE_FILE_SUFFIX
@@ -548,7 +564,7 @@ def geometry_from_parse(text: str, *, expected_n: int, where: str) -> KingbirdGe
     if not isinstance(record, dict) or not isinstance(record.get("squares"), list):
         raise DerivationRefusedError("parse-unreadable", f"{where}: no squares list")
     side = record.get("s")
-    if not isinstance(side, str) or not Decimal(side).is_finite() or Decimal(side) <= 0:
+    if not isinstance(side, str) or not _positive_decimal(side):
         raise DerivationRefusedError("parse-unreadable", f"{where}: side {side!r}")
     squares = record["squares"]
     if record.get("n") != expected_n or len(squares) != expected_n:
@@ -694,7 +710,8 @@ def derive_witness(
     existing rows on every build.
 
     With `parse_revision`, `source_text` is not an SVG but a third party's parse of it
-    (`geometry_from_parse`), pinned at that revision; the witness names it and says its
+    (`geometry_from_parse`), pinned at that revision; the witness names it and the
+    SHA-256 of the parse's bytes, which this repository does not retain, and says its
     numbers are that parse's, and the parse must reproduce the page's printed side digit
     for digit.
     """
@@ -705,9 +722,10 @@ def derive_witness(
             raise DerivationRefusedError(
                 error.kind, f"n={plan.n} from {plan.source_path}: {error}"
             ) from error
-        revision = None
+        revision = digest = None
     else:
-        revision = f"{parse_revision}/{parse_record_name(plan)}"
+        revision = f"{pinned_parse_revision(parse_revision)}/{parse_record_name(plan)}"
+        digest = hashlib.sha256(source_text.encode("utf-8")).hexdigest()
         geometry = geometry_from_parse(source_text, expected_n=plan.source_n, where=revision)
         _assert_printed_truncation(plan.catalogue_side, geometry.side, n=plan.n)
     _assert_side_matches(plan.catalogue_side, geometry.side, what="the catalogue", n=plan.n)
@@ -747,6 +765,7 @@ def derive_witness(
             source_url=plan.url,
             retrieved=retrieved,
             revision=revision,
+            revision_sha256=digest,
         )
     except (SourceGeometryError, ValueError) as error:
         raise DerivationRefusedError("witness-rejected", f"n={plan.n}: {error}") from error
@@ -817,18 +836,39 @@ def read_parses(
     plans: Sequence[DerivationPlan], root: Path
 ) -> tuple[dict[str, str], dict[str, DerivationRefusedError]]:
     """Read each distinct picture's parse from `root`, keyed by the picture's URL as
-    `fetch_pictures` keys what it fetches, so the rest of a pass is the same either way."""
+    `fetch_pictures` keys what it fetches, so the rest of a pass is the same either way.
+
+    Each is decoded from its bytes with no newline translation, so the text encodes back
+    to exactly the file and the digest `derive_witness` records is the file's.
+    """
     read: dict[str, str] = {}
     failures: dict[str, DerivationRefusedError] = {}
     for plan in plans:
         path = root / parse_record_name(plan)
-        if path.is_file():
-            read[plan.url] = path.read_text(encoding="utf-8")
-        else:
+        if not path.is_file():
             failures[plan.url] = DerivationRefusedError(
                 "parse-missing", f"{path} holds no parse of {plan.source_path}"
             )
+            continue
+        try:
+            read[plan.url] = path.read_bytes().decode("utf-8")
+        except UnicodeDecodeError as error:
+            failures[plan.url] = DerivationRefusedError(
+                "parse-unreadable", f"{path}: not UTF-8: {error}"
+            )
     return read, failures
+
+
+def pinned_parse_revision(revision: str) -> str:
+    """`revision` without a trailing slash, or a refusal unless it pins a commit and a
+    directory: it is written into every witness read from the parse, so a branch, a
+    short id or a sentence would be a provenance nobody can resolve."""
+    if not PARSE_REVISION.fullmatch(revision):
+        raise DerivationRefusedError(
+            "parse-unpinned",
+            f"--parse-revision {revision!r} is not owner/name@<40-hex commit>:<directory>",
+        )
+    return revision.rstrip("/")
 
 
 def derive(
@@ -854,6 +894,8 @@ def derive(
         raise DerivationRefusedError(
             "parse-unpinned", "a parse directory and its pinned revision go together"
         )
+    if parse_revision is not None:
+        parse_revision = pinned_parse_revision(parse_revision)
     assert_no_raw_retention(out_root)
     plans, skipped, refusals = derivation_plans(numbers, out_root=out_root, refresh=refresh)
     for case in skipped:

@@ -12,7 +12,11 @@ from __future__ import annotations
 import json
 from decimal import Decimal
 from pathlib import Path
+from typing import Any
 
+import pytest
+
+from devtools import compare_site_floors
 from devtools.compare_site_floors import (
     ABOVE,
     ABSENT,
@@ -84,3 +88,26 @@ def test_the_retained_receipt_reads_the_retained_table() -> None:
     assert receipt["format"] == "site-floor-comparison-v1"
     assert receipt["table_sha256"] == digest
     assert len(receipt["rows"]) == sum(key.isdigit() for key in table) == 100
+
+
+def test_the_receipt_is_written_whole_or_not_at_all(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    """`--json` replaces a receipt a packet retains; a write that fails part way through
+    must leave the old receipt, not half of the new one."""
+    out = tmp_path / "site_floors_compare.json"
+    out.write_text("the retained receipt\n", encoding="utf-8")
+    written = Path.write_text
+
+    def interrupted(path: Path, text: str, *args: Any, **kwargs: Any) -> int:
+        written(path, text[:10], *args, **kwargs)
+        raise OSError("disk full")
+
+    monkeypatch.setattr(Path, "write_text", interrupted)
+    table = PACKET / "square-packing/site/www/data/lower_bounds.json"
+    with pytest.raises(OSError, match="disk full"):
+        compare_site_floors.main([str(table), "--json", str(out)])
+    monkeypatch.undo()
+    assert out.read_text(encoding="utf-8") == "the retained receipt\n"
+    assert compare_site_floors.main([str(table), "--json", str(out)]) == 0
+    assert json.loads(out.read_text(encoding="utf-8"))["format"] == "site-floor-comparison-v1"

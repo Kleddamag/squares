@@ -165,10 +165,15 @@ happened:
   [`intake-watch.yaml`](intake-watch.yaml): the head, the date, and a note saying what
   the commits changed, so the next sweep starts there.
   A read that names a bead holds a result back for later, and is removed once a packet
-  pins that commit. A pin is an acquisition record’s commit or a revision in a register
-  source’s address. A commit a README names in prose pins nothing, because prose that
-  names a commit is as likely to say it was left for an import of its own, as the 4
-  October wand125 packet said of `c56b9b7` and `1ebd484`.
+  pins that commit. A pin is an acquisition record’s commit, retaining the paths the
+  record declares, or a revision in a register source’s address, retaining the path the
+  address names after it (`/tree/<commit>/<path>`) or the whole tree when it names none.
+  Where both pin one commit, the acquisition record’s scope stands: the register’s
+  address says what it cites, not what was retained, and reading it as the whole tree
+  hid every earlier commit no packet took in.
+  A commit a README names in prose pins nothing, because prose that names a commit is as
+  likely to say it was left for an import of its own, as the 4 October wand125 packet
+  said of `c56b9b7` and `1ebd484`.
 - **A Kingbird count that drops below its record** is a result by others, imported like
   any other. Where the register cannot take it yet, it is declared under
   `pending_catalogue_intake`, with its bead and the day it was recorded.
@@ -177,13 +182,29 @@ happened:
   something to import, an open issue’s `answer_bead`, and a queued result or ask, which
   names its own `bead` because the answer bead owns the reply and not the import.
   The schemas refuse a pending intake or a deferred conflict without one, and
-  `check_bead_tree` fails any deferral whose bead has closed or does not exist.
+  `check_bead_tree` fails any deferral whose bead is not open, `in_progress` or
+  `blocked`: one that is closed, deferred or does not exist.
   The three Kingbird counts held on 2026-09-30 named none, and the record trailed the
   catalogue for five days
   ([the postmortem](../../docs/project/postmortems/postmortem-2026-10-05-orphaned-catalogue-intake.md)).
+- **Closing a bead a record names takes a record edit in the same change**: a new owner
+  for the deferral, or the deferral resolved.
+  The bead store changes with no tracked change, and a continuous-integration checkout
+  reads it, so the gate fails a dead deferral only in a change that touches a record
+  declaring deferrals (`source-coverage.yaml`, `result-requests.yaml` or
+  `intake-watch.yaml`), and reports it as a warning anywhere else.
+  A bead closed with its deferral left in place passes every other change and fails the
+  next one to touch that record; `check_bead_tree` run directly, and the sweep, list it
+  whatever changed.
 - **A wait names what it waits on.** A queued result or ask gives it as `blocked_on`, a
-  pull request or issue as `owner/name#N` or a bead; a bead says it in a sentence such
-  as “waits for jlevy/squares#305”, or through a `blocks` dependency.
+  pull request or issue as `owner/name#N` or a bead, and the wait is over once every one
+  has resolved. A bead declares it on a line of its own in its description or its notes,
+  `blocked_on: jlevy/squares#305, think-wpuu`, read the same way; the last such line
+  stands, so a note that adds `blocked_on: none` ends the wait.
+  Without one, a sentence of the description in the present tense says it, such as
+  “waits for jlevy/squares#305”, and a `blocks` dependency always does.
+  Prose in the notes is never read: notes accumulate, and the sweep once took “was held
+  for #305, which merged” and another bead’s example of a wait as waits still open.
   Nothing resumes a wait when its blocker resolves, so the sweep reports it: wand125’s 4
   October certificates waited for #305, which merged that evening, and stayed queued.
 

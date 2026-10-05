@@ -263,7 +263,8 @@ body {
    can ask how wide their frame is. A card comes in three sizes, which it names in
    `data-card-size`, and is as wide as a column of the grid of its size's columns the
    frame fits, with 1rem gaps: small columns are at least 12rem, medium 16rem and large
-   21rem, so a 69rem frame holds five small cards to a line, four medium or three large.
+   21rem, so a 69rem frame holds four small or four medium cards to a line, or three large; no size sets
+   more than four to a line (the owner, 2026-10-05).
    `--site-cards-small`, `-medium` and `-large` are those counts, each stepped by its own
    container queries: n columns of minimum m and n - 1 gaps need (m + 1)n - 1 rem. A card
    that names no size is medium. On screen the cards are one wrapping row that centres
@@ -320,11 +321,6 @@ body {
     --site-cards-small: 4;
   }
 }
-@container (width >= 64rem) {
-  .site-cards {
-    --site-cards-small: 5;
-  }
-}
 @container (width >= 65rem) {
   .site-cards {
     --site-cards-large: 3;
@@ -333,16 +329,6 @@ body {
 @container (width >= 67rem) {
   .site-cards {
     --site-cards-medium: 4;
-  }
-}
-@container (width >= 77rem) {
-  .site-cards {
-    --site-cards-small: 6;
-  }
-}
-@container (width >= 84rem) {
-  .site-cards {
-    --site-cards-medium: 5;
   }
 }
 @container (width >= 87rem) {

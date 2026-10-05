@@ -547,7 +547,7 @@ REPLAY_RULES: tuple[Rule, ...] = (
     ),
     (
         "the promotion's exact test and the independent Fraction checker",
-        _in_replay(r"upper_bound_packets check --replay"),
+        _in_replay(r"(?:upper_bound_packets|catalogue_upper_bounds) check --replay"),
         runs(("V-upper-bound-promotion", "V-check-rational-witness-independent"), INDEPENDENT),
     ),
     (

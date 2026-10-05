@@ -5,7 +5,7 @@ title: "Intake pass 2026-10-05 evening: #363, #366, #368, wand125 43050ed, think
 kind: epic
 status: open
 priority: 1
-version: 7
+version: 10
 labels:
   - result-import
 dependencies: []
@@ -16,6 +16,9 @@ child_order_hints:
   - is-01m46g512kmgj1c1588mv8q5s1
   - is-01m46g51s5a06f0r0qsqy5tte3
   - is-01m46gawrv4mmpnv3927s51zfs
+  - is-01m46h61c8wn0pb907jw36ryhq
+  - is-01m46h62p2q5qxwg7s4sxj83mw
+  - is-01m46h63vpa1vyw04dt0nh3fj4
 created_at: 2026-10-05T17:00:28.359Z
-updated_at: 2026-10-05T17:03:43.387Z
+updated_at: 2026-10-05T17:18:35.382Z
 ---

@@ -148,6 +148,17 @@ experiment:
       1/256, closure all_parent_poses_forbidden for interior-N at step 183. The standing verifier at cebb5d15a
       passes it in full mode in 383 s, checking all 6,803 live rows in full and 16,147 collision regions by
       54,053,012 exact facet checks. Alone it excludes 64,500 states and 8,109 orbits.
+  - shape: determination
+    role: outcome
+    question: Is target 10 (side-N0, side-W1, side-W2, interior-NW, interior-W, interior-S, interior-N, interior-SE)
+      infeasible at U, by a certificate the kernel's checker accepts and the standing verifier re-proves in
+      full?
+    outcome: criterion_met
+    checked_by: The run (receipts/K/kernel-t10-bc425.json) returns PASS_CERTIFIED_CLOSED in 458 s of wall and 407 s of
+      process CPU (producer 277 s, checker 179 s) on 156 steps and 11,292 rows in 20 rounds, rows finest at
+      1/512, closure all_parent_poses_forbidden for interior-NW at step 155. The standing verifier at
+      cebb5d15a passes it in full mode in 241 s, checking all 4,451 live rows in full and 11,101 collision
+      regions by 29,302,976 exact facet checks. Alone it excludes 70,440 states and 8,850 orbits.
   verdict:
     decision: in-progress
     primary_criterion: Each frozen target run once, a closure admitted only on the standing verifier's full pass
@@ -190,6 +201,7 @@ projected for it alone, because most of what it excludes the first had already e
 | 7, `s182-bc425-t7` | corner-NW, side-S0, side-W0, side-W1, side-W2, interior-SW, interior-NW, interior-S | closed in 482 s, 32 steps, 2,050 rows | full pass, 198 s | 44,316 states, 5,649 orbits |
 | 8, `s182-bc425-t8` | corner-NW, side-W0, side-W1, side-W2, interior-SW, interior-NW, interior-S, interior-E | closed in 738 s, 113 steps, 8,748 rows | full pass, 439 s | 41,456 states, 5,287 orbits |
 | 9, `s182-bc425-t9` | corner-SW, side-W0, side-W1, side-W2, interior-SW, interior-NW, interior-S, interior-N | closed in 694 s, 184 steps, 14,264 rows | full pass, 383 s | 39,884 states, 5,087 orbits |
+| 10, `s182-bc425-t10` | side-N0, side-W1, side-W2, interior-NW, interior-W, interior-S, interior-N, interior-SE | closed in 458 s, 156 steps, 11,292 rows | full pass, 241 s | 39,656 states, 5,057 orbits |
 
 The targets and the census they came from are
 [kernel-targets-bc425.txt](../../../explorations/X048-session-182-overnight/kernel-targets-bc425.txt)

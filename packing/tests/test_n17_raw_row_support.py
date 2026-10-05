@@ -99,7 +99,9 @@ def test_timeout_failure_never_enters_compatible_cache() -> None:
 
 def test_actual_memory_guard_and_wall_guard_refuse(monkeypatch: pytest.MonkeyPatch) -> None:
     monkeypatch.setattr(
-        bounded_diagnostics, "current_memory_bytes", lambda: raw.MAX_PEAK_BYTES + 1
+        bounded_diagnostics,
+        "current_memory_bytes",
+        lambda: bounded_diagnostics.MAX_MEMORY_BYTES + 1,
     )
     with pytest.raises(IncompleteError, match="worker current RSS"):
         raw.remaining(budget())
@@ -222,7 +224,7 @@ def test_cold_receipt_hash_and_packet_size_refusals(tmp_path: Path) -> None:
     path.write_text(json.dumps(receipt))
     with pytest.raises(RefusalError, match="node receipt differs"):
         raw.checked_inputs(tmp_path, path)
-    path.write_bytes(b" " * (raw.MAX_PACKET_BYTES + 1))
+    path.write_bytes(b" " * (bounded_diagnostics.MAX_PACKET_BYTES + 1))
     with pytest.raises(RefusalError, match="exceeds 4 MiB"):
         raw.bounded_json(path)
 

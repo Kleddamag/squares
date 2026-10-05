@@ -32,7 +32,9 @@ def test_worker_memory_guard_still_refuses_an_over_limit_reading(
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
     monkeypatch.setattr(
-        bounded_diagnostics, "current_memory_bytes", lambda: graph.MAX_PEAK_BYTES + 1
+        bounded_diagnostics,
+        "current_memory_bytes",
+        lambda: bounded_diagnostics.MAX_MEMORY_BYTES + 1,
     )
     with pytest.raises(IncompleteError, match="actual worker current RSS exceeds"):
         graph.propagate([{0}, {1}], [{1}, {0}], budget(), path=True)

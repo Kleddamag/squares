@@ -18,6 +18,7 @@ from pathlib import Path
 from typing import Any
 
 from devtools.bounded_diagnostics import (
+    MAX_MEMORY_BYTES,
     check_budget,
     same_inputs,
     write_json,
@@ -37,8 +38,6 @@ MAX_ROWS = 128
 MAX_PAIRS = 50_000
 MAX_PAIR_CAP = 250_000
 MAX_NODES = 100_000
-MAX_PEAK_BYTES = 512 * 1024 * 1024
-MAX_PACKET_BYTES = 4 * 1024 * 1024
 PREDICATE = "sorted-owner-universal-collision-v1"
 SCHEMA = "n17.raw-row-support.v1"
 type RowKey = tuple[int, int]
@@ -335,7 +334,7 @@ def packet(
             "unique_pairs": max_pairs,
             "DFS_nodes": MAX_NODES,
             "wall_seconds": 180,
-            "peak_bytes": MAX_PEAK_BYTES,
+            "peak_bytes": MAX_MEMORY_BYTES,
         },
         "selections": [
             [atom_reference(atoms[i], document) for i in values]

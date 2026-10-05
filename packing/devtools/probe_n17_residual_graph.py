@@ -34,7 +34,6 @@ from sqpack.hull_kernel.node import points
 from sqpack.hull_kernel.rational import Q
 
 MAX_INPUT_BYTES = 64 * 1024 * 1024
-MAX_PEAK_BYTES = 512 * 1024 * 1024
 
 
 @dataclass

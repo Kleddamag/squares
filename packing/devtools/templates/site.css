@@ -101,9 +101,9 @@ body {
   /* A table stops at 100rem, short of the atlas's cap: past it, its columns only spread
      apart and a row gets harder to follow. */
   --site-table-max: 100rem;
-  /* The tables of results hold nine columns since 2026-10-03 (`think-m3m4`), and on a
-     very wide window they bleed further than the other tables (`think-bcmc`); at 1280
-     pixels and below they are as wide as before. */
+  /* The tables of results hold eight columns since 2026-10-04 (`think-46fw`; nine from
+     2026-10-03, `think-m3m4`), and on a very wide window they bleed further than the
+     other tables (`think-bcmc`); at 1280 pixels and below they are as wide as before. */
   --site-results-table-max: 112rem;
   /* The space above and below every table, on screen: a site table with its filter bar,
      and a document's own table (paper-design.md, Tables). */
@@ -175,12 +175,13 @@ body {
   margin-inline: calc((var(--site-table-wide) - 100%) / -2);
   max-width: var(--site-table-wide);
 }
-/* The tables of results hold nine columns since 2026-10-03 (eight from 2026-10-02,
-   `think-ybt5`, `think-e4o3`; the significance's from `think-m3m4`): 1198 pixels at
-   their floors where every row shows, more than the wide track's 1104 at a 1280-pixel
-   window. So they bleed from 74rem (1184 pixels), fit from about 1278, and are 1200
-   pixels wide at 1280, as wide as the frontier table there, with 2 to spare; narrower,
-   they scroll in their wrap, as any table does where its floors outrun the window. */
+/* The tables of results hold eight columns since 2026-10-04, when the Details column
+   moved into the row's popover (`think-46fw`; nine from 2026-10-03, `think-m3m4`):
+   1095.5 pixels at their floors where every row shows, 1198 with nine. They bleed from
+   74rem (1184 pixels), as they did when nine columns outran the wide track's 1104, fit
+   from about 1176, and are 1200 pixels wide at 1280, as wide as the frontier table
+   there, with 104.5 to spare, which the long list of cases takes; narrower, they scroll
+   in their wrap, as any table does where its floors outrun the window. */
 .site-page .site-wide:has(> .site-table-wrap .site-results) {
   --site-table-bleed-from: 74rem;
   --site-table-max: var(--site-results-table-max);
@@ -1391,14 +1392,14 @@ body {
    result column's floor is its 16.55rem (above): the widest piece of a formula a line
    cannot end inside, 248.5px, and the cell's padding are narrower than that, now that a
    long quotient may end a line after its solidus (`overview_data.breakable_quotients`).
-   A result's records are its Details column, a link to a line (below). */
+   A result's records are in its row's popover (below). */
 @media (width >= 40rem) {
   .site-results .site-col-credit {
     min-width: 11.5rem;
   }
   /* As narrow as its widest chip, like the other short columns: the spare width is the
      result's and the credit's. */
-  .site-results :is(.site-col-s, .site-rungs, .site-col-status, .site-col-details) {
+  .site-results :is(.site-col-s, .site-rungs, .site-col-status) {
     width: 0;
   }
 }
@@ -1455,16 +1456,16 @@ body {
    after a formula, where with the last piece a box 148 of 214 widths had one. */
 .site-results .site-col-result :is(.kpress-math-inline, .katex-html > .base:last-child) {
   display: inline;
-} /* A result's records, its case link, the register, its evidence, source and reviews, are
-   its Details, a column of their own since 2026-10-02 (`think-e4o3`; they stood on a
-   line under the summary until then): one link to a line, the column as narrow as its
-   widest link, so the result's cell holds the claim alone. On a phone they are a line
-   under the claim again, a dot drawn between two links (below). */
-.site-results .site-col-details .site-records {
-  min-width: 0;
-}
-.site-results .site-col-details .site-records a {
-  display: block;
+} /* A result's records, its case link, the register, its evidence, source and reviews,
+   are the last entry of its row's popover (`overview_sections._detail`): one line, a dot
+   drawn between two links, each link kept whole. They were a Details column of the
+   table from 2026-10-02 (`think-e4o3`) to 2026-10-04 (`think-46fw`), one link to a line,
+   and before that a line under the summary; the row reads more cleanly without them. */
+.site-row-pop .site-detail .site-records a + a::before {
+  color: var(--kpress-doc-muted);
+  content: "·";
+  display: inline-block;
+  padding-inline: 0.35em;
 }
 
 .site-table .site-rungs {
@@ -1475,14 +1476,14 @@ body {
 }
 
 /* ---------- A table of results on a phone ----------
-   Nine columns do not fit 390px, and scrolling a table sideways to read one claim is the
+   Eight columns do not fit 390px, and scrolling a table sideways to read one claim is the
    wrong trade: each row becomes a small card, id, cases and rungs on its first line, the
    significance under the id and the status line under the rungs on its second, then the
-   claim with its records under it, and the credit and date. The results page's table and the overview's recent table are the one
+   claim, and the credit and date. The results page's table and the overview's recent table are the one
    table (`.site-results`), so both take it. The card places its cells by class, not by
    column, and orders them (`order`): the wide table's row opens with the date and sets
-   the credit before the status and the details, so the card reads as it did before the
-   columns were reordered. */
+   the credit before the status, so the card reads as it did before the columns were
+   reordered. */
 @media (width < 40rem) {
   .site-results thead {
     display: none;
@@ -1559,20 +1560,11 @@ body {
     grid-area: 3 / 1 / auto / -1;
     text-align: start;
   }
-  .site-results :is(.site-col-result, .site-col-details) {
+  .site-results .site-col-result {
     grid-column: 1 / -1;
   }
-  .site-results .site-col-details .site-records a {
-    display: inline;
-  }
-  .site-results .site-col-details .site-records a + a::before {
-    color: var(--kpress-doc-muted);
-    content: "·";
-    display: inline-block;
-    padding-inline: 0.35em;
-  }
-  /* The claim and its details come before the credit and the date, which the wide row
-     sets on either side of them. */
+  /* The claim comes before the credit and the date, which the wide row sets on either
+     side of it. */
   .site-results .site-col-credit {
     grid-column: 1 / 3;
     order: 1;

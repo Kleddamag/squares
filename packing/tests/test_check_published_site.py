@@ -184,17 +184,21 @@ EXPECTED_RECORDS = RecordLinks(
 
 
 def result_row(row: str, *, here: bool, records: bool = True) -> str:
-    """A result's row as a table of results writes it: named by `id` on the results page
-    (`here`) and by `data-result` anywhere else, with its line of record links."""
+    """A result's row and the popover it opens, as a table of results writes them: the
+    row named by `id` on the results page (`here`) and by `data-result` anywhere else,
+    and its popover, whose short form ends with its line of record links."""
     link = f'<a href="{RECORD}">register</a>' if records else ""
     return (
         f'<tr {"id" if here else "data-result"}="{row}" data-s="3"><td>{row}</td>'
-        f'<td class="site-col-result">A result<div class="site-records">{link}</div></td></tr>'
+        '<td class="site-col-result">A result</td></tr>'
+        f'<div class="site-popover site-row-pop" id="pop-result-{row}" popover role="dialog">'
+        f'<dl class="site-detail"><dt>Records</dt><dd><div class="site-records">{link}</div>'
+        "</dd></dl></div>"
     )
 
 
 def results_table(*, here: bool) -> bytes:
-    """The table of results on a page, every row with its record link."""
+    """The table of results on a page, every row's popover with its record link."""
     rows = "".join(result_row(row, here=here) for row in EXPECTED_RECORDS.rows)
     return f"<table><tbody>{rows}</tbody></table>".encode()
 
@@ -561,10 +565,12 @@ def test_absent_links_names_what_a_deploy_dropped_and_rows_are_read_one_by_one()
             '<div class="site-records"></div>', ""
         )
         + result_row("t-002", here=True)
-        + '<tr id="replay-n-18"><td><div class="site-records">not a result</div></td></tr>'
         + "</tbody></table>"
+        + '<div class="site-popover site-row-pop" id="pop-case-18" popover>'
+        + '<div class="site-records">not a result</div></div>'
     )
-    # A row without its line is not given the next row's, and only result rows are read.
+    # A popover without its line is not given the next one's, and only result rows'
+    # popovers are read.
     assert row_records(table) == {"t-002": f'<a href="{RECORD}">register</a>'}
     assert row_records(result_row("t-007", here=False)) == {
         "t-007": f'<a href="{RECORD}">register</a>'

@@ -536,8 +536,9 @@ def _dl(rows: list[tuple[str, str]]) -> str:
 
 
 def _detail(result: Result) -> str:
-    """A result's claim, composition, next rung, why it matters and novelty label: the
-    short form of what its row opens to, which the page itself carries (`result_row`)."""
+    """A result's claim, composition, next rung, why it matters, novelty label and
+    records: the short form of what its row opens to, which the page itself carries
+    (`result_row`), and what a reader without scripts or off the network sees."""
     record = result.record
     rows = [("Claim", prose_html(record["claim"]))]
     for key, label in (("composition", "Composition"), ("next_rung", "Next rung")):
@@ -554,14 +555,17 @@ def _detail(result: Result) -> str:
             ),
         )
     )
+    rows.append(("Records", f'<div class="site-records">{_records(result)}</div>'))
     body = "".join(f"<dt>{label}</dt><dd>{value}</dd>" for label, value in rows)
     return f'<dl class="site-detail">{body}</dl>'
 
 
 def _records(result: Result) -> str:
     """A result's records, its case link, the register, its evidence, source and reviews,
-    as its Details cell sets them: one link to a line on a wide screen, and on a phone a
-    line under the claim, a dot drawn between two links (`site.css`)."""
+    as the short form of its row's popover ends with them (`_detail`): one line, a dot
+    drawn between two links (`site.css`). The table carried them as a Details column
+    until 2026-10-04 (`think-46fw`); the row opens to them, and the overview it fetches
+    links each of them again (`result_overview.links_section`)."""
     return "".join(
         f'<a href="{_esc(link.url)}"'
         + (f' title="{_esc(link.title)}"' if link.title else "")
@@ -874,14 +878,15 @@ def result_head() -> str:
     """The header row of a table of results: the one set of columns both tables carry,
     in one order. The date; the significance, with a new result's star; the result; the
     cases; the credit; the verification and confirmation rungs, with the kind under
-    them; the status; the details, the result's records a link to a line; and the id,
-    which is the row's trigger. The owner set this order on 2026-10-02: the id led and
-    the date closed the row until then (`think-t090`); the status stood under the kind,
-    in the rungs' cell, though it is where the result stands and no rung (`think-ybt5`);
-    and the records stood on a line under the summary, where the result's cell holds the
-    claim alone now (`think-e4o3`). Significance left the rungs for a column of its own,
-    the second, on 2026-10-03 (`think-m3m4`). A column sorts where an order means
-    something, on either page."""
+    them; the status; and the id, which is the row's trigger. The owner set this order
+    on 2026-10-02: the id led and the date closed the row until then (`think-t090`);
+    the status stood under the kind, in the rungs' cell, though it is where the result
+    stands and no rung (`think-ybt5`); and the records stood on a line under the
+    summary, where the result's cell holds the claim alone now (`think-e4o3`).
+    Significance left the rungs for a column of its own, the second, on 2026-10-03
+    (`think-m3m4`). The records, a Details column from 2026-10-02, moved into the row's
+    popover on 2026-10-04 (`think-46fw`), which reads more cleanly than a column of
+    links. A column sorts where an order means something, on either page."""
     return (
         "<thead><tr>"
         '<th data-sort="text" title="Published, for a result by others; established, for '
@@ -896,7 +901,6 @@ def result_head() -> str:
         '<th data-sort="text" class="site-col-status" title="How far the work on it here '
         "has gone: recorded, reviewed, confirmed or incomplete; then who has the next "
         'move, and superseded, wholly or in part, and by what, where it is">Status</th>'
-        '<th class="site-col-details">Details</th>'
         '<th data-sort="text" class="site-col-id">ID</th>'
         "</tr></thead>"
     )
@@ -971,9 +975,9 @@ def result_cells(result: Result, overview: Overview, detail: RowDetail) -> str:
     its date (`date_cell`), its significance with the star a new result earns
     (`significance_cell`), its summary (`result_text`), its cases (`case_list`), its
     credit (`credit_cell`), its verification and confirmation chips with its kind on a
-    line under them (`ladder_chips`, `kind_chip`), its status line (`status_marks`), its
-    records a link to a line (`_records`), and its id (`id_cell`). The status cell sorts
-    on the status word alone."""
+    line under them (`ladder_chips`, `kind_chip`), its status line (`status_marks`), and
+    its id (`id_cell`). Its records are in the popover the row opens (`_detail`). The
+    status cell sorts on the status word alone."""
     record = result.record
     standing = f'<span class="site-standing">{status_marks(result)}</span>'
     return (
@@ -989,8 +993,6 @@ def result_cells(result: Result, overview: Overview, detail: RowDetail) -> str:
         f'data-value="{_esc(record["confirmation"] + record["verification"])}">'
         f'{ladder_chips(result)}<span class="site-kind">{kind_chip(result)}</span></td>'
         f'<td class="site-col-status" data-value="{_esc(result.status)}">{standing}</td>'
-        '<td class="site-col-details">'
-        f'<div class="site-records">{_records(result)}</div></td>'
         f"{id_cell(result, detail)}"
     )
 
@@ -1023,8 +1025,8 @@ def table_of_results(overview: Overview, defaults: FilterDefaults, *, here: bool
     Both pages' tables are this one, and they are two filters of it. They differ in
     `defaults`, where the bar starts, with a row outside them `hidden` in the HTML, so
     the first paint is already filtered; and in `here`, which is the results page, where
-    each row is the result's own address (`result_table_row`). Every row shows its
-    records and opens its popover in both, and a row links to the results page only
+    each row is the result's own address (`result_table_row`). Every row opens its
+    popover, which carries its records, in both, and a row links to the results page only
     where its status names the results that supersede it (`supersession_marks`).
 
     No heading divides the rows. Whose a result is, and what it builds on, is read from

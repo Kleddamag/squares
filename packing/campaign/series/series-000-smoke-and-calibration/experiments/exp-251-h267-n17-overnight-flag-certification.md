@@ -104,16 +104,29 @@ experiment:
       it in full mode in 82 s, checking all 1,534 live rows in full and 3,660 collision regions by 17,886,564
       exact facet checks. Alone it excludes 112,796 states and 14,170 orbits.
   - shape: determination
+    role: outcome
+    question: Is target 6 (side-S0, side-W0, side-S1, interior-SW, interior-NW, interior-W, interior-S) infeasible at U, by a certificate the kernel's
+      checker accepts and the standing verifier re-proves in full?
+    outcome: criterion_met
+    checked_by: The run (receipts/K/kernel-k6.json) returns PASS_CERTIFIED_CLOSED in 214 s of wall
+      (207 s of process CPU; producer 112 s, checker 101 s) on
+      63 steps and 4,059 rows in 9 rounds, finest row 1/128,
+      closure all_parent_poses_forbidden for interior-S at step 62. The standing
+      verifier at cebb5d15a passes it in full mode in 175 s, checking all 2,209 live rows
+      in full and 5,679 collision regions by 23,184,284 exact facet checks. Alone it
+      excludes 116,888 states and 14,681 orbits.
+  - shape: determination
     role: guard
     question: Do the certified exclusions leave at most 10^4 orbits, H-267's threshold?
     outcome: criterion_missed
-    checked_by: With s182-k1 admitted, census_n17_certified counts 102,124 states and 12,929 orbits, the
-      endpoint surviving, down from 126,168 and 15,953 at the registration; with lane A's state 5683195,
-      s182-k3, s182-k4 and s182-k5 as well, 81,684 states and 10,360 orbits (results/exp-251-n17-overnight-flag-certification/census.json,
-      reading the selector recheck; 83 flags still project, and certifying them all would leave 17,160 states
-      in 2,196 orbits). The same tool on a copy of the ledger restricted to the arity-at-most-7 entries (W7,
-      A, s182-k1, s182-k3, s182-k4, s182-k5) counts 11,468 orbits, down from exp-249's 17,690, against the
-      threshold of 10^4.
+    checked_by: With W7, A, SW9, N1 and Session 182's admissions (s182-k1, s182-m5683195, s182-k3, s182-k4, s182-k5, s182-k6),
+      census_n17_certified
+      counts 79,872 states and 10,132 orbits, the endpoint surviving, down from 126,168 and
+      15,953 at the registration (results/exp-251-n17-overnight-flag-certification/census.json, reading the
+      selector recheck; 82 flags still project, and certifying them all would leave
+      17,160 states in 2,196 orbits). The same tool on a copy of the ledger restricted to
+      the arity-at-most-7 entries (W7, A, s182-k1, s182-k3, s182-k4, s182-k5, s182-k6) counts 11,240 orbits, down
+      from exp-249's 17,690, against the threshold of 10^4.
   verdict:
     decision: in-progress
     primary_criterion: The certified residue is at most 10^4 orbits with every certificate independently
@@ -147,11 +160,13 @@ exhausted.
 | 3, `s182-k3` | corner-NW, side-N0, side-W2, interior-SW, interior-NW, interior-W, interior-S | closed in 195 s, 18 steps, 1,198 rows | full pass, 124 s | 89,456 states, 11,336 orbits (after lane A’s state 5683195 too) |
 | 4, `s182-k4` | side-S0, side-S1, side-W2, interior-SW, interior-NW, interior-W, interior-S | closed in 597 s, 129 steps, 8,636 rows | full pass, 269 s | 83,148 states, 10,546 orbits |
 | 5, `s182-k5` | side-S0, side-N0, side-W2, interior-SW, interior-NW, interior-W, interior-S | closed in 244 s, 25 steps, 1,600 rows | full pass, 82 s | 81,684 states, 10,360 orbits |
+| 6, `s182-k6` | side-S0, side-W0, side-S1, interior-SW, interior-NW, interior-W, interior-S | closed in 214 s, 63 steps, 4,059 rows | full pass, 175 s | 79,872 states, 10,132 orbits |
 
-At the margin `s182-k1` removes 24,044 states and 3,024 orbits from the certified count,
-exactly the census’s projected gain for that flag, `s182-k3` a further 12,660 states and
-1,592 orbits, `s182-k4` 6,308 states and 790 orbits, and `s182-k5` 1,464 states and 186
-orbits. The receipts are under
+At the margin of the certified count, in the order admitted: `s182-k1` 24,044 states and
+3,024 orbits; `s182-k3` 12,660 states and 1,592 orbits; `s182-k4` 6,308 states and 790
+orbits; `s182-k5` 1,464 states and 186 orbits; `s182-k6` 1,812 states and 228 orbits.
+The first is exactly the census’s projected gain for that flag.
+The receipts are under
 [receipts/K](../../../explorations/X048-session-182-overnight/receipts/K/), the
 certificate’s small files under the X048 certificates folder, and its objects in the
 [hosted-data manifest](../../../../hosted/n17-x048-session-168-certificates.yaml).

@@ -1528,6 +1528,9 @@ certification of Sessions 166 and 167 passed again on this branch at `c0941ba4e`
   ([exp-249](packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-249-h267-n17-first-certified-sub-patterns.md)),
   then flag 3 (SW9, arity 9) and the whole residue state N1
   ([exp-250](packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-250-h267-n17-standing-verifier-admissions.md)).
+  Their verifier at `25c1cdef6` carried the closed-cover defect class found the same
+  day; neither defect was reached on them, and the fixed verifier re-passes both
+  ([verifier-rewrites review, §6.2 and §6.5](docs/project/reviews/review-2026-10-03-n17-verifier-rewrites.md#65-re-verification-with-the-fixed-verifier)).
   The certified census is 126,168 states in 15,953 orbits.
   The selector’s finish-stage recheck placed one of its 90 flags (an arity-8 false
   flag), so 87 flags stand uncertified.

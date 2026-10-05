@@ -542,3 +542,51 @@ def test_the_live_backlog_and_report_render() -> None:
     report = check_requests.report(live, register, None)
     assert report[0] == "# Result Requests"
     assert sum(line.startswith("## #") for line in report) == len(live["issues"])
+
+
+class _Pages:
+    """A listing served page by page, as GitHub serves `?per_page=N&page=K`."""
+
+    def __init__(self, items: list[int], size: int) -> None:
+        self.items, self.size, self.asked = items, size, []
+
+    def __call__(self, path: str) -> Any:
+        self.asked.append(path)
+        page = int(path.rpartition("&page=")[2])
+        return self.items[(page - 1) * self.size : page * self.size]
+
+
+def test_a_listing_is_read_page_by_page_until_a_short_or_empty_page() -> None:
+    """A short final page ends the read, and so does the empty page after a full one."""
+    short = _Pages(list(range(250)), 100)
+    assert check_requests.gh_fetch("repos/a/b/issues?per_page=100", short) == list(range(250))
+    assert [path.rpartition("=")[2] for path in short.asked] == ["1", "2", "3"]
+    full = _Pages(list(range(200)), 100)
+    assert check_requests.gh_fetch("repos/a/b/issues?state=all&per_page=100", full) == list(
+        range(200)
+    )
+    assert full.asked[-1] == "repos/a/b/issues?state=all&per_page=100&page=3"
+
+
+def test_a_response_that_is_not_a_listing_is_returned_on_the_first_page_and_refused_later() -> (
+    None
+):
+    """An object on page 1 is the answer (an error, or a path that is not a listing);
+    an object after it would drop the pages already read, so it is refused."""
+    error = {"message": "Not Found"}
+    assert check_requests.gh_fetch("repos/a/b/issues?per_page=2", lambda _: error) == error
+    pages = iter([[1, 2], {"message": "rate limited"}])
+    with pytest.raises(ValueError, match="page 2"):
+        check_requests.gh_fetch("repos/a/b/issues?per_page=2", lambda _: next(pages))
+
+
+@pytest.mark.parametrize("size", ["0", "101", "250"])
+def test_a_page_size_github_does_not_serve_is_refused(size: str) -> None:
+    """GitHub serves at most 100 a page, so `per_page=250` came back 100 long, read as a
+    short page, and stopped after the first; `per_page=0` would never end."""
+
+    def never(_: str) -> Any:
+        pytest.fail("a refused page size made a request")
+
+    with pytest.raises(ValueError, match="per_page"):
+        check_requests.gh_fetch(f"repos/a/b/issues?per_page={size}", never)

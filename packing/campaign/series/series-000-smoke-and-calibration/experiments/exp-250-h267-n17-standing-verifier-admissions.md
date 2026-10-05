@@ -147,7 +147,13 @@ Both certificate directories keep their `-pending` names, because each verificat
 receipt names its directory and the census requires that name.
 *Annotation, 2026-10-05:* since `74b9b686f` the census matches a verification by the
 content ids in the objects’ file names, not by directory, so these directories may be
-renamed without verifying them again (`think-ssm3` item 1).
+renamed without verifying them again (`think-ssm3` item 1). *Annotation, 2026-10-05:*
+the kernel verifier these admissions ran under, at `25c1cdef6`, carried the closed-cover
+defect class the verifier-rewrites review’s addendum found the same day.
+Its section 6.2 measures that neither defective branch was taken on SW9 or N1, and
+section 6.5 re-verifies both, with W7, in full under the fixed verifier: PASS, with
+counts, closures and content ids equal to these receipts
+([review](../../../../../docs/project/reviews/review-2026-10-03-n17-verifier-rewrites.md#65-re-verification-with-the-fixed-verifier)).
 
 ## What It Changes
 

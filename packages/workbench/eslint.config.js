@@ -45,6 +45,8 @@ const NOT_OURS = [
   "packing/*/target/**",
   "attic/**",
   "packing/resources/**",
+  // The rendered site, which `render_overview` writes and Git ignores; its sources are linted.
+  "packing/site/**",
   ".claude/**",
 ];
 

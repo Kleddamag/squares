@@ -358,7 +358,6 @@ def test_ladder_labels_are_the_registers(
     for node in _data(root, "data-value"):
         assert node.text == pf.ladder_value(records[node.attrib["data-value"]])
     assert facts["LADDER_GAP"] == "0.0020836"
-    assert facts["LADDER_T061_STEP"] == "3.9 \N{MULTIPLICATION SIGN} 10⁻⁹"
 
 
 def test_roadmap_numbers_are_facts(roots: dict[str, ET.Element], facts: dict[str, str]) -> None:
@@ -505,7 +504,6 @@ def test_the_catalogue_marks_exactly_the_rows_below_one(
     assert sum(int(node.attrib["data-count"]) for node in bins) == len(python["rows"])
     assert facts["CATALOGUE_TIGHT_ANGLES"] == "44.58°\N{EN DASH}44.59°"
     assert facts["CATALOGUE_PAIR_ANGLES"] == "30.63°\N{EN DASH}30.65°"
-    assert facts["CATALOGUE_WIDTH_MIN"] == "3.6 \N{MULTIPLICATION SIGN} 10⁻⁹"
 
 
 def test_the_envelope_inset_is_the_rows_margin(

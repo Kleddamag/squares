@@ -321,6 +321,17 @@ def test_require_names_the_fetch_command_when_an_object_is_absent(
         require("data/alpha.bin", path)
 
 
+def test_require_reads_paths_under_a_root_the_caller_passes(repo: Path) -> None:
+    """A tool with its own root finds objects there, never under the repository root."""
+    path, _ = _staged(repo)
+    beta = repo / "data" / "nested" / "beta.json.gz"
+    assert require("data/nested/beta.json.gz", path, repo=repo) == beta
+    assert require(beta, path, repo=repo) == beta
+    beta.unlink()
+    with pytest.raises(HostedDataMissingError, match="not in this checkout"):
+        require("data/nested/beta.json.gz", path, repo=repo)
+
+
 def test_the_command_line_stages_and_checks(
     repo: Path, monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]
 ) -> None:

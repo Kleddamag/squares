@@ -424,9 +424,15 @@ def fetch(
     return outcomes
 
 
-def require(path: str | Path, manifest_path: Path, *, verify: bool = True) -> Path:
-    """The local file for a hosted object, or `HostedDataMissingError` naming the fetch."""
-    repo = repository_root()
+def require(
+    path: str | Path, manifest_path: Path, *, verify: bool = True, repo: Path | None = None
+) -> Path:
+    """The local file for a hosted object, or `HostedDataMissingError` naming the fetch.
+
+    Paths are relative to ``repo``, the repository root unless a tool that takes its own
+    root, such as a census over a fixture tree, passes it.
+    """
+    repo = repository_root() if repo is None else repo.resolve()
     candidate = Path(path)
     relative = candidate.resolve().relative_to(repo) if candidate.is_absolute() else candidate
     manifest = load_manifest(manifest_path)

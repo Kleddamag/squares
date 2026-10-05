@@ -43,6 +43,17 @@ A census that cannot be priced cannot be planned.
 This samples the residue uniformly, so the measured cost extrapolates, and works at a
 cap above the endpoint, so every exclusion it makes is reusable in a final proof.
 
+## Progress (annotation, 2026-10-05; the claim is unchanged)
+
+The instrument exists: n11’s kernel adapted to n17 (`devtools/check_n17_subpattern.py`
+on `sqpack.hull_kernel`), checked by the standing kernel verifier.
+It runs on the H-266 unique-state cover at $U = 1169/250$, not the H-263 cover or the
+H259 grid this record names, on residue states sampled under 44 of the selector’s flags
+(`X048-session-168-pilots/handoff/k2/h-sample.json`). Two states ran at 32 bins.
+N1 (distance 4) stalled under a 45-minute ceiling, closed in 3,723 s under a two-hour
+one, and was admitted in exp-250. F1 (distance 6) stalled under the 45-minute ceiling.
+The falsifier needs 10 to 20 sampled orbits, so H-264 has no verdict (`think-e17c`).
+
 <!-- This document follows common-doc-guidelines.md.
 See github.com/jlevy/practical-prose and review guidelines before editing.
 -->

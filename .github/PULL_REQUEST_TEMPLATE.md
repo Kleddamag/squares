@@ -51,6 +51,8 @@ defer-dependency. -->
 ## Changes by Purpose
 
 <!-- Group code, data, record, and documentation changes by the result they produce.
+A branch that adds hosted data (OR-18) gives the release URL, the manifest path, and
+the total size.
 -->
 
 | Area | Result | Principal files or interfaces |

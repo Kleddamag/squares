@@ -8,12 +8,13 @@
 # admits an entry is its `verification`.
 schema: n17-certified-sub-patterns/v3
 design: ring-3-voronoi-8-tabbed-unique
-# The certificate objects (about 112 MB of gzip) are hosted outside Git (OR-18), listed
-# with their assets, sizes and SHA-256 in this manifest; each certificate directory keeps
-# its small files. The count needs only the committed receipts; `python -m
-# devtools.hosted_data fetch --manifest` with this path puts the objects back so the
-# verifiers can run again.
-data_manifest: packing/campaign/explorations/X048-session-168-pilots/certificates/hosted-data.yaml
+# The certificate objects (about 112 MB of gzip) are hosted outside Git (OR-18) on the
+# release data/n17-x048-session-168-certificates-v1, listed with their assets, sizes and
+# SHA-256 in this hosted-data manifest; each certificate directory keeps its small files.
+# The count needs only the committed receipts; `python -m devtools.hosted_data fetch
+# --manifest hosted/n17-x048-session-168-certificates.yaml`, run from packing/, puts the
+# objects back so the verifiers can run again.
+data_manifest: packing/hosted/n17-x048-session-168-certificates.yaml
 # The standing verifiers, written separately from the producers, as reviews admitted them.
 # Each entry's verification names the listing it ran under by `id`; `version` is the
 # revision the review read, kept for the reader, and nothing resolves it (OR-18). A listing with

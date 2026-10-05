@@ -26,7 +26,7 @@ second implementation agrees.
 ## The Short Version
 
 - **81** programs: **31** external and **50** first-party; **64** decide claims and **17** check premises.
-- **266** of **293** evidence entries name the programs that verified them: 199 reproduced with the producer’s code, 51 independently re-implemented, 9 no relation: a proof, a derivation or a report, 7 re-implemented, sharing the producer’s components.
+- **267** of **294** evidence entries name the programs that verified them: 200 reproduced with the producer’s code, 51 independently re-implemented, 9 no relation: a proof, a derivation or a report, 7 re-implemented, sharing the producer’s components.
 
 ## Programs
 
@@ -42,7 +42,7 @@ second implementation agrees.
 | [`V-evand-zmx2`](#v-evand-zmx2) | zmx2 | Evan Daniel | external | decides | 19 | 9 |
 | [`V-evand-zm-mixed-py`](#v-evand-zm-mixed-py) | zm_mixed.py | Evan Daniel | external | decides | 6 | 6 |
 | [`V-evand-zeromargin-py`](#v-evand-zeromargin-py) | zeromargin.py | Evan Daniel | external | decides | 4 | 2 |
-| [`V-evand-angle-net-verify`](#v-evand-angle-net-verify) | verify (the angle-net arrangement sweep) | Evan Daniel | external | decides | 8 | 4 |
+| [`V-evand-angle-net-verify`](#v-evand-angle-net-verify) | verify (the angle-net arrangement sweep) | Evan Daniel | external | decides | 9 | 5 |
 | [`V-evand-xcheck-py`](#v-evand-xcheck-py) | xcheck.py | Evan Daniel | external | decides | 4 | 2 |
 | [`V-evand-zmcheck`](#v-evand-zmcheck) | zmcheck (verify2/src/main.rs) | Evan Daniel | external | decides | 3 | 2 |
 | [`V-evand-qx2-zm-py`](#v-evand-qx2-zm-py) | qx2_zm.py | Evan Daniel | external | decides | 4 | 2 |
@@ -60,7 +60,7 @@ second implementation agrees.
 | [`V-stanislavfort-17squares-point-checker`](#v-stanislavfort-17squares-point-checker) | verify_certificate.py | Stanislav Fort | external | decides | 1 | 0 |
 | [`V-queuingtheory-n11-verify`](#v-queuingtheory-n11-verify) | VERIFY.py | Queuingtheorydotcom | external | decides | 1 | 1 |
 | [`V-wand125-tools`](#v-wand125-tools) | The wand125 tools repository's transfer/l_cap.py and general_pose_tree | wand125 | external | decides | 3 | 2 |
-| [`V-squarepacker-indep-check-cpp`](#v-squarepacker-indep-check-cpp) | indep_check.cpp | squarepacker | external | decides | 2 | 1 |
+| [`V-squarepacker-indep-check-cpp`](#v-squarepacker-indep-check-cpp) | indep_check.cpp | squarepacker | external | decides | 3 | 2 |
 | [`V-schadt-n29-check-py`](#v-schadt-n29-check-py) | check.py | Schadt | external | decides | 1 | 0 |
 | [`V-anabologyco-n17-checker`](#v-anabologyco-n17-checker) | scripts/check_certificate.py and its event pipeline | anabologyco-maker | external | decides | 1 | 0 |
 | [`V-check-basic-bounds`](#v-check-basic-bounds) | devtools.check_basic_bounds | Squares Project (Levy) | first-party | decides | 3 | 14 |
@@ -458,6 +458,7 @@ Decides a positive-margin weighted point cover over an angle net by an exact arr
 | `E-n012-squarepacker-31360-7901-source-replay` | replayed here | producer’s code | T-078 |
 | `E-n012-levy-15680000-3949423-generator` | audited here | producer’s code | T-079 |
 | `E-n012-levy-15680000-3949423-source-replay` | replayed here | producer’s code | T-079 |
+| `E-n012-squarepacker-7943-2000-report` | the source’s own run | producer’s code | T-095 |
 | `E-n021-evand-5000-1001-report` | the source’s own run | producer’s code | T-050 |
 | `E-n021-evand-5000-1001-source-replay` | replayed here | producer’s code | T-050 |
 
@@ -732,6 +733,7 @@ The source's own checker of its scaled n = 12 point certificate, an angle-net sw
 | --- | --- | --- | --- |
 | `E-n012-squarepacker-31360-7901-report` | the source’s own run | producer’s code | T-078 |
 | `E-n012-squarepacker-31360-7901-source-replay` | replayed here | producer’s code | T-078 |
+| `E-n012-squarepacker-7943-2000-report` | the source’s own run | producer’s code | T-095 |
 
 ### `V-schadt-n29-check-py`
 

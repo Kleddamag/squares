@@ -30,6 +30,7 @@ import re
 from collections import Counter
 from collections.abc import Mapping, Sequence
 from dataclasses import dataclass, field
+from functools import cache
 from pathlib import Path
 from typing import Any
 
@@ -224,16 +225,28 @@ def prose_html(text: object, *, between: str = "<br><br>") -> str:
     return between.join(tex_bounds(paragraph) for paragraph in paragraphs(text))
 
 
+@cache
+def _text(path: Path, mtime_ns: int, size: int) -> str:
+    """`path`'s text, read once per version of the file: the key carries its modification
+    time and size, so an edited file is read again."""
+    del mtime_ns, size
+    return path.read_text(encoding="utf-8")
+
+
 def _line_of(path: Path, needle: str) -> int:
     """The 1-based line of the first line containing `needle` whole, for a line anchor:
     not followed by another letter, digit, `_` or `-`, so `id: E-n020-fractional-certificate`
     is not found in `id: E-n020-fractional-certificate-97-20`, the line before it, where
     T-020's first evidence link pointed until 2026-10-04."""
-    whole = re.compile(re.escape(needle) + r"(?![\w-])")
-    for number, line in enumerate(path.read_text(encoding="utf-8").splitlines(), start=1):
-        if whole.search(line):
-            return number
-    raise SystemExit(f"{path.name} has no line containing {needle!r}")
+    # One search over the text, not one per line: the first match is on the first line
+    # holding the needle, and the newlines before it number that line. The page asks
+    # for some four hundred of these, and a loop over lines was a quarter of its render.
+    stat = path.stat()
+    text = _text(path, stat.st_mtime_ns, stat.st_size)
+    found = re.search(re.escape(needle) + r"(?![\w-])", text)
+    if found is None:
+        raise SystemExit(f"{path.name} has no line containing {needle!r}")
+    return text.count("\n", 0, found.start()) + 1
 
 
 def line_link(path: Path, needle: str) -> str:

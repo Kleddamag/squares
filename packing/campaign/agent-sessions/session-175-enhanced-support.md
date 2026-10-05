@@ -16,7 +16,7 @@ session:
   status: stopped
   certification_pending: think-q0z7
   goal: Find additional parent-row cliques in frozen half/octagon enhanced-core model using
-    allrawpieces, or honest boundedunknown. No rownegative/admission/globalproof.
+    all raw pieces, or honest bounded unknown. No rownegative/admission/globalproof.
   workflow_phases:
   - workflow: research-loop
     focus: correctness
@@ -31,13 +31,13 @@ session:
     started_at: '2026-10-04T08:57:34.275511+00:00'
     deadline_at: '2026-10-04T09:27:34.275511+00:00'
     expected_output: packing/campaign/explorations/X048-session-175-enhanced-support/README.md
-    validation_command: explicit projectPython3.14 -m pytest tests/test_n17_enhanced_row_support.py
+    validation_command: explicit project Python 3.14 -m pytest tests/test_n17_enhanced_row_support.py
       -q
-    kill_condition: Source30min, relevant parent overlap, guard or insufficient15min finalization
+    kill_condition: Source 30 min, relevant parent overlap, guard or insufficient 15 min finalization
       reserve.
-    fallback: Retain18enhanced parent supports/72fixedtuple loss evidence, allother78rowsunknown;
-      no capladder.
-    outcome: 36 focused tests pass3.36s; Ruff/types clean; endpoint24parents/15selections225freshpairs;
+    fallback: Retain 18 enhanced parent supports/72 fixed tuple loss evidence, all other 78 rows unknown;
+      no cap ladder.
+    outcome: 36 focused tests pass 3.36 s; Ruff/types clean; endpoint 24 parents/15 selections 225 fresh pairs;
       root source gate accepted.
     evidence:
     - packing/devtools/probe_n17_enhanced_row_support.py
@@ -51,22 +51,22 @@ session:
     objective: ONE frozen enhanced-parent B search and root independent retained-clique replay.
     status: stopped
     entered_by: evidence_checkpoint
-    switch_reason: Independent source/control gate09:16UTC accepted before target.
+    switch_reason: Independent source/control gate 09:16 UTC accepted before target.
     budget_minutes: 15
     started_at: '2026-10-04T09:17:42.807908+00:00'
     deadline_at: '2026-10-04T09:32:42.807908+00:00'
     expected_output: packing/campaign/explorations/X048-session-175-enhanced-support/README.md
-    validation_command: ONE explicit projectPython enhanced support CLI; immutable Job240s;
-      root direct independent replay Job150s
-    kill_condition: 100kunique pairs/100knodes/180s/512MiB or Job240s ends attempt; no rerun/capladder.
-    fallback: Retain18enhanced parent supports/72fixedtuple loss evidence, allother78rowsunknown;
-      no capladder.
-    outcome: 26cliques support41/96parents(+23),55 unknown;100kpairs/134DFS/157.625s170758144B.
-      Independent390pairs/5044inventory replay accepted; no unsupportedness.
+    validation_command: ONE explicit project Python enhanced support CLI; immutable Job 240 s;
+      root direct independent replay Job 150 s
+    kill_condition: 100k unique pairs/100k nodes/180 s/512 MiB or Job 240 s ends attempt; no rerun/capladder.
+    fallback: Retain 18 enhanced parent supports/72 fixed tuple loss evidence, all other 78 rows unknown;
+      no cap ladder.
+    outcome: 26 cliques support 41/96 parents (+23), 55 unknown; 100k pairs/134 DFS/157.625 s, 170758144 B.
+      Independent 390 pairs/5044 inventory replay accepted; no unsupportedness.
     evidence:
     - packing/campaign/explorations/X048-session-175-enhanced-support/README.md
     - packing/campaign/resource-usage/codex-session-175.yaml
-    stop_reason: ONE target reached100kpair cap; independently checked41 parents(+23),55 unknown.
+    stop_reason: ONE target reached 100k pair cap; independently checked 41 parents (+23), 55 unknown.
       Source/evidence accepted; hosted certification remains explicit.
     next_action: Observe final metadata current-head CI, then close/sync think-wh57; next scheduled
       project requires new frozen phase/ownership and source gate. No A target repeat.
@@ -78,21 +78,21 @@ session:
     slice_minutes: 30
     finalization_minutes: 15
   stop_conditions:
-  - ONE B100kunique pairs/100knodes/180s/512MiB/Job240; anyguard ends, no capladder.
-  - Fresh7seedvalidation before coverage, explicit2522→5044B childinventory/96parents; oldraw4096guard
+  - ONE B 100k unique pairs/100k nodes/180 s/512 MiB/Job 240; any guard ends, no cap ladder.
+  - Fresh 7 seed validation before coverage, explicit 2522→5044 B child inventory/96 parents; old raw 4096 guard
     unchanged.
   - Endpoint exact angle-containing children and root pretarget source/control GO; root fresh
-    replay120s/512MiB/Job150.
-  - No oldraw/H/kernel/producer edits, adaptive partition/capture/Flag2/admission or globalproof
+    replay 120 s/512 MiB/Job 150.
+  - No oldraw/H/kernel/producer edits, adaptive partition/capture/Flag2/admission or global proof
     claim.
-  - Project15minreserve, outer14:36:46Z and30minwindowfinalreserve binding; no retrospective
-    deadlineextension.
+  - Project 15 min reserve, outer 14:36:46Z and 30 min window final reserve binding; no retrospective
+    deadline extension.
   progress:
-    metric: Independently replayed parent-row support beyond18known enhanced-model rows
-    before: H7retained tuples support18/96; Jindependent72fixedtuple losses do not establish
-      other78row unsupportedness.
-    after: 26cliques support41/96parents(+23),55 unknown;100kpairs/134DFS/157.625s170758144B.
-      Independent390pairs/5044inventory replay accepted; no unsupportedness.
+    metric: Independently replayed parent-row support beyond 18 known enhanced-model rows
+    before: H7 retained tuples support 18/96; J independent 72 fixed tuple losses do not establish
+      other 78 row unsupportedness.
+    after: 26 cliques support 41/96 parents (+23), 55 unknown; 100k pairs/134 DFS/157.625 s, 170758144 B.
+      Independent 390 pairs/5044 inventory replay accepted; no unsupportedness.
   delegations: []
   outputs:
   - packing/campaign/explorations/X048-session-175-enhanced-support/README.md
@@ -101,24 +101,25 @@ session:
   checks:
   - Original gate declarations below are historical branch evidence. The rewritten
     review layer remains uncertified; no source target or mathematical replay was rerun.
-  - Fresh actualmain225d6/PR3071525/HEAD14d131; relevantparentfilesunchanged, current3Drafts19 pass36 skip/allrequiredSUCCESS.
-  - Ownthink-wh57 publishedclaim under67ek; adaptiveK2ljxn/capture/upstream untouched. SoleSol
-    executor/integrator, rootcriticalreview/replay only.
-  - OldB–J/G/I immutable. Historical coldchecks reused; new target/replay onlyenhanced binary
-    supports.
-  - Root source/control gate passed;36tests/Ruff/types and endpoint225freshpairs accepted. ONE
-    B pairguard; independent5044inventory/H7prefix/390freshpairs confirms41 parents. All5Jobs
-    empty/cleanuptrue/noerrors.
-  - Native aggregate ONCE exactstart2026-10-04T08:57:34.275511+00:00, cutoff2026-10-04T09:24:27.705513+00:00,
-    actualend2026-10-04T09:24:30.780378+00:00. Declared branch interval; live/boundary lower
+  - Fresh actual main 225d6, PR 307 at 1525 and HEAD 14d131; relevant parent files unchanged; the
+    current three Drafts have 19 pass/36 skip, all required SUCCESS.
+  - Own think-wh57 claim published under think-67ek; adaptive K2 (think-ljxn), capture and
+    upstream untouched. Sole Sol executor/integrator, root critical review/replay only.
+  - Old B–J/G/I immutable. Historical cold checks reused; the new target and replay cover only
+    enhanced binary supports.
+  - Root source/control gate passed; 36 tests/Ruff/types and the endpoint's 225 fresh pairs
+    accepted. ONE B run stopped at its pair guard; the independent 5044-atom inventory, H7 prefix
+    and 390 fresh pairs confirm 41 parents. All 5 Jobs empty, cleanup true, no errors.
+  - Native aggregate ONCE exact start 2026-10-04T08:57:34.275511+00:00, cutoff 2026-10-04T09:24:27.705513+00:00,
+    actual end 2026-10-04T09:24:30.780378+00:00. Declared branch interval; live/boundary lower
     bound. All later publication/CI work excluded.
   - 'Historical full gate: fast at 217b571669986590937a7b8d85af0b018103dd60: passed'
-  - Exact repaired source217b571 current55checks terminal19 pass36 skip/all 3 requiredSUCCESS. Initial
-    source failed only stale-file inventory guard; official lastgreen14d131 coherent cohort
-    refresh preserves existing10%policy/ceilings. Sevenfocused controls pass; full supported-host
-    suite passes. Windows subprocess ancestor permission failures remain classified separately,
+  - Exact repaired source 217b571 has 55 current checks terminal, 19 pass/36 skip, all 3 required
+    SUCCESS. The initial source failed only the stale-file inventory guard; the official last-green
+    14d131 coherent cohort refresh preserves the existing 10% policy and ceilings. Seven focused
+    controls pass; the full supported-host suite passes. Windows subprocess ancestor permission failures remain classified separately,
     no host/policy fix.
-  stop_reason: ONE target reached100kpair cap; independently checked41 parents(+23),55 unknown.
+  stop_reason: ONE target reached 100k pair cap; independently checked 41 parents (+23), 55 unknown.
     Source/evidence accepted; hosted certification remains explicit.
   next_action: Await Joshua and current-layer required CI under think-q0z7.
     No active research executor or reserved follow-up; original intervals are historical.
@@ -129,8 +130,8 @@ session:
 ---
 # Enhanced parent supports
 
-One additive fixed-domain diagnostic; full rawpiece half atoms retain original parentrow
-identities. No adaptiveproducer or geometric admission.
+One additive fixed-domain diagnostic; full raw piece half atoms retain original parent
+row identities. No adaptive producer or geometric admission.
 
 <!-- This document follows common-doc-guidelines.md.
 See github.com/jlevy/practical-prose and review guidelines before editing.

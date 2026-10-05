@@ -348,6 +348,21 @@ EXPLAINER_REVISED = "October 1, 2026"
 #: (think-2cqu).
 OPTIMALITY_REVIEW_HISTORY = (
     PublicationHistoryEntry(
+        version="v0.1.5",
+        first_published="October 5, 2026",
+        result_scope=(
+            "The series revision: the paper is Part III of a three-part series, its "
+            "lineage section defines charge and threshold certificates and names Part "
+            "II's three changes from T-026, and Charge Budgets contrasts capacity one "
+            "with a k-of-m charge's $\\lfloor m/k\\rfloor$; every term is defined before "
+            "its use, a test now holding that, so the receipt, seed, branch, cut and label "
+            "are defined at first use and the frames table, the ban paragraph and Figure 6 "
+            "move after the terms they use; the series notation writes $L_0$, $\\Gamma_i$, "
+            "$\\operatorname{rot}$, $\\mathbf{D}_4$ and $(191/50)/U$ for $S$, $q_i$, the "
+            "quarter-turn $Q$, $D_4$ and $B$."
+        ),
+    ),
+    PublicationHistoryEntry(
         version="v0.1.4",
         first_published="October 4, 2026",
         result_scope=(
@@ -418,7 +433,7 @@ OPTIMALITY_REVIEW_EDITION = " ".join(
 #: prints, by the rule `EXPLAINER_REVISED` follows -- the author date of the last commit
 #: that changed its article, `n11-optimality-review-article.md`, held to git by
 #: `devtools.artifact_dates`. Change it in the commit that changes the article.
-OPTIMALITY_REVIEW_REVISED = "October 4, 2026"
+OPTIMALITY_REVIEW_REVISED = "October 5, 2026"
 
 #: The day the proof the review explains was published by its source, which the review's
 #: "Original proof" date prints. A fact about someone else's work, so it is typed, and

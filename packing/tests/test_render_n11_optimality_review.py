@@ -449,7 +449,7 @@ def test_actual_article_renders_all_retained_figures_and_pinned_sources() -> Non
         f"{facts['ROW_CASE_UPDATES']} complete updates exclude case 2095",
         f"overlay regions {facts['D4_BAN_REGIONS']} is below 1",
         f"over {facts['D4_REGIONS']} closed regions and {facts['D4_BANS']} bans",
-        f"{facts['LOCAL_MARGINS']} exact margins over {facts['LOCAL_BRANCHES']} branches",
+        f"{facts['LOCAL_MARGINS']} exact margins over {facts['LOCAL_BRANCHES']} linear systems",
     ):
         assert phrase in said, phrase
     # The first figure is set as the first paper sets its own: the drawing alone in a

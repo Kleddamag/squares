@@ -31,7 +31,7 @@ from kpress.format.pdf import _await_print_fonts  # pyright: ignore[reportPrivat
 from kpress.output import write_bytes_atomic
 from strif import atomic_output_file
 
-from devtools import artifact_dates, paper_front, render_n11_lower_bounds_explainer
+from devtools import artifact_dates, paper_front, paper_links, render_n11_lower_bounds_explainer
 from devtools.render_n11_lower_bounds_explainer_pdf import dated
 from devtools.render_overview import (
     EMBED_SCRIPT,
@@ -339,11 +339,14 @@ def expanded_markdown(
     article: Path = ARTICLE,
     revision: str,
     facts: Mapping[str, str] | None = None,
+    edition: paper_links.Edition = "page",
 ) -> str:
     """Fill the paper's front, the declared figure slots and the caption facts, and pin
     local source citations to a Git commit. A fact the article does not use is refused,
     as a slot it does not fill is: the two lists are the article's and the figure
-    modules' alike."""
+    modules' alike. A link to another paper of the series (`{{PAPER:<slug>#<anchor>}}`)
+    is filled for `edition` before the pinning, which would otherwise refuse it as a
+    file the repository does not hold (`devtools.paper_links`)."""
     facts = facts or {}
     source = paper_front.fill(source, FRONT)
     unused = sorted(key for key in facts if "{{" + key + "}}" not in source)
@@ -369,6 +372,7 @@ def expanded_markdown(
         {**figures, **facts, "VERSION_HISTORY": version_history_markdown()},
         source=article,
     )
+    filled = paper_links.fill_paper_links(filled, edition=edition)
     return _repository_links(filled, source=article, revision=revision)
 
 
@@ -428,14 +432,24 @@ def render(
     The page typesets the expanded article, its front included; the edition is that
     document with its front in the Markdown edition's form (`paper_front.published`):
     the title as a heading and the credits as a list, and no formats row, which is the
-    page's navigation. The rest, the figures as their SVG among it, is kept whole."""
+    page's navigation. The rest, the figures as their SVG among it, is kept whole. A link
+    to another paper is page-relative on the page and the site's address in the edition,
+    which is read away from the site."""
     from kpress.format.markdown import parse_markdown  # noqa: PLC0415
 
-    markdown = expanded_markdown(
+    page_markdown = expanded_markdown(
         source, figures=figures, article=article, revision=revision, facts=facts
     )
+    markdown = expanded_markdown(
+        source,
+        figures=figures,
+        article=article,
+        revision=revision,
+        facts=facts,
+        edition="markdown",
+    )
     document = parse_markdown(
-        caption_math(markdown), title=TITLE, trust_mode="trusted", math="auto"
+        caption_math(page_markdown), title=TITLE, trust_mode="trusted", math="auto"
     )
     errors = [item.message for item in document.diagnostics if item.severity == "error"]
     if errors:

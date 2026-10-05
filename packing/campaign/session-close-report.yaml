@@ -3157,7 +3157,7 @@ sessions:
   title: "n17 Overnight Lanes"
   status: in_progress
   primary_bead: think-tmz6
-  phases: 2
+  phases: 3
   measured: false
   unmeasured_reason: >-
     declares no resource measurement

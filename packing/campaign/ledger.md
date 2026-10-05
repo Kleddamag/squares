@@ -194,7 +194,7 @@ Each entry summarizes one user-level research window. Cycle slots are wall-clock
 | [session-178](agent-sessions/session-178-full-core-ablation.md) | stopped | contemporaneous | `research-loop` (correctness) | `research-loop` (correctness) | 2 | think-abit | Await Joshua's review of the rebuilt layer (PR 360) under think-q0z7. No active research executor or reserved follow-up; original intervals are historical. |
 | [session-179](agent-sessions/session-179-selective-halving.md) | stopped | contemporaneous | `research-loop` (correctness) | `research-loop` (correctness) | 2 | think-ns4t | Await Joshua's review of the rebuilt layer (PR 360) under think-q0z7. No active research executor or reserved follow-up; original intervals are historical. |
 | [session-180](agent-sessions/session-180-n17-producer-memo.md) | stopped | contemporaneous | `review-planning-oversight` (insight) | `review-planning-oversight` (correctness) | 3 | think-wn6x | Review the rebuilt layer that replaces Draft PR 325 under think-wn6x; upstream think-tmz6 remains the research coordinator. No merge or new compute is authorized by this closeout. |
-| [session-182](agent-sessions/session-182-n17-overnight-lanes.md) | in_progress | contemporaneous | `review-planning-oversight` (insight) | `research-loop` (correctness) | 2 | think-tmz6 | Run lanes A and K's queues from the run worktree, admit verified closures, and write the morning handoff at 14:30 UTC without stopping the run. |
+| [session-182](agent-sessions/session-182-n17-overnight-lanes.md) | in_progress | contemporaneous | `review-planning-oversight` (insight) | `research-loop` (correctness) | 3 | think-tmz6 | Run BC-423's and BC-424's queues, lane E and the branch-and-bound queue from the run worktrees, and admit each closure its control releases. |
 
 ### Workflow summary
 
@@ -207,7 +207,7 @@ Declared counts are contemporaneous contracts; retrospective counts are reconstr
 | `insight-iteration` | 29 | 1 | 90 | 4 |
 | `process-review` | 16 | 4 | 64 | 6 |
 | `efficiency-loop` | 11 | 1 | 41 | 1 |
-| `research-loop` | 37 | 4 | 131 | 9 |
+| `research-loop` | 37 | 4 | 132 | 9 |
 | `pipeline-improvement` | 41 | 2 | 213 | 7 |
 | `documentation-pass` | 1 | 0 | 29 | 3 |
 | `remediation` | 2 | 1 | 6 | 3 |

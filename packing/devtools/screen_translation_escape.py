@@ -699,9 +699,12 @@ def _screen_entry(entry: dict[str, Any]) -> tuple[bool, dict[str, Any]]:
     try:
         squares, side, square_ids = materialize_record(entry)
         residual = shape_residual(squares)
-        if residual > SHAPE_RESIDUAL_LIMIT:
-            return False, _exclusion(entry, residual)
-        return True, screen_record(entry["n"], squares, side, square_ids)
+        screened = residual <= SHAPE_RESIDUAL_LIMIT
+        record = (
+            screen_record(entry["n"], squares, side, square_ids)
+            if screened
+            else _exclusion(entry, residual)
+        )
     except Exception as error:
         # A pool reports the failure without saying which unit raised it, and several of
         # the messages this can surface name only a square index.  Naming the record here
@@ -710,6 +713,11 @@ def _screen_entry(entry: dict[str, Any]) -> tuple[bool, dict[str, Any]]:
         prefix = f"n={entry['n']}"
         blamed = message if message.startswith(prefix) else f"{prefix}: {message}"
         raise ValueError(blamed) from error
+    # Which record this result is about, as the manifest names it, so that a record
+    # replaced under a retained screen is caught by the pull request's sampled check
+    # rather than by the deferred re-screen (`identity_errors`).
+    record["reported_side"] = entry["reported_side"]
+    return screened, record
 
 
 def screen_corpus(
@@ -907,6 +915,32 @@ def check(workers: int | None = None) -> None:
     print(f"translation escape screen check passed: {_summary(document)}")
 
 
+def identity_errors(screen: dict[str, Any], entries: dict[int, dict[str, Any]]) -> list[str]:
+    """Every retained result that was screened on a record the manifest no longer holds.
+
+    A record import replaces a witness and its manifest entry together, and the sampled
+    replay below reaches only every `SCREEN_SAMPLE_STRIDE`th record, so a replaced record
+    between the strides went unscreened until the deferred re-screen found it after the
+    merge: T-092's seven records on run 37268431203. Each result names the side of the
+    record it was screened on, which costs nothing to compare for the whole corpus. It
+    catches a record that changed; it cannot catch a witness re-transcribed at the same
+    reported side, which stays the deferred re-screen's to find.
+    """
+    problems: list[str] = []
+    for record in [*screen["cases"], *screen["excluded"]]:
+        n = int(record["n"])
+        entry = entries.get(n)
+        if entry is None:
+            continue
+        screened_on = record.get("reported_side")
+        if screened_on != entry["reported_side"]:
+            problems.append(
+                f"n={n}: screened on the record of side {screened_on}, but the manifest now "
+                f"holds the record of side {entry['reported_side']}; run with --update"
+            )
+    return problems
+
+
 def check_sample(stride: int = SCREEN_SAMPLE_STRIDE, workers: int | None = None) -> None:
     """The pull request's stand-in for the whole screen, and what it does not cover.
 
@@ -916,13 +950,15 @@ def check_sample(stride: int = SCREEN_SAMPLE_STRIDE, workers: int | None = None)
     subprocess timeout on a machine faster than the hosted runner. That is why the whole
     re-screen moved to the deferred surface.
 
-    Three checks, and the first does most of the work. Everything in the screen but the
+    Four checks, and the first does most of the work. Everything in the screen but the
     per-record entries -- the aggregate, the method block, the tolerances, the claim
     boundaries, the contract, and the file's own formatting -- is recomputed from the
     retained cases and exclusions and compared byte for byte, and `_document` runs the
     schema validator and `screen_errors` on the way through. So an aggregate that has
     stopped matching its cases, a tolerance constant changed without re-running the
     screen, or a certificate claiming no motion all fail here on every pull request.
+    Another compares every retained result's `reported_side` with the manifest, so a
+    record replaced without a re-screen fails here too, wherever the stride falls.
 
     What it does not cover: the geometry of the records the stride skips. That is
     `single-square translation escape screen` on the deferred surface, which is the exact
@@ -954,6 +990,7 @@ def check_sample(stride: int = SCREEN_SAMPLE_STRIDE, workers: int | None = None)
         problems.append(f"the retained screen does not cover exactly {KNOWN_BEST_CORPUS.label}")
     numbers = sampled_numbers(KNOWN_BEST_CORPUS, stride)
     entries = {int(entry["n"]): entry for entry in manifest_entries()}
+    problems.extend(identity_errors(screen, entries))
     retained_cases = {int(case["n"]): case for case in screen["cases"]}
     retained_excluded = {int(item["n"]): item for item in screen["excluded"]}
     units = [entries[n] for n in numbers]

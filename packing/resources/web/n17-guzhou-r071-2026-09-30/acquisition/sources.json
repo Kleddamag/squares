@@ -31,11 +31,9 @@
       ],
       "subtree_file_count": 186,
       "subtree_total_bytes": 9476703,
-      "retained_file_count": 153,
-      "retained_total_bytes": 7325400,
+      "retained_file_count": 45,
+      "retained_total_bytes": 3323486,
       "compressed": [
-        "n17-square-packing/certificates/R070-4.6604427/project/followup_c015/data/lifted_accepted_model.json.gz",
-        "n17-square-packing/certificates/R070-4.6604427/project/followup_c016/data/geometric_overlay_all.json.gz",
         "n17-square-packing/certificates/R070-4.6604427/project/followup_c016/results/target_4.6604427/certificate.json.gz",
         "n17-square-packing/certificates/R070-4.6604427/project/followup_c016/results/target_4.6604427/paired_replay/cpp-0.json.gz",
         "n17-square-packing/certificates/R070-4.6604427/project/followup_c016/results/target_4.6604427/paired_replay/cpp-1.json.gz",
@@ -44,9 +42,7 @@
         "n17-square-packing/certificates/R070-4.6604427/project/followup_c016/results/target_4.6604427/paired_replay/node-0.json.gz",
         "n17-square-packing/certificates/R070-4.6604427/project/followup_c016/results/target_4.6604427/paired_replay/node-1.json.gz",
         "n17-square-packing/certificates/R070-4.6604427/project/followup_c016/results/target_4.6604427/paired_replay/node-2.json.gz",
-        "n17-square-packing/certificates/R070-4.6604427/project/followup_c016/results/target_4.6604427/paired_replay/node-3.json.gz",
-        "n17-square-packing/certificates/R071-C029/project/followup_c026/data/finite_comparison.json.gz",
-        "n17-square-packing/certificates/R071-C029/project/followup_c029/data/joint_graph.json.gz"
+        "n17-square-packing/certificates/R070-4.6604427/project/followup_c016/results/target_4.6604427/paired_replay/node-3.json.gz"
       ],
       "pinned_only": [
         {
@@ -162,10 +158,88 @@
           "identical_to": "packing/resources/web/n17-guzhou-r068-2026-09-28/n17-square-packing/certificates/R068-C010/upstream/notices/NOTICES/README.md"
         },
         {
+          "path": "certificates/R070-4.6604427/project/followup_c015/data/lifted_accepted_model.json",
+          "bytes": 1458345,
+          "sha256": "ff183c5e0c14646ce06b07e0dcda075f09a9a34110e23daee27d16c4488edb13",
+          "reason": "R070's C015 research model and pose, inputs to the compensation charge's construction; the R070 and R071 certificates carry the charge themselves, and neither bound, the paired replay nor devtools.audit_guzhou_r071 reads them (OR-18)"
+        },
+        {
+          "path": "certificates/R070-4.6604427/project/followup_c015/results/angular_cell/short_pose.json",
+          "bytes": 149,
+          "sha256": "c0ce9bfa6e93e279e01f64c74d6d712df517cb3e4b432f2777e0b0e14a058f8d",
+          "reason": "R070's C015 research model and pose, inputs to the compensation charge's construction; the R070 and R071 certificates carry the charge themselves, and neither bound, the paired replay nor devtools.audit_guzhou_r071 reads them (OR-18)"
+        },
+        {
+          "path": "certificates/R070-4.6604427/project/followup_c016/data/geometric_overlay_all.json",
+          "bytes": 287100,
+          "sha256": "5c10820e44a7a038dc717f0ca728f07c88b947a908f522ce480f19ada8f0bfa3",
+          "reason": "R070's same-budget geometric overlay, which carries no bound; neither bound, the paired replay nor devtools.audit_guzhou_r071 reads it (OR-18)"
+        },
+        {
+          "path": "certificates/R070-4.6604427/project/followup_c016/results/all_geometry_bigint.json",
+          "bytes": 552,
+          "sha256": "30c6466397b6edeeb6759665e000db6cf95c79f602caa8c8260e4de5c48fa07c",
+          "reason": "the outputs of R070's overlay and obstruction research, among them a 1.98 MB one-line obstruction record, which carry no bound; their geometry replay regenerates them, and neither bound, the paired replay nor devtools.audit_guzhou_r071 reads them (OR-18)"
+        },
+        {
+          "path": "certificates/R070-4.6604427/project/followup_c016/results/all_geometry_cpp.json",
+          "bytes": 410,
+          "sha256": "3df036121677f8ce0e33e4130f34f01bd89520915e3d17c7f2eb3e2abbfe2b93",
+          "reason": "the outputs of R070's overlay and obstruction research, among them a 1.98 MB one-line obstruction record, which carry no bound; their geometry replay regenerates them, and neither bound, the paired replay nor devtools.audit_guzhou_r071 reads them (OR-18)"
+        },
+        {
+          "path": "certificates/R070-4.6604427/project/followup_c016/results/parent_hull_obstruction_bigint.json",
+          "bytes": 847,
+          "sha256": "14478328cf3da643124eebb267690093bf182519f36fb478f5d177121eb39e9f",
+          "reason": "the outputs of R070's overlay and obstruction research, among them a 1.98 MB one-line obstruction record, which carry no bound; their geometry replay regenerates them, and neither bound, the paired replay nor devtools.audit_guzhou_r071 reads them (OR-18)"
+        },
+        {
           "path": "certificates/R070-4.6604427/project/followup_c016/results/parent_hull_obstruction_cpp.json",
           "bytes": 1979565,
           "sha256": "60e0609d0a9ad0952963c76f621c9a7bcc613981e2e345e1b5423a762761cd9c",
-          "reason": "a 1.98 MB one-line output of R070's obstruction research, which carries no bound; its geometry replay regenerates it and no premise of either bound reads it"
+          "reason": "the outputs of R070's overlay and obstruction research, among them a 1.98 MB one-line obstruction record, which carry no bound; their geometry replay regenerates them, and neither bound, the paired replay nor devtools.audit_guzhou_r071 reads them (OR-18)"
+        },
+        {
+          "path": "certificates/R070-4.6604427/project/followup_c016/src/exact_model.js",
+          "bytes": 7797,
+          "sha256": "fe3a0eccf4c926898241e9fa5fd21a198cc3e4978a046695168640935a13a155",
+          "reason": "the programs of R070's overlay and obstruction research, which carry no bound; neither bound, the paired replay nor devtools.audit_guzhou_r071 reads them (OR-18)"
+        },
+        {
+          "path": "certificates/R070-4.6604427/project/followup_c016/src/geometric_overlay.hpp",
+          "bytes": 7893,
+          "sha256": "bcab81bb235f15599e10dac549f274ff6bca1da449ea6cf89c98a5c7435ddffe",
+          "reason": "the programs of R070's overlay and obstruction research, which carry no bound; neither bound, the paired replay nor devtools.audit_guzhou_r071 reads them (OR-18)"
+        },
+        {
+          "path": "certificates/R070-4.6604427/project/followup_c016/src/geometric_rules.cpp",
+          "bytes": 2007,
+          "sha256": "9200de19865fc7840a72db04660ffe9133641ae1e05c2a6a50dc089addb27b68",
+          "reason": "the programs of R070's overlay and obstruction research, which carry no bound; neither bound, the paired replay nor devtools.audit_guzhou_r071 reads them (OR-18)"
+        },
+        {
+          "path": "certificates/R070-4.6604427/project/followup_c016/src/parent_hull_obstruction.cpp",
+          "bytes": 3222,
+          "sha256": "76fe9ebed85ea8a0f0ef5a4a059d55c7071b89744a03e63ea4f9f47f2be394e0",
+          "reason": "the programs of R070's overlay and obstruction research, which carry no bound; neither bound, the paired replay nor devtools.audit_guzhou_r071 reads them (OR-18)"
+        },
+        {
+          "path": "certificates/R070-4.6604427/project/followup_c016/src/verify_geometric_rules.js",
+          "bytes": 1778,
+          "sha256": "ce1777d48672c45b3ac80a452c1afe217ebad41bf9ba1bc3533f162c46f1b407",
+          "reason": "the programs of R070's overlay and obstruction research, which carry no bound; neither bound, the paired replay nor devtools.audit_guzhou_r071 reads them (OR-18)"
+        },
+        {
+          "path": "certificates/R070-4.6604427/project/followup_c016/src/verify_parent_hull_obstruction.js",
+          "bytes": 3286,
+          "sha256": "a29019f1cd37cfe2835e89243cc077a893026a97d9fd54fc031b45ca2477b40f",
+          "reason": "the programs of R070's overlay and obstruction research, which carry no bound; neither bound, the paired replay nor devtools.audit_guzhou_r071 reads them (OR-18)"
+        },
+        {
+          "path": "certificates/R070-4.6604427/project/work/src/adaptive_library.cpp",
+          "bytes": 5848,
+          "sha256": "6706119bd6358749051f66a2b81cd6258392e99d6f1b3bad7d090ef8fa10e9f2",
+          "reason": "a research library of R070's construction, which no bound, replay or audit here reads (OR-18)"
         },
         {
           "path": "certificates/R071-C029/project/base/upstream/cpp/native_geometry.hpp",
@@ -278,6 +352,576 @@
           "sha256": "f9bc19e134efd913c8fdbd8dc4453bea2636c02ac0f4d7f0fa0563528e1ef47e",
           "reason": "byte-identical to the upstream notices the R068 packet retains",
           "identical_to": "packing/resources/web/n17-guzhou-r068-2026-09-28/n17-square-packing/certificates/R068-C010/upstream/notices/NOTICES/README.md"
+        },
+        {
+          "path": "certificates/R071-C029/project/followup_c021/src/bigq.js",
+          "bytes": 935,
+          "sha256": "77c97a364300572938e49149299f4b9b1dcdd5df7beea837c0a8b4295a00a3af",
+          "reason": "R071's C028 and C029 conditional joint-geometry research and the C021 and C026 inputs it reuses: sources, data trees and frozen outputs that claim no bound; neither the C027 bound, its paired replay nor devtools.audit_guzhou_r071 reads them, so they are pinned by digest rather than retained (OR-18)"
+        },
+        {
+          "path": "certificates/R071-C029/project/followup_c026/data/finite_comparison.json",
+          "bytes": 673076,
+          "sha256": "8d00267cddcaa820dccd646969af0724f3ed88add675e00924483028dd372dc4",
+          "reason": "R071's C028 and C029 conditional joint-geometry research and the C021 and C026 inputs it reuses: sources, data trees and frozen outputs that claim no bound; neither the C027 bound, its paired replay nor devtools.audit_guzhou_r071 reads them, so they are pinned by digest rather than retained (OR-18)"
+        },
+        {
+          "path": "certificates/R071-C029/project/followup_c028/data/atlas.json",
+          "bytes": 441,
+          "sha256": "6fe09a4d9a3435f2f09bf76671d65b3817e380b8f9ac905416ec1545e577812c",
+          "reason": "R071's C028 and C029 conditional joint-geometry research and the C021 and C026 inputs it reuses: sources, data trees and frozen outputs that claim no bound; neither the C027 bound, its paired replay nor devtools.audit_guzhou_r071 reads them, so they are pinned by digest rather than retained (OR-18)"
+        },
+        {
+          "path": "certificates/R071-C029/project/followup_c028/data/atlas.tree",
+          "bytes": 144456,
+          "sha256": "ef0c64fbb39e24fb5b2a0698243167dd60319906d0e49dcfaf8f95c134fd9505",
+          "reason": "R071's C028 and C029 conditional joint-geometry research and the C021 and C026 inputs it reuses: sources, data trees and frozen outputs that claim no bound; neither the C027 bound, its paired replay nor devtools.audit_guzhou_r071 reads them, so they are pinned by digest rather than retained (OR-18)"
+        },
+        {
+          "path": "certificates/R071-C029/project/followup_c028/data/frontier_witnesses.json",
+          "bytes": 5883,
+          "sha256": "539cbbc05f2a2b4fc8bafdcac852b0bf268529d3b1a4554805c607e64adb64f2",
+          "reason": "R071's C028 and C029 conditional joint-geometry research and the C021 and C026 inputs it reuses: sources, data trees and frozen outputs that claim no bound; neither the C027 bound, its paired replay nor devtools.audit_guzhou_r071 reads them, so they are pinned by digest rather than retained (OR-18)"
+        },
+        {
+          "path": "certificates/R071-C029/project/followup_c028/data/predicates.json",
+          "bytes": 2635,
+          "sha256": "cd04ec5ad5efffb10547ed752f60bdada08d7ae4e22aa6096c79fcc68c2a9f2c",
+          "reason": "R071's C028 and C029 conditional joint-geometry research and the C021 and C026 inputs it reuses: sources, data trees and frozen outputs that claim no bound; neither the C027 bound, its paired replay nor devtools.audit_guzhou_r071 reads them, so they are pinned by digest rather than retained (OR-18)"
+        },
+        {
+          "path": "certificates/R071-C029/project/followup_c028/data/stabbing.json",
+          "bytes": 1581,
+          "sha256": "085cb3f85e3b9c1c05f34c859f4f6f87c69d7412b7c429a411c349abaa52d200",
+          "reason": "R071's C028 and C029 conditional joint-geometry research and the C021 and C026 inputs it reuses: sources, data trees and frozen outputs that claim no bound; neither the C027 bound, its paired replay nor devtools.audit_guzhou_r071 reads them, so they are pinned by digest rather than retained (OR-18)"
+        },
+        {
+          "path": "certificates/R071-C029/project/followup_c028/results/atlas_final_bigint.json",
+          "bytes": 244161,
+          "sha256": "c29e271a086914019f674a91ffe13c4b240f6919de9963058e46333fc45b1697",
+          "reason": "R071's C028 and C029 conditional joint-geometry research and the C021 and C026 inputs it reuses: sources, data trees and frozen outputs that claim no bound; neither the C027 bound, its paired replay nor devtools.audit_guzhou_r071 reads them, so they are pinned by digest rather than retained (OR-18)"
+        },
+        {
+          "path": "certificates/R071-C029/project/followup_c028/results/atlas_final_cpp.json",
+          "bytes": 244161,
+          "sha256": "c29e271a086914019f674a91ffe13c4b240f6919de9963058e46333fc45b1697",
+          "reason": "R071's C028 and C029 conditional joint-geometry research and the C021 and C026 inputs it reuses: sources, data trees and frozen outputs that claim no bound; neither the C027 bound, its paired replay nor devtools.audit_guzhou_r071 reads them, so they are pinned by digest rather than retained (OR-18)"
+        },
+        {
+          "path": "certificates/R071-C029/project/followup_c028/results/frontier_bigint.json",
+          "bytes": 94946,
+          "sha256": "20302fbccee1c9bef6d410d4bfdf9adfcf7000bfd2b782d96a1948fe0c85c4a0",
+          "reason": "R071's C028 and C029 conditional joint-geometry research and the C021 and C026 inputs it reuses: sources, data trees and frozen outputs that claim no bound; neither the C027 bound, its paired replay nor devtools.audit_guzhou_r071 reads them, so they are pinned by digest rather than retained (OR-18)"
+        },
+        {
+          "path": "certificates/R071-C029/project/followup_c028/results/frontier_cpp.json",
+          "bytes": 94946,
+          "sha256": "20302fbccee1c9bef6d410d4bfdf9adfcf7000bfd2b782d96a1948fe0c85c4a0",
+          "reason": "R071's C028 and C029 conditional joint-geometry research and the C021 and C026 inputs it reuses: sources, data trees and frozen outputs that claim no bound; neither the C027 bound, its paired replay nor devtools.audit_guzhou_r071 reads them, so they are pinned by digest rather than retained (OR-18)"
+        },
+        {
+          "path": "certificates/R071-C029/project/followup_c028/results/predicates_bigint.json",
+          "bytes": 679,
+          "sha256": "28967045b33141a7929d178e704b6bb2b2b8711cf6bb75f284c24ecd359c96fa",
+          "reason": "R071's C028 and C029 conditional joint-geometry research and the C021 and C026 inputs it reuses: sources, data trees and frozen outputs that claim no bound; neither the C027 bound, its paired replay nor devtools.audit_guzhou_r071 reads them, so they are pinned by digest rather than retained (OR-18)"
+        },
+        {
+          "path": "certificates/R071-C029/project/followup_c028/results/predicates_cpp.json",
+          "bytes": 679,
+          "sha256": "28967045b33141a7929d178e704b6bb2b2b8711cf6bb75f284c24ecd359c96fa",
+          "reason": "R071's C028 and C029 conditional joint-geometry research and the C021 and C026 inputs it reuses: sources, data trees and frozen outputs that claim no bound; neither the C027 bound, its paired replay nor devtools.audit_guzhou_r071 reads them, so they are pinned by digest rather than retained (OR-18)"
+        },
+        {
+          "path": "certificates/R071-C029/project/followup_c028/results/stabbing_bigint.json",
+          "bytes": 20220,
+          "sha256": "8cb6b63c51b3c4401651a5782a170d049f2dd5941a09de41999583d11d7fcdc7",
+          "reason": "R071's C028 and C029 conditional joint-geometry research and the C021 and C026 inputs it reuses: sources, data trees and frozen outputs that claim no bound; neither the C027 bound, its paired replay nor devtools.audit_guzhou_r071 reads them, so they are pinned by digest rather than retained (OR-18)"
+        },
+        {
+          "path": "certificates/R071-C029/project/followup_c028/results/stabbing_cpp.json",
+          "bytes": 20220,
+          "sha256": "8cb6b63c51b3c4401651a5782a170d049f2dd5941a09de41999583d11d7fcdc7",
+          "reason": "R071's C028 and C029 conditional joint-geometry research and the C021 and C026 inputs it reuses: sources, data trees and frozen outputs that claim no bound; neither the C027 bound, its paired replay nor devtools.audit_guzhou_r071 reads them, so they are pinned by digest rather than retained (OR-18)"
+        },
+        {
+          "path": "certificates/R071-C029/project/followup_c028/src/atlas.cpp",
+          "bytes": 9554,
+          "sha256": "7191c462fa6fcac5a7e15bc1da35ed6ba52373975563ca7f76433f895d489936",
+          "reason": "R071's C028 and C029 conditional joint-geometry research and the C021 and C026 inputs it reuses: sources, data trees and frozen outputs that claim no bound; neither the C027 bound, its paired replay nor devtools.audit_guzhou_r071 reads them, so they are pinned by digest rather than retained (OR-18)"
+        },
+        {
+          "path": "certificates/R071-C029/project/followup_c028/src/atlas.js",
+          "bytes": 9018,
+          "sha256": "e00d55afe81ab4c90b252b35b80829aaa01a365634e58f73238576d9a058e7de",
+          "reason": "R071's C028 and C029 conditional joint-geometry research and the C021 and C026 inputs it reuses: sources, data trees and frozen outputs that claim no bound; neither the C027 bound, its paired replay nor devtools.audit_guzhou_r071 reads them, so they are pinned by digest rather than retained (OR-18)"
+        },
+        {
+          "path": "certificates/R071-C029/project/followup_c028/src/common.hpp",
+          "bytes": 3693,
+          "sha256": "dc1f57a9b27a21bc257007683154e130fee0942c93cdbbdc8887931372f57d1a",
+          "reason": "R071's C028 and C029 conditional joint-geometry research and the C021 and C026 inputs it reuses: sources, data trees and frozen outputs that claim no bound; neither the C027 bound, its paired replay nor devtools.audit_guzhou_r071 reads them, so they are pinned by digest rather than retained (OR-18)"
+        },
+        {
+          "path": "certificates/R071-C029/project/followup_c028/src/controls.js",
+          "bytes": 9470,
+          "sha256": "957241c67ba7cd96c0c5ed876fa9b8f165009ce30bb5e09c05644510d2db870b",
+          "reason": "R071's C028 and C029 conditional joint-geometry research and the C021 and C026 inputs it reuses: sources, data trees and frozen outputs that claim no bound; neither the C027 bound, its paired replay nor devtools.audit_guzhou_r071 reads them, so they are pinned by digest rather than retained (OR-18)"
+        },
+        {
+          "path": "certificates/R071-C029/project/followup_c028/src/frontier.cpp",
+          "bytes": 8904,
+          "sha256": "37b0b35636da37f096b0850e3121876a76ebc02c6b5fd9cface29aacf0806614",
+          "reason": "R071's C028 and C029 conditional joint-geometry research and the C021 and C026 inputs it reuses: sources, data trees and frozen outputs that claim no bound; neither the C027 bound, its paired replay nor devtools.audit_guzhou_r071 reads them, so they are pinned by digest rather than retained (OR-18)"
+        },
+        {
+          "path": "certificates/R071-C029/project/followup_c028/src/frontier.js",
+          "bytes": 8514,
+          "sha256": "c1feacc640c6557e0d3770e15534c92058c92b9bcb76f55f36479f30af94e221",
+          "reason": "R071's C028 and C029 conditional joint-geometry research and the C021 and C026 inputs it reuses: sources, data trees and frozen outputs that claim no bound; neither the C027 bound, its paired replay nor devtools.audit_guzhou_r071 reads them, so they are pinned by digest rather than retained (OR-18)"
+        },
+        {
+          "path": "certificates/R071-C029/project/followup_c028/src/predicates.cpp",
+          "bytes": 1339,
+          "sha256": "902bb1864aac11522ebd9548e239b3e92eed30c99899b87aa4b01d2b2467a336",
+          "reason": "R071's C028 and C029 conditional joint-geometry research and the C021 and C026 inputs it reuses: sources, data trees and frozen outputs that claim no bound; neither the C027 bound, its paired replay nor devtools.audit_guzhou_r071 reads them, so they are pinned by digest rather than retained (OR-18)"
+        },
+        {
+          "path": "certificates/R071-C029/project/followup_c028/src/predicates.js",
+          "bytes": 1196,
+          "sha256": "eb3dfaf0a801be5735e2978a73b8293bdb78bd77ab9314dde53c781ae3e431af",
+          "reason": "R071's C028 and C029 conditional joint-geometry research and the C021 and C026 inputs it reuses: sources, data trees and frozen outputs that claim no bound; neither the C027 bound, its paired replay nor devtools.audit_guzhou_r071 reads them, so they are pinned by digest rather than retained (OR-18)"
+        },
+        {
+          "path": "certificates/R071-C029/project/followup_c028/src/stabbing.cpp",
+          "bytes": 3289,
+          "sha256": "fdcb8d5e0fab1b1060ddbe1be1083186f992545091714931fdace441763faa57",
+          "reason": "R071's C028 and C029 conditional joint-geometry research and the C021 and C026 inputs it reuses: sources, data trees and frozen outputs that claim no bound; neither the C027 bound, its paired replay nor devtools.audit_guzhou_r071 reads them, so they are pinned by digest rather than retained (OR-18)"
+        },
+        {
+          "path": "certificates/R071-C029/project/followup_c028/src/stabbing.js",
+          "bytes": 4167,
+          "sha256": "c7fc900c79c64aea4f10eb7a6db996030fe0259c9769fe8141f935abf8bf6d04",
+          "reason": "R071's C028 and C029 conditional joint-geometry research and the C021 and C026 inputs it reuses: sources, data trees and frozen outputs that claim no bound; neither the C027 bound, its paired replay nor devtools.audit_guzhou_r071 reads them, so they are pinned by digest rather than retained (OR-18)"
+        },
+        {
+          "path": "certificates/R071-C029/project/followup_c028/src/strict_json.js",
+          "bytes": 1501,
+          "sha256": "47dae66daed61b9dafe983d371bed53ac0f0863ace9e175ec096e71c69b568c1",
+          "reason": "R071's C028 and C029 conditional joint-geometry research and the C021 and C026 inputs it reuses: sources, data trees and frozen outputs that claim no bound; neither the C027 bound, its paired replay nor devtools.audit_guzhou_r071 reads them, so they are pinned by digest rather than retained (OR-18)"
+        },
+        {
+          "path": "certificates/R071-C029/project/followup_c029/data/component_pairs.json",
+          "bytes": 5703,
+          "sha256": "8c8c6562820055b125c552469117384dd3a85c2086f8ed3b0cba5a9cea6e459c",
+          "reason": "R071's C028 and C029 conditional joint-geometry research and the C021 and C026 inputs it reuses: sources, data trees and frozen outputs that claim no bound; neither the C027 bound, its paired replay nor devtools.audit_guzhou_r071 reads them, so they are pinned by digest rather than retained (OR-18)"
+        },
+        {
+          "path": "certificates/R071-C029/project/followup_c029/data/full_owner_cases.json",
+          "bytes": 707,
+          "sha256": "7ded6ec2a896335ba7f43e3126fc9f8dda98381d26627f7365fc6c6d7c1694db",
+          "reason": "R071's C028 and C029 conditional joint-geometry research and the C021 and C026 inputs it reuses: sources, data trees and frozen outputs that claim no bound; neither the C027 bound, its paired replay nor devtools.audit_guzhou_r071 reads them, so they are pinned by digest rather than retained (OR-18)"
+        },
+        {
+          "path": "certificates/R071-C029/project/followup_c029/data/fullowner_00_00.tree",
+          "bytes": 43898,
+          "sha256": "a4ea6a9329e391f651e005d97d1e0a7288839c9f034a0bca6b53f90684ed7d31",
+          "reason": "R071's C028 and C029 conditional joint-geometry research and the C021 and C026 inputs it reuses: sources, data trees and frozen outputs that claim no bound; neither the C027 bound, its paired replay nor devtools.audit_guzhou_r071 reads them, so they are pinned by digest rather than retained (OR-18)"
+        },
+        {
+          "path": "certificates/R071-C029/project/followup_c029/data/fullowner_10_02.tree",
+          "bytes": 53406,
+          "sha256": "69bc9c44726f0b1e3dee127129265c39c67a9f93597ccbad7e15fdddaf68ea86",
+          "reason": "R071's C028 and C029 conditional joint-geometry research and the C021 and C026 inputs it reuses: sources, data trees and frozen outputs that claim no bound; neither the C027 bound, its paired replay nor devtools.audit_guzhou_r071 reads them, so they are pinned by digest rather than retained (OR-18)"
+        },
+        {
+          "path": "certificates/R071-C029/project/followup_c029/data/joint_graph.json",
+          "bytes": 53381,
+          "sha256": "fe5623f0c2dc86bfec2a0a0d5b7457508d1e65ee193c5f839f0cfe366602a198",
+          "reason": "R071's C028 and C029 conditional joint-geometry research and the C021 and C026 inputs it reuses: sources, data trees and frozen outputs that claim no bound; neither the C027 bound, its paired replay nor devtools.audit_guzhou_r071 reads them, so they are pinned by digest rather than retained (OR-18)"
+        },
+        {
+          "path": "certificates/R071-C029/project/followup_c029/data/pair_00_01.tree",
+          "bytes": 49655,
+          "sha256": "c9c443517aacc3aebf1415a98c46f4b43900147527ccf5aa323dc659c2759f51",
+          "reason": "R071's C028 and C029 conditional joint-geometry research and the C021 and C026 inputs it reuses: sources, data trees and frozen outputs that claim no bound; neither the C027 bound, its paired replay nor devtools.audit_guzhou_r071 reads them, so they are pinned by digest rather than retained (OR-18)"
+        },
+        {
+          "path": "certificates/R071-C029/project/followup_c029/data/pair_00_03.tree",
+          "bytes": 519,
+          "sha256": "991aa372d5cf2da8e88aefd1504135882c1abfc2a1a362cbb817e9f45b2f7086",
+          "reason": "R071's C028 and C029 conditional joint-geometry research and the C021 and C026 inputs it reuses: sources, data trees and frozen outputs that claim no bound; neither the C027 bound, its paired replay nor devtools.audit_guzhou_r071 reads them, so they are pinned by digest rather than retained (OR-18)"
+        },
+        {
+          "path": "certificates/R071-C029/project/followup_c029/data/pair_01_02.tree",
+          "bytes": 36576,
+          "sha256": "033fd678612a6c570b8122c897073ad5a109bdd3d408408165f77615763fe1d1",
+          "reason": "R071's C028 and C029 conditional joint-geometry research and the C021 and C026 inputs it reuses: sources, data trees and frozen outputs that claim no bound; neither the C027 bound, its paired replay nor devtools.audit_guzhou_r071 reads them, so they are pinned by digest rather than retained (OR-18)"
+        },
+        {
+          "path": "certificates/R071-C029/project/followup_c029/data/pair_01_04.tree",
+          "bytes": 9515,
+          "sha256": "b37c20a1156e27b0c4da12536a67648091f3eb2f30404c6a126a823872cdcd2b",
+          "reason": "R071's C028 and C029 conditional joint-geometry research and the C021 and C026 inputs it reuses: sources, data trees and frozen outputs that claim no bound; neither the C027 bound, its paired replay nor devtools.audit_guzhou_r071 reads them, so they are pinned by digest rather than retained (OR-18)"
+        },
+        {
+          "path": "certificates/R071-C029/project/followup_c029/data/pair_02_05.tree",
+          "bytes": 16115,
+          "sha256": "22f6986c1717312cb9fc0f6ea2e3dbd43bd458c57a904ccbe99d54a0a719d6c8",
+          "reason": "R071's C028 and C029 conditional joint-geometry research and the C021 and C026 inputs it reuses: sources, data trees and frozen outputs that claim no bound; neither the C027 bound, its paired replay nor devtools.audit_guzhou_r071 reads them, so they are pinned by digest rather than retained (OR-18)"
+        },
+        {
+          "path": "certificates/R071-C029/project/followup_c029/data/pair_03_04.tree",
+          "bytes": 11411,
+          "sha256": "377f85dba85e397b8394234134f7d0af990f19f060e5d72fa9a0247682a47825",
+          "reason": "R071's C028 and C029 conditional joint-geometry research and the C021 and C026 inputs it reuses: sources, data trees and frozen outputs that claim no bound; neither the C027 bound, its paired replay nor devtools.audit_guzhou_r071 reads them, so they are pinned by digest rather than retained (OR-18)"
+        },
+        {
+          "path": "certificates/R071-C029/project/followup_c029/data/pair_05_06.tree",
+          "bytes": 16965,
+          "sha256": "6c9196854c6d6f9f4c1e34f3958512f466126c2d71545debd6cbcb5ce9d7ad02",
+          "reason": "R071's C028 and C029 conditional joint-geometry research and the C021 and C026 inputs it reuses: sources, data trees and frozen outputs that claim no bound; neither the C027 bound, its paired replay nor devtools.audit_guzhou_r071 reads them, so they are pinned by digest rather than retained (OR-18)"
+        },
+        {
+          "path": "certificates/R071-C029/project/followup_c029/data/pair_06_09.tree",
+          "bytes": 53120,
+          "sha256": "0b24764a28d14eddfc5e1a8983aa47ef752a5aea60f0ff3530bffbfcc7015b28",
+          "reason": "R071's C028 and C029 conditional joint-geometry research and the C021 and C026 inputs it reuses: sources, data trees and frozen outputs that claim no bound; neither the C027 bound, its paired replay nor devtools.audit_guzhou_r071 reads them, so they are pinned by digest rather than retained (OR-18)"
+        },
+        {
+          "path": "certificates/R071-C029/project/followup_c029/data/pair_08_09.tree",
+          "bytes": 10296,
+          "sha256": "4c16decd3e193bd66be1493e2378000e51405d36d90b3f8d8dd7e911c4b8501c",
+          "reason": "R071's C028 and C029 conditional joint-geometry research and the C021 and C026 inputs it reuses: sources, data trees and frozen outputs that claim no bound; neither the C027 bound, its paired replay nor devtools.audit_guzhou_r071 reads them, so they are pinned by digest rather than retained (OR-18)"
+        },
+        {
+          "path": "certificates/R071-C029/project/followup_c029/data/pair_09_13.tree",
+          "bytes": 38100,
+          "sha256": "f8be14529fd2aa475a83a0bd238c6cfbc73d63ec4d07f05e191886b62fda98be",
+          "reason": "R071's C028 and C029 conditional joint-geometry research and the C021 and C026 inputs it reuses: sources, data trees and frozen outputs that claim no bound; neither the C027 bound, its paired replay nor devtools.audit_guzhou_r071 reads them, so they are pinned by digest rather than retained (OR-18)"
+        },
+        {
+          "path": "certificates/R071-C029/project/followup_c029/data/pair_10_14.tree",
+          "bytes": 15799,
+          "sha256": "a5f93ecb178777f3be2abd98469d007237cb4063952a283792019c488da4c47d",
+          "reason": "R071's C028 and C029 conditional joint-geometry research and the C021 and C026 inputs it reuses: sources, data trees and frozen outputs that claim no bound; neither the C027 bound, its paired replay nor devtools.audit_guzhou_r071 reads them, so they are pinned by digest rather than retained (OR-18)"
+        },
+        {
+          "path": "certificates/R071-C029/project/followup_c029/data/pair_10_15.tree",
+          "bytes": 15991,
+          "sha256": "fcac9f518dcb3b075e9880ac0c92648a2fbb64d6d936d07d8c54c0b14210f4a6",
+          "reason": "R071's C028 and C029 conditional joint-geometry research and the C021 and C026 inputs it reuses: sources, data trees and frozen outputs that claim no bound; neither the C027 bound, its paired replay nor devtools.audit_guzhou_r071 reads them, so they are pinned by digest rather than retained (OR-18)"
+        },
+        {
+          "path": "certificates/R071-C029/project/followup_c029/data/pair_11_13.tree",
+          "bytes": 17620,
+          "sha256": "81c93e10dba6ab588ddfbf39e297c50f19c25b64a5123a1b1d0514db21d100e5",
+          "reason": "R071's C028 and C029 conditional joint-geometry research and the C021 and C026 inputs it reuses: sources, data trees and frozen outputs that claim no bound; neither the C027 bound, its paired replay nor devtools.audit_guzhou_r071 reads them, so they are pinned by digest rather than retained (OR-18)"
+        },
+        {
+          "path": "certificates/R071-C029/project/followup_c029/data/pair_11_17.tree",
+          "bytes": 16934,
+          "sha256": "a9f4f643b549e3afd80da4ab62597d440ce0c63697b2d764191df11ba32eb992",
+          "reason": "R071's C028 and C029 conditional joint-geometry research and the C021 and C026 inputs it reuses: sources, data trees and frozen outputs that claim no bound; neither the C027 bound, its paired replay nor devtools.audit_guzhou_r071 reads them, so they are pinned by digest rather than retained (OR-18)"
+        },
+        {
+          "path": "certificates/R071-C029/project/followup_c029/data/pair_12_16.tree",
+          "bytes": 10079,
+          "sha256": "a303fa52e3296a0e6df75d3a1e55a7cc5f87fd8672fe2e903455dc8392b3e4fa",
+          "reason": "R071's C028 and C029 conditional joint-geometry research and the C021 and C026 inputs it reuses: sources, data trees and frozen outputs that claim no bound; neither the C027 bound, its paired replay nor devtools.audit_guzhou_r071 reads them, so they are pinned by digest rather than retained (OR-18)"
+        },
+        {
+          "path": "certificates/R071-C029/project/followup_c029/data/pair_15_16.tree",
+          "bytes": 35927,
+          "sha256": "241d81701bcc3a776c0765ed580271b7837cbfe72996612804f59c9635d83bbc",
+          "reason": "R071's C028 and C029 conditional joint-geometry research and the C021 and C026 inputs it reuses: sources, data trees and frozen outputs that claim no bound; neither the C027 bound, its paired replay nor devtools.audit_guzhou_r071 reads them, so they are pinned by digest rather than retained (OR-18)"
+        },
+        {
+          "path": "certificates/R071-C029/project/followup_c029/data/pair_16_17.tree",
+          "bytes": 51498,
+          "sha256": "cc25d1c3bf3c4ddd0854f6cfa76e84601e888a6116245e60b7bfd9ec14fcb6f2",
+          "reason": "R071's C028 and C029 conditional joint-geometry research and the C021 and C026 inputs it reuses: sources, data trees and frozen outputs that claim no bound; neither the C027 bound, its paired replay nor devtools.audit_guzhou_r071 reads them, so they are pinned by digest rather than retained (OR-18)"
+        },
+        {
+          "path": "certificates/R071-C029/project/followup_c029/results/fullowner_00_00_bigint.json",
+          "bytes": 273,
+          "sha256": "bc07ac60c86bd78e03a2644a5e97cb98fc28a77ca2d10ee125679e46110b30af",
+          "reason": "R071's C028 and C029 conditional joint-geometry research and the C021 and C026 inputs it reuses: sources, data trees and frozen outputs that claim no bound; neither the C027 bound, its paired replay nor devtools.audit_guzhou_r071 reads them, so they are pinned by digest rather than retained (OR-18)"
+        },
+        {
+          "path": "certificates/R071-C029/project/followup_c029/results/fullowner_00_00_cpp.json",
+          "bytes": 273,
+          "sha256": "bc07ac60c86bd78e03a2644a5e97cb98fc28a77ca2d10ee125679e46110b30af",
+          "reason": "R071's C028 and C029 conditional joint-geometry research and the C021 and C026 inputs it reuses: sources, data trees and frozen outputs that claim no bound; neither the C027 bound, its paired replay nor devtools.audit_guzhou_r071 reads them, so they are pinned by digest rather than retained (OR-18)"
+        },
+        {
+          "path": "certificates/R071-C029/project/followup_c029/results/fullowner_10_02_bigint.json",
+          "bytes": 275,
+          "sha256": "3fe35ecf6f8939f9e60c89204c505a60c59897bc0a728894c1a15576cdb9fb6a",
+          "reason": "R071's C028 and C029 conditional joint-geometry research and the C021 and C026 inputs it reuses: sources, data trees and frozen outputs that claim no bound; neither the C027 bound, its paired replay nor devtools.audit_guzhou_r071 reads them, so they are pinned by digest rather than retained (OR-18)"
+        },
+        {
+          "path": "certificates/R071-C029/project/followup_c029/results/fullowner_10_02_cpp.json",
+          "bytes": 275,
+          "sha256": "3fe35ecf6f8939f9e60c89204c505a60c59897bc0a728894c1a15576cdb9fb6a",
+          "reason": "R071's C028 and C029 conditional joint-geometry research and the C021 and C026 inputs it reuses: sources, data trees and frozen outputs that claim no bound; neither the C027 bound, its paired replay nor devtools.audit_guzhou_r071 reads them, so they are pinned by digest rather than retained (OR-18)"
+        },
+        {
+          "path": "certificates/R071-C029/project/followup_c029/results/joint_graph_bigint.json",
+          "bytes": 1019,
+          "sha256": "096bbfdd27bd631c6f564de947bd4763b804aa665a30539bcb788773a08761c9",
+          "reason": "R071's C028 and C029 conditional joint-geometry research and the C021 and C026 inputs it reuses: sources, data trees and frozen outputs that claim no bound; neither the C027 bound, its paired replay nor devtools.audit_guzhou_r071 reads them, so they are pinned by digest rather than retained (OR-18)"
+        },
+        {
+          "path": "certificates/R071-C029/project/followup_c029/results/joint_graph_cpp.json",
+          "bytes": 1019,
+          "sha256": "096bbfdd27bd631c6f564de947bd4763b804aa665a30539bcb788773a08761c9",
+          "reason": "R071's C028 and C029 conditional joint-geometry research and the C021 and C026 inputs it reuses: sources, data trees and frozen outputs that claim no bound; neither the C027 bound, its paired replay nor devtools.audit_guzhou_r071 reads them, so they are pinned by digest rather than retained (OR-18)"
+        },
+        {
+          "path": "certificates/R071-C029/project/followup_c029/results/pair_00_01_bigint.json",
+          "bytes": 199,
+          "sha256": "14440484860644a6ce1e19aaf3dbb868c59f7135e792c19cc89c989ecf1f7b86",
+          "reason": "R071's C028 and C029 conditional joint-geometry research and the C021 and C026 inputs it reuses: sources, data trees and frozen outputs that claim no bound; neither the C027 bound, its paired replay nor devtools.audit_guzhou_r071 reads them, so they are pinned by digest rather than retained (OR-18)"
+        },
+        {
+          "path": "certificates/R071-C029/project/followup_c029/results/pair_00_01_cpp.json",
+          "bytes": 199,
+          "sha256": "14440484860644a6ce1e19aaf3dbb868c59f7135e792c19cc89c989ecf1f7b86",
+          "reason": "R071's C028 and C029 conditional joint-geometry research and the C021 and C026 inputs it reuses: sources, data trees and frozen outputs that claim no bound; neither the C027 bound, its paired replay nor devtools.audit_guzhou_r071 reads them, so they are pinned by digest rather than retained (OR-18)"
+        },
+        {
+          "path": "certificates/R071-C029/project/followup_c029/results/pair_00_03_bigint.json",
+          "bytes": 190,
+          "sha256": "723518ca2d8776b6fdb6d706029dcc1305829dbaa1c51b2afdd84b1a00d33c5c",
+          "reason": "R071's C028 and C029 conditional joint-geometry research and the C021 and C026 inputs it reuses: sources, data trees and frozen outputs that claim no bound; neither the C027 bound, its paired replay nor devtools.audit_guzhou_r071 reads them, so they are pinned by digest rather than retained (OR-18)"
+        },
+        {
+          "path": "certificates/R071-C029/project/followup_c029/results/pair_00_03_cpp.json",
+          "bytes": 190,
+          "sha256": "723518ca2d8776b6fdb6d706029dcc1305829dbaa1c51b2afdd84b1a00d33c5c",
+          "reason": "R071's C028 and C029 conditional joint-geometry research and the C021 and C026 inputs it reuses: sources, data trees and frozen outputs that claim no bound; neither the C027 bound, its paired replay nor devtools.audit_guzhou_r071 reads them, so they are pinned by digest rather than retained (OR-18)"
+        },
+        {
+          "path": "certificates/R071-C029/project/followup_c029/results/pair_01_02_bigint.json",
+          "bytes": 199,
+          "sha256": "1c1c1801f932bb4cd6b66fc74766afe87369e5dad14adefad6b6aa521bb5e836",
+          "reason": "R071's C028 and C029 conditional joint-geometry research and the C021 and C026 inputs it reuses: sources, data trees and frozen outputs that claim no bound; neither the C027 bound, its paired replay nor devtools.audit_guzhou_r071 reads them, so they are pinned by digest rather than retained (OR-18)"
+        },
+        {
+          "path": "certificates/R071-C029/project/followup_c029/results/pair_01_02_cpp.json",
+          "bytes": 199,
+          "sha256": "1c1c1801f932bb4cd6b66fc74766afe87369e5dad14adefad6b6aa521bb5e836",
+          "reason": "R071's C028 and C029 conditional joint-geometry research and the C021 and C026 inputs it reuses: sources, data trees and frozen outputs that claim no bound; neither the C027 bound, its paired replay nor devtools.audit_guzhou_r071 reads them, so they are pinned by digest rather than retained (OR-18)"
+        },
+        {
+          "path": "certificates/R071-C029/project/followup_c029/results/pair_01_04_bigint.json",
+          "bytes": 196,
+          "sha256": "c89aaefe14435d830f8f4f39407167f42e85db020669d678a97432ecc1b826cd",
+          "reason": "R071's C028 and C029 conditional joint-geometry research and the C021 and C026 inputs it reuses: sources, data trees and frozen outputs that claim no bound; neither the C027 bound, its paired replay nor devtools.audit_guzhou_r071 reads them, so they are pinned by digest rather than retained (OR-18)"
+        },
+        {
+          "path": "certificates/R071-C029/project/followup_c029/results/pair_01_04_cpp.json",
+          "bytes": 196,
+          "sha256": "c89aaefe14435d830f8f4f39407167f42e85db020669d678a97432ecc1b826cd",
+          "reason": "R071's C028 and C029 conditional joint-geometry research and the C021 and C026 inputs it reuses: sources, data trees and frozen outputs that claim no bound; neither the C027 bound, its paired replay nor devtools.audit_guzhou_r071 reads them, so they are pinned by digest rather than retained (OR-18)"
+        },
+        {
+          "path": "certificates/R071-C029/project/followup_c029/results/pair_02_05_bigint.json",
+          "bytes": 197,
+          "sha256": "9ff464e10e69008ddb8e1580c0bcde445d040b344851249b4f73c5fce97e6ef2",
+          "reason": "R071's C028 and C029 conditional joint-geometry research and the C021 and C026 inputs it reuses: sources, data trees and frozen outputs that claim no bound; neither the C027 bound, its paired replay nor devtools.audit_guzhou_r071 reads them, so they are pinned by digest rather than retained (OR-18)"
+        },
+        {
+          "path": "certificates/R071-C029/project/followup_c029/results/pair_02_05_cpp.json",
+          "bytes": 197,
+          "sha256": "9ff464e10e69008ddb8e1580c0bcde445d040b344851249b4f73c5fce97e6ef2",
+          "reason": "R071's C028 and C029 conditional joint-geometry research and the C021 and C026 inputs it reuses: sources, data trees and frozen outputs that claim no bound; neither the C027 bound, its paired replay nor devtools.audit_guzhou_r071 reads them, so they are pinned by digest rather than retained (OR-18)"
+        },
+        {
+          "path": "certificates/R071-C029/project/followup_c029/results/pair_03_04_bigint.json",
+          "bytes": 197,
+          "sha256": "344286e9edc383bc5a89cf6069da741c9527aabf8688a64181492f489d96ce6f",
+          "reason": "R071's C028 and C029 conditional joint-geometry research and the C021 and C026 inputs it reuses: sources, data trees and frozen outputs that claim no bound; neither the C027 bound, its paired replay nor devtools.audit_guzhou_r071 reads them, so they are pinned by digest rather than retained (OR-18)"
+        },
+        {
+          "path": "certificates/R071-C029/project/followup_c029/results/pair_03_04_cpp.json",
+          "bytes": 197,
+          "sha256": "344286e9edc383bc5a89cf6069da741c9527aabf8688a64181492f489d96ce6f",
+          "reason": "R071's C028 and C029 conditional joint-geometry research and the C021 and C026 inputs it reuses: sources, data trees and frozen outputs that claim no bound; neither the C027 bound, its paired replay nor devtools.audit_guzhou_r071 reads them, so they are pinned by digest rather than retained (OR-18)"
+        },
+        {
+          "path": "certificates/R071-C029/project/followup_c029/results/pair_05_06_bigint.json",
+          "bytes": 197,
+          "sha256": "eae199c8bfcc08b174f9d3c4e42196696c466cb559e66501118538a9b6b72cb7",
+          "reason": "R071's C028 and C029 conditional joint-geometry research and the C021 and C026 inputs it reuses: sources, data trees and frozen outputs that claim no bound; neither the C027 bound, its paired replay nor devtools.audit_guzhou_r071 reads them, so they are pinned by digest rather than retained (OR-18)"
+        },
+        {
+          "path": "certificates/R071-C029/project/followup_c029/results/pair_05_06_cpp.json",
+          "bytes": 197,
+          "sha256": "eae199c8bfcc08b174f9d3c4e42196696c466cb559e66501118538a9b6b72cb7",
+          "reason": "R071's C028 and C029 conditional joint-geometry research and the C021 and C026 inputs it reuses: sources, data trees and frozen outputs that claim no bound; neither the C027 bound, its paired replay nor devtools.audit_guzhou_r071 reads them, so they are pinned by digest rather than retained (OR-18)"
+        },
+        {
+          "path": "certificates/R071-C029/project/followup_c029/results/pair_06_09_bigint.json",
+          "bytes": 200,
+          "sha256": "22da89ccb2aef50c250ee5e80f94065e98ec3318dca4a403ff3ca109f8832554",
+          "reason": "R071's C028 and C029 conditional joint-geometry research and the C021 and C026 inputs it reuses: sources, data trees and frozen outputs that claim no bound; neither the C027 bound, its paired replay nor devtools.audit_guzhou_r071 reads them, so they are pinned by digest rather than retained (OR-18)"
+        },
+        {
+          "path": "certificates/R071-C029/project/followup_c029/results/pair_06_09_cpp.json",
+          "bytes": 200,
+          "sha256": "22da89ccb2aef50c250ee5e80f94065e98ec3318dca4a403ff3ca109f8832554",
+          "reason": "R071's C028 and C029 conditional joint-geometry research and the C021 and C026 inputs it reuses: sources, data trees and frozen outputs that claim no bound; neither the C027 bound, its paired replay nor devtools.audit_guzhou_r071 reads them, so they are pinned by digest rather than retained (OR-18)"
+        },
+        {
+          "path": "certificates/R071-C029/project/followup_c029/results/pair_08_09_bigint.json",
+          "bytes": 197,
+          "sha256": "c52faa94b2ad20a35a2d2a542510f49588a5bec4b3760c272c99fa30a45608d7",
+          "reason": "R071's C028 and C029 conditional joint-geometry research and the C021 and C026 inputs it reuses: sources, data trees and frozen outputs that claim no bound; neither the C027 bound, its paired replay nor devtools.audit_guzhou_r071 reads them, so they are pinned by digest rather than retained (OR-18)"
+        },
+        {
+          "path": "certificates/R071-C029/project/followup_c029/results/pair_08_09_cpp.json",
+          "bytes": 197,
+          "sha256": "c52faa94b2ad20a35a2d2a542510f49588a5bec4b3760c272c99fa30a45608d7",
+          "reason": "R071's C028 and C029 conditional joint-geometry research and the C021 and C026 inputs it reuses: sources, data trees and frozen outputs that claim no bound; neither the C027 bound, its paired replay nor devtools.audit_guzhou_r071 reads them, so they are pinned by digest rather than retained (OR-18)"
+        },
+        {
+          "path": "certificates/R071-C029/project/followup_c029/results/pair_09_13_bigint.json",
+          "bytes": 200,
+          "sha256": "2e0fea75f83deffd39ac5fc518cb0bab7e28a931e77e1711aff62b5c8d2b4516",
+          "reason": "R071's C028 and C029 conditional joint-geometry research and the C021 and C026 inputs it reuses: sources, data trees and frozen outputs that claim no bound; neither the C027 bound, its paired replay nor devtools.audit_guzhou_r071 reads them, so they are pinned by digest rather than retained (OR-18)"
+        },
+        {
+          "path": "certificates/R071-C029/project/followup_c029/results/pair_09_13_cpp.json",
+          "bytes": 200,
+          "sha256": "2e0fea75f83deffd39ac5fc518cb0bab7e28a931e77e1711aff62b5c8d2b4516",
+          "reason": "R071's C028 and C029 conditional joint-geometry research and the C021 and C026 inputs it reuses: sources, data trees and frozen outputs that claim no bound; neither the C027 bound, its paired replay nor devtools.audit_guzhou_r071 reads them, so they are pinned by digest rather than retained (OR-18)"
+        },
+        {
+          "path": "certificates/R071-C029/project/followup_c029/results/pair_10_14_bigint.json",
+          "bytes": 199,
+          "sha256": "c1058c010fee81c36003c57f78b611a3e26d0b02ed3df3574938c6af2b43740d",
+          "reason": "R071's C028 and C029 conditional joint-geometry research and the C021 and C026 inputs it reuses: sources, data trees and frozen outputs that claim no bound; neither the C027 bound, its paired replay nor devtools.audit_guzhou_r071 reads them, so they are pinned by digest rather than retained (OR-18)"
+        },
+        {
+          "path": "certificates/R071-C029/project/followup_c029/results/pair_10_14_cpp.json",
+          "bytes": 199,
+          "sha256": "c1058c010fee81c36003c57f78b611a3e26d0b02ed3df3574938c6af2b43740d",
+          "reason": "R071's C028 and C029 conditional joint-geometry research and the C021 and C026 inputs it reuses: sources, data trees and frozen outputs that claim no bound; neither the C027 bound, its paired replay nor devtools.audit_guzhou_r071 reads them, so they are pinned by digest rather than retained (OR-18)"
+        },
+        {
+          "path": "certificates/R071-C029/project/followup_c029/results/pair_10_15_bigint.json",
+          "bytes": 199,
+          "sha256": "767472d0430f5cb10dfc732a97cee4d8ed5ee57204255d4261efb38289b20da6",
+          "reason": "R071's C028 and C029 conditional joint-geometry research and the C021 and C026 inputs it reuses: sources, data trees and frozen outputs that claim no bound; neither the C027 bound, its paired replay nor devtools.audit_guzhou_r071 reads them, so they are pinned by digest rather than retained (OR-18)"
+        },
+        {
+          "path": "certificates/R071-C029/project/followup_c029/results/pair_10_15_cpp.json",
+          "bytes": 199,
+          "sha256": "767472d0430f5cb10dfc732a97cee4d8ed5ee57204255d4261efb38289b20da6",
+          "reason": "R071's C028 and C029 conditional joint-geometry research and the C021 and C026 inputs it reuses: sources, data trees and frozen outputs that claim no bound; neither the C027 bound, its paired replay nor devtools.audit_guzhou_r071 reads them, so they are pinned by digest rather than retained (OR-18)"
+        },
+        {
+          "path": "certificates/R071-C029/project/followup_c029/results/pair_11_13_bigint.json",
+          "bytes": 199,
+          "sha256": "0bbe3d16bbf5f86ed7efe720d5c88653bee50986eaba92b97a2367a864071018",
+          "reason": "R071's C028 and C029 conditional joint-geometry research and the C021 and C026 inputs it reuses: sources, data trees and frozen outputs that claim no bound; neither the C027 bound, its paired replay nor devtools.audit_guzhou_r071 reads them, so they are pinned by digest rather than retained (OR-18)"
+        },
+        {
+          "path": "certificates/R071-C029/project/followup_c029/results/pair_11_13_cpp.json",
+          "bytes": 199,
+          "sha256": "0bbe3d16bbf5f86ed7efe720d5c88653bee50986eaba92b97a2367a864071018",
+          "reason": "R071's C028 and C029 conditional joint-geometry research and the C021 and C026 inputs it reuses: sources, data trees and frozen outputs that claim no bound; neither the C027 bound, its paired replay nor devtools.audit_guzhou_r071 reads them, so they are pinned by digest rather than retained (OR-18)"
+        },
+        {
+          "path": "certificates/R071-C029/project/followup_c029/results/pair_11_17_bigint.json",
+          "bytes": 199,
+          "sha256": "312f14c18c6f2544716f2a6a6a052e2ec24ee5222792bf709c5985cb0b50b43f",
+          "reason": "R071's C028 and C029 conditional joint-geometry research and the C021 and C026 inputs it reuses: sources, data trees and frozen outputs that claim no bound; neither the C027 bound, its paired replay nor devtools.audit_guzhou_r071 reads them, so they are pinned by digest rather than retained (OR-18)"
+        },
+        {
+          "path": "certificates/R071-C029/project/followup_c029/results/pair_11_17_cpp.json",
+          "bytes": 199,
+          "sha256": "312f14c18c6f2544716f2a6a6a052e2ec24ee5222792bf709c5985cb0b50b43f",
+          "reason": "R071's C028 and C029 conditional joint-geometry research and the C021 and C026 inputs it reuses: sources, data trees and frozen outputs that claim no bound; neither the C027 bound, its paired replay nor devtools.audit_guzhou_r071 reads them, so they are pinned by digest rather than retained (OR-18)"
+        },
+        {
+          "path": "certificates/R071-C029/project/followup_c029/results/pair_12_16_bigint.json",
+          "bytes": 199,
+          "sha256": "468d798c0b58938d18550ab7c1dd6ebc944f5c5a378fe42f38f787c1bafe0e65",
+          "reason": "R071's C028 and C029 conditional joint-geometry research and the C021 and C026 inputs it reuses: sources, data trees and frozen outputs that claim no bound; neither the C027 bound, its paired replay nor devtools.audit_guzhou_r071 reads them, so they are pinned by digest rather than retained (OR-18)"
+        },
+        {
+          "path": "certificates/R071-C029/project/followup_c029/results/pair_12_16_cpp.json",
+          "bytes": 199,
+          "sha256": "468d798c0b58938d18550ab7c1dd6ebc944f5c5a378fe42f38f787c1bafe0e65",
+          "reason": "R071's C028 and C029 conditional joint-geometry research and the C021 and C026 inputs it reuses: sources, data trees and frozen outputs that claim no bound; neither the C027 bound, its paired replay nor devtools.audit_guzhou_r071 reads them, so they are pinned by digest rather than retained (OR-18)"
+        },
+        {
+          "path": "certificates/R071-C029/project/followup_c029/results/pair_15_16_bigint.json",
+          "bytes": 201,
+          "sha256": "1ddb2fe629b88a85af2f86af7cf123766411f95b20a61cc0043da4e3554bd86b",
+          "reason": "R071's C028 and C029 conditional joint-geometry research and the C021 and C026 inputs it reuses: sources, data trees and frozen outputs that claim no bound; neither the C027 bound, its paired replay nor devtools.audit_guzhou_r071 reads them, so they are pinned by digest rather than retained (OR-18)"
+        },
+        {
+          "path": "certificates/R071-C029/project/followup_c029/results/pair_15_16_cpp.json",
+          "bytes": 201,
+          "sha256": "1ddb2fe629b88a85af2f86af7cf123766411f95b20a61cc0043da4e3554bd86b",
+          "reason": "R071's C028 and C029 conditional joint-geometry research and the C021 and C026 inputs it reuses: sources, data trees and frozen outputs that claim no bound; neither the C027 bound, its paired replay nor devtools.audit_guzhou_r071 reads them, so they are pinned by digest rather than retained (OR-18)"
+        },
+        {
+          "path": "certificates/R071-C029/project/followup_c029/results/pair_16_17_bigint.json",
+          "bytes": 202,
+          "sha256": "a5952613d835a458a2b11a14a61b0b1f7f3215cf3b4a72278e25d095c4cb5e7b",
+          "reason": "R071's C028 and C029 conditional joint-geometry research and the C021 and C026 inputs it reuses: sources, data trees and frozen outputs that claim no bound; neither the C027 bound, its paired replay nor devtools.audit_guzhou_r071 reads them, so they are pinned by digest rather than retained (OR-18)"
+        },
+        {
+          "path": "certificates/R071-C029/project/followup_c029/results/pair_16_17_cpp.json",
+          "bytes": 202,
+          "sha256": "a5952613d835a458a2b11a14a61b0b1f7f3215cf3b4a72278e25d095c4cb5e7b",
+          "reason": "R071's C028 and C029 conditional joint-geometry research and the C021 and C026 inputs it reuses: sources, data trees and frozen outputs that claim no bound; neither the C027 bound, its paired replay nor devtools.audit_guzhou_r071 reads them, so they are pinned by digest rather than retained (OR-18)"
+        },
+        {
+          "path": "certificates/R071-C029/project/followup_c029/src/controls.js",
+          "bytes": 6534,
+          "sha256": "303a89a5d7f86afcd496250e743046534ba764713e36389ee9826f3421e38f78",
+          "reason": "R071's C028 and C029 conditional joint-geometry research and the C021 and C026 inputs it reuses: sources, data trees and frozen outputs that claim no bound; neither the C027 bound, its paired replay nor devtools.audit_guzhou_r071 reads them, so they are pinned by digest rather than retained (OR-18)"
+        },
+        {
+          "path": "certificates/R071-C029/project/followup_c029/src/joint_graph.cpp",
+          "bytes": 7691,
+          "sha256": "532d12cfcfe0936016b0b04922f1c91fd03c2cee25951d20f02b923a9cc32df9",
+          "reason": "R071's C028 and C029 conditional joint-geometry research and the C021 and C026 inputs it reuses: sources, data trees and frozen outputs that claim no bound; neither the C027 bound, its paired replay nor devtools.audit_guzhou_r071 reads them, so they are pinned by digest rather than retained (OR-18)"
+        },
+        {
+          "path": "certificates/R071-C029/project/followup_c029/src/joint_graph.js",
+          "bytes": 7914,
+          "sha256": "aeb4043791a23a9637d3f129e9ab72500bffff23bf4f90a11105c690cd604786",
+          "reason": "R071's C028 and C029 conditional joint-geometry research and the C021 and C026 inputs it reuses: sources, data trees and frozen outputs that claim no bound; neither the C027 bound, its paired replay nor devtools.audit_guzhou_r071 reads them, so they are pinned by digest rather than retained (OR-18)"
+        },
+        {
+          "path": "certificates/R071-C029/project/followup_c029/src/owner_verify.cpp",
+          "bytes": 4139,
+          "sha256": "cf6ad0f9e6aa5d2e88edf3e832b4a057e6d4146f26ab754ab407d2e3d4872750",
+          "reason": "R071's C028 and C029 conditional joint-geometry research and the C021 and C026 inputs it reuses: sources, data trees and frozen outputs that claim no bound; neither the C027 bound, its paired replay nor devtools.audit_guzhou_r071 reads them, so they are pinned by digest rather than retained (OR-18)"
+        },
+        {
+          "path": "certificates/R071-C029/project/followup_c029/src/owner_verify.js",
+          "bytes": 4359,
+          "sha256": "738d1a8bdbdf5f83b8ccf834b16a10a757bc2d5fbf2432ab7c68a03c378352c8",
+          "reason": "R071's C028 and C029 conditional joint-geometry research and the C021 and C026 inputs it reuses: sources, data trees and frozen outputs that claim no bound; neither the C027 bound, its paired replay nor devtools.audit_guzhou_r071 reads them, so they are pinned by digest rather than retained (OR-18)"
+        },
+        {
+          "path": "certificates/R071-C029/project/followup_c029/src/pair_verify.cpp",
+          "bytes": 4693,
+          "sha256": "a008c9614ea51d9582f6248e1efa55622c4f3b7152a992c456d1d70a7dd83722",
+          "reason": "R071's C028 and C029 conditional joint-geometry research and the C021 and C026 inputs it reuses: sources, data trees and frozen outputs that claim no bound; neither the C027 bound, its paired replay nor devtools.audit_guzhou_r071 reads them, so they are pinned by digest rather than retained (OR-18)"
+        },
+        {
+          "path": "certificates/R071-C029/project/followup_c029/src/pair_verify.js",
+          "bytes": 4597,
+          "sha256": "8c9950ed5cb13ddb7f2a46224dca36cb228938857d7f0ea0e264f7c44b5677ca",
+          "reason": "R071's C028 and C029 conditional joint-geometry research and the C021 and C026 inputs it reuses: sources, data trees and frozen outputs that claim no bound; neither the C027 bound, its paired replay nor devtools.audit_guzhou_r071 reads them, so they are pinned by digest rather than retained (OR-18)"
         }
       ],
       "license": "No repository-wide licence. Each package's ATTRIBUTION.md says that repackaging does not expand third-party licences and that attribution is not endorsement; the inherited upstream notices under project/base/upstream/notices/ keep their own scopes, Kleddamag's MIT LICENSE among them.",

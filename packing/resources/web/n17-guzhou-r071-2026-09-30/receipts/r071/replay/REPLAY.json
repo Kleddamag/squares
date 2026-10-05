@@ -1,0 +1,40 @@
+{
+  "status": "PASS_R071_C027_GLOBAL_REPLAY",
+  "scope": "bound",
+  "records": [
+    {
+      "id": "compile_global",
+      "command": [
+        "g++",
+        "-O3",
+        "-std=c++17",
+        "WORK/R071-C029/project/base/upstream/cpp/verify.cpp",
+        "-o",
+        "WORK/bound/bin/verify"
+      ],
+      "start": "2026-10-05T04:53:42.899Z",
+      "end": "2026-10-05T04:53:55.814Z",
+      "exit": 0,
+      "signal": null,
+      "error": null
+    },
+    {
+      "id": "global_dual_replay",
+      "command": [
+        "/opt/node22/bin/node",
+        "WORK/R071-C029/project/base/upstream/cpp/replay.js",
+        "WORK/R071-C029/bounds/c027/certificate.json",
+        "WORK/bound/global",
+        "WORK/bound/bin/verify",
+        "2"
+      ],
+      "start": "2026-10-05T04:53:55.814Z",
+      "end": "2026-10-05T05:51:40.622Z",
+      "exit": 0,
+      "signal": null,
+      "error": null
+    }
+  ],
+  "source_manifest_sha256": "ec8c77bc86aed7e18b7d1b8eee2cd5983a25516f8ee3374cedea919270e26459",
+  "new_global_bound_from_c029": false
+}

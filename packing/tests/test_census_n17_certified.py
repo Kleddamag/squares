@@ -1,7 +1,8 @@
-"""Controls for the n17 certified census: what it refuses, what it counts, and the fetch.
+"""Controls for the n17 certified census: what it refuses, what it counts, and its data.
 
 Every fixture lives in a temporary directory that is not a Git checkout: the census reads
-no history. Hosted certificate objects are fabricated payloads served from `file://` URLs.
+no history (OR-18). Hosted certificate objects are listed in a fabricated manifest and,
+where a test needs them in place, written at their paths.
 """
 
 from __future__ import annotations
@@ -13,7 +14,6 @@ from typing import Any
 
 import pytest
 
-from devtools import hosted_data
 from devtools.census_n17_certified import (
     BB_CERTIFIED,
     BB_SCHEMA,
@@ -27,6 +27,7 @@ from devtools.census_n17_certified import (
     RefusedError,
     census,
     cover_context,
+    hosted_objects,
     main,
 )
 from devtools.select_n17_sub_patterns import SCHEMA as SELECTOR_SCHEMA
@@ -96,26 +97,36 @@ def bare_directory(root: Path, directory: str) -> str:
     return f"certificates/{directory}"
 
 
+def payload(file_name: str) -> bytes:
+    """The fabricated bytes of a hosted object."""
+    return f"object {file_name}\n".encode()
+
+
 def saved_certificate(
     root: Path, directory: str, name: str | None = None, certifier: str = "kernel"
 ) -> str:
-    """A certificate directory whose objects the root's manifest lists and a `file://` URL
-    serves; the objects are not placed."""
+    """A certificate directory whose objects the root's hosted-data manifest lists; the
+    objects are not placed."""
     declared = bare_directory(root, directory)
     manifest = root / MANIFEST
-    records = hosted_data.load_manifest(root, MANIFEST) if manifest.exists() else {}
+    document = (
+        json.loads(manifest.read_text(encoding="utf-8"))
+        if manifest.exists()
+        else {"repository": "jlevy/squares", "tag": "data-test-v1", "objects": []}
+    )
+    listed = {item["path"] for item in document["objects"]}
     for file_name in object_files(name or directory, certifier):
-        source = root / "hosted" / file_name
-        source.parent.mkdir(parents=True, exist_ok=True)
-        _ = source.write_bytes(f"object {file_name}\n".encode())
-        records[f"{declared}/{file_name}"] = hosted_data.HostedFile(
-            name=file_name,
-            path=f"{declared}/{file_name}",
-            size=source.stat().st_size,
-            sha256=hashlib.sha256(source.read_bytes()).hexdigest(),
-            url=source.as_uri(),
+        if f"{declared}/{file_name}" in listed:
+            continue
+        document["objects"].append(
+            {
+                "path": f"{declared}/{file_name}",
+                "asset": file_name,
+                "size": len(payload(file_name)),
+                "sha256": hashlib.sha256(payload(file_name)).hexdigest(),
+            }
         )
-    _ = manifest.write_text(hosted_data.render(records.values()), encoding="utf-8")
+    _ = manifest.write_text(json.dumps(document), encoding="utf-8")  # JSON is YAML
     return declared
 
 
@@ -282,7 +293,9 @@ def test_only_admitted_entries_are_counted_and_need_no_hosted_bytes(tmp_path: Pa
     # The count rests on the receipts; the objects are hosted and not in place.
     assert record["entries"][0]["certificate_data"]["local"] == "absent"
     assert record["data"]["certificates_not_in_place"] == 1
-    assert record["data"]["full_recheck"] == "needs --fetch"
+    assert record["data"]["full_recheck"] == (
+        "run python -m devtools.hosted_data fetch --manifest hosted.yaml"
+    )
     receipt = entries[0]["receipt"]
     with pytest.raises(RefusedError, match="evidence"):
         _ = run_census(tmp_path, [entry("W7", W7, receipt, status="admitted")])
@@ -504,78 +517,70 @@ def test_a_listing_with_admits_verifies_only_the_entries_it_names(tmp_path: Path
             _ = run_census(tmp_path, [first], [{**old, "admits": malformed}, fixed])
 
 
-def test_fetch_downloads_checks_and_places_the_hosted_objects(tmp_path: Path) -> None:
-    """`fetch` places every absent hosted file of the ledger's certificates, checked against
-    the manifest; the count is the same; a second fetch downloads nothing; a wrong digest
-    or a wrong size is refused and leaves no file behind."""
+def test_objects_in_place_are_reported_and_one_of_another_size_is_refused(
+    tmp_path: Path,
+) -> None:
+    """The census never downloads: objects written at their paths read as in place, the
+    count is the same either way, and a file whose size is not the manifest's is refused
+    before anything counts."""
     entries = [admitted_w7(tmp_path), admitted_a(tmp_path)]
     before = run_census(tmp_path, entries)
-    after = run_census(tmp_path, entries, fetch=True)
-    assert after["data"]["fetched"] == 3
+    assert before["data"]["certificates_not_in_place"] == 2
+    for item in json.loads((tmp_path / MANIFEST).read_text(encoding="utf-8"))["objects"]:
+        _ = (tmp_path / item["path"]).write_bytes(payload(item["asset"]))
+    after = run_census(tmp_path, entries)
     assert after["data"]["full_recheck"] == "the hosted files are in place"
     assert {row["certificate_data"]["local"] for row in after["entries"]} == {"present"}
     assert after["certified"] == before["certified"]
     placed = tmp_path / "certificates/W7" / object_files("W7", "kernel")[0]
-    assert placed.read_bytes() == (tmp_path / "hosted" / placed.name).read_bytes()
-    assert run_census(tmp_path, entries, fetch=True)["data"]["fetched"] == 0
-    # A placed file of another size is refused before anything counts.
     _ = placed.write_bytes(b"truncated")
     with pytest.raises(RefusedError, match="not the manifest's"):
         _ = run_census(tmp_path, entries)
     placed.unlink()
-    # A download whose SHA-256 differs from the manifest's is refused and not kept.
-    manifest = tmp_path / MANIFEST
-    text = manifest.read_text(encoding="utf-8")
-    digest = hashlib.sha256(f"object {placed.name}\n".encode()).hexdigest()
-    _ = manifest.write_text(text.replace(digest, "f" * 64), encoding="utf-8")
-    with pytest.raises(RefusedError, match="SHA-256"):
-        _ = run_census(tmp_path, entries, fetch=True)
-    assert sorted(path.name for path in placed.parent.iterdir()) == [
-        "README.txt",
-        object_files("W7", "kernel")[1],
-    ]
+    partial = run_census(tmp_path, entries)
+    assert partial["entries"][0]["certificate_data"]["local"] == "partial"
 
 
-def test_the_cli_fetches_and_reports(
+def test_the_cli_names_the_fetch_command_when_objects_are_absent(
     tmp_path: Path, capsys: pytest.CaptureFixture[str]
 ) -> None:
     _ = run_census(tmp_path, [admitted_w7(tmp_path)])
     flags = {"schema": SELECTOR_SCHEMA, "design": DESIGN, "flagged": []}
-    command = [
-        "--root",
-        str(tmp_path),
-        "--selector-receipt",
-        write_json(tmp_path, "f.json", flags),
-    ]
-    assert main([*command, "--ledger", "ledger.yaml", "--fetch"]) == 0
-    assert json.loads(capsys.readouterr().out)["data"]["fetched"] == 2
+    receipt = write_json(tmp_path, "f.json", flags)
+    command = ["--root", str(tmp_path), "--selector-receipt", receipt]
+    assert main([*command, "--ledger", "ledger.yaml"]) == 0
+    captured = capsys.readouterr()
+    assert json.loads(captured.out)["certified"]["admitted"] == 1
+    assert "python -m devtools.hosted_data fetch --manifest hosted.yaml" in captured.err
     assert main([*command, "--ledger", "missing.yaml"]) == 2
     assert "does not exist" in json.loads(capsys.readouterr().out)["refused"]
 
 
 def test_the_manifest_is_refused_when_malformed(tmp_path: Path) -> None:
     good = {
-        "name": "x.json.gz",
         "path": "certificates/W7/x.json.gz",
+        "asset": "x.json.gz",
         "size": 1,
         "sha256": "a" * 64,
-        "url": "https://example.invalid/tag/x.json.gz",
+        "description": "optional",
     }
-    for change, message in (
-        ({"size": -1}, "byte count"),
-        ({"sha256": "A" * 64}, "hex"),
-        ({"path": "/abs/x.json.gz"}, "repository-relative"),
-        ({"url": "https://example.invalid/tag/y.json.gz"}, "must end in"),
-        ({"extra": 1}, "fields must be"),
+    head = {"repository": "jlevy/squares", "tag": "data-test-v1"}
+    for document, message in (
+        ({**head, "objects": [{**good, "size": -1}]}, "byte count"),
+        ({**head, "objects": [{**good, "sha256": "A" * 64}]}, "hex"),
+        ({**head, "objects": [{**good, "path": "/abs/x.json.gz"}]}, "repository-relative"),
+        ({**head, "objects": [{**good, "url": "https://x"}]}, "needs path, asset"),
+        ({**head, "objects": [good, good]}, "listed twice"),
+        ({"repository": "jlevy/squares", "objects": [good]}, "a repository and a tag"),
+        ({**head, "objects": {}}, "objects must be a list"),
     ):
-        document = {"schema": hosted_data.SCHEMA, "files": [{**good, **change}]}
         _ = (tmp_path / MANIFEST).write_text(json.dumps(document), encoding="utf-8")
-        with pytest.raises(hosted_data.HostedDataError, match=message):
-            _ = hosted_data.load_manifest(tmp_path, MANIFEST)
-    twice = {"schema": hosted_data.SCHEMA, "files": [good, good]}
-    _ = (tmp_path / MANIFEST).write_text(json.dumps(twice), encoding="utf-8")
-    with pytest.raises(hosted_data.HostedDataError, match="listed twice"):
-        _ = hosted_data.load_manifest(tmp_path, MANIFEST)
+        with pytest.raises(RefusedError, match=message):
+            _ = hosted_objects(tmp_path, MANIFEST)
+    _ = (tmp_path / MANIFEST).write_text(
+        json.dumps({**head, "objects": [good]}), encoding="utf-8"
+    )
+    assert hosted_objects(tmp_path, MANIFEST)["certificates/W7/x.json.gz"].size == 1
 
 
 def test_the_committed_ledger_counts_its_four_admitted_entries_without_the_dumps() -> None:

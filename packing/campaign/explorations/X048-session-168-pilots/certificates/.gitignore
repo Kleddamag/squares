@@ -1,3 +1,0 @@
-# The certificate objects are hosted outside Git and listed in hosted-data.yaml; a fetch
-# places them here. The small files beside them (README, verification receipts) stay.
-*/*.json.gz

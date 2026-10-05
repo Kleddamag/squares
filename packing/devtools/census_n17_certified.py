@@ -15,9 +15,10 @@ The ledger. A YAML file declares one entry per certified class:
 - `receipt`: the certifier's receipt. A `pending` entry may leave it null while its
   receipt is being produced.
 - `certificate`: the directory of the saved proof objects, or null where the certifier
-  keeps none. The objects themselves are hosted outside Git and listed in the ledger's
-  `data_manifest` (`devtools.hosted_data`): name, path, size, SHA-256 and URL. The
-  directory keeps the small files, such as the verification receipt.
+  keeps none. The objects themselves are hosted outside Git as release assets and listed
+  in the ledger's `data_manifest`, the repository's hosted-data manifest (`repository`,
+  `tag`, and per object its `path`, `asset`, `size` and `sha256`). The directory keeps the
+  small files, such as the verification receipt.
 - `status`: `admitted` or `pending`, and `evidence`: the document that admits the entry, a
   review or the experiment record holding a reviewed verifier's full pass, required once it
   is admitted. The census checks only that the file exists. It is a pointer for readers,
@@ -73,10 +74,12 @@ objects is refused.
 The data. The certificate objects are bulk data, hosted outside Git under OR-18. The
 count rests on the committed producer and verification receipts, so it does not need
 the hosted objects. Re-running a verifier does: each entry's
-`certificate_data` says whether its objects are in place, and the report's `data` line
-says how many are absent. `--fetch` downloads them to their paths, checking each against
-the manifest's size and SHA-256, after which every verification command in the record
-runs as written.
+`certificate_data` says whether its objects are in place (by the manifest's sizes; a
+file of another size is refused), and the report's `data` line says how many are absent
+and the command that fetches them, `python -m devtools.hosted_data fetch --manifest
+<data_manifest>`, which checks each against the manifest's SHA-256 and puts it at its
+path. Every verification command in the record then runs as written. The census reads
+the manifest and never downloads.
 
 The report. The certified line counts admitted entries only. Pending entries with a
 verified receipt are a separate projection, and pending entries still awaiting a receipt a
@@ -94,6 +97,8 @@ from __future__ import annotations
 import argparse
 import functools
 import json
+import re
+import sys
 import time
 from collections.abc import Sequence
 from dataclasses import dataclass
@@ -103,7 +108,6 @@ from typing import Any
 import numpy as np
 from numpy.typing import NDArray
 
-from devtools import hosted_data
 from devtools import select_n17_sub_patterns as selector
 from devtools.provenance import provenance
 from sqpack.yamlio import load_yaml
@@ -138,9 +142,62 @@ EVIDENCE_NOTE = (
 )
 DATA_NOTE = (
     "the count rests on the committed producer and verification receipts; re-running a "
-    "verifier needs the hosted certificate objects, and --fetch downloads the absent ones "
-    "and checks each against the manifest's size and SHA-256"
+    "verifier needs the hosted certificate objects"
 )
+FETCH_COMMAND = "python -m devtools.hosted_data fetch --manifest {manifest}"
+HEX64 = re.compile(r"[0-9a-f]{64}")
+OBJECT_FIELDS = {"path", "asset", "size", "sha256"}
+
+
+@dataclass(frozen=True)
+class HostedObject:
+    """One object of a hosted-data manifest: where it lands, its asset name and size."""
+
+    path: str
+    asset: str
+    size: int
+    sha256: str
+
+
+def hosted_objects(root: Path, declared: str) -> dict[str, HostedObject]:
+    """The hosted-data manifest's objects by repository-relative path.
+
+    TODO: read this through the shared hosted-data module (`sqpack.hosted_data`, with
+    `python -m devtools.hosted_data`) once jlevy/squares' hosted_data PR merges; this
+    minimal reader exists only until then, and downloads, checks and publishes nothing.
+    """
+    where = f"data_manifest {declared}"
+    path = resolve(root, declared, where)
+    document = load_yaml(path.read_text(encoding="utf-8"))
+    if not isinstance(document, dict) or not all(
+        isinstance(document.get(key), str) and document[key] for key in ("repository", "tag")
+    ):
+        raise RefusedError(f"{where}: needs a repository and a tag")
+    raw = document.get("objects")
+    if not isinstance(raw, list):
+        raise RefusedError(f"{where}: objects must be a list")
+    objects: dict[str, HostedObject] = {}
+    for index, item in enumerate(raw):
+        if not isinstance(item, dict) or not OBJECT_FIELDS <= set(item) <= {
+            *OBJECT_FIELDS,
+            "description",
+        }:
+            raise RefusedError(f"{where}: object {index} needs path, asset, size and sha256")
+        size, sha256, relative = item["size"], str(item["sha256"]), str(item["path"])
+        if not isinstance(size, int) or isinstance(size, bool) or size < 0:
+            raise RefusedError(f"{where}: object {index}: size must be a byte count")
+        if HEX64.fullmatch(sha256) is None:
+            raise RefusedError(f"{where}: object {index}: sha256 must be 64 lowercase hex")
+        if Path(relative).is_absolute() or ".." in Path(relative).parts:
+            raise RefusedError(
+                f"{where}: object {index}: {relative!r} is not repository-relative"
+            )
+        if relative in objects:
+            raise RefusedError(f"{where}: {relative} is listed twice")
+        objects[relative] = HostedObject(relative, str(item["asset"]), size, sha256)
+    return objects
+
+
 PROVENANCE = provenance(Path(__file__))
 
 States = NDArray[np.int64]
@@ -245,9 +302,9 @@ def object_names(certifier: str, ids: Any, manifest: str) -> list[str]:
 def check_certificate(
     entry: dict[str, Any],
     receipt: dict[str, Any],
-    context: tuple[Path, dict[str, hosted_data.HostedFile]],
+    context: tuple[Path, dict[str, HostedObject]],
     where: str,
-) -> tuple[list[str], list[hosted_data.HostedFile]]:
+) -> tuple[list[str], list[HostedObject]]:
     """The declared certificate directory, whose hosted files must include the objects the
     producer receipt names; those objects' file names, and every hosted file in it."""
     root, hosted = context
@@ -263,13 +320,22 @@ def check_certificate(
     return names, records
 
 
-def certificate_data(root: Path, records: list[hosted_data.HostedFile]) -> dict[str, Any]:
-    """Whether a certificate's hosted files are in place, from the manifest's sizes."""
-    try:
-        states = [hosted_data.state(root, record) for record in records]
-    except hosted_data.HostedDataError as error:
-        raise RefusedError(str(error)) from error
-    present = states.count("present")
+def certificate_data(root: Path, records: list[HostedObject]) -> dict[str, Any]:
+    """Whether a certificate's hosted files are in place, from the manifest's sizes; a
+    file of another size is refused."""
+    present = 0
+    for record in records:
+        path = root / record.path
+        if not path.is_file():
+            continue
+        size = path.stat().st_size
+        if size != record.size:
+            raise RefusedError(
+                f"{record.path} holds {size:,} bytes, not the manifest's {record.size:,}; "
+                "remove it and fetch it again"
+            )
+        present += 1
+    states = ["present"] * present + ["absent"] * (len(records) - present)
     local = "partial" if 0 < present < len(states) else "present" if present else "absent"
     return {
         "files": len(records),
@@ -392,7 +458,7 @@ def check_verification(
 def check_entry(
     cover: Cover,
     entry: Any,
-    context: tuple[Path, dict[str, dict[str, Any]], dict[str, hosted_data.HostedFile]],
+    context: tuple[Path, dict[str, dict[str, Any]], dict[str, HostedObject]],
     index: int,
 ) -> Entry:
     """Every check on one ledger entry; refuses on the first that fails."""
@@ -472,43 +538,17 @@ def read_ledger(ledger: Path) -> dict[str, Any]:
     return document
 
 
-def hosted_files(root: Path, document: dict[str, Any], ledger: Path) -> dict[str, Any]:
-    """The data manifest's files by path; none when the ledger declares no manifest."""
+def hosted_files(root: Path, document: dict[str, Any]) -> dict[str, HostedObject]:
+    """The data manifest's objects by path; none when the ledger declares no manifest."""
     declared = document.get("data_manifest")
-    if declared is None:
-        return {}
-    try:
-        return hosted_data.load_manifest(root, str(declared))
-    except hosted_data.HostedDataError as error:
-        raise RefusedError(f"{ledger}: data_manifest: {error}") from error
-
-
-def fetch_certificates(
-    root: Path, ledger: Path, opener: hosted_data.Opener | None = None
-) -> list[str]:
-    """Download the absent hosted objects under the ledger's certificate directories,
-    checking each against the manifest; the paths downloaded."""
-    document = read_ledger(ledger)
-    hosted = hosted_files(root, document, ledger)
-    directories = {
-        str(entry["certificate"]).rstrip("/") + "/"
-        for entry in document.get("entries") or []
-        if isinstance(entry, dict) and entry.get("certificate")
-    }
-    wanted = [r for path, r in sorted(hosted.items()) if path.startswith(tuple(directories))]
-    try:
-        if opener is None:
-            return hosted_data.fetch(root, wanted)
-        return hosted_data.fetch(root, wanted, opener)
-    except (hosted_data.HostedDataError, OSError) as error:
-        raise RefusedError(f"fetch: {error}") from error
+    return {} if declared is None else hosted_objects(root, str(declared))
 
 
 def load_ledger(cover: Cover, ledger: Path, root: Path) -> list[Entry]:
     document = read_ledger(ledger)
     raw = document.get("entries") or []
     verifiers = load_verifiers(root, document.get("verifiers") or [], ledger)
-    hosted = hosted_files(root, document, ledger)
+    hosted = hosted_files(root, document)
     context = (root, verifiers, hosted)
     entries = [check_entry(cover, entry, context, index) for index, entry in enumerate(raw)]
     names = [entry.name for entry in entries]
@@ -569,13 +609,10 @@ def census(
     *,
     root: Path = REPO,
     selector_receipts: Sequence[str] = DEFAULT_SELECTOR_RECEIPTS,
-    fetch: bool = False,
-    opener: hosted_data.Opener | None = None,
 ) -> dict[str, Any]:
-    """The certified census, its projections, and every entry's exclusion; with `fetch`,
-    the absent certificate objects are downloaded first."""
+    """The certified census, its projections, and every entry's exclusion."""
     clock = time.perf_counter()
-    fetched = fetch_certificates(root, ledger, opener) if fetch else []
+    manifest = read_ledger(ledger).get("data_manifest")
     cover = cover_context()
     entries = load_ledger(cover, ledger, root)
     full = count(cover, [])
@@ -629,8 +666,11 @@ def census(
             "files": sum(row["files"] for row in data),
             "bytes": sum(row["bytes"] for row in data),
             "certificates_not_in_place": len(absent),
-            "fetched": len(fetched),
-            "full_recheck": "needs --fetch" if absent else "the hosted files are in place",
+            "full_recheck": (
+                "run " + FETCH_COMMAND.format(manifest=manifest)
+                if absent
+                else "the hosted files are in place"
+            ),
             "note": DATA_NOTE,
         },
         "certified": {"admitted": len(admitted), **certified},
@@ -662,21 +702,11 @@ def main(argv: list[str] | None = None) -> int:
         "--root", type=Path, default=REPO, help="what the ledger's paths are relative to"
     )
     _ = parser.add_argument("--output", type=Path, help="write the census here")
-    _ = parser.add_argument(
-        "--fetch",
-        action="store_true",
-        help="first download the absent certificate objects the data manifest lists",
-    )
     arguments = parser.parse_args(argv)
     root: Path = arguments.root
     receipts = arguments.selector_receipt or list(DEFAULT_SELECTOR_RECEIPTS)
     try:
-        record = census(
-            root / arguments.ledger,
-            root=root,
-            selector_receipts=receipts,
-            fetch=arguments.fetch,
-        )
+        record = census(root / arguments.ledger, root=root, selector_receipts=receipts)
     except RefusedError as refusal:
         print(json.dumps({"refused": str(refusal)}))
         return 2
@@ -684,6 +714,10 @@ def main(argv: list[str] | None = None) -> int:
     if arguments.output is not None:
         _ = arguments.output.write_text(text + "\n", encoding="utf-8")
     print(text)
+    if record["data"]["certificates_not_in_place"]:
+        print(
+            f"census: {record['data']['full_recheck']} to re-run the verifiers", file=sys.stderr
+        )
     return 0
 
 

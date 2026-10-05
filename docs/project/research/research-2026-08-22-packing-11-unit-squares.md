@@ -947,7 +947,7 @@ Use the structured form to query or plot; use these tables to read.
 | 66 | `3 + 4 √2` = 8.65685425 | hand | — | 8.42 | counting | 0.2369 |
 | 67 | `8 + (1/2)√2` = 8.70710678 | strip | — | 8.455 | counting | 0.2521 |
 | 68 | 8.79879524 | — | — | 8.51 | counting | 0.2888 |
-| 69 | 8.82720551 | — | — | 8.612 | counting | 0.2152 |
+| 69 | 8.82719466 | annealing | 38 | 8.612 | counting | 0.2152 |
 | 70 | 8.88166676 | hand | 4 | 8.6475 | counting | 0.2342 |
 | 71 | 8.94407156 | annealing | — | 8.705 | counting | 0.2391 |
 | 72 | 9 | grid | — | 8.74 | counting | 0.26 |
@@ -956,11 +956,11 @@ Use the structured form to query or plot; use these tables to read.
 | 75 | 9 | grid | — | 8.92 | counting | 0.08 |
 | 76 | 9 | grid | — | 8.96 | counting | 0.04 |
 | 82 | `6 + (5/2)√2` = 9.53553391 | hand | — | 9.32 | counting | 0.2155 |
-| 83 | 9.63482562 | extension | 24 | 9.37 | counting | 0.2648 |
+| 83 | 9.63475765 | extension | 672 | 9.37 | counting | 0.2648 |
 | 84 | `9 + (1/2)√2` = 9.70710678 | strip | — | 9.4 | counting | 0.3071 |
 | 85 | `(11/2) + 3 √2` = 9.74264069 | hand | — | 9.46 | counting | 0.2826 |
 | 86 | `(17/2) + (1/2)√7` = 9.82287566 | extension | — | 9.5 | counting | 0.3229 |
-| 87 | 9.83881744 | annealing | 44 | 9.55 | counting | 0.2888 |
+| 87 | 9.83881527 | annealing | 41 | 9.55 | counting | 0.2888 |
 | 88 | 9.88815305 | hand | 20 | 9.6 | counting | 0.2882 |
 | 89 | `5 + (7/2)√2` = 9.94974747 | hand | — | 9.65 | counting | 0.2997 |
 | 90 | 10 | grid | — | 9.725 | counting | 0.275 |

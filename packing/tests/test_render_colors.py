@@ -34,12 +34,14 @@ from sqpack.witness import load_witness
 #: more fill since the #227 intake: `n = 68` became Couzo's packing, so the contact-overlay
 #: stratum "first retained UnitSquare rendering-derived geometry" moved to `n = 69`.
 #: n=1..324 gained 51 files and 10,616 fills on 2026-10-02: the regularized layer's
-#: drawings (think-bgkz), drawn by the house renderer under the same contract. The two
-#: smaller corpora are not re-measured.
+#: drawings (think-bgkz), drawn by the house renderer under the same contract. One fill
+#: fewer on 2026-10-05: `n = 69` left its rendering for the catalogue's packing (T-088), so
+#: that contact-overlay stratum, now "first source-packet-derived geometry", is `n = 68`.
+#: The two smaller corpora are not re-measured.
 GOLDEN_INDEXED: dict[str, tuple[int, int]] = {
     "n=1..100": (211, 32017),
     "n=1..200": (311, 47067),
-    "n=1..324": (385, 68618),
+    "n=1..324": (385, 68617),
 }
 #: The largest number of distinct angle classes any one frame carries, and the case that
 #: carries it, per corpus. Per frame rather than corpus-wide because the colorizer

@@ -247,6 +247,8 @@ action for each are in [`frontier/RESULTS.md`](packing/frontier/RESULTS.md); the
 | [T-059](packing/frontier/RESULTS.md) | 11 | `V3` | `C3` | `S2` | `previously-published` | wand125/square-packing-tools reports that its exact general_pose_tree checker reproduces all 12028 per-row core minima of Kleddamag’s n11 certificate, release v1.0.2, with global row minimum 999962528 units and all witnesses replayed. |
 | [T-061](packing/frontier/RESULTS.md) | 11 | `V3` | `C3` | `S2` | `previously-published` | s(11) > 3875000000/999999999 = 3.875000003875000003875 …, by Ke Wang and Can Li’s Zenodo record of 29 September 2026, reported on jlevy/squares#247. |
 | [T-078](packing/frontier/RESULTS.md) | 12 | `V3` | `C3` | `S2` | `previously-published` | s(12) >= 31360/7901 = 3.96911783 …, by squarepacker (Ryu Sungjoon) after Evan Daniel, published on 2 October 2026 and reported on jlevy/squares#309. |
+| [T-088](packing/frontier/RESULTS.md) | 69 | `V0` | `C0` | `S2` | `previously-published` | s(69) <= 8.827194655729738914 …, the root near 8.82719465572973 of the degree-38 polynomial the Kingbird catalogue prints for this count, by David Ellsworth’s packing of 69 unit squares in a square of that side. |
+| [T-089](packing/frontier/RESULTS.md) | 83, 87 | `V0` | `C0` | `S2` | `previously-published` | s(83) <= 9.634757648631082029 …, a root of degree 672, and s(87) <= 9.838815269948262260 …, the root near 9.83881526994826 of the degree-41 polynomial the Kingbird catalogue prints for that count: two packings by Allen Chang, the first optimized by David Ellsworth. |
 | [T-063](packing/frontier/RESULTS.md) | 61 | `V3` | `C3` | `S1` | `previously-published` | s(61) = 8, as a corollary of s(60) = 8 (T-062), which Evan Daniel published with it on 28 September 2026. |
 
 | Significance | What [`epistemics.md`](epistemics.md#significance-and-novelty) anchors it to |
@@ -282,7 +284,7 @@ hypothesis status and summarizes experiment verdicts, and the
 | Explorations | 47 | 28 linked to proposed hypotheses; 19 uncodified |
 | Hypotheses | 198 | 39 confirmed; 32 refuted; 64 blocked; 17 unresolved; 9 open; 32 open questions; 2 result registered; 2 abandoned; 0 running; 1 exhausted |
 | Experiments | 170 | 53 accepted; 37 rejected; 52 unresolved; 12 baseline; 11 blocked; 4 abandoned; 0 in progress; 1 exhausted |
-| Frontier results | 87 | 87 registered, 58 by others |
+| Frontier results | 89 | 89 registered, 60 by others |
 
 <!-- END CURRENT-RESEARCH-STATUS -->
 

@@ -11176,6 +11176,73 @@ evidence:
       here and none was replayed; the retained files and the dates of both sources are in
       the packets. No optimality is claimed.
     source_reviewed: '2026-09-29'
+  - id: E-n069-ellsworth-2026-09-report
+    claim: upper-bound
+    scope: {n_values: [69]}
+    assurance: reported
+    reported_method: source-unspecified
+    performed_by: source-author
+    relationship_to_generator: same-implementation
+    origin: external
+    novelty: previously-published
+    source_key: '[Ellsworth n69 2026-09-24]'
+    replay_status: not-attempted
+    verifiers: []
+    limitations: >-
+      The Kingbird catalogue capture of 2026-09-30 (page dated 2026-09-24) prints s(69) =
+      8.82719465572973 with a degree-38 lock and its polynomial, credited to David
+      Ellsworth in September 2026; the capture of 2026-08-22 did not. It states no checker
+      and no tolerance, and its SVG, which carries the pose, was not reachable from this
+      session, so the retained witness is Evan Daniel's binary64 parse of it at
+      evand/square-packing 7ff3b2113532889708a3baa4d56bc44294022e63, whose side is the
+      polynomial's root to 30 digits. That witness's 1e-8 numerical receipt checks the
+      parse only and is not recorded here as a replay. No optimality is claimed.
+    source_reviewed: '2026-10-05'
+  - id: E-n083-chang-2026-09-report
+    claim: upper-bound
+    scope: {n_values: [83]}
+    assurance: reported
+    reported_method: source-unspecified
+    performed_by: source-author
+    relationship_to_generator: same-implementation
+    origin: external
+    novelty: previously-published
+    source_key: '[Chang n83 2026-09-24]'
+    replay_status: not-attempted
+    verifiers: []
+    limitations: >-
+      The Kingbird catalogue capture of 2026-09-30 (page dated 2026-09-24) prints s(83) =
+      9.63475764863108 with a degree-672 lock, credited to Allen Chang and optimized by
+      David Ellsworth in September 2026; its polynomial is printed only in the SVG. It
+      states no checker and no tolerance, and the SVG was not reachable from this session,
+      so neither the polynomial nor the source's own pose is retained; the retained
+      witness is Evan Daniel's binary64 parse of the SVG at evand/square-packing
+      7ff3b2113532889708a3baa4d56bc44294022e63, whose side the printed decimal truncates.
+      That witness's 1e-8 numerical receipt checks the parse only and is not recorded here
+      as a replay. No optimality is claimed.
+    source_reviewed: '2026-10-05'
+  - id: E-n087-chang-2026-09-report
+    claim: upper-bound
+    scope: {n_values: [87]}
+    assurance: reported
+    reported_method: source-unspecified
+    performed_by: source-author
+    relationship_to_generator: same-implementation
+    origin: external
+    novelty: previously-published
+    source_key: '[Chang n87 2026-09-24]'
+    replay_status: not-attempted
+    verifiers: []
+    limitations: >-
+      The Kingbird catalogue capture of 2026-09-30 (page dated 2026-09-24) prints s(87) =
+      9.83881526994826 with a degree-41 lock and its polynomial, credited to Allen Chang in
+      September 2026. It states no checker and no tolerance, and its SVG, which carries the
+      pose, was not reachable from this session, so the retained witness is Evan Daniel's
+      binary64 parse of it at evand/square-packing
+      7ff3b2113532889708a3baa4d56bc44294022e63, whose side is the polynomial's root to 30
+      digits. That witness's 1e-8 numerical receipt checks the parse only and is not
+      recorded here as a replay. No optimality is claimed.
+    source_reviewed: '2026-10-05'
   - id: E-k2m4-evand-family-report
     claim: lower-bound
     scope: {n_values: [21, 32, 45, 60, 77, 96, 117, 140, 165, 192, 221, 252, 285, 320]}

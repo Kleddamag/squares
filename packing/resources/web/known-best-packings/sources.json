@@ -354,18 +354,19 @@
       "url": "https://github.com/franciscouzo/square-packing/blob/f3c5a529c255b546db18605702b8da298132309f/n68.txt"
     },
     {
-      "bytes": 19018,
-      "kind": "unitsquare-rendering",
+      "attribution": "SVG and high-precision updates by David Ellsworth; catalogue based on Erich Friedman's original compilation.",
+      "kind": "kingbird-derived-facts",
+      "license_status": "no-express-reuse-terms-found",
       "listed_n": [
         69
       ],
       "n": 69,
-      "path": "resources/web/known-best-packings/unitsquare/n069.svg",
-      "raw_asset_retained": true,
-      "retrieved": "2026-08-26",
+      "raw_asset_retained": false,
+      "retention_policy": "metadata-and-derived-numerical-facts-only",
+      "retrieved": "2026-10-05",
+      "revision": "evand/square-packing@7ff3b2113532889708a3baa4d56bc44294022e63:site/www/data/p/square-69.json",
       "source_n": 69,
-      "upstream_declared_sha256": "b32aa37d37b07248ac92e683bbfd9be7ca6eb6aafa35a35e46a2484467afee41",
-      "url": "https://hmbelvedere.com/packings/n069.svg"
+      "url": "https://kingbird.myphotos.cc/packing/square-69.svg"
     },
     {
       "attribution": "SVG and high-precision updates by David Ellsworth; catalogue based on Erich Friedman's original compilation.",
@@ -419,7 +420,8 @@
       "n": 83,
       "raw_asset_retained": false,
       "retention_policy": "metadata-and-derived-numerical-facts-only",
-      "retrieved": "2026-08-26",
+      "retrieved": "2026-10-05",
+      "revision": "evand/square-packing@7ff3b2113532889708a3baa4d56bc44294022e63:site/www/data/p/square-83.json",
       "source_n": 83,
       "url": "https://kingbird.myphotos.cc/packing/square-83.svg"
     },
@@ -475,7 +477,8 @@
       "n": 87,
       "raw_asset_retained": false,
       "retention_policy": "metadata-and-derived-numerical-facts-only",
-      "retrieved": "2026-08-26",
+      "retrieved": "2026-10-05",
+      "revision": "evand/square-packing@7ff3b2113532889708a3baa4d56bc44294022e63:site/www/data/p/square-87.json",
       "source_n": 87,
       "url": "https://kingbird.myphotos.cc/packing/square-87.svg"
     },

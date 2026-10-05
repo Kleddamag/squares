@@ -6,10 +6,10 @@
       "coverage_threshold_cases": {
         "at_least_50_percent": 35,
         "at_least_75_percent": 33,
-        "at_least_90_percent": 27
+        "at_least_90_percent": 28
       },
       "fully_structured_cases": 10,
-      "internal_slide_dof": 859,
+      "internal_slide_dof": 869,
       "narrow_partition_status_counts": {
         "established": 3,
         "not-established": 23,
@@ -17,30 +17,27 @@
         "outside-registered-budget": 2
       },
       "sensitivity_comparison": {
-        "changed_case_count": 3,
+        "changed_case_count": 2,
         "changed_ns": [
           68,
-          69,
           71
         ],
-        "primary_structured_square_count": 1782,
+        "primary_structured_square_count": 1792,
         "sensitivity_structured_square_count": 1797,
-        "within_budget_flip_ns": [
-          69
-        ]
+        "within_budget_flip_ns": []
       },
       "source_strata": [
         {
-          "case_count": 34,
+          "case_count": 35,
           "fully_structured_cases": 10,
           "sensitivity_changed_ns": [
             71
           ],
           "source_kind": "kingbird-derived-facts",
-          "square_count": 1723,
-          "structured_fraction": "0.96691816599",
-          "structured_square_count": 1666,
-          "within_six_components_and_three_free_cases": 25
+          "square_count": 1792,
+          "structured_fraction": "0.967075892857",
+          "structured_square_count": 1733,
+          "within_six_components_and_three_free_cases": 26
         },
         {
           "case_count": 1,
@@ -53,24 +50,12 @@
           "structured_fraction": "0.867647058824",
           "structured_square_count": 59,
           "within_six_components_and_three_free_cases": 0
-        },
-        {
-          "case_count": 1,
-          "fully_structured_cases": 0,
-          "sensitivity_changed_ns": [
-            69
-          ],
-          "source_kind": "unitsquare-rendering",
-          "square_count": 69,
-          "structured_fraction": "0.826086956522",
-          "structured_square_count": 57,
-          "within_six_components_and_three_free_cases": 0
         }
       ],
       "square_count": 1860,
-      "structured_fraction": "0.958064516129",
-      "structured_square_count": 1782,
-      "within_six_components_and_three_free_cases": 25
+      "structured_fraction": "0.963440860215",
+      "structured_square_count": 1792,
+      "within_six_components_and_three_free_cases": 26
     },
     "cases": [
       {
@@ -807,24 +792,24 @@
           "status": "not-established"
         },
         "primary": {
-          "angle_class_count": 14,
-          "contact_component_count": 5,
-          "contact_edge_count": 78,
-          "free_square_count": 12,
-          "internal_slide_dof": 29,
-          "largest_component_size": 25,
-          "structured_fraction": "0.826086956522",
-          "structured_square_count": 57,
+          "angle_class_count": 3,
+          "contact_component_count": 4,
+          "contact_edge_count": 98,
+          "free_square_count": 2,
+          "internal_slide_dof": 32,
+          "largest_component_size": 28,
+          "structured_fraction": "0.971014492754",
+          "structured_square_count": 67,
           "wall_seated_square_count": 27,
-          "within_six_components_and_three_free": false
+          "within_six_components_and_three_free": true
         },
         "sensitivity_delta": {
           "contact_component_count": 0,
-          "free_square_count": -10,
-          "structured_square_count": 10,
-          "within_budget_changed": true
+          "free_square_count": 0,
+          "structured_square_count": 0,
+          "within_budget_changed": false
         },
-        "source_kind": "unitsquare-rendering",
+        "source_kind": "kingbird-derived-facts",
         "square_count": 69
       },
       {
@@ -923,11 +908,11 @@
           "status": "not-established"
         },
         "primary": {
-          "angle_class_count": 3,
-          "contact_component_count": 4,
-          "contact_edge_count": 119,
+          "angle_class_count": 4,
+          "contact_component_count": 5,
+          "contact_edge_count": 109,
           "free_square_count": 4,
-          "internal_slide_dof": 33,
+          "internal_slide_dof": 39,
           "largest_component_size": 28,
           "structured_fraction": "0.951807228916",
           "structured_square_count": 79,
@@ -1041,9 +1026,9 @@
         "primary": {
           "angle_class_count": 3,
           "contact_component_count": 5,
-          "contact_edge_count": 129,
+          "contact_edge_count": 128,
           "free_square_count": 1,
-          "internal_slide_dof": 37,
+          "internal_slide_dof": 38,
           "largest_component_size": 36,
           "structured_fraction": "0.988505747126",
           "structured_square_count": 86,

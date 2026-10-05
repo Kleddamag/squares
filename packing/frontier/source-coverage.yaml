@@ -3,7 +3,7 @@ softschema:
   schema: source-coverage.schema.yaml
   status: enforced
 
-last_reviewed: '2026-10-02'
+last_reviewed: '2026-10-05'
 coverage_scope: >
   Current public upper-bound catalogues and first-party result releases known to this
   project, the Schadt n=29 witness-contract regression source, and the September 2026
@@ -1018,17 +1018,27 @@ sources:
     disposition: baseline-current
     replay_disposition: case-specific
     represented_by: [frontier/n-001.md through frontier/n-324.md]
-    evidence: [E-kingbird-upper-register]
+    evidence:
+      - E-kingbird-upper-register
+      - E-n069-ellsworth-2026-09-report
+      - E-n083-chang-2026-09-report
+      - E-n087-chang-2026-09-report
     notes: >
       Captured again on 2026-09-30; the server dates the page 2026-09-24. The capture of
       2026-08-22, which the 2026-08-25 review found byte-identical to a fresh retrieval, is
       kept beside it as kingbird-squares-in-squares-2026-08-22, because the UnitSquare and
       certified-packet intakes read it. devtools.diff_kingbird_catalogue compares the two:
       41 counts at n <= 324 print a new side, all of them lower. At 36 a certified packet
-      already reports a smaller side; n = 126 and 179 now take the catalogue's new side;
-      n = 69, 83 and 87 are pending intake below. The two that moved were published
-      before 22 August 2026, so the register's rule for results by others does not hold
-      them back. n = 126 is Joost de Winter's packing: the retained de Winter packet
+      already reports a smaller side; n = 126 and 179 took the catalogue's new side on
+      2026-09-30; n = 69, 83 and 87 took it on 2026-10-05, when their September 2026
+      results by others were registered as T-088 (David Ellsworth, n = 69) and T-089
+      (Allen Chang, n = 83 and 87), each with its own reported evidence entry. Their SVGs
+      were not reachable from that session, so their witnesses are Evan Daniel's parse of
+      the pictures (evand/square-packing 7ff3b2113532889708a3baa4d56bc44294022e63,
+      site/www/data/p), which agrees with this repository's own parse to one binary64 ulp
+      at the 90 counts where both read the same picture. The two that moved on
+      2026-09-30 were published before 22 August 2026, so the register's rule for results
+      by others did not hold them back. n = 126 is Joost de Winter's packing: the retained de Winter packet
       (resources/web/de-winter-improved-packings-2026/results.json, observed 2026-09-05,
       before the catalogue carried it) records his report "Improved packings of 68, 126
       and 206 unit squares in a square", dated 2026-08-14, with s(126) =
@@ -1051,7 +1061,7 @@ sources:
     scope: {n_values: [68, 69, 103, 105, 110, 131]}
     reviewed: '2026-08-25'
     source_date: '2026-07-29'
-    disposition: current-report
+    disposition: superseded-covered
     replay_disposition: public-certificate-missing
     represented_by: [frontier/n-068.md, frontier/n-069.md, frontier/n-103.md, frontier/n-105.md, frontier/n-110.md, frontier/n-131.md]
     evidence: [E-unitsquare-release1-report]
@@ -1061,7 +1071,9 @@ sources:
       verified; four further claims are retained below without creating empty case files.
       On 2026-09-29 Francisco Couzo's certified packings (franciscouzo-square-packing-2026)
       superseded its reports at n = 68, 103, 105, 110 and 131, which are listed under
-      superseded_reports; n = 69 remains its current report.
+      superseded_reports. On 2026-10-05 the catalogue's David Ellsworth packing (T-088), an
+      optimization of the release's own n = 69 packing, superseded its last current report,
+      also listed there.
   - id: schadt-n29-2025
     title: Squares-packing S(29) — New Record
     role: source-repository
@@ -1087,11 +1099,6 @@ selected_overrides:
     evidence: E-franciscouzo-2026-09-27-report
     reason: Newer reported upper bound, certified here (T-056), below the UnitSquare release and
       the Kingbird baseline.
-  - n: 69
-    source_id: unitsquare-release1
-    value: '8.827205507815920656880680735618736931225314831'
-    evidence: E-unitsquare-release1-report
-    reason: Newer first-party reported upper bound than the Kingbird baseline.
   - n: 102
     source_id: franciscouzo-square-packing-2026
     value: '10.607174680178947'
@@ -1347,6 +1354,12 @@ superseded_reports:
     value: '8.803383074716108386903836683375989697670063329'
     superseded_by: franciscouzo-square-packing-2026
     reason: Superseded on 2026-09-29 by Francisco Couzo's smaller certified side.
+  - n: 69
+    source_id: unitsquare-release1
+    value: '8.827205507815920656880680735618736931225314831'
+    superseded_by: kingbird-current
+    reason: Superseded on 2026-10-05 by the catalogue's side for David Ellsworth's optimization of
+      the same packing (T-088), which the case now reports from the catalogue baseline.
   - n: 103
     source_id: casson-square-packing-2026
     value: '10.70377984436967189'
@@ -1602,36 +1615,4 @@ superseded_reports:
     reason: Larger than Francisco Couzo's side at this count; the case record states both sources'
       dates and values.
 beyond_horizon_claims: []
-pending_catalogue_intake:
-  - n: 69
-    record_value: '8.827205507815920656880680735618736931225314831'
-    catalogue_value: '8.82719465572973'
-    capture: '2026-08-22'
-    reason: >-
-      The capture of 2026-09-30 prints David Ellsworth's September 2026 packing, which in the
-      catalogue's words refound the UnitSquare Project's July 2026 improvement starting from
-      Morandi's s(69) and optimized it to a degree-38 root below the release's side. A result
-      by others after 2026-08-22 that would become this count's reported upper bound, so the
-      register holds it before the record takes it (epistemics.md, Results by Others); the
-      record also moves from the release to the catalogue, which the UnitSquare prose does not
-      yet say.
-  - n: 83
-    record_value: '9.63482562092335'
-    catalogue_value: '9.63475764863108'
-    capture: '2026-08-22'
-    reason: >-
-      The capture of 2026-09-30 prints Allen Chang's September 2026 improvement of the Hajba and
-      Cantrell packing, optimized by David Ellsworth in September 2026, with a degree-672 root
-      whose polynomial the catalogue leaves to the SVG source. A result by others after
-      2026-08-22 that would become this count's reported upper bound, so the register holds it
-      before the record takes it (epistemics.md, Results by Others).
-  - n: 87
-    record_value: '9.83881743996618'
-    catalogue_value: '9.83881526994826'
-    capture: '2026-08-22'
-    reason: >-
-      The capture of 2026-09-30 prints Allen Chang's September 2026 improvement and
-      optimization of the Ellsworth and Cantrell packing, a degree-41 root, with help the
-      catalogue credits to "TheMagicAnimals". A result by others after 2026-08-22 that would
-      become this count's reported upper bound, so the register holds it before the record
-      takes it (epistemics.md, Results by Others).
+pending_catalogue_intake: []

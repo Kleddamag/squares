@@ -169,15 +169,16 @@ It records each source’s scope, review date, retained first-party material, ev
 replay disposition, in-horizon overrides, and relevant claims beyond $n = 324$.
 
 The current baseline reparses the retained Kingbird catalogue through $n = 324$, applies
-the newer UnitSquare report at $n = 69$, Francisco Couzo’s certified packings at 49
-counts from $n = 68$ to $307$ (T-056) and Joost de Winter’s at $n = 211$ (T-057), and
-records the Schadt $n = 29$ repository as a superseded numerical witness.
+Francisco Couzo’s certified packings at 49 counts from $n = 68$ to $307$ (T-056) and
+Joost de Winter’s at $n = 211$ (T-057), and records the Schadt $n = 29$ repository as a
+superseded numerical witness.
 UnitSquare’s reports at $n = 68, 103, 105, 110, 131$ and Griffin Casson’s 39 packings,
-each larger than Couzo’s at its count, are listed as superseded reports.
-Overrides may come from any retained source: each must beat the catalogue baseline, and
-every claim a source’s retained record makes — the UnitSquare release, or a packet’s
-acquisition record — is reparsed and accounted for exactly once, as selected, superseded
-or beyond the horizon.
+each larger than Couzo’s at its count, are listed as superseded reports, and so is
+UnitSquare’s at $n = 69$, larger than the catalogue’s later side for the same packing
+(T-088). Overrides may come from any retained source: each must beat the catalogue
+baseline, and every claim a source’s retained record makes — the UnitSquare release, or
+a packet’s acquisition record — is reparsed and accounted for exactly once, as selected,
+superseded or beyond the horizon.
 The selected source register has no remaining beyond-horizon claims.
 The check is local and deterministic; refreshing a public source is a dated W1 research
 survey, not a network operation hidden inside ordinary validation.
@@ -190,12 +191,12 @@ Where a newer capture prints a side below a record’s and taking it is an intak
 own — a result by others published on or after 22 August 2026, which the register must
 hold first — the count is listed under `pending_catalogue_intake`, with the side the
 record still reports, the side the current capture prints, and the capture the record
-transcribes ($n = 69, 83, 87$ today).
-The check reconciles such a count against that earlier capture, requires its record to
-carry a `source-evidence` blocker naming `pending_catalogue_intake` and the newer side
-(which `STATUS.md` shows as “catalogue ahead, intake pending”), and fails the entry as
-soon as either capture or the record stops bearing it out, so an entry is removed in the
-commit that takes the side.
+transcribes. None is listed today; $n = 69, 83$ and $87$ were, until their results were
+registered on 2026-10-05 as T-088 and T-089. The check reconciles such a count against
+that earlier capture, requires its record to carry a `source-evidence` blocker naming
+`pending_catalogue_intake` and the newer side (which `STATUS.md` shows as “catalogue
+ahead, intake pending”), and fails the entry as soon as either capture or the record
+stops bearing it out, so an entry is removed in the commit that takes the side.
 
 ```shell
 uv run --frozen python -m devtools.check_source_coverage
@@ -504,13 +505,13 @@ outlived their case promotions.
 
 Of the 247 open cases, 102 are still held by the trivial grid.
 The other 145 carry non-grid constructions.
-Within $n \le 100$, the 33 non-grid open cases comprise 13 hand-built, 10 from simulated
-annealing (nine of the ten dated 2024–2026; $n = 53$ is Cantrell’s from 2002), 5
-diagonal strips, 3 extensions of smaller records, and 2 whose method the source does not
-record ($n = 68, 69$).
+Within $n \le 100$, the 33 non-grid open cases comprise 13 hand-built, 11 from simulated
+annealing (ten of the eleven dated 2024–2026; $n = 53$ is Cantrell’s from 2002), 5
+diagonal strips, 3 extensions of smaller records, and 1 whose method the source does not
+record ($n = 68$).
 
-Recorded catalogue degrees for $n \le 100$ rise through 4, 5, 6, 8, 12, 18, 20, 24, 42,
-and 44, while every proved case but $n = 11$, whose side has degree 8, has degree at
+Recorded catalogue degrees for $n \le 100$ rise through 4, 5, 6, 8, 12, 18, 20, 38, 41,
+42 and 672, while every proved case but $n = 11$, whose side has degree 8, has degree at
 most 2.
 
 ### Smallest Open Gaps

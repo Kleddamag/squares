@@ -237,7 +237,7 @@ It contains no centres, side, geometry, container-fit result, packing feasibilit
 or optimality claim.
 
 [`contact-overlays.json`](contact-overlays.json) indexes five deterministic visual
-strata from the registered descriptive census: $n = 11$, $28$, $40$, $69$, and $89$.
+strata from the registered descriptive census: $n = 11$, $28$, $40$, $68$, and $89$.
 Every SVG under [`contact-overlays/`](contact-overlays/) uses the same house renderer as
 the base atlas. Dashed orange lines join square centres or a centre to a seated wall;
 they show tolerance-qualified graph incidence, not exact physical contact loci or
@@ -255,7 +255,20 @@ The newer public UnitSquare renderings superseded the older Kingbird geometry at
 $n = 68, 69, 103, 105, 110$ and $131$; their six-decimal polygon coordinates are
 explicitly recorded as rendering-derived numerical evidence, not as the unavailable
 interval boxes named in their metadata.
-Only $n = 69$ still draws one, since Couzo’s packings supersede the other five.
+None draws one now: Couzo’s packings supersede five of them, and $n = 69$ moved on
+2026-10-05 to the catalogue’s later side for the same packing, David Ellsworth’s
+optimization (T-088).
+
+At $n = 69, 83$ and $87$ the catalogue facts are not read from the SVG itself, which the
+session that took in their September 2026 sides could not fetch, but from Evan Daniel’s
+binary64 parse of it, pinned at a commit of `evand/square-packing`; each witness names
+that file in `source.revision` and says so in its limitations.
+`devtools.derive_kingbird_facts --compare-parse` measures that parse against this
+repository’s own: at the 90 counts whose witnesses were read from their own pictures,
+every side agrees and every pose agrees to one binary64 ulp.
+Before the three were taken in it also compared $n = 83$ and $87$, whose retained
+witnesses still described the pictures the catalogue had replaced, and those two were
+the only ones that differed.
 
 At 50 counts the drawing is a parallel project’s packing, read from its source packet’s
 derived facts: Francisco Couzo’s at 49 counts from $n = 68$ to $307$ (T-056) and Joost

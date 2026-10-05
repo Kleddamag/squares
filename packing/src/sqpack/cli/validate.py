@@ -4496,11 +4496,15 @@ STEPS: tuple[Step, ...] = (
         measure_verifier=True,
         touches=_MEASURE_VERIFIER_SRC,
     ),
+    # The optional native n17 kernel: its crate's floor and release build, then the bitwise
+    # replay against the Python pilot. It shares the measure verifier's job, which caches
+    # both crates' builds; cold, it cost 52.83s, too much for the saturated checks queue.
     Step(
         "n17 branch-and-bound native (Rust)",
         _rust_n17_bb_native,
         fast=True,
         broad=True,
+        measure_verifier=True,
         touches=(
             *_CORE,
             "packing/n17bb_native/*",

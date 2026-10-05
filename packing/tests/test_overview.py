@@ -3701,8 +3701,10 @@ SITE_STATEMENT = (
         "AI-powered research efforts. This Squares Project was begun by Joshua Levy in "
         "August 2026 with some initial explorations that obtained new lower bounds for "
         "$n = 11, 17, 18, 19, 20$ and other low values. Now several others have obtained "
-        "results building on this work, including a landmark new proof by "
-        "Queuingtheorydotcom of the optimality of the famous case of 11 squares. "
+        "results building on this work, including Kleddamag"
+        "\N{RIGHT SINGLE QUOTATION MARK}s certified lower bound of 31/8 and a landmark "
+        "new proof by Queuingtheorydotcom of the optimality of the famous case of 11 "
+        "squares. "
         "Separately, Evan Daniel has proved the optimality of a whole infinite family, "
         "$s(k^2 - 3) = k$ for every $k \\ge 6$, along with exact values at 21, 32 and 45 "
         "squares. This project now independently tabulates all known new results and "
@@ -3724,7 +3726,8 @@ def test_the_sites_own_statement_follows_readmes_introduction(
     """After README's introduction the section has two paragraphs of its own (the
     owner, 2026-10-03): how the project began and what it does now, and where to
     report a result it lacks and how to join its chat. The first links the project's
-    founder, the explainer that holds its first lower bounds, the case record of
+    founder, the explainer that holds its first lower bounds (Part I), Parts II and
+    III of the series at Kleddamag's bound and the optimality proof, the case record of
     $n = 11$, Evan Daniel's family $s(k^2 - 3) = k$ at its row on the Results page and
     his exact values at the case records of 21, 32 and 45, and the ladders that show how
     far each result is checked, and does not claim every proof is; the second opens a
@@ -3745,6 +3748,8 @@ def test_the_sites_own_statement_follows_readmes_introduction(
     for link in (
         f"{founder}Joshua Levy</a>",
         '<a href="papers/n11-lower-bounds-explainer.html">new lower bounds</a>',
+        '<a href="papers/n11-threshold-bound-review.html">certified lower bound of 31/8</a>',
+        '<a href="papers/n11-optimality-review.html">landmark new proof</a>',
         f'<a href="{render_case_pages.case_url(11)}" data-case="11">case of 11 squares</a>',
         '<a href="all-results.html#t-064">a whole infinite family</a>',
         *(
@@ -3763,6 +3768,8 @@ def test_the_sites_own_statement_follows_readmes_introduction(
     groups = dict(OTHERS)
     assert by_id["T-060"].credit.startswith("Queuingtheorydotcom after Levy")
     assert by_id["T-060"].group == groups["builds-on-project"]
+    assert by_id["T-037"].credit.startswith("Kleddamag")
+    assert by_id["T-037"].group == groups["builds-on-project"]
     exact = {"T-064": None, "T-052": [21], "T-051": [32], "T-053": [45]}
     for result, n_values in exact.items():
         record = by_id[result].record

@@ -140,6 +140,18 @@ def test_a_quotation_the_formatter_curled_inside_still_counts() -> None:
     assert assistance.catalogue_owed(_record(CATALOGUE_RECORD, body), catalogue) == ()
 
 
+def test_a_quotation_whose_apostrophes_the_formatter_curled_still_counts() -> None:
+    """The formatter curls single quotes and apostrophes as it curls double ones."""
+    catalogue = {
+        7: _Entry("Improved by A. O'Name in September 2026, working with the 'X' model.")
+    }
+    (owed,) = assistance.catalogue_owed(_record(CATALOGUE_RECORD, "Found.\n"), catalogue)
+    assert "O'Name" in owed
+    curled = owed.replace("O'Name", "O’Name").replace("'X'", "‘X’")
+    body = f"## The packing\n\nFound.\n{curled}\n"
+    assert assistance.catalogue_owed(_record(CATALOGUE_RECORD, body), catalogue) == ()
+
+
 def test_a_record_reporting_another_source_owes_the_catalogue_nothing() -> None:
     elsewhere = CATALOGUE_RECORD.replace("'[Kingbird]'", "'[Elsewhere 2026]'")
     assert assistance.catalogue_owed(_record(elsewhere, "Found.\n"), {7: AI_CREDIT}) == ()

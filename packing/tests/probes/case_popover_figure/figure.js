@@ -1,5 +1,5 @@
 // The case popover's drawing as the browser lays it out now: the width of the popover's
-// body, inside its padding; the drawing's width and height; the stroke width the browser
+// body, inside its padding; the height the panel may take (`--site-popover-max-block`); the drawing's width and height; the stroke width the browser
 // computes for the frame and for the squares' outlines, and whether each is drawn in the
 // page's own units; the height of each `svg` the caption's typeset math draws, such as a
 // radical; the root's font size; and how wide the page and the popover reach against the
@@ -18,6 +18,7 @@
   const outlined = getComputedStyle(outline);
   return {
     body: body.clientWidth,
+    panel_height: Number.parseFloat(getComputedStyle(popover).maxBlockSize),
     width: box.width,
     height: box.height,
     frame: Number.parseFloat(framed.strokeWidth),

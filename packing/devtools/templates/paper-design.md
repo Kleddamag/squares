@@ -1418,18 +1418,21 @@ it.
   The drawing is as wide as the column allows up to 28rem on the record page and 18rem
   in a result overview, and in the case popover it fills the panel’s width, growing and
   shrinking with the panel and square at every width (the owner, 2026-10-04,
-  `think-u214`; 24rem until then, so the number line under it was in view when the
-  popover opened in a laptop’s window, where it now follows a scroll of the panel); the
-  facts under it keep to 40rem, in the sans face at the note size.
-  Its lines keep the weight they have at 24rem across, however large it is shown
+  `think-u214`; 24rem until then), short of the panel’s height less 8rem, the room the
+  caption and the actions held at the panel’s foot take, so the whole square shows at
+  one scroll of the panel: 608 of the panel’s 934 pixels in a 1280 by 800 window, 700
+  at 1280 by 900, the full width on a tablet or a phone. The facts under it keep to
+  40rem, in the sans face at the note size.
+  Its lines keep the weight they have at 12rem across, however large it is shown
   (`think-pkz0`): the drawing strokes its frame 1.2 and each square’s outline 0.6 of the
   102 units its box is wide (`render_frontier_page.packing_svg`), weights that grow with
-  the drawing, so the popover’s drawing, 58rem across on a laptop, drew them about two
-  and a half times as heavy.
+  the drawing, so the popover’s drawing, 58rem across on a laptop, drew them 11 and 5.5
+  pixels heavy, and at a 24rem weight a zoomed drawing still read as heavy-lined (the
+  owner, 2026-10-05).
   The stylesheet draws them in the page’s own units instead
   (`vector-effect: non-scaling-stroke`), at the same share of the figure’s width
-  (`100cqi`) up to 24rem (`--site-case-figure-lines`): 4.5 and 2.3 pixels from 24rem up,
-  and as before below it, in a result overview and on a phone.
+  (`100cqi`) up to 12rem (`--site-case-figure-lines`): 2.3 and 1.1 pixels from 12rem up,
+  and as the drawing draws them below it.
   `tests/test_case_pages.py` reads the two shares from the drawing itself, so the
   stylesheet and the drawing cannot part.
   All of it is written when the page is rendered, from the film’s own facts

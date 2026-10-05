@@ -330,17 +330,20 @@ def _declarations(css: str, selector: str) -> str:
 
 @pytest.mark.parametrize("units", [1000, overview_sections.ATLAS_UNITS])
 def test_the_drawing_fills_the_case_popover_at_its_own_line_weight(units: int) -> None:
-    """In the case popover the visual summary's drawing is as wide as the panel
-    (`think-u214`), and its lines keep the weight they have at 24rem however large it is
-    shown (`think-pkz0`): the stylesheet draws them in the page's units
-    (`non-scaling-stroke`) at the share of the drawing's width the drawing gives them up
-    to 24rem across. The shares are read here from the drawing itself, at the record's
-    units and a result overview's, so the stylesheet and the drawing cannot part."""
+    """In the case popover the visual summary's drawing is as wide as the panel, short
+    of the panel's height less the room its caption and actions take (`think-u214`), and
+    its lines keep the weight they have at 12rem however large it is shown
+    (`think-pkz0`): the stylesheet draws them in the page's units (`non-scaling-stroke`)
+    at the share of the drawing's width the drawing gives them up to 12rem across. The
+    shares are read here from the drawing itself, at the record's units and a result
+    overview's, so the stylesheet and the drawing cannot part."""
     css = render_overview.SITE_CSS.read_text(encoding="utf-8")
-    assert "inline-size: 100%;" in _declarations(css, ".site-case-pop .site-case-figure")
+    assert "inline-size: min(100%, var(--site-popover-max-block) - 8rem);" in _declarations(
+        css, ".site-case-pop .site-case-figure"
+    )
     figure = _declarations(css, ".site-case-figure")
     assert "container-type: inline-size;" in figure
-    assert "--site-case-figure-lines: min(100cqi, 24rem);" in figure
+    assert "--site-case-figure-lines: min(100cqi, 12rem);" in figure
     assert "vector-effect: non-scaling-stroke;" in _declarations(
         css, ".site-case-figure > svg :is(rect, path)"
     )

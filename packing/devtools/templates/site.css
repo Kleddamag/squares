@@ -2503,9 +2503,13 @@ body {
   margin: 0;
 }
 /* In the popover the drawing fills the panel's width and grows and shrinks with it,
-   square at every width (the owner, 2026-10-04, `think-u214`). */
+   square at every width (the owner, 2026-10-04, `think-u214`), and is never taller than
+   the panel shows at once: the panel's height less 8rem, room for the caption (2rem) and
+   the actions held at its foot (5rem), so the whole square can be seen without the
+   actions covering its foot. At 1280 by 800 that is 608px of the panel's 934; a tablet
+   or a phone, taller than it is wide, keeps the full width. */
 .site-case-pop .site-case-figure {
-  inline-size: 100%;
+  inline-size: min(100%, var(--site-popover-max-block) - 8rem);
 }
 .site-case-summary-facts {
   font-family: var(--kpress-font-sans);
@@ -2529,17 +2533,17 @@ body {
   display: block;
   inline-size: 100%;
 }
-/* The drawing's lines are as heavy as the drawing draws them up to 24rem across, the
-   size it was drawn at in the popover, and no heavier however large it is shown
-   (`think-pkz0`). The drawing strokes its frame 1.2 and each square's outline 0.6 of
-   the 102 units its box is wide (`render_frontier_page.packing_svg`), so those lines
-   scale with it: the popover's drawing, 58rem across on a laptop, drew them two and a
-   half times as heavy as at 24rem. Here they are drawn in the page's own units instead
-   (`non-scaling-stroke`), at the same share of the drawing's width (`100cqi`, the
-   figure's) up to 24rem, so a smaller drawing, a result overview's or a phone's, keeps
-   its lines as they were. */
+/* The drawing's lines are as heavy as the drawing draws them up to 12rem across, and no
+   heavier however large it is shown (`think-pkz0`). The drawing strokes its frame 1.2
+   and each square's outline 0.6 of the 102 units its box is wide
+   (`render_frontier_page.packing_svg`), so those lines scale with it: the popover's
+   drawing, 58rem across on a laptop, drew them 11 and 5.5 pixels heavy, and even at
+   24rem a zoomed drawing read as heavy-lined (the owner, 2026-10-05). Here they are
+   drawn in the page's own units instead (`non-scaling-stroke`), at the same share of the
+   drawing's width (`100cqi`, the figure's) up to 12rem, 2.3 and 1.1 pixels from there
+   up, so a smaller drawing keeps its lines as they were. */
 .site-case-figure {
-  --site-case-figure-lines: min(100cqi, 24rem);
+  --site-case-figure-lines: min(100cqi, 12rem);
   container-type: inline-size;
 }
 .site-case-figure > svg :is(rect, path) {

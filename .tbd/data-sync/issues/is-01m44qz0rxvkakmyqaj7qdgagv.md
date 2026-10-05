@@ -5,7 +5,7 @@ title: "Follow-up 2026-10-05: unimported issue content, the pending Kingbird int
 kind: epic
 status: open
 priority: 1
-version: 13
+version: 14
 labels:
   - result-import
   - issues
@@ -24,7 +24,8 @@ child_order_hints:
   - is-01m44rf3v2ybjr076zts1j3aca
   - is-01m44rf4zpzedxgrtyrp7frzvq
   - is-01m44rf66ed9fn40rwb0c010gy
+  - is-01m44w8yx2pvafe15mx7p3x7qz
 created_at: 2026-10-05T00:38:34.013Z
-updated_at: 2026-10-05T00:47:23.854Z
+updated_at: 2026-10-05T01:53:54.082Z
 ---
 Owner request 2026-10-05: review outstanding GitHub issue content not yet imported and import it by packing/campaign/result-import.md; fix the frontier's stale n = 83 (and every count where the Kingbird catalogue is ahead); make sure the Kingbird results are current; review, cite and import evand's site (https://evand.github.io/square-packing/, incl. problems.html) and link it from the homepage. One PR on claude/ecstatic-pascal-pothtx.

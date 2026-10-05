@@ -906,7 +906,7 @@ def _source_index(plans: dict[int, SourcePlan]) -> dict:
                     "path": _relative(plan.path),
                     "raw_asset_retained": False,
                     "retention_policy": KINGBIRD_RETENTION_POLICY,
-                    "retrieved": packets.RETRIEVED,
+                    "retrieved": packet.retrieved,
                     "source_n": plan.source_n,
                     "url": plan.url,
                 }
@@ -999,7 +999,7 @@ def _build_witness(case: FrontierCase, plan: SourcePlan) -> dict:
                 retained,
                 source_key=case.reported_source_key,
                 source_path=_relative(plan.path),
-                retrieved=packets.RETRIEVED,
+                retrieved=PACKET_SOURCES[case.reported_source_key].retrieved,
             )
         source_text = plan.path.read_text(encoding="utf-8")
         source_path = _relative(plan.path)

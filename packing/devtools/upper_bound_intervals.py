@@ -296,12 +296,12 @@ def upstream_bytes(source: packets.Source, pose: Pose) -> tuple[str, bytes]:
     wrongly anywhere would change the bytes, and so their digest.
     """
     case = packets.cases(source)[pose.n]
-    if source is packets.FRANCISCOUZO:
+    if source.layout == "couzo":
         unit = {"radians": "rad", "degrees": "deg"}[pose.unit]
         rows = "".join(f"{x} {y} {theta}\n" for x, y, theta in pose.squares)
         text = f"# n = {pose.n}\n# s = {pose.side}\n# x y theta({unit})\n{rows}"
         return case["file"], text.encode("utf-8")
-    if source is packets.DE_WINTER:
+    if source.layout == "de-winter":
         record = {
             "n": pose.n,
             "s": pose.side,
@@ -743,10 +743,11 @@ def control_rows(source: packets.Source, n: int, square: int) -> list[dict[str, 
 
 
 #: The pose each packet's controls mutate, and the square moved: the exact route's own
-#: choice at ``n = 68``; at ``n = 211``, square 80, the left square of the closest pair
-#: the source reports (zero-based 79 and 81), which moving right closes.
+#: choice where the packet has one (``n = 68`` square 31, and ``n = 208`` square 2 in the
+#: 3 October packet); at ``n = 211``, square 80, the left square of the closest pair the
+#: source reports (zero-based 79 and 81), which moving right closes.
 CONTROL_CASES = {
-    packets.FRANCISCOUZO.id: (packets.CONTROL_N, packets.CONTROL_SHIFT_SQUARE),
+    **{source.id: source.control for source in packets.CERTIFIED if source.control is not None},
     packets.DE_WINTER.id: (211, 80),
 }
 

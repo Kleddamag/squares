@@ -11115,6 +11115,117 @@ evidence:
       optimality at any count.
     source_reviewed: '2026-09-30'
 
+  - id: E-franciscouzo-2026-10-03-report
+    claim: upper-bound
+    scope: {n_values: [208, 209, 228, 263, 272, 303, 306]}
+    assurance: reported
+    reported_method: numerical-f64
+    performed_by: source-author
+    relationship_to_generator: same-implementation
+    origin: external
+    novelty: previously-published
+    source_key: '[franciscouzo square-packing 2026-10-03]'
+    replay_status: not-attempted
+    verifiers: []
+    limitations: >-
+      Source 6042c56b43b64c09fe5a32c64879e698f399beaf (2026-10-03, "new records") replaces
+      the text files for these seven counts, each a packing of binary64 centres and angles
+      with the side on its second line, and their rows of the README table. Each side is
+      below the one the same repository printed at f3c5a529 (E-franciscouzo-2026-09-27-report).
+      It states no method, tolerance or checker. The side of each case is the one its text
+      file prints; the per-case commit history, including every earlier side, is in the
+      packet's acquisition/sources.json. This is the public-claim entry; the exact replay
+      here is E-franciscouzo-2026-10-03-exact-replay. No optimality is claimed by the
+      source or here.
+    source_reviewed: '2026-10-05'
+
+  - id: E-franciscouzo-2026-10-03-exact-replay
+    claim: upper-bound
+    scope: {n_values: [208, 209, 228, 263, 272, 303, 306]}
+    assurance: verified
+    method: exact-algebraic
+    performed_by: repository
+    relationship_to_generator: independent-implementation
+    origin: replayed-here
+    novelty: previously-published
+    source_key: '[franciscouzo square-packing 2026-10-03]'
+    certificate: witnesses/franciscouzo-2026-10-03/
+    replay: >-
+      uv run --frozen --all-extras --group dev python -m devtools.upper_bound_packets
+      check --replay --source franciscouzo-square-packing-2026-10-03 --workers 4, which
+      regenerates every certificate from the packet's retained facts by robust rational
+      promotion (36 rational digits, side increase at most 1e-9), requires its bytes to
+      equal the committed one, and decides the committed one again with
+      devtools.check_rational_witness_independent; it must report every case VERIFIED.
+    replay_status: passed
+    verifiers: [V-upper-bound-promotion, V-check-rational-witness-independent]
+    limitations: >-
+      Proves, for each listed count, s(n) at most the side of an exact rational packing
+      decided pair by pair and wall by wall over Q, twice, by the promotion's exact
+      separating-axis test and by an independent Fraction checker that shares no code
+      with it. Each certificate is the source's decimal pose rounded to rationals at
+      centre dilation 1, so it is the author's packing and not a relabelled witness; its
+      side differs from the printed side by less than 1.8e-15 either way, and the verified
+      lane carries the larger of the printed side and the certified side rounded up at
+      the printed precision. That is the printed side at n = 228, 272 and 303 and one unit
+      of the fifteenth decimal above it at n = 208, 209 and 263, which
+      bounds_agree_at_declared_precision accepts. At n = 306 it lies 2 units above, which
+      the case record keeps as a conflict; the reported side there is not certified. Two
+      negative controls on the n = 208 certificate, its side cut by 1e-15 and square 2
+      moved by 1e-6, are refused by both checkers (receipts/negative-controls.json). The
+      method-distinct second entry is E-franciscouzo-2026-10-03-interval-replay; no
+      optimality at any count.
+    source_reviewed: '2026-10-05'
+
+  - id: E-franciscouzo-2026-10-03-interval-replay
+    claim: upper-bound
+    scope: {n_values: [208, 209, 228, 263, 272, 303, 306]}
+    assurance: verified
+    method: interval-certified
+    performed_by: repository
+    relationship_to_generator: independent-implementation
+    origin: replayed-here
+    novelty: previously-published
+    source_key: '[franciscouzo square-packing 2026-10-03]'
+    certificate: resources/web/franciscouzo-square-packing-2026-10-03/facts/
+    replay: >-
+      uv run --frozen --all-extras --group dev python -m devtools.upper_bound_intervals
+      check --source franciscouzo-square-packing-2026-10-03, which rebuilds each upstream
+      file from the packet's retained facts and requires the size and SHA-256 the
+      acquisition took from the pinned clone, decides each printed pose again by
+      outward-rounded decimal interval arithmetic, and requires every row of
+      receipts/interval-certification.json and receipts/interval-negative-controls.json to
+      be what it records; it must print "every case and control decided as its receipt
+      records". About a second on one worker.
+    replay_status: passed
+    verifiers: [V-upper-bound-intervals]
+    limitations: >-
+      Proves, for each listed count, s(n) at most the same verified value that
+      E-franciscouzo-2026-10-03-exact-replay gives, from the source's own pose as printed
+      rather than a rational rounding of it: the printed centres, each angle in the
+      radians the source declares, and its true cosine and sine, enclosed by Taylor
+      polynomials with the Lagrange remainder. On decimal fixed-point intervals of 40
+      digits rounded outward, 4,024 of the 232,869 pairs are proved disjoint by the
+      separating-axis test over the four edge normals and the rest by bounding circles
+      decided exactly on the printed centres; nothing needed more than 40 digits, no pair
+      touches, and the least gap at any count is 1.99e-13 (n = 306). The pose, translated
+      so that its least x and y are zero, lies inside a square of the larger of the printed
+      side and its own extent's upper end rounded up at 15 decimals. That is the printed
+      side at n = 228, 272 and 303; at the other four the printed pose's extent exceeds its
+      printed side by 2.9e-16 to 1.76e-15, one unit of the fifteenth decimal at n = 208,
+      209 and 263 and 2 units at n = 306, so the printed side at 306 is not that of the
+      printed pose in any arithmetic. As placed, five of the seven poses cross a wall of
+      the source's frame by up to 1.76e-15; the bound is the translated pose's, as the
+      exact entry's is. At every count the verified value equals the exact entry's, and
+      the exact certificate's side lies within 2.3e-40 of the enclosure of the pose's
+      extent. Three controls on n = 208 are refused
+      (receipts/interval-negative-controls.json). The program, its method and its common
+      mode with the exact entry are those of E-franciscouzo-2026-09-27-interval-replay,
+      whose review is docs/project/reviews/review-2026-09-30-interval-route-t056-t057.md;
+      only its source records changed to read this packet, and no review of this run is
+      retained. The program is not formally verified. No optimality at any count.
+    source_reviewed: '2026-10-05'
+
   - id: E-n211-de-winter-report
     claim: upper-bound
     scope: {n_values: [211]}

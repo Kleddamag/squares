@@ -26,7 +26,7 @@ second implementation agrees.
 ## The Short Version
 
 - **78** programs: **31** external and **47** first-party; **64** decide claims and **14** check premises.
-- **257** of **283** evidence entries name the programs that verified them: 195 reproduced with the producer’s code, 46 independently re-implemented, 9 no relation: a proof, a derivation or a report, 7 re-implemented, sharing the producer’s components.
+- **259** of **286** evidence entries name the programs that verified them: 195 reproduced with the producer’s code, 48 independently re-implemented, 9 no relation: a proof, a derivation or a report, 7 re-implemented, sharing the producer’s components.
 
 ## Programs
 
@@ -66,10 +66,10 @@ second implementation agrees.
 | [`V-check-basic-bounds`](#v-check-basic-bounds) | devtools.check_basic_bounds | Squares Project (Levy) | first-party | decides | 3 | 14 |
 | [`V-optimal-moduli`](#v-optimal-moduli) | cases.small_n.optimal_moduli | Squares Project (Levy) | first-party | decides | 1 | 0 |
 | [`V-sqpack-verify`](#v-sqpack-verify) | sqpack.verify | Squares Project (Levy) | first-party | decides | 12 | 2 |
-| [`V-check-rational-witness-independent`](#v-check-rational-witness-independent) | devtools.check_rational_witness_independent | Squares Project (Levy) | first-party | decides | 4 | 3 |
+| [`V-check-rational-witness-independent`](#v-check-rational-witness-independent) | devtools.check_rational_witness_independent | Squares Project (Levy) | first-party | decides | 5 | 4 |
 | [`V-check-nagamochi-lemma1-counterexample`](#v-check-nagamochi-lemma1-counterexample) | devtools.check_nagamochi_lemma1_counterexample | Squares Project (Levy) | first-party | decides | 1 | 1 |
-| [`V-upper-bound-promotion`](#v-upper-bound-promotion) | devtools.upper_bound_packets | Squares Project (Levy) | first-party | decides | 2 | 2 |
-| [`V-upper-bound-intervals`](#v-upper-bound-intervals) | devtools.upper_bound_intervals | Squares Project (Levy) | first-party | decides | 2 | 2 |
+| [`V-upper-bound-promotion`](#v-upper-bound-promotion) | devtools.upper_bound_packets | Squares Project (Levy) | first-party | decides | 3 | 3 |
+| [`V-upper-bound-intervals`](#v-upper-bound-intervals) | devtools.upper_bound_intervals | Squares Project (Levy) | first-party | decides | 3 | 3 |
 | [`V-sqpack-cover`](#v-sqpack-cover) | sqpack.cover | Squares Project (Levy) | first-party | decides | 4 | 8 |
 | [`V-green17-interval-audit`](#v-green17-interval-audit) | cases.green17.interval_audit | Squares Project (Levy) | first-party | decides | 1 | 3 |
 | [`V-kingbird29-verify-svg`](#v-kingbird29-verify-svg) | cases.kingbird29.verify_svg | Squares Project (Levy) | first-party | decides | 2 | 0 |
@@ -817,6 +817,7 @@ Decides a rational-corner witness pair by pair and wall by wall in Fraction arit
 | `E-n017-kleddamag-rational-upper` | replayed here | independent | T-065 |
 | `E-n029-schadt-rational-upper` | replayed here | independent | - |
 | `E-franciscouzo-2026-09-27-exact-replay` | replayed here | independent | T-056 |
+| `E-franciscouzo-2026-10-03-exact-replay` | replayed here | independent | T-092 |
 | `E-n211-de-winter-exact-replay` | replayed here | independent | T-057 |
 
 ### `V-check-nagamochi-lemma1-counterexample`
@@ -846,6 +847,7 @@ Rounds a source's decimal pose to rationals and decides every pair and wall exac
 | evidence | run | code | results |
 | --- | --- | --- | --- |
 | `E-franciscouzo-2026-09-27-exact-replay` | replayed here | independent | T-056 |
+| `E-franciscouzo-2026-10-03-exact-replay` | replayed here | independent | T-092 |
 | `E-n211-de-winter-exact-replay` | replayed here | independent | T-057 |
 
 ### `V-upper-bound-intervals`
@@ -856,10 +858,13 @@ Decides a source's printed pose as printed, by outward-rounded decimal interval 
 
 - Source: [`packing/devtools/upper_bound_intervals.py`](../../packing/devtools/upper_bound_intervals.py)
 - Versions run: this repository's commits, which Git holds
+- What its authors read and used: [`packing/devtools/upper_bound_intervals.py`](../../packing/devtools/upper_bound_intervals.py)
+- Note: Its module statement lists the three things it shares with the exact route (the retained facts, the packet tool's source and acquisition records, and the exact receipt read only to compare values), none of them geometry; packing/tests/test_upper_bound_intervals.py holds its imports to those.
 
 | evidence | run | code | results |
 | --- | --- | --- | --- |
 | `E-franciscouzo-2026-09-27-interval-replay` | replayed here | independent | T-056 |
+| `E-franciscouzo-2026-10-03-interval-replay` | replayed here | independent | T-092 |
 | `E-n211-de-winter-interval-replay` | replayed here | independent | T-057 |
 
 ### `V-sqpack-cover`

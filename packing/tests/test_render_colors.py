@@ -58,8 +58,9 @@ GOLDEN_MAX_ANGLE_CLASSES: dict[str, tuple[int, int]] = {
 #: How many frames carry more classes than there are unpinned hue slots, so that their
 #: registrations wrap and two classes in one drawing share a colour. None at all when
 #: the corpus stopped at 100; 37 of 324, not 32, since the #227 intake's 50 packings, and
-#: 36 since the 2026-09-30 catalogue refresh moved n = 126 and 179 onto new packings.
-GOLDEN_WRAPPED_CASES: dict[str, int] = {"n=1..100": 0, "n=1..200": 12, "n=1..324": 36}
+#: 36 since the 2026-09-30 catalogue refresh moved n = 126 and 179 onto new packings, and
+#: 35 since Couzo's packing of 3 October at n = 208 (T-092) carries 16 classes, not 21.
+GOLDEN_WRAPPED_CASES: dict[str, int] = {"n=1..100": 0, "n=1..200": 12, "n=1..324": 35}
 
 ROOT = Path(__file__).resolve().parents[1]
 ATLAS = ROOT / "atlas"

@@ -271,8 +271,10 @@ witnesses still described the pictures the catalogue had replaced, and those two
 the only ones that differed.
 
 At 50 counts the drawing is a parallel project’s packing, read from its source packet’s
-derived facts: Francisco Couzo’s at 49 counts from $n = 68$ to $307$ (T-056) and Joost
-de Winter’s at $n = 211$ (T-057), the first drawing of 211 squares that is not the grid.
+derived facts: Francisco Couzo’s at 49 counts from $n = 68$ to $307$ (T-056), seven of
+them, $n = 208, 209, 228, 263, 272, 303$ and $306$, from his revision of 3 October 2026
+(T-092), and Joost de Winter’s at $n = 211$ (T-057), the first drawing of 211 squares
+that is not the grid.
 Neither source publishes a licence, so the packets keep the centres and angles and the
 upstream digests, never the files, as for Kingbird.
 Each of these packings is also certified exactly here, which the case record carries in

@@ -5,7 +5,7 @@ squares, published by [Kleddamag in 11-squares-certified-bound](https://github.c
 the [proof](https://github.com/Kleddamag/11-squares-certified-bound/blob/6a733f339395c3514f2ab63d8c4aa64cf63c0b5a/PROOF.md),
 [certificate](https://github.com/Kleddamag/11-squares-certified-bound/blob/6a733f339395c3514f2ab63d8c4aa64cf63c0b5a/global-certificate.json)
 and [reproduction](https://github.com/Kleddamag/11-squares-certified-bound/blob/6a733f339395c3514f2ab63d8c4aa64cf63c0b5a/README.md)
-at revision `6a733f3` (v1.0.2), retained in this project’s
+at the reviewed release, v1.0.2, retained in this project’s
 [archive](../../resources/web/external-square-certificates-2026-09-22/kleddamag-11/README.md).
 Its `AUTHORS.md` says OpenAI Codex developed the mathematics and computation under
 Kleddamag’s direction; the certificate develops this project’s T-026 certificate, the
@@ -728,8 +728,8 @@ centres allowed over it.
 
 ## Appendix A: Certificate Schema
 
-The retained file `global-certificate.json` (SHA-256
-`57e9927da5c13f42dd8bcbf8f08c84363635fece626657ee63a810c61cd44458`) has ten fields:
+The retained file `global-certificate.json`, whose digest the release’s manifest and the
+register’s evidence entry record, has ten fields:
 `L` and `A`, the container and parent sides as rational strings; `coordinate_denominator`
 ($10^{10}$) and `weight_denominator` ($10^9$); `point_orbits`, a list of 679 triples
 $(x,y,w)$ of integers, one site per orbit with its point weight, 613 of them zero;

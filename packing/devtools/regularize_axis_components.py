@@ -1576,15 +1576,16 @@ def atlas_record(
         record["refusal"] = {"kind": error.kind, "reason": str(error)}
         record["shades"] = _shade_record(before, before)
         return record, None, time.perf_counter() - started
-    certificate = next(
-        iter(sorted(layout.certificates.glob(f"*/n-{n:03d}-rational.yaml.gz"))), None
-    )
+    # A count certified again from a later packet has a certificate in each packet's
+    # directory, and the frame is exactly the one of the packing the atlas now draws; the
+    # first in order is named only when none matches.
+    candidates = sorted(layout.certificates.glob(f"*/n-{n:03d}-rational.yaml.gz"))
+    matching = next((path for path in candidates if _certificate_matches(frame, path)), None)
+    certificate = matching or next(iter(candidates), None)
     record["exact_frame"] = {
         "derivation": frame.provenance["derivation"],
         "retained_certificate": layout.relative(certificate) if certificate else None,
-        "matches_retained_certificate": (
-            _certificate_matches(frame, certificate) if certificate else None
-        ),
+        "matches_retained_certificate": (matching is not None) if certificate else None,
     }
     # Only a dilated frame names its factor, so a layer built at dilation 1 reads the same
     # whether or not the prototype exists.

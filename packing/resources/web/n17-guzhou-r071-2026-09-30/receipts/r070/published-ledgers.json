@@ -1,0 +1,44 @@
+{
+  "schema": "GuzhouR070PublishedLedgers/v1",
+  "release": "R070",
+  "certificate_sha256": "8438cae4da93c98a92b0b96560f95d9da8d0ef47287783f3b18a9cb8208167b9",
+  "ledgers_compared": 2,
+  "rows_per_ledger": 5107,
+  "mismatches": 0,
+  "first_mismatches": [],
+  "minimum_units": 1000026844,
+  "intervals_at_minimum": 5107,
+  "next_minimum_units": null,
+  "cells": 2260759562719,
+  "budget_units": 17000448944,
+  "surplus_units": 7404,
+  "canonical_rows_sha256": {
+    "published-cpp": "b1618ced1052302c605998716059faef1b7142af9a6661411fcc206395094255",
+    "published-node": "b1618ced1052302c605998716059faef1b7142af9a6661411fcc206395094255"
+  },
+  "triples_sha256": {
+    "published-cpp": "322eaafe9bb5100c8badb500c262e6095e327c6a678a00748e728260c77ad213",
+    "published-node": "322eaafe9bb5100c8badb500c262e6095e327c6a678a00748e728260c77ad213"
+  },
+  "partitions": {
+    "cpp": 4,
+    "node": 4
+  },
+  "cpp_header": {
+    "sites": 20860,
+    "signed_terms": 49208,
+    "minimum_strict_margin": "2841821827556535860368883518555127286690306535927/2841168301217205113722798488244261580337539919330750000000000"
+  },
+  "theorem_agrees": {
+    "status": true,
+    "target": true,
+    "intervals": true,
+    "certificate": true,
+    "minimum": true,
+    "budget": true,
+    "surplus": true,
+    "inputs": true
+  },
+  "theorem_seconds": 868.951,
+  "theorem_processes": 8
+}

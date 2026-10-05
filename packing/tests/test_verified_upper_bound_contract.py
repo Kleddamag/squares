@@ -40,8 +40,9 @@ from sqpack.known_best import KNOWN_BEST_CORPUS
 #: Lowered on 2026-09-29 by 46: Francisco Couzo's 49 packings (T-056) replaced 49 trailing
 #: reports with certified ones, three of which, n = 206, 259 and 305, still trail by 2 or
 #: 3 units of the printed fifteenth decimal; de Winter's n = 211 (T-057) moved a report
-#: and its ceiling together off the grid.
-TRAILING_BY_CORPUS: dict[str, int] = {"n=1..100": 16, "n=1..200": 47, "n=1..324": 82}
+#: and its ceiling together off the grid. Raised on 2026-10-05 by one: Couzo's packing of 3
+#: October at n = 306 (T-092) certifies only 2 units of the fifteenth decimal above its side.
+TRAILING_BY_CORPUS: dict[str, int] = {"n=1..100": 16, "n=1..200": 47, "n=1..324": 83}
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 # The consumers of this field now span the repository: it is named in SYNOPSIS.md and
@@ -138,6 +139,11 @@ DECLARED_CONSUMERS = {
         "a dated review explaining why n = 206, 259 and 305 carry a verified ceiling above "
         "the printed side; it reads the field as the certified ceiling and says it is "
         "neither s(n) nor a different packing"
+    ),
+    "docs/project/reviews/review-2026-10-05-couzo-6042c56.md": (
+        "the T-092 review, explaining why n = 306 carries a verified ceiling two units of "
+        "the fifteenth decimal above the printed side, as the 29 September review did for "
+        "n = 206, 259 and 305; it reads the field as the certified ceiling, not as s(n)"
     ),
     "packing/tests/test_evand_square_packing.py": (
         "pins n = 32's ceiling to the trivial grid's 6, which with the verified lower bound "
@@ -407,15 +413,15 @@ def test_a_third_of_the_corpus_certifies_a_weaker_bound_than_it_reports() -> Non
     assert worst > Decimal("0.42")
 
     # And in those cases `exact_form` is exact about the ceiling and says nothing about
-    # s(n): for all but four it is literally the integer grid bound. n = 29 carries an
-    # interval certificate's endpoint, and n = 206, 259 and 305 the rounded-up side of an
-    # exact rational certificate of Couzo's packing (T-056).
+    # s(n): for all but five it is literally the integer grid bound. n = 29 carries an
+    # interval certificate's endpoint, and n = 206, 259, 305 and 306 the rounded-up side of
+    # an exact rational certificate of Couzo's packing (T-056; T-092 at 306).
     grids = {
         n
         for n in trailing
         if loaded_cases[n]["verified_upper_bound"]["exact_form"] == str(math.isqrt(n - 1) + 1)
     }
-    assert sorted(set(trailing) - grids) == [29, 206, 259, 305]
+    assert sorted(set(trailing) - grids) == [29, 206, 259, 305, 306]
 
     # Every case carrying an exact_form on the ceiling, split by whether s(n) is known.
     exact_forms = sum(

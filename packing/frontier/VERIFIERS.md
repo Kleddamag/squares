@@ -26,21 +26,21 @@ second implementation agrees.
 ## The Short Version
 
 - **79** programs: **31** external and **48** first-party; **65** decide claims and **14** check premises.
-- **229** of **252** evidence entries name the programs that verified them: 167 reproduced with the producer’s code, 46 independently re-implemented, 9 no relation: a proof, a derivation or a report, 7 re-implemented, sharing the producer’s components.
+- **261** of **288** evidence entries name the programs that verified them: 197 reproduced with the producer’s code, 48 independently re-implemented, 9 no relation: a proof, a derivation or a report, 7 re-implemented, sharing the producer’s components.
 
 ## Programs
 
 | id | program | author | provenance | role | evidence | results |
 | --- | --- | --- | --- | --- | ---: | ---: |
 | [`V-tokoharu-verify-cpp`](#v-tokoharu-verify-cpp) | verify.cpp | Tokoharu | external | decides | 12 | 7 |
-| [`V-wand125-mixed-rotated-verify-cpp`](#v-wand125-mixed-rotated-verify-cpp) | mixed_rotated_verify.cpp | wand125 | external | decides | 52 | 6 |
-| [`V-wand125-verify-mixed-full-proof-py`](#v-wand125-verify-mixed-full-proof-py) | verify_mixed_full_proof.py | wand125 | external | decides | 29 | 3 |
+| [`V-wand125-mixed-rotated-verify-cpp`](#v-wand125-mixed-rotated-verify-cpp) | mixed_rotated_verify.cpp | wand125 | external | decides | 80 | 8 |
+| [`V-wand125-verify-mixed-full-proof-py`](#v-wand125-verify-mixed-full-proof-py) | verify_mixed_full_proof.py | wand125 | external | decides | 57 | 5 |
 | [`V-wand125-unified-linear-verify-cpp`](#v-wand125-unified-linear-verify-cpp) | unified_linear_verify.cpp | wand125 | external | decides | 6 | 3 |
 | [`V-wand125-verify-portable-py`](#v-wand125-verify-portable-py) | verify_portable.py | wand125 | external | decides | 2 | 1 |
 | [`V-wand125-check-with-sqpack`](#v-wand125-check-with-sqpack) | check_with_sqpack.py | wand125 | external | decides | 5 | 1 |
 | [`V-wand125-valid7-checker`](#v-wand125-valid7-checker) | valid7-independent-check (Tier A, Tier B and the record checker) | wand125 | external | decides | 1 | 1 |
-| [`V-evand-zmx2`](#v-evand-zmx2) | zmx2 | Evan Daniel | external | decides | 18 | 9 |
-| [`V-evand-zm-mixed-py`](#v-evand-zm-mixed-py) | zm_mixed.py | Evan Daniel | external | decides | 5 | 6 |
+| [`V-evand-zmx2`](#v-evand-zmx2) | zmx2 | Evan Daniel | external | decides | 19 | 9 |
+| [`V-evand-zm-mixed-py`](#v-evand-zm-mixed-py) | zm_mixed.py | Evan Daniel | external | decides | 6 | 6 |
 | [`V-evand-zeromargin-py`](#v-evand-zeromargin-py) | zeromargin.py | Evan Daniel | external | decides | 4 | 2 |
 | [`V-evand-angle-net-verify`](#v-evand-angle-net-verify) | verify (the angle-net arrangement sweep) | Evan Daniel | external | decides | 8 | 4 |
 | [`V-evand-xcheck-py`](#v-evand-xcheck-py) | xcheck.py | Evan Daniel | external | decides | 4 | 2 |
@@ -49,11 +49,11 @@ second implementation agrees.
 | [`V-evand-lean`](#v-evand-lean) | The source's Lean development (lean/) | Evan Daniel | external | decides | 7 | 5 |
 | [`V-chelokot-lean`](#v-chelokot-lean) | The source's Lean development (formal/) | chelokot | external | decides | 1 | 1 |
 | [`V-kleddamag-n11-verify`](#v-kleddamag-n11-verify) | verify.py | Kleddamag | external | decides | 4 | 2 |
-| [`V-kleddamag-n17-verify`](#v-kleddamag-n17-verify) | verify.py | Kleddamag | external | decides | 9 | 5 |
+| [`V-kleddamag-n17-verify`](#v-kleddamag-n17-verify) | verify.py | Kleddamag | external | decides | 10 | 6 |
 | [`V-wang-li-n11-verify`](#v-wang-li-n11-verify) | verify.py of the Zenodo release | Wang and Li | external | decides | 2 | 1 |
 | [`V-guzhou-r012-verify-py`](#v-guzhou-r012-verify-py) | certificates/R012/verify.py | Guzhou0806 | external | decides | 1 | 1 |
 | [`V-guzhou-r052-verify-py`](#v-guzhou-r052-verify-py) | certificates/R052/verify.py | Guzhou0806 | external | decides | 2 | 1 |
-| [`V-guzhou-n17-verify-cpp`](#v-guzhou-n17-verify-cpp) | verify.cpp | Guzhou0806 | external | decides | 3 | 2 |
+| [`V-guzhou-n17-verify-cpp`](#v-guzhou-n17-verify-cpp) | verify.cpp | Guzhou0806 | external | decides | 4 | 3 |
 | [`V-burns-n17-verify-py`](#v-burns-n17-verify-py) | verify-n17-lower-bound-4_4811.py | Burns | external | decides | 1 | 0 |
 | [`V-massaccesi-n17-verify-py`](#v-massaccesi-n17-verify-py) | verify-n17-lower-bound-4_5058.py | Massaccesi | external | decides | 1 | 2 |
 | [`V-mira-17squares-point-checker`](#v-mira-17squares-point-checker) | verify_certificate.py | Mira | external | decides | 1 | 0 |
@@ -66,10 +66,10 @@ second implementation agrees.
 | [`V-check-basic-bounds`](#v-check-basic-bounds) | devtools.check_basic_bounds | Squares Project (Levy) | first-party | decides | 3 | 14 |
 | [`V-optimal-moduli`](#v-optimal-moduli) | cases.small_n.optimal_moduli | Squares Project (Levy) | first-party | decides | 1 | 0 |
 | [`V-sqpack-verify`](#v-sqpack-verify) | sqpack.verify | Squares Project (Levy) | first-party | decides | 12 | 2 |
-| [`V-check-rational-witness-independent`](#v-check-rational-witness-independent) | devtools.check_rational_witness_independent | Squares Project (Levy) | first-party | decides | 4 | 3 |
+| [`V-check-rational-witness-independent`](#v-check-rational-witness-independent) | devtools.check_rational_witness_independent | Squares Project (Levy) | first-party | decides | 5 | 4 |
 | [`V-check-nagamochi-lemma1-counterexample`](#v-check-nagamochi-lemma1-counterexample) | devtools.check_nagamochi_lemma1_counterexample | Squares Project (Levy) | first-party | decides | 1 | 1 |
-| [`V-upper-bound-promotion`](#v-upper-bound-promotion) | devtools.upper_bound_packets | Squares Project (Levy) | first-party | decides | 2 | 2 |
-| [`V-upper-bound-intervals`](#v-upper-bound-intervals) | devtools.upper_bound_intervals | Squares Project (Levy) | first-party | decides | 2 | 2 |
+| [`V-upper-bound-promotion`](#v-upper-bound-promotion) | devtools.upper_bound_packets | Squares Project (Levy) | first-party | decides | 3 | 3 |
+| [`V-upper-bound-intervals`](#v-upper-bound-intervals) | devtools.upper_bound_intervals | Squares Project (Levy) | first-party | decides | 3 | 3 |
 | [`V-sqpack-cover`](#v-sqpack-cover) | sqpack.cover | Squares Project (Levy) | first-party | decides | 4 | 8 |
 | [`V-green17-interval-audit`](#v-green17-interval-audit) | cases.green17.interval_audit | Squares Project (Levy) | first-party | decides | 1 | 3 |
 | [`V-kingbird29-verify-svg`](#v-kingbird29-verify-svg) | cases.kingbird29.verify_svg | Squares Project (Levy) | first-party | decides | 2 | 0 |
@@ -202,6 +202,34 @@ Decides a mixed point-and-rectangle certificate at each of the 201 net direction
 | `E-n094-wand125-mixed-992-report` | the source’s own run | producer’s code | T-082 |
 | `E-n095-wand125-mixed-996-report` | the source’s own run | producer’s code | T-082 |
 | `E-n096-wand125-mixed-997-report` | the source’s own run | producer’s code | T-082 |
+| `E-n042-wand125-mixed-68475-report` | the source’s own run | producer’s code | T-090 |
+| `E-n043-wand125-mixed-69075-report` | the source’s own run | producer’s code | T-090 |
+| `E-n044-wand125-mixed-69725-report` | the source’s own run | producer’s code | T-090 |
+| `E-n051-wand125-mixed-747-report` | the source’s own run | producer’s code | T-090 |
+| `E-n056-wand125-mixed-78025-report` | the source’s own run | producer’s code | T-090 |
+| `E-n057-wand125-mixed-78725-report` | the source’s own run | producer’s code | T-090 |
+| `E-n067-wand125-mixed-8475-report` | the source’s own run | producer’s code | T-090 |
+| `E-n069-wand125-mixed-862-report` | the source’s own run | producer’s code | T-090 |
+| `E-n072-wand125-mixed-876-report` | the source’s own run | producer’s code | T-090 |
+| `E-n075-wand125-mixed-894-report` | the source’s own run | producer’s code | T-090 |
+| `E-n084-wand125-mixed-94075-report` | the source’s own run | producer’s code | T-090 |
+| `E-n086-wand125-mixed-9503-report` | the source’s own run | producer’s code | T-090 |
+| `E-n088-wand125-mixed-96125-report` | the source’s own run | producer’s code | T-090 |
+| `E-n093-wand125-mixed-988-report` | the source’s own run | producer’s code | T-090 |
+| `E-n094-wand125-mixed-994-report` | the source’s own run | producer’s code | T-090 |
+| `E-n095-wand125-mixed-9965-report` | the source’s own run | producer’s code | T-090 |
+| `E-n053-wand125-mixed-76275-report` | the source’s own run | producer’s code | T-091 |
+| `E-n054-wand125-mixed-7685-report` | the source’s own run | producer’s code | T-091 |
+| `E-n058-wand125-mixed-7935-report` | the source’s own run | producer’s code | T-091 |
+| `E-n070-wand125-mixed-86575-report` | the source’s own run | producer’s code | T-091 |
+| `E-n071-wand125-mixed-8721-report` | the source’s own run | producer’s code | T-091 |
+| `E-n073-wand125-mixed-8813-report` | the source’s own run | producer’s code | T-091 |
+| `E-n076-wand125-mixed-8965-report` | the source’s own run | producer’s code | T-091 |
+| `E-n087-wand125-mixed-958-report` | the source’s own run | producer’s code | T-091 |
+| `E-n088-wand125-mixed-962-report` | the source’s own run | producer’s code | T-091 |
+| `E-n090-wand125-mixed-973-report` | the source’s own run | producer’s code | T-091 |
+| `E-n091-wand125-mixed-97625-report` | the source’s own run | producer’s code | T-091 |
+| `E-n094-wand125-mixed-995-report` | the source’s own run | producer’s code | T-091 |
 
 ### `V-wand125-verify-mixed-full-proof-py`
 
@@ -244,6 +272,34 @@ The source's driver for a complete mixed-certificate proof: it runs mixed_rotate
 | `E-n094-wand125-mixed-992-report` | the source’s own run | producer’s code | T-082 |
 | `E-n095-wand125-mixed-996-report` | the source’s own run | producer’s code | T-082 |
 | `E-n096-wand125-mixed-997-report` | the source’s own run | producer’s code | T-082 |
+| `E-n042-wand125-mixed-68475-report` | the source’s own run | producer’s code | T-090 |
+| `E-n043-wand125-mixed-69075-report` | the source’s own run | producer’s code | T-090 |
+| `E-n044-wand125-mixed-69725-report` | the source’s own run | producer’s code | T-090 |
+| `E-n051-wand125-mixed-747-report` | the source’s own run | producer’s code | T-090 |
+| `E-n056-wand125-mixed-78025-report` | the source’s own run | producer’s code | T-090 |
+| `E-n057-wand125-mixed-78725-report` | the source’s own run | producer’s code | T-090 |
+| `E-n067-wand125-mixed-8475-report` | the source’s own run | producer’s code | T-090 |
+| `E-n069-wand125-mixed-862-report` | the source’s own run | producer’s code | T-090 |
+| `E-n072-wand125-mixed-876-report` | the source’s own run | producer’s code | T-090 |
+| `E-n075-wand125-mixed-894-report` | the source’s own run | producer’s code | T-090 |
+| `E-n084-wand125-mixed-94075-report` | the source’s own run | producer’s code | T-090 |
+| `E-n086-wand125-mixed-9503-report` | the source’s own run | producer’s code | T-090 |
+| `E-n088-wand125-mixed-96125-report` | the source’s own run | producer’s code | T-090 |
+| `E-n093-wand125-mixed-988-report` | the source’s own run | producer’s code | T-090 |
+| `E-n094-wand125-mixed-994-report` | the source’s own run | producer’s code | T-090 |
+| `E-n095-wand125-mixed-9965-report` | the source’s own run | producer’s code | T-090 |
+| `E-n053-wand125-mixed-76275-report` | the source’s own run | producer’s code | T-091 |
+| `E-n054-wand125-mixed-7685-report` | the source’s own run | producer’s code | T-091 |
+| `E-n058-wand125-mixed-7935-report` | the source’s own run | producer’s code | T-091 |
+| `E-n070-wand125-mixed-86575-report` | the source’s own run | producer’s code | T-091 |
+| `E-n071-wand125-mixed-8721-report` | the source’s own run | producer’s code | T-091 |
+| `E-n073-wand125-mixed-8813-report` | the source’s own run | producer’s code | T-091 |
+| `E-n076-wand125-mixed-8965-report` | the source’s own run | producer’s code | T-091 |
+| `E-n087-wand125-mixed-958-report` | the source’s own run | producer’s code | T-091 |
+| `E-n088-wand125-mixed-962-report` | the source’s own run | producer’s code | T-091 |
+| `E-n090-wand125-mixed-973-report` | the source’s own run | producer’s code | T-091 |
+| `E-n091-wand125-mixed-97625-report` | the source’s own run | producer’s code | T-091 |
+| `E-n094-wand125-mixed-995-report` | the source’s own run | producer’s code | T-091 |
 
 ### `V-wand125-unified-linear-verify-cpp`
 
@@ -318,8 +374,8 @@ Decides Valid7 for Evan Daniel's k = 7 cover: every closed unit square in [0,7]^
 
 Decides a zero-margin point-and-segment cover by branch and bound over centre and angle boxes, each acceptance an exact integer test on outward-rounded binary64 enclosures, over the D4 region (--d4) or the unreduced pose space (--full).
 
-- Source: [`packing/resources/web/evand-square-packing-2026-09-28/square-packing/s12/verify2/src/bin/zmx2.rs`](../../packing/resources/web/evand-square-packing-2026-09-28/square-packing/s12/verify2/src/bin/zmx2.rs), [`packing/resources/web/evand-zmx2-sym-atoms-2026-09-30/square-packing/s12/verify2/src/bin/zmx2.rs`](../../packing/resources/web/evand-zmx2-sym-atoms-2026-09-30/square-packing/s12/verify2/src/bin/zmx2.rs)
-- Versions run: SHA-256 `6b7f0f79466b…` (the 2026-09-28 packet's post-audit parser, which made the shipped records and which wand125's verify.sh pins); SHA-256 `92a4cfe87b4e…`, revision `e4af291cf527` (the --sym-atoms version, for the unreduced s(32) sweep; of `zmx2.rs`)
+- Source: [`packing/resources/web/evand-square-packing-2026-09-28/square-packing/s12/verify2/src/bin/zmx2.rs`](../../packing/resources/web/evand-square-packing-2026-09-28/square-packing/s12/verify2/src/bin/zmx2.rs), [`packing/resources/web/evand-zmx2-sym-atoms-2026-09-30/square-packing/s12/verify2/src/bin/zmx2.rs`](../../packing/resources/web/evand-zmx2-sym-atoms-2026-09-30/square-packing/s12/verify2/src/bin/zmx2.rs), [`packing/resources/web/evand-square-packing-2026-10-04/square-packing/s12/verify2/src/bin/zmx2.rs`](../../packing/resources/web/evand-square-packing-2026-10-04/square-packing/s12/verify2/src/bin/zmx2.rs)
+- Versions run: SHA-256 `6b7f0f79466b…` (the 2026-09-28 packet's post-audit parser, which made the shipped records and which wand125's verify.sh pins); SHA-256 `92a4cfe87b4e…`, revision `e4af291cf527` (the --sym-atoms version, for the unreduced s(32) sweep; of `zmx2.rs`); SHA-256 `e2bb84e9e059…`, revision `b8157df7a7c7` (the version that accepts a side that is not a multiple of 1/10, with which the source checked its s(20) point cover at side 2443/500; unchanged at 7ff3b211 and not run here; of `zmx2.rs`)
 - Note: wand125 verified its own covers with zmx2 as well, so a zmx2 replay of a wand125 cover is a replay of the producer's code.
 
 | evidence | run | code | results |
@@ -342,6 +398,7 @@ Decides a zero-margin point-and-segment cover by branch and bound over centre an
 | `E-n021-evand-mixed-cover-zmx2-replay` | replayed here | producer’s code | T-052 |
 | `E-n045-evand-mixed-cover-report` | the source’s own run | producer’s code | T-053 |
 | `E-n045-evand-mixed-cover-zmx2-replay` | replayed here | producer’s code | T-053 |
+| `E-n020-evand-point-cover-4886-report` | the source’s own run | producer’s code | - |
 
 ### `V-evand-zm-mixed-py`
 
@@ -360,6 +417,7 @@ The source's exact mixed point-and-segment cover checker, the predecessor zmx2 w
 | `E-n077-wand125-mixed-cover-report` | the source’s own run | producer’s code | T-067 |
 | `E-n021-evand-mixed-cover-report` | the source’s own run | producer’s code | T-052 |
 | `E-n045-evand-mixed-cover-report` | the source’s own run | producer’s code | T-053 |
+| `E-n020-evand-point-cover-4886-report` | the source’s own run | producer’s code | - |
 
 ### `V-evand-zeromargin-py`
 
@@ -512,6 +570,7 @@ Decides an n = 17 certified-bound charge certificate by a Python sweep and a Jav
 | `E-n017-guzhou-r068-report` | the source’s own run | producer’s code | T-043 |
 | `E-n017-guzhou-r068-source-replay` | replayed here | producer’s code | T-043 |
 | `E-n017-guzhou-r067-source-replay` | replayed here | producer’s code | T-042 |
+| `E-n017-guzhou-r071-report` | the source’s own run | producer’s code | T-093 |
 | `E-n017-kleddamag-4640020-report` | the source’s own run | producer’s code | T-040 |
 | `E-n017-kleddamag-4640020-source-replay` | replayed here | producer’s code | T-040 |
 
@@ -570,6 +629,7 @@ The source's C++ exclusion checker, run interval by interval beside Kleddamag's 
 | `E-n017-guzhou-r068-report` | the source’s own run | producer’s code | T-043 |
 | `E-n017-guzhou-r068-source-replay` | replayed here | producer’s code | T-043 |
 | `E-n017-guzhou-r067-source-replay` | replayed here | producer’s code | T-042 |
+| `E-n017-guzhou-r071-report` | the source’s own run | producer’s code | T-093 |
 
 ### `V-burns-n17-verify-py`
 
@@ -760,6 +820,7 @@ Decides a rational-corner witness pair by pair and wall by wall in Fraction arit
 | `E-n017-kleddamag-rational-upper` | replayed here | independent | T-065 |
 | `E-n029-schadt-rational-upper` | replayed here | independent | - |
 | `E-franciscouzo-2026-09-27-exact-replay` | replayed here | independent | T-056 |
+| `E-franciscouzo-2026-10-03-exact-replay` | replayed here | independent | T-092 |
 | `E-n211-de-winter-exact-replay` | replayed here | independent | T-057 |
 
 ### `V-check-nagamochi-lemma1-counterexample`
@@ -789,6 +850,7 @@ Rounds a source's decimal pose to rationals and decides every pair and wall exac
 | evidence | run | code | results |
 | --- | --- | --- | --- |
 | `E-franciscouzo-2026-09-27-exact-replay` | replayed here | independent | T-056 |
+| `E-franciscouzo-2026-10-03-exact-replay` | replayed here | independent | T-092 |
 | `E-n211-de-winter-exact-replay` | replayed here | independent | T-057 |
 
 ### `V-upper-bound-intervals`
@@ -799,10 +861,13 @@ Decides a source's printed pose as printed, by outward-rounded decimal interval 
 
 - Source: [`packing/devtools/upper_bound_intervals.py`](../../packing/devtools/upper_bound_intervals.py)
 - Versions run: this repository's commits, which Git holds
+- What its authors read and used: [`packing/devtools/upper_bound_intervals.py`](../../packing/devtools/upper_bound_intervals.py)
+- Note: Its module statement lists the three things it shares with the exact route (the retained facts, the packet tool's source and acquisition records, and the exact receipt read only to compare values), none of them geometry; packing/tests/test_upper_bound_intervals.py holds its imports to those.
 
 | evidence | run | code | results |
 | --- | --- | --- | --- |
 | `E-franciscouzo-2026-09-27-interval-replay` | replayed here | independent | T-056 |
+| `E-franciscouzo-2026-10-03-interval-replay` | replayed here | independent | T-092 |
 | `E-n211-de-winter-interval-replay` | replayed here | independent | T-057 |
 
 ### `V-sqpack-cover`

@@ -69,14 +69,16 @@ def test_the_residue_is_two_populations_and_nothing_between() -> None:
     tilted. Among the catalogue's packings no residue component touches one wall or
     three. The one exception is n = 68, whose record moved on 2026-09-29 from its
     UnitSquare rendering, where every square is a singleton, to Francisco Couzo's packing:
-    its five-square block seats against one wall.
+    its five-square block seats against one wall. n = 69 made the same move on 2026-10-05,
+    to the catalogue's packing (T-088), and its two blocks, of 21 and 28 squares, are corner
+    blocks like the catalogue's others.
     """
     residue = _record()["residue"]
 
-    assert residue["walls_touched"] == {"1": 1, "2": 65, "4": 44}
+    assert residue["walls_touched"] == {"1": 1, "2": 67, "4": 44}
     assert residue["by_source"] == {
         "exact-grid": 44,
-        "kingbird-derived-facts": 65,
+        "kingbird-derived-facts": 67,
         "packet-derived-facts": 1,
     }
     assert residue["tilted"] == 0
@@ -96,8 +98,9 @@ def test_the_strata_are_not_three_samples_of_one_population() -> None:
     """Why stratifying was the thing worth doing.
 
     Two thirds of the corpus is a row-major grid subset with no tilt anywhere in it, and
-    every tilted component in the repository lives in the other third plus the two excluded
-    renderings.
+    every tilted component in the repository lives in the other third. The UnitSquare
+    renderings that were a stratum of their own have all left it, n = 68 for Couzo's packet
+    on 2026-09-29 and n = 69 for the catalogue on 2026-10-05 (T-088).
     """
     strata = _record()["strata"]
 
@@ -105,7 +108,8 @@ def test_the_strata_are_not_three_samples_of_one_population() -> None:
     assert strata["exact-grid"]["tilted_components"] == 0
     assert strata["exact-grid"]["components"] == 64  # one connected component per record
     assert strata["kingbird-derived-facts"]["tilted_components"] > 0
-    assert strata["unitsquare-rendering"]["shapes"] == {"singleton": 69}
+    assert "unitsquare-rendering" not in strata
+    assert strata["kingbird-derived-facts"]["records"] == 35
     assert strata["packet-derived-facts"]["records"] == 1
     assert strata["packet-derived-facts"]["tilted_components"] > 0
 

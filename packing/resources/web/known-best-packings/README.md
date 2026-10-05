@@ -59,10 +59,28 @@ the packet’s source key, and [`sources.json`](sources.json) lists each such ca
 Kingbird facts, which described the superseded catalogue packing, are no longer the
 atlas’s witness; Git keeps them.
 
+## Facts Read From a Pinned Parse
+
+At $n = 69, 83$ and $87$ the catalogue’s packings of September 2026 (T-088, T-089) were
+taken in on 2026-10-05 from a session that could not fetch the SVGs.
+Their centre-and-angle facts are read instead from Evan Daniel’s parse of the same
+pictures, `site/www/data/p/square-<n>.json` in `evand/square-packing` at
+`7ff3b2113532889708a3baa4d56bc44294022e63`: his own SVG reader’s output, exported in
+binary64. Each witness names that file in `source.revision`, its limitations say the
+numbers are a third party’s parse and not the SVG, and [`sources.json`](sources.json)
+carries the same `revision`. No byte of the parse is retained either; the policy above
+applies to it unchanged.
+`devtools.derive_kingbird_facts --compare-parse` holds the parse to this repository’s
+own reading: at the 90 counts whose witnesses were read from their own pictures, every
+side agrees and every pose agrees to one binary64 ulp.
+Re-deriving the three from the SVGs, once they can be fetched, replaces the parse.
+
 ## Retained UnitSquare Renderings
 
-The `unitsquare/` files are retained public evidence renderings for the newer `n = 68`
-and `n = 69` records.
+The `unitsquare/` files are retained public evidence renderings for the `n = 68` and
+`n = 69` records, which drew on them until Couzo’s packing took `n = 68` on 2026-09-29
+and the catalogue’s took `n = 69` on 2026-10-05; no case draws on them now, and the
+screen’s exclusion control is built from the `n = 69` rendering.
 Those renderings identify governed source receipts in metadata but expose only rounded
 polygon coordinates, so the normalized witnesses preserve that limitation.
 Their retained bytes are checked against the SVG digests independently declared in the

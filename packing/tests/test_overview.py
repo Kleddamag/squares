@@ -1960,6 +1960,9 @@ def test_the_ladder_diagram_is_its_own_component_on_the_shared_tokens() -> None:
 
     # The rail is the chip's own width, now that no count stands under the chip.
     assert "min-inline-size: var(--site-ladders-rail);" in body(".site-ladders-rung .site-chip")
+    # The rail is never narrower than what stands in it, so a wider face's mark pushes the
+    # description along rather than running into it.
+    assert "minmax(var(--site-ladders-rail), max-content)" in rules
     bordered = re.findall(r"([^{}]+)\{[^{}]*\bborder[\w-]*:[^{}]*\}", rules)
     assert [selector.strip() for selector in bordered] == [".site-ladders-head"]
     assert "border-block-end: 1px solid var(--kpress-doc-text);" in body(".site-ladders-head")

@@ -1836,7 +1836,7 @@ body {
   --site-ladders-line: calc(var(--site-font-size-note) * var(--site-ladders-leading));
   /* The rail holds a chip and nothing else, so it is the chip's own width. */
   --site-ladders-rail: 2.25rem;
-  --site-ladders-significance-rail: 3.6rem;
+  --site-ladders-significance-rail: 3.75rem;
   --site-ladders-gap: 0.75rem;
   /* The narrowest a description is ever set: `SHORT_MEANING_LINE` characters a line. */
   --site-ladders-meaning-min: 13.5rem;
@@ -1909,7 +1909,7 @@ body {
   text-align: center;
 }
 /* Significance's rungs are marks, not chips (`significance_mark`): its column's rail is
-   as wide as the widest, S5 and its five bars, so every description in it starts on one
+   as wide as the widest, S5 and its five bars (58.8 pixels at the note size), so every description in it starts on one
    line, as the chips' do. A mark stands as tall as a chip, the chip's line height and
    margin, so a rung of it is as tall as any other where it stands on a line of its own
    over its description, and its letters are level with its description's first line
@@ -1927,16 +1927,21 @@ body {
   block-size: calc(2 * var(--site-ladders-line));
   grid-area: meaning;
 }
-/* A rung with room, 17.85rem (the widest rail, significance's, the gap and the least
+/* A rung with room, 18rem (the widest rail, significance's, the gap and the least
    description): the chip in its rail and the description beside it, its first line
    level with the chip's letters, which the chip's own margin sets down. Every cell
    turns at that one width, so a row's rungs stay one height; at 16.5rem, the chips'
    rail's, a significance description was set 21.6 pixels short of its least and took
-   a third line (2026-10-03). */
-@container (inline-size >= 17.85rem) {
+   a third line (2026-10-03). The rail is at least its width and never narrower than
+   what stands in it: S5's mark, 58.8 pixels in the page's face, ran 1.2 past a 3.6rem
+   rail, and a wider face (65 pixels in the fallback, more in some system faces) ran it
+   into its description (the owner, 2026-10-05). */
+@container (inline-size >= 18rem) {
   .site-ladders-rung {
     align-items: start;
-    grid-template: "chip meaning" auto / var(--site-ladders-rail) minmax(0, 1fr);
+    grid-template-areas: "chip meaning";
+    grid-template-rows: auto;
+    grid-template-columns: minmax(var(--site-ladders-rail), max-content) minmax(0, 1fr);
   }
   .site-ladders-meaning {
     margin-block-start: 0.15rem;

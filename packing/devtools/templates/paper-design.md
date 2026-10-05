@@ -1187,15 +1187,19 @@ it.
   - **Rows.** Every rung is the same height at any one width, since each is a chip and a
     two-line box; a significance mark stands as tall as a chip, the chip’s line height
     and margin. A cell arranges the two by its own width.
-    With 17.85rem or more it sets the chip in a rail, 2.25rem, the chip’s own width, or
-    3.6rem for significance, the widest mark’s (`--site-ladders-significance-rail`), and
-    the description beside it, 0.75rem on, 64.1px a row: at 1280 and 1024 pixels, down
-    to a 973-pixel window, and on a phone down to 318 pixels.
+    With 18rem or more it sets the chip in a rail, 2.25rem, the chip’s own width, or
+    3.75rem for significance, the widest mark’s (`--site-ladders-significance-rail`;
+    S5’s is 58.8px in the page’s face), and the description beside it, 0.75rem on,
+    64.1px a row: at 1280 and 1024 pixels, down to a 980-pixel window, and on a phone
+    down to 320 pixels.
+    The rail is never narrower than what stands in it (`minmax(rail, max-content)`): at
+    3.6rem S5’s mark ran 1.2px past it, and a wider face, 65px in the fallback and more
+    in some system faces, ran it into the words beside it (the owner, 2026-10-05).
     Every cell turns at the widest rail’s width, so a row’s rungs stay one height and a
-    significance description, 1.35rem narrower than the others beside its wider rail, is
+    significance description, 1.5rem narrower than the others beside its wider rail, is
     never under its least: at 16.5rem, the chips’ rail’s, it was set 21.6px short and
     took a third line (2026-10-03). Narrower, it sets the chip on a line of its own and
-    the description under it across the cell, 91.8px a row, from 972 pixels down to 716,
+    the description under it across the cell, 91.8px a row, from 979 pixels down to 716,
     so at 768 and 908. A description is never set narrower than 13.5rem
     (`--site-ladders-meaning-min`).
   - **Columns.** The three columns are equal, and each keeps 0.75rem

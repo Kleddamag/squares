@@ -3,9 +3,9 @@ type: is
 id: is-01m45602efjpf2p4axsgdsm6q3
 title: Stage 4 review of T-093 (Guzhou0806 R071, s(17) > 18641771/4000000), and its replay if Boost can be installed
 kind: task
-status: in_progress
+status: closed
 priority: 1
-version: 4
+version: 5
 delegate: claude-code@vm
 labels:
   - result-import
@@ -14,8 +14,12 @@ parent_id: is-01m44qz0rxvkakmyqaj7qdgagv
 hold: null
 hold_until: null
 created_at: 2026-10-05T04:43:48.559Z
-updated_at: 2026-10-05T07:38:51.491Z
+updated_at: 2026-10-05T08:22:37.052Z
 started_at: 2026-10-05T04:45:51.255Z
+closed_at: 2026-10-05T08:22:37.052Z
+close_reason: "T-093 at V3/C3: R071 C027 paired replay passed, separate review clean, packet trimmed to digest pins; merged into #362 at ed80b1637"
+resolution: null
+duplicate_of: null
 ---
 
 ## Notes

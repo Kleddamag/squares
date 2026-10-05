@@ -5,7 +5,7 @@ title: "Site: page weight, speed and readability"
 kind: epic
 status: open
 priority: 1
-version: 16
+version: 18
 labels: []
 dependencies: []
 child_order_hints:
@@ -22,7 +22,9 @@ child_order_hints:
   - is-01m44mv9jff8sbw3fng71h3871
   - is-01m44mvawpdyqh6jg7x1nq3k33
   - is-01m44mvzamht1e9gcp0bs57f2f
+  - is-01m44rnqpqb3fxdr4p5npk31b2
+  - is-01m44rnrzq46x3k8wts9ztf075
 created_at: 2026-10-04T07:36:40.896Z
-updated_at: 2026-10-04T23:44:28.500Z
+updated_at: 2026-10-05T00:50:59.703Z
 ---
 Every page inlined ~1.8 MB (0.95 MB gzip) of faces, KaTeX, kpress CSS/JS; a reader re-downloaded it on every page (measured 2026-10-04 with measure_site_pages load --network fast-4g --after index.html: 1.0-1.3 MB per page, cold or warm). Move it to content-hashed files under assets/ (devtools/site_assets.py), in phases.

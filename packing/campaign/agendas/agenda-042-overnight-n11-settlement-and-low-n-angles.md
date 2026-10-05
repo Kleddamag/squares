@@ -1972,6 +1972,60 @@ agenda:
       control (K-control-endpoint7, PASS_CONTROL_STALLED in 1,244 s,
       receipts/K/kernel-control-endpoint7.json) covers it. A stall stays a stall, with its
       node kept; none is re-run under BC-423's recipe. Evidence record exp-256.
+  - id: BC-428
+    purpose: research
+    owner_focus: correctness
+    instances:
+    - 17
+    state: in_progress
+    priority: 1
+    question: >-
+      What does per-state exclusion cost in the 21 strata of the arity8 frame that H-264's
+      seed-182 draw never reached, under SW9's frozen adaptive-row recipe?
+    hypotheses:
+    - H-275
+    budget: >-
+      At most 31 runs of at most 7,000 s each and one verification of at most 4,000 s per
+      closure, on two workers, to the run operator's deadline at 2026-10-06T07:14:04Z.
+    entry: >-
+      The coordinator's re-plan at the 21:43 UTC check-in after BC-427; this cell, H-275,
+      exp-257 and the frozen draw committed before the first run.
+    exit: >-
+      The list exhausted or the deadline reached, each run's verdict as observed: a closure
+      re-proved by the standing kernel verifier in full and admitted, one commit each, or a
+      non-closure retained with its node kept; states not run are reported as not run. Any
+      soundness alarm or one verifier FAIL stops the slice.
+    bead: think-z8an
+    depends_on:
+    - BC-415
+    next_evidence: packing/campaign/agent-sessions/session-182-n17-overnight-lanes.md
+    workflows:
+    - research-loop
+    program: post-optimality-low-n
+    parallel_group: n17-overnight-182
+    artifacts:
+    - packing/campaign/hypotheses/H-275-n17-unsampled-strata-per-state-price.md
+    - packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-257-h275-n17-unsampled-strata.md
+    - packing/campaign/explorations/X048-session-182-overnight/kernel-targets-bc428.txt
+    - packing/campaign/explorations/X048-session-182-overnight/receipts/U
+    note: >-
+      Under BC-418, a future slice added at a check-in, following exp-252's report of 21
+      unsampled strata (827 orbits) and H-274's closure of all four counted stalls under
+      SW9's recipe. Registered under a new hypothesis, H-275, because H-264's claim fixes
+      its seed-182 draw and its 32-bin instrument. The draw rule is one state per
+      unsampled stratum, and a second from each stratum holding more than the mean of
+      827/21 orbits (ten strata), from numpy's default_rng(428) over the strata in name
+      order. The run order is a permutation from the same generator, every stratum's first
+      state before any second. The 31 states are frozen in kernel-targets-bc428.txt,
+      written from receipts/U/draw-bc428.jsonl, which receipts/U/draw-bc428.cmd.txt
+      reproduces from receipts/U/frame-arity8.json (survey_n17_residue --flag-set arity8
+      --sample 0 --strata-only) and receipts/A/survey-seed182.json. The instrument is
+      SW9's frozen recipe exactly (--bins 64 --max-rounds 24 --hull-limit 16
+      --producer-share 0.6 --split-floor 512 --max-rows 1152 --split-patience 1
+      --max-seconds 7000) on whole 17-cell states, so BC-424's endpoint-state control under
+      it (PASS_CERTIFIED_STALL, receipts/A/kernel-control-endpoint-sw9.json) and lane K's
+      endpoint7 control cover it. Admission is the standard one: the standing verifier's
+      full pass and the census with the endpoint surviving. Evidence record exp-257.
 ---
 # Agenda 042: The n11 Settlement Ladder and Low-n Angles
 

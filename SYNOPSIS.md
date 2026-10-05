@@ -288,11 +288,11 @@ hypothesis status and summarizes experiment verdicts, and the
 | Record | Count | State at the cutoff |
 | --- | ---: | --- |
 | Agendas | 39 | 19 active; 14 completed; 5 paused; 1 superseded |
-| Commitments | 416 | 216 complete; 65 stopped; 70 blocked; 25 ready; 21 tentative; 19 in progress |
+| Commitments | 417 | 216 complete; 65 stopped; 70 blocked; 25 ready; 21 tentative; 20 in progress |
 | Sessions | 180 | 105 completed; 74 stopped; 1 nonterminal |
 | Explorations | 47 | 28 linked to proposed hypotheses; 19 uncodified |
-| Hypotheses | 208 | 45 confirmed; 33 refuted; 63 blocked; 19 unresolved; 9 open; 34 open questions; 2 result registered; 2 abandoned; 0 running; 1 exhausted |
-| Experiments | 185 | 60 accepted; 38 rejected; 58 unresolved; 12 baseline; 11 blocked; 4 abandoned; 1 in progress; 1 exhausted |
+| Hypotheses | 209 | 45 confirmed; 33 refuted; 63 blocked; 19 unresolved; 9 open; 35 open questions; 2 result registered; 2 abandoned; 0 running; 1 exhausted |
+| Experiments | 186 | 60 accepted; 38 rejected; 58 unresolved; 12 baseline; 11 blocked; 4 abandoned; 2 in progress; 1 exhausted |
 | Frontier results | 94 | 94 registered, 65 by others |
 
 <!-- END CURRENT-RESEARCH-STATUS -->
@@ -5638,6 +5638,7 @@ round that names the hypothesis, control roles included.
 | [H-272](packing/campaign/hypotheses/H-272-symmetric-kingbird-records-reoptimized.md) | blocked | At least 7 of the 68 symmetric Kingbird-derived records re-optimize without symmetry to a verified smaller side (X-049) | 0 | — |
 | [H-273](packing/campaign/hypotheses/H-273-n17-distance-two-infeasible-at-cap.md) | unresolved | Each of the 95 distance-2 orbits of the arity8 frame is infeasible at U; a float survey refutes it with one placement and cannot confirm it (Session 182, lane E) | 1 | exp-255 unresolved: no placement in 95 searches, every control placed; closest miss penetration 0.00027 |
 | [H-274](packing/campaign/hypotheses/H-274-n17-per-state-closure-under-adaptive-rows.md) | confirmed | At least two of H-264’s four counted stalled draws close under SW9’s adaptive-row recipe, on the standing verifier’s full pass (Session 182) | 1 | exp-253 accepted, W2 review confirmed with corrections: s182-m2784767-sw9 and s182-m2817021-sw9 closed and admitted after the endpoint-state control did not close, then s182-m2878207-sw9 and s182-m3063677-sw9: all four closed |
+| [H-275](packing/campaign/hypotheses/H-275-n17-unsampled-strata-per-state-price.md) | open question | The per-state exclusion price, under SW9’s adaptive-row recipe, of residue states drawn from the 21 strata H-264’s seed-182 draw never reached (827 orbits; Session 182) | 1 | exp-257 registered: 31 frozen states from the 21 strata |
 
 ### Confirmed
 
@@ -5974,7 +5975,7 @@ The relevant generator writes the receipt, and the entry fills in on the next
 
 ## Experiments Conducted
 
-There are 185 rounds registered in `series-000`.
+There are 186 rounds registered in `series-000`.
 
 They record 2512.1 agent-minutes and 4975.5 wall-minutes.
 These totals exclude four historical annealing rounds with unrecorded timing; their wall
@@ -6203,6 +6204,7 @@ archive beside it.
 | [exp-254](packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-254-h267-n17-second-tranche-flags.md) | 17 | target | H-267 | Session 182 BC-425: lane K’s second tranche, the next ten standing flags by projected gain (all arity 8) under the frozen SW9 recipe, each closure admitted on the standing verifier’s full pass | Eight of ten arity-8 flags forbidden at U on the standing verifier’s full pass (s182-bc425-t1, t2, t4, t5, t7, t8, t9, t10), two at the 24-round cap; 5,057 certified orbits, endpoint surviving; arity 8, so H-267 unresolved | unresolved |
 | [exp-255](packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-255-h273-n17-distance-two-survey.md) | 17 | target | H-273 | Session 182 lane E: every distance-2 orbit of the arity8 frame searched for a float placement at U, ten shards each with the endpoint’s state as its positive control | No placement in 95 searches, every control placed; the closest miss at penetration 0.00027 | unresolved |
 | [exp-256](packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-256-h267-n17-third-tranche-flags.md) | 17 | target | H-267 | Session 182 BC-427: lane K’s third tranche, the sixteen remaining flags of arity at most seven with the most projected gain, under the frozen SW9 recipe, each closure admitted on the standing verifier’s full pass | In progress: s182-bc427-t4 and s182-bc427-t6 forbidden at U; 4,711 certified orbits, 8,191 under arity-at-most-7 entries | in-progress |
+| [exp-257](packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-257-h275-n17-unsampled-strata.md) | 17 | target | H-275 | Session 182 BC-428: a seeded draw of 31 residue states from the 21 strata H-264’s draw never reached, run whole under SW9’s frozen adaptive-row recipe, each closure admitted on the standing verifier’s full pass | In progress: registered before its first run | in-progress |
 
 ### Cost and provenance
 
@@ -6393,10 +6395,11 @@ archive beside it.
 | exp-254 | 7,000 s per target and 4,000 s per verification; one worker per job | 7543.0 s | — | criterion | `72c343904`; eight of ten closed and admitted, two at the round cap |
 | exp-255 | 3,600 s per shard under a 3,900 s hard timeout, one or two workers | 13549.0 s | — | criterion | `f7b45bdbb`; 95 of 95 orbits searched, none placed |
 | exp-256 | 7,000 s per target and 4,000 s per verification; one worker per job, two workers | — | — | — | in progress at `cebb5d15a` |
+| exp-257 | 7,000 s per state and 4,000 s per verification; one worker per job, two workers | — | — | — | in progress at `cebb5d15a` |
 
-### What the 185 rounds jointly establish
+### What the 186 rounds jointly establish
 
-The 185 rounds use 2512.1 agent-minutes and 4975.5 wall-minutes under the campaign’s
+The 186 rounds use 2512.1 agent-minutes and 4975.5 wall-minutes under the campaign’s
 retained effort accounting.
 The never-invoked exp129 adds no scientific result or execution time.
 Exp-114 contributes 2.46 seconds of target/replay effort; its readiness work is recorded

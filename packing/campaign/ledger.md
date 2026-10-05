@@ -904,12 +904,13 @@ Status: **active**. Turn PR 230's W3 review and the two explorations it led to, 
 | BC-425 | research | 17 | complete | 1 | think-035m | packing/campaign/agent-sessions/session-182-n17-overnight-lanes.md |
 | BC-426 | research | 17 | in_progress | 1 | think-035m | packing/campaign/agent-sessions/session-182-n17-overnight-lanes.md |
 | BC-427 | research | 17 | in_progress | 1 | think-035m | packing/campaign/agent-sessions/session-182-n17-overnight-lanes.md |
+| BC-428 | research | 17 | in_progress | 1 | think-z8an | packing/campaign/agent-sessions/session-182-n17-overnight-lanes.md |
 
 ## Series
 
 | id | status | title | rounds | opened because |
 | --- | --- | --- | --- | --- |
-| series-000 | open | S0: smoke and calibration — prove the machinery, establish every baseline metric | 185 | First series. There is no prior instrument, so not |
+| series-000 | open | S0: smoke and calibration — prove the machinery, establish every baseline metric | 186 | First series. There is no prior instrument, so not |
 
 ## Registry
 
@@ -1123,6 +1124,7 @@ Status: **active**. Turn PR 230's W3 review and the two explorations it led to, 
 | H-272 | blocked | search | Of the 68 non-grid known-best records whose witness derives from Kingb |  | 0 |  |  |
 | H-273 | unresolved | proof | Each of the 95 orbits at Hamming distance 2 from the endpoint's state  |  | 1 |  | 225.8m wall |
 | H-274 | confirmed | proof | Of the four counted draws of H-264's seed-182 draw that stalled under  |  | 1 |  | 196.1m wall |
+| H-275 | open question | proof | On a seeded draw of one residue state from each of the 21 strata of su |  | 1 |  |  |
 
 ## Needs review — held for a human, not decided
 
@@ -1351,11 +1353,12 @@ Status: **active**. Turn PR 230's W3 review and the two explorations it led to, 
 | exp-032 | series-000 | 3 | openai-codex | H-021 | The exact connected and isolated controls pass, every declared conflation fails, and all unsupported floating-point observations remain unresolved. |
 | exp-201 | series-000 | 18 | claude-opus-5 | H-201 | Calibration, not a scored round: it freezes p_perturb = 1.0, perturb_scale = 2 and a flat mu = 5 for exp-202 and exp-203, and it turned up a schedule-length effect that is now registered as H-204 rather than folded into an arm. |
 
-### in-progress (1)
+### in-progress (2)
 
 | id | series | instance | operator | hypotheses | reason |
 | --- | --- | --- | --- | --- | --- |
 | exp-256 | series-000 | 17 | Claude Session 182; the run operator's BC-427 queue produces and verifies each certificate on two workers and admits each closure in the session checkout | H-267 | Registered before its first run; each closure is admitted as its verifier passes, and the verdict is written when the list is exhausted or a stop rule fires. |
+| exp-257 | series-000 | 17 | Claude Session 182; the run operator's BC-428 queue runs the states in the frozen order on two workers, verifies each closure, and admits it in the session checkout | H-275 | Registered before its first run; each closure is admitted as its verifier passes, and the verdict is written when the list is exhausted or the deadline arrives. |
 
 ## Resumable — stopped on the clock, not on an answer
 
@@ -1403,7 +1406,7 @@ Status: **active**. Turn PR 230's W3 review and the two explorations it led to, 
 
 ## Effort
 
-185 rounds, 2512.1 agent-minutes, 4975.5 wall-minutes.
+186 rounds, 2512.1 agent-minutes, 4975.5 wall-minutes.
 
 These totals exclude 4 historical rounds with unrecorded timing; their cost is unknown, not zero.
 

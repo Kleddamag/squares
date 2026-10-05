@@ -849,6 +849,15 @@ consequence in each.
   (`census-arity7-after-bc427-t4.json`); the handoff’s 1,372 is against the 10,173 line
   after `s182-k9`. After `s182-bc427-t6` the line is 8,191, which no longer depends on
   A, and only W7 is individually decisive.
+- **BC-427 closes after targets 8 and 10, and BC-428 opens on H-264’s unsampled
+  strata.** At the coordinator’s re-plan at 21:43, BC-427’s queue stopped launching
+  after target 10; the targets past 10 are recorded as not run, and the cap stalls are
+  left for BC-423’s recipe once the user rules on its control.
+  BC-428 registers H-275 and exp-257 before its first run: a seeded draw of 31 residue
+  states from the 21 strata H-264’s seed-182 draw never reached, under SW9’s frozen
+  recipe on two workers to the deadline.
+  H-275 is a new hypothesis because H-264’s claim fixes its draw and its 32-bin
+  instrument.
 
 <!-- This document follows common-doc-guidelines.md.
 See github.com/jlevy/practical-prose and review guidelines before editing.

@@ -1258,7 +1258,9 @@ _CARDS_TO_A_LINE = re.compile(
 )
 #: Each card size's minimum column, in rem, and the most to a line the stylesheet steps
 #: to: `paper-design.md`, Cards.
-CARD_COLUMNS = {"small": (12, 6), "medium": (16, 5), "large": (21, 4)}
+#: Each size's minimum column in rem and the most cards it sets to a line: four at most for
+#: every size (the owner, 2026-10-05).
+CARD_COLUMNS = {"small": (12, 4), "medium": (16, 4), "large": (21, 4)}
 
 
 def _screen_card_rules() -> str:

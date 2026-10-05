@@ -113,6 +113,11 @@ allowlist:
 # in replay_guzhou_r071.py, whose two sites hold Guzhou0806's retained package files and
 # the C027 certificate against the source's pinned digests before replaying and mutating
 # them. Recorded as inherited under think-vre9, as its audit sibling is.
+# The merge of origin/main at d08d07997 on 2026-10-05 brought in the n = 11 series' figure
+# modules: n11_threshold_figures.py, whose five sites hold its figure inputs and the
+# threshold certificate's bindings against pinned digests, and paper_figures.py, whose one
+# site holds the bound ladder's register records against a digest. Recorded as inherited
+# under think-29r8, which decides each against OR-16.
 baseline:
   packages/workbench/tools/workbench_tools/check_candidate.py: 1
   packing/benchmarks/bench_n11_fast_cover.py: 3
@@ -219,6 +224,8 @@ baseline:
   packing/devtools/n11_optimality_figures.py: 3
   packing/devtools/n11_optimality_mechanism_figures.py: 9
   packing/devtools/n11_optimality_overview_figures.py: 7
+  packing/devtools/n11_threshold_figures.py: 5
+  packing/devtools/paper_figures.py: 1
   packing/devtools/pilot_n17_subpattern_bb.py: 3
   packing/devtools/plan_valid7_replay.py: 6
   packing/devtools/plan_valid9_replay.py: 6

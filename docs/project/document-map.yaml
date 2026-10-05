@@ -11,6 +11,8 @@ scope: >
 documents:
   - {path: packing/devtools/n17-diagnostics.md, role: development-guide, authority: current, lifecycle: maintained}
   - {path: docs/project/n17-optimality-explainer.md, role: tutorial, authority: supporting, lifecycle: maintained}
+  - {path: docs/project/specs/active/plan-2026-10-05-n11-explainer-series.md, role: plan, authority: current, lifecycle: transient}
+  - {path: docs/project/reviews/review-2026-10-05-n11-threshold-bound-review.md, role: review, authority: record, lifecycle: retained}
   - {path: docs/project/reviews/review-2026-10-02-nagamochi-lemma1-karakus.md, role: review, authority: record, lifecycle: retained}
   - {path: docs/project/reviews/review-2026-10-02-wand125-s61-point-cover.md, role: review, authority: record, lifecycle: retained}
   - {path: docs/project/reviews/review-2026-10-03-n11-optimality-upstream-delta.md, role: review, authority: record, lifecycle: retained}

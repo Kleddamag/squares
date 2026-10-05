@@ -5,12 +5,12 @@ title: PR333 split-layer review and certification tracking
 kind: chore
 status: open
 priority: 2
-version: 2
+version: 3
 assignee: Guzhou
 labels: []
 dependencies: []
 created_at: 2026-10-05T01:49:28.290Z
-updated_at: 2026-10-05T02:53:21.074Z
+updated_at: 2026-10-05T02:59:58.019Z
 ---
 # PR333 split-layer review and certification tracking
 
@@ -30,3 +30,5 @@ Review A's nine implementation findings and scope parent are closed. Current hea
 middle/top packing/pages gates pass, bottom cannot form a merge ref. No overall
 merge acceptance is claimed. Await Joshua and separately authorized upstream integration.
 No active executor, research ownership, background work or follow-up reserved.
+Joshua, Fable and other agents are free to claim new work under a new bead, with fresh
+authority, ownership and safety checks. These tracking notes reserve no mechanism.

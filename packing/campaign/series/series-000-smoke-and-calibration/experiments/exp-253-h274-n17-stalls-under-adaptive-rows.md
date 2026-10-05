@@ -32,16 +32,16 @@ experiment:
     role: target
   method:
     control: The kernel on the endpoint's own state, which is feasible at U, under the same recipe at the
-      7,000 s ceiling must not close. It ran beside the first state, and no closure was admitted before it
-      finished. It returned PASS_CERTIFIED_STALL in 6,599 s of wall and 6,299 s of process CPU, the producer
-      at its 24-round cap on 408 steps and 27,520 rows, finest 1/128, excluding nothing
+      7,000 s ceiling must not close. It ran beside the first three states in turn, and no closure was
+      admitted before it finished. It returned PASS_CERTIFIED_STALL in 6,599 s of wall and 6,299 s of process
+      CPU, the producer at its 24-round cap on 408 steps and 27,520 rows, finest 1/128, excluding nothing
       (receipts/A/kernel-control-endpoint-sw9.json).
     candidate: Each frozen state's seed and node, re-proved in full by the standing kernel verifier on a closure.
     runs_per_condition: 1
     interleaved: false
-    operator: Claude Session 182; the run operator's BC-424 queue ran the control beside the first state and the
-      states two at a time in mask order, verified each closure, and admitted it in the session checkout once
-      the control had finished without closing
+    operator: Claude Session 182; the run operator's BC-424 queue ran the control beside the states, which ran
+      one at a time in mask order, verified each closure, and admitted it in the session checkout once the
+      control had finished without closing
     entry_point: packing/devtools/check_n17_subpattern.py
     command: 'From packing/ of the run worktree: nice -n 10 timeout -k 120 7600 .venv/bin/python3 -m
       devtools.check_n17_subpattern --cells CELLS17 --bins 64 --max-rounds 24 --hull-limit 16 --producer-share
@@ -101,10 +101,12 @@ experiment:
       SW9's recipe, each re-proved in full by the standing kernel verifier and admitted
       after the endpoint-state control finished without closing, which meets the
       criterion of two. Both had reached producer fixed points under N1's recipe. The
-      third, 2878207, closed after the verdict too; the fourth, 3063677, runs on for the
-      cost. Held for the W2 review the plan requires before X-048 or the frontier states
-      the verdict.
-    needs_review: true
+      third, 2878207, closed too and was verified and admitted after the verdict; the
+      fourth, 3063677, runs on for the cost. The W2 factual review
+      (docs/project/reviews/review-2026-10-05-exp-253-h274.md) confirmed the verdict with
+      corrections to the mechanism, the procedure, a timing and one figure, which this
+      record carries.
+    needs_review: false
     commit: 3396efda0
   effort:
     timebox: 7,000 s per state and for the control, 4,000 s per verification, one worker each
@@ -122,29 +124,33 @@ This round is BC-424 of
 registered at a check-in with the four counted stalls that existed then.
 [Lane D’s stall classification](../../../../../docs/project/reviews/review-2026-10-05-n17-stall-classification.md)
 gives the mechanism.
-The distance-4 stalls share a north-wall knot whose cut margins, about 0.011 to 0.015,
-sit below the first-order losses of 32 uniform bins but above a cut at the 1/512 split
-floor.
+In three of the four stalls (2817021, 3063677 and 2878207) the knot is side-N1 and
+side-N2 on the north wall, and in 2784767 it is side-W0 and side-W1 on the west wall.
+Their cut margins, about 0.011 to 0.018, sit below the first-order losses of 32 uniform
+bins but above a cut at the 1/512 split floor.
 
-The control and the first state ran side by side, and admission, not launch, waited for
-the control. Session 182 changed to that procedure after its second container restart;
-its record gives the reason.
+The control ran beside the first three states in turn, and admission, not launch, waited
+for the control. H-274’s regime ran the control first; Session 182 changed to this
+procedure after its second container restart and recorded it in `4a49f464b` before the
+counted launch, and its record gives the reason.
 Each closed state removes only its own orbit.
 
-H-274 is accepted on its first two states and held for a W2 review.
+H-274 is accepted on its first two states.
+[The W2 factual review](../../../../../docs/project/reviews/review-2026-10-05-exp-253-h274.md)
+confirmed the verdict with corrections, which this record carries.
 Both closed with their finest rows at 1/128, so neither needed rows as fine as the 1/512
 split floor. The round’s wall, 6,601 s, runs from the launch at 14:19:55 UTC to the
 control’s end, which released both closures.
-Two earlier launches of the control and the first state were killed by container
-restarts without receipts and are not counted.
-The third state, 2878207, closed after the verdict in 875 s of CPU; the fourth runs on
-for the cost.
+Container restarts killed two earlier launches of the control (12:07 and 13:29 UTC) and
+one of the first state (13:29 UTC) without receipts; they are not counted.
+The third state, 2878207, closed in 875 s of CPU and was verified and admitted after the
+verdict; the fourth runs on for the cost.
 
 ## Runs
 
 | Mask | Distance | Under N1’s recipe (exp-252) | Under SW9’s recipe | Process CPU | Verifier |
 | --- | --- | --- | --- | --- | --- |
-| control | 0 | stalled in 333 s | 24-round cap, not closed | 6,299 s | — |
+| control | 0 | stalled in 321 s | 24-round cap, not closed | 6,299 s | — |
 | 2784767 | 4 | fixed point, 828 s | closed, 7 rounds, admitted | 1,675 s | full pass, 782 s |
 | 2817021 | 4 | fixed point, 828 s | closed, 8 rounds, admitted | 2,100 s | full pass, 911 s |
 | 2878207 | 6 | fixed point, 925 s | closed, 4 rounds, admitted after the verdict | 875 s | full pass, 421 s |

@@ -744,12 +744,16 @@ consequence in each.
 
 ## After the Handoff
 
-- **H-274 is accepted, held for its W2 review**
-  ([exp-253](../series/series-000-smoke-and-calibration/experiments/exp-253-h274-n17-stalls-under-adaptive-rows.md)).
+- **H-274 is accepted**
+  ([exp-253](../series/series-000-smoke-and-calibration/experiments/exp-253-h274-n17-stalls-under-adaptive-rows.md)),
+  confirmed with corrections by its
+  [W2 factual review](../../../docs/project/reviews/review-2026-10-05-exp-253-h274.md).
   BC-424’s endpoint-state control stalled at its 24-round cap in 6,599 s and passed at
   16:09:56 UTC, releasing states 2784767 and 2817021 (`36c081a4d`, `3396efda0`); the
-  verdict is `90a031fb6`. State 2878207 closed after it (`400c57176`). The certified
-  census is 72,248 states in 9,162 orbits, the endpoint surviving.
+  verdict is `90a031fb6`. State 2878207’s producer closed at 16:08:36, before the
+  control ended and before the verdict; it was verified at 16:15:37 and admitted after
+  the verdict (`400c57176`). The certified census is 72,248 states in 9,162 orbits, the
+  endpoint surviving.
 - **BC-423’s control is undecided, so target 2 is not admitted.** Target 2 closed under
   BC-423’s settings at 15:02:59 (46 rounds, 33,834 rows, finest row 1/512), and the
   standing verifier passed it in full at 15:22:50 in 1,190 s. Its endpoint7 control

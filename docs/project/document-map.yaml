@@ -45,6 +45,7 @@ documents:
   - {path: docs/project/reviews/review-2026-10-05-n17-capture-r9.md, role: review, authority: record, lifecycle: retained}
   - {path: docs/project/reviews/review-2026-10-05-n17-stall-classification.md, role: review, authority: record, lifecycle: retained}
   - {path: docs/project/reviews/review-2026-10-05-exp-252-h264.md, role: review, authority: record, lifecycle: retained}
+  - {path: docs/project/reviews/review-2026-10-05-exp-253-h274.md, role: review, authority: record, lifecycle: retained}
   - {path: docs/project/reviews/review-2026-10-03-integrity-ceremony-audit.md, role: review, authority: record, lifecycle: retained}
   - {path: packing/campaign/explorations/X048-session-168-pilots/handoff/README.md, role: research-report, authority: record, lifecycle: retained}
   - {path: docs/project/reviews/review-2026-10-01-n17-route-after-pr265.md, role: review, authority: record, lifecycle: retained}

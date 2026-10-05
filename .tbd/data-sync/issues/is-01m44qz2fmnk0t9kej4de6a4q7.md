@@ -5,7 +5,7 @@ title: "Import wand125: mixed rectangle-measure lower bounds of 4 October at 14 
 kind: task
 status: in_progress
 priority: 1
-version: 8
+version: 9
 delegate: claude-code@vm
 labels:
   - result-import
@@ -18,7 +18,7 @@ parent_id: is-01m44qz0rxvkakmyqaj7qdgagv
 hold: null
 hold_until: null
 created_at: 2026-10-05T00:38:35.764Z
-updated_at: 2026-10-05T02:11:19.636Z
+updated_at: 2026-10-05T03:25:41.892Z
 started_at: 2026-10-05T00:48:54.642Z
 ---
 14 comments on #282 (2026-10-04T07:04Z..19:04Z), commits 683264c..797bdf6 of wand125/square-packing-bounds. Stages 1-3: claim map against the record, packet at the last commit, register T-090 at V0, read_through on #282. Replay (stage 4) priced and queued, not run: same verifier as mixed_n84_L940, ~7 CPU-h per certificate.
@@ -34,3 +34,5 @@ Claim map for T-091 (prior reported value, holder): n53 3051/400 > 3043/400 rect
 T-091: V0/C0, S3 draft, published 2026-10-04. #282 result oct4-mixed-12 -> T-091. Replay (think-wrdq): 130.8 CPU-h planned (116.9 x 1.119; 137.7 by the source's oblique seconds), mixed-shard wand125-mixed-bounds-evening-2026-10-04 --runners 6 (~21-22 CPU-h, ~5.5 wall-h per runner at 4 workers). Blind review pending: brief at the coordinator.
 
 Validation: records tier fails only on id contiguity (T-088/T-089 on the Kingbird lane); renumbered to T-088/T-089 in a scratch worktree, check_results and 93 register tests pass. See the final report for the push tier.
+
+2026-10-05 03:30Z validation at 2bcc69791: records tier fails only id contiguity; push tier: lint, types, browser floor and edit checks green; its reachable-tests step ran the whole suite (the retained check_records.py is Python outside the mapped roots) and hit the 1800 s limit under load. The reachable selection without that file (179 files) ran 5080 passed, 13 failed: 6 contiguity, 2 fixed_core_packet reaping tests that fail on clean main here, 2 n11 and 2 validation_cli tests that pass alone (load), and test_site_frontier_table's pinned n = 51 value, fixed in 2bcc69791. Renumbered to T-088/T-089 in a scratch worktree, check_results and 93 register tests pass.

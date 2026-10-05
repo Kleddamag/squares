@@ -128,6 +128,18 @@ def test_a_catalogue_record_owes_the_entry_s_ai_statement_quoted_whole() -> None
     assert assistance.catalogue_owed(_record(CATALOGUE_RECORD, body), catalogue) == ()
 
 
+def test_a_quotation_the_formatter_curled_inside_still_counts() -> None:
+    """n = 87: the formatter curls the straight quotes the catalogue nests in a sentence."""
+    catalogue = {
+        7: _Entry('Improved by A. Name in September 2026, working with X, with help from "B".')
+    }
+    (owed,) = assistance.catalogue_owed(_record(CATALOGUE_RECORD, "Found.\n"), catalogue)
+    assert '"B"' in owed
+    curled = owed.replace('"B"', "“B”")
+    body = f"## The packing\n\nFound.\n{curled}\n"
+    assert assistance.catalogue_owed(_record(CATALOGUE_RECORD, body), catalogue) == ()
+
+
 def test_a_record_reporting_another_source_owes_the_catalogue_nothing() -> None:
     elsewhere = CATALOGUE_RECORD.replace("'[Kingbird]'", "'[Elsewhere 2026]'")
     assert assistance.catalogue_owed(_record(elsewhere, "Found.\n"), {7: AI_CREDIT}) == ()

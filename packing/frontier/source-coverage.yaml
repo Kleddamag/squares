@@ -1358,8 +1358,8 @@ superseded_reports:
     source_id: unitsquare-release1
     value: '8.827205507815920656880680735618736931225314831'
     superseded_by: kingbird-current
-    reason: Superseded on 2026-10-05 by the catalogue's side for David Ellsworth's optimization of
-      the same packing (T-088), which the case now reports from the catalogue baseline.
+    reason: Superseded on 2026-10-05 by the catalogue's side for David Ellsworth's optimization
+      of the same packing (T-088), which the case now reports from the catalogue baseline.
   - n: 103
     source_id: casson-square-packing-2026
     value: '10.70377984436967189'

@@ -122,8 +122,8 @@ def test_a_stronger_non_ds7_report_at_n18_is_left_in_place() -> None:
     """wand125's mixed report on a declared net (T-096) outranks R012, its own rectangle
     certificate and the DS7 candidates at n = 18.
 
-    It sits above the verified lane until its coverage replay runs here, a reported-lane
-    fact the DS7 selector must neither lower nor replace.
+    Its coverage replay here has put it in the verified lane too; the DS7 selector must
+    neither lower nor replace the reported one.
     """
     case = ds7.read_case(REPO, None, 18)
     assert case["reported_lower_bound"]["exact_form"] == "47/10"

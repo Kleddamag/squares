@@ -213,8 +213,31 @@ record, in 4,628 CPU-seconds against the source’s 3,741 on the same directions
 receipts are [`receipts/n66-L843/range-*/`](receipts/n66-L843/). A sample is a
 diagnostic: it decides no other direction, and `mixed-merge` has not been run.
 
-**`n18-L470`: the bundle’s own driver, in full.** See the receipts under
-[`receipts/n18-L470/full/`](receipts/n18-L470/) once the run completes.
+**`n18-L470`: the bundle’s own driver, in full.** The pinned tarball was unpacked twice.
+One copy is the shipped run, which `audit_wand125_declared_net bundle` binds to the
+packet. In the other, the bundle’s driver ran as its README says, at two workers under
+`nice`, with CPython 3.14.7, NumPy 2.5.2 and c++ 13.3.0, from 17:16 to 21:40 UTC on 5
+October 2026:
+
+```sh
+OPENBLAS_NUM_THREADS=1 OMP_NUM_THREADS=1 python3 code/verify_mixed_full_proof.py proof --workers 2
+```
+
+It exited zero with `ALL_ANGLES_VERIFIED_AND_REPLAYED` at 416 of 416 nodes, in 4.40
+hours of wall time on a host at load 7 to 17; its CPU time was not recorded, the
+runner’s process times not reaching the driver’s pooled workers. From `packing/`,
+
+```sh
+uv run --frozen --all-extras --group dev python -m devtools.audit_wand125_declared_net \
+  compare --shipped SHIPPED --fresh RUN --meta RUN_META
+```
+
+printed `FULL_REPLAY_MATCHES_SHIPPED`: the driver’s progress counts 416 of 416 nodes, its
+binary is in the copy, all 416 records were written during the run and equal the shipped
+ones and the retained certificate’s, the rewritten certificate equals the retained one
+as a mapping, and the other 848 shipped files are unchanged. The receipts are
+[`receipts/n18-L470/full/`](receipts/n18-L470/full/): `compare.json`, and the runner’s
+`run.meta` and the driver’s `run.stdout`.
 
 **`sqverify-fast`.** This repository’s clean-room verifier, with lemma N0 for the
 declared net, verified both certificates at every direction of their nets: `n18-L470` at
@@ -226,8 +249,9 @@ rung rests on it.
 ## Limitations
 
 - **Coverage is decided by the source’s C++ alone** for the source’s own runs; the replays
-  and `sqverify-fast` runs here are recorded separately. At $n = 66$ only a sample of 12
-  directions has been replayed with the source’s checker.
+  and `sqverify-fast` runs here are recorded separately. At $n = 18$ the bundle’s own
+  driver was replayed in full; at $n = 66$ only a sample of 12 directions has been
+  replayed with the source’s checker.
 - **No source audit.** Neither directory carries the source’s `completion-audit.json`, so
   nothing the source publishes binds a certificate to its tarball but the README’s digest
   and the commit. The binding here is the pinned tree’s digest and each bundle’s own file

@@ -15348,3 +15348,74 @@ evidence:
         the source's until the replay here passes; the comparison tool for it must be fixed
         first (finding DN-1, blocking for the exit).
     source_reviewed: '2026-10-05'
+  - id: E-n018-wand125-mixed-470-source-replay
+    claim: lower-bound
+    scope: {n_values: [18]}
+    assurance: verified
+    method: interval-certified
+    performed_by: repository
+    relationship_to_generator: same-implementation
+    origin: replayed-here
+    novelty: previously-published
+    source_key: '[wand125 mixed bounds finer net 2026-10-05]'
+    certificate: resources/web/wand125-mixed-bounds-finer-net-2026-10-05/square-packing-bounds/certificates/mixed_n18_L470/candidate.json.gz
+    replay: >-
+      Fetch certificates/mixed_n18_L470/n18-L4.7-proof-bundle.tar.gz from
+      wand125/square-packing-bounds at the pinned revision, refuse it unless its SHA-256
+      (6c30eb73...) and size are the pinned ones, and unpack it twice. From packing/,
+      .venv/bin/python3 -m devtools.audit_wand125_declared_net bundle --bundle SHIPPED
+      binds the unpacked bundle to the packet and its records and inputs to the declared
+      net. In the other copy, as the bundle's README says, with the project CPython 3.14
+      and NumPy and a C++17 c++ on PATH: OPENBLAS_NUM_THREADS=1 OMP_NUM_THREADS=1
+      python3 code/verify_mixed_full_proof.py proof --workers 2, recording the run's start,
+      exit and end. Then .venv/bin/python3 -m devtools.audit_wand125_declared_net compare
+      --shipped SHIPPED --fresh RUN --meta RUN_META must print FULL_REPLAY_MATCHES_SHIPPED:
+      the run exited zero, the driver's progress counts 416 of 416 nodes, its binary is in
+      the copy, and every regenerated record, and the rewritten certificate as a mapping,
+      equal the shipped and retained ones (receipts/n18-L470/full/ in the packet). The
+      checker's controls are .venv/bin/python3 -m devtools.audit_wand125_point_and_mixed
+      mixed-control n37 --work W, which must report CONTROLS_REFUSED.
+    replay_status: passed
+    verifiers: [V-wand125-mixed-rotated-verify-cpp, V-wand125-verify-mixed-full-proof-py, V-audit-wand125-declared-net]
+    proof:
+      source: packing/resources/web/external-square-certificates-2026-09-22/tokoharu-density/docs/continuous-density-certificate.ja.md
+      theorem: Rectangle-density covering obstruction at coverage one on a declared half-angle net, applied to wand125's mixed_n18_L470; no 18 unit squares fit in a square of side below 47/10.
+      scope: Unrestricted square packing with disjoint interiors and arbitrary rotations.
+      pinpoints: >-
+        The theorem and interval-verifier correspondence of the 2026-09-22 Tokoharu
+        review; the departures of mixed_rotated_verify.cpp from verify.cpp (coverage one
+        and the per-node centre domain) read in the 2026-09-28 n = 50 verifier review; the
+        declared net re-derived in exact arithmetic in the 5 October review of this
+        certificate, with lemma N0 of packing/sqverify_fast/SOUNDNESS.md; the replay
+        receipts in receipts/n18-L470/ of the wand125-mixed-bounds-finer-net-2026-10-05
+        packet.
+      assumptions:
+        - The rectangle density is nonnegative and exact, of total mass 1799999/100000 < 18, which this repository's exact audit recomputes from the retained candidate.
+        - All angles and legal centres are covered by the declared net of 416 half-angle tangents of step 1/1001 at core side 999/1000, B (1 + 1/1001) = 500499/500500 < 1, and the per-bin centre domains at half-step 1/2002, which the exact audit and the bundle check recompute and bind to every shipped record and input.
+        - Binary64 arithmetic has the reviewed IEEE-754 semantics, compiled by the shipped line with -ffp-contract=off and -fno-fast-math.
+        - The replayed interval inputs enclose the exact candidate, which the bundle check verifies for every input's header and rectangle lines.
+      audit_record: docs/project/reviews/review-2026-10-05-wand125-declared-net-n18-n66.md
+    limitations: >-
+      Replays the source's driver code/verify_mixed_full_proof.py (SHA-256 2719e482...)
+      and checker code/mixed_rotated_verify.cpp (SHA-256 89b674a6...), both byte-identical
+      to the n = 50 copies reviewed on 28 September, unchanged, as the bundle's README
+      says, on 2026-10-05T17:16:28Z to 2026-10-05T21:40:27Z at two workers under nice on a shared 4-core x86-64 Linux
+      container (c++ 13.3.0, CPython 3.14.7, NumPy 2.5.2, one BLAS and OpenMP thread):
+      416 of 416 nodes, 4.40 hours of wall time at two workers under nice on a host at load 7 to 17 (CPU time was not recorded: the runner's process times do not reach the driver's pooled workers), against the bundle's record of 9,819 oblique
+      seconds on macOS arm64. Every regenerated record equals the shipped one and the
+      retained certificate's: the axis 725,904 cells with integer minimum
+      1.0174496711115353, and each of the 415 oblique nodes its node count and lower bound,
+      the least 1.000000000165181 at index 161 (FULL_REPLAY_MATCHES_SHIPPED). This is a
+      machine replay of the source's checker, not an independent decision of the
+      certificate: coverage is decided by the source's C++ alone, and the angle-zero
+      tables are a second implementation for one direction only. The driver regenerates
+      the inputs from the candidate; the bundle check binds every shipped input's header
+      to the declared net and its rectangle lines to the expanded candidate. Controls: the
+      checker, with the same compile, accepts mixed_n37_L644 at its least-bound direction
+      and refuses two mutated copies there (receipts/n37/control.json of the 2026-10-01
+      point-and-mixed packet, held by tests/test_wand125_checker_controls.py); no mutation
+      of the n = 18 certificate was run with the source's checker. This repository's
+      sqverify-fast refuses its masses scaled by 0.985 at 326 of 416 directions with exact
+      witnesses and refuses every corrupted net declaration, but no evidence entry rests on
+      it. The tarball is pinned by digest and not retained.
+    source_reviewed: '2026-10-05'

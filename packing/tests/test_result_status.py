@@ -226,8 +226,10 @@ def test_superseded_is_marked_on_a_bound_and_where_a_later_result_is_declared() 
     # superseded Daniel's s(12) >= 15680/3951 (T-049); thirty-three since the merge of the
     # same day, when the replays recorded in parallel (T-063, T-069) beat Bašić and
     # Slivková's piercing bound (T-087) at both of its counts; thirty-four since 5 October,
-    # when R071's replay (T-093) superseded R068 (T-043) at n = 17.
-    assert len(derived) == 34
+    # when R071's replay (T-093) superseded R068 (T-043) at n = 17; thirty-six later that
+    # day, when wand125's mixed certificate on a declared net (T-096) took n = 18 from
+    # both of its rectangle entries, the replay T-045 and the report T-046.
+    assert len(derived) == 36
     assert {"T-020", "T-021", "T-030", "T-043", "T-044", "T-047", "T-049", "T-087"} <= set(
         derived
     )
@@ -248,7 +250,7 @@ def test_superseded_is_marked_on_a_bound_and_where_a_later_result_is_declared() 
         assert entry not in by, entry
     assert view.superseding(records.results["T-037"], records) == ("T-060",)
     assert view.position_marks(records.results["T-019"], view.SUPERSEDED, records) == [
-        "superseded by T-045, T-046, T-068, T-074 and T-093"
+        "superseded by T-068, T-074, T-093 and T-096"
     ]
     # Only a bound supersedes: at n = 13 and 46 a correction and an audit carry the
     # lower bound's evidence beside the optimality results that hold it.

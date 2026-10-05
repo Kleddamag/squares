@@ -16,7 +16,7 @@ those directions. CPU on a shared host whose load average is given.
 
 | Certificate | n | Format | Status | Directions | Nodes | Least certified bound | Exact leaf | CPU s, all directions | Load | Replayed directions | Authors’ CPU s | Ours, same directions | Ratio |
 | --- | ---: | --- | --- | ---: | ---: | --- | --- | ---: | ---: | --- | ---: | ---: | ---: |
-| `mixed_n18_L470` | 18 | M | VERIFIED | 416 | 37,882,813 | 1.0000000000740676 | clears | 168.3 | 12.5 | none: first complete check here | - | - | - |
+| `mixed_n18_L470` | 18 | M | VERIFIED | 416 | 37,882,813 | 1.0000000000740676 | clears | 168.3 | 12.5 | all 416 | - | - | - |
 | `mixed_n37_L644` | 37 | M | VERIFIED | 201 | 49,002,652 | 1.000000001365918 | clears | 621.1 | 1.8 | all 201 | 18,462 | 620.9 | 30x |
 | `mixed_n50_L7318` | 50 | M | VERIFIED | 201 | 25,730,280 | 1.0000000022689954 | clears | 176.6 | 5.4 | none: first complete check here | - | - | - |
 | `mixed_n50_L735` | 50 | L | VERIFIED | 201 | 62,847,662 | 1.0000000002563805 | clears | 647.1 | 12.0 | none: first complete check here | - | - | - |

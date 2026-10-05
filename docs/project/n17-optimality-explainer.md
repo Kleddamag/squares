@@ -28,7 +28,7 @@ machinery, which the tutorial explains and this document only names.
 | --- | --- | --- | --- |
 | Best known packing | $S^{\ast} = 4.67553009360455\ldots$ | John Bidwell, 1998, building on Hämäläinen’s 1980 packing | verified: a rational ceiling $4.6755300936045509516342148538535054$ certified here ([T-065](../../packing/frontier/RESULTS.md)) |
 | Its side as an algebraic number | the root of the catalogue’s degree-18 polynomial | this project, [exp-245](../../packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-245-h265-n17-catalogue-polynomial.md), 2026-10-02 | proved: the polynomial is irreducible and the certified side is its root ([H-265](../../packing/campaign/hypotheses/H-265-n17-catalogue-polynomial-identity.md)) |
-| Best lower bound | $s(17) > 116511/25000 = 4.66044$ | Guzhou0806 / N17 project, R068, 28 September 2026, continuing Kleddamag’s charge | verified at `V3/C3`: both source checkers replayed here in full ([T-043](../../packing/frontier/RESULTS.md)) |
+| Best lower bound | $s(17) > 18641771/4000000 = 4.66044275$ | Guzhou0806 / N17 project, R071, 30 September 2026, on R068’s charge, which continues Kleddamag’s | verified at `V3/C3` on 5 October: both source checkers replayed here in full ([T-093](../../packing/frontier/RESULTS.md); R068’s $116511/25000$, T-043, before it) |
 | Gap | $0.01509$ |  | **open** |
 
 The known packing has ten axis-aligned squares, six tilted by about $39.80^{\circ}$ and
@@ -402,7 +402,7 @@ $n = 17$ lower-bound results and holds the bracket’s lower end.
 | Status | Items |
 | --- | --- |
 | Proved | The depth-width wall lemma; the identity of the certified side with the catalogue polynomial; the stress; with one review and not machine-checked end to end, the capture-target theorem as the composition of exp-244, exp-248 and exp-247 with hand lemmas 1–6 of the [recipe review](reviews/review-2026-10-02-n17-local-theorem-recipe.md) |
-| Verified | The rational ceiling on the side; the R068 lower bound at `V3/C3`; the cover’s coverage, capacities, $D_4$ invariance, Burnside count and unique family state; the local minimum over $B_W'$ at $r = 1/5000$; the slide bounds |
+| Verified | The rational ceiling on the side; the R071 lower bound at `V3/C3` (T-093), and R068’s before it (T-043); the cover’s coverage, capacities, $D_4$ invariance, Burnside count and unique family state; the local minimum over $B_W'$ at $r = 1/5000$; the slide bounds |
 | Admitted | The W7 and A certificates, each re-proved in full by an independent verifier ([exp-249](../../packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-249-h267-n17-first-certified-sub-patterns.md)); the SW9 and N1 kernel certificates, each re-proved in full by the standing verifier, and again by the verifier fixed for the closed-cover defect class, which the defects had not reached on either ([verifier-rewrites review, §6.5](reviews/review-2026-10-03-n17-verifier-rewrites.md#65-re-verification-with-the-fixed-verifier)); and the certified census of 15,953 orbits ([exp-250](../../packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-250-h267-n17-standing-verifier-admissions.md)) |
 | Projected | Nothing at present beyond the heuristic lines below |
 | Heuristic | Every selector flag, every best-penetration figure, and every orbit count conditional on flags proving |

@@ -22,7 +22,7 @@ result, this project’s or another’s, by how far it has been checked.
 It goes into most depth where there is recent progress, which in September 2026 means
 $n = 11$, $n = 17$, and the exact values newly proved at $n = 21$, $32$ and $45$. At
 seventeen squares both ends of the bracket are now machine-checked: Guzhou0806’s lower
-bound $s(17) > 4.66044$ ([T-043](packing/frontier/RESULTS.md)), and the upper bound
+bound $s(17) > 4.66044275$ ([T-093](packing/frontier/RESULTS.md)), and the upper bound
 $s(17) \le 4.67553009\ldots$ of John Bidwell’s 1998 packing, certified exactly from
 Kleddamag’s rational witness ([T-065](packing/frontier/RESULTS.md)).
 

@@ -321,11 +321,11 @@
       {"group":"case-record","path":"packing/frontier/n-322.md","phrases":{"beside: bound":1,"beside: family":1,"beside: verified":1,"closed-form: 2\\lfloor":1,"k2-minus-2-identity: k^2 - 2":1,"k2-minus-2-identity: n^2 - 2":1,"k2-minus-2-identity: n² − 2":1},"statements":{"closed_form":1,"k2_minus_2_identity":3,"mentions":0,"qualified":6,"relies":1,"states":6,"unqualified_states":1}},
       {"group":"case-record","path":"packing/frontier/n-323.md","phrases":{"beside: bound":1,"beside: proves":1,"beside: verified":1,"closed-form: 2\\lfloor":1},"statements":{"closed_form":1,"k2_minus_2_identity":0,"mentions":0,"qualified":4,"relies":1,"states":3,"unqualified_states":0}},
       {"group":"case-record","path":"packing/frontier/n-324.md","phrases":{"beside: bound":1},"statements":{"closed_form":0,"k2_minus_2_identity":0,"mentions":0,"qualified":0,"relies":1,"states":0,"unqualified_states":0}},
-      {"group":"register","path":"packing/frontier/RESULTS.md","phrases":{"beside: family":1,"beside: theorem":2,"beside: verified":4,"closed-form: min(ceil":2,"k2-minus-2-identity: k^2 - 2":1,"k2-minus-2-identity: m^2 - 2":1},"statements":{"closed_form":2,"k2_minus_2_identity":2,"mentions":24,"qualified":6,"relies":0,"states":11,"unqualified_states":5}},
+      {"group":"register","path":"packing/frontier/RESULTS.md","phrases":{"beside: family":1,"beside: theorem":2,"beside: verified":4,"closed-form: min(ceil":2,"k2-minus-2-identity: k^2 - 2":1,"k2-minus-2-identity: m^2 - 2":1},"statements":{"closed_form":2,"k2_minus_2_identity":2,"mentions":25,"qualified":6,"relies":0,"states":11,"unqualified_states":5}},
       {"group":"register","path":"packing/frontier/INVENTORY.md","phrases":{},"statements":{"closed_form":0,"k2_minus_2_identity":0,"mentions":1,"qualified":0,"relies":0,"states":0,"unqualified_states":0}},
       {"group":"register","path":"packing/frontier/CERTIFICATE-REACH.md","phrases":{"beside: floor":8},"statements":{"closed_form":0,"k2_minus_2_identity":0,"mentions":0,"qualified":0,"relies":8,"states":0,"unqualified_states":0}},
       {"group":"register","path":"packing/frontier/results.yaml","phrases":{"beside: bounds":2,"beside: closed form":7,"beside: closed-form":1,"beside: exact value":1,"beside: family":3,"beside: theorem":3,"beside: verified":13,"closed-form: 2⌊":1,"closed-form: min(ceil":2,"k2-minus-2-identity: k^2 - 2":1,"k2-minus-2-identity: k² − 2":1,"k2-minus-2-identity: m^2 - 2":2},"statements":{"closed_form":3,"k2_minus_2_identity":4,"mentions":20,"qualified":35,"relies":10,"states":27,"unqualified_states":10}},
-      {"group":"register","path":"packing/frontier/evidence.yaml","phrases":{"beside: bound":3,"beside: boundary":1,"beside: bounds":1,"beside: closed form":10,"beside: exact value":1,"beside: family":1,"beside: theorem":52,"beside: verified":8,"closed-form: min(ceil":1,"k2-minus-2-identity: m^2 - 2":2,"k2-minus-2-identity: m^2-2":1,"k2-minus-2-identity: n^2 - 2":1,"k2-minus-2-identity: n^2-2":1},"statements":{"closed_form":1,"k2_minus_2_identity":5,"mentions":18,"qualified":22,"relies":15,"states":68,"unqualified_states":55}},
+      {"group":"register","path":"packing/frontier/evidence.yaml","phrases":{"beside: bound":3,"beside: boundary":1,"beside: bounds":1,"beside: closed form":10,"beside: exact value":1,"beside: family":1,"beside: theorem":54,"beside: verified":8,"closed-form: min(ceil":1,"k2-minus-2-identity: m^2 - 2":2,"k2-minus-2-identity: m^2-2":1,"k2-minus-2-identity: n^2 - 2":1,"k2-minus-2-identity: n^2-2":1},"statements":{"closed_form":1,"k2_minus_2_identity":5,"mentions":22,"qualified":27,"relies":15,"states":70,"unqualified_states":56}},
       {"group":"research","path":"docs/project/research/research-2026-08-22-packing-11-unit-squares.md","phrases":{"beside: bound":5,"beside: bounds":1,"beside: closed form":1,"beside: family":4,"beside: governed":1,"beside: proved":1,"beside: theorem":1,"closed-form: 2⌊":1,"k2-minus-2-identity: m² − 2":2,"k2-minus-2-identity: m²−2":3,"k2-minus-2-identity: n² − 2":1,"k2-minus-2-identity: n²−2":1,"lone table cell":175},"statements":{"closed_form":1,"k2_minus_2_identity":7,"mentions":7,"qualified":15,"relies":183,"states":14,"unqualified_states":4}},
       {"group":"research","path":"docs/project/research/research-2026-08-22-square-packing-algorithms-and-tooling.md","phrases":{"beside: family":1,"beside: proved":1,"k2-minus-2-identity: k^2 - 2":3,"k2-minus-2-identity: n^2 - 2":2,"lone table cell":1},"statements":{"closed_form":0,"k2_minus_2_identity":5,"mentions":1,"qualified":8,"relies":1,"states":7,"unqualified_states":0}},
       {"group":"research","path":"docs/project/research/research-2026-09-07-stromquist-memos-and-helper-arguments.md","phrases":{},"statements":{"closed_form":0,"k2_minus_2_identity":0,"mentions":1,"qualified":0,"relies":0,"states":0,"unqualified_states":0}},
@@ -770,7 +770,7 @@
       "family": null,
       "n": 17,
       "nagamochi": {"basis":"nagamochi-theorem-2","decimal":"4.162277660168","exact":"1 + sqrt(10)","exact_case":false},
-      "operative_lower_bound": {"cites_t007":false,"evidence":["E-n017-guzhou-r068-source-replay"],"exact_form":"116511/25000","results":["T-043"],"t007_scope_covers_n":true,"value":"4.66044"},
+      "operative_lower_bound": {"cites_t007":false,"evidence":["E-n017-guzhou-r071-source-replay"],"exact_form":"18641771/4000000","results":["T-093"],"t007_scope_covers_n":true,"value":"4.66044275"},
       "reported_lower_bound": {"cites_t007":false,"evidence":["E-n017-guzhou-r071-report"],"value":"4.66044275"},
       "reported_status": "open",
       "status": "open",
@@ -793,10 +793,10 @@
           {"confirmation":"C3","id":"T-043","kind":"lower-bound","verification":"V3"},
           {"confirmation":"C1","id":"T-083","kind":"lower-bound","verification":"V3"},
           {"confirmation":"C3","id":"T-085","kind":"correction","verification":"V3"},
-          {"confirmation":"C0","id":"T-093","kind":"lower-bound","verification":"V0"}
+          {"confirmation":"C3","id":"T-093","kind":"lower-bound","verification":"V3"}
         ],
         "registered_reported": {"basis":"exact-form","decimal":"4.660442750000","exact":"18641771/4000000","reaches_nagamochi":true,"shortfall_below_nagamochi":"-0.498165089832","sources":[{"evidence":["E-n017-guzhou-r071-report"],"n":17,"proved_by":["Guzhou0806"],"results":["T-093"],"via":"direct"}]},
-        "registered_verified": {"basis":"exact-form","decimal":"4.660440000000","exact":"116511/25000","reaches_nagamochi":true,"shortfall_below_nagamochi":"-0.498162339832","sources":[{"evidence":["E-n017-guzhou-r068-source-replay"],"n":17,"results":["T-043"],"via":"direct"}]}
+        "registered_verified": {"basis":"exact-form","decimal":"4.660442750000","exact":"18641771/4000000","reaches_nagamochi":true,"shortfall_below_nagamochi":"-0.498165089832","sources":[{"evidence":["E-n017-guzhou-r071-source-replay"],"n":17,"results":["T-093"],"via":"direct"}]}
       },
       "weakened_to": null,
       "weakened_to_without_karakus": null
@@ -2169,7 +2169,7 @@
       "n": 67,
       "nagamochi": {"basis":"nagamochi-theorem-2","decimal":"8.211102550927","exact":"1 + 2*sqrt(13)","exact_case":false},
       "operative_lower_bound": {"cites_t007":false,"evidence":["E-wand125-rectangle-2026-09-28-source-replay"],"exact_form":"1691/200","results":["T-070"],"t007_scope_covers_n":true,"value":"8.455"},
-      "reported_lower_bound": {"cites_t007":false,"evidence":["E-n067-wand125-mixed-8475-report"],"value":"8.475"},
+      "reported_lower_bound": {"cites_t007":false,"evidence":["E-n067-wand125-mixed-848-report"],"value":"8.48"},
       "reported_status": "open",
       "status": "open",
       "support": {
@@ -2178,8 +2178,8 @@
         "chelokot_lean": null,
         "karakus_explicit_bound": {"basis":"karakus-6.1","decimal":"8.197402159170","exact":"1/2 + (1/2)*sqrt(237)","reaches_nagamochi":false,"shortfall_below_nagamochi":"0.013700391757"},
         "karakus_k2_minus_1": null,
-        "other_registered_results_at_n": [{"confirmation":"C0","id":"T-046","kind":"lower-bound","verification":"V0"},{"confirmation":"C3","id":"T-070","kind":"lower-bound","verification":"V3"},{"confirmation":"C1","id":"T-083","kind":"lower-bound","verification":"V3"},{"confirmation":"C3","id":"T-085","kind":"correction","verification":"V3"},{"confirmation":"C1","id":"T-090","kind":"lower-bound","verification":"V0"}],
-        "registered_reported": {"basis":"exact-form","decimal":"8.475000000000","exact":"339/40","reaches_nagamochi":true,"shortfall_below_nagamochi":"-0.263897449073","sources":[{"evidence":["E-n067-wand125-mixed-8475-report"],"n":67,"proved_by":["wand125"],"results":["T-090"],"via":"direct"}]},
+        "other_registered_results_at_n": [{"confirmation":"C0","id":"T-046","kind":"lower-bound","verification":"V0"},{"confirmation":"C3","id":"T-070","kind":"lower-bound","verification":"V3"},{"confirmation":"C1","id":"T-083","kind":"lower-bound","verification":"V3"},{"confirmation":"C3","id":"T-085","kind":"correction","verification":"V3"},{"confirmation":"C1","id":"T-090","kind":"lower-bound","verification":"V0"},{"confirmation":"C0","id":"T-094","kind":"lower-bound","verification":"V0"}],
+        "registered_reported": {"basis":"exact-form","decimal":"8.480000000000","exact":"212/25","reaches_nagamochi":true,"shortfall_below_nagamochi":"-0.268897449073","sources":[{"evidence":["E-n067-wand125-mixed-848-report"],"n":67,"proved_by":["wand125"],"results":["T-094"],"via":"direct"}]},
         "registered_verified": {"basis":"exact-form","decimal":"8.455000000000","exact":"1691/200","reaches_nagamochi":true,"shortfall_below_nagamochi":"-0.243897449073","sources":[{"evidence":["E-wand125-rectangle-2026-09-28-source-replay"],"n":67,"results":["T-070"],"via":"direct"}]}
       },
       "weakened_to": null,
@@ -2628,7 +2628,7 @@
       "n": 84,
       "nagamochi": {"basis":"nagamochi-theorem-2","decimal":"9.185352771872","exact":"1 + sqrt(67)","exact_case":false},
       "operative_lower_bound": {"cites_t007":false,"evidence":["E-n084-wand125-mixed-940-source-replay"],"exact_form":"47/5","results":["T-071"],"t007_scope_covers_n":true,"value":"9.4"},
-      "reported_lower_bound": {"cites_t007":false,"evidence":["E-n084-wand125-mixed-94075-report"],"value":"9.4075"},
+      "reported_lower_bound": {"cites_t007":false,"evidence":["E-n084-wand125-mixed-9411-report"],"value":"9.411"},
       "reported_status": "open",
       "status": "open",
       "support": {
@@ -2637,8 +2637,8 @@
         "chelokot_lean": null,
         "karakus_explicit_bound": {"basis":"karakus-6.1","decimal":"9.174675786448","exact":"1/2 + (1/2)*sqrt(301)","reaches_nagamochi":false,"shortfall_below_nagamochi":"0.010676985423"},
         "karakus_k2_minus_1": null,
-        "other_registered_results_at_n": [{"confirmation":"C3","id":"T-071","kind":"lower-bound","verification":"V3"},{"confirmation":"C1","id":"T-083","kind":"lower-bound","verification":"V3"},{"confirmation":"C3","id":"T-085","kind":"correction","verification":"V3"},{"confirmation":"C1","id":"T-090","kind":"lower-bound","verification":"V0"}],
-        "registered_reported": {"basis":"exact-form","decimal":"9.407500000000","exact":"3763/400","reaches_nagamochi":true,"shortfall_below_nagamochi":"-0.222147228128","sources":[{"evidence":["E-n084-wand125-mixed-94075-report"],"n":84,"proved_by":["wand125"],"results":["T-090"],"via":"direct"}]},
+        "other_registered_results_at_n": [{"confirmation":"C3","id":"T-071","kind":"lower-bound","verification":"V3"},{"confirmation":"C1","id":"T-083","kind":"lower-bound","verification":"V3"},{"confirmation":"C3","id":"T-085","kind":"correction","verification":"V3"},{"confirmation":"C1","id":"T-090","kind":"lower-bound","verification":"V0"},{"confirmation":"C0","id":"T-094","kind":"lower-bound","verification":"V0"}],
+        "registered_reported": {"basis":"exact-form","decimal":"9.411000000000","exact":"9411/1000","reaches_nagamochi":true,"shortfall_below_nagamochi":"-0.225647228128","sources":[{"evidence":["E-n084-wand125-mixed-9411-report"],"n":84,"proved_by":["wand125"],"results":["T-094"],"via":"direct"}]},
         "registered_verified": {"basis":"exact-form","decimal":"9.400000000000","exact":"47/5","reaches_nagamochi":true,"shortfall_below_nagamochi":"-0.214647228128","sources":[{"evidence":["E-n084-wand125-mixed-940-source-replay"],"n":84,"results":["T-071"],"via":"direct"}]}
       },
       "weakened_to": null,

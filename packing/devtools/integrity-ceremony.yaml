@@ -109,6 +109,10 @@ allowlist:
 # certificate and the R068 checker bytes its completion summary names against the
 # source's recorded digests, as audit_guzhou_r068.py does. Recorded as inherited under
 # think-vre9, which decides whether it joins the allowlist as a download.
+# The merge of origin/main at dee22b882 on 2026-10-05 (PR 362, the R071 replay) brought
+# in replay_guzhou_r071.py, whose two sites hold Guzhou0806's retained package files and
+# the C027 certificate against the source's pinned digests before replaying and mutating
+# them. Recorded as inherited under think-vre9, as its audit sibling is.
 baseline:
   packages/workbench/tools/workbench_tools/check_candidate.py: 1
   packing/benchmarks/bench_n11_fast_cover.py: 3
@@ -229,6 +233,7 @@ baseline:
   packing/devtools/render_regularized_atlas.py: 2
   packing/devtools/replay_chelokot_lean.py: 1
   packing/devtools/replay_evand_zmx2.py: 1
+  packing/devtools/replay_guzhou_r071.py: 2
   packing/devtools/replay_n17_rational_upper.py: 1
   packing/devtools/run_fixed_core_calibration_profiles.py: 9
   packing/devtools/run_n11_nonfield_batch.py: 1

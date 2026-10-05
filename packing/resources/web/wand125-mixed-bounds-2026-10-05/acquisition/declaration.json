@@ -1,0 +1,47 @@
+{
+  "format": "external-source-declaration-v1",
+  "id": "wand125-mixed-bounds",
+  "source_url": "https://github.com/wand125/square-packing-bounds",
+  "source_ref": "refs/heads/main",
+  "source_commit": "a541afbe7826ff75f6d3848e10279fd524d55af3",
+  "retrieved_at_utc": "2026-10-05T07:36:39Z",
+  "git_scope": "A blobless clone of the single public branch with its history, sparsely checked out at this commit: the two claim directories added since 797bdf6 and the three root files. Every file under those two directories is digested, with the three root files; the rest of the tree is pinned by the commit.",
+  "archived_dir": "square-packing-bounds",
+  "license": "MIT, Copyright (c) 2026 wand125 (root LICENSE)",
+  "claims": [
+    "s(67) >= 212/25 (certificates/mixed_n67_L848)",
+    "s(84) >= 9411/1000 (certificates/mixed_n84_L9411)"
+  ],
+  "scope": [
+    "README.md",
+    "LICENSE",
+    ".gitignore",
+    "certificates/mixed_n67_L848",
+    "certificates/mixed_n84_L9411"
+  ],
+  "pinned_only": [
+    {
+      "match": "LICENSE",
+      "reason": "retained byte-identical by the 2026-09-27 rectangle packet",
+      "identical_to": "packing/resources/web/wand125-rectangle-certificates-2026-09-27/wand125-rectangles/LICENSE"
+    },
+    {
+      "match": ".gitignore",
+      "reason": "a retained .gitignore would act on this repository's tree; the 2026-10-01 packet README quotes it"
+    },
+    {
+      "match": "certificates/mixed_*/*-proof-bundle.tar.gz",
+      "reason": "complete proof bundle (22.0 and 28.6 MB)"
+    },
+    {
+      "match": "certificates/mixed_*/code/*",
+      "reason": "byte-identical to the mixed_n50_L740/code/ file of the same name, retained by the 2026-09-28 packet",
+      "identical_to": "packing/resources/web/wand125-point-and-mixed-2026-09-28/square-packing-bounds/certificates/mixed_n50_L740/code"
+    },
+    {
+      "match": "certificates/mixed_*/requirements.txt",
+      "reason": "byte-identical to mixed_n50_L740/requirements.txt, retained by the 2026-09-28 packet",
+      "identical_to": "packing/resources/web/wand125-point-and-mixed-2026-09-28/square-packing-bounds/certificates/mixed_n50_L740/requirements.txt"
+    }
+  ]
+}

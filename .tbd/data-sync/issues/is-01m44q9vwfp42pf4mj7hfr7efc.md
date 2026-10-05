@@ -3,14 +3,18 @@ type: is
 id: is-01m44q9vwfp42pf4mj7hfr7efc
 title: "PR #333 A1 (High): the OR-16 integrity ratchet is bypassed."
 kind: task
-status: open
+status: in_progress
 priority: 2
-version: 1
+version: 2
+delegate: graph_gate
 labels: []
 dependencies: []
 parent_id: is-01m44q9st2e0jh0h0cztp6hnv8
+hold: null
+hold_until: null
 created_at: 2026-10-05T00:27:00.878Z
-updated_at: 2026-10-05T00:27:00.878Z
+updated_at: 2026-10-05T00:54:30.323Z
+started_at: 2026-10-05T00:54:30.323Z
 ---
 https://github.com/jlevy/squares/pull/333#pullrequestreview-5408660716
 

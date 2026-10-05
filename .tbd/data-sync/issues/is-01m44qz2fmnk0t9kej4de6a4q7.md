@@ -5,7 +5,7 @@ title: "Import wand125: mixed rectangle-measure lower bounds of 4 October at 14 
 kind: task
 status: in_progress
 priority: 1
-version: 5
+version: 6
 delegate: claude-code@vm
 labels:
   - result-import
@@ -18,14 +18,14 @@ parent_id: is-01m44qz0rxvkakmyqaj7qdgagv
 hold: null
 hold_until: null
 created_at: 2026-10-05T00:38:35.764Z
-updated_at: 2026-10-05T01:06:03.292Z
+updated_at: 2026-10-05T01:06:25.563Z
 started_at: 2026-10-05T00:48:54.642Z
 ---
 14 comments on #282 (2026-10-04T07:04Z..19:04Z), commits 683264c..797bdf6 of wand125/square-packing-bounds. Stages 1-3: claim map against the record, packet at the last commit, register T-090 at V0, read_through on #282. Replay (stage 4) priced and queued, not run: same verifier as mixed_n84_L940, ~7 CPU-h per certificate.
 
 ## Notes
 
-2026-10-05 01:30Z stages 1-3 and 5 (tbd-moderate lane, branch claude/ecstatic-pascal-pothtx-wand125, commits 861a9f258 and 696167be9; not pushed).
+2026-10-05 01:05Z stages 1-3 and 5 (tbd-moderate lane, branch claude/ecstatic-pascal-pothtx-wand125, commits 861a9f258 and 696167be9; not pushed).
 
 Pin: wand125/square-packing-bounds 797bdf6e10eba5f9dccca9da06f8352e81ba9dde (head; committed 2026-10-04T19:03:58Z; ls-remote: one branch, no tags). Nothing after it. Between 8aa6a10 and 797bdf6: 12 certificate commits, plus 3f063bd (k2m4_n77_L9: run logs, full replay record, hardened verify.sh, cover unchanged; evidence update for T-067, #279/#280 review points) and 781afb3 (point_n21_L5: relativized paths, English status messages, lemma-code map fixed, certificate unchanged; evidence update for T-055). Neither is a new claim; both are separate evidence-update imports, not retained here.
 

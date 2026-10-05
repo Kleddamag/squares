@@ -154,25 +154,37 @@ experiment:
   - shape: determination
     role: guard
     question: Do the certified exclusions leave at most 10^4 orbits, H-267's threshold?
-    outcome: criterion_missed
-    checked_by: With W7, A, SW9, N1 and Session 182's admissions (s182-k1, s182-m5683195, s182-k3, s182-k4, s182-k5, s182-k6, s182-k7, s182-k8, s182-k9),
-      census_n17_certified
-      counts 72,296 states and 9,168 orbits, the endpoint surviving, down from 126,168 and
-      15,953 at the registration (results/exp-251-n17-overnight-flag-certification/census.json, reading the
-      selector recheck; 79 flags still project, and certifying them all would leave
-      17,160 states in 2,196 orbits). The same tool on the ledger restricted to
-      the arity-at-most-7 entries (W7, A, s182-k1, s182-k3, s182-k4, s182-k5, s182-k6, s182-k7, s182-k8, s182-k9) counts 80,260 states and 10,173 orbits, down
-      from exp-249's 17,690, against the threshold of 10^4 (receipts/K/census-arity7-after-k9.json, on
-      the derived ledger receipts/K/ledger-arity7-after-k9.yaml, whose header names the command that writes it).
+    outcome: criterion_met
+    checked_by: >-
+      On the ledger restricted to the entries of arity at most seven, W7, A, this round's
+      s182-k1 and s182-k3 to s182-k9, and s182-bc427-t4 from exp-256, census_n17_certified
+      counts 78,824 states and 9,990 orbits, the endpoint surviving: ten orbits under the
+      threshold of 10^4 (receipts/K/census-arity7-after-bc427-t4.json, on the derived
+      ledger receipts/K/ledger-arity7-after-bc427-t4.yaml, whose header names the command
+      that writes it). After s182-k9 the same count was 10,173
+      (receipts/K/census-arity7-after-k9.json), down from exp-249's 17,690. Lane K's target
+      2, closed under BC-423's settings and held for the user's ruling, is not among the
+      entries. The census of record at 488c72d77 counts 38,220 states and 4,874 orbits,
+      the endpoint surviving (results/exp-256-n17-third-tranche-flags/census.json).
   verdict:
-    decision: in-progress
+    decision: accepted
     primary_criterion: The certified residue is at most 10^4 orbits with every certificate independently
       checked; rejected if it exceeds 10^4 at arity seven or a certificate excludes the endpoint state.
-    reason: Lane K's round is running; each closure is admitted as its verifier passes, and the verdict is
-      written when the target list is exhausted.
-  lease:
-    expires: '2026-10-06T08:14:04Z'
-    host: Session 182 remote container
+    reason: >-
+      Every entry of arity at most seven is admitted on a reviewed standing verifier's full
+      pass, the endpoint's state survives each, and together they leave 9,990 orbits, ten
+      under the threshold of 10^4 (receipts/K/census-arity7-after-bc427-t4.json on its
+      derived ledger). Lane K's eight admitted arity-7 flags took the count from 17,690 to
+      10,173, and BC-427's target 4 (exp-256) took the last 183. The count does not depend
+      on lane K's target 2, which is held for the user's ruling and would take 1,372 more.
+      The margin is ten orbits. Held for the W2 review the plan requires before X-048 or
+      the frontier states the verdict.
+    needs_review: true
+    commit: 488c72d77
+  effort:
+    timebox: 7,000 s per kernel target and 4,000 s per verification; one worker per job
+    wall_seconds: 9285
+    stopped_by: criterion
 ---
 # exp-251: Session 182 Lane K, the Heaviest Standing Flags
 
@@ -183,10 +195,16 @@ unique-state cover. This round is lane K of the
 (BC-420): the nine arity-7 standing flags with the most census weight, run through the
 kernel with the adaptive-row recipe that closed SW9, which they had never had.
 
-The round is in progress.
-Each closure is admitted as soon as the standing verifier passes it in full from the
-clean run worktree, and this record gains a result per target until the list is
-exhausted.
+H-267 is accepted, held for a W2 review.
+The entries of arity at most seven now leave 9,990 orbits, ten under $10^4$
+([census-arity7-after-bc427-t4.json](../../../explorations/X048-session-182-overnight/receipts/K/census-arity7-after-bc427-t4.json)).
+The last 183 came from BC-427’s target 4, recorded in
+[exp-256](exp-256-h267-n17-third-tranche-flags.md), and the count does not depend on
+target 2 below, which is held for the user’s ruling.
+The round’s wall, 9,285 s, is lane K’s frozen list, from the endpoint7 control’s start
+at 08:46:26 UTC to `s182-k9`’s verification at 11:21:11. Each closure is admitted as
+soon as the standing verifier passes it in full from the clean run worktree, and this
+record gains a result per target until the list is exhausted.
 
 ## Admitted So Far
 

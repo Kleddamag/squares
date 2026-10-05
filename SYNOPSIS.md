@@ -292,7 +292,7 @@ hypothesis status and summarizes experiment verdicts, and the
 | Sessions | 180 | 105 completed; 74 stopped; 1 nonterminal |
 | Explorations | 47 | 28 linked to proposed hypotheses; 19 uncodified |
 | Hypotheses | 208 | 44 confirmed; 33 refuted; 63 blocked; 20 unresolved; 9 open; 34 open questions; 2 result registered; 2 abandoned; 0 running; 1 exhausted |
-| Experiments | 185 | 59 accepted; 38 rejected; 58 unresolved; 12 baseline; 11 blocked; 4 abandoned; 2 in progress; 1 exhausted |
+| Experiments | 185 | 60 accepted; 38 rejected; 58 unresolved; 12 baseline; 11 blocked; 4 abandoned; 1 in progress; 1 exhausted |
 | Frontier results | 94 | 94 registered, 65 by others |
 
 <!-- END CURRENT-RESEARCH-STATUS -->
@@ -5975,7 +5975,7 @@ The relevant generator writes the receipt, and the entry fills in on the next
 
 There are 185 rounds registered in `series-000`.
 
-They record 2512.1 agent-minutes and 4820.8 wall-minutes.
+They record 2512.1 agent-minutes and 4975.5 wall-minutes.
 These totals exclude four historical annealing rounds with unrecorded timing; their wall
 and operator costs are unknown, not zero.
 Exp129 closed as blocked without invocation and contributes zero scientific elapsed
@@ -6196,7 +6196,7 @@ archive beside it.
 | [exp-248](packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-248-h268-n17-local-half-composition.md) | 17 | target | H-268 | Exact slide bounds from square 6’s cover cell, and the local theorem over the box they need | Slides certified inside B_W′; the local theorem passes over B_W′ at r = 1/5000, worst 0.925931 | accepted |
 | [exp-249](packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-249-h267-n17-first-certified-sub-patterns.md) | 17 | target | H-267 | Two flagged sub-patterns certified by two independent provers, each re-proved in full by an independent verifier | W7 and A forbidden at U; 17,690 certified orbits, endpoint surviving | unresolved |
 | [exp-250](packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-250-h267-n17-standing-verifier-admissions.md) | 17 | target | H-267 | Flag 3 at arity 9 and the residue state N1, closed by the kernel and admitted on the standing verifier’s full pass, nothing re-run | SW9 and N1 forbidden at U; 15,953 certified orbits, endpoint surviving | unresolved |
-| [exp-251](packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-251-h267-n17-overnight-flag-certification.md) | 17 | target | H-267 | Session 182 lane K: the nine heaviest arity-7 standing flags under SW9’s adaptive-row kernel recipe, each closure admitted on the standing verifier’s full pass | In progress: s182-k1, s182-k3, s182-k4, s182-k5, s182-k6, s182-k7, s182-k8 and s182-k9 forbidden at U; 9,168 certified orbits, endpoint surviving | in-progress |
+| [exp-251](packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-251-h267-n17-overnight-flag-certification.md) | 17 | target | H-267 | Session 182 lane K: the nine heaviest arity-7 standing flags under SW9’s adaptive-row kernel recipe, each closure admitted on the standing verifier’s full pass | The entries of arity at most seven leave 9,990 orbits, ten under 10^4, without lane K’s target 2; the criterion met, held for W2 review | accepted |
 | [exp-252](packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-252-h264-n17-overnight-per-state-price.md) | 17 | target | H-264 | Session 182 lane A: H-264’s seed-182 draw of residue states through the 17-owner kernel at 32 bins, each closure admitted on the standing verifier’s full pass | Five of the ten counted draws forbidden at U on the standing verifier’s full pass, the criterion met; W2 review confirmed with corrections; 9,165 certified orbits, endpoint surviving | accepted |
 | [exp-253](packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-253-h274-n17-stalls-under-adaptive-rows.md) | 17 | target | H-274 | Session 182 BC-424: H-274’s four frozen lane A stalls as whole 17-cell states under SW9’s adaptive-row kernel recipe, each closure admitted on the standing verifier’s full pass | Two of the four frozen stalls forbidden at U on the standing verifier’s full pass (s182-m2784767-sw9, s182-m2817021-sw9), the criterion met, and the other two (s182-m2878207-sw9, s182-m3063677-sw9) admitted after it, all four closed; W2 review confirmed with corrections; 7,307 certified orbits, endpoint surviving | accepted |
 | [exp-254](packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-254-h267-n17-second-tranche-flags.md) | 17 | target | H-267 | Session 182 BC-425: lane K’s second tranche, the next ten standing flags by projected gain (all arity 8) under the frozen SW9 recipe, each closure admitted on the standing verifier’s full pass | Eight of ten arity-8 flags forbidden at U on the standing verifier’s full pass (s182-bc425-t1, t2, t4, t5, t7, t8, t9, t10), two at the 24-round cap; 5,057 certified orbits, endpoint surviving; arity 8, so H-267 unresolved | unresolved |
@@ -6395,7 +6395,7 @@ archive beside it.
 
 ### What the 185 rounds jointly establish
 
-The 185 rounds use 2512.1 agent-minutes and 4820.8 wall-minutes under the campaign’s
+The 185 rounds use 2512.1 agent-minutes and 4975.5 wall-minutes under the campaign’s
 retained effort accounting.
 The never-invoked exp129 adds no scientific result or execution time.
 Exp-114 contributes 2.46 seconds of target/replay effort; its readiness work is recorded

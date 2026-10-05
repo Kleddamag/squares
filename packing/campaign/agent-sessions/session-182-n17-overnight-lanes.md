@@ -833,6 +833,13 @@ consequence in each.
   They run under lane K’s frozen SW9 recipe on two workers, aimed at H-267 independently
   of target 2. Without target 2, any one of ten listed flags would take the arity-7
   count below $10^4$ alone.
+- **H-267’s arity-7 line crossed $10^4$ at 20:04.** BC-427’s target 4 (side-E1 and six
+  interior cells) closed in 171 s and was admitted on the standing verifier’s full pass
+  (`488c72d77`), taking the arity-at-most-7 count from 10,173 to 9,990 orbits, the
+  endpoint surviving, independently of lane K’s target 2. Targets 1 and 2 had stalled,
+  target 1 at a producer fixed point and target 2 at the round cap.
+  At the coordinator’s direction, exp-251 then accepted H-267 with needs_review true,
+  for the W2 review the coordinator commissions.
 
 <!-- This document follows common-doc-guidelines.md.
 See github.com/jlevy/practical-prose and review guidelines before editing.

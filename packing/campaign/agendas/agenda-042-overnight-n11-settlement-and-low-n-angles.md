@@ -1901,7 +1901,7 @@ agenda:
       --max-rounds 48 --hull-limit 16 --producer-share 0.6 --split-floor 512 --max-rows
       2304 --split-patience 1 --core octagon --max-seconds 7000 --save-objects DIR --output
       FILE. Like BC-423's, it differs from SW9's in --max-rounds 48, --max-rows 2304 and
-      --core octagon. The only control under this recipe is BC-423's endpoint7 control,
+      --core octagon. --max-rows is 2304, BC-423's value, not SW9's 1152. The only control under this recipe is BC-423's endpoint7 control,
       whose run ended INCOMPLETE and whose saved node the checker alone then found
       PASS_SAVED_STALL (receipts/K/kernel-control-endpoint7-bc423-check.json). Lane K's
       target 2 rests on the same receipt and awaits the user's ruling, so every BC-426

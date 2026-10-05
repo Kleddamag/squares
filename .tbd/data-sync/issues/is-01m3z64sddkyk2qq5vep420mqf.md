@@ -3,9 +3,9 @@ type: is
 id: is-01m3z64sddkyk2qq5vep420mqf
 title: Selector finish stage, re-search the 90 flags, then F1 rank-2 residue sweep (lane S2)
 kind: task
-status: open
+status: closed
 priority: 1
-version: 8
+version: 9
 spec_path: docs/project/reviews/review-2026-10-02-n17-bulk-exclusion-design.md
 delegate: claude-code@vm
 labels: []
@@ -14,8 +14,12 @@ parent_id: is-01m3xkd6zmq1jqwtn628h2k7zy
 hold: null
 hold_until: null
 created_at: 2026-10-02T20:50:56.556Z
-updated_at: 2026-10-05T05:37:08.045Z
+updated_at: 2026-10-05T10:04:21.819Z
 started_at: 2026-10-03T22:35:32.305Z
+closed_at: 2026-10-05T10:04:21.819Z
+close_reason: H1 landed on the session branch at 6bfd419ec/0fab37ef4 (census reads the recheck receipt; tests pin 87 flags/2,197 orbits at exp-250 and 86 flags after s182-k1)
+resolution: null
+duplicate_of: null
 ---
 Session 168. Q1's residue survey (0e110249) found the selector's L-BFGS-B descent stops at maxiter 600 and polishes only below 1e-4, so flags between 1e-4 and 1e-2 may be false. S2 is adding a finish stage (long descent) to devtools/select_n17_sub_patterns.py, re-searching all 90 flags (arity-6/7/8 receipts) and running the full arity-8 sweep with --restrict-to-survivors 8 (Q1 found an arity-8 north-wall class removing 539 orbits deferred by the missing-pairs subset). Next: commit tool, tests and receipts; recompute projections.
 

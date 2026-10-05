@@ -398,7 +398,7 @@ def test_an_unfamiliar_replay_is_left_for_a_person() -> None:
         ),
         (
             "E-k2m3-wand125-valid7-independent",
-            {"V-wand125-valid7-checker", "V-audit-valid7-independent"},
+            {"V-wand125-valid7-checker", "V-audit-valid7-independent", "V-probe-valid7-fixes"},
             "independent-implementation",
         ),
         ("E-n012-fractional-certificate", {"V-sqpack-fractional-exact"}, "same-implementation"),

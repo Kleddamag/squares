@@ -2035,6 +2035,10 @@ agree, and two commits carrying the same tree still need not.
 `bead tree` reads the bead store in `.git/tbd/data-sync-worktree`, which is not in any
 tree, and so does `tier ceilings are declared and not slack`, which refuses an advisory
 pull-request wall whose tracking bead is closed or unknown.
+For that reason `bead tree` fails a record’s deferral whose bead is no longer open only
+in a change that touches a record declaring deferrals, and reports it as a warning
+anywhere else ([the runbook](packing/campaign/result-import.md#stage-0-sweep)), so
+closing a bead does not turn every pull request red.
 `provenance: recorded commits are reachable` reads the git graph and the clone depth —
 `D-226` is the run where CI discarded the history its own provenance gate needed.
 A rule that skips on tree identity has to keep running those four; what `D-468` licenses

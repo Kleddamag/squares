@@ -2312,20 +2312,31 @@ def packet_adopted_counts() -> frozenset[int]:
     return frozenset(_upper_bound_packets()[1])
 
 
+@cache
+def _catalogue_certificates() -> Any:
+    """`devtools.catalogue_upper_bounds`, imported late for the same reason as the intake."""
+    return importlib.import_module("devtools.catalogue_upper_bounds")
+
+
 def adopt_upper_bound_packet(n: int, text: str) -> str:
     """The drafted record with the certified packet's intake applied, where one covers `n`.
 
     Unchanged elsewhere. The intake writes over the upper lane, its blockers, evidence,
     resources and priority notes, the opening sentence, the ceiling section and the packing
     section, and keeps the drafted packing's paragraph as the previous best known packing.
+    At the catalogue's counts certified exactly on 2026-10-05 (T-088, T-089),
+    `devtools.catalogue_upper_bounds` moves the verified upper lane and its blocker the
+    same way, and leaves the body, whose intake prose is the record's own.
     """
     intake, plans, earlier = _upper_bound_packets()
     plan = plans.get(n)
-    if plan is None:
+    adopted = text if plan is None else intake.apply_case(plan, text, earlier[n])
+    adopted = _catalogue_certificates().apply_case(n, adopted)
+    if adopted == text:
         return text
     # The intake moves the verified upper bound's evidence, so the record's
     # verification-code section is written again from the front matter it leaves.
-    return render_case_verifiers.refresh(intake.apply_case(plan, text, earlier[n]))
+    return render_case_verifiers.refresh(adopted)
 
 
 def generate_record(

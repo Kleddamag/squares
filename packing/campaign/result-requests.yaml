@@ -19,6 +19,43 @@ repository: jlevy/squares
 owner: jlevy
 last_reviewed: '2026-10-05'
 issues:
+  - number: 358
+    title: 'n17: certifying two arity-7 flagged classes with the sub-pattern branch and bound'
+    author: wand125
+    opened: '2026-10-05'
+    state: open
+    kind: other
+    triage: done
+    summary: >-
+      A work plan and not a result: wand125 is certifying two of the arity-7 flagged classes
+      of the n = 17 bulk exclusion that think-j6qy tracks (side-S0, side-N0, interior-SW,
+      interior-NW, interior-W, interior-S, interior-SE; and side-S0, side-W0, interior-SW,
+      interior-NW, interior-W, interior-S, interior-SE) with
+      devtools/pilot_n17_subpattern_bb.py and the optional native kernel of #350, extended
+      so that --certificate writes the Python path's certificate format, and checked first
+      on pattern A against the Python path and the standing branch-and-bound verifier.
+      Admission is to follow think-j6qy's path, the certificate objects hosted as release
+      assets behind a hosted-data manifest (OR-18).
+    read_through: '2026-10-05T05:59:19Z'
+    results: []
+    asks:
+      - what: >-
+          Admit the two classes' certificates when they are posted, by think-j6qy's
+          admission path: the certificate, the standing verifier in full mode, and a ledger
+          entry with its verification receipt
+        state: queued
+        bead: think-j6qy
+        note: >-
+          Nothing is posted yet. Triage found no result to register and no claim to map:
+          until a certificate arrives, the plan names which two of think-j6qy's 42 open
+          arity-7 flags are in wand125's hands.
+    beads: [think-j6qy]
+    answer_bead: think-3twl
+    replies: []
+    close_when: >-
+      Both classes' certificates are admitted or refused through think-j6qy's path, or the
+      author withdraws the plan.
+
   - number: 317
     title: Streamline, explain, and formalize n=11 optimality proof
     author: jlevy
@@ -478,10 +515,11 @@ issues:
       counts, then a rolling series of comments adding n = 84, 85, 76, 96, 85 again, 87, 91,
       92 again, 83 and 96 again on 2 October, and 22 more on 3 October, from n = 95 down to
       n = 69, six of them again at counts already posted (76, 87, 90, 91, 92, 96), then 14
-      more from 3 October 19:33 UTC to 4 October 06:09 UTC, at n = 42 to 95, and 14 more
-      from 4 October 07:04 to 19:04 UTC, at n = 53 to 94, twelve of them again at counts
-      already posted.
-    read_through: '2026-10-04T19:04:09Z'
+      more from 3 October 19:33 UTC to 4 October 06:09 UTC, at n = 42 to 95, 14 more from
+      4 October 07:04 to 19:04 UTC, at n = 53 to 94, twelve of them again at counts already
+      posted, and two more on 5 October at 06:06 and 06:07 UTC, at n = 67 and 84, both again
+      at counts already posted.
+    read_through: '2026-10-05T06:07:23Z'
     results:
       - key: mixed-five
         claim: s(37) >= 161/25, s(65) >= 167/20, s(66) >= 421/50, s(90) >= 48/5 and s(92) >= 969/100
@@ -552,7 +590,15 @@ issues:
           at n = 88 and 94 above the fourteen's 769/80 and 497/50
         source: https://github.com/jlevy/squares/issues/282#issuecomment-5977856616
         register: [T-091]
-    beads: [think-ye2x, think-fb6h, think-09ag, think-r7yt, think-wpuu, think-e6ss, think-07s1, think-wrdq]
+      - key: oct5-n67-n84
+        claim: >-
+          Two mixed rectangle-measure certificates posted in comments of 5 October 2026 at
+          06:06 and 06:07 UTC: s(67) >= 212/25 and s(84) >= 9411/1000 (mixed_n67_L848 at
+          6c0842e, mixed_n84_L9411 at a541afb), above the fourteen's 339/40 and 3763/400
+          (T-090), which they supersede
+        source: https://github.com/jlevy/squares/issues/282#issuecomment-5989043109
+        register: [T-094]
+    beads: [think-ye2x, think-fb6h, think-09ag, think-r7yt, think-wpuu, think-e6ss, think-07s1, think-wrdq, think-0xb8, think-flv5]
     answer_bead: think-7gop
     replies:
       - url: https://github.com/jlevy/squares/issues/282#issuecomment-5972354526

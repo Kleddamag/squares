@@ -1191,17 +1191,16 @@ it.
     3.75rem for significance, the widest mark’s (`--site-ladders-significance-rail`;
     S5’s is 58.8px in the page’s face), and the description beside it, 0.75rem on,
     64.1px a row: at 1280 and 1024 pixels, down to a 980-pixel window, and on a phone
-    down to 320 pixels.
-    The rail is never narrower than what stands in it (`minmax(rail, max-content)`): at
-    3.6rem S5’s mark ran 1.2px past it, and a wider face, 65px in the fallback and more
-    in some system faces, ran it into the words beside it (the owner, 2026-10-05).
-    Every cell turns at the widest rail’s width, so a row’s rungs stay one height and a
-    significance description, 1.5rem narrower than the others beside its wider rail, is
-    never under its least: at 16.5rem, the chips’ rail’s, it was set 21.6px short and
-    took a third line (2026-10-03). Narrower, it sets the chip on a line of its own and
-    the description under it across the cell, 91.8px a row, from 979 pixels down to 716,
-    so at 768 and 908. A description is never set narrower than 13.5rem
-    (`--site-ladders-meaning-min`).
+    down to 320 pixels. The rail is never narrower than what stands in it
+    (`minmax(rail, max-content)`): at 3.6rem S5’s mark ran 1.2px past it, and a wider
+    face, 65px in the fallback and more in some system faces, ran it into the words
+    beside it (the owner, 2026-10-05). Every cell turns at the widest rail’s width, so a
+    row’s rungs stay one height and a significance description, 1.5rem narrower than the
+    others beside its wider rail, is never under its least: at 16.5rem, the chips’
+    rail’s, it was set 21.6px short and took a third line (2026-10-03). Narrower, it
+    sets the chip on a line of its own and the description under it across the cell,
+    91.8px a row, from 979 pixels down to 716, so at 768 and 908. A description is never
+    set narrower than 13.5rem (`--site-ladders-meaning-min`).
   - **Columns.** The three columns are equal, and each keeps 0.75rem
     (`--site-ladders-inset`) clear after its words, before the next column’s chip.
     Three columns therefore need 42.75rem: three times the least description and its
@@ -1466,16 +1465,15 @@ it.
   shrinking with the panel and square at every width (the owner, 2026-10-04,
   `think-u214`; 24rem until then), short of the panel’s height less 8rem, the room the
   caption and the actions held at the panel’s foot take, so the whole square shows at
-  one scroll of the panel: 608 of the panel’s 934 pixels in a 1280 by 800 window, 700
-  at 1280 by 900, the full width on a tablet or a phone. The facts under it keep to
-  40rem, in the sans face at the note size.
+  one scroll of the panel: 608 of the panel’s 934 pixels in a 1280 by 800 window, 700 at
+  1280 by 900, the full width on a tablet or a phone.
+  The facts under it keep to 40rem, in the sans face at the note size.
   Its lines keep the weight they have at 12rem across, however large it is shown
   (`think-pkz0`): the drawing strokes its frame 1.2 and each square’s outline 0.6 of the
   102 units its box is wide (`render_frontier_page.packing_svg`), weights that grow with
   the drawing, so the popover’s drawing, 58rem across on a laptop, drew them 11 and 5.5
   pixels heavy, and at a 24rem weight a zoomed drawing still read as heavy-lined (the
-  owner, 2026-10-05).
-  The stylesheet draws them in the page’s own units instead
+  owner, 2026-10-05). The stylesheet draws them in the page’s own units instead
   (`vector-effect: non-scaling-stroke`), at the same share of the figure’s width
   (`100cqi`) up to 12rem (`--site-case-figure-lines`): 2.3 and 1.1 pixels from 12rem up,
   and as the drawing draws them below it.

@@ -1746,7 +1746,16 @@ agenda:
       found on W7 that the octagon core does not remove a coarse row's domain loss, so
       the hull side of a cut may still need the rows. Target 2 projects 2,917 orbits and
       the arity-at-most-7 residue stands at 10,173, so a closure would bear on H-267's
-      threshold; any verdict change gets a W2 review. Evidence record exp-251.
+      threshold; any verdict change gets a W2 review. Evidence record exp-251. Target 2
+      closed under these settings at 15:02:59 UTC (46 rounds) and its standing verifier
+      passed in full at 15:22:50, but the endpoint7 control ended INCOMPLETE at 16:16:40:
+      the producer stopped at its time share in round 9 with every owner's rows still live,
+      and the checker ran out of the 7,000 s ceiling. An INCOMPLETE control is not a pass, so
+      the gate voided the closure and nothing was admitted. At the coordinator's decision
+      the checker alone re-checks the kept control node with --check-saved at a 14,000 s
+      ceiling; only a stall there releases target 2 for admission, and a closure is a
+      soundness alarm. The receipt and the producer's progress records are in
+      receipts/K of X048-session-182-overnight.
   - id: BC-424
     purpose: research
     owner_focus: correctness

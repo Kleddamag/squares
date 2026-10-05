@@ -742,6 +742,33 @@ consequence in each.
 - `think-jcte`, `think-023x` and `think-ahe4` are closed, each citing its filing
   commits, and `think-jhgi`’s title names 118 objects.
 
+## After the Handoff
+
+- **H-274 is accepted, held for its W2 review**
+  ([exp-253](../series/series-000-smoke-and-calibration/experiments/exp-253-h274-n17-stalls-under-adaptive-rows.md)).
+  BC-424’s endpoint-state control stalled at its 24-round cap in 6,599 s and passed at
+  16:09:56 UTC, releasing states 2784767 and 2817021 (`36c081a4d`, `3396efda0`); the
+  verdict is `90a031fb6`. State 2878207 closed after it (`400c57176`). The certified
+  census is 72,248 states in 9,162 orbits, the endpoint surviving.
+- **BC-423’s control is undecided, so target 2 is not admitted.** Target 2 closed under
+  BC-423’s settings at 15:02:59 (46 rounds, 33,834 rows, finest row 1/512), and the
+  standing verifier passed it in full at 15:22:50 in 1,190 s. Its endpoint7 control
+  under the same settings ended INCOMPLETE at 16:16:40. The producer stopped at its time
+  share after step 64 of round 9, at 4,280 s, with every owner’s rows still live (192 or
+  512). It saved its node, and the checker then ran out of the 7,000 s ceiling (“indexed
+  event construction timed out after 1013 edges”). An INCOMPLETE control is not a pass,
+  so the gate voided the closure.
+  The certificate and every object are kept.
+  The receipt and the producer’s progress records are filed beside the other lane K
+  receipts in [receipts/K](../explorations/X048-session-182-overnight/receipts/K/).
+- **The saved control node is re-checked at 14,000 s**, at the coordinator’s decision.
+  `check_n17_subpattern --check-saved` runs the checker alone, never importing the
+  producer, on the kept seed and node from the clean run worktree; it started at
+  16:20:26. The two-hour single-process limit is relaxed for this one job because the
+  session’s heartbeat now prevents the container from suspending.
+  A stall on the endpoint7 node is the control’s pass and releases target 2 for
+  admission. A closure would be a soundness alarm.
+
 <!-- This document follows common-doc-guidelines.md.
 See github.com/jlevy/practical-prose and review guidelines before editing.
 -->

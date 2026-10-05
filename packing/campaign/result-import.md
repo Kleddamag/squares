@@ -48,7 +48,7 @@ W1 phase on one branch:
    They are posted after the merge, from `main`, by the owner or at the owner’s request
    ([stage 7](#stage-7-answer)).
 7. **Sweep again** with `make intake`, after the branch’s changes to the records.
-   The pass is done when nothing needs an owner, or when the pull request says why each
+   The pass is done when nothing needs action, or when the pull request says why each
    remaining item waits.
 
 The pass needs network access to `github.com`, for Git and for the API through `gh`;
@@ -93,7 +93,7 @@ claude/intake-YYYY-MM-DD, with today's date.
    `tbd shortcut create-or-update-pr-simple`. List every item with its bead and the
    stage it reached, and every source the sweep could not check.
 7. Draft each reply an issue is owed in its answer bead. Do not post it.
-8. Run `make intake` again and report every item that still needs an owner.
+8. Run `make intake` again and report every item that still needs action.
 
 Never merge, never push to main, never post, edit or close anything on a GitHub issue
 without the owner's word, and never start a replay measured in CPU-hours without a

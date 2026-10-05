@@ -205,6 +205,14 @@ properties:
           Optional named or versioned upstream release. Omit it when the retained
           Git-tracked source already supplies the only required identity; do not add a
           duplicate content hash.
+      revision_sha256:
+        type: string
+        pattern: '^[0-9a-f]{64}$'
+        description: >-
+          The SHA-256 of the bytes of the file `revision` names, where that file is not
+          retained in this repository: a Kingbird witness read from a third party's
+          parse of the catalogue SVG records the parse's digest, since a revision says
+          where the file was and not which bytes were read.
   certificate:
     type: object
     additionalProperties: true

@@ -1,0 +1,13 @@
+# command: env VERIFY_BINS=0:0 nice -n 10 /tmp/claude-0/-home-user-squares/1fb2d4ab-96d0-5b24-9e36-157598bdbf06/scratchpad/laneA/verify-crate/target/release/verify lowered-orbit.txt 12 96000 1 0
+# cwd: scratch run directory; control lowered-orbit.txt written by devtools.audit_s12_v11_certificate --write-controls (sha256 1c42bbb4), byte for byte the source's; verify as in ../daniel-verify-ovf-N96000.log (binary sha256 60279b2c)
+# python3: not used by this command
+# host: 4 cores; load 11.82 9.79 6.01; started 2026-10-05T17:24:36Z
+D4-symmetric atom set: true  -> angles cover [0,45] deg
+atoms=1736 total weight = 119974008/10000000 = 11.997401
+s = 15886000/4000000 = 3.971500
+angles: k=0..39765 (N=96000), covering [0,45deg]
+PARTIAL RUN: VERIFY_BINS=0:0 -- only these bins are swept; this run cannot verify anything
+  FAIL at angle k=0: covered 9999850/10000000
+min covered weight over ALL placements = 9999850/10000000 = 0.999985  (at angle k=0)
+NOT VERIFIED (PARTIAL RUN: only bins 0..0 of 0..39764 were swept)
+# finished 2026-10-05T17:24:36Z; exit 0; wall 0.051 s; CPU 0.0 s (user 0.033 + sys 0.000); load 11.82 9.79 6.01

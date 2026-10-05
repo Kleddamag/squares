@@ -9,8 +9,13 @@ counts on a fixture small enough to read.
 
 from __future__ import annotations
 
+import json
+import os
 from pathlib import Path
 
+import pytest
+
+from devtools import check_bead_tree
 from devtools.check_bead_tree import (
     check,
     deferral_problems,
@@ -18,6 +23,7 @@ from devtools.check_bead_tree import (
     parse_aliases,
     staleness,
 )
+from sqpack.cli import validate
 
 
 def _bead(bead_id: str, status: str, title: str) -> dict[str, object]:
@@ -163,3 +169,72 @@ def test_the_live_records_deferrals_are_all_well_formed_aliases() -> None:
     for where, alias in deferrals():
         assert alias.startswith("think-"), where
         assert len(alias) == len("think-aaaa"), where
+
+
+def _dead_deferral_store(monkeypatch: pytest.MonkeyPatch) -> None:
+    """A store whose one deferral names a closed bead, and no agendas."""
+    beads = [_bead("is-01aaaa", "closed", "an intake closed under its deferral")]
+    monkeypatch.setattr(check_bead_tree, "load", lambda: (beads, "fixture", {"aaaa": "01aaaa"}))
+    monkeypatch.setattr(check_bead_tree, "deferrals", lambda: [("pending n=69", "think-aaaa")])
+    monkeypatch.setattr(check_bead_tree, "AGENDAS", Path("/nonexistent/agendas"))
+
+
+def test_a_dead_deferral_fails_the_check_and_is_a_warning_under_the_gates_flag(
+    monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]
+) -> None:
+    """Closing a bead a record names turned every pull request red with no tracked change.
+
+    Run directly the check still fails it; the gate passes the flag when the change
+    touches no record that declares a deferral, and then it is printed and passes.
+    """
+    _dead_deferral_store(monkeypatch)
+    assert check_bead_tree.main([]) == 1
+    assert "FAIL pending n=69 names think-aaaa (closed)" in capsys.readouterr().out
+    assert check_bead_tree.main([check_bead_tree.WARN_DEAD_DEFERRALS]) == 0
+    shown = capsys.readouterr().out
+    assert "WARN pending n=69 names think-aaaa (closed)" in shown
+    assert "FAIL" not in shown
+    assert check_bead_tree.main(["--json", check_bead_tree.WARN_DEAD_DEFERRALS]) == 0
+    report = json.loads(capsys.readouterr().out)
+    assert (report["status"], report["problems"]) == ("ok", [])
+    assert [w["bead"] for w in report["warnings"]] == ["think-aaaa"]
+
+
+WARN = ("--warn-dead-deferrals",)
+
+
+@pytest.mark.parametrize(
+    ("changed", "arguments"),
+    [
+        (["packing/devtools/intake_sweep.py", "README.md"], WARN),
+        (["packing/campaign/intake-watch.yaml"], ()),
+        (["packing/frontier/source-coverage.yaml", "README.md"], ()),
+        (None, ()),
+    ],
+)
+def test_the_gate_fails_a_dead_deferral_only_on_a_change_to_a_record_declaring_one(
+    monkeypatch: pytest.MonkeyPatch, changed: list[str] | None, arguments: tuple[str, ...]
+) -> None:
+    """`None` is a checkout where `origin/main` does not resolve: it cannot say what
+    changed, so the dead deferral fails it."""
+    observed: list[tuple[str, ...]] = []
+
+    def capture(_context: validate.Context, module: str, *given: str) -> str:
+        observed.append((module, *given))
+        return "  ok"
+
+    def paths(since: str) -> list[str]:
+        assert since == "origin/main"
+        if changed is None:
+            raise validate.UsageError("--since 'origin/main' does not name a commit")
+        return changed
+
+    monkeypatch.setattr(validate, "_module", capture)
+    monkeypatch.setattr(validate, "changed_paths", paths)
+    context = validate.Context(
+        deep=False, strict=False, jobs=1, inner_jobs=1, environment=os.environ.copy()
+    )
+    step = validate._bead_tree  # noqa: SLF001  # pyright: ignore[reportPrivateUsage]
+    assert step(context) == "  ok"
+    assert observed == [("devtools.check_bead_tree", *arguments)]
+    assert (check_bead_tree.WARN_DEAD_DEFERRALS,) == WARN

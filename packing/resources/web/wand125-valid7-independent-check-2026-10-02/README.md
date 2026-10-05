@@ -225,6 +225,14 @@ independent implementation by its read log.
 The evidence entry is `E-k2m3-wand125-valid7-independent`.
 No mutated cover was run in the replay; the three refused here are `verify.sh`’s, above.
 
+## A Later Revision
+
+On 3 October 2026 the author fixed the review’s D-1 to D-3 upstream, at `da469ec`, with
+the release records unchanged.
+The [3 October packet](../wand125-valid7-independent-check-2026-10-03/README.md) retains
+that revision, its `verify.sh` run here on 5 October, and a probe showing each finding
+present in this packet’s code and gone in that one.
+
 ## Compressed Files
 
 The 33 shard records are receipts, compressed by the runners with `gzip -9n`: 51,005,708

@@ -866,6 +866,7 @@ documents:
   - {path: docs/project/reviews/review-2026-10-03-wand125-october-3-certificates.md, role: review, authority: record, lifecycle: retained}
   - {path: docs/project/reviews/review-2026-10-03-evand-k2m4-claim-chain.md, role: review, authority: record, lifecycle: retained}
   - {path: docs/project/reviews/review-2026-10-05-evand-square-packing-atlas.md, role: review, authority: record, lifecycle: retained}
+  - {path: docs/project/reviews/review-2026-10-05-kingbird-intake-n69-n83-n87.md, role: review, authority: record, lifecycle: retained}
   - path: docs/project/reviews/review-2026-09-28-density-solver-comparison.md
     role: review
     authority: record

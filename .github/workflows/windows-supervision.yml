@@ -8,7 +8,7 @@ name: Windows supervision
     paths:
       - .github/workflows/windows-supervision.yml
       - packing/devtools/supervise_windows.py
-      - packing/tests/test_supervise_windows.py
+      - packing/tests/test_windows_supervision.py
       - packing/.python-version
       - packing/pyproject.toml
       - packing/uv.lock
@@ -17,7 +17,7 @@ name: Windows supervision
     paths:
       - .github/workflows/windows-supervision.yml
       - packing/devtools/supervise_windows.py
-      - packing/tests/test_supervise_windows.py
+      - packing/tests/test_windows_supervision.py
       - packing/.python-version
       - packing/pyproject.toml
       - packing/uv.lock
@@ -56,7 +56,7 @@ jobs:
         run: uv sync --frozen --group dev
       - name: Execute all three bounded native modes
         run: |
-          uv run --frozen --group dev python -m pytest tests/test_supervise_windows.py -k native_venv_worker_and_grandchild -q --junitxml=native-windows-controls.xml
+          uv run --frozen --group dev python -m pytest tests/test_windows_supervision.py -k native_venv_worker_and_grandchild -q --junitxml=native-windows-controls.xml
           if ($LASTEXITCODE -ne 0) { throw 'Native control failed' }
           [xml]$NativeControlReport = Get-Content native-windows-controls.xml -Raw
           $NativeControlSuite = $NativeControlReport.testsuites.testsuite

@@ -339,7 +339,7 @@ def test_the_windows_workflow_runs_every_native_case_under_a_ceiling() -> None:
     owned = {
         ".github/workflows/windows-supervision.yml",
         "packing/devtools/supervise_windows.py",
-        "packing/tests/test_supervise_windows.py",
+        "packing/tests/test_windows_supervision.py",
     }
     for event in ("pull_request", "push"):
         assert owned <= set(workflow["on"][event]["paths"]), event
@@ -355,7 +355,7 @@ def test_the_windows_workflow_runs_every_native_case_under_a_ceiling() -> None:
     assert setup["with"]["python-version"] == python
 
     command = next(step["run"] for step in job["steps"] if "pytest" in step.get("run", ""))
-    assert "tests/test_supervise_windows.py" in command
+    assert "tests/test_windows_supervision.py" in command
     selector = command.split(" -k ")[1].split()[0]
     assert selector in test_native_venv_worker_and_grandchild_are_owned_and_reaped.__name__
     assert f"-ne {len(NATIVE_MODES)} " in command

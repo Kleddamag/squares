@@ -30,7 +30,7 @@ session:
     started_at: '2026-10-04T06:05:36.777117+00:00'
     deadline_at: '2026-10-04T06:35:36.777117+00:00'
     expected_output: packing/campaign/results/session-173-windows-supervision/README.md
-    validation_command: explicit project Python 3.14 -m pytest tests/test_supervise_windows.py
+    validation_command: explicit project Python 3.14 -m pytest tests/test_windows_supervision.py
       -q (cwd isolated packing, isolated PYTHONPATH)
     kill_condition: Parent/main mechanism overlap, broad configuration/type/CI migration, resource
       limit or 30-minute source slot.
@@ -41,7 +41,7 @@ session:
       Root found/fixed only test identity-output allocation race; independent replay pending.
     evidence:
     - packing/devtools/supervise_windows.py
-    - packing/tests/test_supervise_windows.py
+    - packing/tests/test_windows_supervision.py
     - packing/campaign/results/session-173-windows-supervision/receipts/controls.json
     stop_reason: Bounded controls pass; hold adoption/publication for root safety review and
       independent replay.
@@ -62,7 +62,7 @@ session:
     started_at: '2026-10-04T06:18:33.136088+00:00'
     deadline_at: '2026-10-04T06:38:33.136088+00:00'
     expected_output: packing/campaign/results/session-173-windows-supervision/README.md
-    validation_command: explicit project Python 3.14 -m pytest tests/test_supervise_windows.py
+    validation_command: explicit project Python 3.14 -m pytest tests/test_windows_supervision.py
       -q (cwd isolated packing, isolated PYTHONPATH)
     kill_condition: Parent/main mechanism overlap, broad configuration/type/CI migration, resource
       limit or 30-minute source slot.
@@ -103,7 +103,7 @@ session:
   outputs:
   - packing/campaign/results/session-173-windows-supervision/README.md
   - packing/devtools/supervise_windows.py
-  - packing/tests/test_supervise_windows.py
+  - packing/tests/test_windows_supervision.py
   checks:
   - E source ef8c42547 and final 2bada1a91 hosted 19 pass/36 skip/all required SUCCESS; think-2uhz
     closed/synced, native 172 once.

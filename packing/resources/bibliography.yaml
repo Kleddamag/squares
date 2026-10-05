@@ -782,6 +782,33 @@ sources:
       direction, and each commit message ends with a co-author trailer naming an AI
       assistant. web/wand125-mixed-bounds-2026-10-04/acquisition/sources.json pins revision
       8aa6a10b3b8f165d39c85b68982fed1de086516c. Dated by that revision, 2026-10-04 UTC.
+  - key: '[wand125 mixed bounds evening 2026-10-04]'
+    authors: [wand125]
+    year: 2026
+    venue: GitHub
+    dated: '2026-10-04'
+    credit: wand125 after Tokoharu, Levy, Stromquist, Nagamochi, Burns, Massaccesi
+    short_credit: wand125 after Tokoharu, Levy et al.
+    lineage: builds-on-project
+    note: >-
+      The 12 mixed rectangle-measure certificates that wand125/square-packing-bounds added in
+      12 commits from 2026-10-04 07:51 UTC to 19:03 UTC, for n = 53, 54, 58, 70, 71, 73, 76,
+      87, 88, 90, 91 and 94 (certificates/mixed_n91_L97625 to mixed_n58_L7935), each
+      requested for registration in its own comment on jlevy/squares#282: rectangle densities
+      of mass n - 1/100000 checked at coverage one by code/mixed_rotated_verify.cpp, byte for
+      byte the checker of the source's n = 50 certificate and of the [wand125 mixed bounds
+      2026-10-04] certificates. Ten supersede certificates of earlier keys, mixed_n58_L7905,
+      mixed_n70_L86475, mixed_n71_L8705, mixed_n73_L8809, mixed_n76_L896, mixed_n87_L955,
+      mixed_n88_L96125, mixed_n90_L9725, mixed_n91_L975 and mixed_n94_L994; n = 53 and 54 are
+      the source's first mixed certificates there. The directories carry no
+      completion-audit.json. The packet also pins, unchanged, mixed_n86_L9503 and
+      mixed_n69_L862 of the [wand125 mixed bounds 2026-10-04] packet, posted the same
+      morning. Credited as they are, on the root README's Attribution section, which opens
+      "The method is not ours."; the README says parts of the work were produced with AI
+      assistance under human direction, and each commit message ends with a co-author
+      trailer naming an AI assistant.
+      web/wand125-mixed-bounds-evening-2026-10-04/acquisition/sources.json pins revision
+      797bdf6e10eba5f9dccca9da06f8352e81ba9dde. Dated by that revision, 2026-10-04 UTC.
   - key: '[franciscouzo square-packing 2026-09-27]'
     authors: [Couzo]
     year: 2026

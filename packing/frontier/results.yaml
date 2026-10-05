@@ -2,7 +2,7 @@ softschema:
   contract: packing.squares:ResultsRegister/v1
   schema: results.schema.yaml
   status: enforced
-last_reviewed: '2026-10-03'
+last_reviewed: '2026-10-05'
 results:
   - id: T-001
     kind: lower-bound
@@ -7815,3 +7815,100 @@ results:
       replayed cover proving s(61) = 8 (T-063), both replayed here on 2 October 2026. This
       result stays true as stated and keeps its rungs: a proof of both bounds that uses
       nothing of Nagamochi 2005 and no computer search.
+  - id: T-090
+    kind: lower-bound
+    registered: '2026-10-05'
+    headline: "Mixed rectangle-measure lower bounds reported at 14 counts in `n = 53…94`"
+    claim: >-
+      wand125/square-packing-bounds reports 14 rectangle-density certificates published on 4
+      October 2026: s(53) >= 3051/400 = 7.6275, s(54) >= 1537/200 = 7.685, s(58) >= 1587/200
+      = 7.935, s(69) >= 431/50 = 8.62, s(70) >= 3463/400 = 8.6575, s(71) >= 8721/1000 =
+      8.721, s(73) >= 8813/1000 = 8.813, s(76) >= 1793/200 = 8.965, s(86) >= 9503/1000 =
+      9.503, s(87) >= 479/50 = 9.58, s(88) >= 481/50 = 9.62, s(90) >= 973/100 = 9.73, s(91)
+      >= 781/80 = 9.7625 and s(94) >= 199/20 = 9.95.
+
+      Each is a density of 312 to 853 uniform rectangles in D4 orbits and no point mass, of
+      total mass n - 1/100000, at core side 9977/10000 on 201 net half-angles of step
+      83/40000, of the kind and checker of T-082. The source reports each accepted at all 200
+      oblique net angles by code/mixed_rotated_verify.cpp, its research copy of Tokoharu's
+      verify.cpp at coverage threshold one, and at the axis by exact integer tables. Twelve
+      supersede the source's certificates at the same count: eleven of T-082's, and at n = 88
+      and 94 its certificates of earlier that day, which this record retains and has not
+      registered. At n = 53 and 54 they are the source's first mixed certificates.
+
+      All 14 values are above what the record reported at their counts, by 0.003 to 0.03:
+      over T-082 at twelve counts, and over the source's rectangle certificates (T-068,
+      T-074) at n = 53 and 54. A packing of n + 1 squares contains one of n, but at each next
+      count the record already reports more, or holds a value of this entry, so none carries
+      further.
+
+      Here the source was retained, its exact premises were recomputed from the retained
+      bytes, and the replay's checks before its first angle were run on each pinned tarball.
+      None of it decides coverage, and no angle was replayed. The values stand as reported,
+      and the verified lower bounds are unchanged.
+
+      wand125 after Tokoharu and Levy,
+      [square-packing-bounds](https://github.com/wand125/square-packing-bounds/tree/797bdf6e10eba5f9dccca9da06f8352e81ba9dde/certificates).
+      Registration was requested in 14 comments of 4 October 2026 on jlevy/squares#282. The
+      source says parts of the work were produced with AI assistance under human direction.
+    scope: {n_values: [53, 54, 58, 69, 70, 71, 73, 76, 86, 87, 88, 90, 91, 94]}
+    verification: V0
+    confirmation: C0
+    significance:
+      score: 3
+      rationale: >-
+        Scored as a claim: if the replays pass, the strongest verified lower bounds on record
+        at 14 counts from n = 53 to 94, and the strongest reported at all 14. Further sizes
+        from the generator and checker of T-069, T-071, T-072, T-075 and T-082, with no new
+        technique, at S3 as those are; the score gates nothing.
+      scored: '2026-10-05'
+      by: 'issue-282 October 4 import, registering lane (repository; draft)'
+    novelty: previously-published
+    attribution:
+      source_keys: ['[wand125 mixed bounds evening 2026-10-04]', '[wand125 mixed bounds 2026-10-04]']
+      published: '2026-10-04'
+    composition: >-
+      14 primary certificates, each on its own reported entry, at V0/C0: not yet reviewed and
+      not replayed. Coverage is decided by the source's C++ checker alone, byte for byte the
+      checker the 28 September, 2 October and 3 October reviews read; the axis tables are a
+      second implementation for one direction and not a second method.
+    evidence:
+      - E-n053-wand125-mixed-76275-report
+      - E-n054-wand125-mixed-7685-report
+      - E-n058-wand125-mixed-7935-report
+      - E-n069-wand125-mixed-862-report
+      - E-n070-wand125-mixed-86575-report
+      - E-n071-wand125-mixed-8721-report
+      - E-n073-wand125-mixed-8813-report
+      - E-n076-wand125-mixed-8965-report
+      - E-n086-wand125-mixed-9503-report
+      - E-n087-wand125-mixed-958-report
+      - E-n088-wand125-mixed-962-report
+      - E-n090-wand125-mixed-973-report
+      - E-n091-wand125-mixed-97625-report
+      - E-n094-wand125-mixed-995-report
+    artifacts:
+      - packing/resources/web/wand125-mixed-bounds-evening-2026-10-04/README.md
+      - packing/resources/web/wand125-mixed-bounds-evening-2026-10-04/receipts/mixed-audit.json
+      - packing/resources/web/wand125-mixed-bounds-2026-10-04/README.md
+      - packing/resources/web/wand125-mixed-bounds-2026-10-04/receipts/mixed-audit.json
+      - packing/devtools/audit_wand125_point_and_mixed.py
+    next_rung: >-
+      A review of the 14 certificates, prompted separately from the lane that registered
+      them, and the complete replays, about 153 CPU-hours planned (161 by the
+      source's own oblique seconds): devtools.audit_wand125_point_and_mixed mixed-shard
+      wand125-mixed-bounds-evening-2026-10-04 --runners 6 for the twelve that packet holds,
+      and n69-L862 and n86-L9503 under the 4 October packet, mixed-replay on each range and
+      mixed-merge per certificate, before any verified lower bound is raised; a count's
+      verified lower bound moves when its replay returns the certificate's own record at all
+      201 directions.
+    notes: >-
+      V0 because each cited entry is the source's claim: assurance reported, replay not
+      attempted. C0 because no review of these certificates is on file yet. One entry for
+      the 14 requested in comments of 4 October after the fourteen #282 still has queued,
+      all present unchanged at one revision: twelve are retained in the evening packet, and
+      mixed_n86_L9503 and mixed_n69_L862, added before the 4 October packet's pin, in that
+      packet, which the evening packet compares them with. That packet's other 14
+      certificates are the queued fourteen, not in this entry. A later revision than
+      T-082's, so a separate entry. The proof-bundle tarballs are pinned by digest and not
+      retained.

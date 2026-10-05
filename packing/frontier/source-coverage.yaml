@@ -914,6 +914,52 @@ sources:
       pass on all 22; no angle was replayed, and the proof-bundle tarballs are pinned by
       digest and not retained. Every comparison in the source's audits is with an exact
       rational; six name an unpublished value of the source's own.
+  - id: wand125-mixed-bounds-evening-2026-10-04
+    title: Mixed rectangle-measure certificates of 4 October 2026 for 14 counts in n = 53 to 94
+    role: source-repository
+    url: https://github.com/wand125/square-packing-bounds/tree/797bdf6e10eba5f9dccca9da06f8352e81ba9dde
+    local: resources/web/wand125-mixed-bounds-evening-2026-10-04/
+    source_key: '[wand125 mixed bounds evening 2026-10-04]'
+    scope: {n_values: [53, 54, 58, 69, 70, 71, 73, 76, 86, 87, 88, 90, 91, 94]}
+    reviewed: '2026-10-05'
+    source_date: '2026-10-04'
+    disposition: current-report
+    replay_disposition: case-specific
+    represented_by: [frontier/n-053.md, frontier/n-054.md, frontier/n-058.md, frontier/n-069.md, frontier/n-070.md, frontier/n-071.md, frontier/n-073.md, frontier/n-076.md, frontier/n-086.md, frontier/n-087.md, frontier/n-088.md, frontier/n-090.md, frontier/n-091.md, frontier/n-094.md]
+    evidence:
+      - E-n053-wand125-mixed-76275-report
+      - E-n054-wand125-mixed-7685-report
+      - E-n058-wand125-mixed-7935-report
+      - E-n069-wand125-mixed-862-report
+      - E-n070-wand125-mixed-86575-report
+      - E-n071-wand125-mixed-8721-report
+      - E-n073-wand125-mixed-8813-report
+      - E-n076-wand125-mixed-8965-report
+      - E-n086-wand125-mixed-9503-report
+      - E-n087-wand125-mixed-958-report
+      - E-n088-wand125-mixed-962-report
+      - E-n090-wand125-mixed-973-report
+      - E-n091-wand125-mixed-97625-report
+      - E-n094-wand125-mixed-995-report
+    notes: >-
+      Revision 797bdf6e10eba5f9dccca9da06f8352e81ba9dde, retrieved at 2026-10-05T00:44Z for
+      14 comments of 4 October on jlevy/squares#282, posted from 07:04 to 19:04 UTC. 14
+      rectangle densities checked at coverage one by the source's research copy of
+      Tokoharu's verify.cpp, byte for byte the checker of its n = 50 certificate, each of
+      mass n - 1/100000 and added by its own commit. Twelve, from 07:51 to 19:03 UTC, are
+      retained in this packet; mixed_n86_L9503 and mixed_n69_L862, added at 07:03 and 07:17
+      UTC, are retained in the 4 October packet at 8aa6a10, and this packet pins them
+      unchanged at its own revision. All 14 are recorded as reported lower bounds (T-090),
+      each above what the record reported at its count; at n = 88 and 94 they also pass the
+      source's mixed_n88_L96125 and mixed_n94_L994 of earlier that day, which the 4 October
+      packet retains and the record has not registered. The directories carry no
+      completion-audit.json, so each tarball is bound by its digest at the pinned tree. The
+      exact audit and the replay's checks before its first angle pass on all 14; no angle
+      was replayed, and the proof-bundle tarballs are pinned by digest and not retained.
+      The revision also changes certificates/k2m4_n77_L9 (3f063bd: run logs, a replay
+      record and a hardened verify.sh, the cover unchanged; T-067) and point_n21_L5
+      (781afb3: relativized paths and a corrected lemma-code map, the certificate
+      unchanged; T-055); neither is retained here.
   - id: wand125-valid7-independent-check-2026-10-02
     title: Independent exact checker of Valid7 for s(k^2 - 3) = k
     role: source-repository

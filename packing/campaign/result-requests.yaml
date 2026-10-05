@@ -17,7 +17,7 @@ softschema:
   status: enforced
 repository: jlevy/squares
 owner: jlevy
-last_reviewed: '2026-10-04'
+last_reviewed: '2026-10-05'
 issues:
   - number: 317
     title: Streamline, explain, and formalize n=11 optimality proof
@@ -470,8 +470,10 @@ issues:
       counts, then a rolling series of comments adding n = 84, 85, 76, 96, 85 again, 87, 91,
       92 again, 83 and 96 again on 2 October, and 22 more on 3 October, from n = 95 down to
       n = 69, six of them again at counts already posted (76, 87, 90, 91, 92, 96), then 14
-      more from 3 October 19:33 UTC to 4 October 06:09 UTC, at n = 42 to 95.
-    read_through: '2026-10-04T06:09:55Z'
+      more from 3 October 19:33 UTC to 4 October 06:09 UTC, at n = 42 to 95, and 14 more
+      from 4 October 07:04 to 19:04 UTC, at n = 53 to 94, twelve of them again at counts
+      already posted.
+    read_through: '2026-10-04T19:04:09Z'
     results:
       - key: mixed-five
         claim: s(37) >= 161/25, s(65) >= 167/20, s(66) >= 421/50, s(90) >= 48/5 and s(92) >= 969/100
@@ -526,13 +528,23 @@ issues:
           what the record reports at its count
         source: https://github.com/jlevy/squares/issues/282#issuecomment-5972753544
         not_registered: >-
-          Posted after T-082's pin 2aff2076 and not yet imported. The source's head 3554616
-          holds all fourteen, so one new entry at that pin can register them; its preflight
-          needs audit_wand125_point_and_mixed to accept certificates without
-          completion-audit.json, which 150939e removed from the 27 mixed certificates
-          published since 3 October.
+          Posted after T-082's pin 2aff2076 and not yet registered. Retained at 8aa6a10 in
+          wand125-mixed-bounds-2026-10-04, with mixed_n86_L9503 and mixed_n69_L862 of the
+          next result, which T-090 registers; the exact audit and every pre-replay check
+          pass there, so one new entry at that pin can register the fourteen. At n = 88 and
+          94, T-090's certificates of later that day are higher.
         queued: true
-    beads: [think-ye2x, think-fb6h, think-09ag, think-r7yt, think-wpuu]
+      - key: oct4-mixed-14
+        claim: >-
+          Fourteen mixed rectangle-measure certificates posted in comments of 4 October 2026
+          from 07:04 to 19:04 UTC: s(86) >= 9503/1000, s(69) >= 431/50, s(91) >= 781/80,
+          s(76) >= 1793/200, s(90) >= 973/100, s(71) >= 8721/1000, s(87) >= 479/50, s(54) >=
+          1537/200, s(73) >= 8813/1000, s(94) >= 199/20, s(53) >= 3051/400, s(88) >= 481/50,
+          s(70) >= 3463/400 and s(58) >= 1587/200 (683264c to 797bdf6), each above what the
+          record reported at its count
+        source: https://github.com/jlevy/squares/issues/282#issuecomment-5977545188
+        register: [T-090]
+    beads: [think-ye2x, think-fb6h, think-09ag, think-r7yt, think-wpuu, think-07s1, think-wrdq]
     answer_bead: think-7gop
     replies:
       - url: https://github.com/jlevy/squares/issues/282#issuecomment-5972354526
@@ -601,14 +613,20 @@ issues:
     triage: done
     summary: >-
       Higher rectangle-density certificates at 34 counts from n = 19 to 95, at 1a25a5e,
-      each accepted by Tokoharu's unchanged verify.cpp.
-    read_through: '2026-10-01T21:13:37Z'
+      each accepted by Tokoharu's unchanged verify.cpp. Evan Daniel's comment of 4 October
+      offers wand125 a data point for s(19), and reports no result: at container side
+      4.823, just above Hämäläinen's s(18) packing (7 + sqrt 7)/2, the exact
+      fractional-packing ceiling of pure closed covers is 18.4703 and a float cover LP
+      converges to about 18.84 < 19, so a certificate of s(19) > (7 + sqrt 7)/2, and with
+      it s(18) < s(19), looks within reach of a closed cover; he leaves it to wand125
+      (evand/square-packing s12/search/CEILINGS_17_20.md, section 6).
+    read_through: '2026-10-04T15:16:46Z'
     results:
       - key: rect-34
         claim: Rectangle-density lower bounds raised at 34 counts in n = 19…95 (1a25a5e)
         source: body
         register: [T-068, T-074]
-    beads: [think-6ei5]
+    beads: [think-6ei5, think-8i66]
     answer_bead: think-pmxk
     replies:
       - url: https://github.com/jlevy/squares/issues/281#issuecomment-5971665493

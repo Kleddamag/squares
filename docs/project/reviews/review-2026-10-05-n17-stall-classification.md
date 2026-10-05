@@ -45,11 +45,11 @@ Nothing was committed, pushed or posted; lane D writes no shared record.
 
 ## Verdict
 
-**One stall of each kind, and a third kind the rule did not anticipate.** Of the six
-kernel runs that stalled tonight (one lane-K flag, five lane-A per-state nodes), the
-flag is loss-limited, one per-state node is consistency-limited, and the other four are
-mixed by the rule’s letter and loss-limited in substance, at a row width the rule’s
-second clause cannot see past.
+**One flag stall, loss-limited; seven per-state stalls, four of them a kind the rule did
+not anticipate.** Of the eight kernel runs that stalled tonight (one lane-K flag, seven
+lane-A per-state nodes), the flag is loss-limited, three per-state nodes are
+consistency-limited, and the other four are mixed by the rule’s letter and loss-limited
+in substance, at a row width the rule’s second clause cannot see past.
 C2 comes first; two zero-build re-runs come before it.
 
 - **K-k2 is loss-limited and aimable at its own floor.** Interior-NW is 0.5 per cent
@@ -70,15 +70,19 @@ C2 comes first; two zero-build re-runs come before it.
   rule’s loss clause fails; they are two to four times the losses at lane K’s $1/512$
   floor, where the same nodes would classify as K-k2 does.
   Three of the four never cut a row; m2784767 cut two.
-- **m1964767, at distance 2, is consistency-limited.** Every owner is at least 63 per
-  cent supported at a true fixed point; a 14-cell sub-pattern of it is float-placeable.
-  No pairwise cut at any row width addresses most of its poses.
-- **Flag 2’s reading generalises**, to the flag directly and to four of the five
+- **Three per-state stalls are consistency-limited: m1964767 and m851903 at distance 2,
+  m1949551 at distance 4.** Every owner is at least 63, 72 and 66 per cent supported
+  respectively, at fixed points the producer reached in 5, 2 and 13 rounds; a 14-cell
+  sub-pattern of m1964767 is float-placeable.
+  No pairwise cut at any row width addresses most of their poses.
+  m1949551 has the deepest ownership of any stall (side-W0 owns 0.32 of a square), so
+  reach is not what these three lack.
+- **Flag 2’s reading generalises**, to the flag directly and to four of the seven
   per-state states through the row width: wall crowds held by margins of a few
   thousandths to a hundredth and a half, which the kernel’s first-order losses exceed at
   the rows it was given.
   The consistency-limited stall, where the plan’s negative branch points to a branch
-  predicate, occurred once, at the near-endpoint distance.
+  predicate, occurred three times in seven, twice at the near-endpoint distance.
 - **Build C2 first.** It is a producer policy with nothing for a verifier to re-admit,
   it is what the plan’s rule selects on the one flag stall, and the flag is the census’s
   heaviest (2,917 orbits).
@@ -86,8 +90,8 @@ C2 comes first; two zero-build re-runs come before it.
   the octagon core (its knot owners have no wall loss, so the octagon alone puts a
   $1/64$ collision cut near $2.4\times10^{-4}$); and the per-state stalls under the SW9
   adaptive-row recipe instead of N1’s, which is a lane-A recipe question rather than a
-  build. C5 second, with m1964767 as its first test and the reservation that a branch
-  gives a consistency-limited node children that are each still pairwise.
+  build. C5 second, with the three consistency-limited nodes as its first test and the
+  reservation that a branch gives such a node children that are each still pairwise.
 - **Limits.** Supported shares are lower bounds and margins upper bounds, in float, on
   sampled poses; the per-state nodes were sampled at 100 poses per owner, not the plan’s
   400, because the frozen run does not finish in 1,200 s on seventeen owners at
@@ -96,9 +100,10 @@ C2 comes first; two zero-build re-runs come before it.
 
 ## 1. The Stalls
 
-Six kernel runs stalled: three before the diagnoses began and three (A-m1964767,
-A-m2878207, A-m2784767) while they ran; lane K’s nine targets were decided by 11:12 UTC
-with K-k2 the only stall, and lane A was still running.
+Eight kernel runs stalled: three before the diagnoses began and five (A-m1964767,
+A-m2878207, A-m2784767, A-m1949551, A-m851903) while they ran; lane K’s nine targets
+were decided by 11:12 UTC with K-k2 the only stall, and lane A’s twelve draws by 12:07
+UTC with five of the ten counted draws closed and both distance-2 draws stalled.
 Lane A’s endpoint control, which must stall, is not counted.
 Content ids name the saved nodes the diagnoses read.
 
@@ -110,6 +115,8 @@ Content ids name the saved nodes the diagnoses read.
 | A-m1964767, node `90021eed…` | 17 (full state, distance 2) | 32; uniform | 8, 136 | 1/32 | 523 of 544 | `stalled`, fixed point from round 5 | none; weakest interior-SW and interior-W at 63% (medians 0.0090, 0.0145) | 0.0149; 0.0312 | consistency-limited |
 | A-m2878207, node `cd339242…` | 17 (full state, distance 6) | 32; uniform | 11, 187 | 1/32 | 544 of 544 | `stalled`, no row ever cut | none; side-N2 at 17% (median 0.0168) and side-N1 at 39% (0.0144), both below the 1/32 losses; fifteen owners over 69% | 0.0149; 0.0312 | mixed, consistency-dominated |
 | A-m2784767, node `226b1ec5…` | 17 (full state, distance 4) | 32; uniform | 13, 221 | 1/32 | 542 of 544 | `stalled`, fixed point from round 4 | none; side-W0 at 20% (median 0.0168) and side-W1 at 25% (0.0177), both below the 1/32 losses; fifteen owners over 73% | 0.0149; 0.0312 | mixed, consistency-dominated |
+| A-m1949551, node `be7c5c80…` | 17 (full state, distance 4) | 32; uniform | 13, 221 | 1/32 | 544 of 544 | `stalled`, no row ever cut | none; weakest interior-SW 66%, side-W0 68%, side-S2 69% (medians 0.0136, 0.0127, 0.0072) | 0.0149; 0.0312 | consistency-limited |
+| A-m851903, node `d1072390…` | 17 (full state, distance 2) | 32; uniform | 2, 34 | 1/32 | 544 of 544 | `stalled` after two rounds, nothing moved | none; weakest side-E1 72%, side-S1 73%, side-N1 74% (medians 0.0138, 0.0164, 0.0186) | 0.0149; 0.0312 | consistency-limited |
 
 ### 1.1 K-k2: A Mixed Arity-7 Flag at the Row Cap
 
@@ -217,19 +224,20 @@ N1’s parameters: 32 uniform bins, envelope core, no adaptive rows, 24 rounds, 
 | m1964767 | index 5 | 2, c4/i4/d2 | 0.0120; 0.0 at arity 14 (placed) | 8, 136 | `stalled`, fixed point from round 5, 523 of 544 live | 989 s, 623 s |
 | m2878207 | index 8 | 6, c4/i4/d6 | 0.0528; 0.0106 at arity 10 | 11, 187 | `stalled`, 544 of 544 rows live | 1,940 s, 925 s |
 | m2784767 | index 10 | 4, c4/i$\le$3/d4 | 0.0335; 0.0048 at arity 10 | 13, 221 | `stalled`, fixed point from round 4, 542 of 544 live | 1,997 s, 828 s |
+| m1949551 | index 6 | 4, c4/i4/d4 | 0.0552; 0.0073 at arity 10 | 13, 221 | `stalled`, 544 of 544 rows live | 1,613 s, 1,297 s |
+| m851903 | index 9 | 2, c4/i$\le$3/d2 | 0.0115; 0.0031 at arity 15 | 2, 34 | `stalled`, 544 of 544 rows live | 88 s, 77 s |
 | m5683195 (closed, for comparison) | index 2 | 4, c3/i4/d4 | 0.0288; 0.027 at arity 13 | 8, 135 | `closed` in round 7 | 2,148 s, 869 s |
 | m5500414 (closed, for comparison) | index 3 | 6, c3/i4/d6 | 0.0317; 0.0041 at arity 10 | 8, 129 | `closed`, rows dying from round 2 | 1,109 s, 594 s |
 
 The later stalls arrived while the first two were being diagnosed; m1964767 is of a
-different kind and is taken in §1.3, and m2878207 and m2784767, which repeat the first
-two’s shape, in §1.4. One column of the table is worth a remark before the diagnoses:
-the survey’s minimal sub-pattern, the smallest set of the state’s cells the float
-selector could not place, misses by $0.027$ on the first state that closed and by
-$0.0126$, $7.4\times10^{-4}$ and nothing at all (a 14-cell sub-pattern of m1964767 was
-placed) on the first three that stalled, while the full-state penetrations run the other
-way ($0.029$ closed against $0.032$, $0.048$ and $0.012$ stalled).
-The later results blur it: m5500414 closed with a minimal margin of $0.0041$ and
-m2878207 stalled with $0.0106$. On six states it is at most a tendency, and the
+different kind and is taken in §1.3, m2878207 and m2784767, which repeat the first two’s
+shape, in §1.4, and m1949551 and m851903 in §1.5. One column of the table is worth a
+remark before the diagnoses: the survey’s minimal sub-pattern, the smallest set of the
+state’s cells the float selector could not place, does not separate the closures from
+the stalls. Across lane A’s twelve draws the five that closed have minimal margins from
+$3.6\times10^{-4}$ to $0.027$ and the seven that stalled from $0$ (a 14-cell sub-pattern
+of m1964767 was placed) to $0.0126$; the full-state penetrations overlap the same way.
+Nothing in the float survey predicts which per-state nodes the kernel closes; the
 diagnoses below are what carry the classification.
 In the first two stalls no row of any owner died in any round: every owner keeps all 32
 rows, every angle, and a residual box equal to its cell, except four owners that own
@@ -511,6 +519,77 @@ it owns nothing; the induction got exactly as far as the losses allowed and stop
 *Mixed* under the rule, consistency-dominated, loss-limited at the west wall relative to
 the finer floor.
 
+### 1.5 A-m1949551 and A-m851903: Lane A’s Last Two Stalls
+
+These two arrived after the review was first filed, with lane A’s twelve draws then all
+run. m1949551 (draw index 6, distance 4, c4/i4/d4, float penetration $0.0552$, minimal
+sub-pattern $0.0073$ at arity 10 on the north wall and the west side) ran 13 rounds and
+221 steps without a row dying (544 of 544 live, wall 1,613 s, process CPU 1,297 s),
+twelve of seventeen owners owning nothing at the seed.
+It has the most reach of any stall: eleven owners end with a sixteen-vertex hull and
+boxes cut by 0.3 to 0.5 (corner-SW to $y\le0.845$, side-W0 to $[0.500, 0.957]\times
+[1.393, 1.849]$, side-S1 to $y\le1.011$, interior-SW to $[1.463, 1.970]\times[1.411,
+1.728]$, interior-S to $x\ge2.400$), and still no row died.
+Its north wall is full (corner-NW, side-N0, side-N1, side-N2, corner-NE). m851903 (index
+9, distance 2, c4/i$\le$3/d2, penetration $0.0115$, minimal $0.0031$ at arity 15) is the
+quickest stall of the night: two rounds and 34 steps in 88 s, nothing moved, every box
+its cell, only the four corners owning a five-vertex sliver, thirteen owners owning
+nothing. It fills the north, south and east walls and has no side-W0.
+
+**Survivors and support on m1949551** (`domains-m1949551-s100.json`,
+`support-m1949551-s100.json`, 100 poses per owner, 256 s). Ownership is the deepest of
+any stall: side-W0 owns 0.32 of a square (ideal 0.34), interior-SW 0.26, side-W1 0.19,
+interior-W 0.13, side-S1 0.12, corner-SW 0.08, interior-S 0.06, corner-SE 0.05; the four
+north side cells, side-E1 and side-E2 own nothing.
+The owners under 80 per cent supported:
+
+| Owner | Supported | Cut margin: least, tenth percentile, median | Partners that cannot support (poses, median margin) |
+| --- | ---: | --- | --- |
+| interior-SW | 66 per cent | 0.0010, 0.0034, 0.0136 | interior-S (17, 0.0098), side-W0 (13, 0.0157), interior-W (9, 0.0133) |
+| side-W0 | 68 per cent | 0.0018, 0.0039, 0.0127 | side-W1 (16, 0.0127), corner-SW (14, 0.0107), interior-SW (5, 0.0066) |
+| side-S2 | 69 per cent | 0.0003, 0.0012, 0.0072 | side-S1 (13, 0.0097), corner-SE (10, 0.0120), interior-S (10, 0.0035) |
+| side-N2 | 71 per cent | 0.0007, 0.0038, 0.0108 | side-N1 (13, 0.0087), corner-NE (9, 0.0065), interior-N (6, 0.0203), side-E2 (2) |
+| side-N0 | 72 per cent | 0.0031, 0.0049, 0.0137 | side-N1 (15, 0.0165), corner-NW (6, 0.0068), interior-W (4, 0.0116), side-W1 (3) |
+| interior-W | 73 per cent | 0.0003, 0.0016, 0.0102 | interior-SW (12, 0.0050), interior-N (8, 0.0112), interior-S (4), side-W1 (4) |
+| interior-S | 78 per cent | 0.0044, 0.0078, 0.0130 | interior-SW (13, 0.0165), interior-W (4, 0.0149), side-S1 (3), side-S2 (2) |
+| interior-N | 79 per cent | 0.0025, 0.0027, 0.0077 | interior-W (15, 0.0064), side-N1 (4, 0.0127), side-N2 (2) |
+
+The other nine owners are 81 to 93 per cent supported.
+Every owner is at least two thirds supported, so the node is *consistency-limited*, the
+second of the night and the first at distance 4. Its north wall is full, as in the three
+north-wall crowds, but here the crowd is not a knot: side-N0, side-N1 and side-N2 are
+72, 81 and 71 per cent supported, each by every partner for most of its poses.
+What little unsupport there is sits on the owners that own the most (interior-SW,
+side-W0, side-W1, interior-W), in the south-west where the induction did its work;
+margins where poses are unsupported run $0.004$ to $0.020$, below the $1/32$ losses as
+everywhere.
+This state and m1964767 are the two the pairwise kernel cannot address at any
+row width, and the two with the deepest reach among the stalls, which is one more reason
+to doubt that ownership is what the stalls lack.
+
+**Support on m851903** (`support-m851903-s100.json`, 100 poses per owner, 117 s), the
+owners under 80 per cent:
+
+| Owner | Supported | Cut margin: least, tenth percentile, median | Partners that cannot support (poses, median margin) |
+| --- | ---: | --- | --- |
+| side-E1 | 72 per cent | 0.0030, 0.0072, 0.0138 | side-E2 (17, 0.0136), side-E0 (12, 0.0158) |
+| side-S1 | 73 per cent | 0.0026, 0.0072, 0.0164 | side-S2 (18, 0.0133), side-S0 (13, 0.0165) |
+| side-N1 | 74 per cent | 0.0006, 0.0051, 0.0186 | side-N2 (14, 0.0171), side-N0 (13, 0.0189) |
+| side-S0 | 78 per cent | 0.0012, 0.0016, 0.0087 | side-S1 (15, 0.0069), corner-SW (7, 0.0093) |
+| side-N0 | 78 per cent | 0.0012, 0.0016, 0.0063 | side-N1 (13, 0.0144), corner-NW (8, 0.0034), side-W2 (2) |
+
+The other twelve owners are 82 to 95 per cent supported.
+Every owner is at least 72 per cent supported, so the node is *consistency-limited*, the
+third of the night and the second at distance 2. It has three full walls (north, south
+and east) and each wall’s middle square is the least supported owner, at 72 to 74 per
+cent, held by its two wall neighbours by $0.013$ to $0.019$; but with every owner spread
+over its whole cell and nothing having moved, three quarters of every owner’s poses
+clear some pose of every partner, and the crowds are spread rather than knotted.
+The producer saw this in two rounds, which is the cheapest stall of the night (88 s) and
+the clearest statement of what the pairwise induction can and cannot do from a
+whole-cell seed: at this state no one-partner cut, however exact, removes a quarter or
+more of any owner.
+
 ## 2. The Flag-2 Baseline Under the Plan’s Rule
 
 Applying the plan’s rule to the committed flag-2 receipts, as the generalisation test
@@ -598,14 +677,18 @@ consistent*. What they are not is evidence that the induction has nothing to cut
 each, 63 to 85 of 100 sampled poses of the least supported owner are removable by an
 exact one-partner cut.
 
-**m1964767 is consistency-limited, the one genuine case.** Every owner is at least 63
-per cent supported at a true fixed point, so under the rule, and under any row width,
-this is the stall of a pairwise induction that has run out of pairwise facts: for three
+**m1964767 is consistency-limited, the first of three.** Every owner is at least 63 per
+cent supported at a true fixed point, so under the rule, and under any row width, this
+is the stall of a pairwise induction that has run out of pairwise facts: for three
 fifths or more of every owner’s poses some pose of every partner clears them, and no cut
 that reasons from one partner at a time removes a pose like that, however fine the rows
-or exact the core. It is also the state whose survey record says the exclusion is joint:
-a 14-cell sub-pattern of it was placed in float, so nothing smaller than fifteen of its
-cells is infeasible, and its full penetration of $0.012$ is the smallest of the six.
+or exact the core. m1949551 (every owner at least 66 per cent, the deepest ownership of
+any stall) and m851903 (at least 72 per cent, nothing moved in two rounds) are the same
+class, in §1.5; with them the consistency-limited stalls are three of seven per-state
+stalls and both of the distance-2 draws.
+It is also the state whose survey record says the exclusion is joint: a 14-cell
+sub-pattern of it was placed in float, so nothing smaller than fifteen of its cells is
+infeasible, and its full penetration of $0.012$ is the smallest of the six.
 It is one square move from the endpoint’s state, in the stratum lane A reports
 separately and lane E would search.
 What it is not, on tonight’s evidence, is a false flag: a float penetration of $0.012$
@@ -653,11 +736,12 @@ ownership, which is how m5683195 and m5500414 closed from seeds where eleven and
 owners owned nothing.
 So the premise that reach is what stalls per-state nodes is not what these four nodes
 show; resolution is.
-The one node where reach and consistency rather than resolution are the limit is
-m1964767, and it is a consistency-limited fixed point that a branch would hand to two
-pairwise children.
-*Expected gain:* per-state exclusion in the residue tail (2,197 orbits
-in 17,168 states at the recheck), which lane A prices tonight.
+The nodes where consistency rather than resolution is the limit are the three
+consistency-limited fixed points (m1964767, m1949551, m851903), and a branch would hand
+each to two pairwise children; m1949551, with the deepest ownership of any stall, says
+that reach is not what they lack either.
+*Expected gain:* per-state exclusion in the residue tail (2,197 orbits in 17,168 states
+at the recheck), which lane A prices tonight.
 *What it cannot do:* a half-cell seed gives an owner a core, not a closure; whether the
 children close within the ceiling is the claim’s untested half, and each branch doubles
 the per-state cost. *Cost:* a multi-slice build (producer, checker, verifier, consumer
@@ -667,9 +751,9 @@ rule) with a review, against C2’s single producer slice.
 $1/2$, so they own a core already and a branch would not help them; on the wall-crowd
 states the knot exists but an aimed split has nothing to act on until a row dies, which
 at $1/32$ almost none can.
-Flag stalls and per-state no-progress stalls are two failure modes; the first has its
-remedy in C2, the second in the row floor first and C5 after, and m1964767 is a third
-mode that neither candidate addresses directly.
+Flag stalls and per-state wall-crowd stalls are two failure modes; the first has its
+remedy in C2, the second in the row floor first and C5 after, and the three
+consistency-limited states are a third mode that neither candidate addresses directly.
 
 ## 5. What to Build First
 
@@ -712,21 +796,21 @@ reasons, in order of weight:
    400 to 900 s for a flag and 180 to 420 s for a per-state node at 100 poses.
 
 **C5 second, and only after the per-state stalls have been re-run at the finer floor.**
-C5 is aimed at the per-state nodes, but four of tonight’s five per-state stalls turn out
-to be resolution stalls with a wall-crowd knot, which the adaptive-row recipe addresses
-without a grammar change, and a per-state closure removes one orbit where a flag removes
-thousands; lane A’s survey exists to price exactly that trade.
+C5 is aimed at the per-state nodes, but four of tonight’s seven per-state stalls turn
+out to be resolution stalls with a wall-crowd knot, which the adaptive-row recipe
+addresses without a grammar change, and a per-state closure removes one orbit where a
+flag removes thousands; lane A’s survey exists to price exactly that trade.
 If the re-run at $1/512$ still leaves them, or if lane A ends with fewer than half its
 counted draws closed, the plan already names a grammar change as the consequence, and
 C5’s half-cell seed is the version of it that tonight’s numbers support for the hull
 side of the cut: every side cell’s children own a core, no angle sector of a whole-cell
 parent does. Its first falsifier test is then cheap: run both children of one half-split
-on m1964767, the consistency-limited node, and on m3063677, and see whether either pair
-closes where the parent stalled.
-On m1964767 the expectation should be modest: the parent is at a fixed point with every
-owner over 60 per cent supported, and each child is a pairwise induction over a smaller
-seed; what C5 would show there is whether a smaller seed changes the supported shares,
-which is the measurement to take before and after.
+on the three consistency-limited nodes (m1964767, m1949551, m851903) and on m3063677,
+and see whether any pair closes where the parent stalled.
+On the consistency-limited three the expectation should be modest: each parent is at a
+fixed point with every owner over 60 per cent supported, and each child is a pairwise
+induction over a smaller seed; what C5 would show there is whether a smaller seed
+changes the supported shares, which is the measurement to take before and after.
 
 **Not recommended first:** the octagon core as a candidate build on its own (it is a
 setting, taken into the re-run above; it does nothing for wall-loss knots such as flag
@@ -742,7 +826,7 @@ K-k2 already ran.
 | Read from the kernel receipts | per-round rows, live rows and splits; producer outcomes, wall and CPU; seed ownership; the recipes (K: 64 bins, adaptive rows to $1/512$, cap 1,152; A: 32 uniform bins) |
 | Read from the survey receipt | each lane-A state’s draw index, distance, stratum, full-state and minimal-sub-pattern float penetrations |
 | Float estimates | supported shares (lower bounds) and cut margins (upper bounds) from sampled poses, 400 per owner on K-k2 and 100 on the per-state nodes; ideal owned regions; first-order losses |
-| Measured for this review | the diagnoses’ cost: `support` at 400 poses, 367 CPU-s on the 7-owner node and over 616 CPU-s without finishing on a 17-owner node; at 100 poses 160 to 255 CPU-s on 17 owners; `domains` 3 to 5 CPU-s; about 0.6 CPU-h for the lane, the restart loss included |
+| Measured for this review | the diagnoses’ cost: `support` at 400 poses, 367 CPU-s on the 7-owner node and over 616 CPU-s without finishing on a 17-owner node; at 100 poses 111 to 256 CPU-s on 17 owners; `domains` 3 to 5 CPU-s; about 0.7 CPU-h for the lane, the restart loss included |
 | Derived here | the finest-row losses from the row-loss formulas; the cell half-diagonal argument for seed ownership; the classification under the plan’s rule and its reading at the $1/512$ floor; the flag-2 baseline under the same rule; the minimal-sub-pattern remark (four states); the C2 and C5 assessment and the build order |
 | Not done | any placement search on tonight’s nodes (`place`); any exact or interval form of the support test; any run of an aimed policy, an octagon or finer-row re-run, or a branched child; any change to a record |
 

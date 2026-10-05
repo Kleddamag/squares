@@ -53,8 +53,28 @@
       "identical_to": "packing/resources/web/n17-guzhou-r068-2026-09-28/n17-square-packing/certificates/R068-C010/upstream/notices"
     },
     {
-      "match": "certificates/R070-4.6604427/project/followup_c016/results/parent_hull_obstruction_cpp.json",
-      "reason": "a 1.98 MB one-line output of R070's obstruction research, which carries no bound; its geometry replay regenerates it and no premise of either bound reads it"
+      "match": "certificates/R071-C029/project/followup_c0*/**",
+      "reason": "R071's C028 and C029 conditional joint-geometry research and the C021 and C026 inputs it reuses: sources, data trees and frozen outputs that claim no bound; neither the C027 bound, its paired replay nor devtools.audit_guzhou_r071 reads them, so they are pinned by digest rather than retained (OR-18)"
+    },
+    {
+      "match": "certificates/R070-4.6604427/project/followup_c015/**",
+      "reason": "R070's C015 research model and pose, inputs to the compensation charge's construction; the R070 and R071 certificates carry the charge themselves, and neither bound, the paired replay nor devtools.audit_guzhou_r071 reads them (OR-18)"
+    },
+    {
+      "match": "certificates/R070-4.6604427/project/followup_c016/data/*",
+      "reason": "R070's same-budget geometric overlay, which carries no bound; neither bound, the paired replay nor devtools.audit_guzhou_r071 reads it (OR-18)"
+    },
+    {
+      "match": "certificates/R070-4.6604427/project/followup_c016/src/*",
+      "reason": "the programs of R070's overlay and obstruction research, which carry no bound; neither bound, the paired replay nor devtools.audit_guzhou_r071 reads them (OR-18)"
+    },
+    {
+      "match": "certificates/R070-4.6604427/project/followup_c016/results/*.json",
+      "reason": "the outputs of R070's overlay and obstruction research, among them a 1.98 MB one-line obstruction record, which carry no bound; their geometry replay regenerates them, and neither bound, the paired replay nor devtools.audit_guzhou_r071 reads them (OR-18)"
+    },
+    {
+      "match": "certificates/R070-4.6604427/project/work/**",
+      "reason": "a research library of R070's construction, which no bound, replay or audit here reads (OR-18)"
     }
   ]
 }

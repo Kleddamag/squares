@@ -2129,12 +2129,13 @@ pointer and by keyboard, and measures its label at 1280, 768 and 390 pixels.
   (the owner, 2026-10-02, `think-tgjv`; one paragraph of up to 125 words stood between
   the heading and the filter bar until then).
   The first paragraph, 50 to 100 words, is the headline of recent progress, eleven
-  squares settled by T-060, seventeen squares bracketed by T-043 and T-065, the new
-  exact values at $n = 21$, $32$ and $45$, each id linked to its row and held to the
-  register by `check_results.READER_TIER`; then one sentence on where the table above
-  starts. The homepage no longer explains the ratings (the owner, 2026-10-03,
-  `think-42dx`): the paragraph that said what each rating means and the key of every
-  rung under the table are gone, and the Results page carries both.
+  squares settled by T-060, seventeen squares bracketed by T-093 and T-065 (T-043 until
+  2026-10-05), the new exact values at $n = 21$, $32$ and $45$, each id linked to its
+  row and held to the register by `check_results.READER_TIER`; then one sentence on
+  where the table above starts.
+  The homepage no longer explains the ratings (the owner, 2026-10-03, `think-42dx`): the
+  paragraph that said what each rating means and the key of every rung under the table
+  are gone, and the Results page carries both.
   The legend under the table (`rung_legend`, on the results page’s table too) is three
   short lines in the support colour at the note size, in a box framed as a card is (it
   stood between the bar and the table until 2026-10-04): every significance mark, S1 to

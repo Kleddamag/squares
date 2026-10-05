@@ -1,0 +1,9 @@
+# command: env N17_TIMEOUT_MINUTES=600 taskset -c 2,3 node run_public.js bound WORK/bound
+# cwd: WORK/R071-C029, the R071 package staged by devtools.replay_guzhou_r071 from the packet, byte-identical to certificates/R071-C029/ at 8c11f696
+# python3: not used by this command
+# host: 4 cores; load 5.16 4.06 4.76; started 2026-10-05T04:53:42Z
+PASS_BYTES_ONLY / 仅字节身份通过
+DONE 1/2 compile_global
+DONE 2/2 global_dual_replay
+PASS bound
+# finished 2026-10-05T05:51:40Z; exit 0; wall 3477.804 s; CPU 3237.8 s (user 3106.336 + sys 131.475); load 10.15 12.92 13.81

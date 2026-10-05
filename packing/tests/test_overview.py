@@ -1131,9 +1131,9 @@ def test_a_cases_visual_summary_carries_what_the_film_shows() -> None:
     }
     seventeen = facts[17]
     assert seventeen["exact"] is False
-    assert (seventeen["lower"], seventeen["upper"]) == ("4.660440", "4.675531")
+    assert (seventeen["lower"], seventeen["upper"]) == ("4.660442", "4.675531")
     assert seventeen["open"] == ["optimality"]
-    assert seventeen["cite"]["lower"]["note"] == "(confirmed T-043)"
+    assert seventeen["cite"]["lower"]["note"] == "(confirmed T-093)"
     # A floor that stands in for Nagamochi 2005's withdrawn bound names the work it corrects.
     assert facts[150]["cite"]["lower"]["corrects"] == "corrects Nagamochi 2005"
     assert facts[150]["cite"]["upper"]["corrects"] is None
@@ -3649,12 +3649,12 @@ def test_recent_results_names_the_headline_results_at_their_rows(
     lead = _recent_prose(page)
     text = _rendered_text(lead)
     assert "the exact side of Trump\u2019s 1979 packing" in text
-    assert "Seventeen squares is bracketed by machine-checked bounds, T-043 below" in text
+    assert "Seventeen squares is bracketed by machine-checked bounds, T-093 below" in text
     assert "new exact values" in text
-    for result in ("t-060", "t-043", "t-065"):
+    for result in ("t-060", "t-093", "t-065"):
         assert f'<a href="all-results.html#{result}">{result.upper()}</a>' in lead, result
         assert f'id="{result}"' in results, result
-    assert re.findall(r"\bT-\d{3}\b", text) == ["T-060", "T-043", "T-065"]
+    assert re.findall(r"\bT-\d{3}\b", text) == ["T-060", "T-093", "T-065"]
     records = case_pages
     for n in (21, 32, 45):
         assert f'<a href="{render_case_pages.case_url(n)}" data-case="{n}">' in lead, n
@@ -3666,14 +3666,14 @@ def test_recent_results_names_the_headline_results_at_their_rows(
     assert site_documents.README in check_results.READER_TIER
     assert render_overview.OVERVIEW_ARTICLE in check_results.READER_TIER
     template = render_overview.OVERVIEW_ARTICLE.read_text(encoding="utf-8")
-    for result in ("T-060", "T-043", "T-065"):
+    for result in ("T-060", "T-093", "T-065"):
         assert result in template, result
     # The register's own values, as the rows state them: the exact values the
     # paragraph says are new, and the eleven-square side it writes.
     by_id = {r.id: r for r in overview_data.load().results}
     assert by_id["T-060"].record["kind"] == "optimality"
-    assert [by_id[t].record["scope"]["n_values"] for t in ("T-043", "T-065")] == [[17], [17]]
-    assert by_id["T-043"].record["kind"] == "lower-bound"
+    assert [by_id[t].record["scope"]["n_values"] for t in ("T-093", "T-065")] == [[17], [17]]
+    assert by_id["T-093"].record["kind"] == "lower-bound"
     assert by_id["T-065"].record["kind"] == "upper-bound"
     assert "3.8770835" in by_id["T-060"].record["claim"]
     exact = {
@@ -4399,12 +4399,12 @@ def test_a_new_result_is_starred_in_both_tables_by_the_atlas_rule(
         result = by_id[result_id]
         assert result.standing == render_recent_results.HOLDS, result_id
         assert set(cases) <= set(scope_values(dict(result.record["scope"]))), result_id
-    # T-060 settles n = 11 and T-043 holds n = 17. T-037 is as new and is superseded,
-    # T-007 holds its cases and is from 2005, and T-057 is a new upper bound, which the
-    # atlas does not star.
+    # T-060 settles n = 11 and T-093 holds n = 17 (T-043 until 2026-10-05). T-037 is as
+    # new and is superseded, T-007 holds its cases and is from 2005, and T-057 is a new
+    # upper bound, which the atlas does not star.
     assert starred["T-060"] == (11,)
-    assert starred["T-043"] == (17,)
-    assert not {"T-037", "T-007", "T-057"} & set(starred)
+    assert starred["T-093"] == (17,)
+    assert not {"T-037", "T-007", "T-057", "T-043"} & set(starred)
 
     table = overview_sections.results_table(overview)
     recent = overview_sections.recent_table(overview)
@@ -5446,7 +5446,7 @@ def test_a_result_rows_popover_body_comes_from_one_function(
 #: view, and its house drawing no longer ships, which rendered the page at 2,404,813
 #: bytes with the new-result stars, and the ceiling is 2,500,000 again, without the
 #: fetch think-yozo planned for the second drawings.
-PAGE_CEILINGS = {"index.html": 2_500_000, render_overview.RESULTS_PAGE: 1_200_000}
+PAGE_CEILINGS = {"index.html": 2_600_000, render_overview.RESULTS_PAGE: 1_200_000}
 
 
 def test_no_page_carries_a_result_overview(

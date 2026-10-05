@@ -46,6 +46,8 @@ SCHEMA_NAME = "hosted-data.schema.yaml"
 MAX_OBJECTS = 1000
 #: An object must be smaller than this: GitHub refuses a release asset of 2 GiB or more.
 MAX_OBJECT_BYTES = 2 * 1024**3
+#: The host GitHub takes release asset uploads on, apart from the API host.
+UPLOAD_HOST = "uploads.github.com"
 _CHUNK = 1 << 20
 
 
@@ -301,7 +303,8 @@ class GhClient:
     def _require(self, *arguments: str) -> str:
         result = self._run(*arguments)
         if result.returncode:
-            raise HostedDataError(f"gh {arguments[0]} failed: {result.stderr.strip()}")
+            command = " ".join(arguments[:2] if arguments[0] == "release" else arguments[:1])
+            raise HostedDataError(f"gh {command} failed: {result.stderr.strip()}")
         return result.stdout
 
     def assets(self, repository: str, tag: str) -> dict[str, RemoteAsset] | None:
@@ -348,7 +351,21 @@ class GhClient:
             if source.name != asset:
                 named = Path(scratch) / asset
                 named.symlink_to(source.resolve())
-            self._require("release", "upload", tag, str(named), "--repo", repository)
+            result = self._run("release", "upload", tag, str(named), "--repo", repository)
+        if not result.returncode:
+            return
+        said = result.stderr.strip()
+        if "HTTP 403" in said and UPLOAD_HOST in said:
+            # A cloud environment whose egress does not allow the upload host answers
+            # 403 there while the API host, and so the release's creation, works.
+            raise HostedDataError(
+                f"uploading {asset} to {repository}@{tag} was refused with HTTP 403 by "
+                f"{UPLOAD_HOST}, the host GitHub takes release assets on. Allow "
+                f"{UPLOAD_HOST} in the environment's network access, then run publish "
+                "again: it uploads only the assets the release lacks, and nothing was "
+                f"replaced. gh said: {said}"
+            )
+        raise HostedDataError(f"gh release upload failed for {asset}: {said}")
 
     def download(self, repository: str, tag: str, asset: str, destination: Path) -> None:
         # `--clobber` here overwrites only the caller's own temporary file.

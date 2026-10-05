@@ -685,6 +685,28 @@ def test_a_capture_holds_the_page_its_transcription_under_the_archive_header_and
     assert sweep.newest_capture(tmp_path) == ("2026-10-05", out / f"{capture_tool.STEM}.md")
 
 
+def test_another_catalogue_page_is_captured_beside_the_catalogue_under_its_own_name(
+    tmp_path: Path,
+) -> None:
+    out = tmp_path / "kingbird-2026-10-05"
+    stem = "kingbird-squares-in-squares-compared"
+    capture_tool.write_capture(
+        b"<html>older packings</html>",
+        url="https://kingbird.myphotos.cc/packing/squares_in_squares__compared.html",
+        retrieved_utc="2026-10-05T06:00:00Z",
+        last_modified=None,
+        out=out,
+        transcriber=lambda page: f"body of {page.name}\n",
+        stem=stem,
+    )
+    text = (out / f"{stem}.md").read_text(encoding="utf-8")
+    assert text.startswith(f"# Archived: {stem}\n\n**Source:** https://kingbird")
+    assert text.endswith(f"---\n\nbody of {stem}.html\n")
+    assert (out / f"{stem}.capture.json").is_file()
+    assert not (out / "capture.json").exists()
+    assert sweep.newest_capture(tmp_path) is None
+
+
 def test_a_capture_whose_transcription_fails_writes_nothing(tmp_path: Path) -> None:
     """The page used to be written before the transcriber ran, so a failed transcription
     left a capture directory holding a page and no transcription."""

@@ -7967,6 +7967,13 @@ results:
       Stage 4 ran the same day (think-5w7d): the exact certificate replayed here and the
       review of 2026-10-05 moved the entry to V3/C3 and the case's verified upper bound off
       the 9 x 9 grid. The printed side stays the reported bound.
+
+      The SVG was fetched later on 2026-10-05, once the session's egress policy allowed it
+      (think-cdzc). Read by this repository's own adapter, it agrees with the parse the
+      witness was read from, coordinate for coordinate at binary64
+      (resources/web/known-best-packings/receipts/kingbird-2026-10-05-pictures.json), so the certificate is of the pictured packing. Its comment dates the
+      optimization 7 September 2026; whether published moves to that date is think-691c,
+      and re-deriving the witness from the picture's 50-digit pose is think-krbs.
     next_rung: >-
       V4 and C4 need two adversarial AI reviews by distinct reviewers of the claim and a
       human oversight record; the review of 2026-10-05 is one. The verified bound sits 2e-14
@@ -8071,6 +8078,16 @@ results:
       Stage 4 ran the same day (think-5w7d): the exact certificates replayed here and the
       review of 2026-10-05 moved the entry to V3/C3 and both cases' verified upper bounds
       off the 10 x 10 grid. The printed sides stay the reported bounds.
+
+      Both SVGs were fetched later on 2026-10-05, once the session's egress policy allowed
+      it (think-cdzc). Read by this repository's own adapter, each agrees with the parse
+      its witness was read from at binary64: n = 87 coordinate for coordinate, n = 83 but
+      for one angle the picture gives as 0 and the parse as 3.4e-49 degrees
+      (resources/web/known-best-packings/receipts/kingbird-2026-10-05-pictures.json). So the certificates are of the pictured packings. The n = 83 SVG holds
+      the degree-672 polynomial as a Mathematica Root object, and the comments date the
+      steps 4 to 10 September 2026 (n = 83) and 10 to 16 September 2026 (n = 87); whether
+      published moves is think-691c, and re-deriving the witnesses from the pictures'
+      100-digit poses is think-krbs.
     next_rung: >-
       V4 and C4 need two adversarial AI reviews by distinct reviewers of the claim and a
       human oversight record; the review of 2026-10-05 is one. The verified bounds sit
@@ -8396,7 +8413,9 @@ results:
       later release that lowers an earlier entry's values is a new entry: T-056 keeps its
       claim, and the case records at these seven counts now carry this one. The live
       catalogue was not read: kingbird.myphotos.cc was unreachable from the session, and
-      from the review's.
+      from the review's. It was read on 2026-10-05 at 22:39Z, once the egress policy
+      allowed it, and its page is byte for byte the capture of 2026-09-30 that the
+      comparison used (think-cdzc).
 
       Reviewed on 5 October 2026 by the import's stage-4 lane, prompted separately from
       the registering lane (docs/project/reviews/review-2026-10-05-couzo-6042c56.md): no

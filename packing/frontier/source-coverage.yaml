@@ -1226,7 +1226,8 @@ sources:
       retained Kingbird capture of 2026-09-30; each certifies exactly over Q here at centre
       dilation 1 and again by interval arithmetic on the printed pose (T-092). The other 42
       counts are unchanged from the earlier revision. The live catalogue was not read:
-      kingbird.myphotos.cc was unreachable from the session.
+      kingbird.myphotos.cc was unreachable from the session. It was read later on
+      2026-10-05, and its page is byte for byte the capture of 2026-09-30 compared here.
   - id: de-winter-square-packing-211-2026
     title: square-packing-211
     role: source-repository
@@ -1277,7 +1278,7 @@ sources:
     local: resources/web/kingbird-squares-in-squares.html
     source_key: '[Kingbird]'
     scope: {n_min: 1, n_max: 324}
-    reviewed: '2026-09-30'
+    reviewed: '2026-10-05'
     source_date: '2026-09-24'
     disposition: baseline-current
     replay_disposition: case-specific
@@ -1318,6 +1319,18 @@ sources:
       on June 17, 2026". Its values supply the baseline report;
       newer first-party releases can override individual cases. SVG geometry has
       case-specific replay status and is not made formal by appearing here.
+      Read again on 2026-10-05, once the session's egress policy allowed it (think-fr8i):
+      devtools.capture_kingbird_catalogue fetched the page at 22:39:12Z with the same
+      bytes as on 2026-09-30 (SHA-256 b99c3265...) and the same Last-Modified, so the
+      retained capture stands and devtools.diff_kingbird_catalogue finds no count read
+      differently. devtools.derive_kingbird_facts --compare-pictures then fetched the
+      picture behind each of the 98 retained Kingbird witnesses: 95 are their pictures
+      exactly, and the three read from Evan Daniel's parse (n = 69, 83, 87) agree with
+      theirs at binary64
+      (resources/web/known-best-packings/receipts/kingbird-2026-10-05-pictures.json). None
+      of those pictures is newer than 2026-09-24. The older-packings page, captured
+      2026-08-22 and dated 2026-09-24 by the server, was captured again into the record
+      the same day.
   - id: unitsquare-release1
     title: UnitSquare Results Release 1
     role: first-party-release

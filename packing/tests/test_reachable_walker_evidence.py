@@ -45,6 +45,16 @@ def test_walker_evidence_discards_comments_but_keeps_executable_inputs(
     assert reachable_tests._walker_evidence(test) is expected  # noqa: SLF001
 
 
+@pytest.fixture(scope="module")
+def static_tree() -> None:
+    """The static tree `select_tests` parses and memoizes for the life of the process,
+    paid in setup, as `test_reachable_tests` pays it: called first, the parse held this
+    test past the 12 s per-test rule (12.18 s on run 37383614128) while the selection
+    itself takes under a second."""
+    reachable_tests.select_tests(["packing/src/sqpack/cli/validate.py"])
+
+
+@pytest.mark.usefixtures("static_tree")
 def test_benign_metadata_import_no_longer_expands_an_unrelated_frontier_change() -> None:
     selection = reachable_tests.select_tests(["packing/frontier/n-011.md"])
     assert not selection.everything

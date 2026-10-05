@@ -1,0 +1,26 @@
+---
+type: is
+id: is-01m44qz0rxvkakmyqaj7qdgagv
+title: "Follow-up 2026-10-05: unimported issue content, the pending Kingbird intake (n = 69, 83, 87), and evand's site"
+kind: epic
+status: open
+priority: 1
+version: 9
+labels:
+  - result-import
+  - issues
+dependencies: []
+parent_id: is-01m41csdc2gp36ry5p6n7c2x2y
+child_order_hints:
+  - is-01m44qz1asb40jr4qgd1kcytft
+  - is-01m44qz1y770x06rg50px7bqyh
+  - is-01m44qz2fmnk0t9kej4de6a4q7
+  - is-01m44qz3145ah8rt8cadtz51sm
+  - is-01m44qz3phdnc1yfv76nxp6cak
+  - is-01m44qz48kr4zse36ykc4v9hfb
+  - is-01m44qz4sp4xrmggh6fkwgv2x9
+  - is-01m44qz5cez2hhdr2b5p4m1sya
+created_at: 2026-10-05T00:38:34.013Z
+updated_at: 2026-10-05T00:38:38.734Z
+---
+Owner request 2026-10-05: review outstanding GitHub issue content not yet imported and import it by packing/campaign/result-import.md; fix the frontier's stale n = 83 (and every count where the Kingbird catalogue is ahead); make sure the Kingbird results are current; review, cite and import evand's site (https://evand.github.io/square-packing/, incl. problems.html) and link it from the homepage. One PR on claude/ecstatic-pascal-pothtx.

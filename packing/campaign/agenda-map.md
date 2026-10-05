@@ -2,7 +2,7 @@
 
 # Agenda map
 
-410 agenda commitments across 39 agendas, as declared in each agenda's own frontmatter.
+411 agenda commitments across 39 agendas, as declared in each agenda's own frontmatter.
 Source of truth is [`agendas/`](agendas/); this view is regenerated, never edited.
 
 An agenda's queue owns priority ordering, so this map preserves each agenda's
@@ -10,7 +10,7 @@ order rather than imposing one across them.
 
 ## The short version
 
-- **17** in_progress, **25** ready, **21** tentative, **70** blocked, **65** stopped, **212** complete.
+- **18** in_progress, **25** ready, **21** tentative, **70** blocked, **65** stopped, **212** complete.
 
 - **27 blocked commitments carry a manual condition** (`BC-016`, `BC-025`, `BC-033`, `BC-050`, `BC-115`, `BC-170`, `BC-204`, `BC-205`, `BC-212`, `BC-207`, `BC-208`, `BC-209`, `BC-215`, `BC-217`, `BC-221`, `BC-238`, `BC-248`, `BC-270`, `BC-306`, `BC-337`, `BC-327`, `BC-329`, `BC-330`, `BC-358`, `BC-364`, `BC-365`, `BC-396`). Dependency edges alone cannot make these ready; each condition is named in the table below and must be explicitly cleared.
 
@@ -73,6 +73,7 @@ Commitments a session may take now, in each agenda's declared order.
 | agenda-042 | `BC-418` | ready | 0 | correctness | research | Can the n17 local theorem and cover be closed, and do sub-pattern exclusion and capture fit the budget? | `think-tmz6` |
 | agenda-042 | `BC-419` | in_progress | 0 | correctness | research | Do at least half of the ten counted seed-182 draws close under the 17-owner kernel within the 7,000 s… | `think-z8an` |
 | agenda-042 | `BC-420` | in_progress | 0 | correctness | research | Do the standing flags with the most census weight close under the frozen SW9 adaptive-row kernel recipe, or… | `think-035m` |
+| agenda-042 | `BC-423` | in_progress | 0 | correctness | research | Does lane K's target 2 (corner-SW, side-N0, side-W0, side-W1, interior-SW, interior-NW, interior-W) close… | `think-035m` |
 | agenda-042 | `BC-387` | ready | 1 | insight | research | With the capacity-one ceiling lemma proved in the 4.640020 review, does a clique-weighted family of unit… | `think-68la` |
 | agenda-042 | `BC-388` | ready | 1 | insight | research | What is the least side f(theta) along the six-axis plus five-common-angle family at 200 tilts, and on which… | `think-91yk` |
 | agenda-042 | `BC-393` | ready | 1 | correctness | tool_validation | Does this repository's native coverage engine decide every one of the 2,168 rows of Kleddamag's 4.66001… | `think-0rbj` |
@@ -221,7 +222,7 @@ A commitment whose exit another agenda's commitment satisfied. Recorded as an ed
 | agenda-037 | active | 1 |  | 1 | 1 | 1 | 1 | 5 |
 | agenda-040 | active |  | 1 |  | 2 | 1 | 3 | 7 |
 | agenda-041 | active | 4 |  |  |  |  | 2 | 6 |
-| agenda-042 | active | 4 | 9 |  | 2 | 4 | 29 | 48 |
+| agenda-042 | active | 5 | 9 |  | 2 | 4 | 29 | 49 |
 
 ## By program
 
@@ -537,8 +538,9 @@ Open frontier: `BC-306`.
 | agenda-042 | `BC-419` | in_progress | Do at least half of the ten counted seed-182 draws close under the 17-owner kernel within the 7,000… |
 | agenda-042 | `BC-420` | in_progress | Do the standing flags with the most census weight close under the frozen SW9 adaptive-row kernel… |
 | agenda-042 | `BC-422` | in_progress | With a W5 block due under OR-12, do packing-validate --edit and --push stay within their 240 s and… |
+| agenda-042 | `BC-423` | in_progress | Does lane K's target 2 (corner-SW, side-N0, side-W0, side-W1, interior-SW, interior-NW, interior-W)… |
 
-Open frontier: `BC-416`, `BC-418`, `BC-419`, `BC-420`, `BC-422`.
+Open frontier: `BC-416`, `BC-418`, `BC-419`, `BC-420`, `BC-422`, `BC-423`.
 
 ### `reach-table-ladder`
 

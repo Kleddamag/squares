@@ -1660,6 +1660,52 @@ agenda:
       reading is 0.91 s for the producer's self-check against 0.18 s for the standing
       verifier on N1. CPU is tonight's bottleneck, so the block adds no gate run while
       the compute lanes hold the CPUs. BC-421 stays reserved for lane E.
+  - id: BC-423
+    purpose: research
+    owner_focus: correctness
+    instances:
+    - 17
+    state: in_progress
+    priority: 0
+    question: >-
+      Does lane K's target 2 (corner-SW, side-N0, side-W0, side-W1, interior-SW,
+      interior-NW, interior-W) close under SW9's recipe with lane D's diagnosed settings:
+      48 rounds, 2,304 rows and the octagon core?
+    hypotheses:
+    - H-267
+    budget: >-
+      Two runs of at most 7,000 s each in lane K's freed slot (the endpoint7 control
+      under the same settings, then the target) and one verification of at most 4,000 s.
+    entry: >-
+      Lane D's classification of K-k2 as loss-limited, and the coordinator's re-plan at
+      the 11:27 UTC check-in; this cell committed before either run.
+    exit: >-
+      One run, verdict as observed: a closure re-proved by the standing kernel verifier
+      in full and admitted, or a non-closure retained. A closure of the control is a
+      soundness alarm.
+    bead: think-035m
+    depends_on:
+    - BC-415
+    next_evidence: packing/campaign/agent-sessions/session-182-n17-overnight-lanes.md
+    workflows:
+    - research-loop
+    program: post-optimality-low-n
+    parallel_group: n17-overnight-182
+    artifacts:
+    - docs/project/specs/active/plan-2026-10-05-n17-overnight.md
+    note: >-
+      Under BC-418, a future slice added at a check-in (the plan's rule 8); no frozen
+      criterion and no running ceiling changes. The recipe is SW9's frozen one except
+      --max-rounds 48 --max-rows 2304 --core octagon: --bins 64 --hull-limit 16
+      --producer-share 0.6 --split-floor 512 --split-patience 1 --max-seconds 7000, from
+      the clean run worktree at cebb5d15a. Lane D read the stall as loss-limited: the knot
+      owners interior-NW and interior-W are 0.5 and 4.5 per cent supported, with median
+      cut margins near 0.010 against the 1/512 core loss of 0.00097, and the run stopped
+      at its 24-round cap with about 2,400 s of producer share unused. Caveat: lane K2
+      found on W7 that the octagon core does not remove a coarse row's domain loss, so
+      the hull side of a cut may still need the rows. Target 2 projects 2,917 orbits and
+      the arity-at-most-7 residue stands at 10,173, so a closure would bear on H-267's
+      threshold; any verdict change gets a W2 review. Evidence record exp-251.
 ---
 # Agenda 042: The n11 Settlement Ladder and Low-n Angles
 
@@ -1776,6 +1822,7 @@ under BC-418, with three cells registered before the first target run.
 | BC-419 / H-264: per-state price | A, two compute slots | H-264 rewritten in place with `instrument_ready: true`; the seed-182 draw of 12 states, 10 counted. |
 | BC-420 / H-267: flag certification | K, one compute slot, two when slot 4 opens | Nine kernel targets frozen in projected-gain order; the branch-and-bound queue waits for slot 4. |
 | BC-422: OR-12 efficiency block | No compute | Gate walls from the registration’s validation runs; per-row costs from the lanes’ receipts. |
+| BC-423 / H-267: K-k2 with lane D’s settings | Lane K’s freed slot | Added at the 11:27 check-in: 48 rounds, 2,304 rows, octagon core; the endpoint7 control first under the same settings. |
 
 BC-421 is reserved for lane E (H-273, near-endpoint sizing), registered only when it
 launches.

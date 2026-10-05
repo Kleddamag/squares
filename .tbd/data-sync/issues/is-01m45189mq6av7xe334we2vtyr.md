@@ -5,7 +5,7 @@ title: "Import wand125: valid7 checker fix of D-1 to D-3 at da469ec, an evidence
 kind: task
 status: in_progress
 priority: 2
-version: 2
+version: 3
 delegate: claude-code@vm
 labels:
   - result-import
@@ -15,7 +15,7 @@ parent_id: is-01m44qz0rxvkakmyqaj7qdgagv
 hold: null
 hold_until: null
 created_at: 2026-10-05T03:20:55.191Z
-updated_at: 2026-10-05T04:23:01.955Z
+updated_at: 2026-10-05T04:43:43.852Z
 started_at: 2026-10-05T04:23:01.955Z
 ---
 Found by the intake sweep of 2026-10-05 (think-nkzt). wand125/valid7-independent-check moved from 38dd31b369991b0d96c917a4af0c7139b44a038d, which the wand125-valid7-independent-check-2026-10-02 packet pins, to da469ecff5da0c71882e894b65d680ce57a0c87e (2026-10-03T23:14:42Z, Hiroaki Hosono): "Fix the three points raised in evand/square-packing#1 (no change to any certified result)". It changes src/check_record.py, src/cover.py, src/rf.py and src/tier_b2.py (60 lines added, 20 removed). Nothing on jlevy/squares asked for it. It answers evand/square-packing#1, closed 2026-10-03, whose points are this record's review findings.
@@ -37,3 +37,7 @@ Who else holds it: T-064 is V3/C3 on two routes. One is the qx2_zm.py replay (E-
 - No T-NNN.
 - Replaying verify.sh at da469ec on the retained records costs minutes. The 2 October run took 623 s of wall time and 451 CPU-s on 4 cores.
 - When the packet pins da469ec, remove its read in packing/campaign/intake-watch.yaml.
+
+## Notes
+
+2026-10-05 lane stage4, branch claude/ecstatic-pascal-pothtx-stage4 (not pushed), commit 70764a031: packet wand125-valid7-independent-check-2026-10-03 (named for the pin's UTC date 2026-10-03T23:14:42Z, not 10-04) at da469ec by acquire_source (--check PACKET_MATCHES_ITS_CONTRACT); release records-v1 re-downloaded 04:23Z, digests OK, records.sha256 identical. verify.sh replay on retained bytes (CPython 3.14.7, flint 0.9.0): RECORD OK, seed 2431791605250748986, mutants refused, exit 0, 427 s wall / 408 CPU-s (receipts/valid7_verify.log). New devtools.probe_valid7_fixes (V-probe-valid7-fixes, premises): D-1/D-2 examples accepted at 38dd31b, refused at da469ec; hash( gone; controls accepted (receipts/valid7_fix_probe.json, tests/test_probe_valid7_fixes.py). Records: bibliography [wand125 valid7 independent check 2026-10-03] + coverage entry; V-wand125-valid7-checker versions += da469ec; evidence update on E-k2m3-wand125-valid7-independent; dated updates at D-1..D-3 in the 2 Oct review; T-064 notes/artifacts/controls; intake-watch read removed. No rung change. Note: da469ec also adds check_record.py --claim tilt (ValidTilt9 domain), not in the claim map.

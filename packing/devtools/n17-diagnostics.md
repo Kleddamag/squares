@@ -31,9 +31,7 @@ Retained JSON is written with the repository’s `sqpack.retained_json` formatte
 The shared writer checks the actual UTF-8 LF bytes against the 4 MiB packet ceiling
 before replacing a destination.
 Formatting retained files changes no JSON content and does not rerun their measurements.
-The formatter and its direct tests are an exact compatibility prerequisite copied from
-main revision `7e45c42a248acb2c658688e09d8a37c2117e8d06`, paths
-`packing/src/sqpack/retained_json.py` and `packing/tests/test_retained_json.py`.
+The formatter is main’s own module, `sqpack.retained_json`.
 
 Run from `packing/` with the existing Python 3.14 environment.
 On POSIX:

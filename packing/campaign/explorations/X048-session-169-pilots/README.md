@@ -124,6 +124,13 @@ A fresh check on parent `601bbf110` reproduced the same seed/node bytes, 42 step
 672 rows, with 130,387,968 bytes producer peak and 135,819,264 bytes pipeline peak.
 That run confirms compatibility; it is not a new isolated optimization comparison.
 
+Commits cited here that are not in this branch’s history resolve elsewhere: `1525d4e03`,
+`347fc6246`, `4c295ad3d`, `56d5b6eaa`, `601bbf110` and `7f1db8a42` at
+`refs/pull/325/head`, and `1525d4e03`, `601bbf110` and `7f1db8a42` also at
+`refs/pull/307/head`. All but `56d5b6eaa` are also ancestors of the tag
+`archive/guzhou-review-a-333`. The references are provenance only; no code reads them
+(`OR-18`).
+
 ## Validation Status
 
 The evidence layer at `4c295ad3d` passed all required hosted checks after refreshing its

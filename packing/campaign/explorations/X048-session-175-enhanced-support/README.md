@@ -1,8 +1,8 @@
 # Enhanced-model replacement supports
 
-The full raw-piece support search added 23 independently replayed parent supports: the
-enhanced model has 41 of 96 parent rows supported, with 55 unknown.
-All seven H selections covering 18 rows are retained.
+The full raw-piece support search added 23 parent supports, each freshly replayed (same
+implementation, no search): the enhanced model has 41 of 96 parent rows supported, with
+55 unknown. All seven H selections covering 18 rows are retained.
 The one search reached its 100,000-pair ceiling; its budget was not increased and the
 search was not repeated.
 These are positive supports in a finite binary network, not common realizable poses or a
@@ -22,7 +22,7 @@ No piece is dropped, no child domain is recomputed and no adaptive producer runs
 | --- | --- | --- |
 | ONE B search | 26 cliques, 41 parents (+23), 100000 unique pairs, 134 DFS nodes | INCOMPLETE pair guard; 55 unknown, no unsupported candidate |
 | Cost | 157.625 s protocol/160.797 s Job; 170758144 B OS worker peak | 180 s/512 MiB protocol; 240 s outer Job; no guard relaxation |
-| Independent B replay | 26 cliques, 390 fresh pairs; 41 parents/1.417 s | Rebuilds all 5044 children independently using unchanged H builder; exact H7 prefix/input/model identity |
+| Fresh B replay (same implementation, no search) | 26 cliques, 390 fresh pairs; 41 parents/1.417 s | Rebuilds all 5044 children afresh using unchanged H builder; exact H7 prefix/input/model identity |
 | Endpoint | 148 raw/296 children, 24 parents, 15 seeds; 225 fresh replay pairs | Explicit full endpoint angle enclosure lies in selected child interval |
 | Controls | 36 tests 3.36 s; Ruff/types clean | Finite exhaustive assignments, half identity, strict growth, provenance, seeds, caps, failures and direct replay |
 
@@ -101,6 +101,13 @@ pass/36 skip and all 3 required SUCCESS. Final metadata CI is observed separatel
 new A target follows.
 Native usage is one privacy aggregate/lower bound; later finalization and CI after its
 cutoff are excluded, with declared branch association.
+
+Commits cited in this record that are not in this branch’s history, including the
+probes’ `BASE_REVISION` values, resolve at the tag `archive/guzhou-review-a-333`
+(Guzhou’s original nine-session branch).
+The references are provenance only; no code reads them (`OR-18`). “Fresh replay” here
+means the same implementation re-run in a separate process without search; receipt names
+ending in `-independent-replay.json` predate that wording.
 
 <!-- This document follows common-doc-guidelines.md.
 See github.com/jlevy/practical-prose and review guidelines before editing.

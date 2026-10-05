@@ -8605,8 +8605,9 @@ results:
       10000050/10^7 at bin 0, and refusing it at 24000; a pass at one net is a complete
       check, so the refusals are not counterexamples.
 
-      Here the source was retained and its exact premises audited; no coverage has been
-      decided here yet, and the verified lower bound is unchanged.
+      Here the source was retained, its exact premises audited and its mathematics reviewed
+      with no blocking finding; no coverage has been decided here yet, and the verified
+      lower bound is unchanged.
 
       squarepacker (Ryu Sungjoon),
       [s12-lower-bound](https://github.com/squarepacker/s12-lower-bound/tree/7a96bec36bc6811c3715ef581598f22ff9b7ba3a),
@@ -8617,7 +8618,7 @@ results:
       were prepared with the help of Claude (Anthropic).
     scope: {n_values: [12]}
     verification: V0
-    confirmation: C0
+    confirmation: C1
     significance:
       score: 3
       rationale: >-
@@ -8632,12 +8633,23 @@ results:
       source_keys: ['[squarepacker s12 2026-10-05]']
       published: '2026-10-05'
     composition: >-
-      Primary at n = 12: one certificate, no monotonicity, at V0/C0: retained and audited
-      for its exact premises, not reviewed and not replayed here. The source's two checkers,
+      Primary at n = 12: one certificate, no monotonicity, at V0/C1: retained, audited for
+      its exact premises and read by a separately prompted review, not yet replayed here. The source's two checkers,
       Daniel's verify and squarepacker's indep_check.cpp, are one angle-net method in two
       implementations, and the second was built into the search for the weights.
     evidence:
       - E-n012-squarepacker-7943-2000-report
+    reviews:
+      - path: docs/project/reviews/review-2026-10-05-s12-v11-certificate.md
+        kind: adversarial
+        reviewer: AI agent, the separately prompted stage-4 review lane for T-095, sharing no context with the registering and replay lanes, blind to the replay; claude-opus-5-5, tbd-strong tier
+        reviewer_kind: ai
+        relation: project
+        date: '2026-10-05'
+        scope: >-
+          squarepacker's v1.1 certificate for s(12) >= 7943/2000, pinned at 7a96bec3: the argument from certificate to bound with every hypothesis of Daniel's verify, indep_check.cpp and the native parent-core route; the producer's logs and controls cross-read; container, dilation, advance, gap, heaviest orbit, row positions and slip thresholds re-derived by hand; the trust boundaries and the search's fitting to two checkers; the source's account of why it stops near 3.9715 and its clarification of #309; credit, licence, AI statement and dates; significance. Reading only: no computation ran in the review lane, whose tool permissions refused it (its F1).
+        verdict: accepted
+        covers: [T-095]
     artifacts:
       - packing/resources/web/squarepacker-s12-lower-bound-2026-10-05/README.md
       - packing/resources/web/squarepacker-s12-lower-bound-2026-10-05/s12-lower-bound/s12_lower_3.9715.txt.gz
@@ -8659,6 +8671,8 @@ results:
       adversarial review.
     notes: >-
       V0 because the cited entry is the source's claim: assurance reported, replay not yet
-      attempted. C0 because nothing here has read the certificate's mathematics; the exact
-      audit decides no coverage. A later release than T-078's, from the same repository, so
+      attempted. C1 because a separately prompted adversarial review, blind to the replay,
+      read the mathematics and found no blocking defect
+      (docs/project/reviews/review-2026-10-05-s12-v11-certificate.md); it ran no
+      computation, its F1. A later release than T-078's, from the same repository, so
       an entry of its own; T-078 keeps its claim. Ids here are provisional until merged.

@@ -7562,6 +7562,20 @@ evidence:
       (receipts/preflight.json, 21 checks); this entry preserves the source claim, and the
       local replays are recorded separately.
     source_reviewed: '2026-10-05'
+    external_review:
+      state: informally-verified
+      date: '2026-10-05'
+      reviewed_by: An AI agent of this project (claude-opus-5-5, tbd-strong tier), the separately prompted stage-4 review lane for T-095, sharing no context with the registering and replay lanes and blind to the replay (docs/project/reviews/review-2026-10-05-s12-v11-certificate.md).
+      note: >-
+        No mathematical defect and no blocking finding: the reduction, the D4 fold, the
+        rational net, the shrink lemma with Daniel's rounding, the admissible centre box and
+        the cell-closure lemma re-derive, and indep_check.cpp was read line by line. A
+        reading review: the lane's tool permissions refused every command that runs a
+        program, so it read no certificate integer and decided no bin (its F1), and the
+        bound rests on the replays. Its F3: the v1.1 search stopped when indep_check's
+        range-restricted twin found no violation on [0, 45] degrees, so the producer's
+        indep_check runs are producer evidence and the confirmation is Daniel's verify,
+        replayed in full, and the native route.
 
   - id: E-n021-evand-5000-1001-report
     claim: lower-bound

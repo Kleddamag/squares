@@ -183,7 +183,7 @@ results, it is a statement about what this repository has itself examined.
 | `E-n012-levy-15680000-3949423-source-replay` | 1 | lower-bound | verified | equalities and inequalities, no tolerance | here | - | apparently-novel | producer’s code | `V-evand-angle-net-verify` |
 | `E-n012-levy-15680000-3949423-native-parent-core` | 1 | lower-bound | verified | strict inequalities only | here | - | apparently-novel | independent | `V-sqpack-parent-core-native` |
 | `E-n012-levy-15680000-3949423-audit` | 0 | derived-structure | verified | equalities and inequalities, no tolerance | here | - | apparently-novel | no code | `V-audit-s12-reweighted` |
-| `E-n012-squarepacker-7943-2000-report` | 1 | lower-bound | reported | - | elsewhere | - | previously-published | producer’s code | `V-evand-angle-net-verify`, `V-squarepacker-indep-check-cpp` |
+| `E-n012-squarepacker-7943-2000-report` | 1 | lower-bound | reported | - | elsewhere | informally-verified | previously-published | producer’s code | `V-evand-angle-net-verify`, `V-squarepacker-indep-check-cpp` |
 | `E-n021-evand-5000-1001-report` | 0 | lower-bound | reported | - | elsewhere | - | previously-published | producer’s code | `V-evand-angle-net-verify`, `V-evand-xcheck-py` |
 | `E-n021-evand-5000-1001-source-replay` | 0 | lower-bound | verified | equalities and inequalities, no tolerance | here | informally-verified | previously-published | producer’s code | `V-evand-angle-net-verify`, `V-evand-xcheck-py` |
 | `E-n013-evand-casefree-cover-report` | 0 | lower-bound | reported | - | elsewhere | - | previously-published | producer’s code | `V-evand-zeromargin-py`, `V-evand-zmcheck` |

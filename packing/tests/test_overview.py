@@ -6304,6 +6304,22 @@ def test_a_cases_status_is_one_chip_wherever_it_is_drawn(
             assert page.count(overview_sections.case_status_chip(status)) >= 1, (name, status)
 
 
+def test_an_indexed_line_anchor_is_the_line_a_line_by_line_search_finds() -> None:
+    """`LineIndex` searches a file once rather than line by line, and must land where the
+    line-by-line search did for every id an overview links, so no anchor moves."""
+    for path, key in ((overview_data.RESULTS, "results"), (overview_data.EVIDENCE, "evidence")):
+        ids = [entry["id"] for entry in safe_load(path.read_text(encoding="utf-8"))[key]]
+        lines = path.read_text(encoding="utf-8").splitlines()
+        index = overview_data.LineIndex.read(path)
+        assert ids
+        for entry in ids:
+            whole = re.compile(re.escape(f"id: {entry}") + r"(?![\w-])")
+            expected = next(n for n, line in enumerate(lines, start=1) if whole.search(line))
+            assert index.line_of(f"id: {entry}") == expected, (path.name, entry)
+    with pytest.raises(SystemExit, match="has no line containing"):
+        index.line_of("id: E-no-such-entry")
+
+
 def test_a_line_link_finds_an_id_whole_and_not_as_the_start_of_a_longer_one() -> None:
     """`overview_data.line_link` anchors the first line naming an id whole: T-020's first
     evidence entry, `E-n020-fractional-certificate`, comes after the entry whose id it

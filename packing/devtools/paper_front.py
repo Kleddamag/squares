@@ -10,7 +10,7 @@ them the series strip (the series plan, 2026-10-05):
 
     Human oversight: **Joshua Levy**
     Agents: **GPT-6 Astra** and **GPT-6 Sol**
-    Draft v0.1.4 (version history)
+    Draft v0.1.5 (version history)
     Original proof September 29, 2026 · Last revised October 4, 2026
 
     Part III of 3 in the n = 11 series

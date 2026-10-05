@@ -140,9 +140,13 @@ of T-025 and T-026. The numerical $3.81$ result is not a premise of T-026. Keepi
 T-018 proof in full also gives readers an assurance bridge: its short standard-library
 checker exposes the shared geometry and counting mechanism end to end.
 That point-certificate checker does not verify the threshold certificates.
-The linked T-025 and T-026 claim documents each embed the new standard-library threshold
-verifier and the exact certificate bytes it checks; T-026 also embeds and re-derives its
-dilation record.
+The explainer is Part I of a series on $n = 11$, read in order:
+[Part II](https://jlevy.github.io/squares/papers/n11-threshold-bound-review.html)
+reviews Kleddamag’s certified bound $s(11) > 31/8$ (T-037), and
+[Part III](https://jlevy.github.io/squares/papers/n11-optimality-review.html) reviews
+the proof that Trump’s packing is optimal (T-060). The linked T-025 and T-026 claim
+documents each embed the new standard-library threshold verifier and the exact
+certificate bytes it checks; T-026 also embeds and re-derives its dilation record.
 
 Two different quantities get called a gap in this subject, and this document keeps them
 apart. The **bound gap** is the distance between the best upper and lower bounds, the
@@ -1494,6 +1498,14 @@ Smale’s **α-theory**, in [§5](#5-algebra-versus-numerics), has nothing to do
 primitive element $\alpha$. And the neighbouring research reports use $\theta$ for what
 this document calls $a$, and $u_i$ for a per-square half-angle parameter rather than a
 single primitive element.
+
+[Part II of the $n = 11$ series](https://jlevy.github.io/squares/papers/n11-threshold-bound-review.html),
+the review of Kleddamag’s $s(11) > 31/8$, defines a few symbols of its own, which are
+local to it: the parent side $A$, the least charge $\Gamma$ of an assigned core, the
+total budget $M$, and a row $(a, b, t, B)$, an interval $[a, b]$ of parent half-angle
+tangents with its core’s direction $t$ and side $B$. Its $B$ is the shrunken side above,
+one for each row; its $a$ and $b$ are a row’s ends, not the angle-class angle $a$ of
+this card.
 
 ## 11. Further Reading
 

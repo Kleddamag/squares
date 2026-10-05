@@ -53,7 +53,15 @@ experiment:
     record: packing/campaign/series/series-000-smoke-and-calibration/results/exp-256-n17-third-tranche-flags
     dirty: false
     commit: cebb5d15aaa17d0cc13aa302ecbd750a54bfc57d
-  results: []
+  results:
+  - shape: determination
+    role: outcome
+    question: Is target 2 (corner-SW, side-S0, side-W0, side-W2, interior-SW, interior-NW, interior-W) infeasible at U
+      within the 7,000 s ceiling?
+    outcome: criterion_missed
+    checked_by: The run (receipts/K/kernel-t2-bc427.json) returns PASS_CERTIFIED_STALL in 1,044 s of wall and 984 s of
+      process CPU, the producer at its 24-round cap (168 steps, 18,402 rows, finest 1/512); at the last round
+      every owner still had live rows, side-W0 9 and side-S0 15 the fewest. A non-closure; its node is kept.
   verdict:
     decision: in-progress
     primary_criterion: The certified residue at arity at most seven is at most 10^4 orbits with every certificate
@@ -90,6 +98,7 @@ No arity-8 flag fills it.
 
 | Target | Cells | Producer | Verifier | Census after |
 | --- | --- | --- | --- | --- |
+| 2 | corner-SW, side-S0, side-W0, side-W2, interior-SW, interior-NW, interior-W | 24-round cap at 1,044 s, not closed | — | — |
 
 The targets and the census they came from are
 [kernel-targets-bc427.txt](../../../explorations/X048-session-182-overnight/kernel-targets-bc427.txt)

@@ -895,12 +895,12 @@ Status: **active**. Turn PR 230's W3 review and the two explorations it led to, 
 | BC-416 | research | 17 | in_progress | 1 | think-1s3i | packing/campaign/hypotheses/H-267-n17-isolated-sub-pattern-residue.md |
 | BC-417 | research | 17 | complete | 0 | think-set0 | packing/campaign/hypotheses/H-268-n17-local-theorem-slider-coverage.md |
 | BC-418 | research | 17 | ready | 0 | think-tmz6 | packing/campaign/agent-sessions/session-167-n17-parallel-lanes-after-route-review.md |
-| BC-419 | research | 17 | in_progress | 0 | think-z8an | packing/campaign/agent-sessions/session-182-n17-overnight-lanes.md |
+| BC-419 | research | 17 | complete | 0 | think-z8an | packing/campaign/agent-sessions/session-182-n17-overnight-lanes.md |
 | BC-420 | research | 17 | in_progress | 0 | think-035m | packing/campaign/agent-sessions/session-182-n17-overnight-lanes.md |
 | BC-421 | research | 17 | in_progress | 1 | think-tmz6 | packing/campaign/agent-sessions/session-182-n17-overnight-lanes.md |
 | BC-422 | tool_validation | 17 | in_progress | 1 | think-9ntw | packing/campaign/agent-sessions/session-182-n17-overnight-lanes.md |
 | BC-423 | research | 17 | in_progress | 0 | think-035m | packing/campaign/agent-sessions/session-182-n17-overnight-lanes.md |
-| BC-424 | research | 17 | ready | 1 | think-z8an | packing/campaign/agent-sessions/session-182-n17-overnight-lanes.md |
+| BC-424 | research | 17 | in_progress | 1 | think-z8an | packing/campaign/agent-sessions/session-182-n17-overnight-lanes.md |
 
 ## Series
 

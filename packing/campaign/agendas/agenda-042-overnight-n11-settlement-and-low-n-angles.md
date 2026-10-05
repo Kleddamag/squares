@@ -1547,7 +1547,7 @@ agenda:
     owner_focus: correctness
     instances:
     - 17
-    state: in_progress
+    state: complete
     priority: 0
     question: >-
       Do at least half of the ten counted seed-182 draws close under the 17-owner kernel
@@ -1574,6 +1574,8 @@ agenda:
     parallel_group: n17-overnight-182
     artifacts:
     - docs/project/specs/active/plan-2026-10-05-n17-overnight.md
+    - packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-252-h264-n17-overnight-per-state-price.md
+    - docs/project/reviews/review-2026-10-05-exp-252-h264.md
     note: >-
       Under BC-418, lane A of the n17 overnight plan. The float pre-screen (survey seed 182, sample 12,
       two workers) runs first and also places the endpoint as its positive control; a
@@ -1750,7 +1752,7 @@ agenda:
     owner_focus: correctness
     instances:
     - 17
-    state: ready
+    state: in_progress
     priority: 1
     question: >-
       Do at least two of the four counted lane A stalls (masks 2817021, 3063677, 2878207

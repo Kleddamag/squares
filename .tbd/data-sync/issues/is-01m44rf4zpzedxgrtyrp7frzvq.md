@@ -3,9 +3,9 @@ type: is
 id: is-01m44rf4zpzedxgrtyrp7frzvq
 title: "devtools.intake_sweep: one command that lists every unimported input across sources"
 kind: task
-status: in_progress
+status: closed
 priority: 1
-version: 5
+version: 6
 delegate: claude-code@vm
 labels:
   - result-import
@@ -16,8 +16,12 @@ parent_id: is-01m44qz0rxvkakmyqaj7qdgagv
 hold: null
 hold_until: null
 created_at: 2026-10-05T00:47:22.613Z
-updated_at: 2026-10-05T02:23:20.919Z
+updated_at: 2026-10-05T07:19:49.830Z
 started_at: 2026-10-05T00:49:41.998Z
+closed_at: 2026-10-05T07:19:49.830Z
+close_reason: "Done in jlevy/squares#353 / #359 (merged 2026-10-05)"
+resolution: null
+duplicate_of: null
 ---
 Combine check_requests --github (unread issues/comments), watched repositories whose head is past their newest retained packet pin, the Kingbird recapture diff (diff_kingbird_catalogue) when a new capture exists, pending_catalogue_intake entries with age and owning bead, queued asks; markdown report + nonzero exit when an item lacks a bead.
 

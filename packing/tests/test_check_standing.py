@@ -212,13 +212,13 @@ def _entry(records: view.Records, entry: str, **changed: Any) -> Mapping[str, An
 
 
 def test_a_superseded_entry_whose_bound_still_stands_is_refused(records: view.Records) -> None:
-    """The mismatch one way: marked superseded, and still the best on record. T-043
-    holds the verified bound at n = 17, and T-048's 37/5 is the verified bound at n = 50
-    since its replay was recorded on 2026-10-02. The reported lane is held too: n = 11's
-    record reports the proved
-    value as the source rounds it, below the verified one."""
-    assert view.standing(records.results["T-043"], records) == view.HOLDS
-    for entry, n in (("T-043", 17), ("T-048", 50)):
+    """The mismatch one way: marked superseded, and still the best on record. T-093
+    holds the verified bound at n = 17 (T-043 until 2026-10-05), and T-048's 37/5 is the
+    verified bound at n = 50 since its replay was recorded on 2026-10-02. The reported
+    lane is held too: n = 11's record reports the proved value as the source rounds it,
+    below the verified one."""
+    assert view.standing(records.results["T-093"], records) == view.HOLDS
+    for entry, n in (("T-093", 17), ("T-048", 50)):
         (verified,) = check_standing.problems(records.results[entry], view.SUPERSEDED, records)
         assert f"{entry} is superseded, yet at n = {n}" in verified
         assert "no worse than the verified one" in verified
@@ -227,7 +227,7 @@ def test_a_superseded_entry_whose_bound_still_stands_is_refused(records: view.Re
     assert "T-018 is superseded, yet at n = 11" in reported
     assert "no worse than the reported one" in reported
     # A tie is not superseded either: the same value under another entry's citation.
-    tied = _entry(records, "T-001", headline="`s(17) ≥ 116511/25000`")
+    tied = _entry(records, "T-001", headline="`s(17) ≥ 18641771/4000000`")
     assert check_standing.problems(tied, view.SUPERSEDED, records)
 
 
@@ -262,9 +262,9 @@ def test_an_entry_that_holds_one_case_of_several_stands(records: view.Records) -
 def test_an_entry_may_not_state_more_than_its_case_record_carries(
     records: view.Records,
 ) -> None:
-    over = _entry(records, "T-043", headline="`s(17) > 4.67`")
+    over = _entry(records, "T-093", headline="`s(17) > 4.67`")
     (problem,) = check_standing.problems(over, view.HOLDS, records)
-    assert "T-043 states more than the verified bound its case record carries" in problem
+    assert "T-093 states more than the verified bound its case record carries" in problem
 
 
 def test_an_entry_with_no_standing_states_no_bound(records: view.Records) -> None:
@@ -298,5 +298,6 @@ def test_the_command_fails_on_a_mismatch(
     monkeypatch.setattr(view, "standing", lambda *_: view.SUPERSEDED)
     assert check_standing.main(["--cases"]) == 1
     printed = capsys.readouterr()
-    assert "FAIL  T-043 is superseded, yet at n = 17" in printed.err
-    assert "n = 17 lower 116511/25000: verified equal, reported beaten" in printed.out
+    assert "FAIL  T-093 is superseded, yet at n = 17" in printed.err
+    assert "n = 17 lower 18641771/4000000: verified equal, reported equal" in printed.out
+    assert "n = 17 lower 116511/25000: verified beaten, reported beaten" in printed.out

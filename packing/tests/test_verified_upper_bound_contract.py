@@ -465,7 +465,7 @@ def test_n17_endpoint_ceiling_keeps_report_and_optimality_distinct() -> None:
     assert bounds_agree_at_declared_precision(reported, upper)
     assert reported["algebraic_degree"] == 18
     assert case["status"] == "open"
-    assert case["verified_lower_bound"]["exact_form"] == "116511/25000"
+    assert case["verified_lower_bound"]["exact_form"] == "18641771/4000000"
     assert "E-n017-kleddamag-rational-upper" in case["evidence"]
     assert all(
         "E-kingbird-upper-register" not in blocker.get("evidence", [])

@@ -39,6 +39,7 @@
     "surplus": true,
     "inputs": true
   },
+  "consistent": true,
   "theorem_seconds": 868.951,
   "theorem_processes": 8
 }

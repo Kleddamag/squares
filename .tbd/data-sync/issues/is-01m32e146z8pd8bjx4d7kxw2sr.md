@@ -3,14 +3,18 @@ type: is
 id: is-01m32e146z8pd8bjx4d7kxw2sr
 title: PR 211's prose that R012 is the strongest public n=17 value is already stale
 kind: bug
-status: open
+status: in_progress
 priority: 1
-version: 1
+version: 2
+delegate: claude-code@vm
 labels: []
 dependencies: []
 parent_id: is-01m32dt0p76c4bvp3amxtmyt2p
+hold: null
+hold_until: null
 created_at: 2026-09-21T16:50:46.623Z
-updated_at: 2026-09-21T16:50:46.623Z
+updated_at: 2026-10-05T05:34:33.059Z
+started_at: 2026-10-05T05:34:33.059Z
 ---
 Independent of how Kleddamag is adjudicated. The public chain advanced past PR 211 twice before it landed, and this repository holds neither step.
 

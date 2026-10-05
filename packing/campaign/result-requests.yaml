@@ -43,12 +43,15 @@ issues:
           s(k^2 - c) = k for all large k
         source: body
         not_registered: >-
-          Being imported by think-8nv9, lane D of the 5 October evening intake (think-fg6g):
-          the repository retained at a pinned revision, the theorem registered as reported,
-          Lemma 4.10's ball-arithmetic computation replayed here and the argument reviewed.
-          Nothing of it is on main yet.
-        queued: true
-        bead: think-8nv9
+          Recorded in packing/frontier/asymptotic-waste-bounds.yaml at V3/C1, not in the
+          register: the register holds results by the counts n <= 324 they settle, and this
+          theorem settles none (a register scope for families is think-kqi1). The repository
+          is retained whole at 25f645e8 (v1.1 plus its DOI line); Lemma 4.10's labelling was
+          replayed in full with the producer's code, the constants re-decided in interval
+          arithmetic, two controls refused, and one separately prompted AI review accepted
+          the argument with nine non-blocking findings. An independent labelling is
+          think-k3tk.
+        queued: false
     beads: [think-8nv9]
     answer_bead: think-neei
     replies:

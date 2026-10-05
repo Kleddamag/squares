@@ -618,6 +618,16 @@ objects:
   sha256: 97bbefa67fface846309a3d1b450ac571fe6e8fd5ffd9a68e48268e836a25bb1
   description: kernel certificate of s182-m2878207-sw9 (session 182, lane A stall under SW9's recipe,
     H-274)
+- path: packing/campaign/explorations/X048-session-168-pilots/certificates/s182-m3063677-sw9/node-ed786503936075264718549bf37458ad46bb11eb89f4afb73f9abff69a5fb746.json.gz
+  asset: node-ed786503936075264718549bf37458ad46bb11eb89f4afb73f9abff69a5fb746.json.gz
+  size: 103653991
+  sha256: 631b7232cd03346978f029ca3b7f0d99343a354cad835a06607dd42c7dec6e2a
+  description: kernel certificate of s182-m3063677-sw9 (session 182, lane A stall under SW9's recipe, H-274)
+- path: packing/campaign/explorations/X048-session-168-pilots/certificates/s182-m3063677-sw9/seed-dc8c7938273300711facdaa4f99384c2bec0bfcbf03cb2c1395897a275983dcd.json.gz
+  asset: seed-dc8c7938273300711facdaa4f99384c2bec0bfcbf03cb2c1395897a275983dcd.json.gz
+  size: 22322
+  sha256: db3070dd07b4f3361fbe3a9dd4df5a9914a17e2eab8fa400ebe0f8c00400d217
+  description: kernel certificate of s182-m3063677-sw9 (session 182, lane A stall under SW9's recipe, H-274)
 - path: packing/campaign/explorations/X048-session-168-pilots/certificates/s182-m4028335/node-dc6a4636a02c08d8d2c6692aa95757805497da04ffaa0ff6e675a58dcaa83442.json.gz
   asset: node-dc6a4636a02c08d8d2c6692aa95757805497da04ffaa0ff6e675a58dcaa83442.json.gz
   size: 21541509

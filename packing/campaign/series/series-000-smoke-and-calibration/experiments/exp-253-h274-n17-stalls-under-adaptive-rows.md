@@ -91,6 +91,18 @@ experiment:
       cebb5d15a passes it in full mode in 421 s, checking all 4,022 live rows in full and 11,385 collision
       regions by 63,401,908 exact facet checks. It excludes its own 8 states, one orbit. Under N1's recipe the
       same state reached a producer fixed point after 925 s of process CPU (exp-252).
+  - shape: determination
+    role: outcome
+    question: Is the state with mask 3063677 (lane A's draw at index 1, distance 4, stalled under N1's recipe)
+      infeasible at U, by a certificate the kernel's checker accepts and the standing verifier re-proves in
+      full?
+    outcome: criterion_met
+    checked_by: The run (receipts/A/kernel-m3063677-sw9.json) returns PASS_CERTIFIED_CLOSED in 3,536 s of wall
+      and 2,826 s of process CPU (producer 1,594 s, checker 1,939 s) on 136 steps and 9,088 rows in 8 rounds,
+      rows finest at 1/128, closure all_parent_poses_forbidden for interior-E at step 135. The standing
+      verifier at cebb5d15a passes it in full mode in 1,628 s, checking all 8,951 live rows in full and 27,771
+      collision regions by 151,391,996 exact facet checks. It excludes its own 8 states, one orbit. Under N1's
+      recipe the same state reached a producer fixed point after 634 s of process CPU (exp-252).
   verdict:
     decision: accepted
     primary_criterion: At least two of the four frozen states close within the 7,000 s ceiling, each re-proved
@@ -101,8 +113,8 @@ experiment:
       SW9's recipe, each re-proved in full by the standing kernel verifier and admitted
       after the endpoint-state control finished without closing, which meets the
       criterion of two. Both had reached producer fixed points under N1's recipe. The
-      third, 2878207, closed too and was verified and admitted after the verdict; the
-      fourth, 3063677, runs on for the cost. The W2 factual review
+      third, 2878207, and the fourth, 3063677, closed too and were verified and admitted
+      after the verdict, so all four frozen states closed. The W2 factual review
       (docs/project/reviews/review-2026-10-05-exp-253-h274.md) confirmed the verdict with
       corrections to the mechanism, the procedure, a timing and one figure, which this
       record carries.
@@ -110,7 +122,7 @@ experiment:
     commit: 3396efda0
   effort:
     timebox: 7,000 s per state and for the control, 4,000 s per verification, one worker each
-    wall_seconds: 6601
+    wall_seconds: 11768
     stopped_by: criterion
 ---
 # exp-253: Session 182 BC-424, Lane A’s Stalls Under Adaptive Rows
@@ -139,12 +151,13 @@ H-274 is accepted on its first two states.
 [The W2 factual review](../../../../../docs/project/reviews/review-2026-10-05-exp-253-h274.md)
 confirmed the verdict with corrections, which this record carries.
 Both closed with their finest rows at 1/128, so neither needed rows as fine as the 1/512
-split floor. The round’s wall, 6,601 s, runs from the launch at 14:19:55 UTC to the
-control’s end, which released both closures.
+split floor. The round’s wall, 11,768 s, runs from the launch at 14:19:55 UTC to the end
+of its last measurement, 3063677’s verification at 17:36:03; the verdict came at the
+control’s end, 16:09:56, which released the first two closures.
 Container restarts killed two earlier launches of the control (12:07 and 13:29 UTC) and
 one of the first state (13:29 UTC) without receipts; they are not counted.
-The third state, 2878207, closed in 875 s of CPU and was verified and admitted after the
-verdict; the fourth runs on for the cost.
+The third state, 2878207, closed in 875 s of CPU and the fourth, 3063677, in 2,826 s;
+both were verified and admitted after the verdict, so all four frozen states closed.
 
 ## Runs
 
@@ -154,6 +167,7 @@ verdict; the fourth runs on for the cost.
 | 2784767 | 4 | fixed point, 828 s | closed, 7 rounds, admitted | 1,675 s | full pass, 782 s |
 | 2817021 | 4 | fixed point, 828 s | closed, 8 rounds, admitted | 2,100 s | full pass, 911 s |
 | 2878207 | 6 | fixed point, 925 s | closed, 4 rounds, admitted after the verdict | 875 s | full pass, 421 s |
+| 3063677 | 4 | fixed point, 634 s | closed, 8 rounds, admitted after the verdict | 2,826 s | full pass, 1,628 s |
 
 The receipts are under
 [receipts/A](../../../explorations/X048-session-182-overnight/receipts/A/), each

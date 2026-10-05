@@ -900,7 +900,7 @@ Status: **active**. Turn PR 230's W3 review and the two explorations it led to, 
 | BC-421 | research | 17 | in_progress | 1 | think-tmz6 | packing/campaign/agent-sessions/session-182-n17-overnight-lanes.md |
 | BC-422 | tool_validation | 17 | in_progress | 1 | think-9ntw | packing/campaign/agent-sessions/session-182-n17-overnight-lanes.md |
 | BC-423 | research | 17 | in_progress | 0 | think-035m | packing/campaign/agent-sessions/session-182-n17-overnight-lanes.md |
-| BC-424 | research | 17 | in_progress | 1 | think-z8an | packing/campaign/agent-sessions/session-182-n17-overnight-lanes.md |
+| BC-424 | research | 17 | complete | 1 | think-z8an | packing/campaign/agent-sessions/session-182-n17-overnight-lanes.md |
 | BC-425 | research | 17 | in_progress | 1 | think-035m | packing/campaign/agent-sessions/session-182-n17-overnight-lanes.md |
 
 ## Series
@@ -1120,7 +1120,7 @@ Status: **active**. Turn PR 230's W3 review and the two explorations it led to, 
 | H-270 | blocked | search | For some integer k with 18 <= k <= 41, the strip construction of Kearn | k: 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 | 0 |  |  |
 | H-272 | blocked | search | Of the 68 non-grid known-best records whose witness derives from Kingb |  | 0 |  |  |
 | H-273 | open | proof | Each of the 95 orbits at Hamming distance 2 from the endpoint's state  |  | 0 |  |  |
-| H-274 | confirmed | proof | Of the four counted draws of H-264's seed-182 draw that stalled under  |  | 1 |  | 110.0m wall |
+| H-274 | confirmed | proof | Of the four counted draws of H-264's seed-182 draw that stalled under  |  | 1 |  | 196.1m wall |
 
 ## Needs review — held for a human, not decided
 
@@ -1327,7 +1327,7 @@ Status: **active**. Turn PR 230's W3 review and the two explorations it led to, 
 | exp-247 | series-000 | 17 | Claude Session 168; lane G2 built the design in Session 167, the coordinator ran it from a clean worktree | H-266 | Every criterion item holds for the unique-state design, which keeps the 43,593-orbit census. The exp-246 tabbed design stays unresolved; this round supersedes it for H-266. |
 | exp-248 | series-000 | 17 | Claude Session 168; lanes H, H2 and A3 built the tools, the coordinator ran both from a clean worktree | H-268 | Every criterion item holds with strict margin, and the composition with the B_W' local theorem and the H-266 cover gives the capture-target theorem. The deviation is recorded; H-261, whose claim names the whole physical slider domain, stays unresolved. |
 | exp-252 | series-000 | 17 | Claude Session 182; the run operator's lane A queue ran the survey, the control and the draws two at a time in the survey's own seeded random order, verified each closure and admitted it in the session checkout | H-264 | Five of the ten counted draws closed within the 7,000 s ceiling, each re-proved in full by the standing kernel verifier, which meets the criterion of at least half; every closure cost under 900 s of process CPU and every verification under 700 s, far inside two CPU-hours. The other five counted draws reached producer fixed points inside the ceiling, as did both distance-2 draws. The W2 factual review (docs/project/reviews/review-2026-10-05-exp-252-h264.md) confirmed the verdict with corrections to bookkeeping and attribution, which this record carries. |
-| exp-253 | series-000 | 17 | Claude Session 182; the run operator's BC-424 queue ran the control beside the states, which ran one at a time in mask order, verified each closure, and admitted it in the session checkout once the control had finished without closing | H-274 | The first two frozen states, 2784767 and 2817021, closed within the ceiling under SW9's recipe, each re-proved in full by the standing kernel verifier and admitted after the endpoint-state control finished without closing, which meets the criterion of two. Both had reached producer fixed points under N1's recipe. The third, 2878207, closed too and was verified and admitted after the verdict; the fourth, 3063677, runs on for the cost. The W2 factual review (docs/project/reviews/review-2026-10-05-exp-253-h274.md) confirmed the verdict with corrections to the mechanism, the procedure, a timing and one figure, which this record carries. |
+| exp-253 | series-000 | 17 | Claude Session 182; the run operator's BC-424 queue ran the control beside the states, which ran one at a time in mask order, verified each closure, and admitted it in the session checkout once the control had finished without closing | H-274 | The first two frozen states, 2784767 and 2817021, closed within the ceiling under SW9's recipe, each re-proved in full by the standing kernel verifier and admitted after the endpoint-state control finished without closing, which meets the criterion of two. Both had reached producer fixed points under N1's recipe. The third, 2878207, and the fourth, 3063677, closed too and were verified and admitted after the verdict, so all four frozen states closed. The W2 factual review (docs/project/reviews/review-2026-10-05-exp-253-h274.md) confirmed the verdict with corrections to the mechanism, the procedure, a timing and one figure, which this record carries. |
 
 ### baseline (12)
 
@@ -1399,7 +1399,7 @@ Status: **active**. Turn PR 230's W3 review and the two explorations it led to, 
 
 ## Effort
 
-183 rounds, 2512.1 agent-minutes, 4383.1 wall-minutes.
+183 rounds, 2512.1 agent-minutes, 4469.2 wall-minutes.
 
 These totals exclude 4 historical rounds with unrecorded timing; their cost is unknown, not zero.
 

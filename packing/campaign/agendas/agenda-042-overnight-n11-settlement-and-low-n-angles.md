@@ -1761,7 +1761,7 @@ agenda:
     owner_focus: correctness
     instances:
     - 17
-    state: in_progress
+    state: complete
     priority: 1
     question: >-
       Do at least two of the four counted lane A stalls (masks 2817021, 3063677, 2878207
@@ -1789,6 +1789,8 @@ agenda:
     parallel_group: n17-overnight-182
     artifacts:
     - packing/campaign/hypotheses/H-274-n17-per-state-closure-under-adaptive-rows.md
+    - packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-253-h274-n17-stalls-under-adaptive-rows.md
+    - docs/project/reviews/review-2026-10-05-exp-253-h274.md
     note: >-
       Under BC-418, a future slice added at a check-in; H-264 keeps running to its own
       verdict on N1's recipe. Recipe: --bins 64 --max-rounds 24 --hull-limit 16

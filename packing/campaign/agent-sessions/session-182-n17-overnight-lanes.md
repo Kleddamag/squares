@@ -752,8 +752,9 @@ consequence in each.
   16:09:56 UTC, releasing states 2784767 and 2817021 (`36c081a4d`, `3396efda0`); the
   verdict is `90a031fb6`. State 2878207’s producer closed at 16:08:36, before the
   control ended and before the verdict; it was verified at 16:15:37 and admitted after
-  the verdict (`400c57176`). The certified census is 72,248 states in 9,162 orbits, the
-  endpoint surviving.
+  the verdict (`400c57176`). The fourth, 3063677, closed at 17:08:53 and was verified at
+  17:36:03, so all four frozen states closed, and BC-424 is complete.
+  The certified census is 72,248 states in 9,162 orbits, the endpoint surviving.
 - **BC-423’s control is undecided, so target 2 is not admitted.** Target 2 closed under
   BC-423’s settings at 15:02:59 (46 rounds, 33,834 rows, finest row 1/512), and the
   standing verifier passed it in full at 15:22:50 in 1,190 s. Its endpoint7 control

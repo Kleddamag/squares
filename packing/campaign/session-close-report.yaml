@@ -7,11 +7,11 @@ softschema:
   schema: schemas/session-close-report.schema.yaml
   envelope: null
   status: enforced
-count: 176
+count: 179
 generated_by: >-
   uv run --frozen --all-extras --group dev python -m devtools.close_session --render
 totals:
-  sessions_measured: 122
+  sessions_measured: 125
   sessions_unmeasured: 54
   attributed:
     rollups: 297
@@ -35,9 +35,9 @@ totals:
     one_off_code: 7280
     wall_hours: 713.93
 codex_receipts:
-  attributed: 75
+  attributed: 78
   unattributed: 2
-  measured: 77
+  measured: 80
 # Per-session figures below are the logs each session DECLARES. They overlap when
 # sessions share a harness log, so they do not sum to `attributed` above.
 sessions:
@@ -3072,6 +3072,66 @@ sessions:
     agent_hours: 0.65
     active_union_hours: 0.32
     wall_hours: 0.32
+    snapshot_incomplete: true
+- id: session-177
+  title: "Exact cached collision equivalence and first-use profile"
+  status: stopped
+  primary_bead: think-5sya
+  phases: 2
+  measured: true
+  rollups:
+  - packing/campaign/resource-usage/codex-session-177.yaml
+  turns: null
+  tool_calls: null
+  tool_errors: null
+  one_off_code: null
+  wall_hours: null
+  codex_receipts:
+  - path: packing/campaign/resource-usage/codex-session-177.yaml
+    model_responses: 66
+    agent_hours: 0.72
+    active_union_hours: 0.36
+    wall_hours: 0.36
+    snapshot_incomplete: true
+- id: session-178
+  title: "Full-interval augmentation versus halving on fixed E tuples"
+  status: stopped
+  primary_bead: think-abit
+  phases: 2
+  measured: true
+  rollups:
+  - packing/campaign/resource-usage/codex-session-178.yaml
+  turns: null
+  tool_calls: null
+  tool_errors: null
+  one_off_code: null
+  wall_hours: null
+  codex_receipts:
+  - path: packing/campaign/resource-usage/codex-session-178.yaml
+    model_responses: 73
+    agent_hours: 0.7
+    active_union_hours: 0.35
+    wall_hours: 0.35
+    snapshot_incomplete: true
+- id: session-179
+  title: "Certificate-preserving selective halving on frozen E tuples"
+  status: stopped
+  primary_bead: think-ns4t
+  phases: 2
+  measured: true
+  rollups:
+  - packing/campaign/resource-usage/codex-session-179.yaml
+  turns: null
+  tool_calls: null
+  tool_errors: null
+  one_off_code: null
+  wall_hours: null
+  codex_receipts:
+  - path: packing/campaign/resource-usage/codex-session-179.yaml
+    model_responses: 81
+    agent_hours: 0.7
+    active_union_hours: 0.35
+    wall_hours: 0.35
     snapshot_incomplete: true
 - id: session-180
   title: "Bounded n17 producer memo retention investigation"

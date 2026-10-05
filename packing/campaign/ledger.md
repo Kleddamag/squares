@@ -190,6 +190,9 @@ Each entry summarizes one user-level research window. Cycle slots are wall-clock
 | [session-174](agent-sessions/session-174-core-refinement.md) | stopped | contemporaneous | `research-loop` (correctness) | `review-planning-oversight` (correctness) | 2 | think-0xxc | Await Joshua and current-layer required CI under think-q0z7. No active research executor or reserved follow-up; original intervals are historical. |
 | [session-175](agent-sessions/session-175-enhanced-support.md) | stopped | contemporaneous | `research-loop` (correctness) | `research-loop` (correctness) | 2 | think-wh57 | Await Joshua and current-layer required CI under think-q0z7. No active research executor or reserved follow-up; original intervals are historical. |
 | [session-176](agent-sessions/session-176-owner-priority.md) | stopped | contemporaneous | `research-loop` (correctness) | `research-loop` (correctness) | 2 | think-mkgr | Await Joshua and current-layer required CI under think-q0z7. No active research executor or reserved follow-up; original intervals are historical. |
+| [session-177](agent-sessions/session-177-cached-collision.md) | stopped | contemporaneous | `research-loop` (correctness) | `research-loop` (correctness) | 2 | think-5sya | Await Joshua and current-layer required CI under think-q0z7. No active research executor or reserved follow-up; original intervals are historical. |
+| [session-178](agent-sessions/session-178-full-core-ablation.md) | stopped | contemporaneous | `research-loop` (correctness) | `research-loop` (correctness) | 2 | think-abit | Await Joshua and current-layer required CI under think-q0z7. No active research executor or reserved follow-up; original intervals are historical. |
+| [session-179](agent-sessions/session-179-selective-halving.md) | stopped | contemporaneous | `research-loop` (correctness) | `research-loop` (correctness) | 2 | think-ns4t | Await Joshua and current-layer required CI under think-q0z7. No active research executor or reserved follow-up; original intervals are historical. |
 | [session-180](agent-sessions/session-180-n17-producer-memo.md) | stopped | contemporaneous | `review-planning-oversight` (insight) | `review-planning-oversight` (correctness) | 3 | think-wn6x | Review the rebuilt layer that replaces Draft PR 325 under think-wn6x; its hosted certification on the rebuilt history is owned by think-i45l. Upstream think-tmz6 remains the research coordinator. No merge or new compute is authorized by this closeout. |
 
 ### Workflow summary
@@ -203,7 +206,7 @@ Declared counts are contemporaneous contracts; retrospective counts are reconstr
 | `insight-iteration` | 29 | 1 | 90 | 4 |
 | `process-review` | 16 | 4 | 64 | 6 |
 | `efficiency-loop` | 11 | 1 | 41 | 1 |
-| `research-loop` | 34 | 4 | 124 | 9 |
+| `research-loop` | 37 | 4 | 130 | 9 |
 | `pipeline-improvement` | 41 | 2 | 213 | 7 |
 | `documentation-pass` | 1 | 0 | 29 | 3 |
 | `remediation` | 2 | 1 | 6 | 3 |

@@ -119,13 +119,17 @@ separate record.
 Guzhou0806’s R068 of 28 September, continuing that charge with one added
 four-site point orbit over 4,991 intervals, proves $s(17) > 116511/25000 = 4.66044$,
 exactly $0.00043$ higher; its two checkers’ complete replays pass here and agree with
-the published ledgers, at `V3/C3`, and it supplies the verified bound, $0.0151$ below
-Bidwell’s packing
+the published ledgers, at `V3/C3`, and it supplied the verified bound until 5 October
 ([review](docs/project/reviews/review-2026-09-28-n17-guzhou-r067-r068.md)). R067,
 $233009/50000$, was replayed beside it.
-Each now has an entry in the results register (`T-038` to `T-043`), which since 29
-September 2026 holds every result by others that this record acts on, with the source’s
-credit beside this repository’s `V` and `C`.
+Guzhou0806’s R071 of 30 September keeps R068’s charge and rebuilds its cores over 5,114
+intervals for $s(17) > 18641771/4000000 = 4.66044275$, $11/4000000$ higher; its complete
+replay passed here on 5 October at `V3/C3`, and it supplies the verified bound now,
+$0.0151$ below Bidwell’s packing
+([review](docs/project/reviews/review-2026-10-05-guzhou-r071.md)). Each now has an entry
+in the results register (`T-038` to `T-043`, and `T-093`), which since 29 September 2026
+holds every result by others that this record acts on, with the source’s credit beside
+this repository’s `V` and `C`.
 
 The same intake took in three more sources.
 Evan Daniel’s `evand/square-packing`, building on Sam Burns’s and Gustavo Massaccesi’s
@@ -239,6 +243,7 @@ action for each are in [`frontier/RESULTS.md`](packing/frontier/RESULTS.md); the
 | [T-090](packing/frontier/RESULTS.md) | 42, 43, 44, 51, 56, 57, 67, 69, 72, 75, 84, 86, 88, 93, 94, 95 | `V0` | `C1` | `S3` | `previously-published` | wand125/square-packing-bounds reports 16 rectangle-density certificates published on 3 and 4 October 2026: s(42) >= 2739/400 = 6.8475, s(43) >= 2763/400 = 6.9075, s(44) >= 2789/400 = 6.9725, s(51) >= 747/100 = 7.47, s(56) >= 3121/400 = 7.8025, s(57) >= 3149/400 = 7.8725, s(67) >= 339/40 = 8.475, s(69) >= 431/50 = 8.62, s(72) >= 219/25 = 8.76, s(75) >= 447/50 = 8.94, s(84) >= 3763/400 = 9.4075, s(86) >= 9503/1000 = 9.503, s(88) >= 769/80 = 9.6125, s(93) >= 247/25 = 9.88, s(94) >= 497/50 = 9.94 and s(95) >= 1993/200 = 9.965. |
 | [T-091](packing/frontier/RESULTS.md) | 53, 54, 58, 70, 71, 73, 76, 87, 88, 90, 91, 94 | `V0` | `C1` | `S3` | `previously-published` | wand125/square-packing-bounds reports 12 rectangle-density certificates published on 4 October 2026, after those of T-090: s(53) >= 3051/400 = 7.6275, s(54) >= 1537/200 = 7.685, s(58) >= 1587/200 = 7.935, s(70) >= 3463/400 = 8.6575, s(71) >= 8721/1000 = 8.721, s(73) >= 8813/1000 = 8.813, s(76) >= 1793/200 = 8.965, s(87) >= 479/50 = 9.58, s(88) >= 481/50 = 9.62, s(90) >= 973/100 = 9.73, s(91) >= 781/80 = 9.7625 and s(94) >= 199/20 = 9.95. |
 | [T-046](packing/frontier/RESULTS.md) | 18, 19, 20, 26, 27, 28, 29, 30, 31, 37, 38, 39, 40, 41, 42, 43, 44, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 86, 88, 89, 90, 91, 94, 95 | `V0` | `C0` | `S3` | `previously-published` | wand125/square-packing-bounds reports one standing rectangle-density certificate for each of 48 counts from n = 18 to n = 95, added or raised between 26 and 28 September 2026. |
+| [T-094](packing/frontier/RESULTS.md) | 67, 84 | `V0` | `C0` | `S3` | `previously-published` | wand125/square-packing-bounds reports two rectangle-density certificates published on 5 October 2026, after those of T-091: s(67) >= 212/25 = 8.48 and s(84) >= 9411/1000 = 9.411. |
 | [T-003](packing/frontier/RESULTS.md) | 17, 18 | `V3` | `C3` | `S2` | `apparently-novel` | The sixteen-point set’s unavoidability ceiling lies in [4426213/1000000, 4427/1000): certification at the left endpoint, an exact escaping pose at the right, with the top strips’ a + 2b <= 2*sqrt(2) hypothesis identifying the closing mechanism at 753/250 + sqrt(2), inside the bracket. |
 | [T-005](packing/frontier/RESULTS.md) | 13 | `V3` | `C3` | `S2` | `apparently-novel` | Bentz 2010, Lemma 10 is false as printed -- the middle replacement point (1, 1.74) is refuted by an exact escape certificate, and the published page image carries the same transposed text -- and true under the corrected reading (1.74, 1), with all three corrected replacement covers certified exactly. |
 | [T-011](packing/frontier/RESULTS.md) | 11 | `V3` | `C3` | `S2` | `previously-published` | Trump’s 1979 packing is exactly valid: 11 unit squares in a square of side the published degree-8 algebraic number 3.877083590022814 …, with 14 of 55 pairs in exact zero-separation contact and 20 corner coordinates exactly on the boundary, so s(11) <= that side. |
@@ -252,7 +257,7 @@ action for each are in [`frontier/RESULTS.md`](packing/frontier/RESULTS.md); the
 | [T-078](packing/frontier/RESULTS.md) | 12 | `V3` | `C3` | `S2` | `previously-published` | s(12) >= 31360/7901 = 3.96911783 …, by squarepacker (Ryu Sungjoon) after Evan Daniel, published on 2 October 2026 and reported on jlevy/squares#309. |
 | [T-088](packing/frontier/RESULTS.md) | 69 | `V3` | `C3` | `S2` | `previously-published` | s(69) <= 8.82719465572975, by David Ellsworth’s packing of 69 unit squares, certified here exactly. |
 | [T-089](packing/frontier/RESULTS.md) | 83, 87 | `V3` | `C3` | `S2` | `previously-published` | s(83) <= 9.63475764863195 and s(87) <= 9.83881526994915, by two packings by Allen Chang, the first optimized by David Ellsworth, certified here exactly. |
-| [T-093](packing/frontier/RESULTS.md) | 17 | `V0` | `C0` | `S2` | `previously-published` | s(17) > 18641771/4000000 = 4.66044275, by Guzhou0806 / N17 project’s R071 release of 30 September 2026, on the charge of R068 (T-043). |
+| [T-093](packing/frontier/RESULTS.md) | 17 | `V3` | `C3` | `S2` | `previously-published` | s(17) > 18641771/4000000 = 4.66044275, by Guzhou0806 / N17 project’s R071 release of 30 September 2026, on the charge of R068 (T-043). |
 | [T-063](packing/frontier/RESULTS.md) | 61 | `V3` | `C3` | `S1` | `previously-published` | s(61) = 8, as a corollary of s(60) = 8 (T-062), which Evan Daniel published with it on 28 September 2026. |
 
 | Significance | What [`epistemics.md`](epistemics.md#significance-and-novelty) anchors it to |
@@ -288,7 +293,7 @@ hypothesis status and summarizes experiment verdicts, and the
 | Explorations | 47 | 28 linked to proposed hypotheses; 19 uncodified |
 | Hypotheses | 198 | 39 confirmed; 32 refuted; 64 blocked; 17 unresolved; 9 open; 32 open questions; 2 result registered; 2 abandoned; 0 running; 1 exhausted |
 | Experiments | 170 | 53 accepted; 37 rejected; 52 unresolved; 12 baseline; 11 blocked; 4 abandoned; 0 in progress; 1 exhausted |
-| Frontier results | 93 | 93 registered, 64 by others |
+| Frontier results | 94 | 94 registered, 65 by others |
 
 <!-- END CURRENT-RESEARCH-STATUS -->
 
@@ -555,6 +560,7 @@ case or experiment separately.
 | [Changes in v0.1.4 of the Eleven-Square Optimality Review, for Its W2 Exposition Review](docs/project/reviews/review-2026-10-04-n11-optimality-paper-v0.1.4-changes.md) | dated review record | record | retained | — |
 | [wand125 Certificates of 3 and 4 October: Review of 28 Mixed Rectangle-Measure Bounds From `n = 42` to `n = 95`](docs/project/reviews/review-2026-10-05-wand125-october-4-certificates.md) | dated review record | record | retained | — |
 | [Review: Couzo’s Revision of 3 October 2026, Seven Lower Sides From `n = 208` to `306` (T-092)](docs/project/reviews/review-2026-10-05-couzo-6042c56.md) | dated review record | record | retained | — |
+| [Proof Review: Guzhou0806’s R071, `s(17) > 18641771/4000000 = 4.66044275`](docs/project/reviews/review-2026-10-05-guzhou-r071.md) | dated review record | record | retained | — |
 | [Integration of GPT-6 Pro’s Adversarial Review of the Eleven-Square Optimality Proof](docs/project/reviews/review-2026-10-03-n11-gpt6-pro-review-integration.md) | dated review record | record | retained | — |
 | [Eleven-Square Optimality Paper: Adversarial Review](docs/project/reviews/review-2026-10-03-n11-optimality-paper-adversarial.md) | dated review record | record | retained | — |
 | [Review: The Site’s Documentation Cards and the Records Behind Them](docs/project/reviews/review-2026-10-01-site-documentation-records.md) | dated review record | record | retained | — |

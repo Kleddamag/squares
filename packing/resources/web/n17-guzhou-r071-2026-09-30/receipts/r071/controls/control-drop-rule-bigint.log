@@ -1,0 +1,6 @@
+# command: node project/base/upstream/cpp/reference/verify_global_variable.js WORK/controls/drop-rule/certificate.json WORK/controls/drop-rule/node.json 0 4
+# cwd: WORK/R071-C029, the staged R071 package; certificate 24268e250fdd40fd55f2bb78fb66883578a854dd0a2503aba2e84715869d4eb4, the drop-rule mutation of 15b6bf6a936eba71338c9ea3e3b9966ae21db8116a6f5a92a8b5da5ccabed469 (bounds/c027/certificate.json): rule orbit 27 of weight 24870028 zeroed, budget_units 16801488720 (minus 198960224), minimum_units 1000026409 unchanged; intervals 0 to 3; C++ executable cf761bb5d19ba01be76853c7e6bd47648a8ff5c29624d02f9cc02d730cc719d5
+# python3: not used by this command
+# host: 4 cores; load 14.49 11.29 8.10; started 2026-10-05T05:04:09Z
+{"status":"EXACT_INTERVAL_COVERAGE_FAILURE","interval":0,"minimum_units":"950286788","cells":415976325,"required":"1000026409","rows":[{"interval":0,"minimum_units":"950286788","cells":415976325}],"certificate_sha256":"24268e250fdd40fd55f2bb78fb66883578a854dd0a2503aba2e84715869d4eb4","seconds":1.909,"verified_utc":"2026-10-05T05:04:11.822Z"}
+# finished 2026-10-05T05:04:11Z; exit 2; wall 1.975 s; CPU 1.6 s (user 1.549 + sys 0.084); load 14.49 11.29 8.10

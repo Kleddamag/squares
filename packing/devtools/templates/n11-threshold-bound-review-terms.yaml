@@ -1,0 +1,524 @@
+# The term registry of Part II, "A Review of the Certified Lower Bound s(11) > 31/8 for
+# 11 Squares", in the form the series' define-before-use gate reads
+# (plan-2026-10-05-n11-explainer-series.md, section 9.4; the scanner is
+# `devtools.paper_terms`). One entry per term, symbol or lemma, in definition order, which
+# is the plan's concept spine (section 5.3). Fields:
+#
+#   term        the name, as the glossary lists it
+#   uses        a regex matched against the rendered prose, or against the TeX source of
+#               a formula when `symbol` is true, that counts as a use of the term
+#   defined_by  an exact substring of the defining sentence, which occurs once, inside the
+#               section `anchor` names; the bold run of the definition where there is one
+#   anchor      the heading id of the defining section on the rendered page
+#   requires    the terms a reader needs first; each is registered and defined earlier
+#   forward     uses allowed before the definition, each an exact substring of the earlier
+#               sentence with its reason: `roadmap` (the preamble, the result or the
+#               inventory names a later concept), `heading` (a heading names it) or
+#               `link-to-definition` (the sentence links the defining section)
+#
+# A lemma is a term whose definition is its bold name. The three changes of The Result
+# are named there and defined later, so each carries its definition's section as a
+# forward reference. The scanner skips credits, SVG, scripts, navigation and footnotes.
+
+paper: n11-threshold-bound-review
+terms:
+  - term: unit square
+    uses: "\\bunit squares?\\b"
+    defined_by: "A **unit square** is a square of side one"
+    anchor: the-result
+    requires: []
+    forward: []
+  - term: packing
+    uses: "\\bpackings?\\b"
+    defined_by: "A **packing** of unit squares in a **container**"
+    anchor: the-result
+    requires: [unit square]
+    forward: []
+  - term: container
+    uses: "\\bcontainers?\\b"
+    defined_by: "A **packing** of unit squares in a **container**"
+    anchor: the-result
+    requires: [unit square]
+    forward: []
+  - term: s(11)
+    symbol: true
+    uses: "s\\(11\\)"
+    defined_by: "Write $s(11)$ for the smallest container side"
+    anchor: the-result
+    requires: [packing, container]
+    forward: []
+  - term: orientation modulo a quarter-turn
+    uses: "\\bmodulo \\$\\\\pi/2\\$|\\bquarter-turn\\b"
+    defined_by: "A square is unchanged by a quarter-turn, so its angle is only defined modulo $\\pi/2$"
+    anchor: the-result
+    requires: [unit square]
+    forward: []
+  - term: Theorem
+    uses: "\\bTheorem\\b"
+    defined_by: "**Theorem.** $s(11)>31/8=3.875$"
+    anchor: the-result
+    requires: [s(11)]
+    forward: []
+  - term: T
+    symbol: true
+    uses: "(?<![A-Za-z0-9_\\\\])T(?![A-Za-z0-9_-])"
+    defined_by: "Write $T=3.8770835900\\ldots$ for the side of Walter Trump’s packing"
+    anchor: the-result
+    requires: [packing]
+    forward: []
+  - term: bound gap
+    uses: "\\bbound gaps?\\b"
+    defined_by: "the **bound gap**, the distance between the best upper and lower bounds"
+    anchor: the-result
+    requires: [T]
+    forward: []
+  - term: five-site k-of-m charges
+    uses: "\\bfive-site \\$?k\\$?-of-\\$?m\\$? charges\\b"
+    defined_by: "**five-site k-of-m charges**"
+    anchor: the-result
+    requires: [Theorem]
+    forward: []
+  - term: threshold charges on shrunken parents with strict cores
+    uses: "\\bshrunken parents\\b"
+    defined_by: "**threshold charges on shrunken parents with strict cores**"
+    anchor: the-result
+    requires: [Theorem]
+    forward: []
+  - term: re-optimised certificate over adaptive angle rows
+    uses: "\\badaptive angle rows\\b"
+    defined_by: "**a re-optimised certificate over 12,028 adaptive angle rows**"
+    anchor: the-result
+    requires: [Theorem]
+    forward: []
+  - term: inherited
+    uses: "\\binherited\\b"
+    defined_by: "An ingredient is **inherited** when a"
+    anchor: what-is-new-and-what-it-inherits
+    requires: []
+    forward:
+      - text: " side $A=764/775$ in a container of side $191/50$, each with an inner core strictly\n   inside it, a framework inherited through the Levy/Guzhou0806/Mira line and defined\n   in [Parents and the One Inequality](#parents-and-the-one"
+        reason: roadmap
+  - term: new data
+    uses: "\\bnew data\\b"
+    defined_by: "it is **new data** when it is the source’s"
+    anchor: what-is-new-and-what-it-inherits
+    requires: [inherited]
+    forward: []
+  - term: new
+    uses: "\\bNew:|\\bNew at eleven squares\\b|\\bis \\*\\*new\\*\\* when\\b"
+    defined_by: "it is **new** when no antecedent is"
+    anchor: what-is-new-and-what-it-inherits
+    requires: [inherited]
+    forward: []
+  - term: site
+    uses: "\\bsites?\\b"
+    defined_by: "A **site** is a position in the container"
+    anchor: what-is-new-and-what-it-inherits
+    requires: [container]
+    forward:
+      - text: "**five-site k-of-m charges**: charges of the kinds 2-of-5 and 3-of-5 beside Paper I’s\n   2-of-3, each paying a core that "
+        reason: roadmap
+      - text: "the kinds 2-of-5 and 3-of-5 beside Paper I’s\n   2-of-3, each paying a core that holds at least $k$ of its $m$ sites (defined in the\n   next section and formally in [the section after it](#from-points-to-k-of-m-charges));\n2."
+        reason: roadmap
+      - text: "CERT_ROWS}} angle rows; every\nlegal centre of every row collects charge at least $\\Gamma$ from {{CERT_SITES}} sites; and\n$11\\Gamma={{CERT_ELEVEN_GAMMA}}$ exceeds the budget $M={{CERT_M}}$."
+        reason: roadmap
+  - term: k-of-m charge, informally
+    uses: "\\$k\\$-of-\\$m\\$ charges?|\\bk-of-m charges?\\b|\\b[23]-of-[35] charges?\\b"
+    defined_by: "the general form, a $k$-of-$m$ charge, pays its weight"
+    anchor: what-is-new-and-what-it-inherits
+    requires: [site]
+    forward:
+      - text: "**five-site k-of-m charges**: charges of the kinds 2-of-5 and 3-of-5 beside Paper I’s\n   2-of-3, each paying a core that holds at least "
+        reason: roadmap
+      - text: "The rest of the paper answers, in order: what a $k$-of-$m$ charge is and why it pays\nmore than the points it replaces; how the eleven squares become eleven parents and one\nine"
+        reason: roadmap
+      - text: "That is a 3-of-5 charge, and the general form, a $k$-of-$m$ charge, pays its weight\nto a square that holds at least $k$ of its $m$ sites."
+        reason: roadmap
+  - term: k-of-m charge
+    uses: "\\(S,k,w\\)"
+    defined_by: "A **k-of-m charge** $(S,k,w)$ is a set $S$ of $m=|S|$ distinct sites"
+    anchor: from-points-to-k-of-m-charges
+    requires: ["k-of-m charge, informally", site, core, captures]
+    forward: []
+  - term: point charge
+    uses: "\\bpoint charges?\\b"
+    defined_by: "A **point charge**, which Paper I calls an atom, is a site with a nonnegative\n**weight**"
+    anchor: from-points-to-k-of-m-charges
+    requires: [site]
+    forward: []
+  - term: weight
+    uses: "\\bweights?\\b"
+    defined_by: "a site with a nonnegative\n**weight**"
+    anchor: from-points-to-k-of-m-charges
+    requires: [site]
+    forward:
+      - text: "ons in the container, arranged so that a small\nsquare placed anywhere must enclose at least a fixed amount of weight while the total\navailable is less than eleven times that amount, so eleven squares with disjoint\ninteriors ca"
+        reason: roadmap
+      - text: "Paper I places a weight at each site and pays it to any small square that contains the\nsite; Kleddamag’s certificate also uses charges that pay only for a group."
+        reason: roadmap
+      - text: "Take the charge the source numbers {{CHARGE_ORBIT}}, the heaviest in the certificate:\nweight {{CHARGE_WEIGHT}} on the five sites {{CHARGE_SITES}}, rounded here from their\nexact coordinates."
+        reason: roadmap
+      - text: "A small square that holds any three of the five is paid the whole weight; one that holds\ntwo is paid nothing."
+        reason: roadmap
+      - text: "That is a 3-of-5 charge, and the general form, a $k$-of-$m$ charge, pays its weight\nto a square that holds at least $k$ of its $m$ sites."
+        reason: roadmap
+      - text: "<figure>\n{{CHARGE_SVG}}\n<figcaption><strong>Figure 4.</strong> One $k$-of-$m$ charge: the 3-of-5 charge of orbit\n{{CHARGE_ORBIT}}, weight $w =$ {{CHARGE_WEIGHT}}, the largest in the certificate, on the\ncore of row {{CHARGE_ROW}}."
+        reason: roadmap
+      - text: "Inset: point weights of $w/3$\non each of the five sites guarantee the same $w$ to a core holding three of them but can\npay out $5w/3$ across disjoint cores, against the one charge’s $w$."
+        reason: roadmap
+      - text: "- New data: the certificate re-optimised from T-026’s, with sites moved and rounded,\n  families added, weights re-optimised, and the catalogue replaced."
+        reason: roadmap
+  - term: core
+    uses: "\\bcores?\\b"
+    defined_by: "A **core** is a closed square strictly inside a packed square"
+    anchor: from-points-to-k-of-m-charges
+    requires: [unit square]
+    forward:
+      - text: "*five-site k-of-m charges**: charges of the kinds 2-of-5 and 3-of-5 beside Paper I’s\n   2-of-3, each paying a core that holds at least $k$ of its $m$ sites (defined in the\n   next section and formally in [the section after i"
+        reason: roadmap
+      - text: "**threshold charges on shrunken parents with strict cores**: the squares are shrunk\n   to side $A=764/775$ in a container of side $191/50$, each with an inner core str"
+        reason: roadmap
+      - text: "**a re-optimised certificate over 12,028 adaptive angle rows**, each with its own\n   core, replacing T-026’s uniform net of directions (defined in\n   [Parents, Cores and the Angle Catalogue](#parents-cores-and-the-angle-catalogue))."
+        reason: roadmap
+      - text: "Middle: T-026’s core of side $B = {{CHANGES_T026_B}}$ at a\nnet direction inside a unit square, against T-037’s parent of side $A = {{CERT_A}}$ with a\nrow’s core inside it."
+        reason: roadmap
+      - text: "It is still the furthest the charge method reached, and Paper III’s field certificates,\nwhich charge cores in the same way, are easiest to follow against it."
+        reason: roadmap
+      - text: "OUND}}$ become eleven parents of side $A$ in a container of\nside $L_0={{CERT_L0}}$; each parent is assigned a core by one of {{CERT_ROWS}} angle rows; every\nlegal centre of every row collects charge at least $\\Gamma$ from {{"
+        reason: roadmap
+      - text: "<figure>\n{{CHARGE_SVG}}\n<figcaption><strong>Figure 4.</strong> One $k$-of-$m$ charge: the 3-of-5 charge of orbit\n{{CHARGE_ORBIT}}, weight $w =$ {{CHARGE_WEIGHT}}, the largest in the certificate, on the\ncore of row {{CHARGE_ROW}}."
+        reason: roadmap
+      - text: "The core on the left holds three of its five sites and is\npaid; the disjoint core on the right holds two and is not."
+        reason: roadmap
+      - text: "Inset: point weights of $w/3$\non each of the five sites guarantee the same $w$ to a core holding three of them but can\npay out $5w/3$ across disjoint cores, against the one charge’s $w$."
+        reason: roadmap
+      - text: "The core placements\nwere checked exactly against the\n<a href=\"../../resources/web/external-square-certificates-2026-09-22/kleddamag-11/global-certificate.json\">retained certificate</a>.</figcaption>\n</figure>"
+        reason: roadmap
+      - text: "- The shrunken parent of side $A<1$, the bound $L_0/A$, one concentric closed core per\n  angle interval, and coverage required only over the legal parent-centre square are\n  inherited through "
+        reason: roadmap
+      - text: "d the strict-containment transfer are R038’s\n  additions; adaptive interval refinement, maximal safe rational cores and certified\n  parent envelopes are recorded in Mira’s attribution for the 4.614153 continuation,\n  which na"
+        reason: roadmap
+  - term: captures
+    uses: "\\bcaptures?\\b|\\bcaptured\\b"
+    defined_by: "a core **captures** a site when the site lies in the core"
+    anchor: from-points-to-k-of-m-charges
+    requires: [core, site]
+    forward: []
+  - term: charge C(Q)
+    symbol: true
+    uses: "C\\(Q\\)"
+    defined_by: "The **charge** $C(Q)$ of a core $Q$ is the total it is paid"
+    anchor: from-points-to-k-of-m-charges
+    requires: [core, point charge]
+    forward: []
+  - term: mass
+    uses: "\\bmass\\b"
+    defined_by: "which Paper I calls the **mass**"
+    anchor: from-points-to-k-of-m-charges
+    requires: [charge C(Q)]
+    forward: []
+  - term: threshold
+    uses: "\\bthreshold\\b(?! atom| code|-counting| charges| certificate)"
+    defined_by: "an integer\n**threshold** $1\\le k\\le m$"
+    anchor: from-points-to-k-of-m-charges
+    requires: [k-of-m charge]
+    forward: []
+  - term: Budget lemma
+    uses: "\\bBudget lemma\\b"
+    defined_by: "**Budget lemma.**"
+    anchor: from-points-to-k-of-m-charges
+    requires: [k-of-m charge, captures]
+    forward: []
+  - term: budget
+    uses: "\\bbudgets?\\b"
+    defined_by: "and at most $w\\lfloor m/k\\rfloor$ in total, its\n**budget**"
+    anchor: from-points-to-k-of-m-charges
+    requires: [Budget lemma]
+    forward:
+      - text: "Left: the charge\nfamilies and the share of the budget carried by single points, {{CHANGES_T026_POINT_SHARE}}\nof T-026’s budget over {{CHANGES_T026_POINTS}} point a"
+        reason: roadmap
+      - text: "collects charge at least $\\Gamma$ from {{CERT_SITES}} sites; and\n$11\\Gamma={{CERT_ELEVEN_GAMMA}}$ exceeds the budget $M={{CERT_M}}$."
+        reason: roadmap
+      - text: "What makes it cheap is its budget: squares with disjoint interiors hold disjoint sets of\nsites, so at most $\\lfloor 5/3\\rfloor=1$ of them can hold three of the five, and across a\nwhole packing the charge pays out at most once."
+        reason: roadmap
+      - text: "- The general $k$-of-$m$ charge, its budget $w\\lfloor m/k\\rfloor$, and the rule that\n  budgets add across charges that share sites are inherited from Paper I, where T-025\n  states them as the general threshold atom and uses the case 2-of-3."
+        reason: roadmap
+  - term: parent
+    uses: "\\bparents?\\b"
+    defined_by: "A **parent** is a square of side $A=764/775$"
+    anchor: parents-and-the-one-inequality
+    requires: [container]
+    forward:
+      - text: "**threshold charges on shrunken parents with strict cores**: the squares are shrunk\n   to side $A=764/775$ in a container of side $191/50$, each with"
+        reason: roadmap
+      - text: "framework inherited through the Levy/Guzhou0806/Mira line and defined\n   in [Parents and the One Inequality](#parents-and-the-one-inequality);\n3."
+        reason: link-to-definition
+      - text: "**a re-optimised certificate over 12,028 adaptive angle rows**, each with its own\n   core, replacing T-026’s uniform net of directions (defined in\n   [Parents, Cores and the Angle Catalogue](#parents-cores-and-the-angle-catalogue))."
+        reason: roadmap
+      - text: "Middle: T-026’s core of side $B = {{CHANGES_T026_B}}$ at a\nnet direction inside a unit square, against T-037’s parent of side $A = {{CERT_A}}$ with a\nrow’s core inside it."
+        reason: roadmap
+      - text: "a $k$-of-$m$ charge is and why it pays\nmore than the points it replaces; how the eleven squares become eleven parents and one\ninequality; what the certificate’s charges are; how every angle is covered by finitely\nmany rows; how"
+        reason: roadmap
+      - text: "Eleven unit squares in a\ncontainer of side ${{CERT_BOUND}}$ become eleven parents of side $A$ in a container of\nside $L_0={{CERT_L0}}$; each parent is assigned a core by one of {{CERT_ROWS}} "
+        reason: roadmap
+      - text: "- Point and 2-of-3 charges over contiguous intervals of parent angles are inherited from\n  Kleddamag’s own earlier proof for seventeen squares (T-038), which used 2-of-3 charges\n  only."
+        reason: roadmap
+      - text: "- The shrunken parent of side $A<1$, the bound $L_0/A$, one concentric closed core per\n  angle interval, and coverage required only"
+        reason: roadmap
+      - text: "the bound $L_0/A$, one concentric closed core per\n  angle interval, and coverage required only over the legal parent-centre square are\n  inherited through the Levy/Guzhou0806/Mira line: the first registered certificate of\n  th"
+        reason: roadmap
+      - text: "hou0806’s R012 (T-032, 2026-09-20), and the centre restriction’s\n  analytic antecedent is this project’s unit-parent centre note."
+        reason: roadmap
+      - text: "  The smaller rational parent side and the strict-containment transfer are R038’s\n  additions; adaptive interval refinement, maximal safe r"
+        reason: roadmap
+      - text: "nt transfer are R038’s\n  additions; adaptive interval refinement, maximal safe rational cores and certified\n  parent envelopes are recorded in Mira’s attribution for the 4.614153 continuation,\n  which names no single author."
+        reason: roadmap
+      - text: "- New at eleven squares: threshold charges in the parent-interval framework."
+        reason: roadmap
+  - term: A
+    symbol: true
+    uses: "(?<![A-Za-z0-9_\\\\])A(?![A-Za-z0-9_])"
+    defined_by: "A **parent** is a square of side $A=764/775$"
+    anchor: parents-and-the-one-inequality
+    requires: [parent]
+    forward:
+      - text: "**threshold charges on shrunken parents with strict cores**: the squares are shrunk\n   to side $A=764/775$ in a container of side $191/50$, each with an inner core strictly\n   inside it, a framework inherite"
+        reason: roadmap
+      - text: "Middle: T-026’s core of side $B = {{CHANGES_T026_B}}$ at a\nnet direction inside a unit square, against T-037’s parent of side $A = {{CERT_A}}$ with a\nrow’s core inside it."
+        reason: roadmap
+      - text: "Eleven unit squares in a\ncontainer of side ${{CERT_BOUND}}$ become eleven parents of side $A$ in a container of\nside $L_0={{CERT_L0}}$; each parent is assigned a core by one of {{CERT_ROWS}} angle rows;"
+        reason: roadmap
+      - text: "- The shrunken parent of side $A<1$, the bound $L_0/A$, one concentric closed core per\n  angle interval, and coverage required only over the l"
+        reason: roadmap
+  - term: L0
+    symbol: true
+    uses: "L_0"
+    defined_by: "inside the container $[0,L_0]^2$ of side\n$L_0=191/50$"
+    anchor: parents-and-the-one-inequality
+    requires: [container]
+    forward:
+      - text: "nit squares in a\ncontainer of side ${{CERT_BOUND}}$ become eleven parents of side $A$ in a container of\nside $L_0={{CERT_L0}}$; each parent is assigned a core by one of {{CERT_ROWS}} angle rows; every\nlegal centre of every "
+        reason: roadmap
+      - text: "- The shrunken parent of side $A<1$, the bound $L_0/A$, one concentric closed core per\n  angle interval, and coverage required only over the legal parent-centre "
+        reason: roadmap
+  - term: Scaling lemma
+    uses: "\\bScaling lemma\\b"
+    defined_by: "**Scaling lemma.**"
+    anchor: parents-and-the-one-inequality
+    requires: [parent, A, L0]
+    forward: []
+  - term: assigned core
+    uses: "\\bassigned cores?\\b"
+    defined_by: "Every parent is given an **assigned core**"
+    anchor: parents-and-the-one-inequality
+    requires: [parent, core]
+    forward: []
+  - term: Gamma
+    symbol: true
+    uses: "\\\\Gamma"
+    defined_by: "$\\Gamma$ is the least charge of any assigned core"
+    anchor: parents-and-the-one-inequality
+    requires: [assigned core, charge C(Q)]
+    forward:
+      - text: "assigned a core by one of {{CERT_ROWS}} angle rows; every\nlegal centre of every row collects charge at least $\\Gamma$ from {{CERT_SITES}} sites; and\n$11\\Gamma={{CERT_ELEVEN_GAMMA}}$ exceeds the budget $M={{CERT_M}}$."
+        reason: roadmap
+  - term: M
+    symbol: true
+    uses: "(?<![A-Za-z0-9_\\\\])M(?![A-Za-z0-9_])"
+    defined_by: "$M$ is the sum of the budgets of all the charges"
+    anchor: parents-and-the-one-inequality
+    requires: [budget]
+    forward:
+      - text: " charge at least $\\Gamma$ from {{CERT_SITES}} sites; and\n$11\\Gamma={{CERT_ELEVEN_GAMMA}}$ exceeds the budget $M={{CERT_M}}$."
+        reason: roadmap
+  - term: D4
+    symbol: true
+    uses: "\\\\mathbf\\{D\\}_4"
+    defined_by: "which form the group $\\mathbf{D}_4$"
+    anchor: the-certificates-charges
+    requires: [container]
+    forward: []
+  - term: orbit
+    uses: "\\borbits?\\b"
+    defined_by: "The **orbit** of a site is the set of its\nimages under the eight symmetries"
+    anchor: the-certificates-charges
+    requires: [D4, site]
+    forward:
+      - text: "<figure>\n{{CHARGE_SVG}}\n<figcaption><strong>Figure 4.</strong> One $k$-of-$m$ charge: the 3-of-5 charge of orbit\n{{CHARGE_ORBIT}}, weight $w =$ {{CHARGE_WEIGHT}}, the largest in the certificate, on the\ncore of row {{CHARGE_ROW}}."
+        reason: roadmap
+  - term: D4-invariant certificate
+    uses: "\\\\mathbf\\{D\\}_4\\$-invariant"
+    defined_by: "A certificate is **$\\mathbf{D}_4$-invariant** when every point charge"
+    anchor: the-certificates-charges
+    requires: [orbit, k-of-m charge]
+    forward: []
+  - term: half-tangent
+    symbol: true
+    uses: "\\\\tan\\((?:\\\\theta|\\\\varphi)/2\\)"
+    defined_by: "For an angle $\\theta$, write $t=\\tan(\\theta/2)$"
+    anchor: parents-cores-and-the-angle-catalogue
+    requires: [orientation modulo a quarter-turn]
+    forward: []
+  - term: parent angle
+    symbol: true
+    uses: "\\\\varphi"
+    defined_by: "A parent’s angle is written $\\varphi$"
+    anchor: parents-cores-and-the-angle-catalogue
+    requires: [parent, half-tangent]
+    forward: []
+  - term: Folding lemma
+    uses: "\\bFolding lemma\\b"
+    defined_by: "**Folding lemma.**"
+    anchor: parents-cores-and-the-angle-catalogue
+    requires: [parent angle, D4-invariant certificate, core]
+    forward: []
+  - term: row
+    uses: "\\brows?\\b"
+    defined_by: "A **row** $(a,b,t,B)$ is a closed interval $[a,b]$ of parent half-tangents"
+    anchor: parents-cores-and-the-angle-catalogue
+    requires: [parent, assigned core, half-tangent]
+    forward:
+      - text: "**a re-optimised certificate over 12,028 adaptive angle rows**, each with its own\n   core, replacing T-026’s uniform net of directions (defined in\n   [Parents, Cores and the Angle Catalogue](#parents-cores-and-the-angle-catalogue))."
+        reason: link-to-definition
+      - text: "Middle: T-026’s core of side $B = {{CHANGES_T026_B}}$ at a\nnet direction inside a unit square, against T-037’s parent of side $A = {{CERT_A}}$ with a\nrow’s core inside it."
+        reason: roadmap
+      - text: "Right: T-026’s {{CHANGES_T026_NET}} net directions against\nT-037’s {{CERT_ROWS}} angle rows, each a closed interval."
+        reason: roadmap
+      - text: "n parents and one\ninequality; what the certificate’s charges are; how every angle is covered by finitely\nmany rows; how every legal centre is checked exactly; why the bound is strict; and what\nwas verified here."
+        reason: roadmap
+      - text: "de $A$ in a container of\nside $L_0={{CERT_L0}}$; each parent is assigned a core by one of {{CERT_ROWS}} angle rows; every\nlegal centre of every row collects charge at least $\\Gamma$ from {{CERT_SITES}} sites; and\n$11\\Gamma={"
+        reason: roadmap
+      - text: "<figure>\n{{CHARGE_SVG}}\n<figcaption><strong>Figure 4.</strong> One $k$-of-$m$ charge: the 3-of-5 charge of orbit\n{{CHARGE_ORBIT}}, weight $w =$ {{CHARGE_WEIGHT}}, the largest in the certificate, on the\ncore of row {{CHARGE_ROW}}."
+        reason: roadmap
+  - term: catalogue
+    uses: "\\bcatalogue\\b"
+    defined_by: "The\n**catalogue** is the certificate’s list of"
+    anchor: parents-cores-and-the-angle-catalogue
+    requires: [row]
+    forward:
+      - text: "**a re-optimised certificate over 12,028 adaptive angle rows**, each with its own\n   core, replacing T-026’s uniform net of directions (defined in\n   [Parents, Cores and the Angle Catalogue](#parents-cores-and-the-angle-catalogue))."
+        reason: link-to-definition
+      - text: "- New data: the certificate re-optimised from T-026’s, with sites moved and rounded,\n  families added, weights re-optimised, and the catalogue replaced."
+        reason: roadmap
+      - text: "Every parent is given an **assigned core**, a closed square strictly inside it whose\nside and angle depend only on the parent’s angle; how is the subject of\n[Parents, Cores and the Angle Catalogue](#parents-cores-and-the-angle-catalogue)."
+        reason: link-to-definition
+  - term: mismatch
+    symbol: true
+    uses: "(?<![A-Za-z0-9_\\\\])d(?![A-Za-z0-9_])"
+    defined_by: "The **mismatch** $d$ between a parent and its core"
+    anchor: parents-cores-and-the-angle-catalogue
+    requires: [parent angle, row]
+    forward: []
+  - term: Strict-core lemma
+    uses: "\\bStrict-core lemma\\b"
+    defined_by: "**Strict-core lemma.**"
+    anchor: parents-cores-and-the-angle-catalogue
+    requires: [row, mismatch]
+    forward: []
+  - term: margin
+    uses: "\\bmargins?\\b"
+    defined_by: "The **margin** $A-B(\\cos d+|\\sin d|)$"
+    anchor: parents-cores-and-the-angle-catalogue
+    requires: [Strict-core lemma]
+    forward: []
+  - term: legal centre domain
+    uses: "\\blegal centre domains?\\b|\\blegal centres?\\b"
+    defined_by: "its centre lies in the\n**legal centre domain**"
+    anchor: every-legal-centre-collects-enough-charge
+    requires: [parent, A, L0]
+    forward:
+      - text: "e\ninequality; what the certificate’s charges are; how every angle is covered by finitely\nmany rows; how every legal centre is checked exactly; why the bound is strict; and what\nwas verified here."
+        reason: roadmap
+      - text: "container of\nside $L_0={{CERT_L0}}$; each parent is assigned a core by one of {{CERT_ROWS}} angle rows; every\nlegal centre of every row collects charge at least $\\Gamma$ from {{CERT_SITES}} sites; and\n$11\\Gamma={{CERT_ELEVEN_GAMMA}}"
+        reason: roadmap
+  - term: Envelope lemma
+    uses: "\\bEnvelope lemma\\b"
+    defined_by: "**Envelope lemma.**"
+    anchor: every-legal-centre-collects-enough-charge
+    requires: [legal centre domain, row]
+    forward: []
+  - term: inset
+    symbol: true
+    uses: "\\\\rho"
+    defined_by: "is the square\n$[\\rho,L_0-\\rho]^2$ with **inset** $\\rho="
+    anchor: every-legal-centre-collects-enough-charge
+    requires: [Envelope lemma]
+    forward: []
+  - term: envelope
+    uses: "\\benvelopes?\\b"
+    defined_by: "the row’s **envelope**"
+    anchor: every-legal-centre-collects-enough-charge
+    requires: [Envelope lemma]
+    forward:
+      - text: "sfer are R038’s\n  additions; adaptive interval refinement, maximal safe rational cores and certified\n  parent envelopes are recorded in Mira’s attribution for the 4.614153 continuation,\n  which names no single author."
+        reason: roadmap
+  - term: core frame
+    uses: "\\bcore frame\\b"
+    defined_by: "Work in the **core frame**"
+    anchor: every-legal-centre-collects-enough-charge
+    requires: [core]
+    forward: []
+  - term: capture rectangle
+    uses: "\\bcapture rectangles?\\b"
+    defined_by: "call this the site’s **capture rectangle**"
+    anchor: every-legal-centre-collects-enough-charge
+    requires: [core frame, captures]
+    forward: []
+  - term: Signed-expansion lemma
+    uses: "\\bSigned-expansion lemma\\b|\\bsigned expansion\\b"
+    defined_by: "**Signed-expansion lemma.**"
+    anchor: every-legal-centre-collects-enough-charge
+    requires: [k-of-m charge, capture rectangle]
+    forward: []
+  - term: exact sweep
+    uses: "\\bexact sweep\\b|\\bsweeps?\\b"
+    defined_by: "The **exact sweep**."
+    anchor: every-legal-centre-collects-enough-charge
+    requires: [Signed-expansion lemma, envelope]
+    forward:
+      - text: "- The signed inclusion–exclusion of a $k$-of-$m$ indicator into rectangle terms, and the\n  integer difference sweep that evaluates it, are T-025’s; the source’s coefficients are\n  the same."
+        reason: roadmap
+  - term: event line
+    uses: "\\bevent lines?\\b"
+    defined_by: "The vertical lines through those coordinates are the **event lines**"
+    anchor: every-legal-centre-collects-enough-charge
+    requires: [exact sweep]
+    forward: []
+  - term: slab
+    uses: "\\bslabs?\\b"
+    defined_by: "they cut the frame\ninto vertical **slabs**"
+    anchor: every-legal-centre-collects-enough-charge
+    requires: [event line]
+    forward: []
+  - term: y-cell
+    uses: "\\by-cells?\\b|\\bopen cells?\\b"
+    defined_by: "the horizontal lines cut each slab into **y-cells**"
+    anchor: every-legal-centre-collects-enough-charge
+    requires: [slab]
+    forward: []
+  - term: generic centre
+    uses: "\\bgeneric centres?\\b"
+    defined_by: "a centre in an open cell is a **generic centre**"
+    anchor: every-legal-centre-collects-enough-charge
+    requires: [y-cell]
+    forward: []
+  - term: upper semicontinuous
+    uses: "\\bupper\\s+semicontinuous\\b|\\bupper semicontinuity\\b"
+    defined_by: "such a sum is **upper\nsemicontinuous**"
+    anchor: every-legal-centre-collects-enough-charge
+    requires: [capture rectangle]
+    forward: []
+  - term: Boundary lemma
+    uses: "\\bBoundary lemma\\b"
+    defined_by: "**Boundary lemma.**"
+    anchor: every-legal-centre-collects-enough-charge
+    requires: [generic centre, Gamma, envelope]
+    forward: []
+  - term: Attainment lemma
+    uses: "\\bAttainment lemma\\b"
+    defined_by: "**Attainment lemma.**"
+    anchor: the-contradiction-and-the-strict-bound
+    requires: [s(11), packing]
+    forward:
+      - text: "Write $s(11)$ for the smallest container side that admits a packing of eleven unit\nsquares; the Attainment lemma in the closing section shows that a smallest side exists."
+        reason: roadmap

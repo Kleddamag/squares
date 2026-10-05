@@ -5,16 +5,20 @@ title: Replay wand125's 14 mixed certificates of 4 October (T-090 stage 4)
 kind: task
 status: open
 priority: 2
-version: 2
+version: 3
 labels:
   - result-import
 dependencies: []
 parent_id: is-01m44qz0rxvkakmyqaj7qdgagv
 created_at: 2026-10-05T00:38:38.133Z
-updated_at: 2026-10-05T02:11:30.419Z
+updated_at: 2026-10-05T07:51:11.671Z
 ---
 Full 201-angle replays, as for T-082; held for compute budget like think-wpuu's runners.
 
 ## Notes
 
 2026-10-05: covers T-091 only (the 12 at 797bdf6, packet wand125-mixed-bounds-evening-2026-10-04): 130.8 CPU-h planned, mixed-shard --runners 6. T-090's 16 at 8aa6a10 (incl. n69-L862, n86-L9503; 146.5 CPU-h, --runners 8) stay with think-wpuu.
+
+2026-10-05 (intake pass think-i5qd): the blocks dependency on think-07s1 is removed. think-07s1 closed when the wand125 lane merged (105d38044), so T-091 is on main, and nothing this bead names is open. The replay of T-091's 12 waits only on a compute budget the owner sets (130.9 CPU-hours planned, mixed-shard wand125-mixed-bounds-evening-2026-10-04 --runners 6), as think-wpuu's does for T-090.
+
+blocked_on: none

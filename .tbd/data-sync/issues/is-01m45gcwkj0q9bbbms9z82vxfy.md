@@ -1,0 +1,16 @@
+---
+type: is
+id: is-01m45gcwkj0q9bbbms9z82vxfy
+title: "Stage 4 of T-094: review and replay wand125's mixed_n67_L848 and mixed_n84_L9411 (#282)"
+kind: task
+status: open
+priority: 2
+version: 1
+labels:
+  - result-import
+dependencies: []
+parent_id: is-01m44qz0rxvkakmyqaj7qdgagv
+created_at: 2026-10-05T07:45:34.322Z
+updated_at: 2026-10-05T07:45:34.322Z
+---
+Stage 4 (W2) for T-094, the two mixed rectangle-measure certificates wand125/square-packing-bounds published on 5 October 2026 (s(67) >= 212/25, s(84) >= 9411/1000), retained in packing/resources/web/wand125-mixed-bounds-2026-10-05 at a541afb. Two lanes. Review: a mapped review under docs/project/reviews/ of the two certificates, as review-2026-10-05-wand125-october-4-certificates.md read T-090 and T-091 (checker byte-identical to the one already read, the tarball binding without a completion-audit.json, margins and supersessions in exact arithmetic); recorded as external_review on E-n067-wand125-mixed-848-report and E-n084-wand125-mixed-9411-report, which takes T-094 to C1. Replay: the complete 201-angle replays, 26.5 CPU-hours planned (23.7 by mixed-price, 21.2 by the source's own oblique seconds), mixed-shard wand125-mixed-bounds-2026-10-05 --runners 2 (two hosts of four workers, about 3.3 wall hours each), mixed-replay per range and mixed-merge per certificate, receipts committed to the packet. Held for a compute budget the owner sets, as the T-090 and T-091 replays are. Not started.

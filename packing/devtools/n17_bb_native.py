@@ -160,7 +160,7 @@ def install(native_dir: str | Path) -> ModuleType:
         boxes: tuple[pilot.Box, ...],
         index: int,
     ) -> pilot.PairTerm:
-        if self.recorder is not None or self.settings.taylor:
+        if use_python(self):
             return original_pair_term(self, node, boxes, index)
         if self.settings.merge_gap != 0.0:
             raise ValueError("the native kernel requires --merge-gap 0")

@@ -1819,9 +1819,13 @@ session, a `git push` of a tag can be refused with 403 by the session’s ref-sc
 credential broker. `publish` pushes no tag, since `gh release create` makes it through
 the API; to make one by hand, run
 `gh api repos/OWNER/REPO/git/refs -f ref=refs/tags/TAG -f sha=SHA`. Uploads go to
-`uploads.github.com`, which a cloud environment’s network access must allow.
-Where it does not, the first upload is refused with HTTP 403 (the egress reply names
-`host_not_allowed`), and the agent proxy refuses a binary upload as well.
+`uploads.github.com` and need **direct** egress to it: the agent proxy’s GitHub gateway
+accepts only JSON request bodies and answers a binary asset upload with HTTP 415
+(“Request bodies must declare Content-Type: application/json”), so no upload can travel
+through the proxy. Keep `uploads.github.com` in the `NO_PROXY` list above, and allow it
+in the cloud environment’s network access.
+Where the environment does not allow it, the direct request is refused with HTTP 403
+(`x-deny-reason: host_not_allowed`) and `publish` stops at the first upload, saying so.
 The release `publish` created stays, without assets; once the host is allowed, `publish`
 again uploads every asset it lacks.
 That happened on the first real run, on 2026-10-05, for PR 347’s certificate dumps.

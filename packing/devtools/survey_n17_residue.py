@@ -29,7 +29,9 @@ the allocation and every extrapolation are then over that frame alone, while a f
 class is still measured against all survivors. `--sample 0` takes every orbit in the
 frame, so the survey is a census of it and each estimate is exact. `--flag-set arity8
 --distance 2 --sample 0` is every one-cell move from the endpoint that the arity-8 flags
-leave.
+leave. `--shard K/N` keeps the K-th of N interleaved parts of the draw in mask order, so N
+runs survey a frame once between them, each under its own wall ceiling; a shard's
+estimates cover its part only, and the parts are combined afterwards.
 
 The measurements, per sampled state:
 
@@ -1106,6 +1108,23 @@ def frame_of(pop: Population, apart: int | None) -> Population:
     return Population(pop.flags, pop.alive, kept, features, strata)
 
 
+def shard_of(drawn: list[tuple[str, int]], shard: str | None) -> list[tuple[str, int]]:
+    """The K-th of N interleaved parts of a draw, in mask order, for `shard` = "K/N", or
+    the whole draw for None. The N parts partition the draw, so N runs of a `--sample 0`
+    frame survey every orbit in it exactly once, each run short enough for its own wall
+    ceiling; each run still places the endpoint's control first."""
+    if shard is None:
+        return drawn
+    part, slash, parts = shard.partition("/")
+    if not slash or not part.isdigit() or not parts.isdigit():
+        raise ValueError(f"shard {shard!r}: write K/N")
+    k, n = int(part), int(parts)
+    if not 0 <= k < n:
+        raise ValueError(f"shard {shard!r}: need 0 <= K < N")
+    ordered = sorted(drawn, key=lambda item: item[1])
+    return [item for index, item in enumerate(ordered) if index % n == k]
+
+
 def draw_frame(
     frame: Population, sample: int, seed: int
 ) -> tuple[dict[str, int], list[tuple[str, int]]]:
@@ -1434,6 +1453,11 @@ def main(argv: list[str] | None = None) -> int:
         default=None,
         help="restrict the frame to the orbits at this Hamming distance from the endpoint's",
     )
+    _ = parser.add_argument(
+        "--shard",
+        default=None,
+        help="K/N: survey the K-th of N interleaved parts of the draw, in mask order",
+    )
     _ = parser.add_argument("--seed", type=int, default=1)
     _ = parser.add_argument("--workers", type=int, default=1)
     _ = parser.add_argument("--timeout", type=float, default=None, help="wall ceiling, s")
@@ -1500,6 +1524,14 @@ def main(argv: list[str] | None = None) -> int:
         allocation, drawn = draw_frame(frame, arguments.sample, arguments.seed)
     except ValueError as error:
         parser.error(f"--distance {arguments.distance} --sample {arguments.sample}: {error}")
+    if arguments.shard is not None:
+        try:
+            drawn = shard_of(drawn, arguments.shard)
+        except ValueError as error:
+            parser.error(f"--shard: {error}")
+        allocation = {}
+        for key, _ in drawn:
+            allocation[key] = allocation.get(key, 0) + 1
     drawn = [(ENDPOINT_STRATUM, endpoint_rep), *drawn]
     margin = arguments.margin
     finish_on = not arguments.no_finish
@@ -1550,6 +1582,7 @@ def main(argv: list[str] | None = None) -> int:
             },
             "sample": arguments.sample,
             "distance": arguments.distance,
+            "shard": arguments.shard,
             "seed": arguments.seed,
             "workers": arguments.workers,
             "timeout": arguments.timeout,

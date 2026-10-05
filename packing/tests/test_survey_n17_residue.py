@@ -250,3 +250,33 @@ def test_distance_two_with_sample_zero_is_every_one_cell_move(tmp_path: Path) ->
     assert drawn[0]["stratum"] == survey.ENDPOINT_STRATUM
     assert len({row["mask"] for row in drawn[1:]}) == 95
     assert all(row["stratum"].endswith("/d2") for row in drawn[1:])
+
+
+def test_shards_partition_the_draw_in_mask_order() -> None:
+    """`shard_of` splits a draw into N interleaved parts by mask that cover it exactly once,
+    and refuses a malformed or out-of-range shard."""
+    drawn = [("a", 9), ("b", 3), ("a", 7), ("c", 1), ("b", 5)]
+    parts = [survey.shard_of(drawn, f"{k}/2") for k in range(2)]
+    assert parts == [[("c", 1), ("b", 5), ("a", 9)], [("b", 3), ("a", 7)]]
+    assert sorted(item for part in parts for item in part) == sorted(drawn)
+    assert survey.shard_of(drawn, None) is drawn
+    for bad in ("2/2", "1", "a/b", "-1/2"):
+        with pytest.raises(ValueError, match="shard"):
+            _ = survey.shard_of(drawn, bad)
+
+
+def test_ten_shards_cover_the_distance_two_frame_once(tmp_path: Path) -> None:
+    """H-273's 95-orbit frame in ten shards: each places the control first, and the shards
+    are disjoint and together hold all 95 orbits."""
+    seen: list[int] = []
+    for k in range(10):
+        output = tmp_path / f"shard-{k}.json"
+        command = ["--flag-set", "arity8", "--distance", "2", "--sample", "0", "--strata-only"]
+        assert survey.main([*command, "--shard", f"{k}/10", "--output", str(output)]) == 0
+        header = json.loads(output.read_text(encoding="utf-8"))
+        assert header["parameters"]["shard"] == f"{k}/10"
+        drawn = header["drawn"]
+        assert drawn[0]["stratum"] == survey.ENDPOINT_STRATUM
+        assert header["population"]["frame"]["drawn"] == len(drawn) - 1 in (9, 10)
+        seen.extend(row["mask"] for row in drawn[1:])
+    assert len(seen) == len(set(seen)) == 95

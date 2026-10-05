@@ -131,14 +131,23 @@ experiment:
       verifier at cebb5d15a passes it in full mode in 252 s, checking all 2,579 live rows in
       full and 8,326 collision regions by 15,726,176 exact facet checks. It excludes its own 8
       states, one orbit.
+  - shape: determination
+    role: outcome
+    question: Is the draw at index 7 (mask 2601983, distance 4) infeasible at U, by a certificate the
+      kernel's checker accepts and the standing verifier re-proves in full?
+    outcome: criterion_met
+    checked_by: The run (receipts/A/kernel-m2601983.json) returns PASS_CERTIFIED_CLOSED in 489 s of wall
+      and 352 s of process CPU (producer 283 s, checker 205 s) on 79 steps and 2,528 rows in 5
+      rounds, closure all_parent_poses_forbidden for side-S2 at step 78. The standing verifier
+      at cebb5d15a passes it in full mode in 151 s, checking all 2,485 live rows in full and
+      7,051 collision regions by 12,940,716 exact facet checks. It excludes its own 8 states,
+      one orbit.
   verdict:
     decision: in-progress
     primary_criterion: At least half of the counted draws excluded within two CPU-hours each, with N1's 7,000 s
       wall ceiling standing in for that limit; falsified by six non-closures of the ten counted.
-    reason: Nine of the ten counted draws have run. Four closed and were re-proved by the standing
-      verifier, a fifth (2601983) closed and awaits its verification, and four did not close; the
-      verdict is fixed when five verified closures or six non-closures are in, and the remaining runs
-      continue for the cost estimate.
+    reason: 9 of the ten counted draws have run, 5 closed and 4 not closed; the verdict is fixed when
+      five close or six do not, and the remaining runs continue for the cost estimate.
   lease:
     expires: '2026-10-06T08:14:04Z'
     host: Session 182 remote container
@@ -167,11 +176,13 @@ This round is lane A of the
 | 3 | 5500414 | 6 | c3/i4/d6 | closed, 8 rounds, admitted | 1,109 s | 594 s | full pass, 328 s |
 | 12 | 7844815 | 6 | c4/i>=5/d6 | closed, 5 rounds, admitted | 646 s | 395 s | full pass, 184 s |
 | 11 | 4028335 | 4 | c4/i>=5/d4 | closed, 5 rounds, admitted | 857 s | 545 s | full pass, 252 s |
+| 7 | 2601983 | 4 | c4/i4/d4 | closed, 5 rounds, admitted | 489 s | 352 s | full pass, 151 s |
 
 State 5500414’s orbit was already excluded by lane K’s flag certificates, so its
-admission leaves the count unchanged, while states 7844815 and 4028335 each remove their
-own orbit. With every draw admitted so far, the certified census counts 72,280 states in
-9,166 orbits, the endpoint surviving
+admission leaves the count unchanged, while states 7844815, 4028335 and 2601983 each
+remove their own orbit.
+With every draw admitted so far, the certified census counts 72,272 states in 9,165
+orbits, the endpoint surviving
 ([census](../results/exp-252-n17-overnight-per-state-price/census.json)).
 
 The draws run in the survey’s own seeded random order (indices 2, 4, 1, 5, 8, 10, 3, 12,

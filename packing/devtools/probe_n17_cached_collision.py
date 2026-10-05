@@ -19,6 +19,7 @@ from typing import Any
 
 from devtools import probe_n17_enhanced_row_support as enhanced
 from devtools.bounded_diagnostics import (
+    MAX_MEMORY_BYTES,
     check_budget,
     retained_matches,
     same_header,
@@ -54,7 +55,6 @@ ARTIFACT_PROVENANCE = {
 MAX_QUERIES = 958
 MAX_CALLS = 4096
 WALL_SECONDS = 30
-MAX_PEAK_BYTES = 512 * 1024**2
 PASSES = ("rational", "integer", "cached_first", "cached_warm")
 EXPECTED_B_SELECTIONS = 44
 EXPECTED_J_TUPLES = 72
@@ -320,7 +320,7 @@ def header(
             "unique_queries": MAX_QUERIES,
             "primitive_calls": MAX_CALLS,
             "wall_seconds": WALL_SECONDS,
-            "peak_bytes": MAX_PEAK_BYTES,
+            "peak_bytes": MAX_MEMORY_BYTES,
         },
         "cold_scope": "initially-empty cache over whole corpus; not per-query",
         "search_speedup_measured": False,

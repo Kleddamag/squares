@@ -17,6 +17,7 @@ from pathlib import Path
 from typing import Any
 
 from devtools.bounded_diagnostics import (
+    MAX_MEMORY_BYTES,
     check_budget,
     retained_matches,
     same_content,
@@ -61,7 +62,6 @@ SCHEMA = "n17.fixed-witness-full-core-ablation.v1"
 MODEL = "full-chart-octagon-hull-old-core-frozen-domain-v1"
 BASE_REVISION = "9a8b4ef75fbb880ec207d2a9769d2a518c10fb14"
 MAX_PAIRS = 1185
-MAX_PEAK_BYTES = 512 * 1024**2
 WALL_SECONDS = 45
 FROZEN_PATHS = {
     False: (
@@ -218,7 +218,7 @@ def bind(
         "limits": {
             "fresh_pair_calls": MAX_PAIRS,
             "wall_seconds": WALL_SECONDS,
-            "worker_current_rss_bytes": MAX_PEAK_BYTES,
+            "worker_current_rss_bytes": MAX_MEMORY_BYTES,
         },
     }
     remaining(budget)

@@ -222,13 +222,17 @@ def test_peak_threshold_and_postquery_guard(
     context: probe.Context, monkeypatch: pytest.MonkeyPatch
 ) -> None:
     monkeypatch.setattr(
-        bounded_diagnostics, "current_memory_bytes", lambda: probe.MAX_PEAK_BYTES
+        bounded_diagnostics,
+        "current_memory_bytes",
+        lambda: bounded_diagnostics.MAX_MEMORY_BYTES,
     )
     probe.remaining(budget())
 
     def inflate(*_: Any) -> bool:
         monkeypatch.setattr(
-            bounded_diagnostics, "current_memory_bytes", lambda: probe.MAX_PEAK_BYTES + 1
+            bounded_diagnostics,
+            "current_memory_bytes",
+            lambda: bounded_diagnostics.MAX_MEMORY_BYTES + 1,
         )
         return False
 

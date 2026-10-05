@@ -112,7 +112,9 @@ def test_guard_checks_both_sides_and_does_not_return_failed_query(
         guard.check_pair(overrun, *atoms)
     assert guard.calls == 1
     monkeypatch.setattr(
-        bounded_diagnostics, "current_memory_bytes", lambda: probe.MAX_PEAK_BYTES + 1
+        bounded_diagnostics,
+        "current_memory_bytes",
+        lambda: bounded_diagnostics.MAX_MEMORY_BYTES + 1,
     )
     with pytest.raises(IncompleteError, match="current RSS"):
         probe.Guard(budget()).check_pair(lambda *_: True, *atoms)
@@ -123,7 +125,9 @@ def test_post_memory_guard_and_exact_bool(monkeypatch: pytest.MonkeyPatch) -> No
 
     def inflate(*_: Any) -> bool:
         monkeypatch.setattr(
-            bounded_diagnostics, "current_memory_bytes", lambda: probe.MAX_PEAK_BYTES + 1
+            bounded_diagnostics,
+            "current_memory_bytes",
+            lambda: bounded_diagnostics.MAX_MEMORY_BYTES + 1,
         )
         return True
 
@@ -315,7 +319,9 @@ def test_cached_constructor_wall_and_query_post_memory_guard(
 
     def inflate(*_: Any, **__: Any) -> int:
         monkeypatch.setattr(
-            bounded_diagnostics, "current_memory_bytes", lambda: probe.MAX_PEAK_BYTES + 1
+            bounded_diagnostics,
+            "current_memory_bytes",
+            lambda: bounded_diagnostics.MAX_MEMORY_BYTES + 1,
         )
         return 4
 

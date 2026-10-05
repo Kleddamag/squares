@@ -18,6 +18,7 @@ from typing import Any
 
 from devtools import probe_n17_full_core_ablation as full
 from devtools.bounded_diagnostics import (
+    MAX_MEMORY_BYTES,
     check_budget,
     retained_matches,
     same_content,
@@ -45,7 +46,6 @@ MODEL = "selective-half-chart-octagon-hull-old-core-frozen-domain-v1"
 BASE_REVISION = "aba2b3123841ecac937983df30119f9844e07363"
 MAX_CALLS = 1024
 WALL_SECONDS = 45
-MAX_PEAK_BYTES = 512 * 1024**2
 FULL = (1 << 64) - 1
 D_PATH = (
     "packing/campaign/explorations/X048-session-178-full-core-ablation/"
@@ -411,7 +411,7 @@ def bind(
         "limits": {
             "uncached_pair_calls": MAX_CALLS,
             "wall_seconds": WALL_SECONDS,
-            "worker_current_rss_bytes": MAX_PEAK_BYTES,
+            "worker_current_rss_bytes": MAX_MEMORY_BYTES,
         },
         "mask_convention": (
             "bit i is half choice of ascending-owner position i; assignment index0..63; "

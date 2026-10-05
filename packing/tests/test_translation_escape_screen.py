@@ -15,6 +15,7 @@ from pathlib import Path
 from typing import Any
 
 import mpmath as mp
+import pytest
 import yaml
 
 from devtools import screen_translation_escape
@@ -28,6 +29,8 @@ from devtools.screen_translation_escape import (
     SLIDING,
     ActiveContacts,
     RecordGeometry,
+    check_sample,
+    identity_errors,
     load_record,
     manifest_entries,
     schema_errors,
@@ -72,7 +75,12 @@ def _rendering_entry(directory: Path) -> dict[str, Any]:
     path.write_text(
         witness_document(witness, schema="../witness.schema.yaml"), encoding="utf-8"
     )
-    return {"n": 69, "witness": {"path": str(path)}, "source": {"kind": "unitsquare-rendering"}}
+    return {
+        "n": 69,
+        "reported_side": geometry.side,
+        "witness": {"path": str(path)},
+        "source": {"kind": "unitsquare-rendering"},
+    }
 
 
 #: Cases whose movable-square count differs between the screen's four tolerances; each
@@ -200,9 +208,33 @@ def test_retained_screen_satisfies_its_own_contract() -> None:
 def test_small_records_rescreen_to_the_retained_result() -> None:
     """Recompute a few records from the witnesses, not from the retained file."""
     cases = _cases()
+    entries = {entry["n"]: entry for entry in manifest_entries()}
     for n in (5, 10, 11, 27):
-        squares, side, square_ids = load_record(n)
-        assert screen_record(n, squares, side, square_ids) == cases[n]
+        screened = screen_translation_escape._screen_entry(entries[n])  # pyright: ignore[reportPrivateUsage]  # noqa: SLF001
+        assert screened == (True, cases[n])
+
+
+def test_every_retained_result_names_the_record_the_manifest_holds() -> None:
+    entries = {entry["n"]: entry for entry in manifest_entries()}
+    assert identity_errors(_screen(), entries) == []
+
+
+def test_the_sampled_check_refuses_a_record_replaced_under_the_screen(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    # Run 37268431203: T-092 replaced n = 208, 209, 228, 263, 272, 303 and 306 without a
+    # re-screen, none of the seven is on the sampled stride, and only the deferred
+    # re-screen after the merge saw it. A replaced record now fails the sampled check.
+    retained = _cases()[208]["reported_side"]
+    replaced = [
+        {**entry, "reported_side": "14.9"} if entry["n"] == 208 else entry
+        for entry in manifest_entries()
+    ]
+    monkeypatch.setattr(screen_translation_escape, "manifest_entries", lambda: replaced)
+    with pytest.raises(ValueError, match=f"n=208: screened on the record of side {retained}"):
+        # A stride longer than the corpus replays n = 1 alone; the identity check covers
+        # every record whatever the stride.
+        check_sample(stride=KNOWN_BEST_CORPUS.count)
 
 
 def test_certified_slides_equal_their_closed_forms() -> None:

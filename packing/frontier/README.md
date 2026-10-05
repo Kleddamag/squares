@@ -485,8 +485,8 @@ October 2026. Replayed certificates recorded in parallel and merged on 3 October
 have since raised all five of those, and 46 more of the Karakuş floors, above them; they
 are counted below. Two others use certificates already integrated into the register: at
 $n = 12$ this project’s re-weighting of Evan Daniel’s points ($15680000/3949423$), and
-at $n = 17$ the current external certificate bound ($116511/25000$). Complete interval
-and exact replays of external certificates hold the other 58: wand125’s mixed
+at $n = 17$ the current external certificate bound ($18641771/4000000$). Complete
+interval and exact replays of external certificates hold the other 58: wand125’s mixed
 rectangle-measure certificates at $n = 37$, 50, 65, 66, 76, 83 to 85, 87, 90 to 92 and
 96, and by monotonicity at $n = 51$ from $n = 50$, at $n = 86$ from $n = 85$, at
 $n = 88$ from $n = 87$ and at $n = 93$ from $n = 92$, and its rectangle-density
@@ -530,7 +530,7 @@ Ranked by gap—the best-known packing minus the verified lower bound, which is 
 
 | $n$ | gap | record | note |
 | --- | --- | --- | --- |
-| 17 | 0.0151 | Bidwell | carried to $\frac{116511}{25000}$ by Guzhou0806 after Kleddamag |
+| 17 | 0.0151 | Bidwell | carried to $\frac{18641771}{4000000}$ by Guzhou0806 after Kleddamag |
 | 12 | 0.0298 | grid | $4^2 - 4$, carried to $\frac{15680000}{3949423}$ by Levy after Daniel |
 | 31 | 0.0475 | grid | $6^2 - 5$, carried to $\frac{2381}{400}$ by wand125 after Tokoharu |
 | 44 | 0.0575 | grid | $7^2 - 5$, carried to $\frac{2777}{400}$ by wand125 after Tokoharu |

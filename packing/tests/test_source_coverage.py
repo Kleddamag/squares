@@ -7,7 +7,10 @@ import json
 from pathlib import Path
 from typing import Any
 
+from jsonschema_rs import Draft202012Validator
+
 from devtools import check_source_coverage as coverage_check
+from sqpack.yamlio import safe_load
 
 
 def _coverage() -> dict[str, Any]:
@@ -124,6 +127,8 @@ PENDING = {
     "catalogue_value": "2.85",
     "capture": coverage_check.INTAKE_CAPTURE_DATE,
     "reason": "a result the register holds first",
+    "bead": "think-ab12",
+    "recorded": "2026-09-30",
 }
 CURRENT = {5: "2.9", 6: "2.85", 7: "3"}
 EARLIER = {5: "2.9", 6: "3", 7: "3"}
@@ -179,6 +184,51 @@ def test_a_pending_intake_needs_a_capture_that_changed_and_a_side_that_beats() -
     )
     assert beaten[0] == "pending catalogue intake n=6: 2.95 does not beat the record"
     assert "the one retained earlier capture" in _pending_errors(capture="2026-01-01")[0]
+
+
+def test_a_pending_intake_names_the_bead_that_owns_it_and_the_day_it_was_deferred() -> None:
+    """The three of 2026-09-30 named no owner, and nothing listed them for five days."""
+    orphan = {key: value for key, value in PENDING.items() if key not in {"bead", "recorded"}}
+    errors = coverage_check.pending_intake_errors([orphan], CURRENT, EARLIER, CASES)
+    assert errors == [
+        (
+            "pending catalogue intake n=6 names no bead (none); a deferral names the open "
+            "bead that owns the intake"
+        ),
+        "pending catalogue intake n=6 records no date (none) it was deferred on",
+    ]
+    assert "names no bead (bd-12)" in _pending_errors(bead="bd-12")[0]
+    assert "records no date (last week)" in _pending_errors(recorded="last week")[0]
+
+
+def test_the_schema_requires_an_owner_on_every_deferral() -> None:
+    """The same rule in the schema, so `validate_schemas` refuses it on its own."""
+    schema = safe_load(
+        coverage_check.COVERAGE.with_name("source-coverage.schema.yaml").read_text()
+    )
+    validator = Draft202012Validator(schema)
+    document = safe_load(coverage_check.COVERAGE.read_text(encoding="utf-8"))
+    document.pop("softschema")
+    document["pending_catalogue_intake"] = [dict(PENDING)]
+    assert validator.is_valid(document)
+    for key in ("bead", "recorded"):
+        document["pending_catalogue_intake"] = [
+            {name: value for name, value in PENDING.items() if name != key}
+        ]
+        assert not validator.is_valid(document), key
+    conflict = {
+        "n": 400,
+        "source_id": "kingbird-current",
+        "claim": "upper-bound",
+        "value": "20.5",
+        "assurance": "reported",
+        "disposition": "deferred-conflict",
+    }
+    document["pending_catalogue_intake"] = []
+    document["beyond_horizon_claims"] = [conflict]
+    assert not validator.is_valid(document)
+    document["beyond_horizon_claims"] = [{**conflict, "bead": "think-ab12"}]
+    assert validator.is_valid(document)
 
 
 def test_the_recorded_coverage_reconciles() -> None:

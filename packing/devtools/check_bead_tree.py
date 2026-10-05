@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Check the bead tree for the two shapes that made D-025 unreadable.
+"""Check the bead tree for the shapes that made D-025 unreadable, and who owns each deferral.
 
 The beads are the work list. They live outside this directory -- on the `tbd-sync`
 branch, not in the working tree -- so nothing in the gate could see them, and the one
@@ -16,10 +16,21 @@ Two invariants are cheap and catch that whole class:
    modelled the same phase is how the duplicate arose; the duplicate is invisible in any
    view that shows one epic at a time.
 
-Neither needs the `tbd` binary. The beads are Markdown-with-frontmatter files, and this
+A third invariant joins the tree to the records:
+
+3. **Every deferral a record declares names a bead that is still open.** A deferral is
+   work the record knows it has not done: a Kingbird count pending intake, a
+   beyond-horizon claim held as a deferred conflict, a watched repository read past its
+   newest packet, an issue still open, a result or ask queued on one. Each names its
+   owning bead (`deferrals`). The
+   three counts pending intake from 2026-09-30 named none, nothing listed them, and the
+   record called the older sides best known for five days; a bead closed under a live
+   deferral is the same orphan by another route.
+
+None needs the `tbd` binary. The beads are Markdown-with-frontmatter files, and this
 reads them straight out of git, preferring the local sync worktree so it works offline.
 
-A third shape is reported and never failed on, because the agenda layer and the bead
+One more shape is reported and never failed on, because the agenda layer and the bead
 tree are edited by different hands at different times and the gap between them is a
 fact to read, not a violation to block a push on. An in-progress bead named only by
 terminal agenda cells (`complete` or `stopped`) is work the agenda has finished with and
@@ -53,6 +64,11 @@ MAPPINGS = ".tbd/data-sync/mappings/ids.yml"
 WORKTREE = REPO / ".git" / "tbd" / "data-sync-worktree" / ISSUES
 REFS = ("tbd-sync", "origin/tbd-sync")
 AGENDAS = REPO / "packing" / "campaign" / "agendas"
+COVERAGE = REPO / "packing" / "frontier" / "source-coverage.yaml"
+REQUESTS = REPO / "packing" / "campaign" / "result-requests.yaml"
+INTAKE_WATCH = REPO / "packing" / "campaign" / "intake-watch.yaml"
+#: The bead states that still own work, as `devtools.bead_state` reads them.
+LIVE = frozenset({"open", "in_progress", "blocked"})
 # The agenda schema's `bead` pattern is `^think-[a-z0-9]+$`; the part after the prefix
 # is the alias table's key.
 ALIAS_PREFIX = "think-"
@@ -60,46 +76,73 @@ IN_PROGRESS = "in_progress"
 TERMINAL_STATES = frozenset({"complete", "stopped"})
 
 
+#: The key under which a parsed bead carries its Markdown body: the description and
+#: notes `devtools.intake_sweep` reads for the blocker a bead says it waits on.
+BODY = "_body"
+
+
 def _parse(text: str) -> dict[str, Any] | None:
-    """Pull the YAML frontmatter off one bead file."""
+    """Pull the YAML frontmatter off one bead file, with the body under `BODY`."""
     if not text.startswith("---\n"):
         return None
     end = text.find("\n---\n", 4)
     if end < 0:
         return None
     front = safe_load(text[4:end])
-    return front if isinstance(front, dict) and "id" in front else None
+    if not isinstance(front, dict) or "id" not in front:
+        return None
+    front[BODY] = text[end + 5 :]
+    return front
 
 
 def parse_aliases(text: str) -> dict[str, str]:
     """The alias table, short code -> ULID tail.
 
     Read line by line rather than as YAML: a four-character code such as `1e10`, `null`
-    or `true` is a float, None or bool to a YAML loader and a key to `tbd`.
+    or `true` is a float, None or bool to a YAML loader and a key to `tbd`. `tbd` itself
+    writes such a code quoted, `"48e1": ...`, and the quotes are not part of it.
     """
     aliases: dict[str, str] = {}
     for line in text.splitlines():
         short, sep, tail = line.partition(":")
-        if sep and not line.lstrip().startswith("#") and short.strip() and tail.strip():
-            aliases[short.strip()] = tail.strip()
+        short = short.strip().strip("\"'")
+        if sep and not line.lstrip().startswith("#") and short and tail.strip():
+            aliases[short] = tail.strip()
     return aliases
 
 
+def _worktree() -> Path:
+    """The sync worktree's issues: under `.git`, or the common directory of a linked
+    worktree, where `.git` is a file and reading the branch blob by blob took 17 s."""
+    if WORKTREE.is_dir():
+        return WORKTREE
+    common = subprocess.run(
+        ["git", "-C", str(REPO), "rev-parse", "--path-format=absolute", "--git-common-dir"],
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    if common.returncode == 0:
+        return Path(common.stdout.strip()) / "tbd" / "data-sync-worktree" / ISSUES
+    return WORKTREE
+
+
 def _from_worktree() -> tuple[list[dict[str, Any]], str, dict[str, str]] | None:
-    if not WORKTREE.is_dir():
+    worktree = _worktree()
+    if not worktree.is_dir():
         return None
     beads = []
-    for f in sorted(WORKTREE.glob("is-*.md")):
+    for f in sorted(worktree.glob("is-*.md")):
         b = _parse(f.read_text(encoding="utf-8"))
         if b:
             beads.append(b)
     if not beads:
         return None
     try:
-        where = str(WORKTREE.relative_to(REPO))
-    except ValueError:  # a store outside the repo, as the fault-injection tests use
-        where = str(WORKTREE)
-    mapping = WORKTREE.parent / "mappings" / "ids.yml"
+        where = str(worktree.relative_to(REPO))
+    except ValueError:  # a linked worktree's store, or one a fault-injection test made
+        where = str(worktree)
+    mapping = worktree.parent / "mappings" / "ids.yml"
     aliases = parse_aliases(mapping.read_text(encoding="utf-8")) if mapping.is_file() else {}
     return beads, where, aliases
 
@@ -211,6 +254,88 @@ def staleness(
     return report
 
 
+def _records(path: Path) -> dict[str, Any]:
+    if not path.is_file():
+        return {}
+    loaded = safe_load(path.read_text(encoding="utf-8"))
+    return loaded if isinstance(loaded, dict) else {}
+
+
+def deferrals(
+    coverage: Path = COVERAGE, requests: Path = REQUESTS, watch: Path = INTAKE_WATCH
+) -> list[tuple[str, str]]:
+    """Every deferral the records declare, as (where, the bead alias it names).
+
+    A deferral without a bead is refused by its record's own schema, so only what is
+    named is collected here; this check asks whether what is named still owns the work.
+    """
+    named: list[tuple[str, str]] = []
+    source = _records(coverage)
+    named.extend(
+        (
+            f"source-coverage.yaml pending_catalogue_intake n={entry.get('n')}",
+            str(entry["bead"]),
+        )
+        for entry in source.get("pending_catalogue_intake") or ()
+        if entry.get("bead")
+    )
+    named.extend(
+        (f"source-coverage.yaml deferred conflict n={entry.get('n')}", str(entry["bead"]))
+        for entry in source.get("beyond_horizon_claims") or ()
+        if entry.get("disposition") == "deferred-conflict" and entry.get("bead")
+    )
+    for issue in _records(requests).get("issues") or ():
+        if issue.get("state") != "open":
+            continue
+        where = f"result-requests.yaml open issue #{issue.get('number')}"
+        if issue.get("answer_bead"):
+            named.append((where, str(issue["answer_bead"])))
+        named.extend(
+            (f"{where} queued result {result.get('key')}", str(result["bead"]))
+            for result in issue.get("results") or ()
+            if result.get("queued") and result.get("bead")
+        )
+        named.extend(
+            (f"{where} queued ask", str(ask["bead"]))
+            for ask in issue.get("asks") or ()
+            if ask.get("state") == "queued" and ask.get("bead")
+        )
+    named.extend(
+        (
+            (
+                f"intake-watch.yaml {entry.get('url')} read through "
+                f"{str(entry.get('read_through'))[:12]}"
+            ),
+            str(entry["bead"]),
+        )
+        for entry in _records(watch).get("repositories") or ()
+        if entry.get("bead")
+    )
+    return named
+
+
+def deferral_problems(
+    beads: list[dict[str, Any]], aliases: dict[str, str], named: list[tuple[str, str]]
+) -> list[dict[str, str]]:
+    """Each declared deferral whose bead does not exist or no longer owns work."""
+    status = {str(b["id"]).rpartition("-")[2]: str(b.get("status")) for b in beads}
+    problems: list[dict[str, str]] = []
+    for where, alias in named:
+        tail = aliases.get(alias.removeprefix(ALIAS_PREFIX))
+        found = status.get(tail or "")
+        if found in LIVE:
+            continue
+        problems.append(
+            {
+                "kind": "dead_deferral",
+                "bead": alias,
+                "parent": where,
+                "status": found or "no such bead",
+            }
+        )
+    return problems
+
+
 def check(beads: list[dict[str, Any]]) -> list[dict[str, str]]:
     by_id = {b["id"]: b for b in beads}
     problems: list[dict[str, str]] = []
@@ -252,7 +377,7 @@ def main() -> int:
         return 0
 
     beads, source, aliases = found
-    problems = check(beads)
+    problems = check(beads) + deferral_problems(beads, aliases, deferrals())
     report = staleness(beads, aliases, agenda_cells() if AGENDAS.is_dir() else [])
     if as_json:
         print(
@@ -272,6 +397,11 @@ def main() -> int:
     for p in problems:
         if p["kind"] == "open_under_closed":
             print(f"  FAIL open bead {p['bead']!r} sits under closed parent {p['parent']!r}")
+        elif p["kind"] == "dead_deferral":
+            print(
+                f"  FAIL {p['parent']} names {p['bead']} ({p['status']}); a deferral names "
+                "the open bead that owns it"
+            )
         else:
             print(f"  FAIL two open beads titled {p['bead']!r} under {p['parent']!r}")
     # Reported, never failed on: see the module docstring for why.
@@ -283,9 +413,14 @@ def main() -> int:
     for entry in untracked:
         print(f"    {entry['bead']}  {entry['title']}")
     if problems:
-        print(f"FAIL {len(problems)} bead-tree problem(s); see D-025", file=sys.stderr)
+        print(
+            f"FAIL {len(problems)} bead-tree problem(s); see D-025 and D-519", file=sys.stderr
+        )
         return 1
-    print("  ok  no open bead under a closed parent, no duplicate open siblings")
+    print(
+        "  ok  no open bead under a closed parent, no duplicate open siblings, every "
+        "deferral owned by an open bead"
+    )
     return 0
 
 

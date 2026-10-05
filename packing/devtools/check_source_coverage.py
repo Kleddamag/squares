@@ -378,6 +378,25 @@ def pending_intake_blocker(case: Mapping) -> Mapping | None:
     return None
 
 
+#: A bead alias as the records name one.
+BEAD_ALIAS = re.compile(r"think-[a-z0-9]{4}")
+_DATE = re.compile(r"\d{4}-\d{2}-\d{2}")
+
+
+def deferral_errors(entry: Mapping, where: str) -> list[str]:
+    """What a pending catalogue intake lacks to be owned: its bead and its date."""
+    bead, recorded = str(entry.get("bead") or ""), str(entry.get("recorded") or "")
+    errors: list[str] = []
+    if not BEAD_ALIAS.fullmatch(bead):
+        errors.append(
+            f"{where} names no bead ({bead or 'none'}); a deferral names the open bead "
+            "that owns the intake"
+        )
+    if not _DATE.fullmatch(recorded):
+        errors.append(f"{where} records no date ({recorded or 'none'}) it was deferred on")
+    return errors
+
+
 def pending_intake_errors(
     pending: Sequence[Mapping],
     current: Mapping[int, str],
@@ -395,6 +414,12 @@ def pending_intake_errors(
     `PENDING_INTAKE_MARKER` and the newer side, so the record itself says it trails the
     source; no record may carry that blocker undeclared. Once the intake lands the record
     reports the current side, and the declaration then fails here until it is removed.
+
+    A declaration is also a deferral, and a deferral is work: it names the bead that owns
+    the intake and the day it was recorded. The three declared on 2026-09-30 named no
+    bead, nothing listed them, and the record trailed the catalogue for five days until
+    the owner noticed. Whether the bead is still open is not a fact of the tree, so
+    `check_bead_tree` asks the bead store, and `devtools.intake_sweep` reports the age.
     """
     errors: list[str] = []
     seen: set[int] = set()
@@ -404,6 +429,7 @@ def pending_intake_errors(
         if n in seen:
             errors.append(f"{where} is declared twice")
         seen.add(n)
+        errors.extend(deferral_errors(entry, where))
         if entry["capture"] != INTAKE_CAPTURE_DATE:
             errors.append(
                 f"{where} names capture {entry['capture']}; the one retained earlier "

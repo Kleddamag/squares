@@ -1,0 +1,36 @@
+# How far an intake pass has read each watched repository beyond the packets that pin it.
+#
+# `devtools.intake_sweep` derives the watched repositories from the source register, the
+# packets' acquisition records and the site's list of other projects, and compares each
+# remote head with the commits the packets pin. A head no packet pins is new to the
+# record. An entry here says a pass read it: with `bead`, what the commits hold is
+# owned by that open bead until a packet pins it; without one, there was nothing to
+# import, and `note` says what changed. The runbook is campaign/result-import.md,
+# Running an Intake Pass.
+softschema:
+  contract: packing.squares:IntakeWatch/v1
+  schema: schemas/intake-watch.schema.yaml
+  status: enforced
+
+repositories:
+  # Three packets retain their repository at a commit their prose names and carry no
+  # acquisition record, so nothing structured pins them. Each head on 2026-10-05 was that
+  # commit, so the read is the pin the packet lacks.
+  - url: https://github.com/Queuingtheorydotcom/11SquaresOptimal
+    read_through: f9e0de713a0949d1bc6a0fa6b59d96edf6c3d65c
+    read_on: '2026-10-05'
+    note: >-
+      The head is the commit the n11-optimality-2026-09-29 packet retains and T-060 cites;
+      nothing new to import.
+  - url: https://github.com/DRMacIver/square-packing-research
+    read_through: 9e2cd597047e040a63b7dcd103e79962cfc2d781
+    read_on: '2026-10-05'
+    note: >-
+      The head is the commit the maciver-square-packing-2026-09-07 packet retains its three
+      papers from; nothing new to import.
+  - url: https://github.com/anabologyco-maker/square17-lower-bound
+    read_through: 396da6f7c112f49b50b5f4563ad2486ef38ac909
+    read_on: '2026-10-05'
+    note: >-
+      The head is the commit the n17-github-certificates-2026 packet retains the tree of;
+      nothing new to import.

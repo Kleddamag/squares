@@ -1680,6 +1680,37 @@ Tests are not scanned: a test asserting that a receipt names the digest of what 
 refuses nothing at run time.
 The step `integrity ceremony never grows` runs it in the edit tier.
 
+### Bulk Data and Git History
+
+[`OR-18`](operating-rules.md#or-18-keep-bulk-data-out-of-git-and-never-bind-code-or-verdicts-to-a-git-commit-or-blob)
+is the rule; this is how to follow it.
+
+- **Size.** Before committing retained data, check what it adds:
+  `git diff --cached --stat`, or `git rev-list --objects origin/main..HEAD` piped to
+  `git cat-file --batch-check` for the whole branch.
+  A binary or dump over a few megabytes, or data totalling tens of megabytes, is hosted
+  outside the repository, for example as a release asset on `jlevy/squares`.
+- **Manifest.** The repository keeps a small committed manifest with the name, size,
+  location, and SHA-256 of each hosted object.
+  A tool that needs the bytes downloads them on request (a `--fetch` flag) and checks
+  them against the manifest.
+  That comparison is a trust-boundary check under `OR-16`. Without the bytes, the tool
+  still reports from the committed receipts and says that a full re-check needs the
+  fetch. Tests use a small fixture, never the hosted object.
+- **Paths, not revisions.** A tool reads its inputs by repository-relative path or
+  through a manifest. It never reads them from a recorded commit (`git show REV:path`),
+  and never refuses because a file’s blob id or commit differs from a recorded one.
+  Record a commit or blob id as provenance if it helps a reader.
+  Where a verdict must be tied to the input it was computed from, give the input a
+  semantic identity (a design name and version) and compare that, or recompute.
+- **No self-pins.** Do not pin the SHA-256 of a file this repository writes and commits.
+  Git already holds it, and the pin makes regenerating the file identically, or moving
+  it, a failure.
+- **Removing data later.** Data that is already in a branch’s history cannot be removed
+  by a deleting commit.
+  The branch has to be rebuilt from main without the blobs.
+  This is why the size check comes before the commit.
+
 Pytest collection is explicit in `pyproject.toml`; `tests/conftest.py` fails if the
 configured test directory disappears.
 Domain programs are named by what they check, not with `_test.py`, so pytest cannot

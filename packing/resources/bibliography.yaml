@@ -809,6 +809,28 @@ sources:
       trailer naming an AI assistant.
       web/wand125-mixed-bounds-evening-2026-10-04/acquisition/sources.json pins revision
       797bdf6e10eba5f9dccca9da06f8352e81ba9dde. Dated by that revision, 2026-10-04 UTC.
+  - key: '[wand125 record updates 2026-10-04]'
+    authors: [wand125]
+    year: 2026
+    venue: GitHub
+    dated: '2026-10-04'
+    credit: wand125 after Daniel, Tokoharu, Levy, Stromquist, Nagamochi, Burns, Massaccesi
+    short_credit: wand125 after Daniel et al.
+    lineage: credits-project
+    note: >-
+      Four updates wand125/square-packing-bounds made on 2026-10-04 to certificates this
+      record holds, none changing a certificate: c56b9b7a publishes the s(59) = 8 cover's
+      zm_mixed.py per-root records with an exact record checker, its zmx2 logs and a
+      complete checksum list (T-066, answering review findings F1 and F2); 1ebd4845 fixes
+      the s(45) = 7 verify.sh D4 check and adds the reference run (T-054); 3f063bd5
+      publishes the s(77) = 9 cover's run logs and a full replay record with a hardened
+      verify.sh (T-067); 781afb3b relativizes the paths recorded in the s(21) = 5 archive
+      and corrects its lemma-code map (T-055). Credited as the root README credits the
+      method; it says parts of the work were produced with AI assistance under human
+      direction, and each commit message ends with a co-author trailer naming an AI
+      assistant. web/wand125-record-updates-2026-10-04/acquisition/sources.json pins
+      revision 797bdf6e10eba5f9dccca9da06f8352e81ba9dde. Dated by that revision, 2026-10-04
+      UTC.
   - key: '[franciscouzo square-packing 2026-09-27]'
     authors: [Couzo]
     year: 2026

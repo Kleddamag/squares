@@ -1324,23 +1324,31 @@ evidence:
     verifiers: [V-evand-zmx2]
     limitations: >-
       wand125/square-packing-bounds at 39d8ecc74d651b54ec977c331c8f2015b442a6c4
-      (2026-09-28T22:20:47Z by the author's clock) claims s(45) = 7 from a
-      point-only, D4-invariant measure of 12,645 points, coordinates over 2,000
-      and weights over 2^49, total 12666371418707823/2^48 = 44.99999100001 < 45,
-      whose capture condition (every closed unit square in [0,7]^2 has mass at
-      least 1, a point on its boundary counting) is decided by Evan Daniel's
-      unmodified zmx2 (evand/square-packing 6e1223cf, zmx2.rs SHA-256
-      6b7f0f79..., zmx2 cert cover.txt --d4 --pair-points; reference run 204.4 s
-      on eight threads, 4,900 roots, 1,295,460 boxes, depth 38). zmx2 encloses
-      geometry in binary64 intervals widened outward and accepts by exact
-      integer tests. The weights came from an LP over candidate supports
-      iterated against weak poses that zmx2 located, scaled by about 1.000835
-      and rounded up; the checker is Daniel's, not the generator's author's,
-      although it steered the search. The source states that Daniel published
-      s(45) = 7 first with a mixed point-and-segment measure and claims no
+      (2026-09-28T22:20:47Z by the author's clock) claims s(45) = 7 from a point-only,
+      D4-invariant measure of 12,645 points, coordinates over 2,000 and weights over
+      2^49, total 12666371418707823/2^48 = 44.99999100001 < 45, whose capture
+      condition (every closed unit square in [0,7]^2 has mass at least 1, a point on
+      its boundary counting) is decided by Evan Daniel's unmodified zmx2
+      (evand/square-packing 6e1223cf, zmx2.rs SHA-256 6b7f0f79..., zmx2 cert cover.txt
+      --d4 --pair-points; reference run 204.4 s on eight threads, 4,900 roots,
+      1,295,460 boxes, depth 38). zmx2 encloses geometry in binary64 intervals widened
+      outward and accepts by exact integer tests. The weights came from an LP over
+      candidate supports iterated against weak poses that zmx2 located, scaled by
+      about 1.000835 and rounded up; the checker is Daniel's, not the generator's
+      author's, although it steered the search. The source states that Daniel
+      published s(45) = 7 first with a mixed point-and-segment measure and claims no
       priority; parts of the work were produced with AI assistance under human
       direction, as its README says. The upper bound 7 is the grid. This entry
-      preserves the source claim; the local replay is recorded separately.
+      preserves the source claim; the local replay is recorded separately. Evidence
+      update, 2026-10-05: at 1ebd4845 (2026-10-04T06:48:52Z) the source fixed
+      verify.sh's D4 check, which had also accepted zmx2's 'cover is not D4-invariant'
+      message, to judge invariance from its '^D4: measure invariant' line, and added
+      the original reference run (reference/roots.txt and run.txt), which a fresh
+      per-root log is now compared with; the cover is unchanged. The replay here is
+      unaffected: the D4 invariance it relies on was checked exactly by
+      devtools.audit_wand125_point_and_mixed, and zmx2 printed VERIFIED-D4 at every
+      root. the wand125 record-updates packet of 4 October retains the update at
+      797bdf6e.
     source_reviewed: '2026-09-28'
 
   - id: E-n045-wand125-point-cover-source-replay
@@ -1434,27 +1442,37 @@ evidence:
     replay_status: not-attempted
     verifiers: [V-wand125-verify-portable-py]
     limitations: >-
-      wand125/square-packing-bounds claims s(21) = 5 from a point-only,
-      D4-invariant measure of 4,604 entries (4,520 positive) on Evan Daniel's
-      s21_lower_4.9950.txt support scaled by 1001/1000, re-weighted, with
-      capture threshold q = 249987/250000 over every closed unit square in
-      [0,5]^2, mass 2624862500021/125000000000 and 21q - mass =
-      999979/125000000000 > 0; introduced at b97c7963 and completed at d38917c6
-      (2026-09-28T10:44:48Z), with a Lean 4 overlay at b64f96e6 proving
-      n21pts_eq_five_of_checker : N21PtsCheckerCover -> minSide 21 = 5 from the
-      one capture hypothesis. The capture statement is decided by the source's
-      own exact rational replay of a retained certificate tree
-      (verify_portable.py over a 464 MB bundle: 5,000 roots, 8,758 sieve
-      parents, 31,678 frontier parents, 7,052 parents above t = 5/12
-      excluded), which took 8,577 s on two workers of an M1. The source names
-      Daniel's mixed-cover proof of s(21) = 5 (bundle commit 086a129a,
-      2026-09-27T19:56:22Z) as first and claims no priority; its s(21)
-      write-up says the code was developed with Codex. The upper bound is the
-      grid. The complete local replay was still running when this entry was
-      written (its root and sieve stages passed, every proof file
-      byte-identical to the source's M1 run). This entry preserves the source
-      claim; the complete replay here of 29 September 2026 is
-      E-n021-wand125-point-endpoint-source-replay.
+      wand125/square-packing-bounds claims s(21) = 5 from a point-only, D4-invariant
+      measure of 4,604 entries (4,520 positive) on Evan Daniel's s21_lower_4.9950.txt
+      support scaled by 1001/1000, re-weighted, with capture threshold q =
+      249987/250000 over every closed unit square in [0,5]^2, mass
+      2624862500021/125000000000 and 21q - mass = 999979/125000000000 > 0; introduced
+      at b97c7963 and completed at d38917c6 (2026-09-28T10:44:48Z), with a Lean 4
+      overlay at b64f96e6 proving n21pts_eq_five_of_checker : N21PtsCheckerCover ->
+      minSide 21 = 5 from the one capture hypothesis. The capture statement is decided
+      by the source's own exact rational replay of a retained certificate tree
+      (verify_portable.py over a 464 MB bundle: 5,000 roots, 8,758 sieve parents,
+      31,678 frontier parents, 7,052 parents above t = 5/12 excluded), which took
+      8,577 s on two workers of an M1. The source names Daniel's mixed-cover proof of
+      s(21) = 5 (bundle commit 086a129a, 2026-09-27T19:56:22Z) as first and claims no
+      priority; its s(21) write-up says the code was developed with Codex. The upper
+      bound is the grid. The complete local replay was still running when this entry
+      was written (its root and sieve stages passed, every proof file byte-identical
+      to the source's M1 run). This entry preserves the source claim; the complete
+      replay here of 29 September 2026 is E-n021-wand125-point-endpoint-source-replay.
+      Evidence update, 2026-10-05: at 781afb3b (2026-10-04T10:49:48Z) the source
+      removed absolute machine paths from the records inside its archive and from the
+      two acceptance linkage files, updating their embedded hashes and listing each
+      edited file's digest before and after in path-relativization-map.json,
+      translated mixed_proof_pipeline.py's status messages, which are not on the
+      checking path, and corrected lemma-code-map.json to the 27 files the checking
+      path runs; it reports a fresh replay of the rebuilt archive ending
+      FRESH_ALL_DOMAIN_REPLAY_VERIFIED. The certificate is unchanged, but the 14
+      bundle parts were rebuilt, so the replay here
+      (E-n021-wand125-point-endpoint-source-replay) is of the archive at 39d8ecc7, not
+      of the rebuilt one. the wand125 record-updates packet of 4 October retains the
+      changed records at 797bdf6e and pins the parts through archive-index.json's
+      digests, not its own.
     external_review:
       state: informally-verified
       date: '2026-09-28'
@@ -1683,28 +1701,36 @@ evidence:
     verifiers: [V-evand-zm-mixed-py, V-evand-zmx2]
     limitations: >-
       wand125/square-packing-bounds at 1a25a5ed745fdd905a52f48fcc48150a0669032d (the
-      directory's one commit, 2026-10-01T21:10:40Z) reports s(59) = 8 from a mixed cover
-      of [0,8]^2 in Evan Daniel's "mixed 1" format: 26,308 weighted points and 5,240
-      segments of length 1/50 on the interior lattice lines, total mass
+      directory's one commit, 2026-10-01T21:10:40Z) reports s(59) = 8 from a mixed
+      cover of [0,8]^2 in Evan Daniel's "mixed 1" format: 26,308 weighted points and
+      5,240 segments of length 1/50 on the interior lattice lines, total mass
       1474762899/25000000 = 58.99051596 < 59, D4-invariant. It was made with Daniel's
       line-cover linear program from his s(60) cover as warm start, then scaled by
       2019/2000; the source puts its margin over the exact threshold at about 0.09%.
       The source reports Daniel's checkers, pinned at evand/square-packing b91d70b6,
       accepting it: zmx2 --d4 over 6,400 roots (9,844,124 boxes) and zmx2 --full over
-      51,200 roots (79,108,328 boxes), none uncertified. Its exact-rational evidence is
-      two zm_mixed.py runs: the complete depth-24 sweep of 102,400 roots ends NOT VERIFIED
-      with six uncertified boxes in one root, and a second run of that root alone at
-      depth limit 34 certifies it. Both used the zm_mixed.py that predates Daniel's
-      guard against a zero-width angle bin. The directory's SHA256SUMS lists four run
-      logs that are not in the published tree, so the source's verify.sh stops at its
-      first step on a fresh checkout, and its per-root records are published by digest
-      only. This entry preserves the source claim; the local zmx2 replay of 2 October
-      2026 is E-n059-wand125-mixed-cover-zmx2-replay. The two-run zm_mixed.py composite
-      is not recorded as evidence: whether the complete sweep's six uncertified boxes
-      lie in the root the deeper run certifies is not decided by anything published
-      (the 2 October review, finding F1). No Lean statement exists for this cover and
-      the source says it has had no review outside its project. The grid gives the
-      upper bound.
+      51,200 roots (79,108,328 boxes), none uncertified. Its exact-rational evidence
+      is two zm_mixed.py runs: the complete depth-24 sweep of 102,400 roots ends NOT
+      VERIFIED with six uncertified boxes in one root, and a second run of that root
+      alone at depth limit 34 certifies it. Both used the zm_mixed.py that predates
+      Daniel's guard against a zero-width angle bin. The directory's SHA256SUMS lists
+      four run logs that are not in the published tree, so the source's verify.sh
+      stops at its first step on a fresh checkout, and its per-root records are
+      published by digest only. This entry preserves the source claim; the local zmx2
+      replay of 2 October 2026 is E-n059-wand125-mixed-cover-zmx2-replay. The two-run
+      zm_mixed.py composite is not recorded as evidence: whether the complete sweep's
+      six uncertified boxes lie in the root the deeper run certifies is not decided by
+      anything published (the 2 October review, finding F1). No Lean statement exists
+      for this cover and the source says it has had no review outside its project. The
+      grid gives the upper bound. Evidence update, 2026-10-05: at c56b9b7a
+      (2026-10-04T01:42:52Z) the source published, for this unchanged cover, the
+      zm_mixed.py per-root records (every root at depth 24, the root R at depth 34)
+      with check_records.py, which checks them in exact rational arithmetic and which
+      verify.sh now runs, the zmx2 per-root logs, a toolchain record and the run logs,
+      and made SHA256SUMS list exactly the published files: the source's answer to the
+      2 October review's findings F1 and F2. the wand125 record-updates packet of 4
+      October retains them at 797bdf6e. Neither the records nor check_records.py has
+      been run here.
     external_review:
       state: informally-verified
       date: '2026-10-02'
@@ -1829,25 +1855,34 @@ evidence:
       mixed cover of [0,9]^2 in Evan Daniel's "mixed 1" format: 28,273 weighted points
       and 6,420 segments, total mass 43347137744028965/2^49 = 76.999984600031... < 77,
       D4-invariant. It is Daniel's s(60) cover cut at 4 in both coordinates with a
-      central band inserted, plus a D4-symmetric band measure of mass about 16.43 found
-      by a linear program over 31 rounds, the whole scaled to just below 77. Eighty-four
-      points of the band measure that lay on loaded lattice lines were replaced by
-      segments of length 2/1000, because zm_mixed.py's certificate mode does not count
-      such a point with its line; before the replacement that checker left 291 boxes
-      uncertified. After it no point lies on a loaded line or on any grid line, as in
-      the reviewed s(21), s(45) and s(60) covers; what is new to the checkers is three
-      segment lengths including 2/1000, overlapping segments on one line, a weight unit
-      of 2^-49 and the partner lines --pair-points makes from off-grid point pairs (the
-      2 October review, sections 8.1 and 8.2, finding F5). The source reports Daniel's checkers, pinned at evand/square-packing b91d70b6,
+      central band inserted, plus a D4-symmetric band measure of mass about 16.43
+      found by a linear program over 31 rounds, the whole scaled to just below 77.
+      Eighty-four points of the band measure that lay on loaded lattice lines were
+      replaced by segments of length 2/1000, because zm_mixed.py's certificate mode
+      does not count such a point with its line; before the replacement that checker
+      left 291 boxes uncertified. After it no point lies on a loaded line or on any
+      grid line, as in the reviewed s(21), s(45) and s(60) covers; what is new to the
+      checkers is three segment lengths including 2/1000, overlapping segments on one
+      line, a weight unit of 2^-49 and the partner lines --pair-points makes from
+      off-grid point pairs (the 2 October review, sections 8.1 and 8.2, finding F5).
+      The source reports Daniel's checkers, pinned at evand/square-packing b91d70b6,
       accepting it: zmx2 --d4 --pair-points over 8,100 roots (5,810,824 boxes), zmx2
-      --full --pair-points over 64,800 roots (46,583,600 boxes), and zm_mixed.py
-      --d4 --cert-mode in exact rationals over 129,600 roots, none uncertified. The
+      --full --pair-points over 64,800 roots (46,583,600 boxes), and zm_mixed.py --d4
+      --cert-mode in exact rationals over 129,600 roots, none uncertified. The
       directory's SHA256SUMS lists three run logs that are not in the published tree,
-      so the source's verify.sh stops at its first step on a fresh checkout. This entry
-      preserves the source claim; the local zmx2 replay of 2 October 2026 is
-      E-n077-wand125-mixed-cover-zmx2-replay, and zm_mixed.py has not been run here. No
-      Lean statement exists for this cover and the source says it has had no review
-      outside its project. The grid gives the upper bound.
+      so the source's verify.sh stops at its first step on a fresh checkout. This
+      entry preserves the source claim; the local zmx2 replay of 2 October 2026 is
+      E-n077-wand125-mixed-cover-zmx2-replay, and zm_mixed.py has not been run here.
+      No Lean statement exists for this cover and the source says it has had no review
+      outside its project. The grid gives the upper bound. Evidence update,
+      2026-10-05: at 3f063bd5 (2026-10-04T08:04:06Z) the source published, for this
+      unchanged cover, its run logs and a full replay record ending N77_COVER_VERIFIED
+      (zmx2 D4 and full, and zm_mixed.py with its per-root records), hardened
+      verify.sh to judge D4 invariance from its '^D4: measure invariant' line under
+      set -euo pipefail, and made SHA256SUMS list exactly the tracked files, answering
+      the 2 October review's finding F2. the wand125 record-updates packet of 4
+      October retains them at 797bdf6e. The new verify.sh and records have not been
+      run here.
     external_review:
       state: informally-verified
       date: '2026-10-02'

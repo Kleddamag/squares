@@ -1,0 +1,8 @@
+date_utc 2026-10-04T00:59:54Z
+zmx2.rs_sha256 6b7f0f79466bf25c9a85f8fe2f3866de734935f0521ea188136818c2fb5b3fed
+zmx2_binary_sha256 80596601b3d9b58354a159d8c754a185db30f55d8d2ed9e4f5edd9bd98063232
+rustc rustc 1.86.0 (05f9846f8 2025-03-31)
+cargo cargo 1.86.0 (adf9b6ad1 2025-02-28)
+build cargo build --release --bin zmx2 (Cargo.toml/Cargo.lock of upstream s12/verify2 at b91d70b)
+cpu AMD EPYC 7B13
+cover_sha256 6f4d2b64f9a88ae49546f05fa28752382f9ebfa8b7f8b6e6c6f1a8e693177e19

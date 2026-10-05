@@ -691,6 +691,13 @@ issues:
             confirmation: C3
             status: confirmed
     close_when: T-066 is confirmed, and the reply saying so is posted from main.
+    notes: >-
+      Evidence update, recorded 2026-10-05: on 4 October the source answered the review's
+      findings F1 and F2 on the s(59) cover (c56b9b7a: the zm_mixed.py per-root records, an
+      exact record checker, the zmx2 logs and a complete checksum list), and its commits
+      1ebd4845 (s(45) = 7) and 781afb3b (s(21) = 5) name this issue. Each is recorded on its
+      entry's report evidence from the wand125-record-updates-2026-10-04 packet; no rung
+      moves and nothing new was run here, so no reply is owed.
 
   - number: 279
     title: 'Exact value s(77) = 9 (k = 9 of the k² − 4 series): registration request (external certificate)'
@@ -724,6 +731,13 @@ issues:
             confirmation: C3
             status: confirmed
     close_when: T-067 is confirmed, and the reply saying so is posted from main.
+    notes: >-
+      Evidence update, recorded 2026-10-05: on 4 October the source published the s(77)
+      cover's run logs and a full replay record with a hardened verify.sh (3f063bd5),
+      answering the review's finding F2, and its commits 1ebd4845 (s(45) = 7) and 781afb3b
+      (s(21) = 5) name this issue. Each is recorded on its entry's report evidence from the
+      wand125-record-updates-2026-10-04 packet; no rung moves and nothing new was run here,
+      so no reply is owed.
 
   - number: 256
     title: 'Exact value s(60) = 8 (corollary s(61) = 8): registration request (external certificate)'

@@ -998,7 +998,33 @@ sources:
       pinned by digest and not retained. The revision also changes certificates/k2m4_n77_L9
       (3f063bd: run logs, a replay record and a hardened verify.sh, the cover unchanged;
       T-067) and point_n21_L5 (781afb3: relativized paths and a corrected lemma-code map,
-      the certificate unchanged; T-055), which the wand125 evidence-update packet retains.
+      the certificate unchanged; T-055), which the record-updates packet retains.
+  - id: wand125-record-updates-2026-10-04
+    title: Record and script updates of 4 October 2026 to wand125's s(21), s(45), s(59) and s(77) certificates
+    role: source-repository
+    url: https://github.com/wand125/square-packing-bounds/tree/797bdf6e10eba5f9dccca9da06f8352e81ba9dde
+    local: resources/web/wand125-record-updates-2026-10-04/
+    source_key: '[wand125 record updates 2026-10-04]'
+    scope: {n_values: [21, 45, 59, 77]}
+    reviewed: '2026-10-05'
+    source_date: '2026-10-04'
+    disposition: current-report
+    replay_disposition: case-specific
+    represented_by: [frontier/evidence.yaml]
+    evidence:
+      - E-n021-wand125-point-endpoint-report
+      - E-n045-wand125-point-cover-report
+      - E-n059-wand125-mixed-cover-report
+      - E-n077-wand125-mixed-cover-report
+    notes: >-
+      Revision 797bdf6e10eba5f9dccca9da06f8352e81ba9dde, retrieved at 2026-10-05T00:44Z.
+      Four commits of 4 October change the records, logs or scripts around certificates this
+      record holds and no certificate: c56b9b7a for the s(59) = 8 cover (T-066, answering
+      review findings F1 and F2), 1ebd4845 for the s(45) = 7 point cover (T-054), 3f063bd5
+      for the s(77) = 9 cover (T-067) and 781afb3b for the s(21) = 5 archive (T-055). Each
+      is recorded as an evidence update on its entry's report evidence, and none moves a
+      rung; nothing new was run here. The s(21) = 5 bundle parts, 455 MB, are pinned
+      through the retained archive index rather than digested here.
   - id: wand125-valid7-independent-check-2026-10-02
     title: Independent exact checker of Valid7 for s(k^2 - 3) = k
     role: source-repository

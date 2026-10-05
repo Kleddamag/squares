@@ -5851,9 +5851,9 @@ results:
       V4 and C4 need two adversarial AI reviews by distinct reviewers and a human oversight
       record; one adversarial review is retained. A complete zm_mixed.py sweep, about 127
       CPU-hours at the source, recorded as a second, exact-algebraic entry, would give the
-      lower half a second machine method and regenerate the per-root records the source
-      does not publish (finding F1; think-mx3k). V5 would need a Lean statement for this
-      cover and a human expert's review of the formalization.
+      lower half a second machine method; the per-root records the source published on 4
+      October in answer to finding F1 can be checked against it (think-mx3k). V5 would need
+      a Lean statement for this cover and a human expert's review of the formalization.
     notes: >-
       Raised from V0/C0 on 2 October 2026, when the zmx2 replay (think-oy3i) and the review
       of the s(59) and s(77) covers landed with no defect blocking the claim. The source's
@@ -5861,6 +5861,11 @@ results:
       logs (finding F2), so its two zmx2 steps were run as this repository's own sequence.
       For the author: publishing the two zm_mixed.py root records and logs, or the six
       boxes with their root, would make the exact route checkable.
+
+      The source published them on 4 October, with an exact checker of the records and a
+      checksum file that lists exactly the published files, answering findings F1 and F2;
+      the report entry records the update. Neither the records nor the source's new
+      verify.sh has been run here, so the rungs do not move.
 
   - id: T-067
     kind: optimality
@@ -5979,6 +5984,10 @@ results:
       names unpublished run logs (finding F2), so its two zmx2 steps were run as this
       repository's own sequence. For the author: publishing the run logs the checksum file
       lists would let the source's own script pass and allow a root-for-root comparison.
+
+      The source published them on 4 October, with a full replay record and a hardened
+      verify.sh, answering finding F2; the report entry records the update. The root-for-root
+      comparison has not been run here, so the rungs do not move.
 
   - id: T-068
     kind: lower-bound

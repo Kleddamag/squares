@@ -5,7 +5,7 @@ title: "Import wand125: 14+ mixed certificates (#282)"
 kind: task
 status: in_progress
 priority: 1
-version: 7
+version: 8
 delegate: claude-code@vm
 labels:
   - result-import
@@ -14,10 +14,10 @@ parent_id: is-01m41csdc2gp36ry5p6n7c2x2y
 hold: null
 hold_until: null
 created_at: 2026-10-04T07:19:38.704Z
-updated_at: 2026-10-05T03:56:23.113Z
+updated_at: 2026-10-05T04:21:04.028Z
 started_at: 2026-10-04T07:32:04.027Z
 ---
-Mixed rectangle-measure certificates posted on jlevy/squares#282 from 2026-10-03 19:33Z (14 at upstream 3554616; two more at 6832.. and 8aa6.. after 07:00Z). Stages 1-2 on branch import-282-mixed14 (packet wand125-mixed-bounds-2026-10-04, W7 audit binding by pinned digest). Stage 3 (new T-NNN) waits for jlevy/squares#305. Replays (~124 CPU-h for 14) held with think-wpuu. Separate import needed: c56b9b7 (T-066 F1/F2, #280).
+Mixed rectangle-measure certificates posted on jlevy/squares#282 from 2026-10-03 19:33Z (14 at upstream 3554616; two more at 6832.. and 8aa6.. after 07:00Z). Stages 1-2 on branch import-282-mixed14 (packet wand125-mixed-bounds-2026-10-04, W7 audit binding by pinned digest). Stage 3 (new T-NNN) was held for jlevy/squares#305, which merged 2026-10-04; it is done as T-090 on PR 353. Replays (~124 CPU-h for 14) held with think-wpuu. Separate import needed: c56b9b7 (T-066 F1/F2, #280).
 
 ## Notes
 

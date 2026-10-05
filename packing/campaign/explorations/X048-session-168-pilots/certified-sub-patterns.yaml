@@ -477,3 +477,16 @@ entries:
     verification:
       receipt: packing/campaign/explorations/X048-session-168-pilots/certificates/s182-bc425-t10/verification.json
       verifier: kernel-streamed
+  - name: s182-bc427-t4
+    cells: [side-E1, interior-SW, interior-NW, interior-W, interior-S, interior-N, interior-E]
+    certifier: kernel
+    # Session 182 BC-427's target 4 (arity 7, 1 wall or corner cells), closed with lane K's
+    # frozen SW9 recipe at 64 bins in 171 s of wall from the clean run worktree at cebb5d15a.
+    # Admitted in exp-256 by the standing verifier's full pass there.
+    receipt: packing/campaign/explorations/X048-session-182-overnight/receipts/K/kernel-t4-bc427.json
+    certificate: packing/campaign/explorations/X048-session-168-pilots/certificates/s182-bc427-t4
+    status: admitted
+    evidence: packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-256-h267-n17-third-tranche-flags.md
+    verification:
+      receipt: packing/campaign/explorations/X048-session-168-pilots/certificates/s182-bc427-t4/verification.json
+      verifier: kernel-streamed

@@ -71,6 +71,18 @@ experiment:
       process CPU, the producer with producer outcome stalled (112 steps, 13,468 rows, finest 1/512); at the
       last round every owner still had live rows, side-N1 100 and interior-SW 134 the fewest. A non-closure;
       its node is kept.
+  - shape: determination
+    role: outcome
+    question: Is target 4 (side-E1, interior-SW, interior-NW, interior-W, interior-S, interior-N, interior-E)
+      infeasible at U, by a certificate the kernel's checker accepts and the standing verifier re-proves in
+      full?
+    outcome: criterion_met
+    checked_by: The run (receipts/K/kernel-t4-bc427.json) returns PASS_CERTIFIED_CLOSED in 171 s of wall and 146 s of
+      process CPU (producer 96 s, checker 73 s) on 15 steps and 960 rows in 3 rounds, rows finest at 1/64,
+      closure all_parent_poses_forbidden for side-E1 at step 14. The standing verifier at cebb5d15a passes it
+      in full mode in 84 s, checking all 957 live rows in full and 2,682 collision regions by 17,169,132 exact
+      facet checks. Alone it excludes 51,260 states and 6,468 orbits. The arity-at-most-7 entries then leave
+      78,824 states and 9,990 orbits (receipts/K/census-arity7-after-bc427-t4.json).
   verdict:
     decision: in-progress
     primary_criterion: The certified residue at arity at most seven is at most 10^4 orbits with every certificate
@@ -98,9 +110,13 @@ The threshold of at most $10^4$ needs 173 orbits off that line, and going below 
 174\. Target 2 alone would take 1,372, so with it admitted no more is needed.
 Without it, any one of the ten frozen targets that project at least 174 orbits against
 the arity-7 line (183 to 1,799) would suffice alone.
-The census flags 33 classes of arity at most seven besides target 2. The frozen list is
-the sixteen with the most projected gain against the certified line at `71b1d0363`,
-which is the tranche’s cap.
+Target 4, which projects 183, closed and was admitted, and the line now stands at 9,990
+orbits
+([census-arity7-after-bc427-t4.json](../../../explorations/X048-session-182-overnight/receipts/K/census-arity7-after-bc427-t4.json)),
+ten under $10^4$. H-267 is claimed only after a W2 review, so exp-251’s verdict stays
+open. The census flags 33 classes of arity at most seven besides target 2. The frozen
+list is the sixteen with the most projected gain against the certified line at
+`71b1d0363`, which is the tranche’s cap.
 No arity-8 flag fills it.
 
 ## Runs
@@ -108,7 +124,8 @@ No arity-8 flag fills it.
 | Target | Cells | Producer | Verifier | Census after |
 | --- | --- | --- | --- | --- |
 | 2 | corner-SW, side-S0, side-W0, side-W2, interior-SW, interior-NW, interior-W | 24-round cap at 1,044 s, not closed | — | — |
-| 1 | side-N1, side-E1, interior-SW, interior-W, interior-S, interior-N, interior-E | PASS_CERTIFIED_STALL at 3,773 s, not closed | — | — |
+| 1 | side-N1, side-E1, interior-SW, interior-W, interior-S, interior-N, interior-E | producer fixed point after 16 rounds at 3,773 s, not closed | — | — |
+| 4, `s182-bc427-t4` | side-E1, interior-SW, interior-NW, interior-W, interior-S, interior-N, interior-E | closed in 171 s, 15 steps, 960 rows | full pass, 84 s | 4,874 orbits; 9,990 at arity at most seven |
 
 The targets and the census they came from are
 [kernel-targets-bc427.txt](../../../explorations/X048-session-182-overnight/kernel-targets-bc427.txt)

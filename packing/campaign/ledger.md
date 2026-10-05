@@ -1119,13 +1119,14 @@ Status: **active**. Turn PR 230's W3 review and the two explorations it led to, 
 | H-270 | blocked | search | For some integer k with 18 <= k <= 41, the strip construction of Kearn | k: 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 | 0 |  |  |
 | H-272 | blocked | search | Of the 68 non-grid known-best records whose witness derives from Kingb |  | 0 |  |  |
 | H-273 | open | proof | Each of the 95 orbits at Hamming distance 2 from the endpoint's state  |  | 0 |  |  |
-| H-274 | running | proof | Of the four counted draws of H-264's seed-182 draw that stalled under  |  | 1 |  |  |
+| H-274 | needs review | proof | Of the four counted draws of H-264's seed-182 draw that stalled under  |  | 1 |  | 110.0m wall |
 
 ## Needs review — held for a human, not decided
 
 | id | hypotheses | decision | why it was not decided |
 | --- | --- | --- | --- |
 | exp-050 | H-054 | unresolved | The authorized source-semantics measurement stops at ordered E1 reason 3, attribution-unbound, with zero cells. This leaves H-054 unresolved and instrument_ready false; the terminal decision awaits BC-120/BC-121 review. |
+| exp-253 | H-274 | accepted | The first two frozen states, 2784767 and 2817021, closed within the ceiling under SW9's recipe, each re-proved in full by the standing kernel verifier and admitted after the endpoint-state control finished without closing, which meets the criterion of two. Both had reached producer fixed points under N1's recipe. The other two states run on for the cost and are recorded as they finish. Held for the W2 review the plan requires before X-048 or the frontier states the verdict. |
 
 ## Rounds
 
@@ -1264,7 +1265,7 @@ Status: **active**. Turn PR 230's W3 review and the two explorations it led to, 
 | exp-158 | series-000 | 11 | Codex BC303 T2 charge-sweep agent | H-160 | The September 14 strategy reset paused this route before the target charge ran; no target receipt or scientific verdict exists. |
 | exp-160 | series-000 | 11 | Codex BC303 H-162 retained-receipt analyst | H-162 | The September 14 strategy reset paused this route with no exp-158 target receipt; no H-162 comparison or scientific verdict exists. |
 
-### accepted (58)
+### accepted (59)
 
 | id | series | instance | operator | hypotheses | reason |
 | --- | --- | --- | --- | --- | --- |
@@ -1326,6 +1327,7 @@ Status: **active**. Turn PR 230's W3 review and the two explorations it led to, 
 | exp-247 | series-000 | 17 | Claude Session 168; lane G2 built the design in Session 167, the coordinator ran it from a clean worktree | H-266 | Every criterion item holds for the unique-state design, which keeps the 43,593-orbit census. The exp-246 tabbed design stays unresolved; this round supersedes it for H-266. |
 | exp-248 | series-000 | 17 | Claude Session 168; lanes H, H2 and A3 built the tools, the coordinator ran both from a clean worktree | H-268 | Every criterion item holds with strict margin, and the composition with the B_W' local theorem and the H-266 cover gives the capture-target theorem. The deviation is recorded; H-261, whose claim names the whole physical slider domain, stays unresolved. |
 | exp-252 | series-000 | 17 | Claude Session 182; the run operator's lane A queue ran the survey, the control and the draws two at a time in the survey's own seeded random order, verified each closure and admitted it in the session checkout | H-264 | Five of the ten counted draws closed within the 7,000 s ceiling, each re-proved in full by the standing kernel verifier, which meets the criterion of at least half; every closure cost under 900 s of process CPU and every verification under 700 s, far inside two CPU-hours. The other five counted draws reached producer fixed points inside the ceiling, as did both distance-2 draws. The W2 factual review (docs/project/reviews/review-2026-10-05-exp-252-h264.md) confirmed the verdict with corrections to bookkeeping and attribution, which this record carries. |
+| exp-253 | series-000 | 17 | Claude Session 182; the run operator's BC-424 queue ran the control beside the first state and the states two at a time in mask order, verified each closure, and admitted it in the session checkout once the control had finished without closing | H-274 | The first two frozen states, 2784767 and 2817021, closed within the ceiling under SW9's recipe, each re-proved in full by the standing kernel verifier and admitted after the endpoint-state control finished without closing, which meets the criterion of two. Both had reached producer fixed points under N1's recipe. The other two states run on for the cost and are recorded as they finish. Held for the W2 review the plan requires before X-048 or the frontier states the verdict. |
 
 ### baseline (12)
 
@@ -1344,12 +1346,11 @@ Status: **active**. Turn PR 230's W3 review and the two explorations it led to, 
 | exp-032 | series-000 | 3 | openai-codex | H-021 | The exact connected and isolated controls pass, every declared conflation fails, and all unsupported floating-point observations remain unresolved. |
 | exp-201 | series-000 | 18 | claude-opus-5 | H-201 | Calibration, not a scored round: it freezes p_perturb = 1.0, perturb_scale = 2 and a flat mu = 5 for exp-202 and exp-203, and it turned up a schedule-length effect that is now registered as H-204 rather than folded into an arm. |
 
-### in-progress (2)
+### in-progress (1)
 
 | id | series | instance | operator | hypotheses | reason |
 | --- | --- | --- | --- | --- | --- |
 | exp-251 | series-000 | 17 | Claude Session 182; the run operator's lane K queue produced and verified each certificate and admitted it in the session checkout | H-267 | Lane K's round is running; each closure is admitted as its verifier passes, and the verdict is written when the target list is exhausted. |
-| exp-253 | series-000 | 17 | Claude Session 182; the run operator's BC-424 queue ran the control beside the first state and the states two at a time in mask order, verified each closure, and admitted it in the session checkout once the control had finished without closing | H-274 | The first two frozen states are admitted after the endpoint-state control finished without closing, which reaches the criterion's two; the verdict is written in its own commit, and the other two states are recorded as they finish. |
 
 ## Resumable — stopped on the clock, not on an answer
 
@@ -1397,7 +1398,7 @@ Status: **active**. Turn PR 230's W3 review and the two explorations it led to, 
 
 ## Effort
 
-182 rounds, 2512.1 agent-minutes, 4273.1 wall-minutes.
+182 rounds, 2512.1 agent-minutes, 4383.1 wall-minutes.
 
 These totals exclude 4 historical rounds with unrecorded timing; their cost is unknown, not zero.
 

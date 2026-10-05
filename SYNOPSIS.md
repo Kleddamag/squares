@@ -291,8 +291,8 @@ hypothesis status and summarizes experiment verdicts, and the
 | Commitments | 413 | 213 complete; 65 stopped; 70 blocked; 25 ready; 21 tentative; 19 in progress |
 | Sessions | 180 | 105 completed; 74 stopped; 1 nonterminal |
 | Explorations | 47 | 28 linked to proposed hypotheses; 19 uncodified |
-| Hypotheses | 208 | 43 confirmed; 33 refuted; 63 blocked; 19 unresolved; 10 open; 34 open questions; 2 result registered; 2 abandoned; 1 running; 1 exhausted |
-| Experiments | 182 | 58 accepted; 38 rejected; 56 unresolved; 12 baseline; 11 blocked; 4 abandoned; 2 in progress; 1 exhausted |
+| Hypotheses | 208 | 43 confirmed; 33 refuted; 63 blocked; 19 unresolved; 10 open; 34 open questions; 2 result registered; 2 abandoned; 0 running; 1 exhausted; 1 needs review |
+| Experiments | 182 | 59 accepted; 38 rejected; 56 unresolved; 12 baseline; 11 blocked; 4 abandoned; 1 in progress; 1 exhausted |
 | Frontier results | 94 | 94 registered, 65 by others |
 
 <!-- END CURRENT-RESEARCH-STATUS -->
@@ -5635,7 +5635,7 @@ round that names the hypothesis, control roles included.
 | [H-270](packing/campaign/hypotheses/H-270-k2-plus-1-crossover-kearney-shiu-strip.md) | blocked | Some $k$ in 18..41 has a Kearney–Shiu strip packing of $k^2+1$ squares below the plateau $k+5/\sqrt2-3$ (X-049) | 0 | — |
 | [H-272](packing/campaign/hypotheses/H-272-symmetric-kingbird-records-reoptimized.md) | blocked | At least 7 of the 68 symmetric Kingbird-derived records re-optimize without symmetry to a verified smaller side (X-049) | 0 | — |
 | [H-273](packing/campaign/hypotheses/H-273-n17-distance-two-infeasible-at-cap.md) | open | Each of the 95 distance-2 orbits of the arity8 frame is infeasible at U; a float survey refutes it with one placement and cannot confirm it (Session 182, lane E) | 0 | — |
-| [H-274](packing/campaign/hypotheses/H-274-n17-per-state-closure-under-adaptive-rows.md) | running | At least two of H-264’s four counted stalled draws close under SW9’s adaptive-row recipe, on the standing verifier’s full pass (Session 182) | 1 | exp-253 in progress: s182-m2784767-sw9 and s182-m2817021-sw9 admitted on the standing verifier’s full pass after the endpoint-state control did not close |
+| [H-274](packing/campaign/hypotheses/H-274-n17-per-state-closure-under-adaptive-rows.md) | needs review | At least two of H-264’s four counted stalled draws close under SW9’s adaptive-row recipe, on the standing verifier’s full pass (Session 182) | 1 | exp-253 accepted, held for W2 review: s182-m2784767-sw9 and s182-m2817021-sw9 closed and admitted after the endpoint-state control did not close |
 
 ### Confirmed
 
@@ -5974,7 +5974,7 @@ The relevant generator writes the receipt, and the entry fills in on the next
 
 There are 182 rounds registered in `series-000`.
 
-They record 2512.1 agent-minutes and 4273.1 wall-minutes.
+They record 2512.1 agent-minutes and 4383.1 wall-minutes.
 These totals exclude four historical annealing rounds with unrecorded timing; their wall
 and operator costs are unknown, not zero.
 Exp129 closed as blocked without invocation and contributes zero scientific elapsed
@@ -6197,7 +6197,7 @@ archive beside it.
 | [exp-250](packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-250-h267-n17-standing-verifier-admissions.md) | 17 | target | H-267 | Flag 3 at arity 9 and the residue state N1, closed by the kernel and admitted on the standing verifier’s full pass, nothing re-run | SW9 and N1 forbidden at U; 15,953 certified orbits, endpoint surviving | unresolved |
 | [exp-251](packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-251-h267-n17-overnight-flag-certification.md) | 17 | target | H-267 | Session 182 lane K: the nine heaviest arity-7 standing flags under SW9’s adaptive-row kernel recipe, each closure admitted on the standing verifier’s full pass | In progress: s182-k1, s182-k3, s182-k4, s182-k5, s182-k6, s182-k7, s182-k8 and s182-k9 forbidden at U; 9,168 certified orbits, endpoint surviving | in-progress |
 | [exp-252](packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-252-h264-n17-overnight-per-state-price.md) | 17 | target | H-264 | Session 182 lane A: H-264’s seed-182 draw of residue states through the 17-owner kernel at 32 bins, each closure admitted on the standing verifier’s full pass | Five of the ten counted draws forbidden at U on the standing verifier’s full pass, the criterion met; W2 review confirmed with corrections; 9,165 certified orbits, endpoint surviving | accepted |
-| [exp-253](packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-253-h274-n17-stalls-under-adaptive-rows.md) | 17 | target | H-274 | Session 182 BC-424: H-274’s four frozen lane A stalls as whole 17-cell states under SW9’s adaptive-row kernel recipe, each closure admitted on the standing verifier’s full pass | In progress: s182-m2784767-sw9 and s182-m2817021-sw9 forbidden at U; 9,163 certified orbits, endpoint surviving | in-progress |
+| [exp-253](packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-253-h274-n17-stalls-under-adaptive-rows.md) | 17 | target | H-274 | Session 182 BC-424: H-274’s four frozen lane A stalls as whole 17-cell states under SW9’s adaptive-row kernel recipe, each closure admitted on the standing verifier’s full pass | Two of the four frozen stalls forbidden at U on the standing verifier’s full pass (s182-m2784767-sw9, s182-m2817021-sw9), the criterion met; held for W2 review; 9,163 certified orbits, endpoint surviving | accepted |
 
 ### Cost and provenance
 
@@ -6384,11 +6384,11 @@ archive beside it.
 | exp-250 | 7000 seconds per verification; one worker | 836.0 s | — | criterion | `fd2c9602e`; two full verifications, at fd2c9602e and ae4f5fb4 |
 | exp-251 | 7,000 s per kernel target and 4,000 s per verification; one worker | — | — | — | in progress at `cebb5d15a` |
 | exp-252 | 7,000 s per state and 4,000 s per verification, one worker per job | 12041.0 s | — | criterion | `dfd38187c`; five of the ten counted draws closed; W2 review confirmed with corrections |
-| exp-253 | 7,000 s per state and for the control, 4,000 s per verification; one worker each | — | — | — | in progress at `cebb5d15a` |
+| exp-253 | 7,000 s per state and for the control, 4,000 s per verification, one worker each | 6601.0 s | — | criterion | `3396efda0`; two of the four frozen states closed; held for W2 review |
 
 ### What the 182 rounds jointly establish
 
-The 182 rounds use 2512.1 agent-minutes and 4273.1 wall-minutes under the campaign’s
+The 182 rounds use 2512.1 agent-minutes and 4383.1 wall-minutes under the campaign’s
 retained effort accounting.
 The never-invoked exp129 adds no scientific result or execution time.
 Exp-114 contributes 2.46 seconds of target/replay effort; its readiness work is recorded

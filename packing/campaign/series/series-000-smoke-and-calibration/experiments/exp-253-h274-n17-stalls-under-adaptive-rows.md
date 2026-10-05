@@ -80,16 +80,23 @@ experiment:
       collision regions by 136,159,832 exact facet checks. It excludes its own 8 states, one orbit. Under N1's
       recipe the same state reached a producer fixed point after 828 s of process CPU (exp-252).
   verdict:
-    decision: in-progress
+    decision: accepted
     primary_criterion: At least two of the four frozen states close within the 7,000 s ceiling, each re-proved
       in full by the standing kernel verifier; rejected if fewer than two do, and void if the endpoint-state
       control closes.
-    reason: The first two frozen states are admitted after the endpoint-state control finished without
-      closing, which reaches the criterion's two; the verdict is written in its own commit, and the other two
-      states are recorded as they finish.
-  lease:
-    expires: '2026-10-06T08:14:04Z'
-    host: Session 182 remote container
+    reason: >-
+      The first two frozen states, 2784767 and 2817021, closed within the ceiling under
+      SW9's recipe, each re-proved in full by the standing kernel verifier and admitted
+      after the endpoint-state control finished without closing, which meets the
+      criterion of two. Both had reached producer fixed points under N1's recipe. The
+      other two states run on for the cost and are recorded as they finish. Held for the
+      W2 review the plan requires before X-048 or the frontier states the verdict.
+    needs_review: true
+    commit: 3396efda0
+  effort:
+    timebox: 7,000 s per state and for the control, 4,000 s per verification, one worker each
+    wall_seconds: 6601
+    stopped_by: criterion
 ---
 # exp-253: Session 182 BC-424, Lane A’s Stalls Under Adaptive Rows
 
@@ -110,6 +117,14 @@ The control and the first state ran side by side, and admission, not launch, wai
 the control. Session 182 changed to that procedure after its second container restart;
 its record gives the reason.
 Each closed state removes only its own orbit.
+
+H-274 is accepted on its first two states and held for a W2 review.
+Both closed with their finest rows at 1/128, so neither needed rows as fine as the 1/512
+split floor. The round’s wall, 6,601 s, runs from the launch at 14:19:55 UTC to the
+control’s end, which released both closures.
+Two earlier launches of the control and the first state were killed by container
+restarts without receipts and are not counted.
+The other two states run on for the cost.
 
 ## Runs
 

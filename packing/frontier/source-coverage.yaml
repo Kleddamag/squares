@@ -3,7 +3,7 @@ softschema:
   schema: source-coverage.schema.yaml
   status: enforced
 
-last_reviewed: '2026-10-02'
+last_reviewed: '2026-10-05'
 coverage_scope: >
   Current public upper-bound catalogues and first-party result releases known to this
   project, the Schadt n=29 witness-contract regression source, and the September 2026
@@ -311,7 +311,38 @@ sources:
       for byte) matched the published ledgers on every one of 4,991 rows.
       One event-cell method, so V4/C3 and no method-distinct C4; the native
       parent-core route cannot represent the weighted-threshold and
-      winning-subset features.
+      winning-subset features. It still holds the verified field; R071
+      (guzhou-n17-r071-2026) reports 11/4000000 more on the same charge and is
+      not yet replayed.
+  - id: guzhou-n17-r071-2026
+    title: N17 square packing, R071 strict lower bound 4.66044275
+    role: source-repository
+    url: https://github.com/Guzhou0806/n17-square-packing/tree/8c11f6962506940c5de67a9fa73b3d1e2e151196/certificates/R071-C029
+    local: resources/web/n17-guzhou-r071-2026-09-30/n17-square-packing/
+    source_key: '[Guzhou0806 n17 R071]'
+    scope: {n_values: [17]}
+    reviewed: '2026-10-05'
+    source_date: '2026-09-30'
+    disposition: current-report
+    replay_disposition: case-specific
+    represented_by: [frontier/n-017.md, frontier/results.yaml]
+    evidence: [E-n017-guzhou-r071-report]
+    notes: >-
+      Guzhou0806 / N17 project's R071 release at
+      8c11f6962506940c5de67a9fa73b3d1e2e151196, R068's charge unchanged at a
+      smaller parent over 5,114 intervals, retained on 2026-10-05 as 153 of
+      the 186 files the R070 and R071 commits changed or added since 815b1626,
+      the other 33 pinned by digest, 32 of them the R068 packet's checker and
+      notices byte for byte. It carries the case's reported lower bound,
+      18641771/4000000. Its partition records are missing and a completion
+      summary is retained; the source's CI replay passed and was not observed
+      by its publisher. Not replayed here: the paired replay is priced at about
+      70 CPU-minutes in the packet README. R070 at
+      8988d933e10fe89709a01d98b602396c29dd7bd1, 46604427/10000000 over 5,107
+      intervals with complete published ledgers that agree row by row, is in
+      the same packet and superseded by R071, which is built on it; neither
+      release's research material (R070's overlay and fixed-class obstruction,
+      R071's conditional joint geometry at 9321/2000) carries a bound.
   - id: guzhou-n17-r067-2026
     title: N17 square packing, R067 strict lower bound 4.66018
     role: source-repository

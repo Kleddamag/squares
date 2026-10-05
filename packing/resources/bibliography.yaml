@@ -2,7 +2,7 @@ softschema:
   contract: packing.squares:Bibliography/v1
   schema: bibliography.schema.yaml
   status: enforced
-last_reviewed: '2026-10-02'
+last_reviewed: '2026-10-05'
 # The citation fields a generator needs, keyed by the source keys the frontier records
 # use. The Markdown tables in README.md stay the human index; this file holds only what
 # a line of citation text is built from, for the keys something cites.
@@ -245,6 +245,40 @@ sources:
       project" in upstream_notices (R067-4.66018/ATTRIBUTION.md, line 9). Superseded by
       R068 the same day and retained in the same packet
       (web/n17-guzhou-r068-2026-09-28/README.md).
+  - key: '[Guzhou0806 n17 R071]'
+    authors: [Guzhou0806]
+    year: 2026
+    venue: GitHub
+    dated: '2026-09-30'
+    credit: Guzhou0806 after Kleddamag, Mira, Levy
+    short_credit: Guzhou0806 after Kleddamag et al.
+    lineage: builds-on-project
+    note: >-
+      The R071 release of Guzhou0806/n17-square-packing at 8c11f696, 2026-09-30, whose
+      certificates/R071-C029/bounds/c027/ claims s(17) > 18641771/4000000 on R068's
+      charge at a smaller parent. Its ATTRIBUTION.md says the improvements to 4.6604427
+      and 4.66044275 "belong to AI-assisted research in the Guzhou0806/N17 project; they
+      are not new results of Kleddamag", that the 4.66001 framework, proof and
+      JavaScript checker are Kleddamag's, and that "Nagamochi's measure, chelokot's
+      repair/compensation proof and Lean work, and other upstream algorithms retain their
+      original attribution", without saying which part rests on them; it keeps the
+      notices crediting Mira-acc/17squares, Guzhou0806's R038 and Joshua Levy, the
+      squares project, under project/base/upstream/notices
+      (web/n17-guzhou-r071-2026-09-30/README.md).
+  - key: '[Guzhou0806 n17 R070]'
+    authors: [Guzhou0806]
+    year: 2026
+    venue: GitHub
+    dated: '2026-09-29'
+    credit: Guzhou0806 after Kleddamag, Mira, Levy
+    lineage: builds-on-project
+    note: >-
+      The R070 release of Guzhou0806/n17-square-packing at 8988d933, 2026-09-29, whose
+      certificates/R070-4.6604427/ claims s(17) > 46604427/10000000 on R068's charge, and
+      which its ATTRIBUTION.md credits to "AI-assisted work in the Guzhou/N17 project" on
+      Kleddamag's 4.66001 construction, proof and JavaScript checker. Superseded by R071
+      the next day and retained in R071's packet
+      (web/n17-guzhou-r071-2026-09-30/README.md).
   - key: '[evand square-packing 2026]'
     authors: [Daniel]
     year: 2026

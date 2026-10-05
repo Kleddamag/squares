@@ -2,7 +2,7 @@ softschema:
   contract: packing.squares:FrontierEvidenceSet/v1
   schema: frontier-evidence.schema.yaml
   status: enforced
-last_reviewed: '2026-10-02'
+last_reviewed: '2026-10-05'
 evidence:
   - id: E-n017-kleddamag-rational-upper
     claim: upper-bound
@@ -8219,6 +8219,56 @@ evidence:
       case's verified bound and remains valid evidence. Its advance over
       466001/100000 is 17/100000.
     source_reviewed: '2026-09-28'
+
+  - id: E-n017-guzhou-r071-report
+    claim: lower-bound
+    scope: {n_values: [17]}
+    assurance: reported
+    reported_method: exact-algebraic
+    performed_by: source-author
+    relationship_to_generator: same-implementation
+    origin: external
+    novelty: previously-published
+    source_key: '[Guzhou0806 n17 R071]'
+    certificate: resources/web/n17-guzhou-r071-2026-09-30/n17-square-packing/certificates/R071-C029/bounds/c027/certificate.json
+    replay_status: not-attempted
+    verifiers: [V-guzhou-n17-verify-cpp, V-kleddamag-n17-verify]
+    limitations: >-
+      Guzhou0806 / N17 project's R071 release at
+      8c11f6962506940c5de67a9fa73b3d1e2e151196 (2026-09-30T22:53:43Z) claims the
+      strict lower bound s(17) > 18641771/4000000 = 4.66044275 for independently
+      rotated unit squares with disjoint interiors and boundary contact allowed,
+      11/4000000 above R068's 116511/25000. This entry records that source
+      claim; nothing has been replayed here. The certificate (C027, SHA-256
+      15b6bf6a...d469) keeps R068's charge unchanged: all 2,621 point orbits,
+      all 889 rule orbits, the budget 17000448944 units of 10^-9 and the
+      requested minimum 1000026409 equal R068's, and only the parent side,
+      A = 18452000/18641771 in the container L = 4613/1000, and the strict
+      cores change, over 5,114 angle intervals that refine R068's 4,991 and
+      R070's 5,107 without moving an endpoint. Its source string says "All
+      5111 core intervals rebuilt"; every interval it shares with R070 keeps
+      its core's angle and none keeps its core. The source reports minimum core
+      charge 1000026844 and surplus 17 x 1000026844 - M = 7404 from a
+      completion summary of a three-partition C++ and BigInt run of 1,694 s;
+      its row-level partition records are missing, which the source states.
+      That summary names the certificate's digest and, as checker, launcher
+      and executable, the bytes R068's replay here ran (devtools.audit_guzhou_r071
+      summary). The source's own CI replay of it, run 36788162356 on GitHub
+      Actions, passed in 16 min 43 s; its publisher did not observe it, and its
+      artifacts could not be fetched here. R070 at
+      8988d933e10fe89709a01d98b602396c29dd7bd1 (2026-09-29T07:56:05Z) claimed
+      s(17) > 46604427/10000000 = 4.6604427 on the same charge over 5,107
+      intervals, with published four-partition C++ and BigInt ledgers that
+      agree row by row (minimum 1000026844 on every row, surplus 7404) and a
+      passing CI run; R071 supersedes it and is built on its certificate. Both
+      releases disclose AI assistance and credit Kleddamag for the 4.66001
+      charge, proof and BigInt checker; neither claims a record, optimality,
+      peer review or proof-assistant formalization. Their other results carry
+      no bound: R070's same-budget geometric overlay and its obstruction at one
+      parent within a fixed-weight enhancement class, and R071's conditional
+      joint geometry at 9321/2000 inside one first-anchor box, which the source
+      says does not prove s(17) > 4.6605.
+    source_reviewed: '2026-10-05'
 
   - id: E-n017-kleddamag-4640020-report
     claim: lower-bound

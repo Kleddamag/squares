@@ -2,7 +2,7 @@ softschema:
   contract: packing.squares:ResultsRegister/v1
   schema: results.schema.yaml
   status: enforced
-last_reviewed: '2026-10-03'
+last_reviewed: '2026-10-05'
 results:
   - id: T-001
     kind: lower-bound
@@ -7832,3 +7832,82 @@ results:
       replayed cover proving s(61) = 8 (T-063), both replayed here on 2 October 2026. This
       result stays true as stated and keeps its rungs: a proof of both bounds that uses
       nothing of Nagamochi 2005 and no computer search.
+
+  - id: T-093
+    kind: lower-bound
+    registered: '2026-10-05'
+    headline: "`s(17) > 18641771/4000000 = 4.66044275`"
+    claim: >-
+      s(17) > 18641771/4000000 = 4.66044275, by Guzhou0806 / N17 project's R071 release of
+      30 September 2026, on the charge of R068 (T-043). It is 11/4000000 above T-043's
+      116511/25000, the verified lower bound, and would leave 0.0150873 to Bidwell's
+      4.67553009.
+
+      The certificate keeps every point orbit, rule orbit and weight of R068, and its budget
+      of 17000448944 units of 10^-9, and rebuilds every strict core for the smaller parent
+      side 18452000/18641771 in the container 4613/1000, over 5,114 parent-angle intervals
+      that refine R068's 4,991. The source reports minimum core charge 1000026844 on every
+      interval, so seventeen cores exceed the budget by 7404. It refines R070 of the day
+      before, s(17) > 46604427/10000000 = 4.6604427 over 5,107 intervals, which it
+      supersedes.
+
+      The source checked it with a three-partition run of Guzhou0806's C++ checker and
+      Kleddamag's Node BigInt checker, of which it retains a completion summary and says the
+      row records are missing; its GitHub Actions replay passed, unobserved by its
+      publisher. Nothing has been replayed here. devtools.audit_guzhou_r071 found the
+      charge equal to R068's and the summary consistent with the certificate, naming the
+      checker bytes T-043's replay ran.
+
+      Guzhou0806 / N17 project,
+      [n17-square-packing](https://github.com/Guzhou0806/n17-square-packing/tree/8c11f6962506940c5de67a9fa73b3d1e2e151196/certificates/R071-C029),
+      on Kleddamag's charge. The package credits Kleddamag for the 4.66001 framework, proof
+      and BigInt checker (Kleddamag building on Squares Project (Joshua Levy), Mira and
+      Guzhou0806), and discloses AI assistance.
+    scope: {n_values: [17]}
+    verification: V0
+    confirmation: C0
+    significance:
+      score: 2
+      rationale: >-
+        Scored as a claim: the strongest reported lower bound at n = 17, 11/4000000 over
+        T-043 from T-043's charge unchanged, a finer catalogue and rebuilt cores, the
+        construction of T-042, which is S2. If replayed it would hold the verified field,
+        which argues for S3 by the T-039 precedent; it is drafted at S2 because it adds no
+        charge feature, rule or method and moves the bound by under three parts in a
+        million. The reviewing lane confirms or changes it.
+      scored: '2026-10-05'
+      by: think-1qms import, registering lane (repository; draft)
+    novelty: previously-published
+    attribution:
+      source_keys: ['[Guzhou0806 n17 R071]']
+      published: '2026-09-30'
+    evidence:
+      - E-n017-guzhou-r071-report
+    artifacts:
+      - packing/resources/web/n17-guzhou-r071-2026-09-30/README.md
+      - packing/resources/web/n17-guzhou-r071-2026-09-30/n17-square-packing/certificates/R071-C029/BOUND_PROOF.md
+      - packing/resources/web/n17-guzhou-r071-2026-09-30/receipts/r071/structure.json
+      - packing/resources/web/n17-guzhou-r071-2026-09-30/receipts/r071/summary.json
+      - packing/resources/web/n17-guzhou-r071-2026-09-30/receipts/ci/r071-actions-run.json
+      - packing/devtools/audit_guzhou_r071.py
+    next_rung: >-
+      think-1qms: the complete paired replay of the certificate by the source's own
+      run_public.js bound, Guzhou0806's C++ checker and Kleddamag's Node BigInt checker over
+      all 5,114 intervals at two partitions, priced in the packet at about 70 CPU-minutes
+      and 80 minutes' wall here from T-043's measured run, with the Boost headers this
+      container lacks; then devtools.audit_guzhou_r071 compare R071 on the fresh ledgers,
+      and a review of what differs from T-043, the parent side, the added intervals and the
+      rebuilt cores, since the charge and both checkers are T-043's byte for byte. Recorded
+      as replayed-here evidence, that replay is what raises the rungs and moves the
+      verified field.
+
+      The r071-bound artifact of the source's CI run, which expires on 2026-12-29 and
+      could not be fetched here, holds fresh partitions that could be compared row by row
+      first, as a diagnostic. V4 and C4 then need what T-043's next_rung names.
+    notes: >-
+      V0 because the one cited entry is the source's report: assurance reported, replay not
+      attempted. C0 because nothing here has read the mathematics: the pre-replay audit
+      checks the certificate's structure against R068's and the source's own records, and
+      decides no interval. R070, published the day before and superseded by this release,
+      stays in the packet and the case record without an entry of its own, as a publication
+      record never replayed. Ids here are provisional until merged.

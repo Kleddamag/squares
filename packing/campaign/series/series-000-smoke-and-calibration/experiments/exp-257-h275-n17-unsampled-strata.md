@@ -54,7 +54,18 @@ experiment:
     record: packing/campaign/series/series-000-smoke-and-calibration/results/exp-257-n17-unsampled-strata
     dirty: false
     commit: cebb5d15aaa17d0cc13aa302ecbd750a54bfc57d
-  results: []
+  results:
+  - shape: determination
+    role: outcome
+    question: Is draw 2 (mask 4061102, stratum c3/i>=5/d4) infeasible at U, by a certificate the kernel's checker
+      accepts and the standing verifier re-proves in full?
+    outcome: criterion_met
+    checked_by: The run (receipts/U/kernel-u2-bc428.json) returns PASS_CERTIFIED_CLOSED in 1,891 s of wall and 1,231 s
+      of process CPU (producer 1,229 s, checker 660 s) on 56 steps and 3,712 rows in 4 rounds, rows finest at
+      1/128, closure all_parent_poses_forbidden for side-E0 at step 55. The standing verifier at cebb5d15a
+      passes it in full mode in 560 s, checking all 3,712 live rows in full and 13,050 collision regions by
+      73,627,372 exact facet checks. It excludes its own 8 states, one orbit; the certified census after it is
+      36,980 states in 4,710 orbits.
   verdict:
     decision: in-progress
     primary_criterion: The fraction of the frozen states the kernel excludes under SW9's recipe within the 7,000 s
@@ -90,6 +101,7 @@ reported as not run.
 
 | Order | Stratum | Mask | Outcome | Process CPU | Verifier |
 | --- | --- | --- | --- | --- | --- |
+| 2 | c3/i>=5/d4 | 4061102 | closed, 4 rounds, admitted | 1,231 s | full pass, 560 s |
 
 <!-- This document follows common-doc-guidelines.md.
 See github.com/jlevy/practical-prose and review guidelines before editing.

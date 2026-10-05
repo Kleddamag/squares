@@ -9,48 +9,18 @@ from __future__ import annotations
 
 import argparse
 import cProfile
-import ctypes
-import importlib
 import inspect
 import json
 import os
 import pstats
-import sys
 import time
-from ctypes import wintypes
 from pathlib import Path
 from typing import Any
 
 from devtools.check_hull_kernel_mask0 import n17_unique_frame
 from devtools.check_n17_subpattern import PATTERNS, canonical_bytes, save_certificate
+from devtools.process_memory import peak_memory_bytes
 from sqpack.hull_kernel import Budget, producer
-
-
-def peak_memory_bytes() -> int:
-    """Actual Python process peak working set on Windows; peak RSS on Unix."""
-    if sys.platform != "win32":
-        resource = importlib.import_module("resource")
-        peak = resource.getrusage(resource.RUSAGE_SELF).ru_maxrss
-        return int(peak if sys.platform == "darwin" else peak * 1024)
-
-    class Counters(ctypes.Structure):
-        _fields_ = [("cb", wintypes.DWORD), ("faults", wintypes.DWORD)] + [
-            (name, ctypes.c_size_t)
-            for name in ("peak", "working", "pp", "p", "pnp", "np", "page", "peakpage")
-        ]
-
-    kernel = ctypes.WinDLL("kernel32", use_last_error=True)
-    psapi = ctypes.WinDLL("psapi", use_last_error=True)
-    kernel.GetCurrentProcess.restype = wintypes.HANDLE
-    psapi.GetProcessMemoryInfo.argtypes = [wintypes.HANDLE, ctypes.c_void_p, wintypes.DWORD]
-    psapi.GetProcessMemoryInfo.restype = wintypes.BOOL
-    value = Counters()
-    value.cb = ctypes.sizeof(value)
-    if not psapi.GetProcessMemoryInfo(
-        kernel.GetCurrentProcess(), ctypes.byref(value), value.cb
-    ):
-        raise ctypes.WinError(ctypes.get_last_error())
-    return int(value.peak)
 
 
 def main() -> int:

@@ -171,11 +171,12 @@ def test_production_does_not_retain_partner_generations(
         return result
 
     monkeypatch.setattr(producer, "partner_cover", cover)
-    result = producer.produce(frame, mask, bins=8, max_rounds=6, budget=budget())
+    bins = 8
+    result = producer.produce(frame, mask, bins=bins, max_rounds=6, budget=budget())
     assert len(result.node["steps"]) > len(mask)
     # A run that revisits every owner may cache one generation, never its history.
-    assert max(sizes) <= len(mask) * 8
-    assert len(observed[0]) <= (len(mask) - 1) * 8
+    assert max(sizes) <= len(mask) * bins
+    assert len(observed[0]) <= (len(mask) - 1) * bins
 
 
 def test_the_partner_memo_follows_the_accepted_row_object(

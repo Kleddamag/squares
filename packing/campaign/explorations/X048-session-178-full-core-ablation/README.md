@@ -4,7 +4,7 @@ Among the frozen 79 E selections, full-interval octagon augmentation loses 71, w
 half-interval augmentation loses 72; only E index 58 is additional.
 All 96 full-interval cores are strictly valid, contain their old cores and gain positive
 area. Each is exactly contained in both H half-interval cores (192 containment checks).
-Independent replay made 1,047 fresh predicate calls.
+A fresh replay (same implementation, no search) made 1,047 predicate calls.
 This is fixed-sample mechanism separation, with no replacement search, DFS or
 whole-network equivalence claim.
 
@@ -13,8 +13,8 @@ Full core is hull(old core plus the octagon over the original complete interval)
 and domains are not split.
 All 79 tuples are classified in source-index/ascending-owner-pair order.
 A loss has one exact true collision witness; a survivor has all 15 false pairs.
-Full losses F71 are a subset of independently certified J72; all H7 survivors survive
-the weaker full model.
+Full losses F71 are a subset of J72, a fixed-sample result that was freshly replayed;
+all H7 survivors survive the weaker full model.
 Additional halving loss is precisely index 58. Equality of complete networks was not
 measured. 8 surviving E tuples cover 21 sample parent rows, 75 unknown; B’s separately
 established 60 enhanced-parent supports remain intact.
@@ -22,10 +22,10 @@ D21 does not replace B60. No tuple loss is parent-row unsupportedness, admission
 optimality.
 
 ONE target 1047 uncached rational calls, 2.187575 s, 154226688 B overall worker peak,
-inside 1185 calls/45 s/512 MiB/Job 60. Fresh independent replay directly reconstructs
-full cores from old+octagon, rebuilds H children, checks all 96 strict growth/192
-nesting and repeats 1047 original rational calls without importing the new diagnostic:
-2.055424 s/159236096 B. It independently derives F71, additional 58 and positive 21.
+inside 1185 calls/45 s/512 MiB/Job 60. A fresh replay (same implementation, no search)
+directly reconstructs full cores from old+octagon, rebuilds H children, checks all 96
+strict growth/192 nesting and repeats 1047 original rational calls without importing the
+new diagnostic: 2.055424 s/159236096 B. It rederives F71, additional 58 and positive 21.
 Endpoint 15 tuples/24 parents all survive 225 calls, and a new process replay checks
 225\. 26 focused controls 3.31 s/Ruff/types/embedded-script check pass.
 Five retained Jobs end empty with cleanup confirmed.
@@ -34,7 +34,7 @@ OS peaks can miss short-lived unsampled children.
 [Opt-in diagnostic](../../../devtools/probe_n17_full_core_ablation.py),
 [controls](../../../tests/test_n17_full_core_ablation.py),
 [summary](receipts/result-summary.json) and
-[fresh independent receipt](receipts/independent-replay.json).
+[fresh replay receipt](receipts/independent-replay.json).
 Raw E/H/G/J and all prior inputs/results/archives stay immutable.
 Historical cold checks were reused; no new producer or cold certificate verification
 ran. Source identity is Git revision and path; generated SHA fields are canonical JSON
@@ -89,6 +89,13 @@ Source/evidence `c6972548e98ec356a8d408e9b34518be87a6cf36` is observed terminal 
 pass/36 skip and all 3 required SUCCESS. Final metadata CI is observed separately.
 One native privacy aggregate is a live/boundary lower bound; later publication/CI is
 excluded. Another project needs a new W3/ownership/resource gate.
+
+Commits cited in this record that are not in this branch’s history, including the
+probes’ `BASE_REVISION` values, resolve at the tag `archive/guzhou-review-a-333`
+(Guzhou’s original nine-session branch).
+The references are provenance only; no code reads them (`OR-18`). “Fresh replay” here
+means the same implementation re-run in a separate process without search; receipt names
+containing `independent-replay` predate that wording.
 
 <!-- This document follows common-doc-guidelines.md.
 See github.com/jlevy/practical-prose and review guidelines before editing.

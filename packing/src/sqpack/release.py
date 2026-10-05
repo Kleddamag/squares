@@ -257,6 +257,8 @@ FIRST_PUBLISHED = PUBLICATION_HISTORY[-1].first_published
 #: from the article's history between the deployments listed above `PUBLICATION_HISTORY`
 #: on 2026-10-02:
 #:
+#:   v0.4.4  the paper becomes Part I of the n = 11 series: the frontier update names
+#:           T-037 and links Parts II and III, and Further Reading lists the series
 #:   v0.4.3  the frontier update of September 30 records T-060's proof that s(11) is
 #:           Trump's side, the T-026 rating moves from V4/C5 to V3/C3 under the ladder
 #:           of 2026-09-30, Figure 3 marks the settled endpoint, and a footnote records
@@ -287,6 +289,16 @@ FIRST_PUBLISHED = PUBLICATION_HISTORY[-1].first_published
 #:                                            on October 1 and 2, so the substantive
 #:                                            day is the one recorded
 EXPLAINER_HISTORY = (
+    PublicationHistoryEntry(
+        version="v0.4.4",
+        first_published="October 5, 2026",
+        result_scope=(
+            "The series revision: the paper is Part I of a three-part series on eleven "
+            "squares, its frontier update names Kleddamag's T-037 and links Part II, "
+            "which explains it, and Part III, which explains T-060, and Further Reading "
+            "lists the series in reading order."
+        ),
+    ),
     PublicationHistoryEntry(
         version="v0.4.3",
         first_published="October 1, 2026",
@@ -339,7 +351,7 @@ EXPLAINER_FIRST_PUBLISHED = EXPLAINER_HISTORY[-1].first_published
 #: `PUBLICATION_DATE`, the day the edition was first published, which stood still while
 #: the article changed under it: merging is the whole publish, so the text a reader sees
 #: moves between editions. Change it in the commit that changes the article.
-EXPLAINER_REVISED = "October 1, 2026"
+EXPLAINER_REVISED = "October 5, 2026"
 
 #: The optimality review's own editions, newest first, each with the day it was first
 #: published and what changed in the paper: the review's history, as `EXPLAINER_HISTORY`

@@ -790,6 +790,15 @@ in Memo III (private communication, September 2026). His suggestion prompted a
 
 ## Further Reading
 
+- **The $n = 11$ series**, read in order
+  - **Part I**, this paper: how weighted points and two-of-three threshold atoms prove
+    T-018, T-025 and T-026.
+  - **[Part II: A Review of the Certified Lower Bound $s(11) \gt 31/8$ for 11 Squares]({{PAPER:n11-threshold-bound-review}}):**
+    Kleddamag’s proof of T-037, which develops the T-026 certificate with five-site
+    k-of-m charges, threshold charges on shrunken parents with strict cores, and a
+    re-optimised certificate over 12,028 angle rows.
+  - **[Part III: A Review of the Optimality Proof of the Trump Packing of 11 Squares]({{PAPER:n11-optimality-review}}):**
+    Queuingtheorydotcom’s proof that Trump’s packing is optimal (T-060).
 - **Papers and sources**
   - Friedman’s survey: an introduction to the problem and its literature.[^survey]
   - Stromquist’s geometric proofs for ten and eleven

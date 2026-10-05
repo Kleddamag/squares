@@ -20,7 +20,12 @@ from urllib.parse import urljoin
 import pytest
 import tinycss2
 
-from devtools import check_published_site, render_n11_lower_bounds_explainer, render_overview
+from devtools import (
+    check_published_site,
+    paper_links,
+    render_n11_lower_bounds_explainer,
+    render_overview,
+)
 from devtools.render_n11_lower_bounds_explainer import (
     ATLAS,
     BEST_RENDERING,
@@ -1061,6 +1066,8 @@ def test_every_relative_link_in_the_page_names_a_file_the_deploy_serves(page: st
         *(asset.name for asset in COMPOSITE_ASSETS),
         *SITE_PAGES,
         *(page.removesuffix("index.html") or "./" for page in SITE_PAGES),
+        # The series' other papers, which the page links (`devtools.paper_links`).
+        *(render_overview.paper_path(slug) for slug in paper_links.PAPER_SLUGS),
     }
     # Markup only. The page inlines KaTeX and kpress's client, and a minified
     # `'+a(this.src)+'` in one of them reads as an attribute to a regex that does not

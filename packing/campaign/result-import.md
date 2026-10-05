@@ -282,12 +282,17 @@ scope. The reviewer of the pull request looks for those.
 Stage 4 is one W2 phase with two lanes that share no context: a replay of the
 certificate and a review of its mathematics.
 
-**The replay** runs the source’s own verification on the retained bytes, in full.
-A fast tier or a sample of roots is a diagnostic.
+**The replay** is a complete verification of the retained certificate, in full: the
+source’s own checker, or a first-party implementation of the same theorem whose
+soundness has been adversarially reviewed and whose independence is recorded, as
+`sqverify-fast` is for measure-capture certificates (`V-sqverify-fast`). The
+[review of 5 October 2026](../../docs/project/reviews/review-2026-10-05-wand125-october-5-and-independent-replays.md#carrying-the-route-to-t-082-t-090-and-t-091)
+lists what a records lane checks for each certificate on that route, and what needs
+another review. A fast tier or a sample of roots is a diagnostic.
 One complete replay is what `C3` needs; a second route is recorded beside the rung and
 is not a condition of it.
 
-- It runs the retained copy of each checker, which is read before it is run.
+- A source’s checker runs from its retained copy, which is read before it is run.
   A script that fetches one over the network is run with the fetch replaced, and the
   receipt says so.
 - Its evidence entry names every program the replay runs in `verifiers`, deciders and

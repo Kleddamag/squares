@@ -36,8 +36,13 @@ refused, every mass scaled by 99/100 (the stage-4 control of the authors' replay
 every mass scaled so that the exact capture at the least-bound leaf's centre is at most
 one part in a million below the threshold. That capture is evaluated again by
 `check_sqverify_fast.mixed_exact`, an exact evaluator written apart from the crate, and
-must equal the crate's. Each receipt is `--out/PACKET/CERTIFICATE.control.json`, with
-status `CONTROLS_REFUSED` only when all of that holds.
+must equal the crate's; each refused mutant must capture less than 1 at that centre or at
+the refusal's witness, evaluated the same way. The near-threshold mutant is named for
+the centre it is scaled at: the verifier may refuse it at another centre, and its
+discrimination near the threshold rests on the crate's own tests (IR-3 of the review
+of 5 October). Each receipt is `--out/PACKET/CERTIFICATE.control.json`, with status
+`CONTROLS_REFUSED` only when all of that holds. `--evidence` prints each selected
+certificate's replay evidence entry, for a records lane to paste into the register.
 
 From `packing/`:
 
@@ -489,6 +494,9 @@ def control_status(case: Case, out: Path) -> str | None:
 EVIDENCE = PROJECT / "frontier/evidence.yaml"
 #: What `--evidence` says of the build, whose crate source is the reviewed one.
 REVIEWED_BUILD = "4ddf37d9c"
+#: That build's `source_sha256`, which `build.rs` takes over src/, Cargo.toml, Cargo.lock
+#: and itself; the gate's test profile in Cargo.toml has changed it since.
+REVIEWED_SOURCE = "9985c465"
 #: The assumptions every format M replay entry states beside its mass.
 ASSUMPTIONS = (
     (
@@ -576,38 +584,48 @@ def evidence_entry(
         "tests/test_sqverify_fast_census.py."
     )
     least = entry["least_bound_leaf_exact"]
+    stored = str(entry["candidate_sha256"])
+    pinned = hashlib.sha256(gzip.decompress(case.candidate.read_bytes())).hexdigest()
+    built = str((entry.get("build") or {}).get("source_sha256", ""))
     limitations = (
         "sqverify-fast, this repository's clean-room measure verifier, decided the retained "
-        f"candidate {case.certificate}, the bytes the packet pins, at all 201 net "
-        f"directions on {date}. Admission recomputed in exact rationals n = {case.n}, "
-        f"L = {side}, the total mass {mass} < {case.n}, the core side {premises['B']} "
-        "with B(1 + D/(1 - D^2/4)) < 1 "
-        f"and the net of 201 half-angles of step {premises['D']}, from "
-        f"{premises['source_rectangles']} rectangle rows ({premises['expanded_rectangles']} "
-        "images) and no point or segment, and took format M's per-bin centre domain. The axis "
+        f"candidate {case.certificate} at all 201 net directions on {date}. The receipts "
+        f"name the stored gzip file's SHA-256 {stored[:8]}..., which decompresses to the "
+        f"SHA-256 {pinned[:8]}... the packet's acquisition record pins "
+        "(devtools.retained_data check ties the two). Admission recomputed in exact "
+        f"rationals n = {case.n}, L = {side}, the total mass {mass} < {case.n}, the core "
+        f"side {premises['B']} with B(1 + D/(1 - D^2/4)) < 1 and the net of 201 "
+        f"half-angles of step {premises['D']}, from {premises['source_rectangles']} "
+        f"rectangle rows ({premises['expanded_rectangles']:,} distinct images) and no point "
+        "or segment, and took format M's per-bin centre domain, at threshold 1. The axis "
         f"direction was decided by an exact-event vertex sweep over {axis['vertices']:,} "
         f"vertices, least certified capture {axis['min_certified_lower_bound']!r}; the other "
         f"200 by interval branch and bound over {entry['nodes']:,} boxes, least certified "
         f"lower bound {oblique['min_certified_lower_bound']!r} at index {oblique['r']}; "
         f"the exact capture at the least-bound leaf's centre (index {least['r']}) is "
-        f"{float(Fraction(least['exact_coverage'])):.10f}. Status VERIFIED, exit 0, "
-        f"{float(entry['cpu_seconds']):,.0f} CPU seconds at two threads, "
-        f"{float(entry['wall_seconds']):,.0f} seconds of wall time on a shared 4-core x86-64 "
-        "Linux container under load, with sqverify-fast's src/ unchanged since the build "
-        f"its two reviews of 3 October accepted ({REVIEWED_BUILD}; rustc 1.98.0, release). "
+        f"{float(Fraction(least['exact_coverage'])):.10f}. Every direction verified, "
+        f"summary VERIFIED, exit 0, {float(entry['cpu_seconds']):,.0f} CPU seconds at two "
+        f"threads and {float(entry['wall_seconds']):,.0f} seconds of wall time on a shared "
+        "4-core x86-64 Linux container under load. The build is rustc 1.98.0, release, "
+        f"x86-64 Linux, source_sha256 {built[:8]}...; its src/, Cargo.lock and build.rs are "
+        f"unchanged since {REVIEWED_BUILD}, the build the two reviews of 3 October accepted, "
+        f"and the digest differs from that build's {REVIEWED_SOURCE[:8]}... only because "
+        "Cargo.toml gained the gate's test profile, which the release binary does not use. "
         "It decides coverage independently of the source's checker: the crate was written "
         "without opening it (packing/sqverify_fast/INDEPENDENCE.md) and shares no code with "
-        "it, though both run the same net-and-shrink method, so it is a second "
-        "implementation and not a second method, and its node counts and bounds are its own "
-        "rather than the certificate's record. Controls at index "
+        "it. It shares the theorem, the net, the core side, the per-bin domain lemma and the "
+        "threshold, so a defect in that mathematics would affect both: a second "
+        "implementation, not a second method. Its node counts and bounds are its own, not "
+        "the certificate's records. Controls at index "
         f"{receipt['index']}: the original verified again, every mass scaled by 99/100 "
         f"refused ({runs['scaled-99-100']['verdict']}, {uncovered(runs['scaled-99-100'])}), "
         "and every mass scaled so that the exact capture at the least-bound leaf's centre is "
         f"at most 1 - 10^-6 refused ({runs['near-threshold']['verdict']}, "
-        f"{uncovered(runs['near-threshold'])}); the centre's capture was evaluated "
-        "again by an exact evaluator written apart from the crate and agrees. The source's "
-        "own checker was not run here on this certificate, and its tarball is pinned by "
-        "digest and not retained."
+        f"{uncovered(runs['near-threshold'])}); each capture below 1 was evaluated "
+        "again by an exact evaluator written apart from the crate, and "
+        "tests/test_sqverify_fast_census.py holds the receipts. The source's own checker "
+        "was not run here on this certificate, and its tarball is pinned by digest and not "
+        "retained."
     )
     scope = ", ".join(str(n) for n in report["scope"]["n_values"])
     lines = [
@@ -631,8 +649,8 @@ def evidence_entry(
             "theorem",
             "The net-and-shrink measure-capture obstruction of SOUNDNESS.md (The Claim; "
             "Formats M and L, lemma D for format M's per-bin domain), applied to wand125's "
-            f"{case.certificate}: no {case.n} unit squares fit in a square of side below "
-            f"{side}.",
+            f"{case.certificate}: no {case.n} unit squares pack in a square of side {side}, "
+            f"so s({case.n}) >= {side}.",
             indent=6,
         ),
         (

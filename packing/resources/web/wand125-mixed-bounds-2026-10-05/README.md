@@ -17,8 +17,10 @@ each states a larger side and names the one it supersedes: `mixed_n67_L848` over
 
 What was checked here is SHA-256 digests, Git blob ids, the exact premises the audit below
 recomputes from the retained bytes, and every check the replay makes before its first
-angle, run on each pinned tarball. Nothing was replayed: no direction of either
-certificate has been decided here.
+angle, run on each pinned tarball. On 5 October `sqverify-fast`, this repository’s
+clean-room measure verifier, decided both retained candidates at all 201 net directions
+([the independent replays](#the-independent-replays)); the source’s own checker has not
+been run here.
 
 ## Source and Pin
 
@@ -195,10 +197,30 @@ Each runner runs its `mixed-replay` commands one after another, then commits and
 its receipts; `mixed-merge NAME` is run for each certificate once every range of it has
 arrived. No replay has been launched.
 
+## The Independent Replays
+
+On 5 October 2026 `devtools.sqverify_fast_census --family mixed` ran `sqverify-fast` on
+each retained `candidate.json.gz` at all 201 net directions, at the threshold the
+certificate declares, and then refused two mutants of each at its least-bound direction.
+Both are `VERIFIED`; the receipts are in
+[`benchmarks/measure-verifier/census-mixed/`](../../../benchmarks/measure-verifier/census-mixed/README.md),
+and the evidence entries `E-n067-wand125-mixed-848-sqverify-fast-replay` and
+`E-n084-wand125-mixed-9411-sqverify-fast-replay` state them.
+
+| Name here | Nodes | Least certified bound (index) | CPU seconds, two threads |
+| --- | ---: | --- | ---: |
+| `n67-L848` | 91,535,166 | $1.000000000605981$ (77) | 1,388 |
+| `n84-L9411` | 110,704,136 | $1.000000000102596$ (111) | 1,878 |
+
+The verifier was written without opening the source’s checker and shares no code with
+it, so these are independent decisions of coverage by the same method, not
+reproductions of the source’s records. The source’s checker remains unreplayed here; the
+range commands above would add that reproduction.
+
 ## Limitations
 
-- **Nothing is replayed.** Coverage is decided by the source’s C++ alone, and no direction
-  of either certificate has been run here.
+- **The source’s checker is not replayed.** Coverage was decided here by `sqverify-fast`
+  alone; the source’s C++ and its axis tables have not run on either certificate.
 - **No source audit.** Neither directory carries the source’s `completion-audit.json`, so
   nothing the source publishes binds a certificate to its tarball but the README’s digest
   and the commit. The binding here is the pinned tree’s digest and, after `mixed-fetch`,

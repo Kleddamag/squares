@@ -1078,6 +1078,7 @@ verifiers:
     source:
       - packing/sqverify_fast
       - packing/devtools/sqverify_fast_census.py
+      - packing/devtools/check_sqverify_fast.py
     independence_record: packing/sqverify_fast/independence-record.yaml
     note: >-
       A clean-room verifier, written from the mathematics without opening the authors'
@@ -1085,7 +1086,8 @@ verifiers:
       packing/sqverify_fast/SOUNDNESS.md, and accepted at 4ddf37d9c by the two adversarial
       reviews of 3 October 2026, of its soundness and of its testing and independence. Its
       census drives the binary, keeps every direction's receipt and puts negative controls
-      on a certificate at its least-bound direction.
+      on a certificate at its least-bound direction, with check_sqverify_fast's exact
+      evaluator and mutation helpers; neither decides coverage.
 
   - id: V-replay-chelokot-lean
     program: devtools.replay_chelokot_lean

@@ -3,9 +3,9 @@ type: is
 id: is-01m44q9s23va67aadeq8qtk00x
 title: "PR #325 A6 (Low): numbers glued to words."
 kind: task
-status: in_progress
+status: closed
 priority: 2
-version: 2
+version: 3
 delegate: graph_gate
 labels: []
 dependencies: []
@@ -13,8 +13,12 @@ parent_id: is-01m44q74w8x5z0b69hev8yr4d7
 hold: null
 hold_until: null
 created_at: 2026-10-05T00:26:57.986Z
-updated_at: 2026-10-05T00:27:47.069Z
+updated_at: 2026-10-05T00:53:37.819Z
 started_at: 2026-10-05T00:27:47.069Z
+closed_at: 2026-10-05T00:53:37.818Z
+close_reason: A6 fixed in17d43/56d5;11focusedtests+lint/types/recordchecks pass. HostedCI terminal blockedby inheritedparentdrift, explicitreceipt.
+resolution: null
+duplicate_of: null
 ---
 https://github.com/jlevy/squares/pull/325#pullrequestreview-5408660666
 

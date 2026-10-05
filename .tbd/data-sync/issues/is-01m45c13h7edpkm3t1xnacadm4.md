@@ -3,9 +3,9 @@ type: is
 id: is-01m45c13h7edpkm3t1xnacadm4
 title: "Intake pass: the 41 evand/square-packing commits inside the 7ff3b21 pin that no packet retains (08e8a5f..7ff3b21)"
 kind: task
-status: in_progress
+status: closed
 priority: 2
-version: 4
+version: 5
 delegate: claude-code@vm
 labels:
   - result-import
@@ -14,8 +14,12 @@ parent_id: is-01m44qz0rxvkakmyqaj7qdgagv
 hold: null
 hold_until: null
 created_at: 2026-10-05T06:29:13.895Z
-updated_at: 2026-10-05T07:32:30.046Z
+updated_at: 2026-10-05T08:45:46.136Z
 started_at: 2026-10-05T06:29:42.567Z
+closed_at: 2026-10-05T08:45:46.135Z
+close_reason: "Merged in jlevy/squares#362 (dee22b882): 41 evand commits dispositioned, evidence updates on T-006, T-051-T-053, T-062, T-064, T-081"
+resolution: null
+duplicate_of: null
 ---
 
 ## Notes

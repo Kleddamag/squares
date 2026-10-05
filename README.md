@@ -67,8 +67,8 @@ Three of them form one series on $n = 11$, read in order:
    [source](packing/devtools/templates/n11-lower-bounds-explainer-article.md)).
 2. [**A Review of the Certified Lower Bound s(11) > 31/8 for 11 Squares**](https://jlevy.github.io/squares/papers/n11-threshold-bound-review.html):
    explains Kleddamag’s proof that $s(11) > 31/8$ (T-037): five-site k-of-m charges,
-   threshold charges on shrunken parents with strict cores, and a re-optimised
-   certificate over 12,028 angle rows
+   k-of-m charges on shrunken parents with strict cores, and a reoptimized certificate
+   over 12,028 angle rows
    ([PDF](https://jlevy.github.io/squares/papers/n11-threshold-bound-review.pdf),
    [source](packing/devtools/templates/n11-threshold-bound-review-article.md)).
 3. [**A Review of the Optimality Proof of the Trump Packing of 11 Squares**](https://jlevy.github.io/squares/papers/n11-optimality-review.html):

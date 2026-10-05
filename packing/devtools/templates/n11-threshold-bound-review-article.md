@@ -58,8 +58,7 @@ T-037’s over four families. Middle: T-026’s core, a square of side $B = {{CH
 at one of its net directions, inside a unit square, against T-037’s parent of side
 $A = {{CERT_A}}$ with a row’s core inside it. Right: T-026’s {{CHANGES_T026_NET}}-step net
 of directions against T-037’s {{CERT_ROWS}} angle rows, each a closed interval. Both
-certificates are read from
-their retained files, the
+certificates are read from their retained files, the
 <a href="../../cases/n11_threshold_certificate/certificate-191-50-net1440.json">T-026 certificate</a>
 and the
 <a href="../../resources/web/external-square-certificates-2026-09-22/kleddamag-11/global-certificate.json">T-037 certificate</a>.</figcaption>
@@ -383,9 +382,9 @@ two disjoint interiors, so the cores are disjoint, and the Budget lemma applies 
 <figcaption><strong>Figure 7.</strong> A parent and its assigned core. The parent of side
 $A = {{CERT_A}}$ at the row’s upper end angle, the concentric core of side $B$ at the
 row’s core angle, and the mismatch $d$ between them, for row 0 and row
-{{CATALOGUE_TIGHT_ROW}}, where $\Gamma$ is attained. The mismatch is drawn {{CORE_EXAGGERATION}} times its true size and the core shrunk to fit:
-at true scale core and parent differ by less than a pixel, and the margin is at least
-$10^{-12}$. The
+{{CATALOGUE_TIGHT_ROW}}, where $\Gamma$ is attained. The mismatch is drawn
+{{CORE_EXAGGERATION}} times its true size and the core shrunk to fit: at true scale core
+and parent differ by less than a pixel, and the margin is at least $10^{-12}$. The
 <a href="../../resources/web/external-square-certificates-2026-09-22/kleddamag-11/independent_controls.py">source’s controls</a>
 and this project’s
 <a href="../../src/sqpack/fractional/parent_core.py">parent-core premise check</a>
@@ -866,10 +865,10 @@ supply.
     R012, the first registered certificate with parents, a catalogue of parent-angle
     intervals, one core per interval and coverage over the legal parent-center square.
 
-[^audit]: [Mathematical review of 2026-09-22](6175646974): Integration Finding 4 on
-    the ingredients changed together and the absent ablation; the polygon-clipping
-    control on five rows, row 11962 among them; the replay times; and the note that the
-    archive must not acquire generated files.
+[^audit]: [Mathematical review of 2026-09-22](../../../docs/project/reviews/review-2026-09-22-kleddamag-n11-mathematics.md):
+    Integration Finding 4 on the ingredients changed together and the absent ablation;
+    the polygon-clipping control on five rows, row 11962 among them; the replay times;
+    and the note that the archive must not acquire generated files.
     Its instrument is [`audit_kleddamag_n11.py`](../audit_kleddamag_n11.py) and its
     receipt the
     [independent audit](../../resources/web/external-square-certificates-2026-09-22/receipts/n11/independent-audit.json).
@@ -907,7 +906,8 @@ supply.
 [^conclusion]: [Original proof, conclusion](../../resources/web/external-square-certificates-2026-09-22/kleddamag-11/PROOF.md#L79-L85):
     the counting at lines 81–83 and the compactness argument at line 83; the
     [full-replay receipt](../../resources/web/external-square-certificates-2026-09-22/receipts/n11/full-replay/RESULT.json)
-    records the exact $\Gamma$, $M$ and surplus; the [native review](6e6174697665)
+    records the exact $\Gamma$, $M$ and surplus; the
+    [native review](../../../docs/project/reviews/review-2026-09-22-native-n11-parent-core.md)
     states the attainment argument in its proof contract.
 
 [^census]: [Original proof, the certificate](../../resources/web/external-square-certificates-2026-09-22/kleddamag-11/PROOF.md#L7-L14),
@@ -953,9 +953,10 @@ supply.
 [^envelope]: [Original proof, line 51](../../resources/web/external-square-certificates-2026-09-22/kleddamag-11/PROOF.md#L51);
     the envelope check in
     [`exact_mixed.py`](../../resources/web/external-square-certificates-2026-09-22/kleddamag-11/exact_mixed.py#L99-L100);
-    the derivative argument in the [native review](6e6174697665) and in
-    [`parent_core.py`](../../src/sqpack/fractional/parent_core.py), whose docstring
-    carries it, and the 12,028 envelope inequalities in the
+    the derivative argument in the
+    [native review](../../../docs/project/reviews/review-2026-09-22-native-n11-parent-core.md)
+    and in [`parent_core.py`](../../src/sqpack/fractional/parent_core.py), whose
+    docstring carries it, and the 12,028 envelope inequalities in the
     [independent audit](../../resources/web/external-square-certificates-2026-09-22/receipts/n11/independent-audit.json).
 
 [^signed]: [Original proof, the exact finite sweep](../../resources/web/external-square-certificates-2026-09-22/kleddamag-11/PROOF.md#L53-L65):
@@ -984,9 +985,10 @@ supply.
     [Python scan record](../../resources/web/external-square-certificates-2026-09-22/kleddamag-11/evidence/portable/python.json).
 
 [^floor]: [`exact_mixed.py`, line 85](../../resources/web/external-square-certificates-2026-09-22/kleddamag-11/exact_mixed.py#L85),
-    the two binary searches; the [mathematical review](6175646974) states the
-    equivalence of the comparisons and records the polygon-clipping control on all
-    34,909 slabs of rows 0, 1, 6014, 11962 and 12027.
+    the two binary searches; the
+    [mathematical review](../../../docs/project/reviews/review-2026-09-22-kleddamag-n11-mathematics.md)
+    states the equivalence of the comparisons and records the polygon-clipping control
+    on all 34,909 slabs of rows 0, 1, 6014, 11962 and 12027.
 
 [^boundary]: [Original proof, boundaries](../../resources/web/external-square-certificates-2026-09-22/kleddamag-11/PROOF.md#L73-L77);
     the direct boundary and event centers in the
@@ -994,14 +996,15 @@ supply.
     and their
     [record](../../resources/web/external-square-certificates-2026-09-22/kleddamag-11/evidence/portable/controls.json),
     14 rows and 5,586 centers with least charge $1.000047518$; the
-    [mathematical review](6175646974) on why a positivity argument on the signed form
-    would be invalid and the source does not make one.
+    [mathematical review](../../../docs/project/reviews/review-2026-09-22-kleddamag-n11-mathematics.md)
+    on why a positivity argument on the signed form would be invalid and the source does
+    not make one.
 
-[^native]: [Native parent-core review](6e6174697665); the verifier
-    [`verify_kleddamag_n11_native.py`](../verify_kleddamag_n11_native.py), the
-    [complete receipt](../../campaign/agent-sessions/session-153-native-full.json), the
-    [row journal](../../campaign/agent-sessions/session-153-native-full.rows.jsonl) and
-    the [reconciliation tool](../audit_kleddamag_n11_native.py) with its
+[^native]: [Native parent-core review](../../../docs/project/reviews/review-2026-09-22-native-n11-parent-core.md);
+    the verifier [`verify_kleddamag_n11_native.py`](../verify_kleddamag_n11_native.py),
+    the [complete receipt](../../campaign/agent-sessions/session-153-native-full.json),
+    the [row journal](../../campaign/agent-sessions/session-153-native-full.rows.jsonl)
+    and the [reconciliation tool](../audit_kleddamag_n11_native.py) with its
     [record](../../campaign/agent-sessions/session-153-native-reconciliation.json).
     The band counts of Figure 12 were computed from the row journal against the Python
     scan record.

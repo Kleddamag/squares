@@ -1033,7 +1033,7 @@ module, card label, part and title, in reading order).
 (`paper_front.series`), the slugs a link between papers may name (`paper_links`), the
 structure audit (`paper_structure`), the Pages scope (`pages_scope`), the preview build
 (`preview_site`) and the deployed-site check (`check_published_site`) read it.
-Adding a paper is one entry there and its renderer, modelled on
+Adding a paper is one entry there and its renderer, modeled on
 `render_n11_optimality_review.py`; then its own Pages job and `-unchanged` notice in
 `pages.yml` with a scope output, a staged step in `publish` and a clause in
 `pages-required`, budgets for both jobs in `gate-budgets.yaml`, its version and dates in

@@ -44,7 +44,6 @@ Why it is warranted:
 
 - T-037 is confirmed (V3/C3) and scored S5, which meets the Stage 6 trigger in
   `packing/campaign/result-import.md` (§“Stage 6: Explain”).
-- No bead or plan exists for this paper.
 - The register says T-037 was superseded on 2026-09-29 by Wang and Li’s reweighted and
   scaled certificate (T-061, 3.9 × 10⁻⁹ higher) and by T-060. Paper II states both.
 
@@ -348,8 +347,8 @@ figures.
    - **Fig II.9** envelope (with a one-dimensional semicontinuity inset); **Fig II.10**
      signed rectangles; **Fig II.11** charge field of row 11962.
 8. **The Contradiction and the Strict Bound.** → `PROOF.md:79-83`.
-   - Assembles Secs. 3–7: no eleven parents of side A fit in [0, L₀]², so no eleven unit
-     squares fit in side 31/8.
+   - Assembles Sections 3–7: no eleven parents of side A fit in [0, L₀]², so no eleven
+     unit squares fit in side 31/8.
    - **Attainment lemma** (G3): eleven unit squares fit in side 4; parameters below that
      form a compact set; containment and disjoint interiors are closed conditions; the
      infimum is attained, so exclusion at 31/8 gives s(11) > 31/8. Set against I’s
@@ -394,8 +393,7 @@ Then **Sources and Verification Record** and **Version History**.
 
 Every term, symbol and lemma of II in definition order.
 II’s term registry (§9.4) is seeded from this table.
-Nothing is used before its row except in Secs.
-0–2 with a forward marker.
+Nothing is used before its row except in Sections 0–2 with a forward marker.
 
 | # | Concept | Section | Depends on |
 | --- | --- | --- | --- |
@@ -690,6 +688,7 @@ Running on the rendered page means placeholders are filled and anchors are the g
 ones.
 
 **Rules** (`tests/test_paper_terms.py`, parametrised over papers):
+
 1. Each `defined_by` occurs once, inside the section named by `anchor`.
 2. No match of `uses` precedes the definition except at a declared `forward` substring.
 3. Each prerequisite is registered and defined earlier.

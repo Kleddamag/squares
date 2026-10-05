@@ -933,8 +933,8 @@ Together with the exact witness, it proves $s(11)=T$.[^endpoint]
 <figure>
 {{ENDPOINT_SVG}}
 <figcaption><strong>Figure 12.</strong> Why the rational cap settles the exact endpoint.
-The same hypothetical side-$L_0$ container, with $L_0 < T$, fits concentrically inside the cap
-and then inside the fixed side-$T$ container after the checked rigid alignment. Its
+The same hypothetical side-$L_0$ container, with $L_0 < T$, fits concentrically inside the
+cap and then inside the fixed side-$T$ container after the checked rigid alignment. Its
 unit squares keep their size. Capture and
 <a href="../../resources/web/n11-optimality-2026-09-29/receipts/pose-inclusion/result.json">pose inclusion</a>
 put the packing in the local rectangle; isolation forces the construction, whose span

@@ -68,12 +68,54 @@ experiment:
     checked_by: The run (receipts/A/kernel-m2817021.json) returns PASS_CERTIFIED_STALL in 2,072 s of wall and
       827 s of process CPU, the producer at a fixed point after 11 rounds (187 steps, 5,984 rows), well inside
       its ceiling, so the registered re-run does not apply. A non-closure.
+  - shape: determination
+    role: outcome
+    question: Is the draw at index 1 (mask 3063677, distance 4) excluded within the 7,000 s ceiling?
+    outcome: criterion_missed
+    checked_by: The run (receipts/A/kernel-m3063677.json) returns PASS_CERTIFIED_STALL in 1,129 s of wall
+      and 634 s of process CPU, the producer at a fixed point after 6 rounds (102 steps, 3,264
+      rows), inside its ceiling, so the registered re-run does not apply. A non-closure.
+  - shape: determination
+    role: outcome
+    question: Is the draw at index 5 (mask 1964767, distance 2, the declared secondary stratum, not
+      counted) excluded within the 7,000 s ceiling?
+    outcome: criterion_missed
+    checked_by: The run (receipts/A/kernel-m1964767.json) returns PASS_CERTIFIED_STALL in 989 s of wall
+      and 623 s of process CPU, the producer at a fixed point after 8 rounds (136 steps, 4,352
+      rows), inside its ceiling, so the registered re-run does not apply. A non-closure,
+      reported separately.
+  - shape: determination
+    role: outcome
+    question: Is the draw at index 8 (mask 2878207, distance 6) excluded within the 7,000 s ceiling?
+    outcome: criterion_missed
+    checked_by: The run (receipts/A/kernel-m2878207.json) returns PASS_CERTIFIED_STALL in 1,940 s of wall
+      and 925 s of process CPU, the producer at a fixed point after 11 rounds (187 steps, 5,984
+      rows), inside its ceiling, so the registered re-run does not apply. A non-closure.
+  - shape: determination
+    role: outcome
+    question: Is the draw at index 10 (mask 2784767, distance 4) excluded within the 7,000 s ceiling?
+    outcome: criterion_missed
+    checked_by: The run (receipts/A/kernel-m2784767.json) returns PASS_CERTIFIED_STALL in 1,997 s of wall
+      and 828 s of process CPU, the producer at a fixed point after 13 rounds (221 steps, 7,072
+      rows), inside its ceiling, so the registered re-run does not apply. A non-closure.
+  - shape: determination
+    role: outcome
+    question: Is the draw at index 3 (mask 5500414, distance 6) infeasible at U, by a certificate the
+      kernel's checker accepts and the standing verifier re-proves in full?
+    outcome: criterion_met
+    checked_by: The run (receipts/A/kernel-m5500414.json) returns PASS_CERTIFIED_CLOSED in 1,109 s of wall
+      and 594 s of process CPU (producer 712 s, checker 396 s) on 129 steps and 4,128 rows in 8
+      rounds, closure all_parent_poses_forbidden for side-E1 at step 128. The standing verifier
+      at cebb5d15a passes it in full mode in 328 s, checking all 3,536 live rows in full and
+      9,948 collision regions by 15,599,756 exact facet checks. It excludes its own 8 states,
+      one orbit.
   verdict:
     decision: in-progress
     primary_criterion: At least half of the counted draws excluded within two CPU-hours each, with N1's 7,000 s
       wall ceiling standing in for that limit; falsified by six non-closures of the ten counted.
-    reason: Two of the ten counted draws have run, one closed and one did not; the verdict is fixed when five
-      close or six do not, and the remaining runs continue for the cost estimate.
+    reason: 7 of the ten counted draws have run, 3 closed and 4 not closed; the
+      verdict is fixed when five close or six do not, and the remaining runs continue for the
+      cost estimate.
   lease:
     expires: '2026-10-06T08:14:04Z'
     host: Session 182 remote container
@@ -95,9 +137,15 @@ This round is lane A of the
 | control | 1900015 (endpoint) | 0 | endpoint | stalled, as it must | 333 s | 321 s | — |
 | 2 | 5683195 | 4 | c3/i4/d4 | closed, 8 rounds, admitted | 2,147 s | 869 s | full pass, 676 s |
 | 4 | 2817021 | 4 | c3/i<=3/d4 | producer fixed point after 11 rounds | 2,072 s | 827 s | — |
+| 1 | 3063677 | 4 | c3/i4/d4 | producer fixed point after 6 rounds | 1,129 s | 634 s | — |
+| 5 | 1964767 | 2 | c4/i4/d2 | producer fixed point after 8 rounds (not counted) | 989 s | 623 s | — |
+| 8 | 2878207 | 6 | c4/i4/d6 | producer fixed point after 11 rounds | 1,940 s | 925 s | — |
+| 10 | 2784767 | 4 | c4/i<=3/d4 | producer fixed point after 13 rounds | 1,997 s | 828 s | — |
+| 3 | 5500414 | 6 | c3/i4/d6 | closed, 8 rounds, admitted | 1,109 s | 594 s | full pass, 328 s |
 
-With draw 5683195 admitted, the certified census counts 102,116 states in 12,928 orbits,
-the endpoint surviving
+State 5500414’s orbit was already excluded by lane K’s flag certificates, so its
+admission leaves the count unchanged: with every draw admitted so far, the certified
+census counts 72,296 states in 9,168 orbits, the endpoint surviving
 ([census](../results/exp-252-n17-overnight-per-state-price/census.json)).
 
 The draws run in the survey’s own seeded random order (indices 2, 4, 1, 5, 8, 10, 3, 12,

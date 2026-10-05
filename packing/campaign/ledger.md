@@ -1348,7 +1348,7 @@ Status: **active**. Turn PR 230's W3 review and the two explorations it led to, 
 | id | series | instance | operator | hypotheses | reason |
 | --- | --- | --- | --- | --- | --- |
 | exp-251 | series-000 | 17 | Claude Session 182; the run operator's lane K queue produced and verified each certificate and admitted it in the session checkout | H-267 | Lane K's round is running; each closure is admitted as its verifier passes, and the verdict is written when the target list is exhausted. |
-| exp-252 | series-000 | 17 | Claude Session 182; the run operator's lane A queue ran the survey, the control and the draws two at a time in the survey's own seeded random order, verified each closure and admitted it in the session checkout | H-264 | Two of the ten counted draws have run, one closed and one did not; the verdict is fixed when five close or six do not, and the remaining runs continue for the cost estimate. |
+| exp-252 | series-000 | 17 | Claude Session 182; the run operator's lane A queue ran the survey, the control and the draws two at a time in the survey's own seeded random order, verified each closure and admitted it in the session checkout | H-264 | 7 of the ten counted draws have run, 3 closed and 4 not closed; the verdict is fixed when five close or six do not, and the remaining runs continue for the cost estimate. |
 
 ## Resumable — stopped on the clock, not on an answer
 

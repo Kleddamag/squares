@@ -1846,8 +1846,8 @@ agenda:
       lane K's endpoint7 control under that recipe (K-control-endpoint7,
       PASS_CONTROL_STALLED in 1,244 s, receipts/K/kernel-control-endpoint7.json) covers it
       and no new control runs. An arity-8 closure counts for the certified census but not
-      toward H-267's criterion, which is read at arity at most seven. Evidence record: the
-      next free experiment id when the first closure is admitted.
+      toward H-267's criterion, which is read at arity at most seven. Evidence record
+      exp-254, written at the first admission.
 ---
 # Agenda 042: The n11 Settlement Ladder and Low-n Angles
 

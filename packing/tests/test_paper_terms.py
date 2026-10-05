@@ -10,7 +10,7 @@ biting would fail here rather than pass on the papers.
 Part I is advisory (series plan §9.4): it is published and older than the rule, so its
 findings are reported as an expected failure rather than a failure. A paper joins the
 gate by one entry in `PAPERS`; a paper whose page is not built here yet is named in
-`PENDING`, and links to it are accepted until it joins.
+`PENDING`, and links to it are accepted until it joins. All three papers are under it.
 """
 
 from __future__ import annotations
@@ -23,6 +23,7 @@ import pytest
 
 from devtools import paper_links, paper_terms, render_n11_lower_bounds_explainer
 from devtools import render_n11_optimality_review as review
+from devtools import render_n11_threshold_bound_review as threshold
 from devtools.paper_terms import Banned, Concept, Forward, Registry, Series, Term
 
 REVISION = "a" * 40
@@ -55,6 +56,16 @@ def _optimality_review() -> str:
     return page
 
 
+def _threshold_review() -> str:
+    page, _ = threshold.render(
+        threshold.ARTICLE.read_text(encoding="utf-8"),
+        figures=threshold.render_all_figures(),
+        facts=threshold.render_all_facts(),
+        revision=REVISION,
+    )
+    return page
+
+
 #: The papers under the gate, in reading order. Adding a paper is one entry here.
 PAPERS = (
     PaperCase(
@@ -63,11 +74,12 @@ PAPERS = (
         render_n11_lower_bounds_explainer.MARKDOWN,
         advisory=True,
     ),
+    PaperCase(threshold.SLUG, _threshold_review, threshold.ARTICLE),
     PaperCase(review.SLUG, _optimality_review, review.ARTICLE),
 )
 #: Papers of the series whose page this module does not build yet. A link to one is
 #: accepted unchecked until it joins `PAPERS`, and then this set must drop it.
-PENDING = frozenset({"n11-threshold-bound-review"})
+PENDING: frozenset[str] = frozenset()
 ADVISORY = frozenset(case.slug for case in PAPERS if case.advisory)
 
 

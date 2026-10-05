@@ -903,7 +903,7 @@ Status: **active**. Turn PR 230's W3 review and the two explorations it led to, 
 | BC-424 | research | 17 | complete | 1 | think-z8an | packing/campaign/agent-sessions/session-182-n17-overnight-lanes.md |
 | BC-425 | research | 17 | complete | 1 | think-035m | packing/campaign/agent-sessions/session-182-n17-overnight-lanes.md |
 | BC-426 | research | 17 | in_progress | 1 | think-035m | packing/campaign/agent-sessions/session-182-n17-overnight-lanes.md |
-| BC-427 | research | 17 | in_progress | 1 | think-035m | packing/campaign/agent-sessions/session-182-n17-overnight-lanes.md |
+| BC-427 | research | 17 | complete | 1 | think-035m | packing/campaign/agent-sessions/session-182-n17-overnight-lanes.md |
 | BC-428 | research | 17 | in_progress | 1 | think-z8an | packing/campaign/agent-sessions/session-182-n17-overnight-lanes.md |
 
 ## Series
@@ -1117,7 +1117,7 @@ Status: **active**. Turn PR 230's W3 review and the two explorations it led to, 
 | H-264 | open question | proof | On a seeded stratified draw of residue orbits on the H-266 unique-stat |  | 1 |  | 200.7m wall |
 | H-265 | confirmed | proof | The side S* of the H255 chart root is a root of the degree-18 polynomi |  | 1 |  | 1s wall |
 | H-266 | confirmed | proof | At cap U = 1169/250 there is a D4-symmetric closed cover of the centre |  | 2 |  | 2s wall |
-| H-267 | confirmed | proof | On the H-266 cover, forbidden occupancy sub-patterns of arity at most  |  | 5 |  | 328.7m wall |
+| H-267 | confirmed | proof | On the H-266 cover, forbidden occupancy sub-patterns of arity at most  |  | 5 |  | 513.6m wall |
 | H-268 | confirmed | proof | Every packing of 17 unit squares in [0,S]^2 with S <= S* whose occupan |  | 1 |  | 27s wall |
 | H-269 | blocked | proof | A fixed-profile periodic measure of the form behind T-064 (a corner mo | family: k^2-4 k^2-5 | 0 |  |  |
 | H-270 | blocked | search | For some integer k with 18 <= k <= 41, the strip construction of Kearn | k: 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 | 0 |  |  |
@@ -1271,7 +1271,7 @@ Status: **active**. Turn PR 230's W3 review and the two explorations it led to, 
 | exp-158 | series-000 | 11 | Codex BC303 T2 charge-sweep agent | H-160 | The September 14 strategy reset paused this route before the target charge ran; no target receipt or scientific verdict exists. |
 | exp-160 | series-000 | 11 | Codex BC303 H-162 retained-receipt analyst | H-162 | The September 14 strategy reset paused this route with no exp-158 target receipt; no H-162 comparison or scientific verdict exists. |
 
-### accepted (60)
+### accepted (61)
 
 | id | series | instance | operator | hypotheses | reason |
 | --- | --- | --- | --- | --- | --- |
@@ -1335,6 +1335,7 @@ Status: **active**. Turn PR 230's W3 review and the two explorations it led to, 
 | exp-251 | series-000 | 17 | Claude Session 182; the run operator's lane K queue produced and verified each certificate and admitted it in the session checkout | H-267 | Every entry of arity at most seven is admitted on a reviewed standing verifier's full pass, the endpoint's state survives each, and together they leave 9,990 orbits, ten under the threshold of 10^4 (receipts/K/census-arity7-after-bc427-t4.json on its derived ledger). Lane K's eight admitted arity-7 flags took the count from 17,690 to 10,173, and BC-427's target 4 (exp-256) took the last 183. The count includes A, certified by the interval branch and bound under exp-249's recorded deviation and verified there under bb-review-r4, and is 10,173 without it; W7 likewise rests on exp-249's verification under kernel-review-r3, and the other nine are verified at cebb5d15a. The count does not depend on lane K's target 2, which is held for the user's ruling and would take 1,344 more (receipts/K/census-arity7-after-bc427-t4.json). The margin is ten orbits, and every one of the eleven entries is individually decisive. Lane K's own list ended at 10,173 with the criterion unmet; exp-256's admission at 488c72d77 fixed the verdict, and its cost is exp-256's. The W2 factual review (docs/project/reviews/review-2026-10-05-exp-251-h267.md) confirmed the verdict with corrections to these disclosures and two figures, which this record carries. Addendum after the review: at 340e92b84, after exp-256's s182-bc427-t6, the line is 8,191 orbits (receipts/K/census-arity7-after-bc427-t6.json), so the claim no longer depends on A (8,302 without it); only W7 is individually decisive (11,496 without it). |
 | exp-252 | series-000 | 17 | Claude Session 182; the run operator's lane A queue ran the survey, the control and the draws two at a time in the survey's own seeded random order, verified each closure and admitted it in the session checkout | H-264 | Five of the ten counted draws closed within the 7,000 s ceiling, each re-proved in full by the standing kernel verifier, which meets the criterion of at least half; every closure cost under 900 s of process CPU and every verification under 700 s, far inside two CPU-hours. The other five counted draws reached producer fixed points inside the ceiling, as did both distance-2 draws. The W2 factual review (docs/project/reviews/review-2026-10-05-exp-252-h264.md) confirmed the verdict with corrections to bookkeeping and attribution, which this record carries. |
 | exp-253 | series-000 | 17 | Claude Session 182; the run operator's BC-424 queue ran the control beside the states, which ran one at a time in mask order, verified each closure, and admitted it in the session checkout once the control had finished without closing | H-274 | The first two frozen states, 2784767 and 2817021, closed within the ceiling under SW9's recipe, each re-proved in full by the standing kernel verifier and admitted after the endpoint-state control finished without closing, which meets the criterion of two. Both had reached producer fixed points under N1's recipe. The third, 2878207, and the fourth, 3063677, closed too and were verified and admitted after the verdict, so all four frozen states closed. The W2 factual review (docs/project/reviews/review-2026-10-05-exp-253-h274.md) confirmed the verdict with corrections to the mechanism, the procedure, a timing and one figure, which this record carries. |
+| exp-256 | series-000 | 17 | Claude Session 182; the run operator's BC-427 queue produces and verifies each certificate on two workers and admits each closure in the session checkout | H-267 | Two of the ten targets run closed and were admitted on the standing verifier's full pass, target 4 (488c72d77) and target 6 (340e92b84), and they took the arity-7 line from 10,173 to 9,990 and then 8,191 orbits, the endpoint surviving (receipts/K/census-arity7-after-bc427-t6.json), which meets the criterion. The other eight stalled, six at the 24-round cap and two at producer fixed points, and targets 11 to 16 were not run. The W2 review of exp-251 (docs/project/reviews/review-2026-10-05-exp-251-h267.md) replayed target 4's verification and recounted both the 9,990 and the 8,191 lines; H-267's verdict is exp-251's. |
 
 ### baseline (12)
 
@@ -1353,11 +1354,10 @@ Status: **active**. Turn PR 230's W3 review and the two explorations it led to, 
 | exp-032 | series-000 | 3 | openai-codex | H-021 | The exact connected and isolated controls pass, every declared conflation fails, and all unsupported floating-point observations remain unresolved. |
 | exp-201 | series-000 | 18 | claude-opus-5 | H-201 | Calibration, not a scored round: it freezes p_perturb = 1.0, perturb_scale = 2 and a flat mu = 5 for exp-202 and exp-203, and it turned up a schedule-length effect that is now registered as H-204 rather than folded into an arm. |
 
-### in-progress (2)
+### in-progress (1)
 
 | id | series | instance | operator | hypotheses | reason |
 | --- | --- | --- | --- | --- | --- |
-| exp-256 | series-000 | 17 | Claude Session 182; the run operator's BC-427 queue produces and verifies each certificate on two workers and admits each closure in the session checkout | H-267 | Registered before its first run; each closure is admitted as its verifier passes, and the verdict is written when the list is exhausted or a stop rule fires. |
 | exp-257 | series-000 | 17 | Claude Session 182; the run operator's BC-428 queue runs the states in the frozen order on two workers, verifies each closure, and admits it in the session checkout | H-275 | Registered before its first run; each closure is admitted as its verifier passes, and the verdict is written when the list is exhausted or the deadline arrives. |
 
 ## Resumable — stopped on the clock, not on an answer
@@ -1406,7 +1406,7 @@ Status: **active**. Turn PR 230's W3 review and the two explorations it led to, 
 
 ## Effort
 
-186 rounds, 2512.1 agent-minutes, 4975.5 wall-minutes.
+186 rounds, 2512.1 agent-minutes, 5160.4 wall-minutes.
 
 These totals exclude 4 historical rounds with unrecorded timing; their cost is unknown, not zero.
 

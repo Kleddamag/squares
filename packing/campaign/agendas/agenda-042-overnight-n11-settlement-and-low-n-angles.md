@@ -1918,7 +1918,7 @@ agenda:
     owner_focus: correctness
     instances:
     - 17
-    state: in_progress
+    state: complete
     priority: 1
     question: >-
       Do the remaining standing flags of arity at most seven, the sixteen with the most
@@ -1971,7 +1971,14 @@ agenda:
       --max-seconds 7000) from the clean run worktree at cebb5d15a, so lane K's endpoint7
       control (K-control-endpoint7, PASS_CONTROL_STALLED in 1,244 s,
       receipts/K/kernel-control-endpoint7.json) covers it. A stall stays a stall, with its
-      node kept; none is re-run under BC-423's recipe. Evidence record exp-256.
+      node kept; none is re-run under BC-423's recipe. Evidence record exp-256. Closed
+      after target 10 at the coordinator's re-plan: targets 4 and 6 closed and were
+      admitted, taking the arity-7 line to 8,191; six stopped at the round cap and two at
+      producer fixed points; targets 11 to 16 were not run, since SW9 had stopped five of
+      the eight runs finished by then at the cap, the six project 15 to 54 orbits each
+      against the certified line, and H-267 was confirmed. Those six and every kept
+      cap-stall node are the natural input to BC-423's recipe once the user rules on its
+      control.
   - id: BC-428
     purpose: research
     owner_focus: correctness

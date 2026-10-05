@@ -138,16 +138,50 @@ experiment:
       process CPU, the producer at its 24-round cap (144 steps, 10,944 rows, finest 1/512); at the last round
       every owner still had live rows, interior-N 18 and interior-NW 22 the fewest. A non-closure; its node is
       kept.
+  - shape: determination
+    role: outcome
+    question: Is target 8 (side-S0, side-S1, interior-SW, interior-NW, interior-W, interior-N, interior-SE) infeasible
+      at U within the 7,000 s ceiling?
+    outcome: criterion_missed
+    checked_by: The run (receipts/K/kernel-t8-bc427.json) returns PASS_CERTIFIED_STALL in 5,424 s of wall and 4,572 s of
+      process CPU, the producer at a fixed point after 21 rounds (147 steps, 16,289 rows, finest 1/512); at
+      the last round every owner still had live rows, interior-W 23 and interior-SW 37 the fewest. A
+      non-closure; its node is kept.
+  - shape: determination
+    role: cost
+    question: Were targets 11 to 16 run before the tranche closed?
+    outcome: criterion_missed
+    checked_by: >-
+      No. At the coordinator's re-plan at 21:43 UTC the queue stopped launching after
+      target 10, and targets 11 to 16 were not run. The reasons were three. SW9's recipe
+      had stopped five of the eight runs finished by then at the 24-round cap, and six of
+      the ten it ran in the end.
+      The six project 15 to 54 orbits each against the certified line at f749123fd, and
+      15 to 439 against the arity-7 line
+      (receipts/K/census-bc427-close.json; receipts/K/census-arity7-after-bc427-t6.json).
+      And H-267 was already confirmed (exp-251). Those six, and every kept cap-stall node
+      of this tranche, are the natural input to BC-423's recipe once the user rules on its
+      control.
   verdict:
-    decision: in-progress
+    decision: accepted
     primary_criterion: The certified residue at arity at most seven is at most 10^4 orbits with every certificate
       independently checked; a closure is admitted only on the standing verifier's full pass with the endpoint
       surviving.
-    reason: Registered before its first run; each closure is admitted as its verifier passes, and the verdict is
-      written when the list is exhausted or a stop rule fires.
-  lease:
-    expires: '2026-10-06T08:14:04Z'
-    host: Session 182 remote container
+    reason: >-
+      Two of the ten targets run closed and were admitted on the standing verifier's full
+      pass, target 4 (488c72d77) and target 6 (340e92b84), and they took the arity-7 line
+      from 10,173 to 9,990 and then 8,191 orbits, the endpoint surviving
+      (receipts/K/census-arity7-after-bc427-t6.json), which meets the criterion. The other
+      eight stalled, six at the 24-round cap and two at producer fixed points, and targets
+      11 to 16 were not run. The W2 review of exp-251
+      (docs/project/reviews/review-2026-10-05-exp-251-h267.md) replayed target 4's
+      verification and recounted both the 9,990 and the 8,191 lines; H-267's verdict is
+      exp-251's.
+    needs_review: false
+  effort:
+    timebox: 7,000 s per target and 4,000 s per verification, one worker per job, two workers
+    wall_seconds: 11095
+    stopped_by: criterion
 ---
 # exp-256: Session 182 BC-427, Lane K’s Third Tranche
 
@@ -176,6 +210,13 @@ list is the sixteen with the most projected gain against the certified line at
 `71b1d0363`, which is the tranche’s cap.
 No arity-8 flag fills it.
 
+The tranche closed after target 10 at the coordinator’s re-plan.
+Two of the ten targets run closed, eight stalled (six at the 24-round cap, two at
+producer fixed points), and targets 11 to 16 were not run.
+The round’s wall, 11,095 s, runs from the launch at 18:57:42 UTC to target 8’s end at
+22:02:37. The six not run, and every cap-stall node kept here, are the natural input to
+BC-423’s recipe once the user rules on its control.
+
 ## Runs
 
 | Target | Cells | Producer | Verifier | Census after |
@@ -189,6 +230,7 @@ No arity-8 flag fills it.
 | 5 | side-E0, side-S1, interior-NW, interior-W, interior-S, interior-N, interior-SE | 24-round cap at 4,554 s, not closed | — | — |
 | 9 | side-E1, interior-SW, interior-NW, interior-W, interior-N, interior-E, interior-SE | 24-round cap at 726 s, not closed | — | — |
 | 10 | interior-NW, interior-W, interior-S, interior-N, interior-E, interior-SE | 24-round cap at 712 s, not closed | — | — |
+| 8 | side-S0, side-S1, interior-SW, interior-NW, interior-W, interior-N, interior-SE | producer fixed point after 21 rounds at 5,424 s, not closed | — | — |
 
 The targets and the census they came from are
 [kernel-targets-bc427.txt](../../../explorations/X048-session-182-overnight/kernel-targets-bc427.txt)

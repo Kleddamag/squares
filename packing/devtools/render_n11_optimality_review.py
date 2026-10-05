@@ -41,6 +41,7 @@ from devtools.render_overview import (
     PAPERS_ROOT,
     SITE_NAV,
     SITE_NAV_CSS,
+    SITE_URL,
     THEME_SCRIPT,
     PageMeta,
     colophon_lines,
@@ -119,6 +120,13 @@ MATH_WAIT_MS = 15_000
 #: Asks the page's math driver for every formula at once, before a print.
 TYPESET_ALL = probe(
     render_n11_lower_bounds_explainer.PROBES, "render_n11_optimality_review/typeset_all"
+)
+#: Rewrites the page's relative links against its published address before a print, so
+#: the PDF's links to the site and to the other papers of the series do not point at the
+#: build machine's disk; the explainer's PDF does the same.
+ABSOLUTE_LINKS = probe(
+    render_n11_lower_bounds_explainer.PROBES,
+    "render_n11_lower_bounds_explainer_pdf/absolute_links",
 )
 FIGURE_SLOT = re.compile(r"\{\{([A-Z_]+_SVG)\}\}")
 #: A figure's caption, and a formula in one. A caption is an HTML block, where KPress
@@ -521,6 +529,7 @@ def _print_pdf(html_path: Path, pdf_path: Path) -> None:
         try:
             page = browser.new_page()
             page.goto(html_path.as_uri(), wait_until="networkidle")
+            page.evaluate(ABSOLUTE_LINKS, SITE_URL + SITE_PATH)
             page.emulate_media(media="print")
             hosts = page.locator(".kpress-math")
             if hosts.count() == 0:

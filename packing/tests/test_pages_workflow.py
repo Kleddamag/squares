@@ -1595,6 +1595,12 @@ def test_the_partial_checkouts_keep_the_directories_the_render_links() -> None:
             "/packing/resources/web/external-square-certificates-2026-09-22/kleddamag-11/",
             "/packing/resources/web/wand125-tools-2026-09-29/receipts/n11-bound-full.jsonl.gz",
             "/packing/campaign/agent-sessions/session-153-native-full.rows.jsonl",
+            "/packing/resources/web/external-square-certificates-2026-09-22/receipts/n11/full-replay/RESULT.json",
+            "/packing/resources/web/external-square-certificates-2026-09-22/receipts/n11/independent-audit.json",
+            "/packing/resources/web/wand125-tools-2026-09-29/README.md",
+            "/packing/resources/web/wand125-tools-2026-09-29/receipts/n11-bound-full-summary.json",
+            "/packing/campaign/agent-sessions/session-153-native-full.json",
+            "/packing/campaign/agent-sessions/session-153-native-reconciliation.json",
         ),
     }
     assert set(kept) == REVIEW_JOBS
@@ -1701,6 +1707,12 @@ REVIEW_CHECKOUTS: dict[str, tuple[tuple[str, ...], tuple[str, ...]]] = {
             f"{KLEDDAMAG}/evidence/portable/python.json",
             "packing/resources/web/wand125-tools-2026-09-29/receipts/n11-bound-full.jsonl.gz",
             "packing/campaign/agent-sessions/session-153-native-full.rows.jsonl",
+            "packing/resources/web/external-square-certificates-2026-09-22/receipts/n11/full-replay/RESULT.json",
+            "packing/resources/web/external-square-certificates-2026-09-22/receipts/n11/independent-audit.json",
+            "packing/resources/web/wand125-tools-2026-09-29/README.md",
+            "packing/resources/web/wand125-tools-2026-09-29/receipts/n11-bound-full-summary.json",
+            "packing/campaign/agent-sessions/session-153-native-full.json",
+            "packing/campaign/agent-sessions/session-153-native-reconciliation.json",
         ),
         (
             "packing/resources/web/unrelated/README.md",

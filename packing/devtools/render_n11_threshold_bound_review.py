@@ -43,6 +43,7 @@ from devtools import (
 )
 from devtools.render_n11_lower_bounds_explainer_pdf import dated
 from devtools.render_n11_optimality_review import (
+    ABSOLUTE_LINKS,
     MATH_WAIT_MS,
     TYPESET_ALL,
     caption_math,
@@ -56,6 +57,7 @@ from devtools.render_overview import (
     PAPERS_ROOT,
     SITE_NAV,
     SITE_NAV_CSS,
+    SITE_URL,
     THEME_SCRIPT,
     PageMeta,
     colophon_lines,
@@ -105,7 +107,6 @@ RECEIPTS = PACKING / "resources/web/external-square-certificates-2026-09-22/rece
 #: which agents wrote it; its own version, which links its version history at the foot
 #: of the page; and its dates, the day the source published the proof and the day the
 #: article last changed, all from `sqpack.release`.
-# TODO(coordinator): add `series=` (Part II of 3) once `paper_front.PaperFront` has it.
 FRONT = paper_front.check(
     paper_front.PaperFront(
         slug=SLUG,
@@ -121,6 +122,7 @@ FRONT = paper_front.check(
             paper_front.Dated(paper_front.REVISED, THRESHOLD_REVIEW_REVISED),
         ),
         history="version-history",
+        series=paper_front.series(SLUG),
     )
 )
 #: The twelve figures, plan figures II.1 to II.12 in reading order; the figure module
@@ -580,6 +582,7 @@ def _print_pdf(html_path: Path, pdf_path: Path) -> None:
         try:
             page = browser.new_page()
             page.goto(html_path.as_uri(), wait_until="networkidle")
+            page.evaluate(ABSOLUTE_LINKS, SITE_URL + SITE_PATH)
             page.emulate_media(media="print")
             hosts = page.locator(".kpress-math")
             if hosts.count() == 0:

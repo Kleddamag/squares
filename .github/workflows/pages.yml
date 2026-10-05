@@ -137,6 +137,12 @@ name: Certificate page
       - packing/resources/web/external-square-certificates-2026-09-22/kleddamag-11/**
       - packing/resources/web/wand125-tools-2026-09-29/receipts/n11-bound-full.jsonl.gz
       - packing/campaign/agent-sessions/session-153-native-full.rows.jsonl
+      - packing/resources/web/external-square-certificates-2026-09-22/receipts/n11/full-replay/RESULT.json
+      - packing/resources/web/external-square-certificates-2026-09-22/receipts/n11/independent-audit.json
+      - packing/resources/web/wand125-tools-2026-09-29/README.md
+      - packing/resources/web/wand125-tools-2026-09-29/receipts/n11-bound-full-summary.json
+      - packing/campaign/agent-sessions/session-153-native-full.json
+      - packing/campaign/agent-sessions/session-153-native-reconciliation.json
       - packing/devtools/render_n11_optimality_review.py
       - packing/devtools/n11_optimality_figures.py
       - packing/devtools/n11_optimality_overview_figures.py
@@ -446,6 +452,12 @@ jobs:
             /packing/resources/web/external-square-certificates-2026-09-22/kleddamag-11/
             /packing/resources/web/wand125-tools-2026-09-29/receipts/n11-bound-full.jsonl.gz
             /packing/campaign/agent-sessions/session-153-native-full.rows.jsonl
+            /packing/resources/web/external-square-certificates-2026-09-22/receipts/n11/full-replay/RESULT.json
+            /packing/resources/web/external-square-certificates-2026-09-22/receipts/n11/independent-audit.json
+            /packing/resources/web/wand125-tools-2026-09-29/README.md
+            /packing/resources/web/wand125-tools-2026-09-29/receipts/n11-bound-full-summary.json
+            /packing/campaign/agent-sessions/session-153-native-full.json
+            /packing/campaign/agent-sessions/session-153-native-reconciliation.json
 
       - name: Install uv and Python 3.14
         uses: astral-sh/setup-uv@c771a70e6277c0a99b617c7a806ffedaca235ff9 # v9.0.0

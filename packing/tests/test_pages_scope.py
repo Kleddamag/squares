@@ -249,9 +249,10 @@ def test_a_change_to_the_record_or_the_reader_documents_builds_only_the_overview
         "n11_lower_bounds_explainer",
         "overview",
     }
-    # The register is also the optimality paper's: its bound ladder reads the headlines.
+    # The register is also Parts II and III's: their bound ladder reads the headlines.
     assert in_scope(["packing/frontier/results.yaml"], declared) == {
         "n11_lower_bounds_explainer",
+        "n11_threshold_bound_review",
         "n11_optimality_review",
         "overview",
     }

@@ -44,6 +44,7 @@ from PIL import Image
 from devtools import measure_site_pages as measure
 from devtools import render_n11_lower_bounds_explainer, render_overview
 from devtools import render_n11_optimality_review as paper
+from devtools import render_n11_threshold_bound_review as threshold
 from devtools.preview_site import serve
 from devtools.render_n11_lower_bounds_explainer_pdf import BROWSER_OVERRIDE
 from tests import site_renders
@@ -445,15 +446,17 @@ def test_the_summary_lists_each_roles_distinct_settings_with_their_pages() -> No
 def test_every_shell_with_the_publication_stylesheet_carries_its_head_script() -> None:
     """The stylesheet's math rule reads the platform from an attribute its head script
     stamps, so a shell that names one names the other, in its head, where it runs before
-    the body paints; and both papers take the pair from one function."""
+    the body paints; and every paper takes the pair from one function."""
     shells = sorted(TEMPLATES.glob("*-shell.html"))
     assert {shell.name for shell in shells} >= {
         "n11-lower-bounds-explainer-shell.html",
+        threshold.SHELL.name,
         paper.SHELL.name,
     }
     carrying = [shell for shell in shells if "{{PUBLICATION_CSS}}" in shell.read_text("utf-8")]
     assert {shell.name for shell in carrying} == {
         "n11-lower-bounds-explainer-shell.html",
+        threshold.SHELL.name,
         paper.SHELL.name,
     }
     for shell in carrying:

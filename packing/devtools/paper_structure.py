@@ -581,10 +581,19 @@ def compare(reference: Structure, *others: Structure) -> list[dict[str, Any]]:
             "axis": axis,
             "compared": "content" if axis in CONTENT_AXES else "form",
             **{paper: values[axis] for paper, values in found},
-            "same": all(values[axis] == first[axis] for _, values in found),
+            "same": _agree(axis, [values[axis] for _, values in found]),
         }
         for axis in sorted(first, key=lambda axis: (axis in CONTENT_AXES, axis))
     ]
+
+
+def _agree(axis: str, values: Sequence[Any]) -> bool:
+    """Whether every paper sets `axis` as the first does. A heading-case axis is held
+    only over the papers that have such headings: a paper with no subsections has no
+    case to disagree with (`heading_case` reports `none`)."""
+    if axis.endswith(" case"):
+        values = [value for value in values if value != "none"]
+    return all(value == values[0] for value in values)
 
 
 def differences(rows: Sequence[dict[str, Any]]) -> list[dict[str, Any]]:

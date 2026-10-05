@@ -79,6 +79,18 @@ experiment:
       verifier at cebb5d15a passes it in full mode in 911 s, checking all 8,707 live rows in full and 25,457
       collision regions by 136,159,832 exact facet checks. It excludes its own 8 states, one orbit. Under N1's
       recipe the same state reached a producer fixed point after 828 s of process CPU (exp-252).
+  - shape: determination
+    role: outcome
+    question: Is the state with mask 2878207 (lane A's draw at index 8, distance 6, stalled under N1's recipe)
+      infeasible at U, by a certificate the kernel's checker accepts and the standing verifier re-proves in
+      full?
+    outcome: criterion_met
+    checked_by: The run (receipts/A/kernel-m2878207-sw9.json) returns PASS_CERTIFIED_CLOSED in 901 s of wall
+      and 875 s of process CPU (producer 464 s, checker 436 s) on 61 steps and 4,022 rows in 4 rounds, rows
+      finest at 1/128, closure all_parent_poses_forbidden for side-E1 at step 60. The standing verifier at
+      cebb5d15a passes it in full mode in 421 s, checking all 4,022 live rows in full and 11,385 collision
+      regions by 63,401,908 exact facet checks. It excludes its own 8 states, one orbit. Under N1's recipe the
+      same state reached a producer fixed point after 925 s of process CPU (exp-252).
   verdict:
     decision: accepted
     primary_criterion: At least two of the four frozen states close within the 7,000 s ceiling, each re-proved
@@ -89,8 +101,9 @@ experiment:
       SW9's recipe, each re-proved in full by the standing kernel verifier and admitted
       after the endpoint-state control finished without closing, which meets the
       criterion of two. Both had reached producer fixed points under N1's recipe. The
-      other two states run on for the cost and are recorded as they finish. Held for the
-      W2 review the plan requires before X-048 or the frontier states the verdict.
+      third, 2878207, closed after the verdict too; the fourth, 3063677, runs on for the
+      cost. Held for the W2 review the plan requires before X-048 or the frontier states
+      the verdict.
     needs_review: true
     commit: 3396efda0
   effort:
@@ -124,7 +137,8 @@ split floor. The round’s wall, 6,601 s, runs from the launch at 14:19:55 UTC t
 control’s end, which released both closures.
 Two earlier launches of the control and the first state were killed by container
 restarts without receipts and are not counted.
-The other two states run on for the cost.
+The third state, 2878207, closed after the verdict in 875 s of CPU; the fourth runs on
+for the cost.
 
 ## Runs
 
@@ -133,6 +147,7 @@ The other two states run on for the cost.
 | control | 0 | stalled in 333 s | 24-round cap, not closed | 6,299 s | — |
 | 2784767 | 4 | fixed point, 828 s | closed, 7 rounds, admitted | 1,675 s | full pass, 782 s |
 | 2817021 | 4 | fixed point, 828 s | closed, 8 rounds, admitted | 2,100 s | full pass, 911 s |
+| 2878207 | 6 | fixed point, 925 s | closed, 4 rounds, admitted after the verdict | 875 s | full pass, 421 s |
 
 The receipts are under
 [receipts/A](../../../explorations/X048-session-182-overnight/receipts/A/), each

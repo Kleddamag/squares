@@ -578,12 +578,24 @@ objects:
   asset: node-aebb90bafb6fd539cb3d5ad94b665bce5f54f23a13da4889b5bce94eda84ac25.json.gz
   size: 83524099
   sha256: 652e158d784f6b993e6e3ee9f2d4ccd0cfa251abecc8b2d584aec9fa1f347668
-  description: kernel certificate of s182-m2817021-sw9 (session 182, lane A stall under SW9's recipe, H-274)
+  description: kernel certificate of s182-m2817021-sw9 (session 182, lane A stall under SW9's recipe,
+    H-274)
 - path: packing/campaign/explorations/X048-session-168-pilots/certificates/s182-m2817021-sw9/seed-b6ddc0846fc2af8226ffb60096cabf8b422e52892feacd9ba348c8752aac454f.json.gz
   asset: seed-b6ddc0846fc2af8226ffb60096cabf8b422e52892feacd9ba348c8752aac454f.json.gz
   size: 23708
   sha256: 96ea765e21623fdec2536b701c26efe519f804890f557c77db0bbd53298804c6
-  description: kernel certificate of s182-m2817021-sw9 (session 182, lane A stall under SW9's recipe, H-274)
+  description: kernel certificate of s182-m2817021-sw9 (session 182, lane A stall under SW9's recipe,
+    H-274)
+- path: packing/campaign/explorations/X048-session-168-pilots/certificates/s182-m2878207-sw9/node-7c035b2deb6828e3b52663cdd461839d2381d3580a698b1c706ff611e2b811c5.json.gz
+  asset: node-7c035b2deb6828e3b52663cdd461839d2381d3580a698b1c706ff611e2b811c5.json.gz
+  size: 40382717
+  sha256: 1d44da72ae18afa1460256e74200529ca667cf36c83e616ae6b0775737bf762c
+  description: kernel certificate of s182-m2878207-sw9 (session 182, lane A stall under SW9's recipe, H-274)
+- path: packing/campaign/explorations/X048-session-168-pilots/certificates/s182-m2878207-sw9/seed-5d67b7217acc661969d626f205cde96bcc43359008c7b172bf6242863f8b341d.json.gz
+  asset: seed-5d67b7217acc661969d626f205cde96bcc43359008c7b172bf6242863f8b341d.json.gz
+  size: 22967
+  sha256: 97bbefa67fface846309a3d1b450ac571fe6e8fd5ffd9a68e48268e836a25bb1
+  description: kernel certificate of s182-m2878207-sw9 (session 182, lane A stall under SW9's recipe, H-274)
 - path: packing/campaign/explorations/X048-session-168-pilots/certificates/s182-m4028335/node-dc6a4636a02c08d8d2c6692aa95757805497da04ffaa0ff6e675a58dcaa83442.json.gz
   asset: node-dc6a4636a02c08d8d2c6692aa95757805497da04ffaa0ff6e675a58dcaa83442.json.gz
   size: 21541509

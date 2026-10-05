@@ -345,3 +345,17 @@ entries:
     verification:
       receipt: packing/campaign/explorations/X048-session-168-pilots/certificates/s182-m2817021-sw9/verification.json
       verifier: kernel-streamed
+  - name: s182-m2878207-sw9
+    cells: [corner-SW, corner-SE, corner-NW, corner-NE, side-S0, side-N0, side-W0, side-E0, side-N1, side-E1, side-N2, side-W2, side-E2, interior-SW, interior-NW, interior-S, interior-E]
+    certifier: kernel
+    # Session 182 BC-424 (H-274): lane A's draw at index 8 (distance 6), which stalled under
+    # N1's recipe in exp-252, closed as a whole 17-cell state with SW9's adaptive-row recipe
+    # in 901 s of wall from the clean run worktree at cebb5d15a. Admitted in exp-253 by the
+    # standing verifier's full pass there, after the endpoint-state control did not close.
+    receipt: packing/campaign/explorations/X048-session-182-overnight/receipts/A/kernel-m2878207-sw9.json
+    certificate: packing/campaign/explorations/X048-session-168-pilots/certificates/s182-m2878207-sw9
+    status: admitted
+    evidence: packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-253-h274-n17-stalls-under-adaptive-rows.md
+    verification:
+      receipt: packing/campaign/explorations/X048-session-168-pilots/certificates/s182-m2878207-sw9/verification.json
+      verifier: kernel-streamed

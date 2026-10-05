@@ -1,9 +1,26 @@
 name: Windows supervision
 
+# The native gate for `devtools.supervise_windows`, which no Linux job can exercise.
+# Its own workflow, path-filtered to what it tests, rather than a lane of
+# `packing-required`: see `test_the_windows_workflow_runs_every_native_case_under_a_ceiling`.
 "on":
-  pull_request: {}
+  pull_request:
+    paths:
+      - .github/workflows/windows-supervision.yml
+      - packing/devtools/supervise_windows.py
+      - packing/tests/test_supervise_windows.py
+      - packing/.python-version
+      - packing/pyproject.toml
+      - packing/uv.lock
   push:
     branches: [main]
+    paths:
+      - .github/workflows/windows-supervision.yml
+      - packing/devtools/supervise_windows.py
+      - packing/tests/test_supervise_windows.py
+      - packing/.python-version
+      - packing/pyproject.toml
+      - packing/uv.lock
   workflow_dispatch: {}
 
 permissions:
@@ -17,7 +34,7 @@ jobs:
   native-owned-job:
     name: Native Windows owned-Job controls
     runs-on: windows-latest
-    timeout-minutes: 10
+    timeout-minutes: 5
     defaults:
       run:
         working-directory: packing

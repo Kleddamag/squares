@@ -24,6 +24,19 @@ from typing import Any, NoReturn
 
 GIB = 1024**3
 MEASUREMENT_FAILURE_LIMIT = 3
+RECEIPT_SCHEMA = "packing.windows-supervisor.v2"
+
+# Memory guard defaults, sized for a large developer workstation rather than as host
+# policy; every one can be changed on the command line. Two worker thresholds with
+# different actions, so both are reachable as a worker grows:
+#: Hard stop. An owned process at or above this terminates the whole owned tree.
+DEFAULT_WORKER_MEMORY_GIB = 16.0
+#: Review mark. The first sample at or above this is recorded and warned about, and the
+#: run continues; it sits below the hard stop so a growing worker is flagged first.
+DEFAULT_REVIEW_MEMORY_GIB = 12.0
+#: Host floor on available physical memory: refuse to start below it, stop once below.
+#: A caller may lower it, down to zero, and is warned rather than refused.
+DEFAULT_MIN_AVAILABLE_GIB = 8.0
 
 
 def gib_bytes(value: float) -> int:
@@ -47,7 +60,13 @@ def durable_json(path, value):
 
 
 def process_handle(process: subprocess.Popen[bytes]) -> int:
-    """The Windows Popen owns this handle; callers never close it directly."""
+    """The root's process handle, read from CPython's private `Popen._handle`.
+
+    `subprocess` exposes no public handle on Windows, and the suspended root has to be
+    assigned to the Job and resumed through one before it runs any code. Only CPython
+    is supported; a missing attribute raises before resume. The Popen owns this handle,
+    so callers never close it.
+    """
     return int(process.__dict__["_handle"])
 
 
@@ -488,6 +507,14 @@ class WindowsJob:
         self.require(self.kernel.AssignProcessToJobObject(self.handle, process_handle(process)))
 
     def resume(self, process):
+        """Resume the suspended root with ntdll's undocumented `NtResumeProcess`.
+
+        `CREATE_SUSPENDED` suspends the primary thread, and the documented `ResumeThread`
+        needs that thread's handle, which CPython's `subprocess` closes without
+        returning. Relying on the export is an assumption about the Windows versions
+        this runs on; if it is absent, the lookup in `__init__` fails before any child
+        is launched.
+        """
         status = self.ntdll.NtResumeProcess(process_handle(process))
         if status < 0:
             raise RuntimeError(f"NtResumeProcess failed, NTSTATUS 0x{status & 0xFFFFFFFF:08x}")
@@ -501,6 +528,59 @@ class WindowsJob:
             self.require(self.kernel.CloseHandle(handle))
 
 
+def guard_warnings(args: argparse.Namespace) -> list[str]:
+    """Settings the supervisor accepts but the caller should know they chose."""
+    warnings = []
+    if args.min_available_gib < DEFAULT_MIN_AVAILABLE_GIB:
+        warnings.append(
+            f"available-memory floor lowered to {args.min_available_gib:g} GiB from the "
+            f"{DEFAULT_MIN_AVAILABLE_GIB:g} GiB default; the host may page or run out of "
+            "memory before this supervisor stops the owned tree"
+        )
+    if args.review_memory_gib >= args.worker_memory_gib:
+        warnings.append(
+            f"review mark {args.review_memory_gib:g} GiB is not below the hard stop "
+            f"{args.worker_memory_gib:g} GiB, so it can only be recorded on the sample "
+            "that stops the tree"
+        )
+    return warnings
+
+
+def memory_crossings(
+    workers: list[dict[str, Any]], stop_bytes: int, review_bytes: int
+) -> tuple[list[dict[str, Any]], list[dict[str, Any]]]:
+    """The live owned workers at or above the hard stop, and at or above the review mark.
+
+    A worker is judged by the larger of its current and OS-reported peak working set,
+    so a spike between samples still counts.
+    """
+
+    def size(worker: dict[str, Any]) -> int:
+        return max(worker["working_set_bytes"], worker["peak_working_set_bytes"])
+
+    over_stop = [worker for worker in workers if size(worker) >= stop_bytes]
+    over_review = [worker for worker in workers if size(worker) >= review_bytes]
+    return over_stop, over_review
+
+
+def final_status(reason: str, receipt: dict[str, Any], cleanup_errors: list[str]) -> str:
+    """The receipt's outcome once cleanup has run.
+
+    A root that exited zero while owned descendants were still running is
+    `success-with-cleanup`: those descendants were terminated, not finished. Any cleanup
+    error overrides every other outcome.
+    """
+    if cleanup_errors:
+        return "cleanup-failed"
+    if reason == "success" and receipt.get("descendants_termination_requested"):
+        return "success-with-cleanup"
+    return reason
+
+
+#: CLI exit code per final status; every status not listed exits 2.
+EXIT_CODES = {"success": 0, "success-with-cleanup": 0, "timeout": 124, "interrupted": 130}
+
+
 def supervise(args):
     output = args.output_dir.resolve()
     output.mkdir(parents=True, exist_ok=True)
@@ -508,16 +588,19 @@ def supervise(args):
         raise RuntimeError("Output directory must be empty; receipts are never overwritten")
     started = time.monotonic()
     receipt = {
-        "schema": "packing.windows-supervisor.v1",
+        "schema": RECEIPT_SCHEMA,
         "started_at": utc_now(),
         "command": args.command,
         "cwd": str(args.cwd.resolve()),
         "timeout_seconds": args.timeout,
         "sample_interval_seconds": args.interval,
         "worker_memory_stop_bytes": gib_bytes(args.worker_memory_gib),
-        "worker_memory_review_stop_bytes": gib_bytes(args.review_memory_gib),
+        "worker_memory_review_bytes": gib_bytes(args.review_memory_gib),
+        "worker_memory_review_crossed": False,
+        "worker_memory_review_trigger": None,
         "worker_measurement_failure_limit": MEASUREMENT_FAILURE_LIMIT,
         "system_available_stop_bytes": gib_bytes(args.min_available_gib),
+        "guard_warnings": guard_warnings(args),
         "supervisor_pid": os.getpid(),
         "pid": None,
         "status": "starting",
@@ -625,21 +708,31 @@ def supervise(args):
                 stream.flush()
                 os.fsync(stream.fileno())
                 durable_json(output / "heartbeat.json", sample)
-                over_stop = [
-                    w
-                    for w in last_sample["workers"]
-                    if max(w["working_set_bytes"], w["peak_working_set_bytes"])
-                    >= receipt["worker_memory_stop_bytes"]
-                ]
-                over_review = [
-                    w
-                    for w in last_sample["workers"]
-                    if max(w["working_set_bytes"], w["peak_working_set_bytes"])
-                    >= receipt["worker_memory_review_stop_bytes"]
-                ]
-                if over_stop or over_review:
-                    reason = "worker-memory-stop" if over_stop else "worker-memory-review"
-                    receipt["worker_memory_trigger"] = over_stop or over_review
+                over_stop, over_review = memory_crossings(
+                    last_sample["workers"],
+                    receipt["worker_memory_stop_bytes"],
+                    receipt["worker_memory_review_bytes"],
+                )
+                if over_review and not receipt["worker_memory_review_crossed"]:
+                    # A mark, not a stop: recorded once, and the run continues.
+                    receipt.update(
+                        worker_memory_review_crossed=True,
+                        worker_memory_review_trigger={
+                            "at": sample["at"],
+                            "wall_seconds": wall,
+                            "workers": over_review,
+                        },
+                    )
+                    durable_json(output / "start.json", receipt)
+                    print(
+                        "warning: an owned worker reached the "
+                        f"{args.review_memory_gib:g} GiB review mark; still running",
+                        file=sys.stderr,
+                        flush=True,
+                    )
+                if over_stop:
+                    reason = "worker-memory-stop"
+                    receipt["worker_memory_trigger"] = over_stop
                     break
                 if measurement_failures >= MEASUREMENT_FAILURE_LIMIT:
                     reason = "worker-measurement-failed"
@@ -761,19 +854,10 @@ def supervise(args):
             error=error,
             cleanup_errors=cleanup_errors,
         )
-        if cleanup_errors:
-            receipt["status"] = "cleanup-failed"
+        receipt["status"] = final_status(reason, receipt, cleanup_errors)
         durable_json(output / "final.json", receipt)
     print(json.dumps(receipt, sort_keys=True), flush=True)
-    return (
-        0
-        if receipt["status"] == "success"
-        else 124
-        if receipt["status"] == "timeout"
-        else 130
-        if receipt["status"] == "interrupted"
-        else 2
-    )
+    return EXIT_CODES.get(receipt["status"], 2)
 
 
 def build_parser() -> argparse.ArgumentParser:
@@ -785,20 +869,29 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument(
         "--worker-memory-gib",
         type=float,
-        default=16.0,
-        help="Stop when an owned process current or observed OS peak reaches this value",
+        default=DEFAULT_WORKER_MEMORY_GIB,
+        help=(
+            "hard stop: terminate the owned tree when an owned process's current or "
+            "observed OS peak working set reaches this (default %(default)g)"
+        ),
     )
     parser.add_argument(
         "--review-memory-gib",
         type=float,
-        default=12.0,
-        help="Early review stop; hard-stop label wins if one sample crosses both limits",
+        default=DEFAULT_REVIEW_MEMORY_GIB,
+        help=(
+            "review mark: record and warn the first time an owned process reaches this, "
+            "and keep running (default %(default)g)"
+        ),
     )
     parser.add_argument(
         "--min-available-gib",
         type=float,
-        default=8.0,
-        help="Available physical-memory floor (>=0); default 8 GiB is conservative",
+        default=DEFAULT_MIN_AVAILABLE_GIB,
+        help=(
+            "available physical-memory floor, zero or more; lowering it below the "
+            "default %(default)g warns rather than refuses"
+        ),
     )
     parser.add_argument("command", nargs=argparse.REMAINDER)
     return parser
@@ -845,6 +938,8 @@ def main(arguments: list[str] | None = None) -> int:
     if os.name != "nt":
         print("Windows is required; no child launched or unmonitored fallback", file=sys.stderr)
         return 2
+    for warning in guard_warnings(args):
+        print(f"warning: {warning}", file=sys.stderr, flush=True)
     install_interrupt_handlers()
     return supervise(args)
 

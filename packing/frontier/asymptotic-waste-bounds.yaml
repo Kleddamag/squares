@@ -194,7 +194,8 @@ lower_bounds:
       exact-volume and recursive-cover checks of code/coverage_independent/, found no
       gap, and the source's verify_v10.py passed its 132 checks on these outputs. This
       reproduces the computation with the producer's code; the labelling of the boxes
-      has one implementation, and no independent one has run (review finding RF-1).
+      has one implementation, and no independent one has run (review finding RF-1;
+      think-k3tk).
       (2) Two controls were refused: the box holding the nine-pair configuration, at
       threshold 8, and the n = 2 box list without that box (receipts/controls/).
       (3) Every numerical step from the lemmas' stated inputs to the constants was

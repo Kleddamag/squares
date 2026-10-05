@@ -1664,8 +1664,8 @@ is the rule; this is how to follow it.
   outside the repository, for example as a release asset on `jlevy/squares`.
 - **Manifest.** The repository keeps a small committed manifest with the name, size,
   location, and SHA-256 of each hosted object.
-  A tool that needs the bytes downloads them on request (a `--fetch` flag) and checks
-  them against the manifest.
+  A tool that needs the bytes downloads them on request and checks them against the
+  manifest; [Publishing Hosted Data](#publishing-hosted-data) is the standard way.
   That comparison is a trust-boundary check under `OR-16`. Without the bytes, the tool
   still reports from the committed receipts and says that a full re-check needs the
   fetch. Tests use a small fixture, never the hosted object.
@@ -1687,6 +1687,117 @@ Pytest collection is explicit in `pyproject.toml`; `tests/conftest.py` fails if 
 configured test directory disappears.
 Domain programs are named by what they check, not with `_test.py`, so pytest cannot
 silently collect or omit them by accident.
+
+#### Publishing Hosted Data
+
+A pull request that adds hosted data follows these steps with
+`python -m devtools.hosted_data`, run from `packing/`. Each release has one manifest in
+`packing/hosted/`, a softschema record whose contract is
+[`hosted-data.schema.yaml`](packing/hosted/hosted-data.schema.yaml);
+`sqpack.hosted_data` holds the logic.
+Use it when the size check above says the data does not belong in Git: one file over a
+few megabytes, or a set totalling tens of megabytes.
+
+1. **Choose the tag.** A data release is tagged `data/<subject>-v<N>`, for example
+   `data/n17-certificate-dumps-v1`, so it cannot be read as a version of the project,
+   and is created with `--latest=false`, so the project’s version release stays Latest.
+   The slash works in `gh release`, in the API and in download URLs; that was checked on
+   2026-10-05 against an existing slash tag, `kustomize/v5.4.1` on
+   `kubernetes-sigs/kustomize`. The schema refuses any other tag shape.
+   A release’s bytes never change: different bytes go out under the next version, such
+   as `data/n17-certificate-dumps-v2`.
+
+2. **Ignore the paths.** Add the directory that will hold the fetched objects to
+   `.gitignore`, so the bytes cannot be committed by accident.
+   `check` refuses a path Git does not ignore, and a tracked file never counts as
+   ignored.
+
+3. **Stage the manifest** from the local files:
+
+   ```bash
+   python -m devtools.hosted_data stage --manifest hosted/n17-certificate-dumps.yaml \
+     --from cases/n17_census/dumps \
+     --repository jlevy/squares --tag data/n17-certificate-dumps-v1
+   ```
+
+   It records each file’s repository-relative path, asset name (the file name), size and
+   SHA-256, refuses two files with one name, and runs `check`. Staging again after the
+   data is regenerated updates sizes and digests and keeps descriptions.
+   Add a `description` to the manifest, and to any object that needs one:
+
+   ```yaml
+   softschema:
+     contract: packing.squares:HostedData/v1
+     schema: hosted-data.schema.yaml
+     status: enforced
+
+   repository: jlevy/squares
+   tag: data/n17-certificate-dumps-v1
+   description: Certificate dumps the n17 census re-checks when they are fetched.
+   objects:
+   - path: packing/cases/n17_census/dumps/verifier-a.json.gz
+     asset: verifier-a.json.gz
+     size: 26214400
+     sha256: 9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08
+   ```
+
+4. **Commit the manifest and the code that reads through it, not the data.** A tool
+   calls `sqpack.hosted_data.require(path, manifest)`, which returns the local file or
+   raises `HostedDataMissingError` naming the fetch command.
+   Without the bytes the tool still reports from its committed receipts.
+
+5. **Publish:** `python -m devtools.hosted_data publish --manifest M`. It checks the
+   local bytes and the release before it changes anything, creates the release if it is
+   absent (`--title`, `--notes` and `--target` are optional), uploads only the assets
+   the release lacks, then downloads every asset and checks it against the manifest.
+
+6. **Fetch on a clean checkout** to see the round trip work:
+   `python -m devtools.hosted_data fetch --manifest M`, with `--only GLOB` to select
+   objects by path or asset name.
+   It skips a file already present with the right bytes, writes each download through a
+   temporary file, and refuses bytes whose size or SHA-256 differ.
+   It will not overwrite a present file whose bytes differ, which may be data not yet
+   staged, unless given `--replace`.
+
+7. **In the pull request body**, under Changes by Purpose, give the release URL, the
+   manifest path and the total size.
+
+**Never clobber, never delete.** `gh release upload --clobber` deletes the existing
+asset before it uploads, so an upload that then fails leaves nothing.
+`publish` never replaces an asset, and refuses one whose bytes differ from the manifest.
+Do not delete a release, or an asset on one, that a committed manifest names: the
+manifest stays in history, and a checkout of that commit fetches through it.
+
+**GitHub’s limits.** A release holds at most 1000 assets (a 1001st upload is refused
+with HTTP 422) and each asset must be under 2 GiB; total size and bandwidth are not
+limited
+([About releases](https://docs.github.com/en/repositories/releasing-projects-on-github/about-releases),
+[community discussion 165616](https://github.com/orgs/community/discussions/165616)).
+`check` and `publish` enforce both.
+Pack a large set of small files into one tarball rather than hundreds of assets.
+
+**Running `gh`.** `gh` reaches the GitHub hosts directly, outside the agent proxy, and
+everything else keeps `HTTPS_PROXY`; never disable TLS verification:
+
+```bash
+export NO_PROXY="api.github.com,github.com,release-assets.githubusercontent.com,objects.githubusercontent.com,codeload.github.com,raw.githubusercontent.com,uploads.github.com${NO_PROXY:+,$NO_PROXY}"
+export no_proxy="$NO_PROXY"
+```
+
+Where exports do not persist between commands, prefix each `gh` command with the two
+assignments instead.
+The host list is `GITHUB_DIRECT_HOSTS` in `.claude/scripts/ensure-gh-cli.sh`. In a cloud
+session, a `git push` of a tag can be refused with 403 by the session’s ref-scoped
+credential broker. `publish` pushes no tag, since `gh release create` makes it through
+the API; to make one by hand, run
+`gh api repos/OWNER/REPO/git/refs -f ref=refs/tags/TAG -f sha=SHA`.
+
+**Precedent.** Release [`v0.4.2`](https://github.com/jlevy/squares/releases/tag/v0.4.2)
+hosts two ascent films, of 40 MB and 216 MB, with their JSON receipts.
+Its procedure in [`packages/workbench/README.md`](packages/workbench/README.md) uploads
+through the REST API to set each video’s content type, then checks the served bytes with
+a range request and a SHA-256. Those films are part of a site version, so they sit on a
+version tag; data that only tools read goes on a `data/` tag through this tool.
 
 ## Retained JSON Is One Record per Line
 

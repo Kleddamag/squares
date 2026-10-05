@@ -1,0 +1,66 @@
+$schema: https://json-schema.org/draft/2020-12/schema
+$id: packing.squares:HostedData/v1
+title: HostedData
+description: >-
+  One GitHub release that hosts bulk data outside Git (OR-18), and every object on it.
+  The manifest is committed; the objects are not. Each object is fetched to its `path`,
+  which must be git-ignored, and checked against its `size` and `sha256` on download.
+  `sqpack.hosted_data` reads this contract, and `python -m devtools.hosted_data check`
+  also refuses what a schema cannot state: a path that is not git-ignored, a repeated
+  path or asset name, and more than 1000 objects, which is the most assets GitHub
+  allows on one release. development.md, Publishing Hosted Data, is the procedure.
+type: object
+additionalProperties: false
+required: [repository, tag, objects]
+properties:
+  repository:
+    type: string
+    pattern: '^[A-Za-z0-9-]+/[A-Za-z0-9._-]+$'
+    description: The GitHub repository that holds the release, as OWNER/NAME.
+  tag:
+    type: string
+    pattern: '^data/[a-z0-9]+(-[a-z0-9]+)*-v[1-9][0-9]*$'
+    description: >-
+      The release tag, `data/<subject>-v<N>`. The `data/` namespace keeps a data
+      release from being read as a version of the project. A release's bytes never
+      change: different bytes are published under the next `v<N>`.
+  description:
+    type: string
+    minLength: 1
+    description: What the data is and which tool reads it.
+  objects:
+    type: array
+    minItems: 1
+    items: {$ref: '#/$defs/object'}
+$defs:
+  object:
+    type: object
+    additionalProperties: false
+    required: [path, asset, size, sha256]
+    properties:
+      path:
+        type: string
+        pattern: '^[A-Za-z0-9_][A-Za-z0-9._/-]*$'
+        description: >-
+          Where the object lives once fetched, relative to the repository root. It
+          must be git-ignored, so the bytes can never be committed by accident.
+      asset:
+        type: string
+        pattern: '^[A-Za-z0-9][A-Za-z0-9._-]*$'
+        description: >-
+          The asset name on the release. GitHub renames an asset whose name has other
+          characters, so the pattern keeps the name the manifest gives the name served.
+      size:
+        type: integer
+        minimum: 1
+        exclusiveMaximum: 2147483648
+        description: The object's bytes. GitHub refuses a release asset of 2 GiB or more.
+      sha256:
+        type: string
+        pattern: '^[0-9a-f]{64}$'
+        description: >-
+          The SHA-256 of the object's bytes, checked on every download: the bytes cross
+          a trust boundary (OR-16).
+      description:
+        type: string
+        minLength: 1

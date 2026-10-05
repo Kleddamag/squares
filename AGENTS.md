@@ -79,6 +79,8 @@ for each rule. Edit there, not here.
   boundaries.
 - **OR-17:** Every routine gate has a wall ceiling, and anything above it is selected on
   purpose.
+- **OR-18:** Keep bulk data out of Git, and never bind code or verdicts to a Git commit
+  or blob.
 <!-- END OPERATING RULES SUMMARY -->
 
 ## Build & Test

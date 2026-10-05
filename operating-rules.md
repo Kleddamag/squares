@@ -684,9 +684,10 @@ licence to change the rules mid-slice.
 ### OR-16: Use Git for repository integrity; reserve checksums for real trust boundaries
 
 Identify committed source, results, and review packets by Git revision and
-repository-relative path.
-Do not add SHA-256 manifests beside those files or hash both sides of a trusted
-save-and-read round trip.
+repository-relative path when citing where they came from.
+A cited revision is provenance for a reader; no program may need to resolve it to run
+(`OR-18`). Do not add SHA-256 manifests beside those files or hash both sides of a
+trusted save-and-read round trip.
 Compare complete content or regenerated semantic results when a check needs to detect
 drift.
 
@@ -773,6 +774,50 @@ question: cycle time is a floor on iteration rate, and a gate people cannot affo
 run is a gate that stops reporting.
 `think-zmos` is the efficiency block that measured this; `think-haam` tracks encoding
 the ceiling and its control.
+
+### OR-18: Keep bulk data out of Git, and never bind code or verdicts to a Git commit or blob
+
+Git holds source, records, and data small enough to review.
+It is not a data store, and the project is not a low-trust environment that needs each
+file pinned to the commit that wrote it.
+
+**Bulk data does not go into a pull request.** A retained binary or dump of more than a
+few megabytes, or a set of them totalling tens of megabytes, is hosted outside the
+repository, for example as a GitHub release asset.
+The repository keeps a small manifest naming each object, its size, its location, and a
+SHA-256. That SHA-256 is justified under `OR-16` because the object crosses a real trust
+boundary: it is downloaded.
+Receipts, verdicts, and summaries stay in Git as ordinary records.
+Decide this before the data is committed: once a blob is in a branch’s history, removing
+it means rewriting that history or rebuilding the branch, and every commit cited by hash
+in the records goes stale.
+
+**No program depends on Git history to produce its answer.** Code finds its inputs by
+repository-relative path or through a manifest, so data can move, be re-laid out, or
+leave the repository without the code changing.
+Do not:
+
+- read inputs with `git show REV:path`, `git rev-parse REV:path`, or a list of recorded
+  commits;
+- gate a result on a file’s Git blob id or commit, which makes any later edit to that
+  file, including a formatting or integrity pass, fail a correct result;
+- add a SHA-256 pin for a file the repository itself writes and commits.
+
+Recording a commit or blob id beside a result is fine as provenance.
+Refusing to run because one changed is the defect.
+When a check needs to know that an input is the one a verdict was computed from, it
+compares a semantic identity the input carries, such as a design name and version, or it
+recomputes the verdict.
+
+The owner set this on 2026-10-04, reviewing jlevy/squares#307. That branch committed
+112.5 MB of certificate dumps, 94 `.json.gz` files of up to 26 MB each, about 116 MB
+packed in history. Its census read them through `git rev-parse REV:path` at seven
+recorded verifier commits, so taking the dumps out would have broken the census, and
+rewriting the history to drop them would have invalidated 30 commits cited in 92 places.
+In the same branch, a local-theorem replay pinned another file’s blob id.
+The branch’s own integrity-ceremony edit changed that file, and from then on every
+mathematical check passed while the replay reported failure.
+Include this rule when briefing subagents that retain data or write verifiers.
 
 <!-- This document follows common-doc-guidelines.md.
 See github.com/jlevy/practical-prose and review guidelines before editing.

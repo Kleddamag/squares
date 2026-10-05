@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
 """Check the site as GitHub Pages serves it, against the commit it should be built from.
 
-`pages.yml` renders the overview and the pages beside it, the two papers under `papers/`
-with their Markdown and PDF, and the workbench from `main`, and deploys them. Nothing is
+`pages.yml` renders the overview and the pages beside it, the three papers of the n = 11
+series under `papers/` with their Markdown and PDF (`render_overview.PAPERS`), and the
+workbench from `main`, and deploys them. Nothing is
 checked in, so nothing in the repository says whether a deploy landed or what the pages
 it served link to; this asks the live site. From `packing/`:
 
@@ -46,15 +47,20 @@ the exit status is 0 only when every check passes:
 - the Markdown edition and the PDF are served beside the page under its slug and the
   composite assets at the site's root, and the PDF is a PDF with the expected page count
   and a source receipt matching the exact HTML bytes the site serves;
-- the optimality paper, which the Papers page's first card opens, is served where that
-  card points, `papers/n11-optimality-review.html`, with its Markdown and PDF beside it,
-  and each paper's bar marks Papers as the current section, from a level below the
-  root. Its own Pages job builds and checks its content. It is the one
-  page whose repository links are held to a commit and not to `main`: a paper cites the
-  evidence as it stood when the paper was typeset, so each citation on the page and in
-  its Markdown names the expected commit, the one the deploy built from, which `main`
-  keeps, and every path it cites is in that commit's tree. A citation that names `main`,
-  or any other commit, fails;
+- each review, every paper after the first (the threshold-bound review,
+  `papers/n11-threshold-bound-review.html`, and the optimality review,
+  `papers/n11-optimality-review.html`), is served where its Papers card points, with its
+  Markdown and PDF beside it, carries its own version and not the site's, and each
+  paper's bar marks Papers as the current section, from a level below the root. Its own
+  Pages job builds and checks its content. The reviews are the pages whose repository
+  links are held to a commit and not to `main`: a review cites the evidence as it stood
+  when the paper was typeset, so each citation on the page and in its Markdown names the
+  expected commit, the one the deploy built from, which `main` keeps, and every path it
+  cites is in that commit's tree. A citation that names `main`, or any other commit,
+  fails;
+- every link from one paper to another (`devtools.paper_links`), on a page and in a
+  Markdown edition, names a paper the site serves and a heading that paper has, which
+  only a site holding every paper can answer;
 - the workbench names the expected source commit, starts its public API in the pinned
   browser, and links back to this project's root rather than the account site's root;
 - every page's head carries the site's identity and link-preview tags, exactly one of
@@ -68,7 +74,8 @@ the exit status is 0 only when every check passes:
   that page's own head gives; the one that leads off the site carries a canonical link
   to it, in full, and no card.
 
-`--local DIR` asks only that last group, of a site built into a directory
+`--local DIR` asks only that last group and the links between papers, of a site built into
+a directory
 (`devtools.preview_site`, which also runs it on every build, and the Pages workflow's
 `overview` and `publish` jobs, on the overview's build and on the assembled site), and
 fetches nothing; it holds every HTML file there that is a document, every case record
@@ -124,7 +131,12 @@ from devtools.repo_links import (
     repository_tree,
 )
 from sqpack.probes import probe
-from sqpack.release import EXPLAINER_VERSION, OPTIMALITY_REVIEW_EDITION, PUBLICATION_EDITION
+from sqpack.release import (
+    EXPLAINER_VERSION,
+    OPTIMALITY_REVIEW_EDITION,
+    PUBLICATION_EDITION,
+    THRESHOLD_REVIEW_EDITION,
+)
 
 #: The JavaScript this runs in the deployed workbench, as files (`sqpack.probes`).
 PROBES = Path(__file__).resolve().parent / "probes"
@@ -162,14 +174,33 @@ SITE_PAGES = tuple(render_overview.PAGES)
 #: and were asked of GitHub when the table was on the overview.
 LINK_CHECKED_PAGES = frozenset({"index.html", "frontier.html", render_overview.RESULTS_PAGE})
 
-#: What is served with the optimality paper's page, by path under the site's root: its
-#: Markdown and its PDF, beside it under its slug. The page's path is the one the Papers
-#: card links (`overview_sections.OPTIMALITY_PAPER`).
-OPTIMALITY_PAPER_MARKDOWN = f"{OPTIMALITY_PAPER.removesuffix('.html')}.md"
-OPTIMALITY_PAPER_FILES = (
-    OPTIMALITY_PAPER_MARKDOWN,
-    f"{OPTIMALITY_PAPER.removesuffix('.html')}.pdf",
+#: Each paper's own version, as its front prints it (`sqpack.release`), by slug: the
+#: explainer's number, and each review's status and number (`Draft v0.1.4`). A test holds
+#: its slugs to the site's papers (`render_overview.PAPERS`).
+PAPER_VERSIONS: dict[str, str] = {
+    render_overview.N11_LOWER_BOUNDS_EXPLAINER: EXPLAINER_VERSION,
+    render_overview.N11_THRESHOLD_BOUND_REVIEW: THRESHOLD_REVIEW_EDITION,
+    render_overview.N11_OPTIMALITY_REVIEW: OPTIMALITY_REVIEW_EDITION,
+}
+#: The reviews, every paper after the first, by the path each is served at, which is the
+#: one its Papers card links: each built and served as the optimality review is.
+REVIEW_PAPERS: tuple[str, ...] = tuple(
+    render_overview.paper_path(paper.slug)
+    for paper in render_overview.PAPERS
+    if paper.slug != render_overview.N11_LOWER_BOUNDS_EXPLAINER
 )
+
+
+def paper_files(page: str) -> tuple[str, str]:
+    """What is served with a paper's page, by path under the site's root: its Markdown
+    and its PDF, beside it under its slug."""
+    stem = page.removesuffix(".html")
+    return f"{stem}.md", f"{stem}.pdf"
+
+
+#: What is served with the optimality paper's page (`paper_files`).
+OPTIMALITY_PAPER_MARKDOWN, _OPTIMALITY_PAPER_PDF = paper_files(OPTIMALITY_PAPER)
+OPTIMALITY_PAPER_FILES = paper_files(OPTIMALITY_PAPER)
 #: The bar's current entry on a paper's page, a level below the root.
 PAPERS_CURRENT = '<a data-page="papers" aria-current="page" href="../papers.html">'
 
@@ -595,8 +626,71 @@ def forwarder_canonicals() -> dict[str, str]:
 
 def shared_pages() -> tuple[str, ...]:
     """Every page of the site that can be shared, by the path it is served at: the
-    renderer's own pages, the explainer, the optimality paper and the workbench."""
-    return (*SITE_PAGES, LOWER_BOUNDS_PAPER, OPTIMALITY_PAPER, WORKBENCH_PAGE)
+    renderer's own pages, every paper and the workbench."""
+    return (*SITE_PAGES, LOWER_BOUNDS_PAPER, *REVIEW_PAPERS, WORKBENCH_PAGE)
+
+
+#: A link from one paper's page to another's, as `devtools.paper_links` fills it on the
+#: page: the target's page beside it, with a heading's anchor or none.
+_PAPER_PAGE_LINK = re.compile(r'href="(?P<slug>[a-z0-9-]+)\.html(?:#(?P<anchor>[^"]*))?"')
+#: The same link in a Markdown edition: the target's page at the site's address.
+_PAPER_MARKDOWN_LINK = re.compile(
+    r"\]\("
+    + re.escape(render_overview.SITE_URL + render_overview.PAPERS_DIR + "/")
+    + r"(?P<slug>[a-z0-9-]+)\.html(?:#(?P<anchor>[^)\s]*))?\)"
+)
+#: A heading's id, which is what a link between papers may name.
+_HEADING_ID = re.compile(r'<h[1-6]\b[^>]*\sid="([^"]+)"')
+
+
+def heading_ids(page: str) -> frozenset[str]:
+    """The ids of a paper's headings: the anchors a link from another paper may name."""
+    return frozenset(_HEADING_ID.findall(page))
+
+
+def cross_paper_link_checks(
+    pages: Mapping[str, str], markdowns: Mapping[str, str]
+) -> list[tuple[bool, str]]:
+    """Every link from one paper to another, on each page in `pages` and in each Markdown
+    edition in `markdowns` (each by the path it is served at), against the target: a
+    paper of the site whose page is among `pages`, and, where the link names an anchor,
+    one of that page's headings (`devtools.paper_links`). A link to a paper whose page
+    is not there is reported and not failed, as a build that skipped it would otherwise
+    always fail; one to a page the site does not serve fails. One line per source."""
+    slugs = {
+        paper.slug: render_overview.paper_path(paper.slug) for paper in render_overview.PAPERS
+    }
+    ids = {path: heading_ids(text) for path, text in pages.items()}
+    results: list[tuple[bool, str]] = []
+    sources = [(path, text, _PAPER_PAGE_LINK) for path, text in pages.items()]
+    sources += [(path, text, _PAPER_MARKDOWN_LINK) for path, text in markdowns.items()]
+    for source, text, pattern in sources:
+        found = [
+            (match["slug"], match["anchor"])
+            for match in pattern.finditer(text)
+            if pattern is _PAPER_MARKDOWN_LINK or match["slug"] in slugs
+        ]
+        if not found:
+            continue
+        broken: list[str] = []
+        unbuilt: set[str] = set()
+        for slug, anchor in found:
+            target = slugs.get(slug)
+            if target is None:
+                broken.append(f"{slug}.html, no paper of the site")
+            elif target not in ids:
+                unbuilt.add(target)
+            elif anchor and anchor not in ids[target]:
+                broken.append(f"{target}#{anchor}, no heading of that paper")
+        line = f"{source}: {len(found)} links to other papers"
+        if broken:
+            line += f", {len(broken)} broken: {broken[:5]}"
+        elif unbuilt:
+            line += f", to {sorted(unbuilt)} not in this build, so not checked"
+        else:
+            line += ", each to a paper served here and a heading it has"
+        results.append((not broken, line))
+    return results
 
 
 #: A case's record file, by its path under the site's root.
@@ -700,6 +794,12 @@ def local_head_checks(directory: Path) -> list[tuple[bool, str]]:
     absent = [name for name, found in pages.items() if found is None]
     absent += [name for name, (found, _) in forwarders.items() if found is None]
     results += [(True, f"{name}: not in this build, so not checked") for name in absent]
+    papers = (LOWER_BOUNDS_PAPER, *REVIEW_PAPERS)
+    markdowns = {paper_files(paper)[0]: text(paper_files(paper)[0]) for paper in papers}
+    results += cross_paper_link_checks(
+        {paper: found for paper in papers if (found := pages[paper]) is not None},
+        {name: found for name, found in markdowns.items() if found is not None},
+    )
 
     def served(path: str) -> bytes | None:
         found = directory / path
@@ -1338,43 +1438,52 @@ def check(
             )
         )
 
-    status, paper = fetch(site + OPTIMALITY_PAPER, timeout=timeout)
-    paper_text = paper.decode("utf-8", errors="replace")
-    current = PAPERS_CURRENT in paper_text
-    marked = f"Papers is {'' if current else 'not '}the bar's current entry"
-    line = f"optimality paper {OPTIMALITY_PAPER}: HTTP {status}, {len(paper)} bytes, {marked}"
-    results.append((status == 200 and current, line))
-    if status == 200:
-        # The review carries its own version and not the site's, as the explainer does.
-        versioned = OPTIMALITY_REVIEW_EDITION in paper_text
-        results.append(
-            (
-                versioned,
-                (
-                    f"version {OPTIMALITY_REVIEW_EDITION!r} is {'' if versioned else 'not '}"
-                    f"on {OPTIMALITY_PAPER}"
-                ),
-            )
+    # Every review, each as the optimality review has been checked since it was served:
+    # its page with Papers current in its bar, its own version and not the site's, its
+    # citations pinned to the commit, and its Markdown and PDF beside it.
+    paper_pages = {LOWER_BOUNDS_PAPER: text}
+    paper_markdowns = {LOWER_BOUNDS_MARKDOWN: markdown_text}
+    for review in REVIEW_PAPERS:
+        record = render_overview.paper_record(
+            review.removeprefix("papers/").removesuffix(".html")
         )
-        unstamped = PUBLICATION_EDITION not in paper_text
-        results.append(
-            (
-                unstamped,
-                (
-                    f"the site's edition {PUBLICATION_EDITION!r} is "
-                    f"{'not ' if unstamped else ''}on {OPTIMALITY_PAPER}, which carries its "
-                    "own version"
-                ),
+        version = PAPER_VERSIONS[record.slug]
+        status, paper = fetch(site + review, timeout=timeout)
+        paper_text = paper.decode("utf-8", errors="replace")
+        current = PAPERS_CURRENT in paper_text
+        marked = f"Papers is {'' if current else 'not '}the bar's current entry"
+        line = f"{record.label} {review}: HTTP {status}, {len(paper)} bytes, {marked}"
+        results.append((status == 200 and current, line))
+        if status == 200:
+            # A review carries its own version and not the site's, as the explainer does.
+            versioned = version in paper_text
+            results.append(
+                (versioned, f"version {version!r} is {'' if versioned else 'not '}on {review}")
             )
-        )
-        cites_commit(OPTIMALITY_PAPER, paper_text)
-    heads[OPTIMALITY_PAPER] = paper_text
-    for name in OPTIMALITY_PAPER_FILES:
-        cited_here = name == OPTIMALITY_PAPER_MARKDOWN
-        status, body = fetch(site + name, head=not cited_here, timeout=timeout)
-        results.append((status == 200, f"served {name}: HTTP {status}"))
-        if cited_here and status == 200:
-            cites_commit(name, body.decode("utf-8", errors="replace"))
+            unstamped = PUBLICATION_EDITION not in paper_text
+            results.append(
+                (
+                    unstamped,
+                    (
+                        f"the site's edition {PUBLICATION_EDITION!r} is "
+                        f"{'not ' if unstamped else ''}on {review}, which carries its "
+                        "own version"
+                    ),
+                )
+            )
+            cites_commit(review, paper_text)
+            paper_pages[review] = paper_text
+        heads[review] = paper_text
+        review_markdown, _ = paper_files(review)
+        for name in paper_files(review):
+            cited_here = name == review_markdown
+            status, body = fetch(site + name, head=not cited_here, timeout=timeout)
+            results.append((status == 200, f"served {name}: HTTP {status}"))
+            if cited_here and status == 200:
+                found = body.decode("utf-8", errors="replace")
+                cites_commit(name, found)
+                paper_markdowns[name] = found
+    results.extend(cross_paper_link_checks(paper_pages, paper_markdowns))
 
     # No link written before a page moved or was withdrawn breaks: a page's old address
     # forwards, and a file's old address serves the same bytes. A deploy that dropped a

@@ -14,16 +14,17 @@ reader documents the site links by name are defined once here, and each renderer
 them through these constants rather than by writing the path again. A path that is not
 in the tree `main` will hold fails the render (`site_documents`) or the render-time test
 (`tests/test_repo_links.py`), and the deployed-site check refuses any page that links a
-commit by its hash, the optimality paper aside.
+commit by its hash, the two reviews aside.
 
 Two things name a commit on purpose. The committed claim documents name their edition's
 revision (`render_n11_lower_bounds_explainer.edition_file`); they are not site pages. The
-optimality paper is one, and pins each citation to the commit it was built from
-(`render_n11_optimality_review.link_revision`): a paper cites the evidence as it stood when it
-was typeset, with anchors into reviews and receipts that keep changing on `main`. The hazard
-above does not reach the deployed paper, since the deploy builds it from the commit it deploys,
-which `main` keeps; the deployed-site check holds each of its citations to that commit and to
-its tree (`check_published_site.paper_citations`).
+reviews are site pages, Parts II and III of the n = 11 series, and each pins every citation
+to the commit it was built from (`render_n11_optimality_review.link_revision`, and the
+threshold-bound review's renderer, which is modelled on it, the same way): a paper cites the
+evidence as it stood when it was typeset, with anchors into reviews and receipts that keep
+changing on `main`. The hazard above does not reach a deployed review, since the deploy builds
+it from the commit it deploys, which `main` keeps; the deployed-site check holds each of its
+citations to that commit and to its tree (`check_published_site.paper_citations`).
 """
 
 from __future__ import annotations

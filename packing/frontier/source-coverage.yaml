@@ -1114,18 +1114,22 @@ sources:
     represented_by: [frontier/n-067.md, frontier/n-084.md]
     evidence:
       - E-n067-wand125-mixed-848-report
+      - E-n067-wand125-mixed-848-sqverify-fast-replay
       - E-n084-wand125-mixed-9411-report
+      - E-n084-wand125-mixed-9411-sqverify-fast-replay
     notes: >-
       Revision a541afbe7826ff75f6d3848e10279fd524d55af3, retrieved at 2026-10-05T07:36Z for
       two comments of 5 October on jlevy/squares#282. Two rectangle densities checked at
       coverage one by the source's research copy of Tokoharu's verify.cpp, byte for byte the
       checker of its n = 50 certificate, each of mass n - 1/100000 and added by its own
-      commit, pinned together at the second. Both are recorded as reported lower bounds
+      commit, pinned together at the second. Both were recorded as reported lower bounds
       (T-094), each above what the record reported at its count; they supersede the source's
       mixed_n67_L8475 and mixed_n84_L94075 (T-090). The directories carry no
       completion-audit.json, so each tarball is bound by its digest at the pinned tree. The
-      exact audit and the replay's checks before its first angle pass on both; no angle was
-      replayed, and the proof-bundle tarballs are pinned by digest and not retained. The
+      exact audit and the replay's checks before its first angle pass on both. On 5 October
+      sqverify-fast, this repository's clean-room measure verifier, decided both at all 201
+      net directions, which put them in the verified lane; the source's own checker was not
+      run here, and the proof-bundle tarballs are pinned by digest and not retained. The
       revision changes nothing else after 797bdf6, the evening packet's pin.
   - id: wand125-valid7-independent-check-2026-10-02
     title: Independent exact checker of Valid7 for s(k^2 - 3) = k

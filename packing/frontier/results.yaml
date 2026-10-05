@@ -8509,10 +8509,10 @@ results:
   - id: T-094
     kind: lower-bound
     registered: '2026-10-05'
-    headline: "Mixed rectangle-measure lower bounds reported at `n = 67` and `84`"
+    headline: "Mixed rectangle-measure lower bounds verified at `n = 67` and `84`"
     claim: >-
-      wand125/square-packing-bounds reports two rectangle-density certificates published on
-      5 October 2026, after those of T-091: s(67) >= 212/25 = 8.48 and s(84) >= 9411/1000 =
+      Two rectangle densities of wand125/square-packing-bounds, checked at coverage one and
+      published on 5 October 2026, prove s(67) >= 212/25 = 8.48 and s(84) >= 9411/1000 =
       9.411.
 
       Each is a density of uniform rectangles in D4 orbits, 536 at n = 67 and 686 at n = 84,
@@ -8523,15 +8523,17 @@ results:
       threshold one, and at the axis by exact integer tables. Both supersede the source's
       certificates of T-090 at the same count, mixed_n67_L8475 and mixed_n84_L94075.
 
-      Both values are above what the record reported at their counts, T-090's 339/40 and
-      3763/400, by 0.005 and 0.0035. A packing of n + 1 squares contains one of n, but at n =
-      68 and 85 the record already reports more (851/100 and 473/50), so neither carries
-      further.
+      Both values are above what the record held at their counts: the verified 1691/200 and
+      47/5, by 0.025 and 0.011, and T-090's reported 339/40 and 3763/400, by 0.005 and
+      0.0035. A packing of n + 1 squares contains one of n, but at n = 68 and 85 the record
+      already holds more in both lanes (851/100 and 473/50), so neither carries further.
 
-      Here the source was retained, its exact premises were recomputed from the retained
-      bytes, and the replay's checks before its first angle were run on each pinned tarball.
-      None of it decides coverage, and no angle was replayed. The values stand as reported,
-      and the verified lower bounds are unchanged.
+      Each certificate was decided here on 5 October 2026 by sqverify-fast, this
+      repository's clean-room measure verifier, at all 201 net directions of the retained
+      candidate, and two mutants of each scaled below coverage one were refused: confirmed,
+      independently re-implemented. The verifier shares no code with the source's checker and
+      runs the same net-and-shrink method, so it is a second implementation and not a second
+      method. The source's own checker was not run here.
 
       wand125 after Tokoharu and Levy,
       [square-packing-bounds](https://github.com/wand125/square-packing-bounds/tree/a541afbe7826ff75f6d3848e10279fd524d55af3/certificates).
@@ -8539,46 +8541,73 @@ results:
       The source says parts of the work were produced with AI assistance under human
       direction.
     scope: {n_values: [67, 84]}
-    verification: V0
-    confirmation: C0
+    verification: V3
+    confirmation: C3
     significance:
       score: 3
       rationale: >-
-        Scored as a claim: if the replays pass, the strongest verified lower bounds on record
-        at n = 67 and 84, and the strongest reported at both. Further sizes from the
-        generator and checker of T-069, T-071, T-072, T-075, T-082, T-090 and T-091, with no
-        new technique, at S3 as those are; the score gates nothing.
+        The strongest verified lower bounds on record at n = 67 and 84, above the replayed
+        rectangle and mixed certificates that held them by 0.025 and 0.011. Further sizes from
+        the generator and checker of T-069, T-071, T-072, T-075, T-082, T-090 and T-091, with
+        no new technique, at S3 as those are. The review of 5 October confirmed S3: that they
+        are the source's first certificates verified here by an independently re-implemented
+        replay is a fact about this repository's confirmation, not about the result.
       scored: '2026-10-05'
-      by: 'issue-282 October 5 import, registering lane (repository; draft)'
+      by: docs/project/reviews/review-2026-10-05-wand125-october-5-and-independent-replays.md (repository; confirms the registering lane's draft)
     novelty: previously-published
     attribution:
       source_keys: ['[wand125 mixed bounds 2026-10-05]']
       published: '2026-10-05'
     composition: >-
-      Two primary certificates, each on its own reported entry, at V0/C0: retained and
-      audited for their exact premises, not reviewed and not replayed. Coverage is decided
-      by the source's C++ checker alone, byte for byte the checker the 28 September and 2,
-      3 and 5 October reviews read; the axis tables are a second implementation for one
-      direction and not a second method.
+      Two primary certificates, each on its own reported entry and its own replay entry.
+      Each replay is sqverify-fast at all 201 net directions of the retained candidate: one
+      interval-certified method, replayed here by an independent implementation, C3. The
+      source's checker and axis tables were not run here, so no second method and no
+      reproduction with the producer's code stands beside it.
     evidence:
       - E-n067-wand125-mixed-848-report
+      - E-n067-wand125-mixed-848-sqverify-fast-replay
       - E-n084-wand125-mixed-9411-report
+      - E-n084-wand125-mixed-9411-sqverify-fast-replay
+    reviews:
+      - path: docs/project/reviews/review-2026-10-05-wand125-october-5-and-independent-replays.md
+        kind: adversarial
+        reviewer: AI agent, the review lane of the 2026-10-05 stage 4 for T-094 and the independent replays (claude-opus-5-5, tbd-strong tier), prompted separately from the registering and replay lanes
+        reviewer_kind: ai
+        relation: project
+        date: '2026-10-05'
+        scope: >-
+          The mathematics of mixed_n67_L848 and mixed_n84_L9411, every exact premise recomputed by its own code, and the sqverify-fast census rows and control receipts as a complete replay here; written after the replays.
+        verdict: accepted
+        covers: [T-094]
     artifacts:
       - packing/resources/web/wand125-mixed-bounds-2026-10-05/README.md
       - packing/resources/web/wand125-mixed-bounds-2026-10-05/receipts/mixed-audit.json
       - packing/devtools/audit_wand125_point_and_mixed.py
+      - packing/benchmarks/measure-verifier/census-mixed/census.json
+      - packing/benchmarks/measure-verifier/census-mixed/wand125-mixed-bounds-2026-10-05/mixed_n67_L848.jsonl.gz
+      - packing/benchmarks/measure-verifier/census-mixed/wand125-mixed-bounds-2026-10-05/mixed_n84_L9411.jsonl.gz
+      - packing/devtools/sqverify_fast_census.py
+      - docs/project/reviews/review-2026-10-05-wand125-october-5-and-independent-replays.md
+    controls:
+      - packing/benchmarks/measure-verifier/census-mixed/wand125-mixed-bounds-2026-10-05/mixed_n67_L848.control.json
+      - packing/benchmarks/measure-verifier/census-mixed/wand125-mixed-bounds-2026-10-05/mixed_n84_L9411.control.json
+      - packing/tests/test_sqverify_fast_census.py
     next_rung: >-
-      A review of the two certificates, as the 5 October review read T-090 and T-091, for
-      C1; and the complete replays, about 26.5 CPU-hours planned (21.2 by the source's own
-      oblique seconds), with devtools.audit_wand125_point_and_mixed mixed-shard
-      wand125-mixed-bounds-2026-10-05 --runners 2 for the ranges, mixed-replay on each and
-      mixed-merge per certificate, before any verified lower bound is raised; a count's
-      verified lower bound moves when its replay returns the certificate's own record at all
-      201 directions. Both are think-flv5's, held for a compute budget.
+      V4 and C4 need two adversarial AI reviews by distinct reviewers and a human oversight
+      record; one adversarial review is retained. A replay of the source's own checker,
+      devtools.audit_wand125_point_and_mixed mixed-shard wand125-mixed-bounds-2026-10-05
+      --runners 2 (about 26.5 CPU-hours planned), would add a reproduction with the
+      producer's code beside the rung; a second machine method would be a method-distinct
+      decision of rotated coverage.
     notes: >-
-      V0 because each cited entry is the source's claim: assurance reported, replay not
-      attempted. C0 because nothing here has read the certificates' mathematics: the exact
-      audit and the pre-replay checks decide no direction. One entry for the two pinned
-      together at one revision; a later revision than T-091's, so a separate entry. At n =
-      67 and 84 it raises T-090's values, which keep their claim. The proof-bundle tarballs
-      are pinned by digest and not retained. Ids here are provisional until merged.
+      Raised from V0/C0 on 5 October 2026 (think-7fxu, the stage 4 of think-flv5): the two
+      sqverify-fast replays, 1,388 and 1,878 CPU seconds at two threads, and the review of
+      that day, prompted separately from the registering and replay lanes, which read the
+      certificates' mathematics and the replays and found no blocking defect (IR-1 to IR-5,
+      notes; IR-1 and IR-4 are stated in the replay entries, and IR-2's amendment of
+      result-import.md stage 4 lands with this exit). The first result by others moved to the
+      verified lane by an independently re-implemented replay and not by the source's own
+      checker; the 26.5 CPU-hours planned for that replay were not spent. Ids here are
+      provisional until merged. The proof-bundle tarballs are pinned by digest and not
+      retained.

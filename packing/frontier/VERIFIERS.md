@@ -25,8 +25,8 @@ second implementation agrees.
 
 ## The Short Version
 
-- **81** programs: **31** external and **50** first-party; **64** decide claims and **17** check premises.
-- **266** of **293** evidence entries name the programs that verified them: 199 reproduced with the producer’s code, 51 independently re-implemented, 9 no relation: a proof, a derivation or a report, 7 re-implemented, sharing the producer’s components.
+- **82** programs: **31** external and **51** first-party; **65** decide claims and **17** check premises.
+- **268** of **295** evidence entries name the programs that verified them: 199 reproduced with the producer’s code, 53 independently re-implemented, 9 no relation: a proof, a derivation or a report, 7 re-implemented, sharing the producer’s components.
 
 ## Programs
 
@@ -103,6 +103,7 @@ second implementation agrees.
 | [`V-audit-wand125-rectangles`](#v-audit-wand125-rectangles) | devtools.audit_wand125_rectangles | Squares Project (Levy) | first-party | premises | 3 | 3 |
 | [`V-audit-wand125-point-and-mixed`](#v-audit-wand125-point-and-mixed) | devtools.audit_wand125_point_and_mixed | Squares Project (Levy) | first-party | premises | 17 | 7 |
 | [`V-audit-wand125-linear`](#v-audit-wand125-linear) | devtools.audit_wand125_linear | Squares Project (Levy) | first-party | premises | 3 | 3 |
+| [`V-sqverify-fast`](#v-sqverify-fast) | sqverify-fast | Squares Project (Levy) | first-party | decides | 2 | 1 |
 | [`V-replay-chelokot-lean`](#v-replay-chelokot-lean) | devtools.replay_chelokot_lean | Squares Project (Levy) | first-party | premises | 1 | 1 |
 | [`V-replay-evand-zmx2`](#v-replay-evand-zmx2) | devtools.replay_evand_zmx2 | Squares Project (Levy) | first-party | premises | 5 | 5 |
 | [`V-audit-evand-mixed-covers`](#v-audit-evand-mixed-covers) | devtools.audit_evand_mixed_covers | Squares Project (Levy) | first-party | premises | 9 | 8 |
@@ -1388,6 +1389,22 @@ The audit, replay driver and controls for wand125's linear certificates.
 | `E-n083-wand125-linear-935-source-replay` | replayed here | producer’s code | T-073 |
 | `E-n101-wand125-linear-1028-source-replay` | replayed here | producer’s code | T-080 |
 | `E-n082-wand125-linear-932-source-replay` | replayed here | producer’s code | T-076 |
+
+### `V-sqverify-fast`
+
+**sqverify-fast, run at all 201 net directions by devtools.sqverify_fast_census** · Squares Project (Levy) · first-party · decides · Rust, Python · interval-certified
+
+Decides a measure-capture lower-bound certificate of format T, M or L on the 201-direction net: exact admission of its premises, then an exact-event vertex sweep at the axis and outward-rounded interval branch and bound at every other direction, every shrunk square at every centre of its domain capturing at least the threshold.
+
+- Source: [`packing/sqverify_fast`](../../packing/sqverify_fast), [`packing/devtools/sqverify_fast_census.py`](../../packing/devtools/sqverify_fast_census.py), [`packing/devtools/check_sqverify_fast.py`](../../packing/devtools/check_sqverify_fast.py)
+- Versions run: this repository's commits, which Git holds
+- What its authors read and used: [`packing/sqverify_fast/independence-record.yaml`](../../packing/sqverify_fast/independence-record.yaml)
+- Note: A clean-room verifier, written from the mathematics without opening the authors' checkers (packing/sqverify_fast/INDEPENDENCE.md), its lemmas proved in packing/sqverify_fast/SOUNDNESS.md, and accepted at 4ddf37d9c by the two adversarial reviews of 3 October 2026, of its soundness and of its testing and independence. Its census drives the binary, keeps every direction's receipt and puts negative controls on a certificate at its least-bound direction, with check_sqverify_fast's exact evaluator and mutation helpers; neither decides coverage.
+
+| evidence | run | code | results |
+| --- | --- | --- | --- |
+| `E-n067-wand125-mixed-848-sqverify-fast-replay` | replayed here | independent | T-094 |
+| `E-n084-wand125-mixed-9411-sqverify-fast-replay` | replayed here | independent | T-094 |
 
 ### `V-replay-chelokot-lean`
 

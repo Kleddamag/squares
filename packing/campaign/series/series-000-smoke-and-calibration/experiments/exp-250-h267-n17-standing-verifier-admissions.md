@@ -145,6 +145,9 @@ N1’s earlier full pass, by an earlier version of the verifier, stays beside it
 `verification-5c550f7c.json`, with the same counts.
 Both certificate directories keep their `-pending` names, because each verification
 receipt names its directory and the census requires that name.
+*Annotation, 2026-10-05:* since `74b9b686f` the census matches a verification by the
+content ids in the objects’ file names, not by directory, so these directories may be
+renamed without verifying them again (`think-ssm3` item 1).
 
 ## What It Changes
 

@@ -1,8 +1,9 @@
 """Controls for the n17 certified census: what it refuses, what it counts, and its data.
 
 Every fixture lives in a temporary directory that is not a Git checkout: the census reads
-no history (OR-18). Hosted certificate objects are listed in a fabricated manifest and,
-where a test needs them in place, written at their paths.
+no history (OR-18). Hosted certificate objects are listed in a fabricated manifest in the
+hosted-data contract (`sqpack.hosted_data`) and, where a test needs them in place, written
+at their paths.
 """
 
 from __future__ import annotations
@@ -27,16 +28,26 @@ from devtools.census_n17_certified import (
     RefusedError,
     census,
     cover_context,
-    hosted_objects,
+    hosted_files,
     main,
 )
 from devtools.select_n17_sub_patterns import SCHEMA as SELECTOR_SCHEMA
+from sqpack.hosted_data import CONTRACT, fetch_command
 
 W7 = ["corner-SW", "side-N0", "side-W0", "side-W1", "side-W2", "interior-SW", "interior-W"]
 A = ["interior-SW", "interior-NW", "interior-W", "interior-S", "interior-N", "interior-SE"]
 VERIFIERS = {"kernel": "tools/verify_kernel.py", "branch-and-bound": "tools/verify_bb.py"}
 LISTINGS = {"kernel": "kernel-v1", "branch-and-bound": "bb-v1"}
 MANIFEST = "hosted.yaml"
+HOSTED_HEAD = {
+    "softschema": {
+        "contract": CONTRACT,
+        "schema": "hosted-data.schema.yaml",
+        "status": "enforced",
+    },
+    "repository": "jlevy/squares",
+    "tag": "data/census-fixture-v1",
+}
 EXP250_CENSUS = (
     REPO
     / "packing/campaign/series/series-000-smoke-and-calibration/results"
@@ -112,7 +123,7 @@ def saved_certificate(
     document = (
         json.loads(manifest.read_text(encoding="utf-8"))
         if manifest.exists()
-        else {"repository": "jlevy/squares", "tag": "data-test-v1", "objects": []}
+        else {**HOSTED_HEAD, "objects": []}
     )
     listed = {item["path"] for item in document["objects"]}
     for file_name in object_files(name or directory, certifier):
@@ -294,8 +305,9 @@ def test_only_admitted_entries_are_counted_and_need_no_hosted_bytes(tmp_path: Pa
     assert record["entries"][0]["certificate_data"]["local"] == "absent"
     assert record["data"]["certificates_not_in_place"] == 1
     assert record["data"]["full_recheck"] == (
-        "run python -m devtools.hosted_data fetch --manifest hosted.yaml"
+        f"run {fetch_command(tmp_path / MANIFEST)} from packing/"
     )
+    assert "python -m devtools.hosted_data fetch --manifest " in record["data"]["full_recheck"]
     receipt = entries[0]["receipt"]
     with pytest.raises(RefusedError, match="evidence"):
         _ = run_census(tmp_path, [entry("W7", W7, receipt, status="admitted")])
@@ -534,7 +546,10 @@ def test_objects_in_place_are_reported_and_one_of_another_size_is_refused(
     assert after["certified"] == before["certified"]
     placed = tmp_path / "certificates/W7" / object_files("W7", "kernel")[0]
     _ = placed.write_bytes(b"truncated")
-    with pytest.raises(RefusedError, match="not the manifest's"):
+    with pytest.raises(RefusedError, match="differs from its manifest"):
+        _ = run_census(tmp_path, entries)
+    _ = placed.write_bytes(b"x" * len(payload(placed.name)))  # the size, other bytes
+    with pytest.raises(RefusedError, match=r"differs from its manifest \(sha256"):
         _ = run_census(tmp_path, entries)
     placed.unlink()
     partial = run_census(tmp_path, entries)
@@ -551,12 +566,16 @@ def test_the_cli_names_the_fetch_command_when_objects_are_absent(
     assert main([*command, "--ledger", "ledger.yaml"]) == 0
     captured = capsys.readouterr()
     assert json.loads(captured.out)["certified"]["admitted"] == 1
-    assert "python -m devtools.hosted_data fetch --manifest hosted.yaml" in captured.err
+    assert fetch_command(tmp_path / MANIFEST) in captured.err
     assert main([*command, "--ledger", "missing.yaml"]) == 2
     assert "does not exist" in json.loads(capsys.readouterr().out)["refused"]
 
 
-def test_the_manifest_is_refused_when_malformed(tmp_path: Path) -> None:
+def test_the_manifest_is_refused_unless_it_meets_the_hosted_data_contract(
+    tmp_path: Path,
+) -> None:
+    """The census reads its manifest through `sqpack.hosted_data`, so a manifest outside
+    the contract refuses the count, as does an object listed twice."""
     good = {
         "path": "certificates/W7/x.json.gz",
         "asset": "x.json.gz",
@@ -564,23 +583,28 @@ def test_the_manifest_is_refused_when_malformed(tmp_path: Path) -> None:
         "sha256": "a" * 64,
         "description": "optional",
     }
-    head = {"repository": "jlevy/squares", "tag": "data-test-v1"}
+    ledger = {"data_manifest": MANIFEST}
+    bare = {key: value for key, value in HOSTED_HEAD.items() if key != "softschema"}
     for document, message in (
-        ({**head, "objects": [{**good, "size": -1}]}, "byte count"),
-        ({**head, "objects": [{**good, "sha256": "A" * 64}]}, "hex"),
-        ({**head, "objects": [{**good, "path": "/abs/x.json.gz"}]}, "repository-relative"),
-        ({**head, "objects": [{**good, "url": "https://x"}]}, "needs path, asset"),
-        ({**head, "objects": [good, good]}, "listed twice"),
-        ({"repository": "jlevy/squares", "objects": [good]}, "a repository and a tag"),
-        ({**head, "objects": {}}, "objects must be a list"),
+        ({**HOSTED_HEAD, "objects": [{**good, "size": -1}]}, "minimum"),
+        ({**HOSTED_HEAD, "objects": [{**good, "sha256": "A" * 64}]}, "does not match"),
+        ({**HOSTED_HEAD, "objects": [{**good, "path": "/abs/x.json.gz"}]}, "does not match"),
+        ({**HOSTED_HEAD, "objects": [{**good, "url": "https://x"}]}, "url"),
+        ({**HOSTED_HEAD, "objects": [good, good]}, "listed twice"),
+        ({**HOSTED_HEAD, "tag": "data-test-v1", "objects": [good]}, "does not match"),
+        ({**bare, "objects": [good]}, "softschema.contract missing"),
+        ({**HOSTED_HEAD, "objects": {}}, "array"),
     ):
         _ = (tmp_path / MANIFEST).write_text(json.dumps(document), encoding="utf-8")
-        with pytest.raises(RefusedError, match=message):
-            _ = hosted_objects(tmp_path, MANIFEST)
+        with pytest.raises(RefusedError, match=f"data_manifest {MANIFEST}: .*{message}"):
+            _ = hosted_files(tmp_path, ledger)
     _ = (tmp_path / MANIFEST).write_text(
-        json.dumps({**head, "objects": [good]}), encoding="utf-8"
+        json.dumps({**HOSTED_HEAD, "objects": [good]}), encoding="utf-8"
     )
-    assert hosted_objects(tmp_path, MANIFEST)["certificates/W7/x.json.gz"].size == 1
+    hosted = hosted_files(tmp_path, ledger)
+    assert hosted.manifest == tmp_path / MANIFEST
+    assert hosted.objects["certificates/W7/x.json.gz"].size == 1
+    assert hosted_files(tmp_path, {}).objects == {}
 
 
 def test_the_committed_ledger_counts_its_four_admitted_entries_without_the_dumps() -> None:

@@ -75,7 +75,35 @@ evidence:
       derived here. Certificate novelty is not assessed. Endpoint feasibility only. Catalogue degree18 polynomial
       identity remains unestablished. Conditional minimality depends on specified projection branches; first-order
       stationarity, unrestricted local minimality and global optimality remain unproved. No new packing
-      discovery is claimed.
+      discovery is claimed. Annotation (2026-10-05). The catalogue degree-18 identity is now established
+      (E-n017-catalogue-polynomial-identity, exp-245) and first-order stationarity is certified (exp-242);
+      unrestricted local minimality and global optimality remain unproved.
+
+  - id: E-n017-catalogue-polynomial-identity
+    claim: derived-structure
+    scope: *id001
+    assurance: verified
+    method: exact-algebraic
+    performed_by: repository
+    relationship_to_generator: same-implementation
+    replay_status: passed
+    verifiers: [V-n17-catalogue-polynomial]
+    source_reviewed: '2026-10-02'
+    origin: audited-here
+    certificate: packing/campaign/series/series-000-smoke-and-calibration/results/exp-245-n17-catalogue-polynomial/run-001/receipt.json
+    replay: From packing, .venv/bin/python3 -m devtools.check_n17_catalogue_polynomial --output FILE; the
+      exact line is in exp-245's run-001/command.txt. The independent review's separate recomputation is
+      retained under results/exp-245-n17-catalogue-polynomial/audit/.
+    external_review:
+      state: informally-verified
+      date: '2026-10-02'
+      reviewed_by: Session 167 independent output review, which recomputed every step in separate code
+      note: A separate resultant chain, Sturm counts and a second elimination order agree; irreducibility
+        is certified by Rabin tests mod 7, 103, 167 and 173. Encloses S* to width 1e-40.
+    limitations: Identifies the side of the H255 chart endpoint with the root of the degree-18 polynomial
+      recorded in n-017.md, and proves that polynomial irreducible over Q. No packing, feasibility or
+      optimality claim; the rational ceiling (E-n017-certified-endpoint) and the open status are unchanged.
+      The catalogue's own derivation of the polynomial remains unreviewed source material.
 
   - id: E-n060-evand-mixed-cover-report
     claim: lower-bound

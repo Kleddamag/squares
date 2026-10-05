@@ -808,6 +808,7 @@ The repository keeps a small manifest naming each object, its size, its location
 SHA-256. That SHA-256 is justified under `OR-16` because the object crosses a real trust
 boundary: it is downloaded.
 Receipts, verdicts, and summaries stay in Git as ordinary records.
+[Publishing Hosted Data](development.md#publishing-hosted-data) is the procedure.
 Decide this before the data is committed: once a blob is in a branch’s history, removing
 it means rewriting that history or rebuilding the branch, and every commit cited by hash
 in the records goes stale.

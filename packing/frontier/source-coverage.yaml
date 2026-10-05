@@ -1024,8 +1024,9 @@ sources:
       the checker of its n = 50 certificate, each of mass n - 1/100000 and added by its own
       commit, pinned together at the last. All 16 are recorded as reported lower bounds
       (T-090), each above what the record reported at its count; at n = 88 and 94 the
-      source's certificates of later that day (T-091, the evening packet) are higher, and
-      the case records report those. Nine supersede certificates this record holds: eight of
+      source's certificates of later that day (T-091, the evening packet) are higher, and at
+      n = 67 and 84 those of 5 October (T-094, the 2026-10-05 packet), and the case records
+      report those. Nine supersede certificates this record holds: eight of
       T-082 and mixed_n84_L940 (T-071). The directories carry no completion-audit.json, so
       each tarball is bound by its digest at the pinned tree. The exact audit and the
       replay's checks before its first angle pass on all 16; no angle was replayed, and the
@@ -1099,6 +1100,33 @@ sources:
       is recorded as an evidence update on its entry's report evidence, and none moves a
       rung; nothing new was run here. The s(21) = 5 bundle parts, 455 MB, are pinned
       through the retained archive index rather than digested here.
+  - id: wand125-mixed-bounds-2026-10-05
+    title: Mixed rectangle-measure certificates of 5 October 2026 for n = 67 and 84
+    role: source-repository
+    url: https://github.com/wand125/square-packing-bounds/tree/a541afbe7826ff75f6d3848e10279fd524d55af3
+    local: resources/web/wand125-mixed-bounds-2026-10-05/
+    source_key: '[wand125 mixed bounds 2026-10-05]'
+    scope: {n_values: [67, 84]}
+    reviewed: '2026-10-05'
+    source_date: '2026-10-05'
+    disposition: current-report
+    replay_disposition: case-specific
+    represented_by: [frontier/n-067.md, frontier/n-084.md]
+    evidence:
+      - E-n067-wand125-mixed-848-report
+      - E-n084-wand125-mixed-9411-report
+    notes: >-
+      Revision a541afbe7826ff75f6d3848e10279fd524d55af3, retrieved at 2026-10-05T07:36Z for
+      two comments of 5 October on jlevy/squares#282. Two rectangle densities checked at
+      coverage one by the source's research copy of Tokoharu's verify.cpp, byte for byte the
+      checker of its n = 50 certificate, each of mass n - 1/100000 and added by its own
+      commit, pinned together at the second. Both are recorded as reported lower bounds
+      (T-094), each above what the record reported at its count; they supersede the source's
+      mixed_n67_L8475 and mixed_n84_L94075 (T-090). The directories carry no
+      completion-audit.json, so each tarball is bound by its digest at the pinned tree. The
+      exact audit and the replay's checks before its first angle pass on both; no angle was
+      replayed, and the proof-bundle tarballs are pinned by digest and not retained. The
+      revision changes nothing else after 797bdf6, the evening packet's pin.
   - id: wand125-valid7-independent-check-2026-10-02
     title: Independent exact checker of Valid7 for s(k^2 - 3) = k
     role: source-repository

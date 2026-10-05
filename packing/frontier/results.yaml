@@ -8106,7 +8106,8 @@ results:
       All 16 values were above what the record reported at their counts, by 0.003 to 0.0375:
       over T-082 at eight counts, T-071 at n = 84, and the source's rectangle certificates
       (T-046, T-068, T-077) at seven. At n = 88 and 94 the source's certificates of later
-      that day (T-091) are higher, and the case records report those. A packing of n + 1
+      that day (T-091) are higher, and at n = 67 and 84 those of 5 October (T-094); the case
+      records report those. A packing of n + 1
       squares contains one of n, but at each next count the record already reports more, so
       none carries further.
 
@@ -8127,7 +8128,7 @@ results:
       score: 3
       rationale: >-
         Scored as a claim: if the replays pass, the strongest verified lower bounds on record
-        at 16 counts from n = 42 to 95, and the strongest reported at 14 of them. Further
+        at 16 counts from n = 42 to 95, and the strongest reported at 12 of them. Further
         sizes from the generator and checker of T-069, T-071, T-072, T-075 and T-082, with
         no new technique, at S3 as those are; the score gates nothing.
       scored: '2026-10-05'
@@ -8191,7 +8192,8 @@ results:
       One entry for the 16 pinned together at one revision, as T-082 is for its 22; mixed_n86_L9503 and
       mixed_n69_L862 were requested after the other fourteen and before the pin. A later
       revision than T-082's, so a separate entry. At n = 88 and 94 the later T-091 raises
-      the reported bound, and this entry keeps its claim there. The packet also retains the
+      the reported bound, and at n = 67 and 84 the later T-094; this entry keeps its claim
+      there. The packet also retains the
       source's answer to findings OC-1 and OC-2 of the review of T-082, recorded on T-082's
       and T-075's evidence. The proof-bundle tarballs are pinned by digest and not retained.
   - id: T-091
@@ -8503,3 +8505,80 @@ results:
       the reach of this charge below 186417711/40000000 (review RF-7), so a higher bound
       needs a new charge or an argument across parents. Rung 5 needs a proof-assistant
       formalization reviewed by human experts.
+
+  - id: T-094
+    kind: lower-bound
+    registered: '2026-10-05'
+    headline: "Mixed rectangle-measure lower bounds reported at `n = 67` and `84`"
+    claim: >-
+      wand125/square-packing-bounds reports two rectangle-density certificates published on
+      5 October 2026, after those of T-091: s(67) >= 212/25 = 8.48 and s(84) >= 9411/1000 =
+      9.411.
+
+      Each is a density of uniform rectangles in D4 orbits, 536 at n = 67 and 686 at n = 84,
+      and no point mass, of total mass n - 1/100000, at core side 9977/10000 on 201 net
+      half-angles of step 83/40000, of the kind and checker of T-082, T-090 and T-091. The
+      source reports each accepted at all 200 oblique net angles by
+      code/mixed_rotated_verify.cpp, its research copy of Tokoharu's verify.cpp at coverage
+      threshold one, and at the axis by exact integer tables. Both supersede the source's
+      certificates of T-090 at the same count, mixed_n67_L8475 and mixed_n84_L94075.
+
+      Both values are above what the record reported at their counts, T-090's 339/40 and
+      3763/400, by 0.005 and 0.0035. A packing of n + 1 squares contains one of n, but at n =
+      68 and 85 the record already reports more (851/100 and 473/50), so neither carries
+      further.
+
+      Here the source was retained, its exact premises were recomputed from the retained
+      bytes, and the replay's checks before its first angle were run on each pinned tarball.
+      None of it decides coverage, and no angle was replayed. The values stand as reported,
+      and the verified lower bounds are unchanged.
+
+      wand125 after Tokoharu and Levy,
+      [square-packing-bounds](https://github.com/wand125/square-packing-bounds/tree/a541afbe7826ff75f6d3848e10279fd524d55af3/certificates).
+      Registration was requested in two comments of 5 October 2026 on jlevy/squares#282.
+      The source says parts of the work were produced with AI assistance under human
+      direction.
+    scope: {n_values: [67, 84]}
+    verification: V0
+    confirmation: C0
+    significance:
+      score: 3
+      rationale: >-
+        Scored as a claim: if the replays pass, the strongest verified lower bounds on record
+        at n = 67 and 84, and the strongest reported at both. Further sizes from the
+        generator and checker of T-069, T-071, T-072, T-075, T-082, T-090 and T-091, with no
+        new technique, at S3 as those are; the score gates nothing.
+      scored: '2026-10-05'
+      by: 'issue-282 October 5 import, registering lane (repository; draft)'
+    novelty: previously-published
+    attribution:
+      source_keys: ['[wand125 mixed bounds 2026-10-05]']
+      published: '2026-10-05'
+    composition: >-
+      Two primary certificates, each on its own reported entry, at V0/C0: retained and
+      audited for their exact premises, not reviewed and not replayed. Coverage is decided
+      by the source's C++ checker alone, byte for byte the checker the 28 September and 2,
+      3 and 5 October reviews read; the axis tables are a second implementation for one
+      direction and not a second method.
+    evidence:
+      - E-n067-wand125-mixed-848-report
+      - E-n084-wand125-mixed-9411-report
+    artifacts:
+      - packing/resources/web/wand125-mixed-bounds-2026-10-05/README.md
+      - packing/resources/web/wand125-mixed-bounds-2026-10-05/receipts/mixed-audit.json
+      - packing/devtools/audit_wand125_point_and_mixed.py
+    next_rung: >-
+      A review of the two certificates, as the 5 October review read T-090 and T-091, for
+      C1; and the complete replays, about 26.5 CPU-hours planned (21.2 by the source's own
+      oblique seconds), with devtools.audit_wand125_point_and_mixed mixed-shard
+      wand125-mixed-bounds-2026-10-05 --runners 2 for the ranges, mixed-replay on each and
+      mixed-merge per certificate, before any verified lower bound is raised; a count's
+      verified lower bound moves when its replay returns the certificate's own record at all
+      201 directions. Both are think-flv5's, held for a compute budget.
+    notes: >-
+      V0 because each cited entry is the source's claim: assurance reported, replay not
+      attempted. C0 because nothing here has read the certificates' mathematics: the exact
+      audit and the pre-replay checks decide no direction. One entry for the two pinned
+      together at one revision; a later revision than T-091's, so a separate entry. At n =
+      67 and 84 it raises T-090's values, which keep their claim. The proof-bundle tarballs
+      are pinned by digest and not retained. Ids here are provisional until merged.

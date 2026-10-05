@@ -1,0 +1,104 @@
+{
+  "tool": "python -m devtools.catalogue_upper_bounds certify",
+  "promotion": {
+    "strategy": "robust-rational",
+    "rational_digits": 36,
+    "max_side_increase": "1e-9"
+  },
+  "independent_checker": "devtools.check_rational_witness_independent",
+  "cases": [
+    {
+      "n": 69,
+      "result": "T-088",
+      "printed_side": "8.82719465572973",
+      "capture": "2026-09-30",
+      "witness": "witnesses/known-best/n-069.yaml",
+      "witness_side": "8.82719465572973891493146938059",
+      "witness_revision": "evand/square-packing@7ff3b2113532889708a3baa4d56bc44294022e63:site/www/data/p/square-69.json",
+      "certificate": "witnesses/kingbird-2026/n-069-rational.yaml",
+      "certified_side": "441359732786487391359732786487/50000000000000000000000000000",
+      "certified_side_decimal": "8.8271946557297478271946557297400000000000",
+      "side_increase": "1.783e-14",
+      "side_increase_over_witness": "8.912e-15",
+      "center_dilation": "1000000000000001/1000000000000000",
+      "pairs_tested": 2346,
+      "promotion": "certificate-produced",
+      "independent": {
+        "verification_passed": true,
+        "pairs_tested": 2346,
+        "minimum_containment_clearance": "0",
+        "minimum_best_pair_gap": "522063803792918893674915866818332140888528225804019684690034732267146780232012094247583/2130732838015945912018701319313094637549946809648000219929157179830060482000000000000000000000000000000",
+        "failures": []
+      },
+      "units_above_printed": 2,
+      "verified_value": "8.82719465572975",
+      "exact_form": "35308778622919/4000000000000",
+      "wall_seconds": {
+        "promote": 3.0,
+        "independent": 0.7
+      }
+    },
+    {
+      "n": 83,
+      "result": "T-089",
+      "printed_side": "9.63475764863108",
+      "capture": "2026-09-30",
+      "witness": "witnesses/known-best/n-083.yaml",
+      "witness_side": "9.6347576486310820292600837938",
+      "witness_revision": "evand/square-packing@7ff3b2113532889708a3baa4d56bc44294022e63:site/www/data/p/square-83.json",
+      "certificate": "witnesses/kingbird-2026/n-083-rational.yaml",
+      "certified_side": "120434470607899318447060788852500000000000000000000037318835457776423476234166086156874750000000000000962047035799519905271896114833409447126751892934176441597296670610456414201641071331536083493610541/12500000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000111415638393967267100693793740499498819073706208423143271073925334975005000000000000000000000000000",
+      "certified_side_decimal": "9.6347576486319454757648631082000000000001",
+      "side_increase": "8.655e-13",
+      "side_increase_over_witness": "8.634e-13",
+      "center_dilation": "10000000000001/10000000000000",
+      "pairs_tested": 3403,
+      "promotion": "certificate-produced",
+      "independent": {
+        "verification_passed": true,
+        "pairs_tested": 3403,
+        "minimum_containment_clearance": "0",
+        "minimum_best_pair_gap": "287178344987361238968822446824835703905213676726832856121999690748463535475381708846707/2906314442756491078903894226731945982392375858400204396448521504965842602500000000000000000000000000",
+        "failures": []
+      },
+      "units_above_printed": 87,
+      "verified_value": "9.63475764863195",
+      "exact_form": "192695152972639/20000000000000",
+      "wall_seconds": {
+        "promote": 5.7,
+        "independent": 1.1
+      }
+    },
+    {
+      "n": 87,
+      "result": "T-089",
+      "printed_side": "9.83881526994826",
+      "capture": "2026-09-30",
+      "witness": "witnesses/known-best/n-087.yaml",
+      "witness_side": "9.8388152699482622602660931895",
+      "witness_revision": "evand/square-packing@7ff3b2113532889708a3baa4d56bc44294022e63:site/www/data/p/square-87.json",
+      "certificate": "witnesses/kingbird-2026/n-087-rational.yaml",
+      "certified_side": "98388152699491448815269948261/10000000000000000000000000000",
+      "certified_side_decimal": "9.8388152699491448815269948261000000000000",
+      "side_increase": "8.849e-13",
+      "side_increase_over_witness": "8.826e-13",
+      "center_dilation": "10000000000001/10000000000000",
+      "pairs_tested": 3741,
+      "promotion": "certificate-produced",
+      "independent": {
+        "verification_passed": true,
+        "pairs_tested": 3741,
+        "minimum_containment_clearance": "0",
+        "minimum_best_pair_gap": "107268142509209105488183485060769136006708136414932843680350532516240752915210844691607/1086665661000235610102934798468401327879662434096098372503003312079242649000000000000000000000000000",
+        "failures": []
+      },
+      "units_above_printed": 89,
+      "verified_value": "9.83881526994915",
+      "exact_form": "196776305398983/20000000000000",
+      "wall_seconds": {
+        "promote": 4.4,
+        "independent": 1.0
+      }
+    }
+  ]
+}

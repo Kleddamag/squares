@@ -30,24 +30,24 @@ Decision of 2026-09-07, under
 [the atlas expansion plan](../../../../docs/project/specs/active/plan-2026-09-07-atlas-expansion-to-324.md),
 decision `D2`: the policy above applies unchanged to the 123 catalogue cases in
 `n = 101..324` whose geometry the prospective audit located but did not retain.
-Each is acquired once, ephemerally, by the atlas builder's `--fetch` path; the SVG is
+Each is acquired once, ephemerally, by the atlas builder’s `--fetch` path; the SVG is
 parsed to numerical centre-and-angle facts, and only those facts, the attribution, and
-the source metadata are retained, with `raw_asset_retained: false`.
-The source-availability map records the state as
+the source metadata are retained, with `raw_asset_retained: false`. The
+source-availability map records the state as
 `derived-facts-acquisition-approved-2026-09-07`; its 2026-08-26 audit remains the
-provenance record for which source served which `n`.
-The
+provenance record for which source served which `n`. The
 [survey of sources beyond 100](../../../../docs/project/research/research-2026-09-07-square-packing-sources-beyond-100.md)
 found no source with express reuse terms that carries this range, so there is no
 licensed alternative to prefer.
-Express permission from the catalogue's author would allow raw retention and is an
-owner action, not a prerequisite here.
+Express permission from the catalogue’s author would allow raw retention and is an owner
+action, not a prerequisite here.
 
 ## Source Packets’ Derived Facts
 
 From 2026-09-29 the best known packing at 50 counts comes from two repositories that
 publish no licence: Francisco Couzo’s 49 packings for `n = 68…307` and Joost de Winter’s
-packing of 211 squares. The same policy applies to them.
+packing of 211 squares.
+The same policy applies to them.
 Each source’s packet keeps the centres and angles as Witness/v2 facts under its own
 `facts/` directory, with the upstream files pinned by digest in its
 `acquisition/sources.json`, and retains no upstream byte:
@@ -74,6 +74,43 @@ applies to it unchanged.
 own reading: at the 90 counts whose witnesses were read from their own pictures, every
 side agrees and every pose agrees to one binary64 ulp.
 Re-deriving the three from the SVGs, once they can be fetched, replaces the parse.
+
+### Certified Here
+
+On 2026-10-05 the three witnesses were certified exactly by
+[`devtools.catalogue_upper_bounds`](../../../devtools/catalogue_upper_bounds.py), with
+the robust rational promotion `devtools.upper_bound_packets` runs for T-056 and T-057,
+unchanged.
+Each pose is rounded to rationals of 36 digits and dilated about the centre by
+the first factor that makes every pair and wall pass the promotion’s exact
+separating-axis test.
+Each certificate is then decided again by `devtools.check_rational_witness_independent`,
+which shares no code with the promotion.
+The certificates are in [`witnesses/kingbird-2026/`](../../../witnesses/kingbird-2026/)
+and the receipts in [`receipts/`](receipts/):
+[`kingbird-2026-09-certification.json`](receipts/kingbird-2026-09-certification.json),
+and two mutations of the $n = 69$ certificate, its side cut by $10^{-15}$ and square 1
+moved by $10^{-6}$, which both checkers refuse
+([`kingbird-2026-09-negative-controls.json`](receipts/kingbird-2026-09-negative-controls.json)).
+
+| n | Side printed | Dilation | Certified side | Above the printed side | Verified value |
+| --- | --- | --- | --- | --- | --- |
+| 69 | `8.82719465572973` | $1 + 10^{-15}$ | `8.82719465572974782719…` | $1.78 \times 10^{-14}$ | `8.82719465572975` |
+| 83 | `9.63475764863108` | $1 + 10^{-13}$ | `9.63475764863194547576…` | $8.65 \times 10^{-13}$ | `9.63475764863195` |
+| 87 | `9.83881526994826` | $1 + 10^{-13}$ | `9.83881526994914488152…` | $8.85 \times 10^{-13}$ | `9.83881526994915` |
+
+Each certificate proves $s(n)$ at most its own side, which lies above the printed side
+at all three counts, for two reasons.
+The catalogue prints each side cut short, so the root it truncates is already above it,
+by $8.9 \times 10^{-15}$, $2.0 \times 10^{-15}$ and $2.3 \times 10^{-15}$. And a
+binary64 pose of a packing whose squares touch overlaps by rounding, so the promotion
+has to dilate it: at $n = 69$ by $1 + 10^{-15}$, which adds $8.9 \times 10^{-15}$ to the
+side, and at $n = 83$ and $87$, where $1 + 10^{-15}$ left one and thirteen pairs
+overlapping, by $1 + 10^{-13}$, which adds about $8.7 \times 10^{-13}$. The verified
+value is the certified side rounded up at the printed precision, the rule T-056 uses,
+and at none of the three counts is it the printed side.
+The SVG’s own 30-digit pose, or a pose refined on its active contacts, would close most
+of the gap.
 
 ## Retained UnitSquare Renderings
 

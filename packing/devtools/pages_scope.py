@@ -1,13 +1,15 @@
 #!/usr/bin/env python3
 """Decide which of the published site's builds a pull request has to run and check.
 
-The Pages workflow publishes one artifact assembled from four builds: the two papers
-under `/papers/`, each by its slug (the lower-bounds explainer at
-`/papers/n11-lower-bounds-explainer.html` and the optimality review at
+The Pages workflow publishes one artifact assembled from five builds: the three papers
+under `/papers/`, each by its slug (`render_overview.PAPERS`: the lower-bounds explainer
+at `/papers/n11-lower-bounds-explainer.html`, the threshold-bound review at
+`/papers/n11-threshold-bound-review.html` and the optimality review at
 `/papers/n11-optimality-review.html`), the site's own pages (the overview at `/` and the
 pages `render_overview.PAGES` puts beside it, with the forwarders at the papers' old
 addresses), and the workbench at `/workbench/`. A half that is a paper is named by the
-paper's slug, with underscores where a workflow output cannot carry a hyphen. Until
+paper's slug, with underscores where a workflow output cannot carry a hyphen
+(`half_name`). Until
 2026-09-15 every pull request that touched the explainer's or the workbench's paths paid
 for both. #178 changed ten workbench probe files and ran about 330 s of explainer
 Chromium checks on a page whose bytes it could not change; an explainer-only
@@ -15,10 +17,12 @@ change paid for the workbench build the same way.
 
 This tool is what lets each half run only on its own inputs. For each half it takes:
 
-* the builder's own declaration of what a render reads -- `RENDER_INPUTS` in
-  `devtools/render_n11_lower_bounds_explainer.py` for the explainer, in
-  `workbench_tools/build_site.py` for the workbench and in
-  `devtools/render_n11_optimality_review.py` for the T-060 article, and `inputs()` in
+* the builder's own declaration of what a render reads -- `RENDER_INPUTS` in each paper's
+  renderer, the module `render_overview.PAPERS` names for it
+  (`devtools/render_n11_lower_bounds_explainer.py` for the explainer,
+  `devtools/render_n11_threshold_bound_review.py` for the T-037 review and
+  `devtools/render_n11_optimality_review.py` for the T-060 review), in
+  `workbench_tools/build_site.py` for the workbench, and `inputs()` in
   `devtools/render_overview.py` for the site's own pages (its `RENDER_INPUTS` and the record
   `overview_data.INPUTS` names). Read live from those modules rather than copied here, because a
   copy is a second list that drifts, and the builders' lists already have tests that keep them
@@ -55,6 +59,7 @@ from __future__ import annotations
 
 import argparse
 import ast
+import importlib
 import importlib.util
 import os
 import re
@@ -66,6 +71,7 @@ from functools import cache
 from pathlib import Path
 from typing import Any
 
+from devtools import render_overview
 from sqpack.yamlio import safe_load
 
 PACKING = Path(__file__).resolve().parents[1]
@@ -87,10 +93,19 @@ _NOT_ON_PULL_REQUESTS = re.compile(
 )
 
 
-def _lower_bounds_explainer_inputs() -> tuple[Path, ...]:
-    from devtools import render_n11_lower_bounds_explainer  # noqa: PLC0415
+def half_name(slug: str) -> str:
+    """A paper's half, as the workflow's outputs name it: its slug, with underscores
+    where an output cannot carry a hyphen."""
+    return slug.replace("-", "_")
 
-    return tuple(render_n11_lower_bounds_explainer.RENDER_INPUTS)
+
+def _paper_inputs(module: str) -> Callable[[], tuple[Path, ...]]:
+    """What the paper `module` renders reads: its renderer's `RENDER_INPUTS`."""
+
+    def inputs() -> tuple[Path, ...]:
+        return tuple(importlib.import_module(module).RENDER_INPUTS)
+
+    return inputs
 
 
 def _workbench_inputs() -> tuple[Path, ...]:
@@ -105,19 +120,13 @@ def _overview_inputs() -> tuple[Path, ...]:
     return render_overview.inputs()
 
 
-def _optimality_review_inputs() -> tuple[Path, ...]:
-    from devtools import render_n11_optimality_review  # noqa: PLC0415
-
-    return tuple(render_n11_optimality_review.RENDER_INPUTS)
-
-
 #: Each half, and the builder declaration it starts from, in the order the workflow's
-#: outputs and summary use.
+#: outputs and summary use: the papers in reading order, from the site's one list of them
+#: (`render_overview.PAPERS`), then the workbench and the site's own pages.
 BUILDER_INPUTS: Mapping[str, Callable[[], tuple[Path, ...]]] = {
-    "n11_lower_bounds_explainer": _lower_bounds_explainer_inputs,
+    **{half_name(paper.slug): _paper_inputs(paper.module) for paper in render_overview.PAPERS},
     "workbench": _workbench_inputs,
     "overview": _overview_inputs,
-    "n11_optimality_review": _optimality_review_inputs,
 }
 
 
@@ -169,8 +178,8 @@ def half_jobs(workflow: Mapping[str, Any]) -> dict[str, set[str]]:
     A job belongs to a half when its `if:` requires `needs.scope.outputs.<half> ==
     'true'`, or when it needs a job that does -- GitHub skips a job whose need was
     skipped, so a check downstream of `prepare` is gated by `prepare`'s condition whether
-    or not it repeats it. A job downstream of both halves (the aggregate, the deploy
-    path) belongs to both, which only ever widens what a half counts as its input.
+    or not it repeats it. A job downstream of several halves (the aggregate, the deploy
+    path) belongs to each, which only ever widens what a half counts as its input.
     """
     jobs: Mapping[str, Mapping[str, Any]] = workflow["jobs"]
     members: dict[str, set[str]] = {half: set() for half in BUILDER_INPUTS}
@@ -240,7 +249,7 @@ def commands_run(jobs: Iterable[Mapping[str, Any]]) -> set[Path]:
 def _imported_modules(path: Path) -> frozenset[str]:
     """The first-party modules `path` imports. Read once per version of the file: every
     half's closure reaches the same tools (`publish` runs `check_published_site` for all
-    four), and parsing each again per half and per call held the scope's own test over
+    five), and parsing each again per half and per call held the scope's own test over
     the pull-request surface's per-test ceiling."""
     stat = path.stat()
     return _parsed_imports(path, stat.st_mtime_ns, stat.st_size)

@@ -1,16 +1,18 @@
 #!/usr/bin/env python3
-"""The structure of a rendered paper, and the two papers compared axis by axis.
+"""The structure of a rendered paper, and the site's papers compared axis by axis.
 
-The owner asked on 2026-10-01 that the two papers' "formats, formatting, and all
-structure should be similar". This reads each paper as a reader meets it, from the page,
-its Markdown edition and its PDF, and reports the two side by side on every structural
+The owner asked on 2026-10-01 that the papers' "formats, formatting, and all structure
+should be similar". This reads each paper as a reader meets it, from the page, its
+Markdown edition and its PDF, and reports the papers side by side on every structural
 axis: the head and its dates, the formats row, the title, each line of the credits and
-what is bold and what is linked in it, the version and dates lines, the heading case,
-the figures and their captions, the tables, the footnotes, the closing and the
-colophon, and the Markdown edition's opening. An axis is one of two kinds: a form,
-which both papers set one way, and content, which is each paper's own, such as how
-many figures it has. `compare` says which differ, and `tests/test_paper_structure.py`
-fails when a form differs between the two.
+what is bold and what is linked in it, the version and dates lines, the series strip,
+the heading case, the figures and their captions, the tables, the footnotes, the
+closing and the colophon, and the Markdown edition's opening. An axis is one of two
+kinds: a form, which every paper sets one way, and content, which is each paper's own,
+such as how many figures it has. `compare` sets every paper beside the first, Part I of
+the series (`render_overview.PAPERS`), and says which differ, and
+`tests/test_paper_structure.py` fails when a form differs between any paper and the
+first.
 
 Usage, from `packing/`, on a site `preview_site` has built, or on the published site:
 
@@ -20,8 +22,8 @@ Usage, from `packing/`, on a site `preview_site` has built, or on the published 
 The audit this was written for (think-2cqu) found the credits in two orders, a bold
 address on one paper and none on the other, the version before the dates on one and
 after on the other, and chips rendered by KPress on one paper and written raw into the
-shell of the other. The front of both is written by `devtools.paper_front` now; this
-is what shows it stays so, and what finds the next difference.
+shell of the other. The front of every paper is written by `devtools.paper_front` now;
+this is what shows it stays so, and what finds the next difference.
 """
 
 from __future__ import annotations
@@ -37,18 +39,16 @@ from html.parser import HTMLParser
 from pathlib import Path
 from typing import Any, NamedTuple
 
-from devtools.render_overview import (
-    N11_LOWER_BOUNDS_EXPLAINER,
-    N11_OPTIMALITY_REVIEW,
-    PROJECT_NAME,
-    TITLE_SEPARATOR,
-    paper_path,
-)
+from devtools import render_overview
+from devtools.render_overview import PROJECT_NAME, TITLE_SEPARATOR, paper_path
 
-#: The two papers, in the order the audit reads them: the first paper is the reference.
-PAPERS = (N11_LOWER_BOUNDS_EXPLAINER, N11_OPTIMALITY_REVIEW)
+#: The site's papers, in reading order, which is the order the audit reads them: the
+#: first paper is the reference every other is compared with.
+PAPERS: tuple[str, ...] = tuple(paper.slug for paper in render_overview.PAPERS)
 #: The lines a paper's credits may carry, in the order they stand, by what the line is.
-CREDIT_KINDS = ("source", "address", "oversight", "agents", "version", "dates")
+#: The series strip is the last, and is several lines: which part the paper is, then each
+#: other part (`paper_front.series`).
+CREDIT_KINDS = ("source", "address", "oversight", "agents", "version", "dates", "series")
 #: Elements with no content, which the parser must not wait for a closing tag of.
 _VOID = frozenset(
     (
@@ -59,6 +59,10 @@ _VOID = frozenset(
 )
 _FIGURE_LEAD = re.compile(r"^Figure (\d+)\.")
 _DATED = re.compile(r"^(.+?) ([A-Z][a-z]+ \d{1,2}, \d{4})$")
+#: The series strip's first line, which part of how many, and each line after it, one
+#: other part by its number and its title.
+_SERIES_HEAD = re.compile(r"^Part ([IVX]+) of (\d+) in (.+)$")
+_SERIES_PART = re.compile(r"^Part ([IVX]+): (.+)$")
 _PDF_PAGE = re.compile(rb"/Type\s*/Page(?![s/\w])")
 _PDF_BOX = re.compile(rb"/MediaBox\s*\[\s*([\d.]+)\s+([\d.]+)\s+([\d.]+)\s+([\d.]+)\s*\]")
 _PDF_DATE = re.compile(rb"/(CreationDate|ModDate)\s*\(D:([^)]*)\)")
@@ -200,12 +204,15 @@ def _meta(root: Node, key: str) -> str:
     return ""
 
 
+#: The credit lines known by their class, by the class.
+_CREDIT_CLASSES = {"series": "series", "publication-date": "dates", "edition": "version"}
+
+
 def _credit_kind(line: Node, text: str) -> str:
     classes = line.classes
-    if "publication-date" in classes:
-        return "dates"
-    if "edition" in classes:
-        return "version"
+    for cls, kind in _CREDIT_CLASSES.items():
+        if cls in classes:
+            return kind
     if text.startswith("Human oversight"):
         return "oversight"
     if text.startswith("Agents"):
@@ -270,12 +277,15 @@ def _pdf(pdf: bytes) -> dict[str, str]:
 
 def _markdown_head(markdown: str) -> tuple[str, ...]:
     """The Markdown edition's opening: its first line and the list that follows it, up
-    to the first paragraph."""
+    to the first paragraph, each item one entry with any line the formatter wrapped it
+    onto joined back to it."""
     lines = markdown.strip().split("\n")
     head: list[str] = [lines[0]] if lines else []
     for line in lines[1:]:
         if line.startswith("- "):
             head.append(line)
+        elif line.startswith("  ") and line.strip() and head[1:]:
+            head[-1] += " " + line.strip()
         elif line.strip() and head[1:]:
             break
     return tuple(head)
@@ -312,14 +322,30 @@ def read(paper: str, html: str, markdown: str = "", pdf: bytes = b"") -> Structu
     )
 
 
+def _symbolic(word: str) -> bool:
+    """Whether a heading's word is notation rather than a word that takes a capital: a
+    formula's piece (`s(11)`, `31/8`, `L₀`), or a name made of letters and small words,
+    such as `k-of-m`, whose letters are symbols."""
+    if re.search(r"[\d(=<>/\u2080-\u2089]", word):
+        return True
+    parts = word.split("-")
+    return len(parts) > 1 and all(
+        len(part) <= 1 or part.lower() in _SMALL_WORDS for part in parts
+    )
+
+
 def heading_case(headings: Sequence[str]) -> str:
-    """`Title Case` where every word of every heading that is not a small word or a
-    number begins with a capital; `sentence case` where only the first does; `mixed`
-    where the headings disagree; `none` where there is no heading."""
+    """`Title Case` where every word of every heading that is not a small word, a number
+    or notation (`_symbolic`) begins with a capital; `sentence case` where only the first
+    does; `mixed` where the headings disagree; `none` where there is no heading."""
     found = set()
     for heading in headings:
         words = [w for w in re.split(r"[\s:]+", heading) if re.match(r"[A-Za-z]", w)]
-        later = [w for w in words[1:] if w.lower() not in _SMALL_WORDS and len(w) > 1]
+        later = [
+            w
+            for w in words[1:]
+            if w.lower() not in _SMALL_WORDS and len(w) > 1 and not _symbolic(w)
+        ]
         if not later:
             continue
         capitals = sum(1 for w in later if w[0].isupper())
@@ -354,7 +380,7 @@ def _dates(line: CreditLine | None) -> list[tuple[str, str]]:
 
 def axes(structure: Structure) -> dict[str, str]:
     """Each axis of a paper's structure, as one line a reader can compare: a form the
-    two papers share, or the content that is this paper's own (`CONTENT_AXES`)."""
+    papers share, or the content that is this paper's own (`CONTENT_AXES`)."""
     lines = {line.kind: line for line in structure.credits}
     slug = structure.paper
     expected_title = f"{structure.name}{TITLE_SEPARATOR}{PROJECT_NAME}"
@@ -362,7 +388,11 @@ def axes(structure: Structure) -> dict[str, str]:
     named = [
         line for line in structure.credits if line.kind in ("source", "oversight", "agents")
     ]
-    plain = [line for line in structure.credits if line.kind in ("address", "version", "dates")]
+    plain = [
+        line
+        for line in structure.credits
+        if line.kind in ("address", "version", "dates", "series")
+    ]
     version = lines.get("version")
     pdf = structure.pdf
     return {
@@ -409,6 +439,8 @@ def axes(structure: Structure) -> dict[str, str]:
         "credits: dates grammar": " · ".join(f"{label} <day>" for label, _ in dates) or "none",
         "credits: dates end with": dates[-1][0] if dates else "none",
         "credits: dates": lines["dates"].text if "dates" in lines else "",
+        "series: strip": _series_form(structure),
+        "series: part": _series_part(structure),
         "credits: oversight": lines["oversight"].text if "oversight" in lines else "",
         "credits: agents": lines["agents"].text if "agents" in lines else "",
         "credits: source": " · ".join(
@@ -442,6 +474,43 @@ def axes(structure: Structure) -> dict[str, str]:
         ),
         "pdf: pages": pdf.get("pages", "no PDF"),
     }
+
+
+def _series_lines(structure: Structure) -> list[CreditLine]:
+    return [line for line in structure.credits if line.kind == "series"]
+
+
+def _series_form(structure: Structure) -> str:
+    """How the series strip is set: under the dates, which part of how many, then every
+    other part by its number and its title, each plain and linking its paper."""
+    strip = _series_lines(structure)
+    if not strip:
+        return "none"
+    kinds = [line.kind for line in structure.credits]
+    head = _SERIES_HEAD.match(strip[0].text)
+    problems = []
+    if kinds[-len(strip) :] != ["series"] * len(strip) or kinds[-len(strip) - 1] != "dates":
+        problems.append("not under the dates")
+    if head is None or strip[0].links or strip[0].bold:
+        problems.append(f"opens with {strip[0].text!r}")
+    elif len(strip) != int(head.group(2)):
+        problems.append(f"names {len(strip) - 1} other parts of {head.group(2)}")
+    for line in strip[1:]:
+        part = _SERIES_PART.match(line.text)
+        if part is None or len(line.links) != 1 or line.bold or line.links[0][0] != part[2]:
+            problems.append(f"a part named as {line.text!r}")
+    return (
+        problems[0]
+        if problems
+        else "Part N of M, then each other part by number and title, linked"
+    )
+
+
+def _series_part(structure: Structure) -> str:
+    """Which part of the series the paper says it is."""
+    strip = _series_lines(structure)
+    head = _SERIES_HEAD.match(strip[0].text) if strip else None
+    return f"Part {head.group(1)} of {head.group(2)}" if head else "none"
 
 
 def _iso(day: str) -> str:
@@ -478,7 +547,7 @@ def _markdown_form(structure: Structure) -> str:
 
 
 #: The axes that are each paper's own content, which may differ; every other axis is a
-#: form, which the two papers set one way.
+#: form, which every paper sets one way.
 CONTENT_AXES = frozenset(
     {
         "title: text",
@@ -490,6 +559,7 @@ CONTENT_AXES = frozenset(
         "credits: source",
         "credits: lines",
         "credits: version line",
+        "series: part",
         "head: article dates",
         "sections: count",
         "figures: count",
@@ -501,26 +571,35 @@ CONTENT_AXES = frozenset(
 )
 
 
-def compare(first: Structure, second: Structure) -> list[dict[str, Any]]:
-    """Every axis, with both papers' values and whether they are the same, the form
-    axes first."""
-    one, two = axes(first), axes(second)
+def compare(reference: Structure, *others: Structure) -> list[dict[str, Any]]:
+    """Every axis, with each paper's value, the reference's first, and whether every
+    paper's is the reference's, the form axes first."""
+    found = [(structure.paper, axes(structure)) for structure in (reference, *others)]
+    first = found[0][1]
     return [
         {
             "axis": axis,
             "compared": "content" if axis in CONTENT_AXES else "form",
-            first.paper: one[axis],
-            second.paper: two[axis],
-            "same": one[axis] == two[axis],
+            **{paper: values[axis] for paper, values in found},
+            "same": _agree(axis, [values[axis] for _, values in found]),
         }
-        for axis in sorted(one, key=lambda axis: (axis in CONTENT_AXES, axis))
+        for axis in sorted(first, key=lambda axis: (axis in CONTENT_AXES, axis))
     ]
 
 
+def _agree(axis: str, values: Sequence[Any]) -> bool:
+    """Whether every paper sets `axis` as the first does. A heading-case axis is held
+    only over the papers that have such headings: a paper with no subsections has no
+    case to disagree with (`heading_case` reports `none`)."""
+    if axis.endswith(" case"):
+        values = [value for value in values if value != "none"]
+    return all(value == values[0] for value in values)
+
+
 def differences(rows: Sequence[dict[str, Any]]) -> list[dict[str, Any]]:
-    """The form axes the two papers set differently: what fails the test. A PDF axis
-    is compared only where both papers have a PDF: a preview draws the second paper's
-    and never the first's, which its own Pages job draws (`preview_site`)."""
+    """The form axes some paper sets differently from the first: what fails the test. A
+    PDF axis is compared only where every paper has a PDF: a preview draws every paper's
+    but the first's, which its own Pages job draws (`preview_site`)."""
     return [
         row
         for row in rows
@@ -555,8 +634,7 @@ def main(argv: Sequence[str] | None = None) -> int:
     parser.add_argument("site", help="a built site's directory, or the address it is served at")
     parser.add_argument("--markdown", action="store_true", help="print a table, not JSON")
     arguments = parser.parse_args(argv)
-    first, second = read_site(arguments.site)
-    rows = compare(first, second)
+    rows = compare(*read_site(arguments.site))
     if arguments.markdown:
         from devtools.measure_site_pages import markdown_table  # noqa: PLC0415
 

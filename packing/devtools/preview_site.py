@@ -1,11 +1,12 @@
 #!/usr/bin/env python3
 """Build the whole published site into one directory, serve it, and screenshot it.
 
-The Pages workflow assembles the site from four builds on four runners: the two papers
-under `papers/`, each by its slug (`n11-lower-bounds-explainer`, with the atlas's files
-it shares with the overview at the root, and `n11-optimality-review`), the site pages
-from `devtools.render_overview`, with a forwarder at each address a paper used to have,
-and the workbench. This puts the same four side by side on one machine, so the site can
+The Pages workflow assembles the site from five builds on five runners: the three papers
+under `papers/`, each by its slug (`render_overview.PAPERS`: `n11-lower-bounds-explainer`,
+with the atlas's files it shares with the overview at the root,
+`n11-threshold-bound-review` and `n11-optimality-review`), the site pages from
+`devtools.render_overview`, with a forwarder at each address a paper used to have, and
+the workbench. This puts the same five side by side on one machine, so the site can
 be looked at, and its navigation followed, before anything is deployed. It never deploys
 and never writes into `packing/site/`.
 
@@ -27,8 +28,9 @@ Usage, from `packing/`:
         --scheme light --scheme dark --page index.html
     uv run --frozen --all-extras --group dev python -m devtools.preview_site --clips
 
-`--skip` leaves a slow build out, by its name: `n11-lower-bounds-explainer`,
-`n11-optimality-review` or `workbench`. A link to it then points at a missing page, which
+`--skip` leaves a slow build out, by its name: a paper's slug
+(`n11-lower-bounds-explainer`, `n11-threshold-bound-review`, `n11-optimality-review`),
+`pages` or `workbench`. A link to it then points at a missing page, which
 the link check reports rather than fails on, and a build already in `--output` stays.
 `--page` shoots only the pages it
 names, each with any fragment (`frontier.html#n-11` is one case's row), and `--press`
@@ -72,14 +74,17 @@ from sqpack.probes import probe
 PACKING = Path(__file__).resolve().parents[1]
 REPO = PACKING.parent
 DEFAULT_OUTPUT = Path(tempfile.gettempdir()) / "squares-site-preview"
-#: The builds, in the order they run: the two papers by their slugs, the site's own
-#: pages, and the workbench.
-BUILDS = (
-    render_overview.N11_LOWER_BOUNDS_EXPLAINER,
-    "pages",
-    "workbench",
-    render_overview.N11_OPTIMALITY_REVIEW,
+#: The builds, in the order they run, each by its name: the first paper, whose page the
+#: site's pages share the atlas's files with, the site's own pages, the workbench, then
+#: every other paper of the site in reading order (`render_overview.PAPERS`), each by its
+#: slug.
+#: The papers built as the reviews are (`build_paper`): every paper but the first.
+OTHER_PAPERS = tuple(
+    paper.slug
+    for paper in render_overview.PAPERS
+    if paper.slug != render_overview.N11_LOWER_BOUNDS_EXPLAINER
 )
+BUILDS = (render_overview.N11_LOWER_BOUNDS_EXPLAINER, "pages", "workbench", *OTHER_PAPERS)
 WIDTHS = (1280, 390)
 PROBES = PACKING / "devtools" / "probes"
 _OVERFLOW = probe(PROBES, "preview_site/overflow")
@@ -156,10 +161,11 @@ def build_workbench(output: Path) -> None:
     _run("workbench_tools.build_site", "--out", str(output / "workbench"))
 
 
-def build_optimality_review(output: Path) -> None:
-    """The optimality review as its Pages job leaves it: the page, its Markdown and its
-    PDF under `papers/`."""
-    _run("devtools.render_n11_optimality_review", "--site", str(output), "--pdf")
+def build_paper(slug: str, output: Path) -> None:
+    """A paper other than the first as its Pages job leaves it: the page, its Markdown and
+    its PDF under `papers/`, from the renderer `render_overview.PAPERS` names for it. The
+    reviews are built alike (`n11-threshold-bound-review`, `n11-optimality-review`)."""
+    _run(render_overview.paper_record(slug).module, "--site", str(output), "--pdf")
 
 
 def copy_moved_files(output: Path) -> list[str]:
@@ -197,8 +203,9 @@ def build(output: Path, skip: set[str]) -> None:
         print(f"wrote {social_card.write(output)}, the link preview's card")
     if "workbench" not in skip:
         build_workbench(output)
-    if render_overview.N11_OPTIMALITY_REVIEW not in skip:
-        build_optimality_review(output)
+    for slug in OTHER_PAPERS:
+        if slug not in skip:
+            build_paper(slug, output)
     for old in copy_moved_files(output):
         print(f"copied {output / old}, the address a file had before it moved")
 

@@ -1652,6 +1652,22 @@ pages:
       figures, article, and KPress assets. Its 10-minute operational job timeout bounds
       setup faults; this 80-second cost ceiling detects work growth on the measured
       warm-cache reference shape.
+  # Part II of the series (the plan of 2026-10-05), unmeasured as `publish` is: no hosted
+  # run of the job exists until the pull request that adds the paper runs it, and that
+  # run is its measurement.
+  - id: n11-threshold-bound-review
+    measured_seconds: null
+    measured_on: null
+    measured_where: null
+    ceiling_seconds: 100.0
+    argument: >-
+      The T-037 review is built as the optimality review is: its figure and renderer
+      tests, the page, its Markdown and its PDF, and the artifact upload. It reads more
+      data than that paper does, the archived proof's certificate and evidence, the T-059
+      replay journal and the native row journal, about 12 MB in its partial checkout, and
+      one figure evaluates the charge field over a grid of centres. The ceiling is the
+      optimality review's 80 seconds with a quarter added for that data until a hosted
+      run gives the job its own reading; its 10-minute job timeout bounds setup faults.
   - id: pdf
     measured_seconds: 73.3
     measured_on: 2026-09-16
@@ -1765,6 +1781,16 @@ pages:
       The same scope-reason-only notice as the two existing unchanged jobs. This
       explicitly borrowed four-second calibration will be replaced by a direct reading
       when an unrelated pull request first exercises the T-060 skip path (think-x2ln).
+  - id: n11-threshold-bound-review-unchanged
+    measured_seconds: 4.0
+    measured_on: 2026-09-16
+    measured_where: >-
+      Proxy from the structurally identical explainer/workbench unchanged notices in
+      run 35039355763; the T-037 notice is new with the paper (2026-10-05).
+    ceiling_seconds: 8.0
+    argument: >-
+      The same scope-reason-only notice for Part II, borrowing the same four-second
+      calibration until an unrelated pull request first exercises its skip path.
   # The two entries below are unmeasured, as `publish` above is, because no hosted run of
   # their jobs exists yet: the plan in
   # `docs/project/specs/active/plan-2026-09-29-github-pages-overview.md` makes the first

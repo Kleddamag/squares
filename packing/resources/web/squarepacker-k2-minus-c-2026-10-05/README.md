@@ -1,6 +1,6 @@
 # squarepacker’s `k² − M(k) ≥ 0.033 log k`, Pinned 2026-10-05
 
-Ryu Sungjoon (GitHub `squarepacker`) reports a preprint on the integer-side case of the
+Sungjoon Ryu (GitHub `squarepacker`) reports a preprint on the integer-side case of the
 asymptotic problem. Let `M(k)` be the largest number of unit squares that fit in
 `[0,k]²` pairwise disjoint as closed sets.
 The preprint’s Theorem 1.1 says that for every integer `k ≥ 2`,

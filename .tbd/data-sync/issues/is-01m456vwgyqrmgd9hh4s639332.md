@@ -3,9 +3,9 @@ type: is
 id: is-01m456vwgyqrmgd9hh4s639332
 title: "Homepage: cards for the essential external sites (Kingbird / Ellsworth's Squares in Squares, Friedman's Packing Center, evand's Square Packing Atlas, UnitSquare, others the register cites) beside the GitHub projects"
 kind: task
-status: in_progress
+status: closed
 priority: 1
-version: 3
+version: 4
 delegate: claude-code@vm
 labels: []
 dependencies: []
@@ -13,8 +13,12 @@ parent_id: is-01m44qz0rxvkakmyqaj7qdgagv
 hold: null
 hold_until: null
 created_at: 2026-10-05T04:58:59.998Z
-updated_at: 2026-10-05T05:51:42.764Z
+updated_at: 2026-10-05T07:19:55.327Z
 started_at: 2026-10-05T04:59:39.795Z
+closed_at: 2026-10-05T07:19:55.327Z
+close_reason: "Done in jlevy/squares#353 / #359 (merged 2026-10-05)"
+resolution: null
+duplicate_of: null
 ---
 
 ## Notes

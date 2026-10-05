@@ -204,6 +204,7 @@ PAPERS_DIR = "papers"
 #: import this module, so the slugs are written once, here.
 N11_OPTIMALITY_REVIEW = "n11-optimality-review"
 N11_LOWER_BOUNDS_EXPLAINER = "n11-lower-bounds-explainer"
+N11_THRESHOLD_BOUND_REVIEW = "n11-threshold-bound-review"
 #: From a paper's page back up to the site's root, which is where the bar's links, the
 #: other pages and the atlas's files are.
 PAPERS_ROOT = "../"

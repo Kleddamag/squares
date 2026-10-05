@@ -36,7 +36,6 @@ import gzip
 import hashlib
 import json
 import math
-import re
 from collections import Counter
 from collections.abc import Callable, Sequence
 from dataclasses import dataclass
@@ -495,7 +494,6 @@ def _facts(src: Sources) -> dict[str, str]:
         math.dist((float(src.sites[i][0]), float(src.sites[i][1])), (float(centre[0]),) * 2)
         for i in triple.members
     )
-    widths = [row.right - row.left for row in cert.rows]
     sides = [row.core_side for row in cert.rows]
     tight = cert.rows[TIGHT_ROW]
     pair_rows = [cert.rows[i] for i in TIGHT_PAIR]
@@ -512,11 +510,6 @@ def _facts(src: Sources) -> dict[str, str]:
     end = cert.rows[-1].right
     t060 = pf.ladder_records(RESULTS)["T-060"]["claim"].removeprefix("= ")
     gap = Fraction(t060.rstrip("…")) - cert.outer_side / cert.parent_side
-    t061_headline = pf.ladder_records(RESULTS)["T-061"]["headline"]
-    found = re.search(r"`s\(11\) > (\d+)/(\d+)", t061_headline)
-    _require(found is not None, "T-061's headline states no fraction")
-    assert found is not None
-    t061 = Fraction(int(found.group(1)), int(found.group(2)))
     facts = {
         # The whole certificate.
         "CERT_GAMMA": pf.exact_decimal(gamma),
@@ -541,7 +534,6 @@ def _facts(src: Sources) -> dict[str, str]:
         "CHANGES_T026_NET": pf.count(int(src.t026["direction_steps"])),
         # II.2
         "LADDER_GAP": pf.decimal(gap, 7),
-        "LADDER_T061_STEP": pf.scientific(t061 - cert.outer_side / cert.parent_side),
         # II.4
         "CHARGE_ORBIT": str(CHARGE_ORBIT),
         "CHARGE_WEIGHT": pf.exact_decimal(charge.weight),
@@ -573,13 +565,10 @@ def _facts(src: Sources) -> dict[str, str]:
         "FAMILIES_PAIR_ORBIT": str(PAIR_ORBIT),
         "FAMILIES_PAIR_WEIGHT": pf.exact_decimal(pair.weight),
         # II.7
-        "CORE_MARGIN": pf.power_of_ten(Fraction(src.python["strict_core_margin"])),
         "CORE_EXAGGERATION": pf.count(CORE_EXAGGERATION),
         # II.8
         "CATALOGUE_ROWS": pf.count(len(cert.rows)),
         "CATALOGUE_END": str(end),
-        "CATALOGUE_WIDTH_MIN": pf.scientific(min(widths)),
-        "CATALOGUE_WIDTH_MAX": pf.scientific(max(widths)),
         "CATALOGUE_B_MIN": pf.decimal(min(sides), 5),
         "CATALOGUE_B_MAX": pf.decimal(max(sides), 5),
         "CATALOGUE_TIGHT_ROW": str(TIGHT_ROW),

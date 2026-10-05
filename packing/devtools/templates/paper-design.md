@@ -1118,12 +1118,35 @@ it.
   declared in [site-nav.css](site-nav.css) so every page carries them, the explainer and
   the workbench included, and fed to KPress’s own `--kpress-transition-fast` so its
   contents rail and footnote links match.
-  A rule transitions only the properties its hover changes (`background-color`, `color`,
-  `border-color`, `opacity`, `translate`), never `all`, and never with a literal
-  duration: `tests/test_overview.py` fails a `transition` in `site.css`, `site-nav.css`
-  or `paper-publication.css` that names a time instead of the token.
-  Under `prefers-reduced-motion: reduce` the duration is 0ms, so colours change at once
-  and no arrow moves.
+  - **The hover transition.** A change of colour, a wash, a text colour, a border or a
+    shadow, eases on one token, `--site-hover-transition`: `background-color`, `color`,
+    `border-color` and `box-shadow` on that timing (the owner, 2026-10-04,
+    `think-g9cu`). Every element whose hover or focus changes one of them carries
+    `transition: var(--site-hover-transition)` at rest, not in its hover rule, so the
+    change eases in and out: the cards, the bar’s links and tabs, the theme menu, a
+    popover’s close cross and action, a table’s rows (their wash on hover, on keyboard
+    focus and while their popover is open, which snapped until then), the ladders’
+    names, the atlas tiles, the record index and the contents rail, and on a paper’s
+    page its links, buttons and readouts (`paper-publication.css`). The token names
+    those four properties and never `all`, so a late stylesheet snaps into place rather
+    than animating its layout, and it is used alone, never listed beside another
+    property, so it still reads under reduced motion.
+  - What else a hover moves, an arrow’s nudge or a card icon’s fade, transitions that
+    one property (`translate`, `opacity`) on the same timing, never with a literal
+    duration.
+  - A focus ring (`outline`) is not eased: it shows the moment focus arrives.
+  - `tests/test_site_hover_motion.py` holds it: the token declared once, every
+    `transition` in `site.css`, `site-nav.css`, `site-result.css`, `paper-type.css` and
+    `paper-publication.css` the token or one property on its timing, and every rule
+    whose hover or focus changes a colour, a border or a shadow styling an element that
+    carries the token at rest, by its own selector, a broader rule’s, or a shared rule
+    the test names with its reason; in Chromium, a row, the bar’s links and the close
+    cross ease the four properties over 140ms.
+  - The workbench’s own controls keep its own motion tokens (`--duration-fast`,
+    `--easing-standard`, in `packages/workbench/assets/workbench.css`), under its own
+    design contract; only the bar it shares with the site runs on this one.
+  - Under `prefers-reduced-motion: reduce` the duration is 0ms and the token `none`, so
+    colours change at once and no arrow moves.
 
 - **Rating ladders.** Verification Ladders is a section of the Results page, under its
   table, since 2026-10-02 (the owner, `think-hqb3`); it was the homepage’s section

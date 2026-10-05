@@ -399,7 +399,7 @@ body {
   color: inherit;
   position: relative;
   text-decoration: none;
-  transition: background-color var(--site-hover-duration) var(--site-hover-easing);
+  transition: var(--site-hover-transition);
 }
 .kpress button.site-card {
   background: none;
@@ -423,7 +423,7 @@ body {
   gap: 0;
   padding: 0;
   position: relative;
-  transition: background-color var(--site-hover-duration) var(--site-hover-easing);
+  transition: var(--site-hover-transition);
 }
 .kpress .site-card-footed > .site-card-main {
   color: inherit;
@@ -666,9 +666,7 @@ body {
   background: var(--site-scrim);
 }
 .site-popover .site-popover-close {
-  transition:
-    background-color var(--site-hover-duration) var(--site-hover-easing),
-    color var(--site-hover-duration) var(--site-hover-easing);
+  transition: var(--site-hover-transition);
   background: none;
   border: 0;
   color: var(--kpress-doc-muted);
@@ -772,7 +770,7 @@ body {
   gap: 0.5rem;
   padding: 0.45rem 0.9rem;
   text-decoration: none;
-  transition: background-color var(--site-hover-duration) var(--site-hover-easing);
+  transition: var(--site-hover-transition);
 }
 .kpress .site-popover a.site-popover-action::after,
 .kpress .site-action .site-icon-arrow {
@@ -1599,11 +1597,14 @@ body {
   color: var(--site-support-color);
 }
 
-/* Rows part on a light rule rather than KPress's zebra stripe, and wash on hover. After
-   the phone layout, which draws the same rule under each card. */
+/* Rows part on a light rule rather than KPress's zebra stripe, and wash on hover, the
+   wash easing in and out on the hover timing (site-nav.css, Motion), as it does on
+   focus and while the row's popover is open. After the phone layout, which draws the
+   same rule under each card. */
 .kpress .site-table tbody tr {
   background: none;
   border-block-end: 1px solid var(--kpress-doc-border);
+  transition: var(--site-hover-transition);
 }
 .kpress .site-table tbody tr:hover {
   background: var(--site-wash);
@@ -1878,6 +1879,7 @@ body {
   font-weight: var(--site-font-weight-sans-medium);
   line-height: var(--paper-heading-leading);
   margin-block-end: 0.3rem;
+  transition: var(--site-hover-transition);
 }
 .kpress .site-ladders .site-ladders-name:is(:hover, :focus-visible) {
   color: var(--kpress-doc-accent);
@@ -2055,7 +2057,7 @@ body {
   text-align: center;
   text-decoration: none;
   transform-origin: 0 0;
-  transition: background-color var(--site-hover-duration) var(--site-hover-easing);
+  transition: var(--site-hover-transition);
 }
 .kpress .site-atlas-cell:is(:hover, :focus-visible) {
   background: var(--site-wash);
@@ -2682,7 +2684,7 @@ body {
   color: var(--kpress-doc-muted);
   padding-block: 0.2rem;
   text-align: center;
-  transition: background-color var(--site-hover-duration) var(--site-hover-easing);
+  transition: var(--site-hover-transition);
 }
 .kpress .site-case-index a[data-status="proved"] {
   color: var(--kpress-doc-accent);
@@ -2721,6 +2723,7 @@ body {
 }
 .kpress .kpress-toc a {
   border-left: 0;
+  transition: var(--site-hover-transition);
 }
 .kpress .kpress-toc a:hover {
   background: none;

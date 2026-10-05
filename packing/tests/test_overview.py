@@ -4729,33 +4729,8 @@ def test_the_icon_set_is_one_drawing_in_the_stylesheet() -> None:
         overview_sections.arrow_icon("sideways")
 
 
-#: The stylesheets that carry every hover on the site.
-_HOVER_SHEETS = (
-    render_overview.SITE_CSS,
-    render_overview.SITE_NAV_CSS,
-    EXPLAINER_SHELL,
-    EXPLAINER_STYLE,
-)
-
-
-def test_every_hover_runs_on_the_one_motion_token() -> None:
-    """One timing for every hover, declared once where every page reads it, 120 to 150ms
-    ease-out and instant under reduced motion; no transition names its own time or
-    transitions `all`."""
-    nav = render_overview.SITE_NAV_CSS.read_text(encoding="utf-8")
-    duration = re.findall(r"--site-hover-duration:\s*(\d+)ms;", nav)
-    assert [int(d) for d in duration] == [140, 0]
-    assert "--site-hover-easing: ease-out;" in nav
-    timing = "var(--site-hover-duration) var(--site-hover-easing)"
-    assert f"--kpress-transition-fast: {timing};" in nav
-    for sheet in _HOVER_SHEETS:
-        text = sheet.read_text(encoding="utf-8")
-        assert "--site-hover-duration:" not in text or sheet == render_overview.SITE_NAV_CSS
-        for value in re.findall(r"transition:\s*([^;]+);", text):
-            assert not re.search(r"\d(?:m?s)\b", value), (sheet.name, value)
-            assert not re.search(r"\ball\b", value), (sheet.name, value)
-            if value.strip() != "none":
-                assert "var(--site-hover-duration) var(--site-hover-easing)" in value, value
+# The one hover transition and every hover's use of it are held by
+# `tests/test_site_hover_motion.py`.
 
 
 def test_every_popover_shares_one_margin_and_close_target() -> None:

@@ -4449,7 +4449,10 @@ results:
       read zeromargin.py, so Lemma P derives from zeromargin.py's G0-G3 (jlevy/squares#238,
       retained as
       packing/resources/web/evand-square-packing-2026-10-01/issue-238-author-2026-10-01.json).
-      The brief that governed that reading is not public and was not seen here.
+      The brief that governed that reading was not public when this entry was reviewed. The
+      source published it on 3 October, and the 4 October evand packet retains it
+      (s12/tasks/s21-finish/xcheck.md, think-83zc): it forbids zm_mixed.py and its
+      write-up and permits zeromargin.py, zmcheck and their write-ups, as the source said.
     reviews:
       - path: docs/project/reviews/review-2026-10-02-evand-s32-no-fold-run.md
         kind: adversarial
@@ -5694,16 +5697,25 @@ results:
       and kernel-checks the 689 LEB and 374 CAP leaves of the run's 32,079 with Lemmas U and
       K, as reported and not built here; the tree that joins the leaves and the 26,829 PIECE
       and EXACT leaves remain. think-kqi1 tracks a scope that can state an infinite family.
+
+      The source also reports an interval-certified checker: its zmx2 with area density
+      decides Valid7 by a sweep of the whole pose space, about 400 CPU-seconds at the
+      source, retained with its run records in the 4 October evand packet and not replayed
+      here (E-k2m3-evand-family-report, think-83zc). The source still waits for a second
+      reader of its newest lemmas.
     notes: >-
       V0/C1 until 3 October 2026, when the full qx2_zm.py replay (two shards, think-4k80)
       and lane LL's Lean build were recorded; the 1 October mathematical review and lane
       Y's review of 2 October are the reads. The review's D-1 is recorded on wand125's
       entry, which was reported evidence until its replay with D-1 guarded (fourteen
-      shards, think-e3tq) was recorded on 3 October; that moved no rung. The source's six
-      adversarial reviews by AI agents are its own and are not retained as review records
-      here. The source's Lean toward ValidTilt7 (LebMass, LebMass7, ValidSplit7) was
-      retained on 5 October 2026 in the evand packet of 4 October (think-plrl); it moves no
-      rung.
+      shards, think-e3tq) was recorded on 3 October; that moved no rung.
+
+      The source's six adversarial reviews by AI agents are its own and are not retained
+      as review records here; their reports, private until the source published them on 3
+      October, are kept in the evand packet of 4 October as the source's files
+      (think-83zc). The source's Lean toward ValidTilt7 (LebMass, LebMass7, ValidSplit7)
+      was retained on 5 October 2026 in the evand packet of 4 October (think-plrl); it
+      moves no rung.
 
       wand125 fixed the review's D-1 to D-3 upstream on 3 October; that revision's
       verify.sh ran here on 5 October on the unchanged records, an evidence update on
@@ -7803,7 +7815,9 @@ results:
       to minSide n = s for every n >= 1 in Daniel's own statement of the problem. It reads
       chelokot's definitions and builds none of his proofs, so it adds no route and moves no
       rung; it is a second reading of the statement this entry's theorem uses, retained in
-      the 2026-10-04 evand packet (think-plrl).
+      the 2026-10-04 evand packet (think-plrl). The modules it imports, the source's
+      common specification, its bridges and the attainment theorem isLeast_minSide, joined
+      that packet on 5 October (think-83zc).
   - id: T-087
     kind: lower-bound
     registered: '2026-10-03'

@@ -125,6 +125,14 @@ evidence:
       local zmx2 replay of 2 October 2026 is
       E-n060-evand-mixed-cover-zmx2-replay, and zm_mixed.py was not run here.
       No Lean theorem checks this cover. The grid gives the upper bound.
+      Evidence update, 2026-10-05: the source's claims audit (6383ad8,
+      2026-10-02T00:37:52Z), which the 2 October evand packet read, is retained in the 4
+      October packet at 7ff3b211, where the bundle README is unchanged since (think-83zc).
+      It calls zm_mixed.py and zmx2 separately written rather than independent, since
+      zmx2's point test (Lemma P) uses the G0-G3 of zeromargin.py's write-up and
+      zm_mixed.py calls zeromargin.py, which is this entry's review finding F5, and notes,
+      citing Karakuş, that the published proof of Nagamochi's 2005 general result is
+      incomplete. No rung moves.
     source_reviewed: '2026-10-01'
   - id: E-n061-evand-derived-report
     claim: lower-bound
@@ -373,6 +381,23 @@ evidence:
       The fast source script rechecks hashes and recorded coverage; its full
       positive-tilt checker and the Lean build have not run here. The finite
       scope enumerates this corpus's instances, not the theorem's full domain.
+      Evidence update, 2026-10-05: the 4 October evand packet retains, at 7ff3b211, what
+      earlier commits added on this claim (think-83zc). The bundle README as edited on 3
+      October (02629f2 to ca6d988) records wand125's checker as an independent second
+      implementation, which the source reran in a sandbox (RECORD OK over all 156,800
+      roots, three mutant covers refused) and read, finding the measure-zero gap this
+      record's review names D-1; says the D4 reduction and Lemma Z are kernel-checked,
+      leaving ValidTilt7; cites chelokot's Lean s6_eq_three for k = 3; and points at the
+      six adversarial review reports, published at 0f55a52 and retained with it. At
+      bfbdf04 (2026-10-02T14:06:48Z) the source's zmx2 with area density closed the 120
+      D4 boxes at the double germs it had left open: search/ZMX2_AREA.md reports Valid7
+      by cert --first-order, VERIFIED-D4 over 4,900 roots and VERIFIED over all 39,200
+      roots of the unreduced pose space, none uncertified, 399 CPU-seconds, with its run
+      records. That is an interval-certified second implementation by the source's agent,
+      written without opening qx2_zm.py; the source calls its newest lemmas (Lemma U per
+      base cell, Lemma V, Lemma K(d)) the least reviewed, and its README and TODO still
+      call zmx2 partial until a second reader checks them. Nothing was run here, and no
+      rung moves.
     source_reviewed: '2026-10-01'
   - id: E-k2m3-wand125-valid7-independent
     claim: lower-bound
@@ -6695,7 +6720,15 @@ evidence:
       find, the first exact value of s(k^2 - 4) for any k >= 4; its CREDITS.md
       says the work was produced with an AI agent under human direction.
       The upper bound 6 is the trivial grid. This entry preserves the source
-      claim; the local replay is recorded separately.
+      claim; the local replay is recorded separately. Evidence update, 2026-10-05:
+      the source's claims audit (6383ad8, 2026-10-02T00:37:52Z), which the 2 October
+      evand packet read, is retained in the 4 October packet at 7ff3b211 with
+      s12/VERIFICATION.md, the README being unchanged since (think-83zc). It calls
+      zmcheck separately written, sharing no code with zeromargin.py but written from
+      its lemmas, so the point-test formulation is common; notes, citing Karakuş, that
+      the published proof of Nagamochi's 2005 general result is incomplete; and records
+      the hypothesis-free s32_eq_6 of 28 September (S32Lower.lean, not built here,
+      think-angg). No rung moves.
     source_reviewed: '2026-09-27'
 
   - id: E-n032-evand-closed-cover-source-run
@@ -6999,7 +7032,13 @@ evidence:
       packing/resources/web/evand-square-packing-2026-10-01/issue-238-author-2026-10-01.json);
       the brief that governed that reading is not public and was not seen here. The zmcheck
       sweeps and the Lean build were not run here, and the checker programs are not
-      formalised.
+      formalised. Evidence update, 2026-10-05: the brief was published at 0f55a52
+      (2026-10-03T20:24:02Z), and the 4 October evand packet retains it at 7ff3b211 as
+      s12/tasks/s21-finish/xcheck.md, dated 27 September, with the plan and audits of the
+      s(21) bundle (think-83zc). It forbids zm_mixed.py, its tests, ZM_MIXED.md and its
+      audits, and permits zmcheck, zeromargin.py, RUNG2.md and ZEROMARGIN.md for the
+      pose-space subdivision and point primitives, as the source said on #238. No rung
+      moves.
     source_reviewed: '2026-10-02'
 
   - id: E-n012-evand-15680-3951-report
@@ -7706,7 +7745,15 @@ evidence:
       Axioms.lean over its default target also printed only the standard axioms
       (receipts/lean/axioms_default.log). The theorem is Bentz's (T-006); this is Evan
       Daniel's case-free proof of it, made with an AI agent under his direction as his
-      CREDITS.md says.
+      CREDITS.md says. Evidence update, 2026-10-05: at c2ae715 (2026-10-02T01:10:00Z)
+      the source added s13_isLeast : IsLeast {s | Packs 13 s} 4 to S13Lower.lean, from
+      its theorem that the infimum is attained for every n >= 1 (isLeast_minSide,
+      Attain.lean). At f7b4430 and 87726c9 its SpecHeadline.lean states the same as s13
+      for a common specification, UnitSquarePacking.Packs, and as s13_fc for
+      formal-conjectures' definitions (open unit squares placed by isometries in the open
+      square), through SpecBridge.lean and SpecFC.lean. The 4 October evand packet
+      retains these files at 7ff3b211 (think-83zc); none was built here. They restate the
+      theorem this entry built for other forms of the definition, and no rung moves.
     source_reviewed: '2026-09-30'
 
   - id: E-n021-evand-mixed-cover-report
@@ -7744,6 +7791,15 @@ evidence:
       its s(32) = 6; its CREDITS.md says the work was produced with an AI agent
       under human direction. The upper bound 5 is the grid. This entry
       preserves the source claim; the local replay is recorded separately.
+      Evidence update, 2026-10-05: the source's claims audit (6383ad8,
+      2026-10-02T00:37:52Z), which the 2 October evand packet read, is retained in the 4
+      October packet at 7ff3b211, where the bundle README is unchanged since
+      (think-83zc). It calls the two checkers separately written rather than independent,
+      since zmx2's point test (Lemma P) uses the G0-G3 of zeromargin.py's write-up and
+      zm_mixed.py calls zeromargin.py, and notes, citing Karakuş, that the published
+      proof of Nagamochi's 2005 general result is incomplete. The brief that set what
+      zmx2's author could read, s12/tasks/s21-finish/xcheck.md, is retained there too.
+      No rung moves.
     source_reviewed: '2026-09-28'
 
   - id: E-n021-evand-mixed-cover-zmx2-replay
@@ -7868,7 +7924,13 @@ evidence:
       1 + sqrt(34) as the earlier bounds; its CREDITS.md says the work was
       produced with an AI agent under human direction. The upper bound 7 is the
       grid. This entry preserves the source claim; the local replay is recorded
-      separately.
+      separately. Evidence update, 2026-10-05: the source's claims audit (6383ad8,
+      2026-10-02T00:37:52Z), which the 2 October evand packet read, is retained in the 4
+      October packet at 7ff3b211, where the bundle README is unchanged since
+      (think-83zc). It calls the two checkers separately written rather than independent,
+      since zmx2's point test (Lemma P) uses the G0-G3 of zeromargin.py's write-up and
+      zm_mixed.py calls zeromargin.py, and notes, citing Karakuş, that the published
+      proof of Nagamochi's 2005 general result is incomplete. No rung moves.
     source_reviewed: '2026-09-28'
 
   - id: E-n045-evand-mixed-cover-zmx2-replay
@@ -11683,7 +11745,14 @@ evidence:
       is the public-claim entry; the source's run and Lean reduction are the two entries
       after it. The scope is the projection onto the cases this record holds, n <= 324,
       which is k = 5 to 18; the reported theorem does not end at k = 18. Nothing here has
-      replayed the positive-tilt run.
+      replayed the positive-tilt run. Evidence update, 2026-10-05: the three adversarial
+      review reports that the bundle README summarises and kept in private notes at this
+      pin were published at 0f55a52 (2026-10-03T20:24:02Z), and the 4 October evand packet
+      retains them at 7ff3b211 (s12/tasks/k2m4-review/, think-83zc). They report no
+      BREAKS. The claim report's one GAP, that the step from the run's D4 region and
+      Lemma Z to Valid9 was argued only in a docstring, is the reduction the source
+      kernel-checks in ValidSplit9.lean (valid9_of_tilt_axis), which the 3 October packet
+      retains. Nothing was run here, and no rung moves.
     external_review:
       state: informally-verified
       date: '2026-10-03'

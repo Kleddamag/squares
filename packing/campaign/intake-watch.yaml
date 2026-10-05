@@ -115,3 +115,23 @@ repositories:
       pin them here. The R042, R043, R050 and R052-4.62003 packages are superseded and
       left out on purpose, each pinned by its publication record's digests (the R052 and
       continuation packets' READMEs). n-017.md cites every release. Nothing to import.
+  - url: https://github.com/evand/square-packing
+    read_through: 40e442f35e55c4d1bd4a4defb9304f9672e5c08f
+    read_on: '2026-10-05'
+    note: >-
+      The 41 commits from 27dd68a (1 October) to 40e442f (4 October), the parent of the
+      7ff3b211 pin, whose changed paths no packet retained (think-83zc). Where one bears on
+      a registered entry, the evand-square-packing-2026-10-04 packet now retains the file
+      at the pin, each an evidence update that moves no rung: the k2m3 bundle README of
+      02629f2 to ca6d988 and the k2m3 review reports (T-064); zmx2's area-density run
+      deciding Valid7 at bfbdf04 (T-064); the k2m4 review reports (T-081); the claims
+      audit of 6383ad8 and the s(21) bundle's brief and audits (T-051, T-052, T-053,
+      T-062); and the Lean of f7b4430, 87726c9 and c2ae715, the specification bridges,
+      isLeast_minSide and s13_isLeast (T-006, T-086). The rest is working material the
+      packet README leaves out: the TODO and Completed lists, the task briefs, the rest of
+      what 0f55a52 published (session reviews, status notes, TODO archives, reviewers'
+      scratch code and logs), the research notes and scripts (SOS probe, S2
+      insertable LPs, seam capacity, qx2 margin studies, the s(20) generator tools, the
+      dual_exact doc pointers of 27dd68a), the literature and proof-anatomy notes,
+      QUADRANT_EXACT.md's pointer to the now-public reviews, S3Lower.lean's toy s3_eq_2 and
+      Average.lean's averaging lemma, which bounds nothing. Nothing else to import.

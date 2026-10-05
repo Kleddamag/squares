@@ -107,8 +107,8 @@ session:
   progress:
     metric: Frozen equivalence-safe W5 decisions with retained representative evidence
     before: No measured memo-lifetime comparison.
-    after: One retained21.0% producer-peak comparison with exact-byte equivalence; M1 owns implementation,
-      our layer adds independent evidence/instrument/regression;83 current-parent targeted tests
+    after: One retained 21.0% producer-peak comparison with exact-byte equivalence; M1 owns implementation,
+      our layer adds independent evidence/instrument/regression; 83 current-parent targeted tests
       and hosted fast prerequisites pass.
   delegations:
   - task: w3_direct

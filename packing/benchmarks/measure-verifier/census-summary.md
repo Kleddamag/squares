@@ -6,15 +6,16 @@ The same rows, with receipt paths and digests, are in `census-summary.json`.
 Every retained certificate that `sqverify-fast` decides (formats T, M and L), from the
 two census folders: [census/](census/README.md) and
 [census-mixed/](census-mixed/README.md).
-*Verdict* is `VERIFIED` only when all 201 net directions verified, the process exited
-zero, and the exact capture at the least-bound leaf’s centre cleared the threshold.
-*Authors’ replay here* is what this repository holds of a replay by the authors’ own
-checker; where it holds less than a complete replay, this census is the first complete
-check of the certificate here, which the last column says.
+*Verdict* is `VERIFIED` only when every direction of its net verified, the process
+exited zero, and the exact capture at the least-bound leaf’s centre cleared the
+threshold. *Authors’ replay here* is what this repository holds of a replay by the
+authors’ own checker; where it holds less than a complete replay, this census is the
+first complete check of the certificate here, which the last column says.
 
 | Certificate | Format | n | L | Verdict | CPU s | Least certified bound | Authors’ replay here | First complete check here |
 | --- | --- | ---: | --- | --- | ---: | --- | --- | --- |
 | `cert_n11_L381` | T | 11 | 381/100 | VERIFIED | 19.4 | 1.0001000043992454 | complete | no |
+| `mixed_n18_L470` | M | 18 | 47/10 | VERIFIED | 168.3 | 1.0000000000740676 | complete | no |
 | `rect_n18_L4695` | T | 18 | 939/200 | VERIFIED | 213.2 | 1.0001000024649946 | complete | no |
 | `rect_n19_L4815` | T | 19 | 963/200 | VERIFIED | 138.2 | 1.000100001265513 | complete | no |
 | `rect_n19_L48175` | T | 19 | 1927/400 | VERIFIED | 255.4 | 1.0001000003934286 | complete | no |
@@ -98,6 +99,7 @@ check of the certificate here, which the last column says.
 | `rect_n61_L796` | T | 61 | 199/25 | VERIFIED | 109.0 | 1.000100005068861 | complete | no |
 | `mixed_n65_L835` | M | 65 | 167/20 | VERIFIED | 1629.0 | 1.000000000539362 | complete | no |
 | `mixed_n66_L842` | M | 66 | 421/50 | VERIFIED | 1460.1 | 1.0000000000012201 | complete | no |
+| `mixed_n66_L843` | M | 66 | 843/100 | VERIFIED | 2167.2 | 1.0000000006737138 | partial (12 of 201) | yes |
 | `rect_n66_L8345` | T | 66 | 1669/200 | VERIFIED | 152.4 | 1.0001000034419847 | none | yes |
 | `rect_n66_L8375` | T | 66 | 67/8 | VERIFIED | 230.3 | 1.000100000263314 | none | yes |
 | `rect_n66_L8385` | T | 66 | 1677/200 | VERIFIED | 250.1 | 1.0001000001280729 | none | yes |
@@ -166,7 +168,7 @@ check of the certificate here, which the last column says.
 | `mixed_n96_L996` | M | 96 | 249/25 | VERIFIED | 456.4 | 1.000000000121414 | complete | no |
 | `mixed_n101_L1028` | L | 101 | 257/25 | VERIFIED | 128.4 | 1.000000000300333 | complete | no |
 
-151 of 151 certificates verified; 76 of them are the first complete check of their
+153 of 153 certificates verified; 77 of them are the first complete check of their
 certificate in this repository.
 
 <!-- This document follows common-doc-guidelines.md.

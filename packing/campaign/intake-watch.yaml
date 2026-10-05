@@ -138,15 +138,6 @@ repositories:
 
   # Heads read by the intake pass of 2026-10-05 08:00Z (think-i5qd) that arrived after it
   # pinned its packets; each is held for an import of its own.
-  - url: https://github.com/wand125/square-packing-bounds
-    read_through: d73ce20d6650b333f299daf348ac179399190c10
-    read_on: '2026-10-05'
-    bead: think-4qit
-    note: >-
-      One commit past a541afb, the wand125-mixed-bounds-2026-10-05 packet's pin: d73ce20
-      adds certificates/mixed_n66_L843, s(66) >= 843/100, superseding the source's
-      mixed_n66_L842 (T-069), posted on #282 at 08:11:44Z. To be imported at this or a later
-      head.
   - url: https://github.com/squarepacker/s12-lower-bound
     read_through: 7a96bec36bc6811c3715ef581598f22ff9b7ba3a
     read_on: '2026-10-05'

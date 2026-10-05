@@ -703,7 +703,9 @@ sources:
       five were recorded as reported lower bounds (T-069), and on 2026-10-02 each passed a
       complete replay here, every direction returning the certificate's record, which put
       all five in the verified lane; the proof-bundle tarballs are pinned by digest and not
-      retained. The revision also
+      retained. At n = 66 the source's mixed_n66_L843 of 5 October (T-097, the finer-net
+      packet) supersedes it in the reported lane, and the case record reports that one; the
+      verified lane keeps 421/50 until its replay. The revision also
       holds mixed_n87_L939 and mixed_n87_L940, below its rectangle certificate at n = 87,
       which are pinned and not registered; the request announces n = 82 to 85 to follow.
   - id: wand125-mixed-bounds-2026-10-02
@@ -1131,6 +1133,37 @@ sources:
       net directions, which put them in the verified lane; the source's own checker was not
       run here, and the proof-bundle tarballs are pinned by digest and not retained. The
       revision changes nothing else after 797bdf6, the evening packet's pin.
+  - id: wand125-mixed-bounds-finer-net-2026-10-05
+    title: Mixed rectangle-measure certificates of later 5 October 2026 for n = 18 and 66
+    role: source-repository
+    url: https://github.com/wand125/square-packing-bounds/tree/43050edc5bdf5116fc5a073283128edd6749946b
+    local: resources/web/wand125-mixed-bounds-finer-net-2026-10-05/
+    source_key: '[wand125 mixed bounds finer net 2026-10-05]'
+    scope: {n_values: [18, 66]}
+    reviewed: '2026-10-05'
+    source_date: '2026-10-05'
+    disposition: current-report
+    replay_disposition: case-specific
+    represented_by: [frontier/n-018.md, frontier/n-066.md]
+    evidence:
+      - E-n018-wand125-mixed-470-report
+      - E-n066-wand125-mixed-843-report
+    notes: >-
+      Revision 43050edc5bdf5116fc5a073283128edd6749946b, retrieved at 2026-10-05T17:10Z for a
+      comment of 5 October on jlevy/squares#282 (mixed_n66_L843, added at d73ce20) and for
+      jlevy/squares#366 (mixed_n18_L470, added at 43050ed). Two rectangle densities checked
+      at coverage one by the source's research copy of Tokoharu's verify.cpp, byte for byte
+      the checker of its n = 50 certificate, run by the same driver, each of mass n -
+      1/100000. mixed_n18_L470 is on a net its candidate declares, core 999/1000 and 416
+      half-angle tangents of step 1/1001; mixed_n66_L843 is on the standard net and
+      supersedes the source's mixed_n66_L842 (T-069). Both are recorded as reported lower
+      bounds (T-096 and T-097), each above what the record reported at its count. The
+      directories carry no completion-audit.json, so each tarball is bound by its digest at
+      the pinned tree. The exact audits and the checks before any replay pass on both: for
+      n = 66 the fixed-net audit and its mixed-fetch, for n = 18
+      devtools.audit_wand125_declared_net, which also binds every shipped record and input
+      to the declared net. The proof-bundle tarballs are pinned by digest and not
+      retained.
   - id: wand125-valid7-independent-check-2026-10-02
     title: Independent exact checker of Valid7 for s(k^2 - 3) = k
     role: source-repository

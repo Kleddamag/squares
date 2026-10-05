@@ -231,6 +231,23 @@ def test_a_superseded_entry_whose_bound_still_stands_is_refused(records: view.Re
     assert check_standing.problems(tied, view.SUPERSEDED, records)
 
 
+def test_a_superseded_report_is_held_to_the_reported_lane_alone(records: view.Records) -> None:
+    """T-046 reports wand125's rectangle certificates at C0. Its replays (T-045, T-070)
+    hold verified bounds equal to some of its values, and others are above the verified
+    bound where no replay has run, but every one is beaten in the reported lane, so it is
+    superseded without a problem. The same entry at a replayed rung would be refused."""
+    record = records.results["T-046"]
+    assert record["confirmation"] in check_standing.UNREPLAYED
+    assert view.standing(record, records) == view.SUPERSEDED
+    assert check_standing.problems(record, view.SUPERSEDED, records) == []
+    assert "equals the verified bound" in check_standing.summary(
+        record, view.SUPERSEDED, records
+    )
+    replayed = _entry(records, "T-046", confirmation="C3")
+    (problem,) = check_standing.problems(replayed, view.SUPERSEDED, records)
+    assert "no worse than the verified one" in problem
+
+
 def test_a_standing_entry_whose_every_bound_is_beaten_is_refused(records: view.Records) -> None:
     """The mismatch the other way: not marked superseded, and no longer the best at any
     case. T-001's 4.426213 is below the verified and the reported bound at n = 17."""
@@ -245,17 +262,18 @@ def test_a_standing_entry_whose_every_bound_is_beaten_is_refused(records: view.R
 
 
 def test_an_entry_that_holds_one_case_of_several_stands(records: view.Records) -> None:
-    """T-045 is beaten at fourteen of its fifteen counts and holds n = 18. It still
-    holds a case bound, so it is not superseded, and the summary names both. The example
-    was T-047 until 2026-10-02, when the rectangle replays raised n = 26, 29 and 30, the
-    last three it held, and then T-044 until the replays of 1 October's certificates
-    (T-074) raised n = 56, the last count it held, later that day."""
-    record = records.results["T-045"]
+    """T-071 is beaten at three of its four counts and holds n = 84. It still holds a
+    case bound, so it is not superseded, and the summary names both. The example was
+    T-047 until 2026-10-02, when the rectangle replays raised n = 26, 29 and 30, the last
+    three it held; then T-044 until the replays of 1 October's certificates (T-074)
+    raised n = 56, the last count it held, later that day; then T-045 until 2026-10-05,
+    when the replay of T-096's certificate on a declared net raised n = 18."""
+    record = records.results["T-071"]
     assert view.standing(record, records) == view.HOLDS
     assert check_standing.problems(record, view.HOLDS, records) == []
     line = check_standing.summary(record, view.HOLDS, records)
-    assert "equals the verified bound at n = 18 " in line
-    assert "beaten at n = 19, 20, 26\u201328, 30\u201332, 40, 61, 75\u201378" in line
+    assert "equals the verified bound at n = 84 " in line
+    assert "beaten at n = 85\u201387" in line
     assert check_standing.problems(record, view.SUPERSEDED, records)
 
 

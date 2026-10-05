@@ -958,6 +958,30 @@ sources:
       trailer naming an AI assistant.
       web/wand125-mixed-bounds-2026-10-05/acquisition/sources.json pins revision
       a541afbe7826ff75f6d3848e10279fd524d55af3. Dated by that revision, 2026-10-05 UTC.
+  - key: '[wand125 mixed bounds finer net 2026-10-05]'
+    authors: [wand125]
+    year: 2026
+    venue: GitHub
+    dated: '2026-10-05'
+    credit: wand125 after Tokoharu, Levy, Stromquist, Nagamochi, Burns, Massaccesi
+    short_credit: wand125 after Tokoharu, Levy et al.
+    lineage: builds-on-project
+    note: >-
+      The two mixed rectangle-measure certificates that wand125/square-packing-bounds added
+      on 2026-10-05 after a541afb: certificates/mixed_n66_L843 for s(66) >= 843/100, in
+      d73ce20 and requested in a comment on jlevy/squares#282, and
+      certificates/mixed_n18_L470 for s(18) >= 47/10, in 43050ed and requested in
+      jlevy/squares#366. Both are rectangle densities of mass n - 1/100000 checked at
+      coverage one by code/mixed_rotated_verify.cpp, byte for byte the checker of the
+      source's n = 50 certificate. mixed_n18_L470 is the source's first on a net its
+      candidate declares (proof_net: core 999/1000, 416 half-angle tangents of step
+      1/1001); mixed_n66_L843 supersedes mixed_n66_L842 of the [wand125 mixed bounds
+      2026-10-01] key. The directories carry no completion-audit.json. Credited as they
+      are, on the root README's Attribution section, which opens "The method is not
+      ours."; the README says parts of the work were produced with AI assistance under
+      human direction. web/wand125-mixed-bounds-finer-net-2026-10-05/acquisition/sources.json
+      pins revision 43050edc5bdf5116fc5a073283128edd6749946b. Dated by that revision,
+      2026-10-05 UTC.
   - key: '[franciscouzo square-packing 2026-09-27]'
     authors: [Couzo]
     year: 2026

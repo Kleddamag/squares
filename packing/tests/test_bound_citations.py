@@ -875,8 +875,9 @@ RECORDED_LINKS: dict[tuple[int, str], tuple[list[str], list[str]]] = {
     (101, "lower"): (["T-080"], ["T-080"]),
     # This project's own bound, established rather than confirmed, was T-030's until
     # 2026-10-02 (`test_a_novel_first_party_bound_cites_this_project_and_its_result` keeps
-    # that shape); since then it is wand125's rectangle bound, which T-045 replays.
-    (18, "lower"): (["T-045"], ["T-045"]),
+    # that shape); then wand125's rectangle bound, which T-045 replays, until 2026-10-05;
+    # since then its mixed bound on a declared net, which T-096 replays.
+    (18, "lower"): (["T-096"], ["T-096"]),
 }
 
 

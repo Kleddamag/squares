@@ -45,13 +45,15 @@ verifiers:
     methods: [interval-certified]
     role: decides
     summary: >-
-      Decides a mixed point-and-rectangle certificate at each of the 201 net directions,
+      Decides a mixed point-and-rectangle certificate at each direction of the
+      certificate's net, 201 on the standard net or the 416 that mixed_n18_L470 declares,
       returning the direction's own record of cells and lower bound.
     source:
       - packing/resources/web/wand125-point-and-mixed-2026-09-28/square-packing-bounds/certificates/mixed_n50_L740/code/mixed_rotated_verify.cpp
     versions:
       - {sha256: 89b674a6feabe24d91c29431de1624907c4bff83280ceb481475455686693652}
       - {revision: 7975030a, note: "the n = 76 bundle's tarball, fetched by Git and pinned by its own SHA-256"}
+      - {revision: 43050edc, note: "the n = 18 bundle's tarball on a declared net, fetched by Git and pinned by its own SHA-256"}
 
   - id: V-wand125-verify-mixed-full-proof-py
     program: verify_mixed_full_proof.py
@@ -68,7 +70,9 @@ verifiers:
       - packing/resources/web/wand125-point-and-mixed-2026-09-28/square-packing-bounds/certificates/mixed_n50_L740/code/verify_mixed_full_proof.py
     versions:
       - {sha256: 2719e482cfdd87da2b64b50af626bbd0a68d58d95b746cf27467b2a7aca83648}
-    note: Retained and reviewed; no confirming entry runs it yet.
+    note: >-
+      Retained and reviewed. E-n018-wand125-mixed-470-source-replay runs it end to end, as
+      the n = 18 bundle's README says.
 
   - id: V-wand125-unified-linear-verify-cpp
     program: unified_linear_verify.cpp
@@ -1052,6 +1056,20 @@ verifiers:
       Fetches, pins and binds wand125's point and mixed bundles, checks their exact
       premises, drives the source's checker and compares its records with the shipped ones.
     source: [packing/devtools/audit_wand125_point_and_mixed.py]
+
+  - id: V-audit-wand125-declared-net
+    program: devtools.audit_wand125_declared_net
+    author: Squares Project (Levy)
+    provenance: first-party
+    language: [Python]
+    methods: [exact-algebraic]
+    role: premises
+    summary: >-
+      Checks the exact premises of wand125's mixed certificate on a declared net, lemma
+      N0's among them; binds its bundle's files to the packet and every shipped record and
+      input to the declared net and the expanded candidate; and compares a replay of the
+      bundle's own driver with the shipped records, requiring the run to have happened.
+    source: [packing/devtools/audit_wand125_declared_net.py]
 
   - id: V-audit-wand125-linear
     program: devtools.audit_wand125_linear

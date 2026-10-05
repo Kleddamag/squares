@@ -25,16 +25,16 @@ second implementation agrees.
 
 ## The Short Version
 
-- **82** programs: **31** external and **51** first-party; **65** decide claims and **17** check premises.
-- **268** of **295** evidence entries name the programs that verified them: 199 reproduced with the producer’s code, 53 independently re-implemented, 9 no relation: a proof, a derivation or a report, 7 re-implemented, sharing the producer’s components.
+- **83** programs: **31** external and **52** first-party; **65** decide claims and **18** check premises.
+- **271** of **298** evidence entries name the programs that verified them: 202 reproduced with the producer’s code, 53 independently re-implemented, 9 no relation: a proof, a derivation or a report, 7 re-implemented, sharing the producer’s components.
 
 ## Programs
 
 | id | program | author | provenance | role | evidence | results |
 | --- | --- | --- | --- | --- | ---: | ---: |
 | [`V-tokoharu-verify-cpp`](#v-tokoharu-verify-cpp) | verify.cpp | Tokoharu | external | decides | 12 | 7 |
-| [`V-wand125-mixed-rotated-verify-cpp`](#v-wand125-mixed-rotated-verify-cpp) | mixed_rotated_verify.cpp | wand125 | external | decides | 82 | 9 |
-| [`V-wand125-verify-mixed-full-proof-py`](#v-wand125-verify-mixed-full-proof-py) | verify_mixed_full_proof.py | wand125 | external | decides | 59 | 6 |
+| [`V-wand125-mixed-rotated-verify-cpp`](#v-wand125-mixed-rotated-verify-cpp) | mixed_rotated_verify.cpp | wand125 | external | decides | 85 | 11 |
+| [`V-wand125-verify-mixed-full-proof-py`](#v-wand125-verify-mixed-full-proof-py) | verify_mixed_full_proof.py | wand125 | external | decides | 62 | 8 |
 | [`V-wand125-unified-linear-verify-cpp`](#v-wand125-unified-linear-verify-cpp) | unified_linear_verify.cpp | wand125 | external | decides | 6 | 3 |
 | [`V-wand125-verify-portable-py`](#v-wand125-verify-portable-py) | verify_portable.py | wand125 | external | decides | 2 | 1 |
 | [`V-wand125-check-with-sqpack`](#v-wand125-check-with-sqpack) | check_with_sqpack.py | wand125 | external | decides | 5 | 1 |
@@ -102,6 +102,7 @@ second implementation agrees.
 | [`V-audit-tokoharu-density`](#v-audit-tokoharu-density) | devtools.audit_tokoharu_density | Squares Project (Levy) | first-party | premises | 1 | 1 |
 | [`V-audit-wand125-rectangles`](#v-audit-wand125-rectangles) | devtools.audit_wand125_rectangles | Squares Project (Levy) | first-party | premises | 3 | 3 |
 | [`V-audit-wand125-point-and-mixed`](#v-audit-wand125-point-and-mixed) | devtools.audit_wand125_point_and_mixed | Squares Project (Levy) | first-party | premises | 17 | 7 |
+| [`V-audit-wand125-declared-net`](#v-audit-wand125-declared-net) | devtools.audit_wand125_declared_net | Squares Project (Levy) | first-party | premises | 1 | 1 |
 | [`V-audit-wand125-linear`](#v-audit-wand125-linear) | devtools.audit_wand125_linear | Squares Project (Levy) | first-party | premises | 3 | 3 |
 | [`V-sqverify-fast`](#v-sqverify-fast) | sqverify-fast | Squares Project (Levy) | first-party | decides | 2 | 1 |
 | [`V-replay-chelokot-lean`](#v-replay-chelokot-lean) | devtools.replay_chelokot_lean | Squares Project (Levy) | first-party | premises | 1 | 1 |
@@ -146,10 +147,10 @@ Decides a rectangle-density covering certificate over every net direction by out
 
 **mixed_rotated_verify.cpp, with the source's per-angle replay functions** · wand125 · external · decides · C++, Python · interval-certified
 
-Decides a mixed point-and-rectangle certificate at each of the 201 net directions, returning the direction's own record of cells and lower bound.
+Decides a mixed point-and-rectangle certificate at each direction of the certificate's net, 201 on the standard net or the 416 that mixed_n18_L470 declares, returning the direction's own record of cells and lower bound.
 
 - Source: [`packing/resources/web/wand125-point-and-mixed-2026-09-28/square-packing-bounds/certificates/mixed_n50_L740/code/mixed_rotated_verify.cpp`](../../packing/resources/web/wand125-point-and-mixed-2026-09-28/square-packing-bounds/certificates/mixed_n50_L740/code/mixed_rotated_verify.cpp)
-- Versions run: SHA-256 `89b674a6feab…`; revision `7975030a` (the n = 76 bundle's tarball, fetched by Git and pinned by its own SHA-256)
+- Versions run: SHA-256 `89b674a6feab…`; revision `7975030a` (the n = 76 bundle's tarball, fetched by Git and pinned by its own SHA-256); revision `43050edc` (the n = 18 bundle's tarball on a declared net, fetched by Git and pinned by its own SHA-256)
 
 | evidence | run | code | results |
 | --- | --- | --- | --- |
@@ -235,6 +236,9 @@ Decides a mixed point-and-rectangle certificate at each of the 201 net direction
 | `E-n094-wand125-mixed-995-report` | the source’s own run | producer’s code | T-091 |
 | `E-n067-wand125-mixed-848-report` | the source’s own run | producer’s code | T-094 |
 | `E-n084-wand125-mixed-9411-report` | the source’s own run | producer’s code | T-094 |
+| `E-n066-wand125-mixed-843-report` | the source’s own run | producer’s code | T-097 |
+| `E-n018-wand125-mixed-470-report` | the source’s own run | producer’s code | T-096 |
+| `E-n018-wand125-mixed-470-source-replay` | replayed here | producer’s code | T-096 |
 
 ### `V-wand125-verify-mixed-full-proof-py`
 
@@ -244,7 +248,7 @@ The source's driver for a complete mixed-certificate proof: it runs mixed_rotate
 
 - Source: [`packing/resources/web/wand125-point-and-mixed-2026-09-28/square-packing-bounds/certificates/mixed_n50_L740/code/verify_mixed_full_proof.py`](../../packing/resources/web/wand125-point-and-mixed-2026-09-28/square-packing-bounds/certificates/mixed_n50_L740/code/verify_mixed_full_proof.py)
 - Versions run: SHA-256 `2719e482cfdd…`
-- Note: Retained and reviewed; no confirming entry runs it yet.
+- Note: Retained and reviewed. E-n018-wand125-mixed-470-source-replay runs it end to end, as the n = 18 bundle's README says.
 
 | evidence | run | code | results |
 | --- | --- | --- | --- |
@@ -307,6 +311,9 @@ The source's driver for a complete mixed-certificate proof: it runs mixed_rotate
 | `E-n094-wand125-mixed-995-report` | the source’s own run | producer’s code | T-091 |
 | `E-n067-wand125-mixed-848-report` | the source’s own run | producer’s code | T-094 |
 | `E-n084-wand125-mixed-9411-report` | the source’s own run | producer’s code | T-094 |
+| `E-n066-wand125-mixed-843-report` | the source’s own run | producer’s code | T-097 |
+| `E-n018-wand125-mixed-470-report` | the source’s own run | producer’s code | T-096 |
+| `E-n018-wand125-mixed-470-source-replay` | replayed here | producer’s code | T-096 |
 
 ### `V-wand125-unified-linear-verify-cpp`
 
@@ -1374,6 +1381,19 @@ Fetches, pins and binds wand125's point and mixed bundles, checks their exact pr
 | `E-n091-wand125-mixed-970-source-replay` | replayed here | producer’s code | T-075 |
 | `E-n092-wand125-mixed-975-source-replay` | replayed here | producer’s code | T-075 |
 | `E-n096-wand125-mixed-996-source-replay` | replayed here | producer’s code | T-075 |
+
+### `V-audit-wand125-declared-net`
+
+**devtools.audit_wand125_declared_net** · Squares Project (Levy) · first-party · checks premises · Python · exact-algebraic
+
+Checks the exact premises of wand125's mixed certificate on a declared net, lemma N0's among them; binds its bundle's files to the packet and every shipped record and input to the declared net and the expanded candidate; and compares a replay of the bundle's own driver with the shipped records, requiring the run to have happened.
+
+- Source: [`packing/devtools/audit_wand125_declared_net.py`](../../packing/devtools/audit_wand125_declared_net.py)
+- Versions run: this repository's commits, which Git holds
+
+| evidence | run | code | results |
+| --- | --- | --- | --- |
+| `E-n018-wand125-mixed-470-source-replay` | replayed here | producer’s code | T-096 |
 
 ### `V-audit-wand125-linear`
 

@@ -299,22 +299,24 @@ def test_the_chain_on_eleven_squares_says_how_each_result_stands_there(
 def test_a_chain_step_says_both_standings_of_a_result_that_holds_elsewhere(
     overview: overview_data.Overview, bodies: dict[str, str]
 ) -> None:
-    """T-045 is the current best at other cases and superseded at n = 32 by Evan Daniel's
-    s(32) = 6 (T-051), and its step in that chain says both. T-047 on n = 11 was this
-    test's case until 2026-10-02, when it stopped holding anywhere."""
-    steps = dict(STEP.findall(bodies["T-051"]))
-    assert steps["t-051"] == overview_sections.standing_key(HOLDS)
-    wide = _result(overview, "T-045")
+    """T-069 is the current best at other cases and superseded at n = 92 by the source's
+    later certificate (T-075), and its step in that chain says both. T-047 on n = 11 was
+    this test's case until 2026-10-02, when it stopped holding anywhere, and T-045 on
+    n = 32 until 2026-10-05, when T-096's replay took n = 18, the last count it held."""
+    steps = dict(STEP.findall(bodies["T-075"]))
+    assert steps["t-075"] == overview_sections.standing_key(HOLDS)
+    wide = _result(overview, "T-069")
     assert wide.standing == HOLDS
-    assert result_overview.standing_on(wide, [32]) == SUPERSEDED
-    step = bodies["T-051"].split('data-step="t-045"', 1)[1].split("</li>", 1)[0]
+    assert result_overview.standing_on(wide, [92]) == SUPERSEDED
+    step = bodies["T-075"].split('data-step="t-069"', 1)[1].split("</li>", 1)[0]
     # A result that still stands draws no chip, so the step has none for its standing
     # elsewhere and says in words how it stands on this case.
     assert not overview_sections.is_superseded(wide)
     assert ">current best<" not in step
     assert ">superseded<" not in step
-    assert "on this case, superseded by <a href=" in step
-    assert steps["t-045"] == overview_sections.standing_key(SUPERSEDED)
+    # T-075's chain spans several cases, so the words are for all of them.
+    assert "on these cases, superseded by <a href=" in step
+    assert steps["t-069"] == overview_sections.standing_key(SUPERSEDED)
 
 
 def test_a_result_superseded_in_part_stays_current_in_its_chain(

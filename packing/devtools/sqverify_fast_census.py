@@ -15,13 +15,14 @@ The replay receipts named below were the first census's case list; the rectangle
 family now reads them only for the authors' replay status. They are
 the ones this repository has already replayed with the authors' checker: every case in
 the `receipts/replay/audit.json` of the wand125 rectangle packets, and Tokoharu's three
-in the 22 September packet. Each runs through `sqverify-fast` at all 201 net
-directions; its per-direction receipts and summary are kept as
-`--out/PACKET/CERTIFICATE.jsonl.gz`. The census records, per certificate, the
-verifier's status, node total, least certified bound, CPU seconds (from `wait4`, user
-plus system), wall seconds and load average, beside the binary's and the candidate's
-digests. On the least-bound direction, the exact capture at the centre of the
-least-bound leaf is evaluated in rationals and must clear the threshold.
+in the 22 September packet. Each runs through `sqverify-fast` at every direction of its
+net, 201 unless a format M file declares its own (`proof_net`, jlevy/squares#366); its
+per-direction receipts and summary are kept as `--out/PACKET/CERTIFICATE.jsonl.gz`.
+The census records, per certificate, the verifier's status, node total, least
+certified bound, CPU seconds (from `wait4`, user plus system), wall seconds and load
+average, beside the binary's and the candidate's digests. On the least-bound
+direction, the exact capture at the centre of the least-bound leaf is evaluated in
+rationals and must clear the threshold.
 
 A certificate counts as verified here only when the verifier's own summary says
 `VERIFIED` (every direction verified and the direction set is the whole net) and its
@@ -97,7 +98,10 @@ MIXED_PACKETS = (
     "wand125-mixed-bounds-2026-10-04",
     "wand125-mixed-bounds-evening-2026-10-04",
     "wand125-mixed-bounds-2026-10-05",
+    "wand125-mixed-bounds-finer-net-2026-10-05",
 )
+#: The standard net's direction count; a format M file may declare another.
+STANDARD_DIRECTIONS = 201
 CENSUS_ROOT = PROJECT / "benchmarks/measure-verifier"
 # Tokoharu's three certificates, replayed in the 22 September packet's density receipt.
 TOKOHARU_CASES = (
@@ -192,6 +196,14 @@ def mixed_cases() -> list[Case]:
     return cases
 
 
+def net_directions(case: Case) -> int:
+    """How many net directions a case's certificate has: its `proof_net`'s, else 201."""
+    raw = case.candidate.read_bytes()
+    data = json.loads(gzip.decompress(raw) if raw[:2] == b"\x1f\x8b" else raw)
+    net = data.get("proof_net") if isinstance(data, dict) else None
+    return int(net["last"]) + 1 if isinstance(net, dict) else STANDARD_DIRECTIONS
+
+
 def replay_folders(case: Case) -> list[Path]:
     """A mixed case's receipt folders: `n76`, or `n85-L946` where two sides share n."""
     receipts = WEB / case.packet / "receipts"
@@ -217,7 +229,8 @@ def mixed_reference(case: Case) -> dict[str, Any]:
     """The authors' replayed directions of one mixed case, with their CPU seconds.
 
     A full replay recorded only as a comparison (`full/compare.json`, the 28 September
-    packet) counts as all 201 directions when its certificate digest is this case's.
+    packet) counts as every direction of the case's net when its certificate digest is
+    this case's.
     """
     rows: dict[int, dict[str, Any]] = {}
     complete_without_rows = False
@@ -255,18 +268,20 @@ def mixed_reference(case: Case) -> dict[str, Any]:
                 record.get("certificate_sha256") == digest or images == 8 * len(rows_here)
             )
     return {
-        "directions": list(range(201)) if complete_without_rows else sorted(rows),
+        "directions": (
+            list(range(net_directions(case))) if complete_without_rows else sorted(rows)
+        ),
         "cpu_seconds": sum(float(row.get("cpu_seconds") or 0.0) for row in rows.values()),
         "nodes": sum(int((row.get("report") or {}).get("nodes") or 0) for row in rows.values()),
         "per_direction_cpu": not complete_without_rows,
     }
 
 
-def replay_status(directions: int) -> str:
-    """How much of a certificate the authors' replay recorded here covers."""
-    if directions >= 201:
+def replay_status(directions: int, total: int = STANDARD_DIRECTIONS) -> str:
+    """How much of a certificate's `total` directions the authors' replay here covers."""
+    if directions >= total:
         return "complete"
-    return f"partial ({directions} of 201)" if directions else "none"
+    return f"partial ({directions} of {total})" if directions else "none"
 
 
 def sha256(path: Path) -> str:
@@ -366,7 +381,12 @@ def run(binary: Path, case: Case, out: Path, threads: int) -> dict[str, Any]:
         "L": case.side,
         "returncode": os.waitstatus_to_exitcode(status),
         "stderr_tail": error_text[-2000:],
-        "status": summary.get("status") if len(rows) == 201 else "INCOMPLETE",
+        "status": (
+            summary.get("status")
+            if len(rows)
+            == int((summary.get("premises") or {}).get("angle_count") or STANDARD_DIRECTIONS)
+            else "INCOMPLETE"
+        ),
         "directions_verified": sum(1 for row in rows if row.get("verdict") == "verified"),
         "refused_directions": summary.get("refused_directions"),
         "nodes": summary.get("nodes"),
@@ -799,10 +819,11 @@ def render_mixed_report(census: dict[str, Any], out: Path) -> str:
         "",
         "Every retained certificate of formats M (rectangle rows, per-bin centre domain) and L",
         "(points, segments and rectangles, Tokoharu's domain), verified by `sqverify-fast` at",
-        "all 201 net directions at the threshold the certificate declares, 1. *Replayed",
-        "directions* are those the authors' checker replayed in this repository; where there",
-        "are none, this census is the first complete check here. *Exact leaf* is the exact",
-        "rational capture at the centre of the least-bound leaf of the least-bound direction.",
+        "every direction of its net (201, unless the file declares its own) at the threshold",
+        "the certificate declares, 1. *Replayed directions* are those the authors' checker",
+        "replayed in this repository; where there are none, this census is the first",
+        "complete check here. *Exact leaf* is the exact rational capture at the centre of",
+        "the least-bound leaf of the least-bound direction.",
         "*Authors' CPU* is the authors' checker's recorded CPU seconds on the directions this",
         "repository replayed; *ours, same directions* is `sqverify-fast`'s thread CPU on",
         "exactly those directions. CPU on a shared host whose load average is given.",
@@ -812,8 +833,8 @@ def render_mixed_report(census: dict[str, Any], out: Path) -> str:
         "",
         (
             "| Certificate | n | Format | Status | Directions | Nodes | Least certified bound"
-            " | Exact leaf | CPU s, all 201 | Load | Replayed directions | Authors' CPU s"
-            " | Ours, same directions | Ratio | Control |"
+            " | Exact leaf | CPU s, all directions | Load | Replayed directions"
+            " | Authors' CPU s | Ours, same directions | Ratio | Control |"
         ),
         "|" + "|".join(f" {align} " for align in MIXED_ALIGN.split()) + "|",
     ]
@@ -832,8 +853,8 @@ def render_mixed_report(census: dict[str, Any], out: Path) -> str:
         )
         authors = float(reference.get("cpu_seconds") or 0.0)
         span = (
-            "all 201"
-            if len(replayed) == 201
+            f"all {len(replayed)}"
+            if case is not None and len(replayed) == net_directions(case)
             else ", ".join(str(r) for r in replayed) or "none: first complete check here"
         )
         if not reference.get("per_direction_cpu", True):
@@ -897,7 +918,11 @@ def summary_rows() -> list[dict[str, Any]]:
                 )
             else:
                 replayed = mixed_reference(case)["directions"] if case is not None else []
-                replay = replay_status(len(replayed))
+                replay = (
+                    replay_status(len(replayed), net_directions(case))
+                    if case is not None
+                    else "none"
+                )
                 source = str(entry.get("packet"))
             least = entry.get("least_bound_leaf_exact") or {}
             verified = (
@@ -949,8 +974,8 @@ def render_summary(rows: list[dict[str, Any]]) -> str:
         "",
         "Every retained certificate that `sqverify-fast` decides (formats T, M and L), from",
         "the two census folders: [census/](census/README.md) and",
-        "[census-mixed/](census-mixed/README.md). *Verdict* is `VERIFIED` only when all 201",
-        "net directions verified, the process exited zero, and the exact capture at the",
+        "[census-mixed/](census-mixed/README.md). *Verdict* is `VERIFIED` only when every",
+        "direction of its net verified, the process exited zero, and the exact capture at the",
         "least-bound leaf's centre cleared the threshold. *Authors' replay here* is what",
         "this repository holds of a replay by the authors' own checker; where it holds less",
         "than a complete replay, this census is the first complete check of the certificate",

@@ -590,6 +590,7 @@ case or experiment separately.
 | [n17 Stall Classification](docs/project/reviews/review-2026-10-05-n17-stall-classification.md) | dated review record | record | retained | — |
 | [exp-252 Factual Review](docs/project/reviews/review-2026-10-05-exp-252-h264.md) | dated review record | record | retained | — |
 | [exp-253 Factual Review](docs/project/reviews/review-2026-10-05-exp-253-h274.md) | dated review record | record | retained | — |
+| [exp-251 Factual Review](docs/project/reviews/review-2026-10-05-exp-251-h267.md) | dated review record | record | retained | — |
 | [Integrity Ceremony Audit](docs/project/reviews/review-2026-10-03-integrity-ceremony-audit.md) | dated review record | record | retained | — |
 | [Session 168 Handoff: Work Stopped Mid-Flight](packing/campaign/explorations/X048-session-168-pilots/handoff/README.md) | research synthesis | record | retained | — |
 | [n17 Optimality Route After PR 265](docs/project/reviews/review-2026-10-01-n17-route-after-pr265.md) | dated review record | record | retained | — |

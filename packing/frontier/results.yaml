@@ -7871,7 +7871,7 @@ results:
       direction.
     scope: {n_values: [42, 43, 44, 51, 56, 57, 67, 69, 72, 75, 84, 86, 88, 93, 94, 95]}
     verification: V0
-    confirmation: C0
+    confirmation: C1
     significance:
       score: 3
       rationale: >-
@@ -7886,10 +7886,11 @@ results:
       source_keys: ['[wand125 mixed bounds 2026-10-04]']
       published: '2026-10-04'
     composition: >-
-      16 primary certificates, each on its own reported entry, at V0/C0: not yet reviewed and
-      not replayed. Coverage is decided by the source's C++ checker alone, byte for byte the
-      checker the 28 September, 2 October and 3 October reviews read; the axis tables are a
-      second implementation for one direction and not a second method.
+      16 primary certificates, each on its own reported entry, at V0/C1: read by the 5
+      October review of these certificates, and not replayed. Coverage is decided by the
+      source's C++ checker alone, byte for byte the checker the 28 September, 2 October and 3
+      October reviews read; the axis tables are a second implementation for one direction
+      and not a second method.
     evidence:
       - E-n042-wand125-mixed-68475-report
       - E-n043-wand125-mixed-69075-report
@@ -7907,22 +7908,36 @@ results:
       - E-n093-wand125-mixed-988-report
       - E-n094-wand125-mixed-994-report
       - E-n095-wand125-mixed-9965-report
+    reviews:
+      - path: docs/project/reviews/review-2026-10-05-wand125-october-4-certificates.md
+        kind: adversarial
+        reviewer: AI agent, the review lane of the 2026-10-05 import, prompted separately from the lane that retained the packets and registered the entries, after retention and blind to any replay; model unstated
+        reviewer_kind: ai
+        relation: project
+        date: '2026-10-05'
+        scope: >-
+          The 28 certificates wand125/square-packing-bounds published on 3 and 4 October, the 16 of T-090 pinned at 8aa6a10b and the 12 of T-091 at 797bdf6e, against checkers byte-identical to ones already reviewed: the argument from certificate to bound, the tarball binding without the source's completion audit, the comparisons and margins in exact arithmetic, the supersessions at n = 88 and 94 and the two certificates both packets pin, what the new measures add, their sizes, structure and records, and the platforms the bundles record; blind to any replay and not to retention.
+        verdict: accepted
+        covers: [T-090, T-091]
     artifacts:
       - packing/resources/web/wand125-mixed-bounds-2026-10-04/README.md
       - packing/resources/web/wand125-mixed-bounds-2026-10-04/receipts/mixed-audit.json
       - packing/devtools/audit_wand125_point_and_mixed.py
+      - docs/project/reviews/review-2026-10-05-wand125-october-4-certificates.md
     next_rung: >-
-      A review of the 16 certificates, prompted separately from the lane that registered
-      them, and the complete replays, about 146 CPU-hours planned (180 by the source's own
-      oblique seconds), with devtools.audit_wand125_point_and_mixed mixed-shard
+      The complete replays, about 146 CPU-hours planned (180 by the source's own oblique
+      seconds), with devtools.audit_wand125_point_and_mixed mixed-shard
       wand125-mixed-bounds-2026-10-04 --runners 8 for the ranges, mixed-replay on each and
       mixed-merge per certificate, before any verified lower bound is raised; a count's
       verified lower bound moves when its replay returns the certificate's own record at all
       201 directions.
     notes: >-
       V0 because each cited entry is the source's claim: assurance reported, replay not
-      attempted. C0 because no review of these certificates is on file yet. One entry for
-      the 16 pinned together at one revision, as T-082 is for its 22; mixed_n86_L9503 and
+      attempted. C1 because the 5 October review of these certificates is recorded as each
+      report entry's external_review, with no blocking defect. That review was prompted
+      separately from the lane that retained the packets and registered the entry.
+
+      One entry for the 16 pinned together at one revision, as T-082 is for its 22; mixed_n86_L9503 and
       mixed_n69_L862 were requested after the other fourteen and before the pin. A later
       revision than T-082's, so a separate entry. At n = 88 and 94 the later T-091 raises
       the reported bound, and this entry keeps its claim there. The packet also retains the
@@ -7966,7 +7981,7 @@ results:
       source says parts of the work were produced with AI assistance under human direction.
     scope: {n_values: [53, 54, 58, 70, 71, 73, 76, 87, 88, 90, 91, 94]}
     verification: V0
-    confirmation: C0
+    confirmation: C1
     significance:
       score: 3
       rationale: >-
@@ -7981,10 +7996,11 @@ results:
       source_keys: ['[wand125 mixed bounds evening 2026-10-04]']
       published: '2026-10-04'
     composition: >-
-      12 primary certificates, each on its own reported entry, at V0/C0: not yet reviewed and
-      not replayed. Coverage is decided by the source's C++ checker alone, byte for byte the
-      checker the 28 September, 2 October and 3 October reviews read; the axis tables are a
-      second implementation for one direction and not a second method.
+      12 primary certificates, each on its own reported entry, at V0/C1: read by the 5
+      October review of these certificates, and not replayed. Coverage is decided by the
+      source's C++ checker alone, byte for byte the checker the 28 September, 2 October and 3
+      October reviews read; the axis tables are a second implementation for one direction
+      and not a second method.
     evidence:
       - E-n053-wand125-mixed-76275-report
       - E-n054-wand125-mixed-7685-report
@@ -7998,23 +8014,37 @@ results:
       - E-n090-wand125-mixed-973-report
       - E-n091-wand125-mixed-97625-report
       - E-n094-wand125-mixed-995-report
+    reviews:
+      - path: docs/project/reviews/review-2026-10-05-wand125-october-4-certificates.md
+        kind: adversarial
+        reviewer: AI agent, the review lane of the 2026-10-05 import, prompted separately from the lane that retained the packets and registered the entries, after retention and blind to any replay; model unstated
+        reviewer_kind: ai
+        relation: project
+        date: '2026-10-05'
+        scope: >-
+          The 28 certificates wand125/square-packing-bounds published on 3 and 4 October, the 16 of T-090 pinned at 8aa6a10b and the 12 of T-091 at 797bdf6e, against checkers byte-identical to ones already reviewed: the argument from certificate to bound, the tarball binding without the source's completion audit, the comparisons and margins in exact arithmetic, the supersessions at n = 88 and 94 and the two certificates both packets pin, what the new measures add, their sizes, structure and records, and the platforms the bundles record; blind to any replay and not to retention.
+        verdict: accepted
+        covers: [T-090, T-091]
     artifacts:
       - packing/resources/web/wand125-mixed-bounds-evening-2026-10-04/README.md
       - packing/resources/web/wand125-mixed-bounds-evening-2026-10-04/receipts/mixed-audit.json
       - packing/devtools/audit_wand125_point_and_mixed.py
+      - docs/project/reviews/review-2026-10-05-wand125-october-4-certificates.md
     next_rung: >-
-      A review of the 12 certificates, prompted separately from the lane that registered
-      them, and the complete replays, about 131 CPU-hours planned (138 by the source's own
-      oblique seconds), with devtools.audit_wand125_point_and_mixed mixed-shard
+      The complete replays, about 131 CPU-hours planned (138 by the source's own oblique
+      seconds), with devtools.audit_wand125_point_and_mixed mixed-shard
       wand125-mixed-bounds-evening-2026-10-04 --runners 6 for the ranges, mixed-replay on
       each and mixed-merge per certificate, before any verified lower bound is raised; a
       count's verified lower bound moves when its replay returns the certificate's own record
-      at all 201 directions.
+      at all 201 directions. Five of the bundles record their proof run on macOS arm64, and
+      their replays must return those records exactly.
     notes: >-
       V0 because each cited entry is the source's claim: assurance reported, replay not
-      attempted. C0 because no review of these certificates is on file yet. One entry for
-      the 12 pinned together at one revision; the evening packet also pins two of T-090's
-      certificates, mixed_n86_L9503 and mixed_n69_L862, unchanged, and they stay T-090's. A
-      later revision than T-090's, so a separate entry; at n = 88 and 94 it raises T-090's
-      values, which keep their claim. The proof-bundle tarballs are pinned by digest and not
-      retained.
+      attempted. C1 because the 5 October review of these certificates is recorded as each
+      report entry's external_review, with no blocking defect. That review was prompted
+      separately from the lane that retained the packets and registered the entry. One entry
+      for the 12 pinned together at one revision; the evening packet also pins two of
+      T-090's certificates, mixed_n86_L9503 and mixed_n69_L862, unchanged, and they stay
+      T-090's. A later revision than T-090's, so a separate entry; at n = 88 and 94 it
+      raises T-090's values, which keep their claim. The proof-bundle tarballs are pinned
+      by digest and not retained.

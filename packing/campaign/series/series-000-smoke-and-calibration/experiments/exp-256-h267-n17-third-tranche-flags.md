@@ -136,7 +136,9 @@ H-267’s count at arity at most seven is 10,173 orbits, from
 [census-arity7-after-k9.json](../../../explorations/X048-session-182-overnight/receipts/K/census-arity7-after-k9.json),
 which is unchanged since `s182-k9` because every later admission is arity 8 or larger.
 The threshold of at most $10^4$ needs 173 orbits off that line, and going below it needs
-174\. Target 2 alone would take 1,372, so with it admitted no more is needed.
+174\. Target 2 alone would take 1,372 from that line, so with it admitted no more is
+needed; after target 4 it would take 1,344 from the 9,990 line
+([census-arity7-after-bc427-t4.json](../../../explorations/X048-session-182-overnight/receipts/K/census-arity7-after-bc427-t4.json)).
 Without it, any one of the ten frozen targets that project at least 174 orbits against
 the arity-7 line (183 to 1,799) would suffice alone.
 Target 4, which projects 183, closed and was admitted, and the line now stands at 9,990

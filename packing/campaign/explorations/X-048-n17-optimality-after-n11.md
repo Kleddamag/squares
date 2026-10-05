@@ -1000,6 +1000,26 @@ marked so; #354 to #360 had not yet taken that commit.
 | Derived here, needing review | the dual-norm reading of pilot 2 and the onset window in C3; the two-engine decomposition; the frame note; the verifier-bound cost claim |
 | Not done | any experiment; any verification of a certificate; any change to a record |
 
+## October 5 Evening Addition: H-267 Accepted
+
+Added after Session 182’s exp-251 verdict and its W2 review; nothing above is changed.
+[H-267](../hypotheses/H-267-n17-isolated-sub-pattern-residue.md) is accepted
+([exp-251](../series/series-000-smoke-and-calibration/experiments/exp-251-h267-n17-overnight-flag-certification.md),
+confirmed with corrections by
+[its W2 review](../../../docs/project/reviews/review-2026-10-05-exp-251-h267.md)). The
+certified sub-patterns of arity at most seven leave 9,990 orbits of the unique-state
+cover at `488c72d77`, ten under $10^4$, the endpoint’s state surviving
+([census-arity7-after-bc427-t4.json](X048-session-182-overnight/receipts/K/census-arity7-after-bc427-t4.json)).
+That count includes A, certified by the branch and bound under exp-249’s recorded
+deviation, and is 10,173 without it.
+After `s182-bc427-t6` (`340e92b84`) it is 8,191 orbits
+([census-arity7-after-bc427-t6.json](X048-session-182-overnight/receipts/K/census-arity7-after-bc427-t6.json)),
+which no longer depends on A. Neither count includes lane K’s target 2, whose closure is
+held for the owner’s ruling.
+Every entry carries a standing verifier’s full pass, but the certificate objects are not
+yet uploaded (`think-jhgi`), so re-verifying any of them elsewhere waits on that.
+H-267 is a census statement: it moves no bound and no frontier field.
+
 ## Planning Review
 
 Astra at max reasoning reviewed the transfer mechanisms and draft mathematics.

@@ -840,6 +840,15 @@ consequence in each.
   target 1 at a producer fixed point and target 2 at the round cap.
   At the coordinator’s direction, exp-251 then accepted H-267 with needs_review true,
   for the W2 review the coordinator commissions.
+- **The W2 review of exp-251 confirmed H-267 with corrections**
+  ([review](../../../docs/project/reviews/review-2026-10-05-exp-251-h267.md)), and
+  exp-251 carries them with needs_review false.
+  The count includes A, certified by the branch and bound under exp-249’s recorded
+  deviation, and is 10,173 without it.
+  Target 2 would take 1,344 orbits from the 9,990 line
+  (`census-arity7-after-bc427-t4.json`); the handoff’s 1,372 is against the 10,173 line
+  after `s182-k9`. After `s182-bc427-t6` the line is 8,191, which no longer depends on
+  A, and only W7 is individually decisive.
 
 <!-- This document follows common-doc-guidelines.md.
 See github.com/jlevy/practical-prose and review guidelines before editing.

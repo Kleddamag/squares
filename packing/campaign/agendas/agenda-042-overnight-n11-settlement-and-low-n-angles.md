@@ -1961,7 +1961,9 @@ agenda:
       BC-423 holds it. H-267's count at arity at most seven is 10,173 orbits
       (receipts/K/census-arity7-after-k9.json, unchanged since s182-k9). Reaching its
       threshold of at most 10^4 needs 173 orbits off that line, and going below it needs
-      174. With target 2 admitted, which projects 1,372 there, none more is needed.
+      174. With target 2 admitted, which projects 1,372 there, none more is needed; after
+      s182-bc427-t4 it projects 1,344 against the 9,990 line
+      (receipts/K/census-arity7-after-bc427-t4.json).
       Without it, any one of the ten listed flags that project at least 174 orbits
       against the arity-7 line (183 to 1,799) would suffice alone. The instrument is lane
       K's frozen SW9 recipe exactly (--bins 64 --max-rounds 24 --hull-limit 16

@@ -20,7 +20,8 @@ experiment:
       on the unique-state 24-cell cover at U = 1169/250.
     engine: devtools.check_n17_subpattern (producer and checker) and devtools.verify_n17_kernel_certificate in
       full mode under the kernel-streamed listing, both from the clean run worktree at the session-182
-      registration commit
+      registration commit; the verdict's count also rests on W7 and A, admitted in exp-249 and verified
+      there under the kernel-review-r3 and bb-review-r4 listings
     assurance: verified
     method: exact-algebraic
     host_system: Linux x86_64 remote session container, project Python 3.14.7, one worker per job at nice 10
@@ -33,7 +34,10 @@ experiment:
   method:
     control: The endpoint7 pattern (the endpoint's own west-wall cells, feasible at U) under the same recipe at
       a 3,600 s ceiling must not close; it returned PASS_CONTROL_STALLED in 1,244 s (receipts/K/kernel-control-endpoint7.json).
-      The endpoint's state must survive every admitted entry, which the census checks.
+      The endpoint's state must survive every admitted entry, which the census checks. H-267's method
+      control, n11's mask-0 field replayed through the same adapter, holds, as tests/test_hull_kernel_mask0.py
+      passes 6 of 6 at d0c2417ab, reaching PASS_LIBRARY_REPRODUCES_MASK0, with packing/src/sqpack/hull_kernel/
+      unchanged since cebb5d15a (the W2 review, F5).
     candidate: Each frozen target's seed and node, re-proved in full by the standing kernel verifier.
     runs_per_condition: 1
     interleaved: false
@@ -57,7 +61,7 @@ experiment:
     question: Is target 1 (side-S0, side-N0, side-S1, interior-SW, interior-NW, interior-W, interior-S) infeasible
       at U, by a certificate the kernel's checker accepts and the standing verifier re-proves in full?
     outcome: criterion_met
-    checked_by: The run (receipts/K/kernel-k1.json) returns PASS_CERTIFIED_CLOSED in 305 s of wall (276 s
+    checked_by: The run (receipts/K/kernel-k1.json) returns PASS_CERTIFIED_CLOSED in 306 s of wall (276 s
       of process CPU; producer 155 s, checker 149 s) on 27 steps and 1,728 rows in 4 rounds, finest row 1/64,
       closure all_parent_poses_forbidden for interior-W at step 26. The standing verifier at cebb5d15a passes
       it in full mode in 173 s, checking all 1,664 live rows in full and 4,132 collision regions by 23,294,320
@@ -67,7 +71,7 @@ experiment:
     question: Is target 2 (corner-SW, side-N0, side-W0, side-W1, interior-SW, interior-NW, interior-W)
       excluded within the 7,000 s ceiling?
     outcome: criterion_missed
-    checked_by: The run (receipts/K/kernel-k2.json) returns PASS_CERTIFIED_STALL in 3,047 s of wall and 2,330 s
+    checked_by: The run (receipts/K/kernel-k2.json) returns PASS_CERTIFIED_STALL in 3,048 s of wall and 2,330 s
       of process CPU, the producer at its 24-round cap. A non-closure; its node is kept for lane D. This is the
       class the plan's review did not count, at best penetration 0.0050045 on the default receipts.
   - shape: determination
@@ -114,7 +118,9 @@ experiment:
       closure all_parent_poses_forbidden for interior-S at step 62. The standing
       verifier at cebb5d15a passes it in full mode in 175 s, checking all 2,209 live rows
       in full and 5,679 collision regions by 23,184,284 exact facet checks. Alone it
-      excludes 116,888 states and 14,681 orbits.
+      excludes 116,888 states and 14,681 orbits. The container restart at about 10:32 killed
+      this target's first launch mid-producer (10:35:54); the counted run is the re-run from
+      scratch at 10:36:31.
   - shape: determination
     role: outcome
     question: Is target 7 (side-N0, side-W1, side-W2, interior-SW, interior-NW, interior-W, interior-S) infeasible at U, by a certificate the kernel's
@@ -175,11 +181,23 @@ experiment:
       pass, the endpoint's state survives each, and together they leave 9,990 orbits, ten
       under the threshold of 10^4 (receipts/K/census-arity7-after-bc427-t4.json on its
       derived ledger). Lane K's eight admitted arity-7 flags took the count from 17,690 to
-      10,173, and BC-427's target 4 (exp-256) took the last 183. The count does not depend
-      on lane K's target 2, which is held for the user's ruling and would take 1,372 more.
-      The margin is ten orbits. Held for the W2 review the plan requires before X-048 or
-      the frontier states the verdict.
-    needs_review: true
+      10,173, and BC-427's target 4 (exp-256) took the last 183. The count includes A,
+      certified by the interval branch and bound under exp-249's recorded deviation and
+      verified there under bb-review-r4, and is 10,173 without it; W7 likewise rests on
+      exp-249's verification under kernel-review-r3, and the other nine are verified at
+      cebb5d15a. The count does not depend on lane K's target 2, which is held for the
+      user's ruling and would take 1,344 more
+      (receipts/K/census-arity7-after-bc427-t4.json). The margin is ten orbits, and every
+      one of the eleven entries is individually decisive. Lane K's own list ended at
+      10,173 with the criterion unmet; exp-256's admission at 488c72d77 fixed the verdict,
+      and its cost is exp-256's. The W2 factual review
+      (docs/project/reviews/review-2026-10-05-exp-251-h267.md) confirmed the verdict with
+      corrections to these disclosures and two figures, which this record carries.
+      Addendum after the review: at 340e92b84, after exp-256's s182-bc427-t6, the line is
+      8,191 orbits (receipts/K/census-arity7-after-bc427-t6.json), so the claim no longer
+      depends on A (8,302 without it); only W7 is individually decisive (11,496 without
+      it).
+    needs_review: false
     commit: 488c72d77
   effort:
     timebox: 7,000 s per kernel target and 4,000 s per verification; one worker per job
@@ -195,23 +213,43 @@ unique-state cover. This round is lane K of the
 (BC-420): the nine arity-7 standing flags with the most census weight, run through the
 kernel with the adaptive-row recipe that closed SW9, which they had never had.
 
-H-267 is accepted, held for a W2 review.
-The entries of arity at most seven now leave 9,990 orbits, ten under $10^4$
+H-267 is accepted.
+[The W2 factual review](../../../../../docs/project/reviews/review-2026-10-05-exp-251-h267.md)
+confirmed the verdict with corrections, which this record carries.
+The entries of arity at most seven leave 9,990 orbits, ten under $10^4$
 ([census-arity7-after-bc427-t4.json](../../../explorations/X048-session-182-overnight/receipts/K/census-arity7-after-bc427-t4.json)).
 The last 183 came from BC-427’s target 4, recorded in
-[exp-256](exp-256-h267-n17-third-tranche-flags.md), and the count does not depend on
-target 2 below, which is held for the user’s ruling.
-The round’s wall, 9,285 s, is lane K’s frozen list, from the endpoint7 control’s start
-at 08:46:26 UTC to `s182-k9`’s verification at 11:21:11. Each closure is admitted as
-soon as the standing verifier passes it in full from the clean run worktree, and this
-record gains a result per target until the list is exhausted.
+[exp-256](exp-256-h267-n17-third-tranche-flags.md).
+The count does not depend on target 2 below, which is held for the user’s ruling and
+would take 1,344 more.
 
-## Admitted So Far
+Lane K’s own round ended when its list was exhausted, at 10,173 orbits with the
+criterion unmet. Its wall, 9,285 s, runs from the endpoint7 control’s start at 08:46:26
+UTC to `s182-k9`’s verification at 11:21:11. exp-256’s admission of `s182-bc427-t4` at
+`488c72d77` fixed the verdict, and that run’s cost is exp-256’s. Each closure was
+admitted after the standing verifier passed it in full from the clean run worktree, the
+admission commits following the pass by 1 to 26 minutes.
+
+The count includes A, certified by the interval branch and bound under
+[exp-249](exp-249-h267-n17-first-certified-sub-patterns.md)’s recorded deviation, and is
+10,173 without it. W7 and A were verified in exp-249, the other nine at `cebb5d15a`.
+Every one of the eleven entries is individually decisive at 9,990: the review’s
+leave-one-out recount leaves between 10,071 and 14,436 orbits without any one of them.
+After exp-256’s `s182-bc427-t6` (`340e92b84`) the line is 8,191 orbits
+([census-arity7-after-bc427-t6.json](../../../explorations/X048-session-182-overnight/receipts/K/census-arity7-after-bc427-t6.json)).
+It no longer depends on A, which leaves 8,302 without it, and only W7 is individually
+decisive, leaving 11,496.
+
+The certificate objects are listed in the hosted-data manifest but not yet uploaded
+(`think-jhgi`). The census rests on the committed receipts; re-verifying any entry
+outside this container needs the upload.
+
+## Admissions
 
 | Target | Cells | Producer | Verifier | Census after |
 | --- | --- | --- | --- | --- |
-| 1, `s182-k1` | side-S0, side-N0, side-S1, interior-SW, interior-NW, interior-W, interior-S | closed in 305 s, 27 steps, 1,728 rows | full pass, 173 s | 102,124 states, 12,929 orbits |
-| 2 | corner-SW, side-N0, side-W0, side-W1, interior-SW, interior-NW, interior-W | 24-round cap at 3,047 s, not closed | — | — |
+| 1, `s182-k1` | side-S0, side-N0, side-S1, interior-SW, interior-NW, interior-W, interior-S | closed in 306 s, 27 steps, 1,728 rows | full pass, 173 s | 102,124 states, 12,929 orbits |
+| 2 | corner-SW, side-N0, side-W0, side-W1, interior-SW, interior-NW, interior-W | 24-round cap at 3,048 s, not closed | — | — |
 | 3, `s182-k3` | corner-NW, side-N0, side-W2, interior-SW, interior-NW, interior-W, interior-S | closed in 195 s, 18 steps, 1,198 rows | full pass, 124 s | 89,456 states, 11,336 orbits (after lane A’s state 5683195 too) |
 | 4, `s182-k4` | side-S0, side-S1, side-W2, interior-SW, interior-NW, interior-W, interior-S | closed in 597 s, 129 steps, 8,636 rows | full pass, 269 s | 83,148 states, 10,546 orbits |
 | 5, `s182-k5` | side-S0, side-N0, side-W2, interior-SW, interior-NW, interior-W, interior-S | closed in 244 s, 25 steps, 1,600 rows | full pass, 82 s | 81,684 states, 10,360 orbits |

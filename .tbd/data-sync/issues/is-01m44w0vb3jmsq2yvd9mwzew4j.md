@@ -5,7 +5,7 @@ title: "Certify rebuilt Sessions 170-172 and 174-179 on stack 357 (#355, #356, #
 kind: chore
 status: open
 priority: 2
-version: 6
+version: 7
 assignee: Guzhou
 delegate: null
 labels: []
@@ -13,7 +13,7 @@ dependencies: []
 hold: null
 hold_until: null
 created_at: 2026-10-05T01:49:28.290Z
-updated_at: 2026-10-05T11:24:23.130Z
+updated_at: 2026-10-05T12:04:26.799Z
 started_at: 2026-10-05T07:24:27.154Z
 ---
 # PR333 split-layer review and certification tracking
@@ -28,4 +28,4 @@ condition are satisfied; it is not ownership of an ongoing research mechanism.
 
 ## Notes
 
-2026-10-05 11:30Z: Sessions 170-172 certified on #355 at 1a1fd21a5 (hosted fast pass, run 37297540063 at 405e12a88). Sessions 174-176 and 177-179 remain pending: every #356/#360 run fails only shard wall verdicts (think-p684), and the gate never certifies a failed run.
+2026-10-05 12:05Z: Sessions 177-179 certified on #360 at db1556daf (hosted fast pass, run 37305598332 at 3b5edcdd9, fully green). Only Sessions 174-176 remain pending: no #356 run has yet passed its shard walls (think-p684).

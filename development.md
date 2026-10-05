@@ -18,8 +18,10 @@ Package metadata, Ruff, and BasedPyright express the broader `3.14`-only compati
 boundary; `uv.lock` pins dependencies, not the interpreter.
 macOS and Linux are supported development hosts.
 Pull requests run the bounded Linux fast surface; integration events run the ordinary
-full checkpoint on Linux and four focused portability checks on macOS. The Rust search
-engine uses the stable Cargo toolchain.
+full checkpoint on Linux.
+Four focused portability checks run on macOS on every event except a stacked pull
+request, one whose base is another branch rather than `main`. The Rust search engine
+uses the stable Cargo toolchain.
 
 From the repository root, then from `packing/`:
 
@@ -938,6 +940,10 @@ as the runs it would report on, because the defect *is* that no run is created.
 A `push` event fires off the branch tip, which exists whatever the base is doing, and
 its check run is keyed to the head commit — so it appears on the pull request, where the
 missing runs would have been.
+It merges against the base of the branch’s open pull request, which is the merge GitHub
+builds, and against `main` when the branch has no open pull request.
+Until 2026-10-05 it always used `main`, which put a false red on every push to a stacked
+branch (46 on that day alone), whose pull request targets the branch below it.
 
 When it fails, it is telling you one thing: **no `pull_request` run will be created for
 this branch until the conflict is resolved**, so the pull request’s checks will sit
@@ -1034,10 +1040,10 @@ module, card label, part and title, in reading order).
 structure audit (`paper_structure`), the Pages scope (`pages_scope`), the preview build
 (`preview_site`) and the deployed-site check (`check_published_site`) read it.
 Adding a paper is one entry there and its renderer, modeled on
-`render_n11_optimality_review.py`; then its own Pages job and `-unchanged` notice in
-`pages.yml` with a scope output, a staged step in `publish` and a clause in
-`pages-required`, budgets for both jobs in `gate-budgets.yaml`, its version and dates in
-`sqpack.release`, its rows in `devtools.artifact_dates`, and its version in
+`render_n11_optimality_review.py`; then its own Pages job in `pages.yml` with a scope
+output and a line in `scope`’s skipped-page notices, a staged step in `publish` and a
+clause in `pages-required`, a budget for the job in `gate-budgets.yaml`, its version and
+dates in `sqpack.release`, its rows in `devtools.artifact_dates`, and its version in
 `check_published_site.PAPER_VERSIONS`. The workflow tests name each step that is
 missing. A renderer is given the site’s root (`--site`, by default `packing/site/`) and
 writes its paper there, where it is served, so every check reads the page at its
@@ -1061,8 +1067,8 @@ A pull request runs the same build without deploying, so a render that breaks fa
 review rather than the next deploy.
 It builds only the pages its changes can affect: the workflow’s `scope` job runs
 `devtools.pages_scope`, which reads each builder’s `RENDER_INPUTS` and the tools the
-workflow runs for that page, and a page none of the changed files touches is skipped by
-a job named for the reason.
+workflow runs for that page, and a page none of the changed files touches is skipped,
+with a notice from `scope` naming the page and the reason.
 `pages-required` is the aggregate a branch rule would require; it passes such a skip and
 nothing else.
 
@@ -1083,7 +1089,7 @@ The outputs are `site/papers/n11-threshold-bound-review.html`, `.md`, and `.pdf`
 Its Pages job, `n11-threshold-bound-review`, checks out the archived Kleddamag proof,
 the T-059 replay journal and the native verifier’s row journal beside the code, runs the
 figure and renderer tests, and renders and checks the page, the Markdown and the PDF;
-its `-unchanged` notice says why when no input of it changed.
+`scope`’s notice says why when no input of it changed.
 It explains accepted evidence and reruns no sweep.
 
 The separate **T-060 optimality paper**, Part III, lives at

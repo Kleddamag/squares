@@ -34,11 +34,16 @@ from __future__ import annotations
 
 import io
 import json
+import os
 import re
 import shlex
+import shutil
+import subprocess
 from contextlib import redirect_stdout
 from pathlib import Path
 from typing import Any
+
+import pytest
 
 from sqpack.cli import validate
 from sqpack.gate_budgets import BUDGETS, ci_declaration_problems, load
@@ -439,13 +444,142 @@ def test_the_conflict_check_runs_on_an_event_that_fires_for_an_unmergeable_branc
     # turn an unknown answer into a false green. The workflow must fail closed before
     # asking merge-tree anything.
     assert "set -euo pipefail" in commands
-    assert "git merge-tree --write-tree HEAD origin/main" in commands
+    assert 'git merge-tree --write-tree HEAD "origin/$target"' in commands
     assert "exit 1" in commands
 
     for job in document["jobs"].values():
         assert not job.get("continue-on-error")
     for step in steps:
         assert not step.get("continue-on-error")
+
+
+def _mergeability_step() -> dict[str, Any]:
+    (job,) = _workflow(MERGEABILITY)["jobs"].values()
+    return next(step for step in job["steps"] if "merge-tree" in str(step.get("run", "")))
+
+
+def _git(cwd: Path, *arguments: str) -> str:
+    return subprocess.run(
+        ("git", "-c", "user.name=t", "-c", "user.email=t@example.invalid", *arguments),
+        cwd=cwd,
+        check=True,
+        capture_output=True,
+        text=True,
+    ).stdout
+
+
+def _check_mergeability(
+    tmp_path: Path, clone: Path, branch: str, gh_output: str | None
+) -> tuple[subprocess.CompletedProcess[str], str, str]:
+    """Run the workflow's step in `clone`, with a `gh` that prints `gh_output` or fails."""
+    bash = shutil.which("bash")
+    if bash is None:
+        pytest.skip("the mergeability step is a bash script")
+    stub = tmp_path / "bin"
+    stub.mkdir(exist_ok=True)
+    calls = tmp_path / "gh-calls"
+    summary = tmp_path / "summary.md"
+    calls.write_text("")
+    summary.write_text("")
+    (stub / "gh").write_text(
+        '#!/usr/bin/env bash\nprintf \'%s\\n\' "$*" >> "$STUB_CALLS"\n'
+        '[ -n "${STUB_OUTPUT+set}" ] || exit 1\nprintf \'%s\' "$STUB_OUTPUT"\n'
+    )
+    (stub / "gh").chmod(0o755)
+    environment = {
+        "PATH": f"{stub}{os.pathsep}{os.environ.get('PATH', '')}",
+        "HOME": str(tmp_path),
+        "BRANCH": branch,
+        "GH_TOKEN": "unused",
+        "GH_REPO": "owner/repo",
+        "RUNNER_TEMP": str(tmp_path),
+        "GITHUB_STEP_SUMMARY": str(summary),
+        "STUB_CALLS": str(calls),
+    }
+    if gh_output is not None:
+        environment["STUB_OUTPUT"] = gh_output
+    ran = subprocess.run(
+        (bash, "--noprofile", "--norc", "-eo", "pipefail", "-c", _mergeability_step()["run"]),
+        cwd=clone,
+        env=environment,
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    return ran, summary.read_text(), calls.read_text()
+
+
+def test_the_conflict_check_merges_against_the_pull_requests_base(tmp_path: Path) -> None:
+    """A stacked branch is asked about the branch its pull request targets, not `main`.
+
+    GitHub builds `refs/pull/N/merge` against the pull request's base, so that is the
+    merge whose failure `D-459` is about. On 2026-10-05 the check still merged every branch
+    into `main`, and a stack whose layers each merged cleanly into the layer below read 46
+    false reds in a day. Built here as a real repository: `main` and the base `layer` edit
+    one line two ways, and `top`, stacked on `layer`, merges into `layer` and not into
+    `main`. With no open pull request the branch is asked about `main`, as before; a
+    lookup that fails is an unknown, not a pass, and so is not a merge into `main`.
+    """
+    step = _mergeability_step()
+    (job,) = _workflow(MERGEABILITY)["jobs"].values()
+    assert job["permissions"] == {"contents": "read", "pull-requests": "read"}
+    assert step["env"] == {
+        "GH_TOKEN": "${{ github.token }}",
+        "GH_REPO": "${{ github.repository }}",
+        "BRANCH": "${{ github.ref_name }}",
+    }
+    if shutil.which("git") is None:
+        pytest.skip("needs git")
+
+    origin = tmp_path / "origin.git"
+    work = tmp_path / "work"
+    _git(tmp_path, "init", "--quiet", "--bare", "--initial-branch=main", str(origin))
+    _git(tmp_path, "clone", "--quiet", str(origin), str(work))
+    (work / "shared.txt").write_text("one\n")
+    _git(work, "add", "shared.txt")
+    _git(work, "commit", "--quiet", "-m", "root")
+    _git(work, "push", "--quiet", "origin", "HEAD:refs/heads/main")
+    _git(work, "switch", "--quiet", "-c", "layer")
+    (work / "shared.txt").write_text("layer\n")
+    _git(work, "commit", "--quiet", "-am", "layer")
+    _git(work, "push", "--quiet", "origin", "layer")
+    _git(work, "switch", "--quiet", "-c", "top")
+    (work / "top.txt").write_text("top\n")
+    _git(work, "add", "top.txt")
+    _git(work, "commit", "--quiet", "-m", "top")
+    _git(work, "push", "--quiet", "origin", "top")
+    _git(work, "switch", "--quiet", "main")
+    (work / "shared.txt").write_text("main\n")
+    _git(work, "commit", "--quiet", "-am", "main moves")
+    _git(work, "push", "--quiet", "origin", "main")
+    clone = tmp_path / "clone"
+    _git(tmp_path, "clone", "--quiet", "--branch", "top", str(origin), str(clone))
+
+    ran, summary, calls = _check_mergeability(tmp_path, clone, "top", "41 layer")
+    assert ran.returncode == 0, ran.stdout + ran.stderr
+    assert "Merges cleanly into origin/layer" in ran.stdout
+    assert "the base of open pull request #41" in ran.stdout
+    assert not summary
+    assert calls.startswith("pr list --head top --state open "), calls
+
+    for gh_output, why in (
+        ("", "no open pull request has this branch as its head"),
+        ("42 main", "the base of open pull request #42"),
+    ):
+        ran, summary, _ = _check_mergeability(tmp_path, clone, "top", gh_output)
+        assert ran.returncode == 1, (gh_output, ran.stdout)
+        assert "::error title=Branch conflicts with main::" in ran.stdout
+        assert f"`origin/main` at `{_git(clone, 'rev-parse', 'origin/main').strip()}`" in (
+            summary
+        )
+        assert why in summary
+        assert "git fetch origin main && git rebase origin/main" in summary
+        assert "shared.txt" in summary
+
+    ran, summary, _ = _check_mergeability(tmp_path, clone, "top", None)
+    assert ran.returncode == 1
+    assert "::error title=Mergeability could not be determined::" in ran.stdout
+    assert "Merges cleanly" not in ran.stdout
 
 
 def test_the_new_workflows_pin_the_actions_the_gate_already_pins() -> None:

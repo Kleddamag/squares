@@ -6122,6 +6122,11 @@ def test_a_paper_is_named_by_its_slug_in_the_source_and_on_the_site() -> None:
     )
     packing = overview_data.REPO / "packing"
     jobs = load_workflow()["jobs"]
+    skip_notices = next(
+        step["run"]
+        for step in jobs["scope"]["steps"]
+        if step.get("name") == "Say why each skipped page is not built"
+    )
     for slug in slugs:
         name = slug.replace("-", "_")
         assert render_overview.paper_record(slug).module == f"devtools.render_{name}"
@@ -6139,7 +6144,7 @@ def test_a_paper_is_named_by_its_slug_in_the_source_and_on_the_site() -> None:
             tests / f"test_{name}.py"
         ).is_file(), slug
         assert name in BUILDER_INPUTS, slug
-        assert f"{slug}-unchanged" in jobs, slug
+        assert name in {line.split(" ", 1)[0] for line in skip_notices.splitlines()}, slug
     assert render_overview.paper_path("a-b", ".pdf") == "papers/a-b.pdf"
 
 

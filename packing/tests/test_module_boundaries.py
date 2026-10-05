@@ -741,10 +741,23 @@ def test_ci_jobs_fetch_provenance_history_and_key_the_uv_cache_from_the_lock() -
     raw_mac_steps = mac_job["steps"]
     assert isinstance(raw_mac_steps, list)
     mac_steps = [_mapping(step) for step in raw_mac_steps]
-    assert "if" not in mac_job, (
-        "the macOS check is cheap enough to run on pull requests; skipping them is why "
-        "the libcairo breakage was only ever visible after a merge"
+    # It runs on every pull request into `main` and on every other event, and skips only
+    # a stacked pull request, whose base is another branch and whose tree the stack's pull
+    # request into `main` checks again (129 macOS jobs on the stacked branches on
+    # 2026-10-05). The pull request into `main` must keep it: skipping pull requests is
+    # why the libcairo breakage was only ever visible after a merge.
+    mac_condition = "github.event_name != 'pull_request' || github.base_ref == 'main'"
+    assert mac_job["if"] == mac_condition, (
+        "the macOS check is cheap enough to run on pull requests into main; skipping them "
+        "is why the libcairo breakage was only ever visible after a merge"
     )
+    # Nothing waits on it, `packing-required` included, so a skip changes no verdict.
+    dependents = [
+        name
+        for name, job in jobs.items()
+        if "macos-portability" in str(_mapping(job).get("needs", ""))
+    ]
+    assert not dependents, f"a skipped macOS check must hold up nothing: {dependents}"
     assert "continue-on-error" not in mac_job
     assert all("continue-on-error" not in step for step in mac_steps)
 

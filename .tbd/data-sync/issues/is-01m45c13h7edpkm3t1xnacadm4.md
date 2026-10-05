@@ -5,7 +5,7 @@ title: "Intake pass: the 41 evand/square-packing commits inside the 7ff3b21 pin 
 kind: task
 status: in_progress
 priority: 2
-version: 3
+version: 4
 delegate: claude-code@vm
 labels:
   - result-import
@@ -14,7 +14,7 @@ parent_id: is-01m44qz0rxvkakmyqaj7qdgagv
 hold: null
 hold_until: null
 created_at: 2026-10-05T06:29:13.895Z
-updated_at: 2026-10-05T06:47:36.892Z
+updated_at: 2026-10-05T07:32:30.046Z
 started_at: 2026-10-05T06:29:42.567Z
 ---
 
@@ -33,3 +33,5 @@ Evidence updates (files added to the evand-square-packing-2026-10-04 declaration
 Nothing to import (read in campaign/intake-watch.yaml through 40e442f): TODO/Completed, briefs, 0f55a52's other working material, research notes/scripts (SOS probe, S2 insertable, seam, qx2 PL/go-no-go, s20 generator tools, 27dd68a doc pointers), literature-s32 and proof-anatomy notes, QUADRANT_EXACT pointer, S3Lower s3_eq_2 (toy), Average.lean (lemma, no bound).
 
 No new claim, so no import bead. Follow-up worth pricing (not done here): replay zmx2 cert L4_k02_box7.txt --full --first-order (~400 CPU-s at the source) with the retained d42cbde2 zmx2.rs, compared root for root with k7_full_first_order_v2.log.xz: an interval-certified method beside T-064's rung, after a second reader of ZMX2_AREA.md sec 13.
+
+Committed 7ff9b5ca7 (not pushed). Validation: packing-validate --records passed 44/44 steps; 15 touched test files 562 passed; reachable_tests --since 208313ddf selected everything (zmx2_tools.py is Python under resources): 11280 passed, 3 failed: test_release pin drift (expected on a data commit; DATA_REVISION re-pin owed at integration) and two fixed_core_packet process-reaping tests that also fail when run alone, with no code changed (PID 1 is process_api; environmental). make intake rerun: the evand item is gone.

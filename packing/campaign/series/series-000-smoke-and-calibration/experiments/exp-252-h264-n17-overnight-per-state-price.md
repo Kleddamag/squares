@@ -142,6 +142,22 @@ experiment:
       at cebb5d15a passes it in full mode in 151 s, checking all 2,485 live rows in full and
       7,051 collision regions by 12,940,716 exact facet checks. It excludes its own 8 states,
       one orbit.
+  - shape: determination
+    role: outcome
+    question: Is the draw at index 6 (mask 1949551, distance 4) excluded within the 7,000 s ceiling?
+    outcome: criterion_missed
+    checked_by: The run (receipts/A/kernel-m1949551.json) returns PASS_CERTIFIED_STALL in 1,613 s of wall
+      and 1,297 s of process CPU, the producer at a fixed point after 13 rounds (221 steps,
+      7,072 rows), inside its ceiling, so the registered re-run does not apply. A non-closure.
+  - shape: determination
+    role: outcome
+    question: Is the draw at index 9 (mask 851903, distance 2, the declared secondary stratum, not
+      counted) excluded within the 7,000 s ceiling?
+    outcome: criterion_missed
+    checked_by: The run (receipts/A/kernel-m851903.json) returns PASS_CERTIFIED_STALL in 88 s of wall and
+      77 s of process CPU, the producer at a fixed point after 2 rounds (34 steps, 1,088 rows),
+      inside its ceiling, so the registered re-run does not apply. A non-closure, reported
+      separately.
   verdict:
     decision: accepted
     primary_criterion: At least half of the counted draws excluded within two CPU-hours each, with N1's 7,000 s
@@ -150,9 +166,9 @@ experiment:
       Five of the ten counted draws closed within the 7,000 s ceiling, each re-proved in full
       by the standing kernel verifier, which meets the criterion of at least half; every
       closure cost under 900 s of process CPU and every verification under 700 s, far inside
-      two CPU-hours. The remaining counted draw (index 6) and the distance-2 draw at index 9
-      run on for the cost estimate. Held for the W2 review the plan requires before X-048 or
-      the frontier states the verdict.
+      two CPU-hours. The other five counted draws reached producer fixed points inside the
+      ceiling, as did both distance-2 draws. Held for the W2 review the plan requires before
+      X-048 or the frontier states the verdict.
     needs_review: true
     commit: dfd38187c
   effort:
@@ -182,7 +198,8 @@ recipe (H-274 asks whether adaptive rows do).
 The wall of 11,744 s runs from the survey’s start at 08:46 UTC to the fifth verification
 at 12:02 UTC, through a container restart.
 The verdict waits for the W2 review the plan requires before X-048 or the frontier says
-so. The extrapolation over the drawn strata follows when the last two draws are in.
+so. All twelve draws have now run: the last counted draw (index 6) and the distance-2
+draw at index 9 reached producer fixed points too.
 
 ## Per-State Table
 
@@ -199,6 +216,8 @@ so. The extrapolation over the drawn strata follows when the last two draws are 
 | 12 | 7844815 | 6 | c4/i>=5/d6 | closed, 5 rounds, admitted | 646 s | 395 s | full pass, 184 s |
 | 11 | 4028335 | 4 | c4/i>=5/d4 | closed, 5 rounds, admitted | 857 s | 545 s | full pass, 252 s |
 | 7 | 2601983 | 4 | c4/i4/d4 | closed, 5 rounds, admitted | 489 s | 352 s | full pass, 151 s |
+| 6 | 1949551 | 4 | c4/i4/d4 | producer fixed point after 13 rounds | 1,613 s | 1,297 s | — |
+| 9 | 851903 | 2 | c4/i<=3/d2 | producer fixed point after 2 rounds (not counted) | 88 s | 77 s | — |
 
 State 5500414’s orbit was already excluded by lane K’s flag certificates, so its
 admission leaves the count unchanged, while states 7844815, 4028335 and 2601983 each

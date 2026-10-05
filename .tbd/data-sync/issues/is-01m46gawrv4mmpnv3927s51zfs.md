@@ -3,9 +3,9 @@ type: is
 id: is-01m46gawrv4mmpnv3927s51zfs
 title: "Reply audit: bring every intake issue's GitHub thread up to the record (#238, #282, #294, #295, #317, #358, #367; acknowledge #363, #366, #368), and record each reply"
 kind: task
-status: in_progress
+status: closed
 priority: 1
-version: 3
+version: 4
 delegate: claude-code@vm
 labels:
   - result-import
@@ -14,8 +14,12 @@ parent_id: is-01m46g4yac7ewc22drc7twjhy5
 hold: null
 hold_until: null
 created_at: 2026-10-05T17:03:43.387Z
-updated_at: 2026-10-05T17:38:32.278Z
+updated_at: 2026-10-05T17:54:33.016Z
 started_at: 2026-10-05T17:17:55.208Z
+closed_at: 2026-10-05T17:54:33.016Z
+close_reason: "Merged into #369 at 8c6405c17: twelve replies posted and recorded; no reply due"
+resolution: null
+duplicate_of: null
 ---
 
 ## Notes

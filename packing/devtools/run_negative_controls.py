@@ -80,6 +80,7 @@ from pathlib import Path
 from threading import Lock
 from uuid import uuid4
 
+from devtools.repo_scope import tracked_files
 from sqpack.workers import worker_count
 from sqpack.yamlio import safe_load
 
@@ -532,11 +533,21 @@ LINK_BACK = (
 # `git add -A` inside a snapshot must skip what the real index skips, or a reader's
 # scratch in `attic/` would be tracked in the worker though the repository does not
 # track it -- which is PR 207's bug, rebuilt one directory over.
+#
+# The last two joined on 2026-10-05 (think-nns5), for the same failure as the
+# bibliography's, measured by running every distinct control command unmutated in a
+# fresh worker. `validate_schemas` reported `bibliography.yaml: declared schema not
+# found`, because the dataset was rescued and the schema it declares was not; and
+# `sqpack.campaign.ledger check`, which 35 controls drive, failed on agenda 015's
+# closeout naming `.github/PULL_REQUEST_TEMPLATE.md`, which only a link could bring
+# into a worker. Both checkers were red before any mutation was applied.
 COPY_SEPARATELY = (
     ROOT / "resources/README.md",
     ROOT / "resources/bibliography.yaml",
+    ROOT / "resources/bibliography.schema.yaml",
     REPO / ".flowmarkignore",
     REPO / ".gitignore",
+    REPO / ".github/PULL_REQUEST_TEMPLATE.md",
 )
 # The reader-facing documents live at the repository root now, and the controls reach
 # them: three mutate README.md and ten mutate SYNOPSIS.md, while the schema and
@@ -562,6 +573,31 @@ ROOT_DOCUMENTS = (
     REPO / "docs",
     REPO / "packages",
 )
+
+
+def root_files() -> tuple[Path, ...]:
+    """Every file the repository tracks at its root that is not copied by name above.
+
+    The README's layout tree draws the root's files -- the Makefile, the lockfile, the
+    TypeScript and lint configuration, `CLAUDE.md` -- and `.gitmodules` declares `vendor`,
+    which it draws too. A worker that carried only the named documents had none of them,
+    so `check_readme` reported fourteen drawn entries missing in every worker and its four
+    controls were scored over a checker that was red before their mutation (think-nns5).
+    The root's files are a few kilobytes of configuration (about 110 KB in all on
+    2026-10-05), so they are carried whole rather than listed, and a file added at the
+    root reaches every worker without an edit here. Directories are not: each one the
+    controls need is a `ROOT_DOCUMENTS` entry or `packing/` itself.
+
+    Asked of git, not of the directory, so a reader's untracked scratch at the root never
+    enters a worker; empty where there is no index to ask.
+    """
+    listed = tracked_files(REPO, ":(glob)*")
+    if listed is None:
+        return ()
+    named = {*COPY_SEPARATELY, *ROOT_DOCUMENTS}
+    return tuple(path for path in listed if path not in named)
+
+
 # Keep a bounded portable fallback with enough headroom for source, schemas, and
 # manifests after generator-owned prospective geometry is pruned above.
 #
@@ -892,7 +928,7 @@ def snapshot_pruned_targets() -> list[Path]:
 
 def snapshot_source_bytes() -> int:
     """Bytes copied by the portable fallback, excluding build products and caches."""
-    total = sum(path.stat().st_size for path in COPY_SEPARATELY)
+    total = sum(path.stat().st_size for path in (*COPY_SEPARATELY, *root_files()))
     total += sum(target.stat().st_size for target in snapshot_pruned_targets())
     for document in ROOT_DOCUMENTS:
         if document.is_dir():
@@ -970,7 +1006,7 @@ def clone_tree(dest: Path) -> None:
     work = dest / HERE
     _clone_into(ROOT, work)
 
-    for target in (*COPY_SEPARATELY, *snapshot_pruned_targets()):
+    for target in (*COPY_SEPARATELY, *root_files(), *snapshot_pruned_targets()):
         landing = dest / target.relative_to(REPO)
         landing.parent.mkdir(parents=True, exist_ok=True)
         shutil.copy2(target, landing)
@@ -1016,6 +1052,43 @@ def resolve_control_target(control_file: object, *, tree: Path, work: Path) -> P
     return target
 
 
+def control_environment(tree: Path, pycache: Path) -> dict[str, str]:
+    """The environment a control's command runs in inside `tree`, bytecode under `pycache`.
+
+    One function for `run_one` and for the test that runs each command unmutated, so a
+    baseline is taken in exactly the environment the mutation is.
+    """
+    work = tree / HERE
+    env = os.environ.copy()
+    # The parent owns the control journal, and a nested gate must not start a
+    # second artifact capture inside a snapshot.
+    env.pop("PACKING_VALIDATION_ARTIFACT_DIR", None)
+    # A snapshot owns its own index, which is how a check here answers what the
+    # repository holds. An inherited `GIT_DIR` or `GIT_INDEX_FILE` would point every
+    # one of those questions at another repository, and the mutation is not in it.
+    for inherited in [name for name in env if name.startswith("GIT_")]:
+        del env[inherited]
+    # Every worker links the already-synced environment to avoid reinstalling the
+    # scientific stack. Letting `uv run` sync that shared environment installs the
+    # editable project from a temporary snapshot, which disappears after this run
+    # and leaves the developer environment broken. Snapshot imports must still win.
+    env["UV_NO_SYNC"] = "1"
+    import_roots = (
+        str(work / "src"),
+        str(work),
+        str(tree / "packages/workbench/tools"),
+    )
+    env["PYTHONPATH"] = os.pathsep.join(
+        (*import_roots, env["PYTHONPATH"]) if env.get("PYTHONPATH") else import_roots
+    )
+    # Two controls can make same-size edits to one module inside the same filesystem
+    # timestamp tick. Python's normal timestamp-and-size bytecode cache would then
+    # let the second command execute the first control's mutation. Give every
+    # command a fresh cache root so the source under test is always recompiled.
+    env["PYTHONPYCACHEPREFIX"] = str(pycache)
+    return env
+
+
 def run_one(c: dict, tree: Path) -> tuple[bool, str]:
     """Apply the mutation inside `tree`, run the command there, restore. (passed, why)."""
     work = tree / HERE
@@ -1032,44 +1105,17 @@ def run_one(c: dict, tree: Path) -> tuple[bool, str]:
         target.write_text(text.replace(old, new, 1), encoding="utf-8")
         # check=False deliberately: a non-zero exit is the EXPECTED outcome here, and
         # inspecting it is this function's whole job.
-        env = os.environ.copy()
-        # The parent owns the control journal, and a nested gate must not start a
-        # second artifact capture inside a snapshot.
-        env.pop("PACKING_VALIDATION_ARTIFACT_DIR", None)
-        # A snapshot owns its own index, which is how a check here answers what the
-        # repository holds. An inherited `GIT_DIR` or `GIT_INDEX_FILE` would point every
-        # one of those questions at another repository, and the mutation is not in it.
-        for inherited in [name for name in env if name.startswith("GIT_")]:
-            del env[inherited]
-        # Every worker links the already-synced environment to avoid reinstalling the
-        # scientific stack. Letting `uv run` sync that shared environment installs the
-        # editable project from a temporary snapshot, which disappears after this run
-        # and leaves the developer environment broken. Snapshot imports must still win.
-        env["UV_NO_SYNC"] = "1"
-        import_roots = (
-            str(work / "src"),
-            str(work),
-            str(tree / "packages/workbench/tools"),
-        )
-        env["PYTHONPATH"] = os.pathsep.join(
-            (*import_roots, env["PYTHONPATH"]) if env.get("PYTHONPATH") else import_roots
-        )
         try:
             timeout_seconds = float(c.get("timeout_seconds", DEFAULT_CONTROL_TIMEOUT_SECONDS))
         except TypeError, ValueError:
             return False, "timeout_seconds is not a number"
         if not math.isfinite(timeout_seconds) or timeout_seconds <= 0:
             return False, "timeout_seconds must be finite and positive"
-        # Two controls can make same-size edits to one module inside the same filesystem
-        # timestamp tick. Python's normal timestamp-and-size bytecode cache would then
-        # let the second command execute the first control's mutation. Give every
-        # command a fresh cache root so the source under test is always recompiled.
         with tempfile.TemporaryDirectory(prefix="negctl-pycache-", dir=tree) as pycache:
-            env["PYTHONPYCACHEPREFIX"] = pycache
             outcome = run_control_command(
                 c["run"],
                 cwd=work,
-                environment=env,
+                environment=control_environment(tree, Path(pycache)),
                 timeout_seconds=timeout_seconds,
             )
         output = outcome.stdout + outcome.stderr

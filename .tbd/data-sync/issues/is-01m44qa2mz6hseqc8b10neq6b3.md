@@ -3,9 +3,9 @@ type: is
 id: is-01m44qa2mz6hseqc8b10neq6b3
 title: "Address PR #336 Review A maintenance"
 kind: chore
-status: in_progress
+status: closed
 priority: 2
-version: 7
+version: 8
 delegate: graph_gate
 labels: []
 dependencies: []
@@ -18,7 +18,11 @@ child_order_hints:
 hold: null
 hold_until: null
 created_at: 2026-10-05T00:27:07.806Z
-updated_at: 2026-10-05T02:30:53.135Z
+updated_at: 2026-10-05T02:56:32.815Z
 started_at: 2026-10-05T02:30:53.134Z
+closed_at: 2026-10-05T02:56:32.814Z
+close_reason: All five Review A findings fixed and dispositions posted. Exact 49613a52f hosted native and required checks PASS. Maintenance scope complete; research paused, no active executor or follow-up reserved.
+resolution: null
+duplicate_of: null
 ---
 All formal Review A findings: https://github.com/jlevy/squares/pull/336#pullrequestreview-5408660754. Maintenance only; research paused. Sole graph_gate executor, root critical review. No merge, new mathematical target or parent rewrite.

@@ -24,8 +24,11 @@ The sources, one section of the report each:
   packet's pin and every read in `campaign/intake-watch.yaml` are new to the record.
   Commits a packet's pin already contains but whose changed paths no packet at or after
   them retains are evidence nobody took in, such as wand125's `c56b9b7` and `1ebd484`.
-  A pin is structured, an acquisition record's commit or a revision in a register
-  source's address; a commit named only in prose pins nothing.
+  A pin is structured: an acquisition record's commit with the paths it declares, or a
+  revision in a register source's address with the path the address names after it,
+  the whole tree when it names none. Where both pin one commit the acquisition record's
+  scope stands, since the register's address says what it cites, not what was retained.
+  A commit named only in prose pins nothing.
 - **The Kingbird catalogue**: the newest capture `devtools.capture_kingbird_catalogue`
   wrote, when it is newer than the record's, compared count by count through
   `devtools.diff_kingbird_catalogue`. A count it moves below its record is an intake.
@@ -35,9 +38,11 @@ The sources, one section of the report each:
   results and asks queued on open issues (each needs its own bead; the answer bead owns
   the reply, not the import), triage and replies owed, and the validation backlog.
 - **Blocked imports**: a queued result or ask's `blocked_on`, and what an open
-  `result-import` bead says it waits on, in a sentence with a waiting word, or through a
-  `blocks` dependency. A pull request or issue that has merged or closed, or a bead that
-  has closed, is a blocker that has resolved, and nothing resumes the wait on its own.
+  `result-import` bead says it waits on: a `blocked_on:` line in its description or
+  notes, the last one standing, else a present-tense sentence with a waiting word in its
+  description, or a `blocks` dependency. Notes are history, so their prose is not read.
+  A pull request or issue that has merged or closed, or a bead that has closed, is a
+  blocker that has resolved, and nothing resumes the wait on its own.
 - **Manual reports**: they have no machine source. The runbook makes each a bead
   labelled `result-import` first, so the open ones are listed as the bead queue.
 
@@ -80,6 +85,7 @@ from typing import Any
 
 from devtools import check_bead_tree, check_requests
 from devtools.audit_kingbird_catalogue import load_frontier_cases
+from devtools.bead_state import LIVE
 from devtools.capture_kingbird_catalogue import CAPTURE_PREFIX, CAPTURES, STEM
 from devtools.diff_kingbird_catalogue import compare, record_standings
 from devtools.overview_sections import OTHER_PROJECTS
@@ -104,7 +110,8 @@ KINGBIRD = "kingbird-current"
 IMPORT_LABEL = "result-import"
 _GITHUB = re.compile(r"https://github\.com/([\w.-]+)/([\w.-]+)")
 _GIST = re.compile(r"https://gist\.github\.com/(?:[\w.-]+/)?([0-9a-f]+)(?:\.git)?")
-_TREE = re.compile(r"/tree/([0-9a-f]{40})\b")
+#: A register address's pinned revision, and the path within it the address names.
+_TREE = re.compile(r"/tree/([0-9a-f]{40})(?![0-9a-f])(?:/([^?#]*))?")
 _CAPTURE_DIR = re.compile(rf"{re.escape(CAPTURE_PREFIX)}(\d{{4}}-\d{{2}}-\d{{2}})")
 #: A sentence that says something waits: the blockers it names are read as blockers.
 _WAITING = re.compile(
@@ -112,6 +119,17 @@ _WAITING = re.compile(
     r"|\bafter\b(?=[^.;]*\b(?:merges|lands|closes)\b)",
     re.IGNORECASE,
 )
+#: A sentence that says what a wait was rather than what it is: "was held for #305,
+#: which merged", "waited on #290". "Has been blocked" still waits, so it is not here.
+_PAST_WAIT = re.compile(
+    r"\b(?:was|were|had\s+been)\s+(?:\w+\s+)?(?:held|blocked|waiting|pending)\b|\bwaited\b",
+    re.IGNORECASE,
+)
+#: A bead's declared wait, on a line of its own: `blocked_on: jlevy/squares#305,
+#: think-wpuu`, or `blocked_on: none` once nothing is awaited. The last one stands.
+_BLOCKED_ON = re.compile(r"^[ \t]*blocked_on:(?P<refs>.*)$", re.MULTILINE)
+#: The heading `tbd` puts between a bead's description and its accumulated notes.
+_NOTES = re.compile(r"^## Notes[ \t]*$", re.MULTILINE)
 _ISSUE_REF = re.compile(r"(?<![\w/#])(?:(?P<repo>[\w.-]+/[\w.-]+))?#(?P<number>\d+)\b")
 _BEAD_REF = re.compile(r"\bthink-[a-z0-9]{4}\b")
 _SENTENCE = re.compile(r"(?<=[.;!?])\s+|\n+")
@@ -146,13 +164,35 @@ class Section:
 
 @dataclass(frozen=True)
 class QueuedBead:
-    """An open `result-import` bead: its alias, status, title and what it says."""
+    """An open `result-import` bead: its alias, status, title and what it says.
+
+    `text` is the title and the description, which say what the bead is now; `notes` are
+    what was appended to it since, read only for a `blocked_on:` line.
+    """
 
     alias: str
     status: str
     title: str
     text: str
     blocked_by: tuple[str, ...] = ()
+    notes: str = ""
+
+
+def queued_bead(bead: Mapped, alias: str, blocked_by: Iterable[str] = ()) -> QueuedBead:
+    """One parsed bead as the queue holds it, its description apart from its notes."""
+    body = str(bead.get(check_bead_tree.BODY, ""))
+    heading = _NOTES.search(body)
+    description, notes = (
+        (body[: heading.start()], body[heading.end() :]) if heading else (body, "")
+    )
+    return QueuedBead(
+        alias=alias,
+        status=str(bead.get("status")),
+        title=str(bead.get("title", "")),
+        text=f"{bead.get('title', '')}\n{description}",
+        blocked_by=tuple(blocked_by),
+        notes=notes,
+    )
 
 
 @dataclass(frozen=True)
@@ -183,16 +223,13 @@ class Beads:
         queue = tuple(
             sorted(
                 (
-                    QueuedBead(
-                        alias=alias_by_id[str(b["id"])],
-                        status=str(b.get("status")),
-                        title=str(b.get("title", "")),
-                        text=f"{b.get('title', '')}\n{b.get(check_bead_tree.BODY, '')}",
-                        blocked_by=tuple(blocked_by.get(alias_by_id[str(b["id"])], ())),
+                    queued_bead(
+                        b,
+                        alias_by_id[str(b["id"])],
+                        blocked_by.get(alias_by_id[str(b["id"])], ()),
                     )
                     for b in beads
-                    if str(b.get("status")) in check_bead_tree.LIVE
-                    and IMPORT_LABEL in (b.get("labels") or ())
+                    if str(b.get("status")) in LIVE and IMPORT_LABEL in (b.get("labels") or ())
                 ),
                 key=lambda queued: queued.alias,
             )
@@ -212,9 +249,7 @@ def owned(
     if beads is None:
         return Item(what, OWNED, alias, "unconfirmed: no bead store", since, step)
     state = beads.state(alias)
-    return Item(
-        what, OWNED if state in check_bead_tree.LIVE else NEEDS_OWNER, alias, state, since, step
-    )
+    return Item(what, OWNED if state in LIVE else NEEDS_OWNER, alias, state, since, step)
 
 
 def age(since: str, today: date) -> str:
@@ -234,18 +269,37 @@ def stated_blockers(text: str, repository: str, own: str = "") -> list[str]:
 
     Only a sentence with a waiting word counts ("waits for jlevy/squares#305", "held until
     think-ab12 closes", "after #305 merges"), so an issue the text merely cites is not
-    read as a blocker. A bare `#N` is on `repository`.
+    read as a blocker. A sentence that tells what a wait was ("was held for #305, which
+    merged") names nothing still awaited. A bare `#N` is on `repository`.
     """
     found: list[str] = []
     for sentence in _SENTENCE.split(text):
-        if not _WAITING.search(sentence):
+        if not _WAITING.search(sentence) or _PAST_WAIT.search(sentence):
             continue
-        found.extend(
-            f"{match['repo'] or repository}#{match['number']}"
-            for match in _ISSUE_REF.finditer(sentence)
-        )
-        found.extend(bead for bead in _BEAD_REF.findall(sentence) if bead != own)
+        found.extend(_refs(sentence, repository, own))
     return list(dict.fromkeys(found))
+
+
+def _refs(text: str, repository: str, own: str = "") -> list[str]:
+    """Every pull request, issue and bead `text` names, other than `own`."""
+    issues = (f"{m['repo'] or repository}#{m['number']}" for m in _ISSUE_REF.finditer(text))
+    return [*issues, *(bead for bead in _BEAD_REF.findall(text) if bead != own)]
+
+
+def declared_blockers(queued: QueuedBead, repository: str) -> list[str] | None:
+    """What an open bead declares it waits on now, or None when it declares nothing.
+
+    A `blocked_on:` line, in the description or the notes, declares it, and the last
+    such line stands, so a later one replaces an earlier and `blocked_on: none` ends the
+    wait. Without one, the description's sentences are read by `stated_blockers`. The
+    notes' prose is never read: notes accumulate, and a sentence there that once said
+    the bead waited, or that cited another bead's wait as an example, says nothing about
+    what it waits on now.
+    """
+    declared = _BLOCKED_ON.findall(f"{queued.text}\n{queued.notes}")
+    if not declared:
+        return None
+    return list(dict.fromkeys(_refs(declared[-1], repository, queued.alias)))
 
 
 IssueFetch = Callable[[str], Mapped]
@@ -290,11 +344,20 @@ class Blockers:
         state = None if self.beads is None else self.beads.state(alias)
         if state is None or state == "no such bead":
             return None
-        return "" if state in check_bead_tree.LIVE else state
+        return "" if state in LIVE else state
 
     def resolved(self, refs: Iterable[str]) -> list[str]:
         """Each of `refs` that has resolved, with how."""
         return [f"{ref}, {how}" for ref in refs if (how := self.resolution(ref))]
+
+    def all_resolved(self, refs: Sequence[str]) -> list[str]:
+        """Each of `refs` with how it resolved, once every one has; else nothing.
+
+        A wait on several things is over at the last of them, so one that holds, or one
+        this run could not read, keeps the whole wait open.
+        """
+        resolved = self.resolved(refs)
+        return resolved if len(resolved) == len(refs) else []
 
 
 # -- GitHub issues --------------------------------------------------------------------
@@ -397,9 +460,14 @@ def watched_repositories(
     """Every repository the record names, keyed in lower case, with the packets that pin it.
 
     A pin is structured: the commit a packet's acquisition record names, with the paths
-    it declares, or a revision in a register source's address, taken as the whole tree.
-    A commit a README or a note names in prose pins nothing, since prose that names a
-    commit is as likely to say it was not taken in.
+    it declares, or a revision in a register source's address. The register's revision
+    retains the path its address names after it (`/tree/<commit>/<path>`), or the whole
+    tree when it names none, and is dropped where an acquisition record pins the same
+    commit, whose declared scope is what was retained there. Most register addresses
+    pin the commit of a scoped packet, so taking them as the whole tree retained every
+    earlier commit's changes and hid every one no packet took in. A commit a README or
+    a note names in prose pins nothing, since prose that names a commit is as likely to
+    say it was not taken in.
     """
     found: dict[str, Watched] = {}
 
@@ -410,15 +478,23 @@ def watched_repositories(
         entry.cited_by.add(cited_by)
         return entry
 
-    for source in coverage["sources"]:
-        entry = watch(repository(source["url"]), source["id"])
-        if entry is not None and (pin := _TREE.search(source["url"])):
-            entry.packets.append(Packet(source["id"], pin[1]))
+    acquired: list[tuple[Watched, Packet]] = []
     for name, source in _acquisition_sources(packets):
         entry = watch(repository(str(source.get("source_url", ""))), name)
         commit = str(source.get("source_commit") or source.get("source_ref") or "")
         if entry is not None and re.fullmatch(r"[0-9a-f]{40}", commit):
-            entry.packets.append(Packet(name, commit, _scope(source)))
+            acquired.append((entry, Packet(name, commit, _scope(source))))
+    # A register address names what the register cites, not what a packet retains, so
+    # where a packet pins the same commit its declared scope stands for both.
+    retained = {(id(entry), packet.pin) for entry, packet in acquired}
+    for source in coverage["sources"]:
+        entry = watch(repository(source["url"]), source["id"])
+        pin = _TREE.search(source["url"])
+        if entry is not None and pin and (id(entry), pin[1]) not in retained:
+            path = (pin[2] or "").strip("/")
+            entry.packets.append(Packet(source["id"], pin[1], (path,)))
+    for entry, packet in acquired:
+        entry.packets.append(packet)
     for url in projects if projects is not None else (u for u, _, _ in OTHER_PROJECTS):
         watch(repository(url), "the site's other projects")
     return found
@@ -869,10 +945,11 @@ def _queued(
     """A queued result or ask: owned by its own bead, and held by what it waits on.
 
     The issue's answer bead owns the reply, not the import, and `beads` may name several,
-    so an item with no bead of its own is unowned. Its blockers are its `blocked_on`, or
-    what its text says it waits on.
+    so an item with no bead of its own is unowned. Its blockers are its `blocked_on`,
+    whose wait is over once every one has resolved, as the schema says; without one, a
+    blocker its text says it waits on counts once it resolves.
     """
-    refs = list(entry.get("blocked_on") or ()) or stated_blockers(text, repository)
+    declared = [str(ref) for ref in entry.get("blocked_on") or ()]
     item = owned(
         what,
         str(entry.get("bead") or ""),
@@ -880,7 +957,12 @@ def _queued(
         since=since,
         step="name the bead that imports it, as `bead` on the entry",
     )
-    if resolved := blockers.resolved(refs):
+    resolved = (
+        blockers.all_resolved(declared)
+        if declared
+        else blockers.resolved(stated_blockers(text, repository))
+    )
+    if resolved:
         detail = f"{item.what}; it waits on {'; '.join(resolved)}"
         state = RESOLVED if item.state == OWNED else item.state
         return replace(
@@ -892,9 +974,11 @@ def _queued(
 def blocked_section(beads: Beads | None, blockers: Blockers, repository: str) -> Section:
     """Open import beads whose stated blocker has merged, closed or been closed.
 
-    A blocker the bead's text names counts once it resolves, since the sentence that
-    names it says the bead waits on it. Its `blocks` dependencies count once all of them
-    have closed, because a bead with several children waits on the last.
+    A bead's `blocked_on:` line (`declared_blockers`) counts once every blocker it lists
+    has resolved. Without one, a blocker its description names counts once it resolves,
+    since the sentence that names it says the bead waits on it. Its `blocks` dependencies
+    count once all of them have closed, because a bead with several children waits on
+    the last.
     """
     section = Section("Blocked imports")
     if beads is None:
@@ -902,13 +986,20 @@ def blocked_section(beads: Beads | None, blockers: Blockers, repository: str) ->
         return section
     waiting = 0
     for queued in beads.queue:
-        stated = stated_blockers(queued.text, repository, queued.alias)
+        declared = declared_blockers(queued, repository)
+        stated = (
+            declared
+            if declared is not None
+            else stated_blockers(queued.text, repository, queued.alias)
+        )
         if not stated and not queued.blocked_by:
             continue
         waiting += 1
-        resolved = blockers.resolved(stated)
-        dependencies = blockers.resolved(queued.blocked_by)
-        if len(dependencies) == len(queued.blocked_by):
+        resolved = (
+            blockers.all_resolved(stated) if declared is not None else blockers.resolved(stated)
+        )
+        if queued.blocked_by:
+            dependencies = blockers.all_resolved(queued.blocked_by)
             resolved += [ref for ref in dependencies if ref not in resolved]
         if resolved:
             section.items.append(

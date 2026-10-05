@@ -123,15 +123,16 @@ hidden.
 
 ## Other Square Packing Projects
 
-These are the open projects on GitHub that the research frontier cites, ordered by the
-significance of their results in the [register](all-results.html): most at S5 first,
-then S4, and so on down, newest first among equals.
-Each card ends with a count that opens those results.
-Evan Daniel also publishes the
-[Square Packing Atlas](https://evand.github.io/square-packing/), which draws every
-record packing beside the proven floor beneath it, and a page of
+The first three cards are the catalogues of the record packings: David Ellsworth’s
+Squares in Squares, which continues Erich Friedman’s original page, and Evan Daniel’s
+Square Packing Atlas, which draws every record packing beside the proven floor beneath
+it and keeps a page of
 [open problems](https://evand.github.io/square-packing/problems.html) about the patterns
-that span many $n$.
+that span many $n$. After them come the projects and posts, on GitHub and elsewhere,
+that the research frontier cites results from, ordered by the significance of those
+results in the [register](all-results.html): most at S5 first, then S4, and so on down,
+newest first among equals.
+A card with registered results ends with a count that opens them.
 
 {{OTHER_PROJECTS}}
 

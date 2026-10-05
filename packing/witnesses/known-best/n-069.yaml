@@ -380,6 +380,7 @@ witness:
     url: https://kingbird.myphotos.cc/packing/square-69.svg
     retrieved: '2026-10-05'
     revision: evand/square-packing@7ff3b2113532889708a3baa4d56bc44294022e63:site/www/data/p/square-69.json
+    revision_sha256: f0a6d89fa4970aa9c24d240fabeb48514f014627b755be8f27445d9da1640a21
   certificate:
     kind: numerical-feasibility-receipt
     replay: uv run --frozen packing-witness check witnesses/known-best/n-069.yaml --method numerical-multiprecision

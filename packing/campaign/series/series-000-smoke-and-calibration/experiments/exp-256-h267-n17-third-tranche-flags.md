@@ -120,6 +120,15 @@ experiment:
     checked_by: The run (receipts/K/kernel-t5-bc427.json) returns PASS_CERTIFIED_STALL in 4,554 s of wall and 4,292 s of
       process CPU, the producer at its 24-round cap (168 steps, 19,241 rows, finest 1/512); at the last round
       every owner still had live rows, side-E0 64 and side-S1 85 the fewest. A non-closure; its node is kept.
+  - shape: determination
+    role: outcome
+    question: Is target 9 (side-E1, interior-SW, interior-NW, interior-W, interior-N, interior-E, interior-SE)
+      infeasible at U within the 7,000 s ceiling?
+    outcome: criterion_missed
+    checked_by: The run (receipts/K/kernel-t9-bc427.json) returns PASS_CERTIFIED_STALL in 726 s of wall and 446 s of
+      process CPU, the producer at its 24-round cap (168 steps, 12,670 rows, finest 1/512); at the last round
+      every owner still had live rows, interior-E 11 and interior-NW 11 the fewest. A non-closure; its node is
+      kept.
   verdict:
     decision: in-progress
     primary_criterion: The certified residue at arity at most seven is at most 10^4 orbits with every certificate
@@ -169,6 +178,7 @@ No arity-8 flag fills it.
 | 6, `s182-bc427-t6` | side-S1, side-W1, interior-NW, interior-W, interior-S, interior-SE | closed in 197 s, 40 steps, 2,816 rows | full pass, 120 s | 4,711 orbits; 8,191 at arity at most seven |
 | 7 | side-W0, side-W1, interior-SW, interior-NW, interior-W, interior-S, interior-N | 24-round cap at 842 s, not closed | — | — |
 | 5 | side-E0, side-S1, interior-NW, interior-W, interior-S, interior-N, interior-SE | 24-round cap at 4,554 s, not closed | — | — |
+| 9 | side-E1, interior-SW, interior-NW, interior-W, interior-N, interior-E, interior-SE | 24-round cap at 726 s, not closed | — | — |
 
 The targets and the census they came from are
 [kernel-targets-bc427.txt](../../../explorations/X048-session-182-overnight/kernel-targets-bc427.txt)

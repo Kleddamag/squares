@@ -1,0 +1,22 @@
+# command: node project/base/upstream/cpp/reference/verify_global_variable.js WORK/controls/over-claim/certificate.json WORK/controls/over-claim/node.json 0 1
+# cwd: WORK/R071-C029, the staged R071 package; certificate 1f776c0a0c8720b187c7f204c3da86e54e2006b0923c07cfbd7a1fd491c348c1, the over-claim mutation of 15b6bf6a936eba71338c9ea3e3b9966ae21db8116a6f5a92a8b5da5ccabed469 (bounds/c027/certificate.json): A 9226/9321 and normalized_target 9321/2000, cores unchanged; intervals 0 to 0; C++ executable cf761bb5d19ba01be76853c7e6bd47648a8ff5c29624d02f9cc02d730cc719d5
+# python3: not used by this command
+# host: 4 cores; load 14.49 11.29 8.10; started 2026-10-05T05:04:07Z
+WORK/R071-C029/project/base/upstream/cpp/reference/verify_global_variable.js:3
+const need=(v,s)=>{if(!v)throw Error(s)};const abs=a=>a<0n?-a:a;function gcd(a,b){a=abs(a);b=abs(b);while(b)[a,b]=[b,a%b];return a}function lcm(a,b){return a/gcd(a,b)*b}function q(a,b=1n){a=BigInt(a);b=BigInt(b);need(b!==0n,'denominator');if(b<0n){a=-a;b=-b}const g=gcd(a,b);return[a/g,b/g]}function p(s){const a=String(s).split('/');return q(a[0],a[1]||1)}function add(a,b){return q(a[0]*b[1]+b[0]*a[1],a[1]*b[1])}function sub(a,b){return add(a,[-b[0],b[1]])}function mul(a,b){return q(a[0]*b[0],a[1]*b[1])}function div(a,b){return q(a[0]*b[1],a[1]*b[0])}const cmp=(a,b)=>a<b?-1:a>b?1:0;const le=(a,b)=>a[0]*b[1]<=b[0]*a[1];const eq=(a,b)=>a[0]*b[1]===b[0]*a[1];const positive=a=>a[0]>0n;const str=a=>a.join('/');function floor(a,b){const r=a/b;return a<0n&&a%b!==0n?r-1n:r}const ceil=(a,b)=>-floor(-a,b);function trig(t){return[q(t[1]*t[1]-t[0]*t[0],t[1]*t[1]+t[0]*t[0]),q(2n*t[0]*t[1],t[1]*t[1]+t[0]*t[0])]}
+                         ^
+
+Error: strict core
+    at need (WORK/R071-C029/project/base/upstream/cpp/reference/verify_global_variable.js:3:32)
+    at Object.<anonymous> (WORK/R071-C029/project/base/upstream/cpp/reference/verify_global_variable.js:26:612)
+    at Module._compile (node:internal/modules/cjs/loader:1706:14)
+    at Object..js (node:internal/modules/cjs/loader:1839:10)
+    at Module.load (node:internal/modules/cjs/loader:1441:32)
+    at Function._load (node:internal/modules/cjs/loader:1263:12)
+    at TracingChannel.traceSync (node:diagnostics_channel:328:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:237:24)
+    at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:171:5)
+    at node:internal/main/run_main_module:36:49
+
+Node.js v22.22.0
+# finished 2026-10-05T05:04:08Z; exit 1; wall 0.304 s; CPU 0.3 s (user 0.237 + sys 0.040); load 14.49 11.29 8.10

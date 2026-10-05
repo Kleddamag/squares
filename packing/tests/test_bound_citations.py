@@ -805,7 +805,7 @@ def test_the_recorded_register_gives_these_lines(n: int) -> None:
     ("n", "author", "venue", "entry"),
     [
         (11, "Queuingtheorydotcom after Levy et al.", "Web", "T-060"),
-        (17, "Guzhou0806 after Kleddamag et al.", "GitHub", "T-043"),
+        (17, "Guzhou0806 after Kleddamag et al.", "GitHub", "T-093"),
         # Tokoharu's T-047 held n = 26 and 29 until 2026-10-02, when wand125's merged
         # rectangle replays raised both, n = 26 under T-045 and n = 29 under T-070, and
         # the replays of its 1 October certificates raised both again later that day.

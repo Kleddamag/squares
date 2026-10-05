@@ -25,16 +25,16 @@ second implementation agrees.
 
 ## The Short Version
 
-- **80** programs: **31** external and **49** first-party; **65** decide claims and **15** check premises.
-- **264** of **291** evidence entries name the programs that verified them: 197 reproduced with the producer’s code, 51 independently re-implemented, 9 no relation: a proof, a derivation or a report, 7 re-implemented, sharing the producer’s components.
+- **82** programs: **31** external and **51** first-party; **65** decide claims and **17** check premises.
+- **267** of **294** evidence entries name the programs that verified them: 200 reproduced with the producer’s code, 51 independently re-implemented, 9 no relation: a proof, a derivation or a report, 7 re-implemented, sharing the producer’s components.
 
 ## Programs
 
 | id | program | author | provenance | role | evidence | results |
 | --- | --- | --- | --- | --- | ---: | ---: |
 | [`V-tokoharu-verify-cpp`](#v-tokoharu-verify-cpp) | verify.cpp | Tokoharu | external | decides | 12 | 7 |
-| [`V-wand125-mixed-rotated-verify-cpp`](#v-wand125-mixed-rotated-verify-cpp) | mixed_rotated_verify.cpp | wand125 | external | decides | 80 | 8 |
-| [`V-wand125-verify-mixed-full-proof-py`](#v-wand125-verify-mixed-full-proof-py) | verify_mixed_full_proof.py | wand125 | external | decides | 57 | 5 |
+| [`V-wand125-mixed-rotated-verify-cpp`](#v-wand125-mixed-rotated-verify-cpp) | mixed_rotated_verify.cpp | wand125 | external | decides | 82 | 9 |
+| [`V-wand125-verify-mixed-full-proof-py`](#v-wand125-verify-mixed-full-proof-py) | verify_mixed_full_proof.py | wand125 | external | decides | 59 | 6 |
 | [`V-wand125-unified-linear-verify-cpp`](#v-wand125-unified-linear-verify-cpp) | unified_linear_verify.cpp | wand125 | external | decides | 6 | 3 |
 | [`V-wand125-verify-portable-py`](#v-wand125-verify-portable-py) | verify_portable.py | wand125 | external | decides | 2 | 1 |
 | [`V-wand125-check-with-sqpack`](#v-wand125-check-with-sqpack) | check_with_sqpack.py | wand125 | external | decides | 5 | 1 |
@@ -49,11 +49,11 @@ second implementation agrees.
 | [`V-evand-lean`](#v-evand-lean) | The source's Lean development (lean/) | Evan Daniel | external | decides | 7 | 5 |
 | [`V-chelokot-lean`](#v-chelokot-lean) | The source's Lean development (formal/) | chelokot | external | decides | 1 | 1 |
 | [`V-kleddamag-n11-verify`](#v-kleddamag-n11-verify) | verify.py | Kleddamag | external | decides | 4 | 2 |
-| [`V-kleddamag-n17-verify`](#v-kleddamag-n17-verify) | verify.py | Kleddamag | external | decides | 10 | 6 |
+| [`V-kleddamag-n17-verify`](#v-kleddamag-n17-verify) | verify.py | Kleddamag | external | decides | 11 | 6 |
 | [`V-wang-li-n11-verify`](#v-wang-li-n11-verify) | verify.py of the Zenodo release | Wang and Li | external | decides | 2 | 1 |
 | [`V-guzhou-r012-verify-py`](#v-guzhou-r012-verify-py) | certificates/R012/verify.py | Guzhou0806 | external | decides | 1 | 1 |
 | [`V-guzhou-r052-verify-py`](#v-guzhou-r052-verify-py) | certificates/R052/verify.py | Guzhou0806 | external | decides | 2 | 1 |
-| [`V-guzhou-n17-verify-cpp`](#v-guzhou-n17-verify-cpp) | verify.cpp | Guzhou0806 | external | decides | 4 | 3 |
+| [`V-guzhou-n17-verify-cpp`](#v-guzhou-n17-verify-cpp) | verify.cpp | Guzhou0806 | external | decides | 5 | 3 |
 | [`V-burns-n17-verify-py`](#v-burns-n17-verify-py) | verify-n17-lower-bound-4_4811.py | Burns | external | decides | 1 | 0 |
 | [`V-massaccesi-n17-verify-py`](#v-massaccesi-n17-verify-py) | verify-n17-lower-bound-4_5058.py | Massaccesi | external | decides | 1 | 2 |
 | [`V-mira-17squares-point-checker`](#v-mira-17squares-point-checker) | verify_certificate.py | Mira | external | decides | 1 | 0 |
@@ -110,6 +110,8 @@ second implementation agrees.
 | [`V-audit-s12-reweighted`](#v-audit-s12-reweighted) | devtools.audit_s12_reweighted | Squares Project (Levy) | first-party | premises | 1 | 1 |
 | [`V-compare-evand-s32-sweep`](#v-compare-evand-s32-sweep) | devtools.compare_evand_s32_sweep | Squares Project (Levy) | first-party | premises | 1 | 1 |
 | [`V-audit-guzhou-r068`](#v-audit-guzhou-r068) | devtools.audit_guzhou_r068 | Squares Project (Levy) | first-party | premises | 2 | 2 |
+| [`V-audit-guzhou-r071`](#v-audit-guzhou-r071) | devtools.audit_guzhou_r071 | Squares Project (Levy) | first-party | premises | 1 | 1 |
+| [`V-replay-guzhou-r071`](#v-replay-guzhou-r071) | devtools.replay_guzhou_r071 | Squares Project (Levy) | first-party | premises | 1 | 1 |
 | [`V-audit-valid7-independent`](#v-audit-valid7-independent) | devtools.audit_valid7_independent | Squares Project (Levy) | first-party | premises | 1 | 1 |
 | [`V-probe-valid7-fixes`](#v-probe-valid7-fixes) | devtools.probe_valid7_fixes | Squares Project (Levy) | first-party | premises | 1 | 1 |
 
@@ -231,6 +233,8 @@ Decides a mixed point-and-rectangle certificate at each of the 201 net direction
 | `E-n090-wand125-mixed-973-report` | the source’s own run | producer’s code | T-091 |
 | `E-n091-wand125-mixed-97625-report` | the source’s own run | producer’s code | T-091 |
 | `E-n094-wand125-mixed-995-report` | the source’s own run | producer’s code | T-091 |
+| `E-n067-wand125-mixed-848-report` | the source’s own run | producer’s code | T-094 |
+| `E-n084-wand125-mixed-9411-report` | the source’s own run | producer’s code | T-094 |
 
 ### `V-wand125-verify-mixed-full-proof-py`
 
@@ -301,6 +305,8 @@ The source's driver for a complete mixed-certificate proof: it runs mixed_rotate
 | `E-n090-wand125-mixed-973-report` | the source’s own run | producer’s code | T-091 |
 | `E-n091-wand125-mixed-97625-report` | the source’s own run | producer’s code | T-091 |
 | `E-n094-wand125-mixed-995-report` | the source’s own run | producer’s code | T-091 |
+| `E-n067-wand125-mixed-848-report` | the source’s own run | producer’s code | T-094 |
+| `E-n084-wand125-mixed-9411-report` | the source’s own run | producer’s code | T-094 |
 
 ### `V-wand125-unified-linear-verify-cpp`
 
@@ -559,7 +565,7 @@ Decides a weighted threshold certificate for n = 11 by two event-cell sweeps ove
 Decides an n = 17 certified-bound charge certificate by a Python sweep and a JavaScript BigInt sweep run together, each covering every interval and agreeing on every minimum and cell count.
 
 - Source: [`packing/resources/web/n17-kleddamag-certified-bound-2026-09-21/kleddamag-17-squares-certified-bound/verify.py`](../../packing/resources/web/n17-kleddamag-certified-bound-2026-09-21/kleddamag-17-squares-certified-bound/verify.py), [`packing/resources/web/n17-kleddamag-4640020-2026-09-26/kleddamag-17-squares-certified-bound/bounds/4.640020/verify.py`](../../packing/resources/web/n17-kleddamag-4640020-2026-09-26/kleddamag-17-squares-certified-bound/bounds/4.640020/verify.py), [`packing/resources/web/n17-kleddamag-466001-2026-09-27/kleddamag-17-squares-certified-bound/bounds/4.66001/verify.py`](../../packing/resources/web/n17-kleddamag-466001-2026-09-27/kleddamag-17-squares-certified-bound/bounds/4.66001/verify.py)
-- Versions run: SHA-256 `d620178d047a…` (v1.0.0, 461300/99853); SHA-256 `6a027666c393…` (4.640020; of `verify.py`); SHA-256 `2885bb142a31…` (4.66001; of `verify.py`)
+- Versions run: SHA-256 `d620178d047a…` (v1.0.0, 461300/99853); SHA-256 `6a027666c393…` (4.640020; of `verify.py`); SHA-256 `2885bb142a31…` (4.66001; of `verify.py`); SHA-256 `c22091862df6…` (the Node BigInt checker of 4.66001, which Guzhou0806's R067 to R071 bundle byte for byte; of `verify_global_variable.js`)
 - Note: Guzhou0806's paired n = 17 launchers run Kleddamag's Node BigInt checker beside their own C++.
 
 | evidence | run | code | results |
@@ -572,6 +578,7 @@ Decides an n = 17 certified-bound charge certificate by a Python sweep and a Jav
 | `E-n017-guzhou-r068-source-replay` | replayed here | producer’s code | T-043 |
 | `E-n017-guzhou-r067-source-replay` | replayed here | producer’s code | T-042 |
 | `E-n017-guzhou-r071-report` | the source’s own run | producer’s code | T-093 |
+| `E-n017-guzhou-r071-source-replay` | replayed here | producer’s code | T-093 |
 | `E-n017-kleddamag-4640020-report` | the source’s own run | producer’s code | T-040 |
 | `E-n017-kleddamag-4640020-source-replay` | replayed here | producer’s code | T-040 |
 
@@ -622,8 +629,8 @@ The source's checkers of its R052 charge certificate, a Python sweep and a BigIn
 
 The source's C++ exclusion checker, run interval by interval beside Kleddamag's Node BigInt checker by the paired launcher, which requires both to pass.
 
-- Source: [`packing/resources/web/n17-guzhou-r068-2026-09-28/n17-square-packing/certificates/R068-C010/upstream/cpp/verify.cpp`](../../packing/resources/web/n17-guzhou-r068-2026-09-28/n17-square-packing/certificates/R068-C010/upstream/cpp/verify.cpp), [`packing/resources/web/n17-guzhou-r068-2026-09-28/n17-square-packing/certificates/R067-4.66018/src/verify.cpp`](../../packing/resources/web/n17-guzhou-r068-2026-09-28/n17-square-packing/certificates/R067-4.66018/src/verify.cpp)
-- Versions run: SHA-256 `3ba09554cef0…`, revision `815b1626` (identical bytes for R067 and R068)
+- Source: [`packing/resources/web/n17-guzhou-r068-2026-09-28/n17-square-packing/certificates/R068-C010/upstream/cpp/verify.cpp`](../../packing/resources/web/n17-guzhou-r068-2026-09-28/n17-square-packing/certificates/R068-C010/upstream/cpp/verify.cpp), [`packing/resources/web/n17-guzhou-r068-2026-09-28/n17-square-packing/certificates/R067-4.66018/src/verify.cpp`](../../packing/resources/web/n17-guzhou-r068-2026-09-28/n17-square-packing/certificates/R067-4.66018/src/verify.cpp), [`packing/resources/web/n17-guzhou-r071-2026-09-30/n17-square-packing/certificates/R071-C029/run_public.js`](../../packing/resources/web/n17-guzhou-r071-2026-09-30/n17-square-packing/certificates/R071-C029/run_public.js)
+- Versions run: SHA-256 `3ba09554cef0…`, revision `815b1626` (identical bytes for R067 and R068); SHA-256 `3ba09554cef0…`, revision `8c11f6962506` (R071's project/base/upstream/cpp/verify.cpp, pinned in the R071 packet as byte-identical to R068's); SHA-256 `1125e5969fe0…` (the paired launcher replay.js, the same bytes in R067 to R071; of `replay.js`); SHA-256 `45f6ef8e5b5e…`, revision `8c11f6962506` (R071's public launcher, which checks the package, builds verify.cpp and runs replay.js at two partitions; of `run_public.js`)
 
 | evidence | run | code | results |
 | --- | --- | --- | --- |
@@ -631,6 +638,7 @@ The source's C++ exclusion checker, run interval by interval beside Kleddamag's 
 | `E-n017-guzhou-r068-source-replay` | replayed here | producer’s code | T-043 |
 | `E-n017-guzhou-r067-source-replay` | replayed here | producer’s code | T-042 |
 | `E-n017-guzhou-r071-report` | the source’s own run | producer’s code | T-093 |
+| `E-n017-guzhou-r071-source-replay` | replayed here | producer’s code | T-093 |
 
 ### `V-burns-n17-verify-py`
 
@@ -1487,6 +1495,32 @@ Compares a fresh paired-launcher run's C++ and Node ledgers with the published o
 | --- | --- | --- | --- |
 | `E-n017-guzhou-r068-source-replay` | replayed here | producer’s code | T-043 |
 | `E-n017-guzhou-r067-source-replay` | replayed here | producer’s code | T-042 |
+
+### `V-audit-guzhou-r071`
+
+**devtools.audit_guzhou_r071** · Squares Project (Levy) · first-party · checks premises · Python · exact-algebraic
+
+Holds Guzhou0806's R070 and R071 certificates to R068's charge, R070's published ledgers and R071's completion summary to their certificates, and compares a fresh paired run's C++ and BigInt ledgers row by row.
+
+- Source: [`packing/devtools/audit_guzhou_r071.py`](../../packing/devtools/audit_guzhou_r071.py)
+- Versions run: this repository's commits, which Git holds
+
+| evidence | run | code | results |
+| --- | --- | --- | --- |
+| `E-n017-guzhou-r071-source-replay` | replayed here | producer’s code | T-093 |
+
+### `V-replay-guzhou-r071`
+
+**devtools.replay_guzhou_r071** · Squares Project (Levy) · first-party · checks premises · Python · exact-algebraic
+
+Stages R071's package from the retained bytes, refusing any byte whose SHA-256 is not the record's, and runs its paired replay and two mutated-certificate controls.
+
+- Source: [`packing/devtools/replay_guzhou_r071.py`](../../packing/devtools/replay_guzhou_r071.py)
+- Versions run: this repository's commits, which Git holds
+
+| evidence | run | code | results |
+| --- | --- | --- | --- |
+| `E-n017-guzhou-r071-source-replay` | replayed here | producer’s code | T-093 |
 
 ### `V-audit-valid7-independent`
 

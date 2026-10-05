@@ -60,7 +60,7 @@ FRONTIER = ROOT / "frontier"
 #: The reader documents whose result mentions must name registered results: README, the
 #: synopsis, and the site's overview, results, frontier and papers prose. Each template
 #: is held for the results its own prose names: the overview's Recent Results names
-#: T-060, T-043, T-065 and the three new exact values in its one paragraph, the papers
+#: T-060, T-093, T-065 and the three new exact values in its one paragraph, the papers
 #: page T-060, and the Frontier page T-015 and T-016; README is held for its own fuller
 #: account of the same progress.
 READER_TIER = (

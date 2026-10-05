@@ -187,6 +187,7 @@ def ledgers() -> dict[str, Any]:
         "ledgers_compared": 2,
         "cpp_header": result["cpp_headers"]["published"],
         "theorem_agrees": checks,
+        "consistent": all(checks.values()),
         "theorem_seconds": theorem["seconds"],
         "theorem_processes": len(theorem["processes"]),
     }
@@ -234,7 +235,13 @@ def summary() -> dict[str, Any]:
     }
 
 
-def main() -> int:
+def exit_code(receipt: dict[str, Any]) -> int:
+    """1 when a receipt reports a differing row or a record inconsistent with its rows."""
+    failed = receipt.get("mismatches") or receipt.get("consistent") is False
+    return 1 if failed else 0
+
+
+def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     commands = parser.add_subparsers(dest="command", required=True)
     shape = commands.add_parser("structure", help="a certificate against R068's")
@@ -249,7 +256,7 @@ def main() -> int:
     replay.add_argument("fresh", type=Path)
     replay.add_argument("--published", type=Path)
     replay.add_argument("--output", type=Path)
-    args = parser.parse_args()
+    args = parser.parse_args(argv)
     if args.command == "structure":
         receipt = structure(args.release)
     elif args.command == "ledgers":
@@ -264,8 +271,7 @@ def main() -> int:
         with atomic_output_file(args.output) as temporary:
             Path(temporary).write_text(text, encoding="utf-8")
     sys.stdout.write(text)
-    failed = receipt.get("mismatches") or receipt.get("consistent") is False
-    return 1 if failed else 0
+    return exit_code(receipt)
 
 
 if __name__ == "__main__":

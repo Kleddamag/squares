@@ -3,9 +3,9 @@ type: is
 id: is-01m45frks6jn1bc5wmdzkpyq6k
 title: "Intake pass 2026-10-05 07:30Z: #358 (n17 work plan), two new wand125 comments on #282, wand125/square-packing-bounds a541afbe (s(84) >= 9411/1000)"
 kind: task
-status: in_progress
+status: closed
 priority: 1
-version: 4
+version: 5
 delegate: claude-code@vm
 labels:
   - result-import
@@ -14,8 +14,12 @@ parent_id: is-01m44qz0rxvkakmyqaj7qdgagv
 hold: null
 hold_until: null
 created_at: 2026-10-05T07:34:29.926Z
-updated_at: 2026-10-05T08:32:54.517Z
+updated_at: 2026-10-05T08:45:46.556Z
 started_at: 2026-10-05T07:35:01.094Z
+closed_at: 2026-10-05T08:45:46.555Z
+close_reason: "Merged in jlevy/squares#362 (dee22b882): #358 recorded, #282 comments read to T-094, a541afb at stages 1-3, three late arrivals owned (think-4qit, think-d135); make intake clean"
+resolution: null
+duplicate_of: null
 ---
 
 ## Notes

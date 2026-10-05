@@ -525,26 +525,26 @@ issues:
           3121/400, s(84) >= 3763/400, s(67) >= 339/40, s(88) >= 769/80, s(94) >= 497/50,
           s(51) >= 747/100, s(75) >= 447/50, s(72) >= 219/25, s(57) >= 3149/400, s(43) >=
           2763/400, s(42) >= 2739/400 and s(95) >= 1993/200 (b321ac9 to 3554616), each above
-          what the record reports at its count
+          what the record reported at its count
         source: https://github.com/jlevy/squares/issues/282#issuecomment-5972753544
-        not_registered: >-
-          Posted after T-082's pin 2aff2076 and not yet registered. Retained at 8aa6a10 in
-          wand125-mixed-bounds-2026-10-04, with mixed_n86_L9503 and mixed_n69_L862 of the
-          next result, which T-090 registers; the exact audit and every pre-replay check
-          pass there, so one new entry at that pin can register the fourteen. At n = 88 and
-          94, T-090's certificates of later that day are higher.
-        queued: true
-      - key: oct4-mixed-14
+        register: [T-090]
+      - key: oct4-n86-n69
         claim: >-
-          Fourteen mixed rectangle-measure certificates posted in comments of 4 October 2026
-          from 07:04 to 19:04 UTC: s(86) >= 9503/1000, s(69) >= 431/50, s(91) >= 781/80,
-          s(76) >= 1793/200, s(90) >= 973/100, s(71) >= 8721/1000, s(87) >= 479/50, s(54) >=
-          1537/200, s(73) >= 8813/1000, s(94) >= 199/20, s(53) >= 3051/400, s(88) >= 481/50,
-          s(70) >= 3463/400 and s(58) >= 1587/200 (683264c to 797bdf6), each above what the
-          record reported at its count
+          Two more posted on 4 October at 07:04 and 07:17 UTC, s(86) >= 9503/1000 and s(69)
+          >= 431/50 (683264c, 8aa6a10), pinned with the fourteen above at 8aa6a10
         source: https://github.com/jlevy/squares/issues/282#issuecomment-5977545188
         register: [T-090]
-    beads: [think-ye2x, think-fb6h, think-09ag, think-r7yt, think-wpuu, think-07s1, think-wrdq]
+      - key: oct4-mixed-12
+        claim: >-
+          Twelve mixed rectangle-measure certificates posted in comments of 4 October 2026
+          from 07:51 to 19:04 UTC: s(91) >= 781/80, s(76) >= 1793/200, s(90) >= 973/100,
+          s(71) >= 8721/1000, s(87) >= 479/50, s(54) >= 1537/200, s(73) >= 8813/1000, s(94)
+          >= 199/20, s(53) >= 3051/400, s(88) >= 481/50, s(70) >= 3463/400 and s(58) >=
+          1587/200 (02f981a to 797bdf6), each above what the record reported at its count;
+          at n = 88 and 94 above the fourteen's 769/80 and 497/50
+        source: https://github.com/jlevy/squares/issues/282#issuecomment-5977856616
+        register: [T-091]
+    beads: [think-ye2x, think-fb6h, think-09ag, think-r7yt, think-wpuu, think-e6ss, think-07s1, think-wrdq]
     answer_bead: think-7gop
     replies:
       - url: https://github.com/jlevy/squares/issues/282#issuecomment-5972354526

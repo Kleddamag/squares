@@ -931,33 +931,33 @@ Use the structured form to query or plot; use these tables to read.
 | 39 | 6.81072208 | annealing | 5 | 6.635 | counting | 0.1757 |
 | 40 | `4 + 2 √2` = 6.82842712 | hand | — | 6.7 | counting | 0.1284 |
 | 41 | 6.92669309 | annealing | 42 | 6.76 | counting | 0.1667 |
-| 42 | 7 | grid | — | 6.8275 | counting | 0.1725 |
-| 43 | 7 | grid | — | 6.8875 | counting | 0.1125 |
-| 44 | 7 | grid | — | 6.9425 | counting | 0.0575 |
+| 42 | 7 | grid | — | 6.8475 | counting | 0.1525 |
+| 43 | 7 | grid | — | 6.9075 | counting | 0.0925 |
+| 44 | 7 | grid | — | 6.9725 | counting | 0.0275 |
 | 50 | `7 + (4/7)` = 7.57142857 | annealing | — | 7.4 | counting | 0.1714 |
-| 51 | 7.70079924 | annealing | 12 | 7.46 | counting | 0.2408 |
+| 51 | 7.70079924 | annealing | 12 | 7.47 | counting | 0.2308 |
 | 52 | `7 + (1/2)√2` = 7.70710678 | strip | — | 7.55 | counting | 0.1571 |
 | 53 | `(13/2) + (1/2)√7` = 7.82287566 | annealing | — | 7.6275 | counting | 0.1954 |
 | 54 | `7 - (1/2)√2 + sqrt(1 + √2)` = 7.84666719 | hand | — | 7.685 | counting | 0.1617 |
 | 55 | 7.94577101 | annealing | — | 7.728 | counting | 0.2178 |
-| 56 | 8 | grid | — | 7.7825 | counting | 0.2175 |
-| 57 | 8 | grid | — | 7.835 | counting | 0.165 |
+| 56 | 8 | grid | — | 7.8025 | counting | 0.1975 |
+| 57 | 8 | grid | — | 7.8725 | counting | 0.1275 |
 | 58 | 8 | grid | — | 7.935 | counting | 0.065 |
 | 65 | `5 + (5/2)√2` = 8.53553391 | hand | — | 8.35 | counting | 0.1855 |
 | 66 | `3 + 4 √2` = 8.65685425 | hand | — | 8.42 | counting | 0.2369 |
-| 67 | `8 + (1/2)√2` = 8.70710678 | strip | — | 8.455 | counting | 0.2521 |
+| 67 | `8 + (1/2)√2` = 8.70710678 | strip | — | 8.475 | counting | 0.2321 |
 | 68 | 8.79879524 | — | — | 8.51 | counting | 0.2888 |
 | 69 | 8.82720551 | — | — | 8.62 | counting | 0.2072 |
 | 70 | 8.88166676 | hand | 4 | 8.6575 | counting | 0.2242 |
 | 71 | 8.94407156 | annealing | — | 8.721 | counting | 0.2231 |
-| 72 | 9 | grid | — | 8.74 | counting | 0.26 |
+| 72 | 9 | grid | — | 8.76 | counting | 0.24 |
 | 73 | 9 | grid | — | 8.813 | counting | 0.187 |
 | 74 | 9 | grid | — | 8.8675 | counting | 0.1325 |
-| 75 | 9 | grid | — | 8.92 | counting | 0.08 |
+| 75 | 9 | grid | — | 8.94 | counting | 0.06 |
 | 76 | 9 | grid | — | 8.965 | counting | 0.035 |
 | 82 | `6 + (5/2)√2` = 9.53553391 | hand | — | 9.32 | counting | 0.2155 |
 | 83 | 9.63482562 | extension | 24 | 9.37 | counting | 0.2648 |
-| 84 | `9 + (1/2)√2` = 9.70710678 | strip | — | 9.4 | counting | 0.3071 |
+| 84 | `9 + (1/2)√2` = 9.70710678 | strip | — | 9.4075 | counting | 0.2996 |
 | 85 | `(11/2) + 3 √2` = 9.74264069 | hand | — | 9.46 | counting | 0.2826 |
 | 86 | `(17/2) + (1/2)√7` = 9.82287566 | extension | — | 9.503 | counting | 0.3199 |
 | 87 | 9.83881744 | annealing | 44 | 9.58 | counting | 0.2588 |
@@ -966,9 +966,9 @@ Use the structured form to query or plot; use these tables to read.
 | 90 | 10 | grid | — | 9.73 | counting | 0.27 |
 | 91 | 10 | grid | — | 9.7625 | counting | 0.2375 |
 | 92 | 10 | grid | — | 9.77 | counting | 0.23 |
-| 93 | 10 | grid | — | 9.86 | counting | 0.14 |
+| 93 | 10 | grid | — | 9.88 | counting | 0.12 |
 | 94 | 10 | grid | — | 9.95 | counting | 0.05 |
-| 95 | 10 | grid | — | 9.96 | counting | 0.04 |
+| 95 | 10 | grid | — | 9.965 | counting | 0.035 |
 | 101 | `7 + (5/2)√2` = 10.53553391 | extension | — | 10.28 | counting | 0.2555 |
 | 102 | 10.60717468 | — | — | 10.28 | monotone from `s(101)` | 0.3272 |
 | 103 | 10.70351676 | — | — | 10.28 | monotone from `s(101)` | 0.4235 |

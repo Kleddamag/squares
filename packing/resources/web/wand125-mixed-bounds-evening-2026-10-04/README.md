@@ -28,8 +28,9 @@ counts, each above its own rectangle certificate there.
 [4 October packet](../wand125-mixed-bounds-2026-10-04/README.md) was pinned at `8aa6a10`,
 and that packet retains them, with their exact audit and pre-replay receipts. Here they are
 pinned by digest at `797bdf6`, and the acquisition check compares each retained file with
-that packet’s copy byte for byte; their tarballs have the digests it pins. The other 14
-certificates of that packet are not part of this import.
+that packet’s copy byte for byte; their tarballs have the digests it pins. They are that
+packet’s certificates and are recorded from it; this packet adds the 12 posted after its
+pin.
 
 What was checked here is SHA-256 digests, Git blob ids, the exact premises the audit below
 recomputes from the retained bytes, and every check the replay makes before its first
@@ -177,11 +178,10 @@ All 14 are rectangle densities with no point mass (each `candidate.json` has an 
 $B = 9977/10000$, 201 net half-angles of step $83/40000$ and coverage threshold $1$, as for
 every earlier mixed certificate. Each `certificate.json` has status
 `ALL_ANGLES_VERIFIED_AND_REPLAYED`. Each README compares with the source’s own earlier
-value at its count. That is the value the record reported there before this import at the
-twelve counts other than $n = 88$ and 94; there the record reported the source’s
-`mixed_n88_L960` ($48/5$) and `mixed_n94_L992` ($248/25$), and the certificates of earlier
-that day that the READMEs name, $769/80$ and $497/50$, are retained in the 4 October packet
-and not registered.
+value at its count, which is the value the record reported there before this import,
+except at $n = 88$ and 94: there the record reported the source’s `mixed_n88_L960`
+($48/5$) and `mixed_n94_L992` ($248/25$), and the certificates of earlier that day that
+the READMEs name, $769/80$ and $497/50$, are the 4 October packet’s.
 
 ## The Exact Audit and the Pre-Replay Checks
 
@@ -240,7 +240,8 @@ the 14. `mixed-price` scales the rate of the three angles timed on 2 October by 
 certificate’s node counts and rectangles, 136.9 CPU-hours. The planned column is that
 estimate times 1.119, the ratio of measured to estimated CPU-hours over the 14
 complete replays already merged in this record (`observed_ratio`), 153.3 CPU-hours in
-all: 130.9 for the 12 this packet holds, and 22.4 for `n69-L862` and `n86-L9503`.
+all: 130.9 for the 12 this packet holds, and 22.4 for `n69-L862` and `n86-L9503`, which the
+4 October packet’s replay plan already carries.
 
 ## Replaying the Certificates
 
@@ -275,11 +276,8 @@ six hosts of four workers; at eight it leaves one host 16 per cent above the mea
 
 Each runner runs its `mixed-replay` commands one after another, then commits and pushes
 its receipts; `mixed-merge NAME` is run for each certificate once every range of it has
-arrived. `n69-L862` and `n86-L9503` are replayed once, under their 4 October packet
-names, and their receipts go to that packet: a seventh host running `mixed-replay
-n69-L862 --range 0-200` and `mixed-replay n86-L9503 --range 0-200` carries 22.4 planned
-CPU-hours, about 5.6 wall hours at four workers, unless that packet’s own replay runs them
-first. No replay has been launched.
+arrived. `n69-L862` and `n86-L9503` are replayed once, by the 4 October packet’s own plan,
+and their receipts go to that packet. No replay has been launched.
 
 ## Limitations
 

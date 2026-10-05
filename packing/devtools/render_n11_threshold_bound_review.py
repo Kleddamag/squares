@@ -89,10 +89,12 @@ SLUG = N11_THRESHOLD_BOUND_REVIEW
 #: Where the paper is served, from the site's root, and the way back up to the root.
 SITE_PATH = paper_path(SLUG)
 SITE_ROOT = PAPERS_ROOT
-#: The title, plain, for the head and the Markdown edition; the hero sets its one
-#: formula as the page's own math span, as Part I's does for `n = 11`.
+#: The title, plain, for the head and the registry; the hero writes its one formula as
+#: Markdown math, which KPress typesets on the page like every other formula of this
+#: paper and which the Markdown edition keeps as `$...$`. Part I's `.tex` span is typeset
+#: only by Part I's own math preparation, so here it would print its TeX raw.
 TITLE = "A Review of the Certified Lower Bound s(11) > 31/8 for 11 Squares"
-HERO_TITLE = TITLE.replace("s(11) > 31/8", '<span class="tex">s(11) \\gt 31/8</span>')
+HERO_TITLE = TITLE.replace("s(11) > 31/8", "$s(11) > 31/8$")
 #: One line of at most 160 characters, the §8 one-liner cut to the head's limit.
 DESCRIPTION = (
     "Explains Kleddamag's proof that s(11) > 31/8 (T-037): five-site k-of-m charges, "

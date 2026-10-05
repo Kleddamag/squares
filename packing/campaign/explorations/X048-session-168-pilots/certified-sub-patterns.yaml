@@ -143,3 +143,16 @@ entries:
     verification:
       receipt: packing/campaign/explorations/X048-session-168-pilots/certificates/N1-state-pending/verification.json
       verifier: kernel-io-recording
+  - name: s182-k1
+    cells: [side-S0, side-N0, side-S1, interior-SW, interior-NW, interior-W, interior-S]
+    certifier: kernel
+    # Session 182 lane K's first target (arity 7, three wall cells), closed with SW9's
+    # adaptive-row recipe at 64 bins in 305 s from the clean run worktree at cebb5d15a.
+    # Admitted in exp-251 by the standing verifier's full pass there.
+    receipt: packing/campaign/explorations/X048-session-182-overnight/receipts/K/kernel-k1.json
+    certificate: packing/campaign/explorations/X048-session-168-pilots/certificates/s182-k1
+    status: admitted
+    evidence: packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-251-h267-n17-overnight-flag-certification.md
+    verification:
+      receipt: packing/campaign/explorations/X048-session-168-pilots/certificates/s182-k1/verification.json
+      verifier: kernel-streamed

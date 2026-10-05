@@ -287,7 +287,7 @@ hypothesis status and summarizes experiment verdicts, and the
 | Sessions | 180 | 105 completed; 74 stopped; 1 nonterminal |
 | Explorations | 47 | 28 linked to proposed hypotheses; 19 uncodified |
 | Hypotheses | 206 | 43 confirmed; 33 refuted; 63 blocked; 19 unresolved; 9 open; 34 open questions; 2 result registered; 2 abandoned; 0 running; 1 exhausted |
-| Experiments | 179 | 57 accepted; 38 rejected; 56 unresolved; 12 baseline; 11 blocked; 4 abandoned; 0 in progress; 1 exhausted |
+| Experiments | 180 | 57 accepted; 38 rejected; 56 unresolved; 12 baseline; 11 blocked; 4 abandoned; 1 in progress; 1 exhausted |
 | Frontier results | 93 | 93 registered, 64 by others |
 
 <!-- END CURRENT-RESEARCH-STATUS -->
@@ -5617,7 +5617,7 @@ round that names the hypothesis, control roles included.
 | [H-264](packing/campaign/hypotheses/H-264-n17-geometric-exclusion-cost-per-leaf.md) | open question | The cost of one exact geometric exclusion on a uniform residue sample at a cap at or above the endpoint; re-scopes think-11ma (BC-411) | 0 | — |
 | [H-265](packing/campaign/hypotheses/H-265-n17-catalogue-polynomial-identity.md) | confirmed | The certified chart endpoint is a root of the catalogue’s irreducible degree-18 polynomial | 1 | exp-245 accepted: identical with unit 1; irreducible over Q |
 | [H-266](packing/campaign/hypotheses/H-266-n17-minimal-capacity-one-cover.md) | confirmed | A D4-symmetric capacity-one cover of at most 25 cells holds the endpoint family in one occupancy state; the unique-state 24-cell cover replaces the H259 grid | 2 | exp-247 accepted: 43,593 orbits; unique state, margin 0.002112 |
-| [H-267](packing/campaign/hypotheses/H-267-n17-isolated-sub-pattern-residue.md) | unresolved | Isolated sub-pattern certificates of arity at most seven leave at most 10^4 orbits on the H-266 cover; the selector flags 44 classes and projects 5,084 orbits | 2 | exp-250 unresolved: SW9 (arity 9) and the state N1 admitted on the standing verifier’s full pass; 15,953 certified orbits |
+| [H-267](packing/campaign/hypotheses/H-267-n17-isolated-sub-pattern-residue.md) | unresolved | Isolated sub-pattern certificates of arity at most seven leave at most 10^4 orbits on the H-266 cover; the selector flags 44 classes and projects 5,084 orbits | 3 | exp-251 in progress: lane K’s first arity-7 flag, s182-k1, admitted on the standing verifier’s full pass; 12,929 certified orbits, 14,477 under arity-at-most-7 entries |
 | [H-268](packing/campaign/hypotheses/H-268-n17-local-theorem-slider-coverage.md) | confirmed | With square 6 in its H-266 cell, the slides of squares 5 and 13 stay inside the box exp-244 certifies; b can go negative, so the local theorem was re-run over the widened box B_W′ | 1 | exp-248 accepted: a ≤ 23/200, z ≥ −49/1000, b ≥ −1.685r; B_W′ worst ratio 0.925931 |
 | [H-269](packing/campaign/hypotheses/H-269-periodic-certificates-k2-minus-4-and-5.md) | blocked | A periodic measure of T-064’s form proves $s(k^2-4)=k$ and $s(k^2-5)=k$ for all large $k$; the go/no-go is an exact corner deficit $D>1$ (X-049). Since 3 October 2026 T-081 reports the $d=4$ cell at $D\approx 1.074$, pending its replay (`think-8hk1`); $d=5$ stays open | 0 | — |
 | [H-270](packing/campaign/hypotheses/H-270-k2-plus-1-crossover-kearney-shiu-strip.md) | blocked | Some $k$ in 18..41 has a Kearney–Shiu strip packing of $k^2+1$ squares below the plateau $k+5/\sqrt2-3$ (X-049) | 0 | — |
@@ -5958,7 +5958,7 @@ The relevant generator writes the receipt, and the entry fills in on the next
 
 ## Experiments Conducted
 
-There are 179 rounds registered in `series-000`.
+There are 180 rounds registered in `series-000`.
 
 They record 2512.1 agent-minutes and 4072.4 wall-minutes.
 These totals exclude four historical annealing rounds with unrecorded timing; their wall
@@ -6181,6 +6181,7 @@ archive beside it.
 | [exp-248](packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-248-h268-n17-local-half-composition.md) | 17 | target | H-268 | Exact slide bounds from square 6’s cover cell, and the local theorem over the box they need | Slides certified inside B_W′; the local theorem passes over B_W′ at r = 1/5000, worst 0.925931 | accepted |
 | [exp-249](packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-249-h267-n17-first-certified-sub-patterns.md) | 17 | target | H-267 | Two flagged sub-patterns certified by two independent provers, each re-proved in full by an independent verifier | W7 and A forbidden at U; 17,690 certified orbits, endpoint surviving | unresolved |
 | [exp-250](packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-250-h267-n17-standing-verifier-admissions.md) | 17 | target | H-267 | Flag 3 at arity 9 and the residue state N1, closed by the kernel and admitted on the standing verifier’s full pass, nothing re-run | SW9 and N1 forbidden at U; 15,953 certified orbits, endpoint surviving | unresolved |
+| [exp-251](packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-251-h267-n17-overnight-flag-certification.md) | 17 | target | H-267 | Session 182 lane K: the nine heaviest arity-7 standing flags under SW9’s adaptive-row kernel recipe, each closure admitted on the standing verifier’s full pass | In progress: s182-k1 forbidden at U; 12,929 certified orbits, endpoint surviving | in-progress |
 
 ### Cost and provenance
 
@@ -6365,10 +6366,11 @@ archive beside it.
 | exp-248 | 900 seconds per run; one worker | 27.4 s | — | criterion | `9c26793c1`; two clean runs at f8c1246b |
 | exp-249 | 1800 seconds per run; one worker | 2055.6 s | — | criterion | `15df68ab1`; two clean runs at 15df68ab |
 | exp-250 | 7000 seconds per verification; one worker | 836.0 s | — | criterion | `fd2c9602e`; two full verifications, at fd2c9602e and ae4f5fb4 |
+| exp-251 | 7,000 s per kernel target and 4,000 s per verification; one worker | — | — | — | in progress at `cebb5d15a` |
 
-### What the 179 rounds jointly establish
+### What the 180 rounds jointly establish
 
-The 179 rounds use 2512.1 agent-minutes and 4072.4 wall-minutes under the campaign’s
+The 180 rounds use 2512.1 agent-minutes and 4072.4 wall-minutes under the campaign’s
 retained effort accounting.
 The never-invoked exp129 adds no scientific result or execution time.
 Exp-114 contributes 2.46 seconds of target/replay effort; its readiness work is recorded

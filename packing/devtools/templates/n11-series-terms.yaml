@@ -1,0 +1,62 @@
+# The n = 11 series' shared concepts: which paper derives each in full, and where.
+#
+# Read by `devtools.paper_terms` (rule 6). A paper that uses a concept it does not own
+# names it with `series:` in its own registry, and its first use of it must sit in a
+# block that links the owner's page. Ownership follows the series plan's content table
+# (docs/project/specs/active/plan-2026-10-05-n11-explainer-series.md, §2); each anchor
+# is the heading id of the owner's section that derives the concept, and the anchor test
+# holds it to the owner's rendered page once that page is built.
+#
+# `clashes` lists the symbols the series knowingly gives two meanings (§3), each keyed by
+# the `term` name the papers' registries use for it. Any other symbol defined by two
+# papers must name one series concept in both.
+
+concepts:
+  - concept: s-n
+    owner: n11-lower-bounds-explainer
+    anchor: the-square-packing-problem
+  - concept: container-side
+    owner: n11-lower-bounds-explainer
+    anchor: the-square-packing-problem
+  - concept: core
+    owner: n11-lower-bounds-explainer
+    anchor: the-result-and-proof-roadmap
+  - concept: point-charge
+    owner: n11-lower-bounds-explainer
+    anchor: atoms-mass-and-the-budget
+  - concept: mass
+    owner: n11-lower-bounds-explainer
+    anchor: atoms-mass-and-the-budget
+  - concept: threshold-atom
+    owner: n11-lower-bounds-explainer
+    anchor: proof-of-the-new-lower-bound
+  - concept: d4
+    owner: n11-lower-bounds-explainer
+    anchor: the-five-conditions-for-a-point-certificate
+  - concept: charge
+    owner: n11-threshold-bound-review
+    anchor: from-points-to-k-of-m-charges
+  - concept: k-of-m-budget
+    owner: n11-threshold-bound-review
+    anchor: from-points-to-k-of-m-charges
+  - concept: strict-core
+    owner: n11-threshold-bound-review
+    anchor: parents-cores-and-the-angle-catalogue
+  - concept: receipt
+    owner: n11-optimality-review
+    anchor: the-result
+  - concept: capacity
+    owner: n11-optimality-review
+    anchor: charge-budgets-exclude-many-patterns-at-once
+
+clashes:
+  - symbol: A
+    reason: >-
+      Part II's parent side A = 764/775 against Part III's local squares A(a, b) of
+      Appendix A and gap gradients A_i, and Part I's site set of the linear program (§3)
+  - symbol: ρ
+    reason: >-
+      Part II's envelope inset against a constant of Part III's Appendix A (§3)
+  - symbol: C
+    reason: >-
+      Part II's charge C(Q) of a core against Part III's Voronoi cells C_j (§3)

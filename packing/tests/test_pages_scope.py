@@ -10,6 +10,7 @@ holding a copy.
 
 from __future__ import annotations
 
+import importlib
 import re
 from collections.abc import Callable
 from pathlib import Path
@@ -59,6 +60,16 @@ def in_scope(changed: list[str], declared: dict[str, tuple[Path, ...]]) -> set[s
         ("overview", lambda: render_overview.RENDER_INPUTS),
         ("overview", lambda: overview_data.INPUTS),
         ("n11_optimality_review", lambda: render_n11_optimality_review.RENDER_INPUTS),
+        (
+            "n11_threshold_bound_review",
+            lambda: (
+                importlib.import_module(
+                    render_overview.paper_record(
+                        render_overview.N11_THRESHOLD_BOUND_REVIEW
+                    ).module
+                ).RENDER_INPUTS
+            ),
+        ),
     ],
 )
 def test_every_builder_input_puts_its_page_in_scope(
@@ -219,7 +230,8 @@ def test_a_change_to_the_record_or_the_reader_documents_builds_only_the_overview
     tutorial are the overview's alone, so a pull request changing only those
     runs its job and no explainer Chromium. The register itself is read by the explainer
     too, and so is n = 11's case record, whose exact T-060 endpoint Figure 3 checks
-    (`render_n11_lower_bounds_explainer.n11_solved`); the renderer module by all three, since it
+    (`render_n11_lower_bounds_explainer.n11_solved`), and the register by the optimality
+    paper, whose bound ladder reads it; the renderer module by all three, since it
     also writes the navigation bar the Visualizer's build takes (`nav_shell`); and kpress by all
     three.
     """
@@ -233,15 +245,44 @@ def test_a_change_to_the_record_or_the_reader_documents_builds_only_the_overview
         "packing/devtools/templates/overview-article.md",
     ):
         assert in_scope([changed], declared) == {"overview"}, changed
-    for shared in ("packing/frontier/results.yaml", "packing/frontier/n-011.md"):
-        assert in_scope([shared], declared) == {"n11_lower_bounds_explainer", "overview"}, (
-            shared
-        )
+    assert in_scope(["packing/frontier/n-011.md"], declared) == {
+        "n11_lower_bounds_explainer",
+        "overview",
+    }
+    # The register is also Parts II and III's: their bound ladder reads the headlines.
+    assert in_scope(["packing/frontier/results.yaml"], declared) == {
+        "n11_lower_bounds_explainer",
+        "n11_threshold_bound_review",
+        "n11_optimality_review",
+        "overview",
+    }
     assert in_scope(["packing/devtools/render_overview.py"], declared) == set(
         pages_scope.BUILDER_INPUTS
     )
     assert in_scope(["vendor/kpress"], declared) == set(pages_scope.BUILDER_INPUTS)
     assert in_scope(["AGENTS.md", "packing/resources/n11/source.md"], declared) == set()
+
+
+def test_every_paper_of_the_site_is_a_half_by_its_slug() -> None:
+    """A paper is one entry in the site's registry (`render_overview.PAPERS`) and its
+    renderer, and the scope reads the registry: each paper is a half, named by its slug
+    with underscores, in reading order, before the workbench and the site's own pages."""
+    assert list(pages_scope.BUILDER_INPUTS) == [
+        "n11_lower_bounds_explainer",
+        "n11_threshold_bound_review",
+        "n11_optimality_review",
+        "workbench",
+        "overview",
+    ]
+    assert [pages_scope.half_name(paper.slug) for paper in render_overview.PAPERS] == list(
+        pages_scope.BUILDER_INPUTS
+    )[:3]
+
+
+def test_t037_article_selects_only_its_page(declared: dict[str, tuple[Path, ...]]) -> None:
+    assert in_scope(
+        ["packing/devtools/templates/n11-threshold-bound-review-article.md"], declared
+    ) == {"n11_threshold_bound_review"}
 
 
 def test_t060_article_selects_only_its_page(declared: dict[str, tuple[Path, ...]]) -> None:
@@ -254,34 +295,39 @@ def test_t060_article_selects_only_its_page(declared: dict[str, tuple[Path, ...]
     ) == {"n11_optimality_review"}
 
 
-def test_t060_page_has_an_independent_required_build() -> None:
+@pytest.mark.parametrize(
+    "slug", [render_overview.N11_THRESHOLD_BOUND_REVIEW, render_overview.N11_OPTIMALITY_REVIEW]
+)
+def test_each_review_has_an_independent_required_build(slug: str) -> None:
+    """Each review, T-037's and T-060's, is built and checked by a job of its own, gated
+    on its own half, that renders it where it is served and is required by the
+    publication and the aggregate."""
     jobs = load_workflow()["jobs"]
-    job = jobs["n11-optimality-review"]
-    assert "needs.scope.outputs.n11_optimality_review == 'true'" in job["if"]
+    half = pages_scope.half_name(slug)
+    module = render_overview.paper_record(slug).module.removeprefix("devtools.")
+    job = jobs[slug]
+    assert f"needs.scope.outputs.{half} == 'true'" in job["if"]
     assert job["timeout-minutes"] == 10
     browser_control = next(
         step
         for step in job["steps"]
         if step.get("name") == "Check the paper's figures and renderer"
     )
-    assert browser_control["env"]["SQPACK_N11_OPTIMALITY_REVIEW_BROWSER"] == "1"
+    assert browser_control["env"][f"SQPACK_{half.upper()}_BROWSER"] == "1"
     commands = "\n".join(str(step.get("run", "")) for step in job["steps"])
     # Rendered where it is served: under `papers/` in the site, by the paper's slug.
-    assert "render_n11_optimality_review --site site --pdf" in commands
-    assert "render_n11_optimality_review --site site --check" in commands
-    assert "test -s site/papers/n11-optimality-review.pdf" in commands
-    assert "n11-optimality-review" in jobs["publish"]["needs"]
-    assert "n11-optimality-review" in jobs["pages-required"]["needs"]
-    assert "n11-optimality-review-unchanged" in jobs["pages-required"]["needs"]
+    assert f"{module} --site site --pdf" in commands
+    assert f"{module} --site site --check" in commands
+    assert f"test -s site/papers/{slug}.pdf" in commands
+    assert slug in jobs["publish"]["needs"]
+    assert slug in jobs["pages-required"]["needs"]
+    assert f"{slug}-unchanged" in jobs["pages-required"]["needs"]
     required = next(
         step["run"]
         for step in jobs["pages-required"]["steps"]
         if step.get("name") == "Require every page this run builds to pass"
     )
-    assert (
-        '(.scope.outputs.n11_optimality_review != "true" '
-        'or .["n11-optimality-review"].result == "success")'
-    ) in required
+    assert (f'(.scope.outputs.{half} != "true" or .["{slug}"].result == "success")') in required
 
 
 def test_a_matching_input_is_a_path_not_a_string_prefix() -> None:
@@ -366,12 +412,14 @@ def test_the_workflow_outputs_and_summary_are_written(
     assert lines == [
         "n11_lower_bounds_explainer=true",
         "n11_lower_bounds_explainer_reason=every page is built on a test",
+        "n11_threshold_bound_review=true",
+        "n11_threshold_bound_review_reason=every page is built on a test",
+        "n11_optimality_review=true",
+        "n11_optimality_review_reason=every page is built on a test",
         "workbench=true",
         "workbench_reason=every page is built on a test",
         "overview=true",
         "overview_reason=every page is built on a test",
-        "n11_optimality_review=true",
-        "n11_optimality_review_reason=every page is built on a test",
     ]
     assert "| n11_lower_bounds_explainer | builds and checks |" in summary.read_text(
         encoding="utf-8"

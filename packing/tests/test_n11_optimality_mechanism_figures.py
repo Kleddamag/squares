@@ -44,7 +44,7 @@ def test_worked_row_and_charge_retain_accepted_scope() -> None:
     assert "Required owners O = {0,1,2,3,6}" in charge
     assert "Mask J = {0,…,10}; O ⊆ J" in charge
     assert "Charged cells P ∩ J = {1,2}" in charge
-    assert "q₁ + q₂ = 2 &gt; 1 = b" in charge
+    assert "Γ₁ + Γ₂ = 2 &gt; 1 = b" in charge
     assert "all-direction" in charge
     # No sentence is lettered into a diagram: what one says of it is its caption's.
     for content in rendered.values():

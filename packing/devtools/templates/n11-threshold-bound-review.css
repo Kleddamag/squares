@@ -1,0 +1,100 @@
+/* Diagram geometry for the T-037 figures. Publication type is shared with the other two
+   papers (templates/paper-publication.css), and the diagram rules below are Paper III's
+   (n11-optimality-review.css), kept in step with them. */
+/* A table keeps to the column at every width and scrolls inside its own wrap. The shared
+   column rule caps each block of the article at the measure, and that cap outranks the
+   one KPress puts on a table's wrap; capped at the column as well, the wrap is the
+   scroller, as a document's table is on the site's own pages (site.css). Print lays a
+   table out at the page's width and is not affected. */
+.cert-page.n11-paper > .kpress-table-wrap {
+  max-width: min(100%, calc(var(--kpress-measure) + 2 * var(--kpress-column-inset)));
+}
+/* The credits, their one column and the space before this paper's own, are the
+   publication layer's: every paper writes them from one component
+   (`devtools.paper_front`), and nothing here is theirs. */
+.n11-paper figure > svg,
+.n11-paper .figure-pair > svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+.n11-paper .figure-pair {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+  align-items: center;
+}
+.n11-paper :is(.figure-pair, figure:has(> svg)) {
+  font-size: var(--paper-font-size-support);
+}
+/* A label with no class of its own is the sans's regular weight, as a note is: weight
+   is inherited where the face is not, and without one a label sat at the serif's 400. */
+.n11-paper :where(figure > svg, .figure-pair > svg) text {
+  font-family: var(--kpress-font-sans);
+  font-feature-settings: var(--kpress-font-features-sans);
+  font-size: var(--paper-diagram-font-size, var(--paper-font-size-support));
+  font-weight: var(--cert-font-weight-sans-light);
+}
+.n11-paper .n11-diagram-label {
+  font-weight: var(--cert-font-weight-sans-bold);
+}
+.n11-paper .n11-diagram-note {
+  font-size: var(--paper-diagram-note-size, var(--paper-font-size-note));
+  font-weight: var(--cert-font-weight-sans-light);
+}
+/* Every diagram of this paper is drawn by the series' figure roles
+   (`devtools.paper_figures`) in one fixed light palette, ink included, so on the dark
+   theme each keeps a light ground under it, or its labels would be dark ink on the dark
+   page. The list is exactly the diagrams that carry fixed ink, as Paper III's is, and a
+   test holds it to them. The ground is a token, as every colour is
+   (`devtools.check_colour_tokens`). */
+:root {
+  --n11-threshold-diagram-ground: oklch(100% 0 0);
+}
+:root[data-kpress-resolved-theme="dark"]
+  .n11-threshold-paper
+  :is(
+    .n11-ladder,
+    .n11-threshold-changes,
+    .n11-threshold-roadmap,
+    .n11-threshold-charge,
+    .n11-threshold-budget,
+    .n11-threshold-families,
+    .n11-threshold-core,
+    .n11-threshold-catalogue,
+    .n11-threshold-envelope,
+    .n11-threshold-signed,
+    .n11-threshold-field,
+    .n11-threshold-minima
+  ) {
+  background: var(--n11-threshold-diagram-ground);
+}
+@media print {
+  /* Chromium measures before pagination; fix the same Letter text-column width
+     that the PDF uses so viewBox label compensation sees its final scale. */
+  .n11-paper figure > svg,
+  .n11-paper .figure-pair {
+    width: calc(8.5in - 2 * var(--kpress-print-page-margin));
+    max-width: none;
+  }
+}
+/* The width a diagram's labels were laid out for, registered as a length, so the label
+   script reads it in pixels whatever unit it is written in (`diagram-labels.js`), and an
+   unset or `initial` value is 0px, which shrinks nothing. */
+@property --paper-diagram-fit-from {
+  syntax: "<length>";
+  inherits: true;
+  initial-value: 0px;
+}
+/* On a phone every diagram of this paper takes the column: the series rule is that a
+   figure fits 390 px without horizontal scrolling (the plan's figure system), so below
+   `--paper-diagram-fit-from`, the width a diagram's labels were laid out for, its labels
+   shrink with it in proportion (`diagram-labels.js`). A pair stacks. */
+@media screen and (max-width: 42rem) {
+  .n11-paper .figure-pair {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .n11-paper .n11-diagram {
+    --paper-diagram-fit-from: 680px;
+  }
+}

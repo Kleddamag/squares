@@ -355,6 +355,13 @@ It states nothing the register does not hold, and its exposition gets its own W2
 It is neither a replay nor the human oversight record that rung 4 requires.
 [conventions.md → Naming](../../conventions.md#2-naming) owns its slug, and
 [the development guide](../../development.md) how it is built and served.
+A paper on a case that already has papers joins them as a series, as the $n = 11$ papers
+are one, read in order: the threshold-bound review of T-037 is Part II between the
+lower-bounds explainer and the optimality review.
+It is one entry in `render_overview.PAPERS`, defines every term before it uses it, and
+follows the series rules in
+[paper-design.md](../devtools/templates/paper-design.md#the-papers-front)
+([the series plan](../../docs/project/specs/active/plan-2026-10-05-n11-explainer-series.md)).
 
 ## Stage 7: Answer
 

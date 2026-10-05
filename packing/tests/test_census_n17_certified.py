@@ -29,6 +29,7 @@ from devtools.census_n17_certified import (
     VERIFICATION_SCHEMA,
     RefusedError,
     census,
+    class_mask,
     cover_context,
     flagged_classes,
     hosted_files,
@@ -664,6 +665,46 @@ def test_the_census_projects_the_recheck_flags_by_default(tmp_path: Path) -> Non
     retained = json.loads(EXP250_CENSUS.read_text(encoding="utf-8"))
     assert record["certified"] == retained["certified"]
     assert record["certified"]["endpoint_survives"]
+
+
+def test_the_committed_ledger_projects_the_recheck_flags_it_has_not_admitted() -> None:
+    """At the committed ledger, the projected flags are the recheck's 89 less those the
+    ledger admits, the flags leave the certified line as the census gives it without
+    them, and the endpoint survives. While every admitted class beyond exp-250's four is
+    a flag, certifying all flags still leaves 17,168 states in 2,197 orbits. With lane
+    K's s182-k1 admitted (exp-251) that is 86 flags over 102,124 certified states in
+    12,929 orbits."""
+    record = census(REPO / DEFAULT_LEDGER)
+    bare = census(REPO / DEFAULT_LEDGER, selector_receipts=())
+    assert record["certified"] == bare["certified"]
+    assert record["certified"]["endpoint_survives"]
+    cover = cover_context()
+    flags = set(flagged_classes(cover, REPO, (RECHECK,)))
+    admitted = {
+        row["name"]: class_mask(cover, row["cells"], row["name"])
+        for row in record["entries"]
+        if row["status"] == "admitted"
+    }
+    projected = record["flagged_uncertified"]
+    assert (
+        len(projected["classes"])
+        == len(flags - set(admitted.values()))
+        == 89 - len({mask for mask in admitted.values() if mask in flags})
+    )
+    if {name for name, mask in admitted.items() if mask not in flags} <= EXP250_ADMITTED:
+        assert projected["all_certified_projection"] == {
+            "surviving_states": 17168,
+            "orbits": 2197,
+            "endpoint_survives": True,
+        }
+    if set(admitted) == {*EXP250_ADMITTED, "s182-k1"}:
+        assert record["certified"] == {
+            "admitted": 5,
+            "surviving_states": 102124,
+            "orbits": 12929,
+            "endpoint_survives": True,
+        }
+        assert len(projected["classes"]) == 86
 
 
 def test_a_recheck_withdraws_the_class_it_placed_from_earlier_flags(tmp_path: Path) -> None:

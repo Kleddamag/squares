@@ -1,8 +1,9 @@
 # D1: lazy raw-piece row support on the frozen B state
 
-D1 found independently replayed complete abstract supports for **55 of 96 live rows**.
-It stopped at the preregistered 100,000 DFS-node ceiling; the remaining 41 rows are
-unresolved. No row was reported exhaustively unsupported and nothing was excluded.
+D1 found freshly replayed (same implementation, no search) complete abstract supports
+for **55 of 96 live rows**. It stopped at the preregistered 100,000 DFS-node ceiling;
+the remaining 41 rows are unresolved.
+No row was reported exhaustively unsupported and nothing was excluded.
 
 This is a new protocol after the raw full-graph guard refusal, not a relaxation of that
 protocol or a new producer run.
@@ -60,7 +61,7 @@ stopped during an unresolved row’s search; it did not treat the cap as exhaust
 failure. The full packet and last progress packet were retained.
 No limits were enlarged.
 
-## Controls and independent replay
+## Controls and fresh replay
 
 The focused new and reused controls passed: **34 tests in 2.97 seconds**; Ruff and
 basedpyright passed.
@@ -76,7 +77,8 @@ exact endpoint enclosure’s row/piece inclusion.
 Search/replay actual worker peaks were 142,917,632 B / 143,577,088 B; each whole Job
 took 3.328 seconds.
 
-The coordinator independently ran B `--verify` in a separate supervised process.
+The coordinator ran B `--verify` again in a separate supervised process: a fresh replay
+by the same implementation, without search.
 It reconstructed atoms from the source, did not invoke DFS or consume its cache, and
 checked all **49 selections / 735 fresh pairs**, reproducing **55/96 supported rows**.
 Outcome: `PASS_REPLAYED_PARTIAL_SUPPORT`; protocol wall 0.3148229 s, CPU 0.3125 s;
@@ -91,7 +93,8 @@ Import startup is included in supervised wall but excluded from protocol wall.
 
 - `receipts/D1_B-support-packet.json`: complete raw-row witness packet (compact JSON;
   semantically identical to the 147,330-byte local pretty original).
-- `receipts/D1_B-independent-replay.json`: coordinator’s fresh replay receipt.
+- `receipts/D1_B-independent-replay.json`: coordinator’s fresh replay receipt (same
+  implementation, no search; the file name predates that wording).
 - `receipts/D1_endpoint-support-packet.json`, `receipts/D1_endpoint-replay.json`.
 - `receipts/D1_result-summary.json`: exact revisions, counts, check results and
   separately labelled Job resource/cleanup summaries.

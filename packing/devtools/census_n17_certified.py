@@ -79,7 +79,9 @@ downloaded, OR-16) and refuses one that differs. The report's `data` line says h
 certificates are not in place and the command, run from `packing/`, that fetches them:
 `python -m devtools.hosted_data fetch --manifest` with the manifest's path, which checks
 each download the same way and puts it at its path. Every verification command in the
-record then runs as written. The census never downloads.
+record then runs as written. The census never downloads. development.md, Publishing
+Hosted Data (`development.md#publishing-hosted-data`), is the procedure behind the
+manifest and the release.
 
 The report. The certified line counts admitted entries only. Pending entries with a
 verified receipt are a separate projection, and pending entries still awaiting a receipt a

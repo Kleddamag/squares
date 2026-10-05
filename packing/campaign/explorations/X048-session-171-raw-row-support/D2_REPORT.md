@@ -1,7 +1,7 @@
 # D2: forward checking and MRV on the same raw graph
 
-D2 independently supports **69 of 96 rows**, adding **14** to D1. It stopped at 50,000
-unique exact pairs after 76 nodes and 13.529 seconds.
+D2 supports **69 of 96 rows** by fresh replay (same implementation, no search), adding
+**14** to D1. It stopped at 50,000 unique exact pairs after 76 nodes and 13.529 seconds.
 The remaining 27 rows are unresolved; no row was exhaustively unsupported and no
 exclusion was made.
 
@@ -42,8 +42,8 @@ and reject mutated seeds or collisions.
 `endpoint6` retained all 24 rows and the exact endpoint; its 14 selections were freshly
 replayed with 210 pair checks.
 
-The coordinator independently rebuilt B atoms and directly checked all **57 selections /
-855 fresh pairs**, reproducing 69 supported rows.
+The coordinator rebuilt B atoms afresh with the same implementation and directly checked
+all **57 selections / 855 fresh pairs**, reproducing 69 supported rows.
 It used neither DFS nor the search cache.
 The extra-row acceptance criterion passed; all-row completion did not.
 This is incremental evidence, not a cold performance comparison with D1.
@@ -61,10 +61,10 @@ Working-set peaks and Job committed memory are separately labelled observations.
 ## Replay and retained evidence
 
 [B packet](receipts/D2_B-support-packet.json),
-[independent replay](receipts/D2_B-independent-replay.json) and endpoint receipts retain
-exact provenance. Published support packets are compact JSON copies checked equal to
-local pretty originals.
-Receipt hashes identify canonical JSON content.
+[fresh replay](receipts/D2_B-independent-replay.json) (same implementation, no search)
+and endpoint receipts retain exact provenance.
+Published support packets are compact JSON copies checked equal to local pretty
+originals. Receipt hashes identify canonical JSON content.
 Large saved inputs and local partial/Job logs remain outside Git.
 
 From `packing/`, using explicit Python 3.14 and supplied saved input paths:

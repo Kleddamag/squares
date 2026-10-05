@@ -484,9 +484,9 @@ masked, and Bašić and Slivková’s piercing bound at $n = 37, 61$ (T-087), re
 October 2026. Replayed certificates recorded in parallel and merged on 3 October 2026
 have since raised all five of those, and 46 more of the Karakuş floors, above them; they
 are counted below. Two others use certificates already integrated into the register: at
-$n = 12$ this project’s re-weighting of Evan Daniel’s points ($15680000/3949423$), and
-at $n = 17$ the current external certificate bound ($18641771/4000000$). Complete
-interval and exact replays of external certificates hold the other 58: wand125’s mixed
+$n = 12$ squarepacker’s re-weighting of Evan Daniel’s points ($7943/2000$), and at
+$n = 17$ the current external certificate bound ($18641771/4000000$). Complete interval
+and exact replays of external certificates hold the other 58: wand125’s mixed
 rectangle-measure certificates at $n = 37$, 50, 65, 66, 76, 83 to 85, 87, 90 to 92 and
 96, and by monotonicity at $n = 51$ from $n = 50$, at $n = 86$ from $n = 85$, at
 $n = 88$ from $n = 87$ and at $n = 93$ from $n = 92$, and its rectangle-density

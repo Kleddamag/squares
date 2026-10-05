@@ -1677,7 +1677,10 @@ OTHER_PROJECTS: tuple[tuple[str, str, str], ...] = (
     (
         "https://github.com/squarepacker/s12-lower-bound",
         "Ryu Sungjoon",
-        "Evan Daniel's s(12) certificate rescaled by 7902/7901, a bound for twelve squares.",
+        (
+            "Evan Daniel's s(12) points rescaled and then re-weighted, the lower bound"
+            " s(12) \u2265 7943/2000 for twelve squares."
+        ),
     ),
     (
         "https://github.com/wand125/square-packing-bounds",

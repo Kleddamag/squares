@@ -226,11 +226,13 @@ def test_superseded_is_marked_on_a_bound_and_where_a_later_result_is_declared() 
     # superseded Daniel's s(12) >= 15680/3951 (T-049); thirty-three since the merge of the
     # same day, when the replays recorded in parallel (T-063, T-069) beat Bašić and
     # Slivková's piercing bound (T-087) at both of its counts; thirty-four since 5 October,
-    # when R071's replay (T-093) superseded R068 (T-043) at n = 17.
-    assert len(derived) == 34
-    assert {"T-020", "T-021", "T-030", "T-043", "T-044", "T-047", "T-049", "T-087"} <= set(
-        derived
-    )
+    # when R071's replay (T-093) superseded R068 (T-043) at n = 17; thirty-five when
+    # squarepacker's v1.1 (T-095) took n = 12's reported lower bound from T-078, and
+    # thirty-six when its replays took the verified one from T-079 the same day.
+    assert len(derived) == 36
+    assert {
+        "T-020", "T-021", "T-030", "T-043", "T-044", "T-047", "T-049", "T-078", "T-079", "T-087"
+    } <= set(derived)  # fmt: skip
     assert {str(records.results[entry]["kind"]) for entry in derived} == {"lower-bound"}
     # A result of another kind is marked only where its entry declares the whole of it
     # implied, and in part where it declares a part (think-rl2b).

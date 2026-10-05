@@ -8,7 +8,7 @@ ours, which rest on someone else's argument, and how far each has been checked.
 
 ## The short version
 
-- **294** evidence records. **158** are formal; **151** of those were established here.
+- **297** evidence records. **161** are formal; **154** of those were established here.
 - **128** rest on an argument made elsewhere, of which **7** have been read by nobody here.
 - **40** claim to be first established here. **13** make no novelty statement at all - not assessed, which is not the same as not novel.
 
@@ -180,10 +180,13 @@ results, it is a statement about what this repository has itself examined.
 | `E-n012-squarepacker-31360-7901-source-replay` | 0 | lower-bound | verified | equalities and inequalities, no tolerance | here | informally-verified | previously-published | producer’s code | `V-evand-angle-net-verify`, `V-squarepacker-indep-check-cpp` |
 | `E-n012-squarepacker-31360-7901-native-parent-core` | 0 | lower-bound | verified | strict inequalities only | here | - | previously-published | independent | `V-sqpack-parent-core-native` |
 | `E-n012-levy-15680000-3949423-generator` | 0 | lower-bound | verified | equalities and inequalities, no tolerance | here | - | apparently-novel | producer’s code | `V-evand-angle-net-verify` |
-| `E-n012-levy-15680000-3949423-source-replay` | 1 | lower-bound | verified | equalities and inequalities, no tolerance | here | - | apparently-novel | producer’s code | `V-evand-angle-net-verify` |
-| `E-n012-levy-15680000-3949423-native-parent-core` | 1 | lower-bound | verified | strict inequalities only | here | - | apparently-novel | independent | `V-sqpack-parent-core-native` |
+| `E-n012-levy-15680000-3949423-source-replay` | 0 | lower-bound | verified | equalities and inequalities, no tolerance | here | - | apparently-novel | producer’s code | `V-evand-angle-net-verify` |
+| `E-n012-levy-15680000-3949423-native-parent-core` | 0 | lower-bound | verified | strict inequalities only | here | - | apparently-novel | independent | `V-sqpack-parent-core-native` |
 | `E-n012-levy-15680000-3949423-audit` | 0 | derived-structure | verified | equalities and inequalities, no tolerance | here | - | apparently-novel | no code | `V-audit-s12-reweighted` |
 | `E-n012-squarepacker-7943-2000-report` | 1 | lower-bound | reported | - | elsewhere | informally-verified | previously-published | producer’s code | `V-evand-angle-net-verify`, `V-squarepacker-indep-check-cpp` |
+| `E-n012-squarepacker-7943-2000-source-replay` | 1 | lower-bound | verified | equalities and inequalities, no tolerance | here | - | previously-published | producer’s code | `V-evand-angle-net-verify`, `V-squarepacker-indep-check-cpp` |
+| `E-n012-squarepacker-7943-2000-native-parent-core` | 1 | lower-bound | verified | strict inequalities only | here | - | previously-published | independent | `V-sqpack-parent-core-native` |
+| `E-n012-squarepacker-7943-2000-audit` | 0 | derived-structure | verified | equalities and inequalities, no tolerance | here | - | previously-published | no code | `V-audit-s12-v11` |
 | `E-n021-evand-5000-1001-report` | 0 | lower-bound | reported | - | elsewhere | - | previously-published | producer’s code | `V-evand-angle-net-verify`, `V-evand-xcheck-py` |
 | `E-n021-evand-5000-1001-source-replay` | 0 | lower-bound | verified | equalities and inequalities, no tolerance | here | informally-verified | previously-published | producer’s code | `V-evand-angle-net-verify`, `V-evand-xcheck-py` |
 | `E-n013-evand-casefree-cover-report` | 0 | lower-bound | reported | - | elsewhere | - | previously-published | producer’s code | `V-evand-zeromargin-py`, `V-evand-zmcheck` |
@@ -319,10 +322,10 @@ results, it is a statement about what this repository has itself examined.
 
 ## What the register rests on
 
-- **assurance**: numerically-checked 4, reported 132, verified 158
-- **method**: exact-algebraic 95, interval-certified 50, numerical-multiprecision 4, proof-assistant-checked 3, proof-audited 3, published-proof 7, reported 132
-- **novelty**: apparently-novel 40, common-knowledge 4, not assessed 13, previously-published 237
-- **relationship to the producer's code**: generator 5, independent-implementation 51, not-applicable 19, same-implementation 206, shared-components 7, unknown-historical 6
+- **assurance**: numerically-checked 4, reported 132, verified 161
+- **method**: exact-algebraic 97, interval-certified 51, numerical-multiprecision 4, proof-assistant-checked 3, proof-audited 3, published-proof 7, reported 132
+- **novelty**: apparently-novel 40, common-knowledge 4, not assessed 13, previously-published 240
+- **relationship to the producer's code**: generator 5, independent-implementation 52, not-applicable 20, same-implementation 207, shared-components 7, unknown-historical 6
 
 The `cases` column is how many frontier records cite each piece of evidence, and it is the reason to read this table rather than count records. Ranked below are the *formal* records only: a `reported` record cited across the frontier may be a shared catalogue and is labelled as such, which is the register working rather than risk. The risk is a verified claim resting on an argument nobody has examined.
 
@@ -336,8 +339,6 @@ Claims marked `apparently-novel`: first established here as far as the archived 
 | `E-n005-fixed-side-local-rigidity` | 5 | The first exact PROOF that Goebel's n = 5 optimum is locally rigid at fixed side -- a property ASSERTED WITHOUT PROOF by Kingbird (archived main page, line 44, "Rigid." with a link and no argument), not stated by Goebel 1979 (zero occurrences of "rigid" or "uniqu" in the extraction) and not annotated by Friedman DS7, whose Theorem 2 is a lower bound only and analyses no equality case | 1 | verified |
 | `E-n005-second-order-rigidity` | 5 | That n = 5 is not infinitesimally rigid but is second-order rigid, proved exactly; the catalogue asserts 'Rigid.' without defining or arguing it | 1 | verified |
 | `E-n011-trump-local-rigidity` | 11 | Local rigidity proved by exhausting all 128 branchwise cones; sources assert rigidity, and zero algebraic freedom does not exclude a branching motion | 1 | verified |
-| `E-n012-levy-15680000-3949423-native-parent-core` | 12 | New weights for Daniel's 1,736 points, scaled by 3951000/3949423, found by linear programming over their D4 orbits; the points, the verifier and the method are Daniel's, Burns's and Massaccesi's. | 1 | verified |
-| `E-n012-levy-15680000-3949423-source-replay` | 12 | New weights for Daniel's 1,736 points, scaled by 3951000/3949423, found by linear programming over their D4 orbits; the points, the verifier and the method are Daniel's, Burns's and Massaccesi's. | 1 | verified |
 | `E-n029-interval-certified-upper` | 29 | An interval certificate for a square-in-square bound; the packing is Kingbird's | 1 | verified |
 | `E-n040-first-order-flexibility` | 40 | That the tilted block turns at first order and every turn is refused at second; DS7 asserts n = 40 is rigid and this refines rather than contradicts it | 1 | verified |
 | `E-green17-sixteen-point-lower` | 17, 18 | The certified object: sixteen rational points unavoidable in [0, 4426213/1000000]^2, every decision an exact rational sign. The bound's value sits below Green's reported number, so what is new is the verified certificate, not the frontier of reported claims. | 0 | verified |
@@ -363,6 +364,8 @@ Claims marked `apparently-novel`: first established here as far as the archived 
 | `E-n012-independent-verifier` | 12 | Nothing new in this entry -- it is a second, independent decision of the historical 77/20 rung and its 19/5 calibration certificate. | 0 | verified |
 | `E-n012-levy-15680000-3949423-audit` | 12 | New weights for Daniel's 1,736 points, scaled by 3951000/3949423, found by linear programming over their D4 orbits; the points, the verifier and the method are Daniel's, Burns's and Massaccesi's. | 0 | verified |
 | `E-n012-levy-15680000-3949423-generator` | 12 | New weights for Daniel's 1,736 points, scaled by 3951000/3949423, found by linear programming over their D4 orbits; the points, the verifier and the method are Daniel's, Burns's and Massaccesi's. | 0 | verified |
+| `E-n012-levy-15680000-3949423-native-parent-core` | 12 | New weights for Daniel's 1,736 points, scaled by 3951000/3949423, found by linear programming over their D4 orbits; the points, the verifier and the method are Daniel's, Burns's and Massaccesi's. | 0 | verified |
+| `E-n012-levy-15680000-3949423-source-replay` | 12 | New weights for Daniel's 1,736 points, scaled by 3951000/3949423, found by linear programming over their D4 orbits; the points, the verifier and the method are Daniel's, Burns's and Massaccesi's. | 0 | verified |
 | `E-n017-fractional-certificate` | 17, 18, 19 | The certificate and the side. The method is Burns's and the parametrisation is Massaccesi's own; what is new is a denser certificate at a larger side than his, found by this project's generator once its separation oracle was corrected. | 0 | verified |
 | `E-n018-fractional-certificate` | 18 | The certificate and the side. The method is Burns's, the parametrisation Massaccesi's, and the seed T-019's own atoms scaled to 467/100; what is new is a certificate at 467/100, found after the uniform grid walled there. | 0 | verified |
 | `E-n018-t028-fractional-certificate` | 18 | The certificate and the side. The method is Burns's, the parametrisation Massaccesi's, and the seed T-027's own atoms scaled to 187/40 plus a windows-5 lattice; what is new is a certificate at 187/40, found after 117/25 locked at 18.000000. | 0 | verified |

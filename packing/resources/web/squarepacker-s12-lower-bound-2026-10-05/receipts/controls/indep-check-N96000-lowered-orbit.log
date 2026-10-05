@@ -1,0 +1,11 @@
+# command: nice -n 10 /tmp/claude-0/-home-user-squares/1fb2d4ab-96d0-5b24-9e36-157598bdbf06/scratchpad/laneA/indep/indep_check lowered-orbit.txt 96000
+# cwd: scratch run directory; control lowered-orbit.txt written by devtools.audit_s12_v11_certificate --write-controls (sha256 1c42bbb4), byte for byte the source's; indep_check as in ../indep-check-N96000.log (binary sha256 e7748f8b); run under nice -n 10
+# python3: not used by this command
+# host: 4 cores; load 8.79 9.34 8.02; started 2026-10-05T23:25:24Z
+certificate: s = 15886000/4000000 = 3.971500000, D = 4000000, W = 10000000, m = 1736
+total weight = 119974008/10000000 = 11.997400800   (n = 12: total < n)
+angle net N = 96000, bins k = 0..95999 covering [0,90] deg (no symmetry assumed), grid Q = 1000000000000000
+min captured weight over all bins = 9999850/10000000 = 0.999985000   (bin k=0, 0.0000 deg)
+  near centre (0.543300, 0.543300) at angle 0.000000 deg (diagnostic, floating point)
+NOT VERIFIED
+# finished 2026-10-05T23:32:27Z; exit 1; wall 422.759 s; CPU 301.6 s (user 289.548 + sys 12.012); load 11.16 9.38 8.39

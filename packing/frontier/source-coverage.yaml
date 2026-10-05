@@ -898,7 +898,7 @@ sources:
     scope: {n_values: [12]}
     reviewed: '2026-10-02'
     source_date: '2026-10-02'
-    disposition: current-report
+    disposition: superseded-covered
     replay_disposition: case-specific
     represented_by: [frontier/n-012.md]
     evidence:
@@ -912,9 +912,9 @@ sources:
       by 7902/7901, weights unchanged. Daniel's verifier and the author's indep_check.cpp
       both accepted it here at the angle net N = 24000, and this repository's native
       parent-core interval route decided all 9,942 rows, so s(12) >= 31360/7901 is verified
-      (T-078, V3/C3) and supersedes T-049's 15680/3951; it stays the reported bound at
-      n = 12, and this project's re-weighting of the same points (T-079) holds the verified
-      one since 3 October. All three checkers refuse two mutated certificates. The one retained review was written by the lane that ran the replays
+      (T-078, V3/C3) and supersedes T-049's 15680/3951; this project's re-weighting of the
+      same points (T-079) held the verified bound from 3 October, and squarepacker's v1.1
+      (T-095) holds both the reported and the verified one since 5 October. All three checkers refuse two mutated certificates. The one retained review was written by the lane that ran the replays
       (its finding F1).
   - id: squarepacker-s12-lower-bound-2026-10-05
     title: Daniel's s(12) points dilated to 7943/2000 and re-weighted (v1.1)
@@ -930,15 +930,21 @@ sources:
     represented_by: [frontier/n-012.md]
     evidence:
       - E-n012-squarepacker-7943-2000-report
+      - E-n012-squarepacker-7943-2000-source-replay
+      - E-n012-squarepacker-7943-2000-native-parent-core
+      - E-n012-squarepacker-7943-2000-audit
     notes: >-
       Release v1.1, revision 7a96bec36bc6811c3715ef581598f22ff9b7ba3a by Ryu Sungjoon
       (squarepacker), archived as Zenodo 10.5281/zenodo.23157015, retained for
       jlevy/squares#363; the v1.0 files it leaves unchanged are pinned to the 2 October
       packet. Evan Daniel's 1,736 points (T-049) dilated to the container 7943/2000 and
-      re-weighted by linear programming, after this project's Route B (T-079). The source
-      reports Daniel's verifier and its own indep_check.cpp accepting it at the angle net
-      N = 96000. Registered as reported (T-095); the exact premises pass here, and the
-      replays and the review are stage 4 of think-3kd9.
+      re-weighted by linear programming, after this project's Route B (T-079). Daniel's
+      verifier with overflow checks and the author's indep_check.cpp both accepted it here
+      at the angle net N = 96000, least 10000050/10^7 at bin 0 as the source logs, and this
+      repository's native parent-core interval route decided all 39,765 rows, so s(12) >=
+      7943/2000 is verified (T-095, V3/C3) and supersedes T-079's 15680000/3949423. All
+      three refuse the source's two controls. A separately prompted review found no
+      blocking defect and ran no computation (its F1).
   - id: wand125-point-n61-2026-09-30
     title: Point-only cover for s(61) = 8
     role: source-repository

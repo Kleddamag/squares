@@ -42,10 +42,11 @@ from sqpack.verify import float_sign, verify_packing
 #: not-rigid records, the locally-rigid records, and lists the undetermined ones.
 GOLDEN_BY_CORPUS: dict[str, tuple[int, int, list[int]]] = {
     # Couzo's packings (T-056) replaced the renderings the screen excluded at n = 68, 103,
-    # 105, 110 and 131, and the screen found a translating square in each.
-    "n=1..100": (85, 12, [28, 40, 69]),
-    "n=1..200": (181, 16, [28, 40, 69]),
-    "n=1..324": (301, 20, [28, 40, 69]),
+    # 105, 110 and 131, and the screen found a translating square in each; the catalogue's
+    # packing replaced the last, n = 69, on 2026-10-05 (T-088), and the same holds there.
+    "n=1..100": (86, 12, [28, 40]),
+    "n=1..200": (182, 16, [28, 40]),
+    "n=1..324": (302, 20, [28, 40]),
 }
 
 ROOT = Path(__file__).resolve().parent.parent

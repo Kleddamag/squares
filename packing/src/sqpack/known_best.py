@@ -1142,6 +1142,7 @@ def kingbird_derived_witness(
     source_path: str,
     source_url: str,
     retrieved: str = RETRIEVED_DATE,
+    revision: str | None = None,
 ) -> dict[str, Any]:
     """Recheck retained Kingbird numerical facts without requiring the source SVG.
 
@@ -1149,6 +1150,12 @@ def kingbird_derived_witness(
     acquired in passes, and the date belongs to the pass that read the source rather
     than to this function. The default keeps the 34 witnesses of the 2026-08-26 pass
     stating what they have always stated; a later pass supplies its own date.
+
+    ``revision`` names a third party's pinned parse of the catalogue SVG, where the facts
+    were read from that parse rather than from the SVG itself:
+    ``devtools.derive_kingbird_facts --from-parse`` writes it, for a count whose SVG this
+    repository could not fetch. It is kept in ``source.revision`` and stated in the
+    limitations, so the witness says whose reading of the picture its numbers are.
     """
     expected_id = f"W-known-best-n{n:03d}"
     if retained_witness.get("id") != expected_id or retained_witness.get("n") != n:
@@ -1173,6 +1180,11 @@ def kingbird_derived_witness(
             f"catalogue's n={source_n} construction"
         )
     )
+    if revision is not None:
+        derivation = (
+            f"{derivation}, read from {revision}, a third party's binary64 parse of the "
+            "catalogue SVG, and not from the SVG itself"
+        )
     witness = deepcopy(dict(retained_witness))
     witness["claim"] = {
         "coordinate_provenance": "reported",
@@ -1193,6 +1205,7 @@ def kingbird_derived_witness(
         "path": source_path,
         "url": source_url,
         "retrieved": retrieved,
+        **({"revision": revision} if revision is not None else {}),
     }
     witness.pop("certificate", None)
     return _checked_witness(witness, tolerance=KINGBIRD_TOLERANCE, witness_path=witness_path)

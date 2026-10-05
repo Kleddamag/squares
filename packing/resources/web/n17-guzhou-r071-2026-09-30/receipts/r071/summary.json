@@ -1,0 +1,25 @@
+{
+  "schema": "GuzhouR071CompletionSummary/v1",
+  "release": "R071",
+  "certificate_sha256": "15b6bf6a936eba71338c9ea3e3b9966ae21db8116a6f5a92a8b5da5ccabed469",
+  "minimum_units": 1000026844,
+  "surplus_units": 7404,
+  "partitions": 3,
+  "seconds": 1694.142,
+  "verified_utc": "2026-09-30T18:01:29.899Z",
+  "checks": {
+    "status": true,
+    "certificate": true,
+    "target": true,
+    "intervals": true,
+    "budget": true,
+    "surplus": true,
+    "minimum_reaches_request": true,
+    "reference_is_r068s": true,
+    "launcher_is_r068s": true,
+    "executable_is_r068_and_r070_runs": true,
+    "every_process_exited_zero": true
+  },
+  "consistent": true,
+  "partition_records_published": false
+}

@@ -670,8 +670,9 @@ it.
   The same strip also switches a view in place: there it is a `tablist` of buttons
   (`role="tab"`), each stripped of a button’s own chrome and taking the strip’s type,
   the selected one filled as the current page’s link is.
-  The homepage’s atlas uses it for its Grid and Triangle views (**Atlas views**, below);
-  `site-nav.css` draws both forms, and the header rules above take only the `nav` strip.
+  The homepage’s atlas uses it for its Grid and Triangle views (**Atlas views**, below)
+  and for its Small, Medium and Large tiles (**Atlas sizes**, below); `site-nav.css`
+  draws both forms, and the header rules above take only the `nav` strip.
   From the top, both pages read bar, rule, tabs, content: the tabs stand under the rule
   that runs under the bar, never over it.
   They are in the header slot, whose lower border is that rule, so a header that holds
@@ -1118,12 +1119,35 @@ it.
   declared in [site-nav.css](site-nav.css) so every page carries them, the explainer and
   the workbench included, and fed to KPress’s own `--kpress-transition-fast` so its
   contents rail and footnote links match.
-  A rule transitions only the properties its hover changes (`background-color`, `color`,
-  `border-color`, `opacity`, `translate`), never `all`, and never with a literal
-  duration: `tests/test_overview.py` fails a `transition` in `site.css`, `site-nav.css`
-  or `paper-publication.css` that names a time instead of the token.
-  Under `prefers-reduced-motion: reduce` the duration is 0ms, so colours change at once
-  and no arrow moves.
+  - **The hover transition.** A change of colour, a wash, a text colour, a border or a
+    shadow, eases on one token, `--site-hover-transition`: `background-color`, `color`,
+    `border-color` and `box-shadow` on that timing (the owner, 2026-10-04,
+    `think-g9cu`). Every element whose hover or focus changes one of them carries
+    `transition: var(--site-hover-transition)` at rest, not in its hover rule, so the
+    change eases in and out: the cards, the bar’s links and tabs, the theme menu, a
+    popover’s close cross and action, a table’s rows (their wash on hover, on keyboard
+    focus and while their popover is open, which snapped until then), the ladders’
+    names, the atlas tiles, the record index and the contents rail, and on a paper’s
+    page its links, buttons and readouts (`paper-publication.css`). The token names
+    those four properties and never `all`, so a late stylesheet snaps into place rather
+    than animating its layout, and it is used alone, never listed beside another
+    property, so it still reads under reduced motion.
+  - What else a hover moves, an arrow’s nudge or a card icon’s fade, transitions that
+    one property (`translate`, `opacity`) on the same timing, never with a literal
+    duration.
+  - A focus ring (`outline`) is not eased: it shows the moment focus arrives.
+  - `tests/test_site_hover_motion.py` holds it: the token declared once, every
+    `transition` in `site.css`, `site-nav.css`, `site-result.css`, `paper-type.css` and
+    `paper-publication.css` the token or one property on its timing, and every rule
+    whose hover or focus changes a colour, a border or a shadow styling an element that
+    carries the token at rest, by its own selector, a broader rule’s, or a shared rule
+    the test names with its reason; in Chromium, a row, the bar’s links and the close
+    cross ease the four properties over 140ms.
+  - The workbench’s own controls keep its own motion tokens (`--duration-fast`,
+    `--easing-standard`, in `packages/workbench/assets/workbench.css`), under its own
+    design contract; only the bar it shares with the site runs on this one.
+  - Under `prefers-reduced-motion: reduce` the duration is 0ms and the token `none`, so
+    colours change at once and no arrow moves.
 
 - **Rating ladders.** Verification Ladders is a section of the Results page, under its
   table, since 2026-10-02 (the owner, `think-hqb3`); it was the homepage’s section
@@ -1163,17 +1187,20 @@ it.
   - **Rows.** Every rung is the same height at any one width, since each is a chip and a
     two-line box; a significance mark stands as tall as a chip, the chip’s line height
     and margin. A cell arranges the two by its own width.
-    With 17.85rem or more it sets the chip in a rail, 2.25rem, the chip’s own width, or
-    3.6rem for significance, the widest mark’s (`--site-ladders-significance-rail`), and
-    the description beside it, 0.75rem on, 64.1px a row: at 1280 and 1024 pixels, down
-    to a 973-pixel window, and on a phone down to 318 pixels.
-    Every cell turns at the widest rail’s width, so a row’s rungs stay one height and a
-    significance description, 1.35rem narrower than the others beside its wider rail, is
-    never under its least: at 16.5rem, the chips’ rail’s, it was set 21.6px short and
-    took a third line (2026-10-03). Narrower, it sets the chip on a line of its own and
-    the description under it across the cell, 91.8px a row, from 972 pixels down to 716,
-    so at 768 and 908. A description is never set narrower than 13.5rem
-    (`--site-ladders-meaning-min`).
+    With 18rem or more it sets the chip in a rail, 2.25rem, the chip’s own width, or
+    3.75rem for significance, the widest mark’s (`--site-ladders-significance-rail`;
+    S5’s is 58.8px in the page’s face), and the description beside it, 0.75rem on,
+    64.1px a row: at 1280 and 1024 pixels, down to a 980-pixel window, and on a phone
+    down to 320 pixels. The rail is never narrower than what stands in it
+    (`minmax(rail, max-content)`): at 3.6rem S5’s mark ran 1.2px past it, and a wider
+    face, 65px in the fallback and more in some system faces, ran it into the words
+    beside it (the owner, 2026-10-05). Every cell turns at the widest rail’s width, so a
+    row’s rungs stay one height and a significance description, 1.5rem narrower than the
+    others beside its wider rail, is never under its least: at 16.5rem, the chips’
+    rail’s, it was set 21.6px short and took a third line (2026-10-03). Narrower, it
+    sets the chip on a line of its own and the description under it across the cell,
+    91.8px a row, from 979 pixels down to 716, so at 768 and 908. A description is never
+    set narrower than 13.5rem (`--site-ladders-meaning-min`).
   - **Columns.** The three columns are equal, and each keeps 0.75rem
     (`--site-ladders-inset`) clear after its words, before the next column’s chip.
     Three columns therefore need 42.75rem: three times the least description and its
@@ -1204,13 +1231,15 @@ it.
 - **Atlas grid.** The atlas grid holds every tracked case, n = 1 to 324, as a square
   drawing in the page’s ink with its n beneath.
   The grid bleeds past the wide track as the window grows, to 140rem less the page
-  gutters, and its cells keep a readable size (at least 6.4rem, 4.6rem on a phone), so a
-  wider screen shows more cases per row: 4 at 390 pixels, 11 at 1280, 17 at 1920 and 20
-  at 2560. A cell washes on hover and on keyboard focus, and is a link to its case’s
-  record file, `cases/11.html`, which opens in the page’s one case popover (**Case
-  records**, below). The wash is the cell’s background, behind the drawing, and it is the
-  only thing that changes: every line of the drawing keeps the page’s ink at rest,
-  hovered, focused and pressed, in both themes.
+  gutters, and its cells keep a readable size (at least 6.4rem, 4.6rem on a phone, at
+  the Medium size; **Atlas sizes**, below), so a wider screen shows more cases per row:
+  4 at 390 pixels, 10 at 1280, 16 at 1920 and 20 at 2560 (measured on 2026-10-04; the
+  figures for 1280 and 1920 had read 11 and 17). A cell washes on hover and on keyboard
+  focus, and is a link to its case’s record file, `cases/11.html`, which opens in the
+  page’s one case popover (**Case records**, below).
+  The wash is the cell’s background, behind the drawing, and it is the only thing that
+  changes: every line of the drawing keeps the page’s ink at rest, hovered, focused and
+  pressed, in both themes.
   The drawing sets that colour on itself rather than reading the link’s, which KPress
   lightens on hover (`tests/test_site_drawing_hover.py` reads both in Chromium).
   The cells ship in a `<template>` and are placed only as the grid nears the viewport
@@ -1261,9 +1290,9 @@ it.
   tile’s line and column as custom properties, the stylesheet lays the tiles out from
   them (`grid-area`), and the placement is redone on the frame after a resize and when
   the expander opens or closes.
-  A tile is its line’s share of the block, `100cqi` over the tiles a line holds and no
-  wider than `--site-atlas-tile-max` (4.5rem), with its inset, its number and the space
-  over a row as fractions of it, so the triangle keeps its proportions.
+  At Medium a tile is its line’s share of the block, `100cqi` over the tiles a line
+  holds and no wider than `--site-atlas-tile-max` (4.5rem), with its inset, its number
+  and the space over a row as fractions of it, so the triangle keeps its proportions.
   Measured in Chromium: at 1280 pixels 63px tiles for the hundred and 34px for all 324,
   no row wrapping; at 1024, 50 and 27px; at 768, 36px for the hundred, and 26px for all
   324 with rows 14 to 18 wrapping at 26 to a line; at 390, 45px tiles at eight to a
@@ -1292,25 +1321,64 @@ it.
   420ms; the hundred miss no frame, and all 324 miss ten of 39 at 120Hz, the longest
   18ms.
 
-- **Atlas drawings.** Beside the view tabs, in one row over the tiles that wraps under
-  them on a phone, a second strip of the same tabs chooses the drawing
-  (`atlas_layer_tabs`): **House**, the default, the record’s own rendering, and
-  **Regularized**, the derived view that `atlas/known-best/regularized/` keeps for some
-  cases (X-049), with each square’s shade from the same house rule on the regularized
-  pose. `devtools.render_regularized_atlas` draws those views from the layer’s index, so
-  a view the layer gains joins the atlas at the next render; its `--check` holds the
+- **Atlas sizes.** Beside the view tabs, in one row over the tiles that wraps under them
+  on a phone, a second strip of the same tabs chooses the size of the tiles
+  (`atlas_size_tabs`, think-ht8t): **Small**, **Medium** and **Large**, Medium selected
+  by default and the strip’s one stop in the page’s tab order, with the keys of the view
+  tabs. Medium is the atlas as it was before it offered a choice; the page is rendered at
+  it, and without scripting the strip stays `hidden`. The size is one token,
+  `--site-atlas-scale` on the block (1, Small 0.667, Large 1.5), set by its
+  `data-atlas-size`, and applies in either view.
+  In the grid it scales the least cell, `--site-atlas-cell-min` (6.4rem, 4.6rem on a
+  phone): at 1280 pixels a line holds 15 tiles at Small, 10 at Medium and 7 at Large,
+  and on a phone 6, 4 and 3. In the triangle it scales the most a tile may be and, at
+  Small, the tile’s share of its line, never under the least tile, so Small keeps the
+  tiles a line holds and draws each smaller, centred.
+  Large holds fewer to a line, as many as tiles half as wide again as Medium’s leave
+  room for (`perLineAt`, tested in Node), so where the triangle already fills the block
+  its long rows wrap by the one rule: at 1280 pixels the hundred go from 19 to a line to
+  13, rows 8 to 10 wrapping, and all 324 from 35 to 23; on a phone the hundred go from 8
+  to 5. A block wide enough that Medium’s tiles stop at the most a tile may be lets
+  Large grow them first.
+  A change of size is a change of layout and moves every tile as a change of view does
+  (**Atlas views**, above).
+  The size is in the address as `?size=small` or `?size=large` (Medium has none),
+  written and read as the view is, before any tile is placed.
+  `tests/test_site_atlas_views.py` reads each size in Chromium, and
+  `devtools.measure_atlas_views` measures every layout at every size (`layout`), times
+  the changes of size in each view (`move`) and pictures them (`shots`).
+
+- **Atlas marks.** A tile carries up to two marks beside its number, each hung out of
+  the flow so the number stays centred: the new-result star after it, and the
+  regularized layer’s badge before it.
+  The star is the site’s one star in its warm ink (`atlas_star`, `.site-star`), on every
+  case whose verified lower bound is a new result, the rule the frontier table’s Recent
+  column stars by (`render_frontier_page.recent_lower_bounds`, think-wwtt); it is hidden
+  from assistive technology, and the tile’s name ends “new result” instead, as a starred
+  row’s does in a table of results.
+  A case that `atlas/known-best/regularized/` keeps a derived view of (X-049) is drawn
+  from that view, the record’s exact frame with its nearly axis-aligned squares
+  straightened, each square shaded by the house rule on the regularized pose, and its
+  tile carries the layer’s badge, a dot in the accent, and says “regularized view” in
+  its name; every other case is drawn from its house rendering.
+  `devtools.render_regularized_atlas` draws those views from the layer’s index, so a
+  view the layer gains joins the atlas at the next render; its `--check` holds the
   drawings to the index.
-  A case with a view has a second tile in a third `<template>`, and choosing Regularized
-  swaps it in for the house tile in place, with the tile’s place in the triangle and the
-  keyboard focus carried over, so nothing moves and the two can be compared by flicking
-  between the tabs (`overview/atlas-layer.js`); every other case keeps its house tile.
-  A regularized tile carries the layer’s badge, a dot in the accent hung past its number
-  so the number stays centred, and the Regularized tab carries the same dot as its key.
-  Either tile opens the same case record, whose drawing is the house one: the
-  regularized layer is the atlas’s view, not the record’s. The drawing is in the address
-  as `?layer=regularized` (house has none), read before any tile is placed.
-  `tests/test_site_atlas_views.py` reads the swap in Chromium, and
-  `devtools.measure_atlas_views` measures each layout in both drawings.
+  The tile opens the same case record as any other, whose drawing is the house one: the
+  regularized layer is the atlas’s view, not the record’s. Until 2026-10-04 the house
+  drawing was the default and a **House** and **Regularized** strip swapped a second
+  tile in for each such case; the owner dropped the choice for the regularized drawings
+  alone (think-k8x9), and the page stopped shipping the second set, 264 KB. A key under
+  the two strips, on a line of its own, names both marks in words, each beside its mark
+  as on a tile, “new result” and “regularized view”, the second a link to the atlas
+  README’s section on the layer (`atlas_legend`), in the support colour at the note
+  size, as the tables of results key their star: a star without a key reads as
+  decoration, and a regularized drawing is shown only labelled as one.
+  It ships `hidden` with the strips.
+  At the smallest tile, 26 pixels with a three-figure number, the star is set at 0.8 of
+  the number’s size and both marks stay inside their tile:
+  `devtools.measure_atlas_views` holds every layout to that (`mark_problems`), and
+  `tests/test_site_atlas_views.py` holds which tiles carry which mark to the records.
 
 - **Action under a table or grid.** Where one control follows a table or a grid, it is
   the site’s one action button, `.site-action`, in a centred `.site-action-row`: the
@@ -1392,10 +1460,25 @@ it.
   note; and what is OPEN. A citation line is a table row of two cells, the label
   (“lower” or “upper”) and the source, so the label column is as wide as the wider label
   however it is drawn, and the source wraps between words beside it.
-  The drawing is as wide as the column allows up to 28rem on the record page, 24rem in
-  the case popover, so the number line under it is in view when the popover opens in a
-  laptop’s window, and 18rem in a result overview; the facts under it keep to 40rem, in
-  the sans face at the note size.
+  The drawing is as wide as the column allows up to 28rem on the record page and 18rem
+  in a result overview, and in the case popover it fills the panel’s width, growing and
+  shrinking with the panel and square at every width (the owner, 2026-10-04,
+  `think-u214`; 24rem until then), short of the panel’s height less 8rem, the room the
+  caption and the actions held at the panel’s foot take, so the whole square shows at
+  one scroll of the panel: 608 of the panel’s 934 pixels in a 1280 by 800 window, 700 at
+  1280 by 900, the full width on a tablet or a phone.
+  The facts under it keep to 40rem, in the sans face at the note size.
+  Its lines keep the weight they have at 12rem across, however large it is shown
+  (`think-pkz0`): the drawing strokes its frame 1.2 and each square’s outline 0.6 of the
+  102 units its box is wide (`render_frontier_page.packing_svg`), weights that grow with
+  the drawing, so the popover’s drawing, 58rem across on a laptop, drew them 11 and 5.5
+  pixels heavy, and at a 24rem weight a zoomed drawing still read as heavy-lined (the
+  owner, 2026-10-05). The stylesheet draws them in the page’s own units instead
+  (`vector-effect: non-scaling-stroke`), at the same share of the figure’s width
+  (`100cqi`) up to 12rem (`--site-case-figure-lines`): 2.3 and 1.1 pixels from 12rem up,
+  and as the drawing draws them below it.
+  `tests/test_case_pages.py` reads the two shares from the drawing itself, so the
+  stylesheet and the drawing cannot part.
   All of it is written when the page is rendered, from the film’s own facts
   (`atlas_film_facts`, read from the atlas figure and `bound-citations.json`), its math
   as kpress’s markup; the gap bar’s labels are placed then too

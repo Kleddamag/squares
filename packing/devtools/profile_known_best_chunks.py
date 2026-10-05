@@ -531,6 +531,8 @@ def profile_errors(profile: dict[str, Any]) -> list[str]:
     source_strata = []
     for source_kind in SOURCE_KINDS:
         selected_rows = [row for row in rows if row["source_kind"] == source_kind]
+        if not selected_rows:
+            continue
         stratum_squares = sum(row["square_count"] for row in selected_rows)
         stratum_structured = sum(
             row["primary"]["structured_square_count"] for row in selected_rows
@@ -665,6 +667,10 @@ def expected_outputs() -> tuple[dict[str, Any], str]:
     source_strata = []
     for source_kind in SOURCE_KINDS:
         selected = [row for row in rows if row["source_kind"] == source_kind]
+        if not selected:
+            # A kind no record draws on any more has no stratum to describe: the last
+            # UnitSquare rendering, n = 69, left for the catalogue on 2026-10-05 (T-088).
+            continue
         square_count = sum(row["square_count"] for row in selected)
         structured = sum(row["primary"]["structured_square_count"] for row in selected)
         source_strata.append(

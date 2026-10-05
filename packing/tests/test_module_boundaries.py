@@ -17,6 +17,7 @@ from typing import cast
 import pytest
 import yaml
 
+from devtools import upper_bound_packets
 from devtools.check_readme import meaningful_top_level_entries
 from sqpack.cli import validate
 from sqpack.project import ProjectLayoutError, require_project_root
@@ -569,6 +570,13 @@ def test_ci_jobs_fetch_provenance_history_and_key_the_uv_cache_from_the_lock() -
         "/packing/campaign/explorations/X049-families-data/",
         "/packages/workbench/",
         "/vendor/kpress/",
+    } <= sparse
+    # Every upper-bound packet the atlas can plan from rides in the slice, read from the
+    # packet registry rather than listed here, so a new packet cannot pass a whole
+    # checkout and fail the slice, as franciscouzo-square-packing-2026-10-03 did on
+    # jlevy/squares#353's first run.
+    assert {
+        f"/packing/resources/web/{source.directory}/" for source in upper_bound_packets.SOURCES
     } <= sparse
     full_step = next(
         _mapping(step)

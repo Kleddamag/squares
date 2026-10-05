@@ -8,3 +8,19 @@ packing/resources/web/known-best-packings/kingbird/*.svg -whitespace
 # Some scanned PDFs contain no early NUL byte, so Git can misclassify their compressed
 # streams as text. Archive PDFs are immutable binary evidence.
 packing/resources/**/*.pdf binary
+
+# Review surface. Retained third-party sources and files the record's own tools write are
+# collapsed in pull-request diffs and left out of the language and line statistics, so a
+# reviewer reads the records, code and prose that decide a result. Every one of these is
+# still checked by the gate: a packet by `acquire_source --check`, a view by its renderer's
+# drift check, the atlas by `build_known_best_atlas --check`.
+packing/resources/web/** linguist-generated=true
+packing/atlas/known-best/** linguist-generated=true
+packing/witnesses/** linguist-generated=true
+packing/campaign/explorations/X049-families-data/** linguist-generated=true
+packing/frontier/RESULTS.md linguist-generated=true
+packing/frontier/INVENTORY.md linguist-generated=true
+packing/frontier/STATUS.md linguist-generated=true
+packing/frontier/VERIFIERS.md linguist-generated=true
+packing/frontier/CERTIFICATE-REACH.md linguist-generated=true
+defects.md linguist-generated=true

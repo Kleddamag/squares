@@ -8,9 +8,9 @@ ours, which rest on someone else's argument, and how far each has been checked.
 
 ## The short version
 
-- **251** evidence records. **152** are formal; **145** of those were established here.
-- **91** rest on an argument made elsewhere, of which **7** have been read by nobody here.
-- **40** claim to be first established here. **13** make no novelty statement at all - not assessed, which is not the same as not novel.
+- **288** evidence records. **155** are formal; **148** of those were established here.
+- **125** rest on an argument made elsewhere, of which **7** have been read by nobody here.
+- **40** claim to be first established here. **14** make no novelty statement at all - not assessed, which is not the same as not novel.
 
 A formal claim on an unread external proof is still formal: the proof proves its
 claim whether or not we read it. The count above is not a doubt about those
@@ -24,6 +24,7 @@ results, it is a statement about what this repository has itself examined.
 | --- | ---: | --- | --- | --- | --- | --- | --- | --- | --- |
 | `E-n017-kleddamag-rational-upper` | 0 | upper-bound | verified | equalities and inequalities, no tolerance | here | informally-verified | previously-published | independent | `V-check-rational-witness-independent` |
 | `E-n017-certified-endpoint` | 1 | upper-bound | verified | equalities and inequalities, no tolerance | here | informally-verified | *not assessed* | independent | `V-n17-endpoint-checkers`, `V-audit-n17-endpoint-receipt` |
+| `E-n017-catalogue-polynomial-identity` | 0 | derived-structure | verified | equalities and inequalities, no tolerance | here | informally-verified | *not assessed* | producer’s code | `V-n17-catalogue-polynomial` |
 | `E-n060-evand-mixed-cover-report` | 1 | lower-bound | reported | - | elsewhere | informally-verified | previously-published | producer’s code | `V-evand-zm-mixed-py`, `V-evand-zmx2` |
 | `E-n061-evand-derived-report` | 1 | lower-bound | reported | - | elsewhere | informally-verified | previously-published | no code | - |
 | `E-n061-wand125-point-cover-evand-replay-report` | 0 | lower-bound | reported | - | elsewhere | - | previously-published | independent | `V-evand-zeromargin-py`, `V-evand-zmcheck`, `V-evand-zmx2` |
@@ -44,12 +45,12 @@ results, it is a statement about what this repository has itself examined.
 | `E-wand125-rectangle-report` | 1 | lower-bound | reported | - | elsewhere | - | previously-published | producer’s code | `V-tokoharu-verify-cpp` |
 | `E-wand125-rectangle-monotone-report` | 0 | lower-bound | reported | - | here | - | previously-published | no code | `V-tokoharu-verify-cpp` |
 | `E-wand125-rectangle-source-replay` | 1 | lower-bound | verified | strict inequalities only | here | informally-verified | previously-published | producer’s code | `V-tokoharu-verify-cpp`, `V-audit-wand125-rectangles` |
-| `E-wand125-rectangle-2026-09-28-report` | 3 | lower-bound | reported | - | elsewhere | - | previously-published | producer’s code | `V-tokoharu-verify-cpp` |
+| `E-wand125-rectangle-2026-09-28-report` | 0 | lower-bound | reported | - | elsewhere | - | previously-published | producer’s code | `V-tokoharu-verify-cpp` |
 | `E-wand125-rectangle-2026-09-28-monotone-report` | 0 | lower-bound | reported | - | here | - | previously-published | no code | `V-tokoharu-verify-cpp` |
 | `E-wand125-rectangle-2026-09-28-source-replay` | 5 | lower-bound | verified | strict inequalities only | here | - | previously-published | producer’s code | `V-tokoharu-verify-cpp`, `V-audit-wand125-rectangles` |
-| `E-wand125-rectangle-2026-10-01-report` | 17 | lower-bound | reported | - | elsewhere | informally-verified | previously-published | producer’s code | `V-tokoharu-verify-cpp` |
+| `E-wand125-rectangle-2026-10-01-report` | 12 | lower-bound | reported | - | elsewhere | informally-verified | previously-published | producer’s code | `V-tokoharu-verify-cpp` |
 | `E-wand125-rectangle-2026-10-01-source-replay` | 29 | lower-bound | verified | strict inequalities only | here | - | previously-published | producer’s code | `V-tokoharu-verify-cpp`, `V-audit-wand125-rectangles` |
-| `E-wand125-rectangle-2026-10-02-report` | 2 | lower-bound | reported | - | elsewhere | informally-verified | previously-published | producer’s code | `V-tokoharu-verify-cpp` |
+| `E-wand125-rectangle-2026-10-02-report` | 1 | lower-bound | reported | - | elsewhere | informally-verified | previously-published | producer’s code | `V-tokoharu-verify-cpp` |
 | `E-n045-wand125-point-cover-report` | 0 | lower-bound | reported | - | elsewhere | - | previously-published | producer’s code | `V-evand-zmx2` |
 | `E-n045-wand125-point-cover-source-replay` | 0 | lower-bound | verified | strict inequalities only | here | informally-verified | previously-published | producer’s code | `V-evand-zmx2`, `V-audit-wand125-point-and-mixed` |
 | `E-n021-wand125-point-endpoint-report` | 0 | lower-bound | reported | - | elsewhere | informally-verified | previously-published | producer’s code | `V-wand125-verify-portable-py` |
@@ -70,7 +71,7 @@ results, it is a statement about what this repository has itself examined.
 | `E-n090-wand125-mixed-960-source-replay` | 1 | lower-bound | verified | strict inequalities only | here | - | previously-published | producer’s code | `V-wand125-mixed-rotated-verify-cpp`, `V-audit-wand125-point-and-mixed` |
 | `E-n092-wand125-mixed-969-report` | 0 | lower-bound | reported | - | elsewhere | informally-verified | previously-published | producer’s code | `V-wand125-mixed-rotated-verify-cpp` |
 | `E-n092-wand125-mixed-969-source-replay` | 0 | lower-bound | verified | strict inequalities only | here | - | previously-published | producer’s code | `V-wand125-mixed-rotated-verify-cpp`, `V-audit-wand125-point-and-mixed` |
-| `E-n084-wand125-mixed-940-report` | 1 | lower-bound | reported | - | elsewhere | informally-verified | previously-published | producer’s code | `V-wand125-mixed-rotated-verify-cpp` |
+| `E-n084-wand125-mixed-940-report` | 0 | lower-bound | reported | - | elsewhere | informally-verified | previously-published | producer’s code | `V-wand125-mixed-rotated-verify-cpp` |
 | `E-n084-wand125-mixed-940-source-replay` | 1 | lower-bound | verified | strict inequalities only | here | - | previously-published | producer’s code | `V-wand125-mixed-rotated-verify-cpp`, `V-audit-wand125-point-and-mixed` |
 | `E-n085-wand125-mixed-942-report` | 0 | lower-bound | reported | - | elsewhere | informally-verified | previously-published | producer’s code | `V-wand125-mixed-rotated-verify-cpp` |
 | `E-n085-wand125-mixed-942-source-replay` | 0 | lower-bound | verified | strict inequalities only | here | - | previously-published | producer’s code | `V-wand125-mixed-rotated-verify-cpp`, `V-audit-wand125-point-and-mixed` |
@@ -111,9 +112,9 @@ results, it is a statement about what this repository has itself examined.
 | `E-friedman-ds7-table2-opaque-lower` | 0 | lower-bound | reported | - | elsewhere | - | previously-published | unknown | - |
 | `E-n017-maciver-reported-lower` | 0 | lower-bound | reported | - | elsewhere | not-reviewed | previously-published | unknown | *none held* |
 | `E-green26-reported-lower` | 0 | lower-bound | reported | - | - | defect-found | previously-published | unknown | - |
-| `E-kingbird-upper-register` | 177 | upper-bound | reported | - | - | - | previously-published | producer’s code | - |
+| `E-kingbird-upper-register` | 178 | upper-bound | reported | - | - | - | previously-published | producer’s code | - |
 | `E-kingbird-grid-completeness` | 96 | upper-bound | reported | - | - | - | previously-published | producer’s code | - |
-| `E-unitsquare-release1-report` | 1 | upper-bound | reported | - | - | - | previously-published | producer’s code | *none held* |
+| `E-unitsquare-release1-report` | 0 | upper-bound | reported | - | - | - | previously-published | producer’s code | *none held* |
 | `E-basic-grid-upper` | 254 | upper-bound | verified | equalities and inequalities, no tolerance | here | - | common-knowledge | independent | `V-check-basic-bounds` |
 | `E-basic-area-lower` | 18 | lower-bound | verified | equalities and inequalities, no tolerance | here | - | common-knowledge | independent | `V-check-basic-bounds` |
 | `E-nagamochi-lower` | 175 | lower-bound | reported | - | elsewhere | defect-found | previously-published | no code | - |
@@ -194,9 +195,10 @@ results, it is a statement about what this repository has itself examined.
 | `E-n045-evand-mixed-cover-zmx2-replay` | 1 | lower-bound | verified | strict inequalities only | here | informally-verified | previously-published | producer’s code | `V-evand-zmx2`, `V-audit-evand-mixed-covers` |
 | `E-n017-kleddamag-466001-report` | 0 | lower-bound | reported | - | elsewhere | - | previously-published | producer’s code | `V-kleddamag-n17-verify` |
 | `E-n017-kleddamag-466001-source-replay` | 0 | lower-bound | verified | equalities and inequalities, no tolerance | here | informally-verified | previously-published | producer’s code | `V-kleddamag-n17-verify` |
-| `E-n017-guzhou-r068-report` | 1 | lower-bound | reported | - | elsewhere | - | previously-published | producer’s code | `V-guzhou-n17-verify-cpp`, `V-kleddamag-n17-verify` |
+| `E-n017-guzhou-r068-report` | 0 | lower-bound | reported | - | elsewhere | - | previously-published | producer’s code | `V-guzhou-n17-verify-cpp`, `V-kleddamag-n17-verify` |
 | `E-n017-guzhou-r068-source-replay` | 1 | lower-bound | verified | equalities and inequalities, no tolerance | here | informally-verified | previously-published | producer’s code | `V-guzhou-n17-verify-cpp`, `V-kleddamag-n17-verify`, `V-audit-guzhou-r068` |
 | `E-n017-guzhou-r067-source-replay` | 0 | lower-bound | verified | equalities and inequalities, no tolerance | here | informally-verified | previously-published | producer’s code | `V-guzhou-n17-verify-cpp`, `V-kleddamag-n17-verify`, `V-audit-guzhou-r068` |
+| `E-n017-guzhou-r071-report` | 1 | lower-bound | reported | - | elsewhere | - | previously-published | producer’s code | `V-guzhou-n17-verify-cpp`, `V-kleddamag-n17-verify` |
 | `E-n017-kleddamag-4640020-report` | 0 | lower-bound | reported | - | elsewhere | - | previously-published | producer’s code | `V-kleddamag-n17-verify` |
 | `E-n017-kleddamag-4640020-source-replay` | 0 | lower-bound | verified | equalities and inequalities, no tolerance | here | informally-verified | previously-published | producer’s code | `V-kleddamag-n17-verify` |
 | `E-n017-guzhou-r012-source-replay` | 0 | lower-bound | verified | equalities and inequalities, no tolerance | here | informally-verified | previously-published | producer’s code | `V-guzhou-r012-verify-py` |
@@ -241,45 +243,80 @@ results, it is a statement about what this repository has itself examined.
 | `E-n011-trump-local-theorem-first-clause` | 0 | derived-structure | verified | whatever its theorem states | here | - | *not assessed* | independent | `V-review-trump-local-theorem` |
 | `E-n011-trump-isolation-radius` | 0 | derived-structure | verified | equalities and inequalities, no tolerance | here | - | *not assessed* | producer’s code | `V-trump11-isolation-radius` |
 | `E-wand125-n068-derived-lower` | 0 | lower-bound | verified | equalities and inequalities, no tolerance | here | informally-verified | *not assessed* | producer’s code | `V-wand125-check-with-sqpack`, `V-sqpack-fractional-exact` |
-| `E-franciscouzo-2026-09-27-report` | 49 | upper-bound | reported | - | elsewhere | - | previously-published | producer’s code | *none held* |
-| `E-franciscouzo-2026-09-27-exact-replay` | 49 | upper-bound | verified | equalities and inequalities, no tolerance | here | - | previously-published | independent | `V-upper-bound-promotion`, `V-check-rational-witness-independent` |
-| `E-franciscouzo-2026-09-27-interval-replay` | 49 | upper-bound | verified | strict inequalities only | here | - | previously-published | independent | `V-upper-bound-intervals` |
+| `E-franciscouzo-2026-09-27-report` | 42 | upper-bound | reported | - | elsewhere | - | previously-published | producer’s code | *none held* |
+| `E-franciscouzo-2026-09-27-exact-replay` | 42 | upper-bound | verified | equalities and inequalities, no tolerance | here | - | previously-published | independent | `V-upper-bound-promotion`, `V-check-rational-witness-independent` |
+| `E-franciscouzo-2026-09-27-interval-replay` | 42 | upper-bound | verified | strict inequalities only | here | - | previously-published | independent | `V-upper-bound-intervals` |
+| `E-franciscouzo-2026-10-03-report` | 7 | upper-bound | reported | - | elsewhere | informally-verified | previously-published | producer’s code | *none held* |
+| `E-franciscouzo-2026-10-03-exact-replay` | 7 | upper-bound | verified | equalities and inequalities, no tolerance | here | - | previously-published | independent | `V-upper-bound-promotion`, `V-check-rational-witness-independent` |
+| `E-franciscouzo-2026-10-03-interval-replay` | 7 | upper-bound | verified | strict inequalities only | here | - | previously-published | independent | `V-upper-bound-intervals` |
 | `E-n211-de-winter-report` | 1 | upper-bound | reported | - | elsewhere | - | previously-published | producer’s code | *none held* |
 | `E-n211-de-winter-exact-replay` | 1 | upper-bound | verified | equalities and inequalities, no tolerance | here | - | previously-published | independent | `V-upper-bound-promotion`, `V-check-rational-witness-independent` |
 | `E-n211-de-winter-interval-replay` | 1 | upper-bound | verified | strict inequalities only | here | - | previously-published | independent | `V-upper-bound-intervals` |
 | `E-casson-2026-09-23-report` | 0 | upper-bound | reported | - | elsewhere | - | previously-published | producer’s code | *none held* |
+| `E-n069-ellsworth-2026-09-report` | 0 | upper-bound | reported | - | elsewhere | - | previously-published | producer’s code | - |
+| `E-n083-chang-2026-09-report` | 0 | upper-bound | reported | - | elsewhere | - | previously-published | producer’s code | - |
+| `E-n087-chang-2026-09-report` | 0 | upper-bound | reported | - | elsewhere | - | previously-published | producer’s code | - |
 | `E-k2m4-evand-family-report` | 9 | lower-bound | reported | - | elsewhere | informally-verified | previously-published | producer’s code | `V-evand-qx2-zm-py`, `V-evand-lean` |
 | `E-k2m4-evand-validtilt9-qx2-report` | 0 | lower-bound | reported | - | elsewhere | - | previously-published | producer’s code | `V-evand-qx2-zm-py` |
 | `E-k2m4-evand-lean-report` | 0 | lower-bound | reported | - | elsewhere | - | previously-published | producer’s code | `V-evand-lean` |
-| `E-n051-wand125-mixed-746-report` | 1 | lower-bound | reported | - | elsewhere | informally-verified | previously-published | producer’s code | `V-wand125-mixed-rotated-verify-cpp`, `V-wand125-verify-mixed-full-proof-py` |
+| `E-n020-evand-point-cover-4886-report` | 0 | lower-bound | reported | - | elsewhere | - | previously-published | producer’s code | `V-evand-zmx2`, `V-evand-zm-mixed-py` |
+| `E-n051-wand125-mixed-746-report` | 0 | lower-bound | reported | - | elsewhere | informally-verified | previously-published | producer’s code | `V-wand125-mixed-rotated-verify-cpp`, `V-wand125-verify-mixed-full-proof-py` |
 | `E-n052-wand125-mixed-755-report` | 1 | lower-bound | reported | - | elsewhere | informally-verified | previously-published | producer’s code | `V-wand125-mixed-rotated-verify-cpp`, `V-wand125-verify-mixed-full-proof-py` |
 | `E-n055-wand125-mixed-7728-report` | 1 | lower-bound | reported | - | elsewhere | informally-verified | previously-published | producer’s code | `V-wand125-mixed-rotated-verify-cpp`, `V-wand125-verify-mixed-full-proof-py` |
-| `E-n058-wand125-mixed-7905-report` | 1 | lower-bound | reported | - | elsewhere | informally-verified | previously-published | producer’s code | `V-wand125-mixed-rotated-verify-cpp`, `V-wand125-verify-mixed-full-proof-py` |
-| `E-n069-wand125-mixed-8612-report` | 1 | lower-bound | reported | - | elsewhere | informally-verified | previously-published | producer’s code | `V-wand125-mixed-rotated-verify-cpp`, `V-wand125-verify-mixed-full-proof-py` |
-| `E-n070-wand125-mixed-86475-report` | 1 | lower-bound | reported | - | elsewhere | informally-verified | previously-published | producer’s code | `V-wand125-mixed-rotated-verify-cpp`, `V-wand125-verify-mixed-full-proof-py` |
-| `E-n071-wand125-mixed-8705-report` | 1 | lower-bound | reported | - | elsewhere | informally-verified | previously-published | producer’s code | `V-wand125-mixed-rotated-verify-cpp`, `V-wand125-verify-mixed-full-proof-py` |
-| `E-n073-wand125-mixed-8809-report` | 1 | lower-bound | reported | - | elsewhere | informally-verified | previously-published | producer’s code | `V-wand125-mixed-rotated-verify-cpp`, `V-wand125-verify-mixed-full-proof-py` |
+| `E-n058-wand125-mixed-7905-report` | 0 | lower-bound | reported | - | elsewhere | informally-verified | previously-published | producer’s code | `V-wand125-mixed-rotated-verify-cpp`, `V-wand125-verify-mixed-full-proof-py` |
+| `E-n069-wand125-mixed-8612-report` | 0 | lower-bound | reported | - | elsewhere | informally-verified | previously-published | producer’s code | `V-wand125-mixed-rotated-verify-cpp`, `V-wand125-verify-mixed-full-proof-py` |
+| `E-n070-wand125-mixed-86475-report` | 0 | lower-bound | reported | - | elsewhere | informally-verified | previously-published | producer’s code | `V-wand125-mixed-rotated-verify-cpp`, `V-wand125-verify-mixed-full-proof-py` |
+| `E-n071-wand125-mixed-8705-report` | 0 | lower-bound | reported | - | elsewhere | informally-verified | previously-published | producer’s code | `V-wand125-mixed-rotated-verify-cpp`, `V-wand125-verify-mixed-full-proof-py` |
+| `E-n073-wand125-mixed-8809-report` | 0 | lower-bound | reported | - | elsewhere | informally-verified | previously-published | producer’s code | `V-wand125-mixed-rotated-verify-cpp`, `V-wand125-verify-mixed-full-proof-py` |
 | `E-n074-wand125-mixed-88675-report` | 1 | lower-bound | reported | - | elsewhere | informally-verified | previously-published | producer’s code | `V-wand125-mixed-rotated-verify-cpp`, `V-wand125-verify-mixed-full-proof-py` |
-| `E-n075-wand125-mixed-892-report` | 1 | lower-bound | reported | - | elsewhere | informally-verified | previously-published | producer’s code | `V-wand125-mixed-rotated-verify-cpp`, `V-wand125-verify-mixed-full-proof-py` |
-| `E-n076-wand125-mixed-896-report` | 1 | lower-bound | reported | - | elsewhere | informally-verified | previously-published | producer’s code | `V-wand125-mixed-rotated-verify-cpp`, `V-wand125-verify-mixed-full-proof-py` |
-| `E-n086-wand125-mixed-950-report` | 1 | lower-bound | reported | - | elsewhere | informally-verified | previously-published | producer’s code | `V-wand125-mixed-rotated-verify-cpp`, `V-wand125-verify-mixed-full-proof-py` |
-| `E-n087-wand125-mixed-955-report` | 1 | lower-bound | reported | - | elsewhere | informally-verified | previously-published | producer’s code | `V-wand125-mixed-rotated-verify-cpp`, `V-wand125-verify-mixed-full-proof-py` |
-| `E-n088-wand125-mixed-960-report` | 1 | lower-bound | reported | - | elsewhere | informally-verified | previously-published | producer’s code | `V-wand125-mixed-rotated-verify-cpp`, `V-wand125-verify-mixed-full-proof-py` |
+| `E-n075-wand125-mixed-892-report` | 0 | lower-bound | reported | - | elsewhere | informally-verified | previously-published | producer’s code | `V-wand125-mixed-rotated-verify-cpp`, `V-wand125-verify-mixed-full-proof-py` |
+| `E-n076-wand125-mixed-896-report` | 0 | lower-bound | reported | - | elsewhere | informally-verified | previously-published | producer’s code | `V-wand125-mixed-rotated-verify-cpp`, `V-wand125-verify-mixed-full-proof-py` |
+| `E-n086-wand125-mixed-950-report` | 0 | lower-bound | reported | - | elsewhere | informally-verified | previously-published | producer’s code | `V-wand125-mixed-rotated-verify-cpp`, `V-wand125-verify-mixed-full-proof-py` |
+| `E-n087-wand125-mixed-955-report` | 0 | lower-bound | reported | - | elsewhere | informally-verified | previously-published | producer’s code | `V-wand125-mixed-rotated-verify-cpp`, `V-wand125-verify-mixed-full-proof-py` |
+| `E-n088-wand125-mixed-960-report` | 0 | lower-bound | reported | - | elsewhere | informally-verified | previously-published | producer’s code | `V-wand125-mixed-rotated-verify-cpp`, `V-wand125-verify-mixed-full-proof-py` |
 | `E-n089-wand125-mixed-965-report` | 1 | lower-bound | reported | - | elsewhere | informally-verified | previously-published | producer’s code | `V-wand125-mixed-rotated-verify-cpp`, `V-wand125-verify-mixed-full-proof-py` |
-| `E-n090-wand125-mixed-9725-report` | 1 | lower-bound | reported | - | elsewhere | informally-verified | previously-published | producer’s code | `V-wand125-mixed-rotated-verify-cpp`, `V-wand125-verify-mixed-full-proof-py` |
-| `E-n091-wand125-mixed-975-report` | 1 | lower-bound | reported | - | elsewhere | informally-verified | previously-published | producer’s code | `V-wand125-mixed-rotated-verify-cpp`, `V-wand125-verify-mixed-full-proof-py` |
+| `E-n090-wand125-mixed-9725-report` | 0 | lower-bound | reported | - | elsewhere | informally-verified | previously-published | producer’s code | `V-wand125-mixed-rotated-verify-cpp`, `V-wand125-verify-mixed-full-proof-py` |
+| `E-n091-wand125-mixed-975-report` | 0 | lower-bound | reported | - | elsewhere | informally-verified | previously-published | producer’s code | `V-wand125-mixed-rotated-verify-cpp`, `V-wand125-verify-mixed-full-proof-py` |
 | `E-n092-wand125-mixed-977-report` | 1 | lower-bound | reported | - | elsewhere | informally-verified | previously-published | producer’s code | `V-wand125-mixed-rotated-verify-cpp`, `V-wand125-verify-mixed-full-proof-py` |
-| `E-n093-wand125-mixed-986-report` | 1 | lower-bound | reported | - | elsewhere | informally-verified | previously-published | producer’s code | `V-wand125-mixed-rotated-verify-cpp`, `V-wand125-verify-mixed-full-proof-py` |
-| `E-n094-wand125-mixed-992-report` | 1 | lower-bound | reported | - | elsewhere | informally-verified | previously-published | producer’s code | `V-wand125-mixed-rotated-verify-cpp`, `V-wand125-verify-mixed-full-proof-py` |
-| `E-n095-wand125-mixed-996-report` | 1 | lower-bound | reported | - | elsewhere | informally-verified | previously-published | producer’s code | `V-wand125-mixed-rotated-verify-cpp`, `V-wand125-verify-mixed-full-proof-py` |
+| `E-n093-wand125-mixed-986-report` | 0 | lower-bound | reported | - | elsewhere | informally-verified | previously-published | producer’s code | `V-wand125-mixed-rotated-verify-cpp`, `V-wand125-verify-mixed-full-proof-py` |
+| `E-n094-wand125-mixed-992-report` | 0 | lower-bound | reported | - | elsewhere | informally-verified | previously-published | producer’s code | `V-wand125-mixed-rotated-verify-cpp`, `V-wand125-verify-mixed-full-proof-py` |
+| `E-n095-wand125-mixed-996-report` | 0 | lower-bound | reported | - | elsewhere | informally-verified | previously-published | producer’s code | `V-wand125-mixed-rotated-verify-cpp`, `V-wand125-verify-mixed-full-proof-py` |
 | `E-n096-wand125-mixed-997-report` | 0 | lower-bound | reported | - | elsewhere | informally-verified | previously-published | producer’s code | `V-wand125-mixed-rotated-verify-cpp`, `V-wand125-verify-mixed-full-proof-py` |
+| `E-n042-wand125-mixed-68475-report` | 1 | lower-bound | reported | - | elsewhere | informally-verified | previously-published | producer’s code | `V-wand125-mixed-rotated-verify-cpp`, `V-wand125-verify-mixed-full-proof-py` |
+| `E-n043-wand125-mixed-69075-report` | 1 | lower-bound | reported | - | elsewhere | informally-verified | previously-published | producer’s code | `V-wand125-mixed-rotated-verify-cpp`, `V-wand125-verify-mixed-full-proof-py` |
+| `E-n044-wand125-mixed-69725-report` | 1 | lower-bound | reported | - | elsewhere | informally-verified | previously-published | producer’s code | `V-wand125-mixed-rotated-verify-cpp`, `V-wand125-verify-mixed-full-proof-py` |
+| `E-n051-wand125-mixed-747-report` | 1 | lower-bound | reported | - | elsewhere | informally-verified | previously-published | producer’s code | `V-wand125-mixed-rotated-verify-cpp`, `V-wand125-verify-mixed-full-proof-py` |
+| `E-n056-wand125-mixed-78025-report` | 1 | lower-bound | reported | - | elsewhere | informally-verified | previously-published | producer’s code | `V-wand125-mixed-rotated-verify-cpp`, `V-wand125-verify-mixed-full-proof-py` |
+| `E-n057-wand125-mixed-78725-report` | 1 | lower-bound | reported | - | elsewhere | informally-verified | previously-published | producer’s code | `V-wand125-mixed-rotated-verify-cpp`, `V-wand125-verify-mixed-full-proof-py` |
+| `E-n067-wand125-mixed-8475-report` | 1 | lower-bound | reported | - | elsewhere | informally-verified | previously-published | producer’s code | `V-wand125-mixed-rotated-verify-cpp`, `V-wand125-verify-mixed-full-proof-py` |
+| `E-n069-wand125-mixed-862-report` | 1 | lower-bound | reported | - | elsewhere | informally-verified | previously-published | producer’s code | `V-wand125-mixed-rotated-verify-cpp`, `V-wand125-verify-mixed-full-proof-py` |
+| `E-n072-wand125-mixed-876-report` | 1 | lower-bound | reported | - | elsewhere | informally-verified | previously-published | producer’s code | `V-wand125-mixed-rotated-verify-cpp`, `V-wand125-verify-mixed-full-proof-py` |
+| `E-n075-wand125-mixed-894-report` | 1 | lower-bound | reported | - | elsewhere | informally-verified | previously-published | producer’s code | `V-wand125-mixed-rotated-verify-cpp`, `V-wand125-verify-mixed-full-proof-py` |
+| `E-n084-wand125-mixed-94075-report` | 1 | lower-bound | reported | - | elsewhere | informally-verified | previously-published | producer’s code | `V-wand125-mixed-rotated-verify-cpp`, `V-wand125-verify-mixed-full-proof-py` |
+| `E-n086-wand125-mixed-9503-report` | 1 | lower-bound | reported | - | elsewhere | informally-verified | previously-published | producer’s code | `V-wand125-mixed-rotated-verify-cpp`, `V-wand125-verify-mixed-full-proof-py` |
+| `E-n088-wand125-mixed-96125-report` | 0 | lower-bound | reported | - | elsewhere | informally-verified | previously-published | producer’s code | `V-wand125-mixed-rotated-verify-cpp`, `V-wand125-verify-mixed-full-proof-py` |
+| `E-n093-wand125-mixed-988-report` | 1 | lower-bound | reported | - | elsewhere | informally-verified | previously-published | producer’s code | `V-wand125-mixed-rotated-verify-cpp`, `V-wand125-verify-mixed-full-proof-py` |
+| `E-n094-wand125-mixed-994-report` | 0 | lower-bound | reported | - | elsewhere | informally-verified | previously-published | producer’s code | `V-wand125-mixed-rotated-verify-cpp`, `V-wand125-verify-mixed-full-proof-py` |
+| `E-n095-wand125-mixed-9965-report` | 1 | lower-bound | reported | - | elsewhere | informally-verified | previously-published | producer’s code | `V-wand125-mixed-rotated-verify-cpp`, `V-wand125-verify-mixed-full-proof-py` |
+| `E-n053-wand125-mixed-76275-report` | 1 | lower-bound | reported | - | elsewhere | informally-verified | previously-published | producer’s code | `V-wand125-mixed-rotated-verify-cpp`, `V-wand125-verify-mixed-full-proof-py` |
+| `E-n054-wand125-mixed-7685-report` | 1 | lower-bound | reported | - | elsewhere | informally-verified | previously-published | producer’s code | `V-wand125-mixed-rotated-verify-cpp`, `V-wand125-verify-mixed-full-proof-py` |
+| `E-n058-wand125-mixed-7935-report` | 1 | lower-bound | reported | - | elsewhere | informally-verified | previously-published | producer’s code | `V-wand125-mixed-rotated-verify-cpp`, `V-wand125-verify-mixed-full-proof-py` |
+| `E-n070-wand125-mixed-86575-report` | 1 | lower-bound | reported | - | elsewhere | informally-verified | previously-published | producer’s code | `V-wand125-mixed-rotated-verify-cpp`, `V-wand125-verify-mixed-full-proof-py` |
+| `E-n071-wand125-mixed-8721-report` | 1 | lower-bound | reported | - | elsewhere | informally-verified | previously-published | producer’s code | `V-wand125-mixed-rotated-verify-cpp`, `V-wand125-verify-mixed-full-proof-py` |
+| `E-n073-wand125-mixed-8813-report` | 1 | lower-bound | reported | - | elsewhere | informally-verified | previously-published | producer’s code | `V-wand125-mixed-rotated-verify-cpp`, `V-wand125-verify-mixed-full-proof-py` |
+| `E-n076-wand125-mixed-8965-report` | 1 | lower-bound | reported | - | elsewhere | informally-verified | previously-published | producer’s code | `V-wand125-mixed-rotated-verify-cpp`, `V-wand125-verify-mixed-full-proof-py` |
+| `E-n087-wand125-mixed-958-report` | 1 | lower-bound | reported | - | elsewhere | informally-verified | previously-published | producer’s code | `V-wand125-mixed-rotated-verify-cpp`, `V-wand125-verify-mixed-full-proof-py` |
+| `E-n088-wand125-mixed-962-report` | 1 | lower-bound | reported | - | elsewhere | informally-verified | previously-published | producer’s code | `V-wand125-mixed-rotated-verify-cpp`, `V-wand125-verify-mixed-full-proof-py` |
+| `E-n090-wand125-mixed-973-report` | 1 | lower-bound | reported | - | elsewhere | informally-verified | previously-published | producer’s code | `V-wand125-mixed-rotated-verify-cpp`, `V-wand125-verify-mixed-full-proof-py` |
+| `E-n091-wand125-mixed-97625-report` | 1 | lower-bound | reported | - | elsewhere | informally-verified | previously-published | producer’s code | `V-wand125-mixed-rotated-verify-cpp`, `V-wand125-verify-mixed-full-proof-py` |
+| `E-n094-wand125-mixed-995-report` | 1 | lower-bound | reported | - | elsewhere | informally-verified | previously-published | producer’s code | `V-wand125-mixed-rotated-verify-cpp`, `V-wand125-verify-mixed-full-proof-py` |
 
 ## What the register rests on
 
-- **assurance**: numerically-checked 4, reported 95, verified 152
-- **method**: exact-algebraic 90, interval-certified 49, numerical-multiprecision 4, proof-assistant-checked 3, proof-audited 3, published-proof 7, reported 95
-- **novelty**: apparently-novel 40, common-knowledge 4, not assessed 13, previously-published 194
-- **relationship to the producer's code**: generator 5, independent-implementation 46, not-applicable 19, same-implementation 168, shared-components 7, unknown-historical 6
+- **assurance**: numerically-checked 4, reported 129, verified 155
+- **method**: exact-algebraic 92, interval-certified 50, numerical-multiprecision 4, proof-assistant-checked 3, proof-audited 3, published-proof 7, reported 129
+- **novelty**: apparently-novel 40, common-knowledge 4, not assessed 14, previously-published 230
+- **relationship to the producer's code**: generator 5, independent-implementation 48, not-applicable 19, same-implementation 203, shared-components 7, unknown-historical 6
 
 The `cases` column is how many frontier records cite each piece of evidence, and it is the reason to read this table rather than count records. Ranked below are the *formal* records only: a `reported` record cited across the frontier may be a shared catalogue and is labelled as such, which is the register working rather than risk. The risk is a verified claim resting on an argument nobody has examined.
 
@@ -336,8 +373,8 @@ The `n` column is what each covers and `cases` is how many frontier records cite
 | --- | ---: | --- | --- |
 | `E-basic-grid-upper` | 254 | here | - |
 | `E-karakus-strip-lower` | 203 | elsewhere | informally-verified |
-| `E-franciscouzo-2026-09-27-exact-replay` | 49 | here | - |
-| `E-franciscouzo-2026-09-27-interval-replay` | 49 | here | - |
+| `E-franciscouzo-2026-09-27-exact-replay` | 42 | here | - |
+| `E-franciscouzo-2026-09-27-interval-replay` | 42 | here | - |
 | `E-wand125-rectangle-2026-10-01-source-replay` | 29 | here | - |
 
 The most-cited argument this repository did not produce is `E-karakus-strip-lower`, carrying 203 frontier cases. It is an external proof, and it has been read here: its record carries the review, what was re-derived, and the four things that were not. The arithmetic is what picked it out for reading -- being cited this heavily is the reason to open an argument, not a reason to trust it.

@@ -61,6 +61,8 @@ COVERAGE = FRONTIER / "source-coverage.yaml"
 EVIDENCE = FRONTIER / "evidence.yaml"
 #: The acquisition record `devtools.upper_bound_packets` writes into a packet.
 ACQUISITION_FORMAT = "external-source-acquisition-v1"
+#: The disposition of the source whose values every case reports unless overridden.
+BASELINE_DISPOSITION = "baseline-current"
 
 #: Significant digits the exact-form reconciliation agrees to. The catalogue prints 14
 #: places, and a wrong radical usually agrees to the printed precision, so comparing at
@@ -378,6 +380,25 @@ def pending_intake_blocker(case: Mapping) -> Mapping | None:
     return None
 
 
+#: A bead alias as the records name one.
+BEAD_ALIAS = re.compile(r"think-[a-z0-9]{4}")
+_DATE = re.compile(r"\d{4}-\d{2}-\d{2}")
+
+
+def deferral_errors(entry: Mapping, where: str) -> list[str]:
+    """What a pending catalogue intake lacks to be owned: its bead and its date."""
+    bead, recorded = str(entry.get("bead") or ""), str(entry.get("recorded") or "")
+    errors: list[str] = []
+    if not BEAD_ALIAS.fullmatch(bead):
+        errors.append(
+            f"{where} names no bead ({bead or 'none'}); a deferral names the open bead "
+            "that owns the intake"
+        )
+    if not _DATE.fullmatch(recorded):
+        errors.append(f"{where} records no date ({recorded or 'none'}) it was deferred on")
+    return errors
+
+
 def pending_intake_errors(
     pending: Sequence[Mapping],
     current: Mapping[int, str],
@@ -395,6 +416,12 @@ def pending_intake_errors(
     `PENDING_INTAKE_MARKER` and the newer side, so the record itself says it trails the
     source; no record may carry that blocker undeclared. Once the intake lands the record
     reports the current side, and the declaration then fails here until it is removed.
+
+    A declaration is also a deferral, and a deferral is work: it names the bead that owns
+    the intake and the day it was recorded. The three declared on 2026-09-30 named no
+    bead, nothing listed them, and the record trailed the catalogue for five days until
+    the owner noticed. Whether the bead is still open is not a fact of the tree, so
+    `check_bead_tree` asks the bead store, and `devtools.intake_sweep` reports the age.
     """
     errors: list[str] = []
     seen: set[int] = set()
@@ -404,6 +431,7 @@ def pending_intake_errors(
         if n in seen:
             errors.append(f"{where} is declared twice")
         seen.add(n)
+        errors.extend(deferral_errors(entry, where))
         if entry["capture"] != INTAKE_CAPTURE_DATE:
             errors.append(
                 f"{where} names capture {entry['capture']}; the one retained earlier "
@@ -491,13 +519,21 @@ def selection_errors(
     baseline it replaces, and, where the source's claims are reparsed here, equal the
     side the source itself prints. A superseded report is a retained claim that a
     selected override at the same `n` beats: it must equal its own source's printed side
-    and exceed the override's. Every reparsed claim is then accounted for exactly once,
-    as a selected override, a superseded report, or a claim tracked beyond the corpus.
+    and exceed the override's. Where no override is selected the report may instead name
+    the catalogue baseline, which must then print a side below it -- what a later capture
+    of the catalogue does when it overtakes a release (`n = 69`, 2026-10-05, T-088). Every
+    reparsed claim is then accounted for exactly once, as a selected override, a
+    superseded report, or a claim tracked beyond the corpus.
     """
     errors: list[str] = []
     n_min = coverage["case_corpus"]["n_min"]
     n_max = coverage["case_corpus"]["n_max"]
     sources = {source["id"]: source for source in coverage["sources"]}
+    baselines = {
+        source["id"]
+        for source in coverage["sources"]
+        if source.get("disposition") == BASELINE_DISPOSITION
+    }
     overrides = {entry["n"]: entry for entry in coverage["selected_overrides"]}
     if len(overrides) != len(coverage["selected_overrides"]):
         errors.append("selected override n values are not unique")
@@ -535,7 +571,13 @@ def selection_errors(
         accounted.setdefault(source_id, set()).add(n)
         errors.extend(_claim_errors(where, source_id, n, entry["value"], claims))
         selected = overrides.get(n)
-        if selected is None or selected["source_id"] != entry["superseded_by"]:
+        if selected is None and entry["superseded_by"] in baselines:
+            # No override is selected, so the catalogue baseline is the case's report and
+            # what beat this claim: a later capture printing a smaller side.
+            printed = kingbird.get(n)
+            if printed is None or Decimal(printed) >= Decimal(entry["value"]):
+                errors.append(f"{where} is not beaten by the catalogue baseline {printed}")
+        elif selected is None or selected["source_id"] != entry["superseded_by"]:
             errors.append(f"{where} names {entry['superseded_by']}, not the selected source")
         elif Decimal(selected["value"]) >= Decimal(entry["value"]):
             errors.append(f"{where} is not beaten by the selected {selected['value']}")

@@ -174,6 +174,12 @@ surface, and only the unavoidably slow ones leave it, each on its own measuremen
 `OR-14` is why the surface is kept quick — a development cycle is never artificially
 slow, and its target is two to two and a half minutes.
 
+**Running an intake pass.** When the owner says “run the intake”, run `make intake` at
+the root and follow
+[result-import.md → Running an Intake Pass](packing/campaign/result-import.md#running-an-intake-pass).
+The sweep reads GitHub, the Kingbird catalogue and every watched repository over the
+network, so it runs on request and in no validation tier.
+
 ### The JavaScript and CSS floor
 
 **Biome owns browser formatting and general lint, type-aware ESLint owns the retained

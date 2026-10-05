@@ -399,7 +399,7 @@ body {
   color: inherit;
   position: relative;
   text-decoration: none;
-  transition: background-color var(--site-hover-duration) var(--site-hover-easing);
+  transition: var(--site-hover-transition);
 }
 .kpress button.site-card {
   background: none;
@@ -423,7 +423,7 @@ body {
   gap: 0;
   padding: 0;
   position: relative;
-  transition: background-color var(--site-hover-duration) var(--site-hover-easing);
+  transition: var(--site-hover-transition);
 }
 .kpress .site-card-footed > .site-card-main {
   color: inherit;
@@ -666,9 +666,7 @@ body {
   background: var(--site-scrim);
 }
 .site-popover .site-popover-close {
-  transition:
-    background-color var(--site-hover-duration) var(--site-hover-easing),
-    color var(--site-hover-duration) var(--site-hover-easing);
+  transition: var(--site-hover-transition);
   background: none;
   border: 0;
   color: var(--kpress-doc-muted);
@@ -772,7 +770,7 @@ body {
   gap: 0.5rem;
   padding: 0.45rem 0.9rem;
   text-decoration: none;
-  transition: background-color var(--site-hover-duration) var(--site-hover-easing);
+  transition: var(--site-hover-transition);
 }
 .kpress .site-popover a.site-popover-action::after,
 .kpress .site-action .site-icon-arrow {
@@ -1599,11 +1597,14 @@ body {
   color: var(--site-support-color);
 }
 
-/* Rows part on a light rule rather than KPress's zebra stripe, and wash on hover. After
-   the phone layout, which draws the same rule under each card. */
+/* Rows part on a light rule rather than KPress's zebra stripe, and wash on hover, the
+   wash easing in and out on the hover timing (site-nav.css, Motion), as it does on
+   focus and while the row's popover is open. After the phone layout, which draws the
+   same rule under each card. */
 .kpress .site-table tbody tr {
   background: none;
   border-block-end: 1px solid var(--kpress-doc-border);
+  transition: var(--site-hover-transition);
 }
 .kpress .site-table tbody tr:hover {
   background: var(--site-wash);
@@ -1835,7 +1836,7 @@ body {
   --site-ladders-line: calc(var(--site-font-size-note) * var(--site-ladders-leading));
   /* The rail holds a chip and nothing else, so it is the chip's own width. */
   --site-ladders-rail: 2.25rem;
-  --site-ladders-significance-rail: 3.6rem;
+  --site-ladders-significance-rail: 3.75rem;
   --site-ladders-gap: 0.75rem;
   /* The narrowest a description is ever set: `SHORT_MEANING_LINE` characters a line. */
   --site-ladders-meaning-min: 13.5rem;
@@ -1878,6 +1879,7 @@ body {
   font-weight: var(--site-font-weight-sans-medium);
   line-height: var(--paper-heading-leading);
   margin-block-end: 0.3rem;
+  transition: var(--site-hover-transition);
 }
 .kpress .site-ladders .site-ladders-name:is(:hover, :focus-visible) {
   color: var(--kpress-doc-accent);
@@ -1907,7 +1909,7 @@ body {
   text-align: center;
 }
 /* Significance's rungs are marks, not chips (`significance_mark`): its column's rail is
-   as wide as the widest, S5 and its five bars, so every description in it starts on one
+   as wide as the widest, S5 and its five bars (58.8 pixels at the note size), so every description in it starts on one
    line, as the chips' do. A mark stands as tall as a chip, the chip's line height and
    margin, so a rung of it is as tall as any other where it stands on a line of its own
    over its description, and its letters are level with its description's first line
@@ -1925,16 +1927,21 @@ body {
   block-size: calc(2 * var(--site-ladders-line));
   grid-area: meaning;
 }
-/* A rung with room, 17.85rem (the widest rail, significance's, the gap and the least
+/* A rung with room, 18rem (the widest rail, significance's, the gap and the least
    description): the chip in its rail and the description beside it, its first line
    level with the chip's letters, which the chip's own margin sets down. Every cell
    turns at that one width, so a row's rungs stay one height; at 16.5rem, the chips'
    rail's, a significance description was set 21.6 pixels short of its least and took
-   a third line (2026-10-03). */
-@container (inline-size >= 17.85rem) {
+   a third line (2026-10-03). The rail is at least its width and never narrower than
+   what stands in it: S5's mark, 58.8 pixels in the page's face, ran 1.2 past a 3.6rem
+   rail, and a wider face (65 pixels in the fallback, more in some system faces) ran it
+   into its description (the owner, 2026-10-05). */
+@container (inline-size >= 18rem) {
   .site-ladders-rung {
     align-items: start;
-    grid-template: "chip meaning" auto / var(--site-ladders-rail) minmax(0, 1fr);
+    grid-template-areas: "chip meaning";
+    grid-template-rows: auto;
+    grid-template-columns: minmax(var(--site-ladders-rail), max-content) minmax(0, 1fr);
   }
   .site-ladders-meaning {
     margin-block-start: 0.15rem;
@@ -1973,8 +1980,8 @@ body {
 
 /* The atlas grid: every case's known-best packing in a square cell, numbered beneath.
    It bleeds past the wide track as the window grows, up to 140rem, and its cells keep a
-   size that reads, so the row holds more cases the wider the screen: four on a phone,
-   eleven at 1280 pixels, seventeen at 1920 and twenty at 2560. A cell washes on hover
+   size that reads, so the row holds more cases the wider the screen: at Medium, four on
+   a phone, ten at 1280 pixels, sixteen at 1920 and twenty at 2560. A cell washes on hover
    like a card and opens the case popover (Case records, below). The wash is the cell's
    background,
    behind the drawing, and it is all that changes: every line keeps the page's ink. */
@@ -1988,6 +1995,11 @@ body {
      all 35 tiles of the eighteenth row stand on one line from a 1024-pixel window up. */
   --site-atlas-tile-min: 1.625rem;
   --site-atlas-tile-max: 4.5rem;
+  /* The grid's least cell at Medium, and the size's scale (overview/atlas-view.js reads
+     it): Small draws a tile two thirds as wide and Large half as wide again, in either
+     view. The block's `data-atlas-size` sets it, below. */
+  --site-atlas-cell-min: 6.4rem;
+  --site-atlas-scale: 1;
   /* The move between the views: one duration and one easing for every tile, read by
      the script. Reduced motion makes the switch instant, as it does every hover. */
   --site-atlas-move-duration: 360ms;
@@ -2008,10 +2020,19 @@ body {
     --site-atlas-move-duration: 0ms;
   }
 }
-/* The view tabs and the drawing tabs: two of the section tabs' strip (site-nav.css), on
+/* The three sizes of tile (think-ht8t): Medium is the scale of 1 above, the size the
+   atlas had before it offered a choice. */
+.site-page .site-atlas-grid[data-atlas-size="small"] {
+  --site-atlas-scale: 0.667;
+}
+.site-page .site-atlas-grid[data-atlas-size="large"] {
+  --site-atlas-scale: 1.5;
+}
+/* The view tabs and the size tabs: two of the section tabs' strip (site-nav.css), on
    the bar's line, so each is as tall here as under the bar. One row centred over the
-   tiles; on a narrow block the drawing tabs wrap under. Each is hidden until the script
-   has tiles to arrange. */
+   tiles, the key to a tile's marks on a line of its own under it; on a narrow block the
+   size tabs wrap under the view tabs. Each is hidden until the script has tiles to
+   arrange. */
 .site-atlas-grid .site-atlas-controls {
   display: flex;
   flex-wrap: wrap;
@@ -2020,29 +2041,65 @@ body {
   margin-block-end: var(--site-atlas-toggle-space);
 }
 .site-atlas-grid .site-atlas-views,
-.site-atlas-grid .site-atlas-layers {
+.site-atlas-grid .site-atlas-sizes {
   line-height: var(--site-nav-line);
   margin: 0;
 }
 .site-atlas-grid .site-atlas-views[hidden],
-.site-atlas-grid .site-atlas-layers[hidden] {
+.site-atlas-grid .site-atlas-sizes[hidden],
+.site-atlas-grid .site-atlas-legend[hidden] {
   display: none;
+}
+/* The key: each mark beside its words, in the support colour at the note size, as the
+   tables of results key their star (`.site-rung-legend`), centred on a line of its own
+   under the tabs. */
+.kpress .site-atlas-grid .site-atlas-legend {
+  color: var(--site-support-color);
+  column-gap: 1.2rem;
+  display: flex;
+  flex-basis: 100%;
+  flex-wrap: wrap;
+  font-family: var(--kpress-font-sans);
+  font-size: var(--site-font-size-note);
+  font-weight: var(--site-font-weight-sans-light);
+  justify-content: center;
+  margin: 0;
+  row-gap: 0.3rem;
+}
+.site-atlas-legend-item {
+  align-items: center;
+  display: inline-flex;
+  gap: 0.3rem;
 }
 /* The two custom properties are the triangle's (below); they are declared here, in the
    rule both views share, because every line of every drawing inherits them, and a
    declaration for the triangle alone would have the browser restyle all of those, some
-   three thousand elements, at each change of view. */
+   three thousand elements, at each change of view. A tile is its line's share of the
+   block, no wider than the most a tile may be, both scaled by the size: Small draws it
+   two thirds as wide, never under the least tile, and Large lets it grow to half as wide
+   again, the script having set fewer to a line. At Medium it is the share alone, no
+   wider than `--site-atlas-tile-max`. The grid's least cell is scaled the same way. */
 .site-atlas-cells {
-  --site-atlas-tile: min(var(--site-atlas-tile-max), calc(100cqi / var(--site-atlas-per-line, 1)));
+  --site-atlas-fit: calc(100cqi / var(--site-atlas-per-line, 1));
+  --site-atlas-share: calc(var(--site-atlas-fit) * min(1, var(--site-atlas-scale)));
+  --site-atlas-most: calc(var(--site-atlas-tile-max) * var(--site-atlas-scale));
+  --site-atlas-tile: clamp(
+    var(--site-atlas-tile-min),
+    var(--site-atlas-share),
+    var(--site-atlas-most)
+  );
+  --site-atlas-cell: calc(var(--site-atlas-cell-min) * var(--site-atlas-scale));
   --site-atlas-row-space: 0.12;
   display: grid;
   gap: 0.5rem;
-  grid-template-columns: repeat(auto-fill, minmax(6.4rem, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(var(--site-atlas-cell), 1fr));
 }
 @media (max-width: 40rem) {
+  .site-page .site-atlas-grid {
+    --site-atlas-cell-min: 4.6rem;
+  }
   .site-atlas-cells {
     gap: 0.35rem;
-    grid-template-columns: repeat(auto-fill, minmax(4.6rem, 1fr));
   }
 }
 /* A tile in a move between the views is scaled about its own corner, which is where the
@@ -2055,7 +2112,7 @@ body {
   text-align: center;
   text-decoration: none;
   transform-origin: 0 0;
-  transition: background-color var(--site-hover-duration) var(--site-hover-easing);
+  transition: var(--site-hover-transition);
 }
 .kpress .site-atlas-cell:is(:hover, :focus-visible) {
   background: var(--site-wash);
@@ -2072,6 +2129,8 @@ body {
   height: auto;
   width: 100%;
 }
+/* The number's box is shrunk to the number and centred, so the marks it carries can
+   hang outside it (below) and the number stand where it would without them. */
 .site-atlas-n {
   color: var(--kpress-doc-muted);
   display: block;
@@ -2079,7 +2138,10 @@ body {
   font-size: 0.8rem;
   font-variant-numeric: tabular-nums;
   font-weight: var(--site-font-weight-sans-light);
+  inline-size: fit-content;
   margin-block-start: 0.2rem;
+  margin-inline: auto;
+  position: relative;
 }
 /* Nothing in the atlas transitions its place: the move between the views is the
    script's (overview/atlas-view.js), and the layout a view sets must be the whole of it
@@ -2154,27 +2216,32 @@ body {
   display: none;
 }
 /* The regularized drawing's badge (overview_sections.atlas_layer_mark): a dot in the
-   accent, sized in its text. The Regularized tab carries it before its word, so the tab
-   is the key; a regularized tile hangs it past its number, out of the flow, so the
-   number stays centred as on every other tile. */
+   accent, sized in its text. The atlas's key carries it before its words; a regularized
+   tile hangs it before its number, out of the flow, so the number stays centred as on
+   every other tile. It hung past the number until the new-result star took that side
+   on 2026-10-04 (think-wwtt), and the Regularized tab was its key until then. */
 .site-atlas-layer-mark {
   background: var(--kpress-doc-accent);
   block-size: 0.5em;
   border-radius: 50%;
   display: inline-block;
   inline-size: 0.5em;
-  margin-inline-end: 0.45em;
   vertical-align: 0.08em;
-}
-.site-atlas-cell[data-atlas-layer="regularized"] .site-atlas-n {
-  inline-size: fit-content;
-  margin-inline: auto;
-  position: relative;
 }
 .site-atlas-n > .site-atlas-layer-mark {
   inset-block-start: 50%;
-  inset-inline-start: calc(100% + 0.3em);
-  margin: 0;
+  inset-inline-end: calc(100% + 0.3em);
+  position: absolute;
+  translate: 0 -50%;
+}
+/* A new result's star (overview_sections.atlas_star), the site's one star in its warm
+   ink (`.site-star`), hung past the number's end, out of the flow, a little smaller
+   than the number so it stays inside the smallest tile. */
+.site-atlas-n > .site-star {
+  font-size: 0.8em;
+  inset-block-start: 50%;
+  inset-inline-start: calc(100% + 0.12em);
+  line-height: 1;
   position: absolute;
   translate: 0 -50%;
 }
@@ -2434,6 +2501,9 @@ body {
   background: var(--kpress-doc-bg);
   float: inline-end;
   inset-block-start: var(--site-popover-close-inset);
+  /* Held at the top alone: the card's `inset-inline-end`, read by a sticky box as a
+     second limit, set it a padding's width in from the corner, over the steps. */
+  inset-inline-end: auto;
   margin-block-start: calc(var(--site-popover-close-inset) - var(--site-popover-pad));
   margin-inline-end: calc(var(--site-popover-close-inset) - var(--site-popover-pad));
   position: sticky;
@@ -2456,6 +2526,10 @@ body {
     inline-size: calc(100vw - 1rem);
     padding-inline: 0.75rem;
   }
+  /* Its cross keeps to that narrower padding, as its steps do (below). */
+  .site-popover.site-case-pop .site-popover-close {
+    margin-inline-end: calc(var(--site-popover-close-inset) - 0.75rem);
+  }
   .site-popover.site-case-pop:popover-open {
     max-block-size: calc(100dvh - 1rem);
   }
@@ -2471,6 +2545,21 @@ body {
   gap: 1rem;
   justify-content: space-between;
   margin-block-end: 1rem;
+}
+/* The record's steps are the first line the cross stands beside once it is held at the
+   corner, so they keep clear of it as the label above them does: the next case's link
+   ended under the cross (`think-0dxa`). */
+.site-case-pop .site-case-steps {
+  padding-inline-end: calc(
+    var(--site-popover-close) +
+    var(--site-popover-close-inset) -
+    var(--site-popover-pad)
+  );
+}
+@media (max-width: 40rem) {
+  .site-case-pop .site-case-steps {
+    padding-inline-end: calc(var(--site-popover-close) + var(--site-popover-close-inset) - 0.75rem);
+  }
 }
 .kpress .site-case-title {
   font-size: calc(var(--site-font-size-sans-base) * 1.6);
@@ -2500,10 +2589,14 @@ body {
   inline-size: min(28rem, 100%);
   margin: 0;
 }
-/* In the popover the drawing is a little smaller than on the record's page, so the
-   number line under it is in view when the popover opens on a laptop's window. */
+/* In the popover the drawing fills the panel's width and grows and shrinks with it,
+   square at every width (the owner, 2026-10-04, `think-u214`), and is never taller than
+   the panel shows at once: the panel's height less 8rem, room for the caption (2rem) and
+   the actions held at its foot (5rem), so the whole square can be seen without the
+   actions covering its foot. At 1280 by 800 that is 608px of the panel's 934; a tablet
+   or a phone, taller than it is wide, keeps the full width. */
 .site-case-pop .site-case-figure {
-  inline-size: min(24rem, 100%);
+  inline-size: min(100%, var(--site-popover-max-block) - 8rem);
 }
 .site-case-summary-facts {
   font-family: var(--kpress-font-sans);
@@ -2518,11 +2611,36 @@ body {
 .site-case-summary .site-atlas-gap-values span[data-anchor="start"] {
   transform: translateX(0.3rem);
 }
-.site-case-figure svg {
+/* The drawing is the figure's own `svg`. A caption's typeset math draws a radical as an
+   `svg` of its own, which KaTeX sizes; sized as the drawing, it collapsed to nothing,
+   and a side such as 3 + ½√2 read as 3 + ½ 2. */
+.site-case-figure > svg {
   block-size: auto;
   color: var(--kpress-doc-text);
   display: block;
   inline-size: 100%;
+}
+/* The drawing's lines are as heavy as the drawing draws them up to 12rem across, and no
+   heavier however large it is shown (`think-pkz0`). The drawing strokes its frame 1.2
+   and each square's outline 0.6 of the 102 units its box is wide
+   (`render_frontier_page.packing_svg`), so those lines scale with it: the popover's
+   drawing, 58rem across on a laptop, drew them 11 and 5.5 pixels heavy, and even at
+   24rem a zoomed drawing read as heavy-lined (the owner, 2026-10-05). Here they are
+   drawn in the page's own units instead (`non-scaling-stroke`), at the same share of the
+   drawing's width (`100cqi`, the figure's) up to 12rem, 2.3 and 1.1 pixels from there
+   up, so a smaller drawing keeps its lines as they were. */
+.site-case-figure {
+  --site-case-figure-lines: min(100cqi, 12rem);
+  container-type: inline-size;
+}
+.site-case-figure > svg :is(rect, path) {
+  vector-effect: non-scaling-stroke;
+}
+.site-case-figure > svg > rect {
+  stroke-width: calc(var(--site-case-figure-lines) * 1.2 / 102);
+}
+.site-case-figure > svg path {
+  stroke-width: calc(var(--site-case-figure-lines) * 0.6 / 102);
 }
 .site-case-figure figcaption {
   color: var(--site-support-color);
@@ -2682,7 +2800,7 @@ body {
   color: var(--kpress-doc-muted);
   padding-block: 0.2rem;
   text-align: center;
-  transition: background-color var(--site-hover-duration) var(--site-hover-easing);
+  transition: var(--site-hover-transition);
 }
 .kpress .site-case-index a[data-status="proved"] {
   color: var(--kpress-doc-accent);
@@ -2721,6 +2839,7 @@ body {
 }
 .kpress .kpress-toc a {
   border-left: 0;
+  transition: var(--site-hover-transition);
 }
 .kpress .kpress-toc a:hover {
   background: none;

@@ -5,7 +5,7 @@ title: "Address PR #336 Review A maintenance"
 kind: chore
 status: closed
 priority: 2
-version: 8
+version: 9
 delegate: graph_gate
 labels: []
 dependencies: []
@@ -18,7 +18,7 @@ child_order_hints:
 hold: null
 hold_until: null
 created_at: 2026-10-05T00:27:07.806Z
-updated_at: 2026-10-05T02:56:32.815Z
+updated_at: 2026-10-05T05:23:30.324Z
 started_at: 2026-10-05T02:30:53.134Z
 closed_at: 2026-10-05T02:56:32.814Z
 close_reason: All five Review A findings fixed and dispositions posted. Exact 49613a52f hosted native and required checks PASS. Maintenance scope complete; research paused, no active executor or follow-up reserved.
@@ -26,3 +26,7 @@ resolution: null
 duplicate_of: null
 ---
 All formal Review A findings: https://github.com/jlevy/squares/pull/336#pullrequestreview-5408660754. Maintenance only; research paused. Sole graph_gate executor, root critical review. No merge, new mathematical target or parent rewrite.
+
+## Notes
+
+Claude follow-up 2026-10-05: merged main 6dbd6f69e (2c4d5ee0e), then 24d3d98f7, 1fcb74fdf and 058434d09 (test renamed to test_windows_supervision.py to clear the suite-file shard-4 threshold; re-record tracked as think-skka). CI is green at 058434d09.

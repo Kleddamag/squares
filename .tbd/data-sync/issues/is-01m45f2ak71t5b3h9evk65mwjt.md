@@ -1,0 +1,20 @@
+---
+type: is
+id: is-01m45f2ak71t5b3h9evk65mwjt
+title: "Address PR #355 Review B (round 1)"
+kind: chore
+status: open
+priority: 1
+version: 5
+labels: []
+dependencies: []
+parent_id: is-01m456snzxb4mjvrjh0amapqg3
+child_order_hints:
+  - is-01m45f2cc9keebdd7yjqd81wtg
+  - is-01m45f2e4gfdbfes9wrkym98kx
+  - is-01m45f2g48tjwvnn9ryb7vj3kv
+  - is-01m45f2j0g3abnn6dv6ah45391
+created_at: 2026-10-05T07:22:19.623Z
+updated_at: 2026-10-05T07:22:27.215Z
+---
+Review B (senior, round 1) on jlevy/squares#355 (raw residual supports layer of stack 357, rebuild of #333), pinned to head 018ee13c5: https://github.com/jlevy/squares/pull/355#pullrequestreview-5411026555. Verdict: approve after B1 and B2, once CI is green. Review A on #333 holds A1-A9. Findings: B1 provenance commits resolve only from guzhou/review-a-backup-333 (child); B2 Sessions 170-172 merge uncertified (think-q0z7); B3 stale sentence in n17-diagnostics.md (child); B4 'independent' for a same-implementation replay (child); B5 body Validation (child). CI: think-umlx. The layer is a draft PR and must be marked ready before the stack merges. Closes when every finding is closed and the dispositions reply is posted.

@@ -5,7 +5,7 @@ title: "N17 Session169: profile and bound obsolete producer PartnerMemo generati
 kind: task
 status: open
 priority: 1
-version: 8
+version: 10
 spec_path: docs/project/reviews/review-2026-10-02-n17-bulk-exclusion-design.md
 assignee: Guzhou0806
 delegate: null
@@ -15,7 +15,7 @@ parent_id: is-01m3xkd6zmq1jqwtn628h2k7zy
 hold: paused
 hold_until: null
 created_at: 2026-10-03T20:49:44.645Z
-updated_at: 2026-10-05T02:53:20.382Z
+updated_at: 2026-10-05T07:24:34.028Z
 started_at: 2026-10-03T20:50:09.807Z
 ---
 Own only Session 169's bounded W3/W10 decision and W5 PartnerMemo lifecycle profile on PR 307 head 234a07f4e22edb3b8e4074356236e4137b1ec19d, branch guzhou/n17-p01-partner-memo. Operator Guzhou0806-Codex-T0; one primary executor after the user's token-budget addendum.
@@ -49,3 +49,5 @@ Disposition: PR325 review/merge tracking ONLY; retain this bead open until merge
 
 Historical notes (retained verbatim):
 Final scoped delivery complete. PR325 head d1c1a778c: all reported CI checks terminal, no failures; packing-required/pages-required/merges-into-main SUCCESS.83 targeted current-parent tests pass. Await review/merge; bead intentionally remains open until merge. Session169 administrative closeout preserves parent coordinator think-tmz6. Our layer adds evidence/instrument/regression, no producer or verifier edits versus601bbf110. No active worker, Session B, background computation or merge.
+
+2026-10-05 07:30 UTC (bead bookkeeper, stack 357). #325 was closed at 07:02 UTC, replaced by jlevy/squares#354 (branch claude/n17-producer-memo, rebuild onto #347 by think-i45l, Guzhou0806's five research commits keep their authorship). Session 180 is certified on the rebuilt history (hosted fast pass at a11029e56, run 37266352906 attempt 3). This bead's until-merge condition now refers to #354, which merges with stack 357. Review B on #354 (https://github.com/jlevy/squares/pull/354#pullrequestreview-5411026306) is tracked by think-qh0i. Status, hold and delegate left as Guzhou set them.

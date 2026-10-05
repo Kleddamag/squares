@@ -3,9 +3,9 @@ type: is
 id: is-01m44qa14eqdx6d5mhrxjhr7fs
 title: "PR #333 A8 (Low): a repo-wide re-record inside a research layer."
 kind: task
-status: in_progress
+status: closed
 priority: 2
-version: 2
+version: 3
 delegate: graph_gate
 labels: []
 dependencies: []
@@ -13,8 +13,12 @@ parent_id: is-01m44q9st2e0jh0h0cztp6hnv8
 hold: null
 hold_until: null
 created_at: 2026-10-05T00:27:06.253Z
-updated_at: 2026-10-05T00:54:30.345Z
+updated_at: 2026-10-05T02:29:02.383Z
 started_at: 2026-10-05T00:54:30.345Z
+closed_at: 2026-10-05T02:29:02.382Z
+close_reason: Review A delivered in PR333/351/352; focused controls and source/pages gates pass; inherited parent merge conflict explicitly tracked by open think-q0z7, no active executor or reserved follow-up.
+resolution: null
+duplicate_of: null
 ---
 https://github.com/jlevy/squares/pull/333#pullrequestreview-5408660716
 

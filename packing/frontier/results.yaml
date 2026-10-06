@@ -316,11 +316,11 @@ results:
   - id: T-007
     kind: lower-bound
     registered: '2026-08-31'
-    headline: "`s(n) ≥ min(⌈√n⌉, √(n - 2⌊√n⌋ + 1) + 1)` for `4 ≤ n ≤ 100`"
+    headline: "`s(n) ≥ min(⌈√n⌉, √(n - 2⌊√n⌋ + 1) + 1)` for `4 ≤ n ≤ 324`"
     claim: >-
-      For every integer 4 <= N <= 100, Nagamochi 2005, Theorem 2 gives
+      For every integer 4 <= N <= 324, Nagamochi 2005, Theorem 2 gives
       s(N) >= min(ceil(sqrt(N)), sqrt(N - 2*floor(sqrt(N)) + 1) + 1).
-    scope: {n_min: 4, n_max: 100}
+    scope: {n_min: 4, n_max: 324}
     verification: V0
     confirmation: C1
     significance:
@@ -379,6 +379,13 @@ results:
       T-074, T-075, T-076 at n = 82 and, at n = 101 to 105, T-080), the mixed covers proving s(59), s(60), s(61) = 8 and s(77), s(78) = 9 (T-062, T-063,
       T-066, T-067), and the s(k^2 - 3) = k family (T-064). None of them rests on this
       result.
+
+      2026-10-06: the scope, headline and claim widened from 4 <= N <= 100 to
+      4 <= N <= 324, the cases this record holds, which is the scope of its one evidence
+      entry, E-nagamochi-lower. Every case record from n = 101 cites that entry, 165 of
+      them for their reported lower bound, and 203 of their verified floors are tagged as
+      correcting it, while the entry named none of those cases. The theorem and the
+      defect are unchanged, and so are the rungs and the incomplete status.
 
   - id: T-008
     kind: optimality

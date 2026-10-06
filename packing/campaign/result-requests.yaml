@@ -96,6 +96,19 @@ issues:
         reported:
           - result: exact-optima-48
           - result: certificates-273
+      - url: https://github.com/jlevy/squares/issues/375#issuecomment-6007913483
+        date: '2026-10-06'
+        by: jlevy
+        kind: confirmation
+        reported:
+          - result: exact-optima-48
+            id: T-098
+            verification: V3
+            confirmation: C3
+            status: confirmed
+          - result: certificates-273
+          - result: kkt-local-minima
+          - result: n17-certificate
     close_when: >-
       T-098 is merged and the reply from main says what was registered, replayed and
       reviewed; the n = 17 certificate is taken up or declined with the n = 17 work.

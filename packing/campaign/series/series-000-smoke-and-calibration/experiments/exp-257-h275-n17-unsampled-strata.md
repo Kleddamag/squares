@@ -113,6 +113,17 @@ experiment:
     checked_by: The run (receipts/U/kernel-u6-bc428.json) returns PASS_CERTIFIED_STALL in 2,009 s of wall and 1,863 s of
       process CPU, the producer at a fixed point after 15 rounds (255 steps, 17,152 rows, finest 1/128),
       inside its ceiling. A non-closure; its node is kept.
+  - shape: determination
+    role: outcome
+    question: Is draw 7 (mask 5959674, stratum c<=2/i4/d6) infeasible at U, by a certificate the kernel's checker
+      accepts and the standing verifier re-proves in full?
+    outcome: criterion_met
+    checked_by: The run (receipts/U/kernel-u7-bc428.json) returns PASS_CERTIFIED_CLOSED in 1,606 s of wall and 1,475 s
+      of process CPU (producer 790 s, checker 812 s) on 79 steps and 5,248 rows in 5 rounds, rows finest at
+      1/128, closure all_parent_poses_forbidden for side-N2 at step 78. The standing verifier at cebb5d15a
+      passes it in full mode in 714 s, checking all 5,160 live rows in full and 16,556 collision regions by
+      93,568,844 exact facet checks. It excludes its own 8 states, one orbit; the certified census after it is
+      36,948 states in 4,706 orbits.
   verdict:
     decision: in-progress
     primary_criterion: The fraction of the frozen states the kernel excludes under SW9's recipe within the 7,000 s
@@ -154,6 +165,7 @@ reported as not run.
 | 5 | c<=2/i>=5/d6 | 3931626 | closed, 4 rounds, admitted | 1,135 s | full pass, 563 s |
 | 1 | c3/i<=3/d2 (d2) | 1900509 | incomplete at 7,001 s | 6,101 s | — |
 | 6 | c4/i4/d>=8 | 5491711 | fixed point after 15 rounds, not closed | 1,863 s | — |
+| 7 | c<=2/i4/d6 | 5959674 | closed, 5 rounds, admitted | 1,475 s | full pass, 714 s |
 
 <!-- This document follows common-doc-guidelines.md.
 See github.com/jlevy/practical-prose and review guidelines before editing.

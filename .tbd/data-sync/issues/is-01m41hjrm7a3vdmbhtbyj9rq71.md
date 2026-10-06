@@ -5,7 +5,7 @@ title: "Import wand125's 22 certificates posted on #282 on 3 October (mixed_n95_
 kind: task
 status: in_progress
 priority: 1
-version: 7
+version: 8
 delegate: claude-code@vm
 labels:
   - result-import
@@ -14,7 +14,7 @@ parent_id: is-01m41csdc2gp36ry5p6n7c2x2y
 hold: null
 hold_until: null
 created_at: 2026-10-03T18:49:17.703Z
-updated_at: 2026-10-06T09:33:11.982Z
+updated_at: 2026-10-06T15:07:17.342Z
 started_at: 2026-10-06T07:50:57.086Z
 ---
 Found by the final-reply lane: check_requests --github lists 22 comments on #282 after 2 Oct 15:16 UTC carrying new mixed rectangle-measure certificates. None is retained, reviewed or registered. Runbook stages 1-3 (retain, preflight, blind review, register at V0), then replay runners as for T-075. Also check whether their Green comparisons use proper upper enclosures (audit finding MX-2/AF-1). #282 stays open for these.
@@ -26,3 +26,5 @@ Found by the final-reply lane: check_requests --github lists 22 comments on #282
 2026-10-06 07:50Z lane R4 of think-wyf4 (worktree squares-lanes/r4, branch claude/ecstatic-pascal-pothtx-r4 from ebf232767): owner released the hold under think-3ok2. None of T-082's 22 or T-090's 16 is in the 149-certificate census (census-mixed has none from the 10-03 or 10-04 packets), so all 38 need sqverify-fast rows. Built sqverify-fast at main's reviewed crate source d97758bb (binary 567a0fd5, rustc 1.98.0), the binary of T-099/T-100. Running the census then --control, one certificate at a time, largest verified-bound gain first: T-090's 16 (12 with a gain, n = 93, 57, 51, 86, 75, 72, 69, 42, 44, 43, 56, 95; then n = 84, 67, 88, 94, dominated by T-094 and T-091). 1 thread while process group 8378 runs, then 2.
 
 2026-10-06 09:45Z lane R4: n93_L988 (1,317 CPU-s) and n57_L78725 (1,816 CPU-s) VERIFIED with controls refused, at 1 thread on a host at load 11-18 (~0.5 core). Coordinator decision: finish T-090's 16 whole (no split), go to 2 threads once PG 8378 exits or load5 < 8; then T-082's 22 on the same branch (no longer a priced remainder). Queue after n51: the other 13 of T-090, then T-082's 22, gain first (n89, n74, n55, n52, n96, n92, then the 16 dominated by T-090/T-091). Also done: T-075's six afternoon certificates got controls and independent replay entries (2bda0d5a4, b3e917247, re-pin b2d94b082); the census tool states a row's own threads (5f8d9994f).
+
+2026-10-06 15:30Z lane R4: T-090 exit committed on claude/ecstatic-pascal-pothtx-r4: be3364eab census (16/16 VERIFIED, controls refused, 26,382 CPU-s), 794a2d123 records (T-090 V3/C3; verified lower bound moves at n = 42, 43, 44, 51, 56, 57, 69, 72, 75, 86, 93, 95 and 96), ec173e301 re-pin, 65a8dcbce tests. T-082's 22 now running (started 15:00Z with n89, gain first), same rules.

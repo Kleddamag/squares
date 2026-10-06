@@ -315,6 +315,14 @@ def runs_code(entry: Mapping[str, Any]) -> bool:
     return method in _CODE_METHODS or bool(entry.get("replay"))
 
 
+#: Who ran a third party's check that this repository holds only as their report: its
+#: origin is `external`, not `independently-external`, so it confirms nothing here. Until
+#: 2026-10-06 it read "a third party's run", and the line in `RESULTS.md` went on to say
+#: how the third party's code stood to the producer's, "independently re-implemented",
+#: the words a confirmed result's mark uses (`E-k2m4-wand125-validtilt9-report`, T-081).
+THIRD_PARTY_REPORT = "reported by a third party, not replayed here"
+
+
 def run_label(entry: Mapping[str, Any]) -> str:
     """Who ran an entry's verification, in a few words."""
     labels = {
@@ -325,7 +333,7 @@ def run_label(entry: Mapping[str, Any]) -> str:
     if (origin := entry.get("origin")) in labels:
         return labels[str(origin)]
     if entry.get("performed_by") == "independent-external":
-        return f"a third party{APOSTROPHE}s run"
+        return THIRD_PARTY_REPORT
     if (entry.get("method") or entry.get("reported_method")) in _PROOFS:
         return "a published proof"
     return f"the source{APOSTROPHE}s own run"
@@ -348,11 +356,11 @@ def programs_text(entry: Mapping[str, Any], verifiers: Mapping[str, Verifier]) -
 
 def entry_line(entry: Mapping[str, Any], verifiers: Mapping[str, Verifier]) -> str:
     """One evidence entry's verification code in a line: who ran it, how its code stands
-    to the producer's where anything ran beyond the source's own run, and its programs."""
+    to the producer's where a confirming run went beyond the source's own, and its
+    programs. A third party's run held only as their report confirms nothing here, so
+    its line names no relation, whose labels are the words a confirmation is read in
+    (`THIRD_PARTY_REPORT`); `VERIFIERS.md` keeps its code relation in a column of its own."""
     relation = entry.get("relationship_to_generator")
-    beyond = (
-        entry.get("origin") in CONFIRMING_ORIGINS
-        or entry.get("performed_by") == "independent-external"
-    )
+    beyond = entry.get("origin") in CONFIRMING_ORIGINS
     how = f", {LABELS[str(relation)]}" if beyond and relation in RANK else ""
     return f"`{entry['id']}`, {run_label(entry)}{how}: {programs_text(entry, verifiers)}"

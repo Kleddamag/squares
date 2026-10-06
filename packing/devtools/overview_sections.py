@@ -16,7 +16,7 @@ import itertools
 import math
 import re
 import textwrap
-from collections.abc import Iterable, Sequence
+from collections.abc import Collection, Iterable, Sequence
 from datetime import date, timedelta
 from functools import cache
 from html.parser import HTMLParser
@@ -48,7 +48,7 @@ from devtools.render_overview import (
     paper_path,
 )
 from devtools.render_overview import PAPERS as SERIES
-from devtools.render_recent_results import SUPERSEDED, listed, superseded
+from devtools.render_recent_results import REPORTED_MARK, SUPERSEDED, listed, superseded
 from devtools.repo_links import branch_file
 from devtools.result_status import CONFIRMED, STATUSES
 from sqpack.yamlio import safe_load
@@ -1352,6 +1352,13 @@ def rung_chips(result: Result) -> str:
     return f"{significance_mark(level, rung_meanings()[f'S{level}'])} {ladder_chips(result)}"
 
 
+def superseder_link(other: str, reported: Collection[str]) -> str:
+    """A superseding result as a mark names it: a link to its row, followed where it is a
+    report no replay has confirmed by `(reported)` (`Supersession.named`)."""
+    link = f'<a href="{_esc(result_url(other))}">{_esc(other)}</a>'
+    return f"{link} {REPORTED_MARK}" if other in reported else link
+
+
 def supersession_marks(result: Result) -> str:
     """Whether a result is superseded, and by what, as its status line ends: `superseded`
     where it is (`is_superseded`), then `superseded in part` where a later result implies
@@ -1368,7 +1375,7 @@ def supersession_marks(result: Result) -> str:
     standing, `data-standing="superseded-in-part"`, and its row stays current."""
     marks = []
     for mark in result.supersessions:
-        links = [f'<a href="{_esc(result_url(other))}">{_esc(other)}</a>' for other in mark.by]
+        links = [superseder_link(other, mark.reported) for other in mark.by]
         extent = _esc(mark.mark.removeprefix(SUPERSEDED).strip())
         after = " ".join(filter(None, (extent, f"by {listed(links)}" if links else "")))
         quiet = f' <span class="site-cell-quiet">{after}</span>' if after else ""

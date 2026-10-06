@@ -168,6 +168,13 @@ experiment:
       passes it in full mode in 562 s, checking all 4,468 live rows in full and 14,254 collision regions by
       78,128,736 exact facet checks. It excludes its own 8 states, one orbit; the certified census after it is
       36,916 states in 4,702 orbits.
+  - shape: determination
+    role: outcome
+    question: Is draw 12 (mask 2818035, stratum c<=2/i<=3/d6) excluded within the 7,000 s ceiling?
+    outcome: criterion_missed
+    checked_by: The run (receipts/U/kernel-u12-bc428.json) returns PASS_CERTIFIED_STALL in 1,681 s of wall and 1,597 s
+      of process CPU, the producer at a fixed point after 6 rounds (102 steps, 6,784 rows, finest 1/128),
+      inside its ceiling. A non-closure; its node is kept.
   verdict:
     decision: in-progress
     primary_criterion: The fraction of the frozen states the kernel excludes under SW9's recipe within the 7,000 s
@@ -214,6 +221,7 @@ reported as not run.
 | 10 | c3/i>=5/d>=8 | 5996459 | closed, 2 rounds, admitted | 581 s | full pass, 322 s |
 | 9 | c<=2/i4/d>=8 | 5931001 | closed, 5 rounds, admitted | 1,264 s | full pass, 574 s |
 | 11 | c<=2/i4/d4 | 3079158 | closed, 4 rounds, admitted | 1,199 s | full pass, 562 s |
+| 12 | c<=2/i<=3/d6 | 2818035 | fixed point after 6 rounds, not closed | 1,597 s | — |
 
 <!-- This document follows common-doc-guidelines.md.
 See github.com/jlevy/practical-prose and review guidelines before editing.

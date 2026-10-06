@@ -534,18 +534,18 @@ Ranked by gap—the best-known packing minus the verified lower bound, which is 
 | $n$ | gap | record | note |
 | --- | --- | --- | --- |
 | 17 | 0.0151 | Bidwell | carried to $\frac{18641771}{4000000}$ by Guzhou0806 after Kleddamag |
-| 12 | 0.0298 | grid | $4^2 - 4$, carried to $\frac{15680000}{3949423}$ by Levy after Daniel |
-| 31 | 0.0475 | grid | $6^2 - 5$, carried to $\frac{2381}{400}$ by wand125 after Tokoharu |
-| 44 | 0.0575 | grid | $7^2 - 5$, carried to $\frac{2777}{400}$ by wand125 after Tokoharu |
-| 76 | 0.0600 | grid | $9^2 - 5$, carried to $\frac{447}{50}$ by wand125 after Tokoharu |
+| 44 | 0.0275 | grid | $7^2 - 5$, carried to $\frac{2789}{400}$ by wand125 after Tokoharu |
+| 12 | 0.0285 | grid | $4^2 - 4$, carried to $\frac{7943}{2000}$ by squarepacker after Daniel |
+| 76 | 0.0350 | grid | $9^2 - 5$, carried to $\frac{1793}{200}$ by wand125 after Tokoharu |
+| 95 | 0.0350 | grid | $10^2 - 5$, carried to $\frac{1993}{200}$ by wand125 after Tokoharu |
 
 The $n = 17$ bound is Guzhou0806 / N17 project’s R068, continuing Kleddamag’s charge
 (Kleddamag building on Squares Project (Joshua Levy), Mira and Guzhou0806): an exact
 weighted-certificate proof over 4,991 orientation intervals.
-The first two moved in September 2026 on third-party weighted certificates, and the
-$k^2 - 4$ family now has three solved members above $k = 3$: $s(21) = 5$, $s(32) = 6$
-and $s(45) = 7$, proved by Evan Daniel on the same method’s zero-margin form, the first
-and third with mass on the grid lines as well as on points.
+$n = 17$ and $n = 12$ moved in September 2026 on third-party weighted certificates, and
+the $k^2 - 4$ family now has three solved members above $k = 3$: $s(21) = 5$,
+$s(32) = 6$ and $s(45) = 7$, proved by Evan Daniel on the same method’s zero-margin
+form, the first and third with mass on the grid lines as well as on points.
 $n = 21$, in this table at $0.0050$ from 2026-09-27, left it with that proof.
 $n = 11$, which headed it at $0.0021$ once Kleddamag carried it to $31/8$, left it on
 2026-09-30, when T-060 proved $s(11)$ equal to Trump’s side, and $n = 61$ on 2026-10-02,

@@ -34,8 +34,10 @@ it, and changes nothing else in them.
 
 What was checked here is SHA-256 digests, Git blob ids, the exact premises the audit below
 recomputes from the retained bytes, and every check the replay makes before its first
-angle, run on each pinned tarball. Nothing was replayed: no direction of any of the 16 has
-been decided here.
+angle, run on each pinned tarball. On 6 October `sqverify-fast`, this repository’s
+clean-room measure verifier, decided the 16 retained candidates at all 201 net directions
+([the independent replays](#the-independent-replays)); the source’s own checker has not
+been run here on any of the 16.
 
 ## Source and Pin
 
@@ -289,7 +291,44 @@ hosts of four workers:
 
 Each runner runs its `mixed-replay` commands one after another, then commits and pushes
 its receipts; `mixed-merge NAME` is run for each certificate once every range of it has
-arrived. No replay has been launched.
+arrived. No replay of the source’s checker has been launched.
+
+## The Independent Replays
+
+On 6 October 2026 `devtools.sqverify_fast_census --family mixed` ran `sqverify-fast` on
+each retained `candidate.json.gz` at all 201 net directions, at the threshold the
+certificate declares, and then refused two mutants of each at its least-bound direction.
+All 16 are `VERIFIED`; the receipts are in
+[`benchmarks/measure-verifier/census-mixed/`](../../../benchmarks/measure-verifier/census-mixed/README.md),
+and each certificate’s evidence entry `E-…-sqverify-fast-replay` states its run.
+The build is main’s crate source `d97758bb…`, which the
+[soundness review of 6 October](../../../../docs/project/reviews/review-2026-10-06-sqverify-fast-declared-net-soundness.md)
+accepted for standard-net certificates; all 16 are on the standard net.
+
+| Certificate | Nodes | Least certified bound (index) | CPU seconds | Threads |
+| --- | ---: | --- | ---: | ---: |
+| `mixed_n42_L68475` | 77,174,084 | $1.0000000002195921$ (87) | 1,672 | 2 |
+| `mixed_n43_L69075` | 85,750,510 | $1.0000000000794018$ (67) | 1,598 | 2 |
+| `mixed_n44_L69725` | 55,337,350 | $1.0000000003233136$ (176) | 1,176 | 2 |
+| `mixed_n51_L747` | 72,129,554 | $1.000000000916658$ (137) | 1,040 | 1 |
+| `mixed_n56_L78025` | 83,847,974 | $1.0000000002764038$ (179) | 1,597 | 2 |
+| `mixed_n57_L78725` | 84,325,748 | $1.0000000000104121$ (184) | 1,816 | 1 |
+| `mixed_n67_L8475` | 75,088,660 | $1.0000000006600718$ (183) | 1,299 | 1 |
+| `mixed_n69_L862` | 92,221,320 | $1.000000000173938$ (11) | 2,198 | 2 |
+| `mixed_n72_L876` | 93,877,670 | $1.000000000071343$ (87) | 2,259 | 2 |
+| `mixed_n75_L894` | 102,689,438 | $1.000000000005104$ (198) | 2,705 | 2 |
+| `mixed_n84_L94075` | 83,220,602 | $1.0000000005252527$ (117) | 1,494 | 2 |
+| `mixed_n86_L9503` | 82,400,840 | $1.00000000020883$ (179) | 1,458 | 1 |
+| `mixed_n88_L96125` | 91,617,282 | $1.000000000448649$ (193) | 1,788 | 2 |
+| `mixed_n93_L988` | 56,860,974 | $1.0000000008842913$ (116) | 1,317 | 1 |
+| `mixed_n94_L994` | 66,819,374 | $1.0000000001238274$ (171) | 1,912 | 2 |
+| `mixed_n95_L9965` | 47,780,470 | $1.0000000013097659$ (96) | 1,054 | 2 |
+
+They took 7.3 CPU-hours in all, at one thread while the shared four-core host was
+heavily loaded and at two once it was freer. The verifier was written without opening
+the source’s checker and shares no code with it, so these are independent decisions of
+coverage by the same method, not reproductions of the source’s records. The source’s
+checker remains unreplayed here; the range commands above would add that reproduction.
 
 ## The Answer to Findings OC-1 and OC-2
 
@@ -312,8 +351,8 @@ The 3 October packet keeps the removed audits as they were published there.
 
 ## Limitations
 
-- **Nothing is replayed.** Coverage is decided by the source’s C++ alone, and no direction
-  of any of the 16 has been run here.
+- **The source’s checker is not replayed.** Coverage was decided here by `sqverify-fast`
+  alone; the source’s C++ and its axis tables have not run on any of the 16.
 - **No source audit.** The source’s `completion-audit.json` no longer exists for any of
   the 16, so nothing the source publishes binds a certificate to its tarball but the
   README’s digest and the commit. The binding here is the pinned tree’s digest and, after

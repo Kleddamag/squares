@@ -1313,7 +1313,10 @@ sources:
       opened. mixed_n18_L4705 and mixed_n19_L4825 declare a net of 2073 half-angle tangents
       of step 1/5002 at core 4999/5000 and supersede T-099 and T-100. The exact audits and
       the bundle bindings of devtools.audit_wand125_declared_net pass on all ten; none
-      decides coverage. The tarballs are pinned by digest and not retained.
+      decides coverage. Eight of the nine check2 run logs name an input file the source did
+      not publish, which the audit names (finding FN-1 of the 6 October review); every
+      control witness recomputes exactly on the published measure. The tarballs are pinned
+      by digest and not retained.
   - id: wand125-valid7-independent-check-2026-10-02
     title: Independent exact checker of Valid7 for s(k^2 - 3) = k
     role: source-repository

@@ -88,6 +88,9 @@ takes ``--certificate``, ``n18-L470`` unless given.
   retained ``mixed_n50_L740`` code, at chosen oblique nodes at threshold one, each
   node's record held to lemma N0 and its input to the expanded candidate. It decides only
   the nodes it ran.
+- ``compare-census`` sets this repository's sqverify-fast census row of a check2
+  certificate beside the source's run of its copy of the crate, direction by direction:
+  both must verify every node, and it counts where their node counts and bounds agree.
 
 From ``packing/``::
 
@@ -455,6 +458,24 @@ def semantic_digest(candidate: dict[str, Any]) -> str:
     return hashlib.sha256(text.encode()).hexdigest()
 
 
+#: The eight check2 runs whose log names an input other than the published candidate.json
+#: (finding FN-1 of the 6 October review of T-108 to T-117): the SHA-256 of the bytes each
+#: read, as its own summary records it. Each read the published side, core, net, node
+#: count and mass, and the source's pre-publication run of the same build read the
+#: published bytes, but these bytes are not published. A check2 run that names any other
+#: input, or a published one where this names an unpublished one, is refused.
+UNPUBLISHED_RUN_INPUTS = {
+    "n19-L4825": "9132b84eceb4c9913bcf3065be58828665c5b12469c585f1700c1408c7f43cb7",
+    "n20-L4905": "c446837b499de48ede56a5b3a660abf81615b6332a36314012bca642306cd07f",
+    "n26-L5545": "6ea9cce160259694f48b9bb5f1ba3222332b7d8051284278f11a4413c6933c95",
+    "n27-L56435": "e6561fe4d114945a99f81aee05ef3028fb95ee60cf139990e8cd1deffc312dbf",
+    "n28-L5735": "c0218bf04ce2fe50a714cde1a4fe124ec1c90aebc50e5b5d65259cd094522bfd",
+    "n30-L58835": "6b3d9075e5faa99015409f531c8d3cdc3af69356d9a933e987da5f505ec9d766",
+    "n39-L665": "012755340a2a7dd214891d3e123ddc29e8dfd6f03c07dccedaf563c02da931ca",
+    "n41-L6775": "cbc04bd94c0f7041178419115990eb193ba52a79bc67efa2a2b7d00f8d9588b2",
+}
+#: The factor every check2 control scales each mass by: 0.985 in the control's own words.
+CHECK2_CONTROL_FACTOR = Fraction(197, 200)
 #: The source's second run of its check2 check before publication, on another host; not in
 #: the bundle, so not listed.
 PREPUBLICATION = "verification/prepublication-receipt.json"
@@ -473,11 +494,14 @@ def audit_check2(directory: Path, stated: Certificate) -> dict[str, Any]:
     digest. Besides the measure and lemma N0's premises, the last net bin must hold an
     orientation of ``[0, pi/4]``; the net block must be the facts recomputed here; one
     candidate digest, recomputed here by the source's rule, must be stated throughout; the
-    receipt must report every node verified at threshold one on this candidate and net,
-    and so must the source's pre-publication run (`PREPUBLICATION`) by the same build;
-    and every file ``files-sha256.json`` lists, the tarball's own README apart
-    (`BUNDLE_README`), must be the directory's, retained or pinned. It decides no
-    coverage.
+    receipt must report every node of this net verified at threshold one, by a run that
+    read this side, core, step, count and mass, from the published candidate or from the
+    unpublished input `UNPUBLISHED_RUN_INPUTS` names for it (finding FN-1 of the 6
+    October review); the control must be this candidate with every mass scaled by
+    197/200, refused; the source's pre-publication run (`PREPUBLICATION`) by the same
+    build must verify every node on the published bytes; and every file
+    ``files-sha256.json`` lists, the tarball's own README apart (`BUNDLE_README`), must be
+    the directory's, retained or pinned. It decides no coverage.
     """
     raw = read_retained_bytes(directory / "candidate.json")
     candidate = load_json(raw)
@@ -534,15 +558,28 @@ def audit_check2(directory: Path, stated: Certificate) -> dict[str, Any]:
         and premises_run["centre_domain"] == "per-bin",
         "the source's run read another side, core, net or mass",
     )
+    run_input = str(premises_run["input_sha256"])
+    published = run_input == sha256(raw)
+    require(
+        published != (stated.key in UNPUBLISHED_RUN_INPUTS)
+        and (published or UNPUBLISHED_RUN_INPUTS[stated.key] == run_input),
+        f"the source's run read {run_input[:8]}..., neither the published candidate nor the"
+        " unpublished input UNPUBLISHED_RUN_INPUTS names for it",
+    )
     control = load_json(read_retained_bytes(directory / "check2/control.json"))
     require(control_refused(control), "the source's control was not refused")
+    require(
+        control_factor(control) == CHECK2_CONTROL_FACTOR
+        and control.get("candidate_file_sha256", sha256(raw)) == sha256(raw),
+        "the source's control is not this candidate with every mass scaled by 197/200",
+    )
     second = load_json(read_retained_bytes(directory / PREPUBLICATION))
     require(
         second["status"] == "VERIFIED"
         and second["verdict"] == "PASS"
         and second["directions_verified"] == second["directions_expected"] == count
         and second["candidate_digest"] == digest
-        and second["file_sha256"] == sha256(raw)
+        and second["file_sha256"] == second["input_sha256"] == sha256(raw)
         and second["build"]["source_sha256"] == summary["build"]["source_sha256"]
         and second["control"]["status"] == "REFUSED",
         "the source's pre-publication run does not verify every node of this candidate",
@@ -584,8 +621,10 @@ def audit_check2(directory: Path, stated: Certificate) -> dict[str, Any]:
             "control": control["kind"],
             "control_status": "REFUSED",
         },
+        "run_input": {"sha256": run_input, "published_candidate": published},
         "prepublication_check": {
             "status": second["status"],
+            "input_is_published_candidate": True,
             "directions": second["directions_verified"],
             "seconds": second["seconds"],
             "target": second["build"]["target"],
@@ -595,8 +634,9 @@ def audit_check2(directory: Path, stated: Certificate) -> dict[str, Any]:
         "scope": (
             "Exact premises only, from the retained files: the measure, lemma N0's premises"
             " on the declared net and its last bin, the net block bundle.json states, one"
-            " candidate digest, the source's receipt of its own run at every node, and every"
-            " listed file's digest. No coverage is decided here."
+            " candidate digest, the source's receipt of its own run at every node and the"
+            " input that run read (run_input), its control, its pre-publication run on the"
+            " published bytes, and every listed file's digest. No coverage is decided here."
         ),
     }
 
@@ -612,6 +652,22 @@ def control_refused(control: dict[str, Any]) -> bool:
             each["status"] == "REFUSED" and each["exit"] != 0 for each in control["tries"]
         )
     return control["status"] == "REFUSED" and control["exit"] != 0
+
+
+def control_factor(control: dict[str, Any]) -> Fraction | None:
+    """The factor a source control record says it scaled every mass by.
+
+    ``mixed_n18_L4705``'s record states it per try (``197/200``); the others state it in
+    their kind, ``every mass x 0.985, 32 directions``.
+    """
+    if "tries" in control:
+        factors = {Fraction(each["factor"]) for each in control["tries"]}
+        return factors.pop() if len(factors) == 1 else None
+    prefix = "every mass x "
+    kind = str(control["kind"])
+    if not kind.startswith(prefix):
+        return None
+    return Fraction(kind.removeprefix(prefix).split(",")[0])
 
 
 def pinned_digests(stated: Certificate) -> dict[str, str]:
@@ -918,6 +974,51 @@ def read_jsonl_gz(path: Path) -> list[dict[str, Any]]:
     return [json.loads(line) for line in gzip.decompress(path.read_bytes()).splitlines()]
 
 
+def control_witnesses(
+    candidate: dict[str, Any], tried: list[dict[str, Any]], factor: Fraction
+) -> int:
+    """Recompute every exact witness of a control log on the candidate scaled by ``factor``.
+
+    Each witness's centre must lie in its node's per-bin domain, its logged exact capture
+    must equal the capture `check_sqverify_fast.mixed_exact` computes there on the scaled
+    measure, an evaluator written apart from the crate, and that capture must be below
+    one: so the control is a provably invalid measure, refused (finding FN-2 of the 6
+    October review of T-108 to T-117). Returns how many were recomputed.
+    """
+    exact = importlib.import_module("devtools.check_sqverify_fast").mixed_exact
+    scaled_candidate = {
+        "L": candidate["L"],
+        "B": candidate["B"],
+        "proof_net": candidate["proof_net"],
+        "rectangles": [
+            {"rectangle": row["rectangle"], "mass": str(Fraction(row["mass"]) * factor)}
+            for row in candidate["rectangles"]
+        ],
+    }
+    side = Fraction(candidate["L"])
+    step = Fraction(candidate["proof_net"]["step"])
+    count = 0
+    for record in tried:
+        witness = record.get("witness") or {}
+        if not witness.get("exact_below_threshold"):
+            continue
+        r = int(record["r"])
+        low = rho(max(Fraction(0), step * r - step / 2))
+        x, y = (Fraction(value) for value in witness["exact_pose"])
+        logged = Fraction(witness["exact_coverage"])
+        require(
+            low <= x <= side - low and low <= y <= side - low,
+            f"control node {r}: the witness is outside the per-bin domain",
+        )
+        require(
+            exact(scaled_candidate, x, y, r) == logged < 1,
+            f"control node {r}: the witness's capture is not the logged one below one",
+        )
+        count += 1
+    require(count > 0, "the control log has no exact witness")
+    return count
+
+
 def bundle_check2(root: Path, directory: Path, stated: Certificate) -> dict[str, Any]:
     """Bind an unpacked check2 bundle to the packet, and its run log to the declared net.
 
@@ -1014,9 +1115,22 @@ def bundle_check2(root: Path, directory: Path, stated: Certificate) -> dict[str,
         and sorted(control_summary["refused_directions"]) == refused
         and len(refused) == stated_refused
         and below == last_try["exact_below_threshold"]
-        and factor < 1,
-        "the control log is not a refusal of a scaled candidate, as control.json states",
+        and factor == CHECK2_CONTROL_FACTOR,
+        "the control log is not a refusal of this candidate scaled by 197/200, as"
+        " control.json states",
     )
+    control_premises = control_summary["premises"]
+    require(
+        Fraction(control_premises["L"]) == Fraction(candidate["L"])
+        and Fraction(control_premises["B"]) == Fraction(candidate["B"])
+        and Fraction(control_premises["D"]) == Fraction(candidate["proof_net"]["step"])
+        and control_premises["angle_count"] == count
+        and control_premises["format"] == "M"
+        and control_premises["centre_domain"] == "per-bin"
+        and control_summary["threshold"] == "1",
+        "the control ran on another side, core, net or threshold",
+    )
+    witnesses = control_witnesses(candidate, tried, factor)
     return {
         "kind": "wand125-declared-net-bundle/v1",
         "format": "check2",
@@ -1037,6 +1151,7 @@ def bundle_check2(root: Path, directory: Path, stated: Certificate) -> dict[str,
             "axis_lower": axis["min_certified_lower_bound"],
         },
         "control_log": {
+            "witnesses_recomputed": witnesses,
             "file": logs[0].relative_to(root).as_posix(),
             "directions": len(tried),
             "refused": len(refused),
@@ -2029,6 +2144,88 @@ def cpp_sample(
     }
 
 
+#: Where the census keeps each certificate's per-direction receipts, by packet.
+CENSUS = PROJECT / "benchmarks/measure-verifier/census-mixed"
+
+
+def compare_census(key: str, tarball: Path, work: Path) -> dict[str, Any]:
+    """This repository's sqverify-fast census row against the source's check2 run log.
+
+    The pinned tarball is unpacked and bound first (`bundle_check2`). Then, direction by
+    direction, the census row's receipts (``census-mixed/<packet>/<name>.jsonl.gz``) are
+    set beside the source's ``check2/run.jsonl.gz``: both must hold one record per net
+    node, every one verified. It counts the directions whose node counts and certified
+    lower bounds are identical between the two runs, and the largest difference where
+    not. Agreement here is not a second implementation: the source's verifier is a copy
+    of this repository's crate. Identical counts at every direction say the two ran the
+    same algorithm on the same input; differences say where the two builds' code or
+    inputs differ. It decides nothing beyond the census row.
+    """
+    stated = CERTIFICATES[key]
+    require(stated.check2, f"{key} ships no check2 run log")
+    root, pin = unpack(stated, tarball, work / "bundle")
+    binding = bundle(root, key=key)
+    count = int(binding["run_log"]["directions"])
+    ours_path = CENSUS / stated.packet.name / f"{stated.name}.jsonl.gz"
+    ours_rows = read_jsonl_gz(ours_path)
+    ours = {row["r"]: row for row in ours_rows if "r" in row}
+    theirs = {row["r"]: row for row in read_jsonl_gz(root / "check2/run.jsonl.gz")[:-1]}
+    require(
+        sorted(ours) == sorted(theirs) == list(range(count)),
+        "the two runs do not each hold one record per net node",
+    )
+    require(
+        all(ours[r]["verdict"] == theirs[r]["verdict"] == "verified" for r in ours),
+        "a direction is not verified by both runs",
+    )
+    same_nodes = [r for r in range(1, count) if ours[r]["nodes"] == theirs[r]["nodes"]]
+    same_bound = [
+        r
+        for r in range(count)
+        if ours[r]["min_certified_lower_bound"] == theirs[r]["min_certified_lower_bound"]
+    ]
+    gaps = [
+        abs(ours[r]["min_certified_lower_bound"] - theirs[r]["min_certified_lower_bound"])
+        for r in range(count)
+    ]
+    least = {
+        name: min(
+            (r for r in range(1, count)),
+            key=lambda r, rows=rows: (rows[r]["min_certified_lower_bound"], r),
+        )
+        for name, rows in (("census", ours), ("source", theirs))
+    }
+    return {
+        "kind": "wand125-declared-net-census-comparison/v1",
+        "certificate": stated.name,
+        "status": "BOTH_VERIFY_EVERY_DIRECTION",
+        "directions": count,
+        "identical_node_counts": len(same_nodes),
+        "identical_lower_bounds": len(same_bound),
+        "largest_lower_bound_difference": max(gaps),
+        "oblique_nodes": {
+            "census": sum(ours[r]["nodes"] for r in range(1, count)),
+            "source": sum(theirs[r]["nodes"] for r in range(1, count)),
+        },
+        "least_oblique": {
+            name: {
+                "r": r,
+                "lower": (ours if name == "census" else theirs)[r]["min_certified_lower_bound"],
+            }
+            for name, r in least.items()
+        },
+        "census_receipts": ours_path.relative_to(PROJECT).as_posix(),
+        "census_receipts_sha256": file_sha256(ours_path),
+        "tarball": pin,
+        "scope": (
+            "This repository's sqverify-fast census row beside the source's run of its copy"
+            " of the same crate, direction by direction. Agreement shows the two builds ran"
+            " alike; it is not a second implementation, and it decides nothing beyond the"
+            " census row."
+        ),
+    }
+
+
 def write_or_check(path: Path, value: dict[str, Any], *, check: bool) -> int:
     text = retained_json.dumps(value)
     if check:
@@ -2084,12 +2281,15 @@ def main(argv: list[str] | None = None) -> int:
         "processes", help="snapshot a running replay's driver and workers"
     )
     processes_parser.add_argument("--pid", type=int, required=True, help="the driver's pid")
+    census_parser = commands.add_parser(
+        "compare-census", help="the census row beside the source's check2 run log"
+    )
     fast_parser = commands.add_parser(
         "control-sqverify-fast", help="sqverify-fast on the control receipt's variants"
     )
     fast_parser.add_argument("--sqverify-fast", type=Path, required=True)
     fast_parser.add_argument("--work", type=Path, required=True)
-    for running in (sample_parser, cpp_parser, replay_parser, control_parser):
+    for running in (sample_parser, cpp_parser, replay_parser, control_parser, census_parser):
         running.add_argument("--tarball", type=Path, required=True)
         running.add_argument("--work", type=Path, required=True)
     for running in (sample_parser, cpp_parser, replay_parser):
@@ -2100,6 +2300,7 @@ def main(argv: list[str] | None = None) -> int:
         compare_parser,
         sample_parser,
         cpp_parser,
+        census_parser,
         replay_parser,
         control_parser,
         fast_parser,
@@ -2119,6 +2320,7 @@ def main(argv: list[str] | None = None) -> int:
 PASSING = {
     "sample": "SAMPLE_REPLAYED",
     "cpp-sample": "SAMPLE_VERIFIED",
+    "compare-census": "BOTH_VERIFY_EVERY_DIRECTION",
     "control": "CONTROLS_REFUSED",
     "control-sqverify-fast": "CONTROLS_REFUSED",
     "replay": "FULL_REPLAY_MATCHES_SHIPPED",
@@ -2151,6 +2353,9 @@ def run_command(args: argparse.Namespace) -> int:
         result = cpp_sample(key, args.tarball, args.work, args.nodes, args.workers)
         first, last = args.nodes[0], args.nodes[-1]
         out = args.out or receipts / f"cpp-sample/nodes-{first:04d}-{last:04d}.json"
+    elif args.command == "compare-census":
+        result = compare_census(key, args.tarball, args.work)
+        out = args.out or receipts / "compare-census.json"
     elif args.command == "control":
         result = control(key, args.tarball, args.work, args.index, args.sqverify_fast)
         out = args.out or receipts / "control.json"

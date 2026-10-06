@@ -151,13 +151,21 @@ stated for a general step D”. The comparison was by digest; neither file was o
   one change. A `sqverify-fast` replay here therefore re-implements the producer’s
   check, sharing its components, rather than confirming it with a second
   implementation. It is recorded as `shared-components`, the shared component being the
-  `sqverify_fast` crate, and not as `independent-implementation`, as T-099 and T-100’s
-  replays are. `mixed_n29_L581`, decided at the source by the C++ checker, is recorded
-  as T-099 and T-100 are.
+  `sqverify_fast` crate, all of it but the declared-net reader, and not as
+  `independent-implementation`, as T-099 and T-100’s replays are. The sharing runs the
+  other way from the definition’s usual case: the producer adapted this repository’s
+  code, not the reverse, and the replay is much closer to a reproduction than the label
+  alone says. `mixed_n29_L581` is recorded as T-099 and T-100 are,
+  `independent-implementation`, because the claim the source publishes rests on its C++
+  records; the source’s pre-publication run of its copy of the crate on that candidate
+  publishes no receipt.
 - **The source’s C++ checker still applies.** Every check2 candidate is in the format
   `code/mixed_rotated_verify.cpp` (`89b674a6…`) reads, and that checker shares no code
-  with `sqverify_fast`. `cpp-sample` runs it at chosen nodes of each, from the retained
-  `mixed_n50_L740` code ([Replaying the Certificates](#replaying-the-certificates)).
+  with `sqverify_fast`. It is the producer’s own code, though, so a run of it here is a
+  reproduction with the producer’s code of a check the producer did not run, never an
+  independent confirmation; its value is diversity against the crate. `cpp-sample` runs
+  it at chosen nodes of each, from the retained `mixed_n50_L740` code
+  ([Replaying the Certificates](#replaying-the-certificates)).
 
 ## What Is Retained
 
@@ -207,8 +215,8 @@ its manifest without one.
 
 | Name here | Claim | Rectangles | Core $B$ | Net | Source’s comparison | Least oblique bound recorded (index) | Axis bound recorded |
 | --- | --- | ---: | --- | --- | --- | --- | --- |
-| `n18-L4705` | $s(18) \ge 941/200$ | 324 | $4999/5000$ | step $1/5002$, 2073 nodes | its `mixed_n18_L4704` (4.704) | $1.0000000000680034$ (1234) | $1.016430568872826$ |
-| `n19-L4825` | $s(19) \ge 193/40$ | 341 | $4999/5000$ | step $1/5002$, 2073 nodes | its `mixed_n19_L48229` (4.8229) | $1.0000000001230112$ (1021) | $1.0036436971903462$ |
+| `n18-L4705` | $s(18) \ge 941/200$ | 324 | $4999/5000$ | step $1/5002$, 2073 nodes | its `mixed_n18_L4704` (4.704); the directory, its `mixed_n18_L470` (4.7) | $1.0000000000680034$ (1234) | $1.016430568872826$ |
+| `n19-L4825` | $s(19) \ge 193/40$ | 341 | $4999/5000$ | step $1/5002$, 2073 nodes | its `mixed_n19_L48229` (4.8229); the directory, its `rect_n19_L48175` (4.8175) | $1.0000000001230112$ (1021) | $1.0036436971903462$ |
 | `n20-L4905` | $s(20) \ge 981/200$ | 327 | $1999/2000$ | step $1/2006$, 832 nodes | its `rect_n20_L49` (4.9) | $1.000000000154736$ (679) | $1.0046418452468053$ |
 | `n26-L5545` | $s(26) \ge 1109/200$ | 477 | $1999/2000$ | step $1/2006$, 832 nodes | its `rect_n26_L55325` (5.5325) | $1.0000000003495713$ (241) | $1.0032441151223488$ |
 | `n27-L56435` | $s(27) \ge 11287/2000$ | 439 | $1999/2000$ | step $1/2006$, 832 nodes | its `rect_n27_L5635` (5.635) | $1.0000000000168654$ (632) | $1.0033571274334194$ |
@@ -217,6 +225,11 @@ its manifest without one.
 | `n30-L58835` | $s(30) \ge 11767/2000$ | 402 | $1999/2000$ | step $1/2006$, 832 nodes | its `rect_n30_L5875` (5.875) | $1.0000000000570795$ (347) | $1.0055878584856262$ |
 | `n39-L665` | $s(39) \ge 133/20$ | 600 | $999/1000$ | step $1/1001$, 416 nodes | its `rect_n39_L6635` (6.635) | $1.0000000001966394$ (394) | $1.002333722755048$ |
 | `n41-L6775` | $s(41) \ge 271/40$ | 376 | $999/1000$ | step $1/1001$, 416 nodes | its `rect_n41_L676` (6.76) | $1.0000000000604714$ (409) | $1.004989715377397$ |
+
+For `n18-L4705` and `n19-L4825` the comparison column gives the root README’s, which
+says each supersedes the 6 October finer-net certificate, and then that of the
+directory’s README and `bundle.json`, which compare with the certificate before it: the
+bundle-level comparisons predate the root README’s (finding FN-6 of the review).
 
 The check2 bounds are the source’s `sqverify-proof-net` run log’s, read by `bundle`;
 `n29-L581`’s are its C++ records’, read by `audit`. All ten are rectangle densities with
@@ -265,11 +278,19 @@ a replay record at threshold one. For each check2 certificate:
   here;
 - the semantic digest recomputed here is the one `bundle.json` and the receipt state;
 - `check2/receipt.json` has the digest `bundle.json` states, and reports every node of
-  this candidate and net verified at threshold one, by a run that read this side, core,
-  step, node count and mass;
-- `check2/control.json` reports the control refused;
+  this net verified at threshold one, by a run that read this side, core, step, node
+  count and mass;
+- the run’s own record of the bytes it read, its summary’s `input_sha256`, is the
+  published `candidate.json` for `n18-L4705` only. The other eight logged runs read a
+  file whose bytes are not published, named by its digest in the tool’s
+  `UNPUBLISHED_RUN_INPUTS` and in each audit receipt’s `run_input`, with the same side,
+  core, net, count and mass (finding FN-1 of the
+  [6 October review](../../../../docs/project/reviews/review-2026-10-06-wand125-check2-ten-certificates.md)).
+  Any other input is refused;
+- `check2/control.json` reports the control refused, with every mass scaled by
+  $197/200$ and, where it names one, this candidate’s file;
 - `verification/prepublication-receipt.json` reports every node verified by the same
-  build, with its control refused;
+  build, on the published bytes, with its control refused;
 - every file `files-sha256.json` lists is the directory’s, by its bytes or its pin,
   apart from the bundle’s own `README.md`, which is shorter than the directory’s.
 
@@ -290,13 +311,22 @@ each check2 bundle:
 - the run log holds one record per net node, each `verified` at threshold one with a
   certified lower bound of at least one, the axis by the exact vertex sweep and every
   oblique node by branch and bound, and ends with the summary the receipt states;
-- the control log ends `REFUSED` on the candidate with every mass scaled by $197/200$,
-  and its refused directions and witnesses below threshold are those `control.json`
-  states.
+- the control log ends `REFUSED` on this side, core, net and threshold, with every mass
+  scaled by exactly $197/200$, and its refused directions and witnesses below threshold
+  are those `control.json` states;
+- every exact witness of the control log lies in its node’s per-bin domain, and its
+  logged capture is the one `check_sqverify_fast.mixed_exact`, an evaluator written apart
+  from the crate, computes on the published candidate scaled by $197/200$, below one:
+  277 witnesses in all, so each control is a provably invalid measure (finding FN-2 of the
+  review).
 
 The receipts are `receipts/<name>/bundle.json`. A check2 binding shows what the
 source’s run printed; it decides no coverage, and the run it describes is of a copy of
-this repository’s verifier.
+this repository’s verifier, on the published bytes for `n18-L4705` and on unpublished
+ones for the other eight. The source’s pre-publication runs read the published bytes and
+publish no log, and every control witness evaluates exactly on the published measure:
+what remains unbound is which file the eight logged runs read, and the replay here reads
+the published bytes.
 
 ## Prices
 
@@ -328,8 +358,30 @@ the census tool as merged at `f342dff82` and this packet added to its list, reco
 the [Milestone B census](../../../benchmarks/measure-verifier/census-mixed/README.md)
 as each row completes. Until a row is committed, it decides nothing.
 
-**The source’s C++ checker.** Not yet run: `cpp-sample` on chosen nodes of each check2
-certificate, and `sample` on chosen nodes of `n29-L581`’s shipped records.
+**The source’s C++ checker.** On 6 October 2026 `cpp-sample` ran the source’s C++
+checker, `89b674a6…`, built and driven by the source’s own functions from the retained
+`mixed_n50_L740` code, at the least-bound node of `n41-L6775`’s check2 run log and at its
+last node, at one worker under `nice` on the shared four-core host at load 17:
+
+```sh
+# from packing/
+uv run --frozen --all-extras --group dev python -m devtools.audit_wand125_declared_net \
+  cpp-sample --certificate n41-L6775 --tarball TARBALL --work W --nodes 409,415 --workers 1
+```
+
+| Name here | Node | C++ status | C++ lower bound | C++ nodes | CPU seconds | check2’s lower bound there |
+| --- | ---: | --- | --- | ---: | ---: | --- |
+| `n41-L6775` | 409 | `ANGLE_VERIFIED` | $1.0000001768444517$ | 475,593 | 314.9 | $1.0000000000604714$ |
+| `n41-L6775` | 415 | `ANGLE_VERIFIED` | $1.0000002617844366$ | 477,177 | 326.9 | $1.0000002104724752$ |
+
+Each node’s record names lemma N0’s tangent and per-bin domain, threshold one and the
+checker’s digest, and its input encloses the expanded candidate; neither has a frontier
+or a witness. The receipt is
+[`receipts/n41-L6775/cpp-sample/`](receipts/n41-L6775/cpp-sample/). The review ran the
+same command at node 1234 of `n18-L4705`, which verified with lower bound
+$1.0000000050433526$ in 147.9 CPU seconds. The samples of the other check2 candidates,
+and `sample` on chosen nodes of `n29-L581`’s shipped records, are still to run. Each
+sample is the producer’s own code at one node, and decides that node only.
 
 ## Limitations
 

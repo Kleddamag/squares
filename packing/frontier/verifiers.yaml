@@ -54,7 +54,7 @@ verifiers:
       - {sha256: 89b674a6feabe24d91c29431de1624907c4bff83280ceb481475455686693652}
       - {revision: 7975030a, note: "the n = 76 bundle's tarball, fetched by Git and pinned by its own SHA-256"}
       - {revision: 43050edc, note: "the n = 18 bundle's tarball on a declared net, fetched by Git and pinned by its own SHA-256"}
-      - {revision: 2fad66e0, note: "the n = 29 bundle's tarball on a declared net, and the C++ samples of the nine check2 candidates, which ship no C++ record"}
+      - {revision: 2fad66e0, note: "the n = 29 bundle's tarball on a declared net; and, from the retained n = 50 code, cpp-sample's runs at sampled nodes of check2 candidates, which ship no C++ record, each the producer's own code re-run, never an independent confirmation (receipts/<name>/cpp-sample/ in the 6 October check2 packet)"}
 
   - id: V-wand125-verify-mixed-full-proof-py
     program: verify_mixed_full_proof.py
@@ -110,7 +110,9 @@ verifiers:
       (packing/sqverify_fast/INDEPENDENCE.md, Declared Nets). Its SOUNDNESS.md and
       INDEPENDENCE.md are this repository's files of 3 October by their digests. A replay
       here by V-sqverify-fast re-implements its check sharing the producer's components,
-      the sqverify_fast crate, not independently.
+      the sqverify_fast crate, all of it but the declared-net reader, not independently;
+      the producer adapted this repository's code, not the reverse, so the replay is much
+      closer to a reproduction than the label alone says.
 
   - id: V-wand125-unified-linear-verify-cpp
     program: unified_linear_verify.cpp

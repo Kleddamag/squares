@@ -9,6 +9,7 @@ shipped one.
 
 from __future__ import annotations
 
+import importlib
 import json
 import math
 import os
@@ -612,3 +613,102 @@ def test_the_n29_bundle_is_bound_like_the_earlier_proof_bundles() -> None:
     assert record["rectangle_images"] == 8 * 505
     assert record["upstream_oblique_nodes"] == facts["oblique_nodes"]
     assert record["tarball"]["sha256"] == stated.tarball_pin()[0]
+
+
+def test_each_check2_run_names_its_input_published_or_listed() -> None:
+    """Finding FN-1 of the review of T-108 to T-117: eight check2 run logs name an input
+    other than the published candidate.json. The audit names each, and refuses any other."""
+    for key in CHECK2:
+        facts = declared.audit(key=key)
+        published = key not in declared.UNPUBLISHED_RUN_INPUTS
+        assert facts["run_input"]["published_candidate"] is published, key
+        if not published:
+            assert facts["run_input"]["sha256"] == declared.UNPUBLISHED_RUN_INPUTS[key]
+        assert facts["prepublication_check"]["input_is_published_candidate"]
+    assert len(declared.UNPUBLISHED_RUN_INPUTS) == 8
+
+
+def test_an_unlisted_or_stale_run_input_is_refused(monkeypatch: pytest.MonkeyPatch) -> None:
+    listed = dict(declared.UNPUBLISHED_RUN_INPUTS)
+    unlisted = {key: value for key, value in listed.items() if key != "n20-L4905"}
+    monkeypatch.setattr(declared, "UNPUBLISHED_RUN_INPUTS", unlisted)
+    with pytest.raises(declared.AuditError, match="neither the published candidate"):
+        declared.audit(key="n20-L4905")
+    stale = listed | {"n18-L4705": "0" * 64}
+    monkeypatch.setattr(declared, "UNPUBLISHED_RUN_INPUTS", stale)
+    with pytest.raises(declared.AuditError, match="neither the published candidate"):
+        declared.audit(key="n18-L4705")
+
+
+def test_both_forms_of_the_control_factor_read_197_200() -> None:
+    assert declared.control_factor({"tries": [{"factor": "197/200"}]}) == Fraction(197, 200)
+    kind = {"kind": "every mass x 0.985, 32 directions"}
+    assert declared.control_factor(kind) == Fraction(197, 200)
+    assert declared.control_factor({"kind": "masses halved"}) is None
+
+
+def test_a_control_witness_is_recomputed_exactly() -> None:
+    """Finding FN-2: each control witness must lie in its node's per-bin domain and carry
+    the capture an evaluator written apart from the crate computes on the scaled measure,
+    below one."""
+    exact = importlib.import_module("devtools.check_sqverify_fast").mixed_exact
+    stated = declared.CERTIFICATES["n41-L6775"]
+    candidate = declared.load_json(read_retained_bytes(stated.directory / "candidate.json"))
+    half = Fraction(1, 2)
+    scaled = {
+        "L": candidate["L"],
+        "B": candidate["B"],
+        "proof_net": candidate["proof_net"],
+        "rectangles": [
+            {"rectangle": row["rectangle"], "mass": str(Fraction(row["mass"]) * half)}
+            for row in candidate["rectangles"]
+        ],
+    }
+    side = Fraction(candidate["L"])
+    pose = (float(side / 2), float(side / 2))
+    capture = exact(scaled, Fraction(pose[0]), Fraction(pose[1]), 7)
+    assert capture < 1
+
+    def tried(coverage: Fraction, where: tuple[float, float]) -> list[dict[str, Any]]:
+        witness = {
+            "exact_below_threshold": True,
+            "exact_pose": list(where),
+            "exact_coverage": str(coverage),
+        }
+        return [{"r": 7, "verdict": "counterexample-candidate", "witness": witness}]
+
+    assert declared.control_witnesses(candidate, tried(capture, pose), half) == 1
+    with pytest.raises(declared.AuditError, match="not the logged one"):
+        declared.control_witnesses(candidate, tried(capture + Fraction(1, 10**12), pose), half)
+    with pytest.raises(declared.AuditError, match="outside the per-bin domain"):
+        declared.control_witnesses(candidate, tried(capture, (0.1, pose[1])), half)
+
+
+def test_every_cpp_sample_receipt_verified_its_nodes() -> None:
+    """cpp-sample: the source's C++ checker, the producer's own code but sharing none with
+    sqverify_fast, verified each check2 candidate at every node it ran."""
+    receipts = [
+        (key, path)
+        for key in sorted(CHECK2)
+        for path in sorted((declared.CERTIFICATES[key].receipts / "cpp-sample").glob("*.json"))
+    ]
+    assert (
+        "n41-L6775",
+        declared.CERTIFICATES["n41-L6775"].receipts / "cpp-sample/nodes-0409-0415.json",
+    ) in receipts
+    for key, path in receipts:
+        stated = declared.CERTIFICATES[key]
+        record = json.loads(path.read_text(encoding="utf-8"))
+        assert record["status"] == "SAMPLE_VERIFIED", path.name
+        assert record["certificate"] == stated.name
+        assert record["checker_sha256"] == declared.CHECKER_SHA256
+        assert record["threshold"] == "1"
+        assert record["tarball"]["sha256"] == stated.tarball_pin()[0]
+        assert record["binding"]["status"] == "BUNDLE_BOUND_TO_PACKET_AND_NET"
+        assert record["candidate_digest"] == declared.audit(key=key)["candidate_digest"]
+        assert [row["index"] for row in record["rows"]] == record["nodes"]
+        for row in record["rows"]:
+            assert row["verified"], (path, row["index"])
+            assert row["status"] == "ANGLE_VERIFIED", (path, row["index"])
+            assert (row["frontier_boxes"], row["exact_witnesses"]) == (0, 0)
+            assert float(row["lower"]) >= 1

@@ -17677,11 +17677,29 @@ evidence:
       devtools.audit_wand125_declared_net audit --certificate n18-L4705
       (receipts/n18-L4705/audit.json in the packet) recomputes the mass, lemma N0's
       premises on the declared net, the net block bundle.json states and the semantic
-      candidate digest from the retained bytes, and holds the receipt, control and
-      pre-publication receipt to this candidate and net; its bundle check binds the pinned
-      check2 tarball (SHA-256 187115fc...) to the packet and the source's run and control
-      logs to the net and the receipt. None of it decides coverage, and the source's run
-      is of a copy of this repository's verifier.
+      candidate digest from the retained bytes; it holds the receipt and the
+      pre-publication receipt to this net, the control to this candidate scaled by
+      197/200, and the logged run's own input digest to the published candidate. Its
+      bundle check binds the pinned check2 tarball (SHA-256 187115fc...) to the packet,
+      the run log to the net and the receipt, and the control log to the net, and
+      recomputes each of its 29 exact witnesses on the published measure scaled by 197/200
+      with an evaluator written apart from the crate. None of it decides coverage, and the
+      source's run is of a copy of this repository's verifier.
+    external_review:
+      state: informally-verified
+      date: '2026-10-06'
+      reviewed_by: >-
+        AI agent, the separately prompted review lane of the second 2026-10-06 intake round's lane R7, model claude-opus-5-5 (tbd-strong tier)
+        (docs/project/reviews/review-2026-10-06-wand125-check2-ten-certificates.md)
+      note: >-
+        No defect in the certificate. The net's premises hold in exact arithmetic (B (1
+        + 1/5002) = 25009997/25010000, margin 3/25010000; t_2072^2 + 2 t_2072 - 1 =
+        367/6255001 > 0; the last bin's floor 4143/10004 below tan(pi/8)), as do the
+        mass, rows and semantic digest, and lemma N0 covers the net. The reviewer
+        reproduced every control witness's exact capture with an evaluator of its own,
+        and found the logged run's input digest the published candidate's. The coverage
+        statements are those of the source's copy of this repository's crate until a
+        complete replay here passes.
     source_reviewed: '2026-10-06'
   - id: E-n019-wand125-mixed-4825-report
     claim: lower-bound
@@ -17721,11 +17739,31 @@ evidence:
       verified lower bound at n = 19, by 0.0021. Here devtools.audit_wand125_declared_net
       audit --certificate n19-L4825 (receipts/n19-L4825/audit.json in the packet)
       recomputes the mass, lemma N0's premises on the declared net, the net block
-      bundle.json states and the semantic candidate digest from the retained bytes, and
-      holds the receipt, control and pre-publication receipt to this candidate and net;
-      its bundle check binds the pinned check2 tarball (SHA-256 7b4f000c...) to the packet
-      and the source's run and control logs to the net and the receipt. None of it decides
-      coverage, and the source's run is of a copy of this repository's verifier.
+      bundle.json states and the semantic candidate digest from the retained bytes; it
+      holds the receipt and the pre-publication receipt to this net, the control to this
+      candidate scaled by 197/200, and the logged run's own input digest to 9132b84e..., a
+      file the source did not publish, with the published side, core, net, count and mass
+      (finding FN-1 of the 6 October review); the pre-publication run read the published
+      bytes. Its bundle check binds the pinned check2 tarball (SHA-256 7b4f000c...) to the
+      packet, the run log to the net and the receipt, and the control log to the net, and
+      recomputes each of its 31 exact witnesses on the published measure scaled by 197/200
+      with an evaluator written apart from the crate. None of it decides coverage, and the
+      source's run is of a copy of this repository's verifier.
+    external_review:
+      state: informally-verified
+      date: '2026-10-06'
+      reviewed_by: >-
+        AI agent, the separately prompted review lane of the second 2026-10-06 intake round's lane R7, model claude-opus-5-5 (tbd-strong tier)
+        (docs/project/reviews/review-2026-10-06-wand125-check2-ten-certificates.md)
+      note: >-
+        No defect in the certificate. The net's premises hold in exact arithmetic (B (1
+        + 1/5002) = 25009997/25010000, margin 3/25010000; t_2072^2 + 2 t_2072 - 1 =
+        367/6255001 > 0; the last bin's floor 4143/10004 below tan(pi/8)), as do the
+        mass, rows and semantic digest, and lemma N0 covers the net. The reviewer
+        reproduced every control witness's exact capture with an evaluator of its own,
+        and found the logged run's input digest not the published candidate's (FN-1,
+        fixed by naming it). The coverage statements are those of the source's copy of
+        this repository's crate until a complete replay here passes.
     source_reviewed: '2026-10-06'
   - id: E-n020-wand125-mixed-4905-report
     claim: lower-bound
@@ -17764,11 +17802,31 @@ evidence:
       0.0075. Here devtools.audit_wand125_declared_net audit --certificate n20-L4905
       (receipts/n20-L4905/audit.json in the packet) recomputes the mass, lemma N0's
       premises on the declared net, the net block bundle.json states and the semantic
-      candidate digest from the retained bytes, and holds the receipt, control and
-      pre-publication receipt to this candidate and net; its bundle check binds the pinned
-      check2 tarball (SHA-256 aa672122...) to the packet and the source's run and control
-      logs to the net and the receipt. None of it decides coverage, and the source's run
-      is of a copy of this repository's verifier.
+      candidate digest from the retained bytes; it holds the receipt and the
+      pre-publication receipt to this net, the control to this candidate scaled by
+      197/200, and the logged run's own input digest to c446837b..., a file the source did
+      not publish, with the published side, core, net, count and mass (finding FN-1 of the
+      6 October review); the pre-publication run read the published bytes. Its bundle
+      check binds the pinned check2 tarball (SHA-256 aa672122...) to the packet, the run
+      log to the net and the receipt, and the control log to the net, and recomputes each
+      of its 31 exact witnesses on the published measure scaled by 197/200 with an
+      evaluator written apart from the crate. None of it decides coverage, and the
+      source's run is of a copy of this repository's verifier.
+    external_review:
+      state: informally-verified
+      date: '2026-10-06'
+      reviewed_by: >-
+        AI agent, the separately prompted review lane of the second 2026-10-06 intake round's lane R7, model claude-opus-5-5 (tbd-strong tier)
+        (docs/project/reviews/review-2026-10-06-wand125-check2-ten-certificates.md)
+      note: >-
+        No defect in the certificate. The net's premises hold in exact arithmetic (B (1
+        + 1/2006) = 4011993/4012000, margin 7/4012000; t_831^2 + 2 t_831 - 1 =
+        497/4024036 > 0; the last bin's floor 1661/4012 below tan(pi/8)), as do the
+        mass, rows and semantic digest, and lemma N0 covers the net. The reviewer
+        reproduced every control witness's exact capture with an evaluator of its own,
+        and found the logged run's input digest not the published candidate's (FN-1,
+        fixed by naming it). The coverage statements are those of the source's copy of
+        this repository's crate until a complete replay here passes.
     source_reviewed: '2026-10-06'
   - id: E-n026-wand125-mixed-5545-report
     claim: lower-bound
@@ -17807,11 +17865,31 @@ evidence:
       Here devtools.audit_wand125_declared_net audit --certificate n26-L5545
       (receipts/n26-L5545/audit.json in the packet) recomputes the mass, lemma N0's
       premises on the declared net, the net block bundle.json states and the semantic
-      candidate digest from the retained bytes, and holds the receipt, control and
-      pre-publication receipt to this candidate and net; its bundle check binds the pinned
-      check2 tarball (SHA-256 3f8ebbe9...) to the packet and the source's run and control
-      logs to the net and the receipt. None of it decides coverage, and the source's run
-      is of a copy of this repository's verifier.
+      candidate digest from the retained bytes; it holds the receipt and the
+      pre-publication receipt to this net, the control to this candidate scaled by
+      197/200, and the logged run's own input digest to 6ea9cce1..., a file the source did
+      not publish, with the published side, core, net, count and mass (finding FN-1 of the
+      6 October review); the pre-publication run read the published bytes. Its bundle
+      check binds the pinned check2 tarball (SHA-256 3f8ebbe9...) to the packet, the run
+      log to the net and the receipt, and the control log to the net, and recomputes each
+      of its 31 exact witnesses on the published measure scaled by 197/200 with an
+      evaluator written apart from the crate. None of it decides coverage, and the
+      source's run is of a copy of this repository's verifier.
+    external_review:
+      state: informally-verified
+      date: '2026-10-06'
+      reviewed_by: >-
+        AI agent, the separately prompted review lane of the second 2026-10-06 intake round's lane R7, model claude-opus-5-5 (tbd-strong tier)
+        (docs/project/reviews/review-2026-10-06-wand125-check2-ten-certificates.md)
+      note: >-
+        No defect in the certificate. The net's premises hold in exact arithmetic (B (1
+        + 1/2006) = 4011993/4012000, margin 7/4012000; t_831^2 + 2 t_831 - 1 =
+        497/4024036 > 0; the last bin's floor 1661/4012 below tan(pi/8)), as do the
+        mass, rows and semantic digest, and lemma N0 covers the net. The reviewer
+        reproduced every control witness's exact capture with an evaluator of its own,
+        and found the logged run's input digest not the published candidate's (FN-1,
+        fixed by naming it). The coverage statements are those of the source's copy of
+        this repository's crate until a complete replay here passes.
     source_reviewed: '2026-10-06'
   - id: E-n027-wand125-mixed-56435-report
     claim: lower-bound
@@ -17850,11 +17928,31 @@ evidence:
       devtools.audit_wand125_declared_net audit --certificate n27-L56435
       (receipts/n27-L56435/audit.json in the packet) recomputes the mass, lemma N0's
       premises on the declared net, the net block bundle.json states and the semantic
-      candidate digest from the retained bytes, and holds the receipt, control and
-      pre-publication receipt to this candidate and net; its bundle check binds the pinned
-      check2 tarball (SHA-256 33b2a440...) to the packet and the source's run and control
-      logs to the net and the receipt. None of it decides coverage, and the source's run
-      is of a copy of this repository's verifier.
+      candidate digest from the retained bytes; it holds the receipt and the
+      pre-publication receipt to this net, the control to this candidate scaled by
+      197/200, and the logged run's own input digest to e6561fe4..., a file the source did
+      not publish, with the published side, core, net, count and mass (finding FN-1 of the
+      6 October review); the pre-publication run read the published bytes. Its bundle
+      check binds the pinned check2 tarball (SHA-256 33b2a440...) to the packet, the run
+      log to the net and the receipt, and the control log to the net, and recomputes each
+      of its 31 exact witnesses on the published measure scaled by 197/200 with an
+      evaluator written apart from the crate. None of it decides coverage, and the
+      source's run is of a copy of this repository's verifier.
+    external_review:
+      state: informally-verified
+      date: '2026-10-06'
+      reviewed_by: >-
+        AI agent, the separately prompted review lane of the second 2026-10-06 intake round's lane R7, model claude-opus-5-5 (tbd-strong tier)
+        (docs/project/reviews/review-2026-10-06-wand125-check2-ten-certificates.md)
+      note: >-
+        No defect in the certificate. The net's premises hold in exact arithmetic (B (1
+        + 1/2006) = 4011993/4012000, margin 7/4012000; t_831^2 + 2 t_831 - 1 =
+        497/4024036 > 0; the last bin's floor 1661/4012 below tan(pi/8)), as do the
+        mass, rows and semantic digest, and lemma N0 covers the net. The reviewer
+        reproduced every control witness's exact capture with an evaluator of its own,
+        and found the logged run's input digest not the published candidate's (FN-1,
+        fixed by naming it). The coverage statements are those of the source's copy of
+        this repository's crate until a complete replay here passes.
     source_reviewed: '2026-10-06'
   - id: E-n028-wand125-mixed-5735-report
     claim: lower-bound
@@ -17893,11 +17991,31 @@ evidence:
       Here devtools.audit_wand125_declared_net audit --certificate n28-L5735
       (receipts/n28-L5735/audit.json in the packet) recomputes the mass, lemma N0's
       premises on the declared net, the net block bundle.json states and the semantic
-      candidate digest from the retained bytes, and holds the receipt, control and
-      pre-publication receipt to this candidate and net; its bundle check binds the pinned
-      check2 tarball (SHA-256 202dc8de...) to the packet and the source's run and control
-      logs to the net and the receipt. None of it decides coverage, and the source's run
-      is of a copy of this repository's verifier.
+      candidate digest from the retained bytes; it holds the receipt and the
+      pre-publication receipt to this net, the control to this candidate scaled by
+      197/200, and the logged run's own input digest to c0218bf0..., a file the source did
+      not publish, with the published side, core, net, count and mass (finding FN-1 of the
+      6 October review); the pre-publication run read the published bytes. Its bundle
+      check binds the pinned check2 tarball (SHA-256 202dc8de...) to the packet, the run
+      log to the net and the receipt, and the control log to the net, and recomputes each
+      of its 31 exact witnesses on the published measure scaled by 197/200 with an
+      evaluator written apart from the crate. None of it decides coverage, and the
+      source's run is of a copy of this repository's verifier.
+    external_review:
+      state: informally-verified
+      date: '2026-10-06'
+      reviewed_by: >-
+        AI agent, the separately prompted review lane of the second 2026-10-06 intake round's lane R7, model claude-opus-5-5 (tbd-strong tier)
+        (docs/project/reviews/review-2026-10-06-wand125-check2-ten-certificates.md)
+      note: >-
+        No defect in the certificate. The net's premises hold in exact arithmetic (B (1
+        + 1/1001) = 500499/500500, margin 1/500500; t_415^2 + 2 t_415 - 1 = 1054/1002001
+        > 0; the last bin's floor 829/2002 below tan(pi/8)), as do the mass, rows and
+        semantic digest, and lemma N0 covers the net. The reviewer reproduced every
+        control witness's exact capture with an evaluator of its own, and found the
+        logged run's input digest not the published candidate's (FN-1, fixed by naming
+        it). The coverage statements are those of the source's copy of this repository's
+        crate until a complete replay here passes.
     source_reviewed: '2026-10-06'
   - id: E-n029-wand125-mixed-581-report
     claim: lower-bound
@@ -17926,24 +18044,42 @@ evidence:
       per-bin centre domain at half-step 1/2002. The least oblique lower bound the source
       records is 1.000000000892745, at net index 364, and the axis integer minimum
       72324513115955573/72057594037927936 = 1.003704246326725 over 11,309,769 cells; its
-      oblique run took 152,187 seconds over 128,316,129 nodes, on macOS (arm64) by the
-      bundle's own records, and the README says the full replay was run where the
-      certificate was made. It exceeds 2319/400 = 5.7975, the reported (T-068) and
-      verified (T-074) lower bound at n = 29, by 0.0125. The directory carries no
-      completion-audit.json and no publication audit; the tarball (SHA-256 057d3df3...) is
-      bound to the certificate by its digest at the pinned tree and the README's statement
-      of it, and is pinned by digest and not retained. The README also reports a
-      pre-publication run of the source's copy of this repository's sqverify-fast changed
-      to read the declared net (source digest ab6e33e1...) verifying all 416 directions in
-      584 seconds, with masses scaled by 0.985 refused; no receipt of it is published and
-      it was not checked here. Here devtools.audit_wand125_declared_net audit
-      --certificate n29-L581 (receipts/n29-L581/audit.json in the packet) recomputes the
-      mass, lemma N0's premises on the declared net and the net blocks the manifest and
-      certificate state from the retained bytes, and checks that one candidate digest is
-      stated throughout; its bundle check binds the pinned tarball's 1,266 listed files to
-      the packet, every shipped record and input header to the declared net's tangent,
-      per-bin domain and threshold, and every input's rectangle lines to the expanded
-      candidate; none of it decides coverage.
+      oblique run took 152,187 seconds over 128,316,129 nodes by the bundle's own records,
+      none of which names a platform; the bundle's replay ran on macOS (arm64) by its
+      bundle.json, and the README says it was run where the certificate was made. It
+      exceeds 2319/400 = 5.7975, the reported (T-068) and verified (T-074) lower bound at
+      n = 29, by 0.0125. The directory carries no completion-audit.json and no publication
+      audit; the tarball (SHA-256 057d3df3...) is bound to the certificate by its digest
+      at the pinned tree and the README's statement of it, and is pinned by digest and not
+      retained. The README also reports a pre-publication run of the source's copy of this
+      repository's sqverify-fast changed to read the declared net (source digest
+      ab6e33e1...) verifying all 416 directions in 584 seconds, with masses scaled by
+      0.985 refused; no receipt of it is published and it was not checked here. The claim
+      the source publishes rests on the C++ records, so a replay here by sqverify-fast
+      stands independent of the producer's checker even though the producer also ran a
+      copy of this repository's crate on the candidate. Here
+      devtools.audit_wand125_declared_net audit --certificate n29-L581
+      (receipts/n29-L581/audit.json in the packet) recomputes the mass, lemma N0's
+      premises on the declared net and the net blocks the manifest and certificate state
+      from the retained bytes, and checks that one candidate digest is stated throughout;
+      its bundle check binds the pinned tarball's 1,266 listed files to the packet, every
+      shipped record and input header to the declared net's tangent, per-bin domain and
+      threshold, and every input's rectangle lines to the expanded candidate; none of it
+      decides coverage.
+    external_review:
+      state: informally-verified
+      date: '2026-10-06'
+      reviewed_by: >-
+        AI agent, the separately prompted review lane of the second 2026-10-06 intake round's lane R7, model claude-opus-5-5 (tbd-strong tier)
+        (docs/project/reviews/review-2026-10-06-wand125-check2-ten-certificates.md)
+      note: >-
+        No defect in the certificate. The net's premises hold in exact arithmetic (B (1
+        + 1/1001) = 500499/500500, margin 1/500500; t_415^2 + 2 t_415 - 1 = 1054/1002001
+        > 0; the last bin's floor 829/2002 below tan(pi/8)), as do the mass, rows and
+        semantic digest, and lemma N0 covers the net. The reviewer bound all 415 shipped
+        oblique records and inputs to the net and the expanded candidate with code of
+        its own. The coverage statements are the source's until a complete replay here
+        passes.
     source_reviewed: '2026-10-06'
   - id: E-n030-wand125-mixed-58835-report
     claim: lower-bound
@@ -17982,11 +18118,31 @@ evidence:
       devtools.audit_wand125_declared_net audit --certificate n30-L58835
       (receipts/n30-L58835/audit.json in the packet) recomputes the mass, lemma N0's
       premises on the declared net, the net block bundle.json states and the semantic
-      candidate digest from the retained bytes, and holds the receipt, control and
-      pre-publication receipt to this candidate and net; its bundle check binds the pinned
-      check2 tarball (SHA-256 8a629510...) to the packet and the source's run and control
-      logs to the net and the receipt. None of it decides coverage, and the source's run
-      is of a copy of this repository's verifier.
+      candidate digest from the retained bytes; it holds the receipt and the
+      pre-publication receipt to this net, the control to this candidate scaled by
+      197/200, and the logged run's own input digest to 6b3d9075..., a file the source did
+      not publish, with the published side, core, net, count and mass (finding FN-1 of the
+      6 October review); the pre-publication run read the published bytes. Its bundle
+      check binds the pinned check2 tarball (SHA-256 8a629510...) to the packet, the run
+      log to the net and the receipt, and the control log to the net, and recomputes each
+      of its 31 exact witnesses on the published measure scaled by 197/200 with an
+      evaluator written apart from the crate. None of it decides coverage, and the
+      source's run is of a copy of this repository's verifier.
+    external_review:
+      state: informally-verified
+      date: '2026-10-06'
+      reviewed_by: >-
+        AI agent, the separately prompted review lane of the second 2026-10-06 intake round's lane R7, model claude-opus-5-5 (tbd-strong tier)
+        (docs/project/reviews/review-2026-10-06-wand125-check2-ten-certificates.md)
+      note: >-
+        No defect in the certificate. The net's premises hold in exact arithmetic (B (1
+        + 1/2006) = 4011993/4012000, margin 7/4012000; t_831^2 + 2 t_831 - 1 =
+        497/4024036 > 0; the last bin's floor 1661/4012 below tan(pi/8)), as do the
+        mass, rows and semantic digest, and lemma N0 covers the net. The reviewer
+        reproduced every control witness's exact capture with an evaluator of its own,
+        and found the logged run's input digest not the published candidate's (FN-1,
+        fixed by naming it). The coverage statements are those of the source's copy of
+        this repository's crate until a complete replay here passes.
     source_reviewed: '2026-10-06'
   - id: E-n039-wand125-mixed-665-report
     claim: lower-bound
@@ -18025,11 +18181,31 @@ evidence:
       devtools.audit_wand125_declared_net audit --certificate n39-L665
       (receipts/n39-L665/audit.json in the packet) recomputes the mass, lemma N0's
       premises on the declared net, the net block bundle.json states and the semantic
-      candidate digest from the retained bytes, and holds the receipt, control and
-      pre-publication receipt to this candidate and net; its bundle check binds the pinned
-      check2 tarball (SHA-256 ac1bba6e...) to the packet and the source's run and control
-      logs to the net and the receipt. None of it decides coverage, and the source's run
-      is of a copy of this repository's verifier.
+      candidate digest from the retained bytes; it holds the receipt and the
+      pre-publication receipt to this net, the control to this candidate scaled by
+      197/200, and the logged run's own input digest to 01275534..., a file the source did
+      not publish, with the published side, core, net, count and mass (finding FN-1 of the
+      6 October review); the pre-publication run read the published bytes. Its bundle
+      check binds the pinned check2 tarball (SHA-256 ac1bba6e...) to the packet, the run
+      log to the net and the receipt, and the control log to the net, and recomputes each
+      of its 31 exact witnesses on the published measure scaled by 197/200 with an
+      evaluator written apart from the crate. None of it decides coverage, and the
+      source's run is of a copy of this repository's verifier.
+    external_review:
+      state: informally-verified
+      date: '2026-10-06'
+      reviewed_by: >-
+        AI agent, the separately prompted review lane of the second 2026-10-06 intake round's lane R7, model claude-opus-5-5 (tbd-strong tier)
+        (docs/project/reviews/review-2026-10-06-wand125-check2-ten-certificates.md)
+      note: >-
+        No defect in the certificate. The net's premises hold in exact arithmetic (B (1
+        + 1/1001) = 500499/500500, margin 1/500500; t_415^2 + 2 t_415 - 1 = 1054/1002001
+        > 0; the last bin's floor 829/2002 below tan(pi/8)), as do the mass, rows and
+        semantic digest, and lemma N0 covers the net. The reviewer reproduced every
+        control witness's exact capture with an evaluator of its own, and found the
+        logged run's input digest not the published candidate's (FN-1, fixed by naming
+        it). The coverage statements are those of the source's copy of this repository's
+        crate until a complete replay here passes.
     source_reviewed: '2026-10-06'
   - id: E-n041-wand125-mixed-6775-report
     claim: lower-bound
@@ -18068,9 +18244,29 @@ evidence:
       devtools.audit_wand125_declared_net audit --certificate n41-L6775
       (receipts/n41-L6775/audit.json in the packet) recomputes the mass, lemma N0's
       premises on the declared net, the net block bundle.json states and the semantic
-      candidate digest from the retained bytes, and holds the receipt, control and
-      pre-publication receipt to this candidate and net; its bundle check binds the pinned
-      check2 tarball (SHA-256 59bd9ff5...) to the packet and the source's run and control
-      logs to the net and the receipt. None of it decides coverage, and the source's run
-      is of a copy of this repository's verifier.
+      candidate digest from the retained bytes; it holds the receipt and the
+      pre-publication receipt to this net, the control to this candidate scaled by
+      197/200, and the logged run's own input digest to cbc04bd9..., a file the source did
+      not publish, with the published side, core, net, count and mass (finding FN-1 of the
+      6 October review); the pre-publication run read the published bytes. Its bundle
+      check binds the pinned check2 tarball (SHA-256 59bd9ff5...) to the packet, the run
+      log to the net and the receipt, and the control log to the net, and recomputes each
+      of its 31 exact witnesses on the published measure scaled by 197/200 with an
+      evaluator written apart from the crate. None of it decides coverage, and the
+      source's run is of a copy of this repository's verifier.
+    external_review:
+      state: informally-verified
+      date: '2026-10-06'
+      reviewed_by: >-
+        AI agent, the separately prompted review lane of the second 2026-10-06 intake round's lane R7, model claude-opus-5-5 (tbd-strong tier)
+        (docs/project/reviews/review-2026-10-06-wand125-check2-ten-certificates.md)
+      note: >-
+        No defect in the certificate. The net's premises hold in exact arithmetic (B (1
+        + 1/1001) = 500499/500500, margin 1/500500; t_415^2 + 2 t_415 - 1 = 1054/1002001
+        > 0; the last bin's floor 829/2002 below tan(pi/8)), as do the mass, rows and
+        semantic digest, and lemma N0 covers the net. The reviewer reproduced every
+        control witness's exact capture with an evaluator of its own, and found the
+        logged run's input digest not the published candidate's (FN-1, fixed by naming
+        it). The coverage statements are those of the source's copy of this repository's
+        crate until a complete replay here passes.
     source_reviewed: '2026-10-06'

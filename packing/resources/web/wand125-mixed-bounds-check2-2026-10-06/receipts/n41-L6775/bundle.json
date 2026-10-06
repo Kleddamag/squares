@@ -7,7 +7,7 @@
   "retained_files_equal": 9,
   "pinned_files_equal": 5,
   "run_log": {"directions":416,"oblique_nodes":114365213,"direction_seconds":2014.239513378999,"direction_cpu_seconds":-0.0,"threads":4,"target":"aarch64-apple-darwin","source_sha256":"ab6e33e164dbc5c32b40349ba55981b58e630b5eef59534196a69d259404fd7c","least_oblique":{"r":409,"lower":1.0000000000604714},"axis_lower":1.004989715377397},
-  "control_log": {"file":"check2/control.jsonl.gz","directions":32,"refused":32,"factor":"197/200","exact_below_threshold":31},
+  "control_log": {"witnesses_recomputed":31,"file":"check2/control.jsonl.gz","directions":32,"refused":32,"factor":"197/200","exact_below_threshold":31},
   "scope": "The bundle's files against its own list and the packet, and the source's run and control logs against the declared net, threshold one and the receipt. The run is of the source's adaptation of this repository's sqverify_fast, whose tarball is held by digest and not opened. No coverage is decided here.",
   "tarball": {"name":"n41-L6.775-check2-bundle.tar.gz","sha256":"59bd9ff55f9b0bd29eea919dd7c19135e7d34673d9fd43ca2c5a46c618fa73e3","bytes":174603}
 }

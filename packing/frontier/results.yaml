@@ -9508,9 +9508,11 @@ results:
       and the reported and verified lower bound at n = 18, by 0.001, and supersedes it.
 
       Here the source was retained and its exact premises, those of the declared net among
-      them, were recomputed from the retained bytes, and the source's run log was bound to
-      the declared net and its receipt. None of it decides coverage. The value stands as
-      reported, and the verified lower bound is unchanged.
+      them, were recomputed from the retained bytes, the source's run log was bound to the
+      declared net and its receipt, and every exact witness of its control was recomputed
+      on the published measure scaled by 197/200. The 6 October review found no defect in
+      the certificate. None of it decides coverage, so the value stands as reported, and
+      the verified lower bound is unchanged.
 
       wand125 after Tokoharu and Levy,
       [square-packing-bounds](https://github.com/wand125/square-packing-bounds/tree/2fad66e02f54a492835dc41ac37a9184e1e7a662/certificates/mixed_n18_L4705).
@@ -9519,55 +9521,76 @@ results:
       direction.
     scope: {n_values: [18]}
     verification: V0
-    confirmation: C0
+    confirmation: C1
     significance:
       score: 3
       rationale: >-
         Scored as a claim: if the replay passes, the strongest verified lower bound on
         record at n = 18, by 0.001. The certificate kind of T-099 on a declared net,
         checked at the source by a copy of this repository's verifier rather than its
-        C++ checker; no new technique, at S3 as T-099 and T-100 are. The score gates
-        nothing.
+        C++ checker; no new technique, at S3 as T-099 and T-100 are. The 6 October
+        review confirmed the draft.
       scored: '2026-10-06'
-      by: 'wand125 check2 import, registering lane R7 of the 6 October intake round (repository; draft)'
+      by: docs/project/reviews/review-2026-10-06-wand125-check2-ten-certificates.md (repository; confirms the registering lane's draft)
     novelty: previously-published
     attribution:
       source_keys: ['[wand125 mixed bounds check2 2026-10-06]']
       published: '2026-10-06'
     composition: >-
-      One primary certificate on one reported entry, at V0/C0: retained and audited for
-      its exact premises, not reviewed and not replayed. Coverage is decided at the source
-      by a copy of this repository's sqverify_fast changed to read a declared net, so a
-      sqverify-fast replay here would re-implement the producer's check sharing that
-      crate, not independently. The source's C++ checker, which shares no code with it,
-      was not run on this candidate.
+      One primary certificate on one reported entry, read by the 6 October review and not
+      replayed in full, at V0/C1. Coverage is decided at the source by a copy of this
+      repository's sqverify_fast changed to read a declared net, so a sqverify-fast replay
+      here would re-implement the producer's check sharing that crate, not independently.
+      The source's C++ checker, the producer's own code but sharing none with the crate,
+      was not run in full on this candidate.
     evidence:
       - E-n018-wand125-mixed-4705-report
+    reviews:
+      - path: docs/project/reviews/review-2026-10-06-wand125-check2-ten-certificates.md
+        kind: adversarial
+        reviewer: Claude Opus 5.5 (claude-opus-5-5), the tbd-strong sub-agent, prompted separately from lane R7 of the second 6 October intake round that retained, audited and registered T-108 to T-117, sharing none of its context beyond the brief and the committed record, after registration and before any complete replay, allowed to run its own checks at one thread and barred from the source's adapted crate
+        reviewer_kind: ai
+        relation: project
+        date: '2026-10-06'
+        scope: >-
+          wand125's ten certificates of 6 October pinned at 2fad66e0, nine check2
+          bundles and the n = 29 proof bundle: the argument from certificate to bound,
+          the three declared nets re-derived in exact arithmetic, the 1/5002 net among
+          them, against the scope of the declared-net soundness review; what check2
+          changes and which code confirms it; the source's run and control logs, every
+          control witness recomputed exactly with code of its own; every number in the
+          records; the first-party audit, bundle and cpp-sample commands; and the
+          drafted significance, at eb004e7c5. It ran the source's C++ checker at one
+          node each of mixed_n41_L6775 and mixed_n18_L4705.
+        verdict: accepted
+        covers: [T-108, T-109, T-110, T-111, T-112, T-113, T-114, T-115, T-116, T-117]
     artifacts:
       - packing/resources/web/wand125-mixed-bounds-check2-2026-10-06/README.md
       - packing/resources/web/wand125-mixed-bounds-check2-2026-10-06/receipts/n18-L4705/audit.json
       - packing/resources/web/wand125-mixed-bounds-check2-2026-10-06/receipts/n18-L4705/bundle.json
       - packing/devtools/audit_wand125_declared_net.py
       - packing/sqverify_fast/SOUNDNESS.md
+      - docs/project/reviews/review-2026-10-06-wand125-check2-ten-certificates.md
     next_rung: >-
-      A review of the certificate and of the check2 form, and a complete replay:
-      sqverify-fast over all 2073 directions of the declared net on the census route,
-      which the declared-net soundness review accepted for a net meeting lemma N0's
-      premises, as this one does. The verified lower bound at n = 18 moves when it passes
-      and the review finds no blocking defect. Samples of the source's C++ checker on the
-      candidate would add a check that shares no code with the crate.
+      A complete replay: sqverify-fast over all 2073 directions of the declared net on the
+      census route, which the declared-net soundness review accepted for a net meeting
+      lemma N0's premises, as this one does; it is running since 6 October (think-yrdj).
+      The verified lower bound at n = 18 moves when it passes. Samples of the source's C++
+      checker, the producer's own code but sharing none with the crate, add diversity at
+      the nodes they run.
     notes: >-
       V0 because the cited entry is the source's claim: assurance reported, replay not yet
-      complete. C0 because nothing here has yet read the certificate's mathematics: the
-      exact audit and the bundle binding decide no direction. The source's pre-publication
-      run on another host is its own run of the same build and was not checked here. The
-      check2 tarball is pinned by digest and not retained, and the adapted crate inside it
-      is pinned and not opened. Ids here are provisional until merged.
+      complete. C1 because the 6 October review read the certificate's mathematics and
+      found no defect; the exact audit and the bundle binding decide no direction. The
+      source's pre-publication run on another host is its own run of the same build and
+      was not checked here. The check2 tarball is pinned by digest and not retained, and
+      the adapted crate inside it is pinned and not opened. Ids here are provisional until
+      merged.
     activity:
       state: in-analysis
       what: >-
-        The sqverify-fast census row and its controls, samples of the source's C++
-        checker, and one review of the batch, run separately.
+        The sqverify-fast census row and its controls, and samples of the source's C++
+        checker, run separately.
       since: '2026-10-06'
       link: think-yrdj
 
@@ -9594,9 +9617,13 @@ results:
       supersedes it.
 
       Here the source was retained and its exact premises, those of the declared net among
-      them, were recomputed from the retained bytes, and the source's run log was bound to
-      the declared net and its receipt. None of it decides coverage. The value stands as
-      reported, and the verified lower bound is unchanged.
+      them, were recomputed from the retained bytes, the source's run log was bound to the
+      declared net and its receipt, and every exact witness of its control was recomputed
+      on the published measure scaled by 197/200. The source's logged run read a file
+      whose bytes it did not publish, with the same side, core, net and mass; its
+      pre-publication run read the published bytes. The 6 October review found no defect
+      in the certificate. None of it decides coverage, so the value stands as reported,
+      and the verified lower bound is unchanged.
 
       wand125 after Tokoharu and Levy,
       [square-packing-bounds](https://github.com/wand125/square-packing-bounds/tree/2fad66e02f54a492835dc41ac37a9184e1e7a662/certificates/mixed_n19_L4825).
@@ -9605,55 +9632,76 @@ results:
       direction.
     scope: {n_values: [19]}
     verification: V0
-    confirmation: C0
+    confirmation: C1
     significance:
       score: 3
       rationale: >-
         Scored as a claim: if the replay passes, the strongest verified lower bound on
         record at n = 19, by 0.0021. The certificate kind of T-099 on a declared net,
         checked at the source by a copy of this repository's verifier rather than its
-        C++ checker; no new technique, at S3 as T-099 and T-100 are. The score gates
-        nothing.
+        C++ checker; no new technique, at S3 as T-099 and T-100 are. The 6 October
+        review confirmed the draft.
       scored: '2026-10-06'
-      by: 'wand125 check2 import, registering lane R7 of the 6 October intake round (repository; draft)'
+      by: docs/project/reviews/review-2026-10-06-wand125-check2-ten-certificates.md (repository; confirms the registering lane's draft)
     novelty: previously-published
     attribution:
       source_keys: ['[wand125 mixed bounds check2 2026-10-06]']
       published: '2026-10-06'
     composition: >-
-      One primary certificate on one reported entry, at V0/C0: retained and audited for
-      its exact premises, not reviewed and not replayed. Coverage is decided at the source
-      by a copy of this repository's sqverify_fast changed to read a declared net, so a
-      sqverify-fast replay here would re-implement the producer's check sharing that
-      crate, not independently. The source's C++ checker, which shares no code with it,
-      was not run on this candidate.
+      One primary certificate on one reported entry, read by the 6 October review and not
+      replayed in full, at V0/C1. Coverage is decided at the source by a copy of this
+      repository's sqverify_fast changed to read a declared net, so a sqverify-fast replay
+      here would re-implement the producer's check sharing that crate, not independently.
+      The source's C++ checker, the producer's own code but sharing none with the crate,
+      was not run in full on this candidate.
     evidence:
       - E-n019-wand125-mixed-4825-report
+    reviews:
+      - path: docs/project/reviews/review-2026-10-06-wand125-check2-ten-certificates.md
+        kind: adversarial
+        reviewer: Claude Opus 5.5 (claude-opus-5-5), the tbd-strong sub-agent, prompted separately from lane R7 of the second 6 October intake round that retained, audited and registered T-108 to T-117, sharing none of its context beyond the brief and the committed record, after registration and before any complete replay, allowed to run its own checks at one thread and barred from the source's adapted crate
+        reviewer_kind: ai
+        relation: project
+        date: '2026-10-06'
+        scope: >-
+          wand125's ten certificates of 6 October pinned at 2fad66e0, nine check2
+          bundles and the n = 29 proof bundle: the argument from certificate to bound,
+          the three declared nets re-derived in exact arithmetic, the 1/5002 net among
+          them, against the scope of the declared-net soundness review; what check2
+          changes and which code confirms it; the source's run and control logs, every
+          control witness recomputed exactly with code of its own; every number in the
+          records; the first-party audit, bundle and cpp-sample commands; and the
+          drafted significance, at eb004e7c5. It ran the source's C++ checker at one
+          node each of mixed_n41_L6775 and mixed_n18_L4705.
+        verdict: accepted
+        covers: [T-108, T-109, T-110, T-111, T-112, T-113, T-114, T-115, T-116, T-117]
     artifacts:
       - packing/resources/web/wand125-mixed-bounds-check2-2026-10-06/README.md
       - packing/resources/web/wand125-mixed-bounds-check2-2026-10-06/receipts/n19-L4825/audit.json
       - packing/resources/web/wand125-mixed-bounds-check2-2026-10-06/receipts/n19-L4825/bundle.json
       - packing/devtools/audit_wand125_declared_net.py
       - packing/sqverify_fast/SOUNDNESS.md
+      - docs/project/reviews/review-2026-10-06-wand125-check2-ten-certificates.md
     next_rung: >-
-      A review of the certificate and of the check2 form, and a complete replay:
-      sqverify-fast over all 2073 directions of the declared net on the census route,
-      which the declared-net soundness review accepted for a net meeting lemma N0's
-      premises, as this one does. The verified lower bound at n = 19 moves when it passes
-      and the review finds no blocking defect. Samples of the source's C++ checker on the
-      candidate would add a check that shares no code with the crate.
+      A complete replay: sqverify-fast over all 2073 directions of the declared net on the
+      census route, which the declared-net soundness review accepted for a net meeting
+      lemma N0's premises, as this one does; it is running since 6 October (think-yrdj).
+      The verified lower bound at n = 19 moves when it passes. Samples of the source's C++
+      checker, the producer's own code but sharing none with the crate, add diversity at
+      the nodes they run.
     notes: >-
       V0 because the cited entry is the source's claim: assurance reported, replay not yet
-      complete. C0 because nothing here has yet read the certificate's mathematics: the
-      exact audit and the bundle binding decide no direction. The source's pre-publication
-      run on another host is its own run of the same build and was not checked here. The
-      check2 tarball is pinned by digest and not retained, and the adapted crate inside it
-      is pinned and not opened. Ids here are provisional until merged.
+      complete. C1 because the 6 October review read the certificate's mathematics and
+      found no defect; the exact audit and the bundle binding decide no direction. The
+      source's pre-publication run on another host is its own run of the same build and
+      was not checked here. The check2 tarball is pinned by digest and not retained, and
+      the adapted crate inside it is pinned and not opened. Ids here are provisional until
+      merged.
     activity:
       state: in-analysis
       what: >-
-        The sqverify-fast census row and its controls, samples of the source's C++
-        checker, and one review of the batch, run separately.
+        The sqverify-fast census row and its controls, and samples of the source's C++
+        checker, run separately.
       since: '2026-10-06'
       link: think-yrdj
 
@@ -9680,9 +9728,13 @@ results:
       1959/400 = 4.8975 (T-074) by 0.0075.
 
       Here the source was retained and its exact premises, those of the declared net among
-      them, were recomputed from the retained bytes, and the source's run log was bound to
-      the declared net and its receipt. None of it decides coverage. The value stands as
-      reported, and the verified lower bound is unchanged.
+      them, were recomputed from the retained bytes, the source's run log was bound to the
+      declared net and its receipt, and every exact witness of its control was recomputed
+      on the published measure scaled by 197/200. The source's logged run read a file
+      whose bytes it did not publish, with the same side, core, net and mass; its
+      pre-publication run read the published bytes. The 6 October review found no defect
+      in the certificate. None of it decides coverage, so the value stands as reported,
+      and the verified lower bound is unchanged.
 
       wand125 after Tokoharu and Levy,
       [square-packing-bounds](https://github.com/wand125/square-packing-bounds/tree/2fad66e02f54a492835dc41ac37a9184e1e7a662/certificates/mixed_n20_L4905).
@@ -9691,55 +9743,76 @@ results:
       direction.
     scope: {n_values: [20]}
     verification: V0
-    confirmation: C0
+    confirmation: C1
     significance:
       score: 3
       rationale: >-
         Scored as a claim: if the replay passes, the strongest verified lower bound on
         record at n = 20, by 0.0075. The certificate kind of T-099 on a declared net,
         checked at the source by a copy of this repository's verifier rather than its
-        C++ checker; no new technique, at S3 as T-099 and T-100 are. The score gates
-        nothing.
+        C++ checker; no new technique, at S3 as T-099 and T-100 are. The 6 October
+        review confirmed the draft.
       scored: '2026-10-06'
-      by: 'wand125 check2 import, registering lane R7 of the 6 October intake round (repository; draft)'
+      by: docs/project/reviews/review-2026-10-06-wand125-check2-ten-certificates.md (repository; confirms the registering lane's draft)
     novelty: previously-published
     attribution:
       source_keys: ['[wand125 mixed bounds check2 2026-10-06]']
       published: '2026-10-06'
     composition: >-
-      One primary certificate on one reported entry, at V0/C0: retained and audited for
-      its exact premises, not reviewed and not replayed. Coverage is decided at the source
-      by a copy of this repository's sqverify_fast changed to read a declared net, so a
-      sqverify-fast replay here would re-implement the producer's check sharing that
-      crate, not independently. The source's C++ checker, which shares no code with it,
-      was not run on this candidate.
+      One primary certificate on one reported entry, read by the 6 October review and not
+      replayed in full, at V0/C1. Coverage is decided at the source by a copy of this
+      repository's sqverify_fast changed to read a declared net, so a sqverify-fast replay
+      here would re-implement the producer's check sharing that crate, not independently.
+      The source's C++ checker, the producer's own code but sharing none with the crate,
+      was not run in full on this candidate.
     evidence:
       - E-n020-wand125-mixed-4905-report
+    reviews:
+      - path: docs/project/reviews/review-2026-10-06-wand125-check2-ten-certificates.md
+        kind: adversarial
+        reviewer: Claude Opus 5.5 (claude-opus-5-5), the tbd-strong sub-agent, prompted separately from lane R7 of the second 6 October intake round that retained, audited and registered T-108 to T-117, sharing none of its context beyond the brief and the committed record, after registration and before any complete replay, allowed to run its own checks at one thread and barred from the source's adapted crate
+        reviewer_kind: ai
+        relation: project
+        date: '2026-10-06'
+        scope: >-
+          wand125's ten certificates of 6 October pinned at 2fad66e0, nine check2
+          bundles and the n = 29 proof bundle: the argument from certificate to bound,
+          the three declared nets re-derived in exact arithmetic, the 1/5002 net among
+          them, against the scope of the declared-net soundness review; what check2
+          changes and which code confirms it; the source's run and control logs, every
+          control witness recomputed exactly with code of its own; every number in the
+          records; the first-party audit, bundle and cpp-sample commands; and the
+          drafted significance, at eb004e7c5. It ran the source's C++ checker at one
+          node each of mixed_n41_L6775 and mixed_n18_L4705.
+        verdict: accepted
+        covers: [T-108, T-109, T-110, T-111, T-112, T-113, T-114, T-115, T-116, T-117]
     artifacts:
       - packing/resources/web/wand125-mixed-bounds-check2-2026-10-06/README.md
       - packing/resources/web/wand125-mixed-bounds-check2-2026-10-06/receipts/n20-L4905/audit.json
       - packing/resources/web/wand125-mixed-bounds-check2-2026-10-06/receipts/n20-L4905/bundle.json
       - packing/devtools/audit_wand125_declared_net.py
       - packing/sqverify_fast/SOUNDNESS.md
+      - docs/project/reviews/review-2026-10-06-wand125-check2-ten-certificates.md
     next_rung: >-
-      A review of the certificate and of the check2 form, and a complete replay:
-      sqverify-fast over all 832 directions of the declared net on the census route, which
-      the declared-net soundness review accepted for a net meeting lemma N0's premises, as
-      this one does. The verified lower bound at n = 20 moves when it passes and the
-      review finds no blocking defect. Samples of the source's C++ checker on the
-      candidate would add a check that shares no code with the crate.
+      A complete replay: sqverify-fast over all 832 directions of the declared net on the
+      census route, which the declared-net soundness review accepted for a net meeting
+      lemma N0's premises, as this one does; it is running since 6 October (think-yrdj).
+      The verified lower bound at n = 20 moves when it passes. Samples of the source's C++
+      checker, the producer's own code but sharing none with the crate, add diversity at
+      the nodes they run.
     notes: >-
       V0 because the cited entry is the source's claim: assurance reported, replay not yet
-      complete. C0 because nothing here has yet read the certificate's mathematics: the
-      exact audit and the bundle binding decide no direction. The source's pre-publication
-      run on another host is its own run of the same build and was not checked here. The
-      check2 tarball is pinned by digest and not retained, and the adapted crate inside it
-      is pinned and not opened. Ids here are provisional until merged.
+      complete. C1 because the 6 October review read the certificate's mathematics and
+      found no defect; the exact audit and the bundle binding decide no direction. The
+      source's pre-publication run on another host is its own run of the same build and
+      was not checked here. The check2 tarball is pinned by digest and not retained, and
+      the adapted crate inside it is pinned and not opened. Ids here are provisional until
+      merged.
     activity:
       state: in-analysis
       what: >-
-        The sqverify-fast census row and its controls, samples of the source's C++
-        checker, and one review of the batch, run separately.
+        The sqverify-fast census row and its controls, and samples of the source's C++
+        checker, run separately.
       since: '2026-10-06'
       link: think-yrdj
 
@@ -9766,9 +9839,13 @@ results:
       by 0.0125.
 
       Here the source was retained and its exact premises, those of the declared net among
-      them, were recomputed from the retained bytes, and the source's run log was bound to
-      the declared net and its receipt. None of it decides coverage. The value stands as
-      reported, and the verified lower bound is unchanged.
+      them, were recomputed from the retained bytes, the source's run log was bound to the
+      declared net and its receipt, and every exact witness of its control was recomputed
+      on the published measure scaled by 197/200. The source's logged run read a file
+      whose bytes it did not publish, with the same side, core, net and mass; its
+      pre-publication run read the published bytes. The 6 October review found no defect
+      in the certificate. None of it decides coverage, so the value stands as reported,
+      and the verified lower bound is unchanged.
 
       wand125 after Tokoharu and Levy,
       [square-packing-bounds](https://github.com/wand125/square-packing-bounds/tree/2fad66e02f54a492835dc41ac37a9184e1e7a662/certificates/mixed_n26_L5545).
@@ -9777,55 +9854,76 @@ results:
       direction.
     scope: {n_values: [26]}
     verification: V0
-    confirmation: C0
+    confirmation: C1
     significance:
       score: 3
       rationale: >-
         Scored as a claim: if the replay passes, the strongest verified lower bound on
         record at n = 26, by 0.0125. The certificate kind of T-099 on a declared net,
         checked at the source by a copy of this repository's verifier rather than its
-        C++ checker; no new technique, at S3 as T-099 and T-100 are. The score gates
-        nothing.
+        C++ checker; no new technique, at S3 as T-099 and T-100 are. The 6 October
+        review confirmed the draft.
       scored: '2026-10-06'
-      by: 'wand125 check2 import, registering lane R7 of the 6 October intake round (repository; draft)'
+      by: docs/project/reviews/review-2026-10-06-wand125-check2-ten-certificates.md (repository; confirms the registering lane's draft)
     novelty: previously-published
     attribution:
       source_keys: ['[wand125 mixed bounds check2 2026-10-06]']
       published: '2026-10-06'
     composition: >-
-      One primary certificate on one reported entry, at V0/C0: retained and audited for
-      its exact premises, not reviewed and not replayed. Coverage is decided at the source
-      by a copy of this repository's sqverify_fast changed to read a declared net, so a
-      sqverify-fast replay here would re-implement the producer's check sharing that
-      crate, not independently. The source's C++ checker, which shares no code with it,
-      was not run on this candidate.
+      One primary certificate on one reported entry, read by the 6 October review and not
+      replayed in full, at V0/C1. Coverage is decided at the source by a copy of this
+      repository's sqverify_fast changed to read a declared net, so a sqverify-fast replay
+      here would re-implement the producer's check sharing that crate, not independently.
+      The source's C++ checker, the producer's own code but sharing none with the crate,
+      was not run in full on this candidate.
     evidence:
       - E-n026-wand125-mixed-5545-report
+    reviews:
+      - path: docs/project/reviews/review-2026-10-06-wand125-check2-ten-certificates.md
+        kind: adversarial
+        reviewer: Claude Opus 5.5 (claude-opus-5-5), the tbd-strong sub-agent, prompted separately from lane R7 of the second 6 October intake round that retained, audited and registered T-108 to T-117, sharing none of its context beyond the brief and the committed record, after registration and before any complete replay, allowed to run its own checks at one thread and barred from the source's adapted crate
+        reviewer_kind: ai
+        relation: project
+        date: '2026-10-06'
+        scope: >-
+          wand125's ten certificates of 6 October pinned at 2fad66e0, nine check2
+          bundles and the n = 29 proof bundle: the argument from certificate to bound,
+          the three declared nets re-derived in exact arithmetic, the 1/5002 net among
+          them, against the scope of the declared-net soundness review; what check2
+          changes and which code confirms it; the source's run and control logs, every
+          control witness recomputed exactly with code of its own; every number in the
+          records; the first-party audit, bundle and cpp-sample commands; and the
+          drafted significance, at eb004e7c5. It ran the source's C++ checker at one
+          node each of mixed_n41_L6775 and mixed_n18_L4705.
+        verdict: accepted
+        covers: [T-108, T-109, T-110, T-111, T-112, T-113, T-114, T-115, T-116, T-117]
     artifacts:
       - packing/resources/web/wand125-mixed-bounds-check2-2026-10-06/README.md
       - packing/resources/web/wand125-mixed-bounds-check2-2026-10-06/receipts/n26-L5545/audit.json
       - packing/resources/web/wand125-mixed-bounds-check2-2026-10-06/receipts/n26-L5545/bundle.json
       - packing/devtools/audit_wand125_declared_net.py
       - packing/sqverify_fast/SOUNDNESS.md
+      - docs/project/reviews/review-2026-10-06-wand125-check2-ten-certificates.md
     next_rung: >-
-      A review of the certificate and of the check2 form, and a complete replay:
-      sqverify-fast over all 832 directions of the declared net on the census route, which
-      the declared-net soundness review accepted for a net meeting lemma N0's premises, as
-      this one does. The verified lower bound at n = 26 moves when it passes and the
-      review finds no blocking defect. Samples of the source's C++ checker on the
-      candidate would add a check that shares no code with the crate.
+      A complete replay: sqverify-fast over all 832 directions of the declared net on the
+      census route, which the declared-net soundness review accepted for a net meeting
+      lemma N0's premises, as this one does; it is running since 6 October (think-yrdj).
+      The verified lower bound at n = 26 moves when it passes. Samples of the source's C++
+      checker, the producer's own code but sharing none with the crate, add diversity at
+      the nodes they run.
     notes: >-
       V0 because the cited entry is the source's claim: assurance reported, replay not yet
-      complete. C0 because nothing here has yet read the certificate's mathematics: the
-      exact audit and the bundle binding decide no direction. The source's pre-publication
-      run on another host is its own run of the same build and was not checked here. The
-      check2 tarball is pinned by digest and not retained, and the adapted crate inside it
-      is pinned and not opened. Ids here are provisional until merged.
+      complete. C1 because the 6 October review read the certificate's mathematics and
+      found no defect; the exact audit and the bundle binding decide no direction. The
+      source's pre-publication run on another host is its own run of the same build and
+      was not checked here. The check2 tarball is pinned by digest and not retained, and
+      the adapted crate inside it is pinned and not opened. Ids here are provisional until
+      merged.
     activity:
       state: in-analysis
       what: >-
-        The sqverify-fast census row and its controls, samples of the source's C++
-        checker, and one review of the batch, run separately.
+        The sqverify-fast census row and its controls, and samples of the source's C++
+        checker, run separately.
       since: '2026-10-06'
       link: think-yrdj
 
@@ -9852,9 +9950,13 @@ results:
       by 0.0085.
 
       Here the source was retained and its exact premises, those of the declared net among
-      them, were recomputed from the retained bytes, and the source's run log was bound to
-      the declared net and its receipt. None of it decides coverage. The value stands as
-      reported, and the verified lower bound is unchanged.
+      them, were recomputed from the retained bytes, the source's run log was bound to the
+      declared net and its receipt, and every exact witness of its control was recomputed
+      on the published measure scaled by 197/200. The source's logged run read a file
+      whose bytes it did not publish, with the same side, core, net and mass; its
+      pre-publication run read the published bytes. The 6 October review found no defect
+      in the certificate. None of it decides coverage, so the value stands as reported,
+      and the verified lower bound is unchanged.
 
       wand125 after Tokoharu and Levy,
       [square-packing-bounds](https://github.com/wand125/square-packing-bounds/tree/2fad66e02f54a492835dc41ac37a9184e1e7a662/certificates/mixed_n27_L56435).
@@ -9863,55 +9965,76 @@ results:
       direction.
     scope: {n_values: [27]}
     verification: V0
-    confirmation: C0
+    confirmation: C1
     significance:
       score: 3
       rationale: >-
         Scored as a claim: if the replay passes, the strongest verified lower bound on
         record at n = 27, by 0.0085. The certificate kind of T-099 on a declared net,
         checked at the source by a copy of this repository's verifier rather than its
-        C++ checker; no new technique, at S3 as T-099 and T-100 are. The score gates
-        nothing.
+        C++ checker; no new technique, at S3 as T-099 and T-100 are. The 6 October
+        review confirmed the draft.
       scored: '2026-10-06'
-      by: 'wand125 check2 import, registering lane R7 of the 6 October intake round (repository; draft)'
+      by: docs/project/reviews/review-2026-10-06-wand125-check2-ten-certificates.md (repository; confirms the registering lane's draft)
     novelty: previously-published
     attribution:
       source_keys: ['[wand125 mixed bounds check2 2026-10-06]']
       published: '2026-10-06'
     composition: >-
-      One primary certificate on one reported entry, at V0/C0: retained and audited for
-      its exact premises, not reviewed and not replayed. Coverage is decided at the source
-      by a copy of this repository's sqverify_fast changed to read a declared net, so a
-      sqverify-fast replay here would re-implement the producer's check sharing that
-      crate, not independently. The source's C++ checker, which shares no code with it,
-      was not run on this candidate.
+      One primary certificate on one reported entry, read by the 6 October review and not
+      replayed in full, at V0/C1. Coverage is decided at the source by a copy of this
+      repository's sqverify_fast changed to read a declared net, so a sqverify-fast replay
+      here would re-implement the producer's check sharing that crate, not independently.
+      The source's C++ checker, the producer's own code but sharing none with the crate,
+      was not run in full on this candidate.
     evidence:
       - E-n027-wand125-mixed-56435-report
+    reviews:
+      - path: docs/project/reviews/review-2026-10-06-wand125-check2-ten-certificates.md
+        kind: adversarial
+        reviewer: Claude Opus 5.5 (claude-opus-5-5), the tbd-strong sub-agent, prompted separately from lane R7 of the second 6 October intake round that retained, audited and registered T-108 to T-117, sharing none of its context beyond the brief and the committed record, after registration and before any complete replay, allowed to run its own checks at one thread and barred from the source's adapted crate
+        reviewer_kind: ai
+        relation: project
+        date: '2026-10-06'
+        scope: >-
+          wand125's ten certificates of 6 October pinned at 2fad66e0, nine check2
+          bundles and the n = 29 proof bundle: the argument from certificate to bound,
+          the three declared nets re-derived in exact arithmetic, the 1/5002 net among
+          them, against the scope of the declared-net soundness review; what check2
+          changes and which code confirms it; the source's run and control logs, every
+          control witness recomputed exactly with code of its own; every number in the
+          records; the first-party audit, bundle and cpp-sample commands; and the
+          drafted significance, at eb004e7c5. It ran the source's C++ checker at one
+          node each of mixed_n41_L6775 and mixed_n18_L4705.
+        verdict: accepted
+        covers: [T-108, T-109, T-110, T-111, T-112, T-113, T-114, T-115, T-116, T-117]
     artifacts:
       - packing/resources/web/wand125-mixed-bounds-check2-2026-10-06/README.md
       - packing/resources/web/wand125-mixed-bounds-check2-2026-10-06/receipts/n27-L56435/audit.json
       - packing/resources/web/wand125-mixed-bounds-check2-2026-10-06/receipts/n27-L56435/bundle.json
       - packing/devtools/audit_wand125_declared_net.py
       - packing/sqverify_fast/SOUNDNESS.md
+      - docs/project/reviews/review-2026-10-06-wand125-check2-ten-certificates.md
     next_rung: >-
-      A review of the certificate and of the check2 form, and a complete replay:
-      sqverify-fast over all 832 directions of the declared net on the census route, which
-      the declared-net soundness review accepted for a net meeting lemma N0's premises, as
-      this one does. The verified lower bound at n = 27 moves when it passes and the
-      review finds no blocking defect. Samples of the source's C++ checker on the
-      candidate would add a check that shares no code with the crate.
+      A complete replay: sqverify-fast over all 832 directions of the declared net on the
+      census route, which the declared-net soundness review accepted for a net meeting
+      lemma N0's premises, as this one does; it is running since 6 October (think-yrdj).
+      The verified lower bound at n = 27 moves when it passes. Samples of the source's C++
+      checker, the producer's own code but sharing none with the crate, add diversity at
+      the nodes they run.
     notes: >-
       V0 because the cited entry is the source's claim: assurance reported, replay not yet
-      complete. C0 because nothing here has yet read the certificate's mathematics: the
-      exact audit and the bundle binding decide no direction. The source's pre-publication
-      run on another host is its own run of the same build and was not checked here. The
-      check2 tarball is pinned by digest and not retained, and the adapted crate inside it
-      is pinned and not opened. Ids here are provisional until merged.
+      complete. C1 because the 6 October review read the certificate's mathematics and
+      found no defect; the exact audit and the bundle binding decide no direction. The
+      source's pre-publication run on another host is its own run of the same build and
+      was not checked here. The check2 tarball is pinned by digest and not retained, and
+      the adapted crate inside it is pinned and not opened. Ids here are provisional until
+      merged.
     activity:
       state: in-analysis
       what: >-
-        The sqverify-fast census row and its controls, samples of the source's C++
-        checker, and one review of the batch, run separately.
+        The sqverify-fast census row and its controls, and samples of the source's C++
+        checker, run separately.
       since: '2026-10-06'
       link: think-yrdj
 
@@ -9937,9 +10060,13 @@ results:
       by 0.0125.
 
       Here the source was retained and its exact premises, those of the declared net among
-      them, were recomputed from the retained bytes, and the source's run log was bound to
-      the declared net and its receipt. None of it decides coverage. The value stands as
-      reported, and the verified lower bound is unchanged.
+      them, were recomputed from the retained bytes, the source's run log was bound to the
+      declared net and its receipt, and every exact witness of its control was recomputed
+      on the published measure scaled by 197/200. The source's logged run read a file
+      whose bytes it did not publish, with the same side, core, net and mass; its
+      pre-publication run read the published bytes. The 6 October review found no defect
+      in the certificate. None of it decides coverage, so the value stands as reported,
+      and the verified lower bound is unchanged.
 
       wand125 after Tokoharu and Levy,
       [square-packing-bounds](https://github.com/wand125/square-packing-bounds/tree/2fad66e02f54a492835dc41ac37a9184e1e7a662/certificates/mixed_n28_L5735).
@@ -9948,55 +10075,76 @@ results:
       direction.
     scope: {n_values: [28]}
     verification: V0
-    confirmation: C0
+    confirmation: C1
     significance:
       score: 3
       rationale: >-
         Scored as a claim: if the replay passes, the strongest verified lower bound on
         record at n = 28, by 0.0125. The certificate kind of T-099 on a declared net,
         checked at the source by a copy of this repository's verifier rather than its
-        C++ checker; no new technique, at S3 as T-099 and T-100 are. The score gates
-        nothing.
+        C++ checker; no new technique, at S3 as T-099 and T-100 are. The 6 October
+        review confirmed the draft.
       scored: '2026-10-06'
-      by: 'wand125 check2 import, registering lane R7 of the 6 October intake round (repository; draft)'
+      by: docs/project/reviews/review-2026-10-06-wand125-check2-ten-certificates.md (repository; confirms the registering lane's draft)
     novelty: previously-published
     attribution:
       source_keys: ['[wand125 mixed bounds check2 2026-10-06]']
       published: '2026-10-06'
     composition: >-
-      One primary certificate on one reported entry, at V0/C0: retained and audited for
-      its exact premises, not reviewed and not replayed. Coverage is decided at the source
-      by a copy of this repository's sqverify_fast changed to read a declared net, so a
-      sqverify-fast replay here would re-implement the producer's check sharing that
-      crate, not independently. The source's C++ checker, which shares no code with it,
-      was not run on this candidate.
+      One primary certificate on one reported entry, read by the 6 October review and not
+      replayed in full, at V0/C1. Coverage is decided at the source by a copy of this
+      repository's sqverify_fast changed to read a declared net, so a sqverify-fast replay
+      here would re-implement the producer's check sharing that crate, not independently.
+      The source's C++ checker, the producer's own code but sharing none with the crate,
+      was not run in full on this candidate.
     evidence:
       - E-n028-wand125-mixed-5735-report
+    reviews:
+      - path: docs/project/reviews/review-2026-10-06-wand125-check2-ten-certificates.md
+        kind: adversarial
+        reviewer: Claude Opus 5.5 (claude-opus-5-5), the tbd-strong sub-agent, prompted separately from lane R7 of the second 6 October intake round that retained, audited and registered T-108 to T-117, sharing none of its context beyond the brief and the committed record, after registration and before any complete replay, allowed to run its own checks at one thread and barred from the source's adapted crate
+        reviewer_kind: ai
+        relation: project
+        date: '2026-10-06'
+        scope: >-
+          wand125's ten certificates of 6 October pinned at 2fad66e0, nine check2
+          bundles and the n = 29 proof bundle: the argument from certificate to bound,
+          the three declared nets re-derived in exact arithmetic, the 1/5002 net among
+          them, against the scope of the declared-net soundness review; what check2
+          changes and which code confirms it; the source's run and control logs, every
+          control witness recomputed exactly with code of its own; every number in the
+          records; the first-party audit, bundle and cpp-sample commands; and the
+          drafted significance, at eb004e7c5. It ran the source's C++ checker at one
+          node each of mixed_n41_L6775 and mixed_n18_L4705.
+        verdict: accepted
+        covers: [T-108, T-109, T-110, T-111, T-112, T-113, T-114, T-115, T-116, T-117]
     artifacts:
       - packing/resources/web/wand125-mixed-bounds-check2-2026-10-06/README.md
       - packing/resources/web/wand125-mixed-bounds-check2-2026-10-06/receipts/n28-L5735/audit.json
       - packing/resources/web/wand125-mixed-bounds-check2-2026-10-06/receipts/n28-L5735/bundle.json
       - packing/devtools/audit_wand125_declared_net.py
       - packing/sqverify_fast/SOUNDNESS.md
+      - docs/project/reviews/review-2026-10-06-wand125-check2-ten-certificates.md
     next_rung: >-
-      A review of the certificate and of the check2 form, and a complete replay:
-      sqverify-fast over all 416 directions of the declared net on the census route, which
-      the declared-net soundness review accepted for a net meeting lemma N0's premises, as
-      this one does. The verified lower bound at n = 28 moves when it passes and the
-      review finds no blocking defect. Samples of the source's C++ checker on the
-      candidate would add a check that shares no code with the crate.
+      A complete replay: sqverify-fast over all 416 directions of the declared net on the
+      census route, which the declared-net soundness review accepted for a net meeting
+      lemma N0's premises, as this one does; it is running since 6 October (think-yrdj).
+      The verified lower bound at n = 28 moves when it passes. Samples of the source's C++
+      checker, the producer's own code but sharing none with the crate, add diversity at
+      the nodes they run.
     notes: >-
       V0 because the cited entry is the source's claim: assurance reported, replay not yet
-      complete. C0 because nothing here has yet read the certificate's mathematics: the
-      exact audit and the bundle binding decide no direction. The source's pre-publication
-      run on another host is its own run of the same build and was not checked here. The
-      check2 tarball is pinned by digest and not retained, and the adapted crate inside it
-      is pinned and not opened. Ids here are provisional until merged.
+      complete. C1 because the 6 October review read the certificate's mathematics and
+      found no defect; the exact audit and the bundle binding decide no direction. The
+      source's pre-publication run on another host is its own run of the same build and
+      was not checked here. The check2 tarball is pinned by digest and not retained, and
+      the adapted crate inside it is pinned and not opened. Ids here are provisional until
+      merged.
     activity:
       state: in-analysis
       what: >-
-        The sqverify-fast census row and its controls, samples of the source's C++
-        checker, and one review of the batch, run separately.
+        The sqverify-fast census row and its controls, and samples of the source's C++
+        checker, run separately.
       since: '2026-10-06'
       link: think-yrdj
 
@@ -10022,8 +10170,9 @@ results:
 
       Here the source was retained and its exact premises, those of the declared net among
       them, were recomputed from the retained bytes, and the source's shipped runs were
-      bound record by record to the declared net. None of it decides coverage. The value
-      stands as reported, and the verified lower bound is unchanged.
+      bound record by record to the declared net. The 6 October review found no defect in
+      the certificate. None of it decides coverage, so the value stands as reported, and
+      the verified lower bound is unchanged.
 
       wand125 after Tokoharu and Levy,
       [square-packing-bounds](https://github.com/wand125/square-packing-bounds/tree/2fad66e02f54a492835dc41ac37a9184e1e7a662/certificates/mixed_n29_L581).
@@ -10032,51 +10181,70 @@ results:
       direction.
     scope: {n_values: [29]}
     verification: V0
-    confirmation: C0
+    confirmation: C1
     significance:
       score: 3
       rationale: >-
         Scored as a claim: if the replay passes, the strongest verified lower bound on
         record at n = 29, by 0.0125. The certificate kind and checker of T-069 and later
         on T-096's declared net; no new technique, at S3 as T-096, T-099 and T-100 are.
-        The score gates nothing.
+        The 6 October review confirmed the draft.
       scored: '2026-10-06'
-      by: 'wand125 check2 import, registering lane R7 of the 6 October intake round (repository; draft)'
+      by: docs/project/reviews/review-2026-10-06-wand125-check2-ten-certificates.md (repository; confirms the registering lane's draft)
     novelty: previously-published
     attribution:
       source_keys: ['[wand125 mixed bounds check2 2026-10-06]']
       published: '2026-10-06'
     composition: >-
-      One primary certificate on one reported entry, at V0/C0: retained and audited for
-      its exact premises, not reviewed and not replayed. Coverage is decided by the
-      source's C++ checker alone, byte for byte the checker the 28 September and 2, 3, 5
-      and 6 October reviews read; the axis tables are a second implementation for one
-      direction and not a second method.
+      One primary certificate on one reported entry, read by the 6 October review and not
+      replayed, at V0/C1. Coverage is decided by the source's C++ checker alone, byte for
+      byte the checker the 28 September and 2, 3, 5 and 6 October reviews read; the axis
+      tables are a second implementation for one direction and not a second method.
     evidence:
       - E-n029-wand125-mixed-581-report
+    reviews:
+      - path: docs/project/reviews/review-2026-10-06-wand125-check2-ten-certificates.md
+        kind: adversarial
+        reviewer: Claude Opus 5.5 (claude-opus-5-5), the tbd-strong sub-agent, prompted separately from lane R7 of the second 6 October intake round that retained, audited and registered T-108 to T-117, sharing none of its context beyond the brief and the committed record, after registration and before any complete replay, allowed to run its own checks at one thread and barred from the source's adapted crate
+        reviewer_kind: ai
+        relation: project
+        date: '2026-10-06'
+        scope: >-
+          wand125's ten certificates of 6 October pinned at 2fad66e0, nine check2
+          bundles and the n = 29 proof bundle: the argument from certificate to bound,
+          the three declared nets re-derived in exact arithmetic, the 1/5002 net among
+          them, against the scope of the declared-net soundness review; what check2
+          changes and which code confirms it; the source's run and control logs, every
+          control witness recomputed exactly with code of its own; every number in the
+          records; the first-party audit, bundle and cpp-sample commands; and the
+          drafted significance, at eb004e7c5. It ran the source's C++ checker at one
+          node each of mixed_n41_L6775 and mixed_n18_L4705.
+        verdict: accepted
+        covers: [T-108, T-109, T-110, T-111, T-112, T-113, T-114, T-115, T-116, T-117]
     artifacts:
       - packing/resources/web/wand125-mixed-bounds-check2-2026-10-06/README.md
       - packing/resources/web/wand125-mixed-bounds-check2-2026-10-06/receipts/n29-L581/audit.json
       - packing/resources/web/wand125-mixed-bounds-check2-2026-10-06/receipts/n29-L581/bundle.json
       - packing/devtools/audit_wand125_declared_net.py
       - packing/sqverify_fast/SOUNDNESS.md
+      - docs/project/reviews/review-2026-10-06-wand125-check2-ten-certificates.md
     next_rung: >-
-      A review of the certificate and a complete replay: sqverify-fast over all 416
-      directions on the census route, or the bundle's own driver over all 416 nodes, about
-      42 CPU-hours by the source's own oblique seconds. The verified lower bound at n = 29
-      moves when one of them passes and the review finds no blocking defect.
+      A complete replay: sqverify-fast over all 416 directions on the census route, or the
+      bundle's own driver over all 416 nodes, about 42 CPU-hours by the source's own
+      oblique seconds. The verified lower bound at n = 29 moves when one of them passes;
+      the census row is running since 6 October (think-yrdj).
     notes: >-
       V0 because the cited entry is the source's claim: assurance reported, replay not yet
-      complete. C0 because nothing here has yet read the certificate's mathematics: the
-      exact audit and the bundle binding decide no direction. The source's pre-publication
-      run of its copy of sqverify-fast publishes no receipt and was not checked here. The
-      proof-bundle tarball is pinned by digest and not retained. Ids here are provisional
-      until merged.
+      complete. C1 because the 6 October review read the certificate's mathematics and
+      found no defect; the exact audit and the bundle binding decide no direction. The
+      source's pre-publication run of its copy of sqverify-fast publishes no receipt and
+      was not checked here. The proof-bundle tarball is pinned by digest and not retained.
+      Ids here are provisional until merged.
     activity:
       state: in-analysis
       what: >-
-        The sqverify-fast census row and its controls, samples of the source's C++
-        checker, and one review of the batch, run separately.
+        The sqverify-fast census row and its controls, and samples of the source's C++
+        checker, run separately.
       since: '2026-10-06'
       link: think-yrdj
 
@@ -10102,9 +10270,13 @@ results:
       and the reported (T-068) and verified (T-074) lower bound at n = 30, by 0.0085.
 
       Here the source was retained and its exact premises, those of the declared net among
-      them, were recomputed from the retained bytes, and the source's run log was bound to
-      the declared net and its receipt. None of it decides coverage. The value stands as
-      reported, and the verified lower bound is unchanged.
+      them, were recomputed from the retained bytes, the source's run log was bound to the
+      declared net and its receipt, and every exact witness of its control was recomputed
+      on the published measure scaled by 197/200. The source's logged run read a file
+      whose bytes it did not publish, with the same side, core, net and mass; its
+      pre-publication run read the published bytes. The 6 October review found no defect
+      in the certificate. None of it decides coverage, so the value stands as reported,
+      and the verified lower bound is unchanged.
 
       wand125 after Tokoharu and Levy,
       [square-packing-bounds](https://github.com/wand125/square-packing-bounds/tree/2fad66e02f54a492835dc41ac37a9184e1e7a662/certificates/mixed_n30_L58835).
@@ -10113,55 +10285,76 @@ results:
       direction.
     scope: {n_values: [30]}
     verification: V0
-    confirmation: C0
+    confirmation: C1
     significance:
       score: 3
       rationale: >-
         Scored as a claim: if the replay passes, the strongest verified lower bound on
         record at n = 30, by 0.0085. The certificate kind of T-099 on a declared net,
         checked at the source by a copy of this repository's verifier rather than its
-        C++ checker; no new technique, at S3 as T-099 and T-100 are. The score gates
-        nothing.
+        C++ checker; no new technique, at S3 as T-099 and T-100 are. The 6 October
+        review confirmed the draft.
       scored: '2026-10-06'
-      by: 'wand125 check2 import, registering lane R7 of the 6 October intake round (repository; draft)'
+      by: docs/project/reviews/review-2026-10-06-wand125-check2-ten-certificates.md (repository; confirms the registering lane's draft)
     novelty: previously-published
     attribution:
       source_keys: ['[wand125 mixed bounds check2 2026-10-06]']
       published: '2026-10-06'
     composition: >-
-      One primary certificate on one reported entry, at V0/C0: retained and audited for
-      its exact premises, not reviewed and not replayed. Coverage is decided at the source
-      by a copy of this repository's sqverify_fast changed to read a declared net, so a
-      sqverify-fast replay here would re-implement the producer's check sharing that
-      crate, not independently. The source's C++ checker, which shares no code with it,
-      was not run on this candidate.
+      One primary certificate on one reported entry, read by the 6 October review and not
+      replayed in full, at V0/C1. Coverage is decided at the source by a copy of this
+      repository's sqverify_fast changed to read a declared net, so a sqverify-fast replay
+      here would re-implement the producer's check sharing that crate, not independently.
+      The source's C++ checker, the producer's own code but sharing none with the crate,
+      was not run in full on this candidate.
     evidence:
       - E-n030-wand125-mixed-58835-report
+    reviews:
+      - path: docs/project/reviews/review-2026-10-06-wand125-check2-ten-certificates.md
+        kind: adversarial
+        reviewer: Claude Opus 5.5 (claude-opus-5-5), the tbd-strong sub-agent, prompted separately from lane R7 of the second 6 October intake round that retained, audited and registered T-108 to T-117, sharing none of its context beyond the brief and the committed record, after registration and before any complete replay, allowed to run its own checks at one thread and barred from the source's adapted crate
+        reviewer_kind: ai
+        relation: project
+        date: '2026-10-06'
+        scope: >-
+          wand125's ten certificates of 6 October pinned at 2fad66e0, nine check2
+          bundles and the n = 29 proof bundle: the argument from certificate to bound,
+          the three declared nets re-derived in exact arithmetic, the 1/5002 net among
+          them, against the scope of the declared-net soundness review; what check2
+          changes and which code confirms it; the source's run and control logs, every
+          control witness recomputed exactly with code of its own; every number in the
+          records; the first-party audit, bundle and cpp-sample commands; and the
+          drafted significance, at eb004e7c5. It ran the source's C++ checker at one
+          node each of mixed_n41_L6775 and mixed_n18_L4705.
+        verdict: accepted
+        covers: [T-108, T-109, T-110, T-111, T-112, T-113, T-114, T-115, T-116, T-117]
     artifacts:
       - packing/resources/web/wand125-mixed-bounds-check2-2026-10-06/README.md
       - packing/resources/web/wand125-mixed-bounds-check2-2026-10-06/receipts/n30-L58835/audit.json
       - packing/resources/web/wand125-mixed-bounds-check2-2026-10-06/receipts/n30-L58835/bundle.json
       - packing/devtools/audit_wand125_declared_net.py
       - packing/sqverify_fast/SOUNDNESS.md
+      - docs/project/reviews/review-2026-10-06-wand125-check2-ten-certificates.md
     next_rung: >-
-      A review of the certificate and of the check2 form, and a complete replay:
-      sqverify-fast over all 832 directions of the declared net on the census route, which
-      the declared-net soundness review accepted for a net meeting lemma N0's premises, as
-      this one does. The verified lower bound at n = 30 moves when it passes and the
-      review finds no blocking defect. Samples of the source's C++ checker on the
-      candidate would add a check that shares no code with the crate.
+      A complete replay: sqverify-fast over all 832 directions of the declared net on the
+      census route, which the declared-net soundness review accepted for a net meeting
+      lemma N0's premises, as this one does; it is running since 6 October (think-yrdj).
+      The verified lower bound at n = 30 moves when it passes. Samples of the source's C++
+      checker, the producer's own code but sharing none with the crate, add diversity at
+      the nodes they run.
     notes: >-
       V0 because the cited entry is the source's claim: assurance reported, replay not yet
-      complete. C0 because nothing here has yet read the certificate's mathematics: the
-      exact audit and the bundle binding decide no direction. The source's pre-publication
-      run on another host is its own run of the same build and was not checked here. The
-      check2 tarball is pinned by digest and not retained, and the adapted crate inside it
-      is pinned and not opened. Ids here are provisional until merged.
+      complete. C1 because the 6 October review read the certificate's mathematics and
+      found no defect; the exact audit and the bundle binding decide no direction. The
+      source's pre-publication run on another host is its own run of the same build and
+      was not checked here. The check2 tarball is pinned by digest and not retained, and
+      the adapted crate inside it is pinned and not opened. Ids here are provisional until
+      merged.
     activity:
       state: in-analysis
       what: >-
-        The sqverify-fast census row and its controls, samples of the source's C++
-        checker, and one review of the batch, run separately.
+        The sqverify-fast census row and its controls, and samples of the source's C++
+        checker, run separately.
       since: '2026-10-06'
       link: think-yrdj
 
@@ -10187,9 +10380,13 @@ results:
       by 0.015.
 
       Here the source was retained and its exact premises, those of the declared net among
-      them, were recomputed from the retained bytes, and the source's run log was bound to
-      the declared net and its receipt. None of it decides coverage. The value stands as
-      reported, and the verified lower bound is unchanged.
+      them, were recomputed from the retained bytes, the source's run log was bound to the
+      declared net and its receipt, and every exact witness of its control was recomputed
+      on the published measure scaled by 197/200. The source's logged run read a file
+      whose bytes it did not publish, with the same side, core, net and mass; its
+      pre-publication run read the published bytes. The 6 October review found no defect
+      in the certificate. None of it decides coverage, so the value stands as reported,
+      and the verified lower bound is unchanged.
 
       wand125 after Tokoharu and Levy,
       [square-packing-bounds](https://github.com/wand125/square-packing-bounds/tree/2fad66e02f54a492835dc41ac37a9184e1e7a662/certificates/mixed_n39_L665).
@@ -10198,55 +10395,76 @@ results:
       direction.
     scope: {n_values: [39]}
     verification: V0
-    confirmation: C0
+    confirmation: C1
     significance:
       score: 3
       rationale: >-
         Scored as a claim: if the replay passes, the strongest verified lower bound on
         record at n = 39, by 0.015. The certificate kind of T-099 on a declared net,
         checked at the source by a copy of this repository's verifier rather than its
-        C++ checker; no new technique, at S3 as T-099 and T-100 are. The score gates
-        nothing.
+        C++ checker; no new technique, at S3 as T-099 and T-100 are. The 6 October
+        review confirmed the draft.
       scored: '2026-10-06'
-      by: 'wand125 check2 import, registering lane R7 of the 6 October intake round (repository; draft)'
+      by: docs/project/reviews/review-2026-10-06-wand125-check2-ten-certificates.md (repository; confirms the registering lane's draft)
     novelty: previously-published
     attribution:
       source_keys: ['[wand125 mixed bounds check2 2026-10-06]']
       published: '2026-10-06'
     composition: >-
-      One primary certificate on one reported entry, at V0/C0: retained and audited for
-      its exact premises, not reviewed and not replayed. Coverage is decided at the source
-      by a copy of this repository's sqverify_fast changed to read a declared net, so a
-      sqverify-fast replay here would re-implement the producer's check sharing that
-      crate, not independently. The source's C++ checker, which shares no code with it,
-      was not run on this candidate.
+      One primary certificate on one reported entry, read by the 6 October review and not
+      replayed in full, at V0/C1. Coverage is decided at the source by a copy of this
+      repository's sqverify_fast changed to read a declared net, so a sqverify-fast replay
+      here would re-implement the producer's check sharing that crate, not independently.
+      The source's C++ checker, the producer's own code but sharing none with the crate,
+      was not run in full on this candidate.
     evidence:
       - E-n039-wand125-mixed-665-report
+    reviews:
+      - path: docs/project/reviews/review-2026-10-06-wand125-check2-ten-certificates.md
+        kind: adversarial
+        reviewer: Claude Opus 5.5 (claude-opus-5-5), the tbd-strong sub-agent, prompted separately from lane R7 of the second 6 October intake round that retained, audited and registered T-108 to T-117, sharing none of its context beyond the brief and the committed record, after registration and before any complete replay, allowed to run its own checks at one thread and barred from the source's adapted crate
+        reviewer_kind: ai
+        relation: project
+        date: '2026-10-06'
+        scope: >-
+          wand125's ten certificates of 6 October pinned at 2fad66e0, nine check2
+          bundles and the n = 29 proof bundle: the argument from certificate to bound,
+          the three declared nets re-derived in exact arithmetic, the 1/5002 net among
+          them, against the scope of the declared-net soundness review; what check2
+          changes and which code confirms it; the source's run and control logs, every
+          control witness recomputed exactly with code of its own; every number in the
+          records; the first-party audit, bundle and cpp-sample commands; and the
+          drafted significance, at eb004e7c5. It ran the source's C++ checker at one
+          node each of mixed_n41_L6775 and mixed_n18_L4705.
+        verdict: accepted
+        covers: [T-108, T-109, T-110, T-111, T-112, T-113, T-114, T-115, T-116, T-117]
     artifacts:
       - packing/resources/web/wand125-mixed-bounds-check2-2026-10-06/README.md
       - packing/resources/web/wand125-mixed-bounds-check2-2026-10-06/receipts/n39-L665/audit.json
       - packing/resources/web/wand125-mixed-bounds-check2-2026-10-06/receipts/n39-L665/bundle.json
       - packing/devtools/audit_wand125_declared_net.py
       - packing/sqverify_fast/SOUNDNESS.md
+      - docs/project/reviews/review-2026-10-06-wand125-check2-ten-certificates.md
     next_rung: >-
-      A review of the certificate and of the check2 form, and a complete replay:
-      sqverify-fast over all 416 directions of the declared net on the census route, which
-      the declared-net soundness review accepted for a net meeting lemma N0's premises, as
-      this one does. The verified lower bound at n = 39 moves when it passes and the
-      review finds no blocking defect. Samples of the source's C++ checker on the
-      candidate would add a check that shares no code with the crate.
+      A complete replay: sqverify-fast over all 416 directions of the declared net on the
+      census route, which the declared-net soundness review accepted for a net meeting
+      lemma N0's premises, as this one does; it is running since 6 October (think-yrdj).
+      The verified lower bound at n = 39 moves when it passes. Samples of the source's C++
+      checker, the producer's own code but sharing none with the crate, add diversity at
+      the nodes they run.
     notes: >-
       V0 because the cited entry is the source's claim: assurance reported, replay not yet
-      complete. C0 because nothing here has yet read the certificate's mathematics: the
-      exact audit and the bundle binding decide no direction. The source's pre-publication
-      run on another host is its own run of the same build and was not checked here. The
-      check2 tarball is pinned by digest and not retained, and the adapted crate inside it
-      is pinned and not opened. Ids here are provisional until merged.
+      complete. C1 because the 6 October review read the certificate's mathematics and
+      found no defect; the exact audit and the bundle binding decide no direction. The
+      source's pre-publication run on another host is its own run of the same build and
+      was not checked here. The check2 tarball is pinned by digest and not retained, and
+      the adapted crate inside it is pinned and not opened. Ids here are provisional until
+      merged.
     activity:
       state: in-analysis
       what: >-
-        The sqverify-fast census row and its controls, samples of the source's C++
-        checker, and one review of the batch, run separately.
+        The sqverify-fast census row and its controls, and samples of the source's C++
+        checker, run separately.
       since: '2026-10-06'
       link: think-yrdj
 
@@ -10271,9 +10489,15 @@ results:
       and the reported (T-068) and verified (T-074) lower bound at n = 41, by 0.015.
 
       Here the source was retained and its exact premises, those of the declared net among
-      them, were recomputed from the retained bytes, and the source's run log was bound to
-      the declared net and its receipt. None of it decides coverage. The value stands as
-      reported, and the verified lower bound is unchanged.
+      them, were recomputed from the retained bytes, the source's run log was bound to the
+      declared net and its receipt, and every exact witness of its control was recomputed
+      on the published measure scaled by 197/200. The source's logged run read a file
+      whose bytes it did not publish, with the same side, core, net and mass; its
+      pre-publication run read the published bytes. The source's C++ checker, the
+      producer's own code but sharing none with the crate, verified the candidate here at
+      nodes 409 and 415. The 6 October review found no defect in the certificate. None of
+      it decides coverage, so the value stands as reported, and the verified lower bound
+      is unchanged.
 
       wand125 after Tokoharu and Levy,
       [square-packing-bounds](https://github.com/wand125/square-packing-bounds/tree/2fad66e02f54a492835dc41ac37a9184e1e7a662/certificates/mixed_n41_L6775).
@@ -10282,54 +10506,76 @@ results:
       direction.
     scope: {n_values: [41]}
     verification: V0
-    confirmation: C0
+    confirmation: C1
     significance:
       score: 3
       rationale: >-
         Scored as a claim: if the replay passes, the strongest verified lower bound on
         record at n = 41, by 0.015. The certificate kind of T-099 on a declared net,
         checked at the source by a copy of this repository's verifier rather than its
-        C++ checker; no new technique, at S3 as T-099 and T-100 are. The score gates
-        nothing.
+        C++ checker; no new technique, at S3 as T-099 and T-100 are. The 6 October
+        review confirmed the draft.
       scored: '2026-10-06'
-      by: 'wand125 check2 import, registering lane R7 of the 6 October intake round (repository; draft)'
+      by: docs/project/reviews/review-2026-10-06-wand125-check2-ten-certificates.md (repository; confirms the registering lane's draft)
     novelty: previously-published
     attribution:
       source_keys: ['[wand125 mixed bounds check2 2026-10-06]']
       published: '2026-10-06'
     composition: >-
-      One primary certificate on one reported entry, at V0/C0: retained and audited for
-      its exact premises, not reviewed and not replayed. Coverage is decided at the source
-      by a copy of this repository's sqverify_fast changed to read a declared net, so a
-      sqverify-fast replay here would re-implement the producer's check sharing that
-      crate, not independently. The source's C++ checker, which shares no code with it,
-      was not run on this candidate.
+      One primary certificate on one reported entry, read by the 6 October review and not
+      replayed in full, at V0/C1. Coverage is decided at the source by a copy of this
+      repository's sqverify_fast changed to read a declared net, so a sqverify-fast replay
+      here would re-implement the producer's check sharing that crate, not independently.
+      The source's C++ checker, the producer's own code but sharing none with the crate,
+      was not run in full on this candidate.
     evidence:
       - E-n041-wand125-mixed-6775-report
+    reviews:
+      - path: docs/project/reviews/review-2026-10-06-wand125-check2-ten-certificates.md
+        kind: adversarial
+        reviewer: Claude Opus 5.5 (claude-opus-5-5), the tbd-strong sub-agent, prompted separately from lane R7 of the second 6 October intake round that retained, audited and registered T-108 to T-117, sharing none of its context beyond the brief and the committed record, after registration and before any complete replay, allowed to run its own checks at one thread and barred from the source's adapted crate
+        reviewer_kind: ai
+        relation: project
+        date: '2026-10-06'
+        scope: >-
+          wand125's ten certificates of 6 October pinned at 2fad66e0, nine check2
+          bundles and the n = 29 proof bundle: the argument from certificate to bound,
+          the three declared nets re-derived in exact arithmetic, the 1/5002 net among
+          them, against the scope of the declared-net soundness review; what check2
+          changes and which code confirms it; the source's run and control logs, every
+          control witness recomputed exactly with code of its own; every number in the
+          records; the first-party audit, bundle and cpp-sample commands; and the
+          drafted significance, at eb004e7c5. It ran the source's C++ checker at one
+          node each of mixed_n41_L6775 and mixed_n18_L4705.
+        verdict: accepted
+        covers: [T-108, T-109, T-110, T-111, T-112, T-113, T-114, T-115, T-116, T-117]
     artifacts:
       - packing/resources/web/wand125-mixed-bounds-check2-2026-10-06/README.md
       - packing/resources/web/wand125-mixed-bounds-check2-2026-10-06/receipts/n41-L6775/audit.json
       - packing/resources/web/wand125-mixed-bounds-check2-2026-10-06/receipts/n41-L6775/bundle.json
+      - packing/resources/web/wand125-mixed-bounds-check2-2026-10-06/receipts/n41-L6775/cpp-sample/nodes-0409-0415.json
       - packing/devtools/audit_wand125_declared_net.py
       - packing/sqverify_fast/SOUNDNESS.md
+      - docs/project/reviews/review-2026-10-06-wand125-check2-ten-certificates.md
     next_rung: >-
-      A review of the certificate and of the check2 form, and a complete replay:
-      sqverify-fast over all 416 directions of the declared net on the census route, which
-      the declared-net soundness review accepted for a net meeting lemma N0's premises, as
-      this one does. The verified lower bound at n = 41 moves when it passes and the
-      review finds no blocking defect. Samples of the source's C++ checker on the
-      candidate would add a check that shares no code with the crate.
+      A complete replay: sqverify-fast over all 416 directions of the declared net on the
+      census route, which the declared-net soundness review accepted for a net meeting
+      lemma N0's premises, as this one does; it is running since 6 October (think-yrdj).
+      The verified lower bound at n = 41 moves when it passes. Samples of the source's C++
+      checker, the producer's own code but sharing none with the crate, add diversity at
+      the nodes they run.
     notes: >-
       V0 because the cited entry is the source's claim: assurance reported, replay not yet
-      complete. C0 because nothing here has yet read the certificate's mathematics: the
-      exact audit and the bundle binding decide no direction. The source's pre-publication
-      run on another host is its own run of the same build and was not checked here. The
-      check2 tarball is pinned by digest and not retained, and the adapted crate inside it
-      is pinned and not opened. Ids here are provisional until merged.
+      complete. C1 because the 6 October review read the certificate's mathematics and
+      found no defect; the exact audit and the bundle binding decide no direction. The
+      source's pre-publication run on another host is its own run of the same build and
+      was not checked here. The check2 tarball is pinned by digest and not retained, and
+      the adapted crate inside it is pinned and not opened. Ids here are provisional until
+      merged.
     activity:
       state: in-analysis
       what: >-
-        The sqverify-fast census row and its controls, samples of the source's C++
-        checker, and one review of the batch, run separately.
+        The sqverify-fast census row and its controls, and samples of the source's C++
+        checker, run separately.
       since: '2026-10-06'
       link: think-yrdj

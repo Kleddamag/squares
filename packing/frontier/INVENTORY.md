@@ -345,16 +345,16 @@ results, it is a statement about what this repository has itself examined.
 | `E-n019-wand125-mixed-48229-report` | 0 | lower-bound | reported | - | elsewhere | informally-verified | previously-published | producer’s code | `V-wand125-mixed-rotated-verify-cpp`, `V-wand125-verify-mixed-full-proof-py` |
 | `E-n018-wand125-mixed-4704-sqverify-fast-replay` | 1 | lower-bound | verified | strict inequalities only | here | - | previously-published | independent | `V-sqverify-fast` |
 | `E-n019-wand125-mixed-48229-sqverify-fast-replay` | 1 | lower-bound | verified | strict inequalities only | here | - | previously-published | independent | `V-sqverify-fast` |
-| `E-n018-wand125-mixed-4705-report` | 1 | lower-bound | reported | - | elsewhere | - | previously-published | producer’s code | `V-wand125-sqverify-proof-net` |
-| `E-n019-wand125-mixed-4825-report` | 1 | lower-bound | reported | - | elsewhere | - | previously-published | producer’s code | `V-wand125-sqverify-proof-net` |
-| `E-n020-wand125-mixed-4905-report` | 1 | lower-bound | reported | - | elsewhere | - | previously-published | producer’s code | `V-wand125-sqverify-proof-net` |
-| `E-n026-wand125-mixed-5545-report` | 1 | lower-bound | reported | - | elsewhere | - | previously-published | producer’s code | `V-wand125-sqverify-proof-net` |
-| `E-n027-wand125-mixed-56435-report` | 1 | lower-bound | reported | - | elsewhere | - | previously-published | producer’s code | `V-wand125-sqverify-proof-net` |
-| `E-n028-wand125-mixed-5735-report` | 1 | lower-bound | reported | - | elsewhere | - | previously-published | producer’s code | `V-wand125-sqverify-proof-net` |
-| `E-n029-wand125-mixed-581-report` | 1 | lower-bound | reported | - | elsewhere | - | previously-published | producer’s code | `V-wand125-mixed-rotated-verify-cpp`, `V-wand125-verify-mixed-full-proof-py` |
-| `E-n030-wand125-mixed-58835-report` | 1 | lower-bound | reported | - | elsewhere | - | previously-published | producer’s code | `V-wand125-sqverify-proof-net` |
-| `E-n039-wand125-mixed-665-report` | 1 | lower-bound | reported | - | elsewhere | - | previously-published | producer’s code | `V-wand125-sqverify-proof-net` |
-| `E-n041-wand125-mixed-6775-report` | 1 | lower-bound | reported | - | elsewhere | - | previously-published | producer’s code | `V-wand125-sqverify-proof-net` |
+| `E-n018-wand125-mixed-4705-report` | 1 | lower-bound | reported | - | elsewhere | informally-verified | previously-published | producer’s code | `V-wand125-sqverify-proof-net` |
+| `E-n019-wand125-mixed-4825-report` | 1 | lower-bound | reported | - | elsewhere | informally-verified | previously-published | producer’s code | `V-wand125-sqverify-proof-net` |
+| `E-n020-wand125-mixed-4905-report` | 1 | lower-bound | reported | - | elsewhere | informally-verified | previously-published | producer’s code | `V-wand125-sqverify-proof-net` |
+| `E-n026-wand125-mixed-5545-report` | 1 | lower-bound | reported | - | elsewhere | informally-verified | previously-published | producer’s code | `V-wand125-sqverify-proof-net` |
+| `E-n027-wand125-mixed-56435-report` | 1 | lower-bound | reported | - | elsewhere | informally-verified | previously-published | producer’s code | `V-wand125-sqverify-proof-net` |
+| `E-n028-wand125-mixed-5735-report` | 1 | lower-bound | reported | - | elsewhere | informally-verified | previously-published | producer’s code | `V-wand125-sqverify-proof-net` |
+| `E-n029-wand125-mixed-581-report` | 1 | lower-bound | reported | - | elsewhere | informally-verified | previously-published | producer’s code | `V-wand125-mixed-rotated-verify-cpp`, `V-wand125-verify-mixed-full-proof-py` |
+| `E-n030-wand125-mixed-58835-report` | 1 | lower-bound | reported | - | elsewhere | informally-verified | previously-published | producer’s code | `V-wand125-sqverify-proof-net` |
+| `E-n039-wand125-mixed-665-report` | 1 | lower-bound | reported | - | elsewhere | informally-verified | previously-published | producer’s code | `V-wand125-sqverify-proof-net` |
+| `E-n041-wand125-mixed-6775-report` | 1 | lower-bound | reported | - | elsewhere | informally-verified | previously-published | producer’s code | `V-wand125-sqverify-proof-net` |
 
 ## What the register rests on
 

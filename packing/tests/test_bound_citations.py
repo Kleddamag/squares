@@ -895,9 +895,9 @@ def test_the_recorded_register_gives_these_lines(n: int) -> None:
         # rectangle replays raised both, n = 26 under T-045 and n = 29 under T-070, and
         # the replays of its 1 October certificates raised both again later that day
         # (T-074); its mixed certificates of 6 October on declared nets, decided by
-        # sqverify-fast, raised both again (T-111, T-114).
-        (26, "wand125 after Tokoharu, Levy et al.", "GitHub", "T-111"),
-        (29, "wand125 after Tokoharu, Levy et al.", "GitHub", "T-114"),
+        # sqverify-fast, raised both again (T-105, T-108).
+        (26, "wand125 after Tokoharu, Levy et al.", "GitHub", "T-105"),
+        (29, "wand125 after Tokoharu, Levy et al.", "GitHub", "T-108"),
     ],
 )
 def test_promoted_external_bounds_keep_the_sources_credit(
@@ -969,8 +969,8 @@ RECORDED_LINKS: dict[tuple[int, str], tuple[list[str], list[str]]] = {
     # that shape); then wand125's rectangle bound, which T-045 replays, until 2026-10-05;
     # then its mixed bound on a declared net, which T-096 replays, until 2026-10-06; then
     # its bound on a finer declared net, which sqverify-fast decides (T-099), and later
-    # that day its check2 bound on the finest net yet, decided the same way (T-108).
-    (18, "lower"): (["T-108"], ["T-108"]),
+    # that day its check2 bound on the finest net yet, decided the same way (T-102).
+    (18, "lower"): (["T-102"], ["T-102"]),
 }
 
 

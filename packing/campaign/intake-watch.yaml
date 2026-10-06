@@ -115,7 +115,7 @@ repositories:
       30, 39 and 41, which ship no C++ record and carry the source's run of its copy of
       sqverify_fast changed to read a declared net. The wand125-mixed-bounds-check2-2026-10-06
       packet pins 2fad66e and retains all ten directories but the files its README lists
-      as pinned only; they are registered as T-108 to T-117. Nothing else to import.
+      as pinned only; they are registered as T-102 to T-111. Nothing else to import.
   - url: https://github.com/Guzhou0806/n17-square-packing
     read_through: 815b16261f852e389968513eec94b4b9e5b3206d
     read_on: '2026-10-05'

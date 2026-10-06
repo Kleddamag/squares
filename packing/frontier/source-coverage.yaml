@@ -671,7 +671,7 @@ sources:
       replay here, and the 29 that hold a verified bound are registered again as T-074
       (E-wand125-rectangle-2026-10-01-source-replay). At n20, n42 and n70 the 2026-10-02
       revision's raised rungs (T-077) now hold the reported field, and at n19 the 6 October
-      finer-net certificate mixed_n19_L48229 (T-100) did, and from 6 October it held the verified lane there too, decided by sqverify-fast, until the check2 certificate mixed_n19_L4825 (T-109) took both later that day. At n26 to n30, n39 and n41 the source's mixed certificates of 6 October (T-111 to T-117, the 6 October check2 packet) now hold both lanes, decided here by sqverify-fast. At n59, n66, n77, n78 and n90 a stronger report holds the case, so
+      finer-net certificate mixed_n19_L48229 (T-100) did, and from 6 October it held the verified lane there too, decided by sqverify-fast, until the check2 certificate mixed_n19_L4825 (T-103) took both later that day. At n26 to n30, n39 and n41 the source's mixed certificates of 6 October (T-105 to T-111, the 6 October check2 packet) now hold both lanes, decided here by sqverify-fast. At n59, n66, n77, n78 and n90 a stronger report holds the case, so
       those five case records do not cite this source. The request says each directory
       carries a tarball, and none does.
   - id: wand125-exact-covers-2026-10-01
@@ -855,7 +855,7 @@ sources:
       coverage replay of the seven has run here, so each is a reported bound (T-077). At
       n59 and n77 the exact values s(59) = 8 and s(77) = 9 hold, and at n91 and n93 the same
       revision's mixed certificates (T-075), so those four case records do not cite this
-      source. At n20 the source's mixed_n20_L4905 of 6 October (T-110, the 6 October
+      source. At n20 the source's mixed_n20_L4905 of 6 October (T-104, the 6 October
       check2 packet) now holds the reported field, and the verified one, decided here by
       sqverify-fast.
   - id: wand125-mixed-bounds-afternoon-2026-10-02
@@ -1309,7 +1309,7 @@ sources:
       changed to read a declared net, is pinned by digest and not retained. The
       proof-bundle tarballs are pinned by digest and not retained. At n = 18 and 19 the
       source's check2 certificates mixed_n18_L4705 and mixed_n19_L4825 of later that day
-      (T-108 and T-109, the 6 October check2 packet) supersede these two in the reported
+      (T-102 and T-103, the 6 October check2 packet) supersede these two in the reported
       lane, and from their sqverify-fast replays of the same day in the verified lane.
   - id: wand125-mixed-bounds-check2-2026-10-06
     title: Mixed rectangle-measure certificates of 6 October 2026 for ten counts, nine of them check2 bundles
@@ -1339,8 +1339,8 @@ sources:
       the intake pass of 6 October; no request names these certificates. Ten commits since
       65e408c each add one directory and one root README section: ten rectangle densities
       of mass n - 1/100000 on nets their candidates declare, at n18, n19, n20, n26, n27,
-      n28, n29, n30, n39 and n41, each above what the record reported at its count (T-108
-      to T-117). mixed_n29_L581 is a complete proof bundle checked by the source's research
+      n28, n29, n30, n39 and n41, each above what the record reported at its count (T-102
+      to T-111). mixed_n29_L581 is a complete proof bundle checked by the source's research
       copy of Tokoharu's verify.cpp, byte for byte the checker of its n = 50 certificate.
       The other nine are check2 bundles: they ship no C++ record and are checked at the
       source by sqverify-proof-net, its copy of this repository's sqverify_fast changed to
@@ -1353,7 +1353,7 @@ sources:
       control witness recomputes exactly on the published measure. On 6 October
       sqverify-fast, this repository's clean-room measure verifier, decided all ten at
       every direction of their declared nets, which put them in the verified lane: for
-      T-114 independently of the producer's checker, for the nine check2 certificates
+      T-108 independently of the producer's checker, for the nine check2 certificates
       sharing the producer's components, since the source's check is a copy of the same
       crate, whose run logs the census rows equal direction by direction. The source's C++
       checker ran here at sampled nodes of each, and not in full. The tarballs are pinned

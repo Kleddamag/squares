@@ -251,7 +251,7 @@ Decides a mixed point-and-rectangle certificate at each direction of the certifi
 | `E-n018-wand125-mixed-4704-report` | the source’s own run | producer’s code | T-099 |
 | `E-n019-wand125-mixed-48229-report` | the source’s own run | producer’s code | T-100 |
 | `E-n018-wand125-mixed-4704-source-replay` | replayed here | producer’s code | T-099 |
-| `E-n029-wand125-mixed-581-report` | the source’s own run | producer’s code | T-114 |
+| `E-n029-wand125-mixed-581-report` | the source’s own run | producer’s code | T-108 |
 
 ### `V-wand125-verify-mixed-full-proof-py`
 
@@ -330,7 +330,7 @@ The source's driver for a complete mixed-certificate proof: it runs mixed_rotate
 | `E-n018-wand125-mixed-4704-report` | the source’s own run | producer’s code | T-099 |
 | `E-n019-wand125-mixed-48229-report` | the source’s own run | producer’s code | T-100 |
 | `E-n018-wand125-mixed-4704-source-replay` | replayed here | producer’s code | T-099 |
-| `E-n029-wand125-mixed-581-report` | the source’s own run | producer’s code | T-114 |
+| `E-n029-wand125-mixed-581-report` | the source’s own run | producer’s code | T-108 |
 
 ### `V-wand125-sqverify-proof-net`
 
@@ -344,15 +344,15 @@ The source's copy of this repository's sqverify_fast with one change, reading a 
 
 | evidence | run | code | results |
 | --- | --- | --- | --- |
-| `E-n018-wand125-mixed-4705-report` | the source’s own run | producer’s code | T-108 |
-| `E-n019-wand125-mixed-4825-report` | the source’s own run | producer’s code | T-109 |
-| `E-n020-wand125-mixed-4905-report` | the source’s own run | producer’s code | T-110 |
-| `E-n026-wand125-mixed-5545-report` | the source’s own run | producer’s code | T-111 |
-| `E-n027-wand125-mixed-56435-report` | the source’s own run | producer’s code | T-112 |
-| `E-n028-wand125-mixed-5735-report` | the source’s own run | producer’s code | T-113 |
-| `E-n030-wand125-mixed-58835-report` | the source’s own run | producer’s code | T-115 |
-| `E-n039-wand125-mixed-665-report` | the source’s own run | producer’s code | T-116 |
-| `E-n041-wand125-mixed-6775-report` | the source’s own run | producer’s code | T-117 |
+| `E-n018-wand125-mixed-4705-report` | the source’s own run | producer’s code | T-102 |
+| `E-n019-wand125-mixed-4825-report` | the source’s own run | producer’s code | T-103 |
+| `E-n020-wand125-mixed-4905-report` | the source’s own run | producer’s code | T-104 |
+| `E-n026-wand125-mixed-5545-report` | the source’s own run | producer’s code | T-105 |
+| `E-n027-wand125-mixed-56435-report` | the source’s own run | producer’s code | T-106 |
+| `E-n028-wand125-mixed-5735-report` | the source’s own run | producer’s code | T-107 |
+| `E-n030-wand125-mixed-58835-report` | the source’s own run | producer’s code | T-109 |
+| `E-n039-wand125-mixed-665-report` | the source’s own run | producer’s code | T-110 |
+| `E-n041-wand125-mixed-6775-report` | the source’s own run | producer’s code | T-111 |
 
 ### `V-wand125-unified-linear-verify-cpp`
 
@@ -1629,16 +1629,16 @@ Decides a measure-capture lower-bound certificate of format T, M or L on the 201
 | `E-n095-wand125-mixed-9965-sqverify-fast-replay` | replayed here | independent | T-090 |
 | `E-n018-wand125-mixed-4704-sqverify-fast-replay` | replayed here | independent | T-099 |
 | `E-n019-wand125-mixed-48229-sqverify-fast-replay` | replayed here | independent | T-100 |
-| `E-n018-wand125-mixed-4705-sqverify-fast-replay` | replayed here | shared components | T-108 |
-| `E-n019-wand125-mixed-4825-sqverify-fast-replay` | replayed here | shared components | T-109 |
-| `E-n020-wand125-mixed-4905-sqverify-fast-replay` | replayed here | shared components | T-110 |
-| `E-n026-wand125-mixed-5545-sqverify-fast-replay` | replayed here | shared components | T-111 |
-| `E-n027-wand125-mixed-56435-sqverify-fast-replay` | replayed here | shared components | T-112 |
-| `E-n028-wand125-mixed-5735-sqverify-fast-replay` | replayed here | shared components | T-113 |
-| `E-n029-wand125-mixed-581-sqverify-fast-replay` | replayed here | independent | T-114 |
-| `E-n030-wand125-mixed-58835-sqverify-fast-replay` | replayed here | shared components | T-115 |
-| `E-n039-wand125-mixed-665-sqverify-fast-replay` | replayed here | shared components | T-116 |
-| `E-n041-wand125-mixed-6775-sqverify-fast-replay` | replayed here | shared components | T-117 |
+| `E-n018-wand125-mixed-4705-sqverify-fast-replay` | replayed here | shared components | T-102 |
+| `E-n019-wand125-mixed-4825-sqverify-fast-replay` | replayed here | shared components | T-103 |
+| `E-n020-wand125-mixed-4905-sqverify-fast-replay` | replayed here | shared components | T-104 |
+| `E-n026-wand125-mixed-5545-sqverify-fast-replay` | replayed here | shared components | T-105 |
+| `E-n027-wand125-mixed-56435-sqverify-fast-replay` | replayed here | shared components | T-106 |
+| `E-n028-wand125-mixed-5735-sqverify-fast-replay` | replayed here | shared components | T-107 |
+| `E-n029-wand125-mixed-581-sqverify-fast-replay` | replayed here | independent | T-108 |
+| `E-n030-wand125-mixed-58835-sqverify-fast-replay` | replayed here | shared components | T-109 |
+| `E-n039-wand125-mixed-665-sqverify-fast-replay` | replayed here | shared components | T-110 |
+| `E-n041-wand125-mixed-6775-sqverify-fast-replay` | replayed here | shared components | T-111 |
 
 ### `V-replay-chelokot-lean`
 

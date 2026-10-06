@@ -632,7 +632,7 @@ def test_the_n29_bundle_is_bound_like_the_earlier_proof_bundles() -> None:
 
 
 def test_each_check2_run_names_its_input_published_or_listed() -> None:
-    """Finding FN-1 of the review of T-108 to T-117: eight check2 run logs name an input
+    """Finding FN-1 of the review of T-102 to T-111: eight check2 run logs name an input
     other than the published candidate.json. The audit names each, and refuses any other."""
     for key in CHECK2:
         facts = declared.audit(key=key)

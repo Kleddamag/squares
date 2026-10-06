@@ -10109,7 +10109,7 @@ results:
       that names it. The two reviews are stored as their reviewers wrote them and are not
       edited: "T-118" in either review, its title included, is this entry, T-101.
 
-  - id: T-108
+  - id: T-102
     kind: lower-bound
     registered: '2026-10-06'
     headline: "Mixed rectangle-measure lower bound verified at `n = 18`, on the finest declared net yet"
@@ -10179,7 +10179,7 @@ results:
     reviews:
       - path: docs/project/reviews/review-2026-10-06-wand125-check2-ten-certificates.md
         kind: adversarial
-        reviewer: Claude Opus 5.5 (claude-opus-5-5), the tbd-strong sub-agent, prompted separately from lane R7 of the second 6 October intake round that retained, audited and registered T-108 to T-117, sharing none of its context beyond the brief and the committed record, after registration and before any complete replay, allowed to run its own checks at one thread and barred from the source's adapted crate
+        reviewer: Claude Opus 5.5 (claude-opus-5-5), the tbd-strong sub-agent, prompted separately from lane R7 of the second 6 October intake round that retained, audited and registered T-102 to T-111, sharing none of its context beyond the brief and the committed record, after registration and before any complete replay, allowed to run its own checks at one thread and barred from the source's adapted crate
         reviewer_kind: ai
         relation: project
         date: '2026-10-06'
@@ -10194,7 +10194,7 @@ results:
           drafted significance, at eb004e7c5. It ran the source's C++ checker at one
           node each of mixed_n41_L6775 and mixed_n18_L4705.
         verdict: accepted
-        covers: [T-108, T-109, T-110, T-111, T-112, T-113, T-114, T-115, T-116, T-117]
+        covers: [T-102, T-103, T-104, T-105, T-106, T-107, T-108, T-109, T-110, T-111]
     artifacts:
       - packing/resources/web/wand125-mixed-bounds-check2-2026-10-06/README.md
       - packing/resources/web/wand125-mixed-bounds-check2-2026-10-06/receipts/n18-L4705/audit.json
@@ -10229,9 +10229,17 @@ results:
 
       n = 18's verified lower bound moves from T-099's 588/125 to 941/200. The tarball is
       pinned by digest and not retained, and the adapted crate inside it is pinned and not
-      opened. Ids here are provisional until merged.
+      opened. It was registered under the provisional id T-108.
 
-  - id: T-109
+      Renumbered from the provisional T-108 to T-102 when lane R7 merged on 6 October 2026,
+      with the other nine of the ten, the next ids after the register's T-101, in every
+      record, view, test and tool that names them. The review of the ten is stored as its
+      reviewer wrote it and is not edited, so it names them by the provisional ids, its
+      title included: its "T-108", "T-109", "T-110", "T-111", "T-112", "T-113", "T-114",
+      "T-115", "T-116" and "T-117" are T-102, T-103, T-104, T-105, T-106, T-107, T-108,
+      T-109, T-110 and T-111, in that order, and its "T-108" is this entry, T-102.
+
+  - id: T-103
     kind: lower-bound
     registered: '2026-10-06'
     headline: "Mixed rectangle-measure lower bound verified at `n = 19`, on the finest declared net yet"
@@ -10301,7 +10309,7 @@ results:
     reviews:
       - path: docs/project/reviews/review-2026-10-06-wand125-check2-ten-certificates.md
         kind: adversarial
-        reviewer: Claude Opus 5.5 (claude-opus-5-5), the tbd-strong sub-agent, prompted separately from lane R7 of the second 6 October intake round that retained, audited and registered T-108 to T-117, sharing none of its context beyond the brief and the committed record, after registration and before any complete replay, allowed to run its own checks at one thread and barred from the source's adapted crate
+        reviewer: Claude Opus 5.5 (claude-opus-5-5), the tbd-strong sub-agent, prompted separately from lane R7 of the second 6 October intake round that retained, audited and registered T-102 to T-111, sharing none of its context beyond the brief and the committed record, after registration and before any complete replay, allowed to run its own checks at one thread and barred from the source's adapted crate
         reviewer_kind: ai
         relation: project
         date: '2026-10-06'
@@ -10316,7 +10324,7 @@ results:
           drafted significance, at eb004e7c5. It ran the source's C++ checker at one
           node each of mixed_n41_L6775 and mixed_n18_L4705.
         verdict: accepted
-        covers: [T-108, T-109, T-110, T-111, T-112, T-113, T-114, T-115, T-116, T-117]
+        covers: [T-102, T-103, T-104, T-105, T-106, T-107, T-108, T-109, T-110, T-111]
     artifacts:
       - packing/resources/web/wand125-mixed-bounds-check2-2026-10-06/README.md
       - packing/resources/web/wand125-mixed-bounds-check2-2026-10-06/receipts/n19-L4825/audit.json
@@ -10351,9 +10359,17 @@ results:
 
       n = 19's verified lower bound moves from T-100's 48229/10000 to 193/40. The tarball
       is pinned by digest and not retained, and the adapted crate inside it is pinned and
-      not opened. Ids here are provisional until merged.
+      not opened. It was registered under the provisional id T-109.
 
-  - id: T-110
+      Renumbered from the provisional T-109 to T-103 when lane R7 merged on 6 October 2026,
+      with the other nine of the ten, the next ids after the register's T-101, in every
+      record, view, test and tool that names them. The review of the ten is stored as its
+      reviewer wrote it and is not edited, so it names them by the provisional ids, its
+      title included: its "T-108", "T-109", "T-110", "T-111", "T-112", "T-113", "T-114",
+      "T-115", "T-116" and "T-117" are T-102, T-103, T-104, T-105, T-106, T-107, T-108,
+      T-109, T-110 and T-111, in that order, and its "T-109" is this entry, T-103.
+
+  - id: T-104
     kind: lower-bound
     registered: '2026-10-06'
     headline: "Mixed rectangle-measure lower bound verified at `n = 20`, on a declared net"
@@ -10423,7 +10439,7 @@ results:
     reviews:
       - path: docs/project/reviews/review-2026-10-06-wand125-check2-ten-certificates.md
         kind: adversarial
-        reviewer: Claude Opus 5.5 (claude-opus-5-5), the tbd-strong sub-agent, prompted separately from lane R7 of the second 6 October intake round that retained, audited and registered T-108 to T-117, sharing none of its context beyond the brief and the committed record, after registration and before any complete replay, allowed to run its own checks at one thread and barred from the source's adapted crate
+        reviewer: Claude Opus 5.5 (claude-opus-5-5), the tbd-strong sub-agent, prompted separately from lane R7 of the second 6 October intake round that retained, audited and registered T-102 to T-111, sharing none of its context beyond the brief and the committed record, after registration and before any complete replay, allowed to run its own checks at one thread and barred from the source's adapted crate
         reviewer_kind: ai
         relation: project
         date: '2026-10-06'
@@ -10438,7 +10454,7 @@ results:
           drafted significance, at eb004e7c5. It ran the source's C++ checker at one
           node each of mixed_n41_L6775 and mixed_n18_L4705.
         verdict: accepted
-        covers: [T-108, T-109, T-110, T-111, T-112, T-113, T-114, T-115, T-116, T-117]
+        covers: [T-102, T-103, T-104, T-105, T-106, T-107, T-108, T-109, T-110, T-111]
     artifacts:
       - packing/resources/web/wand125-mixed-bounds-check2-2026-10-06/README.md
       - packing/resources/web/wand125-mixed-bounds-check2-2026-10-06/receipts/n20-L4905/audit.json
@@ -10473,9 +10489,17 @@ results:
 
       n = 20's verified lower bound moves from T-074's 1959/400 to 981/200. The tarball is
       pinned by digest and not retained, and the adapted crate inside it is pinned and not
-      opened. Ids here are provisional until merged.
+      opened. It was registered under the provisional id T-110.
 
-  - id: T-111
+      Renumbered from the provisional T-110 to T-104 when lane R7 merged on 6 October 2026,
+      with the other nine of the ten, the next ids after the register's T-101, in every
+      record, view, test and tool that names them. The review of the ten is stored as its
+      reviewer wrote it and is not edited, so it names them by the provisional ids, its
+      title included: its "T-108", "T-109", "T-110", "T-111", "T-112", "T-113", "T-114",
+      "T-115", "T-116" and "T-117" are T-102, T-103, T-104, T-105, T-106, T-107, T-108,
+      T-109, T-110 and T-111, in that order, and its "T-110" is this entry, T-104.
+
+  - id: T-105
     kind: lower-bound
     registered: '2026-10-06'
     headline: "Mixed rectangle-measure lower bound verified at `n = 26`, on a declared net"
@@ -10545,7 +10569,7 @@ results:
     reviews:
       - path: docs/project/reviews/review-2026-10-06-wand125-check2-ten-certificates.md
         kind: adversarial
-        reviewer: Claude Opus 5.5 (claude-opus-5-5), the tbd-strong sub-agent, prompted separately from lane R7 of the second 6 October intake round that retained, audited and registered T-108 to T-117, sharing none of its context beyond the brief and the committed record, after registration and before any complete replay, allowed to run its own checks at one thread and barred from the source's adapted crate
+        reviewer: Claude Opus 5.5 (claude-opus-5-5), the tbd-strong sub-agent, prompted separately from lane R7 of the second 6 October intake round that retained, audited and registered T-102 to T-111, sharing none of its context beyond the brief and the committed record, after registration and before any complete replay, allowed to run its own checks at one thread and barred from the source's adapted crate
         reviewer_kind: ai
         relation: project
         date: '2026-10-06'
@@ -10560,7 +10584,7 @@ results:
           drafted significance, at eb004e7c5. It ran the source's C++ checker at one
           node each of mixed_n41_L6775 and mixed_n18_L4705.
         verdict: accepted
-        covers: [T-108, T-109, T-110, T-111, T-112, T-113, T-114, T-115, T-116, T-117]
+        covers: [T-102, T-103, T-104, T-105, T-106, T-107, T-108, T-109, T-110, T-111]
     artifacts:
       - packing/resources/web/wand125-mixed-bounds-check2-2026-10-06/README.md
       - packing/resources/web/wand125-mixed-bounds-check2-2026-10-06/receipts/n26-L5545/audit.json
@@ -10595,9 +10619,17 @@ results:
 
       n = 26's verified lower bound moves from T-074's 2213/400 to 1109/200. The tarball
       is pinned by digest and not retained, and the adapted crate inside it is pinned and
-      not opened. Ids here are provisional until merged.
+      not opened. It was registered under the provisional id T-111.
 
-  - id: T-112
+      Renumbered from the provisional T-111 to T-105 when lane R7 merged on 6 October 2026,
+      with the other nine of the ten, the next ids after the register's T-101, in every
+      record, view, test and tool that names them. The review of the ten is stored as its
+      reviewer wrote it and is not edited, so it names them by the provisional ids, its
+      title included: its "T-108", "T-109", "T-110", "T-111", "T-112", "T-113", "T-114",
+      "T-115", "T-116" and "T-117" are T-102, T-103, T-104, T-105, T-106, T-107, T-108,
+      T-109, T-110 and T-111, in that order, and its "T-111" is this entry, T-105.
+
+  - id: T-106
     kind: lower-bound
     registered: '2026-10-06'
     headline: "Mixed rectangle-measure lower bound verified at `n = 27`, on a declared net"
@@ -10668,7 +10700,7 @@ results:
     reviews:
       - path: docs/project/reviews/review-2026-10-06-wand125-check2-ten-certificates.md
         kind: adversarial
-        reviewer: Claude Opus 5.5 (claude-opus-5-5), the tbd-strong sub-agent, prompted separately from lane R7 of the second 6 October intake round that retained, audited and registered T-108 to T-117, sharing none of its context beyond the brief and the committed record, after registration and before any complete replay, allowed to run its own checks at one thread and barred from the source's adapted crate
+        reviewer: Claude Opus 5.5 (claude-opus-5-5), the tbd-strong sub-agent, prompted separately from lane R7 of the second 6 October intake round that retained, audited and registered T-102 to T-111, sharing none of its context beyond the brief and the committed record, after registration and before any complete replay, allowed to run its own checks at one thread and barred from the source's adapted crate
         reviewer_kind: ai
         relation: project
         date: '2026-10-06'
@@ -10683,7 +10715,7 @@ results:
           drafted significance, at eb004e7c5. It ran the source's C++ checker at one
           node each of mixed_n41_L6775 and mixed_n18_L4705.
         verdict: accepted
-        covers: [T-108, T-109, T-110, T-111, T-112, T-113, T-114, T-115, T-116, T-117]
+        covers: [T-102, T-103, T-104, T-105, T-106, T-107, T-108, T-109, T-110, T-111]
     artifacts:
       - packing/resources/web/wand125-mixed-bounds-check2-2026-10-06/README.md
       - packing/resources/web/wand125-mixed-bounds-check2-2026-10-06/receipts/n27-L56435/audit.json
@@ -10718,9 +10750,17 @@ results:
 
       n = 27's verified lower bound moves from T-074's 1127/200 to 11287/2000. The tarball
       is pinned by digest and not retained, and the adapted crate inside it is pinned and
-      not opened. Ids here are provisional until merged.
+      not opened. It was registered under the provisional id T-112.
 
-  - id: T-113
+      Renumbered from the provisional T-112 to T-106 when lane R7 merged on 6 October 2026,
+      with the other nine of the ten, the next ids after the register's T-101, in every
+      record, view, test and tool that names them. The review of the ten is stored as its
+      reviewer wrote it and is not edited, so it names them by the provisional ids, its
+      title included: its "T-108", "T-109", "T-110", "T-111", "T-112", "T-113", "T-114",
+      "T-115", "T-116" and "T-117" are T-102, T-103, T-104, T-105, T-106, T-107, T-108,
+      T-109, T-110 and T-111, in that order, and its "T-112" is this entry, T-106.
+
+  - id: T-107
     kind: lower-bound
     registered: '2026-10-06'
     headline: "Mixed rectangle-measure lower bound verified at `n = 28`, on a declared net"
@@ -10789,7 +10829,7 @@ results:
     reviews:
       - path: docs/project/reviews/review-2026-10-06-wand125-check2-ten-certificates.md
         kind: adversarial
-        reviewer: Claude Opus 5.5 (claude-opus-5-5), the tbd-strong sub-agent, prompted separately from lane R7 of the second 6 October intake round that retained, audited and registered T-108 to T-117, sharing none of its context beyond the brief and the committed record, after registration and before any complete replay, allowed to run its own checks at one thread and barred from the source's adapted crate
+        reviewer: Claude Opus 5.5 (claude-opus-5-5), the tbd-strong sub-agent, prompted separately from lane R7 of the second 6 October intake round that retained, audited and registered T-102 to T-111, sharing none of its context beyond the brief and the committed record, after registration and before any complete replay, allowed to run its own checks at one thread and barred from the source's adapted crate
         reviewer_kind: ai
         relation: project
         date: '2026-10-06'
@@ -10804,7 +10844,7 @@ results:
           drafted significance, at eb004e7c5. It ran the source's C++ checker at one
           node each of mixed_n41_L6775 and mixed_n18_L4705.
         verdict: accepted
-        covers: [T-108, T-109, T-110, T-111, T-112, T-113, T-114, T-115, T-116, T-117]
+        covers: [T-102, T-103, T-104, T-105, T-106, T-107, T-108, T-109, T-110, T-111]
     artifacts:
       - packing/resources/web/wand125-mixed-bounds-check2-2026-10-06/README.md
       - packing/resources/web/wand125-mixed-bounds-check2-2026-10-06/receipts/n28-L5735/audit.json
@@ -10839,9 +10879,17 @@ results:
 
       n = 28's verified lower bound moves from T-074's 2289/400 to 1147/200. The tarball
       is pinned by digest and not retained, and the adapted crate inside it is pinned and
-      not opened. Ids here are provisional until merged.
+      not opened. It was registered under the provisional id T-113.
 
-  - id: T-114
+      Renumbered from the provisional T-113 to T-107 when lane R7 merged on 6 October 2026,
+      with the other nine of the ten, the next ids after the register's T-101, in every
+      record, view, test and tool that names them. The review of the ten is stored as its
+      reviewer wrote it and is not edited, so it names them by the provisional ids, its
+      title included: its "T-108", "T-109", "T-110", "T-111", "T-112", "T-113", "T-114",
+      "T-115", "T-116" and "T-117" are T-102, T-103, T-104, T-105, T-106, T-107, T-108,
+      T-109, T-110 and T-111, in that order, and its "T-113" is this entry, T-107.
+
+  - id: T-108
     kind: lower-bound
     registered: '2026-10-06'
     headline: "Mixed rectangle-measure lower bound verified at `n = 29`, on a declared net"
@@ -10908,7 +10956,7 @@ results:
     reviews:
       - path: docs/project/reviews/review-2026-10-06-wand125-check2-ten-certificates.md
         kind: adversarial
-        reviewer: Claude Opus 5.5 (claude-opus-5-5), the tbd-strong sub-agent, prompted separately from lane R7 of the second 6 October intake round that retained, audited and registered T-108 to T-117, sharing none of its context beyond the brief and the committed record, after registration and before any complete replay, allowed to run its own checks at one thread and barred from the source's adapted crate
+        reviewer: Claude Opus 5.5 (claude-opus-5-5), the tbd-strong sub-agent, prompted separately from lane R7 of the second 6 October intake round that retained, audited and registered T-102 to T-111, sharing none of its context beyond the brief and the committed record, after registration and before any complete replay, allowed to run its own checks at one thread and barred from the source's adapted crate
         reviewer_kind: ai
         relation: project
         date: '2026-10-06'
@@ -10923,7 +10971,7 @@ results:
           drafted significance, at eb004e7c5. It ran the source's C++ checker at one
           node each of mixed_n41_L6775 and mixed_n18_L4705.
         verdict: accepted
-        covers: [T-108, T-109, T-110, T-111, T-112, T-113, T-114, T-115, T-116, T-117]
+        covers: [T-102, T-103, T-104, T-105, T-106, T-107, T-108, T-109, T-110, T-111]
     artifacts:
       - packing/resources/web/wand125-mixed-bounds-check2-2026-10-06/README.md
       - packing/resources/web/wand125-mixed-bounds-check2-2026-10-06/receipts/n29-L581/audit.json
@@ -10956,9 +11004,17 @@ results:
       meeting its conditions.
 
       n = 29's verified lower bound moves from T-074's 2319/400 to 581/100. The tarball is
-      pinned by digest and not retained. Ids here are provisional until merged.
+      pinned by digest and not retained. It was registered under the provisional id T-114.
 
-  - id: T-115
+      Renumbered from the provisional T-114 to T-108 when lane R7 merged on 6 October 2026,
+      with the other nine of the ten, the next ids after the register's T-101, in every
+      record, view, test and tool that names them. The review of the ten is stored as its
+      reviewer wrote it and is not edited, so it names them by the provisional ids, its
+      title included: its "T-108", "T-109", "T-110", "T-111", "T-112", "T-113", "T-114",
+      "T-115", "T-116" and "T-117" are T-102, T-103, T-104, T-105, T-106, T-107, T-108,
+      T-109, T-110 and T-111, in that order, and its "T-114" is this entry, T-108.
+
+  - id: T-109
     kind: lower-bound
     registered: '2026-10-06'
     headline: "Mixed rectangle-measure lower bound verified at `n = 30`, on a declared net"
@@ -11029,7 +11085,7 @@ results:
     reviews:
       - path: docs/project/reviews/review-2026-10-06-wand125-check2-ten-certificates.md
         kind: adversarial
-        reviewer: Claude Opus 5.5 (claude-opus-5-5), the tbd-strong sub-agent, prompted separately from lane R7 of the second 6 October intake round that retained, audited and registered T-108 to T-117, sharing none of its context beyond the brief and the committed record, after registration and before any complete replay, allowed to run its own checks at one thread and barred from the source's adapted crate
+        reviewer: Claude Opus 5.5 (claude-opus-5-5), the tbd-strong sub-agent, prompted separately from lane R7 of the second 6 October intake round that retained, audited and registered T-102 to T-111, sharing none of its context beyond the brief and the committed record, after registration and before any complete replay, allowed to run its own checks at one thread and barred from the source's adapted crate
         reviewer_kind: ai
         relation: project
         date: '2026-10-06'
@@ -11044,7 +11100,7 @@ results:
           drafted significance, at eb004e7c5. It ran the source's C++ checker at one
           node each of mixed_n41_L6775 and mixed_n18_L4705.
         verdict: accepted
-        covers: [T-108, T-109, T-110, T-111, T-112, T-113, T-114, T-115, T-116, T-117]
+        covers: [T-102, T-103, T-104, T-105, T-106, T-107, T-108, T-109, T-110, T-111]
     artifacts:
       - packing/resources/web/wand125-mixed-bounds-check2-2026-10-06/README.md
       - packing/resources/web/wand125-mixed-bounds-check2-2026-10-06/receipts/n30-L58835/audit.json
@@ -11079,9 +11135,17 @@ results:
 
       n = 30's verified lower bound moves from T-074's 47/8 to 11767/2000. The tarball is
       pinned by digest and not retained, and the adapted crate inside it is pinned and not
-      opened. Ids here are provisional until merged.
+      opened. It was registered under the provisional id T-115.
 
-  - id: T-116
+      Renumbered from the provisional T-115 to T-109 when lane R7 merged on 6 October 2026,
+      with the other nine of the ten, the next ids after the register's T-101, in every
+      record, view, test and tool that names them. The review of the ten is stored as its
+      reviewer wrote it and is not edited, so it names them by the provisional ids, its
+      title included: its "T-108", "T-109", "T-110", "T-111", "T-112", "T-113", "T-114",
+      "T-115", "T-116" and "T-117" are T-102, T-103, T-104, T-105, T-106, T-107, T-108,
+      T-109, T-110 and T-111, in that order, and its "T-115" is this entry, T-109.
+
+  - id: T-110
     kind: lower-bound
     registered: '2026-10-06'
     headline: "Mixed rectangle-measure lower bound verified at `n = 39`, on a declared net"
@@ -11150,7 +11214,7 @@ results:
     reviews:
       - path: docs/project/reviews/review-2026-10-06-wand125-check2-ten-certificates.md
         kind: adversarial
-        reviewer: Claude Opus 5.5 (claude-opus-5-5), the tbd-strong sub-agent, prompted separately from lane R7 of the second 6 October intake round that retained, audited and registered T-108 to T-117, sharing none of its context beyond the brief and the committed record, after registration and before any complete replay, allowed to run its own checks at one thread and barred from the source's adapted crate
+        reviewer: Claude Opus 5.5 (claude-opus-5-5), the tbd-strong sub-agent, prompted separately from lane R7 of the second 6 October intake round that retained, audited and registered T-102 to T-111, sharing none of its context beyond the brief and the committed record, after registration and before any complete replay, allowed to run its own checks at one thread and barred from the source's adapted crate
         reviewer_kind: ai
         relation: project
         date: '2026-10-06'
@@ -11165,7 +11229,7 @@ results:
           drafted significance, at eb004e7c5. It ran the source's C++ checker at one
           node each of mixed_n41_L6775 and mixed_n18_L4705.
         verdict: accepted
-        covers: [T-108, T-109, T-110, T-111, T-112, T-113, T-114, T-115, T-116, T-117]
+        covers: [T-102, T-103, T-104, T-105, T-106, T-107, T-108, T-109, T-110, T-111]
     artifacts:
       - packing/resources/web/wand125-mixed-bounds-check2-2026-10-06/README.md
       - packing/resources/web/wand125-mixed-bounds-check2-2026-10-06/receipts/n39-L665/audit.json
@@ -11200,9 +11264,17 @@ results:
 
       n = 39's verified lower bound moves from T-074's 1327/200 to 133/20. The tarball is
       pinned by digest and not retained, and the adapted crate inside it is pinned and not
-      opened. Ids here are provisional until merged.
+      opened. It was registered under the provisional id T-116.
 
-  - id: T-117
+      Renumbered from the provisional T-116 to T-110 when lane R7 merged on 6 October 2026,
+      with the other nine of the ten, the next ids after the register's T-101, in every
+      record, view, test and tool that names them. The review of the ten is stored as its
+      reviewer wrote it and is not edited, so it names them by the provisional ids, its
+      title included: its "T-108", "T-109", "T-110", "T-111", "T-112", "T-113", "T-114",
+      "T-115", "T-116" and "T-117" are T-102, T-103, T-104, T-105, T-106, T-107, T-108,
+      T-109, T-110 and T-111, in that order, and its "T-116" is this entry, T-110.
+
+  - id: T-111
     kind: lower-bound
     registered: '2026-10-06'
     headline: "Mixed rectangle-measure lower bound verified at `n = 41`, on a declared net"
@@ -11271,7 +11343,7 @@ results:
     reviews:
       - path: docs/project/reviews/review-2026-10-06-wand125-check2-ten-certificates.md
         kind: adversarial
-        reviewer: Claude Opus 5.5 (claude-opus-5-5), the tbd-strong sub-agent, prompted separately from lane R7 of the second 6 October intake round that retained, audited and registered T-108 to T-117, sharing none of its context beyond the brief and the committed record, after registration and before any complete replay, allowed to run its own checks at one thread and barred from the source's adapted crate
+        reviewer: Claude Opus 5.5 (claude-opus-5-5), the tbd-strong sub-agent, prompted separately from lane R7 of the second 6 October intake round that retained, audited and registered T-102 to T-111, sharing none of its context beyond the brief and the committed record, after registration and before any complete replay, allowed to run its own checks at one thread and barred from the source's adapted crate
         reviewer_kind: ai
         relation: project
         date: '2026-10-06'
@@ -11286,7 +11358,7 @@ results:
           drafted significance, at eb004e7c5. It ran the source's C++ checker at one
           node each of mixed_n41_L6775 and mixed_n18_L4705.
         verdict: accepted
-        covers: [T-108, T-109, T-110, T-111, T-112, T-113, T-114, T-115, T-116, T-117]
+        covers: [T-102, T-103, T-104, T-105, T-106, T-107, T-108, T-109, T-110, T-111]
     artifacts:
       - packing/resources/web/wand125-mixed-bounds-check2-2026-10-06/README.md
       - packing/resources/web/wand125-mixed-bounds-check2-2026-10-06/receipts/n41-L6775/audit.json
@@ -11321,4 +11393,12 @@ results:
 
       n = 41's verified lower bound moves from T-074's 169/25 to 271/40. The tarball is
       pinned by digest and not retained, and the adapted crate inside it is pinned and not
-      opened. Ids here are provisional until merged.
+      opened. It was registered under the provisional id T-117.
+
+      Renumbered from the provisional T-117 to T-111 when lane R7 merged on 6 October 2026,
+      with the other nine of the ten, the next ids after the register's T-101, in every
+      record, view, test and tool that names them. The review of the ten is stored as its
+      reviewer wrote it and is not edited, so it names them by the provisional ids, its
+      title included: its "T-108", "T-109", "T-110", "T-111", "T-112", "T-113", "T-114",
+      "T-115", "T-116" and "T-117" are T-102, T-103, T-104, T-105, T-106, T-107, T-108,
+      T-109, T-110 and T-111, in that order, and its "T-117" is this entry, T-111.

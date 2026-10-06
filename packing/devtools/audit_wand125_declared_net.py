@@ -459,7 +459,7 @@ def semantic_digest(candidate: dict[str, Any]) -> str:
 
 
 #: The eight check2 runs whose log names an input other than the published candidate.json
-#: (finding FN-1 of the 6 October review of T-108 to T-117): the SHA-256 of the bytes each
+#: (finding FN-1 of the 6 October review of T-102 to T-111): the SHA-256 of the bytes each
 #: read, as its own summary records it. Each read the published side, core, net, node
 #: count and mass, and the source's pre-publication run of the same build read the
 #: published bytes, but these bytes are not published. A check2 run that names any other
@@ -983,7 +983,7 @@ def control_witnesses(
     must equal the capture `check_sqverify_fast.mixed_exact` computes there on the scaled
     measure, an evaluator written apart from the crate, and that capture must be below
     one: so the control is a provably invalid measure, refused (finding FN-2 of the 6
-    October review of T-108 to T-117). Returns how many were recomputed.
+    October review of T-102 to T-111). Returns how many were recomputed.
     """
     exact = importlib.import_module("devtools.check_sqverify_fast").mixed_exact
     scaled_candidate = {

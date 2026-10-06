@@ -20,6 +20,15 @@ None of the ten was posted on an issue here: the intake pass that read `2fad66e`
 them. Their proposed Frontier key is **[wand125 mixed bounds check2 2026-10-06]**. The
 claims below are stated as the source states them.
 
+They are registered as T-102 to T-111, one per count in the order
+$n = 18, 19, 20, 26, 27, 28, 29, 30, 39, 41$ (`think-yrdj`). Lane R7 registered them
+under the provisional ids T-108 to T-117, renumbered when it merged on 6 October 2026.
+The [review of the ten](../../../../docs/project/reviews/review-2026-10-06-wand125-check2-ten-certificates.md)
+is stored as its reviewer wrote it and is not edited, so it names them by the
+provisional ids, its title included: its “T-108”, “T-109”, “T-110”, “T-111”, “T-112”,
+“T-113”, “T-114”, “T-115”, “T-116” and “T-117” are T-102, T-103, T-104, T-105, T-106,
+T-107, T-108, T-109, T-110 and T-111, in that order.
+
 ## Source and Pin
 
 | Field | Value |
@@ -385,7 +394,7 @@ exact capture at the least-bound leaf’s centre at least one. 25,275 CPU second
 direction and refused there every mass scaled by $99/100$ and every mass scaled so that
 the leaf’s centre captures at most $1 - 10^{-6}$, each with an exact capture below one
 that an evaluator written apart from the crate computes again. The rows are the complete
-replays on which T-108 to T-117 rest. For `n29-L581`, decided at the source by the C++
+replays on which T-102 to T-111 rest. For `n29-L581`, decided at the source by the C++
 checker, the replay is independent of the producer’s checker. For the nine check2
 certificates it is not: the source decided them with its copy of this crate, and
 `compare-census` finds the census rows equal to the source’s run logs at every direction,

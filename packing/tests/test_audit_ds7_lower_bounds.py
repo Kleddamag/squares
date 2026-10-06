@@ -119,7 +119,7 @@ def test_indexed_external17_report_never_exceeds_the_verified_lane(
 
 
 def test_a_stronger_non_ds7_report_at_n18_is_left_in_place() -> None:
-    """wand125's check2 report on its finest declared net (T-108) outranks its certificates
+    """wand125's check2 report on its finest declared net (T-102) outranks its certificates
     of 5 and 6 October (T-096, T-099), R012, its rectangle certificate and the DS7
     candidates at n = 18.
 

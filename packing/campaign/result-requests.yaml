@@ -506,7 +506,7 @@ issues:
         register: [T-064]
     asks:
       - what: An independent check of ValidTilt9, by wand125's checker on box 9 or otherwise
-        state: queued
+        state: declined
         bead: think-y3vy
         note: >-
           On 3 October wand125 said on evand/square-packing#1 that they are running their
@@ -519,7 +519,9 @@ issues:
           sampled (30 roots re-decided, 21 matching the published leaves exactly), controlled
           and reviewed, and recorded as E-k2m4-wand125-validtilt9-report on T-081
           (think-dsz4). The full replay, priced at about 118 to 435 CPU-hours, waits for an
-          owner budget under think-hwpr, so the ask stays queued.
+          owner budget under think-hwpr. On 6 October the owner declined the full replay
+          for now: the sample, audit, controls and review stand as the check, T-081 stays
+          V0/C1 as recorded, and think-hwpr keeps the replay as a backlog item.
     beads: [think-4uir, think-dsz4, think-hwpr]
     answer_bead: think-4uir
     replies:
@@ -546,8 +548,10 @@ issues:
             confirmation: C3
             status: confirmed
     close_when: >-
-      T-081 is confirmed and the reply saying so is posted from main, and the independent
-      check of ValidTilt9 is done or declined.
+      T-081 is confirmed, or its standing is settled by the owner, and the reply saying
+      so is posted from main, and the independent check of ValidTilt9 is done or
+      declined. On 6 October the owner declined the full replay for now and asked for the
+      issue to close with T-081 recorded at V0/C1.
     notes: >-
       The k^2 - 3 corollary is registered by T-064 for k >= 6, and its k = 5 case, s(22) =
       5, is Bentz's; the issue's route adds no entry for it.

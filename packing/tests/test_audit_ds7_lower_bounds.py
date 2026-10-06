@@ -119,17 +119,16 @@ def test_indexed_external17_report_never_exceeds_the_verified_lane(
 
 
 def test_a_stronger_non_ds7_report_at_n18_is_left_in_place() -> None:
-    """wand125's mixed report on a declared net (T-096) outranks R012, its own rectangle
-    certificate and the DS7 candidates at n = 18.
+    """wand125's mixed report on a finer declared net (T-099) outranks its own certificate
+    of 5 October (T-096), R012, its rectangle certificate and the DS7 candidates at n = 18.
 
-    Its coverage replay here has put it in the verified lane too; the DS7 selector must
-    neither lower nor replace the reported one.
+    The DS7 selector must neither lower nor replace the reported one.
     """
     case = ds7.read_case(REPO, None, 18)
-    assert case["reported_lower_bound"]["exact_form"] == "47/10"
+    assert case["reported_lower_bound"]["exact_form"] == "588/125"
     assert (
         case["reported_lower_bound"]["source_key"]
-        == "[wand125 mixed bounds finer net 2026-10-05]"
+        == "[wand125 mixed bounds finer net 2026-10-06]"
     )
     assert ds7.select_update(case) is None
 

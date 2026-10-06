@@ -26,15 +26,15 @@ second implementation agrees.
 ## The Short Version
 
 - **88** programs: **33** external and **55** first-party; **68** decide claims and **20** check premises.
-- **292** of **319** evidence entries name the programs that verified them: 207 reproduced with the producer’s code, 68 independently re-implemented, 10 no relation: a proof, a derivation or a report, 7 re-implemented, sharing the producer’s components.
+- **294** of **321** evidence entries name the programs that verified them: 209 reproduced with the producer’s code, 68 independently re-implemented, 10 no relation: a proof, a derivation or a report, 7 re-implemented, sharing the producer’s components.
 
 ## Programs
 
 | id | program | author | provenance | role | evidence | results |
 | --- | --- | --- | --- | --- | ---: | ---: |
 | [`V-tokoharu-verify-cpp`](#v-tokoharu-verify-cpp) | verify.cpp | Tokoharu | external | decides | 12 | 7 |
-| [`V-wand125-mixed-rotated-verify-cpp`](#v-wand125-mixed-rotated-verify-cpp) | mixed_rotated_verify.cpp | wand125 | external | decides | 85 | 11 |
-| [`V-wand125-verify-mixed-full-proof-py`](#v-wand125-verify-mixed-full-proof-py) | verify_mixed_full_proof.py | wand125 | external | decides | 62 | 8 |
+| [`V-wand125-mixed-rotated-verify-cpp`](#v-wand125-mixed-rotated-verify-cpp) | mixed_rotated_verify.cpp | wand125 | external | decides | 87 | 13 |
+| [`V-wand125-verify-mixed-full-proof-py`](#v-wand125-verify-mixed-full-proof-py) | verify_mixed_full_proof.py | wand125 | external | decides | 64 | 10 |
 | [`V-wand125-unified-linear-verify-cpp`](#v-wand125-unified-linear-verify-cpp) | unified_linear_verify.cpp | wand125 | external | decides | 6 | 3 |
 | [`V-wand125-verify-portable-py`](#v-wand125-verify-portable-py) | verify_portable.py | wand125 | external | decides | 2 | 1 |
 | [`V-wand125-check-with-sqpack`](#v-wand125-check-with-sqpack) | check_with_sqpack.py | wand125 | external | decides | 5 | 1 |
@@ -244,6 +244,8 @@ Decides a mixed point-and-rectangle certificate at each direction of the certifi
 | `E-n066-wand125-mixed-843-report` | the source’s own run | producer’s code | T-097 |
 | `E-n018-wand125-mixed-470-report` | the source’s own run | producer’s code | T-096 |
 | `E-n018-wand125-mixed-470-source-replay` | replayed here | producer’s code | T-096 |
+| `E-n018-wand125-mixed-4704-report` | the source’s own run | producer’s code | T-099 |
+| `E-n019-wand125-mixed-48229-report` | the source’s own run | producer’s code | T-100 |
 
 ### `V-wand125-verify-mixed-full-proof-py`
 
@@ -319,6 +321,8 @@ The source's driver for a complete mixed-certificate proof: it runs mixed_rotate
 | `E-n066-wand125-mixed-843-report` | the source’s own run | producer’s code | T-097 |
 | `E-n018-wand125-mixed-470-report` | the source’s own run | producer’s code | T-096 |
 | `E-n018-wand125-mixed-470-source-replay` | replayed here | producer’s code | T-096 |
+| `E-n018-wand125-mixed-4704-report` | the source’s own run | producer’s code | T-099 |
+| `E-n019-wand125-mixed-48229-report` | the source’s own run | producer’s code | T-100 |
 
 ### `V-wand125-unified-linear-verify-cpp`
 

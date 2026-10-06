@@ -282,8 +282,11 @@ def test_superseded_is_marked_on_a_bound_and_where_a_later_result_is_declared() 
         assert by, entry
         assert entry not in by, entry
     assert view.superseding(records.results["T-037"], records) == ("T-060",)
+    # T-019's counts are held now by the replays at n = 17 to 19 (T-093, T-096, T-074) and
+    # by wand125's reports of 6 October at n = 18 and 19 (T-099, T-100), which took the
+    # reported lane at n = 19 from T-068.
     assert view.position_marks(records.results["T-019"], view.SUPERSEDED, records) == [
-        "superseded by T-068, T-074, T-093 and T-096"
+        "superseded by T-074, T-093, T-096, T-099 and T-100"
     ]
     # Only a bound supersedes: at n = 13 and 46 a correction and an audit carry the
     # lower bound's evidence beside the optimality results that hold it.

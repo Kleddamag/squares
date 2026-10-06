@@ -17304,3 +17304,104 @@ evidence:
       count. This is a reproduction with the producer's code, not an independent check;
       E-evand-exact-optima-2026-10-05-exact-replay is that. No optimality at any count.
     source_reviewed: '2026-10-05'
+
+  - id: E-n018-wand125-mixed-4704-report
+    claim: lower-bound
+    scope: {n_values: [18]}
+    assurance: reported
+    reported_method: interval-certified
+    performed_by: source-author
+    relationship_to_generator: same-implementation
+    origin: external
+    novelty: previously-published
+    source_key: '[wand125 mixed bounds finer net 2026-10-06]'
+    certificate: resources/web/wand125-mixed-bounds-finer-net-2026-10-06/square-packing-bounds/certificates/mixed_n18_L4704/candidate.json.gz
+    replay_status: not-attempted
+    verifiers: [V-wand125-mixed-rotated-verify-cpp, V-wand125-verify-mixed-full-proof-py]
+    limitations: >-
+      wand125/square-packing-bounds at 65e408c9fa6bb787b6744c7c479ec19551a15016
+      (committed 2026-10-06T00:35:05Z, and registration requested in a comment on
+      jlevy/squares#366 a minute later) reports s(18) >= 588/125 = 4.704 from a rectangle
+      density of 209 uniform-density rectangles and no point mass, total mass
+      1799999/100000, on a net the candidate declares itself: core side B = 1999/2000 and
+      832 half-angle tangents of step 1/2006 (proof_net, last index 831), finer than
+      mixed_n18_L470's 416 of step 1/1001 at B = 999/1000 (T-096). B (1 + 1/2006) =
+      4011993/4012000 < 1, and the last tangent 831/2006 is past tan(pi/8), where t^2 + 2t
+      - 1 = 497/4024036. It is checked there by code/mixed_rotated_verify.cpp (SHA-256
+      89b674a6...), byte for byte the n = 50 checker, run by the driver
+      code/verify_mixed_full_proof.py (SHA-256 477d613f...), which differs from the n = 50
+      copy only in allowing up to 16 workers instead of 3; every shipped per-angle record
+      names t = r/2006 and the per-bin centre domain at half-step 1/4012. The least oblique
+      lower bound the source records is 1.000000001066446, at net index 797, and the axis
+      integer minimum 1108824296663/1099511627776 = 1.008469823012092 over 1,623,076
+      cells; its oblique run took 43,585 seconds over 114,915,109 nodes, on macOS (arm64)
+      by the bundle's own records. It exceeds the 47/10 of the source's mixed_n18_L470
+      (T-096) by 0.004. The directory carries no completion-audit.json; its
+      publication-audit.json records that absolute path metadata was made relative in 834
+      bundle files and re-executes no geometric check, so the tarball (SHA-256
+      a4098f82...) is bound to the certificate by its digest at the pinned tree and the
+      README's statement of it; it is pinned by digest and not retained. The source says no
+      second full replay of the bundled checker was run on a fresh machine for this
+      release, and reports a check by sqverify-net, its copy of this repository's
+      sqverify-fast changed to read the declared net, verifying all 832 directions in
+      388.2 seconds at one thread, with a net of step 1/1001 at the same core and the
+      masses scaled by 9/10 refused; that run was not checked here. Here
+      devtools.audit_wand125_declared_net audit --certificate n18-L4704
+      (receipts/n18-L4704/audit.json in the packet) recomputes the mass, lemma N0's
+      premises on the declared net and the net blocks the manifest and certificate state
+      from the retained bytes, and checks that one candidate digest is stated throughout;
+      its bundle check binds the pinned tarball's 2,515 listed files to the packet, every
+      shipped record and input header to the declared net's tangent, per-bin domain and
+      threshold, and every input's rectangle lines to the expanded candidate; none of it
+      decides coverage.
+    source_reviewed: '2026-10-06'
+
+  - id: E-n019-wand125-mixed-48229-report
+    claim: lower-bound
+    scope: {n_values: [19]}
+    assurance: reported
+    reported_method: interval-certified
+    performed_by: source-author
+    relationship_to_generator: same-implementation
+    origin: external
+    novelty: previously-published
+    source_key: '[wand125 mixed bounds finer net 2026-10-06]'
+    certificate: resources/web/wand125-mixed-bounds-finer-net-2026-10-06/square-packing-bounds/certificates/mixed_n19_L48229/candidate.json.gz
+    replay_status: not-attempted
+    verifiers: [V-wand125-mixed-rotated-verify-cpp, V-wand125-verify-mixed-full-proof-py]
+    limitations: >-
+      wand125/square-packing-bounds at 65e408c9fa6bb787b6744c7c479ec19551a15016
+      (committed 2026-10-06T00:35:05Z, and registration requested in a comment on
+      jlevy/squares#366 at 01:11:19Z) reports s(19) >= 48229/10000 = 4.8229 from a
+      rectangle density of 313 uniform-density rectangles and no point mass, total mass
+      1899999/100000, on the net mixed_n18_L470 declares (T-096): core side B = 999/1000
+      and 416 half-angle tangents of step 1/1001 (proof_net, last index 415), with B (1 +
+      1/1001) = 500499/500500 < 1 and the last tangent 415/1001 past tan(pi/8). It is
+      checked there by the same driver code/verify_mixed_full_proof.py and checker
+      code/mixed_rotated_verify.cpp (SHA-256 89b674a6...), byte for byte the n = 50
+      copies; every shipped per-angle record names t = r/1001 and the per-bin centre
+      domain at half-step 1/2002. The least oblique lower bound the source records is
+      1.0000000005351664, at net index 37, and the axis integer minimum 1.0026527162381171
+      over 4,717,584 cells; its oblique run took 42,239 seconds over 75,131,365 nodes, on
+      macOS (arm64) by the bundle's own records. It exceeds the 1927/400 = 4.8175 of the
+      source's rect_n19_L48175 (T-074) by 0.0054, and with s(18) <= (7 + sqrt 7)/2 =
+      4.8228757..., Hämäläinen's packing and the verified upper bound at n = 18, it gives
+      s(18) < s(19), as the source notes: (48229/10000 - 7/2)^2 = 175006441/100000000 >
+      7/4. The directory carries no completion-audit.json; its publication-audit.json
+      records that absolute path metadata was made relative in 417 bundle files and
+      re-executes no geometric check, so the tarball (SHA-256 03aeca45...) is bound to the
+      certificate by its digest at the pinned tree and the README's statement of it; it is
+      pinned by digest and not retained. The source says the full replay was run again
+      before publication on a fresh Ubuntu 24.04 machine, 416 of 416 with every bundle file
+      hash checked first, by the same implementation, and retains its log; it reports a
+      check by sqverify-net, its copy of this repository's sqverify-fast changed to read
+      the declared net, verifying all 416 directions; neither was checked here. Here
+      devtools.audit_wand125_declared_net audit --certificate n19-L48229
+      (receipts/n19-L48229/audit.json in the packet) recomputes the mass, lemma N0's
+      premises on the declared net and the net blocks the manifest and certificate state
+      from the retained bytes, and checks that one candidate digest is stated throughout;
+      its bundle check binds the pinned tarball's 1,267 listed files to the packet, every
+      shipped record and input header to the declared net's tangent, per-bin domain and
+      threshold, and every input's rectangle lines to the expanded candidate; none of it
+      decides coverage.
+    source_reviewed: '2026-10-06'

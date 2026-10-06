@@ -1037,6 +1037,32 @@ sources:
       human direction. web/wand125-mixed-bounds-finer-net-2026-10-05/acquisition/sources.json
       pins revision 43050edc5bdf5116fc5a073283128edd6749946b. Dated by that revision,
       2026-10-05 UTC.
+  - key: '[wand125 mixed bounds finer net 2026-10-06]'
+    authors: [wand125]
+    year: 2026
+    venue: GitHub
+    dated: '2026-10-06'
+    credit: wand125 after Tokoharu, Levy, Stromquist, Nagamochi, Burns, Massaccesi
+    short_credit: wand125 after Tokoharu, Levy et al.
+    lineage: builds-on-project
+    note: >-
+      The two mixed rectangle-measure certificates that wand125/square-packing-bounds added
+      on 2026-10-06 in one commit after 43050ed, each on a net its candidate declares, each
+      requested in a comment on jlevy/squares#366: certificates/mixed_n18_L4704 for s(18)
+      >= 588/125 (core 1999/2000, 832 half-angle tangents of step 1/2006), superseding the
+      source's mixed_n18_L470 of the [wand125 mixed bounds finer net 2026-10-05] key, and
+      certificates/mixed_n19_L48229 for s(19) >= 48229/10000 (core 999/1000, 416 tangents
+      of step 1/1001), superseding its rect_n19_L48175 of the [wand125 rectangle bounds
+      2026-10-01] key. Both are rectangle densities of mass n - 1/100000 checked at
+      coverage one by code/mixed_rotated_verify.cpp, byte for byte the checker of the
+      source's n = 50 certificate. The commit also publishes verification/sqverify-net, the
+      source's copy of this repository's sqverify_fast changed to read a declared net,
+      which is pinned by digest and not retained. Credited as they are, on the root
+      README's Attribution section, which opens "The method is not ours."; the README says
+      parts of the work were produced with AI assistance under human direction.
+      web/wand125-mixed-bounds-finer-net-2026-10-06/acquisition/sources.json pins revision
+      65e408c9fa6bb787b6744c7c479ec19551a15016 (the commit's author name is Hiroaki
+      Hosono). Dated by that revision, 2026-10-06 UTC.
   - key: '[franciscouzo square-packing 2026-09-27]'
     authors: [Couzo]
     year: 2026

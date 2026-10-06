@@ -712,3 +712,59 @@ def test_every_cpp_sample_receipt_verified_its_nodes() -> None:
             assert row["status"] == "ANGLE_VERIFIED", (path, row["index"])
             assert (row["frontier_boxes"], row["exact_witnesses"]) == (0, 0)
             assert float(row["lower"]) >= 1
+
+
+@pytest.mark.parametrize("key", sorted(CHECK2))
+def test_each_check2_candidate_passes_the_source_cpp_checker_at_its_sampled_nodes(
+    key: str,
+) -> None:
+    """The source's C++ checker, which shares no code with sqverify_fast, verified each
+    check2 candidate at the nodes cpp-sample ran, its least-bound node among them."""
+    stated = declared.CERTIFICATES[key]
+    receipts = sorted((stated.receipts / "cpp-sample").glob("nodes-*.json"))
+    assert receipts, key
+    bundle = json.loads((stated.receipts / "bundle.json").read_text(encoding="utf-8"))
+    ran: set[int] = set()
+    for path in receipts:
+        record = json.loads(path.read_text(encoding="utf-8"))
+        assert record["status"] == "SAMPLE_VERIFIED", path.name
+        assert record["certificate"] == stated.name
+        assert record["checker_sha256"] == declared.CHECKER_SHA256
+        assert record["threshold"] == "1"
+        assert record["tarball"]["sha256"] == stated.tarball_pin()[0]
+        assert record["binding"]["status"] == "BUNDLE_BOUND_TO_PACKET_AND_NET"
+        assert record["candidate_digest"] == declared.audit(key=key)["candidate_digest"]
+        assert [row["index"] for row in record["rows"]] == record["nodes"]
+        for row in record["rows"]:
+            assert row["verified"], (path.name, row["index"])
+            assert row["status"] == "ANGLE_VERIFIED"
+            assert (row["frontier_boxes"], row["exact_witnesses"]) == (0, 0)
+            assert float(row["lower"]) >= 1
+        ran |= set(record["nodes"])
+    assert bundle["run_log"]["least_oblique"]["r"] in ran
+
+
+@pytest.mark.parametrize("key", sorted(CHECK2))
+def test_each_census_row_runs_as_the_source_copy_of_the_crate_did(key: str) -> None:
+    """compare-census: this repository's census row and the source's run of its copy of
+    the crate both verify every node of the declared net."""
+    stated = declared.CERTIFICATES[key]
+    record = json.loads((stated.receipts / "compare-census.json").read_text(encoding="utf-8"))
+    _rows, _step, count = CHECK2[key]
+    assert record["status"] == "BOTH_VERIFY_EVERY_DIRECTION"
+    assert (record["certificate"], record["directions"]) == (stated.name, count)
+    census = declared.PROJECT / record["census_receipts"]
+    assert declared.file_sha256(census) == record["census_receipts_sha256"]
+    assert record["least_oblique"]["census"]["lower"] >= 1
+
+
+def test_the_n29_sample_returned_the_shipped_records() -> None:
+    stated = declared.CERTIFICATES["n29-L581"]
+    receipts = sorted((stated.receipts / "sample").glob("nodes-*.json"))
+    assert receipts
+    for path in receipts:
+        record = json.loads(path.read_text(encoding="utf-8"))
+        assert record["status"] == "SAMPLE_REPLAYED", path.name
+        assert record["binding"]["status"] == "BUNDLE_BOUND_TO_PACKET_AND_NET"
+        assert all(row["matches_upstream"] for row in record["rows"]), path.name
+        assert 364 in record["nodes"]

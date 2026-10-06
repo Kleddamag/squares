@@ -351,45 +351,105 @@ priced from its bundle’s own records, summed over its `proof/net*/result.json`
 
 ## Replaying the Certificates
 
-**`sqverify-fast`.** In progress: this repository’s clean-room verifier, built from
-`main`’s crate at `34e87a86b` (`source_sha256` `d97758bb…`, binary `567a0fd5…`, rustc
-1.98.0), is deciding all ten at every node of their declared nets at one thread, with
-the census tool as merged at `f342dff82` and this packet added to its list, recorded in
-the [Milestone B census](../../../benchmarks/measure-verifier/census-mixed/README.md)
-as each row completes. Until a row is committed, it decides nothing.
+**`sqverify-fast`.** This repository’s clean-room verifier, built from `main`’s crate
+at `34e87a86b` (`source_sha256` `d97758bb…`, binary `567a0fd5…`, rustc 1.98.0), decided
+all ten at every node of their declared nets on 6 October 2026, from 07:51 to 16:56 UTC,
+at one thread under `nice` on the shared four-core host at load 5 to 16, with the census
+tool as merged at `f342dff82` and this packet added to its list, recorded in the
+[Milestone B census](../../../benchmarks/measure-verifier/census-mixed/README.md):
+
+```sh
+# from packing/
+uv run --frozen --all-extras --group dev python -m devtools.sqverify_fast_census --family mixed \
+  --binary BINARY --out benchmarks/measure-verifier/census-mixed --threads 1 --only mixed_n20_L4905
+uv run --frozen --all-extras --group dev python -m devtools.sqverify_fast_census --family mixed \
+  --binary BINARY --out benchmarks/measure-verifier/census-mixed --control --only mixed_n20_L4905
+```
+
+| Name here | Directions | Boxes | Least certified bound (index) | CPU seconds | Census control | Equal to the source’s run log |
+| --- | ---: | ---: | --- | ---: | --- | --- |
+| `n18-L4705` | 2073 | 352,045,748 | $1.0000000000680034$ (1234) | 2,884.7 | `CONTROLS_REFUSED` at 1234 | nodes at 2072 of 2072, bounds at 2073 of 2073 |
+| `n19-L4825` | 2073 | 355,934,320 | $1.0000000001230112$ (1021) | 2,841.2 | `CONTROLS_REFUSED` at 1021 | nodes at 2072 of 2072, bounds at 2073 of 2073 |
+| `n20-L4905` | 832 | 139,374,489 | $1.000000000154736$ (679) | 1,420.5 | `CONTROLS_REFUSED` at 679 | nodes at 831 of 831, bounds at 832 of 832 |
+| `n26-L5545` | 832 | 234,384,519 | $1.0000000003495713$ (241) | 2,235.6 | `CONTROLS_REFUSED` at 241 | nodes at 831 of 831, bounds at 832 of 832 |
+| `n27-L56435` | 832 | 215,026,151 | $1.0000000000168654$ (632) | 2,824.1 | `CONTROLS_REFUSED` at 632 | nodes at 831 of 831, bounds at 832 of 832 |
+| `n28-L5735` | 416 | 114,964,701 | $1.0000000000381999$ (48) | 1,540.9 | `CONTROLS_REFUSED` at 48 | nodes at 415 of 415, bounds at 416 of 416 |
+| `n29-L581` | 416 | 126,796,081 | $1.0000000000094453$ (298) | 1,632.3 | `CONTROLS_REFUSED` at 298 | not comparable: its source records are the C++ checker’s |
+| `n30-L58835` | 832 | 251,711,359 | $1.0000000000570795$ (347) | 3,890.8 | `CONTROLS_REFUSED` at 347 | nodes at 831 of 831, bounds at 832 of 832 |
+| `n39-L665` | 416 | 182,222,199 | $1.0000000001966394$ (394) | 3,869.8 | `CONTROLS_REFUSED` at 394 | nodes at 415 of 415, bounds at 416 of 416 |
+| `n41-L6775` | 416 | 114,365,213 | $1.0000000000604714$ (409) | 2,135.3 | `CONTROLS_REFUSED` at 409 | nodes at 415 of 415, bounds at 416 of 416 |
+
+Every row is `VERIFIED`: every direction verified, summary `VERIFIED`, exit 0, and the
+exact capture at the least-bound leaf’s centre at least one. 25,275 CPU seconds in all,
+7.0 CPU-hours. Each census control verified the original at the least-bound leaf’s
+direction and refused there every mass scaled by $99/100$ and every mass scaled so that
+the leaf’s centre captures at most $1 - 10^{-6}$, each with an exact capture below one
+that an evaluator written apart from the crate computes again. The rows are the complete
+replays on which T-108 to T-117 rest. For `n29-L581`, decided at the source by the C++
+checker, the replay is independent of the producer’s checker. For the nine check2
+certificates it is not: the source decided them with its copy of this crate, and
+`compare-census` finds the census rows equal to the source’s run logs at every direction,
+node counts and bounds alike ([What Check2 Changes](#what-check2-changes)). They are
+recorded as re-implemented sharing the producer’s components.
 
 **The source’s C++ checker.** On 6 October 2026 `cpp-sample` ran the source’s C++
 checker, `89b674a6…`, built and driven by the source’s own functions from the retained
-`mixed_n50_L740` code, at the least-bound node of `n41-L6775`’s check2 run log and at its
-last node, at one worker under `nice` on the shared four-core host at load 17:
+`mixed_n50_L740` code, at two nodes of each check2 candidate: the least-bound node of the
+source’s run log and its last node, at one worker under `nice`. Every node returned
+`ANGLE_VERIFIED` at threshold one, with no frontier and no witness, each record holding
+lemma N0’s tangent and per-bin domain and each input enclosing the expanded candidate:
 
 ```sh
 # from packing/
 uv run --frozen --all-extras --group dev python -m devtools.audit_wand125_declared_net \
-  cpp-sample --certificate n41-L6775 --tarball TARBALL --work W --nodes 409,415 --workers 1
+  cpp-sample --certificate n20-L4905 --tarball TARBALL --work W --nodes 679,831 --workers 1
 ```
 
 | Name here | Node | C++ status | C++ lower bound | C++ nodes | CPU seconds | check2’s lower bound there |
 | --- | ---: | --- | --- | ---: | ---: | --- |
+| `n18-L4705` | 1234 | `ANGLE_VERIFIED` | $1.0000000050433526$ | 185,673 | 136.3 | $1.0000000000680034$ |
+| `n18-L4705` | 2072 | `ANGLE_VERIFIED` | $1.0000000479163114$ | 232,227 | 193.6 | $1.0000000480646534$ |
+| `n19-L4825` | 1021 | `ANGLE_VERIFIED` | $1.0000004432449892$ | 183,303 | 141.7 | $1.0000000001230112$ |
+| `n19-L4825` | 2072 | `ANGLE_VERIFIED` | $1.0000013259288083$ | 226,665 | 196.9 | $1.000000096803216$ |
+| `n20-L4905` | 679 | `ANGLE_VERIFIED` | $1.0000004964172489$ | 210,793 | 181.4 | $1.000000000154736$ |
+| `n20-L4905` | 831 | `ANGLE_VERIFIED` | $1.0000003740633827$ | 243,315 | 218.8 | $1.0000002351042394$ |
+| `n26-L5545` | 241 | `ANGLE_VERIFIED` | $1.00000005320659$ | 228,431 | 128.9 | $1.0000000003495713$ |
+| `n26-L5545` | 831 | `ANGLE_VERIFIED` | $1.0000000285447033$ | 435,321 | 391.0 | $1.0000001372085743$ |
+| `n27-L56435` | 632 | `ANGLE_VERIFIED` | $1.000000106018499$ | 321,565 | 275.2 | $1.0000000000168654$ |
+| `n27-L56435` | 831 | `ANGLE_VERIFIED` | $1.0000000466948722$ | 431,655 | 385.3 | $1.0000000438623011$ |
+| `n28-L5735` | 48 | `ANGLE_VERIFIED` | $1.0000002610373988$ | 186,639 | 90.9 | $1.0000000000381999$ |
+| `n28-L5735` | 415 | `ANGLE_VERIFIED` | $1.0000000851369437$ | 409,407 | 412.7 | $1.0000000146721826$ |
+| `n30-L58835` | 347 | `ANGLE_VERIFIED` | $1.0000006813531397$ | 305,195 | 194.0 | $1.0000000000570795$ |
+| `n30-L58835` | 831 | `ANGLE_VERIFIED` | $1.0000002315296308$ | 425,157 | 316.9 | $1.0000000024559188$ |
+| `n39-L665` | 394 | `ANGLE_VERIFIED` | $1.000000031004648$ | 762,267 | 713.5 | $1.0000000001966394$ |
+| `n39-L665` | 415 | `ANGLE_VERIFIED` | $1.0000000246206686$ | 789,781 | 726.7 | $1.0000000102061601$ |
 | `n41-L6775` | 409 | `ANGLE_VERIFIED` | $1.0000001768444517$ | 475,593 | 314.9 | $1.0000000000604714$ |
 | `n41-L6775` | 415 | `ANGLE_VERIFIED` | $1.0000002617844366$ | 477,177 | 326.9 | $1.0000002104724752$ |
 
-Each node’s record names lemma N0’s tangent and per-bin domain, threshold one and the
-checker’s digest, and its input encloses the expanded candidate; neither has a frontier
-or a witness. The receipt is
-[`receipts/n41-L6775/cpp-sample/`](receipts/n41-L6775/cpp-sample/). The review ran the
-same command at node 1234 of `n18-L4705`, which verified with lower bound
-$1.0000000050433526$ in 147.9 CPU seconds. The samples of the other check2 candidates,
-and `sample` on chosen nodes of `n29-L581`’s shipped records, are still to run. Each
-sample is the producer’s own code at one node, and decides that node only.
+The C++ bounds are the checker’s own and differ from `sqverify-fast`’s, a different
+subdivision of the same domain. The 18 nodes took 5,346 CPU seconds; at their rate a
+complete C++ run would take from about 29 CPU-hours (`n28-L5735`) to 97 (`n19-L4825`)
+per certificate. The receipts are `receipts/<name>/cpp-sample/`. The review of 6 October
+ran the same command at node 1234 of `n18-L4705` and node 409 of `n41-L6775`, with the
+same records. Each sample is the producer’s own code at two nodes, a check that shares
+no code with `sqverify-fast`, and decides those nodes only.
+
+`sample` replayed `n29-L581`’s shipped records at nodes 0, 1, 364 and 415, the axis and
+the least-bound node among them, with the source’s per-node functions after the full
+driver’s preconditions: each returned the shipped record, in 855 CPU seconds, 0.71 of the
+bundle’s own seconds on the same nodes, which prices the complete oblique replay at about
+30 CPU-hours
+([`receipts/n29-L581/sample/`](receipts/n29-L581/sample/)).
 
 ## Limitations
 
 - **The check2 coverage evidence at the source is a copy of this repository’s
   verifier.** Its runs show that the producer’s check passed; they are not a second
-  implementation beside `sqverify-fast`.
+  implementation beside `sqverify-fast`, whose rows equal them.
 - **No complete run of the C++ checker exists for the check2 candidates.** The source
   ran none, and the samples here decide only their nodes.
+- **Eight of the nine check2 run logs read an unpublished file** (finding FN-1 of the
+  review); the replay here reads the published bytes.
 - **The bundles are pinned and not held.** A replay needs each tarball from the source at
   the pinned revision, with the digest above.
 

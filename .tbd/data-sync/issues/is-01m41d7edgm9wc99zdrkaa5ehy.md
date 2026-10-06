@@ -3,9 +3,9 @@ type: is
 id: is-01m41d7edgm9wc99zdrkaa5ehy
 title: Register links and the results tables' significance column, 2026-10-03 (jlevy/squares#315 and its stacked PR)
 kind: epic
-status: open
+status: closed
 priority: 2
-version: 19
+version: 20
 labels: []
 dependencies: []
 child_order_hints:
@@ -26,7 +26,12 @@ child_order_hints:
   - is-01m429d8ccyabwn5896f2nf44v
   - is-01m429d94k357kzb3jdng3tgp8
 created_at: 2026-10-03T17:33:12.496Z
-updated_at: 2026-10-04T01:45:43.826Z
+updated_at: 2026-10-06T08:36:36.325Z
+closed_at: 2026-10-06T08:36:36.325Z
+close_reason: |
+  Finished wrapper (bead review 2026-10-06, origin/main eb43ffe9a): Dated request bundle of 2026-10-03: #315, #319, #330 and #334 all MERGED 2026-10-04. Open follow-ups think-wviw and think-ojid moved to the top level before closing
+resolution: null
+duplicate_of: null
 ---
 The owner's requests of 2026-10-03 afternoon, under one epic: the supersession links (think-xm4t and its children, jlevy/squares#315, with its backfill think-rl2b and gate fixes think-kmi4), and the stacked PR: significance as its own column (think-m3m4), every site colour a named token enforced by a test, the results table bleeding wider on very wide screens, and the 1280 width budget the new column needs.
 

@@ -22,10 +22,10 @@ later results a result of a kind that is no bound declares imply it in whole or 
 to registered results dated no earlier, on a case it shares, and refuses one on a bound,
 whose supersession is derived (`superseded_by_problems`). It holds a `builds_on`, which
 puts `after …` in the credit of a result of this project, to the sources the
-result's own evidence cites. It refuses a rung label in a `claim`, `composition`
-or `next_rung`, or in a case record, that asserts a rung no result the clause is
-about holds (`devtools.rung_prose`); a statement of what a rung needs is not such
-an assertion. A result's status (recorded, reviewed, confirmed, incomplete) is
+result's own evidence cites. It refuses a rung label in a `claim`, `composition`,
+`next_rung` or `significance.rationale`, or in a case record, that asserts a rung no
+result the clause is about holds (`devtools.rung_prose`); a statement of what a rung
+needs is not such an assertion. A result's status (recorded, reviewed, confirmed, incomplete) is
 derived from its rungs by `devtools.result_status` and never stored; this holds
 the one hand-recorded workflow fact, an entry's `activity`, to its fields, its
 link and its age. Human review owns evidence relevance, claim
@@ -1000,6 +1000,19 @@ def rung_label_problems(
         for field in REGISTER_FIELDS
         for problem in label_problems(record.get(field) or "", standings, own=record["id"])
     ]
+    # A significance rationale is a dated judgment of the claim, and it may say what a
+    # rung would need; it may not say what rung the result stands at, which goes stale as
+    # the rungs move. T-064's said "V0/C1 says how far it stands" for two days after the
+    # result reached V3/C3 (lane R9, 2026-10-06).
+    problems.extend(
+        f"{record['id']}: significance.rationale {problem}"
+        for record in results
+        for problem in label_problems(
+            str((record.get("significance") or {}).get("rationale") or ""),
+            standings,
+            own=record["id"],
+        )
+    )
     by_n: dict[int, set[str]] = {}
     for record in results:
         for n in scope_values(record["scope"]):

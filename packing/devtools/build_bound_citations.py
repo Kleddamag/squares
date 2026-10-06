@@ -693,10 +693,40 @@ def lower_origin(
     # A replay of a published bound is still that source's bound; the entries this project
     # performed but did not originate carry the source's key like the author's own do.
     keys = {register.evidence[item].get("source_key") for item in own}
-    if len(keys) != 1:
-        raise ValueError(f"n={n} {label}: evidence {own} names {len(keys)} sources, not one")
-    source = _source(keys.pop(), register, f"n={n} {label}")
-    return LowerOrigin(own=tuple(own), novel=(), source=source)
+    if len(keys) == 1:
+        source = _source(keys.pop(), register, f"n={n} {label}")
+        return LowerOrigin(own=tuple(own), novel=(), source=source)
+    return LowerOrigin(own=tuple(own), novel=(), source=first_source(n, own, register, label))
+
+
+def first_source(
+    n: int, own: Sequence[str], register: Register, label: str = "lower"
+) -> Source:
+    """The source whose own proof a bound's lane cites, where the lane names several.
+
+    A value proved by one source and proved again by a later one, whose replay here the
+    lane cites beside the first proof, is still the first source's result: the line
+    credits it, and names the results that carry the replays as confirming it. Bentz
+    proved s(13) = 4 in 2010 and s(33) = 6 in 2016; Evan Daniel's case-free cover of
+    [0,4]^2 (T-006) and his s(k^2 - 3) = k family (T-064) prove them again, and since
+    2026-10-06 their replays here sit in those lanes beside Bentz's proofs, which nobody
+    here had replayed. Until then a lane named exactly one source.
+
+    So the one source credited is the one whose author's own entry the lane cites; the
+    entries this project performed from other sources confirm it. Two published sources
+    behind one bound, or replays of two sources and no published proof, still fail: the
+    credit would then be this tool's choice."""
+    authored = {
+        register.evidence[item].get("source_key")
+        for item in own
+        if register.evidence[item].get("performed_by") != FIRST_PARTY
+    }
+    if len(authored) != 1:
+        keys = {register.evidence[item].get("source_key") for item in own}
+        raise ValueError(
+            f"n={n} {label}: evidence {list(own)} names {len(keys)} sources, not one"
+        )
+    return _source(authored.pop(), register, f"n={n} {label}")
 
 
 def lower_citation(

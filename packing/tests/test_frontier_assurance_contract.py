@@ -19,6 +19,7 @@ from devtools.check_basic_bounds import (
 )
 from devtools.migrate_frontier_v2 import apply_assurance_audits, migrate_case
 from devtools.render_research_tables import compact_bound, same_bound
+from sqpack import assurance
 from sqpack.assurance import (
     check_case_semantics,
     check_evidence_semantics,
@@ -470,3 +471,106 @@ def test_the_sampled_replay_is_a_stride_over_the_grid_cases() -> None:
     assert sampled_sequence(grid, len(grid) + 1) == (3,)
     with pytest.raises(ValueError, match="stride must be positive"):
         sampled_sequence(grid, 0)
+
+
+def conditional_theorem(*discharged_by: str) -> dict[str, object]:
+    """A kernel-checked theorem "H implies s(9) = 3" whose hypothesis H is not proved in
+    the proof assistant, the shape of the two Bentz-family Lean builds."""
+    record = verified_evidence()
+    record.update(
+        {
+            "id": "E-conditional-lean",
+            "scope": {"n_values": [9]},
+            "method": "proof-assistant-checked",
+            "relationship_to_generator": "same-implementation",
+            "proof": {
+                "source": "Sqpack/Example.lean",
+                "theorem": "example_of_h (h : H) : minSide 9 = 3",
+                "scope": "under the one hypothesis H",
+                "pinpoints": "Sqpack/Example.lean",
+                "assumptions": ["H, the theorem's one hypothesis."],
+                "conditional_on": [{"hypothesis": "H", "discharged_by": list(discharged_by)}],
+            },
+        }
+    )
+    return record
+
+
+def test_a_conditional_theorem_cites_what_discharges_its_hypothesis() -> None:
+    """A theorem proved only under a hypothesis is verified as the implication, so the
+    record says what discharges the hypothesis, and a verified bound cites it only
+    beside that run. E-k2m4-evand-bentz4-lean-build, ValidTilt9 implies s(k^2 - 4) = k,
+    read as a verified exact value with no condition until 2026-10-06 (lane R9)."""
+    premise = verified_evidence()
+    premise.update({"id": "E-premise-replay", "claim": "lower-bound"})
+    theorem = conditional_theorem("E-premise-replay")
+    evidence = {"E-grid-exact": verified_evidence(), "E-premise-replay": premise}
+    schema("frontier-evidence.schema.yaml").validate(
+        {"last_reviewed": "2026-10-06", "evidence": [premise, theorem]}
+    )
+    assert assurance.conditional_problems({**evidence, "E-conditional-lean": theorem}) == []
+    assert assurance.undischarged(theorem, evidence) == []
+
+    case = valid_case()
+    lanes = {**evidence, "E-conditional-lean": theorem}
+    alone_in_lane = ["E-conditional-lean"]
+    case["verified_lower_bound"] = {"value": "3", "exact_form": "3", "evidence": alone_in_lane}
+    require_error(
+        check_case_semantics(case, lanes),
+        "E-conditional-lean is conditional on H, and the bound cites nothing that "
+        "discharges it",
+    )
+    beside = ["E-premise-replay", "E-conditional-lean"]
+    case["verified_lower_bound"] = {"value": "3", "exact_form": "3", "evidence": beside}
+    assert check_case_semantics(case, lanes) == []
+
+    # Nothing discharges it: it is a conditional theorem, and every view says so.
+    alone = conditional_theorem()
+    assert assurance.undischarged(alone, evidence) == ["H"]
+    unreplayed = {**premise, "replay_status": "not-attempted"}
+    require_error(
+        assurance.conditional_problems(
+            {"E-premise-replay": unreplayed, "E-conditional-lean": theorem}
+        ),
+        "is not a verified replay with a passing status",
+    )
+    require_error(
+        assurance.conditional_problems({"E-conditional-lean": theorem}),
+        "discharged by unknown evidence E-premise-replay",
+    )
+    narrow = {**premise, "scope": {"n_values": [8]}}
+    require_error(
+        assurance.conditional_problems(
+            {"E-premise-replay": narrow, "E-conditional-lean": theorem}
+        ),
+        "whose scope does not cover this entry's",
+    )
+
+
+def test_the_inventory_says_which_theorems_are_conditional() -> None:
+    """The register's two conditional Lean builds: s(k^2 - 3) = k under Valid7, which
+    the qx2 and wand125 replays discharge here, and s(k^2 - 4) = k under ValidTilt9,
+    which nothing here has replayed."""
+    from devtools import render_evidence_inventory  # noqa: PLC0415
+
+    path = Path(__file__).resolve().parent.parent / "frontier" / "evidence.yaml"
+    records = yaml.safe_load(path.read_text(encoding="utf-8"))["evidence"]
+    by_id = {record["id"]: record for record in records}
+    conditional = {
+        record["id"]: assurance.undischarged(record, by_id)
+        for record in records
+        if assurance.conditions(record)
+    }
+    assert conditional == {
+        "E-k2m3-evand-bentz-lean-build": [],
+        "E-k2m4-evand-bentz4-lean-build": ["ValidTilt9"],
+    }
+    assert render_evidence_inventory.claim_text(
+        by_id["E-k2m4-evand-bentz4-lean-build"], by_id
+    ) == ("exact-value, conditional on ValidTilt9, not replayed here")
+    text = (path.parent / "INVENTORY.md").read_text(encoding="utf-8")
+    assert (
+        "| `E-k2m4-evand-bentz4-lean-build` | 0 | exact-value, conditional on ValidTilt9, "
+        "not replayed here | verified |"
+    ) in text
+    assert "| `E-k2m4-evand-bentz4-lean-build` | 0 | exact-value | verified |" not in text

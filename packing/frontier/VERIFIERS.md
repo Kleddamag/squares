@@ -395,7 +395,7 @@ Decides Valid7 for Evan Daniel's k = 7 cover: every closed unit square in [0,7]^
 | evidence | run | code | results |
 | --- | --- | --- | --- |
 | `E-k2m3-wand125-valid7-independent` | replayed here | independent | T-064 |
-| `E-k2m4-wand125-validtilt9-report` | a third party’s run | independent | T-081 |
+| `E-k2m4-wand125-validtilt9-report` | reported by a third party, not replayed here | independent | T-081 |
 
 ### `V-evand-zmx2`
 
@@ -410,7 +410,7 @@ Decides a zero-margin point-and-segment cover by branch and bound over centre an
 | evidence | run | code | results |
 | --- | --- | --- | --- |
 | `E-n060-evand-mixed-cover-report` | the source’s own run | producer’s code | T-062, T-063 |
-| `E-n061-wand125-point-cover-evand-replay-report` | a third party’s run | independent | T-063 |
+| `E-n061-wand125-point-cover-evand-replay-report` | reported by a third party, not replayed here | independent | T-063 |
 | `E-n061-wand125-point-cover-zmx2-replay` | replayed here | producer’s code | T-063 |
 | `E-n060-evand-mixed-cover-zmx2-replay` | replayed here | producer’s code | T-062, T-063 |
 | `E-n045-wand125-point-cover-report` | the source’s own run | producer’s code | T-054 |
@@ -459,7 +459,7 @@ The source's exhaustive exact point-cover checker over the D4 region's root boxe
 
 | evidence | run | code | results |
 | --- | --- | --- | --- |
-| `E-n061-wand125-point-cover-evand-replay-report` | a third party’s run | independent | T-063 |
+| `E-n061-wand125-point-cover-evand-replay-report` | reported by a third party, not replayed here | independent | T-063 |
 | `E-n032-evand-closed-cover-report` | the source’s own run | producer’s code | T-051 |
 | `E-n032-evand-closed-cover-source-run` | replayed here | producer’s code | T-051 |
 | `E-n013-evand-casefree-cover-report` | the source’s own run | producer’s code | - |
@@ -513,7 +513,7 @@ The source's separately written Rust point-cover checker, over the full domain o
 
 | evidence | run | code | results |
 | --- | --- | --- | --- |
-| `E-n061-wand125-point-cover-evand-replay-report` | a third party’s run | independent | T-063 |
+| `E-n061-wand125-point-cover-evand-replay-report` | reported by a third party, not replayed here | independent | T-063 |
 | `E-n032-evand-closed-cover-report` | the source’s own run | producer’s code | T-051 |
 | `E-n013-evand-casefree-cover-report` | the source’s own run | producer’s code | - |
 
@@ -1754,7 +1754,7 @@ Checks what wand125's verify_tilt9.sh leaves out of the ValidTilt9 run: the reco
 
 | evidence | run | code | results |
 | --- | --- | --- | --- |
-| `E-k2m4-wand125-validtilt9-report` | a third party’s run | independent | T-081 |
+| `E-k2m4-wand125-validtilt9-report` | reported by a third party, not replayed here | independent | T-081 |
 
 ### `V-probe-valid7-fixes`
 

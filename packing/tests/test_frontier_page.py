@@ -283,6 +283,108 @@ def test_the_page_says_once_what_the_tag_means_and_links_the_corrected_result(
     assert "all-results.html#t-007" not in table
 
 
+#: The cases whose verified lower bound rests only on a published proof nobody here has
+#: read: Göbel's s(5), Kearney and Shiu's s(6), Stromquist's s(10) and Bentz's s(22), each
+#: transcribed with its theorem and pinpoints and never worked through here. Bentz's s(33)
+#: was one until its lane cited T-064's replays beside the proof on 2026-10-06; n = 13's
+#: proof, Bentz's of 2010, is read here, with an erratum in one lemma, and its lane cites
+#: T-006's replays since the same day.
+UNREAD_PROOF_CASES = (5, 6, 10, 22)
+#: The cases whose reported lower bound is a value of Green's DS7 Theorem 9, whose
+#: illustrated argument leaves a unit square empty (`devtools.check_green_ds7`), above
+#: the verified floor.
+GREEN_THEOREM_9 = frozenset(
+    {
+        *range(122, 126),
+        *range(145, 149),
+        *range(170, 174),
+        *range(197, 201),
+        *range(226, 230),
+        *range(257, 262),
+        *range(290, 295),
+    }
+)
+
+
+def test_a_verified_bound_on_an_unread_published_proof_says_so(rows, cases) -> None:
+    """A published proof enters the verified column whether or not anyone here has read
+    it, and "✓ same" says only that the verified bound equals the reported value. So a
+    verified cell whose every cited entry is a published proof nobody here has read says
+    so under its bound, and no other cell does. Until 2026-10-06 those cells said "✓
+    same" alone, which the page's introduction read as "verified here at the reported
+    value"."""
+    evidence = tables.load_evidence()
+    marked = set()
+    for attributes, cells in rows:
+        n = int(attributes["data-n"] or 0)
+        for label, field in (
+            ("Verified upper", "verified_upper_bound"),
+            ("Verified lower", "verified_lower_bound"),
+        ):
+            words = cells[column(label)]["words"] or ""
+            unread = tables.rests_on_unread_proof(cases[n][field], evidence)
+            assert words.endswith(frontier.UNREAD_PROOF) == unread, (n, label)
+            if unread:
+                marked.add((n, label))
+    assert marked == {(n, "Verified lower") for n in UNREAD_PROOF_CASES}
+    row = frontier.case_row(cases[5], recent=False)
+    assert (
+        '<span class="site-frontier-same">✓ same</span>'
+        '<span class="site-frontier-note site-cell-quiet">published proof, not read here'
+        "</span></td>"
+    ) in row
+    # A read proof is not marked, with or without a defect found by the read.
+    assert frontier.UNREAD_PROOF not in frontier.case_row(cases[13], recent=False)
+    assert frontier.UNREAD_PROOF not in frontier.case_row(cases[8], recent=False)
+
+
+def test_a_reported_bound_on_a_proof_found_defective_says_so(rows, cases) -> None:
+    """A reported bound that stands on a proof whose read here found a defect, and that
+    no verified bound reaches, says "defect recorded" under its credit: Nagamochi's
+    closed form wherever it is above the verified floor (T-007), and Green's DS7 Theorem
+    9 values. Where the verified bound equals the reported one, as at n = 13, 23 and 46,
+    the defect moves no value on the row and the cell is not marked."""
+    evidence = tables.load_evidence()
+    flagged: dict[int, str] = {}
+    for attributes, cells in rows:
+        n = int(attributes["data-n"] or 0)
+        for label, reported, verified in (
+            ("Best known packing", "reported_upper_bound", "verified_upper_bound"),
+            ("Reported lower", "reported_lower_bound", "verified_lower_bound"),
+        ):
+            words = cells[column(label)]["words"] or ""
+            defect = tables.reported_defect(cases[n][reported], cases[n][verified], evidence)
+            assert words.endswith(frontier.DEFECT_RECORDED) == defect, (n, label)
+            if defect:
+                flagged[n] = label
+    assert set(flagged.values()) == {"Reported lower"}
+    assert set(flagged) >= GREEN_THEOREM_9
+    nagamochi = set(flagged) - GREEN_THEOREM_9
+    assert all(
+        cases[n]["reported_lower_bound"]["evidence"] == ["E-nagamochi-lower"] for n in nagamochi
+    )
+    # 149 of Nagamochi's values, all at n = 106 to 319, and Green's 30, on 2026-10-06.
+    assert (len(nagamochi), min(nagamochi), max(nagamochi)) == (149, 106, 319)
+    assert not {13, 23, 46} & set(flagged)
+
+
+def test_status_names_each_verified_lane_and_marks_a_reported_defect(cases) -> None:
+    """`STATUS.md` says who verified each lane apart, and whether a published proof was
+    read here; until 2026-10-06 it merged the two lanes, and n = 5 read "replayed here,
+    external proof" with nothing to say which half was the unread proof."""
+    evidence = tables.load_evidence()
+    assert tables.verification_origins(cases[5], evidence) == (
+        "upper: replayed here; lower: external proof (not read here)"
+    )
+    assert tables.verification_origins(cases[106], evidence) == (
+        "upper: replayed here; lower: external proof (read here), audited here"
+    )
+    assert "reported lower: defect recorded" in tables.case_disposition(cases[106], evidence)
+    assert "defect recorded" not in tables.case_disposition(cases[23], evidence)
+    status = tables.STATUS.read_text(encoding="utf-8")
+    assert "| upper: replayed here; lower: external proof (not read here) |" in status
+
+
 def test_the_gap_is_exact_where_both_bounds_are(rows, cases) -> None:
     gaps = {
         int(attributes["data-n"] or 0): cells[column("Gap")]["data-value"]

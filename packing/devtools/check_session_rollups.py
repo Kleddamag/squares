@@ -63,11 +63,17 @@ Named as a boundary rather than a list so the exemption cannot quietly grow: a n
 is above it by construction, and moving it is a visible edit.
 """
 
-UNMEASURED_REASON = "native_harness_data_unavailable"
-"""The sole reason that can replace a terminal resource receipt.
+UNMEASURED_REASONS = frozenset(
+    {"native_harness_data_unavailable", "rollup_withheld_model_identifiers"}
+)
+"""The reasons that can replace a terminal resource receipt.
 
-The value is deliberately an enum of one rather than free text. A new failure mode must
-become an explicit contract change instead of quietly broadening the exception.
+The values are deliberately an enum rather than free text. A new failure mode must become
+an explicit contract change instead of quietly broadening the exception.
+`rollup_withheld_model_identifiers` was added on 2026-10-06 for Session 182: its harness
+and sub-agent logs exist, but every rollup this contract writes keys turns by model
+identifier, which the agents that ran the session may not commit. The detail must name
+the logs, so the owner can add the rollups with `close_session --update`.
 """
 
 UNMEASURED_HANDOFF_ROLES = frozenset({"administrative_closeout", "work_handoff"})
@@ -155,9 +161,10 @@ def unmeasured_resource_problems(name: str, session: Mapping[str, object]) -> li
             "resource_rollups list"
         )
     reason = marker.get("reason")
-    if reason != UNMEASURED_REASON:
+    if reason not in UNMEASURED_REASONS:
         problems.append(
-            f"{name}: resource_usage_unmeasured reason must be {UNMEASURED_REASON!r}"
+            f"{name}: resource_usage_unmeasured reason must be one of "
+            f"{sorted(UNMEASURED_REASONS)}"
         )
     detail = marker.get("detail")
     if not isinstance(detail, str) or not detail.strip():

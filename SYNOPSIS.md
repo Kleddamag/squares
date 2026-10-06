@@ -881,6 +881,8 @@ case or experiment separately.
 | [H-007: Branch-Free Directed Steps](packing/benchmarks/measure-verifier/experiments/exp-005-h007-branch-free-directed-steps.md) | research synthesis | record | retained | — |
 | [Soundness of sqverify-fast](packing/sqverify_fast/SOUNDNESS.md) | component scope and use | definitive | maintained | — |
 | [sqverify-fast](packing/sqverify_fast/README.md) | component scope and use | supporting | maintained | — |
+| [n17bb-native](packing/n17bb_native/README.md) | component scope and use | supporting | maintained | — |
+| [Native n17 Branch-and-Bound Benchmark](packing/benchmarks/n17-bb-native/README.md) | component scope and use | supporting | maintained | — |
 | [Milestone A Census](packing/benchmarks/measure-verifier/census/README.md) | generated status view | generated | generated | — |
 | [Milestone B Census](packing/benchmarks/measure-verifier/census-mixed/README.md) | generated status view | generated | generated | — |
 | [Census Summary](packing/benchmarks/measure-verifier/census-summary.md) | generated status view | generated | generated | — |

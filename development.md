@@ -180,7 +180,7 @@ alone is not full pre-merge evidence.
 | `--suite-c` | **CI, on every pull request**, in the `suite-c` job, concurrently | 1 of 98 | 168 s | 132.05 s, the geometric mean of eleven hosted readings on 2026-10-01 after the day’s files landed in it, band 90.34–147.16 s (1.63x); the 102.94 s thirty-one-reading record and the 88.59 s first reading stay as history |
 | `--suite-d` | **CI, on every pull request**, in the `suite-d` job, concurrently | 1 of 98 | 143 s | pending its first hosted cohort under `think-t7k5`; the record’s cohort predicts about 84 s for its 278.9 test-second share |
 | `--sweeps` | **CI, on every pull request**, in the `sweeps` job, concurrently | 5 of 98 | 200 s | 101.51 s, the geometric mean of six 4-of-80 hosted readings (66.36–130.77 s, spread 1.97x); the 119.72 s seven-reading mean and PR 180’s 138.84 s predecessor remain in the register as history |
-| `--measure-verifier` | **CI, on every pull request**, in the `measure-verifier` job, concurrently | 1 of 98 | 90 s | pending its first hosted cohort under `think-th8p`; its one step read 21.20 s and, on a runner where every step was about 1.9x slow, 45.30 s inside `--checks` |
+| `--measure-verifier` | **CI, on every pull request**, in the `measure-verifier` job, concurrently | 2 of 98 | 90 s | pending its first hosted cohort under `think-th8p`; the native n17 kernel’s step joined it after a cold 52.83 s inside `--checks`; the verifier’s step read 21.20 s and, on a runner where every step was about 1.9x slow, 45.30 s inside `--checks` |
 | *(no flag)* | Full checkpoint before final review and at block close; main, dispatch, and daily CI | 98 of 98 | 3600 s | integration plus ten deferred workers; new whole-wall measurement pending |
 
 Step counts describe the current 98-step registry, read from `packing-validate --list`
@@ -1566,6 +1566,37 @@ Pass that path to `devtools.verify_rectangle_density` with
 The [tooling overview](docs/project/verification-tooling.md) records the supported
 inputs, refusal behavior, golden controls and measured performance limits.
 This crate verifies rectangle geometry, a separate contract from the global n11 proof.
+
+The optional [n17 native kernel](packing/n17bb_native/README.md) accelerates the
+sub-pattern branch-and-bound pilot without editing the pilot.
+From `packing/`:
+
+```bash
+uv run --frozen --all-extras --group dev python -m devtools.build_n17_bb_native
+uv run --frozen --all-extras --group dev python -m devtools.n17_bb_native \
+    --native-dir n17bb_native/target/python \
+    --cells interior-SW,interior-NW,interior-W,interior-S,interior-N,interior-SE \
+    --label A --max-nodes 2000 --output /tmp/n17-native-A.json
+uv run --frozen --all-extras --group dev packing-validate \
+    --only "n17 branch-and-bound native (Rust)"
+```
+
+The build helper runs formatting, Clippy, Rust tests, rustdoc and the locked release
+build, then prints the import directory.
+On a pull request the step runs in the `measure-verifier` job, which caches the crate’s
+build beside the measure verifier’s. It honors `CARGO_TARGET_DIR`; pass
+`--output-dir DIR` to choose the import directory explicitly.
+The build target matches the running Python’s architecture, including arm64 Python with
+a Rosetta Rust host.
+The validation step requires the built extension and compares native calls and search
+summaries with Python loops using the same tinylp backend, checks the F7 control, and
+exercises the recorder and Taylor fallbacks.
+The unchanged pilot uses HiGHS; its optimal duals and search tree can differ, so the
+tests separately demonstrate that distinction.
+Ordinary test runs skip the native replay tests with a build instruction when the
+extension is absent.
+The [benchmark instrument](packing/benchmarks/n17-bb-native/README.md) records Python,
+native and parallel runs; the parallel driver is for search and refuses certificates.
 
 The native rectangle CLI has
 [five golden scenarios](packing/tests/golden/rectangle-density-cli/) covering complete,

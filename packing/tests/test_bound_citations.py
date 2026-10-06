@@ -547,13 +547,34 @@ def test_a_confirmation_that_would_not_fit_falls_back_to_the_short_venue() -> No
 
 def test_a_line_wider_than_the_stage_fails_rather_than_being_cut() -> None:
     register = _synthetic_register()
+    long_credit = {
+        **register.sources,
+        "[Paper 2001]": citations.Source("[Paper 2001]", ("A" * 70,), 2001, "V" * 60),
+    }
+    wide = citations.Register(register.evidence, register.results, long_credit, register.names)
+    with pytest.raises(ValueError, match="over 66"):
+        citations.lower_citation(7, _synthetic_case(["E-paper"]), wide)
+
+
+def test_a_venue_goes_before_the_line_fails() -> None:
+    """Where neither venue leaves room, the credit and year stand alone; the credit is
+    never cut to keep a venue."""
+    register = _synthetic_register()
     long_venue = {
         **register.sources,
         "[Paper 2001]": citations.Source("[Paper 2001]", ("Author",), 2001, "V" * 60),
     }
     wide = citations.Register(register.evidence, register.results, long_venue, register.names)
-    with pytest.raises(ValueError, match="over 66"):
-        citations.lower_citation(7, _synthetic_case(["E-paper"]), wide)
+    line = citations.lower_citation(7, _synthetic_case(["E-paper"]), wide)
+    assert line is not None
+    assert line["text"] == "Author 2001"
+    source = citations.Source("[K]", ("Author",), 2001, "V" * 30, short_venue="Short J.")
+    assert citations.compose("Author", 2001, source, len("Author 2001, Short J.")) == (
+        "Author 2001, Short J."
+    )
+    assert citations.compose("Author", 2001, source, len("Author 2001, Short J.") - 1) == (
+        "Author 2001"
+    )
 
 
 def test_several_confirmations_are_named_in_id_order() -> None:
@@ -586,9 +607,12 @@ def test_the_width_a_line_is_checked_against_counts_its_note() -> None:
     plain = citations.lower_citation(7, _synthetic_case(["E-paper"]), wide)
     assert plain is not None
     assert len(citations.drawn(plain)) == citations.TEXT_LIMIT
-    # The same line with a confirmation does not fit, and there is no short venue to fall to.
-    with pytest.raises(ValueError, match="over 66"):
-        citations.lower_citation(7, _synthetic_case(["E-paper", "E-replay"]), wide)
+    # The same line with a confirmation does not fit, and there is no short venue to fall
+    # to, so the venue goes and the credit and year stand alone beside the note.
+    confirmed = citations.lower_citation(7, _synthetic_case(["E-paper", "E-replay"]), wide)
+    assert confirmed is not None
+    assert (confirmed["text"], confirmed["note"]) == ("Author 2001", "(confirmed T-901)")
+    assert len(citations.drawn(confirmed)) <= citations.TEXT_LIMIT
 
 
 #: A published work a synthetic bound corrects, and the register's record of it.
@@ -782,18 +806,30 @@ RECORDED: dict[int, tuple[tuple[str, str, str] | None, tuple[str, str, str] | No
     # Since 2026-10-05 its exact optimum, Couzo's packing improved by Daniel (T-098).
     132: (
         ("Couzo & Daniel, GitHub (confirmed T-098)", "external", "verified"),
-        ("Karakuş 2026, arXiv:2609.37410 corrects Nagamochi 2005", "external", "verified"),
+        (
+            "Karakuş 2026, arXiv corrects Nagamochi 2005 (confirmed T-083)",
+            "external",
+            "verified",
+        ),
     ),
     # A certified ceiling that trailed its report by two units of the printed place was
     # cited as reported until 2026-10-05, when the exact optimum of the same packing put
     # both lanes on one side (T-098).
     206: (
         ("Couzo & Daniel, GitHub (confirmed T-098)", "external", "verified"),
-        ("Karakuş 2026, arXiv:2609.37410 corrects Nagamochi 2005", "external", "verified"),
+        (
+            "Karakuş 2026, arXiv corrects Nagamochi 2005 (confirmed T-083)",
+            "external",
+            "verified",
+        ),
     ),
     211: (
         ("de Winter & Daniel, GitHub (confirmed T-098)", "external", "verified"),
-        ("Karakuş 2026, arXiv:2609.37410 corrects Nagamochi 2005", "external", "verified"),
+        (
+            "Karakuş 2026, arXiv corrects Nagamochi 2005 (confirmed T-083)",
+            "external",
+            "verified",
+        ),
     ),
 }
 
@@ -872,9 +908,10 @@ RECORDED_LINKS: dict[tuple[int, str], tuple[list[str], list[str]]] = {
     (13, "lower"): (["T-005", "T-006"], []),
     # chelokot's Lean proof, replayed here with its axiom receipt, since 2026-10-02.
     (7, "lower"): (["T-086"], ["T-086"]),
-    # Karakuş's general bound, read here and not replayed, since 2026-10-02; n = 101 stood
-    # here until its linear certificate's replay was recorded (T-080) on 3 October.
-    (106, "lower"): (["T-083"], []),
+    # Karakuş's general bound since 2026-10-02, read here; its Proposition 5.1 machine-checked
+    # here since 2026-10-06. n = 101 stood here until its linear certificate's replay was
+    # recorded (T-080) on 3 October.
+    (106, "lower"): (["T-083"], ["T-083"]),
     (101, "lower"): (["T-080"], ["T-080"]),
     # This project's own bound, established rather than confirmed, was T-030's until
     # 2026-10-02 (`test_a_novel_first_party_bound_cites_this_project_and_its_result` keeps

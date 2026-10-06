@@ -55,6 +55,8 @@ CASES_DIR = Path(__file__).parents[1] / "cases"
 
 #: The verified floor that replaced the record's on 2026-10-02.
 KARAKUS = nagamochi.KARAKUS
+#: The machine check of Karakuş's Proposition 5.1, cited beside his proof since 2026-10-06.
+KARAKUS_MACHINE = "E-karakus-strip-measure-interval"
 
 
 def citing(record: str = RECORD, lane: str = "verified_lower_bound") -> dict[int, dict]:
@@ -203,7 +205,7 @@ def test_a_floor_rounded_up_is_refused(monkeypatch: pytest.MonkeyPatch) -> None:
         lower = found[150]["verified_lower_bound"]
         # The control has to be about the record it names; if `n = 150` ever leaves
         # Karakuş's lane, this says so instead of passing on another case.
-        assert lower["evidence"] == [KARAKUS]
+        assert lower["evidence"] == [KARAKUS, KARAKUS_MACHINE]
         assert lower["value"] == N150_FLOOR
         lower["value"] = N150_ROUNDED_UP
         return found

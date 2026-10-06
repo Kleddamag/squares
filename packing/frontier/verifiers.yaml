@@ -669,6 +669,26 @@ verifiers:
       both counterexamples from their printed coordinates, and chelokot's Python checker
       was not run.
 
+  - id: V-check-karakus-strip-measure
+    program: devtools.check_karakus_strip_measure
+    author: Squares Project (Levy)
+    provenance: first-party
+    language: [Python]
+    methods: [interval-certified]
+    role: decides
+    summary: >-
+      Decides Karakuş 2026's Proposition 5.1, that the strip measure gives the interior of
+      every square of side in (1, 1.01] more than one, by an exact Fraction branch and bound
+      over the square's orientation, side and cut height, and replays its retained cover
+      leaf by leaf.
+    source: [packing/devtools/check_karakus_strip_measure.py]
+    independence_record: packing/devtools/check_karakus_strip_measure.py
+    note: >-
+      Its module statement says it was written from the paper's Section 5 and nothing else;
+      the source publishes no code. It imports no other checker of this repository; its
+      test compares it with the polygon scorer of
+      devtools.check_nagamochi_lemma1_counterexample.
+
   - id: V-upper-bound-promotion
     program: >-
       devtools.upper_bound_packets, the robust rational promotion and its exact

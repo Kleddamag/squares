@@ -762,8 +762,9 @@ def root_files() -> tuple[Path, ...]:
 # checkers, behind 29 controls, touch the roots at all. `validate_schemas` and
 # `check_generated_markdown` walk the tree and open only the two census READMEs,
 # `check_synopsis` stats those READMEs for its links, and `check_results` stats the 118
-# registered receipts; every one of those returns. The one reader of the rest is `check_readme`, through
-# `scan_retired_workflow_identifiers`, which reads every text file the worker's own index
+# registered receipts; every one of those returns. The one reader of the rest is
+# `check_readme`, through `scan_retired_workflow_identifiers`, which reads every text
+# file the worker's own index
 # tracks, the 475 journals among them; a pruned file leaves that index and so the sweep,
 # as the composite vectors did. Run unmutated in a worker with the roots and in one
 # without them, every distinct command but the full suite printed the same output, wall

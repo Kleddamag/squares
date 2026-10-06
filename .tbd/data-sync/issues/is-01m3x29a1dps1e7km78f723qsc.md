@@ -3,15 +3,19 @@ type: is
 id: is-01m3x29a1dps1e7km78f723qsc
 title: "Handoff: the website lane at the end of 1 October 2026 — what merged, what is in flight, what is the owner's"
 kind: task
-status: open
+status: closed
 priority: 1
-version: 11
+version: 12
 spec_path: docs/project/specs/active/plan-2026-09-29-github-pages-overview.md
 labels: []
 dependencies: []
 parent_id: is-01m3p52z585a2zb9jmy19b0r96
 created_at: 2026-10-02T01:05:01.478Z
-updated_at: 2026-10-02T05:57:27.462Z
+updated_at: 2026-10-06T08:24:22.632Z
+closed_at: 2026-10-06T08:24:22.627Z
+close_reason: "Finished wrapper: the website-lane handoff for 1 October 2026. Its own last notes say no lane is in flight, and each follow-up it lists has its own open bead under think-xjq4."
+resolution: null
+duplicate_of: null
 ---
 Handoff of the website lane (epic think-xjq4) at 2026-10-02 01:35 UTC, 18:35 PT on 1 October. Read this first, then the beads it names.
 

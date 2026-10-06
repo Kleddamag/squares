@@ -46,8 +46,11 @@ WIDTHS = (1280, 1024, 768, 390)
 #: a fraction that is a recent bound, a verified bound printed beside the reported one,
 #: and a three-digit case with a rational upper bound. The fraction was n = 18's until
 #: 2026-10-02, when its verified bound rose to the reported one, and then n = 19's until
-#: the same happened there later that day; n = 12's has terminated since 5 October.
-CASES = (1, 5, 11, 12, 51, 230)
+#: the same happened there later that day; n = 12's has terminated since 5 October. The
+#: verified bound beside the reported one was n = 51's, 37/5 and from the morning of 6
+#: October 2977/400 (T-070), until sqverify-fast decided its own certificate (T-090) later
+#: that day, and is n = 96's since.
+CASES = (1, 5, 11, 12, 96, 230)
 ROWS = [f"n-{n}" for n in CASES]
 #: The drawing's side before it had a column: 2.6rem.
 OLD_THUMB = 41.6
@@ -217,15 +220,17 @@ def test_a_fraction_shows_its_decimal_and_a_name_stays_whole(
     assert rows["n-12"]["cells"][column("Reported lower")]["approx"] == ["= 3.9715"]
     assert rows["n-12"]["cells"][column("Gap")]["approx"] == ["= 0.0285"]
     assert [cell["approx"] for cell in rows["n-12"]["cells"]].count([]) == len(COLUMNS) - 2
-    # A terminating fraction shows its exact decimal in either column. The example was
-    # n = 18 until 2026-10-02, when T-045's replay raised its verified bound to the
-    # reported 939/200 and the cell became "same", and then n = 19 until T-074's did the
-    # same there later that day; n = 51 shows both: its own replayed rectangle
-    # certificate, 2977/400 (T-070, since 6 October; 37/5 from n = 50's mixed certificate
-    # before), below its reported mixed certificate, 747/100 (T-090; 373/50, T-082, until
-    # 5 October).
-    assert rows["n-51"]["cells"][column("Verified lower")]["approx"] == ["= 7.4425"]
-    assert rows["n-51"]["cells"][column("Reported lower")]["approx"] == ["= 7.47"]
+    # A terminating fraction shows its exact decimal in either column: n = 12's above in
+    # the reported one, and in the verified one a bound printed beside a different
+    # reported one. That example was n = 18 until 2026-10-02, when T-045's replay raised
+    # its verified bound to the reported 939/200 and the cell became "same", and then
+    # n = 19 until T-074's did the same there later that day; then n = 51, 37/5 from
+    # n = 50's replayed mixed certificate below its own reported mixed certificate,
+    # 747/100 (T-090; 373/50, T-082, until 5 October), and from the morning of 6 October
+    # its own replayed rectangle certificate, 2977/400 (T-070), until sqverify-fast
+    # decided T-090's certificates later that day. Since then it is n = 96, 1993/200 by
+    # mass from n = 95 (T-090) below the reported s(96) = 10 (T-081).
+    assert rows["n-96"]["cells"][column("Verified lower")]["approx"] == ["= 9.965"]
     assert all(cell["approx"] == [] for cell in rows["n-1"]["cells"])
     assert rows["n-11"]["cells"][column("Reported lower")]["broken"] == []
 

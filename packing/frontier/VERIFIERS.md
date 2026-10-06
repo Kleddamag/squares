@@ -26,7 +26,7 @@ second implementation agrees.
 ## The Short Version
 
 - **90** programs: **33** external and **57** first-party; **69** decide claims and **21** check premises.
-- **337** of **364** evidence entries name the programs that verified them: 211 reproduced with the producer’s code, 109 independently re-implemented, 10 no relation: a proof, a derivation or a report, 7 re-implemented, sharing the producer’s components.
+- **359** of **386** evidence entries name the programs that verified them: 211 reproduced with the producer’s code, 131 independently re-implemented, 10 no relation: a proof, a derivation or a report, 7 re-implemented, sharing the producer’s components.
 
 ## Programs
 
@@ -109,7 +109,7 @@ second implementation agrees.
 | [`V-audit-wand125-point-and-mixed`](#v-audit-wand125-point-and-mixed) | devtools.audit_wand125_point_and_mixed | Squares Project (Levy) | first-party | premises | 17 | 7 |
 | [`V-audit-wand125-declared-net`](#v-audit-wand125-declared-net) | devtools.audit_wand125_declared_net | Squares Project (Levy) | first-party | premises | 1 | 1 |
 | [`V-audit-wand125-linear`](#v-audit-wand125-linear) | devtools.audit_wand125_linear | Squares Project (Levy) | first-party | premises | 3 | 3 |
-| [`V-sqverify-fast`](#v-sqverify-fast) | sqverify-fast | Squares Project (Levy) | first-party | decides | 54 | 7 |
+| [`V-sqverify-fast`](#v-sqverify-fast) | sqverify-fast | Squares Project (Levy) | first-party | decides | 76 | 9 |
 | [`V-replay-chelokot-lean`](#v-replay-chelokot-lean) | devtools.replay_chelokot_lean | Squares Project (Levy) | first-party | premises | 1 | 1 |
 | [`V-replay-evand-zmx2`](#v-replay-evand-zmx2) | devtools.replay_evand_zmx2 | Squares Project (Levy) | first-party | premises | 5 | 5 |
 | [`V-audit-evand-mixed-covers`](#v-audit-evand-mixed-covers) | devtools.audit_evand_mixed_covers | Squares Project (Levy) | first-party | premises | 9 | 8 |
@@ -1569,6 +1569,28 @@ Decides a measure-capture lower-bound certificate of format T, M or L on the 201
 | `E-n090-wand125-mixed-973-sqverify-fast-replay` | replayed here | independent | T-091 |
 | `E-n091-wand125-mixed-97625-sqverify-fast-replay` | replayed here | independent | T-091 |
 | `E-n094-wand125-mixed-995-sqverify-fast-replay` | replayed here | independent | T-091 |
+| `E-n083-wand125-mixed-937-sqverify-fast-replay` | replayed here | independent | T-075 |
+| `E-n085-wand125-mixed-946-sqverify-fast-replay` | replayed here | independent | T-075 |
+| `E-n087-wand125-mixed-948-sqverify-fast-replay` | replayed here | independent | T-075 |
+| `E-n091-wand125-mixed-970-sqverify-fast-replay` | replayed here | independent | T-075 |
+| `E-n092-wand125-mixed-975-sqverify-fast-replay` | replayed here | independent | T-075 |
+| `E-n096-wand125-mixed-996-sqverify-fast-replay` | replayed here | independent | T-075 |
+| `E-n042-wand125-mixed-68475-sqverify-fast-replay` | replayed here | independent | T-090 |
+| `E-n043-wand125-mixed-69075-sqverify-fast-replay` | replayed here | independent | T-090 |
+| `E-n044-wand125-mixed-69725-sqverify-fast-replay` | replayed here | independent | T-090 |
+| `E-n051-wand125-mixed-747-sqverify-fast-replay` | replayed here | independent | T-090 |
+| `E-n056-wand125-mixed-78025-sqverify-fast-replay` | replayed here | independent | T-090 |
+| `E-n057-wand125-mixed-78725-sqverify-fast-replay` | replayed here | independent | T-090 |
+| `E-n067-wand125-mixed-8475-sqverify-fast-replay` | replayed here | independent | T-090 |
+| `E-n069-wand125-mixed-862-sqverify-fast-replay` | replayed here | independent | T-090 |
+| `E-n072-wand125-mixed-876-sqverify-fast-replay` | replayed here | independent | T-090 |
+| `E-n075-wand125-mixed-894-sqverify-fast-replay` | replayed here | independent | T-090 |
+| `E-n084-wand125-mixed-94075-sqverify-fast-replay` | replayed here | independent | T-090 |
+| `E-n086-wand125-mixed-9503-sqverify-fast-replay` | replayed here | independent | T-090 |
+| `E-n088-wand125-mixed-96125-sqverify-fast-replay` | replayed here | independent | T-090 |
+| `E-n093-wand125-mixed-988-sqverify-fast-replay` | replayed here | independent | T-090 |
+| `E-n094-wand125-mixed-994-sqverify-fast-replay` | replayed here | independent | T-090 |
+| `E-n095-wand125-mixed-9965-sqverify-fast-replay` | replayed here | independent | T-090 |
 | `E-n018-wand125-mixed-4704-sqverify-fast-replay` | replayed here | independent | T-099 |
 | `E-n019-wand125-mixed-48229-sqverify-fast-replay` | replayed here | independent | T-100 |
 

@@ -522,6 +522,41 @@ def test_an_evidence_entry_names_the_reviewed_build_its_row_was_made_from() -> N
     assert source.statement in " ".join(record["limitations"].split())
 
 
+def test_an_evidence_entry_states_its_threads_and_the_review_of_the_source_that_ran() -> None:
+    """The row's own thread count, and for a standard-net row built from a later reviewed
+    source (main's at 910b6b12c), the review that accepted that source."""
+    entry = entries()[RECOMPUTED]
+    main_source = "d97758bbc9639edc70b8bd7dc83106d4e8d1be034bacb3e88f8c539b88091c88"
+    rows = {
+        "as run": entry,
+        "main": {
+            **entry,
+            "threads": 1,
+            "build": {**entry["build"], "source_sha256": main_source},
+        },
+    }
+    texts = {
+        name: safe_load(
+            census.evidence_entry(
+                cases()[RECOMPUTED], FOLDER, row, audit_record=census.ROUTE_REVIEW, date="x"
+            )
+        )[0]
+        for name, row in rows.items()
+    }
+    limitations = {
+        name: " ".join(record["limitations"].split()) for name, record in texts.items()
+    }
+    pinpoints = {
+        name: " ".join(record["proof"]["pinpoints"].split()) for name, record in texts.items()
+    }
+    assert entry["threads"] == 2
+    assert "CPU seconds at two threads and" in limitations["as run"]
+    assert "CPU seconds at one thread and" in limitations["main"]
+    assert "the crate source that ran" not in pinpoints["as run"]
+    later = f"the crate source that ran, at 910b6b12c, by {census.DECLARED_NET_REVIEW}"
+    assert later in pinpoints["main"]
+
+
 def test_an_evidence_entry_refuses_a_row_built_from_unreviewed_source() -> None:
     """mixed_n18_L470's row was built at f007d7afd, a source not in REVIEWED_SOURCES."""
     name = DECLARED

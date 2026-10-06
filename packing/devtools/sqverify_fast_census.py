@@ -794,6 +794,13 @@ def folded(key: str, text: str, indent: int = 4) -> list[str]:
     return [f"{' ' * indent}{key}: >-", *(f"{' ' * (indent + 2)}{line}" for line in body)]
 
 
+def thread_count(entry: dict[str, Any]) -> str:
+    """The threads a census row ran at, in words: `one thread`, `two threads`."""
+    threads = int(entry.get("threads") or 1)
+    word = {1: "one", 2: "two", 3: "three", 4: "four"}.get(threads, str(threads))
+    return f"{word} thread{'' if threads == 1 else 's'}"
+
+
 def uncovered(run: dict[str, Any]) -> str:
     """Where a control's mutant was shown, exactly, to capture less than 1."""
     mutation = run["mutation"]
@@ -905,8 +912,9 @@ def evidence_entry(
         f"{oblique['r']}; "
         f"the exact capture at the least-bound leaf's centre (index {least['r']}) is "
         f"{float(Fraction(least['exact_coverage'])):.10f}. Every direction verified, "
-        f"summary VERIFIED, exit 0, {float(entry['cpu_seconds']):,.0f} CPU seconds at two "
-        f"threads and {float(entry['wall_seconds']):,.0f} seconds of wall time on a shared "
+        f"summary VERIFIED, exit 0, {float(entry['cpu_seconds']):,.0f} CPU seconds at "
+        f"{thread_count(entry)} and {float(entry['wall_seconds']):,.0f} seconds of wall time "
+        "on a shared "
         "4-core x86-64 Linux container under load. The build is rustc 1.98.0, release, "
         f"x86-64 Linux, source_sha256 {built[:8]}...: {reviewed.statement}. "
         "It decides coverage independently of the source's checker: the crate was written "
@@ -926,6 +934,12 @@ def evidence_entry(
         "retained."
     )
     scope = ", ".join(str(n) for n in report["scope"]["n_values"])
+    # A standard-net row from a later reviewed source: the review that accepted that source.
+    later_source = (
+        f", and the crate source that ran, at {reviewed.commit}, by {reviewed.review}"
+        if reviewed.review not in (SOUNDNESS_REVIEW, ROUTE_REVIEW)
+        else ""
+    )
     lines = [
         f"  - id: {identifier}",
         "    claim: lower-bound",
@@ -961,7 +975,7 @@ def evidence_entry(
             + (
                 f", and lemma N0 and the declared-net change by {DECLARED_NET_REVIEW}"
                 if declared
-                else ""
+                else later_source
             )
             + f"; the certificate's mathematics read in {audit_record}; "
             + (

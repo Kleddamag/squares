@@ -860,7 +860,7 @@ sources:
     local: resources/web/wand125-mixed-bounds-afternoon-2026-10-02/
     source_key: '[wand125 mixed bounds afternoon 2026-10-02]'
     scope: {n_values: [83, 85, 86, 87, 88, 91, 92, 93, 96]}
-    reviewed: '2026-10-03'
+    reviewed: '2026-10-06'
     source_date: '2026-10-02'
     disposition: current-report
     replay_disposition: case-specific
@@ -868,16 +868,22 @@ sources:
     evidence:
       - E-n083-wand125-mixed-937-report
       - E-n083-wand125-mixed-937-source-replay
+      - E-n083-wand125-mixed-937-sqverify-fast-replay
       - E-n085-wand125-mixed-946-report
       - E-n085-wand125-mixed-946-source-replay
+      - E-n085-wand125-mixed-946-sqverify-fast-replay
       - E-n087-wand125-mixed-948-report
       - E-n087-wand125-mixed-948-source-replay
+      - E-n087-wand125-mixed-948-sqverify-fast-replay
       - E-n091-wand125-mixed-970-report
       - E-n091-wand125-mixed-970-source-replay
+      - E-n091-wand125-mixed-970-sqverify-fast-replay
       - E-n092-wand125-mixed-975-report
       - E-n092-wand125-mixed-975-source-replay
+      - E-n092-wand125-mixed-975-sqverify-fast-replay
       - E-n096-wand125-mixed-996-report
       - E-n096-wand125-mixed-996-source-replay
+      - E-n096-wand125-mixed-996-sqverify-fast-replay
     notes: >-
       Revision b00fc70f1904e9b1b567afee056d347f911209e8, retrieved at 2026-10-02T16:53Z for
       four comments of that afternoon on jlevy/squares#282. Six rectangle densities checked
@@ -890,7 +896,10 @@ sources:
       (T-071) and mixed_n92_L969 (T-069). On 2 and 3 October each passed a complete replay
       here, every direction returning the certificate's record, which put all six and the
       three counts they carry by mass in the verified lane; the proof-bundle tarballs are
-      pinned by digest and not retained. The source's improvement_lower at n = 83, 85 and 87
+      pinned by digest and not retained. sqverify-fast, this repository's clean-room measure
+      verifier, decided all six at all 201 net directions in its census of 3 October, and
+      two mutants of each were refused on 6 October: an independent second implementation
+      beside the source's checker, moving no rung. The source's improvement_lower at n = 83, 85 and 87
       is measured from a value below Green's (review finding AF-1), and at n = 96 the source
       calls Nagamochi's value unproven (AF-3). The same revision's rectangle rungs at n = 91
       and 93 are below these certificates there.
@@ -1054,42 +1063,61 @@ sources:
     url: https://github.com/wand125/square-packing-bounds/tree/8aa6a10b3b8f165d39c85b68982fed1de086516c
     local: resources/web/wand125-mixed-bounds-2026-10-04/
     source_key: '[wand125 mixed bounds 2026-10-04]'
-    scope: {n_values: [42, 43, 44, 51, 56, 57, 67, 69, 72, 75, 84, 86, 88, 93, 94, 95]}
-    reviewed: '2026-10-05'
+    scope: {n_values: [42, 43, 44, 51, 56, 57, 67, 69, 72, 75, 84, 86, 88, 93, 94, 95, 96]}
+    reviewed: '2026-10-06'
     source_date: '2026-10-04'
     disposition: current-report
     replay_disposition: case-specific
-    represented_by: [frontier/n-042.md, frontier/n-043.md, frontier/n-044.md, frontier/n-051.md, frontier/n-056.md, frontier/n-057.md, frontier/n-067.md, frontier/n-069.md, frontier/n-072.md, frontier/n-075.md, frontier/n-084.md, frontier/n-086.md, frontier/n-088.md, frontier/n-093.md, frontier/n-094.md, frontier/n-095.md]
+    represented_by: [frontier/n-042.md, frontier/n-043.md, frontier/n-044.md, frontier/n-051.md, frontier/n-056.md, frontier/n-057.md, frontier/n-067.md, frontier/n-069.md, frontier/n-072.md, frontier/n-075.md, frontier/n-084.md, frontier/n-086.md, frontier/n-088.md, frontier/n-093.md, frontier/n-094.md, frontier/n-095.md, frontier/n-096.md]
     evidence:
       - E-n042-wand125-mixed-68475-report
+      - E-n042-wand125-mixed-68475-sqverify-fast-replay
       - E-n043-wand125-mixed-69075-report
+      - E-n043-wand125-mixed-69075-sqverify-fast-replay
       - E-n044-wand125-mixed-69725-report
+      - E-n044-wand125-mixed-69725-sqverify-fast-replay
       - E-n051-wand125-mixed-747-report
+      - E-n051-wand125-mixed-747-sqverify-fast-replay
       - E-n056-wand125-mixed-78025-report
+      - E-n056-wand125-mixed-78025-sqverify-fast-replay
       - E-n057-wand125-mixed-78725-report
+      - E-n057-wand125-mixed-78725-sqverify-fast-replay
       - E-n067-wand125-mixed-8475-report
+      - E-n067-wand125-mixed-8475-sqverify-fast-replay
       - E-n069-wand125-mixed-862-report
+      - E-n069-wand125-mixed-862-sqverify-fast-replay
       - E-n072-wand125-mixed-876-report
+      - E-n072-wand125-mixed-876-sqverify-fast-replay
       - E-n075-wand125-mixed-894-report
+      - E-n075-wand125-mixed-894-sqverify-fast-replay
       - E-n084-wand125-mixed-94075-report
+      - E-n084-wand125-mixed-94075-sqverify-fast-replay
       - E-n086-wand125-mixed-9503-report
+      - E-n086-wand125-mixed-9503-sqverify-fast-replay
       - E-n088-wand125-mixed-96125-report
+      - E-n088-wand125-mixed-96125-sqverify-fast-replay
       - E-n093-wand125-mixed-988-report
+      - E-n093-wand125-mixed-988-sqverify-fast-replay
       - E-n094-wand125-mixed-994-report
+      - E-n094-wand125-mixed-994-sqverify-fast-replay
       - E-n095-wand125-mixed-9965-report
+      - E-n095-wand125-mixed-9965-sqverify-fast-replay
     notes: >-
       Revision 8aa6a10b3b8f165d39c85b68982fed1de086516c, retrieved at about 2026-10-04T07:21Z
       for 16 comments of 3 and 4 October on jlevy/squares#282. 16 rectangle densities checked
       at coverage one by the source's research copy of Tokoharu's verify.cpp, byte for byte
       the checker of its n = 50 certificate, each of mass n - 1/100000 and added by its own
-      commit, pinned together at the last. All 16 are recorded as reported lower bounds
+      commit, pinned together at the last. All 16 were recorded as reported lower bounds
       (T-090), each above what the record reported at its count; at n = 88 and 94 the
       source's certificates of later that day (T-091, the evening packet) are higher, and at
       n = 67 and 84 those of 5 October (T-094, the 2026-10-05 packet), and the case records
       report those. Nine supersede certificates this record holds: eight of
       T-082 and mixed_n84_L940 (T-071). The directories carry no completion-audit.json, so
       each tarball is bound by its digest at the pinned tree. The exact audit and the
-      replay's checks before its first angle pass on all 16; no angle was replayed, and the
+      replay's checks before its first angle pass on all 16. On 6 October sqverify-fast,
+      this repository's clean-room measure verifier, decided all 16 at all 201 net
+      directions, which put twelve of them and n = 96, which the n = 95 certificate carries
+      by mass, in the verified lane; the source's own checker was not run here, and the
       proof-bundle tarballs are pinned by digest and not retained. The packet also retains
       150939e9, which removed completion-audit.json from the 22 T-082 directories and
       mixed_n96_L996 (T-075), the source's answer to that review's findings OC-1 and OC-2.

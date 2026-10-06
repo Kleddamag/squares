@@ -305,7 +305,10 @@ and each certificate’s evidence entry `E-…-sqverify-fast-replay` states its 
 | `mixed_n91_L97625` | 86,035,506 | $1.0000000003586995$ (124) | 1,824 |
 | `mixed_n94_L995` | 99,167,366 | $1.000000000302789$ (108) | 2,801 |
 
-They took 6.0 CPU-hours in all, on a shared four-core host. The verifier
+They took 6.0 CPU-hours in all, on a shared four-core host. The two certificates this
+packet pins for the 4 October packet, `mixed_n69_L862` and `mixed_n86_L9503`, were
+decided the same way on 6 October from that packet’s copies
+([its replays](../wand125-mixed-bounds-2026-10-04/README.md#the-independent-replays)). The verifier
 was written without opening the source’s checker and shares no code with it, so these
 are independent decisions of coverage by the same method, not reproductions of the
 source’s records. The source’s checker remains unreplayed here; the range commands above

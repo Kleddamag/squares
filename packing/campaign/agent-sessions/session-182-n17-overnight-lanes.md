@@ -13,7 +13,8 @@ session:
   deadline_at: '2026-10-06T08:14:04Z'
   branch: claude/n17-session-182-overnight
   primary_bead: think-tmz6
-  status: in_progress
+  status: stopped
+  certification_pending: think-b8hb
   goal: >-
     Make as much measured progress on s(17) = S* as one night on this container allows:
     certified exclusions that lower the residue below 126,168 states in 15,953 orbits,
@@ -170,7 +171,7 @@ session:
       resource rollups withheld because they carry model identifiers (think-h8oz), and
       certified by the fast gate if it can run inside the reserve, otherwise pending
       under its own bead.
-    status: in_progress
+    status: stopped
     entered_by: planned_checkpoint
     switch_reason: >-
       The work deadline at the start of the finalization reserve, 07:14:04Z, ends the
@@ -190,10 +191,19 @@ session:
     fallback: >-
       Leave the session for the owner to close, with this phase's next_action naming
       what remains.
-    outcome: null
-    evidence: []
-    stop_reason: null
-    next_action: Close Session 182 before 08:14:04Z.
+    outcome: >-
+      exp-257's verdict is a0ff1cd9f, pushed. The session closes stopped, its resource
+      rollups withheld because they carry model identifiers (think-h8oz), its
+      certification pending under think-b8hb.
+    evidence:
+    - packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-257-h275-n17-unsampled-strata.md
+    - packing/campaign/session-close-report.yaml
+    stop_reason: >-
+      The session closes before its deadline; the owner adds the resource rollups
+      (think-h8oz).
+    next_action: >-
+      The owner adds the rollups (think-h8oz) and certifies the handover (think-b8hb);
+      the coordinator commissions exp-257's W2 review.
   budget:
     wall_minutes: 1440
     slice_minutes: 30
@@ -215,7 +225,10 @@ session:
       126,168 states in 15,953 orbits certified (W7, A, SW9 and N1 admitted); H-264
       without a ready registration; the adaptive-row recipe that closed SW9 never run
       on the mixed arity-7 flags.
-    after: null
+    after: >-
+      36,800 states in 4,687 orbits certified, the endpoint surviving, under 56 admitted
+      entries; H-267 confirmed at 8,191 orbits under the entries of arity at most seven;
+      H-264 and H-274 accepted, H-275 accepted pending its W2 review, H-273 unresolved.
   delegations:
   - task: >-
       W3 status review of X-048 on the stack top (the draft addition, a phase-1 report
@@ -422,10 +435,40 @@ session:
     survey_n17_residue --flag-set arity8 --sample 12 --seed 182 --strata-only: the
     endpoint control plus 12 draws, 2 at distance 2, 7 at 4 and 3 at 6 (draw only, no
     search).
-  stop_reason: null
+  stop_reason: >-
+    The deadline: the overnight run ended at the finalization reserve with exp-257's
+    verdict, and the session closes stopped because its resource rollups are withheld
+    (they carry model identifiers; think-h8oz) and its certification is pending
+    (think-b8hb).
   next_action: >-
-    Run BC-423's and BC-424's queues, lane E and the branch-and-bound queue from the run
-    worktrees, and admit each closure its control releases.
+    Certify the handover (think-b8hb), then BC-418 continues under think-tmz6: the
+    owner's decisions recorded here come first (the resource rollups that
+    resource_usage_unmeasured names, lane K's target 2 with the two held re-runs, the
+    branch-and-bound recalibration and #360's merge), and exp-257 awaits its W2 review.
+  ended_at: '2026-10-06T07:21:24Z'
+  resource_rollups: []
+  resource_usage_unmeasured:
+    reason: rollup_withheld_model_identifiers
+    detail: >-
+      Measured, not committed: the harness and sub-agent logs exist, but every rollup
+      this repository's contract writes is keyed by model identifier, which this
+      session's agents may not commit. The owner can add the rollups with close_session
+      --update. The logs, on the run container under
+      /root/.claude/projects/-home-user-squares/: the harness log
+      6b1ed85f-ba08-5540-8095-4fd66881916f.jsonl, from 2026-10-04T05:54Z to the close,
+      so it also spans work before this session; and the 15 sub-agent logs started at or
+      after 2026-10-05T08:13:53Z under its subagents/ folder
+      (agent-a0b0e4ddf405acc39.jsonl, agent-a3ad468c1d0eaa494.jsonl,
+      agent-a4c8fa035f1ffcdfe.jsonl, agent-a53bf696b86d675e4.jsonl,
+      agent-a5876044abe43c05d.jsonl, agent-a76f70717495baf45.jsonl,
+      agent-a819f6f47909bde6a.jsonl, agent-a9984cf91e54e97ec.jsonl,
+      agent-aa7f27534be946dec.jsonl, agent-ab2288a20d80178d9.jsonl,
+      agent-ab708fe86a4d2a573.jsonl, agent-ac87a45cbae726fa6.jsonl,
+      agent-acf4d10a9500316cf.jsonl, agent-af38a7dfb4a15a2aa.jsonl,
+      agent-af521cc6fd2b8c3aa.jsonl). Excluded: agent-af4f5ec641151fc81.jsonl and
+      agent-ab6ed7d52f8584026.jsonl, started at 2026-10-05T04:46Z, before the session.
+    disposition_bead: think-h8oz
+    handoff_role: work_handoff
 ---
 # Session 182: n17 Overnight Lanes
 
@@ -954,6 +997,16 @@ consequence in each.
   u29 closed at the end, with its standing verification still running at the verdict, so
   it is not counted. The certified census stands at 36,800 states in 4,687 orbits, the
   endpoint surviving.
+- **The session closes stopped at 2026-10-06T07:21:24Z**, before its deadline.
+  Its resource rollups are withheld because every rollup the contract writes keys turns
+  by model identifier, which this session’s agents may not commit
+  (resource_usage_unmeasured, `think-h8oz`): the coordinator’s harness log and the 15
+  sub-agent logs started during the session exist on the run container, named in the
+  record, for the owner’s `close_session --update`. Certification is pending under
+  `think-b8hb`: a timed `packing-validate --fast` trial at `fc9774dcb`, with both kernel
+  workers running, had not finished when its 900 s timeout stopped it, against the
+  tier’s 600 s ceiling, so no qualifying gate fit the finalization reserve.
+  The Current Handoff in SYNOPSIS now starts from this session.
 
 <!-- This document follows common-doc-guidelines.md.
 See github.com/jlevy/practical-prose and review guidelines before editing.

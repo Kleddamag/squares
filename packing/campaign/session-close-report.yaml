@@ -3155,11 +3155,11 @@ sessions:
     snapshot_incomplete: true
 - id: session-182
   title: "n17 Overnight Lanes"
-  status: in_progress
+  status: stopped
   primary_bead: think-tmz6
   phases: 4
   measured: false
   unmeasured_reason: >-
-    declares no resource measurement
+    native harness data unavailable; Measured, not committed: the harness and sub-agent logs exist, but every rollup this repository's contract writes is keyed by model identifier, which this session's agents may not commit. The owner can add the rollups with close_session --update. The logs, on the run container under /root/.claude/projects/-home-user-squares/: the harness log 6b1ed85f-ba08-5540-8095-4fd66881916f.jsonl, from 2026-10-04T05:54Z to the close, so it also spans work before this session; and the 15 sub-agent logs started at or after 2026-10-05T08:13:53Z under its subagents/ folder (agent-a0b0e4ddf405acc39.jsonl, agent-a3ad468c1d0eaa494.jsonl, agent-a4c8fa035f1ffcdfe.jsonl, agent-a53bf696b86d675e4.jsonl, agent-a5876044abe43c05d.jsonl, agent-a76f70717495baf45.jsonl, agent-a819f6f47909bde6a.jsonl, agent-a9984cf91e54e97ec.jsonl, agent-aa7f27534be946dec.jsonl, agent-ab2288a20d80178d9.jsonl, agent-ab708fe86a4d2a573.jsonl, agent-ac87a45cbae726fa6.jsonl, agent-acf4d10a9500316cf.jsonl, agent-af38a7dfb4a15a2aa.jsonl, agent-af521cc6fd2b8c3aa.jsonl). Excluded: agent-af4f5ec641151fc81.jsonl and agent-ab6ed7d52f8584026.jsonl, started at 2026-10-05T04:46Z, before the session.
   rollups: []
   codex_receipts: []

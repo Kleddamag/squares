@@ -297,7 +297,7 @@ hypothesis status and summarizes experiment verdicts, and the
 | --- | ---: | --- |
 | Agendas | 39 | 19 active; 14 completed; 5 paused; 1 superseded |
 | Commitments | 417 | 218 complete; 65 stopped; 70 blocked; 25 ready; 21 tentative; 18 in progress |
-| Sessions | 180 | 105 completed; 74 stopped; 1 nonterminal |
+| Sessions | 180 | 105 completed; 75 stopped; all terminal |
 | Explorations | 47 | 28 linked to proposed hypotheses; 19 uncodified |
 | Hypotheses | 209 | 45 confirmed; 33 refuted; 63 blocked; 19 unresolved; 9 open; 35 open questions; 2 result registered; 2 abandoned; 0 running; 1 exhausted |
 | Experiments | 186 | 62 accepted; 38 rejected; 58 unresolved; 12 baseline; 11 blocked; 4 abandoned; 0 in progress; 1 exhausted |
@@ -1514,6 +1514,32 @@ controller, not permission to blur contracts.
 
 ### Current Handoff
 
+[Session 182](packing/campaign/agent-sessions/session-182-n17-overnight-lanes.md) ran
+BC-418’s n17 overnight lanes from the clean run worktree at `cebb5d15a`, admitting each
+closure on the standing kernel verifier’s full pass.
+It stopped at its deadline, its resource rollups withheld because they carry model
+identifiers (`think-h8oz`) and its certification pending (`think-b8hb`).
+
+- **Certified residue.** 126,168 states in 15,953 orbits fell to 36,800 states in 4,687
+  orbits under 56 admitted entries, the endpoint surviving.
+- **Accepted.** H-267 is confirmed: the entries of arity at most seven leave 8,191
+  orbits
+  ([exp-251](packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-251-h267-n17-overnight-flag-certification.md)).
+  H-264 and H-274 are accepted
+  ([exp-252](packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-252-h264-n17-overnight-per-state-price.md),
+  [exp-253](packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-253-h274-n17-stalls-under-adaptive-rows.md)).
+  Each of the three was confirmed with corrections by its W2 review.
+  H-275 is accepted and awaits its W2 review: 24 of 27 counted draws closed
+  ([exp-257](packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-257-h275-n17-unsampled-strata.md)).
+- **Unresolved.** H-273: all 95 distance-2 orbits were searched and none placed
+  ([exp-255](packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-255-h273-n17-distance-two-survey.md)).
+  [exp-254](packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-254-h267-n17-second-tranche-flags.md)
+  is unresolved for H-267; its eight arity-8 closures count in the census.
+- **Held for the owner.** Lane K’s target 2 and BC-426’s two re-runs, closed and
+  verified in full but held on BC-423’s control receipt; the branch-and-bound queue,
+  stopped as miscalibrated; #360’s merge.
+
+Before it,
 [Session 167](packing/campaign/agent-sessions/session-167-n17-parallel-lanes-after-route-review.md)
 merged PR 283 onto current main and ran BC-406’s lanes, plus the follow-ups their
 results selected.
@@ -1545,13 +1571,14 @@ run.
 No bound, frontier field or open status changed.
 
 **Selected next entry:** `think-tmz6`, the BC-418 coordinator, continuing.
-Its first decision is the capture route.
-Lane R9 reads capture pilot 2’s met falsifier and either names another producer limit
-for a third pilot, or confirms that n11’s capture architecture is wrong for n17. In the
-second case the widened projection theorem needs a hypothesis and a bead.
-Beside it, H-264’s pilot runs 10 to 20 residue states to price the per-state method
-(`think-e17c`). That decides whether certifying the 87 flags that survive the selector’s
-finish-stage recheck is worth it (`think-j6qy`).
+Its first decisions are the owner’s: whether BC-423’s endpoint7 control re-check
+(PASS_SAVED_STALL, cells and node matching) releases k2 and BC-426’s two closures;
+recalibrating the branch-and-bound queue; and publishing the certificate objects
+(`think-jhgi`, which needs uploads.github.com).
+The research step after that is BC-423’s recipe (48 rounds, 2,304 rows, octagon core) on
+the kept cap-stall nodes of BC-425 and BC-427, once its control is ruled on, followed by
+lane D’s aimed splits (C2). The capture route (lane R9) waits on the hull-vertex
+compression-pull repair (`think-juy9`).
 
 Session 168 ran BC-418’s lanes.
 Its record is not yet written and will take session-181 (`think-wcqs`). Hosted

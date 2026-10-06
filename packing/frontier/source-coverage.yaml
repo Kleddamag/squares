@@ -3,7 +3,7 @@ softschema:
   schema: source-coverage.schema.yaml
   status: enforced
 
-last_reviewed: '2026-10-05'
+last_reviewed: '2026-10-06'
 coverage_scope: >
   Current public upper-bound catalogues and first-party result releases known to this
   project, the Schadt n=29 witness-contract regression source, and the September 2026
@@ -36,6 +36,28 @@ sources:
       explicitly says its sanitized public derivative has no fresh full geometric
       replay. No verified frontier value changes on intake. This is distinct from
       Kleddamag's T-037 lower bound and wand125's T-059 row-minimum equality.
+  - id: queuingtheorydotcom-11squaresformalized-2026-10-06
+    title: Lean 4 formalization of the eleven-square optimality proof
+    role: source-repository
+    url: https://github.com/Queuingtheorydotcom/11SquaresFormalized/tree/cdc746ed907d258057c283aeb6d077cb2c27e349
+    local: resources/web/queuingtheorydotcom-n11-lean-2026-10-06/
+    source_key: '[Queuingtheorydotcom 11SquaresFormalized 2026]'
+    scope: {n_values: [11]}
+    reviewed: '2026-10-06'
+    source_date: '2026-10-06'
+    disposition: current-report
+    replay_disposition: case-specific
+    represented_by: [frontier/evidence.yaml]
+    evidence: [E-n011-lean-formalization-run]
+    notes: >-
+      Revision cdc746ed907d258057c283aeb6d077cb2c27e349, retrieved at 2026-10-06T18:41Z
+      (bead think-8spq). ElevenSquare.optimality states s(11) = T for T-060's exact T; the
+      source's complete build and final axiom audit passed in EvolvingPrograms run
+      37414883750, trusting Lean's compiler for 13,308 native_decide axioms. Its final
+      audit is pinned by SHA-256 and its per-module SHA-256 map matched all 7,920 modules
+      of the commit's archive here. Recorded as external proof-assistant evidence on
+      T-060, which moves no rung; the full build was not repeated here, and no human
+      formalization review is retained.
   - id: evand-square-packing-2026
     title: square-packing, exact weighted certificates and zero-margin closed covers
     role: source-repository

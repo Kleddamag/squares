@@ -8,8 +8,8 @@ ours, which rest on someone else's argument, and how far each has been checked.
 
 ## The short version
 
-- **387** evidence records. **245** are formal; **238** of those were established here.
-- **134** rest on an argument made elsewhere, of which **7** have been read by nobody here.
+- **388** evidence records. **246** are formal; **238** of those were established here.
+- **135** rest on an argument made elsewhere, of which **7** have been read by nobody here.
 - **1** formal record proves a theorem only under a hypothesis nothing here has replayed, and is verified as that implication alone: `E-k2m4-evand-bentz4-lean-build` (ValidTilt9).
 - **40** claim to be first established here. **14** make no novelty statement at all - not assessed, which is not the same as not novel.
 
@@ -37,6 +37,7 @@ results, it is a statement about what this repository has itself examined.
 | `E-k2m3-evand-bentz-lean-build` | 10 | exact-value, conditional on Valid7, discharged by `E-k2m3-evand-valid7-qx2-replay` and `E-k2m3-wand125-valid7-independent` | verified | its theorem, against a named kernel | here | - | previously-published | producer’s code | `V-evand-lean` |
 | `E-n011-global-optimality-report` | 1 | lower-bound | reported | - | elsewhere | defect-found | previously-published | no code | `V-queuingtheory-n11-verify` |
 | `E-n011-global-optimality-independent` | 1 | exact-value | verified | equalities and inequalities, no tolerance | here | informally-verified | previously-published | shared components | `V-n11-optimality-checkers`, `V-check-n11-final-composition` |
+| `E-n011-lean-formalization-run` | 0 | exact-value | verified | its theorem, against a named kernel | elsewhere | - | previously-published | producer’s code | `V-queuingtheory-n11-lean` |
 | `E-wand125-tools-ceiling-report` | 0 | derived-structure | reported | - | elsewhere | defect-found | previously-published | no code | `V-wand125-tools` |
 | `E-wand125-tools-ceiling-certificates` | 0 | derived-structure | verified | equalities and inequalities, no tolerance | here | - | previously-published | independent | `V-rectangle-ceiling` |
 | `E-wand125-tools-n11-row-report` | 0 | derived-structure | reported | - | elsewhere | defect-found | previously-published | independent | `V-wand125-tools` |
@@ -413,10 +414,10 @@ results, it is a statement about what this repository has itself examined.
 
 ## What the register rests on
 
-- **assurance**: numerically-checked 4, reported 138, verified 245
-- **method**: exact-algebraic 101, interval-certified 130, numerical-multiprecision 4, proof-assistant-checked 4, proof-audited 3, published-proof 7, reported 138
-- **novelty**: apparently-novel 40, common-knowledge 4, not assessed 14, previously-published 329
-- **relationship to the producer's code**: generator 5, independent-implementation 131, not-applicable 20, same-implementation 218, shared-components 7, unknown-historical 6
+- **assurance**: numerically-checked 4, reported 138, verified 246
+- **method**: exact-algebraic 101, interval-certified 130, numerical-multiprecision 4, proof-assistant-checked 5, proof-audited 3, published-proof 7, reported 138
+- **novelty**: apparently-novel 40, common-knowledge 4, not assessed 14, previously-published 330
+- **relationship to the producer's code**: generator 5, independent-implementation 131, not-applicable 20, same-implementation 219, shared-components 7, unknown-historical 6
 
 The `cases` column is how many frontier records cite each piece of evidence, and it is the reason to read this table rather than count records. Ranked below are the *formal* records only: a `reported` record cited across the frontier may be a shared catalogue and is labelled as such, which is the register working rather than risk. The risk is a verified claim resting on an argument nobody has examined.
 

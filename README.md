@@ -39,6 +39,13 @@ The [case record](packing/frontier/n-011.md),
 [review](docs/project/reviews/review-2026-09-29-n11-optimality.md), and
 [retained packet](packing/resources/web/n11-optimality-2026-09-29/README.md) state what
 the confirmation depends on and the reproducibility defects found in the source.
+On 6 October 2026 the proof was announced as formalized in Lean 4 “thanks to Astra and
+Claude”, in
+[11SquaresFormalized](https://github.com/Queuingtheorydotcom/11SquaresFormalized) by
+Queuingtheorydotcom and contributors: its theorem states exactly $s(11) = T$, and its
+source’s complete build passed, trusting Lean’s compiler for its numerical certificates.
+It is recorded on T-060 as the source’s evidence and awaits a human expert’s review of
+the formalization.
 
 **The results live on the project site,
 [Square Packing](https://jlevy.github.io/squares/).** It carries the

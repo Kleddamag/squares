@@ -1,0 +1,56 @@
+def ElevenSquare.Optimality : Prop :=
+Packable 11 T ∧ ∀ (S : ℝ), Packable 11 S → T ≤ S
+def ElevenSquare.T : ℝ :=
+(6 * u + 4) / (1 + 2 * u - u ^ 2)
+def ElevenSquare.u : ℝ :=
+Classical.choose endpoint_root_exists
+def ElevenSquare.endpointPolynomial : ℝ → ℝ :=
+fun x => 5 * x ^ 8 - 10 * x ^ 7 - 2 * x ^ 6 + 14 * x ^ 5 + 12 * x ^ 4 - 6 * x ^ 3 + 2 * x ^ 2 + 2 * x - 1
+@[reducible] def ElevenSquare.Point : Type :=
+ℝ × ℝ
+def ElevenSquare.dot : Point → Point → ℝ :=
+fun p q => p.1 * q.1 + p.2 * q.2
+def ElevenSquare.normSq : Point → ℝ :=
+fun p => dot p p
+def ElevenSquare.perp : Point → Point :=
+fun p => (-p.2, p.1)
+structure ElevenSquare.UnitSquare : Type
+number of parameters: 0
+fields:
+  ElevenSquare.UnitSquare.center : Point
+  ElevenSquare.UnitSquare.axis : Point
+  ElevenSquare.UnitSquare.axis_unit : normSq self.axis = 1
+constructor:
+  ElevenSquare.UnitSquare.mk (center axis : Point) (axis_unit : normSq axis = 1) : UnitSquare
+def ElevenSquare.localX : UnitSquare → Point → ℝ :=
+fun q p => dot (p - q.center) q.axis
+def ElevenSquare.localY : UnitSquare → Point → ℝ :=
+fun q p => dot (p - q.center) (perp q.axis)
+def ElevenSquare.ClosedSquare : UnitSquare → Point → Prop :=
+fun q p => |localX q p| ≤ 1 / 2 ∧ |localY q p| ≤ 1 / 2
+def ElevenSquare.OpenSquare : UnitSquare → Point → Prop :=
+fun q p => |localX q p| < 1 / 2 ∧ |localY q p| < 1 / 2
+def ElevenSquare.InContainer : ℝ → Point → Prop :=
+fun S p => 0 ≤ p.1 ∧ p.1 ≤ S ∧ 0 ≤ p.2 ∧ p.2 ≤ S
+structure ElevenSquare.Packing (n : ℕ) (S : ℝ) : Type
+number of parameters: 2
+fields:
+  ElevenSquare.Packing.squares : Fin n → UnitSquare
+  ElevenSquare.Packing.side_nonneg : 0 ≤ S
+  ElevenSquare.Packing.contained : ∀ (i : Fin n) (p : Point), ClosedSquare (self.squares i) p → InContainer S p
+  ElevenSquare.Packing.interior_disjoint : ∀ (i j : Fin n),
+      i ≠ j → ∀ (p : Point), ¬(OpenSquare (self.squares i) p ∧ OpenSquare (self.squares j) p)
+constructor:
+  ElevenSquare.Packing.mk {n : ℕ} {S : ℝ} (squares : Fin n → UnitSquare) (side_nonneg : 0 ≤ S)
+    (contained : ∀ (i : Fin n) (p : Point), ClosedSquare (squares i) p → InContainer S p)
+    (interior_disjoint :
+      ∀ (i j : Fin n), i ≠ j → ∀ (p : Point), ¬(OpenSquare (squares i) p ∧ OpenSquare (squares j) p)) :
+    Packing n S
+def ElevenSquare.Packable : ℕ → ℝ → Prop :=
+fun n S => Nonempty (Packing n S)
+'ElevenSquare.construction_packable' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ElevenSquare.optimality_of_lower_bound' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ElevenSquare.u_unique' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ElevenSquare.T_lt_U' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ElevenSquare.improvement_within_cover' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ElevenSquare.packing_has_canonical_mask' depends on axioms: [propext, Classical.choice, Quot.sound]

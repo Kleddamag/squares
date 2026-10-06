@@ -26,7 +26,7 @@ packet pins them by digest only.
 | Retrieved | 2026-09-28T23:46:11Z, a full clone whose `main` was this revision |
 | Author | wand125, building on Tokoharu’s solver and interval verifier; the source README says parts of the work were produced with AI assistance under human direction |
 | Licence | MIT, byte-identical to the September 27 packet’s [`LICENSE`](../wand125-rectangle-certificates-2026-09-27/wand125-rectangles/LICENSE) |
-| Tags, submodules, Git LFS | none; the releases page was not reachable from the retrieving session, and the September 27 retrieval found no releases |
+| Tags, submodules, Git LFS | none; the releases page was not reachable from the retrieving session, and the September 27 retrieval found no releases. On 2026-10-05 the GitHub API listed no release and no tag |
 | Upstream tree | 2,295 files, 804 MB, each pinned by SHA-256 in [`acquisition/upstream-tree.sha256`](acquisition/upstream-tree.sha256) |
 | Retained here | 153 files under [`wand125-rectangles/`](wand125-rectangles/), byte-identical to the pinned tree after decompression ([Compressed Files](#compressed-files)) |
 | Read from the September 27 packet | 55 files, byte-identical to the pinned tree |

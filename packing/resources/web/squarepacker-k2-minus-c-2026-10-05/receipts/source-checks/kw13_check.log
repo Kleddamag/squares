@@ -1,0 +1,30 @@
+# command: nice -n 10 /tmp/claude-0/-home-user-squares/1fb2d4ab-96d0-5b24-9e36-157598bdbf06/scratchpad/k2c/consts-venv/bin/python kw13_check.py
+# cwd: code/ of squarepacker/k2-minus-c 25f645e8
+# python3: CPython 3.12.3 (/usr/bin/python3.12) in a scratch venv: mpmath 1.4.1, numpy 2.5.3, python-flint 0.9.0 (the versions the preprint names)
+# host: 4 cores; load 17.90 16.03 11.38; started 2026-10-05T17:36:32Z
+OK  [d=0.0001] 2 R5 < 1.008 (|c1-c3| in [1, 2R5])   [1.00791884145]
+OK  [d=0.0001] psi_max = arcsin(R5 sin(pi - gamma(5,5))) < 7.2 deg   [7.18688049392]
+OK  [d=0.0001] f convex in r1 for r2 >= 1 (coefficient (r2^2-1)/(2 r2) >= 0) -> corners; sep3 > 44.99 deg   [44.9942297316]
+OK  [d=0.0001] side-foot separation arccos(c0) > sep3
+OK  [d=0.0001] each remaining arc has length < 90 + psi - sep3 < 2 gamma0 (so <= 2 points per arc)   [52.1926507623]
+OK  [d=0.0001] gamma(5,5) > 165 deg   [165.626239012]
+OK  [d=1.0e-5] 2 R5 < 1.008 (|c1-c3| in [1, 2R5])   [1.00790661892]
+OK  [d=1.0e-5] psi_max = arcsin(R5 sin(pi - gamma(5,5))) < 7.2 deg   [7.18136829447]
+OK  [d=1.0e-5] f convex in r1 for r2 >= 1 (coefficient (r2^2-1)/(2 r2) >= 0) -> corners; sep3 > 44.99 deg   [44.9978243222]
+OK  [d=1.0e-5] side-foot separation arccos(c0) > sep3
+OK  [d=1.0e-5] each remaining arc has length < 90 + psi - sep3 < 2 gamma0 (so <= 2 points per arc)   [52.1835439723]
+OK  [d=1.0e-5] gamma(5,5) > 165 deg   [165.637263411]
+ALL OK (lem:Kw refinement)
+A = 12.747567905333820075800673973567915325782416038873
+OK  A < 12.7476   [12.7475679053]
+bracket = 36.079509294033447736540532043144531566242797546546
+OK  bracket < 36.081   [36.079509294]
+OK  0.99996*1.386089 - 1.00002 > 0.386
+OK  limit 0.99996/36.081 > 0.0277 > 0.027   [0.0277143094704]
+OK  small k: log k < 36.842 and 0.027*36.842 < 0.995 < 1   [0.994734]
+F > 1 for log k > 35.696427857114284571382855314212568502740109604384  ; 1/Lc = 0.028014007564084605687071018349908950833450063034038
+OK  F(k2) > 1 (Lc < log k2): kappa(2) is limited by 1/log k2 = 0.027143... > 0.027   [0.027143405119]
+rate c=4: log k > 143.94375775031001240049601984079363174526981079243
+limit sqrt(Q/Kw)/(4 sqrt2) = 0.027735009811261456100917086672849968817317665952656
+ALL OK
+# finished 2026-10-05T17:36:34Z; exit 0; wall 1.471 s; CPU 0.4 s (user 0.355 + sys 0.081); load 17.90 16.03 11.38

@@ -158,9 +158,12 @@ def test_a_record_reporting_another_source_owes_the_catalogue_nothing() -> None:
 
 
 def test_the_catalogue_records_quote_their_statements_and_the_check_sees_a_drop() -> None:
-    """n = 126 and 179 carry the catalogue's statements; without them the check fails."""
+    """n = 69 and 179 carry the catalogue's statements; without them the check fails.
+    n = 126 still quotes the catalogue's statement, but since 6 October its reported bound
+    cites Evan Daniel's exact optimum (T-098) rather than the catalogue, and the check
+    holds only records whose reported bound is the catalogue's."""
     entries = assistance.record_catalogue_entries()
-    for n in (126, 179):
+    for n in (69, 179):
         text = (assistance.FRONTIER / f"n-{n:03d}.md").read_text(encoding="utf-8")
         assert assistance.catalogue_owed(text, entries) == ()
         start = text.index("In the catalogue’s words:")

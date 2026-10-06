@@ -8,6 +8,7 @@ from fractions import Fraction
 
 import pytest
 
+from devtools import apply_exact_optima as exact_optima
 from devtools import apply_upper_bound_packets as apply
 from devtools import upper_bound_packets as packets
 from devtools.check_case_prose import Reading
@@ -115,6 +116,12 @@ def test_the_records_are_what_the_apply_tool_writes() -> None:
 
 
 def test_a_case_trails_its_report_exactly_where_the_certificate_does() -> None:
+    """Where a packet's certificate trails its printed side the record says so, except at
+    the counts whose packing Evan Daniel solved exactly (T-098), which every trailing
+    count is: there both lanes hold the exact optimum, and the trailing goes with the
+    printed side it was about."""
+    exact = set(exact_optima.certificates.IMPROVING)
+    assert exact >= TRAILING
     for plan in apply.plans():
         case = safe_load(
             (apply.FRONTIER / f"n-{plan.n:03d}.md")
@@ -124,12 +131,20 @@ def test_a_case_trails_its_report_exactly_where_the_certificate_does() -> None:
         agrees = bounds_agree_at_declared_precision(
             case["reported_upper_bound"], case["verified_upper_bound"]
         )
+        kinds = {conflict["kind"] for conflict in case["conflicts"]}
+        if plan.n in exact:
+            assert agrees, plan.n
+            assert case["verified_upper_bound"]["evidence"] == [
+                exact_optima.EXACT_REPLAY,
+                exact_optima.SOURCE_REPLAY,
+            ]
+            assert "replay-failure" not in kinds, plan.n
+            continue
         assert agrees == (plan.n not in TRAILING), plan.n
         assert case["verified_upper_bound"]["evidence"] == [
             plan.registration.replay,
             plan.registration.interval_replay,
         ]
-        kinds = {conflict["kind"] for conflict in case["conflicts"]}
         assert ("replay-failure" in kinds) == (plan.n in TRAILING), plan.n
 
 
@@ -241,8 +256,11 @@ def test_a_later_registration_takes_a_count_and_keeps_the_earlier_packing() -> N
         text = (apply.FRONTIER / f"n-{plan.n:03d}.md").read_text(encoding="utf-8")
         _, front, body = text.split("---\n", 2)
         case = safe_load(front)["packing"]
-        assert case["reported_upper_bound"]["value"] == plan.side, plan.n
-        assert case["verified_upper_bound"]["value"] == plan.verified, plan.n
+        # All seven are among Evan Daniel's exact optima (T-098), so both lanes hold
+        # that side; the October packing stays the one the body describes.
+        assert case["reported_upper_bound"]["value"] == exact_optima.side_text(plan.n)
+        assert case["verified_upper_bound"]["value"] == exact_optima.side_text(plan.n)
+        assert plan.registration.replay in case["evidence"], plan.n
         assert earlier.registration.replay in case["evidence"], plan.n
         flat = " ".join(Reading.of(body).text.split())
         assert f"It replaces his packing of side `{earlier.side}`" in flat, plan.n

@@ -1,0 +1,148 @@
+# command: nice -n 10 /tmp/claude-0/-home-user-squares/1fb2d4ab-96d0-5b24-9e36-157598bdbf06/scratchpad/k2c/consts-venv/bin/python verify_v10.py
+# cwd: code/ of squarepacker/k2-minus-c 25f645e8 with data/kw9_data.zip's 13 *_final_leaves.jsonl and this replay's verify2 outputs beside it
+# python3: CPython 3.12.3 (/usr/bin/python3.12) in a scratch venv: mpmath 1.4.1, numpy 2.5.3, python-flint 0.9.0 (the versions the preprint names)
+# host: 4 cores; load 13.24 12.86 12.96; started 2026-10-05T19:51:03Z
+OK  ramp integral at a=1.0e-7: 2*int = sin a cos a
+OK  ramp integral at a=0.1: 2*int = sin a cos a
+OK  ramp integral at a=0.5: 2*int = sin a cos a
+OK  ramp integral at a=0.785: 2*int = sin a cos a
+OK  p - sin cos = 1-(p-1)^2/2 >= 0.91 on [1,sqrt2]   [0.914213562373]
+OK  section >= min(2u,1) on grid (psi,u<=3/4)   [0.0]
+OK  eps1 = d+theta1 <= 2e-5
+OK  wall case: eps0 > eps1, eps0 > theta, (1-2eps0)^2 > Q*
+OK  level and section formulas (random parameters, eps1<=2e-5)   [2.35098870164e-38]
+OK  D(0.344) < 0.19   [0.189838640909]
+   h_c = 0.5960716379833215231128054143996818281133
+OK  max(chi(0.344), chi(1.00002)) + 2.2 eps1 < 0.29295   [0.292944289987]
+OK  h/rho + 3 eps < 3/4 for h <= 1+eps
+OK  D(1+eps)+3eps <= 0.51
+OK  all candidate minima > 0.3237 at chi*=0.29295   [0.323779966944]
+OK  brute-force min Xi > 0.3237 (grid)   [0.3237802525]
+OK  beta1 = 3 gamma* <= 8.5e-5   [8.49e-5]
+OK  0.3237 - 2.04 beta1 > 0.3235
+OK  0.3235 - 4 eps0 > Q* = 0.32
+OK  (f) capped upper case: < 1.1 eps1 (sampled)   [0.825551532558]
+OK  (f) capped lower case: < 1.8 eps1 (sampled)   [0.825549878207]
+OK  1.8 eps1 < eps0
+OK  D<0.19 implies zeta < 0.19+3eps <= 0.1906
+OK  (1-0.3812)^2 > 0.38
+OK  theta/6.26: 0.32*(2-1e-5)/4 >= 1/6.26
+OK  (e) (1+h)/(2rho_h) <= 0.71 on [0,1] (grid; derivative (1-h)/rho^3 >= 0 so max at h=1)
+OK  (e) 0.71 eps1 + 1.5*1.415 eps1 <= 3 eps1
+OK  (g) D(h)<0.19 branch: 0.38 - 4 eps0 > Q*
+OK  (g) z,z' <= D(1+eps1) + 3 eps1 <= 0.51
+OK  rho_h <= 1.415 for h <= 1+eps1   [1.41422770458]
+OK  rho_h/h <= sqrt2 for h > 1 (sqrt(1+1/h^2) decreasing)
+OK  sigma_theta >= 1 - theta and (w - 1/w)/2 <= theta (grid in theta <= 1e-5)
+OK  chi_u, chi_l <= chi(h) + (sqrt2 + rho_max/2) eps1 <= chi(h) + 2.2 eps1   [2.12132741466]
+OK  capped upper: h(h-1)/(2rho) + (rho/2)(l-1/2) <= 1.1 eps1 (analytic)   [1.06067077836]
+OK  capped lower: ... + (1-sigma)(1+h)/(2rho) <= 1.8 eps1 (analytic)   [1.41422416896]
+OK  tau >= 1/2 - D_u > -0.02   [-6.70709971015e-5]
+OK  t(V3') <= -0.6 on [0.344, 1+eps1] ((1+h)/rho_h minimal at 0.344 there)
+OK  Gamma_* <= rho_h + rho_h(l - 1/2) < 2   [1.41425598913]
+OK  tau_* > 0 on [0.344, 1+eps1]: sigma(1+h)/(2 rho_h) > 1/2 at h = 0.344
+OK  Fodor R12 = 1.5148...   [1.51480096506]
+OK  R0(1e-4) < 1.5001 < R12   [1.50009428127]
+OK  wall centre radius < R0
+OK  c = d + sqrt2/2 - 1/2 < 0.20721   [0.207206781187]
+OK  area(D0) < 4.155   [4.15441291519]
+OK  perimeter(D0) < 8.1   [8.0998574151]
+OK  Oler bound 2/sqrt3*4.155 + 8.1/2 + 1 < 9.85 (so <= 9 centres)   [9.84778073697]
+OK  area formula vs numerical integration   [4.15441289723]
+OK  sanity: Oler for a circumscribed 3000-gon < 9.85   [9.84703229554]
+OK  K = max(3*11-6, 3*10-6) = 27
+OK  p within 1.58 of a side; 2*1.58 = 3.16 < 4   [1.57331383655]
+OK  12 Lambda/pi + 4 < 10   [9.40227986881]
+OK  count(a) Steiner: (3*Lam + pi)*4/pi = 12 Lam/pi + 4 < 10, wall: (3(d+sqrt2/2) + pi/2)*4/pi < 5
+OK  wall: 12(d+sqrt2/2)/pi + 2 < 5
+OK  theta1(2-theta1)/40 >= Q* thmax(2-thmax)/4 (thmax<=3e-6)
+OK  column: theta1(2-theta1)/40 >= Q* bbar(2-bbar)/4 (bbar<=1.5e-6)
+OK  d' = thmax <= 3e-6 <= 1e-5 (Prop 4.5 applies)
+OK  [d=0.0001] rho1 = max(...) < 0.8662 < 1   [0.866107055367]
+OK  [d=0.0001] max over corners of f is f(Lam,Lam) = 1 - 1/(2 Lam^2)
+OK  [d=0.0001] grid max of f on [1,Lam]^2 <= f(Lam,Lam)   [0.750035351589]
+OK  [d=0.0001] side-foot separation arccos(c0) > gamma0   [78.0412874881]
+OK  [d=0.0001] D(r) <= 5 for r > 1/2 (2 arcsin(1/(2r)) < pi < 5 gamma0)   [4.34713729113]
+OK  [d=0.0001] class radii R3,R4,R5 > 1/2 (classes nonempty) and R5 < R4 < R3 < rho1
+OK  [d=0.0001] at most 5 inner centres (min separation 70.5211 deg)
+OK  [d=0.0001] K_w: every feasible cyclic class sequence has degree sum <= 14   [14]
+OK  [d=0.0001] every sequence with degree sum >= 15 exceeds 2 pi by > 25 deg   [25.9419053627]
+   [d=0.0001] gamma0 = 41.40655975 deg; R3,R4,R5 = 0.75597476, 0.56570943, 0.50395942
+OK  [d=0.0001] quoted: gamma0 > 41.406 deg, rho1 < 0.86611, R3 < 0.75598, R4 < 0.56571, R5 < 0.50396, gamma(2,2) > 70.52 deg
+OK  [d=0.0001] quoted: feasible sum-14 sequences are exactly the rotations of (5,2,5,2), total ~358.95 deg   [358.919267325]
+OK  [d=0.0001] gamma0 decreasing and rho1 increasing in d on (0,1e-4] (grid)
+OK  [d=1.0e-5] rho1 = max(...) < 0.8662 < 1   [0.866033568769]
+OK  [d=1.0e-5] max over corners of f is f(Lam,Lam) = 1 - 1/(2 Lam^2)
+OK  [d=1.0e-5] grid max of f on [1,Lam]^2 <= f(Lam,Lam)   [0.750003535496]
+OK  [d=1.0e-5] side-foot separation arccos(c0) > gamma0   [78.0465584529]
+OK  [d=1.0e-5] D(r) <= 5 for r > 1/2 (2 arcsin(1/(2r)) < pi < 5 gamma0)   [4.34684795663]
+OK  [d=1.0e-5] class radii R3,R4,R5 > 1/2 (classes nonempty) and R5 < R4 < R3 < rho1
+OK  [d=1.0e-5] at most 5 inner centres (min separation 70.528 deg)
+OK  [d=1.0e-5] K_w: every feasible cyclic class sequence has degree sum <= 14   [14]
+OK  [d=1.0e-5] every sequence with degree sum >= 15 exceeds 2 pi by > 25 deg   [25.9717545349]
+   [d=1.0e-5] gamma0 = 41.40931585 deg; R3,R4,R5 = 0.75593353, 0.56568782, 0.50395331
+OK  [d=1.0e-5] quoted: gamma0 > 41.406 deg, rho1 < 0.86611, R3 < 0.75598, R4 < 0.56571, R5 < 0.50396, gamma(2,2) > 70.52 deg
+OK  [d=1.0e-5] quoted: feasible sum-14 sequences are exactly the rotations of (5,2,5,2), total ~358.95 deg   [358.954201113]
+OK  [d=0.0001] Kw(c): 2 R5 < 1.008, gamma(5,5) > 165.6 deg, psi < 7.19 deg   [7.18688049392]
+OK  [d=0.0001] Kw(c): separation from c3 > 44.99 deg (corners of [1,2R5]x[1,Lam]); side foot > 78 deg   [44.9942297316]
+OK  [d=0.0001] Kw(c): 90 + 7.19 - 44.99 < 2 gamma0   [82.8131195061]
+OK  [d=0.0001] Kw(c) text: 2R5 < Lambda (so (a) gives separation gamma0 from c3), gamma0 > 41.406 deg, 90 + 7.19 - 41.406 < 2 gamma0
+OK  [d=1.0e-5] Kw(c): 2 R5 < 1.008, gamma(5,5) > 165.6 deg, psi < 7.19 deg   [7.18136829447]
+OK  [d=1.0e-5] Kw(c): separation from c3 > 44.99 deg (corners of [1,2R5]x[1,Lam]); side foot > 78 deg   [44.9978243222]
+OK  [d=1.0e-5] Kw(c): 90 + 7.19 - 44.99 < 2 gamma0   [82.8186317055]
+OK  [d=1.0e-5] Kw(c) text: 2R5 < Lambda (so (a) gives separation gamma0 from c3), gamma0 > 41.406 deg, 90 + 7.19 - 41.406 < 2 gamma0
+KW = 9  smin = y0(k2) = 790569.4150420948329997233861081796334298887848313
+OK  alpha(s) <= 6.33e-7 for s >= sqrt(k2)/4   [6.32455532034e-7]
+OK  alpha <= 1e-3 (crack lemma range), delta <= 1e-3
+OK  sec x - 1 <= 0.50001 x^2 for x <= 1e-3
+OK  lem:Q n(sec a - 1) < 1.59e-7   [1.58117045286e-7]
+OK  lem:Q beta < n + 1.0159e-5
+OK  lem:Q lower ramp < n + 1.0792e-5
+OK  lem:Q cos a - sin a > 1 - 6.4e-7
+OK  lem:Q w0 = 1.08e-5 > 1.0792e-5 and > 6.4e-7
+OK  tan a < 1.000001 a
+OK  3.02 delta * 1.000001 <= 3.04e-5
+OK  lem:GZ |B_Z| < 0.500018   [0.500017419949]
+OK  g0: 1 - 6.4e-7 - 0.500018 > 0.49998
+OK  A = 4 sqrt(9/0.32)/(2 - 3e-6) < 10.6067   [10.6066176277]
+OK  A >= 2
+OK  Bh: theta1(2-theta1)/40 >= Q* thmax(2-thmax)/4, thmax <= 3e-6
+OK  alpha'(y0) <= 4.48e-7 <= 1.5e-6 (lem:Bh bbar; thmax = 2 bbar <= 3e-6)   [4.472135955e-7]
+OK  alpha(y0) <= 6.33e-7 <= 1.5e-6 (lem:Bv bbar)
+OK  C'(1 - eps) > C
+OK  vertical extent < 1.0001
+OK  eta <= 0.50001 * 16/8 = 1.00002 (y0 = sqrt k / 4)
+OK  for 2 <= k < k2: log k < 29.934, 0.033 * 29.934 < 0.99   [29.9336062089]
+OK  2 log(2(1 - eps)) > 1.38229   [1.38229035578]
+OK  (1-6/k)/(1+8/sqrt k) > 1 - 2.6e-6 for k >= k2   [0.999997470184]
+OK  l(H) >= h0 (log k + 1.38228)   [1.38228515577]
+OK  (1 - omega0) h0 >= 0.99977   [0.99977840432]
+1/(om0 y0) = 0.0063245553203367586639977870888654370674391102786504  2.01/(eps y0) = 0.0012712356193876884914635552048619528505552611660087  alpha(y0)/delta = 0.063245553203367586639977870888654370674391102786504
+OK  1/(omega0 y0) <= 6.33e-3, 2.01/(eps y0) <= 1.272e-3, alpha(y0)/delta <= 0.0633
+bracket = 30.146205599924605280205400903108971270222817285971  -> bound 30.147
+OK  bracket < 30.147   [30.1462055999]
+OK  offset 0.99977*1.38228 - 1.00002 > 0.3819   [0.3819420756]
+limit kappa = 0.033163167147643214913590075297707897966630178790593   1/log(k2-1) = 0.033407267838711790654641284664584950093278732703763
+F > 1 for log k > 29.771947547936025285815737619652520079618312211809   F(k2)/log k2 = 0.033586367983136099453651380374968427732133648242883
+certified kappa for all k >= 2 = 0.033163167147643214913590075297707897966630178790593
+OK  kappa_certified > 0.033   [0.0331631671476]
+OK  F/log k decreasing (offset > 0) and F(k2)/log k2 >= limit
+s(k^2-4)=k for log k > 120.2337537633655740820388689398561669183912299829
+OK  rem:k: expression > 1 for log k > 29.772 (< log k2 = 29.9336...)   [29.7719475479]
+OK  rem:k: 1/log(k2-1) = 0.033407..., F(k2)/log k2 = 0.03358..., limit 0.99977/30.147 = 0.033163...
+OK  rem:k: sqrt(Q*/9)/(4 sqrt2) ~ 0.033333
+OK  rem:const: sqrt(9/0.32) ~ 5.3; with Q* = 1/3: sqrt((1/3)/9)/(4 sqrt2) ~ 0.0340 (text: about 0.0338 after parameter losses)
+OK  rem:const: with Q* = 1/3 the same parameters give a limit ~ 0.0338   [0.033845943733]
+OK  rate: (30.147c - 0.3819)/0.99977 <= 30.16c - 0.38 for c = 2..1000, threshold > log k2 for c >= 2, s(k^2-4)=k for log k > 120.24   [120.233753763]
+OK  intro: 1/0.033 ~ 30; 0.033*29.934 < 0.99
+OK  lem:Kw9: final T=9 runs present for n = 1..5, without and with a side, all task indices
+OK  lem:Kw9: all 78673 accepted boxes re-verified in Arb by verify_leaves2.py (78673 checked), no failure, max rigorous bound 9
+OK  lem:Kw9: the accepted boxes of all 13 final runs tile the initial boxes (tree rebuilt, each box used once, exact volumes)
+OK  lem:Kw9: direction cells used by verify_leaves2 cover [0, 2pi_float] without gaps (last cell extended to the exact 2pi in Arb); rho pieces cover [1, Lambda]
+OK  lem:Kw9: wall angle slices and the no-side slices of theta_2 share their end points (same float expression), first slice starts at 0
+OK  rem:const: with K_w = 13 (Lemma lem:Kw only): A < 12.7476, bracket < 36.212, limit 0.99977/36.212 > 0.0276, and 0.027*log(k2) < 1   [36.2115422667]
+OK  lem:Kw9: floating-point rho_1, Lambda and d+sqrt2/2 used by the search are upper bounds of the exact values
+OK  lem:Kw9: gamma_0 used in the count (float G0 - 1e-12) is below the exact gamma_0 = acos(1 - 1/(2 Lambda^2))
+OK  lem:Kw9: arc (2pi_float, 2pi) is empty without a side: rho_1 - 1/2 < 1 (two centres there would be closer than 1)
+ALL OK
+# finished 2026-10-05T19:51:32Z; exit 0; wall 28.956 s; CPU 18.6 s (user 18.371 + sys 0.202); load 13.23 12.89 12.96

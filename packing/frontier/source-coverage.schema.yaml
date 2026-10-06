@@ -164,8 +164,9 @@ $defs:
       claims_record:
         description: >-
           A retained machine-readable record of the source's upper-bound claims --
-          a UnitSquare results release, or a packet's acquisition/sources.json --
-          which check_source_coverage reparses so every claim in it is accounted for.
+          a UnitSquare results release, a packet's acquisition/sources.json, or a
+          directory of exact certificates whose headers state their sides -- which
+          check_source_coverage reparses so every claim in it is accounted for.
         type: string
         minLength: 1
       evidence:

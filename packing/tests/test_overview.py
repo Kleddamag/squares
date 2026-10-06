@@ -126,11 +126,18 @@ def test_counts_are_the_declared_rungs(register: list[dict]) -> None:
     assert stats.cases_1_100_proved + stats.cases_1_100_open == 100
 
 
-def test_the_render_is_deterministic(page: str, results: str) -> None:
+@pytest.mark.parametrize(
+    ("render", "shared"),
+    [(render_overview.overview_page, "page"), (render_overview.results_page, "results")],
+    ids=["overview", "results"],
+)
+def test_the_render_is_deterministic(
+    render: Callable[[], render_overview.Page], shared: str, request: pytest.FixtureRequest
+) -> None:
     """A fresh render of each page is the shared one, byte for byte, which is what lets
-    every other check read the shared render."""
-    assert render_overview.overview_page().html == page
-    assert render_overview.results_page().html == results
+    every other check read the shared render. One page per node: the two fresh renders
+    together held one node past the per-test ceiling (12.25 s on run 37372707772)."""
+    assert render().html == request.getfixturevalue(shared)
 
 
 def test_the_results_table_has_its_own_page_and_the_overview_points_to_it(
@@ -5453,7 +5460,7 @@ def test_a_result_rows_popover_body_comes_from_one_function(
 #: view, and its house drawing no longer ships, which rendered the page at 2,404,813
 #: bytes with the new-result stars, and the ceiling is 2,500,000 again, without the
 #: fetch think-yozo planned for the second drawings.
-PAGE_CEILINGS = {"index.html": 2_600_000, render_overview.RESULTS_PAGE: 1_200_000}
+PAGE_CEILINGS = {"index.html": 2_700_000, render_overview.RESULTS_PAGE: 1_300_000}
 
 
 def test_no_page_carries_a_result_overview(

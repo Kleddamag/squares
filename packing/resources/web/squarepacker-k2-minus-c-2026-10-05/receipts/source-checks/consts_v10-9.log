@@ -1,0 +1,43 @@
+# command: nice -n 10 /tmp/claude-0/-home-user-squares/1fb2d4ab-96d0-5b24-9e36-157598bdbf06/scratchpad/k2c/consts-venv/bin/python consts_v10.py 9
+# cwd: code/ of squarepacker/k2-minus-c 25f645e8
+# python3: CPython 3.12.3 (/usr/bin/python3.12) in a scratch venv: mpmath 1.4.1, numpy 2.5.3, python-flint 0.9.0 (the versions the preprint names)
+# host: 4 cores; load 17.90 16.03 11.38; started 2026-10-05T17:36:35Z
+KW = 9  smin = y0(k2) = 790569.4150420948329997233861081796334298887848313
+OK  alpha(s) <= 6.33e-7 for s >= sqrt(k2)/4   [6.32455532034e-7]
+OK  alpha <= 1e-3 (crack lemma range), delta <= 1e-3
+OK  sec x - 1 <= 0.50001 x^2 for x <= 1e-3
+OK  lem:Q n(sec a - 1) < 1.59e-7   [1.58117045286e-7]
+OK  lem:Q beta < n + 1.0159e-5
+OK  lem:Q lower ramp < n + 1.0792e-5
+OK  lem:Q cos a - sin a > 1 - 6.4e-7
+OK  lem:Q w0 = 1.08e-5 > 1.0792e-5 and > 6.4e-7
+OK  tan a < 1.000001 a
+OK  3.02 delta * 1.000001 <= 3.04e-5
+OK  lem:GZ |B_Z| < 0.500018   [0.500017419949]
+OK  g0: 1 - 6.4e-7 - 0.500018 > 0.49998
+OK  A = 4 sqrt(9/0.32)/(2 - 3e-6) < 10.6067   [10.6066176277]
+OK  A >= 2
+OK  Bh: theta1(2-theta1)/40 >= Q* thmax(2-thmax)/4, thmax <= 3e-6
+OK  alpha'(y0) <= 4.48e-7 <= 1.5e-6 (lem:Bh bbar; thmax = 2 bbar <= 3e-6)   [4.472135955e-7]
+OK  alpha(y0) <= 6.33e-7 <= 1.5e-6 (lem:Bv bbar)
+OK  C'(1 - eps) > C
+OK  vertical extent < 1.0001
+OK  eta <= 0.50001 * 16/8 = 1.00002 (y0 = sqrt k / 4)
+OK  for 2 <= k < k2: log k < 29.934, 0.033 * 29.934 < 0.99   [29.9336062089]
+OK  2 log(2(1 - eps)) > 1.38229   [1.38229035578]
+OK  (1-6/k)/(1+8/sqrt k) > 1 - 2.6e-6 for k >= k2   [0.999997470184]
+OK  l(H) >= h0 (log k + 1.38228)   [1.38228515577]
+OK  (1 - omega0) h0 >= 0.99977   [0.99977840432]
+1/(om0 y0) = 0.0063245553203367586639977870888654370674391102786504  2.01/(eps y0) = 0.0012712356193876884914635552048619528505552611660087  alpha(y0)/delta = 0.063245553203367586639977870888654370674391102786504
+OK  1/(omega0 y0) <= 6.33e-3, 2.01/(eps y0) <= 1.272e-3, alpha(y0)/delta <= 0.0633
+bracket = 30.146205599924605280205400903108971270222817285971  -> bound 30.147
+OK  bracket < 30.147   [30.1462055999]
+OK  offset 0.99977*1.38228 - 1.00002 > 0.3819   [0.3819420756]
+limit kappa = 0.033163167147643214913590075297707897966630178790593   1/log(k2-1) = 0.033407267838711790654641284664584950093278732703763
+F > 1 for log k > 29.771947547936025285815737619652520079618312211809   F(k2)/log k2 = 0.033586367983136099453651380374968427732133648242883
+certified kappa for all k >= 2 = 0.033163167147643214913590075297707897966630178790593
+OK  kappa_certified > 0.033   [0.0331631671476]
+OK  F/log k decreasing (offset > 0) and F(k2)/log k2 >= limit
+s(k^2-4)=k for log k > 120.2337537633655740820388689398561669183912299829
+ALL OK
+# finished 2026-10-05T17:36:35Z; exit 0; wall 0.316 s; CPU 0.1 s (user 0.078 + sys 0.022); load 17.90 16.03 11.38

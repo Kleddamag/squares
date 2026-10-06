@@ -1,0 +1,23 @@
+{
+  "controls": [
+    {
+      "control": "bad-net",
+      "exit_code": 2,
+      "seconds": 0.008111624978482723,
+      "input_sha256": "a56db4b2589461560e39a982f7ced721548251e545d688d8be47f1aa577e2094",
+      "expected": "admission refusal",
+      "output": "control-bad-net.jsonl"
+    },
+    {
+      "control": "mass09",
+      "exit_code": 1,
+      "seconds": 0.2794481249875389,
+      "input_sha256": "eb1439d5d84b63abdbd057d1cecf8103065100e62574baec1ac4d04cf47888a3",
+      "expected": "exact below-threshold counterexample",
+      "output": "control-mass09.jsonl"
+    }
+  ],
+  "independent_all_seconds": 388.201983917,
+  "binary_sha256": "8c04356619e85be48f77d4efd271198eae218a601882efcbb4faacc542d3db5e",
+  "all_exit_code": 0
+}

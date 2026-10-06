@@ -1,0 +1,16 @@
+{
+  "format": "zenodo-capture-v1",
+  "record": 23165736,
+  "doi": "10.5281/zenodo.23165736",
+  "conceptdoi": "10.5281/zenodo.23164301",
+  "title": "For every fixed c, s(k^2-c) = k for all large k, with an explicit constant (preprint)",
+  "version": "1.1",
+  "publication_date": "2026-10-05",
+  "created": "2026-10-05T15:10:45.145455+00:00",
+  "updated": "2026-10-05T15:37:44.508521+00:00",
+  "api": "https://zenodo.org/api/records/23165736",
+  "retrieved_utc": "2026-10-05T22:54:27Z",
+  "files": [{"key":"squarepacker/k2-minus-c-v1.1.zip","bytes":1130274,"checksum_stated":"md5:6d2d1b0633a8e35f26b8de514addd3ba","md5":"6d2d1b0633a8e35f26b8de514addd3ba","sha256":"c9d3f6de5ff7693a3f6f69a07bf753e16c91462ff662191bd29139a3547a40d6","top_directory":"squarepacker-k2-minus-c-525da4e","members":78,"member_bytes":1679557,"member_manifest":"zenodo-23165736.sha256"}],
+  "extracted": [],
+  "comparisons": [{"archive":"squarepacker/k2-minus-c-v1.1.zip","against":"packing/resources/web/squarepacker-k2-minus-c-2026-10-05/acquisition/upstream-subtree.sha256","same":77,"differs":["README.md"],"only_in_archive":[],"only_in_manifest":[]},{"archive":"squarepacker/k2-minus-c-v1.1.zip","against":"squarepacker/k2-minus-c tag v1.1, 525da4e301cb8dd86778fba944de461a82877a6e","same":78,"differs":[],"only_in_archive":[],"only_in_manifest":[]}]
+}

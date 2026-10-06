@@ -45,13 +45,15 @@ verifiers:
     methods: [interval-certified]
     role: decides
     summary: >-
-      Decides a mixed point-and-rectangle certificate at each of the 201 net directions,
+      Decides a mixed point-and-rectangle certificate at each direction of the
+      certificate's net, 201 on the standard net or the 416 that mixed_n18_L470 declares,
       returning the direction's own record of cells and lower bound.
     source:
       - packing/resources/web/wand125-point-and-mixed-2026-09-28/square-packing-bounds/certificates/mixed_n50_L740/code/mixed_rotated_verify.cpp
     versions:
       - {sha256: 89b674a6feabe24d91c29431de1624907c4bff83280ceb481475455686693652}
       - {revision: 7975030a, note: "the n = 76 bundle's tarball, fetched by Git and pinned by its own SHA-256"}
+      - {revision: 43050edc, note: "the n = 18 bundle's tarball on a declared net, fetched by Git and pinned by its own SHA-256"}
 
   - id: V-wand125-verify-mixed-full-proof-py
     program: verify_mixed_full_proof.py
@@ -68,7 +70,14 @@ verifiers:
       - packing/resources/web/wand125-point-and-mixed-2026-09-28/square-packing-bounds/certificates/mixed_n50_L740/code/verify_mixed_full_proof.py
     versions:
       - {sha256: 2719e482cfdd87da2b64b50af626bbd0a68d58d95b746cf27467b2a7aca83648}
-    note: Retained and reviewed; no confirming entry runs it yet.
+      - sha256: 477d613fc0e265732196d9a6c9fa2acfd093631048a2d6c24a5e1df964111d26
+        path: packing/resources/web/wand125-mixed-bounds-finer-net-2026-10-06/square-packing-bounds/certificates/mixed_n18_L4704/code/verify_mixed_full_proof.py
+        note: "mixed_n18_L4704's copy: one line differs, its check on --workers allowing 16 where the first allows 3"
+    note: >-
+      Retained and reviewed. E-n018-wand125-mixed-470-source-replay runs it end to end, as
+      the n = 18 bundle's README says, and mixed_n19_L48229's bundle ships the same copy.
+      mixed_n18_L4704's bundle ships the second version, retained beside its certificate;
+      the 6 October review read both and found the one change bears on no check.
 
   - id: V-wand125-unified-linear-verify-cpp
     program: unified_linear_verify.cpp
@@ -275,6 +284,40 @@ verifiers:
       - packing/resources/web/evand-square-packing-2026-10-01/source/s12/search/qx2_zm.py
     versions:
       - {sha256: 6294052a37ce66c5d84b55afd606e3a52f463e22b876bf44b5aa903aefb7e737}
+
+  - id: V-evand-verify-cert-py
+    program: verify_cert.py (s12/search/exact/)
+    author: Evan Daniel
+    provenance: external
+    language: [Python]
+    methods: [exact-algebraic]
+    role: decides
+    summary: >-
+      The source's exact checker of its rational packing certificates, in Fraction
+      arithmetic: each square strictly inside the open box, and each pair with centre
+      distance squared at most 2 strictly separated along one of its four face normals,
+      the others by disjoint circumscribed discs.
+    source:
+      - packing/resources/web/evand-square-packing-2026-10-05/square-packing/s12/search/exact/verify_cert.py
+    versions:
+      - {sha256: 3299ca0c0f02f7c221deeea69a9a85b5a90db6bc410b20727fdff211c92bed52}
+
+  - id: V-evand-verify-cert2-py
+    program: verify_cert2.py (s12/search/exact/)
+    author: Evan Daniel
+    provenance: external
+    language: [Python]
+    methods: [exact-algebraic]
+    role: decides
+    summary: >-
+      The source's second exact checker of the same certificates, written to share no
+      geometry with the first: each pair disjoint when no vertex of either lies in the
+      other closed square and no two closed edges meet, every corner strictly inside the
+      open box, in Fraction arithmetic.
+    source:
+      - packing/resources/web/evand-square-packing-2026-10-05/square-packing/s12/search/exact/verify_cert2.py
+    versions:
+      - {sha256: 55140a35d95d9eaa64a14c3b044641efbcda94ebfc3b12b7dec9fa52692e31d3}
 
   - id: V-evand-lean
     program: The source's Lean development (lean/), with gen_zmtree.py emitting a cover's box tree
@@ -1004,6 +1047,28 @@ verifiers:
       closed-cover and collision kernels, which the source bundles too.
 
   # --- First-party programs: premise checks and replay drivers ------------------------
+  - id: V-evand-exact-certificates
+    program: devtools.evand_exact_certificates
+    author: Squares Project (Levy)
+    provenance: first-party
+    language: [Python]
+    methods: [exact-algebraic]
+    role: premises
+    summary: >-
+      Reads Evan Daniel's rational certificates, refusing anything the format does not
+      state, converts each without rounding to a rational center-basis witness for
+      sqpack.witness.exact_verify and to rational corners for
+      devtools.check_rational_witness_independent, which decide it; runs the source's
+      two checkers as retained; compares each side and pose with the register; and makes
+      the negative controls.
+    source: [packing/devtools/evand_exact_certificates.py]
+    independence_record: packing/devtools/evand_exact_certificates.py
+    note: >-
+      Written from the certificate format the source's README states and from the
+      geometry. Its author read the source's verify_cert.py and verify_cert2.py before
+      writing it, to check that the conversion means what they mean, and imports or
+      copies none of their code; it runs them only as separate processes.
+
   - id: V-check-n11-final-composition
     program: devtools.check_n11_final_composition
     author: Squares Project (Levy)
@@ -1064,6 +1129,21 @@ verifiers:
       premises, drives the source's checker and compares its records with the shipped ones.
     source: [packing/devtools/audit_wand125_point_and_mixed.py]
 
+  - id: V-audit-wand125-declared-net
+    program: devtools.audit_wand125_declared_net
+    author: Squares Project (Levy)
+    provenance: first-party
+    language: [Python]
+    methods: [exact-algebraic]
+    role: premises
+    summary: >-
+      Checks the exact premises of wand125's mixed certificates on a declared net, lemma
+      N0's among them; binds each bundle's files to the packet and every shipped record and
+      input to the declared net and the expanded candidate; runs the bundle's own driver
+      with its assertions on and compares the replay with the shipped records, requiring
+      the run to have happened; and runs the stage-4 controls with the source's checker.
+    source: [packing/devtools/audit_wand125_declared_net.py]
+
   - id: V-audit-wand125-linear
     program: devtools.audit_wand125_linear
     author: Squares Project (Levy)
@@ -1073,6 +1153,41 @@ verifiers:
     role: premises
     summary: The audit, replay driver and controls for wand125's linear certificates.
     source: [packing/devtools/audit_wand125_linear.py]
+
+  - id: V-sqverify-fast
+    program: >-
+      sqverify-fast, run at every direction of a certificate's net (the standard 201, or
+      the net a format M file declares) by devtools.sqverify_fast_census
+    author: Squares Project (Levy)
+    provenance: first-party
+    language: [Rust, Python]
+    methods: [interval-certified]
+    role: decides
+    summary: >-
+      Decides a measure-capture lower-bound certificate of format T, M or L on the
+      201-direction net, or of format M on the uniform net its file declares (proof_net,
+      lemma N0): exact admission of its premises, then an exact-event vertex sweep
+      at the axis and outward-rounded interval branch and bound at every other direction,
+      every shrunk square at every centre of its domain capturing at least the threshold.
+    source:
+      - packing/sqverify_fast
+      - packing/devtools/sqverify_fast_census.py
+      - packing/devtools/check_sqverify_fast.py
+    independence_record: packing/sqverify_fast/independence-record.yaml
+    note: >-
+      A clean-room verifier, written from the mathematics without opening the authors'
+      checkers (packing/sqverify_fast/INDEPENDENCE.md), its lemmas proved in
+      packing/sqverify_fast/SOUNDNESS.md, and accepted at 4ddf37d9c by the two adversarial
+      reviews of 3 October 2026, of its soundness and of its testing and independence. Its
+      declared-net change (f007d7afd and 910b6b12c, source_sha256 d97758bb...) was
+      accepted by the soundness review of 6 October 2026
+      (docs/project/reviews/review-2026-10-06-sqverify-fast-declared-net-soundness.md),
+      for a declared net once the control's exact evaluator read that net (its DR-1),
+      which the same day's re-check confirmed. Its census drives the binary, keeps every
+      direction's receipt and puts negative controls on a certificate at its least-bound
+      direction, with check_sqverify_fast's exact evaluator and mutation helpers; neither
+      decides coverage. tests/test_sqverify_fast_census.py admits a census row as evidence
+      only for a build of a reviewed source.
 
   - id: V-replay-chelokot-lean
     program: devtools.replay_chelokot_lean
@@ -1125,6 +1240,22 @@ verifiers:
     source: [packing/devtools/audit_s12_reweighted.py]
     independence_record: packing/devtools/audit_s12_reweighted.py
     note: Its module statement says it shares no code with the tools that made the certificate.
+
+  - id: V-audit-s12-v11
+    program: devtools.audit_s12_v11_certificate
+    author: Squares Project (Levy)
+    provenance: first-party
+    language: [Python]
+    methods: [exact-algebraic]
+    role: premises
+    summary: >-
+      Decides everything squarepacker's v1.1 s(12) certificate rests on but coverage, in
+      integers and Fraction: its bytes, the header and side, a one-to-one match of its
+      points to Daniel's dilated within the stated rounding, positivity, containment, D4
+      invariance and orbits, the total below 12, the corner points, and the source's two
+      controls rebuilt byte for byte.
+    source: [packing/devtools/audit_s12_v11_certificate.py]
+    note: It shares only the file reader and the D4 test with devtools.audit_s12_rescaled_certificate, and nothing with the source's tools.
 
   - id: V-compare-evand-s32-sweep
     program: devtools.compare_evand_s32_sweep

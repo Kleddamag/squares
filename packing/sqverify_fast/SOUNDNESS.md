@@ -16,8 +16,9 @@ commit `abf0a592b`.
 ## The Claim
 
 A certificate gives a side $L$, a shrunk side $B$, a net step $D$ and count $N_\theta$
-(here $83/40000$ and $201$), and orbit representatives $R_j = [x_1, x_2] \times [y_1,
-y_2]$ with weights $w_j \ge 0$, all exact rationals.
+(the standard net is $83/40000$ and $201$; a format M file may declare its own, as
+[Declared Nets](#declared-nets) says), and orbit representatives $R_j = [x_1, x_2]
+\times [y_1, y_2]$ with weights $w_j \ge 0$, all exact rationals.
 Its density is
 
 $$
@@ -50,8 +51,8 @@ $t_{\max}^2 + 2 t_{\max} - 1 > 0$, and for every net index $r$ and every centre 
    uses only the bound on $z$. The fold is at $\pi/4$, not at $\theta_{\max}$: lemma D’s
    per-bin domain (format M) depends on it, since the half-width $\rho$ falls again past
    $\tan(\pi/8)$ and a square folded only above $\theta_{\max}$ could sit at half-angle
-   tangent up to $t_{200} + D/2$, where $\rho$ is below $\rho(a_{200})$. Tokoharu’s
-   domain needs no such care, but the same fold serves it.
+   tangent up to $t_{\max} + D/2$, where $\rho$ is below the last node’s $\rho(a_r)$.
+   Tokoharu’s domain needs no such care, but the same fold serves it.
 
 3. *Shrink (N3).* The concentric square of side $B$ at angle $\theta_r$, seen in the
    unit square’s frame, is rotated by $\delta$; with $z = \tan(\delta/2) \le D/2$ (N2),
@@ -94,6 +95,82 @@ L), and is never below $1$, which is what N4 needs.
 A larger $T$ only makes acceptance harder.
 Formats M and L change the measure and, for M, the centre domain; the section
 [Formats M and L](#formats-m-and-l-points-segments-and-domains) states what changes.
+
+## Declared Nets
+
+Nothing in N1 to N4 uses the values $83/40000$ and $201$: the proof holds for every step
+$D$ and count $N_\theta$ that meet the theorem’s premises.
+A format M file may therefore declare its own net (jlevy/squares#366, whose
+`mixed_n18_L470` has $B = 999/1000$, $D = 1/1001$ and $N_\theta = 416$). This section
+states what admission requires of a declared net and why that is enough.
+
+**Lemma N0 (a declared net).** Let a format M file carry
+`proof_net: {"step": D, "last": m}`, with $D$ an exact rational and $m$ a JSON integer,
+and optionally `"count": m + 1`. Let $N_\theta = m + 1$ and $t_{\max} = mD$. Suppose the
+following hold:
+
+- (a) $D > 0$ and $2 \le N_\theta \le 2^{16}$;
+- (b) $B(1 + D) < 1$;
+- (c) $t_{\max}^2 + 2t_{\max} - 1 > 0$;
+- (d) $t_{\max} \le 1/2$;
+- (e) $B(1 + D/(1 - D^2/4)) < 1$.
+
+Then the theorem, lemma D’s per-bin domain and lemma F3 hold on that net exactly as on
+the standard one.
+
+*Proof.* N1 needs only that consecutive tangents $t_r = rD$ differ by $D$, and (c) is
+its endpoint condition.
+N2 folds at $\pi/4$, not at the net’s end, so it needs only that every
+$\varphi \in [0, \pi/4]$ has a node within $D/2$ of $\tan(\varphi/2) \le
+\tan(\pi/8) < t_{\max}$, which N1 gives.
+N3 needs, for $0 \le z \le D/2$, that a core of side $B$ rotated by
+$\delta = 2\arctan z$ inside a concentric unit square has extent
+$B(1 + 2z - z^2)/(1 + z^2) < 1$ along each of the square’s axes.
+That extent is at most $B(1 + 2z) \le B(1 + D)$, which (b) puts below $1$, so the core
+lies in the open unit square.
+(The sharp condition is $B(1 + D - D^2/4)/(1 + D^2/4) < 1$, the extent at $z = D/2$,
+since the extent increases in $z$ on $[0, \sqrt 2 - 1]$; (b) implies it and is the form
+admission checks.) N4 does not involve the net.
+
+Lemma D’s per-bin domain needs only N2’s fold and the bin $[t_r - D/2, t_r + D/2]$. Put
+$a_r = \max(0, t_r - D/2)$. A unit square assigned to node $r$ has half-angle tangent at
+least $a_r$. On $[0, \pi/4]$ its half-width
+$\rho(\tan(\varphi/2)) = (\cos\varphi + \sin\varphi)/2$ increases in $\varphi$, so its
+centre is at least $\rho(a_r)$ from each wall, for any $D$. `certificate::domain_upper`
+reads $D$ from the admitted net.
+Condition (e), the tangent form of N3, is checked for format M whatever the net.
+
+Lemma F3 needs $t_{\max} \le 1/2$, which is (d), and a step bounded below.
+By (a) and (c), $D = t_{\max}/(N_\theta - 1) > \tan(\pi/8)/2^{16} > 2^{-18}$, so every
+bound F3 derives from $s_1 > 2^{-18}$ stands.
+F2 does not involve the net.
+$\square$
+
+`certificate::declared_net` reads the declaration and `certificate::admit` checks (a) to
+(e) in exact rationals, the same checks every net meets.
+For $B = 999/1000$ and $D = 1/1001$, (b) gives $B(1 + D) = 500499/500500$, so the margin
+is $1/500500$. For (c), $t_{\max} = 415/1001$ and
+$t_{\max}^2 + 2t_{\max} - 1 = 1054/1002001$. For (d), $415/1001 < 1/2$. For (e),
+$B(1 + D/(1 - D^2/4)) = 1335998331/1336001000 \approx 0.99999800225$ (corrected from
+$0.999998001$ by finding DN-4 of the 5 October review).
+
+Admission also refuses these declarations:
+
+- A `proof_net` with any field other than `step`, `last` and `count`, so that a net this
+  reader would not understand, such as one with listed nodes or an offset, is never read
+  as a uniform net.
+- A `last` that is not a nonnegative JSON integer, and a `count` other than `last + 1`.
+- A `proof_net` in a format T or L file, which this reader would not use, refused rather
+  than ignored.
+- Certificate metadata (`certificate.D`, `certificate.angle_count`) that changes the
+  declared net. As for the standard net (finding TI-3), metadata may restate it.
+
+A net declaration this reader would not use is refused and not ignored: a `proof_net`
+outside format M, and format L’s `net` block outside format L (finding DN-5 of the 5
+October review).
+
+Without a declaration, a format M file is on the standard net.
+`mixed_n18_L470` without its `proof_net` is refused, since $B(1 + 83/40000) > 1$.
 
 ## Reduction of Centres
 
@@ -268,6 +345,9 @@ segment of length zero, a nonempty format M `points` list, a format L `net` othe
 step $83/40000$ and last index $200$, certificate metadata that changes the net of
 either format (finding TI-3), format M’s premise $B(1 + D/(1 - D^2/4)) < 1$ failing
 (N3), and a `total_mass` other than the exact sum.
+Format M’s net is the standard one unless the file declares its own, which
+[Declared Nets](#declared-nets) admits under lemma N0; format L’s is always the standard
+one.
 Every row is an orbit representative whose eight $D_4$ images carry an eighth of its
 mass each; coincident images are merged by exact key (a segment and its reverse are one
 key), and the merged total must equal $M$.
@@ -440,6 +520,16 @@ of the 3 October soundness review, whose reproducers are in `tests/adversarial.r
   with a second member or trailing bytes is refused; format L and M nets cannot be
   changed by metadata; format M’s tangent-form premise refuses a $B$ between the two
   limits, which format T admits.
+- `tests/declared_net.rs`, for lemma N0: a declared net replaces the standard one (the
+  direction at the last index and the per-bin domain at four indices read the declared
+  step exactly); without its declaration $B = 999/1000$ is refused on the standard net;
+  eighteen corrupted declarations are refused, each by the premise it breaks, four of
+  them paths finding DN-6 of the 5 October review found untested (`last` $0$, a reaching
+  net past $2^{16}$ directions, `last` past the `u32` range and `last` in exponent
+  form); a duplicate key inside the declaration, the fifth, is refused by the reader;
+  metadata may restate a declared net and never change it; a `proof_net` in format T or
+  L, and a `net` block outside format L, are refused; and the tangent-form premise
+  refuses a $B$ between its two limits at $D = 1/1001$.
 - `interval::tests::nan_is_never_dropped`: every interval primitive keeps a `NaN`
   endpoint, and an overflowing directed step is `NaN`.
 - `rotated_tests::oracle_counts_closed_intersections`: the oracle counts a point on the
@@ -452,10 +542,15 @@ of the 3 October soundness review, whose reproducers are in `tests/adversarial.r
   centres and box points, and runs the mutation controls; for formats M and L it
   compares with an exact evaluator of points, segments and rectangles written in the
   tool, apart from the crate’s oracle, and runs the retained mixed and linear controls.
+  Its `declared-net` group holds `mixed_n18_L470` to lemma N0: the original verified,
+  every one of its corrupted net declarations refused at admission with a message naming
+  the premise it breaks, and its masses scaled by $0.985$ refused with an exact witness
+  below the threshold.
   Its `--quick` subset runs in the gate step `measure verifier Rust (sqverify-fast)`.
-- `devtools/sqverify_fast_census.py` verifies every replayed certificate at all 201
-  directions and evaluates, in exact rationals, the capture at the centre of each
-  certificate’s least-bound leaf; `--family mixed` does the same for formats M and L.
+- `devtools/sqverify_fast_census.py` verifies every replayed certificate at every
+  direction of its net and evaluates, in exact rationals, the capture at the centre of
+  each certificate’s least-bound leaf; `--family mixed` does the same for formats M and
+  L.
 
 ## The First Leg on Its Own Segment
 

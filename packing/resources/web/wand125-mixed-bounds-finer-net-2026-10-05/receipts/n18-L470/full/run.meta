@@ -1,0 +1,13 @@
+command: OPENBLAS_NUM_THREADS=1 OMP_NUM_THREADS=1 nice -n 10 /home/user/squares-lanes/wand-net/packing/.venv/bin/python3 code/verify_mixed_full_proof.py proof --workers 2
+cwd: /tmp/claude-0/-home-user-squares/1fb2d4ab-96d0-5b24-9e36-157598bdbf06/scratchpad/laneB/work18/run
+python: 3.14.7 numpy 2.5.2
+cxx: c++ (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0
+host: Linux 6.18.44-fc-v70 x86_64, 4 cpus
+start: 2026-10-05T17:16:28Z
+loadavg_start: 6.97 4.86 2.75 7/131 21729
+exit: 0
+end: 2026-10-05T21:40:27Z
+loadavg_end: 6.79 7.54 8.66 7/166 25493
+times (shell user sys / children user sys):
+0m0.005s 0m0.004s
+0m3.785s 0m0.503s

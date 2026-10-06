@@ -28,7 +28,10 @@ The reader is not tied to one source or one net. ``s12-rescaled`` is squarepacke
 certificate of jlevy/squares#309, Daniel's ``s12`` file with every coordinate and the
 container multiplied by ``7902/7901``, which its producer's checkers refuse at
 ``N = 6000`` and ``12000`` and accept at ``N = 24000``; its case therefore carries the net
-``N = 24000``, and every row is the same construction at that net. ``--certificate`` and
+``N = 24000``, and every row is the same construction at that net. ``s12-v11`` is
+squarepacker's v1.1 certificate of jlevy/squares#363, Daniel's points dilated to the
+container ``7943/2000`` with new weights, which its producer's checkers accept at
+``N = 96000``, the net its case carries. ``--certificate`` and
 ``--certificate-sha256`` run a case's net and count on another file of the same format,
 pinned by its digest on the command line, which is how a mutated control is decided.
 
@@ -79,6 +82,7 @@ SOURCE_COMMIT = "167d842cd27ba1451cb2833773ea930c80b9e65b"
 RESCALED = (
     REPO / "packing/resources/web/squarepacker-s12-lower-bound-2026-10-02/s12-lower-bound"
 )
+V11 = REPO / "packing/resources/web/squarepacker-s12-lower-bound-2026-10-05/s12-lower-bound"
 #: The source's net and its sigma rounding, as `verify/src/main.rs` `bin_geometry` has them.
 NET = 6000
 SIGMA_SCALE = 1_000_000
@@ -122,6 +126,16 @@ CASES = {
         24000,
         "https://github.com/squarepacker/s12-lower-bound",
         "8c53049025b94bb589ed25a90203f0a34c2945e4",
+    ),
+    "s12-v11": Case(
+        12,
+        V11 / "s12_lower_3.9715.txt",
+        "e2f326b28142cf22402f88357f4c7fe4680a08a32ae785b493adac335bcc2685",
+        "10000050/10000000",
+        0,
+        96000,
+        "https://github.com/squarepacker/s12-lower-bound",
+        "7a96bec36bc6811c3715ef581598f22ff9b7ba3a",
     ),
 }
 

@@ -46,7 +46,7 @@ WIDTHS = (1280, 1024, 768, 390)
 #: a fraction that is a recent bound, a verified bound printed beside the reported one,
 #: and a three-digit case with a rational upper bound. The fraction was n = 18's until
 #: 2026-10-02, when its verified bound rose to the reported one, and then n = 19's until
-#: the same happened there later that day.
+#: the same happened there later that day; n = 12's has terminated since 5 October.
 CASES = (1, 5, 11, 12, 51, 230)
 ROWS = [f"n-{n}" for n in CASES]
 #: The drawing's side before it had a column: 2.6rem.
@@ -187,10 +187,12 @@ def test_the_table_fits_its_track_at_1280_and_scrolls_in_its_wrap_below(
     # at every narrower window: 1192 pixels since the table has no frame (2026-10-02,
     # think-wadm), 1194 before, and 1180 since 3 October 2026, when an exact gap with a
     # numerator or denominator of more than eight digits became its decimal (n = 68's
-    # 4512425581603/15625000000000 was the widest gap; GAP_DIGITS).
+    # 4512425581603/15625000000000 was the widest gap; GAP_DIGITS), and 1165 since 6
+    # October 2026, when Evan Daniel's exact optima (T-098) put the upper lane of 48
+    # counts, n = 68 among them, at their certified sides and narrowed the gap column.
     own = laid[WIDTHS[1]]["table_width"]
     assert own <= wide["table_width"]
-    assert own == pytest.approx(1180, abs=10)
+    assert own == pytest.approx(1165, abs=10)
     for width in WIDTHS[1:]:
         assert laid[width]["scrolls"] > 0, width
         assert laid[width]["table_width"] == pytest.approx(own, abs=1), width
@@ -200,19 +202,21 @@ def test_the_table_fits_its_track_at_1280_and_scrolls_in_its_wrap_below(
 def test_a_fraction_shows_its_decimal_and_a_name_stays_whole(
     laid: dict[int, dict[str, Any]],
 ) -> None:
-    """The reported lower bound of n = 12 is `31360/7901` (`15680/3951` until 3 October
-    2026), and the cell prints its decimal under it: the fraction's value cut after eight
-    places, which is not the `3.969117` the record holds. The row's other closed form is
-    its gap. A credit's longest name, in the row above, is set on one line."""
+    """The best known packing of n = 230 is `15 + (28/41)`, and the cell prints its decimal
+    under it: the value cut after eight places. The example was n = 12's reported lower
+    bound, `31360/7901`, then its verified one, `15680000/3949423`, until T-095's
+    terminating `7943/2000` took both of n = 12's lower cells on 5 October 2026. A
+    credit's longest name, in the row above n = 12, is set on one line."""
     rows = {row["id"]: row for row in laid[1280]["rows"]}
-    lower = rows["n-12"]["cells"][column("Reported lower")]["approx"]
-    assert lower == ["≈ 3.96911783…"]
-    exact, shown = Fraction(31360, 7901), Fraction(lower[0][2:-1])
+    upper = rows["n-230"]["cells"][column("Best known packing")]["approx"]
+    assert upper == ["≈ 15.68292682…"]
+    exact, shown = Fraction(643, 41), Fraction(upper[0][2:-1])
     assert 0 < exact - shown < Fraction(1, 10**8)
-    # Three closed forms since 3 October 2026, when T-079's verified lower bound parted
-    # from the reported one: the two lower bounds and the gap.
-    assert [cell["approx"] for cell in rows["n-12"]["cells"]].count([]) == len(COLUMNS) - 3
-    assert rows["n-12"]["cells"][column("Gap")]["approx"] == ["≈ 0.02979979…"]
+    # n = 12 since 5 October 2026: one lower bound in both lower cells, so the verified
+    # cell repeats no decimal, and the gap 57/2000; both decimals terminate.
+    assert rows["n-12"]["cells"][column("Reported lower")]["approx"] == ["= 3.9715"]
+    assert rows["n-12"]["cells"][column("Gap")]["approx"] == ["= 0.0285"]
+    assert [cell["approx"] for cell in rows["n-12"]["cells"]].count([]) == len(COLUMNS) - 2
     # A terminating fraction shows its exact decimal in either column. The example was
     # n = 18 until 2026-10-02, when T-045's replay raised its verified bound to the
     # reported 939/200 and the cell became "same", and then n = 19 until T-074's did the

@@ -11,6 +11,7 @@ from __future__ import annotations
 import hashlib
 import urllib.error
 import urllib.request
+from collections.abc import Callable, Mapping
 from pathlib import Path
 from typing import Any, Self
 
@@ -86,10 +87,13 @@ def synthetic_plan(n: int, *, source_n: int, out_root: Path) -> DerivationPlan:
 
 
 class FakeResponse:
-    """The two methods `fetch_svg` uses of a `urlopen` result, and nothing else."""
+    """What `fetch_picture` uses of a `urlopen` result, and nothing else."""
 
-    def __init__(self, payload: bytes) -> None:
+    def __init__(self, payload: bytes, last_modified: str | None = None) -> None:
         self.payload: bytes = payload
+        self.headers: dict[str, str] = (
+            {} if last_modified is None else {"Last-Modified": last_modified}
+        )
 
     def read(self) -> bytes:
         return self.payload
@@ -776,3 +780,103 @@ def test_a_parse_is_compared_with_a_witness_read_from_the_same_picture(tmp_path:
     assert same.same_side
     assert same.worst == 0
     assert moved.worst > 1
+
+
+# -- `--compare-pictures`: the retained witnesses against the pictures served today -----
+
+KINGBIRD_PICTURE = f"{derive_tool.KINGBIRD_BASE_URL}/square-4.svg"
+CREDITED_SVG = (
+    "<?xml version='1.0'?>\n<!--\n    Found by A. Person on May 1, 2026.\n"
+    "    Optimized by B. Person on May 2, 2026.\n\n    s = Root[...]\n-->\n" + SYNTHETIC_SVG
+)
+PICTURES = ROOT / "resources/web/known-best-packings/receipts/kingbird-2026-10-05-pictures.json"
+
+
+def _serving(
+    answers: Mapping[str, tuple[bytes, str | None]],
+) -> Callable[[str], tuple[bytes, str | None]]:
+    return answers.__getitem__
+
+
+def _retained_from_picture(tmp_path: Path, *, parse: bool = False) -> Path:
+    plan = DerivationPlan(
+        n=4,
+        source_n=4,
+        listed_n=(3, 4),
+        source_path="square-4.svg",
+        url=KINGBIRD_PICTURE,
+        catalogue_side=SYNTHETIC_SIDE,
+        witness_path=tmp_path / "n-004.yaml",
+    )
+    witness = derive_tool.derive_witness(
+        plan,
+        SYNTHETIC_PARSE if parse else SYNTHETIC_SVG,
+        catalogue_text=REMOVAL_LICENCE,
+        frontier_root=tmp_path,
+        parse_revision=PARSE_REVISION if parse else None,
+    )
+    plan.witness_path.write_text(
+        derive_tool.witness_document(witness, schema="x"), encoding="utf-8"
+    )
+    return plan.witness_path
+
+
+def test_a_pictures_credits_are_its_comments_first_paragraph() -> None:
+    assert derive_tool.picture_credits(CREDITED_SVG) == (
+        "Found by A. Person on May 1, 2026.",
+        "Optimized by B. Person on May 2, 2026.",
+    )
+    assert derive_tool.picture_credits(SYNTHETIC_SVG) == ()
+
+
+@pytest.mark.usefixtures("synthetic_corpus")
+def test_a_witness_is_read_again_against_its_picture(tmp_path: Path) -> None:
+    _retained_from_picture(tmp_path)
+    served = {KINGBIRD_PICTURE: (CREDITED_SVG.encode(), "Thu, 24 Sep 2026 16:37:57 GMT")}
+    readings, refusals = derive_tool.compare_pictures(
+        [3, 4], out_root=tmp_path, fetch=_serving(served)
+    )
+
+    assert refusals == []
+    (reading,) = readings
+    assert reading.identical
+    assert not reading.from_parse
+    assert reading.credits[0] == "Found by A. Person on May 1, 2026."
+    receipt = derive_tool.picture_receipt(
+        readings, refusals, retrieved_utc="2026-10-05T23:00:00Z"
+    )
+    assert (receipt["compared"], receipt["identical"], receipt["agree_to_one_ulp"]) == (1, 1, 1)
+
+
+@pytest.mark.usefixtures("synthetic_corpus")
+def test_a_witness_read_from_a_parse_agrees_with_its_picture_to_one_ulp(tmp_path: Path) -> None:
+    _retained_from_picture(tmp_path, parse=True)
+    moved = SYNTHETIC_SVG.replace('width="2" height="2"', 'width="2" height="2" x="0.25"')
+    served = {KINGBIRD_PICTURE: (SYNTHETIC_SVG.encode(), None)}
+    shifted = {KINGBIRD_PICTURE: (moved.encode(), None)}
+
+    (same,), _ = derive_tool.compare_pictures([4], out_root=tmp_path, fetch=_serving(served))
+    (other,), _ = derive_tool.compare_pictures([4], out_root=tmp_path, fetch=_serving(shifted))
+
+    assert same.from_parse
+    assert same.same_side
+    assert same.worst <= 1
+    assert other.worst > 1
+    assert derive_tool.report_pictures([other], []) == 1
+
+
+def test_every_retained_kingbird_witness_agreed_with_the_pictures_of_5_october() -> None:
+    receipt = safe_load(PICTURES.read_text(encoding="utf-8"))
+    readings = {row["n"]: row for row in receipt["readings"]}
+    assert receipt["refused"] == []
+    assert receipt["compared"] == receipt["agree_to_one_ulp"] == len(readings) == 98
+    retained = {
+        int(path.stem.removeprefix("n-"))
+        for path in WITNESSES.glob("n-*.yaml")
+        if "kingbird.myphotos.cc" in path.read_text(encoding="utf-8")
+    }
+    assert set(readings) == retained
+    for n in (69, 83, 87):
+        assert readings[n]["from_parse"]
+        assert readings[n]["same_side"]
+        assert readings[n]["worst_ulp"] <= 1

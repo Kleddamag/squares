@@ -4,7 +4,7 @@
 **Archived:** 2026-10-02, retrieved 06:49:26 UTC; the server reported `Last-Modified: Sun, 20 Sep 2026 05:49:35 GMT`.
 **Method:** `curl` plus `html2text==2025.4.15 --body-width=0`, the method of the 2026-09-30 catalogue capture; the original HTML is preserved alongside as `kingbird-squares-in-squares-compared2.html`, SHA-256 `95a08874f81c96519094f281072bcfed0684861ba98b34788b954c2285d351aa`.
 
-The second page of the catalogue's older and alternative packings, $n = 101$ to $196$; the first page, $n \le 100$, is archived as `kingbird-squares-in-squares-compared` (2026-08-22), and the third as `kingbird-squares-in-squares-compared3`.
+The second page of the catalogue's older and alternative packings, $n = 101$ to $196$; the first page, $n \le 100$, is archived as `kingbird-squares-in-squares-compared` (2026-10-05; the capture of 2026-08-22 is `kingbird-squares-in-squares-compared-2026-08-22`), and the third as `kingbird-squares-in-squares-compared3`.
 
 ---
 

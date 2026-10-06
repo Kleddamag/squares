@@ -1,0 +1,6 @@
+# command: nice -n 10 /tmp/claude-0/-home-user-squares/1fb2d4ab-96d0-5b24-9e36-157598bdbf06/scratchpad/k2c/replay-venv/bin/python indep_cover.py ../../bnb_n2_T9_0of1_final_leaves.jsonl 40000 12345 ../../indep_n2.json
+# cwd: code/ of squarepacker/k2-minus-c 25f645e8 with the n = 2 no-side box list (as retained), from code/coverage_independent/exact_volume
+# python3: CPython 3.12.3 (/usr/bin/python3.12) in a scratch venv: python-flint 0.9.0, mpmath 1.3.0, numpy 2.5.3
+# host: 4 cores; load 17.04 15.55 10.98; started 2026-10-05T17:35:42Z
+{"file": "bnb_n2_T9_0of1_final_leaves.jsonl", "boxes": 48, "kinds": {"closed": 42, "inf": 6}, "methodA_pass": true, "volume_exact_equal": true, "volume_rel_diff": 0.0, "n_outside_bounds": 0, "n_interior_overlapping_pairs(first50)": 0, "methodB_points_tested": 296127, "methodB_uncovered": [], "seconds": 4.0}
+# finished 2026-10-05T17:35:47Z; exit 0; wall 4.683 s; CPU 1.4 s (user 1.389 + sys 0.028); load 17.19 15.61 11.02

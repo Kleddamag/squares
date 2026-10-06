@@ -5,7 +5,7 @@ title: "Import evand #375: exact rational optima of 48 known-best packings (uppe
 kind: task
 status: in_progress
 priority: 1
-version: 5
+version: 6
 delegate: claude-code@vm
 labels:
   - result-import
@@ -14,7 +14,7 @@ parent_id: is-01m46g4yac7ewc22drc7twjhy5
 hold: null
 hold_until: null
 created_at: 2026-10-05T22:06:58.868Z
-updated_at: 2026-10-05T23:23:49.008Z
+updated_at: 2026-10-06T02:15:08.201Z
 started_at: 2026-10-05T22:08:15.283Z
 ---
 
@@ -97,3 +97,26 @@ Validation plan, priced:
 - Optional reproduction sample with reproduce.sh (about 1-2 CPU h for all; sample only,
   2 threads, nice).
 - One separately prompted adversarial review.
+
+Exit, 2026-10-06 (branch claude/ecstatic-pascal-pothtx-exact at c18fca891, not pushed):
+- T-098 at V3/C3 (status confirmed), S2 confirmed by the review. Replays: first-party
+  2,820 CPU s for 320 certificates (802 for the 48); source checkers 202 CPU s (54 for
+  the 48); controls 3,276 s wall on two workers; reproduction sample (n = 68, 102, 126,
+  211, 270) 178.3 CPU s, same S', not byte-identical (centres <= 2.5e-24, tangents
+  <= 3.3e-24), each decided valid.
+- Review docs/project/reviews/review-2026-10-06-evand-exact-optima.md (adversarial,
+  defect-open on EX-1, n = 126's conjecture above the new ceiling); fixes in 65bb9851b;
+  fix check review-2026-10-06-evand-exact-optima-fix-check.md (confirming,
+  defects-resolved); FX-1..FX-7 handled in 6f84e2783. Both stored byte-identical and
+  excluded from flowmark. Neither reviewer could execute code.
+- New: sqpack.assurance refuses a decimal conjectured_optimum above the verified ceiling
+  by more than half a unit; result_status.latest_review takes the last listed of
+  same-day reviews (used by check_results and check_requests).
+- Translation-escape screen re-run (33 min, two workers): only the 48 reported_side
+  strings changed.
+- #375 verdict reply posted: issuecomment-6007913483, recorded as kind confirmation.
+  n105-descent remains a reply due for the reply from main.
+- Open: think-5n3o (EX-9, reported-lane witness), think-70bh (78 trailing ceilings),
+  think-x4v4 (n = 17 hold). Contiguity of register ids fails until the coordinator
+  reconciles T-095..T-097; with T-098 renumbered into a contiguous slot every
+  check_results-driven test passes.

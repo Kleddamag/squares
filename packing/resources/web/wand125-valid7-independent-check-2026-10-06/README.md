@@ -226,8 +226,9 @@ read the three downloaded records in about 3 CPU-minutes and checks what the sou
 - no root records an uncertified box or a counterexample, the leaf kinds are the
   README’s, and the recorded per-root times sum to 765.85 hours;
 - each root is given the options of its place in its record (`PHASES`): the run notes’
-  root counts at each change, less the 350 pilot roots `MERGE.md` says were dropped from
-  the head of `tilt9_a.jsonl`. That gives 16,755 roots at the default `--amin 1/320`
+  root counts at each change, less, in `tilt9_a.jsonl`, the 350 pilot roots of
+  $[4, 9/2]^2$ that machine 1’s record was seeded with and the restriction dropped. That
+  gives 16,755 roots at the default `--amin 1/320`
   (111.7 recorded hours), 8,339 at `--amin 1/1280` (542.9), 157 at `--bmid-u 3/16`
   (7.2) and 3,099 at `--bmid-u 7/16` (104.0). The width of a Tier B leaf off $u = 0$
   says which hand-off rule made it, so 2,396 roots test their assignment, and none
@@ -248,8 +249,8 @@ re-certified. Exit 0, 600 s of wall and 582 CPU-s, from 2026-10-06T05:44:09Z.
 
 ### A-6. A Sample of Roots, and the Price of a Full Replay
 
-The source’s run took about 766 hours of wall time per root in its workers, so a full
-replay here is far above this lane’s ceiling of 6 CPU-hours. It is priced from a sample
+The source’s run recorded about 766 hours of wall time in its workers, so a full replay
+here is far above this lane’s ceiling of 6 CPU-hours. It is priced from a sample
 and held under `think-hwpr`.
 
 `audit_validtilt9_independent sample --per-phase 5 --heavy 10 --max-seconds 600`
@@ -292,9 +293,8 @@ The first is what a root-for-root comparison costs, and two thirds of it is the 
 heavy roots that ran at `--amin 1/1280`. The second is softer: it rests on nine heavy
 probes, seven of which the last options closed in at most 73 CPU-seconds where the
 published run spent 2 to 3.6 hours, so a heavy root that they do not close quickly would
-raise it. The review’s
-design (A), re-certifying every published leaf, was not priced here; for Valid7 a leaf
-re-check cost about as much as the search.
+raise it. The review’s design (A), re-certifying every published leaf, was not priced
+here; for Valid7 a leaf re-check cost about as much as the search.
 
 ### A-7. Controls
 

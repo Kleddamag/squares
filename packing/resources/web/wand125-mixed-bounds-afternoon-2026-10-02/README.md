@@ -256,7 +256,21 @@ Each `merged.json` is the merged verdict, and `mixed-merge NAME --check` re-deri
 functions, so they confirm the source’s runs rather than deciding coverage a second way.
 The checker’s controls are the $n = 37$ ones of the
 [October 1 packet](../wand125-point-and-mixed-2026-10-01/README.md#controls-for-the-mixed-checker),
-made with the same checker bytes and compile; no mutation of these certificates was run.
+made with the same checker bytes and compile; no mutation of these certificates was run
+with the source’s checker.
+
+## The Independent Decisions, 3 and 6 October 2026
+
+`sqverify-fast`, this repository’s clean-room measure verifier, decided all six retained
+candidates at all 201 net directions in its census of 3 October 2026, from the reviewed
+crate source `9985c465…`, and on 6 October `devtools.sqverify_fast_census --control`
+refused two mutants of each at its least-bound direction: every mass scaled by 99/100,
+and a near-threshold scaling. The receipts are in
+[`benchmarks/measure-verifier/census-mixed/`](../../../benchmarks/measure-verifier/census-mixed/README.md),
+and each certificate’s evidence entry `E-…-sqverify-fast-replay` states its run.
+The verifier shares no code with the source’s checker and runs the same method, so these
+are a second implementation beside the replays above, not a second method, and they move
+no rung.
 
 ## What `23e2284` Changed
 
@@ -302,8 +316,9 @@ retained file, receipt or claim changes. The six bundles of this packet were bui
 
 ## Limitations
 
-- **The replays are the source’s own checker.** Coverage is decided by the source’s C++
-  alone; the replays confirm its runs and are not a second method.
+- **The replays are the source’s own checker and one independent implementation.**
+  Coverage is decided by the source’s C++ and by `sqverify-fast`, which share the
+  method; neither is a second method.
 - **The bundles are pinned and not held.** A replay needs each tarball from the source at
   the pinned revision, with the digest above. `--via git` fetches it by Git; the raw-file
   address has been refused by a session proxy before.

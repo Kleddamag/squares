@@ -1,0 +1,10 @@
+# command: /tmp/claude-0/-home-user-squares/1fb2d4ab-96d0-5b24-9e36-157598bdbf06/scratchpad/r3/venv/bin/python -c 'import multiprocessing, runpy, sys; multiprocessing.set_start_method('"'"'fork'"'"'); sys.argv = sys.argv[1:]; sys.path.insert(0, '"'"'src'"'"'); runpy.run_path(sys.argv[0], run_name='"'"'__main__'"'"')' src/run_all.py cover/M2_leb_1e-4.txt --centers 22/5 9/2 22/5 9/2 --u 0 1/16 --ubins 2 --amin 1/1280 --nproc 1 --record /dev/null
+# cwd: a work dir staged by devtools.audit_validtilt9_independent stage, driver v2, with the mutant covers devtools.audit_validtilt9_independent control wrote
+# python3: a scratch venv: CPython 3.14.7 with python-flint 0.9.0
+# host: 4 cores; load 4.57 5.40 6.41; started 2026-10-06T07:03:12Z
+roots 2, already done 0
+COUNTEREXAMPLE ['89/20', '89/20', '1/64', '9999/10000']
+COUNTEREXAMPLE ['89/20', '89/20', '3/64', '9999/10000']
+new roots 2 leaves {} uncertified 0 counterexamples 2 cpu 0.0s
+NOT VERIFIED
+# finished 2026-10-06T07:03:13Z; exit 0; wall 0.426 s; CPU 0.3 s (user 0.230 + sys 0.037); load 4.57 5.40 6.41

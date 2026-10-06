@@ -1,0 +1,65 @@
+# check_record.py on tilt9_a.jsonl tilt9_b.jsonl tilt9_c.jsonl (--claim tilt)
+## main run: structure, tiling of the region, EMPTY leaves, 2,000 random CORE leaves re-certified
+recheck seed 1974443077083783347
+claim tilt roots 28350 leaf kinds {'CORE': 6565165, 'TIERB2': 2940689, 'EMPTY': 31489}
+RECORD OK
+## Tier B re-certification sample 1 (20 random TIERB2 leaves)
+recheck seed 1001
+claim tilt roots 28350 leaf kinds {'CORE': 6565165, 'TIERB2': 2940689, 'EMPTY': 31489}
+RECORD OK
+## Tier B re-certification sample 2 (20 random TIERB2 leaves)
+recheck seed 1002
+claim tilt roots 28350 leaf kinds {'CORE': 6565165, 'TIERB2': 2940689, 'EMPTY': 31489}
+RECORD OK
+## Tier B re-certification sample 3 (20 random TIERB2 leaves)
+recheck seed 1003
+claim tilt roots 28350 leaf kinds {'CORE': 6565165, 'TIERB2': 2940689, 'EMPTY': 31489}
+RECORD OK
+## Tier B re-certification sample 4 (20 random TIERB2 leaves)
+recheck seed 1004
+claim tilt roots 28350 leaf kinds {'CORE': 6565165, 'TIERB2': 2940689, 'EMPTY': 31489}
+RECORD OK
+## Tier B re-certification sample 5 (20 random TIERB2 leaves)
+recheck seed 1005
+claim tilt roots 28350 leaf kinds {'CORE': 6565165, 'TIERB2': 2940689, 'EMPTY': 31489}
+RECORD OK
+## Tier B re-certification sample 6 (20 random TIERB2 leaves)
+recheck seed 1006
+claim tilt roots 28350 leaf kinds {'CORE': 6565165, 'TIERB2': 2940689, 'EMPTY': 31489}
+RECORD OK
+## Tier B re-certification sample 7 (20 random TIERB2 leaves)
+recheck seed 1007
+claim tilt roots 28350 leaf kinds {'CORE': 6565165, 'TIERB2': 2940689, 'EMPTY': 31489}
+RECORD OK
+## Tier B re-certification sample 8 (20 random TIERB2 leaves)
+recheck seed 1008
+claim tilt roots 28350 leaf kinds {'CORE': 6565165, 'TIERB2': 2940689, 'EMPTY': 31489}
+RECORD OK
+## Tier B re-certification sample 9 (20 random TIERB2 leaves)
+recheck seed 1009
+claim tilt roots 28350 leaf kinds {'CORE': 6565165, 'TIERB2': 2940689, 'EMPTY': 31489}
+RECORD OK
+## Tier B re-certification sample 10 (20 random TIERB2 leaves)
+recheck seed 1010
+claim tilt roots 28350 leaf kinds {'CORE': 6565165, 'TIERB2': 2940689, 'EMPTY': 31489}
+RECORD OK
+## Tier B re-certification sample 11 (20 random TIERB2 leaves)
+recheck seed 1011
+claim tilt roots 28350 leaf kinds {'CORE': 6565165, 'TIERB2': 2940689, 'EMPTY': 31489}
+RECORD OK
+## Tier B re-certification sample 12 (20 random TIERB2 leaves)
+recheck seed 1012
+claim tilt roots 28350 leaf kinds {'CORE': 6565165, 'TIERB2': 2940689, 'EMPTY': 31489}
+RECORD OK
+## Tier B re-certification sample 13 (20 random TIERB2 leaves)
+recheck seed 1013
+claim tilt roots 28350 leaf kinds {'CORE': 6565165, 'TIERB2': 2940689, 'EMPTY': 31489}
+RECORD OK
+## Tier B re-certification sample 14 (20 random TIERB2 leaves)
+recheck seed 1014
+claim tilt roots 28350 leaf kinds {'CORE': 6565165, 'TIERB2': 2940689, 'EMPTY': 31489}
+RECORD OK
+## Tier B re-certification sample 15 (20 random TIERB2 leaves)
+recheck seed 1015
+claim tilt roots 28350 leaf kinds {'CORE': 6565165, 'TIERB2': 2940689, 'EMPTY': 31489}
+RECORD OK

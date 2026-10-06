@@ -1158,6 +1158,13 @@ def test_the_slow_marker_is_declared_only_by_measured_nodes() -> None:
         "test_green17.py": {
             "test_interval_audit_certifies_an_interior_side",  # 6.0s
         },
+        # 21s of call time across 2, measured on 2026-10-06 (review findings 1 and 5 of
+        # review-2026-10-06-karakus-proposition-5-1-machine-check.md). The quick lane keeps
+        # the leaf-by-leaf replay and a sampled soundness check with its unsound control.
+        "test_karakus_strip_measure.py": {
+            "test_every_retained_leaf_respects_every_bound_and_rule",  # 17.4s
+            "test_the_tool_replays_and_matches_its_receipt",  # 3.5s
+        },
         # 27s of call time across 1. This test also carries the pin the four composite
         # tests in its file now stand on: it asserts the retained composite SVG is
         # byte-identical to the one `expected_outputs()` builds, which costs nothing here

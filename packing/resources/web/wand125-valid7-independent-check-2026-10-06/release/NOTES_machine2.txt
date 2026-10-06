@@ -1,0 +1,7 @@
+# run notes of the compute machine (host names replaced by 'machine 1' / 'machine 2' for publication); times are UTC, 2026
+# 10-05 05:06 UTC: machine 2 started on centres x in [39/10, 9/2] (record runs/tilt9_b.jsonl, seeded with machine 1's finished roots of that range); machine 1 keeps runs/tilt9.jsonl and is stopped once all its roots with x < 39/10 are done
+# 10-05 11:34 UTC: switched to run_all.py v2 (sha256 cd6627de26d77dbf; v1 899144f999e69cb0), options --bmid-u 3/16 --bmid-w 1/20, centres x in [39/10, 9/2); roots in runs/tilt9_b.jsonl before: 2432; other files unchanged
+# 10-05 13:08 UTC: resumed with --bmid-u 7/16 (was 3/16; early Tier B hand-off for every u-bin), same code v2 (run_all.py sha256 cd6627de26d77dbf); roots in runs/tilt9_b.jsonl before: 2587
+# 10-05 14:24 UTC: machine was preempted (Spot); resuming
+# 10-05 14:24 UTC: resumed with --bmid-u 7/16 (was 3/16; early Tier B hand-off for every u-bin), same code v2 (run_all.py sha256 cd6627de26d77dbf); roots in runs/tilt9_b.jsonl before: 3042
+# 10-05 15:58 UTC: own range done; starting centres x in [38/10, 39/10) in runs/tilt9_c.jsonl (same code v2, --bmid-u 7/16) to help machine 1

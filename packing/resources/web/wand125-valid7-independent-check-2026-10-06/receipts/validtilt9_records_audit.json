@@ -1,0 +1,227 @@
+{
+  "kind": "validtilt9-independent-records-audit/v1",
+  "ok": true,
+  "problems": [],
+  "records": [
+    {
+      "name": "tilt9_a.jsonl",
+      "sha256_compressed": "f38e33a2a4aa8d32f0abc757bfbf30027fb1d926bae44ac75d9e297f88b591bf",
+      "sha256_decompressed": "1e7ac2fe55a8292bdd25466aece89f31e7a083afb83601decfb9912642909271",
+      "header_argv": [
+        "src/run_all.py",
+        "cover/K4_k008_box9.txt",
+        "--centers",
+        "0",
+        "9/2",
+        "0",
+        "9/2",
+        "--u",
+        "0",
+        "7/16",
+        "--ubins",
+        "14",
+        "--nproc",
+        "16",
+        "--record",
+        "runs/tilt9.jsonl",
+        "--resume"
+      ],
+      "header_sha256": {
+        "cover/K4_k008_box9.txt": "4151d7c4059d5dcf56130c9373e6b5b60635e1a4250f46562d7ecc4d64a27801",
+        "src/run_all.py": "899144f999e69cb0b1e95063e6e9c208cca6eedca51d11c139cfd84d229ca476",
+        "src/tier_a.py": "bb23e935a2e30901d1f9bc6e455ff60c6045826dfb8edf1807c065fdf1a4c9b1",
+        "src/tier_b.py": "ca72a14909e3d242ad2006a782a795fb9cb5a27d81df1422f28aa882049505bb",
+        "src/tier_b2.py": "5fb2a7cc0cb2b2a11832c37bda4fb5f6b0da093117348619a4e6b54daf3be12f",
+        "src/solver.py": "aa462c15f72309912da3ef231d443ea6690ecccf4cbc9f94a5bd7797681b674c",
+        "src/rf.py": "5a86a6a72700574d7ab5f730d86e1d48d6670c4c89b684c770553b5c29b55c1b",
+        "src/cover.py": "939066811ba2539f77fe55670093c0643e91998206bd77a7b8c30dedc6e315dd"
+      },
+      "roots": 23940,
+      "leaves": {
+        "CORE": 5680387,
+        "EMPTY": 29969,
+        "TIERB2": 2461396
+      },
+      "uncertified": 0,
+      "counterexamples": 0,
+      "cpu_core_hours": 605.96
+    },
+    {
+      "name": "tilt9_b.jsonl",
+      "sha256_compressed": "76ec2ef1c72ea8b104dcc3f6d86e1166292e3bb339632ac18c10fe6db828a1ce",
+      "sha256_decompressed": "f802a0e47c3ee3444bf7177dd14f67a4a48ef2d6d593d9c8f6d429e4b9c5fda5",
+      "header_argv": [
+        "src/run_all.py",
+        "cover/K4_k008_box9.txt",
+        "--centers",
+        "39/10",
+        "9/2",
+        "0",
+        "9/2",
+        "--u",
+        "0",
+        "7/16",
+        "--ubins",
+        "14",
+        "--amin",
+        "1/1280",
+        "--nproc",
+        "16",
+        "--record",
+        "runs/tilt9_b.jsonl",
+        "--resume"
+      ],
+      "header_sha256": {
+        "cover/K4_k008_box9.txt": "4151d7c4059d5dcf56130c9373e6b5b60635e1a4250f46562d7ecc4d64a27801",
+        "src/run_all.py": "899144f999e69cb0b1e95063e6e9c208cca6eedca51d11c139cfd84d229ca476",
+        "src/tier_a.py": "bb23e935a2e30901d1f9bc6e455ff60c6045826dfb8edf1807c065fdf1a4c9b1",
+        "src/tier_b.py": "ca72a14909e3d242ad2006a782a795fb9cb5a27d81df1422f28aa882049505bb",
+        "src/tier_b2.py": "5fb2a7cc0cb2b2a11832c37bda4fb5f6b0da093117348619a4e6b54daf3be12f",
+        "src/solver.py": "aa462c15f72309912da3ef231d443ea6690ecccf4cbc9f94a5bd7797681b674c",
+        "src/rf.py": "5a86a6a72700574d7ab5f730d86e1d48d6670c4c89b684c770553b5c29b55c1b",
+        "src/cover.py": "939066811ba2539f77fe55670093c0643e91998206bd77a7b8c30dedc6e315dd"
+      },
+      "roots": 3780,
+      "leaves": {
+        "CORE": 884411,
+        "EMPTY": 1434,
+        "TIERB2": 478230
+      },
+      "uncertified": 0,
+      "counterexamples": 0,
+      "cpu_core_hours": 139.01
+    },
+    {
+      "name": "tilt9_c.jsonl",
+      "sha256_compressed": "0f7275dbdfa2f92702253ba797e8bc660bad1a16c8cf44f1b705edad99d51622",
+      "sha256_decompressed": "4a1e798d115ba57ea4504e4714c37420ab31ff7cfb185c291d40428987efefe3",
+      "header_argv": [
+        "src/run_all.py",
+        "cover/K4_k008_box9.txt",
+        "--centers",
+        "38/10",
+        "39/10",
+        "0",
+        "9/2",
+        "--u",
+        "0",
+        "7/16",
+        "--ubins",
+        "14",
+        "--amin",
+        "1/1280",
+        "--bmid-u",
+        "7/16",
+        "--bmid-w",
+        "1/20",
+        "--nproc",
+        "16",
+        "--record",
+        "runs/tilt9_c.jsonl"
+      ],
+      "header_sha256": {
+        "cover/K4_k008_box9.txt": "4151d7c4059d5dcf56130c9373e6b5b60635e1a4250f46562d7ecc4d64a27801",
+        "src/run_all.py": "cd6627de26d77dbf4876068612cf1bece9b52f66eeb0f7edbe5fa127dd5d9dda",
+        "src/tier_a.py": "bb23e935a2e30901d1f9bc6e455ff60c6045826dfb8edf1807c065fdf1a4c9b1",
+        "src/tier_b.py": "ca72a14909e3d242ad2006a782a795fb9cb5a27d81df1422f28aa882049505bb",
+        "src/tier_b2.py": "5fb2a7cc0cb2b2a11832c37bda4fb5f6b0da093117348619a4e6b54daf3be12f",
+        "src/solver.py": "aa462c15f72309912da3ef231d443ea6690ecccf4cbc9f94a5bd7797681b674c",
+        "src/rf.py": "5a86a6a72700574d7ab5f730d86e1d48d6670c4c89b684c770553b5c29b55c1b",
+        "src/cover.py": "939066811ba2539f77fe55670093c0643e91998206bd77a7b8c30dedc6e315dd"
+      },
+      "roots": 630,
+      "leaves": {
+        "CORE": 367,
+        "EMPTY": 86,
+        "TIERB2": 1063
+      },
+      "uncertified": 0,
+      "counterexamples": 0,
+      "cpu_core_hours": 20.88
+    }
+  ],
+  "grid_roots": 28350,
+  "region": {
+    "centres": [
+      "0",
+      "9/2"
+    ],
+    "u": [
+      "0",
+      "7/16"
+    ],
+    "u_bins": 14,
+    "covers_sqrt2_minus_1": true
+  },
+  "leaves": 9537343,
+  "leaf_kinds": {
+    "CORE": 6565165,
+    "EMPTY": 31489,
+    "TIERB2": 2940689
+  },
+  "cpu_core_hours": 765.85,
+  "stated": {
+    "leaf_kinds": {
+      "CORE": 6565165,
+      "TIERB2": 2940689,
+      "EMPTY": 31489
+    },
+    "core_hours": 766
+  },
+  "phases": {
+    "amin-1/320": {
+      "roots": 16755,
+      "recorded_cpu_hours": 111.73
+    },
+    "amin-1/1280": {
+      "roots": 8339,
+      "recorded_cpu_hours": 542.91
+    },
+    "bmid-3/16": {
+      "roots": 157,
+      "recorded_cpu_hours": 7.2
+    },
+    "bmid-7/16": {
+      "roots": 3099,
+      "recorded_cpu_hours": 104.01
+    }
+  },
+  "shared_code": {
+    "wand125_files": [
+      "check_record.py",
+      "cover.py",
+      "rf.py",
+      "run_all.py",
+      "solver.py",
+      "tier_a.py",
+      "tier_b.py",
+      "tier_b2.py"
+    ],
+    "qx2_files": [
+      "mixed_cover.py",
+      "qx2_zm.py",
+      "zeromargin.py",
+      "zm_mixed.py"
+    ],
+    "wand125_lines": 903,
+    "common_lines": [
+      "ap = argparse.ArgumentParser()",
+      "from fractions import Fraction",
+      "from fractions import Fraction as F",
+      "from multiprocessing import Pool",
+      "if (fp < 0 < fq) or (fq < 0 < fp):",
+      "if __name__ == '__main__':",
+      "line = line.split('#', 1)[0]",
+      "out.append((P[0] + t * (Q[0] - P[0]), P[1] + t * (Q[1] - P[1])))",
+      "return (1 - u * u) / d, 2 * u / d",
+      "while len(lo) >= 2 and cross(lo[-2], lo[-1], p) <= 0: lo.pop()"
+    ]
+  },
+  "roots_whose_leaves_test_their_phase": {
+    "amin-1/320": 520,
+    "amin-1/1280": 245,
+    "bmid-3/16": 59,
+    "bmid-7/16": 1572
+  },
+  "not_checked": "No leaf's bound is recomputed here; check_record.py --recheck/--recheck-b re-certify a sample, and the run itself is the source's. The phase of a root is read from its place in its record; its leaves can only refute it."
+}

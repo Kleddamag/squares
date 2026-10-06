@@ -306,6 +306,10 @@ GRID_UPPER_EVIDENCE = "E-basic-grid-upper"
 AREA_LOWER_EVIDENCE = "E-basic-area-lower"
 NAGAMOCHI_EVIDENCE = "E-nagamochi-lower"
 KARAKUS_EVIDENCE = "E-karakus-strip-lower"
+#: The machine check of Karakuş's Proposition 5.1, the step his bound rests on
+#: (`devtools.check_karakus_strip_measure`, 2026-10-06); cited beside his proof wherever
+#: that proof carries the verified lower bound.
+KARAKUS_MACHINE_EVIDENCE = "E-karakus-strip-measure-interval"
 #: The exact recomputation of the counterexample to Nagamochi's Lemma 1 (`T-085`): why a
 #: record's verified floor is Karakuş's rather than Nagamochi's. Scoped from `n = 10`, the
 #: first case whose container the counterexample family reaches.
@@ -1341,7 +1345,7 @@ def verified_lower_bound(n: int) -> dict[str, Any]:
     return {
         "value": karakus_value(n, VERIFIED_SIGNIFICANT),
         "exact_form": karakus_exact_form(n),
-        "evidence": [KARAKUS_EVIDENCE],
+        "evidence": [KARAKUS_EVIDENCE, KARAKUS_MACHINE_EVIDENCE],
     }
 
 
@@ -2287,7 +2291,9 @@ def apply_lower_bound_promotion(
     lanes = (payload["verified_lower_bound"], payload["reported_lower_bound"])
     if not any(KARAKUS_EVIDENCE in lane["evidence"] for lane in lanes):
         payload["evidence"] = [
-            ref for ref in payload["evidence"] if ref not in {KARAKUS_EVIDENCE, LEMMA1_EVIDENCE}
+            ref
+            for ref in payload["evidence"]
+            if ref not in {KARAKUS_EVIDENCE, KARAKUS_MACHINE_EVIDENCE, LEMMA1_EVIDENCE}
         ]
         payload["resources"] = [
             resource for resource in payload["resources"] if resource != KARAKUS_RESOURCE

@@ -134,7 +134,8 @@ issues:
     title: 'Preprint: for every fixed c, s(k^2-c)=k for all large k (explicit constant 0.033)'
     author: squarepacker
     opened: '2026-10-05'
-    state: open
+    state: closed
+    closed: '2026-10-06'
     kind: result-report
     triage: done
     summary: >-
@@ -184,9 +185,17 @@ issues:
         kind: import
         reported:
           - result: k2-minus-c
+      - url: https://github.com/jlevy/squares/issues/368#issuecomment-6011935672
+        date: '2026-10-06'
+        by: jlevy
+        kind: final
+        reported:
+          - result: k2-minus-c
     close_when: >-
-      The theorem is registered, its computer-assisted lemma replayed and its argument
-      reviewed, and the reply saying so is posted from main.
+      The theorem is recorded (in the register, or beside it in
+      asymptotic-waste-bounds.yaml when it settles no count n <= 324), its
+      computer-assisted lemma replayed and its argument reviewed, and the reply saying so
+      is posted from main.
 
   - number: 367
     title: 'n17 sub-pattern branch and bound: a branching rule that cuts the full trees by 10–20× on the flagged classes, and what we are working on'
@@ -228,7 +237,8 @@ issues:
     title: 'Mixed rectangle-and-point density certificates on a finer angle net (core 0.999, 416 angles): s(18) ≥ 4.7'
     author: wand125
     opened: '2026-10-05'
-    state: open
+    state: closed
+    closed: '2026-10-06'
     kind: result-report
     triage: done
     summary: >-
@@ -299,6 +309,29 @@ issues:
             status: confirmed
           - result: n18-4704
           - result: n19-48229
+      - url: https://github.com/jlevy/squares/issues/366#issuecomment-6011358561
+        date: '2026-10-06'
+        by: jlevy
+        kind: confirmation
+        reported:
+          - result: n18-4704
+            id: T-099
+            verification: V3
+            confirmation: C3
+            status: confirmed
+          - result: n19-48229
+            id: T-100
+            verification: V3
+            confirmation: C3
+            status: confirmed
+          - result: n18-4704
+            id: E-n018-wand125-mixed-4704-report
+          - result: n18-4704
+            id: E-n018-wand125-mixed-4704-sqverify-fast-replay
+          - result: n19-48229
+            id: E-n019-wand125-mixed-48229-report
+          - result: n19-48229
+            id: E-n019-wand125-mixed-48229-sqverify-fast-replay
     close_when: >-
       The s(18) certificate is confirmed or refuted and the reply saying so is posted from
       main, and the offered sqverify_fast change is taken in or declined; and the two
@@ -473,7 +506,7 @@ issues:
         register: [T-064]
     asks:
       - what: An independent check of ValidTilt9, by wand125's checker on box 9 or otherwise
-        state: queued
+        state: declined
         bead: think-y3vy
         note: >-
           On 3 October wand125 said on evand/square-packing#1 that they are running their
@@ -481,8 +514,15 @@ issues:
           reported by 5 October. This repository's clean-room verifier sqverify_fast does
           not yet cover continuous-angle closed covers; its Milestone C
           (docs/project/specs/active/plan-2026-10-03-measure-verifier-milestone-c.md) is
-          the other route.
-    beads: [think-4uir]
+          the other route. On 6 October wand125 published the run (valid7-independent-check
+          c561dbb3, release records-tilt9-v1) without posting here; it is retained, audited,
+          sampled (30 roots re-decided, 21 matching the published leaves exactly), controlled
+          and reviewed, and recorded as E-k2m4-wand125-validtilt9-report on T-081
+          (think-dsz4). The full replay, priced at about 118 to 435 CPU-hours, waits for an
+          owner budget under think-hwpr. On 6 October the owner declined the full replay
+          for now: the sample, audit, controls and review stand as the check, T-081 stays
+          V0/C1 as recorded, and think-hwpr keeps the replay as a backlog item.
+    beads: [think-4uir, think-dsz4, think-hwpr]
     answer_bead: think-4uir
     replies:
       - url: https://github.com/jlevy/squares/issues/316#issuecomment-5971664755
@@ -508,8 +548,10 @@ issues:
             confirmation: C3
             status: confirmed
     close_when: >-
-      T-081 is confirmed and the reply saying so is posted from main, and the independent
-      check of ValidTilt9 is done or declined.
+      T-081 is confirmed, or its standing is settled by the owner, and the reply saying
+      so is posted from main, and the independent check of ValidTilt9 is done or
+      declined. On 6 October the owner declined the full replay for now and asked for the
+      issue to close with T-081 recorded at V0/C1.
     notes: >-
       The k^2 - 3 corollary is registered by T-064 for k >= 6, and its k = 5 case, s(22) =
       5, is Bentz's; the issue's route adds no entry for it.
@@ -759,7 +801,7 @@ issues:
           (D-516), the 63 at n <= 100 among them: the perfect squares on the area bound,
           s(k^2 - 1) = k on T-084, s(k^2 - 2) = k on T-086, and the open floors on T-083 or
           a stronger registered bound. devtools.check_nagamochi_bounds re-derives them.
-    beads: [think-bkqm, think-bmze]
+    beads: [think-bkqm, think-bmze, think-dw1o, think-lpul]
     answer_bead: think-bmze
     replies:
       - url: https://github.com/jlevy/squares/issues/295#issuecomment-5971665348

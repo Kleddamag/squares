@@ -1,0 +1,6 @@
+# command: /tmp/claude-0/-home-user-squares/1fb2d4ab-96d0-5b24-9e36-157598bdbf06/scratchpad/r3/venv/bin/python src/tier_b2.py cover/M1_wall_1e-4.txt 81/20 83/20 1/2 3/5 0 1/64
+# cwd: a work dir staged by devtools.audit_validtilt9_independent stage, driver v2, with the mutant covers devtools.audit_validtilt9_independent control wrote
+# python3: a scratch venv: CPython 3.14.7 with python-flint 0.9.0
+# host: 4 cores; load 4.57 5.40 6.41; started 2026-10-06T07:03:11Z
+{'ok': False, 'why': 'value', 'pair': (0, 6), 'at': '1/128', 'pose': {'u': '36098797593/140737488355328', 'x': '81/20', 'y': '19817200233654669097873644943/39614083863378544117537162466', 'mass': '11042252564351700905728100849864942698029626278772706424539694698558005606975380667/11042794154864854261784200877548252954622846865094396025534036404338688000000000000', 'mass_float': 0.9999509553012075}} 0.1s
+# finished 2026-10-06T07:03:12Z; exit 0; wall 0.447 s; CPU 0.3 s (user 0.278 + sys 0.012); load 4.57 5.40 6.41

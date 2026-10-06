@@ -39,6 +39,17 @@ COMPOSITE_VECTORS = frozenset(
     ROOT / "atlas/known-best" / name
     for name in ("known-best-1-100.svg", "known-best-1-324.svg")
 )
+#: The 2026-10-06 breach's answer (PR #382): receipt roots traced as no control's input.
+RETAINED_RECEIPT_ROOTS = frozenset(
+    ROOT / relative
+    for relative in (
+        "benchmarks/gate-cost-at-324/runs",
+        "benchmarks/measure-verifier/census",
+        "benchmarks/measure-verifier/census-mixed",
+        "benchmarks/measure-verifier/review-2026-10-03-attack",
+        "witnesses/franciscouzo-2026-10-03",
+    )
+)
 
 
 @pytest.fixture(scope="module")
@@ -316,6 +327,7 @@ def test_generator_owned_prospective_outputs_stay_out_of_mutation_snapshots() ->
     }
     assert output_roots <= PRUNE
     assert CORNER_DUAL_SALVAGE_RECEIPT in PRUNE
+    assert RETAINED_RECEIPT_ROOTS <= PRUNE
     assert snapshot_source_bytes() < SNAPSHOT_MAX_BYTES
 
 
@@ -649,6 +661,56 @@ def test_old_validation_archive_is_pruned_while_current_records_survive(
     for source in retained:
         landed = tree / source.relative_to(controls.REPO)
         assert landed.read_bytes() == source.read_bytes()
+
+
+def test_retained_receipts_leave_workers_but_registered_and_linked_ones_return(
+    control_snapshot: tuple[Path, set[Path]],
+) -> None:
+    """The 2026-10-06 prune, asserted from both sides, as agenda 041's is.
+
+    No control reaches the five roots, as a mutation target or by naming one in a
+    command. Every file under them is either absent from the worker or, when a checked
+    document links it or the results register lists it, present byte for byte -- the two
+    census READMEs and the registered receipts among them. A folder a review links
+    arrives empty rather than missing, so the link scan still finds it.
+    """
+    tree, copied_targets = control_snapshot
+    specification = safe_load((ROOT / "devtools/controls.yaml").read_text())
+    for directory in sorted(RETAINED_RECEIPT_ROOTS):
+        assert directory in PRUNE
+        packing_relative = directory.relative_to(ROOT).as_posix()
+        assert all(
+            not (ROOT / control["file"]).resolve().is_relative_to(directory)
+            and packing_relative not in control["run"]
+            for control in specification["controls"]
+        )
+        sources = [path for path in directory.rglob("*") if path.is_file()]
+        assert sources
+        for source in sources:
+            relative = source.relative_to(controls.REPO)
+            copied = tree / relative
+            if relative in copied_targets:
+                assert copied.read_bytes() == source.read_bytes()
+            else:
+                assert not copied.exists()
+
+    census = ROOT / "benchmarks/measure-verifier"
+    for returned in (
+        census / "census/README.md",
+        census / "census-mixed/README.md",
+        census / "census/census.json",
+        census / "census-mixed/census.json",
+    ):
+        relative = returned.relative_to(controls.REPO)
+        assert relative in copied_targets
+        assert (tree / relative).read_bytes() == returned.read_bytes()
+    for linked in (
+        census / "review-2026-10-03-attack",
+        ROOT / "witnesses/franciscouzo-2026-10-03",
+    ):
+        landed = tree / linked.relative_to(controls.REPO)
+        assert landed.is_dir()
+        assert not any(landed.iterdir())
 
 
 def test_math_startup_reports_are_pruned_but_record_sources_survive(

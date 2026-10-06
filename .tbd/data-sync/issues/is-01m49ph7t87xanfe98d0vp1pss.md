@@ -1,0 +1,21 @@
+---
+type: is
+id: is-01m49ph7t87xanfe98d0vp1pss
+title: "B4: result/t-nnn.html as complete pages with rebased links; popovers extract from them; overview drops inline popover summaries"
+kind: task
+status: open
+priority: 1
+version: 3
+spec_path: docs/project/specs/active/plan-2026-10-06-site-urls-seo-performance.md
+labels:
+  - pages
+dependencies:
+  - type: blocks
+    target: is-01m49ph3nezcsjef7cq236g2vh
+  - type: blocks
+    target: is-01m49ph2b8x80wccsyns6728zn
+parent_id: is-01m49ph0abvy6j16zcq4jse39y
+created_at: 2026-10-06T22:49:46.056Z
+updated_at: 2026-10-06T22:49:56.863Z
+---
+Lane B. render_overview.result_fragments, overview_sections.result_fragment, row-popover.js.

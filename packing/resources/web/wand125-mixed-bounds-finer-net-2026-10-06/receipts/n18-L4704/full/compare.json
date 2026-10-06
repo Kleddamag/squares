@@ -1,0 +1,15 @@
+{
+  "kind": "wand125-declared-net-compare/v2",
+  "certificate": "mixed_n18_L4704",
+  "status": "FULL_REPLAY_MATCHES_SHIPPED",
+  "run": {"start":"2026-10-06T03:28:53Z","end":"2026-10-06T15:31:01Z","exit":"0"},
+  "progress": {"done":832,"total":832},
+  "fresh_status": "ALL_ANGLES_VERIFIED_AND_REPLAYED",
+  "fresh_bundle_status": "REPLAYED_PROOF_BUNDLE",
+  "certificate_rewritten": true,
+  "records_matching": 832,
+  "records": 832,
+  "unchanged_shipped_files": 1681,
+  "differing": [],
+  "certificate_sha256": "5e817f89882cb7420fb9ff37af71683abec6a27421dac425f715526140964606"
+}

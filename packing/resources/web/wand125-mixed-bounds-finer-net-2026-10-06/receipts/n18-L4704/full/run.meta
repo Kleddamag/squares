@@ -1,0 +1,17 @@
+command: OPENBLAS_NUM_THREADS=1 OMP_NUM_THREADS=1 /home/user/squares-lanes/r2/packing/.venv/bin/python3 code/verify_mixed_full_proof.py proof --workers 2
+cwd: /tmp/claude-0/-home-user-squares/1fb2d4ab-96d0-5b24-9e36-157598bdbf06/scratchpad/r2/full-n18/run/n18-L4.704-proof-bundle
+tarball: n18-L4.704-proof-bundle.tar.gz sha256 a4098f8200686c944d20c4c9458c3412225b1ca06f77423206a3306d03d4a709 bytes 31800246
+python: 3.14.7 numpy 2.5.2
+cxx: c++ (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0
+host: Linux 6.18.44-fc-v70 x86_64, 4 cpus
+niceness: 10
+start: 2026-10-06T03:28:53Z
+loadavg_start: 1.15 1.85 2.49
+exit: 0
+end: 2026-10-06T15:31:01Z
+loadavg_end: 8.94 8.57 7.30
+wall_seconds: 43328.2
+cpu_user_seconds: 6.3
+cpu_system_seconds: 0.6
+cpu_seconds: 6.8
+max_rss_kb: 128352

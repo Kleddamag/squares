@@ -251,10 +251,9 @@ ran the same command on three more nodes of each, 2, 759 and 830 at $n = 18$ and
 and 415 at $n = 19$, each returning the shipped record, so ten nodes of each net are
 reproduced here with the producer’s code.
 
-**`n18-L4704`: the bundle’s own driver, in full, running.** On 6 October 2026 at
-03:28:44 UTC `replay` unpacked the pinned tarball twice, bound the first copy, and
-started the bundle’s driver in the second as its README says, at two workers under
-`nice`:
+**`n18-L4704`: the bundle’s own driver, in full.** On 6 October 2026 at 03:28:44 UTC
+`replay` unpacked the pinned tarball twice, bound the first copy, and started the
+bundle’s driver in the second as its README says, at two workers under `nice`:
 
 ```sh
 # from packing/
@@ -268,9 +267,20 @@ of it from `/proc` at 03:49:09 UTC:
 [`receipts/n18-L4704/full/processes.json`](receipts/n18-L4704/full/processes.json). The
 driver, its forkserver and both pooled workers, which serve the whole run, ran with no
 `-O` and no `PYTHONOPTIMIZE`, so the source’s `assert` checks are on. `compare` reads that
-snapshot beside the run’s record. At 05:04 UTC the driver had replayed 261 of the 832
-nodes. Until its record, its output and `compare`’s receipt are committed beside the
-snapshot, this replay decides nothing.
+snapshot beside the run’s record.
+
+The driver ran from 03:28:53 to 15:31:01 UTC, 43,328 seconds (12.04 hours) of wall
+time on the shared host at load 1 to 19, and exited zero after replaying all 832 nodes.
+Its record holds only the driver’s own CPU, 6.8 seconds: the pooled workers are
+forkserver processes, whose times the runner’s `wait4` does not reach, so the run’s CPU
+is not recorded; the samples above price it at about 12.8 CPU-hours. `compare`, as at
+`main`, then found every one of the 832 regenerated records and the rewritten
+certificate written during the run and equal to the shipped and retained ones, and the
+1,681 other shipped files unchanged: `FULL_REPLAY_MATCHES_SHIPPED`. The run’s record,
+its output and the receipt are
+[`receipts/n18-L4704/full/`](receipts/n18-L4704/full/), and the replay is recorded as
+`E-n018-wand125-mixed-4704-source-replay`: a complete reproduction with the producer’s
+code beside T-099’s rung.
 
 **The controls.** `control` binds a fresh copy of each bundle, runs the full driver’s
 preconditions, and at the oblique node of the least recorded bound (797 at $n = 18$, 37

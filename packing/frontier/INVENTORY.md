@@ -8,7 +8,7 @@ ours, which rest on someone else's argument, and how far each has been checked.
 
 ## The short version
 
-- **386** evidence records. **244** are formal; **237** of those were established here.
+- **387** evidence records. **245** are formal; **238** of those were established here.
 - **134** rest on an argument made elsewhere, of which **7** have been read by nobody here.
 - **40** claim to be first established here. **14** make no novelty statement at all - not assessed, which is not the same as not novel.
 
@@ -407,14 +407,15 @@ results, it is a statement about what this repository has itself examined.
 | `E-n018-wand125-mixed-4704-report` | 1 | lower-bound | reported | - | elsewhere | informally-verified | previously-published | producer’s code | `V-wand125-mixed-rotated-verify-cpp`, `V-wand125-verify-mixed-full-proof-py` |
 | `E-n019-wand125-mixed-48229-report` | 1 | lower-bound | reported | - | elsewhere | informally-verified | previously-published | producer’s code | `V-wand125-mixed-rotated-verify-cpp`, `V-wand125-verify-mixed-full-proof-py` |
 | `E-n018-wand125-mixed-4704-sqverify-fast-replay` | 1 | lower-bound | verified | strict inequalities only | here | - | previously-published | independent | `V-sqverify-fast` |
+| `E-n018-wand125-mixed-4704-source-replay` | 0 | lower-bound | verified | strict inequalities only | here | - | previously-published | producer’s code | `V-wand125-mixed-rotated-verify-cpp`, `V-wand125-verify-mixed-full-proof-py`, `V-audit-wand125-declared-net` |
 | `E-n019-wand125-mixed-48229-sqverify-fast-replay` | 1 | lower-bound | verified | strict inequalities only | here | - | previously-published | independent | `V-sqverify-fast` |
 
 ## What the register rests on
 
-- **assurance**: numerically-checked 4, reported 138, verified 244
-- **method**: exact-algebraic 101, interval-certified 129, numerical-multiprecision 4, proof-assistant-checked 4, proof-audited 3, published-proof 7, reported 138
-- **novelty**: apparently-novel 40, common-knowledge 4, not assessed 14, previously-published 328
-- **relationship to the producer's code**: generator 5, independent-implementation 131, not-applicable 20, same-implementation 217, shared-components 7, unknown-historical 6
+- **assurance**: numerically-checked 4, reported 138, verified 245
+- **method**: exact-algebraic 101, interval-certified 130, numerical-multiprecision 4, proof-assistant-checked 4, proof-audited 3, published-proof 7, reported 138
+- **novelty**: apparently-novel 40, common-knowledge 4, not assessed 14, previously-published 329
+- **relationship to the producer's code**: generator 5, independent-implementation 131, not-applicable 20, same-implementation 218, shared-components 7, unknown-historical 6
 
 The `cases` column is how many frontier records cite each piece of evidence, and it is the reason to read this table rather than count records. Ranked below are the *formal* records only: a `reported` record cited across the frontier may be a shared catalogue and is labelled as such, which is the register working rather than risk. The risk is a verified claim resting on an argument nobody has examined.
 

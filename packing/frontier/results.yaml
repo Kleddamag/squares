@@ -9687,8 +9687,9 @@ results:
       source's checker and runs the same net-and-shrink method, so it is a second
       implementation and not a second method. The 6 October review of the certificate
       re-derived the 832-node net in exact arithmetic and found no defect. The source's own
-      checker was replayed here at 10 of the 832 directions, each returning the
-      certificate's own record, and not in full.
+      checker was also replayed here in full, the bundle's own driver over all 832 nodes
+      with its assertions on, each returning the certificate's own record: confirmed,
+      reproduced with the producer's code.
 
       wand125 after Tokoharu and Levy,
       [square-packing-bounds](https://github.com/wand125/square-packing-bounds/tree/65e408c9fa6bb787b6744c7c479ec19551a15016/certificates/mixed_n18_L4704).
@@ -9716,13 +9717,14 @@ results:
       sqverify-fast at all 832 directions of the net the retained candidate declares: one
       interval-certified method, replayed here by an independent implementation, C3, on the
       census route, whose per-certificate conditions for a declared net the soundness
-      review of the declared-net change set and this certificate meets. The source's
-      checker was replayed at 10 directions and its axis tables were not run in full here,
-      so no second method and no complete reproduction with the producer's code stands
-      beside it.
+      review of the declared-net change set and this certificate meets. Beside it, the
+      bundle's own driver replayed the source's checker over all 832 nodes, the axis
+      tables among them, each returning the shipped record: a complete reproduction with
+      the producer's code, not a second method.
     evidence:
       - E-n018-wand125-mixed-4704-report
       - E-n018-wand125-mixed-4704-sqverify-fast-replay
+      - E-n018-wand125-mixed-4704-source-replay
     reviews:
       - path: docs/project/reviews/review-2026-10-06-wand125-finer-net-n18-n19.md
         kind: adversarial
@@ -9739,6 +9741,9 @@ results:
       - packing/resources/web/wand125-mixed-bounds-finer-net-2026-10-06/receipts/n18-L4704/audit.json
       - packing/resources/web/wand125-mixed-bounds-finer-net-2026-10-06/receipts/n18-L4704/bundle.json
       - packing/resources/web/wand125-mixed-bounds-finer-net-2026-10-06/receipts/n18-L4704/sample/nodes-000-831.json
+      - packing/resources/web/wand125-mixed-bounds-finer-net-2026-10-06/receipts/n18-L4704/full/compare.json
+      - packing/resources/web/wand125-mixed-bounds-finer-net-2026-10-06/receipts/n18-L4704/full/run.meta
+      - packing/resources/web/wand125-mixed-bounds-finer-net-2026-10-06/receipts/n18-L4704/full/processes.json
       - packing/devtools/audit_wand125_declared_net.py
       - packing/sqverify_fast/SOUNDNESS.md
       - packing/benchmarks/measure-verifier/census-mixed/census.json
@@ -9754,11 +9759,9 @@ results:
     next_rung: >-
       V4 and C4 need two adversarial AI reviews of this result by distinct reviewers and a
       human oversight record. One is retained, the review of 6 October that read the
-      certificate. The complete replay of the source's own checker, the bundle's driver over
-      all 832 nodes by devtools.audit_wand125_declared_net replay (12.8 CPU-hours priced
-      here, running since 6 October, think-qzh5), would add a reproduction with the
-      producer's code beside the rung; a second machine method would be a method-distinct
-      decision of rotated coverage.
+      certificate. A second machine method would be a method-distinct decision of rotated
+      coverage; the complete replay of the source's own checker already stands beside the
+      rung (E-n018-wand125-mixed-4704-source-replay).
     notes: >-
       Raised from V0/C1 on 6 October 2026 (think-qzh5) by the sqverify-fast replay, 702
       CPU seconds at one thread, with its controls. It rests on three reviews: the one of
@@ -9768,6 +9771,11 @@ results:
       format M certificate on a declared net; and the review of 5 October that accepted
       the census route as a complete replay here for a certificate meeting its conditions.
       The census test holds the declared net to lemma N0's premises and to that source.
+
+      The bundle's own driver replayed the source's checker over all 832 nodes from
+      03:28:53Z to 15:31:01Z on 6 October, 12.04 hours of wall time at two workers under
+      load, every record equal to the shipped one (think-drtz); a /proc snapshot during the
+      run shows its assertions on.
 
       n = 18's verified lower bound moves from T-096's 47/10 to 588/125; at n = 19 the
       record already holds more (T-100). A later revision than T-096's at the same count,

@@ -3,7 +3,7 @@ softschema:
   schema: source-coverage.schema.yaml
   status: enforced
 
-last_reviewed: '2026-10-05'
+last_reviewed: '2026-10-06'
 coverage_scope: >
   Current public upper-bound catalogues and first-party result releases known to this
   project, the Schadt n=29 witness-contract regression source, and the September 2026
@@ -665,7 +665,7 @@ sources:
       replay here, and the 29 that hold a verified bound are registered again as T-074
       (E-wand125-rectangle-2026-10-01-source-replay). At n20, n42 and n70 the 2026-10-02
       revision's raised rungs (T-077) now hold the reported field, and at n19 the 6 October
-      finer-net certificate mixed_n19_L48229 (T-100) does, and from 6 October it holds the verified lane there too, decided by sqverify-fast. At n59, n66, n77, n78 and n90 a stronger report holds the case, so
+      finer-net certificate mixed_n19_L48229 (T-100) does, and from 6 October it holds the verified lane there too, decided by sqverify-fast. At n26 to n30, n39 and n41 the source's mixed certificates of 6 October (T-111 to T-117, the 6 October check2 packet) now hold the reported field; the verified lane keeps this revision's values there until their replays. At n59, n66, n77, n78 and n90 a stronger report holds the case, so
       those five case records do not cite this source. The request says each directory
       carries a tarball, and none does.
   - id: wand125-exact-covers-2026-10-01
@@ -849,7 +849,8 @@ sources:
       coverage replay of the seven has run here, so each is a reported bound (T-077). At
       n59 and n77 the exact values s(59) = 8 and s(77) = 9 hold, and at n91 and n93 the same
       revision's mixed certificates (T-075), so those four case records do not cite this
-      source.
+      source. At n20 the source's mixed_n20_L4905 of 6 October (T-110, the 6 October
+      check2 packet) now holds the reported field.
   - id: wand125-mixed-bounds-afternoon-2026-10-02
     title: Mixed rectangle-measure certificates for n = 83, 85, 87, 91, 92, 96
     role: source-repository
@@ -1271,7 +1272,48 @@ sources:
       path-metadata redaction and hashes. The exact audits and the bundle bindings of devtools.audit_wand125_declared_net pass on both. On 6 October sqverify-fast, this repository's clean-room measure verifier, decided both at every direction of their declared nets, which put them in the verified lane; the source's own checker ran here at 10 directions of each and not in full. The commit's
       verification/sqverify-net, the source's copy of this repository's sqverify_fast
       changed to read a declared net, is pinned by digest and not retained. The
-      proof-bundle tarballs are pinned by digest and not retained.
+      proof-bundle tarballs are pinned by digest and not retained. At n = 18 and 19 the
+      source's check2 certificates mixed_n18_L4705 and mixed_n19_L4825 of later that day
+      (T-108 and T-109, the 6 October check2 packet) supersede these two in the reported
+      lane; the verified lane keeps 588/125 and 48229/10000 until their replays.
+  - id: wand125-mixed-bounds-check2-2026-10-06
+    title: Mixed rectangle-measure certificates of 6 October 2026 for ten counts, nine of them check2 bundles
+    role: source-repository
+    url: https://github.com/wand125/square-packing-bounds/tree/2fad66e02f54a492835dc41ac37a9184e1e7a662
+    local: resources/web/wand125-mixed-bounds-check2-2026-10-06/
+    source_key: '[wand125 mixed bounds check2 2026-10-06]'
+    scope: {n_values: [18, 19, 20, 26, 27, 28, 29, 30, 39, 41]}
+    reviewed: '2026-10-06'
+    source_date: '2026-10-06'
+    disposition: current-report
+    replay_disposition: case-specific
+    represented_by: [frontier/n-018.md, frontier/n-019.md, frontier/n-020.md, frontier/n-026.md, frontier/n-027.md, frontier/n-028.md, frontier/n-029.md, frontier/n-030.md, frontier/n-039.md, frontier/n-041.md]
+    evidence:
+      - E-n018-wand125-mixed-4705-report
+      - E-n019-wand125-mixed-4825-report
+      - E-n020-wand125-mixed-4905-report
+      - E-n026-wand125-mixed-5545-report
+      - E-n027-wand125-mixed-56435-report
+      - E-n028-wand125-mixed-5735-report
+      - E-n029-wand125-mixed-581-report
+      - E-n030-wand125-mixed-58835-report
+      - E-n039-wand125-mixed-665-report
+      - E-n041-wand125-mixed-6775-report
+    notes: >-
+      Revision 2fad66e02f54a492835dc41ac37a9184e1e7a662, retrieved at 2026-10-06T07:47Z by
+      the intake pass of 6 October; no request names these certificates. Ten commits since
+      65e408c each add one directory and one root README section: ten rectangle densities
+      of mass n - 1/100000 on nets their candidates declare, at n18, n19, n20, n26, n27,
+      n28, n29, n30, n39 and n41, each above what the record reported at its count (T-108
+      to T-117). mixed_n29_L581 is a complete proof bundle checked by the source's research
+      copy of Tokoharu's verify.cpp, byte for byte the checker of its n = 50 certificate.
+      The other nine are check2 bundles: they ship no C++ record and are checked at the
+      source by sqverify-proof-net, its copy of this repository's sqverify_fast changed to
+      read the declared net, whose git archive is pinned by digest and neither retained nor
+      opened. mixed_n18_L4705 and mixed_n19_L4825 declare a net of 2073 half-angle tangents
+      of step 1/5002 at core 4999/5000 and supersede T-099 and T-100. The exact audits and
+      the bundle bindings of devtools.audit_wand125_declared_net pass on all ten; none
+      decides coverage. The tarballs are pinned by digest and not retained.
   - id: wand125-valid7-independent-check-2026-10-02
     title: Independent exact checker of Valid7 for s(k^2 - 3) = k
     role: source-repository

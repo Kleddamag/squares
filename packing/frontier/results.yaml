@@ -9485,3 +9485,851 @@ results:
       machine is its own run of the same checker, on the bundle before its path metadata
       was made relative, and was not checked here. The proof-bundle tarball is pinned by
       digest and not retained. Ids here are provisional until merged.
+
+  - id: T-108
+    kind: lower-bound
+    registered: '2026-10-06'
+    headline: "Mixed rectangle-measure lower bound reported at `n = 18`, checked by a copy of sqverify-fast"
+    claim: >-
+      wand125/square-packing-bounds reports s(18) >= 941/200 = 4.705, by a
+      rectangle-density certificate on a net it declares, published on 6 October 2026 with
+      a check by the source's adaptation of this repository's sqverify_fast.
+
+      The certificate is a density of 324 uniform rectangles in D4 orbits, and no point
+      mass, of total mass 1799999/100000, on a net finer than any it declared before: core
+      side 4999/5000 and 2073 half-angle tangents of step 1/5002, with 4999/5000 (1 +
+      1/5002) = 25009997/25010000 < 1. The source reports every core at a net angle
+      capturing mass at least one, at all 2073 directions, by sqverify-proof-net, this
+      repository's sqverify_fast with one change that reads the declared net, and calls it
+      an independent second-system check. It ships no record of its C++ checker for this
+      certificate.
+
+      The value is above the 588/125 = 4.704 of T-099, the source's earlier certificate
+      and the reported and verified lower bound at n = 18, by 0.001, and supersedes it.
+
+      Here the source was retained and its exact premises, those of the declared net among
+      them, were recomputed from the retained bytes, and the source's run log was bound to
+      the declared net and its receipt. None of it decides coverage. The value stands as
+      reported, and the verified lower bound is unchanged.
+
+      wand125 after Tokoharu and Levy,
+      [square-packing-bounds](https://github.com/wand125/square-packing-bounds/tree/2fad66e02f54a492835dc41ac37a9184e1e7a662/certificates/mixed_n18_L4705).
+      No registration was requested: the intake pass that read 2fad66e found it. The
+      source says parts of the work were produced with AI assistance under human
+      direction.
+    scope: {n_values: [18]}
+    verification: V0
+    confirmation: C0
+    significance:
+      score: 3
+      rationale: >-
+        Scored as a claim: if the replay passes, the strongest verified lower bound on
+        record at n = 18, by 0.001. The certificate kind of T-099 on a declared net,
+        checked at the source by a copy of this repository's verifier rather than its
+        C++ checker; no new technique, at S3 as T-099 and T-100 are. The score gates
+        nothing.
+      scored: '2026-10-06'
+      by: 'wand125 check2 import, registering lane R7 of the 6 October intake round (repository; draft)'
+    novelty: previously-published
+    attribution:
+      source_keys: ['[wand125 mixed bounds check2 2026-10-06]']
+      published: '2026-10-06'
+    composition: >-
+      One primary certificate on one reported entry, at V0/C0: retained and audited for
+      its exact premises, not reviewed and not replayed. Coverage is decided at the source
+      by a copy of this repository's sqverify_fast changed to read a declared net, so a
+      sqverify-fast replay here would re-implement the producer's check sharing that
+      crate, not independently. The source's C++ checker, which shares no code with it,
+      was not run on this candidate.
+    evidence:
+      - E-n018-wand125-mixed-4705-report
+    artifacts:
+      - packing/resources/web/wand125-mixed-bounds-check2-2026-10-06/README.md
+      - packing/resources/web/wand125-mixed-bounds-check2-2026-10-06/receipts/n18-L4705/audit.json
+      - packing/resources/web/wand125-mixed-bounds-check2-2026-10-06/receipts/n18-L4705/bundle.json
+      - packing/devtools/audit_wand125_declared_net.py
+      - packing/sqverify_fast/SOUNDNESS.md
+    next_rung: >-
+      A review of the certificate and of the check2 form, and a complete replay:
+      sqverify-fast over all 2073 directions of the declared net on the census route,
+      which the declared-net soundness review accepted for a net meeting lemma N0's
+      premises, as this one does. The verified lower bound at n = 18 moves when it passes
+      and the review finds no blocking defect. Samples of the source's C++ checker on the
+      candidate would add a check that shares no code with the crate.
+    notes: >-
+      V0 because the cited entry is the source's claim: assurance reported, replay not yet
+      complete. C0 because nothing here has yet read the certificate's mathematics: the
+      exact audit and the bundle binding decide no direction. The source's pre-publication
+      run on another host is its own run of the same build and was not checked here. The
+      check2 tarball is pinned by digest and not retained, and the adapted crate inside it
+      is pinned and not opened. Ids here are provisional until merged.
+    activity:
+      state: in-analysis
+      what: >-
+        The sqverify-fast census row and its controls, samples of the source's C++
+        checker, and one review of the batch, run separately.
+      since: '2026-10-06'
+      link: think-yrdj
+
+  - id: T-109
+    kind: lower-bound
+    registered: '2026-10-06'
+    headline: "Mixed rectangle-measure lower bound reported at `n = 19`, checked by a copy of sqverify-fast"
+    claim: >-
+      wand125/square-packing-bounds reports s(19) >= 193/40 = 4.825, by a
+      rectangle-density certificate on a net it declares, published on 6 October 2026 with
+      a check by the source's adaptation of this repository's sqverify_fast.
+
+      The certificate is a density of 341 uniform rectangles in D4 orbits, and no point
+      mass, of total mass 1899999/100000, on a net finer than any it declared before: core
+      side 4999/5000 and 2073 half-angle tangents of step 1/5002, with 4999/5000 (1 +
+      1/5002) = 25009997/25010000 < 1. The source reports every core at a net angle
+      capturing mass at least one, at all 2073 directions, by sqverify-proof-net, this
+      repository's sqverify_fast with one change that reads the declared net, and calls it
+      an independent second-system check. It ships no record of its C++ checker for this
+      certificate.
+
+      The value is above the 48229/10000 = 4.8229 of T-100, the source's earlier
+      certificate and the reported and verified lower bound at n = 19, by 0.0021, and
+      supersedes it.
+
+      Here the source was retained and its exact premises, those of the declared net among
+      them, were recomputed from the retained bytes, and the source's run log was bound to
+      the declared net and its receipt. None of it decides coverage. The value stands as
+      reported, and the verified lower bound is unchanged.
+
+      wand125 after Tokoharu and Levy,
+      [square-packing-bounds](https://github.com/wand125/square-packing-bounds/tree/2fad66e02f54a492835dc41ac37a9184e1e7a662/certificates/mixed_n19_L4825).
+      No registration was requested: the intake pass that read 2fad66e found it. The
+      source says parts of the work were produced with AI assistance under human
+      direction.
+    scope: {n_values: [19]}
+    verification: V0
+    confirmation: C0
+    significance:
+      score: 3
+      rationale: >-
+        Scored as a claim: if the replay passes, the strongest verified lower bound on
+        record at n = 19, by 0.0021. The certificate kind of T-099 on a declared net,
+        checked at the source by a copy of this repository's verifier rather than its
+        C++ checker; no new technique, at S3 as T-099 and T-100 are. The score gates
+        nothing.
+      scored: '2026-10-06'
+      by: 'wand125 check2 import, registering lane R7 of the 6 October intake round (repository; draft)'
+    novelty: previously-published
+    attribution:
+      source_keys: ['[wand125 mixed bounds check2 2026-10-06]']
+      published: '2026-10-06'
+    composition: >-
+      One primary certificate on one reported entry, at V0/C0: retained and audited for
+      its exact premises, not reviewed and not replayed. Coverage is decided at the source
+      by a copy of this repository's sqverify_fast changed to read a declared net, so a
+      sqverify-fast replay here would re-implement the producer's check sharing that
+      crate, not independently. The source's C++ checker, which shares no code with it,
+      was not run on this candidate.
+    evidence:
+      - E-n019-wand125-mixed-4825-report
+    artifacts:
+      - packing/resources/web/wand125-mixed-bounds-check2-2026-10-06/README.md
+      - packing/resources/web/wand125-mixed-bounds-check2-2026-10-06/receipts/n19-L4825/audit.json
+      - packing/resources/web/wand125-mixed-bounds-check2-2026-10-06/receipts/n19-L4825/bundle.json
+      - packing/devtools/audit_wand125_declared_net.py
+      - packing/sqverify_fast/SOUNDNESS.md
+    next_rung: >-
+      A review of the certificate and of the check2 form, and a complete replay:
+      sqverify-fast over all 2073 directions of the declared net on the census route,
+      which the declared-net soundness review accepted for a net meeting lemma N0's
+      premises, as this one does. The verified lower bound at n = 19 moves when it passes
+      and the review finds no blocking defect. Samples of the source's C++ checker on the
+      candidate would add a check that shares no code with the crate.
+    notes: >-
+      V0 because the cited entry is the source's claim: assurance reported, replay not yet
+      complete. C0 because nothing here has yet read the certificate's mathematics: the
+      exact audit and the bundle binding decide no direction. The source's pre-publication
+      run on another host is its own run of the same build and was not checked here. The
+      check2 tarball is pinned by digest and not retained, and the adapted crate inside it
+      is pinned and not opened. Ids here are provisional until merged.
+    activity:
+      state: in-analysis
+      what: >-
+        The sqverify-fast census row and its controls, samples of the source's C++
+        checker, and one review of the batch, run separately.
+      since: '2026-10-06'
+      link: think-yrdj
+
+  - id: T-110
+    kind: lower-bound
+    registered: '2026-10-06'
+    headline: "Mixed rectangle-measure lower bound reported at `n = 20`, checked by a copy of sqverify-fast"
+    claim: >-
+      wand125/square-packing-bounds reports s(20) >= 981/200 = 4.905, by a
+      rectangle-density certificate on a net it declares, published on 6 October 2026 with
+      a check by the source's adaptation of this repository's sqverify_fast.
+
+      The certificate is a density of 327 uniform rectangles in D4 orbits, and no point
+      mass, of total mass 1999999/100000, on T-099's declared net: core side 1999/2000 and
+      832 half-angle tangents of step 1/2006, with 1999/2000 (1 + 1/2006) =
+      4011993/4012000 < 1. The source reports every core at a net angle capturing mass at
+      least one, at all 832 directions, by sqverify-proof-net, this repository's
+      sqverify_fast with one change that reads the declared net, and calls it an
+      independent second-system check. It ships no record of its C++ checker for this
+      certificate.
+
+      The value is above the 49/10 = 4.9 the record reported at n = 20, the source's
+      rectangle certificate rect_n20_L49 (T-077), by 0.005, and above the verified
+      1959/400 = 4.8975 (T-074) by 0.0075.
+
+      Here the source was retained and its exact premises, those of the declared net among
+      them, were recomputed from the retained bytes, and the source's run log was bound to
+      the declared net and its receipt. None of it decides coverage. The value stands as
+      reported, and the verified lower bound is unchanged.
+
+      wand125 after Tokoharu and Levy,
+      [square-packing-bounds](https://github.com/wand125/square-packing-bounds/tree/2fad66e02f54a492835dc41ac37a9184e1e7a662/certificates/mixed_n20_L4905).
+      No registration was requested: the intake pass that read 2fad66e found it. The
+      source says parts of the work were produced with AI assistance under human
+      direction.
+    scope: {n_values: [20]}
+    verification: V0
+    confirmation: C0
+    significance:
+      score: 3
+      rationale: >-
+        Scored as a claim: if the replay passes, the strongest verified lower bound on
+        record at n = 20, by 0.0075. The certificate kind of T-099 on a declared net,
+        checked at the source by a copy of this repository's verifier rather than its
+        C++ checker; no new technique, at S3 as T-099 and T-100 are. The score gates
+        nothing.
+      scored: '2026-10-06'
+      by: 'wand125 check2 import, registering lane R7 of the 6 October intake round (repository; draft)'
+    novelty: previously-published
+    attribution:
+      source_keys: ['[wand125 mixed bounds check2 2026-10-06]']
+      published: '2026-10-06'
+    composition: >-
+      One primary certificate on one reported entry, at V0/C0: retained and audited for
+      its exact premises, not reviewed and not replayed. Coverage is decided at the source
+      by a copy of this repository's sqverify_fast changed to read a declared net, so a
+      sqverify-fast replay here would re-implement the producer's check sharing that
+      crate, not independently. The source's C++ checker, which shares no code with it,
+      was not run on this candidate.
+    evidence:
+      - E-n020-wand125-mixed-4905-report
+    artifacts:
+      - packing/resources/web/wand125-mixed-bounds-check2-2026-10-06/README.md
+      - packing/resources/web/wand125-mixed-bounds-check2-2026-10-06/receipts/n20-L4905/audit.json
+      - packing/resources/web/wand125-mixed-bounds-check2-2026-10-06/receipts/n20-L4905/bundle.json
+      - packing/devtools/audit_wand125_declared_net.py
+      - packing/sqverify_fast/SOUNDNESS.md
+    next_rung: >-
+      A review of the certificate and of the check2 form, and a complete replay:
+      sqverify-fast over all 832 directions of the declared net on the census route, which
+      the declared-net soundness review accepted for a net meeting lemma N0's premises, as
+      this one does. The verified lower bound at n = 20 moves when it passes and the
+      review finds no blocking defect. Samples of the source's C++ checker on the
+      candidate would add a check that shares no code with the crate.
+    notes: >-
+      V0 because the cited entry is the source's claim: assurance reported, replay not yet
+      complete. C0 because nothing here has yet read the certificate's mathematics: the
+      exact audit and the bundle binding decide no direction. The source's pre-publication
+      run on another host is its own run of the same build and was not checked here. The
+      check2 tarball is pinned by digest and not retained, and the adapted crate inside it
+      is pinned and not opened. Ids here are provisional until merged.
+    activity:
+      state: in-analysis
+      what: >-
+        The sqverify-fast census row and its controls, samples of the source's C++
+        checker, and one review of the batch, run separately.
+      since: '2026-10-06'
+      link: think-yrdj
+
+  - id: T-111
+    kind: lower-bound
+    registered: '2026-10-06'
+    headline: "Mixed rectangle-measure lower bound reported at `n = 26`, checked by a copy of sqverify-fast"
+    claim: >-
+      wand125/square-packing-bounds reports s(26) >= 1109/200 = 5.545, by a
+      rectangle-density certificate on a net it declares, published on 6 October 2026 with
+      a check by the source's adaptation of this repository's sqverify_fast.
+
+      The certificate is a density of 477 uniform rectangles in D4 orbits, and no point
+      mass, of total mass 2599999/100000, on T-099's declared net: core side 1999/2000 and
+      832 half-angle tangents of step 1/2006, with 1999/2000 (1 + 1/2006) =
+      4011993/4012000 < 1. The source reports every core at a net angle capturing mass at
+      least one, at all 832 directions, by sqverify-proof-net, this repository's
+      sqverify_fast with one change that reads the declared net, and calls it an
+      independent second-system check. It ships no record of its C++ checker for this
+      certificate.
+
+      The value is above 2213/400 = 5.5325, the source's rectangle certificate
+      rect_n26_L55325 and the reported (T-068) and verified (T-074) lower bound at n = 26,
+      by 0.0125.
+
+      Here the source was retained and its exact premises, those of the declared net among
+      them, were recomputed from the retained bytes, and the source's run log was bound to
+      the declared net and its receipt. None of it decides coverage. The value stands as
+      reported, and the verified lower bound is unchanged.
+
+      wand125 after Tokoharu and Levy,
+      [square-packing-bounds](https://github.com/wand125/square-packing-bounds/tree/2fad66e02f54a492835dc41ac37a9184e1e7a662/certificates/mixed_n26_L5545).
+      No registration was requested: the intake pass that read 2fad66e found it. The
+      source says parts of the work were produced with AI assistance under human
+      direction.
+    scope: {n_values: [26]}
+    verification: V0
+    confirmation: C0
+    significance:
+      score: 3
+      rationale: >-
+        Scored as a claim: if the replay passes, the strongest verified lower bound on
+        record at n = 26, by 0.0125. The certificate kind of T-099 on a declared net,
+        checked at the source by a copy of this repository's verifier rather than its
+        C++ checker; no new technique, at S3 as T-099 and T-100 are. The score gates
+        nothing.
+      scored: '2026-10-06'
+      by: 'wand125 check2 import, registering lane R7 of the 6 October intake round (repository; draft)'
+    novelty: previously-published
+    attribution:
+      source_keys: ['[wand125 mixed bounds check2 2026-10-06]']
+      published: '2026-10-06'
+    composition: >-
+      One primary certificate on one reported entry, at V0/C0: retained and audited for
+      its exact premises, not reviewed and not replayed. Coverage is decided at the source
+      by a copy of this repository's sqverify_fast changed to read a declared net, so a
+      sqverify-fast replay here would re-implement the producer's check sharing that
+      crate, not independently. The source's C++ checker, which shares no code with it,
+      was not run on this candidate.
+    evidence:
+      - E-n026-wand125-mixed-5545-report
+    artifacts:
+      - packing/resources/web/wand125-mixed-bounds-check2-2026-10-06/README.md
+      - packing/resources/web/wand125-mixed-bounds-check2-2026-10-06/receipts/n26-L5545/audit.json
+      - packing/resources/web/wand125-mixed-bounds-check2-2026-10-06/receipts/n26-L5545/bundle.json
+      - packing/devtools/audit_wand125_declared_net.py
+      - packing/sqverify_fast/SOUNDNESS.md
+    next_rung: >-
+      A review of the certificate and of the check2 form, and a complete replay:
+      sqverify-fast over all 832 directions of the declared net on the census route, which
+      the declared-net soundness review accepted for a net meeting lemma N0's premises, as
+      this one does. The verified lower bound at n = 26 moves when it passes and the
+      review finds no blocking defect. Samples of the source's C++ checker on the
+      candidate would add a check that shares no code with the crate.
+    notes: >-
+      V0 because the cited entry is the source's claim: assurance reported, replay not yet
+      complete. C0 because nothing here has yet read the certificate's mathematics: the
+      exact audit and the bundle binding decide no direction. The source's pre-publication
+      run on another host is its own run of the same build and was not checked here. The
+      check2 tarball is pinned by digest and not retained, and the adapted crate inside it
+      is pinned and not opened. Ids here are provisional until merged.
+    activity:
+      state: in-analysis
+      what: >-
+        The sqverify-fast census row and its controls, samples of the source's C++
+        checker, and one review of the batch, run separately.
+      since: '2026-10-06'
+      link: think-yrdj
+
+  - id: T-112
+    kind: lower-bound
+    registered: '2026-10-06'
+    headline: "Mixed rectangle-measure lower bound reported at `n = 27`, checked by a copy of sqverify-fast"
+    claim: >-
+      wand125/square-packing-bounds reports s(27) >= 11287/2000 = 5.6435, by a
+      rectangle-density certificate on a net it declares, published on 6 October 2026 with
+      a check by the source's adaptation of this repository's sqverify_fast.
+
+      The certificate is a density of 439 uniform rectangles in D4 orbits, and no point
+      mass, of total mass 2699999/100000, on T-099's declared net: core side 1999/2000 and
+      832 half-angle tangents of step 1/2006, with 1999/2000 (1 + 1/2006) =
+      4011993/4012000 < 1. The source reports every core at a net angle capturing mass at
+      least one, at all 832 directions, by sqverify-proof-net, this repository's
+      sqverify_fast with one change that reads the declared net, and calls it an
+      independent second-system check. It ships no record of its C++ checker for this
+      certificate.
+
+      The value is above 1127/200 = 5.635, the source's rectangle certificate
+      rect_n27_L5635 and the reported (T-068) and verified (T-074) lower bound at n = 27,
+      by 0.0085.
+
+      Here the source was retained and its exact premises, those of the declared net among
+      them, were recomputed from the retained bytes, and the source's run log was bound to
+      the declared net and its receipt. None of it decides coverage. The value stands as
+      reported, and the verified lower bound is unchanged.
+
+      wand125 after Tokoharu and Levy,
+      [square-packing-bounds](https://github.com/wand125/square-packing-bounds/tree/2fad66e02f54a492835dc41ac37a9184e1e7a662/certificates/mixed_n27_L56435).
+      No registration was requested: the intake pass that read 2fad66e found it. The
+      source says parts of the work were produced with AI assistance under human
+      direction.
+    scope: {n_values: [27]}
+    verification: V0
+    confirmation: C0
+    significance:
+      score: 3
+      rationale: >-
+        Scored as a claim: if the replay passes, the strongest verified lower bound on
+        record at n = 27, by 0.0085. The certificate kind of T-099 on a declared net,
+        checked at the source by a copy of this repository's verifier rather than its
+        C++ checker; no new technique, at S3 as T-099 and T-100 are. The score gates
+        nothing.
+      scored: '2026-10-06'
+      by: 'wand125 check2 import, registering lane R7 of the 6 October intake round (repository; draft)'
+    novelty: previously-published
+    attribution:
+      source_keys: ['[wand125 mixed bounds check2 2026-10-06]']
+      published: '2026-10-06'
+    composition: >-
+      One primary certificate on one reported entry, at V0/C0: retained and audited for
+      its exact premises, not reviewed and not replayed. Coverage is decided at the source
+      by a copy of this repository's sqverify_fast changed to read a declared net, so a
+      sqverify-fast replay here would re-implement the producer's check sharing that
+      crate, not independently. The source's C++ checker, which shares no code with it,
+      was not run on this candidate.
+    evidence:
+      - E-n027-wand125-mixed-56435-report
+    artifacts:
+      - packing/resources/web/wand125-mixed-bounds-check2-2026-10-06/README.md
+      - packing/resources/web/wand125-mixed-bounds-check2-2026-10-06/receipts/n27-L56435/audit.json
+      - packing/resources/web/wand125-mixed-bounds-check2-2026-10-06/receipts/n27-L56435/bundle.json
+      - packing/devtools/audit_wand125_declared_net.py
+      - packing/sqverify_fast/SOUNDNESS.md
+    next_rung: >-
+      A review of the certificate and of the check2 form, and a complete replay:
+      sqverify-fast over all 832 directions of the declared net on the census route, which
+      the declared-net soundness review accepted for a net meeting lemma N0's premises, as
+      this one does. The verified lower bound at n = 27 moves when it passes and the
+      review finds no blocking defect. Samples of the source's C++ checker on the
+      candidate would add a check that shares no code with the crate.
+    notes: >-
+      V0 because the cited entry is the source's claim: assurance reported, replay not yet
+      complete. C0 because nothing here has yet read the certificate's mathematics: the
+      exact audit and the bundle binding decide no direction. The source's pre-publication
+      run on another host is its own run of the same build and was not checked here. The
+      check2 tarball is pinned by digest and not retained, and the adapted crate inside it
+      is pinned and not opened. Ids here are provisional until merged.
+    activity:
+      state: in-analysis
+      what: >-
+        The sqverify-fast census row and its controls, samples of the source's C++
+        checker, and one review of the batch, run separately.
+      since: '2026-10-06'
+      link: think-yrdj
+
+  - id: T-113
+    kind: lower-bound
+    registered: '2026-10-06'
+    headline: "Mixed rectangle-measure lower bound reported at `n = 28`, checked by a copy of sqverify-fast"
+    claim: >-
+      wand125/square-packing-bounds reports s(28) >= 1147/200 = 5.735, by a
+      rectangle-density certificate on a net it declares, published on 6 October 2026 with
+      a check by the source's adaptation of this repository's sqverify_fast.
+
+      The certificate is a density of 531 uniform rectangles in D4 orbits, and no point
+      mass, of total mass 2799999/100000, on T-096's declared net: core side 999/1000 and
+      416 half-angle tangents of step 1/1001, with 999/1000 (1 + 1/1001) = 500499/500500 <
+      1. The source reports every core at a net angle capturing mass at least one, at all
+      416 directions, by sqverify-proof-net, this repository's sqverify_fast with one
+      change that reads the declared net, and calls it an independent second-system check.
+      It ships no record of its C++ checker for this certificate.
+
+      The value is above 2289/400 = 5.7225, the source's rectangle certificate
+      rect_n28_L57225 and the reported (T-068) and verified (T-074) lower bound at n = 28,
+      by 0.0125.
+
+      Here the source was retained and its exact premises, those of the declared net among
+      them, were recomputed from the retained bytes, and the source's run log was bound to
+      the declared net and its receipt. None of it decides coverage. The value stands as
+      reported, and the verified lower bound is unchanged.
+
+      wand125 after Tokoharu and Levy,
+      [square-packing-bounds](https://github.com/wand125/square-packing-bounds/tree/2fad66e02f54a492835dc41ac37a9184e1e7a662/certificates/mixed_n28_L5735).
+      No registration was requested: the intake pass that read 2fad66e found it. The
+      source says parts of the work were produced with AI assistance under human
+      direction.
+    scope: {n_values: [28]}
+    verification: V0
+    confirmation: C0
+    significance:
+      score: 3
+      rationale: >-
+        Scored as a claim: if the replay passes, the strongest verified lower bound on
+        record at n = 28, by 0.0125. The certificate kind of T-099 on a declared net,
+        checked at the source by a copy of this repository's verifier rather than its
+        C++ checker; no new technique, at S3 as T-099 and T-100 are. The score gates
+        nothing.
+      scored: '2026-10-06'
+      by: 'wand125 check2 import, registering lane R7 of the 6 October intake round (repository; draft)'
+    novelty: previously-published
+    attribution:
+      source_keys: ['[wand125 mixed bounds check2 2026-10-06]']
+      published: '2026-10-06'
+    composition: >-
+      One primary certificate on one reported entry, at V0/C0: retained and audited for
+      its exact premises, not reviewed and not replayed. Coverage is decided at the source
+      by a copy of this repository's sqverify_fast changed to read a declared net, so a
+      sqverify-fast replay here would re-implement the producer's check sharing that
+      crate, not independently. The source's C++ checker, which shares no code with it,
+      was not run on this candidate.
+    evidence:
+      - E-n028-wand125-mixed-5735-report
+    artifacts:
+      - packing/resources/web/wand125-mixed-bounds-check2-2026-10-06/README.md
+      - packing/resources/web/wand125-mixed-bounds-check2-2026-10-06/receipts/n28-L5735/audit.json
+      - packing/resources/web/wand125-mixed-bounds-check2-2026-10-06/receipts/n28-L5735/bundle.json
+      - packing/devtools/audit_wand125_declared_net.py
+      - packing/sqverify_fast/SOUNDNESS.md
+    next_rung: >-
+      A review of the certificate and of the check2 form, and a complete replay:
+      sqverify-fast over all 416 directions of the declared net on the census route, which
+      the declared-net soundness review accepted for a net meeting lemma N0's premises, as
+      this one does. The verified lower bound at n = 28 moves when it passes and the
+      review finds no blocking defect. Samples of the source's C++ checker on the
+      candidate would add a check that shares no code with the crate.
+    notes: >-
+      V0 because the cited entry is the source's claim: assurance reported, replay not yet
+      complete. C0 because nothing here has yet read the certificate's mathematics: the
+      exact audit and the bundle binding decide no direction. The source's pre-publication
+      run on another host is its own run of the same build and was not checked here. The
+      check2 tarball is pinned by digest and not retained, and the adapted crate inside it
+      is pinned and not opened. Ids here are provisional until merged.
+    activity:
+      state: in-analysis
+      what: >-
+        The sqverify-fast census row and its controls, samples of the source's C++
+        checker, and one review of the batch, run separately.
+      since: '2026-10-06'
+      link: think-yrdj
+
+  - id: T-114
+    kind: lower-bound
+    registered: '2026-10-06'
+    headline: "Mixed rectangle-measure lower bound reported at `n = 29`, on a declared net"
+    claim: >-
+      wand125/square-packing-bounds reports s(29) >= 581/100 = 5.81, by a
+      rectangle-density certificate on a net it declares, published on 6 October 2026.
+
+      The certificate is a density of 505 uniform rectangles in D4 orbits, and no point
+      mass, of total mass 2899999/100000, on T-096's declared net: core side 999/1000 and
+      416 half-angle tangents of step 1/1001, with 999/1000 (1 + 1/1001) = 500499/500500 <
+      1. The source reports every core at a net angle capturing mass at least one: at all
+      415 oblique net angles by code/mixed_rotated_verify.cpp, its research copy of
+      Tokoharu's verify.cpp at coverage threshold one, run by the same driver as T-096's
+      certificate, and at the axis by exact integer tables.
+
+      The value is above 2319/400 = 5.7975, the source's rectangle certificate
+      rect_n29_L57975 and the reported (T-068) and verified (T-074) lower bound at n = 29,
+      by 0.0125.
+
+      Here the source was retained and its exact premises, those of the declared net among
+      them, were recomputed from the retained bytes, and the source's shipped runs were
+      bound record by record to the declared net. None of it decides coverage. The value
+      stands as reported, and the verified lower bound is unchanged.
+
+      wand125 after Tokoharu and Levy,
+      [square-packing-bounds](https://github.com/wand125/square-packing-bounds/tree/2fad66e02f54a492835dc41ac37a9184e1e7a662/certificates/mixed_n29_L581).
+      No registration was requested: the intake pass that read 2fad66e found it. The
+      source says parts of the work were produced with AI assistance under human
+      direction.
+    scope: {n_values: [29]}
+    verification: V0
+    confirmation: C0
+    significance:
+      score: 3
+      rationale: >-
+        Scored as a claim: if the replay passes, the strongest verified lower bound on
+        record at n = 29, by 0.0125. The certificate kind and checker of T-069 and later
+        on T-096's declared net; no new technique, at S3 as T-096, T-099 and T-100 are.
+        The score gates nothing.
+      scored: '2026-10-06'
+      by: 'wand125 check2 import, registering lane R7 of the 6 October intake round (repository; draft)'
+    novelty: previously-published
+    attribution:
+      source_keys: ['[wand125 mixed bounds check2 2026-10-06]']
+      published: '2026-10-06'
+    composition: >-
+      One primary certificate on one reported entry, at V0/C0: retained and audited for
+      its exact premises, not reviewed and not replayed. Coverage is decided by the
+      source's C++ checker alone, byte for byte the checker the 28 September and 2, 3, 5
+      and 6 October reviews read; the axis tables are a second implementation for one
+      direction and not a second method.
+    evidence:
+      - E-n029-wand125-mixed-581-report
+    artifacts:
+      - packing/resources/web/wand125-mixed-bounds-check2-2026-10-06/README.md
+      - packing/resources/web/wand125-mixed-bounds-check2-2026-10-06/receipts/n29-L581/audit.json
+      - packing/resources/web/wand125-mixed-bounds-check2-2026-10-06/receipts/n29-L581/bundle.json
+      - packing/devtools/audit_wand125_declared_net.py
+      - packing/sqverify_fast/SOUNDNESS.md
+    next_rung: >-
+      A review of the certificate and a complete replay: sqverify-fast over all 416
+      directions on the census route, or the bundle's own driver over all 416 nodes, about
+      42 CPU-hours by the source's own oblique seconds. The verified lower bound at n = 29
+      moves when one of them passes and the review finds no blocking defect.
+    notes: >-
+      V0 because the cited entry is the source's claim: assurance reported, replay not yet
+      complete. C0 because nothing here has yet read the certificate's mathematics: the
+      exact audit and the bundle binding decide no direction. The source's pre-publication
+      run of its copy of sqverify-fast publishes no receipt and was not checked here. The
+      proof-bundle tarball is pinned by digest and not retained. Ids here are provisional
+      until merged.
+    activity:
+      state: in-analysis
+      what: >-
+        The sqverify-fast census row and its controls, samples of the source's C++
+        checker, and one review of the batch, run separately.
+      since: '2026-10-06'
+      link: think-yrdj
+
+  - id: T-115
+    kind: lower-bound
+    registered: '2026-10-06'
+    headline: "Mixed rectangle-measure lower bound reported at `n = 30`, checked by a copy of sqverify-fast"
+    claim: >-
+      wand125/square-packing-bounds reports s(30) >= 11767/2000 = 5.8835, by a
+      rectangle-density certificate on a net it declares, published on 6 October 2026 with
+      a check by the source's adaptation of this repository's sqverify_fast.
+
+      The certificate is a density of 402 uniform rectangles in D4 orbits, and no point
+      mass, of total mass 2999999/100000, on T-099's declared net: core side 1999/2000 and
+      832 half-angle tangents of step 1/2006, with 1999/2000 (1 + 1/2006) =
+      4011993/4012000 < 1. The source reports every core at a net angle capturing mass at
+      least one, at all 832 directions, by sqverify-proof-net, this repository's
+      sqverify_fast with one change that reads the declared net, and calls it an
+      independent second-system check. It ships no record of its C++ checker for this
+      certificate.
+
+      The value is above 47/8 = 5.875, the source's rectangle certificate rect_n30_L5875
+      and the reported (T-068) and verified (T-074) lower bound at n = 30, by 0.0085.
+
+      Here the source was retained and its exact premises, those of the declared net among
+      them, were recomputed from the retained bytes, and the source's run log was bound to
+      the declared net and its receipt. None of it decides coverage. The value stands as
+      reported, and the verified lower bound is unchanged.
+
+      wand125 after Tokoharu and Levy,
+      [square-packing-bounds](https://github.com/wand125/square-packing-bounds/tree/2fad66e02f54a492835dc41ac37a9184e1e7a662/certificates/mixed_n30_L58835).
+      No registration was requested: the intake pass that read 2fad66e found it. The
+      source says parts of the work were produced with AI assistance under human
+      direction.
+    scope: {n_values: [30]}
+    verification: V0
+    confirmation: C0
+    significance:
+      score: 3
+      rationale: >-
+        Scored as a claim: if the replay passes, the strongest verified lower bound on
+        record at n = 30, by 0.0085. The certificate kind of T-099 on a declared net,
+        checked at the source by a copy of this repository's verifier rather than its
+        C++ checker; no new technique, at S3 as T-099 and T-100 are. The score gates
+        nothing.
+      scored: '2026-10-06'
+      by: 'wand125 check2 import, registering lane R7 of the 6 October intake round (repository; draft)'
+    novelty: previously-published
+    attribution:
+      source_keys: ['[wand125 mixed bounds check2 2026-10-06]']
+      published: '2026-10-06'
+    composition: >-
+      One primary certificate on one reported entry, at V0/C0: retained and audited for
+      its exact premises, not reviewed and not replayed. Coverage is decided at the source
+      by a copy of this repository's sqverify_fast changed to read a declared net, so a
+      sqverify-fast replay here would re-implement the producer's check sharing that
+      crate, not independently. The source's C++ checker, which shares no code with it,
+      was not run on this candidate.
+    evidence:
+      - E-n030-wand125-mixed-58835-report
+    artifacts:
+      - packing/resources/web/wand125-mixed-bounds-check2-2026-10-06/README.md
+      - packing/resources/web/wand125-mixed-bounds-check2-2026-10-06/receipts/n30-L58835/audit.json
+      - packing/resources/web/wand125-mixed-bounds-check2-2026-10-06/receipts/n30-L58835/bundle.json
+      - packing/devtools/audit_wand125_declared_net.py
+      - packing/sqverify_fast/SOUNDNESS.md
+    next_rung: >-
+      A review of the certificate and of the check2 form, and a complete replay:
+      sqverify-fast over all 832 directions of the declared net on the census route, which
+      the declared-net soundness review accepted for a net meeting lemma N0's premises, as
+      this one does. The verified lower bound at n = 30 moves when it passes and the
+      review finds no blocking defect. Samples of the source's C++ checker on the
+      candidate would add a check that shares no code with the crate.
+    notes: >-
+      V0 because the cited entry is the source's claim: assurance reported, replay not yet
+      complete. C0 because nothing here has yet read the certificate's mathematics: the
+      exact audit and the bundle binding decide no direction. The source's pre-publication
+      run on another host is its own run of the same build and was not checked here. The
+      check2 tarball is pinned by digest and not retained, and the adapted crate inside it
+      is pinned and not opened. Ids here are provisional until merged.
+    activity:
+      state: in-analysis
+      what: >-
+        The sqverify-fast census row and its controls, samples of the source's C++
+        checker, and one review of the batch, run separately.
+      since: '2026-10-06'
+      link: think-yrdj
+
+  - id: T-116
+    kind: lower-bound
+    registered: '2026-10-06'
+    headline: "Mixed rectangle-measure lower bound reported at `n = 39`, checked by a copy of sqverify-fast"
+    claim: >-
+      wand125/square-packing-bounds reports s(39) >= 133/20 = 6.65, by a rectangle-density
+      certificate on a net it declares, published on 6 October 2026 with a check by the
+      source's adaptation of this repository's sqverify_fast.
+
+      The certificate is a density of 600 uniform rectangles in D4 orbits, and no point
+      mass, of total mass 3899999/100000, on T-096's declared net: core side 999/1000 and
+      416 half-angle tangents of step 1/1001, with 999/1000 (1 + 1/1001) = 500499/500500 <
+      1. The source reports every core at a net angle capturing mass at least one, at all
+      416 directions, by sqverify-proof-net, this repository's sqverify_fast with one
+      change that reads the declared net, and calls it an independent second-system check.
+      It ships no record of its C++ checker for this certificate.
+
+      The value is above 1327/200 = 6.635, the source's rectangle certificate
+      rect_n39_L6635 and the reported (T-068) and verified (T-074) lower bound at n = 39,
+      by 0.015.
+
+      Here the source was retained and its exact premises, those of the declared net among
+      them, were recomputed from the retained bytes, and the source's run log was bound to
+      the declared net and its receipt. None of it decides coverage. The value stands as
+      reported, and the verified lower bound is unchanged.
+
+      wand125 after Tokoharu and Levy,
+      [square-packing-bounds](https://github.com/wand125/square-packing-bounds/tree/2fad66e02f54a492835dc41ac37a9184e1e7a662/certificates/mixed_n39_L665).
+      No registration was requested: the intake pass that read 2fad66e found it. The
+      source says parts of the work were produced with AI assistance under human
+      direction.
+    scope: {n_values: [39]}
+    verification: V0
+    confirmation: C0
+    significance:
+      score: 3
+      rationale: >-
+        Scored as a claim: if the replay passes, the strongest verified lower bound on
+        record at n = 39, by 0.015. The certificate kind of T-099 on a declared net,
+        checked at the source by a copy of this repository's verifier rather than its
+        C++ checker; no new technique, at S3 as T-099 and T-100 are. The score gates
+        nothing.
+      scored: '2026-10-06'
+      by: 'wand125 check2 import, registering lane R7 of the 6 October intake round (repository; draft)'
+    novelty: previously-published
+    attribution:
+      source_keys: ['[wand125 mixed bounds check2 2026-10-06]']
+      published: '2026-10-06'
+    composition: >-
+      One primary certificate on one reported entry, at V0/C0: retained and audited for
+      its exact premises, not reviewed and not replayed. Coverage is decided at the source
+      by a copy of this repository's sqverify_fast changed to read a declared net, so a
+      sqverify-fast replay here would re-implement the producer's check sharing that
+      crate, not independently. The source's C++ checker, which shares no code with it,
+      was not run on this candidate.
+    evidence:
+      - E-n039-wand125-mixed-665-report
+    artifacts:
+      - packing/resources/web/wand125-mixed-bounds-check2-2026-10-06/README.md
+      - packing/resources/web/wand125-mixed-bounds-check2-2026-10-06/receipts/n39-L665/audit.json
+      - packing/resources/web/wand125-mixed-bounds-check2-2026-10-06/receipts/n39-L665/bundle.json
+      - packing/devtools/audit_wand125_declared_net.py
+      - packing/sqverify_fast/SOUNDNESS.md
+    next_rung: >-
+      A review of the certificate and of the check2 form, and a complete replay:
+      sqverify-fast over all 416 directions of the declared net on the census route, which
+      the declared-net soundness review accepted for a net meeting lemma N0's premises, as
+      this one does. The verified lower bound at n = 39 moves when it passes and the
+      review finds no blocking defect. Samples of the source's C++ checker on the
+      candidate would add a check that shares no code with the crate.
+    notes: >-
+      V0 because the cited entry is the source's claim: assurance reported, replay not yet
+      complete. C0 because nothing here has yet read the certificate's mathematics: the
+      exact audit and the bundle binding decide no direction. The source's pre-publication
+      run on another host is its own run of the same build and was not checked here. The
+      check2 tarball is pinned by digest and not retained, and the adapted crate inside it
+      is pinned and not opened. Ids here are provisional until merged.
+    activity:
+      state: in-analysis
+      what: >-
+        The sqverify-fast census row and its controls, samples of the source's C++
+        checker, and one review of the batch, run separately.
+      since: '2026-10-06'
+      link: think-yrdj
+
+  - id: T-117
+    kind: lower-bound
+    registered: '2026-10-06'
+    headline: "Mixed rectangle-measure lower bound reported at `n = 41`, checked by a copy of sqverify-fast"
+    claim: >-
+      wand125/square-packing-bounds reports s(41) >= 271/40 = 6.775, by a
+      rectangle-density certificate on a net it declares, published on 6 October 2026 with
+      a check by the source's adaptation of this repository's sqverify_fast.
+
+      The certificate is a density of 376 uniform rectangles in D4 orbits, and no point
+      mass, of total mass 4099999/100000, on T-096's declared net: core side 999/1000 and
+      416 half-angle tangents of step 1/1001, with 999/1000 (1 + 1/1001) = 500499/500500 <
+      1. The source reports every core at a net angle capturing mass at least one, at all
+      416 directions, by sqverify-proof-net, this repository's sqverify_fast with one
+      change that reads the declared net, and calls it an independent second-system check.
+      It ships no record of its C++ checker for this certificate.
+
+      The value is above 169/25 = 6.76, the source's rectangle certificate rect_n41_L676
+      and the reported (T-068) and verified (T-074) lower bound at n = 41, by 0.015.
+
+      Here the source was retained and its exact premises, those of the declared net among
+      them, were recomputed from the retained bytes, and the source's run log was bound to
+      the declared net and its receipt. None of it decides coverage. The value stands as
+      reported, and the verified lower bound is unchanged.
+
+      wand125 after Tokoharu and Levy,
+      [square-packing-bounds](https://github.com/wand125/square-packing-bounds/tree/2fad66e02f54a492835dc41ac37a9184e1e7a662/certificates/mixed_n41_L6775).
+      No registration was requested: the intake pass that read 2fad66e found it. The
+      source says parts of the work were produced with AI assistance under human
+      direction.
+    scope: {n_values: [41]}
+    verification: V0
+    confirmation: C0
+    significance:
+      score: 3
+      rationale: >-
+        Scored as a claim: if the replay passes, the strongest verified lower bound on
+        record at n = 41, by 0.015. The certificate kind of T-099 on a declared net,
+        checked at the source by a copy of this repository's verifier rather than its
+        C++ checker; no new technique, at S3 as T-099 and T-100 are. The score gates
+        nothing.
+      scored: '2026-10-06'
+      by: 'wand125 check2 import, registering lane R7 of the 6 October intake round (repository; draft)'
+    novelty: previously-published
+    attribution:
+      source_keys: ['[wand125 mixed bounds check2 2026-10-06]']
+      published: '2026-10-06'
+    composition: >-
+      One primary certificate on one reported entry, at V0/C0: retained and audited for
+      its exact premises, not reviewed and not replayed. Coverage is decided at the source
+      by a copy of this repository's sqverify_fast changed to read a declared net, so a
+      sqverify-fast replay here would re-implement the producer's check sharing that
+      crate, not independently. The source's C++ checker, which shares no code with it,
+      was not run on this candidate.
+    evidence:
+      - E-n041-wand125-mixed-6775-report
+    artifacts:
+      - packing/resources/web/wand125-mixed-bounds-check2-2026-10-06/README.md
+      - packing/resources/web/wand125-mixed-bounds-check2-2026-10-06/receipts/n41-L6775/audit.json
+      - packing/resources/web/wand125-mixed-bounds-check2-2026-10-06/receipts/n41-L6775/bundle.json
+      - packing/devtools/audit_wand125_declared_net.py
+      - packing/sqverify_fast/SOUNDNESS.md
+    next_rung: >-
+      A review of the certificate and of the check2 form, and a complete replay:
+      sqverify-fast over all 416 directions of the declared net on the census route, which
+      the declared-net soundness review accepted for a net meeting lemma N0's premises, as
+      this one does. The verified lower bound at n = 41 moves when it passes and the
+      review finds no blocking defect. Samples of the source's C++ checker on the
+      candidate would add a check that shares no code with the crate.
+    notes: >-
+      V0 because the cited entry is the source's claim: assurance reported, replay not yet
+      complete. C0 because nothing here has yet read the certificate's mathematics: the
+      exact audit and the bundle binding decide no direction. The source's pre-publication
+      run on another host is its own run of the same build and was not checked here. The
+      check2 tarball is pinned by digest and not retained, and the adapted crate inside it
+      is pinned and not opened. Ids here are provisional until merged.
+    activity:
+      state: in-analysis
+      what: >-
+        The sqverify-fast census row and its controls, samples of the source's C++
+        checker, and one review of the batch, run separately.
+      since: '2026-10-06'
+      link: think-yrdj

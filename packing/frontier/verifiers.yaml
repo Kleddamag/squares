@@ -54,6 +54,7 @@ verifiers:
       - {sha256: 89b674a6feabe24d91c29431de1624907c4bff83280ceb481475455686693652}
       - {revision: 7975030a, note: "the n = 76 bundle's tarball, fetched by Git and pinned by its own SHA-256"}
       - {revision: 43050edc, note: "the n = 18 bundle's tarball on a declared net, fetched by Git and pinned by its own SHA-256"}
+      - {revision: 2fad66e0, note: "the n = 29 bundle's tarball on a declared net, and the C++ samples of the nine check2 candidates, which ship no C++ record"}
 
   - id: V-wand125-verify-mixed-full-proof-py
     program: verify_mixed_full_proof.py
@@ -78,6 +79,38 @@ verifiers:
       the n = 18 bundle's README says, and mixed_n19_L48229's bundle ships the same copy.
       mixed_n18_L4704's bundle ships the second version, retained beside its certificate;
       the 6 October review read both and found the one change bears on no check.
+
+  - id: V-wand125-sqverify-proof-net
+    program: sqverify-proof-net, the source's adaptation of sqverify-fast, run by fine_net_check.sh
+    author: wand125, adapting this repository's sqverify_fast
+    provenance: external
+    language: [Rust, Bash, Python]
+    methods: [interval-certified]
+    role: decides
+    summary: >-
+      The source's copy of this repository's sqverify_fast with one change, reading a
+      format M candidate's declared net (proof_net), with which it decides its check2
+      certificates at every direction of that net; the script runs it with a mass control
+      and writes the receipt.
+    source:
+      - packing/resources/web/wand125-mixed-bounds-check2-2026-10-06/square-packing-bounds/certificates/mixed_n20_L4905/check2/src/fine_net_check.sh
+      - packing/resources/web/wand125-mixed-bounds-check2-2026-10-06/square-packing-bounds/certificates/mixed_n20_L4905/check2/src/SPEC.md
+    versions:
+      - {sha256: a4069c4b55a4da94214b02b2fff50751f0026130b27733f10a775ee7dbb23e36, note: "fine_net_check.sh, the same in all nine check2 bundles"}
+      - revision: fe12e036c
+        note: >-
+          the crate's commit on the source's branch wand125/sqverify-proof-net, which this
+          repository does not hold; its git archive, sqverify-proof-net-fe12e036c.tar.gz,
+          SHA-256 e495f9bf14dc5ca20d8890aa0601183b8b955b94580c4e99ddffa64254371e81, is pinned
+          by the 6 October check2 packet's acquisition record, and its build reports
+          source_sha256 ab6e33e164dbc5c32b40349ba55981b58e630b5eef59534196a69d259404fd7c
+    note: >-
+      The crate itself is pinned and neither retained nor opened, so that no copy of it sits
+      beside sqverify_fast, whose own declared-net change was written apart from it
+      (packing/sqverify_fast/INDEPENDENCE.md, Declared Nets). Its SOUNDNESS.md and
+      INDEPENDENCE.md are this repository's files of 3 October by their digests. A replay
+      here by V-sqverify-fast re-implements its check sharing the producer's components,
+      the sqverify_fast crate, not independently.
 
   - id: V-wand125-unified-linear-verify-cpp
     program: unified_linear_verify.cpp

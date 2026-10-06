@@ -25,16 +25,17 @@ second implementation agrees.
 
 ## The Short Version
 
-- **88** programs: **33** external and **55** first-party; **68** decide claims and **20** check premises.
-- **296** of **323** evidence entries name the programs that verified them: 209 reproduced with the producer’s code, 70 independently re-implemented, 10 no relation: a proof, a derivation or a report, 7 re-implemented, sharing the producer’s components.
+- **89** programs: **34** external and **55** first-party; **69** decide claims and **20** check premises.
+- **306** of **333** evidence entries name the programs that verified them: 219 reproduced with the producer’s code, 70 independently re-implemented, 10 no relation: a proof, a derivation or a report, 7 re-implemented, sharing the producer’s components.
 
 ## Programs
 
 | id | program | author | provenance | role | evidence | results |
 | --- | --- | --- | --- | --- | ---: | ---: |
 | [`V-tokoharu-verify-cpp`](#v-tokoharu-verify-cpp) | verify.cpp | Tokoharu | external | decides | 12 | 7 |
-| [`V-wand125-mixed-rotated-verify-cpp`](#v-wand125-mixed-rotated-verify-cpp) | mixed_rotated_verify.cpp | wand125 | external | decides | 87 | 13 |
-| [`V-wand125-verify-mixed-full-proof-py`](#v-wand125-verify-mixed-full-proof-py) | verify_mixed_full_proof.py | wand125 | external | decides | 64 | 10 |
+| [`V-wand125-mixed-rotated-verify-cpp`](#v-wand125-mixed-rotated-verify-cpp) | mixed_rotated_verify.cpp | wand125 | external | decides | 88 | 14 |
+| [`V-wand125-verify-mixed-full-proof-py`](#v-wand125-verify-mixed-full-proof-py) | verify_mixed_full_proof.py | wand125 | external | decides | 65 | 11 |
+| [`V-wand125-sqverify-proof-net`](#v-wand125-sqverify-proof-net) | sqverify-proof-net | wand125, adapting this repository's sqverify_fast | external | decides | 9 | 9 |
 | [`V-wand125-unified-linear-verify-cpp`](#v-wand125-unified-linear-verify-cpp) | unified_linear_verify.cpp | wand125 | external | decides | 6 | 3 |
 | [`V-wand125-verify-portable-py`](#v-wand125-verify-portable-py) | verify_portable.py | wand125 | external | decides | 2 | 1 |
 | [`V-wand125-check-with-sqpack`](#v-wand125-check-with-sqpack) | check_with_sqpack.py | wand125 | external | decides | 5 | 1 |
@@ -155,7 +156,7 @@ Decides a rectangle-density covering certificate over every net direction by out
 Decides a mixed point-and-rectangle certificate at each direction of the certificate's net, 201 on the standard net or the 416 that mixed_n18_L470 declares, returning the direction's own record of cells and lower bound.
 
 - Source: [`packing/resources/web/wand125-point-and-mixed-2026-09-28/square-packing-bounds/certificates/mixed_n50_L740/code/mixed_rotated_verify.cpp`](../../packing/resources/web/wand125-point-and-mixed-2026-09-28/square-packing-bounds/certificates/mixed_n50_L740/code/mixed_rotated_verify.cpp)
-- Versions run: SHA-256 `89b674a6feab…`; revision `7975030a` (the n = 76 bundle's tarball, fetched by Git and pinned by its own SHA-256); revision `43050edc` (the n = 18 bundle's tarball on a declared net, fetched by Git and pinned by its own SHA-256)
+- Versions run: SHA-256 `89b674a6feab…`; revision `7975030a` (the n = 76 bundle's tarball, fetched by Git and pinned by its own SHA-256); revision `43050edc` (the n = 18 bundle's tarball on a declared net, fetched by Git and pinned by its own SHA-256); revision `2fad66e0` (the n = 29 bundle's tarball on a declared net, and the C++ samples of the nine check2 candidates, which ship no C++ record)
 
 | evidence | run | code | results |
 | --- | --- | --- | --- |
@@ -246,6 +247,7 @@ Decides a mixed point-and-rectangle certificate at each direction of the certifi
 | `E-n018-wand125-mixed-470-source-replay` | replayed here | producer’s code | T-096 |
 | `E-n018-wand125-mixed-4704-report` | the source’s own run | producer’s code | T-099 |
 | `E-n019-wand125-mixed-48229-report` | the source’s own run | producer’s code | T-100 |
+| `E-n029-wand125-mixed-581-report` | the source’s own run | producer’s code | T-114 |
 
 ### `V-wand125-verify-mixed-full-proof-py`
 
@@ -323,6 +325,29 @@ The source's driver for a complete mixed-certificate proof: it runs mixed_rotate
 | `E-n018-wand125-mixed-470-source-replay` | replayed here | producer’s code | T-096 |
 | `E-n018-wand125-mixed-4704-report` | the source’s own run | producer’s code | T-099 |
 | `E-n019-wand125-mixed-48229-report` | the source’s own run | producer’s code | T-100 |
+| `E-n029-wand125-mixed-581-report` | the source’s own run | producer’s code | T-114 |
+
+### `V-wand125-sqverify-proof-net`
+
+**sqverify-proof-net, the source's adaptation of sqverify-fast, run by fine_net_check.sh** · wand125, adapting this repository's sqverify_fast · external · decides · Rust, Bash, Python · interval-certified
+
+The source's copy of this repository's sqverify_fast with one change, reading a format M candidate's declared net (proof_net), with which it decides its check2 certificates at every direction of that net; the script runs it with a mass control and writes the receipt.
+
+- Source: [`packing/resources/web/wand125-mixed-bounds-check2-2026-10-06/square-packing-bounds/certificates/mixed_n20_L4905/check2/src/fine_net_check.sh`](../../packing/resources/web/wand125-mixed-bounds-check2-2026-10-06/square-packing-bounds/certificates/mixed_n20_L4905/check2/src/fine_net_check.sh), [`packing/resources/web/wand125-mixed-bounds-check2-2026-10-06/square-packing-bounds/certificates/mixed_n20_L4905/check2/src/SPEC.md`](../../packing/resources/web/wand125-mixed-bounds-check2-2026-10-06/square-packing-bounds/certificates/mixed_n20_L4905/check2/src/SPEC.md)
+- Versions run: SHA-256 `a4069c4b55a4…` (fine_net_check.sh, the same in all nine check2 bundles); revision `fe12e036c` (the crate's commit on the source's branch wand125/sqverify-proof-net, which this repository does not hold; its git archive, sqverify-proof-net-fe12e036c.tar.gz, SHA-256 e495f9bf14dc5ca20d8890aa0601183b8b955b94580c4e99ddffa64254371e81, is pinned by the 6 October check2 packet's acquisition record, and its build reports source_sha256 ab6e33e164dbc5c32b40349ba55981b58e630b5eef59534196a69d259404fd7c)
+- Note: The crate itself is pinned and neither retained nor opened, so that no copy of it sits beside sqverify_fast, whose own declared-net change was written apart from it (packing/sqverify_fast/INDEPENDENCE.md, Declared Nets). Its SOUNDNESS.md and INDEPENDENCE.md are this repository's files of 3 October by their digests. A replay here by V-sqverify-fast re-implements its check sharing the producer's components, the sqverify_fast crate, not independently.
+
+| evidence | run | code | results |
+| --- | --- | --- | --- |
+| `E-n018-wand125-mixed-4705-report` | the source’s own run | producer’s code | T-108 |
+| `E-n019-wand125-mixed-4825-report` | the source’s own run | producer’s code | T-109 |
+| `E-n020-wand125-mixed-4905-report` | the source’s own run | producer’s code | T-110 |
+| `E-n026-wand125-mixed-5545-report` | the source’s own run | producer’s code | T-111 |
+| `E-n027-wand125-mixed-56435-report` | the source’s own run | producer’s code | T-112 |
+| `E-n028-wand125-mixed-5735-report` | the source’s own run | producer’s code | T-113 |
+| `E-n030-wand125-mixed-58835-report` | the source’s own run | producer’s code | T-115 |
+| `E-n039-wand125-mixed-665-report` | the source’s own run | producer’s code | T-116 |
+| `E-n041-wand125-mixed-6775-report` | the source’s own run | producer’s code | T-117 |
 
 ### `V-wand125-unified-linear-verify-cpp`
 

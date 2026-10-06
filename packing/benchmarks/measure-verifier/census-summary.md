@@ -74,9 +74,11 @@ first complete check of the certificate here, which the last column says.
 | `rect_n51_L74425` | T | 51 | 2977/400 | VERIFIED | 182.3 | 1.0001000002568405 | none | yes |
 | `rect_n52_L7505` | T | 52 | 1501/200 | VERIFIED | 130.0 | 1.0001000020793203 | none | yes |
 | `rect_n52_L7535` | T | 52 | 1507/200 | VERIFIED | 236.8 | 1.0001000012991306 | complete | no |
+| `mixed_n53_L76275` | M | 53 | 3051/400 | VERIFIED | 1352.4 | 1.0000000001795013 | none | yes |
 | `rect_n53_L758` | T | 53 | 379/50 | VERIFIED | 144.9 | 1.00010000038974 | none | yes |
 | `rect_n53_L7595` | T | 53 | 1519/200 | VERIFIED | 202.9 | 1.0001000005722172 | complete | no |
 | `rect_n53_L76075` | T | 53 | 3043/400 | VERIFIED | 257.9 | 1.0001000005003464 | complete | no |
+| `mixed_n54_L7685` | M | 54 | 1537/200 | VERIFIED | 1413.6 | 1.0000000007300995 | none | yes |
 | `rect_n54_L7665` | T | 54 | 1533/200 | VERIFIED | 199.6 | 1.0001000002090057 | none | yes |
 | `rect_n54_L76675` | T | 54 | 3067/400 | VERIFIED | 208.8 | 1.0001000000667002 | none | yes |
 | `rect_n54_L76725` | T | 54 | 3069/400 | VERIFIED | 241.7 | 1.0001000001245186 | complete | no |
@@ -88,6 +90,7 @@ first complete check of the certificate here, which the last column says.
 | `rect_n56_L77825` | T | 56 | 3113/400 | VERIFIED | 254.6 | 1.0001000006761118 | complete | no |
 | `rect_n57_L78` | T | 57 | 39/5 | VERIFIED | 139.6 | 1.0001000094859016 | none | yes |
 | `rect_n57_L7835` | T | 57 | 1567/200 | VERIFIED | 248.6 | 1.0001000003177027 | none | yes |
+| `mixed_n58_L7935` | M | 58 | 1587/200 | VERIFIED | 1916.9 | 1.0000000002574023 | none | yes |
 | `rect_n58_L788` | T | 58 | 197/25 | VERIFIED | 191.4 | 1.000100004157506 | none | yes |
 | `rect_n58_L789` | T | 58 | 789/100 | VERIFIED | 256.4 | 1.0001000032359766 | none | yes |
 | `rect_n59_L7905` | T | 59 | 1581/200 | VERIFIED | 162.3 | 1.0001000010464953 | none | yes |
@@ -112,14 +115,17 @@ first complete check of the certificate here, which the last column says.
 | `rect_n69_L8545` | T | 69 | 1709/200 | VERIFIED | 229.3 | 1.000100000179333 | none | yes |
 | `rect_n69_L8575` | T | 69 | 343/40 | VERIFIED | 307.7 | 1.0001000005653509 | complete | no |
 | `rect_n69_L8585` | T | 69 | 1717/200 | VERIFIED | 339.2 | 1.0001000000646423 | complete | no |
+| `mixed_n70_L86575` | M | 70 | 3463/400 | VERIFIED | 1938.6 | 1.0000000000402047 | none | yes |
 | `rect_n70_L861` | T | 70 | 861/100 | VERIFIED | 229.7 | 1.000100002213263 | none | yes |
 | `rect_n70_L862` | T | 70 | 431/50 | VERIFIED | 266.2 | 1.0001000005601692 | none | yes |
 | `rect_n70_L8625` | T | 70 | 69/8 | VERIFIED | 290.4 | 1.0001000008439647 | complete | no |
 | `rect_n70_L86275` | T | 70 | 3451/400 | VERIFIED | 371.0 | 1.0001000000371736 | none | yes |
+| `mixed_n71_L8721` | M | 71 | 8721/1000 | VERIFIED | 2098.9 | 1.0000000002314637 | none | yes |
 | `rect_n71_L8645` | T | 71 | 1729/200 | VERIFIED | 217.2 | 1.000100000419955 | none | yes |
 | `rect_n71_L8685` | T | 71 | 1737/200 | VERIFIED | 317.3 | 1.0001000016144455 | complete | no |
 | `rect_n72_L8705` | T | 72 | 1741/200 | VERIFIED | 241.1 | 1.0001000023832398 | none | yes |
 | `rect_n72_L874` | T | 72 | 437/50 | VERIFIED | 328.4 | 1.000100000114479 | none | yes |
+| `mixed_n73_L8813` | M | 73 | 8813/1000 | VERIFIED | 1874.7 | 1.0000000008042074 | none | yes |
 | `rect_n73_L874` | T | 73 | 437/50 | VERIFIED | 222.0 | 1.0001000112437228 | none | yes |
 | `rect_n73_L878` | T | 73 | 439/50 | VERIFIED | 312.8 | 1.000100002057731 | none | yes |
 | `rect_n74_L8815` | T | 74 | 1763/200 | VERIFIED | 231.3 | 1.00010000035846 | none | yes |
@@ -128,6 +134,7 @@ first complete check of the certificate here, which the last column says.
 | `rect_n75_L889` | T | 75 | 889/100 | VERIFIED | 291.2 | 1.000100000092212 | complete | no |
 | `rect_n75_L89` | T | 75 | 89/10 | VERIFIED | 303.4 | 1.0001000012091874 | complete | no |
 | `mixed_n76_L894` | M | 76 | 447/50 | VERIFIED | 758.5 | 1.0000000029480338 | complete | no |
+| `mixed_n76_L8965` | M | 76 | 1793/200 | VERIFIED | 757.7 | 1.0000000001430744 | none | yes |
 | `rect_n76_L89` | T | 76 | 89/10 | VERIFIED | 203.5 | 1.0001000007372345 | none | yes |
 | `rect_n76_L892` | T | 76 | 223/25 | VERIFIED | 254.7 | 1.0001000032640825 | none | yes |
 | `rect_n76_L8925` | T | 76 | 357/40 | VERIFIED | 283.5 | 1.0001000015650008 | complete | no |
@@ -147,20 +154,25 @@ first complete check of the certificate here, which the last column says.
 | `rect_n86_L9355` | T | 86 | 1871/200 | VERIFIED | 213.3 | 1.0001000005089622 | complete | no |
 | `rect_n86_L9365` | T | 86 | 1873/200 | VERIFIED | 240.9 | 1.000100000512849 | none | yes |
 | `mixed_n87_L948` | M | 87 | 237/25 | VERIFIED | 451.1 | 1.0000000000698703 | complete | no |
+| `mixed_n87_L958` | M | 87 | 479/50 | VERIFIED | 1899.2 | 1.0000000002258154 | none | yes |
 | `rect_n87_L941` | T | 87 | 941/100 | VERIFIED | 252.6 | 1.0001000008254144 | none | yes |
+| `mixed_n88_L962` | M | 88 | 481/50 | VERIFIED | 1648.3 | 1.000000001156332 | none | yes |
 | `rect_n88_L945` | T | 88 | 189/20 | VERIFIED | 233.5 | 1.0001000012079906 | none | yes |
 | `rect_n88_L94775` | T | 88 | 3791/400 | VERIFIED | 232.9 | 1.0001000051383455 | complete | no |
 | `rect_n89_L955` | T | 89 | 191/20 | VERIFIED | 293.3 | 1.0001000092566568 | none | yes |
 | `rect_n89_L9565` | T | 89 | 1913/200 | VERIFIED | 299.7 | 1.000100000784854 | complete | no |
 | `mixed_n90_L960` | M | 90 | 48/5 | VERIFIED | 525.6 | 1.0000000000508447 | complete | no |
+| `mixed_n90_L973` | M | 90 | 973/100 | VERIFIED | 2087.6 | 1.000000000392674 | none | yes |
 | `rect_n90_L95775` | T | 90 | 3831/400 | VERIFIED | 243.9 | 1.0001000003477836 | none | yes |
 | `mixed_n91_L970` | M | 91 | 97/10 | VERIFIED | 418.2 | 1.0000000012160961 | complete | no |
+| `mixed_n91_L97625` | M | 91 | 781/80 | VERIFIED | 1824.2 | 1.0000000003586995 | none | yes |
 | `rect_n91_L9645` | T | 91 | 1929/200 | VERIFIED | 274.6 | 1.000100000631634 | none | yes |
 | `rect_n91_L96475` | T | 91 | 3859/400 | VERIFIED | 322.9 | 1.0001000002583975 | none | yes |
 | `mixed_n92_L969` | M | 92 | 969/100 | VERIFIED | 580.7 | 1.0000000041386434 | complete | no |
 | `mixed_n92_L975` | M | 92 | 39/4 | VERIFIED | 443.0 | 1.0000000045215391 | complete | no |
 | `rect_n93_L97225` | T | 93 | 3889/400 | VERIFIED | 280.7 | 1.0001000022564717 | complete | no |
 | `rect_n93_L9735` | T | 93 | 1947/200 | VERIFIED | 337.4 | 1.0001000018920165 | none | yes |
+| `mixed_n94_L995` | M | 94 | 199/20 | VERIFIED | 2800.7 | 1.000000000302789 | none | yes |
 | `rect_n94_L9795` | T | 94 | 1959/200 | VERIFIED | 274.6 | 1.0001000000378433 | none | yes |
 | `rect_n94_L9805` | T | 94 | 1961/200 | VERIFIED | 283.9 | 1.0001000020831263 | complete | no |
 | `rect_n95_L98418` | T | 95 | 49209/5000 | VERIFIED | 283.4 | 1.0001000007374712 | complete | no |
@@ -168,7 +180,7 @@ first complete check of the certificate here, which the last column says.
 | `mixed_n96_L996` | M | 96 | 249/25 | VERIFIED | 456.4 | 1.000000000121414 | complete | no |
 | `mixed_n101_L1028` | L | 101 | 257/25 | VERIFIED | 128.4 | 1.000000000300333 | complete | no |
 
-153 of 153 certificates verified; 77 of them are the first complete check of their
+165 of 165 certificates verified; 89 of them are the first complete check of their
 certificate in this repository.
 
 <!-- This document follows common-doc-guidelines.md.

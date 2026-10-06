@@ -1070,37 +1070,52 @@ sources:
     url: https://github.com/wand125/square-packing-bounds/tree/797bdf6e10eba5f9dccca9da06f8352e81ba9dde
     local: resources/web/wand125-mixed-bounds-evening-2026-10-04/
     source_key: '[wand125 mixed bounds evening 2026-10-04]'
-    scope: {n_values: [53, 54, 58, 70, 71, 73, 76, 87, 88, 90, 91, 94]}
-    reviewed: '2026-10-05'
+    scope: {n_values: [53, 54, 58, 70, 71, 72, 73, 76, 87, 88, 89, 90, 91, 92, 93, 94, 95]}
+    reviewed: '2026-10-06'
     source_date: '2026-10-04'
     disposition: current-report
     replay_disposition: case-specific
-    represented_by: [frontier/n-053.md, frontier/n-054.md, frontier/n-058.md, frontier/n-070.md, frontier/n-071.md, frontier/n-073.md, frontier/n-076.md, frontier/n-087.md, frontier/n-088.md, frontier/n-090.md, frontier/n-091.md, frontier/n-094.md]
+    represented_by: [frontier/n-053.md, frontier/n-054.md, frontier/n-058.md, frontier/n-070.md, frontier/n-071.md, frontier/n-072.md, frontier/n-073.md, frontier/n-076.md, frontier/n-087.md, frontier/n-088.md, frontier/n-089.md, frontier/n-090.md, frontier/n-091.md, frontier/n-092.md, frontier/n-093.md, frontier/n-094.md, frontier/n-095.md]
     evidence:
       - E-n053-wand125-mixed-76275-report
+      - E-n053-wand125-mixed-76275-sqverify-fast-replay
       - E-n054-wand125-mixed-7685-report
+      - E-n054-wand125-mixed-7685-sqverify-fast-replay
       - E-n058-wand125-mixed-7935-report
+      - E-n058-wand125-mixed-7935-sqverify-fast-replay
       - E-n070-wand125-mixed-86575-report
+      - E-n070-wand125-mixed-86575-sqverify-fast-replay
       - E-n071-wand125-mixed-8721-report
+      - E-n071-wand125-mixed-8721-sqverify-fast-replay
       - E-n073-wand125-mixed-8813-report
+      - E-n073-wand125-mixed-8813-sqverify-fast-replay
       - E-n076-wand125-mixed-8965-report
+      - E-n076-wand125-mixed-8965-sqverify-fast-replay
       - E-n087-wand125-mixed-958-report
+      - E-n087-wand125-mixed-958-sqverify-fast-replay
       - E-n088-wand125-mixed-962-report
+      - E-n088-wand125-mixed-962-sqverify-fast-replay
       - E-n090-wand125-mixed-973-report
+      - E-n090-wand125-mixed-973-sqverify-fast-replay
       - E-n091-wand125-mixed-97625-report
+      - E-n091-wand125-mixed-97625-sqverify-fast-replay
       - E-n094-wand125-mixed-995-report
+      - E-n094-wand125-mixed-995-sqverify-fast-replay
     notes: >-
       Revision 797bdf6e10eba5f9dccca9da06f8352e81ba9dde, retrieved at 2026-10-05T00:44Z for
       12 comments of 4 October on jlevy/squares#282. 12 rectangle densities checked at
       coverage one by the source's research copy of Tokoharu's verify.cpp, byte for byte the
       checker of its n = 50 certificate, each of mass n - 1/100000 and added by its own
-      commit, pinned together at the last. All 12 are recorded as reported lower bounds
+      commit, pinned together at the last. All 12 were recorded as reported lower bounds
       (T-091), each above what the record reported at its count; at n = 88 and 94 they raise
       the source's certificates of earlier that day (T-090). The packet also pins
       mixed_n86_L9503 and mixed_n69_L862 of the 4 October packet, unchanged here; they are
       T-090's. The directories carry no completion-audit.json, so each tarball is bound by
       its digest at the pinned tree. The exact audit and the replay's checks before its
-      first angle pass on all 12; no angle was replayed, and the proof-bundle tarballs are
+      first angle pass on all 12. On 5 and 6 October sqverify-fast, this repository's
+      clean-room measure verifier, decided all 12 at all 201 net directions, which put them
+      and the five counts they carry by mass (n = 72, 89, 92, 93 and 95) in the verified
+      lane; the source's own checker was not run here, and the proof-bundle tarballs are
       pinned by digest and not retained. The revision also changes certificates/k2m4_n77_L9
       (3f063bd: run logs, a replay record and a hardened verify.sh, the cover unchanged;
       T-067) and point_n21_L5 (781afb3: relativized paths and a corrected lemma-code map,

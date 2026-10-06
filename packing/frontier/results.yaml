@@ -8259,14 +8259,17 @@ results:
   - id: T-091
     kind: lower-bound
     registered: '2026-10-05'
-    headline: "Mixed rectangle-measure lower bounds reported at 12 counts in `n = 53…94`"
+    headline: "Mixed rectangle-measure lower bounds verified at 17 counts in `n = 53…95`"
     claim: >-
-      wand125/square-packing-bounds reports 12 rectangle-density certificates published on 4
-      October 2026, after those of T-090: s(53) >= 3051/400 = 7.6275, s(54) >= 1537/200 =
-      7.685, s(58) >= 1587/200 = 7.935, s(70) >= 3463/400 = 8.6575, s(71) >= 8721/1000 =
-      8.721, s(73) >= 8813/1000 = 8.813, s(76) >= 1793/200 = 8.965, s(87) >= 479/50 = 9.58,
-      s(88) >= 481/50 = 9.62, s(90) >= 973/100 = 9.73, s(91) >= 781/80 = 9.7625 and s(94) >=
-      199/20 = 9.95.
+      Twelve rectangle densities of wand125/square-packing-bounds, checked at coverage one
+      and published on 4 October 2026, after those of T-090, prove s(53) >= 3051/400 =
+      7.6275, s(54) >= 1537/200 = 7.685, s(58) >= 1587/200 = 7.935, s(70) >= 3463/400 =
+      8.6575, s(71) >= 8721/1000 = 8.721, s(73) >= 8813/1000 = 8.813, s(76) >= 1793/200 =
+      8.965, s(87) >= 479/50 = 9.58, s(88) >= 481/50 = 9.62, s(90) >= 973/100 = 9.73,
+      s(91) >= 781/80 = 9.7625 and s(94) >= 199/20 = 9.95. A packing of n + 1 squares
+      contains one of n, so the n = 71 value also bounds n = 72, the n = 88 value n = 89, the
+      n = 91 value n = 92 and 93, and the n = 94 value n = 95, where each is above the
+      verified bound the record held: 17 counts in all.
 
       Each is a density of 312 to 853 uniform rectangles in D4 orbits and no point mass, of
       total mass n - 1/100000, at core side 9977/10000 on 201 net half-angles of step
@@ -8277,56 +8280,71 @@ results:
       and at n = 88 and 94 two of T-090's of earlier that day. At n = 53 and 54 they are the
       source's first mixed certificates.
 
-      All 12 values are above what the record reported at their counts, by 0.004 to 0.03:
+      All 12 values were above what the record reported at their counts, by 0.004 to 0.03:
       over T-082 at eight counts, T-090 at n = 88 and 94, and the source's rectangle
-      certificates (T-068, T-074) at n = 53 and 54. A packing of n + 1 squares contains one
-      of n, but at each next count the record already reports more, or holds a value of this
-      entry, so none carries further.
+      certificates (T-068, T-074) at n = 53 and 54. Over the verified lower bounds they
+      replace, at the twelve counts and the five they carry to, the rise is 0.0125 to 0.1525.
 
-      Here the source was retained, its exact premises were recomputed from the retained
-      bytes, and the replay's checks before its first angle were run on each pinned tarball.
-      None of it decides coverage, and no angle was replayed. The values stand as reported,
-      and the verified lower bounds are unchanged.
+      Each certificate was decided here on 5 and 6 October 2026 by sqverify-fast, this
+      repository's clean-room measure verifier, at all 201 net directions of the retained
+      candidate, and two mutants of each scaled below coverage one were refused: confirmed,
+      independently re-implemented. The verifier shares no code with the source's checker and
+      runs the same net-and-shrink method, so it is a second implementation and not a second
+      method. The source's own checker was not run here.
 
       wand125 after Tokoharu and Levy,
       [square-packing-bounds](https://github.com/wand125/square-packing-bounds/tree/797bdf6e10eba5f9dccca9da06f8352e81ba9dde/certificates).
       Registration was requested in 12 comments of 4 October 2026 on jlevy/squares#282. The
       source says parts of the work were produced with AI assistance under human direction.
-    scope: {n_values: [53, 54, 58, 70, 71, 73, 76, 87, 88, 90, 91, 94]}
-    verification: V0
-    confirmation: C1
+    scope: {n_values: [53, 54, 58, 70, 71, 72, 73, 76, 87, 88, 89, 90, 91, 92, 93, 94, 95]}
+    verification: V3
+    confirmation: C3
     significance:
       score: 3
       rationale: >-
-        Scored as a claim: if the replays pass, the strongest verified lower bounds on record
-        at 12 counts from n = 53 to 94, and the strongest reported at all 12. Further sizes
-        from the generator and checker of T-069, T-071, T-072, T-075, T-082 and T-090, with
-        no new technique, at S3 as those are; the score gates nothing.
+        The strongest verified lower bounds on record at 17 counts from n = 53 to 95, and the
+        strongest reported at all 12 of its own. Further sizes from the generator and checker
+        of T-069, T-071, T-072, T-075, T-082 and T-090, with no new technique, at S3 as those
+        are; the 5 October review of these certificates confirmed S3.
       scored: '2026-10-05'
-      by: 'issue-282 October 4 import, registering lane (repository; draft)'
+      by: docs/project/reviews/review-2026-10-05-wand125-october-4-certificates.md (repository; confirms the registering lane's draft)
     novelty: previously-published
     attribution:
       source_keys: ['[wand125 mixed bounds evening 2026-10-04]']
       published: '2026-10-04'
     composition: >-
-      12 primary certificates, each on its own reported entry, at V0/C1: read by the 5
-      October review of these certificates, and not replayed. Coverage is decided by the
-      source's C++ checker alone, byte for byte the checker the 28 September, 2 October and 3
-      October reviews read; the axis tables are a second implementation for one direction
-      and not a second method.
+      12 primary certificates, each on its own reported entry and its own replay entry. n =
+      72, 89, 92, 93 and 95 take the n = 71, 88, 91 and 94 certificates directly, their
+      masses being below those counts, so no step is added. Each replay is sqverify-fast at
+      all 201 net directions of the retained candidate: one interval-certified method,
+      replayed here by an independent implementation, C3. The source's checker and axis
+      tables were not run here, so no second method and no reproduction with the producer's
+      code stands beside it.
     evidence:
       - E-n053-wand125-mixed-76275-report
+      - E-n053-wand125-mixed-76275-sqverify-fast-replay
       - E-n054-wand125-mixed-7685-report
+      - E-n054-wand125-mixed-7685-sqverify-fast-replay
       - E-n058-wand125-mixed-7935-report
+      - E-n058-wand125-mixed-7935-sqverify-fast-replay
       - E-n070-wand125-mixed-86575-report
+      - E-n070-wand125-mixed-86575-sqverify-fast-replay
       - E-n071-wand125-mixed-8721-report
+      - E-n071-wand125-mixed-8721-sqverify-fast-replay
       - E-n073-wand125-mixed-8813-report
+      - E-n073-wand125-mixed-8813-sqverify-fast-replay
       - E-n076-wand125-mixed-8965-report
+      - E-n076-wand125-mixed-8965-sqverify-fast-replay
       - E-n087-wand125-mixed-958-report
+      - E-n087-wand125-mixed-958-sqverify-fast-replay
       - E-n088-wand125-mixed-962-report
+      - E-n088-wand125-mixed-962-sqverify-fast-replay
       - E-n090-wand125-mixed-973-report
+      - E-n090-wand125-mixed-973-sqverify-fast-replay
       - E-n091-wand125-mixed-97625-report
+      - E-n091-wand125-mixed-97625-sqverify-fast-replay
       - E-n094-wand125-mixed-995-report
+      - E-n094-wand125-mixed-995-sqverify-fast-replay
     reviews:
       - path: docs/project/reviews/review-2026-10-05-wand125-october-4-certificates.md
         kind: adversarial
@@ -8338,29 +8356,72 @@ results:
           The 28 certificates wand125/square-packing-bounds published on 3 and 4 October, the 16 of T-090 pinned at 8aa6a10b and the 12 of T-091 at 797bdf6e, against checkers byte-identical to ones already reviewed: the argument from certificate to bound, the tarball binding without the source's completion audit, the comparisons and margins in exact arithmetic, the supersessions at n = 88 and 94 and the two certificates both packets pin, what the new measures add, their sizes, structure and records, and the platforms the bundles record; blind to any replay and not to retention.
         verdict: accepted
         covers: [T-090, T-091]
+      - path: docs/project/reviews/review-2026-10-05-wand125-october-5-and-independent-replays.md
+        kind: adversarial
+        reviewer: AI agent, the review lane of the 2026-10-05 stage 4 for T-094 and the independent replays (claude-opus-5-5, tbd-strong tier), prompted separately from the registering and replay lanes
+        reviewer_kind: ai
+        relation: project
+        date: '2026-10-05'
+        scope: >-
+          For T-091, the census route only: whether a passing sqverify-fast census row and control receipt on a retained candidate are a complete replay here that, with the 5 October review of these certificates' mathematics, may move a count's verified lower bound, and the per-certificate conditions under which that decision carries to T-082, T-090 and T-091; written before T-091's rows existed, and not a reading of its certificates.
+        verdict: accepted
+        covers: [T-091, T-094]
     artifacts:
       - packing/resources/web/wand125-mixed-bounds-evening-2026-10-04/README.md
       - packing/resources/web/wand125-mixed-bounds-evening-2026-10-04/receipts/mixed-audit.json
       - packing/devtools/audit_wand125_point_and_mixed.py
+      - packing/benchmarks/measure-verifier/census-mixed/census.json
+      - packing/benchmarks/measure-verifier/census-mixed/wand125-mixed-bounds-evening-2026-10-04/mixed_n53_L76275.jsonl.gz
+      - packing/benchmarks/measure-verifier/census-mixed/wand125-mixed-bounds-evening-2026-10-04/mixed_n54_L7685.jsonl.gz
+      - packing/benchmarks/measure-verifier/census-mixed/wand125-mixed-bounds-evening-2026-10-04/mixed_n58_L7935.jsonl.gz
+      - packing/benchmarks/measure-verifier/census-mixed/wand125-mixed-bounds-evening-2026-10-04/mixed_n70_L86575.jsonl.gz
+      - packing/benchmarks/measure-verifier/census-mixed/wand125-mixed-bounds-evening-2026-10-04/mixed_n71_L8721.jsonl.gz
+      - packing/benchmarks/measure-verifier/census-mixed/wand125-mixed-bounds-evening-2026-10-04/mixed_n73_L8813.jsonl.gz
+      - packing/benchmarks/measure-verifier/census-mixed/wand125-mixed-bounds-evening-2026-10-04/mixed_n76_L8965.jsonl.gz
+      - packing/benchmarks/measure-verifier/census-mixed/wand125-mixed-bounds-evening-2026-10-04/mixed_n87_L958.jsonl.gz
+      - packing/benchmarks/measure-verifier/census-mixed/wand125-mixed-bounds-evening-2026-10-04/mixed_n88_L962.jsonl.gz
+      - packing/benchmarks/measure-verifier/census-mixed/wand125-mixed-bounds-evening-2026-10-04/mixed_n90_L973.jsonl.gz
+      - packing/benchmarks/measure-verifier/census-mixed/wand125-mixed-bounds-evening-2026-10-04/mixed_n91_L97625.jsonl.gz
+      - packing/benchmarks/measure-verifier/census-mixed/wand125-mixed-bounds-evening-2026-10-04/mixed_n94_L995.jsonl.gz
+      - packing/devtools/sqverify_fast_census.py
       - docs/project/reviews/review-2026-10-05-wand125-october-4-certificates.md
+      - docs/project/reviews/review-2026-10-05-wand125-october-5-and-independent-replays.md
+    controls:
+      - packing/benchmarks/measure-verifier/census-mixed/wand125-mixed-bounds-evening-2026-10-04/mixed_n53_L76275.control.json
+      - packing/benchmarks/measure-verifier/census-mixed/wand125-mixed-bounds-evening-2026-10-04/mixed_n54_L7685.control.json
+      - packing/benchmarks/measure-verifier/census-mixed/wand125-mixed-bounds-evening-2026-10-04/mixed_n58_L7935.control.json
+      - packing/benchmarks/measure-verifier/census-mixed/wand125-mixed-bounds-evening-2026-10-04/mixed_n70_L86575.control.json
+      - packing/benchmarks/measure-verifier/census-mixed/wand125-mixed-bounds-evening-2026-10-04/mixed_n71_L8721.control.json
+      - packing/benchmarks/measure-verifier/census-mixed/wand125-mixed-bounds-evening-2026-10-04/mixed_n73_L8813.control.json
+      - packing/benchmarks/measure-verifier/census-mixed/wand125-mixed-bounds-evening-2026-10-04/mixed_n76_L8965.control.json
+      - packing/benchmarks/measure-verifier/census-mixed/wand125-mixed-bounds-evening-2026-10-04/mixed_n87_L958.control.json
+      - packing/benchmarks/measure-verifier/census-mixed/wand125-mixed-bounds-evening-2026-10-04/mixed_n88_L962.control.json
+      - packing/benchmarks/measure-verifier/census-mixed/wand125-mixed-bounds-evening-2026-10-04/mixed_n90_L973.control.json
+      - packing/benchmarks/measure-verifier/census-mixed/wand125-mixed-bounds-evening-2026-10-04/mixed_n91_L97625.control.json
+      - packing/benchmarks/measure-verifier/census-mixed/wand125-mixed-bounds-evening-2026-10-04/mixed_n94_L995.control.json
+      - packing/tests/test_sqverify_fast_census.py
     next_rung: >-
-      The complete replays, about 131 CPU-hours planned (138 by the source's own oblique
-      seconds), with devtools.audit_wand125_point_and_mixed mixed-shard
-      wand125-mixed-bounds-evening-2026-10-04 --runners 6 for the ranges, mixed-replay on
-      each and mixed-merge per certificate, before any verified lower bound is raised; a
-      count's verified lower bound moves when its replay returns the certificate's own record
-      at all 201 directions. Five of the bundles record their proof run on macOS arm64, and
-      their replays must return those records exactly.
+      V4 and C4 need a human oversight record and two adversarial AI reviews of the claim by
+      distinct reviewers: the 5 October review of these certificates is one, and the review
+      of the census route of the same day decided the route, not these certificates'
+      mathematics. Replays of the source's own checker (about 131 CPU-hours planned,
+      devtools.audit_wand125_point_and_mixed mixed-shard wand125-mixed-bounds-evening-2026-10-04 --runners 6) would add a
+      reproduction with the producer's code beside the rung, and only they bear on the five
+      bundles that record their proof run on macOS arm64 (OF-2); a second machine method
+      would be a method-distinct decision of rotated coverage.
     notes: >-
-      V0 because each cited entry is the source's claim: assurance reported, replay not
-      attempted. C1 because the 5 October review of these certificates is recorded as each
-      report entry's external_review, with no blocking defect. That review was prompted
-      separately from the lane that retained the packets and registered the entry. One entry
-      for the 12 pinned together at one revision; the evening packet also pins two of
-      T-090's certificates, mixed_n86_L9503 and mixed_n69_L862, unchanged, and they stay
-      T-090's. A later revision than T-090's, so a separate entry; at n = 88 and 94 it
-      raises T-090's values, which keep their claim. The proof-bundle tarballs are pinned
-      by digest and not retained.
+      Raised from V0/C1 by think-7fxu: the twelve sqverify-fast replays, 758 to
+      2,801 CPU seconds each at two threads, 6.0 CPU-hours in all,
+      with two mutants of each refused, under the census route the review of 5 October 2026
+      accepted (docs/project/reviews/review-2026-10-05-wand125-october-5-and-independent-replays.md) and the 5 October review of these certificates' mathematics. The 131
+      CPU-hours planned for replays of the source's checker were not spent.
+
+      One entry for the
+      12 pinned together at one revision; the evening packet also pins two of T-090's
+      certificates, mixed_n86_L9503 and mixed_n69_L862, unchanged, and they stay T-090's. A
+      later revision than T-090's, so a separate entry; at n = 88 and 94 it raises T-090's
+      values, which keep their claim. The proof-bundle tarballs are pinned by digest and not
+      retained.
 
   - id: T-092
     kind: upper-bound
@@ -8641,7 +8702,7 @@ results:
         scope: >-
           The mathematics of mixed_n67_L848 and mixed_n84_L9411, every exact premise recomputed by its own code, and the sqverify-fast census rows and control receipts as a complete replay here; written after the replays.
         verdict: accepted
-        covers: [T-094]
+        covers: [T-091, T-094]
     artifacts:
       - packing/resources/web/wand125-mixed-bounds-2026-10-05/README.md
       - packing/resources/web/wand125-mixed-bounds-2026-10-05/receipts/mixed-audit.json

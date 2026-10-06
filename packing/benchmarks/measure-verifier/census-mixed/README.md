@@ -24,11 +24,18 @@ there.
 | `mixed_n50_L7318` | 50 | M | VERIFIED | 201 | 25,730,280 | 1.0000000022689954 | clears | 176.6 | 5.4 | none: first complete check here | - | - | - | - |
 | `mixed_n50_L735` | 50 | L | VERIFIED | 201 | 62,847,662 | 1.0000000002563805 | clears | 647.1 | 12.0 | none: first complete check here | - | - | - | - |
 | `mixed_n50_L740` | 50 | M | VERIFIED | 201 | 79,977,134 | 1.0000000004091405 | clears | 810.7 | 8.5 | all 201 | - | - | - | - |
+| `mixed_n53_L76275` | 53 | M | VERIFIED | 201 | 74,893,418 | 1.0000000001795013 | clears | 1352.4 | 9.6 | none: first complete check here | - | - | - | CONTROLS_REFUSED |
+| `mixed_n54_L7685` | 54 | M | VERIFIED | 201 | 74,884,146 | 1.0000000007300995 | clears | 1413.6 | 14.5 | none: first complete check here | - | - | - | CONTROLS_REFUSED |
+| `mixed_n58_L7935` | 58 | M | VERIFIED | 201 | 75,303,852 | 1.0000000002574023 | clears | 1916.9 | 12.8 | none: first complete check here | - | - | - | CONTROLS_REFUSED |
 | `mixed_n65_L835` | 65 | M | VERIFIED | 201 | 91,946,228 | 1.000000000539362 | clears | 1629.0 | 2.0 | all 201 | 65,879 | 1628.5 | 40x | - |
 | `mixed_n66_L842` | 66 | M | VERIFIED | 201 | 87,565,608 | 1.0000000000012201 | clears | 1460.1 | 4.0 | all 201 | 42,065 | 1459.8 | 29x | - |
 | `mixed_n66_L843` | 66 | M | VERIFIED | 201 | 117,253,700 | 1.0000000006737138 | clears | 2104.9 | 6.3 | 0, 1, 24, 25, 100, 101, 147, 148, 156, 157, 199, 200 | 4,628 | 128.8 | 36x | CONTROLS_REFUSED |
 | `mixed_n67_L848` | 67 | M | VERIFIED | 201 | 91,535,166 | 1.000000000605981 | clears | 1388.3 | 3.2 | none: first complete check here | - | - | - | CONTROLS_REFUSED |
+| `mixed_n70_L86575` | 70 | M | VERIFIED | 201 | 102,788,360 | 1.0000000000402047 | clears | 1938.6 | 12.6 | none: first complete check here | - | - | - | CONTROLS_REFUSED |
+| `mixed_n71_L8721` | 71 | M | VERIFIED | 201 | 92,643,856 | 1.0000000002314637 | clears | 2098.9 | 9.6 | none: first complete check here | - | - | - | CONTROLS_REFUSED |
+| `mixed_n73_L8813` | 73 | M | VERIFIED | 201 | 95,416,008 | 1.0000000008042074 | clears | 1874.7 | 10.8 | none: first complete check here | - | - | - | CONTROLS_REFUSED |
 | `mixed_n76_L894` | 76 | M | VERIFIED | 201 | 32,989,364 | 1.0000000029480338 | clears | 758.5 | 4.9 | all 201 | 13,096 | 758.3 | 17x | - |
+| `mixed_n76_L8965` | 76 | M | VERIFIED | 201 | 42,405,724 | 1.0000000001430744 | clears | 757.7 | 15.1 | none: first complete check here | - | - | - | CONTROLS_REFUSED |
 | `mixed_n82_L932` | 82 | L | VERIFIED | 201 | 150,629,171 | 1.0000000001085079 | clears | 3387.6 | 2.0 | all 201 | 110,673 | 3387.0 | 33x | - |
 | `mixed_n83_L935` | 83 | L | VERIFIED | 201 | 134,172,189 | 1.0000000006450585 | clears | 3068.8 | 4.9 | all 201 | 94,103 | 3068.3 | 31x | - |
 | `mixed_n83_L937` | 83 | M | VERIFIED | 201 | 116,735,118 | 1.0000000001148488 | clears | 2054.5 | 2.3 | all 201 | 58,523 | 2054.0 | 28x | - |
@@ -37,14 +44,19 @@ there.
 | `mixed_n85_L942` | 85 | M | VERIFIED | 201 | 89,192,514 | 1.0000000002558 | clears | 1595.6 | 2.8 | all 201 | 35,181 | 1595.2 | 22x | - |
 | `mixed_n85_L946` | 85 | M | VERIFIED | 201 | 72,746,810 | 1.000000000416021 | clears | 1549.7 | 1.9 | all 201 | 35,056 | 1549.4 | 23x | - |
 | `mixed_n87_L948` | 87 | M | VERIFIED | 201 | 32,682,134 | 1.0000000000698703 | clears | 451.1 | 1.9 | all 201 | 9,585 | 450.9 | 21x | - |
+| `mixed_n87_L958` | 87 | M | VERIFIED | 201 | 90,798,292 | 1.0000000002258154 | clears | 1899.2 | 9.7 | none: first complete check here | - | - | - | CONTROLS_REFUSED |
+| `mixed_n88_L962` | 88 | M | VERIFIED | 201 | 93,106,576 | 1.000000001156332 | clears | 1648.3 | 3.8 | none: first complete check here | - | - | - | CONTROLS_REFUSED |
 | `mixed_n90_L960` | 90 | M | VERIFIED | 201 | 57,975,508 | 1.0000000000508447 | clears | 525.6 | 4.7 | all 201 | 26,494 | 525.2 | 50x | - |
+| `mixed_n90_L973` | 90 | M | VERIFIED | 201 | 92,284,808 | 1.000000000392674 | clears | 2087.6 | 8.6 | none: first complete check here | - | - | - | CONTROLS_REFUSED |
 | `mixed_n91_L970` | 91 | M | VERIFIED | 201 | 25,333,138 | 1.0000000012160961 | clears | 418.2 | 2.1 | all 201 | 8,475 | 418.0 | 20x | - |
+| `mixed_n91_L97625` | 91 | M | VERIFIED | 201 | 86,035,506 | 1.0000000003586995 | clears | 1824.2 | 13.8 | none: first complete check here | - | - | - | CONTROLS_REFUSED |
 | `mixed_n92_L969` | 92 | M | VERIFIED | 201 | 57,457,538 | 1.0000000041386434 | clears | 580.7 | 5.8 | all 201 | 24,022 | 580.3 | 41x | - |
 | `mixed_n92_L975` | 92 | M | VERIFIED | 201 | 26,872,130 | 1.0000000045215391 | clears | 443.0 | 2.0 | all 201 | 9,627 | 442.8 | 22x | - |
+| `mixed_n94_L995` | 94 | M | VERIFIED | 201 | 99,167,366 | 1.000000000302789 | clears | 2800.7 | 12.1 | none: first complete check here | - | - | - | CONTROLS_REFUSED |
 | `mixed_n96_L996` | 96 | M | VERIFIED | 201 | 26,793,520 | 1.000000000121414 | clears | 456.4 | 2.1 | all 201 | 8,758 | 456.2 | 19x | - |
 | `mixed_n101_L1028` | 101 | L | VERIFIED | 201 | 53,145,987 | 1.000000000300333 | clears | 128.4 | 4.0 | all 201 | 27,669 | 128.0 | 216x | - |
 
-24 of 24 certificates verified; 28056 CPU seconds in all.
+36 of 36 certificates verified; 49668 CPU seconds in all.
 
 <!-- This document follows common-doc-guidelines.md.
 See github.com/jlevy/practical-prose and review guidelines before editing.

@@ -797,7 +797,7 @@ issues:
           (D-516), the 63 at n <= 100 among them: the perfect squares on the area bound,
           s(k^2 - 1) = k on T-084, s(k^2 - 2) = k on T-086, and the open floors on T-083 or
           a stronger registered bound. devtools.check_nagamochi_bounds re-derives them.
-    beads: [think-bkqm, think-bmze]
+    beads: [think-bkqm, think-bmze, think-dw1o, think-lpul]
     answer_bead: think-bmze
     replies:
       - url: https://github.com/jlevy/squares/issues/295#issuecomment-5971665348

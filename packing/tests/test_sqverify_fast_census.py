@@ -1,20 +1,22 @@
-"""The clean-room verifier's mixed census, and its controls on the certificates it decides.
+"""The clean-room verifier's census, and its controls on the certificates it decides.
 
 `devtools.sqverify_fast_census --family mixed` keeps, per retained format M or L
-certificate, `sqverify-fast`'s verdict at all 201 net directions, and for a certificate
-whose verified lower bound rests on that verdict, a control receipt: the original
-verified again at its least-bound direction, and two mutants refused there (every mass
-scaled by 99/100, and every mass scaled so that the exact capture at the least-bound
-leaf's centre is at most one part in a million below 1). `campaign/result-import.md`
-asks that two mutated certificates be refused by every checker that accepted the
-original, with a test holding them; this is that test for `V-sqverify-fast`.
+certificate, `sqverify-fast`'s verdict at all 201 net directions, and the default
+rectangle family the same for every format T certificate at Tokoharu's threshold
+10001/10000. For a certificate on which an evidence entry rests, it keeps a control
+receipt: the original verified again at its least-bound direction, and two mutants
+refused there (every mass scaled by 99/100, and every mass scaled so that the exact
+capture at the least-bound leaf's centre is at most one part in a million below the
+row's threshold). `campaign/result-import.md` asks that two mutated certificates be
+refused by every checker that accepted the original, with a test holding them; this is
+that test for `V-sqverify-fast`.
 
 These tests read the retained receipts, the retained candidates and the evidence
 register only; nothing here builds or runs the verifier. Each mutant's capture at the
 centre is recomputed here from the receipt's exact capture and factor, so each refusal
-is the verifier's correct answer rather than a budget running out, and one receipt's
-exact capture is recomputed from the candidate by the exact evaluator written apart
-from the crate.
+is the verifier's correct answer rather than a budget running out, and one receipt of
+each family has its exact capture recomputed from the candidate by an exact evaluator
+written apart from the crate.
 """
 
 from __future__ import annotations
@@ -30,10 +32,17 @@ from typing import Any
 import pytest
 
 from devtools import sqverify_fast_census as census
-from devtools.check_sqverify_fast import mixed_exact, net_step, read_raw
+from devtools.check_sqverify_fast import direction, mixed_exact, net_step, read_raw
+from sqpack.rectangle_density import coverage_at_point, load_candidate
 from sqpack.yamlio import safe_load
 
 FOLDER = census.CENSUS_ROOT / "census-mixed"
+#: The rectangle family's census: format T, at Tokoharu's threshold.
+RECTANGLES = census.CENSUS_ROOT / "census"
+#: The format T receipt whose exact capture is recomputed here from the candidate.
+RECOMPUTED_T = "rect_n66_L8385"
+#: Tokoharu's threshold, which the rectangle family passes for every format T row.
+TOKOHARU_THRESHOLD = "10001/10000"
 EVIDENCE = census.PROJECT / "frontier/evidence.yaml"
 RESULTS = census.PROJECT / "frontier/results.yaml"
 VERIFIER = "V-sqverify-fast"
@@ -83,10 +92,33 @@ def entries() -> dict[str, Any]:
 
 
 @cache
+def rectangle_cases() -> dict[str, census.Case]:
+    return {case.certificate: case for case in census.rectangle_cases()}
+
+
+@cache
+def rectangle_entries() -> dict[str, Any]:
+    data = json.loads((RECTANGLES / "census.json").read_text(encoding="utf-8"))
+    value: dict[str, Any] = data["cases"]
+    return value
+
+
+def case_of(name: str) -> census.Case:
+    """A certificate's census case, of either family."""
+    return rectangle_cases()[name] if name in rectangle_entries() else cases()[name]
+
+
+def row_of(name: str) -> dict[str, Any]:
+    """A certificate's census row, of either family."""
+    return rectangle_entries()[name] if name in rectangle_entries() else entries()[name]
+
+
+@cache
 def controls() -> dict[str, dict[str, Any]]:
     return {
         path.name.removesuffix(".control.json"): json.loads(path.read_text(encoding="utf-8"))
-        for path in sorted(FOLDER.glob("*/*.control.json"))
+        for folder in (FOLDER, RECTANGLES)
+        for path in sorted(folder.glob("*/*.control.json"))
     }
 
 
@@ -105,12 +137,13 @@ def decided() -> dict[str, dict[str, Any]]:
 def cited() -> dict[str, str]:
     """Each evidence entry that `V-sqverify-fast` decides, by the certificate it names."""
     by_path = {
-        str(case.candidate.relative_to(census.PROJECT)): name for name, case in cases().items()
+        str(case.candidate.relative_to(census.PROJECT)): name
+        for name, case in {**cases(), **rectangle_cases()}.items()
     }
     found: dict[str, str] = {}
     for ident, entry in decided().items():
         name = by_path.get(str(entry.get("certificate")))
-        assert name is not None, f"{ident}: no mixed census case for its certificate"
+        assert name is not None, f"{ident}: no census case for its certificate"
         found[ident] = name
     return found
 
@@ -154,9 +187,36 @@ def test_every_mixed_census_case_is_verified_at_every_direction_of_its_net() -> 
         assert summary["status"] == "VERIFIED", name
 
 
+def test_every_rectangle_census_case_cited_is_verified_at_every_direction() -> None:
+    """The format T rows an evidence entry rests on, at all 201 directions of the
+    standard net and Tokoharu's threshold."""
+    for evidence_id, name in cited().items():
+        if name not in rectangle_entries():
+            continue
+        entry = rectangle_entries()[name]
+        case = rectangle_cases()[name]
+        least = entry["least_bound_leaf_exact"]
+        assert entry["status"] == "VERIFIED", evidence_id
+        assert entry["returncode"] == 0, evidence_id
+        assert entry["directions_verified"] == census.STANDARD_DIRECTIONS, evidence_id
+        assert entry["threshold"] == TOKOHARU_THRESHOLD, evidence_id
+        assert least["clears_threshold"] is True, evidence_id
+        assert Fraction(least["exact_coverage"]) >= Fraction(entry["threshold"]), evidence_id
+        assert entry["candidate_sha256"] == sha256(case.candidate), evidence_id
+        receipt = RECTANGLES / case.packet / f"{name}.jsonl.gz"
+        rows = [json.loads(line) for line in gzip.decompress(receipt.read_bytes()).splitlines()]
+        directions = [row for row in rows if "r" in row]
+        assert sorted(int(row["r"]) for row in directions) == list(
+            range(census.STANDARD_DIRECTIONS)
+        ), evidence_id
+        assert all(row["verdict"] == "verified" for row in directions), evidence_id
+        assert rows[-1]["kind"] == "sqverify-fast-summary/v1", evidence_id
+        assert rows[-1]["status"] == "VERIFIED", evidence_id
+
+
 def test_every_entry_the_verifier_decides_has_a_verified_case_and_a_refused_control() -> None:
     for evidence_id, name in cited().items():
-        assert entries()[name]["status"] == "VERIFIED", evidence_id
+        assert row_of(name)["status"] == "VERIFIED", evidence_id
         assert name in controls(), f"{evidence_id}: no control receipt for {name}"
         assert controls()[name]["status"] == "CONTROLS_REFUSED", evidence_id
 
@@ -229,6 +289,9 @@ def test_every_entry_the_verifier_decides_is_within_what_its_review_accepted() -
     its census row.
     """
     for evidence_id, name in cited().items():
+        if name in rectangle_entries():
+            assert format_t_problems(name) == [], evidence_id
+            continue
         raw = read_raw(cases()[name].candidate)
         assert raw["points"] == [], evidence_id
         assert raw.get("scaling_factor", "1") == "1", evidence_id
@@ -261,6 +324,55 @@ def test_every_entry_the_verifier_decides_is_within_what_its_review_accepted() -
         assert summary["fault_injected_at_box"] is None, evidence_id
 
 
+def format_t_problems(name: str) -> list[str]:
+    """Where a format T row is outside what the review of its route accepted.
+
+    The certificates the 6 October review of the format T route read: Tokoharu's format
+    with no point or segment, the standard net and core (201 half-angles of step 83/40000
+    at core side 9977/10000), Tokoharu's centre domain, a mass of n - 1/100, densities far
+    below lemma F3's caps, decided at Tokoharu's threshold 10001/10000 by a build of
+    reviewed source with no fault injected, and controlled by a build of reviewed source.
+    """
+    entry = rectangle_entries()[name]
+    case = rectangle_cases()[name]
+    raw = read_raw(case.candidate)
+    premises = entry["premises"]
+    n = int(premises["n"])
+    densest = max(
+        Fraction(weight) / ((Fraction(x2) - Fraction(x1)) * (Fraction(y2) - Fraction(y1)))
+        for (x1, y1, x2, y2), weight in zip(raw["rectangles"], raw["weights"], strict=True)
+    )
+    receipt = RECTANGLES / entry["packet"] / f"{name}.jsonl.gz"
+    summary = json.loads(gzip.decompress(receipt.read_bytes()).splitlines()[-1])
+    control = controls().get(name) or {}
+    holds = {
+        "n and L are the row's": (n, premises["L"]) == (entry["n"], entry["L"]),
+        "format T": premises["format"] == "T",
+        "no point or segment": "points" not in raw and "segments" not in raw,
+        "no expanded point or segment": (
+            premises["expanded_points"] == premises["expanded_segments"] == 0
+        ),
+        "Tokoharu's centre domain": premises["centre_domain"] == "tokoharu",
+        "the standard net and core": (premises["angle_count"], premises["D"], premises["B"])
+        == (census.STANDARD_DIRECTIONS, "83/40000", "9977/10000"),
+        "mass n - 1/100": Fraction(premises["mass_exact"]) == n - Fraction(1, 100),
+        "densities far below lemma F3's caps": densest <= DENSITY_CEILING,
+        "Tokoharu's threshold": entry["threshold"] == TOKOHARU_THRESHOLD,
+        "no refused direction": entry["refused_directions"] == [],
+        "row of reviewed source": entry["build"]["source_sha256"] in REVIEWED_SOURCES,
+        "release build of rustc 1.98.0": (
+            entry["build"]["profile"],
+            entry["build"]["rustc"].split()[1],
+        )
+        == ("release", "1.98.0"),
+        "no fault injected": summary["fault_injected_at_box"] is None,
+        "controls of reviewed source": (
+            (control.get("build") or {}).get("source_sha256") in REVIEWED_SOURCES
+        ),
+    }
+    return [condition for condition, ok in holds.items() if not ok]
+
+
 def test_every_entry_the_verifier_decides_rests_on_a_review_of_its_certificate() -> None:
     """The route carries only to a certificate whose mathematics a review read.
 
@@ -286,20 +398,41 @@ def test_every_entry_the_verifier_decides_rests_on_a_review_of_its_certificate()
 @pytest.mark.parametrize("name", sorted(controls()))
 def test_each_control_refuses_both_mutants_where_the_original_verifies(name: str) -> None:
     receipt = controls()[name]
-    entry = entries()[name]
-    case = cases()[name]
+    entry = row_of(name)
+    case = case_of(name)
+    # The threshold the row was decided at: 1 for formats M and L, which declare it, and
+    # Tokoharu's 10001/10000 for format T, which the receipt records.
+    threshold = Fraction(entry["threshold"])
+    assert Fraction(receipt.get("threshold", "1")) == threshold
     assert receipt["kind"] == "sqverify-fast-control/v1"
     assert receipt["status"] == "CONTROLS_REFUSED"
     assert (receipt["packet"], receipt["n"], receipt["L"]) == (case.packet, case.n, case.side)
     assert receipt["candidate_sha256"] == sha256(case.candidate) == entry["candidate_sha256"]
-    least = entry["least_bound_leaf_exact"]
-    assert receipt["index"] == least["r"]
-    assert receipt["centre"] == least["centre"]
     exact = Fraction(receipt["exact_capture_independent"])
     assert receipt["captures_agree"] is True
-    assert (
-        exact == Fraction(receipt["exact_capture_crate"]) == Fraction(least["exact_coverage"])
-    )
+    assert exact == Fraction(receipt["exact_capture_crate"])
+    if name in rectangle_entries():
+        # Format T: the tightest least-bound leaf centre of the row's 200 oblique
+        # directions, by exact capture (`census.tightest_centre`), which is the centre
+        # of that direction's least-bound leaf in the census receipts.
+        assert receipt["selection"] == "tightest least-bound leaf centre"
+        assert receipt["centres_weighed"] == census.STANDARD_DIRECTIONS - 1
+        rows = gzip.decompress(
+            (RECTANGLES / case.packet / f"{name}.jsonl.gz").read_bytes()
+        ).splitlines()
+        (row,) = (
+            row
+            for row in map(json.loads, rows)
+            if "r" in row and int(row["r"]) == receipt["index"]
+        )
+        box = row["least_bound_box"]
+        assert receipt["centre"] == [box["x"], box["y"]]
+        assert receipt["index"] >= 1
+    else:
+        least = entry["least_bound_leaf_exact"]
+        assert receipt["index"] == least["r"]
+        assert receipt["centre"] == least["centre"]
+        assert exact == Fraction(least["exact_coverage"])
     runs = {run["name"]: run for run in receipt["runs"]}
     assert set(runs) == {"original", "scaled-99-100", "near-threshold"}
     original = runs["original"]
@@ -313,12 +446,14 @@ def test_each_control_refuses_both_mutants_where_the_original_verifies(name: str
         # The mutant's capture is below the threshold at the least-bound leaf's centre or
         # at the refusal's witness, so the claim the mutant makes is false there and a
         # refusal is the only correct answer.
-        assert exact * factor < 1 or (witness is not None and Fraction(witness) < 1), mutant
+        assert exact * factor < threshold or (
+            witness is not None and Fraction(witness) < threshold
+        ), mutant
         assert run["returncode"] == 1, mutant
         assert run["verdict"] not in (None, "verified"), mutant
     assert Fraction(runs["scaled-99-100"]["mutation"]["factor"]) == census.CONTROL_SCALE
     near = runs["near-threshold"]["mutation"]
-    assert exact * Fraction(near["factor"]) <= 1 - census.NEAR_THRESHOLD
+    assert exact * Fraction(near["factor"]) <= threshold * (1 - census.NEAR_THRESHOLD)
 
 
 def test_one_control_capture_is_recomputed_from_the_candidate() -> None:
@@ -332,6 +467,23 @@ def test_one_control_capture_is_recomputed_from_the_candidate() -> None:
     px, py = (Fraction(value) for value in scaled["witness"]["exact_pose"])
     capture = census.CONTROL_SCALE * mixed_exact(raw, px, py, index)
     assert capture == Fraction(scaled["mutation"]["capture_at_witness"]) < 1
+
+
+def test_one_format_t_control_capture_is_recomputed_from_the_candidate() -> None:
+    """The centre's capture, and the 99/100 mutant's at its witness, by
+    `sqpack.rectangle_density`, which shares no code with the crate."""
+    receipt = controls()[RECOMPUTED_T]
+    case = rectangle_cases()[RECOMPUTED_T]
+    candidate = load_candidate(case.candidate, n=case.n)
+    cosine, sine = direction(int(receipt["index"]))
+    x, y = (Fraction(value) for value in receipt["centre"])
+    capture = coverage_at_point(candidate, x, y, cosine, sine)
+    assert capture == Fraction(receipt["exact_capture_independent"])
+    (scaled,) = (run for run in receipt["runs"] if run["name"] == "scaled-99-100")
+    px, py = (Fraction(value) for value in scaled["witness"]["exact_pose"])
+    witness = census.CONTROL_SCALE * coverage_at_point(candidate, px, py, cosine, sine)
+    assert witness == Fraction(scaled["mutation"]["capture_at_witness"])
+    assert witness < Fraction(TOKOHARU_THRESHOLD)
 
 
 def test_each_reviewed_source_names_the_review_that_accepted_it() -> None:

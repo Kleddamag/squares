@@ -106,6 +106,13 @@ experiment:
     outcome: criterion_missed
     checked_by: The run (receipts/U/kernel-u1-bc428.json) returns INCOMPLETE in 7,001 s of wall and 6,101 s of process
       CPU (capture row wall ceiling). Not a closure; nothing is concluded from it, and its saved node is kept.
+  - shape: determination
+    role: outcome
+    question: Is draw 6 (mask 5491711, stratum c4/i4/d>=8) excluded within the 7,000 s ceiling?
+    outcome: criterion_missed
+    checked_by: The run (receipts/U/kernel-u6-bc428.json) returns PASS_CERTIFIED_STALL in 2,009 s of wall and 1,863 s of
+      process CPU, the producer at a fixed point after 15 rounds (255 steps, 17,152 rows, finest 1/128),
+      inside its ceiling. A non-closure; its node is kept.
   verdict:
     decision: in-progress
     primary_criterion: The fraction of the frozen states the kernel excludes under SW9's recipe within the 7,000 s
@@ -146,6 +153,7 @@ reported as not run.
 | 4 | c3/i>=5/d6 | 6020797 | closed, 3 rounds, admitted | 726 s | full pass, 312 s |
 | 5 | c<=2/i>=5/d6 | 3931626 | closed, 4 rounds, admitted | 1,135 s | full pass, 563 s |
 | 1 | c3/i<=3/d2 (d2) | 1900509 | incomplete at 7,001 s | 6,101 s | — |
+| 6 | c4/i4/d>=8 | 5491711 | fixed point after 15 rounds, not closed | 1,863 s | — |
 
 <!-- This document follows common-doc-guidelines.md.
 See github.com/jlevy/practical-prose and review guidelines before editing.

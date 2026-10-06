@@ -5,13 +5,13 @@ title: Freeze and publish Session094 readiness with immutable validation
 kind: task
 status: in_progress
 priority: 1
-version: 3
+version: 4
 spec_path: packing/campaign/agendas/agenda-024-post-381-24h-portfolio.md
 labels: []
 dependencies: []
-parent_id: is-01m1xm76pe8hkcafwfrt1n958f
+parent_id: null
 created_at: 2026-09-07T10:11:01.205Z
-updated_at: 2026-09-07T11:25:49.087Z
+updated_at: 2026-10-06T08:48:09.774Z
 ---
 Root: reconcile sourceauthor/review/prose records, namedcaps and costreceipts; freezecompleteengine, runimmutablepush/full atappropriatecheckpoint, updatePR109 and watchhostedCI. Scientificsourcecontrols/exp125 require theirseparatecommittedprotocols afterreadiness.
 

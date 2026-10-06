@@ -447,7 +447,7 @@ def apply_case(n: int, text: str) -> str:
 # --------------------------------------------------------------------------------------
 
 
-def _entries(name: str, entries: Sequence[Mapping[str, Any]]) -> str:
+def coverage_entries(name: str, entries: Sequence[Mapping[str, Any]]) -> str:
     """A top-level list of the coverage record, laid out as the packet intake lays it."""
     if not entries:
         return f"{name}: []\n"
@@ -520,14 +520,14 @@ def coverage_text(text: str) -> str:
     superseded.sort(key=lambda entry: (entry["n"], entry["source_id"]))
     text = re.sub(
         r"^selected_overrides:.*\n(?:(?:  |    ).*\n)*",
-        lambda _match: _entries("selected_overrides", overrides),
+        lambda _match: coverage_entries("selected_overrides", overrides),
         text,
         count=1,
         flags=re.MULTILINE,
     )
     return re.sub(
         r"^superseded_reports:.*\n(?:(?:  |    ).*\n)*",
-        lambda _match: _entries("superseded_reports", superseded),
+        lambda _match: coverage_entries("superseded_reports", superseded),
         text,
         count=1,
         flags=re.MULTILINE,

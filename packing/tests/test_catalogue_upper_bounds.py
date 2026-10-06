@@ -1,12 +1,18 @@
-"""The exact certificates of the catalogue's packings at n = 69, 83 and 87 (T-088, T-089)."""
+"""The exact certificates of the catalogue's packings at n = 69, 83 and 87 (T-088, T-089).
+
+Since 2026-10-06 Evan Daniel's exact certificates of the same packings (T-118) hold those
+counts' verified upper lanes, a layer `devtools.apply_exact_ceilings` writes over this one.
+"""
 
 from __future__ import annotations
 
 import json
 from fractions import Fraction
 
+from devtools import apply_exact_ceilings as exact_ceilings
 from devtools import catalogue_upper_bounds as catalogue
 from devtools import upper_bound_packets as packets
+from devtools.apply_upper_bound_packets import normalized
 from sqpack.assurance import bounds_agree_at_declared_precision
 from sqpack.witness import load_witness
 from sqpack.yamlio import safe_load
@@ -50,28 +56,36 @@ def test_both_negative_controls_are_refused_by_both_checkers() -> None:
     ]
 
 
-def test_each_case_record_carries_its_receipts_verified_value_and_says_it_trails() -> None:
-    """The verified lane is the certificate's, and it trails the printed side at all three."""
+def test_each_receipts_verified_value_trails_the_printed_side_and_was_superseded() -> None:
+    """Each certificate's verified value trails the printed side, at all three; since
+    2026-10-06 Evan Daniel's exact certificate of the same packing (T-118) holds the
+    verified lane below it, and the record keeps the reported side these receipts print."""
     for n, row in catalogue.certification().items():
         text = (catalogue.ROOT / "frontier" / f"n-{n:03d}.md").read_text(encoding="utf-8")
         case = safe_load(text.split("---\n")[1])["packing"]
+        ours = {"value": row["verified_value"], "exact_form": row["exact_form"]}
         assert case["reported_upper_bound"]["value"] == row["printed_side"], n
-        assert case["verified_upper_bound"]["value"] == row["verified_value"], n
-        assert case["verified_upper_bound"]["exact_form"] == row["exact_form"], n
-        assert case["verified_upper_bound"]["evidence"] == [catalogue.REPLAY_EVIDENCE[n]], n
-        assert not bounds_agree_at_declared_precision(
-            case["reported_upper_bound"], case["verified_upper_bound"]
+        assert not bounds_agree_at_declared_precision(case["reported_upper_bound"], ours), n
+        assert n in exact_ceilings.certificates.CEILINGS, n
+        assert Fraction(case["verified_upper_bound"]["exact_form"]) < Fraction(
+            row["exact_form"]
         ), n
-        assert any(blocker["kind"] == "mathematics" for blocker in case["blockers"]), n
+        assert case["verified_upper_bound"]["evidence"] == [
+            exact_ceilings.EXACT_REPLAY,
+            exact_ceilings.SOURCE_REPLAY,
+        ], n
 
 
 def test_apply_case_writes_each_committed_records_upper_lane_and_blockers() -> None:
-    """Applied to a committed record, the generator's adoption step changes nothing in it."""
+    """Applied to a committed record with the later layer on top, as the generator applies
+    them, the adoption step changes nothing in it."""
     for n in catalogue.RESULTS:
         text = (catalogue.ROOT / "frontier" / f"n-{n:03d}.md").read_text(encoding="utf-8")
-        applied = catalogue.apply_case(n, text)
+        applied = exact_ceilings.apply_case(n, catalogue.apply_case(n, text))
         assert safe_load(applied.split("---\n")[1]) == safe_load(text.split("---\n")[1]), n
-        assert applied.split("---\n", 2)[2] == text.split("---\n", 2)[2], n
+        assert normalized(applied.split("---\n", 2)[2]) == normalized(
+            text.split("---\n", 2)[2]
+        ), n
     assert catalogue.apply_case(68, "---\npacking: {}\n---\nbody\n") == (
         "---\npacking: {}\n---\nbody\n"
     )

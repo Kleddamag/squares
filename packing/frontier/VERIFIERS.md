@@ -26,7 +26,7 @@ second implementation agrees.
 ## The Short Version
 
 - **90** programs: **33** external and **57** first-party; **69** decide claims and **21** check premises.
-- **359** of **386** evidence entries name the programs that verified them: 211 reproduced with the producer’s code, 131 independently re-implemented, 10 no relation: a proof, a derivation or a report, 7 re-implemented, sharing the producer’s components.
+- **362** of **389** evidence entries name the programs that verified them: 213 reproduced with the producer’s code, 132 independently re-implemented, 10 no relation: a proof, a derivation or a report, 7 re-implemented, sharing the producer’s components.
 
 ## Programs
 
@@ -46,8 +46,8 @@ second implementation agrees.
 | [`V-evand-xcheck-py`](#v-evand-xcheck-py) | xcheck.py | Evan Daniel | external | decides | 4 | 2 |
 | [`V-evand-zmcheck`](#v-evand-zmcheck) | zmcheck (verify2/src/main.rs) | Evan Daniel | external | decides | 3 | 2 |
 | [`V-evand-qx2-zm-py`](#v-evand-qx2-zm-py) | qx2_zm.py | Evan Daniel | external | decides | 4 | 2 |
-| [`V-evand-verify-cert-py`](#v-evand-verify-cert-py) | verify_cert.py (s12/search/exact/) | Evan Daniel | external | decides | 2 | 1 |
-| [`V-evand-verify-cert2-py`](#v-evand-verify-cert2-py) | verify_cert2.py (s12/search/exact/) | Evan Daniel | external | decides | 2 | 1 |
+| [`V-evand-verify-cert-py`](#v-evand-verify-cert-py) | verify_cert.py (s12/search/exact/) | Evan Daniel | external | decides | 4 | 2 |
+| [`V-evand-verify-cert2-py`](#v-evand-verify-cert2-py) | verify_cert2.py (s12/search/exact/) | Evan Daniel | external | decides | 4 | 2 |
 | [`V-evand-lean`](#v-evand-lean) | The source's Lean development (lean/) | Evan Daniel | external | decides | 8 | 5 |
 | [`V-chelokot-lean`](#v-chelokot-lean) | The source's Lean development (formal/) | chelokot | external | decides | 1 | 1 |
 | [`V-kleddamag-n11-verify`](#v-kleddamag-n11-verify) | verify.py | Kleddamag | external | decides | 4 | 2 |
@@ -67,8 +67,8 @@ second implementation agrees.
 | [`V-anabologyco-n17-checker`](#v-anabologyco-n17-checker) | scripts/check_certificate.py and its event pipeline | anabologyco-maker | external | decides | 1 | 0 |
 | [`V-check-basic-bounds`](#v-check-basic-bounds) | devtools.check_basic_bounds | Squares Project (Levy) | first-party | decides | 3 | 14 |
 | [`V-optimal-moduli`](#v-optimal-moduli) | cases.small_n.optimal_moduli | Squares Project (Levy) | first-party | decides | 1 | 0 |
-| [`V-sqpack-verify`](#v-sqpack-verify) | sqpack.verify | Squares Project (Levy) | first-party | decides | 13 | 3 |
-| [`V-check-rational-witness-independent`](#v-check-rational-witness-independent) | devtools.check_rational_witness_independent | Squares Project (Levy) | first-party | decides | 9 | 7 |
+| [`V-sqpack-verify`](#v-sqpack-verify) | sqpack.verify | Squares Project (Levy) | first-party | decides | 14 | 4 |
+| [`V-check-rational-witness-independent`](#v-check-rational-witness-independent) | devtools.check_rational_witness_independent | Squares Project (Levy) | first-party | decides | 10 | 8 |
 | [`V-check-nagamochi-lemma1-counterexample`](#v-check-nagamochi-lemma1-counterexample) | devtools.check_nagamochi_lemma1_counterexample | Squares Project (Levy) | first-party | decides | 1 | 1 |
 | [`V-check-karakus-strip-measure`](#v-check-karakus-strip-measure) | devtools.check_karakus_strip_measure | Squares Project (Levy) | first-party | decides | 1 | 2 |
 | [`V-upper-bound-promotion`](#v-upper-bound-promotion) | devtools.upper_bound_packets | Squares Project (Levy) | first-party | decides | 6 | 5 |
@@ -101,7 +101,7 @@ second implementation agrees.
 | [`V-n17-endpoint-checkers`](#v-n17-endpoint-checkers) | devtools.check_n17_root_certificate and devtools.check_n17_endpoint_feasibility | Squares Project (Levy) | first-party | decides | 1 | 1 |
 | [`V-n17-catalogue-polynomial`](#v-n17-catalogue-polynomial) | devtools.check_n17_catalogue_polynomial | Squares Project (Levy) | first-party | decides | 1 | 0 |
 | [`V-n11-optimality-checkers`](#v-n11-optimality-checkers) | The devtools.check_n11_optimality | Squares Project (Levy) | first-party | decides | 1 | 1 |
-| [`V-evand-exact-certificates`](#v-evand-exact-certificates) | devtools.evand_exact_certificates | Squares Project (Levy) | first-party | premises | 2 | 1 |
+| [`V-evand-exact-certificates`](#v-evand-exact-certificates) | devtools.evand_exact_certificates | Squares Project (Levy) | first-party | premises | 4 | 2 |
 | [`V-check-n11-final-composition`](#v-check-n11-final-composition) | devtools.check_n11_final_composition | Squares Project (Levy) | first-party | premises | 1 | 1 |
 | [`V-audit-n17-endpoint-receipt`](#v-audit-n17-endpoint-receipt) | devtools.audit_n17_endpoint_receipt | Squares Project (Levy) | first-party | premises | 1 | 1 |
 | [`V-audit-tokoharu-density`](#v-audit-tokoharu-density) | devtools.audit_tokoharu_density | Squares Project (Levy) | first-party | premises | 1 | 1 |
@@ -544,6 +544,8 @@ The source's exact checker of its rational packing certificates, in Fraction ari
 | --- | --- | --- | --- |
 | `E-evand-exact-optima-2026-10-05-report` | the source’s own run | producer’s code | T-098 |
 | `E-evand-exact-optima-2026-10-05-source-replay` | replayed here | producer’s code | T-098 |
+| `E-evand-exact-ceilings-2026-10-05-report` | the source’s own run | producer’s code | T-118 |
+| `E-evand-exact-ceilings-2026-10-05-source-replay` | replayed here | producer’s code | T-118 |
 
 ### `V-evand-verify-cert2-py`
 
@@ -558,6 +560,8 @@ The source's second exact checker of the same certificates, written to share no 
 | --- | --- | --- | --- |
 | `E-evand-exact-optima-2026-10-05-report` | the source’s own run | producer’s code | T-098 |
 | `E-evand-exact-optima-2026-10-05-source-replay` | replayed here | producer’s code | T-098 |
+| `E-evand-exact-ceilings-2026-10-05-report` | the source’s own run | producer’s code | T-118 |
+| `E-evand-exact-ceilings-2026-10-05-source-replay` | replayed here | producer’s code | T-118 |
 
 ### `V-evand-lean`
 
@@ -866,6 +870,7 @@ Decides a packing pair by pair and wall by wall: by exact sign in a number field
 | `E-n029-schadt-numerical` | replayed here | independent | - |
 | `E-n029-interval-certified-upper` | replayed here | independent | T-009 |
 | `E-evand-exact-optima-2026-10-05-exact-replay` | replayed here | independent | T-098 |
+| `E-evand-exact-ceilings-2026-10-05-exact-replay` | replayed here | independent | T-118 |
 
 ### `V-check-rational-witness-independent`
 
@@ -889,6 +894,7 @@ Decides a rational-corner witness pair by pair and wall by wall in Fraction arit
 | `E-n083-chang-2026-09-exact-replay` | replayed here | independent | T-089 |
 | `E-n087-chang-2026-09-exact-replay` | replayed here | independent | T-089 |
 | `E-evand-exact-optima-2026-10-05-exact-replay` | replayed here | independent | T-098 |
+| `E-evand-exact-ceilings-2026-10-05-exact-replay` | replayed here | independent | T-118 |
 
 ### `V-check-nagamochi-lemma1-counterexample`
 
@@ -1391,6 +1397,8 @@ Reads Evan Daniel's rational certificates, refusing anything the format does not
 | --- | --- | --- | --- |
 | `E-evand-exact-optima-2026-10-05-exact-replay` | replayed here | independent | T-098 |
 | `E-evand-exact-optima-2026-10-05-source-replay` | replayed here | producer’s code | T-098 |
+| `E-evand-exact-ceilings-2026-10-05-exact-replay` | replayed here | independent | T-118 |
+| `E-evand-exact-ceilings-2026-10-05-source-replay` | replayed here | producer’s code | T-118 |
 
 ### `V-check-n11-final-composition`
 

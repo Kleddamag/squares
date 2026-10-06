@@ -1,4 +1,4 @@
-"""Evan Daniel's exact certificates (T-098): the reader, the conversion and the receipts.
+"""Evan Daniel's exact certificates (T-098, T-118): the reader, the conversion and the receipts.
 
 `devtools.evand_exact_certificates` reads a certificate format no checker here read
 before, converts it without rounding and hands it to this repository's two exact
@@ -9,16 +9,18 @@ committed receipts and records to the retained certificates.
 
 from __future__ import annotations
 
+import json
 from fractions import Fraction
 from pathlib import Path
 
 import pytest
 
-from devtools import apply_exact_optima, apply_upper_bound_packets
+from devtools import apply_exact_ceilings, apply_exact_optima, apply_upper_bound_packets
 from devtools import check_rational_witness_independent as independent
 from devtools import evand_exact_certificates as certificates
 from devtools.check_source_coverage import load_claims
-from sqpack.assurance import check_case_semantics
+from devtools.upper_bound_packets import verified_value
+from sqpack.assurance import bounds_agree_at_declared_precision, check_case_semantics
 from sqpack.witness import exact_verify
 
 #: Two axis-parallel unit squares side by side, 1e-20 apart, in a box 1e-20 wider than
@@ -145,10 +147,14 @@ def test_the_smallest_retained_certificate_is_decided_exactly() -> None:
 
 def test_the_claims_record_is_the_retained_certificates() -> None:
     """`check_source_coverage` reads the packet's certificate directory as its claims:
-    the 48 improving counts, each at the side its header gives, written out in full."""
+    the 48 improving counts and the 77 ceiling counts, each at the side its header gives,
+    written out in full."""
     claims = load_claims(certificates.CERTS)
-    assert sorted(claims) == sorted(certificates.IMPROVING)
+    assert tuple(sorted(claims)) == certificates.RETAINED
+    assert len(certificates.RETAINED) == 125
+    assert not set(certificates.IMPROVING) & set(certificates.CEILINGS)
     assert claims[211] == apply_exact_optima.side_text(211)
+    assert claims[28] == apply_exact_ceilings.committed()[28]["certified_side_decimal"]
 
 
 def test_the_earlier_evidence_is_the_packets_and_the_catalogues() -> None:
@@ -238,3 +244,57 @@ def test_a_kkt_count_on_another_second_order_report_is_refused() -> None:
         apply_exact_optima.report_sentence(211, status, "PSD with 42 zero modes")
     bound_only = apply_exact_optima.report_sentence(211, "bound only", "PSD with 42 zero modes")
     assert bound_only == apply_exact_optima.BOUND_ONLY
+
+
+def test_the_ceiling_counts_are_the_ones_the_survey_derives() -> None:
+    """Every count whose certificate, rounded up at the printed precision, lowers the
+    verified ceiling is listed, and no other: the committed survey, the live records and
+    the retained certificates agree."""
+    assert apply_exact_ceilings.survey_problems() == []
+    assert 17 not in certificates.CEILINGS
+    assert len(certificates.CEILINGS) == 77
+
+
+def test_n29_trails_its_report_and_keeps_its_own_ceiling() -> None:
+    """The one trailing count the certificates do not move: its interval enclosure lies
+    below the certificate's side, so a rounding of that side would only weaken it."""
+    receipt = json.loads(apply_exact_ceilings.SURVEY_RECEIPT.read_text(encoding="utf-8"))
+    unmoved = {row["n"]: row for row in receipt["unmoved"]}
+    assert sorted(unmoved) == [29]
+    assert unmoved[29]["certified_above_verified_by"] > 0
+    assert 29 not in certificates.CEILINGS
+    case = certificates.case_record(29)
+    assert case["verified_upper_bound"]["evidence"] == ["E-n029-interval-certified-upper"]
+
+
+@pytest.mark.parametrize("n", [28, 50, 69, 83, 127, 230, 300])
+def test_the_ceiling_records_are_the_layer_applied_to_themselves(n: int) -> None:
+    path = apply_exact_ceilings.FRONTIER / f"n-{n:03d}.md"
+    text = path.read_text(encoding="utf-8")
+    normalized = apply_upper_bound_packets.normalized
+    assert normalized(apply_exact_ceilings.apply_case(n, text)) == normalized(text)
+
+
+def test_the_coverage_record_is_the_ceiling_layer_applied_to_itself() -> None:
+    text = apply_exact_ceilings.COVERAGE.read_text(encoding="utf-8")
+    assert apply_exact_ceilings.coverage_text(text) == text
+
+
+def test_each_ceiling_is_the_certified_side_rounded_up_at_the_printed_precision() -> None:
+    """The verified value is at least the certificate's side, one unit of the printed last
+    place above the printed side, and agrees with the report exactly where the catalogue
+    prints no closed form."""
+    for n, row in apply_exact_ceilings.committed().items():
+        case = certificates.case_record(n)
+        verified = case["verified_upper_bound"]
+        side = Fraction(row["certified_side"])
+        assert verified["value"] == verified_value(row["printed_side"], side), n
+        assert Fraction(verified["exact_form"]) == Fraction(verified["value"]) >= side, n
+        assert verified["evidence"] == [
+            apply_exact_ceilings.EXACT_REPLAY,
+            apply_exact_ceilings.SOURCE_REPLAY,
+        ], n
+        agrees = bounds_agree_at_declared_precision(case["reported_upper_bound"], verified)
+        assert agrees == (not case["reported_upper_bound"].get("exact_form")), n
+        assert agrees == row["agrees_with_report"], n
+        assert any(b["kind"] == "mathematics" for b in case["blockers"]) != agrees, n

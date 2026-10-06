@@ -23335,6 +23335,135 @@ evidence:
       E-evand-exact-optima-2026-10-05-exact-replay is that. No optimality at any count.
     source_reviewed: '2026-10-05'
 
+  - id: E-evand-exact-ceilings-2026-10-05-report
+    claim: upper-bound
+    scope: {n_values: [28, 37, 39, 41, 50, 51, 53, 54, 55, 69, 70, 71, 83, 87, 88, 101, 104, 107, 108, 109, 122, 124, 125, 127, 128, 129, 145, 146, 147, 148, 149, 150, 151, 153, 170, 171, 173, 174, 175, 176, 178, 179, 197, 198, 200, 201, 202, 203, 204, 205, 226, 227, 229, 230, 231, 232, 233, 234, 235, 257, 258, 260, 261, 262, 264, 265, 266, 267, 290, 291, 293, 294, 295, 296, 298, 299, 300]}
+    assurance: reported
+    reported_method: exact-algebraic
+    performed_by: source-author
+    relationship_to_generator: same-implementation
+    origin: external
+    novelty: previously-published
+    source_key: '[evand exact optima 2026-10-05]'
+    certificate: resources/web/evand-square-packing-2026-10-05/square-packing/s12/search/exact/batch/certs/
+    replay_status: not-attempted
+    verifiers: [V-evand-verify-cert-py, V-evand-verify-cert2-py]
+    limitations: >-
+      evand/square-packing at 13ee36e5807727d12a5da36b9b90a96bdba272bf
+      (2026-10-05T20:54:59Z), s12/search/exact/batch/, reports for each listed count an
+      exact rational certificate n-N.cert of s(n) <= S': n unit squares, each a rational
+      centre and a rational t = tan(theta/2), in a box of rational side S'. Each is the
+      register's own known-best witness, the Kingbird catalogue's packing at every listed
+      count, taken by the source's solver exactsolve.py to a nearby exact KKT point of
+      minimizing the side at 80 digits and rounded outward (centres to 10^-35, the
+      configuration scaled by 1 + 10^-20 and the side rounded up), so that every pair gap
+      is at least about 1e-20 and every wall clearance about 5e-21. At these counts S' lies
+      1.2e-16 to 9.8e-15 above the side the record reports, and the source offers them,
+      with the other certificates above a printed side, as an independent exact replay of
+      the existing upper bounds, asking for nothing to be registered from them; the owner
+      decided on 6 October 2026 to act on the 77 at which the side rounded up at the
+      printed precision lowers the verified ceiling (think-70bh,
+      receipts/ceiling-survey.json). The source says its two checkers, verify_cert.py and
+      verify_cert2.py, accept every certificate. Its numerical reports that most exact
+      points are KKT local minima are not claims on s(n) and are not registered. This is
+      the public-claim entry; the replays here are
+      E-evand-exact-ceilings-2026-10-05-exact-replay and
+      E-evand-exact-ceilings-2026-10-05-source-replay.
+    source_reviewed: '2026-10-06'
+
+  - id: E-evand-exact-ceilings-2026-10-05-exact-replay
+    claim: upper-bound
+    scope: {n_values: [28, 37, 39, 41, 50, 51, 53, 54, 55, 69, 70, 71, 83, 87, 88, 101, 104, 107, 108, 109, 122, 124, 125, 127, 128, 129, 145, 146, 147, 148, 149, 150, 151, 153, 170, 171, 173, 174, 175, 176, 178, 179, 197, 198, 200, 201, 202, 203, 204, 205, 226, 227, 229, 230, 231, 232, 233, 234, 235, 257, 258, 260, 261, 262, 264, 265, 266, 267, 290, 291, 293, 294, 295, 296, 298, 299, 300]}
+    assurance: verified
+    method: exact-algebraic
+    performed_by: repository
+    relationship_to_generator: independent-implementation
+    origin: replayed-here
+    novelty: previously-published
+    source_key: '[evand exact optima 2026-10-05]'
+    certificate: resources/web/evand-square-packing-2026-10-05/square-packing/s12/search/exact/batch/certs/
+    replay: >-
+      uv run --frozen --all-extras --group dev python -m devtools.evand_exact_certificates
+      check --workers 2, which reads each retained certificate strictly, converts it
+      without rounding to a rational center-basis witness and to rational corners, and
+      decides it with sqpack.witness.exact_verify and with
+      devtools.check_rational_witness_independent; it must report all 125 retained
+      certificates VALID under both, these 77 among them. The run of 5 October 2026 read
+      all 320 certificates the packet pins from a checkout at the pin, as
+      receipts/first-party-check.json records; check --check holds that receipt to the
+      pinned digests and the retained certificates in a second, and
+      devtools.apply_exact_ceilings --check holds each case record's verified upper bound
+      to receipts/ceiling-survey.json and the rule it states. The controls are
+      devtools.evand_exact_certificates controls --ceilings --workers 2
+      (receipts/negative-controls-ceilings.json).
+    replay_status: passed
+    verifiers: [V-sqpack-verify, V-check-rational-witness-independent, V-evand-exact-certificates]
+    independence_record: packing/devtools/evand_exact_certificates.py
+    limitations: >-
+      Proves, for each listed count, s(n) at most S', the side of the source's
+      certificate, by deciding the certificate here, every pair and every wall over Q,
+      twice, with the conversion and the two deciders of
+      E-evand-exact-optima-2026-10-05-exact-replay: a strict parse (a header n S and
+      exactly n rows x y t of rational literals), (c, s) = ((1 - t^2)/(1 + t^2), 2t/(1 +
+      t^2)) so that c^2 + s^2 = 1 exactly, sqpack.witness.exact_verify on the rational
+      center-basis witness and devtools.check_rational_witness_independent on the rational
+      corners, which share no geometry or verification code with each other and neither
+      imports nor copies the source's. Both accepted all 77 in the run of 5 October 2026
+      that decided all 320 certificates the packet pins (n = 17 held), read from a
+      checkout at the pin and matched to the manifest's digests, with least wall clearance
+      5e-21 and least pair gap about 1e-20 at every count: 838 of its 2,820 CPU seconds.
+      The 77 certificates were retained on 6 October 2026 from a second clone at the same
+      commit, byte for byte the decided ones (receipts/ceiling-survey.json records each
+      digest). The case records carry each count's verified upper bound as S' rounded up
+      at the fourteen decimals the record's printed side carries, with that decimal's
+      fraction as the exact form, which s(n) <= S' implies. Three controls on each of the
+      77, decided by both checkers here and by the source's two
+      (receipts/negative-controls-ceilings.json): one square of the tightest pair moved
+      along the closing normal by its exact gap plus one unit of the side's denominator,
+      and the box shrunk by its least top or right clearance plus that unit, are refused
+      by all four; the box shrunk by the unit alone is accepted by all four, as it must be
+      when every clearance exceeds the unit. Both deciders here accept contact and the
+      source's two do not, which is sound for s(n) and moot for these certificates. No
+      optimality at any count, and no certificate of a closed-form side: at the 55 counts
+      whose report is a closed form, S' lies 7.6e-20 to 1.8e-19 above it.
+    source_reviewed: '2026-10-06'
+
+  - id: E-evand-exact-ceilings-2026-10-05-source-replay
+    claim: upper-bound
+    scope: {n_values: [28, 37, 39, 41, 50, 51, 53, 54, 55, 69, 70, 71, 83, 87, 88, 101, 104, 107, 108, 109, 122, 124, 125, 127, 128, 129, 145, 146, 147, 148, 149, 150, 151, 153, 170, 171, 173, 174, 175, 176, 178, 179, 197, 198, 200, 201, 202, 203, 204, 205, 226, 227, 229, 230, 231, 232, 233, 234, 235, 257, 258, 260, 261, 262, 264, 265, 266, 267, 290, 291, 293, 294, 295, 296, 298, 299, 300]}
+    assurance: verified
+    method: exact-algebraic
+    performed_by: repository
+    relationship_to_generator: same-implementation
+    origin: replayed-here
+    novelty: previously-published
+    source_key: '[evand exact optima 2026-10-05]'
+    certificate: resources/web/evand-square-packing-2026-10-05/square-packing/s12/search/exact/batch/certs/
+    replay: >-
+      uv run --frozen --all-extras --group dev python -m devtools.evand_exact_certificates
+      source-replay, which runs the source's verify_cert.py and verify_cert2.py, as the
+      packet retains them, on each retained certificate with this project's interpreter
+      as separate processes, and requires each to exit 0 with a last line beginning
+      VALID; it must report all 125 retained certificates, these 77 among them, accepted
+      by both. The run of 5 October 2026 ran them on all 320 certificates the packet pins,
+      read from a checkout at the pin, as receipts/source-replay.json records.
+    replay_status: passed
+    verifiers: [V-evand-verify-cert-py, V-evand-verify-cert2-py, V-evand-exact-certificates]
+    limitations: >-
+      Proves, for each listed count, s(n) at most S' by the source's own decision of its
+      certificate, run here as E-evand-exact-optima-2026-10-05-source-replay describes:
+      verify_cert.py (SHA-256 3299ca0c...) and verify_cert2.py (SHA-256 55140a35...), as
+      retained, under CPython 3.14.7 as separate processes, each held to its exit status
+      and to a last line beginning VALID rather than to the published driver
+      verify_all.sh, whose first leg INVALID also passes. Both accepted all 77 in the run
+      of 5 October 2026 over all 320 certificates the packet pins (n = 17 held), 59 of its
+      202 CPU seconds, and verify_cert.py reports a least wall clearance of 5e-21 and a
+      least pair separation of 1e-20 at each of them (receipts/source-replay.json). The
+      case records carry each count's S' rounded up at the printed precision. This is a
+      reproduction with the producer's code, not an independent check;
+      E-evand-exact-ceilings-2026-10-05-exact-replay is that. No optimality at any count.
+    source_reviewed: '2026-10-06'
+
   - id: E-n018-wand125-mixed-4704-report
     claim: lower-bound
     scope: {n_values: [18]}

@@ -317,7 +317,8 @@ issues:
     title: "New lower bound for s(12): 7943/2000 = 3.9715 (Daniel's points re-weighted, building on Route B)"
     author: squarepacker
     opened: '2026-10-05'
-    state: open
+    state: closed
+    closed: '2026-10-06'
     kind: result-report
     triage: done
     summary: >-

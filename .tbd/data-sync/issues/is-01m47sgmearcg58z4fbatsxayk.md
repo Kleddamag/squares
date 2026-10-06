@@ -3,15 +3,19 @@ type: is
 id: is-01m47sgmearcg58z4fbatsxayk
 title: Certify Session 182's handover with a qualifying gate
 kind: task
-status: open
+status: closed
 priority: 2
-version: 2
+version: 3
 spec_path: docs/project/reviews/review-2026-10-02-n17-bulk-exclusion-design.md
 labels: []
 dependencies: []
 parent_id: is-01m3xkd6zmq1jqwtn628h2k7zy
 created_at: 2026-10-06T05:03:23.082Z
-updated_at: 2026-10-06T15:59:14.865Z
+updated_at: 2026-10-06T17:33:57.244Z
+closed_at: 2026-10-06T17:33:57.244Z
+close_reason: "Merged in jlevy/squares#384 (stack #386) on 2026-10-06."
+resolution: null
+duplicate_of: null
 ---
 Session 182 (session-182-n17-overnight-lanes) closes stopped with certification_pending:
 no qualifying gate ran on its handed-over source inside the finalization reserve.

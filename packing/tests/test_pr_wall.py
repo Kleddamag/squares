@@ -738,7 +738,7 @@ def test_the_live_reader_uses_only_a_bound_live_invocation_when_the_api_hides_it
     verdict = check_pr_wall.judge(measured, tight.workflow("packing-validation"), tight.policy)
     assert verdict.status == "failed"
     assert client.calls == check_pr_wall.SETTLE_ATTEMPTS
-    assert delays == [check_pr_wall.SETTLE_SECONDS] * 2
+    assert delays == [check_pr_wall.SETTLE_SECONDS] * (check_pr_wall.SETTLE_ATTEMPTS - 1)
 
     matrix = deepcopy(active)
     sibling = next(job for job in matrix if job["name"] == "geometry")
@@ -796,7 +796,10 @@ def test_the_live_reader_does_not_extend_a_completed_aggregator_without_a_wall_s
     client = _JobsClient([completed])
     monkeypatch.setattr(check_pr_wall.time, "sleep", lambda _seconds: None)
     expected = check_pr_wall._reported_job_ids(completed, entry)
-    with pytest.raises(WallError, match=r"without a started .* step after 3 reads"):
+    with pytest.raises(
+        WallError,
+        match=rf"without a started .* step after {check_pr_wall.SETTLE_ATTEMPTS} reads",
+    ):
         check_pr_wall._settled_jobs(client, IN_BAND, entry, expected)
     assert client.calls == check_pr_wall.SETTLE_ATTEMPTS
 

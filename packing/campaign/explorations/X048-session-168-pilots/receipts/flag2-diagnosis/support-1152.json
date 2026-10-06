@@ -1,0 +1,235 @@
+{
+ "node_file": "node-89a19166324d9f9093f49b9ec61b57eea37bd03c7d65ad5e76c0144a18a3f092.json.gz",
+ "provenance": {
+  "dirty": true,
+  "files": {
+   "packing/devtools/diagnose_n17_flag.py": "cc2bfade25a121bdcec621f4144f2b1c50d0e571"
+  },
+  "revision": "e145e6b4dddfec9cd7f501c16f8a8c7fc75a90a0"
+ },
+ "schema": "n17-flag-diagnosis/v1",
+ "seconds": 300.8,
+ "status": "diagnostic, not a certificate: survivors are read from a saved node, placements are float searches, and only the exact check of a rounded placement counts",
+ "support": {
+  "owners": {
+   "corner-SW": {
+    "cut_margin": {
+     "least": 3.972080331948735e-05,
+     "median": 0.0021127775729667952,
+     "tenth_percentile": 0.0003522171199681123
+    },
+    "supported_share": 0.95,
+    "unsupported_by": {
+     "side-S0": {
+      "largest_margin": 0.0016821473065997683,
+      "median_margin": 0.00038693893292907067,
+      "poses": 3
+     },
+     "side-W0": {
+      "largest_margin": 0.004995183858096164,
+      "median_margin": 0.0028784528197493,
+      "poses": 7
+     }
+    }
+   },
+   "interior-NW": {
+    "cut_margin": {
+     "least": 0.0005776763076819069,
+     "median": 0.006068861251548929,
+     "tenth_percentile": 0.001471450668659291
+    },
+    "supported_share": 0.83,
+    "unsupported_by": {
+     "interior-W": {
+      "largest_margin": 0.014357219182623338,
+      "median_margin": 0.004695118926169528,
+      "poses": 18
+     },
+     "side-W2": {
+      "largest_margin": 0.015490718432201955,
+      "median_margin": 0.007100758628303561,
+      "poses": 16
+     }
+    }
+   },
+   "interior-SE": {
+    "cut_margin": {
+     "least": 0.00015949661909819834,
+     "median": 0.0032304905615091473,
+     "tenth_percentile": 0.0008715744115499913
+    },
+    "supported_share": 0.875,
+    "unsupported_by": {
+     "interior-W": {
+      "largest_margin": 0.008694393285970992,
+      "median_margin": 0.003352968303285131,
+      "poses": 19
+     },
+     "side-S1": {
+      "largest_margin": 0.008651089487575092,
+      "median_margin": 0.0021221377753742887,
+      "poses": 8
+     }
+    }
+   },
+   "interior-W": {
+    "cut_margin": {
+     "least": 0.0002595021523115193,
+     "median": 0.006668330034546699,
+     "tenth_percentile": 0.0011368881079190317
+    },
+    "supported_share": 0.825,
+    "unsupported_by": {
+     "interior-NW": {
+      "largest_margin": 0.015614691709777806,
+      "median_margin": 0.007493032335425309,
+      "poses": 19
+     },
+     "side-W0": {
+      "largest_margin": 0.015923129065181563,
+      "median_margin": 0.0042396101428556765,
+      "poses": 16
+     }
+    }
+   },
+   "side-S0": {
+    "cut_margin": {
+     "least": 0.00019995693765606504,
+     "median": 0.0037265712034232346,
+     "tenth_percentile": 0.0011497899836191428
+    },
+    "supported_share": 0.645,
+    "unsupported_by": {
+     "corner-SW": {
+      "largest_margin": 0.005046082546591668,
+      "median_margin": 0.0029651891993137114,
+      "poses": 4
+     },
+     "side-S1": {
+      "largest_margin": 0.010833318843080253,
+      "median_margin": 0.003590194150144277,
+      "poses": 12
+     },
+     "side-W0": {
+      "largest_margin": 0.008381764462163321,
+      "median_margin": 0.0034132697385633737,
+      "poses": 65
+     }
+    }
+   },
+   "side-S1": {
+    "cut_margin": {
+     "least": 0.00018289913382085743,
+     "median": 0.0034962270544727225,
+     "tenth_percentile": 0.0008518928124096715
+    },
+    "supported_share": 0.905,
+    "unsupported_by": {
+     "interior-SE": {
+      "largest_margin": 0.006676820521967053,
+      "median_margin": 0.003140591589565256,
+      "poses": 7
+     },
+     "side-S0": {
+      "largest_margin": 0.011641283706369632,
+      "median_margin": 0.004441386088353427,
+      "poses": 10
+     },
+     "side-W0": {
+      "largest_margin": 0.001675745224502534,
+      "median_margin": 0.0015471310005314431,
+      "poses": 2
+     }
+    }
+   },
+   "side-W0": {
+    "cut_margin": {
+     "least": 4.1764127036936216e-05,
+     "median": 0.0036523116493547003,
+     "tenth_percentile": 0.0010357820698797537
+    },
+    "supported_share": 0.27,
+    "unsupported_by": {
+     "corner-SW": {
+      "largest_margin": 0.014082091909302985,
+      "median_margin": 0.0035211841563647095,
+      "poses": 17
+     },
+     "interior-W": {
+      "largest_margin": 0.006599286560259099,
+      "median_margin": 0.003904021775699873,
+      "poses": 4
+     },
+     "side-S0": {
+      "largest_margin": 0.010120971694917102,
+      "median_margin": 0.0035046178741197087,
+      "poses": 75
+     },
+     "side-W1": {
+      "largest_margin": 0.010798724756726386,
+      "median_margin": 0.0035531499647731835,
+      "poses": 79
+     }
+    }
+   },
+   "side-W1": {
+    "cut_margin": {
+     "least": 2.0947027202122825e-05,
+     "median": 0.0031375486271797426,
+     "tenth_percentile": 0.0007866614205218614
+    },
+    "supported_share": 0.245,
+    "unsupported_by": {
+     "interior-NW": {
+      "largest_margin": 0.0074034368770916625,
+      "median_margin": 0.0074034368770916625,
+      "poses": 1
+     },
+     "side-W0": {
+      "largest_margin": 0.008117197782618102,
+      "median_margin": 0.002672727702409561,
+      "poses": 81
+     },
+     "side-W2": {
+      "largest_margin": 0.008349288239537844,
+      "median_margin": 0.003501458406536151,
+      "poses": 86
+     }
+    }
+   },
+   "side-W2": {
+    "cut_margin": {
+     "least": 9.937784120983562e-05,
+     "median": 0.004967887715166541,
+     "tenth_percentile": 0.0015289945682030349
+    },
+    "supported_share": 0.46499999999999997,
+    "unsupported_by": {
+     "interior-NW": {
+      "largest_margin": 0.006792277545214831,
+      "median_margin": 0.005775257645881826,
+      "poses": 5
+     },
+     "side-W1": {
+      "largest_margin": 0.011200843318206144,
+      "median_margin": 0.004755070464850242,
+      "poses": 104
+     }
+    }
+   }
+  },
+  "partner_pool": {
+   "corner-SW": 64740,
+   "interior-NW": 30978,
+   "interior-SE": 223596,
+   "interior-W": 15915,
+   "side-S0": 7818,
+   "side-S1": 212577,
+   "side-W0": 4044,
+   "side-W1": 22023,
+   "side-W2": 2772
+  },
+  "refine": 200,
+  "samples": 200
+ }
+}

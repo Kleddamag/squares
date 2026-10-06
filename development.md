@@ -171,14 +171,14 @@ alone is not full pre-merge evidence.
 | `--edit` | contributor, in the edit loop | 58 of 98 | 240 s | 59.4 s |
 | `--push` | contributor, once before a push — the edit tier plus tests reachable from the diff (`--since`) | varies with the diff | 1800 s | about a minute for a narrow code change; an implicitly configured broad diff selects the whole suite and assigns one outer job so pytest can use the host, see below |
 | `--fast` | contributor, at a block boundary; the union of the ten tiers below | 85 of 98 | 600 s | record cleared 2026-09-07 when the corpus widened; 229.1 s locally, only the ceiling applies |
-| `--checks` | **CI, on every pull request**, in the `validate` job | 61 of 98 | 140 s | 103.70 s, the geometric mean of thirty-three hosted readings on 2026-09-30 and 10-01, with the band 59.4–137.1 s (2.31x) the runner pool spanned on unchanged steps; the 114.34 s two-attempt record stays in the register as history |
-| `--frontend` | **CI, on every pull request**, in the `frontend` job, concurrently | 4 of 98 | 150 s | 104.74 s, the geometric mean of 32 hosted readings from 27 to 30 September (70.97–134.86 s, 1.90x); 85.25 s from two readings stays in the register as history |
+| `--checks` | **CI, on every pull request**, in the `validate` job | 61 of 98 | 150 s | 103.70 s, the geometric mean of thirty-three hosted readings on 2026-09-30 and 10-01, with the band 59.4–137.1 s (2.31x) the runner pool spanned on unchanged steps; the 114.34 s two-attempt record stays in the register as history |
+| `--frontend` | **CI, on every pull request**, in the `frontend` job, concurrently | 4 of 98 | 165 s | 104.74 s, the geometric mean of 32 hosted readings from 27 to 30 September (70.97–134.86 s, 1.90x); 85.25 s from two readings stays in the register as history |
 | `--typecheck` | **CI, on every pull request**, in the `typecheck` job, concurrently | 1 of 98 | 130 s | 86.71 s, the geometric mean of 174 hosted step walls from 2 to 4 October on 17 branches, with the band 54–123 s that its two runner regimes span; the 111 s ceiling it replaced was breached by 3–6% of runs with zero findings, and the 76.5 s eighteen-reading record stays in the register as history |
 | `--geometry` | **CI, on every pull request**, in the `geometry` job, concurrently | 9 of 98 | 180 s | 98.07 s, the geometric mean of fourteen hosted readings, with the band 58.75–116.19 s that its two runner regimes span |
-| `--suite-a` | **CI, on every pull request**, in the `suite-a` job, concurrently | 1 of 98 | 131 s | 114.58 s, the geometric mean of twelve hosted readings on 2026-10-01 of the three-shard partition after the day’s growth, band 83.91–128.65 s (1.53x); two more walls that day, 131.58 and 132.67 s, were over the ceiling with every test green and are named, not averaged; the 85.03 s two-reading record stays in the register as history |
-| `--suite-b` | **CI, on every pull request**, in the `suite-b` job, concurrently | 1 of 98 | 154 s | 114.38 s, the geometric mean of eleven hosted readings on 2026-10-01 of the same partition, band 79.30–139.35 s (1.76x); the 104.65 s single reading stays as history |
-| `--suite-c` | **CI, on every pull request**, in the `suite-c` job, concurrently | 1 of 98 | 154 s | 132.05 s, the geometric mean of eleven hosted readings on 2026-10-01 after the day’s files landed in it, band 90.34–147.16 s (1.63x); the 102.94 s thirty-one-reading record and the 88.59 s first reading stay as history |
-| `--suite-d` | **CI, on every pull request**, in the `suite-d` job, concurrently | 1 of 98 | 131 s | pending its first hosted cohort under `think-t7k5`; the record’s cohort predicts about 84 s for its 278.9 test-second share |
+| `--suite-a` | **CI, on every pull request**, in the `suite-a` job, concurrently | 1 of 98 | 143 s | 114.58 s, the geometric mean of twelve hosted readings on 2026-10-01 of the three-shard partition after the day’s growth, band 83.91–128.65 s (1.53x); two more walls that day, 131.58 and 132.67 s, were over the ceiling with every test green and are named, not averaged; the 85.03 s two-reading record stays in the register as history |
+| `--suite-b` | **CI, on every pull request**, in the `suite-b` job, concurrently | 1 of 98 | 168 s | 114.38 s, the geometric mean of eleven hosted readings on 2026-10-01 of the same partition, band 79.30–139.35 s (1.76x); the 104.65 s single reading stays as history |
+| `--suite-c` | **CI, on every pull request**, in the `suite-c` job, concurrently | 1 of 98 | 168 s | 132.05 s, the geometric mean of eleven hosted readings on 2026-10-01 after the day’s files landed in it, band 90.34–147.16 s (1.63x); the 102.94 s thirty-one-reading record and the 88.59 s first reading stay as history |
+| `--suite-d` | **CI, on every pull request**, in the `suite-d` job, concurrently | 1 of 98 | 143 s | pending its first hosted cohort under `think-t7k5`; the record’s cohort predicts about 84 s for its 278.9 test-second share |
 | `--sweeps` | **CI, on every pull request**, in the `sweeps` job, concurrently | 5 of 98 | 200 s | 101.51 s, the geometric mean of six 4-of-80 hosted readings (66.36–130.77 s, spread 1.97x); the 119.72 s seven-reading mean and PR 180’s 138.84 s predecessor remain in the register as history |
 | `--measure-verifier` | **CI, on every pull request**, in the `measure-verifier` job, concurrently | 1 of 98 | 90 s | pending its first hosted cohort under `think-th8p`; its one step read 21.20 s and, on a runner where every step was about 1.9x slow, 45.30 s inside `--checks` |
 | *(no flag)* | Full checkpoint before final review and at block close; main, dispatch, and daily CI | 98 of 98 | 3600 s | integration plus ten deferred workers; new whole-wall measurement pending |
@@ -227,8 +227,13 @@ the surface. Each shard writes a per-file cost report beside its JUnit and timin
 artifacts; the recorder accepts complete coherent cohorts and rejects failed, partial,
 duplicated, coverage-mismatched, and mixed-provenance evidence, and a cohort recorded at
 one shard count may be packed into another, which is how the lane is repartitioned.
-The current declared ceilings are 131 seconds for shards A and D and 154 seconds for B
-and C.
+The current declared ceilings are 143 seconds for shards A and D and 168 seconds for B
+and C. They rose from 131 and 154 seconds on 2026-10-05, with `frontend` (150 to 165
+seconds) and `checks` (140 to 150 seconds), by the owner’s decision under `think-p684`,
+selected on purpose as `OR-17` requires: PR 347 adds 133.9 recorded test-seconds to the
+lane, about 10%, and 16 of 24 of its stack’s cohorts put a job over a ceiling against 2
+of 27 on `main`, every test green.
+The 12-second per-test wall is unchanged.
 
 The frontend browser runner builds one page and runs eight isolated browser contracts.
 The gate permits two contracts concurrently when the CPU count and outer job count leave
@@ -1751,6 +1756,34 @@ The nearby code or documentation must name that boundary and the failure the com
 detects. Compact content identities used for deduplication, append-only event ids, or
 cache correctness are not integrity claims and must name that separate function.
 
+Four shapes are ceremony here and are refused in review: a tool that hashes its own
+source or its kernel’s and refuses a checkpoint or receipt whose digest differs; a
+ledger or registry that lists verifiers, receipts or receipts-of-receipts by SHA-256; an
+audit that compares a working file to its historical Git blob and fails on difference;
+and a frozen copy of code kept so that bytes can be compared.
+The shape that replaces all four is a provenance record: the blob id of the bytes the
+process imported (`git hash-object`, or `hashlib.sha1(b"blob %d\0" + data)` as
+`check_n17_local_minimum` does), the revision, and whether the tree was dirty; it is
+recorded and never compared.
+Determinism is a fixture test: produce a small instance and compare its bytes with the
+committed fixture (`test_verify_n17_certificates`’s W7 at bins 8 is the model).
+Content addressing may name files and deduplicate; a name is not a check, and a loader
+does not refuse a file for not hashing to its name.
+The
+[integrity-ceremony audit](docs/project/reviews/review-2026-10-03-integrity-ceremony-audit.md)
+inventories every instance with its verdict and the slices that remove them.
+`devtools.check_integrity_ceremony` counts the two detectable forms, a module hashing
+its own or a sibling’s source and an `==` or `!=` on a digest, in every tracked Python
+file that is not a test and is outside the allowlist in
+`devtools/integrity-ceremony.yaml`, where each listed file names its boundary by kind (a
+download, an external checkout, a generated artifact, a legacy manifest).
+Every other file may not rise above its per-file baseline.
+A fall is never a finding, so removing ceremony costs no bookkeeping; `--update`
+tightens the baseline when convenient.
+Tests are not scanned: a test asserting that a receipt names the digest of what ran
+refuses nothing at run time.
+The step `integrity ceremony never grows` runs it in the edit tier.
+
 ### Bulk Data and Git History
 
 [`OR-18`](operating-rules.md#or-18-keep-bulk-data-out-of-git-and-never-bind-code-or-verdicts-to-a-git-commit-or-blob)
@@ -1889,7 +1922,17 @@ The host list is `GITHUB_DIRECT_HOSTS` in `.claude/scripts/ensure-gh-cli.sh`. In
 session, a `git push` of a tag can be refused with 403 by the session’s ref-scoped
 credential broker. `publish` pushes no tag, since `gh release create` makes it through
 the API; to make one by hand, run
-`gh api repos/OWNER/REPO/git/refs -f ref=refs/tags/TAG -f sha=SHA`.
+`gh api repos/OWNER/REPO/git/refs -f ref=refs/tags/TAG -f sha=SHA`. Uploads go to
+`uploads.github.com` and need **direct** egress to it: the agent proxy’s GitHub gateway
+accepts only JSON request bodies and answers a binary asset upload with HTTP 415
+(“Request bodies must declare Content-Type: application/json”), so no upload can travel
+through the proxy. Keep `uploads.github.com` in the `NO_PROXY` list above, and allow it
+in the cloud environment’s network access.
+Where the environment does not allow it, the direct request is refused with HTTP 403
+(`x-deny-reason: host_not_allowed`) and `publish` stops at the first upload, saying so.
+The release `publish` created stays, without assets; once the host is allowed, `publish`
+again uploads every asset it lacks.
+That happened on the first real run, on 2026-10-05, for PR 347’s certificate dumps.
 
 **Precedent.** Release [`v0.4.2`](https://github.com/jlevy/squares/releases/tag/v0.4.2)
 hosts two ascent films, of 40 MB and 216 MB, with their JSON receipts.

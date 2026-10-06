@@ -25,8 +25,8 @@ second implementation agrees.
 
 ## The Short Version
 
-- **84** programs: **31** external and **53** first-party; **65** decide claims and **19** check premises.
-- **275** of **302** evidence entries name the programs that verified them: 204 reproduced with the producer’s code, 54 independently re-implemented, 10 no relation: a proof, a derivation or a report, 7 re-implemented, sharing the producer’s components.
+- **85** programs: **31** external and **54** first-party; **66** decide claims and **19** check premises.
+- **276** of **303** evidence entries name the programs that verified them: 205 reproduced with the producer’s code, 54 independently re-implemented, 10 no relation: a proof, a derivation or a report, 7 re-implemented, sharing the producer’s components.
 
 ## Programs
 
@@ -96,6 +96,7 @@ second implementation agrees.
 | [`V-wall-owner-footprints`](#v-wall-owner-footprints) | devtools.wall_owner_footprints | Squares Project (Levy) | first-party | decides | 1 | 0 |
 | [`V-wall-owner-containment`](#v-wall-owner-containment) | devtools.wall_owner_containment | Squares Project (Levy) | first-party | decides | 1 | 0 |
 | [`V-n17-endpoint-checkers`](#v-n17-endpoint-checkers) | devtools.check_n17_root_certificate and devtools.check_n17_endpoint_feasibility | Squares Project (Levy) | first-party | decides | 1 | 1 |
+| [`V-n17-catalogue-polynomial`](#v-n17-catalogue-polynomial) | devtools.check_n17_catalogue_polynomial | Squares Project (Levy) | first-party | decides | 1 | 0 |
 | [`V-n11-optimality-checkers`](#v-n11-optimality-checkers) | The devtools.check_n11_optimality | Squares Project (Levy) | first-party | decides | 1 | 1 |
 | [`V-check-n11-final-composition`](#v-check-n11-final-composition) | devtools.check_n11_final_composition | Squares Project (Levy) | first-party | premises | 1 | 1 |
 | [`V-audit-n17-endpoint-receipt`](#v-audit-n17-endpoint-receipt) | devtools.audit_n17_endpoint_receipt | Squares Project (Levy) | first-party | premises | 1 | 1 |
@@ -1290,6 +1291,19 @@ Prove the n = 17 contact-chart root exists and is unique in its box, and certify
 | evidence | run | code | results |
 | --- | --- | --- | --- |
 | `E-n017-certified-endpoint` | audited here | independent | T-065 |
+
+### `V-n17-catalogue-polynomial`
+
+**devtools.check_n17_catalogue_polynomial** · Squares Project (Levy) · first-party · decides · Python · exact-algebraic
+
+Eliminate the n = 17 chart variables by exact resultants, factor over Q, isolate the factor that vanishes at the certified root, and certify the catalogue polynomial irreducible.
+
+- Source: [`packing/devtools/check_n17_catalogue_polynomial.py`](../../packing/devtools/check_n17_catalogue_polynomial.py)
+- Versions run: this repository's commits, which Git holds
+
+| evidence | run | code | results |
+| --- | --- | --- | --- |
+| `E-n017-catalogue-polynomial-identity` | audited here | producer’s code | - |
 
 ### `V-n11-optimality-checkers`
 

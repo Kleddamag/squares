@@ -1,0 +1,19 @@
+# BC-428's draw (H-275). Run from packing/ of the session checkout; it prints receipts/U/draw-bc428.jsonl.
+PYTHONPATH=. .venv/bin/python3 - campaign/explorations/X048-session-182-overnight/receipts/U/frame-arity8.json campaign/explorations/X048-session-182-overnight/receipts/A/survey-seed182.json <<'EOF'
+import json, sys
+import numpy as np
+from devtools import check_hull_kernel_mask0 as m
+frame = json.load(open(sys.argv[1])); drawn182 = json.load(open(sys.argv[2]))
+names = list(m.n17_unique_frame().cell_names)
+reached = {s["stratum"] for s in drawn182["states"]}
+strata = sorted(k for k in frame["population"]["strata"] if k != "endpoint" and k not in reached)
+members = {k: sorted(d["mask"] for d in frame["drawn"] if d["stratum"] == k) for k in strata}
+mean = sum(len(v) for v in members.values()) / len(strata)
+rng = np.random.default_rng(428)
+picks = {k: [int(x) for x in rng.choice(members[k], size=2 if len(members[k]) > mean else 1, replace=False)] for k in strata}
+order = [strata[i] for i in rng.permutation(len(strata))]
+runs = [(k, picks[k][0]) for k in order] + [(k, picks[k][1]) for k in order if len(picks[k]) > 1]
+for k, mask in runs:
+    cells = [names[i] for i in range(len(names)) if mask >> i & 1]
+    print(json.dumps({"stratum": k, "orbits": len(members[k]), "mask": mask, "cells": cells}))
+EOF

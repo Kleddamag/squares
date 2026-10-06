@@ -976,6 +976,17 @@ verifiers:
       - packing/devtools/check_n17_root_certificate.py
       - packing/devtools/check_n17_endpoint_feasibility.py
 
+  - id: V-n17-catalogue-polynomial
+    program: devtools.check_n17_catalogue_polynomial
+    author: Squares Project (Levy)
+    provenance: first-party
+    language: [Python]
+    methods: [exact-algebraic]
+    role: decides
+    summary: Eliminate the n = 17 chart variables by exact resultants, factor over Q, isolate the factor that vanishes at the certified root, and certify the catalogue polynomial irreducible.
+    source:
+      - packing/devtools/check_n17_catalogue_polynomial.py
+
   - id: V-n11-optimality-checkers
     program: The devtools.check_n11_optimality, check_n11_capture and check_n11_generic component checkers
     author: Squares Project (Levy)

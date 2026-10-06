@@ -44,3 +44,9 @@ packing/atlas/known-best/video/spikes/**/frames/
 # regenerates its rows, and `squares-workbench-summarize-annealing --check` compares them
 # with the summaries; see packing/campaign/results/annealing/README.md.
 /packing/campaign/results/annealing/*.jsonl
+
+# The n17 sub-pattern certificate objects are hosted outside Git as release assets
+# (OR-18) and listed in packing/hosted/n17-x048-session-168-certificates.yaml;
+# `python -m devtools.hosted_data fetch --manifest` with that manifest puts them here.
+# The README files and verification receipts in the same directories are tracked.
+/packing/campaign/explorations/X048-session-168-pilots/certificates/*/*.json.gz

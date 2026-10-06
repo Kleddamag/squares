@@ -1,0 +1,259 @@
+# Derived, never edited: H-267's arity-at-most-7 ledger after s182-bc427-t6 (exp-256).
+# The ledger of record (packing/campaign/explorations/X048-session-168-pilots/certified-sub-patterns.yaml)
+# with only its entries of at most seven cells, written by this command from packing/:
+#   .venv/bin/python3 -c "import yaml, pathlib; p = pathlib.Path('campaign/explorations/X048-session-168-pilots/certified-sub-patterns.yaml'); d = yaml.safe_load(p.read_text()); d['entries'] = [e for e in d['entries'] if len(e['cells']) <= 7]; print(yaml.safe_dump(d, sort_keys=False), end='')"
+# census-arity7-after-bc427-t6.json beside it is devtools.census_n17_certified --ledger packing/campaign/explorations/X048-session-182-overnight/receipts/K/ledger-arity7-after-bc427-t6.yaml, run from packing/.
+schema: n17-certified-sub-patterns/v3
+design: ring-3-voronoi-8-tabbed-unique
+data_manifest: packing/hosted/n17-x048-session-168-certificates.yaml
+verifiers:
+- id: kernel-review-r3
+  certifier: kernel
+  path: packing/devtools/verify_n17_kernel_certificate.py
+  version: 556561586095f1eaf7952e32199f40a4d3360d20
+  review: docs/project/reviews/review-2026-10-02-n17-w7-closure.md
+  admits:
+  - W7
+- id: bb-review-r4
+  certifier: branch-and-bound
+  path: packing/devtools/verify_n17_bb_certificate.py
+  version: 556561586095f1eaf7952e32199f40a4d3360d20
+  review: docs/project/reviews/review-2026-10-02-n17-branch-and-bound-certifier.md
+- id: kernel-homogeneous
+  certifier: kernel
+  path: packing/devtools/verify_n17_kernel_certificate.py
+  version: e0b66f07b1d5daa04da0edc07dd591d7c17d9c47
+  review: docs/project/reviews/review-2026-10-03-n17-verifier-rewrites.md
+  admits: []
+- id: bb-enclosure-retry
+  certifier: branch-and-bound
+  path: packing/devtools/verify_n17_bb_certificate.py
+  version: ff5471e8902aeab0a9247501e9a3de380619d56a
+  review: docs/project/reviews/review-2026-10-03-n17-verifier-rewrites.md
+- id: kernel-adaptive-rows
+  certifier: kernel
+  path: packing/devtools/verify_n17_kernel_certificate.py
+  version: 575795e029151abc52d892126acd05e23795641d
+  review: docs/project/reviews/review-2026-10-03-n17-verifier-rewrites.md
+  admits: []
+- id: kernel-io-recording
+  certifier: kernel
+  path: packing/devtools/verify_n17_kernel_certificate.py
+  version: 25c1cdef690f4c1d398364a13e3cf96281c01c17
+  review: docs/project/reviews/review-2026-10-03-n17-verifier-rewrites.md
+  admits:
+  - SW9
+  - N1
+- id: kernel-closed-covers
+  certifier: kernel
+  path: packing/devtools/verify_n17_kernel_certificate.py
+  version: 318c28c42afaa4128c07dcbc785d717adbaf95a9
+  review: docs/project/reviews/review-2026-10-03-n17-verifier-rewrites.md
+- id: kernel-streamed
+  certifier: kernel
+  path: packing/devtools/verify_n17_kernel_certificate.py
+  version: 601bbf1107a622b306a3fe1fc57faebc9e28d27f
+  review: docs/project/reviews/review-2026-10-04-n17-streamed-verifier.md
+entries:
+- name: W7
+  cells:
+  - corner-SW
+  - side-N0
+  - side-W0
+  - side-W1
+  - side-W2
+  - interior-SW
+  - interior-W
+  certifier: kernel
+  receipt: packing/campaign/series/series-000-smoke-and-calibration/results/exp-249-n17-first-certified-sub-patterns/run-001/receipt.json
+  certificate: packing/campaign/explorations/X048-session-168-pilots/certificates/W7
+  status: admitted
+  evidence: docs/project/reviews/review-2026-10-02-n17-w7-closure.md
+  verification:
+    receipt: packing/campaign/explorations/X048-session-168-pilots/certificates/W7/verification.json
+    verifier: kernel-review-r3
+- name: A
+  cells:
+  - interior-SW
+  - interior-NW
+  - interior-W
+  - interior-S
+  - interior-N
+  - interior-SE
+  certifier: branch-and-bound
+  receipt: packing/campaign/series/series-000-smoke-and-calibration/results/exp-249-n17-first-certified-sub-patterns/run-002/receipt.json
+  certificate: packing/campaign/explorations/X048-session-168-pilots/certificates/A
+  status: admitted
+  evidence: docs/project/reviews/review-2026-10-02-n17-branch-and-bound-certifier.md
+  verification:
+    receipt: packing/campaign/explorations/X048-session-168-pilots/certificates/A/verification.json
+    verifier: bb-review-r4
+- name: s182-k1
+  cells:
+  - side-S0
+  - side-N0
+  - side-S1
+  - interior-SW
+  - interior-NW
+  - interior-W
+  - interior-S
+  certifier: kernel
+  receipt: packing/campaign/explorations/X048-session-182-overnight/receipts/K/kernel-k1.json
+  certificate: packing/campaign/explorations/X048-session-168-pilots/certificates/s182-k1
+  status: admitted
+  evidence: packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-251-h267-n17-overnight-flag-certification.md
+  verification:
+    receipt: packing/campaign/explorations/X048-session-168-pilots/certificates/s182-k1/verification.json
+    verifier: kernel-streamed
+- name: s182-k3
+  cells:
+  - corner-NW
+  - side-N0
+  - side-W2
+  - interior-SW
+  - interior-NW
+  - interior-W
+  - interior-S
+  certifier: kernel
+  receipt: packing/campaign/explorations/X048-session-182-overnight/receipts/K/kernel-k3.json
+  certificate: packing/campaign/explorations/X048-session-168-pilots/certificates/s182-k3
+  status: admitted
+  evidence: packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-251-h267-n17-overnight-flag-certification.md
+  verification:
+    receipt: packing/campaign/explorations/X048-session-168-pilots/certificates/s182-k3/verification.json
+    verifier: kernel-streamed
+- name: s182-k4
+  cells:
+  - side-S0
+  - side-S1
+  - side-W2
+  - interior-SW
+  - interior-NW
+  - interior-W
+  - interior-S
+  certifier: kernel
+  receipt: packing/campaign/explorations/X048-session-182-overnight/receipts/K/kernel-k4.json
+  certificate: packing/campaign/explorations/X048-session-168-pilots/certificates/s182-k4
+  status: admitted
+  evidence: packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-251-h267-n17-overnight-flag-certification.md
+  verification:
+    receipt: packing/campaign/explorations/X048-session-168-pilots/certificates/s182-k4/verification.json
+    verifier: kernel-streamed
+- name: s182-k5
+  cells:
+  - side-S0
+  - side-N0
+  - side-W2
+  - interior-SW
+  - interior-NW
+  - interior-W
+  - interior-S
+  certifier: kernel
+  receipt: packing/campaign/explorations/X048-session-182-overnight/receipts/K/kernel-k5.json
+  certificate: packing/campaign/explorations/X048-session-168-pilots/certificates/s182-k5
+  status: admitted
+  evidence: packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-251-h267-n17-overnight-flag-certification.md
+  verification:
+    receipt: packing/campaign/explorations/X048-session-168-pilots/certificates/s182-k5/verification.json
+    verifier: kernel-streamed
+- name: s182-k6
+  cells:
+  - side-S0
+  - side-W0
+  - side-S1
+  - interior-SW
+  - interior-NW
+  - interior-W
+  - interior-S
+  certifier: kernel
+  receipt: packing/campaign/explorations/X048-session-182-overnight/receipts/K/kernel-k6.json
+  certificate: packing/campaign/explorations/X048-session-168-pilots/certificates/s182-k6
+  status: admitted
+  evidence: packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-251-h267-n17-overnight-flag-certification.md
+  verification:
+    receipt: packing/campaign/explorations/X048-session-168-pilots/certificates/s182-k6/verification.json
+    verifier: kernel-streamed
+- name: s182-k7
+  cells:
+  - side-N0
+  - side-W1
+  - side-W2
+  - interior-SW
+  - interior-NW
+  - interior-W
+  - interior-S
+  certifier: kernel
+  receipt: packing/campaign/explorations/X048-session-182-overnight/receipts/K/kernel-k7.json
+  certificate: packing/campaign/explorations/X048-session-168-pilots/certificates/s182-k7
+  status: admitted
+  evidence: packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-251-h267-n17-overnight-flag-certification.md
+  verification:
+    receipt: packing/campaign/explorations/X048-session-168-pilots/certificates/s182-k7/verification.json
+    verifier: kernel-streamed
+- name: s182-k8
+  cells:
+  - corner-SW
+  - side-W0
+  - side-W1
+  - side-W2
+  - interior-SW
+  - interior-NW
+  - interior-W
+  certifier: kernel
+  receipt: packing/campaign/explorations/X048-session-182-overnight/receipts/K/kernel-k8.json
+  certificate: packing/campaign/explorations/X048-session-168-pilots/certificates/s182-k8
+  status: admitted
+  evidence: packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-251-h267-n17-overnight-flag-certification.md
+  verification:
+    receipt: packing/campaign/explorations/X048-session-168-pilots/certificates/s182-k8/verification.json
+    verifier: kernel-streamed
+- name: s182-k9
+  cells:
+  - side-S0
+  - side-W0
+  - side-W1
+  - side-W2
+  - interior-SW
+  - interior-NW
+  - interior-W
+  certifier: kernel
+  receipt: packing/campaign/explorations/X048-session-182-overnight/receipts/K/kernel-k9.json
+  certificate: packing/campaign/explorations/X048-session-168-pilots/certificates/s182-k9
+  status: admitted
+  evidence: packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-251-h267-n17-overnight-flag-certification.md
+  verification:
+    receipt: packing/campaign/explorations/X048-session-168-pilots/certificates/s182-k9/verification.json
+    verifier: kernel-streamed
+- name: s182-bc427-t4
+  cells:
+  - side-E1
+  - interior-SW
+  - interior-NW
+  - interior-W
+  - interior-S
+  - interior-N
+  - interior-E
+  certifier: kernel
+  receipt: packing/campaign/explorations/X048-session-182-overnight/receipts/K/kernel-t4-bc427.json
+  certificate: packing/campaign/explorations/X048-session-168-pilots/certificates/s182-bc427-t4
+  status: admitted
+  evidence: packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-256-h267-n17-third-tranche-flags.md
+  verification:
+    receipt: packing/campaign/explorations/X048-session-168-pilots/certificates/s182-bc427-t4/verification.json
+    verifier: kernel-streamed
+- name: s182-bc427-t6
+  cells:
+  - side-S1
+  - side-W1
+  - interior-NW
+  - interior-W
+  - interior-S
+  - interior-SE
+  certifier: kernel
+  receipt: packing/campaign/explorations/X048-session-182-overnight/receipts/K/kernel-t6-bc427.json
+  certificate: packing/campaign/explorations/X048-session-168-pilots/certificates/s182-bc427-t6
+  status: admitted
+  evidence: packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-256-h267-n17-third-tranche-flags.md
+  verification:
+    receipt: packing/campaign/explorations/X048-session-168-pilots/certificates/s182-bc427-t6/verification.json
+    verifier: kernel-streamed

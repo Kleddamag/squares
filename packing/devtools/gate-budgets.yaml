@@ -389,7 +389,17 @@ tiers:
   #
   # It remains outside the 180 s required-workflow wall, which includes checkout, setup,
   # queueing and the aggregator as well as this tier.
-  ceiling_seconds: 140.0
+  # 2026-10-05: 150 s, raised from 140 s by the owner's decision of 2026-10-05 under
+  # think-p684, and selected on purpose, as `OR-17` requires of anything above a routine
+  # ceiling. PR 347 adds 133.9 recorded test-seconds to the behavioural lane, about 10%:
+  # the n17 stack's median four-shard sum is 505.5 s against main's 464 s, a slow runner
+  # needs about 558 s of the 570 s the four shard ceilings allowed, and 16 of 24 stack
+  # cohorts put a job over a ceiling against 2 of 27 on main, every test green. Every
+  # pull-request ceiling the stack overran rises about 9% together (A and D 131 -> 143 s,
+  # B and C 154 -> 168 s, frontend 150 -> 165 s, checks 140 -> 150 s). The 12 s per-test
+  # wall, the suite_files planning capacities 131/154/154/131 (frozen weights of the
+  # recorded assignment, not ceilings) and every recorded cost below are unchanged.
+  ceiling_seconds: 150.0
   # Cleared, on the same rule that cleared 1369.60s and 409.0s from the `fast` entry and
   # 107.05s from `sweeps`: the figure measures a tier that no longer exists. It measured
   # this one twice over -- the four readings predate the corpus widening, and the widened
@@ -427,7 +437,7 @@ tiers:
     run 36795901221, job 110159146528, which passed before the run was superseded by
     the next push. Observed spread 2.31x, on twelve branches whose changes touched
     none of this tier's steps. The band is the readings' own range; a run from its low
-    end can grow to the 140 s ceiling, 2.36x its 59.4 s low edge, before any rule fires,
+    end can grow to the 150 s ceiling (140 s until 2026-10-05), 2.53x its 59.4 s low edge, before any rule fires,
     which is the price `band_problems` states and the reason the relative rules are
     advisory on a pull request.
   measured_band: {low: 59.4, high: 137.1}
@@ -579,7 +589,17 @@ tiers:
   # in a tier wall of 93.16 s (run 36967092452, job 110713091091), inside the record's
   # band. The entry below names three steps and stays as the reading it was; the
   # four-step cohort re-takes it.
-  ceiling_seconds: 150.0
+  # 2026-10-05: 165 s, raised from 150 s by the owner's decision of 2026-10-05 under
+  # think-p684, and selected on purpose, as `OR-17` requires of anything above a routine
+  # ceiling. PR 347 adds 133.9 recorded test-seconds to the behavioural lane, about 10%:
+  # the n17 stack's median four-shard sum is 505.5 s against main's 464 s, a slow runner
+  # needs about 558 s of the 570 s the four shard ceilings allowed, and 16 of 24 stack
+  # cohorts put a job over a ceiling against 2 of 27 on main, every test green. Every
+  # pull-request ceiling the stack overran rises about 9% together (A and D 131 -> 143 s,
+  # B and C 154 -> 168 s, frontend 150 -> 165 s, checks 140 -> 150 s). The 12 s per-test
+  # wall, the suite_files planning capacities 131/154/154/131 (frozen weights of the
+  # recorded assignment, not ceilings) and every recorded cost below are unchanged.
+  ceiling_seconds: 165.0
   measured_seconds: 104.74
   measured_on: '2026-09-30'
   measured_where: >-
@@ -718,7 +738,17 @@ tiers:
   # gives B and C's 327.9. The first hosted cohort of the new partition re-takes this
   # record; until then the record below is the measured cost of the shard the day's
   # pull requests actually ran, and the reason the lane was repartitioned.
-  ceiling_seconds: 131.0
+  # 2026-10-05: 143 s, raised from 131 s by the owner's decision of 2026-10-05 under
+  # think-p684, and selected on purpose, as `OR-17` requires of anything above a routine
+  # ceiling. PR 347 adds 133.9 recorded test-seconds to the behavioural lane, about 10%:
+  # the n17 stack's median four-shard sum is 505.5 s against main's 464 s, a slow runner
+  # needs about 558 s of the 570 s the four shard ceilings allowed, and 16 of 24 stack
+  # cohorts put a job over a ceiling against 2 of 27 on main, every test green. Every
+  # pull-request ceiling the stack overran rises about 9% together (A and D 131 -> 143 s,
+  # B and C 154 -> 168 s, frontend 150 -> 165 s, checks 140 -> 150 s). The 12 s per-test
+  # wall, the suite_files planning capacities 131/154/154/131 (frozen weights of the
+  # recorded assignment, not ceilings) and every recorded cost below are unchanged.
+  ceiling_seconds: 143.0
   measured_seconds: 114.58
   measured_on: '2026-10-01'
   measured_where: >-
@@ -738,7 +768,7 @@ tiers:
     so they are named here and kept out of the band, as the suite_c record of
     2026-10-01 kept its 170.30 s and 172.45 s; with them the mean is 116.94 s.
     Observed spread 1.53x. The band is the readings' own range; a run from its low end
-    can grow to the 131 s ceiling, 1.56x its 83.91 s low edge, before any rule fires.
+    can grow to the 143 s ceiling (131 s until 2026-10-05), 1.70x its 83.91 s low edge, before any rule fires.
   measured_band: {low: 83.91, high: 128.65}
   attribution:
     cause: >-
@@ -842,7 +872,7 @@ tiers:
     writes a fresh per-file cost report beside its timing artifact. It keeps full Git
     history for history-reading tests but installs no Node toolchain; browser liveness
     belongs to `frontend`. `packing-required` preserves coverage by requiring all shard
-    jobs, and the declared 131-second ceiling is the absolute bound. Since 2026-10-01
+    jobs, and the declared 143-second ceiling (131 s until 2026-10-05) is the absolute bound. Since 2026-10-01
     the partition is four shards packed by capacity 131/154/154/131, so this shard and
     D carry the lane's two lighter shares; the plugin warns in the job's own log when
     more than a tenth of a shard's files have no recorded cost, which is the state that
@@ -883,7 +913,17 @@ tiers:
   # four-way partition recorded that day (`suite_d`), which packs this shard at 327.9
   # of 1,213.6 recorded test-seconds, about 98 s predicted, so the ceiling is about
   # 1.57x of what the first hosted cohort of the new partition should read.
-  ceiling_seconds: 154.0
+  # 2026-10-05: 168 s, raised from 154 s by the owner's decision of 2026-10-05 under
+  # think-p684, and selected on purpose, as `OR-17` requires of anything above a routine
+  # ceiling. PR 347 adds 133.9 recorded test-seconds to the behavioural lane, about 10%:
+  # the n17 stack's median four-shard sum is 505.5 s against main's 464 s, a slow runner
+  # needs about 558 s of the 570 s the four shard ceilings allowed, and 16 of 24 stack
+  # cohorts put a job over a ceiling against 2 of 27 on main, every test green. Every
+  # pull-request ceiling the stack overran rises about 9% together (A and D 131 -> 143 s,
+  # B and C 154 -> 168 s, frontend 150 -> 165 s, checks 140 -> 150 s). The 12 s per-test
+  # wall, the suite_files planning capacities 131/154/154/131 (frozen weights of the
+  # recorded assignment, not ceilings) and every recorded cost below are unchanged.
+  ceiling_seconds: 168.0
   measured_seconds: 114.38
   measured_on: '2026-10-01'
   measured_where: >-
@@ -901,7 +941,7 @@ tiers:
     and 36924379492, twelve of its files unrecorded and placed by the hash (302 tests,
     60.5 test-seconds, `test_site_head.py` 28.9 s and `test_site_documents.py` 25.8 s
     among them). The band is the readings' own range; a run from its low end can grow
-    to the 154 s ceiling, 1.94x its 79.30 s low edge, before any rule fires.
+    to the 168 s ceiling (154 s until 2026-10-05), 2.12x its 79.30 s low edge, before any rule fires.
   measured_band: {low: 79.30, high: 139.35}
   history:
   - measured_seconds: 119.54
@@ -1026,7 +1066,17 @@ tiers:
   # shard at 327.9 of 1,213.6 recorded test-seconds, about 98 s predicted, against the
   # 463.1 it had accumulated by the path hash; the ceiling is then about 1.57x of what
   # the first hosted cohort of the new partition should read.
-  ceiling_seconds: 154.0
+  # 2026-10-05: 168 s, raised from 154 s by the owner's decision of 2026-10-05 under
+  # think-p684, and selected on purpose, as `OR-17` requires of anything above a routine
+  # ceiling. PR 347 adds 133.9 recorded test-seconds to the behavioural lane, about 10%:
+  # the n17 stack's median four-shard sum is 505.5 s against main's 464 s, a slow runner
+  # needs about 558 s of the 570 s the four shard ceilings allowed, and 16 of 24 stack
+  # cohorts put a job over a ceiling against 2 of 27 on main, every test green. Every
+  # pull-request ceiling the stack overran rises about 9% together (A and D 131 -> 143 s,
+  # B and C 154 -> 168 s, frontend 150 -> 165 s, checks 140 -> 150 s). The 12 s per-test
+  # wall, the suite_files planning capacities 131/154/154/131 (frozen weights of the
+  # recorded assignment, not ceilings) and every recorded cost below are unchanged.
+  ceiling_seconds: 168.0
   measured_seconds: 132.05
   measured_on: '2026-10-01'
   measured_where: >-
@@ -1040,7 +1090,7 @@ tiers:
     143.81 s in run 36928600491 attempts 1, 3 and 4 (jobs 110591983179, 110602459042
     and 110605187305), which the latest-attempt view hides behind the 146.48 s fifth
     attempt. Observed spread 1.63x. The band is the readings' own range; a run from
-    its low end can grow to the 154 s ceiling, 1.70x its 90.34 s low edge, before any
+    its low end can grow to the 168 s ceiling (154 s until 2026-10-05), 1.86x its 90.34 s low edge, before any
     rule fires.
   measured_band: {low: 90.34, high: 147.16}
   attribution:
@@ -1107,13 +1157,13 @@ tiers:
       of the shard after the day's files landed in it.
   reference: {jobs: 1, inner_jobs: 1, cpus: 4}
   argument: >-
-    Third whole-file shard of the same quick behavioral lane. Its 154-second absolute
-    ceiling matches shard B and has applied since its first run. Run 36739024277 was the
+    Third whole-file shard of the same quick behavioral lane. Its absolute ceiling
+    matches shard B: 154 seconds from its first run, 168 since 2026-10-05. Run 36739024277 was the
     first observed three-way cohort; the thirty readings after it on 2026-09-30 and
     2026-10-01 measured its variability at 2.29x on unchanged tests, which is what the
     102.94 s record in its history carries. Since 2026-10-01 the partition is four
     shards packed by capacity 131/154/154/131; this shard and B carry the lane's two
-    heavier shares under the 154 s ceiling.
+    heavier shares under the 168 s ceiling.
 
 - id: suite_d
   command: packing-validate --suite-d
@@ -1125,7 +1175,17 @@ tiers:
   # tier has no hosted reading, so the entry is pending under think-t7k5 as `suite_c` was
   # under think-o18s on 2026-09-30: the ceiling applies from the first run, and the first
   # complete pull-request cohort replaces the pending fields with its observed wall.
-  ceiling_seconds: 131.0
+  # 2026-10-05: 143 s, raised from 131 s by the owner's decision of 2026-10-05 under
+  # think-p684, and selected on purpose, as `OR-17` requires of anything above a routine
+  # ceiling. PR 347 adds 133.9 recorded test-seconds to the behavioural lane, about 10%:
+  # the n17 stack's median four-shard sum is 505.5 s against main's 464 s, a slow runner
+  # needs about 558 s of the 570 s the four shard ceilings allowed, and 16 of 24 stack
+  # cohorts put a job over a ceiling against 2 of 27 on main, every test green. Every
+  # pull-request ceiling the stack overran rises about 9% together (A and D 131 -> 143 s,
+  # B and C 154 -> 168 s, frontend 150 -> 165 s, checks 140 -> 150 s). The 12 s per-test
+  # wall, the suite_files planning capacities 131/154/154/131 (frozen weights of the
+  # recorded assignment, not ceilings) and every recorded cost below are unchanged.
+  ceiling_seconds: 143.0
   measured_seconds: null
   measured_on: null
   measured_where: null

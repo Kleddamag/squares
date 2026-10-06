@@ -1,0 +1,792 @@
+softschema:
+  contract: packing.squares:HostedData/v1
+  schema: hosted-data.schema.yaml
+  status: enforced
+
+repository: jlevy/squares
+tag: data/n17-x048-session-168-certificates-v1
+description: 'The n17 sub-pattern certificate objects of X-048 session 168, by certificate directory:
+  the interval branch-and-bound certificate of A and the kernel certificates of W7, SW9 (flag 3) and residue
+  state N1. The standing verifiers (devtools.verify_n17_bb_certificate, devtools.verify_n17_kernel_certificate)
+  re-check them once fetched; devtools.census_n17_certified counts from the committed receipts without
+  them. Session 182 adds the kernel certificates its lanes admit, by directory: s182-k<J> for lane K''s
+  flags and s182-m<mask> for lane A''s residue states.'
+objects:
+- path: packing/campaign/explorations/X048-session-168-pilots/certificates/A/00afebeeab777bd3afb8509747520a5d5a174c04a5e9a07a5ba29e86b8ac45d0.json.gz
+  asset: 00afebeeab777bd3afb8509747520a5d5a174c04a5e9a07a5ba29e86b8ac45d0.json.gz
+  size: 717044
+  sha256: 3872599f76cdea32594fe736bb1463aaa6489d7d7080880a1efb5b392d80a081
+  description: interval branch-and-bound certificate of A
+- path: packing/campaign/explorations/X048-session-168-pilots/certificates/A/02a1105bb2ab1202acc46f2a6df60fee4b30eaeace4bfa751f1b168835647382.json.gz
+  asset: 02a1105bb2ab1202acc46f2a6df60fee4b30eaeace4bfa751f1b168835647382.json.gz
+  size: 770152
+  sha256: 631b85977fbeb9779c2e1b852ecc0618ae1236d9fe5bae4d87e2fe5a305f3aff
+  description: interval branch-and-bound certificate of A
+- path: packing/campaign/explorations/X048-session-168-pilots/certificates/A/049242fef143e864ae78e201cd0b4bcef575e78c3f85dd4d383eebcee38073f2.json.gz
+  asset: 049242fef143e864ae78e201cd0b4bcef575e78c3f85dd4d383eebcee38073f2.json.gz
+  size: 743827
+  sha256: 18fa3d112a5046d71a07203549ff8102acd7b38ecd9818e8c6e3abd4fc6f157f
+  description: interval branch-and-bound certificate of A
+- path: packing/campaign/explorations/X048-session-168-pilots/certificates/A/065dc42ecbdb51d707c9cae0e1572d4fc97f294505edb4e94c7d685a1ea1ea88.json.gz
+  asset: 065dc42ecbdb51d707c9cae0e1572d4fc97f294505edb4e94c7d685a1ea1ea88.json.gz
+  size: 571777
+  sha256: 5f15b0e54ec4233cbf654b201f5f4bbb6a397dad75669f28ff6da55b455247e2
+  description: interval branch-and-bound certificate of A
+- path: packing/campaign/explorations/X048-session-168-pilots/certificates/A/075dc97b91eaa68d59f6e0bfa91fd59344414cedfe423d4af3920f006d045d36.json.gz
+  asset: 075dc97b91eaa68d59f6e0bfa91fd59344414cedfe423d4af3920f006d045d36.json.gz
+  size: 694622
+  sha256: 34baf8db0953a631144cee8451ed357e8960dc5e9845835edb55c1787bdbc97e
+  description: interval branch-and-bound certificate of A
+- path: packing/campaign/explorations/X048-session-168-pilots/certificates/A/08d9b652a32bfc892743ebc7defd59c6121c875746bb0d06fbb96bd86924a210.json.gz
+  asset: 08d9b652a32bfc892743ebc7defd59c6121c875746bb0d06fbb96bd86924a210.json.gz
+  size: 611526
+  sha256: c7228aab47c47b42e93c1b57c9016aed71e4a545a2be332bb6e4601aa7b2ea2e
+  description: interval branch-and-bound certificate of A
+- path: packing/campaign/explorations/X048-session-168-pilots/certificates/A/096d49f6167a0f0aacac2977c255cd4adaede25543c162e77e44fdcbcf8f8650.json.gz
+  asset: 096d49f6167a0f0aacac2977c255cd4adaede25543c162e77e44fdcbcf8f8650.json.gz
+  size: 743611
+  sha256: b0ef78a3bd5d4c1c6f33375067c463b36cc979c1ea3162576d1ed5d2e56a65c6
+  description: interval branch-and-bound certificate of A
+- path: packing/campaign/explorations/X048-session-168-pilots/certificates/A/0c4753389f883dd88df289ff976a4d99ba2086c16c5ab93abfcae7abd057726b.json.gz
+  asset: 0c4753389f883dd88df289ff976a4d99ba2086c16c5ab93abfcae7abd057726b.json.gz
+  size: 769104
+  sha256: d743eabee446c38f1409985af7c7e40ad349e258188c80665d55f74ef8ef5467
+  description: interval branch-and-bound certificate of A
+- path: packing/campaign/explorations/X048-session-168-pilots/certificates/A/0f2195cdd072ecebd55cf4d7b099b6aba394da9a9fc82bfa1d8683614995b917.json.gz
+  asset: 0f2195cdd072ecebd55cf4d7b099b6aba394da9a9fc82bfa1d8683614995b917.json.gz
+  size: 655375
+  sha256: b214fbc283363390b1aa4f62e90b2ffd5beece56cb3ec41db3fc51fc799d1148
+  description: interval branch-and-bound certificate of A
+- path: packing/campaign/explorations/X048-session-168-pilots/certificates/A/10cb53de21ee66cd466e7adca7d429c6e1e97969c155e208572e3fef733c1906.json.gz
+  asset: 10cb53de21ee66cd466e7adca7d429c6e1e97969c155e208572e3fef733c1906.json.gz
+  size: 567004
+  sha256: 0aa69de46fccb8670a2fc0bfcb848aa60981958349785ac294137108d75e18a1
+  description: interval branch-and-bound certificate of A
+- path: packing/campaign/explorations/X048-session-168-pilots/certificates/A/142352bc930ac0a49c42ba9c358d3e2218867b83a86943f4cbfe9f4606118357.json.gz
+  asset: 142352bc930ac0a49c42ba9c358d3e2218867b83a86943f4cbfe9f4606118357.json.gz
+  size: 735010
+  sha256: 2ade5b1816e0f034db013b6e88e7a1824de8ff665261485644d2c553ee1297ee
+  description: interval branch-and-bound certificate of A
+- path: packing/campaign/explorations/X048-session-168-pilots/certificates/A/1585e0202dde0f159d8d00f5f54102abab46f3021dfb88584399607c5f1c0c9a.json.gz
+  asset: 1585e0202dde0f159d8d00f5f54102abab46f3021dfb88584399607c5f1c0c9a.json.gz
+  size: 516991
+  sha256: b4dab46d2867811e6a485adadc991349756d6043f036fc967d795392a8ddd625
+  description: interval branch-and-bound certificate of A
+- path: packing/campaign/explorations/X048-session-168-pilots/certificates/A/1717665b710c0ff6268e6492082e03f97dc7baea3c65fb3121b6aa368f564a87.json.gz
+  asset: 1717665b710c0ff6268e6492082e03f97dc7baea3c65fb3121b6aa368f564a87.json.gz
+  size: 611431
+  sha256: accf6374242c17bcecf3f85e148a21c72db63544aa450d204afeb42a0e39a32c
+  description: interval branch-and-bound certificate of A
+- path: packing/campaign/explorations/X048-session-168-pilots/certificates/A/1c3ad84e4c5176a42b4d760b234be8d76dce597e8a881c74ec647baa65207dd4.json.gz
+  asset: 1c3ad84e4c5176a42b4d760b234be8d76dce597e8a881c74ec647baa65207dd4.json.gz
+  size: 860520
+  sha256: 17dbaadab8e9672b9b84422bffcfef4f53f8b42b612bdf7a87fef65c3e76a5a6
+  description: interval branch-and-bound certificate of A
+- path: packing/campaign/explorations/X048-session-168-pilots/certificates/A/1fd4860c32c16db7283d1df51bf969635ccecfb50f696093b5a481cb55bd9471.json.gz
+  asset: 1fd4860c32c16db7283d1df51bf969635ccecfb50f696093b5a481cb55bd9471.json.gz
+  size: 765883
+  sha256: 0d1353ec6423f48556c21060e23d66c1f7c6c59ee5bc3c676ed30359805f9792
+  description: interval branch-and-bound certificate of A
+- path: packing/campaign/explorations/X048-session-168-pilots/certificates/A/26e357819e840b006a366fa7e0050f1de19685e869260217c54fe8b94873f412.json.gz
+  asset: 26e357819e840b006a366fa7e0050f1de19685e869260217c54fe8b94873f412.json.gz
+  size: 674656
+  sha256: 95db40909c496f4555ab3b7919eedb259c3cd8e1804f2f63daea712e7b24da49
+  description: interval branch-and-bound certificate of A
+- path: packing/campaign/explorations/X048-session-168-pilots/certificates/A/274c724360f89e2abf21963021e26cd655b2ac6f5f0925a2ac07fd96fc637798.json.gz
+  asset: 274c724360f89e2abf21963021e26cd655b2ac6f5f0925a2ac07fd96fc637798.json.gz
+  size: 616117
+  sha256: 2da8a5cd0f385283fca0fc6b46fd132967774cf3feabe0374ee53693f76ea199
+  description: interval branch-and-bound certificate of A
+- path: packing/campaign/explorations/X048-session-168-pilots/certificates/A/27ad3c33a14c9853e3e05f6897c30372f5700b4a4199755dbe7fd2f5845c7c24.json.gz
+  asset: 27ad3c33a14c9853e3e05f6897c30372f5700b4a4199755dbe7fd2f5845c7c24.json.gz
+  size: 617136
+  sha256: d08312e8e8f903857b6d23361067847ead97e53095d145fcc773579a31a88491
+  description: interval branch-and-bound certificate of A
+- path: packing/campaign/explorations/X048-session-168-pilots/certificates/A/2b0934f8082fa6f0662a1f65e6e747f90db6507a06c9fb2fa4e9682248b6e43d.json.gz
+  asset: 2b0934f8082fa6f0662a1f65e6e747f90db6507a06c9fb2fa4e9682248b6e43d.json.gz
+  size: 511635
+  sha256: 8aec07bd37786b404022297ed23c6a3990260d28dd8cd0ba795097d7bc15edf8
+  description: interval branch-and-bound certificate of A
+- path: packing/campaign/explorations/X048-session-168-pilots/certificates/A/2c784616dc7ca4a4548e8877f7368850c69885589b04ffbadad38cc7f8197217.json.gz
+  asset: 2c784616dc7ca4a4548e8877f7368850c69885589b04ffbadad38cc7f8197217.json.gz
+  size: 642196
+  sha256: 22bf16120732e502e017925ac6b3707333b10b1562d77618d14164019a84b557
+  description: interval branch-and-bound certificate of A
+- path: packing/campaign/explorations/X048-session-168-pilots/certificates/A/2dff739e447986237df1af47f696e46dc630e09f0aaff1b2914b699f221e60d9.json.gz
+  asset: 2dff739e447986237df1af47f696e46dc630e09f0aaff1b2914b699f221e60d9.json.gz
+  size: 569589
+  sha256: 9723f2422a68f4f1575cae7756e21ccc799b10eb9b5cf56f57e8e7e5f060af5d
+  description: interval branch-and-bound certificate of A
+- path: packing/campaign/explorations/X048-session-168-pilots/certificates/A/2fc6349b198922f82ba0e6b1d495cccbeb3b603a5d5ee62aa224e90eb6d9a02a.json.gz
+  asset: 2fc6349b198922f82ba0e6b1d495cccbeb3b603a5d5ee62aa224e90eb6d9a02a.json.gz
+  size: 711951
+  sha256: f4708b60ed01ff4132ef9401810d5ebebdfabd7e7aec3d28439de5fadce973d6
+  description: interval branch-and-bound certificate of A
+- path: packing/campaign/explorations/X048-session-168-pilots/certificates/A/340492bddf2674b70e4403e15c13793c224a5dfa4d428a5e1834da546ee6a9dc.json.gz
+  asset: 340492bddf2674b70e4403e15c13793c224a5dfa4d428a5e1834da546ee6a9dc.json.gz
+  size: 4405
+  sha256: 05c8155f44d44453d66d220988c2d7311872fcd2740902df26433c8fdcb76fab
+  description: interval branch-and-bound certificate of A
+- path: packing/campaign/explorations/X048-session-168-pilots/certificates/A/3498f7a64c77ec16f3a0d81795fb16b6c8e8da0c22b0317145036fee4323a8d3.json.gz
+  asset: 3498f7a64c77ec16f3a0d81795fb16b6c8e8da0c22b0317145036fee4323a8d3.json.gz
+  size: 608145
+  sha256: 5dc3c771d761601c8121fc55afefca41d94e8561f80d2bff670851305cd6997c
+  description: interval branch-and-bound certificate of A
+- path: packing/campaign/explorations/X048-session-168-pilots/certificates/A/357308eaf45e129eb38535f79ecc8db5fa6fe0cb16f6637ed2c3254894ac68b9.json.gz
+  asset: 357308eaf45e129eb38535f79ecc8db5fa6fe0cb16f6637ed2c3254894ac68b9.json.gz
+  size: 718809
+  sha256: 816714d7ea447b1e4af96d77596d87393d07011f024c2bc03b5dcbe5fe631764
+  description: interval branch-and-bound certificate of A
+- path: packing/campaign/explorations/X048-session-168-pilots/certificates/A/3ed33ba1406c1b4e9aeff2ae7141ed305d2385bfc7a2b1364c35155a927c2079.json.gz
+  asset: 3ed33ba1406c1b4e9aeff2ae7141ed305d2385bfc7a2b1364c35155a927c2079.json.gz
+  size: 668040
+  sha256: 1505313b728f53cc880471ac33f4fdaa987713fb376419bf1628e0c03b935f86
+  description: interval branch-and-bound certificate of A
+- path: packing/campaign/explorations/X048-session-168-pilots/certificates/A/3f6ed0bdc1004fdf47f33aff973109fbff0fcf62f2c3327c43860df410126450.json.gz
+  asset: 3f6ed0bdc1004fdf47f33aff973109fbff0fcf62f2c3327c43860df410126450.json.gz
+  size: 591687
+  sha256: 0ab49bfd46232487ad2daedfe54a36463fb14afddb7d3be84e8e41e3ae656dea
+  description: interval branch-and-bound certificate of A
+- path: packing/campaign/explorations/X048-session-168-pilots/certificates/A/4038e62e18ec06942812faa8ef17906dc5d83aae406f7ccf1a537ad7686dbeb1.json.gz
+  asset: 4038e62e18ec06942812faa8ef17906dc5d83aae406f7ccf1a537ad7686dbeb1.json.gz
+  size: 496803
+  sha256: a7852cc9b1517342e7ef37baa368d2c5f959413483c51a17a4f60b3fa87c2e2b
+  description: interval branch-and-bound certificate of A
+- path: packing/campaign/explorations/X048-session-168-pilots/certificates/A/406bc333befba88faa79e10326db93b06f1a6aba1ebbe3c1d6d6af225d127d93.json.gz
+  asset: 406bc333befba88faa79e10326db93b06f1a6aba1ebbe3c1d6d6af225d127d93.json.gz
+  size: 745251
+  sha256: b94644602437916858e5a8ffc5c4348488e6da9ad3402d0b6c032df8af5cf2e3
+  description: interval branch-and-bound certificate of A
+- path: packing/campaign/explorations/X048-session-168-pilots/certificates/A/42952754d8d7ab3a521043775a2fd00a37beee57a2e3cbae30b013b9461ea42d.json.gz
+  asset: 42952754d8d7ab3a521043775a2fd00a37beee57a2e3cbae30b013b9461ea42d.json.gz
+  size: 548764
+  sha256: ad4d580c96b66e3dbc84663b6d80ea9832a9ae58cd9f2af8317aa6a194caa250
+  description: interval branch-and-bound certificate of A
+- path: packing/campaign/explorations/X048-session-168-pilots/certificates/A/44a79cde31e5b371cc82de749db79fd722c56a560fce6c3a7e8e7d3cb815dcaf.json.gz
+  asset: 44a79cde31e5b371cc82de749db79fd722c56a560fce6c3a7e8e7d3cb815dcaf.json.gz
+  size: 682514
+  sha256: bf0c8e3c5836bd341cfedde2b32bf0423968a2d4ef3e748c1b173467df7283db
+  description: interval branch-and-bound certificate of A
+- path: packing/campaign/explorations/X048-session-168-pilots/certificates/A/49d7cd73646a3749fce03600ed65ebed0741c9661adfa7742980323c7a75cb9c.json.gz
+  asset: 49d7cd73646a3749fce03600ed65ebed0741c9661adfa7742980323c7a75cb9c.json.gz
+  size: 696503
+  sha256: b3bdfc15e7f595e0bac2e47b1c471053291c7635ddffc7433c1465de4a807750
+  description: interval branch-and-bound certificate of A
+- path: packing/campaign/explorations/X048-session-168-pilots/certificates/A/53b050fdb83f6f86ef7c8bc087d6494dac98beabb597f31a1e0993a15e9262be.json.gz
+  asset: 53b050fdb83f6f86ef7c8bc087d6494dac98beabb597f31a1e0993a15e9262be.json.gz
+  size: 684924
+  sha256: 58f92c6043f74bc317550a38fc40ae83316c03ddd23549756c27d33d98c495a4
+  description: interval branch-and-bound certificate of A
+- path: packing/campaign/explorations/X048-session-168-pilots/certificates/A/556e77e7af3d8596200e9d7a1523cb770e3327931b83abe97bc30b2731b19c1c.json.gz
+  asset: 556e77e7af3d8596200e9d7a1523cb770e3327931b83abe97bc30b2731b19c1c.json.gz
+  size: 801579
+  sha256: b9f9887cd8db1b6f5472390472e44bcc6bd1926aada3ec6ba734a83df183384e
+  description: interval branch-and-bound certificate of A
+- path: packing/campaign/explorations/X048-session-168-pilots/certificates/A/55f1bc227e3f8a6788839669ce251a59bca1940a05ece3ba9116b5fe4a6f64d9.json.gz
+  asset: 55f1bc227e3f8a6788839669ce251a59bca1940a05ece3ba9116b5fe4a6f64d9.json.gz
+  size: 745571
+  sha256: 144b923371f06cfbd46bbbed8ff951142435b4ddb60bdd903358a7c866ceb111
+  description: interval branch-and-bound certificate of A
+- path: packing/campaign/explorations/X048-session-168-pilots/certificates/A/5da9657c6f2fc056d0b78eff3f5af553014ac9fb3be1e3c45357ef32ccffba96.json.gz
+  asset: 5da9657c6f2fc056d0b78eff3f5af553014ac9fb3be1e3c45357ef32ccffba96.json.gz
+  size: 640583
+  sha256: dccdc161134aea810f659feadf99029569256a478a28f7fe085edcdb03594c33
+  description: interval branch-and-bound certificate of A
+- path: packing/campaign/explorations/X048-session-168-pilots/certificates/A/5e3ae7390052f2868247d2269321a3fe2960751267a9a0caad978d3bc6df22f0.json.gz
+  asset: 5e3ae7390052f2868247d2269321a3fe2960751267a9a0caad978d3bc6df22f0.json.gz
+  size: 608358
+  sha256: 0c784410a4aa2abed70ebcde532ce63a076937d0370dec6f8e1cbddc1dd0c1d6
+  description: interval branch-and-bound certificate of A
+- path: packing/campaign/explorations/X048-session-168-pilots/certificates/A/5f0071e964ac76db5dc3f47da05725466907bc16ab75bf00037636d89bb6500b.json.gz
+  asset: 5f0071e964ac76db5dc3f47da05725466907bc16ab75bf00037636d89bb6500b.json.gz
+  size: 701794
+  sha256: a4e03219e570055e13c41559e21a42086cceabb505a651f7a89073e3972a3920
+  description: interval branch-and-bound certificate of A
+- path: packing/campaign/explorations/X048-session-168-pilots/certificates/A/5f87289a781771b2f98e1a857c295920e6199b5a2fae2db593927312b6211416.json.gz
+  asset: 5f87289a781771b2f98e1a857c295920e6199b5a2fae2db593927312b6211416.json.gz
+  size: 114462
+  sha256: e1e525bfe414ef7b436b208c584e55cb8d4c87fa3f656c4009fb35b9081de867
+  description: interval branch-and-bound certificate of A
+- path: packing/campaign/explorations/X048-session-168-pilots/certificates/A/631f9629cb8d8267edff7a24cbcfd6001b8c24375aafe1d61a9d38b15328d9e9.json.gz
+  asset: 631f9629cb8d8267edff7a24cbcfd6001b8c24375aafe1d61a9d38b15328d9e9.json.gz
+  size: 749922
+  sha256: d8f8b0be99629397fe2bfe19d02e54c4252b6a0214353a88e9bfad6bb8209a87
+  description: interval branch-and-bound certificate of A
+- path: packing/campaign/explorations/X048-session-168-pilots/certificates/A/648fab2b692f9d2e5158bf015ca388a582109619526c21d40d5f5fd3562b7da2.json.gz
+  asset: 648fab2b692f9d2e5158bf015ca388a582109619526c21d40d5f5fd3562b7da2.json.gz
+  size: 620650
+  sha256: b2ce4be57f95c8120cf782384f964c10ab21393e2ed9022d4ddee13b48b0d9ce
+  description: interval branch-and-bound certificate of A
+- path: packing/campaign/explorations/X048-session-168-pilots/certificates/A/65e96e74f94b1e495eb83795df7f841d5151897b091e466a30869e9f13f7c1d9.json.gz
+  asset: 65e96e74f94b1e495eb83795df7f841d5151897b091e466a30869e9f13f7c1d9.json.gz
+  size: 662620
+  sha256: d21b6f0ae7ac681e3c773d6f0b8609143d9b3e738ef4921ed2936a8c4209e1f5
+  description: interval branch-and-bound certificate of A
+- path: packing/campaign/explorations/X048-session-168-pilots/certificates/A/68dbd4cfb2a139315ee176623d2a10f29608ae23395431d00037a07fab387bab.json.gz
+  asset: 68dbd4cfb2a139315ee176623d2a10f29608ae23395431d00037a07fab387bab.json.gz
+  size: 525425
+  sha256: 00e15633e1d71dfff442015a7b3238c5d05cf8816a0ebde485fdcdbc95b4ecac
+  description: interval branch-and-bound certificate of A
+- path: packing/campaign/explorations/X048-session-168-pilots/certificates/A/6bf8f49fc8fb2da41cf878f7d0e1c307e0a85ef6d7145a65fdefbd2ac88b9f3e.json.gz
+  asset: 6bf8f49fc8fb2da41cf878f7d0e1c307e0a85ef6d7145a65fdefbd2ac88b9f3e.json.gz
+  size: 642601
+  sha256: 3c795348127b6a83007f8f30963344e192599472ab7120578ab4c362120a9aa3
+  description: interval branch-and-bound certificate of A
+- path: packing/campaign/explorations/X048-session-168-pilots/certificates/A/720f2e538241e285e6397beb5a14c8237895e00cf423dd4ad184c21e0d1beaaa.json.gz
+  asset: 720f2e538241e285e6397beb5a14c8237895e00cf423dd4ad184c21e0d1beaaa.json.gz
+  size: 781481
+  sha256: d071dfd97600e3cab088a953caf64d52878369cb77f590452d4848fbd15f14eb
+  description: interval branch-and-bound certificate of A
+- path: packing/campaign/explorations/X048-session-168-pilots/certificates/A/74090313830b8f28f7eb13098bfbf822d3b1a6d9da9e8fb15b1574b8b950610b.json.gz
+  asset: 74090313830b8f28f7eb13098bfbf822d3b1a6d9da9e8fb15b1574b8b950610b.json.gz
+  size: 626842
+  sha256: c53edaf82f91b073153494cde3d84b235a11d7983373dcbfe8f171613bf818af
+  description: interval branch-and-bound certificate of A
+- path: packing/campaign/explorations/X048-session-168-pilots/certificates/A/748479a0fc56d18f0154b317afc2f4ad3c9709775712e507547a28a38cbb5e03.json.gz
+  asset: 748479a0fc56d18f0154b317afc2f4ad3c9709775712e507547a28a38cbb5e03.json.gz
+  size: 685257
+  sha256: 63d05a8af24144dd25c2820307a33881543de61799904af8373df0dbdbadd125
+  description: interval branch-and-bound certificate of A
+- path: packing/campaign/explorations/X048-session-168-pilots/certificates/A/748c9836162d3a58562dea6c06cdd6ff861d21422bd195149c3143f2f8c96a25.json.gz
+  asset: 748c9836162d3a58562dea6c06cdd6ff861d21422bd195149c3143f2f8c96a25.json.gz
+  size: 606738
+  sha256: dff99ba42d6d2708374fb0686c61a6aa6c51c4e83f2565658ae4e8db801a957b
+  description: interval branch-and-bound certificate of A
+- path: packing/campaign/explorations/X048-session-168-pilots/certificates/A/757ac2746dbb37c9f85d2720fac6f00eca4600faf7fdc7c52aeb2248a6fe55a8.json.gz
+  asset: 757ac2746dbb37c9f85d2720fac6f00eca4600faf7fdc7c52aeb2248a6fe55a8.json.gz
+  size: 811948
+  sha256: 9776f8cfaed36f098843356c52cc6f904eec3e42f40d72b1bdc81f167434b6ef
+  description: interval branch-and-bound certificate of A
+- path: packing/campaign/explorations/X048-session-168-pilots/certificates/A/794e0df2a656539c60c622f48b3eaedab772839e8dcb246984b92aab344c3d01.json.gz
+  asset: 794e0df2a656539c60c622f48b3eaedab772839e8dcb246984b92aab344c3d01.json.gz
+  size: 610503
+  sha256: 7cf7940b00c822871572e9c243fb7b9c40e9ee4f70de34cac84e3264246a6095
+  description: interval branch-and-bound certificate of A
+- path: packing/campaign/explorations/X048-session-168-pilots/certificates/A/79a3e21b13c800490733f8c63c74a4b913a7e23966fe0fb94323f3f4246652e1.json.gz
+  asset: 79a3e21b13c800490733f8c63c74a4b913a7e23966fe0fb94323f3f4246652e1.json.gz
+  size: 587795
+  sha256: 76171ce5d3eb709a7590b6ea2b38090d4e978089b743006c0f5994c84124cd76
+  description: interval branch-and-bound certificate of A
+- path: packing/campaign/explorations/X048-session-168-pilots/certificates/A/7a884fd60b4c7ac2edd04765f3daa08f3164ac7a51b1510180d7904194002965.json.gz
+  asset: 7a884fd60b4c7ac2edd04765f3daa08f3164ac7a51b1510180d7904194002965.json.gz
+  size: 732669
+  sha256: 1b47368082f88d97a341239a98c4493c8a092b5b5a5dfc0238f170f89fe55220
+  description: interval branch-and-bound certificate of A
+- path: packing/campaign/explorations/X048-session-168-pilots/certificates/A/7fe1b6a03d1de505d05e72b89303083b67617e0c5ec103607b0454681842ec28.json.gz
+  asset: 7fe1b6a03d1de505d05e72b89303083b67617e0c5ec103607b0454681842ec28.json.gz
+  size: 595847
+  sha256: b7c1e34cedd65b717a1883eac7d635007e144259daae6b0f97448536ece0445a
+  description: interval branch-and-bound certificate of A
+- path: packing/campaign/explorations/X048-session-168-pilots/certificates/A/82e68c4c331b37d27ffbb25f996af0f040b6b48aa240ea94bb61f5925485f703.json.gz
+  asset: 82e68c4c331b37d27ffbb25f996af0f040b6b48aa240ea94bb61f5925485f703.json.gz
+  size: 595810
+  sha256: a7274c01800fe362a1c79e3b138585ee64f1a4398d45fe6377cfe2743a794206
+  description: interval branch-and-bound certificate of A
+- path: packing/campaign/explorations/X048-session-168-pilots/certificates/A/835847a091f0c25cb420563103f14a9dbe235bedaf073afdfd48c7ab18da240f.json.gz
+  asset: 835847a091f0c25cb420563103f14a9dbe235bedaf073afdfd48c7ab18da240f.json.gz
+  size: 619551
+  sha256: 1f8f8e4e9f668a7ed6c46c8dd367d46218b2283111544c46bc62fba00ecfe941
+  description: interval branch-and-bound certificate of A
+- path: packing/campaign/explorations/X048-session-168-pilots/certificates/A/86b8cf8c28b279e753adb92137b51e7230e3b4c0bc245b693cbd0cee7a434b14.json.gz
+  asset: 86b8cf8c28b279e753adb92137b51e7230e3b4c0bc245b693cbd0cee7a434b14.json.gz
+  size: 628124
+  sha256: 0e55d4b172af6aedc964343dbcb50cedfb1e07189af207501de5d419ac9c332a
+  description: interval branch-and-bound certificate of A
+- path: packing/campaign/explorations/X048-session-168-pilots/certificates/A/89bd77324982d2b5cef3a2b642a25b822e5523d4e82910ac428684524dea256d.json.gz
+  asset: 89bd77324982d2b5cef3a2b642a25b822e5523d4e82910ac428684524dea256d.json.gz
+  size: 710807
+  sha256: 0fc6202863b8f1cf95d130ec2819c1ea78a147a31153e439d23c88a26a72f073
+  description: interval branch-and-bound certificate of A
+- path: packing/campaign/explorations/X048-session-168-pilots/certificates/A/8c063b7a8eb2a59236382f56732517d645dd4fcf317f98c0c9160884ca47479a.json.gz
+  asset: 8c063b7a8eb2a59236382f56732517d645dd4fcf317f98c0c9160884ca47479a.json.gz
+  size: 760927
+  sha256: 7914cb7d8396f506764f04a011cec69c8edd9357ed845f47bb9f8437c80da5f4
+  description: interval branch-and-bound certificate of A
+- path: packing/campaign/explorations/X048-session-168-pilots/certificates/A/8e11469a3da03177b4b1b9aa0f6fcf6bdb88ec97b125a3b9f78e54f144f3b5d8.json.gz
+  asset: 8e11469a3da03177b4b1b9aa0f6fcf6bdb88ec97b125a3b9f78e54f144f3b5d8.json.gz
+  size: 754263
+  sha256: f1a7f75b0b72cd36ca247d0082c14d577ca59e60367835b06477752b2f6fa84e
+  description: interval branch-and-bound certificate of A
+- path: packing/campaign/explorations/X048-session-168-pilots/certificates/A/906d562b9633e4a428b814b5c58e6ba4d64e868a0ad9a975514cf591225ac6e8.json.gz
+  asset: 906d562b9633e4a428b814b5c58e6ba4d64e868a0ad9a975514cf591225ac6e8.json.gz
+  size: 631454
+  sha256: c9d7a4b5dcf3ba3c8b9ecf1eacb327f67e9cea5c564fd581ee8af07fda74ac72
+  description: interval branch-and-bound certificate of A
+- path: packing/campaign/explorations/X048-session-168-pilots/certificates/A/9a8ea83bb12a48a7f6423ba09aaa877ab23e8e11f5c43d74d9f17ecb15d40744.json.gz
+  asset: 9a8ea83bb12a48a7f6423ba09aaa877ab23e8e11f5c43d74d9f17ecb15d40744.json.gz
+  size: 832105
+  sha256: 179073d1ccb4f1f73f59793d3d0a4a52f430d6a0a46346df3c61543a419653a5
+  description: interval branch-and-bound certificate of A
+- path: packing/campaign/explorations/X048-session-168-pilots/certificates/A/9b538e7ccc514e091f5afd759bad3ef85a0d09accd09bdcc5e0fa945120ac3f0.json.gz
+  asset: 9b538e7ccc514e091f5afd759bad3ef85a0d09accd09bdcc5e0fa945120ac3f0.json.gz
+  size: 586153
+  sha256: c7325950be67c3cd703df9773cee26d77bd0810793735cf3ed0480a61751d851
+  description: interval branch-and-bound certificate of A
+- path: packing/campaign/explorations/X048-session-168-pilots/certificates/A/9b5ed9fb06fb867368d8865b5a7ef282f15fd6ad071870c457f0209e71d6f368.json.gz
+  asset: 9b5ed9fb06fb867368d8865b5a7ef282f15fd6ad071870c457f0209e71d6f368.json.gz
+  size: 780467
+  sha256: 6288556a5f9a4b1f6a483489a97516c752fd70cd22d747f32c7b768a26fb57d2
+  description: interval branch-and-bound certificate of A
+- path: packing/campaign/explorations/X048-session-168-pilots/certificates/A/a91ee763ea762af8dfc85f89ad669c6194854fbdb035991e71abf7608dcbf094.json.gz
+  asset: a91ee763ea762af8dfc85f89ad669c6194854fbdb035991e71abf7608dcbf094.json.gz
+  size: 683583
+  sha256: f3bbef3ce00d6eb381c885652ac723c25a42c496a8fda3e139c62e94a1516653
+  description: interval branch-and-bound certificate of A
+- path: packing/campaign/explorations/X048-session-168-pilots/certificates/A/a9ec723818236e205e05a7710fc751b8dc320040aaa71492563e7e62746a8ad3.json.gz
+  asset: a9ec723818236e205e05a7710fc751b8dc320040aaa71492563e7e62746a8ad3.json.gz
+  size: 19603
+  sha256: 8b84e17e56774c0f1ddc146be56ab40946a030966238e16be5e2650da5f9981a
+  description: interval branch-and-bound certificate of A
+- path: packing/campaign/explorations/X048-session-168-pilots/certificates/A/ac342b3af39b9a81733e48ecb92662b3be93ef9927ee3580e6d8704a0794823e.json.gz
+  asset: ac342b3af39b9a81733e48ecb92662b3be93ef9927ee3580e6d8704a0794823e.json.gz
+  size: 881197
+  sha256: 3dcbcad63987f04ad02c36c065924e78f251e647691bf1096f959306625194e5
+  description: interval branch-and-bound certificate of A
+- path: packing/campaign/explorations/X048-session-168-pilots/certificates/A/ad156dab12f841b447e00d3838d4a6af189083a44b6940bd8393198a0fa5b134.json.gz
+  asset: ad156dab12f841b447e00d3838d4a6af189083a44b6940bd8393198a0fa5b134.json.gz
+  size: 660143
+  sha256: dcdcf8699515e0ee1682c521c4efdfeb8e73c7a07255887aa21dc308f814855b
+  description: interval branch-and-bound certificate of A
+- path: packing/campaign/explorations/X048-session-168-pilots/certificates/A/ad3f4aec5eb082f4ec36df16ed31914b7e56c862d88d88ad0bbf9fd71137b757.json.gz
+  asset: ad3f4aec5eb082f4ec36df16ed31914b7e56c862d88d88ad0bbf9fd71137b757.json.gz
+  size: 587022
+  sha256: 9ebbd4adfc06bc3f69662c8a40af78f78713f69039e6f982cc77931631498034
+  description: interval branch-and-bound certificate of A
+- path: packing/campaign/explorations/X048-session-168-pilots/certificates/A/b1851bc7ca8e6c265b0a28032f96fc2e1912ecf1959cfe5fd52063fae76b1478.json.gz
+  asset: b1851bc7ca8e6c265b0a28032f96fc2e1912ecf1959cfe5fd52063fae76b1478.json.gz
+  size: 550099
+  sha256: 7b9219c8e0b33da665ee6b7fa054095721947d5849e1b49fb227cb8b816cd264
+  description: interval branch-and-bound certificate of A
+- path: packing/campaign/explorations/X048-session-168-pilots/certificates/A/b5f885da613728bddad0f12b93875b5918207a035c2062dfce63a8a5a0798180.json.gz
+  asset: b5f885da613728bddad0f12b93875b5918207a035c2062dfce63a8a5a0798180.json.gz
+  size: 518522
+  sha256: cdc92ad4c7fa4e35dea5acf5fd250b1957dd4657c2373acc4c2de7d71485c3a6
+  description: interval branch-and-bound certificate of A
+- path: packing/campaign/explorations/X048-session-168-pilots/certificates/A/bd70a5c54214c4272a3bd1b9821a61cee5b925593ce2f72428be649a3a7c7f5b.json.gz
+  asset: bd70a5c54214c4272a3bd1b9821a61cee5b925593ce2f72428be649a3a7c7f5b.json.gz
+  size: 661650
+  sha256: f8c6e4920f21b757648a18a9531892adfb6418229dc846db1eb65e46962485ea
+  description: interval branch-and-bound certificate of A
+- path: packing/campaign/explorations/X048-session-168-pilots/certificates/A/bff3edeb6a6bedd1b26d48277ed9479cd5cbe451baf45d5ecb15e63d7c1c6450.json.gz
+  asset: bff3edeb6a6bedd1b26d48277ed9479cd5cbe451baf45d5ecb15e63d7c1c6450.json.gz
+  size: 598243
+  sha256: a30f657eb6bf35619c620a8b50d234bdfd84f34de4d5a70afe319ffb89454184
+  description: interval branch-and-bound certificate of A
+- path: packing/campaign/explorations/X048-session-168-pilots/certificates/A/c7fd478bebb2d4529efcc68455507e478fc9a61fba055767c5fb728cc481246a.json.gz
+  asset: c7fd478bebb2d4529efcc68455507e478fc9a61fba055767c5fb728cc481246a.json.gz
+  size: 671860
+  sha256: 41024b41eaa6d820d97c28b4c1aad343c2fdc8246955b6c4f03739a2a4b628fa
+  description: interval branch-and-bound certificate of A
+- path: packing/campaign/explorations/X048-session-168-pilots/certificates/A/cbcaa3285f57ba57f58e956bae64f9a977dea31f29ecf391ddcd187d3b746685.json.gz
+  asset: cbcaa3285f57ba57f58e956bae64f9a977dea31f29ecf391ddcd187d3b746685.json.gz
+  size: 744072
+  sha256: 133aedacfd492d185a8a17e8ae84c70f67db30aa1d5258219ac9cc06b755da16
+  description: interval branch-and-bound certificate of A
+- path: packing/campaign/explorations/X048-session-168-pilots/certificates/A/d549f5b107281f98e5d5dcb3413d0aeee1f21a726a2622275543c820fdba0443.json.gz
+  asset: d549f5b107281f98e5d5dcb3413d0aeee1f21a726a2622275543c820fdba0443.json.gz
+  size: 615347
+  sha256: 610bcda6a081941adc5f6395d7926dcb6f5c06663cfdc56a0ef542432bd6d482
+  description: interval branch-and-bound certificate of A
+- path: packing/campaign/explorations/X048-session-168-pilots/certificates/A/d5d05086c5b396620804d6d1e6162c0f0a311463d109d61879e0db44605a10bc.json.gz
+  asset: d5d05086c5b396620804d6d1e6162c0f0a311463d109d61879e0db44605a10bc.json.gz
+  size: 482311
+  sha256: 7aeec1c458b27aaf6c6ecc4354dd11ece0181fd87051ec08ea3d91cbaac84a85
+  description: interval branch-and-bound certificate of A
+- path: packing/campaign/explorations/X048-session-168-pilots/certificates/A/d72bc648d104c054355b6af2a26deabd9f616caf4b0fd08304fe0a627e5f7ee2.json.gz
+  asset: d72bc648d104c054355b6af2a26deabd9f616caf4b0fd08304fe0a627e5f7ee2.json.gz
+  size: 576884
+  sha256: b3e519d7b05ead07d1ae1cdab27092ef92ddbb40b08edf4023f55aeba38d955f
+  description: interval branch-and-bound certificate of A
+- path: packing/campaign/explorations/X048-session-168-pilots/certificates/A/d933596b3d84240e6128bad48f24d3ffc5f00cc173ce1df5b5f71c1cf8f4a270.json.gz
+  asset: d933596b3d84240e6128bad48f24d3ffc5f00cc173ce1df5b5f71c1cf8f4a270.json.gz
+  size: 627676
+  sha256: 39d6cc2c084ff4cc18ea01d9d25a8aba74173e8170f8ce4291f82206202c58b9
+  description: interval branch-and-bound certificate of A
+- path: packing/campaign/explorations/X048-session-168-pilots/certificates/A/df5b0420c4e9672b503c0a8593fd46601672a0015960c4699e85a9f1c31708fe.json.gz
+  asset: df5b0420c4e9672b503c0a8593fd46601672a0015960c4699e85a9f1c31708fe.json.gz
+  size: 568261
+  sha256: 859808aa5b1490094b6375fef3668d194686f5d37bbc2494cb7eaacc0b75a7be
+  description: interval branch-and-bound certificate of A
+- path: packing/campaign/explorations/X048-session-168-pilots/certificates/A/e0c888668282824156897c430ba94a166181998b1c8e7e5224cf5445ffa80aab.json.gz
+  asset: e0c888668282824156897c430ba94a166181998b1c8e7e5224cf5445ffa80aab.json.gz
+  size: 748114
+  sha256: ad076f516f94a66b31ba01297ef70a97e4ec89d0f4faee0b76930caab32be840
+  description: interval branch-and-bound certificate of A
+- path: packing/campaign/explorations/X048-session-168-pilots/certificates/A/e26d0edab13996743a9a5729937c8b5401a3ef95e8896ef1c9bca8a0c02ae520.json.gz
+  asset: e26d0edab13996743a9a5729937c8b5401a3ef95e8896ef1c9bca8a0c02ae520.json.gz
+  size: 888620
+  sha256: 8277b23cd8e213f29e64c506bc2c067e56b8d2352ad197ae451a9a10ec0c8657
+  description: interval branch-and-bound certificate of A
+- path: packing/campaign/explorations/X048-session-168-pilots/certificates/A/e52faa5e15d47ed7fbb61d5dd4f70272a70f3a31a33c621d131fc577624c1bd5.json.gz
+  asset: e52faa5e15d47ed7fbb61d5dd4f70272a70f3a31a33c621d131fc577624c1bd5.json.gz
+  size: 779042
+  sha256: 00368d35198d92a2f52ef818fcb83ca7f635f02c59fdb0cd25e6fb6ffeb7352b
+  description: interval branch-and-bound certificate of A
+- path: packing/campaign/explorations/X048-session-168-pilots/certificates/A/efbc33f788b0a25873e831e6b2e61063713ce5952ae6049422bf9b85d3da230d.json.gz
+  asset: efbc33f788b0a25873e831e6b2e61063713ce5952ae6049422bf9b85d3da230d.json.gz
+  size: 547450
+  sha256: 3b72051de5f81ffdc50018aeb83c228f4c08c3164802c14b56fbade91da1b81d
+  description: interval branch-and-bound certificate of A
+- path: packing/campaign/explorations/X048-session-168-pilots/certificates/A/f6a3c552ebc37bbd2eda05c01b24e704552440a6053e1de986b12d401474a9e2.json.gz
+  asset: f6a3c552ebc37bbd2eda05c01b24e704552440a6053e1de986b12d401474a9e2.json.gz
+  size: 611988
+  sha256: 18e1cac9c07a609c7f20bb4b6a49144c1bcdd2bca2dd662923307ae4a5f3fac2
+  description: interval branch-and-bound certificate of A
+- path: packing/campaign/explorations/X048-session-168-pilots/certificates/A/f992f70bd6135a22f415fb8d91721b97d5a522faf63161af77178d90904d46c7.json.gz
+  asset: f992f70bd6135a22f415fb8d91721b97d5a522faf63161af77178d90904d46c7.json.gz
+  size: 704759
+  sha256: f93df47789e123f3cb691d06f29300bb8667d06f9b7b7a1a32b0fa226ac095ad
+  description: interval branch-and-bound certificate of A
+- path: packing/campaign/explorations/X048-session-168-pilots/certificates/A/ff9c2774b055435a80fe70b5eb033b7a3114fab806f012d587134effffab2173.json.gz
+  asset: ff9c2774b055435a80fe70b5eb033b7a3114fab806f012d587134effffab2173.json.gz
+  size: 757362
+  sha256: 6667d23ed517abc37c6a4e57efe9d8caeb3985a52f1bf1a0d5d8872d2ea53f56
+  description: interval branch-and-bound certificate of A
+- path: packing/campaign/explorations/X048-session-168-pilots/certificates/N1-state-pending/node-27050bae8f0b826a04bd6aa7045dab89e15dea0aea502306eceb328d5e000299.json.gz
+  asset: node-27050bae8f0b826a04bd6aa7045dab89e15dea0aea502306eceb328d5e000299.json.gz
+  size: 26064663
+  sha256: 6cff3cff4460bc4b04949a262e678d0c3ed5f442c3010171b208a7a3aa71cd39
+  description: kernel certificate of residue state N1
+- path: packing/campaign/explorations/X048-session-168-pilots/certificates/N1-state-pending/seed-f5aef9232d2814b0466b9ee28348d0a297453865d47508421d8e717644210b51.json.gz
+  asset: seed-f5aef9232d2814b0466b9ee28348d0a297453865d47508421d8e717644210b51.json.gz
+  size: 10809
+  sha256: 951a8463ce8fddc40fd81c888df21658c0ef23735f784f49c1cc10a423e75795
+  description: kernel certificate of residue state N1
+- path: packing/campaign/explorations/X048-session-168-pilots/certificates/W7/node-2d516d00ab3bd989ab1d90e531c626589d819ab3753bff6ed83221590b4523ca.json.gz
+  asset: node-2d516d00ab3bd989ab1d90e531c626589d819ab3753bff6ed83221590b4523ca.json.gz
+  size: 16200330
+  sha256: a612b377ef093691fe9d6662e7dc65e130a05f077f784d2ab2c3c384bde53dcb
+  description: kernel certificate of W7
+- path: packing/campaign/explorations/X048-session-168-pilots/certificates/W7/seed-8949a798f00bb376d9520fda8eb71146973905c75977173bede6aa81e0500782.json.gz
+  asset: seed-8949a798f00bb376d9520fda8eb71146973905c75977173bede6aa81e0500782.json.gz
+  size: 8886
+  sha256: 23a8d3e7c557906acac67bfd0958706dd793961a7493a381b63bb0eba7bb7f2d
+  description: kernel certificate of W7
+- path: packing/campaign/explorations/X048-session-168-pilots/certificates/flag3-a9-pending/node-19cb96810c2b7f41b83dd93f0f52277d7296f8ca91f9374fbf8f2bab2f83df42.json.gz
+  asset: node-19cb96810c2b7f41b83dd93f0f52277d7296f8ca91f9374fbf8f2bab2f83df42.json.gz
+  size: 14630217
+  sha256: d33a399651c7325df87fddddfac31884f5af6983b9a4db49bc52b60b57340d66
+  description: kernel certificate of SW9 (flag 3)
+- path: packing/campaign/explorations/X048-session-168-pilots/certificates/flag3-a9-pending/seed-93954a4ddf6a56149d87089088e17279c7c7ccc08abd2ca834106f5d10f9b1d1.json.gz
+  asset: seed-93954a4ddf6a56149d87089088e17279c7c7ccc08abd2ca834106f5d10f9b1d1.json.gz
+  size: 11089
+  sha256: 2be309cd4f28038ac5362a49d6041305ac48e3285b7410a60e9a0ccae2c949bd
+  description: kernel certificate of SW9 (flag 3)
+- path: packing/campaign/explorations/X048-session-168-pilots/certificates/s182-bc425-t1/node-816da3599236c1a83645ef1ef160af7c9237172a6b31504775a54e9c33d471cd.json.gz
+  asset: node-816da3599236c1a83645ef1ef160af7c9237172a6b31504775a54e9c33d471cd.json.gz
+  size: 27848551
+  sha256: 7a6a87453a7380cd8c7c50fb57d57d5a39f1d3a64217fd69ccd42950b33ae415
+  description: kernel certificate of s182-bc425-t1 (session 182, BC-425 lane K second tranche, H-267)
+- path: packing/campaign/explorations/X048-session-168-pilots/certificates/s182-bc425-t1/seed-860440b9c5bf0756eba87c31c105af538ab4a9ff270b04a7c65f13cd57cee566.json.gz
+  asset: seed-860440b9c5bf0756eba87c31c105af538ab4a9ff270b04a7c65f13cd57cee566.json.gz
+  size: 9541
+  sha256: 818454ac209ec635118a249d59b20d313c2dad2e01eb62cc00c4d547792395dd
+  description: kernel certificate of s182-bc425-t1 (session 182, BC-425 lane K second tranche, H-267)
+- path: packing/campaign/explorations/X048-session-168-pilots/certificates/s182-bc425-t10/node-cf06e27a0ff7e5ac82048b4a7d8d6f4e39968bb0a1c154083dc5ee4f582cbde1.json.gz
+  asset: node-cf06e27a0ff7e5ac82048b4a7d8d6f4e39968bb0a1c154083dc5ee4f582cbde1.json.gz
+  size: 20676634
+  sha256: 1396d2f13b5f103a11ab904fb6c86f9a6123f72b4865ba5232ca607173f52e4d
+  description: kernel certificate of s182-bc425-t10 (session 182, BC-425 lane K second tranche, H-267)
+- path: packing/campaign/explorations/X048-session-168-pilots/certificates/s182-bc425-t10/seed-55f8972c6a3b3a79cfd2e30c97e6b457083cc7aec54e135495de411317d0a90a.json.gz
+  asset: seed-55f8972c6a3b3a79cfd2e30c97e6b457083cc7aec54e135495de411317d0a90a.json.gz
+  size: 8114
+  sha256: 397545d81b58e59305e666669f7fbd3d83d9826cd3cf2e11f5bf9d8604d17ab6
+  description: kernel certificate of s182-bc425-t10 (session 182, BC-425 lane K second tranche, H-267)
+- path: packing/campaign/explorations/X048-session-168-pilots/certificates/s182-bc425-t2/node-efa84000c4e7a83a2781654a769401eb5de5fa6585cb60f9b79278bcd2c5dbaa.json.gz
+  asset: node-efa84000c4e7a83a2781654a769401eb5de5fa6585cb60f9b79278bcd2c5dbaa.json.gz
+  size: 35094204
+  sha256: 996913e9fcd3c27a9f5c559514281f3e244d8661556f956bacf7d7a98f1ba621
+  description: kernel certificate of s182-bc425-t2 (session 182, BC-425 lane K second tranche, H-267)
+- path: packing/campaign/explorations/X048-session-168-pilots/certificates/s182-bc425-t2/seed-65d94b2e6c090e9e9d982d3bf980b825bdfacf467492fa144f1a5b4f00366d20.json.gz
+  asset: seed-65d94b2e6c090e9e9d982d3bf980b825bdfacf467492fa144f1a5b4f00366d20.json.gz
+  size: 9389
+  sha256: fa09bf395565d326a245f0765de540622bf8607b6ec35cc03f830d5eaa19b157
+  description: kernel certificate of s182-bc425-t2 (session 182, BC-425 lane K second tranche, H-267)
+- path: packing/campaign/explorations/X048-session-168-pilots/certificates/s182-bc425-t4/node-a52b9f4442e6cf130822ef86bbeefce459ccf3b35decd9c53231db6c85c2985b.json.gz
+  asset: node-a52b9f4442e6cf130822ef86bbeefce459ccf3b35decd9c53231db6c85c2985b.json.gz
+  size: 21198024
+  sha256: 163879958654bc93afe471ed6bd66878526d41875edf57f8ce19079ea661a737
+  description: kernel certificate of s182-bc425-t4 (session 182, BC-425 lane K second tranche, H-267)
+- path: packing/campaign/explorations/X048-session-168-pilots/certificates/s182-bc425-t4/seed-16b445d615f406f87dfc08778b53a406de023007ae94166abc86c5a618e4343e.json.gz
+  asset: seed-16b445d615f406f87dfc08778b53a406de023007ae94166abc86c5a618e4343e.json.gz
+  size: 9655
+  sha256: 63a890ff814abee94cea6800ff1868384a8f24a70b01dd6bf41da140adad99fb
+  description: kernel certificate of s182-bc425-t4 (session 182, BC-425 lane K second tranche, H-267)
+- path: packing/campaign/explorations/X048-session-168-pilots/certificates/s182-bc425-t5/node-b8248fa8cf569f23445f67f96664069d233be380fa80d9e6105d232d65b5d696.json.gz
+  asset: node-b8248fa8cf569f23445f67f96664069d233be380fa80d9e6105d232d65b5d696.json.gz
+  size: 14451915
+  sha256: 976116386f58b91a654069297cf1d6f9bff77b866f48a7a99f15bcdf9f078954
+  description: kernel certificate of s182-bc425-t5 (session 182, BC-425 lane K second tranche, H-267)
+- path: packing/campaign/explorations/X048-session-168-pilots/certificates/s182-bc425-t5/seed-28ef157a52837f865012758423b7e1c8f9929dcaa7d7938de8325a6b4bd73af9.json.gz
+  asset: seed-28ef157a52837f865012758423b7e1c8f9929dcaa7d7938de8325a6b4bd73af9.json.gz
+  size: 8553
+  sha256: 17c8ae90308bebb53e44812e75cb086f93151eb7099cb5a422f26be5287b94b7
+  description: kernel certificate of s182-bc425-t5 (session 182, BC-425 lane K second tranche, H-267)
+- path: packing/campaign/explorations/X048-session-168-pilots/certificates/s182-bc425-t7/node-969adaceea52edd9ac8b25878854da8a0b06a58da43dc11e597df7a31706fc8f.json.gz
+  asset: node-969adaceea52edd9ac8b25878854da8a0b06a58da43dc11e597df7a31706fc8f.json.gz
+  size: 16289388
+  sha256: 9cbc66e8ebc749cead958b82f4f71d579d930ccf839a309b474f87273af876b6
+  description: kernel certificate of s182-bc425-t7 (session 182, BC-425 lane K second tranche, H-267)
+- path: packing/campaign/explorations/X048-session-168-pilots/certificates/s182-bc425-t7/seed-b99c594cc310eb8c121468c12e725b688026cc7c0d0eb977dd56dfef61971d0b.json.gz
+  asset: seed-b99c594cc310eb8c121468c12e725b688026cc7c0d0eb977dd56dfef61971d0b.json.gz
+  size: 9880
+  sha256: b192376885d9dac0b7f2518196c419bf21156c9a7c071da189d66c158a7d1ff2
+  description: kernel certificate of s182-bc425-t7 (session 182, BC-425 lane K second tranche, H-267)
+- path: packing/campaign/explorations/X048-session-168-pilots/certificates/s182-bc425-t8/node-1e4f1513f30a42e016aed05891bc29e1b94773734112e0d0d1d03d21d2fe0f23.json.gz
+  asset: node-1e4f1513f30a42e016aed05891bc29e1b94773734112e0d0d1d03d21d2fe0f23.json.gz
+  size: 31667320
+  sha256: 3be17ce343b446ab14340288e127b9babea08e91334a7ea6aa3e3f6babf2c033
+  description: kernel certificate of s182-bc425-t8 (session 182, BC-425 lane K second tranche, H-267)
+- path: packing/campaign/explorations/X048-session-168-pilots/certificates/s182-bc425-t8/seed-86a3a93689f1ec088a145f89d9d3a46d91e1de1ba18a39dda757a1cc50e5183e.json.gz
+  asset: seed-86a3a93689f1ec088a145f89d9d3a46d91e1de1ba18a39dda757a1cc50e5183e.json.gz
+  size: 9340
+  sha256: 22e626021193e14e8752909f49d539d61e6376e7aa60f6bce849f9255e8dcc5c
+  description: kernel certificate of s182-bc425-t8 (session 182, BC-425 lane K second tranche, H-267)
+- path: packing/campaign/explorations/X048-session-168-pilots/certificates/s182-bc425-t9/node-ec6a74f4fc4a5cb0c21a326bda32bf07b92e3afc51cdab5e52f8daaeb795442b.json.gz
+  asset: node-ec6a74f4fc4a5cb0c21a326bda32bf07b92e3afc51cdab5e52f8daaeb795442b.json.gz
+  size: 31537351
+  sha256: 43ff857677eadba6cf7913fffdb1ee801106027d901c1b28d3b44cdad1a432eb
+  description: kernel certificate of s182-bc425-t9 (session 182, BC-425 lane K second tranche, H-267)
+- path: packing/campaign/explorations/X048-session-168-pilots/certificates/s182-bc425-t9/seed-bea12f9c7e27014834aec1a8769741f23f415cac53cc9e5fd97ddb6a10dd77bf.json.gz
+  asset: seed-bea12f9c7e27014834aec1a8769741f23f415cac53cc9e5fd97ddb6a10dd77bf.json.gz
+  size: 8881
+  sha256: 17ace238d5d0fb72f2c31bf66c09fa2b36e235e2affa9296cdc3c9ab026348d0
+  description: kernel certificate of s182-bc425-t9 (session 182, BC-425 lane K second tranche, H-267)
+- path: packing/campaign/explorations/X048-session-168-pilots/certificates/s182-bc427-t4/node-c75f9bdb597a2097f77c67f03eaef07067cb50bcbcaf3df8c388674af62ecd7c.json.gz
+  asset: node-c75f9bdb597a2097f77c67f03eaef07067cb50bcbcaf3df8c388674af62ecd7c.json.gz
+  size: 6422571
+  sha256: 8976b2e335768205b11f4363b8c8f9f725e562d963f6139f7291f663df6637eb
+  description: kernel certificate of s182-bc427-t4 (session 182, BC-427 lane K third tranche, H-267)
+- path: packing/campaign/explorations/X048-session-168-pilots/certificates/s182-bc427-t4/seed-cdb978b51c06a8f0b242be1f0f2993162669ec3a4721296d42bf3ee8527d873d.json.gz
+  asset: seed-cdb978b51c06a8f0b242be1f0f2993162669ec3a4721296d42bf3ee8527d873d.json.gz
+  size: 6348
+  sha256: f9904f4bdeb84e26892ab900e594eca2d7b9932a6250a13d586e54be5811603d
+  description: kernel certificate of s182-bc427-t4 (session 182, BC-427 lane K third tranche, H-267)
+- path: packing/campaign/explorations/X048-session-168-pilots/certificates/s182-bc427-t6/node-f863b2d7014bd0342697f99c8695ca9ca124c20e0c94e38d7747c5a564a10629.json.gz
+  asset: node-f863b2d7014bd0342697f99c8695ca9ca124c20e0c94e38d7747c5a564a10629.json.gz
+  size: 9490016
+  sha256: 05f3de4ba099003d2f1caa94daacb34c1dc72a58d3185011512f46423071a78e
+  description: kernel certificate of s182-bc427-t6 (session 182, BC-427 lane K third tranche, H-267)
+- path: packing/campaign/explorations/X048-session-168-pilots/certificates/s182-bc427-t6/seed-ecd9af7ad84f8e487d6b0d81d09d4db65710b196bcd19fc2735d4760dcaa7b9e.json.gz
+  asset: seed-ecd9af7ad84f8e487d6b0d81d09d4db65710b196bcd19fc2735d4760dcaa7b9e.json.gz
+  size: 6427
+  sha256: 604d9ade51532994bb806661b2e45b9c8a50dd1578c1fc23d363cce8bb522df6
+  description: kernel certificate of s182-bc427-t6 (session 182, BC-427 lane K third tranche, H-267)
+- path: packing/campaign/explorations/X048-session-168-pilots/certificates/s182-bc428-u2/node-02f97a79b9d237d245d4f6b3d8f2936f130367a399a0a6d170298a488ed279fe.json.gz
+  asset: node-02f97a79b9d237d245d4f6b3d8f2936f130367a399a0a6d170298a488ed279fe.json.gz
+  size: 49936573
+  sha256: adba6ea16791b8c98b07e6d9f56197b817b6c585f25b79c23563792d755ba658
+  description: kernel certificate of s182-bc428-u2 (session 182, BC-428 unsampled-stratum state, H-275)
+- path: packing/campaign/explorations/X048-session-168-pilots/certificates/s182-bc428-u2/seed-413f21229ca68c29b1f771be6925a91c3166abc1b79cfd18a69724e5f7a13e05.json.gz
+  asset: seed-413f21229ca68c29b1f771be6925a91c3166abc1b79cfd18a69724e5f7a13e05.json.gz
+  size: 21601
+  sha256: 6e9b73a435bb182e59f5b1735c52a5087d86f117d9ed51f7f27f66dd27601d34
+  description: kernel certificate of s182-bc428-u2 (session 182, BC-428 unsampled-stratum state, H-275)
+- path: packing/campaign/explorations/X048-session-168-pilots/certificates/s182-bc428-u3/node-08c0e1c7314d36f2f94e15d984c169e6b7dd9168b80b5d6f88966978f32cb377.json.gz
+  asset: node-08c0e1c7314d36f2f94e15d984c169e6b7dd9168b80b5d6f88966978f32cb377.json.gz
+  size: 51857688
+  sha256: 1d77a709836a2a60a4071d7d9725b3cb6394827a3a259fc21e7b95218595c828
+  description: kernel certificate of s182-bc428-u3 (session 182, BC-428 unsampled-stratum state, H-275)
+- path: packing/campaign/explorations/X048-session-168-pilots/certificates/s182-bc428-u3/seed-166e71d8fc8f5db8f4c4745a7b1a7968cbd09698b90e7070854873b74938eaae.json.gz
+  asset: seed-166e71d8fc8f5db8f4c4745a7b1a7968cbd09698b90e7070854873b74938eaae.json.gz
+  size: 23767
+  sha256: 1b3c744641ad1bc6290c2959a74ce9a378ae3022dcadf91da936e83ecfc8fc9f
+  description: kernel certificate of s182-bc428-u3 (session 182, BC-428 unsampled-stratum state, H-275)
+- path: packing/campaign/explorations/X048-session-168-pilots/certificates/s182-bc428-u4/node-52b5ba27b3ecc01ff43167e2b2bed30b087ce5eb70d80dee71f6ea3f5c197a05.json.gz
+  asset: node-52b5ba27b3ecc01ff43167e2b2bed30b087ce5eb70d80dee71f6ea3f5c197a05.json.gz
+  size: 32723928
+  sha256: 01112b3a910cb335f02d4688c612b5e258ebbeb6e63958255d9fdcc86303ff94
+  description: kernel certificate of s182-bc428-u4 (session 182, BC-428 unsampled-stratum state, H-275)
+- path: packing/campaign/explorations/X048-session-168-pilots/certificates/s182-bc428-u4/seed-a845f83e4baee67ccaaeb0bac62a8dc9b7320fb10757fdfd9b7a9dd3407ad6d2.json.gz
+  asset: seed-a845f83e4baee67ccaaeb0bac62a8dc9b7320fb10757fdfd9b7a9dd3407ad6d2.json.gz
+  size: 21853
+  sha256: fe5fa73d4c37e82d67a96d29714fa3021a58422e78c0c8af07bf37eff17c968b
+  description: kernel certificate of s182-bc428-u4 (session 182, BC-428 unsampled-stratum state, H-275)
+- path: packing/campaign/explorations/X048-session-168-pilots/certificates/s182-bc428-u5/node-59dbfdbf65b5d8e157801c27afb30e7e0a0fed1196a8e986509a6cbd6032fddc.json.gz
+  asset: node-59dbfdbf65b5d8e157801c27afb30e7e0a0fed1196a8e986509a6cbd6032fddc.json.gz
+  size: 48832403
+  sha256: 0221c0b6992d8342d10412bae7f9447f2db5f8e09fcd4289db0006573de7463f
+  description: kernel certificate of s182-bc428-u5 (session 182, BC-428 unsampled-stratum state, H-275)
+- path: packing/campaign/explorations/X048-session-168-pilots/certificates/s182-bc428-u5/seed-09e419c0baa8a175eaaa2843441c0acb2f3fc06e85d24a9ef1122cf57006be80.json.gz
+  asset: seed-09e419c0baa8a175eaaa2843441c0acb2f3fc06e85d24a9ef1122cf57006be80.json.gz
+  size: 21573
+  sha256: 43b11df70910d29076ebf6d690057f584c6373504798a5405c61877831739ac9
+  description: kernel certificate of s182-bc428-u5 (session 182, BC-428 unsampled-stratum state, H-275)
+- path: packing/campaign/explorations/X048-session-168-pilots/certificates/s182-k1/node-98540adf15fc966b0c389adeef310fffe7e1be2fc2c010ae91a2d22824881199.json.gz
+  asset: node-98540adf15fc966b0c389adeef310fffe7e1be2fc2c010ae91a2d22824881199.json.gz
+  size: 9705863
+  sha256: e34197deb0e34b25e1f53131b953edb52c25573376401308f04db1fed5443d22
+  description: kernel certificate of s182-k1 (session 182, lane K target 1)
+- path: packing/campaign/explorations/X048-session-168-pilots/certificates/s182-k1/seed-f8d0172d226ff486ac8348726192efe50700560da532ea9123705cf09ff370af.json.gz
+  asset: seed-f8d0172d226ff486ac8348726192efe50700560da532ea9123705cf09ff370af.json.gz
+  size: 7889
+  sha256: c5729d2f94d9152dad01d797f7a4eaa463472bdce779413b0b3c4cc2a74fbcbf
+  description: kernel certificate of s182-k1 (session 182, lane K target 1)
+- path: packing/campaign/explorations/X048-session-168-pilots/certificates/s182-k3/node-7b2496f5853e22328b69ed9f53b41aa951442aef5d0356c1e318aaca114472b5.json.gz
+  asset: node-7b2496f5853e22328b69ed9f53b41aa951442aef5d0356c1e318aaca114472b5.json.gz
+  size: 6586259
+  sha256: 79c5f854280c348a4bee63a005aac3ff61dd09009511d5bb67e5cc4f755f0b2e
+  description: kernel certificate of s182-k3 (session 182, lane K target 3)
+- path: packing/campaign/explorations/X048-session-168-pilots/certificates/s182-k3/seed-e8c61d26ff08ab72425877a5fe54d0e382924875ca429679f4f43d8cc6e54a0a.json.gz
+  asset: seed-e8c61d26ff08ab72425877a5fe54d0e382924875ca429679f4f43d8cc6e54a0a.json.gz
+  size: 8329
+  sha256: 34b4ca69a1f69e832c53cb4e2ef4764af7a94b89bcd0d47b5419ab54d1360697
+  description: kernel certificate of s182-k3 (session 182, lane K target 3)
+- path: packing/campaign/explorations/X048-session-168-pilots/certificates/s182-k4/node-262872026b1ef3f66519ac28ed57282d2379c5cc1d30dda63ff3ec954973decb.json.gz
+  asset: node-262872026b1ef3f66519ac28ed57282d2379c5cc1d30dda63ff3ec954973decb.json.gz
+  size: 17175229
+  sha256: f15da8fa69d016f2dce89f938b67a420a1c80b4d1397de4ca93cf507aa2d25f7
+  description: kernel certificate of s182-k4 (session 182, lane K target 4)
+- path: packing/campaign/explorations/X048-session-168-pilots/certificates/s182-k4/seed-86c954d5f78a7ece88e162a5e68492748e6c5756b2833df054324a2a2fe887da.json.gz
+  asset: seed-86c954d5f78a7ece88e162a5e68492748e6c5756b2833df054324a2a2fe887da.json.gz
+  size: 7697
+  sha256: 5b54ee927cd9cd31ffd9f0760d57e3858b661128fd034a108e0ae1658a541b01
+  description: kernel certificate of s182-k4 (session 182, lane K target 4)
+- path: packing/campaign/explorations/X048-session-168-pilots/certificates/s182-k5/node-394139149a97cf49b2c662159d47d0a17ffc0e225d5951dce787d7e47c091ac5.json.gz
+  asset: node-394139149a97cf49b2c662159d47d0a17ffc0e225d5951dce787d7e47c091ac5.json.gz
+  size: 8177365
+  sha256: e0d8502fb91f6219a82fb0cef662baf8bb7e8f91afb2689a66c288aa9d42870b
+  description: kernel certificate of s182-k5 (session 182, lane K target 5)
+- path: packing/campaign/explorations/X048-session-168-pilots/certificates/s182-k5/seed-142a716b49f3e9491db73e43452ded24514ddb6f9e85397c51ba9bfa696b0d27.json.gz
+  asset: seed-142a716b49f3e9491db73e43452ded24514ddb6f9e85397c51ba9bfa696b0d27.json.gz
+  size: 8008
+  sha256: c1931500d3c17f1ab9f91d632f0353f48ca618167e1fcfd421cfad1bdafbb38e
+  description: kernel certificate of s182-k5 (session 182, lane K target 5)
+- path: packing/campaign/explorations/X048-session-168-pilots/certificates/s182-k6/node-b6b1368e34dd8b2e3d889826b1fab0578ae78d66e1b5e282f026c0431b89cca7.json.gz
+  asset: node-b6b1368e34dd8b2e3d889826b1fab0578ae78d66e1b5e282f026c0431b89cca7.json.gz
+  size: 9241926
+  sha256: 9c6a379d97befa654475c947c6ee6129208b41b55293df23962472d7133daf31
+  description: kernel certificate of s182-k6 (session 182, lane K target 6)
+- path: packing/campaign/explorations/X048-session-168-pilots/certificates/s182-k6/seed-cc0020ff51051c78877aae17fa19cc79a1557ae660d9ad34e16008d3ad8daf9c.json.gz
+  asset: seed-cc0020ff51051c78877aae17fa19cc79a1557ae660d9ad34e16008d3ad8daf9c.json.gz
+  size: 7515
+  sha256: 4e1a7d167dc19e7ec3c71f4116f6dcb3b61c255b7fd97579a6da3866a05f20c9
+  description: kernel certificate of s182-k6 (session 182, lane K target 6)
+- path: packing/campaign/explorations/X048-session-168-pilots/certificates/s182-k7/node-07a7e9bb69c3e0aaf7203c0657fd520441114ecf6813ba826817eedea61a7efb.json.gz
+  asset: node-07a7e9bb69c3e0aaf7203c0657fd520441114ecf6813ba826817eedea61a7efb.json.gz
+  size: 9354292
+  sha256: 10cc8f23d12d3ef86deaf4d2586fd1d8bb82ce4029d120ca1cdc214c67d67169
+  description: kernel certificate of s182-k7 (session 182, lane K target 7)
+- path: packing/campaign/explorations/X048-session-168-pilots/certificates/s182-k7/seed-6e13ead2001f9daf6d8100582abd17ffe2cc5056d3beec7524611ec77f3517f4.json.gz
+  asset: seed-6e13ead2001f9daf6d8100582abd17ffe2cc5056d3beec7524611ec77f3517f4.json.gz
+  size: 7609
+  sha256: 9af193c6108627c3d0d6642d943c88cf63bee3a50d049ee9690364b81538f9c0
+  description: kernel certificate of s182-k7 (session 182, lane K target 7)
+- path: packing/campaign/explorations/X048-session-168-pilots/certificates/s182-k8/node-9e5d7edfb1dca5ae33b2bd721a69ca15181451bb04ca11b23000e159c3532090.json.gz
+  asset: node-9e5d7edfb1dca5ae33b2bd721a69ca15181451bb04ca11b23000e159c3532090.json.gz
+  size: 5246613
+  sha256: 344a87be12bf62f5e89797f21c85c7b66d077d83a106edbf46e592a06ac6bf61
+  description: kernel certificate of s182-k8 (session 182, lane K target 8)
+- path: packing/campaign/explorations/X048-session-168-pilots/certificates/s182-k8/seed-00d6ec4d6ffd89ce604dce25cf0fd2e0c77d8dcf2cf5f4b4caa9af123c79556d.json.gz
+  asset: seed-00d6ec4d6ffd89ce604dce25cf0fd2e0c77d8dcf2cf5f4b4caa9af123c79556d.json.gz
+  size: 8253
+  sha256: db48037128ba0fecaca780a2daf11c922523cb6ea8f79066ad4663c5b63ed229
+  description: kernel certificate of s182-k8 (session 182, lane K target 8)
+- path: packing/campaign/explorations/X048-session-168-pilots/certificates/s182-k9/node-0baff2df89793d4ea57d890a76146f0348096d33ec0e23ce080efcd6b2fc6493.json.gz
+  asset: node-0baff2df89793d4ea57d890a76146f0348096d33ec0e23ce080efcd6b2fc6493.json.gz
+  size: 23442284
+  sha256: 4500a1a04d71dfa1c4eab3369f443935eee14b6da1d20277352d6b5636127b38
+  description: kernel certificate of s182-k9 (session 182, lane K target 9)
+- path: packing/campaign/explorations/X048-session-168-pilots/certificates/s182-k9/seed-2aeeb1c1f256807d43189e4dd7c5d0a64da148cb97238ded66f2358713368fc3.json.gz
+  asset: seed-2aeeb1c1f256807d43189e4dd7c5d0a64da148cb97238ded66f2358713368fc3.json.gz
+  size: 8026
+  sha256: 2a1c5fac37a84c67afb89da2816a496171e82b26375193fa9af21fd2a50b2cb9
+  description: kernel certificate of s182-k9 (session 182, lane K target 9)
+- path: packing/campaign/explorations/X048-session-168-pilots/certificates/s182-m2601983/node-028cbaa33cd4399875ef725b3930c0fc7db26a441bc1fbb5236fc55f7c0ad218.json.gz
+  asset: node-028cbaa33cd4399875ef725b3930c0fc7db26a441bc1fbb5236fc55f7c0ad218.json.gz
+  size: 15695295
+  sha256: 9338bd05cf4fc40f11fd2e5fc3d210dba666a3a2e953a82cc8132618cdf76964
+  description: kernel certificate of s182-m2601983 (session 182, lane A residue state, H-264)
+- path: packing/campaign/explorations/X048-session-168-pilots/certificates/s182-m2601983/seed-79277ee2e46c007c685046a923889e03450e756eb455a7d09cc36a46524e7589.json.gz
+  asset: seed-79277ee2e46c007c685046a923889e03450e756eb455a7d09cc36a46524e7589.json.gz
+  size: 11191
+  sha256: 145ae8e0348da1e54d8fadc6e877be23eb33f784745c9182f74f54b2594ef685
+  description: kernel certificate of s182-m2601983 (session 182, lane A residue state, H-264)
+- path: packing/campaign/explorations/X048-session-168-pilots/certificates/s182-m2784767-sw9/node-8535f96194bf1b815a90d8bfe67c4172396dcc620af9b42f954f2f3cd997b8c8.json.gz
+  asset: node-8535f96194bf1b815a90d8bfe67c4172396dcc620af9b42f954f2f3cd997b8c8.json.gz
+  size: 64816662
+  sha256: b6962a3b2280fa580640ac6dd045757d41f52fa554007ca8a5dd34644a00680b
+  description: kernel certificate of s182-m2784767-sw9 (session 182, lane A stall under SW9's recipe,
+    H-274)
+- path: packing/campaign/explorations/X048-session-168-pilots/certificates/s182-m2784767-sw9/seed-d846dc01e1a6f71f1975419e29d03818e9f98deb3d68224c00c1847cdf46f32c.json.gz
+  asset: seed-d846dc01e1a6f71f1975419e29d03818e9f98deb3d68224c00c1847cdf46f32c.json.gz
+  size: 23646
+  sha256: 88ea4931158a328c7108d3341fdb4882628b21c317aacd87373365d6ceb4bdc2
+  description: kernel certificate of s182-m2784767-sw9 (session 182, lane A stall under SW9's recipe,
+    H-274)
+- path: packing/campaign/explorations/X048-session-168-pilots/certificates/s182-m2817021-sw9/node-aebb90bafb6fd539cb3d5ad94b665bce5f54f23a13da4889b5bce94eda84ac25.json.gz
+  asset: node-aebb90bafb6fd539cb3d5ad94b665bce5f54f23a13da4889b5bce94eda84ac25.json.gz
+  size: 83524099
+  sha256: 652e158d784f6b993e6e3ee9f2d4ccd0cfa251abecc8b2d584aec9fa1f347668
+  description: kernel certificate of s182-m2817021-sw9 (session 182, lane A stall under SW9's recipe,
+    H-274)
+- path: packing/campaign/explorations/X048-session-168-pilots/certificates/s182-m2817021-sw9/seed-b6ddc0846fc2af8226ffb60096cabf8b422e52892feacd9ba348c8752aac454f.json.gz
+  asset: seed-b6ddc0846fc2af8226ffb60096cabf8b422e52892feacd9ba348c8752aac454f.json.gz
+  size: 23708
+  sha256: 96ea765e21623fdec2536b701c26efe519f804890f557c77db0bbd53298804c6
+  description: kernel certificate of s182-m2817021-sw9 (session 182, lane A stall under SW9's recipe,
+    H-274)
+- path: packing/campaign/explorations/X048-session-168-pilots/certificates/s182-m2878207-sw9/node-7c035b2deb6828e3b52663cdd461839d2381d3580a698b1c706ff611e2b811c5.json.gz
+  asset: node-7c035b2deb6828e3b52663cdd461839d2381d3580a698b1c706ff611e2b811c5.json.gz
+  size: 40382717
+  sha256: 1d44da72ae18afa1460256e74200529ca667cf36c83e616ae6b0775737bf762c
+  description: kernel certificate of s182-m2878207-sw9 (session 182, lane A stall under SW9's recipe,
+    H-274)
+- path: packing/campaign/explorations/X048-session-168-pilots/certificates/s182-m2878207-sw9/seed-5d67b7217acc661969d626f205cde96bcc43359008c7b172bf6242863f8b341d.json.gz
+  asset: seed-5d67b7217acc661969d626f205cde96bcc43359008c7b172bf6242863f8b341d.json.gz
+  size: 22967
+  sha256: 97bbefa67fface846309a3d1b450ac571fe6e8fd5ffd9a68e48268e836a25bb1
+  description: kernel certificate of s182-m2878207-sw9 (session 182, lane A stall under SW9's recipe,
+    H-274)
+- path: packing/campaign/explorations/X048-session-168-pilots/certificates/s182-m3063677-sw9/node-ed786503936075264718549bf37458ad46bb11eb89f4afb73f9abff69a5fb746.json.gz
+  asset: node-ed786503936075264718549bf37458ad46bb11eb89f4afb73f9abff69a5fb746.json.gz
+  size: 103653991
+  sha256: 631b7232cd03346978f029ca3b7f0d99343a354cad835a06607dd42c7dec6e2a
+  description: kernel certificate of s182-m3063677-sw9 (session 182, lane A stall under SW9's recipe,
+    H-274)
+- path: packing/campaign/explorations/X048-session-168-pilots/certificates/s182-m3063677-sw9/seed-dc8c7938273300711facdaa4f99384c2bec0bfcbf03cb2c1395897a275983dcd.json.gz
+  asset: seed-dc8c7938273300711facdaa4f99384c2bec0bfcbf03cb2c1395897a275983dcd.json.gz
+  size: 22322
+  sha256: db3070dd07b4f3361fbe3a9dd4df5a9914a17e2eab8fa400ebe0f8c00400d217
+  description: kernel certificate of s182-m3063677-sw9 (session 182, lane A stall under SW9's recipe,
+    H-274)
+- path: packing/campaign/explorations/X048-session-168-pilots/certificates/s182-m4028335/node-dc6a4636a02c08d8d2c6692aa95757805497da04ffaa0ff6e675a58dcaa83442.json.gz
+  asset: node-dc6a4636a02c08d8d2c6692aa95757805497da04ffaa0ff6e675a58dcaa83442.json.gz
+  size: 21541509
+  sha256: aded98559b3fb180ca42abdc84adef9805f054598281347ce890f8abaa3b61f7
+  description: kernel certificate of s182-m4028335 (session 182, lane A residue state, H-264)
+- path: packing/campaign/explorations/X048-session-168-pilots/certificates/s182-m4028335/seed-035a414cea6d4568d0bf034857abaa25d909ac2dbf23efbcfff4a81f17e008ac.json.gz
+  asset: seed-035a414cea6d4568d0bf034857abaa25d909ac2dbf23efbcfff4a81f17e008ac.json.gz
+  size: 10884
+  sha256: f51743b10d3a4c5448d23af7654bf07616d464e1f273a2d5f1629b9c40be30e7
+  description: kernel certificate of s182-m4028335 (session 182, lane A residue state, H-264)
+- path: packing/campaign/explorations/X048-session-168-pilots/certificates/s182-m5500414/node-3e6452f6bac2eadb0b34d87f733dbac47c2d5c5d1bc117aad1a2bd02c669d16d.json.gz
+  asset: node-3e6452f6bac2eadb0b34d87f733dbac47c2d5c5d1bc117aad1a2bd02c669d16d.json.gz
+  size: 23273715
+  sha256: b795cbb2fe2c2ddf5b769cf39f0453957f50b7e54fa654726bc9d494ab48a377
+  description: kernel certificate of s182-m5500414 (session 182, lane A residue state, H-264)
+- path: packing/campaign/explorations/X048-session-168-pilots/certificates/s182-m5500414/seed-ff31e1dc9a8a8bd0cd196a811e60fcfe10a08e0767e8d219fce2df7516e77845.json.gz
+  asset: seed-ff31e1dc9a8a8bd0cd196a811e60fcfe10a08e0767e8d219fce2df7516e77845.json.gz
+  size: 11044
+  sha256: db1fe1dfa5ed2d0c1fbb16ac4a3c2b566438c4e925892944bea3634c70003538
+  description: kernel certificate of s182-m5500414 (session 182, lane A residue state, H-264)
+- path: packing/campaign/explorations/X048-session-168-pilots/certificates/s182-m5683195/node-59e605864e3301e3687e327f2547a9813921c9496409c75d493b62b1847cef29.json.gz
+  asset: node-59e605864e3301e3687e327f2547a9813921c9496409c75d493b62b1847cef29.json.gz
+  size: 30542844
+  sha256: 953b97dcb104d6ab0396c364be844aa44e762205245e0e3f1909bbe0f3538d43
+  description: kernel certificate of s182-m5683195 (session 182, lane A residue state, H-264)
+- path: packing/campaign/explorations/X048-session-168-pilots/certificates/s182-m5683195/seed-6fff8353c5bcae817dccc28ca49614567cfd424a211b8643bd9264898ea0e6ae.json.gz
+  asset: seed-6fff8353c5bcae817dccc28ca49614567cfd424a211b8643bd9264898ea0e6ae.json.gz
+  size: 10924
+  sha256: 54c70ae570676620be47db0da6936fa41910194059e9c369c292e4024a46b98d
+  description: kernel certificate of s182-m5683195 (session 182, lane A residue state, H-264)
+- path: packing/campaign/explorations/X048-session-168-pilots/certificates/s182-m7844815/node-331b0001113c3bf9ec209da357ffc70c26fc26ea0279fc57cec86274455ba6ba.json.gz
+  asset: node-331b0001113c3bf9ec209da357ffc70c26fc26ea0279fc57cec86274455ba6ba.json.gz
+  size: 15311252
+  sha256: 75a04b959b0e908527baae1717d4f72d799713091d26e50c5ea0e27d4077bc84
+  description: kernel certificate of s182-m7844815 (session 182, lane A residue state, H-264)
+- path: packing/campaign/explorations/X048-session-168-pilots/certificates/s182-m7844815/seed-9a67d320015504c595f5e3c1685f6205d0dea2599f6c3e67efcd3c484d612410.json.gz
+  asset: seed-9a67d320015504c595f5e3c1685f6205d0dea2599f6c3e67efcd3c484d612410.json.gz
+  size: 10767
+  sha256: 181c85ed26baa0fe550f6411ba359a0c408c2e16b7e687eb4f3095af8a236b4f
+  description: kernel certificate of s182-m7844815 (session 182, lane A residue state, H-264)

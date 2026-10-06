@@ -700,6 +700,28 @@ review. The detailed policy is in
 [development.md](development.md#hashes-and-repository-owned-artifacts) and
 `tbd guidelines general-coding-rules`.
 
+**Internal bookkeeping never costs a re-run, and the repository is not a trust boundary
+with itself.** Identify a retained result, a tool, a kernel or a verifier by the Git
+revision and repository-relative paths that produced it, never by a digest of its bytes.
+Reuse a checkpoint, receipt, cache or certificate whenever its content still checks;
+nothing refuses it because a file, a dependency, a lock or an interpreter has changed
+since it was written.
+Record that drift beside the result as information.
+Prove determinism with a small-instance test in the fast tier (same input, identical
+bytes), never by re-running a retained computation.
+A checksum earns its place only where three answers are written beside it: the boundary
+it crosses, where the independently supplied expected value comes from, and the failure
+it detects. A downloaded packet and an external checker at a revision qualify; Git
+ancestry does not, because under
+[OR-18](#or-18-keep-bulk-data-out-of-git-and-never-bind-code-or-verdicts-to-a-git-commit-or-blob)
+no program may need to resolve a cited revision; and a file the repository wrote does
+not. The owner set this on 2026-10-03, after a dependency change was priced at the 6,197
+s n11 native run and a kernel speedup with identical output sent a capture run back to
+round 0; the
+[integrity-ceremony audit](docs/project/reviews/review-2026-10-03-integrity-ceremony-audit.md)
+inventories every instance, and `devtools.check_integrity_ceremony` holds their count so
+it only falls.
+
 The owner requested this rule on 2026-09-06 after the PR #97 continuation added
 duplicate packet hashes and a checker-side manifest for files already tracked together
 in Git. `think-jyf4` tracks their removal.

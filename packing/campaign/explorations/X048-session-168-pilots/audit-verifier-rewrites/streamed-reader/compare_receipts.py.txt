@@ -1,0 +1,54 @@
+"""Compare a kernel verification receipt field for field with earlier receipts.
+
+Prints, for each earlier receipt, every top-level field and every count that differs from
+the new receipt's, and the fields only one of them has. `seconds` and the verifier's own
+identity (`provenance`, or `verifier_sha256` in receipts written before provenance) are
+expected to differ and are listed apart.
+
+Usage: python compare_receipts.py NEW.json OLD.json [OLD.json ...]
+"""
+
+from __future__ import annotations
+
+import json
+import sys
+from pathlib import Path
+from typing import Any
+
+IDENTITY = {"seconds", "provenance", "verifier_sha256"}
+
+
+def flatten(receipt: dict[str, Any]) -> dict[str, Any]:
+    out: dict[str, Any] = {}
+    for key, value in receipt.items():
+        if key == "counts" and isinstance(value, dict):
+            for name, count in value.items():
+                out[f"counts.{name}"] = count
+        else:
+            out[key] = value
+    return out
+
+
+def main() -> int:
+    new = flatten(json.loads(Path(sys.argv[1]).read_text()))
+    status = 0
+    for name in sys.argv[2:]:
+        old = flatten(json.loads(Path(name).read_text()))
+        shared = sorted((set(new) & set(old)) - IDENTITY)
+        differ = {key: (new[key], old[key]) for key in shared if new[key] != old[key]}
+        report = {
+            "new": sys.argv[1],
+            "old": name,
+            "fields_compared": len(shared),
+            "differ": differ,
+            "only_new": sorted(set(new) - set(old) - IDENTITY),
+            "only_old": sorted(set(old) - set(new) - IDENTITY),
+            "identity": {key: [new.get(key), old.get(key)] for key in sorted(IDENTITY)},
+        }
+        print(json.dumps(report, indent=1))
+        status |= bool(differ)
+    return status
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

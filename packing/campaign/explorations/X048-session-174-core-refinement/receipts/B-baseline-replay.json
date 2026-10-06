@@ -1,0 +1,16 @@
+{
+  "diagnostic_only": true,
+  "new_exclusions": 0,
+  "status": "PASS_REPLAYED_ALL_ROWS",
+  "supported_rows": 96,
+  "live_rows": 96,
+  "selections_checked": 79,
+  "fresh_pair_checks": 1185,
+  "all_rows_supported": true,
+  "unsupported_rows_independently_verified": false,
+  "input_identity": {"seed_sha256":"c548ed2ed62e6c84276aa7135c956610022874732f195c8c6706b020798282a6","node_sha256":"5d09ba6c6f5bf45fd35db979a1bac66d42034c622c1ffe9c415b9835cc5140b8","cold_receipt_sha256":"f00dbb6b69d8ffa6f2f7b2c26489a090ba49a1fff0b86bb7f951109398d68bec"},
+  "packet_sha256": "39df9dca3cfa95544d8cc5297f70fc37b34221d5d3078b50b2f274502c978e6c",
+  "wall_seconds": 0.4560291000525467,
+  "cpu_seconds": 0.453125,
+  "worker_peak_bytes": 153030656
+}

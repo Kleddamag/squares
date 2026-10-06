@@ -194,7 +194,10 @@ def test_no_exact_value_rests_on_t007_and_each_family_names_its_new_proof() -> N
             ["T-086"],
         )
         minus_one = by_n[k * k - 1]["operative_lower_bound"]
-        assert minus_one["evidence"] == ["E-karakus-strip-lower"]
+        assert minus_one["evidence"] == [
+            "E-karakus-strip-lower",
+            "E-karakus-strip-measure-interval",
+        ]
         assert "T-084" in minus_one["results"]
 
 

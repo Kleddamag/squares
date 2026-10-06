@@ -7867,11 +7867,15 @@ results:
       2005. It equals ceil(sqrt(N)) exactly at N = m^2 - 1, which is T-084, and is strictly
       below Nagamochi's Theorem 2, T-007, at every other nonsquare N.
 
-      The proof was read in full and re-derived here, and is not machine-checked. Hakan
-      Karakuş, [arXiv:2609.37410](https://arxiv.org/abs/2609.37410), 29 September 2026.
+      The proof was read in full and re-derived here. Its Proposition 5.1, the strip
+      measure's per-square bound on which the rectangle bound rests, is machine-checked
+      here, independently re-implemented: an exact branch and bound over the square's
+      orientation, side and cut height (devtools.check_karakus_strip_measure), by its own
+      decomposition rather than the paper's Lemma 5.2. Hakan Karakuş,
+      [arXiv:2609.37410](https://arxiv.org/abs/2609.37410), 29 September 2026.
     scope: {n_values: [8, 10, 11, 12, 13, 14, 15, 17, 18, 19, 20, 21, 22, 23, 24, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112, 113, 114, 115, 116, 117, 118, 119, 120, 122, 123, 124, 125, 126, 127, 128, 129, 130, 131, 132, 133, 134, 135, 136, 137, 138, 139, 140, 141, 142, 143, 145, 146, 147, 148, 149, 150, 151, 152, 153, 154, 155, 156, 157, 158, 159, 160, 161, 162, 163, 164, 165, 166, 167, 168, 170, 171, 172, 173, 174, 175, 176, 177, 178, 179, 180, 181, 182, 183, 184, 185, 186, 187, 188, 189, 190, 191, 192, 193, 194, 195, 197, 198, 199, 200, 201, 202, 203, 204, 205, 206, 207, 208, 209, 210, 211, 212, 213, 214, 215, 216, 217, 218, 219, 220, 221, 222, 223, 224, 226, 227, 228, 229, 230, 231, 232, 233, 234, 235, 236, 237, 238, 239, 240, 241, 242, 243, 244, 245, 246, 247, 248, 249, 250, 251, 252, 253, 254, 255, 257, 258, 259, 260, 261, 262, 263, 264, 265, 266, 267, 268, 269, 270, 271, 272, 273, 274, 275, 276, 277, 278, 279, 280, 281, 282, 283, 284, 285, 286, 287, 288, 290, 291, 292, 293, 294, 295, 296, 297, 298, 299, 300, 301, 302, 303, 304, 305, 306, 307, 308, 309, 310, 311, 312, 313, 314, 315, 316, 317, 318, 319, 320, 321, 322, 323]}
     verification: V3
-    confirmation: C1
+    confirmation: C3
     significance:
       score: 3
       rationale: >-
@@ -7888,16 +7892,53 @@ results:
       source_key: '[Nagamochi 2005]'
       result: T-007
       what: Lemma 1, on which Theorem 2's proof rests, is false
+    composition: >-
+      Derived. The load-bearing step, Proposition 5.1, is decided by
+      E-karakus-strip-measure-interval over the whole pose space; E-karakus-strip-lower is the
+      read of the whole proof. Read and not machine-checked: the chord profile (5.3), the
+      reduction of the measure of an open square to it, the case split by which strip lines
+      meet the square with its reflection and central symmetry, the soundness of the coded
+      rules (the review of 2026-10-06), Theorem 1.1's scale-and-sum, and Corollary 6.2's
+      step to s(N). Each is a fact of plane geometry, measure additivity or arithmetic that
+      estimates nothing over the pose space, so the derived rung is the machine check's.
+      Lemma 5.2 and the paper's three strip cases are not used and stay read.
     evidence:
       - E-karakus-strip-lower
+      - E-karakus-strip-measure-interval
     artifacts:
       - packing/resources/papers/karakus-2026-counterexample-nagamochi-scoring-lemma.pdf
       - packing/resources/papers/karakus-2026-counterexample-nagamochi-scoring-lemma.md
+      - packing/devtools/check_karakus_strip_measure.py
+      - packing/campaign/series/series-000-smoke-and-calibration/results/karakus-strip-measure/receipt.json
       - docs/project/reviews/review-2026-10-02-nagamochi-lemma1-karakus.md
+      - docs/project/reviews/review-2026-10-06-karakus-proposition-5-1-machine-check.md
+    controls:
+      - packing/tests/test_karakus_strip_measure.py
+    reviews:
+      - path: docs/project/reviews/review-2026-10-06-karakus-proposition-5-1-machine-check.md
+        kind: adversarial
+        reviewer: >-
+          AI agent (claude-opus-5-5, tbd-strong tier), a separately prompted lane sharing no
+          context with the lane that wrote the checker, at d7f2c6186
+        reviewer_kind: ai
+        relation: project
+        date: '2026-10-06'
+        scope: >-
+          devtools.check_karakus_strip_measure against Section 5 of Karakuş 2026: the
+          reduction of Proposition 5.1 to the two decided inequalities, every enclosure and
+          rule, the certificate's replay and the controls; an independent exact evaluator,
+          an exact adversarial search over 271,932 squares, every retained leaf sampled on
+          explicit squares, mutations of the measure, an analytic proof of the reduced
+          claim; and the rungs T-083 and T-084 may carry.
+        verdict: accepted
+        covers: [T-083, T-084]
     next_rung: >-
-      C2 and above need a replay: a machine check of Proposition 5.1, that every square of
-      side in (1, 1.01] gets more than one from the strip measure, over its three-parameter
-      pose space. A stronger floor at any n is a new result, not a rung change.
+      V4 and C4 need a second adversarial AI review of the machine check by a distinct
+      reviewer, and a human oversight record that checks its trust boundary, the meaning of
+      the decided inequalities against Proposition 5.1 and the reviews' findings; the review
+      of 2026-10-06 is the first. A second machine method, such as a formalization of
+      Proposition 5.1, would be recorded beside the rung. A stronger floor at any n is a new
+      result, not a rung change.
 
   - id: T-084
     kind: optimality
@@ -7916,11 +7957,13 @@ results:
       which that proof rests, is false (T-085), and Karakuş's proof uses neither that lemma
       nor the paper's technical lemmas.
 
-      The proof was read in full and re-derived here, and is not machine-checked. Hakan
-      Karakuş, [arXiv:2609.37410](https://arxiv.org/abs/2609.37410), 29 September 2026.
+      The proof was read in full and re-derived here. Its Proposition 5.1 is machine-checked
+      here, independently re-implemented (devtools.check_karakus_strip_measure), by its own
+      decomposition rather than the paper's Lemma 5.2. Hakan Karakuş,
+      [arXiv:2609.37410](https://arxiv.org/abs/2609.37410), 29 September 2026.
     scope: {n_values: [8, 15, 24, 35, 48, 63, 80, 99, 120, 143, 168, 195, 224, 255, 288, 323]}
     verification: V3
-    confirmation: C1
+    confirmation: C3
     significance:
       score: 3
       rationale: >-
@@ -7934,27 +7977,59 @@ results:
       source_keys: ['[Karakuş 2026]']
       published: '2026-09-29'
     composition: >-
-      Compound, and the minimum is set by the lower half. The upper half is the grid,
-      E-basic-grid-upper, replayed exactly here; the lower half is E-karakus-strip-lower,
-      Karakuş's published proof, read and re-derived here and not machine-checked. The
-      checker derives C3 from the grid's entry; this note is why the declared confirmation
-      is C1.
+      Compound, an equality. The upper half is the grid, E-basic-grid-upper, replayed exactly
+      here. The lower half is Corollary 6.1 at a = b = k >= 3, where Delta(k) = 1, and its
+      load-bearing step, Proposition 5.1, is decided by E-karakus-strip-measure-interval;
+      E-karakus-strip-lower is the read of the whole proof. Read and not machine-checked are
+      the chord profile (5.3), the reduction to it, the case split with its reflection and
+      central symmetry, the soundness of the coded rules (the review of 2026-10-06),
+      Theorem 1.1's scale-and-sum and Corollary 6.1's step to s(k^2 - 1) >= k, each of which
+      estimates nothing over the pose space. So the lower half is at the machine check's
+      rung, and the equality takes it.
     corrects:
       source_key: '[Nagamochi 2005]'
       result: T-007
       what: Lemma 1, on which Theorem 2's proof rests, is false
     evidence:
       - E-karakus-strip-lower
+      - E-karakus-strip-measure-interval
       - E-basic-grid-upper
     artifacts:
       - packing/resources/papers/karakus-2026-counterexample-nagamochi-scoring-lemma.pdf
       - packing/resources/papers/karakus-2026-counterexample-nagamochi-scoring-lemma.md
+      - packing/devtools/check_karakus_strip_measure.py
+      - packing/campaign/series/series-000-smoke-and-calibration/results/karakus-strip-measure/receipt.json
       - packing/devtools/check_basic_bounds.py
       - docs/project/reviews/review-2026-10-02-nagamochi-lemma1-karakus.md
+      - docs/project/reviews/review-2026-10-06-karakus-proposition-5-1-machine-check.md
+    controls:
+      - packing/tests/test_karakus_strip_measure.py
+    reviews:
+      - path: docs/project/reviews/review-2026-10-06-karakus-proposition-5-1-machine-check.md
+        kind: adversarial
+        reviewer: >-
+          AI agent (claude-opus-5-5, tbd-strong tier), a separately prompted lane sharing no
+          context with the lane that wrote the checker, at d7f2c6186
+        reviewer_kind: ai
+        relation: project
+        date: '2026-10-06'
+        scope: >-
+          devtools.check_karakus_strip_measure against Section 5 of Karakuş 2026: the
+          reduction of Proposition 5.1 to the two decided inequalities, every enclosure and
+          rule, the certificate's replay and the controls; an independent exact evaluator,
+          an exact adversarial search over 271,932 squares, every retained leaf sampled on
+          explicit squares, mutations of the measure, an analytic proof of the reduced
+          claim; and the rungs T-083 and T-084 may carry.
+        verdict: accepted
+        covers: [T-083, T-084]
     next_rung: >-
-      C2 and above need a replay of the lower half: a machine check of Proposition 5.1, or a
-      replay of chelokot's Lean proof of the same family by an augmented measure, which is
-      reported and was not built here.
+      V4 and C4 need a second adversarial AI review of the machine check by a distinct
+      reviewer and a human oversight record; the review of 2026-10-06 is the first.
+      chelokot's Lean development proves the same family by an augmented measure
+      (Records.NearSquare.squareMinusOne_isMinimumSide); the build of 2 October 2026
+      retained for T-086 compiled it and its Audit module printed standard axioms for it, but
+      no statement-fidelity reading of it is retained, so it is not yet evidence here.
+      Registered with that reading, it would be a second machine method beside the rung.
 
   - id: T-085
     kind: correction

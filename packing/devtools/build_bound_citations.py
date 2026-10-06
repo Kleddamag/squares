@@ -408,11 +408,15 @@ def compose(
     The first form that fits the `room` the note leaves: the whole credit with the source's
     full venue, then with its short venue, then the `short_authors` with each venue in
     turn. Who did the work outranks where it appeared, so a venue gives way before a credit
-    does. Where no form fits, the narrowest is returned and the caller fails it.
+    does, and where no form with a venue fits, the venue goes before the line fails: the
+    credit and year alone, whole and then short. `n = k^2 - 1`'s lower line is the case,
+    Karakuş's bound confirmed by two results and correcting Nagamochi's (2026-10-06).
+    Where no form fits, the narrowest is returned and the caller fails it.
     """
     who = [authors] if short_authors is None else [authors, short_authors]
     where = [source.venue] if source.short_venue is None else [source.venue, source.short_venue]
     forms = [cite(name, year, venue) for name in who for venue in where]
+    forms += [head for name in who if (head := short_cite(name, year))]
     return next((text for text in forms if len(text) <= room), forms[-1])
 
 

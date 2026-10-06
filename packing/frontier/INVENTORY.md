@@ -8,7 +8,7 @@ ours, which rest on someone else's argument, and how far each has been checked.
 
 ## The short version
 
-- **363** evidence records. **221** are formal; **214** of those were established here.
+- **364** evidence records. **222** are formal; **215** of those were established here.
 - **134** rest on an argument made elsewhere, of which **7** have been read by nobody here.
 - **40** claim to be first established here. **14** make no novelty statement at all - not assessed, which is not the same as not novel.
 
@@ -157,6 +157,7 @@ results, it is a statement about what this repository has itself examined.
 | `E-basic-area-lower` | 18 | lower-bound | verified | equalities and inequalities, no tolerance | here | - | common-knowledge | independent | `V-check-basic-bounds` |
 | `E-nagamochi-lower` | 175 | lower-bound | reported | - | elsewhere | defect-found | previously-published | no code | - |
 | `E-karakus-strip-lower` | 203 | lower-bound | verified | whatever its theorem states | elsewhere | informally-verified | previously-published | no code | - |
+| `E-karakus-strip-measure-interval` | 203 | lower-bound | verified | equalities and inequalities, no tolerance | here | - | previously-published | independent | `V-check-karakus-strip-measure` |
 | `E-nagamochi-lemma1-counterexample` | 0 | derived-structure | verified | equalities and inequalities, no tolerance | here | - | previously-published | independent | `V-check-nagamochi-lemma1-counterexample` |
 | `E-chelokot-square-minus-two-lean` | 16 | exact-value | verified | its theorem, against a named kernel | here | - | previously-published | producer’s code | `V-chelokot-lean`, `V-replay-chelokot-lean` |
 | `E-basic-slivkova-piercing-lower` | 0 | lower-bound | verified | whatever its theorem states | elsewhere | informally-verified | previously-published | no code | - |
@@ -388,10 +389,10 @@ results, it is a statement about what this repository has itself examined.
 
 ## What the register rests on
 
-- **assurance**: numerically-checked 4, reported 138, verified 221
-- **method**: exact-algebraic 100, interval-certified 107, numerical-multiprecision 4, proof-assistant-checked 4, proof-audited 3, published-proof 7, reported 138
-- **novelty**: apparently-novel 40, common-knowledge 4, not assessed 14, previously-published 305
-- **relationship to the producer's code**: generator 5, independent-implementation 108, not-applicable 20, same-implementation 217, shared-components 7, unknown-historical 6
+- **assurance**: numerically-checked 4, reported 138, verified 222
+- **method**: exact-algebraic 101, interval-certified 107, numerical-multiprecision 4, proof-assistant-checked 4, proof-audited 3, published-proof 7, reported 138
+- **novelty**: apparently-novel 40, common-knowledge 4, not assessed 14, previously-published 306
+- **relationship to the producer's code**: generator 5, independent-implementation 109, not-applicable 20, same-implementation 217, shared-components 7, unknown-historical 6
 
 The `cases` column is how many frontier records cite each piece of evidence, and it is the reason to read this table rather than count records. Ranked below are the *formal* records only: a `reported` record cited across the frontier may be a shared catalogue and is labelled as such, which is the register working rather than risk. The risk is a verified claim resting on an argument nobody has examined.
 
@@ -448,9 +449,9 @@ The `n` column is what each covers and `cases` is how many frontier records cite
 | --- | ---: | --- | --- |
 | `E-basic-grid-upper` | 250 | here | - |
 | `E-karakus-strip-lower` | 203 | elsewhere | informally-verified |
+| `E-karakus-strip-measure-interval` | 203 | here | - |
 | `E-evand-exact-optima-2026-10-05-exact-replay` | 48 | here | - |
 | `E-evand-exact-optima-2026-10-05-source-replay` | 48 | here | - |
-| `E-wand125-rectangle-2026-10-01-source-replay` | 18 | here | - |
 
 The most-cited argument this repository did not produce is `E-karakus-strip-lower`, carrying 203 frontier cases. It is an external proof, and it has been read here: its record carries the review, what was re-derived, and the four things that were not. The arithmetic is what picked it out for reading -- being cited this heavily is the reason to open an argument, not a reason to trust it.
 

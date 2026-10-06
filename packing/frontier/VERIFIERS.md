@@ -25,8 +25,8 @@ second implementation agrees.
 
 ## The Short Version
 
-- **89** programs: **33** external and **56** first-party; **68** decide claims and **21** check premises.
-- **336** of **363** evidence entries name the programs that verified them: 211 reproduced with the producer’s code, 108 independently re-implemented, 10 no relation: a proof, a derivation or a report, 7 re-implemented, sharing the producer’s components.
+- **90** programs: **33** external and **57** first-party; **69** decide claims and **21** check premises.
+- **337** of **364** evidence entries name the programs that verified them: 211 reproduced with the producer’s code, 109 independently re-implemented, 10 no relation: a proof, a derivation or a report, 7 re-implemented, sharing the producer’s components.
 
 ## Programs
 
@@ -70,6 +70,7 @@ second implementation agrees.
 | [`V-sqpack-verify`](#v-sqpack-verify) | sqpack.verify | Squares Project (Levy) | first-party | decides | 13 | 3 |
 | [`V-check-rational-witness-independent`](#v-check-rational-witness-independent) | devtools.check_rational_witness_independent | Squares Project (Levy) | first-party | decides | 9 | 7 |
 | [`V-check-nagamochi-lemma1-counterexample`](#v-check-nagamochi-lemma1-counterexample) | devtools.check_nagamochi_lemma1_counterexample | Squares Project (Levy) | first-party | decides | 1 | 1 |
+| [`V-check-karakus-strip-measure`](#v-check-karakus-strip-measure) | devtools.check_karakus_strip_measure | Squares Project (Levy) | first-party | decides | 1 | 2 |
 | [`V-upper-bound-promotion`](#v-upper-bound-promotion) | devtools.upper_bound_packets | Squares Project (Levy) | first-party | decides | 6 | 5 |
 | [`V-upper-bound-intervals`](#v-upper-bound-intervals) | devtools.upper_bound_intervals | Squares Project (Levy) | first-party | decides | 3 | 3 |
 | [`V-sqpack-cover`](#v-sqpack-cover) | sqpack.cover | Squares Project (Levy) | first-party | decides | 4 | 8 |
@@ -903,6 +904,21 @@ Scores Karakuş's squares K_t and chelokot's square against Nagamochi 2005's mea
 | evidence | run | code | results |
 | --- | --- | --- | --- |
 | `E-nagamochi-lemma1-counterexample` | replayed here | independent | T-085 |
+
+### `V-check-karakus-strip-measure`
+
+**devtools.check_karakus_strip_measure** · Squares Project (Levy) · first-party · decides · Python · exact-algebraic
+
+Decides Karakuş 2026's Proposition 5.1, that the strip measure gives the interior of every square of side in (1, 1.01] more than one, by an exact Fraction branch and bound over the square's orientation, side and cut height, and replays its retained cover leaf by leaf.
+
+- Source: [`packing/devtools/check_karakus_strip_measure.py`](../../packing/devtools/check_karakus_strip_measure.py)
+- Versions run: this repository's commits, which Git holds
+- What its authors read and used: [`packing/devtools/check_karakus_strip_measure.py`](../../packing/devtools/check_karakus_strip_measure.py)
+- Note: Its module statement says it was written from the paper's Section 5 and nothing else; the source publishes no code. It imports no other checker of this repository; its test compares it with the polygon scorer of devtools.check_nagamochi_lemma1_counterexample.
+
+| evidence | run | code | results |
+| --- | --- | --- | --- |
+| `E-karakus-strip-measure-interval` | audited here | independent | T-083, T-084 |
 
 ### `V-upper-bound-promotion`
 

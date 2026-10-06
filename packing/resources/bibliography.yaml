@@ -111,6 +111,7 @@ sources:
     authors: [Karakuş]
     year: 2026
     venue: arXiv:2609.37410
+    short_venue: arXiv
     dated: '2026-09-29'
     lineage: independent
   - key: '[Kearney–Shiu 2002]'

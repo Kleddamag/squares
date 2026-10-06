@@ -3,9 +3,9 @@ type: is
 id: is-01m456snzxb4mjvrjh0amapqg3
 title: Rebuild Guzhou's n17 stack (PRs 325, 333, 351, 352) onto PR 347 without PR 307's dumps and certify it
 kind: task
-status: in_progress
+status: closed
 priority: 1
-version: 7
+version: 8
 assignee: claude
 delegate: claude-code@vm
 labels: []
@@ -18,8 +18,12 @@ child_order_hints:
 hold: null
 hold_until: null
 created_at: 2026-10-05T04:57:47.773Z
-updated_at: 2026-10-05T07:24:35.643Z
+updated_at: 2026-10-06T08:11:26.490Z
 started_at: 2026-10-05T04:58:02.944Z
+closed_at: 2026-10-06T08:11:26.489Z
+close_reason: "Done. Stack 357 (#347 -> #354 -> #355 -> #356 -> #360 -> #365) merged into main at 01:12 UTC 2026-10-06 (merge a6279886b); #352 closed 2026-10-05 11:23 UTC, as were #325, #333 and #351 at 07:02 UTC. Review B round 1 dispositions: think-qh0i (#354) closed, all four findings addressed; think-114f (#355), think-a0pu (#356) and think-dm11 (#360 plus stack-level) closed, all findings addressed except the session-record 'independent replay' wording residuals, now follow-ups think-9pvm, think-qm0l and think-oy5v (P2, parent think-tmz6), and #356 B2. Session certification is tracked separately by think-q0z7, which stays open: Sessions 170-172 and 177-179 are certified on main; 174-176 still carry certification_pending."
+resolution: null
+duplicate_of: null
 ---
 PR 307 was closed and rebuilt as PR 347 without its 112.5 MB of certificate dumps (OR-18). PRs 325, 333, 351 and 352 sit on PR 307's history, so merging any of them would bring the dumps into main. Rebuild each as a claude/ branch by cherry-picking Guzhou's commits (authorship preserved) onto PR 347, re-render the records, verify Guzhou's Review A fixes and finish what is left, open the replacements as a formal stack, drive CI green, then comment on and close the originals as authorized. The rebuilt sessions stay certification_pending on this bead until a hosted fast gate passes on the rebuilt history.
 

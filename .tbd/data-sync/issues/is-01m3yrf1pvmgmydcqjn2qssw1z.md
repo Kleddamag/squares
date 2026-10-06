@@ -5,13 +5,13 @@ title: Import the ten wand125 certificates at b00fc70 (rect n20, 42, 70; linear 
 kind: task
 status: open
 priority: 1
-version: 7
+version: 10
 labels:
   - result-import
 dependencies: []
 parent_id: is-01m3yrdxte02c7bnygkke34ct4
 created_at: 2026-10-02T16:51:52.667Z
-updated_at: 2026-10-04T06:33:45.234Z
+updated_at: 2026-10-06T21:48:32.502Z
 ---
 Lane V: retain at b00fc70, extend audit tools, exact preflights, blind review (review-2026-10-02-wand125-afternoon-certificates.md). Then register at V0 (records lane), push, replay on cloud runners (~74 CPU-h), merge receipts, record. Also: what upstream 23e2284's re-hash of retained bundles and the withdrawal of mixed_n50_L7318 mean for retained packets. Issues #282, #294, #308; the three rectangles have no issue.
 
@@ -23,3 +23,9 @@ Lane V: retain at b00fc70, extend audit tools, exact preflights, blind review (r
 2026-10-03 21:05 Follow-up PR #327 (182776349): T-076 n82 linear V3/C3 (six ranges, 30.74 CPU-h; n82 verified 233/25) and T-073 n83 linear V3/C3 (26.15 CPU-h; no case moves, T-075 higher), plus think-sfbj reply records. After merge: final note on #294 to @wand125 (n82, n83 confirmed) and close #294.
 2026-10-04 01:05 Afternoon rectangles replayed in full: n42 (r5), n70 and n20 (r6, done 23:13), each stdout status VERIFIED, receipts on claude/replay-wand125-afternoon-r6 @c2be1d247 (transfer/wand125-rect-afternoon-r5/). Neither r5 nor r6 is merged; T-077 is still V0 on main. Next: one batched records lane (with T-081 and T-046 leftovers) moves T-077 to V3/C3.
 2026-10-04 reconciliation (think-75ti, origin/main e5a48b310): done on main - six mixed certificates T-075 V3/C3; n82 T-076 V3/C3; n83 linear T-073 V3/C3 (n101 T-080 V3/C3); #294 closed 2026-10-03T22:35Z with the final reply; 23e2284 re-hash and mixed_n50_L7318 withdrawal answered by review-2026-10-02-wand125-afternoon-certificates.md AF-7. Remaining (real): T-077 (rect n20, n42, n70) is still V0 on main; its full-replay receipts are on claude/replay-wand125-afternoon-r5 @b829406d (n42) and claude/replay-wand125-afternoon-r6 @c2be1d247 (n70, n20), neither merged. Needs one records lane: merge those receipts, add the source-replay evidence, move T-077 to V3/C3 via devtools.check_results. Close this bead then.
+
+2026-10-06 08:50Z lane R4 of think-wyf4 (branch claude/ecstatic-pascal-pothtx-r4): the mixed and linear parts were already done on main: T-075 V3/C3 (n83-L937, n85-L946, n87-L948, n91-L970, n92-L975, n96-L996, source-checker full replays) and T-076 V3/C3 (n82-L932 linear); all seven are VERIFIED rows of the 149-certificate sqverify-fast census (reviewed build 9985c465, rows of 3 Oct). Under the same rules as T-091/T-097 the six format M ones now have control receipts (CONTROLS_REFUSED, 6 Oct, 42 CPU-s, commit 2bda0d5a4) and independent replay entries E-n0NN-wand125-mixed-*-sqverify-fast-replay on T-075 (commit b3e917247, re-pin b2d94b082): no rung moves, T-075's code attribute becomes independently re-implemented. n82 is format L, outside the route's reviewed scope, so it takes no sqverify-fast entry without another review. The rectangle parts (T-077, n20/42/70) are lane R5's.
+
+2026-10-06 (lane R5, think-wyf4), rectangle part only: rect_n20_L49, rect_n42_L68275, rect_n70_L86275 replays (afternoon-r5 b829406d, afternoon-r6 c2be1d247) merged into the 2 October packet's receipts/replay; new E-wand125-rectangle-2026-10-02-source-replay; verified bound raised at n20 (49/10) and n42 (2731/400). Also controlled on the sqverify-fast format T route (3 entries E-n020/042/070-wand125-rect-*-sqverify-fast-replay). T-077 raised in place V0/C1 -> V3/C3, confirmed both reproduced with the producer's code and independently re-implemented. Commits d07884498, 942473b60. The mixed and linear parts belong to lane R4.
+
+2026-10-06 22:00Z lane R4: two of this bead's mixed counts have moved on in the verified lane. T-082's certificates of 3 October, decided by sqverify-fast on 6 October, are higher at n = 92 (977/100 over mixed_n92_L975) and n = 96 (997/100 over mixed_n96_L996, admitted under the repaired v2 control, think-0uia); commits da07cbbe1 and 2a6585a9d. T-075 keeps n = 83 and 85. The mixed and linear parts of this bead need nothing more from R4. n82 (format L) stays with think-4qga.

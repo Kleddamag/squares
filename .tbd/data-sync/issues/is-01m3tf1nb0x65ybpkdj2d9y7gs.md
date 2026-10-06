@@ -3,9 +3,9 @@ type: is
 id: is-01m3tf1nb0x65ybpkdj2d9y7gs
 title: Revise n11 explainer opening and apply line-by-line publication feedback
 kind: task
-status: in_progress
+status: closed
 priority: 1
-version: 24
+version: 25
 labels: []
 dependencies: []
 child_order_hints:
@@ -26,7 +26,12 @@ child_order_hints:
   - is-01m3v1fawj8t12bh308abgc7qx
   - is-01m3v2zncnfvtd2p0h1gqcsbm2
 created_at: 2026-10-01T00:50:19.096Z
-updated_at: 2026-10-01T07:12:06.371Z
+updated_at: 2026-10-06T08:31:02.775Z
+closed_at: 2026-10-06T08:31:02.774Z
+close_reason: |
+  Done (bead review 2026-10-06, origin/main eb43ffe9a): PR #261 (codex/n11-explainer-doc-review) MERGED 2026-10-01T15:33Z; the requested opening restructuring e37362ff9 and CI follow-up 751ef78a4 are on origin/main; line-by-line feedback window for that PR is over
+resolution: null
+duplicate_of: null
 ---
 Continue published T-060 paper on codex/n11-explainer-doc-review from origin/main. User asks first opening prose to explicitly identify this as an explanation of the original proof and directly cite original proof, repository and each antecedent/provenance contribution. Retain mathematical meaning and source scope. Delegate rigorous common-doc-guidelines review read-only while user provides line corrections; apply requested corrections on branch and keep publication separate.
 

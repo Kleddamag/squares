@@ -3,9 +3,9 @@ type: is
 id: is-01m41cx3q2pckpmsmmwq1rsngz
 title: Shrink PR 305's retained data and set one layout for retained JSON results
 kind: feature
-status: open
+status: closed
 priority: 1
-version: 18
+version: 19
 labels:
   - session-169
 dependencies: []
@@ -23,9 +23,9 @@ child_order_hints:
   - is-01m424tye0ptksxhthdgqc60k3
   - is-01m42dfbtqy8q2sdjjck1sgcsv
 created_at: 2026-10-03T17:27:33.847Z
-updated_at: 2026-10-04T02:56:46.423Z
-closed_at: null
-close_reason: null
+updated_at: 2026-10-06T08:27:19.185Z
+closed_at: 2026-10-06T08:27:19.185Z
+close_reason: "Done: think-1uwx (PR 305) and think-k131 (PR 323, layout check) are merged (e19be6bb0, 2026-10-04). The owner decisions it held are top-level beads now (2pvg, giqi, l51e, 5o8i), and its last child 2qbn is closed."
 resolution: null
 duplicate_of: null
 ---

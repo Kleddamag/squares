@@ -3,15 +3,20 @@ type: is
 id: is-01m3qj2s8fb8ewx3h334rtqqjf
 title: Expose child pytest timings and live worker progress for reachable validation
 kind: task
-status: in_progress
+status: closed
 priority: 1
-version: 3
+version: 4
 spec_path: docs/project/reviews/review-2026-09-29-validation-parallelism.md
 labels: []
 dependencies: []
 parent_id: is-01m3p5wj25knm7rbx0g4a4tpvg
 created_at: 2026-09-29T21:45:38.317Z
-updated_at: 2026-09-29T22:43:21.055Z
+updated_at: 2026-10-06T08:34:42.571Z
+closed_at: 2026-10-06T08:34:42.571Z
+close_reason: |
+  Done (bead review 2026-10-06, origin/main eb43ffe9a): devtools/reachable_progress.py (session_finish receipts) and child JUnit/durations are on origin/main via PR #246 (MERGED 2026-09-30) with test_reachable_progress.py; published CI passed
+resolution: null
+duplicate_of: null
 ---
 The reachable-test wrapper prevents the gate from injecting direct-pytest JUnit and duration receipts. A ten-worker broad run can stall near completion with one CPU-active worker, without enough evidence to distinguish an indivisible test from queued imbalance. Preserve exact selection, markers and assertions. Add maintained child-pytest durations/JUnit plus live start/finish receipts naming run, worker, node and source, with interrupted partial states and focused regression tests. Do not claim that changing xdist scheduling helps until matched workload evidence exists.
 

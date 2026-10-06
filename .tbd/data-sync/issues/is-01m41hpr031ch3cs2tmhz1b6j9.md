@@ -1,11 +1,11 @@
 ---
 type: is
 id: is-01m41hpr031ch3cs2tmhz1b6j9
-title: "Publish the 118 hosted n17 certificate objects (307,697,692 bytes; #347's 92 plus 26 from #365) to release data/n17-x048-session-168-certificates-v1 (PR #347 B1; blocked on uploads.github.com egress)"
+title: "Publish the 198 hosted n17 certificate objects (2,115,210,138 bytes per #379's manifest) to release data/n17-x048-session-168-certificates-v1 (blocked on uploads.github.com egress)"
 kind: task
 status: open
 priority: 1
-version: 10
+version: 11
 spec_path: docs/project/reviews/review-2026-10-02-n17-bulk-exclusion-design.md
 delegate: null
 labels:
@@ -16,7 +16,7 @@ parent_id: is-01m45ex3dssa31jvkkz9bzpc6e
 hold: blocked
 hold_until: null
 created_at: 2026-10-03T18:51:28.130Z
-updated_at: 2026-10-05T14:58:27.715Z
+updated_at: 2026-10-06T08:04:03.332Z
 started_at: 2026-10-05T07:20:29.619Z
 ---
 Lane D (think-nkp0) measured PR 307 (busy-goldberg-rouoli) carrying 115.5 MB of X048 pilot certificate dumps (.json.gz node files up to 26 MB each) unique over main. Merged as is, every main clone and every full-history CI job carries them permanently, and the repository passes about 1 GB. Options: a release asset or data repository pinned by digest, keep only summaries in git, or at least xz (28-38% smaller than gzip on the largest archives). GitHub storage holds the PR ref's objects either way. Owner decision; whatever reads the dumps needs a fetch path.

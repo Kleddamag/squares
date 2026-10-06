@@ -5,17 +5,15 @@ title: "Post the replies the import review found owing: 256, 279 to 282, 238, an
 kind: task
 status: closed
 priority: 1
-version: 7
+version: 8
 spec_path: docs/project/specs/active/plan-2026-10-01-result-import-first-application.md
 labels:
   - packing
   - result-import
-dependencies:
-  - type: blocks
-    target: is-01m3yrzmzcpq964zt2kr14w8jv
+dependencies: []
 parent_id: is-01m41csdc2gp36ry5p6n7c2x2y
 created_at: 2026-10-01T23:55:49.001Z
-updated_at: 2026-10-03T18:49:16.670Z
+updated_at: 2026-10-06T22:27:19.849Z
 closed_at: 2026-10-03T18:49:16.670Z
 close_reason: null
 resolution: null

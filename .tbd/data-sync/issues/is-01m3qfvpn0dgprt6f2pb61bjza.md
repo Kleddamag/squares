@@ -3,15 +3,20 @@ type: is
 id: is-01m3qfvpn0dgprt6f2pb61bjza
 title: Fan out hosted deferred validation across immutable-tree jobs
 kind: task
-status: in_progress
+status: closed
 priority: 1
-version: 7
+version: 8
 spec_path: docs/project/reviews/review-2026-09-29-validation-parallelism.md
 labels: []
 dependencies: []
 parent_id: is-01m3p5wj25knm7rbx0g4a4tpvg
 created_at: 2026-09-29T21:06:49.119Z
-updated_at: 2026-09-29T22:49:47.929Z
+updated_at: 2026-10-06T08:34:34.431Z
+closed_at: 2026-10-06T08:34:34.430Z
+close_reason: |
+  Done (bead review 2026-10-06, origin/main eb43ffe9a): Deep-gate fanout on origin/main: .github/workflows/deep-gate.yml resolve-tree, four deferred whole-Step jobs, exhaustive-1..3, deep-gate-required; first hosted measurement recorded in gate-budgets.yaml; PR #246 MERGED 2026-09-30. Repeat-sample spread is think-be1s's
+resolution: null
+duplicate_of: null
 ---
 Split the deep gate's eight existing complete deferred Step verdicts into four balanced explicit hosted jobs and the exhaustive_exact lane into three stable whole-file shards through packing-validate. Resolve one immutable checkout SHA for every job; preserve nonempty, pairwise-disjoint complete coverage, unique timing artifacts, required aggregation, and honest inherited/derived job budgets until hosted cells provide direct baselines.
 

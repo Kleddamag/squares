@@ -9360,6 +9360,7 @@ results:
       format M certificate on a declared net; and the review of 5 October that accepted
       the census route as a complete replay here for a certificate meeting its conditions.
       The census test holds the declared net to lemma N0's premises and to that source.
+
       n = 18's verified lower bound moves from T-096's 47/10 to 588/125; at n = 19 the
       record already holds more (T-100). A later revision than T-096's at the same count,
       so its own entry; T-096 keeps its claim. The proof-bundle tarball is pinned by digest
@@ -9426,7 +9427,9 @@ results:
       review of the declared-net change set and this certificate meets. The source's
       checker was replayed at 10 directions and its axis tables were not run in full here,
       so no second method and no complete reproduction with the producer's code stands
-      beside it. The separation s(18) < s(19) is cited from n = 18's record, whose verified
+      beside it.
+
+      The separation s(18) < s(19) is cited from n = 18's record, whose verified
       upper bound is E-lifted-q7-upper, the exact verification of Hämäläinen's packing;
       this entry adds no evidence for it beyond its own bound.
     evidence:
@@ -9475,6 +9478,7 @@ results:
       declared-net change, which accepted the crate source of the replay's build for a
       format M certificate on a declared net; and the review of 5 October that accepted
       the census route as a complete replay here for a certificate meeting its conditions.
+
       n = 19's verified lower bound moves from T-074's 1927/400 to 48229/10000, and with
       n = 18's verified upper bound it separates s(18) from s(19). Its mass is below 20,
       but the record holds more at n = 20. The source's pre-publication replay on a fresh

@@ -3,9 +3,9 @@ type: is
 id: is-01m42sq1hwn811q3t0jfz4dcsj
 title: "Merge #305"
 kind: task
-status: open
+status: closed
 priority: 1
-version: 13
+version: 14
 labels: []
 dependencies:
   - type: blocks
@@ -34,6 +34,10 @@ dependencies:
     target: is-01m42x9sy9mvd5sqqs7skwmfkp
 parent_id: is-01m42sq026mszrdm4fwf5r8g8y
 created_at: 2026-10-04T06:30:40.956Z
-updated_at: 2026-10-04T07:33:21.480Z
+updated_at: 2026-10-06T08:32:52.988Z
+closed_at: 2026-10-06T08:32:52.970Z
+close_reason: "Done: jlevy/squares#305 merged 2026-10-04T23:00:25Z into main as e19be6bb0 (gh pr view 305: MERGED, base main); e19be6bb0 is an ancestor of origin/main eb43ffe9a."
+resolution: null
+duplicate_of: null
 ---
 Owner confirmed in session 2026-10-04. Gate: green CI on current head, no conflict, review findings addressed.

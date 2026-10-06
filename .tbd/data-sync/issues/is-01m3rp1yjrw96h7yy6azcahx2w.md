@@ -3,9 +3,9 @@ type: is
 id: is-01m3rp1yjrw96h7yy6azcahx2w
 title: Profile exact sequential geometry cost for T060 nonfield exclusions
 kind: task
-status: in_progress
+status: closed
 priority: 0
-version: 10
+version: 11
 spec_path: docs/project/specs/active/plan-2026-09-29-proof-verification-consolidation.md
 labels: []
 dependencies: []
@@ -16,7 +16,12 @@ child_order_hints:
   - is-01m3s36jew3nmbz2yhdf33yf8w
   - is-01m3s5g5mzpjt0rcz12n5cxy3h
 created_at: 2026-09-30T08:14:19.735Z
-updated_at: 2026-09-30T12:44:14.366Z
+updated_at: 2026-10-06T08:36:11.084Z
+closed_at: 2026-10-06T08:36:11.084Z
+close_reason: |
+  Done (bead review 2026-10-06, origin/main eb43ffe9a): Row-cost inventory and profile retained (receipts/nonfield-manifest/row-cost-inventory.json, generic2095-row-profile.json under n11-optimality-2026-09-29) and the indexed cover adopted; T-060 confirmed at S5/V4/C5. Open child think-iks0 moved to think-3i74 before closing
+resolution: null
+duplicate_of: null
 ---
 Build reusable row-cost inventory and bounded profile from pinned nonfield manifest and accepted generic mask 2095 receipt. Identify exact union cover hotspot and assess safe optimization without changing frozen verifier; report calibrated scenarios and differential acceptance conditions.
 

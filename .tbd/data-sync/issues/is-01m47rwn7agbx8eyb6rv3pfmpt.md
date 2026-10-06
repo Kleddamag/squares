@@ -5,13 +5,13 @@ title: Add Session 182's resource rollups (owner; they carry model identifiers)
 kind: task
 status: open
 priority: 2
-version: 1
+version: 2
 spec_path: docs/project/reviews/review-2026-10-02-n17-bulk-exclusion-design.md
 labels: []
 dependencies: []
 parent_id: is-01m3xkd6zmq1jqwtn628h2k7zy
 created_at: 2026-10-06T04:52:28.522Z
-updated_at: 2026-10-06T04:52:28.522Z
+updated_at: 2026-10-06T16:27:38.810Z
 ---
 Session 182 (session-182-n17-overnight-lanes) closes stopped with
 resource_usage_unmeasured reason rollup_withheld_model_identifiers: its harness and
@@ -35,3 +35,7 @@ To discharge (owner): from packing/, run
 set the session's resource_rollups to the written receipts, remove
 resource_usage_unmeasured, then run `close_session --render` and
 `packing-ledger render`. The logs exist only on that container.
+
+## Notes
+
+Also covers Session 183 (session-183-n17-draw-31, PR #385), which closes stopped with resource_usage_unmeasured reason rollup_withheld_model_identifiers for the same cause. Its inputs on the run container under /root/.claude/projects/-home-user-squares/: the harness log 6b1ed85f-ba08-5540-8095-4fd66881916f.jsonl and the run operator's sub-agent log subagents/agent-a3c879fa91b776b5e.jsonl (started 2026-10-06T15:52Z).

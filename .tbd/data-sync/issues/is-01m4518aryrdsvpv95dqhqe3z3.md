@@ -3,16 +3,20 @@ type: is
 id: is-01m4518aryrdsvpv95dqhqe3z3
 title: "Independent check of ValidTilt9 for T-081: wand125's box-9 run, or sqverify_fast Milestone C (#316)"
 kind: task
-status: open
+status: closed
 priority: 2
-version: 2
+version: 3
 labels:
   - result-import
   - packing
 dependencies: []
 parent_id: is-01m44qz0rxvkakmyqaj7qdgagv
 created_at: 2026-10-05T03:20:56.349Z
-updated_at: 2026-10-06T07:42:38.096Z
+updated_at: 2026-10-06T17:02:09.586Z
+closed_at: 2026-10-06T17:02:09.585Z
+close_reason: "Done and on main via #382 (d087422ed); reply posted 2026-10-06 and recorded"
+resolution: null
+duplicate_of: null
 ---
 This bead owns the ask queued on jlevy/squares#316, which is evand's s(k^2 - 4) = k for every k >= 5, T-081. The ask is for an independent check of ValidTilt9, the tilted box-9 premise that qx2_zm.py certifies over 16,200 D4 roots, made by wand125's Valid7 checker on box 9 or another way. The ask in packing/campaign/result-requests.yaml names this bead as its `bead`. The answer bead for #316 is think-4uir, which owns the reply.
 

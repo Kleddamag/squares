@@ -25,6 +25,7 @@ documents:
   - {path: docs/project/reviews/review-2026-10-05-couzo-6042c56.md, role: review, authority: record, lifecycle: retained}
   - {path: docs/project/reviews/review-2026-10-06-evand-exact-optima.md, role: review, authority: record, lifecycle: retained}
   - {path: docs/project/reviews/review-2026-10-06-evand-exact-optima-fix-check.md, role: review, authority: record, lifecycle: retained}
+  - {path: docs/project/reviews/review-2026-10-06-evand-exact-ceilings.md, role: review, authority: record, lifecycle: retained}
   - {path: docs/project/reviews/review-2026-10-05-guzhou-r071.md, role: review, authority: record, lifecycle: retained}
   - {path: docs/project/reviews/review-2026-10-06-wand125-finer-net-n18-n19.md, role: review, authority: record, lifecycle: retained}
   - {path: docs/project/reviews/review-2026-10-05-wand125-declared-net-n18-n66.md, role: review, authority: record, lifecycle: retained}

@@ -1,0 +1,19 @@
+{
+  "kind": "wand125-declared-net-audit/v1",
+  "certificate": "mixed_n29_L581",
+  "claim": "s(29) >= 581/100",
+  "rectangles": 505,
+  "positive_rectangles": 505,
+  "mass": "2899999/100000",
+  "core": "999/1000",
+  "net": {"step":"1/1001","count":"416","endpoint":"415/1001","endpoint_check":"1054/1002001","rotated_side_upper":"500499/500500","side_margin":"1/500500","per_edge_margin":"1/1001000","tangent_form":"1335998331/1336001000"},
+  "premises": {"a_positive_step_and_count":true,"b_core_fits":true,"c_reaches_past_pi_over_4":true,"d_last_tangent_at_most_half":true,"e_tangent_form":true},
+  "candidate_digest": "e481f15bb52ecfb29bca2e4fbfc6c3931b2508e8c9d53f25628c1659ab9ae43f",
+  "checker_sha256": "89b674a6feabe24d91c29431de1624907c4bff83280ceb481475455686693652",
+  "oblique_records": 415,
+  "oblique_nodes": 128316129,
+  "least_oblique_lower": {"lower":1.000000000892745,"index":364},
+  "axis": {"cells":11309769,"integer_minimum":"1.003704246326725"},
+  "status": "EXACT_PREMISES_HOLD",
+  "scope": "Exact premises only, from the retained files: the measure, lemma N0's premises on the declared net, the net blocks the manifest and certificate state, one candidate digest, and a replay record at threshold one at every node. No coverage is decided here."
+}

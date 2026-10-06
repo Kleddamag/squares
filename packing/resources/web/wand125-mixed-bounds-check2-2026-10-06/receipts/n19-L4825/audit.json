@@ -1,0 +1,19 @@
+{
+  "kind": "wand125-declared-net-audit/v1",
+  "format": "check2",
+  "certificate": "mixed_n19_L4825",
+  "claim": "s(19) >= 193/40",
+  "rectangles": 341,
+  "positive_rectangles": 341,
+  "mass": "1899999/100000",
+  "core": "4999/5000",
+  "net": {"step":"1/5002","count":"2073","endpoint":"1036/2501","endpoint_check":"367/6255001","rotated_side_upper":"25009997/25010000","side_margin":"3/25010000","per_edge_margin":"3/50020000","tangent_form":"500400014977/500400075000"},
+  "premises": {"a_positive_step_and_count":true,"b_core_fits":true,"c_reaches_past_pi_over_4":true,"d_last_tangent_at_most_half":true,"e_tangent_form":true,"f_last_bin_holds_an_orientation":true},
+  "candidate_digest": "0527d8a7e465c6d1eb2f5bebd873aac364d4f49de9a3f625c97bcbdc09abb57d",
+  "listed_files": 15,
+  "listed_files_in_directory": 14,
+  "source_check": {"status":"VERIFIED","directions":2073,"nodes":355934320,"direction_cpu_seconds":"-0.0","threads":4,"source_sha256":"ab6e33e164dbc5c32b40349ba55981b58e630b5eef59534196a69d259404fd7c","verifier":"sqverify-fast (jlevy/squares packing/sqverify_fast, branch wand125/sqverify-proof-net, commit fe12e036c, with proof_net support)","control":"every mass x 0.985, 32 directions","control_status":"REFUSED"},
+  "prepublication_check": {"status":"VERIFIED","directions":2073,"seconds":996,"target":"x86_64-unknown-linux-gnu","control_refused_directions":32},
+  "status": "EXACT_PREMISES_HOLD",
+  "scope": "Exact premises only, from the retained files: the measure, lemma N0's premises on the declared net and its last bin, the net block bundle.json states, one candidate digest, the source's receipt of its own run at every node, and every listed file's digest. No coverage is decided here."
+}

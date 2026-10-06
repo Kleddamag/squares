@@ -214,3 +214,12 @@ docs/project/reviews/review-2026-10-06-evand-exact-optima-fix-check.md
 # apostrophes and 20 straight double quotes retyped as curly, several inside quotations
 # of the records and source code it reviews. Same rule as the reviews above.
 docs/project/reviews/review-2026-10-06-wand125-finer-net-n18-n19.md
+
+# The separately prompted review of T-108 to T-117 (wand125's ten certificates of 6
+# October at 2fad66e, nine of them check2 bundles), stored byte-identical to the
+# reviewer's output as the lane brief requires, SHA-256 1d5e1326..., the common-doc footer
+# included as the reviewer wrote it. Measured on a copy in directory mode with the pinned
+# flowmark-rs 0.4.0 on 2026-10-06: 127 of its 352 lines change, reflow plus 128 straight
+# apostrophes and 38 straight double quotes retyped as curly, several inside quotations of
+# the records and source files it reviews. Same rule as the reviews above.
+docs/project/reviews/review-2026-10-06-wand125-check2-ten-certificates.md

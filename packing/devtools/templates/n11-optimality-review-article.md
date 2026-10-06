@@ -1297,14 +1297,18 @@ beside the accepted ones rather than in their place.
     p. 1: “Three different packings of ten unit squares in a square of side
     $s = 3 + \sqrt{2}/2$”, which
     [Stromquist 2003](../../resources/papers/stromquist-2003-packing-10-or-11-unit-squares.pdf)
-    proves optimal (its Figure 1). The upstream proof states uniqueness only within its
-    case 438, and concludes $s_{11}=T$ in its §10.
+    proves optimal (its Figure 1). The upstream proof states uniqueness only for the
+    near branch of its case 438, in
+    [§8](../../resources/web/n11-optimality-2026-09-29/source/PROOF.md#8-complete-case438-capture-and-the-exact-u-to-t-bridge),
+    and concludes $s_{11}=T$ in its §10.
 
 [^lean-done]: [The verification report of 6 October 2026](https://github.com/Queuingtheorydotcom/11SquaresFormalized/blob/cdc746ed907d258057c283aeb6d077cb2c27e349/docs/VERIFICATION_20261006.md)
     in Queuingtheorydotcom/11SquaresFormalized, status
     `OPTIMALITY_PROVED_WITH_NATIVE_CERTIFICATES`, which states that
     `ElevenSquare.optimality` depends on `propext`, `Classical.choice`, `Quot.sound` and
-    13,308 approved native certificates.
+    13,308 axioms from approved `native_decide` certificate checks; and this project’s
+    [statement audit](../../../docs/project/reviews/review-2026-10-06-n11-lean-formalization-statement-audit.md)
+    of the theorem it states.
 
 [^reproduce]: [Reproduction guide and disclosed limits](../../resources/web/n11-optimality-2026-09-29/README.md#reproducing-the-independent-checks);
     [tooling overview](../../../docs/project/verification-tooling.md).

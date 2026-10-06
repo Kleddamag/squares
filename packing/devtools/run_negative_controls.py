@@ -297,6 +297,11 @@ PRUNE = frozenset(
         # whole; linked Markdown still returns through `linked_pruned_targets`.
         ROOT / "campaign/explorations/X048-session-167-pilots",
         ROOT / "campaign/explorations/X048-session-168-pilots",
+        # Session 182's receipts (6.76 MB of kernel, census and ledger JSON) took the
+        # snapshot to 202,054,385 bytes against the cap on 2026-10-06. Same reason as the
+        # two above: research outputs no control names, read only by the census over a
+        # ledger that is itself pruned; linked Markdown and directories still return.
+        ROOT / "campaign/explorations/X048-session-182-overnight",
         ROOT / "campaign/series/series-000-smoke-and-calibration/results/agenda-024",
         ROOT / "campaign/series/series-000-smoke-and-calibration/results/agenda-025",
         ROOT / "campaign/series/series-000-smoke-and-calibration/results/agenda-026",

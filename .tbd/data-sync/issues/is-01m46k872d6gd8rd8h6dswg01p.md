@@ -3,9 +3,9 @@ type: is
 id: is-01m46k872d6gd8rd8h6dswg01p
 title: "T-083 and T-084: C2 needs a machine check of Proposition 5.1 (#295)"
 kind: task
-status: in_progress
+status: closed
 priority: 2
-version: 4
+version: 5
 delegate: claude-code@vm
 labels:
   - result-import
@@ -13,8 +13,12 @@ dependencies: []
 hold: null
 hold_until: null
 created_at: 2026-10-05T17:54:41.357Z
-updated_at: 2026-10-06T11:13:13.778Z
+updated_at: 2026-10-06T17:02:04.987Z
 started_at: 2026-10-06T07:56:23.783Z
+closed_at: 2026-10-06T17:02:04.986Z
+close_reason: "Done and on main via #382 (d087422ed); reply posted 2026-10-06 and recorded"
+resolution: null
+duplicate_of: null
 ---
 Lane E's reply audit (think-syk6) found no bead owning the C1 -> C2 step for T-083 and T-084 (V3/C1): a machine check of Proposition 5.1. Until it lands, check_requests keeps #295 from closing although everything wand125 asked there is done.
 

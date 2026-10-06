@@ -3,9 +3,9 @@ type: is
 id: is-01m487a50mf35488vbjmvffsnm
 title: "Stage-4 review of check_karakus_strip_measure (T-083, T-084, #295), then merge R6's staged exit"
 kind: task
-status: in_progress
+status: closed
 priority: 1
-version: 3
+version: 4
 delegate: claude-code@vm
 labels:
   - result-import
@@ -14,8 +14,12 @@ parent_id: is-01m482krnapg9vxqd91zjrg171
 hold: null
 hold_until: null
 created_at: 2026-10-06T09:04:30.740Z
-updated_at: 2026-10-06T11:13:14.625Z
+updated_at: 2026-10-06T17:02:05.871Z
 started_at: 2026-10-06T11:00:14.339Z
+closed_at: 2026-10-06T17:02:05.870Z
+close_reason: "Done and on main via #382 (d087422ed); reply posted 2026-10-06 and recorded"
+resolution: null
+duplicate_of: null
 ---
 Stage 4's review lane for the machine check of Karakuş's Proposition 5.1 (T-083, T-084, #295). Lane R6 could not run it: launching `claude -p` as the separately prompted reviewer was refused by its session's permission classifier ("Create Unsafe Agents"), so the replay lane is done and the exit is staged, not merged.
 

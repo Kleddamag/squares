@@ -3,9 +3,9 @@ type: is
 id: is-01m3xrx8b86kp8t1k6gj71p4ej
 title: "Reply on #295 (T-007, Nagamochi Lemma 1 false): the follow-up after PR #305's register change"
 kind: task
-status: open
+status: closed
 priority: 1
-version: 11
+version: 12
 delegate: claude-code@vm
 labels:
   - result-import
@@ -17,8 +17,12 @@ parent_id: is-01m41csdc2gp36ry5p6n7c2x2y
 hold: null
 hold_until: null
 created_at: 2026-10-02T07:40:23.784Z
-updated_at: 2026-10-06T11:13:28.777Z
+updated_at: 2026-10-06T17:02:06.742Z
 started_at: 2026-10-05T03:21:49.383Z
+closed_at: 2026-10-06T17:02:06.742Z
+close_reason: "Done and on main via #382 (d087422ed); reply posted 2026-10-06 and recorded"
+resolution: null
+duplicate_of: null
 ---
 J. PR jlevy/squares#305 (session-168) reviewed T-007 and changed the register; it merged on 2026-10-04. Lemma 1 is false for every a > 3, b > 2 (Karakus family, exact). T-007 is at V0/C1 with the defect recorded, the 287 verified floors that rested on it are re-derived (D-516), and T-083 to T-086 are registered. This bead answers #295. Note for the 2 October stack: verified lower bounds raised by replayed rectangle certificates removed T-007 from 17 more counts (46 operative left then).
 

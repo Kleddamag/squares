@@ -5,13 +5,13 @@ title: Maintain overnight efficiency and morning research handoff
 kind: task
 status: open
 priority: 1
-version: 9
+version: 10
 spec_path: packing/campaign/agendas/agenda-033-overnight-owner-geometry.md
 labels: []
 dependencies: []
-parent_id: is-01m22hh49r1gb5kkwqb1whwmmp
+parent_id: null
 created_at: 2026-09-09T07:36:33.870Z
-updated_at: 2026-10-06T10:12:07.229Z
+updated_at: 2026-10-06T10:16:27.155Z
 closed_at: null
 close_reason: null
 resolution: null

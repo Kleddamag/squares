@@ -254,11 +254,16 @@ section and a `mathematics` blocker, the ceiling now `1e-14` above the printed s
 instead of up to `0.464`.
 Forty-nine of those forms are irrational, which no rational certificate reaches.
 The other six, at `n = 50, 171, 198, 230, 261` and `293`, are rational (`53/7` at
-`n = 50`), and a rational certificate that closes the packing’s contacts exactly would
-reach them. At `n = 50` the source’s own exact point appears to be one: with its scaling
-by `1 + 10^-20` undone, its side is `53/7` rounded up, and the 44 squares it does not list as free
-have centres on a grid of `1/350` to within `1e-10` and tangents `0`, `±1/3` or `±3` to
-within `1e-30`, rational rotations (the review’s EC-1, checked here).
+`n = 50`), and an exact certificate of the packing at that side would reach them, a
+rational one where the packing’s exact point is rational.
+At `n = 50` the source’s own exact point appears to be such a rational one: with its
+scaling by `1 + 10^-20` undone, its side is `53/7` rounded up, and of the 44 squares it
+does not list as free, every one has tangent `0` or `1/3` (a 3-4-5 rotation) to within
+`1e-30`, and 42 have centres on a grid of `1/350` to within `3e-36`. The other two,
+squares 24 and 25 (0-based), sit `8e-17` off that grid along their own 3-4-5 edge
+direction, so the snapped packing at `53/7` is not yet decided
+(`test_n50_certificate_is_53_over_7_on_a_rational_grid_scaled_outward` holds these
+figures; the review’s EC-1, `think-l8gt`).
 
 **The same packings.** Matched square for square with the known-best witness, every
 certificate lies within `7.1e-4` of it; of the 416 squares that move by more than `1e-8`,
@@ -429,6 +434,21 @@ The six other findings were wording and one missing refusal:
 - **EC-7.** The overlap control is described as a move along the best separating axis,
   and the independent checker’s refusal of it as circular.
 
+A second separately prompted reviewer checked those fixes the same day
+([fix check](../../../../docs/project/reviews/review-2026-10-06-evand-exact-ceilings-fix-check.md)),
+also without the project interpreter, and ended `defects-resolved`, with four new
+findings, none blocking, handled after it:
+
+- **FC-1.** At the five rational counts other than `n = 50` the record no longer says a
+  rational certificate would reach the side, only an exact one, rational where the
+  packing’s exact point is.
+- **FC-2 and FC-4.** `n = 50`’s grid structure is held by a test, and its two squares
+  `8e-17` off the grid are named above.
+- **FC-3.** The survey receipt no longer carries a digest column that nothing checked;
+  `evand_exact_certificates.is_decided` ties each retained certificate to the decided one.
+- **The older wording of EC-7** went from T-118’s claim and the control’s docstring too;
+  the controls receipt keeps it as the run wrote it.
+
 ## Not Done Here
 
 - **Local optimality.** That each exact point is a KKT local minimum is the source’s
@@ -438,8 +458,9 @@ The six other findings were wording and one missing refusal:
   verified ceiling the record already holds.
 - **The 55 closed-form sides.** At the ceiling counts whose catalogue side is a closed
   form, the verified upper bound trails it by less than `1e-14`. Reaching it needs an
-  exact algebraic certificate of the packing at the 49 irrational sides, and a rational
-  certificate that closes the contacts exactly at the six rational ones.
+  exact algebraic certificate of the packing at the 49 irrational sides, and an exact
+  certificate at the six rational ones, rational where the packing’s exact point is
+  (`think-l8gt`).
 - **`n = 17`**, held (`think-x4v4`).
 
 ## Compressed Files

@@ -9938,16 +9938,17 @@ results:
       7.6e-20 to 1.8e-19 above it, the certificate's outward rounding, so the verified
       upper bound trails the report by one unit of the fourteenth decimal. Forty-nine of
       those closed forms are irrational, which no rational certificate reaches; the other
-      six, at n = 50, 171, 198, 230, 261 and 293, are rational, which a rational
-      certificate that closes the packing's contacts exactly would reach.
+      six, at n = 50, 171, 198, 230, 261 and 293, are rational, and an exact certificate of
+      the packing at that side would reach them; at n = 50 a rational one appears to
+      exist.
 
       Every certificate is decided here exactly: converted without rounding, by sqpack's
       exact separating-axis test and by devtools.check_rational_witness_independent, which
       share no code with each other or with the source, so independently re-implemented.
       The source's own checkers, verify_cert.py and verify_cert2.py, run here as retained,
       accept every one as well, reproduced with the producer's code. All four refuse each
-      certificate with its tightest pair moved one unit of the side's denominator past
-      touching, and each with its box shrunk that unit past its least clearance.
+      certificate with its tightest pair moved one unit of the side's denominator past its
+      separating-axis gap, and each with its box shrunk that unit past its least clearance.
 
       Matched square for square with the known-best witness, every pose lies within 7.1e-4
       of it, and every square the source does not list as free within 1.2e-7; four of the
@@ -10004,8 +10005,22 @@ results:
           nothing.
         verdict: defect-open
         covers: [T-118]
+      - path: docs/project/reviews/review-2026-10-06-evand-exact-ceilings-fix-check.md
+        kind: confirming
+        reviewer: Claude Opus 5.5 (claude-opus-5-5), the tbd-strong sub-agent at that tier's configured reasoning setting (xhigh), prompted separately from the lane that registered and fixed T-118 and from the reviewer who wrote the review
+        reviewer_kind: ai
+        relation: project
+        date: '2026-10-06'
+        scope: >-
+          Findings EC-1 to EC-7 of the review of 2026-10-06 against the fixes in 4afa30a7a,
+          90d8e250a and 27994978d, with the records, receipts, tools and tests they touch,
+          and n = 50's certificate read row by row, at 27994978d; its session refused the
+          project interpreter, so it re-ran nothing and decided no certificate.
+        verdict: defects-resolved
+        covers: [T-118]
     artifacts:
       - docs/project/reviews/review-2026-10-06-evand-exact-ceilings.md
+      - docs/project/reviews/review-2026-10-06-evand-exact-ceilings-fix-check.md
       - packing/resources/web/evand-square-packing-2026-10-05/README.md
       - packing/resources/web/evand-square-packing-2026-10-05/acquisition/sources.json
       - packing/resources/web/evand-square-packing-2026-10-05/receipts/first-party-check.json
@@ -10034,10 +10049,10 @@ results:
       certificate here has yet been decided by code of a reviewer's own. At the 49 counts
       whose report is an irrational closed form, the verified upper bound reaches the report
       only through an exact algebraic certificate of the packing at that side. At the six
-      rational ones, n = 50, 171, 198, 230, 261 and 293, a rational certificate that closes
-      the contacts exactly would reach it; at n = 50 the source's own exact point, before
-      its outward rounding, appears to be one (the review's EC-1). This entry gives
-      neither.
+      rational ones, n = 50, 171, 198, 230, 261 and 293, an exact certificate at that side
+      would reach it, rational where the packing's exact point is; at n = 50 the source's
+      own exact point, before its outward rounding, appears to be a rational one (the
+      review's EC-1, think-l8gt). This entry gives neither.
     notes: >-
       Registered on 6 October 2026 by lane R8 of the 6 October intake (think-70bh, under
       think-wyf4), on the owner's decision of that day; the id is provisional until merged.
@@ -10063,3 +10078,11 @@ results:
       second clone at the pin, byte for byte the pinned ones, and their controls were run
       then. The n = 17 certificate is held by the owner for the n = 17 work
       (think-x4v4) and was neither retained nor replayed.
+
+      The separately prompted review of 6 October, whose session refused the project
+      interpreter, ended defect-open on one blocking finding, EC-1: the record said no
+      rational certificate reaches a catalogue closed form, false at the six rational ones.
+      That and its six other findings were handled the same day, and a second separately
+      prompted reviewer's fix check ended defects-resolved; its four non-blocking findings
+      were handled after it, n = 50's grid structure now held by a test. Neither reviewer
+      could run code, so no certificate here has yet been decided by a reviewer's own.

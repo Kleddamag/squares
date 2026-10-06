@@ -22,7 +22,6 @@
       "printed_exact_form": null,
       "printed_exact_form_degree": null,
       "printed_side": "5.82444461667405",
-      "sha256": "94828c06201caecff00055c156658fc74cff3b7c33861c71e7ff326fcb8ce2eb",
       "source_input": "register witness",
       "source_status": "KKT local min",
       "verified_value": "5.82444461667406"
@@ -42,7 +41,6 @@
       "printed_exact_form": null,
       "printed_exact_form_degree": null,
       "printed_side": "6.59861960924436",
-      "sha256": "0b8d05705c270b061f65c166bf63d2aed1c9028933793ae969ff7c3d2f5f4904",
       "source_input": "register witness",
       "source_status": "KKT local min",
       "verified_value": "6.59861960924437"
@@ -62,7 +60,6 @@
       "printed_exact_form": null,
       "printed_exact_form_degree": null,
       "printed_side": "6.81072208306864",
-      "sha256": "4092c03a1603b05cd9491937791c0e2e8940145c274aea2c34df6d25d80c5fbb",
       "source_input": "register witness",
       "source_status": "KKT local min",
       "verified_value": "6.81072208306865"
@@ -82,7 +79,6 @@
       "printed_exact_form": null,
       "printed_exact_form_degree": null,
       "printed_side": "6.92669309446880",
-      "sha256": "c9c8350a4857f9e5d0b4f5bc33a54ae037f9db95b6f4e73dbbaa69c7c580b697",
       "source_input": "register witness",
       "source_status": "KKT local min",
       "verified_value": "6.92669309446881"
@@ -102,7 +98,6 @@
       "printed_exact_form": "7 + (4/7)",
       "printed_exact_form_degree": 1,
       "printed_side": "7.57142857142857",
-      "sha256": "c844136df517ad6ba1d9e2c1ad9f4373f3b5a8c6a039f96a1801ff0abaa5f56f",
       "source_input": "register witness",
       "source_status": "KKT local min",
       "verified_value": "7.57142857142858"
@@ -122,7 +117,6 @@
       "printed_exact_form": null,
       "printed_exact_form_degree": null,
       "printed_side": "7.70079923541701",
-      "sha256": "74995dce11bdfe263a83ab9f0f1429d9930c2f897a251dd2742cc1ad6b318739",
       "source_input": "register witness",
       "source_status": "KKT local min",
       "verified_value": "7.70079923541702"
@@ -142,7 +136,6 @@
       "printed_exact_form": "(13/2) + (1/2)sqrt(7)",
       "printed_exact_form_degree": 2,
       "printed_side": "7.82287565553229",
-      "sha256": "50e5bf91eece33e40d34392f76cb7b0c854c7cd4292d3a7517481a24b96b56cb",
       "source_input": "register witness",
       "source_status": "KKT local min",
       "verified_value": "7.82287565553230"
@@ -162,7 +155,6 @@
       "printed_exact_form": "7 - (1/2)sqrt(2) + sqrt(1 + sqrt(2))",
       "printed_exact_form_degree": 4,
       "printed_side": "7.84666719284348",
-      "sha256": "ed3c58125e4ef18f2135157cee1177681aa5b02f0b560ab6daa3c605c9c0f004",
       "source_input": "register witness",
       "source_status": "KKT local min",
       "verified_value": "7.84666719284349"
@@ -182,7 +174,6 @@
       "printed_exact_form": null,
       "printed_exact_form_degree": null,
       "printed_side": "7.94577100750391",
-      "sha256": "36d91d3d7a3f4f5e51983681ac2f230d68786038bb9aacc614edf294f400fa35",
       "source_input": "register witness",
       "source_status": "KKT local min",
       "verified_value": "7.94577100750392"
@@ -202,7 +193,6 @@
       "printed_exact_form": null,
       "printed_exact_form_degree": null,
       "printed_side": "8.82719465572973",
-      "sha256": "742d6b541dd1c8169f6b935b960b1cc5857b374cf39151375a5864b06b4f0791",
       "source_input": "register witness",
       "source_status": "KKT local min",
       "verified_value": "8.82719465572974"
@@ -222,7 +212,6 @@
       "printed_exact_form": null,
       "printed_exact_form_degree": null,
       "printed_side": "8.88166675700900",
-      "sha256": "631beff854aba404854e5c0841bc70b6d671d8d283ab9a8f6e9f42bfe7ef2deb",
       "source_input": "register witness",
       "source_status": "KKT local min",
       "verified_value": "8.88166675700901"
@@ -242,7 +231,6 @@
       "printed_exact_form": null,
       "printed_exact_form_degree": null,
       "printed_side": "8.94407155757031",
-      "sha256": "acbe9dac9468e5fb03d27c32a7cf46de6503e6c91614d9235cf203062221d4d1",
       "source_input": "register witness",
       "source_status": "KKT local min",
       "verified_value": "8.94407155757032"
@@ -262,7 +250,6 @@
       "printed_exact_form": null,
       "printed_exact_form_degree": null,
       "printed_side": "9.63475764863108",
-      "sha256": "c8b8e6f29cca57aa548549d3be003325efe34332e182ec903a468bde04011b50",
       "source_input": "register witness",
       "source_status": "KKT local min",
       "verified_value": "9.63475764863109"
@@ -282,7 +269,6 @@
       "printed_exact_form": null,
       "printed_exact_form_degree": null,
       "printed_side": "9.83881526994826",
-      "sha256": "be10ccd9e14540a1ad09e7860a0ac23a85bd56e3bdc5d98ee6483fc3f7239856",
       "source_input": "register witness",
       "source_status": "KKT local min",
       "verified_value": "9.83881526994827"
@@ -302,7 +288,6 @@
       "printed_exact_form": null,
       "printed_exact_form_degree": null,
       "printed_side": "9.88815305375857",
-      "sha256": "40b50ca5f3536fc5d8667ec7ae4ba0346bf3f078bb84d763dfa39b084bf8ed37",
       "source_input": "register witness",
       "source_status": "KKT local min",
       "verified_value": "9.88815305375858"
@@ -322,7 +307,6 @@
       "printed_exact_form": "7 + (5/2)sqrt(2)",
       "printed_exact_form_degree": 2,
       "printed_side": "10.53553390593273",
-      "sha256": "dfbe5ca659d052ca3c558240623ea55accfad3060da2dafd2b9534cf1a29df4c",
       "source_input": "register witness",
       "source_status": "KKT local min",
       "verified_value": "10.53553390593274"
@@ -342,7 +326,6 @@
       "printed_exact_form": "10 + (1/2)sqrt(2)",
       "printed_exact_form_degree": 2,
       "printed_side": "10.70710678118654",
-      "sha256": "9f2e41e12d343d567057d1d3ffac76197330e1f38a718f77745cf723334492a1",
       "source_input": "register witness",
       "source_status": "KKT local min",
       "verified_value": "10.70710678118655"
@@ -362,7 +345,6 @@
       "printed_exact_form": "10 - (1/2)sqrt(2) + sqrt(1 + sqrt(2))",
       "printed_exact_form_degree": 4,
       "printed_side": "10.84666719284348",
-      "sha256": "21e73629f75e30e54d25ed2ce0c7f225c35fa8f158d05b18f13d9088e98cce52",
       "source_input": "register witness",
       "source_status": "KKT local min",
       "verified_value": "10.84666719284349"
@@ -382,7 +364,6 @@
       "printed_exact_form": null,
       "printed_exact_form_degree": null,
       "printed_side": "10.92591939016138",
-      "sha256": "94ef7cb5c0234a23bdf259bd63e96794a07d1e3a7db8b3d4b33561fbe7042273",
       "source_input": "register witness",
       "source_status": "KKT local min",
       "verified_value": "10.92591939016139"
@@ -402,7 +383,6 @@
       "printed_exact_form": "6 + (7/2)sqrt(2)",
       "printed_exact_form_degree": 2,
       "printed_side": "10.94974746830583",
-      "sha256": "1ed2bb61e3e9f911997fa70178e92c2d140a8732e137cb48f41cb69732734070",
       "source_input": "register witness",
       "source_status": "KKT local min",
       "verified_value": "10.94974746830584"
@@ -422,7 +402,6 @@
       "printed_exact_form": "8 + (5/2)sqrt(2)",
       "printed_exact_form_degree": 2,
       "printed_side": "11.53553390593273",
-      "sha256": "29f4988d2e0712fd70f50b687d879eb3a55447b6990634c1d8e2e92647bb305b",
       "source_input": "register witness",
       "source_status": "KKT local min",
       "verified_value": "11.53553390593274"
@@ -442,7 +421,6 @@
       "printed_exact_form": "6 + 4 sqrt(2)",
       "printed_exact_form_degree": 2,
       "printed_side": "11.65685424949238",
-      "sha256": "351437092e59cf4ebe46ca83136a83d015bdd2f8c1b877c470d706fb79138c82",
       "source_input": "register witness",
       "source_status": "KKT local min",
       "verified_value": "11.65685424949239"
@@ -462,7 +440,6 @@
       "printed_exact_form": "11 + (1/2)sqrt(2)",
       "printed_exact_form_degree": 2,
       "printed_side": "11.70710678118654",
-      "sha256": "62e5c5566a8924ad208240e14a5b58fc24a921141b6adf9bfbeec3d3961d5fd7",
       "source_input": "register witness",
       "source_status": "KKT local min",
       "verified_value": "11.70710678118655"
@@ -482,7 +459,6 @@
       "printed_exact_form": "(21/2) + (1/2)sqrt(7)",
       "printed_exact_form_degree": 2,
       "printed_side": "11.82287565553229",
-      "sha256": "9a6538baec0ce0467fc105998096b786e63b22f7de24228a5ee0f38ee2759e70",
       "source_input": "witness polished by SLP (local optimizer)",
       "source_status": "KKT local min",
       "verified_value": "11.82287565553230"
@@ -502,7 +478,6 @@
       "printed_exact_form": null,
       "printed_exact_form_degree": null,
       "printed_side": "11.82509196821368",
-      "sha256": "b9eff107a64c71be67e1e395a09a3db5dcad195be6aa7f84108ba9261b99ac0c",
       "source_input": "register witness",
       "source_status": "KKT local min",
       "verified_value": "11.82509196821369"
@@ -522,7 +497,6 @@
       "printed_exact_form": null,
       "printed_exact_form_degree": null,
       "printed_side": "11.88130621809000",
-      "sha256": "956183098e1195a95220656454b2d5e0e5a22950da530a2aa04577a11631cfc4",
       "source_input": "witness polished by SLP (local optimizer)",
       "source_status": "KKT local min",
       "verified_value": "11.88130621809001"
@@ -542,7 +516,6 @@
       "printed_exact_form": "9 + (5/2)sqrt(2)",
       "printed_exact_form_degree": 2,
       "printed_side": "12.53553390593273",
-      "sha256": "222147713273d313d47fd9d321e70e8fed718a3340055dec43868c62e83b6d5b",
       "source_input": "register witness",
       "source_status": "KKT local min",
       "verified_value": "12.53553390593274"
@@ -562,7 +535,6 @@
       "printed_exact_form": null,
       "printed_exact_form_degree": null,
       "printed_side": "12.60090777851301",
-      "sha256": "38f90a927815dbe9dc0254f5cb8ff8fb07792b82d919eb471563fcaefd112ad3",
       "source_input": "register witness",
       "source_status": "KKT local min",
       "verified_value": "12.60090777851302"
@@ -582,7 +554,6 @@
       "printed_exact_form": "7 + 4 sqrt(2)",
       "printed_exact_form_degree": 2,
       "printed_side": "12.65685424949238",
-      "sha256": "0e690023b212a054ba64bb3e4c75d18080115079a539d481cf109e0555b66f24",
       "source_input": "register witness",
       "source_status": "KKT local min",
       "verified_value": "12.65685424949239"
@@ -602,7 +573,6 @@
       "printed_exact_form": "7 + 4 sqrt(2)",
       "printed_exact_form_degree": 2,
       "printed_side": "12.65685424949238",
-      "sha256": "ea869ad10f385a57b99dec16f549e7e096aca6cf8bc035a9fc7d556ff5d96be9",
       "source_input": "register witness",
       "source_status": "KKT local min",
       "verified_value": "12.65685424949239"
@@ -622,7 +592,6 @@
       "printed_exact_form": "12 + (1/2)sqrt(2)",
       "printed_exact_form_degree": 2,
       "printed_side": "12.70710678118654",
-      "sha256": "cee609160c234ae69b3139b68873e380f2b82dddeded718e10c82b3e050fb113",
       "source_input": "register witness",
       "source_status": "KKT local min",
       "verified_value": "12.70710678118655"
@@ -642,7 +611,6 @@
       "printed_exact_form": "5 + (11/2)sqrt(2)",
       "printed_exact_form_degree": 2,
       "printed_side": "12.77817459305202",
-      "sha256": "828c4f34babe99d5954aae97c32839576cef06abeb14c0703fd20d4a74287d97",
       "source_input": "register witness",
       "source_status": "KKT local min",
       "verified_value": "12.77817459305203"
@@ -662,7 +630,6 @@
       "printed_exact_form": "(23/2) + (1/2)sqrt(7)",
       "printed_exact_form_degree": 2,
       "printed_side": "12.82287565553229",
-      "sha256": "87cb1ff79a7529e70cbc219c7cc064807d4151b68539b9594c5f8596ecccebb2",
       "source_input": "register witness",
       "source_status": "KKT local min",
       "verified_value": "12.82287565553230"
@@ -682,7 +649,6 @@
       "printed_exact_form": null,
       "printed_exact_form_degree": null,
       "printed_side": "12.88166675700900",
-      "sha256": "476e9fbfa023b9a4ad816f626f5446195de43313314351b5d78b264a6464f19f",
       "source_input": "register witness",
       "source_status": "KKT local min",
       "verified_value": "12.88166675700901"
@@ -702,7 +668,6 @@
       "printed_exact_form": "10 + (5/2)sqrt(2)",
       "printed_exact_form_degree": 2,
       "printed_side": "13.53553390593273",
-      "sha256": "121c13706cd77872b3a02d99e10cff8784c32bd023a31064eaf61db3b250d11b",
       "source_input": "register witness",
       "source_status": "KKT local min",
       "verified_value": "13.53553390593274"
@@ -722,7 +687,6 @@
       "printed_exact_form": "13 + (4/7)",
       "printed_exact_form_degree": 1,
       "printed_side": "13.57142857142857",
-      "sha256": "151d5c28b81d188f500a14bdaf34fdc10d0b52724fb8b3b27e55b7036bcbab3b",
       "source_input": "register witness",
       "source_status": "KKT local min",
       "verified_value": "13.57142857142858"
@@ -742,7 +706,6 @@
       "printed_exact_form": "8 + 4 sqrt(2)",
       "printed_exact_form_degree": 2,
       "printed_side": "13.65685424949238",
-      "sha256": "b3fcf9754113af5e2554d021a7a690816ea98e02c6885cb9aca0f59ddea772d8",
       "source_input": "register witness",
       "source_status": "KKT local min",
       "verified_value": "13.65685424949239"
@@ -762,7 +725,6 @@
       "printed_exact_form": "13 + (1/2)sqrt(2)",
       "printed_exact_form_degree": 2,
       "printed_side": "13.70710678118654",
-      "sha256": "8bced9ed3c925c3fffe56be15e530e6ae6fb971fa54ebe6b304a500cf9a5b30d",
       "source_input": "register witness",
       "source_status": "KKT local min",
       "verified_value": "13.70710678118655"
@@ -782,7 +744,6 @@
       "printed_exact_form": "6 + (11/2)sqrt(2)",
       "printed_exact_form_degree": 2,
       "printed_side": "13.77817459305202",
-      "sha256": "5a9e4b4da03257a09a2faf4de015570e9b5b2a08341e2c7a44069201ce7f10c8",
       "source_input": "register witness",
       "source_status": "KKT local min",
       "verified_value": "13.77817459305203"
@@ -802,7 +763,6 @@
       "printed_exact_form": "(25/2) + (1/2)sqrt(7)",
       "printed_exact_form_degree": 2,
       "printed_side": "13.82287565553229",
-      "sha256": "df75ac33969551858c17d215a8125d0ceacc634d11c63fe7fb39b242607702d6",
       "source_input": "register witness",
       "source_status": "KKT local min",
       "verified_value": "13.82287565553230"
@@ -822,7 +782,6 @@
       "printed_exact_form": "13 - (1/2)sqrt(2) + sqrt(1 + sqrt(2))",
       "printed_exact_form_degree": 4,
       "printed_side": "13.84666719284348",
-      "sha256": "1900995702ce82b129c464897181fcf21e0f7b2ab857832fe9c91a77c475dcba",
       "source_input": "register witness",
       "source_status": "KKT local min",
       "verified_value": "13.84666719284349"
@@ -842,7 +801,6 @@
       "printed_exact_form": null,
       "printed_exact_form_degree": null,
       "printed_side": "13.89534106997649",
-      "sha256": "6e703ec24fa721b3f9992c7ff1850c7f572e5c39d12603a913aea691bd1e6d0c",
       "source_input": "register witness",
       "source_status": "KKT local min",
       "verified_value": "13.89534106997650"
@@ -862,7 +820,6 @@
       "printed_exact_form": "11 + (5/2)sqrt(2)",
       "printed_exact_form_degree": 2,
       "printed_side": "14.53553390593273",
-      "sha256": "ac06902a95ae20c4157c702268098aa186c9af5e1e65fac41e04525e7cbbff91",
       "source_input": "register witness",
       "source_status": "KKT local min",
       "verified_value": "14.53553390593274"
@@ -882,7 +839,6 @@
       "printed_exact_form": "14 + (4/7)",
       "printed_exact_form_degree": 1,
       "printed_side": "14.57142857142857",
-      "sha256": "60b5d30e3dc7fa0585e64378273d7348f45277516adcfe6fa2b16132023fa02d",
       "source_input": "register witness",
       "source_status": "KKT local min",
       "verified_value": "14.57142857142858"
@@ -902,7 +858,6 @@
       "printed_exact_form": "9 + 4 sqrt(2)",
       "printed_exact_form_degree": 2,
       "printed_side": "14.65685424949238",
-      "sha256": "413740728d429e233e99f8075420030c706c73261ae06d37ca62232674764098",
       "source_input": "register witness",
       "source_status": "KKT local min",
       "verified_value": "14.65685424949239"
@@ -922,7 +877,6 @@
       "printed_exact_form": "14 + (1/2)sqrt(2)",
       "printed_exact_form_degree": 2,
       "printed_side": "14.70710678118654",
-      "sha256": "8a39d7f95cf0c7037c6a72cee4a1a93b87e9cb2d8f04adff9d5c7666c7a1410f",
       "source_input": "register witness",
       "source_status": "KKT local min",
       "verified_value": "14.70710678118655"
@@ -942,7 +896,6 @@
       "printed_exact_form": "2 + 9 sqrt(2)",
       "printed_exact_form_degree": 2,
       "printed_side": "14.72792206135785",
-      "sha256": "620b9b21b76086fed3f23feccaf0cd6d052ce2e919a71d9dbfea66ee01f21a5e",
       "source_input": "register witness",
       "source_status": "KKT local min",
       "verified_value": "14.72792206135786"
@@ -962,7 +915,6 @@
       "printed_exact_form": "7 + (11/2)sqrt(2)",
       "printed_exact_form_degree": 2,
       "printed_side": "14.77817459305202",
-      "sha256": "965050fafa6a51f5e7d310a4ef4cace046cc9eb7e4eed63cbb129e765b2fdc8c",
       "source_input": "register witness",
       "source_status": "KKT local min",
       "verified_value": "14.77817459305203"
@@ -982,7 +934,6 @@
       "printed_exact_form": "(27/2) + (1/2)sqrt(7)",
       "printed_exact_form_degree": 2,
       "printed_side": "14.82287565553229",
-      "sha256": "faad2948ec59e542eb4f82cb019b87e754e2ae45fab14dbce27c80f96252e310",
       "source_input": "register witness",
       "source_status": "KKT local min",
       "verified_value": "14.82287565553230"
@@ -1002,7 +953,6 @@
       "printed_exact_form": null,
       "printed_exact_form_degree": null,
       "printed_side": "14.82445114612408",
-      "sha256": "4de07eb0540408dcfe378ab05863160b7af912acf8bf438352f4cc74a30a0ccf",
       "source_input": "register witness",
       "source_status": "KKT local min",
       "verified_value": "14.82445114612409"
@@ -1022,7 +972,6 @@
       "printed_exact_form": "12 + (5/2)sqrt(2)",
       "printed_exact_form_degree": 2,
       "printed_side": "15.53553390593273",
-      "sha256": "9efb436d7c9726c53b9bf960dee6f1f01797c1f12980dd831e774b9c949ae456",
       "source_input": "register witness",
       "source_status": "KKT local min",
       "verified_value": "15.53553390593274"
@@ -1042,7 +991,6 @@
       "printed_exact_form": "(17/2) + 5 sqrt(2)",
       "printed_exact_form_degree": 2,
       "printed_side": "15.57106781186547",
-      "sha256": "d6006f9c1c28692669f9b5da84a911b7eb10fddae594fa4f766b4ac19cfabb9a",
       "source_input": "register witness",
       "source_status": "KKT local min",
       "verified_value": "15.57106781186548"
@@ -1062,7 +1010,6 @@
       "printed_exact_form": "10 + 4 sqrt(2)",
       "printed_exact_form_degree": 2,
       "printed_side": "15.65685424949238",
-      "sha256": "57dd0bddaa92016a28b1934ae0a346794c45c9ebf68d40197fedcd678eb64465",
       "source_input": "register witness",
       "source_status": "KKT local min",
       "verified_value": "15.65685424949239"
@@ -1082,7 +1029,6 @@
       "printed_exact_form": "15 + (28/41)",
       "printed_exact_form_degree": 1,
       "printed_side": "15.68292682926829",
-      "sha256": "706f52cbee661d95b5bd8e255a5996eea5002cc190e5a1a98bc35e82fff5f254",
       "source_input": "register witness",
       "source_status": "bound only",
       "verified_value": "15.68292682926830"
@@ -1102,7 +1048,6 @@
       "printed_exact_form": "15 + (1/2)sqrt(2)",
       "printed_exact_form_degree": 2,
       "printed_side": "15.70710678118654",
-      "sha256": "32466292f9e4096fab514abdf69d332fdad7aa95092574d26a1b015b94d99a8d",
       "source_input": "register witness",
       "source_status": "KKT local min",
       "verified_value": "15.70710678118655"
@@ -1122,7 +1067,6 @@
       "printed_exact_form": "8 + (11/2)sqrt(2)",
       "printed_exact_form_degree": 2,
       "printed_side": "15.77817459305202",
-      "sha256": "e9cb96ccf557874de0902e4fe6f8b74e54e7110aa70deaa5086ece786daaadfc",
       "source_input": "register witness",
       "source_status": "KKT local min",
       "verified_value": "15.77817459305203"
@@ -1142,7 +1086,6 @@
       "printed_exact_form": "8 + (11/2)sqrt(2)",
       "printed_exact_form_degree": 2,
       "printed_side": "15.77817459305202",
-      "sha256": "618e0c1b61e82e155ca8eec0203c7c53d43c1de3c0fdb8b7b85edb0fa1955006",
       "source_input": "register witness",
       "source_status": "KKT local min",
       "verified_value": "15.77817459305203"
@@ -1162,7 +1105,6 @@
       "printed_exact_form": "(29/2) + (1/2)sqrt(7)",
       "printed_exact_form_degree": 2,
       "printed_side": "15.82287565553229",
-      "sha256": "ed54b4b4b5ef941109392a2358542e747bcd9f19556fe70ba05245df9af5cd1e",
       "source_input": "register witness",
       "source_status": "KKT local min",
       "verified_value": "15.82287565553230"
@@ -1182,7 +1124,6 @@
       "printed_exact_form": null,
       "printed_exact_form_degree": null,
       "printed_side": "15.82660563342856",
-      "sha256": "32a5d400b8780ea08c1bc453bbc6a668e83f8bea4d15e1afef34997fea870441",
       "source_input": "register witness",
       "source_status": "KKT local min",
       "verified_value": "15.82660563342857"
@@ -1202,7 +1143,6 @@
       "printed_exact_form": "13 + (5/2)sqrt(2)",
       "printed_exact_form_degree": 2,
       "printed_side": "16.53553390593273",
-      "sha256": "9036c8e811453efb6719f962d3b595db630adc282adf72c24a12c6b9339922f1",
       "source_input": "register witness",
       "source_status": "KKT local min",
       "verified_value": "16.53553390593274"
@@ -1222,7 +1162,6 @@
       "printed_exact_form": "(19/2) + 5 sqrt(2)",
       "printed_exact_form_degree": 2,
       "printed_side": "16.57106781186547",
-      "sha256": "b705686c99c4e6de247432d20b86ff358da894fb47ceb126f31b57a026f8a2fa",
       "source_input": "register witness",
       "source_status": "KKT local min",
       "verified_value": "16.57106781186548"
@@ -1242,7 +1181,6 @@
       "printed_exact_form": "11 + 4 sqrt(2)",
       "printed_exact_form_degree": 2,
       "printed_side": "16.65685424949238",
-      "sha256": "32d2e6df4c5e3435df2c9709d9362bc5929b1b941ee606fcfb364f64810d610a",
       "source_input": "witness polished by SLP (local optimizer)",
       "source_status": "KKT local min",
       "verified_value": "16.65685424949239"
@@ -1262,7 +1200,6 @@
       "printed_exact_form": "16 + (28/41)",
       "printed_exact_form_degree": 1,
       "printed_side": "16.68292682926829",
-      "sha256": "c7c013b2840bd98f6fe431bbdf96b8e8a7e943bc355166a9f335659a5b1509eb",
       "source_input": "register witness",
       "source_status": "bound only",
       "verified_value": "16.68292682926830"
@@ -1282,7 +1219,6 @@
       "printed_exact_form": "16 + (1/2)sqrt(2)",
       "printed_exact_form_degree": 2,
       "printed_side": "16.70710678118654",
-      "sha256": "cdefd7e1b349918c2ce5ec3f0629f4d5d1242010067a1e3b913d8a8eef3c0b60",
       "source_input": "register witness",
       "source_status": "KKT local min",
       "verified_value": "16.70710678118655"
@@ -1302,7 +1238,6 @@
       "printed_exact_form": "9 + (11/2)sqrt(2)",
       "printed_exact_form_degree": 2,
       "printed_side": "16.77817459305202",
-      "sha256": "29415576159129d6167cde73107dbed050d6b310fb8901b4c483060625b9838a",
       "source_input": "register witness",
       "source_status": "KKT local min",
       "verified_value": "16.77817459305203"
@@ -1322,7 +1257,6 @@
       "printed_exact_form": "9 + (11/2)sqrt(2)",
       "printed_exact_form_degree": 2,
       "printed_side": "16.77817459305202",
-      "sha256": "93bb05c093ad2d650ffc79453b13265671c0ec40504f70e4886337ecf2be83c7",
       "source_input": "register witness",
       "source_status": "KKT local min",
       "verified_value": "16.77817459305203"
@@ -1342,7 +1276,6 @@
       "printed_exact_form": null,
       "printed_exact_form_degree": null,
       "printed_side": "16.82306208283780",
-      "sha256": "ccbd7cb3728f74f481241901b310663930d3e1758f4a8d772b5053798b50516f",
       "source_input": "register witness",
       "source_status": "KKT local min",
       "verified_value": "16.82306208283781"
@@ -1362,7 +1295,6 @@
       "printed_exact_form": "16 - (1/2)sqrt(2) + sqrt(1 + sqrt(2))",
       "printed_exact_form_degree": 4,
       "printed_side": "16.84666719284348",
-      "sha256": "98058a4dabc3a66e725e9febc753188286b2685890609beb8b385675f56081c1",
       "source_input": "register witness",
       "source_status": "KKT local min",
       "verified_value": "16.84666719284349"
@@ -1382,7 +1314,6 @@
       "printed_exact_form": "14 + (5/2)sqrt(2)",
       "printed_exact_form_degree": 2,
       "printed_side": "17.53553390593273",
-      "sha256": "52955244183b0b253aeff85c43af149d27d762d398ead290610021ef0cff589a",
       "source_input": "register witness",
       "source_status": "KKT local min",
       "verified_value": "17.53553390593274"
@@ -1402,7 +1333,6 @@
       "printed_exact_form": "14 + (5/2)sqrt(2)",
       "printed_exact_form_degree": 2,
       "printed_side": "17.53553390593273",
-      "sha256": "e3c1ea9c0c356ae7a622f2fbd8c17b21365082b73d6d1a980257df8bdb0cd34b",
       "source_input": "register witness",
       "source_status": "KKT local min",
       "verified_value": "17.53553390593274"
@@ -1422,7 +1352,6 @@
       "printed_exact_form": "17 + (26/41)",
       "printed_exact_form_degree": 1,
       "printed_side": "17.63414634146341",
-      "sha256": "aa67fe1a7957f241fd50df47d4825ddd94aea1c1940540f952d159d54fd292b0",
       "source_input": "register witness",
       "source_status": "KKT local min",
       "verified_value": "17.63414634146342"
@@ -1442,7 +1371,6 @@
       "printed_exact_form": "12 + 4 sqrt(2)",
       "printed_exact_form_degree": 2,
       "printed_side": "17.65685424949238",
-      "sha256": "84bf484cf57ad5a173c92f42f678c175a6b0c9e6f9c1f0dc305c4f1ac4ad0bad",
       "source_input": "register witness",
       "source_status": "KKT local min",
       "verified_value": "17.65685424949239"
@@ -1462,7 +1390,6 @@
       "printed_exact_form": "17 + (1/2)sqrt(2)",
       "printed_exact_form_degree": 2,
       "printed_side": "17.70710678118654",
-      "sha256": "f101a9df0ac1058a108ae1a9f8dec932bee82df581e06e03d3e79c0a7dcff954",
       "source_input": "register witness",
       "source_status": "KKT local min",
       "verified_value": "17.70710678118655"
@@ -1482,7 +1409,6 @@
       "printed_exact_form": "17 + (1/2)sqrt(2)",
       "printed_exact_form_degree": 2,
       "printed_side": "17.70710678118654",
-      "sha256": "be512db90d2eba34009b123c031183f5fcda44d4da69f8680018ed007dafbf0d",
       "source_input": "register witness",
       "source_status": "KKT local min",
       "verified_value": "17.70710678118655"
@@ -1502,7 +1428,6 @@
       "printed_exact_form": "10 + (11/2)sqrt(2)",
       "printed_exact_form_degree": 2,
       "printed_side": "17.77817459305202",
-      "sha256": "c5ed42d1e55e560940560c7252d4e17d6f89183f18dcb218eec97efdb1bdcb22",
       "source_input": "register witness",
       "source_status": "KKT local min",
       "verified_value": "17.77817459305203"
@@ -1536,7 +1461,6 @@
       "printed_exact_form": "(33/2) + (1/2)sqrt(7)",
       "printed_exact_form_degree": 2,
       "printed_side": "17.82287565553229",
-      "sha256": "a5270c4442d1ff9371d0db779d00cda6a8225d46e675ce4ed22cea9669289911",
       "source_input": "witness polished by SLP (local optimizer)",
       "source_status": "KKT local min",
       "verified_value": "17.82287565553230"
@@ -1556,7 +1480,6 @@
       "printed_exact_form": null,
       "printed_exact_form_degree": null,
       "printed_side": "17.82412338847854",
-      "sha256": "2e07546ae7dbe5ead01896d7ffce864e924d4a637e90573e15ab25436d2420d9",
       "source_input": "register witness",
       "source_status": "KKT local min",
       "verified_value": "17.82412338847855"

@@ -246,3 +246,10 @@ docs/project/reviews/review-2026-10-06-karakus-proposition-5-1-machine-check.md
 # change, reflow plus 47 straight apostrophes and 64 straight double quotes retyped as
 # curly. Same rule as the reviews above.
 docs/project/reviews/review-2026-10-06-evand-exact-ceilings.md
+
+# The separately prompted check of that review's fixes, stored byte-identical the same
+# way: its first 16,491 bytes are the reviewer's output, SHA-256 2a0f4418..., and the
+# common-doc footer follows. Measured the same way on 2026-10-06: 84 of its 188 lines
+# change, reflow plus 48 straight apostrophes and 78 straight double quotes retyped as
+# curly.
+docs/project/reviews/review-2026-10-06-evand-exact-ceilings-fix-check.md

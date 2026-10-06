@@ -317,3 +317,34 @@ def test_every_closed_form_lies_below_its_certificate_and_six_are_rational() -> 
         blocker = apply_exact_ceilings.trailing_blocker(row, ["E-kingbird-upper-register"])
         irrational = "an irrational side, which no rational certificate reaches"
         assert (irrational in blocker["detail"]) == (n not in rational), n
+
+
+def test_n50_certificate_is_53_over_7_on_a_rational_grid_scaled_outward() -> None:
+    """At n = 50, whose catalogue side is the rational 53/7, the certificate appears to be a
+    contact-exact rational packing scaled by 1 + 1e-20 (the review's EC-1, its fix check's
+    FC-2 and FC-4): undone, the side is 53/7 rounded up at 30 decimals, every square the
+    source does not list as free has tangent 0 or 1/3 to 1e-30, a 3-4-5 rotation, and 42 of
+    those 44 have centres on a grid of 1/350 to 3e-36. Squares 24 and 25 (0-based) sit
+    8e-17 off it, along their own 3-4-5 edge direction, so the snapped packing at 53/7 is a
+    conjecture this test does not decide."""
+    certificate = certificates.parse(
+        certificates.certificate_path(certificates.CERTS, 50).read_text(encoding="utf-8"),
+        expected_n=50,
+    )
+    free = set(certificates.reported_free()[50])
+    assert sorted(free) == [5, 19, 23, 26, 32, 46]
+    scale = 1 + Fraction(1, 10**20)
+    assert 0 <= certificate.side / scale - Fraction(53, 7) < Fraction(1, 10**30)
+    off: dict[int, tuple[Fraction, Fraction]] = {}
+    for place, pose in enumerate(certificate.poses):
+        if place in free:
+            continue
+        assert pose.t == 0 or abs(pose.t - Fraction(1, 3)) < Fraction(1, 10**30), place
+        x, y = pose.x / scale * 350, pose.y / scale * 350
+        dx, dy = (x - round(x)) / 350, (y - round(y)) / 350
+        if max(abs(dx), abs(dy)) > Fraction(3, 10**36):
+            off[place] = (dx, dy)
+    assert sorted(off) == [24, 25]
+    for dx, dy in off.values():
+        assert abs(dx * 3 - dy * 4) < Fraction(1, 10**30)  # along (4, 3)
+        assert Fraction(7, 10**17) ** 2 < dx * dx + dy * dy < Fraction(9, 10**17) ** 2

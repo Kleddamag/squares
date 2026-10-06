@@ -845,8 +845,12 @@ def _moved(certificate: Certificate, index: int, dx: Fraction, dy: Fraction) -> 
 
 
 def overlap_control(certificate: Certificate) -> tuple[Certificate, dict[str, Any]]:
-    """Move one square of the tightest pair along the closing normal by its exact gap plus
-    one unit of the side's denominator, doubling the excess until the pair overlaps."""
+    """Move one square of the tightest pair along the pair's best separating face axis by
+    that axis's gap plus one unit of the side's denominator, doubling the excess until the
+    pair overlaps. The overlap is judged by the independent checker's own pair gap, so its
+    refusal of the mutant is circular; the mutant is invalid regardless, since its squares
+    have rational unit edge normals and a negative gap on every face axis means, by the
+    separating-axis theorem, that their interiors meet."""
     left, right, gap, (nx, ny) = tightest_pair(certificate)
     unit = Fraction(1, certificate.side.denominator)
     excess = unit

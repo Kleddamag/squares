@@ -27,8 +27,8 @@ be a smaller packing than the catalogue's and no ceiling.
 verified upper lane becomes that value, citing the exact replay here and the source's
 checkers run here; the earlier upper-gap blocker goes, and where the report has a closed
 form, which the certificate's side lies just above, a blocker saying by how much the ceiling
-still trails it takes its place: no rational certificate reaches an irrational form, and only
-one that closes its contacts exactly would reach the six rational ones. The body gains a
+still trails it takes its place: no rational certificate reaches an irrational form, and
+the six rational ones would be reached by an exact certificate at that side. The body gains a
 dated paragraph and a section on the certificate where the ceiling section stood, and keeps
 a rewritten ceiling section where it still trails. At ``n = 69, 83, 87`` the earlier
 certificate's sentences go into the past. The reported lane is unchanged: the packing, its
@@ -205,7 +205,6 @@ def survey_row(
     after = {"value": value, "exact_form": certificates.literal(Fraction(value))}
     return {
         "n": n,
-        "sha256": first["sha256"],
         "printed_side": str(reported["value"]),
         "printed_exact_form": reported.get("exact_form"),
         "finders": list(reported.get("found_by") or []),
@@ -359,8 +358,8 @@ def verified_block(row: Mapping[str, Any]) -> dict[str, Any]:
 
 def trailing_blocker(row: Mapping[str, Any], evidence: Sequence[str]) -> dict[str, Any]:
     """The ``mathematics`` blocker of a count whose report is a closed form: irrational,
-    which no rational certificate reaches, or rational, which one that closes its
-    contacts exactly would (the review's EC-1)."""
+    which no rational certificate reaches, or rational, which an exact certificate at that
+    side would reach (the review's EC-1 and its fix check's FC-1)."""
     rational = row["printed_exact_form_degree"] == 1
     form = (
         "a rational side, which this certificate, rounded outward, does not reach"
@@ -368,7 +367,8 @@ def trailing_blocker(row: Mapping[str, Any], evidence: Sequence[str]) -> dict[st
         else "an irrational side, which no rational certificate reaches"
     )
     remedy = (
-        "a rational certificate of the packing that closes its contacts exactly"
+        "an exact certificate of the packing at that side, rational where its exact point "
+        "is rational"
         if rational
         else "an exact algebraic certificate of the packing at its closed-form side"
     )
@@ -589,8 +589,8 @@ def ceiling_section(n: int, row: Mapping[str, Any]) -> str:
         "squares are rational and each is kept clear of its neighbours and the walls, so "
         "it bounds the exact side from above and does not reach it. "
         + (
-            "That side is rational, so a rational certificate of the packing that closes "
-            "its contacts exactly could reach it. "
+            "That side is rational, so an exact certificate of the packing at that side "
+            "would reach it, a rational one where the packing’s exact point is rational. "
             if row["printed_exact_form_degree"] == 1
             else "That side is irrational, so no rational certificate reaches it. "
         )

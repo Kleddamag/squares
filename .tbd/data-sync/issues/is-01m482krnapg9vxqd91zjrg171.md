@@ -5,7 +5,7 @@ title: "Complete import of every filed issue (6 October, round 2): #282, #281, #
 kind: epic
 status: in_progress
 priority: 1
-version: 16
+version: 17
 delegate: claude-code@vm
 labels: []
 dependencies: []
@@ -23,10 +23,11 @@ child_order_hints:
   - is-01m48ytww2vy3q2mxg6b66v415
   - is-01m494b27nbmm6dd2sw2f3qk7c
   - is-01m495xvv5wq8p22vqds3ajqc2
+  - is-01m497wf2gwte9m7cs7qm3ty0c
 hold: null
 hold_until: null
 created_at: 2026-10-06T07:42:22.889Z
-updated_at: 2026-10-06T17:59:33.988Z
+updated_at: 2026-10-06T18:33:45.295Z
 started_at: 2026-10-06T07:48:43.248Z
 ---
 Owner's ask (2026-10-06): continue importing all filed issues not yet imported, mapped end to end with beads until complete. Lanes: R3 #316 ValidTilt9 (think-dsz4); R4 #282 T-082 and T-090 census replays (think-wpuu, think-wrdq); R5 #281 T-068 (think-6ei5); R6 #295 T-083/T-084 C2 and T-007 (think-dw1o, think-bkqm). Coordinator: #382 records, replies and closures, the intake sweep. Held: n = 17 (think-x4v4). Owner decisions: #368 close, #317 close, think-5n3o, think-70bh.

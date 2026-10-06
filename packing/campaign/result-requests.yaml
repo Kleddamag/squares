@@ -360,6 +360,11 @@ issues:
             id: E-n019-wand125-mixed-48229-report
           - result: n19-48229
             id: E-n019-wand125-mixed-48229-sqverify-fast-replay
+      - url: https://github.com/jlevy/squares/issues/366#issuecomment-6026340743
+        date: '2026-10-06'
+        by: jlevy
+        kind: follow-up
+        reported: []
     close_when: >-
       The s(18) certificate is confirmed or refuted and the reply saying so is posted from
       main, and the offered sqverify_fast change is taken in or declined; and the two

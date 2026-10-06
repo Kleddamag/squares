@@ -5,7 +5,7 @@ title: "Intake round 2026-10-06: #366's s(18) >= 588/125 and s(19) >= 48229/1000
 kind: epic
 status: open
 priority: 1
-version: 4
+version: 5
 labels:
   - result-import
 dependencies: []
@@ -13,6 +13,7 @@ child_order_hints:
   - is-01m47heaqfpfzme4eeahsyqgrw
   - is-01m47hebdne4hp1s4c1yqp31n0
   - is-01m47d1ey7r49t9x8zdj5yarqw
+  - is-01m47mft7sk2zep70k48bmwf55
 created_at: 2026-10-06T02:42:18.299Z
-updated_at: 2026-10-06T02:42:22.841Z
+updated_at: 2026-10-06T03:35:33.369Z
 ---

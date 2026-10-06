@@ -9,8 +9,11 @@ them. At 48 counts `S'` lies below the side the register reported, by `3.5e-13` 
 de Winter’s at `n = 126` and `211`, with the slack of its binary64 pose removed.
 Evan Daniel asked for those 48 to be registered on
 [jlevy/squares#375](https://github.com/jlevy/squares/issues/375). Its Frontier key is
-**[evand exact optima 2026-10-05]**, the result is registered as T-098 (provisional until
-merged), and the import bead is `think-t6ok`.
+**[evand exact optima 2026-10-05]**, the result is registered as T-098, and the import bead
+is `think-t6ok`. At 77 more counts the certified side lies just above the printed one and
+lowers the verified ceiling; the author asked for nothing from those, and the owner decided
+to register them as T-101 (provisionally T-118 until merged, `think-70bh`;
+[The 77 Ceiling Counts](#the-77-ceiling-counts)).
 
 The certificate for `n = 17` is held by the owner for the `n = 17` work on other branches
 (`think-x4v4`). It is not retained, not pinned by digest and not replayed here, and neither
@@ -28,8 +31,8 @@ among it.
 | AI assistance | On #375 the author wrote that “the solver, verifiers and this batch were written with Claude (Anthropic) as a coding and research agent, directed and reviewed by me”; the batch README says both checkers “were written by the same author and agent as the solver” |
 | Licence | MIT (`LICENSE` and `s12/LICENSE`, Evan Daniel), pinned here as identical to the earlier packet’s copies |
 | Retrieved | 2026-10-05T22:08Z, a blobless clone, `main` at this commit then and at 22:22Z |
-| Retained here | The 48 improving certificates `batch/certs/n-N.cert` (1.6 MB), both checkers `verify_cert.py` and `verify_cert2.py`, the solver `exactsolve.py` and its `geom.py`, the drivers `verify_all.sh` and `reproduce.sh`, `batch/results.md`, the source’s per-count report `batch/results.json` (stored compressed) and both READMEs |
-| Pinned by digest only | The other 272 certificates, all 320 solver inputs, the solver’s seven-input test set and its outputs, the batch’s scripts that read the register and build its tables, and `candidates_all.json`: 632 files, 6.2 MB, listed with their reasons in [`acquisition/sources.json`](acquisition/sources.json) |
+| Retained here | The 48 improving certificates `batch/certs/n-N.cert` (1.6 MB) and, from 6 October, the 77 that lower a verified ceiling (2.0 MB), both checkers `verify_cert.py` and `verify_cert2.py`, the solver `exactsolve.py` and its `geom.py`, the drivers `verify_all.sh` and `reproduce.sh`, `batch/results.md`, the source’s per-count report `batch/results.json` (stored compressed) and both READMEs |
+| Pinned by digest only | The other 195 certificates, all 320 solver inputs, the solver’s seven-input test set and its outputs, the batch’s scripts that read the register and build its tables, and `candidates_all.json`: 555 files, 4.3 MB, listed with their reasons in [`acquisition/sources.json`](acquisition/sources.json) |
 | Left out | `batch/certs/n-17.cert`, `batch/inputs/n-17.txt`, `inputs/site17.txt` and `results/site17.*`, held |
 
 `python -m devtools.acquire_source evand-square-packing-2026-10-05 --checkout PATH` writes
@@ -217,6 +220,159 @@ witness’s by more than `1e-8`, and how many of them the source lists as free.
 | 306 | Francisco Couzo (T-092) | `17.963438139777139` | `17.9634381397640028537…` | `1.31e-11` | KKT local min | 2 (2 free) |
 | 307 | Francisco Couzo (T-056) | `17.981030548643712` | `17.9810305486333106963…` | `1.04e-11` | KKT local min | 4 (4 free) |
 
+## The 77 Ceiling Counts
+
+At the other counts each certified side lies above the side the record prints, and #375
+offered those certificates as an independent exact replay of the existing upper bounds,
+asking for nothing to be registered from them.
+The owner decided on 6 October 2026 to act on them where they lower a verified ceiling
+(`think-70bh`); they are registered as T-101, provisionally T-118 until merged.
+
+**Which counts.** A certificate of a printed side carries the verified upper bound at the
+larger of the printed side and its own side rounded up at the printed precision, with
+that decimal’s fraction as the exact form: the rule the record applies to Francisco
+Couzo’s packings (T-056) and to the catalogue’s packings at `n = 69, 83, 87` (T-088,
+T-089). `devtools.apply_exact_ceilings survey` computes that value at each of the 272
+counts the receipts decide beside the 48 and the held `n = 17`, and selects those where
+it lies strictly below the verified ceiling the record held: 77 counts from `n = 28` to
+`300`, every one of them the Kingbird catalogue’s packing
+([`receipts/ceiling-survey.json`](receipts/ceiling-survey.json)). The ceiling had been the
+integer grid at 74 of them, above the printed side by up to `0.464`, and at
+`n = 69, 83, 87` the rounded-up sides of exact certificates of a parse of the catalogue’s
+pictures. The one other count whose ceiling trailed its report, `n = 29`, keeps it: its
+interval-certified bound (`E-n029-interval-certified-upper`) lies `5e-21` below the
+certificate’s side.
+
+**What they carry.** Each certified side lies `1.2e-16` to `9.8e-15` above the printed
+one, and at all 77 the printed side has fourteen decimals, so each verified upper bound is
+the printed side plus one unit of its last place.
+At the 22 counts whose catalogue side is a decimal alone, that agrees with the report at
+the precision the record compares them.
+At the other 55 the catalogue also gives the side as a closed form, and the certificate’s
+side lies `7.6e-20` to `1.8e-19` above it, its outward rounding, so those 55 keep a ceiling
+section and a `mathematics` blocker, the ceiling now `1e-14` above the printed side
+instead of up to `0.464`.
+Forty-nine of those forms are irrational, which no rational certificate reaches.
+The other six, at `n = 50, 171, 198, 230, 261` and `293`, are rational (`53/7` at
+`n = 50`), and an exact certificate of the packing at that side would reach them, a
+rational one where the packing’s exact point is rational.
+At `n = 50` the source’s own exact point appears to be such a rational one: with its
+scaling by `1 + 10^-20` undone, its side is `53/7` rounded up, and of the 44 squares it
+does not list as free, every one has tangent `0` or `1/3` (a 3-4-5 rotation) to within
+`1e-30`, and 42 have centres on a grid of `1/350` to within `3e-36`. The other two,
+squares 24 and 25 (0-based), sit `8e-17` off that grid along their own 3-4-5 edge
+direction, so the snapped packing at `53/7` is not yet decided
+(`test_n50_certificate_is_53_over_7_on_a_rational_grid_scaled_outward` holds these
+figures; the review’s EC-1, `think-l8gt`).
+
+**The same packings.** Matched square for square with the known-best witness, every
+certificate lies within `7.1e-4` of it; of the 416 squares that move by more than `1e-8`,
+332 are ones the source lists as free, and the other 84 move by at most `1.2e-7`. Four of
+the 77, `n = 127, 129, 260` and `299`, were solved from the witness after the source’s
+unpublished SLP squeeze.
+
+**Replayed, retained and controlled.** The run of 5 October decided all 77 with the rest,
+by both checkers here (838 of its 2,820 CPU seconds) and by the source’s two (59 of 202),
+with least wall clearance `5e-21` and least pair gap about `1e-20` at each.
+On 6 October the 77 were retained from a second clone at the pin, byte for byte the
+pinned and decided ones, and `controls --ceilings` made the three controls of each, as
+for the 48 ([`receipts/negative-controls-ceilings.json`](receipts/negative-controls-ceilings.json)):
+one square of the tightest pair moved along the pair’s best separating face axis by that
+axis’s gap, about `1e-20`, plus one unit of the side’s denominator (`1e-30` to `1.6e-28`),
+and the box shrunk by its least top or right clearance, about `5e-21`, plus that unit, are
+refused by all four checkers at every count; the box shrunk by the unit alone is accepted
+by all four, as it must be. Every moved square stays at least `0.71` inside the walls, so
+each overlap refusal is for the pair. The overlap is chosen by the independent checker’s
+own pair gap, so that checker’s refusal of it is circular; the mutant is invalid
+regardless, since its edge normals are rational unit vectors and a negative gap on every
+face axis means the two interiors meet. The run took 4,696 s of wall time on two workers under
+the shared machine’s load; it recorded no CPU time.
+
+Generated by
+`uv run --frozen --all-extras --group dev python -m devtools.apply_exact_ceilings table`.
+“Earlier ceiling” is the verified upper bound before this import, and `S'` is shown to 19
+decimals, rounded up.
+
+| n | Printed side | Closed form | Earlier ceiling | Certified side `S'` | Above printed by | Verified upper bound | Agrees |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| 28 | `5.82444461667405` | — | `6` (grid) | `5.8244446166740592971…` | `9.30e-15` | `5.82444461667406` | yes |
+| 37 | `6.59861960924436` | — | `7` (grid) | `6.5986196092443601163…` | `1.16e-16` | `6.59861960924437` | yes |
+| 39 | `6.81072208306864` | — | `7` (grid) | `6.8107220830686488518…` | `8.85e-15` | `6.81072208306865` | yes |
+| 41 | `6.92669309446880` | — | `7` (grid) | `6.9266930944688022317…` | `2.23e-15` | `6.92669309446881` | yes |
+| 50 | `7.57142857142857` | `7 + (4/7)` | `8` (grid) | `7.5714285714285714287…` | `1.43e-15` | `7.57142857142858` | no |
+| 51 | `7.70079923541701` | — | `8` (grid) | `7.7007992354170117236…` | `1.72e-15` | `7.70079923541702` | yes |
+| 53 | `7.82287565553229` | `(13/2) + (1/2)sqrt(7)` | `8` (grid) | `7.8228756555322952954…` | `5.30e-15` | `7.82287565553230` | no |
+| 54 | `7.84666719284348` | `7 - (1/2)sqrt(2) + sqrt(1 + sqrt(2))` | `8` (grid) | `7.8466671928434897831…` | `9.78e-15` | `7.84666719284349` | no |
+| 55 | `7.94577100750391` | — | `8` (grid) | `7.9457710075039129791…` | `2.98e-15` | `7.94577100750392` | yes |
+| 69 | `8.82719465572973` | — | `8.82719465572975` (T-088) | `8.8271946557297389151…` | `8.92e-15` | `8.82719465572974` | yes |
+| 70 | `8.88166675700900` | — | `9` (grid) | `8.8816667570090046250…` | `4.62e-15` | `8.88166675700901` | yes |
+| 71 | `8.94407155757031` | — | `9` (grid) | `8.9440715575703155067…` | `5.51e-15` | `8.94407155757032` | yes |
+| 83 | `9.63475764863108` | — | `9.63475764863195` (T-089) | `9.6347576486310820294…` | `2.03e-15` | `9.63475764863109` | yes |
+| 87 | `9.83881526994826` | — | `9.83881526994915` (T-089) | `9.8388152699482622604…` | `2.26e-15` | `9.83881526994827` | yes |
+| 88 | `9.88815305375857` | — | `10` (grid) | `9.8881530537585723829…` | `2.38e-15` | `9.88815305375858` | yes |
+| 101 | `10.53553390593273` | `7 + (5/2)sqrt(2)` | `11` (grid) | `10.5355339059327376222…` | `7.62e-15` | `10.53553390593274` | no |
+| 104 | `10.70710678118654` | `10 + (1/2)sqrt(2)` | `11` (grid) | `10.7071067811865475246…` | `7.52e-15` | `10.70710678118655` | no |
+| 107 | `10.84666719284348` | `10 - (1/2)sqrt(2) + sqrt(1 + sqrt(2))` | `11` (grid) | `10.8466671928434897831…` | `9.78e-15` | `10.84666719284349` | no |
+| 108 | `10.92591939016138` | — | `11` (grid) | `10.9259193901613875107…` | `7.51e-15` | `10.92591939016139` | yes |
+| 109 | `10.94974746830583` | `6 + (7/2)sqrt(2)` | `11` (grid) | `10.9497474683058326710…` | `2.67e-15` | `10.94974746830584` | no |
+| 122 | `11.53553390593273` | `8 + (5/2)sqrt(2)` | `12` (grid) | `11.5355339059327376222…` | `7.62e-15` | `11.53553390593274` | no |
+| 124 | `11.65685424949238` | `6 + 4 sqrt(2)` | `12` (grid) | `11.6568542494923801954…` | `1.95e-16` | `11.65685424949239` | no |
+| 125 | `11.70710678118654` | `11 + (1/2)sqrt(2)` | `12` (grid) | `11.7071067811865475246…` | `7.52e-15` | `11.70710678118655` | no |
+| 127 | `11.82287565553229` | `(21/2) + (1/2)sqrt(7)` | `12` (grid) | `11.8228756555322952954…` | `5.30e-15` | `11.82287565553230` | no |
+| 128 | `11.82509196821368` | — | `12` (grid) | `11.8250919682136870293…` | `7.03e-15` | `11.82509196821369` | yes |
+| 129 | `11.88130621809000` | — | `12` (grid) | `11.8813062180900030634…` | `3.06e-15` | `11.88130621809001` | yes |
+| 145 | `12.53553390593273` | `9 + (5/2)sqrt(2)` | `13` (grid) | `12.5355339059327376222…` | `7.62e-15` | `12.53553390593274` | no |
+| 146 | `12.60090777851301` | — | `13` (grid) | `12.6009077785130182403…` | `8.24e-15` | `12.60090777851302` | yes |
+| 147 | `12.65685424949238` | `7 + 4 sqrt(2)` | `13` (grid) | `12.6568542494923801954…` | `1.95e-16` | `12.65685424949239` | no |
+| 148 | `12.65685424949238` | `7 + 4 sqrt(2)` | `13` (grid) | `12.6568542494923801954…` | `1.95e-16` | `12.65685424949239` | no |
+| 149 | `12.70710678118654` | `12 + (1/2)sqrt(2)` | `13` (grid) | `12.7071067811865475246…` | `7.52e-15` | `12.70710678118655` | no |
+| 150 | `12.77817459305202` | `5 + (11/2)sqrt(2)` | `13` (grid) | `12.7781745930520227686…` | `2.77e-15` | `12.77817459305203` | no |
+| 151 | `12.82287565553229` | `(23/2) + (1/2)sqrt(7)` | `13` (grid) | `12.8228756555322952954…` | `5.30e-15` | `12.82287565553230` | no |
+| 153 | `12.88166675700900` | — | `13` (grid) | `12.8816667570090046250…` | `4.63e-15` | `12.88166675700901` | yes |
+| 170 | `13.53553390593273` | `10 + (5/2)sqrt(2)` | `14` (grid) | `13.5355339059327376222…` | `7.62e-15` | `13.53553390593274` | no |
+| 171 | `13.57142857142857` | `13 + (4/7)` | `14` (grid) | `13.5714285714285714288…` | `1.43e-15` | `13.57142857142858` | no |
+| 173 | `13.65685424949238` | `8 + 4 sqrt(2)` | `14` (grid) | `13.6568542494923801954…` | `1.95e-16` | `13.65685424949239` | no |
+| 174 | `13.70710678118654` | `13 + (1/2)sqrt(2)` | `14` (grid) | `13.7071067811865475246…` | `7.52e-15` | `13.70710678118655` | no |
+| 175 | `13.77817459305202` | `6 + (11/2)sqrt(2)` | `14` (grid) | `13.7781745930520227686…` | `2.77e-15` | `13.77817459305203` | no |
+| 176 | `13.82287565553229` | `(25/2) + (1/2)sqrt(7)` | `14` (grid) | `13.8228756555322952954…` | `5.30e-15` | `13.82287565553230` | no |
+| 178 | `13.84666719284348` | `13 - (1/2)sqrt(2) + sqrt(1 + sqrt(2))` | `14` (grid) | `13.8466671928434897831…` | `9.78e-15` | `13.84666719284349` | no |
+| 179 | `13.89534106997649` | — | `14` (grid) | `13.8953410699764907318…` | `7.32e-16` | `13.89534106997650` | yes |
+| 197 | `14.53553390593273` | `11 + (5/2)sqrt(2)` | `15` (grid) | `14.5355339059327376222…` | `7.62e-15` | `14.53553390593274` | no |
+| 198 | `14.57142857142857` | `14 + (4/7)` | `15` (grid) | `14.5714285714285714288…` | `1.43e-15` | `14.57142857142858` | no |
+| 200 | `14.65685424949238` | `9 + 4 sqrt(2)` | `15` (grid) | `14.6568542494923801954…` | `1.95e-16` | `14.65685424949239` | no |
+| 201 | `14.70710678118654` | `14 + (1/2)sqrt(2)` | `15` (grid) | `14.7071067811865475246…` | `7.52e-15` | `14.70710678118655` | no |
+| 202 | `14.72792206135785` | `2 + 9 sqrt(2)` | `15` (grid) | `14.7279220613578554394…` | `5.44e-15` | `14.72792206135786` | no |
+| 203 | `14.77817459305202` | `7 + (11/2)sqrt(2)` | `15` (grid) | `14.7781745930520227686…` | `2.77e-15` | `14.77817459305203` | no |
+| 204 | `14.82287565553229` | `(27/2) + (1/2)sqrt(7)` | `15` (grid) | `14.8228756555322952954…` | `5.30e-15` | `14.82287565553230` | no |
+| 205 | `14.82445114612408` | — | `15` (grid) | `14.8244511461240882237…` | `8.22e-15` | `14.82445114612409` | yes |
+| 226 | `15.53553390593273` | `12 + (5/2)sqrt(2)` | `16` (grid) | `15.5355339059327376222…` | `7.62e-15` | `15.53553390593274` | no |
+| 227 | `15.57106781186547` | `(17/2) + 5 sqrt(2)` | `16` (grid) | `15.5710678118654752442…` | `5.24e-15` | `15.57106781186548` | no |
+| 229 | `15.65685424949238` | `10 + 4 sqrt(2)` | `16` (grid) | `15.6568542494923801954…` | `1.95e-16` | `15.65685424949239` | no |
+| 230 | `15.68292682926829` | `15 + (28/41)` | `16` (grid) | `15.6829268292682926831…` | `2.68e-15` | `15.68292682926830` | no |
+| 231 | `15.70710678118654` | `15 + (1/2)sqrt(2)` | `16` (grid) | `15.7071067811865475246…` | `7.52e-15` | `15.70710678118655` | no |
+| 232 | `15.77817459305202` | `8 + (11/2)sqrt(2)` | `16` (grid) | `15.7781745930520227686…` | `2.77e-15` | `15.77817459305203` | no |
+| 233 | `15.77817459305202` | `8 + (11/2)sqrt(2)` | `16` (grid) | `15.7781745930520227686…` | `2.77e-15` | `15.77817459305203` | no |
+| 234 | `15.82287565553229` | `(29/2) + (1/2)sqrt(7)` | `16` (grid) | `15.8228756555322952955…` | `5.30e-15` | `15.82287565553230` | no |
+| 235 | `15.82660563342856` | — | `16` (grid) | `15.8266056334285680698…` | `8.07e-15` | `15.82660563342857` | yes |
+| 257 | `16.53553390593273` | `13 + (5/2)sqrt(2)` | `17` (grid) | `16.5355339059327376222…` | `7.62e-15` | `16.53553390593274` | no |
+| 258 | `16.57106781186547` | `(19/2) + 5 sqrt(2)` | `17` (grid) | `16.5710678118654752442…` | `5.24e-15` | `16.57106781186548` | no |
+| 260 | `16.65685424949238` | `11 + 4 sqrt(2)` | `17` (grid) | `16.6568542494923801954…` | `1.95e-16` | `16.65685424949239` | no |
+| 261 | `16.68292682926829` | `16 + (28/41)` | `17` (grid) | `16.6829268292682926831…` | `2.68e-15` | `16.68292682926830` | no |
+| 262 | `16.70710678118654` | `16 + (1/2)sqrt(2)` | `17` (grid) | `16.7071067811865475246…` | `7.52e-15` | `16.70710678118655` | no |
+| 264 | `16.77817459305202` | `9 + (11/2)sqrt(2)` | `17` (grid) | `16.7781745930520227686…` | `2.77e-15` | `16.77817459305203` | no |
+| 265 | `16.77817459305202` | `9 + (11/2)sqrt(2)` | `17` (grid) | `16.7781745930520227686…` | `2.77e-15` | `16.77817459305203` | no |
+| 266 | `16.82306208283780` | — | `17` (grid) | `16.8230620828378046464…` | `4.65e-15` | `16.82306208283781` | yes |
+| 267 | `16.84666719284348` | `16 - (1/2)sqrt(2) + sqrt(1 + sqrt(2))` | `17` (grid) | `16.8466671928434897832…` | `9.78e-15` | `16.84666719284349` | no |
+| 290 | `17.53553390593273` | `14 + (5/2)sqrt(2)` | `18` (grid) | `17.5355339059327376222…` | `7.62e-15` | `17.53553390593274` | no |
+| 291 | `17.53553390593273` | `14 + (5/2)sqrt(2)` | `18` (grid) | `17.5355339059327376222…` | `7.62e-15` | `17.53553390593274` | no |
+| 293 | `17.63414634146341` | `17 + (26/41)` | `18` (grid) | `17.6341463414634146344…` | `4.63e-15` | `17.63414634146342` | no |
+| 294 | `17.65685424949238` | `12 + 4 sqrt(2)` | `18` (grid) | `17.6568542494923801954…` | `1.95e-16` | `17.65685424949239` | no |
+| 295 | `17.70710678118654` | `17 + (1/2)sqrt(2)` | `18` (grid) | `17.7071067811865475246…` | `7.52e-15` | `17.70710678118655` | no |
+| 296 | `17.70710678118654` | `17 + (1/2)sqrt(2)` | `18` (grid) | `17.7071067811865475246…` | `7.52e-15` | `17.70710678118655` | no |
+| 298 | `17.77817459305202` | `10 + (11/2)sqrt(2)` | `18` (grid) | `17.7781745930520227686…` | `2.77e-15` | `17.77817459305203` | no |
+| 299 | `17.82287565553229` | `(33/2) + (1/2)sqrt(7)` | `18` (grid) | `17.8228756555322952955…` | `5.30e-15` | `17.82287565553230` | no |
+| 300 | `17.82412338847854` | — | `18` (grid) | `17.8241233884785434711…` | `3.47e-15` | `17.82412338847855` | yes |
+
 ## Review
 
 A separately prompted adversarial review of the import, on 2026-10-06
@@ -253,14 +409,61 @@ Neither reviewer could execute code, so no certificate has yet been decided by c
 that shares nothing with the tools under review; a second adversarial review that runs
 its own decider is what `next_rung` asks for.
 
+### The Review of T-101
+
+Both reviews, stored as their reviewers wrote them, name the entry by its provisional
+id, T-118.
+
+A separately prompted adversarial review of the 77 on 2026-10-06
+([review](../../../../docs/project/reviews/review-2026-10-06-evand-exact-ceilings.md)),
+whose session refused the project interpreter, found the bound and each rounded-up
+ceiling to follow from the receipts, the selection and the handling of `n = 29, 69, 83`
+and `87` right, and all 125 retained certificates byte for byte the pinned and decided
+ones. It ended `defect-open` on one blocking finding, EC-1: the record said no rational
+certificate reaches a catalogue closed form, which is false at the six rational ones.
+That is reworded in T-101, the blockers and this README.
+The six other findings were wording and one missing refusal:
+
+- **EC-2.** `n = 29`’s ceiling is described as its interval-certified bound, not as an
+  enclosure of the optimum.
+- **EC-3.** `survey` refuses a certificate whose side is not above a closed form, and a
+  test holds every gap positive.
+- **EC-4.** T-101’s rationale says the 22 ceilings reach the report to one unit of its
+  last place.
+- **EC-5.** T-088 and T-089 say they are superseded as ceilings, their packings still the
+  best known and reported.
+- **EC-6.** T-101’s notes name the two rows of the import runbook’s table the entry
+  departs from.
+- **EC-7.** The overlap control is described as a move along the best separating axis,
+  and the independent checker’s refusal of it as circular.
+
+A second separately prompted reviewer checked those fixes the same day
+([fix check](../../../../docs/project/reviews/review-2026-10-06-evand-exact-ceilings-fix-check.md)),
+also without the project interpreter, and ended `defects-resolved`, with four new
+findings, none blocking, handled after it:
+
+- **FC-1.** At the five rational counts other than `n = 50` the record no longer says a
+  rational certificate would reach the side, only an exact one, rational where the
+  packing’s exact point is.
+- **FC-2 and FC-4.** `n = 50`’s grid structure is held by a test, and its two squares
+  `8e-17` off the grid are named above.
+- **FC-3.** The survey receipt no longer carries a digest column that nothing checked;
+  `evand_exact_certificates.is_decided` ties each retained certificate to the decided one.
+- **The older wording of EC-7** went from T-101’s claim and the control’s docstring too;
+  the controls receipt keeps it as the run wrote it.
+
 ## Not Done Here
 
 - **Local optimality.** That each exact point is a KKT local minimum is the source’s
   numerical evidence, recorded as reported. It bears on the packings, not on `s(n)`.
-- **The other 272 certificates.** They are replayed with the rest and move no case here.
-  Where a case’s verified ceiling trails its report, one of them could carry the verified
-  lane to within `1e-14` of the printed side; that is an import the author did not ask
-  for, left to its own bead.
+- **The other 195 certificates.** They are replayed with the rest and move no case here:
+  at each, the certified side rounded up at the printed precision lies at or above the
+  verified ceiling the record already holds.
+- **The 55 closed-form sides.** At the ceiling counts whose catalogue side is a closed
+  form, the verified upper bound trails it by less than `1e-14`. Reaching it needs an
+  exact algebraic certificate of the packing at the 49 irrational sides, and an exact
+  certificate at the six rational ones, rational where the packing’s exact point is
+  (`think-l8gt`).
 - **`n = 17`**, held (`think-x4v4`).
 
 ## Compressed Files

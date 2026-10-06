@@ -237,3 +237,19 @@ docs/project/reviews/review-2026-10-06-wand125-finer-net-n18-n19.md
 # the pinned flowmark-rs 0.4.0 on 2026-10-06: 202 of its 311 lines change, all reflow
 # plus three backslash escapes. Same rule as the reviews above.
 docs/project/reviews/review-2026-10-06-karakus-proposition-5-1-machine-check.md
+
+# The separately prompted review of T-101 (Evan Daniel's certificates as verified ceilings
+# at 77 counts, think-70bh), stored byte-identical to the reviewer's output as the lane
+# brief requires: its first 19,174 bytes are that output, SHA-256 f681eaca..., and the
+# common-doc footer the documentation check requires follows them. Measured on a copy in
+# directory mode with the pinned flowmark-rs 0.4.0 on 2026-10-06: 109 of its 214 lines
+# change, reflow plus 47 straight apostrophes and 64 straight double quotes retyped as
+# curly. Same rule as the reviews above.
+docs/project/reviews/review-2026-10-06-evand-exact-ceilings.md
+
+# The separately prompted check of that review's fixes, stored byte-identical the same
+# way: its first 16,491 bytes are the reviewer's output, SHA-256 2a0f4418..., and the
+# common-doc footer follows. Measured the same way on 2026-10-06: 84 of its 188 lines
+# change, reflow plus 48 straight apostrophes and 78 straight double quotes retyped as
+# curly.
+docs/project/reviews/review-2026-10-06-evand-exact-ceilings-fix-check.md

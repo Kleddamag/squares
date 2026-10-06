@@ -9262,7 +9262,9 @@ results:
       999/1000 that T-096's certificate declares. Since 1999/2000 (1 + 1/2006) =
       4011993/4012000 < 1, and the last tangent 831/2006 is past tan(pi/8), every unit
       square contains a concentric core of side 1999/2000 at a net angle strictly in its
-      interior. The source reports every such core capturing mass at least one: at all 831
+      interior.
+
+      The source reports every such core capturing mass at least one: at all 831
       oblique net angles by code/mixed_rotated_verify.cpp, its research copy of Tokoharu's
       verify.cpp at coverage threshold one, run by the same driver as T-096's certificate
       changed only to allow more workers, and at the axis by exact integer tables.

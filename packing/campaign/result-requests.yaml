@@ -1105,7 +1105,8 @@ issues:
     title: 'Mixed rectangle-measure certificates for n = 37, 65, 66, 90, 92 (after T-048): registration request'
     author: wand125
     opened: '2026-10-01'
-    state: open
+    state: closed
+    closed: '2026-10-06'
     kind: result-report
     triage: done
     summary: >-
@@ -1117,7 +1118,7 @@ issues:
       4 October 07:04 to 19:04 UTC, at n = 53 to 94, twelve of them again at counts already
       posted, and three more on 5 October from 06:06 to 08:11 UTC, at n = 67, 84 and 66, all
       again at counts already posted.
-    read_through: '2026-10-06T02:41:07Z'
+    read_through: '2026-10-06T23:13:30Z'
     results:
       - key: mixed-five
         claim: s(37) >= 161/25, s(65) >= 167/20, s(66) >= 421/50, s(90) >= 48/5 and s(92) >= 969/100
@@ -1330,6 +1331,16 @@ issues:
             status: confirmed
           - result: oct4-n86-n69
             id: T-090
+            verification: V3
+            confirmation: C3
+            status: confirmed
+      - url: https://github.com/jlevy/squares/issues/282#issuecomment-6027158015
+        date: '2026-10-06'
+        by: jlevy
+        kind: confirmation
+        reported:
+          - result: oct3-mixed-22
+            id: T-082
             verification: V3
             confirmation: C3
             status: confirmed

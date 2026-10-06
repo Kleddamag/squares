@@ -1290,15 +1290,14 @@ beside the accepted ones rather than in their place.
     2026, which states the exclusion of all 76 cases with no baseline hypothesis.
     The Squares Project has neither reviewed nor replayed either formalization.
 
-[^prior-unique]: [Trump 2023](../../resources/papers/trump-2023-packing-11-unit-squares.pdf), p. 2:
+[^prior-unique]: [Trump 2023](https://www.researchgate.net/publication/368988287), p. 2:
     “The geometrical object is absolutely rigid, no unit square can be rotated or
     translated”;
-    [Stromquist 1984, memorandum II](../../resources/papers/stromquist-1984-packing-unit-squares-inside-squares-ii-ten-unit-squares.pdf),
+    [Stromquist 1984, memorandum II](https://www.walterstromquist.com/papers/squares2.pdf),
     p. 1: “Three different packings of ten unit squares in a square of side
-    $s = 3 + \sqrt{2}/2$”, which
-    [Stromquist 2003](../../resources/papers/stromquist-2003-packing-10-or-11-unit-squares.pdf)
-    proves optimal (its Figure 1). The upstream proof states uniqueness only for the
-    near branch of its case 438, in
+    $s = 3 + \sqrt{2}/2$”, which [Stromquist 2003](https://doi.org/10.37236/1701) proves
+    optimal (its Figure 1). The upstream proof states uniqueness only for the near
+    branch of its case 438, in
     [§8](../../resources/web/n11-optimality-2026-09-29/source/PROOF.md#8-complete-case438-capture-and-the-exact-u-to-t-bridge),
     and concludes $s_{11}=T$ in its §10.
 

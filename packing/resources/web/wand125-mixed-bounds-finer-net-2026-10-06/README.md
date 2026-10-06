@@ -242,6 +242,47 @@ The receipts are [`receipts/n18-L4704/sample/`](receipts/n18-L4704/sample/) and
 [`receipts/n19-L48229/sample/`](receipts/n19-L48229/sample/). A sample is a diagnostic:
 it decides no other node.
 
+**The controls.** `control` binds a fresh copy of each bundle, runs the full driver’s
+preconditions, and at the oblique node of the least recorded bound (797 at $n = 18$, 37
+at $n = 19$) finds a centre of low capture and evaluates it exactly. Two mass mutants
+leave that centre covered below 1, so each is provably invalid there: every mass scaled by
+$99/100$, and every mass scaled so that the centre captures exactly $1 - 10^{-6}$. The
+source’s export and the checker its `compile_verifier` builds, with the shipped record’s
+node limit, accepted each original with its shipped record and stopped both mutants of
+each unresolved (`ANGLE_UNRESOLVED`, at the depth floor). Three corrupted net
+declarations, each breaking one premise, were refused by the source’s own net check and
+by `sqverify-fast`’s admission, each for the premise it breaks:
+
+| Corruption | `n18-L4704` | `n19-L48229` | Source’s refusal | `sqverify-fast`’s refusal |
+| --- | --- | --- | --- | --- |
+| a coarser step on which the core does not fit, the net otherwise sound | step $1/1998$, last 828 | step $1/999$, last 414 | “Core containment is not strict” | “B (1 + D) >= 1” |
+| the last node dropped | last 830 | last 414 | “Net does not reach tan(pi/8)” | “the net does not reach past pi/4” |
+| an unknown field | `offset` | `offset` | “Invalid proof_net fields” | “a field this reader does not know” |
+
+`control-sqverify-fast` then rebuilt the same two mutants from the retained candidate,
+recomputed their captures at the same centre with a first-party exact evaluator, and ran
+`sqverify-fast` at the same node: it verified each original and refused each mutant with
+an exact capture below 1 (`counterexample-candidate`). The receipts are
+`receipts/*/control.json` and `receipts/*/control-sqverify-fast.json`.
+
+**`sqverify-fast`.** This repository’s clean-room verifier, built from `main`’s crate at
+`34e87a86b` (`source_sha256` `d97758bb…`, binary `567a0fd5…`, rustc 1.98.0), decided both
+certificates at every node of their declared nets on 6 October 2026 at two threads,
+recorded in the
+[Milestone B census](../../../benchmarks/measure-verifier/census-mixed/README.md):
+
+| Name here | Directions | Boxes | Least certified bound | CPU seconds |
+| --- | ---: | ---: | --- | ---: |
+| `n18-L4704` | 832 | 115,091,221 | $1.000000001132137$ | 701.6 |
+| `n19-L48229` | 416 | 75,232,113 | $1.000000000833015$ | 507.9 |
+
+That build contains the declared-net change of 5 October (lemma N0), which a review is
+reading again (`think-gcld`); until it accepts that source, no rung rests on these
+rows. The census tool’s own `--control` cannot yet run on a declared net: its exact
+evaluator turns the core by the standard net’s step whatever the candidate declares, so
+its captures disagree with the crate’s (`think-q9gu`). The controls above use
+evaluators that read the declared net.
+
 ## Limitations
 
 - **Coverage is decided by the source’s C++ alone** for the source’s own runs; the

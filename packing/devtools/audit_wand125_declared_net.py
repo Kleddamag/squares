@@ -63,6 +63,10 @@ takes ``--certificate``, ``n18-L470`` unless given.
   centre captures ``1 - 10^-6``, and runs the source's own net check on three corrupted
   net declarations. The original must return its shipped record and every other
   variant must be refused.
+- ``control-sqverify-fast`` runs ``sqverify-fast`` on the same original and mass
+  mutants, rebuilt from the retained candidate by the control receipt's factors and held
+  to its exact captures, at the same node: the original must verify and each mutant must
+  be refused.
 
 From ``packing/``::
 
@@ -871,18 +875,49 @@ def scaled(data: dict[str, Any], factor: Fraction) -> dict[str, Any]:
     return mutated
 
 
-def corrupted_nets(data: dict[str, Any]) -> dict[str, dict[str, Any]]:
-    """Three corrupted net declarations, each a copy of the candidate.
+#: What each corrupted net's refusal must name, by the source's net check and by
+#: ``sqverify-fast``'s admission: a control refused for another premise would not hold its
+#: rule (finding DN-6 of the 5 October review).
+NET_REFUSALS = {
+    "coarser-step": ("Core containment is not strict", "B (1 + D)"),
+    "short-net": ("Net does not reach tan(pi/8)", "pi/4"),
+    "extra-field": ("Invalid proof_net fields", "does not know"),
+}
 
-    ``coarser-step`` sets the step to ``(1 - B) / B``, where ``B (1 + step) = 1`` and the
-    core need not fit inside the unit square; ``short-net`` drops the last node, so the
-    net stops before ``tan(pi/8)``; ``extra-field`` adds a field the format does not
-    have.
+
+def reaches_past_pi_over_8(t: Fraction) -> bool:
+    """Whether a half-angle tangent is at least ``tan(pi/8)``: ``(1 + t)^2 >= 2``."""
+    return (1 + t) ** 2 >= 2
+
+
+def coarser_net(core: Fraction) -> dict[str, Any]:
+    """The finest net of steps ``1/q`` on which the core does not fit, ``B (1 + 1/q) >= 1``,
+    and which is otherwise sound: its last node reaches ``tan(pi/8)`` and the bin below it
+    still holds an orientation of ``[0, pi/4]``. Only the core's fit fails on it."""
+    q = int(core / (1 - core))
+    while q > 1:
+        step = Fraction(1, q)
+        last = next(k for k in range(q + 1) if reaches_past_pi_over_8(k * step))
+        if core * (1 + step) >= 1 and not reaches_past_pi_over_8(
+            (last - Fraction(1, 2)) * step
+        ):
+            return {"step": str(step), "last": last}
+        q -= 1
+    raise AuditError(f"no coarser net isolates the core's fit at B = {core}")
+
+
+def corrupted_nets(data: dict[str, Any]) -> dict[str, dict[str, Any]]:
+    """Three corrupted net declarations, each a copy of the candidate, each breaking one
+    premise of the declared net and no other.
+
+    ``coarser-step`` is `coarser_net`, where the core need not fit inside the unit square;
+    ``short-net`` drops the last node, so the net stops before ``tan(pi/8)``;
+    ``extra-field`` adds a field the format does not have.
     """
     core = Fraction(data["B"])
     net = data["proof_net"]
     return {
-        "coarser-step": data | {"proof_net": net | {"step": str((1 - core) / core)}},
+        "coarser-step": data | {"proof_net": coarser_net(core)},
         "short-net": data | {"proof_net": net | {"last": int(net["last"]) - 1}},
         "extra-field": data | {"proof_net": net | {"offset": str(Fraction(net["step"]) / 2)}},
     }
@@ -1008,15 +1043,21 @@ def control(
         folder.mkdir(parents=True)
         path = folder / "candidate.json"
         path.write_text(json.dumps(variant, indent=2) + "\n")
+        source_rule, admission_rule = NET_REFUSALS[label]
         try:
             net_audit.candidate_net(variant)
         except ValueError as error:
-            source = {"verdict": "REFUSED", "message": str(error)}
+            own = source_rule in str(error)
+            source = {"verdict": "REFUSED" if own else "REFUSED_FOR_ANOTHER_PREMISE"}
+            source["message"] = str(error)
         else:
             source = {"verdict": "ACCEPTED"}
         item = {"name": label, "proof_net": variant["proof_net"], "source": source}
         if sqverify_fast is not None:
-            item["sqverify_fast"] = sqverify_fast_refusal(sqverify_fast, path, stated.n)
+            admission = sqverify_fast_refusal(sqverify_fast, path, stated.n)
+            if admission["verdict"] == "REFUSED" and admission_rule not in admission["stderr"]:
+                admission["verdict"] = "REFUSED_FOR_ANOTHER_PREMISE"
+            item["sqverify_fast"] = admission
         nets.append(item)
         print(json.dumps({"name": label, "verdict": source["verdict"]}), flush=True)
     original, *mutants = runs
@@ -1070,6 +1111,107 @@ def control(
     }
 
 
+def sqverify_fast_row(binary: Path, path: Path, n: int, index: int) -> dict[str, Any]:
+    """One node of one candidate under ``sqverify-fast``, with ``--confirm``."""
+    argv = [str(binary.resolve()), "--candidate", str(path), "--n", str(n)]
+    argv += ["--directions", str(index), "--confirm"]
+    result = subprocess.run(argv, capture_output=True, text=True, check=False, timeout=3600)
+    rows = [json.loads(line) for line in result.stdout.splitlines() if line.startswith("{")]
+    row = next((line for line in rows if line.get("r") == index), {})
+    witness = row.get("witness") or {}
+    return {
+        "returncode": result.returncode,
+        "verdict": row.get("verdict"),
+        "nodes": row.get("nodes"),
+        "min_certified_lower_bound": row.get("min_certified_lower_bound"),
+        "exact_below_threshold": witness.get("exact_below_threshold"),
+        "stderr": result.stderr.strip()[-400:],
+    }
+
+
+def control_sqverify_fast(key: str, binary: Path, work: Path) -> dict[str, Any]:
+    """``sqverify-fast`` on the same original and mutants as the source's checker.
+
+    Reads the certificate's ``control`` receipt, rebuilds each mass mutant from the
+    retained candidate by the factor the receipt records, checks that it is the mutant
+    the source's checker ran (its total mass, and its exact capture at the receipt's
+    witness centre, recomputed here, below 1), and runs ``sqverify-fast`` at the same
+    node. The original must verify there and every mutant must be refused.
+    """
+    stated = CERTIFICATES[key]
+    receipt = json.loads((stated.receipts / "control.json").read_text(encoding="utf-8"))
+    require(receipt["status"] == "CONTROLS_REFUSED", "the control receipt did not pass")
+    rectangles = importlib.import_module("devtools.audit_wand125_rectangles")
+    data = load_json(read_retained_bytes(stated.directory / "candidate.json"))
+    side, core = Fraction(data["L"]), Fraction(data["B"])
+    index = int(receipt["index"])
+    t = Fraction(receipt["witness"]["t"])
+    require(t == index * Fraction(data["proof_net"]["step"]), "the receipt's tangent")
+    c, s = rectangles.net_rotation(t)
+    x, y = (Fraction(value) for value in receipt["witness"]["centre"])
+    work.mkdir(parents=True, exist_ok=True)
+    runs: list[dict[str, Any]] = []
+    for item in receipt["runs"]:
+        factor = Fraction(item.get("factor", "1"))
+        variant = data if item["name"] == "original" else scaled(data, factor)
+        require(Fraction(variant["total_mass"]) == Fraction(item["total_mass"]), item["name"])
+        images: list[tuple[Fraction, ...]] = []
+        for row in variant["rectangles"]:
+            corners = [Fraction(value) for value in row["rectangle"]]
+            area = (corners[2] - corners[0]) * (corners[3] - corners[1])
+            density = Fraction(row["mass"]) / 8 / area
+            images += [(*image, density) for image in orbit(side, corners)]
+        at_witness = rectangles.coverage_exact(images, (x, y), c, s, core)
+        require(
+            at_witness == Fraction(item["witness_coverage_exact"]),
+            f"{item['name']}: the capture at the witness is not the receipt's",
+        )
+        require(item["name"] == "original" or at_witness < 1, f"{item['name']} is covered")
+        path = work / f"{stated.name}-{item['name']}.json"
+        path.write_text(json.dumps(variant), encoding="utf-8")
+        row = sqverify_fast_row(binary, path, stated.n, index)
+        expect = "verified" if item["name"] == "original" else "refused"
+        held = (
+            row["returncode"] == 0 and row["verdict"] == "verified"
+            if expect == "verified"
+            else row["returncode"] == 1 and row["verdict"] not in (None, "verified")
+        )
+        runs.append(
+            {
+                "name": item["name"],
+                "factor": str(factor),
+                "witness_coverage_exact": str(at_witness),
+                "expect": expect,
+                "held": held,
+                **row,
+            }
+        )
+    nets = [
+        {"name": item["name"], **item["sqverify_fast"]}
+        for item in receipt["nets"]
+        if "sqverify_fast" in item
+    ]
+    passed = all(run["held"] for run in runs) and all(
+        item["verdict"] == "REFUSED" for item in nets
+    )
+    return {
+        "kind": "wand125-declared-net-control-sqverify-fast/v1",
+        "status": "CONTROLS_REFUSED" if passed and nets else "CONTROL_FAILED",
+        "certificate": stated.name,
+        "index": index,
+        "binary_sha256": file_sha256(binary),
+        "runs": runs,
+        "nets": nets,
+        "scope": (
+            "sqverify-fast at the node of the source checker's control receipt, on the"
+            " original and the same two mass mutants, rebuilt here from the retained"
+            " candidate and evaluated exactly at the receipt's witness centre by"
+            " audit_wand125_rectangles.coverage_exact; and the corrupted nets the control"
+            " receipt ran through its admission."
+        ),
+    }
+
+
 def write_or_check(path: Path, value: dict[str, Any], *, check: bool) -> int:
     text = retained_json.dumps(value)
     if check:
@@ -1114,6 +1256,11 @@ def main(argv: list[str] | None = None) -> int:
     control_parser.add_argument(
         "--sqverify-fast", type=Path, help="a binary to run the corrupted nets through too"
     )
+    fast_parser = commands.add_parser(
+        "control-sqverify-fast", help="sqverify-fast on the control receipt's variants"
+    )
+    fast_parser.add_argument("--sqverify-fast", type=Path, required=True)
+    fast_parser.add_argument("--work", type=Path, required=True)
     for running in (sample_parser, replay_parser, control_parser):
         running.add_argument("--tarball", type=Path, required=True)
         running.add_argument("--work", type=Path, required=True)
@@ -1126,41 +1273,57 @@ def main(argv: list[str] | None = None) -> int:
         sample_parser,
         replay_parser,
         control_parser,
+        fast_parser,
     ):
         each.add_argument("--certificate", choices=sorted(CERTIFICATES), default=DEFAULT)
         each.add_argument("--out", type=Path, help="the receipt; the packet's by default")
     args = parser.parse_args(argv)
-    receipts = CERTIFICATES[args.certificate].receipts
-    key = args.certificate
     try:
-        if args.command == "audit":
-            out = args.out or receipts / "audit.json"
-            return write_or_check(out, audit(key=key), check=args.check)
-        if args.command == "bundle":
-            out = args.out or receipts / "bundle.json"
-            return write_or_check(out, bundle(args.bundle, key=key), check=False)
-        if args.command == "sample":
-            result = sample(key, args.tarball, args.work, args.nodes, args.workers)
-            first, last = args.nodes[0], args.nodes[-1]
-            out = args.out or receipts / f"sample/nodes-{first:03d}-{last:03d}.json"
-            write_or_check(out, result, check=False)
-            return 0 if result["status"] == "SAMPLE_REPLAYED" else 1
-        if args.command == "control":
-            result = control(key, args.tarball, args.work, args.index, args.sqverify_fast)
-            write_or_check(args.out or receipts / "control.json", result, check=False)
-            return 0 if result["status"] == "CONTROLS_REFUSED" else 1
-        if args.command == "replay":
-            full = args.out or receipts / "full"
-            result = replay(key, args.tarball, args.work, args.workers, full)
-            out = full / "compare.json"
-        else:
-            result = compare(args.shipped, args.fresh, args.meta, key=key)
-            out = args.out or receipts / "full/compare.json"
-        write_or_check(out, result, check=False)
-        return 0 if result["status"] == "FULL_REPLAY_MATCHES_SHIPPED" else 1
+        return run_command(args)
     except AuditError as error:
         print(f"REFUSED: {error}", file=sys.stderr)
         return 1
+
+
+#: The status each running command's receipt reports when it passes.
+PASSING = {
+    "sample": "SAMPLE_REPLAYED",
+    "control": "CONTROLS_REFUSED",
+    "control-sqverify-fast": "CONTROLS_REFUSED",
+    "replay": "FULL_REPLAY_MATCHES_SHIPPED",
+    "compare": "FULL_REPLAY_MATCHES_SHIPPED",
+}
+
+
+def run_command(args: argparse.Namespace) -> int:
+    """Run one parsed command and write its receipt: 0 when it passes."""
+    key = args.certificate
+    receipts = CERTIFICATES[key].receipts
+    if args.command == "audit":
+        out = args.out or receipts / "audit.json"
+        return write_or_check(out, audit(key=key), check=args.check)
+    if args.command == "bundle":
+        out = args.out or receipts / "bundle.json"
+        return write_or_check(out, bundle(args.bundle, key=key), check=False)
+    if args.command == "sample":
+        result = sample(key, args.tarball, args.work, args.nodes, args.workers)
+        first, last = args.nodes[0], args.nodes[-1]
+        out = args.out or receipts / f"sample/nodes-{first:03d}-{last:03d}.json"
+    elif args.command == "control":
+        result = control(key, args.tarball, args.work, args.index, args.sqverify_fast)
+        out = args.out or receipts / "control.json"
+    elif args.command == "control-sqverify-fast":
+        result = control_sqverify_fast(key, args.sqverify_fast, args.work)
+        out = args.out or receipts / "control-sqverify-fast.json"
+    elif args.command == "replay":
+        full = args.out or receipts / "full"
+        result = replay(key, args.tarball, args.work, args.workers, full)
+        out = full / "compare.json"
+    else:
+        result = compare(args.shipped, args.fresh, args.meta, key=key)
+        out = args.out or receipts / "full/compare.json"
+    write_or_check(out, result, check=False)
+    return 0 if result["status"] == PASSING[args.command] else 1
 
 
 if __name__ == "__main__":

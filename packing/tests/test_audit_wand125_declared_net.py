@@ -333,3 +333,51 @@ def test_rectangle_lines_must_enclose_every_image_of_every_row() -> None:
     twice = [lines[0], *lines[0:7], *lines[8:]]
     with pytest.raises(declared.AuditError, match="encloses none of its images"):
         declared.rectangle_block(candidate, twice)
+
+
+@pytest.mark.parametrize("core", [Fraction(1999, 2000), Fraction(999, 1000)])
+def test_the_coarser_net_breaks_the_cores_fit_and_nothing_else(core: Fraction) -> None:
+    net = declared.coarser_net(core)
+    step, last = Fraction(net["step"]), int(net["last"])
+    assert core * (1 + step) >= 1
+    assert declared.reaches_past_pi_over_8(last * step)
+    assert not declared.reaches_past_pi_over_8((last - Fraction(1, 2)) * step)
+
+
+@pytest.mark.parametrize(("key", "index"), [("n18-L4704", 797), ("n19-L48229", 37)])
+def test_each_control_is_refused_for_its_own_premise(key: str, index: int) -> None:
+    """The source's checker accepts the original at its least recorded bound and refuses
+    two mass mutants there, each provably uncovered at an exact witness; the source's net
+    check and sqverify-fast refuse each corrupted net for the premise it breaks; and
+    sqverify-fast verifies the original and refuses the same two mutants."""
+    stated = declared.CERTIFICATES[key]
+    record = json.loads((stated.receipts / "control.json").read_text(encoding="utf-8"))
+    assert record["status"] == "CONTROLS_REFUSED"
+    assert (record["certificate"], record["index"]) == (stated.name, index)
+    assert record["checker"]["source_sha256"] == declared.CHECKER_SHA256
+    original, *mutants = record["runs"]
+    assert original["run"]["verdict"] == "ACCEPTED"
+    assert original["run"]["output"]["lower"] == record["shipped_record"]["lower"]
+    assert [run["name"] for run in mutants] == ["scale-masses", "near-threshold"]
+    for run in mutants:
+        assert Fraction(run["witness_coverage_exact"]) < 1, run["name"]
+        assert run["run"]["verdict"] == "REFUSED", run["name"]
+        assert run["run"]["output"]["status"] == "ANGLE_UNRESOLVED", run["name"]
+    assert Fraction(mutants[1]["witness_coverage_exact"]) == 1 - declared.NEAR_THRESHOLD
+    assert [item["name"] for item in record["nets"]] == list(declared.NET_REFUSALS)
+    for item in record["nets"]:
+        source_rule, admission_rule = declared.NET_REFUSALS[item["name"]]
+        assert item["source"]["verdict"] == "REFUSED", item["name"]
+        assert source_rule in item["source"]["message"], item["name"]
+        assert item["sqverify_fast"]["verdict"] == "REFUSED", item["name"]
+        assert admission_rule in item["sqverify_fast"]["stderr"], item["name"]
+    fast = json.loads(
+        (stated.receipts / "control-sqverify-fast.json").read_text(encoding="utf-8")
+    )
+    assert fast["status"] == "CONTROLS_REFUSED"
+    assert fast["binary_sha256"] == record["sqverify_fast"]
+    assert [(run["name"], run["held"]) for run in fast["runs"]] == [
+        ("original", True),
+        ("scale-masses", True),
+        ("near-threshold", True),
+    ]

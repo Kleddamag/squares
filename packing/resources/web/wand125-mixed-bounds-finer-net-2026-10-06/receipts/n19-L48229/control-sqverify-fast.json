@@ -1,0 +1,10 @@
+{
+  "kind": "wand125-declared-net-control-sqverify-fast/v1",
+  "status": "CONTROLS_REFUSED",
+  "certificate": "mixed_n19_L48229",
+  "index": 37,
+  "binary_sha256": "567a0fd58f7ae4e981580f2a90bed5c92ac44fa8f3ebb442b166e93043c15ed4",
+  "runs": [{"name":"original","factor":"1","witness_coverage_exact":"476268682743374904776529/474999749999999948665900","expect":"verified","held":true,"returncode":0,"verdict":"verified","nodes":142169,"min_certified_lower_bound":1.0000001282073716,"exact_below_threshold":null,"stderr":""},{"name":"scale-masses","factor":"99/100","witness_coverage_exact":"47150599591594115572876371/47499974999999994866590000","expect":"refused","held":true,"returncode":1,"verdict":"counterexample-candidate","nodes":11363,"min_certified_lower_bound":null,"exact_below_threshold":true,"stderr":""},{"name":"near-threshold","factor":"175925657407499980987389383/176395808423472186954270000","witness_coverage_exact":"999999/1000000","expect":"refused","held":true,"returncode":1,"verdict":"counterexample-candidate","nodes":76254,"min_certified_lower_bound":null,"exact_below_threshold":true,"stderr":""}],
+  "nets": [{"name":"coarser-step","returncode":2,"stderr":"sqverify-fast: B (1 + D) >= 1: the shrunk square need not fit inside the unit square","verdict":"REFUSED"},{"name":"short-net","returncode":2,"stderr":"sqverify-fast: the net does not reach past pi/4","verdict":"REFUSED"},{"name":"extra-field","returncode":2,"stderr":"sqverify-fast: proof_net has a field this reader does not know: offset","verdict":"REFUSED"}],
+  "scope": "sqverify-fast at the node of the source checker's control receipt, on the original and the same two mass mutants, rebuilt here from the retained candidate and evaluated exactly at the receipt's witness centre by audit_wand125_rectangles.coverage_exact; and the corrupted nets the control receipt ran through its admission."
+}

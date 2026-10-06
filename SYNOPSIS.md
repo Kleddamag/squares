@@ -577,6 +577,7 @@ case or experiment separately.
 | [review-2026-10-06-evand-exact-optima.md](docs/project/reviews/review-2026-10-06-evand-exact-optima.md) | dated review record | record | retained | — |
 | [Fix Check: The Review of T-098, Evan Daniel’s Exact Optima](docs/project/reviews/review-2026-10-06-evand-exact-optima-fix-check.md) | dated review record | record | retained | — |
 | [Proof Review: Guzhou0806’s R071, `s(17) > 18641771/4000000 = 4.66044275`](docs/project/reviews/review-2026-10-05-guzhou-r071.md) | dated review record | record | retained | — |
+| [Review: wand125’s `s(18) ≥ 588/125` and `s(19) ≥ 48229/10000` on Declared Nets (T-099, T-100)](docs/project/reviews/review-2026-10-06-wand125-finer-net-n18-n19.md) | dated review record | record | retained | — |
 | [wand125’s `s(18) ≥ 47/10` on a Declared Net and `s(66) ≥ 843/100`: Review of T-096, T-097 and the sqverify-fast Declared-Net Change](docs/project/reviews/review-2026-10-05-wand125-declared-net-n18-n66.md) | dated review record | record | retained | — |
 | [Proof Review: squarepacker’s v1.1, `s(12) ≥ 7943/2000 = 3.9715`](docs/project/reviews/review-2026-10-05-s12-v11-certificate.md) | dated review record | record | retained | — |
 | [Integration of GPT-6 Pro’s Adversarial Review of the Eleven-Square Optimality Proof](docs/project/reviews/review-2026-10-03-n11-gpt6-pro-review-integration.md) | dated review record | record | retained | — |

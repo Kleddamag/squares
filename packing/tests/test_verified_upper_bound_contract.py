@@ -169,6 +169,18 @@ DECLARED_CONSUMERS = {
         "exact certificates' sides rounded up, above the printed sides, and never s(n) or "
         "the catalogue's roots"
     ),
+    "docs/project/reviews/review-2026-10-06-evand-exact-optima.md": (
+        "the T-098 review, finding that n = 126 conjectured a side above the ceiling its "
+        "exact certificate verifies; it reads the field as a ceiling on s(n), not as s(n)"
+    ),
+    "docs/project/reviews/review-2026-10-06-evand-exact-optima-fix-check.md": (
+        "the check of that review's fixes, quoting its proposed bracket of a conjecture "
+        "between the verified floor and ceiling; a ceiling, not s(n)"
+    ),
+    "packing/tests/test_evand_exact_certificates.py": (
+        "holds a synthetic case's ceiling against conjectures inside and past half a unit "
+        "of their last place; it reads the field as a ceiling, not as s(n)"
+    ),
     "packing/tests/test_evand_square_packing.py": (
         "pins n = 32's ceiling to the trivial grid's 6, which with the verified lower bound "
         "6 is what makes that case proved; it reads the field as a ceiling, not as s(n)"
@@ -309,7 +321,9 @@ DECLARED_CONSUMERS = {
     ),
     "packing/frontier/square-packing-case.schema.yaml": "defines it",
     "packing/src/sqpack/assurance.py": (
-        "compares report against ceiling and demands a blocker for any gap"
+        "compares report against ceiling and demands a blocker for any gap, and refuses a "
+        "decimal conjectured optimum above the ceiling, which a conjecture of s(n) may not "
+        "exceed"
     ),
     "packing/tests/test_frontier_assurance_contract.py": "exercises those comparisons",
     "packing/tests/test_verified_upper_bound_contract.py": "this file",

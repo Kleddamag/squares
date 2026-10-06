@@ -15497,8 +15497,8 @@ evidence:
         common mode, the parse and the map from t to (c, s), cannot inflate the claim. The
         packet's 53 retained files match the manifest and every receipt verdict is VALID.
         No defect in the source's certificates or claim; the review's one blocking finding
-        was in this repository's n = 126 record, fixed in 65bb9851b and checked by the fix
-        check of the same day. Unchecked: the review executed no code and decided no
+        was in this repository's n = 126 record, which the exact layer now clears, and the
+        fix check of the same day found it resolved. Unchecked: the review executed no code and decided no
         certificate itself; it did not read issue #375 or the source beyond the packet; the
         KKT reports are outside the claim.
     source_reviewed: '2026-10-05'

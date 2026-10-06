@@ -8747,14 +8747,17 @@ results:
       the 48 counts now carry this one. The source's certificates at its 272 other counts,
       each above the printed side, move no case and are replayed with the rest; its n = 17
       certificate is held by the owner for the n = 17 work (think-x4v4) and was neither
-      retained nor replayed. The source's solver, run here on five of the pinned inputs (n =
-      68, 102, 126, 211, 270), regenerated each certificate with the same S', centres
-      within 2.5e-24 and tangents within 3.3e-24 of the retained ones, though not byte for byte as the source's
-      reproduce.sh expects; each regenerated certificate decides valid here
+      retained nor replayed.
+
+      The source's solver, run here on five of the pinned inputs (n = 68, 102, 126, 211,
+      270), regenerated each certificate with the same S', centres within 2.5e-24 and
+      tangents within 3.3e-24 of the retained ones, though not byte for byte as the
+      source's reproduce.sh expects; each regenerated certificate decides valid here
       (receipts/reproduction-sample.json in the packet). Both checkers here and the
       source's two ran over all 320 certificates the packet pins; the controls and the
-      comparison with the register over the 48. The review of 2026-10-06 ended
-      defect-open on n = 126's conjecture, fixed in 65bb9851b; its fix check ended
-      defects-resolved, and its seven non-blocking findings were handled after it, except
-      that each record's reported lane still lists the finder's pose under S' (EX-9,
-      think-5n3o).
+      comparison with the register over the 48.
+
+      The review of 2026-10-06 ended defect-open on n = 126's conjecture, which the exact
+      layer now clears; its fix check ended defects-resolved, and its seven non-blocking
+      findings were handled after it, except that each record's reported lane still lists
+      the finder's pose under S' (EX-9, think-5n3o).

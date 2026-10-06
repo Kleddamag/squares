@@ -485,7 +485,8 @@ issues:
       reduction)
     author: evand
     opened: '2026-10-03'
-    state: open
+    state: closed
+    closed: '2026-10-06'
     kind: result-report
     triage: done
     summary: >-
@@ -536,6 +537,21 @@ issues:
         date: '2026-10-04'
         by: jlevy
         kind: follow-up
+        reported:
+          - result: k2m4
+            id: T-081
+            verification: V0
+            confirmation: C1
+            status: reviewed
+          - result: k2m3-by-monotonicity
+            id: T-064
+            verification: V3
+            confirmation: C3
+            status: confirmed
+      - url: https://github.com/jlevy/squares/issues/316#issuecomment-6021258179
+        date: '2026-10-06'
+        by: jlevy
+        kind: final
         reported:
           - result: k2m4
             id: T-081
@@ -764,7 +780,8 @@ issues:
     title: 'T-007 (Nagamochi 2005): Lemma 1 is false; published counterexamples and replacement results'
     author: wand125
     opened: '2026-10-02'
-    state: open
+    state: closed
+    closed: '2026-10-06'
     kind: defect-report
     triage: done
     summary: >-
@@ -874,6 +891,49 @@ issues:
           - result: chelokot-2026
             id: E-chelokot-square-minus-two-lean
             status: confirmed
+      - url: https://github.com/jlevy/squares/issues/295#issuecomment-6021257540
+        date: '2026-10-06'
+        by: jlevy
+        kind: final
+        reported:
+          - result: lemma1-false
+            id: T-007
+            verification: V0
+            confirmation: C1
+            status: incomplete
+          - result: lemma1-false
+            id: T-085
+            verification: V3
+            confirmation: C3
+            status: confirmed
+          - result: lemma1-false
+            id: E-nagamochi-lower
+          - result: lemma1-false
+            id: E-nagamochi-lemma1-counterexample
+          - result: karakus-2026
+            id: T-083
+            verification: V3
+            confirmation: C3
+            status: confirmed
+          - result: karakus-2026
+            id: T-084
+            verification: V3
+            confirmation: C3
+            status: confirmed
+          - result: karakus-2026
+            id: E-karakus-strip-lower
+          - result: chelokot-2026
+            id: T-086
+            verification: V3
+            confirmation: C3
+            status: confirmed
+          - result: chelokot-2026
+            id: T-085
+            verification: V3
+            confirmation: C3
+            status: confirmed
+          - result: chelokot-2026
+            id: E-chelokot-square-minus-two-lean
     close_when: >-
       The record holds the Lemma 1 defect against T-007, the values it supplies are
       re-derived, and the two replacement sources are registered or declined.
@@ -1210,6 +1270,21 @@ issues:
             verification: V0
             confirmation: C1
             status: reviewed
+      - url: https://github.com/jlevy/squares/issues/282#issuecomment-6021258792
+        date: '2026-10-06'
+        by: jlevy
+        kind: confirmation
+        reported:
+          - result: oct3-oct4-mixed-14
+            id: T-090
+            verification: V3
+            confirmation: C3
+            status: confirmed
+          - result: oct4-n86-n69
+            id: T-090
+            verification: V3
+            confirmation: C3
+            status: confirmed
     close_when: >-
       T-069, T-071 and T-072 are confirmed or refuted, and every later certificate posted
       here is imported and settled. The thread is a rolling request: each release is
@@ -1219,7 +1294,8 @@ issues:
     title: 'Rectangle-density lower bounds raised since T-046 (34 counts in n = 19…95): registration request'
     author: wand125
     opened: '2026-10-01'
-    state: open
+    state: closed
+    closed: '2026-10-06'
     kind: result-report
     triage: done
     summary: >-
@@ -1261,6 +1337,21 @@ issues:
             verification: V0
             confirmation: C1
             status: reviewed
+      - url: https://github.com/jlevy/squares/issues/281#issuecomment-6021256864
+        date: '2026-10-06'
+        by: jlevy
+        kind: final
+        reported:
+          - result: rect-34
+            id: T-068
+            verification: V3
+            confirmation: C3
+            status: confirmed
+          - result: rect-34
+            id: T-074
+            verification: V3
+            confirmation: C3
+            status: confirmed
     close_when: >-
       T-068 is confirmed or refuted at all 34 counts. Counts that pass move to replayed
       entries, as T-045 and T-070 did for T-046; add each such entry to this result.

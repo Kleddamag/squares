@@ -43,10 +43,16 @@ the centre it is scaled at: the verifier may refuse it at another centre, and it
 discrimination near the threshold rests on the crate's own tests (IR-3 of the review
 of 5 October). Each receipt is `--out/PACKET/CERTIFICATE.control.json`, with status
 `CONTROLS_REFUSED` only when all of that holds. `--evidence` prints each selected
-certificate's replay evidence entry, for a records lane to paste into the register.
+certificate's replay evidence entry, for a records lane to paste into the register; it
+refuses a row whose build is not of a crate source in `REVIEWED_SOURCES`, or is on a
+declared net that the source's review did not read, and names the reviewed source it
+was. `--source-digest` prints the tree's crate `source_sha256` by `build.rs`'s rule and
+the review that accepted it, exiting 1 when none did, so a lane can check before it
+builds that a census run will be one of reviewed source.
 
 From `packing/`:
 
+    .venv/bin/python3 -m devtools.sqverify_fast_census --source-digest
     .venv/bin/python3 -m devtools.sqverify_fast_census \\
         --binary sqverify_fast/target/release/sqverify-fast \\
         --out benchmarks/measure-verifier/census --threads 2 --resume
@@ -75,7 +81,13 @@ from fractions import Fraction
 from pathlib import Path
 from typing import Any
 
-from devtools.check_sqverify_fast import mixed_exact, mixed_mutant, read_raw
+from devtools.check_sqverify_fast import (
+    crate_source_sha256,
+    mixed_exact,
+    mixed_mutant,
+    net_step,
+    read_raw,
+)
 from sqpack import retained_json
 from sqpack.yamlio import safe_load
 
@@ -440,6 +452,14 @@ def control(binary: Path, case: Case, entry: dict[str, Any]) -> dict[str, Any]:
     centre = [Fraction(value) for value in least["centre"]]
     crate = Fraction(least["exact_coverage"])
     raw = read_raw(case.candidate)
+    # The exact evaluator takes the step from the file; the row was decided on the net
+    # admission read. They must be one net, or the control is of another certificate.
+    decided = (entry.get("premises") or {}).get("D")
+    if decided is None or Fraction(str(decided)) != net_step(raw):
+        raise SystemExit(
+            f"{case.certificate}: the row's net step {decided} is not the file's "
+            f"{net_step(raw)}; the control would evaluate another net"
+        )
     exact = mixed_exact(raw, centre[0], centre[1], index)
     # Rounded down, so the capture at the centre is at most 1 - NEAR_THRESHOLD.
     near = Fraction(int((1 - NEAR_THRESHOLD) / exact * 10**15), 10**15)
@@ -513,23 +533,106 @@ def control_status(case: Case, out: Path) -> str | None:
 
 #: The register's evidence, read by `--evidence` for each certificate's reported entry.
 EVIDENCE = PROJECT / "frontier/evidence.yaml"
-#: What `--evidence` says of the build, whose crate source is the reviewed one.
-REVIEWED_BUILD = "4ddf37d9c"
 #: The review that accepted a census row and a control receipt as a complete replay here,
 #: and says which certificates the route carries to (Carrying the Route).
 ROUTE_REVIEW = (
     "docs/project/reviews/review-2026-10-05-wand125-october-5-and-independent-replays.md"
 )
-#: That build's `source_sha256`, which `build.rs` takes over src/, Cargo.toml, Cargo.lock
-#: and itself; the gate's test profile in Cargo.toml has changed it since.
-REVIEWED_SOURCE = "9985c465"
-#: The assumptions every format M replay entry states beside its mass.
-ASSUMPTIONS = (
-    (
-        "Every angle and legal centre is covered by the net of 201 half-angles of step"
-        " 83/40000 at core side 9977/10000 and format M's per-bin centre domains, which"
-        " admission checks in exact rationals."
+#: The soundness review of the crate, with its re-review accepting it at 4ddf37d9c.
+SOUNDNESS_REVIEW = "docs/project/reviews/review-2026-10-03-sqverify-fast-soundness.md"
+#: The soundness review of the declared-net change (lemma N0, f007d7afd and 910b6b12c).
+DECLARED_NET_REVIEW = (
+    "docs/project/reviews/review-2026-10-06-sqverify-fast-declared-net-soundness.md"
+)
+
+
+@dataclass(frozen=True)
+class ReviewedSource:
+    """A crate source a soundness review accepted, named by the digest `build.rs` takes."""
+
+    #: The commit at which the reviewed source stands.
+    commit: str
+    #: The review that accepted it.
+    review: str
+    #: What `--evidence` says of a build of it, after its digest.
+    statement: str
+    #: Whether the review read the declared-net path (`proof_net`, lemma N0), so that a
+    #: row on a declared net built from this source may stand as a replay.
+    declared_nets: bool
+
+
+#: Every crate source a soundness review accepted, by its `source_sha256`, which
+#: `build.rs` takes over Cargo.toml, Cargo.lock, build.rs and src/*.rs and every receipt
+#: names. `tests/test_sqverify_fast_census.py` admits a census row as evidence only for a
+#: build of one of these, and `--evidence` names the one a row was built from.
+#: `check_sqverify_fast.crate_source_sha256` computes a tree's digest by the same rule.
+REVIEWED_SOURCES: dict[str, ReviewedSource] = {
+    # The source the two reviews of 3 October accepted (the soundness review's 7, and the
+    # testing and independence review).
+    "9985c465116631570c873ecc33af126adc6f14c7429a5ed44d922254d3c7f8a7": ReviewedSource(
+        commit="4ddf37d9c",
+        review=SOUNDNESS_REVIEW,
+        statement=(
+            "the crate source at 4ddf37d9c, the build the two reviews of 3 October accepted"
+        ),
+        declared_nets=False,
     ),
+    # The same src/, Cargo.lock and build.rs, with the gate's test profile in Cargo.toml,
+    # which the release binary does not use (IR-4 of the route review); through e020eb1e2.
+    "7c49cf79f2408e745d5a0759caf85768d92c502bb574b95dbc12b81a36e50300": ReviewedSource(
+        commit="e020eb1e2",
+        review=ROUTE_REVIEW,
+        statement=(
+            "its src/, Cargo.lock and build.rs are unchanged since 4ddf37d9c, the build the "
+            "two reviews of 3 October accepted, and the digest differs from that build's "
+            "9985c465... only because Cargo.toml gained the gate's test profile, which the "
+            "release binary does not use"
+        ),
+        declared_nets=False,
+    ),
+    # main's crate at 910b6b12c (34e87a86b): the declared net of format M (proof_net,
+    # lemma N0, f007d7afd) with the fixes of the 5 October declared-net review's DN-2,
+    # DN-4 to DN-6 and DN-9 (910b6b12c). Its soundness review of 6 October read the whole
+    # diff from e020eb1e2 and accepted the crate for standard-net certificates, and for a
+    # format M certificate on a declared net once the control's evaluator read that net
+    # (its DR-1, fixed at 36b52538a with DR-2 and DR-3) and the fix had been read, which
+    # the same day's re-check did:
+    # docs/project/reviews/review-2026-10-06-sqverify-fast-declared-net-fix-check.md.
+    "d97758bbc9639edc70b8bd7dc83106d4e8d1be034bacb3e88f8c539b88091c88": ReviewedSource(
+        commit="910b6b12c",
+        review=DECLARED_NET_REVIEW,
+        statement=(
+            "the crate source at 910b6b12c: the source of e020eb1e2 (7c49cf79...) with the "
+            "declared net of format M (proof_net, SOUNDNESS.md lemma N0) and its review fixes, "
+            f"a diff the soundness review {DECLARED_NET_REVIEW} read in full and accepted"
+        ),
+        declared_nets=True,
+    ),
+}
+
+
+def reviewed_source(entry: dict[str, Any]) -> ReviewedSource | None:
+    """The reviewed source a census row's build was made from, or None."""
+    return REVIEWED_SOURCES.get(str((entry.get("build") or {}).get("source_sha256", "")))
+
+
+def net_assumption(premises: dict[str, Any]) -> str:
+    """The net a format M replay entry assumes, as admission read it."""
+    origin = premises.get("net_origin", "standard")
+    which = (
+        "the net its candidate declares (proof_net), lemma N0 of SOUNDNESS.md,"
+        if origin == "proof_net"
+        else "the standard net"
+    )
+    return (
+        f"Every angle and legal centre is covered by {which} of {premises['angle_count']}"
+        f" half-angles of step {premises['D']} at core side {premises['B']} and format M's"
+        " per-bin centre domains, which admission checks in exact rationals."
+    )
+
+
+#: The assumptions every format M replay entry states beside its mass and its net.
+ASSUMPTIONS = (
     (
         "Binary64 arithmetic has IEEE-754 semantics with directed rounding per operation,"
         " as SOUNDNESS.md's Floating Point section uses it."
@@ -573,6 +676,21 @@ def evidence_entry(
         for item in register["evidence"]
         if item.get("assurance") == "reported" and item.get("certificate") == certificate
     )
+    premises = entry["premises"]
+    built = str((entry.get("build") or {}).get("source_sha256", ""))
+    reviewed = reviewed_source(entry)
+    declared = premises.get("net_origin") == "proof_net"
+    if reviewed is None:
+        raise SystemExit(
+            f"{case.certificate}: built from crate source {built[:8]}..., which no review "
+            "accepted (REVIEWED_SOURCES); rebuild from reviewed source and re-run the row"
+        )
+    if declared and not reviewed.declared_nets:
+        raise SystemExit(
+            f"{case.certificate}: a declared net, built from crate source {built[:8]}..., "
+            "whose review did not read the declared net; no review of the declared net "
+            "accepted it (REVIEWED_SOURCES)"
+        )
     receipt = json.loads((out / case.packet / f"{case.certificate}.control.json").read_text())
     if entry.get("status") != "VERIFIED" or receipt.get("status") != "CONTROLS_REFUSED":
         raise SystemExit(f"{case.certificate}: not verified and controlled")
@@ -589,54 +707,64 @@ def evidence_entry(
         (row for row in rows if int(row.get("r", 0)) >= 1),
         key=lambda row: row["min_certified_lower_bound"],
     )
-    premises = entry["premises"]
+    directions = int(premises["angle_count"])
     runs = {run["name"]: run for run in receipt["runs"]}
     side = Fraction(case.side)
     mass = Fraction(premises["mass_exact"])
     identifier = str(report["id"]).removesuffix("-report") + "-sqverify-fast-replay"
     packet_path = f"benchmarks/measure-verifier/census-mixed/{case.packet}/{case.certificate}"
     replay = (
-        "From packing/, after cargo build --release in sqverify_fast/ (toolchain 1.98.0): "
+        "From packing/, in a tree whose crate is reviewed source (.venv/bin/python3 -m "
+        "devtools.sqverify_fast_census --source-digest prints its source_sha256 and exits 0; "
+        f"these receipts' build is {built[:8]}..., the source at {reviewed.commit}), after "
+        "cargo build --release in sqverify_fast/ (toolchain 1.98.0): "
         ".venv/bin/python3 -m devtools.sqverify_fast_census --family mixed --binary "
         "sqverify_fast/target/release/sqverify-fast --out "
         f"benchmarks/measure-verifier/census-mixed --threads 2 --only {case.certificate} "
-        "runs sqverify-fast on the retained candidate at all 201 net directions at the "
+        f"runs sqverify-fast on the retained candidate at all {directions} directions of "
+        f"{'the net it declares' if declared else 'the standard net'} at the "
         "threshold it declares, 1, and records the case in census.json there; "
         f"--check --only {case.certificate} must then print 1 of 1 retained certificates "
         "VERIFIED (every direction verified, summary VERIFIED, exit 0, and the exact capture "
         "at the least-bound leaf's centre at least 1). The same command with --control in "
         "place of --threads 2 must write status CONTROLS_REFUSED. The receipts are "
         f"{packet_path}.jsonl.gz and {packet_path}.control.json, held by "
-        "tests/test_sqverify_fast_census.py."
+        "tests/test_sqverify_fast_census.py, which admits the row only for a build of "
+        "reviewed source."
     )
     least = entry["least_bound_leaf_exact"]
     stored = str(entry["candidate_sha256"])
     pinned = hashlib.sha256(gzip.decompress(case.candidate.read_bytes())).hexdigest()
-    built = str((entry.get("build") or {}).get("source_sha256", ""))
+    net = (
+        f"the net its candidate declares (proof_net), of {directions} half-angles of step "
+        f"{premises['D']}, with B(1 + D) = {premises.get('shrink_bound')} < 1 and the last "
+        f"tangent {premises.get('net_last_tangent')} past tan(pi/8) and at most 1/2 "
+        "(SOUNDNESS.md, lemma N0)"
+        if declared
+        else f"the net of {directions} half-angles of step {premises['D']}"
+    )
     limitations = (
         "sqverify-fast, this repository's clean-room measure verifier, decided the retained "
-        f"candidate {case.certificate} at all 201 net directions on {date}. The receipts "
-        f"name the stored gzip file's SHA-256 {stored[:8]}..., which decompresses to the "
-        f"SHA-256 {pinned[:8]}... the packet's acquisition record pins "
+        f"candidate {case.certificate} at all {directions} net directions on {date}. The "
+        f"receipts name the stored gzip file's SHA-256 {stored[:8]}..., which decompresses "
+        f"to the SHA-256 {pinned[:8]}... the packet's acquisition record pins "
         "(devtools.retained_data check ties the two). Admission recomputed in exact "
         f"rationals n = {case.n}, L = {side}, the total mass {mass} < {case.n}, the core "
-        f"side {premises['B']} with B(1 + D/(1 - D^2/4)) < 1 and the net of 201 "
-        f"half-angles of step {premises['D']}, from {premises['source_rectangles']} "
+        f"side {premises['B']} with B(1 + D/(1 - D^2/4)) < 1 and {net}, from "
+        f"{premises['source_rectangles']} "
         f"rectangle rows ({premises['expanded_rectangles']:,} distinct images) and no point "
         "or segment, and took format M's per-bin centre domain, at threshold 1. The axis "
         f"direction was decided by an exact-event vertex sweep over {axis['vertices']:,} "
         f"vertices, least certified capture {axis['min_certified_lower_bound']!r}; the other "
-        f"200 by interval branch and bound over {entry['nodes']:,} boxes, least certified "
-        f"lower bound {oblique['min_certified_lower_bound']!r} at index {oblique['r']}; "
+        f"{directions - 1} by interval branch and bound over {entry['nodes']:,} boxes, least "
+        f"certified lower bound {oblique['min_certified_lower_bound']!r} at index "
+        f"{oblique['r']}; "
         f"the exact capture at the least-bound leaf's centre (index {least['r']}) is "
         f"{float(Fraction(least['exact_coverage'])):.10f}. Every direction verified, "
         f"summary VERIFIED, exit 0, {float(entry['cpu_seconds']):,.0f} CPU seconds at two "
         f"threads and {float(entry['wall_seconds']):,.0f} seconds of wall time on a shared "
         "4-core x86-64 Linux container under load. The build is rustc 1.98.0, release, "
-        f"x86-64 Linux, source_sha256 {built[:8]}...; its src/, Cargo.lock and build.rs are "
-        f"unchanged since {REVIEWED_BUILD}, the build the two reviews of 3 October accepted, "
-        f"and the digest differs from that build's {REVIEWED_SOURCE[:8]}... only because "
-        "Cargo.toml gained the gate's test profile, which the release binary does not use. "
+        f"x86-64 Linux, source_sha256 {built[:8]}...: {reviewed.statement}. "
         "It decides coverage independently of the source's checker: the crate was written "
         "without opening it (packing/sqverify_fast/INDEPENDENCE.md) and shares no code with "
         "it. It shares the theorem, the net, the core side, the per-bin domain lemma and the "
@@ -685,9 +813,13 @@ def evidence_entry(
         ),
         *folded(
             "pinpoints",
-            "SOUNDNESS.md's theorem and lemmas, accepted with the crate by "
-            "docs/project/reviews/review-2026-10-03-sqverify-fast-soundness.md; the "
-            f"certificate's mathematics read in {audit_record}; "
+            f"SOUNDNESS.md's theorem and lemmas, accepted with the crate by {SOUNDNESS_REVIEW}"
+            + (
+                f", and lemma N0 and the declared-net change by {DECLARED_NET_REVIEW}"
+                if declared
+                else ""
+            )
+            + f"; the certificate's mathematics read in {audit_record}; "
             + (
                 ""
                 if audit_record == ROUTE_REVIEW
@@ -701,6 +833,7 @@ def evidence_entry(
             f"        - The density is nonnegative and exact, of total mass {mass} < {case.n},"
             " which admission recomputes from the retained candidate."
         ),
+        f"        - {net_assumption(premises)}",
         *(f"        - {assumption}" for assumption in ASSUMPTIONS),
         f"      audit_record: {audit_record}",
         *folded("limitations", limitations),
@@ -1059,11 +1192,48 @@ def records_mode(args: argparse.Namespace, census: dict[str, Any], selected: lis
     return 1 if failed else 0
 
 
+def source_digest() -> int:
+    """`--source-digest`: the tree's crate digest and the review that accepted it, if any."""
+    digest = crate_source_sha256()
+    reviewed = REVIEWED_SOURCES.get(digest)
+    scope = (
+        "standard and declared nets" if reviewed and reviewed.declared_nets else "standard net"
+    )
+    print(
+        f"{digest} reviewed source for the {scope} ({reviewed.commit}; {reviewed.review})"
+        if reviewed is not None
+        else f"{digest} not reviewed source: no entry of REVIEWED_SOURCES"
+    )
+    return 0 if reviewed is not None else 1
+
+
+def write_summary() -> int:
+    """`--summary`: census-summary.json and census-summary.md from both census folders."""
+    rows = summary_rows()
+    (CENSUS_ROOT / "census-summary.json").write_text(
+        json.dumps(
+            {"kind": "sqverify-fast-census-summary/v1", "certificates": rows},
+            indent=2,
+            sort_keys=True,
+        )
+        + "\n",
+        encoding="utf-8",
+    )
+    (CENSUS_ROOT / "census-summary.md").write_text(render_summary(rows), encoding="utf-8")
+    return 0
+
+
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=(__doc__ or "").splitlines()[0])
     parser.add_argument("--family", choices=("rectangles", "mixed"), default="rectangles")
-    parser.add_argument("--binary", type=Path, required=True)
-    parser.add_argument("--out", type=Path, required=True)
+    parser.add_argument("--binary", type=Path)
+    parser.add_argument("--out", type=Path)
+    parser.add_argument(
+        "--source-digest",
+        action="store_true",
+        help="print this tree's crate source_sha256 and the review that accepted it; "
+        "exit 1 if none did",
+    )
     parser.add_argument("--threads", type=int, default=1)
     parser.add_argument("--resume", action="store_true")
     parser.add_argument(
@@ -1102,19 +1272,10 @@ def main(argv: list[str] | None = None) -> int:
         help="write census-summary.json and census-summary.md from both census folders",
     )
     args = parser.parse_args(argv)
-    if args.summary:
-        rows = summary_rows()
-        (CENSUS_ROOT / "census-summary.json").write_text(
-            json.dumps(
-                {"kind": "sqverify-fast-census-summary/v1", "certificates": rows},
-                indent=2,
-                sort_keys=True,
-            )
-            + "\n",
-            encoding="utf-8",
-        )
-        (CENSUS_ROOT / "census-summary.md").write_text(render_summary(rows), encoding="utf-8")
-        return 0
+    if not args.source_digest and (args.binary is None or args.out is None):
+        parser.error("--binary and --out are required")
+    if args.source_digest or args.summary:
+        return source_digest() if args.source_digest else write_summary()
     census_path = args.out / "census.json"
     binary_sha = sha256(args.binary)
     census: dict[str, Any] = (

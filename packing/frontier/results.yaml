@@ -9331,9 +9331,11 @@ results:
       CPU-hours, run by devtools.audit_wand125_declared_net replay, which since the
       review's finding FN-1 refuses a run with Python's assertions off and records that
       they were on, and compared record by record with the shipped run; or sqverify-fast
-      over all 832 directions once a review accepts its declared-net change for the census
-      route (think-gcld). The verified lower bound at n = 18 moves when one passes; the
-      review found no defect in the certificate.
+      over all 832 directions, which verified them here on 6 October 2026 with the census
+      control refused, once the declared-net review's acceptance of that crate source for
+      the census route (think-gcld, accepted on the intake round's branch) is
+      merged. The verified lower bound at n = 18 moves when one passes; the review found no
+      defect in the certificate.
     notes: >-
       V0 because the cited entry is the source's claim: assurance reported, replay not yet
       complete. C1 from the review of 6 October, which read the certificate and the
@@ -9434,8 +9436,8 @@ results:
       - docs/project/reviews/review-2026-10-06-wand125-finer-net-n18-n19.md
     next_rung: >-
       A complete replay: sqverify-fast over all 416 directions, which verified them here
-      on 6 October 2026, once a review accepts its declared-net change for the census
-      route (think-gcld) and the census control runs on a declared net (think-q9gu); or
+      on 6 October 2026 with the census control refused, once the declared-net review's
+      acceptance of that crate source for the census route (think-gcld, accepted on the intake round's branch) is merged; or
       the bundle's own driver over all 416 nodes, priced here at 13.4 CPU-hours, run by
       devtools.audit_wand125_declared_net replay, which since the review's finding FN-1
       refuses a run with Python's assertions off, and compared record by record with the

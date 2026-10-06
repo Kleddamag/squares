@@ -276,21 +276,29 @@ an exact capture below 1 (`counterexample-candidate`). The receipts are
 
 **`sqverify-fast`.** This repository’s clean-room verifier, built from `main`’s crate at
 `34e87a86b` (`source_sha256` `d97758bb…`, binary `567a0fd5…`, rustc 1.98.0), decided both
-certificates at every node of their declared nets on 6 October 2026 at two threads,
+certificates at every node of their declared nets on 6 October 2026,
 recorded in the
 [Milestone B census](../../../benchmarks/measure-verifier/census-mixed/README.md):
 
 | Name here | Directions | Boxes | Least certified bound | CPU seconds |
 | --- | ---: | ---: | --- | ---: |
-| `n18-L4704` | 832 | 115,091,221 | $1.000000001132137$ | 701.6 |
-| `n19-L48229` | 416 | 75,232,113 | $1.000000000833015$ | 507.9 |
+| `n18-L4704` | 832 | 115,091,221 | $1.000000001132137$ | 701.7 |
+| `n19-L48229` | 416 | 75,232,113 | $1.000000000833015$ | 512.1 |
 
-That build contains the declared-net change of 5 October (lemma N0), which a review is
-reading again (`think-gcld`); until it accepts that source, no rung rests on these
-rows. The census tool’s own `--control` cannot yet run on a declared net: its exact
-evaluator turns the core by the standard net’s step whatever the candidate declares, so
-its captures disagree with the crate’s (`think-q9gu`). The controls above use
-evaluators that read the declared net.
+The rows were first made on 6 October at 03:12 UTC with the census tool of the base
+commit, whose own `--control` could not run on a declared net: its exact evaluator turned
+the core by the standard net’s step whatever the candidate declared, so its captures
+disagreed with the crate’s (`think-q9gu`). The declared-net soundness review of 6 October
+(`think-gcld`) found the same defect (its DR-1), and its fix, `36b52538a`, makes the
+evaluator read the declared net. The rows and both census controls were then made again
+from 04:48 to 05:03 UTC with that tool, as merged at `f342dff82` (the census tool is
+that commit’s file with this packet added to its list, blob `c4ea4eb5`; its
+`check_sqverify_fast.py` is that commit’s, blob `e6366726`), at one thread: the same
+verdicts, box totals and least bounds, 701.7 and 512.1 CPU seconds. Each census control
+verified the original at the least-bound leaf’s direction (797 at $n = 18$, 198 at
+$n = 19$) and refused both mutants there, with the crate’s exact capture equal to the
+independent evaluator’s. That review accepts the crate source `d97758bb…` for declared
+nets; until its acceptance is merged here, no rung rests on these rows.
 
 ## Limitations
 

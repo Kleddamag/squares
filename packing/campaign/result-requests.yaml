@@ -486,7 +486,7 @@ issues:
       reports three corrections to the paper v0.1.3 (formalization in progress elsewhere,
       13 completed root updates rather than 14, Figure 8's caption against the text) and
       a dependency remark on cases 2175 and 2176.
-    read_through: '2026-10-05T17:22:23Z'
+    read_through: '2026-10-06T22:55:01Z'
     results: []
     asks:
       - what: >-
@@ -500,6 +500,16 @@ issues:
           docs/project/reviews/review-2026-10-04-n11-optimality-paper-v0.1.4-changes.md,
           and T-060's notes gained a dated entry. Answered on the issue on 5 October,
           https://github.com/jlevy/squares/issues/317#issuecomment-5999533910.
+      - what: >-
+          The Lean formalization Queuingtheorydotcom/11SquaresFormalized, announced on 6
+          October
+        state: done
+        note: >-
+          Imported at cdc746ed in #391 and #393: the statement audited and its closure built
+          here, the axiom audit pinned, the tree scanned. T-060 stays V3/C3 until a complete
+          build is held by the record and a human Lean expert who is not an author reviews
+          the formalization. Answered on 6 October,
+          https://github.com/jlevy/squares/issues/317#issuecomment-6026940690.
     beads: [think-1gbu, think-nnrx, think-if2i, think-wbpu]
     answer_bead: think-1gbu
     replies:
@@ -507,6 +517,11 @@ issues:
         date: '2026-10-05'
         by: jlevy
         kind: acknowledgement
+        reported: []
+      - url: https://github.com/jlevy/squares/issues/317#issuecomment-6026940690
+        date: '2026-10-06'
+        by: jlevy
+        kind: import
         reported: []
     close_when: >-
       The owner's call: the umbrella's open beads are closed or moved, and wand125's

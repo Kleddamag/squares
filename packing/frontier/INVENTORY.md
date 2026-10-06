@@ -8,8 +8,8 @@ ours, which rest on someone else's argument, and how far each has been checked.
 
 ## The short version
 
-- **295** evidence records. **160** are formal; **153** of those were established here.
-- **127** rest on an argument made elsewhere, of which **7** have been read by nobody here.
+- **298** evidence records. **162** are formal; **155** of those were established here.
+- **128** rest on an argument made elsewhere, of which **7** have been read by nobody here.
 - **40** claim to be first established here. **13** make no novelty statement at all - not assessed, which is not the same as not novel.
 
 A formal claim on an unread external proof is still formal: the proof proves its
@@ -111,10 +111,10 @@ results, it is a statement about what this repository has itself examined.
 | `E-friedman-ds7-table2-opaque-lower` | 0 | lower-bound | reported | - | elsewhere | - | previously-published | unknown | - |
 | `E-n017-maciver-reported-lower` | 0 | lower-bound | reported | - | elsewhere | not-reviewed | previously-published | unknown | *none held* |
 | `E-green26-reported-lower` | 0 | lower-bound | reported | - | - | defect-found | previously-published | unknown | - |
-| `E-kingbird-upper-register` | 178 | upper-bound | reported | - | - | - | previously-published | producer’s code | - |
+| `E-kingbird-upper-register` | 177 | upper-bound | reported | - | - | - | previously-published | producer’s code | - |
 | `E-kingbird-grid-completeness` | 96 | upper-bound | reported | - | - | - | previously-published | producer’s code | - |
 | `E-unitsquare-release1-report` | 0 | upper-bound | reported | - | - | - | previously-published | producer’s code | *none held* |
-| `E-basic-grid-upper` | 251 | upper-bound | verified | equalities and inequalities, no tolerance | here | - | common-knowledge | independent | `V-check-basic-bounds` |
+| `E-basic-grid-upper` | 250 | upper-bound | verified | equalities and inequalities, no tolerance | here | - | common-knowledge | independent | `V-check-basic-bounds` |
 | `E-basic-area-lower` | 18 | lower-bound | verified | equalities and inequalities, no tolerance | here | - | common-knowledge | independent | `V-check-basic-bounds` |
 | `E-nagamochi-lower` | 175 | lower-bound | reported | - | elsewhere | defect-found | previously-published | no code | - |
 | `E-karakus-strip-lower` | 203 | lower-bound | verified | whatever its theorem states | elsewhere | informally-verified | previously-published | no code | - |
@@ -243,15 +243,15 @@ results, it is a statement about what this repository has itself examined.
 | `E-n011-trump-local-theorem-first-clause` | 0 | derived-structure | verified | whatever its theorem states | here | - | *not assessed* | independent | `V-review-trump-local-theorem` |
 | `E-n011-trump-isolation-radius` | 0 | derived-structure | verified | equalities and inequalities, no tolerance | here | - | *not assessed* | producer’s code | `V-trump11-isolation-radius` |
 | `E-wand125-n068-derived-lower` | 0 | lower-bound | verified | equalities and inequalities, no tolerance | here | informally-verified | *not assessed* | producer’s code | `V-wand125-check-with-sqpack`, `V-sqpack-fractional-exact` |
-| `E-franciscouzo-2026-09-27-report` | 42 | upper-bound | reported | - | elsewhere | - | previously-published | producer’s code | *none held* |
-| `E-franciscouzo-2026-09-27-exact-replay` | 42 | upper-bound | verified | equalities and inequalities, no tolerance | here | - | previously-published | independent | `V-upper-bound-promotion`, `V-check-rational-witness-independent` |
-| `E-franciscouzo-2026-09-27-interval-replay` | 42 | upper-bound | verified | strict inequalities only | here | - | previously-published | independent | `V-upper-bound-intervals` |
-| `E-franciscouzo-2026-10-03-report` | 7 | upper-bound | reported | - | elsewhere | informally-verified | previously-published | producer’s code | *none held* |
-| `E-franciscouzo-2026-10-03-exact-replay` | 7 | upper-bound | verified | equalities and inequalities, no tolerance | here | - | previously-published | independent | `V-upper-bound-promotion`, `V-check-rational-witness-independent` |
-| `E-franciscouzo-2026-10-03-interval-replay` | 7 | upper-bound | verified | strict inequalities only | here | - | previously-published | independent | `V-upper-bound-intervals` |
-| `E-n211-de-winter-report` | 1 | upper-bound | reported | - | elsewhere | - | previously-published | producer’s code | *none held* |
-| `E-n211-de-winter-exact-replay` | 1 | upper-bound | verified | equalities and inequalities, no tolerance | here | - | previously-published | independent | `V-upper-bound-promotion`, `V-check-rational-witness-independent` |
-| `E-n211-de-winter-interval-replay` | 1 | upper-bound | verified | strict inequalities only | here | - | previously-published | independent | `V-upper-bound-intervals` |
+| `E-franciscouzo-2026-09-27-report` | 3 | upper-bound | reported | - | elsewhere | - | previously-published | producer’s code | *none held* |
+| `E-franciscouzo-2026-09-27-exact-replay` | 3 | upper-bound | verified | equalities and inequalities, no tolerance | here | - | previously-published | independent | `V-upper-bound-promotion`, `V-check-rational-witness-independent` |
+| `E-franciscouzo-2026-09-27-interval-replay` | 3 | upper-bound | verified | strict inequalities only | here | - | previously-published | independent | `V-upper-bound-intervals` |
+| `E-franciscouzo-2026-10-03-report` | 0 | upper-bound | reported | - | elsewhere | informally-verified | previously-published | producer’s code | *none held* |
+| `E-franciscouzo-2026-10-03-exact-replay` | 0 | upper-bound | verified | equalities and inequalities, no tolerance | here | - | previously-published | independent | `V-upper-bound-promotion`, `V-check-rational-witness-independent` |
+| `E-franciscouzo-2026-10-03-interval-replay` | 0 | upper-bound | verified | strict inequalities only | here | - | previously-published | independent | `V-upper-bound-intervals` |
+| `E-n211-de-winter-report` | 0 | upper-bound | reported | - | elsewhere | - | previously-published | producer’s code | *none held* |
+| `E-n211-de-winter-exact-replay` | 0 | upper-bound | verified | equalities and inequalities, no tolerance | here | - | previously-published | independent | `V-upper-bound-promotion`, `V-check-rational-witness-independent` |
+| `E-n211-de-winter-interval-replay` | 0 | upper-bound | verified | strict inequalities only | here | - | previously-published | independent | `V-upper-bound-intervals` |
 | `E-casson-2026-09-23-report` | 0 | upper-bound | reported | - | elsewhere | - | previously-published | producer’s code | *none held* |
 | `E-n069-ellsworth-2026-09-report` | 0 | upper-bound | reported | - | elsewhere | informally-verified | previously-published | producer’s code | - |
 | `E-n083-chang-2026-09-report` | 0 | upper-bound | reported | - | elsewhere | informally-verified | previously-published | producer’s code | - |
@@ -317,13 +317,16 @@ results, it is a statement about what this repository has itself examined.
 | `E-n084-wand125-mixed-9411-report` | 1 | lower-bound | reported | - | elsewhere | informally-verified | previously-published | producer’s code | `V-wand125-mixed-rotated-verify-cpp`, `V-wand125-verify-mixed-full-proof-py` |
 | `E-n067-wand125-mixed-848-sqverify-fast-replay` | 1 | lower-bound | verified | strict inequalities only | here | - | previously-published | independent | `V-sqverify-fast` |
 | `E-n084-wand125-mixed-9411-sqverify-fast-replay` | 1 | lower-bound | verified | strict inequalities only | here | - | previously-published | independent | `V-sqverify-fast` |
+| `E-evand-exact-optima-2026-10-05-report` | 48 | upper-bound | reported | - | elsewhere | - | previously-published | producer’s code | `V-evand-verify-cert-py`, `V-evand-verify-cert2-py` |
+| `E-evand-exact-optima-2026-10-05-exact-replay` | 48 | upper-bound | verified | equalities and inequalities, no tolerance | here | - | previously-published | independent | `V-sqpack-verify`, `V-check-rational-witness-independent`, `V-evand-exact-certificates` |
+| `E-evand-exact-optima-2026-10-05-source-replay` | 48 | upper-bound | verified | equalities and inequalities, no tolerance | here | - | previously-published | producer’s code | `V-evand-verify-cert-py`, `V-evand-verify-cert2-py`, `V-evand-exact-certificates` |
 
 ## What the register rests on
 
-- **assurance**: numerically-checked 4, reported 131, verified 160
-- **method**: exact-algebraic 95, interval-certified 52, numerical-multiprecision 4, proof-assistant-checked 3, proof-audited 3, published-proof 7, reported 131
-- **novelty**: apparently-novel 40, common-knowledge 4, not assessed 13, previously-published 238
-- **relationship to the producer's code**: generator 5, independent-implementation 53, not-applicable 19, same-implementation 205, shared-components 7, unknown-historical 6
+- **assurance**: numerically-checked 4, reported 132, verified 162
+- **method**: exact-algebraic 97, interval-certified 52, numerical-multiprecision 4, proof-assistant-checked 3, proof-audited 3, published-proof 7, reported 132
+- **novelty**: apparently-novel 40, common-knowledge 4, not assessed 13, previously-published 241
+- **relationship to the producer's code**: generator 5, independent-implementation 54, not-applicable 19, same-implementation 207, shared-components 7, unknown-historical 6
 
 The `cases` column is how many frontier records cite each piece of evidence, and it is the reason to read this table rather than count records. Ranked below are the *formal* records only: a `reported` record cited across the frontier may be a shared catalogue and is labelled as such, which is the register working rather than risk. The risk is a verified claim resting on an argument nobody has examined.
 
@@ -378,10 +381,10 @@ The `n` column is what each covers and `cases` is how many frontier records cite
 
 | evidence | cases | whose work | read here |
 | --- | ---: | --- | --- |
-| `E-basic-grid-upper` | 251 | here | - |
+| `E-basic-grid-upper` | 250 | here | - |
 | `E-karakus-strip-lower` | 203 | elsewhere | informally-verified |
-| `E-franciscouzo-2026-09-27-exact-replay` | 42 | here | - |
-| `E-franciscouzo-2026-09-27-interval-replay` | 42 | here | - |
+| `E-evand-exact-optima-2026-10-05-exact-replay` | 48 | here | - |
+| `E-evand-exact-optima-2026-10-05-source-replay` | 48 | here | - |
 | `E-wand125-rectangle-2026-10-01-source-replay` | 29 | here | - |
 
 The most-cited argument this repository did not produce is `E-karakus-strip-lower`, carrying 203 frontier cases. It is an external proof, and it has been read here: its record carries the review, what was re-derived, and the four things that were not. The arithmetic is what picked it out for reading -- being cited this heavily is the reason to open an argument, not a reason to trust it.

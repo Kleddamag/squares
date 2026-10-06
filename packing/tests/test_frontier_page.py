@@ -284,10 +284,12 @@ def test_the_page_says_once_what_the_tag_means_and_links_the_corrected_result(
 
 
 #: The cases whose verified lower bound rests only on a published proof nobody here has
-#: read: Göbel's s(5), Kearney and Shiu's s(6), Stromquist's s(10) and Bentz's s(22) and
-#: s(33), each transcribed with its theorem and pinpoints and never worked through here.
-#: n = 13's proof, Bentz's of 2010, is read here, with an erratum in one lemma.
-UNREAD_PROOF_CASES = (5, 6, 10, 22, 33)
+#: read: Göbel's s(5), Kearney and Shiu's s(6), Stromquist's s(10) and Bentz's s(22), each
+#: transcribed with its theorem and pinpoints and never worked through here. Bentz's s(33)
+#: was one until its lane cited T-064's replays beside the proof on 2026-10-06; n = 13's
+#: proof, Bentz's of 2010, is read here, with an erratum in one lemma, and its lane cites
+#: T-006's replays since the same day.
+UNREAD_PROOF_CASES = (5, 6, 10, 22)
 #: The cases whose reported lower bound is a value of Green's DS7 Theorem 9, whose
 #: illustrated argument leaves a unit square empty (`devtools.check_green_ds7`), above
 #: the verified floor.

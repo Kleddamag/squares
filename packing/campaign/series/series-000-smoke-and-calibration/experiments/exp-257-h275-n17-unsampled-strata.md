@@ -358,15 +358,39 @@ experiment:
       126,048,356 exact facet checks. It excludes its own 8 states, one orbit; the certified census after it
       is 36,800 states in 4,687 orbits.
   verdict:
-    decision: in-progress
+    decision: accepted
     primary_criterion: The fraction of the frozen states the kernel excludes under SW9's recipe within the 7,000 s
       ceiling, each closure re-proved in full by the standing kernel verifier with the endpoint surviving, and
       the cost per state; the distance-2 draws reported apart.
-    reason: Registered before its first run; each closure is admitted as its verifier passes, and the verdict is
-      written when the list is exhausted or the deadline arrives.
-  lease:
-    expires: '2026-10-06T08:14:04Z'
-    host: Session 182 remote container
+    reason: >-
+      Accepted means the frozen measurement ran and answered H-275's question for the
+      draws it reached; it does not mean a falsifier survived, because H-275 is an open
+      question and registers none. Of the 27 counted draws that finished, 24 (89%)
+      closed within the 7,000 s ceiling, each re-proved in full by the standing kernel
+      verifier and admitted with the endpoint surviving. Of the other three, u6 and u12
+      reached producer fixed points inside the ceiling; u15 ended INCOMPLETE at the
+      7,000 s ceiling, where the checker ran out of time, so it is neither a closure nor
+      a fixed point. The distance-2 draws are reported apart: u8 closed and was admitted
+      and u1 ended INCOMPLETE at the ceiling. A closure cost 550 to 1,972 s of process
+      CPU (median 1,090) and its verification 257 to 954 s (median 472); the
+      non-closures cost u6 1,863 s (at a fixed point), u12 1,597 s (at a fixed point),
+      u1 6,101 s (INCOMPLETE) and u15 6,844 s (INCOMPLETE). Every one of the 21 strata
+      has a finished draw (21/21), and eight of the ten second draws finished. Not run:
+      u31, because no draw started after 06:17 UTC, when a 7,000 s ceiling would have
+      ended after the session deadline (the coordinator's re-plan of future slices).
+      Draw u29's producer closed at 07:06 UTC after 4,644 s of wall, but its standing
+      verification was still running at the verdict, so it is not counted; it is
+      admitted only if that verification passes. The 29 finished draws' receipts record
+      47,492 s of wall and 43,806 s of process CPU, and their verifications 12,709 s,
+      over 31,588 s on two workers from 21:51 UTC. A stratum with one draw describes
+      that draw, not a closure rate.
+    needs_review: true
+    commit: 8464ffcfe
+  effort:
+    timebox: 7,000 s per state and 4,000 s per verification, one worker per job, two workers, to
+      2026-10-06T07:14:04Z
+    wall_seconds: 31588
+    stopped_by: criterion
 ---
 # exp-257: Session 182 BC-428, H-264’s Unsampled Strata
 
@@ -387,6 +411,35 @@ writes the draw from the frame listing and the seed-182 receipt.
 Each closed state removes only its own orbit.
 The two distance-2 states are reported apart, and any state not run by the deadline is
 reported as not run.
+
+## Verdict
+
+Accepted, with needs_review true for the W2 review the coordinator commissions.
+Accepted means the frozen measurement ran and answered H-275’s question for the draws it
+reached; H-275 is an open question and registers no falsifier, so none survived.
+
+- **Counted draws:** 24 of the 27 that finished closed (89%), each re-proved in full by
+  the standing kernel verifier and admitted, the endpoint surviving.
+- **Producer fixed points:** u6 and u12, inside the ceiling.
+- **INCOMPLETE at the 7,000 s ceiling:** u15; the checker ran out of time, so neither a
+  closure nor a fixed point.
+- **Distance-2 draws, reported apart:** u8 closed and was admitted and u1 ended
+  INCOMPLETE at the ceiling.
+- **Cost per closure:** 550 to 1,972 s of process CPU, median 1,090 s; verification 257
+  to 954 s, median 472 s. Non-closures: u6 1,863 s (at a fixed point), u12 1,597 s (at a
+  fixed point), u1 6,101 s (INCOMPLETE) and u15 6,844 s (INCOMPLETE).
+- **Coverage:** 21/21 strata have a finished draw; eight of the ten second draws
+  finished.
+- **Not run:** u31, because no draw started after 06:17 UTC, when a 7,000 s ceiling
+  would have ended after the session deadline.
+- **Closed, verification running at the verdict:** u29, whose producer closed at 07:06
+  UTC after 4,644 s of wall; not counted, and admitted only if the standing verifier
+  passes it.
+- **Totals:** the 29 finished draws’ receipts record 47,492 s of wall and 43,806 s of
+  process CPU, and their verifications 12,709 s, over 31,588 s on two workers from 21:51
+  UTC.
+
+A stratum with one draw describes that draw, not a closure rate.
 
 ## Runs
 

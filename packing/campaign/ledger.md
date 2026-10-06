@@ -194,7 +194,7 @@ Each entry summarizes one user-level research window. Cycle slots are wall-clock
 | [session-178](agent-sessions/session-178-full-core-ablation.md) | stopped | contemporaneous | `research-loop` (correctness) | `research-loop` (correctness) | 2 | think-abit | Await Joshua's review of the rebuilt layer (PR 360) under think-q0z7. No active research executor or reserved follow-up; original intervals are historical. |
 | [session-179](agent-sessions/session-179-selective-halving.md) | stopped | contemporaneous | `research-loop` (correctness) | `research-loop` (correctness) | 2 | think-ns4t | Await Joshua's review of the rebuilt layer (PR 360) under think-q0z7. No active research executor or reserved follow-up; original intervals are historical. |
 | [session-180](agent-sessions/session-180-n17-producer-memo.md) | stopped | contemporaneous | `review-planning-oversight` (insight) | `review-planning-oversight` (correctness) | 3 | think-wn6x | Review the rebuilt layer that replaces Draft PR 325 under think-wn6x; upstream think-tmz6 remains the research coordinator. No merge or new compute is authorized by this closeout. |
-| [session-182](agent-sessions/session-182-n17-overnight-lanes.md) | in_progress | contemporaneous | `review-planning-oversight` (insight) | `research-loop` (correctness) | 3 | think-tmz6 | Run BC-423's and BC-424's queues, lane E and the branch-and-bound queue from the run worktrees, and admit each closure its control releases. |
+| [session-182](agent-sessions/session-182-n17-overnight-lanes.md) | in_progress | contemporaneous | `review-planning-oversight` (insight) | `review-planning-oversight` (correctness) | 4 | think-tmz6 | Run BC-423's and BC-424's queues, lane E and the branch-and-bound queue from the run worktrees, and admit each closure its control releases. |
 
 ### Workflow summary
 
@@ -211,7 +211,7 @@ Declared counts are contemporaneous contracts; retrospective counts are reconstr
 | `pipeline-improvement` | 41 | 2 | 213 | 7 |
 | `documentation-pass` | 1 | 0 | 29 | 3 |
 | `remediation` | 2 | 1 | 6 | 3 |
-| `review-planning-oversight` | 8 | 3 | 50 | 6 |
+| `review-planning-oversight` | 8 | 3 | 51 | 6 |
 | `general-improvement` | 1 | 0 | 7 | 1 |
 
 ## Experiment agendas
@@ -904,7 +904,7 @@ Status: **active**. Turn PR 230's W3 review and the two explorations it led to, 
 | BC-425 | research | 17 | complete | 1 | think-035m | packing/campaign/agent-sessions/session-182-n17-overnight-lanes.md |
 | BC-426 | research | 17 | in_progress | 1 | think-035m | packing/campaign/agent-sessions/session-182-n17-overnight-lanes.md |
 | BC-427 | research | 17 | complete | 1 | think-035m | packing/campaign/agent-sessions/session-182-n17-overnight-lanes.md |
-| BC-428 | research | 17 | in_progress | 1 | think-z8an | packing/campaign/agent-sessions/session-182-n17-overnight-lanes.md |
+| BC-428 | research | 17 | complete | 1 | think-z8an | packing/campaign/agent-sessions/session-182-n17-overnight-lanes.md |
 
 ## Series
 
@@ -1124,13 +1124,14 @@ Status: **active**. Turn PR 230's W3 review and the two explorations it led to, 
 | H-272 | blocked | search | Of the 68 non-grid known-best records whose witness derives from Kingb |  | 0 |  |  |
 | H-273 | unresolved | proof | Each of the 95 orbits at Hamming distance 2 from the endpoint's state  |  | 1 |  | 225.8m wall |
 | H-274 | confirmed | proof | Of the four counted draws of H-264's seed-182 draw that stalled under  |  | 1 |  | 196.1m wall |
-| H-275 | open question | proof | On a seeded draw of one residue state from each of the 21 strata of su |  | 1 |  |  |
+| H-275 | open question | proof | On a seeded draw of one residue state from each of the 21 strata of su |  | 1 |  | 526.5m wall |
 
 ## Needs review — held for a human, not decided
 
 | id | hypotheses | decision | why it was not decided |
 | --- | --- | --- | --- |
 | exp-050 | H-054 | unresolved | The authorized source-semantics measurement stops at ordered E1 reason 3, attribution-unbound, with zero cells. This leaves H-054 unresolved and instrument_ready false; the terminal decision awaits BC-120/BC-121 review. |
+| exp-257 | H-275 | accepted | Accepted means the frozen measurement ran and answered H-275's question for the draws it reached; it does not mean a falsifier survived, because H-275 is an open question and registers none. Of the 27 counted draws that finished, 24 (89%) closed within the 7,000 s ceiling, each re-proved in full by the standing kernel verifier and admitted with the endpoint surviving. Of the other three, u6 and u12 reached producer fixed points inside the ceiling; u15 ended INCOMPLETE at the 7,000 s ceiling, where the checker ran out of time, so it is neither a closure nor a fixed point. The distance-2 draws are reported apart: u8 closed and was admitted and u1 ended INCOMPLETE at the ceiling. A closure cost 550 to 1,972 s of process CPU (median 1,090) and its verification 257 to 954 s (median 472); the non-closures cost u6 1,863 s (at a fixed point), u12 1,597 s (at a fixed point), u1 6,101 s (INCOMPLETE) and u15 6,844 s (INCOMPLETE). Every one of the 21 strata has a finished draw (21/21), and eight of the ten second draws finished. Not run: u31, because no draw started after 06:17 UTC, when a 7,000 s ceiling would have ended after the session deadline (the coordinator's re-plan of future slices). Draw u29's producer closed at 07:06 UTC after 4,644 s of wall, but its standing verification was still running at the verdict, so it is not counted; it is admitted only if that verification passes. The 29 finished draws' receipts record 47,492 s of wall and 43,806 s of process CPU, and their verifications 12,709 s, over 31,588 s on two workers from 21:51 UTC. A stratum with one draw describes that draw, not a closure rate. |
 
 ## Rounds
 
@@ -1271,7 +1272,7 @@ Status: **active**. Turn PR 230's W3 review and the two explorations it led to, 
 | exp-158 | series-000 | 11 | Codex BC303 T2 charge-sweep agent | H-160 | The September 14 strategy reset paused this route before the target charge ran; no target receipt or scientific verdict exists. |
 | exp-160 | series-000 | 11 | Codex BC303 H-162 retained-receipt analyst | H-162 | The September 14 strategy reset paused this route with no exp-158 target receipt; no H-162 comparison or scientific verdict exists. |
 
-### accepted (61)
+### accepted (62)
 
 | id | series | instance | operator | hypotheses | reason |
 | --- | --- | --- | --- | --- | --- |
@@ -1336,6 +1337,7 @@ Status: **active**. Turn PR 230's W3 review and the two explorations it led to, 
 | exp-252 | series-000 | 17 | Claude Session 182; the run operator's lane A queue ran the survey, the control and the draws two at a time in the survey's own seeded random order, verified each closure and admitted it in the session checkout | H-264 | Five of the ten counted draws closed within the 7,000 s ceiling, each re-proved in full by the standing kernel verifier, which meets the criterion of at least half; every closure cost under 900 s of process CPU and every verification under 700 s, far inside two CPU-hours. The other five counted draws reached producer fixed points inside the ceiling, as did both distance-2 draws. The W2 factual review (docs/project/reviews/review-2026-10-05-exp-252-h264.md) confirmed the verdict with corrections to bookkeeping and attribution, which this record carries. |
 | exp-253 | series-000 | 17 | Claude Session 182; the run operator's BC-424 queue ran the control beside the states, which ran one at a time in mask order, verified each closure, and admitted it in the session checkout once the control had finished without closing | H-274 | The first two frozen states, 2784767 and 2817021, closed within the ceiling under SW9's recipe, each re-proved in full by the standing kernel verifier and admitted after the endpoint-state control finished without closing, which meets the criterion of two. Both had reached producer fixed points under N1's recipe. The third, 2878207, and the fourth, 3063677, closed too and were verified and admitted after the verdict, so all four frozen states closed. The W2 factual review (docs/project/reviews/review-2026-10-05-exp-253-h274.md) confirmed the verdict with corrections to the mechanism, the procedure, a timing and one figure, which this record carries. |
 | exp-256 | series-000 | 17 | Claude Session 182; the run operator's BC-427 queue produces and verifies each certificate on two workers and admits each closure in the session checkout | H-267 | Two of the ten targets run closed and were admitted on the standing verifier's full pass, target 4 (488c72d77) and target 6 (340e92b84), and they took the arity-7 line from 10,173 to 9,990 and then 8,191 orbits, the endpoint surviving (receipts/K/census-arity7-after-bc427-t6.json), which meets the criterion. The other eight stalled, six at the 24-round cap and two at producer fixed points, and targets 11 to 16 were not run. The W2 review of exp-251 (docs/project/reviews/review-2026-10-05-exp-251-h267.md) replayed target 4's verification and recounted both the 9,990 and the 8,191 lines; H-267's verdict is exp-251's. |
+| exp-257 | series-000 | 17 | Claude Session 182; the run operator's BC-428 queue runs the states in the frozen order on two workers, verifies each closure, and admits it in the session checkout | H-275 | Accepted means the frozen measurement ran and answered H-275's question for the draws it reached; it does not mean a falsifier survived, because H-275 is an open question and registers none. Of the 27 counted draws that finished, 24 (89%) closed within the 7,000 s ceiling, each re-proved in full by the standing kernel verifier and admitted with the endpoint surviving. Of the other three, u6 and u12 reached producer fixed points inside the ceiling; u15 ended INCOMPLETE at the 7,000 s ceiling, where the checker ran out of time, so it is neither a closure nor a fixed point. The distance-2 draws are reported apart: u8 closed and was admitted and u1 ended INCOMPLETE at the ceiling. A closure cost 550 to 1,972 s of process CPU (median 1,090) and its verification 257 to 954 s (median 472); the non-closures cost u6 1,863 s (at a fixed point), u12 1,597 s (at a fixed point), u1 6,101 s (INCOMPLETE) and u15 6,844 s (INCOMPLETE). Every one of the 21 strata has a finished draw (21/21), and eight of the ten second draws finished. Not run: u31, because no draw started after 06:17 UTC, when a 7,000 s ceiling would have ended after the session deadline (the coordinator's re-plan of future slices). Draw u29's producer closed at 07:06 UTC after 4,644 s of wall, but its standing verification was still running at the verdict, so it is not counted; it is admitted only if that verification passes. The 29 finished draws' receipts record 47,492 s of wall and 43,806 s of process CPU, and their verifications 12,709 s, over 31,588 s on two workers from 21:51 UTC. A stratum with one draw describes that draw, not a closure rate. |
 
 ### baseline (12)
 
@@ -1353,12 +1355,6 @@ Status: **active**. Turn PR 230's W3 review and the two explorations it led to, 
 | exp-031 | series-000 | 10 | openai-codex | H-002 | All four source perturbations satisfy every declared condition and return to the proved side within floating-point precision. This confirms the narrow known-answer control without reopening H-002's refuted universal claim. |
 | exp-032 | series-000 | 3 | openai-codex | H-021 | The exact connected and isolated controls pass, every declared conflation fails, and all unsupported floating-point observations remain unresolved. |
 | exp-201 | series-000 | 18 | claude-opus-5 | H-201 | Calibration, not a scored round: it freezes p_perturb = 1.0, perturb_scale = 2 and a flat mu = 5 for exp-202 and exp-203, and it turned up a schedule-length effect that is now registered as H-204 rather than folded into an arm. |
-
-### in-progress (1)
-
-| id | series | instance | operator | hypotheses | reason |
-| --- | --- | --- | --- | --- | --- |
-| exp-257 | series-000 | 17 | Claude Session 182; the run operator's BC-428 queue runs the states in the frozen order on two workers, verifies each closure, and admits it in the session checkout | H-275 | Registered before its first run; each closure is admitted as its verifier passes, and the verdict is written when the list is exhausted or the deadline arrives. |
 
 ## Resumable — stopped on the clock, not on an answer
 
@@ -1406,7 +1402,7 @@ Status: **active**. Turn PR 230's W3 review and the two explorations it led to, 
 
 ## Effort
 
-186 rounds, 2512.1 agent-minutes, 5160.4 wall-minutes.
+186 rounds, 2512.1 agent-minutes, 5686.9 wall-minutes.
 
 These totals exclude 4 historical rounds with unrecorded timing; their cost is unknown, not zero.
 

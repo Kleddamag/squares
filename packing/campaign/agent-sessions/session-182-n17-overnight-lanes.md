@@ -113,7 +113,7 @@ session:
       stalls under SW9's recipe), each control running beside its first target with
       admission gated on it, then lane E's H-273 shards and the branch-and-bound queue.
       Admit each closure a standing verifier passes in full.
-    status: in_progress
+    status: completed
     entered_by: planned_checkpoint
     switch_reason: >-
       The morning checkpoint handed off without stopping the run (OR-8), and the work
@@ -133,12 +133,67 @@ session:
     fallback: >-
       Preserve every object, record a defect, admit nothing from that instrument, and
       escalate to the owner.
+    outcome: >-
+      39 admissions, each on the standing kernel verifier's full pass from the clean run
+      worktree: BC-424's four (all four of H-264's counted stalls; H-274 accepted in
+      exp-253 and confirmed with corrections by its W2 review), BC-425's eight arity-8
+      targets (exp-254, unresolved for H-267), BC-427's targets 4 and 6 (exp-256
+      accepted) and BC-428's 25 draws (exp-257 accepted, needs review). The certified
+      census fell from 72,272 states in 9,165 orbits to 36,800 states in 4,687 orbits,
+      the endpoint surviving. H-267 is confirmed (exp-251, W2 review with corrections),
+      its arity-at-most-7 line at 8,191 orbits. Lane E searched all 95 distance-2 orbits
+      with no placement (exp-255, H-273 unresolved). Held for the owner: lane K's target
+      2 and BC-426's two closures, which wait on BC-423's control receipt, the
+      branch-and-bound recalibration and #360's merge. The stack merged into main at
+      a6279886b, and the run continued on claude/n17-session-182-continued.
+    evidence:
+    - packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-251-h267-n17-overnight-flag-certification.md
+    - packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-253-h274-n17-stalls-under-adaptive-rows.md
+    - packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-254-h267-n17-second-tranche-flags.md
+    - packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-255-h273-n17-distance-two-survey.md
+    - packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-256-h267-n17-third-tranche-flags.md
+    - packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-257-h275-n17-unsampled-strata.md
+    - packing/campaign/series/series-000-smoke-and-calibration/results/exp-257-n17-unsampled-strata/census.json
+    - docs/project/reviews/review-2026-10-05-exp-251-h267.md
+    - docs/project/reviews/review-2026-10-05-exp-253-h274.md
+    stop_reason: >-
+      The work deadline at the finalization reserve, 07:14:04Z. BC-428 ended there, and
+      exp-257's verdict is written in the commit that completes this phase.
+    next_action: Phase 4 closes the session.
+  - workflow: review-planning-oversight
+    focus: correctness
+    recording: contemporaneous
+    clock_role: finalization
+    commitment: BC-418
+    objective: >-
+      Write exp-257's verdict and close Session 182 before its deadline: stopped, its
+      resource rollups withheld because they carry model identifiers (think-h8oz), and
+      certified by the fast gate if it can run inside the reserve, otherwise pending
+      under its own bead.
+    status: in_progress
+    entered_by: planned_checkpoint
+    switch_reason: >-
+      The work deadline at the start of the finalization reserve, 07:14:04Z, ends the
+      research loop; what remains is the record.
+    budget_minutes: 60
+    started_at: '2026-10-06T07:14:31Z'
+    deadline_at: '2026-10-06T08:14:04Z'
+    expected_output: >-
+      exp-257's verdict, pushed; then the session stopped, with
+      resource_usage_unmeasured (rollup_withheld_model_identifiers), the close report
+      and SYNOPSIS view from close_session --render, and either a passed fast gate or
+      certification_pending.
+    validation_command: >-
+      cd packing && uv run --frozen --all-extras --group dev packing-validate --records
+    kill_condition: >-
+      The session deadline at 08:14:04Z: no commit after it, and no gate run past it.
+    fallback: >-
+      Leave the session for the owner to close, with this phase's next_action naming
+      what remains.
     outcome: null
     evidence: []
     stop_reason: null
-    next_action: >-
-      Admit BC-423's and BC-424's closures as their controls release them; the
-      coordinator decides at its next check-in whether the run continues to its deadline.
+    next_action: Close Session 182 before 08:14:04Z.
   budget:
     wall_minutes: 1440
     slice_minutes: 30
@@ -233,19 +288,35 @@ session:
       E's shards and the branch-and-bound queue, admitting each released closure and
       reporting to the coordinator every 30 minutes
     operator: Opus sub-agent at high effort
-    status: in_progress
+    status: completed
     recording: contemporaneous
-    outcome: null
-    evidence: null
+    outcome: >-
+      Ran BC-423's and BC-424's gated queues, lane E's shards, the branch-and-bound
+      queue until it stopped under its frozen rule (BB-MISCALIBRATED), and the queues of
+      BC-425, BC-426, BC-427 and BC-428: 39 admissions, one commit each, on the standing
+      verifier's full pass. BC-423's target 2 was voided by its gate and is held with
+      BC-426's two closures for the owner. Pushes went out hourly after --records.
+    evidence:
+    - packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-257-h275-n17-unsampled-strata.md
+    - packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-256-h267-n17-third-tranche-flags.md
+    - packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-254-h267-n17-second-tranche-flags.md
+    - packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-253-h274-n17-stalls-under-adaptive-rows.md
     files:
     - packing/campaign/explorations/X048-session-168-pilots/certified-sub-patterns.yaml
     - packing/hosted/n17-x048-session-168-certificates.yaml
     - packing/campaign/agent-sessions/session-182-n17-overnight-lanes.md
-    checks: null
-    uncertainty: null
+    checks:
+    - >-
+      packing-validate --records, check_retained_json, the hosted-data manifest check
+      and the census, negative-control and hosted-data test files (90 tests) before
+      every admission commit and push.
+    uncertainty: >-
+      The certificate objects of the 39 admissions exist only on this container's disk
+      until the hosted release is published (think-jhgi); every non-closure's node is
+      kept in scratch.
     elapsed_seconds: null
     elapsed_quality: unavailable
-    next_action: Admit each gated closure once its verifier passes and its control releases it.
+    next_action: None for the run operator; phase 4 closes the session.
     phase: 3
     budget_minutes: 1005
     started_at: '2026-10-05T14:30:00Z'
@@ -872,6 +943,17 @@ consequence in each.
   present on this host.
   Stall nodes are kept; the coordinator decides any deletion if free space falls below
   3.5 GB.
+- **BC-428 is complete, and
+  [exp-257](../series/series-000-smoke-and-calibration/experiments/exp-257-h275-n17-unsampled-strata.md)
+  accepts H-275 with needs_review true**, for the W2 review the coordinator commissions.
+  24 of the 27 counted draws closed and were admitted on the standing verifier’s full
+  pass; u6 and u12 reached producer fixed points and u15 ended INCOMPLETE at its
+  ceiling. Of the distance-2 draws, u8 closed and u1 ended INCOMPLETE. Every stratum has
+  a finished draw. At the coordinator’s re-plan no draw started after 06:17 UTC, when a
+  7,000 s ceiling would have ended after the session deadline, so u31 was not run.
+  u29 closed at the end, with its standing verification still running at the verdict, so
+  it is not counted. The certified census stands at 36,800 states in 4,687 orbits, the
+  endpoint surviving.
 
 <!-- This document follows common-doc-guidelines.md.
 See github.com/jlevy/practical-prose and review guidelines before editing.

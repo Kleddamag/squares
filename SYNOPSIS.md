@@ -290,11 +290,11 @@ hypothesis status and summarizes experiment verdicts, and the
 | Record | Count | State at the cutoff |
 | --- | ---: | --- |
 | Agendas | 39 | 19 active; 14 completed; 5 paused; 1 superseded |
-| Commitments | 417 | 217 complete; 65 stopped; 70 blocked; 25 ready; 21 tentative; 19 in progress |
+| Commitments | 417 | 218 complete; 65 stopped; 70 blocked; 25 ready; 21 tentative; 18 in progress |
 | Sessions | 180 | 105 completed; 74 stopped; 1 nonterminal |
 | Explorations | 47 | 28 linked to proposed hypotheses; 19 uncodified |
 | Hypotheses | 209 | 45 confirmed; 33 refuted; 63 blocked; 19 unresolved; 9 open; 35 open questions; 2 result registered; 2 abandoned; 0 running; 1 exhausted |
-| Experiments | 186 | 61 accepted; 38 rejected; 58 unresolved; 12 baseline; 11 blocked; 4 abandoned; 1 in progress; 1 exhausted |
+| Experiments | 186 | 62 accepted; 38 rejected; 58 unresolved; 12 baseline; 11 blocked; 4 abandoned; 0 in progress; 1 exhausted |
 | Frontier results | 94 | 94 registered, 65 by others |
 
 <!-- END CURRENT-RESEARCH-STATUS -->
@@ -5649,7 +5649,7 @@ round that names the hypothesis, control roles included.
 | [H-272](packing/campaign/hypotheses/H-272-symmetric-kingbird-records-reoptimized.md) | blocked | At least 7 of the 68 symmetric Kingbird-derived records re-optimize without symmetry to a verified smaller side (X-049) | 0 | — |
 | [H-273](packing/campaign/hypotheses/H-273-n17-distance-two-infeasible-at-cap.md) | unresolved | Each of the 95 distance-2 orbits of the arity8 frame is infeasible at U; a float survey refutes it with one placement and cannot confirm it (Session 182, lane E) | 1 | exp-255 unresolved: no placement in 95 searches, every control placed; closest miss penetration 0.00027 |
 | [H-274](packing/campaign/hypotheses/H-274-n17-per-state-closure-under-adaptive-rows.md) | confirmed | At least two of H-264’s four counted stalled draws close under SW9’s adaptive-row recipe, on the standing verifier’s full pass (Session 182) | 1 | exp-253 accepted, W2 review confirmed with corrections: s182-m2784767-sw9 and s182-m2817021-sw9 closed and admitted after the endpoint-state control did not close, then s182-m2878207-sw9 and s182-m3063677-sw9: all four closed |
-| [H-275](packing/campaign/hypotheses/H-275-n17-unsampled-strata-per-state-price.md) | open question | The per-state exclusion price, under SW9’s adaptive-row recipe, of residue states drawn from the 21 strata H-264’s seed-182 draw never reached (827 orbits; Session 182) | 1 | exp-257 in progress: s182-bc428-u2, s182-bc428-u3, s182-bc428-u4, s182-bc428-u5, s182-bc428-u7, s182-bc428-u8, s182-bc428-u10, s182-bc428-u9, s182-bc428-u11, s182-bc428-u13, s182-bc428-u14, s182-bc428-u16, s182-bc428-u17, s182-bc428-u18, s182-bc428-u19, s182-bc428-u20, s182-bc428-u21, s182-bc428-u23, s182-bc428-u22, s182-bc428-u24, s182-bc428-u26, s182-bc428-u25, s182-bc428-u27, s182-bc428-u28 and s182-bc428-u30 closed and admitted |
+| [H-275](packing/campaign/hypotheses/H-275-n17-unsampled-strata-per-state-price.md) | open question | The per-state exclusion price, under SW9’s adaptive-row recipe, of residue states drawn from the 21 strata H-264’s seed-182 draw never reached (827 orbits; Session 182) | 1 | exp-257 accepted, needs review: 24 of the 27 counted draws closed and were admitted on the standing verifier’s full pass; u6 and u12 at producer fixed points, u15 INCOMPLETE at the ceiling; of the distance-2 draws, u8 closed and was admitted and u1 ended INCOMPLETE at the ceiling; all 21 strata covered; u29 closed with its verification running at the verdict, not counted; u31 not run; needs review |
 
 ### Confirmed
 
@@ -5988,7 +5988,7 @@ The relevant generator writes the receipt, and the entry fills in on the next
 
 There are 186 rounds registered in `series-000`.
 
-They record 2512.1 agent-minutes and 5160.4 wall-minutes.
+They record 2512.1 agent-minutes and 5686.9 wall-minutes.
 These totals exclude four historical annealing rounds with unrecorded timing; their wall
 and operator costs are unknown, not zero.
 Exp129 closed as blocked without invocation and contributes zero scientific elapsed
@@ -6215,7 +6215,7 @@ archive beside it.
 | [exp-254](packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-254-h267-n17-second-tranche-flags.md) | 17 | target | H-267 | Session 182 BC-425: lane K’s second tranche, the next ten standing flags by projected gain (all arity 8) under the frozen SW9 recipe, each closure admitted on the standing verifier’s full pass | Eight of ten arity-8 flags forbidden at U on the standing verifier’s full pass (s182-bc425-t1, t2, t4, t5, t7, t8, t9, t10), two at the 24-round cap; 5,057 certified orbits, endpoint surviving; arity 8, so H-267 unresolved | unresolved |
 | [exp-255](packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-255-h273-n17-distance-two-survey.md) | 17 | target | H-273 | Session 182 lane E: every distance-2 orbit of the arity8 frame searched for a float placement at U, ten shards each with the endpoint’s state as its positive control | No placement in 95 searches, every control placed; the closest miss at penetration 0.00027 | unresolved |
 | [exp-256](packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-256-h267-n17-third-tranche-flags.md) | 17 | target | H-267 | Session 182 BC-427: lane K’s third tranche, the sixteen remaining flags of arity at most seven with the most projected gain, under the frozen SW9 recipe, each closure admitted on the standing verifier’s full pass | Two of the ten targets run closed (s182-bc427-t4, s182-bc427-t6), taking the arity-7 line to 8,191 orbits; eight stalled and targets 11 to 16 were not run | accepted |
-| [exp-257](packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-257-h275-n17-unsampled-strata.md) | 17 | target | H-275 | Session 182 BC-428: a seeded draw of 31 residue states from the 21 strata H-264’s draw never reached, run whole under SW9’s frozen adaptive-row recipe, each closure admitted on the standing verifier’s full pass | In progress: s182-bc428-u2, s182-bc428-u3, s182-bc428-u4, s182-bc428-u5, s182-bc428-u7, s182-bc428-u8, s182-bc428-u10, s182-bc428-u9, s182-bc428-u11, s182-bc428-u13, s182-bc428-u14, s182-bc428-u16, s182-bc428-u17, s182-bc428-u18, s182-bc428-u19, s182-bc428-u20, s182-bc428-u21, s182-bc428-u23, s182-bc428-u22, s182-bc428-u24, s182-bc428-u26, s182-bc428-u25, s182-bc428-u27, s182-bc428-u28 and s182-bc428-u30 forbidden at U; 4,687 certified orbits, endpoint surviving | in-progress |
+| [exp-257](packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-257-h275-n17-unsampled-strata.md) | 17 | target | H-275 | Session 182 BC-428: a seeded draw of 31 residue states from the 21 strata H-264’s draw never reached, run whole under SW9’s frozen adaptive-row recipe, each closure admitted on the standing verifier’s full pass | 24 of the 27 counted draws closed and were admitted on the standing verifier’s full pass; u6 and u12 at producer fixed points, u15 INCOMPLETE at the ceiling; of the distance-2 draws, u8 closed and was admitted and u1 ended INCOMPLETE at the ceiling; all 21 strata covered; u29 closed with its verification running at the verdict, not counted; u31 not run; needs review | accepted |
 
 ### Cost and provenance
 
@@ -6406,11 +6406,11 @@ archive beside it.
 | exp-254 | 7,000 s per target and 4,000 s per verification; one worker per job | 7543.0 s | — | criterion | `72c343904`; eight of ten closed and admitted, two at the round cap |
 | exp-255 | 3,600 s per shard under a 3,900 s hard timeout, one or two workers | 13549.0 s | — | criterion | `f7b45bdbb`; 95 of 95 orbits searched, none placed |
 | exp-256 | 7,000 s per target and 4,000 s per verification; one worker per job, two workers | 11095.0 s | — | criterion | `340e92b84`; two of ten run closed, the arity-7 line to 8,191; targets 11 to 16 not run |
-| exp-257 | 7,000 s per state and 4,000 s per verification; one worker per job, two workers | — | — | — | in progress at `cebb5d15a` |
+| exp-257 | 7,000 s per state and 4,000 s per verification; one worker per job, two workers | 31588.0 s | — | criterion | `8464ffcfe`; 24 of 27 counted draws closed; u31 not run |
 
 ### What the 186 rounds jointly establish
 
-The 186 rounds use 2512.1 agent-minutes and 5160.4 wall-minutes under the campaign’s
+The 186 rounds use 2512.1 agent-minutes and 5686.9 wall-minutes under the campaign’s
 retained effort accounting.
 The never-invoked exp129 adds no scientific result or execution time.
 Exp-114 contributes 2.46 seconds of target/replay effort; its readiness work is recorded

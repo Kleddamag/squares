@@ -321,6 +321,58 @@ def test_require_names_the_fetch_command_when_an_object_is_absent(
         require("data/alpha.bin", path)
 
 
+def test_an_upload_refused_by_the_upload_host_names_the_host_and_the_remedy(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    """The first real publish met HTTP 403 from uploads.github.com, an egress refusal,
+    after the release was created; the error says which host and what to do."""
+    source = tmp_path / "alpha.bin"
+    source.write_bytes(b"alpha bytes")
+    url = "https://uploads.github.com/repos/jlevy/squares/releases/1/assets?name=alpha.bin"
+    calls: list[tuple[str, ...]] = []
+
+    def refused(
+        _self: hosted_data.GhClient, *arguments: str
+    ) -> subprocess.CompletedProcess[str]:
+        calls.append(arguments)
+        return subprocess.CompletedProcess(
+            ["gh", *arguments], 1, "", f"HTTP 403: 403 Forbidden ({url})\n"
+        )
+
+    monkeypatch.setattr(hosted_data.GhClient, "_run", refused)
+    client = hosted_data.GhClient()
+    with pytest.raises(HostedDataError) as caught:
+        client.upload(REPOSITORY, TAG, source, "alpha.bin")
+    message = str(caught.value)
+    assert "refused with HTTP 403 by uploads.github.com" in message
+    assert "network access" in message
+    assert "run publish again" in message
+    assert url in message
+    assert "--clobber" not in calls[0]
+
+    def failed(
+        _self: hosted_data.GhClient, *arguments: str
+    ) -> subprocess.CompletedProcess[str]:
+        return subprocess.CompletedProcess(["gh", *arguments], 1, "", "HTTP 502: Bad Gateway")
+
+    monkeypatch.setattr(hosted_data.GhClient, "_run", failed)
+    with pytest.raises(
+        HostedDataError, match=r"gh release upload failed for alpha\.bin: HTTP 502"
+    ):
+        client.upload(REPOSITORY, TAG, source, "alpha.bin")
+
+
+def test_require_reads_paths_under_a_root_the_caller_passes(repo: Path) -> None:
+    """A tool with its own root finds objects there, never under the repository root."""
+    path, _ = _staged(repo)
+    beta = repo / "data" / "nested" / "beta.json.gz"
+    assert require("data/nested/beta.json.gz", path, repo=repo) == beta
+    assert require(beta, path, repo=repo) == beta
+    beta.unlink()
+    with pytest.raises(HostedDataMissingError, match="not in this checkout"):
+        require("data/nested/beta.json.gz", path, repo=repo)
+
+
 def test_the_command_line_stages_and_checks(
     repo: Path, monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]
 ) -> None:

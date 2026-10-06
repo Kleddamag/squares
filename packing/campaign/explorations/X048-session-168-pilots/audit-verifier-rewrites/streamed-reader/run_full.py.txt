@@ -1,0 +1,65 @@
+"""Run the standing kernel verifier in full on saved certificates, one at a time.
+
+For each certificate directory it runs `devtools.verify_n17_kernel_certificate` in a child
+process from the worktree's `packing/`, writes the receipt and the progress log, and
+records the child's wall time and peak resident set (`wait4`'s `ru_maxrss`, in KiB on
+Linux). Each child's OOM score is raised to 800 so that the long runs sharing the machine
+are never the ones killed.
+
+Usage: python run_full.py WORKTREE OUTDIR NAME=CERTDIR [NAME=CERTDIR ...]
+"""
+
+from __future__ import annotations
+
+import json
+import os
+import subprocess
+import sys
+import time
+from pathlib import Path
+
+
+def oom_first() -> None:
+    _ = Path("/proc/self/oom_score_adj").write_text("800")
+
+
+def main() -> int:
+    worktree, out = Path(sys.argv[1]), Path(sys.argv[2])
+    out.mkdir(parents=True, exist_ok=True)
+    packing = worktree / "packing"
+    env = {**os.environ, "PYTHONPATH": f"{packing / 'src'}:{packing}"}
+    python = "/home/user/squares/packing/.venv/bin/python3"
+    for spec in sys.argv[3:]:
+        name, _, directory = spec.partition("=")
+        receipt, log = out / f"full-{name}.json", out / f"full-{name}.log"
+        command = [
+            python,
+            "-m",
+            "devtools.verify_n17_kernel_certificate",
+            str(worktree / directory),
+            "--output",
+            str(receipt),
+            "--progress",
+        ]
+        start = time.time()
+        with log.open("w") as stream:
+            child = subprocess.Popen(
+                command, cwd=packing, env=env, stdout=stream, stderr=subprocess.STDOUT,
+                preexec_fn=oom_first,
+            )
+            _, status, usage = os.wait4(child.pid, 0)
+        record = {
+            "name": name,
+            "directory": directory,
+            "exit": os.waitstatus_to_exitcode(status),
+            "wall_seconds": round(time.time() - start, 1),
+            "peak_rss_mb": round(usage.ru_maxrss / 1024, 1),
+        }
+        with log.open("a") as stream:
+            stream.write(json.dumps(record) + "\n")
+        print(json.dumps(record), flush=True)
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

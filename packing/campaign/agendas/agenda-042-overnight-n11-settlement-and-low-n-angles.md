@@ -8,7 +8,7 @@ softschema:
 agenda:
   id: agenda-042
   title: Overnight n11 Settlement Ladder and Low-n Angles After PR 230
-  updated: '2026-10-01'
+  updated: '2026-10-05'
   status: active
   objective: 'Turn PR 230''s W3 review and the two explorations it led to, X-046 and X-047, into one night
     of bounded work. At n11 no counting certificate can prove equality and Kleddamag''s certificate has
@@ -1049,7 +1049,7 @@ agenda:
     owner_focus: correctness
     instances:
     - 17
-    state: blocked
+    state: complete
     priority: 0
     question: Does the fixed analytic common-core stress exclude negative-side first-order directions
       in both n17corner branches?
@@ -1063,8 +1063,6 @@ agenda:
     bead: think-wrgx
     depends_on:
     - BC-401
-    blocked_on: Three synthetic symbolic preparation guard failures; the exact52column executable identity
-      proof and adversarial controls are incomplete. No target run is admitted.
     next_evidence: packing/campaign/hypotheses/H-258-n17-common-core-stress.md
     workflows:
     - pipeline-improvement
@@ -1075,7 +1073,12 @@ agenda:
     - packing/campaign/hypotheses/H-258-n17-common-core-stress.md
     note: Three target-free symbolic preparation guard failures stop this instrument. No target run or
       stationarity verdict; exact residual proof and controls remain missing. Local/globaloptimality remains
-      separate.
+      separate. Unblocked 2026-10-01 by the BC-405 route review, lane A1 of BC-406. Two exploratory reconstructions
+      find the candidate correct (exact identity at the exp-237 midpoint and three other rational points;
+      all 58 weights nonnegative, exactly six zero); the stall was sympy.cancel expression swell. Repair
+      the identity proof with polynomial-ring arithmetic or exact evaluation beyond the degree bound,
+      within the frozen criterion. Session 167 repaired it at 2fbf8d29 (polynomial-ring identities, 256-bit
+      outward bounds, denominator-factor guards); exp-242 accepted after independent review, with a clean replay.
   - id: BC-403
     purpose: research
     owner_focus: correctness
@@ -1130,6 +1133,906 @@ agenda:
     - packing/campaign/hypotheses/H-260-n17-closed-cell-symmetry.md
     note: H260accepted:20155518necessaryclosedassignmentorbits; all8countsindependentlyagree,0.14s group.
       Geometricexclusionsremainthink-11ma.
+  - id: BC-405
+    purpose: research
+    owner_focus: insight
+    instances:
+    - 17
+    state: complete
+    priority: 0
+    question: What does PR 265 leave for an n17 optimality proof, which route is most likely to finish
+      one, and what bounded work comes next?
+    hypotheses:
+    - H-261
+    - H-262
+    - H-263
+    - H-264
+    - H-265
+    budget: 'Session 166: two Fable extra-high assessments (proof route; local endpoint theorem), one survey lane,
+      then coordinator reconciliation and codification, about four hours in all.'
+    entry: PR 265 merged into main with its morning report, and think-11ma as the recorded next entry.
+    exit: The route review retained, H-261 to H-265 registered, BC-406 to BC-411 given beads and lanes,
+      BC-402 unblocked, think-11ma re-scoped, and one coordinating entry selected.
+    bead: think-9fc1
+    depends_on:
+    - BC-404
+    next_evidence: docs/project/reviews/review-2026-10-01-n17-route-after-pr265.md
+    workflows:
+    - review-planning-oversight
+    program: post-optimality-low-n
+    artifacts:
+    - docs/project/reviews/review-2026-10-01-n17-route-after-pr265.md
+    - packing/campaign/explorations/X048-route-review/README.md
+    note: No mathematical error found in PR 265. The H-258 stress checks out exploratorily and the endpoint
+      is a first-order minimum modulo its six slider directions, so the local theorem needs no second-order
+      analysis. The global half has no exclusions; the hybrid route ranks first. No bound or verdict changes.
+  - id: BC-406
+    purpose: research
+    owner_focus: correctness
+    instances:
+    - 17
+    state: complete
+    priority: 0
+    question: Can the n17 local theorem, the occupancy census and the polynomial identification proceed
+      as three disjoint parallel lanes?
+    budget: One coordinated session; lane budgets are those of BC-402, BC-407, BC-408 and BC-409.
+    entry: BC-405 complete; lanes A1 (BC-402), B (BC-408) and C (BC-409) ready.
+    exit: Each dispatched lane reaches its own exit, then the coordinator integrates the records and
+      runs W10 on the results.
+    bead: think-c7kv
+    depends_on:
+    - BC-405
+    next_evidence: docs/project/reviews/review-2026-10-01-n17-route-after-pr265.md
+    workflows:
+    - pipeline-improvement
+    - research-loop
+    - review-planning-oversight
+    program: post-optimality-low-n
+    artifacts:
+    - docs/project/reviews/review-2026-10-01-n17-route-after-pr265.md
+    note: Allocation per OR-10. Opus 5.5 builds instruments; Fable extra-high reviews instruments; Fable
+      max derives and reviews the endpoint theorem and anything that moves a bound. Reconsider the order
+      if the H-258 identity fails at a rational point or lane B leaves more than 1e5 orbits.
+  - id: BC-407
+    purpose: research
+    owner_focus: correctness
+    instances:
+    - 17
+    state: complete
+    priority: 0
+    question: Is the n17 endpoint a strict local minimum modulo its slider cone, with an explicit radius?
+    hypotheses:
+    - H-261
+    budget: One controlled build and review slice of about two hours; target arithmetic in seconds to
+      minutes, one worker.
+    entry: H-258 accepted through BC-402.
+    exit: Exact kernel, duals, curvature bounds, unavailability checks and slider uniformity certified
+      at a declared radius with independent review, or a retained failed ratio test that selects interval
+      enlargement.
+    bead: think-n95s
+    depends_on:
+    - BC-402
+    next_evidence: packing/campaign/hypotheses/H-261-n17-local-minimum-modulo-sliders.md
+    workflows:
+    - pipeline-improvement
+    - research-loop
+    - factual-review
+    program: post-optimality-low-n
+    artifacts:
+    - packing/campaign/hypotheses/H-261-n17-local-minimum-modulo-sliders.md
+    note: Exploratory first-order estimate of the radius is 3e-4 (worst ratio 0.86); it defines the capture
+      target. Session 167 accepted H-258 (exp-242); the recipe review fixes items C1-C12
+      and a uniform radius of about 1/5000 over the slider box; the checker's point half is at 11bdcd7c. exp-244 (unresolved)
+      certifies the ratio test at r = 1/5000 over the declared box (worst 0.925818); the claim's physical
+      slider domain exceeds it, and H-268 (BC-417) owes the bound. Session 168 met the exit with exp-248,
+      which re-runs the ratio test over the widened box B_W' (worst 0.925931). H-261 stays unresolved as
+      worded, since the family with squares 5 and 6 exchanged meets its premises outside B_W'.
+  - id: BC-408
+    purpose: research
+    owner_focus: correctness
+    instances:
+    - 17
+    state: complete
+    priority: 0
+    question: How many H260 occupancy orbits survive the s(6) and s(10) subcontainer cuts and exact conditional
+      charge floors?
+    hypotheses:
+    - H-262
+    budget: One build and review slice; about six R068-sized charge sweeps, hours in all.
+    entry: H259 and H260 accepted; charge construction and floor definitions reviewed before any target
+      count.
+    exit: An exact, independently recounted survivor count with the endpoint pattern surviving, or a
+      retained refusal without retuning.
+    bead: think-j1uw
+    depends_on:
+    - BC-404
+    next_evidence: packing/campaign/hypotheses/H-262-n17-conditional-charge-occupancy-census.md
+    workflows:
+    - insight-iteration
+    - pipeline-improvement
+    - research-loop
+    - factual-review
+    program: post-optimality-low-n
+    artifacts:
+    - packing/campaign/hypotheses/H-262-n17-conditional-charge-occupancy-census.md
+    note: Exploratory cut counts leave about 7.7 million orbits before any charge floor. At most 1e4 survivors
+      makes the hybrid route affordable; more than 1e5 sends the question back to W3. Session 167 ran it as a one-sided pilot (exp-243, rejected). R068's charge collapses at U
+      and excludes nothing; 7,703,312 orbits survive the cuts. One D4-symmetric linear floor vector leaves at least
+      30,966 by theorem; asymmetric and nonlinear floors escape that bound and are open.
+  - id: BC-409
+    purpose: research
+    owner_focus: correctness
+    instances:
+    - 17
+    state: complete
+    priority: 2
+    question: Is the certified n17 chart endpoint a root of the catalogue's irreducible degree-18 polynomial?
+    hypotheses:
+    - H-265
+    budget: One short build slice; seconds to minutes of exact algebra.
+    entry: H255 accepted.
+    exit: An exact identification with an independent recheck, or a retained different factor.
+    bead: think-e6y1
+    depends_on:
+    - BC-399
+    next_evidence: packing/campaign/hypotheses/H-265-n17-catalogue-polynomial-identity.md
+    workflows:
+    - pipeline-improvement
+    - research-loop
+    program: post-optimality-low-n
+    artifacts:
+    - packing/campaign/hypotheses/H-265-n17-catalogue-polynomial-identity.md
+    note: Closes the frontier identification blocker; not on the optimality proof's critical path. Session 167
+      accepted H-265 in exp-245 (identical with unit 1, irreducible); the n-017.md blocker text is updated
+      separately.
+  - id: BC-410
+    purpose: research
+    owner_focus: insight
+    instances:
+    - 17
+    state: stopped
+    priority: 2
+    question: Which closed cover keeps the n17 endpoint family inside one occupancy state and leaves the
+      fewest survivors?
+    hypotheses:
+    - H-263
+    budget: One W3 design slice, then one BC-408 census per candidate cover.
+    entry: BC-408's census instrument accepted.
+    exit: A selected cover with proved capacities and its survivor count, or the H259 grid retained with
+      the reason.
+    bead: think-x4a6
+    depends_on:
+    - BC-408
+    next_evidence: packing/campaign/hypotheses/H-263-n17-endpoint-adapted-cover.md
+    workflows:
+    - insight-iteration
+    - research-loop
+    program: post-optimality-low-n
+    artifacts:
+    - packing/campaign/hypotheses/H-263-n17-endpoint-adapted-cover.md
+    note: Square 9's centre is 0.0012 below an H259 seam; the cover was chosen without reference to the
+      endpoint. Stopped 2026-10-02 by the route review's own condition, since BC-408 left more than 1e5
+      orbits. The cover question returns with the bulk-exclusion design (Session 167 lane F).
+  - id: BC-411
+    purpose: research
+    owner_focus: efficiency
+    instances:
+    - 17
+    state: stopped
+    priority: 1
+    question: What does one exact geometric exclusion of an n17 occupancy leaf cost, on a uniform sample
+      of the residue at a cap at or above the endpoint?
+    hypotheses:
+    - H-264
+    budget: At most 2 CPU-hours per sampled leaf, 10 to 20 leaves.
+    entry: BC-408 reported and BC-410 has selected the cover.
+    exit: Exclusion fraction, producer and checker cost per leaf and an extrapolated total, with unresolved
+      leaves explicit.
+    bead: think-11ma
+    depends_on:
+    - BC-408
+    - BC-410
+    next_evidence: packing/campaign/hypotheses/H-264-n17-geometric-exclusion-cost-per-leaf.md
+    workflows:
+    - insight-iteration
+    - research-loop
+    program: post-optimality-low-n
+    artifacts:
+    - packing/campaign/hypotheses/H-264-n17-geometric-exclusion-cost-per-leaf.md
+    note: Re-scopes Session 165's handoff. A cap below the endpoint (the candidate 4.67) would leave sides
+      in (4.67, S*) uncovered; exclusions at a cap U >= S* apply to every smaller side. Stopped 2026-10-02 with BC-410, since no residue small enough to sample exists yet.
+  - id: BC-412
+    purpose: research
+    owner_focus: insight
+    instances:
+    - 17
+    state: complete
+    priority: 1
+    question: What does capture cost as a function of the local radius, and must the radius be enlarged first?
+    budget: One Fable analysis lane of about 90 minutes in Session 167.
+    entry: BC-406 dispatched; H-261 radius estimated.
+    exit: A dated review with n11's capture statistics, a cost model by radius and a recommendation.
+    bead: think-rode
+    depends_on:
+    - BC-406
+    next_evidence: docs/project/reviews/review-2026-10-02-n17-capture-feasibility.md
+    workflows:
+    - insight-iteration
+    program: post-optimality-low-n
+    artifacts:
+    - docs/project/reviews/review-2026-10-02-n17-capture-feasibility.md
+    note: >-
+      n11's focused radii were 6.5e-4 to 6.8e-3, not 1/64, so the n17 target is 1.5 to 16
+      times finer rather than 50. Capture cost is modelled as logarithmic in the radius;
+      leaves and the contraction rate drive it. The route review carries a dated correction.
+  - id: BC-413
+    purpose: research
+    owner_focus: insight
+    instances:
+    - 17
+    state: complete
+    priority: 2
+    question: Can the conditional projection theorem be widened into a theorem whose premises capture can deliver?
+    budget: One Fable analysis lane of about 80 minutes in Session 167.
+    entry: BC-412 complete.
+    exit: A dated scope review with the plausible radius, the hardest premise and an instrument plan.
+    bead: think-xnhx
+    depends_on:
+    - BC-412
+    next_evidence: docs/project/reviews/review-2026-10-02-n17-widened-projection-scope.md
+    workflows:
+    - insight-iteration
+    program: post-optimality-low-n
+    artifacts:
+    - docs/project/reviews/review-2026-10-02-n17-widened-projection-scope.md
+    note: >-
+      Plausible at angle radius 5e-3 to 1e-2 as a parametric-LP dual-sheet certificate over
+      patches of seven backbone angles; nests inside H-261; the slider domain is the hardest
+      premise. Next slice builds the certificate on a coarse patching and reports the patch
+      count before any target run.
+  - id: BC-414
+    purpose: research
+    owner_focus: insight
+    instances:
+    - 17
+    state: complete
+    priority: 0
+    question: What bulk exclusion engine could take the n17 census to a residue geometric exclusion can absorb?
+    hypotheses:
+    - H-266
+    - H-267
+    budget: One Fable analysis lane of about 100 minutes in Session 167.
+    entry: BC-408 reported a no-go for per-cell charge floors.
+    exit: A dated design review with registrable hypotheses.
+    bead: think-8ul6
+    depends_on:
+    - BC-408
+    next_evidence: docs/project/reviews/review-2026-10-02-n17-bulk-exclusion-design.md
+    workflows:
+    - insight-iteration
+    program: post-optimality-low-n
+    artifacts:
+    - docs/project/reviews/review-2026-10-02-n17-bulk-exclusion-design.md
+    note: >-
+      n11's census was tractable through a minimal capacity-one cover and isolated
+      sub-pattern certificates. The H259 grid counts like a 30-cell cover; an exploratory
+      24-cell design has 43,593 orbits. Registered H-266 and H-267.
+  - id: BC-415
+    purpose: research
+    owner_focus: correctness
+    instances:
+    - 17
+    state: complete
+    priority: 0
+    question: Does a D4-symmetric capacity-one cover of at most 25 cells hold the n17 endpoint family in one state?
+    hypotheses:
+    - H-266
+    budget: One Opus build lane and one Fable proof review of the depth-width wall lemma.
+    entry: H-266 registered.
+    exit: An exact cover receipt with an independently reviewed wall lemma, or the seam or capacity failure retained.
+    bead: think-qjdb
+    depends_on:
+    - BC-414
+    next_evidence: packing/campaign/hypotheses/H-266-n17-minimal-capacity-one-cover.md
+    workflows:
+    - pipeline-improvement
+    - research-loop
+    - factual-review
+    program: post-optimality-low-n
+    artifacts:
+    - packing/campaign/hypotheses/H-266-n17-minimal-capacity-one-cover.md
+    note: >-
+      Started in Session 167 as lanes G (checker) and G-proof (wall lemma). exp-246 certifies the tabbed 24-cell cover (43,593
+      orbits) and the review proves the wall lemma; unresolved because the family also realises a second
+      state through side cell S1 and square 6's range is declared. Next, a unique-state check and a derived
+      square-6 range. Lane G2 then built the unique-state design (0dabde12);
+      Session 168 accepted H-266 on it in exp-247 after an independent review.
+  - id: BC-416
+    purpose: research
+    owner_focus: correctness
+    instances:
+    - 17
+    state: in_progress
+    priority: 1
+    question: Do certified isolated sub-patterns of arity at most seven leave at most 1e4 orbits on the H-266 cover?
+    hypotheses:
+    - H-267
+    budget: About a week to adapt the n11 kernel; hours of CPU for certificates.
+    entry: H-266 accepted.
+    exit: A certified residue count with the endpoint surviving and n11 mask 0 reproduced, or a retained refusal.
+    bead: think-1s3i
+    depends_on:
+    - BC-415
+    next_evidence: packing/campaign/hypotheses/H-267-n17-isolated-sub-pattern-residue.md
+    workflows:
+    - pipeline-improvement
+    - research-loop
+    program: post-optimality-low-n
+    artifacts:
+    - packing/campaign/hypotheses/H-267-n17-isolated-sub-pattern-residue.md
+    note: >-
+      n11 excluded 1,904 of 2,180 cases with 59 such certificates; an exploratory
+      arity-five proxy leaves 11,939 orbits on the 24-cell design. Session 168 built the
+      selector (44 flags to arity seven, 5,084 projected orbits), the kernel and an
+      independent branch and bound, and admitted W7 and A in exp-249: 17,690 certified
+      orbits. exp-250 admitted SW9 (arity 9) and the state N1 on the standing verifier's
+      full pass: 15,953. The residue process review plans the rest.
+  - id: BC-417
+    purpose: research
+    owner_focus: correctness
+    instances:
+    - 17
+    state: complete
+    priority: 0
+    question: Does square 6's H-266 cell keep the slides of squares 5 and 13 inside the box exp-244 certifies?
+    hypotheses:
+    - H-268
+    budget: One short build and review slice.
+    entry: exp-244 recorded; H-266 cover committed.
+    exit: An exact bound with independent review, or a widened box and a re-run of exp-244.
+    bead: think-set0
+    depends_on:
+    - BC-407
+    - BC-415
+    next_evidence: packing/campaign/hypotheses/H-268-n17-local-theorem-slider-coverage.md
+    workflows:
+    - pipeline-improvement
+    - research-loop
+    - factual-review
+    program: post-optimality-low-n
+    artifacts:
+    - packing/campaign/hypotheses/H-268-n17-local-theorem-slider-coverage.md
+    note: >-
+      Closes H-261's scope gap. With square 6 at its centroid the review's float scan keeps a
+      below 0.037 and z above -0.0235, well inside the box. Lane H proved a <= 21/100, z >= -1/20, b <= 3/40 on
+      the tabbed design's S2 (7cd4e652); re-run on the unique design and review remain, and the box's
+      faces a >= 0, b >= 0, z <= 1/16 need their own argument. Session 168 accepted H-268 (exp-248) on the
+      unique design, with a in [0, 23/200], b in [-1.684957 r, 37/500] and z in [-49/1000, 0.0241]; since b
+      can go negative, the local theorem was re-run over B_W' and passes. The capture target is the composed
+      theorem in the local-half composition review.
+  - id: BC-418
+    purpose: research
+    owner_focus: correctness
+    instances:
+    - 17
+    state: ready
+    priority: 0
+    question: Can the n17 local theorem and cover be closed, and do sub-pattern exclusion and capture fit the budget?
+    hypotheses:
+    - H-261
+    - H-266
+    - H-267
+    - H-268
+    budget: One coordinated session; lane budgets per BC-415, BC-416 and BC-417, and a bounded capture pilot.
+    entry: Session 167 complete with exp-242 to exp-246 recorded.
+    exit: >-
+      H-266 and H-268 decided and H-261 re-recorded with review; the H-267 instrument built
+      with its method control; a measured capture contraction rate; then W10 on the results.
+    bead: think-tmz6
+    depends_on:
+    - BC-406
+    next_evidence: packing/campaign/agent-sessions/session-167-n17-parallel-lanes-after-route-review.md
+    workflows:
+    - pipeline-improvement
+    - research-loop
+    - review-planning-oversight
+    program: post-optimality-low-n
+    artifacts:
+    - packing/campaign/agent-sessions/session-167-n17-parallel-lanes-after-route-review.md
+    note: >-
+      Selected next entry after Session 167. Read that session record, the capture,
+      bulk-exclusion and local-theorem instrument reviews, and exp-244 and exp-246 first.
+  - id: BC-419
+    purpose: research
+    owner_focus: correctness
+    instances:
+    - 17
+    state: complete
+    priority: 0
+    question: >-
+      Do at least half of the ten counted seed-182 draws close under the 17-owner kernel
+      within the 7,000 s ceiling, and what does a verified closure cost per state?
+    hypotheses:
+    - H-264
+    budget: >-
+      At most 26 CPU-hours on two compute slots: 2,700 s for the endpoint-state control
+      and 7,000 s per state, each under a hard timeout of 7,600 s.
+    entry: >-
+      H-264 rewritten with instrument_ready true in the session-182 registration commit,
+      and the run worktree synced at that commit.
+    exit: >-
+      All twelve draws run, each closure re-proved by the standing kernel verifier in
+      full and admitted, and the verdict fixed by the arithmetic; or a soundness alarm
+      (the kernel closes the endpoint's own state), which stops the instrument.
+    bead: think-z8an
+    depends_on:
+    - BC-415
+    next_evidence: packing/campaign/agent-sessions/session-182-n17-overnight-lanes.md
+    workflows:
+    - research-loop
+    program: post-optimality-low-n
+    parallel_group: n17-overnight-182
+    artifacts:
+    - docs/project/specs/active/plan-2026-10-05-n17-overnight.md
+    - packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-252-h264-n17-overnight-per-state-price.md
+    - docs/project/reviews/review-2026-10-05-exp-252-h264.md
+    note: >-
+      Under BC-418, lane A of the n17 overnight plan. The float pre-screen (survey seed 182, sample 12,
+      two workers) runs first and also places the endpoint as its positive control; a
+      draw it places leaves the count as a candidate near-endpoint state. Then the
+      kernel control on the endpoint's own state, then the draws in the survey's index
+      order, two at a time, at 32 bins. A run at its ceiling with process CPU below
+      6,300 s is re-run once. Stop rules: a soundness alarm, or three consecutive
+      crashes or refusals; the verdict stops nothing. Evidence record exp-252.
+  - id: BC-420
+    purpose: research
+    owner_focus: correctness
+    instances:
+    - 17
+    state: in_progress
+    priority: 0
+    question: >-
+      Do the standing flags with the most census weight close under the frozen SW9
+      adaptive-row kernel recipe, or under the branch and bound where its tree can be
+      admitted tonight?
+    hypotheses:
+    - H-267
+    budget: >-
+      Kernel at most 17 CPU-hours at 7,000 s per target; branch and bound at most 14
+      CPU-hours at 300 s per Knuth estimate and 5,400 s per certificate run. One compute
+      slot, and a second when slot 4 opens.
+    entry: >-
+      The session-182 registration commit with the kernel target list frozen, and the
+      run worktree synced at that commit.
+    exit: >-
+      The target list exhausted, each closure re-proved by a standing verifier in full
+      and admitted; or a soundness alarm (endpoint7 closes, or the branch and bound
+      certifies an endpoint control). A verifier FAIL stops admissions from that
+      producer until a review.
+    bead: think-035m
+    depends_on:
+    - BC-415
+    next_evidence: packing/campaign/agent-sessions/session-182-n17-overnight-lanes.md
+    workflows:
+    - research-loop
+    program: post-optimality-low-n
+    parallel_group: n17-overnight-182
+    artifacts:
+    - docs/project/specs/active/plan-2026-10-05-n17-overnight.md
+    - packing/campaign/explorations/X048-session-182-overnight/kernel-targets.txt
+    note: >-
+      Under BC-418, lane K of the n17 overnight plan. Targets: arity at most seven, at least three wall
+      or corner cells, best penetration at least 5e-3, in projected-gain order, from the
+      census at the registration commit (nine classes, frozen in kernel-targets.txt).
+      Frozen recipe, SW9's: --bins 64 --max-rounds 24 --hull-limit 16 --producer-share
+      0.6 --split-floor 512 --max-rows 1152 --split-patience 1 --max-seconds 7000. The
+      endpoint7 control runs first at 3,600 s and must not close. The branch-and-bound
+      queue routes on the Knuth estimate's mean with A and W7 as calibration controls and
+      certifies classes of at most 1.5e5 nodes. Evidence record exp-251.
+  - id: BC-421
+    purpose: research
+    owner_focus: correctness
+    instances:
+    - 17
+    state: complete
+    priority: 1
+    question: >-
+      Does any of the 95 distance-2 orbits of the arity8 frame pack at U, which would make
+      the near-endpoint stage non-empty?
+    hypotheses:
+    - H-273
+    budget: >-
+      At most 6 CPU-hours on slot 4: ten shards of 9 or 10 orbits, each at a 3,600 s
+      survey ceiling under a hard timeout of 3,900 s.
+    entry: >-
+      H-273 registered with the survey's shard option at its registration commit, a
+      second clean run worktree at that commit, and slot 4 open at the coordinator's word.
+    exit: >-
+      All 95 orbits searched, or a placement found, which stops the lane for an exact
+      check and the coordinator. A shard whose endpoint control fails to place stops the
+      lane as an instrument failure.
+    bead: think-tmz6
+    depends_on:
+    - BC-415
+    next_evidence: packing/campaign/agent-sessions/session-182-n17-overnight-lanes.md
+    workflows:
+    - research-loop
+    program: post-optimality-low-n
+    parallel_group: n17-overnight-182
+    artifacts:
+    - docs/project/specs/active/plan-2026-10-05-n17-overnight.md
+    - packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-255-h273-n17-distance-two-survey.md
+    - packing/campaign/explorations/X048-session-182-overnight/receipts/E
+    note: >-
+      Under BC-418, lane E of the n17 overnight plan (the backfill). The plan's run line
+      named shards of 30 on two workers at a 3,600 s ceiling; the survey had no way to
+      shard, so 504a84464 adds --shard K/N, and on one slot the same ceiling holds ten
+      shards of 9 or 10. A positive result needs exclusion at U' in the composed argument;
+      a negative is recorded as no placement in that many searches. Evidence record
+      exp-253 or the next free id when it is written.
+  - id: BC-422
+    purpose: tool_validation
+    owner_focus: efficiency
+    instances:
+    - 17
+    state: in_progress
+    priority: 1
+    question: >-
+      With a W5 block due under OR-12, do packing-validate --edit and --push stay within
+      their 240 s and 1,800 s ceilings on this container, and what does the kernel
+      producer's in-process self-check cost per row against the standing kernel verifier
+      on tonight's closures?
+    budget: >-
+      No dedicated compute. The gate walls are read from the session-182 registration's
+      own validation runs, and the per-row costs from lane A and lane K receipts.
+    entry: The OR-12 count read at session-182's W10 phase is at least eight.
+    exit: >-
+      Both gate walls recorded against their ceilings, and the self-check-to-verifier
+      ratio per row from at least one verified closure, or a record that none came back.
+    bead: think-9ntw
+    depends_on: []
+    next_evidence: packing/campaign/agent-sessions/session-182-n17-overnight-lanes.md
+    workflows:
+    - efficiency-loop
+    program: post-optimality-low-n
+    parallel_group: n17-overnight-182
+    note: >-
+      Under BC-418, added at session-182's W10 phase because the count read from the agenda records is past
+      eight: 34 cells terminal since BC-369, the last cell declaring efficiency-loop (nine
+      sessions terminal since session-180's efficiency-loop phase). The prior per-row
+      reading is 0.91 s for the producer's self-check against 0.18 s for the standing
+      verifier on N1. CPU is tonight's bottleneck, so the block adds no gate run while
+      the compute lanes hold the CPUs. BC-421 is lane E's.
+  - id: BC-423
+    purpose: research
+    owner_focus: correctness
+    instances:
+    - 17
+    state: in_progress
+    priority: 0
+    question: >-
+      Does lane K's target 2 (corner-SW, side-N0, side-W0, side-W1, interior-SW,
+      interior-NW, interior-W) close under SW9's recipe with lane D's diagnosed settings:
+      48 rounds, 2,304 rows and the octagon core?
+    hypotheses:
+    - H-267
+    budget: >-
+      Two runs of at most 7,000 s each in lane K's freed slot (the endpoint7 control
+      under the same settings, then the target) and one verification of at most 4,000 s.
+    entry: >-
+      Lane D's classification of K-k2 as loss-limited, and the coordinator's re-plan at
+      the 11:27 UTC check-in; this cell committed before either run.
+    exit: >-
+      One run, verdict as observed: a closure re-proved by the standing kernel verifier
+      in full and admitted, or a non-closure retained. A closure of the control is a
+      soundness alarm.
+    bead: think-035m
+    depends_on:
+    - BC-415
+    next_evidence: packing/campaign/agent-sessions/session-182-n17-overnight-lanes.md
+    workflows:
+    - research-loop
+    program: post-optimality-low-n
+    parallel_group: n17-overnight-182
+    artifacts:
+    - docs/project/specs/active/plan-2026-10-05-n17-overnight.md
+    note: >-
+      Under BC-418, a future slice added at a check-in (the plan's rule 8); no frozen
+      criterion and no running ceiling changes. The recipe is SW9's frozen one except
+      --max-rounds 48 --max-rows 2304 --core octagon: --bins 64 --hull-limit 16
+      --producer-share 0.6 --split-floor 512 --split-patience 1 --max-seconds 7000, from
+      the clean run worktree at cebb5d15a. Lane D read the stall as loss-limited: the knot
+      owners interior-NW and interior-W are 0.5 and 4.5 per cent supported, with median
+      cut margins near 0.010 against the 1/512 core loss of 0.00097, and the run stopped
+      at its 24-round cap with about 2,400 s of producer share unused. Caveat: lane K2
+      found on W7 that the octagon core does not remove a coarse row's domain loss, so
+      the hull side of a cut may still need the rows. Target 2 projects 2,917 orbits and
+      the arity-at-most-7 residue stands at 10,173, so a closure would bear on H-267's
+      threshold; any verdict change gets a W2 review. Evidence record exp-251. Target 2
+      closed under these settings at 15:02:59 UTC (46 rounds) and its standing verifier
+      passed in full at 15:22:50, but the endpoint7 control ended INCOMPLETE at 16:16:40:
+      the producer stopped at its time share in round 9 with every owner's rows still live,
+      and the checker ran out of the 7,000 s ceiling. An INCOMPLETE control is not a pass, so
+      the gate voided the closure and nothing was admitted. At the coordinator's decision
+      the checker alone re-checks the kept control node with --check-saved at a 14,000 s
+      ceiling; only a stall there releases target 2 for admission, and a closure is a
+      soundness alarm. The receipt and the producer's progress records are in
+      receipts/K of X048-session-182-overnight. The re-check returned PASS_SAVED_STALL at
+      17:40:21 on the endpoint7 node (cells and seed and node ids those of the kept
+      control, receipts/K/kernel-control-endpoint7-bc423-check.json), but the queue's
+      identity comparison failed on a JSON formatting difference and left target 2
+      voided; target 2 awaits the user's ruling.
+  - id: BC-424
+    purpose: research
+    owner_focus: correctness
+    instances:
+    - 17
+    state: complete
+    priority: 1
+    question: >-
+      Do at least two of the four counted lane A stalls (masks 2817021, 3063677, 2878207
+      and 2784767) close under SW9's frozen adaptive-row recipe?
+    hypotheses:
+    - H-274
+    budget: >-
+      Five runs of at most 7,000 s (the endpoint-state control, then the four states in
+      mask order) and a verification of at most 4,000 s per closure, in the slots lane A
+      frees when its draws are done.
+    entry: >-
+      H-274 registered with the frozen list before its first run, and lane A's remaining
+      draws finished; after BC-423 and lane E in the freed-slot order.
+    exit: >-
+      All four states run once, each closure re-proved by the standing verifier in full
+      and admitted (each removes its own orbit), and the verdict read; or a soundness
+      alarm (the endpoint-state control closes).
+    bead: think-z8an
+    depends_on:
+    - BC-415
+    next_evidence: packing/campaign/agent-sessions/session-182-n17-overnight-lanes.md
+    workflows:
+    - research-loop
+    program: post-optimality-low-n
+    parallel_group: n17-overnight-182
+    artifacts:
+    - packing/campaign/hypotheses/H-274-n17-per-state-closure-under-adaptive-rows.md
+    - packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-253-h274-n17-stalls-under-adaptive-rows.md
+    - docs/project/reviews/review-2026-10-05-exp-253-h274.md
+    note: >-
+      Under BC-418, a future slice added at a check-in; H-264 keeps running to its own
+      verdict on N1's recipe. Recipe: --bins 64 --max-rounds 24 --hull-limit 16
+      --producer-share 0.6 --split-floor 512 --max-rows 1152 --split-patience 1
+      --max-seconds 7000, from the clean run worktree at cebb5d15a. The list is frozen
+      at this registration: the four counted draws that had stalled by then. The
+      distance-2 draw 1964767 is left out (uncounted, and lane D found it
+      consistency-limited). Mechanism and limits are lane D's stall classification, cited
+      in H-274.
+  - id: BC-425
+    purpose: research
+    owner_focus: correctness
+    instances:
+    - 17
+    state: complete
+    priority: 1
+    question: >-
+      Do the next ten standing flags by projected gain against the certified line at
+      18b7c5ae1 (arity at most 8, at least three wall or corner cells, best penetration
+      at least 0.005) close under lane K's frozen SW9 recipe?
+    hypotheses:
+    - H-267
+    budget: >-
+      At most ten runs of at most 7,000 s each and one verification of at most 4,000 s per
+      closure, on the slot freed after BC-423 and the next slot freed after BC-424, ahead
+      of lane E's second worker.
+    entry: >-
+      The coordinator's re-plan at the 16:30 UTC check-in; this cell and its frozen target
+      list committed before the first run.
+    exit: >-
+      The list exhausted, each run's verdict as observed: a closure re-proved by the
+      standing kernel verifier in full and admitted, one commit each, or a non-closure
+      retained. Any soundness alarm or one verifier FAIL stops the slice.
+    bead: think-035m
+    depends_on:
+    - BC-415
+    next_evidence: packing/campaign/agent-sessions/session-182-n17-overnight-lanes.md
+    workflows:
+    - research-loop
+    program: post-optimality-low-n
+    parallel_group: n17-overnight-182
+    artifacts:
+    - packing/campaign/explorations/X048-session-182-overnight/kernel-targets-bc425.txt
+    - packing/campaign/explorations/X048-session-182-overnight/receipts/K/census-bc425-targets.json
+    - packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-254-h267-n17-second-tranche-flags.md
+    note: >-
+      Under BC-418, lane K's second tranche, a future slice added at a check-in. The
+      targets are frozen in kernel-targets-bc425.txt from the census at 18b7c5ae1
+      (receipts/K/census-bc425-targets.json, reading the selector recheck): lane K's
+      filter with the arity widened from 7 to 8, the top ten by projected orbits, 1,494
+      down to 863. All ten are arity 8. Lane K's target 2 is not among them: its recheck
+      penetration, 0.0049995, is under the 0.005 floor, and BC-423 holds it. The
+      instrument is lane K's frozen SW9 recipe exactly (--bins 64 --max-rounds 24
+      --hull-limit 16 --producer-share 0.6 --split-floor 512 --max-rows 1152
+      --split-patience 1 --max-seconds 7000) from the clean run worktree at cebb5d15a, so
+      lane K's endpoint7 control under that recipe (K-control-endpoint7,
+      PASS_CONTROL_STALLED in 1,244 s, receipts/K/kernel-control-endpoint7.json) covers it
+      and no new control runs. An arity-8 closure counts for the certified census but not
+      toward H-267's criterion, which is read at arity at most seven. Evidence record
+      exp-254, written at the first admission.
+  - id: BC-426
+    purpose: research
+    owner_focus: correctness
+    instances:
+    - 17
+    state: in_progress
+    priority: 1
+    question: >-
+      Do BC-425's two round-cap stalls, targets 3 and 6, close under BC-423's recipe, the
+      one that took lane K's target 2 from a round-cap stall to a closure?
+    hypotheses:
+    - H-267
+    budget: >-
+      Two runs of at most 7,000 s each on the two slots free at 18:25 UTC, behind BC-425's
+      remaining targets, and one verification of at most 4,000 s per closure.
+    entry: >-
+      The coordinator's re-plan at the 18:25 UTC check-in; this cell committed before
+      either run.
+    exit: >-
+      Both targets run once, verdict as observed: a closure re-proved by the standing
+      kernel verifier in full and held as a verified candidate, or a non-closure retained.
+      No closure is admitted before the user rules on the control evidence for this
+      recipe. A soundness alarm stops the slice.
+    bead: think-035m
+    depends_on:
+    - BC-415
+    next_evidence: packing/campaign/agent-sessions/session-182-n17-overnight-lanes.md
+    workflows:
+    - research-loop
+    program: post-optimality-low-n
+    parallel_group: n17-overnight-182
+    artifacts:
+    - packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-254-h267-n17-second-tranche-flags.md
+    - packing/campaign/explorations/X048-session-182-overnight/receipts/K/kernel-control-endpoint7-bc423-check.json
+    note: >-
+      Under BC-418, a future slice added at a check-in, citing BC-423 and exp-254. The
+      targets are BC-425's target 3 (side-S0 side-E0 side-S1 side-S2 interior-NW
+      interior-W interior-S interior-SE) and target 6 (side-N0 side-S1 side-W2 interior-NW
+      interior-W interior-S interior-N interior-SE), both stopped at SW9's 24-round cap with
+      producer time unused (exp-254). The recipe is BC-423's verbatim. The argv, from
+      packing/ of the clean run worktree at cebb5d15a, is nice -n 10 timeout -k 120 7600
+      .venv/bin/python3 -m devtools.check_n17_subpattern --cells CELLS --bins 64
+      --max-rounds 48 --hull-limit 16 --producer-share 0.6 --split-floor 512 --max-rows
+      2304 --split-patience 1 --core octagon --max-seconds 7000 --save-objects DIR --output
+      FILE. Like BC-423's, it differs from SW9's in --max-rounds 48, --max-rows 2304 and
+      --core octagon. --max-rows is 2304, BC-423's value, not SW9's 1152. The only control under this recipe is BC-423's endpoint7 control,
+      whose run ended INCOMPLETE and whose saved node the checker alone then found
+      PASS_SAVED_STALL (receipts/K/kernel-control-endpoint7-bc423-check.json). Lane K's
+      target 2 rests on the same receipt and awaits the user's ruling, so every BC-426
+      closure is verified and held, not admitted, until that ruling. Both targets are
+      arity 8: a closure would count for the census but not toward H-267's arity-7
+      criterion. Both closed, and both are held. Target 6 closed at 18:30:04 in 202 s of
+      wall (9 rounds, finest row 1/128), and target 3 at 18:35:35 in 538 s (13 rounds,
+      finest row 1/256). The standing verifier at cebb5d15a passed each in full, in 124 s
+      and 293 s. Both wait in ADMIT-AFTER-CONTROL for the user's ruling, with their
+      receipts in receipts/K.
+  - id: BC-427
+    purpose: research
+    owner_focus: correctness
+    instances:
+    - 17
+    state: complete
+    priority: 1
+    question: >-
+      Do the remaining standing flags of arity at most seven, the sixteen with the most
+      projected gain against the certified line at 71b1d0363, close under lane K's frozen
+      SW9 recipe?
+    hypotheses:
+    - H-267
+    budget: >-
+      At most sixteen runs of at most 7,000 s each and one verification of at most 4,000 s
+      per closure, on two workers, to the run operator's delegation deadline at
+      2026-10-06T07:14:04Z.
+    entry: >-
+      The coordinator's re-plan at the 18:55 UTC check-in; this cell, exp-256 and the
+      frozen target list committed before the first run.
+    exit: >-
+      The list exhausted, each run's verdict as observed: a closure re-proved by the
+      standing kernel verifier in full and admitted, one commit each, or a non-closure
+      retained with its node kept. Any soundness alarm or one verifier FAIL stops the
+      slice.
+    bead: think-035m
+    depends_on:
+    - BC-415
+    next_evidence: packing/campaign/agent-sessions/session-182-n17-overnight-lanes.md
+    workflows:
+    - research-loop
+    program: post-optimality-low-n
+    parallel_group: n17-overnight-182
+    artifacts:
+    - packing/campaign/explorations/X048-session-182-overnight/kernel-targets-bc427.txt
+    - packing/campaign/explorations/X048-session-182-overnight/receipts/K/census-bc427-targets.json
+    - packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-256-h267-n17-third-tranche-flags.md
+    note: >-
+      Under BC-418, lane K's third tranche, a future slice added at a check-in and aimed at
+      H-267 independently of lane K's target 2. The census at 71b1d0363
+      (receipts/K/census-bc427-targets.json, 39,656 states in 5,057 orbits) flags 34
+      classes of arity at most seven, target 2 among them. The other 33 are more than the
+      sixteen-target cap, so the list is the top sixteen of them by projected orbits
+      against that line, 509 down to 43: fourteen of arity 7 and two of arity 6, frozen in
+      kernel-targets-bc427.txt. No arity-8 flag fills it. Target 2 is left out because
+      BC-423 holds it. H-267's count at arity at most seven is 10,173 orbits
+      (receipts/K/census-arity7-after-k9.json, unchanged since s182-k9). Reaching its
+      threshold of at most 10^4 needs 173 orbits off that line, and going below it needs
+      174. With target 2 admitted, which projects 1,372 there, none more is needed; after
+      s182-bc427-t4 it projects 1,344 against the 9,990 line
+      (receipts/K/census-arity7-after-bc427-t4.json).
+      Without it, any one of the ten listed flags that project at least 174 orbits
+      against the arity-7 line (183 to 1,799) would suffice alone. The instrument is lane
+      K's frozen SW9 recipe exactly (--bins 64 --max-rounds 24 --hull-limit 16
+      --producer-share 0.6 --split-floor 512 --max-rows 1152 --split-patience 1
+      --max-seconds 7000) from the clean run worktree at cebb5d15a, so lane K's endpoint7
+      control (K-control-endpoint7, PASS_CONTROL_STALLED in 1,244 s,
+      receipts/K/kernel-control-endpoint7.json) covers it. A stall stays a stall, with its
+      node kept; none is re-run under BC-423's recipe. Evidence record exp-256. Closed
+      after target 10 at the coordinator's re-plan: targets 4 and 6 closed and were
+      admitted, taking the arity-7 line to 8,191; six stopped at the round cap and two at
+      producer fixed points; targets 11 to 16 were not run, since SW9 had stopped five of
+      the eight runs finished by then at the cap, the six project 15 to 54 orbits each
+      against the certified line, and H-267 was confirmed. Those six and every kept
+      cap-stall node are the natural input to BC-423's recipe once the user rules on its
+      control.
+  - id: BC-428
+    purpose: research
+    owner_focus: correctness
+    instances:
+    - 17
+    state: in_progress
+    priority: 1
+    question: >-
+      What does per-state exclusion cost in the 21 strata of the arity8 frame that H-264's
+      seed-182 draw never reached, under SW9's frozen adaptive-row recipe?
+    hypotheses:
+    - H-275
+    budget: >-
+      At most 31 runs of at most 7,000 s each and one verification of at most 4,000 s per
+      closure, on two workers, to the run operator's deadline at 2026-10-06T07:14:04Z.
+    entry: >-
+      The coordinator's re-plan at the 21:43 UTC check-in after BC-427; this cell, H-275,
+      exp-257 and the frozen draw committed before the first run.
+    exit: >-
+      The list exhausted or the deadline reached, each run's verdict as observed: a closure
+      re-proved by the standing kernel verifier in full and admitted, one commit each, or a
+      non-closure retained with its node kept; states not run are reported as not run. Any
+      soundness alarm or one verifier FAIL stops the slice.
+    bead: think-z8an
+    depends_on:
+    - BC-415
+    next_evidence: packing/campaign/agent-sessions/session-182-n17-overnight-lanes.md
+    workflows:
+    - research-loop
+    program: post-optimality-low-n
+    parallel_group: n17-overnight-182
+    artifacts:
+    - packing/campaign/hypotheses/H-275-n17-unsampled-strata-per-state-price.md
+    - packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-257-h275-n17-unsampled-strata.md
+    - packing/campaign/explorations/X048-session-182-overnight/kernel-targets-bc428.txt
+    - packing/campaign/explorations/X048-session-182-overnight/receipts/U
+    note: >-
+      Under BC-418, a future slice added at a check-in, following exp-252's report of 21
+      unsampled strata (827 orbits) and H-274's closure of all four counted stalls under
+      SW9's recipe. Registered under a new hypothesis, H-275, because H-264's claim fixes
+      its seed-182 draw and its 32-bin instrument. The draw rule is one state per
+      unsampled stratum, and a second from each stratum holding more than the mean of
+      827/21 orbits (ten strata), from numpy's default_rng(428) over the strata in name
+      order. The run order is a permutation from the same generator, every stratum's first
+      state before any second. The 31 states are frozen in kernel-targets-bc428.txt,
+      written from receipts/U/draw-bc428.jsonl, which receipts/U/draw-bc428.cmd.txt
+      reproduces from receipts/U/frame-arity8.json (survey_n17_residue --flag-set arity8
+      --sample 0 --strata-only) and receipts/A/survey-seed182.json. The instrument is
+      SW9's frozen recipe exactly (--bins 64 --max-rounds 24 --hull-limit 16
+      --producer-share 0.6 --split-floor 512 --max-rows 1152 --split-patience 1
+      --max-seconds 7000) on whole 17-cell states, so BC-424's endpoint-state control under
+      it (PASS_CERTIFIED_STALL, receipts/A/kernel-control-endpoint-sw9.json) and lane K's
+      endpoint7 control cover it. Admission is the standard one: the standing verifier's
+      full pass and the census with the endpoint surviving. Evidence record exp-257.
 ---
 # Agenda 042: The n11 Settlement Ladder and Low-n Angles
 
@@ -1213,6 +2116,44 @@ n20 lacks a concrete conditional saving above 0.89474919732, so it remains defer
 The
 [W3 review](../../../docs/project/reviews/review-2026-10-01-post-optimality-w3-opening.md)
 records the source and mathematical reasons.
+
+## October 1 Checkpoint After PR 265
+
+Session 166 ran BC-405, a W10 checkpoint on the merged PR 265 record, and selects
+**BC-406** (`think-c7kv`) as the coordinating entry.
+The
+[route review](../../../docs/project/reviews/review-2026-10-01-n17-route-after-pr265.md)
+holds the assessment, the evidence status and the handoff reading order.
+
+| Commitment | Disposition |
+| --- | --- |
+| BC-402 / H-258: common-core stress | Unblocked, lane A1. Exploratory checks find the candidate correct; repair the identity proof within the frozen criterion. |
+| BC-407 / H-261: local minimum modulo sliders | New, lane A2 after BC-402. Defines the capture target. |
+| BC-408 / H-262: cuts and charge floors | New, lane B, parallel with A1. Decides whether the hybrid route is affordable. |
+| BC-409 / H-265: catalogue polynomial | New, lane C, parallel and mechanical. |
+| BC-410 / H-263: endpoint-adapted cover | Tentative until BC-408 reports. |
+| BC-411 / H-264: exclusion cost per leaf (`think-11ma`) | Re-scoped to a cap at or above the endpoint and a uniform residue sample; tentative until BC-408 and BC-410. |
+| BC-387 / H-248: capacity-one ceiling | Unchanged; eligible beside lane B when capacity allows, since it decides whether pure counting is dead. |
+
+The capture prototype and any strengthening of the conditional theorem wait for H-261’s
+radius and the BC-410 cover.
+
+## October 5 n17 Overnight
+
+[Session 182](../agent-sessions/session-182-n17-overnight-lanes.md) runs the
+[n17 overnight plan](../../../docs/project/specs/active/plan-2026-10-05-n17-overnight.md)
+under BC-418, with three cells registered before the first target run.
+
+| Cell | Lane | Disposition |
+| --- | --- | --- |
+| BC-419 / H-264: per-state price | A, two compute slots | H-264 rewritten in place with `instrument_ready: true`; the seed-182 draw of 12 states, 10 counted. |
+| BC-420 / H-267: flag certification | K, one compute slot, two when slot 4 opens | Nine kernel targets frozen in projected-gain order; the branch-and-bound queue waits for slot 4. |
+| BC-421 / H-273: distance-2 orbits at the cap | Slot 4, one worker | Ten shards of the 95 distance-2 orbits through the float survey; a placement stops the lane for an exact check. |
+| BC-422: OR-12 efficiency block | No compute | Gate walls from the registration’s validation runs; per-row costs from the lanes’ receipts. |
+| BC-423 / H-267: K-k2 with lane D’s settings | Lane K’s freed slot | Added at the 11:27 check-in: 48 rounds, 2,304 rows, octagon core; the endpoint7 control first under the same settings. |
+| BC-424 / H-274: lane A’s stalls under adaptive rows | Lane A’s freed slots, after BC-423 and lane E | The four counted stalls frozen at registration, the endpoint-state control first under SW9’s recipe. |
+
+BC-421 is lane E (H-273, near-endpoint sizing), registered when slot 4 opened.
 
 <!-- This document follows common-doc-guidelines.md.
 See github.com/jlevy/practical-prose and review guidelines before editing.

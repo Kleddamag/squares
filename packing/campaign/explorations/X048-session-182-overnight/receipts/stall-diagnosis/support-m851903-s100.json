@@ -1,0 +1,393 @@
+{
+ "node_file": "node-d1072390c09e98af8db217c6c81bf0bb217e2931ecf30ad07170af6be4e3a3f1.json.gz",
+ "provenance": {
+  "dirty": false,
+  "files": {
+   "packing/devtools/diagnose_n17_flag.py": "cc2bfade25a121bdcec621f4144f2b1c50d0e571"
+  },
+  "revision": "cebb5d15aaa17d0cc13aa302ecbd750a54bfc57d"
+ },
+ "schema": "n17-flag-diagnosis/v1",
+ "seconds": 116.9,
+ "status": "diagnostic, not a certificate: survivors are read from a saved node, placements are float searches, and only the exact check of a rounded placement counts",
+ "support": {
+  "owners": {
+   "corner-NE": {
+    "cut_margin": {
+     "least": 0.00451366701389877,
+     "median": 0.014109686585063452,
+     "tenth_percentile": 0.007939914473401222
+    },
+    "supported_share": 0.9,
+    "unsupported_by": {
+     "side-E2": {
+      "largest_margin": 0.02162207735069177,
+      "median_margin": 0.014109686585063452,
+      "poses": 6
+     },
+     "side-N2": {
+      "largest_margin": 0.02160588717267775,
+      "median_margin": 0.015080199650109927,
+      "poses": 4
+     }
+    }
+   },
+   "corner-NW": {
+    "cut_margin": {
+     "least": 0.002182828295523076,
+     "median": 0.013933069478961668,
+     "tenth_percentile": 0.003261429288192108
+    },
+    "supported_share": 0.86,
+    "unsupported_by": {
+     "side-N0": {
+      "largest_margin": 0.02316243978742949,
+      "median_margin": 0.019897431366903584,
+      "poses": 3
+     },
+     "side-W2": {
+      "largest_margin": 0.029025634362402686,
+      "median_margin": 0.013933069478961668,
+      "poses": 12
+     }
+    }
+   },
+   "corner-SE": {
+    "cut_margin": {
+     "least": 0.0045765060854717765,
+     "median": 0.012845430763130883,
+     "tenth_percentile": 0.006698224842770528
+    },
+    "supported_share": 0.86,
+    "unsupported_by": {
+     "side-E0": {
+      "largest_margin": 0.017443763000843493,
+      "median_margin": 0.010979796749559345,
+      "poses": 4
+     },
+     "side-S2": {
+      "largest_margin": 0.023007000469722927,
+      "median_margin": 0.013348962874513204,
+      "poses": 10
+     }
+    }
+   },
+   "corner-SW": {
+    "cut_margin": {
+     "least": 0.004412971898795526,
+     "median": 0.018913598864839676,
+     "tenth_percentile": 0.008567958206283421
+    },
+    "supported_share": 0.95,
+    "unsupported_by": {
+     "side-S0": {
+      "largest_margin": 0.03208836065679399,
+      "median_margin": 0.018913598864839676,
+      "poses": 5
+     }
+    }
+   },
+   "interior-S": {
+    "cut_margin": {
+     "least": 0.00482192073998855,
+     "median": 0.01048719364456685,
+     "tenth_percentile": 0.00537363297088318
+    },
+    "supported_share": 0.91,
+    "unsupported_by": {
+     "interior-W": {
+      "largest_margin": 0.024767682801675628,
+      "median_margin": 0.010066384494069214,
+      "poses": 6
+     },
+     "side-S1": {
+      "largest_margin": 0.018511910088197747,
+      "median_margin": 0.01222452285415232,
+      "poses": 3
+     }
+    }
+   },
+   "interior-W": {
+    "cut_margin": {
+     "least": 0.002230167293334362,
+     "median": 0.015025432848048581,
+     "tenth_percentile": 0.005527018292685426
+    },
+    "supported_share": 0.94,
+    "unsupported_by": {
+     "interior-S": {
+      "largest_margin": 0.016677170912790196,
+      "median_margin": 0.014887722610166354,
+      "poses": 5
+     },
+     "side-W1": {
+      "largest_margin": 0.017009982841097893,
+      "median_margin": 0.017009982841097893,
+      "poses": 1
+     }
+    }
+   },
+   "side-E0": {
+    "cut_margin": {
+     "least": 0.006097712999053262,
+     "median": 0.018284865277502615,
+     "tenth_percentile": 0.008051674587047785
+    },
+    "supported_share": 0.86,
+    "unsupported_by": {
+     "corner-SE": {
+      "largest_margin": 0.01874665404548681,
+      "median_margin": 0.017618100441752715,
+      "poses": 3
+     },
+     "side-E1": {
+      "largest_margin": 0.04036778317298628,
+      "median_margin": 0.01832368566664322,
+      "poses": 11
+     }
+    }
+   },
+   "side-E1": {
+    "cut_margin": {
+     "least": 0.002974684077267642,
+     "median": 0.013817882081232469,
+     "tenth_percentile": 0.007172409271082459
+    },
+    "supported_share": 0.72,
+    "unsupported_by": {
+     "side-E0": {
+      "largest_margin": 0.02701844138087406,
+      "median_margin": 0.015849022941177293,
+      "poses": 12
+     },
+     "side-E2": {
+      "largest_margin": 0.0323850594616506,
+      "median_margin": 0.013631742732680752,
+      "poses": 17
+     }
+    }
+   },
+   "side-E2": {
+    "cut_margin": {
+     "least": 0.0010108393226040402,
+     "median": 0.006971957237747295,
+     "tenth_percentile": 0.001881141267513753
+    },
+    "supported_share": 0.86,
+    "unsupported_by": {
+     "corner-NE": {
+      "largest_margin": 0.012011716913522541,
+      "median_margin": 0.0020485955872924233,
+      "poses": 5
+     },
+     "side-E1": {
+      "largest_margin": 0.03032194185671977,
+      "median_margin": 0.0125188870527142,
+      "poses": 6
+     },
+     "side-N2": {
+      "largest_margin": 0.015061311406689759,
+      "median_margin": 0.005402960117857902,
+      "poses": 3
+     }
+    }
+   },
+   "side-N0": {
+    "cut_margin": {
+     "least": 0.0011662502169940137,
+     "median": 0.006347907665754715,
+     "tenth_percentile": 0.00155669969161939
+    },
+    "supported_share": 0.78,
+    "unsupported_by": {
+     "corner-NW": {
+      "largest_margin": 0.00980811170590501,
+      "median_margin": 0.00339095115364213,
+      "poses": 8
+     },
+     "side-N1": {
+      "largest_margin": 0.025672267417608197,
+      "median_margin": 0.014371316411475932,
+      "poses": 13
+     },
+     "side-W2": {
+      "largest_margin": 0.006541658620639823,
+      "median_margin": 0.0038972726565537075,
+      "poses": 2
+     }
+    }
+   },
+   "side-N1": {
+    "cut_margin": {
+     "least": 0.0005675200939585512,
+     "median": 0.018590695646205357,
+     "tenth_percentile": 0.005068045462770621
+    },
+    "supported_share": 0.74,
+    "unsupported_by": {
+     "side-N0": {
+      "largest_margin": 0.03246925150122759,
+      "median_margin": 0.0188510044246728,
+      "poses": 13
+     },
+     "side-N2": {
+      "largest_margin": 0.0262222849326883,
+      "median_margin": 0.017055849267189727,
+      "poses": 14
+     }
+    }
+   },
+   "side-N2": {
+    "cut_margin": {
+     "least": 0.0016275993788285037,
+     "median": 0.014576117907543651,
+     "tenth_percentile": 0.009130532255242019
+    },
+    "supported_share": 0.84,
+    "unsupported_by": {
+     "corner-NE": {
+      "largest_margin": 0.010149540078216002,
+      "median_margin": 0.010149540078216002,
+      "poses": 1
+     },
+     "side-E2": {
+      "largest_margin": 0.017648065236417154,
+      "median_margin": 0.01751848710893844,
+      "poses": 2
+     },
+     "side-N1": {
+      "largest_margin": 0.02737064704082315,
+      "median_margin": 0.014224894457430692,
+      "poses": 13
+     }
+    }
+   },
+   "side-S0": {
+    "cut_margin": {
+     "least": 0.001155457924479908,
+     "median": 0.008669553357209092,
+     "tenth_percentile": 0.0016141340095830014
+    },
+    "supported_share": 0.78,
+    "unsupported_by": {
+     "corner-SW": {
+      "largest_margin": 0.012453032724469626,
+      "median_margin": 0.009260245537501932,
+      "poses": 7
+     },
+     "side-S1": {
+      "largest_margin": 0.0401957260264475,
+      "median_margin": 0.0069196912106149755,
+      "poses": 15
+     }
+    }
+   },
+   "side-S1": {
+    "cut_margin": {
+     "least": 0.002609124472698232,
+     "median": 0.016397244056036375,
+     "tenth_percentile": 0.007230283323968712
+    },
+    "supported_share": 0.73,
+    "unsupported_by": {
+     "side-S0": {
+      "largest_margin": 0.0304443055305339,
+      "median_margin": 0.016546366348964225,
+      "poses": 13
+     },
+     "side-S2": {
+      "largest_margin": 0.03781734583425178,
+      "median_margin": 0.013322494293948273,
+      "poses": 18
+     }
+    }
+   },
+   "side-S2": {
+    "cut_margin": {
+     "least": 0.0003191500076015208,
+     "median": 0.007496648826324226,
+     "tenth_percentile": 0.0007682037378498154
+    },
+    "supported_share": 0.8200000000000001,
+    "unsupported_by": {
+     "corner-SE": {
+      "largest_margin": 0.01546442528609182,
+      "median_margin": 0.009006240425934897,
+      "poses": 6
+     },
+     "side-E0": {
+      "largest_margin": 0.006276433144037474,
+      "median_margin": 0.004222270109058401,
+      "poses": 3
+     },
+     "side-S1": {
+      "largest_margin": 0.03583343918291848,
+      "median_margin": 0.011134974043161772,
+      "poses": 9
+     }
+    }
+   },
+   "side-W1": {
+    "cut_margin": {
+     "least": 0.0073074820826410924,
+     "median": 0.01078148225318487,
+     "tenth_percentile": 0.008258026245337358
+    },
+    "supported_share": 0.9299999999999999,
+    "unsupported_by": {
+     "interior-W": {
+      "largest_margin": 0.014975755516956735,
+      "median_margin": 0.012418810037853556,
+      "poses": 2
+     },
+     "side-W2": {
+      "largest_margin": 0.027746177107514702,
+      "median_margin": 0.01078148225318487,
+      "poses": 5
+     }
+    }
+   },
+   "side-W2": {
+    "cut_margin": {
+     "least": 0.0008720655935487986,
+     "median": 0.011401659491603322,
+     "tenth_percentile": 0.002370704900936294
+    },
+    "supported_share": 0.83,
+    "unsupported_by": {
+     "corner-NW": {
+      "largest_margin": 0.014606891797926735,
+      "median_margin": 0.0030744978898612496,
+      "poses": 5
+     },
+     "side-W1": {
+      "largest_margin": 0.03629505407029443,
+      "median_margin": 0.01425566412738588,
+      "poses": 12
+     }
+    }
+   }
+  },
+  "partner_pool": {
+   "corner-NE": 17160,
+   "corner-NW": 14298,
+   "corner-SE": 18963,
+   "corner-SW": 6363,
+   "interior-S": 23400,
+   "interior-W": 29958,
+   "side-E0": 22662,
+   "side-E1": 33855,
+   "side-E2": 20772,
+   "side-N0": 16464,
+   "side-N1": 34134,
+   "side-N2": 17586,
+   "side-S0": 18486,
+   "side-S1": 29805,
+   "side-S2": 30930,
+   "side-W1": 24960,
+   "side-W2": 26589
+  },
+  "refine": 200,
+  "samples": 100
+ }
+}

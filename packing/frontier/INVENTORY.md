@@ -8,9 +8,9 @@ ours, which rest on someone else's argument, and how far each has been checked.
 
 ## The short version
 
-- **293** evidence records. **158** are formal; **151** of those were established here.
+- **294** evidence records. **159** are formal; **152** of those were established here.
 - **127** rest on an argument made elsewhere, of which **7** have been read by nobody here.
-- **40** claim to be first established here. **13** make no novelty statement at all - not assessed, which is not the same as not novel.
+- **40** claim to be first established here. **14** make no novelty statement at all - not assessed, which is not the same as not novel.
 
 A formal claim on an unread external proof is still formal: the proof proves its
 claim whether or not we read it. The count above is not a doubt about those
@@ -24,6 +24,7 @@ results, it is a statement about what this repository has itself examined.
 | --- | ---: | --- | --- | --- | --- | --- | --- | --- | --- |
 | `E-n017-kleddamag-rational-upper` | 0 | upper-bound | verified | equalities and inequalities, no tolerance | here | informally-verified | previously-published | independent | `V-check-rational-witness-independent` |
 | `E-n017-certified-endpoint` | 1 | upper-bound | verified | equalities and inequalities, no tolerance | here | informally-verified | *not assessed* | independent | `V-n17-endpoint-checkers`, `V-audit-n17-endpoint-receipt` |
+| `E-n017-catalogue-polynomial-identity` | 0 | derived-structure | verified | equalities and inequalities, no tolerance | here | informally-verified | *not assessed* | producer’s code | `V-n17-catalogue-polynomial` |
 | `E-n060-evand-mixed-cover-report` | 1 | lower-bound | reported | - | elsewhere | informally-verified | previously-published | producer’s code | `V-evand-zm-mixed-py`, `V-evand-zmx2` |
 | `E-n061-evand-derived-report` | 1 | lower-bound | reported | - | elsewhere | informally-verified | previously-published | no code | - |
 | `E-n061-wand125-point-cover-evand-replay-report` | 0 | lower-bound | reported | - | elsewhere | - | previously-published | independent | `V-evand-zeromargin-py`, `V-evand-zmcheck`, `V-evand-zmx2` |
@@ -318,10 +319,10 @@ results, it is a statement about what this repository has itself examined.
 
 ## What the register rests on
 
-- **assurance**: numerically-checked 4, reported 131, verified 158
-- **method**: exact-algebraic 95, interval-certified 50, numerical-multiprecision 4, proof-assistant-checked 3, proof-audited 3, published-proof 7, reported 131
-- **novelty**: apparently-novel 40, common-knowledge 4, not assessed 13, previously-published 236
-- **relationship to the producer's code**: generator 5, independent-implementation 51, not-applicable 19, same-implementation 205, shared-components 7, unknown-historical 6
+- **assurance**: numerically-checked 4, reported 131, verified 159
+- **method**: exact-algebraic 96, interval-certified 50, numerical-multiprecision 4, proof-assistant-checked 3, proof-audited 3, published-proof 7, reported 131
+- **novelty**: apparently-novel 40, common-knowledge 4, not assessed 14, previously-published 236
+- **relationship to the producer's code**: generator 5, independent-implementation 51, not-applicable 19, same-implementation 206, shared-components 7, unknown-historical 6
 
 The `cases` column is how many frontier records cite each piece of evidence, and it is the reason to read this table rather than count records. Ranked below are the *formal* records only: a `reported` record cited across the frontier may be a shared catalogue and is labelled as such, which is the register working rather than risk. The risk is a verified claim resting on an argument nobody has examined.
 

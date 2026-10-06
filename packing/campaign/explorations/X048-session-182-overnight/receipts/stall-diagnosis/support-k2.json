@@ -1,0 +1,173 @@
+{
+ "node_file": "node-a664143e7e4f76f87ca0de7e9a34e04e59a6ddfddf99a5f497dc4d09f3487184.json.gz",
+ "provenance": {
+  "dirty": false,
+  "files": {
+   "packing/devtools/diagnose_n17_flag.py": "cc2bfade25a121bdcec621f4144f2b1c50d0e571"
+  },
+  "revision": "cebb5d15aaa17d0cc13aa302ecbd750a54bfc57d"
+ },
+ "schema": "n17-flag-diagnosis/v1",
+ "seconds": 438.0,
+ "status": "diagnostic, not a certificate: survivors are read from a saved node, placements are float searches, and only the exact check of a rounded placement counts",
+ "support": {
+  "owners": {
+   "corner-SW": {
+    "cut_margin": {
+     "least": 0.0002374990050204584,
+     "median": 0.0016366358910678835,
+     "tenth_percentile": 0.0006951856908813392
+    },
+    "supported_share": 0.9675,
+    "unsupported_by": {
+     "interior-SW": {
+      "largest_margin": 0.004478891972237942,
+      "median_margin": 0.0017417464307852848,
+      "poses": 8
+     },
+     "side-W0": {
+      "largest_margin": 0.004374762979399205,
+      "median_margin": 0.000742267726515089,
+      "poses": 6
+     }
+    }
+   },
+   "interior-NW": {
+    "cut_margin": {
+     "least": 0.00030933909641039925,
+     "median": 0.009833668454895528,
+     "tenth_percentile": 0.004418142800024172
+    },
+    "supported_share": 0.0050000000000000044,
+    "unsupported_by": {
+     "interior-W": {
+      "largest_margin": 0.020142997345737768,
+      "median_margin": 0.009603573784797814,
+      "poses": 373
+     },
+     "side-N0": {
+      "largest_margin": 0.015179737419452777,
+      "median_margin": 0.005220130682937862,
+      "poses": 268
+     },
+     "side-W1": {
+      "largest_margin": 0.013761533753244848,
+      "median_margin": 0.0036159297778328714,
+      "poses": 101
+     }
+    }
+   },
+   "interior-SW": {
+    "cut_margin": {
+     "least": 2.7205283938291913e-05,
+     "median": 0.0017683113689483387,
+     "tenth_percentile": 0.0003664887993595989
+    },
+    "supported_share": 0.85,
+    "unsupported_by": {
+     "interior-W": {
+      "largest_margin": 0.014476552308348323,
+      "median_margin": 0.001665007497505533,
+      "poses": 43
+     },
+     "side-W0": {
+      "largest_margin": 0.0037518491069234994,
+      "median_margin": 0.0019938153062831754,
+      "poses": 17
+     }
+    }
+   },
+   "interior-W": {
+    "cut_margin": {
+     "least": 0.0001448671062357354,
+     "median": 0.01002294675520865,
+     "tenth_percentile": 0.004329739427178592
+    },
+    "supported_share": 0.04500000000000004,
+    "unsupported_by": {
+     "interior-NW": {
+      "largest_margin": 0.020925759466933425,
+      "median_margin": 0.010041489181582985,
+      "poses": 377
+     },
+     "interior-SW": {
+      "largest_margin": 0.014027309594677684,
+      "median_margin": 0.0033714339047318242,
+      "poses": 45
+     }
+    }
+   },
+   "side-N0": {
+    "cut_margin": {
+     "least": 9.356636774071614e-05,
+     "median": 0.002996633694634987,
+     "tenth_percentile": 0.0007134875705202659
+    },
+    "supported_share": 0.7150000000000001,
+    "unsupported_by": {
+     "interior-NW": {
+      "largest_margin": 0.009721734301985308,
+      "median_margin": 0.002996633694634987,
+      "poses": 114
+     }
+    }
+   },
+   "side-W0": {
+    "cut_margin": {
+     "least": 0.00014621070780085343,
+     "median": 0.0015454353615643734,
+     "tenth_percentile": 0.0002857614633112737
+    },
+    "supported_share": 0.935,
+    "unsupported_by": {
+     "corner-SW": {
+      "largest_margin": 0.0029655740598533153,
+      "median_margin": 0.0013163704328920112,
+      "poses": 3
+     },
+     "interior-SW": {
+      "largest_margin": 0.007801167649942986,
+      "median_margin": 0.001318967258843451,
+      "poses": 8
+     },
+     "side-W1": {
+      "largest_margin": 0.004808345554751403,
+      "median_margin": 0.0023633161623068943,
+      "poses": 15
+     }
+    }
+   },
+   "side-W1": {
+    "cut_margin": {
+     "least": 0.00012230421203629493,
+     "median": 0.0033923173561055675,
+     "tenth_percentile": 0.00024213220036890527
+    },
+    "supported_share": 0.925,
+    "unsupported_by": {
+     "interior-NW": {
+      "largest_margin": 0.00882013888437383,
+      "median_margin": 0.0018364697764733373,
+      "poses": 10
+     },
+     "side-W0": {
+      "largest_margin": 0.007836787041785032,
+      "median_margin": 0.004257278560541589,
+      "poses": 20
+     }
+    }
+   }
+  },
+  "partner_pool": {
+   "corner-SW": 133116,
+   "interior-NW": 9996,
+   "interior-SW": 129588,
+   "interior-W": 2373,
+   "side-N0": 11454,
+   "side-W0": 71124,
+   "side-W1": 79746
+  },
+  "refine": 200,
+  "samples": 400
+ }
+}

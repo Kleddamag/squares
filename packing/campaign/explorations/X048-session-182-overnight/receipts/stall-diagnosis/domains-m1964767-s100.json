@@ -1,0 +1,1726 @@
+{
+ "live_rows": 523,
+ "node_file": "node-90021eede3b868c00b09e385f80b35f5f758235f5263f77315f4083fa8cfc8df.json.gz",
+ "node_id": "n17-custom",
+ "owners": {
+  "corner-NE": {
+   "blocks": [
+    {
+     "degrees": [
+      0.0,
+      90.0
+     ],
+     "ideal_owned_area": 0.003037,
+     "largest_residual_area": 0.3160407,
+     "rows": 32,
+     "x": [
+      3.386,
+      4.176
+     ],
+     "y": [
+      3.386,
+      4.176
+     ]
+    }
+   ],
+   "cell": 3,
+   "ideal_owned_area": 0.003037,
+   "largest_core_loss": 0.014915,
+   "largest_residual_area": 0.3160407,
+   "largest_wall_loss": 0.030244,
+   "live_degrees": 90.0,
+   "live_row_degrees": [
+    1.8188,
+    3.5798
+   ],
+   "live_rows": 32,
+   "live_rows_by_chart_width": {
+    "1/32": 32
+   },
+   "owned_hull_area": 0.002606,
+   "owned_hull_vertices": 5,
+   "rows": 32,
+   "rows_by_chart_width": {
+    "1/32": 32
+   },
+   "sectors": [
+    {
+     "degrees": [
+      0.0,
+      15.0
+     ],
+     "ideal_owned_area": 0.0192,
+     "live_rows": 5
+    },
+    {
+     "degrees": [
+      15.0,
+      30.0
+     ],
+     "ideal_owned_area": 0.013678,
+     "live_rows": 5
+    },
+    {
+     "degrees": [
+      30.0,
+      45.0
+     ],
+     "ideal_owned_area": 0.022237,
+     "live_rows": 6
+    },
+    {
+     "degrees": [
+      45.0,
+      60.0
+     ],
+     "ideal_owned_area": 0.023064,
+     "live_rows": 6
+    },
+    {
+     "degrees": [
+      60.0,
+      75.0
+     ],
+     "ideal_owned_area": 0.036409,
+     "live_rows": 7
+    },
+    {
+     "degrees": [
+      75.0,
+      90.0
+     ],
+     "ideal_owned_area": 0.026683,
+     "live_rows": 8
+    }
+   ],
+   "x": [
+    3.386,
+    4.176
+   ],
+   "y": [
+    3.386,
+    4.176
+   ]
+  },
+  "corner-NW": {
+   "blocks": [
+    {
+     "degrees": [
+      0.0,
+      90.0
+     ],
+     "ideal_owned_area": 0.003037,
+     "largest_residual_area": 0.4196593,
+     "rows": 32,
+     "x": [
+      0.5,
+      1.29
+     ],
+     "y": [
+      3.386,
+      4.176
+     ]
+    }
+   ],
+   "cell": 2,
+   "ideal_owned_area": 0.003037,
+   "largest_core_loss": 0.014915,
+   "largest_residual_area": 0.4196593,
+   "largest_wall_loss": 0.030244,
+   "live_degrees": 90.0,
+   "live_row_degrees": [
+    1.8188,
+    3.5798
+   ],
+   "live_rows": 32,
+   "live_rows_by_chart_width": {
+    "1/32": 32
+   },
+   "owned_hull_area": 0.002606,
+   "owned_hull_vertices": 5,
+   "rows": 32,
+   "rows_by_chart_width": {
+    "1/32": 32
+   },
+   "sectors": [
+    {
+     "degrees": [
+      0.0,
+      15.0
+     ],
+     "ideal_owned_area": 0.009841,
+     "live_rows": 5
+    },
+    {
+     "degrees": [
+      15.0,
+      30.0
+     ],
+     "ideal_owned_area": 0.013678,
+     "live_rows": 5
+    },
+    {
+     "degrees": [
+      30.0,
+      45.0
+     ],
+     "ideal_owned_area": 0.022237,
+     "live_rows": 6
+    },
+    {
+     "degrees": [
+      45.0,
+      60.0
+     ],
+     "ideal_owned_area": 0.023064,
+     "live_rows": 6
+    },
+    {
+     "degrees": [
+      60.0,
+      75.0
+     ],
+     "ideal_owned_area": 0.014898,
+     "live_rows": 7
+    },
+    {
+     "degrees": [
+      75.0,
+      90.0
+     ],
+     "ideal_owned_area": 0.013597,
+     "live_rows": 8
+    }
+   ],
+   "x": [
+    0.5,
+    1.29
+   ],
+   "y": [
+    3.386,
+    4.176
+   ]
+  },
+  "corner-SE": {
+   "blocks": [
+    {
+     "degrees": [
+      0.0,
+      90.0
+     ],
+     "ideal_owned_area": 0.003115,
+     "largest_residual_area": 0.3153046,
+     "rows": 32,
+     "x": [
+      3.386,
+      4.176
+     ],
+     "y": [
+      0.5,
+      1.29
+     ]
+    }
+   ],
+   "cell": 1,
+   "ideal_owned_area": 0.003115,
+   "largest_core_loss": 0.014915,
+   "largest_residual_area": 0.3153046,
+   "largest_wall_loss": 0.030244,
+   "live_degrees": 90.0,
+   "live_row_degrees": [
+    1.8188,
+    3.5798
+   ],
+   "live_rows": 32,
+   "live_rows_by_chart_width": {
+    "1/32": 32
+   },
+   "owned_hull_area": 0.00271,
+   "owned_hull_vertices": 6,
+   "rows": 32,
+   "rows_by_chart_width": {
+    "1/32": 32
+   },
+   "sectors": [
+    {
+     "degrees": [
+      0.0,
+      15.0
+     ],
+     "ideal_owned_area": 0.022471,
+     "live_rows": 5
+    },
+    {
+     "degrees": [
+      15.0,
+      30.0
+     ],
+     "ideal_owned_area": 0.013678,
+     "live_rows": 5
+    },
+    {
+     "degrees": [
+      30.0,
+      45.0
+     ],
+     "ideal_owned_area": 0.022328,
+     "live_rows": 6
+    },
+    {
+     "degrees": [
+      45.0,
+      60.0
+     ],
+     "ideal_owned_area": 0.056549,
+     "live_rows": 6
+    },
+    {
+     "degrees": [
+      60.0,
+      75.0
+     ],
+     "ideal_owned_area": 0.016617,
+     "live_rows": 7
+    },
+    {
+     "degrees": [
+      75.0,
+      90.0
+     ],
+     "ideal_owned_area": 0.026683,
+     "live_rows": 8
+    }
+   ],
+   "x": [
+    3.386,
+    4.176
+   ],
+   "y": [
+    0.5,
+    1.29
+   ]
+  },
+  "corner-SW": {
+   "blocks": [
+    {
+     "degrees": [
+      0.0,
+      90.0
+     ],
+     "ideal_owned_area": 0.182878,
+     "largest_residual_area": 0.2745517,
+     "rows": 32,
+     "x": [
+      0.5,
+      1.05461
+     ],
+     "y": [
+      0.5,
+      1.08075
+     ]
+    }
+   ],
+   "cell": 0,
+   "ideal_owned_area": 0.182878,
+   "largest_core_loss": 0.014915,
+   "largest_residual_area": 0.2745517,
+   "largest_wall_loss": 0.030244,
+   "live_degrees": 90.0,
+   "live_row_degrees": [
+    1.8188,
+    3.5798
+   ],
+   "live_rows": 32,
+   "live_rows_by_chart_width": {
+    "1/32": 32
+   },
+   "owned_hull_area": 0.179897,
+   "owned_hull_vertices": 16,
+   "rows": 32,
+   "rows_by_chart_width": {
+    "1/32": 32
+   },
+   "sectors": [
+    {
+     "degrees": [
+      0.0,
+      15.0
+     ],
+     "ideal_owned_area": 0.185824,
+     "live_rows": 5
+    },
+    {
+     "degrees": [
+      15.0,
+      30.0
+     ],
+     "ideal_owned_area": 0.27463,
+     "live_rows": 5
+    },
+    {
+     "degrees": [
+      30.0,
+      45.0
+     ],
+     "ideal_owned_area": 0.433889,
+     "live_rows": 6
+    },
+    {
+     "degrees": [
+      45.0,
+      60.0
+     ],
+     "ideal_owned_area": 0.454788,
+     "live_rows": 6
+    },
+    {
+     "degrees": [
+      60.0,
+      75.0
+     ],
+     "ideal_owned_area": 0.288623,
+     "live_rows": 7
+    },
+    {
+     "degrees": [
+      75.0,
+      90.0
+     ],
+     "ideal_owned_area": 0.202375,
+     "live_rows": 8
+    }
+   ],
+   "x": [
+    0.5,
+    1.05461
+   ],
+   "y": [
+    0.5,
+    1.08075
+   ]
+  },
+  "interior-N": {
+   "blocks": [
+    {
+     "degrees": [
+      0.0,
+      90.0
+     ],
+     "ideal_owned_area": 0.00916,
+     "largest_residual_area": 0.1801242,
+     "rows": 32,
+     "x": [
+      2.11923,
+      2.678
+     ],
+     "y": [
+      2.41157,
+      3.246
+     ]
+    }
+   ],
+   "cell": 20,
+   "ideal_owned_area": 0.00916,
+   "largest_core_loss": 0.014915,
+   "largest_residual_area": 0.1801242,
+   "largest_wall_loss": 0.0,
+   "live_degrees": 90.0,
+   "live_row_degrees": [
+    1.8188,
+    3.5798
+   ],
+   "live_rows": 32,
+   "live_rows_by_chart_width": {
+    "1/32": 32
+   },
+   "owned_hull_area": 0.004508,
+   "owned_hull_vertices": 9,
+   "rows": 32,
+   "rows_by_chart_width": {
+    "1/32": 32
+   },
+   "sectors": [
+    {
+     "degrees": [
+      0.0,
+      15.0
+     ],
+     "ideal_owned_area": 0.053378,
+     "live_rows": 5
+    },
+    {
+     "degrees": [
+      15.0,
+      30.0
+     ],
+     "ideal_owned_area": 0.070859,
+     "live_rows": 5
+    },
+    {
+     "degrees": [
+      30.0,
+      45.0
+     ],
+     "ideal_owned_area": 0.070469,
+     "live_rows": 6
+    },
+    {
+     "degrees": [
+      45.0,
+      60.0
+     ],
+     "ideal_owned_area": 0.062321,
+     "live_rows": 6
+    },
+    {
+     "degrees": [
+      60.0,
+      75.0
+     ],
+     "ideal_owned_area": 0.119543,
+     "live_rows": 7
+    },
+    {
+     "degrees": [
+      75.0,
+      90.0
+     ],
+     "ideal_owned_area": 0.089866,
+     "live_rows": 8
+    }
+   ],
+   "x": [
+    2.11923,
+    2.678
+   ],
+   "y": [
+    2.41157,
+    3.246
+   ]
+  },
+  "interior-S": {
+   "blocks": [
+    {
+     "degrees": [
+      0.0,
+      90.0
+     ],
+     "ideal_owned_area": 0.03351,
+     "largest_residual_area": 0.1609586,
+     "rows": 32,
+     "x": [
+      2.33481,
+      2.678
+     ],
+     "y": [
+      1.43,
+      2.33046
+     ]
+    }
+   ],
+   "cell": 19,
+   "ideal_owned_area": 0.03351,
+   "largest_core_loss": 0.014915,
+   "largest_residual_area": 0.1609586,
+   "largest_wall_loss": 0.0,
+   "live_degrees": 90.0,
+   "live_row_degrees": [
+    1.8188,
+    3.5798
+   ],
+   "live_rows": 32,
+   "live_rows_by_chart_width": {
+    "1/32": 32
+   },
+   "owned_hull_area": 0.02505,
+   "owned_hull_vertices": 16,
+   "rows": 32,
+   "rows_by_chart_width": {
+    "1/32": 32
+   },
+   "sectors": [
+    {
+     "degrees": [
+      0.0,
+      15.0
+     ],
+     "ideal_owned_area": 0.088297,
+     "live_rows": 5
+    },
+    {
+     "degrees": [
+      15.0,
+      30.0
+     ],
+     "ideal_owned_area": 0.121446,
+     "live_rows": 5
+    },
+    {
+     "degrees": [
+      30.0,
+      45.0
+     ],
+     "ideal_owned_area": 0.114866,
+     "live_rows": 6
+    },
+    {
+     "degrees": [
+      45.0,
+      60.0
+     ],
+     "ideal_owned_area": 0.073439,
+     "live_rows": 6
+    },
+    {
+     "degrees": [
+      60.0,
+      75.0
+     ],
+     "ideal_owned_area": 0.061754,
+     "live_rows": 7
+    },
+    {
+     "degrees": [
+      75.0,
+      90.0
+     ],
+     "ideal_owned_area": 0.126098,
+     "live_rows": 8
+    }
+   ],
+   "x": [
+    2.33481,
+    2.678
+   ],
+   "y": [
+    1.43,
+    2.33046
+   ]
+  },
+  "interior-SW": {
+   "blocks": [
+    {
+     "degrees": [
+      0.0,
+      37.9408
+     ],
+     "ideal_owned_area": 0.373423,
+     "largest_residual_area": 0.0598966,
+     "rows": 11,
+     "x": [
+      1.46298,
+      1.90037
+     ],
+     "y": [
+      1.45424,
+      1.75224
+     ]
+    },
+    {
+     "degrees": [
+      64.0108,
+      90.0
+     ],
+     "ideal_owned_area": 0.551837,
+     "largest_residual_area": 0.0453684,
+     "rows": 12,
+     "x": [
+      1.47645,
+      1.73645
+     ],
+     "y": [
+      1.48109,
+      1.71669
+     ]
+    }
+   ],
+   "cell": 16,
+   "ideal_owned_area": 0.37297,
+   "largest_core_loss": 0.014915,
+   "largest_residual_area": 0.0598966,
+   "largest_wall_loss": 0.0,
+   "live_degrees": 63.93,
+   "live_row_degrees": [
+    1.8188,
+    3.5798
+   ],
+   "live_rows": 23,
+   "live_rows_by_chart_width": {
+    "1/32": 23
+   },
+   "owned_hull_area": 0.355605,
+   "owned_hull_vertices": 16,
+   "rows": 32,
+   "rows_by_chart_width": {
+    "1/32": 32
+   },
+   "sectors": [
+    {
+     "degrees": [
+      0.0,
+      15.0
+     ],
+     "ideal_owned_area": 0.37936,
+     "live_rows": 5
+    },
+    {
+     "degrees": [
+      15.0,
+      30.0
+     ],
+     "ideal_owned_area": 0.467785,
+     "live_rows": 5
+    },
+    {
+     "degrees": [
+      30.0,
+      45.0
+     ],
+     "ideal_owned_area": 0.653046,
+     "live_rows": 3
+    },
+    {
+     "degrees": [
+      60.0,
+      75.0
+     ],
+     "ideal_owned_area": 0.663123,
+     "live_rows": 5
+    },
+    {
+     "degrees": [
+      75.0,
+      90.0
+     ],
+     "ideal_owned_area": 0.565086,
+     "live_rows": 8
+    }
+   ],
+   "x": [
+    1.46298,
+    1.90037
+   ],
+   "y": [
+    1.45424,
+    1.75224
+   ]
+  },
+  "interior-W": {
+   "blocks": [
+    {
+     "degrees": [
+      0.0,
+      90.0
+     ],
+     "ideal_owned_area": 0.108226,
+     "largest_residual_area": 0.0711172,
+     "rows": 32,
+     "x": [
+      1.43,
+      2.19122
+     ],
+     "y": [
+      2.38143,
+      2.678
+     ]
+    }
+   ],
+   "cell": 18,
+   "ideal_owned_area": 0.108226,
+   "largest_core_loss": 0.014915,
+   "largest_residual_area": 0.0711172,
+   "largest_wall_loss": 0.0,
+   "live_degrees": 90.0,
+   "live_row_degrees": [
+    1.8188,
+    3.5798
+   ],
+   "live_rows": 32,
+   "live_rows_by_chart_width": {
+    "1/32": 32
+   },
+   "owned_hull_area": 0.092699,
+   "owned_hull_vertices": 16,
+   "rows": 32,
+   "rows_by_chart_width": {
+    "1/32": 32
+   },
+   "sectors": [
+    {
+     "degrees": [
+      0.0,
+      15.0
+     ],
+     "ideal_owned_area": 0.339245,
+     "live_rows": 5
+    },
+    {
+     "degrees": [
+      15.0,
+      30.0
+     ],
+     "ideal_owned_area": 0.348839,
+     "live_rows": 5
+    },
+    {
+     "degrees": [
+      30.0,
+      45.0
+     ],
+     "ideal_owned_area": 0.358879,
+     "live_rows": 6
+    },
+    {
+     "degrees": [
+      45.0,
+      60.0
+     ],
+     "ideal_owned_area": 0.133208,
+     "live_rows": 6
+    },
+    {
+     "degrees": [
+      60.0,
+      75.0
+     ],
+     "ideal_owned_area": 0.175317,
+     "live_rows": 7
+    },
+    {
+     "degrees": [
+      75.0,
+      90.0
+     ],
+     "ideal_owned_area": 0.401603,
+     "live_rows": 8
+    }
+   ],
+   "x": [
+    1.43,
+    2.19122
+   ],
+   "y": [
+    2.38143,
+    2.678
+   ]
+  },
+  "side-E0": {
+   "blocks": [
+    {
+     "degrees": [
+      0.0,
+      90.0
+     ],
+     "ideal_owned_area": 0.0,
+     "largest_residual_area": 0.2493377,
+     "rows": 32,
+     "x": [
+      3.265,
+      4.176
+     ],
+     "y": [
+      1.29,
+      1.99533
+     ]
+    }
+   ],
+   "cell": 7,
+   "ideal_owned_area": 0.0,
+   "largest_core_loss": 0.014915,
+   "largest_residual_area": 0.2493377,
+   "largest_wall_loss": 0.030244,
+   "live_degrees": 90.0,
+   "live_row_degrees": [
+    1.8188,
+    3.5798
+   ],
+   "live_rows": 32,
+   "live_rows_by_chart_width": {
+    "1/32": 32
+   },
+   "owned_hull_area": 0.0,
+   "owned_hull_vertices": 0,
+   "rows": 32,
+   "rows_by_chart_width": {
+    "1/32": 32
+   },
+   "sectors": [
+    {
+     "degrees": [
+      0.0,
+      15.0
+     ],
+     "ideal_owned_area": 0.000521,
+     "live_rows": 5
+    },
+    {
+     "degrees": [
+      15.0,
+      30.0
+     ],
+     "ideal_owned_area": 0.0,
+     "live_rows": 5
+    },
+    {
+     "degrees": [
+      30.0,
+      45.0
+     ],
+     "ideal_owned_area": 0.0,
+     "live_rows": 6
+    },
+    {
+     "degrees": [
+      45.0,
+      60.0
+     ],
+     "ideal_owned_area": 7.8e-05,
+     "live_rows": 6
+    },
+    {
+     "degrees": [
+      60.0,
+      75.0
+     ],
+     "ideal_owned_area": 0.000447,
+     "live_rows": 7
+    },
+    {
+     "degrees": [
+      75.0,
+      90.0
+     ],
+     "ideal_owned_area": 0.001049,
+     "live_rows": 8
+    }
+   ],
+   "x": [
+    3.265,
+    4.176
+   ],
+   "y": [
+    1.29,
+    1.99533
+   ]
+  },
+  "side-E1": {
+   "blocks": [
+    {
+     "degrees": [
+      0.0,
+      90.0
+     ],
+     "ideal_owned_area": 0.0,
+     "largest_residual_area": 0.190034,
+     "rows": 32,
+     "x": [
+      3.246,
+      4.176
+     ],
+     "y": [
+      1.99533,
+      2.68067
+     ]
+    }
+   ],
+   "cell": 11,
+   "ideal_owned_area": 0.0,
+   "largest_core_loss": 0.014915,
+   "largest_residual_area": 0.190034,
+   "largest_wall_loss": 0.030244,
+   "live_degrees": 90.0,
+   "live_row_degrees": [
+    1.8188,
+    3.5798
+   ],
+   "live_rows": 32,
+   "live_rows_by_chart_width": {
+    "1/32": 32
+   },
+   "owned_hull_area": 0.0,
+   "owned_hull_vertices": 0,
+   "rows": 32,
+   "rows_by_chart_width": {
+    "1/32": 32
+   },
+   "sectors": [
+    {
+     "degrees": [
+      0.0,
+      15.0
+     ],
+     "ideal_owned_area": 0.0,
+     "live_rows": 5
+    },
+    {
+     "degrees": [
+      15.0,
+      30.0
+     ],
+     "ideal_owned_area": 0.0,
+     "live_rows": 5
+    },
+    {
+     "degrees": [
+      30.0,
+      45.0
+     ],
+     "ideal_owned_area": 0.0,
+     "live_rows": 6
+    },
+    {
+     "degrees": [
+      45.0,
+      60.0
+     ],
+     "ideal_owned_area": 0.0,
+     "live_rows": 6
+    },
+    {
+     "degrees": [
+      60.0,
+      75.0
+     ],
+     "ideal_owned_area": 0.0,
+     "live_rows": 7
+    },
+    {
+     "degrees": [
+      75.0,
+      90.0
+     ],
+     "ideal_owned_area": 0.0,
+     "live_rows": 8
+    }
+   ],
+   "x": [
+    3.246,
+    4.176
+   ],
+   "y": [
+    1.99533,
+    2.68067
+   ]
+  },
+  "side-E2": {
+   "blocks": [
+    {
+     "degrees": [
+      0.0,
+      90.0
+     ],
+     "ideal_owned_area": 0.0,
+     "largest_residual_area": 0.2537771,
+     "rows": 32,
+     "x": [
+      3.265,
+      4.176
+     ],
+     "y": [
+      2.68067,
+      3.386
+     ]
+    }
+   ],
+   "cell": 15,
+   "ideal_owned_area": 0.0,
+   "largest_core_loss": 0.014915,
+   "largest_residual_area": 0.2537771,
+   "largest_wall_loss": 0.030244,
+   "live_degrees": 90.0,
+   "live_row_degrees": [
+    1.8188,
+    3.5798
+   ],
+   "live_rows": 32,
+   "live_rows_by_chart_width": {
+    "1/32": 32
+   },
+   "owned_hull_area": 0.0,
+   "owned_hull_vertices": 0,
+   "rows": 32,
+   "rows_by_chart_width": {
+    "1/32": 32
+   },
+   "sectors": [
+    {
+     "degrees": [
+      0.0,
+      15.0
+     ],
+     "ideal_owned_area": 1.2e-05,
+     "live_rows": 5
+    },
+    {
+     "degrees": [
+      15.0,
+      30.0
+     ],
+     "ideal_owned_area": 0.000157,
+     "live_rows": 5
+    },
+    {
+     "degrees": [
+      30.0,
+      45.0
+     ],
+     "ideal_owned_area": 5.5e-05,
+     "live_rows": 6
+    },
+    {
+     "degrees": [
+      45.0,
+      60.0
+     ],
+     "ideal_owned_area": 0.0,
+     "live_rows": 6
+    },
+    {
+     "degrees": [
+      60.0,
+      75.0
+     ],
+     "ideal_owned_area": 0.0,
+     "live_rows": 7
+    },
+    {
+     "degrees": [
+      75.0,
+      90.0
+     ],
+     "ideal_owned_area": 0.002384,
+     "live_rows": 8
+    }
+   ],
+   "x": [
+    3.265,
+    4.176
+   ],
+   "y": [
+    2.68067,
+    3.386
+   ]
+  },
+  "side-N1": {
+   "blocks": [
+    {
+     "degrees": [
+      0.0,
+      90.0
+     ],
+     "ideal_owned_area": 9e-06,
+     "largest_residual_area": 0.3120996,
+     "rows": 32,
+     "x": [
+      1.99533,
+      2.68067
+     ],
+     "y": [
+      3.3042,
+      4.176
+     ]
+    }
+   ],
+   "cell": 9,
+   "ideal_owned_area": 9e-06,
+   "largest_core_loss": 0.014915,
+   "largest_residual_area": 0.3120996,
+   "largest_wall_loss": 0.030244,
+   "live_degrees": 90.0,
+   "live_row_degrees": [
+    1.8188,
+    3.5798
+   ],
+   "live_rows": 32,
+   "live_rows_by_chart_width": {
+    "1/32": 32
+   },
+   "owned_hull_area": 0.0,
+   "owned_hull_vertices": 0,
+   "rows": 32,
+   "rows_by_chart_width": {
+    "1/32": 32
+   },
+   "sectors": [
+    {
+     "degrees": [
+      0.0,
+      15.0
+     ],
+     "ideal_owned_area": 0.022295,
+     "live_rows": 5
+    },
+    {
+     "degrees": [
+      15.0,
+      30.0
+     ],
+     "ideal_owned_area": 0.020303,
+     "live_rows": 5
+    },
+    {
+     "degrees": [
+      30.0,
+      45.0
+     ],
+     "ideal_owned_area": 0.008393,
+     "live_rows": 6
+    },
+    {
+     "degrees": [
+      45.0,
+      60.0
+     ],
+     "ideal_owned_area": 0.004078,
+     "live_rows": 6
+    },
+    {
+     "degrees": [
+      60.0,
+      75.0
+     ],
+     "ideal_owned_area": 0.010211,
+     "live_rows": 7
+    },
+    {
+     "degrees": [
+      75.0,
+      90.0
+     ],
+     "ideal_owned_area": 0.05028,
+     "live_rows": 8
+    }
+   ],
+   "x": [
+    1.99533,
+    2.68067
+   ],
+   "y": [
+    3.3042,
+    4.176
+   ]
+  },
+  "side-N2": {
+   "blocks": [
+    {
+     "degrees": [
+      0.0,
+      90.0
+     ],
+     "ideal_owned_area": 0.0,
+     "largest_residual_area": 0.197086,
+     "rows": 32,
+     "x": [
+      2.68067,
+      3.386
+     ],
+     "y": [
+      3.265,
+      4.176
+     ]
+    }
+   ],
+   "cell": 13,
+   "ideal_owned_area": 0.0,
+   "largest_core_loss": 0.014915,
+   "largest_residual_area": 0.197086,
+   "largest_wall_loss": 0.030244,
+   "live_degrees": 90.0,
+   "live_row_degrees": [
+    1.8188,
+    3.5798
+   ],
+   "live_rows": 32,
+   "live_rows_by_chart_width": {
+    "1/32": 32
+   },
+   "owned_hull_area": 0.0,
+   "owned_hull_vertices": 0,
+   "rows": 32,
+   "rows_by_chart_width": {
+    "1/32": 32
+   },
+   "sectors": [
+    {
+     "degrees": [
+      0.0,
+      15.0
+     ],
+     "ideal_owned_area": 0.004039,
+     "live_rows": 5
+    },
+    {
+     "degrees": [
+      15.0,
+      30.0
+     ],
+     "ideal_owned_area": 0.001052,
+     "live_rows": 5
+    },
+    {
+     "degrees": [
+      30.0,
+      45.0
+     ],
+     "ideal_owned_area": 0.0,
+     "live_rows": 6
+    },
+    {
+     "degrees": [
+      45.0,
+      60.0
+     ],
+     "ideal_owned_area": 7.8e-05,
+     "live_rows": 6
+    },
+    {
+     "degrees": [
+      60.0,
+      75.0
+     ],
+     "ideal_owned_area": 0.001378,
+     "live_rows": 7
+    },
+    {
+     "degrees": [
+      75.0,
+      90.0
+     ],
+     "ideal_owned_area": 0.012255,
+     "live_rows": 8
+    }
+   ],
+   "x": [
+    2.68067,
+    3.386
+   ],
+   "y": [
+    3.265,
+    4.176
+   ]
+  },
+  "side-S0": {
+   "blocks": [
+    {
+     "degrees": [
+      0.0,
+      37.9408
+     ],
+     "ideal_owned_area": 0.29468,
+     "largest_residual_area": 0.1244147,
+     "rows": 11,
+     "x": [
+      1.48704,
+      1.99533
+     ],
+     "y": [
+      0.5,
+      0.82068
+     ]
+    },
+    {
+     "degrees": [
+      66.5498,
+      90.0
+     ],
+     "ideal_owned_area": 0.334403,
+     "largest_residual_area": 0.1129416,
+     "rows": 11,
+     "x": [
+      1.47067,
+      1.99533
+     ],
+     "y": [
+      0.5,
+      0.73868
+     ]
+    }
+   ],
+   "cell": 4,
+   "ideal_owned_area": 0.271761,
+   "largest_core_loss": 0.014915,
+   "largest_residual_area": 0.1244147,
+   "largest_wall_loss": 0.030244,
+   "live_degrees": 61.391,
+   "live_row_degrees": [
+    1.8188,
+    3.5798
+   ],
+   "live_rows": 22,
+   "live_rows_by_chart_width": {
+    "1/32": 22
+   },
+   "owned_hull_area": 0.256255,
+   "owned_hull_vertices": 16,
+   "rows": 32,
+   "rows_by_chart_width": {
+    "1/32": 32
+   },
+   "sectors": [
+    {
+     "degrees": [
+      0.0,
+      15.0
+     ],
+     "ideal_owned_area": 0.307528,
+     "live_rows": 5
+    },
+    {
+     "degrees": [
+      15.0,
+      30.0
+     ],
+     "ideal_owned_area": 0.406772,
+     "live_rows": 5
+    },
+    {
+     "degrees": [
+      30.0,
+      45.0
+     ],
+     "ideal_owned_area": 0.676941,
+     "live_rows": 3
+    },
+    {
+     "degrees": [
+      60.0,
+      75.0
+     ],
+     "ideal_owned_area": 0.416321,
+     "live_rows": 4
+    },
+    {
+     "degrees": [
+      75.0,
+      90.0
+     ],
+     "ideal_owned_area": 0.335406,
+     "live_rows": 8
+    }
+   ],
+   "x": [
+    1.47067,
+    1.99533
+   ],
+   "y": [
+    0.5,
+    0.82068
+   ]
+  },
+  "side-S2": {
+   "blocks": [
+    {
+     "degrees": [
+      0.0,
+      90.0
+     ],
+     "ideal_owned_area": 0.0,
+     "largest_residual_area": 0.4241335,
+     "rows": 32,
+     "x": [
+      2.68067,
+      3.386
+     ],
+     "y": [
+      0.5,
+      1.411
+     ]
+    }
+   ],
+   "cell": 12,
+   "ideal_owned_area": 0.0,
+   "largest_core_loss": 0.014915,
+   "largest_residual_area": 0.4241335,
+   "largest_wall_loss": 0.030244,
+   "live_degrees": 90.0,
+   "live_row_degrees": [
+    1.8188,
+    3.5798
+   ],
+   "live_rows": 32,
+   "live_rows_by_chart_width": {
+    "1/32": 32
+   },
+   "owned_hull_area": 0.0,
+   "owned_hull_vertices": 0,
+   "rows": 32,
+   "rows_by_chart_width": {
+    "1/32": 32
+   },
+   "sectors": [
+    {
+     "degrees": [
+      0.0,
+      15.0
+     ],
+     "ideal_owned_area": 0.00761,
+     "live_rows": 5
+    },
+    {
+     "degrees": [
+      15.0,
+      30.0
+     ],
+     "ideal_owned_area": 0.00166,
+     "live_rows": 5
+    },
+    {
+     "degrees": [
+      30.0,
+      45.0
+     ],
+     "ideal_owned_area": 5.5e-05,
+     "live_rows": 6
+    },
+    {
+     "degrees": [
+      45.0,
+      60.0
+     ],
+     "ideal_owned_area": 1e-05,
+     "live_rows": 6
+    },
+    {
+     "degrees": [
+      60.0,
+      75.0
+     ],
+     "ideal_owned_area": 0.001584,
+     "live_rows": 7
+    },
+    {
+     "degrees": [
+      75.0,
+      90.0
+     ],
+     "ideal_owned_area": 0.004866,
+     "live_rows": 8
+    }
+   ],
+   "x": [
+    2.68067,
+    3.386
+   ],
+   "y": [
+    0.5,
+    1.411
+   ]
+  },
+  "side-W0": {
+   "blocks": [
+    {
+     "degrees": [
+      0.0,
+      47.2588
+     ],
+     "ideal_owned_area": 0.251256,
+     "largest_residual_area": 0.1820897,
+     "rows": 14,
+     "x": [
+      0.5,
+      0.93039
+     ],
+     "y": [
+      1.45384,
+      1.99533
+     ]
+    },
+    {
+     "degrees": [
+      53.1301,
+      90.0
+     ],
+     "ideal_owned_area": 0.272168,
+     "largest_residual_area": 0.1641773,
+     "rows": 16,
+     "x": [
+      0.5,
+      0.86363
+     ],
+     "y": [
+      1.48852,
+      1.99533
+     ]
+    }
+   ],
+   "cell": 6,
+   "ideal_owned_area": 0.230558,
+   "largest_core_loss": 0.014915,
+   "largest_residual_area": 0.1820897,
+   "largest_wall_loss": 0.030244,
+   "live_degrees": 84.1287,
+   "live_row_degrees": [
+    1.8188,
+    3.5798
+   ],
+   "live_rows": 30,
+   "live_rows_by_chart_width": {
+    "1/32": 30
+   },
+   "owned_hull_area": 0.215959,
+   "owned_hull_vertices": 16,
+   "rows": 32,
+   "rows_by_chart_width": {
+    "1/32": 32
+   },
+   "sectors": [
+    {
+     "degrees": [
+      0.0,
+      15.0
+     ],
+     "ideal_owned_area": 0.254483,
+     "live_rows": 5
+    },
+    {
+     "degrees": [
+      15.0,
+      30.0
+     ],
+     "ideal_owned_area": 0.322759,
+     "live_rows": 5
+    },
+    {
+     "degrees": [
+      30.0,
+      45.0
+     ],
+     "ideal_owned_area": 0.445047,
+     "live_rows": 6
+    },
+    {
+     "degrees": [
+      45.0,
+      60.0
+     ],
+     "ideal_owned_area": 0.461374,
+     "live_rows": 4
+    },
+    {
+     "degrees": [
+      60.0,
+      75.0
+     ],
+     "ideal_owned_area": 0.378858,
+     "live_rows": 7
+    },
+    {
+     "degrees": [
+      75.0,
+      90.0
+     ],
+     "ideal_owned_area": 0.283815,
+     "live_rows": 8
+    }
+   ],
+   "x": [
+    0.5,
+    0.93039
+   ],
+   "y": [
+    1.45384,
+    1.99533
+   ]
+  },
+  "side-W2": {
+   "blocks": [
+    {
+     "degrees": [
+      0.0,
+      90.0
+     ],
+     "ideal_owned_area": 0.0,
+     "largest_residual_area": 0.3294127,
+     "rows": 32,
+     "x": [
+      0.5,
+      1.411
+     ],
+     "y": [
+      2.68067,
+      3.386
+     ]
+    }
+   ],
+   "cell": 14,
+   "ideal_owned_area": 0.0,
+   "largest_core_loss": 0.014915,
+   "largest_residual_area": 0.3294127,
+   "largest_wall_loss": 0.030244,
+   "live_degrees": 90.0,
+   "live_row_degrees": [
+    1.8188,
+    3.5798
+   ],
+   "live_rows": 32,
+   "live_rows_by_chart_width": {
+    "1/32": 32
+   },
+   "owned_hull_area": 0.0,
+   "owned_hull_vertices": 0,
+   "rows": 32,
+   "rows_by_chart_width": {
+    "1/32": 32
+   },
+   "sectors": [
+    {
+     "degrees": [
+      0.0,
+      15.0
+     ],
+     "ideal_owned_area": 0.003933,
+     "live_rows": 5
+    },
+    {
+     "degrees": [
+      15.0,
+      30.0
+     ],
+     "ideal_owned_area": 0.002053,
+     "live_rows": 5
+    },
+    {
+     "degrees": [
+      30.0,
+      45.0
+     ],
+     "ideal_owned_area": 0.0,
+     "live_rows": 6
+    },
+    {
+     "degrees": [
+      45.0,
+      60.0
+     ],
+     "ideal_owned_area": 7.8e-05,
+     "live_rows": 6
+    },
+    {
+     "degrees": [
+      60.0,
+      75.0
+     ],
+     "ideal_owned_area": 0.002264,
+     "live_rows": 7
+    },
+    {
+     "degrees": [
+      75.0,
+      90.0
+     ],
+     "ideal_owned_area": 0.018741,
+     "live_rows": 8
+    }
+   ],
+   "x": [
+    0.5,
+    1.411
+   ],
+   "y": [
+    2.68067,
+    3.386
+   ]
+  }
+ },
+ "rows": 544
+}

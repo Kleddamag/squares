@@ -160,13 +160,43 @@ PRUNE = frozenset(
         # leave any snapshot. They stay so the list reads as one class. What the
         # composites actually want is a link scan that tolerates a pruned target, which is
         # `think-t1lk`'s problem and not a line to add here.
+        #
+        # 2026-10-05: both composite vectors join the list, because the reason above has
+        # gone. `e4ad5cedd` (2026-09-30) trimmed the root `README.md` to point at the
+        # published site, and it now links neither vector nor any of the four exports.
+        # The links that remain are in `atlas/README.md`, `atlas/known-best/README.md` and
+        # `FIGURE-PLAYBOOK.md`, which `linked_pruned_targets` does not scan and no control
+        # link-checks: `check_links` runs on the root README and SYNOPSIS only, and the
+        # ledger's `dead_links` on `campaign/` only. A pruned vector now leaves the worker,
+        # and the four exports above stopped being inert on the same commit.
+        #
+        # Both are generator-owned: `build_known_best_atlas` writes them and its `--check`
+        # compares them in full in the `known-best atlas records and sample` step, which
+        # runs outside any worker. Traced, not inferred: all 170 registered controls were
+        # run in their worker trees under `strace -f -e trace=%file` at e62bed3a6 (PR 360,
+        # whose `controls.yaml` and harness match this branch's), and all 170 fired. Four
+        # open both vectors, all of them `check_readme` controls, and only through
+        # `scan_retired_workflow_identifiers`, which reads every text file the worker's
+        # own index tracks, looking for a retired token. A pruned vector is absent from
+        # that index, so it leaves the sweep rather than going missing from it. One more,
+        # `check_generated_markdown`, lists the directory and keeps only `*.md`. No other
+        # control stats, opens or lists either file; none drives an atlas step; and the
+        # full-suite control still refuses at collection. With both pruned, all 170
+        # controls fire, and unmutated `check_readme`, `ledger check`, `validate_schemas`
+        # and `check_generated_markdown` print byte-identical output in a worker with the
+        # vectors and in one without them.
+        #
+        # 8,559,777 bytes. The n=17 stack's top layer (PR 360) measured 201,854,760 against
+        # the 201,326,592 cap and measures 193,294,983 with them pruned.
         ROOT / "atlas/known-best/contact-overlays",
         ROOT / "atlas/known-best/known-best-1-100-card.png",
         ROOT / "atlas/known-best/known-best-1-100.pdf",
         ROOT / "atlas/known-best/known-best-1-100.png",
+        ROOT / "atlas/known-best/known-best-1-100.svg",
         ROOT / "atlas/known-best/known-best-1-100@2x.png",
         ROOT / "atlas/known-best/known-best-1-324.pdf",
         ROOT / "atlas/known-best/known-best-1-324.png",
+        ROOT / "atlas/known-best/known-best-1-324.svg",
         ROOT / "atlas/known-best/rendering",
         # The regularized layer's 51 drawings (think-bgkz, 2026-10-02), 11 MB of generated
         # SVG that `regularized atlas drawings match their index` re-renders and compares,
@@ -254,6 +284,24 @@ PRUNE = frozenset(
         # unrelated research progress. Markdown linked from checked documents is copied
         # back by `linked_pruned_targets`, and registered frontier evidence is copied by
         # `result_pruned_targets`, so the checkers keep every dependency they declare.
+        # Session 168's sub-pattern certificates are exact proof objects read only by
+        # `check_n17_subpattern --check-saved` and the certified-census ledger check, and
+        # named by no control. W7's node alone is 16,200,330 bytes; with it the snapshot
+        # read 204,358,533 against the 201,326,592-byte cap and failed suite A on PR 307
+        # (run 37034789370). Pruning the directory leaves every receipt and the README.
+        # 2026-10-03, the third merge of main: the snapshot read 209,618,778 bytes against
+        # the same cap. Main sits just under it, and this branch's exploration outputs
+        # outside the certificates (handoff, receipts, audits: 8.7 MB, plus Session 167's
+        # 0.8 MB) tipped it over. Like the agenda result roots below, they are research
+        # outputs that `controls.yaml` never names, so both session folders are pruned
+        # whole; linked Markdown still returns through `linked_pruned_targets`.
+        ROOT / "campaign/explorations/X048-session-167-pilots",
+        ROOT / "campaign/explorations/X048-session-168-pilots",
+        # Session 182's receipts (6.76 MB of kernel, census and ledger JSON) took the
+        # snapshot to 202,054,385 bytes against the cap on 2026-10-06. Same reason as the
+        # two above: research outputs no control names, read only by the census over a
+        # ledger that is itself pruned; linked Markdown and directories still return.
+        ROOT / "campaign/explorations/X048-session-182-overnight",
         ROOT / "campaign/series/series-000-smoke-and-calibration/results/agenda-024",
         ROOT / "campaign/series/series-000-smoke-and-calibration/results/agenda-025",
         ROOT / "campaign/series/series-000-smoke-and-calibration/results/agenda-026",
@@ -662,6 +710,17 @@ def root_files() -> tuple[Path, ...]:
 # 17 MB out of this surface -- the chunk census, the escape screen, exp-042 and the
 # other files the snapshot copies -- without pruning anything, so the cap returns to
 # 192 MiB rather than keeping a raise the bytes no longer need.
+# 2026-10-05, the n=17 stack: PR 360 at e62bed3a6 measured 201,854,760 bytes, 528,168
+# over 192 MiB, and hosted suite-b read the same figure (run 37298541719). No one layer
+# broke it. Main's dee22b882 measures 193,929,477; the five layers add 4,688,427 (PR 347),
+# 432,986, 882,399, 520,210 and 1,401,261 (PR 360), almost all of it X-048 session
+# receipts and their probes and tests, which are evidence and stay. Answered by
+# `think-t1lk`'s option (b) rather than by raising: the two composite vectors join
+# `PRUNE` above, traced as no control's input, for 8,559,777 bytes. That leaves PR 360
+# at 193,294,983 and this branch at 190,058,127, both before this change's own 4.5 KB
+# of comment and test, under an unchanged cap. PR 360 separately prunes its Sessions
+# 169-179 exploration folders (93a6839ca, net 2,122,114 bytes); the two prunes are
+# independent, and together they leave that layer about 9.7 MiB under the cap.
 SNAPSHOT_MAX_BYTES = 192 * 1024 * 1024
 DEFAULT_CONTROL_TIMEOUT_SECONDS = 120.0
 TERMINATION_GRACE_SECONDS = 1.0
@@ -814,6 +873,41 @@ def in_pruned_roots(path: Path, roots: frozenset[Path]) -> bool:
     return path in roots or any(parent in roots for parent in path.parents)
 
 
+def _linked_documents() -> list[Path]:
+    """The Markdown the link checker reads inside a worker: the record and root documents."""
+    documents = list((ROOT / "campaign").rglob("*.md"))
+    for document in ROOT_DOCUMENTS:
+        if document.is_dir():
+            documents.extend(
+                path
+                for path in document.rglob("*.md")
+                if not _inside_build_cache(path, below=document)
+            )
+        elif document.is_file() and document.suffix == ".md":
+            documents.append(document)
+    return documents
+
+
+def linked_pruned_directories() -> list[Path]:
+    """Pruned directories the checked documents link to inline, resolved and existing.
+
+    A link to a directory needs the directory, not its contents: exp-249 links Session
+    168's `certificates/`, which the snapshot prunes whole, and the ledger check found
+    that link dead in every worker once `ledger check` became a green-baseline command
+    (#372; #360's suite A, run 37391619647). Copying what such links reach was measured
+    at 2,009 files and 83 MB, taking the snapshot from 190.9 MB to 274 MB against the
+    192 MiB cap, so `clone_tree` recreates each of these directories empty instead.
+    """
+    roots = frozenset(LINKED_PRUNE_ROOTS)
+    directories: set[Path] = set()
+    for document in _linked_documents():
+        for raw in INLINE_LINK.findall(document.read_text(errors="ignore")):
+            resolved = (document.parent / raw).resolve()
+            if resolved.is_dir() and in_pruned_roots(resolved, roots):
+                directories.add(resolved)
+    return sorted(directories)
+
+
 def linked_pruned_targets() -> list[Path]:
     """Omitted files the checked documents link to inline, resolved and existing.
 
@@ -830,20 +924,9 @@ def linked_pruned_targets() -> list[Path]:
     the checker honest at once; a link to a file that truly does not exist is
     left dead for the real checker to refuse.
     """
-    documents = list((ROOT / "campaign").rglob("*.md"))
-    for document in ROOT_DOCUMENTS:
-        if document.is_dir():
-            documents.extend(
-                path
-                for path in document.rglob("*.md")
-                if not _inside_build_cache(path, below=document)
-            )
-        elif document.is_file() and document.suffix == ".md":
-            documents.append(document)
-    roots = frozenset(LINKED_PRUNE_ROOTS)
     targets: set[Path] = set()
     roots = frozenset(LINKED_PRUNE_ROOTS)
-    for document in documents:
+    for document in _linked_documents():
         for raw in INLINE_LINK.findall(document.read_text(errors="ignore")):
             resolved = (document.parent / raw).resolve()
             if resolved.is_file() and in_pruned_roots(resolved, roots):
@@ -956,6 +1039,8 @@ def clone_tree(dest: Path) -> None:
         landing = dest / target.relative_to(REPO)
         landing.parent.mkdir(parents=True, exist_ok=True)
         shutil.copy2(target, landing)
+    for directory in linked_pruned_directories():
+        (dest / directory.relative_to(REPO)).mkdir(parents=True, exist_ok=True)
 
     for document in ROOT_DOCUMENTS:
         if document.is_dir():

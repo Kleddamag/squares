@@ -9,6 +9,8 @@ scope: >
   excluded because its role and lifecycle come from resources/README.md rather than
   current project documentation rules.
 documents:
+  - {path: packing/devtools/n17-diagnostics.md, role: development-guide, authority: current, lifecycle: maintained}
+  - {path: docs/project/n17-optimality-explainer.md, role: tutorial, authority: supporting, lifecycle: maintained}
   - {path: docs/project/specs/active/plan-2026-10-05-n11-explainer-series.md, role: plan, authority: current, lifecycle: transient}
   - {path: docs/project/reviews/review-2026-10-05-n11-threshold-bound-review.md, role: review, authority: record, lifecycle: retained}
   - {path: docs/project/reviews/review-2026-10-02-nagamochi-lemma1-karakus.md, role: review, authority: record, lifecycle: retained}
@@ -22,8 +24,53 @@ documents:
   - {path: docs/project/reviews/review-2026-10-03-n11-gpt6-pro-review-integration.md, role: review, authority: record, lifecycle: retained}
   - {path: docs/project/reviews/review-2026-10-03-n11-optimality-paper-adversarial.md, role: review, authority: record, lifecycle: retained}
   - {path: docs/project/reviews/review-2026-10-01-site-documentation-records.md, role: review, authority: record, lifecycle: retained}
+  - {path: docs/project/reviews/review-2026-10-02-n17-capture-feasibility.md, role: review, authority: record, lifecycle: retained}
+  - {path: docs/project/reviews/review-2026-10-02-n17-charge-floor-pilot.md, role: review, authority: record, lifecycle: retained}
+  - {path: docs/project/reviews/review-2026-10-02-n17-bulk-exclusion-design.md, role: review, authority: record, lifecycle: retained}
+  - {path: docs/project/reviews/review-2026-10-02-n17-widened-projection-scope.md, role: review, authority: record, lifecycle: retained}
+  - {path: docs/project/reviews/review-2026-10-02-n17-local-theorem-recipe.md, role: review, authority: record, lifecycle: retained}
+  - {path: docs/project/reviews/review-2026-10-02-n17-local-theorem-instrument.md, role: review, authority: record, lifecycle: retained}
+  - {path: docs/project/reviews/review-2026-10-02-n17-depth-width-wall-lemma.md, role: review, authority: record, lifecycle: retained}
+  - {path: docs/project/reviews/review-2026-10-02-n17-unique-state-cover.md, role: review, authority: record, lifecycle: retained}
+  - {path: docs/project/reviews/review-2026-10-02-n17-kernel-adaptation-spec.md, role: review, authority: record, lifecycle: retained}
+  - {path: docs/project/reviews/review-2026-10-02-n17-local-half-composition.md, role: review, authority: record, lifecycle: retained}
+  - {path: docs/project/reviews/review-2026-10-02-n17-w7-closure.md, role: review, authority: record, lifecycle: retained}
+  - {path: docs/project/reviews/review-2026-10-02-n17-branch-and-bound-certifier.md, role: review, authority: record, lifecycle: retained}
+  - {path: docs/project/reviews/review-2026-10-02-n17-residue-process.md, role: review, authority: record, lifecycle: retained}
+  - {path: docs/project/reviews/review-2026-10-02-n17-capture-after-pilot.md, role: review, authority: record, lifecycle: retained}
+  - {path: docs/project/reviews/review-2026-10-02-n17-cost-reduction-pruning.md, role: review, authority: record, lifecycle: retained}
+  - {path: docs/project/reviews/review-2026-10-02-n17-cost-reduction-performance.md, role: review, authority: record, lifecycle: retained}
+  - {path: docs/project/reviews/review-2026-10-03-n17-verifier-rewrites.md, role: review, authority: record, lifecycle: retained}
+  - {path: docs/project/reviews/review-2026-10-03-n17-local-radius.md, role: review, authority: record, lifecycle: retained}
+  - {path: docs/project/reviews/review-2026-10-04-n17-streamed-verifier.md, role: review, authority: record, lifecycle: retained}
+  - {path: docs/project/reviews/review-2026-10-04-n17-flag2-diagnosis.md, role: review, authority: record, lifecycle: retained}
+  - {path: docs/project/reviews/review-2026-10-05-n17-capture-r9.md, role: review, authority: record, lifecycle: retained}
+  - {path: docs/project/reviews/review-2026-10-05-n17-stall-classification.md, role: review, authority: record, lifecycle: retained}
+  - {path: docs/project/reviews/review-2026-10-05-exp-252-h264.md, role: review, authority: record, lifecycle: retained}
+  - {path: docs/project/reviews/review-2026-10-05-exp-253-h274.md, role: review, authority: record, lifecycle: retained}
+  - {path: docs/project/reviews/review-2026-10-05-exp-251-h267.md, role: review, authority: record, lifecycle: retained}
+  - {path: docs/project/reviews/review-2026-10-03-integrity-ceremony-audit.md, role: review, authority: record, lifecycle: retained}
+  - {path: packing/campaign/explorations/X048-session-168-pilots/handoff/README.md, role: research-report, authority: record, lifecycle: retained}
+  - {path: docs/project/reviews/review-2026-10-01-n17-route-after-pr265.md, role: review, authority: record, lifecycle: retained}
+  - {path: packing/campaign/explorations/X048-session-168-pilots/README.md, role: research-report, authority: record, lifecycle: retained}
+  - {path: packing/campaign/explorations/X048-session-169-pilots/README.md, role: research-report, authority: record, lifecycle: retained}
+  - {path: packing/campaign/explorations/X048-session-170-compatibility/README.md, role: research-report, authority: record, lifecycle: retained}
+  - {path: packing/campaign/explorations/X048-session-171-raw-row-support/README.md, role: research-report, authority: record, lifecycle: retained}
+  - {path: packing/campaign/explorations/X048-session-171-raw-row-support/D1_REPORT.md, role: research-report, authority: record, lifecycle: retained}
+  - {path: packing/campaign/explorations/X048-session-171-raw-row-support/D2_REPORT.md, role: research-report, authority: record, lifecycle: retained}
+  - {path: packing/campaign/explorations/X048-session-172-capacity-support/README.md, role: research-report, authority: record, lifecycle: retained}
+  - {path: packing/campaign/explorations/X048-session-174-core-refinement/README.md, role: research-report, authority: record, lifecycle: retained}
+  - {path: packing/campaign/explorations/X048-session-175-enhanced-support/README.md, role: research-report, authority: record, lifecycle: retained}
+  - {path: packing/campaign/explorations/X048-session-176-owner-priority/README.md, role: research-report, authority: record, lifecycle: retained}
+  - {path: packing/campaign/explorations/X048-session-177-cached-collision/README.md, role: research-report, authority: record, lifecycle: retained}
+  - {path: packing/campaign/explorations/X048-session-178-full-core-ablation/README.md, role: research-report, authority: record, lifecycle: retained}
+  - {path: packing/campaign/explorations/X048-session-179-selective-halving/README.md, role: research-report, authority: record, lifecycle: retained}
+  - {path: packing/campaign/explorations/X048-session-167-pilots/README.md, role: research-report, authority: record, lifecycle: retained}
+  - {path: packing/campaign/explorations/X048-route-review/README.md, role: research-report, authority: record, lifecycle: retained}
   - {path: packing/campaign/series/series-000-smoke-and-calibration/results/exp-240-n17-mixed-capacity-census/output-review.md, role: review, authority: record, lifecycle: retained}
   - {path: docs/project/reviews/review-2026-10-01-post-optimality-morning.md, role: review, authority: record, lifecycle: retained}
+  - {path: packing/campaign/series/series-000-smoke-and-calibration/results/exp-245-n17-catalogue-polynomial/output-review.md, role: review, authority: record, lifecycle: retained}
+  - {path: packing/campaign/series/series-000-smoke-and-calibration/results/exp-242-n17-core-stress/output-review.md, role: review, authority: record, lifecycle: retained}
   - {path: packing/campaign/series/series-000-smoke-and-calibration/results/exp-241-n17-closed-cell-symmetry/output-review.md, role: review, authority: record, lifecycle: retained}
   - {path: docs/project/reviews/review-2026-10-01-n17-closed-cell-symmetry.md, role: review, authority: record, lifecycle: retained}
   - {path: docs/project/reviews/review-2026-10-01-n17-mixed-capacity-cover.md, role: review, authority: record, lifecycle: retained}
@@ -92,6 +139,7 @@ documents:
   - {path: docs/project/specs/active/plan-2026-10-02-independent-measure-verifier.md, role: plan, authority: current, lifecycle: transient}
   - {path: docs/project/specs/active/plan-2026-10-01-result-import-first-application.md, role: plan, authority: current, lifecycle: transient}
   - {path: docs/project/specs/active/plan-2026-10-03-measure-verifier-milestone-c.md, role: plan, authority: current, lifecycle: transient}
+  - {path: docs/project/specs/active/plan-2026-10-05-n17-overnight.md, role: plan, authority: current, lifecycle: transient}
   - {path: docs/project/specs/active/plan-2026-09-29-github-pages-overview.md, role: plan, authority: current, lifecycle: transient}
   - {path: docs/project/reviews/review-2026-09-13-n11-bc329-source-distinct-reader.md, role: review, authority: record, lifecycle: retained}
   - {path: docs/project/reviews/review-2026-09-13-n11-bc329-reader-rereview.md, role: review, authority: record, lifecycle: retained}

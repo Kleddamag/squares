@@ -1,0 +1,557 @@
+# Sub-patterns certified infeasible on the n17 unique-state cover, and their admission.
+# `devtools/census_n17_certified.py` reads this file. Its certified count uses only the
+# entries marked `admitted`; a `pending` entry is a projection, reported on its own line.
+# Every path is repository-relative. Admitting an entry means setting `status: admitted`
+# and naming the document that admits it in `evidence`: since OR-16's amendment, the
+# experiment record holding the full pass of a reviewed standing verifier. The census
+# checks only that `evidence` exists. It is a pointer for readers, not a check; what
+# admits an entry is its `verification`.
+schema: n17-certified-sub-patterns/v3
+design: ring-3-voronoi-8-tabbed-unique
+# The certificate objects (about 112 MB of gzip) are hosted outside Git (OR-18) on the
+# release data/n17-x048-session-168-certificates-v1, listed with their assets, sizes and
+# SHA-256 in this hosted-data manifest; each certificate directory keeps its small files.
+# The count needs only the committed receipts; `python -m devtools.hosted_data fetch
+# --manifest hosted/n17-x048-session-168-certificates.yaml`, run from packing/, puts the
+# objects back so the verifiers can run again.
+data_manifest: packing/hosted/n17-x048-session-168-certificates.yaml
+# The standing verifiers, written separately from the producers, as reviews admitted them.
+# Each entry's verification names the listing it ran under by `id`; `version` is the
+# revision the review read, kept for the reader, and nothing resolves it (OR-18). A listing with
+# `admits` may verify only the entries it names; the closed-cover listing says why the
+# earlier kernel listings carry it. A verification is matched to its certificate by the
+# content ids in the objects' file names (seed and node, or the manifest), not by
+# directory, so a certificate directory can be renamed without verifying it again.
+# Revisions named here were commits on PR 307's branch; they resolve at
+# refs/pull/307/head.
+verifiers:
+  # The review verifiers: lane R3's for the kernel (W7's receipt), lane R4's for the
+  # branch and bound (A's receipt).
+  - id: kernel-review-r3
+    certifier: kernel
+    path: packing/devtools/verify_n17_kernel_certificate.py
+    version: 556561586095f1eaf7952e32199f40a4d3360d20
+    review: docs/project/reviews/review-2026-10-02-n17-w7-closure.md
+    admits: [W7]
+  - id: bb-review-r4
+    certifier: branch-and-bound
+    path: packing/devtools/verify_n17_bb_certificate.py
+    version: 556561586095f1eaf7952e32199f40a4d3360d20
+    review: docs/project/reviews/review-2026-10-02-n17-branch-and-bound-certifier.md
+  # The kernel verifier on homogeneous integers with memoised partner covers, and the
+  # branch-and-bound verifier with the 2,400-bit enclosure retry and the opt-in Taylor
+  # checks, both admitted by the verifier-rewrites review of 2026-10-03.
+  - id: kernel-homogeneous
+    certifier: kernel
+    path: packing/devtools/verify_n17_kernel_certificate.py
+    version: e0b66f07b1d5daa04da0edc07dd591d7c17d9c47
+    review: docs/project/reviews/review-2026-10-03-n17-verifier-rewrites.md
+    admits: []  # no receipt in this ledger ran under this listing
+  - id: bb-enclosure-retry
+    certifier: branch-and-bound
+    path: packing/devtools/verify_n17_bb_certificate.py
+    version: ff5471e8902aeab0a9247501e9a3de380619d56a
+    review: docs/project/reviews/review-2026-10-03-n17-verifier-rewrites.md
+  # The kernel verifier on adaptive rows: a step's rows partition [0, 1] and each cites an
+  # accepted row that contains it. Admitted by the same review's section 5 once its five
+  # condition tests were committed (section 5.4).
+  - id: kernel-adaptive-rows
+    certifier: kernel
+    path: packing/devtools/verify_n17_kernel_certificate.py
+    version: 575795e029151abc52d892126acd05e23795641d
+    review: docs/project/reviews/review-2026-10-03-n17-verifier-rewrites.md
+    admits: []  # no receipt in this ledger ran under this listing
+  # Only I/O and recording changed since the adaptive rows (no file-name read-back;
+  # provenance for the module). Its mathematical checks are unchanged; the 47 condition
+  # tests pass. SW9's and N1's receipts ran at fd2c9602e and ae4f5fb43, where the file is
+  # this one (blob ea1c7104 in both receipts).
+  - id: kernel-io-recording
+    certifier: kernel
+    path: packing/devtools/verify_n17_kernel_certificate.py
+    version: 25c1cdef690f4c1d398364a13e3cf96281c01c17
+    review: docs/project/reviews/review-2026-10-03-n17-verifier-rewrites.md
+    admits: [SW9, N1]
+  # The kernel verifier with exact point and segment covers (lane V1, after the n11
+  # review's finding C2). Every earlier kernel listing accepts an uncovered zero-area row,
+  # and those from the homogeneous one on also an uncovered one-point section. On W7, SW9
+  # and N1 neither branch ran (review section 6.2), so their receipts stand, and each
+  # earlier kernel listing admits only the entries whose receipts it wrote. A new entry
+  # must be verified under this listing or a later one.
+  - id: kernel-closed-covers
+    certifier: kernel
+    path: packing/devtools/verify_n17_kernel_certificate.py
+    version: 318c28c42afaa4128c07dcbc785d717adbaf95a9
+    review: docs/project/reviews/review-2026-10-03-n17-verifier-rewrites.md
+  # The same verifier reading the node a step at a time, with its facet and
+  # forbidden-region memos bounded (lane M1). Its checks are the closed-cover listing's;
+  # it re-verifies W7, SW9 and N1 in full with their recorded receipts' fields.
+  - id: kernel-streamed
+    certifier: kernel
+    path: packing/devtools/verify_n17_kernel_certificate.py
+    version: 601bbf1107a622b306a3fe1fc57faebc9e28d27f
+    review: docs/project/reviews/review-2026-10-04-n17-streamed-verifier.md
+entries:
+  - name: W7
+    cells: [corner-SW, side-N0, side-W0, side-W1, side-W2, interior-SW, interior-W]
+    certifier: kernel
+    # Admitted in exp-249: the saved objects re-certified by the checker alone in a clean
+    # worktree at 15df68ab, after a full-row independent re-check of all 3,712 rows.
+    receipt: packing/campaign/series/series-000-smoke-and-calibration/results/exp-249-n17-first-certified-sub-patterns/run-001/receipt.json
+    certificate: packing/campaign/explorations/X048-session-168-pilots/certificates/W7
+    status: admitted
+    evidence: docs/project/reviews/review-2026-10-02-n17-w7-closure.md
+    verification:
+      receipt: packing/campaign/explorations/X048-session-168-pilots/certificates/W7/verification.json
+      # Written before receipts recorded their verifier: lane R3's kernel verifier.
+      verifier: kernel-review-r3
+  - name: A
+    cells: [interior-SW, interior-NW, interior-W, interior-S, interior-N, interior-SE]
+    certifier: branch-and-bound
+    # Admitted in exp-249: certified again in a clean worktree at 15df68ab with a
+    # certificate byte-identical to the one the independent review re-checked in full
+    # (manifest 340492bd). The claim rests on that certificate check, not on the
+    # witness-path controls.
+    receipt: packing/campaign/series/series-000-smoke-and-calibration/results/exp-249-n17-first-certified-sub-patterns/run-002/receipt.json
+    certificate: packing/campaign/explorations/X048-session-168-pilots/certificates/A
+    status: admitted
+    evidence: docs/project/reviews/review-2026-10-02-n17-branch-and-bound-certifier.md
+    verification:
+      receipt: packing/campaign/explorations/X048-session-168-pilots/certificates/A/verification.json
+      # Written before receipts recorded their verifier: lane R4's branch-and-bound verifier.
+      verifier: bb-review-r4
+  - name: SW9
+    cells: [corner-SW, side-S0, side-N0, side-W0, side-W1, side-W2, interior-SW, interior-NW, interior-S]
+    certifier: kernel
+    # Flag 3 (arity 9), closed with adaptive rows (155abe8a2) where uniform rows stalled.
+    # Admitted in exp-250 by the standing verifier's full pass at fd2c9602e; nothing re-run.
+    receipt: packing/campaign/explorations/X048-session-168-pilots/receipts/kernel-split-flag3-a9-bins64.json
+    certificate: packing/campaign/explorations/X048-session-168-pilots/certificates/flag3-a9-pending
+    status: admitted
+    evidence: packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-250-h267-n17-standing-verifier-admissions.md
+    verification:
+      receipt: packing/campaign/explorations/X048-session-168-pilots/certificates/flag3-a9-pending/verification.json
+      verifier: kernel-io-recording
+  - name: N1
+    cells: [corner-SW, corner-SE, corner-NW, side-S0, side-N0, side-W0, side-E0, side-S1, side-W1, side-S2, side-N2, side-W2, side-E2, interior-W, interior-S, interior-N, interior-E]
+    certifier: kernel
+    # A whole 17-cell residue state from the H-264 sample, closed at 32 bins under a two-hour
+    # ceiling. Admitted in exp-250 by the standing verifier's full pass at ae4f5fb43.
+    receipt: packing/campaign/explorations/X048-session-168-pilots/handoff/k2/h-N1-2h.json
+    certificate: packing/campaign/explorations/X048-session-168-pilots/certificates/N1-state-pending
+    status: admitted
+    evidence: packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-250-h267-n17-standing-verifier-admissions.md
+    verification:
+      receipt: packing/campaign/explorations/X048-session-168-pilots/certificates/N1-state-pending/verification.json
+      verifier: kernel-io-recording
+  - name: s182-k1
+    cells: [side-S0, side-N0, side-S1, interior-SW, interior-NW, interior-W, interior-S]
+    certifier: kernel
+    # Session 182 lane K's first target (arity 7, three wall cells), closed with SW9's
+    # adaptive-row recipe at 64 bins in 305 s from the clean run worktree at cebb5d15a.
+    # Admitted in exp-251 by the standing verifier's full pass there.
+    receipt: packing/campaign/explorations/X048-session-182-overnight/receipts/K/kernel-k1.json
+    certificate: packing/campaign/explorations/X048-session-168-pilots/certificates/s182-k1
+    status: admitted
+    evidence: packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-251-h267-n17-overnight-flag-certification.md
+    verification:
+      receipt: packing/campaign/explorations/X048-session-168-pilots/certificates/s182-k1/verification.json
+      verifier: kernel-streamed
+  - name: s182-m5683195
+    cells: [corner-SW, corner-SE, corner-NE, side-S0, side-N0, side-W0, side-E0, side-S1, side-N1, side-W1, side-S2, side-N2, side-E2, interior-NW, interior-W, interior-N, interior-SE]
+    certifier: kernel
+    # Session 182 lane A's draw at index 2 (distance 4, stratum c3/i4/d4) of H-264's seed-182
+    # draw: a whole 17-cell residue state, closed at 32 bins with N1's parameters in 2,147 s
+    # of wall from the clean run worktree at cebb5d15a. Admitted in exp-252 by the standing
+    # verifier's full pass there.
+    receipt: packing/campaign/explorations/X048-session-182-overnight/receipts/A/kernel-m5683195.json
+    certificate: packing/campaign/explorations/X048-session-168-pilots/certificates/s182-m5683195
+    status: admitted
+    evidence: packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-252-h264-n17-overnight-per-state-price.md
+    verification:
+      receipt: packing/campaign/explorations/X048-session-168-pilots/certificates/s182-m5683195/verification.json
+      verifier: kernel-streamed
+  - name: s182-k3
+    cells: [corner-NW, side-N0, side-W2, interior-SW, interior-NW, interior-W, interior-S]
+    certifier: kernel
+    # Session 182 lane K's third target (arity 7, three wall cells), closed with SW9's
+    # adaptive-row recipe at 64 bins in 195 s from the clean run worktree at cebb5d15a.
+    # Admitted in exp-251 by the standing verifier's full pass there.
+    receipt: packing/campaign/explorations/X048-session-182-overnight/receipts/K/kernel-k3.json
+    certificate: packing/campaign/explorations/X048-session-168-pilots/certificates/s182-k3
+    status: admitted
+    evidence: packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-251-h267-n17-overnight-flag-certification.md
+    verification:
+      receipt: packing/campaign/explorations/X048-session-168-pilots/certificates/s182-k3/verification.json
+      verifier: kernel-streamed
+  - name: s182-k4
+    cells: [side-S0, side-S1, side-W2, interior-SW, interior-NW, interior-W, interior-S]
+    certifier: kernel
+    # Session 182 lane K's fourth target (arity 7, three wall cells), closed with SW9's
+    # adaptive-row recipe at 64 bins in 597 s from the clean run worktree at cebb5d15a.
+    # Admitted in exp-251 by the standing verifier's full pass there.
+    receipt: packing/campaign/explorations/X048-session-182-overnight/receipts/K/kernel-k4.json
+    certificate: packing/campaign/explorations/X048-session-168-pilots/certificates/s182-k4
+    status: admitted
+    evidence: packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-251-h267-n17-overnight-flag-certification.md
+    verification:
+      receipt: packing/campaign/explorations/X048-session-168-pilots/certificates/s182-k4/verification.json
+      verifier: kernel-streamed
+  - name: s182-k5
+    cells: [side-S0, side-N0, side-W2, interior-SW, interior-NW, interior-W, interior-S]
+    certifier: kernel
+    # Session 182 lane K's fifth target (arity 7, three wall cells), closed with SW9's
+    # adaptive-row recipe at 64 bins in 244 s from the clean run worktree at cebb5d15a.
+    # Admitted in exp-251 by the standing verifier's full pass there.
+    receipt: packing/campaign/explorations/X048-session-182-overnight/receipts/K/kernel-k5.json
+    certificate: packing/campaign/explorations/X048-session-168-pilots/certificates/s182-k5
+    status: admitted
+    evidence: packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-251-h267-n17-overnight-flag-certification.md
+    verification:
+      receipt: packing/campaign/explorations/X048-session-168-pilots/certificates/s182-k5/verification.json
+      verifier: kernel-streamed
+  - name: s182-k6
+    cells: [side-S0, side-W0, side-S1, interior-SW, interior-NW, interior-W, interior-S]
+    certifier: kernel
+    # Session 182 lane K's target 6 (arity 7), closed with SW9's adaptive-row recipe at
+    # 64 bins in 214 s from the clean run worktree at cebb5d15a. Admitted in
+    # exp-251 by the standing verifier's full pass there.
+    receipt: packing/campaign/explorations/X048-session-182-overnight/receipts/K/kernel-k6.json
+    certificate: packing/campaign/explorations/X048-session-168-pilots/certificates/s182-k6
+    status: admitted
+    evidence: packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-251-h267-n17-overnight-flag-certification.md
+    verification:
+      receipt: packing/campaign/explorations/X048-session-168-pilots/certificates/s182-k6/verification.json
+      verifier: kernel-streamed
+  - name: s182-k7
+    cells: [side-N0, side-W1, side-W2, interior-SW, interior-NW, interior-W, interior-S]
+    certifier: kernel
+    # Session 182 lane K's target 7 (arity 7), closed with SW9's adaptive-row recipe at
+    # 64 bins in 295 s from the clean run worktree at cebb5d15a. Admitted in
+    # exp-251 by the standing verifier's full pass there.
+    receipt: packing/campaign/explorations/X048-session-182-overnight/receipts/K/kernel-k7.json
+    certificate: packing/campaign/explorations/X048-session-168-pilots/certificates/s182-k7
+    status: admitted
+    evidence: packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-251-h267-n17-overnight-flag-certification.md
+    verification:
+      receipt: packing/campaign/explorations/X048-session-168-pilots/certificates/s182-k7/verification.json
+      verifier: kernel-streamed
+  - name: s182-k8
+    cells: [corner-SW, side-W0, side-W1, side-W2, interior-SW, interior-NW, interior-W]
+    certifier: kernel
+    # Session 182 lane K's target 8 (arity 7), closed with SW9's adaptive-row recipe at
+    # 64 bins in 118 s from the clean run worktree at cebb5d15a. Admitted in
+    # exp-251 by the standing verifier's full pass there.
+    receipt: packing/campaign/explorations/X048-session-182-overnight/receipts/K/kernel-k8.json
+    certificate: packing/campaign/explorations/X048-session-168-pilots/certificates/s182-k8
+    status: admitted
+    evidence: packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-251-h267-n17-overnight-flag-certification.md
+    verification:
+      receipt: packing/campaign/explorations/X048-session-168-pilots/certificates/s182-k8/verification.json
+      verifier: kernel-streamed
+  - name: s182-k9
+    cells: [side-S0, side-W0, side-W1, side-W2, interior-SW, interior-NW, interior-W]
+    certifier: kernel
+    # Session 182 lane K's target 9 (arity 7), closed with SW9's adaptive-row recipe at
+    # 64 bins in 1,132 s from the clean run worktree at cebb5d15a. Admitted in
+    # exp-251 by the standing verifier's full pass there.
+    receipt: packing/campaign/explorations/X048-session-182-overnight/receipts/K/kernel-k9.json
+    certificate: packing/campaign/explorations/X048-session-168-pilots/certificates/s182-k9
+    status: admitted
+    evidence: packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-251-h267-n17-overnight-flag-certification.md
+    verification:
+      receipt: packing/campaign/explorations/X048-session-168-pilots/certificates/s182-k9/verification.json
+      verifier: kernel-streamed
+  - name: s182-m5500414
+    cells: [corner-SE, corner-NW, corner-NE, side-S0, side-N0, side-W0, side-E0, side-S1, side-W1, side-E1, side-N2, side-W2, side-E2, interior-SW, interior-NW, interior-N, interior-SE]
+    certifier: kernel
+    # Session 182 lane A's draw at index 3 (distance 6, stratum c3/i4/d6) of
+    # H-264's seed-182 draw: a whole 17-cell residue state, closed at 32 bins with N1's
+    # parameters in 1,109 s of wall from the clean run worktree at cebb5d15a.
+    # Admitted in exp-252 by the standing verifier's full pass there.
+    receipt: packing/campaign/explorations/X048-session-182-overnight/receipts/A/kernel-m5500414.json
+    certificate: packing/campaign/explorations/X048-session-168-pilots/certificates/s182-m5500414
+    status: admitted
+    evidence: packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-252-h264-n17-overnight-per-state-price.md
+    verification:
+      receipt: packing/campaign/explorations/X048-session-168-pilots/certificates/s182-m5500414/verification.json
+      verifier: kernel-streamed
+  - name: s182-m7844815
+    cells: [corner-SW, corner-SE, corner-NW, corner-NE, side-W0, side-E0, side-S1, side-N1, side-S2, side-N2, side-E2, interior-SW, interior-NW, interior-W, interior-N, interior-E, interior-SE]
+    certifier: kernel
+    # Session 182 lane A's draw at index 12 (distance 6, stratum c4/i>=5/d6) of
+    # H-264's seed-182 draw: a whole 17-cell residue state, closed at 32 bins with N1's
+    # parameters in 646 s of wall from the clean run worktree at cebb5d15a.
+    # Admitted in exp-252 by the standing verifier's full pass there.
+    receipt: packing/campaign/explorations/X048-session-182-overnight/receipts/A/kernel-m7844815.json
+    certificate: packing/campaign/explorations/X048-session-168-pilots/certificates/s182-m7844815
+    status: admitted
+    evidence: packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-252-h264-n17-overnight-per-state-price.md
+    verification:
+      receipt: packing/campaign/explorations/X048-session-168-pilots/certificates/s182-m7844815/verification.json
+      verifier: kernel-streamed
+  - name: s182-m4028335
+    cells: [corner-SW, corner-SE, corner-NW, corner-NE, side-N0, side-E0, side-S1, side-N1, side-W1, side-S2, side-N2, side-W2, interior-SW, interior-W, interior-S, interior-N, interior-E]
+    certifier: kernel
+    # Session 182 lane A's draw at index 11 (distance 4, stratum c4/i>=5/d4) of
+    # H-264's seed-182 draw: a whole 17-cell residue state, closed at 32 bins with N1's
+    # parameters in 857 s of wall from the clean run worktree at cebb5d15a.
+    # Admitted in exp-252 by the standing verifier's full pass there.
+    receipt: packing/campaign/explorations/X048-session-182-overnight/receipts/A/kernel-m4028335.json
+    certificate: packing/campaign/explorations/X048-session-168-pilots/certificates/s182-m4028335
+    status: admitted
+    evidence: packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-252-h264-n17-overnight-per-state-price.md
+    verification:
+      receipt: packing/campaign/explorations/X048-session-168-pilots/certificates/s182-m4028335/verification.json
+      verifier: kernel-streamed
+  - name: s182-m2601983
+    cells: [corner-SW, corner-SE, corner-NW, corner-NE, side-S0, side-N0, side-W0, side-E0, side-S1, side-N1, side-S2, side-N2, side-E2, interior-SW, interior-NW, interior-W, interior-E]
+    certifier: kernel
+    # Session 182 lane A's draw at index 7 (distance 4, stratum c4/i4/d4) of
+    # H-264's seed-182 draw: a whole 17-cell residue state, closed at 32 bins with N1's
+    # parameters in 489 s of wall from the clean run worktree at cebb5d15a.
+    # Admitted in exp-252 by the standing verifier's full pass there.
+    receipt: packing/campaign/explorations/X048-session-182-overnight/receipts/A/kernel-m2601983.json
+    certificate: packing/campaign/explorations/X048-session-168-pilots/certificates/s182-m2601983
+    status: admitted
+    evidence: packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-252-h264-n17-overnight-per-state-price.md
+    verification:
+      receipt: packing/campaign/explorations/X048-session-168-pilots/certificates/s182-m2601983/verification.json
+      verifier: kernel-streamed
+  - name: s182-m2784767-sw9
+    cells: [corner-SW, corner-SE, corner-NW, corner-NE, side-S0, side-N0, side-W0, side-E0, side-S1, side-W1, side-E1, side-S2, side-N2, side-W2, interior-NW, interior-S, interior-E]
+    certifier: kernel
+    # Session 182 BC-424 (H-274): lane A's draw at index 10 (distance 4), which stalled under
+    # N1's recipe in exp-252, closed as a whole 17-cell state with SW9's adaptive-row recipe
+    # in 1,761 s of wall from the clean run worktree at cebb5d15a. Admitted in exp-253 by the
+    # standing verifier's full pass there, after the endpoint-state control did not close.
+    receipt: packing/campaign/explorations/X048-session-182-overnight/receipts/A/kernel-m2784767-sw9.json
+    certificate: packing/campaign/explorations/X048-session-168-pilots/certificates/s182-m2784767-sw9
+    status: admitted
+    evidence: packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-253-h274-n17-stalls-under-adaptive-rows.md
+    verification:
+      receipt: packing/campaign/explorations/X048-session-168-pilots/certificates/s182-m2784767-sw9/verification.json
+      verifier: kernel-streamed
+  - name: s182-m2817021-sw9
+    cells: [corner-SW, corner-NW, corner-NE, side-S0, side-N0, side-W0, side-E0, side-S1, side-N1, side-E1, side-S2, side-N2, side-W2, side-E2, interior-NW, interior-S, interior-E]
+    certifier: kernel
+    # Session 182 BC-424 (H-274): lane A's draw at index 4 (distance 4), which stalled under
+    # N1's recipe in exp-252, closed as a whole 17-cell state with SW9's adaptive-row recipe
+    # in 2,154 s of wall from the clean run worktree at cebb5d15a. Admitted in exp-253 by the
+    # standing verifier's full pass there, after the endpoint-state control did not close.
+    receipt: packing/campaign/explorations/X048-session-182-overnight/receipts/A/kernel-m2817021-sw9.json
+    certificate: packing/campaign/explorations/X048-session-168-pilots/certificates/s182-m2817021-sw9
+    status: admitted
+    evidence: packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-253-h274-n17-stalls-under-adaptive-rows.md
+    verification:
+      receipt: packing/campaign/explorations/X048-session-168-pilots/certificates/s182-m2817021-sw9/verification.json
+      verifier: kernel-streamed
+  - name: s182-m2878207-sw9
+    cells: [corner-SW, corner-SE, corner-NW, corner-NE, side-S0, side-N0, side-W0, side-E0, side-N1, side-E1, side-N2, side-W2, side-E2, interior-SW, interior-NW, interior-S, interior-E]
+    certifier: kernel
+    # Session 182 BC-424 (H-274): lane A's draw at index 8 (distance 6), which stalled under
+    # N1's recipe in exp-252, closed as a whole 17-cell state with SW9's adaptive-row recipe
+    # in 901 s of wall from the clean run worktree at cebb5d15a. Admitted in exp-253 by the
+    # standing verifier's full pass there, after the endpoint-state control did not close.
+    receipt: packing/campaign/explorations/X048-session-182-overnight/receipts/A/kernel-m2878207-sw9.json
+    certificate: packing/campaign/explorations/X048-session-168-pilots/certificates/s182-m2878207-sw9
+    status: admitted
+    evidence: packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-253-h274-n17-stalls-under-adaptive-rows.md
+    verification:
+      receipt: packing/campaign/explorations/X048-session-168-pilots/certificates/s182-m2878207-sw9/verification.json
+      verifier: kernel-streamed
+  - name: s182-bc425-t1
+    cells: [corner-SW, side-N0, side-W0, side-W1, side-W2, interior-NW, interior-W, interior-S]
+    certifier: kernel
+    # Session 182 BC-425's target 1 (arity 8, four wall or corner cells), closed with lane K's
+    # frozen SW9 recipe at 64 bins in 817 s of wall from the clean run worktree at cebb5d15a.
+    # Admitted in exp-254 by the standing verifier's full pass there.
+    receipt: packing/campaign/explorations/X048-session-182-overnight/receipts/K/kernel-t1-bc425.json
+    certificate: packing/campaign/explorations/X048-session-168-pilots/certificates/s182-bc425-t1
+    status: admitted
+    evidence: packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-254-h267-n17-second-tranche-flags.md
+    verification:
+      receipt: packing/campaign/explorations/X048-session-168-pilots/certificates/s182-bc425-t1/verification.json
+      verifier: kernel-streamed
+  - name: s182-bc425-t2
+    cells: [corner-SW, side-S0, side-S1, side-S2, interior-NW, interior-W, interior-S, interior-SE]
+    certifier: kernel
+    # Session 182 BC-425's target 2 (arity 8, four wall or corner cells), closed with lane K's
+    # frozen SW9 recipe at 64 bins in 1,250 s of wall from the clean run worktree at cebb5d15a.
+    # Admitted in exp-254 by the standing verifier's full pass there.
+    receipt: packing/campaign/explorations/X048-session-182-overnight/receipts/K/kernel-t2-bc425.json
+    certificate: packing/campaign/explorations/X048-session-168-pilots/certificates/s182-bc425-t2
+    status: admitted
+    evidence: packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-254-h267-n17-second-tranche-flags.md
+    verification:
+      receipt: packing/campaign/explorations/X048-session-168-pilots/certificates/s182-bc425-t2/verification.json
+      verifier: kernel-streamed
+  - name: s182-m3063677-sw9
+    cells: [corner-SW, corner-NW, corner-NE, side-S0, side-N0, side-W0, side-S1, side-N1, side-W1, side-E1, side-S2, side-N2, side-E2, interior-NW, interior-W, interior-S, interior-E]
+    certifier: kernel
+    # Session 182 BC-424 (H-274): lane A's draw at index 1 (distance 4), which stalled under
+    # N1's recipe in exp-252, closed as a whole 17-cell state with SW9's adaptive-row recipe
+    # in 3,536 s of wall from the clean run worktree at cebb5d15a. Admitted in exp-253 by the
+    # standing verifier's full pass there, after the endpoint-state control did not close.
+    receipt: packing/campaign/explorations/X048-session-182-overnight/receipts/A/kernel-m3063677-sw9.json
+    certificate: packing/campaign/explorations/X048-session-168-pilots/certificates/s182-m3063677-sw9
+    status: admitted
+    evidence: packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-253-h274-n17-stalls-under-adaptive-rows.md
+    verification:
+      receipt: packing/campaign/explorations/X048-session-168-pilots/certificates/s182-m3063677-sw9/verification.json
+      verifier: kernel-streamed
+  - name: s182-bc425-t4
+    cells: [corner-SE, side-E0, side-S1, side-S2, interior-NW, interior-W, interior-S, interior-SE]
+    certifier: kernel
+    # Session 182 BC-425's target 4 (arity 8, four wall or corner cells), closed with lane K's
+    # frozen SW9 recipe at 64 bins in 553 s of wall from the clean run worktree at cebb5d15a.
+    # Admitted in exp-254 by the standing verifier's full pass there.
+    receipt: packing/campaign/explorations/X048-session-182-overnight/receipts/K/kernel-t4-bc425.json
+    certificate: packing/campaign/explorations/X048-session-168-pilots/certificates/s182-bc425-t4
+    status: admitted
+    evidence: packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-254-h267-n17-second-tranche-flags.md
+    verification:
+      receipt: packing/campaign/explorations/X048-session-168-pilots/certificates/s182-bc425-t4/verification.json
+      verifier: kernel-streamed
+  - name: s182-bc425-t5
+    cells: [side-N0, side-S1, side-N1, interior-NW, interior-W, interior-S, interior-N, interior-SE]
+    certifier: kernel
+    # Session 182 BC-425's target 5 (arity 8, 3 wall or corner cells), closed with lane K's
+    # frozen SW9 recipe at 64 bins in 327 s of wall from the clean run worktree at cebb5d15a.
+    # Admitted in exp-254 by the standing verifier's full pass there.
+    receipt: packing/campaign/explorations/X048-session-182-overnight/receipts/K/kernel-t5-bc425.json
+    certificate: packing/campaign/explorations/X048-session-168-pilots/certificates/s182-bc425-t5
+    status: admitted
+    evidence: packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-254-h267-n17-second-tranche-flags.md
+    verification:
+      receipt: packing/campaign/explorations/X048-session-168-pilots/certificates/s182-bc425-t5/verification.json
+      verifier: kernel-streamed
+  - name: s182-bc425-t7
+    cells: [corner-NW, side-S0, side-W0, side-W1, side-W2, interior-SW, interior-NW, interior-S]
+    certifier: kernel
+    # Session 182 BC-425's target 7 (arity 8, 5 wall or corner cells), closed with lane K's
+    # frozen SW9 recipe at 64 bins in 482 s of wall from the clean run worktree at cebb5d15a.
+    # Admitted in exp-254 by the standing verifier's full pass there.
+    receipt: packing/campaign/explorations/X048-session-182-overnight/receipts/K/kernel-t7-bc425.json
+    certificate: packing/campaign/explorations/X048-session-168-pilots/certificates/s182-bc425-t7
+    status: admitted
+    evidence: packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-254-h267-n17-second-tranche-flags.md
+    verification:
+      receipt: packing/campaign/explorations/X048-session-168-pilots/certificates/s182-bc425-t7/verification.json
+      verifier: kernel-streamed
+  - name: s182-bc425-t8
+    cells: [corner-NW, side-W0, side-W1, side-W2, interior-SW, interior-NW, interior-S, interior-E]
+    certifier: kernel
+    # Session 182 BC-425's target 8 (arity 8, 4 wall or corner cells), closed with lane K's
+    # frozen SW9 recipe at 64 bins in 738 s of wall from the clean run worktree at cebb5d15a.
+    # Admitted in exp-254 by the standing verifier's full pass there.
+    receipt: packing/campaign/explorations/X048-session-182-overnight/receipts/K/kernel-t8-bc425.json
+    certificate: packing/campaign/explorations/X048-session-168-pilots/certificates/s182-bc425-t8
+    status: admitted
+    evidence: packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-254-h267-n17-second-tranche-flags.md
+    verification:
+      receipt: packing/campaign/explorations/X048-session-168-pilots/certificates/s182-bc425-t8/verification.json
+      verifier: kernel-streamed
+  - name: s182-bc425-t9
+    cells: [corner-SW, side-W0, side-W1, side-W2, interior-SW, interior-NW, interior-S, interior-N]
+    certifier: kernel
+    # Session 182 BC-425's target 9 (arity 8, 4 wall or corner cells), closed with lane K's
+    # frozen SW9 recipe at 64 bins in 694 s of wall from the clean run worktree at cebb5d15a.
+    # Admitted in exp-254 by the standing verifier's full pass there.
+    receipt: packing/campaign/explorations/X048-session-182-overnight/receipts/K/kernel-t9-bc425.json
+    certificate: packing/campaign/explorations/X048-session-168-pilots/certificates/s182-bc425-t9
+    status: admitted
+    evidence: packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-254-h267-n17-second-tranche-flags.md
+    verification:
+      receipt: packing/campaign/explorations/X048-session-168-pilots/certificates/s182-bc425-t9/verification.json
+      verifier: kernel-streamed
+  - name: s182-bc425-t10
+    cells: [side-N0, side-W1, side-W2, interior-NW, interior-W, interior-S, interior-N, interior-SE]
+    certifier: kernel
+    # Session 182 BC-425's target 10 (arity 8, 3 wall or corner cells), closed with lane K's
+    # frozen SW9 recipe at 64 bins in 458 s of wall from the clean run worktree at cebb5d15a.
+    # Admitted in exp-254 by the standing verifier's full pass there.
+    receipt: packing/campaign/explorations/X048-session-182-overnight/receipts/K/kernel-t10-bc425.json
+    certificate: packing/campaign/explorations/X048-session-168-pilots/certificates/s182-bc425-t10
+    status: admitted
+    evidence: packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-254-h267-n17-second-tranche-flags.md
+    verification:
+      receipt: packing/campaign/explorations/X048-session-168-pilots/certificates/s182-bc425-t10/verification.json
+      verifier: kernel-streamed
+  - name: s182-bc427-t4
+    cells: [side-E1, interior-SW, interior-NW, interior-W, interior-S, interior-N, interior-E]
+    certifier: kernel
+    # Session 182 BC-427's target 4 (arity 7, 1 wall or corner cells), closed with lane K's
+    # frozen SW9 recipe at 64 bins in 171 s of wall from the clean run worktree at cebb5d15a.
+    # Admitted in exp-256 by the standing verifier's full pass there.
+    receipt: packing/campaign/explorations/X048-session-182-overnight/receipts/K/kernel-t4-bc427.json
+    certificate: packing/campaign/explorations/X048-session-168-pilots/certificates/s182-bc427-t4
+    status: admitted
+    evidence: packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-256-h267-n17-third-tranche-flags.md
+    verification:
+      receipt: packing/campaign/explorations/X048-session-168-pilots/certificates/s182-bc427-t4/verification.json
+      verifier: kernel-streamed
+  - name: s182-bc427-t6
+    cells: [side-S1, side-W1, interior-NW, interior-W, interior-S, interior-SE]
+    certifier: kernel
+    # Session 182 BC-427's target 6 (arity 6, 2 wall or corner cells), closed with lane K's
+    # frozen SW9 recipe at 64 bins in 197 s of wall from the clean run worktree at cebb5d15a.
+    # Admitted in exp-256 by the standing verifier's full pass there.
+    receipt: packing/campaign/explorations/X048-session-182-overnight/receipts/K/kernel-t6-bc427.json
+    certificate: packing/campaign/explorations/X048-session-168-pilots/certificates/s182-bc427-t6
+    status: admitted
+    evidence: packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-256-h267-n17-third-tranche-flags.md
+    verification:
+      receipt: packing/campaign/explorations/X048-session-168-pilots/certificates/s182-bc427-t6/verification.json
+      verifier: kernel-streamed
+  - name: s182-bc428-u2
+    cells: [corner-SE, corner-NW, corner-NE, side-N0, side-E0, side-S1, side-N1, side-W1, side-S2, side-N2, side-W2, side-E2, interior-SW, interior-W, interior-S, interior-N, interior-E]
+    certifier: kernel
+    # Session 182 BC-428 (H-275): draw 2, stratum c3/i>=5/d4 (46 orbits), a whole 17-cell
+    # residue state closed with SW9's adaptive-row recipe in 1,891 s of wall from the clean
+    # run worktree at cebb5d15a. Admitted in exp-257 by the standing verifier's full pass there.
+    receipt: packing/campaign/explorations/X048-session-182-overnight/receipts/U/kernel-u2-bc428.json
+    certificate: packing/campaign/explorations/X048-session-168-pilots/certificates/s182-bc428-u2
+    status: admitted
+    evidence: packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-257-h275-n17-unsampled-strata.md
+    verification:
+      receipt: packing/campaign/explorations/X048-session-168-pilots/certificates/s182-bc428-u2/verification.json
+      verifier: kernel-streamed
+  - name: s182-bc428-u3
+    cells: [corner-SW, corner-SE, corner-NW, corner-NE, side-S0, side-N0, side-W0, side-E0, side-N1, side-W1, side-E1, side-S2, side-N2, side-E2, interior-SW, interior-NW, interior-SE]
+    certifier: kernel
+    # Session 182 BC-428 (H-275): draw 3, stratum c4/i<=3/d>=8 (8 orbits), a whole 17-cell
+    # residue state closed with SW9's adaptive-row recipe in 1,218 s of wall from the clean
+    # run worktree at cebb5d15a. Admitted in exp-257 by the standing verifier's full pass there.
+    receipt: packing/campaign/explorations/X048-session-182-overnight/receipts/U/kernel-u3-bc428.json
+    certificate: packing/campaign/explorations/X048-session-168-pilots/certificates/s182-bc428-u3
+    status: admitted
+    evidence: packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-257-h275-n17-unsampled-strata.md
+    verification:
+      receipt: packing/campaign/explorations/X048-session-168-pilots/certificates/s182-bc428-u3/verification.json
+      verifier: kernel-streamed
+  - name: s182-bc428-u4
+    cells: [corner-SW, corner-NW, corner-NE, side-S0, side-N0, side-E0, side-N1, side-W1, side-E1, side-S2, side-W2, side-E2, interior-SW, interior-NW, interior-S, interior-N, interior-SE]
+    certifier: kernel
+    # Session 182 BC-428 (H-275): draw 4, stratum c3/i>=5/d6 (52 orbits), a whole 17-cell
+    # residue state closed with SW9's adaptive-row recipe in 749 s of wall from the clean
+    # run worktree at cebb5d15a. Admitted in exp-257 by the standing verifier's full pass there.
+    receipt: packing/campaign/explorations/X048-session-182-overnight/receipts/U/kernel-u4-bc428.json
+    certificate: packing/campaign/explorations/X048-session-168-pilots/certificates/s182-bc428-u4
+    status: admitted
+    evidence: packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-257-h275-n17-unsampled-strata.md
+    verification:
+      receipt: packing/campaign/explorations/X048-session-168-pilots/certificates/s182-bc428-u4/verification.json
+      verifier: kernel-streamed
+  - name: s182-bc428-u5
+    cells: [corner-SE, corner-NE, side-N0, side-W0, side-E0, side-S1, side-W1, side-E1, side-S2, side-N2, side-W2, side-E2, interior-SW, interior-NW, interior-S, interior-N, interior-E]
+    certifier: kernel
+    # Session 182 BC-428 (H-275): draw 5, stratum c<=2/i>=5/d6 (8 orbits), a whole 17-cell
+    # residue state closed with SW9's adaptive-row recipe in 1,221 s of wall from the clean
+    # run worktree at cebb5d15a. Admitted in exp-257 by the standing verifier's full pass there.
+    receipt: packing/campaign/explorations/X048-session-182-overnight/receipts/U/kernel-u5-bc428.json
+    certificate: packing/campaign/explorations/X048-session-168-pilots/certificates/s182-bc428-u5
+    status: admitted
+    evidence: packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-257-h275-n17-unsampled-strata.md
+    verification:
+      receipt: packing/campaign/explorations/X048-session-168-pilots/certificates/s182-bc428-u5/verification.json
+      verifier: kernel-streamed

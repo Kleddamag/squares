@@ -228,7 +228,8 @@ issues:
     title: 'Mixed rectangle-and-point density certificates on a finer angle net (core 0.999, 416 angles): s(18) ≥ 4.7'
     author: wand125
     opened: '2026-10-05'
-    state: open
+    state: closed
+    closed: '2026-10-06'
     kind: result-report
     triage: done
     summary: >-
@@ -299,6 +300,29 @@ issues:
             status: confirmed
           - result: n18-4704
           - result: n19-48229
+      - url: https://github.com/jlevy/squares/issues/366#issuecomment-6011358561
+        date: '2026-10-06'
+        by: jlevy
+        kind: confirmation
+        reported:
+          - result: n18-4704
+            id: T-099
+            verification: V3
+            confirmation: C3
+            status: confirmed
+          - result: n19-48229
+            id: T-100
+            verification: V3
+            confirmation: C3
+            status: confirmed
+          - result: n18-4704
+            id: E-n018-wand125-mixed-4704-report
+          - result: n18-4704
+            id: E-n018-wand125-mixed-4704-sqverify-fast-replay
+          - result: n19-48229
+            id: E-n019-wand125-mixed-48229-report
+          - result: n19-48229
+            id: E-n019-wand125-mixed-48229-sqverify-fast-replay
     close_when: >-
       The s(18) certificate is confirmed or refuted and the reply saying so is posted from
       main, and the offered sqverify_fast change is taken in or declined; and the two

@@ -1155,7 +1155,9 @@ verifiers:
     source: [packing/devtools/audit_wand125_linear.py]
 
   - id: V-sqverify-fast
-    program: sqverify-fast, run at all 201 net directions by devtools.sqverify_fast_census
+    program: >-
+      sqverify-fast, run at every direction of a certificate's net (the standard 201, or
+      the net a format M file declares) by devtools.sqverify_fast_census
     author: Squares Project (Levy)
     provenance: first-party
     language: [Rust, Python]
@@ -1163,7 +1165,8 @@ verifiers:
     role: decides
     summary: >-
       Decides a measure-capture lower-bound certificate of format T, M or L on the
-      201-direction net: exact admission of its premises, then an exact-event vertex sweep
+      201-direction net, or of format M on the uniform net its file declares (proof_net,
+      lemma N0): exact admission of its premises, then an exact-event vertex sweep
       at the axis and outward-rounded interval branch and bound at every other direction,
       every shrunk square at every centre of its domain capturing at least the threshold.
     source:
@@ -1176,9 +1179,15 @@ verifiers:
       checkers (packing/sqverify_fast/INDEPENDENCE.md), its lemmas proved in
       packing/sqverify_fast/SOUNDNESS.md, and accepted at 4ddf37d9c by the two adversarial
       reviews of 3 October 2026, of its soundness and of its testing and independence. Its
-      census drives the binary, keeps every direction's receipt and puts negative controls
-      on a certificate at its least-bound direction, with check_sqverify_fast's exact
-      evaluator and mutation helpers; neither decides coverage.
+      declared-net change (f007d7afd and 910b6b12c, source_sha256 d97758bb...) was
+      accepted by the soundness review of 6 October 2026
+      (docs/project/reviews/review-2026-10-06-sqverify-fast-declared-net-soundness.md),
+      for a declared net once the control's exact evaluator read that net (its DR-1),
+      which the same day's re-check confirmed. Its census drives the binary, keeps every
+      direction's receipt and puts negative controls on a certificate at its least-bound
+      direction, with check_sqverify_fast's exact evaluator and mutation helpers; neither
+      decides coverage. tests/test_sqverify_fast_census.py admits a census row as evidence
+      only for a build of a reviewed source.
 
   - id: V-replay-chelokot-lean
     program: devtools.replay_chelokot_lean

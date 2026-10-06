@@ -3,9 +3,9 @@ type: is
 id: is-01m3yrznz7wy514qfhxwt27pnc
 title: "T-007: record the Nagamochi Lemma 1 defect, re-derive the values it supplies (#295)"
 kind: task
-status: in_progress
+status: closed
 priority: 1
-version: 3
+version: 4
 delegate: claude-code@vm
 labels:
   - result-import
@@ -14,8 +14,12 @@ parent_id: is-01m3yrzkz80qd1wv5sjr0kkkv0
 hold: null
 hold_until: null
 created_at: 2026-10-02T17:00:57.703Z
-updated_at: 2026-10-06T09:05:00.542Z
+updated_at: 2026-10-06T10:22:37.641Z
 started_at: 2026-10-06T07:56:25.542Z
+closed_at: 2026-10-06T10:22:37.641Z
+close_reason: "Complete on main since #305: E-nagamochi-lower is defect-found and T-007 incomplete at V0/C1; audit_t007_consumers shows the operative bound cites E-nagamochi-lower at 0 of 324 cases; check_nagamochi_bounds re-derives the 203 floors from Karakuş (6.1). Verified by lane R6 on 2026-10-06."
+resolution: null
+duplicate_of: null
 ---
 T-007 registers Nagamochi 2005, Theorem 2 (V3/C1; the 2026-08-30 read left four items unverified). #295 (wand125) and PR #305's review (session-168) find Lemma 1 false for every a > 3, b > 2 (Karakuş's family, exact; chelokot's Lean counterexample, a square of side 1.0001 in the 4 x 4 container scoring 0.977543 < 1), so the published proofs of Theorem 1 and Theorem 2 are incomplete. Nobody has shown the bound false.
 

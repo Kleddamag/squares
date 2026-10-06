@@ -1116,17 +1116,22 @@ def test_a_declared_supersession_on_a_bound_fails_the_register_gate(
     )
 
 
-def test_t036_is_superseded_in_part_by_t060() -> None:
-    """T-060's `s(11) = T` implies T-036's bound clause for every packing; its equality
-    clause is not implied, since T-060 makes no claim of uniqueness (think-7df0)."""
+def test_t036_is_superseded_in_part_by_t060_and_t102() -> None:
+    """T-060's `s(11) = T` implies T-036's bound clause for every packing and not its
+    equality clause, since T-060 makes no claim of uniqueness (think-7df0); T-102, the
+    uniqueness corollary of T-060, implies the equality clause (think-d1bd)."""
     record, _, _ = _live_record("T-036")
-    assert record["superseded_by"] == [
-        {"result": "T-060", "extent": "part", "what": record["superseded_by"][0]["what"]}
+    declared = record["superseded_by"]
+    assert [(item["result"], item["extent"]) for item in declared] == [
+        ("T-060", "part"),
+        ("T-102", "part"),
     ]
-    what = " ".join(record["superseded_by"][0]["what"].split())
-    assert what.startswith("The first clause")
-    assert "equality clause" in what
-    assert "is not implied" in what
+    first = " ".join(declared[0]["what"].split())
+    assert first.startswith("The first clause")
+    assert "equality clause" in first
+    assert "is not implied" in first
+    second = " ".join(declared[1]["what"].split())
+    assert second.startswith("The equality clause")
 
 
 def test_the_96_25_case_exclusions_are_superseded_by_t060() -> None:

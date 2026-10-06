@@ -123,6 +123,7 @@ KINDS = (
     "lower-bound",
     "upper-bound",
     "optimality",
+    "uniqueness",
     "simplification",
     "rigidity",
     "case-exclusion",
@@ -140,9 +141,12 @@ KIND_RELATIONS = {
     "optimality": frozenset({"="}),
 }
 BOUND_KINDS = frozenset(KIND_RELATIONS)
-#: The kinds that say nothing about `s(n)`: a property of one packing or one class of
-#: configurations, which the evidence contract types as `derived-structure`.
-STRUCTURE_KINDS = frozenset({"rigidity", "case-exclusion", "restricted-optimality"})
+#: The kinds that say nothing about `s(n)`: a property of one packing, one class of
+#: configurations or the packings that attain `s(n)`, which the evidence contract types
+#: as `derived-structure`.
+STRUCTURE_KINDS = frozenset(
+    {"uniqueness", "rigidity", "case-exclusion", "restricted-optimality"}
+)
 STRUCTURE_CLAIM = "derived-structure"
 #: `s(n)` and the relation written after it. Several counts may share one relation,
 #: `s(27), s(28) ≥ 28/5`. The lookbehind keeps `cos(x) =` from reading as `s(x) =`.

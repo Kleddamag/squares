@@ -3053,8 +3053,10 @@ def test_every_result_shows_its_status_and_its_place_on_the_frontier(
     assert t060 in _row(results, "T-037")
     assert not overview_sections.is_superseded(by_id["T-036"])
     in_part = render_recent_results.SUPERSEDED_IN_PART
+    # Since 2026-10-06 T-102, the uniqueness corollary of T-060, implies its equality
+    # clause, so its mark names both.
     assert by_id["T-036"].supersessions == (
-        render_recent_results.Supersession(in_part, ("T-060",)),
+        render_recent_results.Supersession(in_part, ("T-060", "T-102")),
     )
     assert t060 in _row(results, "T-036")
     # A superseding result that no replay has confirmed is named as a report, in the
@@ -3172,11 +3174,12 @@ def test_every_result_shows_its_kind(
     # own standing; `in part` leads the quiet text after it, so the line reads as the
     # register's does, and the status column is no wider than `superseded` (think-kmi4).
     t060 = f'<a href="{overview_sections.result_url("T-060")}">T-060</a>'
+    t102 = f'<a href="{overview_sections.result_url("T-102")}">T-102</a>'
     marks = overview_sections.supersession_marks(t036)
     assert marks == (
         '<span class="site-superseded"><span class="site-chip" '
         'data-standing="superseded-in-part">superseded</span> '
-        f'<span class="site-cell-quiet">in part by {t060}</span></span>'
+        f'<span class="site-cell-quiet">in part by {t060} and {t102}</span></span>'
     )
     (in_part,) = t036.supersessions
     assert html.unescape(re.sub(r"<[^>]+>", "", marks)) == in_part.words()

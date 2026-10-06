@@ -26,7 +26,7 @@ second implementation agrees.
 ## The Short Version
 
 - **90** programs: **33** external and **57** first-party; **69** decide claims and **21** check premises.
-- **363** of **390** evidence entries name the programs that verified them: 214 reproduced with the producer’s code, 132 independently re-implemented, 10 no relation: a proof, a derivation or a report, 7 re-implemented, sharing the producer’s components.
+- **364** of **391** evidence entries name the programs that verified them: 214 reproduced with the producer’s code, 132 independently re-implemented, 10 no relation: a proof, a derivation or a report, 8 re-implemented, sharing the producer’s components.
 
 ## Programs
 
@@ -100,9 +100,9 @@ second implementation agrees.
 | [`V-wall-owner-containment`](#v-wall-owner-containment) | devtools.wall_owner_containment | Squares Project (Levy) | first-party | decides | 1 | 0 |
 | [`V-n17-endpoint-checkers`](#v-n17-endpoint-checkers) | devtools.check_n17_root_certificate and devtools.check_n17_endpoint_feasibility | Squares Project (Levy) | first-party | decides | 1 | 1 |
 | [`V-n17-catalogue-polynomial`](#v-n17-catalogue-polynomial) | devtools.check_n17_catalogue_polynomial | Squares Project (Levy) | first-party | decides | 1 | 0 |
-| [`V-n11-optimality-checkers`](#v-n11-optimality-checkers) | The devtools.check_n11_optimality | Squares Project (Levy) | first-party | decides | 1 | 1 |
+| [`V-n11-optimality-checkers`](#v-n11-optimality-checkers) | The devtools.check_n11_optimality | Squares Project (Levy) | first-party | decides | 2 | 2 |
 | [`V-evand-exact-certificates`](#v-evand-exact-certificates) | devtools.evand_exact_certificates | Squares Project (Levy) | first-party | premises | 4 | 2 |
-| [`V-check-n11-final-composition`](#v-check-n11-final-composition) | devtools.check_n11_final_composition | Squares Project (Levy) | first-party | premises | 1 | 1 |
+| [`V-check-n11-final-composition`](#v-check-n11-final-composition) | devtools.check_n11_final_composition | Squares Project (Levy) | first-party | premises | 2 | 2 |
 | [`V-audit-n17-endpoint-receipt`](#v-audit-n17-endpoint-receipt) | devtools.audit_n17_endpoint_receipt | Squares Project (Levy) | first-party | premises | 1 | 1 |
 | [`V-audit-tokoharu-density`](#v-audit-tokoharu-density) | devtools.audit_tokoharu_density | Squares Project (Levy) | first-party | premises | 1 | 1 |
 | [`V-audit-wand125-rectangles`](#v-audit-wand125-rectangles) | devtools.audit_wand125_rectangles | Squares Project (Levy) | first-party | premises | 4 | 4 |
@@ -1383,6 +1383,7 @@ Consume the published n = 11 optimality proposals component by component and dec
 | evidence | run | code | results |
 | --- | --- | --- | --- |
 | `E-n011-global-optimality-independent` | audited here | shared components | T-060 |
+| `E-n011-optimum-uniqueness` | audited here | shared components | T-102 |
 
 ### `V-evand-exact-certificates`
 
@@ -1414,6 +1415,7 @@ Reconciles the n = 11 component receipts' reviewed bindings; it reruns no geomet
 | evidence | run | code | results |
 | --- | --- | --- | --- |
 | `E-n011-global-optimality-independent` | audited here | shared components | T-060 |
+| `E-n011-optimum-uniqueness` | audited here | shared components | T-102 |
 
 ### `V-audit-n17-endpoint-receipt`
 

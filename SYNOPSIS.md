@@ -183,6 +183,7 @@ action for each are in [`frontier/RESULTS.md`](packing/frontier/RESULTS.md); the
 | [T-052](packing/frontier/RESULTS.md) | 21 | `V3` | `C3` | `S4` | `previously-published` | s(21) = 5: the lower half by Evan Daniel’s mixed cover of 27 September 2026, the upper half by the 5 x 5 grid. |
 | [T-053](packing/frontier/RESULTS.md) | 45 | `V3` | `C3` | `S4` | `previously-published` | s(45) = 7: the lower half by Evan Daniel’s mixed cover of 27 September 2026, the upper half by the 7 x 7 grid. |
 | [T-064](packing/frontier/RESULTS.md) | 33, 46, 61, 78, 97, 118, 141, 166, 193, 222, 253, 286, 321 | `V3` | `C3` | `S4` | `previously-published` | Evan Daniel’s theorem s(k^2 - 3) = k for every integer k >= 6, dated 29 September 2026 by the source and public in its repository on 30 September: the lower half by one family of periodic measures, the upper half by the k x k grid. |
+| [T-102](packing/frontier/RESULTS.md) | 11 | `V3` | `C2` | `S4` | `apparently-novel` | Every packing of eleven unit squares in a square of side T = 3.8770835900228141773…, the least side T-060 proves possible, is Walter Trump’s 1979 packing after one of the eight symmetries of the container and a relabelling of the squares. |
 | [T-081](packing/frontier/RESULTS.md) | 21, 32, 45, 60, 77, 96, 117, 140, 165, 192, 221, 252, 285, 320 | `V0` | `C1` | `S4` | `previously-published` | Evan Daniel’s theorem s(k^2 - 4) = k for every integer k >= 5, published in his repository on 3 October 2026: the lower half at k = 5, 6 and 7 by his s(21), s(32) and s(45) certificates, and at every k >= 8 by one family of periodic measures; the upper half by the k x k grid. |
 | [T-001](packing/frontier/RESULTS.md) | 17 | `V3` | `C3` | `S3` | `apparently-novel` | Sixteen points make [0, 4426213/1000000]^2 unavoidable for open squares of side above one, so s(17) >= 4426213/1000000 = 4.426213. |
 | [T-002](packing/frontier/RESULTS.md) | 18 | `V3` | `C3` | `S3` | `apparently-novel` | s(18) >= 4426213/1000000, by monotonicity from T-001 (a packing of 18 unit squares contains a packing of 17). |
@@ -302,7 +303,7 @@ hypothesis status and summarizes experiment verdicts, and the
 | Explorations | 47 | 28 linked to proposed hypotheses; 19 uncodified |
 | Hypotheses | 209 | 45 confirmed; 33 refuted; 63 blocked; 19 unresolved; 9 open; 35 open questions; 2 result registered; 2 abandoned; 0 running; 1 exhausted |
 | Experiments | 187 | 63 accepted; 38 rejected; 58 unresolved; 12 baseline; 11 blocked; 4 abandoned; 0 in progress; 1 exhausted |
-| Frontier results | 101 | 101 registered, 72 by others |
+| Frontier results | 102 | 102 registered, 72 by others |
 
 <!-- END CURRENT-RESEARCH-STATUS -->
 

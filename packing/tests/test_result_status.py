@@ -309,11 +309,11 @@ def test_superseded_is_marked_on_a_bound_and_where_a_later_result_is_declared() 
     assert view.superseding(exact, records) == ("T-060",)
     upper = {"id": "T-999", "kind": "upper-bound", "scope": {"n_values": [11]}}
     assert view.superseding(upper, records) == ("T-011",)
-    # T-060 implies T-036's bound and not its equality case (think-7df0); it implies
+    # T-060 implies T-036's bound and T-102 its equality case (think-7df0, think-d1bd); it implies
     # T-023's exclusion and not its count of the branch, and the whole of T-031's
     # exclusion, since no packing of eleven squares fits at side 96/25 (think-rl2b).
     expected = {
-        "T-036": ["superseded in part by T-060"],
+        "T-036": ["superseded in part by T-060 and T-102"],
         "T-023": ["superseded in part by T-060"],
         "T-031": ["superseded by T-060"],
     }

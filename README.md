@@ -35,6 +35,16 @@ Queuingtheorydotcom, building on this project and Kleddamag.
 This repository independently replayed the proof’s exact inputs and audited their
 mathematical composition (`V3/C3/S5`: machine-checked, review record pending);
 [T-011](packing/frontier/RESULTS.md) verifies Trump’s matching witness.
+The same argument, read at side exactly $T$, shows that Trump’s packing is the only
+optimal one up to the eight symmetries of the container and relabelling of the squares:
+[T-102](packing/frontier/RESULTS.md) registers that direct corollary of T-060, which
+adds no computation.
+On 6 October 2026 Queuingtheorydotcom reported a complete Lean 4 formalization of the
+optimality theorem,
+[11SquaresFormalized](https://github.com/Queuingtheorydotcom/11SquaresFormalized/tree/cdc746ed907d258057c283aeb6d077cb2c27e349):
+7,920 modules with no admitted goal, its numerical certificates checked by
+`native_decide`, so it trusts Lean’s compiler as well as its kernel.
+This project has not yet reviewed or replayed it.
 The [case record](packing/frontier/n-011.md),
 [review](docs/project/reviews/review-2026-09-29-n11-optimality.md), and
 [retained packet](packing/resources/web/n11-optimality-2026-09-29/README.md) state what

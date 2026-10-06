@@ -196,6 +196,7 @@ Each entry summarizes one user-level research window. Cycle slots are wall-clock
 | [session-179](agent-sessions/session-179-selective-halving.md) | stopped | contemporaneous | `research-loop` (correctness) | `research-loop` (correctness) | 2 | think-ns4t | Await Joshua's review of the rebuilt layer (PR 360) under think-q0z7. No active research executor or reserved follow-up; original intervals are historical. |
 | [session-180](agent-sessions/session-180-n17-producer-memo.md) | stopped | contemporaneous | `review-planning-oversight` (insight) | `review-planning-oversight` (correctness) | 3 | think-wn6x | Review the rebuilt layer that replaces Draft PR 325 under think-wn6x; upstream think-tmz6 remains the research coordinator. No merge or new compute is authorized by this closeout. |
 | [session-182](agent-sessions/session-182-n17-overnight-lanes.md) | stopped | contemporaneous | `review-planning-oversight` (insight) | `review-planning-oversight` (correctness) | 4 | think-tmz6 | Certify the handover (think-b8hb), then BC-418 continues under think-tmz6: the owner's decisions recorded here come first (the resource rollups that resource_usage_unmeasured names, lane K's target 2 with the two held re-runs, the branch-and-bound recalibration and #360's merge), and exp-257 awaits its W2 review. |
+| [session-183](agent-sessions/session-183-n17-draw-31.md) | in_progress | contemporaneous | `review-planning-oversight` (correctness) | `review-planning-oversight` (correctness) | 1 | think-2pjf | Start draw 31 from the clean run worktree once the registration is pushed. |
 
 ### Workflow summary
 
@@ -212,7 +213,7 @@ Declared counts are contemporaneous contracts; retrospective counts are reconstr
 | `pipeline-improvement` | 42 | 2 | 214 | 7 |
 | `documentation-pass` | 1 | 0 | 29 | 3 |
 | `remediation` | 2 | 1 | 6 | 3 |
-| `review-planning-oversight` | 8 | 3 | 52 | 6 |
+| `review-planning-oversight` | 9 | 3 | 53 | 6 |
 | `general-improvement` | 1 | 0 | 7 | 1 |
 
 ## Experiment agendas
@@ -906,12 +907,13 @@ Status: **active**. Turn PR 230's W3 review and the two explorations it led to, 
 | BC-426 | research | 17 | in_progress | 1 | think-035m | packing/campaign/agent-sessions/session-182-n17-overnight-lanes.md |
 | BC-427 | research | 17 | complete | 1 | think-035m | packing/campaign/agent-sessions/session-182-n17-overnight-lanes.md |
 | BC-428 | research | 17 | complete | 1 | think-z8an | packing/campaign/agent-sessions/session-182-n17-overnight-lanes.md |
+| BC-429 | research | 17 | in_progress | 1 | think-2pjf | packing/campaign/agent-sessions/session-183-n17-draw-31.md |
 
 ## Series
 
 | id | status | title | rounds | opened because |
 | --- | --- | --- | --- | --- |
-| series-000 | open | S0: smoke and calibration — prove the machinery, establish every baseline metric | 186 | First series. There is no prior instrument, so not |
+| series-000 | open | S0: smoke and calibration — prove the machinery, establish every baseline metric | 187 | First series. There is no prior instrument, so not |
 
 ## Registry
 
@@ -1125,7 +1127,7 @@ Status: **active**. Turn PR 230's W3 review and the two explorations it led to, 
 | H-272 | blocked | search | Of the 68 non-grid known-best records whose witness derives from Kingb |  | 0 |  |  |
 | H-273 | unresolved | proof | Each of the 95 orbits at Hamming distance 2 from the endpoint's state  |  | 1 |  | 225.8m wall |
 | H-274 | confirmed | proof | Of the four counted draws of H-264's seed-182 draw that stalled under  |  | 1 |  | 196.1m wall |
-| H-275 | open question | proof | On a seeded draw of one residue state from each of the 21 strata of su |  | 1 |  | 555.2m wall |
+| H-275 | open question | proof | On a seeded draw of one residue state from each of the 21 strata of su |  | 2 |  | 555.2m wall |
 
 ## Needs review — held for a human, not decided
 
@@ -1356,6 +1358,12 @@ Status: **active**. Turn PR 230's W3 review and the two explorations it led to, 
 | exp-032 | series-000 | 3 | openai-codex | H-021 | The exact connected and isolated controls pass, every declared conflation fails, and all unsupported floating-point observations remain unresolved. |
 | exp-201 | series-000 | 18 | claude-opus-5 | H-201 | Calibration, not a scored round: it freezes p_perturb = 1.0, perturb_scale = 2 and a flat mu = 5 for exp-202 and exp-203, and it turned up a schedule-length effect that is now registered as H-204 rather than folded into an arm. |
 
+### in-progress (1)
+
+| id | series | instance | operator | hypotheses | reason |
+| --- | --- | --- | --- | --- | --- |
+| exp-258 | series-000 | 17 | Claude Session 183, the run operator, on one worker; on a closure it verifies the certificate and admits it in the session checkout | H-275 | Registered before the run; the verdict is written when the run and any verification finish, or at the session's timebox. |
+
 ## Resumable — stopped on the clock, not on an answer
 
 | id | hypotheses | spent | stopped by | resume from | reopen when |
@@ -1403,7 +1411,7 @@ Status: **active**. Turn PR 230's W3 review and the two explorations it led to, 
 
 ## Effort
 
-186 rounds, 2512.1 agent-minutes, 5715.7 wall-minutes.
+187 rounds, 2512.1 agent-minutes, 5715.7 wall-minutes.
 
 These totals exclude 4 historical rounds with unrecorded timing; their cost is unknown, not zero.
 

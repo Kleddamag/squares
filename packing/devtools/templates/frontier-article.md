@@ -51,9 +51,14 @@ The *verified* columns hold only exact formal bounds: a complete proof, an exact
 algebraic replay, or a rigorous certificate.
 An external certificate counts once it is replayed here in full and its mathematical
 assumptions are discharged, and each record says who ran the checks and how independent
-they were. Where the verified bound is the reported one, the cell says *✓ same*, meaning
-verified here at the reported value.
-A finite-precision result is numerically checked and never enters a verified column.
+they were. Where the verified bound equals the reported value, the cell says *✓ same*,
+which says nothing about who checked it.
+A published proof counts whether or not anyone here has read it, so where every argument
+behind a verified bound is a published proof nobody here has read, the cell says
+*published proof, not read here*. A reported bound that stands on a proof whose reading
+here found a defect, and that no verified bound reaches, says *defect recorded* under
+its credit. A finite-precision result is numerically checked and never enters a verified
+column.
 
 **The other columns.** *Recent* holds the star.
 The *gap* is the verified upper bound minus the verified lower bound, exact where both

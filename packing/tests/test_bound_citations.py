@@ -159,6 +159,13 @@ def _synthetic_register() -> citations.Register:
             "novelty": "previously-published",
             "source_key": "[Other 2002]",
         },
+        # This project's replay of the later source's own route to the same bound.
+        "E-other-replay": {
+            "claim": "lower-bound",
+            "performed_by": "repository",
+            "novelty": "previously-published",
+            "source_key": "[Other 2002]",
+        },
         "E-ours": {
             "claim": "lower-bound",
             "performed_by": "repository",
@@ -180,6 +187,8 @@ def _synthetic_register() -> citations.Register:
         {"id": "T-902", "scope": {"n_values": [7]}, "evidence": ["E-paper"], **SCORED},
         # The same replay at another n, which this n may not claim.
         {"id": "T-903", "scope": {"n_values": [8]}, "evidence": ["E-replay"], **SCORED},
+        # The later source's route, replayed here.
+        {"id": "T-904", "scope": {"n_values": [7]}, "evidence": ["E-other-replay"], **SCORED},
         {"id": "T-910", "scope": {"n_values": [7]}, "evidence": ["E-certificate"], **SCORED},
     ]
     sources = {
@@ -472,6 +481,29 @@ def test_two_published_sources_behind_one_bound_fail_rather_than_choosing() -> N
     register = _synthetic_register()
     with pytest.raises(ValueError, match="names 2 sources"):
         citations.lower_citation(7, _synthetic_case(["E-paper", "E-other"]), register)
+    # Replays of two sources and no published proof leave the credit to choose, too.
+    with pytest.raises(ValueError, match="names 2 sources"):
+        citations.lower_citation(7, _synthetic_case(["E-replay", "E-other-replay"]), register)
+
+
+def test_a_later_routes_replay_beside_the_first_proof_confirms_it() -> None:
+    """The shape of n = 13 and n = 33 since 2026-10-06: Bentz's proof, and beside it the
+    replays here of Daniel's later proof of the same value. The line credits the source
+    whose own proof the lane cites, and the result carrying the replay confirms it
+    (`first_source`)."""
+    register = _synthetic_register()
+    line = citations.lower_citation(7, _synthetic_case(["E-paper", "E-other-replay"]), register)
+    assert line is not None
+    assert (line["text"], line["note"], line["source_key"]) == (
+        "Author 2001, J. Test 1",
+        "(confirmed T-904)",
+        "[Paper 2001]",
+    )
+    assert (line["results"], line["confirmed_by"], line["recent"]) == (
+        ["T-902", "T-904"],
+        ["T-904"],
+        False,
+    )
 
 
 def test_a_novel_first_party_bound_cites_this_project_and_its_result() -> None:
@@ -763,8 +795,19 @@ RECORDED: dict[int, tuple[tuple[str, str, str] | None, tuple[str, str, str] | No
             "verified",
         ),
     ),
-    13: (None, ("Bentz 2010, Electron. J. Combin. 17, #R126", "external", "verified")),
+    # Bentz's proofs, credited as the first, and since 2026-10-06 the replays of the later
+    # routes beside them in the lane: Daniel's case-free cover of [0,4]^2 (T-006) and his
+    # s(k^2 - 3) = k family (T-064), which confirm the bound (`first_source`).
+    13: (
+        None,
+        (
+            "Bentz 2010, Electron. J. Combin. 17, #R126 (confirmed T-006)",
+            "external",
+            "verified",
+        ),
+    ),
     22: (None, ("Bentz 2016, arXiv:1606.03746", "external", "verified")),
+    33: (None, ("Bentz 2016, arXiv:1606.03746 (confirmed T-064)", "external", "verified")),
     # A published proof and this project's audit of it are one source's bound, and the
     # audit's two results are named on the line; the article number gives way so they fit.
     46: (
@@ -904,8 +947,11 @@ RECORDED_LINKS: dict[tuple[int, str], tuple[list[str], list[str]]] = {
     # The audit of Bentz's Theorem 8, and the equality it settles.
     (46, "lower"): (["T-004", "T-008"], ["T-004", "T-008"]),
     # Two results cite Bentz 2010 at n = 13 -- one of them says a lemma is false as
-    # printed -- and neither replays the bound, so neither confirms it.
-    (13, "lower"): (["T-005", "T-006"], []),
+    # printed. Since 2026-10-06 the lane also cites T-006's replays of Daniel's case-free
+    # cover, so T-006 confirms the bound and T-005, which replays nothing, does not.
+    (13, "lower"): (["T-005", "T-006"], ["T-006"]),
+    # Bentz's s(33) = 6, which no result registers, beside T-064's replays since then.
+    (33, "lower"): (["T-064"], ["T-064"]),
     # chelokot's Lean proof, replayed here with its axiom receipt, since 2026-10-02.
     (7, "lower"): (["T-086"], ["T-086"]),
     # Karakuş's general bound since 2026-10-02, read here; its Proposition 5.1 machine-checked

@@ -79,6 +79,7 @@ from devtools.build_bound_citations import (
 )
 from devtools.check_results import BOUND_KINDS, recent_evidence, scope_values
 from devtools.result_credit import source_lineage
+from devtools.result_status import CONFIRMED_FROM
 from sqpack.assurance import bounds_agree_at_declared_precision
 from sqpack.yamlio import safe_load
 
@@ -546,17 +547,35 @@ def superseding(record: Mapping[str, Any], records: Records) -> tuple[str, ...]:
     )
 
 
+#: What follows a superseding result's id where no replay has confirmed it: a report,
+#: `C0` or `C1`, which holds a case's reported bound and never its verified one
+#: (`check_standing`). Until 2026-10-06 a mark named such a result like any other, and
+#: "superseded by … T-082" read as though a confirmed result had taken the bound.
+REPORTED_MARK = "(reported)"
+
+
 class Supersession(NamedTuple):
     """One mark of supersession a view draws after a result's status, and the results
-    that supersede it, in id order."""
+    that supersede it, in id order, with those of them no replay has confirmed."""
 
     mark: str
     """`SUPERSEDED`, or `SUPERSEDED_IN_PART` where a later result implies only part."""
     by: tuple[str, ...]
+    reported: frozenset[str] = frozenset()
+    """The results among `by` that are reports, standing below `C2`."""
+
+    def named(self) -> tuple[str, ...]:
+        """The superseding results as a mark prints them: `T-082 (reported)` for a
+        report, the id alone for a confirmed result."""
+        return tuple(
+            f"{result} {REPORTED_MARK}" if result in self.reported else result
+            for result in self.by
+        )
 
     def words(self) -> str:
-        """The mark as text, as `RESULTS.md` prints it: `superseded by T-030 and T-046`."""
-        return f"{self.mark} by {listed(self.by)}" if self.by else self.mark
+        """The mark as text, as `RESULTS.md` prints it: `superseded by T-030 and T-046`,
+        or `superseded by T-070 and T-082 (reported)`."""
+        return f"{self.mark} by {listed(self.named())}" if self.by else self.mark
 
 
 def listed(ids: Sequence[str]) -> str:
@@ -577,11 +596,21 @@ def supersessions(
     marks: list[Supersession] = []
     if superseded(record, stands):
         by = superseding(record, records) if bound else _declared(record, WHOLE)
-        marks.append(Supersession(SUPERSEDED, by))
+        marks.append(Supersession(SUPERSEDED, by, reports(by, records)))
     part = () if bound else _declared(record, PART)
     if part:
-        marks.append(Supersession(SUPERSEDED_IN_PART, part))
+        marks.append(Supersession(SUPERSEDED_IN_PART, part, reports(part, records)))
     return marks
+
+
+def reports(results: Iterable[str], records: Records) -> frozenset[str]:
+    """The results among `results` that no replay has confirmed: below `C2`, which is
+    recorded or reviewed (`devtools.result_status`)."""
+    return frozenset(
+        result
+        for result in results
+        if int(str(records.results[result]["confirmation"])[1]) < CONFIRMED_FROM
+    )
 
 
 def position_marks(record: Mapping[str, Any], held: str, records: Records) -> list[str]:

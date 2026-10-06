@@ -317,6 +317,29 @@ def test_superseded_is_marked_on_a_bound_and_where_a_later_result_is_declared() 
         assert view.position_marks(record, view.standing(record, records), records) == marks
 
 
+def test_a_superseding_report_is_named_as_one() -> None:
+    """A result no replay has confirmed holds a case's reported bound and never its
+    verified one, so where it supersedes an entry the mark says so after its id. Until
+    2026-10-06 T-044's mark named T-082, a report at C1, like the confirmed results
+    beside it."""
+    view = render_recent_results
+    records = view.load_records()
+    record = records.results["T-044"]
+    (mark,) = view.supersessions(record, view.standing(record, records), records)
+    assert "T-082" in mark.by
+    assert mark.reported == {
+        result for result in mark.by if records.results[result]["confirmation"] in ("C0", "C1")
+    }
+    assert mark.reported == {"T-082"}
+    assert "T-082 (reported)" in mark.words()
+    assert "T-070 (reported)" not in mark.words()
+    for entry in ("T-019", "T-037"):
+        other = records.results[entry]
+        marks = view.position_marks(other, view.standing(other, records), records)
+        assert marks
+        assert all("(reported)" not in words for words in marks), entry
+
+
 def activity(**changes: Any) -> Record:
     entry: Record = {
         "state": "in-analysis",

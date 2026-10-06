@@ -309,6 +309,27 @@ def test_results_md_names_the_programs_behind_each_result() -> None:
     assert "[`VERIFIERS.md`](VERIFIERS.md)" in text
 
 
+def test_a_third_partys_report_reads_as_a_report() -> None:
+    """A third party's run held here only as their report, origin `external`, confirms
+    nothing, so its line says it was not replayed here and names no code relation, whose
+    words are a confirmation's. Until 2026-10-06 wand125's run of ValidTilt9 read "a
+    third party's run, independently re-implemented" in `RESULTS.md` under T-081."""
+    report = EVIDENCE["E-k2m4-wand125-validtilt9-report"]
+    assert report["origin"] == "external"
+    assert report["performed_by"] == "independent-external"
+    assert verifier_registry.run_label(report) == verifier_registry.THIRD_PARTY_REPORT
+    line = verifier_registry.entry_line(report, VERIFIERS)
+    assert line.startswith(
+        "`E-k2m4-wand125-validtilt9-report`, reported by a third party, not replayed here: "
+    )
+    assert not any(label in line for label in verifier_registry.LABELS.values())
+    # A third party's replay retained here is a confirmation, and says how it stands.
+    retained = {**report, "origin": "independently-external"}
+    assert verifier_registry.run_label(retained) == "replayed by a third party"
+    assert "independently re-implemented" in verifier_registry.entry_line(retained, VERIFIERS)
+    assert "a third party\u2019s run" not in render_results.render()
+
+
 def test_the_committed_views_agree_with_the_records() -> None:
     assert render_verifiers.main(["--check"]) == 0
     assert render_case_verifiers.main(["--check"]) == 0

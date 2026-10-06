@@ -87,7 +87,9 @@ A result's status says how far the work on it here has gone, and follows `C`:
 defect found in it is open. After it come who has the next move, where one is recorded,
 and *superseded* by the results named, where the result is a bound that no case bound
 rests on now, or a result of another kind that a later result implies; *superseded in
-part* says a later result implies some of it and it still holds the rest.
+part* says a later result implies some of it and it still holds the rest. A superseding
+result that no replay has confirmed is named with *(reported)* after it: it holds a
+case's reported bound, never its verified one.
 A confirmed result says how it was confirmed, from the code its confirming runs used:
 *reproduced with the producer's code*, where they re-ran the code that produced or
 verified it; *re-implemented, sharing the producer's components*, where separately

@@ -143,20 +143,3 @@ repositories:
       dual_exact doc pointers of 27dd68a), the literature and proof-anatomy notes,
       QUADRANT_EXACT.md's pointer to the now-public reviews, S3Lower.lean's toy s3_eq_2 and
       Average.lean's averaging lemma, which bounds nothing. Nothing else to import.
-
-  - url: https://github.com/wand125/valid7-independent-check
-    read_through: c561dbb3fcea9178599db017f51f56b42ad9f91f
-    read_on: '2026-10-06'
-    note: >-
-      Read through c561dbb (2026-10-06T02:36Z) by lane R3 of the 6 October intake round
-      (think-dsz4): the wand125-valid7-independent-check-2026-10-06 packet pins it. The
-      commit runs wand125's Valid7 checker on ValidTilt9, the finite premise of T-081
-      (s(k^2 - 4) = k for k >= 8), with the release records-tilt9-v1: 28,350 roots, none
-      uncertified. It adds Daniel's box-9 cover, verify_tilt9.sh and a driver option, and
-      changes no checking module. Recorded as reported evidence on T-081,
-      E-k2m4-wand125-validtilt9-report, with no rung moved; the full replay waits for a
-      budget under think-hwpr. Its parents 38dd31b and da469ec are the 2 and 3 October
-      packets' pins.
-
-  # Heads read by the intake pass of 2026-10-05 08:00Z (think-i5qd) that arrived after it
-  # pinned its packets; each is held for an import of its own.

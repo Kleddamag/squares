@@ -31,6 +31,7 @@ from collections.abc import Sequence
 from pathlib import Path
 
 from devtools.verifier_registry import SHORT_LABELS, runs_code
+from sqpack.assurance import conditions, discharges, undischarged
 from sqpack.yamlio import safe_load
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -81,6 +82,23 @@ def scope_text(record: dict) -> str:
     return "-"
 
 
+def claim_text(record: dict, by_id: dict[str, dict]) -> str:
+    """An entry's claim, and for a conditional theorem the hypothesis it takes and
+    whether anything here has discharged it (`proof.conditional_on`): `exact-value,
+    conditional on ValidTilt9, not replayed here`. Until 2026-10-06 the cell said
+    `exact-value` alone, and with `verified` beside it a theorem proved only as an
+    implication from an unreplayed premise read as a verified exact value."""
+    parts = [str(record.get("claim", "-"))]
+    for hypothesis, refs in conditions(record):
+        done = [ref for ref in refs if discharges(by_id.get(ref))]
+        if done:
+            named = " and ".join(f"`{ref}`" for ref in done)
+            parts.append(f"conditional on {hypothesis}, discharged by {named}")
+        else:
+            parts.append(f"conditional on {hypothesis}, not replayed here")
+    return ", ".join(parts)
+
+
 def ours(record: dict) -> bool:
     """Was the argument made here? External proofs are not, however well reviewed."""
     return record.get("origin") not in EXTERNAL_ORIGINS and record.get("origin") is not None
@@ -124,6 +142,8 @@ def render() -> str:
     ]
     novel = [r for r in records if r.get("novelty") in {"apparently-novel", "confirmed-novel"}]
     unassessed = [r for r in records if "novelty" not in r]
+    by_id = {r["id"]: r for r in records}
+    conditional = [r for r in formal if undischarged(r, by_id)]
 
     lines += [
         "## The short version",
@@ -135,6 +155,20 @@ def render() -> str:
         (
             f"- **{len(external)}** rest on an argument made elsewhere, of which "
             f"**{len(unreviewed)}** have been read by nobody here."
+        ),
+        (
+            f"- **{len(conditional)}** formal "
+            f"{'record proves' if len(conditional) == 1 else 'records prove'} a theorem "
+            "only under a hypothesis nothing here has replayed, and "
+            f"{'is' if len(conditional) == 1 else 'are'} verified as that implication "
+            "alone: "
+            + (
+                ", ".join(
+                    f"`{r['id']}` ({' and '.join(undischarged(r, by_id))})" for r in conditional
+                )
+                or "none"
+            )
+            + "."
         ),
         (
             f"- **{len(novel)}** claim to be first established here. "
@@ -151,7 +185,11 @@ def render() -> str:
         (
             "`code` is how the code that verified a record stands to the code its result's "
             "producer used, and `programs` names that code by its id in "
-            "[`VERIFIERS.md`](VERIFIERS.md), which says whose each program is."
+            "[`VERIFIERS.md`](VERIFIERS.md), which says whose each program is. A "
+            "theorem proved only under a hypothesis it does not prove names that "
+            "hypothesis in its `claim`, with the runs that discharge it here or *not "
+            "replayed here*: it is verified as the implication, and as the claim only "
+            "beside them."
         ),
         "",
         (
@@ -172,7 +210,7 @@ def render() -> str:
         )
         lines.append(
             f"| `{record['id']}` | {load.get(record['id'], 0)} "
-            f"| {record.get('claim', '-')} | {record.get('assurance', '-')} "
+            f"| {claim_text(record, by_id)} | {record.get('assurance', '-')} "
             f"| {decides} | {whose} | {review} | {novelty} | {code} | {programs} |"
         )
 

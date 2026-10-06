@@ -765,6 +765,7 @@ def step(other: Result, current: Result, cases: Sequence[int]) -> str:
         result_url,
         standing_key,
         status_chips,
+        superseder_link,
     )
     from devtools.render_recent_results import (  # noqa: PLC0415
         NO_STANDING,
@@ -796,9 +797,9 @@ def step(other: Result, current: Result, cases: Sequence[int]) -> str:
     if here != other.standing:
         on_case = "on this case" if len(cases) == 1 else "on these cases"
         said = _esc(here)
-        by = [mark.by for mark in marks if mark.mark == SUPERSEDED and mark.by]
+        by = [mark for mark in marks if mark.mark == SUPERSEDED and mark.by]
         if by:
-            links = [f'<a href="{_esc(result_url(item))}">{_esc(item)}</a>' for item in by[0]]
+            links = [superseder_link(item, by[0].reported) for item in by[0].by]
             said += f" by {listed(links)}"
         chips += f' <span class="site-cell-quiet">{on_case}, {said}</span>'
     chip_line = f'<p class="site-result-step-chips">{chips}</p>'

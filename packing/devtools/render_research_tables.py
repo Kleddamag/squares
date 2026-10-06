@@ -222,14 +222,80 @@ def compact_bound(bound: dict) -> str:
     return f"`{bound['value']}`"
 
 
+#: What a read here of an external argument found, as an external entry's label carries
+#: it (the evidence schema's `external_review.state`). An external proof with no read on
+#: file is "not read here": it proves its claim whether or not it was read, and the label
+#: says only what this repository has examined.
+REVIEW_LABEL = {
+    "not-reviewed": "not read here",
+    "informally-verified": "read here",
+    "defect-found": "read here, defect recorded",
+}
+UNREAD = "not-reviewed"
+DEFECT_FOUND = "defect-found"
+#: The two lanes a case's verified bounds sit in, as the labels name them.
+VERIFIED_LANES = (("upper", "verified_upper_bound"), ("lower", "verified_lower_bound"))
+
+
+def origin_label(entry: dict) -> str | None:
+    """Who did the work behind one evidence entry, and for an external argument whether it
+    was read here: `replayed here`, or `external proof (not read here)`."""
+    label = ORIGIN_LABEL.get(str(entry.get("origin")))
+    if label is None:
+        return None
+    if entry.get("origin") == "external":
+        state = (entry.get("external_review") or {}).get("state")
+        if state in REVIEW_LABEL:
+            label = f"{label} ({REVIEW_LABEL[state]})"
+    return label
+
+
+def lane_origins(bound: dict, evidence: dict[str, dict]) -> str:
+    """The labels of the evidence one bound cites, once each, or `—`."""
+    labels = [origin_label(evidence[ref]) for ref in bound.get("evidence") or []]
+    return ", ".join(dict.fromkeys(label for label in labels if label)) or "—"
+
+
 def verification_origins(case: dict, evidence: dict[str, dict]) -> str:
-    refs = [
-        *case["verified_upper_bound"]["evidence"],
-        *case["verified_lower_bound"]["evidence"],
-    ]
-    origins = [evidence[ref].get("origin") for ref in refs]
-    labels = [ORIGIN_LABEL[origin] for origin in origins if origin in ORIGIN_LABEL]
-    return ", ".join(dict.fromkeys(labels)) or "—"
+    """Who verified each of a case's two verified bounds, lane by lane: `upper: replayed
+    here; lower: external proof (not read here)`. Until 2026-10-06 the two lanes were
+    merged into one list, so a row whose upper bound was replayed and whose lower bound
+    was a published proof nobody here had read said `replayed here, external proof`
+    without saying which lane was which, or that the proof was unread."""
+    return "; ".join(
+        f"{name}: {lane_origins(case[field], evidence)}" for name, field in VERIFIED_LANES
+    )
+
+
+def unread_external_proof(entry: dict) -> bool:
+    """Whether an evidence entry is a published proof by others that nobody here has
+    read: `origin: external`, `method: published-proof`, `external_review.state:
+    not-reviewed`."""
+    return (
+        entry.get("origin") == "external"
+        and entry.get("method") == "published-proof"
+        and (entry.get("external_review") or {}).get("state") == UNREAD
+    )
+
+
+def rests_on_unread_proof(bound: dict, evidence: dict[str, dict]) -> bool:
+    """Whether every entry a bound cites is a published proof nobody here has read, so
+    that nothing here has examined the argument the bound stands on."""
+    refs = bound.get("evidence") or []
+    return bool(refs) and all(unread_external_proof(evidence[ref]) for ref in refs)
+
+
+def reported_defect(reported: dict, verified: dict, evidence: dict[str, dict]) -> bool:
+    """Whether a reported bound stands on evidence whose read here found a defect while
+    no verified bound holds its value: Nagamochi's closed form above the verified floor
+    since 2026-10-02 (T-007), or a value of Green's DS7 Theorem 9, whose illustrated
+    argument leaves a square empty. Where the verified bound equals the reported one, the
+    defect moves no value on the row and is not marked."""
+    found = any(
+        (evidence[ref].get("external_review") or {}).get("state") == DEFECT_FOUND
+        for ref in reported.get("evidence") or []
+    )
+    return found and not bounds_agree_at_declared_precision(reported, verified)
 
 
 def same_bound(left: dict, right: dict) -> bool:
@@ -237,12 +303,19 @@ def same_bound(left: dict, right: dict) -> bool:
     return bounds_agree_at_declared_precision(left, right)
 
 
-def case_disposition(case: dict) -> str:
+def case_disposition(case: dict, evidence: dict[str, dict]) -> str:
+    """The row's notes: where a verified bound differs from the reported one, where a
+    reported bound stands on a read that found a defect (`reported_defect`), a pending
+    audit, a conflict, or a catalogue side the record waits to take."""
     notes = []
     if not same_bound(case["reported_upper_bound"], case["verified_upper_bound"]):
         notes.append("formal upper trails report")
+    if reported_defect(case["reported_upper_bound"], case["verified_upper_bound"], evidence):
+        notes.append("reported upper: defect recorded")
     if not same_bound(case["reported_lower_bound"], case["verified_lower_bound"]):
         notes.append("formal lower differs from report")
+    if reported_defect(case["reported_lower_bound"], case["verified_lower_bound"], evidence):
+        notes.append("reported lower: defect recorded")
     if case["reported_status"] != case["status"]:
         notes.append("proof audit pending")
     if case["conflicts"]:
@@ -274,6 +347,15 @@ def render_status(cases: list[dict], evidence: dict[str, dict]) -> str:
         ),
         "",
         (
+            "The verification origin says, lane by lane, who did the work behind each "
+            "verified bound, and for a published proof by others whether anyone here has "
+            "read it: a published proof counts whether or not it was read, and *not read "
+            "here* says only that this repository has not examined it. *Defect recorded* "
+            "marks a reported bound that stands on a proof whose reading here found a "
+            "defect, where no verified bound reaches its value."
+        ),
+        "",
+        (
             "Follow the `n` link for full provenance, numerical evidence, conflicts, "
             "and blockers. See [the frontier guide](README.md) for the contract and "
             "[`evidence.yaml`](evidence.yaml) for the typed evidence register."
@@ -292,7 +374,7 @@ def render_status(cases: list[dict], evidence: dict[str, dict]) -> str:
             f"{compact_bound(case['verified_upper_bound'])} | "
             f"{compact_bound(case['reported_lower_bound'])} | "
             f"{compact_bound(case['verified_lower_bound'])} | {case['status']} | "
-            f"{verification_origins(case, evidence)} | {case_disposition(case)} | "
+            f"{verification_origins(case, evidence)} | {case_disposition(case, evidence)} | "
             f"{case['source_reviewed']} |"
         )
     rows.extend(

@@ -3057,6 +3057,14 @@ def test_every_result_shows_its_status_and_its_place_on_the_frontier(
         render_recent_results.Supersession(in_part, ("T-060",)),
     )
     assert t060 in _row(results, "T-036")
+    # A superseding result that no replay has confirmed is named as a report, in the
+    # register's words (`Supersession.words`): T-044's mark names T-082, at C1, since
+    # 2026-10-06 as "T-082 (reported)".
+    t082 = f'<a href="{overview_sections.result_url("T-082")}">T-082</a> (reported)'
+    assert t082 in _row(results, "T-044")
+    (mark,) = by_id["T-044"].supersessions
+    shown = overview_sections.supersession_marks(by_id["T-044"])
+    assert html.unescape(re.sub(r"<[^>]+>", "", shown)) == mark.words()
     for second in ("T-054", "T-055"):
         assert by_id[second].record["kind"] == "simplification"
         assert "second certificate" not in _row(results, second), second

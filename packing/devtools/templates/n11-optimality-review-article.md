@@ -947,10 +947,15 @@ impossibility of a smaller packing.
 The same premises apply when $L_0=T$: a packing of side exactly $T$ also enters the cap,
 the symmetry lemma, capture and inclusion, and the local theorem then makes its aligned
 image the construction.
-So, conditional on the same complete exclusion and capture ensemble, every optimal
-packing is the construction up to the eight symmetries of the container and relabeling
-of the squares. The Squares Project registers only the optimality statement; the
-uniqueness corollary rests on the same evidence and has had no separate review.[^gpt6]
+So, on the same complete exclusion and capture ensemble, every optimal packing is the
+construction up to the eight symmetries of the container and relabeling of the
+squares.[^gpt6] The Squares Project registers this corollary separately as T-112. It
+rests on T-060’s evidence and adds no computation; its one new step, that each premise
+is stated for a side at most $T$, is prose.
+Trump called his packing rigid, meaning that no square can move; that is a local
+property, and no earlier source found states that the optimum is unique.
+Uniqueness is not automatic at a solved count: Stromquist gives three different optimal
+packings of ten squares.[^prior-unique]
 
 ## What Was Verified, and What the Verification Means
 
@@ -1003,8 +1008,13 @@ wand125 reports that the 76 prior-family cases and the 173 returned cases are al
 kernel-checked using only Lean’s standard axioms; an independent replay of the 173
 against the 11SquaresFormalized assembly is recorded in
 [an open pull request to that repository](https://github.com/Queuingtheorydotcom/11SquaresFormalized/pull/7),
-not merged as of October 4.[^lean] The Squares Project has reviewed neither
-formalization, and T-060’s rungs do not rest on them.
+not merged as of October 4.[^lean] On October 6 Queuingtheorydotcom reported the
+formalization in 11SquaresFormalized complete: 7,920 Lean modules with no admitted goal,
+its numerical certificates checked by `native_decide`, so that it trusts Lean’s compiler
+as well as its kernel.[^lean-done] The Squares Project’s statement audit of October 6
+reads its theorem, `ElevenSquare.optimality`, as exactly $s(11)=T$; the full run is
+private, so T-060 records it as the source’s report, and no rung rests on either
+formalization.
 
 The final composition receipt reconciles the completed geometric executions and their
 reviewed dependencies.
@@ -1278,7 +1288,27 @@ beside the accepted ones rather than in their place.
     [prior-family theorem](https://github.com/wand125/n11-optimality-lean/blob/112f91a0a0a30539472718b88e06e71f64d61694/lean/Sqpack/S11Opt/Split/U2Prior.lean)
     on the `split` branch of wand125/n11-optimality-lean, as committed on October 1,
     2026, which states the exclusion of all 76 cases with no baseline hypothesis.
-    The Squares Project has neither reviewed nor replayed either formalization.
+    The Squares Project has audited the statement of the 11SquaresFormalized theorem and
+    built its statement closure and upper half, and has replayed neither proof in full.
+
+[^prior-unique]: [Trump 2023](https://www.researchgate.net/publication/368988287), p. 2:
+    “The geometrical object is absolutely rigid, no unit square can be rotated or
+    translated”;
+    [Stromquist 1984, memorandum II](https://www.walterstromquist.com/papers/squares2.pdf),
+    p. 1: “Three different packings of ten unit squares in a square of side
+    $s = 3 + \sqrt{2}/2$”, which [Stromquist 2003](https://doi.org/10.37236/1701) proves
+    optimal (its Figure 1). The upstream proof states uniqueness only for the near
+    branch of its case 438, in
+    [§8](../../resources/web/n11-optimality-2026-09-29/source/PROOF.md#8-complete-case438-capture-and-the-exact-u-to-t-bridge),
+    and concludes $s_{11}=T$ in its §10.
+
+[^lean-done]: [The verification report of 6 October 2026](https://github.com/Queuingtheorydotcom/11SquaresFormalized/blob/cdc746ed907d258057c283aeb6d077cb2c27e349/docs/VERIFICATION_20261006.md)
+    in Queuingtheorydotcom/11SquaresFormalized, status
+    `OPTIMALITY_PROVED_WITH_NATIVE_CERTIFICATES`, which states that
+    `ElevenSquare.optimality` depends on `propext`, `Classical.choice`, `Quot.sound` and
+    13,308 axioms from approved `native_decide` certificate checks; and this project’s
+    [statement audit](../../../docs/project/reviews/review-2026-10-06-n11-lean-formalization-statement-audit.md)
+    of the theorem it states.
 
 [^reproduce]: [Reproduction guide and disclosed limits](../../resources/web/n11-optimality-2026-09-29/README.md#reproducing-the-independent-checks);
     [tooling overview](../../../docs/project/verification-tooling.md).

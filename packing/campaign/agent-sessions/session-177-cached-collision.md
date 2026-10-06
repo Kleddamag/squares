@@ -42,12 +42,12 @@ session:
     - packing/devtools/probe_n17_cached_collision.py
     - packing/tests/test_n17_cached_collision.py
     stop_reason: Source/control gate accepted before the sole profile.
-    next_action: ONE frozen mixed-corpus profile then independent root rational replay.
+    next_action: ONE frozen mixed-corpus profile then fresh root rational replay.
   - workflow: research-loop
     focus: correctness
     recording: contemporaneous
     clock_role: work
-    objective: ONE frozen B/J mixed-query profile with four backends/passes and independent rational
+    objective: ONE frozen B/J mixed-query profile with four backends/passes and fresh rational
       replay.
     status: stopped
     entered_by: evidence_checkpoint
@@ -62,7 +62,7 @@ session:
       finalization reserve.
     fallback: Retain B60 parent supports and J72 fixed tuple certificates; no backend adoption
       or search claim.
-    outcome: 371 mixed queries/1484 calls exact four-path agreement + independent 371 rational replay;
+    outcome: 371 mixed queries/1484 calls exact four-path agreement + fresh 371 rational replay;
       first-use 0.680193 s versus 0.574571 s rational fails frozen 80 percent/0.1 s; adapter-search
       retired, warm 0.117992 s descriptive only.
     evidence:
@@ -83,14 +83,14 @@ session:
   - ONE≤958 unique pairs/four passes≤4096 calls/30 s/512 MiB/Job 45; any mismatch/guard ends, no ladder.
   - Full strict frozen 5044 inventory/refs, canonical owner direction and both expected classes.
   - Cache/input immutability and unexpected-refusal propagation, pre/post time/RAM guards.
-  - Root fresh independent rational pass≤958/30 s/Job 45; no new cached/profile imports.
+  - Root fresh rational pass≤958/30 s/Job 45; no new cached/profile imports.
   - New matched search prerequisite first-use≤80 percent rational time and≥0.1 s saving; still requires
     next contract/gates.
   - No kernel/producer/raw/H/A/B edits; ≥15 min project reserve and 14:06:46Z outer reserve.
   progress:
     metric: Exact mixed answer agreement and first-use cost ratio
     before: Uncached B 100k pairs 142.535 s; cached primitive exists, diagnostic adapter not measured.
-    after: 371 mixed queries/1484 calls exact four-path agreement + independent 371 rational replay;
+    after: 371 mixed queries/1484 calls exact four-path agreement + fresh 371 rational replay;
       first-use 0.680193 s versus 0.574571 s rational fails frozen 80 percent/0.1 s; adapter-search
       retired, warm 0.117992 s descriptive only.
   delegations: []
@@ -105,9 +105,9 @@ session:
     SUCCESS; think-mkgr closed/synced.
   - Actual main 225d6, PR 307 at 1525 and scoped live ownership inspected; no cached diagnostic overlap.
     Own think-5sya claimed/synced.
-  - Sole primary/integrator plus root critical review/independent evidence; original B–J/G/I/A/B
+  - Sole primary/integrator plus root critical review/fresh-replay evidence; original B–J/G/I/A/B
     frozen.
-  - Root source/control and fresh independent rational verdict gate accepted; 25 controls/Ruff/types.
+  - Root source/control and fresh rational verdict gate accepted; 25 controls/Ruff/types.
     All 3 scientific Jobs exit 0, cleanup true, no errors.
   - Native aggregate ONCE exact start 2026-10-04T10:48:46.442294+00:00, cutoff 2026-10-04T11:10:40.260096+00:00,
     actual end 2026-10-04T11:10:43.340946+00:00; live/boundary lower bound; later publication/CI

@@ -1010,3 +1010,13 @@ objects:
   size: 10767
   sha256: 181c85ed26baa0fe550f6411ba359a0c408c2e16b7e687eb4f3095af8a236b4f
   description: kernel certificate of s182-m7844815 (session 182, lane A residue state, H-264)
+- path: packing/campaign/explorations/X048-session-168-pilots/certificates/s183-bc429-u31/node-589df15302016109b9e6dd39c78350174f3997da365dc4a6aef0130623d56cb7.json.gz
+  asset: node-589df15302016109b9e6dd39c78350174f3997da365dc4a6aef0130623d56cb7.json.gz
+  size: 20367822
+  sha256: 98591a45929d6bb0e5e7398a4cbb377d770688b22e26d572e617baee676be6f9
+  description: kernel certificate of s183-bc429-u31 (session 183, BC-429, BC-428's draw 31, H-275)
+- path: packing/campaign/explorations/X048-session-168-pilots/certificates/s183-bc429-u31/seed-e7c7c41d3ccd39d563d11fa1bf33e360c3ca834cdeb0cbb6c517301adc1fcf00.json.gz
+  asset: seed-e7c7c41d3ccd39d563d11fa1bf33e360c3ca834cdeb0cbb6c517301adc1fcf00.json.gz
+  size: 22494
+  sha256: 416512507190e2be953882afcdf492e4d9fab5c55021c64f30e885dd5223c520
+  description: kernel certificate of s183-bc429-u31 (session 183, BC-429, BC-428's draw 31, H-275)

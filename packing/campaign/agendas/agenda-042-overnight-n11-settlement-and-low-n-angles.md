@@ -2043,6 +2043,57 @@ agenda:
       review (docs/project/reviews/review-2026-10-06-exp-257-h275.md) confirmed the
       verdict with corrections; the round stopped on its clock and resumes at u31.
       Every non-closure's node is kept.
+  - id: BC-429
+    purpose: research
+    owner_focus: correctness
+    instances:
+    - 17
+    state: complete
+    priority: 1
+    question: >-
+      Is draw 31 of BC-428's frozen draw (mask 6015871, stratum c4/i>=5/d>=8), the one
+      state exp-257 never ran, excluded under SW9's frozen adaptive-row recipe within its
+      7,000 s ceiling?
+    hypotheses:
+    - H-275
+    budget: >-
+      One run of at most 7,000 s and, on a closure, one verification of at most 4,000 s,
+      on one worker, inside Session 183's deadline at 2026-10-06T17:07:43Z; a producer
+      still running at 16:57:43Z is stopped unless its ceiling ends before the deadline.
+    entry: >-
+      exp-257's verdict.resume_from, which names draw 31 under its recipe and command;
+      this cell, exp-258 and Session 183's record committed and pushed before the run.
+    exit: >-
+      The run's verdict as observed: a closure re-proved by the standing kernel verifier
+      in full and admitted, or a non-closure retained with its node kept; or the timebox,
+      recorded as stopped_by timebox with resume_from. A soundness alarm or a verifier
+      FAIL stops the slice.
+    bead: think-2pjf
+    depends_on:
+    - BC-428
+    next_evidence: packing/campaign/agent-sessions/session-183-n17-draw-31.md
+    workflows:
+    - research-loop
+    program: post-optimality-low-n
+    parallel_group: n17-overnight-182
+    artifacts:
+    - packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-258-h275-n17-draw-31.md
+    - packing/campaign/explorations/X048-session-182-overnight/kernel-targets-bc428.txt
+    - packing/campaign/explorations/X048-session-182-overnight/receipts/U
+    note: >-
+      BC-428's continuation at its one unrun draw, under BC-418. The state, the recipe
+      and the command are exp-257's unchanged: the 31st line of kernel-targets-bc428.txt
+      under --bins 64 --max-rounds 24 --hull-limit 16 --producer-share 0.6 --split-floor
+      512 --max-rows 1152 --split-patience 1 --max-seconds 7000, from the clean run
+      worktree at cebb5d15a, so BC-424's endpoint-state control and lane K's endpoint7
+      control cover it and no new control runs. Admission is the standard one: the
+      standing verifier's full pass and the census with the endpoint surviving. Evidence
+      record exp-258. Complete
+      with exp-258 accepted: draw 31 closed in 577 s of wall and 547 s of process CPU, the
+      standing verifier passed it in full in 266 s, and s183-bc429-u31 is admitted, the
+      census at 36,784 states in 4,685 orbits with the endpoint surviving. Every one of
+      BC-428's 31 draws now has a verdict; counted with exp-257's, 26 of 29 counted draws
+      closed.
 ---
 # Agenda 042: The n11 Settlement Ladder and Low-n Angles
 

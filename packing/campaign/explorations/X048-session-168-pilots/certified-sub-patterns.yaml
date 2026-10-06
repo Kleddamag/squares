@@ -841,3 +841,16 @@ entries:
     verification:
       receipt: packing/campaign/explorations/X048-session-168-pilots/certificates/s182-bc428-u29/verification.json
       verifier: kernel-streamed
+  - name: s183-bc429-u31
+    cells: [corner-SW, corner-SE, corner-NW, corner-NE, side-S0, side-N0, side-W0, side-S1, side-N1, side-E1, side-W2, side-E2, interior-SW, interior-NW, interior-S, interior-N, interior-SE]
+    certifier: kernel
+    # Session 183 BC-429 (H-275): BC-428's draw 31, stratum c4/i>=5/d>=8 (80 orbits), a whole
+    # 17-cell residue state closed with SW9's adaptive-row recipe in 577 s of wall from the
+    # clean run worktree at cebb5d15a. Admitted in exp-258 by the standing verifier's full pass there.
+    receipt: packing/campaign/explorations/X048-session-182-overnight/receipts/U/kernel-u31-bc429.json
+    certificate: packing/campaign/explorations/X048-session-168-pilots/certificates/s183-bc429-u31
+    status: admitted
+    evidence: packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-258-h275-n17-draw-31.md
+    verification:
+      receipt: packing/campaign/explorations/X048-session-168-pilots/certificates/s183-bc429-u31/verification.json
+      verifier: kernel-streamed

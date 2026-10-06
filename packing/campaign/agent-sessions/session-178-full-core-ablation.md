@@ -42,13 +42,13 @@ session:
     - packing/devtools/probe_n17_full_core_ablation.py
     - packing/tests/test_n17_full_core_ablation.py
     stop_reason: Root pretarget source/control GO before ONE B.
-    next_action: ONE fixed-E79 B target and independent root replay, honor nesting/growth early stops.
+    next_action: ONE fixed-E79 B target and fresh root replay, honor nesting/growth early stops.
   - workflow: research-loop
     focus: correctness
     recording: contemporaneous
     clock_role: work
     objective: ONE frozen full-interval fixed-E79 ablation with exact nesting first and root
-      independent fresh classification.
+      fresh classification.
     status: stopped
     entered_by: evidence_checkpoint
     switch_reason: Root source/control GO and current PR 333 head 9a8b4ef75, all required CI green.
@@ -56,17 +56,17 @@ session:
     started_at: '2026-10-04T11:49:22.688253+00:00'
     deadline_at: '2026-10-04T12:04:22.688253+00:00'
     expected_output: packing/campaign/explorations/X048-session-178-full-core-ablation/README.md
-    validation_command: Fixed full-core ablation≤1185 calls/45 s/512 MiB/Job 60; root fresh independent
+    validation_command: Fixed full-core ablation≤1185 calls/45 s/512 MiB/Job 60; root fresh replay
       under same bounds.
     kill_condition: ONE frozen 1185/45 s/512 MiB/Job 60 or nesting/zero-growth/monotonic contradiction
       stops attempt; no repeat.
     fallback: Retain C NO-GO, B60 supports/J72 fixed losses and immutable prior evidence; no comparison
       if nesting fails.
     outcome: All 96 full-augmentation strict positive growth/all 192 nesting; F71 of E79, H72 minus F only 58; 8 full survivors 21 sample
-      parents. Independent 1047 fresh pairs accepted; B60 retained, no row-negative/network equivalence.
+      parents. 1047 fresh pairs accepted; B60 retained, no row-negative/network equivalence.
     evidence:
     - packing\campaign\explorations\X048-session-178-full-core-ablation\README.md
-    stop_reason: ONE fixed-sample ablation and independent replay accepted; hosted certification
+    stop_reason: ONE fixed-sample ablation and fresh replay accepted; hosted certification
       remains explicit.
     next_action: Observe final metadata current-head CI and close/sync think-abit; a selective-halving
       certificate project requires a new frozen contract/claim/fetch/source gate. No D repeat.
@@ -82,14 +82,14 @@ session:
   - Exact 96 full strict cores, old containment and full core inside both H child cores; concrete
     failure stops comparison.
   - F subset J72 and all H7 survive; any contradiction stops soundness acceptance.
-  - Fresh root independent classification replay≤1185/45 s/Job 60 without new diagnostic imports.
+  - Fresh root classification replay≤1185/45 s/Job 60 without new diagnostic imports.
   - No raw/H/A/B/C/kernel/producer mutation, no row unsupported/global claim; 15 min reserve/outer 14:06:46Z.
   progress:
     metric: Full-interval lost tuple set F and J72 minus F
     before: H bundled halving/octagon loses 72 of E79; contribution of full-interval augmentation
       not separated.
     after: All 96 full-augmentation strict positive growth/all 192 nesting; F71 of E79, H72 minus F only 58; 8 full survivors 21 sample
-      parents. Independent 1047 fresh pairs accepted; B60 retained, no row-negative/network equivalence.
+      parents. 1047 fresh pairs accepted; B60 retained, no row-negative/network equivalence.
   delegations: []
   outputs:
   - packing/campaign/explorations/X048-session-178-full-core-ablation/README.md
@@ -102,9 +102,9 @@ session:
     SUCCESS; think-5sya closed/synced.
   - Actual main 225d6, PR 307 at 1525 and scoped live ownership inspected; no fixed-tuple full-interval
     overlap. think-abit claimed/synced.
-  - Sole primary/integrator and root critical review/independent evidence; original B–J/G/I/A/B/C
+  - Sole primary/integrator and root critical review/fresh-replay evidence; original B–J/G/I/A/B/C
     retained.
-  - Root source/control and independent fixed-sample replay accepted; 26 controls, Ruff, types,
+  - Root source/control and fresh fixed-sample replay accepted; 26 controls, Ruff, types,
     embedded-script and the endpoint's 225 fresh pairs PASS. Five Jobs exit 0 with cleanup true.
   - Native ONCE start 2026-10-04T11:34:51.316411+00:00, cutoff 2026-10-04T11:56:03.204643+00:00,
     actual end 2026-10-04T11:56:07.283634+00:00; live/boundary lower bound, later publication/CI excluded.
@@ -116,7 +116,7 @@ session:
   - 'full gate: fast at 3b5edcdd9a7c3f75344c2c16a161969ed62cfdb9: passed (hosted Packing validation
     run 37305598332 on PR 360, the rebuild of PR 352 on PR 347; this head carries the session''s
     work unchanged)'
-  stop_reason: ONE fixed-sample ablation and independent replay accepted; hosted certification
+  stop_reason: ONE fixed-sample ablation and fresh replay accepted; hosted certification
     remains explicit.
   next_action: Await Joshua's review of the rebuilt layer (PR 360) under think-q0z7.
     No active research executor or reserved follow-up; original intervals are historical.

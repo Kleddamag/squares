@@ -2,7 +2,7 @@
 
 # Agenda map
 
-417 agenda commitments across 39 agendas, as declared in each agenda's own frontmatter.
+418 agenda commitments across 39 agendas, as declared in each agenda's own frontmatter.
 Source of truth is [`agendas/`](agendas/); this view is regenerated, never edited.
 
 An agenda's queue owns priority ordering, so this map preserves each agenda's
@@ -10,7 +10,7 @@ order rather than imposing one across them.
 
 ## The short version
 
-- **18** in_progress, **25** ready, **21** tentative, **70** blocked, **65** stopped, **218** complete.
+- **18** in_progress, **25** ready, **21** tentative, **70** blocked, **65** stopped, **219** complete.
 
 - **27 blocked commitments carry a manual condition** (`BC-016`, `BC-025`, `BC-033`, `BC-050`, `BC-115`, `BC-170`, `BC-204`, `BC-205`, `BC-212`, `BC-207`, `BC-208`, `BC-209`, `BC-215`, `BC-217`, `BC-221`, `BC-238`, `BC-248`, `BC-270`, `BC-306`, `BC-337`, `BC-327`, `BC-329`, `BC-330`, `BC-358`, `BC-364`, `BC-365`, `BC-396`). Dependency edges alone cannot make these ready; each condition is named in the table below and must be explicitly cleared.
 
@@ -222,7 +222,7 @@ A commitment whose exit another agenda's commitment satisfied. Recorded as an ed
 | agenda-037 | active | 1 |  | 1 | 1 | 1 | 1 | 5 |
 | agenda-040 | active |  | 1 |  | 2 | 1 | 3 | 7 |
 | agenda-041 | active | 4 |  |  |  |  | 2 | 6 |
-| agenda-042 | active | 5 | 9 |  | 2 | 4 | 35 | 55 |
+| agenda-042 | active | 5 | 9 |  | 2 | 4 | 36 | 56 |
 
 ## By program
 
@@ -545,6 +545,7 @@ Open frontier: `BC-306`.
 | agenda-042 | `BC-426` | in_progress | Do BC-425's two round-cap stalls, targets 3 and 6, close under BC-423's recipe, the one that took… |
 | agenda-042 | `BC-427` | complete | Do the remaining standing flags of arity at most seven, the sixteen with the most projected gain… |
 | agenda-042 | `BC-428` | complete | What does per-state exclusion cost in the 21 strata of the arity8 frame that H-264's seed-182 draw… |
+| agenda-042 | `BC-429` | complete | Is draw 31 of BC-428's frozen draw (mask 6015871, stratum c4/i>=5/d>=8), the one state exp-257… |
 
 Open frontier: `BC-416`, `BC-418`, `BC-420`, `BC-422`, `BC-423`, `BC-426`.
 

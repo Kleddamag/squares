@@ -1,0 +1,159 @@
+{
+  "schema": "karakus-strip-measure/1",
+  "bead": "think-dw1o",
+  "source": "Karakuş 2026, arXiv:2609.37410v1, Section 5, Proposition 5.1",
+  "statement": "For a >= 2, b >= 3 and the strip measure mu, every closed square in [0, a] x [0, b] of side 1 < lambda <= 101/100 has mu(interior) > 1.",
+  "parameters": {
+    "tau": [
+      "0",
+      "5/12"
+    ],
+    "lambda": [
+      "1",
+      "101/100"
+    ],
+    "part_a_cut": [
+      "0",
+      "1"
+    ],
+    "part_b_depth": [
+      "0",
+      "3/7"
+    ],
+    "corner": {
+      "tau_max": "5/384",
+      "u_min": "63/64"
+    },
+    "line_density": "1/2",
+    "point_mass": "1/2",
+    "row_offset": "1/5",
+    "max_depth": 60
+  },
+  "parts": {
+    "A": {
+      "nodes": 11877,
+      "leaves": 5939,
+      "by_rule": {
+        "margin": 5933,
+        "area": 2,
+        "corner": 4
+      },
+      "max_depth": 34,
+      "tree": "SSSaSSSmSSSmSSSmSSSmSSSmcmSSmcSmcSmSmSSmcmSSmSSSmSSSmSSSmSSSmSSSmSSSmSmmSmSmmSSmSmmSmSmmSmSSSmSmmSmSmmSSmSmmSmSmmSSmSSSmSmmSmSmmSSmSmmSmSmmSmSSSmSmmSmSmmSSmSmmSmSmmSmSSSmSSSmSmmSmSmmSSmSmmSmSmmSmSSSmSmmSmSmmSSmSmmSmSmmSSmSSSmSmmSmSmmSSmSmmSmSmmSmSSSmSmmSmSmmSSmSmmSmSmmSSmSSSmSSSmSmmSmSmmSSmSmmSmSmmSmSSSmSmmSmSmmSSmSmmSmSmmSSmSSSmSmmSmSmmSSmSmmmSmSSSmSmmmmSmSSSmSSSmSmmSmSmmSSmSmmmSmSSSmSmmmmSSmSmmSmSmmSmSSSmSSSmSSSmSmmSmSmmSSmSmmSmSmmSmSSSmSmmSmSmmSSmSmmSmSmmSSmSSSmSmmSmSmmSSmSmmmSmSSSmSmmmmSmSSSmSSSmSmmSmSmmSSmSmmmSmSSSmSmmmmSSmSmmSmSmmSSmSSSmSmmSmSmmSSmSmmSmSmmSmSSSmSmmSmSmmSSmSmmSmSmmSSmSSSmSSSmSmmSmSmmSSmSmmSmSmmSmSSSmSmmSmSmmSSmSmmSmSmmSSmSSSmSmmSmSmmSSmSmmSmSmmSmSSSmSmmSmSmmSSmSmmSmSmmSmSSSmSSSmSmmSmSmmSSmSmmSmSmmSmSSSmSmmSmSmmSSmSmmSmSmmSSmSSSmSmmSmSmmSSmSmmSmSmmSmSSSmSmmSmSmmSSmSmmSmSmmSmSSSmSSSmSSSmSmmSmSmmSSmSmmSmSmmSmSSSmSmmSmSmmSSmSmmSmSmmSSmSSSmSmmSmSmmSSmSmmSmSmmSmSSSmSmmSmSmmSSmSmmSmSmmSmSSSmSSSmSmmSmSmmSSmSmmSmSmmSmSSSmSmmSmSmmSSmSmmSmSmmSSmSSSmSmmSmSmmSSmSmmSmSmmSmSSSmSmmSmSmmSSmSmmSmSmmSSmSSSmSSSmSmmSmSmmSSmSmmSmSmmSmSSSmSmmSmSmmSSmSmmSmSmmSSmSSSmSmmSmSmmSSmSmmSmSmmSmSSSmSmmSmSmmSSmSmmSmSmmSmSSSmSSSmSmmSmSmmSSmSmmSmSmmSmSSSmSmmSmSmmSSmSmmSmSmmSSmSSSmSmmSmSmmSSmSmmSmSmmSmSSSmSmmSmSmmSSmSmmSmSmmSSmSSSmSSSmSSSmSmmSmSmmSSmSmmSmSmmSmSSSmSmmSmSmmSSmSmmSmSmmSSmSSSmSmmSmSmmSSmSmmSmSmmSmSSSmSmmSmSmmSSmSmmSmSmmSmSSSmSSSmSmmSmSmmSSmSmmSmSmmSmSSSmSmmSmSmmSSmSmmSmSmmSSmSSSmSmmSmSmmSSmSmmSmSmmSmSSSmSmmSmSmmSSmSmmSmSmmSSmSSSmSSSmSmmSmSmmSSmSmmSmSmmSmSSSmSmmSmSmmSSmSmmSmSmmSSmSSSmSmmSmSmmSSmSmmSmSmmSmSSSmSmmSmSmmSSmSmmSmSmmSmSSSmSSSmSmmSmSmmSSmSmmSmSmmSmSSSmSmmSmSmmSSmSmmSmSmmSSmSSSmSmmSmSmmSSmSmmSmSmmSmSSSmSmmSmSmmSSmSmmSmSmmSmSSSmSSSmSSSmSmmSmSmmSSmSmmSmSmmSmSSSmSmmSmSmmSSmSmmSmSmmSSmSSSmSmmSmSmmSSmSmmSmSmmSmSSSmSmmSmSmmSSmSmmSmSmmSmSSSmSSSmSmmSmSmmSSmSmmSmSmmSmSSSmSmmSmSmmSSmSmmSmSmmSSmSSSmSmmSmSmmSSmSmmSmSmmSmSSSmSmmSmSmmSSmSmmSmSmmSSmSSSmSSSmSmmSmSmmSSmSmmSmSmmSmSSSmSmmSmSmmSSmSmmSmSmmSSmSSSmSmmSmSmmSSmSmmSmSmmSmSSSmSmmSmSmmSSmSmmmSmSSSmSSSmSmmSmSmmSSmSmmSmSmmSmSSSmSmmSmSmmSSmSmmSmSmmSSmSSSmSmmmmSmSmmSmSSSmSSSmSSSmSSSmSmmSmSmmSSmSmmSmSmmSmSSSmSmmSmSmmSSmSmmSmSmmSSmSSSmSmmSmSmmSSmSmmSmSmmSmSSSmSmmSmSmmSSmSmmSmSmmSmSSSmSSSmSmmSmSmmSSmSmmSmSmmSmSSSmSmmSmSmmSSmSmmSmSmmSSmSSSmSmmSmSmmSSmSmmSmSmmSmSSSmSmmSmSmmSSmSmmSmSmmSSmSSSmSSSmSmmSmSmmSSmSmmSmSmmSmSSSmSmmSmSmmSSmSmmSmSmmSSmSSSmSmmSmSmmSSmSmmSmSmmSmSSSmSmmSmSmmSSmSmmSmSmmSmSSSmSSSmSmmSmSmmSSmSmmSmSmmSmSSSmSmmSmSmmSSmSmmSmSmmSSmSSSmSmmSmSmmSSmSmmSmSmmSmSSSmSmmSmSmmSSmSmmSmSmmSmSSSmSSSmSSSmSmmSmSmmSSmSmmSmSmmSmSSSmSmmSmSmmSSmSmmSmSmmSSmSSSmSmmSmSmmSSmSmmSmSmmSmSSSmSmmSmSmmSSmSmmSmSmmSmSSSmSSSmSmmSmSmmSSmSmmSmSmmSmSSSmSmmSmSmmSSmSmmSmSmmSSmSSSmSmmSmSmmSSmSmmSmSmmSmSSSmSmmSmSmmSSmSmmSmSmmSSmSSSmSSSmSmmSmSmmSSmSmmSmSmmSmSSSmSmmSmSmmSSmSmmSmSmmSSmSSSmSmmSmSmmSSmSmmSmSmmSmSSSmSmmSmSmmSSmSmmSmSmmSmSSSmSSSmSmmSmSmmSSmSmmSmSmmSmSSSmSmmSmSmmSSmSmmSmSmmSSmSSSmSmmSmSmmSSmSmmSmSmmSmSSSmSmmSmSmmSSmSmmmSSmSSSmSSSmSSSmSmmSmSmmSSmSmmSmSmmSmSSSmSmmSmSmmSSmSmmSmSmmSSmSSSmSmmSmSmmSSmSmmSmSmmSmSSSmSmmSmSmmSSmSmmSmSmmSmSSSmSSSmSmmSmSmmSSmSmmSmSmmSmSSSmSmmSmSmmSSmSmmSmSmmSSmSSSmSmmSmSmmSSmSmmmSmSSSmSmmSmSmmmSSmSSSmSSSmSmmSmSmmmSmSSSmSmmmmSSmSmmSmSmmSmSSSmSmmSmSmmSSmSmmSmSmmSmSSSmSSSmSSSmSmmSmSmmSSmSmmSmSmmSmSSSmSmmSmSmmmSSmSmmSmSmmSmSSSmSSSmSmmmmSmSmmSSmSmmSmSmmSSmSSSmSmmSmSmmSSmSmmSmSmmSmSSSmSmmSmSmmSSmSmmSmSmmSSmSSSmSSSmSSSmSSSmSmmSmSmmSSmSmmSmSmmSmSSSmSmmSmSmmSSmSmmSmSmmSSmSSSmSmmSmSmmmSmSmmSmSSSmSSSmSmmSmSmmSSmSmmmSmSSSmSmmSmSmmmSSmSmmSmSmmSSmSSSmSmmSmSmmSSmSmmSmSmmSmSSSmSmmSmSmmSSmSmmSmSmmSmSSSmSSSmSmmSmSmmSSmSmmSmSmmSmSSSmSmmSmSmmSSmSmmSmSmmSSmSSSmSmmSmSmmSSmSmmSmSmmSmSSSmSmmSmSmmSSmSmmSmSmmSSmSSSmSSSmSmmSmSmmSSmSmmSmSmmSmSSSmSmmSmSmmSSmSmmSmSmmSSmSSSmSmmSmSmmSSmSmmSmSmmSmSSSmSmmSmSmmSSmSmmSmSmmSmSSSmSSSmSmmSmSmmSSmSmmSmSmmSmSSSmSmmSmSmmSSmSmmSmSmmSSmSSSmSmmSmSmmSSmSmmSmSmmSmSSSmSmmSmSmmSSmSmmSmSmmSmSSSmSSSmSSSmSmmSmSmmSSmSmmSmSmmSmSSSmSmmSmSmmSSmSmmSmSmmSSmSSSmSmmSmSmmSSmSmmSmSmmSmSSSmSmmSmSmmSSmSmmSmSmmSmSSSmSSSmSmmSmSmmSSmSmmSmSmmSmSSSmSmmSmSmmSSmSmmSmSmmSSmSSSmSmmSmSmmSSmSmmSmSmmSmSSSmSmmSmSmmSSmSmmSmSmmSSmSSSmSSSmSmmSmSmmSSmSmmSmSmmSmSSSmSmmSmSmmSSmSmmSmSmmSSmSSSmSmmSmSmmSSmSmmSmSmmSmSSSmSmmSmSmmSSmSmmSmSmmSmSSSmSSSmSmmSmSmmSSmSmmSmSmmSmSSSmSmmSmSmmSSmSmmSmSmmSSmSSSmSmmSmSmmSSmSmmSmSmmSmSSSmSmmSmSmmSSmSmmSmSmmSmSSSmSSSmSSSmSSSmSSSmSmmSmSmmSSmSmmSmSmmSmSSSmSmmSmSmmSSmSmmSmSmmSSmSSSmSmmSmSmmSSmSmmSmSmmSmSSSmSmmSmSmmSSmSmmSmSmmSmSSSmSSSmSmmmSSmSmmSmSmmSmSmSSmSmmSmSmmSSmSSSmSmmSmSmmSSmSmmSmSmmSmSSSmSmmSmSmmSSmSmmSmSmmSSmSSSmSSSmSmmSmSmmSSmSmmSmSmmSmSSSmSmmSmSmmSSmSmmSmSmmSSmSSSmSmmmmSmSmmSmSSSmSSSmSmmSmSmmmSmSmmSSmSmmSmSmmSmSSSmSmSSmSSSmSmmSmSmmmSmSmmmSSmSSSmSmmSmSmmSSmSmmSmSmmSmSSSmSmmSmSmmSSmSmmSmSmmSSmSSSmSSSmSmmSmSmmSSmSmmSmSmmSmSSSmSmmSmSmmSSmSmmSmSmmSSmSSSmSmmSmSmmSSmSmmSmSmmSmSSSmSmmSmSmmSSmSmmSmSmmSmSSSmSSSmSmmSmSmmSSmSmmSmSmmSmSSSmSmmSmSmmSSmSmmSmSmmSSmSSSmSmmSmSmmSSmSmmSmSmmSmSSSmSmmSmSmmSSmSmmSmSmmSmSSSmSmSSmSSSmSmmmSSmSmmSmSmmSmSmSSmSmmSmSmmmSSmSSSmSSSmSmmSmSmmSSmSmmSmSmmSmSSSmSmmSmSmmSSmSmmSmSmmSSmSSSmSmmSmSmmSSmSmmSmSmmSmSSSmSmmSmSmmSSmSmmSmSmmSmSSSmSSSmSmmSmSmmSSmSmmSmSmmSmSmSSmSmmSmSmmSSmSSSmSmmSmSmmSSmSmmSmSmmSmSSSmSmmSmSmmSSmSmmSmSmmSSmSSSmSSSmSSSmSmmSmSmmSSmSmmSmSmmSmSSSmSmmSmSmmSSmSmmSmSmmSSmSSSmSmmSmSmmSSmSmmSmSmmSmSSSmSmmSmSmmSSmSmmSmSmmSmSSSmSSSmSmmSmSmmSSmSmmSmSmmSmSSSmSmmSmSmmSSmSmmSmSmmSSmSSSmSmmSmSmmSSmSmmSmSmmSmSSSmSmmSmSmmSSmSmmSmSmmSSmSSSmSSSmSmmSmSmmSSmSmmSmSmmSmSSSmSmmSmSmmSSmSmmSmSmmSSmSSSmSmmSmSmmSSmSmmSmSmmSmSSSmSmmSmSmmSSmSmmmSmSSSmSSSmSmmSmSmmSSmSmmSmSmmSmSSSmSmmSmSmmSSmSmmSmSmmSSmSSSmSmmSmSmmmSmSSmmmSmSSSmSSSmSSSmSmmSmSmmSSmSmmSmSmmSmSSSmSmmSmSmmSSmSmmSmSmmSSmSSSmSmmSmSmmSSmSmmSmSmmSmSSSmSmmSmSmmSSmSmmSmSmmSmSSSmSSSmSmmSmSmmSSmSmmSmSmmSmSSSmSmmSmSmmSSmSmmSmSmmSSmSSSmSmmSmSmmSSmSmmSmSmmSmSSSmSmmSmSmmSSmSmmSmSmmSSmSSSmSSSmSmmSmSmmSSmSmmSmSmmSmSSSmSmmSmSmmmSSmSmmSmSmmSmSSSmSSSmSmmmmSmSmmSSmSmmSmSmmSmSmSSmSSSmSmSSmSSSmSmSSmSmmmmSSmSSSmSmmSmSmmSSmSmmSmSmmSmSSSmSmmSmSmmSSmSmmSmSmmSmSmSSmSmSSmSmmSmSmmSmSmSSmSmmSmSmmmSSmSSSmSSSmSSSmSmmSmSmmSSmSmmSmSmmSmSSSmSmmSmSmmSSmSmmSmSmmSSmSSSmSmmSmSmmmSmSSSmSmmmmSmSSSmSSSmSmmSmSmmSSmSmmSmSmmSmSSSmSmmSmSmmSmmSSmSmmSmSmmSSmSSSmSmmSmSmmSSmSmmSmSmmSmSSSmSmmSmSmmSSmSmmSmSmmSmSSSmSSSmSSSmSmmmmSmSmmSSmSmmSmSmmSmSSSmSmmmSSmSmmSmSmmSSmSSSmSmmSmSmmSSmSmmSmSmmSmSSSmSmmSmSmmSSmSmmSmSmmSmSmSSmSSSmSmSSmSmmSmSmmSmSmSSmSmmmSSmSSSmSmmSmSmmSSmSmmSmSmmSmSSSmSmmSmSmmSSmSmmSmSmmSmSmSSmSSSmSmmSmSmmSSmSmmSmSmmSmSSSmSmmmSSmSmmSmSmmSSmSSSmSSSmSSSmSSSmSSSmSmmSmSmmSSmSmmSmSmmSmSSSmSmmSmSmmSSmSmmSmSmmSSmSSSmSmmSmSmmSSmSmmSmSmmSmSSSmSmmSmSmmSSmSmmSmSmmSmSSSmSSSmSmmSmSmmSSmSmmSmSmmSmSSSmSmmSmSmmSSmSmmSmSmmSSmSSSmSmmSmSmmSmmSmSSSmSmmSmSmmmSSmSSSmSSSmSmmmmSmSmmSSmSmmSmSmmSmSSSmSmmSmSmmSSmSmmSmSmmSmSSSmSSSmSSSmSmmSmSmmSSmSmmSmSmmSmSSSmSmmSmSmmSSmSmmSmSmmSSmSmmSmSmmSmSSSmSSSmSmmSmSmmmSmSSSmSmmmmSSmSmmSmSmmSSmSSSmSmmSmSmmSSmSmmSmSmmSmSSSmSmmSmSmmSSmSmmSmSmmSSmSSSmSSSmSmmSmSmmSSmSmmSmSmmSmSSSmSmmSmSmmSSmSmmSmSmmSSmSSSmSmmSmSmmSSmSmmSmSmmSmSSSmSmmSmSmmSSmSmmSmSmmSmSSSmSSSmSmmSmSmmSSmSmmSmSmmSmSSSmSmmSmSmmSSmSmmSmSmmSSmSSSmSmmSmSmmSSmSmmSmSmmSmSSSmSmmSmSmmSSmSmmSmSmmSmSSSmSSSmSSSmSmmSmSmmSSmSmmSmSmmSmSSSmSmmSmSmmSSmSmmSmSmmSSmSSSmSmmSmSmmSSmSmmSmSmmSmSSSmSmmSmSmmSSmSmmSmSmmSmSSSmSSSmSmmSmSmmSSmSmmSmSmmSmSSSmSmmSmSmmSSmSmmSmSmmSSmSSSmSmmSmSmmSSmSmmSmSmmSmSSSmSmmSmSmmSSmSmmSmSmmSSmSSSmSSSmSmmSmSmmSSmSmmSmSmmSmSSSmSmmSmSmmSSmSmmSmSmmSSmSSSmSmmSmSmmSSmSmmSmSmmSmSSSmSmmSmSmmSSmSmmSmSmmSmSSSmSSSmSmmSmSmmSSmSmmSmSmmSmSSSmSmmSmSmmSSmSmmSmSmmSSmSSSmSmmSmSmmSSmSmmSmSmmSmSSSmSmmSmSmmmSSmSSSmSSSmSSSmSmmSmSmmSSmSmmSmSmmSmSSSmSmmSmSmmSSmSmmSmSmmSSmSmmSmSmmSmSSSmSSSmSmmSmSmmmSmSSSmSmmSmSmmmSSmSmmSmSmmSSmSSSmSmmSmSmmSSmSmmSmSmmSmSSSmSmmSmSmmSSmSmmSmSmmSmSSSmSSSmSSSmSmmmmSmSmmSSmSmmSmSmmSmSSSmSmmSmSmmSSmSmmSmSmmSSmSSSmSmmSmSmmSSmSmmSmSmmSmSSSmSmmSmSmmSSmSmmSmSmmSmSSSmSSSmSSSmSSSmSmmSmSmmSSmSmmSmSmmSmSSSmSmmSmSmmSSmSmmSmSmmSSmSSSmSmmSmSmmSSmSmmSmSmmSmSSSmSmmSmSmmSSmSmmSmSmmSmSSSmSSSmSmmSmSmmSSmSmmSmSmmSmSSSmSmmSmSmmSSmSmmSmSmmSSmSSSmSmmSmSmmSSmSmmSmSmmSmSSSmSmmSmSmmSSmSmmSmSmmSSmSSSmSSSmSmmSmSmmSSmSmmSmSmmSmSSSmSmmSmSmmSSmSmmSmSmmSSmSSSmSmmSmSmmmSmSSmmmSmSSSmSSSmSmmSmSmmSSmSmmSmSmmSmSSSmSmmSmSmmSSmSmmmSSmSmmSmSmmSmSSSmSSSmSSSmSmmSmSmmSSmSmmSmSmmSmSSSmSmmSmSmmSSmSmmSmSmmSSmSSSmSmmSmSmmSSmSmmSmSmmSmSSSmSmmSmSmmSSmSmmSmSmmSmSSSmSSSmSmmSmSmmSSmSmmSmSmmSmSSSmSmmSmSmmSSmSmmSmSmmSSmSSSmSmmSmSmmSSmSmmSmSmmSmSSSmSmmSmSmmSSmSmmSmSmmSSmSSSmSSSmSmmSmSmmmSmSSSmSmmmmSSmSmmSmSmmSmSSSmSmmSmSmmSSmSmmSmSmmSSmSSSmSSSmSmmSmSmmSSmSmmSmSmmSmSSSmSmmSmSmmSSmSmmSmSmmSSmSSSmSmmSmSmmSSmSmmSmSmmSmSSSmSmmSmSmmSSmSmmSmSmmSmSSSmSSSmSmmSmSmmSSmSmmSmSmmSmSSSmSmmSmSmmSSmSmmSmSmmSSmSSSmSmmSmSmmSSmSmmSmSmmSmSSSmSmmSmSmmSSmSmmSmSmmSmSSSmSmSSmSmSSmSmSSmSmSSmSmmSmSmmSmSmSSmSmmmmmmSSmSSSmSSSmSSSmSSSmSmmSmSmmSSmSmmSmSmmSmSSSmSmmSmSmmSSmSmmSmSmmSSmSSSmSmmSmSmmmSmSSSmSmmSmSmmmSmSSSmSSSmSmmSmSmmSSmSmmSmSmmSmSSSmSmmSmSmmSSmSmmSmSmmSSmSmmSmSmmSSmSSSmSmmSmSmmSSmSmmSmSmmSmSSSmSmmSmSmmSSmSmmSmSmmSmSSSmSSSmSmmSmSmmSSmSmmSmSmmSmSmSSmSmmSmSmmSSmSSSmSmmSmSmmSSmSmmSmSmmSmSSSmSmmSmSmmSSmSmmSmSmmSSmSSSmSSSmSmmSmSmmSSmSmmSmSmmSmSSSmSmmSmSmmSSmSmmSmSmmSSmSSSmSmmSmSmmSSmSmmSmSmmSmSSSmSmmSmSmmSSmSmmSmSmmSmSSSmSSSmSmmSmSmmSSmSmmSmSmmSmSSSmSmmSmSmmSSmSmmSmSmmSSmSSSmSmmSmSmmSSmSmmmSmSSSmSmmSmSmmmSmSSSmSSSmSmSSmSmmSmSmmSmSmSSmSmmSmSmmSSmSSSmSmmSmSmmSSmSmmSmSmmSmSSSmSmmSmSmmSSmSmmSmSmmSmSmSSmSSSmSmmSmSmmSSmSmmSmSmmSmSSSmSmmSmSmmSSmSmmSmSmmSSmSSSmSSSmSmmSmSmmSSmSmmSmSmmSmSSSmSmmSmSmmSSmSmmSmSmmSSmSSSmSmmSmSmmmSmSSSmSmmmmSmSSSmSSSmSmmSmSmmSSmSmmSmSmmSmSSSmSmmSmSmmSSmSmmSmSmmSSmSmmSmSmmSSmSSSmSSSmSSSmSSSmSmmSmSmmSSmSmmSmSmmSmSSSmSmmSmSmmSSmSmmSmSmmSSmSSSmSmmSmSmmmSmSSSmSmmmmSmSSSmSSSmSmmSmSmmSSmSmmSmSmmSmSSSmSmmSmSmmSSmSmmSmSmmSSmSmmSmSmmSSmSSSmSmmSmSmmSSmSmmSmSmmSmSSSmSmmSmSmmSSmSmmSmSmmSmSSSmSSSmSSSmSmmSmSmmSSmSmmmSmSSSmSmmSmSmmmSSmSmmSmSmmSmSSSmSSSmSmmSmSmmmSmSSSmSmmmmSSmSmmSmSmmSSmSSSmSmmSmSmmSSmSmmSmSmmSmSSSmSmmSmSmmSSmSmmSmSmmSSmSSSmSSSmSmmSmSmmSSmSmmSmSmmSmSSSmSmmSmSmmSmmSSmSmmSmSmmSmSSSmSSSmSmmSmSmmmSmSSSmSmmSmSmmmSSmSmmSmSmmSmSSSmSSSmSSSmSmmSmSmmSSmSmmSmSmmSmSSSmSmmSmSmmSSmSmmSmSmmSSmSSSmSmmSmSmmSSmSmmSmSmmSmSSSmSmmSmSmmSSmSmmSmSmmSmSSSmSSSmSmmSmSmmSSmSmmSmSmmSmSSSmSmmSmSmmSSmSmmSmSmmSSmSSSmSmmSmSmmSSmSmmSmSmmSmSSSmSmmSmSmmSSmSmmSmSmmSSmSSSmSSSmSmmSmSmmmSmSmmSSmSmmSmSmmSmSSSmSmmSmSmmSSmSmmSmSmmSmSSSmSmSSmSSSmSmSSmSSSmSmmmSSmSmmSmSmmSmSmSSmSmmSmSmmSmSmSSmSmSSmSmmSmSmmSmSmSSmSmmSmSmmSSmSSSmSSSmSmmSmSmmSSmSmmmSmSSSmSmmSmSmmmSSmSmmSmSmmSmSSSmSSSmSmmSmSmmmSmSmmSSmSmmSmSmmSmSmSSmSSSmSmmSmSmmSSmSmmSmSmmSmSSSmSmmSmSmmSSmSmmSmSmmSmSmSSmSmSSmSSSmSmmSmSmmSSmSmmSmSmmSmSSSmSmmmSSmSmmSmSmmSmSmSSmSmSSmSmmSmSmmSmSmSSmSmmSmSmmSSmSSSmSSSmSSSmSmmSmSmmSSmSmmSmSmmSmSSSmSmmSmSmmSSmSmmSmSmmSSmSSSmSmmSmSmmSSmSmmmSmSSSmSmmSmSmmmSmSSSmSSSmSmmSmSmmSSmSmmSmSmmSmSSSmSmmSmSmmSSmSmmSmSmmSSmSSSmSmmSmSmmmSmSSSmSmmSmSmmmSSmSSSmSmmSmSmmSSmSmmSmSmmSmSSSmSmmSmSmmSSmSmmSmSmmSmSSSmSSSmSSSmSmmSmSmmSSmSmmSmSmmSmSSSmSmmSmSmmSSmSmmSmSmmSSmSSmmmSmSmmSmSSSmSSSmSmmSmSmmSSmSmmSmSmmSmSSSmSmmSmSmmSSmSmmSmSmmSSmSmmSmSmmSSmSSSmSmmSmSmmSSmSmmSmSmmSmSSSmSmmSmSmmSSmSmmSmSmmSSSmSSmmSmmSSSmSSSmSSSmSmmSmSmmSSmSmmSmSmmSmSSSmSmmSmSmmSSmSmmSmSmmSSmSmmSmSmmSmSSSmSSSmSmmSmSmmSmmSmSSSmSmmSmSmmmSSmSmmSmSmmSSmSSSmSmmSmSmmmSmSSSmSmmSmSmmmSSmSSmmSmmSSSmSSSmSSSmSmmSmSmmmSmSSSmSmmSmSmmmSSmSmmSmSmmSmSSSmSSSmSmmmmSmSmmSSmSmmSmSmmSSmSSSmSmmSmSmmmSmSSSmSmmmmSmSSSmSSSmSmSSmSmSSmSmSSmSmmSmSmmSmSmSSmSmmmmmSSmSSSmSSSmSSSmSmmSmSmmmSmSSSmSmmSmSmmmSSmSmmSmSmmSmSSSmSSSmSmmSmSmmmSmSSSmSmmmmSSmSmmSmSmmSSmSSSmSmmSmSmmSSmSmmSmSmmSmSSSmSmmSmSmmSSmSmmSmSmmSmSSSmSSSmSmmSmSmmSSmSmmSmSmmSmSSSmSmmSmSmmSSmSmmSmSmmSSmSSSmSmmSmSmmSSmSmmSmSmmSmSSSmSmmSmSmmSmmSmSmSSmSSSmSSSmSmmSmSmmSSmSmmSmSmmSmSSSmSmmSmSmmSSmSmmSmSmmSSmSSSmSmmSmSmmmSmSSSmSmmSmSmmmSmSSSmSmSSmSmmSmSmmSmSmSSmSmmSmSmmSSmSSSmSmmSmSmmmSmSSSmSmmSmSmmmSSSmSSmmSmmSSSmSSSmSmmSmSmmSSmSmmSmSmmSmSSSmSmmSmSmmSSmSmmSmSmmSSmSmmSmSmmSSmSSmmSmmSSSmSSSmSmmSmSmmSSmSmmSmSmmSmSSSmSmmSmSmmSSmSmmSmSmmSSmSmmSmSmmSSaSSSSSSmSmSSmmSmmSmSmSSmmSmmSSmSSSmmSmmmSmSSSmmSmmmSSSmSmmSmSmmmSSSSmSmSSmmSmmSmSmSSmmSmmSSmSSSmmSmmmmSSSmSmmSmSmmmSSmmSmmSmSSSSSSmSmSSmmSmmSmSmSSmmSmmmSSSmSmmmmSSSSmSmSSmmSmmSmSmSSmmSmmmSmmSSmmSmm"
+    },
+    "B": {
+      "nodes": 1,
+      "leaves": 1,
+      "by_rule": {
+        "area": 1
+      },
+      "max_depth": 0,
+      "tree": "a"
+    }
+  },
+  "identities": [
+    "C_L is the integral of v/p",
+    "C_P continues C_L along the plateau lambda/M",
+    "C_T continues C_P to lambda^2",
+    "the profile is continuous at lambda m",
+    "the profile is continuous at lambda M",
+    "E_L",
+    "E_P",
+    "E_T",
+    "cell P: F - 1 = Phi + (lambda/M)(1 - u)",
+    "cell P: 2M Phi",
+    "cell T: 2p (F - 1) at g = lambda h - 1",
+    "cell T: F - 1 = (g^2 + 2 line g - 2p (1 - point)) / (2p)",
+    "2p = h^2 - (m^2 + M^2)",
+    "(cos, sin) is a rotation",
+    "cos falls on tau > 0",
+    "sin rises on [0, 1)",
+    "h rises exactly while tau^2 + 2 tau - 1 < 0",
+    "p rises exactly while tau^2 + 2 tau - 1 < 0 (tau^2 - 2 tau - 1 < 0 on [0, 1])",
+    "cos >= sin exactly while tau^2 + 2 tau - 1 <= 0",
+    "Corollary 6.2: t^2 - (t - k) = N"
+  ],
+  "profile_spot_checks": 212,
+  "corollaries": {
+    "T-083": {
+      "n_values": 301,
+      "first": 8,
+      "last": 323
+    },
+    "T-084": {
+      "n_values": [
+        8,
+        15,
+        24,
+        35,
+        48,
+        63,
+        80,
+        99,
+        120,
+        143,
+        168,
+        195,
+        224,
+        255,
+        288,
+        323
+      ]
+    }
+  },
+  "controls": [
+    {
+      "name": "point mass 49/100",
+      "certifier": "refused",
+      "found_by_search": {
+        "tau": "5/3072",
+        "lambda": "12801/12800",
+        "u": "127/128",
+        "value": "90911584864507/90952007680000"
+      },
+      "witness": {
+        "tau": "0",
+        "lambda": "1001/1000",
+        "u": "1"
+      },
+      "mutated_value": "991501/1000000",
+      "karakus_value": "1001501/1000000"
+    },
+    {
+      "name": "line density 49/100",
+      "certifier": "refused",
+      "found_by_search": {
+        "tau": "5/3072",
+        "lambda": "12801/12800",
+        "u": "127/128",
+        "value": "90911508989051/90952007680000"
+      },
+      "witness": {
+        "tau": "0",
+        "lambda": "1001/1000",
+        "u": "1"
+      },
+      "mutated_value": "991491/1000000",
+      "karakus_value": "1001501/1000000"
+    },
+    {
+      "name": "point rows at height 3/5",
+      "certifier": "refused",
+      "found_by_search": {
+        "tau": "655/6144",
+        "lambda": "51201/51200",
+        "u": "155/256",
+        "value": "97829536773569031/97831383203840000"
+      },
+      "witness": {
+        "tau": "2/5",
+        "lambda": "1001/1000",
+        "u": "17/20"
+      },
+      "mutated_value": "744003881/840000000",
+      "karakus_value": "1164003881/840000000"
+    }
+  ],
+  "recorded_utc": "2026-10-06T08:19:26Z",
+  "cpu_seconds": 3.7
+}

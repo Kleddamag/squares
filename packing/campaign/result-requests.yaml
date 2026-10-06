@@ -1182,7 +1182,7 @@ issues:
           mixed_n66_L842 = 421/50 (T-069), which it supersedes
         source: https://github.com/jlevy/squares/issues/282#issuecomment-5990620723
         register: [T-097]
-    beads: [think-ye2x, think-fb6h, think-09ag, think-r7yt, think-wpuu, think-e6ss, think-07s1, think-wrdq, think-0xb8, think-flv5, think-4qit, think-8qo9]
+    beads: [think-ye2x, think-fb6h, think-09ag, think-r7yt, think-wpuu, think-0uia, think-e6ss, think-07s1, think-wrdq, think-0xb8, think-flv5, think-4qit, think-8qo9]
     answer_bead: think-7gop
     replies:
       - url: https://github.com/jlevy/squares/issues/282#issuecomment-5972354526

@@ -239,6 +239,8 @@ action for each are in [`frontier/RESULTS.md`](packing/frontier/RESULTS.md); the
 | [T-095](packing/frontier/RESULTS.md) | 12 | `V3` | `C3` | `S3` | `previously-published` | s(12) >= 7943/2000 = 3.9715, by squarepacker (Ryu Sungjoon) after Evan Daniel and this project’s Route B (T-079), published on 5 October 2026 as release v1.1 of squarepacker/s12-lower-bound and reported on jlevy/squares#363. |
 | [T-096](packing/frontier/RESULTS.md) | 18 | `V3` | `C3` | `S3` | `previously-published` | A rectangle density of wand125/square-packing-bounds, checked at coverage one on a net it declares and published on 5 October 2026, proves s(18) >= 47/10 = 4.7. |
 | [T-097](packing/frontier/RESULTS.md) | 66 | `V3` | `C3` | `S3` | `previously-published` | A rectangle density of wand125/square-packing-bounds, checked at coverage one and published on 5 October 2026, after those of T-094, proves s(66) >= 843/100 = 8.43. |
+| [T-099](packing/frontier/RESULTS.md) | 18 | `V3` | `C3` | `S3` | `previously-published` | A rectangle density of wand125/square-packing-bounds, checked at coverage one on a net it declares and published on 6 October 2026, proves s(18) >= 588/125 = 4.704. |
+| [T-100](packing/frontier/RESULTS.md) | 19 | `V3` | `C3` | `S3` | `previously-published` | A rectangle density of wand125/square-packing-bounds, checked at coverage one on a net it declares and published on 6 October 2026, proves s(19) >= 48229/10000 = 4.8229. |
 | [T-036](packing/frontier/RESULTS.md) | 11 | `V3` | `C2` | `S3` | `apparently-novel` | Every packing of eleven unit squares in a square container, six at orientation 0 and five sharing one orientation modulo pi/2 with half-tangent in [91442076901/250000000000, 73154061521/200000000000] (an interval containing [t* - 10^-6, t* + 10^-6] for Trump’s exact half-tangent t*), has container side at least U = 3.877083590022814 …, the exact side of Trump’s packing, and a packing in the family has side exactly U only if it is a quarter-turn image of Trump’s pose with the squares relabelled within the two classes. |
 | [T-007](packing/frontier/RESULTS.md) | 4-100 | `V0` | `C1` | `S3` | `previously-published` | For every integer 4 <= N <= 100, Nagamochi 2005, Theorem 2 gives s(N) >= min(ceil(sqrt(N)), sqrt(N - 2*floor(sqrt(N)) + 1) + 1). |
 | [T-068](packing/frontier/RESULTS.md) | 19, 20, 26, 27, 28, 29, 30, 31, 38, 39, 40, 41, 42, 43, 44, 53, 54, 55, 56, 66, 68, 69, 70, 74, 75, 76, 86, 87, 88, 89, 90, 93, 94, 95 | `V0` | `C1` | `S3` | `previously-published` | wand125/square-packing-bounds reports a higher standing rectangle-density certificate at each of 34 counts from n = 19 to n = 95, published between 29 September and 1 October 2026. |
@@ -299,7 +301,7 @@ hypothesis status and summarizes experiment verdicts, and the
 | Explorations | 47 | 28 linked to proposed hypotheses; 19 uncodified |
 | Hypotheses | 209 | 45 confirmed; 33 refuted; 63 blocked; 19 unresolved; 9 open; 35 open questions; 2 result registered; 2 abandoned; 0 running; 1 exhausted |
 | Experiments | 186 | 61 accepted; 38 rejected; 58 unresolved; 12 baseline; 11 blocked; 4 abandoned; 1 in progress; 1 exhausted |
-| Frontier results | 98 | 98 registered, 69 by others |
+| Frontier results | 100 | 100 registered, 71 by others |
 
 <!-- END CURRENT-RESEARCH-STATUS -->
 
@@ -575,6 +577,7 @@ case or experiment separately.
 | [review-2026-10-06-evand-exact-optima.md](docs/project/reviews/review-2026-10-06-evand-exact-optima.md) | dated review record | record | retained | — |
 | [Fix Check: The Review of T-098, Evan Daniel’s Exact Optima](docs/project/reviews/review-2026-10-06-evand-exact-optima-fix-check.md) | dated review record | record | retained | — |
 | [Proof Review: Guzhou0806’s R071, `s(17) > 18641771/4000000 = 4.66044275`](docs/project/reviews/review-2026-10-05-guzhou-r071.md) | dated review record | record | retained | — |
+| [Review: wand125’s `s(18) ≥ 588/125` and `s(19) ≥ 48229/10000` on Declared Nets (T-099, T-100)](docs/project/reviews/review-2026-10-06-wand125-finer-net-n18-n19.md) | dated review record | record | retained | — |
 | [wand125’s `s(18) ≥ 47/10` on a Declared Net and `s(66) ≥ 843/100`: Review of T-096, T-097 and the sqverify-fast Declared-Net Change](docs/project/reviews/review-2026-10-05-wand125-declared-net-n18-n66.md) | dated review record | record | retained | — |
 | [sqverify-fast on `main` (`d97758bb…`): Soundness Re-Review of the Declared-Net Change](docs/project/reviews/review-2026-10-06-sqverify-fast-declared-net-soundness.md) | dated review record | record | retained | — |
 | [sqverify-fast Declared Nets: Re-Check of the Fixes for DR-1 to DR-3 (`36b52538a`) and the Proposed Flip](docs/project/reviews/review-2026-10-06-sqverify-fast-declared-net-fix-check.md) | dated review record | record | retained | — |

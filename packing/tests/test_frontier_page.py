@@ -362,7 +362,7 @@ def test_a_closed_form_carries_its_decimal_and_the_decimal_is_the_exact_value(
         '<span class="site-approx">= 3.9715</span>'
     )
     assert frontier.bound_approx_html(cases[18]["reported_lower_bound"]) == (
-        '<span class="site-approx">= 4.7</span>'
+        '<span class="site-approx">= 4.704</span>'
     )
     assert frontier.bound_approx_html(cases[5]["reported_upper_bound"]) == (
         '<span class="site-approx">≈ 2.70710678…</span>'

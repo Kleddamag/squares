@@ -257,8 +257,10 @@ def test_superseded_is_marked_on_a_bound_and_where_a_later_result_is_declared() 
     # on 6 October, when the evening certificates of 4 October (T-091), decided the same
     # way as T-094, superseded T-072 at n = 76, its one count; forty-two when Evan
     # Daniel's exact optima (T-098) took the last counts of Couzo's first certificates
-    # (T-057) and his second (T-092), the first upper bounds here to be superseded.
-    assert len(derived) == 42
+    # (T-057) and his second (T-092), the first upper bounds here to be superseded;
+    # forty-three when wand125's certificate on a finer declared net (T-099) took n = 18,
+    # the one count T-096 held.
+    assert len(derived) == 43
     assert {
         "T-020", "T-021", "T-030", "T-043", "T-044", "T-047", "T-049", "T-057", "T-072",
         "T-078", "T-079", "T-087", "T-092",
@@ -282,8 +284,11 @@ def test_superseded_is_marked_on_a_bound_and_where_a_later_result_is_declared() 
         assert by, entry
         assert entry not in by, entry
     assert view.superseding(records.results["T-037"], records) == ("T-060",)
+    # T-019's counts are held now by R071's replay at n = 17 (T-093) and by wand125's
+    # certificates of 6 October at n = 18 and 19 (T-099, T-100), which took both lanes
+    # there from T-096, T-074 and T-068.
     assert view.position_marks(records.results["T-019"], view.SUPERSEDED, records) == [
-        "superseded by T-068, T-074, T-093 and T-096"
+        "superseded by T-093, T-099 and T-100"
     ]
     # Only a bound supersedes: at n = 13 and 46 a correction and an audit carry the
     # lower bound's evidence beside the optimality results that hold it.

@@ -20,6 +20,8 @@ there.
 | Certificate | n | Format | Status | Directions | Nodes | Least certified bound | Exact leaf | CPU s, all directions | Load | Replayed directions | Authors’ CPU s | Ours, same directions | Ratio | Control |
 | --- | ---: | --- | --- | ---: | ---: | --- | --- | ---: | ---: | --- | ---: | ---: | ---: | --- |
 | `mixed_n18_L470` | 18 | M | VERIFIED | 416 | 37,882,813 | 1.0000000000740676 | clears | 168.3 | 12.5 | all 416 | - | - | - | - |
+| `mixed_n18_L4704` | 18 | M | VERIFIED | 832 | 115,091,221 | 1.000000001132137 | clears | 701.7 | 5.3 | none: first complete check here | - | - | - | CONTROLS_REFUSED |
+| `mixed_n19_L48229` | 19 | M | VERIFIED | 416 | 75,232,113 | 1.000000000833015 | clears | 512.1 | 4.4 | none: first complete check here | - | - | - | CONTROLS_REFUSED |
 | `mixed_n37_L644` | 37 | M | VERIFIED | 201 | 49,002,652 | 1.000000001365918 | clears | 621.1 | 1.8 | all 201 | 18,462 | 620.9 | 30x | - |
 | `mixed_n50_L7318` | 50 | M | VERIFIED | 201 | 25,730,280 | 1.0000000022689954 | clears | 176.6 | 5.4 | none: first complete check here | - | - | - | - |
 | `mixed_n50_L735` | 50 | L | VERIFIED | 201 | 62,847,662 | 1.0000000002563805 | clears | 647.1 | 12.0 | none: first complete check here | - | - | - | - |
@@ -56,7 +58,7 @@ there.
 | `mixed_n96_L996` | 96 | M | VERIFIED | 201 | 26,793,520 | 1.000000000121414 | clears | 456.4 | 2.1 | all 201 | 8,758 | 456.2 | 19x | - |
 | `mixed_n101_L1028` | 101 | L | VERIFIED | 201 | 53,145,987 | 1.000000000300333 | clears | 128.4 | 4.0 | all 201 | 27,669 | 128.0 | 216x | - |
 
-36 of 36 certificates verified; 49668 CPU seconds in all.
+38 of 38 certificates verified; 50882 CPU seconds in all.
 
 <!-- This document follows common-doc-guidelines.md.
 See github.com/jlevy/practical-prose and review guidelines before editing.

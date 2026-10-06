@@ -1,0 +1,66 @@
+{
+  "format": "external-source-declaration-v1",
+  "id": "wand125-mixed-bounds",
+  "source_url": "https://github.com/wand125/square-packing-bounds",
+  "source_ref": "refs/heads/main",
+  "source_commit": "65e408c9fa6bb787b6744c7c479ec19551a15016",
+  "retrieved_at_utc": "2026-10-06T02:47:00Z",
+  "git_scope": "A blobless clone of the single public branch with its history, sparsely checked out at this commit: the two claim directories and the verification/ directory added by it, and the three root files. Every file under those three directories is digested, with the three root files; the rest of the tree is pinned by the commit.",
+  "archived_dir": "square-packing-bounds",
+  "license": "MIT, Copyright (c) 2026 wand125 (root LICENSE)",
+  "claims": [
+    "s(18) >= 588/125 (certificates/mixed_n18_L4704)",
+    "s(19) >= 48229/10000 (certificates/mixed_n19_L48229)"
+  ],
+  "scope": [
+    "README.md",
+    "LICENSE",
+    ".gitignore",
+    "certificates/mixed_n18_L4704",
+    "certificates/mixed_n19_L48229",
+    "verification"
+  ],
+  "pinned_only": [
+    {
+      "match": "LICENSE",
+      "reason": "retained byte-identical by the 2026-09-27 rectangle packet",
+      "identical_to": "packing/resources/web/wand125-rectangle-certificates-2026-09-27/wand125-rectangles/LICENSE"
+    },
+    {
+      "match": ".gitignore",
+      "reason": "a retained .gitignore would act on this repository's tree; the 2026-10-01 packet README quotes it"
+    },
+    {
+      "match": "certificates/mixed_*/*-proof-bundle.tar.gz",
+      "reason": "complete proof bundle (31.8 and 24.2 MB)"
+    },
+    {
+      "match": "certificates/mixed_n19_L48229/code/*",
+      "reason": "byte-identical to the mixed_n50_L740/code/ file of the same name, retained by the 2026-09-28 packet",
+      "identical_to": "packing/resources/web/wand125-point-and-mixed-2026-09-28/square-packing-bounds/certificates/mixed_n50_L740/code"
+    },
+    {
+      "match": "certificates/mixed_n18_L4704/code/[!v]*",
+      "reason": "byte-identical to the mixed_n50_L740/code/ file of the same name, retained by the 2026-09-28 packet",
+      "identical_to": "packing/resources/web/wand125-point-and-mixed-2026-09-28/square-packing-bounds/certificates/mixed_n50_L740/code"
+    },
+    {
+      "match": "certificates/mixed_n18_L4704/code/verify_[ar]*",
+      "reason": "byte-identical to the mixed_n50_L740/code/ file of the same name, retained by the 2026-09-28 packet",
+      "identical_to": "packing/resources/web/wand125-point-and-mixed-2026-09-28/square-packing-bounds/certificates/mixed_n50_L740/code"
+    },
+    {
+      "match": "certificates/mixed_*/requirements.txt",
+      "reason": "byte-identical to mixed_n50_L740/requirements.txt, retained by the 2026-09-28 packet",
+      "identical_to": "packing/resources/web/wand125-point-and-mixed-2026-09-28/square-packing-bounds/certificates/mixed_n50_L740/requirements.txt"
+    },
+    {
+      "match": "certificates/*/verification/*.gz",
+      "reason": "an upstream gzip file, which the archive cannot retain beside its own compression: the input the source's sqverify-net run and controls read, re-derivable from the retained candidate"
+    },
+    {
+      "match": "verification/**",
+      "reason": "the source's adaptation of this repository's sqverify_fast to a declared net, sqverify-net; not retained, so that no copy of it sits in the tree beside the crate whose declared-net change was written apart from it (packing/sqverify_fast/INDEPENDENCE.md, Declared Nets)"
+    }
+  ]
+}

@@ -879,8 +879,9 @@ RECORDED_LINKS: dict[tuple[int, str], tuple[list[str], list[str]]] = {
     # This project's own bound, established rather than confirmed, was T-030's until
     # 2026-10-02 (`test_a_novel_first_party_bound_cites_this_project_and_its_result` keeps
     # that shape); then wand125's rectangle bound, which T-045 replays, until 2026-10-05;
-    # since then its mixed bound on a declared net, which T-096 replays.
-    (18, "lower"): (["T-096"], ["T-096"]),
+    # then its mixed bound on a declared net, which T-096 replays, until 2026-10-06; since
+    # then its bound on a finer declared net, which sqverify-fast decides (T-099).
+    (18, "lower"): (["T-099"], ["T-099"]),
 }
 
 

@@ -25,8 +25,8 @@ Follow the `n` link for full provenance, numerical evidence, conflicts, and bloc
 | [`15`](n-015.md) | `4` | `4` | `4.0` | `4` | proved | replayed here, external proof | — | 2026-09-07 |
 | [`16`](n-016.md) | `4` | `4` | `4.0` | `4` | proved | replayed here | — | 2026-08-24 |
 | [`17`](n-017.md) | `4.67553009360455` | `23377650468022754758171074269267527/5000000000000000000000000000000000` | `18641771/4000000` | `18641771/4000000` | open | audited here, replayed here | — | 2026-10-05 |
-| [`18`](n-018.md) | `(7/2) + (1/2)√7` | `(7/2) + (1/2)√7` | `47/10` | `47/10` | open | replayed here | — | 2026-10-01 |
-| [`19`](n-019.md) | `3 + (4/3)√2` | `3 + (4/3)√2` | `1927/400` | `1927/400` | open | replayed here | — | 2026-10-01 |
+| [`18`](n-018.md) | `(7/2) + (1/2)√7` | `(7/2) + (1/2)√7` | `588/125` | `588/125` | open | replayed here | — | 2026-10-01 |
+| [`19`](n-019.md) | `3 + (4/3)√2` | `3 + (4/3)√2` | `48229/10000` | `48229/10000` | open | replayed here | — | 2026-10-01 |
 | [`20`](n-020.md) | `5` | `5` | `49/10` | `1959/400` | open | replayed here | formal lower differs from report | 2026-10-05 |
 | [`21`](n-021.md) | `5` | `5` | `5` | `5` | proved | replayed here | — | 2026-09-28 |
 | [`22`](n-022.md) | `5` | `5` | `5.0` | `5` | proved | replayed here, external proof | — | 2026-08-25 |

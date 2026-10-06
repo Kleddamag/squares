@@ -1,0 +1,31 @@
+{
+  "kind": "wand125-declared-net-sample/v1",
+  "certificate": "mixed_n19_L48229",
+  "status": "SAMPLE_REPLAYED",
+  "nodes": [0,1,37,104,208,312,411],
+  "workers": 2,
+  "started": "2026-10-06T03:00:05Z",
+  "ended": "2026-10-06T03:07:48Z",
+  "rows": [
+    {"index":0,"status":"AXIS_CERTIFICATE_REPLAYED","cells":4717584,"integer_minimum":1.0026527162381171,"upstream":{"status":"AXIS_CERTIFICATE_REPLAYED","digest":"68706528d7bc3d2f3c9743d9ceb8c91d4fe70b05599b2a9056228165077ffd14","cells":4717584,"gamma":"1","integer_minimum":1.0026527162381171,"scope":"Net angle zero only, no full packing certification."},"matches_upstream":true,"wall_seconds":20.186274759999833,"cpu_seconds":19.881146},
+    {"index":1,"status":"ANGLE_RESULT_REPLAYED","nodes":146439,"lower":1.000000195382917,"upstream_nodes":146439,"upstream_lower":1.000000195382917,"upstream_seconds":49.370997108,"matches_upstream":true,"wall_seconds":55.44433899499995,"cpu_seconds":44.918892},
+    {"index":37,"status":"ANGLE_RESULT_REPLAYED","nodes":137151,"lower":1.0000000005351664,"upstream_nodes":137151,"upstream_lower":1.0000000005351664,"upstream_seconds":38.181336448,"matches_upstream":true,"wall_seconds":62.54357213800017,"cpu_seconds":49.655277000000005},
+    {"index":104,"status":"ANGLE_RESULT_REPLAYED","nodes":138139,"lower":1.000000817203356,"upstream_nodes":138139,"upstream_lower":1.000000817203356,"upstream_seconds":50.248057666,"matches_upstream":true,"wall_seconds":85.43950632399992,"cpu_seconds":65.63544100000001},
+    {"index":208,"status":"ANGLE_RESULT_REPLAYED","nodes":194751,"lower":1.0000005197902908,"upstream_nodes":194751,"upstream_lower":1.0000005197902908,"upstream_seconds":101.747583648,"matches_upstream":true,"wall_seconds":160.22069434200012,"cpu_seconds":137.110814},
+    {"index":312,"status":"ANGLE_RESULT_REPLAYED","nodes":204409,"lower":1.0000004127972966,"upstream_nodes":204409,"upstream_lower":1.0000004127972966,"upstream_seconds":114.928808005,"matches_upstream":true,"wall_seconds":170.31633077000015,"cpu_seconds":156.44679200000002},
+    {"index":411,"status":"ANGLE_RESULT_REPLAYED","nodes":234219,"lower":1.000000033306986,"upstream_nodes":234219,"upstream_lower":1.000000033306986,"upstream_seconds":205.222705118,"matches_upstream":true,"wall_seconds":217.85388325100007,"cpu_seconds":185.73286900000002}
+  ],
+  "sample_cpu_seconds": 659.4,
+  "candidate_digest": "68706528d7bc3d2f3c9743d9ceb8c91d4fe70b05599b2a9056228165077ffd14",
+  "wall_seconds": 462.50506619399994,
+  "bundle_records": {"oblique_records":415,"gammas":["1"],"statuses":["ANGLE_VERIFIED"],"axis_status":"AXIS_VERIFIED","frontier_boxes":0,"nodes":75131365,"least_lower":1.0000000005351664,"upstream_oblique_seconds":42239.314903072,"upstream_axis_seconds":14.056444488000125},
+  "upstream_oblique_seconds_total": 42239.314903072,
+  "sample_cpu_over_upstream_seconds": 1.1425775772873281,
+  "estimated_full_oblique_cpu_hours": 13.40602613561904,
+  "scope": "The source's per-angle replay functions and unchanged C++ checker on the listed indices, after the full driver's preconditions; not a complete replay.",
+  "tarball": {"name":"n19-L4.8229-proof-bundle.tar.gz","sha256":"03aeca45921bcb8fd0be2f4869fb98e596cad673758c79022d337b8ad9629c54","bytes":24197004},
+  "binding": {"status":"BUNDLE_BOUND_TO_PACKET_AND_NET","listed_files":1267,"code_files":10},
+  "environment": {"OPENBLAS_NUM_THREADS":"1","OMP_NUM_THREADS":"1","PYTHONOPTIMIZE":null},
+  "host": {"platform":"Linux-6.18.44-fc-v70-x86_64-with-glibc2.39","cpu":"Intel(R) Xeon(R) Processor @ 2.80GHz","logical_cpus":4,"python":"3.14.7 (main, Sep 29 2026, 15:01:40) [Clang 22.1.3 ]","c++":"c++ (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0","rustc":"rustc 1.97.0 (2d8144b78 2026-07-07)","cargo":"cargo 1.97.0 (c980f4866 2026-06-30)"},
+  "loadavg_end": [7.5224609375,5.54736328125,3.24609375]
+}

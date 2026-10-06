@@ -592,18 +592,20 @@ REVIEWED_SOURCES: dict[str, ReviewedSource] = {
     # main's crate at 910b6b12c (34e87a86b): the declared net of format M (proof_net,
     # lemma N0, f007d7afd) with the fixes of the 5 October declared-net review's DN-2,
     # DN-4 to DN-6 and DN-9 (910b6b12c). Its soundness review of 6 October read the whole
-    # diff from e020eb1e2 and accepted the crate; for standard-net certificates at once,
-    # and for a declared net once the control's evaluator reads that net (its DR-1) and
-    # the fix has been read.
+    # diff from e020eb1e2 and accepted the crate for standard-net certificates, and for a
+    # format M certificate on a declared net once the control's evaluator read that net
+    # (its DR-1, fixed at 36b52538a with DR-2 and DR-3) and the fix had been read, which
+    # the same day's re-check did:
+    # docs/project/reviews/review-2026-10-06-sqverify-fast-declared-net-fix-check.md.
     "d97758bbc9639edc70b8bd7dc83106d4e8d1be034bacb3e88f8c539b88091c88": ReviewedSource(
         commit="910b6b12c",
         review=DECLARED_NET_REVIEW,
         statement=(
-            "the crate source at 910b6b12c, the source of 4ddf37d9c with the declared net of "
-            "format M (proof_net, SOUNDNESS.md lemma N0) and its review fixes, which the "
-            f"soundness review {DECLARED_NET_REVIEW} read in full and accepted"
+            "the crate source at 910b6b12c: the source of e020eb1e2 (7c49cf79...) with the "
+            "declared net of format M (proof_net, SOUNDNESS.md lemma N0) and its review fixes, "
+            f"a diff the soundness review {DECLARED_NET_REVIEW} read in full and accepted"
         ),
-        declared_nets=False,
+        declared_nets=True,
     ),
 }
 
@@ -677,11 +679,16 @@ def evidence_entry(
     built = str((entry.get("build") or {}).get("source_sha256", ""))
     reviewed = reviewed_source(entry)
     declared = premises.get("net_origin") == "proof_net"
-    if reviewed is None or (declared and not reviewed.declared_nets):
+    if reviewed is None:
         raise SystemExit(
             f"{case.certificate}: built from crate source {built[:8]}..., which no review "
-            + ("of the declared net " if reviewed is not None else "")
-            + "accepted (REVIEWED_SOURCES); rebuild from reviewed source and re-run the row"
+            "accepted (REVIEWED_SOURCES); rebuild from reviewed source and re-run the row"
+        )
+    if declared and not reviewed.declared_nets:
+        raise SystemExit(
+            f"{case.certificate}: a declared net, built from crate source {built[:8]}..., "
+            "whose review did not read the declared net; no review of the declared net "
+            "accepted it (REVIEWED_SOURCES)"
         )
     receipt = json.loads((out / case.packet / f"{case.certificate}.control.json").read_text())
     if entry.get("status") != "VERIFIED" or receipt.get("status") != "CONTROLS_REFUSED":
@@ -1188,8 +1195,11 @@ def source_digest() -> int:
     """`--source-digest`: the tree's crate digest and the review that accepted it, if any."""
     digest = crate_source_sha256()
     reviewed = REVIEWED_SOURCES.get(digest)
+    scope = (
+        "standard and declared nets" if reviewed and reviewed.declared_nets else "standard net"
+    )
     print(
-        f"{digest} reviewed source ({reviewed.commit}; {reviewed.review})"
+        f"{digest} reviewed source for the {scope} ({reviewed.commit}; {reviewed.review})"
         if reviewed is not None
         else f"{digest} not reviewed source: no entry of REVIEWED_SOURCES"
     )

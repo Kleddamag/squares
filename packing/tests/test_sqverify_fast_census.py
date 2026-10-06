@@ -61,8 +61,10 @@ REVIEWED_SOURCES = frozenset(
         # f007d7afd) with the fixes of the 5 October declared-net review's DN-2, DN-4 to
         # DN-6 and DN-9 (910b6b12c). The soundness review of 6 October
         # (review-2026-10-06-sqverify-fast-declared-net-soundness.md) read the whole diff
-        # from e020eb1e2 and accepted it, for standard-net certificates at once; a row on
-        # a declared net needs `declared_nets` in `census.REVIEWED_SOURCES` too.
+        # from e020eb1e2 and accepted it for standard-net certificates, and for format M on
+        # a declared net once its finding DR-1 (the control's evaluator on the standard
+        # step) was fixed and the fix read, which the re-check of the same day did. So the
+        # declared-net path is reviewed source too (`declared_nets`).
         "d97758bbc9639edc70b8bd7dc83106d4e8d1be034bacb3e88f8c539b88091c88",
     }
 )
@@ -342,7 +344,7 @@ def test_each_reviewed_source_names_the_review_that_accepted_it() -> None:
     # The only source whose review read the declared-net path is main's at 910b6b12c.
     assert {
         digest for digest, source in census.REVIEWED_SOURCES.items() if source.declared_nets
-    } <= {"d97758bbc9639edc70b8bd7dc83106d4e8d1be034bacb3e88f8c539b88091c88"}
+    } == {"d97758bbc9639edc70b8bd7dc83106d4e8d1be034bacb3e88f8c539b88091c88"}
 
 
 def test_an_evidence_entry_names_the_reviewed_build_its_row_was_made_from() -> None:
@@ -361,7 +363,7 @@ def test_an_evidence_entry_names_the_reviewed_build_its_row_was_made_from() -> N
 
 
 def test_an_evidence_entry_refuses_a_row_built_from_unreviewed_source() -> None:
-    """mixed_n18_L470's row was built at f007d7afd, a source no review accepted."""
+    """mixed_n18_L470's row was built at f007d7afd, a source not in REVIEWED_SOURCES."""
     name = DECLARED
     assert entries()[name]["build"]["source_sha256"] not in REVIEWED_SOURCES
     with pytest.raises(SystemExit, match="no review accepted"):
@@ -451,6 +453,30 @@ def test_the_net_conditions_admit_the_declared_net_only_on_a_source_that_read_it
     assert net_problems(raw, {**premises, "D": "83/40000"}, read_it) == [
         "D is the declared step",
     ]
+    # One variant per remaining condition (finding FC-4 of the 6 October re-check).
+    shapes = (
+        {**net, "count": 415},
+        {**net, "offset": "1/2002"},
+        {"step": net["step"]},
+    )
+    for shape in shapes:
+        assert net_problems({**raw, "proof_net": shape}, premises, read_it) == [
+            "proof_net is not exactly step and an integer last"
+        ], shape
+    stretched = {**raw, "proof_net": {**net, "last": 2000}}
+    assert "(d) the last tangent at most 1/2" in net_problems(stretched, premises, read_it)
+    one_node = {**raw, "proof_net": {**net, "last": 0}}
+    assert "(a) D > 0 and 2 <= N <= 2^16" in net_problems(one_node, premises, read_it)
+    restated = {**raw, "certificate": {"D": "2/2002", "angle_count": 416}}
+    assert net_problems(restated, premises, read_it) == []
+    changed = {**raw, "certificate": {"D": "1/1000"}}
+    assert net_problems(changed, premises, read_it) == ["metadata only restates the net"]
+    for key, value, problem in (
+        ("net_origin", "standard", "net_origin proof_net"),
+        ("angle_count", 417, "angle_count is last + 1"),
+        ("B", "9977/10000", "B is the file's"),
+    ):
+        assert net_problems(raw, {**premises, key: value}, read_it) == [problem], key
 
 
 def test_the_exact_evaluator_reads_a_declared_net() -> None:

@@ -27,6 +27,7 @@ documents:
   - {path: docs/project/reviews/review-2026-10-05-guzhou-r071.md, role: review, authority: record, lifecycle: retained}
   - {path: docs/project/reviews/review-2026-10-05-wand125-declared-net-n18-n66.md, role: review, authority: record, lifecycle: retained}
   - {path: docs/project/reviews/review-2026-10-06-sqverify-fast-declared-net-soundness.md, role: review, authority: record, lifecycle: retained}
+  - {path: docs/project/reviews/review-2026-10-06-sqverify-fast-declared-net-fix-check.md, role: review, authority: record, lifecycle: retained}
   - {path: docs/project/reviews/review-2026-10-05-s12-v11-certificate.md, role: review, authority: record, lifecycle: retained}
   - {path: docs/project/reviews/review-2026-10-03-n11-gpt6-pro-review-integration.md, role: review, authority: record, lifecycle: retained}
   - {path: docs/project/reviews/review-2026-10-03-n11-optimality-paper-adversarial.md, role: review, authority: record, lifecycle: retained}

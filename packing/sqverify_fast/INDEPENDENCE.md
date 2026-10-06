@@ -255,6 +255,20 @@ black boxes.
 On this crate: `cargo build`, `cargo test`, `cargo clippy`, `cargo fmt`, and
 `packing-validate --only "measure verifier Rust"`.
 
+## The Declared Net Reviewed, 6 October 2026
+
+The soundness review of 6 October
+(`docs/project/reviews/review-2026-10-06-sqverify-fast-declared-net-soundness.md`) read
+the whole crate diff from `e020eb1e2` and accepted the crate at `910b6b12c`. It opened
+no `code/` folder or `proof/verify.cpp`. Its findings DR-1 to DR-3 were in the census
+driver and in the exact evaluator of `devtools/check_sqverify_fast.py`, which the
+controls use and which decide nothing.
+Lane R1 of the 2026-10-06 intake fixed them there and changed no source file of this
+crate (none that `source_sha256` covers).
+That lane had read the 5 October declared-net review whole, including the section on the
+source’s code that lane B skipped, and is recorded in `independence-record.yaml` for
+that reason. The relation of this crate to the source’s checker is unchanged.
+
 <!-- This document follows common-doc-guidelines.md.
 See github.com/jlevy/practical-prose and review guidelines before editing.
 -->

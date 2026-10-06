@@ -5,19 +5,17 @@ title: "Reply on #295 (T-007, Nagamochi Lemma 1 false): the follow-up after PR #
 kind: task
 status: closed
 priority: 1
-version: 12
+version: 13
 delegate: claude-code@vm
 labels:
   - result-import
   - packing
-dependencies:
-  - type: blocks
-    target: is-01m3yrzmzcpq964zt2kr14w8jv
+dependencies: []
 parent_id: is-01m41csdc2gp36ry5p6n7c2x2y
 hold: null
 hold_until: null
 created_at: 2026-10-02T07:40:23.784Z
-updated_at: 2026-10-06T17:02:06.742Z
+updated_at: 2026-10-06T22:27:20.726Z
 started_at: 2026-10-05T03:21:49.383Z
 closed_at: 2026-10-06T17:02:06.742Z
 close_reason: "Done and on main via #382 (d087422ed); reply posted 2026-10-06 and recorded"

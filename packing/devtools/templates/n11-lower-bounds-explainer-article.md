@@ -25,7 +25,9 @@ the squares to rotate but not to overlap in their interiors.
 Write $L$ for the exact value below.
 We prove
 
-<p class="centred"><span class="tex-d">s(11) \;\ge\; L = {{CURRENT_BOUND_TEX}} = {{CURRENT_BOUND_DEC}}.</span></p>
+$$
+s(11) \;\ge\; L = {{CURRENT_BOUND_TEX}} = {{CURRENT_BOUND_DEC}}.
+$$
 
 Thus eleven unit squares cannot fit in any square whose side is smaller than $L$. This
 is T-026’s historical lower bound, explained in this v0.4 proof edition.
@@ -790,6 +792,10 @@ in Memo III (private communication, September 2026). His suggestion prompted a
 
 ## Further Reading
 
+- **The $n = 11$ series**, in reading order: Part I, this paper;
+  [Part II]({{PAPER:n11-threshold-bound-review}}), a review of Kleddamag’s proof of
+  $s(11) \gt 31/8$ (T-037); and [Part III]({{PAPER:n11-optimality-review}}), a review of
+  the proof that Trump’s packing is optimal (T-060).
 - **Papers and sources**
   - Friedman’s survey: an introduction to the problem and its literature.[^survey]
   - Stromquist’s geometric proofs for ten and eleven

@@ -359,31 +359,31 @@ def _roadmap() -> str:
         + _text(
             450,
             151,
-            "For the lower bound, assume S < T",
+            "For the lower bound, assume L₀ < T",
             note=True,
             anchor="middle",
         )
-        + _card(170, "Assume S < T", "The same packing sits inside cap U > T")
+        + _card(170, "Assume L₀ < T", "The same packing sits inside cap U > T")
         + _down_arrow(240)
         + _card(263, "Classify center patterns", "16 closed cells; 2,184 case classes")
         + _down_arrow(333)
-        + _card(356, "Exclude, then use symmetry", "2,180 excluded; D4 leaves case 438")
+        + _card(356, "Exclude, then use symmetry", "2,180 excluded; D₄ leaves case 438")
         + _down_arrow(426)
         + _card(449, "Capture, align, include", "Packing enters fixed-T rectangle")
         + _down_arrow(519)
         + _card(
             542,
             "Apply fixed-T local isolation",
-            "Only the witness remains; span T > S",
+            "Only the witness remains; span T > L₀",
             accent=True,
         )
-        + _text(450, 642, "No packing has S < T; hence s(11) = T", anchor="middle")
+        + _text(450, 642, "No packing has L₀ < T; hence s(11) = T", anchor="middle")
     )
     return _svg(
         "roadmap",
         "Two routes to the exact eleven-square optimum",
         "The exact Trump witness gives the upper bound. For the lower bound, assume a "
-        "packing with side S smaller than T. Exact case classification, exclusion, "
+        "packing with side L₀ smaller than T. Exact case classification, exclusion, "
         "symmetry, capture, fixed-T pose inclusion and local isolation force the same "
         "packing to be the witness of span T, a contradiction. Counts are case "
         "classes, not numbers of packings. The diagram summarizes accepted premises "
@@ -438,11 +438,11 @@ def _endpoint() -> str:
         f'<rect x="105" y="158" width="180" height="180" fill="none" '
         f'stroke="{ACCENT}" stroke-width="3" stroke-dasharray="8 5"/>'
         + _text(195, 109, "Rational cap U > T", anchor="middle")
-        + _text(195, 256, "packing in S < T", anchor="middle")
+        + _text(195, 256, "packing in L₀ < T", anchor="middle")
         + f'<path d="M345 243h185" fill="none" stroke="{MUTED}" stroke-width="2"/>'
         + f'<path d="M520 235l12 8-12 8" fill="none" stroke="{MUTED}" '
         'stroke-width="2"/>'
-        + _text(437, 187, "Undo field frame B", note=True, anchor="middle")
+        + _text(437, 187, "Undo file scale", note=True, anchor="middle")
         + _text(437, 216, "rigidly align", note=True, anchor="middle")
         + _text(437, 286, "No physical shrinking", note=True, anchor="middle")
         + f'<rect x="575" y="118" width="260" height="260" fill="none" '
@@ -461,17 +461,17 @@ def _endpoint() -> str:
         + _down_arrow(430)
         + _text(450, 477, "Fixed-T local theorem forces witness", anchor="middle")
         + _down_arrow(488)
-        + _text(450, 538, "Witness spans T > S: contradiction", anchor="middle")
+        + _text(450, 538, "Witness spans T > L₀: contradiction", anchor="middle")
     )
     return _svg(
         "endpoint",
         "Why a smaller container contradicts the exact witness span",
-        "A hypothetical packing P in side S less than T is centered inside the "
-        "larger rational cap U. Undoing the field coordinate conversion and then "
+        "A hypothetical packing P in side L₀ less than T is centered inside the "
+        "larger rational cap U. Undoing the file-coordinate scale and then "
         "rigidly aligning it places the same physical unit squares inside the "
         "fixed-T container. Checked capture and pose inclusion put P in the local "
         "rectangle, where the fixed-T local theorem forces the exact Trump witness. "
-        "That witness spans T in both directions, so it cannot fit inside side S. "
+        "That witness spans T in both directions, so it cannot fit inside side L₀. "
         "The drawn container gaps are schematic and not to scale; no claim of "
         "uniqueness for all optimal packings is made.",
         width=900,

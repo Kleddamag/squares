@@ -44,6 +44,7 @@ name: Certificate page
       - packing/tests/test_pdf_math_browser.py
       - packing/tests/probes/pdf_math_browser/**
       - packing/tests/probes/render_n11_optimality_review/**
+      - packing/tests/probes/render_n11_threshold_bound_review/**
       - packing/devtools/sans_instances.py
       - packing/devtools/check_print_layout.py
       - packing/devtools/inspect_n11_lower_bounds_explainer_typography.py
@@ -123,6 +124,25 @@ name: Certificate page
       - packages/workbench/**
       - packing/devtools/check_published_site.py
       - packing/devtools/pages_scope.py
+      - packing/devtools/paper_links.py
+      - packing/devtools/render_n11_threshold_bound_review.py
+      - packing/devtools/n11_threshold_figures.py
+      - packing/devtools/paper_figures.py
+      - packing/devtools/paper_terms.py
+      - packing/devtools/templates/n11-threshold-bound-review-article.md
+      - packing/devtools/templates/n11-threshold-bound-review-shell.html
+      - packing/devtools/templates/n11-threshold-bound-review.css
+      - packing/devtools/templates/n11-threshold-bound-review-terms.yaml
+      - packing/devtools/templates/n11-series-terms.yaml
+      - packing/resources/web/external-square-certificates-2026-09-22/kleddamag-11/**
+      - packing/resources/web/wand125-tools-2026-09-29/receipts/n11-bound-full.jsonl.gz
+      - packing/campaign/agent-sessions/session-153-native-full.rows.jsonl
+      - packing/resources/web/external-square-certificates-2026-09-22/receipts/n11/full-replay/RESULT.json
+      - packing/resources/web/external-square-certificates-2026-09-22/receipts/n11/independent-audit.json
+      - packing/resources/web/wand125-tools-2026-09-29/README.md
+      - packing/resources/web/wand125-tools-2026-09-29/receipts/n11-bound-full-summary.json
+      - packing/campaign/agent-sessions/session-153-native-full.json
+      - packing/campaign/agent-sessions/session-153-native-reconciliation.json
       - packing/devtools/render_n11_optimality_review.py
       - packing/devtools/n11_optimality_figures.py
       - packing/devtools/n11_optimality_overview_figures.py
@@ -138,7 +158,6 @@ name: Certificate page
       - packing/cases/trump11/**
       - packing/resources/web/n11-optimality-2026-09-29/**
       - packing/resources/papers/kingbird-square-11-provenance.svg
-      - packing/resources/web/external-square-certificates-2026-09-22/kleddamag-11/README.md
       - packing/devtools/wait_for_run_artifact.py
       - packing/devtools/n11-lower-bounds-explainer/**
       - packing/devtools/probes/**
@@ -146,8 +165,8 @@ name: Certificate page
       - .github/workflows/pages.yml
   # A pull request builds and checks the pages without deploying them, so a change that
   # breaks a render fails review rather than the next deploy. It has no `paths:` filter:
-  # the `scope` job below decides, per page, from each builder's declared inputs, and a
-  # page it skips is skipped by a named job that says why. A filter here would be a third
+  # the `scope` job below decides, per page, from each builder's declared inputs, and
+  # names each page it skips in a notice that says why. A filter here would be a third
   # hand-kept list of the same inputs, and a pull request it excluded would carry no
   # Certificate page checks at all, which a reader cannot tell from a missing run.
   pull_request:
@@ -162,10 +181,7 @@ concurrency:
 
 # The job graph, and why it has this shape.
 #
-#   scope ─┬─ n11-lower-bounds-explainer-unchanged (only when that paper is skipped)
-#          ├─ workbench-unchanged                  (only when the workbench is skipped)
-#          ├─ overview-unchanged                   (only when the overview is skipped)
-#          ├─ n11-optimality-review-unchanged      (only when that paper is skipped)
+#   scope ─┬─ n11-threshold-bound-review ──────────────┤
 #          ├─ n11-optimality-review ───────────────────┤
 #          ├─ workbench ───────────────────────────────┐
 #          ├─ overview ────────────────────────────────┤
@@ -179,6 +195,9 @@ concurrency:
 #          └─ browser-geometry (ff, wk) ─ wait artifact┘           │
 #                                                      └───────────┴─ deploy ─ verify-deployment
 #
+# A page `scope` leaves out has no job of its own: `scope` posts a notice naming it and
+# the reason, and every job of that page is skipped.
+#
 # A pull request waits for its slowest job, so what sets its wall is the longest chain,
 # and until 2026-09-15 that chain was `prepare` then one `build` job running about 300 s
 # of Chromium checks one after another on a four-cpu runner: 472 s median on the
@@ -191,15 +210,16 @@ concurrency:
 # than serializing it. Every check that ran before still runs, on the same prepared
 # artifact; nothing moved off the pull request (`OR-13`).
 #
-# The two papers are served under `papers/`, each by its slug, and a job, an output or an
-# artifact that is one paper's carries that slug: `n11-lower-bounds-explainer` (built by
-# `prepare`, checked by the jobs after it) and `n11-optimality-review`. Each is rendered
+# The three papers of the n = 11 series are served under `papers/`, each by its slug
+# (`render_overview.PAPERS`), and a job, an output or an artifact that is one paper's
+# carries that slug: `n11-lower-bounds-explainer` (built by `prepare`, checked by the jobs
+# after it), `n11-threshold-bound-review` and `n11-optimality-review`. Each is rendered
 # into `site/papers/` on its own runner, where it is served, so every check reads the
 # page at its published path and `publish` renames nothing.
 jobs:
-  # Which of the four builds this change can affect: the lower-bounds explainer, the
-  # workbench, the site's own pages (the overview at `/` and the pages beside it), and the
-  # optimality review. A pull request that touches none of their inputs does no browser work at
+  # Which of the five builds this change can affect: the lower-bounds explainer, the
+  # workbench, the site's own pages (the overview at `/` and the pages beside it), the
+  # threshold-bound review and the optimality review. A pull request that touches none of their inputs does no browser work at
   # all, and a workbench-only change no longer pays for the explainer's checks (#178
   # did: ten workbench probe files, about 330 s of explainer Chromium).
   # `devtools.pages_scope` derives each half's inputs from the builder's own declaration
@@ -219,6 +239,8 @@ jobs:
       workbench_reason: ${{ steps.scope.outputs.workbench_reason }}
       overview: ${{ steps.scope.outputs.overview }}
       overview_reason: ${{ steps.scope.outputs.overview_reason }}
+      n11_threshold_bound_review: ${{ steps.scope.outputs.n11_threshold_bound_review }}
+      n11_threshold_bound_review_reason: ${{ steps.scope.outputs.n11_threshold_bound_review_reason }}
       n11_optimality_review: ${{ steps.scope.outputs.n11_optimality_review }}
       n11_optimality_review_reason: ${{ steps.scope.outputs.n11_optimality_review_reason }}
     defaults:
@@ -228,7 +250,7 @@ jobs:
       - name: Check out the repository
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
-          # The declared inputs are read by importing the four builders, and kpress is
+          # The declared inputs are read by importing the five builders, and kpress is
           # installed from the submodule.
           submodules: true
           persist-credentials: false
@@ -260,60 +282,33 @@ jobs:
             uv run --frozen --all-extras --group dev python -m devtools.pages_scope --all "a $EVENT event"
           fi
 
-  # A skipped page is skipped by a job with a name, not by a row of grey checks a reader
-  # has to interpret. These run only when their page is out of scope, and they fail if
-  # the scope job gave no reason, so an empty output cannot pass for a decision.
-  n11-lower-bounds-explainer-unchanged:
-    needs: scope
-    if: needs.scope.outputs.n11_lower_bounds_explainer != 'true'
-    runs-on: ubuntu-latest
-    steps:
-      - name: Say why the lower-bounds explainer is not built
+      # A skipped page is skipped with a reason, not by a row of grey checks a reader has
+      # to interpret. The step above writes every page's decision and reason to this job's
+      # summary; this one puts a notice per skipped page on the run, where the checks list
+      # shows it, and fails if the scope left a page out without a reason, so an empty
+      # output cannot pass for a decision. Until 2026-10-05 each page had a `*-unchanged`
+      # job of its own for this: up to five runner allocations per pull request, each to
+      # print one line, and 20 to 25 of the first wave's allocations in each of that day's
+      # stack cascades, against a pool of about 40.
+      - name: Say why each skipped page is not built
         env:
-          REASON: ${{ needs.scope.outputs.n11_lower_bounds_explainer_reason }}
+          DECISIONS: ${{ toJSON(steps.scope.outputs) }}
         run: |
-          test -n "$REASON"
-          echo "The lower-bounds explainer is not built or checked on this run: $REASON."
-          echo "The lower-bounds explainer is not built or checked on this run: $REASON." >> "$GITHUB_STEP_SUMMARY"
-
-  workbench-unchanged:
-    needs: scope
-    if: needs.scope.outputs.workbench != 'true'
-    runs-on: ubuntu-latest
-    steps:
-      - name: Say why the workbench is not built
-        env:
-          REASON: ${{ needs.scope.outputs.workbench_reason }}
-        run: |
-          test -n "$REASON"
-          echo "The workbench is not built on this run: $REASON."
-          echo "The workbench is not built on this run: $REASON." >> "$GITHUB_STEP_SUMMARY"
-
-  overview-unchanged:
-    needs: scope
-    if: needs.scope.outputs.overview != 'true'
-    runs-on: ubuntu-latest
-    steps:
-      - name: Say why the overview is not built
-        env:
-          REASON: ${{ needs.scope.outputs.overview_reason }}
-        run: |
-          test -n "$REASON"
-          echo "The overview and the site's own pages are not built on this run: $REASON."
-          echo "The overview and the site's own pages are not built on this run: $REASON." >> "$GITHUB_STEP_SUMMARY"
-
-  n11-optimality-review-unchanged:
-    needs: scope
-    if: needs.scope.outputs.n11_optimality_review != 'true'
-    runs-on: ubuntu-latest
-    steps:
-      - name: Say why the optimality review is not built
-        env:
-          REASON: ${{ needs.scope.outputs.n11_optimality_review_reason }}
-        run: |
-          test -n "$REASON"
-          echo "The optimality review is not built or checked on this run: $REASON."
-          echo "The optimality review is not built or checked on this run: $REASON." >> "$GITHUB_STEP_SUMMARY"
+          while read -r half page; do
+            [ "$(jq -r --arg half "$half" '.[$half] // ""' <<< "$DECISIONS")" = true ] && continue
+            reason="$(jq -r --arg key "${half}_reason" '.[$key] // ""' <<< "$DECISIONS")"
+            if [ -z "$reason" ]; then
+              echo "::error title=No reason to skip the $page::the scope did not put the $page in scope and gave no reason"
+              exit 1
+            fi
+            echo "::notice title=The $page is not built::$reason"
+          done <<'PAGES'
+          n11_lower_bounds_explainer lower-bounds explainer
+          workbench workbench
+          overview overview and the site's own pages
+          n11_threshold_bound_review threshold-bound review
+          n11_optimality_review optimality review
+          PAGES
 
   n11-optimality-review:
     needs: scope
@@ -382,6 +377,89 @@ jobs:
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
           name: n11-optimality-review-page
+          path: packing/site/papers
+          if-no-files-found: error
+          retention-days: 7
+
+  # Part II of the series, the review of Kleddamag's s(11) > 31/8 (T-037), built as
+  # the optimality review is: its figures' and renderer's tests, then the page, its
+  # Markdown and its PDF under `site/papers/`. Its partial checkout keeps the archived
+  # proof it cites and reads, the T-059 replay journal and the native verifier's row
+  # journal, which its figures draw (`RENDER_INPUTS` in
+  # `devtools/render_n11_threshold_bound_review.py`).
+  n11-threshold-bound-review:
+    needs: scope
+    if: needs.scope.outputs.n11_threshold_bound_review == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    defaults:
+      run:
+        working-directory: packing
+    steps:
+      - name: Check out the repository and the retained T-037 inputs
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          submodules: true
+          persist-credentials: false
+          filter: blob:none
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /*
+            !/packing/resources/*/
+            !/packing/campaign/*/
+            /packing/resources/web/external-square-certificates-2026-09-22/kleddamag-11/
+            /packing/resources/web/wand125-tools-2026-09-29/receipts/n11-bound-full.jsonl.gz
+            /packing/campaign/agent-sessions/session-153-native-full.rows.jsonl
+            /packing/resources/web/external-square-certificates-2026-09-22/receipts/n11/full-replay/RESULT.json
+            /packing/resources/web/external-square-certificates-2026-09-22/receipts/n11/independent-audit.json
+            /packing/resources/web/wand125-tools-2026-09-29/README.md
+            /packing/resources/web/wand125-tools-2026-09-29/receipts/n11-bound-full-summary.json
+            /packing/campaign/agent-sessions/session-153-native-full.json
+            /packing/campaign/agent-sessions/session-153-native-reconciliation.json
+
+      - name: Install uv and Python 3.14
+        uses: astral-sh/setup-uv@c771a70e6277c0a99b617c7a806ffedaca235ff9 # v9.0.0
+        with:
+          version: "0.12.8"
+          python-version: "3.14.7"
+          working-directory: packing
+          enable-cache: true
+          cache-dependency-glob: uv.lock
+
+      - name: Install Node 24 for KPress math
+        uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e # v6.4.0
+        with:
+          node-version: "24.18.0"
+
+      - name: Cache the pinned Chromium browser
+        uses: actions/cache@0400d5f644dc74513175e3cd8d07132dd4860809 # v4.2.4
+        with:
+          path: ~/.cache/ms-playwright
+          key: playwright-${{ runner.os }}-${{ hashFiles('packing/uv.lock') }}
+
+      - name: Install the pinned Chromium headless shell
+        run: uv run --frozen --group dev python -m playwright install --only-shell chromium
+
+      - name: Check the paper's figures and renderer
+        env:
+          SQPACK_N11_THRESHOLD_BOUND_REVIEW_BROWSER: "1"
+        run: |
+          uv run --frozen --all-extras --group dev pytest -q tests/test_n11_threshold_figures.py tests/test_paper_figures.py
+          uv run --frozen --all-extras --group dev pytest -q tests/test_render_n11_threshold_bound_review.py
+
+      # Rendered where it is served: `site/papers/n11-threshold-bound-review.html`, with
+      # its Markdown and its PDF beside it. Nothing else writes `site/papers` on this
+      # runner, so the artifact is this paper's three files.
+      - name: Render and check the paper in HTML, Markdown, and PDF
+        run: |
+          uv run --frozen --group dev python -m devtools.render_n11_threshold_bound_review --site site --pdf
+          uv run --frozen --group dev python -m devtools.render_n11_threshold_bound_review --site site --check
+          test -s site/papers/n11-threshold-bound-review.pdf
+
+      - name: Share the checked paper
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: n11-threshold-bound-review-page
           path: packing/site/papers
           if-no-files-found: error
           retention-days: 7
@@ -1572,12 +1650,13 @@ jobs:
           if-no-files-found: error
           retention-days: 7
 
-  # What the deployment publishes, assembled from the five jobs that produce it: the
+  # What the deployment publishes, assembled from the six jobs that produce it: the
   # lower-bounds explainer and its Markdown under `/papers/`, with the atlas's files at
   # the root (`prepare`), its checked PDF beside it (`pdf`), the site's own pages at the
   # root with the forwarders at the papers' old addresses (`overview`), the workbench at
-  # `/workbench/` (`workbench`), and the optimality review with its Markdown and PDF under
-  # `/papers/` (`n11-optimality-review`). It runs on pull requests too -- a missing artifact fails
+  # `/workbench/` (`workbench`), and the threshold-bound review and the optimality review,
+  # each with its Markdown and PDF, under `/papers/` (`n11-threshold-bound-review`,
+  # `n11-optimality-review`). It runs on pull requests too -- a missing artifact fails
   # review rather than the next deploy -- lists every file with its size and digest so
   # the tree can be compared across runs, and holds every page's head in it to the site's
   # contract (`check_published_site --local`); only a push to `main` uploads it for Pages.
@@ -1588,10 +1667,10 @@ jobs:
   # skips it with that producer, as one that skipped the workbench always has; each
   # producer's own job has already built and checked what it would contribute, and the
   # assembly itself is exercised on every push to `main` and on every pull request that
-  # touches an input all four builds share (the workflow, the scope tool, kpress, the
+  # touches an input all five builds share (the workflow, the scope tool, kpress, the
   # lockfile). A partial tree is never a publication, so there is nothing to assemble.
   publish:
-    needs: [prepare, pdf, overview, workbench, n11-optimality-review]
+    needs: [prepare, pdf, overview, workbench, n11-threshold-bound-review, n11-optimality-review]
     runs-on: ubuntu-latest
     steps:
       # The assembled site is held to the head contract once it is whole, with the
@@ -1678,25 +1757,47 @@ jobs:
           name: workbench-page
           path: packing/site/workbench
 
-      # The second paper goes beside the first, and is staged for the same reason the
-      # site's pages are: both papers are served from `papers/`, and a name both wrote is
-      # refused rather than overwritten.
+      # The second and third papers go beside the first, each staged for the same reason
+      # the site's pages are: every paper is served from `papers/`, and a name two wrote
+      # is refused rather than overwritten.
+      - name: Use the checked threshold-bound review
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
+        with:
+          name: n11-threshold-bound-review-page
+          path: ${{ runner.temp }}/n11-threshold-bound-review-page
+
+      - name: Put the threshold-bound review beside the other paper, refusing any name already there
+        env:
+          STAGED: ${{ runner.temp }}/n11-threshold-bound-review-page
+        run: |
+          test -s "$STAGED/n11-threshold-bound-review.html"
+          test -s packing/site/papers/n11-lower-bounds-explainer.html
+          for staged in "$STAGED"/*; do
+            name=$(basename "$staged")
+            if [ -e "packing/site/papers/$name" ]; then
+              echo "::error::two papers publish papers/$name"
+              exit 1
+            fi
+          done
+          cp -R "$STAGED"/. packing/site/papers/
+
       - name: Use the checked optimality review
         uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
         with:
           name: n11-optimality-review-page
           path: ${{ runner.temp }}/n11-optimality-review-page
 
-      - name: Put the optimality review beside the other paper, refusing any name already there
+      - name: Put the optimality review beside the other papers, refusing any name already there
         env:
           STAGED: ${{ runner.temp }}/n11-optimality-review-page
         run: |
           test -s "$STAGED/n11-optimality-review.html"
           test -s packing/site/papers/n11-lower-bounds-explainer.html
+          test -s packing/site/papers/n11-threshold-bound-review.html
           for staged in "$STAGED"/*; do
             name=$(basename "$staged")
             if [ -e "packing/site/papers/$name" ]; then
-              echo "::error::both papers publish papers/$name"
+              echo "::error::two papers publish papers/$name"
               exit 1
             fi
           done
@@ -1745,19 +1846,23 @@ jobs:
   # passed, and when a job was skipped because its page was out of scope; it fails on any
   # failure or cancellation, and on a skip whose cause was an upstream failure -- that
   # upstream job is also needed here, so its own failure is what fails the aggregate. The
-  # scope's four outputs must be exactly `true` or `false`, so a scope that wrote nothing
+  # scope's five outputs must be exactly `true` or `false`, so a scope that wrote nothing
   # cannot pass as a decision to skip everything.
+  #
+  # `!cancelled()` rather than `always()`, as `packing-required` has had since D-380. With
+  # `always()` a run superseded by the next push still queued this job against its
+  # cancelled prerequisites: 14 such aggregators on 2026-10-05, four of them waiting about
+  # 19 minutes for a runner. A cancelled run now reports nothing here and the check stays
+  # pending until the replacement run supplies it. A failed or cancelled prerequisite in a
+  # run that goes on is not `cancelled()`, so this job still runs and still fails.
   pages-required:
-    if: always()
+    if: "!cancelled()"
     needs:
       - scope
-      - n11-lower-bounds-explainer-unchanged
-      - workbench-unchanged
-      - overview-unchanged
-      - n11-optimality-review-unchanged
       - prepare
       - workbench
       - overview
+      - n11-threshold-bound-review
       - n11-optimality-review
       - pdf
       - print-layout
@@ -1780,10 +1885,34 @@ jobs:
           jq -r 'to_entries[] | "\(.value.result)\t\(.key)"' <<< "$NEEDS"
           jq -e '
             .scope.result == "success"
-            and ([.scope.outputs.n11_lower_bounds_explainer, .scope.outputs.workbench, .scope.outputs.overview, .scope.outputs.n11_optimality_review] | all(. == "true" or . == "false"))
+            and ([.scope.outputs.n11_lower_bounds_explainer, .scope.outputs.workbench, .scope.outputs.overview, .scope.outputs.n11_threshold_bound_review, .scope.outputs.n11_optimality_review] | all(. == "true" or . == "false"))
+            and (.scope.outputs.n11_threshold_bound_review != "true" or .["n11-threshold-bound-review"].result == "success")
             and (.scope.outputs.n11_optimality_review != "true" or .["n11-optimality-review"].result == "success")
             and ([.[].result] | all(. == "success" or . == "skipped"))
           ' <<< "$NEEDS" > /dev/null
+
+      # A prerequisite cancelled while this run went on was never given a runner: GitHub
+      # cancels a queued job it cannot place ("not acquired by Runner of type hosted even
+      # after multiple attempts"), and on 2026-10-05 it did so to 96 jobs (run 37362926042).
+      # The step above has already failed on that `cancelled`, and must: a required check
+      # does not go green on work that never ran. This step only names the class, so the
+      # red reads as infrastructure rather than as a test, and `rerun-starved.yml` re-runs
+      # the run's failed jobs once. It runs only after a failure, so a green run pays
+      # nothing for it, and a fault here cannot hide the verdict above.
+      - name: Name every prerequisite that never acquired a runner
+        if: failure()
+        env:
+          NEEDS: ${{ toJSON(needs) }}
+        run: |
+          jq -r '
+            [to_entries[] | select(.value.result == "cancelled") | .key] as $starved
+            | ($starved[] | "::error title=Infrastructure::\(.) never acquired a runner (cancelled before start)"),
+              if ($starved | length) > 0
+              then "FAILURE CLASS: infrastructure (\($starved | length) of \(length) prerequisites never acquired a runner: \($starved | join(", ")))"
+              else empty end
+          ' <<< "$NEEDS" > "$RUNNER_TEMP/infrastructure"
+          cat "$RUNNER_TEMP/infrastructure"
+          grep '^FAILURE CLASS: ' "$RUNNER_TEMP/infrastructure" >> "$GITHUB_STEP_SUMMARY" || true
 
       # The wall-check step's start is the stable end of the measured wall: every job
       # above is settled, and this aggregator's checkout and setup are included while the
@@ -1819,8 +1948,9 @@ jobs:
 
   # A job with no status function in its `if:` implicitly requires `success()`, which
   # GitHub evaluates over every ancestor, not just `needs:`. The dispatch-only timing job
-  # and one job of each `*-unchanged` pair skip on every push, so without explicit result
-  # checks these two jobs skip too: from 2026-09-16 no push to `main` deployed.
+  # skips on every push (as each page's `*-unchanged` notice job did until 2026-10-05), so
+  # without explicit result checks these two jobs skip too: from 2026-09-16 no push to
+  # `main` deployed.
   deploy:
     needs: [publish, pages-required]
     if: >-

@@ -11,7 +11,7 @@ Three layers carry it, from the bottom up, with the paper’s text tokens shared
 | --- | --- | --- |
 | KPress | `vendor/kpress` | Fonts, Markdown typography, math, themes, print |
 | Text | [paper-type.css](paper-type.css) | The type base, reading measure, heading scale, role scales and pinned faces every page shares |
-| Paper | [paper-publication.css](paper-publication.css) | The publication layer both papers share: figures, panels, components and print rules |
+| Paper | [paper-publication.css](paper-publication.css) | The publication layer every paper shares: figures, panels, components and print rules |
 | Site | [site.css](site.css), [site-nav.css](site-nav.css) | Site pages and the navigation bar every page carries, the explainer and the workbench included |
 
 The paper and site layers read the same values from `paper-type.css`, under their own
@@ -286,7 +286,7 @@ with these exceptions:
 | h3, h4, table cell (documents) | 21.6px and 17.1px at 1280, 20.7px, 20.16px and 16.2px at 390 | KPress’s own step at a 64rem pane |
 | h3 (a case record’s sections) | 19px | The record’s own heading, at the sans base (`.site-case-heading`) |
 | Table cell (site tables) | 17.48px, and 15.73px as a row card on a phone | The results and atlas tables are set at the note size |
-| Page title | Leading 1.05 on the two papers, 1.15 on the site pages | The explainer’s title keeps KPress’s leading, which its prepared math is fitted to; the optimality paper shares its layer |
+| Page title | Leading 1.05 on the papers, 1.15 on the site pages | The explainer’s title keeps KPress’s leading, which its prepared math is fitted to; the reviews share its layer |
 | Caption | Leading 1.4 on the papers, 1.35 on the site pages; 16.15px under the homepage’s hero, 17.48px elsewhere | The papers’ `--paper-support-leading`; the hero’s caption is a size of its own in `site.css` |
 | Colophon | Line height 1.5 on the papers, the face’s own on the site pages | One line either way |
 | Chip | The papers’ format chips at 16.15px, the site’s at 17.48px | Two components |
@@ -964,22 +964,24 @@ it.
   The page cards, the atlas cards and the other projects are medium; the documents,
   whose notes are a line, are small.
   A section can also be set in lines of its own, in `SECTION_CARD_LINES`, where one
-  wrapping row would not set its cards as they are meant to read: the five page cards
-  stand one, two and two, the Frontier page alone at the top, then the two papers, then
-  the tutorial and the workbench, where one row would set four at 1280 pixels and the
-  fifth alone. Each line is a grid of its own in the section’s one frame, a gap below the
-  line before, and none sets more cards to a line than the longest line holds
+  wrapping row would not set its cards as they are meant to read: the six page cards
+  stand one, three and two, the Frontier page alone at the top, then the three parts of
+  the $n = 11$ series in reading order, then the tutorial and the workbench.
+  Each line is a grid of its own in the section’s one frame, a gap below the line
+  before, and none sets more cards to a line than the longest line holds
   (`data-cards-most`, at which the stylesheet caps its size’s count), so the lines share
-  one column width and each centres in it: two medium columns of 544px at 1280 pixels,
-  the Frontier page’s card centred over the papers.
+  one column width and each centres in it: three medium columns at 1280 pixels, the
+  Frontier page’s card centred over the papers.
   Wherever the frame fits two medium cards, from 33rem, every line stands as set; on a
   phone every card takes the line.
   The owner asked for the page cards in two rows on 2026-10-02 (`think-ec5k`), and two
   over three was chosen over three over two from screenshots at 1280 pixels; later the
   same day the owner set the Frontier page’s card on a line of its own at the top and
-  the rest two and two (`think-ns3d`). A card built without a size (`card()` or
-  `link_card()` with no `size=`) takes the default for its own text: its headline and
-  note, and a direct card’s address, counted as they read, a formula once.
+  the rest two and two (`think-ns3d`); the third paper made the line of papers three on
+  2026-10-05 (the series plan).
+  A card built without a size (`card()` or `link_card()` with no `size=`) takes the
+  default for its own text: its headline and note, and a direct card’s address, counted
+  as they read, a formula once.
 
 - **Card foot.** A direct card may end with a line that holds links of its own
   (`link_card(foot=)`), as an other project’s card ends with its tally of results.
@@ -2252,8 +2254,8 @@ pointer and by keyboard, and measures its label at 1280, 768 and 390 pixels.
   [n11-optimality-review.css](n11-optimality-review.css).
   There a table keeps to the column and scrolls inside its own wrap, and a diagram drawn
   in fixed ink keeps a light ground on the dark theme, as the construction in its first
-  figure does. Its front, the formats row, the title and the credits, is the two papers’
-  one component (**The Papers’ Front**, below).
+  figure does. Its front, the formats row, the title and the credits, is the papers’ one
+  component (**The Papers’ Front**, below).
 
   **The paper’s citations name a commit, the one exception to links on `main`.** A paper
   cites the evidence as it stood when it was typeset: its links carry anchors into
@@ -2342,7 +2344,7 @@ would change the formula’s letters.
 One function, `render_overview.head_tags`, writes every page’s title, description,
 canonical link and link preview from a small record of the page (`PageMeta`): its own
 name, one description, the path it is served at, and whether it is a paper.
-The site’s own pages, both papers and the workbench call it, and no shell writes one of
+The site’s own pages, every paper and the workbench call it, and no shell writes one of
 these tags itself, so the set cannot differ between page kinds.
 
 | Tag | Rule |
@@ -2353,7 +2355,7 @@ these tags itself, so the set cannot differ between page kinds.
 | `og:title`, `twitter:title` | The page’s own name, without the project’s |
 | `og:description`, `twitter:description` | The description, unchanged |
 | `og:url` | The canonical address |
-| `og:type` | `article` for the two papers and the tutorial, with `article:published_time` and `article:modified_time` where the paper states its dates; `website` for every other page |
+| `og:type` | `article` for the papers and the tutorial, with `article:published_time` and `article:modified_time` where the paper states its dates; `website` for every other page |
 | `og:site_name`, `og:locale` | “The Squares Project” and `en_US` |
 | `og:image`, `twitter:image` | The site’s one card, `social-card.png` at the site’s root, in full |
 | `og:image:type`, `og:image:width`, `og:image:height` | `image/png`, 1200 and 630 |
@@ -2365,8 +2367,8 @@ The card is the overview’s hero, the best packing known of 53 squares, at 1200
 the hero’s own drawing in the light theme’s ink on its background, with the project’s
 name under it as the bar sets the site’s name, drawn as outlines so no machine’s fonts
 decide it. `devtools.social_card` draws it when the site is built, and it is not checked
-in. Every page uses the one image, the two papers included: their previews differ by
-title and description, and the alt text stays what the card shows, since Open Graph’s
+in. Every page uses the one image, the papers included: their previews differ by title
+and description, and the alt text stays what the card shows, since Open Graph’s
 `og:image:alt` describes the picture and not the page.
 
 A forwarder previews the page it leads to (`render_overview.forwarder_head`). An old
@@ -2447,12 +2449,12 @@ Its caption uses the shared role; the linked full-size PDF provides the detailed
 
 ## The Papers’ Front
 
-Both papers open the same way, and one component writes it: `devtools.paper_front`, from
-a small record each renderer keeps (`PaperFront`: the slug, the title, who oversaw the
-paper, its agents, its version, its dates, and the source it explains where that is
-someone else’s work).
+Every paper opens the same way, and one component writes it: `devtools.paper_front`,
+from a small record each renderer keeps (`PaperFront`: the slug, the title, who oversaw
+the paper, its agents, its version, its dates, the source it explains where that is
+someone else’s work, and the series it is part of).
 The page, the Markdown edition and the PDF, which takes its title and its dates from the
-page, follow from that record; neither article carries a copy, only the slot
+page, follow from that record; no article carries a copy, only the slot
 `{{FRONT_MATTER}}`.
 
 The front is, in order:
@@ -2473,8 +2475,12 @@ The front is, in order:
 
   Human oversight: **Joshua Levy**
   Agents: **GPT-6 Astra** and **GPT-6 Sol**
-  Draft v0.1.4 (version history)
+  Draft v0.1.5 (version history)
   Original proof September 29, 2026 · Last revised October 4, 2026
+
+  Part III of 3 in the n = 11 series
+  Part I: New Lower Bounds for Square Packing for n = 11
+  Part II: A Review of the Certified Lower Bound s(11) > 31/8 for 11 Squares
   ```
 
   A paper that explains someone else’s work credits its source first, by the author’s
@@ -2482,11 +2488,12 @@ The front is, in order:
   paper that explains the project’s own proofs begins at its own credits.
   Then who oversaw it, the agents, the version line and the dates line, with a line’s
   space before the dates.
-  The project’s repository is not a line of the credits on either paper: the footer
-  every page carries names it, and so does the GITHUB chip.
+  The project’s repository is not a line of the credits on any paper: the footer every
+  page carries names it, and so does the GITHUB chip.
 
 - **The version line.** The paper’s own version, plain: `EXPLAINER_VERSION` for the
-  explainer and `OPTIMALITY_REVIEW_EDITION` (“Draft v0.1.4”) for the review, both from
+  explainer, `THRESHOLD_REVIEW_EDITION` (“Draft v0.1.0”) for the threshold-bound review
+  and `OPTIMALITY_REVIEW_EDITION` (“Draft v0.1.5”) for the optimality review, all from
   `sqpack.release`. Never the site’s edition and never the data hash: the site’s version
   goes on no paper (the owner, 2026-10-01: papers are individually versioned, and a
   paper’s version history reflects versions of the paper, not of the website).
@@ -2495,12 +2502,22 @@ The front is, in order:
   each with the day it was first published and what changed in the paper; a paper at its
   first version has no history to link.
 
-- **The dates line.** One grammar on both: `<What> <Month D, YYYY>` parts joined by a
-  middle dot, ending with “Last revised”, the day the article last changed.
+- **The dates line.** One grammar on every paper: `<What> <Month D, YYYY>` parts joined
+  by a middle dot, ending with “Last revised”, the day the article last changed.
   A paper with a source leads with the day the source published its proof (“Original
   proof September 29, 2026”); the explainer leads with the day its first edition went
   live (“First published September 5, 2026”). Every value is `sqpack.release`’s, and
   `devtools.artifact_dates` holds each to its rule.
+
+- **The series strip.** Under the dates, after a line’s space, which part of the series
+  the paper is (“Part II of 3 in the n = 11 series”), then each other part on a line of
+  its own, by its numeral and its title, the title linking that paper.
+  It is written from the site’s one list of papers, `render_overview.PAPERS`, through
+  `paper_front.series(slug)`, so every paper names the others by the same titles and in
+  reading order, I, II, III (the series plan, 2026-10-05). A link is page-relative on
+  the page (`n11-optimality-review.html`), which works on the site and in a local
+  preview, and the site’s address in the Markdown edition, which is read away from the
+  site, as every link from one paper to another is (`devtools.paper_links`).
 
 - **The closing.** The paper’s own last sections (the explainer’s version history, the
   review’s sources and verification record), then the footnotes, then the colophon every
@@ -2514,20 +2531,105 @@ revised day is `article:modified_time`; the explainer’s first publication is
 `article:published_time` too (**Page Metadata and Social Cards**, above).
 
 The credits are one grid column the width of the page (`.credits`, in the publication
-layer), an address in them may break anywhere, and the two lines’ spaces are `1lh`, on
-`.credits-source + .credits-own` and on `.publication-date`.
+layer), an address in them may break anywhere, and the three lines’ spaces are `1lh`, on
+`.credits-source + .credits-own`, on `.publication-date` and on
+`.publication-date + .series`.
 
-`devtools.paper_structure` reads both rendered papers, from a built site or from the
-published one, and prints every structural axis side by side: the head, the formats row,
-the title, each line of the credits with what is bold and linked in it, the version and
-dates lines, the heading case, the figures and their captions, the tables, the
-footnotes, the closing, the Markdown edition’s opening and the PDF’s title, size and
-dates. A form axis is one both papers set one way; a content axis is each paper’s own,
-such as how many figures it has.
+`devtools.paper_structure` reads every rendered paper, from a built site or from the
+published one, and prints every structural axis side by side, each paper against Part I:
+the head, the formats row, the title, each line of the credits with what is bold and
+linked in it, the version and dates lines, the series strip, the heading case (where
+notation such as `s(11)` or `k-of-m` is not a word that takes a capital), the figures
+and their captions, the tables, the footnotes, the closing, the Markdown edition’s
+opening and the PDF’s title, size and dates.
+A form axis is one every paper sets one way; a content axis is each paper’s own, such as
+how many figures it has, or which part of the series it is.
 `tests/test_paper_structure.py` fails when a form axis differs.
-`devtools.measure_site_pages credits` measures the front as laid out, the weight, the
-gap above and the width of every line and chip, and `tests/test_site_glyphs.py` holds
-the two papers’ fronts equal in a browser at 1280 and 390 pixels.
+`devtools.measure_site_pages credits` measures the front as laid out, the kind, the
+weight, the gap above and the width of every line and chip, and
+`tests/test_site_glyphs.py` holds every paper’s front to the first’s in a browser at
+1280 and 390 pixels.
+
+## The n = 11 Series
+
+The three papers on $n = 11$ are one series, read in order, and every listing of them
+keeps that order: the Papers page, the home cards (one line of three), README and each
+paper’s strip.
+[The series plan](../../../docs/project/specs/active/plan-2026-10-05-n11-explainer-series.md)
+holds the decisions and their evidence; these are the rules a change to any of the three
+keeps.
+
+| Part | Slug | Explains |
+| --- | --- | --- |
+| I | `n11-lower-bounds-explainer` | The project’s point and 2-of-3 certificates: T-018, T-025, T-026 |
+| II | `n11-threshold-bound-review` | Kleddamag’s `s(11) > 31/8` (T-037): k-of-m charges, parents with strict cores over angle rows, the exact sweep |
+| III | `n11-optimality-review` | Queuingtheorydotcom’s `s(11) = T` (T-060): cover, pose invariant, charge transfer, symmetry, capture, isolation |
+
+- **Every paper stands alone, and each concept has one owner.** One paper derives a
+  concept in full; another gives a recap of at most a paragraph that links the owner’s
+  section. Part I owns the problem, sites, point charges (its “atoms”), cores, mass,
+  event cells and the direction net; Part II owns which k-of-m families pay, parents and
+  strict cores, the signed inclusion–exclusion and the exact sweep, and the boundary and
+  attainment arguments; Part III owns the construction, the cover and everything after.
+- **The papers link as a series.** Each lineage section names the previous paper as an
+  antecedent, not a premise; each closing bridge names the next; each front carries the
+  strip. A link from one paper to another is written `{{PAPER:<slug>#<anchor>}}` in the
+  article and filled by the renderer (`devtools.paper_links`); it may name only a fixed
+  heading, never one whose id is built from data.
+  `check_published_site` holds every such link, on the page and in the Markdown, to a
+  heading the target paper has, on the deployed site and on a local build
+  (`preview_site --serve`), which are the only places all three papers are.
+- **Every term is defined before it is used, in reading order.** That holds for words,
+  symbols and lemmas. A roadmap or preamble may name a later concept only with a forward
+  marker (“defined in Section 4”), a heading may name what its section defines, and a
+  caption may use a term defined earlier but may define none.
+  Each paper keeps a term registry, `templates/<slug>-terms.yaml`, and
+  `devtools.paper_terms` walks the rendered page in document order and fails a use ahead
+  of its definition, a definition outside its section, and a bold run in prose that
+  defines nothing registered; `templates/n11-series-terms.yaml` names each shared
+  concept’s owner, and a symbol that means two things in two papers fails unless the
+  plan lists the clash.
+- **Every formula is typeset, the same way in every paper.** A formula is LaTeX the
+  page’s math pipeline sees, so no TeX ever reaches the reader as text: a display
+  formula is a `$$` block in every paper, with a blank line before and after, never
+  run into its sentence and never hand-wrapped; a caption in an HTML block writes its math the way its paper’s
+  pipeline reads it there (`$…$` in Parts II and III, which `caption_math` typesets; a
+  `<span class="tex">` run in Part I); and a title’s formula is math, which one shared
+  rule (`.hero h1 .tex, .hero h1 .kpress-math` in `paper-publication.css`) keeps out of
+  the hero’s caps. `devtools.paper_terms` rule 7 fails any `$` or TeX command left in a
+  paper’s prose, captions or title, and any display formula outside a `$$` block.
+- **Credit is accurate and early.** A review says in its first two sections what the
+  source added and what it inherited, each item named by result id or source file.
+- **One notation.** Part I’s symbols are fixed, because it is published and oldest; Part
+  II fits around them, and Part III renames a symbol only where it clashes with Part I,
+  and only to one that collides with nothing in the three papers or `TUTORIAL.md` §10.
+
+The notation the series shares (the plan’s §3 has every row with its evidence):
+
+| Object | Part I | Part II | Part III |
+| --- | --- | --- | --- |
+| Container side under test | $L_0$ | $L_0 = 191/50$ | $L_0$ (was $S$) |
+| Proved bound | $L$ | $31/8$, or $L_0/A$; never $L$ or $T$ | $T$ |
+| Parent side | — | $A = 764/775$ | local $A(a, b)$, $A_i$ (listed clash) |
+| Core and its side | $Q_i$, $P$; $B$ | $Q$; $B$, one per row | $Q$; no $B$ (writes $(191/50)/U$) |
+| Charge of a core | $\mu(Q)$, mass | $C(Q)$ | “charge at least $\Gamma_i$” |
+| Per-core floor; total budget | $1$; $\sum w$ | $\Gamma$, $M$ | $\Gamma_i$ (was $q_i$); $b$ |
+| Threshold set and size | $S$, $\lvert S\rvert$ | $S$, $m = \lvert S\rvert$ | — |
+| Cores one charge pays | $r$ | $r$ | — |
+| Packed square or parent angle | $\varphi$ | $\varphi$; a row covers $\tan(\varphi/2) \in [a, b]$ | $\theta_i$, $t_i$ |
+| Net or core direction | $\theta_k = 2\arctan t_k$ | $\theta = 2\arctan t$ | — |
+| Angle mismatch | $d$ | $d$ | — |
+| Quarter turn | — | — | $\operatorname{rot}(x, y) = (-y, x)$ |
+| Symmetry group | $\mathbf{D}_4$ | $\mathbf{D}_4$ | $\mathbf{D}_4$ |
+
+The words follow the same rule: a *point charge* (Part I’s atom) and a *k-of-m charge*
+(threshold k, m sites; never “m-of-k”) are the objects, and *the charge* $C(Q)$ is what
+a core receives; “atom” appears in Parts II and III only to gloss Part I’s name.
+A *site* is a charge’s position; Part III’s Voronoi sites are *cover sites*. A *bound
+gap* is the distance from a bound to $T$, never a bare “gap”.
+Each paper states one unnumbered **Theorem**; lemmas are bold-named, unnumbered and
+unique across the series, and a reference across papers reads “Paper II’s Budget lemma”,
+deep-linked.
 
 ## Figures
 
@@ -2538,13 +2640,17 @@ A drawing carries its labels and nothing else: the name of a cell, a node or a p
 axis value, a short formula beside what it measures.
 No title is lettered across the top of an SVG and no sentence under it.
 
-Both papers open on a packing, set one way: the atlas rendering cut to its container’s
-outline (`render_n11_lower_bounds_explainer.crop_to_container`), with the atlas’s own
-lettering gone, in a centred stage (`.stage.trump`) 24rem wide on screen and 3in in
-print, linked to the rendering in the repository.
-The optimality paper’s first figure used to be the atlas’s whole canvas, 960 units wide
-for a container of 536, with the atlas’s caption under the drawing: the packing stood
-18% of the figure’s width left of the column’s centre, over a line of its own text.
+A paper opens on its object.
+Parts I and III open on a packing, set one way: the atlas rendering cut to its
+container’s outline (`render_n11_lower_bounds_explainer.crop_to_container`), with the
+atlas’s own lettering gone, in a centred stage (`.stage.trump`) 24rem wide on screen and
+3in in print, linked to the rendering in the repository.
+Part II’s object is a change of method, so it opens on its first figure, what changed
+from T-026 to T-037 (the series plan amends “both papers open on a packing”,
+2026-10-05). The optimality paper’s first figure used to be the atlas’s whole canvas,
+960 units wide for a container of 536, with the atlas’s caption under the drawing: the
+packing stood 18% of the figure’s width left of the column’s centre, over a line of its
+own text.
 
 The other diagrams of that paper carried a title or sentences of explanation in the
 drawing as well; those are in the captions now.
@@ -2563,7 +2669,26 @@ it as a share of its width, any text that reads as a sentence, and its caption; 
 carries its problems.
 A wide diagram that scrolls sideways on a phone and an apparatus with controls beside
 its drawing are not held to the centre.
-`tests/test_site_glyphs.py` holds both papers to none at 1280 and 390 pixels.
+`tests/test_site_glyphs.py` holds every paper to none at 1280 and 390 pixels.
+
+Parts II and III draw the same object the same way (the series plan, §6.1):
+
+- **One stroke and colour role per object.** The container is a neutral outline; a
+  parent is a filled square; a core is a dashed inner square; a point charge is a dot
+  whose area is proportional to its weight, as in Part I; a k-of-m charge is a thin hull
+  through its m sites with a `k/m` badge; a centre domain is hatched.
+  The roles and the shared `_svg`, `_text` and `_polygon` helpers live in
+  `devtools/paper_figures.py`, in fixed inks on a light ground.
+  Part I’s canvas figures keep their own palette.
+- **The series bound ladder** (`paper_figures.bound_ladder`): the rungs Stromquist
+  (T-010), T-018, T-025, T-026, T-033, T-037 with T-061, and T-060 with Trump, evenly
+  spaced and labelled with the register’s values, with no linear axis, since on one
+  T-037 to $T$ is 0.0021 of the range.
+  It is Part II’s second figure and stands in Part III’s lineage section.
+- **Static SVG from hash-pinned data.** Every number a caption states comes from the
+  figure module’s `caption_facts()`; a label uses only glyphs the shipped face carries
+  ($\Gamma$, $L_0$, $\le$ and subscripts are typeset in the caption otherwise); and a
+  figure fits 390 pixels without scrolling sideways.
 
 ## Print and Verification
 

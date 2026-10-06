@@ -18,8 +18,10 @@ Package metadata, Ruff, and BasedPyright express the broader `3.14`-only compati
 boundary; `uv.lock` pins dependencies, not the interpreter.
 macOS and Linux are supported development hosts.
 Pull requests run the bounded Linux fast surface; integration events run the ordinary
-full checkpoint on Linux and four focused portability checks on macOS. The Rust search
-engine uses the stable Cargo toolchain.
+full checkpoint on Linux.
+Four focused portability checks run on macOS on every event except a stacked pull
+request, one whose base is another branch rather than `main`. The Rust search engine
+uses the stable Cargo toolchain.
 
 From the repository root, then from `packing/`:
 
@@ -169,14 +171,14 @@ alone is not full pre-merge evidence.
 | `--edit` | contributor, in the edit loop | 58 of 98 | 240 s | 59.4 s |
 | `--push` | contributor, once before a push — the edit tier plus tests reachable from the diff (`--since`) | varies with the diff | 1800 s | about a minute for a narrow code change; an implicitly configured broad diff selects the whole suite and assigns one outer job so pytest can use the host, see below |
 | `--fast` | contributor, at a block boundary; the union of the ten tiers below | 85 of 98 | 600 s | record cleared 2026-09-07 when the corpus widened; 229.1 s locally, only the ceiling applies |
-| `--checks` | **CI, on every pull request**, in the `validate` job | 61 of 98 | 140 s | 103.70 s, the geometric mean of thirty-three hosted readings on 2026-09-30 and 10-01, with the band 59.4–137.1 s (2.31x) the runner pool spanned on unchanged steps; the 114.34 s two-attempt record stays in the register as history |
-| `--frontend` | **CI, on every pull request**, in the `frontend` job, concurrently | 4 of 98 | 150 s | 104.74 s, the geometric mean of 32 hosted readings from 27 to 30 September (70.97–134.86 s, 1.90x); 85.25 s from two readings stays in the register as history |
+| `--checks` | **CI, on every pull request**, in the `validate` job | 61 of 98 | 150 s | 103.70 s, the geometric mean of thirty-three hosted readings on 2026-09-30 and 10-01, with the band 59.4–137.1 s (2.31x) the runner pool spanned on unchanged steps; the 114.34 s two-attempt record stays in the register as history |
+| `--frontend` | **CI, on every pull request**, in the `frontend` job, concurrently | 4 of 98 | 165 s | 104.74 s, the geometric mean of 32 hosted readings from 27 to 30 September (70.97–134.86 s, 1.90x); 85.25 s from two readings stays in the register as history |
 | `--typecheck` | **CI, on every pull request**, in the `typecheck` job, concurrently | 1 of 98 | 130 s | 86.71 s, the geometric mean of 174 hosted step walls from 2 to 4 October on 17 branches, with the band 54–123 s that its two runner regimes span; the 111 s ceiling it replaced was breached by 3–6% of runs with zero findings, and the 76.5 s eighteen-reading record stays in the register as history |
 | `--geometry` | **CI, on every pull request**, in the `geometry` job, concurrently | 9 of 98 | 180 s | 98.07 s, the geometric mean of fourteen hosted readings, with the band 58.75–116.19 s that its two runner regimes span |
-| `--suite-a` | **CI, on every pull request**, in the `suite-a` job, concurrently | 1 of 98 | 131 s | 114.58 s, the geometric mean of twelve hosted readings on 2026-10-01 of the three-shard partition after the day’s growth, band 83.91–128.65 s (1.53x); two more walls that day, 131.58 and 132.67 s, were over the ceiling with every test green and are named, not averaged; the 85.03 s two-reading record stays in the register as history |
-| `--suite-b` | **CI, on every pull request**, in the `suite-b` job, concurrently | 1 of 98 | 154 s | 114.38 s, the geometric mean of eleven hosted readings on 2026-10-01 of the same partition, band 79.30–139.35 s (1.76x); the 104.65 s single reading stays as history |
-| `--suite-c` | **CI, on every pull request**, in the `suite-c` job, concurrently | 1 of 98 | 154 s | 132.05 s, the geometric mean of eleven hosted readings on 2026-10-01 after the day’s files landed in it, band 90.34–147.16 s (1.63x); the 102.94 s thirty-one-reading record and the 88.59 s first reading stay as history |
-| `--suite-d` | **CI, on every pull request**, in the `suite-d` job, concurrently | 1 of 98 | 131 s | pending its first hosted cohort under `think-t7k5`; the record’s cohort predicts about 84 s for its 278.9 test-second share |
+| `--suite-a` | **CI, on every pull request**, in the `suite-a` job, concurrently | 1 of 98 | 143 s | 114.58 s, the geometric mean of twelve hosted readings on 2026-10-01 of the three-shard partition after the day’s growth, band 83.91–128.65 s (1.53x); two more walls that day, 131.58 and 132.67 s, were over the ceiling with every test green and are named, not averaged; the 85.03 s two-reading record stays in the register as history |
+| `--suite-b` | **CI, on every pull request**, in the `suite-b` job, concurrently | 1 of 98 | 168 s | 114.38 s, the geometric mean of eleven hosted readings on 2026-10-01 of the same partition, band 79.30–139.35 s (1.76x); the 104.65 s single reading stays as history |
+| `--suite-c` | **CI, on every pull request**, in the `suite-c` job, concurrently | 1 of 98 | 168 s | 132.05 s, the geometric mean of eleven hosted readings on 2026-10-01 after the day’s files landed in it, band 90.34–147.16 s (1.63x); the 102.94 s thirty-one-reading record and the 88.59 s first reading stay as history |
+| `--suite-d` | **CI, on every pull request**, in the `suite-d` job, concurrently | 1 of 98 | 143 s | pending its first hosted cohort under `think-t7k5`; the record’s cohort predicts about 84 s for its 278.9 test-second share |
 | `--sweeps` | **CI, on every pull request**, in the `sweeps` job, concurrently | 5 of 98 | 200 s | 101.51 s, the geometric mean of six 4-of-80 hosted readings (66.36–130.77 s, spread 1.97x); the 119.72 s seven-reading mean and PR 180’s 138.84 s predecessor remain in the register as history |
 | `--measure-verifier` | **CI, on every pull request**, in the `measure-verifier` job, concurrently | 1 of 98 | 90 s | pending its first hosted cohort under `think-th8p`; its one step read 21.20 s and, on a runner where every step was about 1.9x slow, 45.30 s inside `--checks` |
 | *(no flag)* | Full checkpoint before final review and at block close; main, dispatch, and daily CI | 98 of 98 | 3600 s | integration plus ten deferred workers; new whole-wall measurement pending |
@@ -225,8 +227,13 @@ the surface. Each shard writes a per-file cost report beside its JUnit and timin
 artifacts; the recorder accepts complete coherent cohorts and rejects failed, partial,
 duplicated, coverage-mismatched, and mixed-provenance evidence, and a cohort recorded at
 one shard count may be packed into another, which is how the lane is repartitioned.
-The current declared ceilings are 131 seconds for shards A and D and 154 seconds for B
-and C.
+The current declared ceilings are 143 seconds for shards A and D and 168 seconds for B
+and C. They rose from 131 and 154 seconds on 2026-10-05, with `frontend` (150 to 165
+seconds) and `checks` (140 to 150 seconds), by the owner’s decision under `think-p684`,
+selected on purpose as `OR-17` requires: PR 347 adds 133.9 recorded test-seconds to the
+lane, about 10%, and 16 of 24 of its stack’s cohorts put a job over a ceiling against 2
+of 27 on `main`, every test green.
+The 12-second per-test wall is unchanged.
 
 The frontend browser runner builds one page and runs eight isolated browser contracts.
 The gate permits two contracts concurrently when the CPU count and outer job count leave
@@ -382,6 +389,15 @@ A missing or undersampled median produces an explicit warning while the absolute
 still applies. Partial reruns, missing jobs or required timestamps, an incomplete
 jobs-API page, and non-finite register values cannot produce a passing measurement.
 
+Two causes are not judged at all, when they are the only thing wrong with a run: each
+prints `NOT JUDGED`, raises a warning, and exits 0. A prerequisite GitHub cancelled
+before any runner took it is `infrastructure`; the aggregator’s result step already
+fails on its `cancelled` result.
+A later attempt that repeated only the failed jobs is `partial-rerun`: the jobs it kept
+report their first attempt’s times, so the attempt has no whole-run wall, and the result
+step still requires every prerequisite’s success.
+Any other reason left beside either cause keeps the run unmeasurable.
+
 **Both walls are currently advisory under `think-g4n9`.** Each workflow’s entry in
 `pull_request_walls` declares its `enforcement`. Absent means `enforcing`: a wall over
 the budget or the regression ratio fails `packing-required` or `pages-required`. An
@@ -413,6 +429,31 @@ licenses reuse only for fast steps named in the positive `TREE_REUSABLE_FAST_STE
 allowlist. Every deferred step and every unclassified fast step repeats after merge;
 missing artifacts, expired artifacts, API errors, fork runs, and incomplete checks all
 fall back to the complete surface.
+
+### A job no runner took
+
+GitHub cancels a queued job it cannot hand to a hosted runner (“The job was not acquired
+by Runner of type hosted even after multiple attempts”), and the run goes on without it.
+On 2026-10-05 from about 19:17 UTC this happened to 96 jobs after 15 to 35 minutes
+queued (run 37362926042), and the pull requests read red with no test failed.
+Three things answer it:
+
+- `packing-required` and `pages-required` still fail on the `cancelled` result, since a
+  required check does not go green on work that never ran, and then print
+  `FAILURE CLASS: infrastructure` with one `Infrastructure` error annotation per
+  prerequisite that never acquired a runner.
+- `pages-required` runs under `!cancelled()`, as `packing-required` has since `D-380`,
+  so a superseded run no longer queues an aggregator against its cancelled jobs.
+- [`rerun-starved.yml`](.github/workflows/rerun-starved.yml) re-runs the failed jobs of
+  a starved run once. [`rerun_starved.py`](packing/devtools/rerun_starved.py) decides
+  from the API’s JSON and writes every condition to the step summary.
+  The run must be a pull-request or push run, concluded `failure`, on its first attempt,
+  with a job cancelled without a runner, and with no newer run of the workflow for the
+  same commit, or for the same branch and event.
+  The last condition exists because a re-run joins the run’s concurrency group, and
+  re-running an older pull-request run would cancel the newer push’s run.
+  Do not re-run such a run by hand while the pool is not assigning runners; every hand
+  re-run on 2026-10-05 between 19:48 and 20:39 was cancelled or still queued at 20:45.
 
 ### The behavioural lanes
 
@@ -873,16 +914,16 @@ baseline. A `null` baseline leaves those ratio checks unarmed; a measurement pri
 CI does not update the file automatically.
 
 **On a hosted pull-request run the drift and stale rules are advisory under
-`think-be1s`, since 2026-10-01; the ceiling is not.** The register’s
-`policy.pull_request_relative_rules` declares it, the way `pull_request_walls` declares
-an advisory wall: `enforcing` when absent, and `advisory` only with a `tracking_bead`
-and an `advisory_reason`, which `devtools.check_gate_budgets` refuses when the bead is
-closed or unknown. The gate detects the run from the runner’s own `GITHUB_ACTIONS` and
-`GITHUB_EVENT_NAME`, computes both rules as before, prints each finding as
-`FAIL (advisory, not enforced)` with the bead, raises a warning annotation on the run,
-and passes; a run over its ceiling still fails, and `--enforce-budget` overrides the
-relaxation for an operator asking on purpose.
-Off a pull request nothing changes.
+`think-be1s`, since 2026-10-01; since 2026-10-05 the ceiling is too, up to a hang
+detector, under `think-6erz`.** The register’s `policy.pull_request_relative_rules`
+declares it, the way `pull_request_walls` declares an advisory wall: `enforcing` when
+absent, and `advisory` only with a `tracking_bead` and an `advisory_reason`, which
+`devtools.check_gate_budgets` refuses when the bead is closed or unknown.
+The gate detects the run from the runner’s own `GITHUB_ACTIONS` and `GITHUB_EVENT_NAME`,
+computes both rules as before, prints each finding as `FAIL (advisory, not enforced)`
+with the bead, raises a warning annotation on the run, and passes; a run over its
+ceiling still fails, and `--enforce-budget` overrides the relaxation for an operator
+asking on purpose. Off a pull request nothing changes.
 The measurement behind it, 2026-09-30, is retained with every reading’s verdict in
 `packing/tests/fixtures/tier-walls/hosted-readings-2026-09-30.yaml` and replayed by
 `test_the_day_of_2026_09_30_is_judged_on_code_not_on_the_runner`: on unchanged steps the
@@ -895,6 +936,20 @@ What can is a median over several hosted readings, which the wall register alrea
 judges and `think-be1s` owns for the tiers, or a wall normalised by the runner’s
 measured speed; until one of those judges a pull request, the ceiling is the rule a pull
 request is held to.
+
+**The ceiling and the per-test call-wall rule followed on 2026-10-05.**
+`policy.pull_request_ceiling` declares it under the same contract, plus a hang detector:
+on a hosted pull-request run a tier wall over its ceiling, or a test call of 12 s or
+more, is printed with its bead and a `Cost` warning annotation and does not fail the
+run, but a wall above `hang_ratio` (2) times the ceiling, or one call of
+`per_test_hang_seconds` (45) or more, still does.
+Main, scheduled and deep runs keep the ceiling enforced, and `--enforce-budget` again
+overrides it on purpose.
+The evidence is that day’s CI stabilization evaluation: 28 of 36 red pushes to stack
+pull requests failed on a wall verdict alone with every test green, and the +9% raise of
+`3d89c6fa5` was breached again within hours, shard C at 171.2 s against 168 s on #356.
+`think-6erz` returns the ceiling to enforcement when it is judged against a median or a
+runner-normalised wall.
 
 A different CPU/worker shape reports the budget result without failing, unless
 explicitly enforced.
@@ -938,6 +993,10 @@ as the runs it would report on, because the defect *is* that no run is created.
 A `push` event fires off the branch tip, which exists whatever the base is doing, and
 its check run is keyed to the head commit — so it appears on the pull request, where the
 missing runs would have been.
+It merges against the base of the branch’s open pull request, which is the merge GitHub
+builds, and against `main` when the branch has no open pull request.
+Until 2026-10-05 it always used `main`, which put a false red on every push to a stacked
+branch (46 on that day alone), whose pull request targets the branch below it.
 
 When it fails, it is telling you one thing: **no `pull_request` run will be created for
 this branch until the conflict is resolved**, so the pull request’s checks will sit
@@ -1015,15 +1074,33 @@ The survey posters are not redrawn for a result; they are
 [release assets](#release-assets-are-drawn-at-a-version-bump-or-on-demand).
 That sequence also applies when no explainer edition changes.
 
-**The site’s two papers are served under `papers/`, each by its slug**, and the slug is
-the paper’s name in the source too (see
-[conventions.md → Naming](conventions.md#2-naming)): `n11-lower-bounds-explainer`, “New
-lower bounds for square packing for n = 11”, and `n11-optimality-review`, “A review of
-the optimality proof of the Trump packing of 11 squares”.
+**The site’s three papers are served under `papers/`, each by its slug**, and the slug
+is the paper’s name in the source too (see
+[conventions.md → Naming](conventions.md#2-naming)). They are one series on n = 11, read
+in order:
+
+| Part | Slug | Title | Renderer |
+| --- | --- | --- | --- |
+| I | `n11-lower-bounds-explainer` | New Lower Bounds for Square Packing for n = 11 | `render_n11_lower_bounds_explainer` |
+| II | `n11-threshold-bound-review` | A Review of the Certified Lower Bound s(11) > 31/8 for 11 Squares | `render_n11_threshold_bound_review` |
+| III | `n11-optimality-review` | A Review of the Optimality Proof of the Trump Packing of 11 Squares | `render_n11_optimality_review` |
+
 Each is `papers/<slug>.html` with `papers/<slug>.md` and `papers/<slug>.pdf` beside it.
-A renderer is given the site’s root (`--site`, by default `packing/site/`) and writes
-its paper there, where it is served, so every check reads the page at its published path
-and the publication renames nothing.
+**The list of papers is written once**, as `render_overview.PAPERS` (slug, renderer
+module, card label, part and title, in reading order).
+`SITE_PAGES`, the Papers page and home cards, each paper’s series strip
+(`paper_front.series`), the slugs a link between papers may name (`paper_links`), the
+structure audit (`paper_structure`), the Pages scope (`pages_scope`), the preview build
+(`preview_site`) and the deployed-site check (`check_published_site`) read it.
+Adding a paper is one entry there and its renderer, modeled on
+`render_n11_optimality_review.py`; then its own Pages job in `pages.yml` with a scope
+output and a line in `scope`’s skipped-page notices, a staged step in `publish` and a
+clause in `pages-required`, a budget for the job in `gate-budgets.yaml`, its version and
+dates in `sqpack.release`, its rows in `devtools.artifact_dates`, and its version in
+`check_published_site.PAPER_VERSIONS`. The workflow tests name each step that is
+missing. A renderer is given the site’s root (`--site`, by default `packing/site/`) and
+writes its paper there, where it is served, so every check reads the page at its
+published path and the publication renames nothing.
 
 The explainer at
 <https://jlevy.github.io/squares/papers/n11-lower-bounds-explainer.html> is not checked
@@ -1043,13 +1120,33 @@ A pull request runs the same build without deploying, so a render that breaks fa
 review rather than the next deploy.
 It builds only the pages its changes can affect: the workflow’s `scope` job runs
 `devtools.pages_scope`, which reads each builder’s `RENDER_INPUTS` and the tools the
-workflow runs for that page, and a page none of the changed files touches is skipped by
-a job named for the reason.
+workflow runs for that page, and a page none of the changed files touches is skipped,
+with a notice from `scope` naming the page and the reason.
 `pages-required` is the aggregate a branch rule would require; it passes such a skip and
 nothing else.
 
-The separate **T-060 optimality paper** lives at `/papers/n11-optimality-review.html`.
-Its source is
+**Part II, the T-037 threshold-bound review**, lives at
+`/papers/n11-threshold-bound-review.html` and is built as Part III is, from
+[`n11-threshold-bound-review-article.md`](packing/devtools/templates/n11-threshold-bound-review-article.md)
+by
+[`render_n11_threshold_bound_review.py`](packing/devtools/render_n11_threshold_bound_review.py),
+with its figures from `n11_threshold_figures.py`, drawn in the roles `paper_figures.py`
+shares with Part III. From `packing/`:
+
+```bash
+uv run --frozen --all-extras --group dev python -m devtools.render_n11_threshold_bound_review --pdf
+```
+
+The outputs are `site/papers/n11-threshold-bound-review.html`, `.md`, and `.pdf`;
+`--site`, `--check` and `--revision` work as Part III’s do.
+Its Pages job, `n11-threshold-bound-review`, checks out the archived Kleddamag proof,
+the T-059 replay journal and the native verifier’s row journal beside the code, runs the
+figure and renderer tests, and renders and checks the page, the Markdown and the PDF;
+`scope`’s notice says why when no input of it changed.
+It explains accepted evidence and reruns no sweep.
+
+The separate **T-060 optimality paper**, Part III, lives at
+`/papers/n11-optimality-review.html`. Its source is
 [`n11-optimality-review-article.md`](packing/devtools/templates/n11-optimality-review-article.md);
 [`render_n11_optimality_review.py`](packing/devtools/render_n11_optimality_review.py)
 uses the same KPress fonts and
@@ -1099,7 +1196,7 @@ Deployment waits for all of them.
 The workbench job selects Node 24.18.0, installs the root lockfile with scripts
 disabled, and builds the typed workbench package into the self-contained `/workbench/`
 page, beside `prepare` rather than after it.
-The publish job puts the two papers, the checked PDF, the site’s own pages and the
+The publish job puts the three papers, the checked PDF, the site’s own pages and the
 workbench back into one tree and holds every page’s head in it to the site’s contract,
 and every shared asset a page names to being there whole (`check_published_site
 --local`); only a push to `main` uploads that tree to Pages.
@@ -1167,10 +1264,11 @@ pin the verifier at the edition’s revision
 uv run --frozen --all-extras --group dev python -m devtools.check_published_site --commit <merge commit>
 ```
 
-It fetches the live pages, both papers with their Markdown editions and PDFs, the assets
-and the workbench. It checks the explainer edition, verifies that repository links name
-and resolve at the expected commit, and requires the PDF source receipt to match the
-exact served HTML bytes and its page count to match the publication.
+It fetches the live pages, every paper with its Markdown edition and PDF, the assets and
+the workbench, and holds every link from one paper to another to a heading the target
+paper has. It checks the explainer edition, verifies that repository links name and
+resolve at the expected commit, and requires the PDF source receipt to match the exact
+served HTML bytes and its page count to match the publication.
 It also requires the workbench’s exact source revision, starts its public API in pinned
 Chromium, and follows its project-relative link to the overview.
 It asks for every address a paper used to have, as the paragraph above says.
@@ -1191,9 +1289,12 @@ The whole check also runs on a build before it is deployed.
 directory and serves it at `http://127.0.0.1:8765/`, and
 `python -m devtools.check_published_site --site http://127.0.0.1:8765/ --commit <the commit the build was made from>`
 asks it the same questions; a local address is the one kind that is not https and is
-still asked. A preview has the first paper’s PDF only if one is put there: that PDF is
-drawn from `packing/site/` by `render_n11_lower_bounds_explainer_pdf`, which a preview
-never writes.
+still asked. It is how the links between papers are checked before a new paper is live,
+since only a build that holds every paper can answer them; `--local DIR` asks them of a
+built directory too.
+A preview has the first paper’s PDF only if one is put there: that PDF is drawn from
+`packing/site/` by `render_n11_lower_bounds_explainer_pdf`, which a preview never
+writes.
 
 **One version, shared by the site and its data** (the owner, 2026-09-22): every site
 page’s footer and the workbench stage print `PUBLICATION_EDITION` from
@@ -1227,15 +1328,16 @@ A reader finds it in `release.py` and here.
 owner, 2026-10-01: “the repository version should not go on the papers anymore.
 Papers should be individually versioned”). Each paper’s version line prints its own
 version from `release.py`: the explainer’s is `EXPLAINER_VERSION`, the newest entry of
-`EXPLAINER_HISTORY`, and the review’s is `OPTIMALITY_REVIEW_EDITION`, its status and the
-newest entry of `OPTIMALITY_REVIEW_HISTORY` (“Draft v0.1.4”). The top of the explainer
-reads, on two lines, like “v0.4.2 (version history)” and “First published September 5,
-2026 · Last revised October 1, 2026”: which version of the paper is being read, with a
-link to the paper’s own editions at the foot of the page, then when the paper first
-reached a reader and when the article last changed.
-Both papers write their front, the formats row, the title and the credits, from one
-component (`devtools.paper_front`), and `devtools.paper_structure` compares the two
-rendered papers axis by axis
+`EXPLAINER_HISTORY`; each review’s is its status and the newest entry of its history,
+`THRESHOLD_REVIEW_EDITION` (“Draft v0.1.0”) and `OPTIMALITY_REVIEW_EDITION` (“Draft
+v0.1.5”). The top of the explainer reads, on two lines, like “v0.4.2 (version history)”
+and “First published September 5, 2026 · Last revised October 1, 2026”: which version of
+the paper is being read, with a link to the paper’s own editions at the foot of the
+page, then when the paper first reached a reader and when the article last changed.
+Every paper writes its front, the formats row, the title, the credits and the series
+strip (which part of the series it is, and the other parts by title), from one component
+(`devtools.paper_front`), and `devtools.paper_structure` compares every rendered paper
+with Part I axis by axis
 ([paper-design.md → The Papers’ Front](packing/devtools/templates/paper-design.md#the-papers-front)).
 The first date is `EXPLAINER_FIRST_PUBLISHED`, the paper’s oldest edition’s, so it does
 not move.
@@ -1246,7 +1348,7 @@ rule. The colophon on a paper is the site’s two lines without the version part
 credit to Flowmark and KPress.
 `PUBLICATION_EDITION`, `PUBLICATION_STAMP` and the data hash appear on no paper page, in
 no Markdown edition and in no PDF; `tests/test_n11_lower_bounds_explainer.py` and the
-review’s tests hold that, and `check_published_site` refuses a served paper that carries
+reviews’ tests hold that, and `check_published_site` refuses a served paper that carries
 the site’s edition or lacks its own.
 
 **A paper’s history lists the editions in which the paper changed, and nothing else.** A
@@ -1343,10 +1445,11 @@ its source and whether it is what the rule gives:
 - A date derived from a commit is the commit’s author date, on the author’s own
   calendar.
 - A paper’s “revised” date is the date of the last commit that changed its article.
-  The explainer’s is `EXPLAINER_REVISED` and the optimality paper’s is
-  `OPTIMALITY_REVIEW_REVISED`, both in `release.py`, where each paper’s front reads it
-  (`devtools.paper_front`). Change it in the commit that changes the article;
-  `tests/test_artifact_dates.py` fails when it stands still.
+  The explainer’s is `EXPLAINER_REVISED`, the threshold-bound review’s
+  `THRESHOLD_REVIEW_REVISED` and the optimality paper’s `OPTIMALITY_REVIEW_REVISED`, all
+  in `release.py`, where each paper’s front reads it (`devtools.paper_front`). Change it
+  in the commit that changes the article; `tests/test_artifact_dates.py` fails when it
+  stands still.
 - A poster’s dateline is the date of the data commit it was drawn from.
 - A PDF’s `CreationDate` and `ModDate` are the date on its face, at noon UTC, and never
   the build clock.
@@ -1404,8 +1507,9 @@ It is one edit, in the commit that makes the change, with no command:
    `October 2, 2026`, and one sentence on what changed in the paper.
    The number is the paper’s own and is not the site’s; a number already published is
    never changed.
-2. Set `EXPLAINER_REVISED` (or `OPTIMALITY_REVIEW_REVISED`) to the commit’s date, as any
-   change to the article requires; `python -m devtools.artifact_dates --check` and
+2. Set `EXPLAINER_REVISED` (or `THRESHOLD_REVIEW_REVISED`, or
+   `OPTIMALITY_REVIEW_REVISED`) to the commit’s date, as any change to the article
+   requires; `python -m devtools.artifact_dates --check` and
    `tests/test_artifact_dates.py` hold it to git.
 3. Where the entry points name the paper’s version, update them: TUTORIAL.md names the
    explainer’s (`test_reader_facing_version_references_follow_release_metadata`).

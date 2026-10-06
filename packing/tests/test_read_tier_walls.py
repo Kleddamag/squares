@@ -15,7 +15,9 @@ says which tier the reading is of.
 # pyright: reportPrivateUsage=false
 from __future__ import annotations
 
+import io
 import math
+from contextlib import redirect_stderr, redirect_stdout
 from pathlib import Path
 from typing import Any
 
@@ -23,6 +25,8 @@ import pytest
 
 from devtools import read_tier_walls
 from devtools.read_tier_walls import geometric_mean, growth, parse_log, same_shape, step_means
+from sqpack import gate_budgets
+from sqpack.cli import validate
 
 EXCERPT = (
     Path(__file__).resolve().parent
@@ -65,6 +69,44 @@ def advisory_verdict() -> str:
             "49 of 74 STEPS PASSED (a named tier; this is not the full gate)",
         )
     )
+
+
+def test_the_closing_failure_class_leaves_a_budget_only_reading_readable(
+    monkeypatch: pytest.MonkeyPatch, tmp_path: Path
+) -> None:
+    """The gate's own hosted rendering, annotations and failure class included, is still
+    one budget-only reading of its tier at the reference shape."""
+    monkeypatch.setenv("GITHUB_ACTIONS", "true")
+    monkeypatch.setenv("GITHUB_STEP_SUMMARY", str(tmp_path / "summary.md"))
+    summary = validate.RunSummary(
+        results=[validate.StepResult("fast behavioral tests, shard A", "passed", 134.0)],
+        wall_seconds=134.2,
+        selected_count=1,
+        total_count=98,
+        budget=gate_budgets.Verdict(
+            tier="suite_a",
+            wall_seconds=134.2,
+            status="failed",
+            enforced=True,
+            ceiling_seconds=131.0,
+            measured_seconds=114.58,
+            failures=("the suite_a tier ran 134.2s against a 131s ceiling",),
+        ),
+    )
+    stdout = io.StringIO()
+    with redirect_stdout(stdout), redirect_stderr(io.StringIO()):
+        assert validate._render_text(summary, strict=False) == 1
+    log = (
+        "##[group]Run uv run --frozen --all-extras --group dev "
+        "packing-validate --suite-a --jobs 1 --inner-jobs 1\n" + stdout.getvalue()
+    )
+
+    (reading,) = parse_log(log)
+
+    assert (reading.tier, reading.wall_seconds, reading.steps) == ("suite_a", 134.2, "1 of 98")
+    assert reading.enforced
+    assert reading.budget_only_failure
+    assert "FAILURE CLASS: budget verdict alone failed" in log
 
 
 def test_an_advisory_finding_is_still_a_reading_at_the_reference_shape() -> None:

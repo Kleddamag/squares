@@ -1,32 +1,44 @@
-"""The front of a paper, which both papers take from one place.
+"""The front of a paper, which every paper takes from one place.
 
 A paper opens the same way on the site whichever paper it is: the formats row, three
 chips offering the Markdown it is rendered from, its typeset PDF and the project on
-GitHub; then the title; then the credits, in the owner's form (2026-10-01):
+GitHub; then the title; then the credits, in the owner's form (2026-10-01), and under
+them the series strip (the series plan, 2026-10-05):
 
     From the original proof by **Queuingtheorydotcom**
     github.com/Queuingtheorydotcom/11SquaresOptimal
 
     Human oversight: **Joshua Levy**
     Agents: **GPT-6 Astra** and **GPT-6 Sol**
-    Draft v0.1.4 (version history)
+    Draft v0.1.5 (version history)
     Original proof September 29, 2026 · Last revised October 4, 2026
 
+    Part III of 3 in the n = 11 series
+    Part I: New Lower Bounds for Square Packing for n = 11
+    Part II: A Review of the Certified Lower Bound s(11) > 31/8 for 11 Squares
+
 Names in bold, addresses as plain links, the version plain, a line's space before a
-paper's own credits when it explains someone else's work, and a line's space before the
-dates. A paper without a source begins at its own credits. The version is the paper's
-own, not the site's (`sqpack.release`, the papers' own versions), and the version line
-links the paper's version history where it has one, which is where each paper's own
-editions are listed; a paper at its first version has no history to link.
+paper's own credits when it explains someone else's work, a line's space before the
+dates, and another before the series strip. A paper without a source begins at its own
+credits. The version is the paper's own, not the site's (`sqpack.release`, the papers'
+own versions), and the version line links the paper's version history where it has one,
+which is where each paper's own editions are listed; a paper at its first version has
+no history to link. The strip says which part of the series the paper is and names the
+other parts by their titles, each linking its paper: page-relative on the page, which
+works on the site and in a local preview, and by the site's address in the Markdown
+edition, which is read away from the site (`devtools.paper_links` fills a link from one
+paper to another the same way). It is written from the site's one list of papers
+(`render_overview.PAPERS`), so a paper is named the same way on every other paper's
+front.
 
 Each paper describes itself as a `PaperFront`, a small record of the values that differ
-between the two, and everything the reader sees at the top of either page, in its
+between the papers, and everything the reader sees at the top of each page, in its
 Markdown edition and in the head its PDF takes its title from, is written from that
 record here. The renderers used to carry their own copies of this block, one in an
 article and one in a shell, and they drifted: a bold address on one paper and a plain
 one on the other, the version before the dates on one and after on the other, chips
 rendered by KPress on one and written raw on the other (think-2cqu).
-`devtools.paper_structure` measures the two rendered papers against each other, and
+`devtools.paper_structure` measures each rendered paper against the first, and
 `tests/test_paper_structure.py` holds them together.
 """
 
@@ -37,6 +49,7 @@ from datetime import datetime
 from html import escape
 from typing import NamedTuple
 
+from devtools import render_overview
 from devtools.repo_links import REPO_URL
 
 #: The placeholder an article carries where its front goes, exactly once.
@@ -84,9 +97,51 @@ class Dated(NamedTuple):
     day: str
 
 
+class Part(NamedTuple):
+    """One part of a series, as the series strip names it: its number, its slug, which
+    its link is written from, and its title in plain text."""
+
+    number: int
+    slug: str
+    title: str
+
+
+class Series(NamedTuple):
+    """The series a paper is part of: the series' name, as the strip writes it after
+    "Part N of M in", its parts in reading order, and the number of this paper's part."""
+
+    name: str
+    parts: tuple[Part, ...]
+    part: int
+
+
+#: What the series strip calls the site's series of papers on n = 11.
+SERIES_NAME = "the n = 11 series"
+#: The numerals a part is numbered with, as the series plan and the papers' cards write
+#: them.
+_NUMERALS = ("I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X")
+
+
+def numeral(number: int) -> str:
+    """A part's number as the strip writes it: `II` for 2."""
+    if not 1 <= number <= len(_NUMERALS):
+        raise ValueError(f"no numeral is written for part {number}")
+    return _NUMERALS[number - 1]
+
+
+def series(slug: str) -> Series:
+    """The series strip of the site's paper `slug`, from the site's one list of papers
+    (`render_overview.PAPERS`): every paper of the site, in reading order, by its part."""
+    return Series(
+        SERIES_NAME,
+        tuple(Part(paper.part, paper.slug, paper.title) for paper in render_overview.PAPERS),
+        render_overview.paper_record(slug).part,
+    )
+
+
 class PaperFront(NamedTuple):
-    """What differs between the two papers at the top of the page: the record each
-    renderer writes its front from."""
+    """What differs between the papers at the top of the page: the record each renderer
+    writes its front from."""
 
     slug: str
     """Names the page, its Markdown and its PDF, which the formats row links."""
@@ -105,6 +160,9 @@ class PaperFront(NamedTuple):
     history: str = ""
     """The id of the paper's version-history section, which the version line links;
     empty for a paper with one version and so no history."""
+    series: Series | None = None
+    """The series the paper is part of, which the strip under the credits names
+    (`series`); None for a paper in no series."""
 
 
 def check(front: PaperFront) -> PaperFront:
@@ -141,6 +199,15 @@ def check(front: PaperFront) -> PaperFront:
         raise ValueError(f"{front.slug}: the source is credited by its author's name")
     if front.history and not _ANCHOR_ID.fullmatch(front.history):
         raise ValueError(f"{front.slug}: the version history is linked by its id")
+    if front.series is not None:
+        numbers = [part.number for part in front.series.parts]
+        if numbers != list(range(1, len(numbers) + 1)) or len(numbers) < 2:
+            raise ValueError(f"{front.slug}: a series' parts are numbered 1, 2, … in order")
+        mine = [part for part in front.series.parts if part.number == front.series.part]
+        if len(mine) != 1 or mine[0].slug != front.slug:
+            raise ValueError(f"{front.slug}: the series names this paper as its part")
+        if not all(part.title.strip() for part in front.series.parts):
+            raise ValueError(f"{front.slug}: each part of a series is named by its title")
     return front
 
 
@@ -246,6 +313,32 @@ def _credit_lines(front: PaperFront) -> list[tuple[str, str, str]]:
         lines.append(("edition", version, front.version))
     dates = " · ".join(f"{dated.label} {dated.day}" for dated in front.dates)
     lines.append(("publication-date", escape(dates), dates))
+    if front.series is not None:
+        lines.extend(_series_lines(front.series))
+    return lines
+
+
+def _series_lines(series: Series) -> list[tuple[str, str, str]]:
+    """The series strip, as credit lines: which part of how many this paper is, then each
+    other part by its number and its title, linking its paper, in reading order."""
+    count = len(series.parts)
+    heading = f"Part {numeral(series.part)} of {count} in {series.name}"
+    lines = [("series", escape(heading), heading)]
+    for part in series.parts:
+        if part.number == series.part:
+            continue
+        label = f"Part {numeral(part.number)}:"
+        page = render_overview.paper_path(part.slug).removeprefix(
+            render_overview.PAPERS_DIR + "/"
+        )
+        address = render_overview.SITE_URL + render_overview.paper_path(part.slug)
+        lines.append(
+            (
+                "series",
+                f'{label} <a href="{escape(page, quote=True)}">{escape(part.title)}</a>',
+                f"{label} [{part.title}]({address})",
+            )
+        )
     return lines
 
 

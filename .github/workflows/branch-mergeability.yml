@@ -23,7 +23,16 @@ name: Branch mergeability
 # and because check runs are keyed to the head commit SHA it still appears on the pull
 # request's checks list, where the missing runs would have been.
 #
-# **What it does not catch, stated rather than hidden.** `main` moving under an idle
+# **The base is the open pull request's base, not always `main`.** GitHub builds the
+# merge ref against the base the pull request names, so that is the merge this asks
+# about. Until 2026-10-05 it always merged against `main`, and a stacked branch, whose
+# pull request targets the branch below it, carries every commit of that branch and
+# conflicts with `main` until the stack lands: 46 false reds on 2026-10-05, every push to
+# the top of one stack for three hours, while each layer merged cleanly into its real
+# base. A branch with no open pull request has no merge ref yet, and is asked about
+# `main`, where it will most likely go.
+#
+# **What it does not catch, stated rather than hidden.** The base moving under an idle
 # branch produces no event on that branch, so this workflow is silent until the next push
 # -- which is when `D-459` was actually reproduced, five times over, so the measured
 # incident is covered. The uncovered case is a labelled, approved branch that sits while
@@ -55,10 +64,14 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  merges-into-main:
+  merges-into-base:
     # Skipped for a branch deletion, where there is no tip to check out.
     if: "!github.event.deleted"
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      # To read which branch this branch's open pull request targets.
+      pull-requests: read
     steps:
       - name: Check out the branch
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -78,39 +91,59 @@ jobs:
         # tree, needs no index, and answers in milliseconds once the objects are local.
         # Exit 0 is a clean merge, exit 1 is a conflict, anything else is git failing to
         # answer -- and the third is reported as a failure too, because "the check could
-        # not tell" must not read the same as "the branch is fine".
+        # not tell" must not read the same as "the branch is fine". Not finding out which
+        # base to ask about is the same unknown, and fails the same way.
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+          BRANCH: ${{ github.ref_name }}
         run: |
-          # Fail closed if the fetch or ref resolution fails. Without `-e`, a failed
-          # fetch can fall through to a stale remote-tracking ref and report a clean
-          # merge against the wrong base.
+          # Fail closed if the lookup, the fetch or ref resolution fails. Without `-e`, a
+          # failed fetch can fall through to a stale remote-tracking ref and report a
+          # clean merge against the wrong base.
           set -euo pipefail
           report="${RUNNER_TEMP:-/tmp}/merge-tree.out"
-          # An explicit refspec rather than `git fetch origin main`: whether a bare
-          # fetch also updates `refs/remotes/origin/main` depends on the refspec
+          # The base of this branch's open pull request from this repository; a fork's
+          # pull request from a branch of the same name is not this branch.
+          if ! open="$(gh pr list --head "$BRANCH" --state open --json number,baseRefName,isCrossRepository \
+              --jq '[.[] | select(.isCrossRepository | not)] | first // empty | "\(.number) \(.baseRefName)"')"; then
+            echo "::error title=Mergeability could not be determined::could not list the open pull request for $BRANCH. Treat this as unknown rather than clean."
+            exit 1
+          fi
+          if [ -n "$open" ]; then
+            number="${open%% *}"
+            target="${open#* }"
+            why="the base of open pull request #$number"
+          else
+            target=main
+            why="no open pull request has this branch as its head"
+          fi
+          # An explicit refspec rather than `git fetch origin "$target"`: whether a bare
+          # fetch also updates the remote-tracking ref depends on the refspec
           # `actions/checkout` happened to configure, and this check must not be the
           # thing that is sometimes right.
-          git fetch --quiet --no-tags origin +refs/heads/main:refs/remotes/origin/main
-          base="$(git rev-parse origin/main)"
-          git merge-tree --write-tree HEAD origin/main >"$report" 2>&1 && status=0 || status=$?
+          git fetch --quiet --no-tags origin "+refs/heads/$target:refs/remotes/origin/$target"
+          base="$(git rev-parse "origin/$target")"
+          git merge-tree --write-tree HEAD "origin/$target" >"$report" 2>&1 && status=0 || status=$?
           if [ "$status" -eq 0 ]; then
-            echo "Merges cleanly into origin/main ($base); GitHub can build the merge ref."
+            echo "Merges cleanly into origin/$target ($base), $why; GitHub can build the merge ref."
             exit 0
           fi
           {
             echo "### This branch cannot be merge-built"
             echo
-            echo "\`git merge-tree --write-tree HEAD origin/main\` exited $status against"
-            echo "\`origin/main\` at \`$base\`."
+            echo "\`git merge-tree --write-tree HEAD origin/$target\` exited $status against"
+            echo "\`origin/$target\` at \`$base\`, $why."
           } >>"$GITHUB_STEP_SUMMARY"
           if [ "$status" -eq 1 ]; then
-            echo "::error title=Branch conflicts with main::GitHub creates no pull_request run for a conflicted branch, so its checks sit pending rather than red (D-459). Remedy in the job summary."
+            echo "::error title=Branch conflicts with $target::GitHub creates no pull_request run for a conflicted branch, so its checks sit pending rather than red (D-459). Remedy in the job summary."
             {
               echo
               echo "No \`pull_request\` run will be created while this is true, so the pull"
               echo "request's checks will sit pending rather than turn red. Resolve it:"
               echo
               echo '```bash'
-              echo "git fetch origin main && git rebase origin/main   # or: git merge origin/main"
+              echo "git fetch origin $target && git rebase origin/$target   # or: git merge origin/$target"
               echo "git push --force-with-lease"
               echo '```'
               echo

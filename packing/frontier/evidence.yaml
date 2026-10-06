@@ -24069,8 +24069,7 @@ evidence:
       below one. A pre-publication run of the same build on an x86_64 Ubuntu host verified
       all 832 in 490 seconds. The README says the candidate can still be run through the
       C++ checker of the earlier bundles; the source did not. It exceeds the 49/10 the
-      record reported at n = 20 (T-077) by 0.005, and the verified 1959/400 (T-074) by
-      0.0075. Here devtools.audit_wand125_declared_net audit --certificate n20-L4905
+      record reported and verified at n = 20 (T-077) by 0.005. Here devtools.audit_wand125_declared_net audit --certificate n20-L4905
       (receipts/n20-L4905/audit.json in the packet) recomputes the mass, lemma N0's
       premises on the declared net, the net block bundle.json states and the semantic
       candidate digest from the retained bytes; it holds the receipt and the

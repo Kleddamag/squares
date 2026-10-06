@@ -5,13 +5,13 @@ title: "Sessions 171-172 records: call same-implementation replays fresh, not in
 kind: task
 status: open
 priority: 2
-version: 1
+version: 2
 spec_path: docs/project/reviews/review-2026-10-02-n17-bulk-exclusion-design.md
 labels: []
 dependencies: []
 parent_id: is-01m3xkd6zmq1jqwtn628h2k7zy
 created_at: 2026-10-06T08:10:15.368Z
-updated_at: 2026-10-06T08:10:15.368Z
+updated_at: 2026-10-06T15:59:19.452Z
 ---
 Residual of Review B finding B4 on jlevy/squares#355 (https://github.com/jlevy/squares/pull/355#pullrequestreview-5411026555), which merged in stack 357 (main a6279886b).
 
@@ -24,3 +24,7 @@ Outstanding: the AgentSession records were not touched and still call the same-i
 Rule: in this repository's evidential vocabulary (conventions.md, the independence section around lines 324-344) "independent" means a separate implementation. A fresh, search-free re-run of the same predicate code in a separate process is a "fresh replay (same implementation, no search)". Keep "independent" where it names a separate reviewer or role ("root independent review", "independent reviewer"); change it only where it describes the replay, support, check or acceptance evidence. Receipt file names (*-independent-replay.json) keep their historical spelling, as the READMEs already say. After editing, re-render the generated records (close_session --render, packing-ledger render) and run `packing-validate --records` from packing/. Low severity, wording only; no verdict changes.
 
 Done when: grep -n -i independ over the two files returns only reviewer or role uses, and the records tier passes.
+
+## Notes
+
+2026-10-06: addressed on jlevy/squares#384 (claude/n17-session-certification, 7c4f758f5 and 6f635886d); closes when #384 merges.

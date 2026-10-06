@@ -5,7 +5,7 @@ title: "Certify rebuilt Sessions 170-172 and 174-179 on stack 357 (#355, #356, #
 kind: chore
 status: open
 priority: 2
-version: 7
+version: 8
 assignee: Guzhou
 delegate: null
 labels: []
@@ -13,7 +13,7 @@ dependencies: []
 hold: null
 hold_until: null
 created_at: 2026-10-05T01:49:28.290Z
-updated_at: 2026-10-05T12:04:26.799Z
+updated_at: 2026-10-06T15:59:17.340Z
 started_at: 2026-10-05T07:24:27.154Z
 ---
 # PR333 split-layer review and certification tracking
@@ -28,4 +28,4 @@ condition are satisfied; it is not ownership of an ongoing research mechanism.
 
 ## Notes
 
-2026-10-05 12:05Z: Sessions 177-179 certified on #360 at db1556daf (hosted fast pass, run 37305598332 at 3b5edcdd9, fully green). Only Sessions 174-176 remain pending: no #356 run has yet passed its shard walls (think-p684).
+2026-10-06: addressed on jlevy/squares#384 (claude/n17-session-certification, 7c4f758f5 and 6f635886d); closes when #384 merges.

@@ -868,6 +868,41 @@ def in_pruned_roots(path: Path, roots: frozenset[Path]) -> bool:
     return path in roots or any(parent in roots for parent in path.parents)
 
 
+def _linked_documents() -> list[Path]:
+    """The Markdown the link checker reads inside a worker: the record and root documents."""
+    documents = list((ROOT / "campaign").rglob("*.md"))
+    for document in ROOT_DOCUMENTS:
+        if document.is_dir():
+            documents.extend(
+                path
+                for path in document.rglob("*.md")
+                if not _inside_build_cache(path, below=document)
+            )
+        elif document.is_file() and document.suffix == ".md":
+            documents.append(document)
+    return documents
+
+
+def linked_pruned_directories() -> list[Path]:
+    """Pruned directories the checked documents link to inline, resolved and existing.
+
+    A link to a directory needs the directory, not its contents: exp-249 links Session
+    168's `certificates/`, which the snapshot prunes whole, and the ledger check found
+    that link dead in every worker once `ledger check` became a green-baseline command
+    (#372; #360's suite A, run 37391619647). Copying what such links reach was measured
+    at 2,009 files and 83 MB, taking the snapshot from 190.9 MB to 274 MB against the
+    192 MiB cap, so `clone_tree` recreates each of these directories empty instead.
+    """
+    roots = frozenset(LINKED_PRUNE_ROOTS)
+    directories: set[Path] = set()
+    for document in _linked_documents():
+        for raw in INLINE_LINK.findall(document.read_text(errors="ignore")):
+            resolved = (document.parent / raw).resolve()
+            if resolved.is_dir() and in_pruned_roots(resolved, roots):
+                directories.add(resolved)
+    return sorted(directories)
+
+
 def linked_pruned_targets() -> list[Path]:
     """Omitted files the checked documents link to inline, resolved and existing.
 
@@ -884,20 +919,9 @@ def linked_pruned_targets() -> list[Path]:
     the checker honest at once; a link to a file that truly does not exist is
     left dead for the real checker to refuse.
     """
-    documents = list((ROOT / "campaign").rglob("*.md"))
-    for document in ROOT_DOCUMENTS:
-        if document.is_dir():
-            documents.extend(
-                path
-                for path in document.rglob("*.md")
-                if not _inside_build_cache(path, below=document)
-            )
-        elif document.is_file() and document.suffix == ".md":
-            documents.append(document)
-    roots = frozenset(LINKED_PRUNE_ROOTS)
     targets: set[Path] = set()
     roots = frozenset(LINKED_PRUNE_ROOTS)
-    for document in documents:
+    for document in _linked_documents():
         for raw in INLINE_LINK.findall(document.read_text(errors="ignore")):
             resolved = (document.parent / raw).resolve()
             if resolved.is_file() and in_pruned_roots(resolved, roots):
@@ -1010,6 +1034,8 @@ def clone_tree(dest: Path) -> None:
         landing = dest / target.relative_to(REPO)
         landing.parent.mkdir(parents=True, exist_ok=True)
         shutil.copy2(target, landing)
+    for directory in linked_pruned_directories():
+        (dest / directory.relative_to(REPO)).mkdir(parents=True, exist_ok=True)
 
     for document in ROOT_DOCUMENTS:
         if document.is_dir():

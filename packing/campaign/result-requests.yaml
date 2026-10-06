@@ -134,7 +134,8 @@ issues:
     title: 'Preprint: for every fixed c, s(k^2-c)=k for all large k (explicit constant 0.033)'
     author: squarepacker
     opened: '2026-10-05'
-    state: open
+    state: closed
+    closed: '2026-10-06'
     kind: result-report
     triage: done
     summary: >-
@@ -184,9 +185,17 @@ issues:
         kind: import
         reported:
           - result: k2-minus-c
+      - url: https://github.com/jlevy/squares/issues/368#issuecomment-6011935672
+        date: '2026-10-06'
+        by: jlevy
+        kind: final
+        reported:
+          - result: k2-minus-c
     close_when: >-
-      The theorem is registered, its computer-assisted lemma replayed and its argument
-      reviewed, and the reply saying so is posted from main.
+      The theorem is recorded (in the register, or beside it in
+      asymptotic-waste-bounds.yaml when it settles no count n <= 324), its
+      computer-assisted lemma replayed and its argument reviewed, and the reply saying so
+      is posted from main.
 
   - number: 367
     title: 'n17 sub-pattern branch and bound: a branching rule that cuts the full trees by 10–20× on the flagged classes, and what we are working on'

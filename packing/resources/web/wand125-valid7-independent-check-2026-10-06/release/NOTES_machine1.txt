@@ -1,0 +1,8 @@
+# run notes of the compute machine (host names replaced by 'machine 1' / 'machine 2' for publication); times are UTC, 2026
+# 10-03 22:55 UTC: full ValidTilt9 run started, record runs/tilt9.jsonl seeded from the pilot blocks (same grid, same code)
+# 10-04 06:10 UTC: resumed with --amin 1/1280 (was the default 1/320; Tier A goes deeper before handing a box to Tier B); roots in record before: 16755; same code
+# 10-05 05:08 UTC: machine 2 takes centres x >= 39/10; a watch script stops this run when all x < 39/10 roots are done
+# 10-05 11:34 UTC: switched to run_all.py v2 (sha256 cd6627de26d77dbf; v1 899144f999e69cb0), options --bmid-u 3/16 --bmid-w 1/20, centres x in [0, 39/10); roots in runs/tilt9.jsonl before: 23012; other files unchanged
+# 10-05 13:07 UTC: resumed with --bmid-u 7/16 (was 3/16; early Tier B hand-off for every u-bin), same code v2 (run_all.py sha256 cd6627de26d77dbf); roots in runs/tilt9.jsonl before: 23014
+# 10-05 15:34 UTC: stop condition changed to all roots with x < 38/10 (machine 2 takes the column x in [38/10, 39/10) after its own range)
+# 10-05 15:44 UTC: all roots with x < 38/10 done on machine 1 (column 3.8 is done by machine 2); run stopped (its later roots with x >= 39/10, if any, duplicate machine 2 and are dropped at the merge)

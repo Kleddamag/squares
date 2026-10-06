@@ -9915,10 +9915,11 @@ results:
       nearby exact point of minimizing the side. The counts are 28, 37, 39, 41, 50, 51, 53
       to 55, 69 to 71, 83, 87, 88, 101, 104, 107 to 109, 122, 124, 125, 127 to 129, 145 to
       151, 153, 170, 171, 173 to 176, 178, 179, 197, 198, 200 to 205, 226, 227, 229 to 235,
-      257, 258, 260 to 262, 264 to 267, 290, 291, 293 to 296 and 298 to 300. Each S' lies
-      1.2e-16 to 9.8e-15 above the side the catalogue prints, and each case record carries
-      S' rounded up at the fourteen decimals printed as its verified upper bound, from
-      5.82444461667406 at n = 28 to 17.82412338847855 at n = 300.
+      257, 258, 260 to 262, 264 to 267, 290, 291, 293 to 296 and 298 to 300.
+
+      Each S' lies 1.2e-16 to 9.8e-15 above the side the catalogue prints, and each case
+      record carries S' rounded up at the fourteen decimals printed as its verified upper
+      bound, from 5.82444461667406 at n = 28 to 17.82412338847855 at n = 300.
 
       Before this the verified upper bound was the integer grid at 74 of the counts, above
       the printed side by up to 0.464 at n = 101, 122, 145, 170, 197, 226, 257, 290 and 291,
@@ -9936,11 +9937,12 @@ results:
       The source's own checkers, verify_cert.py and verify_cert2.py, run here as retained,
       accept every one as well, reproduced with the producer's code. All four refuse each
       certificate with its tightest pair moved one unit of the side's denominator past
-      touching, and each with its box shrunk that unit past its least clearance. Matched
-      square for square with the known-best witness, every pose lies within 7.1e-4 of it,
-      and every square the source does not list as free within 1.2e-7; four of the 77
-      were solved from the witness after the source's unpublished local squeeze (n = 127,
-      129, 260 and 299). The source's report that 75 of the exact points are KKT local
+      touching, and each with its box shrunk that unit past its least clearance.
+
+      Matched square for square with the known-best witness, every pose lies within 7.1e-4
+      of it, and every square the source does not list as free within 1.2e-7; four of the
+      77 were solved from the witness after the source's unpublished local squeeze (n =
+      127, 129, 260 and 299). The source's report that 75 of the exact points are KKT local
       minima rests on numerical checks and is not verified here; it bears on the packings,
       not on s(n).
 

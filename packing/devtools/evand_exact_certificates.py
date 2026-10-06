@@ -125,6 +125,27 @@ IMPROVING = (
     182, 199, 206, 207, 208, 209, 210, 211, 228, 236, 237, 238, 239, 240, 241, 259, 263,
     268, 269, 270, 271, 272, 273, 297, 301, 302, 303, 304, 305, 306, 307,
 )  # fmt: skip
+#: The counts whose certificate, above the printed side, carries the verified upper lane
+#: below the ceiling it held before (T-118, provisional): every count at which the
+#: certified side rounded up at the printed precision lies below the record's earlier
+#: verified upper bound. `devtools.apply_exact_ceilings survey` derives them from the
+#: records and the receipts, and its `--check` holds this list to that derivation.
+CEILINGS = (
+    28, 37, 39, 41, 50, 51, 53, 54, 55, 69, 70, 71, 83, 87, 88, 101, 104, 107, 108, 109,
+    122, 124, 125, 127, 128, 129, 145, 146, 147, 148, 149, 150, 151, 153, 170, 171, 173,
+    174, 175, 176, 178, 179, 197, 198, 200, 201, 202, 203, 204, 205, 226, 227, 229, 230,
+    231, 232, 233, 234, 235, 257, 258, 260, 261, 262, 264, 265, 266, 267, 290, 291, 293,
+    294, 295, 296, 298, 299, 300,
+)  # fmt: skip
+#: The certificates the packet retains, each one cited by a case record.
+RETAINED = tuple(sorted(IMPROVING + CEILINGS))
+#: The ceiling counts' controls, made as the improving counts' are.
+CEILING_CONTROLS_RECEIPT = RECEIPTS / "negative-controls-ceilings.json"
+CONTROL_KINDS = (
+    "tightest-pair-overlapped",
+    "side-shrunk-past-clearance",
+    "side-shrunk-one-unit",
+)
 #: How far the source's checkers may run per certificate before the replay calls it hung.
 SOURCE_TIMEOUT = 600
 FORMAT = "evand-exact-certificate-receipt-v1"
@@ -381,6 +402,11 @@ def _write_json(path: Path, value: object) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     with atomic_output_file(path) as temporary:
         temporary.write_text(retained_json.dumps(value, sort_keys=True), "utf-8")
+
+
+def write_receipt(path: Path, value: object) -> None:
+    """A receipt of another tool over this packet, in the same layout."""
+    _write_json(path, value)
 
 
 def _relative(path: Path) -> str:
@@ -998,8 +1024,20 @@ def annotate_controls(path: Path = CONTROLS_RECEIPT) -> dict[str, Any]:
     return receipt
 
 
-def run_controls(checkers: Path, directory: Path, workers: int) -> dict[str, Any]:
-    jobs = [(str(checkers), str(directory), n) for n in IMPROVING]
+def run_controls(
+    checkers: Path, directory: Path, workers: int, counts: Sequence[int] = IMPROVING
+) -> dict[str, Any]:
+    """Three controls at each of ``counts``, the improving counts unless told otherwise.
+
+    A receipt for other counts lists them and the workers that ran them. It records no CPU
+    time: the pool's workers are the forkserver's children, not this process's, so
+    ``RUSAGE_CHILDREN`` here does not see them (the first ceiling run recorded 0.2 s that
+    way, and that field was taken out of its receipt).
+    """
+    held = sorted(set(counts) & HELD)
+    if held:
+        raise CertificateError(f"n = {held} is held (think-x4v4)")
+    jobs = [(str(checkers), str(directory), n) for n in counts]
     started = time.monotonic()
     if workers <= 1:
         groups = [_controls_one(job) for job in jobs]
@@ -1007,12 +1045,17 @@ def run_controls(checkers: Path, directory: Path, workers: int) -> dict[str, Any
         with ProcessPoolExecutor(max_workers=workers) as pool:
             groups = list(pool.map(_controls_one, jobs))
     rows = [row for group in groups for row in group]
-    smallest = parse(certificate_path(directory, IMPROVING[0]).read_text("utf-8"))
+    smallest = parse(certificate_path(directory, min(counts)).read_text("utf-8"))
+    vacuity = verify_all_vacuity(checkers, overlap_control(smallest)[0])
+    improving = tuple(counts) == IMPROVING
+    which = "improving certificate" if improving else "certificate this receipt lists"
+    extra: dict[str, Any] = {} if improving else {"counts": list(counts), "workers": workers}
     return {
         "format": FORMAT,
         "tool": "python -m devtools.evand_exact_certificates controls",
+        **extra,
         "what": (
-            "Three altered copies of each improving certificate, decided by this "
+            f"Three altered copies of each {which}, decided by this "
             "repository's two exact checkers and by the source's two, as retained: the "
             "tightest pair overlapped by moving one square along its closing normal by the "
             "exact gap plus one unit of the side's denominator (doubled until it overlaps), "
@@ -1027,7 +1070,7 @@ def run_controls(checkers: Path, directory: Path, workers: int) -> dict[str, Any
             for row in rows
             if row["control"] == "tightest-pair-overlapped"
         ),
-        "verify_all_vacuity": verify_all_vacuity(checkers, overlap_control(smallest)[0]),
+        "verify_all_vacuity": vacuity,
         "rows": rows,
     }
 
@@ -1158,17 +1201,18 @@ def receipt_problems() -> list[str]:
     """Every committed receipt against the packet: fast, offline, deciding nothing again.
 
     Each replay receipt must cover every certificate the manifest pins, at its pinned
-    digest, and pass; each retained certificate must have its row's digest and side; the
-    comparison must cover the 48 improving counts at their certified sides; and every
-    control must have come out as expected.
+    digest, and pass; the retained certificates must be the 48 improving counts and the 77
+    ceiling counts, each with its row's digest and side; the comparison must cover the 48
+    at their certified sides; and every control, three at each of the 125, must have come
+    out as expected.
     """
     problems: list[str] = []
     pinned = manifest_certificates()
     if set(pinned) & HELD:
         problems.append(f"the manifest pins a held count: {sorted(set(pinned) & HELD)}")
     retained = {n: certificate_path(CERTS, n) for n in certificate_counts(CERTS)}
-    if sorted(retained) != sorted(IMPROVING):
-        problems.append("the retained certificates are not the 48 improving counts")
+    if tuple(sorted(retained)) != RETAINED:
+        problems.append("the retained certificates are not the improving and ceiling counts")
     for path, label in (
         (FIRST_PARTY_RECEIPT, "first-party check"),
         (SOURCE_REPLAY_RECEIPT, "source replay"),
@@ -1213,21 +1257,20 @@ def receipt_problems() -> list[str]:
             side = parse(retained[n].read_text(encoding="utf-8"), expected_n=n).side
             if literal(side) != row["certified_side"]:
                 problems.append(f"comparison n={n}: side differs from the certificate")
-    controls = json.loads(CONTROLS_RECEIPT.read_text(encoding="utf-8"))
-    if not controls["all_as_expected"]:
-        problems.append("controls: not every control came out as expected")
-    kinds = {(int(row["n"]), row["control"]) for row in controls["rows"]}
-    wanted = {
-        (n, kind)
-        for n in IMPROVING
-        for kind in (
-            "tightest-pair-overlapped",
-            "side-shrunk-past-clearance",
-            "side-shrunk-one-unit",
-        )
-    }
-    if kinds != wanted:
-        problems.append("controls: rows are not three controls at each improving count")
+    for path, counts, label in (
+        (CONTROLS_RECEIPT, IMPROVING, "controls"),
+        (CEILING_CONTROLS_RECEIPT, CEILINGS, "ceiling controls"),
+    ):
+        controls = json.loads(path.read_text(encoding="utf-8"))
+        if not (controls["all_as_expected"] and controls["overlap_controls_inside_the_box"]):
+            problems.append(f"{label}: not every control came out as expected")
+        kinds = {(int(row["n"]), row["control"]) for row in controls["rows"]}
+        if kinds != {(n, kind) for n in counts for kind in CONTROL_KINDS}:
+            problems.append(f"{label}: rows are not three controls at each of its counts")
+        for row in controls["rows"]:
+            if int(row["n"]) in retained and int(row["n"]) in counts:
+                continue
+            problems.append(f"{label} n={row['n']}: the controlled certificate is not retained")
     return problems
 
 
@@ -1267,7 +1310,7 @@ def _command_check(args: argparse.Namespace) -> int:
         if not problems:
             print(
                 f"receipts agree with the packet: {len(manifest_certificates())} pinned "
-                f"certificates, {len(IMPROVING)} retained, held {sorted(HELD)}"
+                f"certificates, {len(RETAINED)} retained, held {sorted(HELD)}"
             )
         return 1 if problems else 0
     counts = args.n or certificate_counts(args.certs)
@@ -1338,13 +1381,15 @@ def _command_reproduce(args: argparse.Namespace) -> int:
 
 
 def _command_controls(args: argparse.Namespace) -> int:
-    receipt = annotate_controls(args.receipt) if args.annotate else None
+    receipt = annotate_controls(args.receipt or CONTROLS_RECEIPT) if args.annotate else None
     if receipt is not None:
-        _write_json(args.receipt, receipt)
+        _write_json(args.receipt or CONTROLS_RECEIPT, receipt)
         print(f"overlap controls inside the box: {receipt['overlap_controls_inside_the_box']}")
         return 0 if receipt["overlap_controls_inside_the_box"] else 1
-    receipt = run_controls(EXACT, CERTS, args.workers)
-    _write_json(args.receipt, receipt)
+    counts = CEILINGS if args.ceilings else IMPROVING
+    path = args.receipt or (CEILING_CONTROLS_RECEIPT if args.ceilings else CONTROLS_RECEIPT)
+    receipt = run_controls(EXACT, args.certs, args.workers, counts)
+    _write_json(path, receipt)
     unexpected = [
         (row["n"], row["control"]) for row in receipt["rows"] if not row["as_expected"]
     ]
@@ -1390,7 +1435,13 @@ def main(argv: Sequence[str] | None = None) -> int:
     commands.add_parser("table").set_defaults(run=lambda _args: print(table(), end="") or 0)
     controls = commands.add_parser("controls")
     controls.add_argument("--workers", type=int, default=1)
-    controls.add_argument("--receipt", type=Path, default=CONTROLS_RECEIPT)
+    controls.add_argument("--certs", type=Path, default=CERTS)
+    controls.add_argument(
+        "--ceilings",
+        action="store_true",
+        help="control the ceiling counts' certificates (T-118), not the improving ones",
+    )
+    controls.add_argument("--receipt", type=Path)
     controls.add_argument(
         "--annotate",
         action="store_true",

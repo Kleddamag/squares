@@ -3234,7 +3234,7 @@ results:
       relabelling, which implies the equality clause. Each of the two implies a part of
       this result and together they imply all of it; the register marks each as a part,
       since it cannot mark a supersession that only two results make jointly
-      (think-d1bd), so this result stays listed as current.
+      (think-0syl), so this result stays listed as current.
     superseded_by:
       - result: T-060
         extent: part

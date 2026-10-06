@@ -3,15 +3,20 @@ type: is
 id: is-01m3qnty2dvtgva1s2tdp5m33p
 title: Isolate negative-control snapshot cache probe from concurrent xdist workers
 kind: bug
-status: in_progress
+status: closed
 priority: 1
-version: 2
+version: 3
 spec_path: docs/project/reviews/review-2026-09-29-validation-parallelism.md
 labels: []
 dependencies: []
 parent_id: is-01m3p5wj25knm7rbx0g4a4tpvg
 created_at: 2026-09-29T22:51:15.393Z
-updated_at: 2026-09-29T22:56:32.941Z
+updated_at: 2026-10-06T08:34:56.075Z
+closed_at: 2026-10-06T08:34:56.075Z
+close_reason: |
+  Done (bead review 2026-10-06, origin/main eb43ffe9a): packing/tests/test_negative_controls.py on origin/main runs the 1,000,003-byte cache probe inside the private control snapshot via a child process and asserts the live root stays free of it (assert not CACHE_PROBE_ROOT.exists())
+resolution: null
+duplicate_of: null
 ---
 The slow cache-exclusion regression writes a deliberately counted 1,000,003-byte file under the live packing root. Concurrent xdist workers can call snapshot_source_bytes during that window, producing an exact +1,000,003-byte cap failure. Move the probe into a private mutation snapshot while preserving the ordinary-byte and cache-exclusion assertions; do not raise the cap or prune evidence.
 

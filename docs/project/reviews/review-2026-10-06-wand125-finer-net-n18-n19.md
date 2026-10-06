@@ -334,3 +334,7 @@ The Theorem uses a_r = B(cos θ_r + sin θ_r)/2, while lemma N0 uses a_r = max(0
 - I did not run `packing-validate`.
 - I did not read `result-import.md` stage 4 in full; my search for its section did not match.
 - My coverage search is binary64 and heuristic, and decides nothing.
+
+<!-- This document follows common-doc-guidelines.md.
+See github.com/jlevy/practical-prose and review guidelines before editing.
+-->

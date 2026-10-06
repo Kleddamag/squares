@@ -64,9 +64,16 @@ def load_map() -> dict:
 
 
 def title(path: Path) -> str:
-    """Use a document's own H1 rather than duplicating its title in the map."""
+    """Use a document's own H1 rather than duplicating its title in the map.
+
+    An apostrophe between two letters is written as the typographic one, as the commit
+    hook's formatter writes it in the synopsis: a document the formatter leaves raw, such
+    as a review stored as its reviewer wrote it, keeps a straight one in its own H1, and
+    the map would otherwise drift from the synopsis on every commit.
+    """
     match = re.search(r"^#\s+(.+)$", path.read_text(encoding="utf-8"), re.MULTILINE)
-    return match.group(1) if match else path.name
+    heading = match.group(1) if match else path.name
+    return re.sub(r"(?<=\w)'(?=\w)", "\u2019", heading)
 
 
 def document_link(relative: str) -> str:

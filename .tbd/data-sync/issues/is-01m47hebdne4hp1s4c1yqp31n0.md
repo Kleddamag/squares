@@ -3,9 +3,9 @@ type: is
 id: is-01m47hebdne4hp1s4c1yqp31n0
 title: "Import wand125 #366: mixed_n18_L4704 (s(18) >= 588/125, 832-node net) and mixed_n19_L48229 (s(19) >= 48229/10000) at 65e408c"
 kind: task
-status: in_progress
+status: closed
 priority: 1
-version: 5
+version: 6
 delegate: claude-code@vm
 labels:
   - result-import
@@ -14,8 +14,12 @@ parent_id: is-01m47hea1vkqx8h5wzdzcyqs5k
 hold: null
 hold_until: null
 created_at: 2026-10-06T02:42:19.701Z
-updated_at: 2026-10-06T06:04:12.914Z
+updated_at: 2026-10-06T07:19:34.170Z
 started_at: 2026-10-06T02:45:53.733Z
+closed_at: 2026-10-06T07:19:34.169Z
+close_reason: "T-099 and T-100 merged at V3/C3 in #381 (ebf23276); #366 replied and closed. Full n=18 source replay follow-up filed separately."
+resolution: null
+duplicate_of: null
 ---
 
 ## Notes

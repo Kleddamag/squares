@@ -166,9 +166,12 @@ JOB_FIELDS = (
 )
 STEP_FIELDS = ("name", "conclusion", "started_at", "completed_at")
 #: How long an aggregator waits for the API to report a prerequisite it has already been
-#: told finished. The jobs endpoint can lag the `needs` graph by a moment.
-SETTLE_ATTEMPTS = 3
-SETTLE_SECONDS = 3.0
+#: told finished. The jobs endpoint can lag the `needs` graph: on 2026-10-06 it still
+#: reported `n11-optimality-review` in progress after the old 6 s window (3 reads, 3 s
+#: apart), and `pages-required` failed as unmeasurable on #347 (run 37391744553). Eleven
+#: reads 5 s apart wait up to 50 s and stop at the first settled read.
+SETTLE_ATTEMPTS = 11
+SETTLE_SECONDS = 5.0
 WALL_STEP = "Hold the pull request's wall to its budget"
 #: How a reason says a job's times came from an earlier attempt than the run's.
 MIXED_ATTEMPTS = "the jobs API mixed a prior attempt into a partial rerun"

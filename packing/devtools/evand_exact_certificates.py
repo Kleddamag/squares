@@ -126,7 +126,7 @@ IMPROVING = (
     268, 269, 270, 271, 272, 273, 297, 301, 302, 303, 304, 305, 306, 307,
 )  # fmt: skip
 #: The counts whose certificate, above the printed side, carries the verified upper lane
-#: below the ceiling it held before (T-118, provisional): every count at which the
+#: below the ceiling it held before (T-101): every count at which the
 #: certified side rounded up at the printed precision lies below the record's earlier
 #: verified upper bound. `devtools.apply_exact_ceilings survey` derives them from the
 #: records and the receipts, and its `--check` holds this list to that derivation.
@@ -1452,7 +1452,7 @@ def main(argv: Sequence[str] | None = None) -> int:
     controls.add_argument(
         "--ceilings",
         action="store_true",
-        help="control the ceiling counts' certificates (T-118), not the improving ones",
+        help="control the ceiling counts' certificates (T-101), not the improving ones",
     )
     controls.add_argument("--receipt", type=Path)
     controls.add_argument(

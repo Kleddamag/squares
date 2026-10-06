@@ -2325,7 +2325,7 @@ def exact_optimum_counts() -> frozenset[int]:
 
 
 def exact_ceiling_counts() -> frozenset[int]:
-    """The counts whose verified upper lane Evan Daniel's other certificates own (T-118)."""
+    """The counts whose verified upper lane Evan Daniel's other certificates own (T-101)."""
     module = importlib.import_module("devtools.evand_exact_certificates")
     return frozenset(module.CEILINGS)
 
@@ -2347,7 +2347,7 @@ def adopt_upper_bound_packet(n: int, text: str) -> str:
     same way, and leaves the body, whose intake prose is the record's own. Then, at the 48
     counts whose packing Evan Daniel solved to its exact optimum (T-098),
     `devtools.apply_exact_optima` moves both upper lanes to the certified side; last, at
-    the 77 counts where his other certificates lower the verified ceiling (T-118),
+    the 77 counts where his other certificates lower the verified ceiling (T-101),
     `devtools.apply_exact_ceilings` moves the verified upper lane.
     """
     intake, plans, earlier = _upper_bound_packets()

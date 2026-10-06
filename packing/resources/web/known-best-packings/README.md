@@ -152,7 +152,7 @@ KB-3).
 These verified values held the three counts’ ceilings until 2026-10-06, when Evan Daniel’s
 exact certificates of the same packings, refined on their active contacts, took them to
 `8.82719465572974`, `9.63475764863109` and `9.83881526994827`, one unit of the printed last
-place above each printed side (T-118; the
+place above each printed side (T-101; the
 [exact-optima packet](../evand-square-packing-2026-10-05/README.md#the-77-ceiling-counts)).
 
 ## Retained UnitSquare Renderings

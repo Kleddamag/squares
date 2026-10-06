@@ -23381,7 +23381,7 @@ evidence:
       reviewed_by: >-
         Claude Opus 5.5 (claude-opus-5-5), the tbd-strong sub-agent at that tier's
         configured reasoning setting, prompted separately from the lane that registered
-        T-118 (docs/project/reviews/review-2026-10-06-evand-exact-ceilings.md)
+        T-101 (docs/project/reviews/review-2026-10-06-evand-exact-ceilings.md)
       note: >-
         Found the bound s(n) <= S' at the 77 counts and each case's rounded-up verified
         value to follow from the receipts, the selection of the 77 and the handling of n =
@@ -23390,7 +23390,8 @@ evidence:
         defect in the source's certificates; its one blocking finding was this
         repository's claim that no rational certificate reaches a closed form, false at
         the six rational ones, since reworded. Unchecked: its session refused the project
-        interpreter, so it decided no certificate by code and re-ran nothing.
+        interpreter, so it decided no certificate by code and re-ran nothing. The review
+        names the result by its provisional id, T-118, which is T-101.
     source_reviewed: '2026-10-06'
 
   - id: E-evand-exact-ceilings-2026-10-05-exact-replay

@@ -833,14 +833,14 @@ RECORDED: dict[int, tuple[tuple[str, str, str] | None, tuple[str, str, str] | No
         ),
     ),
     # The catalogue credits nobody, so the line cites the catalogue by its compilers. Since
-    # 6 October 2026 Evan Daniel's exact certificate of the packing (T-118) checks the bound
+    # 6 October 2026 Evan Daniel's exact certificate of the packing (T-101) checks the bound
     # to one unit of its fourteenth decimal, short of the closed form, so the line says both,
     # as n = 29's does, and the venue gives way to the note. The lower line was Nagamochi's
     # until 3 October 2026, when the replayed linear certificate of 2 October was recorded
     # (T-080); on PR 305's line it was Karakuş's from 2 October (T-083) until the two lines
     # merged.
     101: (
-        ("Friedman & Ellsworth (reported; confirmed T-118)", "external", "reported"),
+        ("Friedman & Ellsworth (reported; confirmed T-101)", "external", "reported"),
         (
             "wand125 after Tokoharu, Levy et al. 2026, GitHub (confirmed T-080)",
             "external",

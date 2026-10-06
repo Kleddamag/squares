@@ -48,7 +48,7 @@ from sqpack.known_best import KNOWN_BEST_CORPUS
 #: known-best packings (T-098) put both lanes on one exact side at n = 206, 259, 305 and
 #: 306, and certified de Winter's n = 126, whose ceiling had been the grid. Lowered on
 #: 2026-10-06 by 22, to the 55 counts whose catalogue side is a closed form and n = 29:
-#: Evan Daniel's exact certificates of the catalogue's packings (T-118) took 74 ceilings
+#: Evan Daniel's exact certificates of the catalogue's packings (T-101) took 74 ceilings
 #: off the grid and lowered n = 69, 83 and 87's, each to the printed side plus one unit of
 #: its fourteenth decimal, which agrees with a decimal report and trails a closed form.
 TRAILING_BY_CORPUS: dict[str, int] = {"n=1..100": 4, "n=1..200": 28, "n=1..324": 56}
@@ -111,7 +111,7 @@ DECLARED_CONSUMERS = {
         "earlier ceiling trailing its report; it reads the field as a ceiling and never as s(n)"
     ),
     "packing/devtools/apply_exact_ceilings.py": (
-        "writes the ceiling Evan Daniel's exact certificates prove at 77 counts (T-118), the "
+        "writes the ceiling Evan Daniel's exact certificates prove at 77 counts (T-101), the "
         "certified side rounded up at the printed precision, drops the upper-gap blocker and "
         "ceiling section where that agrees with the report, and keeps a rewritten blocker "
         "and section where the report is a closed form it does not reach; it reads the field "
@@ -190,7 +190,7 @@ DECLARED_CONSUMERS = {
     ),
     "packing/tests/test_evand_exact_certificates.py": (
         "holds a synthetic case's ceiling against conjectures inside and past half a unit "
-        "of their last place, and each T-118 ceiling to the certified side rounded up and "
+        "of their last place, and each T-101 ceiling to the certified side rounded up and "
         "to the report it agrees with or trails; it reads the field as a ceiling, not as s(n)"
     ),
     "packing/tests/test_evand_square_packing.py": (
@@ -459,7 +459,7 @@ def test_a_third_of_the_corpus_certifies_a_weaker_bound_than_it_reports() -> Non
     assert len(trailing) == TRAILING_BY_CORPUS[KNOWN_BEST_CORPUS.label]
     for n, (reported, verified) in trailing.items():
         assert verified > reported, n
-    # Up to 0.464 until 2026-10-06, when T-118's certificates took the last trailing
+    # Up to 0.464 until 2026-10-06, when T-101's certificates took the last trailing
     # ceilings off the integer grid; what trails now does so by one unit of the printed
     # fourteenth decimal at most.
     worst = max(verified - reported for reported, verified in trailing.values())
@@ -468,7 +468,7 @@ def test_a_third_of_the_corpus_certifies_a_weaker_bound_than_it_reports() -> Non
     # And in those cases `exact_form` is exact about the ceiling and says nothing about
     # s(n). None is the integer grid bound any more. n = 29 carries an interval
     # certificate's endpoint; every other trailing case reports a closed form, which the
-    # rounded-up side of a rational certificate of its packing does not reach (T-118).
+    # rounded-up side of a rational certificate of its packing does not reach (T-101).
     grids = {
         n
         for n in trailing

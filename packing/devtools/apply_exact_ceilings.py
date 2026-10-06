@@ -23,7 +23,7 @@ the interval-certified bound ``E-n029-interval-certified-upper`` already lies be
 It refuses a certificate whose side is not above the catalogue's closed form, which would
 be a smaller packing than the catalogue's and no ceiling.
 
-**What it writes**, registered as T-118 (provisional). At each of the 77 counts the
+**What it writes**, registered as T-101. At each of the 77 counts the
 verified upper lane becomes that value, citing the exact replay here and the source's
 checkers run here; the earlier upper-gap blocker goes, and where the report has a closed
 form, which the certificate's side lies just above, a blocker saying by how much the ceiling
@@ -73,7 +73,7 @@ from sqpack.yamlio import safe_load
 ROOT = Path(__file__).resolve().parent.parent
 FRONTIER = ROOT / "frontier"
 
-RESULT = "T-118"
+RESULT = "T-101"
 INTAKE = "2026-10-06"
 AUTHOR = "Evan Daniel"
 SOURCE_KEY = "[evand exact optima 2026-10-05]"

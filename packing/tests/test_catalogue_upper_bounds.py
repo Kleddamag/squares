@@ -1,6 +1,6 @@
 """The exact certificates of the catalogue's packings at n = 69, 83 and 87 (T-088, T-089).
 
-Since 2026-10-06 Evan Daniel's exact certificates of the same packings (T-118) hold those
+Since 2026-10-06 Evan Daniel's exact certificates of the same packings (T-101) hold those
 counts' verified upper lanes, a layer `devtools.apply_exact_ceilings` writes over this one.
 """
 
@@ -58,7 +58,7 @@ def test_both_negative_controls_are_refused_by_both_checkers() -> None:
 
 def test_each_receipts_verified_value_trails_the_printed_side_and_was_superseded() -> None:
     """Each certificate's verified value trails the printed side, at all three; since
-    2026-10-06 Evan Daniel's exact certificate of the same packing (T-118) holds the
+    2026-10-06 Evan Daniel's exact certificate of the same packing (T-101) holds the
     verified lane below it, and the record keeps the reported side these receipts print."""
     for n, row in catalogue.certification().items():
         text = (catalogue.ROOT / "frontier" / f"n-{n:03d}.md").read_text(encoding="utf-8")

@@ -129,13 +129,13 @@ The ones that carry the most weight:
   most $10^{-14}$, and each of those cases says so in its own body and carries a
   `mathematics` blocker.
   At 55 of them the catalogue gives the side as a closed form, which Evan Daniel’s
-  rational certificate of the packing bounds from above without reaching it (T-118); at
+  rational certificate of the packing bounds from above without reaching it (T-101); at
   $n = 29$ the ceiling is an interval-certified bound written in full.
   In 43 more it sits above the printed side by no more than one unit of its last place,
   which `bounds_agree_at_declared_precision` reads as the same bound: 2 of them are
   Couzo’s packings certified here (T-056), at $n = 105$ and $130$, whose exact sides
   round up past the fifteen decimals the source prints, and 22 are the catalogue’s
-  packings certified by Evan Daniel and rounded up at its fourteen (T-118). At 48 counts
+  packings certified by Evan Daniel and rounded up at its fourteen (T-101). At 48 counts
   both lanes hold one exact side, the exact optimum of the reported packing (T-098). An
   `exact_form` on the ceiling is the exact form of the ceiling; $s(n)$ is known exactly
   only when `status` is `proved`.

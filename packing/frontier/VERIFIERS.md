@@ -546,8 +546,8 @@ The source's exact checker of its rational packing certificates, in Fraction ari
 | --- | --- | --- | --- |
 | `E-evand-exact-optima-2026-10-05-report` | the source’s own run | producer’s code | T-098 |
 | `E-evand-exact-optima-2026-10-05-source-replay` | replayed here | producer’s code | T-098 |
-| `E-evand-exact-ceilings-2026-10-05-report` | the source’s own run | producer’s code | T-118 |
-| `E-evand-exact-ceilings-2026-10-05-source-replay` | replayed here | producer’s code | T-118 |
+| `E-evand-exact-ceilings-2026-10-05-report` | the source’s own run | producer’s code | T-101 |
+| `E-evand-exact-ceilings-2026-10-05-source-replay` | replayed here | producer’s code | T-101 |
 
 ### `V-evand-verify-cert2-py`
 
@@ -562,8 +562,8 @@ The source's second exact checker of the same certificates, written to share no 
 | --- | --- | --- | --- |
 | `E-evand-exact-optima-2026-10-05-report` | the source’s own run | producer’s code | T-098 |
 | `E-evand-exact-optima-2026-10-05-source-replay` | replayed here | producer’s code | T-098 |
-| `E-evand-exact-ceilings-2026-10-05-report` | the source’s own run | producer’s code | T-118 |
-| `E-evand-exact-ceilings-2026-10-05-source-replay` | replayed here | producer’s code | T-118 |
+| `E-evand-exact-ceilings-2026-10-05-report` | the source’s own run | producer’s code | T-101 |
+| `E-evand-exact-ceilings-2026-10-05-source-replay` | replayed here | producer’s code | T-101 |
 
 ### `V-evand-lean`
 
@@ -872,7 +872,7 @@ Decides a packing pair by pair and wall by wall: by exact sign in a number field
 | `E-n029-schadt-numerical` | replayed here | independent | - |
 | `E-n029-interval-certified-upper` | replayed here | independent | T-009 |
 | `E-evand-exact-optima-2026-10-05-exact-replay` | replayed here | independent | T-098 |
-| `E-evand-exact-ceilings-2026-10-05-exact-replay` | replayed here | independent | T-118 |
+| `E-evand-exact-ceilings-2026-10-05-exact-replay` | replayed here | independent | T-101 |
 
 ### `V-check-rational-witness-independent`
 
@@ -896,7 +896,7 @@ Decides a rational-corner witness pair by pair and wall by wall in Fraction arit
 | `E-n083-chang-2026-09-exact-replay` | replayed here | independent | T-089 |
 | `E-n087-chang-2026-09-exact-replay` | replayed here | independent | T-089 |
 | `E-evand-exact-optima-2026-10-05-exact-replay` | replayed here | independent | T-098 |
-| `E-evand-exact-ceilings-2026-10-05-exact-replay` | replayed here | independent | T-118 |
+| `E-evand-exact-ceilings-2026-10-05-exact-replay` | replayed here | independent | T-101 |
 
 ### `V-check-nagamochi-lemma1-counterexample`
 
@@ -1399,8 +1399,8 @@ Reads Evan Daniel's rational certificates, refusing anything the format does not
 | --- | --- | --- | --- |
 | `E-evand-exact-optima-2026-10-05-exact-replay` | replayed here | independent | T-098 |
 | `E-evand-exact-optima-2026-10-05-source-replay` | replayed here | producer’s code | T-098 |
-| `E-evand-exact-ceilings-2026-10-05-exact-replay` | replayed here | independent | T-118 |
-| `E-evand-exact-ceilings-2026-10-05-source-replay` | replayed here | producer’s code | T-118 |
+| `E-evand-exact-ceilings-2026-10-05-exact-replay` | replayed here | independent | T-101 |
+| `E-evand-exact-ceilings-2026-10-05-source-replay` | replayed here | producer’s code | T-101 |
 
 ### `V-check-n11-final-composition`
 

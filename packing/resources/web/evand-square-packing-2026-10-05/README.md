@@ -12,7 +12,7 @@ Evan Daniel asked for those 48 to be registered on
 **[evand exact optima 2026-10-05]**, the result is registered as T-098, and the import bead
 is `think-t6ok`. At 77 more counts the certified side lies just above the printed one and
 lowers the verified ceiling; the author asked for nothing from those, and the owner decided
-to register them as T-118 (provisional until merged, `think-70bh`;
+to register them as T-101 (provisionally T-118 until merged, `think-70bh`;
 [The 77 Ceiling Counts](#the-77-ceiling-counts)).
 
 The certificate for `n = 17` is held by the owner for the `n = 17` work on other branches
@@ -226,7 +226,7 @@ At the other counts each certified side lies above the side the record prints, a
 offered those certificates as an independent exact replay of the existing upper bounds,
 asking for nothing to be registered from them.
 The owner decided on 6 October 2026 to act on them where they lower a verified ceiling
-(`think-70bh`); they are registered as T-118, provisional until merged.
+(`think-70bh`); they are registered as T-101, provisionally T-118 until merged.
 
 **Which counts.** A certificate of a printed side carries the verified upper bound at the
 larger of the printed side and its own side rounded up at the printed precision, with
@@ -409,7 +409,10 @@ Neither reviewer could execute code, so no certificate has yet been decided by c
 that shares nothing with the tools under review; a second adversarial review that runs
 its own decider is what `next_rung` asks for.
 
-### The Review of T-118
+### The Review of T-101
+
+Both reviews, stored as their reviewers wrote them, name the entry by its provisional
+id, T-118.
 
 A separately prompted adversarial review of the 77 on 2026-10-06
 ([review](../../../../docs/project/reviews/review-2026-10-06-evand-exact-ceilings.md)),
@@ -418,18 +421,18 @@ ceiling to follow from the receipts, the selection and the handling of `n = 29, 
 and `87` right, and all 125 retained certificates byte for byte the pinned and decided
 ones. It ended `defect-open` on one blocking finding, EC-1: the record said no rational
 certificate reaches a catalogue closed form, which is false at the six rational ones.
-That is reworded in T-118, the blockers and this README.
+That is reworded in T-101, the blockers and this README.
 The six other findings were wording and one missing refusal:
 
 - **EC-2.** `n = 29`’s ceiling is described as its interval-certified bound, not as an
   enclosure of the optimum.
 - **EC-3.** `survey` refuses a certificate whose side is not above a closed form, and a
   test holds every gap positive.
-- **EC-4.** T-118’s rationale says the 22 ceilings reach the report to one unit of its
+- **EC-4.** T-101’s rationale says the 22 ceilings reach the report to one unit of its
   last place.
 - **EC-5.** T-088 and T-089 say they are superseded as ceilings, their packings still the
   best known and reported.
-- **EC-6.** T-118’s notes name the two rows of the import runbook’s table the entry
+- **EC-6.** T-101’s notes name the two rows of the import runbook’s table the entry
   departs from.
 - **EC-7.** The overlap control is described as a move along the best separating axis,
   and the independent checker’s refusal of it as circular.
@@ -446,7 +449,7 @@ findings, none blocking, handled after it:
   `8e-17` off the grid are named above.
 - **FC-3.** The survey receipt no longer carries a digest column that nothing checked;
   `evand_exact_certificates.is_decided` ties each retained certificate to the decided one.
-- **The older wording of EC-7** went from T-118’s claim and the control’s docstring too;
+- **The older wording of EC-7** went from T-101’s claim and the control’s docstring too;
   the controls receipt keeps it as the run wrote it.
 
 ## Not Done Here

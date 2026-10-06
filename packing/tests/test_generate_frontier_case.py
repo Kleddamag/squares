@@ -1100,7 +1100,7 @@ def test_a_refresh_keeps_the_assessment_and_rewrites_only_what_moved(tmp_path: P
     assert refresh_records([179], args, availability, catalogue) == 0
 
     refreshed = record_path(tmp_path, 179).read_text(encoding="utf-8")
-    # Since 2026-10-06 the count's verified upper lane is T-118's, a layer the formatter
+    # Since 2026-10-06 the count's verified upper lane is T-101's, a layer the formatter
     # reflows, so the refresh is compared as `check_records` compares an adopted count:
     # whitespace collapsed.
     assert normalized(refreshed) == normalized(committed)

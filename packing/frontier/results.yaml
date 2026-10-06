@@ -8362,7 +8362,7 @@ results:
 
       On 2026-10-06 Evan Daniel's exact certificate of the same packing, refined on its
       active contacts, took the case's verified upper bound to 8.82719465572974, one unit
-      above the printed side (T-118, think-70bh). This entry stays true as stated and is
+      above the printed side (T-101, think-70bh). This entry stays true as stated and is
       superseded there as a ceiling; the packing it registered stays the best known, and
       the catalogue's printed side of it the reported bound. It no longer lists
       E-kingbird-upper-register, that printed side, which the review of 2026-10-05
@@ -8373,7 +8373,7 @@ results:
       V4 and C4 need two adversarial AI reviews by distinct reviewers of the claim and a
       human oversight record; the review of 2026-10-05 is one. The verified bound sat 2e-14
       above the printed side because the certificate is a binary64 parse; the pose refined
-      on its active contacts, Evan Daniel's exact certificate (T-118), has since brought the
+      on its active contacts, Evan Daniel's exact certificate (T-101), has since brought the
       case's verified upper bound within one unit of the printed side's last place. A
       method-distinct second route is what C4 needs.
 
@@ -8486,7 +8486,7 @@ results:
 
       On 2026-10-06 Evan Daniel's exact certificates of the same packings, refined on their
       active contacts, took both cases' verified upper bounds to 9.63475764863109 and
-      9.83881526994827, one unit above the printed sides (T-118, think-70bh). This entry
+      9.83881526994827, one unit above the printed sides (T-101, think-70bh). This entry
       stays true as stated and is superseded at both as a ceiling; the packings it
       registered stay the best known, and the catalogue's printed sides of them the
       reported bounds. It no longer lists E-kingbird-upper-register, those printed sides,
@@ -8498,7 +8498,7 @@ results:
       human oversight record; the review of 2026-10-05 is one. The verified bounds sat
       8.7e-13 and 8.9e-13 above the printed sides because the certificates are binary64
       parses dilated by 1 + 1e-13; the poses refined on their active contacts, Evan
-      Daniel's exact certificates (T-118), have since brought both cases' verified upper
+      Daniel's exact certificates (T-101), have since brought both cases' verified upper
       bounds within one unit of the printed sides' last place. A method-distinct second
       route is what C4 needs.
 
@@ -9927,7 +9927,7 @@ results:
       was made relative, and was not checked here. The proof-bundle tarball is pinned by
       digest and not retained. Ids here are provisional until merged.
 
-  - id: T-118
+  - id: T-101
     kind: upper-bound
     registered: '2026-10-06'
     headline: "Exact certificates of 77 catalogue packings: `s(n) ≤ S'`, `1.2e-16` to `9.8e-15` above each side"
@@ -10008,12 +10008,12 @@ results:
     reviews:
       - path: docs/project/reviews/review-2026-10-06-evand-exact-ceilings.md
         kind: adversarial
-        reviewer: Claude Opus 5.5 (claude-opus-5-5), the tbd-strong sub-agent at that tier's configured reasoning setting (xhigh), prompted separately from the lane that retained the 77 certificates, ran their controls and registered T-118, sharing none of its context beyond the brief and the committed record
+        reviewer: Claude Opus 5.5 (claude-opus-5-5), the tbd-strong sub-agent at that tier's configured reasoning setting (xhigh), prompted separately from the lane that retained the 77 certificates, ran their controls and registered T-101, sharing none of its context beyond the brief and the committed record
         reviewer_kind: ai
         relation: project
         date: '2026-10-06'
         scope: >-
-          T-118's claim, composition, next_rung and notes, its three evidence entries, the
+          T-101's claim, composition, next_rung and notes, its three evidence entries, the
           survey and its receipt, the layer and the case records it writes, the controls
           receipt, the 125 retained certificates' digests against the manifest and both
           replay receipts, n = 50's certificate by hand, the coverage and bibliography rows,
@@ -10021,10 +10021,10 @@ results:
           refused the project interpreter, so it decided no certificate by code and re-ran
           nothing.
         verdict: defect-open
-        covers: [T-118]
+        covers: [T-101]
       - path: docs/project/reviews/review-2026-10-06-evand-exact-ceilings-fix-check.md
         kind: confirming
-        reviewer: Claude Opus 5.5 (claude-opus-5-5), the tbd-strong sub-agent at that tier's configured reasoning setting (xhigh), prompted separately from the lane that registered and fixed T-118 and from the reviewer who wrote the review
+        reviewer: Claude Opus 5.5 (claude-opus-5-5), the tbd-strong sub-agent at that tier's configured reasoning setting (xhigh), prompted separately from the lane that registered and fixed T-101 and from the reviewer who wrote the review
         reviewer_kind: ai
         relation: project
         date: '2026-10-06'
@@ -10034,7 +10034,7 @@ results:
           and n = 50's certificate read row by row, at 27994978d; its session refused the
           project interpreter, so it re-ran nothing and decided no certificate.
         verdict: defects-resolved
-        covers: [T-118]
+        covers: [T-101]
     artifacts:
       - docs/project/reviews/review-2026-10-06-evand-exact-ceilings.md
       - docs/project/reviews/review-2026-10-06-evand-exact-ceilings-fix-check.md
@@ -10072,7 +10072,7 @@ results:
       review's EC-1, think-l8gt). This entry gives neither.
     notes: >-
       Registered on 6 October 2026 by lane R8 of the 6 October intake (think-70bh, under
-      think-wyf4), on the owner's decision of that day; the id is provisional until merged.
+      think-wyf4), on the owner's decision of that day, under the provisional id T-118.
       It is an entry of its own rather than a wider T-098: T-098 registers the 48
       certificates that lower a printed side, as #375 asked, and its claim, score and two
       reviews are about those; these 77 lower only a verified ceiling, and the author
@@ -10103,3 +10103,8 @@ results:
       prompted reviewer's fix check ended defects-resolved; its four non-blocking findings
       were handled after it, n = 50's grid structure now held by a test. Neither reviewer
       could run code, so no certificate here has yet been decided by a reviewer's own.
+
+      Renumbered from the provisional T-118 to T-101 when lane R8 merged on 6 October
+      2026, the next id after the register's T-100, in every record, view, test and tool
+      that names it. The two reviews are stored as their reviewers wrote them and are not
+      edited: "T-118" in either review, its title included, is this entry, T-101.

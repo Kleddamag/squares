@@ -1,4 +1,4 @@
-"""Evan Daniel's exact certificates (T-098, T-118): the reader, the conversion and the receipts.
+"""Evan Daniel's exact certificates (T-098, T-101): the reader, the conversion and the receipts.
 
 `devtools.evand_exact_certificates` reads a certificate format no checker here read
 before, converts it without rounding and hands it to this repository's two exact

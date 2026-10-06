@@ -1788,11 +1788,11 @@
     {
       "L": "843/100",
       "authors_replay_here": "partial (12 of 201)",
-      "binary_sha256": "7da1326cc1dcb437f148c03a710a76fb3ddb68ab8295b80997bc8e135309dbbe",
+      "binary_sha256": "af0871c0d7210aaabed395d2c7db8cc11720041aa5cd679e5f384c3c56cf66a6",
       "candidate": "packing/resources/web/wand125-mixed-bounds-finer-net-2026-10-05/square-packing-bounds/certificates/mixed_n66_L843/candidate.json.gz",
       "candidate_sha256": "d898bf92cea56d8c5ccc343fcc534517a2028a1204a5cdbdb0687254810d179b",
       "certificate": "mixed_n66_L843",
-      "cpu_seconds": 2167.2,
+      "cpu_seconds": 2104.9,
       "directions_verified": 201,
       "first_complete_check_here": true,
       "format": "M",
@@ -1802,7 +1802,7 @@
       "nodes": 117253700,
       "packet": "wand125-mixed-bounds-finer-net-2026-10-05",
       "receipts": "packing/benchmarks/measure-verifier/census-mixed/wand125-mixed-bounds-finer-net-2026-10-05/mixed_n66_L843.jsonl.gz",
-      "source_sha256": "73959cae12d65ce2a594255ddb0b677b899fd6d87b99b079f57d4fe50d1ababa",
+      "source_sha256": "7c49cf79f2408e745d5a0759caf85768d92c502bb574b95dbc12b81a36e50300",
       "threshold": "1",
       "verdict": "VERIFIED"
     },

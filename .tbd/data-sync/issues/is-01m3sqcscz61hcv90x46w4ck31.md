@@ -3,9 +3,9 @@ type: is
 id: is-01m3sqcscz61hcv90x46w4ck31
 title: Profile Rust exact arithmetic slowdown against the Python rectangle verifier
 kind: task
-status: in_progress
+status: closed
 priority: 1
-version: 9
+version: 10
 spec_path: docs/project/specs/active/plan-2026-09-29-proof-verification-consolidation.md
 delegate: claude-code@spud10.local
 labels: []
@@ -16,8 +16,13 @@ child_order_hints:
 hold: null
 hold_until: null
 created_at: 2026-09-30T17:56:57.880Z
-updated_at: 2026-09-30T19:19:45.308Z
+updated_at: 2026-10-06T08:34:22.520Z
 started_at: 2026-09-30T17:59:38.171Z
+closed_at: 2026-10-06T08:34:22.520Z
+close_reason: |
+  Done (bead review 2026-10-06, origin/main eb43ffe9a): Diagnosis published: PR #251 MERGED 2026-09-30 and PR #252 MERGED; receipts rust-exact-arithmetic-ab-2026-09-30.json and rust-exact-bounded-verifier-ab-2026-09-30.json under packing/resources/web/wand125-tools-2026-09-29/receipts/; promotion is think-1ozu
+resolution: null
+duplicate_of: null
 ---
 User requests a careful first-principles diagnosis of why the native Rust exact backend is slower, whether the design is fundamentally inefficient, and a PR review update. Compare actual pinned arithmetic libraries, algorithms, normalization/GCD cost, allocations, caching, setup and transport on equivalent admitted work. Start from retained 201-angle and 1000-node matched benchmarks and the failed batching experiment. Distinguish observed causes from hypotheses; use a reusable bounded profile only when it isolates a concrete question, not a full certificate replay or unrelated suite. Evaluate targeted representation/library/algorithm improvements with exact-result parity and refusal controls. Do not claim Rust language speed guarantees or accept a weaker numerical verifier. Sol investigates; Astra max reviews any mathematical representation changes. Publish the findings and next measured action on the PR.
 

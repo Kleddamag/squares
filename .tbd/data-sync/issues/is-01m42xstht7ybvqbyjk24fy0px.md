@@ -3,15 +3,19 @@ type: is
 id: is-01m42xstht7ybvqbyjk24fy0px
 title: "PR #305 A4: index page inlines 51 regularized tiles; ceiling raised to 4.7 MB"
 kind: bug
-status: open
+status: closed
 priority: 2
-version: 4
+version: 5
 labels:
   - deferred
 dependencies: []
 parent_id: null
 created_at: 2026-10-04T07:42:06.394Z
-updated_at: 2026-10-04T09:02:45.847Z
+updated_at: 2026-10-06T08:43:55.263Z
+closed_at: 2026-10-06T08:43:55.263Z
+close_reason: "Superseded by think-k8x9 (owner, 2026-10-04): the overview draws a regularized case once and no longer ships the house drawing, so the fetch planned here was not needed. origin/main tests/test_overview.py PAGE_CEILINGS puts index.html at 2,700,000 bytes, with the history in its comment."
+resolution: canceled
+duplicate_of: null
 ---
 Review A finding A4 (Medium) on jlevy/squares#305: https://github.com/jlevy/squares/pull/305#pullrequestreview-5404831349
 

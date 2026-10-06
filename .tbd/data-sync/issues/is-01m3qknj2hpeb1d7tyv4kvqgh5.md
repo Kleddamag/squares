@@ -3,17 +3,18 @@ type: is
 id: is-01m3qknj2hpeb1d7tyv4kvqgh5
 title: Make CI wall recent-run sampling aware of gate event surfaces
 kind: task
-status: in_progress
+status: closed
 priority: 2
-version: 6
+version: 7
 spec_path: docs/project/reviews/review-2026-09-29-validation-parallelism.md
 labels: []
 dependencies: []
 parent_id: is-01m3p5wj25knm7rbx0g4a4tpvg
 created_at: 2026-09-29T22:13:22.127Z
-updated_at: 2026-09-29T22:30:26.416Z
-closed_at: 2026-09-29T22:22:35.132Z
-close_reason: Event-aware recent sampling now bounds discovery, admits only complete current-topology runs, reuses admitted payloads, and refuses insufficient compatible samples; focused tests and independent review passed.
+updated_at: 2026-10-06T08:34:51.665Z
+closed_at: 2026-10-06T08:34:51.665Z
+close_reason: |
+  Done (bead review 2026-10-06, origin/main eb43ffe9a): Event-aware sampling integrated at 902b959b4 (on origin/main): check_ci_gate_walls.py maps post-merge to push/schedule/workflow_dispatch; PR #246 MERGED with published CI green
 resolution: null
 duplicate_of: null
 ---

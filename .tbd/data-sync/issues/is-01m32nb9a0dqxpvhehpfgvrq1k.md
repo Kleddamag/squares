@@ -3,14 +3,18 @@ type: is
 id: is-01m32nb9a0dqxpvhehpfgvrq1k
 title: check_pr_wall SETTLE_ATTEMPTS=3 produces false reds on GitHub API lag
 kind: bug
-status: open
+status: closed
 priority: 2
-version: 3
+version: 4
 labels: []
 dependencies: []
 parent_id: is-01m32fgxn7yh0skf12a0zxnres
 created_at: 2026-09-21T18:58:39.551Z
-updated_at: 2026-09-30T13:44:01.143Z
+updated_at: 2026-10-06T08:45:23.081Z
+closed_at: 2026-10-06T08:45:23.081Z
+close_reason: "Done: packing/devtools/check_pr_wall.py on origin/main raises SETTLE_ATTEMPTS from 3 to 11 reads 5 s apart (up to 50 s), and reports runs GitHub did not schedule in full as an 'infrastructure' verdict."
+resolution: null
+duplicate_of: null
 ---
 Observed 2026-09-21 on PR 212, run 35639861454 attempt 1: 'the jobs API reported live aggregator pages-required without a started Hold the pull request wall to its budget step after 3 reads'. The step had in fact started; the run was healthy; the same measurement run locally against that exact run id returned 77s, inside the 180s budget, verdict passed.
 

@@ -5,7 +5,7 @@ title: "W7: implement native exact rectangle-density coverage verifier"
 kind: feature
 status: in_progress
 priority: 1
-version: 16
+version: 18
 spec_path: docs/project/reviews/review-2026-09-29-n11-optimality.md
 delegate: claude-code@spud10.local
 labels: []
@@ -20,7 +20,7 @@ child_order_hints:
 hold: null
 hold_until: null
 created_at: 2026-09-29T07:12:51.117Z
-updated_at: 2026-09-30T01:10:22.812Z
+updated_at: 2026-10-06T08:29:23.234Z
 started_at: 2026-09-29T07:14:10.458Z
 ---
 W7 block in docs/project/specs/active/plan-2026-09-29-native-rectangle-verification.md. Exact rational common-core polygon subdivision and axis event sweep, source-distinct from verify.cpp; library, CLI, refusal controls, proof contract review. Analytic full-net control and bounded retained input probe required before first checkpoint. Full large-certificate independent confirmation remains separate.
@@ -46,3 +46,5 @@ Final Astra-max next-step review selected think-gfpf: exactly two refinement lev
 The two-level diagnostic think-gfpf met its predeclared local criterion: 15 of 67 depth-capped parents close after all 268 children are evaluated. This is diagnostic evidence only; complete native external coverage remains think-aqne. Next: design and cost a whole-angle traversal without treating the 1000-node prefix as a full-angle cost estimate.
 
 2026-09-29 upstream integration: wand125 provisional T-056/T-057 map to canonical T-058/T-059. Published Couzo/de Winter retain T-056/T-057. Historical notes and archived receipts retain their original labels; no evidence bytes or acceptance level changed.
+
+2026-10-06 (bead review): think-ck07 was closed as a duplicate of this bead. Carried over from it: any conversion of rectangle densities to point masses must bound the transport error and pay it from actual coverage slack (placing rectangle mass at cell centres is unsound without that proof), and input admission must include think-c0xc's guards. Evidence: docs/project/reviews/review-2026-09-22-tokoharu-density-mathematics.md.

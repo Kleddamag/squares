@@ -220,10 +220,11 @@ def test_a_fraction_shows_its_decimal_and_a_name_stays_whole(
     # A terminating fraction shows its exact decimal in either column. The example was
     # n = 18 until 2026-10-02, when T-045's replay raised its verified bound to the
     # reported 939/200 and the cell became "same", and then n = 19 until T-074's did the
-    # same there later that day; n = 51 shows both, 37/5 from n = 50's replayed mixed
-    # certificate below its own reported mixed certificate, 747/100 (T-090; 373/50,
-    # T-082, until 5 October).
-    assert rows["n-51"]["cells"][column("Verified lower")]["approx"] == ["= 7.4"]
+    # same there later that day; n = 51 shows both: its own replayed rectangle
+    # certificate, 2977/400 (T-070, since 6 October; 37/5 from n = 50's mixed certificate
+    # before), below its reported mixed certificate, 747/100 (T-090; 373/50, T-082, until
+    # 5 October).
+    assert rows["n-51"]["cells"][column("Verified lower")]["approx"] == ["= 7.4425"]
     assert rows["n-51"]["cells"][column("Reported lower")]["approx"] == ["= 7.47"]
     assert all(cell["approx"] == [] for cell in rows["n-1"]["cells"])
     assert rows["n-11"]["cells"][column("Reported lower")]["broken"] == []

@@ -358,6 +358,17 @@ EXPLAINER_REVISED = "October 5, 2026"
 #: (think-2cqu).
 OPTIMALITY_REVIEW_HISTORY = (
     PublicationHistoryEntry(
+        version="v0.1.6",
+        first_published="October 6, 2026",
+        result_scope=(
+            "The uniqueness corollary is registered as T-102 and no longer called "
+            "unreviewed, with its prior art: Trump's rigidity claim is local, and "
+            "Stromquist's three optimal packings of ten squares show uniqueness is not "
+            "automatic; and Queuingtheorydotcom's report of a complete Lean 4 "
+            "formalization of October 6 is cited, with its native-compiler trust base."
+        ),
+    ),
+    PublicationHistoryEntry(
         version="v0.1.5",
         first_published="October 5, 2026",
         result_scope=(
@@ -440,7 +451,7 @@ OPTIMALITY_REVIEW_EDITION = " ".join(
 #: prints, by the rule `EXPLAINER_REVISED` follows -- the author date of the last commit
 #: that changed its article, `n11-optimality-review-article.md`, held to git by
 #: `devtools.artifact_dates`. Change it in the commit that changes the article.
-OPTIMALITY_REVIEW_REVISED = "October 5, 2026"
+OPTIMALITY_REVIEW_REVISED = "October 6, 2026"
 
 #: The day the proof the review explains was published by its source, which the review's
 #: "Original proof" date prints. A fact about someone else's work, so it is typed, and

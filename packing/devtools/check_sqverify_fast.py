@@ -28,7 +28,9 @@ Two checks of `sqverify-fast` (`packing/sqverify_fast`), both refusable:
   metadata that changes the net, the declaration removed, and format L's net block beside
   it) must be refused at admission, by the premise it breaks; and the masses scaled by
   0.985 must be refused, each refused direction with an exact witness below the
-  threshold.
+  threshold. The binary's own `source_sha256` must be `crate_source_sha256` of this
+  tree, the digest `build.rs` takes and the census's `REVIEWED_SOURCES` admits, so this
+  group fails for a binary built from another tree.
 
 Prints one line per check and `SQVERIFY-FAST CHECKS PASSED` when every check passes;
 exits 1 otherwise. From `packing/`, after `cargo build --release` in
@@ -42,6 +44,7 @@ from __future__ import annotations
 
 import argparse
 import gzip
+import hashlib
 import json
 import random
 import subprocess
@@ -63,6 +66,8 @@ from sqpack.rectangle_density import (
 
 PROJECT = Path(__file__).resolve().parents[1]
 WEB = PROJECT / "resources/web"
+#: The verifier's crate, whose sources `build.rs` digests into every build.
+CRATE = PROJECT / "sqverify_fast"
 STEP = Fraction(83, 40000)
 # The retained stage-4 controls of formats M and L: packet and receipt folder.
 MIXED_CONTROLS = (
@@ -88,9 +93,39 @@ def candidate_path(packet: str, certificate: str) -> Path:
     )
 
 
-def direction(index: int) -> tuple[Fraction, Fraction]:
-    t = index * STEP
+def direction(index: int, step: Fraction = STEP) -> tuple[Fraction, Fraction]:
+    """The exact cosine and sine of net angle `index`, half-angle tangent `index * step`."""
+    t = index * step
     return (1 - t * t) / (1 + t * t), 2 * t / (1 + t * t)
+
+
+def crate_source_sha256(crate: Path = CRATE) -> str:
+    """The `source_sha256` a build of `crate` embeds, by `build.rs`'s own rule.
+
+    SHA-256 over `Cargo.toml`, `Cargo.lock`, `build.rs` and then `src/*.rs` in sorted
+    order, each as its crate-relative name, a NUL byte, its bytes and a NUL byte. The
+    `declared-net` group holds a built binary's own digest to this one, and
+    `sqverify_fast_census --source-digest` prints it with the review that accepted it.
+    """
+    names = ["Cargo.toml", "Cargo.lock", "build.rs"]
+    names += sorted(
+        f"src/{path.name}" for path in (crate / "src").iterdir() if path.suffix == ".rs"
+    )
+    digest = hashlib.sha256()
+    for name in names:
+        digest.update(name.encode() + b"\0" + (crate / name).read_bytes() + b"\0")
+    return digest.hexdigest()
+
+
+def net_step(raw: dict[str, Any]) -> Fraction:
+    """A format M or L candidate's half-angle step: its `proof_net` step, else 83/40000.
+
+    Read as an exact rational from the file's own text, as admission reads it: a format M
+    file may declare its own net (SOUNDNESS.md, lemma N0), and admission refuses a
+    `proof_net` in any other format and metadata that changes a format M or L net.
+    """
+    net = raw.get("proof_net")
+    return Fraction(str(net["step"])) if isinstance(net, dict) else STEP
 
 
 def read_raw(path: Path) -> dict[str, Any]:
@@ -443,7 +478,9 @@ def mixed_exact(raw: dict[str, Any], x: Fraction, y: Fraction, index: int) -> Fr
     """
     side, core = Fraction(raw["L"]), Fraction(raw["B"])
     half = core / 2
-    cosine, sine = direction(index)
+    # At the net angle of the file's own net (finding DR-1 of the 6 October review: the
+    # standard step on a declared net scores another angle).
+    cosine, sine = direction(index, net_step(raw))
     polygon = square_polygon(x, y, cosine, sine, core)
 
     def local(point: tuple[Fraction, Fraction]) -> tuple[Fraction, Fraction]:
@@ -727,7 +764,21 @@ def declared_net(binary: Path, scratch: Path, *, quick: bool) -> list[tuple[bool
     outcomes: list[tuple[bool, str]] = []
     directions = "415" if quick else "0,1,207,415"
     result = run_binary(binary, path, n, "--directions", directions)
-    premises = summary_of(result).get("premises") or {}
+    summary = summary_of(result)
+    premises = summary.get("premises") or {}
+    # The digest every receipt names, which REVIEWED_SOURCES admits, is the one
+    # crate_source_sha256 computes from this tree: a binary built here names it.
+    built = str((summary.get("build") or {}).get("source_sha256"))
+    tree = crate_source_sha256()
+    outcomes.append(
+        (
+            built == tree,
+            (
+                f"the binary names this tree's crate source: source_sha256 {built[:8]}... is"
+                f" build.rs's digest of packing/sqverify_fast, {tree[:8]}..."
+            ),
+        )
+    )
     ok = (
         result.returncode == 0
         and premises.get("net_origin") == "proof_net"

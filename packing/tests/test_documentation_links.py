@@ -60,3 +60,19 @@ def test_existing_absolute_link_is_rejected_but_relative_link_passes(
     problems = _link_problems(report)
     assert len(problems) == 1
     assert "absolute local link" in problems[0]
+
+
+def test_a_link_quoted_in_a_fenced_code_block_is_not_checked(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    """A quoted line of another file keeps its links as text; outside the fence they count."""
+    monkeypatch.setattr(check_documentation, "REPO", tmp_path)
+    report = tmp_path / "report.md"
+    quoted = "| [Row](docs/elsewhere.md) | record |"
+    report.write_text(f"Text.\n\n```\n{quoted}\n```\n\n~~~~text\n{quoted}\n~~~~\n")
+    assert _link_problems(report) == []
+    # A shorter or other fence does not close it; an unclosed fence runs to the end.
+    report.write_text(f"````\n```\n{quoted}\n~~~\n{quoted}\n")
+    assert _link_problems(report) == []
+    report.write_text(f"```\n{quoted}\n```\n{quoted}\n")
+    assert _link_problems(report) == ["report.md: dead link -> docs/elsewhere.md"]

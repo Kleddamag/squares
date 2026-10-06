@@ -77,10 +77,43 @@ def _is_ephemeral_local_target(path: Path) -> bool:
     return relative.parts[:2] == (".tbd", "docs")
 
 
+#: The opening or closing line of a fenced code block (CommonMark: three or more
+#: backticks or tildes, indented by at most three spaces).
+FENCE = re.compile(r"^ {0,3}(`{3,}|~{3,})(.*)$")
+
+
+def _outside_fences(text: str) -> str:
+    """The text without its fenced code blocks, where a quoted link is not a link.
+
+    A review that quotes a line of another file, links and all, in a code block does not
+    link from where it stands (the 6 October re-check quotes a SYNOPSIS.md row). A fence
+    closes on the same character, at least as long, with nothing after it; an unclosed
+    fence runs to the end, as CommonMark has it.
+    """
+    kept: list[str] = []
+    fence = ""
+    for line in text.splitlines():
+        match = FENCE.match(line)
+        if fence:
+            if (
+                match
+                and match.group(1)[0] == fence[0]
+                and len(match.group(1)) >= len(fence)
+                and not match.group(2).strip()
+            ):
+                fence = ""
+            continue
+        if match:
+            fence = match.group(1)
+            continue
+        kept.append(line)
+    return "\n".join(kept)
+
+
 def _link_problems(path: Path) -> list[str]:
     text = path.read_text(encoding="utf-8")
     problems: list[str] = []
-    for raw_target in re.findall(r"!?\[[^]]*\]\(([^)]+)\)", text):
+    for raw_target in re.findall(r"!?\[[^]]*\]\(([^)]+)\)", _outside_fences(text)):
         target = raw_target.strip().strip("<>")
         if target.startswith(("http://", "https://", "mailto:")):
             continue

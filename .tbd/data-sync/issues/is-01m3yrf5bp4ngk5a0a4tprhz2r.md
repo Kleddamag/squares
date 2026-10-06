@@ -3,9 +3,9 @@ type: is
 id: is-01m3yrf5bp4ngk5a0a4tprhz2r
 title: "T-046 leftovers: replay the 28 September rectangle certificates n = 51, 57, 58, 72, 73, 91 (n = 37 only if T-069's n37 fails)"
 kind: task
-status: in_progress
+status: closed
 priority: 2
-version: 7
+version: 8
 delegate: claude-code@vm
 labels:
   - result-import
@@ -16,8 +16,12 @@ parent_id: is-01m3yrdxte02c7bnygkke34ct4
 hold: null
 hold_until: null
 created_at: 2026-10-02T16:51:56.405Z
-updated_at: 2026-10-06T09:18:18.233Z
+updated_at: 2026-10-06T15:55:39.727Z
 started_at: 2026-10-06T07:53:22.392Z
+closed_at: 2026-10-06T15:55:39.726Z
+close_reason: "Done: recorded by lane R5 (T-070, T-046 next_rung) / lane R3 (E-k2m4-evand-bentz4-lean-build) on 6 October, merged in #382"
+resolution: null
+duplicate_of: null
 ---
 Dispatched to runners r1 (n72 workers 3, n91) and r2 (n73 workers 2, n51, n57+n58); transfer dirs wand125-rect-sept28-r1-*/-r2-* on branches claude/replay-wand125-rect-oct1-r1/-r2. Merge with audit_wand125_rectangles --packet 2026-09-28 --merge, then records. About 24 CPU-h.
 

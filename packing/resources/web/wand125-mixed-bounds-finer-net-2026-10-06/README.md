@@ -251,6 +251,27 @@ ran the same command on three more nodes of each, 2, 759 and 830 at $n = 18$ and
 and 415 at $n = 19$, each returning the shipped record, so ten nodes of each net are
 reproduced here with the producer’s code.
 
+**`n18-L4704`: the bundle’s own driver, in full, running.** On 6 October 2026 at
+03:28:44 UTC `replay` unpacked the pinned tarball twice, bound the first copy, and
+started the bundle’s driver in the second as its README says, at two workers under
+`nice`:
+
+```sh
+# from packing/
+uv run --frozen --all-extras --group dev python -m devtools.audit_wand125_declared_net \
+  replay --certificate n18-L4704 --tarball TARBALL --work W --workers 2
+```
+
+The run began before `replay` refused a run with Python’s assertions off and recorded
+that they were on (finding FN-1 of the 6 October review), so `processes` took a snapshot
+of it from `/proc` at 03:49:09 UTC:
+[`receipts/n18-L4704/full/processes.json`](receipts/n18-L4704/full/processes.json). The
+driver, its forkserver and both pooled workers, which serve the whole run, ran with no
+`-O` and no `PYTHONOPTIMIZE`, so the source’s `assert` checks are on. `compare` reads that
+snapshot beside the run’s record. At 05:04 UTC the driver had replayed 261 of the 832
+nodes. Until its record, its output and `compare`’s receipt are committed beside the
+snapshot, this replay decides nothing.
+
 **The controls.** `control` binds a fresh copy of each bundle, runs the full driver’s
 preconditions, and at the oblique node of the least recorded bound (797 at $n = 18$, 37
 at $n = 19$) finds a centre of low capture and evaluates it exactly. Two mass mutants

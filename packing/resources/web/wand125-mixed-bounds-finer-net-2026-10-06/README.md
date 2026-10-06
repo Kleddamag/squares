@@ -319,7 +319,13 @@ verdicts, box totals and least bounds, 701.7 and 512.1 CPU seconds. Each census 
 verified the original at the least-bound leaf’s direction (797 at $n = 18$, 198 at
 $n = 19$) and refused both mutants there, with the crate’s exact capture equal to the
 independent evaluator’s. That review accepts the crate source `d97758bb…` for declared
-nets; until its acceptance is merged here, no rung rests on these rows.
+nets, and its acceptance is on `main` since `c4f00832`. The rows are the complete
+replays on which T-099 and T-100 rest, recorded as
+`E-n018-wand125-mixed-4704-sqverify-fast-replay` and
+`E-n019-wand125-mixed-48229-sqverify-fast-replay`: each decides its certificate
+independently of the source’s checker, sharing no code with it, and is a second
+implementation of the same method, not a second method. The verified lower bound moves
+to $588/125$ at $n = 18$ and to $48229/10000$ at $n = 19$.
 
 ## Limitations
 

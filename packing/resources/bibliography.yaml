@@ -41,7 +41,9 @@ sources:
     lineage: builds-on-project
     note: >-
       11SquaresOptimal at f9e0de713a0949d1bc6a0fa6b59d96edf6c3d65c, announced by
-      Queuingtheorydotcom (@MathCompSciFTW) as an Astra-assisted global optimality proof.
+      Queuingtheorydotcom, who posts on X as @ManassehA06, as an Astra-assisted global
+      optimality proof (announced on 29 September as @MathCompSciFTW; the post is retained
+      in web/queuingtheorydotcom-n11-lean-2026-10-06/receipts/announcement/).
       README and THIRD_PARTY_NOTICES credit jlevy/squares at c55726e1e885227f63110131c0a914665175ff89,
       Walter Trump's construction and David Ellsworth's reconstruction diagram; the
       announcement credits Kleddamag. No blanket license covers the collection.
@@ -57,12 +59,16 @@ sources:
     lineage: builds-on-project
     note: >-
       11SquaresFormalized at cdc746ed907d258057c283aeb6d077cb2c27e349, the Lean 4
-      formalization of T-060's optimality proof. Square Packing Fan (@ManassehA06) posted on
-      6 October 2026 that it "has been formalized in lean thanks to Astra and Claude",
-      thanking Joshua Levy (@ojoshe), Kleddamag, wand125, Guzhou0806 and ctjlewis "for
-      aiding in the process"; the post, 1/n of a thread, links this project's n = 11 page as
-      its image credit and names neither who did the work nor the repository. Authors as read from
-      ACKNOWLEDGEMENTS.md: Queuingtheorydotcom (the underlying
+      formalization of T-060's optimality proof. Queuingtheorydotcom, who posts on X as
+      @ManassehA06, announced on 6 October 2026 that it "has been formalized in lean thanks
+      to Astra and Claude", thanking Joshua Levy (@ojoshe), Kleddamag, wand125, Guzhou0806
+      and ctjlewis "for aiding in the process"; the post, the author's own and 1/n of a
+      thread, links this project's n = 11 page as its image credit and does not name the
+      repository. Joshua Levy quoted it that day
+      (https://x.com/ojoshe/status/2107513739222380935), calling it "a Lean formalization
+      from @ManassehA06 assembled over the last few days, with assistance from @ctjlewis
+      @guzhou0806 and others"; both posts are retained in the intake's
+      receipts/announcement/. Authors as read from ACKNOWLEDGEMENTS.md: Queuingtheorydotcom (the underlying
       computer-assisted proof, and the formalization's development and integration),
       EvolvingPrograms and ctjlewis (verification infrastructure and the complete replay),
       wand125 (n11-optimality-lean, certificate checkers, generated proofs), Benjamin

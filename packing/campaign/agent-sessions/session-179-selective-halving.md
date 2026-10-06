@@ -42,7 +42,7 @@ session:
     - packing/devtools/probe_n17_selective_halving.py
     - packing/tests/test_n17_selective_halving.py
     stop_reason: Source/control accepted; enter ONE frozen measurement.
-    next_action: ONE 1024/45 s/512 MiB/Job 60 then root independent replay.
+    next_action: ONE 1024/45 s/512 MiB/Job 60 then root fresh replay.
   - workflow: research-loop
     focus: correctness
     recording: contemporaneous
@@ -61,7 +61,7 @@ session:
     fallback: Retain D fixed-sample 71+1 separation/B 60 positive supports; no new mixed-certificate
       claim.
     outcome: 2623 actual mixed atoms via rows(18, 13)/(19, 5), 101 extra; restricted J58 library minimum;
-      E72 loss/E7 survive/B44 cliques 60 parents freshly 735 checked and independently accepted. No
+      E72 loss/E7 survive/B44 cliques 60 parents freshly 735 checked and accepted. No
       network equivalence/new search.
     evidence:
     - packing\campaign\explorations\X048-session-179-selective-halving\README.md
@@ -84,7 +84,7 @@ session:
     H7 prefix mapping back to E survives.
   - Actual 2522+extras full/half inventory preserves domains/pieces/interval/core refs; smaller than 5044,
     strict/nesting validation.
-  - Root independent fresh replay same bounds/no new runner import before acceptance.
+  - Root fresh replay same bounds/no new runner import before acceptance.
   - Old raw/H/A/B/C/D/kernel/producer/K2 immutable; 15 min project reserve/outer 14:06:46Z; no admission
     or unsupported row claim.
   progress:
@@ -92,7 +92,7 @@ session:
     before: Full H model 5044 atoms; D71 losses lift except J58; current B44 witnesses 60 positive
       parents.
     after: 2623 actual mixed atoms via rows(18, 13)/(19, 5), 101 extra; restricted J58 library minimum;
-      E72 loss/E7 survive/B44 cliques 60 parents freshly 735 checked and independently accepted. No
+      E72 loss/E7 survive/B44 cliques 60 parents freshly 735 checked and accepted. No
       network equivalence/new search.
   delegations: []
   outputs:
@@ -106,9 +106,9 @@ session:
     SUCCESS; think-abit closed/synced.
   - Actual main 225d6 and PR 307 at 1525 unchanged, no overlap; own think-ns4t claimed/synced; the
     fixed-certificate model is distinct from the K2 producer.
-  - Sole primary/integrator with root critical review/independent evidence only; old
+  - Sole primary/integrator with root critical review/fresh-replay evidence only; old
     B–J/G/I/A/B/C/D preserved.
-  - Root source/control and independent 735 fresh certificate replay accepted; 32 controls, Ruff,
+  - Root source/control and fresh 735 certificate replay accepted; 32 controls, Ruff,
     types and embedded-script PASS; four Jobs exit 0 with cleanup true.
   - Native ONCE start 2026-10-04T12:16:51.090470+00:00, cutoff 2026-10-04T12:37:41.440261+00:00,
     actual end 2026-10-04T12:39:26.150481+00:00; live/boundary lower bound, later publication/CI excluded.

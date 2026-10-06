@@ -40,7 +40,7 @@ session:
     - packing/devtools/probe_n17_scheduled_row_support.py
     - packing/tests/test_n17_scheduled_row_support.py
     stop_reason: Source/control gate accepted before the sole target.
-    next_action: ONE B frozen 100k/100k/180 s/512 MiB; root independent replay.
+    next_action: ONE B frozen 100k/100k/180 s/512 MiB; root fresh replay.
   - workflow: research-loop
     focus: correctness
     recording: contemporaneous
@@ -53,11 +53,11 @@ session:
     started_at: '2026-10-04T10:25:18.540293+00:00'
     deadline_at: '2026-10-04T10:40:18.540293+00:00'
     expected_output: packing/campaign/explorations/X048-session-176-owner-priority/README.md
-    validation_command: Frozen scheduled CLI under immutable Job 240; independent root replay 120 s/Job 150.
+    validation_command: Frozen scheduled CLI under immutable Job 240; fresh root replay 120 s/Job 150.
     kill_condition: Source 30 min, relevant parent overlap, guard or insufficient 15 min finalization
       reserve.
     fallback: Retain A26 cliques/41 supported parents; every remaining row unknown.
-    outcome: 44 cliques support 60/96 parents (+19), 36 unknown; 100000 pairs/127 DFS/142.535 s. Independent 660 pair
+    outcome: 44 cliques support 60/96 parents (+19), 36 unknown; 100000 pairs/127 DFS/142.535 s. Fresh 660 pair
       replay accepted; no unsupportedness or isolated scheduling effect.
     evidence:
     - packing/campaign/explorations/X048-session-176-owner-priority/README.md
@@ -76,15 +76,15 @@ session:
   - ONE 100k unique pairs including all 26 fresh seeds; 100k nodes/180 s/512 MiB/Job 240.
   - Complete validated row permutation; unchanged numeric default; derive owner priorities from
     exact A refs.
-  - Source 30 min and project 90 min with 15 min reserve; root gate before target and independent
+  - Source 30 min and project 90 min with 15 min reserve; root gate before target and fresh
     replay 120 s.
-  - Zero new independently checked parents retires this schedule; no order/cap ladder.
+  - Zero new freshly checked parents retires this schedule; no order/cap ladder.
   - A/H/geometry/input remain frozen; no causal scheduling attribution without matched seed
     baseline.
   progress:
-    metric: New independently replayed parent supports beyond A41
+    metric: New freshly replayed parent supports beyond A41
     before: A26 cliques support 41/96 parents; 55 unknown.
-    after: 44 cliques support 60/96 parents (+19), 36 unknown; 100000 pairs/127 DFS/142.535 s. Independent 660 pair
+    after: 44 cliques support 60/96 parents (+19), 36 unknown; 100000 pairs/127 DFS/142.535 s. Fresh 660 pair
       replay accepted; no unsupportedness or isolated scheduling effect.
   delegations: []
   outputs:
@@ -99,7 +99,7 @@ session:
   - Own think-mkgr claimed/synced; no live scheduling overlap; sole executor plus root review/replay.
   - All previous artifacts immutable. B starts with stronger A seeds; increment is positive
     evidence, not matched benchmark.
-  - Root source/control and independent positive replay accepted; all 5 Jobs exit 0, cleanup
+  - Root source/control and fresh positive replay accepted; all 5 Jobs exit 0, cleanup
     true, no errors.
   - Native aggregate ONCE exact start 2026-10-04T10:10:14.903951+00:00, cutoff 2026-10-04T10:29:42.135281+00:00,
     actual end 2026-10-04T10:29:45.207858+00:00; live/boundary lower bound; later publication/CI

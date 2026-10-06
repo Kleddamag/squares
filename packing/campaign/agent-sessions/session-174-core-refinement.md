@@ -64,7 +64,7 @@ session:
       closeout margin.
     fallback: Retain E/G finite-model result; no further core refinement/search.
     outcome: 1460 refined pairs/4619 assignments; 7 retained tuples support 18 parent rows/18 observed
-      child rows. Independent 105 pair replay passes; 72 tuple losses/78 parent rows remain unknown,
+      child rows. Fresh 105 pair replay passes; 72 tuple losses/78 parent rows remain unknown,
       no replacement search.
     evidence:
     - packing/campaign/explorations/X048-session-174-core-refinement/README.md
@@ -94,7 +94,7 @@ session:
     before: E79 selections cover 96 B parent rows; G fresh same-packet replay 1185 checks/96 rows. Exact
       E packet identity and saved objects bound to baseline receipt.
     after: 1460 refined pairs/4619 assignments; 7 retained tuples support 18 parent rows/18 observed
-      child rows. Independent 105 pair replay passes; 72 tuple losses/78 parent rows remain unknown,
+      child rows. Fresh 105 pair replay passes; 72 tuple losses/78 parent rows remain unknown,
       no replacement search.
   delegations: []
   outputs:
@@ -108,7 +108,7 @@ session:
     delivered with no mutable old evidence.
   - Fresh main 79419cdfc and PR 307 at 1525d4e03 unchanged; no matching fixed-witness diagnostic.
     think-ljxn is the open, unassigned adaptive producer K2/P2 for 539 orbits, untouched.
-  - Own think-0xxc claimed/synced; sole Sol primary/integrator, root critical review and independent
+  - Own think-0xxc claimed/synced; sole Sol primary/integrator, root critical review and fresh
     replay only.
   - G fresh B baseline binds exact E packet content_sha256 and input identity; cold receipts/endpoint
     baseline remain historical.

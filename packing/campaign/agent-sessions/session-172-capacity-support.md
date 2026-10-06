@@ -14,7 +14,7 @@ session:
   branch: guzhou/n17-residual-compatibility
   primary_bead: think-2uhz
   status: stopped
-  goal: Complete independently replayed support for all 96 rows of the SAME frozen B raw graph
+  goal: Complete freshly replayed support for all 96 rows of the SAME frozen B raw graph
     under one 250000 pair capacity; a cap leaves unknowns and ends the attempt.
   workflow_phases:
   - workflow: pipeline-improvement
@@ -48,7 +48,7 @@ session:
     recording: contemporaneous
     clock_role: work
     objective: One same-model B completion attempt with 250000 unique pairs, D2 seeds budgeted,
-      forward-MRV unchanged; fresh independent replay.
+      forward-MRV unchanged; fresh replay.
     status: completed
     entered_by: evidence_checkpoint
     switch_reason: 'Root pretarget gate PASS: explicit 50000 default/250000 ceiling reaches search
@@ -117,7 +117,7 @@ session:
   - A guard is incomplete; no unsupportedness or packing claim from missing witnesses.
   - Outer user endpoint 2026-10-04T16:50:13.8746827+08:00 unchanged.
   progress:
-    metric: Independently supported owner-angle rows in the frozen raw binary network
+    metric: Owner-angle rows supported on fresh replay in the frozen raw binary network
     before: D2 retained 57 selections support 69/96 rows; 27 unresolved at 50000 pairs.
     after: One E attempt supported 96/96 rows with 79 selections, 62361 unique pairs/154 nodes/17.009 s.
       Root fresh replay 1185 pairs PASS_ALL; all 57 D2 selections/69 rows preserved. Exact whole-row
@@ -152,7 +152,7 @@ session:
   - 'full gate: fast at 405e12a88cb55107a5e136818b033611868ea8d7: passed (hosted Packing validation
     run 37297540063 on PR 355, the rebuild of PR 333 on PR 347; this head carries the session''s
     work unchanged)'
-  stop_reason: All 96 rows independently supported; exact frozen binary whole-row route retired.
+  stop_reason: All 96 rows supported on fresh replay; exact frozen binary whole-row route retired.
     Source/evidence hosted certification passed after unchanged reruns for a wall overrun and
     mixed-attempt accounting refusal. No geometric packing/exclusion claim; final metadata CI
     observed separately.
@@ -166,7 +166,7 @@ session:
 # Raw-row capacity completion
 
 The contract and actual clocks precede source editing.
-Sole Sol primary owns think-2uhz; root independently reviews/replays.
+Sole Sol primary owns think-2uhz; root independently reviews and freshly replays.
 Upstream think-tmz6 capture/Flag2 ownership remains.
 D1/D2 are frozen; no automatic continuation after this one bounded completion attempt.
 

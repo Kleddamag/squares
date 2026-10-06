@@ -15,7 +15,7 @@ session:
   primary_bead: think-op6s
   status: stopped
   goal: Determine whether every live row in the frozen B raw-piece pair graph has a complete
-    support witness, with independent replay.
+    support witness, with fresh replay.
   workflow_phases:
   - workflow: pipeline-improvement
     focus: efficiency
@@ -35,23 +35,23 @@ session:
     fallback: Retain partial evidence and do not run the B target.
     outcome: 34 focused controls pass; Ruff/typecheck clean; endpoint 148 atoms/24 rows all supported
       and fresh replayed (210 pairs), exact endpoint retained. Coordinator reviewed canonical
-      pair direction, complete DFS, provenance and independent replay; no blocking defect.
+      pair direction, complete DFS, provenance and fresh replay; no blocking defect.
     evidence:
     - packing/campaign/explorations/X048-session-171-raw-row-support/README.md
     stop_reason: Declared gate completed; changing objective based on retained evidence.
-    next_action: Run frozen B lazy row-support search once and independently replay its retained
+    next_action: Run frozen B lazy row-support search once and freshly replay its retained
       witnesses.
   - workflow: research-loop
     focus: insight
     recording: contemporaneous
     clock_role: work
-    objective: Run frozen B lazy row-support search once and independently replay its retained
+    objective: Run frozen B lazy row-support search once and freshly replay its retained
       witnesses.
     status: completed
     entered_by: evidence_checkpoint
     switch_reason: 34 focused controls pass; Ruff/typecheck clean; endpoint 148 atoms/24 rows all
       supported and fresh replayed (210 pairs), exact endpoint retained. Coordinator reviewed
-      canonical pair direction, complete DFS, provenance and independent replay; no blocking
+      canonical pair direction, complete DFS, provenance and fresh replay; no blocking
       defect.
     budget_minutes: 15
     started_at: '2026-10-04T04:09:21.531403+00:00'
@@ -61,7 +61,7 @@ session:
     kill_condition: Parent overlap, control failure, resource cap or implementation slot end.
     fallback: Retain partial evidence and do not run the B target.
     outcome: B guard-refused at 100000 DFS nodes after 12069 unique pairs and 31.553 seconds; 49 complete
-      selections support 55 of 96 rows. Independent fresh replay passed 735 pair checks; 41 rows unresolved
+      selections support 55 of 96 rows. Fresh replay passed 735 pair checks; 41 rows unresolved
       and no exhaustively unsupported row. All Job cleanup confirmed.
     evidence:
     - packing/campaign/explorations/X048-session-171-raw-row-support/README.md
@@ -77,7 +77,7 @@ session:
     status: completed
     entered_by: evidence_checkpoint
     switch_reason: B guard-refused at 100000 DFS nodes after 12069 unique pairs and 31.553 seconds; 49 complete
-      selections support 55 of 96 rows. Independent fresh replay passed 735 pair checks; 41 rows unresolved
+      selections support 55 of 96 rows. Fresh replay passed 735 pair checks; 41 rows unresolved
       and no exhaustively unsupported row. All Job cleanup confirmed.
     budget_minutes: 30
     started_at: '2026-10-04T04:12:27.845314+00:00'
@@ -87,7 +87,7 @@ session:
     kill_condition: Parent overlap, control failure, resource cap or implementation slot end.
     fallback: Retain partial evidence and do not run the B target.
     outcome: D1 published as f0b94b047; same-model FC/MRV D2 selected and preregistered. Sole
-      Sol executor now also owns integration; root retains independent review/replay.
+      Sol executor now also owns integration; root retains independent review and fresh replay.
     evidence:
     - packing/campaign/explorations/X048-session-171-raw-row-support/D1_REPORT.md
     stop_reason: D1 checkpoint retained and D2 contract frozen.
@@ -101,7 +101,7 @@ session:
     status: completed
     entered_by: evidence_checkpoint
     switch_reason: D1 published as f0b94b047; same-model FC/MRV D2 selected and preregistered.
-      Sole Sol executor now also owns integration; root retains independent review/replay.
+      Sole Sol executor now also owns integration; root retains independent review and fresh replay.
     budget_minutes: 30
     started_at: '2026-10-04T04:28:58+00:00'
     deadline_at: '2026-10-04T04:58:58+00:00'
@@ -115,13 +115,13 @@ session:
     - packing/devtools/probe_n17_raw_row_support.py
     - packing/tests/test_n17_raw_row_support.py
     stop_reason: Independent gate passed before B.
-    next_action: Run one frozen D2 B target, then root independently replays witnesses.
+    next_action: Run one frozen D2 B target, then root freshly replays witnesses.
   - workflow: research-loop
     focus: insight
     recording: contemporaneous
     clock_role: work
-    objective: One same-model B target using budgeted D1 seeds, forward checking and MRV; independent
-      fresh replay.
+    objective: One same-model B target using budgeted D1 seeds, forward checking and MRV; fresh
+      replay.
     status: completed
     entered_by: evidence_checkpoint
     switch_reason: 'Root independent source/control gate PASS: 44 tests, Ruff/types clean, FC/MRV
@@ -133,12 +133,12 @@ session:
     validation_command: python -m pytest tests/test_n17_raw_row_support.py -q
     kill_condition: Parent overlap, control failure, resource cap or implementation slot end.
     fallback: Retain partial evidence and do not run the B target.
-    outcome: D2 reached 50000 unique pairs after 76 nodes/13.529 s; 57 complete selections independently
+    outcome: D2 reached 50000 unique pairs after 76 nodes/13.529 s; 57 complete selections freshly
       replayed 855 pairs support 69/96 rows (+14). All 49 D1 seeds/55 rows retained, 27 unknown, no unsupported
       claim.
     evidence:
     - packing/campaign/explorations/X048-session-171-raw-row-support/receipts/D2_result-summary.json
-    stop_reason: One frozen target and independent replay complete; no cap enlarged.
+    stop_reason: One frozen target and fresh replay complete; no cap enlarged.
     next_action: Publish evidence, observe current-head CI, record native usage once and close
       this slice.
   - workflow: review-planning-oversight
@@ -149,7 +149,7 @@ session:
       closeout; preserve the planned finalization reserve.
     status: stopped
     entered_by: evidence_checkpoint
-    switch_reason: D2 reached 50000 unique pairs after 76 nodes/13.529 s; 57 complete selections independently
+    switch_reason: D2 reached 50000 unique pairs after 76 nodes/13.529 s; 57 complete selections freshly
       replayed 855 pairs support 69/96 rows (+14). All 49 D1 seeds/55 rows retained, 27 unknown, no unsupported
       claim.
     budget_minutes: 20
@@ -183,9 +183,9 @@ session:
   - A cap is incomplete, not an unsupported row; no full graph continuation.
   - User outer six-hour deadline 2026-10-04T16:50:13+08:00 remains.
   progress:
-    metric: Independently checked complete raw-piece supports for live owner-angle rows
+    metric: Freshly checked complete raw-piece supports for live owner-angle rows
     before: B has 2522 raw pieces and 96 rows; dense raw graph was guard-refused before any pairs.
-    after: D2 reached 50000 unique pairs after 76 nodes/13.529 s; 57 complete selections independently
+    after: D2 reached 50000 unique pairs after 76 nodes/13.529 s; 57 complete selections freshly
       replayed 855 pairs support 69/96 rows (+14). All 49 D1 seeds/55 rows retained, 27 unknown, no unsupported
       claim.
   delegations:
@@ -193,14 +193,14 @@ session:
     operator: Codex GPT-6.1 Sol xhigh
     status: completed
     recording: contemporaneous
-    outcome: D1 code/control gate passed; endpoint and independently replayed B evidence delivered.
+    outcome: D1 code/control gate passed; endpoint and freshly replayed B evidence delivered.
     evidence:
     - packing/campaign/explorations/X048-session-171-raw-row-support/D1_REPORT.md
     files:
     - packing/devtools/probe_n17_raw_row_support.py
     - packing/tests/test_n17_raw_row_support.py
     checks:
-    - 34 focused tests; Ruff and types pass; endpoint 24 rows; B 55/96 rows independently replayed
+    - 34 focused tests; Ruff and types pass; endpoint 24 rows; B 55/96 rows freshly replayed
     uncertainty: D1 remaining 41 rows are unresolved, no unsupported claim.
     elapsed_seconds: null
     elapsed_quality: unavailable
@@ -251,7 +251,7 @@ session:
   - 'full gate: fast at 405e12a88cb55107a5e136818b033611868ea8d7: passed (hosted Packing validation
     run 37297540063 on PR 355, the rebuild of PR 333 on PR 347; this head carries the session''s
     work unchanged)'
-  stop_reason: One D1 and one D2 bounded diagnostic delivered. D2 adds 14 independently replayed
+  stop_reason: One D1 and one D2 bounded diagnostic delivered. D2 adds 14 freshly replayed
     rows but 27 remain unknown; no packing/exclusion result or upstream ownership takeover. Source/evidence
     hosted fast certification observed; final metadata CI is observed separately.
   next_action: Await Joshua's review of the rebuilt layer (PR 355) under think-q0z7.

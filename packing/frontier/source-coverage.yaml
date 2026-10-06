@@ -1019,34 +1019,56 @@ sources:
     local: resources/web/wand125-mixed-bounds-2026-10-03/
     source_key: '[wand125 mixed bounds 2026-10-03]'
     scope: {n_values: [51, 52, 55, 58, 69, 70, 71, 73, 74, 75, 76, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96]}
-    reviewed: '2026-10-03'
+    reviewed: '2026-10-06'
     source_date: '2026-10-03'
     disposition: current-report
     replay_disposition: case-specific
     represented_by: [frontier/n-051.md, frontier/n-052.md, frontier/n-055.md, frontier/n-058.md, frontier/n-069.md, frontier/n-070.md, frontier/n-071.md, frontier/n-073.md, frontier/n-074.md, frontier/n-075.md, frontier/n-076.md, frontier/n-086.md, frontier/n-087.md, frontier/n-088.md, frontier/n-089.md, frontier/n-090.md, frontier/n-091.md, frontier/n-092.md, frontier/n-093.md, frontier/n-094.md, frontier/n-095.md, frontier/n-096.md]
     evidence:
       - E-n051-wand125-mixed-746-report
+      - E-n051-wand125-mixed-746-sqverify-fast-replay
       - E-n052-wand125-mixed-755-report
+      - E-n052-wand125-mixed-755-sqverify-fast-replay
       - E-n055-wand125-mixed-7728-report
+      - E-n055-wand125-mixed-7728-sqverify-fast-replay
       - E-n058-wand125-mixed-7905-report
+      - E-n058-wand125-mixed-7905-sqverify-fast-replay
       - E-n069-wand125-mixed-8612-report
+      - E-n069-wand125-mixed-8612-sqverify-fast-replay
       - E-n070-wand125-mixed-86475-report
+      - E-n070-wand125-mixed-86475-sqverify-fast-replay
       - E-n071-wand125-mixed-8705-report
+      - E-n071-wand125-mixed-8705-sqverify-fast-replay
       - E-n073-wand125-mixed-8809-report
+      - E-n073-wand125-mixed-8809-sqverify-fast-replay
       - E-n074-wand125-mixed-88675-report
+      - E-n074-wand125-mixed-88675-sqverify-fast-replay
       - E-n075-wand125-mixed-892-report
+      - E-n075-wand125-mixed-892-sqverify-fast-replay
       - E-n076-wand125-mixed-896-report
+      - E-n076-wand125-mixed-896-sqverify-fast-replay
       - E-n086-wand125-mixed-950-report
+      - E-n086-wand125-mixed-950-sqverify-fast-replay
       - E-n087-wand125-mixed-955-report
+      - E-n087-wand125-mixed-955-sqverify-fast-replay
       - E-n088-wand125-mixed-960-report
+      - E-n088-wand125-mixed-960-sqverify-fast-replay
       - E-n089-wand125-mixed-965-report
+      - E-n089-wand125-mixed-965-sqverify-fast-replay
       - E-n090-wand125-mixed-9725-report
+      - E-n090-wand125-mixed-9725-sqverify-fast-replay
       - E-n091-wand125-mixed-975-report
+      - E-n091-wand125-mixed-975-sqverify-fast-replay
       - E-n092-wand125-mixed-977-report
+      - E-n092-wand125-mixed-977-sqverify-fast-replay
       - E-n093-wand125-mixed-986-report
+      - E-n093-wand125-mixed-986-sqverify-fast-replay
       - E-n094-wand125-mixed-992-report
+      - E-n094-wand125-mixed-992-sqverify-fast-replay
       - E-n095-wand125-mixed-996-report
+      - E-n095-wand125-mixed-996-sqverify-fast-replay
       - E-n096-wand125-mixed-997-report
+      - E-n096-wand125-mixed-997-sqverify-fast-replay
     notes: >-
       Revision 2aff2076c492d62340e986c84f60a0a29eb668df, retrieved at about 2026-10-03T18:49Z
       for 22 comments of that day on jlevy/squares#282. 22 rectangle densities checked at
@@ -1054,13 +1076,16 @@ sources:
       checker of its n = 50 certificate, each of mass n - 1/100000, each added by its own
       commit between 02:49 and 17:58 UTC and pinned together at the last. All 22 are recorded
       as reported lower bounds (T-082), 21 above what the record reported at their counts;
-      at n = 96 the reported s(96) = 10 of T-081 is higher, and 997/100 is above the verified
-      249/25. Six
+      at n = 96 the reported s(96) = 10 of T-081 is higher. Six
       supersede certificates this record holds verified: mixed_n76_L894 (T-072),
       mixed_n87_L948, mixed_n91_L970, mixed_n92_L975 and mixed_n96_L996 (T-075), and
       mixed_n90_L960 (T-069). The exact audit and the replay's checks before its first angle
-      pass on all 22; no angle was replayed, and the proof-bundle tarballs are pinned by
-      digest and not retained. Every comparison in the source's audits is with an exact
+      pass on all 22. On 6 October 2026 sqverify-fast, this repository's clean-room measure verifier,
+      decided all 22 at all 201 net directions, which put six of them, at n = 52, 55, 74, 89,
+      92 and 96, in the verified lane; n = 96 counted once the repaired control refused its
+      mutants (think-0uia), and at the other 16 the source's later certificates (T-090,
+      T-091) are higher. The source's own checker was not run
+      here, and the proof-bundle tarballs are pinned by digest and not retained. Every comparison in the source's audits is with an exact
       rational; six name an unpublished value of the source's own.
   - id: wand125-mixed-bounds-2026-10-04
     title: Mixed rectangle-measure certificates of 3 and 4 October 2026 for 16 counts in n = 42 to 95

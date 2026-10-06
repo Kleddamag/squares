@@ -31,14 +31,16 @@ case records its own binary and source digests. `--check` re-reads the census an
 unless every case is verified, exited zero, and passed the exact least-leaf test;
 `--only` and `--packets` narrow it as they narrow a run.
 
-`--control` (mixed family) puts negative controls on a verified certificate itself: the
-original must verify again at its least-bound direction, and two mutants must be refused.
-Every mass scaled by 99/100 (the stage-4 control of the authors' replays) runs at every
+`--control` (mixed family, format M only: it refuses any other row before running) puts
+negative controls on a verified certificate itself: the original must verify again at its
+least-bound direction, a near-threshold mutant must be refused there, and every mass
+scaled by 99/100 (the stage-4 control of the authors' replays) runs at every
 direction of the net with `--confirm`, at `--threads`: it must be refused at one direction
 at least, and every direction that does not verify it must be a refusal on coverage (a
 counterexample candidate whose witness the crate confirmed below the threshold, or the
 axis sweep's refusal; never `audit-failed`, `non-finite` or `unresolved`) at a pose in the
-per-bin centre domain (lemma D, computed here) where the mutant's capture, evaluated again
+per-bin centre domain (lemma D, with lemma C1's quarter turn: the whole square
+`[rho(a_r), L - rho(a_r)]^2`, computed here) where the mutant's capture, evaluated again
 by `check_sqverify_fast.mixed_exact`, an exact evaluator written apart from the crate,
 equals the crate's, is below 1, and is at least 1 divided by 99/100 for the original. The
 pose is the refusal's witness, or at the axis the sweep's least vertex; rows and summary
@@ -52,7 +54,9 @@ docs/project/reviews/review-2026-10-06-sqverify-fast-census-control-fc1.md).
 Every mass scaled so that the exact capture at the least-bound leaf's centre is at most
 one part in a million below the threshold runs at that direction; that capture is
 evaluated again by the same evaluator and must equal the crate's, and the refused mutant
-must capture less than 1 at that centre or at the refusal's witness. The near-threshold
+must be a counterexample candidate whose witness the crate confirmed below the
+threshold, with the crate's exact capture there equal to this tool's, and capture less
+than 1 at that centre or at the witness, in the domain. The near-threshold
 mutant is named for the centre it is scaled at: the verifier may refuse it at another
 centre, and its discrimination near the threshold rests on the crate's own tests (IR-3
 of the review of 5 October). Each receipt is `--out/PACKET/CERTIFICATE.control.json`,
@@ -463,13 +467,20 @@ def direction_row(binary: Path, candidate: Path, n: int, index: int) -> dict[str
 #: `non-finite`, `unresolved` and `fault-injected` are not refusals a control may count.
 CANDIDATE = "counterexample-candidate"
 AXIS_REFUSED = "refused"
+#: How far the axis sweep's certified lower bound on the capture at its least vertex may
+#: sit below the exact capture there: its binary64 rounding over a few thousand terms.
+AXIS_ROUNDING = Fraction(1, 10**9)
 
 
 def domain_bounds(raw: dict[str, Any], index: int) -> tuple[Fraction, Fraction]:
     """Lemma D's per-bin centre domain at node `index` on either axis, `[rho(a_r), L -
     rho(a_r)]`, computed here apart from the crate (CC-2): `a_r = max(0, r D - D/2)` and
     `rho(t) = (cos phi + sin phi)/2 = (1 + 2t - t^2) / (2 (1 + t^2))` at `t = tan(phi/2)`.
-    A capture below 1 refutes a format M claim only at a centre in this domain."""
+    A capture below 1 refutes a format M claim only at a centre in this domain. It is the
+    whole square, not the quadrant `[L/2, L - rho(a_r)]^2` the crate searches: lemma C1's
+    quarter turn gives the capture the same values on it, so a capture below 1 anywhere in
+    it refutes the claim at node r (CR-6 of the re-check). The crate rounds its search box
+    outward, so a witness a few ulps outside the exact domain fails closed here."""
     step = net_step(raw)
     low = max(Fraction(0), index * step - step / 2)
     rho = (1 + 2 * low - low * low) / (2 * (1 + low * low))
@@ -503,6 +514,18 @@ def refusal_record(
         factor * mixed_exact(raw, Fraction(pose[0]), Fraction(pose[1]), index) if pose else None
     )
     crate = witness.get("exact_coverage")
+    if axis:
+        # The vertex sweep evaluates no capture exactly; it certifies a lower bound on the
+        # capture at its least vertex, which the exact capture must meet, within the
+        # sweep's rounding (CR-5 of the re-check).
+        bound = row.get("min_certified_lower_bound")
+        agree = (
+            capture is not None
+            and bound is not None
+            and Fraction(bound) <= capture <= Fraction(bound) + AXIS_ROUNDING
+        )
+    else:
+        agree = capture is not None and crate is not None and Fraction(crate) == capture
     return {
         "r": index,
         "verdict": verdict,
@@ -513,9 +536,8 @@ def refusal_record(
         "in_domain": format_m and in_domain(raw, index, pose),
         "capture": None if capture is None else str(capture),
         "capture_below_1": capture is not None and capture < 1,
-        # The axis sweep evaluates no capture exactly; elsewhere the crate's must agree.
-        "captures_agree": capture is not None
-        and (crate is None if axis else crate is not None and Fraction(crate) == capture),
+        "crate_lower_bound": row.get("min_certified_lower_bound") if axis else None,
+        "captures_agree": agree,
         "original_at_least_1": capture is not None and capture / factor >= 1,
     }
 
@@ -568,7 +590,16 @@ def scaled_sweep(
         "fault_injected_at_box": summary.get("fault_injected_at_box"),
         "premises_agree": all(
             str(stated.get(key)) == str(premises.get(key))
-            for key in ("D", "B", "L", "n", "net_origin", "angle_count", "format")
+            for key in (
+                "D",
+                "B",
+                "L",
+                "n",
+                "net_origin",
+                "angle_count",
+                "format",
+                "centre_domain",
+            )
         ),
         "mutant_input_sha256": stated.get("input_sha256"),
         "verified_directions": [
@@ -638,6 +669,13 @@ def control(
             f"{net_step(raw)}; the control would evaluate another net"
         )
     format_m = premises.get("format") == "M"
+    if not format_m:
+        # The domain checks are lemma D's per-bin domain; format L's is Tokoharu's, which
+        # this control does not compute, and its axis runs by branch and bound (CR-7).
+        raise SystemExit(
+            f"{case.certificate}: --control serves format M rows only; this row is "
+            f"format {premises.get('format')}"
+        )
     exact = mixed_exact(raw, centre[0], centre[1], index)
     # Rounded down, so the capture at the centre is at most 1 - NEAR_THRESHOLD.
     near = Fraction(int((1 - NEAR_THRESHOLD) / exact * 10**15), 10**15)
@@ -687,31 +725,15 @@ def control(
                     "factor": str(near),
                     "capture_at_centre": str(exact * near),
                     "capture_at_witness": None if witness is None else str(witness),
+                    "witness_captures_agree": witness is not None
+                    and (row.get("witness") or {}).get("exact_coverage") is not None
+                    and Fraction((row.get("witness") or {})["exact_coverage"]) == witness,
                     "centre_in_domain": format_m and in_domain(raw, index, least["centre"]),
                     "witness_in_domain": format_m and in_domain(raw, index, pose),
                 },
                 "expect": "refused",
                 **row,
             }
-        )
-
-    def held(run: dict[str, Any]) -> bool:
-        if run["expect"] == "verified":
-            return run["returncode"] == 0 and run["verdict"] == "verified"
-        if "sweep" in run:
-            return sweep_held(run["sweep"])
-        # Refused on coverage (CC-1), and the mutant's claim is false at a centre in the
-        # domain that this tool evaluated exactly: the least-bound leaf's centre, or the
-        # refusal's witness (CC-2).
-        mutation = run["mutation"]
-        at_centre = mutation["centre_in_domain"] and Fraction(mutation["capture_at_centre"]) < 1
-        at_witness = (
-            mutation["witness_in_domain"]
-            and mutation["capture_at_witness"] is not None
-            and Fraction(mutation["capture_at_witness"]) < 1
-        )
-        return (
-            run["returncode"] == 1 and run["verdict"] == CANDIDATE and (at_centre or at_witness)
         )
 
     agree = exact == crate
@@ -729,8 +751,40 @@ def control(
         "exact_capture_independent": str(exact),
         "captures_agree": agree,
         "runs": runs,
-        "status": "CONTROLS_REFUSED" if all(map(held, runs)) and agree else "CONTROL_FAILED",
+        "status": (
+            "CONTROLS_REFUSED"
+            if all(map(control_run_held, runs)) and agree
+            else "CONTROL_FAILED"
+        ),
     }
+
+
+def control_run_held(run: dict[str, Any]) -> bool:
+    """One run of a v2 control receipt: the original verified; the 99/100 sweep held; the
+    near-threshold mutant refused on coverage (a counterexample candidate whose witness
+    the crate confirmed below the threshold, its exact capture there this tool's, CR-3),
+    with its claim false at a centre in the domain that this tool evaluated exactly: the
+    least-bound leaf's centre, or the refusal's witness (CC-1, CC-2)."""
+    if run["expect"] == "verified":
+        return run["returncode"] == 0 and run["verdict"] == "verified"
+    if "sweep" in run:
+        return sweep_held(run["sweep"])
+    mutation = run["mutation"]
+    at_centre = (
+        mutation["centre_in_domain"] is True and Fraction(mutation["capture_at_centre"]) < 1
+    )
+    at_witness = (
+        mutation["witness_in_domain"] is True
+        and mutation["capture_at_witness"] is not None
+        and Fraction(mutation["capture_at_witness"]) < 1
+    )
+    return (
+        run["returncode"] == 1
+        and run["verdict"] == CANDIDATE
+        and run.get("exact_below_threshold") is True
+        and mutation.get("witness_captures_agree") is True
+        and (at_centre or at_witness)
+    )
 
 
 def control_status(case: Case, out: Path) -> str | None:

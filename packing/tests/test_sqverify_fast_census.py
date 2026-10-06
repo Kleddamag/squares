@@ -331,8 +331,8 @@ def test_each_control_refuses_both_mutants_where_the_original_verifies(name: str
         assert scaled["capture_at_witness"] is not None
         assert Fraction(scaled["capture_at_witness"]) < 1
     else:
-        near_run = runs["near-threshold"]["mutation"]
-        assert near_run["centre_in_domain"] is True or near_run["witness_in_domain"] is True
+        # v2: every run as `--control` judged it, from the receipt's own fields.
+        assert all(map(census.control_run_held, receipt["runs"]))
     assert Fraction(runs["scaled-99-100"]["mutation"]["factor"]) == census.CONTROL_SCALE
     near = runs["near-threshold"]["mutation"]
     assert exact * Fraction(near["factor"]) <= 1 - census.NEAR_THRESHOLD
@@ -480,6 +480,7 @@ def test_only_a_coverage_refusal_counts(
         }
     else:
         full["argmin"] = ["5", "5"]
+        full["min_certified_lower_bound"] = 0.99 - 1e-12
     record = census.refusal_record(raw, full, Fraction(99, 100), format_m=True)
     assert record["coverage_refusal"] is coverage
     assert record["capture"] == str(capture)
@@ -545,11 +546,20 @@ def test_a_sweep_reads_the_binarys_rows_and_summary(
         "exact_coverage": "99/100",
     }
     rows = [
-        {"r": 0, "method": "axis-vertex-sweep", "verdict": "refused", "argmin": ["5", "5"]},
+        {
+            "r": 0,
+            "method": "axis-vertex-sweep",
+            "verdict": "refused",
+            "argmin": ["5", "5"],
+            "min_certified_lower_bound": 0.99 - 1e-12,
+        },
         {"r": 1, "verdict": "verified"},
         {"r": 2, "verdict": census.CANDIDATE, "witness": witness},
     ]
-    stated = {key: premises.get(key) for key in ("D", "B", "L", "n", "net_origin", "format")}
+    stated = {
+        key: premises.get(key)
+        for key in ("D", "B", "L", "n", "net_origin", "format", "centre_domain")
+    }
     summary = {
         "kind": "sqverify-fast-summary/v1",
         "status": "REFUSED",
@@ -605,6 +615,97 @@ def test_a_sweep_reads_the_binarys_rows_and_summary(
     )
     assert not short["indices_complete"]
     assert not census.sweep_held(short)
+    # A mutant whose summary states another count of squares: another certificate.
+    other = {**summary, "premises": {**summary["premises"], "n": 1 + int(premises["n"])}}
+    moved = census.scaled_sweep(
+        stub([*rows, other]),
+        raw,
+        tmp_path / "m.json",
+        1,
+        factor=Fraction(99, 100),
+        threads=1,
+        premises=three,
+    )
+    assert not moved["premises_agree"]
+    assert not census.sweep_held(moved)
+    # The axis capture far above the sweep's certified bound: they do not agree (CR-5).
+    loose = [{**rows[0], "min_certified_lower_bound": 0.9}, *rows[1:], summary]
+    apart = census.scaled_sweep(
+        stub(loose),
+        raw,
+        tmp_path / "m.json",
+        1,
+        factor=Fraction(99, 100),
+        threads=1,
+        premises=three,
+    )
+    assert apart["refused"][0]["captures_agree"] is False
+    assert not census.sweep_held(apart)
+
+
+def test_a_refusal_record_on_the_real_evaluator() -> None:
+    """CR-4 of the re-check: refusal_record unpatched, at the receipt's least-bound
+    centre of RECOMPUTED, where the original's exact capture is the receipt's."""
+    receipt = controls()[RECOMPUTED]
+    raw = read_raw(cases()[RECOMPUTED].candidate)
+    index = int(receipt["index"])
+    exact = Fraction(receipt["exact_capture_independent"])
+    capture = census.CONTROL_SCALE * exact
+    row = {
+        "r": index,
+        "verdict": census.CANDIDATE,
+        "witness": {
+            "exact_pose": receipt["centre"],
+            "exact_below_threshold": capture < 1,
+            "exact_coverage": str(capture),
+        },
+    }
+    record = census.refusal_record(raw, row, census.CONTROL_SCALE, format_m=True)
+    assert record["capture"] == str(capture)
+    assert record["captures_agree"] is True
+    assert record["in_domain"] is True
+    assert record["original_at_least_1"] is (exact >= 1)
+    assert record["capture_below_1"] is (capture < 1)
+
+
+def near_run(**overrides: Any) -> dict[str, Any]:
+    """A made-up near-threshold run that holds, with any field overridden."""
+    mutation = {
+        "factor": "9/10",
+        "capture_at_centre": "999999/1000000",
+        "capture_at_witness": "99/100",
+        "witness_captures_agree": True,
+        "centre_in_domain": True,
+        "witness_in_domain": True,
+        **overrides.pop("mutation", {}),
+    }
+    return {
+        "name": "near-threshold",
+        "expect": "refused",
+        "returncode": 1,
+        "verdict": census.CANDIDATE,
+        "exact_below_threshold": True,
+        "mutation": mutation,
+        **overrides,
+    }
+
+
+def test_a_near_threshold_run_holds_only_on_a_confirmed_coverage_refusal() -> None:
+    """CR-3 of the re-check: the near-threshold mutant's refusal is a counterexample
+    candidate the crate confirmed below the threshold, its exact capture at the witness
+    this tool's, and the claim false at a centre in the domain."""
+    assert census.control_run_held(near_run())
+    assert not census.control_run_held(near_run(verdict="audit-failed"))
+    assert not census.control_run_held(near_run(exact_below_threshold=False))
+    assert not census.control_run_held(near_run(returncode=0))
+    assert not census.control_run_held(near_run(mutation={"witness_captures_agree": False}))
+    outside = {"centre_in_domain": False, "witness_in_domain": False}
+    assert not census.control_run_held(near_run(mutation=outside))
+    above = {"capture_at_centre": "1", "capture_at_witness": "1"}
+    assert not census.control_run_held(near_run(mutation=above))
+    # Either place suffices.
+    assert census.control_run_held(near_run(mutation={"centre_in_domain": False}))
+    assert census.control_run_held(near_run(mutation={"capture_at_witness": None}))
 
 
 def test_an_evidence_entry_states_a_sweep_control() -> None:

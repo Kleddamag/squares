@@ -3,9 +3,9 @@ type: is
 id: is-01m46g4zqq75w7rn8e3j3fgrpr
 title: "Import wand125 #366 s(18) >= 47/10 (finer net, 43050ed) and think-4qit s(66) >= 843/100 (d73ce20): sqverify_fast reads a declared net, replay, review"
 kind: task
-status: in_progress
+status: closed
 priority: 1
-version: 5
+version: 6
 delegate: claude-code@vm
 labels:
   - result-import
@@ -16,8 +16,12 @@ child_order_hints:
 hold: null
 hold_until: null
 created_at: 2026-10-05T17:00:29.815Z
-updated_at: 2026-10-05T22:06:43.532Z
+updated_at: 2026-10-06T02:41:31.338Z
 started_at: 2026-10-05T17:06:29.900Z
+closed_at: 2026-10-06T02:41:31.338Z
+close_reason: Done in jlevy/squares#369 (merged 34e87a86b); verdict replies posted 2026-10-06
+resolution: null
+duplicate_of: null
 ---
 
 ## Notes

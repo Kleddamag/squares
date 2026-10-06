@@ -3,9 +3,9 @@ type: is
 id: is-01m478czzp4p015zm4dsxdt89c
 title: "T-097 exit: s(66) >= 843/100 by sqverify-fast at the reviewed source (census rerun 2026-10-06), controls, evidence, rungs"
 kind: task
-status: in_progress
+status: closed
 priority: 1
-version: 3
+version: 4
 delegate: claude-code@vm
 labels:
   - result-import
@@ -14,8 +14,12 @@ parent_id: is-01m46g4yac7ewc22drc7twjhy5
 hold: null
 hold_until: null
 created_at: 2026-10-06T00:04:18.038Z
-updated_at: 2026-10-06T00:27:14.427Z
+updated_at: 2026-10-06T02:41:34.463Z
 started_at: 2026-10-06T00:05:35.114Z
+closed_at: 2026-10-06T02:41:34.462Z
+close_reason: Done in jlevy/squares#369 (merged 34e87a86b); verdict replies posted 2026-10-06
+resolution: null
+duplicate_of: null
 ---
 
 ## Notes

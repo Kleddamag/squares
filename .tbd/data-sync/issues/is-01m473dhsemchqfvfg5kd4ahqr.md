@@ -3,9 +3,9 @@ type: is
 id: is-01m473dhsemchqfvfg5kd4ahqr
 title: "Archive what the egress block left unread: the Kingbird catalogue (capture, diff, import), Zenodo records (#368 v1.0), evand.github.io, and every packet or bibliography entry noting a 403/proxy block"
 kind: task
-status: in_progress
+status: closed
 priority: 1
-version: 5
+version: 6
 delegate: claude-code@vm
 labels:
   - result-import
@@ -17,8 +17,12 @@ child_order_hints:
 hold: null
 hold_until: null
 created_at: 2026-10-05T22:37:13.390Z
-updated_at: 2026-10-05T23:38:43.712Z
+updated_at: 2026-10-06T02:41:33.533Z
 started_at: 2026-10-05T22:38:04.393Z
+closed_at: 2026-10-06T02:41:33.532Z
+close_reason: Done in jlevy/squares#369 (merged 34e87a86b); verdict replies posted 2026-10-06
+resolution: null
+duplicate_of: null
 ---
 
 ## Notes

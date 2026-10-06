@@ -17,7 +17,7 @@ softschema:
   status: enforced
 repository: jlevy/squares
 owner: jlevy
-last_reviewed: '2026-10-05'
+last_reviewed: '2026-10-06'
 issues:
   - number: 375
     title: 'Analytic optima of 48 recent records (s(n) bounds 3e-13 … 5e-11 below the register) and exact certificates for every record n ≤ 104: registration request'
@@ -36,7 +36,7 @@ issues:
       bounds, with nothing asked. Two exact checkers of his accept every certificate; that
       the points are KKT local minima is his numerical evidence. The source states AI
       assistance (Claude).
-    read_through: '2026-10-05T22:35:10Z'
+    read_through: '2026-10-06T02:41:09Z'
     results:
       - key: exact-optima-48
         claim: >-
@@ -109,6 +109,23 @@ issues:
           - result: certificates-273
           - result: kkt-local-minima
           - result: n17-certificate
+        outdated:
+          - >-
+            everything it describes is recorded on an intake branch and not merged to main,
+            with T-098 provisional; #369 merged it, and T-098 holds on main
+      - url: https://github.com/jlevy/squares/issues/375#issuecomment-6008229686
+        date: '2026-10-06'
+        by: jlevy
+        kind: follow-up
+        reported:
+          - result: exact-optima-48
+            id: T-098
+            verification: V3
+            confirmation: C3
+            status: confirmed
+          - result: n105-descent
+        corrects:
+          - https://github.com/jlevy/squares/issues/375#issuecomment-6007913483
     close_when: >-
       T-098 is merged and the reply from main says what was registered, replayed and
       reviewed; the n = 17 certificate is taken up or declined with the n = 17 work.
@@ -128,7 +145,7 @@ issues:
       the analytic part alone gives 0.027 log k. It settles no concrete value: s(k^2 - 4) =
       k only for log k > 120.24. Files at squarepacker/k2-minus-c, archived on Zenodo; the
       source states extensive AI assistance and no peer review.
-    read_through: '2026-10-05T17:22:34Z'
+    read_through: '2026-10-06T02:41:08Z'
     results:
       - key: k2-minus-c
         claim: >-
@@ -159,6 +176,12 @@ issues:
         date: '2026-10-05'
         by: jlevy
         kind: acknowledgement
+        reported:
+          - result: k2-minus-c
+      - url: https://github.com/jlevy/squares/issues/368#issuecomment-6008229499
+        date: '2026-10-06'
+        by: jlevy
+        kind: import
         reported:
           - result: k2-minus-c
     close_when: >-
@@ -214,30 +237,56 @@ issues:
       1/1001 on [0, pi/4], and total mass 1799999/100000 in 136 rectangles of uniform
       density. Checked by the bundled checker on a fresh machine and by a copy of this
       repository's sqverify_fast changed in one place to read the declared net, with
-      controls; the author offers that change as a pull request.
-    read_through: '2026-10-05T17:22:33Z'
+      controls; the author offers that change as a pull request. Two comments of 6 October,
+      both at 65e408c, add s(18) >= 588/125 = 4.704 by mixed_n18_L4704 on a new net (core
+      side 1999/2000, 832 half-angles of step 1/2006) and s(19) >= 48229/10000 = 4.8229 by
+      mixed_n19_L48229 on the 416-angle net, each checked by the bundled checker's records
+      and the author's adapted sqverify_fast.
+    read_through: '2026-10-06T02:41:06Z'
     results:
       - key: n18-470
         claim: >-
           s(18) >= 47/10 = 4.7 (mixed_n18_L470, 43050ed), on a net of 416 half-angles of
           step 1/1001 at core side 999/1000
         source: body
+        register: [T-096]
+      - key: n18-4704
+        claim: >-
+          s(18) >= 588/125 = 4.704 (mixed_n18_L4704, 65e408c): 209 rectangles of total mass
+          1799999/100000 on a net of 832 half-angles of step 1/2006 at core side 1999/2000,
+          above the 47/10 of mixed_n18_L470 (T-096)
+        source: https://github.com/jlevy/squares/issues/366#issuecomment-6006625425
         not_registered: >-
-          Being imported by think-8qo9, lane B of the 5 October evening intake (think-fg6g):
-          the certificate retained at a pinned revision, the claim registered as reported,
-          replayed here and reviewed. Nothing of it is on main yet.
+          Being imported by think-qzh5, lane R2 of the 6 October intake round (think-zcnr):
+          the certificate retained at 65e408c, the claim registered as reported, replayed
+          here and reviewed. Its 832-node net is new, so its check here follows a soundness
+          re-review of sqverify-fast's declared-net code (think-gcld). Nothing of it is on
+          main yet.
         queued: true
-        bead: think-8qo9
+        bead: think-qzh5
+      - key: n19-48229
+        claim: >-
+          s(19) >= 48229/10000 = 4.8229 (mixed_n19_L48229, 65e408c): 313 uniform rectangles
+          of total mass 1899999/100000 on the net of 416 half-angles of step 1/1001 at core
+          side 999/1000, above the source's rect_n19_L48175 = 4.8175
+        source: https://github.com/jlevy/squares/issues/366#issuecomment-6007234651
+        not_registered: >-
+          Being imported by think-qzh5, lane R2 of the 6 October intake round (think-zcnr):
+          the certificate retained at 65e408c, the claim registered as reported, replayed
+          here and reviewed. Nothing of it is on main yet.
+        queued: true
+        bead: think-qzh5
     asks:
       - what: >-
           The offered pull request: sqverify_fast changed in one place to read a
           certificate's declared proof net in place of the fixed 83/40000 x 201 net
-        state: queued
-        bead: think-8qo9
+        state: done
         note: >-
-          Offered, not yet opened. The import bead covers sqverify_fast reading a declared
-          net here; the reply with the verdict answers the offer.
-    beads: [think-8qo9]
+          sqverify-fast reads a declared net on main since #369 (lemma N0 in its
+          SOUNDNESS.md), written here clean-room from the certificate format and the
+          mathematics without reading the author's adapted copy, so the offered change
+          was not needed. The reply of 6 October told the author.
+    beads: [think-8qo9, think-qzh5]
     answer_bead: think-p3mu
     replies:
       - url: https://github.com/jlevy/squares/issues/366#issuecomment-5999536322
@@ -246,9 +295,23 @@ issues:
         kind: acknowledgement
         reported:
           - result: n18-470
+      - url: https://github.com/jlevy/squares/issues/366#issuecomment-6008229149
+        date: '2026-10-06'
+        by: jlevy
+        kind: confirmation
+        reported:
+          - result: n18-470
+            id: T-096
+            verification: V3
+            confirmation: C3
+            status: confirmed
+          - result: n18-4704
+          - result: n19-48229
     close_when: >-
       The s(18) certificate is confirmed or refuted and the reply saying so is posted from
-      main, and the offered sqverify_fast change is taken in or declined.
+      main, and the offered sqverify_fast change is taken in or declined; and the two
+      certificates of 6 October, mixed_n18_L4704 and mixed_n19_L48229, are imported and
+      confirmed or refuted, with the reply saying so posted from main.
 
   - number: 363
     title: "New lower bound for s(12): 7943/2000 = 3.9715 (Daniel's points re-weighted, building on Route B)"
@@ -266,23 +329,23 @@ issues:
       theta = 0. It is about 0.0013 above T-079. The issue also clarifies #309: the
       rejection of 31360/7900 at N = 24000 does not show that value fails, which does not
       affect T-078.
-    read_through: '2026-10-05T17:22:32Z'
+    read_through: '2026-10-06T02:41:04Z'
     results:
       - key: s12-7943-2000
         claim: s(12) >= 7943/2000 = 3.9715, Daniel's points re-weighted (v1.1)
         source: body
-        not_registered: >-
-          Being imported by think-3kd9, lane A of the 5 October evening intake (think-fg6g):
-          the release retained at a pinned revision, the claim registered as reported,
-          replayed here and reviewed. Nothing of it is on main yet.
-        queued: true
-        bead: think-3kd9
+        register: [T-095]
     asks:
       - what: >-
           An independent replay, ideally including the native parent-core interval
           decision, and, if it holds, the n = 12 frontier record updated
-        state: queued
-        bead: think-3kd9
+        state: done
+        note: >-
+          Replayed here on v1.1 at 7a96bec by Daniel's verify and the author's
+          indep_check.cpp, and decided by the native parent-core interval route
+          (PASS_COMPLETE, all 39,765 rows); T-095 registers 7943/2000 at V3/C3, and n =
+          12's verified lower bound moved to it from T-079's 15680000/3949423 on main
+          (#369).
     beads: [think-3kd9]
     answer_bead: think-uvny
     replies:
@@ -292,6 +355,16 @@ issues:
         kind: acknowledgement
         reported:
           - result: s12-7943-2000
+      - url: https://github.com/jlevy/squares/issues/363#issuecomment-6008228865
+        date: '2026-10-06'
+        by: jlevy
+        kind: confirmation
+        reported:
+          - result: s12-7943-2000
+            id: T-095
+            verification: V3
+            confirmation: C3
+            status: confirmed
     close_when: >-
       The s(12) certificate is confirmed or refuted and the reply saying so is posted from
       main.
@@ -901,7 +974,7 @@ issues:
       4 October 07:04 to 19:04 UTC, at n = 53 to 94, twelve of them again at counts already
       posted, and three more on 5 October from 06:06 to 08:11 UTC, at n = 67, 84 and 66, all
       again at counts already posted.
-    read_through: '2026-10-05T17:22:13Z'
+    read_through: '2026-10-06T02:41:07Z'
     results:
       - key: mixed-five
         claim: s(37) >= 161/25, s(65) >= 167/20, s(66) >= 421/50, s(90) >= 48/5 and s(92) >= 969/100
@@ -985,13 +1058,7 @@ issues:
           s(66) >= 843/100 = 8.43 (mixed_n66_L843, d73ce20), above the source's
           mixed_n66_L842 = 421/50 (T-069), which it supersedes
         source: https://github.com/jlevy/squares/issues/282#issuecomment-5990620723
-        not_registered: >-
-          Posted at d73ce20 after the 5 October intake pass pinned a541afb for T-094, so it
-          is outside that packet. Being imported at d73ce20 or a later head by think-8qo9,
-          lane B of the 5 October evening intake (think-fg6g), which takes over think-4qit;
-          nothing of it is on main yet.
-        queued: true
-        bead: think-8qo9
+        register: [T-097]
     beads: [think-ye2x, think-fb6h, think-09ag, think-r7yt, think-wpuu, think-e6ss, think-07s1, think-wrdq, think-0xb8, think-flv5, think-4qit, think-8qo9]
     answer_bead: think-7gop
     replies:
@@ -1073,6 +1140,41 @@ issues:
             confirmation: C0
             status: recorded
           - result: oct5-n66-843
+      - url: https://github.com/jlevy/squares/issues/282#issuecomment-6008229339
+        date: '2026-10-06'
+        by: jlevy
+        kind: confirmation
+        reported:
+          - result: oct5-n67-n84
+            id: T-094
+            verification: V3
+            confirmation: C3
+            status: confirmed
+          - result: oct4-mixed-12
+            id: T-091
+            verification: V3
+            confirmation: C3
+            status: confirmed
+          - result: oct5-n66-843
+            id: T-097
+            verification: V3
+            confirmation: C3
+            status: confirmed
+          - result: oct3-oct4-mixed-14
+            id: T-090
+            verification: V0
+            confirmation: C1
+            status: reviewed
+          - result: oct4-n86-n69
+            id: T-090
+            verification: V0
+            confirmation: C1
+            status: reviewed
+          - result: oct3-mixed-22
+            id: T-082
+            verification: V0
+            confirmation: C1
+            status: reviewed
     close_when: >-
       T-069, T-071 and T-072 are confirmed or refuted, and every later certificate posted
       here is imported and settled. The thread is a rolling request: each release is

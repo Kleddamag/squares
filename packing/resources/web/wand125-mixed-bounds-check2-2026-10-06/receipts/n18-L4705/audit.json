@@ -1,0 +1,20 @@
+{
+  "kind": "wand125-declared-net-audit/v1",
+  "format": "check2",
+  "certificate": "mixed_n18_L4705",
+  "claim": "s(18) >= 941/200",
+  "rectangles": 324,
+  "positive_rectangles": 324,
+  "mass": "1799999/100000",
+  "core": "4999/5000",
+  "net": {"step":"1/5002","count":"2073","endpoint":"1036/2501","endpoint_check":"367/6255001","rotated_side_upper":"25009997/25010000","side_margin":"3/25010000","per_edge_margin":"3/50020000","tangent_form":"500400014977/500400075000"},
+  "premises": {"a_positive_step_and_count":true,"b_core_fits":true,"c_reaches_past_pi_over_4":true,"d_last_tangent_at_most_half":true,"e_tangent_form":true,"f_last_bin_holds_an_orientation":true},
+  "candidate_digest": "83bf6771510e76ced1dbb4a04dbfa7c378739a23b444e3d637232011627eeb15",
+  "listed_files": 15,
+  "listed_files_in_directory": 14,
+  "source_check": {"status":"VERIFIED","directions":2073,"nodes":352045748,"direction_cpu_seconds":"2877.8086121320025","threads":6,"source_sha256":"ab6e33e164dbc5c32b40349ba55981b58e630b5eef59534196a69d259404fd7c","verifier":"sqverify-fast (jlevy/squares packing/sqverify_fast, branch wand125/sqverify-proof-net, commit fe12e036c, with proof_net support; published as fine_net_verifier/ in wand125/square-packing-tools, commit 5fba675)","control":"every mass times factor, 32 directions spread over the net","control_status":"REFUSED"},
+  "run_input": {"sha256":"9eac284b32b9a387ed9c4c6aebf9ba7727d7ce5bce919cc627bc01e3af1e6ddc","published_candidate":true},
+  "prepublication_check": {"status":"VERIFIED","input_is_published_candidate":true,"directions":2073,"seconds":985,"target":"x86_64-unknown-linux-gnu","control_refused_directions":29},
+  "status": "EXACT_PREMISES_HOLD",
+  "scope": "Exact premises only, from the retained files: the measure, lemma N0's premises on the declared net and its last bin, the net block bundle.json states, one candidate digest, the source's receipt of its own run at every node and the input that run read (run_input), its control, its pre-publication run on the published bytes, and every listed file's digest. No coverage is decided here."
+}

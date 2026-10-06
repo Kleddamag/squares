@@ -138,6 +138,22 @@ issues:
           - result: n105-descent
         corrects:
           - https://github.com/jlevy/squares/issues/375#issuecomment-6007913483
+      - url: https://github.com/jlevy/squares/issues/375#issuecomment-6023190825
+        date: '2026-10-06'
+        by: jlevy
+        kind: confirmation
+        reported:
+          - result: ceilings-77
+            id: T-101
+            verification: V3
+            confirmation: C3
+            status: confirmed
+          - result: ceilings-77
+            id: E-evand-exact-ceilings-2026-10-05-report
+          - result: ceilings-77
+            id: E-evand-exact-ceilings-2026-10-05-exact-replay
+          - result: ceilings-77
+            id: E-evand-exact-ceilings-2026-10-05-source-replay
     close_when: >-
       T-098 is merged and the reply from main says what was registered, replayed and
       reviewed; the n = 17 certificate is taken up or declined with the n = 17 work.

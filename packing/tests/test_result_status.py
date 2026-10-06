@@ -237,8 +237,8 @@ def test_superseded_is_marked_on_a_bound_and_where_a_later_result_is_declared() 
     # way as T-094, superseded T-072 at n = 76, its one count.
     assert len(derived) == 40
     assert {
-        "T-020", "T-021", "T-030", "T-043", "T-044", "T-047", "T-049", "T-072", "T-078", "T-079",
-        "T-087",
+        "T-020", "T-021", "T-030", "T-043", "T-044", "T-047", "T-049", "T-072", "T-078",
+        "T-079", "T-087",
     } <= set(derived)  # fmt: skip
     assert {str(records.results[entry]["kind"]) for entry in derived} == {"lower-bound"}
     # A result of another kind is marked only where its entry declares the whole of it

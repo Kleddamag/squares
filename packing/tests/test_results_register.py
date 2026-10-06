@@ -67,11 +67,27 @@ def test_a_dated_records_own_title_is_not_held_to_the_register(tmp_path: Path) -
     assert re.findall(r"\bT-\d{3}\b", remaining) == ["T-118"]
 
 
+def test_the_uniqueness_reviews_title_keeps_its_provisional_id() -> None:
+    """T-112 was registered as the provisional T-102 and renumbered when it merged with
+    main, whose T-102 is wand125's bound at n = 18. Its adversarial review, stored as its
+    reviewer wrote it, names T-102 in its title, and the synopsis quotes that title; the
+    register's note on T-112 says which result the review's "T-102" is (think-d1bd)."""
+    review = "docs/project/reviews/review-2026-10-06-n11-uniqueness-adversarial.md"
+    title = (check_results.REPO / review).read_text(encoding="utf-8").splitlines()[0]
+    assert title.endswith("(T-102)")
+    record, _, _ = _live_record("T-112")
+    notes = " ".join(record["notes"].split())
+    assert 'its "T-102" is this entry' in notes
+    assert any(item["path"] == review for item in record["reviews"])
+
+
 def test_the_check2_reviews_title_keeps_the_provisional_range() -> None:
     """T-102 to T-111 were registered as the provisional T-108 to T-117, and the review of
     the ten, stored as its reviewer wrote it, names that range in its title. The synopsis
     quotes the title, and the quoted link is left out of the mention check, so the
-    provisional T-112 to T-117, ids the register does not hold, are not refused there."""
+    provisional T-113 to T-117, ids the register does not hold, are not refused there;
+    T-112, which the register now holds, is the uniqueness of the eleven-square optimum
+    and not the review's provisional id for T-106."""
     document_map = safe_load(check_results.DOCUMENT_MAP.read_text(encoding="utf-8"))
     links = check_results.record_links(document_map)
     review = "docs/project/reviews/review-2026-10-06-wand125-check2-ten-certificates.md"
@@ -885,6 +901,8 @@ def test_not_a_bound_is_not_a_kind(
         ("T-056", "lower-bound", "and no cited evidence claims `lower-bound` or `exact-value`"),
         ("T-014", "upper-bound", "and no cited evidence claims `upper-bound` or `exact-value`"),
         ("T-036", "optimality", "an optimality result states an exact value, s(n) = v"),
+        ("T-112", "optimality", "an optimality result states an exact value, s(n) = v"),
+        ("T-004", "uniqueness", "a uniqueness is no bound on s(n), but its headline states"),
         ("T-003", "case-exclusion", "and no cited evidence claims `derived-structure`"),
         # A simplification names the result it proves again, on a case they share.
         ("T-001", "simplification", "a simplification's claim names the registered result"),

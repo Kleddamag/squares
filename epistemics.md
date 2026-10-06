@@ -278,10 +278,12 @@ Two marks sit beside a status and are no part of it.
   The whole is marked *superseded*; a part is marked *superseded in part* and the result
   stays current, since it still holds the rest.
   `T-060`’s $s(11) = T$ implies `T-036`’s bound for its family and not its equality
-  case, since `T-060` makes no claim of uniqueness, so `T-036` is superseded in part.
-  [`devtools/check_results.py`](packing/devtools/check_results.py) holds each named
-  result to one dated no earlier, on a case the two share, and refuses the field on a
-  bound, whose supersession is derived.
+  case, since `T-060` makes no claim of uniqueness, so `T-036` is superseded in part;
+  `T-112`, the uniqueness corollary of `T-060`, implies the equality case and is a
+  second part. No mark says that two parts together make the whole, so `T-036` stays
+  current. [`devtools/check_results.py`](packing/devtools/check_results.py) holds each
+  named result to one dated no earlier, on a case the two share, and refuses the field
+  on a bound, whose supersession is derived.
 - **Activity** says who has the next move, where the record shows it.
   A register entry may carry `activity`, with a `state` of `in-analysis` (a replay, a
   review or an audit of the result is under way here) or `waiting` (a question, a

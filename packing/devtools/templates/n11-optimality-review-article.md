@@ -1288,7 +1288,8 @@ beside the accepted ones rather than in their place.
     [prior-family theorem](https://github.com/wand125/n11-optimality-lean/blob/112f91a0a0a30539472718b88e06e71f64d61694/lean/Sqpack/S11Opt/Split/U2Prior.lean)
     on the `split` branch of wand125/n11-optimality-lean, as committed on October 1,
     2026, which states the exclusion of all 76 cases with no baseline hypothesis.
-    The Squares Project has neither reviewed nor replayed either formalization.
+    The Squares Project has audited the statement of the 11SquaresFormalized theorem and
+    built its statement closure and upper half, and has replayed neither proof in full.
 
 [^prior-unique]: [Trump 2023](https://www.researchgate.net/publication/368988287), p. 2:
     “The geometrical object is absolutely rigid, no unit square can be rotated or

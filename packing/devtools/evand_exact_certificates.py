@@ -359,6 +359,15 @@ def sha256(path: Path) -> str:
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
+def is_decided(path: Path, n: int) -> bool:
+    """Whether the certificate at ``path`` is, byte for byte, the one the first-party
+    receipt decided at ``n``: the download boundary, a source's file against the digest
+    this packet pinned and decided."""
+    rows = json.loads(read_retained_text(FIRST_PARTY_RECEIPT))["rows"]
+    decided = {int(row["n"]): str(row["sha256"]) for row in rows}
+    return n in decided and sha256(path) == decided[n]
+
+
 def certificate_path(directory: Path, n: int) -> Path:
     return directory / f"n-{n}.cert"
 

@@ -241,10 +241,7 @@ def survey(directory: Path = certificates.CERTS) -> dict[str, Any]:
                 certificates.certificate_path(directory, n).read_text(encoding="utf-8"),
                 expected_n=n,
             )
-            if (
-                certificates.sha256(certificates.certificate_path(directory, n))
-                != first[n]["sha256"]
-            ):
+            if not certificates.is_decided(certificates.certificate_path(directory, n), n):
                 raise ValueError(f"n={n}: the certificate read is not the one decided")
             pose = certificates.pose_match(certificate, free.get(n))
             rows.append(
@@ -703,8 +700,8 @@ def survey_problems() -> list[str]:
             row["certified_side"] != first[n]["side"]
         ):
             problems.append(f"survey n={n}: the side is not the certificate's")
-        if certificates.sha256(path) != row["sha256"] or row["sha256"] != first[n]["sha256"]:
-            problems.append(f"survey n={n}: the digest is not the decided certificate's")
+        if not certificates.is_decided(path, n):
+            problems.append(f"survey n={n}: the retained certificate is not the one decided")
         if verified_value(row["printed_side"], side) != row["verified_value"]:
             problems.append(f"survey n={n}: the verified value is not the rule's")
     for n in sorted(first):

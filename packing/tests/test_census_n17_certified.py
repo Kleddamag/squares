@@ -631,8 +631,8 @@ def test_the_committed_ledger_counts_its_four_admitted_entries_without_the_dumps
         assert record["certified"] == retained["certified"]
     # Session 182 staged the seeds and nodes of its admitted certificates (exp-251,
     # exp-252): 92 files and 112,285,110 bytes before them.
-    assert record["data"]["files"] == 162
-    assert record["data"]["bytes"] == 1_172_050_536
+    assert record["data"]["files"] == 164
+    assert record["data"]["bytes"] == 1_222_495_255
 
 
 def exp250_ledger(tmp_path: Path) -> Path:

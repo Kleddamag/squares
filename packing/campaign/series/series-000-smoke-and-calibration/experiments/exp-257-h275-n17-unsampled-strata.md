@@ -157,6 +157,17 @@ experiment:
       passes it in full mode in 574 s, checking all 5,113 live rows in full and 16,161 collision regions by
       89,940,404 exact facet checks. It excludes its own 8 states, one orbit; the certified census after it is
       36,924 states in 4,703 orbits.
+  - shape: determination
+    role: outcome
+    question: Is draw 11 (mask 3079158, stratum c<=2/i4/d4) infeasible at U, by a certificate the kernel's checker
+      accepts and the standing verifier re-proves in full?
+    outcome: criterion_met
+    checked_by: The run (receipts/U/kernel-u11-bc428.json) returns PASS_CERTIFIED_CLOSED in 1,246 s of wall and 1,199 s
+      of process CPU (producer 643 s, checker 601 s) on 68 steps and 4,480 rows in 4 rounds, rows finest at
+      1/128, closure all_parent_poses_forbidden for interior-E at step 67. The standing verifier at cebb5d15a
+      passes it in full mode in 562 s, checking all 4,468 live rows in full and 14,254 collision regions by
+      78,128,736 exact facet checks. It excludes its own 8 states, one orbit; the certified census after it is
+      36,916 states in 4,702 orbits.
   verdict:
     decision: in-progress
     primary_criterion: The fraction of the frozen states the kernel excludes under SW9's recipe within the 7,000 s
@@ -202,6 +213,7 @@ reported as not run.
 | 8 | c3/i4/d2 (d2) | 3078077 | closed, 3 rounds, admitted | 572 s | full pass, 277 s |
 | 10 | c3/i>=5/d>=8 | 5996459 | closed, 2 rounds, admitted | 581 s | full pass, 322 s |
 | 9 | c<=2/i4/d>=8 | 5931001 | closed, 5 rounds, admitted | 1,264 s | full pass, 574 s |
+| 11 | c<=2/i4/d4 | 3079158 | closed, 4 rounds, admitted | 1,199 s | full pass, 562 s |
 
 <!-- This document follows common-doc-guidelines.md.
 See github.com/jlevy/practical-prose and review guidelines before editing.

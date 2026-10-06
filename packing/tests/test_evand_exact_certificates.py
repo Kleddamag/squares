@@ -202,6 +202,39 @@ def test_a_conjecture_above_the_certified_ceiling_is_refused() -> None:
     assert _conjecture_findings("11.77473513240654") == [expected]
 
 
-@pytest.mark.parametrize("conjecture", ["11.77473513238783", "11.7747351323878", "integer"])
+@pytest.mark.parametrize(
+    "conjecture",
+    [
+        "11.77473513238783",
+        "11.7747351323878",
+        # 1.6e-16 above the ceiling, inside half a unit of its last place, 5e-16.
+        "11.774735132387833",
+        "integer",
+    ],
+)
 def test_a_conjecture_at_the_ceiling_to_its_last_place_is_kept(conjecture: str) -> None:
     assert _conjecture_findings(conjecture) == []
+
+
+def test_a_conjecture_past_half_a_unit_of_its_last_place_is_refused() -> None:
+    # 7.2e-15 above the ceiling, outside half a unit of its last place, 5e-15.
+    assert len(_conjecture_findings("11.77473513238784")) == 1
+
+
+def test_the_kkt_sentence_restates_each_count_s_second_order_report() -> None:
+    reports = apply_exact_optima.reports()
+    assert sorted(reports) == sorted(certificates.IMPROVING)
+    kkt = [n for n, (status, _) in reports.items() if status == apply_exact_optima.KKT_STATUS]
+    assert len(kkt) == 44
+    for n in kkt:
+        assert apply_exact_optima.report_sentence(n, *reports[n]).startswith(
+            "The source reports the exact point as a KKT local minimum"
+        )
+
+
+def test_a_kkt_count_on_another_second_order_report_is_refused() -> None:
+    status = apply_exact_optima.KKT_STATUS
+    with pytest.raises(ValueError, match="not positive definite"):
+        apply_exact_optima.report_sentence(211, status, "PSD with 42 zero modes")
+    bound_only = apply_exact_optima.report_sentence(211, "bound only", "PSD with 42 zero modes")
+    assert bound_only == apply_exact_optima.BOUND_ONLY

@@ -416,8 +416,9 @@ def _conjecture_errors(n: int, conjecture: object, upper: object) -> list[str]:
     ceiling, and no more: a record whose certified ceiling lies below the side it
     conjectures optimal contradicts itself. On 2026-10-05 n = 126 kept the catalogue's
     conjectured `11.77473513240654` after an exact certificate put its ceiling 1.9e-11
-    below it (T-098, review finding EX-1). A conjecture that is not a decimal, such as
-    `integer`, is not compared.
+    below it (T-098, review finding EX-1). The check is one-sided: it compares the
+    conjecture with the verified ceiling only, not with the verified floor, and a
+    conjecture or a ceiling that is not a decimal, such as `integer`, is not compared.
     """
     if not isinstance(conjecture, str) or not isinstance(upper, Mapping):
         return []

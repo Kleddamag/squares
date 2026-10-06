@@ -115,6 +115,13 @@ BOUND_ONLY = (
     "The source reports the exact point as a certified bound only: its numerical checks "
     "do not show it to be a local minimum of the side."
 )
+#: The second-order report `KKT` restates, as the source's per-count `second` field
+#: writes it at each of the 44 counts it reports as KKT local minima.
+PD_MODULO_FLAT = re.compile(
+    r"local minimum of S, strict modulo \d+ exact flat motions "
+    r"\(PD on the rest of null\(J_A\)\)"
+)
+KKT_STATUS = "KKT local min"
 AI_SENTENCE = (
     "On jlevy/squares#375 its author wrote that the solver, its checkers and the batch "
     "“were written with Claude (Anthropic) as a coding and research agent, directed and "
@@ -155,10 +162,32 @@ def comparison() -> dict[int, Mapping[str, Any]]:
 
 
 @cache
-def statuses() -> dict[int, str]:
-    """The source's own report of each count's exact point, from its retained results."""
+def reports() -> dict[int, tuple[str, str]]:
+    """The source's own report of each improving count's exact point, from its retained
+    results: its `status` and its second-order `second`. Rows at other counts are
+    skipped by their `n` alone."""
     rows = json.loads(read_retained_text(certificates.RESULTS_JSON))
-    return {int(row["n"]): str(row["status"]) for row in rows if "status" in row}
+    improving = set(certificates.IMPROVING)
+    return {
+        int(row["n"]): (str(row.get("status", "")), str(row.get("second", "")))
+        for row in rows
+        if int(row["n"]) in improving
+    }
+
+
+def report_sentence(n: int, status: str, second: str) -> str:
+    """What the record says of the source's report at `n`. The KKT sentence says the
+    reduced Hessian is positive definite once the exact flat motions are set aside, so
+    a count the source calls a KKT local minimum on any other second-order report is
+    refused rather than described (fix check of T-098's review, FX-3)."""
+    if status != KKT_STATUS:
+        return BOUND_ONLY
+    if not PD_MODULO_FLAT.match(second):
+        raise ValueError(
+            f"n={n}: reported as a KKT local minimum, but its second-order report is not "
+            f"positive definite modulo exact flat motions: {second!r}"
+        )
+    return KKT.format(n=n)
 
 
 # --------------------------------------------------------------------------------------
@@ -353,8 +382,8 @@ def section(n: int, finder: str) -> str:
         f"{AUTHOR}’s [`square-packing`]({PACKET_LINK}) published on 5 October 2026 an exact "
         f"rational certificate of this packing at its exact optimum ({RESULT}): the same {n} "
         f"squares in a square of side `{shown}`, `{below}` below {printed}.{trailing} "
-        f"{motion} The known-best witness this record lists is that binary64 pose, at the "
-        "side its finder prints; the witness of the side above is the certificate itself. "
+        f"{motion} The known-best witness this record lists is that binary64 pose, posed at "
+        "its finder’s larger side; the side above is witnessed by the certificate itself. "
         f"{AUTHOR}’s solver moves the binary64 pose to a nearby exact KKT point of the "
         "problem of minimizing the side under non-overlap, computed at 80 digits, and "
         "rounds it outward to rationals, each square a rational centre and a rational "
@@ -367,7 +396,7 @@ def section(n: int, finder: str) -> str:
         "and the source’s own two checkers, run here as retained, accept it as well "
         f"([receipts]({PACKET_LINK}#replayed-here)). That proves `s({n}) ≤ {shown}`, the "
         "verified upper bound; it says nothing about optimality. "
-        + (KKT.format(n=n) if statuses().get(n) == "KKT local min" else BOUND_ONLY)
+        + report_sentence(n, *reports()[n])
         + f" {AI_SENTENCE}"
     )
     return f"{SECTION}\n\n{first}\n\n{second}\n\n"

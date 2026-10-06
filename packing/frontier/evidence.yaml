@@ -15482,6 +15482,25 @@ evidence:
       for nothing to be registered from them. This is the public-claim entry; the replays
       here are E-evand-exact-optima-2026-10-05-exact-replay and
       E-evand-exact-optima-2026-10-05-source-replay.
+    external_review:
+      state: informally-verified
+      date: '2026-10-06'
+      reviewed_by: >-
+        Claude Opus 5.5 (claude-opus-5-5), the tbd-strong sub-agent at that tier's
+        configured reasoning setting, prompted separately from the lane that retained the
+        packet, replayed the certificates and registered T-098
+        (docs/project/reviews/review-2026-10-06-evand-exact-optima.md)
+      note: >-
+        Read both of the source's checkers and both of this repository's deciders as they
+        ran: each is a correct exact decision of n closed unit squares, pairwise
+        interior-disjoint, in [0, S']^2, skipping only pairs it may soundly skip, and their
+        common mode, the parse and the map from t to (c, s), cannot inflate the claim. The
+        packet's 53 retained files match the manifest and every receipt verdict is VALID.
+        No defect in the source's certificates or claim; the review's one blocking finding
+        was in this repository's n = 126 record, fixed in 65bb9851b and checked by the fix
+        check of the same day. Unchecked: the review executed no code and decided no
+        certificate itself; it did not read issue #375 or the source beyond the packet; the
+        KKT reports are outside the claim.
     source_reviewed: '2026-10-05'
 
   - id: E-evand-exact-optima-2026-10-05-exact-replay

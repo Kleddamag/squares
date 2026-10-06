@@ -86,7 +86,7 @@ packet’s printed side and verified value (T-056, T-057 or T-092), or at `n = 1
 Kingbird catalogue’s side and the grid ceiling `12`. Every `S'` lies below both, by
 `3.5e-13` (`n = 211`) to `5.0e-11` (`n = 270`) under the printed side. Matched square for
 square to the known-best witness by nearest centre, one to one at every count, the
-largest centre displacement is at most `1.442e-3`. Of the 1,543 squares that move by more than
+largest centre displacement is at most `1.441e-3`, rounded up. Of the 1,543 squares that move by more than
 `1e-8`, 358 are ones the source lists as carrying no force, which its solver moves to give
 them clearance; the other 1,185, at 24 counts that include all eleven squeezed inputs,
 move by at most `4.2e-5` (at `n = 263`, where the source reports 40 zero modes). Every
@@ -110,7 +110,13 @@ workers.
 retained on the overlapped `n = 68` control, it prints `verify_cert2 FAIL` and exits 1, and
 never `verify_cert FAIL`, although `verify_cert.py` printed `INVALID` and exited 1. The
 batch’s `summarize.py`, which wrote the ✓✓ column of `results.md` and is pinned here by
-digest (read from the checkout at the pin), has the same test: `'VALID' in` the last line.
+digest only (4,926 bytes, sha256 `79c8ab9c…`, read from the checkout at the pin), has the
+same test. Its line 32 reads, verbatim:
+
+```python
+    return ('VALID' in a.stdout.splitlines()[-1] if a.stdout else False, b.returncode == 0)
+```
+
 So the source’s claim that both checkers accept every certificate rests, for
 `verify_cert.py`, on a test an `INVALID` verdict passes; run here and held to its exit
 status, `verify_cert.py` does accept all 320.
@@ -219,19 +225,33 @@ found the bound $s(n) \le S'_n$ at the 48 counts sound as reasoned and as the re
 record it, and ended `defect-open` on one blocking finding: n = 126 kept the
 catalogue’s conjectured optimum `11.77473513240654`, `1.9e-11` above the ceiling the
 certificate now verifies (EX-1). The layer now clears that conjecture, and
-`sqpack.assurance` refuses any decimal conjecture above its record’s verified ceiling.
-Its ten other findings were wording, rounding and receipt fields, and each is fixed in
-the same pass: the motion maxima round up (EX-2), the frontier README counts 47 of the
-register’s packings and de Winter’s n = 126 (EX-3), the reproduction receipt carries its totals and tangent
-differences (EX-4), the Ellsworth statement is credited to the solver’s README and the
-issue rather than the batch README (EX-5), the overlap controls record that each mutant
-stays inside the box, so each refusal is the overlap’s (EX-6), `summarize.py` is named with
-`verify_all.sh` (EX-7), the n = 17 rows of the retained summaries are noted (EX-8), the
-records say which pose is the known-best witness (EX-9), and the nits are fixed
-(EX-10). For EX-11 the review proposed “non-negative”; the 44 per-count KKT reports each
-state the reduced Hessian positive definite once the exact flat motions are set aside,
-so the records now say that and cite the report. The reviewer could not execute code
-and decided no certificate itself.
+`sqpack.assurance` refuses a decimal conjecture that exceeds its record’s verified
+ceiling by more than half a unit in its last place; the check is one-sided and does not
+compare the conjecture with the verified floor. The ten other findings were wording,
+rounding and receipt fields, none blocking.
+
+A second separately prompted reviewer checked those fixes the same day
+([fix check](../../../../docs/project/reviews/review-2026-10-06-evand-exact-optima-fix-check.md))
+and ended `defects-resolved`: EX-1 to EX-3, EX-5 to EX-8 and EX-10 resolved, EX-4, EX-9
+and EX-11 partly, with seven new findings, none blocking. Since then:
+
+- **EX-4.** The T-098 notes give the reproduction’s tangent differences (FX-1).
+- **EX-11.** The layer reads each count’s second-order report beside its status and
+  refuses a KKT count whose report is not positive definite modulo exact flat motions;
+  all 44 read “strict modulo k exact flat motions (PD on the rest of null(J_A))”, and a
+  test holds them (FX-3).
+- **The guard.** Its tests now cover both sides of the half-unit band (FX-4).
+- **This section and the receipts.** The largest centre displacement is the receipt’s
+  `1.441e-3` (FX-2); `summarize.py`’s test line is quoted above with its digest (FX-7);
+  this section names what remains (FX-5), and T-098 records both reviews (FX-6).
+- **EX-9 stays partly resolved.** Each record’s body says its known-best witness is the
+  finder’s binary64 pose at the finder’s larger side and that the certificate witnesses
+  $S'$, but the front matter still lists that witness under the reported value $S'$,
+  where the atlas writes it for every count; think-5n3o holds the choice.
+
+Neither reviewer could execute code, so no certificate has yet been decided by code
+that shares nothing with the tools under review; a second adversarial review that runs
+its own decider is what `next_rung` asks for.
 
 ## Not Done Here
 

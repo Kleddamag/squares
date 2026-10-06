@@ -86,7 +86,7 @@ issues:
           replayed or recorded here.
         queued: true
         bead: think-x4v4
-    beads: [think-t6ok, think-70bh, think-x4v4]
+    beads: [think-t6ok, think-70bh, think-x4v4, think-5n3o]
     answer_bead: think-ybmt
     replies:
       - url: https://github.com/jlevy/squares/issues/375#issuecomment-6004562871

@@ -8670,7 +8670,7 @@ results:
         its report. The reusable part, an exact solver with certificates, is the source's
         method and not a result here.
       scored: '2026-10-05'
-      by: think-t6ok registering lane (repository; draft)
+      by: docs/project/reviews/review-2026-10-06-evand-exact-optima.md (repository; confirms the registering lane's draft)
     novelty: previously-published
     attribution:
       source_keys: ['[evand exact optima 2026-10-05]']
@@ -8679,6 +8679,34 @@ results:
       - E-evand-exact-optima-2026-10-05-report
       - E-evand-exact-optima-2026-10-05-exact-replay
       - E-evand-exact-optima-2026-10-05-source-replay
+    reviews:
+      - path: docs/project/reviews/review-2026-10-06-evand-exact-optima.md
+        kind: adversarial
+        reviewer: Claude Opus 5.5 (claude-opus-5-5), the tbd-strong sub-agent at that tier's configured reasoning setting, prompted separately from the lane that retained the packet, replayed the certificates and registered T-098, sharing none of its context beyond the brief and the committed record
+        reviewer_kind: ai
+        relation: project
+        date: '2026-10-06'
+        scope: >-
+          T-098's claim and rendering, its three evidence entries, the three verifiers, the
+          bibliography key, result request #375 and the evand intake-watch read, the coverage
+          entry with its 48 overrides and superseded reports, and the case records, read
+          whole at n = 126, 206 and 305, at 4421c513f against the lane's diff from
+          4fa04caf2. Read-only: every attempt to execute code was refused, so it decided no
+          certificate itself and re-ran nothing.
+        verdict: defect-open
+        covers: [T-098]
+      - path: docs/project/reviews/review-2026-10-06-evand-exact-optima-fix-check.md
+        kind: confirming
+        reviewer: Claude Opus 5.5 (claude-opus-5-5), the tbd-strong sub-agent at that tier's configured reasoning setting (xhigh in its agent definition), prompted separately from the lane that registered and fixed T-098 and from the reviewer who wrote the review
+        reviewer_kind: ai
+        relation: project
+        date: '2026-10-06'
+        scope: >-
+          Findings EX-1 to EX-11 of the review of 2026-10-06 against the fixes in 65bb9851b
+          and the derived re-run in aa9fb46dc, with the records, receipts and guard they
+          touch, by reading at aa9fb46dc; it executed nothing and decided no certificate.
+        verdict: defects-resolved
+        covers: [T-098]
     artifacts:
       - packing/resources/web/evand-square-packing-2026-10-05/README.md
       - packing/resources/web/evand-square-packing-2026-10-05/acquisition/sources.json
@@ -8689,6 +8717,8 @@ results:
       - packing/devtools/evand_exact_certificates.py
       - packing/devtools/apply_exact_optima.py
       - packing/devtools/check_rational_witness_independent.py
+      - docs/project/reviews/review-2026-10-06-evand-exact-optima.md
+      - docs/project/reviews/review-2026-10-06-evand-exact-optima-fix-check.md
     controls:
       - packing/resources/web/evand-square-packing-2026-10-05/receipts/negative-controls.json
       - packing/tests/test_evand_exact_certificates.py
@@ -8703,9 +8733,10 @@ results:
       the claim.
     next_rung: >-
       V4 and C4 need a second adversarial AI review of the complete claim by a reviewer
-      distinct from the one of 2026-10-05, and a human oversight record. A method-distinct
-      second route, such as an interval decision of each certificate's pose, would be
-      shown beside the rung. Verifying that each exact point is a local minimum needs an
+      distinct from the one of 2026-10-06, and a human oversight record. That review could
+      run no code and decided no certificate itself; the second should, with a decider of
+      its own. A method-distinct second route, such as an interval decision of each
+      certificate's pose, would be shown beside the rung. Verifying that each exact point is a local minimum needs an
       interval enclosure of the KKT root, which the source names as its next step; it
       bears on the packings, not on s(n).
     notes: >-
@@ -8717,9 +8748,13 @@ results:
       each above the printed side, move no case and are replayed with the rest; its n = 17
       certificate is held by the owner for the n = 17 work (think-x4v4) and was neither
       retained nor replayed. The source's solver, run here on five of the pinned inputs (n =
-      68, 102, 126, 211, 270), regenerated each certificate with the same S' and squares
-      within 2.5e-24 of the retained ones, though not byte for byte as the source's
+      68, 102, 126, 211, 270), regenerated each certificate with the same S', centres
+      within 2.5e-24 and tangents within 3.3e-24 of the retained ones, though not byte for byte as the source's
       reproduce.sh expects; each regenerated certificate decides valid here
       (receipts/reproduction-sample.json in the packet). Both checkers here and the
       source's two ran over all 320 certificates the packet pins; the controls and the
-      comparison with the register over the 48.
+      comparison with the register over the 48. The review of 2026-10-06 ended
+      defect-open on n = 126's conjecture, fixed in 65bb9851b; its fix check ended
+      defects-resolved, and its seven non-blocking findings were handled after it, except
+      that each record's reported lane still lists the finder's pose under S' (EX-9,
+      think-5n3o).

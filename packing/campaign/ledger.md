@@ -187,6 +187,7 @@ Each entry summarizes one user-level research window. Cycle slots are wall-clock
 | [session-170](agent-sessions/session-170-residual-compatibility.md) | stopped | retrospective | `review-planning-oversight` (insight) | `review-planning-oversight` (correctness) | 4 | think-67ek | Await Joshua's review of the rebuilt layer (PR 355) under think-q0z7. No active research executor or reserved follow-up; original intervals are historical. |
 | [session-171](agent-sessions/session-171-raw-row-support.md) | stopped | contemporaneous | `pipeline-improvement` (efficiency) | `review-planning-oversight` (correctness) | 6 | think-op6s | Await Joshua's review of the rebuilt layer (PR 355) under think-q0z7. No active research executor or reserved follow-up; original intervals are historical. |
 | [session-172](agent-sessions/session-172-capacity-support.md) | stopped | contemporaneous | `pipeline-improvement` (efficiency) | `review-planning-oversight` (correctness) | 3 | think-2uhz | Await Joshua's review of the rebuilt layer (PR 355) under think-q0z7. No active research executor or reserved follow-up; original intervals are historical. |
+| [session-173](agent-sessions/session-173-windows-supervision.md) | stopped | contemporaneous | `pipeline-improvement` (efficiency) | `review-planning-oversight` (correctness) | 2 | think-v00i | Observe final metadata current-head CI and close/sync think-v00i. A separately frozen local portable input handoff may follow only after F delivery; no research target or default integration. |
 | [session-174](agent-sessions/session-174-core-refinement.md) | stopped | contemporaneous | `research-loop` (correctness) | `review-planning-oversight` (correctness) | 2 | think-0xxc | Await Joshua and current-layer required CI under think-q0z7. No active research executor or reserved follow-up; original intervals are historical. |
 | [session-175](agent-sessions/session-175-enhanced-support.md) | stopped | contemporaneous | `research-loop` (correctness) | `research-loop` (correctness) | 2 | think-wh57 | Await Joshua and current-layer required CI under think-q0z7. No active research executor or reserved follow-up; original intervals are historical. |
 | [session-176](agent-sessions/session-176-owner-priority.md) | stopped | contemporaneous | `research-loop` (correctness) | `research-loop` (correctness) | 2 | think-mkgr | Await Joshua and current-layer required CI under think-q0z7. No active research executor or reserved follow-up; original intervals are historical. |
@@ -208,10 +209,10 @@ Declared counts are contemporaneous contracts; retrospective counts are reconstr
 | `process-review` | 16 | 4 | 64 | 6 |
 | `efficiency-loop` | 11 | 1 | 41 | 1 |
 | `research-loop` | 37 | 4 | 132 | 9 |
-| `pipeline-improvement` | 41 | 2 | 213 | 7 |
+| `pipeline-improvement` | 42 | 2 | 214 | 7 |
 | `documentation-pass` | 1 | 0 | 29 | 3 |
 | `remediation` | 2 | 1 | 6 | 3 |
-| `review-planning-oversight` | 8 | 3 | 51 | 6 |
+| `review-planning-oversight` | 8 | 3 | 52 | 6 |
 | `general-improvement` | 1 | 0 | 7 | 1 |
 
 ## Experiment agendas

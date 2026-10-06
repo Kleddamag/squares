@@ -297,7 +297,7 @@ hypothesis status and summarizes experiment verdicts, and the
 | --- | ---: | --- |
 | Agendas | 39 | 19 active; 14 completed; 5 paused; 1 superseded |
 | Commitments | 417 | 218 complete; 65 stopped; 70 blocked; 25 ready; 21 tentative; 18 in progress |
-| Sessions | 180 | 105 completed; 75 stopped; all terminal |
+| Sessions | 181 | 105 completed; 76 stopped; all terminal |
 | Explorations | 47 | 28 linked to proposed hypotheses; 19 uncodified |
 | Hypotheses | 209 | 45 confirmed; 33 refuted; 63 blocked; 19 unresolved; 9 open; 35 open questions; 2 result registered; 2 abandoned; 0 running; 1 exhausted |
 | Experiments | 186 | 62 accepted; 38 rejected; 58 unresolved; 12 baseline; 11 blocked; 4 abandoned; 0 in progress; 1 exhausted |
@@ -561,6 +561,8 @@ case or experiment separately.
 
 | Document or collection | Role | Authority | Lifecycle | Current replacement |
 | --- | --- | --- | --- | --- |
+| [Session 173: Windows owned-Job supervision](packing/campaign/results/session-173-windows-supervision/README.md) | typed session record | record | retained | — |
+| [Windows owned-Job supervision](packing/devtools/windows-supervision.md) | engineering and validation rules | current | maintained | — |
 | [Retained n17 diagnostics](packing/devtools/n17-diagnostics.md) | engineering and validation rules | current | maintained | — |
 | [The n = 17 Optimality Proof, Explained](docs/project/n17-optimality-explainer.md) | first-principles tutorial | supporting | maintained | — |
 | [N11: A Three-Paper Explainer Series](docs/project/specs/active/plan-2026-10-05-n11-explainer-series.md) | implementation plan | current | transient | — |
@@ -5934,6 +5936,7 @@ in separate tables: their units differ, and the same work can appear in both.
 | `codex-session-170.yaml` | session-170 | 85 | 0.76 h | 0.67 h | 0.67 h | yes |
 | `codex-session-171.yaml` | session-171 | 204 | 1.85 h | 0.98 h | 0.98 h | yes |
 | `codex-session-172.yaml` | session-172 | 52 | 0.56 h | 0.28 h | 0.28 h | yes |
+| `codex-session-173.yaml` | session-173 | 46 | 0.52 h | 0.26 h | 0.26 h | yes |
 | `codex-session-174.yaml` | session-174 | 58 | 0.72 h | 0.36 h | 0.36 h | yes |
 | `codex-session-175.yaml` | session-175 | 92 | 0.89 h | 0.45 h | 0.45 h | yes |
 | `codex-session-176.yaml` | session-176 | 91 | 0.65 h | 0.32 h | 0.32 h | yes |
@@ -6014,9 +6017,9 @@ in separate tables: their units differ, and the same work can appear in both.
 
 | Coverage | sessions |
 | --- | ---: |
-| measured | 125 |
+| measured | 126 |
 | unmeasured | 55 |
-| **total** | **180** |
+| **total** | **181** |
 
 <!-- END GENERATED: session-close-report -->
 

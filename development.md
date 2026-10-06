@@ -53,6 +53,23 @@ Direct renderer commands do not pass through the validator; export
 `DYLD_FALLBACK_LIBRARY_PATH=/opt/homebrew/lib` before running them when Homebrew’s
 library is otherwise outside the loader’s path.
 
+### Windows worker supervision
+
+Windows is not a supported development host, and `packing-validate` refuses to run on
+it. One tool is the exception: `python -m devtools.supervise_windows` runs a single
+command on Windows inside its own Job, measures every process in that Job against memory
+guards, and terminates the whole tree when the command exits, times out or crosses the
+hard stop. It is opt-in and standard library only, and no gate or research workflow runs
+through it. [Windows owned-Job supervision](packing/devtools/windows-supervision.md) is
+its guide: outcomes and exit codes, the hard stop, review mark and host floor with their
+defaults, and the two private Windows interfaces it relies on.
+
+Its native code runs only on Windows, so its own workflow, `Windows supervision`, runs
+the three native cases on `windows-latest` whenever the tool, its test or the locked
+environment changes.
+That workflow sits outside `packing-required` and the pull-request wall budget, under a
+five-minute `timeout-minutes` ceiling.
+
 ## Code Maturity and Placement
 
 The maturity class says how a module is maintained, not how important its mathematics
@@ -830,9 +847,11 @@ a refusal or a fallback.
 
 The validation deadline bounds subprocess commands on supported POSIX hosts.
 It does not bound pure-Python worker code, the total duration of a step that runs
-multiple commands, or detached daemons; Windows process-tree cleanup is not yet
-implemented. These limits are why a subprocess timeout is not, by itself, evidence that
-D-239 is resolved.
+multiple commands, or detached daemons; the runner implements no Windows process-tree
+cleanup, which only the separate opt-in supervisor in
+[Windows worker supervision](#windows-worker-supervision) provides.
+These limits are why a subprocess timeout is not, by itself, evidence that D-239 is
+resolved.
 
 Pushes to `main`, manual dispatches, and the daily schedule run the ordinary full
 checkpoint on Linux in four jobs: `validate` excludes the slow lane, exhaustive exact

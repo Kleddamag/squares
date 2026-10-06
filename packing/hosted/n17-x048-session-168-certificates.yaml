@@ -602,6 +602,16 @@ objects:
   size: 21261
   sha256: 4fee814eda3889de3f63a06919f4525e40328d700b7a1970f8144dbddf2c8f84
   description: kernel certificate of s182-bc428-u13 (session 182, BC-428 unsampled-stratum state, H-275)
+- path: packing/campaign/explorations/X048-session-168-pilots/certificates/s182-bc428-u14/node-57ca613793fcd23c32fc5110751be8d488851ee9ea0b42c7fdf7a9fa70e97c6c.json.gz
+  asset: node-57ca613793fcd23c32fc5110751be8d488851ee9ea0b42c7fdf7a9fa70e97c6c.json.gz
+  size: 49610165
+  sha256: d55de20dd25a19caacdec2358546afe6150331ed7733b8a9d8c4d2d0a3f441d8
+  description: kernel certificate of s182-bc428-u14 (session 182, BC-428 unsampled-stratum state, H-275)
+- path: packing/campaign/explorations/X048-session-168-pilots/certificates/s182-bc428-u14/seed-13c33ae189261fccc4420ed9ffda67644a93b29be48ac8768dbc65049c78d645.json.gz
+  asset: seed-13c33ae189261fccc4420ed9ffda67644a93b29be48ac8768dbc65049c78d645.json.gz
+  size: 23331
+  sha256: 6d3f8c8676bf86bae0a442ffe1b6cb287677f1e27f7457dea245221227452de4
+  description: kernel certificate of s182-bc428-u14 (session 182, BC-428 unsampled-stratum state, H-275)
 - path: packing/campaign/explorations/X048-session-168-pilots/certificates/s182-bc428-u2/node-02f97a79b9d237d245d4f6b3d8f2936f130367a399a0a6d170298a488ed279fe.json.gz
   asset: node-02f97a79b9d237d245d4f6b3d8f2936f130367a399a0a6d170298a488ed279fe.json.gz
   size: 49936573

@@ -230,6 +230,12 @@ experiment:
       it in full mode in 420 s, checking all 3,153 live rows in full and 10,583 collision regions by
       56,600,352 exact facet checks. It excludes its own 8 states, one orbit; the certified census after it is
       36,876 states in 4,697 orbits.
+  - shape: determination
+    role: outcome
+    question: Is draw 15 (mask 1900531, stratum c<=2/i<=3/d4) excluded within the 7,000 s ceiling?
+    outcome: criterion_missed
+    checked_by: The run (receipts/U/kernel-u15-bc428.json) returns INCOMPLETE in 7,002 s of wall and 6,844 s of process
+      CPU (capture row wall ceiling). Not a closure; nothing is concluded from it, and its saved node is kept.
   verdict:
     decision: in-progress
     primary_criterion: The fraction of the frozen states the kernel excludes under SW9's recipe within the 7,000 s
@@ -282,6 +288,7 @@ reported as not run.
 | 16 | c3/i<=3/d>=8 | 4648955 | closed, 7 rounds, admitted | 1,972 s | full pass, 842 s |
 | 17 | c3/i4/d>=8 | 5503965 | closed, 5 rounds, admitted | 1,335 s | full pass, 592 s |
 | 18 | c<=2/i>=5/d>=8 | 13090300 | closed, 3 rounds, admitted | 936 s | full pass, 420 s |
+| 15 | c<=2/i<=3/d4 | 1900531 | incomplete at 7,002 s | 6,844 s | — |
 
 <!-- This document follows common-doc-guidelines.md.
 See github.com/jlevy/practical-prose and review guidelines before editing.

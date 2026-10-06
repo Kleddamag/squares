@@ -14,7 +14,6 @@ session:
   branch: guzhou/n17-residual-compatibility
   primary_bead: think-wh57
   status: stopped
-  certification_pending: think-q0z7
   goal: Find additional parent-row cliques in frozen half/octagon enhanced-core model using
     all raw pieces, or honest bounded unknown. No row-negative/admission/global proof.
   workflow_phases:
@@ -119,9 +118,12 @@ session:
     14d131 coherent cohort refresh preserves the existing 10% policy and ceilings. Seven focused
     controls pass; the full supported-host suite passes. Windows subprocess ancestor permission failures remain classified separately,
     no host/policy fix.
+  - 'full gate: fast at b68744cba08d770c50f3c4494f9e40c13db724cf: passed (hosted Packing validation
+    run 37433376429 on PR 379, after stack 357 merged into main with PR 356, the rebuild of
+    PR 351; this head carries the session''s work unchanged)'
   stop_reason: ONE target reached 100k pair cap; independently checked 41 parents (+23), 55 unknown.
     Source/evidence accepted; hosted certification remains explicit.
-  next_action: Await Joshua and current-layer required CI under think-q0z7.
+  next_action: None for this session; its rebuilt layer (PR 356) merged with stack 357.
     No active research executor or reserved follow-up; original intervals are historical.
   ended_at: '2026-10-04T09:24:30.780378+00:00'
   handoff_role: administrative_closeout

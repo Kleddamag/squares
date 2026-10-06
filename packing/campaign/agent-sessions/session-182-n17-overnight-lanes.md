@@ -14,7 +14,6 @@ session:
   branch: claude/n17-session-182-overnight
   primary_bead: think-tmz6
   status: stopped
-  certification_pending: think-b8hb
   goal: >-
     Make as much measured progress on s(17) = S* as one night on this container allows:
     certified exclusions that lower the residue below 126,168 states in 15,953 orbits,
@@ -435,16 +434,19 @@ session:
     survey_n17_residue --flag-set arity8 --sample 12 --seed 182 --strata-only: the
     endpoint control plus 12 draws, 2 at distance 2, 7 at 4 and 3 at 6 (draw only, no
     search).
+  - 'full gate: fast at b68744cba08d770c50f3c4494f9e40c13db724cf: passed (hosted Packing validation
+    run 37433376429 on PR 379, the head after this session''s close commit 9e7021715, carrying
+    the handed-over source with exp-257''s W2 corrections and a merge of main)'
   stop_reason: >-
     The deadline: the overnight run ended at the finalization reserve with exp-257's
     verdict, and the session closes stopped because its resource rollups are withheld
     (they carry model identifiers; think-h8oz) and its certification is pending
     (think-b8hb).
   next_action: >-
-    Certify the handover (think-b8hb), then BC-418 continues under think-tmz6: the
-    owner's decisions recorded here come first (the resource rollups that
-    resource_usage_unmeasured names, lane K's target 2 with the two held re-runs, the
-    branch-and-bound recalibration and #360's merge), and exp-257 awaits its W2 review.
+    BC-418 continues under think-tmz6: the owner's decisions recorded here come first (the
+    resource rollups that resource_usage_unmeasured names, lane K's target 2 with the two
+    held re-runs, and the branch-and-bound recalibration); exp-257 resumes at u31
+    (think-2pjf).
   ended_at: '2026-10-06T07:21:24Z'
   resource_rollups: []
   resource_usage_unmeasured:

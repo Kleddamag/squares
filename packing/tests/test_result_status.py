@@ -261,8 +261,11 @@ def test_superseded_is_marked_on_a_bound_and_where_a_later_result_is_declared() 
     # forty-three when wand125's certificate on a finer declared net (T-099) took n = 18,
     # the one count T-096 held; forty-five when Evan Daniel's exact certificates of the
     # catalogue's packings (T-101) took the verified ceilings at n = 69, 83 and 87 from the
-    # certificates of their pictures (T-088, T-089).
-    assert len(derived) == 45
+    # certificates of their pictures (T-088, T-089); forty-six when wand125's check2
+    # certificate at n = 20 (T-104) took both of that count's lanes, the last T-077 held;
+    # forty-eight when the check2 certificates of n = 18 and 19 (T-102, T-103) took both
+    # lanes there from T-099 and T-100, the one count each held.
+    assert len(derived) == 48
     assert {
         "T-020", "T-021", "T-030", "T-043", "T-044", "T-047", "T-049", "T-057", "T-072",
         "T-078", "T-079", "T-087", "T-088", "T-089", "T-092",
@@ -290,10 +293,10 @@ def test_superseded_is_marked_on_a_bound_and_where_a_later_result_is_declared() 
         assert entry not in by, entry
     assert view.superseding(records.results["T-037"], records) == ("T-060",)
     # T-019's counts are held now by R071's replay at n = 17 (T-093) and by wand125's
-    # certificates of 6 October at n = 18 and 19 (T-099, T-100), which took both lanes
-    # there from T-096, T-074 and T-068.
+    # check2 certificates of 6 October at n = 18 and 19 (T-102, T-103), which took both
+    # lanes there from T-099 and T-100 the same day.
     assert view.position_marks(records.results["T-019"], view.SUPERSEDED, records) == [
-        "superseded by T-093, T-099 and T-100"
+        "superseded by T-093, T-102 and T-103"
     ]
     # Only a bound supersedes: at n = 13 and 46 a correction and an audit carry the
     # lower bound's evidence beside the optimality results that hold it.
@@ -309,11 +312,12 @@ def test_superseded_is_marked_on_a_bound_and_where_a_later_result_is_declared() 
     assert view.superseding(exact, records) == ("T-060",)
     upper = {"id": "T-999", "kind": "upper-bound", "scope": {"n_values": [11]}}
     assert view.superseding(upper, records) == ("T-011",)
-    # T-060 implies T-036's bound and T-102 its equality case (think-7df0, think-d1bd); it implies
-    # T-023's exclusion and not its count of the branch, and the whole of T-031's
-    # exclusion, since no packing of eleven squares fits at side 96/25 (think-rl2b).
+    # T-060 implies T-036's bound and T-112 its equality case (think-7df0, think-d1bd);
+    # T-060 implies T-023's exclusion and not its count of the branch, and the whole of
+    # T-031's exclusion, since no packing of eleven squares fits at side 96/25
+    # (think-rl2b).
     expected = {
-        "T-036": ["superseded in part by T-060 and T-102"],
+        "T-036": ["superseded in part by T-060 and T-112"],
         "T-023": ["superseded in part by T-060"],
         "T-031": ["superseded by T-060"],
     }

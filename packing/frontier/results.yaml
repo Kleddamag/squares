@@ -3229,7 +3229,7 @@ results:
       result remained the register's one statement that a packing of eleven squares is
       unique, for the six-plus-five family near Trump's tilt.
 
-      2026-10-06: T-102 registers the uniqueness corollary of T-060, that every packing of
+      2026-10-06: T-112 registers the uniqueness corollary of T-060, that every packing of
       eleven squares at side T is Trump's up to the eight container symmetries and
       relabelling, which implies the equality clause. With T-060 it implies the whole of
       this result.
@@ -3242,11 +3242,11 @@ results:
           packing in the family attains U only as a quarter-turn image of Trump's pose with
           the squares relabelled within the two classes, is not implied, since T-060 makes
           no claim of uniqueness.
-      - result: T-102
+      - result: T-112
         extent: part
         what: >-
           The equality clause: a packing in the family at side U is Trump's packing after
-          a container symmetry and a relabelling, by T-102, and reflections leave the
+          a container symmetry and a relabelling, by T-112, and reflections leave the
           family, so it is a quarter-turn image with the squares relabelled within the two
           classes.
 
@@ -5212,7 +5212,7 @@ results:
     attribution:
       source_keys: ['[Queuingtheorydotcom n11 optimality 2026]']
       published: '2026-09-29'
-    evidence: [E-n011-global-optimality-report, E-n011-global-optimality-independent]
+    evidence: [E-n011-global-optimality-report, E-n011-global-optimality-independent, E-n011-lean-formalization-report]
     composition: >-
       The complete 2184-pattern cover and 2180 exclusions leave four symmetric
       survivors. The D4 bridge reduces these to case 438; the 14-round root
@@ -5222,6 +5222,14 @@ results:
       Trump witness attains `T`. All premises have completed exact executions, which is V3/C3.
       One adversarial AI review is retained and mapped, by GPT-6 Astra at max reasoning; it is
       not a human oversight record. No second machine method is claimed.
+
+      The Lean 4 formalization in 11SquaresFormalized states the whole claim as one theorem,
+      `ElevenSquare.optimality`, which the 6 October statement audit reads as this claim
+      with the same exact `T`. Its source reports that its full verification run, resumed
+      from earlier validated receipts, passed with an axiom audit that trusts Lean's
+      compiler for 13,308 `native_decide` axioms. That run is private and recorded as
+      reported, so it sets no rung; the build here covers the statement closure and the
+      upper half only.
     reviews:
       - path: docs/project/reviews/review-2026-09-29-n11-optimality-census-contract.md
         kind: adversarial
@@ -5243,10 +5251,24 @@ results:
       - packing/resources/web/n11-optimality-2026-09-29/receipts/exclusion-inventory.json
       - packing/resources/web/n11-optimality-2026-09-29/receipts/completion-inventory.json
       - docs/project/reviews/review-2026-09-29-n11-optimality.md
+      - packing/resources/web/queuingtheorydotcom-n11-lean-2026-10-06/README.md
+      - packing/resources/web/queuingtheorydotcom-n11-lean-2026-10-06/receipts/lean/axioms-public-theorems.json
+      - docs/project/reviews/review-2026-10-06-n11-lean-formalization-statement-audit.md
     next_rung: >-
+      V5 needs two records the register lacks. One is a complete build of the
+      11SquaresFormalized proof that the record can rest on, with its axiom receipt: run here
+      from the retained pin at its toolchain, or a third party's build retained here. The
+      source's own run is private and is recorded as reported
+      (E-n011-lean-formalization-report). The other is a retained formalization review by a
+      named human expert who is not its author and states competence in Lean and in the
+      mathematics, checking statement fidelity, the definitions, the axioms (the 13,308
+      `native_decide` axioms the theorem trusts to Lean's compiler among them) and that
+      build.
+
       V4 and C4 need the owner's oversight record and a second adversarial AI review by a
-      reviewer distinct from Astra. Rung 5 requires a proof-assistant formalization reviewed
-      by human experts. Engineering follow-up think-e2ot
+      reviewer distinct from Astra. C5 needs that build made here at the pinned toolchain,
+      an `open_review` pointer and two such expert reviews. Engineering
+      follow-up think-e2ot
       will orchestrate fresh whole-ensemble replay through reviewed state-equivalence
       bindings. Simplification was to precede the n11 explainer, tracked separately, which is
       now the [eleven-square optimality
@@ -5278,14 +5300,24 @@ results:
       accepted certificates of cases 2175 and 2176 carry. This project has not reviewed
       or replayed either formalization, and no rung rests on them.
 
-      2026-10-06: Queuingtheorydotcom reports the complete Lean 4 formalization of this
-      theorem in
-      [11SquaresFormalized](https://github.com/Queuingtheorydotcom/11SquaresFormalized),
-      whose verification report of that day gives 7,920 modules and no admitted goal, with
-      ElevenSquare.optimality depending on propext, Classical.choice, Quot.sound and
-      13,308 approved native_decide certificates. Its trust model is Lean's kernel and
-      native compiler, not the kernel alone. This project has not reviewed or replayed it,
-      and no rung rests on it. T-102 registers the uniqueness corollary of this result.
+      2026-10-06: the Lean 4 formalization in
+      [11SquaresFormalized](https://github.com/Queuingtheorydotcom/11SquaresFormalized) is
+      imported (bead think-8spq). Square Packing Fan (@ManassehA06) posted that day that the
+      optimality "has been formalized in lean thanks to Astra and Claude", thanking Joshua
+      Levy, Kleddamag, wand125, Guzhou0806 and ctjlewis; the retained first post of the
+      thread does not name the repository. Its acknowledgements credit Queuingtheorydotcom,
+      EvolvingPrograms and ctjlewis, wand125, Benjamin Gurevitch, Julian-JJ and Guzhou0806.
+
+      The 6 October statement audit reads its theorem ElevenSquare.optimality as this claim.
+      Its source reports that its full verification run passed in EvolvingPrograms run
+      37414883750, resumed from earlier receipts, with axioms propext, Classical.choice,
+      Quot.sound and 13,308 native_decide axioms: a compiler-trusting check, not a
+      kernel-only one. The run is private, so it is recorded as reported
+      (E-n011-lean-formalization-report), as the separately prompted adversarial review of
+      6 October asked; the full build was not repeated here, and the statement closure and
+      upper half were (E-n011-lean-statement-closure-build). Nothing about it raises C: the
+      owner asked that C stay where the confirming evidence puts it until everything is
+      imported.
 
   - id: T-061
     kind: lower-bound
@@ -7201,10 +7233,11 @@ results:
       count and lower bound at every direction: confirmed, reproduced with the producer's
       code. The inputs were regenerated by this repository's exact preflight, which checks
       that each is the input the upstream accepting run recorded and checks the exact mass,
-      net, smoothing and axis-event premises. At n = 20 and 42 the values raised the
-      verified lower bound, from T-074's 1959/400 and 1363/200, and at n = 42 T-090's mixed
-      certificate raised it again later on 6 October; at n = 70 the mixed certificate of
-      T-091 holds more.
+      net, smoothing and axis-event premises.
+
+      At n = 20 and 42 the values raised the verified lower bound, from T-074's 1959/400 and 1363/200, and later on 6 October
+      T-104's check2 certificate raised it again at n = 20 and T-090's mixed certificate
+      at n = 42; at n = 70 the mixed certificate of T-091 holds more.
 
       Each was also decided by sqverify-fast, this repository's clean-room measure verifier,
       at all 201 net directions at Tokoharu's threshold 10001/10000 in the census of 3
@@ -7299,9 +7332,12 @@ results:
       when the complete replays of 3 October were merged: rect_n42_L68275 on
       claude/replay-wand125-afternoon-r5 and rect_n70_L86275 and rect_n20_L49 on
       claude/replay-wand125-afternoon-r6, 5,453, 27,064 and 3,667 seconds of wall at 4
-      workers. The case records at n = 20 and 42 then cited the replay entry in the verified
-      lane, n = 42's until T-090's mixed certificate was decided there later that day;
-      n = 70's verified lane stays with T-091's mixed certificate, which is higher.
+      workers.
+
+      The case records at n = 20 and 42 then cited the replay entry in the verified
+      lane until later that day, when T-104's check2 certificate was decided at n = 20
+      and T-090's mixed certificate at n = 42; n = 70's verified lane stays with T-091's
+      mixed certificate, which is higher.
       The same day the sqverify-fast census rows of 3 October (214, 272 and 371 CPU
       seconds) were controlled and recorded beside them, on the format T route the review of
       6 October accepted and said carries to these three.
@@ -10131,6 +10167,1299 @@ results:
       edited: "T-118" in either review, its title included, is this entry, T-101.
 
   - id: T-102
+    kind: lower-bound
+    registered: '2026-10-06'
+    headline: "Mixed rectangle-measure lower bound verified at `n = 18`, on the finest declared net yet"
+    claim: >-
+      A rectangle density of wand125/square-packing-bounds, checked at coverage one on a
+      net it declares and published on 6 October 2026, proves s(18) >= 941/200 = 4.705.
+
+      The certificate is a density of 324 uniform rectangles in D4 orbits, and no point
+      mass, of total mass 1799999/100000, on a net it declares itself, finer than any it
+      declared before: core side 4999/5000 and 2073 half-angle tangents of step 1/5002.
+      Since 4999/5000 (1 + 1/5002) = 25009997/25010000 < 1, and the last tangent 1036/2501
+      is past tan(pi/8), every unit square contains a concentric core at a net angle
+      strictly in its interior.
+
+      The source reports every such core capturing mass at least one at all 2073
+      directions, by sqverify-proof-net, its copy of this repository's sqverify_fast
+      changed to read the declared net, and ships no record of its C++ checker for this
+      certificate.
+
+      The value is above the 588/125 = 4.704 of T-099, the source's earlier certificate
+      and the reported and verified lower bound at n = 18 before it, by 0.001, and
+      supersedes it.
+
+      The certificate was decided here on 6 October 2026 by sqverify-fast, this
+      repository's clean-room measure verifier, at all 2073 directions of the net the
+      candidate declares, and two mutants scaled below coverage one were refused:
+      confirmed, re-implemented sharing the producer's components. The source's check is a
+      copy of the same crate with one change, so the two share the sqverify_fast crate;
+      their records agree direction by direction, and their agreement is not a second
+      implementation. The source's C++ checker, the producer's own code but sharing none
+      with the crate, verified the candidate here at threshold one at nodes 1234 and 2072,
+      the least-bound node of the source's run among them, and was not run in full:
+      samples that decide those nodes only.
+
+      wand125 after Tokoharu and Levy,
+      [square-packing-bounds](https://github.com/wand125/square-packing-bounds/tree/2fad66e02f54a492835dc41ac37a9184e1e7a662/certificates/mixed_n18_L4705).
+      No registration was requested: an intake pass of the source found it. The
+      source says parts of the work were produced with AI assistance under human
+      direction.
+    scope: {n_values: [18]}
+    verification: V3
+    confirmation: C3
+    significance:
+      score: 3
+      rationale: >-
+        The strongest verified lower bound on record at n = 18, by 0.001 above T-099,
+        and the strongest reported. The certificate kind of T-099 on a declared net,
+        checked at the source by a copy of this repository's verifier rather than its
+        C++ checker; no new technique, at S3 as T-096, T-099 and T-100 are.
+      scored: '2026-10-06'
+      by: docs/project/reviews/review-2026-10-06-wand125-check2-ten-certificates.md (repository; confirms the registering lane's draft)
+    novelty: previously-published
+    attribution:
+      source_keys: ['[wand125 mixed bounds check2 2026-10-06]']
+      published: '2026-10-06'
+    composition: >-
+      One primary certificate on its reported entry and its replay entry. The replay is
+      sqverify-fast at all 2073 directions of the net the retained candidate declares: one
+      interval-certified method, replayed here by an implementation that shares the
+      producer's components, C3, on the census route, whose conditions for a declared net
+      this certificate meets. The source's own check is a copy of the same crate, and its
+      C++ checker was run here at sampled directions only, so no second implementation and
+      no second method stands beside it.
+    evidence:
+      - E-n018-wand125-mixed-4705-report
+      - E-n018-wand125-mixed-4705-sqverify-fast-replay
+    reviews:
+      - path: docs/project/reviews/review-2026-10-06-wand125-check2-ten-certificates.md
+        kind: adversarial
+        reviewer: Claude Opus 5.5 (claude-opus-5-5), the tbd-strong sub-agent, prompted separately from lane R7 of the second 6 October intake round that retained, audited and registered T-102 to T-111, sharing none of its context beyond the brief and the committed record, after registration and before any complete replay, allowed to run its own checks at one thread and barred from the source's adapted crate
+        reviewer_kind: ai
+        relation: project
+        date: '2026-10-06'
+        scope: >-
+          wand125's ten certificates of 6 October pinned at 2fad66e0, nine check2
+          bundles and the n = 29 proof bundle: the argument from certificate to bound,
+          the three declared nets re-derived in exact arithmetic, the 1/5002 net among
+          them, against the scope of the declared-net soundness review; what check2
+          changes and which code confirms it; the source's run and control logs, every
+          control witness recomputed exactly with code of its own; every number in the
+          records; the first-party audit, bundle and cpp-sample commands; and the
+          drafted significance, at eb004e7c5. It ran the source's C++ checker at one
+          node each of mixed_n41_L6775 and mixed_n18_L4705.
+        verdict: accepted
+        covers: [T-102, T-103, T-104, T-105, T-106, T-107, T-108, T-109, T-110, T-111]
+    artifacts:
+      - packing/resources/web/wand125-mixed-bounds-check2-2026-10-06/README.md
+      - packing/resources/web/wand125-mixed-bounds-check2-2026-10-06/receipts/n18-L4705/audit.json
+      - packing/resources/web/wand125-mixed-bounds-check2-2026-10-06/receipts/n18-L4705/bundle.json
+      - packing/resources/web/wand125-mixed-bounds-check2-2026-10-06/receipts/n18-L4705/compare-census.json
+      - packing/resources/web/wand125-mixed-bounds-check2-2026-10-06/receipts/n18-L4705/cpp-sample/nodes-1234-2072.json
+      - packing/devtools/audit_wand125_declared_net.py
+      - packing/sqverify_fast/SOUNDNESS.md
+      - packing/benchmarks/measure-verifier/census-mixed/census.json
+      - packing/benchmarks/measure-verifier/census-mixed/wand125-mixed-bounds-check2-2026-10-06/mixed_n18_L4705.jsonl.gz
+      - packing/devtools/sqverify_fast_census.py
+      - docs/project/reviews/review-2026-10-06-wand125-check2-ten-certificates.md
+      - docs/project/reviews/review-2026-10-06-sqverify-fast-declared-net-soundness.md
+    controls:
+      - packing/benchmarks/measure-verifier/census-mixed/wand125-mixed-bounds-check2-2026-10-06/mixed_n18_L4705.control.json
+      - packing/tests/test_sqverify_fast_census.py
+      - packing/tests/test_audit_wand125_declared_net.py
+    next_rung: >-
+      V4 and C4 need two adversarial AI reviews of this result by distinct reviewers and a
+      human oversight record; one is retained. A complete run of the source's C++ checker
+      over all 2073 directions (devtools.audit_wand125_declared_net cpp-sample, about 95
+      CPU-hours at the samples' rate) would add a check that shares no code with
+      sqverify_fast beside the rung, though it is the producer's own code.
+    notes: >-
+      Raised from V0/C1 on 6 October 2026 (think-yrdj) by the sqverify-fast replay, 2,885
+      CPU seconds at one thread, with its controls. It rests on the review of 2026-10-06
+      that read this certificate, recorded in reviews; the soundness review of 6 October
+      of sqverify-fast's declared-net change, which accepted the crate source of the
+      replay's build for a format M certificate on a declared net; and the review of 5
+      October that accepted the census route as a complete replay here for a certificate
+      meeting its conditions.
+
+      n = 18's verified lower bound moves from T-099's 588/125 to 941/200. The tarball is
+      pinned by digest and not retained, and the adapted crate inside it is pinned and not
+      opened. It was registered under the provisional id T-108.
+
+      Renumbered from the provisional T-108 to T-102 when lane R7 merged on 6 October 2026,
+      with the other nine of the ten, the next ids after the register's T-101, in every
+      record, view, test and tool that names them. The review of the ten is stored as its
+      reviewer wrote it and is not edited, so it names them by the provisional ids, its
+      title included: its "T-108", "T-109", "T-110", "T-111", "T-112", "T-113", "T-114",
+      "T-115", "T-116" and "T-117" are T-102, T-103, T-104, T-105, T-106, T-107, T-108,
+      T-109, T-110 and T-111, in that order, and its "T-108" is this entry, T-102.
+
+  - id: T-103
+    kind: lower-bound
+    registered: '2026-10-06'
+    headline: "Mixed rectangle-measure lower bound verified at `n = 19`, on the finest declared net yet"
+    claim: >-
+      A rectangle density of wand125/square-packing-bounds, checked at coverage one on a
+      net it declares and published on 6 October 2026, proves s(19) >= 193/40 = 4.825.
+
+      The certificate is a density of 341 uniform rectangles in D4 orbits, and no point
+      mass, of total mass 1899999/100000, on a net it declares itself, finer than any it
+      declared before: core side 4999/5000 and 2073 half-angle tangents of step 1/5002.
+      Since 4999/5000 (1 + 1/5002) = 25009997/25010000 < 1, and the last tangent 1036/2501
+      is past tan(pi/8), every unit square contains a concentric core at a net angle
+      strictly in its interior.
+
+      The source reports every such core capturing mass at least one at all 2073
+      directions, by sqverify-proof-net, its copy of this repository's sqverify_fast
+      changed to read the declared net, and ships no record of its C++ checker for this
+      certificate.
+
+      The value is above the 48229/10000 = 4.8229 of T-100, the source's earlier
+      certificate and the reported and verified lower bound at n = 19 before it, by
+      0.0021, and supersedes it.
+
+      The certificate was decided here on 6 October 2026 by sqverify-fast, this
+      repository's clean-room measure verifier, at all 2073 directions of the net the
+      candidate declares, and two mutants scaled below coverage one were refused:
+      confirmed, re-implemented sharing the producer's components. The source's check is a
+      copy of the same crate with one change, so the two share the sqverify_fast crate;
+      their records agree direction by direction, and their agreement is not a second
+      implementation. The source's C++ checker, the producer's own code but sharing none
+      with the crate, verified the candidate here at threshold one at nodes 1021 and 2072,
+      the least-bound node of the source's run among them, and was not run in full:
+      samples that decide those nodes only.
+
+      wand125 after Tokoharu and Levy,
+      [square-packing-bounds](https://github.com/wand125/square-packing-bounds/tree/2fad66e02f54a492835dc41ac37a9184e1e7a662/certificates/mixed_n19_L4825).
+      No registration was requested: an intake pass of the source found it. The
+      source says parts of the work were produced with AI assistance under human
+      direction.
+    scope: {n_values: [19]}
+    verification: V3
+    confirmation: C3
+    significance:
+      score: 3
+      rationale: >-
+        The strongest verified lower bound on record at n = 19, by 0.0021 above T-100,
+        and the strongest reported. The certificate kind of T-099 on a declared net,
+        checked at the source by a copy of this repository's verifier rather than its
+        C++ checker; no new technique, at S3 as T-096, T-099 and T-100 are.
+      scored: '2026-10-06'
+      by: docs/project/reviews/review-2026-10-06-wand125-check2-ten-certificates.md (repository; confirms the registering lane's draft)
+    novelty: previously-published
+    attribution:
+      source_keys: ['[wand125 mixed bounds check2 2026-10-06]']
+      published: '2026-10-06'
+    composition: >-
+      One primary certificate on its reported entry and its replay entry. The replay is
+      sqverify-fast at all 2073 directions of the net the retained candidate declares: one
+      interval-certified method, replayed here by an implementation that shares the
+      producer's components, C3, on the census route, whose conditions for a declared net
+      this certificate meets. The source's own check is a copy of the same crate, and its
+      C++ checker was run here at sampled directions only, so no second implementation and
+      no second method stands beside it.
+    evidence:
+      - E-n019-wand125-mixed-4825-report
+      - E-n019-wand125-mixed-4825-sqverify-fast-replay
+    reviews:
+      - path: docs/project/reviews/review-2026-10-06-wand125-check2-ten-certificates.md
+        kind: adversarial
+        reviewer: Claude Opus 5.5 (claude-opus-5-5), the tbd-strong sub-agent, prompted separately from lane R7 of the second 6 October intake round that retained, audited and registered T-102 to T-111, sharing none of its context beyond the brief and the committed record, after registration and before any complete replay, allowed to run its own checks at one thread and barred from the source's adapted crate
+        reviewer_kind: ai
+        relation: project
+        date: '2026-10-06'
+        scope: >-
+          wand125's ten certificates of 6 October pinned at 2fad66e0, nine check2
+          bundles and the n = 29 proof bundle: the argument from certificate to bound,
+          the three declared nets re-derived in exact arithmetic, the 1/5002 net among
+          them, against the scope of the declared-net soundness review; what check2
+          changes and which code confirms it; the source's run and control logs, every
+          control witness recomputed exactly with code of its own; every number in the
+          records; the first-party audit, bundle and cpp-sample commands; and the
+          drafted significance, at eb004e7c5. It ran the source's C++ checker at one
+          node each of mixed_n41_L6775 and mixed_n18_L4705.
+        verdict: accepted
+        covers: [T-102, T-103, T-104, T-105, T-106, T-107, T-108, T-109, T-110, T-111]
+    artifacts:
+      - packing/resources/web/wand125-mixed-bounds-check2-2026-10-06/README.md
+      - packing/resources/web/wand125-mixed-bounds-check2-2026-10-06/receipts/n19-L4825/audit.json
+      - packing/resources/web/wand125-mixed-bounds-check2-2026-10-06/receipts/n19-L4825/bundle.json
+      - packing/resources/web/wand125-mixed-bounds-check2-2026-10-06/receipts/n19-L4825/compare-census.json
+      - packing/resources/web/wand125-mixed-bounds-check2-2026-10-06/receipts/n19-L4825/cpp-sample/nodes-1021-2072.json
+      - packing/devtools/audit_wand125_declared_net.py
+      - packing/sqverify_fast/SOUNDNESS.md
+      - packing/benchmarks/measure-verifier/census-mixed/census.json
+      - packing/benchmarks/measure-verifier/census-mixed/wand125-mixed-bounds-check2-2026-10-06/mixed_n19_L4825.jsonl.gz
+      - packing/devtools/sqverify_fast_census.py
+      - docs/project/reviews/review-2026-10-06-wand125-check2-ten-certificates.md
+      - docs/project/reviews/review-2026-10-06-sqverify-fast-declared-net-soundness.md
+    controls:
+      - packing/benchmarks/measure-verifier/census-mixed/wand125-mixed-bounds-check2-2026-10-06/mixed_n19_L4825.control.json
+      - packing/tests/test_sqverify_fast_census.py
+      - packing/tests/test_audit_wand125_declared_net.py
+    next_rung: >-
+      V4 and C4 need two adversarial AI reviews of this result by distinct reviewers and a
+      human oversight record; one is retained. A complete run of the source's C++ checker
+      over all 2073 directions (devtools.audit_wand125_declared_net cpp-sample, about 97
+      CPU-hours at the samples' rate) would add a check that shares no code with
+      sqverify_fast beside the rung, though it is the producer's own code.
+    notes: >-
+      Raised from V0/C1 on 6 October 2026 (think-yrdj) by the sqverify-fast replay, 2,841
+      CPU seconds at one thread, with its controls. It rests on the review of 2026-10-06
+      that read this certificate, recorded in reviews; the soundness review of 6 October
+      of sqverify-fast's declared-net change, which accepted the crate source of the
+      replay's build for a format M certificate on a declared net; and the review of 5
+      October that accepted the census route as a complete replay here for a certificate
+      meeting its conditions.
+
+      n = 19's verified lower bound moves from T-100's 48229/10000 to 193/40. The tarball
+      is pinned by digest and not retained, and the adapted crate inside it is pinned and
+      not opened. It was registered under the provisional id T-109.
+
+      Renumbered from the provisional T-109 to T-103 when lane R7 merged on 6 October 2026,
+      with the other nine of the ten, the next ids after the register's T-101, in every
+      record, view, test and tool that names them. The review of the ten is stored as its
+      reviewer wrote it and is not edited, so it names them by the provisional ids, its
+      title included: its "T-108", "T-109", "T-110", "T-111", "T-112", "T-113", "T-114",
+      "T-115", "T-116" and "T-117" are T-102, T-103, T-104, T-105, T-106, T-107, T-108,
+      T-109, T-110 and T-111, in that order, and its "T-109" is this entry, T-103.
+
+  - id: T-104
+    kind: lower-bound
+    registered: '2026-10-06'
+    headline: "Mixed rectangle-measure lower bound verified at `n = 20`, on a declared net"
+    claim: >-
+      A rectangle density of wand125/square-packing-bounds, checked at coverage one on a
+      net it declares and published on 6 October 2026, proves s(20) >= 981/200 = 4.905.
+
+      The certificate is a density of 327 uniform rectangles in D4 orbits, and no point
+      mass, of total mass 1999999/100000, on the net T-099's certificate declares: core
+      side 1999/2000 and 832 half-angle tangents of step 1/2006. Since 1999/2000 (1 +
+      1/2006) = 4011993/4012000 < 1, and the last tangent 831/2006 is past tan(pi/8),
+      every unit square contains a concentric core at a net angle strictly in its
+      interior.
+
+      The source reports every such core capturing mass at least one at all 832
+      directions, by sqverify-proof-net, its copy of this repository's sqverify_fast
+      changed to read the declared net, and ships no record of its C++ checker for this
+      certificate.
+
+      The value is above the 49/10 = 4.9 the record reported and verified at n = 20, the
+      source's rectangle certificate rect_n20_L49 (T-077), by 0.005.
+
+      The certificate was decided here on 6 October 2026 by sqverify-fast, this
+      repository's clean-room measure verifier, at all 832 directions of the net the
+      candidate declares, and two mutants scaled below coverage one were refused:
+      confirmed, re-implemented sharing the producer's components. The source's check is a
+      copy of the same crate with one change, so the two share the sqverify_fast crate;
+      their records agree direction by direction, and their agreement is not a second
+      implementation. The source's C++ checker, the producer's own code but sharing none
+      with the crate, verified the candidate here at threshold one at nodes 679 and 831,
+      the least-bound node of the source's run among them, and was not run in full:
+      samples that decide those nodes only.
+
+      wand125 after Tokoharu and Levy,
+      [square-packing-bounds](https://github.com/wand125/square-packing-bounds/tree/2fad66e02f54a492835dc41ac37a9184e1e7a662/certificates/mixed_n20_L4905).
+      No registration was requested: an intake pass of the source found it. The
+      source says parts of the work were produced with AI assistance under human
+      direction.
+    scope: {n_values: [20]}
+    verification: V3
+    confirmation: C3
+    significance:
+      score: 3
+      rationale: >-
+        The strongest verified lower bound on record at n = 20, by 0.005 above T-077,
+        and the strongest reported. The certificate kind of T-099 on a declared net,
+        checked at the source by a copy of this repository's verifier rather than its
+        C++ checker; no new technique, at S3 as T-096, T-099 and T-100 are.
+      scored: '2026-10-06'
+      by: docs/project/reviews/review-2026-10-06-wand125-check2-ten-certificates.md (repository; confirms the registering lane's draft)
+    novelty: previously-published
+    attribution:
+      source_keys: ['[wand125 mixed bounds check2 2026-10-06]']
+      published: '2026-10-06'
+    composition: >-
+      One primary certificate on its reported entry and its replay entry. The replay is
+      sqverify-fast at all 832 directions of the net the retained candidate declares: one
+      interval-certified method, replayed here by an implementation that shares the
+      producer's components, C3, on the census route, whose conditions for a declared net
+      this certificate meets. The source's own check is a copy of the same crate, and its
+      C++ checker was run here at sampled directions only, so no second implementation and
+      no second method stands beside it.
+    evidence:
+      - E-n020-wand125-mixed-4905-report
+      - E-n020-wand125-mixed-4905-sqverify-fast-replay
+    reviews:
+      - path: docs/project/reviews/review-2026-10-06-wand125-check2-ten-certificates.md
+        kind: adversarial
+        reviewer: Claude Opus 5.5 (claude-opus-5-5), the tbd-strong sub-agent, prompted separately from lane R7 of the second 6 October intake round that retained, audited and registered T-102 to T-111, sharing none of its context beyond the brief and the committed record, after registration and before any complete replay, allowed to run its own checks at one thread and barred from the source's adapted crate
+        reviewer_kind: ai
+        relation: project
+        date: '2026-10-06'
+        scope: >-
+          wand125's ten certificates of 6 October pinned at 2fad66e0, nine check2
+          bundles and the n = 29 proof bundle: the argument from certificate to bound,
+          the three declared nets re-derived in exact arithmetic, the 1/5002 net among
+          them, against the scope of the declared-net soundness review; what check2
+          changes and which code confirms it; the source's run and control logs, every
+          control witness recomputed exactly with code of its own; every number in the
+          records; the first-party audit, bundle and cpp-sample commands; and the
+          drafted significance, at eb004e7c5. It ran the source's C++ checker at one
+          node each of mixed_n41_L6775 and mixed_n18_L4705.
+        verdict: accepted
+        covers: [T-102, T-103, T-104, T-105, T-106, T-107, T-108, T-109, T-110, T-111]
+    artifacts:
+      - packing/resources/web/wand125-mixed-bounds-check2-2026-10-06/README.md
+      - packing/resources/web/wand125-mixed-bounds-check2-2026-10-06/receipts/n20-L4905/audit.json
+      - packing/resources/web/wand125-mixed-bounds-check2-2026-10-06/receipts/n20-L4905/bundle.json
+      - packing/resources/web/wand125-mixed-bounds-check2-2026-10-06/receipts/n20-L4905/compare-census.json
+      - packing/resources/web/wand125-mixed-bounds-check2-2026-10-06/receipts/n20-L4905/cpp-sample/nodes-0679-0831.json
+      - packing/devtools/audit_wand125_declared_net.py
+      - packing/sqverify_fast/SOUNDNESS.md
+      - packing/benchmarks/measure-verifier/census-mixed/census.json
+      - packing/benchmarks/measure-verifier/census-mixed/wand125-mixed-bounds-check2-2026-10-06/mixed_n20_L4905.jsonl.gz
+      - packing/devtools/sqverify_fast_census.py
+      - docs/project/reviews/review-2026-10-06-wand125-check2-ten-certificates.md
+      - docs/project/reviews/review-2026-10-06-sqverify-fast-declared-net-soundness.md
+    controls:
+      - packing/benchmarks/measure-verifier/census-mixed/wand125-mixed-bounds-check2-2026-10-06/mixed_n20_L4905.control.json
+      - packing/tests/test_sqverify_fast_census.py
+      - packing/tests/test_audit_wand125_declared_net.py
+    next_rung: >-
+      V4 and C4 need two adversarial AI reviews of this result by distinct reviewers and a
+      human oversight record; one is retained. A complete run of the source's C++ checker
+      over all 832 directions (devtools.audit_wand125_declared_net cpp-sample, about 46
+      CPU-hours at the samples' rate) would add a check that shares no code with
+      sqverify_fast beside the rung, though it is the producer's own code.
+    notes: >-
+      Raised from V0/C1 on 6 October 2026 (think-yrdj) by the sqverify-fast replay, 1,420
+      CPU seconds at one thread, with its controls. It rests on the review of 2026-10-06
+      that read this certificate, recorded in reviews; the soundness review of 6 October
+      of sqverify-fast's declared-net change, which accepted the crate source of the
+      replay's build for a format M certificate on a declared net; and the review of 5
+      October that accepted the census route as a complete replay here for a certificate
+      meeting its conditions.
+
+      n = 20's verified lower bound moves from T-077's 49/10 to 981/200. The tarball is
+      pinned by digest and not retained, and the adapted crate inside it is pinned and not
+      opened. It was registered under the provisional id T-110.
+
+      Renumbered from the provisional T-110 to T-104 when lane R7 merged on 6 October 2026,
+      with the other nine of the ten, the next ids after the register's T-101, in every
+      record, view, test and tool that names them. The review of the ten is stored as its
+      reviewer wrote it and is not edited, so it names them by the provisional ids, its
+      title included: its "T-108", "T-109", "T-110", "T-111", "T-112", "T-113", "T-114",
+      "T-115", "T-116" and "T-117" are T-102, T-103, T-104, T-105, T-106, T-107, T-108,
+      T-109, T-110 and T-111, in that order, and its "T-110" is this entry, T-104.
+
+  - id: T-105
+    kind: lower-bound
+    registered: '2026-10-06'
+    headline: "Mixed rectangle-measure lower bound verified at `n = 26`, on a declared net"
+    claim: >-
+      A rectangle density of wand125/square-packing-bounds, checked at coverage one on a
+      net it declares and published on 6 October 2026, proves s(26) >= 1109/200 = 5.545.
+
+      The certificate is a density of 477 uniform rectangles in D4 orbits, and no point
+      mass, of total mass 2599999/100000, on the net T-099's certificate declares: core
+      side 1999/2000 and 832 half-angle tangents of step 1/2006. Since 1999/2000 (1 +
+      1/2006) = 4011993/4012000 < 1, and the last tangent 831/2006 is past tan(pi/8),
+      every unit square contains a concentric core at a net angle strictly in its
+      interior.
+
+      The source reports every such core capturing mass at least one at all 832
+      directions, by sqverify-proof-net, its copy of this repository's sqverify_fast
+      changed to read the declared net, and ships no record of its C++ checker for this
+      certificate.
+
+      The value is above 2213/400 = 5.5325, the source's rectangle certificate
+      rect_n26_L55325 and the reported (T-068) and verified (T-074) lower bound at n = 26
+      before it, by 0.0125.
+
+      The certificate was decided here on 6 October 2026 by sqverify-fast, this
+      repository's clean-room measure verifier, at all 832 directions of the net the
+      candidate declares, and two mutants scaled below coverage one were refused:
+      confirmed, re-implemented sharing the producer's components. The source's check is a
+      copy of the same crate with one change, so the two share the sqverify_fast crate;
+      their records agree direction by direction, and their agreement is not a second
+      implementation. The source's C++ checker, the producer's own code but sharing none
+      with the crate, verified the candidate here at threshold one at nodes 241 and 831,
+      the least-bound node of the source's run among them, and was not run in full:
+      samples that decide those nodes only.
+
+      wand125 after Tokoharu and Levy,
+      [square-packing-bounds](https://github.com/wand125/square-packing-bounds/tree/2fad66e02f54a492835dc41ac37a9184e1e7a662/certificates/mixed_n26_L5545).
+      No registration was requested: an intake pass of the source found it. The
+      source says parts of the work were produced with AI assistance under human
+      direction.
+    scope: {n_values: [26]}
+    verification: V3
+    confirmation: C3
+    significance:
+      score: 3
+      rationale: >-
+        The strongest verified lower bound on record at n = 26, by 0.0125 above T-074,
+        and the strongest reported. The certificate kind of T-099 on a declared net,
+        checked at the source by a copy of this repository's verifier rather than its
+        C++ checker; no new technique, at S3 as T-096, T-099 and T-100 are.
+      scored: '2026-10-06'
+      by: docs/project/reviews/review-2026-10-06-wand125-check2-ten-certificates.md (repository; confirms the registering lane's draft)
+    novelty: previously-published
+    attribution:
+      source_keys: ['[wand125 mixed bounds check2 2026-10-06]']
+      published: '2026-10-06'
+    composition: >-
+      One primary certificate on its reported entry and its replay entry. The replay is
+      sqverify-fast at all 832 directions of the net the retained candidate declares: one
+      interval-certified method, replayed here by an implementation that shares the
+      producer's components, C3, on the census route, whose conditions for a declared net
+      this certificate meets. The source's own check is a copy of the same crate, and its
+      C++ checker was run here at sampled directions only, so no second implementation and
+      no second method stands beside it.
+    evidence:
+      - E-n026-wand125-mixed-5545-report
+      - E-n026-wand125-mixed-5545-sqverify-fast-replay
+    reviews:
+      - path: docs/project/reviews/review-2026-10-06-wand125-check2-ten-certificates.md
+        kind: adversarial
+        reviewer: Claude Opus 5.5 (claude-opus-5-5), the tbd-strong sub-agent, prompted separately from lane R7 of the second 6 October intake round that retained, audited and registered T-102 to T-111, sharing none of its context beyond the brief and the committed record, after registration and before any complete replay, allowed to run its own checks at one thread and barred from the source's adapted crate
+        reviewer_kind: ai
+        relation: project
+        date: '2026-10-06'
+        scope: >-
+          wand125's ten certificates of 6 October pinned at 2fad66e0, nine check2
+          bundles and the n = 29 proof bundle: the argument from certificate to bound,
+          the three declared nets re-derived in exact arithmetic, the 1/5002 net among
+          them, against the scope of the declared-net soundness review; what check2
+          changes and which code confirms it; the source's run and control logs, every
+          control witness recomputed exactly with code of its own; every number in the
+          records; the first-party audit, bundle and cpp-sample commands; and the
+          drafted significance, at eb004e7c5. It ran the source's C++ checker at one
+          node each of mixed_n41_L6775 and mixed_n18_L4705.
+        verdict: accepted
+        covers: [T-102, T-103, T-104, T-105, T-106, T-107, T-108, T-109, T-110, T-111]
+    artifacts:
+      - packing/resources/web/wand125-mixed-bounds-check2-2026-10-06/README.md
+      - packing/resources/web/wand125-mixed-bounds-check2-2026-10-06/receipts/n26-L5545/audit.json
+      - packing/resources/web/wand125-mixed-bounds-check2-2026-10-06/receipts/n26-L5545/bundle.json
+      - packing/resources/web/wand125-mixed-bounds-check2-2026-10-06/receipts/n26-L5545/compare-census.json
+      - packing/resources/web/wand125-mixed-bounds-check2-2026-10-06/receipts/n26-L5545/cpp-sample/nodes-0241-0831.json
+      - packing/devtools/audit_wand125_declared_net.py
+      - packing/sqverify_fast/SOUNDNESS.md
+      - packing/benchmarks/measure-verifier/census-mixed/census.json
+      - packing/benchmarks/measure-verifier/census-mixed/wand125-mixed-bounds-check2-2026-10-06/mixed_n26_L5545.jsonl.gz
+      - packing/devtools/sqverify_fast_census.py
+      - docs/project/reviews/review-2026-10-06-wand125-check2-ten-certificates.md
+      - docs/project/reviews/review-2026-10-06-sqverify-fast-declared-net-soundness.md
+    controls:
+      - packing/benchmarks/measure-verifier/census-mixed/wand125-mixed-bounds-check2-2026-10-06/mixed_n26_L5545.control.json
+      - packing/tests/test_sqverify_fast_census.py
+      - packing/tests/test_audit_wand125_declared_net.py
+    next_rung: >-
+      V4 and C4 need two adversarial AI reviews of this result by distinct reviewers and a
+      human oversight record; one is retained. A complete run of the source's C++ checker
+      over all 832 directions (devtools.audit_wand125_declared_net cpp-sample, about 60
+      CPU-hours at the samples' rate) would add a check that shares no code with
+      sqverify_fast beside the rung, though it is the producer's own code.
+    notes: >-
+      Raised from V0/C1 on 6 October 2026 (think-yrdj) by the sqverify-fast replay, 2,236
+      CPU seconds at one thread, with its controls. It rests on the review of 2026-10-06
+      that read this certificate, recorded in reviews; the soundness review of 6 October
+      of sqverify-fast's declared-net change, which accepted the crate source of the
+      replay's build for a format M certificate on a declared net; and the review of 5
+      October that accepted the census route as a complete replay here for a certificate
+      meeting its conditions.
+
+      n = 26's verified lower bound moves from T-074's 2213/400 to 1109/200. The tarball
+      is pinned by digest and not retained, and the adapted crate inside it is pinned and
+      not opened. It was registered under the provisional id T-111.
+
+      Renumbered from the provisional T-111 to T-105 when lane R7 merged on 6 October 2026,
+      with the other nine of the ten, the next ids after the register's T-101, in every
+      record, view, test and tool that names them. The review of the ten is stored as its
+      reviewer wrote it and is not edited, so it names them by the provisional ids, its
+      title included: its "T-108", "T-109", "T-110", "T-111", "T-112", "T-113", "T-114",
+      "T-115", "T-116" and "T-117" are T-102, T-103, T-104, T-105, T-106, T-107, T-108,
+      T-109, T-110 and T-111, in that order, and its "T-111" is this entry, T-105.
+
+  - id: T-106
+    kind: lower-bound
+    registered: '2026-10-06'
+    headline: "Mixed rectangle-measure lower bound verified at `n = 27`, on a declared net"
+    claim: >-
+      A rectangle density of wand125/square-packing-bounds, checked at coverage one on a
+      net it declares and published on 6 October 2026, proves s(27) >= 11287/2000 =
+      5.6435.
+
+      The certificate is a density of 439 uniform rectangles in D4 orbits, and no point
+      mass, of total mass 2699999/100000, on the net T-099's certificate declares: core
+      side 1999/2000 and 832 half-angle tangents of step 1/2006. Since 1999/2000 (1 +
+      1/2006) = 4011993/4012000 < 1, and the last tangent 831/2006 is past tan(pi/8),
+      every unit square contains a concentric core at a net angle strictly in its
+      interior.
+
+      The source reports every such core capturing mass at least one at all 832
+      directions, by sqverify-proof-net, its copy of this repository's sqverify_fast
+      changed to read the declared net, and ships no record of its C++ checker for this
+      certificate.
+
+      The value is above 1127/200 = 5.635, the source's rectangle certificate
+      rect_n27_L5635 and the reported (T-068) and verified (T-074) lower bound at n = 27
+      before it, by 0.0085.
+
+      The certificate was decided here on 6 October 2026 by sqverify-fast, this
+      repository's clean-room measure verifier, at all 832 directions of the net the
+      candidate declares, and two mutants scaled below coverage one were refused:
+      confirmed, re-implemented sharing the producer's components. The source's check is a
+      copy of the same crate with one change, so the two share the sqverify_fast crate;
+      their records agree direction by direction, and their agreement is not a second
+      implementation. The source's C++ checker, the producer's own code but sharing none
+      with the crate, verified the candidate here at threshold one at nodes 632 and 831,
+      the least-bound node of the source's run among them, and was not run in full:
+      samples that decide those nodes only.
+
+      wand125 after Tokoharu and Levy,
+      [square-packing-bounds](https://github.com/wand125/square-packing-bounds/tree/2fad66e02f54a492835dc41ac37a9184e1e7a662/certificates/mixed_n27_L56435).
+      No registration was requested: an intake pass of the source found it. The
+      source says parts of the work were produced with AI assistance under human
+      direction.
+    scope: {n_values: [27]}
+    verification: V3
+    confirmation: C3
+    significance:
+      score: 3
+      rationale: >-
+        The strongest verified lower bound on record at n = 27, by 0.0085 above T-074,
+        and the strongest reported. The certificate kind of T-099 on a declared net,
+        checked at the source by a copy of this repository's verifier rather than its
+        C++ checker; no new technique, at S3 as T-096, T-099 and T-100 are.
+      scored: '2026-10-06'
+      by: docs/project/reviews/review-2026-10-06-wand125-check2-ten-certificates.md (repository; confirms the registering lane's draft)
+    novelty: previously-published
+    attribution:
+      source_keys: ['[wand125 mixed bounds check2 2026-10-06]']
+      published: '2026-10-06'
+    composition: >-
+      One primary certificate on its reported entry and its replay entry. The replay is
+      sqverify-fast at all 832 directions of the net the retained candidate declares: one
+      interval-certified method, replayed here by an implementation that shares the
+      producer's components, C3, on the census route, whose conditions for a declared net
+      this certificate meets. The source's own check is a copy of the same crate, and its
+      C++ checker was run here at sampled directions only, so no second implementation and
+      no second method stands beside it.
+    evidence:
+      - E-n027-wand125-mixed-56435-report
+      - E-n027-wand125-mixed-56435-sqverify-fast-replay
+    reviews:
+      - path: docs/project/reviews/review-2026-10-06-wand125-check2-ten-certificates.md
+        kind: adversarial
+        reviewer: Claude Opus 5.5 (claude-opus-5-5), the tbd-strong sub-agent, prompted separately from lane R7 of the second 6 October intake round that retained, audited and registered T-102 to T-111, sharing none of its context beyond the brief and the committed record, after registration and before any complete replay, allowed to run its own checks at one thread and barred from the source's adapted crate
+        reviewer_kind: ai
+        relation: project
+        date: '2026-10-06'
+        scope: >-
+          wand125's ten certificates of 6 October pinned at 2fad66e0, nine check2
+          bundles and the n = 29 proof bundle: the argument from certificate to bound,
+          the three declared nets re-derived in exact arithmetic, the 1/5002 net among
+          them, against the scope of the declared-net soundness review; what check2
+          changes and which code confirms it; the source's run and control logs, every
+          control witness recomputed exactly with code of its own; every number in the
+          records; the first-party audit, bundle and cpp-sample commands; and the
+          drafted significance, at eb004e7c5. It ran the source's C++ checker at one
+          node each of mixed_n41_L6775 and mixed_n18_L4705.
+        verdict: accepted
+        covers: [T-102, T-103, T-104, T-105, T-106, T-107, T-108, T-109, T-110, T-111]
+    artifacts:
+      - packing/resources/web/wand125-mixed-bounds-check2-2026-10-06/README.md
+      - packing/resources/web/wand125-mixed-bounds-check2-2026-10-06/receipts/n27-L56435/audit.json
+      - packing/resources/web/wand125-mixed-bounds-check2-2026-10-06/receipts/n27-L56435/bundle.json
+      - packing/resources/web/wand125-mixed-bounds-check2-2026-10-06/receipts/n27-L56435/compare-census.json
+      - packing/resources/web/wand125-mixed-bounds-check2-2026-10-06/receipts/n27-L56435/cpp-sample/nodes-0632-0831.json
+      - packing/devtools/audit_wand125_declared_net.py
+      - packing/sqverify_fast/SOUNDNESS.md
+      - packing/benchmarks/measure-verifier/census-mixed/census.json
+      - packing/benchmarks/measure-verifier/census-mixed/wand125-mixed-bounds-check2-2026-10-06/mixed_n27_L56435.jsonl.gz
+      - packing/devtools/sqverify_fast_census.py
+      - docs/project/reviews/review-2026-10-06-wand125-check2-ten-certificates.md
+      - docs/project/reviews/review-2026-10-06-sqverify-fast-declared-net-soundness.md
+    controls:
+      - packing/benchmarks/measure-verifier/census-mixed/wand125-mixed-bounds-check2-2026-10-06/mixed_n27_L56435.control.json
+      - packing/tests/test_sqverify_fast_census.py
+      - packing/tests/test_audit_wand125_declared_net.py
+    next_rung: >-
+      V4 and C4 need two adversarial AI reviews of this result by distinct reviewers and a
+      human oversight record; one is retained. A complete run of the source's C++ checker
+      over all 832 directions (devtools.audit_wand125_declared_net cpp-sample, about 76
+      CPU-hours at the samples' rate) would add a check that shares no code with
+      sqverify_fast beside the rung, though it is the producer's own code.
+    notes: >-
+      Raised from V0/C1 on 6 October 2026 (think-yrdj) by the sqverify-fast replay, 2,824
+      CPU seconds at one thread, with its controls. It rests on the review of 2026-10-06
+      that read this certificate, recorded in reviews; the soundness review of 6 October
+      of sqverify-fast's declared-net change, which accepted the crate source of the
+      replay's build for a format M certificate on a declared net; and the review of 5
+      October that accepted the census route as a complete replay here for a certificate
+      meeting its conditions.
+
+      n = 27's verified lower bound moves from T-074's 1127/200 to 11287/2000. The tarball
+      is pinned by digest and not retained, and the adapted crate inside it is pinned and
+      not opened. It was registered under the provisional id T-112.
+
+      Renumbered from the provisional T-112 to T-106 when lane R7 merged on 6 October 2026,
+      with the other nine of the ten, the next ids after the register's T-101, in every
+      record, view, test and tool that names them. The review of the ten is stored as its
+      reviewer wrote it and is not edited, so it names them by the provisional ids, its
+      title included: its "T-108", "T-109", "T-110", "T-111", "T-112", "T-113", "T-114",
+      "T-115", "T-116" and "T-117" are T-102, T-103, T-104, T-105, T-106, T-107, T-108,
+      T-109, T-110 and T-111, in that order, and its "T-112" is this entry, T-106.
+
+  - id: T-107
+    kind: lower-bound
+    registered: '2026-10-06'
+    headline: "Mixed rectangle-measure lower bound verified at `n = 28`, on a declared net"
+    claim: >-
+      A rectangle density of wand125/square-packing-bounds, checked at coverage one on a
+      net it declares and published on 6 October 2026, proves s(28) >= 1147/200 = 5.735.
+
+      The certificate is a density of 531 uniform rectangles in D4 orbits, and no point
+      mass, of total mass 2799999/100000, on the net T-096's certificate declares: core
+      side 999/1000 and 416 half-angle tangents of step 1/1001. Since 999/1000 (1 +
+      1/1001) = 500499/500500 < 1, and the last tangent 415/1001 is past tan(pi/8), every
+      unit square contains a concentric core at a net angle strictly in its interior.
+
+      The source reports every such core capturing mass at least one at all 416
+      directions, by sqverify-proof-net, its copy of this repository's sqverify_fast
+      changed to read the declared net, and ships no record of its C++ checker for this
+      certificate.
+
+      The value is above 2289/400 = 5.7225, the source's rectangle certificate
+      rect_n28_L57225 and the reported (T-068) and verified (T-074) lower bound at n = 28
+      before it, by 0.0125.
+
+      The certificate was decided here on 6 October 2026 by sqverify-fast, this
+      repository's clean-room measure verifier, at all 416 directions of the net the
+      candidate declares, and two mutants scaled below coverage one were refused:
+      confirmed, re-implemented sharing the producer's components. The source's check is a
+      copy of the same crate with one change, so the two share the sqverify_fast crate;
+      their records agree direction by direction, and their agreement is not a second
+      implementation. The source's C++ checker, the producer's own code but sharing none
+      with the crate, verified the candidate here at threshold one at nodes 48 and 415,
+      the least-bound node of the source's run among them, and was not run in full:
+      samples that decide those nodes only.
+
+      wand125 after Tokoharu and Levy,
+      [square-packing-bounds](https://github.com/wand125/square-packing-bounds/tree/2fad66e02f54a492835dc41ac37a9184e1e7a662/certificates/mixed_n28_L5735).
+      No registration was requested: an intake pass of the source found it. The
+      source says parts of the work were produced with AI assistance under human
+      direction.
+    scope: {n_values: [28]}
+    verification: V3
+    confirmation: C3
+    significance:
+      score: 3
+      rationale: >-
+        The strongest verified lower bound on record at n = 28, by 0.0125 above T-074,
+        and the strongest reported. The certificate kind of T-099 on a declared net,
+        checked at the source by a copy of this repository's verifier rather than its
+        C++ checker; no new technique, at S3 as T-096, T-099 and T-100 are.
+      scored: '2026-10-06'
+      by: docs/project/reviews/review-2026-10-06-wand125-check2-ten-certificates.md (repository; confirms the registering lane's draft)
+    novelty: previously-published
+    attribution:
+      source_keys: ['[wand125 mixed bounds check2 2026-10-06]']
+      published: '2026-10-06'
+    composition: >-
+      One primary certificate on its reported entry and its replay entry. The replay is
+      sqverify-fast at all 416 directions of the net the retained candidate declares: one
+      interval-certified method, replayed here by an implementation that shares the
+      producer's components, C3, on the census route, whose conditions for a declared net
+      this certificate meets. The source's own check is a copy of the same crate, and its
+      C++ checker was run here at sampled directions only, so no second implementation and
+      no second method stands beside it.
+    evidence:
+      - E-n028-wand125-mixed-5735-report
+      - E-n028-wand125-mixed-5735-sqverify-fast-replay
+    reviews:
+      - path: docs/project/reviews/review-2026-10-06-wand125-check2-ten-certificates.md
+        kind: adversarial
+        reviewer: Claude Opus 5.5 (claude-opus-5-5), the tbd-strong sub-agent, prompted separately from lane R7 of the second 6 October intake round that retained, audited and registered T-102 to T-111, sharing none of its context beyond the brief and the committed record, after registration and before any complete replay, allowed to run its own checks at one thread and barred from the source's adapted crate
+        reviewer_kind: ai
+        relation: project
+        date: '2026-10-06'
+        scope: >-
+          wand125's ten certificates of 6 October pinned at 2fad66e0, nine check2
+          bundles and the n = 29 proof bundle: the argument from certificate to bound,
+          the three declared nets re-derived in exact arithmetic, the 1/5002 net among
+          them, against the scope of the declared-net soundness review; what check2
+          changes and which code confirms it; the source's run and control logs, every
+          control witness recomputed exactly with code of its own; every number in the
+          records; the first-party audit, bundle and cpp-sample commands; and the
+          drafted significance, at eb004e7c5. It ran the source's C++ checker at one
+          node each of mixed_n41_L6775 and mixed_n18_L4705.
+        verdict: accepted
+        covers: [T-102, T-103, T-104, T-105, T-106, T-107, T-108, T-109, T-110, T-111]
+    artifacts:
+      - packing/resources/web/wand125-mixed-bounds-check2-2026-10-06/README.md
+      - packing/resources/web/wand125-mixed-bounds-check2-2026-10-06/receipts/n28-L5735/audit.json
+      - packing/resources/web/wand125-mixed-bounds-check2-2026-10-06/receipts/n28-L5735/bundle.json
+      - packing/resources/web/wand125-mixed-bounds-check2-2026-10-06/receipts/n28-L5735/compare-census.json
+      - packing/resources/web/wand125-mixed-bounds-check2-2026-10-06/receipts/n28-L5735/cpp-sample/nodes-0048-0415.json
+      - packing/devtools/audit_wand125_declared_net.py
+      - packing/sqverify_fast/SOUNDNESS.md
+      - packing/benchmarks/measure-verifier/census-mixed/census.json
+      - packing/benchmarks/measure-verifier/census-mixed/wand125-mixed-bounds-check2-2026-10-06/mixed_n28_L5735.jsonl.gz
+      - packing/devtools/sqverify_fast_census.py
+      - docs/project/reviews/review-2026-10-06-wand125-check2-ten-certificates.md
+      - docs/project/reviews/review-2026-10-06-sqverify-fast-declared-net-soundness.md
+    controls:
+      - packing/benchmarks/measure-verifier/census-mixed/wand125-mixed-bounds-check2-2026-10-06/mixed_n28_L5735.control.json
+      - packing/tests/test_sqverify_fast_census.py
+      - packing/tests/test_audit_wand125_declared_net.py
+    next_rung: >-
+      V4 and C4 need two adversarial AI reviews of this result by distinct reviewers and a
+      human oversight record; one is retained. A complete run of the source's C++ checker
+      over all 416 directions (devtools.audit_wand125_declared_net cpp-sample, about 29
+      CPU-hours at the samples' rate) would add a check that shares no code with
+      sqverify_fast beside the rung, though it is the producer's own code.
+    notes: >-
+      Raised from V0/C1 on 6 October 2026 (think-yrdj) by the sqverify-fast replay, 1,541
+      CPU seconds at one thread, with its controls. It rests on the review of 2026-10-06
+      that read this certificate, recorded in reviews; the soundness review of 6 October
+      of sqverify-fast's declared-net change, which accepted the crate source of the
+      replay's build for a format M certificate on a declared net; and the review of 5
+      October that accepted the census route as a complete replay here for a certificate
+      meeting its conditions.
+
+      n = 28's verified lower bound moves from T-074's 2289/400 to 1147/200. The tarball
+      is pinned by digest and not retained, and the adapted crate inside it is pinned and
+      not opened. It was registered under the provisional id T-113.
+
+      Renumbered from the provisional T-113 to T-107 when lane R7 merged on 6 October 2026,
+      with the other nine of the ten, the next ids after the register's T-101, in every
+      record, view, test and tool that names them. The review of the ten is stored as its
+      reviewer wrote it and is not edited, so it names them by the provisional ids, its
+      title included: its "T-108", "T-109", "T-110", "T-111", "T-112", "T-113", "T-114",
+      "T-115", "T-116" and "T-117" are T-102, T-103, T-104, T-105, T-106, T-107, T-108,
+      T-109, T-110 and T-111, in that order, and its "T-113" is this entry, T-107.
+
+  - id: T-108
+    kind: lower-bound
+    registered: '2026-10-06'
+    headline: "Mixed rectangle-measure lower bound verified at `n = 29`, on a declared net"
+    claim: >-
+      A rectangle density of wand125/square-packing-bounds, checked at coverage one on a
+      net it declares and published on 6 October 2026, proves s(29) >= 581/100 = 5.81.
+
+      The certificate is a density of 505 uniform rectangles in D4 orbits, and no point
+      mass, of total mass 2899999/100000, on the net T-096's certificate declares: core
+      side 999/1000 and 416 half-angle tangents of step 1/1001. Since 999/1000 (1 +
+      1/1001) = 500499/500500 < 1, and the last tangent 415/1001 is past tan(pi/8), every
+      unit square contains a concentric core at a net angle strictly in its interior.
+
+      The source reports every such core capturing mass at least one: at all 415 oblique
+      net angles by code/mixed_rotated_verify.cpp, its research copy of Tokoharu's
+      verify.cpp at coverage threshold one, run by the same driver as T-096's certificate,
+      and at the axis by exact integer tables.
+
+      The value is above 2319/400 = 5.7975, the source's rectangle certificate
+      rect_n29_L57975 and the reported (T-068) and verified (T-074) lower bound at n = 29
+      before it, by 0.0125.
+
+      The certificate was decided here on 6 October 2026 by sqverify-fast, this
+      repository's clean-room measure verifier, at all 416 directions of the net the
+      candidate declares, and two mutants scaled below coverage one were refused:
+      confirmed, independently re-implemented. The verifier shares no code with the
+      source's checker and runs the same net-and-shrink method, so it is a second
+      implementation and not a second method. The source's own checker was replayed here
+      at nodes 0, 1, 364 and 415, the axis and the least-bound node among them, each
+      returning the certificate's own record, and not in full: a partial reproduction with
+      the producer's code.
+
+      wand125 after Tokoharu and Levy,
+      [square-packing-bounds](https://github.com/wand125/square-packing-bounds/tree/2fad66e02f54a492835dc41ac37a9184e1e7a662/certificates/mixed_n29_L581).
+      No registration was requested: an intake pass of the source found it. The
+      source says parts of the work were produced with AI assistance under human
+      direction.
+    scope: {n_values: [29]}
+    verification: V3
+    confirmation: C3
+    significance:
+      score: 3
+      rationale: >-
+        The strongest verified lower bound on record at n = 29, by 0.0125 above T-074,
+        and the strongest reported. The certificate kind of T-099 on a declared net with
+        the C++ checker of T-069 and later; no new technique, at S3 as T-096, T-099 and
+        T-100 are.
+      scored: '2026-10-06'
+      by: docs/project/reviews/review-2026-10-06-wand125-check2-ten-certificates.md (repository; confirms the registering lane's draft)
+    novelty: previously-published
+    attribution:
+      source_keys: ['[wand125 mixed bounds check2 2026-10-06]']
+      published: '2026-10-06'
+    composition: >-
+      One primary certificate on its reported entry and its replay entry. The replay is
+      sqverify-fast at all 416 directions of the net the retained candidate declares: one
+      interval-certified method, replayed here by an independent implementation, C3, on
+      the census route. The source's checker was replayed at sampled directions and its
+      axis tables at the axis only, so no second method and no complete reproduction with
+      the producer's code stands beside it.
+    evidence:
+      - E-n029-wand125-mixed-581-report
+      - E-n029-wand125-mixed-581-sqverify-fast-replay
+    reviews:
+      - path: docs/project/reviews/review-2026-10-06-wand125-check2-ten-certificates.md
+        kind: adversarial
+        reviewer: Claude Opus 5.5 (claude-opus-5-5), the tbd-strong sub-agent, prompted separately from lane R7 of the second 6 October intake round that retained, audited and registered T-102 to T-111, sharing none of its context beyond the brief and the committed record, after registration and before any complete replay, allowed to run its own checks at one thread and barred from the source's adapted crate
+        reviewer_kind: ai
+        relation: project
+        date: '2026-10-06'
+        scope: >-
+          wand125's ten certificates of 6 October pinned at 2fad66e0, nine check2
+          bundles and the n = 29 proof bundle: the argument from certificate to bound,
+          the three declared nets re-derived in exact arithmetic, the 1/5002 net among
+          them, against the scope of the declared-net soundness review; what check2
+          changes and which code confirms it; the source's run and control logs, every
+          control witness recomputed exactly with code of its own; every number in the
+          records; the first-party audit, bundle and cpp-sample commands; and the
+          drafted significance, at eb004e7c5. It ran the source's C++ checker at one
+          node each of mixed_n41_L6775 and mixed_n18_L4705.
+        verdict: accepted
+        covers: [T-102, T-103, T-104, T-105, T-106, T-107, T-108, T-109, T-110, T-111]
+    artifacts:
+      - packing/resources/web/wand125-mixed-bounds-check2-2026-10-06/README.md
+      - packing/resources/web/wand125-mixed-bounds-check2-2026-10-06/receipts/n29-L581/audit.json
+      - packing/resources/web/wand125-mixed-bounds-check2-2026-10-06/receipts/n29-L581/bundle.json
+      - packing/resources/web/wand125-mixed-bounds-check2-2026-10-06/receipts/n29-L581/sample/nodes-000-415.json
+      - packing/devtools/audit_wand125_declared_net.py
+      - packing/sqverify_fast/SOUNDNESS.md
+      - packing/benchmarks/measure-verifier/census-mixed/census.json
+      - packing/benchmarks/measure-verifier/census-mixed/wand125-mixed-bounds-check2-2026-10-06/mixed_n29_L581.jsonl.gz
+      - packing/devtools/sqverify_fast_census.py
+      - docs/project/reviews/review-2026-10-06-wand125-check2-ten-certificates.md
+      - docs/project/reviews/review-2026-10-06-sqverify-fast-declared-net-soundness.md
+    controls:
+      - packing/benchmarks/measure-verifier/census-mixed/wand125-mixed-bounds-check2-2026-10-06/mixed_n29_L581.control.json
+      - packing/tests/test_sqverify_fast_census.py
+      - packing/tests/test_audit_wand125_declared_net.py
+    next_rung: >-
+      V4 and C4 need two adversarial AI reviews of this result by distinct reviewers and a
+      human oversight record; one is retained. A complete replay of the source's own
+      checker, the bundle's driver over all 416 nodes (42 CPU-hours by the source's own
+      seconds, about 30 at the sample's rate here), would add a reproduction with the
+      producer's code beside the rung.
+    notes: >-
+      Raised from V0/C1 on 6 October 2026 (think-yrdj) by the sqverify-fast replay, 1,632
+      CPU seconds at one thread, with its controls. It rests on the review of 2026-10-06
+      that read this certificate, recorded in reviews; the soundness review of 6 October
+      of sqverify-fast's declared-net change, which accepted the crate source of the
+      replay's build for a format M certificate on a declared net; and the review of 5
+      October that accepted the census route as a complete replay here for a certificate
+      meeting its conditions.
+
+      n = 29's verified lower bound moves from T-074's 2319/400 to 581/100. The tarball is
+      pinned by digest and not retained. It was registered under the provisional id T-114.
+
+      Renumbered from the provisional T-114 to T-108 when lane R7 merged on 6 October 2026,
+      with the other nine of the ten, the next ids after the register's T-101, in every
+      record, view, test and tool that names them. The review of the ten is stored as its
+      reviewer wrote it and is not edited, so it names them by the provisional ids, its
+      title included: its "T-108", "T-109", "T-110", "T-111", "T-112", "T-113", "T-114",
+      "T-115", "T-116" and "T-117" are T-102, T-103, T-104, T-105, T-106, T-107, T-108,
+      T-109, T-110 and T-111, in that order, and its "T-114" is this entry, T-108.
+
+  - id: T-109
+    kind: lower-bound
+    registered: '2026-10-06'
+    headline: "Mixed rectangle-measure lower bound verified at `n = 30`, on a declared net"
+    claim: >-
+      A rectangle density of wand125/square-packing-bounds, checked at coverage one on a
+      net it declares and published on 6 October 2026, proves s(30) >= 11767/2000 =
+      5.8835.
+
+      The certificate is a density of 402 uniform rectangles in D4 orbits, and no point
+      mass, of total mass 2999999/100000, on the net T-099's certificate declares: core
+      side 1999/2000 and 832 half-angle tangents of step 1/2006. Since 1999/2000 (1 +
+      1/2006) = 4011993/4012000 < 1, and the last tangent 831/2006 is past tan(pi/8),
+      every unit square contains a concentric core at a net angle strictly in its
+      interior.
+
+      The source reports every such core capturing mass at least one at all 832
+      directions, by sqverify-proof-net, its copy of this repository's sqverify_fast
+      changed to read the declared net, and ships no record of its C++ checker for this
+      certificate.
+
+      The value is above 47/8 = 5.875, the source's rectangle certificate rect_n30_L5875
+      and the reported (T-068) and verified (T-074) lower bound at n = 30 before it, by
+      0.0085.
+
+      The certificate was decided here on 6 October 2026 by sqverify-fast, this
+      repository's clean-room measure verifier, at all 832 directions of the net the
+      candidate declares, and two mutants scaled below coverage one were refused:
+      confirmed, re-implemented sharing the producer's components. The source's check is a
+      copy of the same crate with one change, so the two share the sqverify_fast crate;
+      their records agree direction by direction, and their agreement is not a second
+      implementation. The source's C++ checker, the producer's own code but sharing none
+      with the crate, verified the candidate here at threshold one at nodes 347 and 831,
+      the least-bound node of the source's run among them, and was not run in full:
+      samples that decide those nodes only.
+
+      wand125 after Tokoharu and Levy,
+      [square-packing-bounds](https://github.com/wand125/square-packing-bounds/tree/2fad66e02f54a492835dc41ac37a9184e1e7a662/certificates/mixed_n30_L58835).
+      No registration was requested: an intake pass of the source found it. The
+      source says parts of the work were produced with AI assistance under human
+      direction.
+    scope: {n_values: [30]}
+    verification: V3
+    confirmation: C3
+    significance:
+      score: 3
+      rationale: >-
+        The strongest verified lower bound on record at n = 30, by 0.0085 above T-074,
+        and the strongest reported. The certificate kind of T-099 on a declared net,
+        checked at the source by a copy of this repository's verifier rather than its
+        C++ checker; no new technique, at S3 as T-096, T-099 and T-100 are.
+      scored: '2026-10-06'
+      by: docs/project/reviews/review-2026-10-06-wand125-check2-ten-certificates.md (repository; confirms the registering lane's draft)
+    novelty: previously-published
+    attribution:
+      source_keys: ['[wand125 mixed bounds check2 2026-10-06]']
+      published: '2026-10-06'
+    composition: >-
+      One primary certificate on its reported entry and its replay entry. The replay is
+      sqverify-fast at all 832 directions of the net the retained candidate declares: one
+      interval-certified method, replayed here by an implementation that shares the
+      producer's components, C3, on the census route, whose conditions for a declared net
+      this certificate meets. The source's own check is a copy of the same crate, and its
+      C++ checker was run here at sampled directions only, so no second implementation and
+      no second method stands beside it.
+    evidence:
+      - E-n030-wand125-mixed-58835-report
+      - E-n030-wand125-mixed-58835-sqverify-fast-replay
+    reviews:
+      - path: docs/project/reviews/review-2026-10-06-wand125-check2-ten-certificates.md
+        kind: adversarial
+        reviewer: Claude Opus 5.5 (claude-opus-5-5), the tbd-strong sub-agent, prompted separately from lane R7 of the second 6 October intake round that retained, audited and registered T-102 to T-111, sharing none of its context beyond the brief and the committed record, after registration and before any complete replay, allowed to run its own checks at one thread and barred from the source's adapted crate
+        reviewer_kind: ai
+        relation: project
+        date: '2026-10-06'
+        scope: >-
+          wand125's ten certificates of 6 October pinned at 2fad66e0, nine check2
+          bundles and the n = 29 proof bundle: the argument from certificate to bound,
+          the three declared nets re-derived in exact arithmetic, the 1/5002 net among
+          them, against the scope of the declared-net soundness review; what check2
+          changes and which code confirms it; the source's run and control logs, every
+          control witness recomputed exactly with code of its own; every number in the
+          records; the first-party audit, bundle and cpp-sample commands; and the
+          drafted significance, at eb004e7c5. It ran the source's C++ checker at one
+          node each of mixed_n41_L6775 and mixed_n18_L4705.
+        verdict: accepted
+        covers: [T-102, T-103, T-104, T-105, T-106, T-107, T-108, T-109, T-110, T-111]
+    artifacts:
+      - packing/resources/web/wand125-mixed-bounds-check2-2026-10-06/README.md
+      - packing/resources/web/wand125-mixed-bounds-check2-2026-10-06/receipts/n30-L58835/audit.json
+      - packing/resources/web/wand125-mixed-bounds-check2-2026-10-06/receipts/n30-L58835/bundle.json
+      - packing/resources/web/wand125-mixed-bounds-check2-2026-10-06/receipts/n30-L58835/compare-census.json
+      - packing/resources/web/wand125-mixed-bounds-check2-2026-10-06/receipts/n30-L58835/cpp-sample/nodes-0347-0831.json
+      - packing/devtools/audit_wand125_declared_net.py
+      - packing/sqverify_fast/SOUNDNESS.md
+      - packing/benchmarks/measure-verifier/census-mixed/census.json
+      - packing/benchmarks/measure-verifier/census-mixed/wand125-mixed-bounds-check2-2026-10-06/mixed_n30_L58835.jsonl.gz
+      - packing/devtools/sqverify_fast_census.py
+      - docs/project/reviews/review-2026-10-06-wand125-check2-ten-certificates.md
+      - docs/project/reviews/review-2026-10-06-sqverify-fast-declared-net-soundness.md
+    controls:
+      - packing/benchmarks/measure-verifier/census-mixed/wand125-mixed-bounds-check2-2026-10-06/mixed_n30_L58835.control.json
+      - packing/tests/test_sqverify_fast_census.py
+      - packing/tests/test_audit_wand125_declared_net.py
+    next_rung: >-
+      V4 and C4 need two adversarial AI reviews of this result by distinct reviewers and a
+      human oversight record; one is retained. A complete run of the source's C++ checker
+      over all 832 directions (devtools.audit_wand125_declared_net cpp-sample, about 59
+      CPU-hours at the samples' rate) would add a check that shares no code with
+      sqverify_fast beside the rung, though it is the producer's own code.
+    notes: >-
+      Raised from V0/C1 on 6 October 2026 (think-yrdj) by the sqverify-fast replay, 3,891
+      CPU seconds at one thread, with its controls. It rests on the review of 2026-10-06
+      that read this certificate, recorded in reviews; the soundness review of 6 October
+      of sqverify-fast's declared-net change, which accepted the crate source of the
+      replay's build for a format M certificate on a declared net; and the review of 5
+      October that accepted the census route as a complete replay here for a certificate
+      meeting its conditions.
+
+      n = 30's verified lower bound moves from T-074's 47/8 to 11767/2000. The tarball is
+      pinned by digest and not retained, and the adapted crate inside it is pinned and not
+      opened. It was registered under the provisional id T-115.
+
+      Renumbered from the provisional T-115 to T-109 when lane R7 merged on 6 October 2026,
+      with the other nine of the ten, the next ids after the register's T-101, in every
+      record, view, test and tool that names them. The review of the ten is stored as its
+      reviewer wrote it and is not edited, so it names them by the provisional ids, its
+      title included: its "T-108", "T-109", "T-110", "T-111", "T-112", "T-113", "T-114",
+      "T-115", "T-116" and "T-117" are T-102, T-103, T-104, T-105, T-106, T-107, T-108,
+      T-109, T-110 and T-111, in that order, and its "T-115" is this entry, T-109.
+
+  - id: T-110
+    kind: lower-bound
+    registered: '2026-10-06'
+    headline: "Mixed rectangle-measure lower bound verified at `n = 39`, on a declared net"
+    claim: >-
+      A rectangle density of wand125/square-packing-bounds, checked at coverage one on a
+      net it declares and published on 6 October 2026, proves s(39) >= 133/20 = 6.65.
+
+      The certificate is a density of 600 uniform rectangles in D4 orbits, and no point
+      mass, of total mass 3899999/100000, on the net T-096's certificate declares: core
+      side 999/1000 and 416 half-angle tangents of step 1/1001. Since 999/1000 (1 +
+      1/1001) = 500499/500500 < 1, and the last tangent 415/1001 is past tan(pi/8), every
+      unit square contains a concentric core at a net angle strictly in its interior.
+
+      The source reports every such core capturing mass at least one at all 416
+      directions, by sqverify-proof-net, its copy of this repository's sqverify_fast
+      changed to read the declared net, and ships no record of its C++ checker for this
+      certificate.
+
+      The value is above 1327/200 = 6.635, the source's rectangle certificate
+      rect_n39_L6635 and the reported (T-068) and verified (T-074) lower bound at n = 39
+      before it, by 0.015.
+
+      The certificate was decided here on 6 October 2026 by sqverify-fast, this
+      repository's clean-room measure verifier, at all 416 directions of the net the
+      candidate declares, and two mutants scaled below coverage one were refused:
+      confirmed, re-implemented sharing the producer's components. The source's check is a
+      copy of the same crate with one change, so the two share the sqverify_fast crate;
+      their records agree direction by direction, and their agreement is not a second
+      implementation. The source's C++ checker, the producer's own code but sharing none
+      with the crate, verified the candidate here at threshold one at nodes 394 and 415,
+      the least-bound node of the source's run among them, and was not run in full:
+      samples that decide those nodes only.
+
+      wand125 after Tokoharu and Levy,
+      [square-packing-bounds](https://github.com/wand125/square-packing-bounds/tree/2fad66e02f54a492835dc41ac37a9184e1e7a662/certificates/mixed_n39_L665).
+      No registration was requested: an intake pass of the source found it. The
+      source says parts of the work were produced with AI assistance under human
+      direction.
+    scope: {n_values: [39]}
+    verification: V3
+    confirmation: C3
+    significance:
+      score: 3
+      rationale: >-
+        The strongest verified lower bound on record at n = 39, by 0.015 above T-074,
+        and the strongest reported. The certificate kind of T-099 on a declared net,
+        checked at the source by a copy of this repository's verifier rather than its
+        C++ checker; no new technique, at S3 as T-096, T-099 and T-100 are.
+      scored: '2026-10-06'
+      by: docs/project/reviews/review-2026-10-06-wand125-check2-ten-certificates.md (repository; confirms the registering lane's draft)
+    novelty: previously-published
+    attribution:
+      source_keys: ['[wand125 mixed bounds check2 2026-10-06]']
+      published: '2026-10-06'
+    composition: >-
+      One primary certificate on its reported entry and its replay entry. The replay is
+      sqverify-fast at all 416 directions of the net the retained candidate declares: one
+      interval-certified method, replayed here by an implementation that shares the
+      producer's components, C3, on the census route, whose conditions for a declared net
+      this certificate meets. The source's own check is a copy of the same crate, and its
+      C++ checker was run here at sampled directions only, so no second implementation and
+      no second method stands beside it.
+    evidence:
+      - E-n039-wand125-mixed-665-report
+      - E-n039-wand125-mixed-665-sqverify-fast-replay
+    reviews:
+      - path: docs/project/reviews/review-2026-10-06-wand125-check2-ten-certificates.md
+        kind: adversarial
+        reviewer: Claude Opus 5.5 (claude-opus-5-5), the tbd-strong sub-agent, prompted separately from lane R7 of the second 6 October intake round that retained, audited and registered T-102 to T-111, sharing none of its context beyond the brief and the committed record, after registration and before any complete replay, allowed to run its own checks at one thread and barred from the source's adapted crate
+        reviewer_kind: ai
+        relation: project
+        date: '2026-10-06'
+        scope: >-
+          wand125's ten certificates of 6 October pinned at 2fad66e0, nine check2
+          bundles and the n = 29 proof bundle: the argument from certificate to bound,
+          the three declared nets re-derived in exact arithmetic, the 1/5002 net among
+          them, against the scope of the declared-net soundness review; what check2
+          changes and which code confirms it; the source's run and control logs, every
+          control witness recomputed exactly with code of its own; every number in the
+          records; the first-party audit, bundle and cpp-sample commands; and the
+          drafted significance, at eb004e7c5. It ran the source's C++ checker at one
+          node each of mixed_n41_L6775 and mixed_n18_L4705.
+        verdict: accepted
+        covers: [T-102, T-103, T-104, T-105, T-106, T-107, T-108, T-109, T-110, T-111]
+    artifacts:
+      - packing/resources/web/wand125-mixed-bounds-check2-2026-10-06/README.md
+      - packing/resources/web/wand125-mixed-bounds-check2-2026-10-06/receipts/n39-L665/audit.json
+      - packing/resources/web/wand125-mixed-bounds-check2-2026-10-06/receipts/n39-L665/bundle.json
+      - packing/resources/web/wand125-mixed-bounds-check2-2026-10-06/receipts/n39-L665/compare-census.json
+      - packing/resources/web/wand125-mixed-bounds-check2-2026-10-06/receipts/n39-L665/cpp-sample/nodes-0394-0415.json
+      - packing/devtools/audit_wand125_declared_net.py
+      - packing/sqverify_fast/SOUNDNESS.md
+      - packing/benchmarks/measure-verifier/census-mixed/census.json
+      - packing/benchmarks/measure-verifier/census-mixed/wand125-mixed-bounds-check2-2026-10-06/mixed_n39_L665.jsonl.gz
+      - packing/devtools/sqverify_fast_census.py
+      - docs/project/reviews/review-2026-10-06-wand125-check2-ten-certificates.md
+      - docs/project/reviews/review-2026-10-06-sqverify-fast-declared-net-soundness.md
+    controls:
+      - packing/benchmarks/measure-verifier/census-mixed/wand125-mixed-bounds-check2-2026-10-06/mixed_n39_L665.control.json
+      - packing/tests/test_sqverify_fast_census.py
+      - packing/tests/test_audit_wand125_declared_net.py
+    next_rung: >-
+      V4 and C4 need two adversarial AI reviews of this result by distinct reviewers and a
+      human oversight record; one is retained. A complete run of the source's C++ checker
+      over all 416 directions (devtools.audit_wand125_declared_net cpp-sample, about 83
+      CPU-hours at the samples' rate) would add a check that shares no code with
+      sqverify_fast beside the rung, though it is the producer's own code.
+    notes: >-
+      Raised from V0/C1 on 6 October 2026 (think-yrdj) by the sqverify-fast replay, 3,870
+      CPU seconds at one thread, with its controls. It rests on the review of 2026-10-06
+      that read this certificate, recorded in reviews; the soundness review of 6 October
+      of sqverify-fast's declared-net change, which accepted the crate source of the
+      replay's build for a format M certificate on a declared net; and the review of 5
+      October that accepted the census route as a complete replay here for a certificate
+      meeting its conditions.
+
+      n = 39's verified lower bound moves from T-074's 1327/200 to 133/20. The tarball is
+      pinned by digest and not retained, and the adapted crate inside it is pinned and not
+      opened. It was registered under the provisional id T-116.
+
+      Renumbered from the provisional T-116 to T-110 when lane R7 merged on 6 October 2026,
+      with the other nine of the ten, the next ids after the register's T-101, in every
+      record, view, test and tool that names them. The review of the ten is stored as its
+      reviewer wrote it and is not edited, so it names them by the provisional ids, its
+      title included: its "T-108", "T-109", "T-110", "T-111", "T-112", "T-113", "T-114",
+      "T-115", "T-116" and "T-117" are T-102, T-103, T-104, T-105, T-106, T-107, T-108,
+      T-109, T-110 and T-111, in that order, and its "T-116" is this entry, T-110.
+
+  - id: T-111
+    kind: lower-bound
+    registered: '2026-10-06'
+    headline: "Mixed rectangle-measure lower bound verified at `n = 41`, on a declared net"
+    claim: >-
+      A rectangle density of wand125/square-packing-bounds, checked at coverage one on a
+      net it declares and published on 6 October 2026, proves s(41) >= 271/40 = 6.775.
+
+      The certificate is a density of 376 uniform rectangles in D4 orbits, and no point
+      mass, of total mass 4099999/100000, on the net T-096's certificate declares: core
+      side 999/1000 and 416 half-angle tangents of step 1/1001. Since 999/1000 (1 +
+      1/1001) = 500499/500500 < 1, and the last tangent 415/1001 is past tan(pi/8), every
+      unit square contains a concentric core at a net angle strictly in its interior.
+
+      The source reports every such core capturing mass at least one at all 416
+      directions, by sqverify-proof-net, its copy of this repository's sqverify_fast
+      changed to read the declared net, and ships no record of its C++ checker for this
+      certificate.
+
+      The value is above 169/25 = 6.76, the source's rectangle certificate rect_n41_L676
+      and the reported (T-068) and verified (T-074) lower bound at n = 41 before it, by
+      0.015.
+
+      The certificate was decided here on 6 October 2026 by sqverify-fast, this
+      repository's clean-room measure verifier, at all 416 directions of the net the
+      candidate declares, and two mutants scaled below coverage one were refused:
+      confirmed, re-implemented sharing the producer's components. The source's check is a
+      copy of the same crate with one change, so the two share the sqverify_fast crate;
+      their records agree direction by direction, and their agreement is not a second
+      implementation. The source's C++ checker, the producer's own code but sharing none
+      with the crate, verified the candidate here at threshold one at nodes 409 and 415,
+      the least-bound node of the source's run among them, and was not run in full:
+      samples that decide those nodes only.
+
+      wand125 after Tokoharu and Levy,
+      [square-packing-bounds](https://github.com/wand125/square-packing-bounds/tree/2fad66e02f54a492835dc41ac37a9184e1e7a662/certificates/mixed_n41_L6775).
+      No registration was requested: an intake pass of the source found it. The
+      source says parts of the work were produced with AI assistance under human
+      direction.
+    scope: {n_values: [41]}
+    verification: V3
+    confirmation: C3
+    significance:
+      score: 3
+      rationale: >-
+        The strongest verified lower bound on record at n = 41, by 0.015 above T-074,
+        and the strongest reported. The certificate kind of T-099 on a declared net,
+        checked at the source by a copy of this repository's verifier rather than its
+        C++ checker; no new technique, at S3 as T-096, T-099 and T-100 are.
+      scored: '2026-10-06'
+      by: docs/project/reviews/review-2026-10-06-wand125-check2-ten-certificates.md (repository; confirms the registering lane's draft)
+    novelty: previously-published
+    attribution:
+      source_keys: ['[wand125 mixed bounds check2 2026-10-06]']
+      published: '2026-10-06'
+    composition: >-
+      One primary certificate on its reported entry and its replay entry. The replay is
+      sqverify-fast at all 416 directions of the net the retained candidate declares: one
+      interval-certified method, replayed here by an implementation that shares the
+      producer's components, C3, on the census route, whose conditions for a declared net
+      this certificate meets. The source's own check is a copy of the same crate, and its
+      C++ checker was run here at sampled directions only, so no second implementation and
+      no second method stands beside it.
+    evidence:
+      - E-n041-wand125-mixed-6775-report
+      - E-n041-wand125-mixed-6775-sqverify-fast-replay
+    reviews:
+      - path: docs/project/reviews/review-2026-10-06-wand125-check2-ten-certificates.md
+        kind: adversarial
+        reviewer: Claude Opus 5.5 (claude-opus-5-5), the tbd-strong sub-agent, prompted separately from lane R7 of the second 6 October intake round that retained, audited and registered T-102 to T-111, sharing none of its context beyond the brief and the committed record, after registration and before any complete replay, allowed to run its own checks at one thread and barred from the source's adapted crate
+        reviewer_kind: ai
+        relation: project
+        date: '2026-10-06'
+        scope: >-
+          wand125's ten certificates of 6 October pinned at 2fad66e0, nine check2
+          bundles and the n = 29 proof bundle: the argument from certificate to bound,
+          the three declared nets re-derived in exact arithmetic, the 1/5002 net among
+          them, against the scope of the declared-net soundness review; what check2
+          changes and which code confirms it; the source's run and control logs, every
+          control witness recomputed exactly with code of its own; every number in the
+          records; the first-party audit, bundle and cpp-sample commands; and the
+          drafted significance, at eb004e7c5. It ran the source's C++ checker at one
+          node each of mixed_n41_L6775 and mixed_n18_L4705.
+        verdict: accepted
+        covers: [T-102, T-103, T-104, T-105, T-106, T-107, T-108, T-109, T-110, T-111]
+    artifacts:
+      - packing/resources/web/wand125-mixed-bounds-check2-2026-10-06/README.md
+      - packing/resources/web/wand125-mixed-bounds-check2-2026-10-06/receipts/n41-L6775/audit.json
+      - packing/resources/web/wand125-mixed-bounds-check2-2026-10-06/receipts/n41-L6775/bundle.json
+      - packing/resources/web/wand125-mixed-bounds-check2-2026-10-06/receipts/n41-L6775/compare-census.json
+      - packing/resources/web/wand125-mixed-bounds-check2-2026-10-06/receipts/n41-L6775/cpp-sample/nodes-0409-0415.json
+      - packing/devtools/audit_wand125_declared_net.py
+      - packing/sqverify_fast/SOUNDNESS.md
+      - packing/benchmarks/measure-verifier/census-mixed/census.json
+      - packing/benchmarks/measure-verifier/census-mixed/wand125-mixed-bounds-check2-2026-10-06/mixed_n41_L6775.jsonl.gz
+      - packing/devtools/sqverify_fast_census.py
+      - docs/project/reviews/review-2026-10-06-wand125-check2-ten-certificates.md
+      - docs/project/reviews/review-2026-10-06-sqverify-fast-declared-net-soundness.md
+    controls:
+      - packing/benchmarks/measure-verifier/census-mixed/wand125-mixed-bounds-check2-2026-10-06/mixed_n41_L6775.control.json
+      - packing/tests/test_sqverify_fast_census.py
+      - packing/tests/test_audit_wand125_declared_net.py
+    next_rung: >-
+      V4 and C4 need two adversarial AI reviews of this result by distinct reviewers and a
+      human oversight record; one is retained. A complete run of the source's C++ checker
+      over all 416 directions (devtools.audit_wand125_declared_net cpp-sample, about 37
+      CPU-hours at the samples' rate) would add a check that shares no code with
+      sqverify_fast beside the rung, though it is the producer's own code.
+    notes: >-
+      Raised from V0/C1 on 6 October 2026 (think-yrdj) by the sqverify-fast replay, 2,135
+      CPU seconds at one thread, with its controls. It rests on the review of 2026-10-06
+      that read this certificate, recorded in reviews; the soundness review of 6 October
+      of sqverify-fast's declared-net change, which accepted the crate source of the
+      replay's build for a format M certificate on a declared net; and the review of 5
+      October that accepted the census route as a complete replay here for a certificate
+      meeting its conditions.
+
+      n = 41's verified lower bound moves from T-074's 169/25 to 271/40. The tarball is
+      pinned by digest and not retained, and the adapted crate inside it is pinned and not
+      opened. It was registered under the provisional id T-117.
+
+      Renumbered from the provisional T-117 to T-111 when lane R7 merged on 6 October 2026,
+      with the other nine of the ten, the next ids after the register's T-101, in every
+      record, view, test and tool that names them. The review of the ten is stored as its
+      reviewer wrote it and is not edited, so it names them by the provisional ids, its
+      title included: its "T-108", "T-109", "T-110", "T-111", "T-112", "T-113", "T-114",
+      "T-115", "T-116" and "T-117" are T-102, T-103, T-104, T-105, T-106, T-107, T-108,
+      T-109, T-110 and T-111, in that order, and its "T-117" is this entry, T-111.
+
+  - id: T-112
     kind: uniqueness
     registered: '2026-10-06'
     headline: "Trump's packing is the only optimal packing of eleven squares, up to symmetry"

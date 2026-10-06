@@ -11,7 +11,7 @@ The question of the value of $s(n)$ is simple, but the answer is an open problem
 most $n$. In many cases, $s(n)$ is known only to lie between an upper bound (the size of
 the enclosing square for the tightest packing ever discovered, such as
 $s(29) \le 5.934$) and a lower bound (a size below which it is proved that no packing
-can exist, such as the reported $s(29) \ge 5.7975$).
+can exist, such as the reported $s(29) \ge 5.81$).
 
 <!-- END SHARED: project-intro -->
 
@@ -37,18 +37,21 @@ mathematical composition (`V3/C3/S5`: machine-checked, review record pending);
 [T-011](packing/frontier/RESULTS.md) verifies Trump’s matching witness.
 The same argument, read at side exactly $T$, shows that Trump’s packing is the only
 optimal one up to the eight symmetries of the container and relabelling of the squares:
-[T-102](packing/frontier/RESULTS.md) registers that direct corollary of T-060, which
+[T-112](packing/frontier/RESULTS.md) registers that direct corollary of T-060, which
 adds no computation.
-On 6 October 2026 Queuingtheorydotcom reported a complete Lean 4 formalization of the
-optimality theorem,
-[11SquaresFormalized](https://github.com/Queuingtheorydotcom/11SquaresFormalized/tree/cdc746ed907d258057c283aeb6d077cb2c27e349):
-7,920 modules with no admitted goal, its numerical certificates checked by
-`native_decide`, so it trusts Lean’s compiler as well as its kernel.
-This project has not yet reviewed or replayed it.
 The [case record](packing/frontier/n-011.md),
 [review](docs/project/reviews/review-2026-09-29-n11-optimality.md), and
 [retained packet](packing/resources/web/n11-optimality-2026-09-29/README.md) state what
 the confirmation depends on and the reproducibility defects found in the source.
+On 6 October 2026 the proof was announced as formalized in Lean 4 “thanks to Astra and
+Claude”, in
+[11SquaresFormalized](https://github.com/Queuingtheorydotcom/11SquaresFormalized) by
+Queuingtheorydotcom and contributors.
+This project’s statement audit reads its theorem as exactly $s(11) = T$, and its source
+reports that its full verification run, resumed from earlier validated receipts, passed,
+trusting Lean’s compiler for its numerical certificates.
+It is recorded on T-060 as the source’s report; a complete build this record can rest
+on, and a human expert’s review of the formalization, are still to come.
 
 **The results live on the project site,
 [Square Packing](https://jlevy.github.io/squares/).** It carries the

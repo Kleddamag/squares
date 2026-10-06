@@ -1,0 +1,20 @@
+{
+  "kind": "wand125-declared-net-cpp-sample/v1",
+  "certificate": "mixed_n20_L4905",
+  "status": "SAMPLE_VERIFIED",
+  "nodes": [679,831],
+  "workers": 1,
+  "node_limit": 4000000,
+  "threshold": "1",
+  "started": "2026-10-06T15:31:16Z",
+  "ended": "2026-10-06T15:39:30Z",
+  "rows": [{"index":679,"verified":true,"status":"ANGLE_VERIFIED","nodes":210793,"lower":1.0000004964172489,"frontier_boxes":0,"exact_witnesses":0,"wall_seconds":207.32530374599446,"cpu_seconds":181.40665800000002,"check2_lower":1.000000000154736,"check2_nodes":205251,"check2_seconds":3.069078125},{"index":831,"verified":true,"status":"ANGLE_VERIFIED","nodes":243315,"lower":1.0000003740633827,"frontier_boxes":0,"exact_witnesses":0,"wall_seconds":285.29267530499783,"cpu_seconds":218.769046,"check2_lower":1.0000002351042394,"check2_nodes":235883,"check2_seconds":1.5499935}],
+  "sample_cpu_seconds": 400.2,
+  "candidate_digest": "687ce2fbac0922881d6c3819c1a2ce17a16f87b517e3e0f9a2e488b8eb29b2d6",
+  "checker_sha256": "89b674a6feabe24d91c29431de1624907c4bff83280ceb481475455686693652",
+  "tarball": {"name":"n20-L4.905-check2-bundle.tar.gz","sha256":"aa6721222289fcacf2dd5a9704a089b18f52aaa36cce7622e6d9036123a926cb","bytes":202312},
+  "binding": {"status":"BUNDLE_BOUND_TO_PACKET_AND_NET","listed_files":15},
+  "environment": {"python":"3.14.7","cxx":"c++ (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0","niceness":10},
+  "loadavg_end": [7.6591796875,7.7060546875,7.3388671875],
+  "scope": "The source's C++ checker, mixed_rotated_verify.cpp 89b674a6..., run fresh by the source's own driver functions from the retained mixed_n50_L740 code at the listed oblique nodes of the declared net, at threshold one. It shares no code with sqverify_fast. Not a complete check: it decides the listed nodes only."
+}

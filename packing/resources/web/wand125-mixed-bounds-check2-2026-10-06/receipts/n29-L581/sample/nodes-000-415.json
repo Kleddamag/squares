@@ -1,0 +1,28 @@
+{
+  "kind": "wand125-declared-net-sample/v1",
+  "certificate": "mixed_n29_L581",
+  "status": "SAMPLE_REPLAYED",
+  "nodes": [0,1,364,415],
+  "workers": 1,
+  "started": "2026-10-06T17:35:09Z",
+  "ended": "2026-10-06T17:54:53Z",
+  "rows": [
+    {"index":0,"status":"AXIS_CERTIFICATE_REPLAYED","cells":11309769,"integer_minimum":1.003704246326725,"upstream":{"status":"AXIS_CERTIFICATE_REPLAYED","digest":"e481f15bb52ecfb29bca2e4fbfc6c3931b2508e8c9d53f25628c1659ab9ae43f","cells":11309769,"gamma":"1","integer_minimum":1.003704246326725,"scope":"Net angle zero only, no full packing certification."},"matches_upstream":true,"wall_seconds":91.19496714200068,"cpu_seconds":72.225344},
+    {"index":1,"status":"ANGLE_RESULT_REPLAYED","nodes":199169,"lower":1.0000003335089447,"upstream_nodes":199169,"upstream_lower":1.0000003335089447,"upstream_seconds":127.652854695,"matches_upstream":true,"wall_seconds":144.53876334000233,"cpu_seconds":75.114007},
+    {"index":364,"status":"ANGLE_RESULT_REPLAYED","nodes":408265,"lower":1.000000000892745,"upstream_nodes":408265,"upstream_lower":1.000000000892745,"upstream_seconds":573.653279397,"matches_upstream":true,"wall_seconds":552.4932153830014,"cpu_seconds":336.698217},
+    {"index":415,"status":"ANGLE_RESULT_REPLAYED","nodes":443569,"lower":1.000000061214044,"upstream_nodes":443569,"upstream_lower":1.000000061214044,"upstream_seconds":409.145564813,"matches_upstream":true,"wall_seconds":393.1219647339967,"cpu_seconds":371.08918500000004}
+  ],
+  "sample_cpu_seconds": 855.1,
+  "candidate_digest": "e481f15bb52ecfb29bca2e4fbfc6c3931b2508e8c9d53f25628c1659ab9ae43f",
+  "wall_seconds": 1183.4965649419973,
+  "bundle_records": {"oblique_records":415,"gammas":["1"],"statuses":["ANGLE_VERIFIED"],"axis_status":"AXIS_VERIFIED","frontier_boxes":0,"nodes":128316129,"least_lower":1.000000000892745,"upstream_oblique_seconds":152186.968504354,"upstream_axis_seconds":52.08548128000257},
+  "upstream_oblique_seconds_total": 152186.968504354,
+  "sample_cpu_over_upstream_seconds": 0.7050296827606347,
+  "estimated_full_oblique_cpu_hours": 29.80453614581317,
+  "scope": "The source's per-angle replay functions and unchanged C++ checker on the listed indices, after the full driver's preconditions; not a complete replay.",
+  "tarball": {"name":"n29-L5.81-proof-bundle.tar.gz","sha256":"057d3df36634f062d6eaad37d5c3195bb2c0adfcd7ba7ce6e149d8333be9dc56","bytes":38874443},
+  "binding": {"status":"BUNDLE_BOUND_TO_PACKET_AND_NET","listed_files":1266,"code_files":10},
+  "environment": {"OPENBLAS_NUM_THREADS":"1","OMP_NUM_THREADS":"1","PYTHONOPTIMIZE":null},
+  "host": {"platform":"Linux-6.18.44-fc-v70-x86_64-with-glibc2.39","cpu":"Intel(R) Xeon(R) Processor @ 2.80GHz","logical_cpus":4,"python":"3.14.7 (main, Sep 29 2026, 15:01:40) [Clang 22.1.3 ]","c++":"c++ (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0","rustc":"rustc 1.97.0 (2d8144b78 2026-07-07)","cargo":"cargo 1.97.0 (c980f4866 2026-06-30)"},
+  "loadavg_end": [5.07373046875,6.27099609375,8.35888671875]
+}

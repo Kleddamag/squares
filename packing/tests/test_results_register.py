@@ -67,6 +67,21 @@ def test_a_dated_records_own_title_is_not_held_to_the_register(tmp_path: Path) -
     assert re.findall(r"\bT-\d{3}\b", remaining) == ["T-118"]
 
 
+def test_the_check2_reviews_title_keeps_the_provisional_range() -> None:
+    """T-102 to T-111 were registered as the provisional T-108 to T-117, and the review of
+    the ten, stored as its reviewer wrote it, names that range in its title. The synopsis
+    quotes the title, and the quoted link is left out of the mention check, so the
+    provisional T-112 to T-117, ids the register does not hold, are not refused there."""
+    document_map = safe_load(check_results.DOCUMENT_MAP.read_text(encoding="utf-8"))
+    links = check_results.record_links(document_map)
+    review = "docs/project/reviews/review-2026-10-06-wand125-check2-ten-certificates.md"
+    (quoted,) = [link for link in links if link.endswith(f"({review})")]
+    assert "(T-108 to T-117)" in quoted
+    synopsis = check_results.REPO / "SYNOPSIS.md"
+    assert quoted in synopsis.read_text(encoding="utf-8")
+    assert quoted not in check_results.reader_tier_text(synopsis, links)
+
+
 def test_confirmation_ladder_on_synthetic_atoms() -> None:
     assert derive_confirmation([]) == "C0"
     read_only = {
@@ -1116,15 +1131,15 @@ def test_a_declared_supersession_on_a_bound_fails_the_register_gate(
     )
 
 
-def test_t036_is_superseded_in_part_by_t060_and_t102() -> None:
+def test_t036_is_superseded_in_part_by_t060_and_t112() -> None:
     """T-060's `s(11) = T` implies T-036's bound clause for every packing and not its
-    equality clause, since T-060 makes no claim of uniqueness (think-7df0); T-102, the
+    equality clause, since T-060 makes no claim of uniqueness (think-7df0); T-112, the
     uniqueness corollary of T-060, implies the equality clause (think-d1bd)."""
     record, _, _ = _live_record("T-036")
     declared = record["superseded_by"]
     assert [(item["result"], item["extent"]) for item in declared] == [
         ("T-060", "part"),
-        ("T-102", "part"),
+        ("T-112", "part"),
     ]
     first = " ".join(declared[0]["what"].split())
     assert first.startswith("The first clause")

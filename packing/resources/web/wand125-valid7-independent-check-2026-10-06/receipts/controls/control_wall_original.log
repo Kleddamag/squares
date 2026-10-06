@@ -1,0 +1,6 @@
+# command: /tmp/claude-0/-home-user-squares/1fb2d4ab-96d0-5b24-9e36-157598bdbf06/scratchpad/r3/venv/bin/python src/tier_b2.py cover/K4_k008_box9.txt 81/20 83/20 1/2 3/5 0 1/64
+# cwd: a work dir staged by devtools.audit_validtilt9_independent stage, driver v2, with the mutant covers devtools.audit_validtilt9_independent control wrote
+# python3: a scratch venv: CPython 3.14.7 with python-flint 0.9.0
+# host: 4 cores; load 4.36 5.38 6.41; started 2026-10-06T07:03:09Z
+{'ok': True, 'lines': 34, 'dropped': 202, 'pairs': 273, 'values': 86} 2.2s
+# finished 2026-10-06T07:03:11Z; exit 0; wall 2.418 s; CPU 2.2 s (user 2.127 + sys 0.023); load 4.57 5.40 6.41

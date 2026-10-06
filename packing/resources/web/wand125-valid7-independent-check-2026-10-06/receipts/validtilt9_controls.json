@@ -1,0 +1,39 @@
+{
+  "kind": "validtilt9-independent-controls/v1",
+  "ok": true,
+  "problems": [],
+  "mutants": {
+    "M1_wall_1e-4.txt": "df989b86ec74ff4ba341d84282cd4e649c5c3b82a6890f058408c6ebb50b6577",
+    "M2_leb_1e-4.txt": "5d1c8eb1a705829c391fe7248995bcb7f3cf5ed74118ce444bc62cf8ca08ecc6"
+  },
+  "controls": [
+    {
+      "control": "wall_original",
+      "expect": "{'ok': True",
+      "found": true,
+      "exit": 0,
+      "cpu_seconds": 2.2
+    },
+    {
+      "control": "wall_M1",
+      "expect": "{'ok': False",
+      "found": true,
+      "exit": 0,
+      "cpu_seconds": 0.3
+    },
+    {
+      "control": "lebesgue_original",
+      "expect": "VERIFIED",
+      "found": true,
+      "exit": 0,
+      "cpu_seconds": 0.2
+    },
+    {
+      "control": "lebesgue_M2",
+      "expect": "NOT VERIFIED",
+      "found": true,
+      "exit": 0,
+      "cpu_seconds": 0.3
+    }
+  ]
+}

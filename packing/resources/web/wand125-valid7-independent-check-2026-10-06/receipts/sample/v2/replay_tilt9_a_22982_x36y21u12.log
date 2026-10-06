@@ -1,0 +1,8 @@
+# command: /tmp/claude-0/-home-user-squares/1fb2d4ab-96d0-5b24-9e36-157598bdbf06/scratchpad/r3/venv/bin/python -c 'import multiprocessing, runpy, sys; multiprocessing.set_start_method('"'"'fork'"'"'); sys.argv = sys.argv[1:]; sys.path.insert(0, '"'"'src'"'"'); runpy.run_path(sys.argv[0], run_name='"'"'__main__'"'"')' src/run_all.py cover/K4_k008_box9.txt --centers 18/5 37/10 21/10 11/5 --u 3/8 13/32 --ubins 1 --amin 1/1280 --bmid-u 7/16 --bmid-w 1/20 --nproc 1 --record runs/replay_tilt9_a_22982_x36y21u12.jsonl
+# cwd: a work dir staged by devtools.audit_validtilt9_independent stage, driver v2; run_all.py unmodified, launched under the fork start method
+# python3: a scratch venv: CPython 3.14.7 with python-flint 0.9.0
+# host: 4 cores; load 7.32 6.84 7.18; started 2026-10-06T06:53:36Z
+roots 1, already done 0
+new roots 1 leaves {'TIERB2': 4} uncertified 0 counterexamples 0 cpu 335.8s
+VERIFIED
+# finished 2026-10-06T06:59:12Z; exit 0; wall 336.280 s; CPU 263.7 s (user 263.180 + sys 0.539); load 5.60 6.51 6.98

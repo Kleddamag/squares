@@ -8,8 +8,8 @@ ours, which rest on someone else's argument, and how far each has been checked.
 
 ## The short version
 
-- **323** evidence records. **182** are formal; **175** of those were established here.
-- **133** rest on an argument made elsewhere, of which **7** have been read by nobody here.
+- **325** evidence records. **183** are formal; **176** of those were established here.
+- **134** rest on an argument made elsewhere, of which **7** have been read by nobody here.
 - **40** claim to be first established here. **14** make no novelty statement at all - not assessed, which is not the same as not novel.
 
 A formal claim on an unread external proof is still formal: the proof proves its
@@ -266,7 +266,9 @@ results, it is a statement about what this repository has itself examined.
 | `E-n087-chang-2026-09-exact-replay` | 1 | upper-bound | verified | equalities and inequalities, no tolerance | here | - | previously-published | independent | `V-upper-bound-promotion`, `V-check-rational-witness-independent` |
 | `E-k2m4-evand-family-report` | 9 | lower-bound | reported | - | elsewhere | informally-verified | previously-published | producer’s code | `V-evand-qx2-zm-py`, `V-evand-lean` |
 | `E-k2m4-evand-validtilt9-qx2-report` | 0 | lower-bound | reported | - | elsewhere | - | previously-published | producer’s code | `V-evand-qx2-zm-py` |
+| `E-k2m4-wand125-validtilt9-report` | 0 | lower-bound | reported | - | elsewhere | informally-verified | previously-published | independent | `V-wand125-valid7-checker`, `V-audit-validtilt9-independent` |
 | `E-k2m4-evand-lean-report` | 0 | lower-bound | reported | - | elsewhere | - | previously-published | producer’s code | `V-evand-lean` |
+| `E-k2m4-evand-bentz4-lean-build` | 0 | exact-value | verified | its theorem, against a named kernel | here | - | previously-published | producer’s code | `V-evand-lean` |
 | `E-n020-evand-point-cover-4886-report` | 0 | lower-bound | reported | - | elsewhere | - | previously-published | producer’s code | `V-evand-zmx2`, `V-evand-zm-mixed-py` |
 | `E-n051-wand125-mixed-746-report` | 0 | lower-bound | reported | - | elsewhere | informally-verified | previously-published | producer’s code | `V-wand125-mixed-rotated-verify-cpp`, `V-wand125-verify-mixed-full-proof-py` |
 | `E-n052-wand125-mixed-755-report` | 1 | lower-bound | reported | - | elsewhere | informally-verified | previously-published | producer’s code | `V-wand125-mixed-rotated-verify-cpp`, `V-wand125-verify-mixed-full-proof-py` |
@@ -348,10 +350,10 @@ results, it is a statement about what this repository has itself examined.
 
 ## What the register rests on
 
-- **assurance**: numerically-checked 4, reported 137, verified 182
-- **method**: exact-algebraic 100, interval-certified 69, numerical-multiprecision 4, proof-assistant-checked 3, proof-audited 3, published-proof 7, reported 137
-- **novelty**: apparently-novel 40, common-knowledge 4, not assessed 14, previously-published 265
-- **relationship to the producer's code**: generator 5, independent-implementation 70, not-applicable 20, same-implementation 215, shared-components 7, unknown-historical 6
+- **assurance**: numerically-checked 4, reported 138, verified 183
+- **method**: exact-algebraic 100, interval-certified 69, numerical-multiprecision 4, proof-assistant-checked 4, proof-audited 3, published-proof 7, reported 138
+- **novelty**: apparently-novel 40, common-knowledge 4, not assessed 14, previously-published 267
+- **relationship to the producer's code**: generator 5, independent-implementation 71, not-applicable 20, same-implementation 216, shared-components 7, unknown-historical 6
 
 The `cases` column is how many frontier records cite each piece of evidence, and it is the reason to read this table rather than count records. Ranked below are the *formal* records only: a `reported` record cited across the frontier may be a shared catalogue and is labelled as such, which is the register working rather than risk. The risk is a verified claim resting on an argument nobody has examined.
 

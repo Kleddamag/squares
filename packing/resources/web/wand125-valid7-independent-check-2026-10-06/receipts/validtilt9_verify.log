@@ -1,0 +1,18 @@
+# command: env PY=/tmp/claude-0/-home-user-squares/1fb2d4ab-96d0-5b24-9e36-157598bdbf06/scratchpad/r3/venv/bin/python sh verify_tilt9.sh
+# cwd: a scratch export (git archive) of wand125/valid7-independent-check c561dbb3; runs/tilt9/ holds the four release files of records-tilt9-v1, downloaded first and checked against records.sha256, so the script's curl step fetched nothing
+# python3: a scratch venv: CPython 3.14.7 with python-flint 0.9.0, as requirements.txt pins
+# host: 4 cores; load 6.16 5.58 5.04; started 2026-10-06T05:44:09Z
+--- sha256 of the downloaded files
+tilt9_a.jsonl.gz: OK
+tilt9_b.jsonl.gz: OK
+tilt9_c.jsonl.gz: OK
+--- decompress and check the uncompressed files
+tilt9_a.jsonl: OK
+tilt9_b.jsonl: OK
+tilt9_c.jsonl: OK
+--- check_record.py --claim tilt on the three records (tiling of the region, EMPTY leaves, rechecks)
+recheck seed 2467181006204197608
+claim tilt roots 28350 leaf kinds {'CORE': 6565165, 'TIERB2': 2940689, 'EMPTY': 31489}
+RECORD OK
+verify_tilt9.sh: done (RECORD OK)
+# finished 2026-10-06T05:54:09Z; exit 0; wall 599.625 s; CPU 581.6 s (user 567.403 + sys 14.166); load 8.05 7.53 6.29

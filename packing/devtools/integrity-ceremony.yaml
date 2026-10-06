@@ -40,6 +40,9 @@ allowlist:
   - path: packing/src/sqpack/research/unitsquare_precision.py
     kind: download
     boundary: A Kingbird SVG fetched by URL and held against its pinned digest (H2).
+  - path: packing/devtools/evand_exact_certificates.py
+    kind: download
+    boundary: Evan Daniel's exact certificates and checker sources at 13ee36e against the digests the packet pinned at retention, and the controls derived from them against their receipts' digests (#375).
   - path: packing/devtools/audit_s12_v11_certificate.py
     kind: download
     boundary: squarepacker's v1.1 certificate and Daniel's points against the digests the source and the 2 October packet pinned (#363).

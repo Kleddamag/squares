@@ -203,15 +203,17 @@ stopped, measured session whose update closes administration without replacing t
 handoff. It requires an explicit `stop_reason` and the ordinary certification
 disposition; never use it on active or completed work.
 
-Resource measurement has one corresponding stopped state for native harness data that is
-no longer available.
+Resource measurement has one corresponding stopped state, with two reasons: native
+harness data that is no longer available, and rollups that exist but are withheld
+because they key turns by model identifier, which the session’s agents may not commit.
 Declare `resource_rollups: []` and a `resource_usage_unmeasured` object whose reason is
-`native_harness_data_unavailable`, whose detail says what source is missing, and whose
-`disposition_bead` names the bead under which that absence was investigated and
-recorded. Set `handoff_role` to `administrative_closeout` when terminalizing the old
-record only closes its accounting history, or to `work_handoff` when the session still
-owns the current work entry.
-The checker rejects a syntactically valid bead that `tbd` definitively reports missing.
+`native_harness_data_unavailable` or `rollup_withheld_model_identifiers`, whose detail
+says what source is missing or names the withheld logs, and whose `disposition_bead`
+names the bead under which that absence was investigated and recorded.
+Set `handoff_role` to `administrative_closeout` when terminalizing the old record only
+closes its accounting history, or to `work_handoff` when the session still owns the
+current work entry. The checker rejects a syntactically valid bead that `tbd`
+definitively reports missing.
 When `tbd` is unavailable or cannot answer, bead existence remains unresolved rather
 than turning the tracker into a build dependency.
 This records that usage is unknown; session clocks, delegation durations, prose

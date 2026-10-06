@@ -5,7 +5,7 @@ title: Verify the wand125 mixed backlog (T-090, T-091, T-094; n != 17) with sqve
 kind: task
 status: in_progress
 priority: 1
-version: 5
+version: 6
 delegate: claude-code@vm
 labels:
   - result-import
@@ -14,7 +14,7 @@ parent_id: is-01m46g4yac7ewc22drc7twjhy5
 hold: null
 hold_until: null
 created_at: 2026-10-05T17:00:30.498Z
-updated_at: 2026-10-06T01:32:48.355Z
+updated_at: 2026-10-06T01:56:09.908Z
 started_at: 2026-10-05T17:06:26.474Z
 ---
 
@@ -46,3 +46,4 @@ Is a review required:
 - Queue: T-091 (evening 10-04 packet) running since 18:35; n53 VERIFIED 1,352 CPU-s / 2,176 s wall.
 - 2026-10-06 01:45 T-091 done: 41468f546 (12 census rows VERIFIED, 21,613 CPU-s = 6.0 CPU-h, 6.8 wall-h at two threads, load 4-15; 12 controls refused), ce4423003 (records: T-091 V3/C3; verified bound moves at 17 counts n = 53..95; route review listed on T-091, covers [T-091, T-094]), d25992c91 re-pin. test_result_status +1 (T-072 superseded at n = 76): 35 -> 36 on this branch.
 - Stopped at the T-091 boundary at the owner's request (coordinator 2026-10-06 00:5x). Not started: T-090 (16 certs; priced 7.1 CPU-h, about 8.4 wall-h at two threads, by T-091's 17.6 us of CPU per source node), T-082/think-wpuu (22 certs; 8.7 CPU-h, about 10.3 wall-h). Format T leftovers (think-r7yt's T-077 rect n20/n42/n70 and think-j8f1's T-046 n51/57/58/72/73/91) are already VERIFIED in census/ since #332 (182-371 CPU-s each); they need a format-T --control mode and records only. think-3tgc's rect_n93_L973 has no packet; nothing moves at n = 93 from it (verified now 781/80). T-097 (s(66)) dropped from this lane: the coordinator does its exit on the coordinator branch with --control/--evidence.
+- 2026-10-06 02:00 7c490df1b test fix (T-007 audit, n = 73 now T-091). Reachable tests on d25992c91+fix: 4985 passed, 9 failed (8 not lane C: 5 browser-floor eslint for missing typescript-eslint, 2 fixed_core known, 1 site_glyphs n11 review 12 vs 11 also at 04a0a2217; 1 mine, test_t007 n73, fixed in 7c490df1b). --records: only the known think-d135. Rust target removed.

@@ -956,6 +956,8 @@ evidence:
       The step at S = T is prose, audited by the GPT-6 Pro review of 3 October and the
       paper's own review, and is not mechanised. No receipt records the side of the
       packing it was applied to, because none of the cap-U certificates depends on it.
+      The certificate is T-060's composition receipt, whose endpoint_argument is written
+      for S < T, and the verifiers decide T-060's premises, not the step at S = T.
     novelty: apparently-novel
     novelty_basis:
       corpus: >-
@@ -974,15 +976,15 @@ evidence:
       novel_object: >-
         A global uniqueness statement for an optimal packing of eleven squares. Trump 2023,
         Friedman DS7 and the Kingbird catalogue call Trump's packing rigid, which is local.
-        The upstream proof states uniqueness only within its case 438
-        (src/evidence/research/candidate-capture/CANDIDATE438_CAPTURE.md: every packing of
-        side S <= T satisfying that antecedent is the exact construction up to the
-        quarter turn and labels) and concludes only s(11) = T in PROOF.md section 10. The
+        The upstream proof states uniqueness only for the near branch of its case 438, at
+        side S <= T (PROOF.md section 8: the local theorem forces the near-branch packing
+        to be the exact construction), and concludes only s(11) = T in section 10. The
         global corollary was first written by GPT-6 Pro's adversarial review received on 3
         October 2026 and stated conditionally in this project's paper from v0.1.2 (commit
         1676145d5); before that the paper declined it. No source found proves it. At n =
         10 Stromquist 1984 and 2003 give three optimal packings, so uniqueness is not
-        automatic at a solved count.
+        automatic at a solved count (Stromquist 1984, memorandum II, p. 1: "Three
+        different packings of ten unit squares").
 
   - id: E-wand125-tools-ceiling-report
     claim: derived-structure

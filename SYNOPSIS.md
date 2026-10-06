@@ -581,6 +581,8 @@ case or experiment separately.
 | [wand125’s `s(18) ≥ 47/10` on a Declared Net and `s(66) ≥ 843/100`: Review of T-096, T-097 and the sqverify-fast Declared-Net Change](docs/project/reviews/review-2026-10-05-wand125-declared-net-n18-n66.md) | dated review record | record | retained | — |
 | [sqverify-fast on `main` (`d97758bb…`): Soundness Re-Review of the Declared-Net Change](docs/project/reviews/review-2026-10-06-sqverify-fast-declared-net-soundness.md) | dated review record | record | retained | — |
 | [sqverify-fast Declared Nets: Re-Check of the Fixes for DR-1 to DR-3 (`36b52538a`) and the Proposed Flip](docs/project/reviews/review-2026-10-06-sqverify-fast-declared-net-fix-check.md) | dated review record | record | retained | — |
+| [sqverify-fast Census `--control`: Review of the FC-1 Fix (`9f36ede38`)](docs/project/reviews/review-2026-10-06-sqverify-fast-census-control-fc1.md) | dated review record | record | retained | — |
+| [sqverify-fast Census `--control`: Re-check of the FC-1 Fix Response (`f1ddc2379`)](docs/project/reviews/review-2026-10-06-sqverify-fast-census-control-fc1-recheck.md) | dated review record | record | retained | — |
 | [Proof Review: squarepacker’s v1.1, `s(12) ≥ 7943/2000 = 3.9715`](docs/project/reviews/review-2026-10-05-s12-v11-certificate.md) | dated review record | record | retained | — |
 | [Integration of GPT-6 Pro’s Adversarial Review of the Eleven-Square Optimality Proof](docs/project/reviews/review-2026-10-03-n11-gpt6-pro-review-integration.md) | dated review record | record | retained | — |
 | [Eleven-Square Optimality Paper: Adversarial Review](docs/project/reviews/review-2026-10-03-n11-optimality-paper-adversarial.md) | dated review record | record | retained | — |

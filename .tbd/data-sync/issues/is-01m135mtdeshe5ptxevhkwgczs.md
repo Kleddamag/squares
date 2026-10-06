@@ -5,12 +5,15 @@ title: Reconcile the figure record's derived facts back into the frontier
 kind: task
 status: open
 priority: 2
-version: 3
+version: 5
+spec_path: docs/project/specs/active/plan-2026-10-06-exact-side-values.md
 labels: []
-dependencies: []
+dependencies:
+  - type: blocks
+    target: is-01m49m1tk3gwmq69h2k876033s
 parent_id: is-01m12zjr144a4kg6rnv1t0pm6n
 created_at: 2026-08-28T03:12:05.550Z
-updated_at: 2026-08-28T03:12:18.683Z
+updated_at: 2026-10-06T22:06:23.843Z
 ---
 atlas/known-best/composite-figure.json now computes facts the corpus does not hold, and marks each with provenance "derived". Today that is 84 algebraic degrees and 10 perfect-square rigidity determinations. The record is the review surface; the corpus is still the gap.
 

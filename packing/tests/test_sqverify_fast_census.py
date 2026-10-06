@@ -345,7 +345,14 @@ def format_t_problems(name: str) -> list[str]:
     receipt = RECTANGLES / entry["packet"] / f"{name}.jsonl.gz"
     summary = json.loads(gzip.decompress(receipt.read_bytes()).splitlines()[-1])
     control = controls().get(name) or {}
+    metadata = raw.get("certificate") or {}
     holds = {
+        "metadata restates the standard net": (
+            Fraction(str(metadata.get("D", "83/40000"))) == Fraction(83, 40000)
+            and int(metadata.get("angle_count", census.STANDARD_DIRECTIONS))
+            == census.STANDARD_DIRECTIONS
+        ),
+        "no declared net": "proof_net" not in raw and "net" not in raw,
         "n and L are the row's": (n, premises["L"]) == (entry["n"], entry["L"]),
         "format T": premises["format"] == "T",
         "no point or segment": "points" not in raw and "segments" not in raw,
@@ -471,7 +478,8 @@ def test_one_control_capture_is_recomputed_from_the_candidate() -> None:
 
 def test_one_format_t_control_capture_is_recomputed_from_the_candidate() -> None:
     """The centre's capture, and the 99/100 mutant's at its witness, by
-    `sqpack.rectangle_density`, which shares no code with the crate."""
+    `sqpack.rectangle_density`, which was written before the crate and shares no code
+    with it, though the crate's authors read it (INDEPENDENCE.md)."""
     receipt = controls()[RECOMPUTED_T]
     case = rectangle_cases()[RECOMPUTED_T]
     candidate = load_candidate(case.candidate, n=case.n)

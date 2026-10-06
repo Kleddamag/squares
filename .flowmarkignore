@@ -180,6 +180,14 @@ docs/project/reviews/review-2026-09-08-extending-s11-lower-bound-note.md
 # a period escaped after a number that opens a line.
 docs/project/reviews/review-2026-10-05-s12-v11-certificate.md
 
+# A separately prompted adversarial review of the sqverify-fast format T route (lane R5 of
+# the 2026-10-06 intake, think-6ei5), stored byte for byte as its reviewer printed it, footer
+# included: SHA-256 a0409b9c.... The register cites it as a review record, and the lane
+# brief that ran it requires the reviewer's output unchanged. Measured on 2026-10-06 with
+# the pinned flowmark-rs 0.4.0 on a copy: 431 lines added and 156 removed, almost all
+# reflow, with straight apostrophes retyped as curly in the reviewer's prose.
+docs/project/reviews/review-2026-10-06-sqverify-fast-format-t-route.md
+
 # The GitHub math probe: each case's exact characters are what is measured. Measured on a
 # copy with the pinned flowmark-rs 0.4.0 on 2026-09-30, the formatter changes four of its
 # cases -- a straight quote retyped as curly, an underscore italic rewritten with stars,

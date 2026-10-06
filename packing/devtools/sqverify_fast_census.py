@@ -556,6 +556,11 @@ def control(
     least = entry.get("least_bound_leaf_exact") or {}
     if entry.get("status") != "VERIFIED" or not least:
         raise SystemExit(f"{case.certificate}: control needs a verified census entry")
+    if rectangle_family(case) and not entry.get("threshold"):
+        raise SystemExit(
+            f"{case.certificate}: a format T row records no threshold; re-run it on "
+            "reviewed source before a control"
+        )
     threshold = Fraction(str(entry.get("threshold") or 1))
     # The rectangle family passes Tokoharu's threshold; formats M and L declare theirs.
     passed = str(threshold) if rectangle_family(case) else None
@@ -1058,7 +1063,8 @@ def rectangle_evidence_entry(
         if controlled == built
         else (
             f"a build of crate source {controlled[:8]}..., {control_source.statement}, "
-            f"binary {str(receipt['binary_sha256'])[:8]}..."
+            f"binary {str(receipt['binary_sha256'])[:8]}..., whose format T path is the "
+            f"row's build's ({FORMAT_T_ROUTE_REVIEW} read the diff)"
         )
     )
     replay = (
@@ -1093,7 +1099,9 @@ def rectangle_evidence_entry(
         f"{premises['B']} with B(1 + D) < 1 and the net of {directions} half-angles of step "
         f"{premises['D']}, from {premises['source_rectangles']} rectangle orbits "
         f"({premises['expanded_rectangles']:,} distinct images) and no point or segment, and "
-        f"took format T's centre domain (Tokoharu's), at threshold {threshold}. The axis "
+        f"took format T's centre domain (Tokoharu's), at threshold {threshold}; the file's "
+        "metadata restates that net, and no other field of it but the weights and "
+        "rectangles was read for the decision. The axis "
         f"direction was decided by an exact-event vertex sweep over {axis['vertices']:,} "
         f"vertices, least certified capture {axis['min_certified_lower_bound']!r}; the other "
         f"{directions - 1} by interval branch and bound over {entry['nodes']:,} boxes, least "
@@ -1102,23 +1110,43 @@ def rectangle_evidence_entry(
         f"{least['r']}) is {float(Fraction(least['exact_coverage'])):.10f}. Every direction "
         f"verified, summary VERIFIED, exit 0, {float(entry['cpu_seconds']):,.0f} CPU "
         f"seconds at {entry['threads']} threads and {float(entry['wall_seconds']):,.0f} "
-        "seconds of wall time on a shared 4-core x86-64 Linux container under load, in the "
-        "census of 3 October 2026. The build is rustc 1.98.0, release, x86-64 Linux, "
-        f"source_sha256 {built[:8]}...: {reviewed.statement}. "
+        "seconds of wall time on a shared x86-64 Linux host, load average "
+        f"{float(entry['load_before']):.1f} when it began. The build is rustc 1.98.0, "
+        f"release, x86-64 Linux, source_sha256 {built[:8]}...: {reviewed.statement}. "
         "It decides coverage independently of the source's checker: the crate was written "
         "without opening it (packing/sqverify_fast/INDEPENDENCE.md) and shares no code with "
         "it. It shares the theorem, the net, the core side, Tokoharu's centre domain and the "
         "threshold, so a defect in that mathematics would affect both: a second "
-        "implementation, not a second method. Its node counts and bounds are its own, not "
-        f"the certificate's records. Controls on {date}, on {controls_built}, at index "
-        f"{receipt['index']} and threshold {threshold}: the original verified again, every "
-        f"weight scaled by 99/100 refused ({runs['scaled-99-100']['verdict']}, "
+        "implementation, not a second method, and one that needs no smoothing margin. Its "
+        "node counts and bounds are its own, not the certificate's records. Controls on "
+        f"{date}, on {controls_built}, at threshold "
+        f"{threshold} at index {receipt['index']}, at the least-bound leaf centre of least "
+        f"exact capture over the {receipt['centres_weighed']} oblique directions "
+        f"({float(Fraction(receipt['exact_capture_independent'])):.10f}): the original "
+        "verified again there, every weight scaled by 99/100 refused "
+        f"({runs['scaled-99-100']['verdict']}, "
         f"{uncovered_below(runs['scaled-99-100'], threshold)}), and every weight scaled so "
-        "that the exact capture at the least-bound leaf's centre is at most the threshold "
-        f"less 10^-6 of it refused ({runs['near-threshold']['verdict']}, "
+        "that the exact capture at that centre is at most the threshold less 10^-6 of it "
+        f"refused ({runs['near-threshold']['verdict']}, "
         f"{uncovered_below(runs['near-threshold'], threshold)}); each capture was evaluated "
-        "again by sqpack.rectangle_density, an exact evaluator written apart from the "
-        "crate, and tests/test_sqverify_fast_census.py holds the receipts."
+        "again by sqpack.rectangle_density, an exact evaluator written before the crate "
+        "and sharing no code with it, which the crate's authors read in full "
+        "(INDEPENDENCE.md), so the agreement does not exclude a misreading of the format "
+        "common to both; the exact preflight pins that reading apart from either, since "
+        "the checker input it regenerates from the candidate hashes to the digest the "
+        "source's accepting run recorded. tests/test_sqverify_fast_census.py holds the "
+        f"receipts. The review of the format T route, {FORMAT_T_ROUTE_REVIEW}, re-ran "
+        "three directions on a binary of the control build, which reproduced the census "
+        "receipts field for field, and recomputed two receipts' captures with its own exact "
+        "code. "
+        + (
+            "The source's own checker was also replayed here in full on this certificate, "
+            "a reproduction with the producer's code recorded in the packet's "
+            "receipts/replay."
+            if source_replayed(case)
+            else "The source's own checker was not run here on this certificate, and its "
+            "records are not reproduced."
+        )
     )
     scope = str(case.n)
     lines = [
@@ -1185,8 +1213,28 @@ def uncovered_below(run: dict[str, Any], threshold: Fraction) -> str:
     """Where a control's mutant was shown, exactly, to capture less than the threshold."""
     mutation = run["mutation"]
     if Fraction(mutation["capture_at_centre"]) < threshold:
-        return "exact capture below the threshold at the least-bound leaf's centre"
+        return "exact capture below the threshold at that centre"
     return "exact capture below the threshold at its witness"
+
+
+def source_replayed(case: Case) -> bool:
+    """Whether the packet's receipt records a passed complete replay of this format T
+    certificate by the source's own checker (`devtools.audit_wand125_rectangles`)."""
+    receipt = case.candidate.parents[3] / "receipts/replay/audit.json"
+    if not receipt.is_file():
+        receipt = receipt.with_name("audit.json.gz")
+    if not receipt.is_file():
+        return False
+    data = receipt.read_bytes()
+    record = json.loads(gzip.decompress(data) if data[:2] == b"\x1f\x8b" else data)
+    return any(
+        item.get("certificate") == case.certificate
+        and item.get("status") == "PASS"
+        and (item.get("replay") or {}).get("status") == "PASS"
+        and ((item.get("replay") or {}).get("summary") or {}).get("angle_cases")
+        == STANDARD_DIRECTIONS
+        for item in record.get("cases", [])
+    )
 
 
 def replay_reference() -> dict[str, dict[str, Any]]:

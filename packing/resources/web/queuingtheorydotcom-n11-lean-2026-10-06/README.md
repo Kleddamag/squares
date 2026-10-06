@@ -8,13 +8,18 @@ public theorem is `ElevenSquare.optimality : ElevenSquare.Optimality`, and its R
 reports that the proof passed a full verification run and final axiom audit, with
 numerical certificates trusted to Lean’s compiler through `native_decide`.
 
-Square Packing Fan
-([@ManassehA06](https://x.com/ManassehA06/status/2107508501610217640)) announced the
-formalization on 6 October 2026; the retained post, the first of a thread, names neither
-the repository nor who did the work, and the rest of the thread was not retrieved (X
-answered 429). This import has
-no issue of its own: jlevy/squares#317, the owner’s $n = 11$ umbrella, is where wand125
-reported on 4 October that both Lean formalizations were in progress.
+Queuingtheorydotcom, who posts on X as
+[@ManassehA06](https://x.com/ManassehA06/status/2107508501610217640), announced the
+formalization on 6 October 2026, so the announcement is the author’s own.
+The retained post is the first of a thread and does not name the repository; the rest of
+the thread was not retrieved (X answered 429). The same day the owner, Joshua Levy,
+quoted it in [a post of his own](https://x.com/ojoshe/status/2107513739222380935) that
+gives the formalization’s context and calls it “a Lean formalization from @ManassehA06”,
+and confirmed that @ManassehA06 on X and Queuingtheorydotcom on GitHub are the same
+person. The same X account announced 11SquaresOptimal, `T-060`’s source, on 29
+September, when this record took it down as @MathCompSciFTW’s.
+This import has no issue of its own: jlevy/squares#317, the owner’s $n = 11$ umbrella,
+is where wand125 reported on 4 October that both Lean formalizations were in progress.
 
 ## Source and Pin
 
@@ -25,7 +30,9 @@ reported on 4 October that both Lean formalizations were in progress.
 | Committed | 2026-10-06T05:23:42Z (01:23:42 in the commit’s −04:00), by the generic identity “Square Packing Contributors” that `docs/PUBLICATION.md` describes |
 | Retrieved | 2026-10-06T18:41Z, a blobless, depth-1, sparse clone; `main` pointed at this commit |
 | Licence | No licence file at the root and none stated in `README.md`. `integrations/wand125/` keeps three MIT notices for the incorporated work of wand125 and Evan Daniel, and `PROVENANCE.md` says it assigns no new licence to anything else |
-| Announcement | Square Packing Fan (@ManassehA06), 2026-10-06T16:29:17Z, retained as [`receipts/announcement/tweet-2107508501610217640.json`](receipts/announcement/tweet-2107508501610217640.json), the post as X’s syndication endpoint returned it at 18:43Z |
+| Announcement | Queuingtheorydotcom as @ManassehA06 (display name “Square Packing Fan”, account 1499452114313129988), 2026-10-06T16:29:17Z, retained as [`receipts/announcement/tweet-2107508501610217640.json`](receipts/announcement/tweet-2107508501610217640.json), the post as X’s syndication endpoint returned it at 18:43Z |
+| Owner’s post | Joshua Levy ([@ojoshe](https://x.com/ojoshe/status/2107513739222380935)), 2026-10-06T16:50:05Z, quoting the announcement; retained as [`receipts/announcement/tweet-2107513739222380935.json`](receipts/announcement/tweet-2107513739222380935.json), as the same endpoint returned it at 22:22Z. It is a long post, edited once from 2107513041701273913 of 16:47:19Z; the endpoint returns only its first 276 characters, as does X’s oEmbed endpoint, and the rest was not retained |
+| Earlier announcement | 11SquaresOptimal’s, 2026-09-29T03:17:20Z, which the 29 September intake recorded as @MathCompSciFTW’s and the [review article](../../../devtools/templates/n11-optimality-review-article.md) still links at that handle; retained as [`receipts/announcement/tweet-2104772485816168618.json`](receipts/announcement/tweet-2104772485816168618.json), fetched at 22:22Z, when X served it as @ManassehA06’s, from account 1499452114313129988 |
 | Request | None. Bead `think-8spq` (epic `think-wyf4`) imports it at the owner’s request; jlevy/squares#317 is the $n = 11$ umbrella |
 
 The proof sources are not this repository’s own history. `README.md`, `ASSEMBLY.md` and
@@ -58,10 +65,16 @@ The announcement reads, in full: “The optimality of the packing for 11 squares
 formalized in lean thanks to Astra and Claude! Huge thanks to @ojoshe, @kleddamag,
 @wand_125, @guzhou0806, and @ctjlewis for aiding in the process.” @ojoshe is Joshua Levy,
 this project’s owner. The post links this project’s $n = 11$ page as its image credit.
-The record credits the formalization from `ACKNOWLEDGEMENTS.md`, and names Square Packing
-Fan only as the announcer.
+It is the author’s own announcement: @ManassehA06 is Queuingtheorydotcom, whom
+`ACKNOWLEDGEMENTS.md` credits with developing and integrating the formalization.
+The owner’s post quoting it reads, as far as X returned it: “Exciting to see a
+resolution of the long-standing geometry problem of packing 11 squares.
+The proof is layered with an optimality proof and now a Lean formalization from
+@ManassehA06 assembled over the last few days, with assistance from @ctjlewis
+@guzhou0806 and others. It…”. The record credits the formalization from
+`ACKNOWLEDGEMENTS.md`.
 
-**AI assistance, in the source’s own terms.** The announcement credits Astra and Claude
+**AI assistance, in the source’s own terms.** The author’s announcement credits Astra and Claude
 for the formalization. The repository’s files make no statement of AI assistance:
 `AGENTS.md` is a set of rules addressed to agents working on the formalization, and
 `PC_RESUME.md` and `SIMPLIFICATION_HANDOFF.md` name working branches with the prefix

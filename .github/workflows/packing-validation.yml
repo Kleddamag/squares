@@ -1013,6 +1013,38 @@ jobs:
         if: "steps.measure-cache.outputs.cache-hit == 'true'"
         run: git ls-files -z -- sqverify_fast | xargs -0 touch -t 200001010000
 
+      - name: Key the native n17 kernel cache on its sources and compiler
+        id: n17-native-key
+        working-directory: packing/n17bb_native
+        run: |
+          rustc_vv="$(rustc -vV)"
+          echo "tree=$(git rev-parse HEAD:packing/n17bb_native)" >> "$GITHUB_OUTPUT"
+          echo "rustc=$(printf '%s' "$rustc_vv" | sha256sum | cut -c1-16)" >> "$GITHUB_OUTPUT"
+
+      - name: Restore the native n17 kernel build
+        id: n17-native-cache
+        uses: actions/cache/restore@0400d5f644dc74513175e3cd8d07132dd4860809 # v4.2.4
+        with:
+          path: packing/n17bb_native/target
+          key: >-
+            ${{ runner.os }}-n17bb-native-${{ steps.n17-native-key.outputs.rustc }}-${{
+            steps.n17-native-key.outputs.tree }}
+          restore-keys: |
+            ${{ runner.os }}-n17bb-native-${{ steps.n17-native-key.outputs.rustc }}-
+
+      # The build helper runs the same floor and builds the gate's step uses, so a populated
+      # target leaves the step only incremental work.
+      - name: Populate the native n17 kernel build for this exact tree
+        id: n17-native-populate
+        if: "steps.n17-native-cache.outputs.cache-hit != 'true'"
+        run: >-
+          uv run --frozen --all-extras --group dev python -m devtools.build_n17_bb_native
+          --output-dir n17bb_native/target/python
+
+      - name: Date native n17 kernel sources before their identical cached build
+        if: "steps.n17-native-cache.outputs.cache-hit == 'true'"
+        run: git ls-files -z -- n17bb_native | xargs -0 touch -t 200001010000
+
       - name: Run the required pull-request measure verifier tier
         run: >-
           uv run --frozen --all-extras --group dev
@@ -1027,6 +1059,16 @@ jobs:
         with:
           path: packing/sqverify_fast/target
           key: ${{ steps.measure-cache.outputs.cache-primary-key }}
+
+      - name: Save the native n17 kernel build intermediates
+        if: >-
+          always() && steps.n17-native-cache.outcome == 'success' &&
+          steps.n17-native-cache.outputs.cache-hit != 'true' &&
+          steps.n17-native-populate.outcome == 'success'
+        uses: actions/cache/save@0400d5f644dc74513175e3cd8d07132dd4860809 # v4.2.4
+        with:
+          path: packing/n17bb_native/target
+          key: ${{ steps.n17-native-cache.outputs.cache-primary-key }}
 
       - name: Preserve validation timings and partial logs
         if: always()

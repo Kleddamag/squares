@@ -464,6 +464,7 @@ PRUNE = frozenset(
         ROOT / "sqsearch/target",
         ROOT / "sqverify_exact/target",
         ROOT / "sqverify_fast/target",
+        ROOT / "n17bb_native/target",
         ROOT / "witnesses/prospective",
         # The exact certificates of T-056 and T-057 join on 2026-09-29, when their intake
         # (jlevy/squares#227) put the snapshot at 174,743,423 bytes against the
@@ -516,6 +517,7 @@ LINK_BACK = (
     Path("sqsearch/target"),
     Path("sqverify_exact/target"),
     Path("sqverify_fast/target"),
+    Path("n17bb_native/target"),
 )
 # Individual files rescued from `PRUNE` because a check that runs inside a worker reads
 # that exact path. `clone_tree` copies precisely this tuple and `snapshot_source_bytes`
@@ -862,6 +864,7 @@ LINKED_PRUNE_ROOTS = (
             ROOT / "sqsearch/target",
             ROOT / "sqverify_exact/target",
             ROOT / "sqverify_fast/target",
+            ROOT / "n17bb_native/target",
         }
     ),
     REPO / ".github/workflows",

@@ -24,6 +24,7 @@ from devtools.result_status import (
     STATUSES,
     activity_label,
     activity_problems,
+    latest_review,
     open_issues,
     status,
     status_line,
@@ -108,6 +109,26 @@ def test_an_open_review_verdict_makes_a_result_incomplete_whatever_its_rung(
         reviews=[review(verdict, "2026-09-20"), review("defects-resolved", "2026-09-30")],
     )
     assert status(resolved, EVIDENCE) == CONFIRMED
+
+
+def test_of_reviews_on_one_day_the_one_listed_last_decides() -> None:
+    """A review and the check of its fixes can share a date, as T-098's did on
+    2026-10-06; the list is in the order they were written, so the later one decides
+    whichever way it goes."""
+    same_day = "2026-10-06"
+    resolved = record(
+        "C3",
+        "E-replay",
+        reviews=[review("defect-open", same_day), review("defects-resolved", same_day)],
+    )
+    assert status(resolved, EVIDENCE) == CONFIRMED
+    reopened = record(
+        "C3",
+        "E-replay",
+        reviews=[review("accepted", same_day), review("defect-open", same_day)],
+    )
+    assert status(reopened, EVIDENCE) == INCOMPLETE
+    assert latest_review([]) is None
 
 
 def test_a_failed_replay_makes_a_result_incomplete() -> None:
@@ -228,12 +249,27 @@ def test_superseded_is_marked_on_a_bound_and_where_a_later_result_is_declared() 
     # Slivková's piercing bound (T-087) at both of its counts; thirty-four since 5 October,
     # when R071's replay (T-093) superseded R068 (T-043) at n = 17; thirty-five later that
     # day, when wand125's n = 84 certificate of 5 October (T-094), decided here by
-    # sqverify-fast, superseded T-071 at the last count it held.
-    assert len(derived) == 35
-    assert {"T-020", "T-021", "T-030", "T-043", "T-044", "T-047", "T-049", "T-087"} <= set(
-        derived
-    )
-    assert {str(records.results[entry]["kind"]) for entry in derived} == {"lower-bound"}
+    # sqverify-fast, superseded T-071 at the last count it held; thirty-seven since 6
+    # October, when Evan Daniel's exact optima (T-098) took the last counts of Couzo's
+    # first certificates (T-057) and his second (T-092), the first upper bounds here to
+    # be superseded.
+    assert len(derived) == 37
+    assert {
+        "T-020",
+        "T-021",
+        "T-030",
+        "T-043",
+        "T-044",
+        "T-047",
+        "T-049",
+        "T-057",
+        "T-087",
+        "T-092",
+    } <= set(derived)
+    assert {str(records.results[entry]["kind"]) for entry in derived} == {
+        "lower-bound",
+        "upper-bound",
+    }
     # A result of another kind is marked only where its entry declares the whole of it
     # implied, and in part where it declares a part (think-rl2b).
     assert [entry for entry in marked if entry not in derived] == ["T-031"]

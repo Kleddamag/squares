@@ -104,20 +104,33 @@ def open_issues(record: Record, evidence: Evidence) -> list[str]:
                     f"the read of {review.get('date')} found a defect in {ref}, and no "
                     "replay here has passed"
                 )
-    reviews = list(record.get("reviews") or [])
-    if reviews:
-        latest = max(reviews, key=lambda review: str(review.get("date", "")))
-        if latest.get("verdict") in OPEN_VERDICTS:
-            reasons.append(
-                f"the review of {latest.get('date')} ends {latest.get('verdict')}: "
-                f"{latest.get('path')}"
-            )
+    latest = latest_review(list(record.get("reviews") or []))
+    if latest is not None and latest.get("verdict") in OPEN_VERDICTS:
+        reasons.append(
+            f"the review of {latest.get('date')} ends {latest.get('verdict')}: "
+            f"{latest.get('path')}"
+        )
     reasons.extend(
         f"the replay of {ref} failed"
         for ref, entry in cited
         if entry.get("replay_status") == FAILED_REPLAY
     )
     return reasons
+
+
+def latest_review(reviews: Sequence[Mapping[str, Any]]) -> Mapping[str, Any] | None:
+    """The latest-dated review, and of reviews dated the same day the one listed last.
+
+    A `reviews` list is in the order its documents were written, and a review and the
+    check of its fixes can share a date: T-098's adversarial review and the check that
+    dispositions its findings were both written on 2026-10-06. `max` alone keeps the
+    first of a tie, which would read the defect the later document resolved as open.
+    """
+    latest: Mapping[str, Any] | None = None
+    for review in reviews:
+        if latest is None or str(review.get("date", "")) >= str(latest.get("date", "")):
+            latest = review
+    return latest
 
 
 def status(record: Record, evidence: Evidence) -> str:

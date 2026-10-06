@@ -2,7 +2,7 @@ softschema:
   contract: packing.squares:FrontierEvidenceSet/v1
   schema: frontier-evidence.schema.yaml
   status: enforced
-last_reviewed: '2026-10-05'
+last_reviewed: '2026-10-06'
 evidence:
   - id: E-n017-kleddamag-rational-upper
     claim: upper-bound
@@ -754,6 +754,129 @@ evidence:
       the fast final composer is only an evidence reconciler. Neither uniqueness
       nor a broader rigidity classification is claimed.
     source_reviewed: '2026-09-30'
+
+  - id: E-n011-lean-formalization-report
+    claim: exact-value
+    scope: {n_values: [11]}
+    assurance: reported
+    reported_method: proof-assistant-checked
+    performed_by: source-author
+    relationship_to_generator: same-implementation
+    origin: external
+    novelty: previously-published
+    source_key: '[Queuingtheorydotcom 11SquaresFormalized 2026]'
+    certificate: resources/web/queuingtheorydotcom-n11-lean-2026-10-06/11SquaresFormalized/ElevenSquare/Optimality.lean
+    replay_status: not-attempted
+    verifiers: [V-queuingtheory-n11-lean, V-audit-n11-lean]
+    axioms_receipt: packing/resources/web/queuingtheorydotcom-n11-lean-2026-10-06/receipts/lean/axioms-public-theorems.json
+    proof:
+      source: packing/resources/web/queuingtheorydotcom-n11-lean-2026-10-06/11SquaresFormalized/ElevenSquare/Optimality.lean
+      theorem: >-
+        ElevenSquare.optimality : Optimality, where Optimality is Packable 11 T and, for
+        every real S with Packable 11 S, T <= S. Packable n S says there is a packing of n
+        closed unit squares, each given by a centre and an arbitrary real unit axis, every
+        one inside [0, S]^2, with pairwise disjoint open interiors; T = (6u+4)/(1+2u-u^2)
+        with u the unique root in [9/25, 37/100] of 5u^8-10u^7-2u^6+14u^5+12u^4-6u^3+2u^2+2u-1.
+      scope: >-
+        s(11) = T for eleven unit squares with independent arbitrary rotations, boundary
+        contact allowed and only open interiors required disjoint; the minimum is attained.
+        No uniqueness of the optimal packing is stated.
+      pinpoints: >-
+        ElevenSquare/Geometry.lean (Point, dot, normSq, perp, UnitSquare, localX, localY,
+        ClosedSquare, OpenSquare, InContainer, Packing, Packable); Endpoint.lean
+        (endpointPolynomial, u, u_bounds, u_unique, T); Foundations.lean (Optimality);
+        Construction.lean (construction_packable : Packable 11 T); Optimality.lean
+        (optimal_side_lower_bound, optimality); Pending/S09_GlobalLowerBound.lean
+        (global_lower_bound); Tasks/T07/GlobalComposition.lean
+        (global_lower_bound_of_case438_certificate), UnfinishedCapture.lean and
+        Ext/Case438Global.lean (case438_near_certificate); Verification.lean (the axiom
+        queries); the run's final audit and summary; receipts/lean/axioms-public-theorems.json
+        and receipts/tree-scan.json.
+      assumptions:
+        - The Lean 4.34.1 kernel and Mathlib d13f23b7 are sound, and so are Lean's compiler, code generator and runtime, which evaluate the 10,464 native_decide declarations whose 13,308 auxiliary axioms the theorem depends on; this is the source's stated trust model lean_kernel_and_native_compiler, not a kernel-only check.
+        - The run passed as the source reports. The run and its repository are private; this record holds the source's summary, provenance, integration review and final audit (pinned by SHA-256, matching the summary), not the run's logs or compiled objects, and no full build was repeated here.
+        - The definitions read in the 6 October statement audit are the ones the theorem uses. The audit reads them line by line, and a build here of the 18-module closure of ElevenSquare.Foundations elaborated them and checked by Iff.rfl that Optimality is IsLeast {S | Packable 11 S} T (receipts/lean/ in the packet); the full environment that would print the public theorem's own type was not built here.
+      audit_record: docs/project/reviews/review-2026-10-06-n11-lean-formalization-statement-audit.md
+    limitations: >-
+      The source reports this run, and nothing here observed or repeated it, so the entry
+      is reported and counts toward neither V nor C. The source's command, at
+      Queuingtheorydotcom/11SquaresFormalized cdc746ed with elan, is bash
+      scripts/run_verification.sh --bootstrap --jobs N: it installs leanprover/lean4:v4.34.1,
+      fetches Mathlib d13f23b7's cache, compiles the 7,920 local modules, runs the #print
+      axioms queries of ElevenSquare/Verification.lean, and passes only on status
+      OPTIMALITY_PROVED_WITH_NATIVE_CERTIFICATES with zero admissions and trust model
+      lean_kernel_and_native_compiler. The source reports that it passed in
+      EvolvingPrograms/11SquaresEvolving Actions run 37414883750 at 1bf942a7, a private
+      repository and run, resumed from earlier validated receipts; its summary, provenance
+      and integration review are retained and its final audit is pinned by SHA-256, but not
+      its logs or compiled objects.
+
+      What was checked here, by devtools.audit_n11_lean: the statement (the 6 October
+      audit), the axiom receipt extracted from the pinned final audit (propext,
+      Classical.choice, Quot.sound and 13,308 native_decide axioms, so the theorem trusts
+      Lean's compiler and is not kernel-only), the SHA-256 of all 7,920 modules of the
+      commit's archive against that audit, a token scan of every module, and a build of the
+      statement closure (E-n011-lean-statement-closure-build). The full build was not
+      attempted: the source's run used a 64-worker runner and about 7.94 GB of compiled
+      objects beyond Mathlib's, and this host has 4 shared cores and under 12 GB of free
+      disk. The doc-comments of Optimality.lean and Pending/S09_GlobalLowerBound.lean still
+      call the bound conditional; the final audit's axiom map is what says it is not.
+    source_reviewed: '2026-10-06'
+
+  - id: E-n011-lean-statement-closure-build
+    claim: upper-bound
+    scope: {n_values: [11]}
+    assurance: verified
+    method: proof-assistant-checked
+    performed_by: repository
+    relationship_to_generator: same-implementation
+    origin: replayed-here
+    novelty: previously-published
+    source_key: '[Queuingtheorydotcom 11SquaresFormalized 2026]'
+    certificate: resources/web/queuingtheorydotcom-n11-lean-2026-10-06/11SquaresFormalized/ElevenSquare/Construction.lean
+    replay: >-
+      From packing/, with elan: .venv/bin/python3 -m devtools.audit_n11_lean stage --out W,
+      which writes the 18-module closure of ElevenSquare.Foundations, the three build pins and
+      the statement probe from the 2026-10-06 packet's retained bytes; then lake exe cache
+      get in W; then
+      .venv/bin/python3 -m devtools.audit_n11_lean build --dir W, which builds the closure
+      one module at a time in import order and runs lake env lean AuditN11Statement.lean,
+      which must elaborate without error and print that construction_packable depends on
+      axioms [propext, Classical.choice, Quot.sound]. The receipt, every command with its
+      complete output, is receipts/lean/build-statement-closure.log in the packet.
+    replay_status: passed
+    verifiers: [V-queuingtheory-n11-lean, V-audit-n11-lean]
+    axioms_receipt: packing/resources/web/queuingtheorydotcom-n11-lean-2026-10-06/receipts/lean/build-statement-closure.log
+    proof:
+      source: packing/resources/web/queuingtheorydotcom-n11-lean-2026-10-06/11SquaresFormalized/ElevenSquare/Construction.lean
+      theorem: >-
+        ElevenSquare.construction_packable : Packable 11 T: eleven closed unit squares, each
+        with its own real unit axis, inside [0, T]^2 with pairwise disjoint open interiors,
+        for T = (6u+4)/(1+2u-u^2) and u the unique root in [9/25, 37/100] of
+        5u^8-10u^7-2u^6+14u^5+12u^4-6u^3+2u^2+2u-1; so s(11) <= T.
+      scope: >-
+        The upper half of s(11) = T, Trump's packing at side T in the source's exact
+        construction, and the elaboration of the definitions the public statement uses. It
+        says nothing about the lower half, optimal_side_lower_bound.
+      pinpoints: >-
+        ElevenSquare/Construction.lean (constructionPacking, construction_packable);
+        ConstructionData.lean; Endpoint.lean (u, T, u_unique); Geometry.lean; the probe
+        receipts/lean/AuditN11Statement.lean (Optimality as IsLeast by Iff.rfl, T and the
+        polynomial by rfl, two non-vacuity controls); the build and probe receipts.
+      assumptions:
+        - The Lean 4.34.1 kernel (commit 5045d005) and Mathlib d13f23b7 from its official cache are sound. The 18 modules hold no native_decide, sorry, axiom, implemented_by, extern or unsafe outside comments, so construction_packable is kernel-checked on propext, Classical.choice and Quot.sound alone.
+      audit_record: docs/project/reviews/review-2026-10-06-n11-lean-formalization-statement-audit.md
+    limitations: >-
+      Built here on 6 October 2026 by lane N11, first from 18:49 to 18:57 UTC and again,
+      through devtools.audit_n11_lean build with every command's output kept, from 19:34 to
+      19:42 UTC: one module at a time with LEAN_NUM_THREADS=2, every module exit 0, the
+      Mathlib cache pruned to the 1,836 modules the closure imports to fit the disk; no
+      Mathlib module was rebuilt. It is the
+      statement closure only, the definitions and the attaining construction: the 7,920-module
+      proof of the lower half was not built here, and this entry is no replay of it. The
+      upper half it checks is T-011's, decided there by exact separating axes; this is a
+      second, kernel-checked route to it, in the formalization's own definitions.
+    source_reviewed: '2026-10-06'
 
   - id: E-wand125-tools-ceiling-report
     claim: derived-structure

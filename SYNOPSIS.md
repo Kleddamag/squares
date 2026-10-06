@@ -585,6 +585,8 @@ case or experiment separately.
 | [Eleven-Square Optimality Proof: The Delta for the Original Contributor](docs/project/reviews/review-2026-10-03-n11-optimality-upstream-delta.md) | dated review record | record | retained | — |
 | [Unified adversarial review of the tentative optimality proof for eleven squares](docs/project/reviews/review-2026-10-03-n11-optimality-adversarial-gpt6-pro-unified.md) | dated review record | record | retained | — |
 | [Changes in v0.1.4 of the Eleven-Square Optimality Review, for Its W2 Exposition Review](docs/project/reviews/review-2026-10-04-n11-optimality-paper-v0.1.4-changes.md) | dated review record | record | retained | — |
+| [Statement Audit: the Lean Formalization of Eleven-Square Optimality](docs/project/reviews/review-2026-10-06-n11-lean-formalization-statement-audit.md) | dated review record | record | retained | — |
+| [Adversarial Review: the Import of the Lean Formalization of Eleven-Square Optimality](docs/project/reviews/review-2026-10-06-n11-lean-formalization-adversarial.md) | dated review record | record | retained | — |
 | [wand125 Certificates of 3 and 4 October: Review of 28 Mixed Rectangle-Measure Bounds From `n = 42` to `n = 95`](docs/project/reviews/review-2026-10-05-wand125-october-4-certificates.md) | dated review record | record | retained | — |
 | [wand125 Certificates of 5 October and the Independent Replays: Review of `s(67) ≥ 212/25`, `s(84) ≥ 9411/1000` and the sqverify-fast Route](docs/project/reviews/review-2026-10-05-wand125-october-5-and-independent-replays.md) | dated review record | record | retained | — |
 | [Review: Couzo’s Revision of 3 October 2026, Seven Lower Sides From `n = 208` to `306` (T-092)](docs/project/reviews/review-2026-10-05-couzo-6042c56.md) | dated review record | record | retained | — |
@@ -1780,6 +1782,16 @@ mathematical composition, including all 2,180 exclusions, ten capture nodes, loc
 isolation, and the exact witness.
 The publisher’s four cached final-state digests are stale; our acceptance rests on fresh
 source-bound geometry, not those cached results.
+On 2026-10-06 the
+[Lean 4 formalization](packing/resources/web/queuingtheorydotcom-n11-lean-2026-10-06/README.md)
+of the proof, `ElevenSquare.optimality` in Queuingtheorydotcom/11SquaresFormalized,
+announced as formalized with Astra and Claude, entered the record as the source’s
+reported proof-assistant evidence.
+The statement audit reads its theorem as exactly T-060’s claim; the source reports that
+its full verification run, resumed from earlier receipts, passed with Lean’s compiler
+trusted for 13,308 `native_decide` axioms; and the statement closure and upper half were
+built here. It moves no rung until a complete build the record can rest on and a human
+expert’s review of the formalization are retained.
 T-037’s verified $s(11) > 31/8$ and T-059’s reported row-minimum equality retain their
 separate scopes. PR 246 merged with the verified result; the next handoff is a bounded
 fresh-ensemble replay entry point.

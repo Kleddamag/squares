@@ -2,7 +2,7 @@ softschema:
   contract: packing.squares:Bibliography/v1
   schema: bibliography.schema.yaml
   status: enforced
-last_reviewed: '2026-10-05'
+last_reviewed: '2026-10-06'
 # The citation fields a generator needs, keyed by the source keys the frontier records
 # use. The Markdown tables in README.md stay the human index; this file holds only what
 # a line of citation text is built from, for the keys something cites.
@@ -47,6 +47,30 @@ sources:
       announcement credits Kleddamag. No blanket license covers the collection.
       The public derivative has not had a fresh full geometric replay according to
       docs/PUBLICATION.md. Retained intake: web/n11-optimality-2026-09-29/.
+  - key: '[Queuingtheorydotcom 11SquaresFormalized 2026]'
+    authors: [Queuingtheorydotcom, ctjlewis, wand125, Gurevitch, Julian-JJ, Guzhou0806]
+    year: 2026
+    venue: GitHub
+    short_venue: Web
+    dated: '2026-10-06'
+    credit: Queuingtheorydotcom et al. after Levy, Daniel
+    lineage: builds-on-project
+    note: >-
+      11SquaresFormalized at cdc746ed907d258057c283aeb6d077cb2c27e349, the Lean 4
+      formalization of T-060's optimality proof. Square Packing Fan (@ManassehA06) posted on
+      6 October 2026 that it "has been formalized in lean thanks to Astra and Claude",
+      thanking Joshua Levy (@ojoshe), Kleddamag, wand125, Guzhou0806 and ctjlewis "for
+      aiding in the process"; the post, 1/n of a thread, links this project's n = 11 page as
+      its image credit and names neither who did the work nor the repository. Authors as read from
+      ACKNOWLEDGEMENTS.md: Queuingtheorydotcom (the underlying
+      computer-assisted proof, and the formalization's development and integration),
+      EvolvingPrograms and ctjlewis (verification infrastructure and the complete replay),
+      wand125 (n11-optimality-lean, certificate checkers, generated proofs), Benjamin
+      Gurevitch (T03), Julian-JJ (running the proof on an HPC cluster) and Guzhou0806
+      (proof, transport and verification work); it credits jlevy/squares for the exact
+      packing formulas, Evan Daniel for the square-packing definitions, and Walter Trump
+      for the packing. No licence at the root; MIT notices for the incorporated wand125
+      and Daniel work. Retained intake: web/queuingtheorydotcom-n11-lean-2026-10-06/.
   - key: '[wand125 tools 2026]'
     authors: [wand125]
     year: 2026
@@ -1305,6 +1329,7 @@ credited_names:
   Thomas Schadt: Schadt
   UnitSquare Project: UnitSquare Project
   Walter Trump: Trump
+  Benjamin Gurevitch: Gurevitch
   Ke Wang: Wang
   Can Li: Li
   Z.K. Shangitbayev: Shangitbayev

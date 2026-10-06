@@ -5200,7 +5200,7 @@ results:
     attribution:
       source_keys: ['[Queuingtheorydotcom n11 optimality 2026]']
       published: '2026-09-29'
-    evidence: [E-n011-global-optimality-report, E-n011-global-optimality-independent]
+    evidence: [E-n011-global-optimality-report, E-n011-global-optimality-independent, E-n011-lean-formalization-report]
     composition: >-
       The complete 2184-pattern cover and 2180 exclusions leave four symmetric
       survivors. The D4 bridge reduces these to case 438; the 14-round root
@@ -5210,6 +5210,14 @@ results:
       Trump witness attains `T`. All premises have completed exact executions, which is V3/C3.
       One adversarial AI review is retained and mapped, by GPT-6 Astra at max reasoning; it is
       not a human oversight record. No second machine method is claimed.
+
+      The Lean 4 formalization in 11SquaresFormalized states the whole claim as one theorem,
+      `ElevenSquare.optimality`, which the 6 October statement audit reads as this claim
+      with the same exact `T`. Its source reports that its full verification run, resumed
+      from earlier validated receipts, passed with an axiom audit that trusts Lean's
+      compiler for 13,308 `native_decide` axioms. That run is private and recorded as
+      reported, so it sets no rung; the build here covers the statement closure and the
+      upper half only.
     reviews:
       - path: docs/project/reviews/review-2026-09-29-n11-optimality-census-contract.md
         kind: adversarial
@@ -5231,10 +5239,24 @@ results:
       - packing/resources/web/n11-optimality-2026-09-29/receipts/exclusion-inventory.json
       - packing/resources/web/n11-optimality-2026-09-29/receipts/completion-inventory.json
       - docs/project/reviews/review-2026-09-29-n11-optimality.md
+      - packing/resources/web/queuingtheorydotcom-n11-lean-2026-10-06/README.md
+      - packing/resources/web/queuingtheorydotcom-n11-lean-2026-10-06/receipts/lean/axioms-public-theorems.json
+      - docs/project/reviews/review-2026-10-06-n11-lean-formalization-statement-audit.md
     next_rung: >-
+      V5 needs two records the register lacks. One is a complete build of the
+      11SquaresFormalized proof that the record can rest on, with its axiom receipt: run here
+      from the retained pin at its toolchain, or a third party's build retained here. The
+      source's own run is private and is recorded as reported
+      (E-n011-lean-formalization-report). The other is a retained formalization review by a
+      named human expert who is not its author and states competence in Lean and in the
+      mathematics, checking statement fidelity, the definitions, the axioms (the 13,308
+      `native_decide` axioms the theorem trusts to Lean's compiler among them) and that
+      build.
+
       V4 and C4 need the owner's oversight record and a second adversarial AI review by a
-      reviewer distinct from Astra. Rung 5 requires a proof-assistant formalization reviewed
-      by human experts. Engineering follow-up think-e2ot
+      reviewer distinct from Astra. C5 needs that build made here at the pinned toolchain,
+      an `open_review` pointer and two such expert reviews. Engineering
+      follow-up think-e2ot
       will orchestrate fresh whole-ensemble replay through reviewed state-equivalence
       bindings. Simplification was to precede the n11 explainer, tracked separately, which is
       now the [eleven-square optimality
@@ -5265,6 +5287,25 @@ results:
       that the prior-family proof does not use the 1,931-case baseline premise that the
       accepted certificates of cases 2175 and 2176 carry. This project has not reviewed
       or replayed either formalization, and no rung rests on them.
+
+      2026-10-06: the Lean 4 formalization in
+      [11SquaresFormalized](https://github.com/Queuingtheorydotcom/11SquaresFormalized) is
+      imported (bead think-8spq). Square Packing Fan (@ManassehA06) posted that day that the
+      optimality "has been formalized in lean thanks to Astra and Claude", thanking Joshua
+      Levy, Kleddamag, wand125, Guzhou0806 and ctjlewis; the retained first post of the
+      thread does not name the repository. Its acknowledgements credit Queuingtheorydotcom,
+      EvolvingPrograms and ctjlewis, wand125, Benjamin Gurevitch, Julian-JJ and Guzhou0806.
+
+      The 6 October statement audit reads its theorem ElevenSquare.optimality as this claim.
+      Its source reports that its full verification run passed in EvolvingPrograms run
+      37414883750, resumed from earlier receipts, with axioms propext, Classical.choice,
+      Quot.sound and 13,308 native_decide axioms: a compiler-trusting check, not a
+      kernel-only one. The run is private, so it is recorded as reported
+      (E-n011-lean-formalization-report), as the separately prompted adversarial review of
+      6 October asked; the full build was not repeated here, and the statement closure and
+      upper half were (E-n011-lean-statement-closure-build). Nothing about it raises C: the
+      owner asked that C stay where the confirming evidence puts it until everything is
+      imported.
 
   - id: T-061
     kind: lower-bound

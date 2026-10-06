@@ -595,6 +595,7 @@ case or experiment separately.
 | [Fix Check: The Review of T-098, Evan Daniel’s Exact Optima](docs/project/reviews/review-2026-10-06-evand-exact-optima-fix-check.md) | dated review record | record | retained | — |
 | [Review: Evan Daniel’s Exact Certificates as Verified Ceilings at 77 Counts (T-118)](docs/project/reviews/review-2026-10-06-evand-exact-ceilings.md) | dated review record | record | retained | — |
 | [Fix Check: Evan Daniel’s Exact Certificates as Verified Ceilings (T-118)](docs/project/reviews/review-2026-10-06-evand-exact-ceilings-fix-check.md) | dated review record | record | retained | — |
+| [Review: The Uniqueness of Trump’s Eleven-Square Packing (T-102)](docs/project/reviews/review-2026-10-06-n11-uniqueness-adversarial.md) | dated review record | record | retained | — |
 | [Proof Review: Guzhou0806’s R071, `s(17) > 18641771/4000000 = 4.66044275`](docs/project/reviews/review-2026-10-05-guzhou-r071.md) | dated review record | record | retained | — |
 | [Review: wand125’s `s(18) ≥ 588/125` and `s(19) ≥ 48229/10000` on Declared Nets (T-099, T-100)](docs/project/reviews/review-2026-10-06-wand125-finer-net-n18-n19.md) | dated review record | record | retained | — |
 | [Review: wand125’s Ten Declared-Net Certificates of 6 October (T-108 to T-117)](docs/project/reviews/review-2026-10-06-wand125-check2-ten-certificates.md) | dated review record | record | retained | — |

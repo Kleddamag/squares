@@ -11568,7 +11568,9 @@ results:
       reviewer wrote it: its "T-102" is this entry. Its verdict, defect-open, rests on two
       blocking findings about the registration, not the mathematics: U-1, the id clash,
       and U-2, Lean sentences that duplicated main's import of the formalization; both
-      were resolved in the merge. Its non-blocking findings were handled the same day:
+      were resolved in the merge.
+
+      Its non-blocking findings were handled the same day:
       S3 for S4 (U-5); the epistemics definition allows finitely many named packings
       (U-6); the entry's limitations say what its certificate and verifiers decide (U-7);
       the trivial stabiliser and the eight optimal configurations are stated (U-9, checked

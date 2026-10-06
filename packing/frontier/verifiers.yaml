@@ -1185,6 +1185,7 @@ verifiers:
       - packing/sqverify_fast
       - packing/devtools/sqverify_fast_census.py
       - packing/devtools/check_sqverify_fast.py
+      - packing/src/sqpack/rectangle_density.py
     independence_record: packing/sqverify_fast/independence-record.yaml
     note: >-
       A clean-room verifier, written from the mathematics without opening the authors'
@@ -1197,9 +1198,13 @@ verifiers:
       for a declared net once the control's exact evaluator read that net (its DR-1),
       which the same day's re-check confirmed. Its census drives the binary, keeps every
       direction's receipt and puts negative controls on a certificate at its least-bound
-      direction, with check_sqverify_fast's exact evaluator and mutation helpers; neither
-      decides coverage. tests/test_sqverify_fast_census.py admits a census row as evidence
-      only for a build of a reviewed source.
+      direction, with check_sqverify_fast's exact evaluator and mutation helpers; for
+      format T at the least-bound leaf centre of least exact capture, evaluated by
+      sqpack.rectangle_density, which was written before the crate and which its authors
+      read (the format T route review of 6 October 2026,
+      docs/project/reviews/review-2026-10-06-sqverify-fast-format-t-route.md). None of
+      these decides coverage. tests/test_sqverify_fast_census.py admits a census row as
+      evidence only for a build of a reviewed source.
 
   - id: V-replay-chelokot-lean
     program: devtools.replay_chelokot_lean

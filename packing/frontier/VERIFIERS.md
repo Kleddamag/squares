@@ -26,13 +26,13 @@ second implementation agrees.
 ## The Short Version
 
 - **89** programs: **33** external and **56** first-party; **68** decide claims and **21** check premises.
-- **298** of **325** evidence entries name the programs that verified them: 210 reproduced with the producer’s code, 71 independently re-implemented, 10 no relation: a proof, a derivation or a report, 7 re-implemented, sharing the producer’s components.
+- **336** of **363** evidence entries name the programs that verified them: 211 reproduced with the producer’s code, 108 independently re-implemented, 10 no relation: a proof, a derivation or a report, 7 re-implemented, sharing the producer’s components.
 
 ## Programs
 
 | id | program | author | provenance | role | evidence | results |
 | --- | --- | --- | --- | --- | ---: | ---: |
-| [`V-tokoharu-verify-cpp`](#v-tokoharu-verify-cpp) | verify.cpp | Tokoharu | external | decides | 12 | 7 |
+| [`V-tokoharu-verify-cpp`](#v-tokoharu-verify-cpp) | verify.cpp | Tokoharu | external | decides | 13 | 7 |
 | [`V-wand125-mixed-rotated-verify-cpp`](#v-wand125-mixed-rotated-verify-cpp) | mixed_rotated_verify.cpp | wand125 | external | decides | 87 | 13 |
 | [`V-wand125-verify-mixed-full-proof-py`](#v-wand125-verify-mixed-full-proof-py) | verify_mixed_full_proof.py | wand125 | external | decides | 64 | 10 |
 | [`V-wand125-unified-linear-verify-cpp`](#v-wand125-unified-linear-verify-cpp) | unified_linear_verify.cpp | wand125 | external | decides | 6 | 3 |
@@ -104,11 +104,11 @@ second implementation agrees.
 | [`V-check-n11-final-composition`](#v-check-n11-final-composition) | devtools.check_n11_final_composition | Squares Project (Levy) | first-party | premises | 1 | 1 |
 | [`V-audit-n17-endpoint-receipt`](#v-audit-n17-endpoint-receipt) | devtools.audit_n17_endpoint_receipt | Squares Project (Levy) | first-party | premises | 1 | 1 |
 | [`V-audit-tokoharu-density`](#v-audit-tokoharu-density) | devtools.audit_tokoharu_density | Squares Project (Levy) | first-party | premises | 1 | 1 |
-| [`V-audit-wand125-rectangles`](#v-audit-wand125-rectangles) | devtools.audit_wand125_rectangles | Squares Project (Levy) | first-party | premises | 3 | 3 |
+| [`V-audit-wand125-rectangles`](#v-audit-wand125-rectangles) | devtools.audit_wand125_rectangles | Squares Project (Levy) | first-party | premises | 4 | 4 |
 | [`V-audit-wand125-point-and-mixed`](#v-audit-wand125-point-and-mixed) | devtools.audit_wand125_point_and_mixed | Squares Project (Levy) | first-party | premises | 17 | 7 |
 | [`V-audit-wand125-declared-net`](#v-audit-wand125-declared-net) | devtools.audit_wand125_declared_net | Squares Project (Levy) | first-party | premises | 1 | 1 |
 | [`V-audit-wand125-linear`](#v-audit-wand125-linear) | devtools.audit_wand125_linear | Squares Project (Levy) | first-party | premises | 3 | 3 |
-| [`V-sqverify-fast`](#v-sqverify-fast) | sqverify-fast | Squares Project (Levy) | first-party | decides | 17 | 5 |
+| [`V-sqverify-fast`](#v-sqverify-fast) | sqverify-fast | Squares Project (Levy) | first-party | decides | 54 | 7 |
 | [`V-replay-chelokot-lean`](#v-replay-chelokot-lean) | devtools.replay_chelokot_lean | Squares Project (Levy) | first-party | premises | 1 | 1 |
 | [`V-replay-evand-zmx2`](#v-replay-evand-zmx2) | devtools.replay_evand_zmx2 | Squares Project (Levy) | first-party | premises | 5 | 5 |
 | [`V-audit-evand-mixed-covers`](#v-audit-evand-mixed-covers) | devtools.audit_evand_mixed_covers | Squares Project (Levy) | first-party | premises | 9 | 8 |
@@ -145,6 +145,7 @@ Decides a rectangle-density covering certificate over every net direction by out
 | `E-wand125-rectangle-2026-10-01-report` | the source’s own run | producer’s code | T-068 |
 | `E-wand125-rectangle-2026-10-01-source-replay` | replayed here | producer’s code | T-074 |
 | `E-wand125-rectangle-2026-10-02-report` | the source’s own run | producer’s code | T-077 |
+| `E-wand125-rectangle-2026-10-02-source-replay` | replayed here | producer’s code | T-077 |
 | `E-tokoharu-density-report` | the source’s own run | producer’s code | T-047 |
 | `E-tokoharu-density-monotone-report` | audited here | no code | T-047 |
 | `E-tokoharu-density-source-replay` | replayed here | producer’s code | T-047 |
@@ -1428,6 +1429,7 @@ The exact preflight and replay driver for wand125's rectangle certificates: inpu
 | `E-wand125-rectangle-source-replay` | replayed here | producer’s code | T-045 |
 | `E-wand125-rectangle-2026-09-28-source-replay` | replayed here | producer’s code | T-070 |
 | `E-wand125-rectangle-2026-10-01-source-replay` | replayed here | producer’s code | T-074 |
+| `E-wand125-rectangle-2026-10-02-source-replay` | replayed here | producer’s code | T-077 |
 
 ### `V-audit-wand125-point-and-mixed`
 
@@ -1492,13 +1494,50 @@ The audit, replay driver and controls for wand125's linear certificates.
 
 Decides a measure-capture lower-bound certificate of format T, M or L on the 201-direction net, or of format M on the uniform net its file declares (proof_net, lemma N0): exact admission of its premises, then an exact-event vertex sweep at the axis and outward-rounded interval branch and bound at every other direction, every shrunk square at every centre of its domain capturing at least the threshold.
 
-- Source: [`packing/sqverify_fast`](../../packing/sqverify_fast), [`packing/devtools/sqverify_fast_census.py`](../../packing/devtools/sqverify_fast_census.py), [`packing/devtools/check_sqverify_fast.py`](../../packing/devtools/check_sqverify_fast.py)
+- Source: [`packing/sqverify_fast`](../../packing/sqverify_fast), [`packing/devtools/sqverify_fast_census.py`](../../packing/devtools/sqverify_fast_census.py), [`packing/devtools/check_sqverify_fast.py`](../../packing/devtools/check_sqverify_fast.py), [`packing/src/sqpack/rectangle_density.py`](../../packing/src/sqpack/rectangle_density.py)
 - Versions run: this repository's commits, which Git holds
 - What its authors read and used: [`packing/sqverify_fast/independence-record.yaml`](../../packing/sqverify_fast/independence-record.yaml)
-- Note: A clean-room verifier, written from the mathematics without opening the authors' checkers (packing/sqverify_fast/INDEPENDENCE.md), its lemmas proved in packing/sqverify_fast/SOUNDNESS.md, and accepted at 4ddf37d9c by the two adversarial reviews of 3 October 2026, of its soundness and of its testing and independence. Its declared-net change (f007d7afd and 910b6b12c, source_sha256 d97758bb...) was accepted by the soundness review of 6 October 2026 (docs/project/reviews/review-2026-10-06-sqverify-fast-declared-net-soundness.md), for a declared net once the control's exact evaluator read that net (its DR-1), which the same day's re-check confirmed. Its census drives the binary, keeps every direction's receipt and puts negative controls on a certificate at its least-bound direction, with check_sqverify_fast's exact evaluator and mutation helpers; neither decides coverage. tests/test_sqverify_fast_census.py admits a census row as evidence only for a build of a reviewed source.
+- Note: A clean-room verifier, written from the mathematics without opening the authors' checkers (packing/sqverify_fast/INDEPENDENCE.md), its lemmas proved in packing/sqverify_fast/SOUNDNESS.md, and accepted at 4ddf37d9c by the two adversarial reviews of 3 October 2026, of its soundness and of its testing and independence. Its declared-net change (f007d7afd and 910b6b12c, source_sha256 d97758bb...) was accepted by the soundness review of 6 October 2026 (docs/project/reviews/review-2026-10-06-sqverify-fast-declared-net-soundness.md), for a declared net once the control's exact evaluator read that net (its DR-1), which the same day's re-check confirmed. Its census drives the binary, keeps every direction's receipt and puts negative controls on a certificate at its least-bound direction, with check_sqverify_fast's exact evaluator and mutation helpers; for format T at the least-bound leaf centre of least exact capture, evaluated by sqpack.rectangle_density, which was written before the crate and which its authors read (the format T route review of 6 October 2026, docs/project/reviews/review-2026-10-06-sqverify-fast-format-t-route.md). None of these decides coverage. tests/test_sqverify_fast_census.py admits a census row as evidence only for a build of a reviewed source.
 
 | evidence | run | code | results |
 | --- | --- | --- | --- |
+| `E-n019-wand125-rect-48175-sqverify-fast-replay` | replayed here | independent | T-068 |
+| `E-n020-wand125-rect-48975-sqverify-fast-replay` | replayed here | independent | T-068 |
+| `E-n026-wand125-rect-55325-sqverify-fast-replay` | replayed here | independent | T-068 |
+| `E-n027-wand125-rect-5635-sqverify-fast-replay` | replayed here | independent | T-068 |
+| `E-n028-wand125-rect-57225-sqverify-fast-replay` | replayed here | independent | T-068 |
+| `E-n029-wand125-rect-57975-sqverify-fast-replay` | replayed here | independent | T-068 |
+| `E-n030-wand125-rect-5875-sqverify-fast-replay` | replayed here | independent | T-068 |
+| `E-n031-wand125-rect-59525-sqverify-fast-replay` | replayed here | independent | T-068 |
+| `E-n038-wand125-rect-6545-sqverify-fast-replay` | replayed here | independent | T-068 |
+| `E-n039-wand125-rect-6635-sqverify-fast-replay` | replayed here | independent | T-068 |
+| `E-n040-wand125-rect-67-sqverify-fast-replay` | replayed here | independent | T-068 |
+| `E-n041-wand125-rect-676-sqverify-fast-replay` | replayed here | independent | T-068 |
+| `E-n042-wand125-rect-6815-sqverify-fast-replay` | replayed here | independent | T-068 |
+| `E-n043-wand125-rect-68875-sqverify-fast-replay` | replayed here | independent | T-068 |
+| `E-n044-wand125-rect-69425-sqverify-fast-replay` | replayed here | independent | T-068 |
+| `E-n053-wand125-rect-76075-sqverify-fast-replay` | replayed here | independent | T-068 |
+| `E-n054-wand125-rect-76725-sqverify-fast-replay` | replayed here | independent | T-068 |
+| `E-n055-wand125-rect-77125-sqverify-fast-replay` | replayed here | independent | T-068 |
+| `E-n056-wand125-rect-77825-sqverify-fast-replay` | replayed here | independent | T-068 |
+| `E-n066-wand125-rect-8385-sqverify-fast-replay` | replayed here | independent | T-068 |
+| `E-n068-wand125-rect-851-sqverify-fast-replay` | replayed here | independent | T-068 |
+| `E-n069-wand125-rect-8585-sqverify-fast-replay` | replayed here | independent | T-068 |
+| `E-n070-wand125-rect-8625-sqverify-fast-replay` | replayed here | independent | T-068 |
+| `E-n074-wand125-rect-88475-sqverify-fast-replay` | replayed here | independent | T-068 |
+| `E-n075-wand125-rect-89-sqverify-fast-replay` | replayed here | independent | T-068 |
+| `E-n076-wand125-rect-8925-sqverify-fast-replay` | replayed here | independent | T-068 |
+| `E-n086-wand125-rect-9365-sqverify-fast-replay` | replayed here | independent | T-068 |
+| `E-n087-wand125-rect-941-sqverify-fast-replay` | replayed here | independent | T-068 |
+| `E-n088-wand125-rect-94775-sqverify-fast-replay` | replayed here | independent | T-068 |
+| `E-n089-wand125-rect-9565-sqverify-fast-replay` | replayed here | independent | T-068 |
+| `E-n090-wand125-rect-95775-sqverify-fast-replay` | replayed here | independent | T-068 |
+| `E-n093-wand125-rect-97225-sqverify-fast-replay` | replayed here | independent | T-068 |
+| `E-n094-wand125-rect-9805-sqverify-fast-replay` | replayed here | independent | T-068 |
+| `E-n095-wand125-rect-98518-sqverify-fast-replay` | replayed here | independent | T-068 |
+| `E-n020-wand125-rect-49-sqverify-fast-replay` | replayed here | independent | T-077 |
+| `E-n042-wand125-rect-68275-sqverify-fast-replay` | replayed here | independent | T-077 |
+| `E-n070-wand125-rect-86275-sqverify-fast-replay` | replayed here | independent | T-077 |
 | `E-n067-wand125-mixed-848-sqverify-fast-replay` | replayed here | independent | T-094 |
 | `E-n084-wand125-mixed-9411-sqverify-fast-replay` | replayed here | independent | T-094 |
 | `E-n066-wand125-mixed-843-sqverify-fast-replay` | replayed here | independent | T-097 |

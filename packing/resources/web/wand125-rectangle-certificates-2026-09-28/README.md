@@ -185,8 +185,14 @@ the checker-scaling review.
   encloses its exact datum, the axis-event partition is complete, orbit normalization
   preserves mass, and the exact mass is below `n`. All 50 pass, in 41 s on one core; the
   12 unchanged entries equal those of the September 27 receipt.
-- No coverage replay has run at this pin. The September 27 packet’s replays of `n = 27`,
-  31 and 32 remain; the `n = 31` one is of the earlier `148/25` certificate.
+- [`receipts/replay/audit.json`](receipts/replay/audit.json) and one directory per case:
+  complete 201-direction replays of 18 standing certificates with Tokoharu’s unchanged
+  `verify.cpp` through `run_verify.py`, each reproducing the upstream accepting run’s
+  nodes, leaves and lower bound at every direction. Twelve ran in cloud batches on 29
+  September and were merged on 2 October; six, `n = 51`, 57, 58, 72, 73 and 91, ran on 3
+  October (`claude/replay-wand125-sept28-s1` and `-s2`) and were merged on 6 October with
+  `--merge`. The September 27 packet’s replays of `n = 27`, 31 and 32 remain; the
+  `n = 31` one is of the earlier `148/25` certificate.
 
 `python -m devtools.apply_wand125_rectangles --packet 2026-09-28 --replay-plan` lists the
 standing certificates whose replay would raise a verified lower bound, largest rise

@@ -1,0 +1,34 @@
+{
+ "source": "bnb_n2_T9_0of1_final_leaves.jsonl in data/kw9_data.zip",
+ "source_sha256": "a2e05fb1c777e6e1009ec78dd064c2a446243fe61fb71022117961d42a4cd126",
+ "source_boxes": 48,
+ "sharp_box_index": 23,
+ "sharp_box": {
+  "kind": "closed",
+  "U": 9,
+  "box": [
+   [
+    0.5,
+    0.5915267638417128,
+    0.0,
+    0.0
+   ],
+   [
+    0.5,
+    0.5915267638417128,
+    3.141592653589793,
+    3.5342917352885173
+   ]
+  ]
+ },
+ "sharp-leaf": {
+  "path": "sharp-leaf/bnb_n2_T9_0of1_final_leaves.jsonl",
+  "boxes": 1,
+  "sha256": "8f40b8fe42795e4360748bc7a17be0273b2e4badeab91f065e9eeef6b8265ce3"
+ },
+ "drop-one": {
+  "path": "drop-one/bnb_n2_T9_0of1_final_leaves.jsonl",
+  "boxes": 47,
+  "sha256": "9fd1bd0746d75df4414f96278ded10ec25e90b1e0d03bec7e27cce564951415e"
+ }
+}

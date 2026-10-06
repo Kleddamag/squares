@@ -359,7 +359,11 @@ def test_a_cell_of_cases_holds_each_value_in_a_box_and_reads_as_the_register_doe
         values = boxes.findall(cell)
         assert " ".join(values) == html.escape(result.scope, quote=False)
         assert all(" " not in value for value in values)
-    most = max(overview.results, key=lambda result: len(result.scope.split(", ")))
+    # T-098 has 23 values too since 6 October; T-056's list is the longer by characters.
+    most = max(
+        overview.results,
+        key=lambda result: (len(result.scope.split(", ")), len(result.scope)),
+    )
     assert (most.id, len(most.scope.split(", "))) == (MOST_CASES, 23)
     row, _ = overview_sections.result_table_row(most, overview, here=True, shown=True)
     assert f'<td class="num site-col-n site-n-wraps" data-value="{most.first_n}">' in row

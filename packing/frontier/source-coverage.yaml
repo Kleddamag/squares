@@ -266,6 +266,31 @@ sources:
       attainment theorem and specification bridges (T-006, T-086). Each is an evidence
       update that moves no rung; the rest of those commits is a read in
       campaign/intake-watch.yaml.
+  - id: evand-square-packing-2026-10-05
+    title: 'square-packing s12/search/exact: exact optima and certificates of the register''s known-best packings'
+    role: source-repository
+    url: https://github.com/evand/square-packing/tree/13ee36e5807727d12a5da36b9b90a96bdba272bf/s12/search/exact
+    local: resources/web/evand-square-packing-2026-10-05/square-packing/s12/search/exact/
+    claims_record: resources/web/evand-square-packing-2026-10-05/square-packing/s12/search/exact/batch/certs
+    source_key: '[evand exact optima 2026-10-05]'
+    scope: {n_values: [68, 102, 103, 106, 110, 123, 126, 131, 132, 152, 154, 155, 156, 172, 177, 180, 181, 182, 199, 206, 207, 208, 209, 210, 211, 228, 236, 237, 238, 239, 240, 241, 259, 263, 268, 269, 270, 271, 272, 273, 297, 301, 302, 303, 304, 305, 306, 307]}
+    reviewed: '2026-10-05'
+    source_date: '2026-10-05'
+    disposition: current-report
+    replay_disposition: case-specific
+    represented_by: [frontier/n-068.md through frontier/n-307.md, frontier/results.yaml]
+    evidence: [E-evand-exact-optima-2026-10-05-report, E-evand-exact-optima-2026-10-05-exact-replay, E-evand-exact-optima-2026-10-05-source-replay]
+    notes: >-
+      Revision 13ee36e5807727d12a5da36b9b90a96bdba272bf, retrieved at 2026-10-05T22:08Z:
+      Evan Daniel's exact-contact solver and its certificates for this register's records,
+      registration requested on jlevy/squares#375. At 48 counts the certificate's side lies
+      3.5e-13 to 5.0e-11 below the side the record reported, the exact optimum of the same
+      packing (Couzo's at 46, de Winter's at n = 126 and 211), and is selected here; every
+      one is decided exactly here and by the source's two checkers (T-098). The packet
+      retains those 48 certificates, which are this source's claims record, and pins by
+      digest the other 272 it certifies, each 1e-20 to 1e-14 above the printed side, from
+      which the author asks for nothing; they are replayed with the rest and move no case.
+      The n = 17 certificate is held (think-x4v4): not retained, pinned or replayed.
   - id: kleddamag-n17-466001-2026
     title: Seventeen unit squares — a certified lower bound, 4.66001 package
     role: source-repository
@@ -703,7 +728,9 @@ sources:
       five were recorded as reported lower bounds (T-069), and on 2026-10-02 each passed a
       complete replay here, every direction returning the certificate's record, which put
       all five in the verified lane; the proof-bundle tarballs are pinned by digest and not
-      retained. The revision also
+      retained. At n = 66 the source's mixed_n66_L843 of 5 October (T-097, the finer-net
+      packet) supersedes it in both lanes since sqverify-fast decided that one here on 6
+      October, and the case record reports and verifies 843/100. The revision also
       holds mixed_n87_L939 and mixed_n87_L940, below its rectangle certificate at n = 87,
       which are pinned and not registered; the request announces n = 82 to 85 to follow.
   - id: wand125-mixed-bounds-2026-10-02
@@ -898,7 +925,7 @@ sources:
     scope: {n_values: [12]}
     reviewed: '2026-10-02'
     source_date: '2026-10-02'
-    disposition: current-report
+    disposition: superseded-covered
     replay_disposition: case-specific
     represented_by: [frontier/n-012.md]
     evidence:
@@ -912,10 +939,39 @@ sources:
       by 7902/7901, weights unchanged. Daniel's verifier and the author's indep_check.cpp
       both accepted it here at the angle net N = 24000, and this repository's native
       parent-core interval route decided all 9,942 rows, so s(12) >= 31360/7901 is verified
-      (T-078, V3/C3) and supersedes T-049's 15680/3951; it stays the reported bound at
-      n = 12, and this project's re-weighting of the same points (T-079) holds the verified
-      one since 3 October. All three checkers refuse two mutated certificates. The one retained review was written by the lane that ran the replays
+      (T-078, V3/C3) and supersedes T-049's 15680/3951; this project's re-weighting of the
+      same points (T-079) held the verified bound from 3 October, and squarepacker's v1.1
+      (T-095) holds both the reported and the verified one since 5 October. All three checkers refuse two mutated certificates. The one retained review was written by the lane that ran the replays
       (its finding F1).
+  - id: squarepacker-s12-lower-bound-2026-10-05
+    title: Daniel's s(12) points dilated to 7943/2000 and re-weighted (v1.1)
+    role: source-repository
+    url: https://github.com/squarepacker/s12-lower-bound/tree/7a96bec36bc6811c3715ef581598f22ff9b7ba3a
+    local: resources/web/squarepacker-s12-lower-bound-2026-10-05/
+    source_key: '[squarepacker s12 2026-10-05]'
+    scope: {n_values: [12]}
+    reviewed: '2026-10-05'
+    source_date: '2026-10-05'
+    disposition: current-report
+    replay_disposition: case-specific
+    represented_by: [frontier/n-012.md]
+    evidence:
+      - E-n012-squarepacker-7943-2000-report
+      - E-n012-squarepacker-7943-2000-source-replay
+      - E-n012-squarepacker-7943-2000-native-parent-core
+      - E-n012-squarepacker-7943-2000-audit
+    notes: >-
+      Release v1.1, revision 7a96bec36bc6811c3715ef581598f22ff9b7ba3a by Ryu Sungjoon
+      (squarepacker), archived as Zenodo 10.5281/zenodo.23157015, retained for
+      jlevy/squares#363; the v1.0 files it leaves unchanged are pinned to the 2 October
+      packet. Evan Daniel's 1,736 points (T-049) dilated to the container 7943/2000 and
+      re-weighted by linear programming, after this project's Route B (T-079). Daniel's
+      verifier with overflow checks and the author's indep_check.cpp both accepted it here
+      at the angle net N = 96000, least 10000050/10^7 at bin 0 as the source logs, and this
+      repository's native parent-core interval route decided all 39,765 rows, so s(12) >=
+      7943/2000 is verified (T-095, V3/C3) and supersedes T-079's 15680000/3949423. All
+      three refuse the source's two controls. A separately prompted review found no
+      blocking defect and ran no computation (its F1).
   - id: wand125-point-n61-2026-09-30
     title: Point-only cover for s(61) = 8
     role: source-repository
@@ -1039,37 +1095,52 @@ sources:
     url: https://github.com/wand125/square-packing-bounds/tree/797bdf6e10eba5f9dccca9da06f8352e81ba9dde
     local: resources/web/wand125-mixed-bounds-evening-2026-10-04/
     source_key: '[wand125 mixed bounds evening 2026-10-04]'
-    scope: {n_values: [53, 54, 58, 70, 71, 73, 76, 87, 88, 90, 91, 94]}
-    reviewed: '2026-10-05'
+    scope: {n_values: [53, 54, 58, 70, 71, 72, 73, 76, 87, 88, 89, 90, 91, 92, 93, 94, 95]}
+    reviewed: '2026-10-06'
     source_date: '2026-10-04'
     disposition: current-report
     replay_disposition: case-specific
-    represented_by: [frontier/n-053.md, frontier/n-054.md, frontier/n-058.md, frontier/n-070.md, frontier/n-071.md, frontier/n-073.md, frontier/n-076.md, frontier/n-087.md, frontier/n-088.md, frontier/n-090.md, frontier/n-091.md, frontier/n-094.md]
+    represented_by: [frontier/n-053.md, frontier/n-054.md, frontier/n-058.md, frontier/n-070.md, frontier/n-071.md, frontier/n-072.md, frontier/n-073.md, frontier/n-076.md, frontier/n-087.md, frontier/n-088.md, frontier/n-089.md, frontier/n-090.md, frontier/n-091.md, frontier/n-092.md, frontier/n-093.md, frontier/n-094.md, frontier/n-095.md]
     evidence:
       - E-n053-wand125-mixed-76275-report
+      - E-n053-wand125-mixed-76275-sqverify-fast-replay
       - E-n054-wand125-mixed-7685-report
+      - E-n054-wand125-mixed-7685-sqverify-fast-replay
       - E-n058-wand125-mixed-7935-report
+      - E-n058-wand125-mixed-7935-sqverify-fast-replay
       - E-n070-wand125-mixed-86575-report
+      - E-n070-wand125-mixed-86575-sqverify-fast-replay
       - E-n071-wand125-mixed-8721-report
+      - E-n071-wand125-mixed-8721-sqverify-fast-replay
       - E-n073-wand125-mixed-8813-report
+      - E-n073-wand125-mixed-8813-sqverify-fast-replay
       - E-n076-wand125-mixed-8965-report
+      - E-n076-wand125-mixed-8965-sqverify-fast-replay
       - E-n087-wand125-mixed-958-report
+      - E-n087-wand125-mixed-958-sqverify-fast-replay
       - E-n088-wand125-mixed-962-report
+      - E-n088-wand125-mixed-962-sqverify-fast-replay
       - E-n090-wand125-mixed-973-report
+      - E-n090-wand125-mixed-973-sqverify-fast-replay
       - E-n091-wand125-mixed-97625-report
+      - E-n091-wand125-mixed-97625-sqverify-fast-replay
       - E-n094-wand125-mixed-995-report
+      - E-n094-wand125-mixed-995-sqverify-fast-replay
     notes: >-
       Revision 797bdf6e10eba5f9dccca9da06f8352e81ba9dde, retrieved at 2026-10-05T00:44Z for
       12 comments of 4 October on jlevy/squares#282. 12 rectangle densities checked at
       coverage one by the source's research copy of Tokoharu's verify.cpp, byte for byte the
       checker of its n = 50 certificate, each of mass n - 1/100000 and added by its own
-      commit, pinned together at the last. All 12 are recorded as reported lower bounds
+      commit, pinned together at the last. All 12 were recorded as reported lower bounds
       (T-091), each above what the record reported at its count; at n = 88 and 94 they raise
       the source's certificates of earlier that day (T-090). The packet also pins
       mixed_n86_L9503 and mixed_n69_L862 of the 4 October packet, unchanged here; they are
       T-090's. The directories carry no completion-audit.json, so each tarball is bound by
       its digest at the pinned tree. The exact audit and the replay's checks before its
-      first angle pass on all 12; no angle was replayed, and the proof-bundle tarballs are
+      first angle pass on all 12. On 5 and 6 October sqverify-fast, this repository's
+      clean-room measure verifier, decided all 12 at all 201 net directions, which put them
+      and the five counts they carry by mass (n = 72, 89, 92, 93 and 95) in the verified
+      lane; the source's own checker was not run here, and the proof-bundle tarballs are
       pinned by digest and not retained. The revision also changes certificates/k2m4_n77_L9
       (3f063bd: run logs, a replay record and a hardened verify.sh, the cover unchanged;
       T-067) and point_n21_L5 (781afb3: relativized paths and a corrected lemma-code map,
@@ -1114,19 +1185,57 @@ sources:
     represented_by: [frontier/n-067.md, frontier/n-084.md]
     evidence:
       - E-n067-wand125-mixed-848-report
+      - E-n067-wand125-mixed-848-sqverify-fast-replay
       - E-n084-wand125-mixed-9411-report
+      - E-n084-wand125-mixed-9411-sqverify-fast-replay
     notes: >-
       Revision a541afbe7826ff75f6d3848e10279fd524d55af3, retrieved at 2026-10-05T07:36Z for
       two comments of 5 October on jlevy/squares#282. Two rectangle densities checked at
       coverage one by the source's research copy of Tokoharu's verify.cpp, byte for byte the
       checker of its n = 50 certificate, each of mass n - 1/100000 and added by its own
-      commit, pinned together at the second. Both are recorded as reported lower bounds
+      commit, pinned together at the second. Both were recorded as reported lower bounds
       (T-094), each above what the record reported at its count; they supersede the source's
       mixed_n67_L8475 and mixed_n84_L94075 (T-090). The directories carry no
       completion-audit.json, so each tarball is bound by its digest at the pinned tree. The
-      exact audit and the replay's checks before its first angle pass on both; no angle was
-      replayed, and the proof-bundle tarballs are pinned by digest and not retained. The
+      exact audit and the replay's checks before its first angle pass on both. On 5 October
+      sqverify-fast, this repository's clean-room measure verifier, decided both at all 201
+      net directions, which put them in the verified lane; the source's own checker was not
+      run here, and the proof-bundle tarballs are pinned by digest and not retained. The
       revision changes nothing else after 797bdf6, the evening packet's pin.
+  - id: wand125-mixed-bounds-finer-net-2026-10-05
+    title: Mixed rectangle-measure certificates of later 5 October 2026 for n = 18 and 66
+    role: source-repository
+    url: https://github.com/wand125/square-packing-bounds/tree/43050edc5bdf5116fc5a073283128edd6749946b
+    local: resources/web/wand125-mixed-bounds-finer-net-2026-10-05/
+    source_key: '[wand125 mixed bounds finer net 2026-10-05]'
+    scope: {n_values: [18, 66]}
+    reviewed: '2026-10-05'
+    source_date: '2026-10-05'
+    disposition: current-report
+    replay_disposition: case-specific
+    represented_by: [frontier/n-018.md, frontier/n-066.md]
+    evidence:
+      - E-n018-wand125-mixed-470-report
+      - E-n066-wand125-mixed-843-report
+      - E-n066-wand125-mixed-843-sqverify-fast-replay
+    notes: >-
+      Revision 43050edc5bdf5116fc5a073283128edd6749946b, retrieved at 2026-10-05T17:10Z for a
+      comment of 5 October on jlevy/squares#282 (mixed_n66_L843, added at d73ce20) and for
+      jlevy/squares#366 (mixed_n18_L470, added at 43050ed). Two rectangle densities checked
+      at coverage one by the source's research copy of Tokoharu's verify.cpp, byte for byte
+      the checker of its n = 50 certificate, run by the same driver, each of mass n -
+      1/100000. mixed_n18_L470 is on a net its candidate declares, core 999/1000 and 416
+      half-angle tangents of step 1/1001; mixed_n66_L843 is on the standard net and
+      supersedes the source's mixed_n66_L842 (T-069). Both were recorded as reported lower
+      bounds (T-096 and T-097), each above what the record reported at its count. The
+      directories carry no completion-audit.json, so each tarball is bound by its digest at
+      the pinned tree. The exact audits and the checks before any replay pass on both: for
+      n = 66 the fixed-net audit and its mixed-fetch, for n = 18
+      devtools.audit_wand125_declared_net, which also binds every shipped record and input
+      to the declared net. On 6 October sqverify-fast, this repository's clean-room measure
+      verifier, decided mixed_n66_L843 at all 201 net directions, which put it in the
+      verified lane; the source's own checker ran here at 12 of its directions and not in
+      full. The proof-bundle tarballs are pinned by digest and not retained.
   - id: wand125-valid7-independent-check-2026-10-02
     title: Independent exact checker of Valid7 for s(k^2 - 3) = k
     role: source-repository
@@ -1209,7 +1318,7 @@ sources:
     scope: {n_values: [208, 209, 228, 263, 272, 303, 306]}
     reviewed: '2026-10-05'
     source_date: '2026-10-03'
-    disposition: current-report
+    disposition: superseded-covered
     replay_disposition: case-specific
     represented_by: [frontier/n-208.md through frontier/n-306.md, witnesses/franciscouzo-2026-10-03/]
     evidence: [E-franciscouzo-2026-10-03-report, E-franciscouzo-2026-10-03-exact-replay, E-franciscouzo-2026-10-03-interval-replay]
@@ -1222,7 +1331,10 @@ sources:
       retained Kingbird capture of 2026-09-30; each certifies exactly over Q here at centre
       dilation 1 and again by interval arithmetic on the printed pose (T-092). The other 42
       counts are unchanged from the earlier revision. The live catalogue was not read:
-      kingbird.myphotos.cc was unreachable from the session.
+      kingbird.myphotos.cc was unreachable from the session. It was read later on
+      2026-10-05, and its page is byte for byte the capture of 2026-09-30 compared here.
+      On 2026-10-05 Evan Daniel's exact optima of these seven packings (T-098) superseded
+      all seven reports.
   - id: de-winter-square-packing-211-2026
     title: square-packing-211
     role: source-repository
@@ -1233,7 +1345,7 @@ sources:
     scope: {n_values: [211]}
     reviewed: '2026-09-29'
     source_date: '2026-09-16'
-    disposition: current-report
+    disposition: superseded-covered
     replay_disposition: case-specific
     represented_by: [frontier/n-211.md, witnesses/de-winter-2026/n-211-rational.yaml.gz]
     evidence: [E-n211-de-winter-report, E-n211-de-winter-exact-replay, E-n211-de-winter-interval-replay]
@@ -1243,7 +1355,8 @@ sources:
       licence. Its packing of 211 squares at side 14.99796070496771500150 is the first
       below the grid side 15 on record, and certifies exactly over Q here (T-057). The
       source's author-reported interval check publishes no boxes or checker. It was
-      found on 2026-09-29 alongside issue #227 and is not in the live catalogue.
+      found on 2026-09-29 alongside issue #227 and is not in the live catalogue. On
+      2026-10-05 Evan Daniel's exact optimum of the same packing (T-098) superseded it.
   - id: casson-square-packing-2026
     title: 'Squares in squares: 39 improved packings (n = 103-307)'
     role: source-repository
@@ -1273,7 +1386,7 @@ sources:
     local: resources/web/kingbird-squares-in-squares.html
     source_key: '[Kingbird]'
     scope: {n_min: 1, n_max: 324}
-    reviewed: '2026-09-30'
+    reviewed: '2026-10-05'
     source_date: '2026-09-24'
     disposition: baseline-current
     replay_disposition: case-specific
@@ -1314,6 +1427,18 @@ sources:
       on June 17, 2026". Its values supply the baseline report;
       newer first-party releases can override individual cases. SVG geometry has
       case-specific replay status and is not made formal by appearing here.
+      Read again on 2026-10-05, once the session's egress policy allowed it (think-fr8i):
+      devtools.capture_kingbird_catalogue fetched the page at 22:39:12Z with the same
+      bytes as on 2026-09-30 (SHA-256 b99c3265...) and the same Last-Modified, so the
+      retained capture stands and devtools.diff_kingbird_catalogue finds no count read
+      differently. devtools.derive_kingbird_facts --compare-pictures then fetched the
+      picture behind each of the 98 retained Kingbird witnesses: 95 are their pictures
+      exactly, and the three read from Evan Daniel's parse (n = 69, 83, 87) agree with
+      theirs at binary64
+      (resources/web/known-best-packings/receipts/kingbird-2026-10-05-pictures.json). None
+      of those pictures is newer than 2026-09-24. The older-packings page, captured
+      2026-08-22 and dated 2026-09-24 by the server, was captured again into the record
+      the same day.
   - id: unitsquare-release1
     title: UnitSquare Results Release 1
     role: first-party-release
@@ -1357,22 +1482,23 @@ sources:
       implementations. Neither establishes optimality.
 selected_overrides:
   - n: 68
-    source_id: franciscouzo-square-packing-2026
-    value: '8.798795237222592'
-    evidence: E-franciscouzo-2026-09-27-report
-    reason: Newer reported upper bound, certified here (T-056), below the UnitSquare release and
-      the Kingbird baseline.
+    source_id: evand-square-packing-2026-10-05
+    value: '8.798795237218283902664668919394'
+    evidence: E-evand-exact-optima-2026-10-05-report
+    reason: The exact optimum of the same packing, certified here (T-098), below Francisco Couzo's
+      printed side (T-056).
   - n: 102
-    source_id: franciscouzo-square-packing-2026
-    value: '10.607174680178947'
-    evidence: E-franciscouzo-2026-09-27-report
-    reason: Newer reported upper bound, certified here (T-056), below the Kingbird baseline.
+    source_id: evand-square-packing-2026-10-05
+    value: '10.607174680176051125448595024891'
+    evidence: E-evand-exact-optima-2026-10-05-report
+    reason: The exact optimum of the same packing, certified here (T-098), below Francisco Couzo's
+      printed side (T-056).
   - n: 103
-    source_id: franciscouzo-square-packing-2026
-    value: '10.703516755580015'
-    evidence: E-franciscouzo-2026-09-27-report
-    reason: Newer reported upper bound, certified here (T-056), below the UnitSquare release and
-      the Kingbird baseline.
+    source_id: evand-square-packing-2026-10-05
+    value: '10.703516755572542008729416503972'
+    evidence: E-evand-exact-optima-2026-10-05-report
+    reason: The exact optimum of the same packing, certified here (T-098), below Francisco Couzo's
+      printed side (T-056).
   - n: 105
     source_id: franciscouzo-square-packing-2026
     value: '10.806077865540567'
@@ -1380,267 +1506,329 @@ selected_overrides:
     reason: Newer reported upper bound, certified here (T-056), below the UnitSquare release and
       the Kingbird baseline.
   - n: 106
-    source_id: franciscouzo-square-packing-2026
-    value: '10.822908044141968'
-    evidence: E-franciscouzo-2026-09-27-report
-    reason: Newer reported upper bound, certified here (T-056), below the Kingbird baseline.
+    source_id: evand-square-packing-2026-10-05
+    value: '10.822908044132847555194436943331'
+    evidence: E-evand-exact-optima-2026-10-05-report
+    reason: The exact optimum of the same packing, certified here (T-098), below Francisco Couzo's
+      printed side (T-056).
   - n: 110
-    source_id: franciscouzo-square-packing-2026
-    value: '10.996783396634358'
-    evidence: E-franciscouzo-2026-09-27-report
-    reason: Newer reported upper bound, certified here (T-056), below the UnitSquare release and
-      the Kingbird baseline.
+    source_id: evand-square-packing-2026-10-05
+    value: '10.996783396631591639612746267957'
+    evidence: E-evand-exact-optima-2026-10-05-report
+    reason: The exact optimum of the same packing, certified here (T-098), below Francisco Couzo's
+      printed side (T-056).
   - n: 123
-    source_id: franciscouzo-square-packing-2026
-    value: '11.601384658385687'
-    evidence: E-franciscouzo-2026-09-27-report
-    reason: Newer reported upper bound, certified here (T-056), below the Kingbird baseline.
+    source_id: evand-square-packing-2026-10-05
+    value: '11.601384658375975564388544443024'
+    evidence: E-evand-exact-optima-2026-10-05-report
+    reason: The exact optimum of the same packing, certified here (T-098), below Francisco Couzo's
+      printed side (T-056).
+  - n: 126
+    source_id: evand-square-packing-2026-10-05
+    value: '11.774735132387832842560264587322'
+    evidence: E-evand-exact-optima-2026-10-05-report
+    reason: The exact optimum of the same packing, certified here (T-098), below the Kingbird
+      catalogue's side for Joost de Winter's packing.
   - n: 130
     source_id: franciscouzo-square-packing-2026
     value: '11.911187706548755'
     evidence: E-franciscouzo-2026-09-27-report
     reason: Newer reported upper bound, certified here (T-056), below the Kingbird baseline.
   - n: 131
-    source_id: franciscouzo-square-packing-2026
-    value: '11.954916830219048'
-    evidence: E-franciscouzo-2026-09-27-report
-    reason: Newer reported upper bound, certified here (T-056), below the UnitSquare release and
-      the Kingbird baseline.
+    source_id: evand-square-packing-2026-10-05
+    value: '11.954916830216124410139679227683'
+    evidence: E-evand-exact-optima-2026-10-05-report
+    reason: The exact optimum of the same packing, certified here (T-098), below Francisco Couzo's
+      printed side (T-056).
   - n: 132
-    source_id: franciscouzo-square-packing-2026
-    value: '11.991327887694469'
-    evidence: E-franciscouzo-2026-09-27-report
-    reason: Newer reported upper bound, certified here (T-056), below the Kingbird baseline.
+    source_id: evand-square-packing-2026-10-05
+    value: '11.991327887691501411687842131585'
+    evidence: E-evand-exact-optima-2026-10-05-report
+    reason: The exact optimum of the same packing, certified here (T-098), below Francisco Couzo's
+      printed side (T-056).
   - n: 152
-    source_id: franciscouzo-square-packing-2026
-    value: '12.830718800982252'
-    evidence: E-franciscouzo-2026-09-27-report
-    reason: Newer reported upper bound, certified here (T-056), below the Kingbird baseline.
+    source_id: evand-square-packing-2026-10-05
+    value: '12.830718800976609954993823643412'
+    evidence: E-evand-exact-optima-2026-10-05-report
+    reason: The exact optimum of the same packing, certified here (T-098), below Francisco Couzo's
+      printed side (T-056).
   - n: 154
-    source_id: franciscouzo-square-packing-2026
-    value: '12.931663721169976'
-    evidence: E-franciscouzo-2026-09-27-report
-    reason: Newer reported upper bound, certified here (T-056), below the Kingbird baseline.
+    source_id: evand-square-packing-2026-10-05
+    value: '12.931663721166847019324363825319'
+    evidence: E-evand-exact-optima-2026-10-05-report
+    reason: The exact optimum of the same packing, certified here (T-098), below Francisco Couzo's
+      printed side (T-056).
   - n: 155
-    source_id: franciscouzo-square-packing-2026
-    value: '12.955619592137850'
-    evidence: E-franciscouzo-2026-09-27-report
-    reason: Newer reported upper bound, certified here (T-056), below the Kingbird baseline.
+    source_id: evand-square-packing-2026-10-05
+    value: '12.95561959213445243801096476729'
+    evidence: E-evand-exact-optima-2026-10-05-report
+    reason: The exact optimum of the same packing, certified here (T-098), below Francisco Couzo's
+      printed side (T-056).
   - n: 156
-    source_id: franciscouzo-square-packing-2026
-    value: '12.982082698520427'
-    evidence: E-franciscouzo-2026-09-27-report
-    reason: Newer reported upper bound, certified here (T-056), below the Kingbird baseline.
+    source_id: evand-square-packing-2026-10-05
+    value: '12.982082698516893102076828502036'
+    evidence: E-evand-exact-optima-2026-10-05-report
+    reason: The exact optimum of the same packing, certified here (T-098), below Francisco Couzo's
+      printed side (T-056).
   - n: 172
-    source_id: franciscouzo-square-packing-2026
-    value: '13.618988956935731'
-    evidence: E-franciscouzo-2026-09-27-report
-    reason: Newer reported upper bound, certified here (T-056), below the Kingbird baseline.
+    source_id: evand-square-packing-2026-10-05
+    value: '13.61898895689939842899969151892'
+    evidence: E-evand-exact-optima-2026-10-05-report
+    reason: The exact optimum of the same packing, certified here (T-098), below Francisco Couzo's
+      printed side (T-056).
   - n: 177
-    source_id: franciscouzo-square-packing-2026
-    value: '13.822979734183507'
-    evidence: E-franciscouzo-2026-09-27-report
-    reason: Newer reported upper bound, certified here (T-056), below the Kingbird baseline.
+    source_id: evand-square-packing-2026-10-05
+    value: '13.822979734169448600231882896281'
+    evidence: E-evand-exact-optima-2026-10-05-report
+    reason: The exact optimum of the same packing, certified here (T-098), below Francisco Couzo's
+      printed side (T-056).
   - n: 180
-    source_id: franciscouzo-square-packing-2026
-    value: '13.927888140501693'
-    evidence: E-franciscouzo-2026-09-27-report
-    reason: Newer reported upper bound, certified here (T-056), below the Kingbird baseline.
+    source_id: evand-square-packing-2026-10-05
+    value: '13.927888140498096339178993024781'
+    evidence: E-evand-exact-optima-2026-10-05-report
+    reason: The exact optimum of the same packing, certified here (T-098), below Francisco Couzo's
+      printed side (T-056).
   - n: 181
-    source_id: franciscouzo-square-packing-2026
-    value: '13.953748821957927'
-    evidence: E-franciscouzo-2026-09-27-report
-    reason: Newer reported upper bound, certified here (T-056), below the Kingbird baseline.
+    source_id: evand-square-packing-2026-10-05
+    value: '13.953748821954402498045544433567'
+    evidence: E-evand-exact-optima-2026-10-05-report
+    reason: The exact optimum of the same packing, certified here (T-098), below Francisco Couzo's
+      printed side (T-056).
   - n: 182
-    source_id: franciscouzo-square-packing-2026
-    value: '13.974090713124822'
-    evidence: E-franciscouzo-2026-09-27-report
-    reason: Newer reported upper bound, certified here (T-056), below the Kingbird baseline.
+    source_id: evand-square-packing-2026-10-05
+    value: '13.974090713121439007150130032772'
+    evidence: E-evand-exact-optima-2026-10-05-report
+    reason: The exact optimum of the same packing, certified here (T-098), below Francisco Couzo's
+      printed side (T-056).
   - n: 199
-    source_id: franciscouzo-square-packing-2026
-    value: '14.618988956907218'
-    evidence: E-franciscouzo-2026-09-27-report
-    reason: Newer reported upper bound, certified here (T-056), below the Kingbird baseline.
+    source_id: evand-square-packing-2026-10-05
+    value: '14.61898895689939842900969151892'
+    evidence: E-evand-exact-optima-2026-10-05-report
+    reason: The exact optimum of the same packing, certified here (T-098), below Francisco Couzo's
+      printed side (T-056).
   - n: 206
-    source_id: franciscouzo-square-packing-2026
-    value: '14.860158663395859'
-    evidence: E-franciscouzo-2026-09-27-report
-    reason: Newer reported upper bound, certified here (T-056), below the Kingbird baseline.
+    source_id: evand-square-packing-2026-10-05
+    value: '14.860158663391903236840250629824'
+    evidence: E-evand-exact-optima-2026-10-05-report
+    reason: The exact optimum of the same packing, certified here (T-098), below Francisco Couzo's
+      printed side (T-056).
   - n: 207
-    source_id: franciscouzo-square-packing-2026
-    value: '14.893954634242480'
-    evidence: E-franciscouzo-2026-09-27-report
-    reason: Newer reported upper bound, certified here (T-056), below the Kingbird baseline.
+    source_id: evand-square-packing-2026-10-05
+    value: '14.893954634237227388391298332204'
+    evidence: E-evand-exact-optima-2026-10-05-report
+    reason: The exact optimum of the same packing, certified here (T-098), below Francisco Couzo's
+      printed side (T-056).
   - n: 208
-    source_id: franciscouzo-square-packing-2026-10-03
-    value: '14.926534459703511'
-    evidence: E-franciscouzo-2026-10-03-report
-    reason: Newer reported upper bound, certified here (T-092), below Francisco Couzo's earlier
-      side (T-056) and the Kingbird baseline.
+    source_id: evand-square-packing-2026-10-05
+    value: '14.926534459699423246906428356506'
+    evidence: E-evand-exact-optima-2026-10-05-report
+    reason: The exact optimum of the same packing, certified here (T-098), below Francisco Couzo's
+      printed side (T-092).
   - n: 209
-    source_id: franciscouzo-square-packing-2026-10-03
-    value: '14.953939011860642'
-    evidence: E-franciscouzo-2026-10-03-report
-    reason: Newer reported upper bound, certified here (T-092), below Francisco Couzo's earlier
-      side (T-056) and the Kingbird baseline.
+    source_id: evand-square-packing-2026-10-05
+    value: '14.953939011857122362887224108935'
+    evidence: E-evand-exact-optima-2026-10-05-report
+    reason: The exact optimum of the same packing, certified here (T-098), below Francisco Couzo's
+      printed side (T-092).
   - n: 210
-    source_id: franciscouzo-square-packing-2026
-    value: '14.973001116591412'
-    evidence: E-franciscouzo-2026-09-27-report
-    reason: Newer reported upper bound, certified here (T-056), below the Kingbird baseline.
+    source_id: evand-square-packing-2026-10-05
+    value: '14.973001116587625741983018050468'
+    evidence: E-evand-exact-optima-2026-10-05-report
+    reason: The exact optimum of the same packing, certified here (T-098), below Francisco Couzo's
+      printed side (T-056).
   - n: 211
-    source_id: de-winter-square-packing-211-2026
-    value: '14.99796070496771500150'
-    evidence: E-n211-de-winter-report
-    reason: Newer reported upper bound, certified here (T-057), below the Kingbird baseline.
+    source_id: evand-square-packing-2026-10-05
+    value: '14.997960704967361565181004478378'
+    evidence: E-evand-exact-optima-2026-10-05-report
+    reason: The exact optimum of the same packing, certified here (T-098), below Joost de Winter's
+      printed side (T-057).
   - n: 228
-    source_id: franciscouzo-square-packing-2026-10-03
-    value: '15.604602454552252'
-    evidence: E-franciscouzo-2026-10-03-report
-    reason: Newer reported upper bound, certified here (T-092), below Francisco Couzo's earlier
-      side (T-056) and the Kingbird baseline.
+    source_id: evand-square-packing-2026-10-05
+    value: '15.604602454546056967137037190451'
+    evidence: E-evand-exact-optima-2026-10-05-report
+    reason: The exact optimum of the same packing, certified here (T-098), below Francisco Couzo's
+      printed side (T-092).
   - n: 236
-    source_id: franciscouzo-square-packing-2026
-    value: '15.872219025616040'
-    evidence: E-franciscouzo-2026-09-27-report
-    reason: Newer reported upper bound, certified here (T-056), below the Kingbird baseline.
+    source_id: evand-square-packing-2026-10-05
+    value: '15.87221902560728287835395301986'
+    evidence: E-evand-exact-optima-2026-10-05-report
+    reason: The exact optimum of the same packing, certified here (T-098), below Francisco Couzo's
+      printed side (T-056).
   - n: 237
-    source_id: franciscouzo-square-packing-2026
-    value: '15.911191683008479'
-    evidence: E-franciscouzo-2026-09-27-report
-    reason: Newer reported upper bound, certified here (T-056), below the Kingbird baseline.
+    source_id: evand-square-packing-2026-10-05
+    value: '15.911191683001783031028912780176'
+    evidence: E-evand-exact-optima-2026-10-05-report
+    reason: The exact optimum of the same packing, certified here (T-098), below Francisco Couzo's
+      printed side (T-056).
   - n: 238
-    source_id: franciscouzo-square-packing-2026
-    value: '15.931725503598480'
-    evidence: E-franciscouzo-2026-09-27-report
-    reason: Newer reported upper bound, certified here (T-056), below the Kingbird baseline.
+    source_id: evand-square-packing-2026-10-05
+    value: '15.931725503591328233767187231141'
+    evidence: E-evand-exact-optima-2026-10-05-report
+    reason: The exact optimum of the same packing, certified here (T-098), below Francisco Couzo's
+      printed side (T-056).
   - n: 239
-    source_id: franciscouzo-square-packing-2026
-    value: '15.953819333484685'
-    evidence: E-franciscouzo-2026-09-27-report
-    reason: Newer reported upper bound, certified here (T-056), below the Kingbird baseline.
+    source_id: evand-square-packing-2026-10-05
+    value: '15.953819333480779915463620238818'
+    evidence: E-evand-exact-optima-2026-10-05-report
+    reason: The exact optimum of the same packing, certified here (T-098), below Francisco Couzo's
+      printed side (T-056).
   - n: 240
-    source_id: franciscouzo-square-packing-2026
-    value: '15.969685337536875'
-    evidence: E-franciscouzo-2026-09-27-report
-    reason: Newer reported upper bound, certified here (T-056), below the Kingbird baseline.
+    source_id: evand-square-packing-2026-10-05
+    value: '15.969685337530780336056074320582'
+    evidence: E-evand-exact-optima-2026-10-05-report
+    reason: The exact optimum of the same packing, certified here (T-098), below Francisco Couzo's
+      printed side (T-056).
   - n: 241
-    source_id: franciscouzo-square-packing-2026
-    value: '15.988132439537539'
-    evidence: E-franciscouzo-2026-09-27-report
-    reason: Newer reported upper bound, certified here (T-056), below the Kingbird baseline.
+    source_id: evand-square-packing-2026-10-05
+    value: '15.988132439524990848590591447359'
+    evidence: E-evand-exact-optima-2026-10-05-report
+    reason: The exact optimum of the same packing, certified here (T-098), below Francisco Couzo's
+      printed side (T-056).
   - n: 259
-    source_id: franciscouzo-square-packing-2026
-    value: '16.602568490497649'
-    evidence: E-franciscouzo-2026-09-27-report
-    reason: Newer reported upper bound, certified here (T-056), below the Kingbird baseline.
+    source_id: evand-square-packing-2026-10-05
+    value: '16.602568490493364515381155942934'
+    evidence: E-evand-exact-optima-2026-10-05-report
+    reason: The exact optimum of the same packing, certified here (T-098), below Francisco Couzo's
+      printed side (T-056).
   - n: 263
-    source_id: franciscouzo-square-packing-2026-10-03
-    value: '16.742270262031791'
-    evidence: E-franciscouzo-2026-10-03-report
-    reason: Newer reported upper bound, certified here (T-092), below Francisco Couzo's earlier
-      side (T-056) and the Kingbird baseline.
+    source_id: evand-square-packing-2026-10-05
+    value: '16.742270262025057683757892778345'
+    evidence: E-evand-exact-optima-2026-10-05-report
+    reason: The exact optimum of the same packing, certified here (T-098), below Francisco Couzo's
+      printed side (T-092).
   - n: 268
-    source_id: franciscouzo-square-packing-2026
-    value: '16.878814821018413'
-    evidence: E-franciscouzo-2026-09-27-report
-    reason: Newer reported upper bound, certified here (T-056), below the Kingbird baseline.
+    source_id: evand-square-packing-2026-10-05
+    value: '16.878814821006764724747121053018'
+    evidence: E-evand-exact-optima-2026-10-05-report
+    reason: The exact optimum of the same packing, certified here (T-098), below Francisco Couzo's
+      printed side (T-056).
   - n: 269
-    source_id: franciscouzo-square-packing-2026
-    value: '16.905967058598858'
-    evidence: E-franciscouzo-2026-09-27-report
-    reason: Newer reported upper bound, certified here (T-056), below the Kingbird baseline.
+    source_id: evand-square-packing-2026-10-05
+    value: '16.905967058583840911467960094275'
+    evidence: E-evand-exact-optima-2026-10-05-report
+    reason: The exact optimum of the same packing, certified here (T-098), below Francisco Couzo's
+      printed side (T-056).
   - n: 270
-    source_id: franciscouzo-square-packing-2026
-    value: '16.937810329390629'
-    evidence: E-franciscouzo-2026-09-27-report
-    reason: Newer reported upper bound, certified here (T-056), below the Kingbird baseline.
+    source_id: evand-square-packing-2026-10-05
+    value: '16.937810329340954110200218669924'
+    evidence: E-evand-exact-optima-2026-10-05-report
+    reason: The exact optimum of the same packing, certified here (T-098), below Francisco Couzo's
+      printed side (T-056).
   - n: 271
-    source_id: franciscouzo-square-packing-2026
-    value: '16.950820792633813'
-    evidence: E-franciscouzo-2026-09-27-report
-    reason: Newer reported upper bound, certified here (T-056), below the Kingbird baseline.
+    source_id: evand-square-packing-2026-10-05
+    value: '16.950820792624958786450490084388'
+    evidence: E-evand-exact-optima-2026-10-05-report
+    reason: The exact optimum of the same packing, certified here (T-098), below Francisco Couzo's
+      printed side (T-056).
   - n: 272
-    source_id: franciscouzo-square-packing-2026-10-03
-    value: '16.968165867864400'
-    evidence: E-franciscouzo-2026-10-03-report
-    reason: Newer reported upper bound, certified here (T-092), below Francisco Couzo's earlier
-      side (T-056) and the Kingbird baseline.
+    source_id: evand-square-packing-2026-10-05
+    value: '16.968165867852158332894136646166'
+    evidence: E-evand-exact-optima-2026-10-05-report
+    reason: The exact optimum of the same packing, certified here (T-098), below Francisco Couzo's
+      printed side (T-092).
   - n: 273
-    source_id: franciscouzo-square-packing-2026
-    value: '16.983925962660670'
-    evidence: E-franciscouzo-2026-09-27-report
-    reason: Newer reported upper bound, certified here (T-056), below the Kingbird baseline.
+    source_id: evand-square-packing-2026-10-05
+    value: '16.983925962650404316108837346991'
+    evidence: E-evand-exact-optima-2026-10-05-report
+    reason: The exact optimum of the same packing, certified here (T-098), below Francisco Couzo's
+      printed side (T-056).
   - n: 292
     source_id: franciscouzo-square-packing-2026
     value: '17.597249391199519'
     evidence: E-franciscouzo-2026-09-27-report
     reason: Newer reported upper bound, certified here (T-056), below the Kingbird baseline.
   - n: 297
-    source_id: franciscouzo-square-packing-2026
-    value: '17.740417287548325'
-    evidence: E-franciscouzo-2026-09-27-report
-    reason: Newer reported upper bound, certified here (T-056), below the Kingbird baseline.
+    source_id: evand-square-packing-2026-10-05
+    value: '17.74041728754380185115320576776'
+    evidence: E-evand-exact-optima-2026-10-05-report
+    reason: The exact optimum of the same packing, certified here (T-098), below Francisco Couzo's
+      printed side (T-056).
   - n: 301
-    source_id: franciscouzo-square-packing-2026
-    value: '17.846667192848074'
-    evidence: E-franciscouzo-2026-09-27-report
-    reason: Newer reported upper bound, certified here (T-056), below the Kingbird baseline.
+    source_id: evand-square-packing-2026-10-05
+    value: '17.846667192843489783121781262887'
+    evidence: E-evand-exact-optima-2026-10-05-report
+    reason: The exact optimum of the same packing, certified here (T-098), below Francisco Couzo's
+      printed side (T-056).
   - n: 302
-    source_id: franciscouzo-square-packing-2026
-    value: '17.885993892536710'
-    evidence: E-franciscouzo-2026-09-27-report
-    reason: Newer reported upper bound, certified here (T-056), below the Kingbird baseline.
+    source_id: evand-square-packing-2026-10-05
+    value: '17.885993892530410666666041882586'
+    evidence: E-evand-exact-optima-2026-10-05-report
+    reason: The exact optimum of the same packing, certified here (T-098), below Francisco Couzo's
+      printed side (T-056).
   - n: 303
-    source_id: franciscouzo-square-packing-2026-10-03
-    value: '17.924341009860250'
-    evidence: E-franciscouzo-2026-10-03-report
-    reason: Newer reported upper bound, certified here (T-092), below Francisco Couzo's earlier
-      side (T-056) and the Kingbird baseline.
+    source_id: evand-square-packing-2026-10-05
+    value: '17.924341009851128373110514612828'
+    evidence: E-evand-exact-optima-2026-10-05-report
+    reason: The exact optimum of the same packing, certified here (T-098), below Francisco Couzo's
+      printed side (T-092).
   - n: 304
-    source_id: franciscouzo-square-packing-2026
-    value: '17.934650018395903'
-    evidence: E-franciscouzo-2026-09-27-report
-    reason: Newer reported upper bound, certified here (T-056), below the Kingbird baseline.
+    source_id: evand-square-packing-2026-10-05
+    value: '17.934650018390681724105084929881'
+    evidence: E-evand-exact-optima-2026-10-05-report
+    reason: The exact optimum of the same packing, certified here (T-098), below Francisco Couzo's
+      printed side (T-056).
   - n: 305
-    source_id: franciscouzo-square-packing-2026
-    value: '17.952959459023539'
-    evidence: E-franciscouzo-2026-09-27-report
-    reason: Newer reported upper bound, certified here (T-056), below the Kingbird baseline.
+    source_id: evand-square-packing-2026-10-05
+    value: '17.952959459015527962875662582531'
+    evidence: E-evand-exact-optima-2026-10-05-report
+    reason: The exact optimum of the same packing, certified here (T-098), below Francisco Couzo's
+      printed side (T-056).
   - n: 306
-    source_id: franciscouzo-square-packing-2026-10-03
-    value: '17.963438139777139'
-    evidence: E-franciscouzo-2026-10-03-report
-    reason: Newer reported upper bound, certified here (T-092), below Francisco Couzo's earlier
-      side (T-056) and the Kingbird baseline.
+    source_id: evand-square-packing-2026-10-05
+    value: '17.963438139764002853611723469441'
+    evidence: E-evand-exact-optima-2026-10-05-report
+    reason: The exact optimum of the same packing, certified here (T-098), below Francisco Couzo's
+      printed side (T-092).
   - n: 307
-    source_id: franciscouzo-square-packing-2026
-    value: '17.981030548643712'
-    evidence: E-franciscouzo-2026-09-27-report
-    reason: Newer reported upper bound, certified here (T-056), below the Kingbird baseline.
+    source_id: evand-square-packing-2026-10-05
+    value: '17.981030548633310696277454165157'
+    evidence: E-evand-exact-optima-2026-10-05-report
+    reason: The exact optimum of the same packing, certified here (T-098), below Francisco Couzo's
+      printed side (T-056).
 superseded_reports:
+  - n: 68
+    source_id: franciscouzo-square-packing-2026
+    value: '8.798795237222592'
+    superseded_by: evand-square-packing-2026-10-05
+    reason: Superseded on 2026-10-05 by Evan Daniel's exact optimum of the same packing, certified
+      here (T-098).
   - n: 68
     source_id: unitsquare-release1
     value: '8.803383074716108386903836683375989697670063329'
-    superseded_by: franciscouzo-square-packing-2026
-    reason: Superseded on 2026-09-29 by Francisco Couzo's smaller certified side.
+    superseded_by: evand-square-packing-2026-10-05
+    reason: Superseded on 2026-09-29 by Francisco Couzo's smaller certified side; since 2026-10-05
+      the selected report is Evan Daniel's exact optimum of that packing (T-098).
   - n: 69
     source_id: unitsquare-release1
     value: '8.827205507815920656880680735618736931225314831'
     superseded_by: kingbird-current
     reason: Superseded on 2026-10-05 by the catalogue's side for David Ellsworth's optimization
       of the same packing (T-088), which the case now reports from the catalogue baseline.
+  - n: 102
+    source_id: franciscouzo-square-packing-2026
+    value: '10.607174680178947'
+    superseded_by: evand-square-packing-2026-10-05
+    reason: Superseded on 2026-10-05 by Evan Daniel's exact optimum of the same packing, certified
+      here (T-098).
   - n: 103
     source_id: casson-square-packing-2026
     value: '10.70377984436967189'
-    superseded_by: franciscouzo-square-packing-2026
+    superseded_by: evand-square-packing-2026-10-05
     reason: Larger than Francisco Couzo's side at this count; the case record states both sources'
-      dates and values.
+      dates and values; since 2026-10-05 the selected report is Evan Daniel's exact optimum of
+      that packing (T-098).
+  - n: 103
+    source_id: franciscouzo-square-packing-2026
+    value: '10.703516755580015'
+    superseded_by: evand-square-packing-2026-10-05
+    reason: Superseded on 2026-10-05 by Evan Daniel's exact optimum of the same packing, certified
+      here (T-098).
   - n: 103
     source_id: unitsquare-release1
     value: '10.703790283762427'
-    superseded_by: franciscouzo-square-packing-2026
-    reason: Superseded on 2026-09-29 by Francisco Couzo's smaller certified side.
+    superseded_by: evand-square-packing-2026-10-05
+    reason: Superseded on 2026-09-29 by Francisco Couzo's smaller certified side; since 2026-10-05
+      the selected report is Evan Daniel's exact optimum of that packing (T-098).
   - n: 105
     source_id: casson-square-packing-2026
     value: '10.80758853319602153'
@@ -1655,217 +1843,469 @@ superseded_reports:
   - n: 106
     source_id: casson-square-packing-2026
     value: '10.82293693182615435'
-    superseded_by: franciscouzo-square-packing-2026
+    superseded_by: evand-square-packing-2026-10-05
     reason: Larger than Francisco Couzo's side at this count; the case record states both sources'
-      dates and values.
+      dates and values; since 2026-10-05 the selected report is Evan Daniel's exact optimum of
+      that packing (T-098).
+  - n: 106
+    source_id: franciscouzo-square-packing-2026
+    value: '10.822908044141968'
+    superseded_by: evand-square-packing-2026-10-05
+    reason: Superseded on 2026-10-05 by Evan Daniel's exact optimum of the same packing, certified
+      here (T-098).
+  - n: 110
+    source_id: franciscouzo-square-packing-2026
+    value: '10.996783396634358'
+    superseded_by: evand-square-packing-2026-10-05
+    reason: Superseded on 2026-10-05 by Evan Daniel's exact optimum of the same packing, certified
+      here (T-098).
   - n: 110
     source_id: unitsquare-release1
     value: '10.996797773597706'
-    superseded_by: franciscouzo-square-packing-2026
-    reason: Superseded on 2026-09-29 by Francisco Couzo's smaller certified side.
+    superseded_by: evand-square-packing-2026-10-05
+    reason: Superseded on 2026-09-29 by Francisco Couzo's smaller certified side; since 2026-10-05
+      the selected report is Evan Daniel's exact optimum of that packing (T-098).
   - n: 123
     source_id: casson-square-packing-2026
     value: '11.60138465962087828'
-    superseded_by: franciscouzo-square-packing-2026
+    superseded_by: evand-square-packing-2026-10-05
     reason: Larger than Francisco Couzo's side at this count; the case record states both sources'
-      dates and values.
+      dates and values; since 2026-10-05 the selected report is Evan Daniel's exact optimum of
+      that packing (T-098).
+  - n: 123
+    source_id: franciscouzo-square-packing-2026
+    value: '11.601384658385687'
+    superseded_by: evand-square-packing-2026-10-05
+    reason: Superseded on 2026-10-05 by Evan Daniel's exact optimum of the same packing, certified
+      here (T-098).
   - n: 131
     source_id: casson-square-packing-2026
     value: '11.95652190193193043'
-    superseded_by: franciscouzo-square-packing-2026
+    superseded_by: evand-square-packing-2026-10-05
     reason: Larger than Francisco Couzo's side at this count; the case record states both sources'
-      dates and values.
+      dates and values; since 2026-10-05 the selected report is Evan Daniel's exact optimum of
+      that packing (T-098).
+  - n: 131
+    source_id: franciscouzo-square-packing-2026
+    value: '11.954916830219048'
+    superseded_by: evand-square-packing-2026-10-05
+    reason: Superseded on 2026-10-05 by Evan Daniel's exact optimum of the same packing, certified
+      here (T-098).
   - n: 131
     source_id: unitsquare-release1
     value: '11.956543108124773261501115489978287643498579738'
-    superseded_by: franciscouzo-square-packing-2026
-    reason: Superseded on 2026-09-29 by Francisco Couzo's smaller certified side.
+    superseded_by: evand-square-packing-2026-10-05
+    reason: Superseded on 2026-09-29 by Francisco Couzo's smaller certified side; since 2026-10-05
+      the selected report is Evan Daniel's exact optimum of that packing (T-098).
   - n: 132
     source_id: casson-square-packing-2026
     value: '11.99134529315214159'
-    superseded_by: franciscouzo-square-packing-2026
+    superseded_by: evand-square-packing-2026-10-05
     reason: Larger than Francisco Couzo's side at this count; the case record states both sources'
-      dates and values.
+      dates and values; since 2026-10-05 the selected report is Evan Daniel's exact optimum of
+      that packing (T-098).
+  - n: 132
+    source_id: franciscouzo-square-packing-2026
+    value: '11.991327887694469'
+    superseded_by: evand-square-packing-2026-10-05
+    reason: Superseded on 2026-10-05 by Evan Daniel's exact optimum of the same packing, certified
+      here (T-098).
   - n: 152
     source_id: casson-square-packing-2026
     value: '12.83071880600230408'
-    superseded_by: franciscouzo-square-packing-2026
+    superseded_by: evand-square-packing-2026-10-05
     reason: Larger than Francisco Couzo's side at this count; the case record states both sources'
-      dates and values.
+      dates and values; since 2026-10-05 the selected report is Evan Daniel's exact optimum of
+      that packing (T-098).
+  - n: 152
+    source_id: franciscouzo-square-packing-2026
+    value: '12.830718800982252'
+    superseded_by: evand-square-packing-2026-10-05
+    reason: Superseded on 2026-10-05 by Evan Daniel's exact optimum of the same packing, certified
+      here (T-098).
   - n: 154
     source_id: casson-square-packing-2026
     value: '12.93166403111078111'
-    superseded_by: franciscouzo-square-packing-2026
+    superseded_by: evand-square-packing-2026-10-05
     reason: Larger than Francisco Couzo's side at this count; the case record states both sources'
-      dates and values.
+      dates and values; since 2026-10-05 the selected report is Evan Daniel's exact optimum of
+      that packing (T-098).
+  - n: 154
+    source_id: franciscouzo-square-packing-2026
+    value: '12.931663721169976'
+    superseded_by: evand-square-packing-2026-10-05
+    reason: Superseded on 2026-10-05 by Evan Daniel's exact optimum of the same packing, certified
+      here (T-098).
   - n: 155
     source_id: casson-square-packing-2026
     value: '12.95820609164224457'
-    superseded_by: franciscouzo-square-packing-2026
+    superseded_by: evand-square-packing-2026-10-05
     reason: Larger than Francisco Couzo's side at this count; the case record states both sources'
-      dates and values.
+      dates and values; since 2026-10-05 the selected report is Evan Daniel's exact optimum of
+      that packing (T-098).
+  - n: 155
+    source_id: franciscouzo-square-packing-2026
+    value: '12.955619592137850'
+    superseded_by: evand-square-packing-2026-10-05
+    reason: Superseded on 2026-10-05 by Evan Daniel's exact optimum of the same packing, certified
+      here (T-098).
   - n: 156
     source_id: casson-square-packing-2026
     value: '12.98208269973811824'
-    superseded_by: franciscouzo-square-packing-2026
+    superseded_by: evand-square-packing-2026-10-05
     reason: Larger than Francisco Couzo's side at this count; the case record states both sources'
-      dates and values.
+      dates and values; since 2026-10-05 the selected report is Evan Daniel's exact optimum of
+      that packing (T-098).
+  - n: 156
+    source_id: franciscouzo-square-packing-2026
+    value: '12.982082698520427'
+    superseded_by: evand-square-packing-2026-10-05
+    reason: Superseded on 2026-10-05 by Evan Daniel's exact optimum of the same packing, certified
+      here (T-098).
+  - n: 172
+    source_id: franciscouzo-square-packing-2026
+    value: '13.618988956935731'
+    superseded_by: evand-square-packing-2026-10-05
+    reason: Superseded on 2026-10-05 by Evan Daniel's exact optimum of the same packing, certified
+      here (T-098).
+  - n: 177
+    source_id: franciscouzo-square-packing-2026
+    value: '13.822979734183507'
+    superseded_by: evand-square-packing-2026-10-05
+    reason: Superseded on 2026-10-05 by Evan Daniel's exact optimum of the same packing, certified
+      here (T-098).
   - n: 180
     source_id: casson-square-packing-2026
     value: '13.93500418116475004'
-    superseded_by: franciscouzo-square-packing-2026
+    superseded_by: evand-square-packing-2026-10-05
     reason: Larger than Francisco Couzo's side at this count; the case record states both sources'
-      dates and values.
+      dates and values; since 2026-10-05 the selected report is Evan Daniel's exact optimum of
+      that packing (T-098).
+  - n: 180
+    source_id: franciscouzo-square-packing-2026
+    value: '13.927888140501693'
+    superseded_by: evand-square-packing-2026-10-05
+    reason: Superseded on 2026-10-05 by Evan Daniel's exact optimum of the same packing, certified
+      here (T-098).
   - n: 181
     source_id: casson-square-packing-2026
     value: '13.95679529257278872'
-    superseded_by: franciscouzo-square-packing-2026
+    superseded_by: evand-square-packing-2026-10-05
     reason: Larger than Francisco Couzo's side at this count; the case record states both sources'
-      dates and values.
+      dates and values; since 2026-10-05 the selected report is Evan Daniel's exact optimum of
+      that packing (T-098).
+  - n: 181
+    source_id: franciscouzo-square-packing-2026
+    value: '13.953748821957927'
+    superseded_by: evand-square-packing-2026-10-05
+    reason: Superseded on 2026-10-05 by Evan Daniel's exact optimum of the same packing, certified
+      here (T-098).
   - n: 182
     source_id: casson-square-packing-2026
     value: '13.97409071444282525'
-    superseded_by: franciscouzo-square-packing-2026
+    superseded_by: evand-square-packing-2026-10-05
     reason: Larger than Francisco Couzo's side at this count; the case record states both sources'
-      dates and values.
+      dates and values; since 2026-10-05 the selected report is Evan Daniel's exact optimum of
+      that packing (T-098).
+  - n: 182
+    source_id: franciscouzo-square-packing-2026
+    value: '13.974090713124822'
+    superseded_by: evand-square-packing-2026-10-05
+    reason: Superseded on 2026-10-05 by Evan Daniel's exact optimum of the same packing, certified
+      here (T-098).
+  - n: 199
+    source_id: franciscouzo-square-packing-2026
+    value: '14.618988956907218'
+    superseded_by: evand-square-packing-2026-10-05
+    reason: Superseded on 2026-10-05 by Evan Daniel's exact optimum of the same packing, certified
+      here (T-098).
+  - n: 206
+    source_id: franciscouzo-square-packing-2026
+    value: '14.860158663395859'
+    superseded_by: evand-square-packing-2026-10-05
+    reason: Superseded on 2026-10-05 by Evan Daniel's exact optimum of the same packing, certified
+      here (T-098).
   - n: 207
     source_id: casson-square-packing-2026
     value: '14.89395465342147418'
-    superseded_by: franciscouzo-square-packing-2026
+    superseded_by: evand-square-packing-2026-10-05
     reason: Larger than Francisco Couzo's side at this count; the case record states both sources'
-      dates and values.
+      dates and values; since 2026-10-05 the selected report is Evan Daniel's exact optimum of
+      that packing (T-098).
+  - n: 207
+    source_id: franciscouzo-square-packing-2026
+    value: '14.893954634242480'
+    superseded_by: evand-square-packing-2026-10-05
+    reason: Superseded on 2026-10-05 by Evan Daniel's exact optimum of the same packing, certified
+      here (T-098).
   - n: 208
     source_id: casson-square-packing-2026
     value: '14.93761283595916289'
-    superseded_by: franciscouzo-square-packing-2026-10-03
+    superseded_by: evand-square-packing-2026-10-05
     reason: Larger than Francisco Couzo's side at this count; the case record states both sources'
-      dates and values.
+      dates and values; since 2026-10-05 the selected report is Evan Daniel's exact optimum of
+      that packing (T-098).
   - n: 208
     source_id: franciscouzo-square-packing-2026
     value: '14.937018796984567'
-    superseded_by: franciscouzo-square-packing-2026-10-03
+    superseded_by: evand-square-packing-2026-10-05
     reason: Superseded on 2026-10-05 by Francisco Couzo's own later and smaller certified side
-      (T-092).
+      (T-092); since 2026-10-05 the selected report is Evan Daniel's exact optimum of that packing
+      (T-098).
+  - n: 208
+    source_id: franciscouzo-square-packing-2026-10-03
+    value: '14.926534459703511'
+    superseded_by: evand-square-packing-2026-10-05
+    reason: Superseded on 2026-10-05 by Evan Daniel's exact optimum of the same packing, certified
+      here (T-098).
   - n: 209
     source_id: casson-square-packing-2026
     value: '14.95856148981292932'
-    superseded_by: franciscouzo-square-packing-2026-10-03
+    superseded_by: evand-square-packing-2026-10-05
     reason: Larger than Francisco Couzo's side at this count; the case record states both sources'
-      dates and values.
+      dates and values; since 2026-10-05 the selected report is Evan Daniel's exact optimum of
+      that packing (T-098).
   - n: 209
     source_id: franciscouzo-square-packing-2026
     value: '14.955041639430016'
-    superseded_by: franciscouzo-square-packing-2026-10-03
+    superseded_by: evand-square-packing-2026-10-05
     reason: Superseded on 2026-10-05 by Francisco Couzo's own later and smaller certified side
-      (T-092).
+      (T-092); since 2026-10-05 the selected report is Evan Daniel's exact optimum of that packing
+      (T-098).
+  - n: 209
+    source_id: franciscouzo-square-packing-2026-10-03
+    value: '14.953939011860642'
+    superseded_by: evand-square-packing-2026-10-05
+    reason: Superseded on 2026-10-05 by Evan Daniel's exact optimum of the same packing, certified
+      here (T-098).
   - n: 210
     source_id: casson-square-packing-2026
     value: '14.97381035691250695'
-    superseded_by: franciscouzo-square-packing-2026
+    superseded_by: evand-square-packing-2026-10-05
     reason: Larger than Francisco Couzo's side at this count; the case record states both sources'
-      dates and values.
+      dates and values; since 2026-10-05 the selected report is Evan Daniel's exact optimum of
+      that packing (T-098).
+  - n: 210
+    source_id: franciscouzo-square-packing-2026
+    value: '14.973001116591412'
+    superseded_by: evand-square-packing-2026-10-05
+    reason: Superseded on 2026-10-05 by Evan Daniel's exact optimum of the same packing, certified
+      here (T-098).
+  - n: 211
+    source_id: de-winter-square-packing-211-2026
+    value: '14.99796070496771500150'
+    superseded_by: evand-square-packing-2026-10-05
+    reason: Superseded on 2026-10-05 by Evan Daniel's exact optimum of the same packing, certified
+      here (T-098).
   - n: 228
     source_id: casson-square-packing-2026
     value: '15.60895620815939289'
-    superseded_by: franciscouzo-square-packing-2026-10-03
+    superseded_by: evand-square-packing-2026-10-05
     reason: Larger than Francisco Couzo's side at this count; the case record states both sources'
-      dates and values.
+      dates and values; since 2026-10-05 the selected report is Evan Daniel's exact optimum of
+      that packing (T-098).
   - n: 228
     source_id: franciscouzo-square-packing-2026
     value: '15.604638007678682'
-    superseded_by: franciscouzo-square-packing-2026-10-03
+    superseded_by: evand-square-packing-2026-10-05
     reason: Superseded on 2026-10-05 by Francisco Couzo's own later and smaller certified side
-      (T-092).
+      (T-092); since 2026-10-05 the selected report is Evan Daniel's exact optimum of that packing
+      (T-098).
+  - n: 228
+    source_id: franciscouzo-square-packing-2026-10-03
+    value: '15.604602454552252'
+    superseded_by: evand-square-packing-2026-10-05
+    reason: Superseded on 2026-10-05 by Evan Daniel's exact optimum of the same packing, certified
+      here (T-098).
   - n: 236
     source_id: casson-square-packing-2026
     value: '15.87606262597991957'
-    superseded_by: franciscouzo-square-packing-2026
+    superseded_by: evand-square-packing-2026-10-05
     reason: Larger than Francisco Couzo's side at this count; the case record states both sources'
-      dates and values.
+      dates and values; since 2026-10-05 the selected report is Evan Daniel's exact optimum of
+      that packing (T-098).
+  - n: 236
+    source_id: franciscouzo-square-packing-2026
+    value: '15.872219025616040'
+    superseded_by: evand-square-packing-2026-10-05
+    reason: Superseded on 2026-10-05 by Evan Daniel's exact optimum of the same packing, certified
+      here (T-098).
   - n: 237
     source_id: casson-square-packing-2026
     value: '15.91292783720833270'
-    superseded_by: franciscouzo-square-packing-2026
+    superseded_by: evand-square-packing-2026-10-05
     reason: Larger than Francisco Couzo's side at this count; the case record states both sources'
-      dates and values.
+      dates and values; since 2026-10-05 the selected report is Evan Daniel's exact optimum of
+      that packing (T-098).
+  - n: 237
+    source_id: franciscouzo-square-packing-2026
+    value: '15.911191683008479'
+    superseded_by: evand-square-packing-2026-10-05
+    reason: Superseded on 2026-10-05 by Evan Daniel's exact optimum of the same packing, certified
+      here (T-098).
   - n: 238
     source_id: casson-square-packing-2026
     value: '15.93958571370620980'
-    superseded_by: franciscouzo-square-packing-2026
+    superseded_by: evand-square-packing-2026-10-05
     reason: Larger than Francisco Couzo's side at this count; the case record states both sources'
-      dates and values.
+      dates and values; since 2026-10-05 the selected report is Evan Daniel's exact optimum of
+      that packing (T-098).
+  - n: 238
+    source_id: franciscouzo-square-packing-2026
+    value: '15.931725503598480'
+    superseded_by: evand-square-packing-2026-10-05
+    reason: Superseded on 2026-10-05 by Evan Daniel's exact optimum of the same packing, certified
+      here (T-098).
   - n: 239
     source_id: casson-square-packing-2026
     value: '15.95623903092502971'
-    superseded_by: franciscouzo-square-packing-2026
+    superseded_by: evand-square-packing-2026-10-05
     reason: Larger than Francisco Couzo's side at this count; the case record states both sources'
-      dates and values.
+      dates and values; since 2026-10-05 the selected report is Evan Daniel's exact optimum of
+      that packing (T-098).
+  - n: 239
+    source_id: franciscouzo-square-packing-2026
+    value: '15.953819333484685'
+    superseded_by: evand-square-packing-2026-10-05
+    reason: Superseded on 2026-10-05 by Evan Daniel's exact optimum of the same packing, certified
+      here (T-098).
   - n: 240
     source_id: casson-square-packing-2026
     value: '15.97536577224557242'
-    superseded_by: franciscouzo-square-packing-2026
+    superseded_by: evand-square-packing-2026-10-05
     reason: Larger than Francisco Couzo's side at this count; the case record states both sources'
-      dates and values.
+      dates and values; since 2026-10-05 the selected report is Evan Daniel's exact optimum of
+      that packing (T-098).
+  - n: 240
+    source_id: franciscouzo-square-packing-2026
+    value: '15.969685337536875'
+    superseded_by: evand-square-packing-2026-10-05
+    reason: Superseded on 2026-10-05 by Evan Daniel's exact optimum of the same packing, certified
+      here (T-098).
   - n: 241
     source_id: casson-square-packing-2026
     value: '15.99043971050729418'
-    superseded_by: franciscouzo-square-packing-2026
+    superseded_by: evand-square-packing-2026-10-05
     reason: Larger than Francisco Couzo's side at this count; the case record states both sources'
-      dates and values.
+      dates and values; since 2026-10-05 the selected report is Evan Daniel's exact optimum of
+      that packing (T-098).
+  - n: 241
+    source_id: franciscouzo-square-packing-2026
+    value: '15.988132439537539'
+    superseded_by: evand-square-packing-2026-10-05
+    reason: Superseded on 2026-10-05 by Evan Daniel's exact optimum of the same packing, certified
+      here (T-098).
   - n: 259
     source_id: casson-square-packing-2026
     value: '16.60256850594295841'
-    superseded_by: franciscouzo-square-packing-2026
+    superseded_by: evand-square-packing-2026-10-05
     reason: Larger than Francisco Couzo's side at this count; the case record states both sources'
-      dates and values.
+      dates and values; since 2026-10-05 the selected report is Evan Daniel's exact optimum of
+      that packing (T-098).
+  - n: 259
+    source_id: franciscouzo-square-packing-2026
+    value: '16.602568490497649'
+    superseded_by: evand-square-packing-2026-10-05
+    reason: Superseded on 2026-10-05 by Evan Daniel's exact optimum of the same packing, certified
+      here (T-098).
   - n: 263
     source_id: franciscouzo-square-packing-2026
     value: '16.742280159187313'
-    superseded_by: franciscouzo-square-packing-2026-10-03
+    superseded_by: evand-square-packing-2026-10-05
     reason: Superseded on 2026-10-05 by Francisco Couzo's own later and smaller certified side
-      (T-092).
+      (T-092); since 2026-10-05 the selected report is Evan Daniel's exact optimum of that packing
+      (T-098).
+  - n: 263
+    source_id: franciscouzo-square-packing-2026-10-03
+    value: '16.742270262031791'
+    superseded_by: evand-square-packing-2026-10-05
+    reason: Superseded on 2026-10-05 by Evan Daniel's exact optimum of the same packing, certified
+      here (T-098).
   - n: 268
     source_id: casson-square-packing-2026
     value: '16.87895510935973675'
-    superseded_by: franciscouzo-square-packing-2026
+    superseded_by: evand-square-packing-2026-10-05
     reason: Larger than Francisco Couzo's side at this count; the case record states both sources'
-      dates and values.
+      dates and values; since 2026-10-05 the selected report is Evan Daniel's exact optimum of
+      that packing (T-098).
+  - n: 268
+    source_id: franciscouzo-square-packing-2026
+    value: '16.878814821018413'
+    superseded_by: evand-square-packing-2026-10-05
+    reason: Superseded on 2026-10-05 by Evan Daniel's exact optimum of the same packing, certified
+      here (T-098).
   - n: 269
     source_id: casson-square-packing-2026
     value: '16.90596713867399714'
-    superseded_by: franciscouzo-square-packing-2026
+    superseded_by: evand-square-packing-2026-10-05
     reason: Larger than Francisco Couzo's side at this count; the case record states both sources'
-      dates and values.
+      dates and values; since 2026-10-05 the selected report is Evan Daniel's exact optimum of
+      that packing (T-098).
+  - n: 269
+    source_id: franciscouzo-square-packing-2026
+    value: '16.905967058598858'
+    superseded_by: evand-square-packing-2026-10-05
+    reason: Superseded on 2026-10-05 by Evan Daniel's exact optimum of the same packing, certified
+      here (T-098).
   - n: 270
     source_id: casson-square-packing-2026
     value: '16.94057158197226087'
-    superseded_by: franciscouzo-square-packing-2026
+    superseded_by: evand-square-packing-2026-10-05
     reason: Larger than Francisco Couzo's side at this count; the case record states both sources'
-      dates and values.
+      dates and values; since 2026-10-05 the selected report is Evan Daniel's exact optimum of
+      that packing (T-098).
+  - n: 270
+    source_id: franciscouzo-square-packing-2026
+    value: '16.937810329390629'
+    superseded_by: evand-square-packing-2026-10-05
+    reason: Superseded on 2026-10-05 by Evan Daniel's exact optimum of the same packing, certified
+      here (T-098).
   - n: 271
     source_id: casson-square-packing-2026
     value: '16.95479445810086716'
-    superseded_by: franciscouzo-square-packing-2026
+    superseded_by: evand-square-packing-2026-10-05
     reason: Larger than Francisco Couzo's side at this count; the case record states both sources'
-      dates and values.
+      dates and values; since 2026-10-05 the selected report is Evan Daniel's exact optimum of
+      that packing (T-098).
+  - n: 271
+    source_id: franciscouzo-square-packing-2026
+    value: '16.950820792633813'
+    superseded_by: evand-square-packing-2026-10-05
+    reason: Superseded on 2026-10-05 by Evan Daniel's exact optimum of the same packing, certified
+      here (T-098).
   - n: 272
     source_id: casson-square-packing-2026
     value: '16.96944950195848989'
-    superseded_by: franciscouzo-square-packing-2026-10-03
+    superseded_by: evand-square-packing-2026-10-05
     reason: Larger than Francisco Couzo's side at this count; the case record states both sources'
-      dates and values.
+      dates and values; since 2026-10-05 the selected report is Evan Daniel's exact optimum of
+      that packing (T-098).
   - n: 272
     source_id: franciscouzo-square-packing-2026
     value: '16.968279785326896'
-    superseded_by: franciscouzo-square-packing-2026-10-03
+    superseded_by: evand-square-packing-2026-10-05
     reason: Superseded on 2026-10-05 by Francisco Couzo's own later and smaller certified side
-      (T-092).
+      (T-092); since 2026-10-05 the selected report is Evan Daniel's exact optimum of that packing
+      (T-098).
+  - n: 272
+    source_id: franciscouzo-square-packing-2026-10-03
+    value: '16.968165867864400'
+    superseded_by: evand-square-packing-2026-10-05
+    reason: Superseded on 2026-10-05 by Evan Daniel's exact optimum of the same packing, certified
+      here (T-098).
   - n: 273
     source_id: casson-square-packing-2026
     value: '16.98811467146214582'
-    superseded_by: franciscouzo-square-packing-2026
+    superseded_by: evand-square-packing-2026-10-05
     reason: Larger than Francisco Couzo's side at this count; the case record states both sources'
-      dates and values.
+      dates and values; since 2026-10-05 the selected report is Evan Daniel's exact optimum of
+      that packing (T-098).
+  - n: 273
+    source_id: franciscouzo-square-packing-2026
+    value: '16.983925962660670'
+    superseded_by: evand-square-packing-2026-10-05
+    reason: Superseded on 2026-10-05 by Evan Daniel's exact optimum of the same packing, certified
+      here (T-098).
   - n: 292
     source_id: casson-square-packing-2026
     value: '17.60256849240573729'
@@ -1875,56 +2315,113 @@ superseded_reports:
   - n: 297
     source_id: casson-square-packing-2026
     value: '17.74092885618564353'
-    superseded_by: franciscouzo-square-packing-2026
+    superseded_by: evand-square-packing-2026-10-05
     reason: Larger than Francisco Couzo's side at this count; the case record states both sources'
-      dates and values.
+      dates and values; since 2026-10-05 the selected report is Evan Daniel's exact optimum of
+      that packing (T-098).
+  - n: 297
+    source_id: franciscouzo-square-packing-2026
+    value: '17.740417287548325'
+    superseded_by: evand-square-packing-2026-10-05
+    reason: Superseded on 2026-10-05 by Evan Daniel's exact optimum of the same packing, certified
+      here (T-098).
   - n: 301
     source_id: casson-square-packing-2026
     value: '17.86867840793058804'
-    superseded_by: franciscouzo-square-packing-2026
+    superseded_by: evand-square-packing-2026-10-05
     reason: Larger than Francisco Couzo's side at this count; the case record states both sources'
-      dates and values.
+      dates and values; since 2026-10-05 the selected report is Evan Daniel's exact optimum of
+      that packing (T-098).
+  - n: 301
+    source_id: franciscouzo-square-packing-2026
+    value: '17.846667192848074'
+    superseded_by: evand-square-packing-2026-10-05
+    reason: Superseded on 2026-10-05 by Evan Daniel's exact optimum of the same packing, certified
+      here (T-098).
+  - n: 302
+    source_id: franciscouzo-square-packing-2026
+    value: '17.885993892536710'
+    superseded_by: evand-square-packing-2026-10-05
+    reason: Superseded on 2026-10-05 by Evan Daniel's exact optimum of the same packing, certified
+      here (T-098).
   - n: 303
     source_id: casson-square-packing-2026
     value: '17.93105636462953001'
-    superseded_by: franciscouzo-square-packing-2026-10-03
+    superseded_by: evand-square-packing-2026-10-05
     reason: Larger than Francisco Couzo's side at this count; the case record states both sources'
-      dates and values.
+      dates and values; since 2026-10-05 the selected report is Evan Daniel's exact optimum of
+      that packing (T-098).
   - n: 303
     source_id: franciscouzo-square-packing-2026
     value: '17.924349265547932'
-    superseded_by: franciscouzo-square-packing-2026-10-03
+    superseded_by: evand-square-packing-2026-10-05
     reason: Superseded on 2026-10-05 by Francisco Couzo's own later and smaller certified side
-      (T-092).
+      (T-092); since 2026-10-05 the selected report is Evan Daniel's exact optimum of that packing
+      (T-098).
+  - n: 303
+    source_id: franciscouzo-square-packing-2026-10-03
+    value: '17.924341009860250'
+    superseded_by: evand-square-packing-2026-10-05
+    reason: Superseded on 2026-10-05 by Evan Daniel's exact optimum of the same packing, certified
+      here (T-098).
   - n: 304
     source_id: casson-square-packing-2026
     value: '17.94880191214547338'
-    superseded_by: franciscouzo-square-packing-2026
+    superseded_by: evand-square-packing-2026-10-05
     reason: Larger than Francisco Couzo's side at this count; the case record states both sources'
-      dates and values.
+      dates and values; since 2026-10-05 the selected report is Evan Daniel's exact optimum of
+      that packing (T-098).
+  - n: 304
+    source_id: franciscouzo-square-packing-2026
+    value: '17.934650018395903'
+    superseded_by: evand-square-packing-2026-10-05
+    reason: Superseded on 2026-10-05 by Evan Daniel's exact optimum of the same packing, certified
+      here (T-098).
   - n: 305
     source_id: casson-square-packing-2026
     value: '17.96053668235995815'
-    superseded_by: franciscouzo-square-packing-2026
+    superseded_by: evand-square-packing-2026-10-05
     reason: Larger than Francisco Couzo's side at this count; the case record states both sources'
-      dates and values.
+      dates and values; since 2026-10-05 the selected report is Evan Daniel's exact optimum of
+      that packing (T-098).
+  - n: 305
+    source_id: franciscouzo-square-packing-2026
+    value: '17.952959459023539'
+    superseded_by: evand-square-packing-2026-10-05
+    reason: Superseded on 2026-10-05 by Evan Daniel's exact optimum of the same packing, certified
+      here (T-098).
   - n: 306
     source_id: casson-square-packing-2026
     value: '17.96846609160515484'
-    superseded_by: franciscouzo-square-packing-2026-10-03
+    superseded_by: evand-square-packing-2026-10-05
     reason: Larger than Francisco Couzo's side at this count; the case record states both sources'
-      dates and values.
+      dates and values; since 2026-10-05 the selected report is Evan Daniel's exact optimum of
+      that packing (T-098).
   - n: 306
     source_id: franciscouzo-square-packing-2026
     value: '17.963449907261179'
-    superseded_by: franciscouzo-square-packing-2026-10-03
+    superseded_by: evand-square-packing-2026-10-05
     reason: Superseded on 2026-10-05 by Francisco Couzo's own later and smaller certified side
-      (T-092).
+      (T-092); since 2026-10-05 the selected report is Evan Daniel's exact optimum of that packing
+      (T-098).
+  - n: 306
+    source_id: franciscouzo-square-packing-2026-10-03
+    value: '17.963438139777139'
+    superseded_by: evand-square-packing-2026-10-05
+    reason: Superseded on 2026-10-05 by Evan Daniel's exact optimum of the same packing, certified
+      here (T-098).
   - n: 307
     source_id: casson-square-packing-2026
     value: '17.98205200143469895'
-    superseded_by: franciscouzo-square-packing-2026
+    superseded_by: evand-square-packing-2026-10-05
     reason: Larger than Francisco Couzo's side at this count; the case record states both sources'
-      dates and values.
+      dates and values; since 2026-10-05 the selected report is Evan Daniel's exact optimum of
+      that packing (T-098).
+  - n: 307
+    source_id: franciscouzo-square-packing-2026
+    value: '17.981030548643712'
+    superseded_by: evand-square-packing-2026-10-05
+    reason: Superseded on 2026-10-05 by Evan Daniel's exact optimum of the same packing, certified
+      here (T-098).
 beyond_horizon_claims: []
 pending_catalogue_intake: []

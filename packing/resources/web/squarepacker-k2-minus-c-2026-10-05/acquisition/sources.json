@@ -1,0 +1,40 @@
+{
+  "format": "external-source-acquisition-v1",
+  "retrieved_at_utc": "2026-10-05T17:10Z",
+  "git_scope": "A complete clone of the public repository, fetched when main was this commit (tag v1.1 is its parent 525da4e3, which differs only in README.md); the manifest covers every file of the tree.",
+  "sources": [
+    {
+      "id": "squarepacker-k2-minus-c",
+      "source_url": "https://github.com/squarepacker/k2-minus-c",
+      "source_ref": "main",
+      "source_commit": "25f645e8fcadb3c2768f4da42d80e977fb1a508d",
+      "committed_utc": "2026-10-05T15:15:50Z",
+      "git_tree": "d384facef45b18e51bb4a17268494bda413b04ec",
+      "archived_path": "packing/resources/web/squarepacker-k2-minus-c-2026-10-05/k2-minus-c",
+      "subtree_manifest": "packing/resources/web/squarepacker-k2-minus-c-2026-10-05/acquisition/upstream-subtree.sha256",
+      "subtree_scope": [
+        ".zenodo.json",
+        "LICENSE",
+        "README.md",
+        "SHA256SUMS",
+        "code",
+        "data",
+        "paper",
+        "reviews"
+      ],
+      "subtree_file_count": 78,
+      "subtree_total_bytes": 1679573,
+      "retained_file_count": 78,
+      "retained_total_bytes": 1679573,
+      "compressed": [],
+      "pinned_only": [],
+      "license": "MIT for code/ and data/ (LICENSE, Copyright (c) 2026 Sungjoon Ryu); CC BY 4.0 for paper/paper.tex and paper/paper.pdf (paper/LICENSE)",
+      "claims": [
+        "Theorem 1.1: for every integer k >= 2, every family of N unit squares in [0,k]^2 that are pairwise disjoint as closed sets has k^2 - N >= kappa log k with kappa = 0.033 (natural logarithm), and k^2 - N >= (0.99977 log k + 0.3819)/30.147 for k >= 10^13 (paper/paper.tex, Theorem 1.1)",
+        "Corollary 1.2: c*(k) := max{c : s(k^2 - c) = k} >= kappa log k - 1, so for every fixed c, s(k^2 - c) = k for all sufficiently large k; for c = 4 the second bound gives s(k^2 - 4) = k for log k > 120.24 (Corollary 1.2, Remark 7.4)",
+        "Without the computer-assisted Lemma 4.10 (K_w* = 9), the analytic Lemma 4.9 (K_w = 13) gives kappa = 0.027 (Remark 7.5)",
+        "Lemma 4.10: at an uncovered point at most 9 Roth-Vaughan rectangles of nearly touching pairs overlap, by a branch-and-bound cover of 78,673 accepted boxes (data/kw9_data.zip), each re-verified in Arb ball arithmetic by code/verify_leaves2.py with 59,238 further bisections, largest rigorous bound 9, no failure; the cover's completeness checked by code/coverage_check.py and by two independent programs in code/coverage_independent/"
+      ]
+    }
+  ]
+}

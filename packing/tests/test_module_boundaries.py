@@ -17,7 +17,7 @@ from typing import cast
 import pytest
 import yaml
 
-from devtools import upper_bound_packets
+from devtools import evand_exact_certificates, upper_bound_packets
 from devtools.check_readme import meaningful_top_level_entries
 from sqpack.cli import validate
 from sqpack.project import ProjectLayoutError, require_project_root
@@ -578,6 +578,10 @@ def test_ci_jobs_fetch_provenance_history_and_key_the_uv_cache_from_the_lock() -
     assert {
         f"/packing/resources/web/{source.directory}/" for source in upper_bound_packets.SOURCES
     } <= sparse
+    # The atlas draws the 48 counts of T-098 from the exact-optima packet's register
+    # comparison, so that packet rides in the slice, named by the module that reads it; it
+    # was missing on jlevy/squares#369's run 37403920231.
+    assert f"/packing/resources/web/{evand_exact_certificates.PACKET.name}/" in sparse
     full_step = next(
         _mapping(step)
         for step in validate_steps

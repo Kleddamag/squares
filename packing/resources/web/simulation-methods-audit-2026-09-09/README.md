@@ -386,10 +386,10 @@ across `hal.science`, `hal.archives-ouvertes.fr`, `hal-lirmm.ccsd.cnrs.fr` and
 
 | Source | Why the report wanted it | Attempt and result |
 | --- | --- | --- |
-| Moreau 1994, *Some numerical methods in multibody dynamics* | The origin of the contact-dynamics time-stepping scheme | Identified at `hal.science/hal-01789082`; HAL gate. OpenAlex has no DOI record, `oa_status: closed`, one non-open location. **Not read** |
-| Jean 1999, *The non-smooth contact dynamics method*, CMAME 177:235 | The canonical statement of the method | Four HAL URLs and mirrors, all HTTP 200 with the challenge page. OpenAlex `closed`, Semantic Scholar green at the same HAL URL. **Not read** |
-| Radjai and Richefeu 2009, *Contact dynamics as a nonsmooth discrete element method* | The solver description in its own words | `hal.science/hal-00689866/document`, challenge page. OpenAlex green with HAL as the only open location. **Not read** |
-| Radjai, Jean, Moreau and Roux 1996, Phys. Rev. Lett. 77:274 | Force chains under contact dynamics | HAL gate. **Not read** |
+| Moreau 1994, *Some numerical methods in multibody dynamics* | The origin of the contact-dynamics time-stepping scheme | Identified at `hal.science/hal-01789082`; HAL gate. OpenAlex has no DOI record, `oa_status: closed`, one non-open location. **Not read**. Retrieved on 2026-10-05 ([below](#retrieved-on-2026-10-05)) |
+| Jean 1999, *The non-smooth contact dynamics method*, CMAME 177:235 | The canonical statement of the method | Four HAL URLs and mirrors, all HTTP 200 with the challenge page. OpenAlex `closed`, Semantic Scholar green at the same HAL URL. **Not read**. Retrieved on 2026-10-05 ([below](#retrieved-on-2026-10-05)) |
+| Radjai and Richefeu 2009, *Contact dynamics as a nonsmooth discrete element method* | The solver description in its own words | `hal.science/hal-00689866/document`, challenge page. OpenAlex green with HAL as the only open location. **Not read**. Retrieved on 2026-10-05 ([below](#retrieved-on-2026-10-05)) |
+| Radjai, Jean, Moreau and Roux 1996, Phys. Rev. Lett. 77:274 | Force chains under contact dynamics | HAL gate. **Not read**. Retrieved on 2026-10-05 ([below](#retrieved-on-2026-10-05)) |
 | Anitescu and Potra 1997, Nonlinear Dyn. 14:231 | The complementarity formulation | Author page HTTP 403; OpenAlex `closed`, publisher DOI the only location. **Not read** |
 | Stewart and Trinkle 1996, IJNME 39:2673 | The other complementarity formulation | Two author pages HTTP 404; OpenAlex `closed`. **Not read** |
 | Lubachevsky and Stillinger 1990, *Geometric properties of random disk packings*, J. Stat. Phys. 60:561 | The original inflation paper | OpenAlex on `10.1007/bf01025983`: `is_oa: false`, `oa_status: closed`, `best_oa_location: null`. **Not read.** Everything attributed to it comes from the 1991 Journal of Computational Physics paper's own section 9, from the 2010 review, or from Skoge et al., all retained |
@@ -411,6 +411,27 @@ Two further access notes, recorded so they are not rediscovered. GitHub code sea
 returns HTTP 401 without authentication; the directory-listing and raw-file endpoints
 work and were used instead. The Princeton URL that Skoge et al. give as their code
 download, `http://cherrypit.princeton.edu/Packing/C++/`, is dead at DNS.
+
+## Retrieved on 2026-10-05
+
+The four HAL papers above were retrieved on 2026-10-05, when `hal.science` answered this
+environment with the PDFs rather than the challenge page (bead `think-cdzc`).
+Each document address was found through HAL’s search API, and each `.raw.md` is
+`pdftotext -layout` (poppler 24.02.0) on its retained PDF, as for the 72 above.
+They are archived and not yet read; nothing in the report changes with them, and each
+sentence that says the source was not read still describes the report as written.
+
+| Source | Acquisition URL | Retrieved (UTC) | PDF SHA-256 | Raw SHA-256 | PDF bytes |
+| --- | --- | --- | --- | --- | ---: |
+| `moreau-1994-numerical-methods-multibody-dynamics-granular-materials` | <https://hal.science/hal-01789082/document> | 2026-10-05T23:28Z | `d0ec22ff05b98750499165c4da7b3799f04f910c77784b0c1e8c8a4562c463f1` | `1734e33c5c44fad08b4741dd4cf95fd323e4d50e9fcd3c31574ded3eb6c52f8e` | 2,483,403 |
+| `jean-1999-non-smooth-contact-dynamics-method` | <https://hal.science/hal-01390459/document> | 2026-10-05T23:28Z | `86cb4540b93b0525ec70394b9cd63f75d24e438a6e8e9206c0fcccc4353e286c` | `63485eee1212e14484c0b536fe680ec50bfcfd0790df3f373757858937629b97` | 1,769,817 |
+| `radjai-richefeu-2009-contact-dynamics-nonsmooth-discrete-element-method` | <https://hal.science/hal-00689866/document> | 2026-10-05T23:28Z | `7c47fd5ed9f5d11dd9f1a834460fdc3b2dd7fbd0b432b7dbca73b15c34002d75` | `e5ea4d613800aabdbbc96c6edbf13219385e65faf8b924aa8587a608d4244a0a` | 828,297 |
+| `radjai-jean-moreau-roux-1996-force-distributions-dense-2d-granular-systems` | <https://hal.science/hal-00759668/document> | 2026-10-05T23:28Z | `1676c55afb3b3901d9c6444e7026e98903106505e519851da3dee06e223b40b4` | `a851d8e2f0b7790c0418389d0d3b1589d42cbb7e36af1f0ae37253547a99081e` | 351,959 |
+
+The other sources above were not re-tried with the PDFs at their publishers: those
+obstacles are the publishers’ own (HTTP 403 to plain clients, paywalls, a Cloudflare
+challenge), not this environment’s, and on 2026-10-05 `journals.aps.org` still answered
+403.
 
 ## What this pass did not cover
 

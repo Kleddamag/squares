@@ -1,0 +1,16 @@
+{
+  "cpu_seconds": 178.3,
+  "environment": {"interpreter":"CPython 3.14.7","numpy":"2.5.2","scipy":"1.17.1"},
+  "format": "evand-exact-certificate-receipt-v1",
+  "rows": [
+    {"byte_identical":false,"cpu_seconds":4.3,"exit_status":0,"input_sha256":"3af1702ad8abcd7d38e638cd7918691faa16df0cf335ff34073fba870594e14c","largest_coordinate_difference":3.534e-26,"largest_tangent_difference":0.0,"n":68,"produced":true,"produced_decided_valid":true,"produced_sha256":"6918fb57d88525221664f97107a01c3eac8f49e57333d4bb7ec76c541d9f8d03","same_side":true,"squares_differing":17,"wall_seconds":13.6},
+    {"byte_identical":false,"cpu_seconds":11.3,"exit_status":0,"input_sha256":"12daa2b468db985b1b62d2abf66c5ef8b4b4c2bceb9c0a4f2344c46938aeff4d","largest_coordinate_difference":5.033e-28,"largest_tangent_difference":0.0,"n":102,"produced":true,"produced_decided_valid":true,"produced_sha256":"9752e4a04f6f47e48e46741eddb267b48d801d922dd313fe535603803ec81cc1","same_side":true,"squares_differing":46,"wall_seconds":31.7},
+    {"byte_identical":false,"cpu_seconds":20.2,"exit_status":0,"input_sha256":"75ee9f5c4697df26b3703e9e034f720332a84013ce9addaac8aef2bb9c94864f","largest_coordinate_difference":1.27e-25,"largest_tangent_difference":9.978e-26,"n":126,"produced":true,"produced_decided_valid":true,"produced_sha256":"6aec1f22278d84acc95b2bd0004ad73e809fb8c387a0e28bc50784880fe5c4d8","same_side":true,"squares_differing":2,"wall_seconds":51.6},
+    {"byte_identical":false,"cpu_seconds":66.2,"exit_status":0,"input_sha256":"78828f9e8bde95b5da7b4dd3ab8291eb51fa139ae3ee80ef1bc65742defc9dd9","largest_coordinate_difference":2.466e-24,"largest_tangent_difference":3.208e-24,"n":211,"produced":true,"produced_decided_valid":true,"produced_sha256":"777b4c99abe01b9556af9bd665a8c93328ddc351bc7f81536a5b102db10bab05","same_side":true,"squares_differing":1,"wall_seconds":120.6},
+    {"byte_identical":false,"cpu_seconds":76.3,"exit_status":0,"input_sha256":"99c3a2f79ef25f2d0d52d7556e5d55e6f92a492e9d23c2665518ed638dc36066","largest_coordinate_difference":1e-24,"largest_tangent_difference":3.219e-25,"n":270,"produced":true,"produced_decided_valid":true,"produced_sha256":"061a688a79b4073e8eea30f2249940b0c997c856dbdcaf9fb26d6d687bdc02d9","same_side":true,"squares_differing":6,"wall_seconds":119.1}
+  ],
+  "solver_sha256": "2e5332155208d9247e4a005df22b2cd8837c4d3ddfcaa678b4859f82dfbd682b",
+  "tool": "python -m devtools.evand_exact_certificates reproduce",
+  "what": "The source's solver, exactsolve.py as retained, run here on the pinned input of each sampled count with one BLAS thread, and its certificate compared with the retained one byte for byte, as the source's reproduce.sh does; where the bytes differ, the sides and the squares are compared, and the regenerated certificate is decided by this repository's two exact checkers.",
+  "workers": 2
+}

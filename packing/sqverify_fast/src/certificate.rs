@@ -30,6 +30,13 @@ pub const MAX_ANGLE_COUNT: u32 = 1 << 16;
 /// See [`MAX_DENSITY_LOG2`].
 pub const MAX_PRIMITIVES: usize = 1_000_000;
 
+/// The standard net: half-angle tangents `r * 83/40000` for `r = 0..=200`. Formats
+/// M and L use it unless a format M file declares its own (`proof_net`), and
+/// format T unless its certificate metadata says otherwise.
+pub const STANDARD_STEP: (i64, i64) = (83, 40_000);
+/// See [`STANDARD_STEP`].
+pub const STANDARD_ANGLE_COUNT: u32 = 201;
+
 /// One expanded rectangle with its exact data.
 #[derive(Clone, Debug)]
 pub struct ExactRect {
@@ -143,6 +150,10 @@ pub struct Certificate {
     pub step: BigRational,
     /// Number of net directions.
     pub angle_count: u32,
+    /// Where the net came from: `standard` (the format's fixed net),
+    /// `proof_net` (declared by a format M file) or `metadata` (format T's
+    /// certificate metadata).
+    pub net_origin: &'static str,
     /// Exact total mass.
     pub mass: BigRational,
     /// Number of positive-weight source rectangles.
@@ -206,7 +217,9 @@ fn sources(
             .and_then(Value::as_object)
             .ok_or(AdmissionError("format L needs its net block".into()))?;
         let step = rational_of(net.get("step").unwrap_or(&Value::Null), "net.step")?;
-        if step != ratio(83, 40_000) || net.get("last").and_then(Value::as_u64) != Some(200) {
+        if step != standard_step()
+            || net.get("last").and_then(Value::as_u64) != Some(u64::from(STANDARD_ANGLE_COUNT - 1))
+        {
             return refuse("format L's net must be step 83/40000, last 200");
         }
         for (index, primitive) in array(object, "primitives")?.iter().enumerate() {
@@ -422,6 +435,45 @@ fn ratio(p: i64, q: i64) -> BigRational {
     BigRational::new(BigInt::from(p), BigInt::from(q))
 }
 
+fn standard_step() -> BigRational {
+    ratio(STANDARD_STEP.0, STANDARD_STEP.1)
+}
+
+/// A format M file's own net, `proof_net`: half-angle tangents `r * step` for
+/// `r = 0..=last`. The object holds `step` (an exact rational) and `last` (a JSON
+/// integer), and may restate the count as `count = last + 1`; any other field is
+/// refused, so a net this reader would not understand (nodes listed one by one,
+/// an offset, a second step) is never read as a uniform one. The premises the net
+/// must meet are checked by [`admit`] with every other net's.
+fn declared_net(value: &Value) -> Result<(BigRational, u32), AdmissionError> {
+    let Value::Object(net) = value else {
+        return refuse("proof_net must be an object");
+    };
+    if let Some(key) = net
+        .keys()
+        .find(|key| !matches!(key.as_str(), "step" | "last" | "count"))
+    {
+        return refuse(format!(
+            "proof_net has a field this reader does not know: {key}"
+        ));
+    }
+    let step = rational_of(net.get("step").unwrap_or(&Value::Null), "proof_net.step")?;
+    let count = net
+        .get("last")
+        .and_then(Value::as_u64)
+        .and_then(|last| last.checked_add(1))
+        .and_then(|count| u32::try_from(count).ok())
+        .ok_or(AdmissionError(
+            "proof_net.last must be a JSON integer from 0 to 2^32 - 2".into(),
+        ))?;
+    if let Some(declared) = net.get("count")
+        && declared.as_u64() != Some(u64::from(count))
+    {
+        return refuse("proof_net.count is not proof_net.last + 1");
+    }
+    Ok((step, count))
+}
+
 /// The eight images of `[x1,x2] x [y1,y2]` under the symmetries of `[0,L]^2`.
 #[must_use]
 pub fn d4_images(
@@ -497,7 +549,8 @@ pub fn direction(step: &BigRational, index: u32) -> (BigRational, BigRational) {
 /// Refuses any malformed field and any failed exact premise: the mass must lie
 /// strictly between zero and `n`, `0 < B < 1`, `B (1 + D) < 1`, the net must reach
 /// past `pi/4`, and every positive rectangle must be a nondegenerate rectangle
-/// inside the container.
+/// inside the container. The premises on the net hold whether the net is the
+/// standard one, a format M file's declared `proof_net` or format T's metadata.
 pub fn admit(
     raw: &[u8],
     value: &Value,
@@ -529,20 +582,29 @@ pub fn admit(
             "candidate side {side} is not the requested {expected}"
         ));
     }
-    let mut step = ratio(83, 40_000);
-    let mut angle_count: u32 = 201;
+    // The net: the standard one, or the one a format M file declares; format T's
+    // metadata may change it, and every other format's may only restate it
+    // (checked once the format is known). Every net, wherever it came from, must
+    // meet the premises below.
+    let declared = object.get("proof_net").map(declared_net).transpose()?;
+    let (mut step, mut angle_count) = declared
+        .clone()
+        .unwrap_or_else(|| (standard_step(), STANDARD_ANGLE_COUNT));
+    let mut metadata_net = false;
     if let Some(metadata) = object.get("certificate") {
         let Value::Object(metadata) = metadata else {
             return refuse("certificate metadata must be an object");
         };
         if let Some(d) = metadata.get("D") {
             step = rational_of(d, "certificate.D")?;
+            metadata_net = true;
         }
         if let Some(count) = metadata.get("angle_count") {
             angle_count = count
                 .as_u64()
                 .and_then(|c| u32::try_from(c).ok())
                 .ok_or(AdmissionError("bad angle_count".into()))?;
+            metadata_net = true;
         }
         for (key, mine) in [("L", &side), ("B", &core)] {
             if let Some(declared) = metadata.get(key)
@@ -582,13 +644,40 @@ pub fn admit(
     }
 
     let (format, domain, listed) = sources(object)?;
-    // Formats M and L fix the net; metadata may restate it but never change it.
-    if format != "T" && (step != ratio(83, 40_000) || angle_count != 201) {
+    // A net declaration this reader would not use is refused, not ignored: a
+    // proof_net outside format M, and format L's net block outside format L.
+    if declared.is_some() && format != "M" {
         return refuse(format!(
-            "format {format}'s net is step 83/40000 with 201 directions; certificate \
-             metadata may not change it"
+            "format {format} declares no proof_net; only format M may (a declaration \
+             this reader would not use is refused, not ignored)"
         ));
     }
+    if format != "L" && object.contains_key("net") {
+        return refuse(format!(
+            "format {format} declares no net block; only format L does (a declaration \
+             this reader would not use is refused, not ignored)"
+        ));
+    }
+    // Formats M and L fix the net: the standard one, or for M the one its
+    // proof_net declares. Metadata may restate it but never change it.
+    let net_origin = if format == "T" {
+        if metadata_net { "metadata" } else { "standard" }
+    } else {
+        let (fixed_step, fixed_count) = declared
+            .clone()
+            .unwrap_or_else(|| (standard_step(), STANDARD_ANGLE_COUNT));
+        if step != fixed_step || angle_count != fixed_count {
+            return refuse(format!(
+                "format {format}'s net is step {fixed_step} with {fixed_count} directions; \
+                 certificate metadata may not change it"
+            ));
+        }
+        if declared.is_some() {
+            "proof_net"
+        } else {
+            "standard"
+        }
+    };
     // The per-bin domain assigns a half-angle tangent within D/2 of t_r, so the
     // angle may differ from theta_r by up to 2 atan(D/2), whose tangent is
     // D/(1 - D^2/4). Lemma N3 needs only B(1 + D) < 1 (by the half-angle form),
@@ -773,6 +862,7 @@ pub fn admit(
         core,
         step,
         angle_count,
+        net_origin,
         mass,
         source_rectangles,
         exact,

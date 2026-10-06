@@ -1,0 +1,29 @@
+{
+  "format": "zenodo-capture-v1",
+  "record": 23164302,
+  "doi": "10.5281/zenodo.23164302",
+  "conceptdoi": "10.5281/zenodo.23164301",
+  "title": "For every fixed c, s(k^2-c) = k for all large k, with an explicit constant (preprint)",
+  "version": "1.0",
+  "publication_date": "2026-10-05",
+  "created": "2026-10-05T14:07:11.426219+00:00",
+  "updated": "2026-10-05T14:07:11.638590+00:00",
+  "api": "https://zenodo.org/api/records/23164302",
+  "retrieved_utc": "2026-10-05T22:54:23Z",
+  "files": [{"key":"squarepacker/k2-minus-c-v1.0.zip","bytes":1083690,"checksum_stated":"md5:8fab14ded131e118a8d0f78f26bd8598","md5":"8fab14ded131e118a8d0f78f26bd8598","sha256":"d65623cf799b1615a76f52e376aceb929b926ce2a1b7045e7c84e8680e297bfa","top_directory":"squarepacker-k2-minus-c-0eb29d4","members":55,"member_bytes":1456471,"member_manifest":"zenodo-23164302.sha256"}],
+  "extracted": [{"member":"paper/paper.pdf","path":"zenodo-23164302/paper/paper.pdf","bytes":555663,"sha256":"da00630c891919e5fdc6e6065da83c8ac638eb07d8cfe4e74e43c11f129d9789"}],
+  "comparisons": [
+    {
+      "archive": "squarepacker/k2-minus-c-v1.0.zip",
+      "against": "packing/resources/web/squarepacker-k2-minus-c-2026-10-05/acquisition/upstream-subtree.sha256",
+      "same": 49,
+      "differs": [".zenodo.json","README.md","SHA256SUMS","paper/paper.pdf","paper/paper.tex","reviews/REVIEWS.md"],
+      "only_in_archive": [],
+      "only_in_manifest": [
+        "code/coverage_independent/README.md","code/coverage_independent/exact_volume/indep_cover.py","code/coverage_independent/exact_volume/results/bnb_n1_T9_0of1.json","code/coverage_independent/exact_volume/results/bnb_n2_T9_0of1.json","code/coverage_independent/exact_volume/results/bnb_n3_T9_0of1.json","code/coverage_independent/exact_volume/results/bnb_n4_T9_0of2.json","code/coverage_independent/exact_volume/results/bnb_n4_T9_1of2.json","code/coverage_independent/exact_volume/results/bnb_n5_T9_0of2.json","code/coverage_independent/exact_volume/results/bnb_n5_T9_1of2.json","code/coverage_independent/exact_volume/results/bnbw_n1_T9_0of1.json","code/coverage_independent/exact_volume/results/bnbw_n2_T9_0of1.json","code/coverage_independent/exact_volume/results/bnbw_n3_T9_0of1.json","code/coverage_independent/exact_volume/results/bnbw_n4_T9_0of2.json","code/coverage_independent/exact_volume/results/bnbw_n4_T9_1of2.json",
+        "code/coverage_independent/exact_volume/results/bnbw_n5_T9_0of1.json","code/coverage_independent/exact_volume/run_all.py","code/coverage_independent/exact_volume/run_all_log.txt","code/coverage_independent/recursive_cover/coverage_lowmem.py","code/coverage_independent/recursive_cover/results.jsonl","code/coverage_independent/recursive_cover/run.log","code/coverage_independent/recursive_cover/selftest.log","code/coverage_independent/recursive_cover/summarize.py","code/coverage_independent/recursive_cover/summary.log"
+      ]
+    },
+    {"archive":"squarepacker/k2-minus-c-v1.0.zip","against":"squarepacker/k2-minus-c tag v1.0, 0eb29d4468dd1ed6c8a06841d4d6f0fd83945e0f","same":55,"differs":[],"only_in_archive":[],"only_in_manifest":[]}
+  ]
+}

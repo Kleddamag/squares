@@ -751,13 +751,14 @@ RECORDED: dict[int, tuple[tuple[str, str, str] | None, tuple[str, str, str] | No
             "verified",
         ),
     ),
-    # A parallel packing certified here: the finder's line, confirmed by the register
-    # entry whose replay it is (T-056), where the UnitSquare release stood until then.
-    # Below it, wand125's rectangle bound of 1 October replayed as T-074, which took the
-    # case on 2026-10-02 from its 28 September certificate (T-070), itself raised that day
-    # from the point bound of T-044.
+    # A parallel packing certified here: the finder's line, where the UnitSquare release
+    # stood until then, confirmed by T-056 until 2026-10-05, when Evan Daniel's exact
+    # optimum of the same packing took both lanes (T-098): the finder and the improver,
+    # with no year, since the year dates the find. Below it, wand125's rectangle bound of
+    # 1 October replayed as T-074, which took the case on 2026-10-02 from its 28 September
+    # certificate (T-070), itself raised that day from the point bound of T-044.
     68: (
-        ("Couzo 2026, GitHub (confirmed T-056)", "external", "verified"),
+        ("Couzo & Daniel, GitHub (confirmed T-098)", "external", "verified"),
         (
             "wand125 after Tokoharu, Levy et al. 2026, GitHub (confirmed T-074)",
             "external",
@@ -778,18 +779,20 @@ RECORDED: dict[int, tuple[tuple[str, str, str] | None, tuple[str, str, str] | No
     ),
     # Three finders and two improvers gave "Arslanov et al." with no year here until
     # Couzo's certified packing took the case; the synthetic test above keeps that shape.
+    # Since 2026-10-05 its exact optimum, Couzo's packing improved by Daniel (T-098).
     132: (
-        ("Couzo 2026, GitHub (confirmed T-056)", "external", "verified"),
+        ("Couzo & Daniel, GitHub (confirmed T-098)", "external", "verified"),
         ("Karakuş 2026, arXiv:2609.37410 corrects Nagamochi 2005", "external", "verified"),
     ),
-    # A certified ceiling that trails its report by two units of the printed place is
-    # still cited as reported, with the register entry that confirms the packing.
+    # A certified ceiling that trailed its report by two units of the printed place was
+    # cited as reported until 2026-10-05, when the exact optimum of the same packing put
+    # both lanes on one side (T-098).
     206: (
-        ("Couzo 2026, GitHub (reported; confirmed T-056)", "external", "reported"),
+        ("Couzo & Daniel, GitHub (confirmed T-098)", "external", "verified"),
         ("Karakuş 2026, arXiv:2609.37410 corrects Nagamochi 2005", "external", "verified"),
     ),
     211: (
-        ("de Winter 2026, GitHub (confirmed T-057)", "external", "verified"),
+        ("de Winter & Daniel, GitHub (confirmed T-098)", "external", "verified"),
         ("Karakuş 2026, arXiv:2609.37410 corrects Nagamochi 2005", "external", "verified"),
     ),
 }
@@ -875,8 +878,9 @@ RECORDED_LINKS: dict[tuple[int, str], tuple[list[str], list[str]]] = {
     (101, "lower"): (["T-080"], ["T-080"]),
     # This project's own bound, established rather than confirmed, was T-030's until
     # 2026-10-02 (`test_a_novel_first_party_bound_cites_this_project_and_its_result` keeps
-    # that shape); since then it is wand125's rectangle bound, which T-045 replays.
-    (18, "lower"): (["T-045"], ["T-045"]),
+    # that shape); then wand125's rectangle bound, which T-045 replays, until 2026-10-05;
+    # since then its mixed bound on a declared net, which T-096 replays.
+    (18, "lower"): (["T-096"], ["T-096"]),
 }
 
 
@@ -1040,9 +1044,10 @@ def test_the_project_lower_bounds_are_exactly_those_first_proved_here() -> None:
     # The guard against a vacuous pass was `assert proved` until 2026-10-02, when the
     # merged rectangle replays raised n = 18, 19 and 20 above T-030, T-020 and T-021, the
     # last lower bounds first proved here. The synthetic test above holds a project line's
-    # shape. A project lower bound stands again since 3 October 2026: n = 12, T-079's
-    # re-weighting of Daniel's points.
-    assert proved == {12}
+    # shape. A project lower bound stood again from 3 to 5 October 2026: n = 12, T-079's
+    # re-weighting of Daniel's points, until squarepacker's re-weighting of them (T-095)
+    # raised it. None stands now.
+    assert proved == set()
 
 
 def test_the_star_marks_recent_results_whoever_proved_them() -> None:
@@ -1058,10 +1063,9 @@ def test_the_star_marks_recent_results_whoever_proved_them() -> None:
     assert lines[11]["recent"]
     assert lines[11]["text"] == "Queuingtheorydotcom after Levy et al. 2026, Web"
     assert lines[12]["recent"]
-    # This project's re-weighting of Daniel's points since 3 October 2026 (T-079), after
-    # squarepacker's rescaling (T-078) earlier that day; a project bound is named as the
-    # project's.
-    assert lines[12]["text"] == "Squares Project (Levy) 2026, result T-079"
+    # squarepacker's re-weighting of Daniel's points since 5 October 2026 (T-095), after
+    # this project's (T-079), which named the project; the credit names Levy for Route B.
+    assert lines[12]["text"] == "squarepacker after Daniel, Levy 2026, GitHub"
     assert lines[18]["recent"]
     assert lines[18]["text"] == "wand125 after Tokoharu, Levy et al. 2026, GitHub"
     assert all(line["recent"] for line in lines.values() if line and line["basis"] == "project")

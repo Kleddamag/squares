@@ -386,8 +386,35 @@ sources:
       David Ellsworth's catalogue and Erich Friedman's survey, and its analysis and 2026
       results to the repository; its open-problems page, problems.html, was added on 4
       October 2026. Its "verified on jlevy/squares" marks cite this record's register. The
-      deployed site was not fetched; the packet web/evand-square-packing-2026-10-04/
-      retains the pages, their scripts and data, and the floors table.
+      packet web/evand-square-packing-2026-10-04/ retains the pages, their scripts and
+      data, and the floors table; the deployed site, fetched on 2026-10-05 after the
+      session that made the packet could not reach it, serves those files byte for byte
+      (the packet's receipts/deployed-site-2026-10-05.json).
+  - key: '[evand exact optima 2026-10-05]'
+    authors: [Daniel]
+    year: 2026
+    venue: GitHub
+    dated: '2026-10-05'
+    credit: Daniel after Couzo, de Winter, Ellsworth, Levy
+    lineage: builds-on-project
+    note: >-
+      evand/square-packing at 13ee36e5807727d12a5da36b9b90a96bdba272bf
+      (2026-10-05T20:54:59Z), s12/search/exact/: an exact-contact solver that takes a
+      binary64 packing to a nearby exact KKT point of minimizing the side and writes an
+      exact rational certificate of s(n) <= S', run on this register's known-best witness
+      at every count n = 1 to 324. It certifies 321 counts; at 48 the side lies 3.5e-13 to
+      5.0e-11 below the register's, the exact optimum of the same packing, Francisco
+      Couzo's at 46 counts and Joost de Winter's at n = 126 and 211. Its batch README says
+      it read the known-best packings from this register's witnesses ("Register data: CC
+      BY 4.0, Joshua Levy, the squares project") and that the packings are their finders';
+      the solver's README says its stationarity rows give David Ellsworth's nested
+      Jacobian-determinant conditions, and the issue that the method is his analytic
+      minimisation reimplemented. Its author
+      wrote on jlevy/squares#375 that the solver, the checkers and the batch were written
+      with Claude (Anthropic) as a coding and research agent, directed and reviewed by
+      him. MIT. The packet web/evand-square-packing-2026-10-05/ retains the 48 improving
+      certificates, both checkers, the solver and the reports, and pins the rest by
+      digest; the n = 17 certificate is held and left out (think-x4v4).
   - key: '[squarepacker s12 2026]'
     authors: [Ryu]
     year: 2026
@@ -408,6 +435,56 @@ sources:
       assistant from Anthropic. MIT, derived material under Daniel's licence. Retained
       whole in web/squarepacker-s12-lower-bound-2026-10-02/; dated by that revision,
       2026-10-02 UTC.
+  - key: '[squarepacker k2-minus-c 2026]'
+    authors: [Ryu]
+    year: 2026
+    venue: GitHub
+    dated: '2026-10-05'
+    credit: squarepacker after Roth, Vaughan
+    lineage: independent
+    note: >-
+      squarepacker/k2-minus-c at 25f645e8fcadb3c2768f4da42d80e977fb1a508d
+      (2026-10-05T15:15:50Z), the preprint "Packing k^2 - c unit squares: s(k^2 - c) = k
+      for all large k", version 1.1, by Sungjoon Ryu (GitHub squarepacker), archived as
+      Zenodo 10.5281/zenodo.23165736 (v1.1; v1.0 is 10.5281/zenodo.23164302), and
+      reported on jlevy/squares#368. It claims k^2 - M(k) >= 0.033 log k for every
+      integer k >= 2, where M(k) is the largest closed packing of unit squares in
+      [0,k]^2, hence s(k^2 - c) = k for every fixed c and all large k; the constant uses
+      the computer-assisted Lemma 4.10, without which the proof gives 0.027. Its method
+      sharpens the fundamental lemma of Roth and Vaughan (1978). The README and the
+      preprint name Ryu as sole author and say the work was developed with extensive
+      assistance from Claude (Anthropic), including the proofs, the text, the programs
+      and the computation for Lemma 4.10, and that it is not peer reviewed. Code and data
+      MIT, the paper CC BY 4.0. Retained whole in
+      web/squarepacker-k2-minus-c-2026-10-05/; dated by that revision, 2026-10-05 UTC.
+      The three Zenodo records, read on 2026-10-05 after the session that made the packet
+      could not reach Zenodo, are kept in its zenodo/ with their digests: 23164302
+      (v1.0) is tag v1.0 (0eb29d44) byte for byte, and its preprint PDF is retained;
+      23165736 (v1.1) is tag v1.1; and 23165916 is the v1.1 preprint alone.
+  - key: '[squarepacker s12 2026-10-05]'
+    authors: [Ryu]
+    year: 2026
+    venue: GitHub
+    dated: '2026-10-05'
+    credit: squarepacker after Daniel, Levy
+    lineage: builds-on-project
+    note: >-
+      squarepacker/s12-lower-bound release v1.1 at 7a96bec36bc6811c3715ef581598f22ff9b7ba3a
+      (2026-10-05T08:31:05Z; its parent 98ffe373 adds every v1.1 file), by Ryu Sungjoon
+      (GitHub squarepacker), archived as Zenodo 10.5281/zenodo.23157015 (v1.1, published
+      2026-10-05; its archive of the tag holds the pinned tree's 68 files byte for byte),
+      and reported on jlevy/squares#363. It claims s(12) >=
+      7943/2000 = 3.9715 from s12_lower_3.9715.txt: Evan Daniel's 1,736 points dilated to
+      the container 7943/2000 and rounded one orbit at a time, with weights re-solved by
+      linear programming, total 11.9974808 < 12, verified by Daniel's verifier with
+      overflow checks and by the author's indep_check.cpp at the angle net N = 96000, with
+      a write-up, paper/s12_lower_3.9715.pdf. Its README credits the points, the verifier,
+      the reduction and its Lean formalisation to Daniel and the re-weighting idea to this
+      project's Route B (T-079), and says the rescaling, the re-weighting, the verification
+      runs and the tools were prepared with the help of Claude (Anthropic). MIT, derived
+      material under Daniel's licence. Retained in
+      web/squarepacker-s12-lower-bound-2026-10-05/, the v1.0 files it leaves unchanged
+      pinned to the 2 October packet; dated by that revision, 2026-10-05 UTC.
   - key: '[Kleddamag n11 2026]'
     authors: [Kleddamag]
     year: 2026
@@ -936,6 +1013,30 @@ sources:
       trailer naming an AI assistant.
       web/wand125-mixed-bounds-2026-10-05/acquisition/sources.json pins revision
       a541afbe7826ff75f6d3848e10279fd524d55af3. Dated by that revision, 2026-10-05 UTC.
+  - key: '[wand125 mixed bounds finer net 2026-10-05]'
+    authors: [wand125]
+    year: 2026
+    venue: GitHub
+    dated: '2026-10-05'
+    credit: wand125 after Tokoharu, Levy, Stromquist, Nagamochi, Burns, Massaccesi
+    short_credit: wand125 after Tokoharu, Levy et al.
+    lineage: builds-on-project
+    note: >-
+      The two mixed rectangle-measure certificates that wand125/square-packing-bounds added
+      on 2026-10-05 after a541afb: certificates/mixed_n66_L843 for s(66) >= 843/100, in
+      d73ce20 and requested in a comment on jlevy/squares#282, and
+      certificates/mixed_n18_L470 for s(18) >= 47/10, in 43050ed and requested in
+      jlevy/squares#366. Both are rectangle densities of mass n - 1/100000 checked at
+      coverage one by code/mixed_rotated_verify.cpp, byte for byte the checker of the
+      source's n = 50 certificate. mixed_n18_L470 is the source's first on a net its
+      candidate declares (proof_net: core 999/1000, 416 half-angle tangents of step
+      1/1001); mixed_n66_L843 supersedes mixed_n66_L842 of the [wand125 mixed bounds
+      2026-10-01] key. The directories carry no completion-audit.json. Credited as they
+      are, on the root README's Attribution section, which opens "The method is not
+      ours."; the README says parts of the work were produced with AI assistance under
+      human direction. web/wand125-mixed-bounds-finer-net-2026-10-05/acquisition/sources.json
+      pins revision 43050edc5bdf5116fc5a073283128edd6749946b. Dated by that revision,
+      2026-10-05 UTC.
   - key: '[franciscouzo square-packing 2026-09-27]'
     authors: [Couzo]
     year: 2026
@@ -1023,7 +1124,10 @@ sources:
       improvement of Morandi's packing, found again with Schadt's program from Morandi's
       and optimized; it says nothing of AI in Ellsworth's
       steps and nothing of this project. The capture of 2026-08-22 printed Morandi's and
-      Cantrell's side instead.
+      Cantrell's side instead. The SVG, which the session that registered it could not
+      fetch, was read on 2026-10-05 (web/known-best-packings/receipts/kingbird-2026-10-05-pictures.json): its comment dates the last step, "Optimized by
+      David Ellsworth on September 7, 2026, with exact polynomial root solution", and the
+      server dates the picture 2026-09-10.
   - key: '[Chang n83 2026-09-24]'
     authors: [Chang, Ellsworth]
     year: 2026
@@ -1042,8 +1146,16 @@ sources:
       Bidwell in 1998. Improved by Allen Chang in September 2026, with GPT-5.6 Sol and
       GPT-6 Astra. Optimized by David Ellsworth in September 2026. Polynomial root
       solution found by Allen Chang in September 2026 (see SVG source)." The polynomial
-      is printed only in the SVG, which this session could not fetch. Nothing in it
-      concerns this project.
+      is printed only in the SVG, which the session that registered it could not fetch.
+      Read on 2026-10-05 (web/known-best-packings/receipts/kingbird-2026-10-05-pictures.json), the SVG's comment holds it as a Mathematica Root object
+      of 343,237 characters, with the four equations in the side and three angles that it
+      solves and their solution to 100 digits, and dates the steps: "Improved by Allen
+      Chang on September 4, 2026, with help from" (the sentence ends there), "Optimized
+      by David Ellsworth on Septemeber 9, 2026, with exact analytic solution", "Exact
+      polynomial root solution found by Allen Chang on September 10, 2026, working with
+      GPT-5.6 Sol and/or GPT-6 Astra" and "Verified by David Ellsworth on September 10,
+      2026 to match analytic solution to 1000000 digits". The server dates the picture
+      2026-09-24. Nothing in it concerns this project.
   - key: '[Chang n87 2026-09-24]'
     authors: [Chang]
     year: 2026
@@ -1066,7 +1178,14 @@ sources:
       from "TheMagicAnimals"." The help is kept in the catalogue's words and not made
       authorship, since the catalogue names joint finders as authors ("Found by David
       Ellsworth and David W. Cantrell") and help otherwise; the case record's
-      improved_by agrees. Nothing in it concerns this project.
+      improved_by agrees. Nothing in it concerns this project. The SVG, which the session
+      that registered it could not fetch, was read on 2026-10-05 (web/known-best-packings/receipts/kingbird-2026-10-05-pictures.json): its comment says
+      "Improved and optimized by Allen Chang on September 10, 2026, with GPT-5.6 Sol
+      and/or GPT-6 Astra, with exact analytic solution, and exact polynomial root
+      solution for "s"" and "Reconstructed by David Ellsworth on September 16, 2026, with
+      full exact polynomial root solution", naming GPT-5.6 Sol and/or GPT-6 Astra where
+      the page names GPT-6 Astra and "TheMagicAnimals". The server dates the picture
+      2026-09-17.
   - key: '[chelokot Nagamochi counterexample 2026]'
     authors: [chelokot]
     year: 2026
@@ -1092,6 +1211,7 @@ credited_names:
   David Ellsworth: Ellsworth
   David W. Cantrell: Cantrell
   Erich Friedman: Friedman
+  Evan Daniel: Daniel
   Evert Stenlund: Stenlund
   Francisco Couzo: Couzo
   Frits Göbel: Göbel

@@ -45,7 +45,7 @@ from pathlib import Path, PurePosixPath
 from typing import Any
 
 from devtools.build_bound_citations import RECENT_SINCE
-from devtools.result_status import STATUSES, activity_problems, status
+from devtools.result_status import STATUSES, activity_problems, latest_review, status
 from devtools.rung_prose import REGISTER_FIELDS, Standing, label_problems
 from devtools.verifier_registry import RANK, confirming_runs, strongest
 from sqpack.assurance import EXTERNAL_ORIGINS, PROOF_METHODS
@@ -205,8 +205,8 @@ def adversarially_reviewed(reviews: list[dict], *, confirming: bool = False) -> 
     ]
     if _distinct_reviewers(adversarial) < ADVERSARIAL_REVIEWS:
         return False
-    latest = max(pool, key=lambda review: str(review.get("date", "")))
-    return latest.get("verdict") in ACCEPTING_VERDICTS
+    latest = latest_review(pool)
+    return latest is not None and latest.get("verdict") in ACCEPTING_VERDICTS
 
 
 def _human_records(reviews: Iterable[dict], kind: str, checks: frozenset[str]) -> list[dict]:

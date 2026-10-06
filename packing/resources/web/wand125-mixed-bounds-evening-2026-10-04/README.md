@@ -34,8 +34,10 @@ pin.
 
 What was checked here is SHA-256 digests, Git blob ids, the exact premises the audit below
 recomputes from the retained bytes, and every check the replay makes before its first
-angle, run on each pinned tarball. Nothing was replayed: no direction of any of the 14 has
-been decided here.
+angle, run on each pinned tarball. On 5 and 6 October `sqverify-fast`, this repository’s
+clean-room measure verifier, decided the 12 retained candidates at all 201 net directions
+([the independent replays](#the-independent-replays)); the source’s own checker has not
+been run here on any of the 14.
 
 ## Source and Pin
 
@@ -279,10 +281,41 @@ its receipts; `mixed-merge NAME` is run for each certificate once every range of
 arrived. `n69-L862` and `n86-L9503` are replayed once, by the 4 October packet’s own plan,
 and their receipts go to that packet. No replay has been launched.
 
+## The Independent Replays
+
+On 5 and 6 October 2026 `devtools.sqverify_fast_census --family mixed` ran `sqverify-fast`
+on each retained `candidate.json.gz` at all 201 net directions, at the threshold the
+certificate declares, and then refused two mutants of each at its least-bound direction.
+All 12 are `VERIFIED`; the receipts are in
+[`benchmarks/measure-verifier/census-mixed/`](../../../benchmarks/measure-verifier/census-mixed/README.md),
+and each certificate’s evidence entry `E-…-sqverify-fast-replay` states its run.
+
+| Certificate | Nodes | Least certified bound (index) | CPU seconds, two threads |
+| --- | ---: | --- | ---: |
+| `mixed_n53_L76275` | 74,893,418 | $1.0000000001795013$ (170) | 1,352 |
+| `mixed_n54_L7685` | 74,884,146 | $1.0000000007300995$ (67) | 1,414 |
+| `mixed_n58_L7935` | 75,303,852 | $1.0000000002574023$ (4) | 1,917 |
+| `mixed_n70_L86575` | 102,788,360 | $1.0000000000402047$ (184) | 1,939 |
+| `mixed_n71_L8721` | 92,643,856 | $1.0000000002314637$ (180) | 2,099 |
+| `mixed_n73_L8813` | 95,416,008 | $1.0000000008042074$ (32) | 1,875 |
+| `mixed_n76_L8965` | 42,405,724 | $1.0000000001430744$ (113) | 758 |
+| `mixed_n87_L958` | 90,798,292 | $1.0000000002258154$ (40) | 1,899 |
+| `mixed_n88_L962` | 93,106,576 | $1.000000001156332$ (173) | 1,648 |
+| `mixed_n90_L973` | 92,284,808 | $1.000000000392674$ (136) | 2,088 |
+| `mixed_n91_L97625` | 86,035,506 | $1.0000000003586995$ (124) | 1,824 |
+| `mixed_n94_L995` | 99,167,366 | $1.000000000302789$ (108) | 2,801 |
+
+They took 6.0 CPU-hours in all, on a shared four-core host. The verifier
+was written without opening the source’s checker and shares no code with it, so these
+are independent decisions of coverage by the same method, not reproductions of the
+source’s records. The source’s checker remains unreplayed here; the range commands above
+would add that reproduction, and only they bear on the five bundles that record a macOS
+arm64 run.
+
 ## Limitations
 
-- **Nothing is replayed.** Coverage is decided by the source’s C++ alone, and no direction
-  of any of the 14 has been run here.
+- **The source’s checker is not replayed.** Coverage was decided here by `sqverify-fast`
+  alone; the source’s C++ and its axis tables have not run on any of the 14.
 - **No source audit.** No directory of the 14 carries the source’s `completion-audit.json`,
   so nothing the source publishes binds a certificate to its tarball but the README’s
   digest and the commit. The binding here is the pinned tree’s digest and, after

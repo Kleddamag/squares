@@ -75,6 +75,36 @@ own reading: at the 90 counts whose witnesses were read from their own pictures,
 side agrees and every pose agrees to one binary64 ulp.
 Re-deriving the three from the SVGs, once they can be fetched, replaces the parse.
 
+### The Pictures Read Again, 5 October
+
+The egress policy was widened on 2026-10-05, and at 23:13Z
+`devtools.derive_kingbird_facts --range 1 324 --compare-pictures` fetched the picture
+behind each of the 98 retained Kingbird witnesses into memory, read it with this
+repository’s own SVG adapter, and compared it with the witness, square for square.
+No SVG was written; the receipt keeps each picture’s size, SHA-256 and `Last-Modified`,
+and the attribution paragraph of its comment
+([`kingbird-2026-10-05-pictures.json`](receipts/kingbird-2026-10-05-pictures.json)).
+
+- **95 witnesses are their pictures exactly:** the side and every centre and angle are
+  the same decimal text. They include $n = 71$, whose picture the server dates
+  2026-09-10, after its witness was read on 2026-08-26; the change left the geometry as
+  it was.
+- **The three read from the parse agree with their pictures at binary64.** At $n = 69$
+  and $87$ every coordinate of the parse is the picture’s rounded to binary64. At
+  $n = 83$ one angle differs, by $1.5 \times 10^{-33}$ of a unit in the last place:
+  the picture gives square 82’s angle as 0 and the parse as $3.4 \times 10^{-49}$
+  degrees. So the witnesses of T-088 and T-089, and the certificates promoted from them,
+  are of the packings the catalogue pictures.
+- **None of the 98 pictures is newer than the page.** The newest, `square-83.svg`, is dated
+  2026-09-24T16:37:57Z; the page was captured again at 22:39Z with the same bytes as on
+  2026-09-30.
+
+The parse stays the witnesses’ source for now. The pictures give each pose to at least
+50 digits, so re-deriving the three from them and certifying that pose with a finer
+dilation is the route T-088’s and T-089’s `next_rung` names to a verified bound within
+one unit of the printed side. It changes the certificates, the receipts and both
+entries, and is left to its own bead, `think-krbs`.
+
 ### Certified Here
 
 On 2026-10-05 the three witnesses were certified exactly by

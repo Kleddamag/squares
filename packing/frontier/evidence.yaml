@@ -878,6 +878,114 @@ evidence:
       second, kernel-checked route to it, in the formalization's own definitions.
     source_reviewed: '2026-10-06'
 
+  - id: E-n011-optimum-uniqueness
+    claim: derived-structure
+    scope: {n_values: [11]}
+    assurance: verified
+    method: proof-audited
+    performed_by: repository
+    relationship_to_generator: shared-components
+    shared_components: ["this repository's exact arithmetic and construction primitives (clipping, closed-cover and collision kernels), which the published source bundles, as in E-n011-global-optimality-independent"]
+    origin: audited-here
+    source_key: '[Queuingtheorydotcom n11 optimality 2026]'
+    source_reviewed: '2026-10-06'
+    certificate: packing/resources/web/n11-optimality-2026-09-29/receipts/final-composition.json
+    replay: >-
+      From packing, run .venv/bin/python3 -m devtools.check_n11_final_composition --out
+      /tmp/n11-final-composition.json, which reconciles the reviewed bindings of the
+      completed geometric executions that E-n011-global-optimality-independent records
+      (status PASS_REVIEWED_COMPONENT_COMPOSITION, with no pending obligation and 2180 of
+      2180 exclusions). It reruns no geometry, and the one step this entry adds, that the
+      same premises apply at side exactly T, is prose.
+    replay_status: passed
+    verifiers: [V-n11-optimality-checkers, V-check-n11-final-composition]
+    proof:
+      source: >-
+        packing/resources/web/n11-optimality-2026-09-29/source/PROOF.md, the pinned proof
+        that E-n011-global-optimality-independent confirms, with the endpoint corollary of
+        the project's eleven-square optimality paper
+        (packing/devtools/templates/n11-optimality-review-article.md, from v0.1.2).
+      theorem: >-
+        Every packing of eleven unit squares in a square of side T = s(11) is Trump's
+        exact construction after one of the eight symmetries of the container and a
+        relabelling of the squares.
+      scope: >-
+        Eleven congruent unit squares with independent rotations and boundary contact, in
+        a container of side exactly T. A quarter-turn reparametrization of one square is
+        the same physical square and is not counted as another packing.
+      pinpoints: >-
+        PROOF.md section 3 states the concentric embedding into the cap U for S < T; the
+        embedding and the conclusion that every cap-U exclusion applies hold verbatim for
+        any S <= U, and so at S = T. Sections 4 to 6 (the
+        2,184-pattern cover, 2,180 exclusions and the D4 reduction to case 438) act on
+        packings in the cap. Section 8 states the U-to-T frame map for side S <= T, and
+        its capture and pose inclusion put the aligned packing in the local rectangle;
+        section 7's local isolation then makes it the exact construction. Section 10 uses
+        S < T only in its last step, the span-T contradiction; at S = T that step is
+        replaced by reading back the alignment, a D4 element composed with the case-438
+        quarter turn.
+      assumptions:
+        - >-
+          Every premise of E-n011-global-optimality-independent, unchanged: the complete
+          exclusion union, the D4 bridge to case 438, the closed capture partition, pose
+          inclusion, and fixed-T local isolation on the reviewed rectangle.
+        - >-
+          The cap-U exclusion, symmetry and capture certificates are statements about
+          every packing in [0,U]^2 and are indifferent to the side of the container the
+          packing came from, since T < U.
+        - >-
+          The U-to-T map p_T = Q^{-1}(p_f/B - (U/2,U/2)) + (T/2,T/2) is rigid after
+          unscaling and sends a centred side-T container onto [0,T]^2.
+      audit_record: >-
+        docs/project/reviews/review-2026-10-03-n11-optimality-adversarial-gpt6-pro-unified.md,
+        section 2.4 and S7, which derives the corollary from the pinned proof's S <= T
+        statements and says it does not freshly verify the unexecuted parts of the global
+        chain; docs/project/reviews/review-2026-10-03-n11-optimality-upstream-delta.md,
+        the row "Conditional uniqueness corollary", applied to the paper in v0.1.2.
+    external_review:
+      state: informally-verified
+      date: '2026-10-03'
+      reviewed_by: GPT-6 Pro unified adversarial review, with coordinator integration
+      note: >-
+        The review found the rigid-map deduction correct and the inspected global
+        statements to admit S <= T, so that uniqueness up to the eight container
+        symmetries and relabelling follows from the premises used for optimality.
+    limitations: >-
+      A corollary of T-060, with no geometry of its own: every computation it rests on
+      is T-060's, and E-n011-global-optimality-independent's limitations apply unchanged.
+      The step at S = T is prose, audited by the GPT-6 Pro review of 3 October and the
+      paper's own review, and is not mechanised. No receipt records the side of the
+      packing it was applied to, because none of the cap-U certificates depends on it.
+      The certificate is T-060's composition receipt, whose endpoint_argument is written
+      for S < T, and the verifiers decide T-060's premises, not the step at S = T.
+    novelty: apparently-novel
+    novelty_basis:
+      corpus: >-
+        packing/resources/ as retained on 2026-10-06, including Trump 2023, [Friedman DS7],
+        [Stromquist 2003] and the 1984 memos, Gensane-Ryckelynck 2005, Kearney-Shiu,
+        Nagamochi 2005, Bentz 2010 and 2016, the Kingbird catalogue (archived 2026-09-05 and
+        2026-09-30), Kleddamag's 11-squares-certified-bound, Wang and Li's Zenodo 23038546
+        and the Wikipedia square-packing page (archived 2026-08-22); every Markdown file of
+        Queuingtheorydotcom/11SquaresOptimal at its only commit, f9e0de7; the README of
+        wand125/n11-optimality-lean; and web searches of 2026-10-06. Live Kingbird,
+        Wikipedia, MathWorld, OEIS, arXiv and Zenodo pages were unreachable from the
+        session and were read only through the archived copies.
+      searched: >-
+        unique, uniqueness, every optimal, up to symmetry, relabel, rigid and alternative
+        packing, on n = 11 and on Trump's packing, on 2026-10-06.
+      novel_object: >-
+        A global uniqueness statement for an optimal packing of eleven squares. Trump 2023,
+        Friedman DS7 and the Kingbird catalogue call Trump's packing rigid, which is local.
+        The upstream proof states uniqueness only for the near branch of its case 438, at
+        side S <= T (PROOF.md section 8: the local theorem forces the near-branch packing
+        to be the exact construction), and concludes only s(11) = T in section 10. The
+        global corollary was first written by GPT-6 Pro's adversarial review received on 3
+        October 2026 and stated conditionally in this project's paper from v0.1.2, of 3
+        October 2026; before that the paper declined it. No source found proves it. At n =
+        10 Stromquist 1984 and 2003 give three optimal packings, so uniqueness is not
+        automatic at a solved count (Stromquist 1984, memorandum II, p. 1: "Three
+        different packings of ten unit squares").
+
   - id: E-wand125-tools-ceiling-report
     claim: derived-structure
     scope: {n_min: 1, n_max: 100}

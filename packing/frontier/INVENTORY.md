@@ -8,10 +8,10 @@ ours, which rest on someone else's argument, and how far each has been checked.
 
 ## The short version
 
-- **434** evidence records. **280** are formal; **273** of those were established here.
+- **435** evidence records. **281** are formal; **274** of those were established here.
 - **146** rest on an argument made elsewhere, of which **7** have been read by nobody here.
 - **1** formal record proves a theorem only under a hypothesis nothing here has replayed, and is verified as that implication alone: `E-k2m4-evand-bentz4-lean-build` (ValidTilt9).
-- **40** claim to be first established here. **14** make no novelty statement at all - not assessed, which is not the same as not novel.
+- **41** claim to be first established here. **14** make no novelty statement at all - not assessed, which is not the same as not novel.
 
 A formal claim on an unread external proof is still formal: the proof proves its
 claim whether or not we read it. The count above is not a doubt about those
@@ -39,6 +39,7 @@ results, it is a statement about what this repository has itself examined.
 | `E-n011-global-optimality-independent` | 1 | exact-value | verified | equalities and inequalities, no tolerance | here | informally-verified | previously-published | shared components | `V-n11-optimality-checkers`, `V-check-n11-final-composition` |
 | `E-n011-lean-formalization-report` | 0 | exact-value | reported | - | elsewhere | - | previously-published | producer’s code | `V-queuingtheory-n11-lean`, `V-audit-n11-lean` |
 | `E-n011-lean-statement-closure-build` | 0 | upper-bound | verified | its theorem, against a named kernel | here | - | previously-published | producer’s code | `V-queuingtheory-n11-lean`, `V-audit-n11-lean` |
+| `E-n011-optimum-uniqueness` | 0 | derived-structure | verified | whatever its theorem states | here | informally-verified | apparently-novel | shared components | `V-n11-optimality-checkers`, `V-check-n11-final-composition` |
 | `E-wand125-tools-ceiling-report` | 0 | derived-structure | reported | - | elsewhere | defect-found | previously-published | no code | `V-wand125-tools` |
 | `E-wand125-tools-ceiling-certificates` | 0 | derived-structure | verified | equalities and inequalities, no tolerance | here | - | previously-published | independent | `V-rectangle-ceiling` |
 | `E-wand125-tools-n11-row-report` | 0 | derived-structure | reported | - | elsewhere | defect-found | previously-published | independent | `V-wand125-tools` |
@@ -460,10 +461,10 @@ results, it is a statement about what this repository has itself examined.
 
 ## What the register rests on
 
-- **assurance**: numerically-checked 4, reported 150, verified 280
-- **method**: exact-algebraic 103, interval-certified 162, numerical-multiprecision 4, proof-assistant-checked 5, proof-audited 3, published-proof 7, reported 150
-- **novelty**: apparently-novel 40, common-knowledge 4, not assessed 14, previously-published 376
-- **relationship to the producer's code**: generator 5, independent-implementation 155, not-applicable 20, same-implementation 232, shared-components 16, unknown-historical 6
+- **assurance**: numerically-checked 4, reported 150, verified 281
+- **method**: exact-algebraic 103, interval-certified 162, numerical-multiprecision 4, proof-assistant-checked 5, proof-audited 4, published-proof 7, reported 150
+- **novelty**: apparently-novel 41, common-knowledge 4, not assessed 14, previously-published 376
+- **relationship to the producer's code**: generator 5, independent-implementation 155, not-applicable 20, same-implementation 232, shared-components 17, unknown-historical 6
 
 The `cases` column is how many frontier records cite each piece of evidence, and it is the reason to read this table rather than count records. Ranked below are the *formal* records only: a `reported` record cited across the frontier may be a shared catalogue and is labelled as such, which is the register working rather than risk. The risk is a verified claim resting on an argument nobody has examined.
 
@@ -490,6 +491,7 @@ Claims marked `apparently-novel`: first established here as far as the archived 
 | `E-n011-fractional-net720-certificate` | 11 | The re-certification of the retained T-018 atoms on the 720-step net at shrink 9979243/10000000, the rung below the registered one and the one the standalone reader decides. | 0 | verified |
 | `E-n011-fractional-net720-dilation-limit` | 11 | The exact lower-bound value from the 720-step re-certification under T-022's dilation-limit argument. It is weaker than the registered bound and is retained because its source rung is the one the standalone reader decides. | 0 | verified |
 | `E-n011-h236-rung0-reduction` | 11 | A machine-verified reduction of one restricted family, six axis squares and five at a common tilt within 10^-6 of Trump's in the half-tangent, to the rho-ball of Trump's labelled pose. Composed with BC-240 it gives the first optimality statement with an equality case for a family containing Trump's packing. The method is a standard exact branch and bound; what is new is the closed certificate for this family. | 0 | verified |
+| `E-n011-optimum-uniqueness` | 11 | A global uniqueness statement for an optimal packing of eleven squares. Trump 2023, Friedman DS7 and the Kingbird catalogue call Trump's packing rigid, which is local. The upstream proof states uniqueness only for the near branch of its case 438, at side S <= T (PROOF.md section 8: the local theorem forces the near-branch packing to be the exact construction), and concludes only s(11) = T in section 10. The global corollary was first written by GPT-6 Pro's adversarial review received on 3 October 2026 and stated conditionally in this project's paper from v0.1.2, of 3 October 2026; before that the paper declined it. No source found proves it. At n = 10 Stromquist 1984 and 2003 give three optimal packings, so uniqueness is not automatic at a solved count (Stromquist 1984, memorandum II, p. 1: "Three different packings of ten unit squares"). | 0 | verified |
 | `E-n011-repaired-lower` | 11 | A correct proof of a bound stated in 1979 and cited as proved since, whose printed argument does not close | 0 | verified |
 | `E-n011-threshold-certificate` | 11 | The threshold atoms themselves: rank-1 Chvatal-Gomory cuts on the certificate side, charging w to every core holding at least k points of S and costing w floor(|S| / k) of the budget. The unavoidable-set counting argument, the event-cell sweep and the interval route are not new objects; a certificate whose budget rests on the floor rule, and the side it reaches, are. | 0 | verified |
 | `E-n011-threshold-net1440-certificate` | 11 | The re-certification of the retained T-025 threshold atoms on the 1440-step net at shrink 249507/250000. The atoms, the threshold theorem, the two decision routes and the net-refinement measurement are not new objects; this certificate and the lower bound derived from it under E-n011-threshold-net1440-dilation-limit are. | 0 | verified |

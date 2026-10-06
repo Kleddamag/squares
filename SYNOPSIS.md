@@ -258,6 +258,7 @@ action for each are in [`frontier/RESULTS.md`](packing/frontier/RESULTS.md); the
 | [T-110](packing/frontier/RESULTS.md) | 39 | `V3` | `C3` | `S3` | `previously-published` | A rectangle density of wand125/square-packing-bounds, checked at coverage one on a net it declares and published on 6 October 2026, proves s(39) >= 133/20 = 6.65. |
 | [T-111](packing/frontier/RESULTS.md) | 41 | `V3` | `C3` | `S3` | `previously-published` | A rectangle density of wand125/square-packing-bounds, checked at coverage one on a net it declares and published on 6 October 2026, proves s(41) >= 271/40 = 6.775. |
 | [T-036](packing/frontier/RESULTS.md) | 11 | `V3` | `C2` | `S3` | `apparently-novel` | Every packing of eleven unit squares in a square container, six at orientation 0 and five sharing one orientation modulo pi/2 with half-tangent in [91442076901/250000000000, 73154061521/200000000000] (an interval containing [t* - 10^-6, t* + 10^-6] for Trump’s exact half-tangent t*), has container side at least U = 3.877083590022814 …, the exact side of Trump’s packing, and a packing in the family has side exactly U only if it is a quarter-turn image of Trump’s pose with the squares relabelled within the two classes. |
+| [T-112](packing/frontier/RESULTS.md) | 11 | `V3` | `C2` | `S3` | `apparently-novel` | Every packing of eleven unit squares in a square of side T = 3.8770835900228141773…, the least side T-060 proves possible, is Walter Trump’s 1979 packing after one of the eight symmetries of the container and a relabelling of the squares. |
 | [T-007](packing/frontier/RESULTS.md) | 4-324 | `V0` | `C1` | `S3` | `previously-published` | For every integer 4 <= N <= 324, Nagamochi 2005, Theorem 2 gives s(N) >= min(ceil(sqrt(N)), sqrt(N - 2*floor(sqrt(N)) + 1) + 1). |
 | [T-087](packing/frontier/RESULTS.md) | 37, 61 | `V3` | `C1` | `S3` | `previously-published` | Bašić and Slivková 2018, Theorem 7 with Proposition 8: no more than B(x) unit squares fit in a square of side x, where B(x) counts the points of an equilateral-lattice piercing set, floor(x)(m + 2) plus floor((m + 2)/2) when frac(x) >= 1/2, with m = floor((2/sqrt 3)(x + 1 - 2 sqrt 2)). |
 | [T-046](packing/frontier/RESULTS.md) | 18, 19, 20, 26, 27, 28, 29, 30, 31, 37, 38, 39, 40, 41, 42, 43, 44, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 86, 88, 89, 90, 91, 94, 95 | `V0` | `C0` | `S3` | `previously-published` | wand125/square-packing-bounds reports one standing rectangle-density certificate for each of 48 counts from n = 18 to n = 95, added or raised between 26 and 28 September 2026. |
@@ -312,7 +313,7 @@ hypothesis status and summarizes experiment verdicts, and the
 | Explorations | 47 | 28 linked to proposed hypotheses; 19 uncodified |
 | Hypotheses | 209 | 45 confirmed; 33 refuted; 63 blocked; 19 unresolved; 9 open; 35 open questions; 2 result registered; 2 abandoned; 0 running; 1 exhausted |
 | Experiments | 187 | 63 accepted; 38 rejected; 58 unresolved; 12 baseline; 11 blocked; 4 abandoned; 0 in progress; 1 exhausted |
-| Frontier results | 111 | 111 registered, 82 by others |
+| Frontier results | 112 | 112 registered, 82 by others |
 
 <!-- END CURRENT-RESEARCH-STATUS -->
 
@@ -594,6 +595,8 @@ case or experiment separately.
 | [Fix Check: The Review of T-098, Evan Daniel’s Exact Optima](docs/project/reviews/review-2026-10-06-evand-exact-optima-fix-check.md) | dated review record | record | retained | — |
 | [Review: Evan Daniel’s Exact Certificates as Verified Ceilings at 77 Counts (T-118)](docs/project/reviews/review-2026-10-06-evand-exact-ceilings.md) | dated review record | record | retained | — |
 | [Fix Check: Evan Daniel’s Exact Certificates as Verified Ceilings (T-118)](docs/project/reviews/review-2026-10-06-evand-exact-ceilings-fix-check.md) | dated review record | record | retained | — |
+| [Review: The Uniqueness of Trump’s Eleven-Square Packing (T-102)](docs/project/reviews/review-2026-10-06-n11-uniqueness-adversarial.md) | dated review record | record | retained | — |
+| [Fix Check: The Uniqueness of Trump’s Eleven-Square Packing (T-112)](docs/project/reviews/review-2026-10-06-n11-uniqueness-fix-check.md) | dated review record | record | retained | — |
 | [Proof Review: Guzhou0806’s R071, `s(17) > 18641771/4000000 = 4.66044275`](docs/project/reviews/review-2026-10-05-guzhou-r071.md) | dated review record | record | retained | — |
 | [Review: wand125’s `s(18) ≥ 588/125` and `s(19) ≥ 48229/10000` on Declared Nets (T-099, T-100)](docs/project/reviews/review-2026-10-06-wand125-finer-net-n18-n19.md) | dated review record | record | retained | — |
 | [Review: wand125’s Ten Declared-Net Certificates of 6 October (T-108 to T-117)](docs/project/reviews/review-2026-10-06-wand125-check2-ten-certificates.md) | dated review record | record | retained | — |

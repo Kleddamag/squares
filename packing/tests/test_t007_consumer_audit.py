@@ -230,7 +230,14 @@ def test_case_rows_carry_each_kind_of_support_separately() -> None:
     # n = 73 mixed certificate (T-091), decided here by sqverify-fast.
     assert by_n[73]["operative_lower_bound"]["exact_form"] == "8813/1000"
     assert by_n[73]["operative_lower_bound"]["results"] == ["T-091"]
-    assert by_n[150]["operative_lower_bound"]["t007_scope_covers_n"] is False
+    # T-007 was scoped 4 to 100 until 2026-10-06, when it took the scope of its evidence,
+    # E-nagamochi-lower, 4 to 324.
+    assert by_n[150]["operative_lower_bound"]["t007_scope_covers_n"] is True
+    assert all(
+        row["operative_lower_bound"]["t007_scope_covers_n"]
+        for row in by_n.values()
+        if row["n"] >= 4
+    )
 
 
 def test_an_independent_route_through_a_nagamochi_lemma_says_so() -> None:

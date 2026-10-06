@@ -3,9 +3,9 @@ type: is
 id: is-01m45f1jvr8mq9q7q1ajveh3g7
 title: "Address PR #354 Review B (round 1)"
 kind: chore
-status: in_progress
+status: closed
 priority: 1
-version: 6
+version: 7
 delegate: claude-code@vm
 labels: []
 dependencies: []
@@ -18,7 +18,11 @@ child_order_hints:
 hold: null
 hold_until: null
 created_at: 2026-10-05T07:21:55.319Z
-updated_at: 2026-10-06T08:09:49.852Z
+updated_at: 2026-10-06T08:11:14.471Z
 started_at: 2026-10-06T08:09:49.852Z
+closed_at: 2026-10-06T08:11:14.471Z
+close_reason: "All four findings addressed; #354 merged in stack 357 at 01:12 UTC 2026-10-06 (main a6279886b). B1 body Validation and commit count: updated before merge (think-6b24). B2 'retained 21.0%', B3 macOS skip, B4 cited-commit home: commit ac8f55ff7, in origin/main eb43ffe9a (think-q282, think-o1wm, think-rr2u). Session 180 certified by hosted run 37266352906 at a11029e56. No follow-ups."
+resolution: null
+duplicate_of: null
 ---
 Review B (senior, round 1) on jlevy/squares#354 (producer memo layer of stack 357, rebuild of #325), pinned to head f19ab81bd: https://github.com/jlevy/squares/pull/354#pullrequestreview-5411026306. Verdict: approve with nits, once CI is green and #347 is ready. Review A on #325 holds (A1-A5; A6 has one leftover, B2). One child per finding: B1 body Validation and cost lines; B2 glued number in session-180; B3 process-memory tests fail on macOS; B4 cited commits need a stated home. CI: think-umlx. Session 180 is already certified (hosted fast pass at a11029e56, run 37266352906 attempt 3). Closes when every child is closed and the dispositions reply is posted.

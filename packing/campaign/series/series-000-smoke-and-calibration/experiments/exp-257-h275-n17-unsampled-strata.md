@@ -357,6 +357,17 @@ experiment:
       passes it in full mode in 786 s, checking all 8,262 live rows in full and 23,575 collision regions by
       126,048,356 exact facet checks. It excludes its own 8 states, one orbit; the certified census after it
       is 36,800 states in 4,687 orbits.
+  - shape: determination
+    role: outcome
+    question: Is draw 29 (mask 769791, stratum c4/i<=3/d6) infeasible at U, by a certificate the kernel's checker
+      accepts and the standing verifier re-proves in full?
+    outcome: criterion_met
+    checked_by: The run (receipts/U/kernel-u29-bc428.json) returns PASS_CERTIFIED_CLOSED in 4,644 s of wall and 4,522 s
+      of process CPU (producer 2,574 s, checker 2,069 s) on 337 steps and 22,720 rows in 20 rounds, rows
+      finest at 1/128, closure all_parent_poses_forbidden for side-E2 at step 336. The standing verifier at
+      cebb5d15a passes it in full mode in 1,899 s, checking all 20,706 live rows in full and 53,800 collision
+      regions by 230,813,492 exact facet checks. It excludes its own 8 states, one orbit; the certified census
+      after it is 36,792 states in 4,686 orbits.
   verdict:
     decision: accepted
     primary_criterion: The fraction of the frozen states the kernel excludes under SW9's recipe within the 7,000 s
@@ -441,6 +452,11 @@ reached; H-275 is an open question and registers no falsifier, so none survived.
 
 A stratum with one draw describes that draw, not a closure rate.
 
+Added 2026-10-06 at 07:39 UTC, after the verdict: draw 29’s standing verification passed
+in full in 1,899 s, and s182-bc428-u29 is admitted, taking the certified census to
+36,792 states in 4,686 orbits.
+The verdict’s figures above are unchanged.
+
 ## Runs
 
 | Order | Stratum | Mask | Outcome | Process CPU | Verifier |
@@ -474,6 +490,7 @@ A stratum with one draw describes that draw, not a closure rate.
 | 27 | c3/i>=5/d>=8 | 6023931 | closed, 3 rounds, admitted | 757 s | full pass, 329 s |
 | 28 | c3/i4/d>=8 | 5470206 | closed, 3 rounds, admitted | 717 s | full pass, 333 s |
 | 30 | c3/i<=3/d6 | 2785277 | closed, 8 rounds, admitted | 1,807 s | full pass, 786 s |
+| 29 | c4/i<=3/d6 | 769791 | closed, 20 rounds, admitted | 4,522 s | full pass, 1,899 s |
 
 <!-- This document follows common-doc-guidelines.md.
 See github.com/jlevy/practical-prose and review guidelines before editing.

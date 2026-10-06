@@ -1,0 +1,15 @@
+{
+  "kind": "wand125-declared-net-census-comparison/v1",
+  "certificate": "mixed_n18_L4705",
+  "status": "BOTH_VERIFY_EVERY_DIRECTION",
+  "directions": 2073,
+  "identical_node_counts": 2072,
+  "identical_lower_bounds": 2073,
+  "largest_lower_bound_difference": 0.0,
+  "oblique_nodes": {"census":352045748,"source":352045748},
+  "least_oblique": {"census":{"r":1234,"lower":1.0000000000680034},"source":{"r":1234,"lower":1.0000000000680034}},
+  "census_receipts": "benchmarks/measure-verifier/census-mixed/wand125-mixed-bounds-check2-2026-10-06/mixed_n18_L4705.jsonl.gz",
+  "census_receipts_sha256": "45e97b36409ec6174e67f11d115411e071591e5c9bb748b6b8f47b2e985f975f",
+  "tarball": {"name":"n18-L4.705-check2-bundle.tar.gz","sha256":"187115fc5297ced03df2c8b2a9cecd77d35da59a254608607facbf2d5e6238f2","bytes":307607},
+  "scope": "This repository's sqverify-fast census row beside the source's run of its copy of the same crate, direction by direction. Agreement shows the two builds ran alike; it is not a second implementation, and it decides nothing beyond the census row."
+}

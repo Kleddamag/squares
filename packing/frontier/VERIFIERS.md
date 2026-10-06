@@ -26,13 +26,13 @@ second implementation agrees.
 ## The Short Version
 
 - **88** programs: **33** external and **55** first-party; **68** decide claims and **20** check premises.
-- **296** of **323** evidence entries name the programs that verified them: 209 reproduced with the producer’s code, 70 independently re-implemented, 10 no relation: a proof, a derivation or a report, 7 re-implemented, sharing the producer’s components.
+- **297** of **324** evidence entries name the programs that verified them: 210 reproduced with the producer’s code, 70 independently re-implemented, 10 no relation: a proof, a derivation or a report, 7 re-implemented, sharing the producer’s components.
 
 ## Programs
 
 | id | program | author | provenance | role | evidence | results |
 | --- | --- | --- | --- | --- | ---: | ---: |
-| [`V-tokoharu-verify-cpp`](#v-tokoharu-verify-cpp) | verify.cpp | Tokoharu | external | decides | 12 | 7 |
+| [`V-tokoharu-verify-cpp`](#v-tokoharu-verify-cpp) | verify.cpp | Tokoharu | external | decides | 13 | 7 |
 | [`V-wand125-mixed-rotated-verify-cpp`](#v-wand125-mixed-rotated-verify-cpp) | mixed_rotated_verify.cpp | wand125 | external | decides | 87 | 13 |
 | [`V-wand125-verify-mixed-full-proof-py`](#v-wand125-verify-mixed-full-proof-py) | verify_mixed_full_proof.py | wand125 | external | decides | 64 | 10 |
 | [`V-wand125-unified-linear-verify-cpp`](#v-wand125-unified-linear-verify-cpp) | unified_linear_verify.cpp | wand125 | external | decides | 6 | 3 |
@@ -104,7 +104,7 @@ second implementation agrees.
 | [`V-check-n11-final-composition`](#v-check-n11-final-composition) | devtools.check_n11_final_composition | Squares Project (Levy) | first-party | premises | 1 | 1 |
 | [`V-audit-n17-endpoint-receipt`](#v-audit-n17-endpoint-receipt) | devtools.audit_n17_endpoint_receipt | Squares Project (Levy) | first-party | premises | 1 | 1 |
 | [`V-audit-tokoharu-density`](#v-audit-tokoharu-density) | devtools.audit_tokoharu_density | Squares Project (Levy) | first-party | premises | 1 | 1 |
-| [`V-audit-wand125-rectangles`](#v-audit-wand125-rectangles) | devtools.audit_wand125_rectangles | Squares Project (Levy) | first-party | premises | 3 | 3 |
+| [`V-audit-wand125-rectangles`](#v-audit-wand125-rectangles) | devtools.audit_wand125_rectangles | Squares Project (Levy) | first-party | premises | 4 | 4 |
 | [`V-audit-wand125-point-and-mixed`](#v-audit-wand125-point-and-mixed) | devtools.audit_wand125_point_and_mixed | Squares Project (Levy) | first-party | premises | 17 | 7 |
 | [`V-audit-wand125-declared-net`](#v-audit-wand125-declared-net) | devtools.audit_wand125_declared_net | Squares Project (Levy) | first-party | premises | 1 | 1 |
 | [`V-audit-wand125-linear`](#v-audit-wand125-linear) | devtools.audit_wand125_linear | Squares Project (Levy) | first-party | premises | 3 | 3 |
@@ -144,6 +144,7 @@ Decides a rectangle-density covering certificate over every net direction by out
 | `E-wand125-rectangle-2026-10-01-report` | the source’s own run | producer’s code | T-068 |
 | `E-wand125-rectangle-2026-10-01-source-replay` | replayed here | producer’s code | T-074 |
 | `E-wand125-rectangle-2026-10-02-report` | the source’s own run | producer’s code | T-077 |
+| `E-wand125-rectangle-2026-10-02-source-replay` | replayed here | producer’s code | T-077 |
 | `E-tokoharu-density-report` | the source’s own run | producer’s code | T-047 |
 | `E-tokoharu-density-monotone-report` | audited here | no code | T-047 |
 | `E-tokoharu-density-source-replay` | replayed here | producer’s code | T-047 |
@@ -1425,6 +1426,7 @@ The exact preflight and replay driver for wand125's rectangle certificates: inpu
 | `E-wand125-rectangle-source-replay` | replayed here | producer’s code | T-045 |
 | `E-wand125-rectangle-2026-09-28-source-replay` | replayed here | producer’s code | T-070 |
 | `E-wand125-rectangle-2026-10-01-source-replay` | replayed here | producer’s code | T-074 |
+| `E-wand125-rectangle-2026-10-02-source-replay` | replayed here | producer’s code | T-077 |
 
 ### `V-audit-wand125-point-and-mixed`
 

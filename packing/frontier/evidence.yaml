@@ -1163,7 +1163,7 @@ evidence:
 
   - id: E-wand125-rectangle-2026-09-28-source-replay
     claim: lower-bound
-    scope: {n_values: [29, 38, 39, 41, 42, 43, 44, 52, 53, 54, 55, 59, 60, 67, 68, 69, 70, 71, 72, 73, 74, 86, 95]}
+    scope: {n_values: [29, 38, 39, 41, 42, 43, 44, 51, 52, 53, 54, 55, 57, 59, 60, 67, 68, 69, 70, 71, 72, 73, 74, 86, 95]}
     assurance: verified
     method: interval-certified
     performed_by: repository
@@ -1175,7 +1175,7 @@ evidence:
     replay: >-
       wand125_replay_output="$(mktemp -d "${TMPDIR:-/tmp}/wand125-rectangle-replay.XXXXXX")" &&
       .venv/bin/python3 -m devtools.audit_wand125_rectangles --packet 2026-09-28 --out "$wand125_replay_output"
-      --replay --workers 2 --n 29 --n 38 --n 39 --n 41 --n 52 --n 53 --n 59 --n 67 --n 69 --n 71 --n 86 --n 95
+      --replay --workers 2 --n 29 --n 38 --n 39 --n 41 --n 51 --n 52 --n 53 --n 57 --n 59 --n 67 --n 69 --n 71 --n 72 --n 73 --n 86 --n 95
     replay_status: passed
     verifiers: [V-tokoharu-verify-cpp, V-audit-wand125-rectangles]
     proof:
@@ -1385,6 +1385,65 @@ evidence:
         for byte Tokoharu's checker read on 22 and 27 September and 2 October, and the
         orbit counts, sides and scaling factors are within what the 1 October certificates
         reached. Coverage statements remain the source's until the replays here pass.
+    source_reviewed: '2026-10-02'
+
+  - id: E-wand125-rectangle-2026-10-02-source-replay
+    claim: lower-bound
+    scope: {n_values: [20, 42]}
+    assurance: verified
+    method: interval-certified
+    performed_by: repository
+    relationship_to_generator: same-implementation
+    origin: replayed-here
+    novelty: previously-published
+    source_key: '[wand125 rectangle bounds 2026-10-02]'
+    certificate: resources/web/wand125-rectangle-certificates-2026-10-02/wand125-rectangles/certificates
+    replay: >-
+      wand125_replay_output="$(mktemp -d "${TMPDIR:-/tmp}/wand125-rectangle-replay.XXXXXX")" &&
+      .venv/bin/python3 -m devtools.audit_wand125_rectangles --packet 2026-10-02 --out "$wand125_replay_output"
+      --replay --workers 2 --n 20 --n 42
+    replay_status: passed
+    verifiers: [V-tokoharu-verify-cpp, V-audit-wand125-rectangles]
+    proof:
+      source: packing/resources/web/external-square-certificates-2026-09-22/tokoharu-density/docs/continuous-density-certificate.ja.md
+      theorem: Rectangle-density covering obstruction, applied to wand125's standing certificates of 2 October 2026
+      scope: Unrestricted square packing with disjoint interiors and arbitrary rotations; monotonic transfer to larger counts below which a certificate's mass lies.
+      pinpoints: >-
+        The theorem and interval-verifier correspondence audited in the linked review;
+        the byte-identical verify.cpp and run_verify.py retained with Tokoharu's packet;
+        per-case preflight and replay records in receipts/preflight/audit.json.gz and
+        receipts/replay/audit.json of the 2026-10-02 wand125 rectangle packet.
+      assumptions:
+        - Nonnegative exact rational rectangle densities have total mass strictly below the target square count.
+        - All angles and legal centres are covered by the certified core net and interval subdivision.
+        - Binary64 arithmetic has the reviewed IEEE-754 semantics, without fast math or FMA contraction.
+        - The replayed interval input is the one regenerated from the exact candidate, whose SHA-256 equals the digest the upstream accepting run recorded.
+      audit_record: docs/project/reviews/review-2026-09-22-tokoharu-density-mathematics.md
+    limitations: >-
+      The scope lists the counts whose verified lower bound this entry carries: each is
+      a count whose own standing certificate at b00fc70 passed the complete 201-direction
+      replay, or a larger count reached by monotonicity from one. Three certificates,
+      rect_n20_L49, rect_n42_L68275 and rect_n70_L86275, were replayed with Tokoharu's
+      unchanged verify.cpp (SHA-256 a75140df...) through run_verify.py at 4 workers in two
+      cloud batches on 3 October 2026 (claude/replay-wand125-afternoon-r5 at b829406d,
+      rect_n42_L68275, and claude/replay-wand125-afternoon-r6 at c2be1d247, which resumed
+      from r5's transfer and ran rect_n70_L86275 and rect_n20_L49), 3,667, 5,453 and
+      27,064 seconds of wall; their receipts were folded into the packet's
+      receipts/replay/audit.json on 6 October by devtools.audit_wand125_rectangles
+      --merge, which checks each case against the packet's own preflight, the published
+      input digest and the reviewed checker digest; every replay reproduced the upstream
+      accepting run's nodes, leaves and lower bound angle by angle. The transfer branches
+      are not merged and transfer/ is not in the tree. n70's 3451/400 is below the mixed
+      certificate that holds n = 70 (T-091), so no case cites this entry there. Global
+      rotated coverage is still decided by the source C++ checker, so this is a machine
+      replay of the source's checker, not an independent decision of the certificate. The
+      2 October review of the afternoon certificates read the same checker for these three
+      at sides up to 3451/400 and 883 orbits, within what the 1 October certificates
+      reached, before their replays, so the rung does not rest on it. The controls are
+      Tokoharu's checker's on rect_n41_L676 of the 1 October packet
+      (receipts/controls/rect_n41_L676.json there, held by
+      tests/test_wand125_checker_controls.py). Run the replay from packing/ with the
+      project CPython 3.14 environment and a C++17-capable g++ on PATH.
     source_reviewed: '2026-10-02'
 
   - id: E-n045-wand125-point-cover-report

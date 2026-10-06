@@ -180,13 +180,19 @@ count.
   encloses its exact datum, the axis-event partition is complete, orbit normalization
   preserves mass, and the exact mass is below `n`. All 53 pass, in 32 s on one core; the
   46 unchanged entries equal those of the October 1 receipt.
-- No coverage replay has run at this pin, and none of the source’s programs was run in
-  making this packet. The checker’s stage-4 controls are the October 1 packet’s
+- [`receipts/replay/audit.json`](receipts/replay/audit.json) and one directory per case:
+  complete 201-direction replays of the three certificates this import registers,
+  `rect_n20_L49`, `rect_n42_L68275` and `rect_n70_L86275`, with Tokoharu’s unchanged
+  `verify.cpp` through `run_verify.py` at 4 workers, each reproducing the upstream
+  accepting run’s nodes, leaves and lower bound at every direction. They ran in cloud
+  batches on 3 October (`claude/replay-wand125-afternoon-r5` and `-r6`) and were merged
+  on 6 October with `--merge`. None of the source’s programs was run in making this
+  packet. The checker’s stage-4 controls are the October 1 packet’s
   [`receipts/controls/rect_n41_L676.json`](../wand125-rectangle-certificates-2026-10-01/receipts/controls/rect_n41_L676.json);
   the checker is the same byte for byte.
 
 The preflight proves every obligation except global rotated coverage, which the external
-checker decides. Until a replay passes here, each bound is the source’s report.
+checker decides; for the three replayed certificates the replay decides it here.
 
 `python -m devtools.apply_wand125_rectangles --packet 2026-10-02 --replay-plan` lists
 the standing certificates whose replay would raise a verified lower bound, each costed by

@@ -879,7 +879,7 @@
       "family": null,
       "n": 20,
       "nagamochi": {"basis":"nagamochi-theorem-2","decimal":"4.605551275463","exact":"1 + sqrt(13)","exact_case":false},
-      "operative_lower_bound": {"cites_t007":false,"evidence":["E-wand125-rectangle-2026-10-01-source-replay"],"exact_form":"1959/400","results":["T-074"],"t007_scope_covers_n":true,"value":"4.8975"},
+      "operative_lower_bound": {"cites_t007":false,"evidence":["E-wand125-rectangle-2026-10-02-source-replay"],"exact_form":"49/10","results":["T-077"],"t007_scope_covers_n":true,"value":"4.9"},
       "reported_lower_bound": {"cites_t007":false,"evidence":["E-wand125-rectangle-2026-10-02-report"],"value":"4.9"},
       "reported_status": "open",
       "status": "open",
@@ -889,9 +889,9 @@
         "chelokot_lean": null,
         "karakus_explicit_bound": {"basis":"karakus-6.1","decimal":"4.531128874149","exact":"1/2 + (1/2)*sqrt(65)","reaches_nagamochi":false,"shortfall_below_nagamochi":"0.074422401314"},
         "karakus_k2_minus_1": null,
-        "other_registered_results_at_n": [{"confirmation":"C3","id":"T-020","kind":"lower-bound","verification":"V3"},{"confirmation":"C3","id":"T-021","kind":"lower-bound","verification":"V3"},{"confirmation":"C3","id":"T-045","kind":"lower-bound","verification":"V3"},{"confirmation":"C0","id":"T-046","kind":"lower-bound","verification":"V0"},{"confirmation":"C1","id":"T-068","kind":"lower-bound","verification":"V0"},{"confirmation":"C3","id":"T-074","kind":"lower-bound","verification":"V3"},{"confirmation":"C1","id":"T-077","kind":"lower-bound","verification":"V0"},{"confirmation":"C1","id":"T-083","kind":"lower-bound","verification":"V3"},{"confirmation":"C3","id":"T-085","kind":"correction","verification":"V3"}],
+        "other_registered_results_at_n": [{"confirmation":"C3","id":"T-020","kind":"lower-bound","verification":"V3"},{"confirmation":"C3","id":"T-021","kind":"lower-bound","verification":"V3"},{"confirmation":"C3","id":"T-045","kind":"lower-bound","verification":"V3"},{"confirmation":"C0","id":"T-046","kind":"lower-bound","verification":"V0"},{"confirmation":"C1","id":"T-068","kind":"lower-bound","verification":"V0"},{"confirmation":"C3","id":"T-074","kind":"lower-bound","verification":"V3"},{"confirmation":"C3","id":"T-077","kind":"lower-bound","verification":"V3"},{"confirmation":"C1","id":"T-083","kind":"lower-bound","verification":"V3"},{"confirmation":"C3","id":"T-085","kind":"correction","verification":"V3"}],
         "registered_reported": {"basis":"exact-form","decimal":"4.900000000000","exact":"49/10","reaches_nagamochi":true,"shortfall_below_nagamochi":"-0.294448724537","sources":[{"evidence":["E-wand125-rectangle-2026-10-02-report"],"n":20,"proved_by":["wand125"],"results":["T-077"],"via":"direct"}]},
-        "registered_verified": {"basis":"exact-form","decimal":"4.897500000000","exact":"1959/400","reaches_nagamochi":true,"shortfall_below_nagamochi":"-0.291948724537","sources":[{"evidence":["E-wand125-rectangle-2026-10-01-source-replay"],"n":20,"results":["T-074"],"via":"direct"}]}
+        "registered_verified": {"basis":"exact-form","decimal":"4.900000000000","exact":"49/10","reaches_nagamochi":true,"shortfall_below_nagamochi":"-0.294448724537","sources":[{"evidence":["E-wand125-rectangle-2026-10-02-source-replay"],"n":20,"results":["T-077"],"via":"direct"}]}
       },
       "weakened_to": null,
       "weakened_to_without_karakus": null
@@ -1496,7 +1496,7 @@
       "family": null,
       "n": 42,
       "nagamochi": {"basis":"nagamochi-theorem-2","decimal":"6.567764362830","exact":"1 + sqrt(31)","exact_case":false},
-      "operative_lower_bound": {"cites_t007":false,"evidence":["E-wand125-rectangle-2026-10-01-source-replay"],"exact_form":"1363/200","results":["T-074"],"t007_scope_covers_n":true,"value":"6.815"},
+      "operative_lower_bound": {"cites_t007":false,"evidence":["E-wand125-rectangle-2026-10-02-source-replay"],"exact_form":"2731/400","results":["T-077"],"t007_scope_covers_n":true,"value":"6.8275"},
       "reported_lower_bound": {"cites_t007":false,"evidence":["E-n042-wand125-mixed-68475-report"],"value":"6.8475"},
       "reported_status": "open",
       "status": "open",
@@ -1506,9 +1506,9 @@
         "chelokot_lean": null,
         "karakus_explicit_bound": {"basis":"karakus-6.1","decimal":"6.520797289396","exact":"1/2 + (1/2)*sqrt(145)","reaches_nagamochi":false,"shortfall_below_nagamochi":"0.046967073433"},
         "karakus_k2_minus_1": null,
-        "other_registered_results_at_n": [{"confirmation":"C0","id":"T-046","kind":"lower-bound","verification":"V0"},{"confirmation":"C1","id":"T-068","kind":"lower-bound","verification":"V0"},{"confirmation":"C3","id":"T-070","kind":"lower-bound","verification":"V3"},{"confirmation":"C3","id":"T-074","kind":"lower-bound","verification":"V3"},{"confirmation":"C1","id":"T-077","kind":"lower-bound","verification":"V0"},{"confirmation":"C1","id":"T-083","kind":"lower-bound","verification":"V3"},{"confirmation":"C3","id":"T-085","kind":"correction","verification":"V3"},{"confirmation":"C1","id":"T-090","kind":"lower-bound","verification":"V0"}],
+        "other_registered_results_at_n": [{"confirmation":"C0","id":"T-046","kind":"lower-bound","verification":"V0"},{"confirmation":"C1","id":"T-068","kind":"lower-bound","verification":"V0"},{"confirmation":"C3","id":"T-070","kind":"lower-bound","verification":"V3"},{"confirmation":"C3","id":"T-074","kind":"lower-bound","verification":"V3"},{"confirmation":"C3","id":"T-077","kind":"lower-bound","verification":"V3"},{"confirmation":"C1","id":"T-083","kind":"lower-bound","verification":"V3"},{"confirmation":"C3","id":"T-085","kind":"correction","verification":"V3"},{"confirmation":"C1","id":"T-090","kind":"lower-bound","verification":"V0"}],
         "registered_reported": {"basis":"exact-form","decimal":"6.847500000000","exact":"2739/400","reaches_nagamochi":true,"shortfall_below_nagamochi":"-0.279735637170","sources":[{"evidence":["E-n042-wand125-mixed-68475-report"],"n":42,"proved_by":["wand125"],"results":["T-090"],"via":"direct"}]},
-        "registered_verified": {"basis":"exact-form","decimal":"6.815000000000","exact":"1363/200","reaches_nagamochi":true,"shortfall_below_nagamochi":"-0.247235637170","sources":[{"evidence":["E-wand125-rectangle-2026-10-01-source-replay"],"n":42,"results":["T-074"],"via":"direct"}]}
+        "registered_verified": {"basis":"exact-form","decimal":"6.827500000000","exact":"2731/400","reaches_nagamochi":true,"shortfall_below_nagamochi":"-0.259735637170","sources":[{"evidence":["E-wand125-rectangle-2026-10-02-source-replay"],"n":42,"results":["T-077"],"via":"direct"}]}
       },
       "weakened_to": null,
       "weakened_to_without_karakus": null
@@ -1750,7 +1750,7 @@
       "family": null,
       "n": 51,
       "nagamochi": {"basis":"nagamochi-theorem-2","decimal":"7.164414002968","exact":"1 + sqrt(38)","exact_case":false},
-      "operative_lower_bound": {"cites_t007":false,"evidence":["E-n050-wand125-mixed-740-source-replay"],"exact_form":"37/5","results":["T-048"],"t007_scope_covers_n":true,"value":"7.4"},
+      "operative_lower_bound": {"cites_t007":false,"evidence":["E-wand125-rectangle-2026-09-28-source-replay"],"exact_form":"2977/400","results":["T-070"],"t007_scope_covers_n":true,"value":"7.4425"},
       "reported_lower_bound": {"cites_t007":false,"evidence":["E-n051-wand125-mixed-747-report"],"value":"7.47"},
       "reported_status": "open",
       "status": "open",
@@ -1760,9 +1760,9 @@
         "chelokot_lean": null,
         "karakus_explicit_bound": {"basis":"karakus-6.1","decimal":"7.152067347825","exact":"1/2 + (1/2)*sqrt(177)","reaches_nagamochi":false,"shortfall_below_nagamochi":"0.012346655143"},
         "karakus_k2_minus_1": null,
-        "other_registered_results_at_n": [{"confirmation":"C0","id":"T-046","kind":"lower-bound","verification":"V0"},{"confirmation":"C3","id":"T-048","kind":"lower-bound","verification":"V3"},{"confirmation":"C1","id":"T-082","kind":"lower-bound","verification":"V0"},{"confirmation":"C1","id":"T-083","kind":"lower-bound","verification":"V3"},{"confirmation":"C3","id":"T-085","kind":"correction","verification":"V3"},{"confirmation":"C1","id":"T-090","kind":"lower-bound","verification":"V0"}],
+        "other_registered_results_at_n": [{"confirmation":"C0","id":"T-046","kind":"lower-bound","verification":"V0"},{"confirmation":"C3","id":"T-048","kind":"lower-bound","verification":"V3"},{"confirmation":"C3","id":"T-070","kind":"lower-bound","verification":"V3"},{"confirmation":"C1","id":"T-082","kind":"lower-bound","verification":"V0"},{"confirmation":"C1","id":"T-083","kind":"lower-bound","verification":"V3"},{"confirmation":"C3","id":"T-085","kind":"correction","verification":"V3"},{"confirmation":"C1","id":"T-090","kind":"lower-bound","verification":"V0"}],
         "registered_reported": {"basis":"exact-form","decimal":"7.470000000000","exact":"747/100","reaches_nagamochi":true,"shortfall_below_nagamochi":"-0.305585997032","sources":[{"evidence":["E-n051-wand125-mixed-747-report"],"n":51,"proved_by":["wand125"],"results":["T-090"],"via":"direct"}]},
-        "registered_verified": {"basis":"exact-form","decimal":"7.400000000000","exact":"37/5","reaches_nagamochi":true,"shortfall_below_nagamochi":"-0.235585997032","sources":[{"evidence":["E-n050-wand125-mixed-740-source-replay"],"n":50,"results":["T-048"],"via":"monotonicity"}]}
+        "registered_verified": {"basis":"exact-form","decimal":"7.442500000000","exact":"2977/400","reaches_nagamochi":true,"shortfall_below_nagamochi":"-0.278085997032","sources":[{"evidence":["E-wand125-rectangle-2026-09-28-source-replay"],"n":51,"results":["T-070"],"via":"direct"}]}
       },
       "weakened_to": null,
       "weakened_to_without_karakus": null
@@ -1912,7 +1912,7 @@
       "family": null,
       "n": 57,
       "nagamochi": {"basis":"nagamochi-theorem-2","decimal":"7.633249580710","exact":"1 + 2*sqrt(11)","exact_case":false},
-      "operative_lower_bound": {"cites_t007":false,"evidence":["E-wand125-rectangle-2026-10-01-source-replay"],"exact_form":"3113/400","results":["T-074"],"t007_scope_covers_n":true,"value":"7.7825"},
+      "operative_lower_bound": {"cites_t007":false,"evidence":["E-wand125-rectangle-2026-09-28-source-replay"],"exact_form":"1567/200","results":["T-070"],"t007_scope_covers_n":true,"value":"7.835"},
       "reported_lower_bound": {"cites_t007":false,"evidence":["E-n057-wand125-mixed-78725-report"],"value":"7.8725"},
       "reported_status": "open",
       "status": "open",
@@ -1922,9 +1922,9 @@
         "chelokot_lean": null,
         "karakus_explicit_bound": {"basis":"karakus-6.1","decimal":"7.588723439378","exact":"1/2 + (1/2)*sqrt(201)","reaches_nagamochi":false,"shortfall_below_nagamochi":"0.044526141331"},
         "karakus_k2_minus_1": null,
-        "other_registered_results_at_n": [{"confirmation":"C3","id":"T-044","kind":"lower-bound","verification":"V3"},{"confirmation":"C0","id":"T-046","kind":"lower-bound","verification":"V0"},{"confirmation":"C3","id":"T-074","kind":"lower-bound","verification":"V3"},{"confirmation":"C1","id":"T-083","kind":"lower-bound","verification":"V3"},{"confirmation":"C3","id":"T-085","kind":"correction","verification":"V3"},{"confirmation":"C1","id":"T-090","kind":"lower-bound","verification":"V0"}],
+        "other_registered_results_at_n": [{"confirmation":"C3","id":"T-044","kind":"lower-bound","verification":"V3"},{"confirmation":"C0","id":"T-046","kind":"lower-bound","verification":"V0"},{"confirmation":"C3","id":"T-070","kind":"lower-bound","verification":"V3"},{"confirmation":"C3","id":"T-074","kind":"lower-bound","verification":"V3"},{"confirmation":"C1","id":"T-083","kind":"lower-bound","verification":"V3"},{"confirmation":"C3","id":"T-085","kind":"correction","verification":"V3"},{"confirmation":"C1","id":"T-090","kind":"lower-bound","verification":"V0"}],
         "registered_reported": {"basis":"exact-form","decimal":"7.872500000000","exact":"3149/400","reaches_nagamochi":true,"shortfall_below_nagamochi":"-0.239250419290","sources":[{"evidence":["E-n057-wand125-mixed-78725-report"],"n":57,"proved_by":["wand125"],"results":["T-090"],"via":"direct"}]},
-        "registered_verified": {"basis":"exact-form","decimal":"7.782500000000","exact":"3113/400","reaches_nagamochi":true,"shortfall_below_nagamochi":"-0.149250419290","sources":[{"evidence":["E-wand125-rectangle-2026-10-01-source-replay"],"n":56,"results":["T-074"],"via":"monotonicity"}]}
+        "registered_verified": {"basis":"exact-form","decimal":"7.835000000000","exact":"1567/200","reaches_nagamochi":true,"shortfall_below_nagamochi":"-0.201750419290","sources":[{"evidence":["E-wand125-rectangle-2026-09-28-source-replay"],"n":57,"results":["T-070"],"via":"direct"}]}
       },
       "weakened_to": null,
       "weakened_to_without_karakus": null
@@ -2273,7 +2273,7 @@
         "chelokot_lean": null,
         "karakus_explicit_bound": {"basis":"karakus-6.1","decimal":"8.389866919029","exact":"1/2 + (1/2)*sqrt(249)","reaches_nagamochi":false,"shortfall_below_nagamochi":"0.026331568065"},
         "karakus_k2_minus_1": null,
-        "other_registered_results_at_n": [{"confirmation":"C3","id":"T-044","kind":"lower-bound","verification":"V3"},{"confirmation":"C0","id":"T-046","kind":"lower-bound","verification":"V0"},{"confirmation":"C1","id":"T-068","kind":"lower-bound","verification":"V0"},{"confirmation":"C3","id":"T-070","kind":"lower-bound","verification":"V3"},{"confirmation":"C3","id":"T-074","kind":"lower-bound","verification":"V3"},{"confirmation":"C1","id":"T-077","kind":"lower-bound","verification":"V0"},{"confirmation":"C1","id":"T-082","kind":"lower-bound","verification":"V0"},{"confirmation":"C1","id":"T-083","kind":"lower-bound","verification":"V3"},{"confirmation":"C3","id":"T-085","kind":"correction","verification":"V3"},{"confirmation":"C3","id":"T-091","kind":"lower-bound","verification":"V3"}],
+        "other_registered_results_at_n": [{"confirmation":"C3","id":"T-044","kind":"lower-bound","verification":"V3"},{"confirmation":"C0","id":"T-046","kind":"lower-bound","verification":"V0"},{"confirmation":"C1","id":"T-068","kind":"lower-bound","verification":"V0"},{"confirmation":"C3","id":"T-070","kind":"lower-bound","verification":"V3"},{"confirmation":"C3","id":"T-074","kind":"lower-bound","verification":"V3"},{"confirmation":"C3","id":"T-077","kind":"lower-bound","verification":"V3"},{"confirmation":"C1","id":"T-082","kind":"lower-bound","verification":"V0"},{"confirmation":"C1","id":"T-083","kind":"lower-bound","verification":"V3"},{"confirmation":"C3","id":"T-085","kind":"correction","verification":"V3"},{"confirmation":"C3","id":"T-091","kind":"lower-bound","verification":"V3"}],
         "registered_reported": {"basis":"exact-form","decimal":"8.657500000000","exact":"3463/400","reaches_nagamochi":true,"shortfall_below_nagamochi":"-0.241301512905","sources":[{"evidence":["E-n070-wand125-mixed-86575-report"],"n":70,"proved_by":["wand125"],"results":["T-091"],"via":"direct"}]},
         "registered_verified": {"basis":"exact-form","decimal":"8.657500000000","exact":"3463/400","reaches_nagamochi":true,"shortfall_below_nagamochi":"-0.241301512905","sources":[{"evidence":["E-n070-wand125-mixed-86575-sqverify-fast-replay"],"n":70,"results":["T-091"],"via":"direct"}]}
       },
@@ -2317,7 +2317,7 @@
       "family": null,
       "n": 72,
       "nagamochi": {"basis":"nagamochi-theorem-2","decimal":"8.549834435270","exact":"1 + sqrt(57)","exact_case":false},
-      "operative_lower_bound": {"cites_t007":false,"evidence":["E-n071-wand125-mixed-8721-sqverify-fast-replay"],"exact_form":"8721/1000","results":["T-091"],"t007_scope_covers_n":true,"value":"8.721"},
+      "operative_lower_bound": {"cites_t007":false,"evidence":["E-wand125-rectangle-2026-09-28-source-replay"],"exact_form":"437/50","results":["T-070"],"t007_scope_covers_n":true,"value":"8.74"},
       "reported_lower_bound": {"cites_t007":false,"evidence":["E-n072-wand125-mixed-876-report"],"value":"8.76"},
       "reported_status": "open",
       "status": "open",
@@ -2329,7 +2329,7 @@
         "karakus_k2_minus_1": null,
         "other_registered_results_at_n": [{"confirmation":"C3","id":"T-044","kind":"lower-bound","verification":"V3"},{"confirmation":"C0","id":"T-046","kind":"lower-bound","verification":"V0"},{"confirmation":"C3","id":"T-070","kind":"lower-bound","verification":"V3"},{"confirmation":"C1","id":"T-083","kind":"lower-bound","verification":"V3"},{"confirmation":"C3","id":"T-085","kind":"correction","verification":"V3"},{"confirmation":"C1","id":"T-090","kind":"lower-bound","verification":"V0"},{"confirmation":"C3","id":"T-091","kind":"lower-bound","verification":"V3"}],
         "registered_reported": {"basis":"exact-form","decimal":"8.760000000000","exact":"219/25","reaches_nagamochi":true,"shortfall_below_nagamochi":"-0.210165564730","sources":[{"evidence":["E-n072-wand125-mixed-876-report"],"n":72,"proved_by":["wand125"],"results":["T-090"],"via":"direct"}]},
-        "registered_verified": {"basis":"exact-form","decimal":"8.721000000000","exact":"8721/1000","reaches_nagamochi":true,"shortfall_below_nagamochi":"-0.171165564730","sources":[{"evidence":["E-n071-wand125-mixed-8721-sqverify-fast-replay"],"n":71,"results":["T-091"],"via":"monotonicity"}]}
+        "registered_verified": {"basis":"exact-form","decimal":"8.740000000000","exact":"437/50","reaches_nagamochi":true,"shortfall_below_nagamochi":"-0.190165564730","sources":[{"evidence":["E-wand125-rectangle-2026-09-28-source-replay"],"n":72,"results":["T-070"],"via":"direct"}]}
       },
       "weakened_to": null,
       "weakened_to_without_karakus": null

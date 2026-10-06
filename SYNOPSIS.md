@@ -566,6 +566,8 @@ case or experiment separately.
 | [wand125 Certificates of 3 and 4 October: Review of 28 Mixed Rectangle-Measure Bounds From `n = 42` to `n = 95`](docs/project/reviews/review-2026-10-05-wand125-october-4-certificates.md) | dated review record | record | retained | — |
 | [wand125 Certificates of 5 October and the Independent Replays: Review of `s(67) ≥ 212/25`, `s(84) ≥ 9411/1000` and the sqverify-fast Route](docs/project/reviews/review-2026-10-05-wand125-october-5-and-independent-replays.md) | dated review record | record | retained | — |
 | [Review: Couzo’s Revision of 3 October 2026, Seven Lower Sides From `n = 208` to `306` (T-092)](docs/project/reviews/review-2026-10-05-couzo-6042c56.md) | dated review record | record | retained | — |
+| [review-2026-10-06-evand-exact-optima.md](docs/project/reviews/review-2026-10-06-evand-exact-optima.md) | dated review record | record | retained | — |
+| [Fix Check: The Review of T-098, Evan Daniel’s Exact Optima](docs/project/reviews/review-2026-10-06-evand-exact-optima-fix-check.md) | dated review record | record | retained | — |
 | [Proof Review: Guzhou0806’s R071, `s(17) > 18641771/4000000 = 4.66044275`](docs/project/reviews/review-2026-10-05-guzhou-r071.md) | dated review record | record | retained | — |
 | [Integration of GPT-6 Pro’s Adversarial Review of the Eleven-Square Optimality Proof](docs/project/reviews/review-2026-10-03-n11-gpt6-pro-review-integration.md) | dated review record | record | retained | — |
 | [Eleven-Square Optimality Paper: Adversarial Review](docs/project/reviews/review-2026-10-03-n11-optimality-paper-adversarial.md) | dated review record | record | retained | — |

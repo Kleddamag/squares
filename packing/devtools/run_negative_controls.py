@@ -237,6 +237,23 @@ PRUNE = frozenset(
         # dependencies below these roots still return through snapshot_pruned_targets.
         ROOT / "benchmarks/math-startup/runs",
         ROOT / "benchmarks/math-startup/fixtures",
+        # Three more benchmark receipt roots join them on 2026-10-06 (PR #382), whole, so
+        # the next dated census run is pruned without an edit here. The two census
+        # folders are what `devtools.sqverify_fast_census` writes: a JSONL receipt per
+        # certificate, plus its `--control` receipt where one is kept, under a dated run
+        # folder. The attack folder is the four seed logs `devtools.attack_sqverify_fast`
+        # wrote for the 2026-10-03 review, and `gate-cost-at-324/runs` is the 475 step
+        # and run journals behind the readings `gate-budgets.yaml` quotes in prose.
+        # `tests/test_sqverify_fast_census.py` reads the census receipts in the ordinary
+        # suite; nothing reads the other two. No control names any of them. Both census
+        # READMEs, which SYNOPSIS links, and the 118 receipts and indexes the results
+        # register lists return through `snapshot_pruned_targets`, 3,299,132 bytes; the
+        # attack folder, which a review links, comes back empty. The trace is at
+        # `SNAPSHOT_MAX_BYTES`.
+        ROOT / "benchmarks/gate-cost-at-324/runs",
+        ROOT / "benchmarks/measure-verifier/census",
+        ROOT / "benchmarks/measure-verifier/census-mixed",
+        ROOT / "benchmarks/measure-verifier/review-2026-10-03-attack",
         # Session 106's compressed validate archive is frozen historical bulk. The
         # owning session names it once as a plain `outputs` path; no mutation target,
         # registered command, test, devtool, result, document-map row or inline link
@@ -475,6 +492,13 @@ PRUNE = frozenset(
         # worker's snapshot, answered by pruning under an unchanged cap.
         ROOT / "witnesses/franciscouzo-2026",
         ROOT / "witnesses/de-winter-2026",
+        # T-092's seven exact certificates, the 3 October packet that supersedes the
+        # 27 September one above, join on 2026-10-06 (PR #382) on exactly its grounds:
+        # `upper_bound_packets certify` writes them, `check --replay` regenerates them,
+        # `tests/test_upper_bound_packets.py` decides them in the ordinary suite, and no
+        # control names them. 1,461,213 bytes. A review links the folder, so every
+        # worker gets it empty, as it gets the folder above.
+        ROOT / "witnesses/franciscouzo-2026-10-03",
     }
 )
 # Build caches: excluded from the counted surface and from every worker tree, by
@@ -723,6 +747,30 @@ def root_files() -> tuple[Path, ...]:
 # of comment and test, under an unchanged cap. PR 360 separately prunes its Sessions
 # 169-179 exploration folders (93a6839ca, net 2,122,114 bytes); the two prunes are
 # independent, and together they leave that layer about 9.7 MiB under the cap.
+# 2026-10-06, PR #382: hosted suite-a read 201,674,181 bytes at 7f2a01816, 347,589 over
+# 192 MiB. CI measures the branch merged with main. This branch alone measured
+# 201,491,089 here, and its merge with main at eb0783695 (#379, Session 182's n=17
+# records and certificates) 201,674,549. The day's intake did it -- new packets,
+# receipts, census rows and larger generated records -- not cache. Answered by
+# `think-t1lk`'s option (b) again rather than by raising: five receipt roots join `PRUNE`
+# above, traced as no control's input -- the measure-verifier census, mixed-census and
+# attack receipts, the gate-cost run journals, and T-092's exact certificates. They hold
+# 8,363,388 bytes, of which 3,299,132 return through the copy-back: net 5,064,256.
+#
+# Traced as on 2026-10-05: all 170 controls were run mutated under `strace -f -e
+# trace=%file` in worker trees that still held the five roots, and all 170 fired. Five
+# checkers, behind 29 controls, touch the roots at all. `validate_schemas` and
+# `check_generated_markdown` walk the tree and open only the two census READMEs,
+# `check_synopsis` stats those READMEs for its links, and `check_results` stats the 118
+# registered receipts; every one of those returns. The one reader of the rest is `check_readme`, through
+# `scan_retired_workflow_identifiers`, which reads every text file the worker's own index
+# tracks, the 475 journals among them; a pruned file leaves that index and so the sweep,
+# as the composite vectors did. Run unmutated in a worker with the roots and in one
+# without them, every distinct command but the full suite printed the same output, wall
+# times and one lease timestamp aside, and with the roots pruned all 170 controls fire.
+#
+# With this change's own comments and test counted, the branch measures 196,433,238
+# bytes and its merge with main 196,616,698, 4.67 MiB and 4.49 MiB under an unchanged cap.
 SNAPSHOT_MAX_BYTES = 192 * 1024 * 1024
 DEFAULT_CONTROL_TIMEOUT_SECONDS = 120.0
 TERMINATION_GRACE_SECONDS = 1.0

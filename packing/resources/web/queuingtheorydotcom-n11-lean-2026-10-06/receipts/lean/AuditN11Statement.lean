@@ -14,6 +14,8 @@ or `rfl` where it can, that the formal statement says what the register claims:
    containment with pairwise disjoint open interiors.
 4. Two controls show the definitions are not vacuous: an axis-aligned square is the
    usual `[c-1/2, c+1/2]^2`, and two unit squares do not fit in a side-1 square.
+5. Root-level declarations named `T` and `Packable` do not change what the names mean
+   inside `namespace ElevenSquare`, where the public theorem is stated.
 -/
 
 open ElevenSquare
@@ -79,3 +81,13 @@ example : ¬ Packable 2 1 := by
 #print axioms ElevenSquare.T_lt_U
 #print axioms ElevenSquare.improvement_within_cover
 #print axioms ElevenSquare.packing_has_canonical_mask
+
+-- 5. Name resolution: root-level declarations named `T` and `Packable` do not capture the
+-- names inside `namespace ElevenSquare`, where `Optimality.lean` states the theorem.
+def T : Nat := 7
+def Packable (_n _S : Nat) : Prop := False
+
+namespace ElevenSquare
+example : T = (6 * u + 4) / (1 + 2 * u - u ^ 2) := rfl
+example : Optimality ↔ (Packable 11 T ∧ ∀ S : ℝ, Packable 11 S → T ≤ S) := Iff.rfl
+end ElevenSquare

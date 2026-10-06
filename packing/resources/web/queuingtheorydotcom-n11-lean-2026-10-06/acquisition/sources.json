@@ -1,7 +1,7 @@
 {
   "format": "external-source-acquisition-v1",
   "retrieved_at_utc": "2026-10-06T18:41Z",
-  "git_scope": "A blobless, depth-1, sparse clone of the public repository, fetched at 2026-10-06T18:41Z when main was this commit. The declared paths are digested: the root files, the build pins, the documentation and notices, the 18-module closure of ElevenSquare.Foundations (every definition the public statements use), the two public statement files and the global lower-bound interface, the verification runner and finalizer, and the completed-run evidence. The rest of the tree, 7,920 Lean modules and about 1.09 GB in all, is pinned by the commit and by the SHA-256 of every module in the source's final audit, which a streamed read of the commit's archive compared here (receipts/tree-scan.json).",
+  "git_scope": "A blobless, depth-1, sparse clone of the public repository, fetched at 2026-10-06T18:41Z when main was this commit. The declared paths are digested: the root files, the build pins, the documentation and notices, the 18-module closure of ElevenSquare.Foundations (every definition the public statements use), the two public statement files, the global lower-bound interface and the three modules it is assembled from at the top (Tasks/T07/UnfinishedCapture, GlobalComposition and Ext/Case438Global), the verification runner and finalizer, and the completed-run evidence. The rest of the tree, 7,920 Lean modules and about 1.09 GB in all, is pinned by the commit and by the SHA-256 of every module in the source's final audit, which a streamed read of the commit's archive compared here (receipts/tree-scan.json).",
   "sources": [
     {
       "id": "queuingtheorydotcom-11squaresformalized",
@@ -52,6 +52,9 @@
         "ElevenSquare/Optimality.lean",
         "ElevenSquare/Verification.lean",
         "ElevenSquare/Pending/S09_GlobalLowerBound.lean",
+        "ElevenSquare/Tasks/T07/UnfinishedCapture.lean",
+        "ElevenSquare/Tasks/T07/GlobalComposition.lean",
+        "ElevenSquare/Tasks/T07/Ext/Case438Global.lean",
         "scripts/run_verification.sh",
         "scripts/verify.py",
         "scripts/verify_support.py",
@@ -63,10 +66,10 @@
         "verification/completed-run-20261006",
         "verification/native-certificates.json"
       ],
-      "subtree_file_count": 56,
-      "subtree_total_bytes": 2675569,
-      "retained_file_count": 54,
-      "retained_total_bytes": 544150,
+      "subtree_file_count": 59,
+      "subtree_total_bytes": 2678406,
+      "retained_file_count": 57,
+      "retained_total_bytes": 546987,
       "compressed": [],
       "pinned_only": [
         {

@@ -17,94 +17,301 @@
  "lean_files": 7928,
  "sha256_match": 7920,
  "sha256_mismatch": [],
- "token_files_code": {
-  "import_Lean": 9,
-  "native_decide": 1839
- },
- "token_files_raw": {
-  "axiom_decl": 1,
-  "import_Lean": 9,
-  "native_decide": 1839,
-  "sorry": 4
- },
- "token_occurrences_code": {
-  "import_Lean": 9,
-  "native_decide": 10464
- },
- "token_paths_code": {
+ "stripping": "Comments (nested /- -/ blocks and -- lines), string literals with escapes, raw strings r#\"...\"# and character literals are blanked before the in-code count, offsets and lines kept.",
+ "tokens": {
+  "admit": {
+   "files_code": 0,
+   "files_raw": 0,
+   "occurrences_code": 0,
+   "occurrences_raw": 0,
+   "pattern": "\\badmit\\b",
+   "raw_hits": []
+  },
+  "axiom_decl": {
+   "files_code": 0,
+   "files_raw": 1,
+   "occurrences_code": 0,
+   "occurrences_raw": 1,
+   "pattern": "(?m)^[ \\t]*(?:@\\[[^\\]]*\\][ \\t]*)?(?:private[ \\t]+|protected[ \\t]+|noncomputable[ \\t]+|unsafe[ \\t]+)*axiom\\b",
+   "raw_hits": [
+    {
+     "in_code": false,
+     "line": 11,
+     "path": "ElevenSquare/Pending/S06_Baseline.lean"
+    }
+   ]
+  },
+  "csimp": {
+   "files_code": 0,
+   "files_raw": 0,
+   "occurrences_code": 0,
+   "occurrences_raw": 0,
+   "pattern": "@\\[[^\\]]*\\bcsimp\\b",
+   "raw_hits": []
+  },
+  "decide_native": {
+   "files_code": 0,
+   "files_raw": 0,
+   "occurrences_code": 0,
+   "occurrences_raw": 0,
+   "pattern": "decide[ \\t]*\\+native",
+   "raw_hits": []
+  },
+  "elab_attribute": {
+   "files_code": 0,
+   "files_raw": 0,
+   "occurrences_code": 0,
+   "occurrences_raw": 0,
+   "pattern": "@\\[[^\\]]*\\b(?:tactic|term_elab|command_elab|macro|delab|app_unexpander)\\b",
+   "raw_hits": []
+  },
+  "env_mod": {
+   "files_code": 0,
+   "files_raw": 0,
+   "occurrences_code": 0,
+   "occurrences_raw": 0,
+   "pattern": "\\bmodifyEnv\\b|\\baddDecl\\b|\\baddDeclCore\\b|\\baddDeclWithoutChecking\\b|\\bEnvironment\\.add\\b|\\bsetEnv\\b",
+   "raw_hits": []
+  },
+  "eval": {
+   "files_code": 0,
+   "files_raw": 0,
+   "occurrences_code": 0,
+   "occurrences_raw": 0,
+   "pattern": "(?m)^[ \\t]*#eval\\b",
+   "raw_hits": []
+  },
+  "exit": {
+   "files_code": 0,
+   "files_raw": 0,
+   "occurrences_code": 0,
+   "occurrences_raw": 0,
+   "pattern": "(?m)^[ \\t]*#exit\\b",
+   "raw_hits": []
+  },
+  "export": {
+   "files_code": 0,
+   "files_raw": 0,
+   "occurrences_code": 0,
+   "occurrences_raw": 0,
+   "pattern": "(?m)^[ \\t]*export\\b",
+   "raw_hits": []
+  },
+  "extern": {
+   "files_code": 0,
+   "files_raw": 0,
+   "occurrences_code": 0,
+   "occurrences_raw": 0,
+   "pattern": "@\\[[^\\]]*\\bextern\\b",
+   "raw_hits": []
+  },
+  "implemented_by": {
+   "files_code": 0,
+   "files_raw": 0,
+   "occurrences_code": 0,
+   "occurrences_raw": 0,
+   "pattern": "\\bimplemented_by\\b",
+   "raw_hits": []
+  },
   "import_Lean": {
-   "ElevenSquare/CaseCountSupport.lean": 1,
-   "ElevenSquare/Pending/FinitePartition.lean": 1,
-   "ElevenSquare/Pending/NatRangeCertificates.lean": 1,
-   "ElevenSquare/Pending/SortedDisjoint.lean": 1,
-   "ElevenSquare/Pending/Types.lean": 1,
-   "ElevenSquare/Tasks/T06/Data.lean": 1,
-   "ElevenSquare/Tasks/T06/DataFeatures.lean": 1,
-   "ElevenSquare/Tasks/T06/Gradients.lean": 1,
-   "scripts/fixtures/T07RowBlockCover.lean": 1
+   "files_code": 9,
+   "files_raw": 9,
+   "occurrences_code": 9,
+   "occurrences_raw": 9,
+   "pattern": "(?m)^import[ \\t]+Lean(?:\\.|\\s|$)",
+   "raw_hits": [
+    {
+     "in_code": true,
+     "line": 2,
+     "path": "ElevenSquare/CaseCountSupport.lean"
+    },
+    {
+     "in_code": true,
+     "line": 2,
+     "path": "ElevenSquare/Pending/FinitePartition.lean"
+    },
+    {
+     "in_code": true,
+     "line": 2,
+     "path": "ElevenSquare/Pending/NatRangeCertificates.lean"
+    },
+    {
+     "in_code": true,
+     "line": 2,
+     "path": "ElevenSquare/Pending/SortedDisjoint.lean"
+    },
+    {
+     "in_code": true,
+     "line": 5,
+     "path": "ElevenSquare/Pending/Types.lean"
+    },
+    {
+     "in_code": true,
+     "line": 1,
+     "path": "ElevenSquare/Tasks/T06/Data.lean"
+    },
+    {
+     "in_code": true,
+     "line": 1,
+     "path": "ElevenSquare/Tasks/T06/DataFeatures.lean"
+    },
+    {
+     "in_code": true,
+     "line": 4,
+     "path": "ElevenSquare/Tasks/T06/Gradients.lean"
+    },
+    {
+     "in_code": true,
+     "line": 1,
+     "path": "scripts/fixtures/T07RowBlockCover.lean"
+    }
+   ]
+  },
+  "initialize": {
+   "files_code": 0,
+   "files_raw": 0,
+   "occurrences_code": 0,
+   "occurrences_raw": 0,
+   "pattern": "(?m)^[ \\t]*(?:builtin_)?initialize\\b",
+   "raw_hits": []
+  },
+  "instance": {
+   "files_code": 3,
+   "files_raw": 3,
+   "occurrences_code": 4,
+   "occurrences_raw": 4,
+   "pattern": "(?m)^[ \\t]*(?:@\\[[^\\]]*\\][ \\t]*)?(?:(?:scoped|local|private|noncomputable)[ \\t]+)*instance\\b",
+   "raw_hits": [
+    {
+     "in_code": true,
+     "line": 24,
+     "path": "ElevenSquare/Simplified/LocalCommonArithmetic.lean"
+    },
+    {
+     "in_code": true,
+     "line": 13,
+     "path": "ElevenSquare/Tasks/T06/BranchAliasDefinitions.lean"
+    },
+    {
+     "in_code": true,
+     "line": 27,
+     "path": "ElevenSquare/Tasks/T06/DataIntegral.lean"
+    },
+    {
+     "in_code": true,
+     "line": 32,
+     "path": "ElevenSquare/Tasks/T06/DataIntegral.lean"
+    }
+   ]
+  },
+  "macro": {
+   "files_code": 0,
+   "files_raw": 0,
+   "occurrences_code": 0,
+   "occurrences_raw": 0,
+   "pattern": "(?m)^[ \\t]*(?:@\\[[^\\]]*\\][ \\t]*)?(?:local[ \\t]+|scoped[ \\t]+)?(?:macro|macro_rules|syntax|elab|elab_rules|declare_syntax_cat)\\b",
+   "raw_hits": []
   },
   "native_decide": {
-   "(first 60 of)": 1839,
-   "ElevenSquare/Tasks/T07/Ext/Gen/Far13/S0.lean": 5,
-   "ElevenSquare/Tasks/T07/Ext/Gen/Far13/S1.lean": 5,
-   "ElevenSquare/Tasks/T07/Ext/Gen/Far13/S10.lean": 5,
-   "ElevenSquare/Tasks/T07/Ext/Gen/Far13/S11.lean": 5,
-   "ElevenSquare/Tasks/T07/Ext/Gen/Far13/S12.lean": 5,
-   "ElevenSquare/Tasks/T07/Ext/Gen/Far13/S13.lean": 5,
-   "ElevenSquare/Tasks/T07/Ext/Gen/Far13/S14.lean": 5,
-   "ElevenSquare/Tasks/T07/Ext/Gen/Far13/S15.lean": 5,
-   "ElevenSquare/Tasks/T07/Ext/Gen/Far13/S16.lean": 5,
-   "ElevenSquare/Tasks/T07/Ext/Gen/Far13/S17.lean": 5,
-   "ElevenSquare/Tasks/T07/Ext/Gen/Far13/S18.lean": 5,
-   "ElevenSquare/Tasks/T07/Ext/Gen/Far13/S19.lean": 5,
-   "ElevenSquare/Tasks/T07/Ext/Gen/Far13/S2.lean": 5,
-   "ElevenSquare/Tasks/T07/Ext/Gen/Far13/S20.lean": 5,
-   "ElevenSquare/Tasks/T07/Ext/Gen/Far13/S21.lean": 5,
-   "ElevenSquare/Tasks/T07/Ext/Gen/Far13/S22.lean": 5,
-   "ElevenSquare/Tasks/T07/Ext/Gen/Far13/S23.lean": 4,
-   "ElevenSquare/Tasks/T07/Ext/Gen/Far13/S3.lean": 5,
-   "ElevenSquare/Tasks/T07/Ext/Gen/Far13/S4.lean": 5,
-   "ElevenSquare/Tasks/T07/Ext/Gen/Far13/S5.lean": 5,
-   "ElevenSquare/Tasks/T07/Ext/Gen/Far13/S6.lean": 5,
-   "ElevenSquare/Tasks/T07/Ext/Gen/Far13/S7.lean": 5,
-   "ElevenSquare/Tasks/T07/Ext/Gen/Far13/S8.lean": 5,
-   "ElevenSquare/Tasks/T07/Ext/Gen/Far13/S9.lean": 5,
-   "ElevenSquare/Tasks/T07/Ext/Gen/Far15/S0.lean": 2,
-   "ElevenSquare/Tasks/T07/Ext/Gen/Far15/S1.lean": 2,
-   "ElevenSquare/Tasks/T07/Ext/Gen/Far15/S2.lean": 2,
-   "ElevenSquare/Tasks/T07/Ext/Gen/Far15/S3.lean": 2,
-   "ElevenSquare/Tasks/T07/Ext/Gen/Far15/S4.lean": 2,
-   "ElevenSquare/Tasks/T07/Ext/Gen/Far15/S5.lean": 2,
-   "ElevenSquare/Tasks/T07/Ext/Gen/Far15/S6.lean": 2,
-   "ElevenSquare/Tasks/T07/Ext/Gen/Far15/S7.lean": 1,
-   "ElevenSquare/Tasks/T07/Ext/Gen/Near/S0.lean": 5,
-   "ElevenSquare/Tasks/T07/Ext/Gen/Near/S1.lean": 5,
-   "ElevenSquare/Tasks/T07/Ext/Gen/Near/S10.lean": 5,
-   "ElevenSquare/Tasks/T07/Ext/Gen/Near/S100.lean": 5,
-   "ElevenSquare/Tasks/T07/Ext/Gen/Near/S101.lean": 5,
-   "ElevenSquare/Tasks/T07/Ext/Gen/Near/S102.lean": 5,
-   "ElevenSquare/Tasks/T07/Ext/Gen/Near/S103.lean": 5,
-   "ElevenSquare/Tasks/T07/Ext/Gen/Near/S104.lean": 5,
-   "ElevenSquare/Tasks/T07/Ext/Gen/Near/S105.lean": 5,
-   "ElevenSquare/Tasks/T07/Ext/Gen/Near/S106.lean": 5,
-   "ElevenSquare/Tasks/T07/Ext/Gen/Near/S107.lean": 5,
-   "ElevenSquare/Tasks/T07/Ext/Gen/Near/S108.lean": 5,
-   "ElevenSquare/Tasks/T07/Ext/Gen/Near/S109.lean": 5,
-   "ElevenSquare/Tasks/T07/Ext/Gen/Near/S11.lean": 5,
-   "ElevenSquare/Tasks/T07/Ext/Gen/Near/S110.lean": 5,
-   "ElevenSquare/Tasks/T07/Ext/Gen/Near/S111.lean": 5,
-   "ElevenSquare/Tasks/T07/Ext/Gen/Near/S112.lean": 5,
-   "ElevenSquare/Tasks/T07/Ext/Gen/Near/S113.lean": 5,
-   "ElevenSquare/Tasks/T07/Ext/Gen/Near/S114.lean": 5,
-   "ElevenSquare/Tasks/T07/Ext/Gen/Near/S115.lean": 5,
-   "ElevenSquare/Tasks/T07/Ext/Gen/Near/S116.lean": 5,
-   "ElevenSquare/Tasks/T07/Ext/Gen/Near/S117.lean": 5,
-   "ElevenSquare/Tasks/T07/Ext/Gen/Near/S118.lean": 5,
-   "ElevenSquare/Tasks/T07/Ext/Gen/Near/S119.lean": 5,
-   "ElevenSquare/Tasks/T07/Ext/Gen/Near/S12.lean": 5,
-   "ElevenSquare/Tasks/T07/Ext/Gen/Near/S120.lean": 5,
-   "ElevenSquare/Tasks/T07/Ext/Gen/Near/S13.lean": 5,
-   "ElevenSquare/Tasks/T07/Ext/Gen/Near/S14.lean": 5
+   "files_code": 1839,
+   "files_raw": 1839,
+   "occurrences_code": 10464,
+   "occurrences_raw": 10464,
+   "pattern": "\\bnative_decide\\b",
+   "raw_hits": "over the limit"
+  },
+  "notation": {
+   "files_code": 0,
+   "files_raw": 0,
+   "occurrences_code": 0,
+   "occurrences_raw": 0,
+   "pattern": "(?m)^[ \\t]*(?:@\\[[^\\]]*\\][ \\t]*)?(?:local[ \\t]+|scoped[ \\t]+)?(?:notation\\d*|infix|infixl|infixr|prefix|postfix)\\b",
+   "raw_hits": []
+  },
+  "ofReduceBool": {
+   "files_code": 0,
+   "files_raw": 0,
+   "occurrences_code": 0,
+   "occurrences_raw": 0,
+   "pattern": "\\bofReduceBool\\b|\\breduceBool\\b",
+   "raw_hits": []
+  },
+  "opaque": {
+   "files_code": 0,
+   "files_raw": 0,
+   "occurrences_code": 0,
+   "occurrences_raw": 0,
+   "pattern": "(?m)^[ \\t]*(?:@\\[[^\\]]*\\][ \\t]*)?(?:private[ \\t]+|protected[ \\t]+|noncomputable[ \\t]+)*opaque\\b",
+   "raw_hits": []
+  },
+  "open_renaming": {
+   "files_code": 0,
+   "files_raw": 0,
+   "occurrences_code": 0,
+   "occurrences_raw": 0,
+   "pattern": "\\bopen\\b[^\\n]*\\b(?:renaming|hiding)\\b",
+   "raw_hits": []
+  },
+  "run_cmd": {
+   "files_code": 0,
+   "files_raw": 0,
+   "occurrences_code": 0,
+   "occurrences_raw": 0,
+   "pattern": "\\brun_cmd\\b|\\brun_elab\\b|\\brun_meta\\b|\\brun_tac\\b",
+   "raw_hits": []
+  },
+  "skipKernelTC": {
+   "files_code": 0,
+   "files_raw": 0,
+   "occurrences_code": 0,
+   "occurrences_raw": 0,
+   "pattern": "skipKernelTC|debug\\.skip",
+   "raw_hits": []
+  },
+  "sorry": {
+   "files_code": 0,
+   "files_raw": 4,
+   "occurrences_code": 0,
+   "occurrences_raw": 4,
+   "pattern": "\\bsorry\\b",
+   "raw_hits": [
+    {
+     "in_code": false,
+     "line": 4,
+     "path": "ElevenSquare/Pending/S06_Data.lean"
+    },
+    {
+     "in_code": false,
+     "line": 6,
+     "path": "ElevenSquare/Pending/S07_Bridge.lean"
+    },
+    {
+     "in_code": false,
+     "line": 4,
+     "path": "ElevenSquare/Pending/S08_Packet.lean"
+    },
+    {
+     "in_code": false,
+     "line": 10,
+     "path": "ElevenSquare/Pending/Types.lean"
+    }
+   ]
+  },
+  "trustCompiler": {
+   "files_code": 0,
+   "files_raw": 0,
+   "occurrences_code": 0,
+   "occurrences_raw": 0,
+   "pattern": "\\btrustCompiler\\b",
+   "raw_hits": []
+  },
+  "unsafe": {
+   "files_code": 0,
+   "files_raw": 0,
+   "occurrences_code": 0,
+   "occurrences_raw": 0,
+   "pattern": "\\bunsafe\\b",
+   "raw_hits": []
   }
  },
  "url": "https://codeload.github.com/Queuingtheorydotcom/11SquaresFormalized/tar.gz/cdc746ed907d258057c283aeb6d077cb2c27e349"

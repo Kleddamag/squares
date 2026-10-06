@@ -25,8 +25,8 @@ second implementation agrees.
 
 ## The Short Version
 
-- **91** programs: **34** external and **57** first-party; **70** decide claims and **21** check premises.
-- **361** of **388** evidence entries name the programs that verified them: 213 reproduced with the producer’s code, 131 independently re-implemented, 10 no relation: a proof, a derivation or a report, 7 re-implemented, sharing the producer’s components.
+- **92** programs: **34** external and **58** first-party; **70** decide claims and **22** check premises.
+- **362** of **389** evidence entries name the programs that verified them: 214 reproduced with the producer’s code, 131 independently re-implemented, 10 no relation: a proof, a derivation or a report, 7 re-implemented, sharing the producer’s components.
 
 ## Programs
 
@@ -61,7 +61,7 @@ second implementation agrees.
 | [`V-mira-17squares-point-checker`](#v-mira-17squares-point-checker) | verify_certificate.py | Mira | external | decides | 1 | 0 |
 | [`V-stanislavfort-17squares-point-checker`](#v-stanislavfort-17squares-point-checker) | verify_certificate.py | Stanislav Fort | external | decides | 1 | 0 |
 | [`V-queuingtheory-n11-verify`](#v-queuingtheory-n11-verify) | VERIFY.py | Queuingtheorydotcom | external | decides | 1 | 1 |
-| [`V-queuingtheory-n11-lean`](#v-queuingtheory-n11-lean) | The 11SquaresFormalized Lean 4 development (ElevenSquare and Sqpack) | Queuingtheorydotcom, wand125, Guzhou0806, Benjamin Gurevitch, Julian-JJ, EvolvingPrograms and ctjlewis | external | decides | 1 | 1 |
+| [`V-queuingtheory-n11-lean`](#v-queuingtheory-n11-lean) | The 11SquaresFormalized Lean 4 development (ElevenSquare and Sqpack) | Queuingtheorydotcom, wand125, Guzhou0806, Benjamin Gurevitch, Julian-JJ, EvolvingPrograms and ctjlewis | external | decides | 2 | 1 |
 | [`V-wand125-tools`](#v-wand125-tools) | The wand125 tools repository's transfer/l_cap.py and general_pose_tree | wand125 | external | decides | 3 | 2 |
 | [`V-squarepacker-indep-check-cpp`](#v-squarepacker-indep-check-cpp) | indep_check.cpp | squarepacker | external | decides | 4 | 2 |
 | [`V-schadt-n29-check-py`](#v-schadt-n29-check-py) | check.py | Schadt | external | decides | 1 | 0 |
@@ -104,6 +104,7 @@ second implementation agrees.
 | [`V-n11-optimality-checkers`](#v-n11-optimality-checkers) | The devtools.check_n11_optimality | Squares Project (Levy) | first-party | decides | 1 | 1 |
 | [`V-evand-exact-certificates`](#v-evand-exact-certificates) | devtools.evand_exact_certificates | Squares Project (Levy) | first-party | premises | 2 | 1 |
 | [`V-check-n11-final-composition`](#v-check-n11-final-composition) | devtools.check_n11_final_composition | Squares Project (Levy) | first-party | premises | 1 | 1 |
+| [`V-audit-n11-lean`](#v-audit-n11-lean) | devtools.audit_n11_lean | Squares Project (Levy) | first-party | premises | 2 | 1 |
 | [`V-audit-n17-endpoint-receipt`](#v-audit-n17-endpoint-receipt) | devtools.audit_n17_endpoint_receipt | Squares Project (Levy) | first-party | premises | 1 | 1 |
 | [`V-audit-tokoharu-density`](#v-audit-tokoharu-density) | devtools.audit_tokoharu_density | Squares Project (Levy) | first-party | premises | 1 | 1 |
 | [`V-audit-wand125-rectangles`](#v-audit-wand125-rectangles) | devtools.audit_wand125_rectangles | Squares Project (Levy) | first-party | premises | 4 | 4 |
@@ -767,11 +768,12 @@ Proves ElevenSquare.optimality, s(11) = T, in Lean 4.34.1 with Mathlib d13f23b7:
 
 - Source: [`packing/resources/web/queuingtheorydotcom-n11-lean-2026-10-06/11SquaresFormalized/ElevenSquare/Optimality.lean`](../../packing/resources/web/queuingtheorydotcom-n11-lean-2026-10-06/11SquaresFormalized/ElevenSquare/Optimality.lean), [`packing/resources/web/queuingtheorydotcom-n11-lean-2026-10-06/11SquaresFormalized/scripts/run_verification.sh`](../../packing/resources/web/queuingtheorydotcom-n11-lean-2026-10-06/11SquaresFormalized/scripts/run_verification.sh), [`packing/resources/web/queuingtheorydotcom-n11-lean-2026-10-06/11SquaresFormalized/scripts/finalize_verification.py`](../../packing/resources/web/queuingtheorydotcom-n11-lean-2026-10-06/11SquaresFormalized/scripts/finalize_verification.py)
 - Versions run: revision `cdc746ed907d` (the integrated commit; its Lean trees and pins are 11SquaresEvolving 1bf942a7's, which passed run 37414883750 at the source; not built here in full)
-- Note: Only the statement files, the 18-module closure of ElevenSquare.Foundations and the runner are retained; the other modules, 7,920 in all, are pinned by the commit and by the SHA-256 of each in the run's final audit.
+- Note: Only the statement files, the 18-module closure of ElevenSquare.Foundations, the three modules at the top of the lower bound's assembly and the runner are retained; the other modules, 7,920 in all, are pinned by the commit and by the SHA-256 of each in the run's final audit.
 
 | evidence | run | code | results |
 | --- | --- | --- | --- |
-| `E-n011-lean-formalization-run` | the source’s own run | producer’s code | T-060 |
+| `E-n011-lean-formalization-report` | the source’s own run | producer’s code | T-060 |
+| `E-n011-lean-statement-closure-build` | replayed here | producer’s code | - |
 
 ### `V-wand125-tools`
 
@@ -1421,6 +1423,20 @@ Reconciles the n = 11 component receipts' reviewed bindings; it reruns no geomet
 | evidence | run | code | results |
 | --- | --- | --- | --- |
 | `E-n011-global-optimality-independent` | audited here | shared components | T-060 |
+
+### `V-audit-n11-lean`
+
+**devtools.audit_n11_lean, with the statement probe AuditN11Statement.lean it stages** · Squares Project (Levy) · first-party · checks premises · Python, Lean 4 · proof-assistant-checked
+
+Stages the statement closure of the 11SquaresFormalized proof from retained bytes, and with the probe checks in Lean that its Optimality is IsLeast {S | Packable 11 S} T for the register's exact T; extracts the public theorems' axioms from the source's final audit; and hashes and scans every module of the commit's archive against that audit. It decides no bound: Lean's kernel, on the source's modules, does.
+
+- Source: [`packing/devtools/audit_n11_lean.py`](../../packing/devtools/audit_n11_lean.py), [`packing/resources/web/queuingtheorydotcom-n11-lean-2026-10-06/receipts/lean/AuditN11Statement.lean`](../../packing/resources/web/queuingtheorydotcom-n11-lean-2026-10-06/receipts/lean/AuditN11Statement.lean)
+- Versions run: this repository's commits, which Git holds
+
+| evidence | run | code | results |
+| --- | --- | --- | --- |
+| `E-n011-lean-formalization-report` | the source’s own run | producer’s code | T-060 |
+| `E-n011-lean-statement-closure-build` | replayed here | producer’s code | - |
 
 ### `V-audit-n17-endpoint-receipt`
 

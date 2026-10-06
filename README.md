@@ -42,10 +42,12 @@ the confirmation depends on and the reproducibility defects found in the source.
 On 6 October 2026 the proof was announced as formalized in Lean 4 “thanks to Astra and
 Claude”, in
 [11SquaresFormalized](https://github.com/Queuingtheorydotcom/11SquaresFormalized) by
-Queuingtheorydotcom and contributors: its theorem states exactly $s(11) = T$, and its
-source’s complete build passed, trusting Lean’s compiler for its numerical certificates.
-It is recorded on T-060 as the source’s evidence and awaits a human expert’s review of
-the formalization.
+Queuingtheorydotcom and contributors.
+This project’s statement audit reads its theorem as exactly $s(11) = T$, and its source
+reports that its full verification run, resumed from earlier validated receipts, passed,
+trusting Lean’s compiler for its numerical certificates.
+It is recorded on T-060 as the source’s report; a complete build this record can rest
+on, and a human expert’s review of the formalization, are still to come.
 
 **The results live on the project site,
 [Square Packing](https://jlevy.github.io/squares/).** It carries the

@@ -2,14 +2,17 @@
 
 This packet retains
 [Queuingtheorydotcom/11SquaresFormalized](https://github.com/Queuingtheorydotcom/11SquaresFormalized)
-at the commit that integrated a complete Lean 4 proof of `T-060`’s claim: Trump’s
-packing of eleven unit squares is optimal, $s(11) = T$. The repository’s public
-theorem is `ElevenSquare.optimality : ElevenSquare.Optimality`, and its README reports
-that the proof passed a full build and final axiom audit, with numerical certificates
-trusted to Lean’s compiler through `native_decide`.
+at the commit that integrated what it presents as a complete Lean 4 proof of `T-060`’s
+claim: Trump’s packing of eleven unit squares is optimal, $s(11) = T$. The repository’s
+public theorem is `ElevenSquare.optimality : ElevenSquare.Optimality`, and its README
+reports that the proof passed a full verification run and final axiom audit, with
+numerical certificates trusted to Lean’s compiler through `native_decide`.
 
-It was announced on 6 October 2026 by Square Packing Fan
-([@ManassehA06](https://x.com/ManassehA06/status/2107508501610217640)). This import has
+Square Packing Fan
+([@ManassehA06](https://x.com/ManassehA06/status/2107508501610217640)) announced the
+formalization on 6 October 2026; the retained post, the first of a thread, names neither
+the repository nor who did the work, and the rest of the thread was not retrieved (X
+answered 429). This import has
 no issue of its own: jlevy/squares#317, the owner’s $n = 11$ umbrella, is where wand125
 reported on 4 October that both Lean formalizations were in progress.
 
@@ -54,7 +57,9 @@ The repository’s own files say who did what, in `ACKNOWLEDGEMENTS.md`:
 The announcement reads, in full: “The optimality of the packing for 11 squares has been
 formalized in lean thanks to Astra and Claude! Huge thanks to @ojoshe, @kleddamag,
 @wand_125, @guzhou0806, and @ctjlewis for aiding in the process.” @ojoshe is Joshua Levy,
-this project’s owner.
+this project’s owner. The post links this project’s $n = 11$ page as its image credit.
+The record credits the formalization from `ACKNOWLEDGEMENTS.md`, and names Square Packing
+Fan only as the announcer.
 
 **AI assistance, in the source’s own terms.** The announcement credits Astra and Claude
 for the formalization. The repository’s files make no statement of AI assistance:
@@ -88,12 +93,14 @@ From `README.md`, `MISSING.md` and `docs/VERIFICATION_20261006.md`, with the run
 The scope is the files a reader needs to judge the statement and the build: the root
 files and build pins, the documentation and notices, the 18 modules of
 `ElevenSquare.Foundations`’ closure (every definition the public statements use, and the
-construction that attains $T$), `Optimality.lean`, `Verification.lean` and
-`Pending/S09_GlobalLowerBound.lean`, the verification runner, finalizer and source
-checker, and the completed-run evidence. Its 56 files, 2,675,569 bytes, are in the
-manifest ([`acquisition/upstream-subtree.sha256`](acquisition/upstream-subtree.sha256));
-54 are retained under [`11SquaresFormalized/`](11SquaresFormalized/), byte-identical,
-544,150 bytes. Two are **pinned by digest only**:
+construction that attains $T$), `Optimality.lean`, `Verification.lean`,
+`Pending/S09_GlobalLowerBound.lean` and the three modules the lower bound is assembled
+from at the top (`Tasks/T07/UnfinishedCapture.lean`, `GlobalComposition.lean` and
+`Ext/Case438Global.lean`), the verification runner, finalizer and source checker, and
+the completed-run evidence. Its 59 files, 2,678,406 bytes, are in the manifest
+([`acquisition/upstream-subtree.sha256`](acquisition/upstream-subtree.sha256)); 57 are
+retained under [`11SquaresFormalized/`](11SquaresFormalized/), byte-identical, 546,987
+bytes. Two are **pinned by digest only**:
 
 - `verification/completed-run-20261006/final-audit.json.gz` (965,439 bytes), because an
   upstream `.gz` cannot be stored as itself here; its decompressed SHA-256 is the
@@ -122,26 +129,42 @@ packet from its manifest.
 - [`receipts/lean/native-axioms.txt.gz`](receipts/lean/native-axioms.txt.gz) lists the
   13,308 auxiliary axioms, sorted, one per line.
 - [`receipts/tree-scan.json`](receipts/tree-scan.json) is a streamed read of the
-  commit’s archive from `codeload.github.com` on 6 October, nothing extracted to disk:
-  the SHA-256 of every one of the 7,920 modules equals the final audit’s `source_sha256`
-  entry for it, none missing and none different, and with comments and strings removed
-  the Lean sources hold no `sorry`, `admit`, `axiom` declaration, `implemented_by`,
-  `extern`, `unsafe`, `debug.skipKernelTC`, `#eval`, `run_cmd`, notation, macro or
-  syntax extension; `native_decide` appears 10,464 times in 1,839 files, the inventory’s
-  counts, and `import Lean.Elab.Tactic.Omega` in nine files.
+  commit’s archive from `codeload.github.com` on 6 October, from 19:20 to 19:31 UTC,
+  nothing extracted to disk. The SHA-256 of every one of the 7,920 modules equals the
+  final audit’s `source_sha256` entry for it, none missing and none different. For each
+  of 25 tokens it records the pattern, the counts in raw text and in code (comments,
+  strings and character literals blanked), zeros included, and every raw hit’s path,
+  line and in-code flag. In code there is no `sorry`, `admit`, `axiom` declaration,
+  `implemented_by`, `extern`, `unsafe`, `debug.skipKernelTC`, `#eval`, `run_cmd`,
+  environment modification, `export`, `open … renaming`, notation, macro, syntax or
+  elaborator attribute; the raw `sorry` and `axiom` hits, four and one, are in comments
+  of `Pending/` modules. `native_decide` appears 10,464 times in 1,839 files, the
+  inventory’s counts; `instance` four times, each a `Decidable` instance; and
+  `import Lean.Elab.Tactic.Omega` in nine files.
 - [`receipts/lean/build-statement-closure.log`](receipts/lean/build-statement-closure.log)
-  is the build here, on 6 October from 18:49 to 18:57 UTC, of the 18-module closure of
-  `ElevenSquare.Foundations` from these retained bytes, at `leanprover/lean4:v4.34.1`
-  with Mathlib `d13f23b7` from its official cache: every module exit 0.
-- [`receipts/lean/AuditN11Statement.lean`](receipts/lean/AuditN11Statement.lean), written
-  here, and its output
-  [`receipts/lean/audit-statement.log`](receipts/lean/audit-statement.log): the
-  definitions printed, `Optimality ↔ IsLeast {S | Packable 11 S} T` by `Iff.rfl`, `T` and
-  the polynomial checked by `rfl` against the register’s exact form, two controls, and
+  is the build here, on 6 October from 19:34 to 19:42 UTC by
+  `devtools.audit_n11_lean build`, of the 18-module closure of `ElevenSquare.Foundations`
+  from these retained bytes, at `leanprover/lean4:v4.34.1` with Mathlib `d13f23b7` from
+  its official cache: every command with its complete output, every module exit 0, and
+  then the output of
+  [`receipts/lean/AuditN11Statement.lean`](receipts/lean/AuditN11Statement.lean), the
+  probe written here: the definitions printed,
+  `Optimality ↔ IsLeast {S | Packable 11 S} T` by `Iff.rfl`, `T` and the polynomial
+  checked by `rfl` against the register’s exact form, two controls, and
   `construction_packable : Packable 11 T` on `propext`, `Classical.choice` and
-  `Quot.sound` only. The
+  `Quot.sound` only. A first build, from 18:49 to 18:57 UTC by a one-off script, gave the
+  same results. The
   [statement audit](../../../../docs/project/reviews/review-2026-10-06-n11-lean-formalization-statement-audit.md)
   reads them.
+
+The three checks are repeated from this packet by
+[`devtools.audit_n11_lean`](../../../devtools/audit_n11_lean.py): `axioms` and `scan`
+take a downloaded copy of the final audit and refuse one whose SHA-256 is not the
+manifest’s, and `stage --out W` writes the statement closure, the pins and the probe,
+ready for `lake exe cache get`, `lake build ElevenSquare.Foundations` and
+`lake env lean AuditN11Statement.lean`. The register records the build as
+`E-n011-lean-statement-closure-build` and the source’s run as
+`E-n011-lean-formalization-report`.
 
 ## Compressed Files
 

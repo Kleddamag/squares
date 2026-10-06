@@ -48,16 +48,17 @@ sources:
     disposition: current-report
     replay_disposition: case-specific
     represented_by: [frontier/evidence.yaml]
-    evidence: [E-n011-lean-formalization-run]
+    evidence: [E-n011-lean-formalization-report, E-n011-lean-statement-closure-build]
     notes: >-
       Revision cdc746ed907d258057c283aeb6d077cb2c27e349, retrieved at 2026-10-06T18:41Z
-      (bead think-8spq). ElevenSquare.optimality states s(11) = T for T-060's exact T; the
-      source's complete build and final axiom audit passed in EvolvingPrograms run
-      37414883750, trusting Lean's compiler for 13,308 native_decide axioms. Its final
-      audit is pinned by SHA-256 and its per-module SHA-256 map matched all 7,920 modules
-      of the commit's archive here. Recorded as external proof-assistant evidence on
-      T-060, which moves no rung; the full build was not repeated here, and no human
-      formalization review is retained.
+      (bead think-8spq). The statement audit reads ElevenSquare.optimality as s(11) = T for
+      T-060's exact T; the source reports that its full verification run passed in
+      EvolvingPrograms run 37414883750, private and resumed from earlier receipts, trusting
+      Lean's compiler for 13,308 native_decide axioms. Its final audit is pinned by SHA-256
+      and its per-module SHA-256 map matched all 7,920 modules of the commit's archive here.
+      Recorded as reported proof-assistant evidence on T-060, which moves no rung; the
+      statement closure was built here (E-n011-lean-statement-closure-build), the full
+      proof was not, and no human formalization review is retained.
   - id: evand-square-packing-2026
     title: square-packing, exact weighted certificates and zero-margin closed covers
     role: source-repository

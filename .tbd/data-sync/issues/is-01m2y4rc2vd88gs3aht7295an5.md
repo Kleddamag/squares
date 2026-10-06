@@ -5,13 +5,13 @@ title: Size workers for costly partial pre-push test selections
 kind: task
 status: open
 priority: 1
-version: 8
+version: 9
 labels:
   - pipeline
 dependencies: []
-parent_id: is-01m2ymyxppsc63e2m2jd9w24hs
+parent_id: null
 created_at: 2026-09-20T00:51:44.858Z
-updated_at: 2026-09-20T06:31:45.553Z
+updated_at: 2026-10-06T08:21:37.837Z
 ---
 Session 142 exposed a local scheduling gap at 4c202aeb: `packing-validate --push --since 2aaa296d` selected 72 of 350 test files, including expensive atlas and evidence tests, but ten implicit outer jobs left pytest serial under the 900-second command cap. Every non-test step passed; pytest printed an `F`, but the timeout prevented the final traceback and summary. A direct ten-worker diagnostic completed the same selection in 814.31 seconds under a different `PACK_JOBS` shape; it is an observed workaround, not a controlled validation of the proposed allocation. The final local push used `--jobs 2 --inner-jobs 2 --timeout-seconds 1800 --since 4c202aeb` and passed 49 steps and 1,619 tests in 392.33 seconds, but it selected a different change set and likewise does not validate the proposal. Selected for the owner-requested W7 pipeline block think-177v: use measured selection cost to allocate workers without relaxing per-test or tier ceilings. Complete a controlled comparison in that preparatory block before resuming H-216. H-216 remains the next scientific target; this scheduling improvement does not change the mathematical acceptance criteria.
 

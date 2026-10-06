@@ -7577,6 +7577,154 @@ evidence:
         indep_check runs are producer evidence and the confirmation is Daniel's verify,
         replayed in full, and the native route.
 
+  - id: E-n012-squarepacker-7943-2000-source-replay
+    claim: lower-bound
+    scope: {n_values: [12]}
+    assurance: verified
+    method: exact-algebraic
+    performed_by: repository
+    relationship_to_generator: same-implementation
+    origin: replayed-here
+    novelty: previously-published
+    source_key: '[squarepacker s12 2026-10-05]'
+    certificate: resources/web/squarepacker-s12-lower-bound-2026-10-05/s12-lower-bound/s12_lower_3.9715.txt.gz
+    replay: >-
+      With the certificate restored from the packet's .gz: copy the retained s12/verify
+      crate of the 2026-09-26 evand packet (main.rs 226ef3f1, blob-identical to 7d6f46d9,
+      which the source names) to scratch, build it with cargo build --release --locked and
+      CARGO_PROFILE_RELEASE_OVERFLOW_CHECKS=true, and run verify s12_lower_3.9715.txt 12
+      96000 2 0 under devtools.replay_receipt with no VERIFY_BINS, which must print
+      VERIFIED; the verdict line decides, since the verifier exits 0 on NOT VERIFIED. Build
+      tools/indep_check.cpp of the 2026-10-02 packet (21527e8d, unchanged at v1.1) with g++
+      -O2 and run indep_check s12_lower_3.9715.txt 96000, which must print VERIFIED. The
+      packet README (Replays Here, Reproduce) gives the commands; the receipts are its
+      receipts/daniel-verify-ovf-N96000.log and receipts/indep-check-N96000.log.
+    replay_status: passed
+    verifiers: [V-evand-angle-net-verify, V-squarepacker-indep-check-cpp]
+    proof:
+      source: packing/resources/web/squarepacker-s12-lower-bound-2026-10-05/s12-lower-bound/paper/s12_lower_3.9715.tex
+      theorem: Twelve unit squares do not fit in a square of side below 7943/2000.
+      scope: Unrestricted square packing with independent rotations, disjoint interiors and boundary contact allowed.
+      pinpoints: >-
+        The paper's Sections 2 and 3 (the reduction, the angle net, the shrink lemma, the
+        admissible centre box, the cell minimum and the conservative rounding) and Section 4
+        (the certificate); the source README, "Why the certificate proves the bound";
+        Daniel's s12/verify/src/main.rs (26 September evand packet) and the 2 October
+        packet's tools/indep_check.cpp; devtools.audit_s12_v11_certificate and its receipt.
+      assumptions:
+        - The weights are positive, the points lie in the closed container, the weighted multiset is D4-invariant in 223 orbits, and the total is 119974808/10^7 < 12, decided exactly by devtools.audit_s12_v11_certificate and again by the verifier.
+        - A unit square at any angle of bin k contains the concentric square of side sigma_k at the bin's left angle, and its admissible centres lie in the box the checker sweeps.
+        - The verifier's i128 arithmetic does not overflow at N = 96000, which the overflow-checked build makes a panic rather than a false pass.
+      audit_record: docs/project/reviews/review-2026-10-05-s12-v11-certificate.md
+    limitations: >-
+      Replays the producer's two checkers on the retained bytes on 2026-10-05 on a shared
+      four-core Linux host at load 5 to 16. Daniel's verify, built by cargo 1.97.0 from the
+      retained sources with overflow checks (binary 60279b2c, the digest of a second build
+      and of the T-079 review's), at N = 96000 on two threads at nice 10, no VERIFY_BINS:
+      VERIFIED over all 39,765 bins, least 10000050/10^7 at bin 0, every printed line equal
+      to the source's log, 4,671 s wall and 3,439 CPU-s. squarepacker's indep_check.cpp
+      (21527e8d, unchanged since v1.0), built by g++ 13.3.0 -O2 (binary e7748f8b, as for
+      T-078), at N = 96000 and 192000 over [0, 90] degrees with no symmetry assumed: VERIFIED
+      at both, least 10000050/10^7 at bin 0, every printed line equal to the source's logs,
+      700 s wall and 305 CPU-s, and 1,117 s and 608 CPU-s. Both are arrangement sweeps of one angle-net method and both
+      are the producer's code, and the source says its weight search stopped when a
+      range-restricted copy of indep_check found no violation and took its LP rows from
+      verify's cells on sampled bins, so the method-distinct decision is
+      E-n012-squarepacker-7943-2000-native-parent-core (review F3). The source's two
+      controls, rebuilt byte for byte, are refused by both (receipts/controls/). The nets
+      N = 24000 and 48000 were not replayed; the source's refusals there are not
+      counterexamples. Advance over T-079: 10266889/7898846000, about 0.0013; gap to the
+      grid's 4: 57/2000.
+    source_reviewed: '2026-10-05'
+
+  - id: E-n012-squarepacker-7943-2000-native-parent-core
+    claim: lower-bound
+    scope: {n_values: [12]}
+    assurance: verified
+    method: interval-certified
+    performed_by: repository
+    relationship_to_generator: independent-implementation
+    independence_record: docs/project/reviews/review-2026-09-22-native-n11-parent-core.md
+    origin: audited-here
+    novelty: previously-published
+    source_key: '[squarepacker s12 2026-10-05]'
+    certificate: resources/web/squarepacker-s12-lower-bound-2026-10-05/s12-lower-bound/s12_lower_3.9715.txt.gz
+    replay: >-
+      uv run --frozen --all-extras --group dev python -m devtools.verify_evand_angle_net_native
+      --case s12-v11 --all --workers 2 --output OUT.json, from packing/, resumable with
+      --resume and the row journal, which must print PASS_COMPLETE over all 39,765 rows.
+    replay_status: passed
+    verifiers: [V-sqpack-parent-core-native]
+    proof:
+      source: packing/src/sqpack/fractional/parent_core.py
+      theorem: Twelve independently rotated unit squares cannot fit in a square of side 7943/2000; the native theorem gives the strict s(12) > 7943/2000, which implies the source's s(12) >= 7943/2000.
+      scope: Unrestricted square packing with disjoint interiors and boundary contact allowed.
+      pinpoints: >-
+        devtools/verify_evand_angle_net_native.py, case s12-v11, which reads the source's
+        integer certificate into ParentCoreCertificate rows [k/N, (k+1)/N, k/N, sigma_k] at
+        N = 96000 with parent side 1 and minimum charge 1; validate_parent_core and
+        parent_core_interval.py verify_parent_core_rows; the receipt and row journal
+        receipts/native-parent-core-N96000.json and .rows.jsonl in the 2026-10-05 packet.
+      assumptions:
+        - The 1,736 point charges are exact, positive and D4 invariant, and total 14996851/1250000 < 12, a counting gap of 3149/1250000.
+        - The 39,765 contiguous half-tangent rows [k/96000, (k+1)/96000] cover the folded parent orientations up to tan(pi/8), and each row's closed core of side sigma_k at half-tangent k/96000 lies strictly inside every unit parent of the row, which validate_parent_core proves in exact rational arithmetic (least containment numerator 389446383489/4915061207552000000000).
+        - Directed-rounding boxes cover each row's entire parent-centre domain and count only sites surely inside the closed core; every row certifies at the exact threshold of one unit with no stalled or exhausted box.
+        - Disjoint parent interiors make their closed cores disjoint, so twelve parents would capture at least 12 from a total below 12.
+      audit_record: docs/project/reviews/review-2026-09-22-native-n11-parent-core.md
+    limitations: >-
+      The complete native run of 2026-10-05, at commit 3ddd47d3 with the tool and case as
+      merged (its two untracked paths, the shared node_modules symlink and the packet test
+      awaiting these receipts, make the receipt report dirty, and the status taken at
+      launch, receipts/native-parent-core-N96000.git-status.txt, names them), on two
+      workers at nice 10:
+      PASS_COMPLETE, all 39,765 rows certified at the one-unit threshold, 340,090,115
+      boxes, no stall, no exhausted budget, no refutation, 16,344 s wall and 12,980 CPU-s.
+      The coverage decision is this repository's interval branch and bound over centre
+      boxes, which shares no code with Daniel's verify, with squarepacker's indep_check.cpp
+      or with the search that made the weights, which matters here because the search
+      stopped on indep_check's verdict and took its rows from verify's cells; with
+      E-n012-squarepacker-7943-2000-source-replay it gives two complete methods, shown
+      beside C3. All rest on the certificate, the counting theorem and the shrink lemma on
+      the same net: the native rows are Daniel's bins and sigma_k by design, though the
+      containment of each core in its parents is proved here, not assumed. The transfer
+      theorem and engine were reviewed for Kleddamag's n = 11 certificate (the audit record
+      above) and applied to T-049, T-078 and T-079; the case s12-v11 changes only the net
+      and the pinned file. Both of the source's controls are refuted at row 0 with
+      admissible witnesses of charge below one (receipts/controls/native-*.json). The exact
+      value remains open.
+    source_reviewed: '2026-10-05'
+
+  - id: E-n012-squarepacker-7943-2000-audit
+    claim: derived-structure
+    scope: {n_values: [12]}
+    assurance: verified
+    method: exact-algebraic
+    performed_by: repository
+    relationship_to_generator: not-applicable
+    origin: audited-here
+    novelty: previously-published
+    source_key: '[squarepacker s12 2026-10-05]'
+    certificate: resources/web/squarepacker-s12-lower-bound-2026-10-05/s12-lower-bound/s12_lower_3.9715.txt.gz
+    replay: >-
+      A premise check, not a replay of the coverage decision. From packing/:
+      uv run --frozen --all-extras --group dev python -m devtools.audit_s12_v11_certificate
+      --output OUT.json, which must print PASS for all 21 checks and equal the packet's
+      receipts/preflight.json; with --write-controls DIR it also writes both controls, byte
+      for byte the source's.
+    replay_status: passed
+    verifiers: [V-audit-s12-v11]
+    limitations: >-
+      Premise evidence only, decided in integers and Fraction from the retained bytes: the
+      digests of the certificate and of Daniel's file, the canonical rendering, the header
+      (side 7943/2000, D = 4000000, W = 10^7, 1,736 points), the dilation 31382793/31360000
+      and the advance 10266889/7898846000 over T-079, a one-to-one match of the points to
+      Daniel's dilated within 11/39200000 (attained), positive weights, distinct points in
+      the closed container, D4 invariance in 223 orbits, the total 119974808/10^7 < 12, the
+      58 points of weight 10000050/10^7 in [0, 1]^2, the heaviest orbit, and both of the
+      source's controls rebuilt byte for byte. It decides no coverage and is no route to
+      the bound; Daniel's verifier and the native interval run decide it.
+    source_reviewed: '2026-10-05'
+
   - id: E-n021-evand-5000-1001-report
     claim: lower-bound
     scope: {n_values: [21]}

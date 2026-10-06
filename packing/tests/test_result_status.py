@@ -230,12 +230,13 @@ def test_superseded_is_marked_on_a_bound_and_where_a_later_result_is_declared() 
     # day, when wand125's n = 84 certificate of 5 October (T-094), decided here by
     # sqverify-fast, superseded T-071 at the last count it held; thirty-seven with
     # wand125's mixed certificate on a declared net (T-096), which took n = 18 from both
-    # of its rectangle entries, the replay T-045 and the report T-046; thirty-eight with
-    # squarepacker's v1.1 (T-095), which reports more at n = 12 than v1.0 (T-078).
-    assert len(derived) == 38
-    assert {"T-020", "T-021", "T-030", "T-043", "T-044", "T-047", "T-049", "T-087"} <= set(
-        derived
-    )
+    # of its rectangle entries, the replay T-045 and the report T-046; thirty-eight when
+    # squarepacker's v1.1 (T-095) took n = 12's reported lower bound from T-078, and
+    # thirty-nine when its replays took the verified one from T-079 the same day.
+    assert len(derived) == 39
+    assert {
+        "T-020", "T-021", "T-030", "T-043", "T-044", "T-047", "T-049", "T-078", "T-079", "T-087"
+    } <= set(derived)  # fmt: skip
     assert {str(records.results[entry]["kind"]) for entry in derived} == {"lower-bound"}
     # A result of another kind is marked only where its entry declares the whole of it
     # implied, and in part where it declares a part (think-rl2b).

@@ -51,6 +51,7 @@ results:
       narrative, code map and replays. Rung 5 needs a proof-assistant formalization reviewed
       by human experts. The stronger
       side at the exact ceiling is T-003's business.
+
   - id: T-002
     kind: lower-bound
     registered: '2026-08-31'
@@ -98,6 +99,7 @@ results:
     next_rung: >-
       Rises with T-001; a bespoke n = 18 set stronger than the inherited bound
       would be a new result, not a rung change.
+
   - id: T-003
     kind: method-limit
     registered: '2026-08-31'
@@ -148,6 +150,7 @@ results:
       think-iye2: the shared certifier generalized to a Q(sqrt 2) scalar
       certifies at the ceiling exactly and an exact escape family above it
       turns the bracket into an equality at C3.
+
   - id: T-004
     kind: audit
     registered: '2026-08-31'
@@ -190,6 +193,7 @@ results:
       interval audit generalized to Q(sqrt 2, sqrt 3) sides, would be shown beside the rung as
       a second machine method. Rung 5 needs a proof-assistant formalization reviewed by human
       experts.
+
   - id: T-005
     kind: correction
     registered: '2026-08-31'
@@ -233,6 +237,7 @@ results:
     next_rung: >-
       Communicate the erratum to the author or journal; nothing mechanical
       remains on our side.
+
   - id: T-006
     kind: optimality
     registered: '2026-08-31'
@@ -307,6 +312,7 @@ results:
       Sections 3.1-3.2's staged
       sets (typed on think-1o1f), which would also make it the second fully audited
       theorem of the paper.
+
   - id: T-007
     kind: lower-bound
     registered: '2026-08-31'
@@ -373,6 +379,7 @@ results:
       T-074, T-075, T-076 at n = 82 and, at n = 101 to 105, T-080), the mixed covers proving s(59), s(60), s(61) = 8 and s(77), s(78) = 9 (T-062, T-063,
       T-066, T-067), and the s(k^2 - 3) = k family (T-064). None of them rests on this
       result.
+
   - id: T-008
     kind: optimality
     registered: '2026-08-31'
@@ -418,6 +425,7 @@ results:
       Rises with T-004: V4 and C4 need two adversarial AI reviews by distinct reviewers and a
       human oversight record, and none is retained. A method-independent second confirmation
       of the lower half would be shown beside the rung.
+
   - id: T-009
     kind: upper-bound
     registered: '2026-08-31'
@@ -458,6 +466,7 @@ results:
       be shown beside the rung as a second machine method; the standing
       reported-value promotion question is the owner's evidence-contract
       decision, not a rung.
+
   - id: T-010
     kind: lower-bound
     registered: '2026-08-31'
@@ -505,6 +514,7 @@ results:
       audit built for T-001 run at side 2 + 4/sqrt(5) over the repaired twelve-point set,
       would be shown beside the rung. Rung 5 needs a proof-assistant formalization reviewed by
       human experts.
+
   - id: T-011
     kind: upper-bound
     registered: '2026-08-31'
@@ -548,6 +558,7 @@ results:
       degree-8 witness would be shown beside the rung (the retained rational control proves a
       slightly weaker side and does not confirm this claim). Rung 5 needs a proof-assistant
       formalization reviewed by human experts.
+
   - id: T-012
     kind: rigidity
     registered: '2026-08-31'
@@ -593,6 +604,7 @@ results:
       property now rests. What remains here is the review record: two adversarial AI reviews
       and a human oversight record for rung 4, and for rung 5 a proof-assistant formalization
       reviewed by human experts.
+
   - id: T-013
     kind: rigidity
     registered: '2026-08-31'
@@ -634,6 +646,7 @@ results:
       Characterise the admissible cone past dimension 45 (the corner-touching
       branch obstruction, D-391) or establish local rigidity by another
       route; the rigidity property stays undetermined until then.
+
   - id: T-014
     kind: rigidity
     registered: '2026-09-03'
@@ -739,6 +752,7 @@ results:
       a retained human oversight record (epistemics.md, No Blind Trust); none is retained
       for this result, so it stands at V3/C3: machine-checked, review record pending. The
       oversight record restores the rung.
+
   - id: T-015
     kind: lower-bound
     registered: '2026-09-03'
@@ -1016,6 +1030,7 @@ results:
       (epistemics.md, No Blind Trust); none is retained for this result, so it stands at
       V3/C3: machine-checked, review record pending. The oversight record restores the
       rung.
+
   - id: T-018
     kind: lower-bound
     registered: '2026-09-04'
@@ -1166,6 +1181,7 @@ results:
       stalled search. It is recorded as measurement: two LP runs agreeing to six
       decimals is evidence about the restricted optima, not a proof that tau* equals
       eleven, and nothing here rules out a site set neither run found.
+
   - id: T-019
     kind: lower-bound
     registered: '2026-09-04'
@@ -1665,6 +1681,7 @@ results:
       averaging, or exact
       fixed-atom core shrinkage might extract more from the same data; the present
       argument does not establish s(11) greater than the displayed bound.
+
   - id: T-023
     kind: case-exclusion
     registered: '2026-09-08'
@@ -1760,6 +1777,7 @@ results:
           below T. The count is not implied: that beside four squares holding the four
           patches at most five further squares fit, nine in all, is a statement about ten
           squares, on which T-060 says nothing.
+
   - id: T-024
     kind: lower-bound
     registered: '2026-09-09'
@@ -1880,6 +1898,7 @@ results:
       the cap the threshold atoms of H-152. The displayed lower bound is proved by a
       dilation-limit argument rather than one individual-side certificate at the
       algebraic value.
+
   - id: T-025
     kind: lower-bound
     registered: '2026-09-09'
@@ -1988,6 +2007,7 @@ results:
       record.
       The self-contained T-025 claim embeds its standard-library verifier and certificate
       bytes. T-025 needs no limit argument, so no dilation record belongs at this rung.
+
   - id: T-026
     kind: lower-bound
     registered: '2026-09-09'
@@ -2440,6 +2460,7 @@ results:
       Superseded as the verified lower bound on 2026-10-02 by wand125's replayed
       s(18) >= 939/200 (T-045), so a further rung of this method moves the case only above
       4.695; stays true as stated.
+
   - id: T-031
     kind: case-exclusion
     registered: '2026-09-20'
@@ -2579,6 +2600,7 @@ results:
           square meeting an open corner triangle, so that the octagon class holds none at
           side 96/25. T-060 gives every packing of eleven squares a side of at least T,
           which is above 96/25, so there is no such packing.
+
   - id: T-032
     kind: lower-bound
     registered: '2026-09-21'
@@ -5795,6 +5817,7 @@ results:
       retained human oversight record. A proof that the endpoint's side is the root of the
       catalogue's degree-18 polynomial would make the bound Bidwell's exact value. First-order
       stationarity, local minimality and global optimality are unproved.
+
   - id: T-066
     kind: optimality
     registered: '2026-10-01'
@@ -7257,9 +7280,9 @@ results:
       V4 and C4 need a second adversarial AI review by a distinct reviewer and a human
       oversight record. Rung 5 needs a proof-assistant formalization reviewed by human
       experts; Daniel's Lean pose-box-tree checker, which kernel-checks T-049's certificate,
-      could in principle take this one. The same 1,736 points may carry the bound further:
-      the LP total was 0.024 below 12 at this side. The exact value remains open; the
-      conjecture is s(12) = 4.
+      could in principle take this one. The same 1,736 points carried the bound further:
+      the LP total was 0.024 below 12 at this side, and squarepacker's re-weighting of them
+      reached 7943/2000 (T-095). The exact value remains open; the conjecture is s(12) = 4.
     notes: >-
       Registered from lane RV's review (think-4srr) of lane BB's write-up. The review's
       finding F1, that lane BB's first-party check was a 1,034-row sample, is resolved by
@@ -7268,6 +7291,8 @@ results:
       Supersedes T-078 at n = 12. squarepacker's rescaling is credited in the claim and not
       in builds_on: the registered certificate rests on Daniel's points and verifier, and
       the Route A rescaling it implies is not separately registered.
+      Superseded as the verified lower bound on 2026-10-05 by squarepacker's v1.1 (T-095),
+      which keeps these points and this recipe at a larger side; stays true as stated.
 
   - id: T-080
     kind: lower-bound
@@ -7598,6 +7623,7 @@ results:
       nothing else; the 4 October packet retains the answer, and each report entry records it
       as an evidence update that moves no rung. The proof-bundle tarballs are pinned by
       digest and not retained.
+
   - id: T-083
     kind: lower-bound
     registered: '2026-10-02'
@@ -7643,6 +7669,7 @@ results:
       C2 and above need a replay: a machine check of Proposition 5.1, that every square of
       side in (1, 1.01] gets more than one from the strip measure, over its three-parameter
       pose space. A stronger floor at any n is a new result, not a rung change.
+
   - id: T-084
     kind: optimality
     registered: '2026-10-02'
@@ -7699,6 +7726,7 @@ results:
       C2 and above need a replay of the lower half: a machine check of Proposition 5.1, or a
       replay of chelokot's Lean proof of the same family by an augmented measure, which is
       reported and was not built here.
+
   - id: T-085
     kind: correction
     registered: '2026-10-02'
@@ -7752,6 +7780,7 @@ results:
       Rung 4 on either axis needs two adversarial AI reviews by distinct reviewers and a
       retained human oversight record. Whether Lemma 1 holds for a = 3 or for a, b in
       [2, 3) is undecided; the family does not reach those containers.
+
   - id: T-086
     kind: optimality
     registered: '2026-10-02'
@@ -7820,6 +7849,7 @@ results:
       the 2026-10-04 evand packet (think-plrl). The modules it imports, the source's
       common specification, its bridges and the attainment theorem isLeast_minSide, joined
       that packet on 5 October (think-83zc).
+
   - id: T-087
     kind: lower-bound
     registered: '2026-10-03'
@@ -7875,6 +7905,7 @@ results:
       replayed cover proving s(61) = 8 (T-063), both replayed here on 2 October 2026. This
       result stays true as stated and keeps its rungs: a proof of both bounds that uses
       nothing of Nagamochi 2005 and no computer search.
+
   - id: T-088
     kind: upper-bound
     registered: '2026-10-05'
@@ -7981,6 +8012,7 @@ results:
       pose, fetched and decided by interval arithmetic, or this pose refined on its active
       contacts, would bring it within one unit of the printed side's last place. A
       method-distinct second route is what C4 needs.
+
   - id: T-089
     kind: upper-bound
     registered: '2026-10-05'
@@ -8098,6 +8130,7 @@ results:
       place. A finer dilation ladder in the promotion would close most of it sooner: at 1 +
       2e-15 both pass, at 9.63475764863110 and 9.83881526994828, 2 units above the printed
       sides (the review's KB-3). A method-distinct second route is what C4 needs.
+
   - id: T-090
     kind: lower-bound
     registered: '2026-10-05'
@@ -8213,6 +8246,7 @@ results:
       there. The packet also retains the
       source's answer to findings OC-1 and OC-2 of the review of T-082, recorded on T-082's
       and T-075's evidence. The proof-bundle tarballs are pinned by digest and not retained.
+
   - id: T-091
     kind: lower-bound
     registered: '2026-10-05'
@@ -8638,24 +8672,28 @@ results:
     claim: >-
       s(12) >= 7943/2000 = 3.9715, by squarepacker (Ryu Sungjoon) after Evan Daniel and this
       project's Route B (T-079), published on 5 October 2026 as release v1.1 of
-      squarepacker/s12-lower-bound and reported on jlevy/squares#363. It is
-      10266889/7898846000, about 0.0013, above T-079's 15680000/3949423, and would leave
-      57/2000 = 0.0285 to the grid's 4.
+      squarepacker/s12-lower-bound and reported on jlevy/squares#363. It raises the verified
+      lower bound by 10266889/7898846000, about 0.0013, over T-079's 15680000/3949423, and
+      leaves 57/2000 = 0.0285 to the grid's 4.
 
       The certificate keeps Daniel's 1,736 points of T-049, dilated by 31382793/31360000 to
       the container 7943/2000 and rounded to the grid 1/4000000 one D4 orbit at a time,
       every coordinate within 11/39200000 of its exact image, with new weights found by
       linear programming: all 223 orbits positive, total 119974808/10^7 = 11.9974808 < 12.
-      It claims that every closed unit square in [0, 7943/2000]^2, at every angle, captures
-      weight at least one, decided over the rational angle net 2 arctan(k/96000) with
-      Daniel's per-bin shrink. The source reports Daniel's verifier, built with overflow
-      checks, and its own indep_check.cpp accepting it at N = 96000, least captured weight
-      10000050/10^7 at bin 0, and refusing it at 24000; a pass at one net is a complete
-      check, so the refusals are not counterexamples.
+      Every closed unit square in [0, 7943/2000]^2, at every angle, captures weight at least
+      one, decided over the rational angle net 2 arctan(k/96000) with Daniel's per-bin
+      shrink. The nets N = 24000 and 48000 refuse it, which a pass at one net does not need.
 
-      Here the source was retained, its exact premises audited and its mathematics reviewed
-      with no blocking finding; no coverage has been decided here yet, and the verified
-      lower bound is unchanged.
+      It was decided here on 5 October 2026 by Daniel's verifier, reproduced with the
+      producer's code: built from the retained source with overflow checks on, VERIFIED
+      over all 39,765 bins, least captured weight 10000050/10^7 at bin 0, every line as the
+      source's log; and independently re-implemented by this repository's parent-core
+      interval branch and bound over all 39,765 rows, which shares no code with the sweep
+      or with the search that made the weights and gives the strict s(12) > 7943/2000.
+      squarepacker's own indep_check.cpp, replayed here at N = 96000 and 192000 with the
+      source's minimum, is the producer's evidence: the search stopped when its
+      range-restricted copy found no violation. All three refuse the source's two altered
+      certificates.
 
       squarepacker (Ryu Sungjoon),
       [s12-lower-bound](https://github.com/squarepacker/s12-lower-bound/tree/7a96bec36bc6811c3715ef581598f22ff9b7ba3a),
@@ -8665,28 +8703,43 @@ results:
       The source says the rescaling, the re-weighting, the verification runs and its tools
       were prepared with the help of Claude (Anthropic).
     scope: {n_values: [12]}
-    verification: V0
-    confirmation: C1
+    verification: V3
+    confirmation: C3
     significance:
       score: 3
       rationale: >-
-        Scored as a claim: if confirmed, it raises the verified lower bound at n = 12 by
-        0.0013 over T-079, the largest step since T-049. New weights on Daniel's points by
-        T-079's recipe, Route B, with a complete scan in every cycle of the search, so no
-        new technique and not S4; T-078, a rescaling, is S2, and T-079, new weights, is S3.
+        Raises the verified lower bound at n = 12 by 0.0013 over T-079, the largest step
+        since T-049. New weights on Daniel's points by T-079's recipe, Route B, with a
+        complete scan in every cycle of the search, so no new technique and not S4; T-078,
+        a rescaling, is S2, and T-079, new weights, is S3. Its source shows these points
+        nearly exhausted for re-weighting, about 1.3e-4 below 560/141, which answers
+        T-079's open "the same points may carry the bound further". Not S5: point covers
+        are capped below 3.99.
       scored: '2026-10-05'
-      by: think-3kd9 registering lane (repository; draft)
+      by: docs/project/reviews/review-2026-10-05-s12-v11-certificate.md (repository; keeps the registering lane's draft and adds its clause)
     novelty: previously-published
     attribution:
       source_keys: ['[squarepacker s12 2026-10-05]']
       published: '2026-10-05'
     composition: >-
-      Primary at n = 12: one certificate, no monotonicity, at V0/C1: retained, audited for
-      its exact premises and read by a separately prompted review, not yet replayed here. The source's two checkers,
-      Daniel's verify and squarepacker's indep_check.cpp, are one angle-net method in two
-      implementations, and the second was built into the search for the weights.
+      Primary at n = 12: one certificate, no monotonicity. Two methods decide it: Daniel's
+      arrangement sweep (exact-algebraic), the producer's verifier replayed here in full
+      with overflow checks, and this repository's directed-rounding interval coverage of
+      every row (interval-certified), which shares no code with it or with the search that
+      made the weights; that is C3, with two methods shown beside the rung.
+
+      squarepacker's indep_check.cpp, replayed here too, is a second implementation of
+      the sweep's method and the producer's own, and its range-restricted copy was the
+      search's stopping rule, so it is producer evidence and confirms nothing beyond the
+      other two (review F3). The exact audit of the file is a premise check and decides
+      nothing. All rest on the certificate, the counting step and the shrink lemma on the
+      net N = 96000, and the native rows are the sweep's bins and sigma_k by design (review
+      F9).
     evidence:
       - E-n012-squarepacker-7943-2000-report
+      - E-n012-squarepacker-7943-2000-source-replay
+      - E-n012-squarepacker-7943-2000-native-parent-core
+      - E-n012-squarepacker-7943-2000-audit
     reviews:
       - path: docs/project/reviews/review-2026-10-05-s12-v11-certificate.md
         kind: adversarial
@@ -8704,26 +8757,51 @@ results:
       - packing/resources/web/squarepacker-s12-lower-bound-2026-10-05/s12-lower-bound/README.md
       - packing/resources/web/squarepacker-s12-lower-bound-2026-10-05/s12-lower-bound/paper/s12_lower_3.9715.pdf
       - packing/resources/web/squarepacker-s12-lower-bound-2026-10-05/receipts/preflight.json
+      - packing/resources/web/squarepacker-s12-lower-bound-2026-10-05/receipts/daniel-verify-ovf-N96000.log
+      - packing/resources/web/squarepacker-s12-lower-bound-2026-10-05/receipts/indep-check-N96000.log
+      - packing/resources/web/squarepacker-s12-lower-bound-2026-10-05/receipts/native-parent-core-N96000.json
+      - packing/resources/web/evand-square-packing-2026-09-26/square-packing/s12/certificates/s12_lower_3.9686.txt.gz
       - packing/devtools/audit_s12_v11_certificate.py
-    activity:
-      state: in-analysis
-      what: >-
-        Stage 4 of the import: Daniel's verifier with overflow checks and indep_check.cpp
-        at N = 96000, the native parent-core decision of all 39,765 rows, both controls,
-        and a separately prompted adversarial review.
-      since: '2026-10-05'
-      link: think-3kd9
+      - packing/devtools/verify_evand_angle_net_native.py
+      - docs/project/reviews/review-2026-10-05-s12-v11-certificate.md
+    controls:
+      - packing/tests/test_s12_v11_certificate.py
+      - packing/resources/web/squarepacker-s12-lower-bound-2026-10-05/receipts/controls/native-lowered-orbit.json
+      - packing/resources/web/squarepacker-s12-lower-bound-2026-10-05/receipts/controls/native-regrid-3999600.json
+      - packing/resources/web/squarepacker-s12-lower-bound-2026-10-05/receipts/controls/indep-check-N96000-lowered-orbit.log
+      - packing/resources/web/squarepacker-s12-lower-bound-2026-10-05/receipts/controls/indep-check-N96000-regrid-3999600.log
+      - packing/resources/web/squarepacker-s12-lower-bound-2026-10-05/receipts/controls/daniel-verify-N96000-lowered-orbit-bin-0.log
+      - packing/resources/web/squarepacker-s12-lower-bound-2026-10-05/receipts/controls/daniel-verify-N96000-regrid-3999600-bin-0.log
     next_rung: >-
-      The stage-4 replays and review, under way in think-3kd9: a complete replay of the
-      source's checkers, a method-distinct decision of every row and a separately prompted
-      adversarial review.
+      V4 and C4 need a second adversarial AI review by a distinct reviewer and a human
+      oversight record; the one retained review read the argument and computed nothing
+      (its F1), so a second one that runs its own exact checks would add most. Rung 5
+      needs a proof-assistant formalization reviewed by human experts; Daniel's Lean
+      pose-box-tree checker, which kernel-checks T-049's certificate, could in principle
+      take this one, as the source notes. The source's own analysis puts re-weighting of
+      these points near its end below 560/141 = 3.97163; a higher bound needs new points
+      or another method, and point covers stop short of 3.99. The exact value remains
+      open; the conjecture is s(12) = 4.
     notes: >-
-      V0 because the cited entry is the source's claim: assurance reported, replay not yet
-      attempted. C1 because a separately prompted adversarial review, blind to the replay,
-      read the mathematics and found no blocking defect
-      (docs/project/reviews/review-2026-10-05-s12-v11-certificate.md); it ran no
-      computation, its F1. A later release than T-078's, from the same repository, so
-      an entry of its own; T-078 keeps its claim. Ids here are provisional until merged.
+      Registered by lane A of the 5 October evening intake (think-3kd9), which retained the
+      source, audited its premises and ran the replays; the review lane was prompted
+      separately, blind to the replays. Its findings F1 to F9 are none blocking. F1: it ran
+      no computation, so it is cited as a reading and the rungs rest on the replays. F2:
+      the replay's receipts name the binary's digest, the build flags and the input's
+      digest. F3 and F9 are in the composition.
+
+      F4 to F6 are notes on the source's account of why the points stop near 3.9715 (the
+      LP value at 3.97155 is a floating-point solve over a subset of rows, whose direction
+      is right but which no dual certificate backs; the limit 560/141 is geometric, and
+      that no cover of these points exists just past it is heuristic) and on its
+      clarification of #309 (a sampled exact-pose check that does not show 31360/7900 and
+      does not touch T-078). F7 and F8: the issue's quoted figures match the source
+      README, and the source's per-bin scan, pinned by digest, lists all 39,765 bins at
+      10000050/10^7.
+
+      Supersedes T-079 at n = 12, whose points and recipe this one keeps; T-079 stays true
+      as stated. A later release than T-078's, from the same repository, so an entry of
+      its own. Ids here are provisional until merged.
 
   - id: T-096
     kind: lower-bound

@@ -126,11 +126,97 @@ grid rounding; on the container `s` the test square of bin 0, of side
 fits between that row and the wall once `(141/560)·s > σ₀`, that is past
 `s = 3.9715485` or `3.9715478` for the two.
 
+## Replays Here
+
+On a four-core Linux container shared with four other lanes, at load averages of 5 to 16
+throughout, so every wall time is contended; every long run used two threads under
+`nice -n 10`. Each receipt is written by `devtools.replay_receipt` (command, working
+directory, load, exit status, wall and CPU), and the checkers ran on the certificate as
+upstream bytes, SHA-256 `e2f326b2…`, which the receipt’s header names.
+
+| Checker | Built from | Run | Wall | CPU | Result |
+| --- | --- | --- | ---: | ---: | --- |
+| Daniel’s `verify` (external, the producer’s verifier) | the 26 September evand packet’s `s12/verify/` (main.rs `226ef3f1`, the blob at `7d6f46d9`), copied to scratch and built by cargo 1.97.0 `build --release --locked` with `CARGO_PROFILE_RELEASE_OVERFLOW_CHECKS=true`; binary SHA-256 `60279b2c…`, the same in a second build into a fresh target ([build](receipts/daniel-verify-build.log)) and the digest the `T-079` review built | `verify s12_lower_3.9715.txt 12 96000 2 0`, no `VERIFY_BINS` | 4,671 s | 3,439 s | VERIFIED over `k = 0..39765`, least captured weight `10000050/10⁷` at bin `k = 0`; every printed line equals `logs/3.9715/daniel_verify_ovf_N96000.log` ([receipt](receipts/daniel-verify-ovf-N96000.log)) |
+| squarepacker’s `indep_check` (external, the producer’s own checker) | the 2 October packet’s `tools/indep_check.cpp` (`21527e8d`, unchanged at v1.1) by g++ 13.3.0 `-O2` ([build](receipts/indep-check-build.log)); binary `e7748f8b…`, as for `T-078` | `indep_check s12_lower_3.9715.txt 96000` | 700 s | 305 s | VERIFIED, least `10000050/10⁷` at `k = 0`; every printed line equals `logs/3.9715/indep_check_N96000.log` ([receipt](receipts/indep-check-N96000.log)) |
+| The same, the finer net | as above | `indep_check s12_lower_3.9715.txt 192000` | 1,117 s | 608 s | VERIFIED, least `10000050/10⁷` at `k = 0`; every printed line equals `logs/3.9715/indep_check_N192000.log` ([receipt](receipts/indep-check-N192000.log)) |
+| This repository’s native parent-core route (first party) | [`devtools.verify_evand_angle_net_native`](../../../devtools/verify_evand_angle_net_native.py), case `s12-v11`, at commit `3ddd47d3`; its two untracked paths, the shared `node_modules` symlink and the packet test awaiting these receipts, make the receipt report `dirty`, and the status taken at launch names them ([status](receipts/native-parent-core-N96000.git-status.txt)) | `--case s12-v11 --all --workers 2` | 16,344 s | 12,980 s | `PASS_COMPLETE`: all 39,765 rows certified at the threshold `10⁷/10⁷`, 340,090,115 boxes, no stalled box, no exhausted budget, no refutation; the least row bound is the threshold itself, at row 21524, so the native theorem gives the strict `s(12) > 7943/2000` ([receipt](receipts/native-parent-core-N96000.json), [row journal](receipts/native-parent-core-N96000.rows.jsonl.gz), [log](receipts/native-parent-core-N96000.log)) |
+
+The native reader builds the rows `[k/N, (k+1)/N]` of half-tangents, the core side
+Daniel’s `σ_k` rounded down to `10⁻⁶`, at `N = 96000`, and decides each by
+directed-rounding branch and bound over centre boxes, sharing no code with either sweep
+or with the search that made the weights.
+
+**Which runs carry the confirmation.** The source says its weight search stopped when
+`tools/indep_scan.cpp`, `indep_check` restricted to a range of bins, found no violation on
+`[0°, 45°]`, so that checker’s acceptance there was built into the search; the review’s
+F3 reads its runs as the producer’s evidence. Daniel’s full sweep was never the search’s
+stopping rule, and the native route is untouched by the search: those two carry the
+confirmation.
+
+## Controls
+
+[`devtools.audit_s12_v11_certificate --write-controls`](../../../devtools/audit_s12_v11_certificate.py)
+rebuilds both of the source’s controls from their descriptions, byte for byte its
+`controls/3.9715/` files: `lowered-orbit`, the heaviest orbit lowered by `100/10⁷` a
+point (SHA-256 `1c42bbb4…`), which takes two points from the 58 in `[0, 1]²` and so leaves
+the corner square at `9999850/10⁷`; and `regrid-3999600`, the same integers over
+`D = 3999600`, container `39715/9999` (`f1796e27…`).
+
+| Checker | `lowered-orbit` | `regrid-3999600` |
+| --- | --- | --- |
+| `verify`, single bins (`VERIFY_BINS`, which cannot print VERIFIED), as the source ran them | bins `0` and `30000`: FAIL at both, `9999850/10⁷` ([0](receipts/controls/daniel-verify-N96000-lowered-orbit-bin-0.log), [30000](receipts/controls/daniel-verify-N96000-lowered-orbit-bin-30000.log)) | bin `0`: FAIL, `6737611/10⁷`; bin `30000` passes at `10000050/10⁷` ([0](receipts/controls/daniel-verify-N96000-regrid-3999600-bin-0.log), [30000](receipts/controls/daniel-verify-N96000-regrid-3999600-bin-30000.log)) |
+| `indep_check`, every bin, `N = 96000` | NOT VERIFIED, least `9999850/10⁷` at `k = 0` ([receipt](receipts/controls/indep-check-N96000-lowered-orbit.log)) | NOT VERIFIED, least `6737611/10⁷` at `k = 0` ([receipt](receipts/controls/indep-check-N96000-regrid-3999600.log)) |
+| Native, rows `0` and `30000` | both refuted, each with an admissible witness of charge `199997/200000` ([receipt](receipts/controls/native-lowered-orbit.json)) | row `0` refuted with an admissible witness of charge `1645743/2000000`, row `30000` certified ([receipt](receipts/controls/native-regrid-3999600.json)) |
+
+Every printed line of the control runs equals the source’s own outputs in
+`controls/3.9715/`, for `verify` and for `indep_check` alike. A bin refused in a window
+is refused in the full sweep, since each bin is computed alone and one refused bin makes
+the sweep refuse. `verify` exits `0` whatever its verdict, so its receipts are read by
+their verdict lines. The native control receipts ran at commit `037f78f1`, which already
+held the `s12-v11` case unchanged since; their untracked `node_modules` symlink makes them
+report `dirty`.
+[`tests/test_s12_v11_certificate.py`](../../../tests/test_s12_v11_certificate.py) holds
+every receipt here and regenerates both controls.
+
+## The Review
+
+A separately prompted review lane, blind to these replays, read the source, the paper and
+both checkers and re-derived the argument
+([review](../../../../docs/project/reviews/review-2026-10-05-s12-v11-certificate.md)): no
+mathematical defect and no blocking finding. Its tool permissions refused every command
+that runs a program, so it computed nothing (its F1), and the confirmation rests on the
+replays above. Its notes on the source’s account of why these points stop near `3.9715`
+(F4, F5) and on its clarification of #309 (F6) change no claim: the limit `560/141` is
+geometric, the LP value at `3.97155` is a floating-point solve over a subset of rows
+whose direction is right, and the exact-pose check is a sample that does not touch
+`T-078`.
+
+## Reproduce
+
+From `packing/`, with `SCRATCH` any directory outside the repository:
+
+```bash
+uv run --frozen --all-extras --group dev python -m devtools.audit_s12_v11_certificate \
+  --output SCRATCH/preflight.json --write-controls SCRATCH/controls
+uv run --frozen --all-extras --group dev python -c "from pathlib import Path; \
+from devtools.retained_data import read_retained_bytes as r; \
+Path('SCRATCH/s12_lower_3.9715.txt').write_bytes(r(Path( \
+'resources/web/squarepacker-s12-lower-bound-2026-10-05/s12-lower-bound/s12_lower_3.9715.txt')))"
+cp -r resources/web/evand-square-packing-2026-09-26/square-packing/s12/verify SCRATCH/verify
+(cd SCRATCH/verify && CARGO_PROFILE_RELEASE_OVERFLOW_CHECKS=true cargo build --release --locked)
+SCRATCH/verify/target/release/verify SCRATCH/s12_lower_3.9715.txt 12 96000 2 0
+g++ -O2 -o SCRATCH/indep_check \
+  resources/web/squarepacker-s12-lower-bound-2026-10-02/s12-lower-bound/tools/indep_check.cpp
+SCRATCH/indep_check SCRATCH/s12_lower_3.9715.txt 96000
+uv run --frozen --all-extras --group dev python -m devtools.verify_evand_angle_net_native \
+  --case s12-v11 --all --workers 2 --output SCRATCH/native.json
+```
+
 ## Compressed Files
 
 Each is stored as deterministic gzip made by `gzip -9n`, by `devtools.acquire_source`;
-the table gives the Git blob and SHA-256 of the decompressed bytes, which are the
-upstream blob and digest at `7a96bec3`. The repository’s readers take the upstream path
+the table gives the Git blob and SHA-256 of the decompressed bytes, which for an
+upstream file are its blob and digest at `7a96bec3`. The repository’s readers take the upstream path
 and decompress transparently through `devtools.retained_data.read_retained_bytes`, and
 `python -m devtools.retained_data check PACKET` re-derives every row.
 
@@ -139,6 +225,7 @@ and decompress transparently through `devtools.retained_data.read_retained_bytes
 | `s12-lower-bound/controls/3.9715/control1_lowered_orbit.txt.gz` | upstream | `1f6b7bd42cb3e236577ce789d9c299a02f4d8c09` | `1c42bbb4cf21ee75d9e13e3947cde199559f5207f71662394ed66eecfd05aad9` |
 | `s12-lower-bound/controls/3.9715/control2_scaled_further.txt.gz` | upstream | `cb2cd058164a20872c0321a5e63320ba6249c006` | `f1796e271c6b877692ee06520153636cb7386e331724a720e966ec49c42b8560` |
 | `s12-lower-bound/s12_lower_3.9715.txt.gz` | upstream | `77d09032eb6886cf4c61652b1def410295b76428` | `e2f326b28142cf22402f88357f4c7fe4680a08a32ae785b493adac335bcc2685` |
+| `receipts/native-parent-core-N96000.rows.jsonl.gz` | receipt | `8dd2b4e5b8aad290441e81af18bf583e079f8d6e` | `7fd157828b03b58c39776db74cad8e4f9db20362edf584e98d00f074e215271c` |
 
 <!-- This document follows common-doc-guidelines.md.
 See github.com/jlevy/practical-prose and review guidelines before editing.

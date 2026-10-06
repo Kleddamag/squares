@@ -26,7 +26,7 @@ second implementation agrees.
 ## The Short Version
 
 - **84** programs: **31** external and **53** first-party; **65** decide claims and **19** check premises.
-- **272** of **299** evidence entries name the programs that verified them: 203 reproduced with the producer’s code, 53 independently re-implemented, 9 no relation: a proof, a derivation or a report, 7 re-implemented, sharing the producer’s components.
+- **275** of **302** evidence entries name the programs that verified them: 204 reproduced with the producer’s code, 54 independently re-implemented, 10 no relation: a proof, a derivation or a report, 7 re-implemented, sharing the producer’s components.
 
 ## Programs
 
@@ -42,7 +42,7 @@ second implementation agrees.
 | [`V-evand-zmx2`](#v-evand-zmx2) | zmx2 | Evan Daniel | external | decides | 19 | 9 |
 | [`V-evand-zm-mixed-py`](#v-evand-zm-mixed-py) | zm_mixed.py | Evan Daniel | external | decides | 6 | 6 |
 | [`V-evand-zeromargin-py`](#v-evand-zeromargin-py) | zeromargin.py | Evan Daniel | external | decides | 4 | 2 |
-| [`V-evand-angle-net-verify`](#v-evand-angle-net-verify) | verify (the angle-net arrangement sweep) | Evan Daniel | external | decides | 9 | 5 |
+| [`V-evand-angle-net-verify`](#v-evand-angle-net-verify) | verify (the angle-net arrangement sweep) | Evan Daniel | external | decides | 10 | 5 |
 | [`V-evand-xcheck-py`](#v-evand-xcheck-py) | xcheck.py | Evan Daniel | external | decides | 4 | 2 |
 | [`V-evand-zmcheck`](#v-evand-zmcheck) | zmcheck (verify2/src/main.rs) | Evan Daniel | external | decides | 3 | 2 |
 | [`V-evand-qx2-zm-py`](#v-evand-qx2-zm-py) | qx2_zm.py | Evan Daniel | external | decides | 4 | 2 |
@@ -60,7 +60,7 @@ second implementation agrees.
 | [`V-stanislavfort-17squares-point-checker`](#v-stanislavfort-17squares-point-checker) | verify_certificate.py | Stanislav Fort | external | decides | 1 | 0 |
 | [`V-queuingtheory-n11-verify`](#v-queuingtheory-n11-verify) | VERIFY.py | Queuingtheorydotcom | external | decides | 1 | 1 |
 | [`V-wand125-tools`](#v-wand125-tools) | The wand125 tools repository's transfer/l_cap.py and general_pose_tree | wand125 | external | decides | 3 | 2 |
-| [`V-squarepacker-indep-check-cpp`](#v-squarepacker-indep-check-cpp) | indep_check.cpp | squarepacker | external | decides | 3 | 2 |
+| [`V-squarepacker-indep-check-cpp`](#v-squarepacker-indep-check-cpp) | indep_check.cpp | squarepacker | external | decides | 4 | 2 |
 | [`V-schadt-n29-check-py`](#v-schadt-n29-check-py) | check.py | Schadt | external | decides | 1 | 0 |
 | [`V-anabologyco-n17-checker`](#v-anabologyco-n17-checker) | scripts/check_certificate.py and its event pipeline | anabologyco-maker | external | decides | 1 | 0 |
 | [`V-check-basic-bounds`](#v-check-basic-bounds) | devtools.check_basic_bounds | Squares Project (Levy) | first-party | decides | 3 | 14 |
@@ -90,7 +90,7 @@ second implementation agrees.
 | [`V-dilation-corollary`](#v-dilation-corollary) | devtools.dilation_corollary | Squares Project (Levy) | first-party | decides | 6 | 4 |
 | [`V-n12-independent-verifier`](#v-n12-independent-verifier) | cases/n12_fractional_certificate/independent_verify.py | Squares Project (Levy) | first-party | decides | 1 | 0 |
 | [`V-n17-weighted-instrument`](#v-n17-weighted-instrument) | cases.n17_weighted_certificate | Squares Project (Levy) | first-party | decides | 1 | 2 |
-| [`V-sqpack-parent-core-native`](#v-sqpack-parent-core-native) | sqpack.fractional.parent_core_interval | Squares Project (Levy) | first-party | decides | 5 | 5 |
+| [`V-sqpack-parent-core-native`](#v-sqpack-parent-core-native) | sqpack.fractional.parent_core_interval | Squares Project (Levy) | first-party | decides | 6 | 6 |
 | [`V-replay-owner-footprint-cover`](#v-replay-owner-footprint-cover) | devtools.replay_owner_footprint_cover | Squares Project (Levy) | first-party | decides | 1 | 1 |
 | [`V-five-dot-independent-union`](#v-five-dot-independent-union) | cases.n11_five_dot_cover.independent_union | Squares Project (Levy) | first-party | decides | 1 | 1 |
 | [`V-wall-owner-footprints`](#v-wall-owner-footprints) | devtools.wall_owner_footprints | Squares Project (Levy) | first-party | decides | 1 | 0 |
@@ -109,7 +109,7 @@ second implementation agrees.
 | [`V-replay-evand-zmx2`](#v-replay-evand-zmx2) | devtools.replay_evand_zmx2 | Squares Project (Levy) | first-party | premises | 5 | 5 |
 | [`V-audit-evand-mixed-covers`](#v-audit-evand-mixed-covers) | devtools.audit_evand_mixed_covers | Squares Project (Levy) | first-party | premises | 9 | 8 |
 | [`V-audit-s12-reweighted`](#v-audit-s12-reweighted) | devtools.audit_s12_reweighted | Squares Project (Levy) | first-party | premises | 1 | 1 |
-| [`V-audit-s12-v11`](#v-audit-s12-v11) | devtools.audit_s12_v11_certificate | Squares Project (Levy) | first-party | premises | 0 | 0 |
+| [`V-audit-s12-v11`](#v-audit-s12-v11) | devtools.audit_s12_v11_certificate | Squares Project (Levy) | first-party | premises | 1 | 1 |
 | [`V-compare-evand-s32-sweep`](#v-compare-evand-s32-sweep) | devtools.compare_evand_s32_sweep | Squares Project (Levy) | first-party | premises | 1 | 1 |
 | [`V-audit-guzhou-r068`](#v-audit-guzhou-r068) | devtools.audit_guzhou_r068 | Squares Project (Levy) | first-party | premises | 2 | 2 |
 | [`V-audit-guzhou-r071`](#v-audit-guzhou-r071) | devtools.audit_guzhou_r071 | Squares Project (Levy) | first-party | premises | 1 | 1 |
@@ -468,6 +468,7 @@ Decides a positive-margin weighted point cover over an angle net by an exact arr
 | `E-n012-levy-15680000-3949423-generator` | audited here | producer’s code | T-079 |
 | `E-n012-levy-15680000-3949423-source-replay` | replayed here | producer’s code | T-079 |
 | `E-n012-squarepacker-7943-2000-report` | the source’s own run | producer’s code | T-095 |
+| `E-n012-squarepacker-7943-2000-source-replay` | replayed here | producer’s code | T-095 |
 | `E-n021-evand-5000-1001-report` | the source’s own run | producer’s code | T-050 |
 | `E-n021-evand-5000-1001-source-replay` | replayed here | producer’s code | T-050 |
 
@@ -743,6 +744,7 @@ The source's own checker of its scaled n = 12 point certificate, an angle-net sw
 | `E-n012-squarepacker-31360-7901-report` | the source’s own run | producer’s code | T-078 |
 | `E-n012-squarepacker-31360-7901-source-replay` | replayed here | producer’s code | T-078 |
 | `E-n012-squarepacker-7943-2000-report` | the source’s own run | producer’s code | T-095 |
+| `E-n012-squarepacker-7943-2000-source-replay` | replayed here | producer’s code | T-095 |
 
 ### `V-schadt-n29-check-py`
 
@@ -1220,6 +1222,7 @@ Decides a threshold charge certificate's rows by direct closed-box interval cove
 | `E-n012-evand-15680-3951-native-parent-core` | audited here | independent | T-049 |
 | `E-n012-squarepacker-31360-7901-native-parent-core` | audited here | independent | T-078 |
 | `E-n012-levy-15680000-3949423-native-parent-core` | audited here | independent | T-079 |
+| `E-n012-squarepacker-7943-2000-native-parent-core` | audited here | independent | T-095 |
 
 ### `V-replay-owner-footprint-cover`
 
@@ -1505,7 +1508,9 @@ Decides everything squarepacker's v1.1 s(12) certificate rests on but coverage, 
 - Versions run: this repository's commits, which Git holds
 - Note: It shares only the file reader and the D4 test with devtools.audit_s12_rescaled_certificate, and nothing with the source's tools.
 
-No evidence entry names it yet.
+| evidence | run | code | results |
+| --- | --- | --- | --- |
+| `E-n012-squarepacker-7943-2000-audit` | audited here | no code | T-095 |
 
 ### `V-compare-evand-s32-sweep`
 

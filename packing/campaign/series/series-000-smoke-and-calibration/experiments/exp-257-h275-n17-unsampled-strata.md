@@ -77,6 +77,35 @@ experiment:
       passes it in full mode in 472 s, checking all 6,004 live rows in full and 16,200 collision regions by
       76,354,712 exact facet checks. It excludes its own 8 states, one orbit; the certified census after it is
       36,972 states in 4,709 orbits.
+  - shape: determination
+    role: outcome
+    question: Is draw 4 (mask 6020797, stratum c3/i>=5/d6) infeasible at U, by a certificate the kernel's checker
+      accepts and the standing verifier re-proves in full?
+    outcome: criterion_met
+    checked_by: The run (receipts/U/kernel-u4-bc428.json) returns PASS_CERTIFIED_CLOSED in 749 s of wall and 726 s of
+      process CPU (producer 385 s, checker 362 s) on 49 steps and 3,200 rows in 3 rounds, rows finest at
+      1/128, closure all_parent_poses_forbidden for interior-S at step 48. The standing verifier at cebb5d15a
+      passes it in full mode in 312 s, checking all 3,200 live rows in full and 9,625 collision regions by
+      50,455,248 exact facet checks. It excludes its own 8 states, one orbit; the certified census after it is
+      36,964 states in 4,708 orbits.
+  - shape: determination
+    role: outcome
+    question: Is draw 5 (mask 3931626, stratum c<=2/i>=5/d6) infeasible at U, by a certificate the kernel's checker
+      accepts and the standing verifier re-proves in full?
+    outcome: criterion_met
+    checked_by: The run (receipts/U/kernel-u5-bc428.json) returns PASS_CERTIFIED_CLOSED in 1,221 s of wall and 1,135 s
+      of process CPU (producer 581 s, checker 639 s) on 59 steps and 3,904 rows in 4 rounds, rows finest at
+      1/128, closure all_parent_poses_forbidden for side-E1 at step 58. The standing verifier at cebb5d15a
+      passes it in full mode in 563 s, checking all 3,897 live rows in full and 12,929 collision regions by
+      74,192,232 exact facet checks. It excludes its own 8 states, one orbit; the certified census after it is
+      36,956 states in 4,707 orbits.
+  - shape: determination
+    role: outcome
+    question: Is draw 1 (mask 1900509, stratum c3/i<=3/d2) (distance 2, reported apart) excluded within the 7,000 s
+      ceiling?
+    outcome: criterion_missed
+    checked_by: The run (receipts/U/kernel-u1-bc428.json) returns INCOMPLETE in 7,001 s of wall and 6,101 s of process
+      CPU (capture row wall ceiling). Not a closure; nothing is concluded from it, and its saved node is kept.
   verdict:
     decision: in-progress
     primary_criterion: The fraction of the frozen states the kernel excludes under SW9's recipe within the 7,000 s
@@ -114,6 +143,9 @@ reported as not run.
 | --- | --- | --- | --- | --- | --- |
 | 2 | c3/i>=5/d4 | 4061102 | closed, 4 rounds, admitted | 1,231 s | full pass, 560 s |
 | 3 | c4/i<=3/d>=8 | 4439807 | closed, 6 rounds, admitted | 1,174 s | full pass, 472 s |
+| 4 | c3/i>=5/d6 | 6020797 | closed, 3 rounds, admitted | 726 s | full pass, 312 s |
+| 5 | c<=2/i>=5/d6 | 3931626 | closed, 4 rounds, admitted | 1,135 s | full pass, 563 s |
+| 1 | c3/i<=3/d2 (d2) | 1900509 | incomplete at 7,001 s | 6,101 s | — |
 
 <!-- This document follows common-doc-guidelines.md.
 See github.com/jlevy/practical-prose and review guidelines before editing.

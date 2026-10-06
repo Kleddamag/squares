@@ -494,6 +494,11 @@ def control_status(case: Case, out: Path) -> str | None:
 EVIDENCE = PROJECT / "frontier/evidence.yaml"
 #: What `--evidence` says of the build, whose crate source is the reviewed one.
 REVIEWED_BUILD = "4ddf37d9c"
+#: The review that accepted a census row and a control receipt as a complete replay here,
+#: and says which certificates the route carries to (Carrying the Route).
+ROUTE_REVIEW = (
+    "docs/project/reviews/review-2026-10-05-wand125-october-5-and-independent-replays.md"
+)
 #: That build's `source_sha256`, which `build.rs` takes over src/, Cargo.toml, Cargo.lock
 #: and itself; the gate's test profile in Cargo.toml has changed it since.
 REVIEWED_SOURCE = "9985c465"
@@ -661,8 +666,13 @@ def evidence_entry(
             "pinpoints",
             "SOUNDNESS.md's theorem and lemmas, accepted with the crate by "
             "docs/project/reviews/review-2026-10-03-sqverify-fast-soundness.md; the "
-            f"certificate's mathematics read in {audit_record}; the census row, receipts and "
-            "control receipt named in replay.",
+            f"certificate's mathematics read in {audit_record}; "
+            + (
+                ""
+                if audit_record == ROUTE_REVIEW
+                else f"the census route accepted as a complete replay here in {ROUTE_REVIEW}; "
+            )
+            + "the census row, receipts and control receipt named in replay.",
             indent=6,
         ),
         "      assumptions:",

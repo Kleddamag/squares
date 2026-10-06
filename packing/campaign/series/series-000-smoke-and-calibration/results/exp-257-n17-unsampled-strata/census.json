@@ -5,15 +5,15 @@
   "surviving_states": 346104
  },
  "certified": {
-  "admitted": 40,
+  "admitted": 41,
   "endpoint_survives": true,
-  "orbits": 4702,
-  "surviving_states": 36916
+  "orbits": 4701,
+  "surviving_states": 36908
  },
  "data": {
-  "bytes": 1222495255,
+  "bytes": 1261907518,
   "certificates_not_in_place": 4,
-  "files": 164,
+  "files": 166,
   "full_recheck": "run python -m devtools.hosted_data fetch --manifest hosted/n17-x048-session-168-certificates.yaml from packing/",
   "note": "the count rests on the committed producer and verification receipts; re-running a verifier needs the hosted certificate objects"
  },
@@ -2780,14 +2780,90 @@
     }
    },
    "verified": true
+  },
+  {
+   "alone": {
+    "orbits": 1,
+    "states": 8
+   },
+   "cells": [
+    "corner-SE",
+    "corner-NW",
+    "side-S0",
+    "side-N0",
+    "side-E0",
+    "side-S1",
+    "side-N1",
+    "side-W1",
+    "side-S2",
+    "side-N2",
+    "side-W2",
+    "side-E2",
+    "interior-SW",
+    "interior-W",
+    "interior-S",
+    "interior-N",
+    "interior-E"
+   ],
+   "certificate_data": {
+    "bytes": 39412263,
+    "files": 2,
+    "local": "present"
+   },
+   "certifier": "kernel",
+   "certifier_provenance": {
+    "dirty": false,
+    "files": {
+     "packing/devtools/check_n17_subpattern.py": "cb34edb4f4afd6a4564547ecb72d9f839aaf70f6",
+     "packing/src/sqpack/hull_kernel/__init__.py": "21b43f54fbdd95e2c48a10435edb38891f56074b",
+     "packing/src/sqpack/hull_kernel/collision.py": "e01a610c1862b411f092abdcbd942ea1aad415c1",
+     "packing/src/sqpack/hull_kernel/counting.py": "3cd1b1ae5d75a007e235db34823fcd2004ded855",
+     "packing/src/sqpack/hull_kernel/covers.py": "8f8ef29fda05750f31d7cefa7e2125bb8f32a581",
+     "packing/src/sqpack/hull_kernel/frame.py": "1117fec009404ff9d4ffc1cd4f1752e1467e006b",
+     "packing/src/sqpack/hull_kernel/geometry.py": "8c60af724c1940f2dceef8b2ca7fd7f96ca46384",
+     "packing/src/sqpack/hull_kernel/induction.py": "a847b9ab1d11dd85f1fbe606afb1dc247af4a2a6",
+     "packing/src/sqpack/hull_kernel/n11.py": "df3aba0a17ddc31fac1f771a0d9d9eb950a5c754",
+     "packing/src/sqpack/hull_kernel/n17.py": "683e9361b54bb003283103fe6b716828fa13d71a",
+     "packing/src/sqpack/hull_kernel/node.py": "a8df7478b3e38a7bc8d93aa482d65a7c4c04eaff",
+     "packing/src/sqpack/hull_kernel/ownership.py": "3a4c135e81014aa64750cd5ac05984bf89c0cab5",
+     "packing/src/sqpack/hull_kernel/producer.py": "d5e700eb33b74ceda3b286edaf9146bba252a762",
+     "packing/src/sqpack/hull_kernel/rational.py": "c1143fb28e65efdb0f513d2b8d2cb50c33d97c6b",
+     "packing/src/sqpack/hull_kernel/sequential.py": "ac5e74cae444f6486e5f2f40f9c7579e4b1c9a6f",
+     "packing/src/sqpack/hull_kernel/sweep.py": "0f976d2b774d4a6e2252128571bce6435d0e5b77"
+    },
+    "revision": "cebb5d15aaa17d0cc13aa302ecbd750a54bfc57d"
+   },
+   "evidence": "packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-257-h275-n17-unsampled-strata.md",
+   "marginal": {
+    "orbits": 1,
+    "states": 8
+   },
+   "name": "s182-bc428-u13",
+   "receipt": "packing/campaign/explorations/X048-session-182-overnight/receipts/U/kernel-u13-bc428.json",
+   "receipt_status": "PASS_CERTIFIED_CLOSED",
+   "status": "admitted",
+   "verification": {
+    "certificate": "packing/campaign/explorations/X048-session-168-pilots/certificates/s182-bc428-u13",
+    "mode": "full",
+    "ran_at": "cebb5d15aaa17d0cc13aa302ecbd750a54bfc57d",
+    "receipt": "packing/campaign/explorations/X048-session-168-pilots/certificates/s182-bc428-u13/verification.json",
+    "status": "PASS",
+    "verifier": {
+     "id": "kernel-streamed",
+     "path": "packing/devtools/verify_n17_kernel_certificate.py",
+     "review": "docs/project/reviews/review-2026-10-04-n17-streamed-verifier.md",
+     "version": "601bbf1107a622b306a3fe1fc57faebc9e28d27f"
+    }
+   },
+   "verified": true
   }
  ],
  "evidence_note": "each entry's evidence is a pointer for readers to the document that admits it; the census checks only that the file exists",
  "flagged_uncertified": {
   "all_certified_projection": {
    "endpoint_survives": true,
-   "orbits": 2180,
-   "surviving_states": 17032
+   "orbits": 2179,
+   "surviving_states": 17024
   },
   "classes": [
    {
@@ -4146,14 +4222,14 @@
  "pending_all_projection": {
   "endpoint_survives": true,
   "entries": 0,
-  "orbits": 4702,
-  "surviving_states": 36916
+  "orbits": 4701,
+  "surviving_states": 36908
  },
  "pending_verified_projection": {
   "endpoint_survives": true,
   "entries": 0,
-  "orbits": 4702,
-  "surviving_states": 36916
+  "orbits": 4701,
+  "surviving_states": 36908
  },
  "provenance": {
   "dirty": false,
@@ -4163,13 +4239,13 @@
   "ledger": {
    "dirty": true,
    "files": {
-    "packing/campaign/explorations/X048-session-168-pilots/certified-sub-patterns.yaml": "cbee01e0fba77647285d04e5e28b2f9613b48eab"
+    "packing/campaign/explorations/X048-session-168-pilots/certified-sub-patterns.yaml": "2218014c7c45dc39494abe03649f35a0de980d27"
    },
-   "revision": "6aaec89319f5e8ae9e4bc9533361976854a2ff27"
+   "revision": "aee726881884c3147889b94f7d447107136b1422"
   },
-  "revision": "6aaec89319f5e8ae9e4bc9533361976854a2ff27"
+  "revision": "aee726881884c3147889b94f7d447107136b1422"
  },
  "schema": "n17-certified-census/v1",
- "seconds": 7.607,
+ "seconds": 7.72,
  "status": "exact census under admitted sub-pattern certificates; the pending and flagged lines are projections and never enter the certified count"
 }

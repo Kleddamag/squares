@@ -214,3 +214,10 @@ docs/project/reviews/review-2026-10-06-evand-exact-optima-fix-check.md
 # apostrophes and 20 straight double quotes retyped as curly, several inside quotations
 # of the records and source code it reviews. Same rule as the reviews above.
 docs/project/reviews/review-2026-10-06-wand125-finer-net-n18-n19.md
+
+# The separately prompted review of the machine check of Karakuş's Proposition 5.1 (T-083
+# and T-084, #295), stored byte-identical to the reviewer's output, SHA-256 55ba50b2...,
+# which already ends with the common-doc footer. Measured on a copy in directory mode with
+# the pinned flowmark-rs 0.4.0 on 2026-10-06: 202 of its 311 lines change, all reflow
+# plus three backslash escapes. Same rule as the reviews above.
+docs/project/reviews/review-2026-10-06-karakus-proposition-5-1-machine-check.md

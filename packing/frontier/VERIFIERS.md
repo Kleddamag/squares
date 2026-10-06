@@ -903,7 +903,7 @@ Scores Karakuş's squares K_t and chelokot's square against Nagamochi 2005's mea
 
 ### `V-check-karakus-strip-measure`
 
-**devtools.check_karakus_strip_measure** · Squares Project (Levy) · first-party · decides · Python · interval-certified
+**devtools.check_karakus_strip_measure** · Squares Project (Levy) · first-party · decides · Python · exact-algebraic
 
 Decides Karakuş 2026's Proposition 5.1, that the strip measure gives the interior of every square of side in (1, 1.01] more than one, by an exact Fraction branch and bound over the square's orientation, side and cut height, and replays its retained cover leaf by leaf.
 
@@ -914,7 +914,7 @@ Decides Karakuş 2026's Proposition 5.1, that the strip measure gives the interi
 
 | evidence | run | code | results |
 | --- | --- | --- | --- |
-| `E-karakus-strip-measure-interval` | replayed here | independent | T-083, T-084 |
+| `E-karakus-strip-measure-interval` | audited here | independent | T-083, T-084 |
 
 ### `V-upper-bound-promotion`
 

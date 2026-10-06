@@ -11,7 +11,12 @@ square `S` in `R` of side `1 < lambda <= 101/100` has `mu(S°) > 1`. With the to
 over the square's pose, written from the paper's Section 5 and nothing else (the source
 publishes no code).
 
-**Reduction to the vertical profile** (by hand, and the only part that is). A square's
+It confirms Proposition 5.1's statement by its own decomposition, not the paper's proof of
+it. The paper splits by the height of the square's centre and uses Lemma 5.2 and (5.8);
+this program splits by which strip lines meet the open square and never evaluates Lemma
+5.2, which, with the paper's three strip cases, remains read and is not load-bearing here.
+
+**Reduction to the vertical profile.** A square's
 pose is its orientation `theta`, its side `lambda` and the height `z0` of its lowest
 vertex; `S° lies in (0, a) x (0, b)`, so `S°` meets `L-` in its whole open chord at
 `y = 1`, and its area in `H` is its area between `y = 1` and `y = b - 1`. The open chord
@@ -93,11 +98,32 @@ point mass 49/100, line density 49/100, and the point rows at height 3/5. The ce
 also confirms the closed-form profile against exact polygon geometry at fixed rational
 poses (`profile_spot_checks`).
 
-**What it does not decide.** The reduction above, and the scale-and-sum, are read, not
-machine-checked. The program checks Corollary 6.2's algebra at every nonsquare
-`8 <= N <= 324` (`t = 1/2 + sqrt(N - k + 1/4)` has `k < t <= k + 1`, `t >= 3` and
-`t^2 - Delta(t) = N`) and Corollary 6.1's at `a = b = k` for `3 <= k <= 18`; that the case
-records state those values is `devtools.check_nagamochi_bounds`'s.
+**What is decided, and what is read.** The trees decide two inequalities, which the
+receipt records as `decides`: part A, `lambda^2 + E(u) + 1/2 [p < u - 1/5 < lambda h - p] > 1`
+for `lambda > 1` and `0 < u <= 1`; and part B, `E(v) >= 0` for `0 < v <= 3/7`. Everything
+that turns them into the register's claims is read, not machine-checked, and the receipt
+lists it as `premises`:
+
+1. the closed form (5.3) as the tilted square's chord function, which
+   `profile_spot_checks` confirms exactly at 212 poses and the test at 195 more;
+2. `mu(S°) >= F`: the open square lies in `(0, a) x (0, b)`, and an open interval longer
+   than one inside `(0, a)` holds an integer `1 <= j <= ceil(a) - 1`;
+3. the four-way split by which strip lines meet the open square (it is connected), the
+   reflection `y -> b - y`, and the central symmetry `C(lambda h - x) = lambda^2 - C(x)`,
+   `w(lambda h - x) = w(x)`;
+4. the soundness of the rules as coded, a review obligation, which the test samples
+   against exact geometry and against a deliberately unsound rule;
+5. Theorem 1.1's scale-and-sum: additivity over disjoint open squares, and
+   `mu(R) = ab - Delta(a)`;
+6. for `T-083`, Corollary 6.2's step from `nu(t, t) < N` to `s(N) >= t`;
+7. for `T-084`, Corollary 6.1 at `a = b = k >= 3`, where `Delta(k) = 1`.
+
+The program also restates Corollary 6.2's algebra at every nonsquare `8 <= N <= 324`:
+`t = 1/2 + sqrt(N - k + 1/4)` has `k < t <= k + 1` and `t >= 3`, and the sympy identity
+gives `t^2 - Delta(t) = N`. Given `k = floor(sqrt N)` the two inequalities hold for every
+nonsquare `N >= 8`, so they guard the transcription and carry no evidence beyond that
+identity (the lesson of D-518); that the case records state these values is
+`devtools.check_nagamochi_bounds`'s.
 
 Usage, from `packing/`:
     uv run --frozen --all-extras --group dev python -m \\
@@ -115,7 +141,7 @@ import json
 import math
 import time
 from collections import Counter
-from collections.abc import Callable, Iterator
+from collections.abc import Iterator
 from dataclasses import dataclass
 from datetime import UTC, datetime
 from fractions import Fraction
@@ -147,6 +173,35 @@ SQRT2_LO = Fraction(14142135, 10**7)
 SQRT2_HI = Fraction(14142136, 10**7)
 #: A box that has not closed after this many bisections refuses the claim.
 MAX_DEPTH = 60
+
+#: What turns the two decided inequalities into the register's claims: read, not
+#: machine-checked (the module statement's list, and the review of 2026-10-06).
+PREMISES = (
+    "The closed form (5.3) is the tilted square's chord function; spot-checked exactly.",
+    (
+        "mu(S°) >= F: the open square lies in (0, a) x (0, b), and an open interval longer "
+        "than one inside (0, a) holds an integer 1 <= j <= ceil(a) - 1."
+    ),
+    (
+        "The four-way split by which strip lines meet the connected open square, the "
+        "reflection y -> b - y, and the central symmetry C(lambda h - x) = lambda^2 - C(x), "
+        "w(lambda h - x) = w(x), which carry parts A and B to Proposition 5.1."
+    ),
+    (
+        "The rules as coded are sound: a review obligation, sampled by the test against "
+        "exact geometry and a deliberately unsound rule."
+    ),
+    (
+        "Theorem 1.1's scale-and-sum: additivity over disjoint open squares, and "
+        "mu(R) = ab - Delta(a)."
+    ),
+    "For T-083, Corollary 6.2's step from nu(t, t) < N to s(N) >= t.",
+    "For T-084, Corollary 6.1 at a = b = k >= 3, where Delta(k) = 1.",
+    (
+        "Lemma 5.2, (5.8) and the paper's three strip cases are not used: this decomposition "
+        "is the program's own, and they remain read."
+    ),
+)
 
 HALF = Fraction(1, 2)
 ZERO = Fraction(0)
@@ -305,6 +360,33 @@ def in_corner(box: Box) -> bool:
     return box[1] <= CORNER_TAU and box[4] >= CORNER_V
 
 
+@dataclass(frozen=True)
+class CornerBounds:
+    """Lower bounds over a box on the corner rule's coefficients (see `corner_rule`)."""
+
+    k0: Fraction
+    k1: Fraction
+    q0: Fraction
+    bracket: Fraction
+    t1: Fraction
+
+
+def corner_bounds(o: Orientation, measure: Measure) -> CornerBounds:
+    """`K0`, `K1`, `q = h - 1`, `point q + 2 line + 2 point - 2` and `T1`, bounded below."""
+    alpha, beta = measure.line, measure.point
+    m0 = o.m[0]
+    big0, big1 = o.big_m
+    h0 = o.h[0]
+    q0 = h0 - 1
+    return CornerBounds(
+        k0=(2 * beta - 1) * (big0 if 2 * beta - 1 >= 0 else big1) + h0 + 2 * alpha - 2,
+        k1=2 * (2 * big0 + m0) + 2 * alpha - 2,
+        q0=q0,
+        bracket=beta * q0 + 2 * alpha + 2 * beta - 2,
+        t1=2 * h0 * (q0 + alpha),
+    )
+
+
 def corner_rule(o: Orientation, box: Box, b: Bounds, measure: Measure) -> bool:
     """`F > 1` for every `lambda > 1` of a box with `W = 1`, `u <= 1` and no cell L.
 
@@ -315,25 +397,12 @@ def corner_rule(o: Orientation, box: Box, b: Bounds, measure: Measure) -> bool:
     `T0 = q (point q + 2 line + 2 point - 2)`, `T1 = 2h (q + line)`, `T2 = h^2`.
     `K0, T0 >= 0` and `K1, T1 > 0` make both positive for `delta > 0`.
     """
-    v1 = box[5]
-    if b.w_lo != 1 or v1 > 1 or "L" in b.cells:
+    if b.w_lo != 1 or box[5] > 1 or "L" in b.cells:
         return False
-    alpha, beta = measure.line, measure.point
-    m0 = o.m[0]
-    big0, big1 = o.big_m
-    h0 = o.h[0]
-    if "P" in b.cells:
-        k0 = (2 * beta - 1) * (big0 if 2 * beta - 1 >= 0 else big1) + h0 + 2 * alpha - 2
-        k1 = 2 * (2 * big0 + m0) + 2 * alpha - 2
-        if k0 < 0 or k1 <= 0:
-            return False
-    if "T" in b.cells:
-        q0 = h0 - 1
-        bracket = beta * q0 + 2 * alpha + 2 * beta - 2
-        t1 = 2 * h0 * (q0 + alpha)
-        if q0 < 0 or bracket < 0 or t1 <= 0:
-            return False
-    return True
+    c = corner_bounds(o, measure)
+    if "P" in b.cells and (c.k0 < 0 or c.k1 <= 0):
+        return False
+    return not ("T" in b.cells and (c.q0 < 0 or c.bracket < 0 or c.t1 <= 0))
 
 
 def decide(box: Box, part: str, measure: Measure) -> str | None:
@@ -448,35 +517,51 @@ def search(
     return Cover(part, "".join(out), deepest)
 
 
-def verify_tree(part: str, tree: str, measure: Measure = KARAKUS) -> Counter[str]:
-    """Walk a preorder tree from the root box again and re-decide every leaf by its rule."""
+def walk_tree(part: str, tree: str) -> Iterator[tuple[str, Box]]:
+    """Each node of a preorder tree with the box it stands for, rebuilt from the root.
+
+    The walk is iterative, so it holds one pending box per open level; the tree must end
+    exactly where the cover does.
+    """
     root = root_box(part)
     position = 0
-    seen: Counter[str] = Counter()
-
-    def walk(box: Box) -> None:
-        nonlocal position
+    pending: list[Box] = [root]
+    while pending:
+        box = pending.pop()
         _require(position < len(tree), f"part {part}: the tree ends before the cover does")
         code = tree[position]
         position += 1
-        seen[code] += 1
+        yield code, box
         if code == "S":
             low, high = split(box, root)
-            walk(low)
-            walk(high)
-            return
-        o, b = bounds(box, measure, rows=part == "A")
-        checks: dict[str, Callable[[], bool]] = {
-            "m": lambda: part == "A" and margin_rule(box, b, measure),
-            "a": lambda: area_rule(b, measure),
-            "c": lambda: part == "A" and in_corner(box) and corner_rule(o, box, b, measure),
-        }
-        _require(code in checks, f"part {part}: unknown leaf code {code!r}")
-        _require(checks[code](), f"part {part}: leaf {box} does not close by rule {code!r}")
-
-    # Preorder walks recurse once per level; the cover is at most MAX_DEPTH deep.
-    walk(root)
+            pending.append(high)
+            pending.append(low)
     _require(position == len(tree), f"part {part}: the tree runs past the cover")
+
+
+def leaf_holds(part: str, code: str, box: Box, measure: Measure = KARAKUS) -> bool:
+    """Whether the leaf closes by the rule its code names."""
+    o, b = bounds(box, measure, rows=part == "A")
+    if code == "m":
+        return part == "A" and margin_rule(box, b, measure)
+    if code == "a":
+        return area_rule(b, measure)
+    if code == "c":
+        return part == "A" and in_corner(box) and corner_rule(o, box, b, measure)
+    message = f"part {part}: unknown leaf code {code!r}"
+    raise StripMeasureError(message)
+
+
+def verify_tree(part: str, tree: str, measure: Measure = KARAKUS) -> Counter[str]:
+    """Walk a preorder tree from the root box again and re-decide every leaf by its rule."""
+    seen: Counter[str] = Counter()
+    for code, box in walk_tree(part, tree):
+        seen[code] += 1
+        if code != "S":
+            _require(
+                leaf_holds(part, code, box, measure),
+                f"part {part}: leaf {box} does not close by rule {code!r}",
+            )
     return seen
 
 
@@ -686,12 +771,13 @@ def check_identities() -> list[str]:
 
 
 def corollary_checks() -> dict[str, Any]:
-    """Corollary 6.2 at every nonsquare `8 <= N <= 324`, Corollary 6.1 at `3 <= k <= 18`.
+    """Corollary 6.2's algebra at every nonsquare `8 <= N <= 324`, and at `N = k^2 - 1`.
 
     With `k = floor(sqrt N)` and `q = N - k + 1/4`, `t = 1/2 + sqrt q`. `(k - 1/2)^2 < q <=
     (k + 1/2)^2` is `k < t <= k + 1`, so `Delta(t) = t - k`; `q >= 25/4` is `t >= 3`, so the
     square `[0, t]^2` meets `a >= 2`, `b >= 3`; and `t^2 - Delta(t) = N` is the identity
-    `check_identities` verifies. At `N = k^2 - 1` the root is `k` exactly.
+    `check_identities` verifies. At `N = k^2 - 1` the root is `k` exactly. These restate the
+    algebra and cannot fail for a correct `k` (see the module statement).
     """
     general: list[int] = []
     for n in range(8, 325):
@@ -707,11 +793,13 @@ def corollary_checks() -> dict[str, Any]:
         n = k * k - 1
         q = Fraction(n - (k - 1)) + Fraction(1, 4)
         _require(q == (k - HALF) ** 2, f"k={k}: Corollary 6.2 is not exactly k at k^2 - 1")
-        _require(
-            k * k - (k + 1 - k) == n, f"k={k}: the strip's total at a = b = k is not k^2 - 1"
-        )
         families.append(n)
     return {
+        "note": (
+            "These restate the paper's algebra: given k = floor(sqrt N) they hold for every "
+            "nonsquare N >= 8, and carry no evidence beyond the sympy identity "
+            "t^2 - (t - k) = N. The case records' values are check_nagamochi_bounds's."
+        ),
         "T-083": {"n_values": len(general), "first": general[0], "last": general[-1]},
         "T-084": {"n_values": families},
     }
@@ -814,6 +902,17 @@ def certify(*, verify: bool) -> dict[str, Any]:
             "For a >= 2, b >= 3 and the strip measure mu, every closed square in "
             "[0, a] x [0, b] of side 1 < lambda <= 101/100 has mu(interior) > 1."
         ),
+        "decides": {
+            "part_A": (
+                "lambda^2 + E(u) + 1/2 [p < u - 1/5 < lambda h - p] > 1 for every "
+                "orientation, 1 < lambda <= 101/100 and 0 < u <= 1, where u is the height of "
+                "y = 1 above the lowest vertex, E(v) = -C(v) + w(v)/2, C the area below and w "
+                "the open chord at relative height v, m = min(cos, sin), M = max(cos, sin), "
+                "p = mM and h = m + M"
+            ),
+            "part_B": "E(v) >= 0 for every orientation, 1 < lambda <= 101/100 and 0 < v <= 3/7",
+        },
+        "premises": list(PREMISES),
         "parameters": {
             "tau": ["0", str(TAU_MAX)],
             "lambda": [str(LAMBDA_MIN), str(LAMBDA_MAX)],

@@ -674,7 +674,7 @@ verifiers:
     author: Squares Project (Levy)
     provenance: first-party
     language: [Python]
-    methods: [interval-certified]
+    methods: [exact-algebraic]
     role: decides
     summary: >-
       Decides Karakuş 2026's Proposition 5.1, that the strip measure gives the interior of

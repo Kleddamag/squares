@@ -119,7 +119,7 @@ results, it is a statement about what this repository has itself examined.
 | `E-basic-area-lower` | 18 | lower-bound | verified | equalities and inequalities, no tolerance | here | - | common-knowledge | independent | `V-check-basic-bounds` |
 | `E-nagamochi-lower` | 175 | lower-bound | reported | - | elsewhere | defect-found | previously-published | no code | - |
 | `E-karakus-strip-lower` | 203 | lower-bound | verified | whatever its theorem states | elsewhere | informally-verified | previously-published | no code | - |
-| `E-karakus-strip-measure-interval` | 203 | lower-bound | verified | strict inequalities only | here | - | previously-published | independent | `V-check-karakus-strip-measure` |
+| `E-karakus-strip-measure-interval` | 203 | lower-bound | verified | equalities and inequalities, no tolerance | here | - | previously-published | independent | `V-check-karakus-strip-measure` |
 | `E-nagamochi-lemma1-counterexample` | 0 | derived-structure | verified | equalities and inequalities, no tolerance | here | - | previously-published | independent | `V-check-nagamochi-lemma1-counterexample` |
 | `E-chelokot-square-minus-two-lean` | 16 | exact-value | verified | its theorem, against a named kernel | here | - | previously-published | producer’s code | `V-chelokot-lean`, `V-replay-chelokot-lean` |
 | `E-basic-slivkova-piercing-lower` | 0 | lower-bound | verified | whatever its theorem states | elsewhere | informally-verified | previously-published | no code | - |
@@ -350,7 +350,7 @@ results, it is a statement about what this repository has itself examined.
 ## What the register rests on
 
 - **assurance**: numerically-checked 4, reported 137, verified 183
-- **method**: exact-algebraic 100, interval-certified 70, numerical-multiprecision 4, proof-assistant-checked 3, proof-audited 3, published-proof 7, reported 137
+- **method**: exact-algebraic 101, interval-certified 69, numerical-multiprecision 4, proof-assistant-checked 3, proof-audited 3, published-proof 7, reported 137
 - **novelty**: apparently-novel 40, common-knowledge 4, not assessed 14, previously-published 266
 - **relationship to the producer's code**: generator 5, independent-implementation 71, not-applicable 20, same-implementation 215, shared-components 7, unknown-historical 6
 

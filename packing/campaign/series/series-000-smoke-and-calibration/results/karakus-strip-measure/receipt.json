@@ -3,6 +3,20 @@
   "bead": "think-dw1o",
   "source": "Karakuş 2026, arXiv:2609.37410v1, Section 5, Proposition 5.1",
   "statement": "For a >= 2, b >= 3 and the strip measure mu, every closed square in [0, a] x [0, b] of side 1 < lambda <= 101/100 has mu(interior) > 1.",
+  "decides": {
+    "part_A": "lambda^2 + E(u) + 1/2 [p < u - 1/5 < lambda h - p] > 1 for every orientation, 1 < lambda <= 101/100 and 0 < u <= 1, where u is the height of y = 1 above the lowest vertex, E(v) = -C(v) + w(v)/2, C the area below and w the open chord at relative height v, m = min(cos, sin), M = max(cos, sin), p = mM and h = m + M",
+    "part_B": "E(v) >= 0 for every orientation, 1 < lambda <= 101/100 and 0 < v <= 3/7"
+  },
+  "premises": [
+    "The closed form (5.3) is the tilted square's chord function; spot-checked exactly.",
+    "mu(S°) >= F: the open square lies in (0, a) x (0, b), and an open interval longer than one inside (0, a) holds an integer 1 <= j <= ceil(a) - 1.",
+    "The four-way split by which strip lines meet the connected open square, the reflection y -> b - y, and the central symmetry C(lambda h - x) = lambda^2 - C(x), w(lambda h - x) = w(x), which carry parts A and B to Proposition 5.1.",
+    "The rules as coded are sound: a review obligation, sampled by the test against exact geometry and a deliberately unsound rule.",
+    "Theorem 1.1's scale-and-sum: additivity over disjoint open squares, and mu(R) = ab - Delta(a).",
+    "For T-083, Corollary 6.2's step from nu(t, t) < N to s(N) >= t.",
+    "For T-084, Corollary 6.1 at a = b = k >= 3, where Delta(k) = 1.",
+    "Lemma 5.2, (5.8) and the paper's three strip cases are not used: this decomposition is the program's own, and they remain read."
+  ],
   "parameters": {
     "tau": [
       "0",
@@ -75,6 +89,7 @@
   ],
   "profile_spot_checks": 212,
   "corollaries": {
+    "note": "These restate the paper's algebra: given k = floor(sqrt N) they hold for every nonsquare N >= 8, and carry no evidence beyond the sympy identity t^2 - (t - k) = N. The case records' values are check_nagamochi_bounds's.",
     "T-083": {
       "n_values": 301,
       "first": 8,
@@ -154,6 +169,6 @@
       "karakus_value": "1164003881/840000000"
     }
   ],
-  "recorded_utc": "2026-10-06T08:19:26Z",
-  "cpu_seconds": 3.7
+  "recorded_utc": "2026-10-06T11:03:11Z",
+  "cpu_seconds": 3.6
 }

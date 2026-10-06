@@ -567,6 +567,7 @@ case or experiment separately.
 | [Proof Review: squarepacker’s k^2 - M(k) >= 0.033 log k](docs/project/reviews/review-2026-10-05-squarepacker-k2-minus-c.md) | dated review record | record | retained | — |
 | [Eleven-Square Threshold-Bound Paper: Exposition Reviews and Their Disposition](docs/project/reviews/review-2026-10-05-n11-threshold-bound-review.md) | dated review record | record | retained | — |
 | [Nagamochi’s Lemma 1 Is False: What T-007 Rests On Now](docs/project/reviews/review-2026-10-02-nagamochi-lemma1-karakus.md) | dated review record | record | retained | — |
+| [Review: the Machine Check of Karakuş’s Proposition 5.1 (d7f2c6186)](docs/project/reviews/review-2026-10-06-karakus-proposition-5-1-machine-check.md) | dated review record | record | retained | — |
 | [Proof Review: wand125’s Point-Only Cover for `s(61) = 8`](docs/project/reviews/review-2026-10-02-wand125-s61-point-cover.md) | dated review record | record | retained | — |
 | [Eleven-Square Optimality Proof: The Delta for the Original Contributor](docs/project/reviews/review-2026-10-03-n11-optimality-upstream-delta.md) | dated review record | record | retained | — |
 | [Unified adversarial review of the tentative optimality proof for eleven squares](docs/project/reviews/review-2026-10-03-n11-optimality-adversarial-gpt6-pro-unified.md) | dated review record | record | retained | — |

@@ -3,15 +3,19 @@ type: is
 id: is-01m4846sy9cn7qh1qbpgfwn96w
 title: "Sessions 171-172 records: call same-implementation replays fresh, not independent (#355 Review B B4 residual)"
 kind: task
-status: open
+status: closed
 priority: 2
-version: 2
+version: 3
 spec_path: docs/project/reviews/review-2026-10-02-n17-bulk-exclusion-design.md
 labels: []
 dependencies: []
 parent_id: is-01m3xkd6zmq1jqwtn628h2k7zy
 created_at: 2026-10-06T08:10:15.368Z
-updated_at: 2026-10-06T15:59:19.452Z
+updated_at: 2026-10-06T17:34:00.145Z
+closed_at: 2026-10-06T17:34:00.145Z
+close_reason: "Merged in jlevy/squares#384 (stack #386) on 2026-10-06."
+resolution: null
+duplicate_of: null
 ---
 Residual of Review B finding B4 on jlevy/squares#355 (https://github.com/jlevy/squares/pull/355#pullrequestreview-5411026555), which merged in stack 357 (main a6279886b).
 

@@ -3,9 +3,9 @@ type: is
 id: is-01m44w0vb3jmsq2yvd9mwzew4j
 title: "Certify rebuilt Sessions 170-172 and 174-179 on stack 357 (#355, #356, #360 B2; was PR333/351/352 tracking)"
 kind: chore
-status: open
+status: closed
 priority: 2
-version: 9
+version: 10
 assignee: Guzhou
 delegate: null
 labels: []
@@ -13,8 +13,12 @@ dependencies: []
 hold: null
 hold_until: null
 created_at: 2026-10-05T01:49:28.290Z
-updated_at: 2026-10-06T16:00:02.113Z
+updated_at: 2026-10-06T17:33:58.693Z
 started_at: 2026-10-05T07:24:27.154Z
+closed_at: 2026-10-06T17:33:58.693Z
+close_reason: "Merged in jlevy/squares#384 (stack #386) on 2026-10-06."
+resolution: null
+duplicate_of: null
 ---
 # PR333 split-layer review and certification tracking
 

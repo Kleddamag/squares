@@ -5,7 +5,7 @@ title: "Import wand125 #366: mixed_n18_L4704 (s(18) >= 588/125, 832-node net) an
 kind: task
 status: in_progress
 priority: 1
-version: 3
+version: 4
 delegate: claude-code@vm
 labels:
   - result-import
@@ -14,20 +14,16 @@ parent_id: is-01m47hea1vkqx8h5wzdzcyqs5k
 hold: null
 hold_until: null
 created_at: 2026-10-06T02:42:19.701Z
-updated_at: 2026-10-06T03:36:39.522Z
+updated_at: 2026-10-06T05:30:18.042Z
 started_at: 2026-10-06T02:45:53.733Z
 ---
 
 ## Notes
 
-2026-10-06 03:40Z, lane R2 progress.
+2026-10-06 05:35Z, lane R2 handing back to the coordinator (branch claude/ecstatic-pascal-pothtx-r2, HEAD 830a1222d).
 
-Stages 2-3 done on claude/ecstatic-pascal-pothtx-r2: packet wand125-mixed-bounds-finer-net-2026-10-06 at 65e408c (5046b8c96), T-099 and T-100 registered at V0/C0 (95a96145d), pin 35a148afa.
-
-Stage 4 so far (82b2183a5):
-- Source checker, pricing samples at 2 workers: n18 7 nodes, ratio 1.06, full 12.8 CPU-h; n19 7 nodes, ratio 1.14, full 13.4 CPU-h. All nodes matched the shipped records.
-- sqverify-fast (main's crate, source_sha256 d97758bb, not in REVIEWED_SOURCES): n18 VERIFIED 832/832, n19 VERIFIED 416/416. Census rows committed; no rung rests on them until think-gcld accepts.
-- Controls: source checker and sqverify-fast refuse 99/100 and 1-1e-6 mass mutants at nodes 797 and 37, and three corrupted nets each for its own premise.
-- Defect found: census --control on a declared net uses the standard step in check_sqverify_fast.mixed_exact (think-q9gu).
-
-Running: n18 complete replay of the bundle's own driver, 2 workers, started 03:28:44Z, ETA about 11:15Z. Separately prompted review started 03:17Z in /home/user/squares-lanes/r2-review.
+T-099 and T-100 at V0/C1: registered, reviewed (6bc2a8ea7, accepted, S3 confirmed), the review's FN-1 to FN-6 fixed (771013dba).
+sqverify-fast rows and census controls for both, made with the merged census tool of f342dff82 (blob c4ea4eb5 = f342dff82's 59a98bec plus this packet), committed 9377a2ae9; no rung moved on this branch.
+Source-checker controls, samples (10 nodes of each net) committed.
+n18 full replay of the bundle's driver still running detached (process group 8378, started 03:28:44Z, 299/832 at 05:19Z); /proc snapshot ASSERTS_ON committed (cd531fb82). Receipts land in the lane scratchpad full-n18-receipts/. Finish: copy run.meta and run.stdout into receipts/n18-L4704/full/, run audit_wand125_declared_net compare, add E-n018-wand125-mixed-4704-source-replay.
+Open: think-q9gu (fixed by R1's 36b52538a, close at merge).

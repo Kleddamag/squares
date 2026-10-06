@@ -185,7 +185,7 @@ def closed_form_degree(exact_form: str | None) -> int | None:
     transformations = (*standard_transformations, implicit_multiplication_application)
     value = parse_expr(exact_form, transformations=transformations)
     variable = sp.Symbol("x")
-    return int(sp.degree(sp.minimal_polynomial(value, variable), variable))
+    return int(sp.minimal_polynomial(value, variable, polys=True).degree())
 
 
 def survey_row(

@@ -17356,8 +17356,9 @@ evidence:
       decides coverage. The source's checker was replayed here, by
       devtools.audit_wand125_declared_net sample, at nodes 0, 1, 208, 416, 636, 797 and
       831 (receipts/n18-L4704/sample/ in the packet), and by the review at 2, 759 and
-      830, each returning the shipped record: a partial reproduction with the producer's
-      code that decides those nodes only.
+      830, each returning the shipped record, and then in full by the bundle's own driver
+      over all 832 nodes (E-n018-wand125-mixed-4704-source-replay): a complete reproduction
+      with the producer's code.
     external_review:
       state: informally-verified
       date: '2026-10-06'
@@ -17540,11 +17541,95 @@ evidence:
       tests/test_sqverify_fast_census.py holds the receipts. The source's own checker was replayed here at 10 of the 832 nodes, the axis among
       them, each returning the certificate's own record, and at node 797 accepted the
       original and stopped two mass mutants unresolved (receipts/n18-L4704/ in the
-      wand125-mixed-bounds-finer-net-2026-10-06 packet); its complete replay was still
-      running when this entry was written and is not part of it. The tarball is pinned by
+      wand125-mixed-bounds-finer-net-2026-10-06 packet); its complete replay, recorded
+      separately as E-n018-wand125-mixed-4704-source-replay, is not part of this entry. The tarball is pinned by
       digest and not retained.
     source_reviewed: '2026-10-06'
 
+  - id: E-n018-wand125-mixed-4704-source-replay
+    claim: lower-bound
+    scope: {n_values: [18]}
+    assurance: verified
+    method: interval-certified
+    performed_by: repository
+    relationship_to_generator: same-implementation
+    origin: replayed-here
+    novelty: previously-published
+    source_key: '[wand125 mixed bounds finer net 2026-10-06]'
+    certificate: resources/web/wand125-mixed-bounds-finer-net-2026-10-06/square-packing-bounds/certificates/mixed_n18_L4704/candidate.json.gz
+    replay: >-
+      Fetch certificates/mixed_n18_L4704/n18-L4.704-proof-bundle.tar.gz from
+      wand125/square-packing-bounds at the pinned revision. From packing/, with the project
+      CPython 3.14 and NumPy and a C++17 c++ on PATH, .venv/bin/python3 -m
+      devtools.audit_wand125_declared_net replay --certificate n18-L4704 --tarball TARBALL
+      --work W --workers 2 refuses the tarball unless its SHA-256 (a4098f82...) and size are
+      the pinned ones, unpacks it twice, binds the first copy to the packet and every shipped
+      record and input to the declared net and the expanded candidate (bundle), runs the
+      bundle's own driver in the second as its README says, OPENBLAS_NUM_THREADS=1
+      OMP_NUM_THREADS=1 python3 code/verify_mixed_full_proof.py proof --workers 2, with
+      Python's assertions on, recording the run's start, exit, end and CPU, and must print
+      FULL_REPLAY_MATCHES_SHIPPED from compare: the run exited zero with its assertions on,
+      the driver's progress counts 832 of 832 nodes, its binary is in the copy, and every
+      regenerated record and the rewritten certificate were written during the run and
+      equal the shipped and retained ones (receipts/n18-L4704/full/ in the packet). The
+      controls are the same tool's control and control-sqverify-fast, which must report
+      CONTROLS_REFUSED (receipts/n18-L4704/control.json and control-sqverify-fast.json).
+    replay_status: passed
+    verifiers: [V-wand125-mixed-rotated-verify-cpp, V-wand125-verify-mixed-full-proof-py, V-audit-wand125-declared-net]
+    proof:
+      source: packing/resources/web/external-square-certificates-2026-09-22/tokoharu-density/docs/continuous-density-certificate.ja.md
+      theorem: Rectangle-density covering obstruction at coverage one on a declared half-angle net, applied to wand125's mixed_n18_L4704; no 18 unit squares fit in a square of side below 588/125.
+      scope: Unrestricted square packing with disjoint interiors and arbitrary rotations.
+      pinpoints: >-
+        The theorem and interval-verifier correspondence of the 2026-09-22 Tokoharu review;
+        the departures of mixed_rotated_verify.cpp from verify.cpp (coverage one and the
+        per-node centre domain) read in the 2026-09-28 n = 50 verifier review; lemma N0 of
+        packing/sqverify_fast/SOUNDNESS.md, read for a declared net in the 5 October review
+        of T-096; the 832-node net re-derived in exact arithmetic in the 6 October review of
+        this certificate; the replay receipts in receipts/n18-L4704/ of the
+        wand125-mixed-bounds-finer-net-2026-10-06 packet.
+      assumptions:
+        - The rectangle density is nonnegative and exact, of total mass 1799999/100000 < 18, which this repository's exact audit recomputes from the retained candidate.
+        - All angles and legal centres are covered by the declared net of 832 half-angle tangents of step 1/2006 at core side 1999/2000, B (1 + 1/2006) = 4011993/4012000 < 1, and the per-bin centre domains at half-step 1/4012, which the exact audit and the bundle check recompute and bind to every shipped record and input.
+        - Binary64 arithmetic has the reviewed IEEE-754 semantics, compiled by the shipped line with -ffp-contract=off and -fno-fast-math.
+        - The replayed interval inputs enclose the exact candidate, which the bundle check verifies for every input's header and rectangle lines.
+      audit_record: docs/project/reviews/review-2026-10-06-wand125-finer-net-n18-n19.md
+    limitations: >-
+      Replays the bundle's own driver code/verify_mixed_full_proof.py (SHA-256
+      477d613f..., the n = 50 copy with its --workers bound raised to 16) and the
+      source's unchanged checker code/mixed_rotated_verify.cpp (SHA-256 89b674a6...),
+      compiled here by the source's compile_verifier, as the bundle's README says, on
+      the pinned tarball (SHA-256 a4098f82...), from 2026-10-06T03:28:53Z to
+      2026-10-06T15:31:01Z at two workers under nice on a shared 4-core x86-64 Linux
+      container (c++ 13.3.0, CPython 3.14.7, NumPy 2.5.2, one BLAS and OpenMP thread):
+      832 of 832 nodes, 43,328 seconds (12.04 hours) of wall time on a host at load 1 to
+      19, exit zero (CPU time was not recorded: the runner's process times reach the
+      driver, 6.8 seconds, and not its pooled workers, which are forkserver processes;
+      the pricing samples put the oblique replay at about 12.8 CPU-hours), against the
+      bundle's record of 43,585 oblique seconds on macOS arm64. Every regenerated record
+      equals the shipped one and the retained certificate's, and was written during the
+      run: the axis 1,623,076 cells with integer minimum 1.008469823012092, and each of
+      the 831 oblique nodes its node count and lower bound, 114,915,109 nodes in all,
+      the least 1.000000001066446 at index 797; the driver rewrote the certificate,
+      equal to the retained one as a mapping, and the 1,681 other shipped files are
+      unchanged (FULL_REPLAY_MATCHES_SHIPPED, receipts/n18-L4704/full/compare.json, from
+      the compare of the tool at main). The run started before the replay runner
+      recorded that the driver's assertions were on (finding FN-1 of the 6 October
+      review); the /proc snapshot taken during the run at 03:49:09Z
+      (receipts/n18-L4704/full/processes.json) shows the driver, its forkserver and both
+      pooled workers, which serve the whole run, with no -O and no PYTHONOPTIMIZE, so
+      the source's assert checks ran. This is a machine replay of the source's checker,
+      the producer's own code re-run, not an independent decision of the certificate:
+      coverage is decided by the source's C++ alone, and the angle-zero tables are a
+      second implementation for one direction only. The driver regenerates the inputs
+      from the candidate; the bundle check binds every shipped input's header to the
+      declared net and its rectangle lines to the expanded candidate. Controls: at node
+      797, the least-bound, the source's checker accepted the original with its shipped
+      record and stopped two mass mutants, each provably uncovered at an exact witness,
+      unresolved, and the source's net check refused three corrupted net declarations
+      (receipts/n18-L4704/control.json). The tarball is pinned by digest and not
+      retained.
+    source_reviewed: '2026-10-06'
   - id: E-n019-wand125-mixed-48229-sqverify-fast-replay
     claim: lower-bound
     scope: {n_values: [19]}

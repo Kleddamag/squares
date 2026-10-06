@@ -450,3 +450,19 @@ def test_replay_refuses_to_run_with_assertions_off(
     monkeypatch.setenv("PYTHONOPTIMIZE", "1")
     with pytest.raises(declared.AuditError, match="assertions are off"):
         declared.replay("n18-L4704", tmp_path / "absent.tar.gz", tmp_path, 1, tmp_path)
+
+
+def test_the_complete_n18_replay_matches_the_shipped_run() -> None:
+    """think-drtz: the bundle's own driver replayed mixed_n18_L4704 over all 832 nodes with
+    its assertions on, as the /proc snapshot taken during the run shows, and every record
+    it regenerated is the shipped one."""
+    full = declared.CERTIFICATES["n18-L4704"].receipts / "full"
+    record = json.loads((full / "compare.json").read_text(encoding="utf-8"))
+    assert record["status"] == "FULL_REPLAY_MATCHES_SHIPPED"
+    assert (record["records_matching"], record["records"]) == (832, 832)
+    assert record["progress"] == {"done": 832, "total": 832}
+    assert record["certificate_rewritten"]
+    assert record["differing"] == []
+    run = declared.read_meta(full / "run.meta")
+    assert run["exit"] == "0"
+    assert declared.asserts_were_on(run, full / declared.PROCESSES)

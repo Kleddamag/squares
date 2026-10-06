@@ -1,0 +1,79 @@
+{
+  "format": "external-source-declaration-v1",
+  "id": "wand125-mixed-bounds",
+  "source_url": "https://github.com/wand125/square-packing-bounds",
+  "source_ref": "refs/heads/main",
+  "source_commit": "2fad66e02f54a492835dc41ac37a9184e1e7a662",
+  "retrieved_at_utc": "2026-10-06T07:47:00Z",
+  "git_scope": "A blobless clone of the single public branch with its history, sparsely checked out at this commit: the ten claim directories added by the ten commits since 65e408c, and the three root files. Every file under those ten directories is digested, with the three root files; the rest of the tree is pinned by the commit.",
+  "archived_dir": "square-packing-bounds",
+  "license": "MIT, Copyright (c) 2026 wand125 (root LICENSE)",
+  "claims": [
+    "s(18) >= 941/200 (certificates/mixed_n18_L4705)",
+    "s(19) >= 193/40 (certificates/mixed_n19_L4825)",
+    "s(20) >= 981/200 (certificates/mixed_n20_L4905)",
+    "s(26) >= 1109/200 (certificates/mixed_n26_L5545)",
+    "s(27) >= 11287/2000 (certificates/mixed_n27_L56435)",
+    "s(28) >= 1147/200 (certificates/mixed_n28_L5735)",
+    "s(29) >= 581/100 (certificates/mixed_n29_L581)",
+    "s(30) >= 11767/2000 (certificates/mixed_n30_L58835)",
+    "s(39) >= 133/20 (certificates/mixed_n39_L665)",
+    "s(41) >= 271/40 (certificates/mixed_n41_L6775)"
+  ],
+  "scope": [
+    "README.md",
+    "LICENSE",
+    ".gitignore",
+    "certificates/mixed_n18_L4705",
+    "certificates/mixed_n19_L4825",
+    "certificates/mixed_n20_L4905",
+    "certificates/mixed_n26_L5545",
+    "certificates/mixed_n27_L56435",
+    "certificates/mixed_n28_L5735",
+    "certificates/mixed_n29_L581",
+    "certificates/mixed_n30_L58835",
+    "certificates/mixed_n39_L665",
+    "certificates/mixed_n41_L6775"
+  ],
+  "pinned_only": [
+    {
+      "match": "LICENSE",
+      "reason": "retained byte-identical by the 2026-09-27 rectangle packet",
+      "identical_to": "packing/resources/web/wand125-rectangle-certificates-2026-09-27/wand125-rectangles/LICENSE"
+    },
+    {
+      "match": ".gitignore",
+      "reason": "a retained .gitignore would act on this repository's tree; the 2026-10-01 packet README quotes it"
+    },
+    {
+      "match": "certificates/mixed_*/*-bundle.tar.gz",
+      "reason": "the bundle as a tarball: n = 29's complete proof bundle (38.9 MB), and for the other nine the check2 bundle, whose files the directory holds"
+    },
+    {
+      "match": "certificates/mixed_n29_L581/code/*",
+      "reason": "byte-identical to the mixed_n50_L740/code/ file of the same name, retained by the 2026-09-28 packet",
+      "identical_to": "packing/resources/web/wand125-point-and-mixed-2026-09-28/square-packing-bounds/certificates/mixed_n50_L740/code"
+    },
+    {
+      "match": "certificates/mixed_*/requirements.txt",
+      "reason": "byte-identical to mixed_n50_L740/requirements.txt, retained by the 2026-09-28 packet",
+      "identical_to": "packing/resources/web/wand125-point-and-mixed-2026-09-28/square-packing-bounds/certificates/mixed_n50_L740/requirements.txt"
+    },
+    {
+      "match": "certificates/*/check2/src/*.tar.gz",
+      "reason": "the source's adaptation of this repository's sqverify_fast to a declared net (sqverify-proof-net, fe12e036c), which decides the check2 bundles; not retained, so that no copy of it sits in the tree beside the crate whose declared-net change was written apart from it (packing/sqverify_fast/INDEPENDENCE.md, Declared Nets)"
+    },
+    {
+      "match": "certificates/*/check2/src/SOUNDNESS.md",
+      "reason": "the adapted crate's own copy of its soundness argument, kept with the crate it documents and not retained"
+    },
+    {
+      "match": "certificates/*/check2/src/INDEPENDENCE.md",
+      "reason": "the adapted crate's own copy of its independence record, kept with the crate it documents and not retained"
+    },
+    {
+      "match": "certificates/*/check2/*.gz",
+      "reason": "an upstream gzip file, which the archive cannot retain beside its own compression: the source's per-direction run and control logs, summarised by the retained receipt.json and control.json"
+    }
+  ]
+}

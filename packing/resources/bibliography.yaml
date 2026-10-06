@@ -1109,6 +1109,34 @@ sources:
       web/wand125-mixed-bounds-finer-net-2026-10-06/acquisition/sources.json pins revision
       65e408c9fa6bb787b6744c7c479ec19551a15016 (the commit's author name is Hiroaki
       Hosono). Dated by that revision, 2026-10-06 UTC.
+  - key: '[wand125 mixed bounds check2 2026-10-06]'
+    authors: [wand125]
+    year: 2026
+    venue: GitHub
+    dated: '2026-10-06'
+    credit: wand125 after Tokoharu, Levy, Stromquist, Nagamochi, Burns, Massaccesi
+    short_credit: wand125 after Tokoharu, Levy et al.
+    lineage: builds-on-project
+    note: >-
+      The ten mixed rectangle-measure certificates that wand125/square-packing-bounds added
+      on 2026-10-06 in ten commits after 65e408c, each on a net its candidate declares, none
+      requested here: certificates/mixed_n29_L581 for s(29) >= 581/100, a complete proof
+      bundle checked by code/mixed_rotated_verify.cpp, byte for byte the checker of the
+      source's n = 50 certificate, and nine check2 bundles, mixed_n18_L4705, mixed_n19_L4825,
+      mixed_n20_L4905, mixed_n26_L5545, mixed_n27_L56435, mixed_n28_L5735, mixed_n30_L58835,
+      mixed_n39_L665 and mixed_n41_L6775, for s(18) >= 941/200, s(19) >= 193/40, s(20) >=
+      981/200, s(26) >= 1109/200, s(27) >= 11287/2000, s(28) >= 1147/200, s(30) >=
+      11767/2000, s(39) >= 133/20 and s(41) >= 271/40. A check2 bundle ships no C++ record:
+      the source checks it with sqverify-proof-net, its copy of this repository's
+      sqverify_fast changed to read a declared net, which is pinned by digest and not
+      retained. mixed_n18_L4705 and mixed_n19_L4825 declare 2073 half-angle tangents of step
+      1/5002 at core 4999/5000 and supersede the [wand125 mixed bounds finer net 2026-10-06]
+      certificates. Credited as they are, on the root README's Attribution section, which
+      opens "The method is not ours."; the README says parts of the work were produced with
+      AI assistance under human direction.
+      web/wand125-mixed-bounds-check2-2026-10-06/acquisition/sources.json pins revision
+      2fad66e02f54a492835dc41ac37a9184e1e7a662 (the commits' author name is Hiroaki Hosono).
+      Dated by that revision, 2026-10-06 UTC.
   - key: '[franciscouzo square-packing 2026-09-27]'
     authors: [Couzo]
     year: 2026

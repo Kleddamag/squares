@@ -1,0 +1,484 @@
+{
+  "format": "external-source-acquisition-v1",
+  "retrieved_at_utc": "2026-10-06T07:47:00Z",
+  "git_scope": "A blobless clone of the single public branch with its history, sparsely checked out at this commit: the ten claim directories added by the ten commits since 65e408c, and the three root files. Every file under those ten directories is digested, with the three root files; the rest of the tree is pinned by the commit.",
+  "sources": [
+    {
+      "id": "wand125-mixed-bounds",
+      "source_url": "https://github.com/wand125/square-packing-bounds",
+      "source_ref": "refs/heads/main",
+      "source_commit": "2fad66e02f54a492835dc41ac37a9184e1e7a662",
+      "committed_utc": "2026-10-06T07:26:49Z",
+      "git_tree": "39ea18ce37bfdf42cf154decc33a18979fe3c16d",
+      "archived_path": "packing/resources/web/wand125-mixed-bounds-check2-2026-10-06/square-packing-bounds",
+      "subtree_manifest": "packing/resources/web/wand125-mixed-bounds-check2-2026-10-06/acquisition/upstream-subtree.sha256",
+      "subtree_scope": [
+        "README.md",
+        "LICENSE",
+        ".gitignore",
+        "certificates/mixed_n18_L4705",
+        "certificates/mixed_n19_L4825",
+        "certificates/mixed_n20_L4905",
+        "certificates/mixed_n26_L5545",
+        "certificates/mixed_n27_L56435",
+        "certificates/mixed_n28_L5735",
+        "certificates/mixed_n29_L581",
+        "certificates/mixed_n30_L58835",
+        "certificates/mixed_n39_L665",
+        "certificates/mixed_n41_L6775"
+      ],
+      "subtree_file_count": 181,
+      "subtree_total_bytes": 44445588,
+      "retained_file_count": 113,
+      "retained_total_bytes": 1682378,
+      "compressed": [
+        "square-packing-bounds/certificates/mixed_n18_L4705/candidate.json.gz",
+        "square-packing-bounds/certificates/mixed_n19_L4825/candidate.json.gz",
+        "square-packing-bounds/certificates/mixed_n20_L4905/candidate.json.gz",
+        "square-packing-bounds/certificates/mixed_n26_L5545/candidate.json.gz",
+        "square-packing-bounds/certificates/mixed_n27_L56435/candidate.json.gz",
+        "square-packing-bounds/certificates/mixed_n28_L5735/candidate.json.gz",
+        "square-packing-bounds/certificates/mixed_n29_L581/candidate.json.gz",
+        "square-packing-bounds/certificates/mixed_n29_L581/certificate.json.gz",
+        "square-packing-bounds/certificates/mixed_n30_L58835/candidate.json.gz",
+        "square-packing-bounds/certificates/mixed_n39_L665/candidate.json.gz",
+        "square-packing-bounds/certificates/mixed_n41_L6775/candidate.json.gz"
+      ],
+      "pinned_only": [
+        {
+          "path": ".gitignore",
+          "bytes": 132,
+          "sha256": "0a31c24fe622ff8b4b012fbf790686063a84da3dd306d47e7283aad434653308",
+          "reason": "a retained .gitignore would act on this repository's tree; the 2026-10-01 packet README quotes it"
+        },
+        {
+          "path": "LICENSE",
+          "bytes": 1064,
+          "sha256": "c0dd43e7892932c81335f74a2fdbf1a98f5977bab14c0c4c30e3abcc97c34904",
+          "reason": "retained byte-identical by the 2026-09-27 rectangle packet",
+          "identical_to": "packing/resources/web/wand125-rectangle-certificates-2026-09-27/wand125-rectangles/LICENSE"
+        },
+        {
+          "path": "certificates/mixed_n18_L4705/check2/control-197_200.jsonl.gz",
+          "bytes": 14539,
+          "sha256": "eb1cea656160d896e3a85354762c4da53342b68fe4e4b79d821e1427d28bbd8f",
+          "reason": "an upstream gzip file, which the archive cannot retain beside its own compression: the source's per-direction run and control logs, summarised by the retained receipt.json and control.json"
+        },
+        {
+          "path": "certificates/mixed_n18_L4705/check2/run.jsonl.gz",
+          "bytes": 171453,
+          "sha256": "509c298be71dfeb985157e3db08c790d232a278a2b528fc65cbe79494e53c094",
+          "reason": "an upstream gzip file, which the archive cannot retain beside its own compression: the source's per-direction run and control logs, summarised by the retained receipt.json and control.json"
+        },
+        {
+          "path": "certificates/mixed_n18_L4705/check2/src/INDEPENDENCE.md",
+          "bytes": 12283,
+          "sha256": "2e4fb5abf4efa326838216eaea1bc6e75c7ce06d7b1d84504d0973c613dbbaa6",
+          "reason": "the adapted crate's own copy of its independence record, kept with the crate it documents and not retained"
+        },
+        {
+          "path": "certificates/mixed_n18_L4705/check2/src/SOUNDNESS.md",
+          "bytes": 33225,
+          "sha256": "16f1e679f35d4319f4a1ae8be694549dffc3bbd1b435a9005a505ed1d0586f86",
+          "reason": "the adapted crate's own copy of its soundness argument, kept with the crate it documents and not retained"
+        },
+        {
+          "path": "certificates/mixed_n18_L4705/check2/src/sqverify-proof-net-fe12e036c.tar.gz",
+          "bytes": 69540,
+          "sha256": "e495f9bf14dc5ca20d8890aa0601183b8b955b94580c4e99ddffa64254371e81",
+          "reason": "the source's adaptation of this repository's sqverify_fast to a declared net (sqverify-proof-net, fe12e036c), which decides the check2 bundles; not retained, so that no copy of it sits in the tree beside the crate whose declared-net change was written apart from it (packing/sqverify_fast/INDEPENDENCE.md, Declared Nets)"
+        },
+        {
+          "path": "certificates/mixed_n18_L4705/n18-L4.705-check2-bundle.tar.gz",
+          "bytes": 307607,
+          "sha256": "187115fc5297ced03df2c8b2a9cecd77d35da59a254608607facbf2d5e6238f2",
+          "reason": "the bundle as a tarball: n = 29's complete proof bundle (38.9 MB), and for the other nine the check2 bundle, whose files the directory holds"
+        },
+        {
+          "path": "certificates/mixed_n19_L4825/check2/control.jsonl.gz",
+          "bytes": 15398,
+          "sha256": "5767d08d1139396aa88478e9da0bef8967a1f5989fb59b64cde949140f163f1f",
+          "reason": "an upstream gzip file, which the archive cannot retain beside its own compression: the source's per-direction run and control logs, summarised by the retained receipt.json and control.json"
+        },
+        {
+          "path": "certificates/mixed_n19_L4825/check2/run.jsonl.gz",
+          "bytes": 154108,
+          "sha256": "49509a5582bcc209c1a30fbeb68aea882d8294d1be795b0bb9863207114c2db3",
+          "reason": "an upstream gzip file, which the archive cannot retain beside its own compression: the source's per-direction run and control logs, summarised by the retained receipt.json and control.json"
+        },
+        {
+          "path": "certificates/mixed_n19_L4825/check2/src/INDEPENDENCE.md",
+          "bytes": 12283,
+          "sha256": "2e4fb5abf4efa326838216eaea1bc6e75c7ce06d7b1d84504d0973c613dbbaa6",
+          "reason": "the adapted crate's own copy of its independence record, kept with the crate it documents and not retained"
+        },
+        {
+          "path": "certificates/mixed_n19_L4825/check2/src/SOUNDNESS.md",
+          "bytes": 33225,
+          "sha256": "16f1e679f35d4319f4a1ae8be694549dffc3bbd1b435a9005a505ed1d0586f86",
+          "reason": "the adapted crate's own copy of its soundness argument, kept with the crate it documents and not retained"
+        },
+        {
+          "path": "certificates/mixed_n19_L4825/check2/src/sqverify-proof-net-fe12e036c.tar.gz",
+          "bytes": 69540,
+          "sha256": "e495f9bf14dc5ca20d8890aa0601183b8b955b94580c4e99ddffa64254371e81",
+          "reason": "the source's adaptation of this repository's sqverify_fast to a declared net (sqverify-proof-net, fe12e036c), which decides the check2 bundles; not retained, so that no copy of it sits in the tree beside the crate whose declared-net change was written apart from it (packing/sqverify_fast/INDEPENDENCE.md, Declared Nets)"
+        },
+        {
+          "path": "certificates/mixed_n19_L4825/n19-L4.825-check2-bundle.tar.gz",
+          "bytes": 292199,
+          "sha256": "7b4f000c3aa87db233cdf9214127db6556d573a8fdedc4d7422f59a2b22e8c52",
+          "reason": "the bundle as a tarball: n = 29's complete proof bundle (38.9 MB), and for the other nine the check2 bundle, whose files the directory holds"
+        },
+        {
+          "path": "certificates/mixed_n20_L4905/check2/control.jsonl.gz",
+          "bytes": 15991,
+          "sha256": "3a0b0f34a237476c1c960fa8a1315ac4dc5b343771a8a22112482db02d7235bb",
+          "reason": "an upstream gzip file, which the archive cannot retain beside its own compression: the source's per-direction run and control logs, summarised by the retained receipt.json and control.json"
+        },
+        {
+          "path": "certificates/mixed_n20_L4905/check2/run.jsonl.gz",
+          "bytes": 64249,
+          "sha256": "41de488f2b8b76cf9003179546fbaffc004784ff6bd40fa7e0e5e332a3bb63f1",
+          "reason": "an upstream gzip file, which the archive cannot retain beside its own compression: the source's per-direction run and control logs, summarised by the retained receipt.json and control.json"
+        },
+        {
+          "path": "certificates/mixed_n20_L4905/check2/src/INDEPENDENCE.md",
+          "bytes": 12283,
+          "sha256": "2e4fb5abf4efa326838216eaea1bc6e75c7ce06d7b1d84504d0973c613dbbaa6",
+          "reason": "the adapted crate's own copy of its independence record, kept with the crate it documents and not retained"
+        },
+        {
+          "path": "certificates/mixed_n20_L4905/check2/src/SOUNDNESS.md",
+          "bytes": 33225,
+          "sha256": "16f1e679f35d4319f4a1ae8be694549dffc3bbd1b435a9005a505ed1d0586f86",
+          "reason": "the adapted crate's own copy of its soundness argument, kept with the crate it documents and not retained"
+        },
+        {
+          "path": "certificates/mixed_n20_L4905/check2/src/sqverify-proof-net-fe12e036c.tar.gz",
+          "bytes": 69540,
+          "sha256": "e495f9bf14dc5ca20d8890aa0601183b8b955b94580c4e99ddffa64254371e81",
+          "reason": "the source's adaptation of this repository's sqverify_fast to a declared net (sqverify-proof-net, fe12e036c), which decides the check2 bundles; not retained, so that no copy of it sits in the tree beside the crate whose declared-net change was written apart from it (packing/sqverify_fast/INDEPENDENCE.md, Declared Nets)"
+        },
+        {
+          "path": "certificates/mixed_n20_L4905/n20-L4.905-check2-bundle.tar.gz",
+          "bytes": 202312,
+          "sha256": "aa6721222289fcacf2dd5a9704a089b18f52aaa36cce7622e6d9036123a926cb",
+          "reason": "the bundle as a tarball: n = 29's complete proof bundle (38.9 MB), and for the other nine the check2 bundle, whose files the directory holds"
+        },
+        {
+          "path": "certificates/mixed_n26_L5545/check2/control.jsonl.gz",
+          "bytes": 14169,
+          "sha256": "f1b6f020c93948e081bd64299aa69059a7137c0f13474cbeb6b7840c4b5af11f",
+          "reason": "an upstream gzip file, which the archive cannot retain beside its own compression: the source's per-direction run and control logs, summarised by the retained receipt.json and control.json"
+        },
+        {
+          "path": "certificates/mixed_n26_L5545/check2/run.jsonl.gz",
+          "bytes": 64421,
+          "sha256": "e51b60a5ba6be941936a9725739a44b222a99a03d2a87e5de57b9d492d66218a",
+          "reason": "an upstream gzip file, which the archive cannot retain beside its own compression: the source's per-direction run and control logs, summarised by the retained receipt.json and control.json"
+        },
+        {
+          "path": "certificates/mixed_n26_L5545/check2/src/INDEPENDENCE.md",
+          "bytes": 12283,
+          "sha256": "2e4fb5abf4efa326838216eaea1bc6e75c7ce06d7b1d84504d0973c613dbbaa6",
+          "reason": "the adapted crate's own copy of its independence record, kept with the crate it documents and not retained"
+        },
+        {
+          "path": "certificates/mixed_n26_L5545/check2/src/SOUNDNESS.md",
+          "bytes": 33225,
+          "sha256": "16f1e679f35d4319f4a1ae8be694549dffc3bbd1b435a9005a505ed1d0586f86",
+          "reason": "the adapted crate's own copy of its soundness argument, kept with the crate it documents and not retained"
+        },
+        {
+          "path": "certificates/mixed_n26_L5545/check2/src/sqverify-proof-net-fe12e036c.tar.gz",
+          "bytes": 69540,
+          "sha256": "e495f9bf14dc5ca20d8890aa0601183b8b955b94580c4e99ddffa64254371e81",
+          "reason": "the source's adaptation of this repository's sqverify_fast to a declared net (sqverify-proof-net, fe12e036c), which decides the check2 bundles; not retained, so that no copy of it sits in the tree beside the crate whose declared-net change was written apart from it (packing/sqverify_fast/INDEPENDENCE.md, Declared Nets)"
+        },
+        {
+          "path": "certificates/mixed_n26_L5545/n26-L5.545-check2-bundle.tar.gz",
+          "bytes": 207412,
+          "sha256": "3f8ebbe903a8b6f7d1e12d23d48b6d3a91ea026d3fa143732e91f5a18ce43838",
+          "reason": "the bundle as a tarball: n = 29's complete proof bundle (38.9 MB), and for the other nine the check2 bundle, whose files the directory holds"
+        },
+        {
+          "path": "certificates/mixed_n27_L56435/check2/control.jsonl.gz",
+          "bytes": 17733,
+          "sha256": "3e2e239b1cff3eeb6a881af63a74941e3315ed8ec6e5336f7056c5a6065035cb",
+          "reason": "an upstream gzip file, which the archive cannot retain beside its own compression: the source's per-direction run and control logs, summarised by the retained receipt.json and control.json"
+        },
+        {
+          "path": "certificates/mixed_n27_L56435/check2/run.jsonl.gz",
+          "bytes": 64758,
+          "sha256": "dda3b09208a63c002fd14761143c5dd51ac7afca14593055bb1655e0bf318861",
+          "reason": "an upstream gzip file, which the archive cannot retain beside its own compression: the source's per-direction run and control logs, summarised by the retained receipt.json and control.json"
+        },
+        {
+          "path": "certificates/mixed_n27_L56435/check2/src/INDEPENDENCE.md",
+          "bytes": 12283,
+          "sha256": "2e4fb5abf4efa326838216eaea1bc6e75c7ce06d7b1d84504d0973c613dbbaa6",
+          "reason": "the adapted crate's own copy of its independence record, kept with the crate it documents and not retained"
+        },
+        {
+          "path": "certificates/mixed_n27_L56435/check2/src/SOUNDNESS.md",
+          "bytes": 33225,
+          "sha256": "16f1e679f35d4319f4a1ae8be694549dffc3bbd1b435a9005a505ed1d0586f86",
+          "reason": "the adapted crate's own copy of its soundness argument, kept with the crate it documents and not retained"
+        },
+        {
+          "path": "certificates/mixed_n27_L56435/check2/src/sqverify-proof-net-fe12e036c.tar.gz",
+          "bytes": 69540,
+          "sha256": "e495f9bf14dc5ca20d8890aa0601183b8b955b94580c4e99ddffa64254371e81",
+          "reason": "the source's adaptation of this repository's sqverify_fast to a declared net (sqverify-proof-net, fe12e036c), which decides the check2 bundles; not retained, so that no copy of it sits in the tree beside the crate whose declared-net change was written apart from it (packing/sqverify_fast/INDEPENDENCE.md, Declared Nets)"
+        },
+        {
+          "path": "certificates/mixed_n27_L56435/n27-L5.6435-check2-bundle.tar.gz",
+          "bytes": 208184,
+          "sha256": "33b2a44054f2c69f1da41473fb6412ab599c8597e06a81dd5fa2158408f6fda2",
+          "reason": "the bundle as a tarball: n = 29's complete proof bundle (38.9 MB), and for the other nine the check2 bundle, whose files the directory holds"
+        },
+        {
+          "path": "certificates/mixed_n28_L5735/check2/control.jsonl.gz",
+          "bytes": 16147,
+          "sha256": "ff933f4e36ccc1e7f9c9e0a18150cbab3dab53067355aaf40767f6dfe5407285",
+          "reason": "an upstream gzip file, which the archive cannot retain beside its own compression: the source's per-direction run and control logs, summarised by the retained receipt.json and control.json"
+        },
+        {
+          "path": "certificates/mixed_n28_L5735/check2/run.jsonl.gz",
+          "bytes": 33236,
+          "sha256": "066d4ae436425ae1f35fd67b014e0a242f9060002adb2008340b1313eaf08686",
+          "reason": "an upstream gzip file, which the archive cannot retain beside its own compression: the source's per-direction run and control logs, summarised by the retained receipt.json and control.json"
+        },
+        {
+          "path": "certificates/mixed_n28_L5735/check2/src/INDEPENDENCE.md",
+          "bytes": 12283,
+          "sha256": "2e4fb5abf4efa326838216eaea1bc6e75c7ce06d7b1d84504d0973c613dbbaa6",
+          "reason": "the adapted crate's own copy of its independence record, kept with the crate it documents and not retained"
+        },
+        {
+          "path": "certificates/mixed_n28_L5735/check2/src/SOUNDNESS.md",
+          "bytes": 33225,
+          "sha256": "16f1e679f35d4319f4a1ae8be694549dffc3bbd1b435a9005a505ed1d0586f86",
+          "reason": "the adapted crate's own copy of its soundness argument, kept with the crate it documents and not retained"
+        },
+        {
+          "path": "certificates/mixed_n28_L5735/check2/src/sqverify-proof-net-fe12e036c.tar.gz",
+          "bytes": 69540,
+          "sha256": "e495f9bf14dc5ca20d8890aa0601183b8b955b94580c4e99ddffa64254371e81",
+          "reason": "the source's adaptation of this repository's sqverify_fast to a declared net (sqverify-proof-net, fe12e036c), which decides the check2 bundles; not retained, so that no copy of it sits in the tree beside the crate whose declared-net change was written apart from it (packing/sqverify_fast/INDEPENDENCE.md, Declared Nets)"
+        },
+        {
+          "path": "certificates/mixed_n28_L5735/n28-L5.735-check2-bundle.tar.gz",
+          "bytes": 181502,
+          "sha256": "202dc8de02d0e42bbf6d551a4ae3f1e3c71ef3cb3d4cc97785fdaac39a8a95cc",
+          "reason": "the bundle as a tarball: n = 29's complete proof bundle (38.9 MB), and for the other nine the check2 bundle, whose files the directory holds"
+        },
+        {
+          "path": "certificates/mixed_n29_L581/code/endpoint_cells.py",
+          "bytes": 3030,
+          "sha256": "090c336dec73d94998df5b402d58801dc0c647673df1750eda099562706554d9",
+          "reason": "byte-identical to the mixed_n50_L740/code/ file of the same name, retained by the 2026-09-28 packet",
+          "identical_to": "packing/resources/web/wand125-point-and-mixed-2026-09-28/square-packing-bounds/certificates/mixed_n50_L740/code/endpoint_cells.py"
+        },
+        {
+          "path": "certificates/mixed_n29_L581/code/mixed_axis_cells.py",
+          "bytes": 2173,
+          "sha256": "9243ba6c7605f1989f36124f01786400f0da0c6a01ff17ff82512700c3e87406",
+          "reason": "byte-identical to the mixed_n50_L740/code/ file of the same name, retained by the 2026-09-28 packet",
+          "identical_to": "packing/resources/web/wand125-point-and-mixed-2026-09-28/square-packing-bounds/certificates/mixed_n50_L740/code/mixed_axis_cells.py"
+        },
+        {
+          "path": "certificates/mixed_n29_L581/code/mixed_density_check.py",
+          "bytes": 4528,
+          "sha256": "22cc5cd626c0e56e65c88a610663689fb92d36d29f5fad09929dbaa859efefbb",
+          "reason": "byte-identical to the mixed_n50_L740/code/ file of the same name, retained by the 2026-09-28 packet",
+          "identical_to": "packing/resources/web/wand125-point-and-mixed-2026-09-28/square-packing-bounds/certificates/mixed_n50_L740/code/mixed_density_check.py"
+        },
+        {
+          "path": "certificates/mixed_n29_L581/code/mixed_net_audit.py",
+          "bytes": 3908,
+          "sha256": "ac95a85685b24caba90bc742685f4eaa48f2b913467dc1e3a870a4058ebea62d",
+          "reason": "byte-identical to the mixed_n50_L740/code/ file of the same name, retained by the 2026-09-28 packet",
+          "identical_to": "packing/resources/web/wand125-point-and-mixed-2026-09-28/square-packing-bounds/certificates/mixed_n50_L740/code/mixed_net_audit.py"
+        },
+        {
+          "path": "certificates/mixed_n29_L581/code/mixed_rotated_verify.cpp",
+          "bytes": 7894,
+          "sha256": "89b674a6feabe24d91c29431de1624907c4bff83280ceb481475455686693652",
+          "reason": "byte-identical to the mixed_n50_L740/code/ file of the same name, retained by the 2026-09-28 packet",
+          "identical_to": "packing/resources/web/wand125-point-and-mixed-2026-09-28/square-packing-bounds/certificates/mixed_n50_L740/code/mixed_rotated_verify.cpp"
+        },
+        {
+          "path": "certificates/mixed_n29_L581/code/mixed_rotated_verify.py",
+          "bytes": 4302,
+          "sha256": "a5aef414bf3aaf3cb79da9423c44a6ceba7a76e05c59b8da6ac75b970fcb88c1",
+          "reason": "byte-identical to the mixed_n50_L740/code/ file of the same name, retained by the 2026-09-28 packet",
+          "identical_to": "packing/resources/web/wand125-point-and-mixed-2026-09-28/square-packing-bounds/certificates/mixed_n50_L740/code/mixed_rotated_verify.py"
+        },
+        {
+          "path": "certificates/mixed_n29_L581/code/score.py",
+          "bytes": 2930,
+          "sha256": "fa8c293a81815971df11e8fe258ef2b451589a88e4200491e81e7bcf141909bc",
+          "reason": "byte-identical to the mixed_n50_L740/code/ file of the same name, retained by the 2026-09-28 packet",
+          "identical_to": "packing/resources/web/wand125-point-and-mixed-2026-09-28/square-packing-bounds/certificates/mixed_n50_L740/code/score.py"
+        },
+        {
+          "path": "certificates/mixed_n29_L581/code/verify_axis_certificate.py",
+          "bytes": 4427,
+          "sha256": "ed68a256c614b44cdd5e04b075845dc7e17014eeab0ce181900f5dc355c03c91",
+          "reason": "byte-identical to the mixed_n50_L740/code/ file of the same name, retained by the 2026-09-28 packet",
+          "identical_to": "packing/resources/web/wand125-point-and-mixed-2026-09-28/square-packing-bounds/certificates/mixed_n50_L740/code/verify_axis_certificate.py"
+        },
+        {
+          "path": "certificates/mixed_n29_L581/code/verify_mixed_full_proof.py",
+          "bytes": 3602,
+          "sha256": "2719e482cfdd87da2b64b50af626bbd0a68d58d95b746cf27467b2a7aca83648",
+          "reason": "byte-identical to the mixed_n50_L740/code/ file of the same name, retained by the 2026-09-28 packet",
+          "identical_to": "packing/resources/web/wand125-point-and-mixed-2026-09-28/square-packing-bounds/certificates/mixed_n50_L740/code/verify_mixed_full_proof.py"
+        },
+        {
+          "path": "certificates/mixed_n29_L581/code/verify_rotated_result.py",
+          "bytes": 1820,
+          "sha256": "dace4a5f941c926da388702ab8a8e7b196d782501205d6642be7667ab1306082",
+          "reason": "byte-identical to the mixed_n50_L740/code/ file of the same name, retained by the 2026-09-28 packet",
+          "identical_to": "packing/resources/web/wand125-point-and-mixed-2026-09-28/square-packing-bounds/certificates/mixed_n50_L740/code/verify_rotated_result.py"
+        },
+        {
+          "path": "certificates/mixed_n29_L581/n29-L5.81-proof-bundle.tar.gz",
+          "bytes": 38874443,
+          "sha256": "057d3df36634f062d6eaad37d5c3195bb2c0adfcd7ba7ce6e149d8333be9dc56",
+          "reason": "the bundle as a tarball: n = 29's complete proof bundle (38.9 MB), and for the other nine the check2 bundle, whose files the directory holds"
+        },
+        {
+          "path": "certificates/mixed_n29_L581/requirements.txt",
+          "bytes": 6,
+          "sha256": "e09f656c130b9c08b2c5ab7187c891295e449ed77febea2a6ceee9cc98ccb0fc",
+          "reason": "byte-identical to mixed_n50_L740/requirements.txt, retained by the 2026-09-28 packet",
+          "identical_to": "packing/resources/web/wand125-point-and-mixed-2026-09-28/square-packing-bounds/certificates/mixed_n50_L740/requirements.txt"
+        },
+        {
+          "path": "certificates/mixed_n30_L58835/check2/control.jsonl.gz",
+          "bytes": 22409,
+          "sha256": "9ad6b22e2536b1afb5ea306c5753560496bb5ed9bdb91bd4b233afedf496058e",
+          "reason": "an upstream gzip file, which the archive cannot retain beside its own compression: the source's per-direction run and control logs, summarised by the retained receipt.json and control.json"
+        },
+        {
+          "path": "certificates/mixed_n30_L58835/check2/run.jsonl.gz",
+          "bytes": 64890,
+          "sha256": "0d94bcfe0aeca2476e5806330f78653e79d6e628c6bb7194eefd3b5ec36c9824",
+          "reason": "an upstream gzip file, which the archive cannot retain beside its own compression: the source's per-direction run and control logs, summarised by the retained receipt.json and control.json"
+        },
+        {
+          "path": "certificates/mixed_n30_L58835/check2/src/INDEPENDENCE.md",
+          "bytes": 12283,
+          "sha256": "2e4fb5abf4efa326838216eaea1bc6e75c7ce06d7b1d84504d0973c613dbbaa6",
+          "reason": "the adapted crate's own copy of its independence record, kept with the crate it documents and not retained"
+        },
+        {
+          "path": "certificates/mixed_n30_L58835/check2/src/SOUNDNESS.md",
+          "bytes": 33225,
+          "sha256": "16f1e679f35d4319f4a1ae8be694549dffc3bbd1b435a9005a505ed1d0586f86",
+          "reason": "the adapted crate's own copy of its soundness argument, kept with the crate it documents and not retained"
+        },
+        {
+          "path": "certificates/mixed_n30_L58835/check2/src/sqverify-proof-net-fe12e036c.tar.gz",
+          "bytes": 69540,
+          "sha256": "e495f9bf14dc5ca20d8890aa0601183b8b955b94580c4e99ddffa64254371e81",
+          "reason": "the source's adaptation of this repository's sqverify_fast to a declared net (sqverify-proof-net, fe12e036c), which decides the check2 bundles; not retained, so that no copy of it sits in the tree beside the crate whose declared-net change was written apart from it (packing/sqverify_fast/INDEPENDENCE.md, Declared Nets)"
+        },
+        {
+          "path": "certificates/mixed_n30_L58835/n30-L5.8835-check2-bundle.tar.gz",
+          "bytes": 212146,
+          "sha256": "8a629510d1702e41432c95a82e18123471cefc92c1ce5ab797c08e658b49549a",
+          "reason": "the bundle as a tarball: n = 29's complete proof bundle (38.9 MB), and for the other nine the check2 bundle, whose files the directory holds"
+        },
+        {
+          "path": "certificates/mixed_n39_L665/check2/control.jsonl.gz",
+          "bytes": 18920,
+          "sha256": "03fb298df8295a6195e470b555efe4c7a519c19b7828e16e40e6f2ce0899f982",
+          "reason": "an upstream gzip file, which the archive cannot retain beside its own compression: the source's per-direction run and control logs, summarised by the retained receipt.json and control.json"
+        },
+        {
+          "path": "certificates/mixed_n39_L665/check2/run.jsonl.gz",
+          "bytes": 33756,
+          "sha256": "499a84b78c881c0f8d267bf2dd1acd537d80309db0b22cac85b3b31ef252acc5",
+          "reason": "an upstream gzip file, which the archive cannot retain beside its own compression: the source's per-direction run and control logs, summarised by the retained receipt.json and control.json"
+        },
+        {
+          "path": "certificates/mixed_n39_L665/check2/src/INDEPENDENCE.md",
+          "bytes": 12283,
+          "sha256": "2e4fb5abf4efa326838216eaea1bc6e75c7ce06d7b1d84504d0973c613dbbaa6",
+          "reason": "the adapted crate's own copy of its independence record, kept with the crate it documents and not retained"
+        },
+        {
+          "path": "certificates/mixed_n39_L665/check2/src/SOUNDNESS.md",
+          "bytes": 33225,
+          "sha256": "16f1e679f35d4319f4a1ae8be694549dffc3bbd1b435a9005a505ed1d0586f86",
+          "reason": "the adapted crate's own copy of its soundness argument, kept with the crate it documents and not retained"
+        },
+        {
+          "path": "certificates/mixed_n39_L665/check2/src/sqverify-proof-net-fe12e036c.tar.gz",
+          "bytes": 69540,
+          "sha256": "e495f9bf14dc5ca20d8890aa0601183b8b955b94580c4e99ddffa64254371e81",
+          "reason": "the source's adaptation of this repository's sqverify_fast to a declared net (sqverify-proof-net, fe12e036c), which decides the check2 bundles; not retained, so that no copy of it sits in the tree beside the crate whose declared-net change was written apart from it (packing/sqverify_fast/INDEPENDENCE.md, Declared Nets)"
+        },
+        {
+          "path": "certificates/mixed_n39_L665/n39-L6.65-check2-bundle.tar.gz",
+          "bytes": 189653,
+          "sha256": "ac1bba6e28dd3c647d003ed8bdfa087c4157a4d01530635676b7822b76a97faa",
+          "reason": "the bundle as a tarball: n = 29's complete proof bundle (38.9 MB), and for the other nine the check2 bundle, whose files the directory holds"
+        },
+        {
+          "path": "certificates/mixed_n41_L6775/check2/control.jsonl.gz",
+          "bytes": 18267,
+          "sha256": "7c52c2945e84bd81394b915295baf709904324b11c8d4d2fd99ad58cf0b0925d",
+          "reason": "an upstream gzip file, which the archive cannot retain beside its own compression: the source's per-direction run and control logs, summarised by the retained receipt.json and control.json"
+        },
+        {
+          "path": "certificates/mixed_n41_L6775/check2/run.jsonl.gz",
+          "bytes": 33457,
+          "sha256": "7256dbef6838d7cff8a0be72a3e325fec33078a5442fb984272d45183d4641af",
+          "reason": "an upstream gzip file, which the archive cannot retain beside its own compression: the source's per-direction run and control logs, summarised by the retained receipt.json and control.json"
+        },
+        {
+          "path": "certificates/mixed_n41_L6775/check2/src/INDEPENDENCE.md",
+          "bytes": 12283,
+          "sha256": "2e4fb5abf4efa326838216eaea1bc6e75c7ce06d7b1d84504d0973c613dbbaa6",
+          "reason": "the adapted crate's own copy of its independence record, kept with the crate it documents and not retained"
+        },
+        {
+          "path": "certificates/mixed_n41_L6775/check2/src/SOUNDNESS.md",
+          "bytes": 33225,
+          "sha256": "16f1e679f35d4319f4a1ae8be694549dffc3bbd1b435a9005a505ed1d0586f86",
+          "reason": "the adapted crate's own copy of its soundness argument, kept with the crate it documents and not retained"
+        },
+        {
+          "path": "certificates/mixed_n41_L6775/check2/src/sqverify-proof-net-fe12e036c.tar.gz",
+          "bytes": 69540,
+          "sha256": "e495f9bf14dc5ca20d8890aa0601183b8b955b94580c4e99ddffa64254371e81",
+          "reason": "the source's adaptation of this repository's sqverify_fast to a declared net (sqverify-proof-net, fe12e036c), which decides the check2 bundles; not retained, so that no copy of it sits in the tree beside the crate whose declared-net change was written apart from it (packing/sqverify_fast/INDEPENDENCE.md, Declared Nets)"
+        },
+        {
+          "path": "certificates/mixed_n41_L6775/n41-L6.775-check2-bundle.tar.gz",
+          "bytes": 174603,
+          "sha256": "59bd9ff55f9b0bd29eea919dd7c19135e7d34673d9fd43ca2c5a46c618fa73e3",
+          "reason": "the bundle as a tarball: n = 29's complete proof bundle (38.9 MB), and for the other nine the check2 bundle, whose files the directory holds"
+        }
+      ],
+      "license": "MIT, Copyright (c) 2026 wand125 (root LICENSE)",
+      "claims": [
+        "s(18) >= 941/200 (certificates/mixed_n18_L4705)",
+        "s(19) >= 193/40 (certificates/mixed_n19_L4825)",
+        "s(20) >= 981/200 (certificates/mixed_n20_L4905)",
+        "s(26) >= 1109/200 (certificates/mixed_n26_L5545)",
+        "s(27) >= 11287/2000 (certificates/mixed_n27_L56435)",
+        "s(28) >= 1147/200 (certificates/mixed_n28_L5735)",
+        "s(29) >= 581/100 (certificates/mixed_n29_L581)",
+        "s(30) >= 11767/2000 (certificates/mixed_n30_L58835)",
+        "s(39) >= 133/20 (certificates/mixed_n39_L665)",
+        "s(41) >= 271/40 (certificates/mixed_n41_L6775)"
+      ]
+    }
+  ]
+}

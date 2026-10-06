@@ -5,7 +5,7 @@ title: "Import wand125's 22 certificates posted on #282 on 3 October (mixed_n95_
 kind: task
 status: in_progress
 priority: 1
-version: 8
+version: 9
 delegate: claude-code@vm
 labels:
   - result-import
@@ -14,7 +14,7 @@ parent_id: is-01m41csdc2gp36ry5p6n7c2x2y
 hold: null
 hold_until: null
 created_at: 2026-10-03T18:49:17.703Z
-updated_at: 2026-10-06T15:07:17.342Z
+updated_at: 2026-10-06T18:22:06.061Z
 started_at: 2026-10-06T07:50:57.086Z
 ---
 Found by the final-reply lane: check_requests --github lists 22 comments on #282 after 2 Oct 15:16 UTC carrying new mixed rectangle-measure certificates. None is retained, reviewed or registered. Runbook stages 1-3 (retain, preflight, blind review, register at V0), then replay runners as for T-075. Also check whether their Green comparisons use proper upper enclosures (audit finding MX-2/AF-1). #282 stays open for these.
@@ -28,3 +28,5 @@ Found by the final-reply lane: check_requests --github lists 22 comments on #282
 2026-10-06 09:45Z lane R4: n93_L988 (1,317 CPU-s) and n57_L78725 (1,816 CPU-s) VERIFIED with controls refused, at 1 thread on a host at load 11-18 (~0.5 core). Coordinator decision: finish T-090's 16 whole (no split), go to 2 threads once PG 8378 exits or load5 < 8; then T-082's 22 on the same branch (no longer a priced remainder). Queue after n51: the other 13 of T-090, then T-082's 22, gain first (n89, n74, n55, n52, n96, n92, then the 16 dominated by T-090/T-091). Also done: T-075's six afternoon certificates got controls and independent replay entries (2bda0d5a4, b3e917247, re-pin b2d94b082); the census tool states a row's own threads (5f8d9994f).
 
 2026-10-06 15:30Z lane R4: T-090 exit committed on claude/ecstatic-pascal-pothtx-r4: be3364eab census (16/16 VERIFIED, controls refused, 26,382 CPU-s), 794a2d123 records (T-090 V3/C3; verified lower bound moves at n = 42, 43, 44, 51, 56, 57, 69, 72, 75, 86, 93, 95 and 96), ec173e301 re-pin, 65a8dcbce tests. T-082's 22 now running (started 15:00Z with n89, gain first), same rules.
+
+2026-10-06 18:30Z lane R4: T-082 so far 9 of 22 VERIFIED with controls refused, except mixed_n96_L997: VERIFIED (least 1.0000000000057894 at r=139) but its v1 control CONTROL_FAILED, the 99/100 mutant verified at r=139 (FC-1, think-0uia). Coordinator chose to fix FC-1 here: devtools.sqverify_fast_census --control now runs the 99/100 mutant at every direction (fix worktree r4-fc1, commits 9f36ede38 + f1ddc2379, not yet on the branch). Separately prompted review (claude -p tbd-strong): accept with fixes, CC-1 blocking (count only coverage refusals), CC-2..CC-8 non-blocking; all addressed in f1ddc2379; re-check running. Re-control of n96_L997 with the fixed code at 2 threads: CONTROLS_REFUSED (v2), 187 of 201 refused with exact witnesses in the per-bin domain, 14 directions verify the mutant (slack). Plan: commit T-082 in (b) state (21 replay entries) when the census ends, then the FC-1 commits and n96's admission as follow-ups.

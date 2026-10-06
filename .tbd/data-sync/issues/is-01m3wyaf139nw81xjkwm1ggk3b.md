@@ -5,7 +5,7 @@ title: "Import wand125: 34 rectangle-density lower bounds raised since T-046 (#2
 kind: task
 status: in_progress
 priority: 2
-version: 13
+version: 14
 spec_path: docs/project/specs/active/plan-2026-10-01-result-import-first-application.md
 delegate: claude-code@vm
 labels:
@@ -18,7 +18,7 @@ parent_id: is-01m3yrdxte02c7bnygkke34ct4
 hold: null
 hold_until: null
 created_at: 2026-10-01T23:55:45.056Z
-updated_at: 2026-10-06T07:53:20.451Z
+updated_at: 2026-10-06T09:18:15.719Z
 started_at: 2026-10-05T03:21:48.223Z
 ---
 Result import process from stage 1. New lower-bound entry for the 34 counts, under a key for the 1a25a5e release; T-046 keeps its claim. Needs a third Packet in audit_wand125_rectangles and a third Registration in apply_wand125_rectangles. Complete replay 148.5 upstream CPU-h, about 230 worker-hours here. Land the 21 stranded receipts first (think-0rrj, think-20mv): 14 are of certificates this issue raises and all 21 still beat the verified bound.
@@ -40,3 +40,5 @@ T-068 (34 raised rectangle bounds, V0/C1). Per count, on runners: `.venv/bin/pyt
 - #281 was answered on 2026-10-03 (issuecomment-5972354358) with T-074 confirmed and T-068 reviewed.
 
 What is left is one decision for the owner, because #281's close_when needs T-068 confirmed or refuted at all 34 counts, and the register says no replay is planned. The owner can either budget a replay of rect_n66_L8385, rect_n86_L9365, rect_n87_L941 and rect_n90_L95775 (verify.cpp at 201 directions, measured in CPU-hours: the 30 of 2 October took about 143 hours of wall), or accept T-068's next_rung and change #281's close_when to match. Another lane owns #281's entry, so its close_when is unchanged here. The reply on #281, think-pmxk's, follows from that decision.
+
+2026-10-06 (lane R5 of the 6 October intake, think-wyf4; branch claude/ecstatic-pascal-pothtx-r5, not pushed): T-068 confirmed at all 34 counts, V3/C3 derived by check_results, independently re-implemented. Route: the sqverify-fast census rows of 3 October (all 34 VERIFIED at 201 directions, source 9985c465 = 4ddf37d9c, binary b7581bb2, 107-339 CPU-s each) plus format T control receipts of 6 October on main's crate d97758bb (binary 567a0fd5), all CONTROLS_REFUSED. sqverify_fast_census gained --control/--evidence for format T (cb1b4b88d); control point = least-bound leaf centre of least exact capture (rect_n87_L941's least-bound direction left the 99/100 mutant verifying). Separately prompted review docs/project/reviews/review-2026-10-06-sqverify-fast-format-t-route.md accepts with conditions; FT-1..FT-7 handled, FT-8..FT-11 notes. 34 evidence entries E-nNNN-wand125-rect-*-sqverify-fast-replay. No verified bound moves. Commits cb1b4b88d, 942473b60, pin 64826689a. Close condition of #281 met: T-068 confirmed at all 34 counts; the replayed entries are T-074 (29, verify.cpp) and T-068 itself (34, sqverify-fast). Optional source-checker replays of the four (n66, 86, 87, 90): think-j0dd. Lane bead: the coordinator closes.

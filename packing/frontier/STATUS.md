@@ -103,7 +103,7 @@ Follow the `n` link for full provenance, numerical evidence, conflicts, and bloc
 | [`93`](n-093.md) | `10` | `10` | `247/25` | `247/25` | open | replayed here | — | 2026-10-05 |
 | [`94`](n-094.md) | `10` | `10` | `199/20` | `199/20` | open | replayed here | — | 2026-10-05 |
 | [`95`](n-095.md) | `10` | `10` | `1993/200` | `1993/200` | open | replayed here | — | 2026-10-05 |
-| [`96`](n-096.md) | `10` | `10` | `10` | `1993/200` | open | replayed here | formal lower differs from report; proof audit pending | 2026-10-03 |
+| [`96`](n-096.md) | `10` | `10` | `10` | `997/100` | open | replayed here | formal lower differs from report; proof audit pending | 2026-10-03 |
 | [`97`](n-097.md) | `10` | `10` | `10` | `10` | proved | replayed here | — | 2026-10-03 |
 | [`98`](n-098.md) | `10` | `10` | `10` | `10` | proved | replayed here | — | 2026-08-24 |
 | [`99`](n-099.md) | `10` | `10` | `10` | `10` | proved | replayed here, external proof | — | 2026-08-24 |

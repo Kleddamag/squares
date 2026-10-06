@@ -1060,6 +1060,7 @@ sources:
       - E-n095-wand125-mixed-996-report
       - E-n095-wand125-mixed-996-sqverify-fast-replay
       - E-n096-wand125-mixed-997-report
+      - E-n096-wand125-mixed-997-sqverify-fast-replay
     notes: >-
       Revision 2aff2076c492d62340e986c84f60a0a29eb668df, retrieved at about 2026-10-03T18:49Z
       for 22 comments of that day on jlevy/squares#282. 22 rectangle densities checked at
@@ -1072,10 +1073,10 @@ sources:
       mixed_n87_L948, mixed_n91_L970, mixed_n92_L975 and mixed_n96_L996 (T-075), and
       mixed_n90_L960 (T-069). The exact audit and the replay's checks before its first angle
       pass on all 22. On 6 October 2026 sqverify-fast, this repository's clean-room measure verifier,
-      decided all 22 at all 201 net directions, which put five of them, at n = 52, 55, 74,
-      89 and 92, in the verified lane; at n = 96 the decision's control failed closed and
-      moves nothing until it is repaired (think-0uia), and at the other 16 the source's
-      later certificates (T-090, T-091) are higher. The source's own checker was not run
+      decided all 22 at all 201 net directions, which put six of them, at n = 52, 55, 74, 89,
+      92 and 96, in the verified lane; n = 96 counted once the repaired control refused its
+      mutants (think-0uia), and at the other 16 the source's later certificates (T-090,
+      T-091) are higher. The source's own checker was not run
       here, and the proof-bundle tarballs are pinned by digest and not retained. Every comparison in the source's audits is with an exact
       rational; six name an unpublished value of the source's own.
   - id: wand125-mixed-bounds-2026-10-04

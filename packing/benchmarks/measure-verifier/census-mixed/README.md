@@ -94,7 +94,7 @@ direction of the net run (v2), or at that direction alone (v1).
 | `mixed_n95_L996` | 95 | M | VERIFIED | 201 | 45,979,446 | 1.0000000007947085 | clears | 906.8 | 1.8 | none: first complete check here | - | - | - | CONTROLS_REFUSED |
 | `mixed_n95_L9965` | 95 | M | VERIFIED | 201 | 47,780,470 | 1.0000000013097659 | clears | 1053.5 | 4.6 | none: first complete check here | - | - | - | CONTROLS_REFUSED |
 | `mixed_n96_L996` | 96 | M | VERIFIED | 201 | 26,793,520 | 1.000000000121414 | clears | 456.4 | 2.1 | all 201 | 8,758 | 456.2 | 19x | CONTROLS_REFUSED |
-| `mixed_n96_L997` | 96 | M | VERIFIED | 201 | 59,643,606 | 1.0000000000057894 | clears | 978.8 | 11.0 | none: first complete check here | - | - | - | - |
+| `mixed_n96_L997` | 96 | M | VERIFIED | 201 | 59,643,606 | 1.0000000000057894 | clears | 978.8 | 11.0 | none: first complete check here | - | - | - | CONTROLS_REFUSED |
 | `mixed_n101_L1028` | 101 | L | VERIFIED | 201 | 53,145,987 | 1.000000000300333 | clears | 128.4 | 4.0 | all 201 | 27,669 | 128.0 | 216x | - |
 
 76 of 76 certificates verified; 105969 CPU seconds in all.

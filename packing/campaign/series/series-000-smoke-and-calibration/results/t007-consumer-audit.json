@@ -2965,7 +2965,7 @@
       "family": null,
       "n": 96,
       "nagamochi": {"basis":"nagamochi-theorem-2","decimal":"9.888194417315","exact":"1 + sqrt(79)","exact_case":false},
-      "operative_lower_bound": {"cites_t007":false,"evidence":["E-n095-wand125-mixed-9965-sqverify-fast-replay"],"exact_form":"1993/200","results":["T-090"],"t007_scope_covers_n":true,"value":"9.965"},
+      "operative_lower_bound": {"cites_t007":false,"evidence":["E-n096-wand125-mixed-997-sqverify-fast-replay"],"exact_form":"997/100","results":["T-082"],"t007_scope_covers_n":true,"value":"9.97"},
       "reported_lower_bound": {"cites_t007":false,"evidence":["E-k2m4-evand-family-report"],"value":"10"},
       "reported_status": "proved",
       "status": "open",
@@ -2977,7 +2977,7 @@
         "karakus_k2_minus_1": null,
         "other_registered_results_at_n": [{"confirmation":"C3","id":"T-075","kind":"lower-bound","verification":"V3"},{"confirmation":"C1","id":"T-081","kind":"optimality","verification":"V0"},{"confirmation":"C3","id":"T-082","kind":"lower-bound","verification":"V3"},{"confirmation":"C1","id":"T-083","kind":"lower-bound","verification":"V3"},{"confirmation":"C3","id":"T-085","kind":"correction","verification":"V3"},{"confirmation":"C3","id":"T-090","kind":"lower-bound","verification":"V3"}],
         "registered_reported": {"basis":"exact-form","decimal":"10.000000000000","exact":"10","reaches_nagamochi":true,"shortfall_below_nagamochi":"-0.111805582685","sources":[{"evidence":["E-k2m4-evand-family-report"],"n":96,"proved_by":["Evan Daniel"],"results":["T-081"],"via":"direct"}]},
-        "registered_verified": {"basis":"exact-form","decimal":"9.965000000000","exact":"1993/200","reaches_nagamochi":true,"shortfall_below_nagamochi":"-0.076805582685","sources":[{"evidence":["E-n095-wand125-mixed-9965-sqverify-fast-replay"],"n":95,"results":["T-090"],"via":"monotonicity"}]}
+        "registered_verified": {"basis":"exact-form","decimal":"9.970000000000","exact":"997/100","reaches_nagamochi":true,"shortfall_below_nagamochi":"-0.081805582685","sources":[{"evidence":["E-n096-wand125-mixed-997-sqverify-fast-replay"],"n":96,"results":["T-082"],"via":"direct"}]}
       },
       "weakened_to": null,
       "weakened_to_without_karakus": null

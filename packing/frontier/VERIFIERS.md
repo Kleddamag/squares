@@ -26,7 +26,7 @@ second implementation agrees.
 ## The Short Version
 
 - **88** programs: **33** external and **55** first-party; **68** decide claims and **20** check premises.
-- **339** of **366** evidence entries name the programs that verified them: 209 reproduced with the producer’s code, 113 independently re-implemented, 10 no relation: a proof, a derivation or a report, 7 re-implemented, sharing the producer’s components.
+- **340** of **367** evidence entries name the programs that verified them: 209 reproduced with the producer’s code, 114 independently re-implemented, 10 no relation: a proof, a derivation or a report, 7 re-implemented, sharing the producer’s components.
 
 ## Programs
 
@@ -108,7 +108,7 @@ second implementation agrees.
 | [`V-audit-wand125-point-and-mixed`](#v-audit-wand125-point-and-mixed) | devtools.audit_wand125_point_and_mixed | Squares Project (Levy) | first-party | premises | 17 | 7 |
 | [`V-audit-wand125-declared-net`](#v-audit-wand125-declared-net) | devtools.audit_wand125_declared_net | Squares Project (Levy) | first-party | premises | 1 | 1 |
 | [`V-audit-wand125-linear`](#v-audit-wand125-linear) | devtools.audit_wand125_linear | Squares Project (Levy) | first-party | premises | 3 | 3 |
-| [`V-sqverify-fast`](#v-sqverify-fast) | sqverify-fast | Squares Project (Levy) | first-party | decides | 60 | 8 |
+| [`V-sqverify-fast`](#v-sqverify-fast) | sqverify-fast | Squares Project (Levy) | first-party | decides | 61 | 8 |
 | [`V-replay-chelokot-lean`](#v-replay-chelokot-lean) | devtools.replay_chelokot_lean | Squares Project (Levy) | first-party | premises | 1 | 1 |
 | [`V-replay-evand-zmx2`](#v-replay-evand-zmx2) | devtools.replay_evand_zmx2 | Squares Project (Levy) | first-party | premises | 5 | 5 |
 | [`V-audit-evand-mixed-covers`](#v-audit-evand-mixed-covers) | devtools.audit_evand_mixed_covers | Squares Project (Levy) | first-party | premises | 9 | 8 |
@@ -1554,6 +1554,7 @@ Decides a measure-capture lower-bound certificate of format T, M or L on the 201
 | `E-n093-wand125-mixed-986-sqverify-fast-replay` | replayed here | independent | T-082 |
 | `E-n094-wand125-mixed-992-sqverify-fast-replay` | replayed here | independent | T-082 |
 | `E-n095-wand125-mixed-996-sqverify-fast-replay` | replayed here | independent | T-082 |
+| `E-n096-wand125-mixed-997-sqverify-fast-replay` | replayed here | independent | T-082 |
 | `E-n018-wand125-mixed-4704-sqverify-fast-replay` | replayed here | independent | T-099 |
 | `E-n019-wand125-mixed-48229-sqverify-fast-replay` | replayed here | independent | T-100 |
 

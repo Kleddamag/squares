@@ -7549,7 +7549,7 @@ results:
   - id: T-082
     kind: lower-bound
     registered: '2026-10-03'
-    headline: "Mixed rectangle-measure lower bounds at 22 counts in `n = 51…96`, verified at 21"
+    headline: "Mixed rectangle-measure lower bounds verified at 22 counts in `n = 51…96`"
     claim: >-
       Twenty-two rectangle densities of wand125/square-packing-bounds, checked at coverage
       one and published on 3 October 2026, prove s(51) >= 373/50 = 7.46, s(52) >= 151/20 =
@@ -7573,25 +7573,25 @@ results:
       21 of the values were above what the record reported at their counts, by 0.015 to
       0.125: over the source's rectangle certificates (T-046, T-070, T-074, T-077) at 13
       counts, and over its earlier mixed certificates directly at five and by monotonicity
-      at n = 86, 88 and 93. At n = 96, 997/100 is below the s(96) = 10 reported from Evan
-      Daniel's s(k^2 - 4) = k (T-081).
+      at n = 86, 88 and 93. At n = 96, 997/100 is below the side 10 that Evan Daniel's
+      s(k^2 - 4) = k reports there (T-081).
 
       The source's later certificates are higher at 16 of the counts, T-090's of 3 and 4
       October at n = 51, 69, 75, 86, 93 and 95 and T-091's of 4 October at n = 58, 70, 71,
       73, 76, 87, 88, 90, 91 and 94, each verified here, so the verified lower bound there
-      is theirs. At n = 52, 55, 74, 89 and 92 these are the verified lower bounds, above
-      those they replace by 0.0075 to 0.03. A packing of n + 1 squares contains one of n,
-      but at each next count the record already holds more, so none carries further.
+      is theirs. At the other six, n = 52, 55, 74, 89, 92 and 96, these are the verified
+      lower bounds, above those they replace by 0.005 to 0.03. A packing of n + 1 squares
+      contains one of n, but at each next count the record already holds more, so none
+      carries further.
 
       Each certificate was decided here on 6 October 2026 by sqverify-fast, this
       repository's clean-room measure verifier, at all 201 net directions of the retained
-      candidate, and each verified. At 21 of them two mutants scaled below coverage one
-      were then refused: confirmed, independently re-implemented. At n = 96 the control
-      failed closed: its mutant scaled to 99/100 verified too, at the one direction the
-      control runs it, which shows the certificate's slack there and not a fault, but the
-      control counts it as a failure (think-0uia). That decision moves nothing until a
-      repaired control refuses its mutants, so the verified lower bound at n = 96 is still
-      the 1993/200 carried from n = 95 (T-090).
+      candidate, and two mutants of each scaled below coverage one were refused:
+      confirmed, independently re-implemented. At n = 96 the first control failed closed,
+      its mutant scaled to 99/100 verifying at the one direction it ran, which showed the
+      certificate's slack there and not a fault (think-0uia); the repaired control, which
+      runs that mutant at every net direction, refused it at 187 of the 201, each
+      at an exact capture below one.
 
       The verifier shares no code with the source's checker and runs the same
       net-and-shrink method, so it is a second implementation and not a second method. The
@@ -7607,10 +7607,10 @@ results:
     significance:
       score: 3
       rationale: >-
-        The strongest verified lower bounds on record at five counts, n = 52, 55, 74, 89 and
-        92, and the strongest reported at all five. At n = 96 its 997/100 is held behind a
-        failed control (think-0uia), below the 10 T-081 reports there; at the other 16 the
-        source's later certificates (T-090, T-091) are higher. Further sizes from the
+        The strongest verified lower bounds on record at six counts, n = 52, 55, 74, 89, 92
+        and 96, and the strongest reported at five of them (at n = 96 T-081 reports 10); at
+        the other 16 the source's later certificates (T-090, T-091) are higher. Further
+        sizes from the
         generator and checker of T-069, T-071, T-072 and T-075, with no new technique, at S3
         as those are; the 3 October review of these certificates proposed S3, which the
         replays leave standing.
@@ -7621,13 +7621,11 @@ results:
       source_keys: ['[wand125 mixed bounds 2026-10-03]']
       published: '2026-10-03'
     composition: >-
-      22 primary certificates, each on its own reported entry, and 21 on their own replay
-      entry. Each replay is sqverify-fast at all 201 net directions of the retained
-      candidate: one interval-certified method, replayed here by an independent
-      implementation, C3. The n = 96 certificate verified the same way, but its control
-      failed closed, so it has no replay entry until a repaired control refuses its mutants
-      (think-0uia). The source's checker and axis tables were not run here, so no second
-      method and no reproduction with the producer's code stands beside it.
+      22 primary certificates, each on its own reported entry and its own replay entry. Each
+      replay is sqverify-fast at all 201 net directions of the retained candidate: one
+      interval-certified method, replayed here by an independent implementation, C3. The
+      source's checker and axis tables were not run here, so no second method and no
+      reproduction with the producer's code stands beside it.
     evidence:
       - E-n051-wand125-mixed-746-report
       - E-n051-wand125-mixed-746-sqverify-fast-replay
@@ -7672,6 +7670,7 @@ results:
       - E-n095-wand125-mixed-996-report
       - E-n095-wand125-mixed-996-sqverify-fast-replay
       - E-n096-wand125-mixed-997-report
+      - E-n096-wand125-mixed-997-sqverify-fast-replay
     reviews:
       - path: docs/project/reviews/review-2026-10-03-wand125-october-3-certificates.md
         kind: adversarial
@@ -7717,6 +7716,8 @@ results:
       - packing/devtools/sqverify_fast_census.py
       - docs/project/reviews/review-2026-10-05-wand125-october-5-and-independent-replays.md
       - docs/project/reviews/review-2026-10-06-sqverify-fast-declared-net-soundness.md
+      - docs/project/reviews/review-2026-10-06-sqverify-fast-census-control-fc1.md
+      - docs/project/reviews/review-2026-10-06-sqverify-fast-census-control-fc1-recheck.md
     controls:
       - packing/benchmarks/measure-verifier/census-mixed/wand125-mixed-bounds-2026-10-03/mixed_n51_L746.control.json
       - packing/benchmarks/measure-verifier/census-mixed/wand125-mixed-bounds-2026-10-03/mixed_n52_L755.control.json
@@ -7739,10 +7740,10 @@ results:
       - packing/benchmarks/measure-verifier/census-mixed/wand125-mixed-bounds-2026-10-03/mixed_n93_L986.control.json
       - packing/benchmarks/measure-verifier/census-mixed/wand125-mixed-bounds-2026-10-03/mixed_n94_L992.control.json
       - packing/benchmarks/measure-verifier/census-mixed/wand125-mixed-bounds-2026-10-03/mixed_n95_L996.control.json
+      - packing/benchmarks/measure-verifier/census-mixed/wand125-mixed-bounds-2026-10-03/mixed_n96_L997.control.json
       - packing/tests/test_sqverify_fast_census.py
     next_rung: >-
-      At n = 96 the decision counts once a repaired control (think-0uia) refuses its
-      mutants; the verified lower bound there then moves to 997/100. V4 and C4 need a human
+      V4 and C4 need a human
       oversight record and two adversarial AI reviews of the claim by distinct reviewers:
       the 3 October review of these certificates is one, and the review of the census route
       of 5 October decided the route, not these certificates' mathematics. Replays of the
@@ -7751,39 +7752,47 @@ results:
       --runners 8) would add a reproduction with the producer's code beside the rung; a
       second machine method would be a method-distinct decision of rotated coverage.
     notes: >-
-      Raised from V0/C1 by think-wpuu on 6 October 2026: the 22 sqverify-fast replays,
-      551 to 2,069 CPU seconds each at two threads, 8.0 CPU-hours in all, with two mutants
-      of each refused at 21 of them, under the census route the review of 5 October 2026
-      accepted
+      Raised from V0/C1 by think-wpuu on 6 October 2026: the 22 sqverify-fast replays, 551
+      to 2,069 CPU seconds each at two threads, 8.0 CPU-hours in all, with two mutants of
+      each refused, under the census route the review of 5 October 2026 accepted
       (docs/project/reviews/review-2026-10-05-wand125-october-5-and-independent-replays.md,
       Carrying the Route to T-082, T-090 and T-091) and the 3 October review of these
-      certificates' mathematics, with no blocking defect. The build is main's crate source,
-      which the soundness review of 6 October accepted for standard-net certificates
-      (docs/project/reviews/review-2026-10-06-sqverify-fast-declared-net-soundness.md); each
-      certificate here is on the standard net. The 162 CPU-hours planned for replays of the
-      source's checker were not spent.
+      certificates' mathematics, with no blocking defect. The build is main's crate
+      source, which the soundness review of 6 October accepted for standard-net
+      certificates
+      (docs/project/reviews/review-2026-10-06-sqverify-fast-declared-net-soundness.md);
+      each certificate here is on the standard net. The 162 CPU-hours planned for replays
+      of the source's checker were not spent.
 
-      At n = 96 the control's mutant scaled to 99/100 verified at the least-bound direction,
-      as finding FC-1 of the 6 October check of the declared-net fixes foresaw
-      (docs/project/reviews/review-2026-10-06-sqverify-fast-declared-net-fix-check.md): the
-      receipt is CONTROL_FAILED and is kept as mixed_n96_L997.control-failed-v1.json,
-      outside the receipts the census's tests hold to CONTROLS_REFUSED. A row whose control
-      fails moves nothing under the census route, so n = 96 keeps the verified lower bound
-      it had.
+      At n = 96 the control's mutant scaled to 99/100 verified at the least-bound
+      direction, as finding FC-1 of the 6 October check of the declared-net fixes foresaw
+      (docs/project/reviews/review-2026-10-06-sqverify-fast-declared-net-fix-check.md):
+      the receipt is CONTROL_FAILED and is kept as mixed_n96_L997.control-failed-v1.json,
+      outside the receipts the census's tests hold to CONTROLS_REFUSED.
+
+      Under think-0uia the control now runs that mutant at every net direction and counts
+      only coverage refusals at a centre in the per-bin domain whose exact capture is
+      below one, with the near-threshold run confirmed by an exact witness; two separately
+      prompted reviews of 6 October read the change
+      (docs/project/reviews/review-2026-10-06-sqverify-fast-census-control-fc1.md and its
+      re-check, review-2026-10-06-sqverify-fast-census-control-fc1-recheck.md), and their
+      blocking findings were fixed. Its receipt for n = 96, the census's first
+      sqverify-fast-control/v2, refused the mutant at 187 of the 201 directions and the
+      near-threshold mutant at the least-bound one, and the decision then counted.
 
       Each count's verified value moves to the side of the largest certificate there whose
       own replay passed, as the 3 October review of these certificates set out: this
-      entry's at n = 52, 55, 74, 89 and 92. At the other 16 the source's later certificates
-      are higher and keep the verified lower bound; this entry keeps its claim there.
+      entry's at n = 52, 55, 74, 89, 92 and 96. At the other 16 the source's later
+      certificates are higher and keep the verified lower bound; this entry keeps its
+      claim there.
 
       One entry for the 22, all pinned at one revision, as T-075 is for its six; a later
-      revision than T-075's, so a separate entry. The review's OC-1 is in the n = 88 and 93
-      entries' limitations: the source's improvement figures there are not lower bounds.
-      The source answered OC-1 and OC-2 on 4 October by removing every completion audit and
-      changing nothing else; the 4 October packet retains the answer, and each report entry
-      records it as an evidence update that moves no rung. The proof-bundle tarballs are
-      pinned by digest and not retained.
-
+      revision than T-075's, so a separate entry. The review's OC-1 is in the n = 88 and
+      93 entries' limitations: the source's improvement figures there are not lower
+      bounds. The source answered OC-1 and OC-2 on 4 October by removing every completion
+      audit and changing nothing else; the 4 October packet retains the answer, and each
+      report entry records it as an evidence update that moves no rung. The proof-bundle
+      tarballs are pinned by digest and not retained.
   - id: T-083
     kind: lower-bound
     registered: '2026-10-02'

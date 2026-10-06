@@ -293,14 +293,16 @@ On 6 October 2026 `devtools.sqverify_fast_census --family mixed` ran `sqverify-f
 each retained `candidate.json.gz` at all 201 net directions, at the threshold the
 certificate declares, and then ran its two mutants scaled below coverage one at the
 least-bound direction.
-All 22 are `VERIFIED`, and the control refused both mutants of 21; the receipts are in
+All 22 are `VERIFIED`, and the control refused both mutants of each; the receipts are in
 [`benchmarks/measure-verifier/census-mixed/`](../../../benchmarks/measure-verifier/census-mixed/README.md),
-and each of the 21 certificates’ evidence entry `E-…-sqverify-fast-replay` states its run.
-At `mixed_n96_L997` the mutant scaled to $99/100$ verified too, at the one direction the
-control runs it: the certificate has more than 1% to spare there, which the control as
-written counts as a failure (think-0uia). Its receipt is kept as
-`mixed_n96_L997.control-failed-v1.json`, and the decision moves nothing until a repaired
-control refuses its mutants.
+and each certificate’s evidence entry `E-…-sqverify-fast-replay` states its run.
+At `mixed_n96_L997` the first control failed closed: the mutant scaled to $99/100$
+verified too, at the one direction that control runs it, the certificate having more
+than 1% to spare there (think-0uia). Its receipt is kept as
+`mixed_n96_L997.control-failed-v1.json`. The repaired control runs that mutant at every
+net direction and refused it at 187 of the 201, each at a centre in the per-bin
+domain whose exact capture is below 1; its receipt, `mixed_n96_L997.control.json`, is
+the census’s first of kind `sqverify-fast-control/v2`.
 The build is main’s crate source `d97758bb…`, which the
 [soundness review of 6 October](../../../../docs/project/reviews/review-2026-10-06-sqverify-fast-declared-net-soundness.md)
 accepted for standard-net certificates; all 22 are on the standard net.

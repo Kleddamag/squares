@@ -404,8 +404,10 @@ sources:
       5.0e-11 below the register's, the exact optimum of the same packing, Francisco
       Couzo's at 46 counts and Joost de Winter's at n = 126 and 211. Its batch README says
       it read the known-best packings from this register's witnesses ("Register data: CC
-      BY 4.0, Joshua Levy, the squares project") and that the method is David Ellsworth's
-      analytic minimisation reimplemented; the packings are their finders'. Its author
+      BY 4.0, Joshua Levy, the squares project") and that the packings are their finders';
+      the solver's README says its stationarity rows give David Ellsworth's nested
+      Jacobian-determinant conditions, and the issue that the method is his analytic
+      minimisation reimplemented. Its author
       wrote on jlevy/squares#375 that the solver, the checkers and the batch were written
       with Claude (Anthropic) as a coding and research agent, directed and reviewed by
       him. MIT. The packet web/evand-square-packing-2026-10-05/ retains the 48 improving

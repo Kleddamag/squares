@@ -105,7 +105,8 @@ PACKING_HEADING = "## The packing"
 #: What the source's own report says of its exact point, by its `status`.
 KKT = (
     "The source reports the exact point as a KKT local minimum: multipliers that keep "
-    "it in equilibrium, curvature positive away from its exact flat motions, and no "
+    "it in equilibrium, a reduced Hessian positive definite once its exact flat "
+    "motions are set aside (its per-count report), and no "
     "first-order descent across corner-to-corner contacts, each computed numerically at "
     "that point; none of that is verified here, and it bears on this packing alone, not "
     "on `s({n})`."
@@ -213,6 +214,9 @@ def front_matter(n: int, front: str) -> str:
             "evidence": [EXACT_REPLAY, SOURCE_REPLAY],
         },
     )
+    # The source conjectures no optimum, and a catalogue's conjecture above the certified
+    # side would contradict the record (review finding EX-1, n = 126).
+    front = _set_block(front, "conjectured_optimum", None)
     evidence = list(payload["evidence"])
     front = _set_block(
         front, "evidence", [item for item in EVIDENCE if item not in evidence] + evidence
@@ -287,6 +291,11 @@ def _scientific(value: float) -> str:
     return f"{value:.1e}".replace("e-0", "e-")
 
 
+def _bound(value: float) -> str:
+    """An upper bound in two significant digits, rounded up so that it stays one."""
+    return _scientific(certificates.round_up(float(value), 2))
+
+
 def section(n: int, finder: str) -> str:
     """The section on the exact optimum, placed before the packing section."""
     from devtools.generate_frontier_case import display_first_party_upper  # noqa: PLC0415
@@ -302,12 +311,12 @@ def section(n: int, finder: str) -> str:
     count, free = int(pose["moved_count"]), int(pose["moved_listed_free"])
     motion = (
         "Square for square, its pose lies within "
-        f"`{_scientific(pose['largest_centre_displacement'])}` of the binary64 pose the "
+        f"`{_bound(pose['largest_centre_displacement'])}` of the binary64 pose the "
         "atlas pictures for this count."
     )
     if count:
         others = count - free
-        nonfree = _scientific(pose["nonfree_moved_largest_centre_displacement"])
+        nonfree = _bound(pose["nonfree_moved_largest_centre_displacement"])
         if not others:
             parts = "all of them squares the source lists as carrying no force"
         elif not free:
@@ -320,7 +329,7 @@ def section(n: int, finder: str) -> str:
         motion += (
             f" {count} {'square moves' if count == 1 else 'squares move'} by more than "
             f"`1e-8`, {parts}; every other square moves by at most "
-            f"`{_scientific(pose['unmoved_largest_centre_displacement'])}`."
+            f"`{_bound(pose['unmoved_largest_centre_displacement'])}`."
         )
     below = _scientific(float(row["below_printed_side_by"]))
     if row["earlier_result"] is None:
@@ -344,7 +353,8 @@ def section(n: int, finder: str) -> str:
         f"{AUTHOR}’s [`square-packing`]({PACKET_LINK}) published on 5 October 2026 an exact "
         f"rational certificate of this packing at its exact optimum ({RESULT}): the same {n} "
         f"squares in a square of side `{shown}`, `{below}` below {printed}.{trailing} "
-        f"{motion} "
+        f"{motion} The known-best witness this record lists is that binary64 pose, at the "
+        "side its finder prints; the witness of the side above is the certificate itself. "
         f"{AUTHOR}’s solver moves the binary64 pose to a nearby exact KKT point of the "
         "problem of minimizing the side under non-overlap, computed at 80 digits, and "
         "rounds it outward to rationals, each square a rational centre and a rational "

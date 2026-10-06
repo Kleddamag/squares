@@ -13,8 +13,9 @@ Evan Daniel asked for those 48 to be registered on
 merged), and the import bead is `think-t6ok`.
 
 The certificate for `n = 17` is held by the owner for the `n = 17` work on other branches
-(`think-x4v4`). It is not retained, not pinned and not replayed here, and neither are the
-solver’s `n = 17` input and test-set outputs.
+(`think-x4v4`). It is not retained, not pinned by digest and not replayed here, and neither
+are the solver’s `n = 17` input and test-set outputs; the commit pins the whole tree, them
+among it.
 
 ## Source and Pin
 
@@ -34,8 +35,9 @@ solver’s `n = 17` input and test-set outputs.
 `python -m devtools.acquire_source evand-square-packing-2026-10-05 --checkout PATH` writes
 the retained tree, the subtree manifest and the acquisition record from a checkout at the
 pin, from [`acquisition/declaration.json`](acquisition/declaration.json); `--check`
-re-derives them from the packet alone. `results.md` and `results.json` are retained byte
-for byte and so keep their `n = 17` rows, which nothing here reads.
+re-derives them from the packet alone. `results.md`, `results.json` and
+`s12/search/exact/README.md` are retained byte for byte and so keep their `n = 17` rows,
+which nothing here reads.
 
 ## What the Source Claims
 
@@ -64,8 +66,8 @@ above, a rational centre-and-basis witness for `sqpack.witness.exact_verify`, an
 corners `(x + c a − s b, y + s a + c b)`, `a, b = ±1/2`, for
 `devtools.check_rational_witness_independent`, which shares no geometry or verification
 code with `sqpack`. Their common mode is that parse and the map from `t` to `(c, s)`.
-Both accept all 48, with least wall clearance `5e-21` and least pair gap `1e-20` at every
-count, and every one of the 320 certificates the packet pins, read from a checkout at the
+Both accept all 48, with least wall clearance `5e-21` and least pair gap about `1e-20`
+at every count, and every one of the 320 certificates the packet pins, read from a checkout at the
 pin: 2,820 CPU seconds on two workers, 802 of them for the 48
 ([`receipts/first-party-check.json`](receipts/first-party-check.json)).
 Neither decider imports or copies the source’s code; the converter’s author read the
@@ -74,7 +76,7 @@ source’s checkers first, to confirm the corner convention, as the module state
 **The source’s checkers, reproduced.** `source-replay` runs `verify_cert.py` and
 `verify_cert2.py` as retained, under CPython 3.14.7, as separate processes, holding each
 to its exit status and to a last line beginning `VALID`. Both accept all 320 certificates
-(202 CPU seconds on two workers; 55 for the 48), and `verify_cert.py` reports a least wall
+(202 CPU seconds on two workers; 54 for the 48), and `verify_cert.py` reports a least wall
 clearance of `5e-21` and a least pair separation of `1e-20` at each improving count
 ([`receipts/source-replay.json`](receipts/source-replay.json)).
 
@@ -84,10 +86,10 @@ packet’s printed side and verified value (T-056, T-057 or T-092), or at `n = 1
 Kingbird catalogue’s side and the grid ceiling `12`. Every `S'` lies below both, by
 `3.5e-13` (`n = 211`) to `5.0e-11` (`n = 270`) under the printed side. Matched square for
 square to the known-best witness by nearest centre, one to one at every count, the
-largest centre displacement is `1.44e-3`. Of the 1,543 squares that move by more than
+largest centre displacement is at most `1.442e-3`. Of the 1,543 squares that move by more than
 `1e-8`, 358 are ones the source lists as carrying no force, which its solver moves to give
 them clearance; the other 1,185, at 24 counts that include all eleven squeezed inputs,
-move by at most `4.1e-5` (at `n = 263`, where the source reports 40 zero modes). Every
+move by at most `4.2e-5` (at `n = 263`, where the source reports 40 zero modes). Every
 other square moves by at most `9.2e-9`
 ([`receipts/register-comparison.json`](receipts/register-comparison.json)). So each
 certificate is the register’s packing, made exact, and not a new arrangement.
@@ -106,20 +108,31 @@ workers.
 **The source’s own driver.** `verify_all.sh` reports a failure from its first leg only if
 `verify_cert.py`’s last line fails `grep -q VALID`, which `INVALID` also matches. Run as
 retained on the overlapped `n = 68` control, it prints `verify_cert2 FAIL` and exits 1, and
-never `verify_cert FAIL`, although `verify_cert.py` printed `INVALID` and exited 1. So the
-source’s claim that both checkers accept every certificate rests, for `verify_cert.py`, on
-something its driver did not test; run here with its exit status, `verify_cert.py` does
-accept all 320.
+never `verify_cert FAIL`, although `verify_cert.py` printed `INVALID` and exited 1. The
+batch’s `summarize.py`, which wrote the ✓✓ column of `results.md` and is pinned here by
+digest (read from the checkout at the pin), has the same test: `'VALID' in` the last line.
+So the source’s claim that both checkers accept every certificate rests, for
+`verify_cert.py`, on a test an `INVALID` verdict passes; run here and held to its exit
+status, `verify_cert.py` does accept all 320.
+
+**Open and closed.** The source’s checkers require every square strictly inside the open
+box and every pair strictly apart; this repository’s two accept contact, which is still
+sound for `s(n)`, closed squares with disjoint interiors in the closed box. A certificate
+with an exact contact would pass here and fail there. None of these does: every clearance
+is about `5e-21` and every gap about `1e-20`, and both pairs of checkers accept all 320.
+The overlap controls move a square whose walls stay strictly clear (least clearance
+`1.07e-20`), so each of their refusals is for the overlapping pair.
 
 **A reproduction sample.** `reproduce` runs the source’s solver, `exactsolve.py` as
 retained, on the pinned inputs of `n = 68, 102, 126, 211` and `270` (the smallest count, a
 squeezed input, de Winter’s two packings, one a certified bound only, and the largest
-gap), with one BLAS thread, under CPython 3.14.7, numpy 2.5.2 and scipy 1.17.1: 247 CPU
-seconds in all ([`receipts/reproduction-sample.json`](receipts/reproduction-sample.json)).
+gap), with one BLAS thread, under CPython 3.14.7, numpy 2.5.2 and scipy 1.17.1: 178 CPU
+seconds in all on two workers ([`receipts/reproduction-sample.json`](receipts/reproduction-sample.json)).
 None of the five regenerated certificates is byte for byte the retained one, which is the
-test `reproduce.sh` applies. Each has exactly the retained side `S'`, its squares differ
-from the retained ones at 1 to 46 places by at most `2.5e-24`, far inside the `1e-20` gaps,
-and this repository’s two checkers accept each. So the solve reproduces the bound here and
+test `reproduce.sh` applies. Each has exactly the retained side `S'`; its squares differ
+from the retained ones at 1 to 46 places, the centres by at most `2.5e-24` and the
+tangents `t` by at most `3.3e-24`, far inside the `1e-20` gaps; and this repository’s two
+checkers accept each. So the solve reproduces the bound here and
 not the bytes. At each of the five counts the source reports exact flat motions or free
 squares, positions the contacts do not fix, where the solver’s floating-point linear
 algebra and LP solves choose; that the differences come from there, and from library
@@ -200,7 +213,25 @@ witness’s by more than `1e-8`, and how many of them the source lists as free.
 
 ## Review
 
-REVIEW_PARAGRAPH
+A separately prompted adversarial review of the import, on 2026-10-06
+([review](../../../../docs/project/reviews/review-2026-10-06-evand-exact-optima.md)),
+found the bound $s(n) \le S'_n$ at the 48 counts sound as reasoned and as the receipts
+record it, and ended `defect-open` on one blocking finding: n = 126 kept the
+catalogue’s conjectured optimum `11.77473513240654`, `1.9e-11` above the ceiling the
+certificate now verifies (EX-1). The layer now clears that conjecture, and
+`sqpack.assurance` refuses any decimal conjecture above its record’s verified ceiling.
+Its ten other findings were wording, rounding and receipt fields, and each is fixed in
+the same pass: the motion maxima round up (EX-2), the frontier README counts 47 of the
+register’s packings and de Winter’s n = 126 (EX-3), the reproduction receipt carries its totals and tangent
+differences (EX-4), the Ellsworth statement is credited to the solver’s README and the
+issue rather than the batch README (EX-5), the overlap controls record that each mutant
+stays inside the box, so each refusal is the overlap’s (EX-6), `summarize.py` is named with
+`verify_all.sh` (EX-7), the n = 17 rows of the retained summaries are noted (EX-8), the
+records say which pose is the known-best witness (EX-9), and the nits are fixed
+(EX-10). For EX-11 the review proposed “non-negative”; the 44 per-count KKT reports each
+state the reduced Hessian positive definite once the exact flat motions are set aside,
+so the records now say that and cite the report. The reviewer could not execute code
+and decided no certificate itself.
 
 ## Not Done Here
 

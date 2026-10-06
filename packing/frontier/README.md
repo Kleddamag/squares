@@ -172,7 +172,7 @@ replay disposition, in-horizon overrides, and relevant claims beyond $n = 324$.
 The current baseline reparses the retained Kingbird catalogue through $n = 324$, applies
 Francisco Couzo’s certified packings at 49 counts from $n = 68$ to $307$ (T-056), seven
 of them lowered again by his revision of 3 October 2026 (T-092), and Joost de Winter’s
-at $n = 211$ (T-057), then Evan Daniel’s exact optima of 48 of those packings and of de
+at $n = 211$ (T-057), then Evan Daniel’s exact optima of 47 of those packings and of de
 Winter’s $n = 126$ (T-098), and records the Schadt $n = 29$ repository as a superseded
 numerical witness.
 UnitSquare’s reports at $n = 68, 103, 105, 110, 131$, Griffin Casson’s

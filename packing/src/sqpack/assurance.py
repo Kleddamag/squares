@@ -400,12 +400,40 @@ def check_case_semantics(
         and bool(reported_upper_refs & set(_string_list(blocker.get("evidence"))))
     ]
     verified_upper = case.get("verified_upper_bound")
+    errors.extend(_conjecture_errors(n_value, case.get("conjectured_optimum"), verified_upper))
     same_upper = bounds_agree_at_declared_precision(reported_upper, verified_upper)
     if same_upper and upper_gap_blockers:
         errors.append(f"n={n_value}: stale formal-upper-gap blocker")
     if not same_upper and not upper_gap_blockers:
         errors.append(f"n={n_value}: formal upper trails report without a blocker")
     return errors
+
+
+def _conjecture_errors(n: int, conjecture: object, upper: object) -> list[str]:
+    """A conjectured optimum written as a decimal may not exceed the verified ceiling.
+
+    The decimal is a display, so it is allowed half a unit of its last place above the
+    ceiling, and no more: a record whose certified ceiling lies below the side it
+    conjectures optimal contradicts itself. On 2026-10-05 n = 126 kept the catalogue's
+    conjectured `11.77473513240654` after an exact certificate put its ceiling 1.9e-11
+    below it (T-098, review finding EX-1). A conjecture that is not a decimal, such as
+    `integer`, is not compared.
+    """
+    if not isinstance(conjecture, str) or not isinstance(upper, Mapping):
+        return []
+    try:
+        stated = Decimal(conjecture)
+        ceiling = Decimal(str(upper.get("value")))
+    except InvalidOperation:
+        return []
+    exponent = stated.as_tuple().exponent
+    if not isinstance(exponent, int) or not stated.is_finite() or not ceiling.is_finite():
+        return []
+    if stated - ceiling > Decimal(1).scaleb(exponent) / 2:
+        return [
+            f"n={n}: conjectured optimum {conjecture} exceeds the verified ceiling {ceiling}"
+        ]
+    return []
 
 
 def check_experiment_semantics(experiment: Mapping[str, object]) -> list[str]:

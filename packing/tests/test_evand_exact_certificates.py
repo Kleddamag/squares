@@ -18,6 +18,7 @@ from devtools import apply_exact_optima, apply_upper_bound_packets
 from devtools import check_rational_witness_independent as independent
 from devtools import evand_exact_certificates as certificates
 from devtools.check_source_coverage import load_claims
+from sqpack.assurance import check_case_semantics
 from sqpack.witness import exact_verify
 
 #: Two axis-parallel unit squares side by side, 1e-20 apart, in a box 1e-20 wider than
@@ -181,3 +182,26 @@ def test_the_records_are_the_layer_applied_to_themselves(n: int) -> None:
 def test_the_coverage_record_is_the_layer_applied_to_itself() -> None:
     text = apply_exact_optima.COVERAGE.read_text(encoding="utf-8")
     assert apply_exact_optima.coverage_text(text) == text
+
+
+def _conjecture_findings(conjecture: str) -> list[str]:
+    case = {
+        "n": 126,
+        "conjectured_optimum": conjecture,
+        "verified_upper_bound": {"value": "11.7747351323878328426"},
+    }
+    return [e for e in check_case_semantics(case, {}) if "conjectured optimum" in e]
+
+
+def test_a_conjecture_above_the_certified_ceiling_is_refused() -> None:
+    # The catalogue's side, which n = 126 kept until review finding EX-1.
+    expected = (
+        "n=126: conjectured optimum 11.77473513240654 exceeds the verified ceiling "
+        "11.7747351323878328426"
+    )
+    assert _conjecture_findings("11.77473513240654") == [expected]
+
+
+@pytest.mark.parametrize("conjecture", ["11.77473513238783", "11.7747351323878", "integer"])
+def test_a_conjecture_at_the_ceiling_to_its_last_place_is_kept(conjecture: str) -> None:
+    assert _conjecture_findings(conjecture) == []

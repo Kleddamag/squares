@@ -15521,7 +15521,7 @@ evidence:
       devtools.check_rational_witness_independent decides. Those two share no geometry or
       verification code; their common mode is the parse and the map from t to (c, s), and
       neither imports or copies the source's code. Both accept all 48, with least wall
-      clearance 5e-21 and least pair gap 1e-20 at every count, and all 320 certificates
+      clearance 5e-21 and least pair gap about 1e-20 at every count, and all 320 certificates
       the packet pins (n = 17 held), read from a checkout at the pin and matched to the
       manifest's digests: 2,820 CPU seconds on two workers, 802 for the 48. Three controls
       on each of the 48, decided by both checkers here and by the source's two
@@ -15529,8 +15529,11 @@ evidence:
       closing normal by its exact gap, 1e-20, plus one unit of the side's denominator (1e-30
       to 8e-29), and the box shrunk by its least top or right clearance, 5e-21, plus that
       unit, are refused by all four; the box shrunk by the unit alone is accepted by all
-      four, as it must be when every clearance exceeds the unit. No optimality at any
-      count.
+      four, as it must be when every clearance exceeds the unit. The moved square of each
+      overlap control stays strictly inside the box (least clearance 1.07e-20), so each
+      refusal is for the pair. Both deciders here accept contact and the source's two do
+      not, which is sound for s(n) and moot for these certificates, whose every clearance
+      is about 5e-21. No optimality at any count.
     source_reviewed: '2026-10-05'
 
   - id: E-evand-exact-optima-2026-10-05-source-replay
@@ -15567,9 +15570,10 @@ evidence:
       a separate process, and each is held to its exit status and to a last line
       beginning VALID, not to the published driver verify_all.sh, whose first leg pipes
       verify_cert.py's last line to grep -q VALID, which INVALID also matches
-      (receipts/negative-controls.json runs it on a refused certificate). Both accept all
+      (receipts/negative-controls.json runs it on a refused certificate); the batch's
+      summarize.py, which wrote results.md's verdict column, makes the same test. Both accept all
       48, and all 320 certificates the packet pins (n = 17 held), in 202 CPU seconds on two
-      workers, 55 for the 48 (receipts/source-replay.json); verify_cert.py reports a least
+      workers, 54 for the 48 (receipts/source-replay.json); verify_cert.py reports a least
       wall clearance of 5e-21 and a least pair separation of 1e-20 at each improving
       count. This is a reproduction with the producer's code, not an independent check;
       E-evand-exact-optima-2026-10-05-exact-replay is that. No optimality at any count.

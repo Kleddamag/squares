@@ -19,9 +19,11 @@ the two exact checkers this repository already runs in its ``exact verification`
   ``devtools.check_rational_witness_independent``, which shares no geometry or
   verification code with ``sqpack``.
 
-The parse, the map from ``t`` to ``(c, s)`` and the corner arithmetic are this module's
-own and are the common mode of the two decisions. The source's checkers are not imported
-or read by any code here; ``source-replay`` runs them as separate processes.
+The parse and the map from ``t`` to ``(c, s)`` are this module's own and are the common
+mode of the two decisions; the corners built here go to the independent checker alone,
+which checks their shape itself. The source's checkers are not imported by any code here:
+``source-replay`` runs them as separate processes, and ``controls`` copies them, unchanged,
+into a scratch tree to run the source's ``verify_all.sh``.
 
 **What its author read.** The format as the source's README states it, and the source's
 ``verify_cert.py`` and ``verify_cert2.py``, read before this module was written to
@@ -452,6 +454,15 @@ def _witness_poses(n: int) -> tuple[list[tuple[float, float, float]], str, str]:
     return poses, str(witness["side"]), str(witness.get("source", {}).get("key", ""))
 
 
+def round_up(value: float, digits: int = 4) -> float:
+    """``value`` rounded up to ``digits`` significant digits, for a stated upper bound."""
+    if value <= 0:
+        return 0.0
+    exponent = math.floor(math.log10(value)) - digits + 1
+    scaled = math.ceil(Decimal(repr(value)).scaleb(-exponent))
+    return float(Decimal(scaled).scaleb(exponent))
+
+
 def _turn(left: float, right: float) -> float:
     """The least rotation taking one square's orientation to the other's, modulo 90 degrees."""
     quarter = math.pi / 2
@@ -505,12 +516,12 @@ def pose_match(certificate: Certificate, free: Sequence[int] | None = None) -> d
         "moved": moved,
         "moved_count": len(moved["squares"]),
         "moved_listed_free": len(moved["squares"]) - len(moved["nonfree_squares"]),
-        "largest_centre_displacement": float(f"{largest_shift:.3e}"),
-        "largest_rotation_difference_radians": float(f"{largest_turn:.3e}"),
-        "nonfree_moved_largest_centre_displacement": float(f"{nonfree_shift:.3e}"),
-        "nonfree_moved_largest_rotation_difference_radians": float(f"{nonfree_turn:.3e}"),
-        "unmoved_largest_centre_displacement": float(f"{still_shift:.3e}"),
-        "unmoved_largest_rotation_difference_radians": float(f"{still_turn:.3e}"),
+        "largest_centre_displacement": round_up(largest_shift),
+        "largest_rotation_difference_radians": round_up(largest_turn),
+        "nonfree_moved_largest_centre_displacement": round_up(nonfree_shift),
+        "nonfree_moved_largest_rotation_difference_radians": round_up(nonfree_turn),
+        "unmoved_largest_centre_displacement": round_up(still_shift),
+        "unmoved_largest_rotation_difference_radians": round_up(still_turn),
     }
 
 
@@ -815,6 +826,13 @@ def overlap_control(certificate: Certificate) -> tuple[Certificate, dict[str, An
                 "exact_gap": float(gap),
                 "moved_by_gap_plus": float(excess),
                 "unit": float(unit),
+                "moved_square_wall_clearance": float(
+                    min(
+                        clearance
+                        for x, y in squares[right]
+                        for clearance in (x, y, moved.side - x, moved.side - y)
+                    )
+                ),
             }
         excess *= 2
     raise CertificateError(f"n = {certificate.n}: no small move overlaps the tightest pair")
@@ -953,6 +971,33 @@ def verify_all_vacuity(checkers: Path, mutant: Certificate) -> dict[str, Any]:
     }
 
 
+def annotate_controls(path: Path = CONTROLS_RECEIPT) -> dict[str, Any]:
+    """Add each overlap control's moved-square wall clearance to a committed receipt.
+
+    The control is regenerated from its retained certificate, which is deterministic, and
+    must have the digest the receipt recorded; nothing is decided again. Where the moved
+    square stays strictly inside the box, every checker's refusal can only be for a pair,
+    since the original certificate passed and only that square moved.
+    """
+    receipt = json.loads(read_retained_text(path))
+    for row in receipt["rows"]:
+        if row["control"] != "tightest-pair-overlapped":
+            continue
+        n = int(row["n"])
+        certificate = parse(
+            certificate_path(CERTS, n).read_text(encoding="utf-8"), expected_n=n
+        )
+        mutant, fresh = overlap_control(certificate)
+        if hashlib.sha256(serialize(mutant).encode()).hexdigest() != row["sha256"]:
+            raise CertificateError(f"n = {n}: the overlap control does not regenerate")
+        row["moved_square_wall_clearance"] = fresh["moved_square_wall_clearance"]
+    overlaps = [row for row in receipt["rows"] if row["control"] == "tightest-pair-overlapped"]
+    receipt["overlap_controls_inside_the_box"] = all(
+        row["moved_square_wall_clearance"] > 0 for row in overlaps
+    )
+    return receipt
+
+
 def run_controls(checkers: Path, directory: Path, workers: int) -> dict[str, Any]:
     jobs = [(str(checkers), str(directory), n) for n in IMPROVING]
     started = time.monotonic()
@@ -977,6 +1022,11 @@ def run_controls(checkers: Path, directory: Path, workers: int) -> dict[str, Any
         ),
         "wall_seconds": round(time.monotonic() - started, 1),
         "all_as_expected": all(row["as_expected"] for row in rows),
+        "overlap_controls_inside_the_box": all(
+            row["moved_square_wall_clearance"] > 0
+            for row in rows
+            if row["control"] == "tightest-pair-overlapped"
+        ),
         "verify_all_vacuity": verify_all_vacuity(checkers, overlap_control(smallest)[0]),
         "rows": rows,
     }
@@ -1033,6 +1083,16 @@ def _reproduce_one(job: tuple[str, int]) -> dict[str, Any]:
             row["squares_differing"] = sum(
                 mine != kept for mine, kept in zip(ours.poses, theirs.poses, strict=True)
             )
+            row["largest_tangent_difference"] = float(
+                f"{
+                    max(
+                        (
+                            float(abs(mine.t - kept.t))
+                            for mine, kept in zip(ours.poses, theirs.poses, strict=True)
+                        ),
+                        default=0.0,
+                    ):.3e}"
+            )
             row["largest_coordinate_difference"] = float(
                 f"{
                     max(
@@ -1076,6 +1136,8 @@ def run_reproduce(inputs: Path, counts: Sequence[int], workers: int) -> dict[str
             "scipy": scipy.__version__,
         },
         "solver_sha256": sha256(EXACT / "exactsolve.py"),
+        "workers": workers,
+        "cpu_seconds": round(sum(row["cpu_seconds"] for row in rows), 1),
         "rows": rows,
     }
 
@@ -1276,6 +1338,11 @@ def _command_reproduce(args: argparse.Namespace) -> int:
 
 
 def _command_controls(args: argparse.Namespace) -> int:
+    receipt = annotate_controls(args.receipt) if args.annotate else None
+    if receipt is not None:
+        _write_json(args.receipt, receipt)
+        print(f"overlap controls inside the box: {receipt['overlap_controls_inside_the_box']}")
+        return 0 if receipt["overlap_controls_inside_the_box"] else 1
     receipt = run_controls(EXACT, CERTS, args.workers)
     _write_json(args.receipt, receipt)
     unexpected = [
@@ -1324,6 +1391,11 @@ def main(argv: Sequence[str] | None = None) -> int:
     controls = commands.add_parser("controls")
     controls.add_argument("--workers", type=int, default=1)
     controls.add_argument("--receipt", type=Path, default=CONTROLS_RECEIPT)
+    controls.add_argument(
+        "--annotate",
+        action="store_true",
+        help="add the overlap controls' wall clearances to the committed receipt",
+    )
     controls.set_defaults(run=_command_controls)
     args = parser.parse_args(argv)
     return int(args.run(args))

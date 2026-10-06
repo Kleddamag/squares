@@ -208,6 +208,17 @@ experiment:
       passes it in full mode in 842 s, checking all 7,571 live rows in full and 21,980 collision regions by
       123,141,184 exact facet checks. It excludes its own 8 states, one orbit; the certified census after it
       is 36,892 states in 4,699 orbits.
+  - shape: determination
+    role: outcome
+    question: Is draw 17 (mask 5503965, stratum c3/i4/d>=8) infeasible at U, by a certificate the kernel's checker
+      accepts and the standing verifier re-proves in full?
+    outcome: criterion_met
+    checked_by: The run (receipts/U/kernel-u17-bc428.json) returns PASS_CERTIFIED_CLOSED in 1,366 s of wall and 1,335 s
+      of process CPU (producer 727 s, checker 637 s) on 79 steps and 5,248 rows in 5 rounds, rows finest at
+      1/128, closure all_parent_poses_forbidden for side-N2 at step 78. The standing verifier at cebb5d15a
+      passes it in full mode in 592 s, checking all 5,113 live rows in full and 15,236 collision regions by
+      76,511,316 exact facet checks. It excludes its own 8 states, one orbit; the certified census after it is
+      36,884 states in 4,698 orbits.
   verdict:
     decision: in-progress
     primary_criterion: The fraction of the frozen states the kernel excludes under SW9's recipe within the 7,000 s
@@ -258,6 +269,7 @@ reported as not run.
 | 13 | c<=2/i>=5/d4 | 4061110 | closed, 3 rounds, admitted | 984 s | full pass, 452 s |
 | 14 | c<=2/i<=3/d>=8 | 4456442 | closed, 4 rounds, admitted | 1,281 s | full pass, 572 s |
 | 16 | c3/i<=3/d>=8 | 4648955 | closed, 7 rounds, admitted | 1,972 s | full pass, 842 s |
+| 17 | c3/i4/d>=8 | 5503965 | closed, 5 rounds, admitted | 1,335 s | full pass, 592 s |
 
 <!-- This document follows common-doc-guidelines.md.
 See github.com/jlevy/practical-prose and review guidelines before editing.

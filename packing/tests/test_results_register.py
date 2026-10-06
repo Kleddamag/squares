@@ -42,6 +42,31 @@ def test_the_live_register_is_healthy() -> None:
     assert check_results.main() == 0
 
 
+def test_a_dated_records_own_title_is_not_held_to_the_register(tmp_path: Path) -> None:
+    """A review keeps the provisional id it was written with, and the synopsis quotes it.
+
+    T-101 was registered as the provisional T-118, and its two reviews, stored as their
+    reviewers wrote them, still name T-118 in their titles, which the synopsis's document
+    map quotes. Only those quoted titles leave the reader-tier mention check; the same id
+    anywhere else on the page is still refused.
+    """
+    document_map = safe_load(check_results.DOCUMENT_MAP.read_text(encoding="utf-8"))
+    links = check_results.record_links(document_map)
+    review = "docs/project/reviews/review-2026-10-06-evand-exact-ceilings.md"
+    (quoted,) = [link for link in links if link.endswith(f"({review})")]
+    assert "T-118" in quoted
+    maintained = [
+        entry["path"] for entry in document_map["documents"] if entry["authority"] != "record"
+    ]
+    assert maintained
+    assert not any(link.endswith(f"({path})") for link in links for path in maintained)
+    page = tmp_path / "page.md"
+    page.write_text(f"| {quoted} | review |\n\nT-118 is named here too.\n", encoding="utf-8")
+    remaining = check_results.reader_tier_text(page, links)
+    assert quoted not in remaining
+    assert re.findall(r"\bT-\d{3}\b", remaining) == ["T-118"]
+
+
 def test_confirmation_ladder_on_synthetic_atoms() -> None:
     assert derive_confirmation([]) == "C0"
     read_only = {

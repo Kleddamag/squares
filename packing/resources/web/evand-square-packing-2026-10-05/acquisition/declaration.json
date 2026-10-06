@@ -724,135 +724,115 @@
   },
   {
    "match": "s12/search/exact/batch/certs/n-?.cert",
-   "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
+   "reason": "certifies a side above the register's reported one which, rounded up at the printed precision, lies at or above the verified upper bound the record already holds, so no case record cites it; the source asks for nothing to be registered from it, and the replay receipts carry its verdict and digest"
   },
   {
    "match": "s12/search/exact/batch/certs/n-1?.cert",
-   "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
+   "reason": "certifies a side above the register's reported one which, rounded up at the printed precision, lies at or above the verified upper bound the record already holds, so no case record cites it; the source asks for nothing to be registered from it, and the replay receipts carry its verdict and digest"
   },
   {
-   "match": "s12/search/exact/batch/certs/n-2?.cert",
-   "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
+   "match": "s12/search/exact/batch/certs/n-2[012345679].cert",
+   "reason": "certifies a side above the register's reported one which, rounded up at the printed precision, lies at or above the verified upper bound the record already holds, so no case record cites it; the source asks for nothing to be registered from it, and the replay receipts carry its verdict and digest"
   },
   {
-   "match": "s12/search/exact/batch/certs/n-3?.cert",
-   "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
+   "match": "s12/search/exact/batch/certs/n-3[01234568].cert",
+   "reason": "certifies a side above the register's reported one which, rounded up at the printed precision, lies at or above the verified upper bound the record already holds, so no case record cites it; the source asks for nothing to be registered from it, and the replay receipts carry its verdict and digest"
   },
   {
-   "match": "s12/search/exact/batch/certs/n-4?.cert",
-   "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
+   "match": "s12/search/exact/batch/certs/n-4[023456789].cert",
+   "reason": "certifies a side above the register's reported one which, rounded up at the printed precision, lies at or above the verified upper bound the record already holds, so no case record cites it; the source asks for nothing to be registered from it, and the replay receipts carry its verdict and digest"
   },
   {
-   "match": "s12/search/exact/batch/certs/n-5?.cert",
-   "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
+   "match": "s12/search/exact/batch/certs/n-5[26789].cert",
+   "reason": "certifies a side above the register's reported one which, rounded up at the printed precision, lies at or above the verified upper bound the record already holds, so no case record cites it; the source asks for nothing to be registered from it, and the replay receipts carry its verdict and digest"
   },
   {
-   "match": "s12/search/exact/batch/certs/n-6[012345679].cert",
-   "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
+   "match": "s12/search/exact/batch/certs/n-6[01234567].cert",
+   "reason": "certifies a side above the register's reported one which, rounded up at the printed precision, lies at or above the verified upper bound the record already holds, so no case record cites it; the source asks for nothing to be registered from it, and the replay receipts carry its verdict and digest"
   },
   {
-   "match": "s12/search/exact/batch/certs/n-7?.cert",
-   "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
+   "match": "s12/search/exact/batch/certs/n-7[23456789].cert",
+   "reason": "certifies a side above the register's reported one which, rounded up at the printed precision, lies at or above the verified upper bound the record already holds, so no case record cites it; the source asks for nothing to be registered from it, and the replay receipts carry its verdict and digest"
   },
   {
-   "match": "s12/search/exact/batch/certs/n-8?.cert",
-   "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
+   "match": "s12/search/exact/batch/certs/n-8[0124569].cert",
+   "reason": "certifies a side above the register's reported one which, rounded up at the printed precision, lies at or above the verified upper bound the record already holds, so no case record cites it; the source asks for nothing to be registered from it, and the replay receipts carry its verdict and digest"
   },
   {
    "match": "s12/search/exact/batch/certs/n-9?.cert",
-   "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
+   "reason": "certifies a side above the register's reported one which, rounded up at the printed precision, lies at or above the verified upper bound the record already holds, so no case record cites it; the source asks for nothing to be registered from it, and the replay receipts carry its verdict and digest"
   },
   {
-   "match": "s12/search/exact/batch/certs/n-10[014789].cert",
-   "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
+   "match": "s12/search/exact/batch/certs/n-100.cert",
+   "reason": "certifies a side above the register's reported one which, rounded up at the printed precision, lies at or above the verified upper bound the record already holds, so no case record cites it; the source asks for nothing to be registered from it, and the replay receipts carry its verdict and digest"
   },
   {
    "match": "s12/search/exact/batch/certs/n-11[123456789].cert",
-   "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
+   "reason": "certifies a side above the register's reported one which, rounded up at the printed precision, lies at or above the verified upper bound the record already holds, so no case record cites it; the source asks for nothing to be registered from it, and the replay receipts carry its verdict and digest"
   },
   {
-   "match": "s12/search/exact/batch/certs/n-12[01245789].cert",
-   "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
+   "match": "s12/search/exact/batch/certs/n-12[01].cert",
+   "reason": "certifies a side above the register's reported one which, rounded up at the printed precision, lies at or above the verified upper bound the record already holds, so no case record cites it; the source asks for nothing to be registered from it, and the replay receipts carry its verdict and digest"
   },
   {
    "match": "s12/search/exact/batch/certs/n-13[3456789].cert",
-   "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
+   "reason": "certifies a side above the register's reported one which, rounded up at the printed precision, lies at or above the verified upper bound the record already holds, so no case record cites it; the source asks for nothing to be registered from it, and the replay receipts carry its verdict and digest"
   },
   {
-   "match": "s12/search/exact/batch/certs/n-14?.cert",
-   "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
+   "match": "s12/search/exact/batch/certs/n-14[01234].cert",
+   "reason": "certifies a side above the register's reported one which, rounded up at the printed precision, lies at or above the verified upper bound the record already holds, so no case record cites it; the source asks for nothing to be registered from it, and the replay receipts carry its verdict and digest"
   },
   {
-   "match": "s12/search/exact/batch/certs/n-15[013789].cert",
-   "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
+   "match": "s12/search/exact/batch/certs/n-15[789].cert",
+   "reason": "certifies a side above the register's reported one which, rounded up at the printed precision, lies at or above the verified upper bound the record already holds, so no case record cites it; the source asks for nothing to be registered from it, and the replay receipts carry its verdict and digest"
   },
   {
    "match": "s12/search/exact/batch/certs/n-16?.cert",
-   "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
-  },
-  {
-   "match": "s12/search/exact/batch/certs/n-17[01345689].cert",
-   "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
+   "reason": "certifies a side above the register's reported one which, rounded up at the printed precision, lies at or above the verified upper bound the record already holds, so no case record cites it; the source asks for nothing to be registered from it, and the replay receipts carry its verdict and digest"
   },
   {
    "match": "s12/search/exact/batch/certs/n-18[3456789].cert",
-   "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
+   "reason": "certifies a side above the register's reported one which, rounded up at the printed precision, lies at or above the verified upper bound the record already holds, so no case record cites it; the source asks for nothing to be registered from it, and the replay receipts carry its verdict and digest"
   },
   {
-   "match": "s12/search/exact/batch/certs/n-19[012345678].cert",
-   "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
-  },
-  {
-   "match": "s12/search/exact/batch/certs/n-20[012345].cert",
-   "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
+   "match": "s12/search/exact/batch/certs/n-19[0123456].cert",
+   "reason": "certifies a side above the register's reported one which, rounded up at the printed precision, lies at or above the verified upper bound the record already holds, so no case record cites it; the source asks for nothing to be registered from it, and the replay receipts carry its verdict and digest"
   },
   {
    "match": "s12/search/exact/batch/certs/n-21[23456789].cert",
-   "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
+   "reason": "certifies a side above the register's reported one which, rounded up at the printed precision, lies at or above the verified upper bound the record already holds, so no case record cites it; the source asks for nothing to be registered from it, and the replay receipts carry its verdict and digest"
   },
   {
-   "match": "s12/search/exact/batch/certs/n-22[012345679].cert",
-   "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
-  },
-  {
-   "match": "s12/search/exact/batch/certs/n-23[012345].cert",
-   "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
+   "match": "s12/search/exact/batch/certs/n-22[012345].cert",
+   "reason": "certifies a side above the register's reported one which, rounded up at the printed precision, lies at or above the verified upper bound the record already holds, so no case record cites it; the source asks for nothing to be registered from it, and the replay receipts carry its verdict and digest"
   },
   {
    "match": "s12/search/exact/batch/certs/n-24[23456789].cert",
-   "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
+   "reason": "certifies a side above the register's reported one which, rounded up at the printed precision, lies at or above the verified upper bound the record already holds, so no case record cites it; the source asks for nothing to be registered from it, and the replay receipts carry its verdict and digest"
   },
   {
-   "match": "s12/search/exact/batch/certs/n-25[012345678].cert",
-   "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
-  },
-  {
-   "match": "s12/search/exact/batch/certs/n-26[0124567].cert",
-   "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
+   "match": "s12/search/exact/batch/certs/n-25[0123456].cert",
+   "reason": "certifies a side above the register's reported one which, rounded up at the printed precision, lies at or above the verified upper bound the record already holds, so no case record cites it; the source asks for nothing to be registered from it, and the replay receipts carry its verdict and digest"
   },
   {
    "match": "s12/search/exact/batch/certs/n-27[456789].cert",
-   "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
+   "reason": "certifies a side above the register's reported one which, rounded up at the printed precision, lies at or above the verified upper bound the record already holds, so no case record cites it; the source asks for nothing to be registered from it, and the replay receipts carry its verdict and digest"
   },
   {
    "match": "s12/search/exact/batch/certs/n-28?.cert",
-   "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
+   "reason": "certifies a side above the register's reported one which, rounded up at the printed precision, lies at or above the verified upper bound the record already holds, so no case record cites it; the source asks for nothing to be registered from it, and the replay receipts carry its verdict and digest"
   },
   {
-   "match": "s12/search/exact/batch/certs/n-29[01345689].cert",
-   "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
-  },
-  {
-   "match": "s12/search/exact/batch/certs/n-30[089].cert",
-   "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
+   "match": "s12/search/exact/batch/certs/n-30[89].cert",
+   "reason": "certifies a side above the register's reported one which, rounded up at the printed precision, lies at or above the verified upper bound the record already holds, so no case record cites it; the source asks for nothing to be registered from it, and the replay receipts carry its verdict and digest"
   },
   {
    "match": "s12/search/exact/batch/certs/n-31?.cert",
-   "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
+   "reason": "certifies a side above the register's reported one which, rounded up at the printed precision, lies at or above the verified upper bound the record already holds, so no case record cites it; the source asks for nothing to be registered from it, and the replay receipts carry its verdict and digest"
   },
   {
-   "match": "s12/search/exact/batch/certs/n-32?.cert",
-   "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
+   "match": "s12/search/exact/batch/certs/n-32[01234].cert",
+   "reason": "certifies a side above the register's reported one which, rounded up at the printed precision, lies at or above the verified upper bound the record already holds, so no case record cites it; the source asks for nothing to be registered from it, and the replay receipts carry its verdict and digest"
   },
   {
    "match": "s12/search/exact/batch/inputs/*.txt",

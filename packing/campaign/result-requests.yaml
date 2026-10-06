@@ -54,11 +54,23 @@ issues:
         source: body
         not_registered: >-
           The author asks for nothing to be registered from them. The 272 other than n =
-          17 were replayed here with the 48 and are pinned by digest in the packet; they
-          move no case. At the 78 counts whose verified ceiling trails its report they
-          could carry it, a use the author did not ask for, which think-70bh holds for
-          the owner's decision.
+          17 were replayed here with the 48 and are pinned by digest in the packet. At the
+          78 counts whose verified ceiling trailed its report they could carry it, a use
+          the author did not ask for; the owner decided on 6 October 2026 to import them
+          (think-70bh), and 77 now carry the verified ceiling as T-101 (ceilings-77). The
+          other 195 replayed move no case, n = 29 among them, whose interval-certified
+          bound already lies 5e-21 below the certificate's side.
         queued: false
+      - key: ceilings-77
+        claim: >-
+          Of the 273, the exact certificates at 77 counts from n = 28 to 300, each 1.2e-16
+          to 9.8e-15 above the printed side, offered with the rest as an independent exact
+          replay of the existing upper bounds; rounded up at the printed precision, each
+          lies below the verified ceiling the record held at its count
+        source: body
+        register: [T-101]
+        evidence: [E-evand-exact-ceilings-2026-10-05-report, E-evand-exact-ceilings-2026-10-05-exact-replay, E-evand-exact-ceilings-2026-10-05-source-replay]
+        bead: think-70bh
       - key: kkt-local-minima
         claim: >-
           315 of the 321 exact points are KKT local minima, 44 of the 48 improvements

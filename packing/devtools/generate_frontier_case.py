@@ -2324,6 +2324,12 @@ def exact_optimum_counts() -> frozenset[int]:
     return frozenset(module.IMPROVING)
 
 
+def exact_ceiling_counts() -> frozenset[int]:
+    """The counts whose verified upper lane Evan Daniel's other certificates own (T-101)."""
+    module = importlib.import_module("devtools.evand_exact_certificates")
+    return frozenset(module.CEILINGS)
+
+
 @cache
 def _catalogue_certificates() -> Any:
     """`devtools.catalogue_upper_bounds`, imported late for the same reason as the intake."""
@@ -2338,15 +2344,18 @@ def adopt_upper_bound_packet(n: int, text: str) -> str:
     section, and keeps the drafted packing's paragraph as the previous best known packing.
     At the catalogue's counts certified exactly on 2026-10-05 (T-088, T-089),
     `devtools.catalogue_upper_bounds` moves the verified upper lane and its blocker the
-    same way, and leaves the body, whose intake prose is the record's own. Last, at the 48
+    same way, and leaves the body, whose intake prose is the record's own. Then, at the 48
     counts whose packing Evan Daniel solved to its exact optimum (T-098),
-    `devtools.apply_exact_optima` moves both upper lanes to the certified side.
+    `devtools.apply_exact_optima` moves both upper lanes to the certified side; last, at
+    the 77 counts where his other certificates lower the verified ceiling (T-101),
+    `devtools.apply_exact_ceilings` moves the verified upper lane.
     """
     intake, plans, earlier = _upper_bound_packets()
     plan = plans.get(n)
     adopted = text if plan is None else intake.apply_case(plan, text, earlier[n])
     adopted = _catalogue_certificates().apply_case(n, adopted)
     adopted = importlib.import_module("devtools.apply_exact_optima").apply_case(n, adopted)
+    adopted = importlib.import_module("devtools.apply_exact_ceilings").apply_case(n, adopted)
     if adopted == text:
         return text
     # The intake moves the verified upper bound's evidence, so the record's
@@ -2749,7 +2758,11 @@ def check_records(
             )
             # A layer another tool writes is reflowed by the formatter, so a count one
             # adopted is compared with its whitespace collapsed.
-            adopted = n in packet_adopted_counts() or n in exact_optimum_counts()
+            adopted = (
+                n in packet_adopted_counts()
+                or n in exact_optimum_counts()
+                or n in exact_ceiling_counts()
+            )
             write_record(generated, record_path(scratch_dir, n))
             checked += 1
             comparable = without_rigidity(existing)

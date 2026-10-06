@@ -64,7 +64,7 @@ from typing import Any
 import pytest
 
 from devtools import validate_schemas
-from devtools.apply_upper_bound_packets import PREVIOUS_HEADING, earlier_reports
+from devtools.apply_upper_bound_packets import PREVIOUS_HEADING, earlier_reports, normalized
 from devtools.check_basic_bounds import check_case_basic_bounds
 from devtools.check_case_prose import check_case_file
 from devtools.check_source_coverage import COVERAGE, pending_intake_blocker, record_catalogue
@@ -1100,7 +1100,10 @@ def test_a_refresh_keeps_the_assessment_and_rewrites_only_what_moved(tmp_path: P
     assert refresh_records([179], args, availability, catalogue) == 0
 
     refreshed = record_path(tmp_path, 179).read_text(encoding="utf-8")
-    assert refreshed == committed
+    # Since 2026-10-06 the count's verified upper lane is T-101's, a layer the formatter
+    # reflows, so the refresh is compared as `check_records` compares an adopted count:
+    # whitespace collapsed.
+    assert normalized(refreshed) == normalized(committed)
     assert "  rigidity:\n    property: " in refreshed
     drafted = redraft(
         179,
@@ -1111,7 +1114,7 @@ def test_a_refresh_keeps_the_assessment_and_rewrites_only_what_moved(tmp_path: P
         retrieved_date="2026-09-30",
     )
     assert "  rigidity: null\n" in drafted
-    assert with_rigidity_of(committed, drafted) == committed
+    assert normalized(with_rigidity_of(committed, drafted)) == normalized(committed)
 
 
 def test_an_optimizer_the_line_credits_nowhere_else_is_credited_and_dated() -> None:

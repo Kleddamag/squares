@@ -45,6 +45,7 @@ from pathlib import Path, PurePosixPath
 from typing import Any
 
 from devtools.build_bound_citations import RECENT_SINCE
+from devtools.render_document_map import document_link
 from devtools.result_status import STATUSES, activity_problems, latest_review, status
 from devtools.rung_prose import REGISTER_FIELDS, Standing, label_problems
 from devtools.verifier_registry import RANK, confirming_runs, strongest
@@ -1038,6 +1039,32 @@ def verification_relation(declared: str, derived: str) -> str:
     return "supported"
 
 
+def record_links(document_map: Mapping[str, Any]) -> tuple[str, ...]:
+    """The document map's links to dated records, each written with the record's own title.
+
+    The synopsis's document map links each document by its own H1
+    (`devtools.render_document_map`). A document of `record` authority, such as a review
+    stored as its reviewer wrote it, keeps the result ids it was written with and is never
+    edited to follow a renumbering. When a provisional id is renumbered at a merge, as
+    T-118 became T-101 on 6 October 2026, the record's title still names the old id, so
+    these links are left out of the reader-tier mention check; the renumbered entry's
+    notes say which id the record means.
+    """
+    return tuple(
+        document_link(document["path"])
+        for document in document_map.get("documents", ())
+        if document.get("authority") == "record"
+    )
+
+
+def reader_tier_text(path: Path, links: Iterable[str]) -> str:
+    """A reader-tier file's text, less `record_links`; every other mention is checked."""
+    text = path.read_text(encoding="utf-8")
+    for link in links:
+        text = text.replace(link, "")
+    return text
+
+
 def main() -> int:
     problems: list[str] = []
     register = safe_load(RESULTS.read_text(encoding="utf-8"))
@@ -1163,8 +1190,9 @@ def main() -> int:
     problems.extend(rung_label_problems(results, standings))
 
     known = set(actual_ids)
+    links = record_links(document_map)
     for path in READER_TIER:
-        text = path.read_text(encoding="utf-8")
+        text = reader_tier_text(path, links)
         problems.extend(
             f"{path.name}: mentions unknown result {mention}"
             for mention in sorted(set(re.findall(r"\bT-\d{3}\b", text)))

@@ -2048,7 +2048,7 @@ agenda:
     owner_focus: correctness
     instances:
     - 17
-    state: in_progress
+    state: complete
     priority: 1
     question: >-
       Is draw 31 of BC-428's frozen draw (mask 6015871, stratum c4/i>=5/d>=8), the one
@@ -2088,7 +2088,12 @@ agenda:
       worktree at cebb5d15a, so BC-424's endpoint-state control and lane K's endpoint7
       control cover it and no new control runs. Admission is the standard one: the
       standing verifier's full pass and the census with the endpoint surviving. Evidence
-      record exp-258.
+      record exp-258. Complete
+      with exp-258 accepted: draw 31 closed in 577 s of wall and 547 s of process CPU, the
+      standing verifier passed it in full in 266 s, and s183-bc429-u31 is admitted, the
+      census at 36,784 states in 4,685 orbits with the endpoint surviving. Every one of
+      BC-428's 31 draws now has a verdict; counted with exp-257's, 26 of 29 counted draws
+      closed.
 ---
 # Agenda 042: The n11 Settlement Ladder and Low-n Angles
 

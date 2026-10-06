@@ -1539,10 +1539,12 @@ The session before it:
 BC-418’s n17 overnight lanes from the clean run worktree at `cebb5d15a`, admitting each
 closure on the standing kernel verifier’s full pass.
 It stopped at its deadline, its resource rollups withheld because they carry model
-identifiers (`think-h8oz`) and its certification pending (`think-b8hb`).
+identifiers (`think-h8oz`); a hosted fast gate at `b68744cba` (PR 379) later certified
+its handover.
 
-- **Certified residue.** 126,168 states in 15,953 orbits fell to 36,800 states in 4,687
-  orbits under 56 admitted entries, the endpoint surviving.
+- **Certified residue.** 126,168 states in 15,953 orbits fell to 36,792 states in 4,686
+  orbits under 57 admitted entries, the endpoint surviving, counting u29, admitted after
+  exp-257’s verdict.
 - **Accepted.** H-267 is confirmed: the entries of arity at most seven leave 8,191
   orbits
   ([exp-251](packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-251-h267-n17-overnight-flag-certification.md)).

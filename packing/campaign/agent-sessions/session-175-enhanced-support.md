@@ -14,7 +14,6 @@ session:
   branch: guzhou/n17-residual-compatibility
   primary_bead: think-wh57
   status: stopped
-  certification_pending: think-q0z7
   goal: Find additional parent-row cliques in frozen half/octagon enhanced-core model using
     all raw pieces, or honest bounded unknown. No row-negative/admission/global proof.
   workflow_phases:
@@ -23,7 +22,7 @@ session:
     recording: contemporaneous
     clock_role: work
     objective: Add bounded full enhanced-parent support wrapper around unchanged LazySupports,
-      exact half provenance and independent replay; controls before root source gate.
+      exact half provenance and fresh replay; controls before root source gate.
     status: completed
     entered_by: session_start
     switch_reason: null
@@ -43,12 +42,12 @@ session:
     - packing/devtools/probe_n17_enhanced_row_support.py
     - packing/tests/test_n17_enhanced_row_support.py
     stop_reason: Source/control gate accepted; this source slot ended before the single measurement.
-    next_action: ONE frozen B enhanced-parent search, then root independent replay.
+    next_action: ONE frozen B enhanced-parent search, then root fresh replay.
   - workflow: research-loop
     focus: correctness
     recording: contemporaneous
     clock_role: work
-    objective: ONE frozen enhanced-parent B search and root independent retained-clique replay.
+    objective: ONE frozen enhanced-parent B search and root fresh retained-clique replay.
     status: stopped
     entered_by: evidence_checkpoint
     switch_reason: Independent source/control gate 09:16 UTC accepted before target.
@@ -57,16 +56,16 @@ session:
     deadline_at: '2026-10-04T09:32:42.807908+00:00'
     expected_output: packing/campaign/explorations/X048-session-175-enhanced-support/README.md
     validation_command: ONE explicit project Python enhanced support CLI; immutable Job 240 s;
-      root direct independent replay Job 150 s
+      root direct fresh replay Job 150 s
     kill_condition: 100k unique pairs/100k nodes/180 s/512 MiB or Job 240 s ends attempt; no rerun/cap ladder.
     fallback: Retain 18 enhanced parent supports/72 fixed tuple loss evidence, all other 78 rows unknown;
       no cap ladder.
     outcome: 26 cliques support 41/96 parents (+23), 55 unknown; 100k pairs/134 DFS/157.625 s, 170758144 B.
-      Independent 390 pairs/5044 inventory replay accepted; no unsupportedness.
+      Fresh 390 pairs/5044 inventory replay accepted; no unsupportedness.
     evidence:
     - packing/campaign/explorations/X048-session-175-enhanced-support/README.md
     - packing/campaign/resource-usage/codex-session-175.yaml
-    stop_reason: ONE target reached 100k pair cap; independently checked 41 parents (+23), 55 unknown.
+    stop_reason: ONE target reached 100k pair cap; freshly checked 41 parents (+23), 55 unknown.
       Source/evidence accepted; hosted certification remains explicit.
     next_action: Observe final metadata current-head CI, then close/sync think-wh57; next scheduled
       project requires new frozen phase/ownership and source gate. No A target repeat.
@@ -88,11 +87,11 @@ session:
   - Project 15 min reserve, outer 14:36:46Z and 30 min window final reserve binding; no retrospective
     deadline extension.
   progress:
-    metric: Independently replayed parent-row support beyond 18 known enhanced-model rows
-    before: H7 retained tuples support 18/96; J independent 72 fixed tuple losses do not establish
+    metric: Freshly replayed parent-row support beyond 18 known enhanced-model rows
+    before: H7 retained tuples support 18/96; J's fresh 72 fixed tuple losses do not establish
       other 78 row unsupportedness.
     after: 26 cliques support 41/96 parents (+23), 55 unknown; 100k pairs/134 DFS/157.625 s, 170758144 B.
-      Independent 390 pairs/5044 inventory replay accepted; no unsupportedness.
+      Fresh 390 pairs/5044 inventory replay accepted; no unsupportedness.
   delegations: []
   outputs:
   - packing/campaign/explorations/X048-session-175-enhanced-support/README.md
@@ -108,7 +107,7 @@ session:
   - Old B–J/G/I immutable. Historical cold checks reused; the new target and replay cover only
     enhanced binary supports.
   - Root source/control gate passed; 36 tests/Ruff/types and the endpoint's 225 fresh pairs
-    accepted. ONE B run stopped at its pair guard; the independent 5044-atom inventory, H7 prefix
+    accepted. ONE B run stopped at its pair guard; the fresh 5044-atom inventory, H7 prefix
     and 390 fresh pairs confirm 41 parents. All 5 Jobs empty, cleanup true, no errors.
   - Native aggregate ONCE exact start 2026-10-04T08:57:34.275511+00:00, cutoff 2026-10-04T09:24:27.705513+00:00,
     actual end 2026-10-04T09:24:30.780378+00:00. Declared branch interval; live/boundary lower
@@ -119,9 +118,12 @@ session:
     14d131 coherent cohort refresh preserves the existing 10% policy and ceilings. Seven focused
     controls pass; the full supported-host suite passes. Windows subprocess ancestor permission failures remain classified separately,
     no host/policy fix.
-  stop_reason: ONE target reached 100k pair cap; independently checked 41 parents (+23), 55 unknown.
+  - 'full gate: fast at b68744cba08d770c50f3c4494f9e40c13db724cf: passed (hosted Packing validation
+    run 37433376429 on PR 379, after stack 357 merged into main with PR 356, the rebuild of
+    PR 351; this head carries the session''s work unchanged)'
+  stop_reason: ONE target reached 100k pair cap; freshly checked 41 parents (+23), 55 unknown.
     Source/evidence accepted; hosted certification remains explicit.
-  next_action: Await Joshua and current-layer required CI under think-q0z7.
+  next_action: None for this session; its rebuilt layer (PR 356) merged with stack 357.
     No active research executor or reserved follow-up; original intervals are historical.
   ended_at: '2026-10-04T09:24:30.780378+00:00'
   handoff_role: administrative_closeout

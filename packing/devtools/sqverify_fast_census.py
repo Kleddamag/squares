@@ -99,6 +99,7 @@ MIXED_PACKETS = (
     "wand125-mixed-bounds-evening-2026-10-04",
     "wand125-mixed-bounds-2026-10-05",
     "wand125-mixed-bounds-finer-net-2026-10-05",
+    "wand125-mixed-bounds-finer-net-2026-10-06",
 )
 #: The standard net's direction count; a format M file may declare another.
 STANDARD_DIRECTIONS = 201

@@ -27,6 +27,100 @@ def test_the_audit_recomputes_to_its_receipt() -> None:
     assert declared.main(["audit", "--check"]) == 0
 
 
+@pytest.mark.parametrize("key", sorted(declared.CERTIFICATES))
+def test_every_certificate_recomputes_to_its_receipt(key: str) -> None:
+    assert declared.main(["audit", "--certificate", key, "--check"]) == 0
+
+
+def test_the_finer_net_of_6_october_holds_lemma_n0() -> None:
+    """mixed_n18_L4704 (T-099): core 1999/2000 on 832 tangents of step 1/2006."""
+    facts = declared.audit(key="n18-L4704")
+    assert facts["status"] == "EXACT_PREMISES_HOLD"
+    assert all(facts["premises"].values())
+    assert facts["net"]["step"] == "1/2006"
+    assert facts["net"]["count"] == "832"
+    assert facts["net"]["rotated_side_upper"] == "4011993/4012000"
+    assert facts["net"]["endpoint_check"] == "497/4024036"
+    assert (facts["mass"], facts["rectangles"]) == ("1799999/100000", 209)
+    assert facts["oblique_records"] == 831
+    n19 = declared.audit(key="n19-L48229")
+    assert (n19["mass"], n19["rectangles"], n19["oblique_records"]) == (
+        "1899999/100000",
+        313,
+        415,
+    )
+    assert n19["net"] == declared.audit()["net"]
+
+
+@pytest.mark.parametrize(
+    ("key", "listed", "rows"), [("n18-L4704", 2515, 209), ("n19-L48229", 1267, 313)]
+)
+def test_each_bundle_of_6_october_is_bound_to_its_net(key: str, listed: int, rows: int) -> None:
+    stated = declared.CERTIFICATES[key]
+    record = json.loads((stated.receipts / "bundle.json").read_text(encoding="utf-8"))
+    facts = declared.audit(key=key)
+    assert record["status"] == "BUNDLE_BOUND_TO_PACKET_AND_NET"
+    assert record["certificate"] == stated.name
+    assert (record["listed_files"], record["code_files"]) == (listed, 10)
+    assert record["oblique_inputs"] == facts["oblique_records"]
+    assert record["rectangle_images"] == 8 * rows
+    assert record["upstream_oblique_nodes"] == facts["oblique_nodes"]
+
+
+def test_the_one_retained_driver_differs_from_the_n50_copy_only_in_its_worker_cap() -> None:
+    """mixed_n18_L4704's code/verify_mixed_full_proof.py is retained because one line
+    differs from the mixed_n50_L740 copy: the bound on --workers, 16 where it was 3."""
+    stated = declared.CERTIFICATES["n18-L4704"]
+    assert stated.own_code == {"verify_mixed_full_proof.py"}
+    own = stated.code_reference("verify_mixed_full_proof.py").read_text().splitlines()
+    n50 = (declared.N50_DIRECTORY / "code/verify_mixed_full_proof.py").read_text().splitlines()
+    assert len(own) == len(n50)
+    changed = [(a, b) for a, b in zip(n50, own, strict=True) if a != b]
+    assert len(changed) == 1
+    before, after = changed[0]
+    assert "assert 1<=a.workers<=3;" in before
+    assert after == before.replace("a.workers<=3", "a.workers<=16")
+
+
+@pytest.mark.parametrize("key", ["n18-L4704", "n19-L48229"])
+def test_each_sample_of_the_source_checker_returned_the_shipped_records(key: str) -> None:
+    stated = declared.CERTIFICATES[key]
+    receipts = sorted((stated.receipts / "sample").glob("nodes-*.json"))
+    assert receipts
+    for path in receipts:
+        record = json.loads(path.read_text(encoding="utf-8"))
+        assert record["status"] == "SAMPLE_REPLAYED", path.name
+        assert record["certificate"] == stated.name
+        assert record["binding"]["status"] == "BUNDLE_BOUND_TO_PACKET_AND_NET"
+        assert record["candidate_digest"] == declared.audit(key=key)["candidate_digest"]
+        assert record["tarball"]["sha256"] == stated.tarball_pin()[0]
+        assert [row["index"] for row in record["rows"]] == record["nodes"]
+        assert all(row["matches_upstream"] for row in record["rows"]), path.name
+
+
+@pytest.mark.parametrize("key", ["n18-L4704", "n19-L48229"])
+def test_each_corrupted_net_fails_lemma_n0_or_the_format(key: str) -> None:
+    """The three corrupted declarations `control` runs the source's net check on."""
+    candidate = json.loads(
+        read_retained_bytes(declared.CERTIFICATES[key].directory / "candidate.json")
+    )
+    for label, variant in declared.corrupted_nets(candidate).items():
+        net = variant["proof_net"]
+        if label == "extra-field":
+            assert set(net) == {"step", "last", "offset"}
+            continue
+        step, count = Fraction(net["step"]), int(net["last"]) + 1
+        checks = declared.premises(
+            declared.net_facts(Fraction(candidate["B"]), step, count), count
+        )
+        failing = {name for name, held in checks.items() if not held}
+        assert failing == (
+            {"b_core_fits", "e_tangent_form"}
+            if label == "coarser-step"
+            else {"c_reaches_past_pi_over_4"}
+        ), (key, label)
+
+
 def test_the_audit_holds_lemma_n0_on_the_declared_net() -> None:
     facts = declared.audit()
     assert facts["status"] == "EXACT_PREMISES_HOLD"

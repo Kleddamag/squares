@@ -35,7 +35,12 @@ from sqpack.yamlio import safe_load
 
 FOLDER = census.CENSUS_ROOT / "census-mixed"
 EVIDENCE = census.PROJECT / "frontier/evidence.yaml"
+RESULTS = census.PROJECT / "frontier/results.yaml"
 VERIFIER = "V-sqverify-fast"
+#: How far below lemma F3's cap on an expanded rectangle's density, 2^96, a certificate
+#: on the reviewed route stays: eight coinciding images of its densest row at most 2^32.
+#: The retained ones are near 2^19, so none is near the cap.
+DENSITY_CEILING = 2**32
 #: The receipt whose exact capture is recomputed here from the candidate.
 RECOMPUTED = "mixed_n67_L848"
 #: The `source_sha256` of builds whose crate source is the one the two reviews of 3
@@ -70,18 +75,38 @@ def controls() -> dict[str, dict[str, Any]]:
 
 
 @cache
+def decided() -> dict[str, dict[str, Any]]:
+    """Each evidence entry that `V-sqverify-fast` decides, by its id."""
+    register = safe_load(EVIDENCE.read_text(encoding="utf-8"))
+    return {
+        entry["id"]: entry
+        for entry in register["evidence"]
+        if VERIFIER in (entry.get("verifiers") or [])
+    }
+
+
+@cache
 def cited() -> dict[str, str]:
     """Each evidence entry that `V-sqverify-fast` decides, by the certificate it names."""
-    register = safe_load(EVIDENCE.read_text(encoding="utf-8"))
     by_path = {
         str(case.candidate.relative_to(census.PROJECT)): name for name, case in cases().items()
     }
     found: dict[str, str] = {}
-    for entry in register["evidence"]:
-        if VERIFIER in (entry.get("verifiers") or []):
-            name = by_path.get(str(entry.get("certificate")))
-            assert name is not None, f"{entry['id']}: no mixed census case for its certificate"
-            found[entry["id"]] = name
+    for ident, entry in decided().items():
+        name = by_path.get(str(entry.get("certificate")))
+        assert name is not None, f"{ident}: no mixed census case for its certificate"
+        found[ident] = name
+    return found
+
+
+@cache
+def citing() -> dict[str, list[dict[str, Any]]]:
+    """The register results that cite each evidence id."""
+    register = safe_load(RESULTS.read_text(encoding="utf-8"))
+    found: dict[str, list[dict[str, Any]]] = {}
+    for record in register["results"]:
+        for ident in record.get("evidence") or []:
+            found.setdefault(ident, []).append(record)
     return found
 
 
@@ -124,10 +149,22 @@ def test_every_entry_the_verifier_decides_is_within_what_its_review_accepted() -
     """The per-certificate conditions of the review of 5 October (Carrying the Route).
 
     A certificate outside them (points or segments, another core side, net, domain or
-    threshold, a fault injected, or a crate source other than the reviewed one) needs
-    another review before an evidence entry may rest on its census row.
+    threshold, a declared net, a scaling factor, densities near lemma F3's caps, a fault
+    injected, or a crate source other than the reviewed one) needs another review before
+    an evidence entry may rest on its census row.
     """
     for evidence_id, name in cited().items():
+        raw = read_raw(cases()[name].candidate)
+        assert raw["points"] == [], evidence_id
+        assert raw.get("scaling_factor", "1") == "1", evidence_id
+        assert not {"proof_net", "net"} & set(raw), evidence_id
+        densest = max(
+            Fraction(row["mass"])
+            / ((Fraction(x2) - Fraction(x1)) * (Fraction(y2) - Fraction(y1)))
+            for row in raw["rectangles"]
+            for x1, y1, x2, y2 in [row["rectangle"]]
+        )
+        assert 8 * densest <= DENSITY_CEILING, evidence_id
         entry = entries()[name]
         premises = entry["premises"]
         n = int(premises["n"])
@@ -151,6 +188,28 @@ def test_every_entry_the_verifier_decides_is_within_what_its_review_accepted() -
         receipt = FOLDER / entry["packet"] / f"{name}.jsonl.gz"
         summary = json.loads(gzip.decompress(receipt.read_bytes()).splitlines()[-1])
         assert summary["fault_injected_at_box"] is None, evidence_id
+
+
+def test_every_entry_the_verifier_decides_rests_on_a_review_of_its_certificate() -> None:
+    """The route carries only to a certificate whose mathematics a review read.
+
+    Each replay entry names, as its `audit_record`, the review that read its
+    certificate, and every result citing the entry lists that review, accepting and
+    covering the result: the 5 October review of the route for T-094's two, and for
+    T-097's mixed_n66_L843 the review of the same day that read it before its replay.
+    """
+    for evidence_id in cited():
+        record = decided()[evidence_id]["proof"]["audit_record"]
+        results = citing().get(evidence_id) or []
+        assert results, f"{evidence_id}: no result cites it"
+        for result in results:
+            reviews = [
+                review for review in result.get("reviews") or [] if review["path"] == record
+            ]
+            assert reviews, f"{evidence_id}: {result['id']} does not list {record}"
+            for review in reviews:
+                assert review["verdict"] == "accepted", evidence_id
+                assert result["id"] in (review.get("covers") or [result["id"]]), evidence_id
 
 
 @pytest.mark.parametrize("name", sorted(controls()))

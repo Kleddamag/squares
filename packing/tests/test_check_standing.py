@@ -262,19 +262,20 @@ def test_a_standing_entry_whose_every_bound_is_beaten_is_refused(records: view.R
 
 
 def test_an_entry_that_holds_one_case_of_several_stands(records: view.Records) -> None:
-    """T-069 is beaten at n = 92 and holds its other four counts. It still holds a case
-    bound, so it is not superseded, and the summary names both. The example was T-047
+    """T-069 is beaten at n = 66 and 92 and holds its other three counts. It still holds a
+    case bound, so it is not superseded, and the summary names both. The example was T-047
     until 2026-10-02, when the rectangle replays raised n = 26, 29 and 30, the last three
     it held; then T-044 until the replays of 1 October's certificates (T-074) raised n =
     56, the last count it held, later that day; then T-045 until 2026-10-05, when the
     replay of T-096's certificate on a declared net raised n = 18; then, briefly, T-071,
-    until T-094's n = 84 certificate, decided here the same day, raised its last count."""
+    until T-094's n = 84 certificate, decided here the same day, raised its last count.
+    T-097's n = 66 certificate, decided here on 2026-10-06, took one of T-069's counts."""
     record = records.results["T-069"]
     assert view.standing(record, records) == view.HOLDS
     assert check_standing.problems(record, view.HOLDS, records) == []
     line = check_standing.summary(record, view.HOLDS, records)
-    assert "equals the verified bound at n = 37, 65, 66, 90 " in line
-    assert "beaten at n = 92" in line
+    assert "equals the verified bound at n = 37, 65, 90 " in line
+    assert "beaten at n = 66, 92" in line
     assert check_standing.problems(record, view.SUPERSEDED, records)
 
 

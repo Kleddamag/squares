@@ -99,7 +99,7 @@ first complete check of the certificate here, which the last column says.
 | `rect_n61_L796` | T | 61 | 199/25 | VERIFIED | 109.0 | 1.000100005068861 | complete | no |
 | `mixed_n65_L835` | M | 65 | 167/20 | VERIFIED | 1629.0 | 1.000000000539362 | complete | no |
 | `mixed_n66_L842` | M | 66 | 421/50 | VERIFIED | 1460.1 | 1.0000000000012201 | complete | no |
-| `mixed_n66_L843` | M | 66 | 843/100 | VERIFIED | 2167.2 | 1.0000000006737138 | partial (12 of 201) | yes |
+| `mixed_n66_L843` | M | 66 | 843/100 | VERIFIED | 2104.9 | 1.0000000006737138 | partial (12 of 201) | yes |
 | `rect_n66_L8345` | T | 66 | 1669/200 | VERIFIED | 152.4 | 1.0001000034419847 | none | yes |
 | `rect_n66_L8375` | T | 66 | 67/8 | VERIFIED | 230.3 | 1.000100000263314 | none | yes |
 | `rect_n66_L8385` | T | 66 | 1677/200 | VERIFIED | 250.1 | 1.0001000001280729 | none | yes |

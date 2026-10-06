@@ -680,7 +680,7 @@ def _verification(case: dict[str, Any]) -> str:
     them (`render_research_tables`): what the frontier row's popover said until it went
     on 2026-10-03 (think-necq)."""
     origins = tables.verification_origins(case, _evidence_entries())
-    notes = tables.case_disposition(case)
+    notes = tables.case_disposition(case, _evidence_entries())
     return (
         '<div class="site-case-note"><span class="site-card-label">Verification</span>'
         f"<p>{_esc(origins)}</p><p>{_esc(notes)}</p></div>"

@@ -496,25 +496,54 @@ def _cell(content: str, *, value: str | None = None, classes: str = "") -> str:
     return f"<td{attributes}>{content}</td>"
 
 
-def _bound_cell(bound: dict[str, Any], note: str = "") -> str:
+#: What a verified cell says under its bound where every entry the bound cites is a
+#: published proof nobody here has read (`render_research_tables.rests_on_unread_proof`):
+#: n = 5, 6, 10 and 22 on 2026-10-06. A published proof proves its claim whether or not
+#: it was read, so the bound stays in the verified column; the note says what this
+#: repository has itself examined, which "✓ same" alone did not.
+UNREAD_PROOF = "published proof, not read here"
+#: What a reported cell says under its credit where the bound stands on a read here that
+#: found a defect and no verified bound holds its value
+#: (`render_research_tables.reported_defect`): on 2026-10-06, Nagamochi's closed form
+#: wherever it is above the verified floor, and the values of Green's DS7 Theorem 9.
+DEFECT_RECORDED = "defect recorded"
+
+
+@cache
+def evidence_entries() -> dict[str, dict[str, Any]]:
+    """The evidence register, read once for the whole table."""
+    return tables.load_evidence()
+
+
+def _note(text: str) -> str:
+    return f'<span class="site-frontier-note site-cell-quiet">{text}</span>'
+
+
+def _bound_cell(bound: dict[str, Any], note: str = "", *, flag: str = "") -> str:
     parts = [value_html(bound), bound_approx_html(bound)]
-    if note:
-        parts.append(f'<span class="site-frontier-note site-cell-quiet">{note}</span>')
+    parts.extend(_note(text) for text in (note, flag) if text)
     return _cell("".join(parts), value=str(bound["value"]), classes="num")
 
 
 def _verified_cell(verified: dict[str, Any], reported: dict[str, Any]) -> str:
-    """A verified bound, or the mark that it is the reported one, shown once. The mark
-    carries no tooltip: the page's introduction says what it means, and the phrase 470
-    times over was 20 KB of a page held under a byte ceiling."""
+    """A verified bound, or the mark that it equals the reported one, shown once, and
+    under either, where every entry it cites is a published proof nobody here has read,
+    the note that says so (`UNREAD_PROOF`). The mark carries no tooltip: the page's
+    introduction says what it means, and the phrase 470 times over was 20 KB of a page
+    held under a byte ceiling."""
+    note = (
+        _note(UNREAD_PROOF)
+        if tables.rests_on_unread_proof(verified, evidence_entries())
+        else ""
+    )
     if bounds_agree_at_declared_precision(reported, verified):
         return _cell(
-            '<span class="site-frontier-same">✓ same</span>',
+            f'<span class="site-frontier-same">✓ same</span>{note}',
             value=str(verified["value"]),
             classes="num",
         )
     return _cell(
-        value_html(verified) + bound_approx_html(verified),
+        value_html(verified) + bound_approx_html(verified) + note,
         value=str(verified["value"]),
         classes="num",
     )
@@ -565,9 +594,21 @@ def case_row(
         ),
         _cell(star, value="1" if recent else "0"),
         _cell(f"{shown_status}{case_badges(n)}", value=status),
-        _bound_cell(upper, credit(upper.get("found_by"), upper.get("found_year"))),
+        _bound_cell(
+            upper,
+            credit(upper.get("found_by"), upper.get("found_year")),
+            flag=DEFECT_RECORDED
+            if tables.reported_defect(upper, case["verified_upper_bound"], evidence_entries())
+            else "",
+        ),
         _verified_cell(case["verified_upper_bound"], upper),
-        _bound_cell(lower, credit(lower.get("proved_by"), lower.get("proved_year"))),
+        _bound_cell(
+            lower,
+            credit(lower.get("proved_by"), lower.get("proved_year")),
+            flag=DEFECT_RECORDED
+            if tables.reported_defect(lower, case["verified_lower_bound"], evidence_entries())
+            else "",
+        ),
         _verified_cell(case["verified_lower_bound"], lower),
         _cell(gap_html, value=gap_value, classes="num"),
         # Two lines, the case file over the record, as the drawing is two lines high.

@@ -13,7 +13,7 @@ import gzip
 import json
 import subprocess
 import sys
-from datetime import date
+from datetime import date, timedelta
 from pathlib import Path
 from typing import Any
 
@@ -459,8 +459,20 @@ CASES = {
 }
 
 
+def _captured() -> str:
+    """A capture date the sweep reads as newer than the record's, whatever the record says.
+
+    The fixture reads the live register, whose Kingbird `reviewed` date moves each time a
+    capture is taken in; a capture named for a fixed day stops being newer the day the
+    record reaches it, as it did on 2026-10-05.
+    """
+    live = safe_load(sweep.COVERAGE.read_text(encoding="utf-8"))
+    source = next(s for s in live["sources"] if s["id"] == sweep.KINGBIRD)
+    return (date.fromisoformat(str(source["reviewed"])) + timedelta(days=1)).isoformat()
+
+
 def _kingbird(tmp_path: Path, text: str, **coverage: Any) -> sweep.Section:
-    capture = tmp_path / "kingbird-2026-10-05"
+    capture = tmp_path / f"kingbird-{_captured()}"
     capture.mkdir()
     (capture / f"{capture_tool.STEM}.md").write_text(text, encoding="utf-8")
     live = safe_load(sweep.COVERAGE.read_text(encoding="utf-8"))
@@ -486,7 +498,7 @@ def test_a_count_a_newer_capture_moves_below_its_record_is_an_intake(tmp_path: P
     section = _kingbird(tmp_path, text.replace(SIDE, LOWER))
     (item,) = section.items
     assert item.state == sweep.NEEDS_OWNER
-    assert item.what.startswith("n = 29: the capture of 2026-10-05 prints 5.93383000000000")
+    assert item.what.startswith(f"n = 29: the capture of {_captured()} prints 5.93383000000000")
 
 
 def test_a_count_declared_pending_with_its_bead_is_owned(tmp_path: Path) -> None:

@@ -5474,7 +5474,9 @@ def test_a_result_rows_popover_body_comes_from_one_function(
 #: past it on 6 October: 2,548,891 and 1,200,769 bytes with the six results of that
 #: morning, and 2,680,770 and 1,332,411 with wand125's ten check2 results after them,
 #: about 13 KB a result on each page. Each ceiling keeps about a hundred kilobytes above
-#: the second measurement.
+#: the second measurement. Merged with main's T-101 the same day, as T-102 to T-111, they
+#: measured 2,727,614 and 1,379,239 bytes, above both earlier ceilings and about 70 KB
+#: under these.
 PAGE_CEILINGS = {"index.html": 2_800_000, render_overview.RESULTS_PAGE: 1_450_000}
 
 

@@ -47,6 +47,7 @@ import mpmath as mp
 from strif import atomic_output_file
 
 from devtools import build_composite_figure_data, render_composite_pdf
+from devtools import evand_exact_certificates as evand_certificates
 from devtools import upper_bound_packets as packets
 from devtools.build_bound_citations import RECENT_SINCE
 from devtools.build_composite_figure_data import load_record as load_figure_record
@@ -154,6 +155,11 @@ UNITSQUARE_SOURCE_KEY = "[UnitSquare 2026]"
 #: facts, as onto a UnitSquare rendering, by having its bound sourced there.
 PACKET_SOURCES = {source.key: source for source in packets.CERTIFIED}
 PACKET_KIND = "packet-derived-facts"
+#: The report that solved 48 known-best packings to their exact optima (T-098). It moves
+#: a case's side by at most 5e-11 and keeps its packing, so the atlas pictures the
+#: packing from the source that held the count before, which the packet's comparison
+#: receipt names (`devtools.evand_exact_certificates compare`).
+EXACT_OPTIMA_SOURCE_KEY = "[evand exact optima 2026-10-05]"
 
 #: The cases this build covers, end to end: sources, witnesses, house renderings,
 #: frontier back-links and manifest entries.
@@ -729,6 +735,25 @@ def _unitsquare_source_path(n: int) -> Path:
     return found[0] if found else UNITSQUARE_ROOT / filename
 
 
+@cache
+def _exact_optima_pictured() -> dict[int, str]:
+    """The source key each exact optimum's packing is pictured from, by count."""
+    receipt = json.loads(evand_certificates.COMPARISON_RECEIPT.read_text(encoding="utf-8"))
+    return {int(row["n"]): str(row["earlier_source_key"]) for row in receipt["rows"]}
+
+
+def pictured_source_key(case: FrontierCase) -> str:
+    """The source whose geometry the atlas reads for a case: the record's own, except
+    where an exact optimum of a packing reports the side and its finder's source holds
+    the pose."""
+    if case.reported_source_key != EXACT_OPTIMA_SOURCE_KEY:
+        return case.reported_source_key
+    pictured = _exact_optima_pictured().get(case.n)
+    if pictured is None:
+        raise ValueError(f"n={case.n}: no source holds the packing of its exact optimum")
+    return pictured
+
+
 def _source_plan(
     case: FrontierCase,
     catalogue: dict[int, tuple[str, int, tuple[int, ...]]],
@@ -737,7 +762,7 @@ def _source_plan(
     integer_side = rational_integer(case.side)
     if integer_side is not None and integer_side * integer_side >= case.n:
         return SourcePlan("exact-grid", case.path, "", case.n, (case.n,))
-    if case.reported_source_key == UNITSQUARE_SOURCE_KEY:
+    if pictured_source_key(case) == UNITSQUARE_SOURCE_KEY:
         # A record naming the release that the release does not carry is a refusal
         # rather than a fall-through to the catalogue: falling through would quietly
         # source a case from Kingbird whose own record says it came from elsewhere.
@@ -753,7 +778,7 @@ def _source_plan(
             (case.n,),
             upstream_digest,
         )
-    packet = PACKET_SOURCES.get(case.reported_source_key)
+    packet = PACKET_SOURCES.get(pictured_source_key(case))
     if packet is not None:
         # As for the release: a record naming a packet that holds no facts for its `n`
         # is a refusal, never a fall-through to the catalogue.
@@ -996,12 +1021,13 @@ def _build_witness(case: FrontierCase, plan: SourcePlan) -> dict:
         if plan.kind == PACKET_KIND:
             retained = load_witness(plan.path, fallback_schema=WITNESS_SCHEMA)
             _assert_side_matches(case, str(retained["side"]))
+            pictured = pictured_source_key(case)
             return packet_derived_witness(
                 case.n,
                 retained,
-                source_key=case.reported_source_key,
+                source_key=pictured,
                 source_path=_relative(plan.path),
-                retrieved=PACKET_SOURCES[case.reported_source_key].retrieved,
+                retrieved=PACKET_SOURCES[pictured].retrieved,
             )
         source_text = plan.path.read_text(encoding="utf-8")
         source_path = _relative(plan.path)

@@ -496,10 +496,24 @@ def record_catalogue(
 def load_claims(path: pathlib.Path) -> dict[int, str]:
     """A source's upper-bound claims by `n`, reparsed from its own retained record.
 
-    Two shapes are read: a UnitSquare results release, whose `results` carry
-    `offered_side`, and an acquisition record written by `devtools.upper_bound_packets`,
-    whose one source's `cases` carry the `side` each retained packing file prints.
+    Three shapes are read: a UnitSquare results release, whose `results` carry
+    `offered_side`; an acquisition record written by `devtools.upper_bound_packets`,
+    whose one source's `cases` carry the `side` each retained packing file prints; and a
+    directory of exact certificates `n-N.cert` in Evan Daniel's format, each claiming the
+    side its header gives, written out in full (`devtools.evand_exact_certificates`).
     """
+    if path.is_dir():
+        from devtools import evand_exact_certificates as certificates  # noqa: PLC0415
+
+        claims: dict[int, str] = {}
+        for n in certificates.certificate_counts(path):
+            text = certificates.certificate_path(path, n).read_text(encoding="utf-8")
+            side = certificates.parse(text, expected_n=n).side
+            written = certificates.terminating_decimal(side)
+            if written is None:
+                raise ValueError(f"n={n}: the certificate's side does not terminate in decimal")
+            claims[n] = written
+        return claims
     record = json.loads(read_retained_text(path))
     if isinstance(record.get("results"), list):
         return {int(entry["n"]): str(entry["offered_side"]) for entry in record["results"]}
@@ -646,7 +660,9 @@ def main() -> int:
     errors.extend(
         f"{source['id']}: claims record does not exist: {source['claims_record']}"
         for source in coverage["sources"]
-        if source.get("claims_record") and not retained_exists(ROOT / source["claims_record"])
+        if source.get("claims_record")
+        and not (ROOT / source["claims_record"]).is_dir()
+        and not retained_exists(ROOT / source["claims_record"])
     )
 
     evidence_document = safe_load(EVIDENCE.read_text(encoding="utf-8"))

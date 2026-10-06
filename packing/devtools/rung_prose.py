@@ -23,9 +23,9 @@ A clause carrying a cue of that kind (`needs`, `would`, `requires`, `when`, `if`
 `until`, `once`, `held`, a negation, `V5 by …`) is passed whole. That is deliberate and
 it is the limit of the check: it reads labels, not arguments, so a false sentence that
 says `would` passes, and whether a requirement is stated correctly is a review
-obligation. `check_results` applies this to `claim`, `composition` and `next_rung`, and
-to the case records; `notes` is exempt, because the ladder change wrote what each result
-held into it.
+obligation. `check_results` applies this to `claim`, `composition` and `next_rung`, to
+`significance.rationale` since 2026-10-06, and to the case records; `notes` is exempt,
+because the ladder change wrote what each result held into it.
 """
 
 from __future__ import annotations

@@ -149,6 +149,28 @@ def test_notes_are_exempt_and_the_three_fields_are_checked(tmp_path: Path) -> No
     assert [problem.split(", which")[0] for problem in found] == ["T-001: claim asserts V5"]
 
 
+def test_a_significance_rationale_says_no_rung_the_result_does_not_hold() -> None:
+    """A rationale scores the claim and may say what a rung would need, never which rung
+    the result stands at: T-064's read "V0/C1 says how far it stands" two days after the
+    result reached V3/C3, until 2026-10-06."""
+    record = {
+        "id": "T-001",
+        "scope": {"n_values": [7]},
+        "claim": "s(7) = 3.",
+        "significance": {
+            "rationale": "The score gates nothing, and V0/C1 says how far it stands."
+        },
+    }
+    found = check_results.rung_label_problems([record], STANDINGS, cases=[])
+    assert [problem.split(", which")[0] for problem in found] == [
+        "T-001: significance.rationale asserts V0/C1"
+    ]
+    record["significance"] = {
+        "rationale": "S4 whatever its rungs; V4 would need two adversarial reviews."
+    }
+    assert check_results.rung_label_problems([record], STANDINGS, cases=[]) == []
+
+
 def test_the_live_register_and_case_records_assert_no_stale_rung() -> None:
     register = check_results.safe_load(check_results.RESULTS.read_text(encoding="utf-8"))
     evidence = {

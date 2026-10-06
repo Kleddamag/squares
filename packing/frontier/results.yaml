@@ -5629,7 +5629,7 @@ results:
         Scored as a claim: a bound family, which would settle eleven open cases of this
         record and every later k if the finite premise and its reduction pass replay and
         review here. S4 by the anchor "a reusable technique, bound family"; the score gates
-        nothing, and V0/C1 says how far it stands.
+        nothing.
       scored: '2026-10-01'
       by: W1 and W2 source intake
     novelty: previously-published
@@ -5990,9 +5990,11 @@ results:
 
       n = 78 takes the same certificate directly, its total being below 78, so no step is
       added. At registration this entry's scope was n = 77 alone, since T-064 registers
-      s(78) = 9 (result-import.md, register table); it took in n = 78 at stage 4, because
-      the verified bound there rests on this replay alone, T-064's own route being
-      unreplayed. T-064 keeps its claim, which names this route.
+      s(78) = 9 (result-import.md, register table); it took in n = 78 at stage 4, on 2
+      October 2026, because the verified bound there rested on this replay alone, T-064's
+      own route being unreplayed until its Valid7 replay and Lean build passed here on 2
+      and 3 October. The verified bound at n = 78 still cites this replay alone. T-064
+      keeps its claim, which names this route.
     reviews:
       - path: docs/project/reviews/review-2026-10-02-wand125-s59-s77-mixed-covers.md
         kind: adversarial

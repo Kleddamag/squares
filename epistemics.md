@@ -319,6 +319,9 @@ in force when it was written.
 A result’s `claim`, `composition` and `next_rung` and the case records are not dated
 prose: they describe the present ladder, and the checker holds the rung labels in them
 to the rungs the register holds.
+A significance rationale is dated by its `scored`, but it scores the claim and not its
+rungs, so since 2026-10-06 the checker holds it to the same rule: it may say what a rung
+would need, and not which rung the result stands at.
 The proposal behind the change is
 [the ladder review of 2026-09-30](docs/project/specs/active/plan-2026-09-30-epistemics-ladder-review.md).
 
@@ -583,8 +586,9 @@ The checker:
   claim does not, and an `established` date on every result without `attribution`, the
   day its certificate or proof first passed here, which it refuses beside `attribution`
   and before 22 August 2026;
-- refuses a rung label in a result’s `claim`, `composition` or `next_rung`, or in a case
-  record, that asserts a rung no result the clause is about declares or derives.
+- refuses a rung label in a result’s `claim`, `composition`, `next_rung` or
+  `significance.rationale`, or in a case record, that asserts a rung no result the
+  clause is about declares or derives.
   A statement of what a rung needs, or of what a result once held, passes; `notes` is
   exempt, because it records what each result held before 2026-09-30. The rule reads
   labels and not arguments, so whether a requirement is stated correctly is a review

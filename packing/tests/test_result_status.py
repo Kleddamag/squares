@@ -259,8 +259,9 @@ def test_superseded_is_marked_on_a_bound_and_where_a_later_result_is_declared() 
     # Daniel's exact optima (T-098) took the last counts of Couzo's first certificates
     # (T-057) and his second (T-092), the first upper bounds here to be superseded;
     # forty-three when wand125's certificate on a finer declared net (T-099) took n = 18,
-    # the one count T-096 held.
-    assert len(derived) == 43
+    # the one count T-096 held; forty-four when its mixed certificate of 3 October for
+    # n = 52 (T-082), decided here by sqverify-fast, took the one count T-070 held.
+    assert len(derived) == 44
     assert {
         "T-020", "T-021", "T-030", "T-043", "T-044", "T-047", "T-049", "T-057", "T-072",
         "T-078", "T-079", "T-087", "T-092",

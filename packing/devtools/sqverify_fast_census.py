@@ -31,18 +31,26 @@ case records its own binary and source digests. `--check` re-reads the census an
 unless every case is verified, exited zero, and passed the exact least-leaf test;
 `--only` and `--packets` narrow it as they narrow a run.
 
-`--control` (mixed family) puts negative controls on a verified certificate itself, at
-its least-bound direction: the original must verify there, and two mutants must be
-refused, every mass scaled by 99/100 (the stage-4 control of the authors' replays), and
-every mass scaled so that the exact capture at the least-bound leaf's centre is at most
-one part in a million below the threshold. That capture is evaluated again by
-`check_sqverify_fast.mixed_exact`, an exact evaluator written apart from the crate, and
-must equal the crate's; each refused mutant must capture less than 1 at that centre or at
-the refusal's witness, evaluated the same way. The near-threshold mutant is named for
-the centre it is scaled at: the verifier may refuse it at another centre, and its
-discrimination near the threshold rests on the crate's own tests (IR-3 of the review
-of 5 October). Each receipt is `--out/PACKET/CERTIFICATE.control.json`, with status
-`CONTROLS_REFUSED` only when all of that holds. `--evidence` prints each selected
+`--control` (mixed family) puts negative controls on a verified certificate itself: the
+original must verify again at its least-bound direction, and two mutants must be refused.
+Every mass scaled by 99/100 (the stage-4 control of the authors' replays) runs at every
+direction of the net with `--confirm`, at `--threads`: it must be refused at one direction
+at least, and at every direction that refuses it, the mutant's capture at the refusal's
+witness (at the axis, the sweep's argmin), evaluated again by
+`check_sqverify_fast.mixed_exact`, an exact evaluator written apart from the crate, must be
+below 1. It may verify elsewhere, where the certificate has more than 1% slack: the
+least-bound direction is chosen by the branch and bound's termination margin, so a run
+there alone can verify a true mutant and fail closed (FC-1 of the 6 October re-check,
+receipt kind `sqverify-fast-control/v2`; v1 receipts ran it at the least-bound direction
+only, where it was refused). Every mass scaled so that the exact capture at the
+least-bound leaf's centre is at most one part in a million below the threshold runs at
+that direction; that capture is evaluated again by the same evaluator and must equal the
+crate's, and the refused mutant must capture less than 1 at that centre or at the
+refusal's witness. The near-threshold mutant is named for the centre it is scaled at: the
+verifier may refuse it at another centre, and its discrimination near the threshold rests
+on the crate's own tests (IR-3 of the review of 5 October). Each receipt is
+`--out/PACKET/CERTIFICATE.control.json`, with status `CONTROLS_REFUSED` only when all of
+that holds. `--evidence` prints each selected
 certificate's replay evidence entry, for a records lane to paste into the register; it
 refuses a row whose build is not of a crate source in `REVIEWED_SOURCES`, or is on a
 declared net that the source's review did not read, and names the reviewed source it
@@ -443,7 +451,80 @@ def direction_row(binary: Path, candidate: Path, n: int, index: int) -> dict[str
     }
 
 
-def control(binary: Path, case: Case, entry: dict[str, Any]) -> dict[str, Any]:
+def scaled_sweep(
+    binary: Path, raw: dict[str, Any], mutant: Path, n: int, *, factor: Fraction, threads: int
+) -> dict[str, Any]:
+    """The scaled mutant at every direction of its net, with `--confirm` (FC-1).
+
+    A direction where the certificate has more than the scaling's slack verifies the
+    mutant too, so no single direction can be relied on to refuse it; the mutant's
+    claim is refuted where some direction refuses it with a pose at which its capture,
+    evaluated again here apart from the crate, is below 1. Each refused direction's pose
+    is the crate's exact witness, or at the axis, where the vertex sweep reports no
+    witness, its argmin; the mutant's capture there is the factor times the original's.
+    """
+    argv = [str(binary.resolve()), "--candidate", str(mutant), "--n", str(n)]
+    argv += ["--directions", "all", "--threads", str(threads), "--confirm"]
+    start = time.monotonic()
+    result = subprocess.run(argv, capture_output=True, text=True, check=False, timeout=14400)
+    lines = [json.loads(line) for line in result.stdout.splitlines() if line.startswith("{")]
+    rows = sorted((line for line in lines if "r" in line), key=lambda row: int(row["r"]))
+    summary = next(
+        (line for line in lines if line.get("kind") == "sqverify-fast-summary/v1"), {}
+    )
+    refused: list[dict[str, Any]] = []
+    for row in rows:
+        if row.get("verdict") == "verified":
+            continue
+        index = int(row["r"])
+        witness = row.get("witness") or {}
+        pose = witness.get("exact_pose") or (row.get("argmin") if index == 0 else None)
+        capture = (
+            factor * mixed_exact(raw, Fraction(pose[0]), Fraction(pose[1]), index)
+            if pose
+            else None
+        )
+        refused.append(
+            {
+                "r": index,
+                "verdict": row.get("verdict"),
+                "pose": pose,
+                "crate_exact_below_threshold": witness.get("exact_below_threshold"),
+                "capture_below_1": capture is not None and capture < 1,
+                "capture": None if capture is None else f"{float(capture):.12f}",
+            }
+        )
+    return {
+        "directions": len(rows),
+        "net_directions": int((summary.get("premises") or {}).get("angle_count") or 0),
+        "returncode": result.returncode,
+        "summary_status": summary.get("status"),
+        "verified_directions": [
+            int(row["r"]) for row in rows if row.get("verdict") == "verified"
+        ],
+        "refused": refused,
+        "seconds": round(time.monotonic() - start, 2),
+        "stderr_tail": result.stderr[-500:],
+    }
+
+
+def sweep_held(sweep: dict[str, Any]) -> bool:
+    """A scaled sweep refutes its mutant: every direction of the net ran, at least one
+    refused it, and every refusal has a pose whose capture, evaluated apart from the
+    crate, is below 1."""
+    return (
+        sweep["directions"] == sweep["net_directions"] > 0
+        and sweep["returncode"] == 1
+        and sweep["summary_status"] == "REFUSED"
+        and bool(sweep["refused"])
+        and all(item["capture_below_1"] for item in sweep["refused"])
+        and len(sweep["verified_directions"]) + len(sweep["refused"]) == sweep["directions"]
+    )
+
+
+def control(
+    binary: Path, case: Case, entry: dict[str, Any], threads: int = 1
+) -> dict[str, Any]:
     """Negative controls on a verified mixed certificate, at its least-bound direction."""
     least = entry.get("least_bound_leaf_exact") or {}
     if entry.get("status") != "VERIFIED" or not least:
@@ -467,7 +548,23 @@ def control(binary: Path, case: Case, entry: dict[str, Any]) -> dict[str, Any]:
     original = direction_row(binary, case.candidate, case.n, index)
     runs.append({"name": "original", "expect": "verified", **original})
     with tempfile.TemporaryDirectory(prefix="sqverify-fast-control-") as scratch:
-        for name, factor in (("scaled-99-100", CONTROL_SCALE), ("near-threshold", near)):
+        # Every mass scaled by 99/100, at every direction of the net (FC-1 of the 6
+        # October re-check): the least-bound direction is chosen by the branch and
+        # bound's termination margin, and the certificate may have more than 1% slack
+        # there, so a run at that direction alone may verify a true mutant.
+        path = Path(scratch) / f"{case.certificate}-scaled-99-100.json"
+        path.write_text(json.dumps(mixed_mutant(raw, factor=CONTROL_SCALE)), encoding="utf-8")
+        sweep = scaled_sweep(binary, raw, path, case.n, factor=CONTROL_SCALE, threads=threads)
+        runs.append(
+            {
+                "name": "scaled-99-100",
+                "mutation": {"factor": str(CONTROL_SCALE)},
+                "expect": "refused at some direction",
+                "sweep": sweep,
+            }
+        )
+        # The near-threshold mutant at the least-bound leaf, as before.
+        for name, factor in (("near-threshold", near),):
             path = Path(scratch) / f"{case.certificate}-{name}.json"
             path.write_text(json.dumps(mixed_mutant(raw, factor=factor)), encoding="utf-8")
             row = direction_row(binary, path, case.n, index)
@@ -495,6 +592,8 @@ def control(binary: Path, case: Case, entry: dict[str, Any]) -> dict[str, Any]:
     def held(run: dict[str, Any]) -> bool:
         if run["expect"] == "verified":
             return run["returncode"] == 0 and run["verdict"] == "verified"
+        if "sweep" in run:
+            return sweep_held(run["sweep"])
         # Refused, and the mutant's claim is false at a centre this tool evaluated
         # exactly: the least-bound leaf's centre, or the refusal's witness.
         mutation = run["mutation"]
@@ -506,7 +605,7 @@ def control(binary: Path, case: Case, entry: dict[str, Any]) -> dict[str, Any]:
 
     agree = exact == crate
     return {
-        "kind": "sqverify-fast-control/v1",
+        "kind": "sqverify-fast-control/v2",
         "packet": case.packet,
         "certificate": case.certificate,
         "n": case.n,
@@ -659,6 +758,29 @@ def thread_count(entry: dict[str, Any]) -> str:
     return f"{word} thread{'' if threads == 1 else 's'}"
 
 
+def scaled_control_text(index: int, run: dict[str, Any]) -> str:
+    """The 99/100 control in an evidence entry: at the least-bound direction in a
+    `sqverify-fast-control/v1` receipt, at every direction of the net in v2 (FC-1)."""
+    if "sweep" not in run:
+        return (
+            f"Controls at index {index}: the original verified again, every mass scaled by "
+            f"99/100 refused ({run['verdict']}, {uncovered(run)}), "
+        )
+    sweep = run["sweep"]
+    refused, verified = len(sweep["refused"]), len(sweep["verified_directions"])
+    slack = (
+        f" (the mutant verified at the other {verified}, where the certificate has more "
+        "than 1% slack)"
+        if verified
+        else ""
+    )
+    return (
+        f"Controls: the original verified again at index {index}, every mass scaled by "
+        f"99/100 refused at {refused} of the {sweep['directions']} net directions, each with "
+        f"an exact capture below 1 at its witness{slack}, "
+    )
+
+
 def uncovered(run: dict[str, Any]) -> str:
     """Where a control's mutant was shown, exactly, to capture less than 1."""
     mutation = run["mutation"]
@@ -778,10 +900,9 @@ def evidence_entry(
         "it. It shares the theorem, the net, the core side, the per-bin domain lemma and the "
         "threshold, so a defect in that mathematics would affect both: a second "
         "implementation, not a second method. Its node counts and bounds are its own, not "
-        "the certificate's records. Controls at index "
-        f"{receipt['index']}: the original verified again, every mass scaled by 99/100 "
-        f"refused ({runs['scaled-99-100']['verdict']}, {uncovered(runs['scaled-99-100'])}), "
-        "and every mass scaled so that the exact capture at the least-bound leaf's centre is "
+        "the certificate's records. "
+        + scaled_control_text(receipt["index"], runs["scaled-99-100"])
+        + "and every mass scaled so that the exact capture at the least-bound leaf's centre is "
         f"at most 1 - 10^-6 refused ({runs['near-threshold']['verdict']}, "
         f"{uncovered(runs['near-threshold'])}); each capture below 1 was evaluated "
         "again by an exact evaluator written apart from the crate, and "
@@ -1196,12 +1317,20 @@ def records_mode(args: argparse.Namespace, census: dict[str, Any], selected: lis
         return 0
     failed = 0
     for case in selected:
-        receipt = control(args.binary, case, census["cases"].get(case.certificate, {}))
+        receipt = control(
+            args.binary, case, census["cases"].get(case.certificate, {}), args.threads
+        )
         target = args.out / case.packet / f"{case.certificate}.control.json"
         target.parent.mkdir(parents=True, exist_ok=True)
         target.write_text(retained_json.dumps(receipt, sort_keys=True))
         failed += receipt["status"] != "CONTROLS_REFUSED"
-        verdicts = ", ".join(f"{run['name']} {run['verdict']}" for run in receipt["runs"])
+        verdicts = ", ".join(
+            f"{run['name']} refused at {len(run['sweep']['refused'])} of "
+            f"{run['sweep']['directions']}"
+            if "sweep" in run
+            else f"{run['name']} {run['verdict']}"
+            for run in receipt["runs"]
+        )
         print(f"{case.certificate:18} {receipt['status']} r={receipt['index']}: {verdicts}")
     return 1 if failed else 0
 

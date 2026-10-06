@@ -288,7 +288,7 @@ def test_each_control_refuses_both_mutants_where_the_original_verifies(name: str
     receipt = controls()[name]
     entry = entries()[name]
     case = cases()[name]
-    assert receipt["kind"] == "sqverify-fast-control/v1"
+    assert receipt["kind"] in KINDS
     assert receipt["status"] == "CONTROLS_REFUSED"
     assert (receipt["packet"], receipt["n"], receipt["L"]) == (case.packet, case.n, case.side)
     assert receipt["candidate_sha256"] == sha256(case.candidate) == entry["candidate_sha256"]
@@ -304,7 +304,14 @@ def test_each_control_refuses_both_mutants_where_the_original_verifies(name: str
     assert set(runs) == {"original", "scaled-99-100", "near-threshold"}
     original = runs["original"]
     assert (original["returncode"], original["verdict"]) == (0, "verified")
-    for mutant in ("scaled-99-100", "near-threshold"):
+    # v1 ran the 99/100 mutant at the least-bound direction only; v2 runs it at every
+    # direction of the net (FC-1), held below by `test_each_scaled_sweep_...`.
+    single = (
+        ("scaled-99-100", "near-threshold")
+        if receipt["kind"] == KINDS[0]
+        else ("near-threshold",)
+    )
+    for mutant in single:
         run = runs[mutant]
         mutation = run["mutation"]
         factor = Fraction(mutation["factor"])
@@ -319,6 +326,78 @@ def test_each_control_refuses_both_mutants_where_the_original_verifies(name: str
     assert Fraction(runs["scaled-99-100"]["mutation"]["factor"]) == census.CONTROL_SCALE
     near = runs["near-threshold"]["mutation"]
     assert exact * Fraction(near["factor"]) <= 1 - census.NEAR_THRESHOLD
+
+
+#: The control receipt kinds: v1 ran the 99/100 mutant at the least-bound direction, where
+#: each receipt kept shows it refused; v2 runs it at every direction of the net (FC-1 of
+#: the 6 October re-check). A v1 receipt that is CONTROLS_REFUSED meets v2's rule on the
+#: one direction it ran: a refusal with an exact capture below 1 at a pose evaluated apart
+#: from the crate. It is kept, not regenerated.
+KINDS = ("sqverify-fast-control/v1", "sqverify-fast-control/v2")
+
+
+def sweeps() -> dict[str, dict[str, Any]]:
+    """Each v2 receipt's 99/100 sweep, by certificate."""
+    return {
+        name: next(run["sweep"] for run in receipt["runs"] if run["name"] == "scaled-99-100")
+        for name, receipt in controls().items()
+        if receipt["kind"] == KINDS[1]
+    }
+
+
+@pytest.mark.parametrize("name", sorted(sweeps()))
+def test_each_scaled_sweep_refuses_its_mutant_somewhere_with_an_exact_witness(
+    name: str,
+) -> None:
+    """At every direction of the net, the 99/100 mutant is refused at one at least, and at
+    every refusal its capture at the pose kept, recomputed here from the candidate by the
+    evaluator written apart from the crate, is below 1. Where it verifies, the
+    certificate has more than 1% slack, which is no defect."""
+    sweep = sweeps()[name]
+    case = cases()[name]
+    assert census.sweep_held(sweep)
+    assert sweep["net_directions"] == census.net_directions(case)
+    raw = read_raw(case.candidate)
+    for item in sweep["refused"]:
+        assert item["pose"] is not None, item["r"]
+        px, py = (Fraction(value) for value in item["pose"])
+        assert census.CONTROL_SCALE * mixed_exact(raw, px, py, int(item["r"])) < 1, item["r"]
+
+
+def sweep(
+    refused: list[dict[str, Any]], verified: list[int], **overrides: Any
+) -> dict[str, Any]:
+    return {
+        "directions": len(refused) + len(verified),
+        "net_directions": len(refused) + len(verified),
+        "returncode": 1,
+        "summary_status": "REFUSED",
+        "verified_directions": verified,
+        "refused": refused,
+        **overrides,
+    }
+
+
+def refusal(index: int, *, below: bool = True) -> dict[str, Any]:
+    return {
+        "r": index,
+        "verdict": "counterexample-candidate",
+        "pose": [1.0, 2.0],
+        "capture_below_1": below,
+    }
+
+
+def test_a_sweep_holds_only_with_a_witnessed_refusal_at_every_direction_it_refuses() -> None:
+    """The acceptance rule of FC-1's fix, on made-up sweeps."""
+    assert census.sweep_held(sweep([refusal(1), refusal(2)], [0, 3]))
+    # The mutant verified everywhere: no refusal shows the verifier refuses a false claim.
+    assert not census.sweep_held(sweep([], [0, 1, 2], returncode=0, summary_status="VERIFIED"))
+    # A refusal whose pose does not capture less than 1: a refusal not shown correct.
+    assert not census.sweep_held(sweep([refusal(1), refusal(2, below=False)], [0]))
+    # Not every direction of the net ran.
+    assert not census.sweep_held(sweep([refusal(1)], [0], net_directions=201))
+    # An admission refusal or a crash, not a coverage refusal.
+    assert not census.sweep_held(sweep([refusal(1)], [0], returncode=2))
 
 
 def test_one_control_capture_is_recomputed_from_the_candidate() -> None:

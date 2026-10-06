@@ -514,8 +514,13 @@ issues:
           reported by 5 October. This repository's clean-room verifier sqverify_fast does
           not yet cover continuous-angle closed covers; its Milestone C
           (docs/project/specs/active/plan-2026-10-03-measure-verifier-milestone-c.md) is
-          the other route.
-    beads: [think-4uir]
+          the other route. On 6 October wand125 published the run (valid7-independent-check
+          c561dbb3, release records-tilt9-v1) without posting here; it is retained, audited,
+          sampled (30 roots re-decided, 21 matching the published leaves exactly), controlled
+          and reviewed, and recorded as E-k2m4-wand125-validtilt9-report on T-081
+          (think-dsz4). The full replay, priced at about 118 to 435 CPU-hours, waits for an
+          owner budget under think-hwpr, so the ask stays queued.
+    beads: [think-4uir, think-dsz4, think-hwpr]
     answer_bead: think-4uir
     replies:
       - url: https://github.com/jlevy/squares/issues/316#issuecomment-5971664755

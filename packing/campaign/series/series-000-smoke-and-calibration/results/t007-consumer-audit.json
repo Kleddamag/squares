@@ -62,7 +62,7 @@
       {"group":"case-record","path":"packing/frontier/n-063.md","phrases":{"beside: bound":1,"beside: proves":1,"beside: verified":1,"closed-form: 2\\lfloor":1},"statements":{"closed_form":1,"k2_minus_2_identity":0,"mentions":0,"qualified":4,"relies":1,"states":3,"unqualified_states":0}},
       {"group":"case-record","path":"packing/frontier/n-064.md","phrases":{"beside: bound":1},"statements":{"closed_form":0,"k2_minus_2_identity":0,"mentions":0,"qualified":0,"relies":1,"states":0,"unqualified_states":0}},
       {"group":"case-record","path":"packing/frontier/n-065.md","phrases":{"beside: bound":1,"beside: verified":2,"closed-form: 2\\lfloor":1},"statements":{"closed_form":1,"k2_minus_2_identity":0,"mentions":0,"qualified":4,"relies":1,"states":3,"unqualified_states":0}},
-      {"group":"case-record","path":"packing/frontier/n-066.md","phrases":{"beside: bound":1,"beside: verified":2,"closed-form: 2\\lfloor":1},"statements":{"closed_form":1,"k2_minus_2_identity":0,"mentions":0,"qualified":4,"relies":1,"states":3,"unqualified_states":0}},
+      {"group":"case-record","path":"packing/frontier/n-066.md","phrases":{"beside: bound":1,"beside: closed form":1,"beside: verified":1,"closed-form: 2\\lfloor":1},"statements":{"closed_form":1,"k2_minus_2_identity":0,"mentions":0,"qualified":4,"relies":2,"states":2,"unqualified_states":0}},
       {"group":"case-record","path":"packing/frontier/n-067.md","phrases":{"beside: bound":1,"beside: verified":2,"closed-form: 2\\lfloor":1},"statements":{"closed_form":1,"k2_minus_2_identity":0,"mentions":0,"qualified":4,"relies":1,"states":3,"unqualified_states":0}},
       {"group":"case-record","path":"packing/frontier/n-068.md","phrases":{"beside: theorem":1,"beside: verified":1},"statements":{"closed_form":0,"k2_minus_2_identity":0,"mentions":0,"qualified":2,"relies":0,"states":2,"unqualified_states":0}},
       {"group":"case-record","path":"packing/frontier/n-069.md","phrases":{"beside: bound":1,"beside: verified":1},"statements":{"closed_form":0,"k2_minus_2_identity":0,"mentions":0,"qualified":2,"relies":1,"states":1,"unqualified_states":0}},
@@ -2141,7 +2141,7 @@
       "family": null,
       "n": 66,
       "nagamochi": {"basis":"nagamochi-theorem-2","decimal":"8.141428428542","exact":"1 + sqrt(51)","exact_case":false},
-      "operative_lower_bound": {"cites_t007":false,"evidence":["E-n066-wand125-mixed-842-source-replay"],"exact_form":"421/50","results":["T-069"],"t007_scope_covers_n":true,"value":"8.42"},
+      "operative_lower_bound": {"cites_t007":false,"evidence":["E-n066-wand125-mixed-843-sqverify-fast-replay"],"exact_form":"843/100","results":["T-097"],"t007_scope_covers_n":true,"value":"8.43"},
       "reported_lower_bound": {"cites_t007":false,"evidence":["E-n066-wand125-mixed-843-report"],"value":"8.43"},
       "reported_status": "open",
       "status": "open",
@@ -2151,9 +2151,9 @@
         "chelokot_lean": null,
         "karakus_explicit_bound": {"basis":"karakus-6.1","decimal":"8.132168761236","exact":"1/2 + (1/2)*sqrt(233)","reaches_nagamochi":false,"shortfall_below_nagamochi":"0.009259667305"},
         "karakus_k2_minus_1": null,
-        "other_registered_results_at_n": [{"confirmation":"C0","id":"T-046","kind":"lower-bound","verification":"V0"},{"confirmation":"C1","id":"T-068","kind":"lower-bound","verification":"V0"},{"confirmation":"C3","id":"T-069","kind":"lower-bound","verification":"V3"},{"confirmation":"C1","id":"T-083","kind":"lower-bound","verification":"V3"},{"confirmation":"C3","id":"T-085","kind":"correction","verification":"V3"},{"confirmation":"C1","id":"T-097","kind":"lower-bound","verification":"V0"}],
+        "other_registered_results_at_n": [{"confirmation":"C0","id":"T-046","kind":"lower-bound","verification":"V0"},{"confirmation":"C1","id":"T-068","kind":"lower-bound","verification":"V0"},{"confirmation":"C3","id":"T-069","kind":"lower-bound","verification":"V3"},{"confirmation":"C1","id":"T-083","kind":"lower-bound","verification":"V3"},{"confirmation":"C3","id":"T-085","kind":"correction","verification":"V3"},{"confirmation":"C3","id":"T-097","kind":"lower-bound","verification":"V3"}],
         "registered_reported": {"basis":"exact-form","decimal":"8.430000000000","exact":"843/100","reaches_nagamochi":true,"shortfall_below_nagamochi":"-0.288571571458","sources":[{"evidence":["E-n066-wand125-mixed-843-report"],"n":66,"proved_by":["wand125"],"results":["T-097"],"via":"direct"}]},
-        "registered_verified": {"basis":"exact-form","decimal":"8.420000000000","exact":"421/50","reaches_nagamochi":true,"shortfall_below_nagamochi":"-0.278571571458","sources":[{"evidence":["E-n066-wand125-mixed-842-source-replay"],"n":66,"results":["T-069"],"via":"direct"}]}
+        "registered_verified": {"basis":"exact-form","decimal":"8.430000000000","exact":"843/100","reaches_nagamochi":true,"shortfall_below_nagamochi":"-0.288571571458","sources":[{"evidence":["E-n066-wand125-mixed-843-sqverify-fast-replay"],"n":66,"results":["T-097"],"via":"direct"}]}
       },
       "weakened_to": null,
       "weakened_to_without_karakus": null

@@ -73,7 +73,7 @@ Follow the `n` link for full provenance, numerical evidence, conflicts, and bloc
 | [`63`](n-063.md) | `8` | `8` | `8` | `8` | proved | replayed here, external proof | — | 2026-08-24 |
 | [`64`](n-064.md) | `8` | `8` | `8.0` | `8` | proved | replayed here | — | 2026-08-24 |
 | [`65`](n-065.md) | `5 + (5/2)√2` | `5 + (5/2)√2` | `167/20` | `167/20` | open | replayed here | — | 2026-10-02 |
-| [`66`](n-066.md) | `3 + 4 √2` | `3 + 4 √2` | `843/100` | `421/50` | open | replayed here | formal lower differs from report | 2026-10-02 |
+| [`66`](n-066.md) | `3 + 4 √2` | `3 + 4 √2` | `843/100` | `843/100` | open | replayed here | — | 2026-10-02 |
 | [`67`](n-067.md) | `8 + (1/2)√2` | `8 + (1/2)√2` | `212/25` | `212/25` | open | replayed here | — | 2026-10-05 |
 | [`68`](n-068.md) | `8.798795237222592` | `137481175581603/15625000000000` | `851/100` | `851/100` | open | replayed here | — | 2026-10-01 |
 | [`69`](n-069.md) | `8.82719465572973` | `35308778622919/4000000000000` | `431/50` | `1717/200` | open | replayed here | formal upper trails report; formal lower differs from report | 2026-10-05 |

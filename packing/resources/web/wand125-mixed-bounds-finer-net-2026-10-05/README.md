@@ -240,18 +240,29 @@ as a mapping, and the other 848 shipped files are unchanged. The receipts are
 `run.meta` and the driver’s `run.stdout`.
 
 **`sqverify-fast`.** This repository’s clean-room verifier, with lemma N0 for the
-declared net, verified both certificates at every direction of their nets: `n18-L470` at
-416 directions in 168 CPU-seconds and `n66-L843` at 201 in 2,167, recorded in the
-[Milestone B census](../../../benchmarks/measure-verifier/census-mixed/README.md). On the
-12 directions above it took 132 CPU-seconds where the source’s checker took 4,628. No
-rung rests on it.
+declared net, verified both certificates at every direction of their nets on 5 October:
+`n18-L470` at 416 directions in 168 CPU-seconds and `n66-L843` at 201 in 2,167, recorded
+in the [Milestone B census](../../../benchmarks/measure-verifier/census-mixed/README.md).
+No rung rests on those runs.
+
+On 6 October `n66-L843` was decided again at all 201 directions by the binary of the
+crate source that the census route’s review accepted, without the declared-net change:
+`VERIFIED`, 117,253,700 nodes, least certified bound $1.0000000006737138$ at index 122,
+2,105 CPU-seconds at two threads, the same verdict, node total and least bound as the
+run of 5 October, whose census row it replaces. Two mutants were refused at index 122.
+On the 12 directions above it took 129 CPU-seconds where the source’s checker took
+4,628. The evidence entry `E-n066-wand125-mixed-843-sqverify-fast-replay` states it, and
+it is the complete replay here on which the verified lower bound at $n = 66$ rests. The
+verifier was written without opening the source’s checker and shares no code with it,
+so this is an independent decision of coverage by the same method, not a reproduction of
+the source’s records.
 
 ## Limitations
 
 - **Coverage is decided by the source’s C++ alone** for the source’s own runs; the replays
   and `sqverify-fast` runs here are recorded separately. At $n = 18$ the bundle’s own
   driver was replayed in full; at $n = 66$ only a sample of 12 directions has been
-  replayed with the source’s checker.
+  replayed with the source’s checker, and the complete replay here is `sqverify-fast`’s.
 - **No source audit.** Neither directory carries the source’s `completion-audit.json`, so
   nothing the source publishes binds a certificate to its tarball but the README’s digest
   and the commit. The binding here is the pinned tree’s digest and each bundle’s own file

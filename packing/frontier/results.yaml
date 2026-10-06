@@ -8815,10 +8815,10 @@ results:
   - id: T-097
     kind: lower-bound
     registered: '2026-10-05'
-    headline: "Mixed rectangle-measure lower bound reported at `n = 66`"
+    headline: "Mixed rectangle-measure lower bound verified at `n = 66`"
     claim: >-
-      wand125/square-packing-bounds reports s(66) >= 843/100 = 8.43, by a rectangle-density
-      certificate published on 5 October 2026, after those of T-094.
+      A rectangle density of wand125/square-packing-bounds, checked at coverage one and
+      published on 5 October 2026, after those of T-094, proves s(66) >= 843/100 = 8.43.
 
       The certificate is a density of 713 uniform rectangles in D4 orbits, and no point
       mass, of total mass 6599999/100000, at core side 9977/10000 on 201 net half-angles of
@@ -8828,45 +8828,48 @@ results:
       integer tables. It supersedes the source's mixed_n66_L842 (T-069).
 
       The value is above T-069's 421/50 = 8.42, the reported and verified lower bound at n =
-      66, by 0.01. Its mass is below 67 too, but the record holds more there.
+      66 before it, by 0.01. A packing of 67 squares contains one of 66, but at n = 67 the
+      record already holds more in both lanes (212/25), so it does not carry further.
 
-      Here the source was retained, its exact premises were recomputed from the retained
-      bytes, and the replay's checks before its first angle were run on the pinned tarball.
-      The 5 October review of the certificate found no defect. The source's own checker was
-      replayed here at 12 of the 201 directions, the axis, the first, middle and last pairs
-      and the pairs holding the two least recorded bounds, and returned the certificate's
-      own record at each; a sample is a diagnostic and decides no other direction. This
-      repository's clean-room verifier sqverify-fast decided all 201 directions here, but it is not yet a registered verifier and no rung
-      rests on it. The value stands as reported, and the verified lower bound is unchanged.
+      The certificate was decided here on 6 October 2026 by sqverify-fast, this
+      repository's clean-room measure verifier, at all 201 net directions of the retained
+      candidate, and two mutants scaled below coverage one were refused: confirmed,
+      independently re-implemented. The verifier shares no code with the source's checker and
+      runs the same net-and-shrink method, so it is a second implementation and not a second
+      method. The source's own checker was replayed here at 12 of the 201 directions, each
+      returning the certificate's own record, and not in full.
 
       wand125 after Tokoharu and Levy,
       [square-packing-bounds](https://github.com/wand125/square-packing-bounds/tree/43050edc5bdf5116fc5a073283128edd6749946b/certificates/mixed_n66_L843).
       Registration was requested in a comment of 5 October 2026 on jlevy/squares#282. The
       source says parts of the work were produced with AI assistance under human direction.
     scope: {n_values: [66]}
-    verification: V0
-    confirmation: C1
+    verification: V3
+    confirmation: C3
     significance:
       score: 3
       rationale: >-
-        Scored as a claim: if the replay passes, the strongest verified lower bound on
-        record at n = 66, by 0.01, and the strongest reported. A further size from the
-        generator and checker of T-069 and later, with no new technique, at S3 as those are;
-        the score gates nothing.
+        The strongest verified lower bound on record at n = 66, above the replayed mixed
+        certificate that held it (T-069) by 0.01. A further size from the generator and
+        checker of T-069 and later, with no new technique, at S3 as those are. The review of
+        5 October that read the certificate confirmed S3.
       scored: '2026-10-05'
-      by: 'issue-282 October 5 import, registering lane B of the 5 October evening intake (repository; draft)'
+      by: docs/project/reviews/review-2026-10-05-wand125-declared-net-n18-n66.md (repository; confirms the registering lane's draft)
     novelty: previously-published
     attribution:
       source_keys: ['[wand125 mixed bounds finer net 2026-10-05]']
       published: '2026-10-05'
     composition: >-
-      One primary certificate on one reported entry, at V0/C1: retained, audited for its
-      exact premises and reviewed, not replayed. Coverage is decided by the source's C++
-      checker alone, byte for byte the checker the 28 September and 2, 3 and 5 October
-      reviews read; the axis tables are a second implementation for one direction and not a
-      second method.
+      One primary certificate on its reported entry and its replay entry. The replay is
+      sqverify-fast at all 201 net directions of the retained candidate: one
+      interval-certified method, replayed here by an independent implementation, C3, on the
+      census route whose per-certificate conditions the review of 5 October of that route
+      set and this certificate meets. The source's checker was replayed at 12 directions and
+      its axis tables were not run here, so no second method and no complete reproduction
+      with the producer's code stands beside it.
     evidence:
       - E-n066-wand125-mixed-843-report
+      - E-n066-wand125-mixed-843-sqverify-fast-replay
     reviews:
       - path: docs/project/reviews/review-2026-10-05-wand125-declared-net-n18-n66.md
         kind: adversarial
@@ -8883,28 +8886,47 @@ results:
       - packing/resources/web/wand125-mixed-bounds-finer-net-2026-10-05/receipts/mixed-audit.json
       - packing/resources/web/wand125-mixed-bounds-finer-net-2026-10-05/receipts/n66-L843/fetch.json
       - packing/devtools/audit_wand125_point_and_mixed.py
+      - packing/benchmarks/measure-verifier/census-mixed/census.json
       - packing/benchmarks/measure-verifier/census-mixed/wand125-mixed-bounds-finer-net-2026-10-05/mixed_n66_L843.jsonl.gz
+      - packing/devtools/sqverify_fast_census.py
       - packing/resources/web/wand125-mixed-bounds-finer-net-2026-10-05/receipts/n66-L843/range-156-157/summary.json
       - docs/project/reviews/review-2026-10-05-wand125-declared-net-n18-n66.md
+      - docs/project/reviews/review-2026-10-05-wand125-october-5-and-independent-replays.md
+    controls:
+      - packing/benchmarks/measure-verifier/census-mixed/wand125-mixed-bounds-finer-net-2026-10-05/mixed_n66_L843.control.json
+      - packing/tests/test_sqverify_fast_census.py
     next_rung: >-
-      The complete replay, about 15.5 CPU-hours planned (16.2 by the source's own
-      oblique seconds), with devtools.audit_wand125_point_and_mixed mixed-replay n66-L843
-      over the remaining ranges (the six sampled are done) and mixed-merge, before the
-      verified lower bound at n = 66 moves; it moves when the replay returns the
-      certificate's own record at all 201 directions. think-0fkt holds it for a compute
-      budget.
+      V4 and C4 need two adversarial AI reviews of this result by distinct reviewers and a
+      human oversight record. One is retained, the review of 5 October that read the
+      certificate; the review of the census route that day read T-094's certificates and
+      not this one. A complete replay of the source's own checker,
+      devtools.audit_wand125_point_and_mixed mixed-replay n66-L843 over the 189 directions
+      not yet replayed and mixed-merge (think-0fkt, about 14 CPU-hours), would add a
+      reproduction with the producer's code beside the rung; a second machine method would
+      be a method-distinct decision of rotated coverage.
     notes: >-
-      V0 because the cited entry is the source's claim: assurance reported, no complete
-      replay. C1 because the 5 October review of the certificate is recorded as the report
-      entry's external_review, with no defect. The exact audit and the pre-replay checks
-      decide no direction. A later revision than T-094's, so its own entry.
+      Raised from V0/C1 on 6 October 2026 (think-e60e) by the sqverify-fast replay, 2,105
+      CPU seconds at two threads, with its controls. It rests on two reviews of 5 October:
+      the one that read this certificate's mathematics with no defect, recorded on the
+      report entry and in reviews, and the review of T-094 and the independent replays,
+      which accepted the census route as a complete replay here for a certificate whose
+      mathematics a review has read and which meets its per-certificate conditions, as this
+      one does (Carrying the Route; the census test holds them).
+
+      The first review held that a complete sqverify-fast pass moved no rung under stage 4
+      as it then read; the amendment of result-import.md stage 4 that landed with T-094's
+      exit (IR-2 of the route's review) admits a reviewed first-party implementation of the
+      same theorem as the replay, the change that review named. Lane B's earlier census row
+      came from its declared-net build, outside the reviewed crate source, so it moved
+      nothing; the row that replaces it is from the binary of T-094's replays and agrees
+      with it in verdict, node total and least bound. n = 66's verified lower bound moves
+      from T-069's 421/50 to 843/100 and carries to no larger count.
 
       The sample replay of 5 October (think-8qo9) ran
       devtools.audit_wand125_point_and_mixed mixed-replay n66-L843 on six two-direction
       ranges, 0-1, 24-25, 100-101, 147-148, 156-157 and 199-200, at one worker: 12
       directions, each REPLAYED and matching the certificate, 4,628 CPU-seconds against
       the source's 3,741 on them (receipts/n66-L843/range-*/ in the packet). The complete
-      replay was priced at 15.5 CPU-hours, above the lane's budget; with the sample and the
-      complete sqverify-fast pass the review holds the entry at V0/C1 and the verified
-      lower bound at 421/50, as stage 4 and the verifier plan now stand. The proof-bundle tarball is pinned by digest and not
-      retained. Ids here are provisional until merged.
+      replay, priced at 15.5 CPU-hours, was not run, and the verified lower bound no longer
+      waits on it. The proof-bundle tarball is pinned by digest and not retained. Ids here
+      are provisional until merged.

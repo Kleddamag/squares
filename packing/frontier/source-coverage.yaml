@@ -704,8 +704,8 @@ sources:
       complete replay here, every direction returning the certificate's record, which put
       all five in the verified lane; the proof-bundle tarballs are pinned by digest and not
       retained. At n = 66 the source's mixed_n66_L843 of 5 October (T-097, the finer-net
-      packet) supersedes it in the reported lane, and the case record reports that one; the
-      verified lane keeps 421/50 until its replay. The revision also
+      packet) supersedes it in both lanes since sqverify-fast decided that one here on 6
+      October, and the case record reports and verifies 843/100. The revision also
       holds mixed_n87_L939 and mixed_n87_L940, below its rectangle certificate at n = 87,
       which are pinned and not registered; the request announces n = 82 to 85 to follow.
   - id: wand125-mixed-bounds-2026-10-02
@@ -1171,6 +1171,7 @@ sources:
     evidence:
       - E-n018-wand125-mixed-470-report
       - E-n066-wand125-mixed-843-report
+      - E-n066-wand125-mixed-843-sqverify-fast-replay
     notes: >-
       Revision 43050edc5bdf5116fc5a073283128edd6749946b, retrieved at 2026-10-05T17:10Z for a
       comment of 5 October on jlevy/squares#282 (mixed_n66_L843, added at d73ce20) and for
@@ -1179,14 +1180,16 @@ sources:
       the checker of its n = 50 certificate, run by the same driver, each of mass n -
       1/100000. mixed_n18_L470 is on a net its candidate declares, core 999/1000 and 416
       half-angle tangents of step 1/1001; mixed_n66_L843 is on the standard net and
-      supersedes the source's mixed_n66_L842 (T-069). Both are recorded as reported lower
+      supersedes the source's mixed_n66_L842 (T-069). Both were recorded as reported lower
       bounds (T-096 and T-097), each above what the record reported at its count. The
       directories carry no completion-audit.json, so each tarball is bound by its digest at
       the pinned tree. The exact audits and the checks before any replay pass on both: for
       n = 66 the fixed-net audit and its mixed-fetch, for n = 18
       devtools.audit_wand125_declared_net, which also binds every shipped record and input
-      to the declared net. The proof-bundle tarballs are pinned by digest and not
-      retained.
+      to the declared net. On 6 October sqverify-fast, this repository's clean-room measure
+      verifier, decided mixed_n66_L843 at all 201 net directions, which put it in the
+      verified lane; the source's own checker ran here at 12 of its directions and not in
+      full. The proof-bundle tarballs are pinned by digest and not retained.
   - id: wand125-valid7-independent-check-2026-10-02
     title: Independent exact checker of Valid7 for s(k^2 - 3) = k
     role: source-repository

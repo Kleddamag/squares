@@ -173,6 +173,14 @@ docs/project/reviews/review-2026-09-05-strategy-gpt-56-pro-gemini-grok.md
 # strategy review above: the source body is preserved rather than retyped.
 docs/project/reviews/review-2026-09-08-extending-s11-lower-bound-note.md
 
+# A separately prompted adversarial review, stored byte for byte as its reviewer printed it
+# (SHA-256 fc54b564..., think-dsz4) with only the common-doc footer appended: the register
+# cites it as a review record, and the lane brief that ran it requires the reviewer's
+# output unchanged. Measured on 2026-10-06 with the pinned flowmark-rs 0.4.0 on the file:
+# 401 lines added and 150 removed, almost all reflow, with straight apostrophes retyped
+# as curly in the reviewer's prose.
+docs/project/reviews/review-2026-10-06-wand125-validtilt9-independent-check.md
+
 # A separately prompted stage-4 review, stored byte for byte as the review process returned
 # it, which the result-import lanes of 2026-10-05 require of such a review: its SHA-256,
 # 8931947d..., names the reviewer's output. Measured on a copy in directory mode with the

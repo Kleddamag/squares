@@ -51,6 +51,88 @@ def _scope_contains(scope: object, n: int) -> bool:
     return isinstance(lower, int) and isinstance(upper, int) and lower <= n <= upper
 
 
+#: The origins of a run that can discharge a conditional theorem's hypothesis: a passing
+#: replay or audit here, or a third party's replay retained here.
+DISCHARGING_ORIGINS = frozenset({"replayed-here", "audited-here", "independently-external"})
+
+
+def conditions(evidence: Mapping[str, object]) -> list[tuple[str, list[str]]]:
+    """The hypotheses a proved theorem takes and does not prove (`proof.conditional_on`),
+    each with the entries recorded as discharging it, in record order."""
+    proof = evidence.get("proof")
+    if not isinstance(proof, Mapping):
+        return []
+    items = proof.get("conditional_on")
+    if not isinstance(items, list):
+        return []
+    return [
+        (str(item.get("hypothesis")), _string_list(item.get("discharged_by")))
+        for item in items
+        if isinstance(item, Mapping)
+    ]
+
+
+def discharges(evidence: Mapping[str, object] | None) -> bool:
+    """Whether an entry can discharge a hypothesis: a verified run with a passing
+    replay, performed here or retained here from a third party."""
+    return (
+        evidence is not None
+        and evidence.get("assurance") == "verified"
+        and evidence.get("origin") in DISCHARGING_ORIGINS
+        and evidence.get("replay_status") == "passed"
+    )
+
+
+def undischarged(
+    evidence: Mapping[str, object], evidence_by_id: Mapping[str, Mapping[str, object]]
+) -> list[str]:
+    """The hypotheses of a conditional theorem that no recorded entry discharges: the
+    entry is verified as an implication only, and nothing here has decided its premise."""
+    return [
+        hypothesis
+        for hypothesis, refs in conditions(evidence)
+        if not any(discharges(evidence_by_id.get(ref)) for ref in refs)
+    ]
+
+
+def conditional_problems(evidence_by_id: Mapping[str, Mapping[str, object]]) -> list[str]:
+    """What is wrong with the register's conditional theorems: a `discharged_by` entry
+    that does not exist, does not discharge (`discharges`), or does not cover every case
+    the theorem's entry covers."""
+    errors: list[str] = []
+    for evidence_id, evidence in evidence_by_id.items():
+        for hypothesis, refs in conditions(evidence):
+            for ref in refs:
+                other = evidence_by_id.get(ref)
+                if other is None:
+                    errors.append(
+                        f"{evidence_id}: {hypothesis} is discharged by unknown evidence {ref}"
+                    )
+                elif not discharges(other):
+                    errors.append(
+                        f"{evidence_id}: {hypothesis} is discharged by {ref}, which is not "
+                        "a verified replay with a passing status, here or retained here"
+                    )
+                elif not _scope_covers(other.get("scope"), evidence.get("scope")):
+                    errors.append(
+                        f"{evidence_id}: {hypothesis} is discharged by {ref}, whose scope "
+                        "does not cover this entry's"
+                    )
+    return errors
+
+
+def _scope_covers(outer: object, inner: object) -> bool:
+    if not isinstance(inner, Mapping):
+        return False
+    values = inner.get("n_values")
+    if isinstance(values, list):
+        return all(isinstance(n, int) and _scope_contains(outer, n) for n in values)
+    lower, upper = inner.get("n_min"), inner.get("n_max")
+    if not isinstance(lower, int) or not isinstance(upper, int):
+        return False
+    return all(_scope_contains(outer, n) for n in range(lower, upper + 1))
+
+
 def check_evidence_semantics(evidence: Mapping[str, object]) -> list[str]:
     """Return assurance-method violations for one evidence record."""
     errors: list[str] = []
@@ -245,6 +327,15 @@ def _check_bound_evidence(
                     f"{label}: evidence {ref} has claim {evidence.get('claim')!r}, "
                     f"expected {expected_claim!r}"
                 )
+            # A conditional theorem verifies an implication, so a verified bound cites
+            # it only beside the run that decides each of its hypotheses: the lane then
+            # shows everything the bound rests on.
+            errors.extend(
+                f"{label}: evidence {ref} is conditional on {hypothesis}, and the bound "
+                "cites nothing that discharges it"
+                for hypothesis, discharged in conditions(evidence)
+                if not set(discharged) & set(refs)
+            )
     return errors
 
 

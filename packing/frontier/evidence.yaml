@@ -639,6 +639,9 @@ evidence:
         - Valid7, the theorem's one hypothesis, for the k = 7 cover; it is not proved in Lean and is discharged for this cover by E-k2m3-evand-valid7-qx2-replay.
         - The Lean kernel of leanprover/lean4 v4.33.1 and Mathlib 0df444a3 from the official cache are sound; with the definitions read for the 2 October review, that is the trusted base. The finite cover facts (box7Cover_measure, famCover_total, nonnegativity, mass_shift) are kernel-checked by decide +kernel, not assumed.
       audit_record: docs/project/reviews/review-2026-10-02-valid7-independent-checker.md
+      conditional_on:
+        - hypothesis: Valid7
+          discharged_by: [E-k2m3-evand-valid7-qx2-replay, E-k2m3-wand125-valid7-independent]
     limitations: >-
       Built here on 2 October 2026 by lane LL from the closure stage_evand_bentz_lean
       assembled (ten project modules and Mathlib), every staged file with the Git blob of
@@ -16253,6 +16256,9 @@ evidence:
         - ValidTilt9, the theorem's one hypothesis, for the box-9 cover; it is not proved in Lean, and two exact checkers report it (E-k2m4-evand-validtilt9-qx2-report, E-k2m4-wand125-validtilt9-report), neither replayed here in full.
         - The Lean kernel of leanprover/lean4 v4.33.1 and Mathlib from the official cache are sound; with the definitions read by the 3 October claim-chain review and the 6 October review of wand125's run, that is the trusted base. The finite facts (out9, fit9, sym9, axis9, box9Cover_measure, famCover_total4) are kernel-checked by decide +kernel, not assumed.
       audit_record: docs/project/reviews/review-2026-10-03-evand-k2m4-claim-chain.md
+      conditional_on:
+        - hypothesis: ValidTilt9
+          discharged_by: []
     limitations: >-
       Built here on 3 October 2026 from the closure devtools.stage_evand_bentz4_lean
       assembled, every staged file at the Git blob of the source's 2eb15455 tree and the

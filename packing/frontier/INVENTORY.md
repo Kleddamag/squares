@@ -10,6 +10,7 @@ ours, which rest on someone else's argument, and how far each has been checked.
 
 - **386** evidence records. **244** are formal; **237** of those were established here.
 - **134** rest on an argument made elsewhere, of which **7** have been read by nobody here.
+- **1** formal record proves a theorem only under a hypothesis nothing here has replayed, and is verified as that implication alone: `E-k2m4-evand-bentz4-lean-build` (ValidTilt9).
 - **40** claim to be first established here. **14** make no novelty statement at all - not assessed, which is not the same as not novel.
 
 A formal claim on an unread external proof is still formal: the proof proves its
@@ -18,7 +19,7 @@ results, it is a statement about what this repository has itself examined.
 
 ## Every record
 
-`code` is how the code that verified a record stands to the code its result's producer used, and `programs` names that code by its id in [`VERIFIERS.md`](VERIFIERS.md), which says whose each program is.
+`code` is how the code that verified a record stands to the code its result's producer used, and `programs` names that code by its id in [`VERIFIERS.md`](VERIFIERS.md), which says whose each program is. A theorem proved only under a hypothesis it does not prove names that hypothesis in its `claim`, with the runs that discharge it here or *not replayed here*: it is verified as the implication, and as the claim only beside them.
 
 | evidence | cases | claim | assurance | method decides | whose work | read here | novelty | code | programs |
 | --- | ---: | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -33,7 +34,7 @@ results, it is a statement about what this repository has itself examined.
 | `E-k2m3-evand-family-report` | 10 | lower-bound | reported | - | elsewhere | informally-verified | previously-published | producer’s code | `V-evand-qx2-zm-py`, `V-evand-lean` |
 | `E-k2m3-wand125-valid7-independent` | 0 | lower-bound | verified | equalities and inequalities, no tolerance | here | informally-verified | previously-published | independent | `V-wand125-valid7-checker`, `V-audit-valid7-independent`, `V-probe-valid7-fixes` |
 | `E-k2m3-evand-valid7-qx2-replay` | 9 | lower-bound | verified | equalities and inequalities, no tolerance | here | - | previously-published | producer’s code | `V-evand-qx2-zm-py` |
-| `E-k2m3-evand-bentz-lean-build` | 9 | exact-value | verified | its theorem, against a named kernel | here | - | previously-published | producer’s code | `V-evand-lean` |
+| `E-k2m3-evand-bentz-lean-build` | 9 | exact-value, conditional on Valid7, discharged by `E-k2m3-evand-valid7-qx2-replay` and `E-k2m3-wand125-valid7-independent` | verified | its theorem, against a named kernel | here | - | previously-published | producer’s code | `V-evand-lean` |
 | `E-n011-global-optimality-report` | 1 | lower-bound | reported | - | elsewhere | defect-found | previously-published | no code | `V-queuingtheory-n11-verify` |
 | `E-n011-global-optimality-independent` | 1 | exact-value | verified | equalities and inequalities, no tolerance | here | informally-verified | previously-published | shared components | `V-n11-optimality-checkers`, `V-check-n11-final-composition` |
 | `E-wand125-tools-ceiling-report` | 0 | derived-structure | reported | - | elsewhere | defect-found | previously-published | no code | `V-wand125-tools` |
@@ -307,7 +308,7 @@ results, it is a statement about what this repository has itself examined.
 | `E-k2m4-evand-validtilt9-qx2-report` | 0 | lower-bound | reported | - | elsewhere | - | previously-published | producer’s code | `V-evand-qx2-zm-py` |
 | `E-k2m4-wand125-validtilt9-report` | 0 | lower-bound | reported | - | elsewhere | informally-verified | previously-published | independent | `V-wand125-valid7-checker`, `V-audit-validtilt9-independent` |
 | `E-k2m4-evand-lean-report` | 0 | lower-bound | reported | - | elsewhere | - | previously-published | producer’s code | `V-evand-lean` |
-| `E-k2m4-evand-bentz4-lean-build` | 0 | exact-value | verified | its theorem, against a named kernel | here | - | previously-published | producer’s code | `V-evand-lean` |
+| `E-k2m4-evand-bentz4-lean-build` | 0 | exact-value, conditional on ValidTilt9, not replayed here | verified | its theorem, against a named kernel | here | - | previously-published | producer’s code | `V-evand-lean` |
 | `E-n020-evand-point-cover-4886-report` | 0 | lower-bound | reported | - | elsewhere | - | previously-published | producer’s code | `V-evand-zmx2`, `V-evand-zm-mixed-py` |
 | `E-n051-wand125-mixed-746-report` | 0 | lower-bound | reported | - | elsewhere | informally-verified | previously-published | producer’s code | `V-wand125-mixed-rotated-verify-cpp`, `V-wand125-verify-mixed-full-proof-py` |
 | `E-n052-wand125-mixed-755-report` | 1 | lower-bound | reported | - | elsewhere | informally-verified | previously-published | producer’s code | `V-wand125-mixed-rotated-verify-cpp`, `V-wand125-verify-mixed-full-proof-py` |

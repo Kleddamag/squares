@@ -803,12 +803,31 @@ def _foreign(registration: apply.Registration, n: int) -> str:
 
 
 def _direct_plan(frontier: Path) -> apply.Plan:
+    """The newest registration's plan at the least count it certifies directly.
+
+    A later source's bound can hold every such count, as wand125's check2 certificate of
+    6 October does at n = 20, the last one the registration still wrote. So the tool
+    writes the registration's own report back into the copy there first, and the
+    placement rules are tried on the paragraph the tool writes.
+    """
     newest = apply.registered(frontier)
-    return next(
-        plan
-        for plan in apply.plans(newest, frontier)
-        if plan.reported is not None and plan.reported.source == plan.n
+    n = min(
+        n
+        for n, (name, _side) in newest.packet.cases.items()
+        if apply.owner(name) is newest
+        and n not in newest.superseded_priors
+        and any(newest.wrote(part) for part in _paragraphs(frontier / f"n-{n:03d}.md")[1])
     )
+    path = frontier / f"n-{n:03d}.md"
+    bound = apply.Bound(newest.packet.cases[n][1], n, newest)
+    path.write_text(
+        apply.apply_case(apply.Plan(n, bound, None), newest, frontier), encoding="utf-8"
+    )
+    (plan,) = [plan for plan in apply.plans(newest, frontier) if plan.n == n]
+    assert plan.reported == bound
+    path.write_text(apply.apply_case(plan, newest, frontier), encoding="utf-8")
+    assert apply.apply_case(plan, newest, frontier) == path.read_text(encoding="utf-8")
+    return plan
 
 
 def test_an_intake_is_written_beside_another_sources_paragraph_of_its_date(

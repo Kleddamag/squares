@@ -3485,10 +3485,12 @@ def _template_paragraphs(section: str) -> list[str]:
 #: question after a colon, the lower bound glossed as a size below which no packing can
 #: exist, and an example of each bound at $n = 29$, the case's current bounds as the
 #: record reports them (the owner, 2026-10-03: "make the examples current"), each
-#: written as the record writes it, with $\le$ and $\ge$. The lower is called reported:
-#: wand125's certificate is not yet replayed here, and its result stands at V0/C0, so
-#: "proved" alone would put a reported bound in a verified one's place
-#: (`test_the_intros_examples_are_the_records`).
+#: written as the record writes it, with $\le$ and $\ge$. The lower is called reported,
+#: the field `test_the_intros_examples_are_the_records` compares it with: when this was
+#: written wand125's certificate was not yet replayed here and stood at V0/C0, so "proved"
+#: alone would have put a reported bound in a verified one's place. Its 6 October
+#: certificate (T-114) is replayed here at V3/C3, so both lanes now hold 5.81, and the
+#: word stays the owner's.
 PROBLEM_STATEMENT = (
     (
         "The square packing problem is a simple and long-standing problem in geometry: "
@@ -3501,18 +3503,19 @@ PROBLEM_STATEMENT = (
         "for most $n$. In many cases, $s(n)$ is known only to lie between an upper bound "
         "(the size of the enclosing square for the tightest packing ever discovered, such "
         "as $s(29) \\le 5.934$) and a lower bound (a size below which it is proved that no "
-        "packing can exist, such as the reported $s(29) \\ge 5.7975$)."
+        "packing can exist, such as the reported $s(29) \\ge 5.81$)."
     ),
 )
 
 
 def test_the_intros_examples_are_the_records() -> None:
     """The introduction's two examples are case 29's current bounds: its lower example
-    is the reported lower bound, wand125's 5.79 of 2026-09-28 when this was written and
-    its 2319/400 = 5.7975 of 1 October (T-074) since,
-    and its upper example is the reported upper bound rounded up, which also stands at
-    or above the verified ceiling, so it is itself a proved ceiling. A new bound at
-    $n = 29$ that leaves an example stale fails here rather than on the page."""
+    is the reported lower bound, wand125's 5.79 of 2026-09-28 when this was written,
+    its 2319/400 = 5.7975 of 1 October (T-074) after it, and its 581/100 = 5.81 of 6
+    October (T-114) since, and its upper example is the reported upper bound rounded
+    up, which also stands at or above the verified ceiling, so it is itself a proved
+    ceiling. A new bound at $n = 29$ that leaves an example stale fails here rather
+    than on the page."""
     from devtools import overview_data, site_documents  # noqa: PLC0415
 
     block = site_documents.intro_block(site_documents.README.read_text(encoding="utf-8"))
@@ -5459,8 +5462,12 @@ def test_a_result_rows_popover_body_comes_from_one_function(
 #: choice of drawing that day (think-k8x9): a regularized case is drawn once, from its
 #: view, and its house drawing no longer ships, which rendered the page at 2,404,813
 #: bytes with the new-result stars, and the ceiling is 2,500,000 again, without the
-#: fetch think-yozo planned for the second drawings.
-PAGE_CEILINGS = {"index.html": 2_700_000, render_overview.RESULTS_PAGE: 1_300_000}
+#: fetch think-yozo planned for the second drawings. The results' short rows took both
+#: past it on 6 October: 2,548,891 and 1,200,769 bytes with the six results of that
+#: morning, and 2,680,770 and 1,332,411 with wand125's ten check2 results after them,
+#: about 13 KB a result on each page. Each ceiling keeps about a hundred kilobytes above
+#: the second measurement.
+PAGE_CEILINGS = {"index.html": 2_800_000, render_overview.RESULTS_PAGE: 1_450_000}
 
 
 def test_no_page_carries_a_result_overview(

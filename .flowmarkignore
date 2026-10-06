@@ -192,3 +192,9 @@ vendor/
 # retyped as curly, many of them inside quotations of the records it reviews. Same rule
 # as the two dated reviews above: a review is an immutable determination.
 docs/project/reviews/review-2026-10-06-evand-exact-optima.md
+
+# The separately prompted check of that review's fixes, stored byte-identical the same
+# way. Measured the same way on 2026-10-06: 96 of its 283 lines change, all reflow plus
+# 47 straight apostrophes and 74 straight double quotes retyped as curly and one
+# parenthesis escaped.
+docs/project/reviews/review-2026-10-06-evand-exact-optima-fix-check.md

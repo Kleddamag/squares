@@ -292,11 +292,15 @@ another review. For a format M certificate on a net its file declares (`proof_ne
 [soundness review of 6 October 2026](../../docs/project/reviews/review-2026-10-06-sqverify-fast-declared-net-soundness.md#for-the-records-lane)
 gives the checklist, and the census row must be built from a crate source whose review
 read the declared net (`REVIEWED_SOURCES` in `devtools/sqverify_fast_census.py`). Run
-`--control` before counting on its receipt: it tests the 99/100 mutant at one direction,
-which may have more than 1% slack, and then fails closed (FC-1 of the
-[re-check](../../docs/project/reviews/review-2026-10-06-sqverify-fast-declared-net-fix-check.md#fc-1--non-blocking-closed-failure-constrains-every-declared-net-control-receipt-the-99100-control-runs-at-an-index-chosen-by-termination-margin));
-a different choice of direction or scale is a change of control logic and needs a
-review. A fast tier or a sample of roots is a diagnostic.
+`--control` before counting on its receipt. It runs the 99/100 mutant at every direction
+of the net, since a single direction may have more than 1% slack (FC-1 of the
+[re-check](../../docs/project/reviews/review-2026-10-06-sqverify-fast-declared-net-fix-check.md#fc-1--non-blocking-closed-failure-constrains-every-declared-net-control-receipt-the-99100-control-runs-at-an-index-chosen-by-termination-margin)),
+and counts only coverage refusals at poses in the centre domain, each checked apart from
+the crate, as the
+[review of that change](../../docs/project/reviews/review-2026-10-06-sqverify-fast-census-control-fc1.md#for-the-records-lane)
+requires; receipts of the earlier kind, which ran it at the least-bound direction alone,
+stand where they are `CONTROLS_REFUSED`. Any other change of direction or scale is a
+change of control logic and needs a review. A fast tier or a sample of roots is a diagnostic.
 One complete replay is what `C3` needs; a second route is recorded beside the rung and
 is not a condition of it.
 

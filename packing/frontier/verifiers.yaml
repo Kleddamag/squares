@@ -1184,9 +1184,12 @@ verifiers:
       (docs/project/reviews/review-2026-10-06-sqverify-fast-declared-net-soundness.md),
       for a declared net once the control's exact evaluator read that net (its DR-1),
       which the same day's re-check confirmed. Its census drives the binary, keeps every
-      direction's receipt and puts negative controls on a certificate at its least-bound
-      direction, with check_sqverify_fast's exact evaluator and mutation helpers; neither
-      decides coverage. tests/test_sqverify_fast_census.py admits a census row as evidence
+      direction's receipt and puts negative controls on a certificate: the original and a
+      near-threshold mutant at its least-bound direction, and since the review of 6 October
+      of FC-1's fix
+      (docs/project/reviews/review-2026-10-06-sqverify-fast-census-control-fc1.md) the
+      99/100 mutant at every direction of the net, with check_sqverify_fast's exact
+      evaluator and mutation helpers; neither decides coverage. tests/test_sqverify_fast_census.py admits a census row as evidence
       only for a build of a reviewed source.
 
   - id: V-replay-chelokot-lean

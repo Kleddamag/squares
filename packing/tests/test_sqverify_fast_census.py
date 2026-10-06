@@ -322,7 +322,17 @@ def test_each_control_refuses_both_mutants_where_the_original_verifies(name: str
         # refusal is the only correct answer.
         assert exact * factor < 1 or (witness is not None and Fraction(witness) < 1), mutant
         assert run["returncode"] == 1, mutant
-        assert run["verdict"] not in (None, "verified"), mutant
+        # A refusal on coverage, never audit-failed, non-finite or unresolved (CC-1).
+        assert run["verdict"] == census.CANDIDATE, mutant
+    if receipt["kind"] == KINDS[0]:
+        # Each v1 receipt's 99/100 refusal has its own witness below 1, evaluated apart
+        # from the crate: the rule v2 holds at every refused direction (CC-6).
+        scaled = runs["scaled-99-100"]["mutation"]
+        assert scaled["capture_at_witness"] is not None
+        assert Fraction(scaled["capture_at_witness"]) < 1
+    else:
+        near_run = runs["near-threshold"]["mutation"]
+        assert near_run["centre_in_domain"] is True or near_run["witness_in_domain"] is True
     assert Fraction(runs["scaled-99-100"]["mutation"]["factor"]) == census.CONTROL_SCALE
     near = runs["near-threshold"]["mutation"]
     assert exact * Fraction(near["factor"]) <= 1 - census.NEAR_THRESHOLD
@@ -349,55 +359,269 @@ def sweeps() -> dict[str, dict[str, Any]]:
 def test_each_scaled_sweep_refuses_its_mutant_somewhere_with_an_exact_witness(
     name: str,
 ) -> None:
-    """At every direction of the net, the 99/100 mutant is refused at one at least, and at
-    every refusal its capture at the pose kept, recomputed here from the candidate by the
-    evaluator written apart from the crate, is below 1. Where it verifies, the
-    certificate has more than 1% slack, which is no defect."""
+    """At every direction of the net, the 99/100 mutant is refused at one at least, and
+    every direction that does not verify it is a coverage refusal at a pose in the per-bin
+    domain where its capture, recomputed here from the candidate by the evaluator written
+    apart from the crate, is the one the receipt keeps, below 1, with the original's at
+    least 1. Where it verifies, the original captures at least 100/99, which is no
+    defect."""
     sweep = sweeps()[name]
     case = cases()[name]
     assert census.sweep_held(sweep)
     assert sweep["net_directions"] == census.net_directions(case)
     raw = read_raw(case.candidate)
     for item in sweep["refused"]:
-        assert item["pose"] is not None, item["r"]
+        index = int(item["r"])
+        assert item["verdict"] in {census.CANDIDATE, census.AXIS_REFUSED}, index
+        assert census.in_domain(raw, index, item["pose"]), index
         px, py = (Fraction(value) for value in item["pose"])
-        assert census.CONTROL_SCALE * mixed_exact(raw, px, py, int(item["r"])) < 1, item["r"]
+        original = mixed_exact(raw, px, py, index)
+        assert census.CONTROL_SCALE * original == Fraction(item["capture"]) < 1, index
+        assert original >= 1, index
+
+
+def refusal(index: int, **overrides: Any) -> dict[str, Any]:
+    """A made-up refusal that holds, with any field overridden."""
+    return {
+        "r": index,
+        "verdict": census.CANDIDATE,
+        "method": "interval-branch-and-bound",
+        "pose": [1.0, 2.0],
+        "coverage_refusal": True,
+        "in_domain": True,
+        "capture_below_1": True,
+        "captures_agree": True,
+        "original_at_least_1": True,
+        **overrides,
+    }
 
 
 def sweep(
     refused: list[dict[str, Any]], verified: list[int], **overrides: Any
 ) -> dict[str, Any]:
+    """A made-up sweep that holds when its refusals do, with any field overridden."""
+    count = len(refused) + len(verified)
     return {
-        "directions": len(refused) + len(verified),
-        "net_directions": len(refused) + len(verified),
+        "directions": count,
+        "net_directions": count,
+        "indices_complete": True,
         "returncode": 1,
         "summary_status": "REFUSED",
+        "summary_refused_directions": [item["r"] for item in refused],
+        "fault_injected_at_box": None,
+        "premises_agree": True,
         "verified_directions": verified,
         "refused": refused,
         **overrides,
     }
 
 
-def refusal(index: int, *, below: bool = True) -> dict[str, Any]:
-    return {
-        "r": index,
-        "verdict": "counterexample-candidate",
-        "pose": [1.0, 2.0],
-        "capture_below_1": below,
-    }
-
-
 def test_a_sweep_holds_only_with_a_witnessed_refusal_at_every_direction_it_refuses() -> None:
-    """The acceptance rule of FC-1's fix, on made-up sweeps."""
-    assert census.sweep_held(sweep([refusal(1), refusal(2)], [0, 3]))
+    """The acceptance rule of FC-1's fix, on made-up sweeps, one clause at a time."""
+    good = [refusal(1), refusal(2)]
+    assert census.sweep_held(sweep(good, [0, 3]))
     # The mutant verified everywhere: no refusal shows the verifier refuses a false claim.
     assert not census.sweep_held(sweep([], [0, 1, 2], returncode=0, summary_status="VERIFIED"))
-    # A refusal whose pose does not capture less than 1: a refusal not shown correct.
-    assert not census.sweep_held(sweep([refusal(1), refusal(2, below=False)], [0]))
-    # Not every direction of the net ran.
-    assert not census.sweep_held(sweep([refusal(1)], [0], net_directions=201))
+    # Exit 1 and REFUSED, with no refusal among the rows.
+    assert not census.sweep_held(sweep([], [0, 1, 2], summary_refused_directions=[1]))
+    # Exit and summary disagree, each way.
+    assert not census.sweep_held(sweep(good, [0], summary_status="VERIFIED"))
+    assert not census.sweep_held(sweep(good, [0], returncode=0))
     # An admission refusal or a crash, not a coverage refusal.
-    assert not census.sweep_held(sweep([refusal(1)], [0], returncode=2))
+    assert not census.sweep_held(sweep(good, [0], returncode=2))
+    # Not every direction of the net ran, or an index ran twice or was skipped.
+    assert not census.sweep_held(sweep(good, [0], net_directions=201))
+    assert not census.sweep_held(sweep(good, [0], indices_complete=False))
+    # The rows do not add up, or the summary names other refused directions.
+    assert not census.sweep_held(sweep(good, [0], directions=4))
+    assert not census.sweep_held(sweep(good, [0], summary_refused_directions=[1]))
+    # A fault injected, or a mutant on another net or count.
+    assert not census.sweep_held(sweep(good, [0], fault_injected_at_box=17))
+    assert not census.sweep_held(sweep(good, [0], premises_agree=False))
+    # Each clause of a refusal (CC-1, CC-2, CC-4, CC-5).
+    for field in (
+        "coverage_refusal",
+        "in_domain",
+        "capture_below_1",
+        "captures_agree",
+        "original_at_least_1",
+    ):
+        assert not census.sweep_held(sweep([refusal(1), refusal(2, **{field: False})], [0]))
+
+
+@pytest.mark.parametrize(
+    ("row", "coverage"),
+    [
+        ({"r": 3, "verdict": "counterexample-candidate"}, True),
+        ({"r": 3, "verdict": "audit-failed"}, False),
+        ({"r": 3, "verdict": "non-finite"}, False),
+        ({"r": 3, "verdict": "unresolved"}, False),
+        ({"r": 3, "verdict": "fault-injected"}, False),
+        ({"r": 0, "verdict": "refused", "method": "axis-vertex-sweep"}, True),
+        ({"r": 0, "verdict": "non-finite", "method": "axis-vertex-sweep"}, False),
+    ],
+)
+def test_only_a_coverage_refusal_counts(
+    monkeypatch: pytest.MonkeyPatch, row: dict[str, Any], *, coverage: bool
+) -> None:
+    """CC-1: a counterexample candidate whose witness the crate confirmed below the
+    threshold, or the axis sweep's refusal; an audit failure, a non-finite enclosure, an
+    unresolved box or an injected fault is a defect to surface, not a refusal."""
+    raw = read_raw(cases()[RECOMPUTED].candidate)
+    capture = Fraction(99, 100)
+    monkeypatch.setattr(census, "mixed_exact", lambda *_: Fraction(1))
+    pose = [5.0, 5.0]
+    full = {**row}
+    if row["r"]:
+        full["witness"] = {
+            "exact_pose": pose,
+            "exact_below_threshold": True,
+            "exact_coverage": str(capture),
+        }
+    else:
+        full["argmin"] = ["5", "5"]
+    record = census.refusal_record(raw, full, Fraction(99, 100), format_m=True)
+    assert record["coverage_refusal"] is coverage
+    assert record["capture"] == str(capture)
+    assert record["capture_below_1"]
+    assert record["captures_agree"]
+    assert record["original_at_least_1"]
+    assert record["in_domain"]
+    assert census.refusal_held(record) is coverage
+
+
+def test_a_refusal_outside_the_domain_or_disagreeing_with_the_crate_does_not_count(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """CC-2 and CC-5: a pose outside lemma D's per-bin domain refutes nothing, and the
+    exact capture must be the crate's."""
+    raw = read_raw(cases()[RECOMPUTED].candidate)
+    monkeypatch.setattr(census, "mixed_exact", lambda *_: Fraction(1))
+    low, high = census.domain_bounds(raw, 3)
+    row = {
+        "r": 3,
+        "verdict": census.CANDIDATE,
+        "witness": {
+            "exact_pose": [float(low) / 2, float(high)],
+            "exact_below_threshold": True,
+            "exact_coverage": "99/100",
+        },
+    }
+    record = census.refusal_record(raw, row, Fraction(99, 100), format_m=True)
+    assert not record["in_domain"]
+    assert not census.refusal_held(record)
+    row["witness"] = {**row["witness"], "exact_pose": [5.0, 5.0], "exact_coverage": "98/100"}
+    record = census.refusal_record(raw, row, Fraction(99, 100), format_m=True)
+    assert record["in_domain"]
+    assert not record["captures_agree"]
+    assert not census.refusal_held(record)
+
+
+def test_the_per_bin_domain_is_lemma_ds() -> None:
+    """At the axis the bin floor is 0 and the half-width 1/2; at node r it is rho(rD - D/2)
+    with rho(t) = (1 + 2t - t^2) / (2 (1 + t^2)), from L - rho to rho on each axis."""
+    raw = read_raw(cases()[RECOMPUTED].candidate)
+    side, step = Fraction(raw["L"]), net_step(raw)
+    assert census.domain_bounds(raw, 0) == (Fraction(1, 2), side - Fraction(1, 2))
+    low = 5 * step - step / 2
+    rho = (1 + 2 * low - low * low) / (2 * (1 + low * low))
+    assert census.domain_bounds(raw, 5) == (rho, side - rho)
+    assert census.in_domain(raw, 5, [str(rho), str(side - rho)])
+    assert not census.in_domain(raw, 5, [str(rho - Fraction(1, 10**12)), "5"])
+
+
+def test_a_sweep_reads_the_binarys_rows_and_summary(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    """scaled_sweep against a stub binary that prints fixed rows: the axis refusal is
+    judged at its least vertex, a confirmed candidate at its witness, an audit failure is
+    kept as a refusal that does not count, and rows and summary are reconciled."""
+    raw = read_raw(cases()[RECOMPUTED].candidate)
+    premises = entries()[RECOMPUTED]["premises"]
+    monkeypatch.setattr(census, "mixed_exact", lambda *_: Fraction(1))
+    witness = {
+        "exact_pose": [5.0, 5.0],
+        "exact_below_threshold": True,
+        "exact_coverage": "99/100",
+    }
+    rows = [
+        {"r": 0, "method": "axis-vertex-sweep", "verdict": "refused", "argmin": ["5", "5"]},
+        {"r": 1, "verdict": "verified"},
+        {"r": 2, "verdict": census.CANDIDATE, "witness": witness},
+    ]
+    stated = {key: premises.get(key) for key in ("D", "B", "L", "n", "net_origin", "format")}
+    summary = {
+        "kind": "sqverify-fast-summary/v1",
+        "status": "REFUSED",
+        "refused_directions": [0, 2],
+        "fault_injected_at_box": None,
+        "premises": {**stated, "angle_count": 3, "input_sha256": "x"},
+    }
+
+    def stub(lines: list[dict[str, Any]]) -> Path:
+        out = tmp_path / "rows.jsonl"
+        out.write_text("".join(json.dumps(line) + "\n" for line in lines), encoding="utf-8")
+        binary = tmp_path / "stub.sh"
+        binary.write_text(f"#!/bin/sh\ncat {out}\nexit 1\n", encoding="utf-8")
+        binary.chmod(0o755)
+        return binary
+
+    three = {**premises, "angle_count": 3}
+    held = census.scaled_sweep(
+        stub([*rows, summary]),
+        raw,
+        tmp_path / "m.json",
+        1,
+        factor=Fraction(99, 100),
+        threads=1,
+        premises=three,
+    )
+    assert held["indices_complete"]
+    assert held["premises_agree"]
+    assert [item["r"] for item in held["refused"]] == [0, 2]
+    assert held["refused"][0]["pose"] == ["5", "5"]
+    assert census.sweep_held(held)
+    audit = [*rows[:2], {"r": 2, "verdict": "audit-failed", "witness": witness}, summary]
+    failed = census.scaled_sweep(
+        stub(audit),
+        raw,
+        tmp_path / "m.json",
+        1,
+        factor=Fraction(99, 100),
+        threads=1,
+        premises=three,
+    )
+    assert failed["refused"][1]["coverage_refusal"] is False
+    assert not census.sweep_held(failed)
+    # A row missing from the stream: the indices are not the net's.
+    short = census.scaled_sweep(
+        stub([rows[0], rows[2], summary]),
+        raw,
+        tmp_path / "m.json",
+        1,
+        factor=Fraction(99, 100),
+        threads=1,
+        premises=three,
+    )
+    assert not short["indices_complete"]
+    assert not census.sweep_held(short)
+
+
+def test_an_evidence_entry_states_a_sweep_control() -> None:
+    """The v2 sentence names the refusals, the slack directions and the near factor."""
+    run = {
+        "sweep": {
+            "directions": 201,
+            "refused": [refusal(r) for r in range(187)],
+            "verified_directions": list(range(14)),
+        }
+    }
+    text = census.scaled_control_text(139, run)
+    assert "refused at 187 of the 201 net directions" in text
+    assert "the mutant verified at the other 14" in text
+    assert "least vertex" in text
+    near = {"mutation": {"factor": "453393222524583/500000000000000"}}
+    assert census.near_factor(near) == "0.9068"
 
 
 def test_one_control_capture_is_recomputed_from_the_candidate() -> None:
@@ -506,7 +730,10 @@ def test_an_evidence_entry_on_a_declared_net_states_the_net_and_its_review(
     packet.mkdir()
     receipt = FOLDER / case.packet / f"{name}.jsonl.gz"
     (packet / receipt.name).write_bytes(receipt.read_bytes())
-    refused = {"verdict": "counterexample-candidate", "mutation": {"capture_at_centre": "0"}}
+    refused = {
+        "verdict": "counterexample-candidate",
+        "mutation": {"capture_at_centre": "0", "factor": "999/1000"},
+    }
     control = {
         "status": "CONTROLS_REFUSED",
         "index": 408,

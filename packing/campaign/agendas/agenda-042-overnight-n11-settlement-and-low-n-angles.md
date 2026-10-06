@@ -2034,12 +2034,15 @@ agenda:
       receipts/A/kernel-control-endpoint-sw9.json) and lane K's endpoint7 control cover
       it. Admission is the standard one: the standing verifier's full pass and the
       census with the endpoint surviving. Evidence record exp-257. Ended at the deadline
-      with exp-257 accepted (needs review): 24 of 27 counted draws closed and were
-      admitted; u8 closed and was admitted and u1 ended INCOMPLETE at the ceiling; every
-      stratum has a finished draw; u31 were not run, since no draw started after 06:17
-      UTC when its ceiling would have ended after the session deadline; u29 closed with
-      its verification still running at the verdict and is not counted. Every
-      non-closure's node is kept.
+      with exp-257 accepted: 24 of 27 counted draws closed and were admitted; u8 closed
+      and was admitted and u1 ended INCOMPLETE at the ceiling; all 19 counted strata
+      have a finished counted draw. u31 was not run: new starts stopped at 06:17 UTC
+      under the coordinator's session-lease rule, 57 minutes before the registered
+      deadline. u29 closed with its verification still running at the verdict; it
+      passed at 07:38 UTC and u29 is admitted (25 of 28 counting it). The W2 factual
+      review (docs/project/reviews/review-2026-10-06-exp-257-h275.md) confirmed the
+      verdict with corrections; the round stopped on its clock and resumes at u31.
+      Every non-closure's node is kept.
 ---
 # Agenda 042: The n11 Settlement Ladder and Low-n Angles
 

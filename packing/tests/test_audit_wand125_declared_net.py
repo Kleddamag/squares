@@ -9,6 +9,7 @@ shipped one.
 
 from __future__ import annotations
 
+import importlib
 import json
 import math
 import os
@@ -466,3 +467,320 @@ def test_the_complete_n18_replay_matches_the_shipped_run() -> None:
     run = declared.read_meta(full / "run.meta")
     assert run["exit"] == "0"
     assert declared.asserts_were_on(run, full / declared.PROCESSES)
+
+
+#: The check2 certificates of 6 October 2026 at ``2fad66e``, with their row counts and
+#: declared nets: they ship the source's run of its adaptation of sqverify_fast, not C++
+#: records.
+CHECK2 = {
+    "n18-L4705": (324, "1/5002", 2073),
+    "n19-L4825": (341, "1/5002", 2073),
+    "n20-L4905": (327, "1/2006", 832),
+    "n26-L5545": (477, "1/2006", 832),
+    "n27-L56435": (439, "1/2006", 832),
+    "n28-L5735": (531, "1/1001", 416),
+    "n30-L58835": (402, "1/2006", 832),
+    "n39-L665": (600, "1/1001", 416),
+    "n41-L6775": (376, "1/1001", 416),
+}
+#: The source's adaptation of this repository's sqverify_fast, by its build's
+#: ``source_sha256``: every check2 run names it.
+ADAPTED_SOURCE = "ab6e33e164dbc5c32b40349ba55981b58e630b5eef59534196a69d259404fd7c"
+
+
+def test_the_check2_certificates_are_the_ones_the_table_names() -> None:
+    assert {key for key, stated in declared.CERTIFICATES.items() if stated.check2} == set(
+        CHECK2
+    )
+    assert not declared.CERTIFICATES["n29-L581"].check2
+
+
+@pytest.mark.parametrize("key", sorted(CHECK2))
+def test_each_check2_certificate_holds_lemma_n0_and_its_receipt(key: str) -> None:
+    rows, step, count = CHECK2[key]
+    stated = declared.CERTIFICATES[key]
+    facts = declared.audit(key=key)
+    assert facts["format"] == "check2"
+    assert facts["status"] == "EXACT_PREMISES_HOLD"
+    assert all(facts["premises"].values())
+    assert (facts["rectangles"], facts["net"]["step"], facts["net"]["count"]) == (
+        rows,
+        step,
+        str(count),
+    )
+    assert Fraction(facts["mass"]) == stated.n - declared.GAP
+    check = facts["source_check"]
+    assert (check["status"], check["directions"]) == ("VERIFIED", count)
+    assert check["source_sha256"] == ADAPTED_SOURCE
+    assert check["control_status"] == "REFUSED"
+
+
+def test_the_finest_net_has_the_premises_lemma_n0_needs() -> None:
+    """mixed_n18_L4705 and mixed_n19_L4825: core 4999/5000 on 2073 tangents of step
+    1/5002, finer than any net the source declared before."""
+    facts = declared.audit(key="n18-L4705")["net"]
+    step, core = Fraction(1, 5002), Fraction(4999, 5000)
+    assert Fraction(facts["rotated_side_upper"]) == core * (1 + step) < 1
+    assert Fraction(facts["endpoint"]) == Fraction(2072, 5002)
+    assert Fraction(facts["endpoint_check"]) > 0
+    # The last bin still holds an orientation: its floor is below tan(pi/8).
+    assert not declared.reaches_past_pi_over_8(Fraction(2072 * 2 - 1, 2) * step)
+    assert Fraction(facts["tangent_form"]) < 1
+
+
+def copy_check2(tmp_path: Path, key: str) -> Path:
+    """A check2 directory's retained files, decompressed, in a scratch directory."""
+    directory = declared.CERTIFICATES[key].directory
+    for path in directory.rglob("*"):
+        if not path.is_file():
+            continue
+        name = path.relative_to(directory).as_posix().removesuffix(".gz")
+        target = tmp_path / name
+        target.parent.mkdir(parents=True, exist_ok=True)
+        target.write_bytes(read_retained_bytes(directory / name))
+    return tmp_path
+
+
+def coarser_check2_step(value: dict[str, Any]) -> None:
+    # 4999/5000 (1 + 1/1001) > 1: a core at a bin's edge need not fit.
+    value["proof_net"]["step"] = "1/1001"
+
+
+def stated_bundle_endpoint(value: dict[str, Any]) -> None:
+    value["net"]["endpoint"] = "2071/5002"
+
+
+def fewer_directions(value: dict[str, Any]) -> None:
+    value["directions"] = 2072
+
+
+def unrefused_control(value: dict[str, Any]) -> None:
+    value["tries"][0]["status"] = "VERIFIED"
+
+
+@pytest.mark.parametrize(
+    ("name", "change", "message"),
+    [
+        ("candidate.json", coarser_check2_step, "lemma N0"),
+        ("candidate.json", heavier_row, "total_mass"),
+        ("bundle.json", stated_bundle_endpoint, "bundle.json net endpoint"),
+        ("check2/receipt.json", fewer_directions, "receipt digest"),
+        ("check2/control.json", unrefused_control, "control was not refused"),
+    ],
+)
+def test_a_changed_check2_copy_is_refused(
+    tmp_path: Path, name: str, change: Any, message: str
+) -> None:
+    directory = copy_check2(tmp_path, "n18-L4705")
+    assert declared.audit(directory, key="n18-L4705")["status"] == "EXACT_PREMISES_HOLD"
+    edit(directory, name, change)
+    with pytest.raises(declared.AuditError, match=message):
+        declared.audit(directory, key="n18-L4705")
+
+
+def test_a_check2_file_unlike_its_listed_digest_is_refused(tmp_path: Path) -> None:
+    directory = copy_check2(tmp_path, "n20-L4905")
+    spec = directory / "check2/src/SPEC.md"
+    spec.write_text(spec.read_text(encoding="utf-8") + "\n", encoding="utf-8")
+    with pytest.raises(declared.AuditError, match=r"SPEC\.md is not the file"):
+        declared.audit(directory, key="n20-L4905")
+
+
+def test_both_forms_of_the_source_control_record_are_read() -> None:
+    tries = {
+        "refused": True,
+        "tries": [{"status": "REFUSED", "exit": 1}],
+    }
+    assert declared.control_refused(tries)
+    assert not declared.control_refused(tries | {"tries": [{"status": "VERIFIED", "exit": 0}]})
+    assert not declared.control_refused(tries | {"refused": False})
+    assert declared.control_refused({"status": "REFUSED", "exit": 1})
+    assert not declared.control_refused({"status": "REFUSED", "exit": 0})
+
+
+@pytest.mark.parametrize("key", sorted(CHECK2))
+def test_each_check2_bundle_is_bound_to_the_packet_and_its_logs_to_the_net(key: str) -> None:
+    _rows, _step, count = CHECK2[key]
+    stated = declared.CERTIFICATES[key]
+    record = json.loads((stated.receipts / "bundle.json").read_text(encoding="utf-8"))
+    assert record["status"] == "BUNDLE_BOUND_TO_PACKET_AND_NET"
+    assert (record["format"], record["certificate"]) == ("check2", stated.name)
+    assert record["tarball"]["sha256"] == stated.tarball_pin()[0]
+    assert record["listed_files"] == 15
+    assert record["retained_files_equal"] + record["pinned_files_equal"] + 1 == 15
+    log = record["run_log"]
+    assert log["directions"] == count
+    assert log["source_sha256"] == ADAPTED_SOURCE
+    assert log["least_oblique"]["lower"] >= 1
+    assert log["axis_lower"] >= 1
+    control = record["control_log"]
+    assert Fraction(control["factor"]) == Fraction(197, 200)
+    assert control["refused"] >= 1
+    assert control["exact_below_threshold"] >= 1
+
+
+def test_the_n29_bundle_is_bound_like_the_earlier_proof_bundles() -> None:
+    stated = declared.CERTIFICATES["n29-L581"]
+    record = json.loads((stated.receipts / "bundle.json").read_text(encoding="utf-8"))
+    facts = declared.audit(key="n29-L581")
+    assert record["status"] == "BUNDLE_BOUND_TO_PACKET_AND_NET"
+    assert (record["listed_files"], record["code_files"]) == (1266, 10)
+    assert record["oblique_inputs"] == facts["oblique_records"] == 415
+    assert record["rectangle_images"] == 8 * 505
+    assert record["upstream_oblique_nodes"] == facts["oblique_nodes"]
+    assert record["tarball"]["sha256"] == stated.tarball_pin()[0]
+
+
+def test_each_check2_run_names_its_input_published_or_listed() -> None:
+    """Finding FN-1 of the review of T-108 to T-117: eight check2 run logs name an input
+    other than the published candidate.json. The audit names each, and refuses any other."""
+    for key in CHECK2:
+        facts = declared.audit(key=key)
+        published = key not in declared.UNPUBLISHED_RUN_INPUTS
+        assert facts["run_input"]["published_candidate"] is published, key
+        if not published:
+            assert facts["run_input"]["sha256"] == declared.UNPUBLISHED_RUN_INPUTS[key]
+        assert facts["prepublication_check"]["input_is_published_candidate"]
+    assert len(declared.UNPUBLISHED_RUN_INPUTS) == 8
+
+
+def test_an_unlisted_or_stale_run_input_is_refused(monkeypatch: pytest.MonkeyPatch) -> None:
+    listed = dict(declared.UNPUBLISHED_RUN_INPUTS)
+    unlisted = {key: value for key, value in listed.items() if key != "n20-L4905"}
+    monkeypatch.setattr(declared, "UNPUBLISHED_RUN_INPUTS", unlisted)
+    with pytest.raises(declared.AuditError, match="neither the published candidate"):
+        declared.audit(key="n20-L4905")
+    stale = listed | {"n18-L4705": "0" * 64}
+    monkeypatch.setattr(declared, "UNPUBLISHED_RUN_INPUTS", stale)
+    with pytest.raises(declared.AuditError, match="neither the published candidate"):
+        declared.audit(key="n18-L4705")
+
+
+def test_both_forms_of_the_control_factor_read_197_200() -> None:
+    assert declared.control_factor({"tries": [{"factor": "197/200"}]}) == Fraction(197, 200)
+    kind = {"kind": "every mass x 0.985, 32 directions"}
+    assert declared.control_factor(kind) == Fraction(197, 200)
+    assert declared.control_factor({"kind": "masses halved"}) is None
+
+
+def test_a_control_witness_is_recomputed_exactly() -> None:
+    """Finding FN-2: each control witness must lie in its node's per-bin domain and carry
+    the capture an evaluator written apart from the crate computes on the scaled measure,
+    below one."""
+    exact = importlib.import_module("devtools.check_sqverify_fast").mixed_exact
+    stated = declared.CERTIFICATES["n41-L6775"]
+    candidate = declared.load_json(read_retained_bytes(stated.directory / "candidate.json"))
+    half = Fraction(1, 2)
+    scaled = {
+        "L": candidate["L"],
+        "B": candidate["B"],
+        "proof_net": candidate["proof_net"],
+        "rectangles": [
+            {"rectangle": row["rectangle"], "mass": str(Fraction(row["mass"]) * half)}
+            for row in candidate["rectangles"]
+        ],
+    }
+    side = Fraction(candidate["L"])
+    pose = (float(side / 2), float(side / 2))
+    capture = exact(scaled, Fraction(pose[0]), Fraction(pose[1]), 7)
+    assert capture < 1
+
+    def tried(coverage: Fraction, where: tuple[float, float]) -> list[dict[str, Any]]:
+        witness = {
+            "exact_below_threshold": True,
+            "exact_pose": list(where),
+            "exact_coverage": str(coverage),
+        }
+        return [{"r": 7, "verdict": "counterexample-candidate", "witness": witness}]
+
+    assert declared.control_witnesses(candidate, tried(capture, pose), half) == 1
+    with pytest.raises(declared.AuditError, match="not the logged one"):
+        declared.control_witnesses(candidate, tried(capture + Fraction(1, 10**12), pose), half)
+    with pytest.raises(declared.AuditError, match="outside the per-bin domain"):
+        declared.control_witnesses(candidate, tried(capture, (0.1, pose[1])), half)
+
+
+def test_every_cpp_sample_receipt_verified_its_nodes() -> None:
+    """cpp-sample: the source's C++ checker, the producer's own code but sharing none with
+    sqverify_fast, verified each check2 candidate at every node it ran."""
+    receipts = [
+        (key, path)
+        for key in sorted(CHECK2)
+        for path in sorted((declared.CERTIFICATES[key].receipts / "cpp-sample").glob("*.json"))
+    ]
+    assert (
+        "n41-L6775",
+        declared.CERTIFICATES["n41-L6775"].receipts / "cpp-sample/nodes-0409-0415.json",
+    ) in receipts
+    for key, path in receipts:
+        stated = declared.CERTIFICATES[key]
+        record = json.loads(path.read_text(encoding="utf-8"))
+        assert record["status"] == "SAMPLE_VERIFIED", path.name
+        assert record["certificate"] == stated.name
+        assert record["checker_sha256"] == declared.CHECKER_SHA256
+        assert record["threshold"] == "1"
+        assert record["tarball"]["sha256"] == stated.tarball_pin()[0]
+        assert record["binding"]["status"] == "BUNDLE_BOUND_TO_PACKET_AND_NET"
+        assert record["candidate_digest"] == declared.audit(key=key)["candidate_digest"]
+        assert [row["index"] for row in record["rows"]] == record["nodes"]
+        for row in record["rows"]:
+            assert row["verified"], (path, row["index"])
+            assert row["status"] == "ANGLE_VERIFIED", (path, row["index"])
+            assert (row["frontier_boxes"], row["exact_witnesses"]) == (0, 0)
+            assert float(row["lower"]) >= 1
+
+
+@pytest.mark.parametrize("key", sorted(CHECK2))
+def test_each_check2_candidate_passes_the_source_cpp_checker_at_its_sampled_nodes(
+    key: str,
+) -> None:
+    """The source's C++ checker, which shares no code with sqverify_fast, verified each
+    check2 candidate at the nodes cpp-sample ran, its least-bound node among them."""
+    stated = declared.CERTIFICATES[key]
+    receipts = sorted((stated.receipts / "cpp-sample").glob("nodes-*.json"))
+    assert receipts, key
+    bundle = json.loads((stated.receipts / "bundle.json").read_text(encoding="utf-8"))
+    ran: set[int] = set()
+    for path in receipts:
+        record = json.loads(path.read_text(encoding="utf-8"))
+        assert record["status"] == "SAMPLE_VERIFIED", path.name
+        assert record["certificate"] == stated.name
+        assert record["checker_sha256"] == declared.CHECKER_SHA256
+        assert record["threshold"] == "1"
+        assert record["tarball"]["sha256"] == stated.tarball_pin()[0]
+        assert record["binding"]["status"] == "BUNDLE_BOUND_TO_PACKET_AND_NET"
+        assert record["candidate_digest"] == declared.audit(key=key)["candidate_digest"]
+        assert [row["index"] for row in record["rows"]] == record["nodes"]
+        for row in record["rows"]:
+            assert row["verified"], (path.name, row["index"])
+            assert row["status"] == "ANGLE_VERIFIED"
+            assert (row["frontier_boxes"], row["exact_witnesses"]) == (0, 0)
+            assert float(row["lower"]) >= 1
+        ran |= set(record["nodes"])
+    assert bundle["run_log"]["least_oblique"]["r"] in ran
+
+
+@pytest.mark.parametrize("key", sorted(CHECK2))
+def test_each_census_row_runs_as_the_source_copy_of_the_crate_did(key: str) -> None:
+    """compare-census: this repository's census row and the source's run of its copy of
+    the crate both verify every node of the declared net."""
+    stated = declared.CERTIFICATES[key]
+    record = json.loads((stated.receipts / "compare-census.json").read_text(encoding="utf-8"))
+    _rows, _step, count = CHECK2[key]
+    assert record["status"] == "BOTH_VERIFY_EVERY_DIRECTION"
+    assert (record["certificate"], record["directions"]) == (stated.name, count)
+    census = declared.PROJECT / record["census_receipts"]
+    assert declared.file_sha256(census) == record["census_receipts_sha256"]
+    assert record["least_oblique"]["census"]["lower"] >= 1
+
+
+def test_the_n29_sample_returned_the_shipped_records() -> None:
+    stated = declared.CERTIFICATES["n29-L581"]
+    receipts = sorted((stated.receipts / "sample").glob("nodes-*.json"))
+    assert receipts
+    for path in receipts:
+        record = json.loads(path.read_text(encoding="utf-8"))
+        assert record["status"] == "SAMPLE_REPLAYED", path.name
+        assert record["binding"]["status"] == "BUNDLE_BOUND_TO_PACKET_AND_NET"
+        assert all(row["matches_upstream"] for row in record["rows"]), path.name
+        assert 364 in record["nodes"]

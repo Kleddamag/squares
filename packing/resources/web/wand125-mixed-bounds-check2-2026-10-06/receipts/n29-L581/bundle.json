@@ -1,0 +1,15 @@
+{
+  "kind": "wand125-declared-net-bundle/v1",
+  "certificate": "mixed_n29_L581",
+  "status": "BUNDLE_BOUND_TO_PACKET_AND_NET",
+  "listed_files": 1266,
+  "code_files": 10,
+  "oblique_inputs": 415,
+  "rectangle_images": 4040,
+  "rectangle_lines": "ENCLOSE_THE_EXPANDED_CANDIDATE",
+  "upstream_oblique_seconds": 152186.96850435404,
+  "upstream_oblique_nodes": 128316129,
+  "axis": {"cells":11309769,"integer_minimum":"72324513115955573/72057594037927936","seconds":52.08548128000257},
+  "scope": "The bundle's files against its own list and the packet, every shipped record and input header against the declared net's tangent, per-bin domain and threshold, and every input's rectangle lines against the expanded candidate. No coverage is decided here.",
+  "tarball": {"name":"n29-L5.81-proof-bundle.tar.gz","sha256":"057d3df36634f062d6eaad37d5c3195bb2c0adfcd7ba7ce6e149d8333be9dc56","bytes":38874443}
+}

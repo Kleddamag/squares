@@ -1,0 +1,13 @@
+{
+  "kind": "wand125-declared-net-bundle/v1",
+  "format": "check2",
+  "certificate": "mixed_n18_L4705",
+  "status": "BUNDLE_BOUND_TO_PACKET_AND_NET",
+  "listed_files": 15,
+  "retained_files_equal": 9,
+  "pinned_files_equal": 5,
+  "run_log": {"directions":2073,"oblique_nodes":352045748,"direction_seconds":2887.998900735003,"direction_cpu_seconds":2877.8086121320025,"threads":6,"target":"x86_64-unknown-linux-gnu","source_sha256":"ab6e33e164dbc5c32b40349ba55981b58e630b5eef59534196a69d259404fd7c","least_oblique":{"r":1234,"lower":1.0000000000680034},"axis_lower":1.016430568872826},
+  "control_log": {"witnesses_recomputed":29,"file":"check2/control-197_200.jsonl.gz","directions":32,"refused":29,"factor":"197/200","exact_below_threshold":29},
+  "scope": "The bundle's files against its own list and the packet, and the source's run and control logs against the declared net, threshold one and the receipt. The run is of the source's adaptation of this repository's sqverify_fast, whose tarball is held by digest and not opened. No coverage is decided here.",
+  "tarball": {"name":"n18-L4.705-check2-bundle.tar.gz","sha256":"187115fc5297ced03df2c8b2a9cecd77d35da59a254608607facbf2d5e6238f2","bytes":307607}
+}

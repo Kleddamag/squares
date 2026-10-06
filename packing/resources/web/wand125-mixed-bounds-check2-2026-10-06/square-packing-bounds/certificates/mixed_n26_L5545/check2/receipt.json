@@ -1,0 +1,46 @@
+{
+ "candidate": "candidate.json",
+ "file_sha256": "842bee847fcb1f6aa67fb58dbbe865e1b111028af71a64684b879ce1832fc119",
+ "candidate_digest": "cb94c1fd84f304bf2b53674d4efcfaac1282753d5b579d5e509e8451c0bf884d",
+ "status": "VERIFIED",
+ "directions": 832,
+ "failed": 0,
+ "verifier_summary": {
+  "build": {
+   "profile": "release",
+   "rustc": "rustc 1.98.0 (88d9e12ae 2026-08-18)",
+   "source_sha256": "ab6e33e164dbc5c32b40349ba55981b58e630b5eef59534196a69d259404fd7c",
+   "target": "aarch64-apple-darwin"
+  },
+  "direction_cpu_seconds": -0.0,
+  "direction_seconds": 4230.731647135998,
+  "directions": 832,
+  "fault_injected_at_box": null,
+  "kind": "sqverify-fast-summary/v1",
+  "nodes": 234384519,
+  "premises": {
+   "B": "1999/2000",
+   "D": "1/2006",
+   "L": "1109/200",
+   "angle_count": 832,
+   "centre_domain": "per-bin",
+   "expanded_points": 0,
+   "expanded_rectangles": 3816,
+   "expanded_segments": 0,
+   "format": "M",
+   "input_sha256": "6ea9cce160259694f48b9bb5f1ba3222332b7d8051284278f11a4413c6933c95",
+   "mass_below_n": "1/100000",
+   "mass_exact": "2599999/100000",
+   "n": 26,
+   "source_rectangles": 477
+  },
+  "refused_directions": [],
+  "status": "VERIFIED",
+  "threads": 4,
+  "threshold": "1",
+  "wall_seconds": 1059.965453625
+ },
+ "verifier": "sqverify-fast (jlevy/squares packing/sqverify_fast, branch wand125/sqverify-proof-net, commit fe12e036c, with proof_net support)",
+ "checked_by": "an independent second-system check (built from the certificate specification only, without reading the search code)",
+ "copied": "2026-10-06 14:30"
+}

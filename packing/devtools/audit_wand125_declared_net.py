@@ -1,15 +1,28 @@
 """Audit wand125's mixed certificates on a declared net, and replay and compare them.
 
-wand125/square-packing-bounds declares its own half-angle net in three certificates
-(jlevy/squares#366), each a rectangle density whose candidate carries a ``proof_net``
-(`CERTIFICATES`):
+wand125/square-packing-bounds declares its own half-angle net in thirteen certificates,
+the first three posted on jlevy/squares#366, each a rectangle density whose candidate
+carries a ``proof_net`` (`CERTIFICATES`):
 
 - at ``43050ed``, ``mixed_n18_L470`` for ``s(18) >= 47/10``, core side ``999/1000`` and
   ``{"step": "1/1001", "last": 415}``, 416 nodes;
 - at ``65e408c``, ``mixed_n18_L4704`` for ``s(18) >= 588/125``, core side ``1999/2000``
   and ``{"step": "1/2006", "last": 831}``, 832 nodes;
 - at ``65e408c``, ``mixed_n19_L48229`` for ``s(19) >= 48229/10000``, on
-  ``mixed_n18_L470``'s net.
+  ``mixed_n18_L470``'s net;
+- at ``2fad66e``, ten more: ``mixed_n29_L581`` for ``s(29) >= 581/100``, a proof bundle
+  like those above on ``mixed_n18_L470``'s net, and nine *check2* certificates, at
+  ``n = 18, 19, 20, 26, 27, 28, 30, 39, 41``, on that net, on ``mixed_n18_L4704``'s, or
+  on a finer one, core ``4999/5000`` and ``{"step": "1/5002", "last": 2072}``, 2073
+  nodes.
+
+A check2 directory ships no C++ records. Its candidate is in the same format, and its
+bundle holds the source's run of its own adaptation of this repository's sqverify_fast
+(``sqverify-proof-net``, build ``ab6e33e1...``) at every node, with the run's log, a
+control and the adapted crate's source as a tarball, which nothing here opens.
+``audit`` and ``bundle`` take that form for a check2 certificate (`audit_check2`,
+`bundle_check2`), and ``cpp-sample`` runs the source's earlier C++ checker, which shares
+no code with that crate, at chosen nodes of one.
 
 `devtools.audit_wand125_point_and_mixed` takes the standard net (step ``83/40000``, 201
 nodes) and core ``9977/10000`` as fixed, so it cannot audit these. This tool is the
@@ -70,6 +83,14 @@ takes ``--certificate``, ``n18-L470`` unless given.
   mutants, rebuilt from the retained candidate by the control receipt's factors and held
   to its exact captures, at the same node: the original must verify and each mutant must
   be refused.
+- ``cpp-sample`` binds a check2 bundle from its pinned tarball, then runs the source's
+  C++ checker ``89b674a6...``, built and driven by the source's own functions from the
+  retained ``mixed_n50_L740`` code, at chosen oblique nodes at threshold one, each
+  node's record held to lemma N0 and its input to the expanded candidate. It decides only
+  the nodes it ran.
+- ``compare-census`` sets this repository's sqverify-fast census row of a check2
+  certificate beside the source's run of its copy of the crate, direction by direction:
+  both must verify every node, and it counts where their node counts and bounds agree.
 
 From ``packing/``::
 
@@ -83,21 +104,28 @@ From ``packing/``::
         --certificate n19-L48229 --tarball TARBALL --work W --workers 2
     .venv/bin/python3 -m devtools.audit_wand125_declared_net control \\
         --certificate n19-L48229 --tarball TARBALL --work W
+    .venv/bin/python3 -m devtools.audit_wand125_declared_net bundle \\
+        --certificate n20-L4905 --tarball TARBALL --work W
+    .venv/bin/python3 -m devtools.audit_wand125_declared_net cpp-sample \\
+        --certificate n20-L4905 --tarball TARBALL --work W --nodes 1,679 --workers 1
 """
 
 from __future__ import annotations
 
 import argparse
+import gzip
 import hashlib
 import importlib
 import json
 import os
 import platform
+import resource
 import shutil
 import subprocess
 import sys
 import tarfile
 import time
+from concurrent.futures import ProcessPoolExecutor
 from dataclasses import dataclass
 from datetime import UTC, datetime
 from fractions import Fraction
@@ -136,6 +164,10 @@ class Certificate:
     side: Fraction
     tarball: str
     own_code: frozenset[str] = frozenset()
+    #: ``proof``: the source's C++ records at every node, in ``certificate.json``, with a
+    #: complete proof bundle; ``check2``: the source's run of its adaptation of this
+    #: repository's sqverify_fast, in ``check2/receipt.json``, with no C++ records.
+    kind: str = "proof"
 
     @property
     def directory(self) -> Path:
@@ -144,6 +176,10 @@ class Certificate:
     @property
     def receipts(self) -> Path:
         return self.packet / "receipts" / self.key
+
+    @property
+    def check2(self) -> bool:
+        return self.kind == "check2"
 
     @property
     def bundle_name(self) -> str:
@@ -167,6 +203,7 @@ class Certificate:
 
 FINER_NET_05 = WEB / "wand125-mixed-bounds-finer-net-2026-10-05"
 FINER_NET_06 = WEB / "wand125-mixed-bounds-finer-net-2026-10-06"
+CHECK2_06 = WEB / "wand125-mixed-bounds-check2-2026-10-06"
 #: Every certificate of the source on a declared net, by the key a command takes.
 CERTIFICATES = {
     certificate.key: certificate
@@ -195,6 +232,95 @@ CERTIFICATES = {
             19,
             Fraction(48229, 10000),
             "n19-L4.8229-proof-bundle.tar.gz",
+        ),
+        Certificate(
+            "n18-L4705",
+            CHECK2_06,
+            "mixed_n18_L4705",
+            18,
+            Fraction(941, 200),
+            "n18-L4.705-check2-bundle.tar.gz",
+            kind="check2",
+        ),
+        Certificate(
+            "n19-L4825",
+            CHECK2_06,
+            "mixed_n19_L4825",
+            19,
+            Fraction(193, 40),
+            "n19-L4.825-check2-bundle.tar.gz",
+            kind="check2",
+        ),
+        Certificate(
+            "n20-L4905",
+            CHECK2_06,
+            "mixed_n20_L4905",
+            20,
+            Fraction(981, 200),
+            "n20-L4.905-check2-bundle.tar.gz",
+            kind="check2",
+        ),
+        Certificate(
+            "n26-L5545",
+            CHECK2_06,
+            "mixed_n26_L5545",
+            26,
+            Fraction(1109, 200),
+            "n26-L5.545-check2-bundle.tar.gz",
+            kind="check2",
+        ),
+        Certificate(
+            "n27-L56435",
+            CHECK2_06,
+            "mixed_n27_L56435",
+            27,
+            Fraction(11287, 2000),
+            "n27-L5.6435-check2-bundle.tar.gz",
+            kind="check2",
+        ),
+        Certificate(
+            "n28-L5735",
+            CHECK2_06,
+            "mixed_n28_L5735",
+            28,
+            Fraction(1147, 200),
+            "n28-L5.735-check2-bundle.tar.gz",
+            kind="check2",
+        ),
+        Certificate(
+            "n29-L581",
+            CHECK2_06,
+            "mixed_n29_L581",
+            29,
+            Fraction(581, 100),
+            "n29-L5.81-proof-bundle.tar.gz",
+        ),
+        Certificate(
+            "n30-L58835",
+            CHECK2_06,
+            "mixed_n30_L58835",
+            30,
+            Fraction(11767, 2000),
+            "n30-L5.8835-check2-bundle.tar.gz",
+            kind="check2",
+        ),
+        Certificate(
+            "n39-L665",
+            CHECK2_06,
+            "mixed_n39_L665",
+            39,
+            Fraction(133, 20),
+            "n39-L6.65-check2-bundle.tar.gz",
+            kind="check2",
+        ),
+        Certificate(
+            "n41-L6775",
+            CHECK2_06,
+            "mixed_n41_L6775",
+            41,
+            Fraction(271, 40),
+            "n41-L6.775-check2-bundle.tar.gz",
+            kind="check2",
         ),
     )
 }
@@ -263,15 +389,18 @@ def read_directory(directory: Path) -> tuple[dict[str, Any], dict[str, Any], dic
     )
 
 
-def audit(directory: Path | None = None, *, key: str = DEFAULT) -> dict[str, Any]:
-    """Every exact premise of the certificate, from the retained files alone."""
-    stated = CERTIFICATES[key]
-    candidate, certificate, manifest = read_directory(directory or stated.directory)
+def measure(candidate: dict[str, Any], stated: Certificate) -> tuple[Fraction, int]:
+    """The candidate's count, side and rows: its total mass and its positive rows.
+
+    The count and side are the claim's; there are no point masses and no scaling; every
+    row is a nonnegative mass on a nondegenerate rectangle inside ``[0, L]^2``; and the
+    masses total exactly ``n - 1/100000``, as ``total_mass`` states.
+    """
     n = candidate["n"]
-    side, core = Fraction(candidate["L"]), Fraction(candidate["B"])
+    side = Fraction(candidate["L"])
     require((n, side) == (stated.n, stated.side), f"the candidate is n = {n}, L = {side}")
     require(candidate["points"] == [], "the candidate has point masses")
-    require(candidate["scaling_factor"] == "1", "the candidate is scaled")
+    require(candidate.get("scaling_factor", "1") == "1", "the candidate is scaled")
     total = Fraction(0)
     positive = 0
     for index, row in enumerate(candidate["rectangles"]):
@@ -287,6 +416,15 @@ def audit(directory: Path | None = None, *, key: str = DEFAULT) -> dict[str, Any
         total += mass
     require(total == Fraction(candidate["total_mass"]), "total_mass is not the sum")
     require(total == n - GAP, f"the mass {total} is not n - 1/100000")
+    return total, positive
+
+
+def declared_net(
+    candidate: dict[str, Any],
+) -> tuple[Fraction, int, dict[str, Fraction], dict[str, bool]]:
+    """The candidate's declared net: its step, its node count, its facts and lemma N0's
+    premises on it, every premise required to hold."""
+    core = Fraction(candidate["B"])
     net = candidate["proof_net"]
     require(set(net) == {"step", "last"}, f"proof_net has fields {sorted(net)}")
     require(isinstance(net["last"], int), "proof_net.last is not an integer")
@@ -294,16 +432,266 @@ def audit(directory: Path | None = None, *, key: str = DEFAULT) -> dict[str, Any
     facts = net_facts(core, step, count)
     checks = premises(facts, count)
     require(all(checks.values()), f"a premise of lemma N0 fails: {checks}")
+    return step, count, facts, checks
+
+
+#: The net facts the source states in a manifest, certificate or bundle.json net block.
+STATED_NET = (
+    "step",
+    "count",
+    "endpoint",
+    "endpoint_check",
+    "rotated_side_upper",
+    "side_margin",
+    "per_edge_margin",
+)
+
+
+def semantic_digest(candidate: dict[str, Any]) -> str:
+    """The source's candidate digest: SHA-256 of the compact, key-sorted JSON of the
+    fields that define the certificate, ``proof_net`` among them where declared."""
+    keys = ["n", "L", "B", "rectangles", "points", "total_mass"]
+    keys += ["proof_net"] if "proof_net" in candidate else []
+    text = json.dumps(
+        {key: candidate[key] for key in keys}, sort_keys=True, separators=(",", ":")
+    )
+    return hashlib.sha256(text.encode()).hexdigest()
+
+
+#: The eight check2 runs whose log names an input other than the published candidate.json
+#: (finding FN-1 of the 6 October review of T-108 to T-117): the SHA-256 of the bytes each
+#: read, as its own summary records it. Each read the published side, core, net, node
+#: count and mass, and the source's pre-publication run of the same build read the
+#: published bytes, but these bytes are not published. A check2 run that names any other
+#: input, or a published one where this names an unpublished one, is refused.
+UNPUBLISHED_RUN_INPUTS = {
+    "n19-L4825": "9132b84eceb4c9913bcf3065be58828665c5b12469c585f1700c1408c7f43cb7",
+    "n20-L4905": "c446837b499de48ede56a5b3a660abf81615b6332a36314012bca642306cd07f",
+    "n26-L5545": "6ea9cce160259694f48b9bb5f1ba3222332b7d8051284278f11a4413c6933c95",
+    "n27-L56435": "e6561fe4d114945a99f81aee05ef3028fb95ee60cf139990e8cd1deffc312dbf",
+    "n28-L5735": "c0218bf04ce2fe50a714cde1a4fe124ec1c90aebc50e5b5d65259cd094522bfd",
+    "n30-L58835": "6b3d9075e5faa99015409f531c8d3cdc3af69356d9a933e987da5f505ec9d766",
+    "n39-L665": "012755340a2a7dd214891d3e123ddc29e8dfd6f03c07dccedaf563c02da931ca",
+    "n41-L6775": "cbc04bd94c0f7041178419115990eb193ba52a79bc67efa2a2b7d00f8d9588b2",
+}
+#: The factor every check2 control scales each mass by: 0.985 in the control's own words.
+CHECK2_CONTROL_FACTOR = Fraction(197, 200)
+#: The source's second run of its check2 check before publication, on another host; not in
+#: the bundle, so not listed.
+PREPUBLICATION = "verification/prepublication-receipt.json"
+#: The one file a check2 directory's ``files-sha256.json`` lists that is not the
+#: directory's own: the README inside the tarball, shorter than the directory's, which
+#: `bundle` holds to its listed digest.
+BUNDLE_README = "README.md"
+
+
+def audit_check2(directory: Path, stated: Certificate) -> dict[str, Any]:
+    """Every exact premise of a check2 certificate, from the retained files alone.
+
+    A check2 directory carries no C++ records: ``bundle.json`` states the claim and the
+    net's facts, ``check2/receipt.json`` the source's run of its adaptation of this
+    repository's sqverify_fast at every node, and ``files-sha256.json`` every file's
+    digest. Besides the measure and lemma N0's premises, the last net bin must hold an
+    orientation of ``[0, pi/4]``; the net block must be the facts recomputed here; one
+    candidate digest, recomputed here by the source's rule, must be stated throughout; the
+    receipt must report every node of this net verified at threshold one, by a run that
+    read this side, core, step, count and mass, from the published candidate or from the
+    unpublished input `UNPUBLISHED_RUN_INPUTS` names for it (finding FN-1 of the 6
+    October review); the control must be this candidate with every mass scaled by
+    197/200, refused; the source's pre-publication run (`PREPUBLICATION`) by the same
+    build must verify every node on the published bytes; and every file
+    ``files-sha256.json`` lists, the tarball's own README apart (`BUNDLE_README`), must be
+    the directory's, retained or pinned. It decides no coverage.
+    """
+    raw = read_retained_bytes(directory / "candidate.json")
+    candidate = load_json(raw)
+    total, positive = measure(candidate, stated)
+    step, count, facts, checks = declared_net(candidate)
+    core, side = Fraction(candidate["B"]), Fraction(candidate["L"])
+    floor = (count - Fraction(3, 2)) * step
+    require(not reaches_past_pi_over_8(floor), "the last net bin holds no orientation")
+    digest = semantic_digest(candidate)
+    require(
+        candidate.get("scaling_source_digest", digest) == digest,
+        "the candidate's own digest is not its semantic digest",
+    )
+    stated_bundle = load_json(read_retained_bytes(directory / "bundle.json"))
+    require(stated_bundle["schema"] == "fine-net-check2-v1", "bundle.json schema")
+    require(
+        (stated_bundle["n"], Fraction(stated_bundle["L"]), Fraction(stated_bundle["B"]))
+        == (stated.n, side, core)
+        and stated_bundle["proof_net"] == candidate["proof_net"]
+        and stated_bundle["angle_count"] == count
+        and Fraction(stated_bundle["total_mass"]) == total
+        and stated_bundle["candidate_digest"] == digest
+        and stated_bundle["candidate_sha256"] == sha256(raw),
+        "bundle.json states another claim, net, mass or candidate",
+    )
+    for field in STATED_NET:
+        value = stated_bundle["net"][field]
+        require(Fraction(str(value)) == facts[field], f"bundle.json net {field} is {value}")
+    receipt_bytes = read_retained_bytes(directory / "check2/receipt.json")
+    require(stated_bundle["receipt_sha256"] == sha256(receipt_bytes), "receipt digest")
+    receipt = load_json(receipt_bytes)
+    summary = receipt["verifier_summary"]
+    premises_run = summary["premises"]
+    require(
+        receipt["status"] == "VERIFIED"
+        and receipt["directions"] == count
+        and receipt["failed"] == 0
+        and receipt["candidate_digest"] == digest
+        and receipt["file_sha256"] == sha256(raw)
+        and summary["status"] == "VERIFIED"
+        and summary["directions"] == count
+        and summary["refused_directions"] == []
+        and summary["threshold"] == "1"
+        and summary["fault_injected_at_box"] is None,
+        "the source's receipt does not verify every node of this candidate",
+    )
+    require(
+        Fraction(premises_run["L"]) == side
+        and Fraction(premises_run["B"]) == core
+        and Fraction(premises_run["D"]) == step
+        and premises_run["angle_count"] == count
+        and Fraction(premises_run["mass_exact"]) == total
+        and premises_run["format"] == "M"
+        and premises_run["centre_domain"] == "per-bin",
+        "the source's run read another side, core, net or mass",
+    )
+    run_input = str(premises_run["input_sha256"])
+    published = run_input == sha256(raw)
+    require(
+        published != (stated.key in UNPUBLISHED_RUN_INPUTS)
+        and (published or UNPUBLISHED_RUN_INPUTS[stated.key] == run_input),
+        f"the source's run read {run_input[:8]}..., neither the published candidate nor the"
+        " unpublished input UNPUBLISHED_RUN_INPUTS names for it",
+    )
+    control = load_json(read_retained_bytes(directory / "check2/control.json"))
+    require(control_refused(control), "the source's control was not refused")
+    require(
+        control_factor(control) == CHECK2_CONTROL_FACTOR
+        and control.get("candidate_file_sha256", sha256(raw)) == sha256(raw),
+        "the source's control is not this candidate with every mass scaled by 197/200",
+    )
+    second = load_json(read_retained_bytes(directory / PREPUBLICATION))
+    require(
+        second["status"] == "VERIFIED"
+        and second["verdict"] == "PASS"
+        and second["directions_verified"] == second["directions_expected"] == count
+        and second["candidate_digest"] == digest
+        and second["file_sha256"] == second["input_sha256"] == sha256(raw)
+        and second["build"]["source_sha256"] == summary["build"]["source_sha256"]
+        and second["control"]["status"] == "REFUSED",
+        "the source's pre-publication run does not verify every node of this candidate",
+    )
+    listed = load_json(read_retained_bytes(directory / "files-sha256.json"))
+    pins = pinned_digests(stated)
+    for name, value in listed.items():
+        if name == BUNDLE_README:
+            continue
+        path = directory / name
+        found = (
+            sha256(read_retained_bytes(path))
+            if path.exists() or path.with_name(path.name + ".gz").exists()
+            else pins.get(f"certificates/{stated.name}/{name}")
+        )
+        require(found == value, f"{name} is not the file the directory lists")
+    return {
+        "kind": "wand125-declared-net-audit/v1",
+        "format": "check2",
+        "certificate": stated.name,
+        "claim": f"s({stated.n}) >= {side.numerator}/{side.denominator}",
+        "rectangles": len(candidate["rectangles"]),
+        "positive_rectangles": positive,
+        "mass": str(total),
+        "core": str(core),
+        "net": {name: str(value) for name, value in facts.items()},
+        "premises": checks | {"f_last_bin_holds_an_orientation": True},
+        "candidate_digest": digest,
+        "listed_files": len(listed),
+        "listed_files_in_directory": len(listed) - (BUNDLE_README in listed),
+        "source_check": {
+            "status": receipt["status"],
+            "directions": receipt["directions"],
+            "nodes": summary["nodes"],
+            "direction_cpu_seconds": summary["direction_cpu_seconds"],
+            "threads": summary["threads"],
+            "source_sha256": summary["build"]["source_sha256"],
+            "verifier": receipt["verifier"],
+            "control": control["kind"],
+            "control_status": "REFUSED",
+        },
+        "run_input": {"sha256": run_input, "published_candidate": published},
+        "prepublication_check": {
+            "status": second["status"],
+            "input_is_published_candidate": True,
+            "directions": second["directions_verified"],
+            "seconds": second["seconds"],
+            "target": second["build"]["target"],
+            "control_refused_directions": second["control"]["refused_directions"],
+        },
+        "status": "EXACT_PREMISES_HOLD",
+        "scope": (
+            "Exact premises only, from the retained files: the measure, lemma N0's premises"
+            " on the declared net and its last bin, the net block bundle.json states, one"
+            " candidate digest, the source's receipt of its own run at every node and the"
+            " input that run read (run_input), its control, its pre-publication run on the"
+            " published bytes, and every listed file's digest. No coverage is decided here."
+        ),
+    }
+
+
+def control_refused(control: dict[str, Any]) -> bool:
+    """Whether the source's control record says its checker refused every try.
+
+    Two forms occur: a status of its own (``REFUSED``), or, in ``mixed_n18_L4705``, a
+    list of tries, each with its own status, under ``refused``.
+    """
+    if "tries" in control:
+        return control["refused"] is True and all(
+            each["status"] == "REFUSED" and each["exit"] != 0 for each in control["tries"]
+        )
+    return control["status"] == "REFUSED" and control["exit"] != 0
+
+
+def control_factor(control: dict[str, Any]) -> Fraction | None:
+    """The factor a source control record says it scaled every mass by.
+
+    ``mixed_n18_L4705``'s record states it per try (``197/200``); the others state it in
+    their kind, ``every mass x 0.985, 32 directions``.
+    """
+    if "tries" in control:
+        factors = {Fraction(each["factor"]) for each in control["tries"]}
+        return factors.pop() if len(factors) == 1 else None
+    prefix = "every mass x "
+    kind = str(control["kind"])
+    if not kind.startswith(prefix):
+        return None
+    return Fraction(kind.removeprefix(prefix).split(",")[0])
+
+
+def pinned_digests(stated: Certificate) -> dict[str, str]:
+    """Every pinned-only file of the certificate's packet, by its upstream path."""
+    record = json.loads((stated.packet / "acquisition/sources.json").read_text())
+    return {
+        item["path"]: item["sha256"]
+        for source in record["sources"]
+        for item in source["pinned_only"]
+    }
+
+
+def audit(directory: Path | None = None, *, key: str = DEFAULT) -> dict[str, Any]:
+    """Every exact premise of the certificate, from the retained files alone."""
+    stated = CERTIFICATES[key]
+    if stated.check2:
+        return audit_check2(directory or stated.directory, stated)
+    candidate, certificate, manifest = read_directory(directory or stated.directory)
+    n = candidate["n"]
+    side, core = Fraction(candidate["L"]), Fraction(candidate["B"])
+    total, positive = measure(candidate, stated)
+    _step, count, facts, checks = declared_net(candidate)
     for name, block in (("manifest", manifest["net"]), ("certificate", certificate["net"])):
-        for field in (
-            "step",
-            "count",
-            "endpoint",
-            "endpoint_check",
-            "rotated_side_upper",
-            "side_margin",
-            "per_edge_margin",
-        ):
+        for field in STATED_NET:
             require(
                 Fraction(str(block[field])) == facts[field],
                 f"{name} net {field} is {block[field]}",
@@ -446,6 +834,8 @@ def bundle(root: Path, directory: Path | None = None, *, key: str = DEFAULT) -> 
     """Bind an unpacked proof bundle to the packet and its records to the declared net."""
     stated = CERTIFICATES[key]
     directory = directory or stated.directory
+    if stated.check2:
+        return bundle_check2(root, directory, stated)
     listed: dict[str, str] = json.loads((root / "files-sha256.json").read_text())
     present = {
         path.relative_to(root).as_posix()
@@ -575,6 +965,204 @@ def bundle(root: Path, directory: Path | None = None, *, key: str = DEFAULT) -> 
             " and input header against the declared net's tangent, per-bin domain and"
             " threshold, and every input's rectangle lines against the expanded candidate."
             " No coverage is decided here."
+        ),
+    }
+
+
+def read_jsonl_gz(path: Path) -> list[dict[str, Any]]:
+    """The records of a gzipped JSON-lines log."""
+    return [json.loads(line) for line in gzip.decompress(path.read_bytes()).splitlines()]
+
+
+def control_witnesses(
+    candidate: dict[str, Any], tried: list[dict[str, Any]], factor: Fraction
+) -> int:
+    """Recompute every exact witness of a control log on the candidate scaled by ``factor``.
+
+    Each witness's centre must lie in its node's per-bin domain, its logged exact capture
+    must equal the capture `check_sqverify_fast.mixed_exact` computes there on the scaled
+    measure, an evaluator written apart from the crate, and that capture must be below
+    one: so the control is a provably invalid measure, refused (finding FN-2 of the 6
+    October review of T-108 to T-117). Returns how many were recomputed.
+    """
+    exact = importlib.import_module("devtools.check_sqverify_fast").mixed_exact
+    scaled_candidate = {
+        "L": candidate["L"],
+        "B": candidate["B"],
+        "proof_net": candidate["proof_net"],
+        "rectangles": [
+            {"rectangle": row["rectangle"], "mass": str(Fraction(row["mass"]) * factor)}
+            for row in candidate["rectangles"]
+        ],
+    }
+    side = Fraction(candidate["L"])
+    step = Fraction(candidate["proof_net"]["step"])
+    count = 0
+    for record in tried:
+        witness = record.get("witness") or {}
+        if not witness.get("exact_below_threshold"):
+            continue
+        r = int(record["r"])
+        low = rho(max(Fraction(0), step * r - step / 2))
+        x, y = (Fraction(value) for value in witness["exact_pose"])
+        logged = Fraction(witness["exact_coverage"])
+        require(
+            low <= x <= side - low and low <= y <= side - low,
+            f"control node {r}: the witness is outside the per-bin domain",
+        )
+        require(
+            exact(scaled_candidate, x, y, r) == logged < 1,
+            f"control node {r}: the witness's capture is not the logged one below one",
+        )
+        count += 1
+    require(count > 0, "the control log has no exact witness")
+    return count
+
+
+def bundle_check2(root: Path, directory: Path, stated: Certificate) -> dict[str, Any]:
+    """Bind an unpacked check2 bundle to the packet, and its run log to the declared net.
+
+    - every file ``files-sha256.json`` lists has that digest, and nothing is unlisted;
+      the list is the retained one; every listed file but the bundle's own README is the
+      directory's, by its bytes where the packet retains it and by its pin where not;
+      the adapted crate's tarball is compared by digest only and never opened;
+    - the run log ``check2/run.jsonl.gz`` holds one record per net node, every one
+      ``verified`` at threshold one with a certified lower bound of at least one, the
+      axis by the vertex sweep and every oblique node by branch and bound, and ends with
+      the summary the receipt states;
+    - the one control log, ``check2/control.jsonl.gz`` or, in ``mixed_n18_L4705``,
+      ``check2/control-197_200.jsonl.gz``, ends with a summary ``REFUSED`` on the
+      candidate with every mass scaled by a factor below one, its refused directions
+      are the ones it did not verify, and they and its witnesses below threshold are as
+      many as ``control.json`` states.
+
+    It decides no coverage: the source's run is of its adaptation of this repository's
+    sqverify_fast, and its log is what that run printed.
+    """
+    listed: dict[str, str] = json.loads((root / "files-sha256.json").read_text())
+    require(
+        (root / "files-sha256.json").read_bytes()
+        == read_retained_bytes(directory / "files-sha256.json"),
+        "files-sha256.json is not the retained list",
+    )
+    present = {
+        path.relative_to(root).as_posix()
+        for path in root.rglob("*")
+        if path.is_file() and path.name != "files-sha256.json"
+    }
+    require(present == set(listed), f"unlisted or missing: {sorted(present ^ set(listed))[:5]}")
+    pins = pinned_digests(stated)
+    retained = 0
+    for name, digest in listed.items():
+        data = (root / name).read_bytes()
+        require(sha256(data) == digest, f"{name} differs from its list")
+        if name == BUNDLE_README:
+            continue
+        path = directory / name
+        if path.exists() or path.with_name(path.name + ".gz").exists():
+            require(data == read_retained_bytes(path), f"{name} is not the retained file")
+            retained += 1
+        else:
+            require(
+                pins.get(f"certificates/{stated.name}/{name}") == digest,
+                f"{name} is not the pinned file",
+            )
+    candidate = load_json(read_retained_bytes(directory / "candidate.json"))
+    count = int(candidate["proof_net"]["last"]) + 1
+    total = Fraction(candidate["total_mass"])
+    receipt = json.loads(read_retained_bytes(directory / "check2/receipt.json"))
+    run = read_jsonl_gz(root / "check2/run.jsonl.gz")
+    summary, directions = run[-1], run[:-1]
+    require(
+        summary == receipt["verifier_summary"], "the run log's summary is not the receipt's"
+    )
+    require(
+        sorted(record["r"] for record in directions) == list(range(count)),
+        "the run log does not hold one record per net node",
+    )
+    for record in directions:
+        r = record["r"]
+        require(
+            record["verdict"] == "verified"
+            and record["threshold"] == "1"
+            and record["min_certified_lower_bound"] >= 1
+            and record["method"]
+            == ("axis-vertex-sweep" if r == 0 else "interval-branch-and-bound"),
+            f"node {r}: the run log does not verify it at threshold one",
+        )
+    oblique = [record for record in directions if record["r"] > 0]
+    require(
+        sum(record["nodes"] for record in oblique) == summary["nodes"],
+        "the run log's nodes do not total its summary's",
+    )
+    least = min(oblique, key=lambda record: (record["min_certified_lower_bound"], record["r"]))
+    axis = next(record for record in directions if record["r"] == 0)
+    logs = sorted((root / "check2").glob("control*.jsonl.gz"))
+    require(len(logs) == 1, f"the bundle has {len(logs)} control logs")
+    control = read_jsonl_gz(logs[0])
+    control_summary, tried = control[-1], control[:-1]
+    factor = Fraction(control_summary["premises"]["mass_exact"]) / total
+    below = sum(
+        1 for record in tried if (record.get("witness") or {}).get("exact_below_threshold")
+    )
+    stated_control = load_json(read_retained_bytes(directory / "check2/control.json"))
+    last_try = stated_control["tries"][-1] if "tries" in stated_control else stated_control
+    stated_refused = last_try.get("refused", last_try.get("refused_directions"))
+    refused = sorted(record["r"] for record in tried if record["verdict"] != "verified")
+    require(
+        control_summary["status"] == "REFUSED"
+        and len(tried) == control_summary["directions"]
+        and sorted(control_summary["refused_directions"]) == refused
+        and len(refused) == stated_refused
+        and below == last_try["exact_below_threshold"]
+        and factor == CHECK2_CONTROL_FACTOR,
+        "the control log is not a refusal of this candidate scaled by 197/200, as"
+        " control.json states",
+    )
+    control_premises = control_summary["premises"]
+    require(
+        Fraction(control_premises["L"]) == Fraction(candidate["L"])
+        and Fraction(control_premises["B"]) == Fraction(candidate["B"])
+        and Fraction(control_premises["D"]) == Fraction(candidate["proof_net"]["step"])
+        and control_premises["angle_count"] == count
+        and control_premises["format"] == "M"
+        and control_premises["centre_domain"] == "per-bin"
+        and control_summary["threshold"] == "1",
+        "the control ran on another side, core, net or threshold",
+    )
+    witnesses = control_witnesses(candidate, tried, factor)
+    return {
+        "kind": "wand125-declared-net-bundle/v1",
+        "format": "check2",
+        "certificate": stated.name,
+        "status": "BUNDLE_BOUND_TO_PACKET_AND_NET",
+        "listed_files": len(listed),
+        "retained_files_equal": retained,
+        "pinned_files_equal": len(listed) - retained - 1,
+        "run_log": {
+            "directions": len(directions),
+            "oblique_nodes": summary["nodes"],
+            "direction_seconds": summary["direction_seconds"],
+            "direction_cpu_seconds": summary["direction_cpu_seconds"],
+            "threads": summary["threads"],
+            "target": summary["build"]["target"],
+            "source_sha256": summary["build"]["source_sha256"],
+            "least_oblique": {"r": least["r"], "lower": least["min_certified_lower_bound"]},
+            "axis_lower": axis["min_certified_lower_bound"],
+        },
+        "control_log": {
+            "witnesses_recomputed": witnesses,
+            "file": logs[0].relative_to(root).as_posix(),
+            "directions": len(tried),
+            "refused": len(refused),
+            "factor": str(factor),
+            "exact_below_threshold": below,
+        },
+        "scope": (
+            "The bundle's files against its own list and the packet, and the source's run"
+            " and control logs against the declared net, threshold one and the receipt. The"
+            " run is of the source's adaptation of this repository's sqverify_fast, whose"
+            " tarball is held by digest and not opened. No coverage is decided here."
         ),
     }
 
@@ -1351,6 +1939,293 @@ def control_sqverify_fast(key: str, binary: Path, work: Path) -> dict[str, Any]:
     }
 
 
+#: The branch-and-bound nodes `cpp_sample` allows the source's C++ checker at one node.
+CPP_NODE_LIMIT = 4_000_000
+#: The modules of the retained source code `cpp_sample` imports; dropped from the cache
+#: first, so that the run never uses another copy's.
+SOURCE_MODULES = ("mixed_density_check", "mixed_net_audit", "mixed_rotated_verify")
+
+
+def _cpp_node(job: tuple[str, str, int, str, str, int]) -> dict[str, Any]:
+    """Run the source's ``run`` at one oblique node (worker): its record, CPU and wall."""
+    code, candidate, index, out, binary, limit = job
+    if code not in sys.path:
+        sys.path.insert(0, code)
+    rotated = importlib.import_module("mixed_rotated_verify")
+    before = resource.getrusage(resource.RUSAGE_CHILDREN)
+    start = time.monotonic()
+    result = rotated.run(Path(candidate), index, Path(out), Path(binary), limit, Fraction(1))
+    after = resource.getrusage(resource.RUSAGE_CHILDREN)
+    return {
+        "status": result["status"],
+        "nodes": result["nodes"],
+        "lower": result["lower"],
+        "frontier_boxes": len(result["frontier"]),
+        "exact_witnesses": len(result["exact_witnesses"]),
+        "manifest": result["manifest"],
+        "wall_seconds": time.monotonic() - start,
+        "cpu_seconds": (after.ru_utime - before.ru_utime) + (after.ru_stime - before.ru_stime),
+    }
+
+
+def source_code_copy(work: Path) -> Path:
+    """The retained ``mixed_n50_L740`` code in a fresh folder, each file held to its
+    retained bytes and the checker to `CHECKER_SHA256`."""
+    code = work / "code"
+    if code.exists():
+        shutil.rmtree(code)
+    code.mkdir(parents=True)
+    for path in sorted(N50_DIRECTORY.joinpath("code").iterdir()):
+        (code / path.name).write_bytes(read_retained_bytes(path))
+    require(
+        sha256((code / "mixed_rotated_verify.cpp").read_bytes()) == CHECKER_SHA256,
+        "the retained checker is not 89b674a6...",
+    )
+    return code
+
+
+def check_node_manifest(
+    manifest: dict[str, Any], candidate: dict[str, Any], index: int, input_text: bytes
+) -> None:
+    """The source's record of one node: lemma N0's tangent and per-bin domain, threshold
+    one, this candidate, and an input whose header encloses them exactly."""
+    side, core = Fraction(candidate["L"]), Fraction(candidate["B"])
+    step = Fraction(candidate["proof_net"]["step"])
+    t = step * index
+    floor = max(Fraction(0), t - step / 2)
+    low = rho(floor)
+    domain = manifest["domain"]
+    require(
+        manifest["candidate_digest"] == semantic_digest(candidate)
+        and manifest["net_index"] == index
+        and Fraction(manifest["t"]) == t
+        and manifest["gamma"] == "1"
+        and manifest["source_sha256"] == CHECKER_SHA256
+        and manifest["input_sha256"] == sha256(input_text),
+        f"node {index}: the run is not this candidate's at t = {t}",
+    )
+    require(
+        domain["index"] == index
+        and Fraction(domain["original_t_lower"]) == floor
+        and Fraction(domain["centre_low"]) == low
+        and Fraction(domain["centre_high"]) == side - low
+        and Fraction(manifest["E"]) == side / 2 - low,
+        f"node {index}: the centre domain is not the per-bin domain",
+    )
+    lines = input_text.decode().splitlines()
+    cosine, sine = (1 - t * t) / (1 + t * t), 2 * t / (1 + t * t)
+    for position, exact in enumerate((side, core, side / 2 - low, cosine, sine, Fraction(1))):
+        low_end, high_end = enclosure(lines[position])
+        require(low_end <= exact <= high_end, f"node {index}: input line {position + 1}")
+    require(
+        int(lines[6]) == 8 * len(candidate["rectangles"]),
+        f"node {index}: the input lists {lines[6]} rectangles",
+    )
+    rectangle_block(candidate, lines[7:])
+
+
+def cpp_sample(
+    key: str, tarball: Path, work: Path, nodes: list[int], workers: int
+) -> dict[str, Any]:
+    """The source's own C++ checker at chosen oblique nodes of a check2 certificate.
+
+    A check2 directory ships no C++ records: the source checked it with its adaptation of
+    this repository's sqverify_fast. The checker its earlier certificates ship,
+    ``mixed_rotated_verify.cpp`` (`CHECKER_SHA256`), shares no code with that crate. The
+    pinned tarball is unpacked and bound first (`bundle_check2`). Then the retained
+    ``mixed_n50_L740`` code is copied to ``work``, every file held to its retained bytes,
+    with the retained candidate; the source's own net and symmetry checks run on it
+    (``candidate_net``, ``symmetry``); the source's ``compile_verifier`` builds the checker;
+    and the source's ``run`` checks each node at threshold one, with a budget of
+    `CPP_NODE_LIMIT` nodes. Each node's record is held to lemma N0's tangent and per-bin
+    domain and its input to the expanded candidate (`check_node_manifest`). A node passes
+    when the checker returns ``ANGLE_VERIFIED`` with no frontier and no witness and a
+    lower bound of at least one. It decides only the nodes it ran.
+    """
+    stated = CERTIFICATES[key]
+    require(stated.check2, f"{key} ships the source's C++ records: use sample")
+    require(all(index >= 1 for index in nodes), "the axis node is not an input of run")
+    root, pin = unpack(stated, tarball, work / "bundle")
+    binding = bundle(root, key=key)
+    code = source_code_copy(work)
+    raw = read_retained_bytes(stated.directory / "candidate.json")
+    candidate_path = work / "candidate.json"
+    candidate_path.write_bytes(raw)
+    candidate = load_json(raw)
+    for name in SOURCE_MODULES:
+        sys.modules.pop(name, None)
+    if str(code) in sys.path:
+        sys.path.remove(str(code))
+    sys.path.insert(0, str(code))
+    density = importlib.import_module("mixed_density_check")
+    net_audit = importlib.import_module("mixed_net_audit")
+    rotated = importlib.import_module("mixed_rotated_verify")
+    require(Path(rotated.SOURCE).resolve().parent == code.resolve(), "another checker")
+    data = json.loads(raw)
+    model = density.expand(data)
+    net_audit.symmetry(model)
+    step, last = net_audit.candidate_net(data)
+    require(
+        (Fraction(step), last + 1) == declared_net(candidate)[:2] and max(nodes) <= last,
+        "the source's net is not the declared net, or a node lies outside it",
+    )
+    require(model[-1] == semantic_digest(candidate), "the source's digest is another")
+    binary = work / "verify"
+    started = utc_now()
+    rotated.compile_verifier(binary)
+    runs = work / "runs"
+    if runs.exists():
+        shutil.rmtree(runs)
+    runs.mkdir()
+    jobs = [
+        (
+            str(code),
+            str(candidate_path),
+            index,
+            str(runs / f"net{index:04d}"),
+            str(binary),
+            CPP_NODE_LIMIT,
+        )
+        for index in nodes
+    ]
+    logged = {
+        record["r"]: record for record in read_jsonl_gz(root / "check2/run.jsonl.gz")[:-1]
+    }
+    rows: list[dict[str, Any]] = []
+    with ProcessPoolExecutor(max_workers=workers) as pool:
+        for index, report in zip(nodes, pool.map(_cpp_node, jobs), strict=True):
+            folder = runs / f"net{index:04d}"
+            check_node_manifest(
+                report.pop("manifest"), candidate, index, (folder / "input.txt").read_bytes()
+            )
+            verified = (
+                report["status"] == "ANGLE_VERIFIED"
+                and report["frontier_boxes"] == 0
+                and report["exact_witnesses"] == 0
+                and float(report["lower"]) >= 1
+            )
+            rows.append(
+                {"index": index, "verified": verified}
+                | report
+                | {
+                    "check2_lower": logged[index]["min_certified_lower_bound"],
+                    "check2_nodes": logged[index]["nodes"],
+                    "check2_seconds": logged[index]["seconds"],
+                }
+            )
+    return {
+        "kind": "wand125-declared-net-cpp-sample/v1",
+        "certificate": stated.name,
+        "status": "SAMPLE_VERIFIED" if all(row["verified"] for row in rows) else "NOT_VERIFIED",
+        "nodes": nodes,
+        "workers": workers,
+        "node_limit": CPP_NODE_LIMIT,
+        "threshold": "1",
+        "started": started,
+        "ended": utc_now(),
+        "rows": rows,
+        "sample_cpu_seconds": round(sum(row["cpu_seconds"] for row in rows), 1),
+        "candidate_digest": model[-1],
+        "checker_sha256": CHECKER_SHA256,
+        "tarball": pin,
+        "binding": {field: binding[field] for field in ("status", "listed_files")},
+        "environment": {
+            "python": platform.python_version(),
+            "cxx": compiler_version(),
+            "niceness": os.nice(0),
+        },
+        "loadavg_end": list(os.getloadavg()),
+        "scope": (
+            "The source's C++ checker, mixed_rotated_verify.cpp 89b674a6..., run fresh by"
+            " the source's own driver functions from the retained mixed_n50_L740 code at the"
+            " listed oblique nodes of the declared net, at threshold one. It shares no code"
+            " with sqverify_fast. Not a complete check: it decides the listed nodes only."
+        ),
+    }
+
+
+#: Where the census keeps each certificate's per-direction receipts, by packet.
+CENSUS = PROJECT / "benchmarks/measure-verifier/census-mixed"
+
+
+def compare_census(key: str, tarball: Path, work: Path) -> dict[str, Any]:
+    """This repository's sqverify-fast census row against the source's check2 run log.
+
+    The pinned tarball is unpacked and bound first (`bundle_check2`). Then, direction by
+    direction, the census row's receipts (``census-mixed/<packet>/<name>.jsonl.gz``) are
+    set beside the source's ``check2/run.jsonl.gz``: both must hold one record per net
+    node, every one verified. It counts the directions whose node counts and certified
+    lower bounds are identical between the two runs, and the largest difference where
+    not. Agreement here is not a second implementation: the source's verifier is a copy
+    of this repository's crate. Identical counts at every direction say the two ran the
+    same algorithm on the same input; differences say where the two builds' code or
+    inputs differ. It decides nothing beyond the census row.
+    """
+    stated = CERTIFICATES[key]
+    require(stated.check2, f"{key} ships no check2 run log")
+    root, pin = unpack(stated, tarball, work / "bundle")
+    binding = bundle(root, key=key)
+    count = int(binding["run_log"]["directions"])
+    ours_path = CENSUS / stated.packet.name / f"{stated.name}.jsonl.gz"
+    ours_rows = read_jsonl_gz(ours_path)
+    ours = {row["r"]: row for row in ours_rows if "r" in row}
+    theirs = {row["r"]: row for row in read_jsonl_gz(root / "check2/run.jsonl.gz")[:-1]}
+    require(
+        sorted(ours) == sorted(theirs) == list(range(count)),
+        "the two runs do not each hold one record per net node",
+    )
+    require(
+        all(ours[r]["verdict"] == theirs[r]["verdict"] == "verified" for r in ours),
+        "a direction is not verified by both runs",
+    )
+    same_nodes = [r for r in range(1, count) if ours[r]["nodes"] == theirs[r]["nodes"]]
+    same_bound = [
+        r
+        for r in range(count)
+        if ours[r]["min_certified_lower_bound"] == theirs[r]["min_certified_lower_bound"]
+    ]
+    gaps = [
+        abs(ours[r]["min_certified_lower_bound"] - theirs[r]["min_certified_lower_bound"])
+        for r in range(count)
+    ]
+    least = {
+        name: min(
+            (r for r in range(1, count)),
+            key=lambda r, rows=rows: (rows[r]["min_certified_lower_bound"], r),
+        )
+        for name, rows in (("census", ours), ("source", theirs))
+    }
+    return {
+        "kind": "wand125-declared-net-census-comparison/v1",
+        "certificate": stated.name,
+        "status": "BOTH_VERIFY_EVERY_DIRECTION",
+        "directions": count,
+        "identical_node_counts": len(same_nodes),
+        "identical_lower_bounds": len(same_bound),
+        "largest_lower_bound_difference": max(gaps),
+        "oblique_nodes": {
+            "census": sum(ours[r]["nodes"] for r in range(1, count)),
+            "source": sum(theirs[r]["nodes"] for r in range(1, count)),
+        },
+        "least_oblique": {
+            name: {
+                "r": r,
+                "lower": (ours if name == "census" else theirs)[r]["min_certified_lower_bound"],
+            }
+            for name, r in least.items()
+        },
+        "census_receipts": ours_path.relative_to(PROJECT).as_posix(),
+        "census_receipts_sha256": file_sha256(ours_path),
+        "tarball": pin,
+        "scope": (
+            "This repository's sqverify-fast census row beside the source's run of its copy"
+            " of the same crate, direction by direction. Agreement shows the two builds ran"
+            " alike; it is not a second implementation, and it decides nothing beyond the"
+            " census row."
+        ),
+    }
+
+
 def write_or_check(path: Path, value: dict[str, Any], *, check: bool) -> int:
     text = retained_json.dumps(value)
     if check:
@@ -1380,7 +2255,10 @@ def main(argv: list[str] | None = None) -> int:
     audit_parser = commands.add_parser("audit", help="exact premises from the packet")
     audit_parser.add_argument("--check", action="store_true")
     bundle_parser = commands.add_parser("bundle", help="bind an unpacked bundle")
-    bundle_parser.add_argument("--bundle", type=Path, required=True)
+    source = bundle_parser.add_mutually_exclusive_group(required=True)
+    source.add_argument("--bundle", type=Path, help="an unpacked bundle")
+    source.add_argument("--tarball", type=Path, help="the pinned tarball, unpacked afresh")
+    bundle_parser.add_argument("--work", type=Path, help="where --tarball is unpacked")
     compare_parser = commands.add_parser("compare", help="compare a replay with the shipped")
     compare_parser.add_argument("--shipped", type=Path, required=True)
     compare_parser.add_argument("--fresh", type=Path, required=True)
@@ -1389,6 +2267,10 @@ def main(argv: list[str] | None = None) -> int:
     )
     sample_parser = commands.add_parser("sample", help="replay chosen nodes, and price")
     sample_parser.add_argument("--nodes", type=parse_nodes, required=True, help="1,37,100-102")
+    cpp_parser = commands.add_parser(
+        "cpp-sample", help="the source's C++ checker at chosen nodes of a check2 certificate"
+    )
+    cpp_parser.add_argument("--nodes", type=parse_nodes, required=True, help="1,37,100-102")
     replay_parser = commands.add_parser("replay", help="the bundle's driver over every node")
     control_parser = commands.add_parser("control", help="the original and its mutants")
     control_parser.add_argument("--index", type=int, help="the oblique node; least by default")
@@ -1399,21 +2281,26 @@ def main(argv: list[str] | None = None) -> int:
         "processes", help="snapshot a running replay's driver and workers"
     )
     processes_parser.add_argument("--pid", type=int, required=True, help="the driver's pid")
+    census_parser = commands.add_parser(
+        "compare-census", help="the census row beside the source's check2 run log"
+    )
     fast_parser = commands.add_parser(
         "control-sqverify-fast", help="sqverify-fast on the control receipt's variants"
     )
     fast_parser.add_argument("--sqverify-fast", type=Path, required=True)
     fast_parser.add_argument("--work", type=Path, required=True)
-    for running in (sample_parser, replay_parser, control_parser):
+    for running in (sample_parser, cpp_parser, replay_parser, control_parser, census_parser):
         running.add_argument("--tarball", type=Path, required=True)
         running.add_argument("--work", type=Path, required=True)
-    for running in (sample_parser, replay_parser):
+    for running in (sample_parser, cpp_parser, replay_parser):
         running.add_argument("--workers", type=int, default=1)
     for each in (
         audit_parser,
         bundle_parser,
         compare_parser,
         sample_parser,
+        cpp_parser,
+        census_parser,
         replay_parser,
         control_parser,
         fast_parser,
@@ -1432,6 +2319,8 @@ def main(argv: list[str] | None = None) -> int:
 #: The status each running command's receipt reports when it passes.
 PASSING = {
     "sample": "SAMPLE_REPLAYED",
+    "cpp-sample": "SAMPLE_VERIFIED",
+    "compare-census": "BOTH_VERIFY_EVERY_DIRECTION",
     "control": "CONTROLS_REFUSED",
     "control-sqverify-fast": "CONTROLS_REFUSED",
     "replay": "FULL_REPLAY_MATCHES_SHIPPED",
@@ -1448,7 +2337,11 @@ def run_command(args: argparse.Namespace) -> int:
         return write_or_check(out, audit(key=key), check=args.check)
     if args.command == "bundle":
         out = args.out or receipts / "bundle.json"
-        return write_or_check(out, bundle(args.bundle, key=key), check=False)
+        if args.tarball is None:
+            return write_or_check(out, bundle(args.bundle, key=key), check=False)
+        require(args.work is not None, "--tarball needs --work")
+        root, pin = unpack(CERTIFICATES[key], args.tarball, args.work / "bundle")
+        return write_or_check(out, bundle(root, key=key) | {"tarball": pin}, check=False)
     if args.command == "processes":
         out = args.out or receipts / "full" / PROCESSES
         return write_or_check(out, processes(args.pid), check=False)
@@ -1456,6 +2349,13 @@ def run_command(args: argparse.Namespace) -> int:
         result = sample(key, args.tarball, args.work, args.nodes, args.workers)
         first, last = args.nodes[0], args.nodes[-1]
         out = args.out or receipts / f"sample/nodes-{first:03d}-{last:03d}.json"
+    elif args.command == "cpp-sample":
+        result = cpp_sample(key, args.tarball, args.work, args.nodes, args.workers)
+        first, last = args.nodes[0], args.nodes[-1]
+        out = args.out or receipts / f"cpp-sample/nodes-{first:04d}-{last:04d}.json"
+    elif args.command == "compare-census":
+        result = compare_census(key, args.tarball, args.work)
+        out = args.out or receipts / "compare-census.json"
     elif args.command == "control":
         result = control(key, args.tarball, args.work, args.index, args.sqverify_fast)
         out = args.out or receipts / "control.json"

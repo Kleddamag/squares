@@ -40,6 +40,15 @@ allowlist:
   - path: packing/src/sqpack/research/unitsquare_precision.py
     kind: download
     boundary: A Kingbird SVG fetched by URL and held against its pinned digest (H2).
+  - path: packing/devtools/audit_s12_v11_certificate.py
+    kind: download
+    boundary: squarepacker's v1.1 certificate and Daniel's points against the digests the source and the 2 October packet pinned (#363).
+  - path: packing/devtools/audit_wand125_declared_net.py
+    kind: download
+    boundary: wand125's finer-net bundle, its candidate, axis tables and checker files against the digests its manifest and the n50 packet's upstream copy pin (#366).
+  - path: packing/devtools/capture_web_source.py
+    kind: download
+    boundary: Zenodo deposits and deployed web pages against the MD5 and digests the record or a retained manifest states.
   - path: packing/devtools/audit_wand125_point_and_mixed.py
     kind: download
     boundary: wand125's acquired packets, their upstream listings and checker files (H3).

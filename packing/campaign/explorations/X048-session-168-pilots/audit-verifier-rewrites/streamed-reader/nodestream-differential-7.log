@@ -1,0 +1,60 @@
+{
+ "cases": 3000,
+ "seed": 7,
+ "reads": 220047,
+ "emitted_texts_json_loads_refuses": 0,
+ "divergences": 0,
+ "first_divergences": [],
+ "refused_where_json_loads_accepts": {
+  "bom": 9000,
+  "byte-mutated": 447,
+  "byte-mutated: VerificationError: ['the', \"node's\", 'member']": 63,
+  "byte-mutated: VerificationError: ['the', 'node', 'has']": 384,
+  "encoded-surrogate": 9000,
+  "member-before-steps-moved-after": 7047,
+  "member-repeated": 9000,
+  "utf-16": 9000,
+  "utf-16-le-no-bom": 9000
+ },
+ "refusal_types": {
+  "BadGzipFile": 18000,
+  "EOFError": 9000,
+  "JSONDecodeError": 44739,
+  "UnicodeDecodeError": 28050,
+  "VerificationError: ['a', 'node', \"member's\"]": 960,
+  "VerificationError: ['data', 'follows', 'the']": 9060,
+  "VerificationError: ['the', \"node's\", 'member']": 9654,
+  "VerificationError: ['the', \"node's\", 'members']": 1356,
+  "VerificationError: ['the', \"node's\", 'steps']": 666,
+  "VerificationError: ['the', 'node', 'has']": 390,
+  "VerificationError: ['the', 'node', 'is']": 12381,
+  "VerificationError: ['the', 'node', 'repeats']": 6456
+ },
+ "tally": {
+  "bom:refused": 9000,
+  "byte-mutated:accepted": 10242,
+  "byte-mutated:refused": 25758,
+  "canonical:accepted": 9000,
+  "encoded-surrogate:refused": 9000,
+  "gzip-crc:refused": 9000,
+  "gzip-trailing-garbage:refused": 9000,
+  "gzip-truncated:refused": 9000,
+  "gzip-zero-padding:accepted": 9000,
+  "indented:accepted": 9000,
+  "member-before-steps-moved-after:refused": 7047,
+  "member-repeated:refused": 9000,
+  "text-truncated:accepted": 93,
+  "text-truncated:refused": 26907,
+  "trailing-data:refused": 9000,
+  "trailing-whitespace:accepted": 9000,
+  "two-gzip-members:accepted": 9000,
+  "utf-16-le-no-bom:refused": 9000,
+  "utf-16:refused": 9000,
+  "valid:accepted": 24000
+ }
+}
+
+real	6m24.061s
+user	2m0.320s
+sys	0m5.025s
+seed 7 exit 0

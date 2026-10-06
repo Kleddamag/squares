@@ -1,0 +1,28 @@
+"""What the reader's split-number guard protects: a node declaring `"B":10` read with the
+read boundary just after the `1`, by the verifier at the worktree and by the mutant
+`reader-number-at-buffer-end` (R8_MUTANT), on the blind-pair closure."""
+
+from __future__ import annotations
+
+import gzip
+import json
+import os
+import tempfile
+from pathlib import Path
+
+import mutant_plugin  # noqa: F401 - binds R8_MUTANT, if set
+from devtools import verify_n17_kernel_certificate as kv
+from tests.test_verify_n17_certificates import blind_cells, blind_pair
+
+tmp = Path(tempfile.mkdtemp(dir=os.environ.get("R8_TMP", ".")))
+directory = blind_pair(tmp)
+cells = blind_cells(tmp)
+node = next(directory.glob("node-*.json.gz"))
+raw = gzip.decompress(node.read_bytes())
+assert raw.startswith(b'{"B":"1",')
+_ = node.write_bytes(gzip.compress(b'{"B":10,' + raw[len(b'{"B":"1",') :]))
+kv.READ_BYTES = len(b'{"B":1')
+receipt = kv.verify(directory, cells)
+print(json.dumps({"verifier": Path(kv.__file__).name, "status": receipt["status"],
+                  "failure": receipt["failure"],
+                  "node_sha256": receipt.get("certificate", {}).get("node_sha256")}))

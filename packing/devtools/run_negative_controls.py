@@ -80,6 +80,7 @@ from pathlib import Path
 from threading import Lock
 from uuid import uuid4
 
+from devtools.repo_scope import tracked_files
 from sqpack.workers import worker_count
 from sqpack.yamlio import safe_load
 
@@ -159,13 +160,43 @@ PRUNE = frozenset(
         # leave any snapshot. They stay so the list reads as one class. What the
         # composites actually want is a link scan that tolerates a pruned target, which is
         # `think-t1lk`'s problem and not a line to add here.
+        #
+        # 2026-10-05: both composite vectors join the list, because the reason above has
+        # gone. `e4ad5cedd` (2026-09-30) trimmed the root `README.md` to point at the
+        # published site, and it now links neither vector nor any of the four exports.
+        # The links that remain are in `atlas/README.md`, `atlas/known-best/README.md` and
+        # `FIGURE-PLAYBOOK.md`, which `linked_pruned_targets` does not scan and no control
+        # link-checks: `check_links` runs on the root README and SYNOPSIS only, and the
+        # ledger's `dead_links` on `campaign/` only. A pruned vector now leaves the worker,
+        # and the four exports above stopped being inert on the same commit.
+        #
+        # Both are generator-owned: `build_known_best_atlas` writes them and its `--check`
+        # compares them in full in the `known-best atlas records and sample` step, which
+        # runs outside any worker. Traced, not inferred: all 170 registered controls were
+        # run in their worker trees under `strace -f -e trace=%file` at e62bed3a6 (PR 360,
+        # whose `controls.yaml` and harness match this branch's), and all 170 fired. Four
+        # open both vectors, all of them `check_readme` controls, and only through
+        # `scan_retired_workflow_identifiers`, which reads every text file the worker's
+        # own index tracks, looking for a retired token. A pruned vector is absent from
+        # that index, so it leaves the sweep rather than going missing from it. One more,
+        # `check_generated_markdown`, lists the directory and keeps only `*.md`. No other
+        # control stats, opens or lists either file; none drives an atlas step; and the
+        # full-suite control still refuses at collection. With both pruned, all 170
+        # controls fire, and unmutated `check_readme`, `ledger check`, `validate_schemas`
+        # and `check_generated_markdown` print byte-identical output in a worker with the
+        # vectors and in one without them.
+        #
+        # 8,559,777 bytes. The n=17 stack's top layer (PR 360) measured 201,854,760 against
+        # the 201,326,592 cap and measures 193,294,983 with them pruned.
         ROOT / "atlas/known-best/contact-overlays",
         ROOT / "atlas/known-best/known-best-1-100-card.png",
         ROOT / "atlas/known-best/known-best-1-100.pdf",
         ROOT / "atlas/known-best/known-best-1-100.png",
+        ROOT / "atlas/known-best/known-best-1-100.svg",
         ROOT / "atlas/known-best/known-best-1-100@2x.png",
         ROOT / "atlas/known-best/known-best-1-324.pdf",
         ROOT / "atlas/known-best/known-best-1-324.png",
+        ROOT / "atlas/known-best/known-best-1-324.svg",
         ROOT / "atlas/known-best/rendering",
         # The regularized layer's 51 drawings (think-bgkz, 2026-10-02), 11 MB of generated
         # SVG that `regularized atlas drawings match their index` re-renders and compares,
@@ -253,6 +284,24 @@ PRUNE = frozenset(
         # unrelated research progress. Markdown linked from checked documents is copied
         # back by `linked_pruned_targets`, and registered frontier evidence is copied by
         # `result_pruned_targets`, so the checkers keep every dependency they declare.
+        # Session 168's sub-pattern certificates are exact proof objects read only by
+        # `check_n17_subpattern --check-saved` and the certified-census ledger check, and
+        # named by no control. W7's node alone is 16,200,330 bytes; with it the snapshot
+        # read 204,358,533 against the 201,326,592-byte cap and failed suite A on PR 307
+        # (run 37034789370). Pruning the directory leaves every receipt and the README.
+        # 2026-10-03, the third merge of main: the snapshot read 209,618,778 bytes against
+        # the same cap. Main sits just under it, and this branch's exploration outputs
+        # outside the certificates (handoff, receipts, audits: 8.7 MB, plus Session 167's
+        # 0.8 MB) tipped it over. Like the agenda result roots below, they are research
+        # outputs that `controls.yaml` never names, so both session folders are pruned
+        # whole; linked Markdown still returns through `linked_pruned_targets`.
+        ROOT / "campaign/explorations/X048-session-167-pilots",
+        ROOT / "campaign/explorations/X048-session-168-pilots",
+        # Session 182's receipts (6.76 MB of kernel, census and ledger JSON) took the
+        # snapshot to 202,054,385 bytes against the cap on 2026-10-06. Same reason as the
+        # two above: research outputs no control names, read only by the census over a
+        # ledger that is itself pruned; linked Markdown and directories still return.
+        ROOT / "campaign/explorations/X048-session-182-overnight",
         ROOT / "campaign/series/series-000-smoke-and-calibration/results/agenda-024",
         ROOT / "campaign/series/series-000-smoke-and-calibration/results/agenda-025",
         ROOT / "campaign/series/series-000-smoke-and-calibration/results/agenda-026",
@@ -415,6 +464,7 @@ PRUNE = frozenset(
         ROOT / "sqsearch/target",
         ROOT / "sqverify_exact/target",
         ROOT / "sqverify_fast/target",
+        ROOT / "n17bb_native/target",
         ROOT / "witnesses/prospective",
         # The exact certificates of T-056 and T-057 join on 2026-09-29, when their intake
         # (jlevy/squares#227) put the snapshot at 174,743,423 bytes against the
@@ -467,6 +517,7 @@ LINK_BACK = (
     Path("sqsearch/target"),
     Path("sqverify_exact/target"),
     Path("sqverify_fast/target"),
+    Path("n17bb_native/target"),
 )
 # Individual files rescued from `PRUNE` because a check that runs inside a worker reads
 # that exact path. `clone_tree` copies precisely this tuple and `snapshot_source_bytes`
@@ -489,11 +540,21 @@ LINK_BACK = (
 # `git add -A` inside a snapshot must skip what the real index skips, or a reader's
 # scratch in `attic/` would be tracked in the worker though the repository does not
 # track it -- which is PR 207's bug, rebuilt one directory over.
+#
+# The last two joined on 2026-10-05 (think-nns5), for the same failure as the
+# bibliography's, measured by running every distinct control command unmutated in a
+# fresh worker. `validate_schemas` reported `bibliography.yaml: declared schema not
+# found`, because the dataset was rescued and the schema it declares was not; and
+# `sqpack.campaign.ledger check`, which 35 controls drive, failed on agenda 015's
+# closeout naming `.github/PULL_REQUEST_TEMPLATE.md`, which only a link could bring
+# into a worker. Both checkers were red before any mutation was applied.
 COPY_SEPARATELY = (
     ROOT / "resources/README.md",
     ROOT / "resources/bibliography.yaml",
+    ROOT / "resources/bibliography.schema.yaml",
     REPO / ".flowmarkignore",
     REPO / ".gitignore",
+    REPO / ".github/PULL_REQUEST_TEMPLATE.md",
 )
 # The reader-facing documents live at the repository root now, and the controls reach
 # them: three mutate README.md and ten mutate SYNOPSIS.md, while the schema and
@@ -519,6 +580,31 @@ ROOT_DOCUMENTS = (
     REPO / "docs",
     REPO / "packages",
 )
+
+
+def root_files() -> tuple[Path, ...]:
+    """Every file the repository tracks at its root that is not copied by name above.
+
+    The README's layout tree draws the root's files -- the Makefile, the lockfile, the
+    TypeScript and lint configuration, `CLAUDE.md` -- and `.gitmodules` declares `vendor`,
+    which it draws too. A worker that carried only the named documents had none of them,
+    so `check_readme` reported fourteen drawn entries missing in every worker and its four
+    controls were scored over a checker that was red before their mutation (think-nns5).
+    The root's files are a few kilobytes of configuration (about 110 KB in all on
+    2026-10-05), so they are carried whole rather than listed, and a file added at the
+    root reaches every worker without an edit here. Directories are not: each one the
+    controls need is a `ROOT_DOCUMENTS` entry or `packing/` itself.
+
+    Asked of git, not of the directory, so a reader's untracked scratch at the root never
+    enters a worker; empty where there is no index to ask.
+    """
+    listed = tracked_files(REPO, ":(glob)*")
+    if listed is None:
+        return ()
+    named = {*COPY_SEPARATELY, *ROOT_DOCUMENTS}
+    return tuple(path for path in listed if path not in named)
+
+
 # Keep a bounded portable fallback with enough headroom for source, schemas, and
 # manifests after generator-owned prospective geometry is pruned above.
 #
@@ -626,6 +712,17 @@ ROOT_DOCUMENTS = (
 # 17 MB out of this surface -- the chunk census, the escape screen, exp-042 and the
 # other files the snapshot copies -- without pruning anything, so the cap returns to
 # 192 MiB rather than keeping a raise the bytes no longer need.
+# 2026-10-05, the n=17 stack: PR 360 at e62bed3a6 measured 201,854,760 bytes, 528,168
+# over 192 MiB, and hosted suite-b read the same figure (run 37298541719). No one layer
+# broke it. Main's dee22b882 measures 193,929,477; the five layers add 4,688,427 (PR 347),
+# 432,986, 882,399, 520,210 and 1,401,261 (PR 360), almost all of it X-048 session
+# receipts and their probes and tests, which are evidence and stay. Answered by
+# `think-t1lk`'s option (b) rather than by raising: the two composite vectors join
+# `PRUNE` above, traced as no control's input, for 8,559,777 bytes. That leaves PR 360
+# at 193,294,983 and this branch at 190,058,127, both before this change's own 4.5 KB
+# of comment and test, under an unchanged cap. PR 360 separately prunes its Sessions
+# 169-179 exploration folders (93a6839ca, net 2,122,114 bytes); the two prunes are
+# independent, and together they leave that layer about 9.7 MiB under the cap.
 SNAPSHOT_MAX_BYTES = 192 * 1024 * 1024
 DEFAULT_CONTROL_TIMEOUT_SECONDS = 120.0
 TERMINATION_GRACE_SECONDS = 1.0
@@ -767,6 +864,7 @@ LINKED_PRUNE_ROOTS = (
             ROOT / "sqsearch/target",
             ROOT / "sqverify_exact/target",
             ROOT / "sqverify_fast/target",
+            ROOT / "n17bb_native/target",
         }
     ),
     REPO / ".github/workflows",
@@ -776,6 +874,41 @@ LINKED_PRUNE_ROOTS = (
 def in_pruned_roots(path: Path, roots: frozenset[Path]) -> bool:
     """Test resolved ancestry once, rather than rebuilding it for every prune root."""
     return path in roots or any(parent in roots for parent in path.parents)
+
+
+def _linked_documents() -> list[Path]:
+    """The Markdown the link checker reads inside a worker: the record and root documents."""
+    documents = list((ROOT / "campaign").rglob("*.md"))
+    for document in ROOT_DOCUMENTS:
+        if document.is_dir():
+            documents.extend(
+                path
+                for path in document.rglob("*.md")
+                if not _inside_build_cache(path, below=document)
+            )
+        elif document.is_file() and document.suffix == ".md":
+            documents.append(document)
+    return documents
+
+
+def linked_pruned_directories() -> list[Path]:
+    """Pruned directories the checked documents link to inline, resolved and existing.
+
+    A link to a directory needs the directory, not its contents: exp-249 links Session
+    168's `certificates/`, which the snapshot prunes whole, and the ledger check found
+    that link dead in every worker once `ledger check` became a green-baseline command
+    (#372; #360's suite A, run 37391619647). Copying what such links reach was measured
+    at 2,009 files and 83 MB, taking the snapshot from 190.9 MB to 274 MB against the
+    192 MiB cap, so `clone_tree` recreates each of these directories empty instead.
+    """
+    roots = frozenset(LINKED_PRUNE_ROOTS)
+    directories: set[Path] = set()
+    for document in _linked_documents():
+        for raw in INLINE_LINK.findall(document.read_text(errors="ignore")):
+            resolved = (document.parent / raw).resolve()
+            if resolved.is_dir() and in_pruned_roots(resolved, roots):
+                directories.add(resolved)
+    return sorted(directories)
 
 
 def linked_pruned_targets() -> list[Path]:
@@ -794,20 +927,9 @@ def linked_pruned_targets() -> list[Path]:
     the checker honest at once; a link to a file that truly does not exist is
     left dead for the real checker to refuse.
     """
-    documents = list((ROOT / "campaign").rglob("*.md"))
-    for document in ROOT_DOCUMENTS:
-        if document.is_dir():
-            documents.extend(
-                path
-                for path in document.rglob("*.md")
-                if not _inside_build_cache(path, below=document)
-            )
-        elif document.is_file() and document.suffix == ".md":
-            documents.append(document)
-    roots = frozenset(LINKED_PRUNE_ROOTS)
     targets: set[Path] = set()
     roots = frozenset(LINKED_PRUNE_ROOTS)
-    for document in documents:
+    for document in _linked_documents():
         for raw in INLINE_LINK.findall(document.read_text(errors="ignore")):
             resolved = (document.parent / raw).resolve()
             if resolved.is_file() and in_pruned_roots(resolved, roots):
@@ -838,7 +960,7 @@ def snapshot_pruned_targets() -> list[Path]:
 
 def snapshot_source_bytes() -> int:
     """Bytes copied by the portable fallback, excluding build products and caches."""
-    total = sum(path.stat().st_size for path in COPY_SEPARATELY)
+    total = sum(path.stat().st_size for path in (*COPY_SEPARATELY, *root_files()))
     total += sum(target.stat().st_size for target in snapshot_pruned_targets())
     for document in ROOT_DOCUMENTS:
         if document.is_dir():
@@ -916,10 +1038,12 @@ def clone_tree(dest: Path) -> None:
     work = dest / HERE
     _clone_into(ROOT, work)
 
-    for target in (*COPY_SEPARATELY, *snapshot_pruned_targets()):
+    for target in (*COPY_SEPARATELY, *root_files(), *snapshot_pruned_targets()):
         landing = dest / target.relative_to(REPO)
         landing.parent.mkdir(parents=True, exist_ok=True)
         shutil.copy2(target, landing)
+    for directory in linked_pruned_directories():
+        (dest / directory.relative_to(REPO)).mkdir(parents=True, exist_ok=True)
 
     for document in ROOT_DOCUMENTS:
         if document.is_dir():
@@ -962,6 +1086,43 @@ def resolve_control_target(control_file: object, *, tree: Path, work: Path) -> P
     return target
 
 
+def control_environment(tree: Path, pycache: Path) -> dict[str, str]:
+    """The environment a control's command runs in inside `tree`, bytecode under `pycache`.
+
+    One function for `run_one` and for the test that runs each command unmutated, so a
+    baseline is taken in exactly the environment the mutation is.
+    """
+    work = tree / HERE
+    env = os.environ.copy()
+    # The parent owns the control journal, and a nested gate must not start a
+    # second artifact capture inside a snapshot.
+    env.pop("PACKING_VALIDATION_ARTIFACT_DIR", None)
+    # A snapshot owns its own index, which is how a check here answers what the
+    # repository holds. An inherited `GIT_DIR` or `GIT_INDEX_FILE` would point every
+    # one of those questions at another repository, and the mutation is not in it.
+    for inherited in [name for name in env if name.startswith("GIT_")]:
+        del env[inherited]
+    # Every worker links the already-synced environment to avoid reinstalling the
+    # scientific stack. Letting `uv run` sync that shared environment installs the
+    # editable project from a temporary snapshot, which disappears after this run
+    # and leaves the developer environment broken. Snapshot imports must still win.
+    env["UV_NO_SYNC"] = "1"
+    import_roots = (
+        str(work / "src"),
+        str(work),
+        str(tree / "packages/workbench/tools"),
+    )
+    env["PYTHONPATH"] = os.pathsep.join(
+        (*import_roots, env["PYTHONPATH"]) if env.get("PYTHONPATH") else import_roots
+    )
+    # Two controls can make same-size edits to one module inside the same filesystem
+    # timestamp tick. Python's normal timestamp-and-size bytecode cache would then
+    # let the second command execute the first control's mutation. Give every
+    # command a fresh cache root so the source under test is always recompiled.
+    env["PYTHONPYCACHEPREFIX"] = str(pycache)
+    return env
+
+
 def run_one(c: dict, tree: Path) -> tuple[bool, str]:
     """Apply the mutation inside `tree`, run the command there, restore. (passed, why)."""
     work = tree / HERE
@@ -978,44 +1139,17 @@ def run_one(c: dict, tree: Path) -> tuple[bool, str]:
         target.write_text(text.replace(old, new, 1), encoding="utf-8")
         # check=False deliberately: a non-zero exit is the EXPECTED outcome here, and
         # inspecting it is this function's whole job.
-        env = os.environ.copy()
-        # The parent owns the control journal, and a nested gate must not start a
-        # second artifact capture inside a snapshot.
-        env.pop("PACKING_VALIDATION_ARTIFACT_DIR", None)
-        # A snapshot owns its own index, which is how a check here answers what the
-        # repository holds. An inherited `GIT_DIR` or `GIT_INDEX_FILE` would point every
-        # one of those questions at another repository, and the mutation is not in it.
-        for inherited in [name for name in env if name.startswith("GIT_")]:
-            del env[inherited]
-        # Every worker links the already-synced environment to avoid reinstalling the
-        # scientific stack. Letting `uv run` sync that shared environment installs the
-        # editable project from a temporary snapshot, which disappears after this run
-        # and leaves the developer environment broken. Snapshot imports must still win.
-        env["UV_NO_SYNC"] = "1"
-        import_roots = (
-            str(work / "src"),
-            str(work),
-            str(tree / "packages/workbench/tools"),
-        )
-        env["PYTHONPATH"] = os.pathsep.join(
-            (*import_roots, env["PYTHONPATH"]) if env.get("PYTHONPATH") else import_roots
-        )
         try:
             timeout_seconds = float(c.get("timeout_seconds", DEFAULT_CONTROL_TIMEOUT_SECONDS))
         except TypeError, ValueError:
             return False, "timeout_seconds is not a number"
         if not math.isfinite(timeout_seconds) or timeout_seconds <= 0:
             return False, "timeout_seconds must be finite and positive"
-        # Two controls can make same-size edits to one module inside the same filesystem
-        # timestamp tick. Python's normal timestamp-and-size bytecode cache would then
-        # let the second command execute the first control's mutation. Give every
-        # command a fresh cache root so the source under test is always recompiled.
         with tempfile.TemporaryDirectory(prefix="negctl-pycache-", dir=tree) as pycache:
-            env["PYTHONPYCACHEPREFIX"] = pycache
             outcome = run_control_command(
                 c["run"],
                 cwd=work,
-                environment=env,
+                environment=control_environment(tree, Path(pycache)),
                 timeout_seconds=timeout_seconds,
             )
         output = outcome.stdout + outcome.stderr

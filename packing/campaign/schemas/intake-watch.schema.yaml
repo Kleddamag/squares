@@ -21,11 +21,12 @@ $defs:
     additionalProperties: false
     required: [url, read_through, read_on, note]
     description: >-
-      One repository read past its newest packet. With `bead`, the commits hold
-      something to import and that open bead owns it, so the entry is a deferral and
-      `check_bead_tree` fails it once the bead closes; remove the entry when a packet
-      pins the commit. Without `bead`, the pass found nothing to import, and `note`
-      says what the commits changed.
+      One repository read past its newest packet, or through a commit a packet's pin
+      contains whose changed paths no packet retains, which the read then covers with
+      every commit before it. With `bead`, the commits hold something to import and that
+      open bead owns it, so the entry is a deferral and `check_bead_tree` fails it once
+      the bead closes; remove the entry when a packet pins the commit. Without `bead`,
+      the pass found nothing to import, and `note` says what the commits changed.
     properties:
       url:
         type: string

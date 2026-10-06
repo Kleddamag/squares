@@ -1470,25 +1470,35 @@ def test_an_advisory_relative_rule_with_no_bead_store_fails_under_ci_and_skips_l
     assert "think-aaaa" in printed
 
 
-def test_the_live_relaxation_names_a_live_bead_and_keeps_the_ceiling() -> None:
-    """The register as checked in: advisory under a bead the store confirms is open."""
+def test_the_live_relaxation_names_a_live_bead_and_keeps_the_hang_detector() -> None:
+    """The register as checked in: both relaxations advisory under beads the store
+    confirms are open. Since 2026-10-05 (think-6erz) a pull-request run just over a ceiling
+    is advisory; one over the hang ratio still fails."""
     register = live()
     declared = register.policy.pull_request_relative_rules
     assert declared is not None, "the live register no longer declares the relaxation"
+    ceiling = register.policy.pull_request_ceiling
+    assert ceiling is not None, "the live register no longer relaxes the ceiling"
     assert relative_rule_problems(register, _require_bead_store()) == []
-    # The ceiling is outside the relaxation: a pull-request run over it still fails.
     tier = recorded_tier(register)
-    over = gate_budgets.judge(
-        register,
-        tier.id,
-        wall_seconds=tier.ceiling_seconds * 1.01,
-        steps=((SLOW_STEP, tier.ceiling_seconds * 1.01),),
-        jobs=tier.reference.jobs,
-        inner_jobs=tier.reference.inner_jobs,
-        cpus=tier.reference.cpus,
-        pull_request=True,
-    )
-    assert over.failed, over
+
+    def on_a_pull_request(wall: float) -> gate_budgets.Verdict:
+        return gate_budgets.judge(
+            register,
+            tier.id,
+            wall_seconds=wall,
+            steps=((SLOW_STEP, wall),),
+            jobs=tier.reference.jobs,
+            inner_jobs=tier.reference.inner_jobs,
+            cpus=tier.reference.cpus,
+            pull_request=True,
+        )
+
+    over = on_a_pull_request(tier.ceiling_seconds * 1.01)
+    assert not over.failed, over
+    assert any("ceiling" in finding for finding in over.advisory_failures), over
+    hung = on_a_pull_request(tier.ceiling_seconds * ceiling.hang_ratio * 1.01)
+    assert hung.failed, hung
 
 
 def test_the_day_of_2026_09_30_is_judged_on_code_not_on_the_runner() -> None:
@@ -1508,7 +1518,10 @@ def test_the_day_of_2026_09_30_is_judged_on_code_not_on_the_runner() -> None:
     current record or in its history.
     """
     document = safe_load(HOSTED_DAY.read_text(encoding="utf-8"))
-    register = live()
+    # That day is judged under that day's policy: the ceiling's own pull-request
+    # relaxation (think-6erz, 2026-10-05) came later and is held by its own tests.
+    current = live()
+    register = replace(current, policy=replace(current.policy, pull_request_ceiling=None))
     superseded = document["superseded"]
     retaken = document["retaken"]
     intended = replace(
@@ -1590,3 +1603,105 @@ def test_the_day_of_2026_09_30_is_judged_on_code_not_on_the_runner() -> None:
             f"the {tier_id} record re-taken from this day's readings, {seconds:g}s, is no "
             "longer in the live register as the current record or in its history"
         )
+
+
+# --- the ceiling, advisory on pull requests up to a hang detector (think-6erz, 2026-10-05)
+
+
+def ceiling_relaxed(
+    tmp_path: Path,
+    *,
+    enforcement: str | None = "advisory",
+    bead: str | None = "think-aaaa",
+    reason: str | None = "a fabricated owner decision",
+    hang: str | None = "2.0",
+    per_test: str | None = "45.0",
+) -> Path:
+    """The fabricated register (ceiling 200 s, record 150 s) with
+    `policy.pull_request_ceiling` declared; a field left as None is not written."""
+    spec = fabricated(tmp_path, ceiling=200.0, measured="150.0")
+    lines = ["  pull_request_ceiling:"]
+    lines.extend(
+        f"    {name}: {value}"
+        for name, value in (
+            ("enforcement", enforcement),
+            ("tracking_bead", bead),
+            ("advisory_reason", reason),
+            ("hang_ratio", hang),
+            ("per_test_hang_seconds", per_test),
+        )
+        if value is not None
+    )
+    document = spec.read_text(encoding="utf-8")
+    spec.write_text(document.replace("tiers:\n", "\n".join(lines) + "\ntiers:\n", 1))
+    return spec
+
+
+def test_a_ceiling_breach_on_a_pull_request_is_advisory_below_the_hang_ratio(
+    tmp_path: Path,
+) -> None:
+    """#356's shard C, 171.2 s against 168 s with every test green, is the case: over the
+    ceiling but far under twice it, so it is reported under the bead and does not fail."""
+    register = gate_budgets.load(ceiling_relaxed(tmp_path))
+    verdict = judge_pull_request(register, 200.0 * 1.02)
+    assert verdict.status == "advisory", verdict
+    assert not verdict.failures
+    assert any("ceiling" in finding for finding in verdict.advisory_failures)
+    assert verdict.advisory is not None
+    assert verdict.advisory.tracking_bead == "think-aaaa"
+    note = gate_budgets.advisory_note(verdict.advisory)
+    assert "the tier ceilings and the per-test call-wall rule are advisory" in note
+    assert "above 2x its ceiling" in note
+
+
+def test_a_pull_request_wall_above_the_hang_ratio_still_fails(tmp_path: Path) -> None:
+    """The relaxation gives up the verdict on runner speed, not on a run that has stopped
+    making progress: above twice the ceiling the ceiling failure stands."""
+    register = gate_budgets.load(ceiling_relaxed(tmp_path))
+    verdict = judge_pull_request(register, 200.0 * 2.0 + 1.0)
+    assert verdict.failed, verdict
+    assert any("ceiling" in failure for failure in verdict.failures)
+
+
+def test_the_ceiling_relaxation_applies_only_to_a_pull_request_run_and_yields_to_force(
+    tmp_path: Path,
+) -> None:
+    """Main, scheduled and deep runs keep the ceiling, and an operator asking on purpose
+    with --enforce-budget gets the enforced verdict."""
+    register = gate_budgets.load(ceiling_relaxed(tmp_path))
+    assert judge_pull_request(register, 210.0, pull_request=False).failed
+    assert judge_pull_request(register, 210.0, force=True).failed
+
+
+def test_the_ceiling_relaxation_is_held_to_the_tracked_advisory_contract(
+    tmp_path: Path,
+) -> None:
+    """No bead, no reason or no hang detector is refused; an enforcing declaration that
+    still names a tracker or a hang detector is refused; enforcing with neither is None."""
+    for missing in ("bead", "reason", "hang", "per_test"):
+        with pytest.raises(BudgetError):
+            gate_budgets.load(ceiling_relaxed(tmp_path, **{missing: None}))
+    with pytest.raises(BudgetError, match="must exceed 1"):
+        gate_budgets.load(ceiling_relaxed(tmp_path, hang="1.0"))
+    with pytest.raises(BudgetError, match="still declares a hang detector"):
+        gate_budgets.load(
+            ceiling_relaxed(tmp_path, enforcement="enforcing", bead=None, reason=None)
+        )
+    enforcing = gate_budgets.load(
+        ceiling_relaxed(
+            tmp_path, enforcement="enforcing", bead=None, reason=None, hang=None, per_test=None
+        )
+    )
+    assert enforcing.policy.pull_request_ceiling is None
+
+
+def test_an_advisory_ceiling_must_be_tracked_by_an_open_bead(tmp_path: Path) -> None:
+    """The same liveness ratchet the relaxed drift and stale rules are held to."""
+    read = bead_state.fixture_store({"aaaa": "open", "cccc": "closed"})
+    assert relative_rule_problems(gate_budgets.load(ceiling_relaxed(tmp_path)), read) == []
+    closed = relative_rule_problems(
+        gate_budgets.load(ceiling_relaxed(tmp_path, bead="think-cccc")), read
+    )
+    assert len(closed) == 1, closed
+    assert "policy.pull_request_ceiling.enforcement" in closed[0]
+    assert "under think-cccc: closed" in closed[0]

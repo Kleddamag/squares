@@ -124,6 +124,16 @@ def pair_gap(left: Square, right: Square) -> Fraction:
 
 def check(path: Path) -> dict[str, Any]:
     squares, side = parse(path)
+    return check_squares(squares, side)
+
+
+def check_squares(squares: list[Square], side: Fraction) -> dict[str, Any]:
+    """Decide exact unit squares, given as four rational corners each, in ``[0, side]^2``.
+
+    The geometry `check` applies to a parsed witness, for a caller that holds its squares
+    in another exact form and converts them itself: the conversion is then the caller's
+    to state, and this decision is still this module's alone.
+    """
     failures = [
         failure
         for index, square in enumerate(squares, start=1)

@@ -15,9 +15,13 @@ its headline, or from its claim where the headline states none, as `s(n) ≥ val
 same direction, in both lanes:
 
 - a **superseded** entry is beaten at every case and direction it states: its value is
-  strictly worse than the verified bound, and than the reported one. One whose words
-  state no bound this can read is held to the weaker structural rule that another entry
-  holds a verified bound at every case in its scope;
+  strictly worse than the verified bound, and than the reported one. An entry no replay
+  has confirmed (`C0` or `C1`) is a report, which can hold the reported lane and never the
+  verified one, so it is held to the reported bound alone: `T-046`'s rectangle
+  certificates equal verified bounds that their replays (`T-045`, `T-070`) hold, and are
+  above others that no replay holds yet. One whose words state no bound this can read is
+  held to the weaker structural rule that another entry holds a verified bound at every
+  case in its scope;
 - an entry that is the **current best** states, at some case, exactly the verified bound
   (the reported one, where it is the current best as reported), and never more than the
   record carries;
@@ -88,6 +92,9 @@ _CLOSED = re.compile(
 _FOR = re.compile(r"`? for `?n = (?P<cases>\d[\d, …]*(?: and \d+)?)")
 
 BEATEN = "beaten"
+#: Confirmation rungs that no replay reached: an entry at one is held in the reported
+#: lane alone when it is superseded.
+UNREPLAYED = frozenset({"C0", "C1"})
 EN_DASH = "\u2013"
 EQUAL = "equal"
 EXCEEDS = "exceeds"
@@ -226,6 +233,9 @@ def problems(record: Mapping[str, Any], standing: str, records: view.Records) ->
         if found:
             wrong.append(f"{entry} has no standing, yet states a bound at {_at(found)}")
     elif standing == view.SUPERSEDED:
+        if str(record.get("confirmation")) in UNREPLAYED:
+            # Two lanes are never mixed: a report never holds the verified lane.
+            stands = []
         if stands:
             wrong.append(
                 f"{entry} is superseded, yet at {_at(stands)} its stated bound is no "

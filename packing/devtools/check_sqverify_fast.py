@@ -21,6 +21,16 @@ Two checks of `sqverify-fast` (`packing/sqverify_fast`), both refusable:
   and linear n101 certificates, a scaling to one part in a million below the threshold
   at each witness, and a fault injected at an early box of the linear certificate at
   an oblique direction and at direction zero, where it runs by branch and bound.
+- `declared-net`: the format M certificate of jlevy/squares#366 on its own net
+  (`proof_net`: step 1/1001, 416 directions; SOUNDNESS.md, lemma N0). The original must
+  verify on the declared net; every corrupted declaration (a step that breaks
+  `B (1 + D) < 1`, a net short of pi/4, an unknown field, a count that disagrees,
+  metadata that changes the net, the declaration removed, and format L's net block beside
+  it) must be refused at admission, by the premise it breaks; and the masses scaled by
+  0.985 must be refused, each refused direction with an exact witness below the
+  threshold. The binary's own `source_sha256` must be `crate_source_sha256` of this
+  tree, the digest `build.rs` takes and the census's `REVIEWED_SOURCES` admits, so this
+  group fails for a binary built from another tree.
 
 Prints one line per check and `SQVERIFY-FAST CHECKS PASSED` when every check passes;
 exits 1 otherwise. From `packing/`, after `cargo build --release` in
@@ -34,6 +44,7 @@ from __future__ import annotations
 
 import argparse
 import gzip
+import hashlib
 import json
 import random
 import subprocess
@@ -55,11 +66,20 @@ from sqpack.rectangle_density import (
 
 PROJECT = Path(__file__).resolve().parents[1]
 WEB = PROJECT / "resources/web"
+#: The verifier's crate, whose sources `build.rs` digests into every build.
+CRATE = PROJECT / "sqverify_fast"
 STEP = Fraction(83, 40000)
 # The retained stage-4 controls of formats M and L: packet and receipt folder.
 MIXED_CONTROLS = (
     ("wand125-point-and-mixed-2026-10-01", "n37"),
     ("wand125-linear-certificates-2026-10-02", "n101"),
+)
+# The format M certificate on a declared net (jlevy/squares#366): its candidate and n.
+DECLARED_NET = (
+    WEB
+    / "wand125-mixed-bounds-finer-net-2026-10-05/square-packing-bounds/certificates"
+    / "mixed_n18_L470/candidate.json.gz",
+    18,
 )
 
 
@@ -73,9 +93,39 @@ def candidate_path(packet: str, certificate: str) -> Path:
     )
 
 
-def direction(index: int) -> tuple[Fraction, Fraction]:
-    t = index * STEP
+def direction(index: int, step: Fraction = STEP) -> tuple[Fraction, Fraction]:
+    """The exact cosine and sine of net angle `index`, half-angle tangent `index * step`."""
+    t = index * step
     return (1 - t * t) / (1 + t * t), 2 * t / (1 + t * t)
+
+
+def crate_source_sha256(crate: Path = CRATE) -> str:
+    """The `source_sha256` a build of `crate` embeds, by `build.rs`'s own rule.
+
+    SHA-256 over `Cargo.toml`, `Cargo.lock`, `build.rs` and then `src/*.rs` in sorted
+    order, each as its crate-relative name, a NUL byte, its bytes and a NUL byte. The
+    `declared-net` group holds a built binary's own digest to this one, and
+    `sqverify_fast_census --source-digest` prints it with the review that accepted it.
+    """
+    names = ["Cargo.toml", "Cargo.lock", "build.rs"]
+    names += sorted(
+        f"src/{path.name}" for path in (crate / "src").iterdir() if path.suffix == ".rs"
+    )
+    digest = hashlib.sha256()
+    for name in names:
+        digest.update(name.encode() + b"\0" + (crate / name).read_bytes() + b"\0")
+    return digest.hexdigest()
+
+
+def net_step(raw: dict[str, Any]) -> Fraction:
+    """A format M or L candidate's half-angle step: its `proof_net` step, else 83/40000.
+
+    Read as an exact rational from the file's own text, as admission reads it: a format M
+    file may declare its own net (SOUNDNESS.md, lemma N0), and admission refuses a
+    `proof_net` in any other format and metadata that changes a format M or L net.
+    """
+    net = raw.get("proof_net")
+    return Fraction(str(net["step"])) if isinstance(net, dict) else STEP
 
 
 def read_raw(path: Path) -> dict[str, Any]:
@@ -428,7 +478,9 @@ def mixed_exact(raw: dict[str, Any], x: Fraction, y: Fraction, index: int) -> Fr
     """
     side, core = Fraction(raw["L"]), Fraction(raw["B"])
     half = core / 2
-    cosine, sine = direction(index)
+    # At the net angle of the file's own net (finding DR-1 of the 6 October review: the
+    # standard step on a declared net scores another angle).
+    cosine, sine = direction(index, net_step(raw))
     polygon = square_polygon(x, y, cosine, sine, core)
 
     def local(point: tuple[Fraction, Fraction]) -> tuple[Fraction, Fraction]:
@@ -695,10 +747,127 @@ def mixed(
     return outcomes
 
 
+def summary_of(result: subprocess.CompletedProcess[str]) -> dict[str, Any]:
+    """The summary line of a run, or an empty dict."""
+    for line in reversed(result.stdout.splitlines()):
+        if line.startswith("{") and '"sqverify-fast-summary/v1"' in line:
+            value: dict[str, Any] = json.loads(line)
+            return value
+    return {}
+
+
+def declared_net(binary: Path, scratch: Path, *, quick: bool) -> list[tuple[bool, str]]:
+    """Lemma N0 on the retained certificate whose file declares its own net."""
+    path, n = DECLARED_NET
+    raw = read_raw(path)
+    net = raw["proof_net"]
+    outcomes: list[tuple[bool, str]] = []
+    directions = "415" if quick else "0,1,207,415"
+    result = run_binary(binary, path, n, "--directions", directions)
+    summary = summary_of(result)
+    premises = summary.get("premises") or {}
+    # The digest every receipt names, which REVIEWED_SOURCES admits, is the one
+    # crate_source_sha256 computes from this tree: a binary built here names it.
+    built = str((summary.get("build") or {}).get("source_sha256"))
+    tree = crate_source_sha256()
+    outcomes.append(
+        (
+            built == tree,
+            (
+                f"the binary names this tree's crate source: source_sha256 {built[:8]}... is"
+                f" build.rs's digest of packing/sqverify_fast, {tree[:8]}..."
+            ),
+        )
+    )
+    ok = (
+        result.returncode == 0
+        and premises.get("net_origin") == "proof_net"
+        and premises.get("D") == "1/1001"
+        and premises.get("angle_count") == 416
+        and premises.get("shrink_bound") == "500499/500500"
+    )
+    outcomes.append(
+        (
+            ok,
+            (
+                f"declared net mixed_n18_L470 r={directions}: verified on its own net"
+                f" (D {premises.get('D')}, {premises.get('angle_count')} directions,"
+                f" B (1 + D) = {premises.get('shrink_bound')})"
+            ),
+        )
+    )
+    # Each corruption, and the refusal that must name the premise it breaks: a control
+    # refused for another reason would not hold its rule (finding DN-6 of the 5 October
+    # review). The metadata step 1/1000 meets every net premise, so only the rule that
+    # metadata may not change a declared net refuses it.
+    corruptions: list[tuple[str, dict[str, Any] | None, dict[str, Any] | None, str, str]] = [
+        ("step 1/999, B (1 + D) = 1", {**net, "step": "1/999"}, None, "net-key", "B (1 + D)"),
+        ("last 414, short of pi/4", {**net, "last": 414}, None, "net-key", "pi/4"),
+        ("an unknown field", {**net, "offset": "1/2002"}, None, "net-key", "does not know"),
+        ("a count other than last + 1", {**net, "count": 415}, None, "net-key", "count"),
+        (
+            "metadata changing the step",
+            net,
+            {"D": "1/1000", "angle_count": 416},
+            "net-key",
+            "may not change it",
+        ),
+        ("metadata changing the count", net, {"angle_count": 417}, "net-key", "may not change"),
+        ("the declaration removed (the standard net)", None, None, "net-key", "B (1 + D)"),
+        ("a format L net block beside it", net, None, "net", "net block"),
+    ]
+    for name, declared, metadata, where, expected in corruptions:
+        copy = json.loads(json.dumps(raw))
+        if declared is None:
+            del copy["proof_net"]
+        elif where == "net":
+            copy["net"] = {"step": "83/40000", "last": 200}
+        else:
+            copy["proof_net"] = declared
+        if metadata is not None:
+            copy["certificate"] = metadata
+        mutant = write(copy, scratch, f"n18-net-{len(outcomes)}")
+        refused = run_binary(binary, mutant, n, "--directions", "1")
+        outcomes.append(
+            (
+                refused.returncode == 2 and expected in refused.stderr,
+                (
+                    f"declared net: admission refuses {name} for its own premise"
+                    f" (exit {refused.returncode}: {refused.stderr.strip()[:80]})"
+                ),
+            )
+        )
+    mutant = write(mixed_mutant(raw, factor=Fraction(985, 1000)), scratch, "n18-scaled-0985")
+    scaled_directions = "415" if quick else "all"
+    result = run_binary(binary, mutant, n, "--directions", scaled_directions, "--confirm")
+    rows = [
+        json.loads(line)
+        for line in result.stdout.splitlines()
+        if line.startswith("{") and '"r"' in line
+    ]
+    refused_rows = [row for row in rows if row.get("verdict") != "verified"]
+    witnessed = [
+        row for row in refused_rows if (row.get("witness") or {}).get("exact_below_threshold")
+    ]
+    outcomes.append(
+        (
+            result.returncode == 1
+            and bool(refused_rows)
+            and len(witnessed) == len(refused_rows),
+            (
+                f"declared net: masses scaled by 0.985 refused at {len(refused_rows)} of"
+                f" {len(rows)} directions, each with an exact witness below 1"
+                f" ({len(witnessed)})"
+            ),
+        )
+    )
+    return outcomes
+
+
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=(__doc__ or "").splitlines()[0])
     parser.add_argument("--binary", type=Path, required=True)
-    parser.add_argument("--only", choices=("differential", "controls", "mixed"))
+    parser.add_argument("--only", choices=("differential", "controls", "mixed", "declared-net"))
     parser.add_argument(
         "--quick",
         action="store_true",
@@ -718,6 +887,9 @@ def main(argv: list[str] | None = None) -> int:
             outcomes += mixed(
                 binary, Path(scratch), random.Random(args.seed + 1), quick=args.quick
             )
+    if args.only in (None, "declared-net"):
+        with tempfile.TemporaryDirectory(prefix="sqverify-fast-declared-net-") as scratch:
+            outcomes += declared_net(binary, Path(scratch), quick=args.quick)
     for ok, line in outcomes:
         print(("  ok   " if ok else "  FAIL ") + line, flush=True)
     if all(ok for ok, _ in outcomes):

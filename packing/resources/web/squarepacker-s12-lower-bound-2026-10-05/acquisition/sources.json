@@ -1,0 +1,202 @@
+{
+  "format": "external-source-acquisition-v1",
+  "retrieved_at_utc": "2026-10-05T17:07Z",
+  "git_scope": "A complete clone of the public repository, fetched when main and the lightweight tag v1.1 were this commit; the manifest covers every file of the tree, and the v1.0 files that v1.1 leaves unchanged are pinned to the 2026-10-02 packet's copies. The Zenodo record of tag v1.1, 10.5281/zenodo.23157015, read at 2026-10-05T22:46Z, holds one file, squarepacker/s12-lower-bound-v1.1.zip (478,011 bytes, MD5 096de4f2c604be3d419710610eefb68f as Zenodo lists it, SHA-256 bfaae73d48b69f523396f8cd58ce6fb50cdca4260095392944e872001a2ead7c), whose archive comment is this commit and whose 68 files equal this manifest byte for byte, the paper PDF among them.",
+  "sources": [
+    {
+      "id": "squarepacker-s12-lower-bound",
+      "source_url": "https://github.com/squarepacker/s12-lower-bound",
+      "source_ref": "7a96bec36bc6811c3715ef581598f22ff9b7ba3a",
+      "source_commit": "7a96bec36bc6811c3715ef581598f22ff9b7ba3a",
+      "committed_utc": "2026-10-05T08:31:05Z",
+      "git_tree": "2bfa315963c249543a87178f52372e66b293bf8a",
+      "archived_path": "packing/resources/web/squarepacker-s12-lower-bound-2026-10-05/s12-lower-bound",
+      "subtree_manifest": "packing/resources/web/squarepacker-s12-lower-bound-2026-10-05/acquisition/upstream-subtree.sha256",
+      "subtree_scope": [
+        ".zenodo.json",
+        "LICENSE",
+        "README.md",
+        "SHA256SUMS",
+        "s12_lower_3.9715.txt",
+        "s12_lower_3.969118.txt",
+        "controls",
+        "logs",
+        "paper",
+        "search",
+        "tools"
+      ],
+      "subtree_file_count": 68,
+      "subtree_total_bytes": 879455,
+      "retained_file_count": 46,
+      "retained_total_bytes": 695301,
+      "compressed": [
+        "s12-lower-bound/controls/3.9715/control1_lowered_orbit.txt.gz",
+        "s12-lower-bound/controls/3.9715/control2_scaled_further.txt.gz",
+        "s12-lower-bound/s12_lower_3.9715.txt.gz"
+      ],
+      "pinned_only": [
+        {
+          "path": "controls/56points_critical_760_199.txt",
+          "bytes": 609,
+          "sha256": "d98681c28374e6af0febc7439dabef4bb0e4dae51921b5631002cdba63cfbaf4",
+          "reason": "v1.0 file unchanged at v1.1, byte-identical to the 2026-10-02 packet's copy at 8c53049",
+          "identical_to": "packing/resources/web/squarepacker-s12-lower-bound-2026-10-02/s12-lower-bound/controls/56points_critical_760_199.txt"
+        },
+        {
+          "path": "controls/56points_over_1520_397.txt",
+          "bytes": 610,
+          "sha256": "0b712361b78bcfe73a31ed409f643890596caeaca8cfedbb56e804e9e327f4fb",
+          "reason": "v1.0 file unchanged at v1.1, byte-identical to the 2026-10-02 packet's copy at 8c53049",
+          "identical_to": "packing/resources/web/squarepacker-s12-lower-bound-2026-10-02/s12-lower-bound/controls/56points_over_1520_397.txt"
+        },
+        {
+          "path": "controls/scaled_further_31360_7900.txt",
+          "bytes": 30608,
+          "sha256": "04d7105c5b6d8b85cd0655f544b5c59163f9a36fa86814601a30c4114d1526f1",
+          "reason": "v1.0 file unchanged at v1.1, byte-identical to the 2026-10-02 packet's copy at 8c53049",
+          "identical_to": "packing/resources/web/squarepacker-s12-lower-bound-2026-10-02/s12-lower-bound/controls/scaled_further_31360_7900.txt"
+        },
+        {
+          "path": "logs/3.9715/tightscan_N96000.txt.gz",
+          "bytes": 100435,
+          "sha256": "4e64d1bded8c2ca3e62c9dae356204451195139fd6042562278a3d6174b3d029",
+          "reason": "an upstream gzip file, which the archive cannot retain under its own name because it reads every stored .gz as this repository's compression of the file beside it; the per-bin least captured weights of the source's scan at N = 96000"
+        },
+        {
+          "path": "logs/control_56points_critical_760_199.log",
+          "bytes": 489,
+          "sha256": "ae54d3a6fa31bee52de53d0991a8801294f5cd9f28adb9b438ad1ccab055e0d8",
+          "reason": "v1.0 file unchanged at v1.1, byte-identical to the 2026-10-02 packet's copy at 8c53049",
+          "identical_to": "packing/resources/web/squarepacker-s12-lower-bound-2026-10-02/s12-lower-bound/logs/control_56points_critical_760_199.log"
+        },
+        {
+          "path": "logs/control_56points_over_1520_397.log",
+          "bytes": 404,
+          "sha256": "2d6e21b571212f26bc646d6b8f3ab13744e3dce923e20c22fcebb285c589b084",
+          "reason": "v1.0 file unchanged at v1.1, byte-identical to the 2026-10-02 packet's copy at 8c53049",
+          "identical_to": "packing/resources/web/squarepacker-s12-lower-bound-2026-10-02/s12-lower-bound/logs/control_56points_over_1520_397.log"
+        },
+        {
+          "path": "logs/control_original_3.9686_N6000.log",
+          "bytes": 530,
+          "sha256": "9b1548b8d9c74bcb4efa16912dba7cdc6cf5af6eae172f21e1bfe0d88aba8c0f",
+          "reason": "v1.0 file unchanged at v1.1, byte-identical to the 2026-10-02 packet's copy at 8c53049",
+          "identical_to": "packing/resources/web/squarepacker-s12-lower-bound-2026-10-02/s12-lower-bound/logs/control_original_3.9686_N6000.log"
+        },
+        {
+          "path": "logs/control_scaled_further_31360_7900_N24000.log",
+          "bytes": 450,
+          "sha256": "bb7453e67a29eade9bad702d7b03366bbadad343be85118f31ee9e58058d71ad",
+          "reason": "v1.0 file unchanged at v1.1, byte-identical to the 2026-10-02 packet's copy at 8c53049",
+          "identical_to": "packing/resources/web/squarepacker-s12-lower-bound-2026-10-02/s12-lower-bound/logs/control_scaled_further_31360_7900_N24000.log"
+        },
+        {
+          "path": "logs/daniel_verify_N12000.log",
+          "bytes": 623,
+          "sha256": "045e1532007c2d4694150b21fe3e8e284bf61e4c45282b647c063a957cdb54a6",
+          "reason": "v1.0 file unchanged at v1.1, byte-identical to the 2026-10-02 packet's copy at 8c53049",
+          "identical_to": "packing/resources/web/squarepacker-s12-lower-bound-2026-10-02/s12-lower-bound/logs/daniel_verify_N12000.log"
+        },
+        {
+          "path": "logs/daniel_verify_N24000.log",
+          "bytes": 480,
+          "sha256": "95df5a0b271e62dd36880745b7003d0c8da8e5369aaf84f8459c082b22389fd4",
+          "reason": "v1.0 file unchanged at v1.1, byte-identical to the 2026-10-02 packet's copy at 8c53049",
+          "identical_to": "packing/resources/web/squarepacker-s12-lower-bound-2026-10-02/s12-lower-bound/logs/daniel_verify_N24000.log"
+        },
+        {
+          "path": "logs/daniel_verify_N6000.log",
+          "bytes": 617,
+          "sha256": "06e5624eb7c0e72e7b5ccd2981d00ced0bf9467e2146bcb3a2297d5ebfa290fe",
+          "reason": "v1.0 file unchanged at v1.1, byte-identical to the 2026-10-02 packet's copy at 8c53049",
+          "identical_to": "packing/resources/web/squarepacker-s12-lower-bound-2026-10-02/s12-lower-bound/logs/daniel_verify_N6000.log"
+        },
+        {
+          "path": "logs/daniel_verify_overflowchecks_N24000.log",
+          "bytes": 480,
+          "sha256": "95df5a0b271e62dd36880745b7003d0c8da8e5369aaf84f8459c082b22389fd4",
+          "reason": "v1.0 file unchanged at v1.1, byte-identical to the 2026-10-02 packet's copy at 8c53049",
+          "identical_to": "packing/resources/web/squarepacker-s12-lower-bound-2026-10-02/s12-lower-bound/logs/daniel_verify_overflowchecks_N24000.log"
+        },
+        {
+          "path": "logs/indep_check_N12000.log",
+          "bytes": 447,
+          "sha256": "9fe428038c98e24cb1c9129a6322529314f5cbe82003597523579037a655ab23",
+          "reason": "v1.0 file unchanged at v1.1, byte-identical to the 2026-10-02 packet's copy at 8c53049",
+          "identical_to": "packing/resources/web/squarepacker-s12-lower-bound-2026-10-02/s12-lower-bound/logs/indep_check_N12000.log"
+        },
+        {
+          "path": "logs/indep_check_N24000.log",
+          "bytes": 532,
+          "sha256": "411113d8f2bffadd7424de6a0c7d0c1d20a533057ddff6cb53c1c730ed5029dd",
+          "reason": "v1.0 file unchanged at v1.1, byte-identical to the 2026-10-02 packet's copy at 8c53049",
+          "identical_to": "packing/resources/web/squarepacker-s12-lower-bound-2026-10-02/s12-lower-bound/logs/indep_check_N24000.log"
+        },
+        {
+          "path": "logs/indep_check_N24000_Q2pow40.log",
+          "bytes": 529,
+          "sha256": "9e6563ababeae903d01c7682d321cd5b6e5fa127e9acfaa6cde82307b78c68f4",
+          "reason": "v1.0 file unchanged at v1.1, byte-identical to the 2026-10-02 packet's copy at 8c53049",
+          "identical_to": "packing/resources/web/squarepacker-s12-lower-bound-2026-10-02/s12-lower-bound/logs/indep_check_N24000_Q2pow40.log"
+        },
+        {
+          "path": "logs/indep_check_N48000.log",
+          "bytes": 532,
+          "sha256": "469256afb87068ab5411a48dda14b8e1503d1793defa82212293318e843115f1",
+          "reason": "v1.0 file unchanged at v1.1, byte-identical to the 2026-10-02 packet's copy at 8c53049",
+          "identical_to": "packing/resources/web/squarepacker-s12-lower-bound-2026-10-02/s12-lower-bound/logs/indep_check_N48000.log"
+        },
+        {
+          "path": "logs/indep_check_N6000.log",
+          "bytes": 447,
+          "sha256": "335e5af48ac256aa1deab4cabab459adde41ad2df7a476cba9a8f2d9dca437f4",
+          "reason": "v1.0 file unchanged at v1.1, byte-identical to the 2026-10-02 packet's copy at 8c53049",
+          "identical_to": "packing/resources/web/squarepacker-s12-lower-bound-2026-10-02/s12-lower-bound/logs/indep_check_N6000.log"
+        },
+        {
+          "path": "logs/indep_check_N96000.log",
+          "bytes": 532,
+          "sha256": "6052ebd34a60e80ab83aaa39f16936ca15ad9e030fdd48fc6d618ca479b7f926",
+          "reason": "v1.0 file unchanged at v1.1, byte-identical to the 2026-10-02 packet's copy at 8c53049",
+          "identical_to": "packing/resources/web/squarepacker-s12-lower-bound-2026-10-02/s12-lower-bound/logs/indep_check_N96000.log"
+        },
+        {
+          "path": "logs/spot_check_30000_random_poses.log",
+          "bytes": 136,
+          "sha256": "c8b3d1605bb65382196b3e683aeb5ab1a1e109a72aa506c83df3f8274ad201d5",
+          "reason": "v1.0 file unchanged at v1.1, byte-identical to the 2026-10-02 packet's copy at 8c53049",
+          "identical_to": "packing/resources/web/squarepacker-s12-lower-bound-2026-10-02/s12-lower-bound/logs/spot_check_30000_random_poses.log"
+        },
+        {
+          "path": "s12_lower_3.969118.txt",
+          "bytes": 30608,
+          "sha256": "6ad9b0e8257166687f4e861b97f024f4993d7b2125897173b2f5e9f6e2167578",
+          "reason": "v1.0 file unchanged at v1.1, byte-identical to the 2026-10-02 packet's copy at 8c53049",
+          "identical_to": "packing/resources/web/squarepacker-s12-lower-bound-2026-10-02/s12-lower-bound/s12_lower_3.969118.txt"
+        },
+        {
+          "path": "tools/indep_check.cpp",
+          "bytes": 12611,
+          "sha256": "21527e8d86214dd5612e523217a6266f56dfa95beb11ade34d66e20303d2ea96",
+          "reason": "v1.0 file unchanged at v1.1, byte-identical to the 2026-10-02 packet's copy at 8c53049",
+          "identical_to": "packing/resources/web/squarepacker-s12-lower-bound-2026-10-02/s12-lower-bound/tools/indep_check.cpp"
+        },
+        {
+          "path": "tools/spot_check.py",
+          "bytes": 1445,
+          "sha256": "feadb895f53b5f485d3b504f21bb0c24de7b21cfe3293664c48f14fa955e733e",
+          "reason": "v1.0 file unchanged at v1.1, byte-identical to the 2026-10-02 packet's copy at 8c53049",
+          "identical_to": "packing/resources/web/squarepacker-s12-lower-bound-2026-10-02/s12-lower-bound/tools/spot_check.py"
+        }
+      ],
+      "license": "MIT: LICENSE reproduces Evan Daniel's MIT licence for the material derived from evand/square-packing at 7d6f46d9 (the points of every certificate) and releases the rest of the repository under the same terms, Copyright (c) 2026 Ryu Sungjoon",
+      "claims": [
+        "s(12) >= 7943/2000 = 3.9715, by s12_lower_3.9715.txt: Evan Daniel's 1,736 points of s12/certificates/s12_lower_3.9686.txt (evand/square-packing 7d6f46d9) dilated by 31382793/31360000 and rounded to the grid 1/4000000 one D4 orbit at a time, with new weights found by linear programming, all 223 orbits positive, total 119974808/10^7 < 12 (README.md, paper/s12_lower_3.9715.pdf)",
+        "Daniel's verify at 7d6f46d, built with overflow checks, verifies it on the angle net N = 96000 with least captured weight 10000050/10^7 at bin 0 and refuses it at N = 24000 (6737611/10^7); tools/indep_check.cpp, unchanged since v1.0, verifies it at N = 96000 and 192000 and refuses it at 24000 and 48000 (logs/3.9715/)",
+        "Two altered copies, the heaviest orbit lowered by 100/10^7 and the same integers read over D = 3999600, are refused by indep_check at N = 96000 and by single-bin runs of verify (controls/3.9715/)",
+        "The LP for D4-invariant weights on these points exceeds 12 at s = 3.97155 on N = 96000, and finer nets move the obstruction toward 560/141 (README.md, How far these points go; search/)",
+        "v1.0's text called its certificate essentially critical; for the rejecting bin of the 31360/7900 control at N = 96000, actual unit squares at both end angles capture at least 10048468/10^7 on a 401 x 401 grid of centres (tools/exact_pose.py, logs/exact_pose_*.log)"
+      ]
+    }
+  ]
+}

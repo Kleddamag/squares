@@ -22,7 +22,7 @@ result, this project’s or another’s, by how far it has been checked.
 It goes into most depth where there is recent progress, which in September 2026 means
 $n = 11$, $n = 17$, and the exact values newly proved at $n = 21$, $32$ and $45$. At
 seventeen squares both ends of the bracket are now machine-checked: Guzhou0806’s lower
-bound $s(17) > 4.66044$ ([T-043](packing/frontier/RESULTS.md)), and the upper bound
+bound $s(17) > 4.66044275$ ([T-093](packing/frontier/RESULTS.md)), and the upper bound
 $s(17) \le 4.67553009\ldots$ of John Bidwell’s 1998 packing, certified exactly from
 Kleddamag’s rational witness ([T-065](packing/frontier/RESULTS.md)).
 
@@ -58,15 +58,25 @@ its own; the atlas films are the ones cut for the
 [`v0.4.2` release](https://github.com/jlevy/squares/releases/tag/v0.4.2).
 
 The site’s [papers](https://jlevy.github.io/squares/papers.html) explain the proofs.
-The
-[**eleven-square optimality paper**](https://jlevy.github.io/squares/papers/n11-optimality-review.html)
-explains T-060 from the exact construction through the exhaustive case exclusions,
-geometric capture and local-isolation argument that prove $s(11) = 3.8770835900\ldots$.
-It has a [PDF](https://jlevy.github.io/squares/papers/n11-optimality-review.pdf) and
-[maintained source](packing/devtools/templates/n11-optimality-review-article.md), with
-figures drawn from or checked against the retained proof data.
-The [explainer](https://jlevy.github.io/squares/papers/n11-lower-bounds-explainer.html)
-proves the earlier, simpler lower bounds on $s(11)$.
+Three of them form one series on $n = 11$, read in order:
+
+1. [**New Lower Bounds for Square Packing for n = 11**](https://jlevy.github.io/squares/papers/n11-lower-bounds-explainer.html):
+   how weighted points and 2-of-3 threshold atoms prove T-018, T-025 and T-026,
+   $s(11) \ge 3.8264\ldots$, with interactive figures
+   ([PDF](https://jlevy.github.io/squares/papers/n11-lower-bounds-explainer.pdf),
+   [source](packing/devtools/templates/n11-lower-bounds-explainer-article.md)).
+2. [**A Review of the Certified Lower Bound s(11) > 31/8 for 11 Squares**](https://jlevy.github.io/squares/papers/n11-threshold-bound-review.html):
+   explains Kleddamag’s proof that $s(11) > 31/8$ (T-037): five-site k-of-m charges,
+   k-of-m charges on shrunken parents with strict cores, and a reoptimized certificate
+   over 12,028 angle rows
+   ([PDF](https://jlevy.github.io/squares/papers/n11-threshold-bound-review.pdf),
+   [source](packing/devtools/templates/n11-threshold-bound-review-article.md)).
+3. [**A Review of the Optimality Proof of the Trump Packing of 11 Squares**](https://jlevy.github.io/squares/papers/n11-optimality-review.html):
+   explains Queuingtheorydotcom’s proof that Trump’s packing is optimal,
+   $s(11) = 3.8770835\ldots$ (T-060): construction, case exclusions, capture and local
+   isolation, with figures drawn from or checked against the retained proof data
+   ([PDF](https://jlevy.github.io/squares/papers/n11-optimality-review.pdf),
+   [source](packing/devtools/templates/n11-optimality-review-article.md)).
 
 This repository also contains
 **[a set of tools and AI workflows for automated mathematical research](#autonomous-research-process)**:

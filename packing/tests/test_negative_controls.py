@@ -9,6 +9,7 @@ import shlex
 import shutil
 import subprocess
 import sys
+import tempfile
 import time
 from datetime import datetime, timedelta
 from pathlib import Path
@@ -34,6 +35,10 @@ from devtools.run_negative_controls import (
 from sqpack.yamlio import safe_load
 
 MOTION_LAB_GOLDEN = ROOT / "tests/golden/motion-lab-pages.json"
+COMPOSITE_VECTORS = frozenset(
+    ROOT / "atlas/known-best" / name
+    for name in ("known-best-1-100.svg", "known-best-1-324.svg")
+)
 
 
 @pytest.fixture(scope="module")
@@ -288,6 +293,7 @@ def test_generator_owned_prospective_outputs_stay_out_of_mutation_snapshots() ->
     assert ROOT / "witnesses/prospective" in PRUNE
     assert ROOT / "atlas/known-best/rendering" in PRUNE
     assert ROOT / "atlas/known-best/contact-overlays" in PRUNE
+    assert COMPOSITE_VECTORS <= PRUNE
     assert MOTION_LAB_GOLDEN in PRUNE
     assert (
         ROOT
@@ -401,6 +407,34 @@ def test_retired_transition_statistics_are_not_a_mutation_worker_input(
         assert (
             tree / retained.relative_to(controls.REPO)
         ).read_bytes() == retained.read_bytes()
+
+
+def test_composite_vectors_are_not_a_mutation_worker_input(
+    control_snapshot: tuple[Path, set[Path]],
+) -> None:
+    """The 2026-10-05 breach's answer: the composite vectors really leave every worker.
+
+    Until the root README stopped linking them, a pruned vector was copied straight back
+    and the prune saved nothing; the 2026-09-22 measurement recorded at `PRUNE` found
+    exactly that. So the half worth asserting is the copy-back: a checked document that
+    links either vector again returns its bytes to the snapshot, and this fails rather
+    than letting 8.6 MB of headroom disappear unnoticed. The other half is that no
+    control reaches them, as a mutation target or by naming them in a command.
+    """
+    tree, copied_targets = control_snapshot
+    specification = safe_load((ROOT / "devtools/controls.yaml").read_text())
+    for source in sorted(COMPOSITE_VECTORS):
+        relative = source.relative_to(controls.REPO)
+        assert source.is_file()
+        assert all(
+            (ROOT / control["file"]).resolve() != source and source.name not in control["run"]
+            for control in specification["controls"]
+        )
+        assert relative not in copied_targets
+        assert not (tree / relative).exists()
+    # The small records beside them that controls do reach stay, byte for byte.
+    contact = ROOT / "atlas/known-best/contact-full-cell-control.json"
+    assert (tree / contact.relative_to(controls.REPO)).read_bytes() == contact.read_bytes()
 
 
 def test_individually_rescued_paths_reach_the_worker(
@@ -808,36 +842,63 @@ def test_a_worker_snapshot_can_be_asked_what_this_repository_tracks(
                 "packing/sqsearch/target",
                 "packing/sqverify_exact/target",
                 "packing/sqverify_fast/target",
+                "packing/n17bb_native/target",
             )
         )
         for name in tracked
     )
 
 
-def test_the_readme_check_reads_the_directory_inside_a_worker(
-    control_snapshot: tuple[Path, set[Path]],
-) -> None:
-    """The README controls rehearse drift, so the check must get past "no index" here.
+#: Control commands whose unmutated baseline is held green in a worker. A control is scored
+#: "exited non-zero and printed its expected message", with no green baseline demanded, so
+#: a checker already red in the worker lets its controls pass for a reason that is not
+#: their mutation (think-nns5). Measured 2026-10-05 by running every distinct command in
+#: `controls.yaml` unmutated in a fresh worker: these two were red there, on root files and
+#: the pull-request template the snapshot did not carry, and back the 4 README and 35
+#: ledger controls. Two remain red and are not listed: `validate_schemas`, on verifier
+#: registry paths under the pruned `resources/web/`, and
+#: `tests/test_change_scoped_selection.py`, on `vendor/kpress`, which no worker carries.
+GREEN_BASELINE_COMMANDS = (
+    "python3 -m devtools.check_readme",
+    "python3 -m sqpack.campaign.ledger check",
+)
 
-    `check_readme` is not green in a worker and is not expected to be: the snapshot
-    carries a bounded source surface, so the layout tree draws root-level tooling the
-    snapshot does not hold. What must not appear is the refusal, which is what the four
-    README controls got instead of the drift they mutate for.
+
+@pytest.mark.parametrize("command", GREEN_BASELINE_COMMANDS)
+def test_a_control_command_is_green_unmutated_in_a_worker(
+    control_snapshot: tuple[Path, set[Path]], command: str
+) -> None:
+    """The registry's own command, in the environment `run_one` gives it, with no edit.
+
+    For `check_readme` this also holds what the README controls first lost on
+    2026-09-21: an exit of 0 is past the "no index" refusal (`NO_INDEX`) they read in place
+    of the drift they mutate for.
     """
+    spec = safe_load((ROOT / "devtools/controls.yaml").read_text(encoding="utf-8"))
+    assert command in {control["run"] for control in spec["controls"]}
     tree, _copied = control_snapshot
-    work = tree / HERE
-    completed = subprocess.run(
-        [sys.executable, "-m", "devtools.check_readme"],
-        cwd=work,
-        env={
-            **os.environ,
-            "PYTHONPATH": os.pathsep.join((str(work / "src"), str(work))),
-        },
-        capture_output=True,
-        text=True,
-        check=False,
-    )
-    assert NO_INDEX not in completed.stdout + completed.stderr
+    with tempfile.TemporaryDirectory(prefix="negctl-pycache-", dir=tree) as pycache:
+        outcome = run_control_command(
+            command,
+            cwd=tree / HERE,
+            environment=controls.control_environment(tree, Path(pycache)),
+            timeout_seconds=controls.DEFAULT_CONTROL_TIMEOUT_SECONDS,
+        )
+    assert not outcome.timed_out
+    output = outcome.stdout + outcome.stderr
+    assert NO_INDEX not in output
+    assert outcome.returncode == 0, output
+
+
+def test_the_root_files_reach_every_worker(control_snapshot: tuple[Path, set[Path]]) -> None:
+    """Every file tracked at the repository root is in the worker, byte for byte."""
+    tree, _copied = control_snapshot
+    root = controls.root_files()
+    assert controls.REPO / "Makefile" in root
+    assert controls.REPO / ".gitmodules" in root
+    for path in (*root, *COPY_SEPARATELY):
+        relative = path.relative_to(controls.REPO)
+        assert (tree / relative).read_bytes() == path.read_bytes(), relative
 
 
 def test_unmutated_results_checker_is_green_inside_a_worker(

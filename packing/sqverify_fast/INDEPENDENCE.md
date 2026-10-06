@@ -190,6 +190,85 @@ Lemma I1’s branch-free step is the textbook bound that no gap between adjacent
 values exceeds $2^{-52}|x|$, applied directly; no source was consulted for it.
 No web source, paper or other implementation was consulted.
 
+## Declared Nets, 5 October 2026
+
+Lane B of the 5 October evening intake (bead `think-8qo9`) added the declared net of
+format M (`proof_net`, lemma N0), for wand125’s `mixed_n18_L470` of jlevy/squares#366.
+That issue says its reporter changed a copy of this crate “in one place to read the
+declared proof net”.
+The patch was never requested, fetched or opened: the change here was written from the
+certificate format and the mathematics.
+The rule above held throughout.
+
+Files read for the change:
+
+- This crate: `INDEPENDENCE.md`, `README.md`, `SOUNDNESS.md`, `Cargo.toml`, `build.rs`,
+  `src/certificate.rs`, `src/lib.rs`, `src/main.rs` (lines 140–295), and parts of
+  `src/rotated_tests.rs` and `tests/adversarial.rs`. Also `independence-record.yaml`.
+- First-party tools: `devtools/check_sqverify_fast.py`, and
+  `devtools/sqverify_fast_census.py` except lines 420–470; the gate steps
+  `_rust_measure_verifier` and `_rust_measure_verifier_full` of
+  `src/sqpack/cli/validate.py`.
+- The specification `plan-2026-10-02-independent-measure-verifier.md`, lines 25–80 and
+  780–880 (its summary, goals, acceptance and evidence sections).
+- jlevy/squares#366’s body, which has no comments.
+  It describes the certificate and the reporter’s change in prose and quotes no code.
+- From wand125/square-packing-bounds at `43050ed`, data and prose only:
+  - for `mixed_n18_L470` and `mixed_n66_L843`: `README.md`, `manifest.json` and
+    `candidate.json` (its top-level keys, `proof_net` and two rows);
+  - the top-level keys, `net` block and per-angle status, bound and node fields of each
+    `certificate.json`;
+  - the root `README.md`’s two new sections.
+- From the `mixed_n18_L470` proof bundle: `README.md`, `bundle.json`,
+  `files-sha256.json`, `proof/summary.json`, and the fields of
+  `proof/net001/result.json` with its `manifest` block.
+  Also every angle’s `seconds` and `nodes`, and the same fields of the `mixed_n66_L843`
+  bundle, which `mixed-fetch` unpacked.
+- Of `devtools/audit_wand125_point_and_mixed.py`: its `--help` texts, the packet
+  constants and certificate rows (lines 1826–1870 and 2425–2476), to add one row, and
+  its module docstring.
+  Nothing that drives a checker was opened.
+  Also lines 52–70, 148–160 and 336–460 of `tests/test_wand125_mixed_rectangles.py`.
+- The receipt `receipts/n50/full/compare.json` of the 28 September packet (its field
+  names and status).
+- After the change, the lane’s review,
+  `docs/project/reviews/review-2026-10-05-wand125-declared-net-n18-n66.md`, except its
+  section “What the Authors’ Code Shows” (lines 418–451), which compares the change with
+  the source’s code and was skipped for that reason.
+  Its findings DN-4 to DN-6 on this crate were then fixed from the findings’ own text: a
+  `net` block outside format L is refused, five untested refusals are tested, and the
+  controls match refusal messages.
+  The finding DN-1 names two functions of `devtools/audit_wand125_point_and_mixed.py` as
+  models; they were not opened.
+
+Never opened: any file under a `code/` folder or `proof/verify.cpp` of a bundle.
+Those files were checked out and unpacked, and only their Git blob ids and SHA-256
+digests were compared, all equal to the retained `mixed_n50_L740` copies.
+
+Commands run: `git clone --filter=blob:none`, `git sparse-checkout`, `git ls-tree`,
+`git rev-parse` and `git cat-file blob` for the two tarballs, on the source; `tar xzf`,
+`sha256sum` and `jq` over the bundles’ data files.
+The `mixed_n18_L470` bundle’s driver ran as a black box with `--help` and the command
+its README gives, at two workers.
+The audit tool’s `mixed-audit`, `mixed-fetch`, `mixed-price` and `mixed-replay` ran as
+black boxes.
+On this crate: `cargo build`, `cargo test`, `cargo clippy`, `cargo fmt`, and
+`packing-validate --only "measure verifier Rust"`.
+
+## The Declared Net Reviewed, 6 October 2026
+
+The soundness review of 6 October
+(`docs/project/reviews/review-2026-10-06-sqverify-fast-declared-net-soundness.md`) read
+the whole crate diff from `e020eb1e2` and accepted the crate at `910b6b12c`. It opened
+no `code/` folder or `proof/verify.cpp`. Its findings DR-1 to DR-3 were in the census
+driver and in the exact evaluator of `devtools/check_sqverify_fast.py`, which the
+controls use and which decide nothing.
+Lane R1 of the 2026-10-06 intake fixed them there and changed no source file of this
+crate (none that `source_sha256` covers).
+That lane had read the 5 October declared-net review whole, including the section on the
+source’s code that lane B skipped, and is recorded in `independence-record.yaml` for
+that reason. The relation of this crate to the source’s checker is unchanged.
+
 <!-- This document follows common-doc-guidelines.md.
 See github.com/jlevy/practical-prose and review guidelines before editing.
 -->

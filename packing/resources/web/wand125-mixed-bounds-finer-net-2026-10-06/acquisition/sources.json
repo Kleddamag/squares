@@ -1,0 +1,366 @@
+{
+  "format": "external-source-acquisition-v1",
+  "retrieved_at_utc": "2026-10-06T02:47:00Z",
+  "git_scope": "A blobless clone of the single public branch with its history, sparsely checked out at this commit: the two claim directories and the verification/ directory added by it, and the three root files. Every file under those three directories is digested, with the three root files; the rest of the tree is pinned by the commit.",
+  "sources": [
+    {
+      "id": "wand125-mixed-bounds",
+      "source_url": "https://github.com/wand125/square-packing-bounds",
+      "source_ref": "refs/heads/main",
+      "source_commit": "65e408c9fa6bb787b6744c7c479ec19551a15016",
+      "committed_utc": "2026-10-06T00:35:05Z",
+      "git_tree": "15c56b89f26af0284f4f6ec534913a2cb416d38c",
+      "archived_path": "packing/resources/web/wand125-mixed-bounds-finer-net-2026-10-06/square-packing-bounds",
+      "subtree_manifest": "packing/resources/web/wand125-mixed-bounds-finer-net-2026-10-06/acquisition/upstream-subtree.sha256",
+      "subtree_scope": [
+        "README.md",
+        "LICENSE",
+        ".gitignore",
+        "certificates/mixed_n18_L4704",
+        "certificates/mixed_n19_L48229",
+        "verification"
+      ],
+      "subtree_file_count": 70,
+      "subtree_total_bytes": 57841419,
+      "retained_file_count": 20,
+      "retained_total_bytes": 1464020,
+      "compressed": [
+        "square-packing-bounds/certificates/mixed_n18_L4704/candidate.json.gz",
+        "square-packing-bounds/certificates/mixed_n18_L4704/certificate.json.gz",
+        "square-packing-bounds/certificates/mixed_n18_L4704/publication-audit.json.gz",
+        "square-packing-bounds/certificates/mixed_n19_L48229/candidate.json.gz",
+        "square-packing-bounds/certificates/mixed_n19_L48229/certificate.json.gz",
+        "square-packing-bounds/certificates/mixed_n19_L48229/publication-audit.json.gz"
+      ],
+      "pinned_only": [
+        {
+          "path": ".gitignore",
+          "bytes": 132,
+          "sha256": "0a31c24fe622ff8b4b012fbf790686063a84da3dd306d47e7283aad434653308",
+          "reason": "a retained .gitignore would act on this repository's tree; the 2026-10-01 packet README quotes it"
+        },
+        {
+          "path": "LICENSE",
+          "bytes": 1064,
+          "sha256": "c0dd43e7892932c81335f74a2fdbf1a98f5977bab14c0c4c30e3abcc97c34904",
+          "reason": "retained byte-identical by the 2026-09-27 rectangle packet",
+          "identical_to": "packing/resources/web/wand125-rectangle-certificates-2026-09-27/wand125-rectangles/LICENSE"
+        },
+        {
+          "path": "certificates/mixed_n18_L4704/code/endpoint_cells.py",
+          "bytes": 3030,
+          "sha256": "090c336dec73d94998df5b402d58801dc0c647673df1750eda099562706554d9",
+          "reason": "byte-identical to the mixed_n50_L740/code/ file of the same name, retained by the 2026-09-28 packet",
+          "identical_to": "packing/resources/web/wand125-point-and-mixed-2026-09-28/square-packing-bounds/certificates/mixed_n50_L740/code/endpoint_cells.py"
+        },
+        {
+          "path": "certificates/mixed_n18_L4704/code/mixed_axis_cells.py",
+          "bytes": 2173,
+          "sha256": "9243ba6c7605f1989f36124f01786400f0da0c6a01ff17ff82512700c3e87406",
+          "reason": "byte-identical to the mixed_n50_L740/code/ file of the same name, retained by the 2026-09-28 packet",
+          "identical_to": "packing/resources/web/wand125-point-and-mixed-2026-09-28/square-packing-bounds/certificates/mixed_n50_L740/code/mixed_axis_cells.py"
+        },
+        {
+          "path": "certificates/mixed_n18_L4704/code/mixed_density_check.py",
+          "bytes": 4528,
+          "sha256": "22cc5cd626c0e56e65c88a610663689fb92d36d29f5fad09929dbaa859efefbb",
+          "reason": "byte-identical to the mixed_n50_L740/code/ file of the same name, retained by the 2026-09-28 packet",
+          "identical_to": "packing/resources/web/wand125-point-and-mixed-2026-09-28/square-packing-bounds/certificates/mixed_n50_L740/code/mixed_density_check.py"
+        },
+        {
+          "path": "certificates/mixed_n18_L4704/code/mixed_net_audit.py",
+          "bytes": 3908,
+          "sha256": "ac95a85685b24caba90bc742685f4eaa48f2b913467dc1e3a870a4058ebea62d",
+          "reason": "byte-identical to the mixed_n50_L740/code/ file of the same name, retained by the 2026-09-28 packet",
+          "identical_to": "packing/resources/web/wand125-point-and-mixed-2026-09-28/square-packing-bounds/certificates/mixed_n50_L740/code/mixed_net_audit.py"
+        },
+        {
+          "path": "certificates/mixed_n18_L4704/code/mixed_rotated_verify.cpp",
+          "bytes": 7894,
+          "sha256": "89b674a6feabe24d91c29431de1624907c4bff83280ceb481475455686693652",
+          "reason": "byte-identical to the mixed_n50_L740/code/ file of the same name, retained by the 2026-09-28 packet",
+          "identical_to": "packing/resources/web/wand125-point-and-mixed-2026-09-28/square-packing-bounds/certificates/mixed_n50_L740/code/mixed_rotated_verify.cpp"
+        },
+        {
+          "path": "certificates/mixed_n18_L4704/code/mixed_rotated_verify.py",
+          "bytes": 4302,
+          "sha256": "a5aef414bf3aaf3cb79da9423c44a6ceba7a76e05c59b8da6ac75b970fcb88c1",
+          "reason": "byte-identical to the mixed_n50_L740/code/ file of the same name, retained by the 2026-09-28 packet",
+          "identical_to": "packing/resources/web/wand125-point-and-mixed-2026-09-28/square-packing-bounds/certificates/mixed_n50_L740/code/mixed_rotated_verify.py"
+        },
+        {
+          "path": "certificates/mixed_n18_L4704/code/score.py",
+          "bytes": 2930,
+          "sha256": "fa8c293a81815971df11e8fe258ef2b451589a88e4200491e81e7bcf141909bc",
+          "reason": "byte-identical to the mixed_n50_L740/code/ file of the same name, retained by the 2026-09-28 packet",
+          "identical_to": "packing/resources/web/wand125-point-and-mixed-2026-09-28/square-packing-bounds/certificates/mixed_n50_L740/code/score.py"
+        },
+        {
+          "path": "certificates/mixed_n18_L4704/code/verify_axis_certificate.py",
+          "bytes": 4427,
+          "sha256": "ed68a256c614b44cdd5e04b075845dc7e17014eeab0ce181900f5dc355c03c91",
+          "reason": "byte-identical to the mixed_n50_L740/code/ file of the same name, retained by the 2026-09-28 packet",
+          "identical_to": "packing/resources/web/wand125-point-and-mixed-2026-09-28/square-packing-bounds/certificates/mixed_n50_L740/code/verify_axis_certificate.py"
+        },
+        {
+          "path": "certificates/mixed_n18_L4704/code/verify_rotated_result.py",
+          "bytes": 1820,
+          "sha256": "dace4a5f941c926da388702ab8a8e7b196d782501205d6642be7667ab1306082",
+          "reason": "byte-identical to the mixed_n50_L740/code/ file of the same name, retained by the 2026-09-28 packet",
+          "identical_to": "packing/resources/web/wand125-point-and-mixed-2026-09-28/square-packing-bounds/certificates/mixed_n50_L740/code/verify_rotated_result.py"
+        },
+        {
+          "path": "certificates/mixed_n18_L4704/n18-L4.704-proof-bundle.tar.gz",
+          "bytes": 31800246,
+          "sha256": "a4098f8200686c944d20c4c9458c3412225b1ca06f77423206a3306d03d4a709",
+          "reason": "complete proof bundle (31.8 and 24.2 MB)"
+        },
+        {
+          "path": "certificates/mixed_n18_L4704/requirements.txt",
+          "bytes": 6,
+          "sha256": "e09f656c130b9c08b2c5ab7187c891295e449ed77febea2a6ceee9cc98ccb0fc",
+          "reason": "byte-identical to mixed_n50_L740/requirements.txt, retained by the 2026-09-28 packet",
+          "identical_to": "packing/resources/web/wand125-point-and-mixed-2026-09-28/square-packing-bounds/certificates/mixed_n50_L740/requirements.txt"
+        },
+        {
+          "path": "certificates/mixed_n18_L4704/verification/control-bad-net.json.gz",
+          "bytes": 11805,
+          "sha256": "a56db4b2589461560e39a982f7ced721548251e545d688d8be47f1aa577e2094",
+          "reason": "an upstream gzip file, which the archive cannot retain beside its own compression: the input the source's sqverify-net run and controls read, re-derivable from the retained candidate"
+        },
+        {
+          "path": "certificates/mixed_n18_L4704/verification/control-mass09.json.gz",
+          "bytes": 11847,
+          "sha256": "eb1439d5d84b63abdbd057d1cecf8103065100e62574baec1ac4d04cf47888a3",
+          "reason": "an upstream gzip file, which the archive cannot retain beside its own compression: the input the source's sqverify-net run and controls read, re-derivable from the retained candidate"
+        },
+        {
+          "path": "certificates/mixed_n18_L4704/verification/independent-input.json.gz",
+          "bytes": 12054,
+          "sha256": "686886d02fc5bae0ad1c5f25337996fb0bbe9565b54bcc49a1d99d2fe86ade92",
+          "reason": "an upstream gzip file, which the archive cannot retain beside its own compression: the input the source's sqverify-net run and controls read, re-derivable from the retained candidate"
+        },
+        {
+          "path": "certificates/mixed_n19_L48229/code/endpoint_cells.py",
+          "bytes": 3030,
+          "sha256": "090c336dec73d94998df5b402d58801dc0c647673df1750eda099562706554d9",
+          "reason": "byte-identical to the mixed_n50_L740/code/ file of the same name, retained by the 2026-09-28 packet",
+          "identical_to": "packing/resources/web/wand125-point-and-mixed-2026-09-28/square-packing-bounds/certificates/mixed_n50_L740/code/endpoint_cells.py"
+        },
+        {
+          "path": "certificates/mixed_n19_L48229/code/mixed_axis_cells.py",
+          "bytes": 2173,
+          "sha256": "9243ba6c7605f1989f36124f01786400f0da0c6a01ff17ff82512700c3e87406",
+          "reason": "byte-identical to the mixed_n50_L740/code/ file of the same name, retained by the 2026-09-28 packet",
+          "identical_to": "packing/resources/web/wand125-point-and-mixed-2026-09-28/square-packing-bounds/certificates/mixed_n50_L740/code/mixed_axis_cells.py"
+        },
+        {
+          "path": "certificates/mixed_n19_L48229/code/mixed_density_check.py",
+          "bytes": 4528,
+          "sha256": "22cc5cd626c0e56e65c88a610663689fb92d36d29f5fad09929dbaa859efefbb",
+          "reason": "byte-identical to the mixed_n50_L740/code/ file of the same name, retained by the 2026-09-28 packet",
+          "identical_to": "packing/resources/web/wand125-point-and-mixed-2026-09-28/square-packing-bounds/certificates/mixed_n50_L740/code/mixed_density_check.py"
+        },
+        {
+          "path": "certificates/mixed_n19_L48229/code/mixed_net_audit.py",
+          "bytes": 3908,
+          "sha256": "ac95a85685b24caba90bc742685f4eaa48f2b913467dc1e3a870a4058ebea62d",
+          "reason": "byte-identical to the mixed_n50_L740/code/ file of the same name, retained by the 2026-09-28 packet",
+          "identical_to": "packing/resources/web/wand125-point-and-mixed-2026-09-28/square-packing-bounds/certificates/mixed_n50_L740/code/mixed_net_audit.py"
+        },
+        {
+          "path": "certificates/mixed_n19_L48229/code/mixed_rotated_verify.cpp",
+          "bytes": 7894,
+          "sha256": "89b674a6feabe24d91c29431de1624907c4bff83280ceb481475455686693652",
+          "reason": "byte-identical to the mixed_n50_L740/code/ file of the same name, retained by the 2026-09-28 packet",
+          "identical_to": "packing/resources/web/wand125-point-and-mixed-2026-09-28/square-packing-bounds/certificates/mixed_n50_L740/code/mixed_rotated_verify.cpp"
+        },
+        {
+          "path": "certificates/mixed_n19_L48229/code/mixed_rotated_verify.py",
+          "bytes": 4302,
+          "sha256": "a5aef414bf3aaf3cb79da9423c44a6ceba7a76e05c59b8da6ac75b970fcb88c1",
+          "reason": "byte-identical to the mixed_n50_L740/code/ file of the same name, retained by the 2026-09-28 packet",
+          "identical_to": "packing/resources/web/wand125-point-and-mixed-2026-09-28/square-packing-bounds/certificates/mixed_n50_L740/code/mixed_rotated_verify.py"
+        },
+        {
+          "path": "certificates/mixed_n19_L48229/code/score.py",
+          "bytes": 2930,
+          "sha256": "fa8c293a81815971df11e8fe258ef2b451589a88e4200491e81e7bcf141909bc",
+          "reason": "byte-identical to the mixed_n50_L740/code/ file of the same name, retained by the 2026-09-28 packet",
+          "identical_to": "packing/resources/web/wand125-point-and-mixed-2026-09-28/square-packing-bounds/certificates/mixed_n50_L740/code/score.py"
+        },
+        {
+          "path": "certificates/mixed_n19_L48229/code/verify_axis_certificate.py",
+          "bytes": 4427,
+          "sha256": "ed68a256c614b44cdd5e04b075845dc7e17014eeab0ce181900f5dc355c03c91",
+          "reason": "byte-identical to the mixed_n50_L740/code/ file of the same name, retained by the 2026-09-28 packet",
+          "identical_to": "packing/resources/web/wand125-point-and-mixed-2026-09-28/square-packing-bounds/certificates/mixed_n50_L740/code/verify_axis_certificate.py"
+        },
+        {
+          "path": "certificates/mixed_n19_L48229/code/verify_mixed_full_proof.py",
+          "bytes": 3602,
+          "sha256": "2719e482cfdd87da2b64b50af626bbd0a68d58d95b746cf27467b2a7aca83648",
+          "reason": "byte-identical to the mixed_n50_L740/code/ file of the same name, retained by the 2026-09-28 packet",
+          "identical_to": "packing/resources/web/wand125-point-and-mixed-2026-09-28/square-packing-bounds/certificates/mixed_n50_L740/code/verify_mixed_full_proof.py"
+        },
+        {
+          "path": "certificates/mixed_n19_L48229/code/verify_rotated_result.py",
+          "bytes": 1820,
+          "sha256": "dace4a5f941c926da388702ab8a8e7b196d782501205d6642be7667ab1306082",
+          "reason": "byte-identical to the mixed_n50_L740/code/ file of the same name, retained by the 2026-09-28 packet",
+          "identical_to": "packing/resources/web/wand125-point-and-mixed-2026-09-28/square-packing-bounds/certificates/mixed_n50_L740/code/verify_rotated_result.py"
+        },
+        {
+          "path": "certificates/mixed_n19_L48229/n19-L4.8229-proof-bundle.tar.gz",
+          "bytes": 24197004,
+          "sha256": "03aeca45921bcb8fd0be2f4869fb98e596cad673758c79022d337b8ad9629c54",
+          "reason": "complete proof bundle (31.8 and 24.2 MB)"
+        },
+        {
+          "path": "certificates/mixed_n19_L48229/requirements.txt",
+          "bytes": 6,
+          "sha256": "e09f656c130b9c08b2c5ab7187c891295e449ed77febea2a6ceee9cc98ccb0fc",
+          "reason": "byte-identical to mixed_n50_L740/requirements.txt, retained by the 2026-09-28 packet",
+          "identical_to": "packing/resources/web/wand125-point-and-mixed-2026-09-28/square-packing-bounds/certificates/mixed_n50_L740/requirements.txt"
+        },
+        {
+          "path": "certificates/mixed_n19_L48229/verification/independent-input.json.gz",
+          "bytes": 18253,
+          "sha256": "dbe4cd6b0c6a0217f65a0ee84da15cd462b197f716932538d259b35e559daef3",
+          "reason": "an upstream gzip file, which the archive cannot retain beside its own compression: the input the source's sqverify-net run and controls read, re-derivable from the retained candidate"
+        },
+        {
+          "path": "verification/sqverify-net/Cargo.lock",
+          "bytes": 6976,
+          "sha256": "5c3206fa1eeabb23d52e93d76eec0d2c16820e6065ce02e8e13a7fa47693785c",
+          "reason": "the source's adaptation of this repository's sqverify_fast to a declared net, sqverify-net; not retained, so that no copy of it sits in the tree beside the crate whose declared-net change was written apart from it (packing/sqverify_fast/INDEPENDENCE.md, Declared Nets)"
+        },
+        {
+          "path": "verification/sqverify-net/Cargo.toml",
+          "bytes": 1508,
+          "sha256": "df5e6c24699f934dcabe1119273621ac332dfcd9c75dd0650acacfc827466665",
+          "reason": "the source's adaptation of this repository's sqverify_fast to a declared net, sqverify-net; not retained, so that no copy of it sits in the tree beside the crate whose declared-net change was written apart from it (packing/sqverify_fast/INDEPENDENCE.md, Declared Nets)"
+        },
+        {
+          "path": "verification/sqverify-net/INDEPENDENCE.md",
+          "bytes": 12283,
+          "sha256": "2e4fb5abf4efa326838216eaea1bc6e75c7ce06d7b1d84504d0973c613dbbaa6",
+          "reason": "the source's adaptation of this repository's sqverify_fast to a declared net, sqverify-net; not retained, so that no copy of it sits in the tree beside the crate whose declared-net change was written apart from it (packing/sqverify_fast/INDEPENDENCE.md, Declared Nets)"
+        },
+        {
+          "path": "verification/sqverify-net/README.md",
+          "bytes": 2065,
+          "sha256": "23e8ec3d7067abc680832ce83d019669faf971cc4b82cb89a01cf6bc4a941704",
+          "reason": "the source's adaptation of this repository's sqverify_fast to a declared net, sqverify-net; not retained, so that no copy of it sits in the tree beside the crate whose declared-net change was written apart from it (packing/sqverify_fast/INDEPENDENCE.md, Declared Nets)"
+        },
+        {
+          "path": "verification/sqverify-net/SOUNDNESS.md",
+          "bytes": 33225,
+          "sha256": "16f1e679f35d4319f4a1ae8be694549dffc3bbd1b435a9005a505ed1d0586f86",
+          "reason": "the source's adaptation of this repository's sqverify_fast to a declared net, sqverify-net; not retained, so that no copy of it sits in the tree beside the crate whose declared-net change was written apart from it (packing/sqverify_fast/INDEPENDENCE.md, Declared Nets)"
+        },
+        {
+          "path": "verification/sqverify-net/UPSTREAM_COMMIT",
+          "bytes": 41,
+          "sha256": "b6fb3b20ba48e5f06cfe487d2b692839bb92668a0534aea59bc9cf83029dbcf3",
+          "reason": "the source's adaptation of this repository's sqverify_fast to a declared net, sqverify-net; not retained, so that no copy of it sits in the tree beside the crate whose declared-net change was written apart from it (packing/sqverify_fast/INDEPENDENCE.md, Declared Nets)"
+        },
+        {
+          "path": "verification/sqverify-net/UPSTREAM_LICENSE",
+          "bytes": 21153,
+          "sha256": "7428341239cf4ee78c4b951b7fd8a2284b24835aeb0ede82f032b2e95e92cc00",
+          "reason": "the source's adaptation of this repository's sqverify_fast to a declared net, sqverify-net; not retained, so that no copy of it sits in the tree beside the crate whose declared-net change was written apart from it (packing/sqverify_fast/INDEPENDENCE.md, Declared Nets)"
+        },
+        {
+          "path": "verification/sqverify-net/build.rs",
+          "bytes": 1712,
+          "sha256": "1e238378117bc7716e50cdd4e3d0d3862e756e1ff863794b9b559ffe4b2743e6",
+          "reason": "the source's adaptation of this repository's sqverify_fast to a declared net, sqverify-net; not retained, so that no copy of it sits in the tree beside the crate whose declared-net change was written apart from it (packing/sqverify_fast/INDEPENDENCE.md, Declared Nets)"
+        },
+        {
+          "path": "verification/sqverify-net/clippy.toml",
+          "bytes": 58,
+          "sha256": "741d8b6cbd57d7b01ff8918083bbf313e281cce0dbdcb1ed669dc8cb84f44578",
+          "reason": "the source's adaptation of this repository's sqverify_fast to a declared net, sqverify-net; not retained, so that no copy of it sits in the tree beside the crate whose declared-net change was written apart from it (packing/sqverify_fast/INDEPENDENCE.md, Declared Nets)"
+        },
+        {
+          "path": "verification/sqverify-net/independence-record.yaml",
+          "bytes": 8144,
+          "sha256": "2c3dd9edb7066cbb87fef26d3bac48039cf5ad64f738fd2a5271b2d735b04882",
+          "reason": "the source's adaptation of this repository's sqverify_fast to a declared net, sqverify-net; not retained, so that no copy of it sits in the tree beside the crate whose declared-net change was written apart from it (packing/sqverify_fast/INDEPENDENCE.md, Declared Nets)"
+        },
+        {
+          "path": "verification/sqverify-net/rust-toolchain.toml",
+          "bytes": 86,
+          "sha256": "495c69d1db93f25f53e3d0d2d40d812313366cc368de317871c2ace6c6ffafa4",
+          "reason": "the source's adaptation of this repository's sqverify_fast to a declared net, sqverify-net; not retained, so that no copy of it sits in the tree beside the crate whose declared-net change was written apart from it (packing/sqverify_fast/INDEPENDENCE.md, Declared Nets)"
+        },
+        {
+          "path": "verification/sqverify-net/src/axis.rs",
+          "bytes": 7198,
+          "sha256": "bf18bd9a0a82806bac6a3aa82df73349944eaa56a22ae5a9b67a67ab3d237e97",
+          "reason": "the source's adaptation of this repository's sqverify_fast to a declared net, sqverify-net; not retained, so that no copy of it sits in the tree beside the crate whose declared-net change was written apart from it (packing/sqverify_fast/INDEPENDENCE.md, Declared Nets)"
+        },
+        {
+          "path": "verification/sqverify-net/src/certificate.rs",
+          "bytes": 31964,
+          "sha256": "934df119402c84c05eefe7b2fd933044d1da3127c72873af143961f3ec301d25",
+          "reason": "the source's adaptation of this repository's sqverify_fast to a declared net, sqverify-net; not retained, so that no copy of it sits in the tree beside the crate whose declared-net change was written apart from it (packing/sqverify_fast/INDEPENDENCE.md, Declared Nets)"
+        },
+        {
+          "path": "verification/sqverify-net/src/exact.rs",
+          "bytes": 8350,
+          "sha256": "b9d627b740c8a0c7ed069c1faac2563b9db72c03c10c9f88fb3c0234054f481a",
+          "reason": "the source's adaptation of this repository's sqverify_fast to a declared net, sqverify-net; not retained, so that no copy of it sits in the tree beside the crate whose declared-net change was written apart from it (packing/sqverify_fast/INDEPENDENCE.md, Declared Nets)"
+        },
+        {
+          "path": "verification/sqverify-net/src/interval.rs",
+          "bytes": 8484,
+          "sha256": "287da6570dfc1278e3ba6b4c09bfaca6409d16fba0713329bf0c4a5dcbfe5e56",
+          "reason": "the source's adaptation of this repository's sqverify_fast to a declared net, sqverify-net; not retained, so that no copy of it sits in the tree beside the crate whose declared-net change was written apart from it (packing/sqverify_fast/INDEPENDENCE.md, Declared Nets)"
+        },
+        {
+          "path": "verification/sqverify-net/src/lib.rs",
+          "bytes": 7777,
+          "sha256": "2b44e7d227574971cb000231274f9ce783bf70cdaf19debc7a83e9468fbdc53f",
+          "reason": "the source's adaptation of this repository's sqverify_fast to a declared net, sqverify-net; not retained, so that no copy of it sits in the tree beside the crate whose declared-net change was written apart from it (packing/sqverify_fast/INDEPENDENCE.md, Declared Nets)"
+        },
+        {
+          "path": "verification/sqverify-net/src/main.rs",
+          "bytes": 11446,
+          "sha256": "e4a65d9570a5f91f41474a20c3c90e8804da568c11d32ca632da59605f5f84e8",
+          "reason": "the source's adaptation of this repository's sqverify_fast to a declared net, sqverify-net; not retained, so that no copy of it sits in the tree beside the crate whose declared-net change was written apart from it (packing/sqverify_fast/INDEPENDENCE.md, Declared Nets)"
+        },
+        {
+          "path": "verification/sqverify-net/src/oracle.rs",
+          "bytes": 5788,
+          "sha256": "3c993d66c6edb3a235a3e089a586bb4b42de02fb331fc519836b22cadb99c151",
+          "reason": "the source's adaptation of this repository's sqverify_fast to a declared net, sqverify-net; not retained, so that no copy of it sits in the tree beside the crate whose declared-net change was written apart from it (packing/sqverify_fast/INDEPENDENCE.md, Declared Nets)"
+        },
+        {
+          "path": "verification/sqverify-net/src/rotated.rs",
+          "bytes": 42225,
+          "sha256": "4bf878c4d0e8acaedcccedbfb52d8885e1ba2657876bad2048fe30e5f3c7ded3",
+          "reason": "the source's adaptation of this repository's sqverify_fast to a declared net, sqverify-net; not retained, so that no copy of it sits in the tree beside the crate whose declared-net change was written apart from it (packing/sqverify_fast/INDEPENDENCE.md, Declared Nets)"
+        },
+        {
+          "path": "verification/sqverify-net/src/rotated_tests.rs",
+          "bytes": 13209,
+          "sha256": "0e9861a4a8fa2242ebde3e39bc109fe2bb0745e874595c10e777b1f652c7b7b6",
+          "reason": "the source's adaptation of this repository's sqverify_fast to a declared net, sqverify-net; not retained, so that no copy of it sits in the tree beside the crate whose declared-net change was written apart from it (packing/sqverify_fast/INDEPENDENCE.md, Declared Nets)"
+        },
+        {
+          "path": "verification/sqverify-net/tests/adversarial.rs",
+          "bytes": 27664,
+          "sha256": "6261babe3bb834ab170a933ea65af4faebfeb8aede76aba675891db97c3e485b",
+          "reason": "the source's adaptation of this repository's sqverify_fast to a declared net, sqverify-net; not retained, so that no copy of it sits in the tree beside the crate whose declared-net change was written apart from it (packing/sqverify_fast/INDEPENDENCE.md, Declared Nets)"
+        }
+      ],
+      "license": "MIT, Copyright (c) 2026 wand125 (root LICENSE)",
+      "claims": [
+        "s(18) >= 588/125 (certificates/mixed_n18_L4704)",
+        "s(19) >= 48229/10000 (certificates/mixed_n19_L48229)"
+      ]
+    }
+  ]
+}

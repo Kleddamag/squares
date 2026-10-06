@@ -946,6 +946,10 @@ def main(argv: Sequence[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--check", action="store_true", help="report drift without writing")
     args = parser.parse_args(argv)
+    # Evan Daniel's exact optima (T-098) are a layer over this intake at 47 of its counts,
+    # imported here and not at the top, since that tool reads this one's helpers.
+    from devtools import apply_exact_optima  # noqa: PLC0415
+
     selected = plans()
     earlier = earlier_reports()
     problems = evidence_problems(selected)
@@ -953,13 +957,15 @@ def main(argv: Sequence[str] | None = None) -> int:
     for plan in selected:
         path = FRONTIER / f"n-{plan.n:03d}.md"
         text = path.read_text(encoding="utf-8")
-        rendered = apply_case(plan, text, earlier[plan.n])
+        rendered = apply_exact_optima.apply_case(
+            plan.n, apply_case(plan, text, earlier[plan.n])
+        )
         if normalized(rendered) != normalized(text):
             drift.append(path)
             if not args.check:
                 atomic_write_text(path, rendered)
     text = COVERAGE.read_text(encoding="utf-8")
-    updated = coverage_text(text, selected, earlier)
+    updated = apply_exact_optima.coverage_text(coverage_text(text, selected, earlier))
     if updated != text:
         drift.append(COVERAGE)
         if not args.check:

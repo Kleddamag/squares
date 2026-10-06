@@ -244,12 +244,33 @@ PHASES: tuple[Phase, ...] = (
         ("devtools.render_n11_lower_bounds_explainer_pdf", "--update"),
     ),
     Phase(
+        "threshold-bound review page",
+        "papers",
+        "render_n11_threshold_bound_review, HTML and Markdown only",
+        (
+            "devtools.render_n11_threshold_bound_review",
+            "--site",
+            "{scratch}/n11-threshold-page",
+        ),
+    ),
+    Phase(
+        "threshold-bound review page and PDF",
+        "papers",
+        "render_n11_threshold_bound_review --pdf",
+        (
+            "devtools.render_n11_threshold_bound_review",
+            "--site",
+            "{scratch}/n11-threshold",
+            "--pdf",
+        ),
+    ),
+    Phase(
         "optimality paper page",
         "papers",
         "render_n11_optimality_review, HTML and Markdown only",
         (
             "devtools.render_n11_optimality_review",
-            "--output-dir",
+            "--site",
             "{scratch}/n11-optimality-page",
         ),
     ),
@@ -259,7 +280,7 @@ PHASES: tuple[Phase, ...] = (
         "render_n11_optimality_review --pdf",
         (
             "devtools.render_n11_optimality_review",
-            "--output-dir",
+            "--site",
             "{scratch}/n11-optimality",
             "--pdf",
         ),
@@ -284,12 +305,23 @@ PHASES: tuple[Phase, ...] = (
         ("workbench_tools.build_site", "--out", "{scratch}/workbench"),
     ),
     Phase(
+        "preview: threshold-bound review",
+        "preview",
+        "preview_site's fourth build: the threshold-bound review with its PDF",
+        (
+            "devtools.render_n11_threshold_bound_review",
+            "--site",
+            "{scratch}/n11-threshold",
+            "--pdf",
+        ),
+    ),
+    Phase(
         "preview: optimality paper",
         "preview",
-        "preview_site's fourth build: the optimality paper with its PDF",
+        "preview_site's fifth build: the optimality paper with its PDF",
         (
             "devtools.render_n11_optimality_review",
-            "--output-dir",
+            "--site",
             "{scratch}/n11-optimality",
             "--pdf",
         ),

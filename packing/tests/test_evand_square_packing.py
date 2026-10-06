@@ -127,21 +127,23 @@ def test_frontier_records_the_certified_side(
     assert case["reported_lower_bound"]["source_key"] == "[evand square-packing 2026]"
 
 
-def test_the_n12_bound_is_daniels_certificate_rescaled() -> None:
-    """s(12) >= 31360/7901 (T-078) is Daniel's certificate for 15680/3951 with every
-    coordinate and the side multiplied by 7902/7901: the frontier reports the rescaled
-    side, squarepacker's, and verifies this project's re-weighting of the same points at
-    a side scaled by 3951000/3949423 (T-079), since 3 October 2026."""
+def test_the_n12_bounds_are_daniels_points_rescaled() -> None:
+    """Every n = 12 lower bound since T-049 keeps Daniel's points at a larger side: the
+    frontier reports and verifies squarepacker's v1.1, the points dilated by
+    31382793/31360000 and re-weighted (T-095, since 5 October 2026). Before it the
+    verified bound was this project's re-weighting at a side scaled by 3951000/3949423
+    (T-079, from 3 October) and the reported one T-078, the whole certificate times
+    7902/7901."""
     (side,) = (claim[2] for claim in CLAIMS if claim[1] == 12)
     case = _case(12)
     reported = case["reported_lower_bound"]
-    assert Fraction(reported["exact_form"]) == side * Fraction(7902, 7901)
-    assert reported["source_key"] == "[squarepacker s12 2026]"
+    assert Fraction(reported["exact_form"]) == side * Fraction(31382793, 31360000)
+    assert reported["source_key"] == "[squarepacker s12 2026-10-05]"
     verified = case["verified_lower_bound"]
-    assert Fraction(verified["exact_form"]) == side * Fraction(3951000, 3949423)
+    assert Fraction(verified["exact_form"]) == Fraction(reported["exact_form"])
     assert verified["evidence"] == [
-        "E-n012-levy-15680000-3949423-source-replay",
-        "E-n012-levy-15680000-3949423-native-parent-core",
+        "E-n012-squarepacker-7943-2000-source-replay",
+        "E-n012-squarepacker-7943-2000-native-parent-core",
     ]
 
 

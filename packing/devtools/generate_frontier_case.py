@@ -2312,20 +2312,40 @@ def packet_adopted_counts() -> frozenset[int]:
     return frozenset(_upper_bound_packets()[1])
 
 
+def exact_optimum_counts() -> frozenset[int]:
+    """The counts whose upper lanes Evan Daniel's exact optima own (T-098)."""
+    module = importlib.import_module("devtools.evand_exact_certificates")
+    return frozenset(module.IMPROVING)
+
+
+@cache
+def _catalogue_certificates() -> Any:
+    """`devtools.catalogue_upper_bounds`, imported late for the same reason as the intake."""
+    return importlib.import_module("devtools.catalogue_upper_bounds")
+
+
 def adopt_upper_bound_packet(n: int, text: str) -> str:
     """The drafted record with the certified packet's intake applied, where one covers `n`.
 
     Unchanged elsewhere. The intake writes over the upper lane, its blockers, evidence,
     resources and priority notes, the opening sentence, the ceiling section and the packing
     section, and keeps the drafted packing's paragraph as the previous best known packing.
+    At the catalogue's counts certified exactly on 2026-10-05 (T-088, T-089),
+    `devtools.catalogue_upper_bounds` moves the verified upper lane and its blocker the
+    same way, and leaves the body, whose intake prose is the record's own. Last, at the 48
+    counts whose packing Evan Daniel solved to its exact optimum (T-098),
+    `devtools.apply_exact_optima` moves both upper lanes to the certified side.
     """
     intake, plans, earlier = _upper_bound_packets()
     plan = plans.get(n)
-    if plan is None:
+    adopted = text if plan is None else intake.apply_case(plan, text, earlier[n])
+    adopted = _catalogue_certificates().apply_case(n, adopted)
+    adopted = importlib.import_module("devtools.apply_exact_optima").apply_case(n, adopted)
+    if adopted == text:
         return text
     # The intake moves the verified upper bound's evidence, so the record's
     # verification-code section is written again from the front matter it leaves.
-    return render_case_verifiers.refresh(intake.apply_case(plan, text, earlier[n]))
+    return render_case_verifiers.refresh(adopted)
 
 
 def generate_record(
@@ -2721,7 +2741,9 @@ def check_records(
                 review_date=review,
                 retrieved_date=retrieved,
             )
-            adopted = n in packet_adopted_counts()
+            # A layer another tool writes is reflowed by the formatter, so a count one
+            # adopted is compared with its whitespace collapsed.
+            adopted = n in packet_adopted_counts() or n in exact_optimum_counts()
             write_record(generated, record_path(scratch_dir, n))
             checked += 1
             comparable = without_rigidity(existing)

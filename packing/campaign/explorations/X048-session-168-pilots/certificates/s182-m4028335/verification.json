@@ -1,0 +1,81 @@
+{
+ "schema": "n17-certificate-verification/v1",
+ "verifier": "kernel",
+ "provenance": {
+  "revision": "cebb5d15aaa17d0cc13aa302ecbd750a54bfc57d",
+  "dirty": false,
+  "files": {
+   "packing/devtools/verify_n17_kernel_certificate.py": "1ad706c21d04cc4a052af8a942c848cbca59fd76"
+  }
+ },
+ "directory": "packing/campaign/explorations/X048-session-168-pilots/certificates/s182-m4028335",
+ "cells_source": {
+  "kind": "cover",
+  "design": "ring-3-voronoi-8-tabbed-unique"
+ },
+ "mode": "full",
+ "sample_rows_per_step": null,
+ "sample_seed": null,
+ "certificate": {
+  "seed_sha256": "035a414cea6d4568d0bf034857abaa25d909ac2dbf23efbcfff4a81f17e008ac",
+  "node_sha256": "dc6a4636a02c08d8d2c6692aa95757805497da04ffaa0ff6e675a58dcaa83442"
+ },
+ "mask": [
+  0,
+  1,
+  2,
+  3,
+  5,
+  7,
+  8,
+  9,
+  10,
+  12,
+  13,
+  14,
+  16,
+  18,
+  19,
+  20,
+  21
+ ],
+ "cells": [
+  "corner-SW",
+  "corner-SE",
+  "corner-NW",
+  "corner-NE",
+  "side-N0",
+  "side-E0",
+  "side-S1",
+  "side-N1",
+  "side-W1",
+  "side-S2",
+  "side-N2",
+  "side-W2",
+  "interior-SW",
+  "interior-W",
+  "interior-S",
+  "interior-N",
+  "interior-E"
+ ],
+ "bins": 32,
+ "closure": {
+  "kind": "all_parent_poses_forbidden",
+  "owner": 18,
+  "step": 81
+ },
+ "closed": true,
+ "counts": {
+  "collision_facet_checks": 15726176,
+  "collision_regions": 8326,
+  "cover_checks": 2579,
+  "partner_rows": 40425,
+  "rows_full": 2579,
+  "seed_points": 10,
+  "seed_rows": 544,
+  "steps": 82
+ },
+ "status": "PASS",
+ "failure": null,
+ "seconds": 252.0
+}

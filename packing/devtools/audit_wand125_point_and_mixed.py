@@ -15,8 +15,13 @@ Later revisions add more ``certificates/mixed_n*`` directories of the same kind,
 same code byte for byte: n = 37, 65, 66, 90 and 92 at ``1a25a5ed``, n = 84 and 85 at
 ``52af997``, n = 76 at ``7975030``, n = 83, 85, 87, 91, 92 and 96 at ``b00fc70``,
 22 more at ``2aff207``, n = 51 to 96, five of them at counts already named, 16 more
-at ``8aa6a10``, n = 42 to 95, nine of them at counts already named, and 12 more at
-``797bdf6``, n = 53 to 94, ten of them at counts already named.
+at ``8aa6a10``, n = 42 to 95, nine of them at counts already named, 12 more at
+``797bdf6``, n = 53 to 94, ten of them at counts already named, two more at
+``a541afb``, n = 67 and 84, both at counts already named, and one more at ``d73ce20``,
+pinned at ``43050ed``, n = 66, at a count already named. ``43050ed`` also adds
+``mixed_n18_L470``, on a finer net with core 999/1000, which this tool does not audit:
+its exact premises are `sqverify-fast`'s admission, and its replay is the bundle's own
+driver run as its README says.
 `MIXED` names each with its packet and the source's statement; a certificate at a count
 an earlier one already names is ``n85-L946``, its count and side. Since ``150939e`` the
 source's directories carry no ``completion-audit.json``, the source's own audit that
@@ -1829,6 +1834,10 @@ K_REVISION = "8aa6a10b3b8f165d39c85b68982fed1de086516c"
 K_PACKET = WEB / "wand125-mixed-bounds-2026-10-04"
 L_REVISION = "797bdf6e10eba5f9dccca9da06f8352e81ba9dde"
 L_PACKET = WEB / "wand125-mixed-bounds-evening-2026-10-04"
+M_REVISION = "a541afbe7826ff75f6d3848e10279fd524d55af3"
+M_PACKET = WEB / "wand125-mixed-bounds-2026-10-05"
+N_REVISION = "43050edc5bdf5116fc5a073283128edd6749946b"
+N_PACKET = WEB / "wand125-mixed-bounds-finer-net-2026-10-05"
 
 #: The pinned revisions whose certificate directories carry no ``completion-audit.json``:
 #: the source removed it from every directory of 3 October onward at ``150939e`` and
@@ -1836,7 +1845,7 @@ L_PACKET = WEB / "wand125-mixed-bounds-evening-2026-10-04"
 #: tarball's digest at the pinned tree, which `devtools.acquire_source` bound to the
 #: tarball's Git blob at the pinned commit, by the size the acquisition record pins, and by
 #: the digest its README states; every other row still needs the source's audit.
-WITHOUT_SOURCE_AUDIT = frozenset({K_REVISION, L_REVISION})
+WITHOUT_SOURCE_AUDIT = frozenset({K_REVISION, L_REVISION, M_REVISION, N_REVISION})
 
 
 #: Every mixed certificate this tool audits and replays: n = 50 (T-048), the five of
@@ -1844,8 +1853,10 @@ WITHOUT_SOURCE_AUDIT = frozenset({K_REVISION, L_REVISION})
 #: later comment the same day (pinned at ``7975030``, its own packet), the six the
 #: source added that afternoon (UTC), pinned together at ``b00fc70``, the 22 it added
 #: on 3 October, pinned together at ``2aff207``, the 16 it added from 3 October
-#: 19:33 UTC to 4 October 07:17 UTC, pinned together at ``8aa6a10``, and the 12 it added
-#: from 4 October 07:51 UTC to 19:03 UTC, pinned together at ``797bdf6``. Each row is the
+#: 19:33 UTC to 4 October 07:17 UTC, pinned together at ``8aa6a10``, the 12 it added
+#: from 4 October 07:51 UTC to 19:03 UTC, pinned together at ``797bdf6``, the two it
+#: added on 5 October at 06:06 and 06:07 UTC, pinned together at ``a541afb``, and the
+#: n = 66 it added later that morning at ``d73ce20``, pinned at ``43050ed``. Each row is the
 #: packet, the pinned revision, n, the side as the directory names it, the side, the
 #: rectangle count and the candidate digest, as the source states them.
 _MIXED_ROWS: tuple[tuple[Path, str, int, str, Fraction, int, str], ...] = (
@@ -2425,6 +2436,33 @@ _MIXED_ROWS: tuple[tuple[Path, str, int, str, Fraction, int, str], ...] = (
         Fraction(199, 20),
         853,
         "85213e6c8d6ade1e6be86648f569c5b931b08b2d19b39308ce1cd2b578acc185",
+    ),
+    (
+        M_PACKET,
+        M_REVISION,
+        67,
+        "8.48",
+        Fraction(212, 25),
+        536,
+        "7ff5efc88ae68a17f96b0b608114a827ee90c9a3eb994d5492beab449b6f0727",
+    ),
+    (
+        M_PACKET,
+        M_REVISION,
+        84,
+        "9.411",
+        Fraction(9411, 1000),
+        686,
+        "d497f375a3f84615aa5963c1fd306815d9870736fbc7e2f305cbaa187ba47e47",
+    ),
+    (
+        N_PACKET,
+        N_REVISION,
+        66,
+        "8.43",
+        Fraction(843, 100),
+        713,
+        "24cdd5b6dbc67ce5c284ed8957f1a7b69af3627ca65d53401b4d103e0a4dd411",
     ),
 )
 

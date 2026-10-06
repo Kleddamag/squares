@@ -1,0 +1,323 @@
+"""Differential audit of the kernel verifier's `NodeStream` against `json.loads`.
+
+The property under test: for every byte sequence, `NodeStream` either yields exactly what
+`json.loads(gzip.decompress(data))` yields, member by member and step by step, with the
+content id `sha256(canonical(document))`, or it refuses (raises before its content id is
+set). Every input is generated from a seeded generator, so a failure is reproducible
+from its seed.
+
+Inputs: random node-shaped JSON texts written by this script's own emitter (random JSON
+whitespace between every pair of tokens; strings with short escapes, `\\u` escapes,
+surrogate pairs written as escapes, raw non-ASCII and astral characters; numbers in every
+form the grammar allows, including exponents, `-0`, and literals that overflow to
+infinity; `NaN`, `Infinity`, `-Infinity`; duplicate keys inside steps; nesting), and from
+each text: every prefix (truncation), single-byte mutations, the member order broken,
+a member repeated, trailing data, a byte-order mark, UTF-16, UTF-8-encoded surrogates,
+multi-member gzip, gzip padding and trailing garbage, and truncated gzip. Each is read at
+several `READ_BYTES` settings, down to one byte per read.
+
+Run from the worktree's `packing/` with the worktree on `PYTHONPATH`:
+    python nodestream_differential.py [CASES] [SEED]
+It prints one JSON summary line and exits nonzero on any divergence.
+"""
+
+from __future__ import annotations
+
+import collections
+import gzip
+import hashlib
+import json
+import math
+import random
+import sys
+import zlib
+from pathlib import Path
+from typing import Any
+
+from devtools import verify_n17_kernel_certificate as kv
+
+WHITESPACE = " \t\n\r"
+CHUNKS = (1, 2, 3, 5, 7, 13, 64, 1 << 20)
+KEYS_BEFORE = ["B", "U", "closed", "contradiction", "final_state", "mask", "node_id", "s", "stepr", "st\u00e9"]
+KEYS_AFTER = ["steps0", "stepsa", "su", "terminal", "z", "\u00e9", "\U0001f600"]
+ALPHABET = (
+    'abcXYZ019 "\\/\b\f\n\r\t\x00\x1f\x7f'
+    "\u00e9\u03c0\u2028\u2029\ufeff\uffff\U0001f600\U00010000\U0010ffff"
+)
+
+
+def canonical(value: Any) -> bytes:
+    return json.dumps(value, sort_keys=True, separators=(",", ":")).encode()
+
+
+def ws(rng: random.Random) -> str:
+    if rng.random() < 0.6:
+        return ""
+    return "".join(rng.choice(WHITESPACE) for _ in range(rng.randint(1, 3)))
+
+
+def emit_string(rng: random.Random, text: str) -> str:
+    out = ['"']
+    for ch in text:
+        code = ord(ch)
+        choice = rng.random()
+        if ch == '"':
+            out.append('\\"')
+        elif ch == "\\":
+            out.append("\\\\")
+        elif code < 0x20:
+            short = {"\b": "\\b", "\f": "\\f", "\n": "\\n", "\r": "\\r", "\t": "\\t"}
+            out.append(short[ch] if ch in short and choice < 0.5 else f"\\u{code:04x}")
+        elif ch == "/" and choice < 0.5:
+            out.append("\\/")
+        elif code > 0xFFFF and choice < 0.5:
+            high, low = 0xD800 + ((code - 0x10000) >> 10), 0xDC00 + ((code - 0x10000) & 0x3FF)
+            out.append(f"\\u{high:04x}\\u{low:04X}")
+        elif code > 0x7E and code <= 0xFFFF and choice < 0.5:
+            out.append(f"\\u{code:04X}" if choice < 0.25 else f"\\u{code:04x}")
+        elif code < 0x7F and choice < 0.1:
+            out.append(f"\\u{code:04x}")
+        else:
+            out.append(ch)
+    out.append('"')
+    return "".join(out)
+
+
+def random_text(rng: random.Random) -> str:
+    return "".join(rng.choice(ALPHABET) for _ in range(rng.randint(0, 8)))
+
+
+def lone_surrogates(rng: random.Random, written: str) -> str:
+    """Sometimes a lone surrogate escape inside a written string, which `json` accepts."""
+    if rng.random() < 0.9:
+        return written
+    # Just after the opening quote, so that no escape the emitter wrote is split.
+    return written[:1] + rng.choice(["\\ud83d", "\\udc00", "\\uDBFF\\u0041"]) + written[1:]
+
+
+def emit_number(rng: random.Random) -> str:
+    kind = rng.random()
+    if kind < 0.05:
+        return rng.choice(["NaN", "Infinity", "-Infinity"])
+    if kind < 0.08:
+        return rng.choice(["1e400", "-1E+400", "0e-999", "-0", "-0.0", "123456789012345678901234567890"])
+    sign = "-" if rng.random() < 0.3 else ""
+    whole = "0" if rng.random() < 0.2 else str(rng.randint(1, 10**rng.randint(1, 25)))
+    fraction = "." + "".join(rng.choice("0123456789") for _ in range(rng.randint(1, 12))) if rng.random() < 0.4 else ""
+    exponent = (
+        rng.choice("eE") + rng.choice(["", "+", "-"]) + str(rng.randint(0, 40))
+        if rng.random() < 0.3
+        else ""
+    )
+    return sign + whole + fraction + exponent
+
+
+def emit_value(rng: random.Random, depth: int) -> str:
+    kind = rng.random()
+    if depth <= 0 or kind < 0.35:
+        scalar = rng.random()
+        if scalar < 0.45:
+            return emit_number(rng)
+        if scalar < 0.85:
+            return lone_surrogates(rng, emit_string(rng, random_text(rng)))
+        return rng.choice(["true", "false", "null"])
+    if kind < 0.65:
+        items = [emit_value(rng, depth - 1) for _ in range(rng.randint(0, 4))]
+        return "[" + ws(rng) + ("," + ws(rng)).join(item + ws(rng) for item in items) + "]"
+    return emit_object(rng, depth)
+
+
+def emit_object(rng: random.Random, depth: int) -> str:
+    keys = [random_text(rng) or "k" for _ in range(rng.randint(0, 4))]
+    if keys and rng.random() < 0.3:
+        keys.append(rng.choice(keys))  # a duplicate key inside a step: the last one wins
+    members = [
+        emit_string(rng, key) + ws(rng) + ":" + ws(rng) + emit_value(rng, depth - 1) + ws(rng)
+        for key in keys
+    ]
+    return "{" + ws(rng) + ("," + ws(rng)).join(members) + "}"
+
+
+def emit_node(rng: random.Random) -> str:
+    """A node-shaped text: members sorting before `steps` all precede it; members sorting
+    after it go on either side."""
+    before = rng.sample(KEYS_BEFORE, rng.randint(0, 4))
+    after = rng.sample(KEYS_AFTER, rng.randint(0, 3))
+    early = [key for key in after if rng.random() < 0.5]
+    late = [key for key in after if key not in early]
+    head = before + early
+    rng.shuffle(head)
+    rng.shuffle(late)
+
+    def member(key: str) -> str:
+        return emit_string(rng, key) + ws(rng) + ":" + ws(rng) + emit_value(rng, 3) + ws(rng)
+
+    steps = [emit_value(rng, 4) if rng.random() < 0.1 else emit_object(rng, 4) for _ in range(rng.randint(0, 5))]
+    steps_text = "[" + ws(rng) + ("," + ws(rng)).join(step + ws(rng) for step in steps) + "]"
+    members = [member(key) for key in head]
+    members.append(emit_string(rng, "steps") + ws(rng) + ":" + ws(rng) + steps_text + ws(rng))
+    members.extend(member(key) for key in late)
+    return ws(rng) + "{" + ws(rng) + ("," + ws(rng)).join(members) + "}" + ws(rng)
+
+
+def reference(data: bytes) -> tuple[bool, Any]:
+    try:
+        return True, json.loads(gzip.decompress(data))
+    except Exception as failure:  # noqa: BLE001 - any failure is a refusal by json.loads
+        return False, type(failure).__name__
+
+
+def stream(path: Path) -> tuple[bool, Any]:
+    try:
+        node = kv.NodeStream(path)
+        steps = list(node.steps())
+    except kv.VerificationError as failure:
+        return False, f"VerificationError: {str(failure).split(' ', 3)[:3]}"
+    except Exception as failure:  # noqa: BLE001 - any exception is a refusal
+        return False, type(failure).__name__
+    if node.sha256 is None:
+        return False, "no content id"
+    return True, (node.header, steps, node.sha256)
+
+
+def same(expected: Any, got: tuple[dict[str, Any], list[Any], str]) -> str | None:
+    """None when the stream gave exactly the reference document, else what differs."""
+    header, steps, sha = got
+    if not isinstance(expected, dict) or "steps" not in expected:
+        return "the stream accepted what is not a node object"
+    if canonical(steps) != canonical(expected["steps"]):
+        return "steps differ"
+    if canonical({**header, "steps": expected["steps"]}) != canonical(expected):
+        return "header differs"
+    if set(header) != set(expected) - {"steps"}:
+        return "member names differ"
+    if sha != hashlib.sha256(canonical(expected)).hexdigest():
+        return "content id differs"
+    if not any(isinstance(x, float) and math.isnan(x) for x in walk(expected)):
+        if steps != expected["steps"] or {**header, "steps": steps} != expected:
+            return "values differ"
+        if any(type(a) is not type(b) for a, b in zip(walk(steps), walk(expected["steps"]), strict=True)):
+            return "value types differ"
+    return None
+
+
+def walk(value: Any) -> list[Any]:
+    out = [value]
+    if isinstance(value, dict):
+        for key in sorted(value):
+            out.extend(walk(value[key]))
+    elif isinstance(value, list):
+        for item in value:
+            out.extend(walk(item))
+    return out
+
+
+def gz(raw: bytes) -> bytes:
+    return gzip.compress(raw, mtime=0)
+
+
+def variants(rng: random.Random, text: str) -> list[tuple[str, bytes]]:
+    raw = text.encode()
+    out: list[tuple[str, bytes]] = [("valid", gz(raw))]
+    for _ in range(3):
+        cut = rng.randint(0, len(raw))
+        out.append(("text-truncated", gz(raw[:cut])))
+    for _ in range(4):
+        at = rng.randrange(len(raw))
+        mutated = bytearray(raw)
+        mutated[at] = rng.choice(b'{}[],:" \\0123456789-+.eEnNIa\x00\xff\t')
+        out.append(("byte-mutated", gz(bytes(mutated))))
+    out.append(("trailing-data", gz(raw + rng.choice([b"{}", b"x", b"0", b",", b"]", b'""']))))
+    out.append(("trailing-whitespace", gz(raw + b" \n\t\r")))
+    out.append(("bom", gz(b"\xef\xbb\xbf" + raw)))
+    out.append(("utf-16", gz(text.encode("utf-16"))))
+    out.append(("utf-16-le-no-bom", gz(text.encode("utf-16-le"))))
+    if b'"' in raw:
+        at = raw.index(b'"') + 1
+        out.append(("encoded-surrogate", gz(raw[:at] + b"\xed\xa0\x80" + raw[at:])))
+    split = rng.randint(0, len(raw))
+    out.append(("two-gzip-members", gz(raw[:split]) + gz(raw[split:])))
+    out.append(("gzip-zero-padding", gz(raw) + b"\x00" * rng.randint(1, 9)))
+    out.append(("gzip-trailing-garbage", gz(raw) + b"garbage"))
+    packed = gz(raw)
+    out.append(("gzip-truncated", packed[: rng.randint(10, len(packed) - 1)]))
+    corrupt = bytearray(packed)
+    corrupt[-6] ^= 0x01  # the CRC
+    out.append(("gzip-crc", bytes(corrupt)))
+    # Structural edits on the parsed document, written canonically.
+    try:
+        document = json.loads(raw)
+    except ValueError:
+        return out
+    if isinstance(document, dict):
+        names = sorted(document)
+        low = [name for name in names if name < "steps"]
+        if low:
+            name = rng.choice(low)
+            moved = {k: v for k, v in document.items() if k != name}
+            body = canonical(moved)[:-1] + b"," + json.dumps(name).encode() + b":" + canonical(document[name]) + b"}"
+            out.append(("member-before-steps-moved-after", gz(body)))
+        name = rng.choice(names)
+        member = json.dumps(name).encode() + b":" + canonical(document[name])
+        out.append(("member-repeated", gz(b"{" + member + b"," + canonical(document)[1:])))
+        out.append(("canonical", gz(canonical(document))))
+        indented = json.dumps(document, indent=rng.randint(0, 3), ensure_ascii=rng.random() < 0.5)
+        try:
+            out.append(("indented", gz(indented.encode())))
+        except UnicodeEncodeError:  # a lone surrogate has no UTF-8 form; escape it
+            out.append(("indented", gz(json.dumps(document, indent=2).encode())))
+    return out
+
+
+def main() -> int:
+    cases = int(sys.argv[1]) if len(sys.argv) > 1 else 2000
+    seed = int(sys.argv[2]) if len(sys.argv) > 2 else 20261004
+    tmp = Path(sys.argv[3]) if len(sys.argv) > 3 else Path("nodestream-audit.json.gz")
+    rng = random.Random(seed)
+    tally: collections.Counter[str] = collections.Counter()
+    invalid_texts = 0
+    stricter: collections.Counter[str] = collections.Counter()
+    refusals: collections.Counter[str] = collections.Counter()
+    divergences: list[dict[str, Any]] = []
+    for case in range(cases):
+        text = emit_node(rng)
+        try:
+            _ = json.loads(text)
+        except ValueError:
+            invalid_texts += 1
+        for kind, data in variants(rng, text):
+            _ = tmp.write_bytes(data)
+            ok, expected = reference(data)
+            for chunk in rng.sample(CHUNKS, 3) if kind != "valid" else CHUNKS:
+                kv.READ_BYTES = chunk
+                accepted, got = stream(tmp)
+                tally[f"{kind}:{'accepted' if accepted else 'refused'}"] += 1
+                if accepted:
+                    problem = "json.loads refuses it" if not ok else same(expected, got)
+                    if problem:
+                        divergences.append({"case": case, "kind": kind, "chunk": chunk, "problem": problem})
+                else:
+                    refusals[str(got)] += 1
+                    if ok:
+                        stricter[kind] += 1
+                        if kind == "byte-mutated":
+                            stricter[f"byte-mutated: {got}"] += 1
+                    if ok and kind in {"valid", "canonical", "indented", "trailing-whitespace", "two-gzip-members", "gzip-zero-padding"}:
+                        divergences.append({"case": case, "kind": kind, "chunk": chunk, "problem": f"refused a valid node: {got}"})
+    summary = {
+        "cases": cases,
+        "seed": seed,
+        "reads": sum(tally.values()),
+        "emitted_texts_json_loads_refuses": invalid_texts,
+        "divergences": len(divergences),
+        "first_divergences": divergences[:10],
+        "refused_where_json_loads_accepts": dict(sorted(stricter.items())),
+        "refusal_types": dict(sorted(refusals.items())),
+        "tally": dict(sorted(tally.items())),
+    }
+    print(json.dumps(summary, indent=1))
+    return 1 if divergences else 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

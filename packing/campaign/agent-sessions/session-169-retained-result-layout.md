@@ -458,8 +458,8 @@ session:
   - packing/campaign/resource-usage/agent-a6277011de7e52649.yaml
   stop_reason: The owner's questions are answered, both pull requests are merged with main's head and
     green at the certified commit, and the remaining items are owner decisions.
-  next_action: 'Selected next entry unchanged: think-11ma, the exact geometric-exclusion pilot below the
-    certified n17 endpoint.'
+  next_action: 'Selected next entry unchanged: BC-418 (think-tmz6), the n17 coordinator after Session 167.
+    Reconciled 2026-10-04 on merging main into PR 307: written on main, this named the deferred n17 geometric-exclusion pilot, which that branch''s Session 166 re-scoped to a cap at or above the endpoint under H-264.'
 ---
 # One Record per Line for Retained Results, and PR 305’s Size
 

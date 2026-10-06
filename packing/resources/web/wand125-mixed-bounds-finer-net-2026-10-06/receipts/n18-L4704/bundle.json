@@ -1,0 +1,14 @@
+{
+  "kind": "wand125-declared-net-bundle/v1",
+  "certificate": "mixed_n18_L4704",
+  "status": "BUNDLE_BOUND_TO_PACKET_AND_NET",
+  "listed_files": 2515,
+  "code_files": 10,
+  "oblique_inputs": 831,
+  "rectangle_images": 1672,
+  "rectangle_lines": "ENCLOSE_THE_EXPANDED_CANDIDATE",
+  "upstream_oblique_seconds": 43585.21503078494,
+  "upstream_oblique_nodes": 114915109,
+  "axis": {"cells":1623076,"integer_minimum":"1108824296663/1099511627776","seconds":5.1731107760024315},
+  "scope": "The bundle's files against its own list and the packet, every shipped record and input header against the declared net's tangent, per-bin domain and threshold, and every input's rectangle lines against the expanded candidate. No coverage is decided here."
+}

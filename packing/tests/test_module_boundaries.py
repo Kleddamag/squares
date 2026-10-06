@@ -17,7 +17,7 @@ from typing import cast
 import pytest
 import yaml
 
-from devtools import upper_bound_packets
+from devtools import evand_exact_certificates, upper_bound_packets
 from devtools.check_readme import meaningful_top_level_entries
 from sqpack.cli import validate
 from sqpack.project import ProjectLayoutError, require_project_root
@@ -578,6 +578,10 @@ def test_ci_jobs_fetch_provenance_history_and_key_the_uv_cache_from_the_lock() -
     assert {
         f"/packing/resources/web/{source.directory}/" for source in upper_bound_packets.SOURCES
     } <= sparse
+    # The atlas draws the 48 counts of T-098 from the exact-optima packet's register
+    # comparison, so that packet rides in the slice, named by the module that reads it; it
+    # was missing on jlevy/squares#369's run 37403920231.
+    assert f"/packing/resources/web/{evand_exact_certificates.PACKET.name}/" in sparse
     full_step = next(
         _mapping(step)
         for step in validate_steps
@@ -741,10 +745,23 @@ def test_ci_jobs_fetch_provenance_history_and_key_the_uv_cache_from_the_lock() -
     raw_mac_steps = mac_job["steps"]
     assert isinstance(raw_mac_steps, list)
     mac_steps = [_mapping(step) for step in raw_mac_steps]
-    assert "if" not in mac_job, (
-        "the macOS check is cheap enough to run on pull requests; skipping them is why "
-        "the libcairo breakage was only ever visible after a merge"
+    # It runs on every pull request into `main` and on every other event, and skips only
+    # a stacked pull request, whose base is another branch and whose tree the stack's pull
+    # request into `main` checks again (129 macOS jobs on the stacked branches on
+    # 2026-10-05). The pull request into `main` must keep it: skipping pull requests is
+    # why the libcairo breakage was only ever visible after a merge.
+    mac_condition = "github.event_name != 'pull_request' || github.base_ref == 'main'"
+    assert mac_job["if"] == mac_condition, (
+        "the macOS check is cheap enough to run on pull requests into main; skipping them "
+        "is why the libcairo breakage was only ever visible after a merge"
     )
+    # Nothing waits on it, `packing-required` included, so a skip changes no verdict.
+    dependents = [
+        name
+        for name, job in jobs.items()
+        if "macos-portability" in str(_mapping(job).get("needs", ""))
+    ]
+    assert not dependents, f"a skipped macOS check must hold up nothing: {dependents}"
     assert "continue-on-error" not in mac_job
     assert all("continue-on-error" not in step for step in mac_steps)
 
@@ -1009,6 +1026,43 @@ def test_the_slow_marker_is_declared_only_by_measured_nodes() -> None:
         # This exercises the full symbolic feature proof.
         "test_n17_endpoint_features.py": {
             "test_symbolic_zero_options_and_displacement_refusal",  # 28.33s
+        },
+        # exp-248 run-002's ratio command end to end over B_W', measured 2026-10-05 on a
+        # four-cpu box (PR 307's review, finding A2); the fast tier keeps the stubbed CLI
+        # wiring test on the same box and every component the run composes.
+        "test_n17_local_minimum.py": {
+            "test_cli_ratio_on_the_widened_box_passes_end_to_end_as_exp248_run_002",  # 18.73s
+        },
+        # The fully substituted H-258 ring proof, measured 2026-10-02 (Session 167).
+        "test_n17_core_stress.py": {
+            "test_substituted_normalized_identity_completes_within_wall_bound",  # 7.10s
+        },
+        # The hull kernel's whole mask-0 replay beside the frozen checker's, two workers,
+        # measured 2026-10-02 (Session 168, BC-418); the fast tests keep all 55 ownership
+        # proofs, the transfer and a frozen-checked sample of points and rows.
+        "test_hull_kernel_mask0.py": {
+            "test_the_full_replay_reproduces_the_receipt_and_the_frozen_checker",  # 22.44s
+        },
+        # The hull kernel's case-2095 replay (seed, five steps, 160 rows) beside the frozen
+        # checker's own, two workers, measured 2026-10-02 (Session 168, BC-418); the fast
+        # tests keep a frozen-checked seed owner, row and compression, and the refusals.
+        "test_hull_kernel_case2095.py": {
+            "test_the_full_replay_reproduces_case_2095",  # 52.38s
+        },
+        # The n17 kernel verifier's W7 8-bin fixture rebuilt by the producer and compared
+        # by digest, then replayed undoctored as the control for the partner-row test,
+        # measured 2026-10-03 (Session 168, BC-418) on a quiet four-cpu box. The fast tier
+        # keeps the doctored refusal itself, which reads the committed fixture; the build
+        # had held the quick lane for 13.70s on the hosted runner (run 37087123885).
+        "test_verify_n17_certificates.py": {
+            "test_the_w7_fixture_is_what_the_producer_writes",  # 5.26s
+        },
+        # The streamed verifier's W7 8-bin fixture verified with bounded memos and with
+        # none, so a replaced owned hull's dropped regions are exercised; measured
+        # 2026-10-04 (Session 168, lane R8, think-2dpm) on a loaded four-cpu box. The fast
+        # tier keeps the blind and wall pairs, the reader's differential and its refusals.
+        "test_verify_n17_node_stream.py": {
+            "test_the_w7_fixture_replaces_a_hull_and_its_receipt_needs_no_memo",  # 4.54s
         },
         # 18s of call time across 3.
         "test_audit_n54_source_formula.py": {

@@ -95,6 +95,58 @@ def test_missing_compiler_is_failure(monkeypatch: pytest.MonkeyPatch) -> None:
         check_rust_floor.check_probes()
 
 
+def test_n17_native_declares_the_same_rust_floor() -> None:
+    """The optional extension keeps the pinned compiler and enforced library lints."""
+    native = CRATE.parent / "n17bb_native"
+    manifest = tomllib.loads((native / "Cargo.toml").read_text())
+    assert manifest["lints"]["rust"]["unsafe_code"] in {"deny", "forbid"}
+    assert manifest["lints"]["rust"]["missing_docs"] == "deny"
+    assert manifest["lints"]["rust"]["warnings"] == "deny"
+    assert manifest["lints"]["clippy"]["pedantic"] == {"level": "deny", "priority": -1}
+    assert manifest["lints"]["clippy"]["unwrap_used"] == "deny"
+    assert tomllib.loads((native / "rust-toolchain.toml").read_text()) == tomllib.loads(
+        (CRATE / "rust-toolchain.toml").read_text()
+    )
+    assert (native / "Cargo.lock").is_file()
+
+
+@pytest.mark.parametrize("result", ["5 passed in 0.5s", "1 skipped", "no tests ran"])
+def test_n17_gate_builds_then_requires_native_replay(
+    monkeypatch: pytest.MonkeyPatch, result: str
+) -> None:
+    calls: list[tuple[str, ...]] = []
+
+    def run(context: validate.Context, command: Sequence[str], **_: object) -> str:
+        assert context.environment["N17BB_NATIVE_REQUIRED"] == "1"
+        assert context.environment["N17BB_NATIVE_DIR"] == "/scratch/native/python"
+        calls.append(tuple(command))
+        if "devtools.build_n17_bb_native" in command:
+            return "test result: ok. 3 passed; 0 failed"
+        return result
+
+    monkeypatch.setattr(validate.shutil, "which", lambda *_, **__: "cargo")
+    monkeypatch.setattr(validate, "_run", run)
+    environment = {"CARGO_TARGET_DIR": "/scratch/native"}
+    context = validate.Context(
+        deep=False, strict=False, jobs=1, inner_jobs=1, environment=environment
+    )
+    step = next(
+        step for step in validate.STEPS if step.name == "n17 branch-and-bound native (Rust)"
+    )
+    assert step.fast
+    assert step.broad
+    assert "packing/n17bb_native/*" in step.touches
+    if "passed" in result:
+        assert result in step.action(context)
+    else:
+        with pytest.raises(validate.StepFailureError, match="unskipped"):
+            step.action(context)
+    assert "devtools.build_n17_bb_native" in calls[0]
+    assert "tests/test_n17_bb_native.py" in calls[1]
+    assert "tests/test_n17_bb_native_edges.py" in calls[1]
+    assert environment == {"CARGO_TARGET_DIR": "/scratch/native"}
+
+
 @pytest.mark.parametrize("output", ["", "test result: ok. 0 passed; 0 failed"])
 def test_gate_refuses_empty_test_run(monkeypatch: pytest.MonkeyPatch, output: str) -> None:
     monkeypatch.setattr(validate.shutil, "which", lambda *_, **__: "cargo")

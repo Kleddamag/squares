@@ -45,13 +45,15 @@ verifiers:
     methods: [interval-certified]
     role: decides
     summary: >-
-      Decides a mixed point-and-rectangle certificate at each of the 201 net directions,
+      Decides a mixed point-and-rectangle certificate at each direction of the
+      certificate's net, 201 on the standard net or the 416 that mixed_n18_L470 declares,
       returning the direction's own record of cells and lower bound.
     source:
       - packing/resources/web/wand125-point-and-mixed-2026-09-28/square-packing-bounds/certificates/mixed_n50_L740/code/mixed_rotated_verify.cpp
     versions:
       - {sha256: 89b674a6feabe24d91c29431de1624907c4bff83280ceb481475455686693652}
       - {revision: 7975030a, note: "the n = 76 bundle's tarball, fetched by Git and pinned by its own SHA-256"}
+      - {revision: 43050edc, note: "the n = 18 bundle's tarball on a declared net, fetched by Git and pinned by its own SHA-256"}
 
   - id: V-wand125-verify-mixed-full-proof-py
     program: verify_mixed_full_proof.py
@@ -68,7 +70,14 @@ verifiers:
       - packing/resources/web/wand125-point-and-mixed-2026-09-28/square-packing-bounds/certificates/mixed_n50_L740/code/verify_mixed_full_proof.py
     versions:
       - {sha256: 2719e482cfdd87da2b64b50af626bbd0a68d58d95b746cf27467b2a7aca83648}
-    note: Retained and reviewed; no confirming entry runs it yet.
+      - sha256: 477d613fc0e265732196d9a6c9fa2acfd093631048a2d6c24a5e1df964111d26
+        path: packing/resources/web/wand125-mixed-bounds-finer-net-2026-10-06/square-packing-bounds/certificates/mixed_n18_L4704/code/verify_mixed_full_proof.py
+        note: "mixed_n18_L4704's copy: one line differs, its check on --workers allowing 16 where the first allows 3"
+    note: >-
+      Retained and reviewed. E-n018-wand125-mixed-470-source-replay runs it end to end, as
+      the n = 18 bundle's README says, and mixed_n19_L48229's bundle ships the same copy.
+      mixed_n18_L4704's bundle ships the second version, retained beside its certificate;
+      the 6 October review read both and found the one change bears on no check.
 
   - id: V-wand125-unified-linear-verify-cpp
     program: unified_linear_verify.cpp
@@ -134,13 +143,19 @@ verifiers:
     source:
       - packing/resources/web/wand125-valid7-independent-check-2026-10-02/valid7-independent-check/src
       - packing/resources/web/wand125-valid7-independent-check-2026-10-02/valid7-independent-check/verify.sh
+      - packing/resources/web/wand125-valid7-independent-check-2026-10-03/valid7-independent-check/src
     versions:
-      - {revision: 38dd31b369991b0d96c917a4af0c7139b44a038d, note: "the repository's only commit, and its release records-v1"}
+      - {revision: 38dd31b369991b0d96c917a4af0c7139b44a038d, note: "the repository's first commit, and its release records-v1"}
       - sha256: ba73f6c10f81836f676fde9800c716e6810f4759fa3f1a89753609671a290080
         note: >-
           src/tier_b2.py with D-1's accepting line made a refusal, as plan_valid7_replay
           stage --guard-d1 writes it; the full replay here of 2 and 3 October ran it with
           the other V2 files unchanged
+      - revision: da469ecff5da0c71882e894b65d680ce57a0c87e
+        note: >-
+          the second commit, which fixes the 2 October review's D-1 to D-3 and leaves the
+          release records unchanged; its verify.sh ran here on 5 October 2026 on those
+          records
     independence_record: packing/resources/web/wand125-valid7-independent-check-2026-10-02/valid7-independent-check/READ_LOG.md
     note: >-
       Its read log says Daniel's checker qx2_zm.py and his lemma write-ups were not read;
@@ -270,6 +285,40 @@ verifiers:
     versions:
       - {sha256: 6294052a37ce66c5d84b55afd606e3a52f463e22b876bf44b5aa903aefb7e737}
 
+  - id: V-evand-verify-cert-py
+    program: verify_cert.py (s12/search/exact/)
+    author: Evan Daniel
+    provenance: external
+    language: [Python]
+    methods: [exact-algebraic]
+    role: decides
+    summary: >-
+      The source's exact checker of its rational packing certificates, in Fraction
+      arithmetic: each square strictly inside the open box, and each pair with centre
+      distance squared at most 2 strictly separated along one of its four face normals,
+      the others by disjoint circumscribed discs.
+    source:
+      - packing/resources/web/evand-square-packing-2026-10-05/square-packing/s12/search/exact/verify_cert.py
+    versions:
+      - {sha256: 3299ca0c0f02f7c221deeea69a9a85b5a90db6bc410b20727fdff211c92bed52}
+
+  - id: V-evand-verify-cert2-py
+    program: verify_cert2.py (s12/search/exact/)
+    author: Evan Daniel
+    provenance: external
+    language: [Python]
+    methods: [exact-algebraic]
+    role: decides
+    summary: >-
+      The source's second exact checker of the same certificates, written to share no
+      geometry with the first: each pair disjoint when no vertex of either lies in the
+      other closed square and no two closed edges meet, every corner strictly inside the
+      open box, in Fraction arithmetic.
+    source:
+      - packing/resources/web/evand-square-packing-2026-10-05/square-packing/s12/search/exact/verify_cert2.py
+    versions:
+      - {sha256: 55140a35d95d9eaa64a14c3b044641efbcda94ebfc3b12b7dec9fa52692e31d3}
+
   - id: V-evand-lean
     program: The source's Lean development (lean/), with gen_zmtree.py emitting a cover's box tree
     author: Evan Daniel
@@ -352,6 +401,9 @@ verifiers:
       - sha256: 2885bb142a31c461084269a2111235140a0628d746d437e572817554665f331a
         path: packing/resources/web/n17-kleddamag-466001-2026-09-27/kleddamag-17-squares-certified-bound/bounds/4.66001/verify.py
         note: '4.66001'
+      - sha256: c22091862df631f8cfd1f1bb8e5013f0b9c216f20be268fcd7104768919c49b7
+        path: packing/resources/web/n17-kleddamag-466001-2026-09-27/kleddamag-17-squares-certified-bound/bounds/4.66001/verify_global_variable.js
+        note: the Node BigInt checker of 4.66001, which Guzhou0806's R067 to R071 bundle byte for byte
     note: Guzhou0806's paired n = 17 launchers run Kleddamag's Node BigInt checker beside their own C++.
 
   - id: V-wang-li-n11-verify
@@ -408,8 +460,19 @@ verifiers:
     source:
       - packing/resources/web/n17-guzhou-r068-2026-09-28/n17-square-packing/certificates/R068-C010/upstream/cpp/verify.cpp
       - packing/resources/web/n17-guzhou-r068-2026-09-28/n17-square-packing/certificates/R067-4.66018/src/verify.cpp
+      - packing/resources/web/n17-guzhou-r071-2026-09-30/n17-square-packing/certificates/R071-C029/run_public.js
     versions:
       - {sha256: 3ba09554cef0ea0ee15444c4d30476f0e2435144e18b1ec2c908970ca306532c, revision: 815b1626, note: identical bytes for R067 and R068}
+      - sha256: 3ba09554cef0ea0ee15444c4d30476f0e2435144e18b1ec2c908970ca306532c
+        revision: 8c11f6962506940c5de67a9fa73b3d1e2e151196
+        note: R071's project/base/upstream/cpp/verify.cpp, pinned in the R071 packet as byte-identical to R068's
+      - sha256: 1125e5969fe0a22e92ea42845ac0dfe68aae5a2a0110550591a01fa43f297712
+        path: packing/resources/web/n17-guzhou-r068-2026-09-28/n17-square-packing/certificates/R068-C010/upstream/cpp/replay.js
+        note: the paired launcher replay.js, the same bytes in R067 to R071
+      - sha256: 45f6ef8e5b5e16b0c32ddc243ae18416b5781de8edc9b4daa11972e76423160f
+        path: packing/resources/web/n17-guzhou-r071-2026-09-30/n17-square-packing/certificates/R071-C029/run_public.js
+        revision: 8c11f6962506940c5de67a9fa73b3d1e2e151196
+        note: R071's public launcher, which checks the package, builds verify.cpp and runs replay.js at two partitions
 
   - id: V-burns-n17-verify-py
     program: verify-n17-lower-bound-4_4811.py
@@ -607,14 +670,16 @@ verifiers:
       was not run.
 
   - id: V-upper-bound-promotion
-    program: devtools.upper_bound_packets, the robust rational promotion and its exact separating-axis test
+    program: >-
+      devtools.upper_bound_packets, the robust rational promotion and its exact
+      separating-axis test, also driven by devtools.catalogue_upper_bounds
     author: Squares Project (Levy)
     provenance: first-party
     language: [Python]
     methods: [exact-algebraic]
     role: decides
     summary: Rounds a source's decimal pose to rationals and decides every pair and wall exactly.
-    source: [packing/devtools/upper_bound_packets.py]
+    source: [packing/devtools/upper_bound_packets.py, packing/devtools/catalogue_upper_bounds.py]
 
   - id: V-upper-bound-intervals
     program: devtools.upper_bound_intervals
@@ -950,6 +1015,17 @@ verifiers:
       - packing/devtools/check_n17_root_certificate.py
       - packing/devtools/check_n17_endpoint_feasibility.py
 
+  - id: V-n17-catalogue-polynomial
+    program: devtools.check_n17_catalogue_polynomial
+    author: Squares Project (Levy)
+    provenance: first-party
+    language: [Python]
+    methods: [exact-algebraic]
+    role: decides
+    summary: Eliminate the n = 17 chart variables by exact resultants, factor over Q, isolate the factor that vanishes at the certified root, and certify the catalogue polynomial irreducible.
+    source:
+      - packing/devtools/check_n17_catalogue_polynomial.py
+
   - id: V-n11-optimality-checkers
     program: The devtools.check_n11_optimality, check_n11_capture and check_n11_generic component checkers
     author: Squares Project (Levy)
@@ -971,6 +1047,28 @@ verifiers:
       closed-cover and collision kernels, which the source bundles too.
 
   # --- First-party programs: premise checks and replay drivers ------------------------
+  - id: V-evand-exact-certificates
+    program: devtools.evand_exact_certificates
+    author: Squares Project (Levy)
+    provenance: first-party
+    language: [Python]
+    methods: [exact-algebraic]
+    role: premises
+    summary: >-
+      Reads Evan Daniel's rational certificates, refusing anything the format does not
+      state, converts each without rounding to a rational center-basis witness for
+      sqpack.witness.exact_verify and to rational corners for
+      devtools.check_rational_witness_independent, which decide it; runs the source's
+      two checkers as retained; compares each side and pose with the register; and makes
+      the negative controls.
+    source: [packing/devtools/evand_exact_certificates.py]
+    independence_record: packing/devtools/evand_exact_certificates.py
+    note: >-
+      Written from the certificate format the source's README states and from the
+      geometry. Its author read the source's verify_cert.py and verify_cert2.py before
+      writing it, to check that the conversion means what they mean, and imports or
+      copies none of their code; it runs them only as separate processes.
+
   - id: V-check-n11-final-composition
     program: devtools.check_n11_final_composition
     author: Squares Project (Levy)
@@ -1031,6 +1129,21 @@ verifiers:
       premises, drives the source's checker and compares its records with the shipped ones.
     source: [packing/devtools/audit_wand125_point_and_mixed.py]
 
+  - id: V-audit-wand125-declared-net
+    program: devtools.audit_wand125_declared_net
+    author: Squares Project (Levy)
+    provenance: first-party
+    language: [Python]
+    methods: [exact-algebraic]
+    role: premises
+    summary: >-
+      Checks the exact premises of wand125's mixed certificates on a declared net, lemma
+      N0's among them; binds each bundle's files to the packet and every shipped record and
+      input to the declared net and the expanded candidate; runs the bundle's own driver
+      with its assertions on and compares the replay with the shipped records, requiring
+      the run to have happened; and runs the stage-4 controls with the source's checker.
+    source: [packing/devtools/audit_wand125_declared_net.py]
+
   - id: V-audit-wand125-linear
     program: devtools.audit_wand125_linear
     author: Squares Project (Levy)
@@ -1040,6 +1153,41 @@ verifiers:
     role: premises
     summary: The audit, replay driver and controls for wand125's linear certificates.
     source: [packing/devtools/audit_wand125_linear.py]
+
+  - id: V-sqverify-fast
+    program: >-
+      sqverify-fast, run at every direction of a certificate's net (the standard 201, or
+      the net a format M file declares) by devtools.sqverify_fast_census
+    author: Squares Project (Levy)
+    provenance: first-party
+    language: [Rust, Python]
+    methods: [interval-certified]
+    role: decides
+    summary: >-
+      Decides a measure-capture lower-bound certificate of format T, M or L on the
+      201-direction net, or of format M on the uniform net its file declares (proof_net,
+      lemma N0): exact admission of its premises, then an exact-event vertex sweep
+      at the axis and outward-rounded interval branch and bound at every other direction,
+      every shrunk square at every centre of its domain capturing at least the threshold.
+    source:
+      - packing/sqverify_fast
+      - packing/devtools/sqverify_fast_census.py
+      - packing/devtools/check_sqverify_fast.py
+    independence_record: packing/sqverify_fast/independence-record.yaml
+    note: >-
+      A clean-room verifier, written from the mathematics without opening the authors'
+      checkers (packing/sqverify_fast/INDEPENDENCE.md), its lemmas proved in
+      packing/sqverify_fast/SOUNDNESS.md, and accepted at 4ddf37d9c by the two adversarial
+      reviews of 3 October 2026, of its soundness and of its testing and independence. Its
+      declared-net change (f007d7afd and 910b6b12c, source_sha256 d97758bb...) was
+      accepted by the soundness review of 6 October 2026
+      (docs/project/reviews/review-2026-10-06-sqverify-fast-declared-net-soundness.md),
+      for a declared net once the control's exact evaluator read that net (its DR-1),
+      which the same day's re-check confirmed. Its census drives the binary, keeps every
+      direction's receipt and puts negative controls on a certificate at its least-bound
+      direction, with check_sqverify_fast's exact evaluator and mutation helpers; neither
+      decides coverage. tests/test_sqverify_fast_census.py admits a census row as evidence
+      only for a build of a reviewed source.
 
   - id: V-replay-chelokot-lean
     program: devtools.replay_chelokot_lean
@@ -1093,6 +1241,22 @@ verifiers:
     independence_record: packing/devtools/audit_s12_reweighted.py
     note: Its module statement says it shares no code with the tools that made the certificate.
 
+  - id: V-audit-s12-v11
+    program: devtools.audit_s12_v11_certificate
+    author: Squares Project (Levy)
+    provenance: first-party
+    language: [Python]
+    methods: [exact-algebraic]
+    role: premises
+    summary: >-
+      Decides everything squarepacker's v1.1 s(12) certificate rests on but coverage, in
+      integers and Fraction: its bytes, the header and side, a one-to-one match of its
+      points to Daniel's dilated within the stated rounding, positivity, containment, D4
+      invariance and orbits, the total below 12, the corner points, and the source's two
+      controls rebuilt byte for byte.
+    source: [packing/devtools/audit_s12_v11_certificate.py]
+    note: It shares only the file reader and the D4 test with devtools.audit_s12_rescaled_certificate, and nothing with the source's tools.
+
   - id: V-compare-evand-s32-sweep
     program: devtools.compare_evand_s32_sweep
     author: Squares Project (Levy)
@@ -1113,6 +1277,31 @@ verifiers:
     summary: Compares a fresh paired-launcher run's C++ and Node ledgers with the published ones row by row.
     source: [packing/devtools/audit_guzhou_r068.py]
 
+  - id: V-audit-guzhou-r071
+    program: devtools.audit_guzhou_r071
+    author: Squares Project (Levy)
+    provenance: first-party
+    language: [Python]
+    methods: [exact-algebraic]
+    role: premises
+    summary: >-
+      Holds Guzhou0806's R070 and R071 certificates to R068's charge, R070's published
+      ledgers and R071's completion summary to their certificates, and compares a fresh
+      paired run's C++ and BigInt ledgers row by row.
+    source: [packing/devtools/audit_guzhou_r071.py]
+
+  - id: V-replay-guzhou-r071
+    program: devtools.replay_guzhou_r071
+    author: Squares Project (Levy)
+    provenance: first-party
+    language: [Python]
+    methods: [exact-algebraic]
+    role: premises
+    summary: >-
+      Stages R071's package from the retained bytes, refusing any byte whose SHA-256 is
+      not the record's, and runs its paired replay and two mutated-certificate controls.
+    source: [packing/devtools/replay_guzhou_r071.py]
+
   - id: V-audit-valid7-independent
     program: devtools.audit_valid7_independent
     author: Squares Project (Levy)
@@ -1125,3 +1314,17 @@ verifiers:
       release's, their roots cover the pose grid once, and a sample of leaves
       re-certifies. A diagnostic, not a replay.
     source: [packing/devtools/audit_valid7_independent.py]
+
+  - id: V-probe-valid7-fixes
+    program: devtools.probe_valid7_fixes
+    author: Squares Project (Levy)
+    provenance: first-party
+    language: [Python]
+    methods: [exact-algebraic]
+    role: premises
+    summary: >-
+      Runs the 2 October review's demonstrations of D-1, D-2 and D-3 against each retained
+      revision of the Valid7 checker, in the checker's own interpreter, and checks that
+      each finding is present at the first commit and gone at the fix. Decides nothing
+      about Valid7.
+    source: [packing/devtools/probe_valid7_fixes.py]

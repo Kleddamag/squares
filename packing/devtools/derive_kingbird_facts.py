@@ -87,7 +87,10 @@ the same order -- and the two that differed, `n = 83` and `87`, were counts whos
 picture had changed since their witness was read. The parse must print a
 side the catalogue's printed decimal truncates, digit for digit, and passes every check
 a fetched picture does; the witness records `REV` and the file in `source.revision`,
-and its limitations say the numbers are that parse's and not the SVG's::
+and the SHA-256 of the file's bytes in `source.revision_sha256`, since the parse is not
+retained here and a revision alone does not say which bytes were read. `REV` must be
+`owner/name@<full commit>:<directory>`, and its limitations say the numbers are that
+parse's and not the SVG's::
 
     uv run --frozen --all-extras --group dev python -m devtools.derive_kingbird_facts \
         --n 69 --refresh --retrieved 2026-10-05 --from-parse PATH/site/www/data/p \
@@ -97,15 +100,18 @@ and its limitations say the numbers are that parse's and not the SVG's::
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 import math
+import re
 import time
 import urllib.error
 import urllib.request
 from collections.abc import Callable, Sequence
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from dataclasses import dataclass
-from decimal import Decimal
+from datetime import UTC, datetime
+from decimal import Decimal, InvalidOperation
 from fractions import Fraction
 from pathlib import Path
 from typing import Any
@@ -121,6 +127,7 @@ from devtools.build_known_best_atlas import (
     USER_AGENT,
     WITNESS_ROOT,
 )
+from sqpack import retained_json
 from sqpack.kingbird_catalogue import CatalogueEntry, default_catalogue_path, parse_catalogue
 from sqpack.known_best import (
     KINGBIRD_BASE_URL,
@@ -158,6 +165,8 @@ HAND_AUDITED_MAX = 100
 #: with the side as a decimal string and each pose in binary64, angles in degrees modulo
 #: 90, in the y-up frame of the container `[0, s]^2` -- this repository's own convention.
 PARSE_FILE_SUFFIX = ".json"
+#: A pinned parse: `owner/name@<full commit>:<directory>`, the directory the files are in.
+PARSE_REVISION = re.compile(r"^[\w.-]+/[\w.-]+@[0-9a-f]{40}:\S+$")
 
 #: The date this acquisition pass read the catalogue, recorded in every witness it
 #: writes. Not `sqpack.known_best.RETRIEVED_DATE`, which belongs to the 2026-08-26 pass
@@ -391,11 +400,12 @@ def _plan_one(
     )
 
 
-def fetch_svg(url: str) -> str:
+def fetch_picture(url: str) -> tuple[bytes, str | None]:
     """Fetch one catalogue SVG into memory, with the builder's retries and politeness.
 
-    Returns the text. Nothing here writes, and no caller is given a path: the bytes exist
-    only for as long as the derivation that parses them.
+    Returns the bytes and the server's `Last-Modified`. Nothing here writes, and no
+    caller is given a path: the bytes exist only for as long as the derivation or the
+    comparison that parses them.
     """
     request = urllib.request.Request(url, headers={"User-Agent": USER_AGENT})
     last_error: Exception | None = None
@@ -403,6 +413,7 @@ def fetch_svg(url: str) -> str:
         try:
             with urllib.request.urlopen(request, timeout=FETCH_TIMEOUT_SECONDS) as response:
                 content = response.read()
+                modified = response.headers.get("Last-Modified")
         except (OSError, urllib.error.HTTPError, urllib.error.URLError) as error:
             last_error = error
             if attempt < FETCH_ATTEMPTS - 1:
@@ -413,8 +424,13 @@ def fetch_svg(url: str) -> str:
             if b"<svg" not in content:
                 raise DerivationRefusedError("not-svg", f"upstream response is not SVG: {url}")
             time.sleep(FETCH_PAUSE_SECONDS)
-            return content.decode("utf-8")
+            return content, modified
     raise DerivationRefusedError("fetch-failed", f"{url}: {last_error}")
+
+
+def fetch_svg(url: str) -> str:
+    """One catalogue SVG's text, fetched as `fetch_picture` fetches it."""
+    return fetch_picture(url)[0].decode("utf-8")
 
 
 def _pose_key(pose: SquarePose) -> tuple[Decimal, Decimal, Decimal]:
@@ -528,6 +544,15 @@ def _float_text(value: object) -> str:
     return "0" if number.is_zero() else format(number, "f")
 
 
+def _positive_decimal(text: str) -> bool:
+    """Whether `text` is a finite decimal above zero; text that is no decimal is not."""
+    try:
+        value = Decimal(text)
+    except InvalidOperation:
+        return False
+    return value.is_finite() and value > 0
+
+
 def parse_record_name(plan: DerivationPlan) -> str:
     """The parse file that holds this plan's picture: `square-69.svg` is `square-69.json`."""
     return Path(plan.source_path).stem + PARSE_FILE_SUFFIX
@@ -548,7 +573,7 @@ def geometry_from_parse(text: str, *, expected_n: int, where: str) -> KingbirdGe
     if not isinstance(record, dict) or not isinstance(record.get("squares"), list):
         raise DerivationRefusedError("parse-unreadable", f"{where}: no squares list")
     side = record.get("s")
-    if not isinstance(side, str) or not Decimal(side).is_finite() or Decimal(side) <= 0:
+    if not isinstance(side, str) or not _positive_decimal(side):
         raise DerivationRefusedError("parse-unreadable", f"{where}: side {side!r}")
     squares = record["squares"]
     if record.get("n") != expected_n or len(squares) != expected_n:
@@ -678,6 +703,225 @@ def compare_parses(numbers: Sequence[int], root: Path, *, out_root: Path) -> int
     return 1 if disagreeing or not compared else 0
 
 
+@dataclass(frozen=True)
+class PictureReading:
+    """One catalogue picture fetched again and compared with the witness retained for it.
+
+    `identical` is the strongest agreement: the side and every centre and angle the same
+    decimal text, square for square. Otherwise `same_side` and `worst` measure it at
+    binary64, as `compare_parse` does, which is how a witness read from a parse compares
+    with the picture it was a parse of.
+    """
+
+    n: int
+    url: str
+    bytes: int
+    sha256: str
+    last_modified: str | None
+    #: The witness was read from a third party's parse (`source.revision`), not the SVG.
+    from_parse: bool
+    identical: bool
+    same_side: bool
+    worst: float
+    #: The picture's attribution: the first paragraph of the comment before `<svg`.
+    credits: tuple[str, ...]
+
+
+def picture_credits(text: str) -> tuple[str, ...]:
+    """The first paragraph of the comment a catalogue SVG opens with, line by line.
+
+    The catalogue writes its attribution there, with the dates its page abbreviates to
+    a month, and below a blank line whatever derivation or polynomial the picture
+    carries. Only the attribution is returned.
+    """
+    head = text.split("<svg", 1)[0]
+    start = head.find("<!--")
+    if start < 0:
+        return ()
+    comment = head[start + 4 :].split("-->", 1)[0]
+    lines: list[str] = []
+    for line in comment.splitlines():
+        if not line.strip():
+            if lines:
+                break
+            continue
+        lines.append(line.strip())
+    return tuple(lines)
+
+
+def _poses_text(witness: dict[str, Any]) -> list[tuple[str, str, str]]:
+    return [
+        (str(square["center"][0]), str(square["center"][1]), str(square["angle"]))
+        for square in witness["squares"]
+    ]
+
+
+def read_picture_again(
+    n: int,
+    witness: dict[str, Any],
+    picture: bytes,
+    *,
+    source_n: int,
+    catalogue_text: str,
+    last_modified: str | None = None,
+) -> PictureReading:
+    """Compare one retained Kingbird witness with its picture, fetched again."""
+    url = str(witness["source"]["url"])
+    text = picture.decode("utf-8")
+    try:
+        geometry = parse_kingbird_svg(text, expected_n=source_n)
+    except SourceGeometryError as error:
+        raise DerivationRefusedError(error.kind, f"n={n} from {url}: {error}") from error
+    poses = subpacking_poses(
+        geometry.poses, n=n, source_n=source_n, catalogue_text=catalogue_text
+    )
+    theirs = [(pose.center_x, pose.center_y, pose.angle_degrees) for pose in poses]
+    ours = _poses_text(witness)
+    if len(ours) != len(theirs):
+        raise DerivationRefusedError(
+            "square-count-mismatch", f"n={n}: {len(ours)} retained, {len(theirs)} in {url}"
+        )
+    worst = max(
+        abs(float(left) - float(right))
+        / math.ulp(max(abs(float(left)), abs(float(right)), 1.0))
+        for mine, other in zip(ours, theirs, strict=True)
+        for left, right in zip(mine, other, strict=True)
+    )
+    return PictureReading(
+        n=n,
+        url=url,
+        bytes=len(picture),
+        sha256=hashlib.sha256(picture).hexdigest(),
+        last_modified=last_modified,
+        from_parse=bool(witness["source"].get("revision")),
+        identical=str(witness["side"]) == geometry.side and ours == theirs,
+        same_side=float(witness["side"]) == float(geometry.side),
+        worst=worst,
+        credits=picture_credits(text),
+    )
+
+
+def compare_pictures(
+    numbers: Sequence[int],
+    *,
+    out_root: Path,
+    fetch: Callable[[str], tuple[bytes, str | None]] = fetch_picture,
+) -> tuple[list[PictureReading], list[tuple[int, DerivationRefusedError]]]:
+    """`--compare-pictures`: fetch the picture behind each retained Kingbird witness again.
+
+    Every center-angle witness under `out_root` whose source is a catalogue SVG is
+    compared with that SVG as the catalogue serves it now, read by this repository's own
+    adapter: pictured counts and subpackings, and witnesses read from a third party's
+    parse, which is the one comparison `--compare-parse` cannot make. A picture serving
+    two counts is fetched once. Nothing fetched is written.
+    """
+    catalogued = parse_catalogue()
+    catalogue_text = default_catalogue_path().read_text(encoding="utf-8")
+    fetched: dict[str, tuple[bytes, str | None]] = {}
+    readings: list[PictureReading] = []
+    refusals: list[tuple[int, DerivationRefusedError]] = []
+    for n in numbers:
+        path = out_root / f"n-{n:03d}.yaml"
+        if not path.is_file():
+            continue
+        witness = safe_load(path.read_text(encoding="utf-8"))["witness"]
+        url = str((witness.get("source") or {}).get("url", ""))
+        if not url.startswith(KINGBIRD_BASE_URL) or witness.get("representation") != (
+            "center-angle"
+        ):
+            continue
+        listed = catalogued.get(n)
+        if listed is None or listed.svg_path is None or not url.endswith(listed.svg_path):
+            refusals.append(
+                (
+                    n,
+                    DerivationRefusedError(
+                        "source-map-disagrees",
+                        f"n={n}: the witness names {url}, the catalogue "
+                        f"{None if listed is None else listed.svg_path}",
+                    ),
+                )
+            )
+            continue
+        try:
+            if url not in fetched:
+                fetched[url] = fetch(url)
+            picture, modified = fetched[url]
+            readings.append(
+                read_picture_again(
+                    n,
+                    witness,
+                    picture,
+                    source_n=listed.n,
+                    catalogue_text=catalogue_text,
+                    last_modified=modified,
+                )
+            )
+        except DerivationRefusedError as error:
+            refusals.append((n, error))
+    return readings, refusals
+
+
+def picture_receipt(
+    readings: Sequence[PictureReading],
+    refusals: Sequence[tuple[int, DerivationRefusedError]],
+    *,
+    retrieved_utc: str,
+) -> dict[str, Any]:
+    """What `--compare-pictures --receipt` writes: one row per count, and the tally."""
+    agree = [r for r in readings if r.identical or (r.same_side and r.worst <= 1)]
+    return {
+        "format": "kingbird-picture-reading-v1",
+        "retrieved_utc": retrieved_utc,
+        "compared": len(readings),
+        "identical": sum(r.identical for r in readings),
+        "agree_to_one_ulp": len(agree),
+        "refused": [{"n": n, "kind": e.kind, "detail": e.detail} for n, e in refusals],
+        "readings": [
+            {
+                "n": r.n,
+                "url": r.url,
+                "bytes": r.bytes,
+                "sha256": r.sha256,
+                "last_modified": r.last_modified,
+                "from_parse": r.from_parse,
+                "identical": r.identical,
+                "same_side": r.same_side,
+                "worst_ulp": r.worst,
+                "credits": list(r.credits),
+            }
+            for r in readings
+        ],
+    }
+
+
+def report_pictures(
+    readings: Sequence[PictureReading], refusals: Sequence[tuple[int, DerivationRefusedError]]
+) -> int:
+    """Print `--compare-pictures`'s findings; exit 0 only where every picture agrees."""
+    disagreeing = 0
+    for reading in readings:
+        agrees = reading.identical or (reading.same_side and reading.worst <= 1)
+        disagreeing += not agrees
+        if reading.from_parse or not reading.identical:
+            print(
+                f"  n={reading.n:<3} {'agrees' if agrees else 'differs'}  "
+                f"{'parse-read, ' if reading.from_parse else ''}"
+                f"{'identical' if reading.identical else f'worst {reading.worst:.3g} ulp'}"
+                f", {reading.bytes} bytes, Last-Modified {reading.last_modified}"
+            )
+    for n, refusal in refusals:
+        print(f"  n={n:<3} refused  {refusal}")
+    identical = sum(reading.identical for reading in readings)
+    print(
+        f"read {len(readings)} witness{'' if len(readings) == 1 else 'es'} against the "
+        f"catalogue's pictures: {identical} identical, "
+        f"{len(readings) - identical - disagreeing} to one binary64 ulp, "
+        f"{disagreeing} differ, {len(refusals)} refused"
+    )
+    return 1 if disagreeing or refusals or not readings else 0
+
+
 def derive_witness(
     plan: DerivationPlan,
     source_text: str,
@@ -694,7 +938,8 @@ def derive_witness(
     existing rows on every build.
 
     With `parse_revision`, `source_text` is not an SVG but a third party's parse of it
-    (`geometry_from_parse`), pinned at that revision; the witness names it and says its
+    (`geometry_from_parse`), pinned at that revision; the witness names it and the
+    SHA-256 of the parse's bytes, which this repository does not retain, and says its
     numbers are that parse's, and the parse must reproduce the page's printed side digit
     for digit.
     """
@@ -705,9 +950,10 @@ def derive_witness(
             raise DerivationRefusedError(
                 error.kind, f"n={plan.n} from {plan.source_path}: {error}"
             ) from error
-        revision = None
+        revision = digest = None
     else:
-        revision = f"{parse_revision}/{parse_record_name(plan)}"
+        revision = f"{pinned_parse_revision(parse_revision)}/{parse_record_name(plan)}"
+        digest = hashlib.sha256(source_text.encode("utf-8")).hexdigest()
         geometry = geometry_from_parse(source_text, expected_n=plan.source_n, where=revision)
         _assert_printed_truncation(plan.catalogue_side, geometry.side, n=plan.n)
     _assert_side_matches(plan.catalogue_side, geometry.side, what="the catalogue", n=plan.n)
@@ -747,6 +993,7 @@ def derive_witness(
             source_url=plan.url,
             retrieved=retrieved,
             revision=revision,
+            revision_sha256=digest,
         )
     except (SourceGeometryError, ValueError) as error:
         raise DerivationRefusedError("witness-rejected", f"n={plan.n}: {error}") from error
@@ -817,18 +1064,39 @@ def read_parses(
     plans: Sequence[DerivationPlan], root: Path
 ) -> tuple[dict[str, str], dict[str, DerivationRefusedError]]:
     """Read each distinct picture's parse from `root`, keyed by the picture's URL as
-    `fetch_pictures` keys what it fetches, so the rest of a pass is the same either way."""
+    `fetch_pictures` keys what it fetches, so the rest of a pass is the same either way.
+
+    Each is decoded from its bytes with no newline translation, so the text encodes back
+    to exactly the file and the digest `derive_witness` records is the file's.
+    """
     read: dict[str, str] = {}
     failures: dict[str, DerivationRefusedError] = {}
     for plan in plans:
         path = root / parse_record_name(plan)
-        if path.is_file():
-            read[plan.url] = path.read_text(encoding="utf-8")
-        else:
+        if not path.is_file():
             failures[plan.url] = DerivationRefusedError(
                 "parse-missing", f"{path} holds no parse of {plan.source_path}"
             )
+            continue
+        try:
+            read[plan.url] = path.read_bytes().decode("utf-8")
+        except UnicodeDecodeError as error:
+            failures[plan.url] = DerivationRefusedError(
+                "parse-unreadable", f"{path}: not UTF-8: {error}"
+            )
     return read, failures
+
+
+def pinned_parse_revision(revision: str) -> str:
+    """`revision` without a trailing slash, or a refusal unless it pins a commit and a
+    directory: it is written into every witness read from the parse, so a branch, a
+    short id or a sentence would be a provenance nobody can resolve."""
+    if not PARSE_REVISION.fullmatch(revision):
+        raise DerivationRefusedError(
+            "parse-unpinned",
+            f"--parse-revision {revision!r} is not owner/name@<40-hex commit>:<directory>",
+        )
+    return revision.rstrip("/")
 
 
 def derive(
@@ -854,6 +1122,8 @@ def derive(
         raise DerivationRefusedError(
             "parse-unpinned", "a parse directory and its pinned revision go together"
         )
+    if parse_revision is not None:
+        parse_revision = pinned_parse_revision(parse_revision)
     assert_no_raw_retention(out_root)
     plans, skipped, refusals = derivation_plans(numbers, out_root=out_root, refresh=refresh)
     for case in skipped:
@@ -982,6 +1252,20 @@ def parser() -> argparse.ArgumentParser:
         ),
     )
     command.add_argument(
+        "--compare-pictures",
+        action="store_true",
+        help=(
+            "derive nothing: fetch the picture behind each retained Kingbird witness "
+            "again and compare the two, count by count"
+        ),
+    )
+    command.add_argument(
+        "--receipt",
+        type=Path,
+        default=None,
+        help="with --compare-pictures, write the comparison here as JSON",
+    )
+    command.add_argument(
         "--compare-parse",
         type=Path,
         default=None,
@@ -1010,6 +1294,13 @@ def main(argv: Sequence[str] | None = None) -> int:
     try:
         if args.compare_parse is not None:
             return compare_parses(numbers, args.compare_parse, out_root=args.out)
+        if args.compare_pictures:
+            retrieved = datetime.now(UTC).strftime("%Y-%m-%dT%H:%M:%SZ")
+            readings, refusals = compare_pictures(numbers, out_root=args.out)
+            if args.receipt is not None:
+                receipt = picture_receipt(readings, refusals, retrieved_utc=retrieved)
+                _write(args.receipt, retained_json.dumps(receipt, ensure_ascii=False))
+            return report_pictures(readings, refusals)
         return derive(
             numbers,
             out_root=args.out,

@@ -1,0 +1,20 @@
+{
+ "verifier": "lanes/r8/wt/packing/devtools/verify_n17_kernel_certificate.py",
+ "Infinity in an outer domain": "ESCAPED OverflowError",
+ "1e400 in an outer domain": "ESCAPED OverflowError",
+ "NaN in an outer domain": "FAIL: malformed certificate: ValueError('cannot convert NaN to int",
+ "gzip stream cut": "ESCAPED EOFError",
+ "deflate data corrupted": "ESCAPED error",
+ "nesting 100,000 deep in a step": "ESCAPED RecursionError",
+ "undamaged": "PASS: None"
+}
+{
+ "verifier": "lanes/r8/verifier-318c28c42.py",
+ "Infinity in an outer domain": "ESCAPED OverflowError",
+ "1e400 in an outer domain": "ESCAPED OverflowError",
+ "NaN in an outer domain": "FAIL: malformed certificate: ValueError('cannot convert NaN to int",
+ "gzip stream cut": "ESCAPED EOFError",
+ "deflate data corrupted": "ESCAPED error",
+ "nesting 100,000 deep in a step": "ESCAPED RecursionError",
+ "undamaged": "PASS: None"
+}

@@ -124,15 +124,16 @@ The ones that carry the most weight:
 - `verified_upper_bound` and `verified_lower_bound` contain only formally supported
   bounds. They are a ceiling and a floor, not the value of $s(n)$. The certified ceiling
   may be a weaker rational construction or the exact grid when the tighter public pose
-  is only numerical: for 83 of the 324 cases it is *larger* than the best-known side
+  is only numerical: for 78 of the 324 cases it is *larger* than the best-known side
   recorded two fields above it by more than that side’s printed precision allows, by up
   to $0.46$, and each of those cases says so in its own body and carries a `mathematics`
-  blocker. In 43 more it sits above the printed side by no more than one unit of its last
-  place, which `bounds_agree_at_declared_precision` reads as the same bound: 24 of them
-  are Couzo’s packings certified here (T-056, T-092), whose exact sides round up past
-  the fifteen decimals the source prints.
-  An `exact_form` on the ceiling is the exact form of the ceiling; $s(n)$ is known
-  exactly only when `status` is `proved`.
+  blocker. In 21 more it sits above the printed side by no more than one unit of its last
+  place, which `bounds_agree_at_declared_precision` reads as the same bound: 2 of them
+  are Couzo’s packings certified here (T-056), at $n = 105$ and $130$, whose exact sides
+  round up past the fifteen decimals the source prints.
+  At 48 counts both lanes hold one exact side, the exact optimum of the reported packing
+  (T-098). An `exact_form` on the ceiling is the exact form of the ceiling; $s(n)$ is
+  known exactly only when `status` is `proved`.
 - `reported_status` is the source-set view; `status` is `proved` only when the verified
   bounds match exactly.
   There are currently 77 proved and 247 open formal cases.
@@ -171,16 +172,18 @@ replay disposition, in-horizon overrides, and relevant claims beyond $n = 324$.
 The current baseline reparses the retained Kingbird catalogue through $n = 324$, applies
 Francisco Couzo’s certified packings at 49 counts from $n = 68$ to $307$ (T-056), seven
 of them lowered again by his revision of 3 October 2026 (T-092), and Joost de Winter’s
-at $n = 211$ (T-057), and records the Schadt $n = 29$ repository as a superseded
+at $n = 211$ (T-057), then Evan Daniel’s exact optima of 47 of those packings and of de
+Winter’s $n = 126$ (T-098), and records the Schadt $n = 29$ repository as a superseded
 numerical witness.
 UnitSquare’s reports at $n = 68, 103, 105, 110, 131$, Griffin Casson’s
-39 packings, each larger than Couzo’s at its count, and Couzo’s own earlier sides at
-$n = 208, 209, 228, 263, 272, 303, 306$ are listed as superseded reports, and so is
+39 packings, each larger than Couzo’s at its count, Couzo’s own earlier sides at
+$n = 208, 209, 228, 263, 272, 303, 306$, and the printed sides of the 47 Couzo and de
+Winter packings Daniel solved exactly are listed as superseded reports, and so is
 UnitSquare’s at $n = 69$, larger than the catalogue’s later side for the same packing
 (T-088). Overrides may come from any retained source: each must beat the catalogue
-baseline, and every claim a source’s retained record makes — the UnitSquare release, or
-a packet’s acquisition record — is reparsed and accounted for exactly once, as selected,
-superseded or beyond the horizon.
+baseline, and every claim a source’s retained record makes — the UnitSquare release, a
+packet’s acquisition record, or a directory of exact certificates — is reparsed and
+accounted for exactly once, as selected, superseded or beyond the horizon.
 The selected source register has no remaining beyond-horizon claims.
 The check is local and deterministic; refreshing a public source is a dated W1 research
 survey, not a network operation hidden inside ordinary validation.
@@ -484,8 +487,8 @@ masked, and Bašić and Slivková’s piercing bound at $n = 37, 61$ (T-087), re
 October 2026. Replayed certificates recorded in parallel and merged on 3 October 2026
 have since raised all five of those, and 46 more of the Karakuş floors, above them; they
 are counted below. Two others use certificates already integrated into the register: at
-$n = 12$ this project’s re-weighting of Evan Daniel’s points ($15680000/3949423$), and
-at $n = 17$ the current external certificate bound ($116511/25000$). Complete interval
+$n = 12$ squarepacker’s re-weighting of Evan Daniel’s points ($7943/2000$), and at
+$n = 17$ the current external certificate bound ($18641771/4000000$). Complete interval
 and exact replays of external certificates hold the other 58: wand125’s mixed
 rectangle-measure certificates at $n = 37$, 50, 65, 66, 76, 83 to 85, 87, 90 to 92 and
 96, and by monotonicity at $n = 51$ from $n = 50$, at $n = 86$ from $n = 85$, at
@@ -530,7 +533,7 @@ Ranked by gap—the best-known packing minus the verified lower bound, which is 
 
 | $n$ | gap | record | note |
 | --- | --- | --- | --- |
-| 17 | 0.0151 | Bidwell | carried to $\frac{116511}{25000}$ by Guzhou0806 after Kleddamag |
+| 17 | 0.0151 | Bidwell | carried to $\frac{18641771}{4000000}$ by Guzhou0806 after Kleddamag |
 | 12 | 0.0298 | grid | $4^2 - 4$, carried to $\frac{15680000}{3949423}$ by Levy after Daniel |
 | 31 | 0.0475 | grid | $6^2 - 5$, carried to $\frac{2381}{400}$ by wand125 after Tokoharu |
 | 44 | 0.0575 | grid | $7^2 - 5$, carried to $\frac{2777}{400}$ by wand125 after Tokoharu |

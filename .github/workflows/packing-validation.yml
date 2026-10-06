@@ -1013,6 +1013,38 @@ jobs:
         if: "steps.measure-cache.outputs.cache-hit == 'true'"
         run: git ls-files -z -- sqverify_fast | xargs -0 touch -t 200001010000
 
+      - name: Key the native n17 kernel cache on its sources and compiler
+        id: n17-native-key
+        working-directory: packing/n17bb_native
+        run: |
+          rustc_vv="$(rustc -vV)"
+          echo "tree=$(git rev-parse HEAD:packing/n17bb_native)" >> "$GITHUB_OUTPUT"
+          echo "rustc=$(printf '%s' "$rustc_vv" | sha256sum | cut -c1-16)" >> "$GITHUB_OUTPUT"
+
+      - name: Restore the native n17 kernel build
+        id: n17-native-cache
+        uses: actions/cache/restore@0400d5f644dc74513175e3cd8d07132dd4860809 # v4.2.4
+        with:
+          path: packing/n17bb_native/target
+          key: >-
+            ${{ runner.os }}-n17bb-native-${{ steps.n17-native-key.outputs.rustc }}-${{
+            steps.n17-native-key.outputs.tree }}
+          restore-keys: |
+            ${{ runner.os }}-n17bb-native-${{ steps.n17-native-key.outputs.rustc }}-
+
+      # The build helper runs the same floor and builds the gate's step uses, so a populated
+      # target leaves the step only incremental work.
+      - name: Populate the native n17 kernel build for this exact tree
+        id: n17-native-populate
+        if: "steps.n17-native-cache.outputs.cache-hit != 'true'"
+        run: >-
+          uv run --frozen --all-extras --group dev python -m devtools.build_n17_bb_native
+          --output-dir n17bb_native/target/python
+
+      - name: Date native n17 kernel sources before their identical cached build
+        if: "steps.n17-native-cache.outputs.cache-hit == 'true'"
+        run: git ls-files -z -- n17bb_native | xargs -0 touch -t 200001010000
+
       - name: Run the required pull-request measure verifier tier
         run: >-
           uv run --frozen --all-extras --group dev
@@ -1027,6 +1059,16 @@ jobs:
         with:
           path: packing/sqverify_fast/target
           key: ${{ steps.measure-cache.outputs.cache-primary-key }}
+
+      - name: Save the native n17 kernel build intermediates
+        if: >-
+          always() && steps.n17-native-cache.outcome == 'success' &&
+          steps.n17-native-cache.outputs.cache-hit != 'true' &&
+          steps.n17-native-populate.outcome == 'success'
+        uses: actions/cache/save@0400d5f644dc74513175e3cd8d07132dd4860809 # v4.2.4
+        with:
+          path: packing/n17bb_native/target
+          key: ${{ steps.n17-native-cache.outputs.cache-primary-key }}
 
       - name: Preserve validation timings and partial logs
         if: always()
@@ -1268,6 +1310,7 @@ jobs:
             /packing/resources/web/franciscouzo-square-packing-2026-10-03/
             /packing/resources/web/casson-square-packing-2026-09-23/
             /packing/resources/web/de-winter-square-packing-211-2026-09-16/
+            /packing/resources/web/evand-square-packing-2026-10-05/
             /packing/resources/papers/
             !/packing/resources/papers/*
             /packing/resources/papers/kingbird-square-29-provenance.svg
@@ -1709,6 +1752,10 @@ jobs:
     # below. This job runs under `!cancelled()`, so it is reached even when a prerequisite
     # failed, and it is the shell that decides -- a job named in `needs` and missing from
     # the script is an advisory check nothing blocks on.
+    #
+    # `!cancelled()` is about the run. A prerequisite GitHub cancelled because no hosted
+    # runner took it reaches this job as `cancelled` in a run that is not, and still fails
+    # it; the step after the verdict names that class as infrastructure.
     if: "!cancelled() && github.event_name == 'pull_request'"
     needs:
       [validate, frontend, typecheck, geometry, suite-a, suite-b, suite-c, suite-d, sweeps,
@@ -1741,6 +1788,29 @@ jobs:
           test "$SUITE_D_RESULT" = "success"
           test "$SWEEPS_RESULT" = "success"
           test "$MEASURE_VERIFIER_RESULT" = "success"
+
+      # A prerequisite cancelled while this run went on was never given a runner: GitHub
+      # cancels a queued job it cannot place ("not acquired by Runner of type hosted even
+      # after multiple attempts"), and on 2026-10-05 it did so to 96 jobs (run 37362926042).
+      # The step above has already failed on that `cancelled`, and must: a required check
+      # does not go green on work that never ran. This step only names the class, so the
+      # red reads as infrastructure rather than as a test, and `rerun-starved.yml` re-runs
+      # the run's failed jobs once. It runs only after a failure, so a green run pays
+      # nothing for it, and a fault here cannot hide the verdict above.
+      - name: Name every prerequisite that never acquired a runner
+        if: failure()
+        env:
+          NEEDS: ${{ toJSON(needs) }}
+        run: |
+          jq -r '
+            [to_entries[] | select(.value.result == "cancelled") | .key] as $starved
+            | ($starved[] | "::error title=Infrastructure::\(.) never acquired a runner (cancelled before start)"),
+              if ($starved | length) > 0
+              then "FAILURE CLASS: infrastructure (\($starved | length) of \(length) prerequisites never acquired a runner: \($starved | join(", ")))"
+              else empty end
+          ' <<< "$NEEDS" > "$RUNNER_TEMP/infrastructure"
+          cat "$RUNNER_TEMP/infrastructure"
+          grep '^FAILURE CLASS: ' "$RUNNER_TEMP/infrastructure" >> "$GITHUB_STEP_SUMMARY" || true
 
       - name: Check out the wall budget and its register
         if: always() && github.event_name == 'pull_request'
@@ -1793,6 +1863,15 @@ jobs:
     # the libcairo breakage was only ever visible after a merge, on a branch nobody was
     # about to fix. At roughly thirty seconds that exclusion no longer buys anything: a
     # check this cheap belongs before the merge, where it can still change the outcome.
+    #
+    # The merge that matters is the one into `main`, so a pull request runs it only when
+    # `main` is its base. A stacked pull request, whose base is the branch below it, is a
+    # layer of a tree the stack's pull request into `main` will check again: on 2026-10-05
+    # the stacks' layers ran 129 macOS jobs (309 macOS minutes) for that one question.
+    # Every other event still runs it -- the push to `main`, the daily schedule, and a
+    # dispatch, which is a request for it. Nothing waits on it: `packing-required` does not
+    # name it, and the wall check treats it as `not_gating`, so a skip changes no verdict.
+    if: "github.event_name != 'pull_request' || github.base_ref == 'main'"
     runs-on: macos-latest
     defaults:
       run:

@@ -319,6 +319,25 @@ def test_the_command_fails_on_a_planted_module_and_passes_once_it_is_listed(
     assert "none was added" in capsys.readouterr().out
 
 
+def test_a_file_with_a_byte_order_mark_is_read_and_still_scanned(
+    tmp_path: Path, capsys: pytest.CaptureFixture[str]
+) -> None:
+    """CPython accepts a leading UTF-8 byte-order mark in source, and retained third-party
+    files carry one; the guard reads them as the interpreter does, and still finds a site."""
+    (tmp_path / "plain.py").write_bytes(b"\xef\xbb\xbfx = 1\n")
+    (tmp_path / "tool.py").write_bytes(
+        b"\xef\xbb\xbf" + f"page.evaluate({PLANTED!r})\n".encode()
+    )
+    policy = tmp_path / "policy.yaml"
+    text = guard.POLICY.read_text(encoding="utf-8")
+    policy.write_text(text.split("\nallowlist:")[0] + "\nallowlist: []\n", encoding="utf-8")
+
+    assert guard.main(["--repo", str(tmp_path), "--policy", str(policy)]) == 1
+    out = capsys.readouterr().out
+    assert "cannot be read as Python" not in out
+    assert "tool.py: 1 site(s) of JavaScript in Python" in out
+
+
 def test_the_guard_runs_in_the_edit_tier_and_on_every_pull_request() -> None:
     (step,) = [s for s in validate.STEPS if s.name.startswith("browser code lives in files")]
     assert {"edit", "checks"} <= set(step.tags.split(", "))

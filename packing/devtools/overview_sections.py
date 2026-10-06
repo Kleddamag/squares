@@ -28,6 +28,7 @@ from devtools import repo_links
 from devtools.check_results import KINDS, kind_label
 from devtools.overview_data import (
     APOSTROPHE,
+    BIBLIOGRAPHY,
     EN_DASH,
     FRONTIER,
     REPO,
@@ -41,10 +42,12 @@ from devtools.render_overview import (
     DOCUMENT_PAGES,
     N11_LOWER_BOUNDS_EXPLAINER,
     N11_OPTIMALITY_REVIEW,
+    N11_THRESHOLD_BOUND_REVIEW,
     RESULTS_PAGE,
     SITE_PAGES,
     paper_path,
 )
+from devtools.render_overview import PAPERS as SERIES
 from devtools.render_recent_results import SUPERSEDED, listed, superseded
 from devtools.repo_links import branch_file
 from devtools.result_status import CONFIRMED, STATUSES
@@ -230,14 +233,16 @@ SECTION_CARD_SIZES: dict[str, CardSize] = {
 }
 
 #: A section set in lines of its own, as counts of its cards in order, where one
-#: wrapping row would not set them as they are meant to read: the five page cards stand
-#: one, two and two, the Frontier page alone at the top, then the two papers, then the
-#: tutorial and the workbench (the owner, 2026-10-02, `think-ns3d`; they stood two over
-#: three from `think-ec5k` the same day, the Frontier page's card last). Each line is a
-#: row of its own, and none sets more cards to a line than the longest line holds, so the
-#: lines share one column width, half the frame's. The stylesheet holds each longest line
-#: here to a rule.
-SECTION_CARD_LINES: dict[str, tuple[int, ...]] = {"pages": (1, 2, 2)}
+#: wrapping row would not set them as they are meant to read: the six page cards stand
+#: one, three and two, the Frontier page alone at the top, then the three parts of the
+#: n = 11 series on one line, one card per paper in reading order (the series plan,
+#: 2026-10-05), then the tutorial and the workbench. They stood one, two and two while
+#: the site had two papers (the owner, 2026-10-02, `think-ns3d`; two over three from
+#: `think-ec5k` the same day, the Frontier page's card last). Each line is a row of its
+#: own, and none sets more cards to a line than the longest line holds, so the lines
+#: share one column width, a third of the frame's. The stylesheet holds each longest
+#: line here to a rule.
+SECTION_CARD_LINES: dict[str, tuple[int, ...]] = {"pages": (1, 3, 2)}
 
 
 #: Elements with no end tag, which open nothing a parser must later close.
@@ -1473,20 +1478,13 @@ def document_cards() -> str:
     )
 
 
-#: When the explainer's proofs are from, as its cards say it: T-018 was established on
-#: 4 September 2026 and T-025 and T-026 on 9 September (`results.yaml`), first published
-#: on 5 and 13 September (`sqpack.release.PUBLICATION_HISTORY`). A test holds this phrase
-#: to those dates.
-EXPLAINER_AS_OF = "early September"
-
-
 class Paper(NamedTuple):
     """One of the site's papers, as its card says what it is: where it is served, a caps
-    label naming its kind, its title, one or two sentences on what it is, and the size
-    of its card on the Papers page. The title and description are register prose, so
-    `n = 11` in either is set as math. The card is the link to the paper and holds no
-    other, so what a description names (T-060, the optimality paper) is linked from
-    the Papers page's introduction (`templates/papers-article.md`)."""
+    label naming it, its title, one or two sentences on what it is, and the size of its
+    card on the Papers page. The title and description are register prose, so `n = 11`
+    and a bound in either are set as math. The card is the link to the paper and holds
+    no other, so what a description names (T-060, the series) is linked from the Papers
+    page's introduction (`templates/papers-article.md`)."""
 
     href: str
     label: str
@@ -1495,44 +1493,59 @@ class Paper(NamedTuple):
     size: CardSize = "large"
 
 
-#: Where the two papers are served, under `papers/` by their slugs
-#: (`render_overview.paper_path`): the optimality review, which
-#: `render_n11_optimality_review` builds, and the lower-bounds explainer, which
-#: `render_n11_lower_bounds_explainer` builds. Each renderer's `SITE_PATH` is the same
-#: path from the same slug.
-OPTIMALITY_PAPER = paper_path(N11_OPTIMALITY_REVIEW)
-LOWER_BOUNDS_PAPER = paper_path(N11_LOWER_BOUNDS_EXPLAINER)
-
-#: The site's papers, in the order the Papers page shows them, one large card each
-#: (`paper_cards`). A new paper is one entry here. The optimality paper is first: it
-#: explains the result that stands, T-060, where the explainer proves the lower bounds
-#: T-060 superseded and the tutorial is the background to both. Its title is its
-#: renderer's (`render_n11_optimality_review.TITLE`) in sentence case, and its
-#: description says what T-060's rungs allow, `V3/C3`: an accepted proof, machine-checked
-#: here with its review record pending. The explainer's title is the owner's
-#: (2026-09-30), as `render_n11_lower_bounds_explainer.TITLE` has it in title case; the
-#: tutorial's description is `TUTORIAL.md`'s own opening, its audience and what it owns.
-PAPERS: tuple[Paper, ...] = (
-    Paper(
-        href=OPTIMALITY_PAPER,
-        label="Optimality paper",
-        title="A review of the optimality proof of the Trump packing of 11 squares",
-        description=(
-            "Explains the accepted proof that Trump\u2019s 1979 packing of eleven squares "
-            "is optimal, s(11) = 3.8770835\u2026 (T-060): the exact construction, the "
-            "exhaustive case exclusions, the geometric capture and the local-isolation "
-            "argument, with figures drawn from or checked against the retained proof data."
+#: What each part of the n = 11 series says of itself on its cards and in README, by
+#: slug, in the words of the series plan (`docs/project/specs/active/
+#: plan-2026-10-05-n11-explainer-series.md`, Series Presentation): each title is its
+#: renderer's (`render_overview.PAPERS`) in sentence case, and each line names the result
+#: the paper proves or explains. Part III's line says what T-060's rungs allow, `V3/C3`:
+#: a proof, machine-checked here with its review record pending, never a formal one.
+SERIES_CARDS: dict[str, tuple[str, str]] = {
+    N11_LOWER_BOUNDS_EXPLAINER: (
+        "New lower bounds for square packing for n = 11",
+        (
+            "How weighted points and 2-of-3 threshold atoms prove T-018, T-025 and T-026, "
+            "s(11) >= 3.8264\u2026, with interactive figures."
         ),
     ),
-    Paper(
-        href=LOWER_BOUNDS_PAPER,
-        label="Explainer",
-        title="New lower bounds for square packing for n = 11",
-        description=(
-            "An explainer and proof of certain lower bounds for n = 11. It explains the "
-            f"earlier, simpler proofs as of {EXPLAINER_AS_OF}; newer optimality proofs now "
-            "exist (T-060)."
+    N11_THRESHOLD_BOUND_REVIEW: (
+        "A review of the certified lower bound s(11) > 31/8 for 11 squares",
+        (
+            "Explains Kleddamag\u2019s proof that s(11) > 31/8 (T-037): five-site k-of-m "
+            "charges, k-of-m charges on shrunken parents with strict cores, and a "
+            "reoptimized certificate over 12,028 angle rows."
         ),
+    ),
+    N11_OPTIMALITY_REVIEW: (
+        "A review of the optimality proof of the Trump packing of 11 squares",
+        (
+            "Explains Queuingtheorydotcom\u2019s proof that Trump\u2019s packing is optimal, "
+            "s(11) = 3.8770835\u2026 (T-060): construction, case exclusions, capture and "
+            "local isolation."
+        ),
+    ),
+}
+
+#: Where each part of the series is served, under `papers/` by its slug
+#: (`render_overview.paper_path`); each renderer's `SITE_PATH` is the same path from the
+#: same slug.
+LOWER_BOUNDS_PAPER = paper_path(N11_LOWER_BOUNDS_EXPLAINER)
+THRESHOLD_BOUND_PAPER = paper_path(N11_THRESHOLD_BOUND_REVIEW)
+OPTIMALITY_PAPER = paper_path(N11_OPTIMALITY_REVIEW)
+
+#: The site's papers, in the order the Papers page shows them, one large card each
+#: (`paper_cards`): the three parts of the n = 11 series in reading order, I, II, III,
+#: each labelled by its part (`render_overview.PAPERS`, the one registry a new paper is
+#: entered in), then the tutorial, the background to all three, whose description is
+#: `TUTORIAL.md`'s own opening, its audience and what it owns.
+PAPERS: tuple[Paper, ...] = (
+    *(
+        Paper(
+            href=paper_path(record.slug),
+            label=record.label,
+            title=SERIES_CARDS[record.slug][0],
+            description=SERIES_CARDS[record.slug][1],
+        )
+        for record in SERIES
     ),
     Paper(
         href="tutorial.html",
@@ -1546,9 +1559,10 @@ PAPERS: tuple[Paper, ...] = (
         ),
     ),
 )
-#: The explainer, whose card reads the same on the overview as on the Papers page.
+#: Each part of the series, whose card reads the same on the overview as on the Papers
+#: page.
 EXPLAINER = next(paper for paper in PAPERS if paper.href == LOWER_BOUNDS_PAPER)
-#: The optimality paper, whose card on the overview carries its label and its title.
+THRESHOLD_REVIEW = next(paper for paper in PAPERS if paper.href == THRESHOLD_BOUND_PAPER)
 OPTIMALITY = next(paper for paper in PAPERS if paper.href == OPTIMALITY_PAPER)
 
 
@@ -1575,11 +1589,10 @@ def paper_cards() -> str:
 #: The site's reading and working pages, as the overview's cards under The Squares
 #: Project show them: the page, a label, its title, and one line on what a reader finds
 #: there. Both are register prose, so a bound in either is written in ASCII
-#: (`s(11) >= 3.8264…`) and set as math. The explainer's card takes its paper's words;
-#: the optimality paper's and the tutorial's keep a shorter line here. The optimality
-#: paper leads the papers, as on the Papers page: it explains the result that stands. Every
-#: address is a full page the site serves, the paper's a directory below the root, so
-#: its card links straight to it. The Frontier page's card is first, on a line of its
+#: (`s(11) >= 3.8264…`) and set as math. The three parts of the n = 11 series stand
+#: together, in reading order, each card in its paper's own words, as on the Papers page.
+#: Every address is a full page the site serves, a paper's a directory below the root,
+#: so its card links straight to it. The Frontier page's card is first, on a line of its
 #: own (`SECTION_CARD_LINES`, `think-ns3d`): it stood in The Frontier Survey section,
 #: beside a card to the recent cases, until the owner dropped that section on 2026-10-02
 #: and moved the card to every case up here (`think-ec5k`), last of the five at first.
@@ -1591,16 +1604,10 @@ PAGES: tuple[tuple[str, str, str, str], ...] = (
         "Every case from n = 1 to 324",
         "Reported and verified bounds side by side, with their sources.",
     ),
-    (
-        OPTIMALITY.href,
-        OPTIMALITY.label,
-        OPTIMALITY.title,
-        (
-            "Explains the accepted proof that Trump\u2019s packing of eleven squares is "
-            "optimal, s(11) = 3.8770835\u2026 (T-060)."
-        ),
+    *(
+        (paper.href, paper.label, paper.title, paper.description)
+        for paper in (EXPLAINER, THRESHOLD_REVIEW, OPTIMALITY)
     ),
-    (EXPLAINER.href, EXPLAINER.label, EXPLAINER.title, EXPLAINER.description),
     (
         "tutorial.html",
         "Tutorial",
@@ -1670,7 +1677,10 @@ OTHER_PROJECTS: tuple[tuple[str, str, str], ...] = (
     (
         "https://github.com/squarepacker/s12-lower-bound",
         "Ryu Sungjoon",
-        "Evan Daniel's s(12) certificate rescaled by 7902/7901, a bound for twelve squares.",
+        (
+            "Evan Daniel's s(12) points rescaled and then re-weighted, the lower bound"
+            " s(12) \u2265 7943/2000 for twelve squares."
+        ),
     ),
     (
         "https://github.com/wand125/square-packing-bounds",
@@ -1744,6 +1754,100 @@ OTHER_PROJECTS: tuple[tuple[str, str, str], ...] = (
     ),
 )
 
+#: David Ellsworth's Squares in Squares catalogue, the record's `[Kingbird]`.
+KINGBIRD = "https://kingbird.myphotos.cc/packing/squares_in_squares.html"
+
+#: The catalogues of the record packings, which lead the Other Square Packing
+#: Projects section in this order, ahead of the ranked cards (the owner, 2026-10-05,
+#: `think-lvhh`): each one's address, its name, its maintainer as the record credits
+#: them, and what it holds. Ellsworth's catalogue is the baseline of every upper bound
+#: (`kingbird-current` in the source-coverage register). Erich Friedman's original page
+#: is the one the catalogue's header credits, at the archived address that header links
+#: (`resources/web/kingbird-squares-in-squares.md`). Evan Daniel's atlas is the
+#: bibliography's `[evand square packing atlas 2026-10-04]`.
+CATALOGUE_SITES: tuple[tuple[str, str, str, str], ...] = (
+    (
+        KINGBIRD,
+        "Squares in Squares",
+        "David Ellsworth after Erich Friedman",
+        (
+            "The catalogue of record packings, with their exact sides and histories: the"
+            " baseline of every upper bound here."
+        ),
+    ),
+    (
+        "https://web.archive.org/web/20230530194618/https://erich-friedman.github.io/packing/squinsqu/",
+        "Erich\u2019s Packing Center",
+        "Erich Friedman",
+        (
+            "The original Squares in Squares page, as archived on 30 May 2023, which"
+            " Ellsworth\u2019s catalogue continues."
+        ),
+    ),
+    (
+        "https://evand.github.io/square-packing/",
+        "Square Packing Atlas",
+        "Evan Daniel",
+        (
+            "Every record packing drawn beside the proven floor beneath it, with a page of"
+            " open problems."
+        ),
+    ),
+)
+
+#: The other places off GitHub that the record cites results from, ranked with the
+#: projects on GitHub: each one's address, its name (a post's is its title, as the post
+#: gives it), its author as the record credits them, and what it holds. They are the
+#: source-coverage register's two sources off GitHub that are not a catalogue,
+#: UnitSquare's release and Wang and Li's Zenodo record, and the two posts behind
+#: Burns's and Massaccesi's n = 17 bound, whose key the register credits with T-015 and
+#: T-016 and the case records cite. A test holds every source the coverage register
+#: reviews to a card, here or in `OTHER_PROJECTS`, and every address here and in
+#: `CATALOGUE_SITES` to one the record cites.
+OTHER_SITES: tuple[tuple[str, str, str, str], ...] = (
+    (
+        "https://sam-burns.com/posts/proposing-better-lower-bound-for-n17-square-packing/",
+        "Proposing a Better Lower Bound for n = 17 Square Packing",
+        "Sam Burns",
+        (
+            "A weighted certificate for s(17) \u2265 4.4811, the method Massaccesi\u2019s"
+            " bound builds on."
+        ),
+    ),
+    (
+        "https://gus-massa.blogspot.com/2026/08/another-better-lower-bound-for-n17.html",
+        "Another Better Lower Bound for n = 17 Square Packing",
+        "Gustavo Massaccesi",
+        "s(17) \u2265 4.5058, by linear programming on Burns\u2019s certificate architecture.",
+    ),
+    (
+        "https://doi.org/10.5281/zenodo.23038546",
+        "Zenodo 23038546",
+        "Ke Wang and Can Li",
+        (
+            "An exact lower bound for eleven squares, a reweighting of Kleddamag\u2019s"
+            " certificate."
+        ),
+    ),
+    (
+        "https://hmbelvedere.com/",
+        "UnitSquare",
+        "the UnitSquare Project",
+        (
+            "Results Release 1, reported packings for six counts from n = 68 to 131, each"
+            " since superseded."
+        ),
+    ),
+)
+
+
+def site_name(url: str) -> str | None:
+    """A listed website's name, `None` for a repository on GitHub."""
+    for address, name, _, _ in (*CATALOGUE_SITES, *OTHER_SITES):
+        if address == url:
+            return name
+    return None
+
 
 #: Favicons for other projects hosted off GitHub, saved here by host name
 #: (`example.org.png`, `.svg` or `.ico`) and inlined, so the page fetches nothing.
@@ -1761,12 +1865,24 @@ GITHUB_MARK = (
     '.01 1.3.01 1.49 0 .21-.15.45-.55.38A7.995 7.995 0 0 1 0 8c0-4.42 3.58-8 8-8Z"/></svg>'
 )
 
+#: The mark for a website whose favicon is not saved in `PROJECT_FAVICONS`: a globe, a
+#: circle crossed by one meridian and the equator, drawn in the text colour on GitHub's
+#: mark's 16 units.
+WEB_MARK = (
+    '<svg class="site-link-icon" viewBox="0 0 16 16" aria-hidden="true" focusable="false">'
+    '<g fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="8" cy="8" r="6.75"/>'
+    '<ellipse cx="8" cy="8" rx="2.75" ry="6.75"/><path d="M1.25 8h13.5"/></g></svg>'
+)
+
 _FAVICON_TYPES = {".png": "image/png", ".svg": "image/svg+xml", ".ico": "image/x-icon"}
 
 
 def link_icon(url: str) -> str:
     """The mark beside a project's address: GitHub's for a GitHub URL, otherwise the
-    site's own favicon from `PROJECT_FAVICONS`, which a build without one refuses."""
+    site's own favicon where one is saved in `PROJECT_FAVICONS`, and the globe,
+    `WEB_MARK`, where none is. None is saved yet: the hosts the cards for websites name
+    refused this project's sessions when the cards were added (2026-10-05), and a page
+    fetches nothing, so a favicon arrives only as a saved file."""
     host = (urlsplit(url).hostname or "").removeprefix("www.")
     if host == "github.com":
         return GITHUB_MARK
@@ -1778,14 +1894,15 @@ def link_icon(url: str) -> str:
                 f'<img class="site-link-icon" src="data:{mime};base64,{data}" alt="" '
                 'width="16" height="16">'
             )
-    raise SystemExit(
-        f"{url}: save {host}'s favicon as {PROJECT_FAVICONS.name}/{host}.png (or .svg, .ico)"
-    )
+    return WEB_MARK
 
 
 def _breakable(address: str) -> str:
-    """An address that may wrap after each slash rather than inside a name."""
-    return "/<wbr>".join(_esc(part) for part in address.split("/"))
+    """An address that may wrap after each slash rather than inside a name, and after
+    the two slashes of an address it holds, an archived one's, not between them."""
+    return "/<wbr>".join(_esc(part) for part in address.split("/")).replace(
+        "/<wbr>/<wbr>", "//<wbr>"
+    )
 
 
 def link_card(
@@ -1856,12 +1973,26 @@ def link_card(
 #: source-coverage register ties to no repository of its own. The September 20 packet
 #: of weighted certificates is two repositories under one key, Guzhou0806's R012 and
 #: Mira's measure; Guzhou0806's is listed here, so the result registered from the packet
-#: counts for it.
+#: counts for it. The key of Burns's and Massaccesi's n = 17 bound names both authors
+#: and both posts, so its results count for each.
 PROJECT_EXTRA_KEYS: dict[str, tuple[str, ...]] = {
     "https://github.com/Guzhou0806/n17-square-packing": (
         "[n17 weighted certificates 2026-09-20]",
     ),
+    "https://sam-burns.com/posts/proposing-better-lower-bound-for-n17-square-packing/": (
+        "[Burns\u2013Massaccesi n17]",
+    ),
+    "https://gus-massa.blogspot.com/2026/08/another-better-lower-bound-for-n17.html": (
+        "[Burns\u2013Massaccesi n17]",
+    ),
 }
+
+#: Where a listed website's results are cited under a bibliography venue of their own:
+#: every key with that `venue` counts for it, so a result a later intake of the
+#: catalogue registers counts without an edit here. The catalogue's own key, `[Kingbird]`,
+#: is the baseline and attributes no result; each registered packing it carries has a
+#: key of its own whose venue is the catalogue (T-088 and T-089).
+SOURCE_VENUES: dict[str, str] = {KINGBIRD: "Squares in Squares"}
 
 #: The source-coverage register: each source repository the record reviews, with the
 #: bibliography key its results are attributed under.
@@ -1869,15 +2000,20 @@ SOURCE_COVERAGE = FRONTIER / "source-coverage.yaml"
 
 
 def project_urls() -> tuple[str, ...]:
-    """The listed projects' repositories, in the order `OTHER_PROJECTS` writes them,
-    which is not the order the page shows them in (`project_order`)."""
-    return tuple(url for url, _, _ in OTHER_PROJECTS)
+    """Every listed project's address, the websites' first, in the order
+    `CATALOGUE_SITES`, `OTHER_SITES` and `OTHER_PROJECTS` write them, which is not the
+    order the page shows them in (`listed_projects`)."""
+    return (
+        *(url for url, _, _, _ in (*CATALOGUE_SITES, *OTHER_SITES)),
+        *(url for url, _, _ in OTHER_PROJECTS),
+    )
 
 
 def project_name(url: str) -> str:
-    """A project as its owner and repository, `evand/square-packing`: the name the
-    Project filter shows, since three of the repositories are called `square-packing`."""
-    return urlsplit(url).path.strip("/")
+    """A project as the Project filter names it: a website by its name, and a repository
+    as its owner and repository, `evand/square-packing`, since three of the repositories
+    are called `square-packing`."""
+    return site_name(url) or urlsplit(url).path.strip("/")
 
 
 def project_slug(url: str) -> str:
@@ -1895,16 +2031,21 @@ def source_repository(url: str) -> str:
 @cache
 def project_source_keys() -> dict[str, frozenset[str]]:
     """Each listed project's bibliography keys: those the source-coverage register gives
-    the sources at its repository, and those `PROJECT_EXTRA_KEYS` adds. A result is a
-    project's where its `attribution.source_keys` names one of them."""
+    the sources at its address, those `PROJECT_EXTRA_KEYS` adds, and every key whose
+    venue is the project's in `SOURCE_VENUES`. A result is a project's where its
+    `attribution.source_keys` names one of them."""
     coverage = safe_load(SOURCE_COVERAGE.read_text(encoding="utf-8"))["sources"]
+    bibliography = safe_load(BIBLIOGRAPHY.read_text(encoding="utf-8"))["sources"]
     keys: dict[str, set[str]] = {
         url: set(PROJECT_EXTRA_KEYS.get(url, ())) for url in project_urls()
     }
+    listed = {source_repository(url): url for url in keys}
     for source in coverage:
-        repository = source_repository(source["url"])
-        if repository in keys and source.get("source_key"):
-            keys[repository].add(source["source_key"])
+        url = listed.get(source_repository(source["url"]))
+        if url is not None and source.get("source_key"):
+            keys[url].add(source["source_key"])
+    for url, venue in SOURCE_VENUES.items():
+        keys[url] |= {entry["key"] for entry in bibliography if entry.get("venue") == venue}
     return {url: frozenset(found) for url, found in keys.items()}
 
 
@@ -1995,17 +2136,47 @@ def cited_results(overview: Overview) -> list[Cited]:
 
 
 def repository_name(url: str) -> str:
-    """A project's repository by its name alone, a card's headline."""
+    """A project's repository by its name alone."""
     return urlsplit(url).path.rstrip("/").rsplit("/", 1)[-1]
 
 
-def ranked_projects(overview: Overview) -> list[tuple[str, ProjectTally]]:
-    """The listed projects in the order the page shows them, each with its tally: read
-    from the register when the page is rendered, never kept by hand."""
-    slugs = {project_slug(url): url for url in project_urls()}
+def project_headline(url: str) -> str:
+    """A project card's headline: a website's name, or its repository's."""
+    return site_name(url) or repository_name(url)
+
+
+def headline_html(url: str) -> str:
+    """`project_headline` as the card sets it: a website's name is prose, so a case it
+    names (`n = 17`) is set as math; a repository's name is an identifier, set as it is."""
+    name = site_name(url)
+    return tex_bounds(name) if name else _esc(repository_name(url))
+
+
+def _tallied(urls: Sequence[str], overview: Overview) -> dict[str, ProjectTally]:
+    """Each of `urls`'s tally over the register, by its address."""
+    slugs = {project_slug(url): url for url in urls}
     tallies = project_tallies(list(slugs), cited_results(overview), significance_levels())
-    names = {slug: repository_name(url) for slug, url in slugs.items()}
-    return [(slugs[slug], tallies[slug]) for slug in project_order(tallies, names)]
+    return {url: tallies[slug] for slug, url in slugs.items()}
+
+
+def ranked_projects(overview: Overview) -> list[tuple[str, ProjectTally]]:
+    """The projects the page ranks, every listed one but the catalogues, in the order it
+    shows them (`project_order`), each with its tally: read from the register when the
+    page is rendered, never kept by hand."""
+    urls = [*(url for url, _, _, _ in OTHER_SITES), *(url for url, _, _ in OTHER_PROJECTS)]
+    tallies = _tallied(urls, overview)
+    slugs = {project_slug(url): url for url in urls}
+    names = {slug: project_headline(url) for slug, url in slugs.items()}
+    ordered = project_order({slug: tallies[url] for slug, url in slugs.items()}, names)
+    return [(slugs[slug], tallies[slugs[slug]]) for slug in ordered]
+
+
+def listed_projects(overview: Overview) -> list[tuple[str, ProjectTally]]:
+    """Every card of the Other Square Packing Projects section in page order, each with
+    its tally: the catalogues as `CATALOGUE_SITES` writes them, then `ranked_projects`."""
+    catalogues = [url for url, _, _, _ in CATALOGUE_SITES]
+    tallies = _tallied(catalogues, overview)
+    return [(url, tallies[url]) for url in catalogues] + ranked_projects(overview)
 
 
 def results_filter_url(project: str, level: int | None = None) -> str:
@@ -2037,19 +2208,22 @@ def project_tally(url: str, tally: ProjectTally) -> str:
 
 
 def other_project_cards(overview: Overview) -> str:
-    """One card per other project, in `project_order`: its repository's name, its author,
-    what it holds and its address, and at its foot its tally of registered results
-    (`project_tally`). Each card's link opens the project in a new tab. The note is prose
-    like a page card's, so a case it names (`n = 21`) is set as math."""
-    listed = {url: (author, note) for url, author, note in OTHER_PROJECTS}
+    """One card per other project, website or repository, in `listed_projects`'s order:
+    its name (`project_headline`), its author, what it holds and its address, and at its
+    foot its tally of registered results (`project_tally`). Each card's link opens the
+    project in a new tab. The note is prose like a page card's, so a case it names
+    (`n = 21`) is set as math."""
+    listed = {url: (author, note) for url, author, note in OTHER_PROJECTS} | {
+        url: (author, note) for url, _, author, note in (*CATALOGUE_SITES, *OTHER_SITES)
+    }
     cards = []
-    for url, tally in ranked_projects(overview):
+    for url, tally in listed_projects(overview):
         author, note = listed[url]
         cards.append(
             link_card(
                 url,
                 f"By {author}",
-                _esc(repository_name(url)),
+                headline_html(url),
                 tex_bounds(note),
                 size=SECTION_CARD_SIZES["projects"],
                 foot=project_tally(url, tally),

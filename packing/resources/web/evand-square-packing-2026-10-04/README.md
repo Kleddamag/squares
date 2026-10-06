@@ -7,6 +7,10 @@ This packet retains the Square Packing Atlas, Evan Daniel’s site at
 It also retains the notes, certificates and Lean files with claims that the repository
 added after the [October 3 packet](../evand-square-packing-2026-10-03/README.md)’s pin
 `2eb15455`.
+On 5 October an intake pass (bead `think-83zc`) added 44 files from the same clone and
+commit. Earlier commits had changed them, no packet retained them, and they bear on
+entries this record holds; [Added for Earlier Commits](#added-for-earlier-commits)
+lists them.
 
 The owner asked on 5 October 2026 for a review, a citation and an import of the site
 and its pages. No issue was opened for the request; the bead `think-plrl` holds the
@@ -27,11 +31,24 @@ explains how each claim is mapped.
 | Licence | MIT, `LICENSE` and `s12/LICENSE`. The root `README.md` says that `site/www/data/` is derived from David Ellsworth’s SVG catalogue, quotes his attribution text, and is not covered by the MIT licence |
 | Request | The owner’s request of 5 October 2026; bead `think-plrl`, and `think-kqc3` for the homepage link |
 
-**The deployed pages were not fetched.**
-This session’s egress policy blocks `evand.github.io`.
-The pages retained here are the files the Pages workflow copies from this commit.
-The workflow runs on every push to `main` that touches `site/www/`, and this commit
-does.
+**The deployed pages are this commit’s files.**
+The session that made this packet could not reach `evand.github.io`, so it retained the
+files the Pages workflow copies from this commit; the workflow runs on every push to
+`main` that touches `site/www/`, and this commit does.
+On 2026-10-05 at 22:56Z, after the egress policy was widened (bead `think-cdzc`),
+[`devtools.capture_web_source`](../../../devtools/capture_web_source.py) `pages` fetched
+the deployed site as [`acquisition/deployed-site.json`](acquisition/deployed-site.json)
+declares it: the eight pages, the stylesheet, the six scripts, the six data files, the
+seven write-ups and the six covers the workflow copies, and the three parse files under
+`data/p/` that this record’s witnesses at $n = 69, 83$ and $87$ were read from.
+All 37 answered 200 and each is byte-identical to its source file at this commit; the 28
+this packet’s manifest covers match it too
+([receipt](receipts/deployed-site-2026-10-05.json)).
+Every page is served with `Last-Modified: Sun, 04 Oct 2026 20:18:03 GMT`, 25 s after
+this commit, and the two later commits, `ab2bf47` and `13ee36e`, change nothing the
+workflow copies, so no build has replaced this one.
+The three parse files are the bytes each witness names in `source.revision_sha256`.
+So the pages the review of 5 October read are the pages the site served.
 
 **Credit and AI assistance.** `s12/CREDITS.md` has not changed since the October 3
 packet.
@@ -45,9 +62,10 @@ analysis are the site’s own.
 ## What Is Retained
 
 The manifest ([`acquisition/upstream-subtree.sha256`](acquisition/upstream-subtree.sha256))
-covers 71 files, 3,196,966 bytes.
-Sixty-nine are retained under [`square-packing/`](square-packing/), byte-identical after
-decompression. Two are pinned by digest only;
+covers 115 files, 3,924,631 bytes.
+113 are retained under [`square-packing/`](square-packing/), byte-identical after
+decompression: the 69 of the table below and the 44 added on 5 October. Two are pinned
+by digest only;
 [`acquisition/sources.json`](acquisition/sources.json) gives the reason for each.
 
 | Upstream path | What it is |
@@ -76,8 +94,81 @@ analysis of Ellsworth’s catalogue.
 The 547 packing files under `site/www/data/p/`, about 90 MB, are parsed from
 Ellsworth’s SVGs and are pinned by the commit.
 Also left out: the site’s build tools, its working notes and TODO lists, and the task
-briefs and reports under `s12/tasks/` other than the $s(20)$ review.
+briefs and reports under `s12/tasks/` other than the $s(20)$ review and the reviews and
+briefs added on 5 October.
 The research scripts and data that no claim of the site rests on are left out too.
+
+## Added for Earlier Commits
+
+The intake sweep of 5 October listed 41 commits of 1 to 4 October, from `27dd68a` to
+`40e442f`, that this pin contains and whose changed paths no packet retained.
+Where such a commit changed a file that bears on an entry this record holds, the file
+as it stands at this pin was added here, read from the same clone of 00:34Z; every file
+retained before came out byte-identical.
+The declaration’s scope gained 44 files.
+
+| Upstream path | Changed by | Bears on |
+| --- | --- | --- |
+| `s12/certificates/k2m3/README.md` | `02629f2`, `a40e2bc`, `2eb1545`, `37f2d09`, `ca6d988` (3 October) | `T-064` |
+| `s12/tasks/k2m3-review/README.md` and its six `REPORT.md` | `0f55a52` (3 October) | `T-064` |
+| `s12/search/ZMX2_AREA.md`, ten records in `s12/search/zmx2_area/`, `zmx2_area_tests.sh`, `zmx2_tools.py` | `bfbdf04` (2 October) | `T-064` |
+| `s12/tasks/k2m4-review/README.md` and its three `REPORT.md` | `0f55a52` | `T-081` |
+| `s12/VERIFICATION.md`, `s12/certificates/s21/`, `s32/`, `s45/` and `s60/README.md` | `6383ad8` (1 October, local time) | `T-052`, `T-051`, `T-053`, `T-062` |
+| `s12/tasks/s21-finish/`, seven files | `0f55a52` | `T-051`, `T-052`, `T-053`, `T-062` |
+| `s12/lean/Sqpack/Attain.lean`, `Spec.lean`, `SpecBridge.lean`, `FCSquarePacking.lean`, `SpecFC.lean`, `SpecHeadline.lean`, `S13Lower.lean` | `f7b4430`, `87726c9`, `c2ae715` (1 October, local time) | `T-006`, and `T-086`’s note on `SpecChelokot.lean`, which imports them |
+
+What they add, as the source states it; nothing here was run:
+
+- **The $k^2 - 3$ bundle README** records wand125’s checker as an independent second
+  implementation of `Valid7`. The source reran its record check in a sandbox, `RECORD
+  OK` over all 156,800 roots with three mutant covers refused, and read its method,
+  finding the measure-zero gap this record’s review calls D-1.
+  The README says the D4 reduction and Lemma Z are kernel-checked, leaving `ValidTilt7`.
+  It cites chelokot’s Lean `s6_eq_three` for $k = 3$, and it points at the six
+  adversarial reviews of 29 September, which were private until `0f55a52`.
+- **`zmx2` decides `Valid7`.** At `bfbdf04` the source’s `zmx2` with area density closed
+  the 120 D4 boxes at the double germs it had left open (§11.4 of `ZMX2_AREA.md`).
+  `cert --first-order` reports `VERIFIED-D4` over 4,900 roots and `VERIFIED` over all
+  39,200 roots of the unreduced pose space, none uncertified, in 399 CPU-seconds.
+  This is an interval-certified implementation by the source’s agent, written without
+  opening `qx2_zm.py`. Its §13 is the same agent’s self-audit: four refinements of the
+  newest lemmas survive its mutation tests, and a second reader should check them first.
+  So the bundle README and the TODO list still call `zmx2` partial.
+  The `_v2` records were made by `zmx2.rs` blob `08bea466`, the version at `bfbdf04`.
+  The copy retained above is `d42cbde2`, from `b8157df`, which the source says leaves the
+  roots and atoms of every integer side unchanged.
+- **The $k^2 - 4$ reviews.** The three reports the `k2m4` bundle README summarises,
+  kept in private notes when the 3 October packet was made, report no BREAKS.
+  The claim report’s one GAP is the step from the run’s D4 region to `Valid9`, which
+  `ValidSplit9.lean` in the 3 October packet kernel-checks.
+- **The claims audit** of `6383ad8`, which the
+  [2 October packet](../evand-square-packing-2026-10-02/README.md) read without
+  retaining these files, is unchanged at this pin. It calls the bundles’ checkers
+  separately written rather than independent, because they share `zeromargin.py`’s
+  point-test formulation, and it notes, citing Karakuş, that the published proof of
+  Nagamochi’s 2005 general result is incomplete.
+- **The brief of `zmx2`**, `s12/tasks/s21-finish/xcheck.md` of 27 September, was not
+  public when `T-051` was reviewed. It forbids `zm_mixed.py`, its tests, `ZM_MIXED.md`
+  and its audits. It permits `zmcheck`, `zeromargin.py`, `RUNG2.md` and `ZEROMARGIN.md`
+  for pose-space subdivision and point primitives, as the source said on
+  [#238](https://github.com/jlevy/squares/issues/238).
+- **The Lean.** `isLeast_minSide` proves that the infimum is attained for every
+  $n \ge 1$. `Spec.lean` states the problem as `UnitSquarePacking.Packs`, and
+  `SpecBridge.lean` and `SpecFC.lean` connect it to the source’s definitions and to
+  formal-conjectures’ `SquarePacking`. `SpecHeadline.lean` restates $s(13) = 4$ in both
+  forms (`s13`, `s13_fc`), and `S13Lower.lean` adds `s13_isLeast`. These files were not
+  built here.
+
+Each is an evidence update on the entry it bears on, and none moves a rung.
+The rest of those commits is working material, left out by the rules above. That covers
+the TODO and Completed lists, task briefs and the source’s session reviews, the research
+notes and scripts (the SOS probe, the S2 insertable LPs, the seam capacity, the `qx2`
+margin studies, the $s(20)$ cover’s generator tools), the literature and proof-anatomy
+notes, and the reviewers’ scratch code and logs. Two Lean files are left out too:
+`S3Lower.lean`’s `s3_eq_2`, a toy run of the mixed verifier on a classical value, and
+`Average.lean`’s averaging lemma, which bounds nothing.
+A read in [`intake-watch.yaml`](../../../campaign/intake-watch.yaml), through `40e442f`,
+records them.
 
 ## Checks Here, 5 October 2026
 

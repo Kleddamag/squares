@@ -140,15 +140,30 @@ def test_a_quotation_the_formatter_curled_inside_still_counts() -> None:
     assert assistance.catalogue_owed(_record(CATALOGUE_RECORD, body), catalogue) == ()
 
 
+def test_a_quotation_whose_apostrophes_the_formatter_curled_still_counts() -> None:
+    """The formatter curls single quotes and apostrophes as it curls double ones."""
+    catalogue = {
+        7: _Entry("Improved by A. O'Name in September 2026, working with the 'X' model.")
+    }
+    (owed,) = assistance.catalogue_owed(_record(CATALOGUE_RECORD, "Found.\n"), catalogue)
+    assert "O'Name" in owed
+    curled = owed.replace("O'Name", "O’Name").replace("'X'", "‘X’")
+    body = f"## The packing\n\nFound.\n{curled}\n"
+    assert assistance.catalogue_owed(_record(CATALOGUE_RECORD, body), catalogue) == ()
+
+
 def test_a_record_reporting_another_source_owes_the_catalogue_nothing() -> None:
     elsewhere = CATALOGUE_RECORD.replace("'[Kingbird]'", "'[Elsewhere 2026]'")
     assert assistance.catalogue_owed(_record(elsewhere, "Found.\n"), {7: AI_CREDIT}) == ()
 
 
 def test_the_catalogue_records_quote_their_statements_and_the_check_sees_a_drop() -> None:
-    """n = 126 and 179 carry the catalogue's statements; without them the check fails."""
+    """n = 69 and 179 carry the catalogue's statements; without them the check fails.
+    n = 126 still quotes the catalogue's statement, but since 6 October its reported bound
+    cites Evan Daniel's exact optimum (T-098) rather than the catalogue, and the check
+    holds only records whose reported bound is the catalogue's."""
     entries = assistance.record_catalogue_entries()
-    for n in (126, 179):
+    for n in (69, 179):
         text = (assistance.FRONTIER / f"n-{n:03d}.md").read_text(encoding="utf-8")
         assert assistance.catalogue_owed(text, entries) == ()
         start = text.index("In the catalogue’s words:")

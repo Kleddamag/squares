@@ -23,9 +23,10 @@ This Squares Project was begun by [Joshua Levy](https://x.com/ojoshe) in August 
 with some initial explorations that obtained
 [new lower bounds](papers/n11-lower-bounds-explainer.html) for $n = 11, 17, 18, 19, 20$
 and other low values.
-Now several others have obtained results building on this work, including a landmark new
-proof by Queuingtheorydotcom of the optimality of the famous
-[case of 11 squares](cases/11.html).
+Now several others have obtained results building on this work, including Kleddamag’s
+[certified lower bound of 31/8](papers/n11-threshold-bound-review.html) and a
+[landmark new proof](papers/n11-optimality-review.html) by Queuingtheorydotcom of the
+optimality of the famous [case of 11 squares](cases/11.html).
 Separately, Evan Daniel has proved the optimality of
 [a whole infinite family](all-results.html#t-064), $s(k^2 - 3) = k$ for every $k \ge 6$,
 along with exact values at [21](cases/21.html), [32](cases/32.html) and
@@ -45,7 +46,10 @@ Contact [ojoshe](https://x.com/ojoshe) if you wish to join.
      2026-08-22; its own lower bounds are at
      n = 11, 12 and 17 to 21 (T-001 to T-034); the explainer the link names is n = 11's,
      and it lists the bounds at 12, 17 and 19 that its method gave; and the optimality
-     of n = 11 is T-060, Queuingtheorydotcom's. The sentence after it names the
+     of n = 11 is T-060, Queuingtheorydotcom's. On 2026-10-05 (think-92ar) the owner
+     asked for the three n = 11 papers to be linked here: Kleddamag's T-037, also
+     building on this project, joins the sentence with Part II, and "landmark new proof"
+     links Part III. The sentence after it names the
      top-line results by others (the owner, 2026-10-03, think-nlyc), each checked the
      same way: s(k^2 - 3) = k for every k >= 6 is T-064, and s(21) = 5, s(32) = 6 and
      s(45) = 7 are T-052, T-051 and T-053, all four credited to Daniel after Burns,
@@ -91,7 +95,7 @@ $n$.
 
 Eleven squares is settled: $s(11) = 3.8770835\ldots$, the exact side of Trump’s 1979
 packing, by [T-060](all-results.html#t-060). Seventeen squares is bracketed by
-machine-checked bounds, [T-043](all-results.html#t-043) below and
+machine-checked bounds, [T-093](all-results.html#t-093) below and
 [T-065](all-results.html#t-065) above, and [$n = 21$](cases/21.html),
 [$32$](cases/32.html) and [$45$](cases/45.html) have new exact values.
 The table above starts at significance S3 and up, max age 180 days and superseded
@@ -123,15 +127,16 @@ hidden.
 
 ## Other Square Packing Projects
 
-These are the open projects on GitHub that the research frontier cites, ordered by the
-significance of their results in the [register](all-results.html): most at S5 first,
-then S4, and so on down, newest first among equals.
-Each card ends with a count that opens those results.
-Evan Daniel also publishes the
-[Square Packing Atlas](https://evand.github.io/square-packing/), which draws every
-record packing beside the proven floor beneath it, and a page of
+The first three cards are the catalogues of the record packings: David Ellsworth’s
+Squares in Squares, which continues Erich Friedman’s original page, and Evan Daniel’s
+Square Packing Atlas, which draws every record packing beside the proven floor beneath
+it and keeps a page of
 [open problems](https://evand.github.io/square-packing/problems.html) about the patterns
-that span many $n$.
+that span many $n$. After them come the projects and posts, on GitHub and elsewhere,
+that the research frontier cites results from, ordered by the significance of those
+results in the [register](all-results.html): most at S5 first, then S4, and so on down,
+newest first among equals.
+A card with registered results ends with a count that opens them.
 
 {{OTHER_PROJECTS}}
 

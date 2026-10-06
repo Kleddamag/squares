@@ -130,11 +130,13 @@ SCREEN_EXCLUDED: dict[str, tuple[str, ...]] = {
 #: 2026-09-30 for the live corpus after the catalogue refresh moved n = 126 and 179 onto
 #: de Winter's and Stead's packings, and on 2026-10-05 after n = 69, 83 and 87 took the
 #: catalogue's September 2026 packings (T-088, T-089), when n = 69 was screened for the first
-#: time; the two smaller corpora are not re-measured.
+#: time, and again that day after Couzo's 3 October packings at n = 208, 209, 228, 263, 272,
+#: 303 and 306 (T-092), which their import left unscreened; the two smaller corpora are not
+#: re-measured.
 SCREEN_FINDINGS: dict[str, tuple[int, int, int, int]] = {
     "n=1..100": (26, 87, 85, 518),
     "n=1..200": (65, 606, 181, 1883),
-    "n=1..324": (120, 1851, 302, 4492),
+    "n=1..324": (120, 1867, 302, 4511),
 }
 UNDETERMINED_BY_MISS = (28,)
 #: The cases the two sampled sweeps re-derive on every pull request, computed here from
@@ -1592,6 +1594,18 @@ def _quick_lane_command(jobs: int, shard: int) -> tuple[str, ...]:
     )
 
 
+def _pull_request_ceiling() -> gate_budgets.CeilingAdvisory | None:
+    """The register's ceiling relaxation for hosted pull requests, or None to enforce.
+
+    An unreadable register enforces: the relaxation is a declared exception, and a run
+    that cannot read the declaration is held to the rule it relaxes.
+    """
+    try:
+        return gate_budgets.load().policy.pull_request_ceiling
+    except gate_budgets.BudgetError:
+        return None
+
+
 def _fast_tests(context: Context, shard: int) -> str:
     """Enforce call wall time; retain CPU counters as diagnostics without attribution."""
     output = _run(context, _quick_lane_command(context.jobs, shard))
@@ -1603,6 +1617,20 @@ def _fast_tests(context: Context, shard: int) -> str:
         for entry in _call_durations(output)
         if entry[0] >= QUICK_TEST_WALL_BACKSTOP_SECONDS
     ]
+    relaxed = _pull_request_ceiling() if waiting and _hosted_pull_request() else None
+    if relaxed is not None:
+        hung = [entry for entry in waiting if entry[0] >= relaxed.per_test_hang_seconds]
+        if not hung:
+            print(
+                f"{len(waiting)} test(s) held the pull-request surface for "
+                f"{QUICK_TEST_WALL_BACKSTOP_SECONDS:g}s or more of call wall time, "
+                f"reported and not failed:\n{_render_durations(waiting)}\n"
+                f"  {gate_budgets.advisory_note(relaxed.advisory)}"
+            )
+            for seconds, node in waiting:
+                print(f"::warning title=Cost::{node} took {seconds:.2f}s of call wall time")
+            return output
+        waiting = hung
     if waiting:
         raise StepFailureError(
             f"{len(waiting)} test(s) held the pull-request surface for "
@@ -1946,6 +1974,22 @@ def _browser_code_in_files(context: Context) -> str:
     )
 
 
+def _integrity_ceremony(context: Context) -> str:
+    """Digest checks of the repository against itself only ever leave (OR-16).
+
+    A module hashing its own source, or an `==` on a digest, is counted in every tracked
+    Python file outside the allowlist of named boundaries in
+    `devtools/integrity-ceremony.yaml`, and each file's count is held to a baseline that
+    only falls. The audit of 2026-10-03 found the pattern re-added on four dates after
+    OR-16 was written, each time charging a re-run of retained work, so it has a count
+    and the count has a gate. Cheap, and in the edit tier: a digest check of our own
+    files is refused at the keyboard, not in review.
+    """
+    output = _module(context, "devtools.check_integrity_ceremony")
+    _require_text(output, "none above the baseline")
+    return output
+
+
 def _workbench_frontend(context: Context) -> str:
     """Check the probe files, then build once and exercise the page in Chromium.
 
@@ -1987,8 +2031,20 @@ def _workbench_frontend(context: Context) -> str:
 
 
 def _type_floor(context: Context) -> str:
+    """BasedPyright over the project, threaded across the cpus the selection leaves free.
+
+    It is one process outer `--jobs` cannot divide, so the pull request runs it alone at
+    `--jobs 1`, and single-threaded it left three of the runner's four cpus idle. Its hosted
+    wall read 64 to 112 s on PR 307 as the n17 kernel grew, and 111.93 s in run
+    37012208677 failed the tier's 111 s ceiling with zero findings. `--threads` divides
+    the check inside the step, sized by the behavioural lane's rule (`_pytest_workers`,
+    `cpus - jobs + 1`), so beside other steps it stays at one thread and total
+    concurrency stays near the cpu count.
+    """
     basedpyright = _required_tool(context, "basedpyright")
-    output = _commands(context, ((basedpyright,),))
+    threads = _pytest_workers(context.jobs)
+    command = (basedpyright, "--threads", str(threads)) if threads > 1 else (basedpyright,)
+    output = _commands(context, (command,))
     _require_text(output, "0 errors, 0 warnings, 0 notes")
     return output
 
@@ -2456,8 +2512,30 @@ def _independent_lp(context: Context) -> str:
     return output
 
 
+#: The records whose deferrals each name the bead that owns them (`check_bead_tree`).
+DEFERRAL_RECORDS = (
+    "packing/frontier/source-coverage.yaml",
+    "packing/campaign/result-requests.yaml",
+    "packing/campaign/intake-watch.yaml",
+)
+
+
 def _bead_tree(context: Context) -> str:
-    output = _module(context, "devtools.check_bead_tree")
+    """The bead tree's invariants, and a dead deferral only where the change made one.
+
+    Whether a deferral's bead is open is read from the bead store, which a full-history
+    checkout fetches as `origin/tbd-sync` and which changes with no tracked change. So a
+    dead deferral fails only a change that touches a record declaring deferrals, the
+    change against `origin/main` as `changed_paths` reads it, and is a warning anywhere
+    else: closing a bead a record names must not turn every pull request and `main` red.
+    A checkout where `origin/main` does not resolve cannot say what changed, and fails it.
+    """
+    try:
+        touched = set(changed_paths("origin/main")).intersection(DEFERRAL_RECORDS)
+    except UsageError:
+        touched = set(DEFERRAL_RECORDS)
+    arguments = () if touched else ("--warn-dead-deferrals",)
+    output = _module(context, "devtools.check_bead_tree", *arguments)
     if output.startswith("SKIP"):
         raise StepSkippedError("no bead store is reachable", output=output)
     return output
@@ -2540,6 +2618,40 @@ def _rust_quality(context: Context) -> str:
         f"{output}\n  clippy and rustdoc clean at warnings-as-errors; "
         "rustfmt clean; Rust tests passed"
     ).strip()
+
+
+def _rust_n17_bb_native(context: Context) -> str:
+    """Build the optional native pilot and require its differential tests to run."""
+    if shutil.which("cargo", path=context.environment.get("PATH")) is None:
+        raise StepFailureError("n17 native gate requires cargo")
+    crate = PROJECT_ROOT / "n17bb_native"
+    target = Path(context.environment.get("CARGO_TARGET_DIR", "target"))
+    if not target.is_absolute():
+        target = crate / target
+    native_dir = target / "python"
+    environment = dict(context.environment)
+    environment["N17BB_NATIVE_DIR"] = str(native_dir)
+    environment["N17BB_NATIVE_REQUIRED"] = "1"
+    child = replace(
+        context, environment=environment, timeout_seconds=min(context.timeout_seconds, 240)
+    )
+    output = _module(child, "devtools.build_n17_bb_native", "--output-dir", str(native_dir))
+    if not sum(int(count) for count in re.findall(r"test result: ok\. (\d+) passed", output)):
+        raise StepFailureError("n17 native gate ran no passing Rust tests")
+    tests = _run(
+        child,
+        (
+            sys.executable,
+            "-m",
+            "pytest",
+            "-q",
+            "tests/test_n17_bb_native.py",
+            "tests/test_n17_bb_native_edges.py",
+        ),
+    )
+    if "skipped" in tests or not re.search(r"\b[1-9]\d* passed\b", tests):
+        raise StepFailureError("n17 native gate requires passing, unskipped replay tests")
+    return f"{output}\n{tests}"
 
 
 def _rust_measure_verifier(context: Context) -> str:
@@ -3949,6 +4061,15 @@ STEPS: tuple[Step, ...] = (
             "packing/uv.lock",
         ),
     ),
+    # 3.8s of cpu locally over 1,334 Python files: a byte prescan skips the files that
+    # mention no digest and the rest parse in threads. Not `broad`, so `--edit` runs it,
+    # which is where a digest check of our own files should be refused (OR-16).
+    Step(
+        "integrity ceremony never grows",
+        _integrity_ceremony,
+        fast=True,
+        touches=("*.py", "packing/devtools/integrity-ceremony.yaml", *_TOOLCHAIN),
+    ),
     # Hosted frontend pair: Chromium 59.09s, biome 91.69s. `--jobs 2` without the hint
     # starts biome and liveness, and Chromium is the late tail of that job.
     Step(
@@ -4336,9 +4457,8 @@ STEPS: tuple[Step, ...] = (
             *_CORE,
             ".tbd/*",
             "packing/devtools/check_bead_tree.py",
-            "packing/frontier/source-coverage.yaml",
-            "packing/campaign/result-requests.yaml",
-            "packing/campaign/intake-watch.yaml",
+            "packing/devtools/bead_state.py",
+            *DEFERRAL_RECORDS,
         ),
     ),
     # 0.51s on the fast path, which is what runs without `--deep`.
@@ -4436,6 +4556,30 @@ STEPS: tuple[Step, ...] = (
         broad=True,
         measure_verifier=True,
         touches=_MEASURE_VERIFIER_SRC,
+    ),
+    # The optional native n17 kernel: its crate's floor and release build, then the bitwise
+    # replay against the Python pilot. It shares the measure verifier's job, which caches
+    # both crates' builds; cold, it cost 52.83s, too much for the saturated checks queue.
+    Step(
+        "n17 branch-and-bound native (Rust)",
+        _rust_n17_bb_native,
+        fast=True,
+        broad=True,
+        measure_verifier=True,
+        touches=(
+            *_CORE,
+            "packing/n17bb_native/*",
+            "packing/devtools/build_n17_bb_native.py",
+            "packing/devtools/n17_bb_native.py",
+            "packing/devtools/pilot_n17_subpattern_bb.py",
+            "packing/devtools/check_n17_capacity_one_cover.py",
+            "packing/devtools/select_n17_sub_patterns.py",
+            "packing/tests/test_n17_bb_native.py",
+            "packing/tests/test_n17_bb_native_edges.py",
+            "packing/tests/test_build_n17_bb_native.py",
+            "packing/devtools/check_rust_floor.py",
+            "packing/tests/test_rust_floor_contract.py",
+        ),
     ),
     # The full oracle and control set, deferred on its cost: 72.8 s single threaded on an
     # idle four-cpu box, against the quick set the pull request runs above.
@@ -5479,6 +5623,9 @@ TREE_REUSABLE_FAST_STEPS = frozenset(
         "browser floor (biome, eslint, tsc, node:test)",
         "browser floor liveness tests",
         "browser code lives in files (embedded JavaScript, probes)",
+        # The same shape as the embedded-JavaScript guard: a static scan of the tracked
+        # Python and one tracked register, with no clock, network or history consulted.
+        "integrity ceremony never grows",
         "workbench browser behavior in Chromium",
         # The same shape as the workbench step: the tracked pages, rendered and measured
         # in the pinned browser, with no clock, network or history consulted.
@@ -5519,6 +5666,7 @@ TREE_REUSABLE_FAST_STEPS = frozenset(
         # verdict; no repository history, remote state, or stored result is consulted.
         "exact rectangle Rust geometry",
         "measure verifier Rust (sqverify-fast)",
+        "n17 branch-and-bound native (Rust)",
         "Trump exact branchwise linearized cones",
         "H-041 Stromquist repaired-cover exact certificate",
         "H-010 Stromquist printed-cover exact rejection",
@@ -6046,6 +6194,10 @@ def _render_budgets(register: gate_budgets.Register) -> None:
         print(
             f"  enforcement: {gate_budgets.advisory_note(policy.pull_request_relative_rules)}"
         )
+    if policy.pull_request_ceiling is not None:
+        print(
+            f"  enforcement: {gate_budgets.advisory_note(policy.pull_request_ceiling.advisory)}"
+        )
     for tier in register.tiers:
         recorded = (
             f"{tier.measured_seconds:g}s recorded {tier.measured_on}"
@@ -6073,6 +6225,373 @@ def _render_early_exit(namespace: argparse.Namespace, selected: Sequence[Step]) 
     return 0
 
 
+#: The header of pytest's short test summary. The default `-rfE` prints it whenever a test
+#: failed or errored, under every lane this gate runs, and the lines after it are the only
+#: place in a long log that names each failing node once.
+_PYTEST_SHORT_SUMMARY = "short test summary info"
+_PYTEST_SUMMARY_LINE = re.compile(
+    r"^(?P<kind>FAILED|ERROR) (?P<node>.+?)(?: - (?P<message>.*))?$"
+)
+#: pytest's closing count line, `2 failed, 9000 passed, 1 error in 120.00s (0:02:00)`.
+_PYTEST_COUNT_LINE = re.compile(
+    r"\b\d+ (?:failed|passed|errors?|skipped|deselected|xfailed|xpassed)\b.* in \d"
+)
+_PYTEST_COUNT = re.compile(r"\b(?P<count>\d+) (?P<what>failed|errors?)\b")
+#: The two per-test wall rules' own headlines, as `_fast_tests` and `_slow_tests` raise
+#: them; `test_a_per_test_wall_failure_is_its_own_class` drives the raising code itself,
+#: so a reworded headline fails there rather than quietly reading as a step failure.
+_WALL_CEILING_HEADLINE = re.compile(r"^\d+ test\(s\) held the pull-request surface for")
+_SLOW_FLOOR_HEADLINE = re.compile(r"^\d+ deferred test\(s\) ran below the")
+_RENDERED_DURATION = re.compile(r"^\s+(?P<seconds>\d+\.\d+)s  (?P<node>\S+)$")
+_TIMED_OUT = re.compile(r"^command timed out after (?P<seconds>[0-9.]+) seconds")
+#: How many failing names a one-line verdict or an annotation spells out.
+FAILURE_NAMES_SHOWN = 10
+
+
+@dataclass(frozen=True)
+class FailedTests:
+    """The failing pytest nodes of one step, read from pytest's own short summary."""
+
+    step: str
+    count: int
+    nodes: tuple[tuple[str, str], ...]
+    """`(node, message)` pairs, the message empty where pytest printed none."""
+
+
+@dataclass(frozen=True)
+class WallFailures:
+    """One step's per-test wall verdict: the quick ceiling, or the slow lane's floor."""
+
+    step: str
+    rule: Literal["ceiling", "floor"]
+    entries: tuple[tuple[float, str], ...]
+
+
+@dataclass(frozen=True)
+class FailureClasses:
+    """Why a run failed, by class, so the verdict can say it without the log.
+
+    The classes are the ones that call for different responses (D-432 is the cost of not
+    telling them apart): a test that failed, a test that took too long, a check that is
+    not a test, and a tier whose every step passed and whose wall did not.
+    """
+
+    tests: tuple[FailedTests, ...] = ()
+    walls: tuple[WallFailures, ...] = ()
+    steps: tuple[tuple[str, str], ...] = ()
+    """`(step, cause)` for every other failed step; the cause is short, never the log."""
+    budget: gate_budgets.Verdict | None = None
+    """The tier's verdict when it failed or, for a whole tier, could not be judged."""
+    strict_skips: tuple[str, ...] = ()
+
+    @property
+    def budget_alone(self) -> bool:
+        return self.budget is not None and not (self.tests or self.walls or self.steps)
+
+
+def _test_failures(step: str, reason: str) -> FailedTests | None:
+    lines = reason.splitlines()
+    header = max(
+        (index for index, line in enumerate(lines) if _PYTEST_SHORT_SUMMARY in line),
+        default=None,
+    )
+    nodes: list[tuple[str, str]] = []
+    if header is not None:
+        for line in lines[header + 1 :]:
+            match = _PYTEST_SUMMARY_LINE.match(line)
+            if match:
+                nodes.append((match["node"], match["message"] or ""))
+    counted = 0
+    for line in reversed(lines):
+        if _PYTEST_COUNT_LINE.search(line):
+            counted = sum(int(match["count"]) for match in _PYTEST_COUNT.finditer(line))
+            break
+    if not nodes and not counted:
+        return None
+    return FailedTests(step=step, count=max(counted, len(nodes)), nodes=tuple(nodes))
+
+
+def _wall_failures(step: str, reason: str) -> WallFailures | None:
+    headline = reason.split("\n", 1)[0]
+    if _WALL_CEILING_HEADLINE.match(headline):
+        rule: Literal["ceiling", "floor"] = "ceiling"
+    elif _SLOW_FLOOR_HEADLINE.match(headline):
+        rule = "floor"
+    else:
+        return None
+    entries = tuple(
+        (float(match["seconds"]), match["node"])
+        for line in reason.splitlines()[1:]
+        if (match := _RENDERED_DURATION.match(line))
+    )
+    return WallFailures(step=step, rule=rule, entries=entries)
+
+
+def _step_cause(reason: str) -> str:
+    timed_out = _TIMED_OUT.match(reason)
+    if timed_out:
+        return f"timed out after {float(timed_out['seconds']):g} s"
+    if reason.startswith("Traceback"):
+        last = reason.rstrip().rsplit("\n", 1)[-1]
+        return f"raised {last}"
+    return ""
+
+
+def _classify_failures(summary: RunSummary, *, strict: bool) -> FailureClasses:
+    """Sort a finished run's failures into the classes `FailureClasses` names."""
+    tests: list[FailedTests] = []
+    walls: list[WallFailures] = []
+    steps: list[tuple[str, str]] = []
+    for result in summary.results:
+        if result.status != "failed":
+            continue
+        wall = _wall_failures(result.name, result.reason)
+        if wall is not None:
+            walls.append(wall)
+            continue
+        failing = _test_failures(result.name, result.reason)
+        if failing is not None and not _TIMED_OUT.match(result.reason):
+            tests.append(failing)
+            continue
+        steps.append((result.name, _step_cause(result.reason)))
+    budget = summary.budget
+    judged = budget is not None and (
+        budget.failed or (budget.status == "unknown" and budget.tier is not None)
+    )
+    return FailureClasses(
+        tests=tuple(tests),
+        walls=tuple(walls),
+        steps=tuple(steps),
+        budget=budget if judged else None,
+        strict_skips=tuple(
+            result.name for result in summary.results if strict and result.status == "skipped"
+        ),
+    )
+
+
+def _named(names: Sequence[str], limit: int = FAILURE_NAMES_SHOWN) -> str:
+    shown = ", ".join(names[:limit])
+    return f"{shown}, +{len(names) - limit} more" if len(names) > limit else shown
+
+
+def _budget_numbers(verdict: gate_budgets.Verdict) -> str:
+    """`tier X: W s vs ceiling C s`, and which rule fired when the ceiling did not."""
+    if verdict.status == "unknown":
+        note = verdict.notes[0] if verdict.notes else "no reason was given"
+        return f"tier {verdict.tier}: {note}"
+    if verdict.ceiling_seconds is None:
+        return f"tier {verdict.tier}: {verdict.wall_seconds:.1f} s against no declared ceiling"
+    numbers = (
+        f"tier {verdict.tier}: {verdict.wall_seconds:.1f} s vs ceiling "
+        f"{verdict.ceiling_seconds:g} s"
+    )
+    if verdict.wall_seconds > verdict.ceiling_seconds or verdict.measured_seconds is None:
+        return numbers
+    # Within the ceiling, so a record-relative rule fired. The drift rule needs a wall
+    # above the record and the stale rule one below it, so the side names the rule.
+    rule = "drift" if verdict.wall_seconds > verdict.measured_seconds else "stale"
+    return f"{numbers}; the {rule} rule against the recorded {verdict.measured_seconds:g} s"
+
+
+def _failure_class_line(classes: FailureClasses) -> str:
+    """The one line that names every failure class and its decisive numbers."""
+    parts: list[str] = []
+    if classes.tests:
+        count = sum(failing.count for failing in classes.tests)
+        names = [node for failing in classes.tests for node, _ in failing.nodes]
+        noun = "failure" if count == 1 else "failures"
+        parts.append(
+            f"tests failed ({count} {noun}: {_named(names)})"
+            if names
+            else f"tests failed ({count} {noun} in {_named([t.step for t in classes.tests])})"
+        )
+    for wall in classes.walls:
+        entries = [f"{node} {seconds:.2f} s" for seconds, node in wall.entries]
+        tests = "test" if len(entries) == 1 else "tests"
+        counted = (
+            f"{len(entries)} {tests} at or above {QUICK_TEST_WALL_BACKSTOP_SECONDS:g} s"
+            if wall.rule == "ceiling"
+            else f"{len(entries)} slow-marked {tests} under {SLOW_TEST_FLOOR_SECONDS:g} s"
+        )
+        parts.append(f"per-test wall {wall.rule} failed ({counted}: {_named(entries)})")
+    if classes.steps:
+        noun = "step" if len(classes.steps) == 1 else "steps"
+        described = [f"{name} [{cause}]" if cause else name for name, cause in classes.steps]
+        parts.append(f"{len(classes.steps)} {noun} failed ({_named(described)})")
+    budget = classes.budget
+    if budget is not None:
+        numbers = _budget_numbers(budget)
+        if budget.status == "unknown":
+            parts.append(f"the tier's cost could not be judged ({numbers})")
+        elif classes.budget_alone:
+            parts.append(f"budget verdict alone failed ({numbers})")
+        else:
+            parts.append(f"budget verdict also failed ({numbers})")
+    if classes.strict_skips:
+        parts.append(
+            f"strict mode refused {len(classes.strict_skips)} skipped "
+            f"check(s) ({_named(list(classes.strict_skips))})"
+        )
+    return "; ".join(parts) if parts else "the run failed without a classified cause"
+
+
+def _escape_annotation(value: str, *, property_value: bool = False) -> str:
+    """GitHub's workflow-command escaping: data escapes `%`, CR, LF; a property also `:` `,`."""
+    escaped = value.replace("%", "%25").replace("\r", "%0D").replace("\n", "%0A")
+    if property_value:
+        escaped = escaped.replace(":", "%3A").replace(",", "%2C")
+    return escaped
+
+
+def _annotation(level: Literal["error", "warning"], title: str, message: str) -> str:
+    return (
+        f"::{level} title={_escape_annotation(title, property_value=True)}::"
+        f"{_escape_annotation(message)}"
+    )
+
+
+def _failure_annotations(classes: FailureClasses) -> list[str]:
+    """What the pull request's checks page shows: one annotation per failure class.
+
+    Errors for what failed a test or a check; a warning for a budget verdict, which names
+    the tier's wall against its ceiling. A step may carry ten of each, so the classes are
+    one annotation apiece and only other failed steps are listed one by one.
+    """
+    annotations: list[str] = []
+    for failing in classes.tests:
+        noun = "failure" if failing.count == 1 else "failures"
+        listed = [
+            f"{node} - {message}" if message else node
+            for node, message in failing.nodes[:FAILURE_NAMES_SHOWN]
+        ]
+        if len(failing.nodes) > FAILURE_NAMES_SHOWN:
+            listed.append(f"+{len(failing.nodes) - FAILURE_NAMES_SHOWN} more")
+        annotations.append(
+            _annotation(
+                "error",
+                f"Tests failed: {failing.count} {noun} in {failing.step}",
+                "\n".join(listed) or "pytest named no failing node; see the step's log",
+            )
+        )
+    for wall in classes.walls:
+        title = (
+            f"Per-test wall ceiling ({QUICK_TEST_WALL_BACKSTOP_SECONDS:g} s) in {wall.step}"
+            if wall.rule == "ceiling"
+            else f"Per-test wall floor ({SLOW_TEST_FLOOR_SECONDS:g} s) in {wall.step}"
+        )
+        annotations.append(
+            _annotation(
+                "error",
+                title,
+                "\n".join(f"{seconds:.2f} s  {node}" for seconds, node in wall.entries),
+            )
+        )
+    for name, cause in classes.steps[:FAILURE_NAMES_SHOWN]:
+        annotations.append(
+            _annotation(
+                "error", f"Validation step failed: {name}", cause or "see the step's log"
+            )
+        )
+    budget = classes.budget
+    if budget is not None:
+        numbers = _budget_numbers(budget)
+        if budget.status == "unknown":
+            annotations.append(_annotation("error", "budget", f"cost not judged ({numbers})"))
+        elif classes.budget_alone:
+            annotations.append(
+                _annotation(
+                    "warning",
+                    "budget",
+                    f"budget verdict alone failed ({numbers}); every selected step passed",
+                )
+            )
+        else:
+            annotations.append(
+                _annotation("warning", "budget", f"budget verdict also failed ({numbers})")
+            )
+    if classes.strict_skips:
+        annotations.append(
+            _annotation(
+                "error",
+                "Skipped under strict mode",
+                _named(list(classes.strict_skips)),
+            )
+        )
+    return annotations
+
+
+def _markdown_code(text: str) -> str:
+    return "`" + text.replace("`", "'") + "`"
+
+
+def _failure_summary_markdown(summary: RunSummary, classes: FailureClasses) -> str:
+    """The `$GITHUB_STEP_SUMMARY` block: the class first, then the numbers behind it."""
+    budget = summary.budget
+    tier = budget.tier if budget is not None and budget.tier is not None else None
+    surface = f"tier `{tier}`" if tier else "a partial selection"
+    lines = [
+        f"### packing-validate failed: {surface}",
+        "",
+        f"**Failure class:** {_failure_class_line(classes)}",
+        "",
+    ]
+    for failing in classes.tests:
+        lines.append(f"- **Tests failed** in {failing.step}: {failing.count}")
+        lines.extend(
+            f"  - {_markdown_code(node)}" + (f": {message}" if message else "")
+            for node, message in failing.nodes
+        )
+    for wall in classes.walls:
+        rule = (
+            f"at or above the {QUICK_TEST_WALL_BACKSTOP_SECONDS:g} s per-test ceiling"
+            if wall.rule == "ceiling"
+            else f"slow-marked and under the {SLOW_TEST_FLOOR_SECONDS:g} s floor"
+        )
+        lines.append(f"- **Per-test wall** in {wall.step}: {len(wall.entries)} {rule}")
+        lines.extend(
+            f"  - {seconds:.2f} s {_markdown_code(node)}" for seconds, node in wall.entries
+        )
+    lines.extend(
+        f"- **Step failed:** {name}" + (f" ({cause})" if cause else "")
+        for name, cause in classes.steps
+    )
+    lines.extend(f"- **Skipped under strict mode:** {name}" for name in classes.strict_skips)
+    if budget is not None:
+        lines.extend(("", "Tier against its ceiling:", "", "```"))
+        lines.extend(gate_budgets.render(budget))
+        lines.append("```")
+    lines.append("")
+    return "\n".join(lines)
+
+
+def _report_failure_class(summary: RunSummary, *, strict: bool) -> None:
+    """Hand the failure class to the hosted run where one is watching, then print it last.
+
+    The closing line is what a reader of any log sees first from the bottom; on a GitHub
+    runner the same classes also go to the job's step summary and, as annotations, to the
+    pull request's checks page, so the class and its numbers need no log at all.
+
+    Only the process that owns `$GITHUB_STEP_SUMMARY` does either. `main` strips it from
+    every step's environment, so the tests a shard runs -- many of which render a failing
+    summary on purpose -- can neither append to the job's summary nor raise an annotation
+    for a failure that is only their fixture.
+    """
+    classes = _classify_failures(summary, strict=strict)
+    target = os.environ.get("GITHUB_STEP_SUMMARY")
+    if target:
+        if os.environ.get("GITHUB_ACTIONS") == "true":
+            for annotation in _failure_annotations(classes):
+                print(annotation)
+        try:
+            with Path(target).open("a", encoding="utf-8") as stream:
+                stream.write(_failure_summary_markdown(summary, classes))
+        except OSError as error:
+            print(
+                f"packing-validate: could not write the step summary: {error}", file=sys.stderr
+            )
+    print(f"FAILURE CLASS: {_failure_class_line(classes)}")
+
+
 def _summary_status(summary: RunSummary, *, strict: bool) -> int:
     failed = any(result.status == "failed" for result in summary.results)
     skipped = any(result.status == "skipped" for result in summary.results)
@@ -6084,6 +6603,13 @@ def _summary_status(summary: RunSummary, *, strict: bool) -> int:
 
 
 def _render_text(summary: RunSummary, *, strict: bool) -> int:
+    status = _render_verdict(summary, strict=strict)
+    if status:
+        _report_failure_class(summary, strict=strict)
+    return status
+
+
+def _render_verdict(summary: RunSummary, *, strict: bool) -> int:
     if summary.setup_output:
         print("\n== building sqsearch ==")
         print(summary.setup_output)
@@ -6562,6 +7088,8 @@ def main(argv: Sequence[str] | None = None) -> int:
         environment["PACK_JOBS"] = str(inner_jobs)
         # A nested validator proves its own selection and must not inherit this proof.
         _ = environment.pop(TREE_VERIFIED_ENVIRONMENT, None)
+        # The job's step summary is this process's channel alone (`_report_failure_class`).
+        _ = environment.pop("GITHUB_STEP_SUMMARY", None)
         context = Context(
             deep=deep,
             strict=strict,

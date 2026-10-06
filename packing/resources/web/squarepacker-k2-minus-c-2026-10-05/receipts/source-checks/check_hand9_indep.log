@@ -1,0 +1,10 @@
+# command: nice -n 10 /tmp/claude-0/-home-user-squares/1fb2d4ab-96d0-5b24-9e36-157598bdbf06/scratchpad/k2c/consts-venv/bin/python check_hand9_indep.py
+# cwd: code/ of squarepacker/k2-minus-c 25f645e8
+# python3: CPython 3.12.3 (/usr/bin/python3.12) in a scratch venv: mpmath 1.4.1, numpy 2.5.3, python-flint 0.9.0 (the versions the preprint names)
+# host: 4 cores; load 17.90 16.03 11.38; started 2026-10-05T17:36:34Z
+d=1e-4: 6 squares, pairwise disjoint=True (min sep gap 5.6228e-21), p waste=True, count=9
+d=1e-5: 6 squares, pairwise disjoint=True (min sep gap 5.6248e-25), p waste=True, count=9
+d=1e-6: 6 squares, pairwise disjoint=True (min sep gap 5.625e-29), p waste=True, count=9
+d=1e-3: 6 squares, pairwise disjoint=True (min sep gap 5.6026e-17), p waste=True, count=9
+d=1e-2: 6 squares, pairwise disjoint=True (min sep gap 5.4066e-13), p waste=True, count=9
+# finished 2026-10-05T17:36:35Z; exit 0; wall 0.911 s; CPU 0.3 s (user 0.245 + sys 0.033); load 17.90 16.03 11.38

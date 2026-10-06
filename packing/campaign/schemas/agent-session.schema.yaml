@@ -251,7 +251,7 @@ properties:
     additionalProperties: false
     required: [reason, detail, disposition_bead, handoff_role]
     properties:
-      reason: {const: native_harness_data_unavailable}
+      reason: {enum: [native_harness_data_unavailable, rollup_withheld_model_identifiers]}
       detail:
         type: string
         pattern: "\\S"

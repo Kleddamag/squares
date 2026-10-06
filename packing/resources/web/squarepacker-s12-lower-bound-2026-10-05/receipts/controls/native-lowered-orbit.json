@@ -1,0 +1,114 @@
+{
+  "schema": "EvandNativeParentCoreReceipt/v1",
+  "status": "UNRESOLVED",
+  "method": "directed-rounding box branch-and-bound over parent-core rows",
+  "case": "s12-v11",
+  "provenance": {
+    "git_commit": "037f78f152de8a0cfbe73e0f4269c87652256073",
+    "dirty": true,
+    "python": "3.14.7 (main, Sep 29 2026, 15:01:40) [Clang 22.1.3 ]",
+    "platform": "Linux-6.18.44-fc-v70-x86_64-with-glibc2.39",
+    "command": [
+      "/home/user/squares-lanes/s12/packing/devtools/verify_evand_angle_net_native.py",
+      "--case",
+      "s12-v11",
+      "--rows",
+      "0",
+      "30000",
+      "--certificate",
+      "/tmp/claude-0/-home-user-squares/1fb2d4ab-96d0-5b24-9e36-157598bdbf06/scratchpad/laneA/run/lowered-orbit.txt",
+      "--certificate-sha256",
+      "1c42bbb4cf21ee75d9e13e3947cde199559f5207f71662394ed66eecfd05aad9",
+      "--output",
+      "/tmp/claude-0/-home-user-squares/1fb2d4ab-96d0-5b24-9e36-157598bdbf06/scratchpad/laneA/run/controls/native-lowered-orbit.json"
+    ],
+    "source_url": "https://github.com/squarepacker/s12-lower-bound",
+    "source_commit": "7a96bec36bc6811c3715ef581598f22ff9b7ba3a",
+    "certificate": "/tmp/claude-0/-home-user-squares/1fb2d4ab-96d0-5b24-9e36-157598bdbf06/scratchpad/laneA/run/lowered-orbit.txt",
+    "certificate_sha256": "1c42bbb4cf21ee75d9e13e3947cde199559f5207f71662394ed66eecfd05aad9"
+  },
+  "claim": "s(12) >= 7943/2000",
+  "native_bound": "s(12) > 7943/2000",
+  "net": 96000,
+  "sigma_scale": 1000000,
+  "points": 1736,
+  "budget": "14996751/1250000",
+  "counting_gap": "3249/1250000",
+  "premises": {
+    "budget": "14996751/1250000",
+    "minimum_containment_numerator": "389446383489/4915061207552000000000",
+    "final_half_tangent": "2651/6400",
+    "rows": 39765
+  },
+  "catalogue_rows": 39765,
+  "selected_rows": 2,
+  "resumed_rows": 0,
+  "complete": false,
+  "batch_size": 2048,
+  "workers": 1,
+  "scale": 10000000,
+  "threshold_units": 10000000,
+  "boxes": 3294,
+  "row_cpu_seconds": 0.4630432990002191,
+  "least_lower": {
+    "row": 0,
+    "units": null
+  },
+  "source_minimum": {
+    "weight": "10000050/10000000",
+    "bin": 0
+  },
+  "refutations": [
+    {
+      "row": 0,
+      "rotated_centre": [
+        0.6857187499999999,
+        3.285781250000001
+      ],
+      "charge": "199997/200000",
+      "admissible": true
+    },
+    {
+      "row": 30000,
+      "rotated_centre": [
+        0.9985858283040312,
+        0.16323271880754034
+      ],
+      "charge": "199997/200000",
+      "admissible": true
+    }
+  ],
+  "seconds": 21.54618127899994,
+  "rows": [
+    {
+      "label": "0",
+      "status": "refuted",
+      "lower": null,
+      "upper": 9999850,
+      "witness": [
+        0.6857187499999999,
+        3.285781250000001
+      ],
+      "boxes": 127,
+      "stalled": 0,
+      "budget_exhausted": false,
+      "index": 0,
+      "seconds": 0.026229963000105272
+    },
+    {
+      "label": "30000",
+      "status": "refuted",
+      "lower": null,
+      "upper": 9999850,
+      "witness": [
+        0.9985858283040312,
+        0.16323271880754034
+      ],
+      "boxes": 3167,
+      "stalled": 0,
+      "budget_exhausted": false,
+      "index": 30000,
+      "seconds": 0.43681333600011385
+    }
+  ]
+}

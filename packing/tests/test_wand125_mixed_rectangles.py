@@ -58,7 +58,11 @@ K_PACKET = audit.K_PACKET
 K_NAMES = sorted(name for name, c in audit.MIXED.items() if c.packet == K_PACKET)
 L_PACKET = audit.L_PACKET
 L_NAMES = sorted(name for name, c in audit.MIXED.items() if c.packet == L_PACKET)
-UNAUDITED = K_NAMES + L_NAMES
+M_PACKET = audit.M_PACKET
+M_NAMES = sorted(name for name, c in audit.MIXED.items() if c.packet == M_PACKET)
+N_PACKET = audit.N_PACKET
+N_NAMES = sorted(name for name, c in audit.MIXED.items() if c.packet == N_PACKET)
+UNAUDITED = K_NAMES + L_NAMES + M_NAMES + N_NAMES
 NAMES = sorted(audit.MIXED, key=lambda name: (audit.MIXED[name].n, audit.MIXED[name].side))
 
 
@@ -147,8 +151,8 @@ def test_the_g_packet_matches_its_acquisition_contract() -> None:
 
 @pytest.mark.parametrize(
     "packet",
-    [G_PACKET, H_PACKET, I_PACKET, J_PACKET, K_PACKET, L_PACKET],
-    ids=["g", "h", "i", "j", "k", "l"],
+    [G_PACKET, H_PACKET, I_PACKET, J_PACKET, K_PACKET, L_PACKET, M_PACKET, N_PACKET],
+    ids=["g", "h", "i", "j", "k", "l", "m", "n"],
 )
 def test_each_october_packet_audit_recomputes_to_its_receipt(packet: Path) -> None:
     receipt = packet / "receipts/mixed-audit.json"
@@ -338,7 +342,9 @@ def test_the_4_october_certificates_take_their_sides_where_a_count_is_named() ->
     assert {c.revision for c in later.values()} == {audit.K_REVISION}
     assert not any(c.source_audit for c in later.values())
     assert all(
-        c.source_audit for c in audit.MIXED.values() if c.packet not in {K_PACKET, L_PACKET}
+        c.source_audit
+        for c in audit.MIXED.values()
+        if c.packet not in {K_PACKET, L_PACKET, M_PACKET, N_PACKET}
     )
 
 
@@ -365,6 +371,45 @@ def test_the_evening_certificates_take_their_sides_where_a_count_is_named() -> N
     assert audit.MIXED["n53"].directory.name == "mixed_n53_L76275"
     assert {c.revision for c in later.values()} == {audit.L_REVISION}
     assert not any(c.source_audit for c in later.values())
+
+
+def test_the_m_packet_matches_its_acquisition_contract() -> None:
+    assert acquire_source.check(M_PACKET, acquire_source.REPO) == []
+
+
+def test_the_5_october_certificates_take_their_sides_at_named_counts() -> None:
+    """Both raise a 4 October certificate at its count, so each is named by its side."""
+    later = {name: audit.MIXED[name] for name in M_NAMES}
+    assert set(later) == {"n67-L848", "n84-L9411"}
+    assert audit.MIXED["n67"].packet == audit.MIXED["n84-L94075"].packet == K_PACKET
+    assert audit.MIXED["n84-L9411"].tarball == "n84-L9.411-proof-bundle.tar.gz"
+    assert audit.MIXED["n67-L848"].directory.name == "mixed_n67_L848"
+    assert {c.revision for c in later.values()} == {audit.M_REVISION}
+    assert not any(c.source_audit for c in later.values())
+
+
+def test_the_n_packet_matches_its_acquisition_contract() -> None:
+    assert acquire_source.check(N_PACKET, acquire_source.REPO) == []
+
+
+def test_the_43050ed_pin_audits_n66_and_leaves_the_declared_net_to_sqverify_fast() -> None:
+    """``d73ce20``'s n = 66 raises T-069's ``mixed_n66_L842``, so it is named by its side.
+    The pin's other directory, ``mixed_n18_L470``, is on a net of its own (step 1/1001,
+    416 directions) at core 999/1000, which this tool's fixed net and core cannot audit;
+    no row names it."""
+    assert N_NAMES == ["n66-L843"]
+    certificate = audit.MIXED["n66-L843"]
+    assert audit.MIXED["n66"].packet == audit.F_PACKET
+    assert certificate.tarball == "n66-L8.43-proof-bundle.tar.gz"
+    assert certificate.directory.name == "mixed_n66_L843"
+    assert certificate.revision == audit.N_REVISION
+    assert not certificate.source_audit
+    assert not any(c.directory.name == "mixed_n18_L470" for c in audit.MIXED.values())
+    retained = N_PACKET / "square-packing-bounds/certificates/mixed_n18_L470"
+    candidate = json.loads(read_retained_bytes(retained / "candidate.json"))
+    assert candidate["proof_net"] == {"step": "1/1001", "last": 415}
+    assert (candidate["B"], candidate["total_mass"]) == ("0.999", "1799999/100000")
+    assert Fraction(candidate["B"]) != audit.MIXED_CORE
 
 
 @pytest.mark.parametrize("name", ["n69-L862", "n86-L9503"])

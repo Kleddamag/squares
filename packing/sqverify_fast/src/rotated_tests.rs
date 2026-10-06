@@ -32,6 +32,7 @@ pub(crate) fn test_cert(rects: Vec<ExactRect>) -> Certificate {
         core: ratio(9977, 10000),
         step: ratio(83, 40000),
         angle_count: 201,
+        net_origin: "standard",
         mass: ratio(1, 1),
         source_rectangles: rects.len(),
         exact: rects,

@@ -61,10 +61,12 @@ GOLDEN_RECONCILED: dict[str, tuple[int, int]] = {
     # capture of 2026-08-22 while pending intake; on 2026-10-05 their records took the
     # current capture (T-088, T-089): n = 69 leaves the UnitSquare release for a catalogue
     # block (+1 case), and the three new blocks print one more fact between them than the
-    # facts the three records were held to before (+1).
+    # facts the three records were held to before (+1). Lowered by one case on
+    # 2026-10-06, when Evan Daniel's exact optimum of de Winter's packing (T-098) took
+    # n = 126 off the catalogue; its entry printed no fact, so the facts stand.
     "n=1..100": (61, 207),
-    "n=1..200": (100, 393),
-    "n=1..324": (140, 615),
+    "n=1..200": (99, 393),
+    "n=1..324": (139, 615),
 }
 
 #: A block whose printed form uses LaTeX this parser does not read. It must raise rather

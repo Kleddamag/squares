@@ -7,19 +7,19 @@ softschema:
   schema: schemas/session-close-report.schema.yaml
   envelope: null
   status: enforced
-count: 168
+count: 181
 generated_by: >-
   uv run --frozen --all-extras --group dev python -m devtools.close_session --render
 totals:
-  sessions_measured: 114
-  sessions_unmeasured: 54
+  sessions_measured: 126
+  sessions_unmeasured: 55
   attributed:
-    rollups: 275
-    turns: 73865
-    tool_calls: 40690
-    tool_errors: 860
-    one_off_code: 5798
-    wall_hours: 629.1
+    rollups: 297
+    turns: 76355
+    tool_calls: 42099
+    tool_errors: 885
+    one_off_code: 6096
+    wall_hours: 646.8
   unattributed:
     rollups: 65
     turns: 14196
@@ -28,16 +28,16 @@ totals:
     one_off_code: 1184
     wall_hours: 67.13
   measured:
-    rollups: 340
-    turns: 88061
-    tool_calls: 48839
-    tool_errors: 1045
-    one_off_code: 6982
-    wall_hours: 696.23
+    rollups: 362
+    turns: 90551
+    tool_calls: 50248
+    tool_errors: 1070
+    one_off_code: 7280
+    wall_hours: 713.93
 codex_receipts:
-  attributed: 69
+  attributed: 79
   unattributed: 2
-  measured: 71
+  measured: 81
 # Per-session figures below are the logs each session DECLARES. They overlap when
 # sessions share a harness log, so they do not sum to `attributed` above.
 sessions:
@@ -2857,6 +2857,54 @@ sessions:
     active_union_hours: 3.96
     wall_hours: 3.96
     snapshot_incomplete: true
+- id: session-166
+  title: "n17 Route Review and Replanning After PR 265"
+  status: stopped
+  primary_bead: think-9fc1
+  phases: 2
+  measured: true
+  rollups:
+  - packing/campaign/resource-usage/edb82f84-25c7-536c-8add-a1ccc53a1d43.yaml
+  - packing/campaign/resource-usage/agent-a5685e7aa49454a92.yaml
+  - packing/campaign/resource-usage/agent-a5cbb4e16e9eab857.yaml
+  - packing/campaign/resource-usage/agent-aeeb8f584753fe65e.yaml
+  turns: 515
+  tool_calls: 342
+  tool_errors: 8
+  one_off_code: 24
+  wall_hours: 5.02
+  codex_receipts: []
+- id: session-167
+  title: "n17 Parallel Lanes After the Route Review"
+  status: stopped
+  primary_bead: think-c7kv
+  phases: 2
+  measured: true
+  rollups:
+  - packing/campaign/resource-usage/9ef40ca7-d637-5e9a-8f7f-e71a05712560.yaml
+  - packing/campaign/resource-usage/agent-a01d350a113875e85.yaml
+  - packing/campaign/resource-usage/agent-a093f7bf1b5a57a85.yaml
+  - packing/campaign/resource-usage/agent-a3ca8f2c2edfd4340.yaml
+  - packing/campaign/resource-usage/agent-a58c621f9018195e4.yaml
+  - packing/campaign/resource-usage/agent-a625ac54c60aed8cd.yaml
+  - packing/campaign/resource-usage/agent-a66f38937bdef6c02.yaml
+  - packing/campaign/resource-usage/agent-a67f0edde8ed86505.yaml
+  - packing/campaign/resource-usage/agent-a6a437c44c3304b19.yaml
+  - packing/campaign/resource-usage/agent-a70b6f243c76b7028.yaml
+  - packing/campaign/resource-usage/agent-a7e5b6dec097dce25.yaml
+  - packing/campaign/resource-usage/agent-a8a8b79e0239bca0f.yaml
+  - packing/campaign/resource-usage/agent-a99354ec00e40e457.yaml
+  - packing/campaign/resource-usage/agent-a9d15edf10039fa0e.yaml
+  - packing/campaign/resource-usage/agent-abc5e690e5d7d3041.yaml
+  - packing/campaign/resource-usage/agent-abeb1a31ad979cecd.yaml
+  - packing/campaign/resource-usage/agent-ae8abe09a3292e894.yaml
+  - packing/campaign/resource-usage/agent-af4a13e9dbcb00142.yaml
+  turns: 1975
+  tool_calls: 1067
+  tool_errors: 17
+  one_off_code: 274
+  wall_hours: 12.68
+  codex_receipts: []
 - id: session-168
   title: "Families of Known-Best Packings, Contact Shading, and the Large-n Limit"
   status: completed
@@ -2905,6 +2953,66 @@ sessions:
   one_off_code: 343
   wall_hours: 58.29
   codex_receipts: []
+- id: session-170
+  title: "Bounded residual compatibility and finite-model ceiling"
+  status: stopped
+  primary_bead: think-67ek
+  phases: 4
+  measured: true
+  rollups:
+  - packing/campaign/resource-usage/codex-session-170.yaml
+  turns: null
+  tool_calls: null
+  tool_errors: null
+  one_off_code: null
+  wall_hours: null
+  codex_receipts:
+  - path: packing/campaign/resource-usage/codex-session-170.yaml
+    model_responses: 85
+    agent_hours: 0.76
+    active_union_hours: 0.67
+    wall_hours: 0.67
+    snapshot_incomplete: true
+- id: session-171
+  title: "Raw-piece row-support witnesses without dense graph expansion"
+  status: stopped
+  primary_bead: think-op6s
+  phases: 6
+  measured: true
+  rollups:
+  - packing/campaign/resource-usage/codex-session-171.yaml
+  turns: null
+  tool_calls: null
+  tool_errors: null
+  one_off_code: null
+  wall_hours: null
+  codex_receipts:
+  - path: packing/campaign/resource-usage/codex-session-171.yaml
+    model_responses: 204
+    agent_hours: 1.85
+    active_union_hours: 0.98
+    wall_hours: 0.98
+    snapshot_incomplete: true
+- id: session-172
+  title: "One bounded raw-row capacity completion attempt"
+  status: stopped
+  primary_bead: think-2uhz
+  phases: 3
+  measured: true
+  rollups:
+  - packing/campaign/resource-usage/codex-session-172.yaml
+  turns: null
+  tool_calls: null
+  tool_errors: null
+  one_off_code: null
+  wall_hours: null
+  codex_receipts:
+  - path: packing/campaign/resource-usage/codex-session-172.yaml
+    model_responses: 52
+    agent_hours: 0.56
+    active_union_hours: 0.28
+    wall_hours: 0.28
+    snapshot_incomplete: true
 - id: session-173
   title: "Opt-in Windows owned-Job actual-worker supervisor"
   status: stopped
@@ -2925,3 +3033,153 @@ sessions:
     active_union_hours: 0.26
     wall_hours: 0.26
     snapshot_incomplete: true
+- id: session-174
+  title: "Fixed-witness half-interval octagon augmentation"
+  status: stopped
+  primary_bead: think-0xxc
+  phases: 2
+  measured: true
+  rollups:
+  - packing/campaign/resource-usage/codex-session-174.yaml
+  turns: null
+  tool_calls: null
+  tool_errors: null
+  one_off_code: null
+  wall_hours: null
+  codex_receipts:
+  - path: packing/campaign/resource-usage/codex-session-174.yaml
+    model_responses: 58
+    agent_hours: 0.72
+    active_union_hours: 0.36
+    wall_hours: 0.36
+    snapshot_incomplete: true
+- id: session-175
+  title: "Enhanced fixed-domain parent-row replacement supports"
+  status: stopped
+  primary_bead: think-wh57
+  phases: 2
+  measured: true
+  rollups:
+  - packing/campaign/resource-usage/codex-session-175.yaml
+  turns: null
+  tool_calls: null
+  tool_errors: null
+  one_off_code: null
+  wall_hours: null
+  codex_receipts:
+  - path: packing/campaign/resource-usage/codex-session-175.yaml
+    model_responses: 92
+    agent_hours: 0.89
+    active_union_hours: 0.45
+    wall_hours: 0.45
+    snapshot_incomplete: true
+- id: session-176
+  title: "Least-supported-owner scheduling from accepted enhanced supports"
+  status: stopped
+  primary_bead: think-mkgr
+  phases: 2
+  measured: true
+  rollups:
+  - packing/campaign/resource-usage/codex-session-176.yaml
+  turns: null
+  tool_calls: null
+  tool_errors: null
+  one_off_code: null
+  wall_hours: null
+  codex_receipts:
+  - path: packing/campaign/resource-usage/codex-session-176.yaml
+    model_responses: 91
+    agent_hours: 0.65
+    active_union_hours: 0.32
+    wall_hours: 0.32
+    snapshot_incomplete: true
+- id: session-177
+  title: "Exact cached collision equivalence and first-use profile"
+  status: stopped
+  primary_bead: think-5sya
+  phases: 2
+  measured: true
+  rollups:
+  - packing/campaign/resource-usage/codex-session-177.yaml
+  turns: null
+  tool_calls: null
+  tool_errors: null
+  one_off_code: null
+  wall_hours: null
+  codex_receipts:
+  - path: packing/campaign/resource-usage/codex-session-177.yaml
+    model_responses: 66
+    agent_hours: 0.72
+    active_union_hours: 0.36
+    wall_hours: 0.36
+    snapshot_incomplete: true
+- id: session-178
+  title: "Full-interval augmentation versus halving on fixed E tuples"
+  status: stopped
+  primary_bead: think-abit
+  phases: 2
+  measured: true
+  rollups:
+  - packing/campaign/resource-usage/codex-session-178.yaml
+  turns: null
+  tool_calls: null
+  tool_errors: null
+  one_off_code: null
+  wall_hours: null
+  codex_receipts:
+  - path: packing/campaign/resource-usage/codex-session-178.yaml
+    model_responses: 73
+    agent_hours: 0.7
+    active_union_hours: 0.35
+    wall_hours: 0.35
+    snapshot_incomplete: true
+- id: session-179
+  title: "Certificate-preserving selective halving on frozen E tuples"
+  status: stopped
+  primary_bead: think-ns4t
+  phases: 2
+  measured: true
+  rollups:
+  - packing/campaign/resource-usage/codex-session-179.yaml
+  turns: null
+  tool_calls: null
+  tool_errors: null
+  one_off_code: null
+  wall_hours: null
+  codex_receipts:
+  - path: packing/campaign/resource-usage/codex-session-179.yaml
+    model_responses: 81
+    agent_hours: 0.7
+    active_union_hours: 0.35
+    wall_hours: 0.35
+    snapshot_incomplete: true
+- id: session-180
+  title: "Bounded n17 producer memo retention investigation"
+  status: stopped
+  primary_bead: think-wn6x
+  phases: 3
+  measured: true
+  rollups:
+  - packing/campaign/resource-usage/codex-session-180.yaml
+  turns: null
+  tool_calls: null
+  tool_errors: null
+  one_off_code: null
+  wall_hours: null
+  codex_receipts:
+  - path: packing/campaign/resource-usage/codex-session-180.yaml
+    model_responses: 195
+    agent_hours: 1.52
+    active_union_hours: 0.99
+    wall_hours: 0.99
+    snapshot_incomplete: true
+- id: session-182
+  title: "n17 Overnight Lanes"
+  status: stopped
+  primary_bead: think-tmz6
+  phases: 4
+  measured: false
+  unmeasured_reason: >-
+    native harness data unavailable; Measured, not committed: the harness and sub-agent logs exist, but every rollup this repository's contract writes is keyed by model identifier, which this session's agents may not commit. The owner can add the rollups with close_session --update. The logs, on the run container under /root/.claude/projects/-home-user-squares/: the harness log 6b1ed85f-ba08-5540-8095-4fd66881916f.jsonl, from 2026-10-04T05:54Z to the close, so it also spans work before this session; and the 15 sub-agent logs started at or after 2026-10-05T08:13:53Z under its subagents/ folder (agent-a0b0e4ddf405acc39.jsonl, agent-a3ad468c1d0eaa494.jsonl, agent-a4c8fa035f1ffcdfe.jsonl, agent-a53bf696b86d675e4.jsonl, agent-a5876044abe43c05d.jsonl, agent-a76f70717495baf45.jsonl, agent-a819f6f47909bde6a.jsonl, agent-a9984cf91e54e97ec.jsonl, agent-aa7f27534be946dec.jsonl, agent-ab2288a20d80178d9.jsonl, agent-ab708fe86a4d2a573.jsonl, agent-ac87a45cbae726fa6.jsonl, agent-acf4d10a9500316cf.jsonl, agent-af38a7dfb4a15a2aa.jsonl, agent-af521cc6fd2b8c3aa.jsonl). Excluded: agent-af4f5ec641151fc81.jsonl and agent-ab6ed7d52f8584026.jsonl, started at 2026-10-05T04:46Z, before the session.
+  rollups: []
+  codex_receipts: []

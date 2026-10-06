@@ -1,0 +1,84 @@
+    63s checked=350 ok=350 fail=0 maxU=0 rig=302
+   148s checked=627 ok=627 fail=0 maxU=0 rig=729
+   211s checked=940 ok=940 fail=0 maxU=0 rig=981
+   286s checked=989 ok=989 fail=0 maxU=0 rig=1326
+   361s checked=1067 ok=1067 fail=0 maxU=0 rig=1716
+   429s checked=1225 ok=1225 fail=0 maxU=0 rig=2083
+   502s checked=1329 ok=1329 fail=0 maxU=0 rig=2436
+   563s checked=1444 ok=1444 fail=0 maxU=0 rig=2742
+   626s checked=1557 ok=1557 fail=0 maxU=0 rig=3071
+   686s checked=1901 ok=1901 fail=0 maxU=0 rig=3378
+   748s checked=2537 ok=2537 fail=0 maxU=0 rig=3658
+   814s checked=2952 ok=2952 fail=0 maxU=0 rig=3935
+   877s checked=3310 ok=3310 fail=0 maxU=0 rig=4211
+   947s checked=3434 ok=3434 fail=0 maxU=0 rig=4506
+  1014s checked=3443 ok=3443 fail=0 maxU=0 rig=4730
+  1081s checked=3449 ok=3449 fail=0 maxU=0 rig=4970
+  1141s checked=4118 ok=4118 fail=0 maxU=0 rig=5311
+  1211s checked=4330 ok=4330 fail=0 maxU=0 rig=5736
+  1274s checked=5117 ok=5117 fail=0 maxU=0 rig=6107
+  1342s checked=5241 ok=5241 fail=0 maxU=0 rig=6506
+  1404s checked=5303 ok=5303 fail=0 maxU=0 rig=6881
+  1477s checked=5454 ok=5454 fail=0 maxU=0 rig=7334
+  1579s checked=6017 ok=6017 fail=0 maxU=0 rig=7750
+  1640s checked=6394 ok=6394 fail=0 maxU=0 rig=8070
+RESULT bnbw_n5_T9_0of1_final_leaves.jsonl checked 6503 ok 6503 fail 0 maxU 0 rig 8107
+    62s checked=214 ok=214 fail=0 maxU=0 rig=352
+   122s checked=498 ok=498 fail=0 maxU=0 rig=666
+   185s checked=1016 ok=1016 fail=0 maxU=9 rig=923
+   245s checked=1111 ok=1111 fail=0 maxU=9 rig=1037
+   317s checked=1171 ok=1171 fail=0 maxU=9 rig=1243
+   378s checked=1326 ok=1326 fail=0 maxU=9 rig=1398
+   439s checked=1587 ok=1587 fail=0 maxU=9 rig=1564
+   500s checked=2122 ok=2122 fail=0 maxU=9 rig=1758
+RESULT bnb_n5_T9_1of2_final_leaves.jsonl checked 2649 ok 2649 fail 0 maxU 9 rig 1961
+    60s checked=369 ok=369 fail=0 maxU=0 rig=239
+   121s checked=490 ok=490 fail=0 maxU=0 rig=544
+   181s checked=733 ok=733 fail=0 maxU=9 rig=875
+   242s checked=1535 ok=1535 fail=0 maxU=9 rig=1115
+   308s checked=1822 ok=1822 fail=0 maxU=9 rig=1394
+   369s checked=2229 ok=2229 fail=0 maxU=9 rig=1638
+RESULT bnbw_n4_T9_0of2_final_leaves.jsonl checked 2376 ok 2376 fail 0 maxU 9 rig 1688
+    61s checked=423 ok=423 fail=0 maxU=0 rig=370
+   122s checked=777 ok=777 fail=0 maxU=0 rig=690
+   183s checked=1196 ok=1196 fail=0 maxU=0 rig=1031
+RESULT bnb_n5_T9_0of2_final_leaves.jsonl checked 1884 ok 1884 fail 0 maxU 0 rig 1289
+    66s checked=194 ok=194 fail=0 maxU=0 rig=325
+   138s checked=870 ok=870 fail=0 maxU=9 rig=530
+   199s checked=1375 ok=1375 fail=0 maxU=9 rig=871
+RESULT bnbw_n4_T9_1of2_final_leaves.jsonl checked 1430 ok 1430 fail 0 maxU 9 rig 920
+    65s checked=352 ok=352 fail=0 maxU=9 rig=235
+   125s checked=700 ok=700 fail=0 maxU=9 rig=390
+   185s checked=1093 ok=1093 fail=0 maxU=9 rig=501
+   246s checked=1429 ok=1429 fail=0 maxU=9 rig=665
+RESULT bnbw_n3_T9_0of1_final_leaves.jsonl checked 1595 ok 1595 fail 0 maxU 9 rig 754
+    62s checked=196 ok=196 fail=0 maxU=9 rig=98
+   122s checked=329 ok=329 fail=0 maxU=9 rig=193
+   182s checked=438 ok=438 fail=0 maxU=9 rig=290
+   247s checked=519 ok=519 fail=0 maxU=9 rig=403
+   308s checked=654 ok=654 fail=0 maxU=9 rig=513
+   369s checked=740 ok=740 fail=0 maxU=9 rig=606
+   430s checked=821 ok=821 fail=0 maxU=9 rig=707
+   491s checked=916 ok=916 fail=0 maxU=9 rig=807
+   554s checked=982 ok=982 fail=0 maxU=9 rig=914
+   616s checked=1065 ok=1065 fail=0 maxU=9 rig=1019
+   676s checked=1132 ok=1132 fail=0 maxU=9 rig=1111
+   741s checked=1226 ok=1226 fail=0 maxU=9 rig=1216
+   802s checked=1314 ok=1314 fail=0 maxU=9 rig=1329
+RESULT bnb_n4_T9_1of2_final_leaves.jsonl checked 1423 ok 1423 fail 0 maxU 9 rig 1400
+    60s checked=188 ok=188 fail=0 maxU=9 rig=124
+   121s checked=454 ok=454 fail=0 maxU=9 rig=261
+   182s checked=576 ok=576 fail=0 maxU=9 rig=358
+   243s checked=714 ok=714 fail=0 maxU=9 rig=460
+   304s checked=785 ok=785 fail=0 maxU=9 rig=548
+   365s checked=862 ok=862 fail=0 maxU=9 rig=638
+RESULT bnb_n4_T9_0of2_final_leaves.jsonl checked 1149 ok 1149 fail 0 maxU 9 rig 732
+    63s checked=164 ok=164 fail=0 maxU=9 rig=134
+   123s checked=258 ok=258 fail=0 maxU=9 rig=256
+   183s checked=329 ok=329 fail=0 maxU=9 rig=369
+RESULT bnb_n3_T9_0of1_final_leaves.jsonl checked 473 ok 473 fail 0 maxU 9 rig 483
+RESULT bnbw_n2_T9_0of1_final_leaves.jsonl checked 171 ok 171 fail 0 maxU 9 rig 170
+RESULT bnb_n2_T9_0of1_final_leaves.jsonl checked 12 ok 12 fail 0 maxU 9 rig 26
+RESULT bnbw_n1_T9_0of1_final_leaves.jsonl checked 1 ok 1 fail 0 maxU 9 rig 1
+RESULT bnb_n1_T9_0of1_final_leaves.jsonl checked 0 ok 0 fail 0 maxU 0 rig 0
+### worker done

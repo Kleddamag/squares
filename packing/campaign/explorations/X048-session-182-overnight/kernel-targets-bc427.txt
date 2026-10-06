@@ -1,0 +1,16 @@
+side-N1 side-E1 interior-SW interior-W interior-S interior-N interior-E
+corner-SW side-S0 side-W0 side-W2 interior-SW interior-NW interior-W
+side-N0 side-W0 side-N1 interior-SW interior-NW interior-W interior-S
+side-E1 interior-SW interior-NW interior-W interior-S interior-N interior-E
+side-E0 side-S1 interior-NW interior-W interior-S interior-N interior-SE
+side-S1 side-W1 interior-NW interior-W interior-S interior-SE
+side-W0 side-W1 interior-SW interior-NW interior-W interior-S interior-N
+side-S0 side-S1 interior-SW interior-NW interior-W interior-N interior-SE
+side-E1 interior-SW interior-NW interior-W interior-N interior-E interior-SE
+interior-NW interior-W interior-S interior-N interior-E interior-SE
+side-S0 side-W0 side-W2 interior-SW interior-NW interior-W interior-S
+side-S1 side-S2 interior-NW interior-W interior-S interior-N interior-SE
+side-W0 side-W2 interior-SW interior-NW interior-W interior-S interior-N
+side-N1 side-E1 interior-SW interior-NW interior-W interior-S interior-SE
+side-E1 side-S2 interior-SW interior-NW interior-W interior-S interior-SE
+side-S1 side-N1 interior-SW interior-NW interior-W interior-S interior-SE

@@ -1,0 +1,45 @@
+{
+  "kind": "wand125-declared-net-processes/v1",
+  "status": "ASSERTS_ON",
+  "taken": "2026-10-06T03:49:09Z",
+  "driver_pid": 8399,
+  "processes": [
+    {"pid":8399,"argv":["/home/user/squares-lanes/r2/packing/.venv/bin/python3","code/verify_mixed_full_proof.py","proof","--workers","2"],"cwd":"/tmp/claude-0/-home-user-squares/1fb2d4ab-96d0-5b24-9e36-157598bdbf06/scratchpad/r2/full-n18/run/n18-L4.704-proof-bundle","environment":{"PYTHONUNBUFFERED":"1","OPENBLAS_NUM_THREADS":"1","OMP_NUM_THREADS":"1","PYTHONDONTWRITEBYTECODE":"1"},"python":true,"optimizing":false},
+    {"pid":8412,"argv":["/home/user/squares-lanes/r2/packing/.venv/bin/python3","-B","-c","from multiprocessing.resource_tracker import main;main(8)"],"cwd":"/tmp/claude-0/-home-user-squares/1fb2d4ab-96d0-5b24-9e36-157598bdbf06/scratchpad/r2/full-n18/run/n18-L4.704-proof-bundle","environment":{"PYTHONUNBUFFERED":"1","OPENBLAS_NUM_THREADS":"1","OMP_NUM_THREADS":"1","PYTHONDONTWRITEBYTECODE":"1"},"python":true,"optimizing":false},
+    {
+      "pid": 8413,
+      "argv": [
+        "/home/user/squares-lanes/r2/packing/.venv/bin/python3","-B","-c","import sys; from multiprocessing.forkserver import main; main(11, 12, ['__main__'], sys_argv=sys.argv[1:], **{'sys_path': ['/tmp/claude-0/-home-user-squares/1fb2d4ab-96d0-5b24-9e36-157598bdbf06/scratchpad/r2/full-n18/run/n18-L4.704-proof-bundle/code', '/root/.local/share/uv/python/cpython-3.14.7-linux-x86_64-gnu/lib/python314.zip', '/root/.local/share/uv/python/cpython-3.14.7-linux-x86_64-gnu/lib/python3.14', '/root/.local/share/uv/python/cpython-3.14.7-linux-x86_64-gnu/lib/python3.14/lib-dynload', '/home/user/squares-lanes/r2/packing/.venv/lib/python3.14/site-packages', '/home/user/squares-lanes/r2/vendor/kpress/src', '/home/user/squares-lanes/r2/packing/src', '/home/user/squares-lanes/r2/packages/workbench/tools'], 'main_path': '/tmp/claude-0/-home-user-squares/1fb2d4ab-96d0-5b24-9e36-157598bdbf06/scratchpad/r2/full-n18/run/n18-L4.704-proof-bundle/code/verify_mixed_full_proof.py', 'authkey_r': 14})",
+        "code/verify_mixed_full_proof.py","proof","--workers","2"
+      ],
+      "cwd": "/tmp/claude-0/-home-user-squares/1fb2d4ab-96d0-5b24-9e36-157598bdbf06/scratchpad/r2/full-n18/run/n18-L4.704-proof-bundle",
+      "environment": {"PYTHONUNBUFFERED":"1","OPENBLAS_NUM_THREADS":"1","OMP_NUM_THREADS":"1","PYTHONDONTWRITEBYTECODE":"1"},
+      "python": true,
+      "optimizing": false
+    },
+    {
+      "pid": 8414,
+      "argv": [
+        "/home/user/squares-lanes/r2/packing/.venv/bin/python3","-B","-c","import sys; from multiprocessing.forkserver import main; main(11, 12, ['__main__'], sys_argv=sys.argv[1:], **{'sys_path': ['/tmp/claude-0/-home-user-squares/1fb2d4ab-96d0-5b24-9e36-157598bdbf06/scratchpad/r2/full-n18/run/n18-L4.704-proof-bundle/code', '/root/.local/share/uv/python/cpython-3.14.7-linux-x86_64-gnu/lib/python314.zip', '/root/.local/share/uv/python/cpython-3.14.7-linux-x86_64-gnu/lib/python3.14', '/root/.local/share/uv/python/cpython-3.14.7-linux-x86_64-gnu/lib/python3.14/lib-dynload', '/home/user/squares-lanes/r2/packing/.venv/lib/python3.14/site-packages', '/home/user/squares-lanes/r2/vendor/kpress/src', '/home/user/squares-lanes/r2/packing/src', '/home/user/squares-lanes/r2/packages/workbench/tools'], 'main_path': '/tmp/claude-0/-home-user-squares/1fb2d4ab-96d0-5b24-9e36-157598bdbf06/scratchpad/r2/full-n18/run/n18-L4.704-proof-bundle/code/verify_mixed_full_proof.py', 'authkey_r': 14})",
+        "code/verify_mixed_full_proof.py","proof","--workers","2"
+      ],
+      "cwd": "/tmp/claude-0/-home-user-squares/1fb2d4ab-96d0-5b24-9e36-157598bdbf06/scratchpad/r2/full-n18/run/n18-L4.704-proof-bundle",
+      "environment": {"PYTHONUNBUFFERED":"1","OPENBLAS_NUM_THREADS":"1","OMP_NUM_THREADS":"1","PYTHONDONTWRITEBYTECODE":"1"},
+      "python": true,
+      "optimizing": false
+    },
+    {
+      "pid": 8417,
+      "argv": [
+        "/home/user/squares-lanes/r2/packing/.venv/bin/python3","-B","-c","import sys; from multiprocessing.forkserver import main; main(11, 12, ['__main__'], sys_argv=sys.argv[1:], **{'sys_path': ['/tmp/claude-0/-home-user-squares/1fb2d4ab-96d0-5b24-9e36-157598bdbf06/scratchpad/r2/full-n18/run/n18-L4.704-proof-bundle/code', '/root/.local/share/uv/python/cpython-3.14.7-linux-x86_64-gnu/lib/python314.zip', '/root/.local/share/uv/python/cpython-3.14.7-linux-x86_64-gnu/lib/python3.14', '/root/.local/share/uv/python/cpython-3.14.7-linux-x86_64-gnu/lib/python3.14/lib-dynload', '/home/user/squares-lanes/r2/packing/.venv/lib/python3.14/site-packages', '/home/user/squares-lanes/r2/vendor/kpress/src', '/home/user/squares-lanes/r2/packing/src', '/home/user/squares-lanes/r2/packages/workbench/tools'], 'main_path': '/tmp/claude-0/-home-user-squares/1fb2d4ab-96d0-5b24-9e36-157598bdbf06/scratchpad/r2/full-n18/run/n18-L4.704-proof-bundle/code/verify_mixed_full_proof.py', 'authkey_r': 14})",
+        "code/verify_mixed_full_proof.py","proof","--workers","2"
+      ],
+      "cwd": "/tmp/claude-0/-home-user-squares/1fb2d4ab-96d0-5b24-9e36-157598bdbf06/scratchpad/r2/full-n18/run/n18-L4.704-proof-bundle",
+      "environment": {"PYTHONUNBUFFERED":"1","OPENBLAS_NUM_THREADS":"1","OMP_NUM_THREADS":"1","PYTHONDONTWRITEBYTECODE":"1"},
+      "python": true,
+      "optimizing": false
+    },
+    {"pid":22320,"argv":["/tmp/claude-0/-home-user-squares/1fb2d4ab-96d0-5b24-9e36-157598bdbf06/scratchpad/r2/full-n18/run/n18-L4.704-proof-bundle/proof/replay-verify","/tmp/mixed-angle-replay-x1don9bp/input.txt","100123"],"cwd":"/tmp/claude-0/-home-user-squares/1fb2d4ab-96d0-5b24-9e36-157598bdbf06/scratchpad/r2/full-n18/run/n18-L4.704-proof-bundle","environment":{"PYTHONUNBUFFERED":"1","OPENBLAS_NUM_THREADS":"1","OMP_NUM_THREADS":"1","PYTHONDONTWRITEBYTECODE":"1"},"python":false,"optimizing":false},
+    {"pid":22352,"argv":["/tmp/claude-0/-home-user-squares/1fb2d4ab-96d0-5b24-9e36-157598bdbf06/scratchpad/r2/full-n18/run/n18-L4.704-proof-bundle/proof/replay-verify","/tmp/mixed-angle-replay-r86jvc8x/input.txt","100185"],"cwd":"/tmp/claude-0/-home-user-squares/1fb2d4ab-96d0-5b24-9e36-157598bdbf06/scratchpad/r2/full-n18/run/n18-L4.704-proof-bundle","environment":{"PYTHONUNBUFFERED":"1","OPENBLAS_NUM_THREADS":"1","OMP_NUM_THREADS":"1","PYTHONDONTWRITEBYTECODE":"1"},"python":false,"optimizing":false}
+  ]
+}

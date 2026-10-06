@@ -1,0 +1,35 @@
+# BC-428 (H-275): one residue state per stratum of the arity8 frame that H-264's seed-182 draw never reached,
+# two where the stratum holds more orbits than the mean unsampled stratum (827/21), in run order: every
+# stratum's first draw before any second. One 17-cell state per line, from receipts/U/draw-bc428.jsonl, which
+# receipts/U/draw-bc428.cmd.txt writes from receipts/U/frame-arity8.json and receipts/A/survey-seed182.json.
+corner-SW corner-NW corner-NE side-S0 side-W0 side-E0 side-S1 side-N1 side-W1 side-E1 side-S2 side-N2 side-W2 side-E2 interior-W interior-S interior-N
+corner-SE corner-NW corner-NE side-N0 side-E0 side-S1 side-N1 side-W1 side-S2 side-N2 side-W2 side-E2 interior-SW interior-W interior-S interior-N interior-E
+corner-SW corner-SE corner-NW corner-NE side-S0 side-N0 side-W0 side-E0 side-N1 side-W1 side-E1 side-S2 side-N2 side-E2 interior-SW interior-NW interior-SE
+corner-SW corner-NW corner-NE side-S0 side-N0 side-E0 side-N1 side-W1 side-E1 side-S2 side-W2 side-E2 interior-SW interior-NW interior-S interior-N interior-SE
+corner-SE corner-NE side-N0 side-W0 side-E0 side-S1 side-W1 side-E1 side-S2 side-N2 side-W2 side-E2 interior-SW interior-NW interior-S interior-N interior-E
+corner-SW corner-SE corner-NW corner-NE side-S0 side-N0 side-W0 side-E0 side-S1 side-N1 side-E1 side-W2 side-E2 interior-SW interior-NW interior-N interior-SE
+corner-SE corner-NE side-S0 side-N0 side-W0 side-E0 side-S1 side-N1 side-W1 side-E1 side-N2 side-W2 side-E2 interior-NW interior-S interior-N interior-SE
+corner-SW corner-NW corner-NE side-S0 side-N0 side-E0 side-S1 side-N1 side-W1 side-S2 side-N2 side-W2 side-E2 interior-NW interior-W interior-S interior-E
+corner-SW corner-NE side-S0 side-N0 side-W0 side-E0 side-S1 side-N1 side-W1 side-E1 side-S2 side-N2 side-W2 interior-NW interior-S interior-N interior-SE
+corner-SW corner-SE corner-NE side-N0 side-E0 side-S1 side-N1 side-W1 side-E1 side-S2 side-N2 side-W2 interior-SW interior-NW interior-S interior-N interior-SE
+corner-SE corner-NW side-S0 side-N0 side-W0 side-E0 side-S1 side-N1 side-E1 side-S2 side-N2 side-W2 side-E2 interior-NW interior-W interior-S interior-E
+corner-SW corner-SE side-S0 side-N0 side-W0 side-E0 side-S1 side-N1 side-W1 side-E1 side-S2 side-N2 side-W2 side-E2 interior-NW interior-S interior-E
+corner-SE corner-NW side-S0 side-N0 side-E0 side-S1 side-N1 side-W1 side-S2 side-N2 side-W2 side-E2 interior-SW interior-W interior-S interior-N interior-E
+corner-SE corner-NE side-S0 side-N0 side-W0 side-E0 side-S1 side-N1 side-W1 side-E1 side-S2 side-N2 side-W2 side-E2 interior-SW interior-NW interior-SE
+corner-SW corner-SE side-S0 side-N0 side-W0 side-E0 side-S1 side-N1 side-W1 side-E1 side-S2 side-N2 side-W2 side-E2 interior-W interior-S interior-N
+corner-SW corner-SE corner-NE side-S0 side-N0 side-W0 side-E0 side-S1 side-N1 side-W1 side-E1 side-N2 side-W2 side-E2 interior-NW interior-W interior-SE
+corner-SW corner-NW corner-NE side-S0 side-W0 side-E0 side-S1 side-N1 side-E1 side-S2 side-N2 side-W2 side-E2 interior-SW interior-NW interior-N interior-SE
+corner-NW corner-NE side-S0 side-N0 side-W0 side-E0 side-S1 side-W1 side-E1 side-S2 side-N2 side-E2 interior-SW interior-NW interior-W interior-SE interior-NE
+corner-SW corner-SE corner-NW corner-NE side-S0 side-N0 side-W0 side-E0 side-S1 side-N1 side-E1 side-S2 side-N2 side-E2 interior-SW interior-NW interior-W
+corner-SW corner-SE corner-NE side-S0 side-N0 side-W0 side-E0 side-S1 side-N1 side-W1 side-E1 side-S2 side-W2 side-E2 interior-SW interior-NW interior-E
+corner-SW corner-SE corner-NW corner-NE side-E0 side-S1 side-N1 side-W1 side-E1 side-S2 side-N2 side-E2 interior-SW interior-NW interior-W interior-N interior-SE
+corner-SW corner-NW corner-NE side-N0 side-E0 side-S1 side-N1 side-W1 side-S2 side-N2 side-W2 side-E2 interior-SW interior-W interior-S interior-N interior-E
+corner-SW corner-SE corner-NE side-S0 side-N0 side-E0 side-N1 side-E1 side-S2 side-N2 side-W2 side-E2 interior-NW interior-W interior-S interior-N interior-SE
+corner-SW corner-SE corner-NW corner-NE side-S0 side-N0 side-S1 side-W1 side-E1 side-S2 side-N2 side-W2 side-E2 interior-SW interior-NW interior-N interior-SE
+corner-SW corner-NE side-S0 side-N0 side-W0 side-E0 side-S1 side-N1 side-W1 side-E1 side-S2 side-N2 side-E2 interior-NW interior-W interior-N interior-SE
+corner-SE corner-NE side-S0 side-N0 side-W0 side-E0 side-S1 side-N1 side-W1 side-S2 side-N2 side-W2 side-E2 interior-SW interior-NW interior-SE interior-NE
+corner-SW corner-SE corner-NE side-S0 side-N0 side-W0 side-E0 side-N1 side-E1 side-N2 side-W2 side-E2 interior-SW interior-NW interior-S interior-N interior-SE
+corner-SE corner-NW corner-NE side-S0 side-N0 side-W0 side-E0 side-S1 side-N1 side-W1 side-S2 side-N2 side-W2 interior-SW interior-NW interior-N interior-SE
+corner-SW corner-SE corner-NW corner-NE side-S0 side-N0 side-W0 side-E0 side-N1 side-W1 side-E1 side-S2 side-N2 side-E2 interior-SW interior-NW interior-S
+corner-SW corner-NW corner-NE side-S0 side-N0 side-W0 side-E0 side-S1 side-N1 side-W1 side-E1 side-S2 side-N2 side-W2 interior-NW interior-S interior-E
+corner-SW corner-SE corner-NW corner-NE side-S0 side-N0 side-W0 side-S1 side-N1 side-E1 side-W2 side-E2 interior-SW interior-NW interior-S interior-N interior-SE

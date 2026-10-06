@@ -1,0 +1,15 @@
+{
+  "format": "zenodo-capture-v1",
+  "record": 23165916,
+  "doi": "10.5281/zenodo.23165916",
+  "conceptdoi": "10.5281/zenodo.23165915",
+  "title": "Packing k²−c unit squares: s(k²−c) = k for all large k",
+  "version": null,
+  "publication_date": "2026-10-05",
+  "created": "2026-10-05T15:24:25.041946+00:00",
+  "updated": "2026-10-05T15:24:25.314802+00:00",
+  "api": "https://zenodo.org/api/records/23165916",
+  "retrieved_utc": "2026-10-05T23:20:24Z",
+  "files": [{"key":"paper.pdf","bytes":556058,"checksum_stated":"md5:d83b37b0f77b19dceb9f73a4c41cb858","md5":"d83b37b0f77b19dceb9f73a4c41cb858","sha256":"71c4d6b627cf7674b3557d433a0613fb3be502d2b5e41072ed470f50891041bf","same_bytes_as":{"packing/resources/web/squarepacker-k2-minus-c-2026-10-05/acquisition/upstream-subtree.sha256":["paper/paper.pdf"],"packing/resources/web/squarepacker-k2-minus-c-2026-10-05/zenodo/zenodo-23164302.sha256":[]}}],
+  "extracted": []
+}

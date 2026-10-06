@@ -180,9 +180,22 @@ Each entry summarizes one user-level research window. Cycle slots are wall-clock
 | [session-163](agent-sessions/session-163-native-bounds-and-census.md) | stopped | contemporaneous | `pipeline-improvement` (correctness) | `pipeline-improvement` (correctness) | 5 | think-8cps | Under think-niqx, merge current main and certify the resulting PR head through required local and hosted checks. The mathematical obligations identified above remain separate after this integration debt is discharged. |
 | [session-164](agent-sessions/session-164-upstream-merge-and-certification.md) | completed | contemporaneous | `pipeline-improvement` (correctness) | `pipeline-improvement` (correctness) | 39 | think-3i74 | After the reviewed helper cleanup lands, implement the bounded fresh-ensemble replay entry point under think-e2ot; preserve the accepted historical evidence. PR 249 reconciliation, optional Rust performance and later exposition remain separate tracks. |
 | [session-165](agent-sessions/session-165-post-optimality-overnight.md) | completed | contemporaneous | `insight-iteration` (insight) | `pipeline-improvement` (correctness) | 36 | think-kaqh | think-11ma: in a separately scheduled W3 block, preregister a small exact geometric-exclusion pilot below the certified endpoint. The overnight heartbeat is to be paused by15:00UTC; no new overnight research or H258 retry. |
-| [session-168](agent-sessions/session-168-known-best-families-and-shading.md) | completed | contemporaneous | `insight-iteration` (insight) | `remediation` (correctness) | 9 | think-los0 | Selected next entry unchanged: think-11ma, the exact geometric-exclusion pilot below the certified n17 endpoint. Identifiers T-083 to T-087 and session-168 collide with open PRs 292, 298, 307 and 311; the one landing second renumbers. |
-| [session-169](agent-sessions/session-169-retained-result-layout.md) | completed | contemporaneous | `pipeline-improvement` (efficiency) | `pipeline-improvement` (efficiency) | 2 | think-gmef | Selected next entry unchanged: think-11ma, the exact geometric-exclusion pilot below the certified n17 endpoint. |
+| [session-166](agent-sessions/session-166-n17-route-after-pr265.md) | stopped | mixed | `review-planning-oversight` (insight) | `review-planning-oversight` (process) | 2 | think-9fc1 | BC-406 (think-c7kv): dispatch the route review's lanes A1, B and C in parallel, then lane A2 once H-258 is accepted. Hosted certification of this handoff is owned by think-od9c; its re-certification on PR 307's successor branch, by think-g1xy. |
+| [session-167](agent-sessions/session-167-n17-parallel-lanes-after-route-review.md) | stopped | mixed | `review-planning-oversight` (insight) | `research-loop` (correctness) | 2 | think-c7kv | BC-418 (think-tmz6): close H-266's single-state item and H-268's slide bound, then re-record H-261 and H-266; build the H-267 selector and adapt the n11 kernel; pilot the capture contraction rate on the endpoint's occupancy state. Lanes G2 and H left a unique-state cover and the H-268 slide bounds built but unreviewed; H-268 must be re-run on the unique design, and B_W's faces a >= 0, b >= 0 and z <= 1/16 still need a capture-side argument. Hosted certification of this branch is owned by think-iuz2; its re-certification on PR 307's successor branch, by think-g1xy. |
+| [session-168](agent-sessions/session-168-known-best-families-and-shading.md) | completed | contemporaneous | `insight-iteration` (insight) | `remediation` (correctness) | 9 | think-los0 | Selected next entry unchanged: BC-418 (think-tmz6), the n17 coordinator after Session 167. Identifiers T-083 to T-087 and session-168 collide with open PRs 292, 298, 307 and 311; the one landing second renumbers. Reconciled 2026-10-04 on merging main into PR 307: written on main, this named the deferred n17 geometric-exclusion pilot, which that branch's Session 166 re-scoped to a cap at or above the endpoint under H-264. |
+| [session-169](agent-sessions/session-169-retained-result-layout.md) | completed | contemporaneous | `pipeline-improvement` (efficiency) | `pipeline-improvement` (efficiency) | 2 | think-gmef | Selected next entry unchanged: BC-418 (think-tmz6), the n17 coordinator after Session 167. Reconciled 2026-10-04 on merging main into PR 307: written on main, this named the deferred n17 geometric-exclusion pilot, which that branch's Session 166 re-scoped to a cap at or above the endpoint under H-264. |
+| [session-170](agent-sessions/session-170-residual-compatibility.md) | stopped | retrospective | `review-planning-oversight` (insight) | `review-planning-oversight` (correctness) | 4 | think-67ek | Await Joshua's review of the rebuilt layer (PR 355) under think-q0z7. No active research executor or reserved follow-up; original intervals are historical. |
+| [session-171](agent-sessions/session-171-raw-row-support.md) | stopped | contemporaneous | `pipeline-improvement` (efficiency) | `review-planning-oversight` (correctness) | 6 | think-op6s | Await Joshua's review of the rebuilt layer (PR 355) under think-q0z7. No active research executor or reserved follow-up; original intervals are historical. |
+| [session-172](agent-sessions/session-172-capacity-support.md) | stopped | contemporaneous | `pipeline-improvement` (efficiency) | `review-planning-oversight` (correctness) | 3 | think-2uhz | Await Joshua's review of the rebuilt layer (PR 355) under think-q0z7. No active research executor or reserved follow-up; original intervals are historical. |
 | [session-173](agent-sessions/session-173-windows-supervision.md) | stopped | contemporaneous | `pipeline-improvement` (efficiency) | `review-planning-oversight` (correctness) | 2 | think-v00i | Observe final metadata current-head CI and close/sync think-v00i. A separately frozen local portable input handoff may follow only after F delivery; no research target or default integration. |
+| [session-174](agent-sessions/session-174-core-refinement.md) | stopped | contemporaneous | `research-loop` (correctness) | `review-planning-oversight` (correctness) | 2 | think-0xxc | Await Joshua and current-layer required CI under think-q0z7. No active research executor or reserved follow-up; original intervals are historical. |
+| [session-175](agent-sessions/session-175-enhanced-support.md) | stopped | contemporaneous | `research-loop` (correctness) | `research-loop` (correctness) | 2 | think-wh57 | Await Joshua and current-layer required CI under think-q0z7. No active research executor or reserved follow-up; original intervals are historical. |
+| [session-176](agent-sessions/session-176-owner-priority.md) | stopped | contemporaneous | `research-loop` (correctness) | `research-loop` (correctness) | 2 | think-mkgr | Await Joshua and current-layer required CI under think-q0z7. No active research executor or reserved follow-up; original intervals are historical. |
+| [session-177](agent-sessions/session-177-cached-collision.md) | stopped | contemporaneous | `research-loop` (correctness) | `research-loop` (correctness) | 2 | think-5sya | Await Joshua's review of the rebuilt layer (PR 360) under think-q0z7. No active research executor or reserved follow-up; original intervals are historical. |
+| [session-178](agent-sessions/session-178-full-core-ablation.md) | stopped | contemporaneous | `research-loop` (correctness) | `research-loop` (correctness) | 2 | think-abit | Await Joshua's review of the rebuilt layer (PR 360) under think-q0z7. No active research executor or reserved follow-up; original intervals are historical. |
+| [session-179](agent-sessions/session-179-selective-halving.md) | stopped | contemporaneous | `research-loop` (correctness) | `research-loop` (correctness) | 2 | think-ns4t | Await Joshua's review of the rebuilt layer (PR 360) under think-q0z7. No active research executor or reserved follow-up; original intervals are historical. |
+| [session-180](agent-sessions/session-180-n17-producer-memo.md) | stopped | contemporaneous | `review-planning-oversight` (insight) | `review-planning-oversight` (correctness) | 3 | think-wn6x | Review the rebuilt layer that replaces Draft PR 325 under think-wn6x; upstream think-tmz6 remains the research coordinator. No merge or new compute is authorized by this closeout. |
+| [session-182](agent-sessions/session-182-n17-overnight-lanes.md) | stopped | contemporaneous | `review-planning-oversight` (insight) | `review-planning-oversight` (correctness) | 4 | think-tmz6 | Certify the handover (think-b8hb), then BC-418 continues under think-tmz6: the owner's decisions recorded here come first (the resource rollups that resource_usage_unmeasured names, lane K's target 2 with the two held re-runs, the branch-and-bound recalibration and #360's merge), and exp-257 awaits its W2 review. |
 
 ### Workflow summary
 
@@ -194,12 +207,12 @@ Declared counts are contemporaneous contracts; retrospective counts are reconstr
 | `factual-review` | 11 | 1 | 67 | 3 |
 | `insight-iteration` | 29 | 1 | 90 | 4 |
 | `process-review` | 16 | 4 | 64 | 6 |
-| `efficiency-loop` | 11 | 1 | 40 | 1 |
-| `research-loop` | 31 | 4 | 115 | 8 |
-| `pipeline-improvement` | 40 | 2 | 211 | 6 |
+| `efficiency-loop` | 11 | 1 | 41 | 1 |
+| `research-loop` | 37 | 4 | 132 | 9 |
+| `pipeline-improvement` | 42 | 2 | 214 | 7 |
 | `documentation-pass` | 1 | 0 | 29 | 3 |
 | `remediation` | 2 | 1 | 6 | 3 |
-| `review-planning-oversight` | 6 | 0 | 43 | 2 |
+| `review-planning-oversight` | 8 | 3 | 52 | 6 |
 | `general-improvement` | 1 | 0 | 7 | 1 |
 
 ## Experiment agendas
@@ -866,15 +879,39 @@ Status: **active**. Turn PR 230's W3 review and the two explorations it led to, 
 | BC-399 | research | 17 | complete | 0 | think-bj81 | packing/campaign/hypotheses/H-255-n17-exact-polynomial-root.md |
 | BC-400 | research | 17 | complete | 0 | think-bj81 | packing/campaign/hypotheses/H-256-n17-exact-endpoint-feasibility.md |
 | BC-401 | research | 17 | complete | 0 | think-6dg0 | packing/campaign/hypotheses/H-257-n17-endpoint-contact-features.md |
-| BC-402 | research | 17 | blocked | 0 | think-wrgx | packing/campaign/hypotheses/H-258-n17-common-core-stress.md |
+| BC-402 | research | 17 | complete | 0 | think-wrgx | packing/campaign/hypotheses/H-258-n17-common-core-stress.md |
 | BC-403 | research | 17 | complete | 0 | think-70sf | packing/campaign/hypotheses/H-259-n17-mixed-capacity-cover.md |
 | BC-404 | research | 17 | complete | 0 | think-gr22 | packing/campaign/hypotheses/H-260-n17-closed-cell-symmetry.md |
+| BC-405 | research | 17 | complete | 0 | think-9fc1 | docs/project/reviews/review-2026-10-01-n17-route-after-pr265.md |
+| BC-406 | research | 17 | complete | 0 | think-c7kv | docs/project/reviews/review-2026-10-01-n17-route-after-pr265.md |
+| BC-407 | research | 17 | complete | 0 | think-n95s | packing/campaign/hypotheses/H-261-n17-local-minimum-modulo-sliders.md |
+| BC-408 | research | 17 | complete | 0 | think-j1uw | packing/campaign/hypotheses/H-262-n17-conditional-charge-occupancy-census.md |
+| BC-409 | research | 17 | complete | 2 | think-e6y1 | packing/campaign/hypotheses/H-265-n17-catalogue-polynomial-identity.md |
+| BC-410 | research | 17 | stopped | 2 | think-x4a6 | packing/campaign/hypotheses/H-263-n17-endpoint-adapted-cover.md |
+| BC-411 | research | 17 | stopped | 1 | think-11ma | packing/campaign/hypotheses/H-264-n17-geometric-exclusion-cost-per-leaf.md |
+| BC-412 | research | 17 | complete | 1 | think-rode | docs/project/reviews/review-2026-10-02-n17-capture-feasibility.md |
+| BC-413 | research | 17 | complete | 2 | think-xnhx | docs/project/reviews/review-2026-10-02-n17-widened-projection-scope.md |
+| BC-414 | research | 17 | complete | 0 | think-8ul6 | docs/project/reviews/review-2026-10-02-n17-bulk-exclusion-design.md |
+| BC-415 | research | 17 | complete | 0 | think-qjdb | packing/campaign/hypotheses/H-266-n17-minimal-capacity-one-cover.md |
+| BC-416 | research | 17 | in_progress | 1 | think-1s3i | packing/campaign/hypotheses/H-267-n17-isolated-sub-pattern-residue.md |
+| BC-417 | research | 17 | complete | 0 | think-set0 | packing/campaign/hypotheses/H-268-n17-local-theorem-slider-coverage.md |
+| BC-418 | research | 17 | ready | 0 | think-tmz6 | packing/campaign/agent-sessions/session-167-n17-parallel-lanes-after-route-review.md |
+| BC-419 | research | 17 | complete | 0 | think-z8an | packing/campaign/agent-sessions/session-182-n17-overnight-lanes.md |
+| BC-420 | research | 17 | in_progress | 0 | think-035m | packing/campaign/agent-sessions/session-182-n17-overnight-lanes.md |
+| BC-421 | research | 17 | complete | 1 | think-tmz6 | packing/campaign/agent-sessions/session-182-n17-overnight-lanes.md |
+| BC-422 | tool_validation | 17 | in_progress | 1 | think-9ntw | packing/campaign/agent-sessions/session-182-n17-overnight-lanes.md |
+| BC-423 | research | 17 | in_progress | 0 | think-035m | packing/campaign/agent-sessions/session-182-n17-overnight-lanes.md |
+| BC-424 | research | 17 | complete | 1 | think-z8an | packing/campaign/agent-sessions/session-182-n17-overnight-lanes.md |
+| BC-425 | research | 17 | complete | 1 | think-035m | packing/campaign/agent-sessions/session-182-n17-overnight-lanes.md |
+| BC-426 | research | 17 | in_progress | 1 | think-035m | packing/campaign/agent-sessions/session-182-n17-overnight-lanes.md |
+| BC-427 | research | 17 | complete | 1 | think-035m | packing/campaign/agent-sessions/session-182-n17-overnight-lanes.md |
+| BC-428 | research | 17 | complete | 1 | think-z8an | packing/campaign/agent-sessions/session-182-n17-overnight-lanes.md |
 
 ## Series
 
 | id | status | title | rounds | opened because |
 | --- | --- | --- | --- | --- |
-| series-000 | open | S0: smoke and calibration — prove the machinery, establish every baseline metric | 170 | First series. There is no prior instrument, so not |
+| series-000 | open | S0: smoke and calibration — prove the machinery, establish every baseline metric | 186 | First series. There is no prior instrument, so not |
 
 ## Registry
 
@@ -1072,12 +1109,23 @@ Status: **active**. Turn PR 230's W3 review and the two explorations it led to, 
 | H-255 | confirmed | proof | The two exact n17 chart polynomials have a unique real root in the fix |  | 1 |  | 1s wall |
 | H-256 | confirmed | proof | The H254 reconstruction at the unique H255 root, using the fixed centr |  | 1 | T-065 | 43s wall |
 | H-257 | confirmed | proof | At the accepted H255 root and H256 centroid packing, all owner-axis al |  | 1 |  | 42s wall |
-| H-258 | blocked | proof | The fixed analytic common-core stress at the accepted n17 endpoint has |  | 0 |  |  |
+| H-258 | confirmed | proof | The fixed analytic common-core stress at the accepted n17 endpoint has |  | 1 |  | 30s wall |
 | H-259 | confirmed | proof | At side cap1169/250, a closed5by5 centre grid has16 boundary cells of  |  | 1 |  | 0s wall |
 | H-260 | confirmed | proof | D4 acts on existential closed-cell assignments of the H259 cover and i |  | 1 |  | 0s wall |
+| H-261 | unresolved | proof | For an explicit rational radius r > 0, every packing of 17 unit square |  | 1 |  | 15s wall |
+| H-262 | refuted | proof | On the H259 closed grid at cap 1169/250, the subcontainer cuts from s( |  | 1 |  | 2.2m wall |
+| H-263 | open question | proof | Which closed centre cover with proved cell capacities keeps every endp |  | 0 |  |  |
+| H-264 | open question | proof | On a seeded stratified draw of residue orbits on the H-266 unique-stat |  | 1 |  | 200.7m wall |
+| H-265 | confirmed | proof | The side S* of the H255 chart root is a root of the degree-18 polynomi |  | 1 |  | 1s wall |
+| H-266 | confirmed | proof | At cap U = 1169/250 there is a D4-symmetric closed cover of the centre |  | 2 |  | 2s wall |
+| H-267 | confirmed | proof | On the H-266 cover, forbidden occupancy sub-patterns of arity at most  |  | 5 |  | 513.6m wall |
+| H-268 | confirmed | proof | Every packing of 17 unit squares in [0,S]^2 with S <= S* whose occupan |  | 1 |  | 27s wall |
 | H-269 | blocked | proof | A fixed-profile periodic measure of the form behind T-064 (a corner mo | family: k^2-4 k^2-5 | 0 |  |  |
 | H-270 | blocked | search | For some integer k with 18 <= k <= 41, the strip construction of Kearn | k: 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 | 0 |  |  |
 | H-272 | blocked | search | Of the 68 non-grid known-best records whose witness derives from Kingb |  | 0 |  |  |
+| H-273 | unresolved | proof | Each of the 95 orbits at Hamming distance 2 from the endpoint's state  |  | 1 |  | 225.8m wall |
+| H-274 | confirmed | proof | Of the four counted draws of H-264's seed-182 draw that stalled under  |  | 1 |  | 196.1m wall |
+| H-275 | open question | proof | On a seeded draw of one residue state from each of the 21 strata of su |  | 1 |  | 555.2m wall |
 
 ## Needs review — held for a human, not decided
 
@@ -1087,7 +1135,7 @@ Status: **active**. Turn PR 230's W3 review and the two explorations it led to, 
 
 ## Rounds
 
-### rejected (37)
+### rejected (38)
 
 | id | series | instance | operator | hypotheses | reason |
 | --- | --- | --- | --- | --- | --- |
@@ -1128,6 +1176,7 @@ Status: **active**. Turn PR 230's W3 review and the two explorations it led to, 
 | exp-216 | series-000 | 21 | Claude session-144 (Fable lane, Opus port, Fable review) | H-226 | The registered proof strategy cannot close n=21: 3,461 D2-orbits of exceptional structures (for example red (1, 9/10) uncovered with blue (1/2, 9/10) and (9/2, 9/10) uncovered) leave at most four charging boxes on each vertical wall line with no confined partial box, and the paper's toolkit has no further move or contradiction to apply; s(21) = 5 itself is untouched, and the 22,603 needs-geometry orbits name the claim Q(i, j) a stronger lemma would need. |
 | exp-217 | series-000 | 32 | Claude session-144 (Fable lane, Opus port, Fable review) | H-227 | With the m=6 vertical budget 2(sqrt 2 - 1/2) + 1.6 + 3 sqrt 3 / 2 - 6 = 0.0265, any frozen row above a six-point row kills that row's shift and end-point move, so every structure whose red spare lies outside red row 1 or blue spare outside blue row 6 leaves at most five charges on every wall line and no shorter slide recovers a sixth; s(32) = 6 itself is untouched. |
 | exp-233 | series-000 | 12 | Claude Session 157 coordinator | H-241 | The row loop converged with covering value 11.980175 < 12, so no depth-one family reaching 12 exists on this support and the additive route at n12 is not shown dead above 3.9609; the converged value is a float LP, not a certificate, so it suggests rather than establishes a point certificate at 3.9609. |
+| exp-243 | series-000 | 17 | Claude Session 167; lane B built the pilot, the coordinator replayed it from a clean worktree | H-262 | The registered claim (at most 10^4 survivors) is false for every D4-symmetric per-cell floor vector by the ceiling theorem; R068's dictionary at U leaves 7,703,312, rejecting that engine outright. The exact six-sweep instrument is unnecessary. Asymmetric and nonlinear floors remain open and belong to a new hypothesis. |
 
 ### exhausted (1)
 
@@ -1144,7 +1193,7 @@ Status: **active**. Turn PR 230's W3 review and the two explorations it led to, 
 | exp-162 | series-000 | 20 | Cursor session-140 | H-218 | The Session-140 research wall expired with no RETAINABLE freeze on the H-218 sweep. Closest masses were leftover n=20 971/200 at 19.910044 unconverged and leftover n=12 3969/1000 at 12.091168 after crossing 12. T-028 at n=18 does not confirm H-218. The unfinished float LPs remain unresolved; their objectives do not refute their site sets. |
 | exp-231 | series-000 | 11 | Claude Session 156, Opus extra-high lane and coordinator | H-236 | The declared caps ran out with 58 of 256 subtrees open and no counterexample candidate, so H-236 is neither confirmed nor refuted; the remaining subtrees are a bounded computation for the unchanged frozen instrument. |
 
-### unresolved (52)
+### unresolved (58)
 
 | id | series | instance | operator | hypotheses | reason |
 | --- | --- | --- | --- | --- | --- |
@@ -1200,6 +1249,12 @@ Status: **active**. Turn PR 230's W3 review and the two explorations it led to, 
 | exp-218 | series-000 | 17 | Claude session-144 Opus runner | H-224 | The converged restricted optimum 17.0423 refutes point certificates on this site set only, and the accepted depth-one family has total just below 14, not 17, so H-224 is neither confirmed nor killed at this scope; the fixed-shrink point route at n=17 is bounded below by 14 for every site set at 23/5 and above by this site set's 17.04. |
 | exp-230 | series-000 | 12 | Claude Session 156, Opus high lane | H-241 | The loop ran to its time limits with the covering value unsettled just below 12 and no family reaching 12, so whether additive routes at n12 survive above 3.9609 is still open; a row objective of 11.98 is suggestive of a little headroom but is not a value. |
 | exp-234 | series-000 | 11 | Claude Session 158 coordinator | H-242 | No box closed at the cap, so rung 1's total cost is not measured, only bounded below; but the flat response to width and tilt shows the cost lives in the centre enumeration, so the stronger per-node relaxation, not more or narrower boxes, is the prerequisite for H-112, while wide boxes remain usable once it exists. |
+| exp-244 | series-000 | 17 | Claude Session 167; lanes A2-build and A2-build-2 built the instrument, the coordinator ran it from a clean worktree | H-261 | The mathematics, instrument and certificates have no blocking defect, and the local minimum modulo sliders is certified on the declared box B_W at r = 1/5000. The frozen claim covers the whole physical slider domain, which B_W does not, so H-261 as worded is neither confirmed nor refuted. Closing it needs a capture-side lemma that a <= 1/4 and z >= -1/8 whenever square 6 lies in its occupancy cell, or a wider box. |
+| exp-246 | series-000 | 17 | Claude Session 167; lane G built the instrument, the coordinator ran it from a clean worktree | H-266 | The cover itself is certified and the lemma reviewed, so the census of 43,593 orbits stands. The single-state purpose of the claim is not met while square 13 also lies in side cell S1, and square 6's domain is declared. Moving the tab or shrinking S1 by a few thousandths, and deriving square 6's range, would close both. |
+| exp-249 | series-000 | 17 | Claude Session 168; lanes K2 and P2 built the provers, lanes R3 and R4 reviewed them, the coordinator ran both from a clean worktree | H-267 | Both certificates are sound and admitted, and the endpoint survives, but 2 of 44 flagged classes leave 17,690 orbits. A was certified by an interval branch and bound, which H-267's claim does not name among its instruments; the independent review admits it as an equivalent certificate, and that is a recorded deviation in the instrument, not in the threshold. |
+| exp-250 | series-000 | 17 | Claude Session 168; lane K2 produced both certificates and ran both full verifications, lane A3 admitted them and wrote this record | H-267 | Both certificates pass the standing verifier in full and are admitted, and the endpoint survives, but 15,953 orbits remain, and an arity-9 class and a whole state bear on H-267's arity-seven criterion only as progress on the census. |
+| exp-254 | series-000 | 17 | Claude Session 182; the run operator's BC-425 queue produced and verified each certificate on one slot and then two, and admitted each closure in the session checkout | H-267 | Eight of the ten frozen arity-8 flags closed under lane K's frozen SW9 recipe and were admitted on the standing verifier's full pass, and two stopped at its 24-round cap. The certified census fell from 72,248 states in 9,162 orbits to 39,656 states in 5,057 orbits with the endpoint surviving, but arity-8 classes bear on H-267's arity-seven criterion only as progress on the census, so H-267 is unresolved by this round. |
+| exp-255 | series-000 | 17 | Claude Session 182; the run operator's lane E queue ran the ten shards on a second clean run worktree in the slot left after the kernel lanes | H-273 | All 95 distance-2 orbits were searched and none placed, while every shard's control placed. Under the frozen criterion that is no placement in 95 searches, not a proof of infeasibility, so H-273 stays unresolved. The 0.00027 near miss on mask 3963647 is the orbit a later exact or longer search would take first. |
 
 ### blocked (11)
 
@@ -1217,7 +1272,7 @@ Status: **active**. Turn PR 230's W3 review and the two explorations it led to, 
 | exp-158 | series-000 | 11 | Codex BC303 T2 charge-sweep agent | H-160 | The September 14 strategy reset paused this route before the target charge ran; no target receipt or scientific verdict exists. |
 | exp-160 | series-000 | 11 | Codex BC303 H-162 retained-receipt analyst | H-162 | The September 14 strategy reset paused this route with no exp-158 target receipt; no H-162 comparison or scientific verdict exists. |
 
-### accepted (53)
+### accepted (62)
 
 | id | series | instance | operator | hypotheses | reason |
 | --- | --- | --- | --- | --- | --- |
@@ -1274,6 +1329,15 @@ Status: **active**. Turn PR 230's W3 review and the two explorations it led to, 
 | exp-239 | series-000 | 17 | Codex Session165 coordinator | H-257 | The exact-root geometric feature inventory is complete and independently audited. The two-branch first-order model now has its feature premises; stationarity and higher-order/global arguments remain separate. |
 | exp-240 | series-000 | 17 | Codex Session165 coordinator | H-259 | Reviewed complete cover and exact census agree independently. Raw occupancy reduction only; geometric realization and exclusion remain open. |
 | exp-241 | series-000 | 17 | Codex Session165 coordinator | H-260 | Complete independent eight-term audit and closed-assignment cover review pass. Necessaryoccupancyorbits only; no geometriccaseexcluded ornewbound. |
+| exp-242 | series-000 | 17 | Claude Session 167 coordinator; lane A1 built the instrument and run-001 | H-258 | Every criterion item is met. This is first-order stationarity of the complete local model in both corner branches; it is not local minimality, rigidity or global optimality. |
+| exp-245 | series-000 | 17 | Claude Session 167; lane C built the instrument, the coordinator ran it from a clean worktree | H-265 | Every clause holds. S* is an algebraic number of degree 18 with the catalogue's polynomial as its minimal polynomial. No packing, feasibility or optimality claim; the admitted rational ceiling and the open status of s(17) are unchanged. |
+| exp-247 | series-000 | 17 | Claude Session 168; lane G2 built the design in Session 167, the coordinator ran it from a clean worktree | H-266 | Every criterion item holds for the unique-state design, which keeps the 43,593-orbit census. The exp-246 tabbed design stays unresolved; this round supersedes it for H-266. |
+| exp-248 | series-000 | 17 | Claude Session 168; lanes H, H2 and A3 built the tools, the coordinator ran both from a clean worktree | H-268 | Every criterion item holds with strict margin, and the composition with the B_W' local theorem and the H-266 cover gives the capture-target theorem. The deviation is recorded; H-261, whose claim names the whole physical slider domain, stays unresolved. |
+| exp-251 | series-000 | 17 | Claude Session 182; the run operator's lane K queue produced and verified each certificate and admitted it in the session checkout | H-267 | Every entry of arity at most seven is admitted on a reviewed standing verifier's full pass, the endpoint's state survives each, and together they leave 9,990 orbits, ten under the threshold of 10^4 (receipts/K/census-arity7-after-bc427-t4.json on its derived ledger). Lane K's eight admitted arity-7 flags took the count from 17,690 to 10,173, and BC-427's target 4 (exp-256) took the last 183. The count includes A, certified by the interval branch and bound under exp-249's recorded deviation and verified there under bb-review-r4, and is 10,173 without it; W7 likewise rests on exp-249's verification under kernel-review-r3, and the other nine are verified at cebb5d15a. The count does not depend on lane K's target 2, which is held for the user's ruling and would take 1,344 more (receipts/K/census-arity7-after-bc427-t4.json). The margin is ten orbits, and every one of the eleven entries is individually decisive. Lane K's own list ended at 10,173 with the criterion unmet; exp-256's admission at 488c72d77 fixed the verdict, and its cost is exp-256's. The W2 factual review (docs/project/reviews/review-2026-10-05-exp-251-h267.md) confirmed the verdict with corrections to these disclosures and two figures, which this record carries. Addendum after the review: at 340e92b84, after exp-256's s182-bc427-t6, the line is 8,191 orbits (receipts/K/census-arity7-after-bc427-t6.json), so the claim no longer depends on A (8,302 without it); only W7 is individually decisive (11,496 without it). |
+| exp-252 | series-000 | 17 | Claude Session 182; the run operator's lane A queue ran the survey, the control and the draws two at a time in the survey's own seeded random order, verified each closure and admitted it in the session checkout | H-264 | Five of the ten counted draws closed within the 7,000 s ceiling, each re-proved in full by the standing kernel verifier, which meets the criterion of at least half; every closure cost under 900 s of process CPU and every verification under 700 s, far inside two CPU-hours. The other five counted draws reached producer fixed points inside the ceiling, as did both distance-2 draws. The W2 factual review (docs/project/reviews/review-2026-10-05-exp-252-h264.md) confirmed the verdict with corrections to bookkeeping and attribution, which this record carries. |
+| exp-253 | series-000 | 17 | Claude Session 182; the run operator's BC-424 queue ran the control beside the states, which ran one at a time in mask order, verified each closure, and admitted it in the session checkout once the control had finished without closing | H-274 | The first two frozen states, 2784767 and 2817021, closed within the ceiling under SW9's recipe, each re-proved in full by the standing kernel verifier and admitted after the endpoint-state control finished without closing, which meets the criterion of two. Both had reached producer fixed points under N1's recipe. The third, 2878207, and the fourth, 3063677, closed too and were verified and admitted after the verdict, so all four frozen states closed. The W2 factual review (docs/project/reviews/review-2026-10-05-exp-253-h274.md) confirmed the verdict with corrections to the mechanism, the procedure, a timing and one figure, which this record carries. |
+| exp-256 | series-000 | 17 | Claude Session 182; the run operator's BC-427 queue produces and verifies each certificate on two workers and admits each closure in the session checkout | H-267 | Two of the ten targets run closed and were admitted on the standing verifier's full pass, target 4 (488c72d77) and target 6 (340e92b84), and they took the arity-7 line from 10,173 to 9,990 and then 8,191 orbits, the endpoint surviving (receipts/K/census-arity7-after-bc427-t6.json), which meets the criterion. The other eight stalled, six at the 24-round cap and two at producer fixed points, and targets 11 to 16 were not run. The W2 review of exp-251 (docs/project/reviews/review-2026-10-05-exp-251-h267.md) replayed target 4's verification and recounted both the 9,990 and the 8,191 lines; H-267's verdict is exp-251's. |
+| exp-257 | series-000 | 17 | Claude Session 182; the run operator's BC-428 queue runs the states in the frozen order on two workers, verifies each closure, and admits it in the session checkout | H-275 | Accepted, though the round stopped on its clock rather than its criterion: at the verdict u29 was still in verification and u31 had not run. H-275 is an open question and registers no falsifier, so accepted means that the 29 draws that ran to a verdict answer its question for those draws, and the two undecided draws can move the counted answer only within 24 to 26 closures of 29. Of the 27 counted draws that finished, 24 (89%) closed within the 7,000 s ceiling, each re-proved in full by the standing kernel verifier and admitted with the endpoint surviving. Of the other three, u6 and u12 reached producer fixed points inside the ceiling; u15 ended INCOMPLETE at the 7,000 s ceiling, where the checker ran out of time, so it is neither a closure nor a fixed point. The distance-2 draws are reported apart: u8 closed and was admitted and u1 ended INCOMPLETE at the ceiling. A counted closure cost 550 to 1,972 s of process CPU (median 1,113) and its verification 257 to 954 s (median 483); the non-closures cost u6 1,863 s (at a fixed point), u12 1,597 s (at a fixed point), u1 6,101 s (INCOMPLETE) and u15 6,844 s (INCOMPLETE). All 19 counted strata have a finished counted draw and 17 a verified closure; the two distance-2 strata are reached only by u1 and u8. Eight of the ten second draws finished. Draw u29's producer closed at 07:06:36 UTC after 4,644 s of wall and 4,522 s of process CPU; its verification passed after the verdict, at 07:38:15 UTC in 1,899 s, and it is admitted. Counting it gives 25 of 28 (89%), closure CPU 550 to 4,522 s (median 1,135) and verification 257 to 1,899 s (median 493). Not run: u31 (mask 6015871, c4/i>=5/d>=8, a second draw). New starts stopped at 06:17 UTC, 57 minutes before the registered 07:14:04Z deadline, under the coordinator's session-lease rule that no 7,000 s ceiling end after the 08:14:04Z lease; under the registered deadline alone u31 would have started at 06:37:51. A successor resumes at u31. The 29 finished draws' receipts record 47,492 s of wall and 43,806 s of process CPU, and their verifications 12,709 s; u29 adds 4,644 s of wall, 4,522 s of CPU and 1,899 s of verification. The round ran 33,313 s on two workers, from the first start at 21:51:23 UTC to u29's receipt. A stratum with one draw describes that draw, not a closure rate. The W2 factual review (docs/project/reviews/review-2026-10-06-exp-257-h275.md) confirmed the verdict with corrections to the stop reason, the medians, the wall, and the producer and checker wording, which this record carries. |
 
 ### baseline (12)
 
@@ -1335,10 +1399,11 @@ Status: **active**. Turn PR 230's W3 review and the two explorations it led to, 
 | exp-215 | H-225 | 62.6m wall | timebox | packing/campaign/series/series-000-smoke-and-calibration/res |  |
 | exp-230 | H-241 | 150.0m wall | timebox | The leg-3 warm state, retained as results/agenda-042/exp-230 |  |
 | exp-231 | H-236 | 397.1m wall | timebox | The top tree and 198 closed subtree files in attic/rung0 of  | Run the 58 wall-cap subtrees with the unchanged Amendment 1  |
+| exp-257 | H-275 | 555.2m wall | timebox | Draw 31 of packing/campaign/explorations/X048-session-182-ov |  |
 
 ## Effort
 
-170 rounds, 2512.1 agent-minutes, 4020.8 wall-minutes.
+186 rounds, 2512.1 agent-minutes, 5715.7 wall-minutes.
 
 These totals exclude 4 historical rounds with unrecorded timing; their cost is unknown, not zero.
 

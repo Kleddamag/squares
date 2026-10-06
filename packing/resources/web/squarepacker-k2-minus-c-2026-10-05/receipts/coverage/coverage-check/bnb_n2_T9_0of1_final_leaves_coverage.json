@@ -1,0 +1,16 @@
+{
+ "file": "bnb_n2_T9_0of1_final_leaves.jsonl",
+ "n": 2,
+ "wall": false,
+ "task": 0,
+ "ntask": 1,
+ "leaves": 48,
+ "nodes": 88,
+ "unused": 0,
+ "overused": 0,
+ "duplicates": 0,
+ "volume_equal": true,
+ "pruned_fraction": 0.0,
+ "edge_boxes": 1,
+ "ok": true
+}

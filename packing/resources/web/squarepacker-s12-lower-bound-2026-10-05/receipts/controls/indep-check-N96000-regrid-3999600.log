@@ -1,0 +1,11 @@
+# command: nice -n 10 /tmp/claude-0/-home-user-squares/1fb2d4ab-96d0-5b24-9e36-157598bdbf06/scratchpad/laneA/indep/indep_check regrid-3999600.txt 96000
+# cwd: scratch run directory; control regrid-3999600.txt written by devtools.audit_s12_v11_certificate --write-controls (sha256 f1796e27), byte for byte the source's; indep_check as in ../indep-check-N96000.log (binary sha256 e7748f8b); run under nice -n 10
+# python3: not used by this command
+# host: 4 cores; load 11.16 9.38 8.39; started 2026-10-05T23:32:27Z
+certificate: s = 15886000/3999600 = 3.971897190, D = 3999600, W = 10000000, m = 1736
+total weight = 119974808/10000000 = 11.997480800   (n = 12: total < n)
+angle net N = 96000, bins k = 0..95999 covering [0,90] deg (no symmetry assumed), grid Q = 1000000000000000
+min captured weight over all bins = 6737611/10000000 = 0.673761100   (bin k=0, 0.0000 deg)
+  near centre (0.500039, 0.500039) at angle 0.000000 deg (diagnostic, floating point)
+NOT VERIFIED
+# finished 2026-10-05T23:39:51Z; exit 1; wall 443.769 s; CPU 303.6 s (user 291.167 + sys 12.412); load 10.37 10.11 9.14

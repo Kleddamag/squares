@@ -793,9 +793,9 @@ session:
   stop_reason: The owner's questions are answered and every follow-up bead is closed, with hosted CI green
     at the certified commit, but think-wqfw, the owner's restoring commit for the sixteen rollups' withheld
     model labels.
-  next_action: 'Selected next entry unchanged: think-11ma, the exact geometric-exclusion pilot below the
-    certified n17 endpoint. Identifiers T-083 to T-087 and session-168 collide with open PRs 292, 298,
-    307 and 311; the one landing second renumbers.'
+  next_action: 'Selected next entry unchanged: BC-418 (think-tmz6), the n17 coordinator after Session 167.
+    Identifiers T-083 to T-087 and session-168 collide with open PRs 292, 298, 307 and 311; the one
+    landing second renumbers. Reconciled 2026-10-04 on merging main into PR 307: written on main, this named the deferred n17 geometric-exclusion pilot, which that branch''s Session 166 re-scoped to a cap at or above the endpoint under H-264.'
 ---
 # Families of Known-Best Packings, Contact Shading, and the Large-n Limit
 

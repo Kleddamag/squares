@@ -8,8 +8,10 @@ becoming a live audit of someone's website.
 
 from __future__ import annotations
 
+import hashlib
 import urllib.error
 import urllib.request
+from collections.abc import Callable, Mapping
 from pathlib import Path
 from typing import Any, Self
 
@@ -22,7 +24,7 @@ from devtools.derive_kingbird_facts import (
     DerivationRefusedError,
 )
 from sqpack.kingbird_catalogue import CatalogueEntry, default_catalogue_path
-from sqpack.known_best import parse_kingbird_svg
+from sqpack.known_best import kingbird_derived_witness, parse_kingbird_svg
 from sqpack.yamlio import safe_load
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -85,10 +87,13 @@ def synthetic_plan(n: int, *, source_n: int, out_root: Path) -> DerivationPlan:
 
 
 class FakeResponse:
-    """The two methods `fetch_svg` uses of a `urlopen` result, and nothing else."""
+    """What `fetch_picture` uses of a `urlopen` result, and nothing else."""
 
-    def __init__(self, payload: bytes) -> None:
+    def __init__(self, payload: bytes, last_modified: str | None = None) -> None:
         self.payload: bytes = payload
+        self.headers: dict[str, str] = (
+            {} if last_modified is None else {"Last-Modified": last_modified}
+        )
 
     def read(self) -> bytes:
         return self.payload
@@ -540,7 +545,9 @@ SYNTHETIC_PARSE = (
     '{"name": "square-4.svg", "s": "2.5", "n": 4, '
     '"squares": [[0.5, 2.0, 0.0], [0.5, 1.0, 0.0], [1.5, 2.0, 0.0], [1.5, 1.0, 0.0]]}'
 )
-PARSE_REVISION = "evand/square-packing@0123abc:site/www/data/p"
+PARSE_REVISION = "evand/square-packing@7ff3b2113532889708a3baa4d56bc44294022e63:site/www/data/p"
+#: What the witness records of the parse it was read from: these bytes and no others.
+PARSE_SHA256 = hashlib.sha256(SYNTHETIC_PARSE.encode("utf-8")).hexdigest()
 
 
 def write_parse(directory: Path, text: str = SYNTHETIC_PARSE) -> Path:
@@ -568,6 +575,7 @@ def test_a_parse_stands_in_for_the_picture_and_the_witness_says_whose_it_is(
     ]
     assert {square["angle"] for square in witness["squares"]} == {"0"}
     assert witness["source"]["revision"] == f"{PARSE_REVISION}/square-4.json"
+    assert witness["source"]["revision_sha256"] == PARSE_SHA256
     assert witness["source"]["url"] == SYNTHETIC_URL
     assert (
         "a third party's binary64 parse of the catalogue SVG"
@@ -601,6 +609,8 @@ def test_a_parse_the_printed_side_does_not_truncate_is_refused(tmp_path: Path) -
         ('{"s": "2.5", "n": 4, "squares": [[0.5, 2.0, 0.0]]}', "square-count-mismatch"),
         (SYNTHETIC_PARSE.replace("[1.5, 1.0, 0.0]", "[1.5, 1.0, 90.0]"), "parse-unreadable"),
         (SYNTHETIC_PARSE.replace("[1.5, 1.0, 0.0]", '[1.5, "1.0", 0.0]'), "parse-unreadable"),
+        (SYNTHETIC_PARSE.replace('"s": "2.5"', '"s": "two and a half"'), "parse-unreadable"),
+        (SYNTHETIC_PARSE.replace('"s": "2.5"', '"s": ""'), "parse-unreadable"),
     ],
 )
 def test_a_parse_that_is_not_the_export_shape_is_refused(text: str, kind: str) -> None:
@@ -617,6 +627,56 @@ def test_a_parse_without_its_pinned_revision_is_refused(tmp_path: Path) -> None:
     assert refusal.value.kind == "parse-unpinned"
 
 
+@pytest.mark.parametrize(
+    "revision",
+    [
+        "evand/square-packing@0123abc:site/www/data/p",
+        "evand/square-packing@main:site/www/data/p",
+        "evand/square-packing:site/www/data/p",
+        "evand/square-packing@7ff3b2113532889708a3baa4d56bc44294022e63",
+        "evand/square-packing@7ff3b2113532889708a3baa4d56bc44294022e63:",
+        "Evan Daniel's export of 5 October",
+    ],
+)
+def test_a_parse_revision_that_pins_no_commit_and_directory_is_refused(
+    tmp_path: Path, revision: str
+) -> None:
+    """`--parse-revision` is written into every witness: it must name a repository, a full
+    commit and a directory, not a branch, a short id or a sentence."""
+    with pytest.raises(DerivationRefusedError) as refusal:
+        derive_tool.derive(
+            [4], out_root=tmp_path, from_parse=tmp_path / "p", parse_revision=revision
+        )
+    assert refusal.value.kind == "parse-unpinned"
+    plan = synthetic_plan(4, source_n=4, out_root=tmp_path)
+    with pytest.raises(DerivationRefusedError) as direct:
+        derive_tool.derive_witness(
+            plan,
+            SYNTHETIC_PARSE,
+            catalogue_text=REMOVAL_LICENCE,
+            frontier_root=tmp_path,
+            parse_revision=revision,
+        )
+    assert direct.value.kind == "parse-unpinned"
+
+
+def test_a_witness_read_from_a_parse_must_carry_the_parses_digest() -> None:
+    """The parse is not retained, so its digest is what ties the witness to its bytes; a
+    rebuild of a retained witness that names a revision and no digest is refused."""
+    retained = safe_load((derive_tool.WITNESS_ROOT / "n-071.yaml").read_text(encoding="utf-8"))[
+        "witness"
+    ]
+    with pytest.raises(ValueError, match="revision_sha256"):
+        kingbird_derived_witness(
+            71,
+            retained,
+            source_n=71,
+            source_path="resources/web/known-best-packings/sources.json",
+            source_url="https://kingbird.myphotos.cc/packing/square-71.svg",
+            revision=f"{PARSE_REVISION}/square-71.json",
+        )
+
+
 @pytest.mark.usefixtures("synthetic_corpus")
 def test_a_pass_from_a_parse_fetches_nothing_and_writes_the_revision(
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch
@@ -626,6 +686,9 @@ def test_a_pass_from_a_parse_fetches_nothing_and_writes_the_revision(
 
     monkeypatch.setattr(urllib.request, "urlopen", no_network)
     out = tmp_path / "out"
+    parse = write_parse(tmp_path / "parse")
+    raw = SYNTHETIC_PARSE.replace(", ", ",\r\n").encode("utf-8") + b"\r\n"
+    (parse / "square-4.json").write_bytes(raw)
 
     status = derive_tool.main(
         [
@@ -636,7 +699,7 @@ def test_a_pass_from_a_parse_fetches_nothing_and_writes_the_revision(
             "--retrieved",
             "2026-10-05",
             "--from-parse",
-            str(write_parse(tmp_path / "parse")),
+            str(parse),
             "--parse-revision",
             PARSE_REVISION,
         ]
@@ -646,6 +709,9 @@ def test_a_pass_from_a_parse_fetches_nothing_and_writes_the_revision(
     written = safe_load((out / "n-004.yaml").read_text(encoding="utf-8"))["witness"]
     assert written["source"]["revision"] == f"{PARSE_REVISION}/square-4.json"
     assert written["source"]["retrieved"] == "2026-10-05"
+    # The digest is of the file's bytes, line endings included, not of a decoded text.
+    assert written["source"]["revision_sha256"] == hashlib.sha256(raw).hexdigest()
+    assert written["source"]["revision_sha256"] != PARSE_SHA256
 
 
 @pytest.mark.usefixtures("synthetic_corpus")
@@ -714,3 +780,103 @@ def test_a_parse_is_compared_with_a_witness_read_from_the_same_picture(tmp_path:
     assert same.same_side
     assert same.worst == 0
     assert moved.worst > 1
+
+
+# -- `--compare-pictures`: the retained witnesses against the pictures served today -----
+
+KINGBIRD_PICTURE = f"{derive_tool.KINGBIRD_BASE_URL}/square-4.svg"
+CREDITED_SVG = (
+    "<?xml version='1.0'?>\n<!--\n    Found by A. Person on May 1, 2026.\n"
+    "    Optimized by B. Person on May 2, 2026.\n\n    s = Root[...]\n-->\n" + SYNTHETIC_SVG
+)
+PICTURES = ROOT / "resources/web/known-best-packings/receipts/kingbird-2026-10-05-pictures.json"
+
+
+def _serving(
+    answers: Mapping[str, tuple[bytes, str | None]],
+) -> Callable[[str], tuple[bytes, str | None]]:
+    return answers.__getitem__
+
+
+def _retained_from_picture(tmp_path: Path, *, parse: bool = False) -> Path:
+    plan = DerivationPlan(
+        n=4,
+        source_n=4,
+        listed_n=(3, 4),
+        source_path="square-4.svg",
+        url=KINGBIRD_PICTURE,
+        catalogue_side=SYNTHETIC_SIDE,
+        witness_path=tmp_path / "n-004.yaml",
+    )
+    witness = derive_tool.derive_witness(
+        plan,
+        SYNTHETIC_PARSE if parse else SYNTHETIC_SVG,
+        catalogue_text=REMOVAL_LICENCE,
+        frontier_root=tmp_path,
+        parse_revision=PARSE_REVISION if parse else None,
+    )
+    plan.witness_path.write_text(
+        derive_tool.witness_document(witness, schema="x"), encoding="utf-8"
+    )
+    return plan.witness_path
+
+
+def test_a_pictures_credits_are_its_comments_first_paragraph() -> None:
+    assert derive_tool.picture_credits(CREDITED_SVG) == (
+        "Found by A. Person on May 1, 2026.",
+        "Optimized by B. Person on May 2, 2026.",
+    )
+    assert derive_tool.picture_credits(SYNTHETIC_SVG) == ()
+
+
+@pytest.mark.usefixtures("synthetic_corpus")
+def test_a_witness_is_read_again_against_its_picture(tmp_path: Path) -> None:
+    _retained_from_picture(tmp_path)
+    served = {KINGBIRD_PICTURE: (CREDITED_SVG.encode(), "Thu, 24 Sep 2026 16:37:57 GMT")}
+    readings, refusals = derive_tool.compare_pictures(
+        [3, 4], out_root=tmp_path, fetch=_serving(served)
+    )
+
+    assert refusals == []
+    (reading,) = readings
+    assert reading.identical
+    assert not reading.from_parse
+    assert reading.credits[0] == "Found by A. Person on May 1, 2026."
+    receipt = derive_tool.picture_receipt(
+        readings, refusals, retrieved_utc="2026-10-05T23:00:00Z"
+    )
+    assert (receipt["compared"], receipt["identical"], receipt["agree_to_one_ulp"]) == (1, 1, 1)
+
+
+@pytest.mark.usefixtures("synthetic_corpus")
+def test_a_witness_read_from_a_parse_agrees_with_its_picture_to_one_ulp(tmp_path: Path) -> None:
+    _retained_from_picture(tmp_path, parse=True)
+    moved = SYNTHETIC_SVG.replace('width="2" height="2"', 'width="2" height="2" x="0.25"')
+    served = {KINGBIRD_PICTURE: (SYNTHETIC_SVG.encode(), None)}
+    shifted = {KINGBIRD_PICTURE: (moved.encode(), None)}
+
+    (same,), _ = derive_tool.compare_pictures([4], out_root=tmp_path, fetch=_serving(served))
+    (other,), _ = derive_tool.compare_pictures([4], out_root=tmp_path, fetch=_serving(shifted))
+
+    assert same.from_parse
+    assert same.same_side
+    assert same.worst <= 1
+    assert other.worst > 1
+    assert derive_tool.report_pictures([other], []) == 1
+
+
+def test_every_retained_kingbird_witness_agreed_with_the_pictures_of_5_october() -> None:
+    receipt = safe_load(PICTURES.read_text(encoding="utf-8"))
+    readings = {row["n"]: row for row in receipt["readings"]}
+    assert receipt["refused"] == []
+    assert receipt["compared"] == receipt["agree_to_one_ulp"] == len(readings) == 98
+    retained = {
+        int(path.stem.removeprefix("n-"))
+        for path in WITNESSES.glob("n-*.yaml")
+        if "kingbird.myphotos.cc" in path.read_text(encoding="utf-8")
+    }
+    assert set(readings) == retained
+    for n in (69, 83, 87):
+        assert readings[n]["from_parse"]
+        assert readings[n]["same_side"]
+        assert readings[n]["worst_ulp"] <= 1

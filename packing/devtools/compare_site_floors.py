@@ -48,6 +48,8 @@ from fractions import Fraction
 from pathlib import Path
 from typing import cast
 
+from strif import atomic_output_file
+
 from devtools.audit_kingbird_catalogue import load_frontier_cases
 from devtools.retained_data import GZIP_SUFFIX, read_retained_bytes
 from sqpack import retained_json
@@ -285,8 +287,12 @@ def main(argv: Sequence[str] | None = None) -> int:
     families = parse_families(cast("str", args.families)) if args.families else None
     result = report(cast("Path", args.table), load_frontier_cases(FRONTIER), families)
     if args.json is not None:
-        out = cast("Path", args.json)
-        out.write_text(retained_json.dumps(result, ensure_ascii=False), encoding="utf-8")
+        # Atomically: the path is usually a receipt a packet retains, and a write cut off
+        # part way would leave neither the old receipt nor the new one.
+        with atomic_output_file(cast("Path", args.json)) as temporary:
+            temporary.write_text(
+                retained_json.dumps(result, ensure_ascii=False), encoding="utf-8"
+            )
     sys.stdout.write(_text(result) + "\n")
     return 0
 

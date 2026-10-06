@@ -3,15 +3,19 @@ type: is
 id: is-01m487a50mf35488vbjmvffsnm
 title: "Stage-4 review of check_karakus_strip_measure (T-083, T-084, #295), then merge R6's staged exit"
 kind: task
-status: open
+status: in_progress
 priority: 1
-version: 1
+version: 3
+delegate: claude-code@vm
 labels:
   - result-import
 dependencies: []
 parent_id: is-01m482krnapg9vxqd91zjrg171
+hold: null
+hold_until: null
 created_at: 2026-10-06T09:04:30.740Z
-updated_at: 2026-10-06T09:04:30.740Z
+updated_at: 2026-10-06T11:13:14.625Z
+started_at: 2026-10-06T11:00:14.339Z
 ---
 Stage 4's review lane for the machine check of Karakuş's Proposition 5.1 (T-083, T-084, #295). Lane R6 could not run it: launching `claude -p` as the separately prompted reviewer was refused by its session's permission classifier ("Create Unsafe Agents"), so the replay lane is done and the exit is staged, not merged.
 
@@ -27,3 +31,17 @@ How to finish:
 
 Expected CPU: the checker's replay is about 4 s; the review lane, its own budget.
 What refutes: a box the checker closes by an unsound rule, or a gap in the hand reduction.
+
+## Notes
+
+2026-10-06: done on the lane branch claude/ecstatic-pascal-pothtx-r6. The coordinator ran the review as a fresh-context subagent with no permission bypass, from the lane's prompt; its verdict is accept with non-blocking findings. The exit commits 28ffccc7c and b5778dbbe were fast-forwarded onto the lane branch.
+- c77b29307 stores the review (SHA-256 55ba50b2..., with a .flowmarkignore entry and a document-map entry) and lists it in T-083's and T-084's reviews.
+- c77b29307 also dispositions the findings:
+  - 1: a quick soundness-sampling test, a slow full-leaf sweep, and an unsound point-row control that the sampling rejects.
+  - 2: the trust boundary as an enumerated list.
+  - 3: decides and premises fields in the receipt.
+  - 4: the independent-decomposition sentence, with Lemma 5.2 stated as read.
+  - 5: the full replay test marked slow.
+  - 6: the corollary checks labelled as restatements, and the vacuous T-084 line dropped.
+- 396f9beb8 re-pins.
+Validation: packing-validate --records fails only campaign record (the n = 17 ledger). Close at R6's merge.

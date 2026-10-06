@@ -165,13 +165,13 @@ literals.
 `ElevenSquare.Foundations` imports no `Pending` module, so every definition the public
 statements use, and the construction that attains $T$, build without the proof.
 Its closure is 18 modules, about 410 KB, retained in the packet byte for byte.
-`devtools.audit_n11_lean build` staged them, refusing any file whose SHA-256 is not the
-packet manifest’s, and built them on 6 October from 19:34 to 19:42 UTC one module at a
-time in import order, with `nice -n 10` and `LEAN_NUM_THREADS=2`, on
-`leanprover/lean4:v4.34.1` (commit `5045d005`, the compiler string the source’s run
-reports) and Mathlib `d13f23b7` from its official cache, which was fetched whole and
-then pruned to the 1,836 Mathlib modules the closure imports to fit the disk.
-All 18 built with exit 0, and no Mathlib module was rebuilt.
+`devtools.audit_n11_lean build` staged them from the packet’s retained bytes, which
+`devtools.acquire_source --check` holds to the upstream manifest, and built them on 6
+October from 19:34 to 19:42 UTC one module at a time in import order, with `nice -n 10`
+and `LEAN_NUM_THREADS=2`, on `leanprover/lean4:v4.34.1` (commit `5045d005`, the compiler
+string the source’s run reports) and Mathlib `d13f23b7` from its official cache, which
+was fetched whole and then pruned to the 1,836 Mathlib modules the closure imports to
+fit the disk. All 18 built with exit 0, and no Mathlib module was rebuilt.
 [`build-statement-closure.log`](../../../packing/resources/web/queuingtheorydotcom-n11-lean-2026-10-06/receipts/lean/build-statement-closure.log)
 is the receipt, every command with its complete output.
 A first build, from 18:49 to 18:57 UTC by a one-off script, gave the same results.

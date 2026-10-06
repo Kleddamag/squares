@@ -29,7 +29,7 @@ receipts into the packet:
 ``stage --out DIR``
     Writes the 18-module closure of ``ElevenSquare.Foundations``, the three build pins and
     the statement probe ``receipts/lean/AuditN11Statement.lean`` from the packet into
-    ``DIR``, refusing any file whose SHA-256 is not the packet manifest's.
+    ``DIR``, copied from the packet's retained bytes.
 
 ``build --dir DIR --receipt LOG``
     Stages into ``DIR`` and builds the closure one module at a time in import order
@@ -431,21 +431,18 @@ def write_scan(audit_path: Path, out: Path, url: str = ARCHIVE) -> dict[str, Any
 def stage(out: Path, source: Path = SOURCE, probe: Path = PROBE) -> list[Path]:
     """Copy the statement closure, the pins and the probe into ``out``; return them.
 
-    Each upstream file is refused unless its SHA-256 is the packet manifest's.
+    The packet's own bytes are copied as they are: ``devtools.acquire_source --check``
+    holds the packet to its upstream manifest, and the repository is no trust boundary
+    with itself (OR-16).
     """
-    pinned = manifest_sha256()
     if (out / "ElevenSquare").exists():
         shutil.rmtree(out / "ElevenSquare")
     names = [*PINS, *(f"ElevenSquare/{module}.lean" for module in CLOSURE)]
     written: list[Path] = []
     for name in names:
-        data = (source / name).read_bytes()
-        if hashlib.sha256(data).hexdigest() != pinned.get(name):
-            msg = f"{name} is not the retained upstream file"
-            raise SystemExit(msg)
         target = out / name
         target.parent.mkdir(parents=True, exist_ok=True)
-        target.write_bytes(data)
+        shutil.copyfile(source / name, target)
         written.append(target)
     shutil.copyfile(probe, out / probe.name)
     written.append(out / probe.name)
@@ -481,7 +478,7 @@ def build(directory: Path, receipt: Path) -> int:
     env = {**os.environ, "LEAN_NUM_THREADS": "2"}
     lines = [
         f"# devtools.audit_n11_lean build, Queuingtheorydotcom/11SquaresFormalized {COMMIT}",
-        f"# staged {len(staged)} files, every upstream one at the packet manifest's SHA-256",
+        f"# staged {len(staged)} files from the packet's retained bytes",
         f"# host: {os.cpu_count()} cores; started {_utc()}; LEAN_NUM_THREADS=2, nice -n 10",
     ]
     steps: list[list[str]] = [["lean", "--version"], ["lake", "--version"]]

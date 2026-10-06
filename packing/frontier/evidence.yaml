@@ -837,8 +837,8 @@ evidence:
     replay: >-
       From packing/, with elan: .venv/bin/python3 -m devtools.audit_n11_lean stage --out W,
       which writes the 18-module closure of ElevenSquare.Foundations, the three build pins and
-      the statement probe from the 2026-10-06 packet's retained bytes, refusing any whose
-      SHA-256 is not the packet manifest's; then lake exe cache get in W; then
+      the statement probe from the 2026-10-06 packet's retained bytes; then lake exe cache
+      get in W; then
       .venv/bin/python3 -m devtools.audit_n11_lean build --dir W, which builds the closure
       one module at a time in import order and runs lake env lean AuditN11Statement.lean,
       which must elaborate without error and print that construction_packable depends on

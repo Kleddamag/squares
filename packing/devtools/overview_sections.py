@@ -1725,6 +1725,11 @@ OTHER_PROJECTS: tuple[tuple[str, str, str], ...] = (
         "A computer-assisted proof that Trump's packing of eleven squares is optimal.",
     ),
     (
+        "https://github.com/Queuingtheorydotcom/11SquaresFormalized",
+        "Queuingtheorydotcom et al.",
+        "A Lean 4 formalization of that proof, trusting Lean's compiler for its certificates.",
+    ),
+    (
         "https://github.com/Kleddamag/11-squares-certified-bound",
         "Kleddamag",
         "A certified lower bound for eleven squares.",

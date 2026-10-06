@@ -254,8 +254,8 @@ Decides a mixed point-and-rectangle certificate at each direction of the certifi
 The source's driver for a complete mixed-certificate proof: it runs mixed_rotated_verify.cpp over every net direction and joins the per-direction records.
 
 - Source: [`packing/resources/web/wand125-point-and-mixed-2026-09-28/square-packing-bounds/certificates/mixed_n50_L740/code/verify_mixed_full_proof.py`](../../packing/resources/web/wand125-point-and-mixed-2026-09-28/square-packing-bounds/certificates/mixed_n50_L740/code/verify_mixed_full_proof.py)
-- Versions run: SHA-256 `2719e482cfdd…`
-- Note: Retained and reviewed. E-n018-wand125-mixed-470-source-replay runs it end to end, as the n = 18 bundle's README says.
+- Versions run: SHA-256 `2719e482cfdd…`; SHA-256 `477d613fc0e2…` (mixed_n18_L4704's copy: one line differs, its check on --workers allowing 16 where the first allows 3; of `verify_mixed_full_proof.py`)
+- Note: Retained and reviewed. E-n018-wand125-mixed-470-source-replay runs it end to end, as the n = 18 bundle's README says, and mixed_n19_L48229's bundle ships the same copy. mixed_n18_L4704's bundle ships the second version, retained beside its certificate; the 6 October review read both and found the one change bears on no check.
 
 | evidence | run | code | results |
 | --- | --- | --- | --- |
@@ -1459,7 +1459,7 @@ Fetches, pins and binds wand125's point and mixed bundles, checks their exact pr
 
 **devtools.audit_wand125_declared_net** · Squares Project (Levy) · first-party · checks premises · Python · exact-algebraic
 
-Checks the exact premises of wand125's mixed certificate on a declared net, lemma N0's among them; binds its bundle's files to the packet and every shipped record and input to the declared net and the expanded candidate; and compares a replay of the bundle's own driver with the shipped records, requiring the run to have happened.
+Checks the exact premises of wand125's mixed certificates on a declared net, lemma N0's among them; binds each bundle's files to the packet and every shipped record and input to the declared net and the expanded candidate; runs the bundle's own driver with its assertions on and compares the replay with the shipped records, requiring the run to have happened; and runs the stage-4 controls with the source's checker.
 
 - Source: [`packing/devtools/audit_wand125_declared_net.py`](../../packing/devtools/audit_wand125_declared_net.py)
 - Versions run: this repository's commits, which Git holds

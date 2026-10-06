@@ -63,6 +63,9 @@ takes ``--certificate``, ``n18-L470`` unless given.
   centre captures ``1 - 10^-6``, and runs the source's own net check on three corrupted
   net declarations. The original must return its shipped record and every other
   variant must be refused.
+- ``processes`` snapshots a running ``replay``'s driver and workers from ``/proc``:
+  their command lines and Python environment, to show the source's assertions were on
+  for a run whose record predates ``replay``'s own record of it.
 - ``control-sqverify-fast`` runs ``sqverify-fast`` on the same original and mass
   mutants, rebuilt from the retained candidate by the control receipt's factors and held
   to its exact captures, at the same node: the original must verify and each mutant must
@@ -595,6 +598,106 @@ def read_meta(path: Path) -> dict[str, str]:
     return meta
 
 
+#: The snapshot of a running replay's processes that `processes` writes beside its record.
+PROCESSES = "processes.json"
+
+
+def optimizing(argv: list[str]) -> bool:
+    """Whether a Python command line asks for ``-O``: an ``O`` among the short options
+    before the script, ``-c`` or ``-m``."""
+    for token in argv[1:]:
+        if not token.startswith("-") or token in {"-c", "-m"}:
+            return False
+        if not token.startswith("--") and "O" in token[1:]:
+            return True
+    return False
+
+
+def asserts_were_on(run: dict[str, str], snapshot: Path) -> bool:
+    """Whether the run record, or a snapshot taken during the run, shows that the
+    driver and its workers ran with Python's assertions on."""
+    if run.get("asserts") == "on":
+        return True
+    if not snapshot.is_file():
+        return False
+    taken = json.loads(snapshot.read_text(encoding="utf-8"))
+    start, end = run.get("start", ""), run.get("end", "")
+    return (
+        taken.get("status") == "ASSERTS_ON"
+        and bool(start)
+        and start <= taken.get("taken", "")
+        and (not end or taken.get("taken", "") <= end)
+        and len(taken.get("processes") or []) >= 2
+    )
+
+
+def descendants(pid: int) -> list[int]:
+    """``pid`` and every process below it, from ``/proc``."""
+    children: dict[int, list[int]] = {}
+    for entry in Path("/proc").iterdir():
+        if not entry.name.isdigit():
+            continue
+        try:
+            fields = (entry / "stat").read_text().rsplit(")", 1)[1].split()
+        except OSError:
+            continue
+        children.setdefault(int(fields[1]), []).append(int(entry.name))
+    found, queue = [], [pid]
+    while queue:
+        current = queue.pop()
+        found.append(current)
+        queue += children.get(current, [])
+    return sorted(found)
+
+
+def processes(pid: int) -> dict[str, Any]:
+    """A snapshot of a running replay: the driver ``pid`` and every process below it.
+
+    For each process, its command line, working directory and the environment
+    variables that change how Python or NumPy run. Status ``ASSERTS_ON`` when the
+    driver's command line is the bundle's driver and no Python process among them asks
+    for ``-O`` or has ``PYTHONOPTIMIZE`` set.
+    """
+    rows: list[dict[str, Any]] = []
+    for each in descendants(pid):
+        base = Path("/proc") / str(each)
+        try:
+            argv = (base / "cmdline").read_bytes().decode().split("\0")[:-1]
+            environ = (base / "environ").read_bytes().decode(errors="replace").split("\0")
+            cwd = str((base / "cwd").readlink())
+        except OSError:
+            continue
+        kept = {
+            name: value
+            for name, _, value in (item.partition("=") for item in environ)
+            if name.startswith("PYTHON") or name in {"OPENBLAS_NUM_THREADS", "OMP_NUM_THREADS"}
+        }
+        python = bool(argv) and Path(argv[0]).name.startswith("python")
+        rows.append(
+            {
+                "pid": each,
+                "argv": argv,
+                "cwd": cwd,
+                "environment": kept,
+                "python": python,
+                "optimizing": python and (optimizing(argv) or "PYTHONOPTIMIZE" in kept),
+            }
+        )
+    driver = rows[0]["argv"] if rows else []
+    on = (
+        bool(rows)
+        and driver[1:3] == ["code/verify_mixed_full_proof.py", "proof"]
+        and not any(row["optimizing"] for row in rows)
+    )
+    return {
+        "kind": "wand125-declared-net-processes/v1",
+        "status": "ASSERTS_ON" if on else "NOT_SHOWN",
+        "taken": utc_now(),
+        "driver_pid": pid,
+        "processes": rows,
+    }
+
+
 def record_name(r: int) -> str:
     return "proof/axis/replayed.json" if r == 0 else f"proof/net{r:03d}/replayed.json"
 
@@ -612,11 +715,16 @@ def compare(
 
     The run happened when its runner's record says it started and exited zero, the
     driver's progress record counts every node done, the driver's binary is in the copy,
-    and every node's record was written after the run started. Every regenerated record
-    equals the shipped one and the retained certificate's, field by field; the copy's
-    certificate, if the driver rewrote it, equals the retained one as a mapping, whatever
-    its order; the copy's `bundle.json` reports the replay; and every other shipped file
-    is unchanged.
+    every node's record and the rewritten certificate were written after the run
+    started. The source's checks ran when the run record says the driver's assertions
+    were on, or a snapshot of the running processes (`processes`, ``processes.json``
+    beside the record) shows no ``-O`` and no ``PYTHONOPTIMIZE`` in the driver or any
+    worker during the run: the checks are Python ``assert`` statements (finding FN-1 of
+    the 6 October review). Every regenerated record equals the shipped one and the
+    retained certificate's, field by field; the copy's certificate equals the retained
+    one as a mapping, whatever its order; and every other shipped file is unchanged. The
+    copy's `bundle.json` is held to the shipped one's statuses as a consistency check
+    only: the driver does not write it, so it shows nothing about the run (FN-2).
     """
     stated = CERTIFICATES[key]
     directory = directory or stated.directory
@@ -628,6 +736,8 @@ def compare(
         differing.append(f"the run did not exit zero: {run.get('exit')}")
     started = run.get("start", "")
     start_time = datetime.fromisoformat(started).timestamp() if started else None
+    if not asserts_were_on(run, meta.parent / PROCESSES):
+        differing.append("nothing shows the driver's assertions were on during the run")
     progress_path = fresh / "proof/replay-progress.json"
     progress = json.loads(progress_path.read_text()) if progress_path.is_file() else {}
     if progress != {"done": count, "total": count}:
@@ -652,7 +762,9 @@ def compare(
         else:
             matching += 1
     rewritten = fresh / "proof/certificate.json"
-    if rewritten.is_file() and load_json(rewritten.read_bytes()) != certificate:
+    if start_time is None or rewritten.stat().st_mtime < start_time:
+        differing.append("proof/certificate.json: not rewritten by this run")
+    elif load_json(rewritten.read_bytes()) != certificate:
         differing.append("proof/certificate.json: differs from the retained certificate")
     fresh_bundle = json.loads((fresh / "bundle.json").read_text())
     if (fresh_bundle.get("status"), fresh_bundle.get("certificate")) != (
@@ -802,12 +914,19 @@ def replay(
     The pinned tarball is unpacked twice. The first copy is bound by `bundle`, whose
     receipt is written beside the run's; the driver runs in the second,
     ``OPENBLAS_NUM_THREADS=1 OMP_NUM_THREADS=1 python3 code/verify_mixed_full_proof.py
-    proof --workers W`` with this interpreter as ``python3``. The run's record,
-    ``run.meta``, holds its start, exit and end, and the CPU of the driver and of every
-    process it waited for, its pooled workers and their checker runs among them, read
-    from ``wait4``; ``run.stdout`` is what it printed.
+    proof --workers W`` with this interpreter as ``python3``. The source's checks are
+    Python ``assert`` statements, so the runner refuses to start under ``-O`` or
+    ``PYTHONOPTIMIZE`` and removes ``PYTHONOPTIMIZE`` from the driver's environment
+    (finding FN-1 of the 6 October review). The run's record, ``run.meta``, holds its
+    start, exit and end, that its assertions were on, and the CPU of the driver and of
+    every process it waited for, its pooled workers and their checker runs among them,
+    read from ``wait4``; ``run.stdout`` is what it printed.
     """
     stated = CERTIFICATES[key]
+    require(
+        not sys.flags.optimize and not os.environ.get("PYTHONOPTIMIZE"),
+        "assertions are off: the source's checks are asserts, so drop -O and PYTHONOPTIMIZE",
+    )
     out = out or stated.receipts / "full"
     out.mkdir(parents=True, exist_ok=True)
     shipped, pin = unpack(stated, tarball, work / "shipped")
@@ -815,11 +934,10 @@ def replay(
     fresh, _pin = unpack(stated, tarball, work / "run")
     command = [sys.executable, "code/verify_mixed_full_proof.py", "proof"]
     command += ["--workers", str(workers)]
-    environment = os.environ | {
-        "OPENBLAS_NUM_THREADS": "1",
-        "OMP_NUM_THREADS": "1",
-        "PYTHONDONTWRITEBYTECODE": "1",
-    }
+    environment = {
+        name: value for name, value in os.environ.items() if name != "PYTHONOPTIMIZE"
+    } | {"OPENBLAS_NUM_THREADS": "1", "OMP_NUM_THREADS": "1", "PYTHONDONTWRITEBYTECODE": "1"}
+    require(not optimizing(command), "the driver's command line asks for -O")
     lines = [
         "command: OPENBLAS_NUM_THREADS=1 OMP_NUM_THREADS=1 " + " ".join(command),
         f"cwd: {fresh}",
@@ -831,6 +949,11 @@ def replay(
             f" {os.cpu_count()} cpus"
         ),
         f"niceness: {os.nice(0)}",
+        "asserts: on",
+        (
+            "asserts_basis: the runner refuses -O and PYTHONOPTIMIZE, and the driver runs"
+            " without -O and with PYTHONOPTIMIZE removed from its environment"
+        ),
         f"start: {utc_now()}",
         "loadavg_start: " + " ".join(f"{value:.2f}" for value in os.getloadavg()),
     ]
@@ -890,17 +1013,32 @@ def reaches_past_pi_over_8(t: Fraction) -> bool:
     return (1 + t) ** 2 >= 2
 
 
+def sharp_extent(core: Fraction, step: Fraction) -> Fraction:
+    """The widest a concentric core of side ``core`` reaches across the unit square when
+    the core's angle is half a step of half-angle tangent from the square's:
+    ``B (cos d + sin d)`` at ``tan(d/2) = step/2``. It increases with the offset, so a
+    core fits strictly inside every unit square assigned to its node exactly when this is
+    below 1."""
+    z = step / 2
+    return core * (1 + 2 * z - z * z) / (1 + z * z)
+
+
 def coarser_net(core: Fraction) -> dict[str, Any]:
-    """The finest net of steps ``1/q`` on which the core does not fit, ``B (1 + 1/q) >= 1``,
-    and which is otherwise sound: its last node reaches ``tan(pi/8)`` and the bin below it
-    still holds an orientation of ``[0, pi/4]``. Only the core's fit fails on it."""
+    """The finest net of steps ``1/q`` on which the core does not fit, and which is
+    otherwise sound: its last node reaches ``tan(pi/8)`` and the bin below it still holds
+    an orientation of ``[0, pi/4]``.
+
+    The core does not fit when `sharp_extent` is at least 1: then a unit square at a bin's
+    edge does not hold its core strictly inside, so the containment the argument needs
+    fails, and not only the sufficient test ``B (1 + D) < 1`` (finding FN-3 of the 6
+    October review, which found ``D = (1 - B)/B`` still fits). Only the core's fit fails.
+    """
     q = int(core / (1 - core))
     while q > 1:
         step = Fraction(1, q)
         last = next(k for k in range(q + 1) if reaches_past_pi_over_8(k * step))
-        if core * (1 + step) >= 1 and not reaches_past_pi_over_8(
-            (last - Fraction(1, 2)) * step
-        ):
+        sound = not reaches_past_pi_over_8((last - Fraction(1, 2)) * step)
+        if sharp_extent(core, step) >= 1 and sound:
             return {"step": str(step), "last": last}
         q -= 1
     raise AuditError(f"no coarser net isolates the core's fit at B = {core}")
@@ -910,7 +1048,8 @@ def corrupted_nets(data: dict[str, Any]) -> dict[str, dict[str, Any]]:
     """Three corrupted net declarations, each a copy of the candidate, each breaking one
     premise of the declared net and no other.
 
-    ``coarser-step`` is `coarser_net`, where the core need not fit inside the unit square;
+    ``coarser-step`` is `coarser_net`, on which a core at a bin's edge does not fit
+    strictly inside its unit square;
     ``short-net`` drops the last node, so the net stops before ``tan(pi/8)``;
     ``extra-field`` adds a field the format does not have.
     """
@@ -1256,6 +1395,10 @@ def main(argv: list[str] | None = None) -> int:
     control_parser.add_argument(
         "--sqverify-fast", type=Path, help="a binary to run the corrupted nets through too"
     )
+    processes_parser = commands.add_parser(
+        "processes", help="snapshot a running replay's driver and workers"
+    )
+    processes_parser.add_argument("--pid", type=int, required=True, help="the driver's pid")
     fast_parser = commands.add_parser(
         "control-sqverify-fast", help="sqverify-fast on the control receipt's variants"
     )
@@ -1274,6 +1417,7 @@ def main(argv: list[str] | None = None) -> int:
         replay_parser,
         control_parser,
         fast_parser,
+        processes_parser,
     ):
         each.add_argument("--certificate", choices=sorted(CERTIFICATES), default=DEFAULT)
         each.add_argument("--out", type=Path, help="the receipt; the packet's by default")
@@ -1305,6 +1449,9 @@ def run_command(args: argparse.Namespace) -> int:
     if args.command == "bundle":
         out = args.out or receipts / "bundle.json"
         return write_or_check(out, bundle(args.bundle, key=key), check=False)
+    if args.command == "processes":
+        out = args.out or receipts / "full" / PROCESSES
+        return write_or_check(out, processes(args.pid), check=False)
     if args.command == "sample":
         result = sample(key, args.tarball, args.work, args.nodes, args.workers)
         first, last = args.nodes[0], args.nodes[-1]

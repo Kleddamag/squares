@@ -67,9 +67,14 @@ assistance under human direction.”
   inputs, read here as data). `mixed_n19_L48229` verified at all 416, with no control. That copy is pinned here by digest and not retained,
   and was not opened (see [What Is Retained](#what-is-retained)).
 - **The source’s replays.** `mixed_n19_L48229`’s README says the bundled checker’s full
-  replay was run again before publication on a separate machine, 416 of 416 with every
-  bundle file hash checked first, and retains the log
-  (`verification/prepublication-replay.txt`). `mixed_n18_L4704`’s says plainly that no
+  replay was run again before publication on a separate machine, 416 of 416 with “all
+  1266 original bundle file hashes matching”, and retains the log
+  (`verification/prepublication-replay.txt`). That was the bundle before its path
+  metadata was made relative: the pinned tarball lists 1,267 files, and it is bound to
+  the replayed one only through the source’s before and after digests, whose before
+  archive is not published (finding FN-5 of the
+  [6 October review](../../../../docs/project/reviews/review-2026-10-06-wand125-finer-net-n18-n19.md)).
+  `mixed_n18_L4704`’s says plainly that no
   such replay was run for it: its evidence is the original complete run, the
   `sqverify-net` run and the publication audit. Neither was checked here.
 - **The publication audit.** Each directory’s `publication-audit.json` records that the
@@ -240,7 +245,11 @@ with the least recorded bound (37 and 797) and the slowest or last nodes.
 
 The receipts are [`receipts/n18-L4704/sample/`](receipts/n18-L4704/sample/) and
 [`receipts/n19-L48229/sample/`](receipts/n19-L48229/sample/). A sample is a diagnostic:
-it decides no other node.
+it decides no other node. The
+[6 October review](../../../../docs/project/reviews/review-2026-10-06-wand125-finer-net-n18-n19.md)
+ran the same command on three more nodes of each, 2, 759 and 830 at $n = 18$ and 198, 414
+and 415 at $n = 19$, each returning the shipped record, so ten nodes of each net are
+reproduced here with the producer’s code.
 
 **The controls.** `control` binds a fresh copy of each bundle, runs the full driver’s
 preconditions, and at the oblique node of the least recorded bound (797 at $n = 18$, 37
@@ -255,7 +264,7 @@ by `sqverify-fast`’s admission, each for the premise it breaks:
 
 | Corruption | `n18-L4704` | `n19-L48229` | Source’s refusal | `sqverify-fast`’s refusal |
 | --- | --- | --- | --- | --- |
-| a coarser step on which the core does not fit, the net otherwise sound | step $1/1998$, last 828 | step $1/999$, last 414 | “Core containment is not strict” | “B (1 + D) >= 1” |
+| a coarser step on which a core at a bin’s edge does not fit, the net otherwise sound | step $1/1998$, last 828 | step $1/997$, last 413 | “Core containment is not strict” | “B (1 + D) >= 1” |
 | the last node dropped | last 830 | last 414 | “Net does not reach tan(pi/8)” | “the net does not reach past pi/4” |
 | an unknown field | `offset` | `offset` | “Invalid proof_net fields” | “a field this reader does not know” |
 

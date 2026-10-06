@@ -244,7 +244,9 @@ def replay(shipped: Path, fresh: Path, certificate: dict[str, Any]) -> Path:
     (fresh / "proof/replay-progress.json").write_text('{"done": 416, "total": 416}')
     (fresh / declared.DRIVER_BINARY).write_bytes(b"binary")
     meta = fresh.parent / "run.meta"
-    meta.write_text("start: 2026-10-05T17:16:28Z\nexit: 0\nend: 2026-10-05T22:00:00Z\n")
+    meta.write_text(
+        "asserts: on\nstart: 2026-10-05T17:16:28Z\nexit: 0\nend: 2026-10-05T22:00:00Z\n"
+    )
     return meta
 
 
@@ -340,6 +342,10 @@ def test_the_coarser_net_breaks_the_cores_fit_and_nothing_else(core: Fraction) -
     net = declared.coarser_net(core)
     step, last = Fraction(net["step"]), int(net["last"])
     assert core * (1 + step) >= 1
+    # The sharp extent, not only the sufficient test: a core at a bin's edge does not fit
+    # strictly inside its unit square (FN-3). At D = (1 - B)/B it still would.
+    assert declared.sharp_extent(core, step) >= 1
+    assert declared.sharp_extent(core, (1 - core) / core) < 1
     assert declared.reaches_past_pi_over_8(last * step)
     assert not declared.reaches_past_pi_over_8((last - Fraction(1, 2)) * step)
 
@@ -365,6 +371,8 @@ def test_each_control_is_refused_for_its_own_premise(key: str, index: int) -> No
         assert run["run"]["output"]["status"] == "ANGLE_UNRESOLVED", run["name"]
     assert Fraction(mutants[1]["witness_coverage_exact"]) == 1 - declared.NEAR_THRESHOLD
     assert [item["name"] for item in record["nets"]] == list(declared.NET_REFUSALS)
+    candidate = json.loads(read_retained_bytes(stated.directory / "candidate.json"))
+    assert record["nets"][0]["proof_net"] == declared.coarser_net(Fraction(candidate["B"]))
     for item in record["nets"]:
         source_rule, admission_rule = declared.NET_REFUSALS[item["name"]]
         assert item["source"]["verdict"] == "REFUSED", item["name"]
@@ -381,3 +389,64 @@ def test_each_control_is_refused_for_its_own_premise(key: str, index: int) -> No
         ("scale-masses", True),
         ("near-threshold", True),
     ]
+
+
+def test_a_run_with_nothing_showing_its_assertions_were_on_does_not_match(
+    tmp_path: Path,
+) -> None:
+    """Finding FN-1 of the 6 October review: the source's checks are asserts, so a run
+    whose record and snapshot do not show them on proves nothing."""
+    shipped, fresh = tmp_path / "shipped", tmp_path / "fresh"
+    certificate = shipped_tree(shipped)
+    meta = replay(shipped, fresh, certificate)
+    meta.write_text("start: 2026-10-05T17:16:28Z\nexit: 0\nend: 2026-10-05T22:00:00Z\n")
+    assert declared.compare(shipped, fresh, meta)["differing"] == [
+        "nothing shows the driver's assertions were on during the run"
+    ]
+    snapshot = {
+        "status": "ASSERTS_ON",
+        "taken": "2026-10-05T18:00:00Z",
+        "processes": [{"pid": 1}, {"pid": 2}],
+    }
+    (meta.parent / declared.PROCESSES).write_text(json.dumps(snapshot))
+    assert declared.compare(shipped, fresh, meta)["status"] == "FULL_REPLAY_MATCHES_SHIPPED"
+    # A snapshot taken outside the run, or one that does not show the assertions on,
+    # shows nothing about it.
+    for changed in ({"taken": "2026-10-05T23:00:00Z"}, {"status": "NOT_SHOWN"}):
+        (meta.parent / declared.PROCESSES).write_text(json.dumps(snapshot | changed))
+        assert declared.compare(shipped, fresh, meta)["status"] == "MISMATCH"
+
+
+def test_a_certificate_the_run_did_not_rewrite_does_not_match(tmp_path: Path) -> None:
+    """Finding FN-2: the shipped certificate equals the retained one, so an unrewritten
+    copy must not count as the driver's output."""
+    shipped, fresh = tmp_path / "shipped", tmp_path / "fresh"
+    certificate = shipped_tree(shipped)
+    meta = replay(shipped, fresh, certificate)
+    os.utime(fresh / "proof/certificate.json", (1_790_000_000, 1_790_000_000))
+    assert declared.compare(shipped, fresh, meta)["differing"] == [
+        "proof/certificate.json: not rewritten by this run"
+    ]
+
+
+@pytest.mark.parametrize(
+    ("argv", "expected"),
+    [
+        (["python3", "code/verify_mixed_full_proof.py", "proof"], "runs asserts"),
+        (["python3", "-B", "-c", "import sys"], "runs asserts"),
+        (["python3", "-O", "code/verify_mixed_full_proof.py"], "optimizes"),
+        (["python3", "-BO", "-c", "x"], "optimizes"),
+        (["python3", "-OO", "-m", "x"], "optimizes"),
+        (["python3", "-m", "x", "-O"], "runs asserts"),
+    ],
+)
+def test_an_optimizing_command_line_is_recognised(argv: list[str], expected: str) -> None:
+    assert declared.optimizing(argv) is (expected == "optimizes")
+
+
+def test_replay_refuses_to_run_with_assertions_off(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    monkeypatch.setenv("PYTHONOPTIMIZE", "1")
+    with pytest.raises(declared.AuditError, match="assertions are off"):
+        declared.replay("n18-L4704", tmp_path / "absent.tar.gz", tmp_path, 1, tmp_path)

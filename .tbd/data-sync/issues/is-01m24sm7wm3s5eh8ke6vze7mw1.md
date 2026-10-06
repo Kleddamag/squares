@@ -3,9 +3,9 @@ type: is
 id: is-01m24sm7wm3s5eh8ke6vze7mw1
 title: "N11 daytime: strategic research blocks after the combined merge"
 kind: epic
-status: open
+status: closed
 priority: 1
-version: 53
+version: 54
 spec_path: docs/project/specs/active/plan-2026-09-10-n11-daytime-strategy-and-explainer.md
 labels: []
 dependencies: []
@@ -44,9 +44,9 @@ child_order_hints:
   - is-01m2mm43z5rhrhwg1ac775r1sc
   - is-01m2mmq0d31xcfva6p0nspxv9n
 created_at: 2026-09-10T04:36:14.355Z
-updated_at: 2026-09-23T04:48:12.320Z
-closed_at: null
-close_reason: null
+updated_at: 2026-10-06T08:43:15.823Z
+closed_at: 2026-10-06T08:43:15.823Z
+close_reason: "Finished dated wrapper: the 2026-09-10 n11 daytime research blocks are over. s(11) is settled: T-060 (V3/C3) proves s(11) = T = 3.8770835..., packing/frontier/RESULTS.md on origin/main eb43ffe9a marks every earlier n11 lower bound 'superseded by T-060', and packing/campaign/ideas.md Orientation records n11 as settled with its older route premises historical. Still-relevant children moved: think-gtax and think-2npx to think-xkqu; all others closed."
 resolution: null
 duplicate_of: null
 ---

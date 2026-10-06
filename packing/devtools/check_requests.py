@@ -278,7 +278,7 @@ def _register_entry(ident: str, register: Register) -> Entry:
     rungs = f"{record['verification']}/{record['confirmation']}"
     status = result_status.status(record, register.evidence)
     reviews = list(record.get("reviews") or [])
-    latest = max(reviews, key=lambda review: str(review.get("date", ""))) if reviews else None
+    latest = result_status.latest_review(reviews)
     if latest and latest.get("verdict") == "refuted":
         return Entry(ident, rungs, REFUTED, status, str(latest.get("path")), "")
     if issues := result_status.open_issues(record, register.evidence):

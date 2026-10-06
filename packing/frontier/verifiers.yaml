@@ -280,6 +280,40 @@ verifiers:
     versions:
       - {sha256: 6294052a37ce66c5d84b55afd606e3a52f463e22b876bf44b5aa903aefb7e737}
 
+  - id: V-evand-verify-cert-py
+    program: verify_cert.py (s12/search/exact/)
+    author: Evan Daniel
+    provenance: external
+    language: [Python]
+    methods: [exact-algebraic]
+    role: decides
+    summary: >-
+      The source's exact checker of its rational packing certificates, in Fraction
+      arithmetic: each square strictly inside the open box, and each pair with centre
+      distance squared at most 2 strictly separated along one of its four face normals,
+      the others by disjoint circumscribed discs.
+    source:
+      - packing/resources/web/evand-square-packing-2026-10-05/square-packing/s12/search/exact/verify_cert.py
+    versions:
+      - {sha256: 3299ca0c0f02f7c221deeea69a9a85b5a90db6bc410b20727fdff211c92bed52}
+
+  - id: V-evand-verify-cert2-py
+    program: verify_cert2.py (s12/search/exact/)
+    author: Evan Daniel
+    provenance: external
+    language: [Python]
+    methods: [exact-algebraic]
+    role: decides
+    summary: >-
+      The source's second exact checker of the same certificates, written to share no
+      geometry with the first: each pair disjoint when no vertex of either lies in the
+      other closed square and no two closed edges meet, every corner strictly inside the
+      open box, in Fraction arithmetic.
+    source:
+      - packing/resources/web/evand-square-packing-2026-10-05/square-packing/s12/search/exact/verify_cert2.py
+    versions:
+      - {sha256: 55140a35d95d9eaa64a14c3b044641efbcda94ebfc3b12b7dec9fa52692e31d3}
+
   - id: V-evand-lean
     program: The source's Lean development (lean/), with gen_zmtree.py emitting a cover's box tree
     author: Evan Daniel
@@ -1008,6 +1042,28 @@ verifiers:
       closed-cover and collision kernels, which the source bundles too.
 
   # --- First-party programs: premise checks and replay drivers ------------------------
+  - id: V-evand-exact-certificates
+    program: devtools.evand_exact_certificates
+    author: Squares Project (Levy)
+    provenance: first-party
+    language: [Python]
+    methods: [exact-algebraic]
+    role: premises
+    summary: >-
+      Reads Evan Daniel's rational certificates, refusing anything the format does not
+      state, converts each without rounding to a rational center-basis witness for
+      sqpack.witness.exact_verify and to rational corners for
+      devtools.check_rational_witness_independent, which decide it; runs the source's
+      two checkers as retained; compares each side and pose with the register; and makes
+      the negative controls.
+    source: [packing/devtools/evand_exact_certificates.py]
+    independence_record: packing/devtools/evand_exact_certificates.py
+    note: >-
+      Written from the certificate format the source's README states and from the
+      geometry. Its author read the source's verify_cert.py and verify_cert2.py before
+      writing it, to check that the conversion means what they mean, and imports or
+      copies none of their code; it runs them only as separate processes.
+
   - id: V-check-n11-final-composition
     program: devtools.check_n11_final_composition
     author: Squares Project (Levy)

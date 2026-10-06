@@ -25,8 +25,8 @@ second implementation agrees.
 
 ## The Short Version
 
-- **85** programs: **31** external and **54** first-party; **66** decide claims and **19** check premises.
-- **289** of **316** evidence entries name the programs that verified them: 205 reproduced with the producer’s code, 67 independently re-implemented, 10 no relation: a proof, a derivation or a report, 7 re-implemented, sharing the producer’s components.
+- **88** programs: **33** external and **55** first-party; **68** decide claims and **20** check premises.
+- **292** of **319** evidence entries name the programs that verified them: 207 reproduced with the producer’s code, 68 independently re-implemented, 10 no relation: a proof, a derivation or a report, 7 re-implemented, sharing the producer’s components.
 
 ## Programs
 
@@ -46,6 +46,8 @@ second implementation agrees.
 | [`V-evand-xcheck-py`](#v-evand-xcheck-py) | xcheck.py | Evan Daniel | external | decides | 4 | 2 |
 | [`V-evand-zmcheck`](#v-evand-zmcheck) | zmcheck (verify2/src/main.rs) | Evan Daniel | external | decides | 3 | 2 |
 | [`V-evand-qx2-zm-py`](#v-evand-qx2-zm-py) | qx2_zm.py | Evan Daniel | external | decides | 4 | 2 |
+| [`V-evand-verify-cert-py`](#v-evand-verify-cert-py) | verify_cert.py (s12/search/exact/) | Evan Daniel | external | decides | 2 | 1 |
+| [`V-evand-verify-cert2-py`](#v-evand-verify-cert2-py) | verify_cert2.py (s12/search/exact/) | Evan Daniel | external | decides | 2 | 1 |
 | [`V-evand-lean`](#v-evand-lean) | The source's Lean development (lean/) | Evan Daniel | external | decides | 7 | 5 |
 | [`V-chelokot-lean`](#v-chelokot-lean) | The source's Lean development (formal/) | chelokot | external | decides | 1 | 1 |
 | [`V-kleddamag-n11-verify`](#v-kleddamag-n11-verify) | verify.py | Kleddamag | external | decides | 4 | 2 |
@@ -65,8 +67,8 @@ second implementation agrees.
 | [`V-anabologyco-n17-checker`](#v-anabologyco-n17-checker) | scripts/check_certificate.py and its event pipeline | anabologyco-maker | external | decides | 1 | 0 |
 | [`V-check-basic-bounds`](#v-check-basic-bounds) | devtools.check_basic_bounds | Squares Project (Levy) | first-party | decides | 3 | 14 |
 | [`V-optimal-moduli`](#v-optimal-moduli) | cases.small_n.optimal_moduli | Squares Project (Levy) | first-party | decides | 1 | 0 |
-| [`V-sqpack-verify`](#v-sqpack-verify) | sqpack.verify | Squares Project (Levy) | first-party | decides | 12 | 2 |
-| [`V-check-rational-witness-independent`](#v-check-rational-witness-independent) | devtools.check_rational_witness_independent | Squares Project (Levy) | first-party | decides | 8 | 6 |
+| [`V-sqpack-verify`](#v-sqpack-verify) | sqpack.verify | Squares Project (Levy) | first-party | decides | 13 | 3 |
+| [`V-check-rational-witness-independent`](#v-check-rational-witness-independent) | devtools.check_rational_witness_independent | Squares Project (Levy) | first-party | decides | 9 | 7 |
 | [`V-check-nagamochi-lemma1-counterexample`](#v-check-nagamochi-lemma1-counterexample) | devtools.check_nagamochi_lemma1_counterexample | Squares Project (Levy) | first-party | decides | 1 | 1 |
 | [`V-upper-bound-promotion`](#v-upper-bound-promotion) | devtools.upper_bound_packets | Squares Project (Levy) | first-party | decides | 6 | 5 |
 | [`V-upper-bound-intervals`](#v-upper-bound-intervals) | devtools.upper_bound_intervals | Squares Project (Levy) | first-party | decides | 3 | 3 |
@@ -98,6 +100,7 @@ second implementation agrees.
 | [`V-n17-endpoint-checkers`](#v-n17-endpoint-checkers) | devtools.check_n17_root_certificate and devtools.check_n17_endpoint_feasibility | Squares Project (Levy) | first-party | decides | 1 | 1 |
 | [`V-n17-catalogue-polynomial`](#v-n17-catalogue-polynomial) | devtools.check_n17_catalogue_polynomial | Squares Project (Levy) | first-party | decides | 1 | 0 |
 | [`V-n11-optimality-checkers`](#v-n11-optimality-checkers) | The devtools.check_n11_optimality | Squares Project (Levy) | first-party | decides | 1 | 1 |
+| [`V-evand-exact-certificates`](#v-evand-exact-certificates) | devtools.evand_exact_certificates | Squares Project (Levy) | first-party | premises | 2 | 1 |
 | [`V-check-n11-final-composition`](#v-check-n11-final-composition) | devtools.check_n11_final_composition | Squares Project (Levy) | first-party | premises | 1 | 1 |
 | [`V-audit-n17-endpoint-receipt`](#v-audit-n17-endpoint-receipt) | devtools.audit_n17_endpoint_receipt | Squares Project (Levy) | first-party | premises | 1 | 1 |
 | [`V-audit-tokoharu-density`](#v-audit-tokoharu-density) | devtools.audit_tokoharu_density | Squares Project (Levy) | first-party | premises | 1 | 1 |
@@ -520,6 +523,34 @@ The source's exact-rational checker of Valid7, the finite statement its k^2 - 3 
 | `E-k2m4-evand-family-report` | the source’s own run | producer’s code | T-081 |
 | `E-k2m4-evand-validtilt9-qx2-report` | the source’s own run | producer’s code | T-081 |
 
+### `V-evand-verify-cert-py`
+
+**verify_cert.py (s12/search/exact/)** · Evan Daniel · external · decides · Python · exact-algebraic
+
+The source's exact checker of its rational packing certificates, in Fraction arithmetic: each square strictly inside the open box, and each pair with centre distance squared at most 2 strictly separated along one of its four face normals, the others by disjoint circumscribed discs.
+
+- Source: [`packing/resources/web/evand-square-packing-2026-10-05/square-packing/s12/search/exact/verify_cert.py`](../../packing/resources/web/evand-square-packing-2026-10-05/square-packing/s12/search/exact/verify_cert.py)
+- Versions run: SHA-256 `3299ca0c0f02…`
+
+| evidence | run | code | results |
+| --- | --- | --- | --- |
+| `E-evand-exact-optima-2026-10-05-report` | the source’s own run | producer’s code | T-098 |
+| `E-evand-exact-optima-2026-10-05-source-replay` | replayed here | producer’s code | T-098 |
+
+### `V-evand-verify-cert2-py`
+
+**verify_cert2.py (s12/search/exact/)** · Evan Daniel · external · decides · Python · exact-algebraic
+
+The source's second exact checker of the same certificates, written to share no geometry with the first: each pair disjoint when no vertex of either lies in the other closed square and no two closed edges meet, every corner strictly inside the open box, in Fraction arithmetic.
+
+- Source: [`packing/resources/web/evand-square-packing-2026-10-05/square-packing/s12/search/exact/verify_cert2.py`](../../packing/resources/web/evand-square-packing-2026-10-05/square-packing/s12/search/exact/verify_cert2.py)
+- Versions run: SHA-256 `55140a35d95d…`
+
+| evidence | run | code | results |
+| --- | --- | --- | --- |
+| `E-evand-exact-optima-2026-10-05-report` | the source’s own run | producer’s code | T-098 |
+| `E-evand-exact-optima-2026-10-05-source-replay` | replayed here | producer’s code | T-098 |
+
 ### `V-evand-lean`
 
 **The source's Lean development (lean/), with gen_zmtree.py emitting a cover's box tree** · Evan Daniel · external · decides · Lean 4, Python · proof-assistant-checked
@@ -825,6 +856,7 @@ Decides a packing pair by pair and wall by wall: by exact sign in a number field
 | `E-n011-trump-upper` | replayed here | independent | T-011 |
 | `E-n029-schadt-numerical` | replayed here | independent | - |
 | `E-n029-interval-certified-upper` | replayed here | independent | T-009 |
+| `E-evand-exact-optima-2026-10-05-exact-replay` | replayed here | independent | T-098 |
 
 ### `V-check-rational-witness-independent`
 
@@ -847,6 +879,7 @@ Decides a rational-corner witness pair by pair and wall by wall in Fraction arit
 | `E-n069-ellsworth-2026-09-exact-replay` | replayed here | independent | T-088 |
 | `E-n083-chang-2026-09-exact-replay` | replayed here | independent | T-089 |
 | `E-n087-chang-2026-09-exact-replay` | replayed here | independent | T-089 |
+| `E-evand-exact-optima-2026-10-05-exact-replay` | replayed here | independent | T-098 |
 
 ### `V-check-nagamochi-lemma1-counterexample`
 
@@ -1318,6 +1351,22 @@ Consume the published n = 11 optimality proposals component by component and dec
 | evidence | run | code | results |
 | --- | --- | --- | --- |
 | `E-n011-global-optimality-independent` | audited here | shared components | T-060 |
+
+### `V-evand-exact-certificates`
+
+**devtools.evand_exact_certificates** · Squares Project (Levy) · first-party · checks premises · Python · exact-algebraic
+
+Reads Evan Daniel's rational certificates, refusing anything the format does not state, converts each without rounding to a rational center-basis witness for sqpack.witness.exact_verify and to rational corners for devtools.check_rational_witness_independent, which decide it; runs the source's two checkers as retained; compares each side and pose with the register; and makes the negative controls.
+
+- Source: [`packing/devtools/evand_exact_certificates.py`](../../packing/devtools/evand_exact_certificates.py)
+- Versions run: this repository's commits, which Git holds
+- What its authors read and used: [`packing/devtools/evand_exact_certificates.py`](../../packing/devtools/evand_exact_certificates.py)
+- Note: Written from the certificate format the source's README states and from the geometry. Its author read the source's verify_cert.py and verify_cert2.py before writing it, to check that the conversion means what they mean, and imports or copies none of their code; it runs them only as separate processes.
+
+| evidence | run | code | results |
+| --- | --- | --- | --- |
+| `E-evand-exact-optima-2026-10-05-exact-replay` | replayed here | independent | T-098 |
+| `E-evand-exact-optima-2026-10-05-source-replay` | replayed here | producer’s code | T-098 |
 
 ### `V-check-n11-final-composition`
 

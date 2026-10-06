@@ -751,13 +751,14 @@ RECORDED: dict[int, tuple[tuple[str, str, str] | None, tuple[str, str, str] | No
             "verified",
         ),
     ),
-    # A parallel packing certified here: the finder's line, confirmed by the register
-    # entry whose replay it is (T-056), where the UnitSquare release stood until then.
-    # Below it, wand125's rectangle bound of 1 October replayed as T-074, which took the
-    # case on 2026-10-02 from its 28 September certificate (T-070), itself raised that day
-    # from the point bound of T-044.
+    # A parallel packing certified here: the finder's line, where the UnitSquare release
+    # stood until then, confirmed by T-056 until 2026-10-05, when Evan Daniel's exact
+    # optimum of the same packing took both lanes (T-098): the finder and the improver,
+    # with no year, since the year dates the find. Below it, wand125's rectangle bound of
+    # 1 October replayed as T-074, which took the case on 2026-10-02 from its 28 September
+    # certificate (T-070), itself raised that day from the point bound of T-044.
     68: (
-        ("Couzo 2026, GitHub (confirmed T-056)", "external", "verified"),
+        ("Couzo & Daniel, GitHub (confirmed T-098)", "external", "verified"),
         (
             "wand125 after Tokoharu, Levy et al. 2026, GitHub (confirmed T-074)",
             "external",
@@ -778,18 +779,20 @@ RECORDED: dict[int, tuple[tuple[str, str, str] | None, tuple[str, str, str] | No
     ),
     # Three finders and two improvers gave "Arslanov et al." with no year here until
     # Couzo's certified packing took the case; the synthetic test above keeps that shape.
+    # Since 2026-10-05 its exact optimum, Couzo's packing improved by Daniel (T-098).
     132: (
-        ("Couzo 2026, GitHub (confirmed T-056)", "external", "verified"),
+        ("Couzo & Daniel, GitHub (confirmed T-098)", "external", "verified"),
         ("Karakuş 2026, arXiv:2609.37410 corrects Nagamochi 2005", "external", "verified"),
     ),
-    # A certified ceiling that trails its report by two units of the printed place is
-    # still cited as reported, with the register entry that confirms the packing.
+    # A certified ceiling that trailed its report by two units of the printed place was
+    # cited as reported until 2026-10-05, when the exact optimum of the same packing put
+    # both lanes on one side (T-098).
     206: (
-        ("Couzo 2026, GitHub (reported; confirmed T-056)", "external", "reported"),
+        ("Couzo & Daniel, GitHub (confirmed T-098)", "external", "verified"),
         ("Karakuş 2026, arXiv:2609.37410 corrects Nagamochi 2005", "external", "verified"),
     ),
     211: (
-        ("de Winter 2026, GitHub (confirmed T-057)", "external", "verified"),
+        ("de Winter & Daniel, GitHub (confirmed T-098)", "external", "verified"),
         ("Karakuş 2026, arXiv:2609.37410 corrects Nagamochi 2005", "external", "verified"),
     ),
 }

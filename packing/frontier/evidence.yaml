@@ -17151,3 +17151,156 @@ evidence:
       holds the receipts. The source's own checker was not run here on this certificate, and
       its tarball is pinned by digest and not retained.
     source_reviewed: '2026-10-06'
+
+  - id: E-evand-exact-optima-2026-10-05-report
+    claim: upper-bound
+    scope: {n_values: [68, 102, 103, 106, 110, 123, 126, 131, 132, 152, 154, 155, 156, 172, 177, 180, 181, 182, 199, 206, 207, 208, 209, 210, 211, 228, 236, 237, 238, 239, 240, 241, 259, 263, 268, 269, 270, 271, 272, 273, 297, 301, 302, 303, 304, 305, 306, 307]}
+    assurance: reported
+    reported_method: exact-algebraic
+    performed_by: source-author
+    relationship_to_generator: same-implementation
+    origin: external
+    novelty: previously-published
+    source_key: '[evand exact optima 2026-10-05]'
+    certificate: resources/web/evand-square-packing-2026-10-05/square-packing/s12/search/exact/batch/certs/
+    replay_status: not-attempted
+    verifiers: [V-evand-verify-cert-py, V-evand-verify-cert2-py]
+    limitations: >-
+      evand/square-packing at 13ee36e5807727d12a5da36b9b90a96bdba272bf
+      (2026-10-05T20:54:59Z), s12/search/exact/batch/, reports for each listed count an
+      exact rational certificate n-N.cert of s(n) <= S': n unit squares, each a rational
+      centre and a rational t = tan(theta/2), in a box of rational side S', from 3.5e-13
+      (n = 211) to 5.0e-11 (n = 270) below the side the record reported, as its
+      results.md tabulates. Each is the register's own known-best witness, which the
+      source read from this repository, taken by its solver exactsolve.py to a nearby
+      exact KKT point of minimizing the side at 80 digits and rounded outward (centres to
+      10^-35, the configuration scaled by 1 + 10^-20 and the side rounded up), so that
+      every pair gap is at least about 1e-20 and every wall clearance about 5e-21. Eleven
+      of the 48 inputs are the witness after the source's unpublished SLP squeeze, which
+      bears on reproducing the solve and not on checking a certificate. The source says
+      its two checkers, verify_cert.py and verify_cert2.py, accept every certificate
+      (verify_all.sh, about two minutes), and that reproduce.sh regenerates each one byte
+      for byte from its input (1 to 2 CPU-hours for all 321). It reports, numerically and
+      not by interval proof, that 44 of the 48 exact points are KKT local minima
+      (multipliers from an LP, a reduced Hessian checked in binary64, and a MILP test over
+      corner-to-corner disjunctions) and that n = 177, 211, 263 and 272 are certified
+      bounds only; none of that is a claim on s(n). The batch also certifies 272 other
+      counts (n = 17 is held here), each 1e-20 to 1e-14 above the printed side, and asks
+      for nothing to be registered from them. This is the public-claim entry; the replays
+      here are E-evand-exact-optima-2026-10-05-exact-replay and
+      E-evand-exact-optima-2026-10-05-source-replay.
+    external_review:
+      state: informally-verified
+      date: '2026-10-06'
+      reviewed_by: >-
+        Claude Opus 5.5 (claude-opus-5-5), the tbd-strong sub-agent at that tier's
+        configured reasoning setting, prompted separately from the lane that retained the
+        packet, replayed the certificates and registered T-098
+        (docs/project/reviews/review-2026-10-06-evand-exact-optima.md)
+      note: >-
+        Read both of the source's checkers and both of this repository's deciders as they
+        ran: each is a correct exact decision of n closed unit squares, pairwise
+        interior-disjoint, in [0, S']^2, skipping only pairs it may soundly skip, and their
+        common mode, the parse and the map from t to (c, s), cannot inflate the claim. The
+        packet's 53 retained files match the manifest and every receipt verdict is VALID.
+        No defect in the source's certificates or claim; the review's one blocking finding
+        was in this repository's n = 126 record, which the exact layer now clears, and the
+        fix check of the same day found it resolved. Unchecked: the review executed no code and decided no
+        certificate itself; it did not read issue #375 or the source beyond the packet; the
+        KKT reports are outside the claim.
+    source_reviewed: '2026-10-05'
+
+  - id: E-evand-exact-optima-2026-10-05-exact-replay
+    claim: upper-bound
+    scope: {n_values: [68, 102, 103, 106, 110, 123, 126, 131, 132, 152, 154, 155, 156, 172, 177, 180, 181, 182, 199, 206, 207, 208, 209, 210, 211, 228, 236, 237, 238, 239, 240, 241, 259, 263, 268, 269, 270, 271, 272, 273, 297, 301, 302, 303, 304, 305, 306, 307]}
+    assurance: verified
+    method: exact-algebraic
+    performed_by: repository
+    relationship_to_generator: independent-implementation
+    origin: replayed-here
+    novelty: previously-published
+    source_key: '[evand exact optima 2026-10-05]'
+    certificate: resources/web/evand-square-packing-2026-10-05/square-packing/s12/search/exact/batch/certs/
+    replay: >-
+      uv run --frozen --all-extras --group dev python -m devtools.evand_exact_certificates
+      check --workers 2, which reads each retained certificate strictly, converts it
+      without rounding to a rational center-basis witness and to rational corners, and
+      decides it with sqpack.witness.exact_verify and with
+      devtools.check_rational_witness_independent; it must report all 48 VALID under both.
+      With --certs pointed at a checkout of the source at the pin it decides all 320
+      certificates the packet pins, as receipts/first-party-check.json records; check
+      --check holds that receipt to the packet's pinned digests in a second. The controls
+      are devtools.evand_exact_certificates controls --workers 2
+      (receipts/negative-controls.json).
+    replay_status: passed
+    verifiers: [V-sqpack-verify, V-check-rational-witness-independent, V-evand-exact-certificates]
+    independence_record: packing/devtools/evand_exact_certificates.py
+    limitations: >-
+      Proves, for each listed count, s(n) at most S', the side of the source's certificate
+      and both upper lanes' value, by deciding the certificate here, every pair and every
+      wall over Q, twice. The certificate is read strictly (a header n S and exactly n rows
+      x y t of rational literals; the source's parser ignores rows past n, this one refuses
+      them) and converted without rounding: (c, s) = ((1 - t^2)/(1 + t^2), 2t/(1 + t^2)),
+      so c^2 + s^2 = 1 exactly, into a rational center-basis witness, which
+      sqpack.witness.exact_verify materializes and decides, and into rational corners (x +
+      c a - s b, y + s a + c b) for a, b = +-1/2, which
+      devtools.check_rational_witness_independent decides. Those two share no geometry or
+      verification code; their common mode is the parse and the map from t to (c, s), and
+      neither imports or copies the source's code. Both accept all 48, with least wall
+      clearance 5e-21 and least pair gap about 1e-20 at every count, and all 320 certificates
+      the packet pins (n = 17 held), read from a checkout at the pin and matched to the
+      manifest's digests: 2,820 CPU seconds on two workers, 802 for the 48. Three controls
+      on each of the 48, decided by both checkers here and by the source's two
+      (receipts/negative-controls.json): one square of the tightest pair moved along the
+      closing normal by its exact gap, 1e-20, plus one unit of the side's denominator (1e-30
+      to 8e-29), and the box shrunk by its least top or right clearance, 5e-21, plus that
+      unit, are refused by all four; the box shrunk by the unit alone is accepted by all
+      four, as it must be when every clearance exceeds the unit. The moved square of each
+      overlap control stays strictly inside the box (least clearance 1.07e-20), so each
+      refusal is for the pair. Both deciders here accept contact and the source's two do
+      not, which is sound for s(n) and moot for these certificates, whose every clearance
+      is about 5e-21. No optimality at any count.
+    source_reviewed: '2026-10-05'
+
+  - id: E-evand-exact-optima-2026-10-05-source-replay
+    claim: upper-bound
+    scope: {n_values: [68, 102, 103, 106, 110, 123, 126, 131, 132, 152, 154, 155, 156, 172, 177, 180, 181, 182, 199, 206, 207, 208, 209, 210, 211, 228, 236, 237, 238, 239, 240, 241, 259, 263, 268, 269, 270, 271, 272, 273, 297, 301, 302, 303, 304, 305, 306, 307]}
+    assurance: verified
+    method: exact-algebraic
+    performed_by: repository
+    relationship_to_generator: same-implementation
+    origin: replayed-here
+    novelty: previously-published
+    source_key: '[evand exact optima 2026-10-05]'
+    certificate: resources/web/evand-square-packing-2026-10-05/square-packing/s12/search/exact/batch/certs/
+    replay: >-
+      uv run --frozen --all-extras --group dev python -m devtools.evand_exact_certificates
+      source-replay, which runs the source's verify_cert.py and verify_cert2.py, as the
+      packet retains them, on each retained certificate with this project's interpreter
+      as separate processes, and requires each to exit 0 with a last line beginning
+      VALID; it must report all 48 accepted by both. With --certs pointed at a checkout of
+      the source at the pin it runs them on all 320 certificates the packet pins, as
+      receipts/source-replay.json records.
+    replay_status: passed
+    verifiers: [V-evand-verify-cert-py, V-evand-verify-cert2-py, V-evand-exact-certificates]
+    limitations: >-
+      Proves, for each listed count, s(n) at most S' by the source's own decision of its
+      certificate, run here: verify_cert.py (each square strictly inside the open box by
+      its half-extent (|c| + |s|)/2; each pair with centre distance squared at most 2
+      strictly separated along one of the four face normals; the others by disjoint
+      circumscribed discs) and verify_cert2.py (every corner strictly inside the open box;
+      each such pair disjoint because no vertex of either lies in the other closed square
+      and no two closed edges meet), both in Fraction arithmetic and both by the source's
+      author and agent, sharing the certificate parser's conventions and no geometry.
+      Each ran as retained (SHA-256 3299ca0c... and 55140a35...) under CPython 3.14.7 as
+      a separate process, and each is held to its exit status and to a last line
+      beginning VALID, not to the published driver verify_all.sh, whose first leg pipes
+      verify_cert.py's last line to grep -q VALID, which INVALID also matches
+      (receipts/negative-controls.json runs it on a refused certificate); the batch's
+      summarize.py, which wrote results.md's verdict column, makes the same test. Both accept all
+      48, and all 320 certificates the packet pins (n = 17 held), in 202 CPU seconds on two
+      workers, 54 for the 48 (receipts/source-replay.json); verify_cert.py reports a least
+      wall clearance of 5e-21 and a least pair separation of 1e-20 at each improving
+      count. This is a reproduction with the producer's code, not an independent check;
+      E-evand-exact-optima-2026-10-05-exact-replay is that. No optimality at any count.
+    source_reviewed: '2026-10-05'

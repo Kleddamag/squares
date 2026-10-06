@@ -19,6 +19,100 @@ repository: jlevy/squares
 owner: jlevy
 last_reviewed: '2026-10-05'
 issues:
+  - number: 375
+    title: 'Analytic optima of 48 recent records (s(n) bounds 3e-13 … 5e-11 below the register) and exact certificates for every record n ≤ 104: registration request'
+    author: evand
+    opened: '2026-10-05'
+    state: open
+    kind: result-report
+    triage: done
+    summary: >-
+      Evan Daniel's exact-contact solver, run on this register's known-best witness at
+      every count, gives exact rational certificates of s(n) <= S' at 321 of the 324
+      counts (evand/square-packing 13ee36e, s12/search/exact/batch/). At 48 counts S' lies
+      3e-13 to 5e-11 below the register's side, the exact optimum of the same packing
+      (Couzo's at 46, de Winter's at n = 126 and 211), and he asks for those to be
+      registered; the other 273 are offered as an independent exact replay of the upper
+      bounds, with nothing asked. Two exact checkers of his accept every certificate; that
+      the points are KKT local minima is his numerical evidence. The source states AI
+      assistance (Claude).
+    read_through: '2026-10-05T22:35:10Z'
+    results:
+      - key: exact-optima-48
+        claim: >-
+          s(n) <= S' at n = 68, 102, 103, 106, 110, 123, 126, 131, 132, 152, 154, 155, 156,
+          172, 177, 180, 181, 182, 199, 206 to 211, 228, 236 to 241, 259, 263, 268 to 273,
+          297 and 301 to 307, each S' rational and 3e-13 to 5e-11 below the register's
+          reported side
+        source: body
+        register: [T-098]
+      - key: certificates-273
+        claim: >-
+          Exact certificates at the 273 other certified counts, each 1e-20 to 1e-14 above
+          the printed side, offered as an independent exact replay of the existing upper
+          bounds; n = 105, 130 and 292 not certified
+        source: body
+        not_registered: >-
+          The author asks for nothing to be registered from them. The 272 other than n =
+          17 were replayed here with the 48 and are pinned by digest in the packet; they
+          move no case. At the 78 counts whose verified ceiling trails its report they
+          could carry it, a use the author did not ask for, which think-70bh holds for
+          the owner's decision.
+        queued: false
+      - key: kkt-local-minima
+        claim: >-
+          315 of the 321 exact points are KKT local minima, 44 of the 48 improvements
+          among them, by numerical checks at 80 digits (multipliers, reduced Hessian,
+          corner-to-corner MILP); six are certified bounds only
+        source: body
+        not_registered: >-
+          Numerical evidence of local optimality of the packings, not a bound on s(n):
+          recorded as reported in T-098 and its report entry and not verified here.
+        queued: false
+      - key: n105-descent
+        claim: >-
+          At n = 105 the witness has equilibrium residual 1e-3 and a first-order descent
+          once corner-to-corner touches may slip, so it may not be a local minimum
+        source: body
+        not_registered: >-
+          A numerical observation on Couzo's n = 105 packing that moves no bound; the
+          packet README records it.
+        queued: false
+      - key: n17-certificate
+        claim: The exact certificate at n = 17, one of the 273
+        source: body
+        not_registered: >-
+          Held by the owner for the n = 17 work on other branches: not retained, pinned,
+          replayed or recorded here.
+        queued: true
+        bead: think-x4v4
+    beads: [think-t6ok, think-70bh, think-x4v4, think-5n3o]
+    answer_bead: think-ybmt
+    replies:
+      - url: https://github.com/jlevy/squares/issues/375#issuecomment-6004562871
+        date: '2026-10-05'
+        by: jlevy
+        kind: acknowledgement
+        reported:
+          - result: exact-optima-48
+          - result: certificates-273
+      - url: https://github.com/jlevy/squares/issues/375#issuecomment-6007913483
+        date: '2026-10-06'
+        by: jlevy
+        kind: confirmation
+        reported:
+          - result: exact-optima-48
+            id: T-098
+            verification: V3
+            confirmation: C3
+            status: confirmed
+          - result: certificates-273
+          - result: kkt-local-minima
+          - result: n17-certificate
+    close_when: >-
+      T-098 is merged and the reply from main says what was registered, replayed and
+      reviewed; the n = 17 certificate is taken up or declined with the n = 17 work.
+
   - number: 368
     title: 'Preprint: for every fixed c, s(k^2-c)=k for all large k (explicit constant 0.033)'
     author: squarepacker

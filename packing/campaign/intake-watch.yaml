@@ -116,10 +116,18 @@ repositories:
       left out on purpose, each pinned by its publication record's digests (the R052 and
       continuation packets' READMEs). n-017.md cites every release. Nothing to import.
   - url: https://github.com/evand/square-packing
-    read_through: 40e442f35e55c4d1bd4a4defb9304f9672e5c08f
+    read_through: 13ee36e5807727d12a5da36b9b90a96bdba272bf
     read_on: '2026-10-05'
     note: >-
-      The 41 commits from 27dd68a (1 October) to 40e442f (4 October), the parent of the
+      Read through 13ee36e on 2026-10-05 by lane F of the evening intake (think-t6ok): the
+      evand-square-packing-2026-10-05 packet pins 13ee36e for s12/search/exact/, Evan
+      Daniel's exact optima (T-098, jlevy/squares#375); the same commit adds one line to
+      s12/TODO.md, a working list. The commit between it and the 7ff3b211 pin, ab2bf47 (5
+      October), adds section G of s12/search/WISHLIST.md and a paragraph of
+      s12/notes/conjectures-literature-2026-10-04.md on the algebraic degree of s(n): the
+      source factored the catalogue's degree-672 polynomial for s(83), which T-089 cites,
+      with python-flint and found it irreducible over Q. That is a working note on a
+      printed polynomial, not a bound, and nothing to import. Earlier: the 41 commits from 27dd68a (1 October) to 40e442f (4 October), the parent of the
       7ff3b211 pin, whose changed paths no packet retained (think-83zc). Where one bears on
       a registered entry, the evand-square-packing-2026-10-04 packet now retains the file
       at the pin, each an evidence update that moves no rung: the k2m3 bundle README of

@@ -24,6 +24,7 @@ from devtools.result_status import (
     STATUSES,
     activity_label,
     activity_problems,
+    latest_review,
     open_issues,
     status,
     status_line,
@@ -108,6 +109,26 @@ def test_an_open_review_verdict_makes_a_result_incomplete_whatever_its_rung(
         reviews=[review(verdict, "2026-09-20"), review("defects-resolved", "2026-09-30")],
     )
     assert status(resolved, EVIDENCE) == CONFIRMED
+
+
+def test_of_reviews_on_one_day_the_one_listed_last_decides() -> None:
+    """A review and the check of its fixes can share a date, as T-098's did on
+    2026-10-06; the list is in the order they were written, so the later one decides
+    whichever way it goes."""
+    same_day = "2026-10-06"
+    resolved = record(
+        "C3",
+        "E-replay",
+        reviews=[review("defect-open", same_day), review("defects-resolved", same_day)],
+    )
+    assert status(resolved, EVIDENCE) == CONFIRMED
+    reopened = record(
+        "C3",
+        "E-replay",
+        reviews=[review("accepted", same_day), review("defect-open", same_day)],
+    )
+    assert status(reopened, EVIDENCE) == INCOMPLETE
+    assert latest_review([]) is None
 
 
 def test_a_failed_replay_makes_a_result_incomplete() -> None:
@@ -234,13 +255,18 @@ def test_superseded_is_marked_on_a_bound_and_where_a_later_result_is_declared() 
     # squarepacker's v1.1 (T-095) took n = 12's reported lower bound from T-078, and
     # thirty-nine when its replays took the verified one from T-079 the same day; forty
     # on 6 October, when the evening certificates of 4 October (T-091), decided the same
-    # way as T-094, superseded T-072 at n = 76, its one count.
-    assert len(derived) == 40
+    # way as T-094, superseded T-072 at n = 76, its one count; forty-two when Evan
+    # Daniel's exact optima (T-098) took the last counts of Couzo's first certificates
+    # (T-057) and his second (T-092), the first upper bounds here to be superseded.
+    assert len(derived) == 42
     assert {
-        "T-020", "T-021", "T-030", "T-043", "T-044", "T-047", "T-049", "T-072", "T-078",
-        "T-079", "T-087",
+        "T-020", "T-021", "T-030", "T-043", "T-044", "T-047", "T-049", "T-057", "T-072",
+        "T-078", "T-079", "T-087", "T-092",
     } <= set(derived)  # fmt: skip
-    assert {str(records.results[entry]["kind"]) for entry in derived} == {"lower-bound"}
+    assert {str(records.results[entry]["kind"]) for entry in derived} == {
+        "lower-bound",
+        "upper-bound",
+    }
     # A result of another kind is marked only where its entry declares the whole of it
     # implied, and in part where it declares a part (think-rl2b).
     assert [entry for entry in marked if entry not in derived] == ["T-031"]

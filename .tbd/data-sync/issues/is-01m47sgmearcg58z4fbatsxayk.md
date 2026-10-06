@@ -5,13 +5,13 @@ title: Certify Session 182's handover with a qualifying gate
 kind: task
 status: open
 priority: 2
-version: 1
+version: 2
 spec_path: docs/project/reviews/review-2026-10-02-n17-bulk-exclusion-design.md
 labels: []
 dependencies: []
 parent_id: is-01m3xkd6zmq1jqwtn628h2k7zy
 created_at: 2026-10-06T05:03:23.082Z
-updated_at: 2026-10-06T05:03:23.082Z
+updated_at: 2026-10-06T15:59:14.865Z
 ---
 Session 182 (session-182-n17-overnight-lanes) closes stopped with certification_pending:
 no qualifying gate ran on its handed-over source inside the finalization reserve.
@@ -26,3 +26,7 @@ To discharge: run `packing-validate --fast` (or the full gate) at or after the s
 close commit on claude/n17-session-182-continued, or rely on a hosted fast run of that
 head. Then replace certification_pending with the canonical
 `full gate: fast at <sha>: passed` line in the session's checks.
+
+## Notes
+
+2026-10-06: addressed on jlevy/squares#384 (claude/n17-session-certification, 7c4f758f5 and 6f635886d); closes when #384 merges.

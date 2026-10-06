@@ -8,8 +8,8 @@ ours, which rest on someone else's argument, and how far each has been checked.
 
 ## The short version
 
-- **387** evidence records. **245** are formal; **238** of those were established here.
-- **134** rest on an argument made elsewhere, of which **7** have been read by nobody here.
+- **390** evidence records. **247** are formal; **240** of those were established here.
+- **135** rest on an argument made elsewhere, of which **7** have been read by nobody here.
 - **1** formal record proves a theorem only under a hypothesis nothing here has replayed, and is verified as that implication alone: `E-k2m4-evand-bentz4-lean-build` (ValidTilt9).
 - **40** claim to be first established here. **14** make no novelty statement at all - not assessed, which is not the same as not novel.
 
@@ -154,7 +154,7 @@ results, it is a statement about what this repository has itself examined.
 | `E-kingbird-upper-register` | 177 | upper-bound | reported | - | - | - | previously-published | producer’s code | - |
 | `E-kingbird-grid-completeness` | 96 | upper-bound | reported | - | - | - | previously-published | producer’s code | - |
 | `E-unitsquare-release1-report` | 0 | upper-bound | reported | - | - | - | previously-published | producer’s code | *none held* |
-| `E-basic-grid-upper` | 250 | upper-bound | verified | equalities and inequalities, no tolerance | here | - | common-knowledge | independent | `V-check-basic-bounds` |
+| `E-basic-grid-upper` | 176 | upper-bound | verified | equalities and inequalities, no tolerance | here | - | common-knowledge | independent | `V-check-basic-bounds` |
 | `E-basic-area-lower` | 18 | lower-bound | verified | equalities and inequalities, no tolerance | here | - | common-knowledge | independent | `V-check-basic-bounds` |
 | `E-nagamochi-lower` | 175 | lower-bound | reported | - | elsewhere | defect-found | previously-published | no code | - |
 | `E-karakus-strip-lower` | 203 | lower-bound | verified | whatever its theorem states | elsewhere | informally-verified | previously-published | no code | - |
@@ -301,9 +301,9 @@ results, it is a statement about what this repository has itself examined.
 | `E-n069-ellsworth-2026-09-report` | 0 | upper-bound | reported | - | elsewhere | informally-verified | previously-published | producer’s code | - |
 | `E-n083-chang-2026-09-report` | 0 | upper-bound | reported | - | elsewhere | informally-verified | previously-published | producer’s code | - |
 | `E-n087-chang-2026-09-report` | 0 | upper-bound | reported | - | elsewhere | informally-verified | previously-published | producer’s code | - |
-| `E-n069-ellsworth-2026-09-exact-replay` | 1 | upper-bound | verified | equalities and inequalities, no tolerance | here | - | previously-published | independent | `V-upper-bound-promotion`, `V-check-rational-witness-independent` |
-| `E-n083-chang-2026-09-exact-replay` | 1 | upper-bound | verified | equalities and inequalities, no tolerance | here | - | previously-published | independent | `V-upper-bound-promotion`, `V-check-rational-witness-independent` |
-| `E-n087-chang-2026-09-exact-replay` | 1 | upper-bound | verified | equalities and inequalities, no tolerance | here | - | previously-published | independent | `V-upper-bound-promotion`, `V-check-rational-witness-independent` |
+| `E-n069-ellsworth-2026-09-exact-replay` | 0 | upper-bound | verified | equalities and inequalities, no tolerance | here | - | previously-published | independent | `V-upper-bound-promotion`, `V-check-rational-witness-independent` |
+| `E-n083-chang-2026-09-exact-replay` | 0 | upper-bound | verified | equalities and inequalities, no tolerance | here | - | previously-published | independent | `V-upper-bound-promotion`, `V-check-rational-witness-independent` |
+| `E-n087-chang-2026-09-exact-replay` | 0 | upper-bound | verified | equalities and inequalities, no tolerance | here | - | previously-published | independent | `V-upper-bound-promotion`, `V-check-rational-witness-independent` |
 | `E-k2m4-evand-family-report` | 9 | lower-bound | reported | - | elsewhere | informally-verified | previously-published | producer’s code | `V-evand-qx2-zm-py`, `V-evand-lean` |
 | `E-k2m4-evand-validtilt9-qx2-report` | 0 | lower-bound | reported | - | elsewhere | - | previously-published | producer’s code | `V-evand-qx2-zm-py` |
 | `E-k2m4-wand125-validtilt9-report` | 0 | lower-bound | reported | - | elsewhere | informally-verified | previously-published | independent | `V-wand125-valid7-checker`, `V-audit-validtilt9-independent` |
@@ -405,6 +405,9 @@ results, it is a statement about what this repository has itself examined.
 | `E-evand-exact-optima-2026-10-05-report` | 48 | upper-bound | reported | - | elsewhere | informally-verified | previously-published | producer’s code | `V-evand-verify-cert-py`, `V-evand-verify-cert2-py` |
 | `E-evand-exact-optima-2026-10-05-exact-replay` | 48 | upper-bound | verified | equalities and inequalities, no tolerance | here | - | previously-published | independent | `V-sqpack-verify`, `V-check-rational-witness-independent`, `V-evand-exact-certificates` |
 | `E-evand-exact-optima-2026-10-05-source-replay` | 48 | upper-bound | verified | equalities and inequalities, no tolerance | here | - | previously-published | producer’s code | `V-evand-verify-cert-py`, `V-evand-verify-cert2-py`, `V-evand-exact-certificates` |
+| `E-evand-exact-ceilings-2026-10-05-report` | 0 | upper-bound | reported | - | elsewhere | informally-verified | previously-published | producer’s code | `V-evand-verify-cert-py`, `V-evand-verify-cert2-py` |
+| `E-evand-exact-ceilings-2026-10-05-exact-replay` | 77 | upper-bound | verified | equalities and inequalities, no tolerance | here | - | previously-published | independent | `V-sqpack-verify`, `V-check-rational-witness-independent`, `V-evand-exact-certificates` |
+| `E-evand-exact-ceilings-2026-10-05-source-replay` | 77 | upper-bound | verified | equalities and inequalities, no tolerance | here | - | previously-published | producer’s code | `V-evand-verify-cert-py`, `V-evand-verify-cert2-py`, `V-evand-exact-certificates` |
 | `E-n018-wand125-mixed-4704-report` | 1 | lower-bound | reported | - | elsewhere | informally-verified | previously-published | producer’s code | `V-wand125-mixed-rotated-verify-cpp`, `V-wand125-verify-mixed-full-proof-py` |
 | `E-n019-wand125-mixed-48229-report` | 1 | lower-bound | reported | - | elsewhere | informally-verified | previously-published | producer’s code | `V-wand125-mixed-rotated-verify-cpp`, `V-wand125-verify-mixed-full-proof-py` |
 | `E-n018-wand125-mixed-4704-sqverify-fast-replay` | 1 | lower-bound | verified | strict inequalities only | here | - | previously-published | independent | `V-sqverify-fast` |
@@ -413,10 +416,10 @@ results, it is a statement about what this repository has itself examined.
 
 ## What the register rests on
 
-- **assurance**: numerically-checked 4, reported 138, verified 245
-- **method**: exact-algebraic 101, interval-certified 130, numerical-multiprecision 4, proof-assistant-checked 4, proof-audited 3, published-proof 7, reported 138
-- **novelty**: apparently-novel 40, common-knowledge 4, not assessed 14, previously-published 329
-- **relationship to the producer's code**: generator 5, independent-implementation 131, not-applicable 20, same-implementation 218, shared-components 7, unknown-historical 6
+- **assurance**: numerically-checked 4, reported 139, verified 247
+- **method**: exact-algebraic 103, interval-certified 130, numerical-multiprecision 4, proof-assistant-checked 4, proof-audited 3, published-proof 7, reported 139
+- **novelty**: apparently-novel 40, common-knowledge 4, not assessed 14, previously-published 332
+- **relationship to the producer's code**: generator 5, independent-implementation 132, not-applicable 20, same-implementation 220, shared-components 7, unknown-historical 6
 
 The `cases` column is how many frontier records cite each piece of evidence, and it is the reason to read this table rather than count records. Ranked below are the *formal* records only: a `reported` record cited across the frontier may be a shared catalogue and is labelled as such, which is the register working rather than risk. The risk is a verified claim resting on an argument nobody has examined.
 
@@ -471,11 +474,11 @@ The `n` column is what each covers and `cases` is how many frontier records cite
 
 | evidence | cases | whose work | read here |
 | --- | ---: | --- | --- |
-| `E-basic-grid-upper` | 250 | here | - |
 | `E-karakus-strip-lower` | 203 | elsewhere | informally-verified |
 | `E-karakus-strip-measure-interval` | 203 | here | - |
-| `E-evand-exact-optima-2026-10-05-exact-replay` | 48 | here | - |
-| `E-evand-exact-optima-2026-10-05-source-replay` | 48 | here | - |
+| `E-basic-grid-upper` | 176 | here | - |
+| `E-evand-exact-ceilings-2026-10-05-exact-replay` | 77 | here | - |
+| `E-evand-exact-ceilings-2026-10-05-source-replay` | 77 | here | - |
 
 The most-cited argument this repository did not produce is `E-karakus-strip-lower`, carrying 203 frontier cases. It is an external proof, and it has been read here: its record carries the review, what was re-derived, and the four things that were not. The arithmetic is what picked it out for reading -- being cited this heavily is the reason to open an argument, not a reason to trust it.
 

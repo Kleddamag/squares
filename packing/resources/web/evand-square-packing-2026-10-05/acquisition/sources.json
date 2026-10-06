@@ -706,8 +706,8 @@
       ],
       "subtree_file_count": 690,
       "subtree_total_bytes": 8141621,
-      "retained_file_count": 58,
-      "retained_total_bytes": 1915445,
+      "retained_file_count": 135,
+      "retained_total_bytes": 3887992,
       "compressed": [
         "square-packing/s12/search/exact/batch/results.json.gz"
       ],
@@ -755,1633 +755,1171 @@
           "path": "s12/search/exact/batch/certs/n-1.cert",
           "bytes": 281,
           "sha256": "04a78b122e425011658fee4df2af8949837104181af3b64fa76a979dd0c31344",
-          "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
+          "reason": "certifies a side above the register's reported one which, rounded up at the printed precision, lies at or above the verified upper bound the record already holds, so no case record cites it; the source asks for nothing to be registered from it, and the replay receipts carry its verdict and digest"
         },
         {
           "path": "s12/search/exact/batch/certs/n-10.cert",
           "bytes": 1774,
           "sha256": "87b63979ac9aacf3e73e587a584767c714dde1c561f812a789c2d403df2bfece",
-          "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
+          "reason": "certifies a side above the register's reported one which, rounded up at the printed precision, lies at or above the verified upper bound the record already holds, so no case record cites it; the source asks for nothing to be registered from it, and the replay receipts carry its verdict and digest"
         },
         {
           "path": "s12/search/exact/batch/certs/n-100.cert",
           "bytes": 9234,
           "sha256": "3bcd66fa0f83ec28c31220a106efe024ea0be272853d7804f23e234fd1a88393",
-          "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
-        },
-        {
-          "path": "s12/search/exact/batch/certs/n-101.cert",
-          "bytes": 14708,
-          "sha256": "dfbe5ca659d052ca3c558240623ea55accfad3060da2dafd2b9534cf1a29df4c",
-          "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
-        },
-        {
-          "path": "s12/search/exact/batch/certs/n-104.cert",
-          "bytes": 14018,
-          "sha256": "9f2e41e12d343d567057d1d3ffac76197330e1f38a718f77745cf723334492a1",
-          "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
-        },
-        {
-          "path": "s12/search/exact/batch/certs/n-107.cert",
-          "bytes": 15358,
-          "sha256": "21e73629f75e30e54d25ed2ce0c7f225c35fa8f158d05b18f13d9088e98cce52",
-          "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
-        },
-        {
-          "path": "s12/search/exact/batch/certs/n-108.cert",
-          "bytes": 18347,
-          "sha256": "94ef7cb5c0234a23bdf259bd63e96794a07d1e3a7db8b3d4b33561fbe7042273",
-          "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
-        },
-        {
-          "path": "s12/search/exact/batch/certs/n-109.cert",
-          "bytes": 17648,
-          "sha256": "1ed2bb61e3e9f911997fa70178e92c2d140a8732e137cb48f41cb69732734070",
-          "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
+          "reason": "certifies a side above the register's reported one which, rounded up at the printed precision, lies at or above the verified upper bound the record already holds, so no case record cites it; the source asks for nothing to be registered from it, and the replay receipts carry its verdict and digest"
         },
         {
           "path": "s12/search/exact/batch/certs/n-11.cert",
           "bytes": 1974,
           "sha256": "9cc1b667f9ca4e99a0bf8a30912a3b46299411b2a65489a37cc3937691ea32f5",
-          "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
+          "reason": "certifies a side above the register's reported one which, rounded up at the printed precision, lies at or above the verified upper bound the record already holds, so no case record cites it; the source asks for nothing to be registered from it, and the replay receipts carry its verdict and digest"
         },
         {
           "path": "s12/search/exact/batch/certs/n-111.cert",
           "bytes": 10237,
           "sha256": "7a55c12b92ab86d3ce393fc03510a7ea1908142fc0ce5686dcf671eb32ddfd90",
-          "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
+          "reason": "certifies a side above the register's reported one which, rounded up at the printed precision, lies at or above the verified upper bound the record already holds, so no case record cites it; the source asks for nothing to be registered from it, and the replay receipts carry its verdict and digest"
         },
         {
           "path": "s12/search/exact/batch/certs/n-112.cert",
           "bytes": 10328,
           "sha256": "76698cbe3b8de2afeb46ceb83d45e4880a0d7dcbe5a47aae928e33f0738201c4",
-          "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
+          "reason": "certifies a side above the register's reported one which, rounded up at the printed precision, lies at or above the verified upper bound the record already holds, so no case record cites it; the source asks for nothing to be registered from it, and the replay receipts carry its verdict and digest"
         },
         {
           "path": "s12/search/exact/batch/certs/n-113.cert",
           "bytes": 10418,
           "sha256": "4a76a7868cb2f9fd6023077565133712e942f0c4a471a98f6047e778a13ed7c9",
-          "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
+          "reason": "certifies a side above the register's reported one which, rounded up at the printed precision, lies at or above the verified upper bound the record already holds, so no case record cites it; the source asks for nothing to be registered from it, and the replay receipts carry its verdict and digest"
         },
         {
           "path": "s12/search/exact/batch/certs/n-114.cert",
           "bytes": 10509,
           "sha256": "a18a9ce287ce74f6d981bea5a97c2de2703d356c99b35e1fdd9478370ced2c05",
-          "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
+          "reason": "certifies a side above the register's reported one which, rounded up at the printed precision, lies at or above the verified upper bound the record already holds, so no case record cites it; the source asks for nothing to be registered from it, and the replay receipts carry its verdict and digest"
         },
         {
           "path": "s12/search/exact/batch/certs/n-115.cert",
           "bytes": 10600,
           "sha256": "93f41c0a380ee6da102b8709bc823621d7d867faf8157cf8ed70dfc190f7ae8b",
-          "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
+          "reason": "certifies a side above the register's reported one which, rounded up at the printed precision, lies at or above the verified upper bound the record already holds, so no case record cites it; the source asks for nothing to be registered from it, and the replay receipts carry its verdict and digest"
         },
         {
           "path": "s12/search/exact/batch/certs/n-116.cert",
           "bytes": 10692,
           "sha256": "7f617ebfd7a9b68b87289ab7a6faaca15b1c59b1f462189342f2b7fce32ee658",
-          "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
+          "reason": "certifies a side above the register's reported one which, rounded up at the printed precision, lies at or above the verified upper bound the record already holds, so no case record cites it; the source asks for nothing to be registered from it, and the replay receipts carry its verdict and digest"
         },
         {
           "path": "s12/search/exact/batch/certs/n-117.cert",
           "bytes": 10784,
           "sha256": "000b25cee32d4c306da19772dcab8231092779735e61281facfcdd7a85f4ac34",
-          "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
+          "reason": "certifies a side above the register's reported one which, rounded up at the printed precision, lies at or above the verified upper bound the record already holds, so no case record cites it; the source asks for nothing to be registered from it, and the replay receipts carry its verdict and digest"
         },
         {
           "path": "s12/search/exact/batch/certs/n-118.cert",
           "bytes": 10874,
           "sha256": "21115488a1eb37b4074b5b0cbf332d04bc76dd8f8c3d8a9d5a2f41f3a38ab9fe",
-          "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
+          "reason": "certifies a side above the register's reported one which, rounded up at the printed precision, lies at or above the verified upper bound the record already holds, so no case record cites it; the source asks for nothing to be registered from it, and the replay receipts carry its verdict and digest"
         },
         {
           "path": "s12/search/exact/batch/certs/n-119.cert",
           "bytes": 10966,
           "sha256": "ffc094cb969da791bb054f919a0e72041f66025ea22775f1bebf289f988bcf20",
-          "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
+          "reason": "certifies a side above the register's reported one which, rounded up at the printed precision, lies at or above the verified upper bound the record already holds, so no case record cites it; the source asks for nothing to be registered from it, and the replay receipts carry its verdict and digest"
         },
         {
           "path": "s12/search/exact/batch/certs/n-12.cert",
           "bytes": 1265,
           "sha256": "f4fc2635bdef1a1e2ba08235010d9a5d885c480ed689c002edd4c4d720af37bc",
-          "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
+          "reason": "certifies a side above the register's reported one which, rounded up at the printed precision, lies at or above the verified upper bound the record already holds, so no case record cites it; the source asks for nothing to be registered from it, and the replay receipts carry its verdict and digest"
         },
         {
           "path": "s12/search/exact/batch/certs/n-120.cert",
           "bytes": 11058,
           "sha256": "9a0c4baff15b9161800bebb723332a6c39e23130fd56088fbecfe75c2dff46b0",
-          "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
+          "reason": "certifies a side above the register's reported one which, rounded up at the printed precision, lies at or above the verified upper bound the record already holds, so no case record cites it; the source asks for nothing to be registered from it, and the replay receipts carry its verdict and digest"
         },
         {
           "path": "s12/search/exact/batch/certs/n-121.cert",
           "bytes": 11150,
           "sha256": "b374fd81702136a978276c4921bb18fa61e3adc6b3d77f8b3a83fc4e659508bb",
-          "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
-        },
-        {
-          "path": "s12/search/exact/batch/certs/n-122.cert",
-          "bytes": 17594,
-          "sha256": "29f4988d2e0712fd70f50b687d879eb3a55447b6990634c1d8e2e92647bb305b",
-          "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
-        },
-        {
-          "path": "s12/search/exact/batch/certs/n-124.cert",
-          "bytes": 20981,
-          "sha256": "351437092e59cf4ebe46ca83136a83d015bdd2f8c1b877c470d706fb79138c82",
-          "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
-        },
-        {
-          "path": "s12/search/exact/batch/certs/n-125.cert",
-          "bytes": 16488,
-          "sha256": "62e5c5566a8924ad208240e14a5b58fc24a921141b6adf9bfbeec3d3961d5fd7",
-          "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
-        },
-        {
-          "path": "s12/search/exact/batch/certs/n-127.cert",
-          "bytes": 18001,
-          "sha256": "9a6538baec0ce0467fc105998096b786e63b22f7de24228a5ee0f38ee2759e70",
-          "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
-        },
-        {
-          "path": "s12/search/exact/batch/certs/n-128.cert",
-          "bytes": 18021,
-          "sha256": "b9eff107a64c71be67e1e395a09a3db5dcad195be6aa7f84108ba9261b99ac0c",
-          "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
-        },
-        {
-          "path": "s12/search/exact/batch/certs/n-129.cert",
-          "bytes": 18509,
-          "sha256": "956183098e1195a95220656454b2d5e0e5a22950da530a2aa04577a11631cfc4",
-          "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
+          "reason": "certifies a side above the register's reported one which, rounded up at the printed precision, lies at or above the verified upper bound the record already holds, so no case record cites it; the source asks for nothing to be registered from it, and the replay receipts carry its verdict and digest"
         },
         {
           "path": "s12/search/exact/batch/certs/n-13.cert",
           "bytes": 1355,
           "sha256": "e7362d48542fd28e9a7b006efc07c013abd8da4431c01fd94c4dc0684bc41cf5",
-          "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
+          "reason": "certifies a side above the register's reported one which, rounded up at the printed precision, lies at or above the verified upper bound the record already holds, so no case record cites it; the source asks for nothing to be registered from it, and the replay receipts carry its verdict and digest"
         },
         {
           "path": "s12/search/exact/batch/certs/n-133.cert",
           "bytes": 12223,
           "sha256": "cee9779250ea27008b7045dde349f6b2f3afd458866db49da653c74fae60fbf5",
-          "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
+          "reason": "certifies a side above the register's reported one which, rounded up at the printed precision, lies at or above the verified upper bound the record already holds, so no case record cites it; the source asks for nothing to be registered from it, and the replay receipts carry its verdict and digest"
         },
         {
           "path": "s12/search/exact/batch/certs/n-134.cert",
           "bytes": 12314,
           "sha256": "bfc63107e8f6e5298c3855a5d6d595f28783bae53ef30ed40f6422977cc21ffa",
-          "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
+          "reason": "certifies a side above the register's reported one which, rounded up at the printed precision, lies at or above the verified upper bound the record already holds, so no case record cites it; the source asks for nothing to be registered from it, and the replay receipts carry its verdict and digest"
         },
         {
           "path": "s12/search/exact/batch/certs/n-135.cert",
           "bytes": 12404,
           "sha256": "2dc4334cd03105efce902dca072205d770a8f1c535e84337daf39632c223eade",
-          "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
+          "reason": "certifies a side above the register's reported one which, rounded up at the printed precision, lies at or above the verified upper bound the record already holds, so no case record cites it; the source asks for nothing to be registered from it, and the replay receipts carry its verdict and digest"
         },
         {
           "path": "s12/search/exact/batch/certs/n-136.cert",
           "bytes": 12495,
           "sha256": "05128c52e3004a653bbe7d9e18164943cad9fe5051d3050319105cae0c9e44d4",
-          "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
+          "reason": "certifies a side above the register's reported one which, rounded up at the printed precision, lies at or above the verified upper bound the record already holds, so no case record cites it; the source asks for nothing to be registered from it, and the replay receipts carry its verdict and digest"
         },
         {
           "path": "s12/search/exact/batch/certs/n-137.cert",
           "bytes": 12586,
           "sha256": "3a4fa79e5ef6a6ea05c7b0e063a86bdc251de5243b4f75ada25f922f6c07ce75",
-          "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
+          "reason": "certifies a side above the register's reported one which, rounded up at the printed precision, lies at or above the verified upper bound the record already holds, so no case record cites it; the source asks for nothing to be registered from it, and the replay receipts carry its verdict and digest"
         },
         {
           "path": "s12/search/exact/batch/certs/n-138.cert",
           "bytes": 12678,
           "sha256": "349b988c48ce9c0d267365510df6629ff1b600fd82a2242faa9d7dee1376232f",
-          "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
+          "reason": "certifies a side above the register's reported one which, rounded up at the printed precision, lies at or above the verified upper bound the record already holds, so no case record cites it; the source asks for nothing to be registered from it, and the replay receipts carry its verdict and digest"
         },
         {
           "path": "s12/search/exact/batch/certs/n-139.cert",
           "bytes": 12770,
           "sha256": "2f2c5c099470007175a52ea6885a4d4ef7ac19eb2246d98e1286ed59125451fa",
-          "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
+          "reason": "certifies a side above the register's reported one which, rounded up at the printed precision, lies at or above the verified upper bound the record already holds, so no case record cites it; the source asks for nothing to be registered from it, and the replay receipts carry its verdict and digest"
         },
         {
           "path": "s12/search/exact/batch/certs/n-14.cert",
           "bytes": 1445,
           "sha256": "d2153c52c1cd3145eec73052b6232753f5c1f201452809b2cb4d859461583391",
-          "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
+          "reason": "certifies a side above the register's reported one which, rounded up at the printed precision, lies at or above the verified upper bound the record already holds, so no case record cites it; the source asks for nothing to be registered from it, and the replay receipts carry its verdict and digest"
         },
         {
           "path": "s12/search/exact/batch/certs/n-140.cert",
           "bytes": 12860,
           "sha256": "502d5016f2ef1ae838aca0d764bf0b1e768b49b56708260b50b43806439bf7b0",
-          "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
+          "reason": "certifies a side above the register's reported one which, rounded up at the printed precision, lies at or above the verified upper bound the record already holds, so no case record cites it; the source asks for nothing to be registered from it, and the replay receipts carry its verdict and digest"
         },
         {
           "path": "s12/search/exact/batch/certs/n-141.cert",
           "bytes": 12952,
           "sha256": "8b8102a554535d6517a4ade487ee2e1d600364069c52e23870e55718fd3c0ee8",
-          "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
+          "reason": "certifies a side above the register's reported one which, rounded up at the printed precision, lies at or above the verified upper bound the record already holds, so no case record cites it; the source asks for nothing to be registered from it, and the replay receipts carry its verdict and digest"
         },
         {
           "path": "s12/search/exact/batch/certs/n-142.cert",
           "bytes": 13044,
           "sha256": "f093f791e3b435b865b1c471ced07d4f0738d8fedee45824b06f0b95e88a6f27",
-          "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
+          "reason": "certifies a side above the register's reported one which, rounded up at the printed precision, lies at or above the verified upper bound the record already holds, so no case record cites it; the source asks for nothing to be registered from it, and the replay receipts carry its verdict and digest"
         },
         {
           "path": "s12/search/exact/batch/certs/n-143.cert",
           "bytes": 13136,
           "sha256": "ed1d73d9e3a0007e8a8de59b793e8980c3d83da4f8ee925c875031c9d5f5b865",
-          "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
+          "reason": "certifies a side above the register's reported one which, rounded up at the printed precision, lies at or above the verified upper bound the record already holds, so no case record cites it; the source asks for nothing to be registered from it, and the replay receipts carry its verdict and digest"
         },
         {
           "path": "s12/search/exact/batch/certs/n-144.cert",
           "bytes": 13228,
           "sha256": "4eb349ccec0fb23a7b76c303707aad26d363c43ac0cc8f5f93b47c870bf5990b",
-          "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
-        },
-        {
-          "path": "s12/search/exact/batch/certs/n-145.cert",
-          "bytes": 20046,
-          "sha256": "222147713273d313d47fd9d321e70e8fed718a3340055dec43868c62e83b6d5b",
-          "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
-        },
-        {
-          "path": "s12/search/exact/batch/certs/n-146.cert",
-          "bytes": 21661,
-          "sha256": "38f90a927815dbe9dc0254f5cb8ff8fb07792b82d919eb471563fcaefd112ad3",
-          "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
-        },
-        {
-          "path": "s12/search/exact/batch/certs/n-147.cert",
-          "bytes": 23745,
-          "sha256": "0e690023b212a054ba64bb3e4c75d18080115079a539d481cf109e0555b66f24",
-          "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
-        },
-        {
-          "path": "s12/search/exact/batch/certs/n-148.cert",
-          "bytes": 23882,
-          "sha256": "ea869ad10f385a57b99dec16f549e7e096aca6cf8bc035a9fc7d556ff5d96be9",
-          "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
-        },
-        {
-          "path": "s12/search/exact/batch/certs/n-149.cert",
-          "bytes": 19763,
-          "sha256": "cee609160c234ae69b3139b68873e380f2b82dddeded718e10c82b3e050fb113",
-          "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
+          "reason": "certifies a side above the register's reported one which, rounded up at the printed precision, lies at or above the verified upper bound the record already holds, so no case record cites it; the source asks for nothing to be registered from it, and the replay receipts carry its verdict and digest"
         },
         {
           "path": "s12/search/exact/batch/certs/n-15.cert",
           "bytes": 1534,
           "sha256": "86c1b194b3d2a42b1f263c877579fc4aeb5950d2c5d4e132f5b55f19ab6aaedf",
-          "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
-        },
-        {
-          "path": "s12/search/exact/batch/certs/n-150.cert",
-          "bytes": 24435,
-          "sha256": "828c4f34babe99d5954aae97c32839576cef06abeb14c0703fd20d4a74287d97",
-          "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
-        },
-        {
-          "path": "s12/search/exact/batch/certs/n-151.cert",
-          "bytes": 21160,
-          "sha256": "87cb1ff79a7529e70cbc219c7cc064807d4151b68539b9594c5f8596ecccebb2",
-          "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
-        },
-        {
-          "path": "s12/search/exact/batch/certs/n-153.cert",
-          "bytes": 22119,
-          "sha256": "476e9fbfa023b9a4ad816f626f5446195de43313314351b5d78b264a6464f19f",
-          "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
+          "reason": "certifies a side above the register's reported one which, rounded up at the printed precision, lies at or above the verified upper bound the record already holds, so no case record cites it; the source asks for nothing to be registered from it, and the replay receipts carry its verdict and digest"
         },
         {
           "path": "s12/search/exact/batch/certs/n-157.cert",
           "bytes": 14398,
           "sha256": "fc1de94402b90a06a28e8c35081b06a4cab2aadf21d41e1ab179e3f3089b3377",
-          "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
+          "reason": "certifies a side above the register's reported one which, rounded up at the printed precision, lies at or above the verified upper bound the record already holds, so no case record cites it; the source asks for nothing to be registered from it, and the replay receipts carry its verdict and digest"
         },
         {
           "path": "s12/search/exact/batch/certs/n-158.cert",
           "bytes": 14466,
           "sha256": "8180d2c0729c61698c9a703b5e3ae84bf912d8a67738ba762348657c4f397a2a",
-          "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
+          "reason": "certifies a side above the register's reported one which, rounded up at the printed precision, lies at or above the verified upper bound the record already holds, so no case record cites it; the source asks for nothing to be registered from it, and the replay receipts carry its verdict and digest"
         },
         {
           "path": "s12/search/exact/batch/certs/n-159.cert",
           "bytes": 14553,
           "sha256": "fbb7fca44a1f41c6c907c302fbde74d23644443194cc8a2c40750ea4fd7c23ed",
-          "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
+          "reason": "certifies a side above the register's reported one which, rounded up at the printed precision, lies at or above the verified upper bound the record already holds, so no case record cites it; the source asks for nothing to be registered from it, and the replay receipts carry its verdict and digest"
         },
         {
           "path": "s12/search/exact/batch/certs/n-16.cert",
           "bytes": 1624,
           "sha256": "04dd1df53172490182562705b936a18078a4c16879be4dfdb757617237289a09",
-          "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
+          "reason": "certifies a side above the register's reported one which, rounded up at the printed precision, lies at or above the verified upper bound the record already holds, so no case record cites it; the source asks for nothing to be registered from it, and the replay receipts carry its verdict and digest"
         },
         {
           "path": "s12/search/exact/batch/certs/n-160.cert",
           "bytes": 14641,
           "sha256": "3f27d5e3424241858941bc7c0d9e8db76fab240730f6d86d5c25437e73c2d971",
-          "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
+          "reason": "certifies a side above the register's reported one which, rounded up at the printed precision, lies at or above the verified upper bound the record already holds, so no case record cites it; the source asks for nothing to be registered from it, and the replay receipts carry its verdict and digest"
         },
         {
           "path": "s12/search/exact/batch/certs/n-161.cert",
           "bytes": 14729,
           "sha256": "923bd7d176d364648eaaab8a9f58f9505ae7d600cdc24fd0026e9bccf74d61de",
-          "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
+          "reason": "certifies a side above the register's reported one which, rounded up at the printed precision, lies at or above the verified upper bound the record already holds, so no case record cites it; the source asks for nothing to be registered from it, and the replay receipts carry its verdict and digest"
         },
         {
           "path": "s12/search/exact/batch/certs/n-162.cert",
           "bytes": 14818,
           "sha256": "5503e19c118b1cec2994d2226f346f7ca88f6b98a17cea3a2d6e67922853e334",
-          "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
+          "reason": "certifies a side above the register's reported one which, rounded up at the printed precision, lies at or above the verified upper bound the record already holds, so no case record cites it; the source asks for nothing to be registered from it, and the replay receipts carry its verdict and digest"
         },
         {
           "path": "s12/search/exact/batch/certs/n-163.cert",
           "bytes": 14907,
           "sha256": "2bef94fb0cd734cf78541268ac35e25fdea13cf49cfded9740994cb9b530748d",
-          "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
+          "reason": "certifies a side above the register's reported one which, rounded up at the printed precision, lies at or above the verified upper bound the record already holds, so no case record cites it; the source asks for nothing to be registered from it, and the replay receipts carry its verdict and digest"
         },
         {
           "path": "s12/search/exact/batch/certs/n-164.cert",
           "bytes": 14994,
           "sha256": "ff50c60bea9a3ebbcc941a18ea1598bdd41e5cba546539804f23bdcbae8031d5",
-          "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
+          "reason": "certifies a side above the register's reported one which, rounded up at the printed precision, lies at or above the verified upper bound the record already holds, so no case record cites it; the source asks for nothing to be registered from it, and the replay receipts carry its verdict and digest"
         },
         {
           "path": "s12/search/exact/batch/certs/n-165.cert",
           "bytes": 15083,
           "sha256": "d5bb8a298d7ee8903e03cd4a07ae868ae2b86ca6f01ee600edbbc3d7a59658c3",
-          "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
+          "reason": "certifies a side above the register's reported one which, rounded up at the printed precision, lies at or above the verified upper bound the record already holds, so no case record cites it; the source asks for nothing to be registered from it, and the replay receipts carry its verdict and digest"
         },
         {
           "path": "s12/search/exact/batch/certs/n-166.cert",
           "bytes": 15172,
           "sha256": "d87dd3ee048bced105d3326336daf5653fbef7974935d4ce22033cc563dfed8a",
-          "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
+          "reason": "certifies a side above the register's reported one which, rounded up at the printed precision, lies at or above the verified upper bound the record already holds, so no case record cites it; the source asks for nothing to be registered from it, and the replay receipts carry its verdict and digest"
         },
         {
           "path": "s12/search/exact/batch/certs/n-167.cert",
           "bytes": 15261,
           "sha256": "ffdbcb63797d5c08ed5703c1c2efeb1338962f74d7015fb3587318ad533b5ea7",
-          "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
+          "reason": "certifies a side above the register's reported one which, rounded up at the printed precision, lies at or above the verified upper bound the record already holds, so no case record cites it; the source asks for nothing to be registered from it, and the replay receipts carry its verdict and digest"
         },
         {
           "path": "s12/search/exact/batch/certs/n-168.cert",
           "bytes": 15350,
           "sha256": "2cfacb40ae183c6d66405c63c1e5978d3e95e7f5b574a34a33e9d444fb1ad6dc",
-          "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
+          "reason": "certifies a side above the register's reported one which, rounded up at the printed precision, lies at or above the verified upper bound the record already holds, so no case record cites it; the source asks for nothing to be registered from it, and the replay receipts carry its verdict and digest"
         },
         {
           "path": "s12/search/exact/batch/certs/n-169.cert",
           "bytes": 15436,
           "sha256": "068a8333694989ba82ba79693b88879ccb8d751af87404a8bfcdb07da71f6ceb",
-          "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
-        },
-        {
-          "path": "s12/search/exact/batch/certs/n-170.cert",
-          "bytes": 28291,
-          "sha256": "121c13706cd77872b3a02d99e10cff8784c32bd023a31064eaf61db3b250d11b",
-          "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
-        },
-        {
-          "path": "s12/search/exact/batch/certs/n-171.cert",
-          "bytes": 23042,
-          "sha256": "151d5c28b81d188f500a14bdaf34fdc10d0b52724fb8b3b27e55b7036bcbab3b",
-          "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
-        },
-        {
-          "path": "s12/search/exact/batch/certs/n-173.cert",
-          "bytes": 27231,
-          "sha256": "b3fcf9754113af5e2554d021a7a690816ea98e02c6885cb9aca0f59ddea772d8",
-          "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
-        },
-        {
-          "path": "s12/search/exact/batch/certs/n-174.cert",
-          "bytes": 22894,
-          "sha256": "8bced9ed3c925c3fffe56be15e530e6ae6fb971fa54ebe6b304a500cf9a5b30d",
-          "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
-        },
-        {
-          "path": "s12/search/exact/batch/certs/n-175.cert",
-          "bytes": 31680,
-          "sha256": "5a9e4b4da03257a09a2faf4de015570e9b5b2a08341e2c7a44069201ce7f10c8",
-          "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
-        },
-        {
-          "path": "s12/search/exact/batch/certs/n-176.cert",
-          "bytes": 24510,
-          "sha256": "df75ac33969551858c17d215a8125d0ceacc634d11c63fe7fb39b242607702d6",
-          "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
-        },
-        {
-          "path": "s12/search/exact/batch/certs/n-178.cert",
-          "bytes": 24736,
-          "sha256": "1900995702ce82b129c464897181fcf21e0f7b2ab857832fe9c91a77c475dcba",
-          "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
-        },
-        {
-          "path": "s12/search/exact/batch/certs/n-179.cert",
-          "bytes": 24703,
-          "sha256": "6e703ec24fa721b3f9992c7ff1850c7f572e5c39d12603a913aea691bd1e6d0c",
-          "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
+          "reason": "certifies a side above the register's reported one which, rounded up at the printed precision, lies at or above the verified upper bound the record already holds, so no case record cites it; the source asks for nothing to be registered from it, and the replay receipts carry its verdict and digest"
         },
         {
           "path": "s12/search/exact/batch/certs/n-18.cert",
           "bytes": 3121,
           "sha256": "1623fc491477cc5b7d1f34dceaf179438a3ac740ae25b743db83480396f69f83",
-          "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
+          "reason": "certifies a side above the register's reported one which, rounded up at the printed precision, lies at or above the verified upper bound the record already holds, so no case record cites it; the source asks for nothing to be registered from it, and the replay receipts carry its verdict and digest"
         },
         {
           "path": "s12/search/exact/batch/certs/n-183.cert",
           "bytes": 16710,
           "sha256": "f32eb5b7834cee09ff478ef44fa63cf10262f2b6cba274be680a3fb15ff69108",
-          "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
+          "reason": "certifies a side above the register's reported one which, rounded up at the printed precision, lies at or above the verified upper bound the record already holds, so no case record cites it; the source asks for nothing to be registered from it, and the replay receipts carry its verdict and digest"
         },
         {
           "path": "s12/search/exact/batch/certs/n-184.cert",
           "bytes": 16801,
           "sha256": "577a31ff6c692a2ed3d094980c6f6ff34d51621369e8d04cc6d04c401f32418e",
-          "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
+          "reason": "certifies a side above the register's reported one which, rounded up at the printed precision, lies at or above the verified upper bound the record already holds, so no case record cites it; the source asks for nothing to be registered from it, and the replay receipts carry its verdict and digest"
         },
         {
           "path": "s12/search/exact/batch/certs/n-185.cert",
           "bytes": 16891,
           "sha256": "da94d374c7b761b8f0edfdb16ec61c81ae991b97d1b0bffb8b23e973d1d806a3",
-          "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
+          "reason": "certifies a side above the register's reported one which, rounded up at the printed precision, lies at or above the verified upper bound the record already holds, so no case record cites it; the source asks for nothing to be registered from it, and the replay receipts carry its verdict and digest"
         },
         {
           "path": "s12/search/exact/batch/certs/n-186.cert",
           "bytes": 17004,
           "sha256": "c85423b430843693df30662562d9378bade7081de4c66903f0cbcc7c636bf891",
-          "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
+          "reason": "certifies a side above the register's reported one which, rounded up at the printed precision, lies at or above the verified upper bound the record already holds, so no case record cites it; the source asks for nothing to be registered from it, and the replay receipts carry its verdict and digest"
         },
         {
           "path": "s12/search/exact/batch/certs/n-187.cert",
           "bytes": 17073,
           "sha256": "3e22ecec46aa24c2ddf1f9b5d498195d281cff9fb2b2b77f58c0efbf461b7355",
-          "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
+          "reason": "certifies a side above the register's reported one which, rounded up at the printed precision, lies at or above the verified upper bound the record already holds, so no case record cites it; the source asks for nothing to be registered from it, and the replay receipts carry its verdict and digest"
         },
         {
           "path": "s12/search/exact/batch/certs/n-188.cert",
           "bytes": 17165,
           "sha256": "d6c602c15dc7f054f951826afe1e6f448ee2a6cf0a2f2ea41906d8d14a3a1ac5",
-          "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
+          "reason": "certifies a side above the register's reported one which, rounded up at the printed precision, lies at or above the verified upper bound the record already holds, so no case record cites it; the source asks for nothing to be registered from it, and the replay receipts carry its verdict and digest"
         },
         {
           "path": "s12/search/exact/batch/certs/n-189.cert",
           "bytes": 17257,
           "sha256": "b4cee7e63f15fde4f1860073fc21b7c4bf863b64c948ae1ba5febc2249386281",
-          "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
+          "reason": "certifies a side above the register's reported one which, rounded up at the printed precision, lies at or above the verified upper bound the record already holds, so no case record cites it; the source asks for nothing to be registered from it, and the replay receipts carry its verdict and digest"
         },
         {
           "path": "s12/search/exact/batch/certs/n-19.cert",
           "bytes": 3219,
           "sha256": "73758d0fa95137f29d0ba4cbf25955872b9bf8e8e62e599316239108354ba78d",
-          "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
+          "reason": "certifies a side above the register's reported one which, rounded up at the printed precision, lies at or above the verified upper bound the record already holds, so no case record cites it; the source asks for nothing to be registered from it, and the replay receipts carry its verdict and digest"
         },
         {
           "path": "s12/search/exact/batch/certs/n-190.cert",
           "bytes": 17347,
           "sha256": "67f07cf3f10d38bba0bfac7d185e76ca00a5873d047a52118dec4e80f1c47c8c",
-          "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
+          "reason": "certifies a side above the register's reported one which, rounded up at the printed precision, lies at or above the verified upper bound the record already holds, so no case record cites it; the source asks for nothing to be registered from it, and the replay receipts carry its verdict and digest"
         },
         {
           "path": "s12/search/exact/batch/certs/n-191.cert",
           "bytes": 17439,
           "sha256": "e1b46c90360702dcd8ddef5caac5f741f8f11dffa7f0b973991f7135099265da",
-          "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
+          "reason": "certifies a side above the register's reported one which, rounded up at the printed precision, lies at or above the verified upper bound the record already holds, so no case record cites it; the source asks for nothing to be registered from it, and the replay receipts carry its verdict and digest"
         },
         {
           "path": "s12/search/exact/batch/certs/n-192.cert",
           "bytes": 17531,
           "sha256": "607ff2220dc08c1e11d7d2e5f39d9ed8ad1046028b8b1e363769d27748e51b58",
-          "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
+          "reason": "certifies a side above the register's reported one which, rounded up at the printed precision, lies at or above the verified upper bound the record already holds, so no case record cites it; the source asks for nothing to be registered from it, and the replay receipts carry its verdict and digest"
         },
         {
           "path": "s12/search/exact/batch/certs/n-193.cert",
           "bytes": 17623,
           "sha256": "730429a5d815fd09ff23b8b2e69d259e5d0cbc3035f3dacfee61d0ae299cf0a3",
-          "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
+          "reason": "certifies a side above the register's reported one which, rounded up at the printed precision, lies at or above the verified upper bound the record already holds, so no case record cites it; the source asks for nothing to be registered from it, and the replay receipts carry its verdict and digest"
         },
         {
           "path": "s12/search/exact/batch/certs/n-194.cert",
           "bytes": 17715,
           "sha256": "6f6d7955bf4dd28afd572846a9a7fd43421f9f706891e485dc9e7d74828a361c",
-          "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
+          "reason": "certifies a side above the register's reported one which, rounded up at the printed precision, lies at or above the verified upper bound the record already holds, so no case record cites it; the source asks for nothing to be registered from it, and the replay receipts carry its verdict and digest"
         },
         {
           "path": "s12/search/exact/batch/certs/n-195.cert",
           "bytes": 17804,
           "sha256": "86b4cdf2fe733092f4fd535c4bb56d5606ac86e53b8b2b6c0df6387ada12b520",
-          "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
+          "reason": "certifies a side above the register's reported one which, rounded up at the printed precision, lies at or above the verified upper bound the record already holds, so no case record cites it; the source asks for nothing to be registered from it, and the replay receipts carry its verdict and digest"
         },
         {
           "path": "s12/search/exact/batch/certs/n-196.cert",
           "bytes": 17896,
           "sha256": "93f41feff7c18d6dafdbf5c59fa0e09c917190b070542af59b875fa9eb1e0eb8",
-          "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
-        },
-        {
-          "path": "s12/search/exact/batch/certs/n-197.cert",
-          "bytes": 26376,
-          "sha256": "ac06902a95ae20c4157c702268098aa186c9af5e1e65fac41e04525e7cbbff91",
-          "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
-        },
-        {
-          "path": "s12/search/exact/batch/certs/n-198.cert",
-          "bytes": 27058,
-          "sha256": "60b5d30e3dc7fa0585e64378273d7348f45277516adcfe6fa2b16132023fa02d",
-          "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
+          "reason": "certifies a side above the register's reported one which, rounded up at the printed precision, lies at or above the verified upper bound the record already holds, so no case record cites it; the source asks for nothing to be registered from it, and the replay receipts carry its verdict and digest"
         },
         {
           "path": "s12/search/exact/batch/certs/n-2.cert",
           "bytes": 371,
           "sha256": "2fc44b74dba64ea6c598410075b1eb25c70b6884ca50926036bd7a613c54f6a2",
-          "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
+          "reason": "certifies a side above the register's reported one which, rounded up at the printed precision, lies at or above the verified upper bound the record already holds, so no case record cites it; the source asks for nothing to be registered from it, and the replay receipts carry its verdict and digest"
         },
         {
           "path": "s12/search/exact/batch/certs/n-20.cert",
           "bytes": 1983,
           "sha256": "64e818921f259ff1167df5378919af6ea79d8a353e28f88c6c57e86e96c184f9",
-          "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
-        },
-        {
-          "path": "s12/search/exact/batch/certs/n-200.cert",
-          "bytes": 30099,
-          "sha256": "413740728d429e233e99f8075420030c706c73261ae06d37ca62232674764098",
-          "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
-        },
-        {
-          "path": "s12/search/exact/batch/certs/n-201.cert",
-          "bytes": 26250,
-          "sha256": "8a39d7f95cf0c7037c6a72cee4a1a93b87e9cb2d8f04adff9d5c7666c7a1410f",
-          "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
-        },
-        {
-          "path": "s12/search/exact/batch/certs/n-202.cert",
-          "bytes": 26019,
-          "sha256": "620b9b21b76086fed3f23feccaf0cd6d052ce2e919a71d9dbfea66ee01f21a5e",
-          "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
-        },
-        {
-          "path": "s12/search/exact/batch/certs/n-203.cert",
-          "bytes": 35924,
-          "sha256": "965050fafa6a51f5e7d310a4ef4cace046cc9eb7e4eed63cbb129e765b2fdc8c",
-          "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
-        },
-        {
-          "path": "s12/search/exact/batch/certs/n-204.cert",
-          "bytes": 28277,
-          "sha256": "faad2948ec59e542eb4f82cb019b87e754e2ae45fab14dbce27c80f96252e310",
-          "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
-        },
-        {
-          "path": "s12/search/exact/batch/certs/n-205.cert",
-          "bytes": 28234,
-          "sha256": "4de07eb0540408dcfe378ab05863160b7af912acf8bf438352f4cc74a30a0ccf",
-          "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
+          "reason": "certifies a side above the register's reported one which, rounded up at the printed precision, lies at or above the verified upper bound the record already holds, so no case record cites it; the source asks for nothing to be registered from it, and the replay receipts carry its verdict and digest"
         },
         {
           "path": "s12/search/exact/batch/certs/n-21.cert",
           "bytes": 2073,
           "sha256": "ece21d43c5e91fb454c741c9ca381060ad26c2136c28730fac49df73eaef46ee",
-          "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
+          "reason": "certifies a side above the register's reported one which, rounded up at the printed precision, lies at or above the verified upper bound the record already holds, so no case record cites it; the source asks for nothing to be registered from it, and the replay receipts carry its verdict and digest"
         },
         {
           "path": "s12/search/exact/batch/certs/n-212.cert",
           "bytes": 19355,
           "sha256": "901ba447181ceee4e7bb4a8e3981719927b3e720b3bcb2087ef4e9185177138d",
-          "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
+          "reason": "certifies a side above the register's reported one which, rounded up at the printed precision, lies at or above the verified upper bound the record already holds, so no case record cites it; the source asks for nothing to be registered from it, and the replay receipts carry its verdict and digest"
         },
         {
           "path": "s12/search/exact/batch/certs/n-213.cert",
           "bytes": 19445,
           "sha256": "02ee45a989d70c4991037af0735037d2eb5d188f5b82ec67942846aad33627d0",
-          "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
+          "reason": "certifies a side above the register's reported one which, rounded up at the printed precision, lies at or above the verified upper bound the record already holds, so no case record cites it; the source asks for nothing to be registered from it, and the replay receipts carry its verdict and digest"
         },
         {
           "path": "s12/search/exact/batch/certs/n-214.cert",
           "bytes": 19536,
           "sha256": "ce6e3d59f24f4009920f3621c712548adec3d95ab9d33494695eb4da3e45dee7",
-          "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
+          "reason": "certifies a side above the register's reported one which, rounded up at the printed precision, lies at or above the verified upper bound the record already holds, so no case record cites it; the source asks for nothing to be registered from it, and the replay receipts carry its verdict and digest"
         },
         {
           "path": "s12/search/exact/batch/certs/n-215.cert",
           "bytes": 19627,
           "sha256": "59893d9f0d218a32d6dd44b8945d7da2fc93e2bee56fbb2f297e33adb2b52a19",
-          "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
+          "reason": "certifies a side above the register's reported one which, rounded up at the printed precision, lies at or above the verified upper bound the record already holds, so no case record cites it; the source asks for nothing to be registered from it, and the replay receipts carry its verdict and digest"
         },
         {
           "path": "s12/search/exact/batch/certs/n-216.cert",
           "bytes": 19741,
           "sha256": "dcc72598e79bd37124f040faf79a6e4a753f03adc47326c01dacc8bae8b294a3",
-          "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
+          "reason": "certifies a side above the register's reported one which, rounded up at the printed precision, lies at or above the verified upper bound the record already holds, so no case record cites it; the source asks for nothing to be registered from it, and the replay receipts carry its verdict and digest"
         },
         {
           "path": "s12/search/exact/batch/certs/n-217.cert",
           "bytes": 19811,
           "sha256": "29fc153e35b2abbb35c39ede95286c33347add56518a430371b0603e209236b5",
-          "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
+          "reason": "certifies a side above the register's reported one which, rounded up at the printed precision, lies at or above the verified upper bound the record already holds, so no case record cites it; the source asks for nothing to be registered from it, and the replay receipts carry its verdict and digest"
         },
         {
           "path": "s12/search/exact/batch/certs/n-218.cert",
           "bytes": 19901,
           "sha256": "ec82ff17e844688e32783125599873f9559033235daef54607ebb8a5698ca3e3",
-          "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
+          "reason": "certifies a side above the register's reported one which, rounded up at the printed precision, lies at or above the verified upper bound the record already holds, so no case record cites it; the source asks for nothing to be registered from it, and the replay receipts carry its verdict and digest"
         },
         {
           "path": "s12/search/exact/batch/certs/n-219.cert",
           "bytes": 19993,
           "sha256": "da1ebe35fa166b4c917dd1f7dfba51bdb0d961379dd88cacb6fe80c647d2603a",
-          "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
+          "reason": "certifies a side above the register's reported one which, rounded up at the printed precision, lies at or above the verified upper bound the record already holds, so no case record cites it; the source asks for nothing to be registered from it, and the replay receipts carry its verdict and digest"
         },
         {
           "path": "s12/search/exact/batch/certs/n-22.cert",
           "bytes": 2163,
           "sha256": "0362af8546536179ce67ad364817b6e7f504a721a9e1b91d723b11ca36339bab",
-          "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
+          "reason": "certifies a side above the register's reported one which, rounded up at the printed precision, lies at or above the verified upper bound the record already holds, so no case record cites it; the source asks for nothing to be registered from it, and the replay receipts carry its verdict and digest"
         },
         {
           "path": "s12/search/exact/batch/certs/n-220.cert",
           "bytes": 20085,
           "sha256": "0a1dba95e408722d0fb823a7f134861d1d934b93d2ffca0ad44d0ecd5f3d7145",
-          "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
+          "reason": "certifies a side above the register's reported one which, rounded up at the printed precision, lies at or above the verified upper bound the record already holds, so no case record cites it; the source asks for nothing to be registered from it, and the replay receipts carry its verdict and digest"
         },
         {
           "path": "s12/search/exact/batch/certs/n-221.cert",
           "bytes": 20177,
           "sha256": "6bd513c3eb71df75208e2faeafac1c7d929cf38ee3ac4122c2c209d9dafe5f18",
-          "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
+          "reason": "certifies a side above the register's reported one which, rounded up at the printed precision, lies at or above the verified upper bound the record already holds, so no case record cites it; the source asks for nothing to be registered from it, and the replay receipts carry its verdict and digest"
         },
         {
           "path": "s12/search/exact/batch/certs/n-222.cert",
           "bytes": 20269,
           "sha256": "086f11ce54e936b07cbe76aab5b4320f8d0bcee93da22551570e4cc64ed9fd35",
-          "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
+          "reason": "certifies a side above the register's reported one which, rounded up at the printed precision, lies at or above the verified upper bound the record already holds, so no case record cites it; the source asks for nothing to be registered from it, and the replay receipts carry its verdict and digest"
         },
         {
           "path": "s12/search/exact/batch/certs/n-223.cert",
           "bytes": 20358,
           "sha256": "41ae4057b0631caa47c81d1683e296d6cc8bebbf3b9552cbf8bee1c2185f9e24",
-          "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
+          "reason": "certifies a side above the register's reported one which, rounded up at the printed precision, lies at or above the verified upper bound the record already holds, so no case record cites it; the source asks for nothing to be registered from it, and the replay receipts carry its verdict and digest"
         },
         {
           "path": "s12/search/exact/batch/certs/n-224.cert",
           "bytes": 20450,
           "sha256": "2589558b7c33f92c6a61eab37bb6a193355ea0732ba8fd327e748d928dda56f1",
-          "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
+          "reason": "certifies a side above the register's reported one which, rounded up at the printed precision, lies at or above the verified upper bound the record already holds, so no case record cites it; the source asks for nothing to be registered from it, and the replay receipts carry its verdict and digest"
         },
         {
           "path": "s12/search/exact/batch/certs/n-225.cert",
           "bytes": 20542,
           "sha256": "4b22966616f22f30521ad27f1a28cd38c74a6abb1593324e76c6cd34b28bd816",
-          "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
-        },
-        {
-          "path": "s12/search/exact/batch/certs/n-226.cert",
-          "bytes": 30353,
-          "sha256": "9efb436d7c9726c53b9bf960dee6f1f01797c1f12980dd831e774b9c949ae456",
-          "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
-        },
-        {
-          "path": "s12/search/exact/batch/certs/n-227.cert",
-          "bytes": 36957,
-          "sha256": "d6006f9c1c28692669f9b5da84a911b7eb10fddae594fa4f766b4ac19cfabb9a",
-          "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
-        },
-        {
-          "path": "s12/search/exact/batch/certs/n-229.cert",
-          "bytes": 33971,
-          "sha256": "57dd0bddaa92016a28b1934ae0a346794c45c9ebf68d40197fedcd678eb64465",
-          "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
+          "reason": "certifies a side above the register's reported one which, rounded up at the printed precision, lies at or above the verified upper bound the record already holds, so no case record cites it; the source asks for nothing to be registered from it, and the replay receipts carry its verdict and digest"
         },
         {
           "path": "s12/search/exact/batch/certs/n-23.cert",
           "bytes": 2252,
           "sha256": "dc6cbabc1f29b7623a6ad62daea0c7c77d7354b35517852431f7442dd40861b4",
-          "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
-        },
-        {
-          "path": "s12/search/exact/batch/certs/n-230.cert",
-          "bytes": 30891,
-          "sha256": "706f52cbee661d95b5bd8e255a5996eea5002cc190e5a1a98bc35e82fff5f254",
-          "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
-        },
-        {
-          "path": "s12/search/exact/batch/certs/n-231.cert",
-          "bytes": 30101,
-          "sha256": "32466292f9e4096fab514abdf69d332fdad7aa95092574d26a1b015b94d99a8d",
-          "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
-        },
-        {
-          "path": "s12/search/exact/batch/certs/n-232.cert",
-          "bytes": 39561,
-          "sha256": "e9cb96ccf557874de0902e4fe6f8b74e54e7110aa70deaa5086ece786daaadfc",
-          "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
-        },
-        {
-          "path": "s12/search/exact/batch/certs/n-233.cert",
-          "bytes": 39717,
-          "sha256": "618e0c1b61e82e155ca8eec0203c7c53d43c1de3c0fdb8b7b85edb0fa1955006",
-          "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
-        },
-        {
-          "path": "s12/search/exact/batch/certs/n-234.cert",
-          "bytes": 31960,
-          "sha256": "ed54b4b4b5ef941109392a2358542e747bcd9f19556fe70ba05245df9af5cd1e",
-          "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
-        },
-        {
-          "path": "s12/search/exact/batch/certs/n-235.cert",
-          "bytes": 32094,
-          "sha256": "32a5d400b8780ea08c1bc453bbc6a668e83f8bea4d15e1afef34997fea870441",
-          "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
+          "reason": "certifies a side above the register's reported one which, rounded up at the printed precision, lies at or above the verified upper bound the record already holds, so no case record cites it; the source asks for nothing to be registered from it, and the replay receipts carry its verdict and digest"
         },
         {
           "path": "s12/search/exact/batch/certs/n-24.cert",
           "bytes": 2342,
           "sha256": "dbe89588e93443564822d41cc107894f67001099fa32eb50f0d71d9fcd7cb618",
-          "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
+          "reason": "certifies a side above the register's reported one which, rounded up at the printed precision, lies at or above the verified upper bound the record already holds, so no case record cites it; the source asks for nothing to be registered from it, and the replay receipts carry its verdict and digest"
         },
         {
           "path": "s12/search/exact/batch/certs/n-242.cert",
           "bytes": 22115,
           "sha256": "ebcc4fb130c09a92dcf66bdcc4fa33c6e4995cd1845e0f41fd7c4e1b1a34af95",
-          "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
+          "reason": "certifies a side above the register's reported one which, rounded up at the printed precision, lies at or above the verified upper bound the record already holds, so no case record cites it; the source asks for nothing to be registered from it, and the replay receipts carry its verdict and digest"
         },
         {
           "path": "s12/search/exact/batch/certs/n-243.cert",
           "bytes": 22205,
           "sha256": "e84eddc761899e7fe0d321a119ff46d45dfe7112b4ba51da8e959a0331a11e9c",
-          "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
+          "reason": "certifies a side above the register's reported one which, rounded up at the printed precision, lies at or above the verified upper bound the record already holds, so no case record cites it; the source asks for nothing to be registered from it, and the replay receipts carry its verdict and digest"
         },
         {
           "path": "s12/search/exact/batch/certs/n-244.cert",
           "bytes": 22296,
           "sha256": "56ef6af2e6851761703fe94399911d122cffb4eac53cee4e443a62de8e5ae30e",
-          "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
+          "reason": "certifies a side above the register's reported one which, rounded up at the printed precision, lies at or above the verified upper bound the record already holds, so no case record cites it; the source asks for nothing to be registered from it, and the replay receipts carry its verdict and digest"
         },
         {
           "path": "s12/search/exact/batch/certs/n-245.cert",
           "bytes": 22387,
           "sha256": "35ce02e1b3c33c6d96aafda87fdf2320a72146400afdab92d10eb8e7747f8833",
-          "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
+          "reason": "certifies a side above the register's reported one which, rounded up at the printed precision, lies at or above the verified upper bound the record already holds, so no case record cites it; the source asks for nothing to be registered from it, and the replay receipts carry its verdict and digest"
         },
         {
           "path": "s12/search/exact/batch/certs/n-246.cert",
           "bytes": 22479,
           "sha256": "21c123bb4bb17271f83072e39346a0bba1ac9a181bd2f74d8884a97c05c28375",
-          "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
+          "reason": "certifies a side above the register's reported one which, rounded up at the printed precision, lies at or above the verified upper bound the record already holds, so no case record cites it; the source asks for nothing to be registered from it, and the replay receipts carry its verdict and digest"
         },
         {
           "path": "s12/search/exact/batch/certs/n-247.cert",
           "bytes": 22571,
           "sha256": "ab52cb27abc1130a6a56c2eff5611307487af85bf2e7e505ae8cf14975fb01be",
-          "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
+          "reason": "certifies a side above the register's reported one which, rounded up at the printed precision, lies at or above the verified upper bound the record already holds, so no case record cites it; the source asks for nothing to be registered from it, and the replay receipts carry its verdict and digest"
         },
         {
           "path": "s12/search/exact/batch/certs/n-248.cert",
           "bytes": 22661,
           "sha256": "5914c8b0ea602e39a8c62682ce02960fd485402252050e7bee553be8f1d6ac8c",
-          "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
+          "reason": "certifies a side above the register's reported one which, rounded up at the printed precision, lies at or above the verified upper bound the record already holds, so no case record cites it; the source asks for nothing to be registered from it, and the replay receipts carry its verdict and digest"
         },
         {
           "path": "s12/search/exact/batch/certs/n-249.cert",
           "bytes": 22753,
           "sha256": "259ce9df190879302d6e2cb533c55992d1ea743783784852dca363bc136bb3b0",
-          "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
+          "reason": "certifies a side above the register's reported one which, rounded up at the printed precision, lies at or above the verified upper bound the record already holds, so no case record cites it; the source asks for nothing to be registered from it, and the replay receipts carry its verdict and digest"
         },
         {
           "path": "s12/search/exact/batch/certs/n-25.cert",
           "bytes": 2432,
           "sha256": "b53d98487d88611a2a88685c5a22f07476fb82ec35564b83f0e25366f2f1abf5",
-          "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
+          "reason": "certifies a side above the register's reported one which, rounded up at the printed precision, lies at or above the verified upper bound the record already holds, so no case record cites it; the source asks for nothing to be registered from it, and the replay receipts carry its verdict and digest"
         },
         {
           "path": "s12/search/exact/batch/certs/n-250.cert",
           "bytes": 22845,
           "sha256": "b0f08b842275f47e29bfdac663bf81e06e210ec2b1ada0d17d174cac8e822ce1",
-          "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
+          "reason": "certifies a side above the register's reported one which, rounded up at the printed precision, lies at or above the verified upper bound the record already holds, so no case record cites it; the source asks for nothing to be registered from it, and the replay receipts carry its verdict and digest"
         },
         {
           "path": "s12/search/exact/batch/certs/n-251.cert",
           "bytes": 22937,
           "sha256": "5debae1a071e4336d6dbd737304ce17bc04ccb1a0c7fcddefb3ca855b47f9dd8",
-          "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
+          "reason": "certifies a side above the register's reported one which, rounded up at the printed precision, lies at or above the verified upper bound the record already holds, so no case record cites it; the source asks for nothing to be registered from it, and the replay receipts carry its verdict and digest"
         },
         {
           "path": "s12/search/exact/batch/certs/n-252.cert",
           "bytes": 23029,
           "sha256": "bf60c330c93b4261a9dabfaef5064934bf89b4927f0538b9bfb5a486307363d2",
-          "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
+          "reason": "certifies a side above the register's reported one which, rounded up at the printed precision, lies at or above the verified upper bound the record already holds, so no case record cites it; the source asks for nothing to be registered from it, and the replay receipts carry its verdict and digest"
         },
         {
           "path": "s12/search/exact/batch/certs/n-253.cert",
           "bytes": 23118,
           "sha256": "efbcfd0231a5cc4ac050a7e8dfc3ce63282556aaec8144a265bca4081e5cef3d",
-          "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
+          "reason": "certifies a side above the register's reported one which, rounded up at the printed precision, lies at or above the verified upper bound the record already holds, so no case record cites it; the source asks for nothing to be registered from it, and the replay receipts carry its verdict and digest"
         },
         {
           "path": "s12/search/exact/batch/certs/n-254.cert",
           "bytes": 23210,
           "sha256": "2d0029babde3f1de01ad9d3e9f1d66584a87618e9aa30735ee1bf4c7f573be02",
-          "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
+          "reason": "certifies a side above the register's reported one which, rounded up at the printed precision, lies at or above the verified upper bound the record already holds, so no case record cites it; the source asks for nothing to be registered from it, and the replay receipts carry its verdict and digest"
         },
         {
           "path": "s12/search/exact/batch/certs/n-255.cert",
           "bytes": 23302,
           "sha256": "7b1302b0d4cd491def09b023631003b909efc8f4d7e1045f552e8946085117e4",
-          "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
+          "reason": "certifies a side above the register's reported one which, rounded up at the printed precision, lies at or above the verified upper bound the record already holds, so no case record cites it; the source asks for nothing to be registered from it, and the replay receipts carry its verdict and digest"
         },
         {
           "path": "s12/search/exact/batch/certs/n-256.cert",
           "bytes": 23394,
           "sha256": "19edde95904970c0009bbb46f61123b60d73e6d369c179a12a2d3be55c2d84a2",
-          "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
-        },
-        {
-          "path": "s12/search/exact/batch/certs/n-257.cert",
-          "bytes": 40845,
-          "sha256": "9036c8e811453efb6719f962d3b595db630adc282adf72c24a12c6b9339922f1",
-          "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
-        },
-        {
-          "path": "s12/search/exact/batch/certs/n-258.cert",
-          "bytes": 40555,
-          "sha256": "b705686c99c4e6de247432d20b86ff358da894fb47ceb126f31b57a026f8a2fa",
-          "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
+          "reason": "certifies a side above the register's reported one which, rounded up at the printed precision, lies at or above the verified upper bound the record already holds, so no case record cites it; the source asks for nothing to be registered from it, and the replay receipts carry its verdict and digest"
         },
         {
           "path": "s12/search/exact/batch/certs/n-26.cert",
           "bytes": 4311,
           "sha256": "a2521731de89ef70414b1b4bca283fa3f824c51a397bfe6fcaeb000e7e700ed6",
-          "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
-        },
-        {
-          "path": "s12/search/exact/batch/certs/n-260.cert",
-          "bytes": 45627,
-          "sha256": "32d2e6df4c5e3435df2c9709d9362bc5929b1b941ee606fcfb364f64810d610a",
-          "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
-        },
-        {
-          "path": "s12/search/exact/batch/certs/n-261.cert",
-          "bytes": 35104,
-          "sha256": "c7c013b2840bd98f6fe431bbdf96b8e8a7e943bc355166a9f335659a5b1509eb",
-          "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
-        },
-        {
-          "path": "s12/search/exact/batch/certs/n-262.cert",
-          "bytes": 33975,
-          "sha256": "cdefd7e1b349918c2ce5ec3f0629f4d5d1242010067a1e3b913d8a8eef3c0b60",
-          "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
-        },
-        {
-          "path": "s12/search/exact/batch/certs/n-264.cert",
-          "bytes": 43358,
-          "sha256": "29415576159129d6167cde73107dbed050d6b310fb8901b4c483060625b9838a",
-          "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
-        },
-        {
-          "path": "s12/search/exact/batch/certs/n-265.cert",
-          "bytes": 43498,
-          "sha256": "93bb05c093ad2d650ffc79453b13265671c0ec40504f70e4886337ecf2be83c7",
-          "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
-        },
-        {
-          "path": "s12/search/exact/batch/certs/n-266.cert",
-          "bytes": 35738,
-          "sha256": "ccbd7cb3728f74f481241901b310663930d3e1758f4a8d772b5053798b50516f",
-          "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
-        },
-        {
-          "path": "s12/search/exact/batch/certs/n-267.cert",
-          "bytes": 36286,
-          "sha256": "98058a4dabc3a66e725e9febc753188286b2685890609beb8b385675f56081c1",
-          "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
+          "reason": "certifies a side above the register's reported one which, rounded up at the printed precision, lies at or above the verified upper bound the record already holds, so no case record cites it; the source asks for nothing to be registered from it, and the replay receipts carry its verdict and digest"
         },
         {
           "path": "s12/search/exact/batch/certs/n-27.cert",
           "bytes": 4090,
           "sha256": "cc28feb746b73e4f3b6bc7a6f5a512971ba01d164de98e4cb6bcd9b2de91c311",
-          "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
+          "reason": "certifies a side above the register's reported one which, rounded up at the printed precision, lies at or above the verified upper bound the record already holds, so no case record cites it; the source asks for nothing to be registered from it, and the replay receipts carry its verdict and digest"
         },
         {
           "path": "s12/search/exact/batch/certs/n-274.cert",
           "bytes": 25017,
           "sha256": "015ba945909eca0e3bf5bbe164e762da0f3f654773e2d5448cd65efecbaffeeb",
-          "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
+          "reason": "certifies a side above the register's reported one which, rounded up at the printed precision, lies at or above the verified upper bound the record already holds, so no case record cites it; the source asks for nothing to be registered from it, and the replay receipts carry its verdict and digest"
         },
         {
           "path": "s12/search/exact/batch/certs/n-275.cert",
           "bytes": 25107,
           "sha256": "dc7b9d9878f4b4b73ad9965e9327796d81ec073a3abe1f0b9b4cae026d500340",
-          "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
+          "reason": "certifies a side above the register's reported one which, rounded up at the printed precision, lies at or above the verified upper bound the record already holds, so no case record cites it; the source asks for nothing to be registered from it, and the replay receipts carry its verdict and digest"
         },
         {
           "path": "s12/search/exact/batch/certs/n-276.cert",
           "bytes": 25198,
           "sha256": "1f405afa49e265477f770dfc55c6a6594f89ce9fc00b247e88183aaf72f9ed1e",
-          "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
+          "reason": "certifies a side above the register's reported one which, rounded up at the printed precision, lies at or above the verified upper bound the record already holds, so no case record cites it; the source asks for nothing to be registered from it, and the replay receipts carry its verdict and digest"
         },
         {
           "path": "s12/search/exact/batch/certs/n-277.cert",
           "bytes": 25289,
           "sha256": "e572d53e560b663f990288652d5409a2c6892aa16269cc09fb5192422a6d80bd",
-          "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
+          "reason": "certifies a side above the register's reported one which, rounded up at the printed precision, lies at or above the verified upper bound the record already holds, so no case record cites it; the source asks for nothing to be registered from it, and the replay receipts carry its verdict and digest"
         },
         {
           "path": "s12/search/exact/batch/certs/n-278.cert",
           "bytes": 25381,
           "sha256": "a08d68f1a16595695db1c1889707a9dd09fbce882e7997ce32ef090ea7a4a934",
-          "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
+          "reason": "certifies a side above the register's reported one which, rounded up at the printed precision, lies at or above the verified upper bound the record already holds, so no case record cites it; the source asks for nothing to be registered from it, and the replay receipts carry its verdict and digest"
         },
         {
           "path": "s12/search/exact/batch/certs/n-279.cert",
           "bytes": 25473,
           "sha256": "66d9f45f645b6ea18d9ad8f6b6658db15d0e0e50dca3dbb698a1ec8972bbd098",
-          "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
-        },
-        {
-          "path": "s12/search/exact/batch/certs/n-28.cert",
-          "bytes": 4730,
-          "sha256": "94828c06201caecff00055c156658fc74cff3b7c33861c71e7ff326fcb8ce2eb",
-          "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
+          "reason": "certifies a side above the register's reported one which, rounded up at the printed precision, lies at or above the verified upper bound the record already holds, so no case record cites it; the source asks for nothing to be registered from it, and the replay receipts carry its verdict and digest"
         },
         {
           "path": "s12/search/exact/batch/certs/n-280.cert",
           "bytes": 25563,
           "sha256": "8f8d50a43583f80e9f76a1146b48df05af84842830eeff8fc323349a96087df5",
-          "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
+          "reason": "certifies a side above the register's reported one which, rounded up at the printed precision, lies at or above the verified upper bound the record already holds, so no case record cites it; the source asks for nothing to be registered from it, and the replay receipts carry its verdict and digest"
         },
         {
           "path": "s12/search/exact/batch/certs/n-281.cert",
           "bytes": 25655,
           "sha256": "4ed2b7a8adde5a8b413fc4a8e063ce5c69e1209202e433dc9219960404dc6f9b",
-          "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
+          "reason": "certifies a side above the register's reported one which, rounded up at the printed precision, lies at or above the verified upper bound the record already holds, so no case record cites it; the source asks for nothing to be registered from it, and the replay receipts carry its verdict and digest"
         },
         {
           "path": "s12/search/exact/batch/certs/n-282.cert",
           "bytes": 25747,
           "sha256": "8f14accc25f5f8e627b27cd02f1e15152628db49b1353529950ed6218112b307",
-          "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
+          "reason": "certifies a side above the register's reported one which, rounded up at the printed precision, lies at or above the verified upper bound the record already holds, so no case record cites it; the source asks for nothing to be registered from it, and the replay receipts carry its verdict and digest"
         },
         {
           "path": "s12/search/exact/batch/certs/n-283.cert",
           "bytes": 25839,
           "sha256": "b40192ab7a3df6ade40d955deb683e783866eec02d96077e0122ea4842590068",
-          "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
+          "reason": "certifies a side above the register's reported one which, rounded up at the printed precision, lies at or above the verified upper bound the record already holds, so no case record cites it; the source asks for nothing to be registered from it, and the replay receipts carry its verdict and digest"
         },
         {
           "path": "s12/search/exact/batch/certs/n-284.cert",
           "bytes": 25931,
           "sha256": "f592b755b05af8e8eec077f203f300a00184deeabd07a11e511e51887c792749",
-          "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
+          "reason": "certifies a side above the register's reported one which, rounded up at the printed precision, lies at or above the verified upper bound the record already holds, so no case record cites it; the source asks for nothing to be registered from it, and the replay receipts carry its verdict and digest"
         },
         {
           "path": "s12/search/exact/batch/certs/n-285.cert",
           "bytes": 26020,
           "sha256": "d0c6816a3f6f82c43dcc115e841042f8982db7ce93f910a7ec2bb1e01c7adeb2",
-          "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
+          "reason": "certifies a side above the register's reported one which, rounded up at the printed precision, lies at or above the verified upper bound the record already holds, so no case record cites it; the source asks for nothing to be registered from it, and the replay receipts carry its verdict and digest"
         },
         {
           "path": "s12/search/exact/batch/certs/n-286.cert",
           "bytes": 26112,
           "sha256": "cc9a9c310d3e85dfbedeea48bdd941108ccb35d13d378a8c8d47769294df8f99",
-          "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
+          "reason": "certifies a side above the register's reported one which, rounded up at the printed precision, lies at or above the verified upper bound the record already holds, so no case record cites it; the source asks for nothing to be registered from it, and the replay receipts carry its verdict and digest"
         },
         {
           "path": "s12/search/exact/batch/certs/n-287.cert",
           "bytes": 26204,
           "sha256": "7c589d2f3ba344409ccc4289a9df3db06c4f4d0d2cb6a62e3c4cd56ba79c3c04",
-          "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
+          "reason": "certifies a side above the register's reported one which, rounded up at the printed precision, lies at or above the verified upper bound the record already holds, so no case record cites it; the source asks for nothing to be registered from it, and the replay receipts carry its verdict and digest"
         },
         {
           "path": "s12/search/exact/batch/certs/n-288.cert",
           "bytes": 26296,
           "sha256": "2d0224e21a0baceac72857ccf16b07f45440bda16fe2431d51b6db9b6f04f3c0",
-          "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
+          "reason": "certifies a side above the register's reported one which, rounded up at the printed precision, lies at or above the verified upper bound the record already holds, so no case record cites it; the source asks for nothing to be registered from it, and the replay receipts carry its verdict and digest"
         },
         {
           "path": "s12/search/exact/batch/certs/n-289.cert",
           "bytes": 26388,
           "sha256": "adc698dfb78d85f493a3be9697bde4f804f7e7b2482240ca670a509512d22481",
-          "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
+          "reason": "certifies a side above the register's reported one which, rounded up at the printed precision, lies at or above the verified upper bound the record already holds, so no case record cites it; the source asks for nothing to be registered from it, and the replay receipts carry its verdict and digest"
         },
         {
           "path": "s12/search/exact/batch/certs/n-29.cert",
           "bytes": 5138,
           "sha256": "81fb164fdc5cfe75ebde9bf0842b8856b21aebc48eb446c4be19d86f6e4ea783",
-          "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
-        },
-        {
-          "path": "s12/search/exact/batch/certs/n-290.cert",
-          "bytes": 40017,
-          "sha256": "52955244183b0b253aeff85c43af149d27d762d398ead290610021ef0cff589a",
-          "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
-        },
-        {
-          "path": "s12/search/exact/batch/certs/n-291.cert",
-          "bytes": 40169,
-          "sha256": "e3c1ea9c0c356ae7a622f2fbd8c17b21365082b73d6d1a980257df8bdb0cd34b",
-          "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
-        },
-        {
-          "path": "s12/search/exact/batch/certs/n-293.cert",
-          "bytes": 37429,
-          "sha256": "aa67fe1a7957f241fd50df47d4825ddd94aea1c1940540f952d159d54fd292b0",
-          "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
-        },
-        {
-          "path": "s12/search/exact/batch/certs/n-294.cert",
-          "bytes": 50251,
-          "sha256": "84bf484cf57ad5a173c92f42f678c175a6b0c9e6f9c1f0dc305c4f1ac4ad0bad",
-          "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
-        },
-        {
-          "path": "s12/search/exact/batch/certs/n-295.cert",
-          "bytes": 38058,
-          "sha256": "f101a9df0ac1058a108ae1a9f8dec932bee82df581e06e03d3e79c0a7dcff954",
-          "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
-        },
-        {
-          "path": "s12/search/exact/batch/certs/n-296.cert",
-          "bytes": 38277,
-          "sha256": "be512db90d2eba34009b123c031183f5fcda44d4da69f8680018ed007dafbf0d",
-          "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
-        },
-        {
-          "path": "s12/search/exact/batch/certs/n-298.cert",
-          "bytes": 47896,
-          "sha256": "c5ed42d1e55e560940560c7252d4e17d6f89183f18dcb218eec97efdb1bdcb22",
-          "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
-        },
-        {
-          "path": "s12/search/exact/batch/certs/n-299.cert",
-          "bytes": 40928,
-          "sha256": "a5270c4442d1ff9371d0db779d00cda6a8225d46e675ce4ed22cea9669289911",
-          "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
+          "reason": "certifies a side above the register's reported one which, rounded up at the printed precision, lies at or above the verified upper bound the record already holds, so no case record cites it; the source asks for nothing to be registered from it, and the replay receipts carry its verdict and digest"
         },
         {
           "path": "s12/search/exact/batch/certs/n-3.cert",
           "bytes": 461,
           "sha256": "0a90c11bd5595c462167903d7be71923ee229287f3d0decf01a1d7e28ef5a13e",
-          "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
+          "reason": "certifies a side above the register's reported one which, rounded up at the printed precision, lies at or above the verified upper bound the record already holds, so no case record cites it; the source asks for nothing to be registered from it, and the replay receipts carry its verdict and digest"
         },
         {
           "path": "s12/search/exact/batch/certs/n-30.cert",
           "bytes": 2865,
           "sha256": "e4a10d6bf8311ca019a86229682d58386d51860c02513db4e308f13784e42907",
-          "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
-        },
-        {
-          "path": "s12/search/exact/batch/certs/n-300.cert",
-          "bytes": 40621,
-          "sha256": "2e07546ae7dbe5ead01896d7ffce864e924d4a637e90573e15ab25436d2420d9",
-          "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
+          "reason": "certifies a side above the register's reported one which, rounded up at the printed precision, lies at or above the verified upper bound the record already holds, so no case record cites it; the source asks for nothing to be registered from it, and the replay receipts carry its verdict and digest"
         },
         {
           "path": "s12/search/exact/batch/certs/n-308.cert",
           "bytes": 28105,
           "sha256": "a3cbfe407cbbfca60fc96418929078ebb02de2963dc660fd6ce221149757cb9c",
-          "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
+          "reason": "certifies a side above the register's reported one which, rounded up at the printed precision, lies at or above the verified upper bound the record already holds, so no case record cites it; the source asks for nothing to be registered from it, and the replay receipts carry its verdict and digest"
         },
         {
           "path": "s12/search/exact/batch/certs/n-309.cert",
           "bytes": 28193,
           "sha256": "6f770a087ceb4832864918df5054e995fe8aec2adccbb29609a0194c8c580d0a",
-          "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
+          "reason": "certifies a side above the register's reported one which, rounded up at the printed precision, lies at or above the verified upper bound the record already holds, so no case record cites it; the source asks for nothing to be registered from it, and the replay receipts carry its verdict and digest"
         },
         {
           "path": "s12/search/exact/batch/certs/n-31.cert",
           "bytes": 2956,
           "sha256": "c4bbf79b51471e3bf0a218830dd8a50ca77d747d09d13f7e628f785312c26e8f",
-          "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
+          "reason": "certifies a side above the register's reported one which, rounded up at the printed precision, lies at or above the verified upper bound the record already holds, so no case record cites it; the source asks for nothing to be registered from it, and the replay receipts carry its verdict and digest"
         },
         {
           "path": "s12/search/exact/batch/certs/n-310.cert",
           "bytes": 28282,
           "sha256": "c196429b91837bf2edc693c1cf13bcc1343af22a237c3610370227a45f5f830c",
-          "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
+          "reason": "certifies a side above the register's reported one which, rounded up at the printed precision, lies at or above the verified upper bound the record already holds, so no case record cites it; the source asks for nothing to be registered from it, and the replay receipts carry its verdict and digest"
         },
         {
           "path": "s12/search/exact/batch/certs/n-311.cert",
           "bytes": 28371,
           "sha256": "d4cfd9f3fc5ee2bbcb5fd8e0947267b4cd96c1b58b3e351eb81558cf4955be90",
-          "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
+          "reason": "certifies a side above the register's reported one which, rounded up at the printed precision, lies at or above the verified upper bound the record already holds, so no case record cites it; the source asks for nothing to be registered from it, and the replay receipts carry its verdict and digest"
         },
         {
           "path": "s12/search/exact/batch/certs/n-312.cert",
           "bytes": 28461,
           "sha256": "f5c9e014dfc42ecc840a5952bb1dc5e2b57c31dd440be9fd7f2b5f8f584ef563",
-          "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
+          "reason": "certifies a side above the register's reported one which, rounded up at the printed precision, lies at or above the verified upper bound the record already holds, so no case record cites it; the source asks for nothing to be registered from it, and the replay receipts carry its verdict and digest"
         },
         {
           "path": "s12/search/exact/batch/certs/n-313.cert",
           "bytes": 28551,
           "sha256": "a9accdddedb808fb78f928a8396b2c6b4df4ddad2631bfee49a58829fb2a7cd6",
-          "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
+          "reason": "certifies a side above the register's reported one which, rounded up at the printed precision, lies at or above the verified upper bound the record already holds, so no case record cites it; the source asks for nothing to be registered from it, and the replay receipts carry its verdict and digest"
         },
         {
           "path": "s12/search/exact/batch/certs/n-314.cert",
           "bytes": 28639,
           "sha256": "829d49a8b6fb4fe58f919ba7e0b9af3ba963a46a7f357a7ec56b76aaf84320e5",
-          "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
+          "reason": "certifies a side above the register's reported one which, rounded up at the printed precision, lies at or above the verified upper bound the record already holds, so no case record cites it; the source asks for nothing to be registered from it, and the replay receipts carry its verdict and digest"
         },
         {
           "path": "s12/search/exact/batch/certs/n-315.cert",
           "bytes": 28729,
           "sha256": "d04fb3c0c41b54f50825b8db1c572fcb50ef3e4c4049a3885bd6dfadea004036",
-          "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
+          "reason": "certifies a side above the register's reported one which, rounded up at the printed precision, lies at or above the verified upper bound the record already holds, so no case record cites it; the source asks for nothing to be registered from it, and the replay receipts carry its verdict and digest"
         },
         {
           "path": "s12/search/exact/batch/certs/n-316.cert",
           "bytes": 28819,
           "sha256": "124c40113e122417f4f040cc659f599e905107ec32a8af39b62a8c9737dafb7c",
-          "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
+          "reason": "certifies a side above the register's reported one which, rounded up at the printed precision, lies at or above the verified upper bound the record already holds, so no case record cites it; the source asks for nothing to be registered from it, and the replay receipts carry its verdict and digest"
         },
         {
           "path": "s12/search/exact/batch/certs/n-317.cert",
           "bytes": 28909,
           "sha256": "ee33cee4f265ff8ec9df083fd572d30e8255287e53f166153b017a723183e94c",
-          "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
+          "reason": "certifies a side above the register's reported one which, rounded up at the printed precision, lies at or above the verified upper bound the record already holds, so no case record cites it; the source asks for nothing to be registered from it, and the replay receipts carry its verdict and digest"
         },
         {
           "path": "s12/search/exact/batch/certs/n-318.cert",
           "bytes": 28999,
           "sha256": "52de8105f50b20d86d26b30c92f41f276a548b7ce8a3a0966ccf337f6941ac75",
-          "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
+          "reason": "certifies a side above the register's reported one which, rounded up at the printed precision, lies at or above the verified upper bound the record already holds, so no case record cites it; the source asks for nothing to be registered from it, and the replay receipts carry its verdict and digest"
         },
         {
           "path": "s12/search/exact/batch/certs/n-319.cert",
           "bytes": 29086,
           "sha256": "4e7afa8b14e8d16fc3c1435a6e7991352e040aecef802157b8a8a914db749cc6",
-          "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
+          "reason": "certifies a side above the register's reported one which, rounded up at the printed precision, lies at or above the verified upper bound the record already holds, so no case record cites it; the source asks for nothing to be registered from it, and the replay receipts carry its verdict and digest"
         },
         {
           "path": "s12/search/exact/batch/certs/n-32.cert",
           "bytes": 3047,
           "sha256": "29ff997ced760d0257691c32f5333abccddc8d2238dc0ccb4306fe7f410dfe1a",
-          "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
+          "reason": "certifies a side above the register's reported one which, rounded up at the printed precision, lies at or above the verified upper bound the record already holds, so no case record cites it; the source asks for nothing to be registered from it, and the replay receipts carry its verdict and digest"
         },
         {
           "path": "s12/search/exact/batch/certs/n-320.cert",
           "bytes": 29154,
           "sha256": "2ca8bd61a8041aade252f49240d253b48dc39a8230673b5abc95cf1d0b617eae",
-          "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
+          "reason": "certifies a side above the register's reported one which, rounded up at the printed precision, lies at or above the verified upper bound the record already holds, so no case record cites it; the source asks for nothing to be registered from it, and the replay receipts carry its verdict and digest"
         },
         {
           "path": "s12/search/exact/batch/certs/n-321.cert",
           "bytes": 29266,
           "sha256": "43661da70a97d0010cf15cfa659f1b5da54bc72d4ab23d8e0fc9b14d7398040f",
-          "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
+          "reason": "certifies a side above the register's reported one which, rounded up at the printed precision, lies at or above the verified upper bound the record already holds, so no case record cites it; the source asks for nothing to be registered from it, and the replay receipts carry its verdict and digest"
         },
         {
           "path": "s12/search/exact/batch/certs/n-322.cert",
           "bytes": 29356,
           "sha256": "511bc3015817de5e32c7f8a4fac0738c23cc4c5045fca88714420bed425dbaea",
-          "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
+          "reason": "certifies a side above the register's reported one which, rounded up at the printed precision, lies at or above the verified upper bound the record already holds, so no case record cites it; the source asks for nothing to be registered from it, and the replay receipts carry its verdict and digest"
         },
         {
           "path": "s12/search/exact/batch/certs/n-323.cert",
           "bytes": 29446,
           "sha256": "9106d906fd26a17168ca9684f775c3875c8f57e924dd837c5d6ef642786c14ff",
-          "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
+          "reason": "certifies a side above the register's reported one which, rounded up at the printed precision, lies at or above the verified upper bound the record already holds, so no case record cites it; the source asks for nothing to be registered from it, and the replay receipts carry its verdict and digest"
         },
         {
           "path": "s12/search/exact/batch/certs/n-324.cert",
           "bytes": 29534,
           "sha256": "caaa3a6672583f9d33bd168151befd2e638350bee0b797c78cff0befbba54a5e",
-          "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
+          "reason": "certifies a side above the register's reported one which, rounded up at the printed precision, lies at or above the verified upper bound the record already holds, so no case record cites it; the source asks for nothing to be registered from it, and the replay receipts carry its verdict and digest"
         },
         {
           "path": "s12/search/exact/batch/certs/n-33.cert",
           "bytes": 3137,
           "sha256": "cd26782bdf9e347e19f149f69427ff44dcd5b6dd0c08190804a00a8cb7fef421",
-          "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
+          "reason": "certifies a side above the register's reported one which, rounded up at the printed precision, lies at or above the verified upper bound the record already holds, so no case record cites it; the source asks for nothing to be registered from it, and the replay receipts carry its verdict and digest"
         },
         {
           "path": "s12/search/exact/batch/certs/n-34.cert",
           "bytes": 3228,
           "sha256": "2cb5c9be201fc99f0da1ee2f1825562baccde50336cfe0b43aad878c05bb2e84",
-          "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
+          "reason": "certifies a side above the register's reported one which, rounded up at the printed precision, lies at or above the verified upper bound the record already holds, so no case record cites it; the source asks for nothing to be registered from it, and the replay receipts carry its verdict and digest"
         },
         {
           "path": "s12/search/exact/batch/certs/n-35.cert",
           "bytes": 3319,
           "sha256": "4b8ec4e6050370f26b499d1758bc73f0cf4250dc51192963b198e68eccbeb90b",
-          "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
+          "reason": "certifies a side above the register's reported one which, rounded up at the printed precision, lies at or above the verified upper bound the record already holds, so no case record cites it; the source asks for nothing to be registered from it, and the replay receipts carry its verdict and digest"
         },
         {
           "path": "s12/search/exact/batch/certs/n-36.cert",
           "bytes": 3411,
           "sha256": "48db111d20b788d0d3259cabe9683411b726cb5aaae7dd52eed0c81cda6b7e6d",
-          "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
-        },
-        {
-          "path": "s12/search/exact/batch/certs/n-37.cert",
-          "bytes": 6122,
-          "sha256": "0b8d05705c270b061f65c166bf63d2aed1c9028933793ae969ff7c3d2f5f4904",
-          "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
+          "reason": "certifies a side above the register's reported one which, rounded up at the printed precision, lies at or above the verified upper bound the record already holds, so no case record cites it; the source asks for nothing to be registered from it, and the replay receipts carry its verdict and digest"
         },
         {
           "path": "s12/search/exact/batch/certs/n-38.cert",
           "bytes": 5511,
           "sha256": "4cf80a7376a925eda40dbd2fd3a84d92bb460c1a550898cde2b4e2e8eef61636",
-          "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
-        },
-        {
-          "path": "s12/search/exact/batch/certs/n-39.cert",
-          "bytes": 6970,
-          "sha256": "4092c03a1603b05cd9491937791c0e2e8940145c274aea2c34df6d25d80c5fbb",
-          "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
+          "reason": "certifies a side above the register's reported one which, rounded up at the printed precision, lies at or above the verified upper bound the record already holds, so no case record cites it; the source asks for nothing to be registered from it, and the replay receipts carry its verdict and digest"
         },
         {
           "path": "s12/search/exact/batch/certs/n-4.cert",
           "bytes": 551,
           "sha256": "8af218caf36f599cfd114fb73ae091bb36e815d9ff49867f9da5b5d0b26397d4",
-          "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
+          "reason": "certifies a side above the register's reported one which, rounded up at the printed precision, lies at or above the verified upper bound the record already holds, so no case record cites it; the source asks for nothing to be registered from it, and the replay receipts carry its verdict and digest"
         },
         {
           "path": "s12/search/exact/batch/certs/n-40.cert",
           "bytes": 6398,
           "sha256": "06fedc00e7e48251bfec25e819a922f7bec857eb06f0e3f980771b776067054b",
-          "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
-        },
-        {
-          "path": "s12/search/exact/batch/certs/n-41.cert",
-          "bytes": 6778,
-          "sha256": "c9c8350a4857f9e5d0b4f5bc33a54ae037f9db95b6f4e73dbbaa69c7c580b697",
-          "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
+          "reason": "certifies a side above the register's reported one which, rounded up at the printed precision, lies at or above the verified upper bound the record already holds, so no case record cites it; the source asks for nothing to be registered from it, and the replay receipts carry its verdict and digest"
         },
         {
           "path": "s12/search/exact/batch/certs/n-42.cert",
           "bytes": 3958,
           "sha256": "3259a1bce83b5c582f5bfb2fe4bdc4866e4558e24109cb0a30f27497d9b71cb4",
-          "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
+          "reason": "certifies a side above the register's reported one which, rounded up at the printed precision, lies at or above the verified upper bound the record already holds, so no case record cites it; the source asks for nothing to be registered from it, and the replay receipts carry its verdict and digest"
         },
         {
           "path": "s12/search/exact/batch/certs/n-43.cert",
           "bytes": 4049,
           "sha256": "fb12f3584fe25334bd0d7a12e6d1b7561386628ab02d7a3ba27adc3e3c185284",
-          "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
+          "reason": "certifies a side above the register's reported one which, rounded up at the printed precision, lies at or above the verified upper bound the record already holds, so no case record cites it; the source asks for nothing to be registered from it, and the replay receipts carry its verdict and digest"
         },
         {
           "path": "s12/search/exact/batch/certs/n-44.cert",
           "bytes": 4160,
           "sha256": "9c157bdd3e2a47f438a8706c7e2897d4b75b1a8a0e8d2c32dc6939901282fa50",
-          "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
+          "reason": "certifies a side above the register's reported one which, rounded up at the printed precision, lies at or above the verified upper bound the record already holds, so no case record cites it; the source asks for nothing to be registered from it, and the replay receipts carry its verdict and digest"
         },
         {
           "path": "s12/search/exact/batch/certs/n-45.cert",
           "bytes": 4230,
           "sha256": "974909e92fa0c80bdad521daf45bf046cfc7ef2e1a58d3a1e43ca5db23abd08c",
-          "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
+          "reason": "certifies a side above the register's reported one which, rounded up at the printed precision, lies at or above the verified upper bound the record already holds, so no case record cites it; the source asks for nothing to be registered from it, and the replay receipts carry its verdict and digest"
         },
         {
           "path": "s12/search/exact/batch/certs/n-46.cert",
           "bytes": 4321,
           "sha256": "780efee48e1660e15059b2c6775456a928f92b1d17fd89066e37a71779684a43",
-          "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
+          "reason": "certifies a side above the register's reported one which, rounded up at the printed precision, lies at or above the verified upper bound the record already holds, so no case record cites it; the source asks for nothing to be registered from it, and the replay receipts carry its verdict and digest"
         },
         {
           "path": "s12/search/exact/batch/certs/n-47.cert",
           "bytes": 4412,
           "sha256": "0e3ace7e162117fc8d58a92d083bbdded40ef90738a525ec13c5a8b009885248",
-          "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
+          "reason": "certifies a side above the register's reported one which, rounded up at the printed precision, lies at or above the verified upper bound the record already holds, so no case record cites it; the source asks for nothing to be registered from it, and the replay receipts carry its verdict and digest"
         },
         {
           "path": "s12/search/exact/batch/certs/n-48.cert",
           "bytes": 4504,
           "sha256": "13ddc450ec9eed7db1ddc561471780da03d135214c8613085086a145185e86ef",
-          "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
+          "reason": "certifies a side above the register's reported one which, rounded up at the printed precision, lies at or above the verified upper bound the record already holds, so no case record cites it; the source asks for nothing to be registered from it, and the replay receipts carry its verdict and digest"
         },
         {
           "path": "s12/search/exact/batch/certs/n-49.cert",
           "bytes": 4596,
           "sha256": "6c7e540ff55fe2cb3990446203ab8ac0875c6fe27b415d37e5bfd4a8d0c080fe",
-          "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
+          "reason": "certifies a side above the register's reported one which, rounded up at the printed precision, lies at or above the verified upper bound the record already holds, so no case record cites it; the source asks for nothing to be registered from it, and the replay receipts carry its verdict and digest"
         },
         {
           "path": "s12/search/exact/batch/certs/n-5.cert",
           "bytes": 885,
           "sha256": "cf43eb4d940915e3ab11ef43d470678dfed3388f377103e038426deb2b60d52b",
-          "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
-        },
-        {
-          "path": "s12/search/exact/batch/certs/n-50.cert",
-          "bytes": 7943,
-          "sha256": "c844136df517ad6ba1d9e2c1ad9f4373f3b5a8c6a039f96a1801ff0abaa5f56f",
-          "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
-        },
-        {
-          "path": "s12/search/exact/batch/certs/n-51.cert",
-          "bytes": 8367,
-          "sha256": "74995dce11bdfe263a83ab9f0f1429d9930c2f897a251dd2742cc1ad6b318739",
-          "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
+          "reason": "certifies a side above the register's reported one which, rounded up at the printed precision, lies at or above the verified upper bound the record already holds, so no case record cites it; the source asks for nothing to be registered from it, and the replay receipts carry its verdict and digest"
         },
         {
           "path": "s12/search/exact/batch/certs/n-52.cert",
           "bytes": 7390,
           "sha256": "dc53918bddc2ae7c72ed34b00884911e76247fc8180a35d261c7ad8d8f71493f",
-          "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
-        },
-        {
-          "path": "s12/search/exact/batch/certs/n-53.cert",
-          "bytes": 7872,
-          "sha256": "50e5bf91eece33e40d34392f76cb7b0c854c7cd4292d3a7517481a24b96b56cb",
-          "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
-        },
-        {
-          "path": "s12/search/exact/batch/certs/n-54.cert",
-          "bytes": 8202,
-          "sha256": "ed3c58125e4ef18f2135157cee1177681aa5b02f0b560ab6daa3c605c9c0f004",
-          "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
-        },
-        {
-          "path": "s12/search/exact/batch/certs/n-55.cert",
-          "bytes": 8487,
-          "sha256": "36d91d3d7a3f4f5e51983681ac2f230d68786038bb9aacc614edf294f400fa35",
-          "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
+          "reason": "certifies a side above the register's reported one which, rounded up at the printed precision, lies at or above the verified upper bound the record already holds, so no case record cites it; the source asks for nothing to be registered from it, and the replay receipts carry its verdict and digest"
         },
         {
           "path": "s12/search/exact/batch/certs/n-56.cert",
           "bytes": 5240,
           "sha256": "69be5368125875a0d0fb2e0054d4a05ef1409440bfd49985f3b93cb823fee6ff",
-          "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
+          "reason": "certifies a side above the register's reported one which, rounded up at the printed precision, lies at or above the verified upper bound the record already holds, so no case record cites it; the source asks for nothing to be registered from it, and the replay receipts carry its verdict and digest"
         },
         {
           "path": "s12/search/exact/batch/certs/n-57.cert",
           "bytes": 5329,
           "sha256": "5d31245446d67e122c8bcff1088532a205a82a45436a6530f177027d248351c1",
-          "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
+          "reason": "certifies a side above the register's reported one which, rounded up at the printed precision, lies at or above the verified upper bound the record already holds, so no case record cites it; the source asks for nothing to be registered from it, and the replay receipts carry its verdict and digest"
         },
         {
           "path": "s12/search/exact/batch/certs/n-58.cert",
           "bytes": 5397,
           "sha256": "c7c4e200285f47f5672a87e75e3e093c683789d68fb77d4c2631bde048cd17fc",
-          "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
+          "reason": "certifies a side above the register's reported one which, rounded up at the printed precision, lies at or above the verified upper bound the record already holds, so no case record cites it; the source asks for nothing to be registered from it, and the replay receipts carry its verdict and digest"
         },
         {
           "path": "s12/search/exact/batch/certs/n-59.cert",
           "bytes": 5506,
           "sha256": "5e6ba7af759a2dd27b54539557de961e4a01c515aa60e53acb7587d036c74d0c",
-          "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
+          "reason": "certifies a side above the register's reported one which, rounded up at the printed precision, lies at or above the verified upper bound the record already holds, so no case record cites it; the source asks for nothing to be registered from it, and the replay receipts carry its verdict and digest"
         },
         {
           "path": "s12/search/exact/batch/certs/n-6.cert",
           "bytes": 709,
           "sha256": "49049c2951a50531b7024097f721a3ecd37502e96d27d4c804e77ffee883eb7b",
-          "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
+          "reason": "certifies a side above the register's reported one which, rounded up at the printed precision, lies at or above the verified upper bound the record already holds, so no case record cites it; the source asks for nothing to be registered from it, and the replay receipts carry its verdict and digest"
         },
         {
           "path": "s12/search/exact/batch/certs/n-60.cert",
           "bytes": 5595,
           "sha256": "b724340919cd1b54c1df882bf1333bad4fd39794969bbb9d9e22bed111e6c89a",
-          "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
+          "reason": "certifies a side above the register's reported one which, rounded up at the printed precision, lies at or above the verified upper bound the record already holds, so no case record cites it; the source asks for nothing to be registered from it, and the replay receipts carry its verdict and digest"
         },
         {
           "path": "s12/search/exact/batch/certs/n-61.cert",
           "bytes": 5684,
           "sha256": "e76a7870a59c0a576e4702b36081f023a4e2dc81e9be7e2c4a6f0eaa9ed9f761",
-          "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
+          "reason": "certifies a side above the register's reported one which, rounded up at the printed precision, lies at or above the verified upper bound the record already holds, so no case record cites it; the source asks for nothing to be registered from it, and the replay receipts carry its verdict and digest"
         },
         {
           "path": "s12/search/exact/batch/certs/n-62.cert",
           "bytes": 5774,
           "sha256": "c025c86c39d16eb15ee16ac78dcde848f780ace26add66ad7e2a6e2cceaba2f6",
-          "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
+          "reason": "certifies a side above the register's reported one which, rounded up at the printed precision, lies at or above the verified upper bound the record already holds, so no case record cites it; the source asks for nothing to be registered from it, and the replay receipts carry its verdict and digest"
         },
         {
           "path": "s12/search/exact/batch/certs/n-63.cert",
           "bytes": 5864,
           "sha256": "4dc8a1e4e79e96a6274b8ee2b6d089cd72cafa870a15dc2d90a7e058b43af319",
-          "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
+          "reason": "certifies a side above the register's reported one which, rounded up at the printed precision, lies at or above the verified upper bound the record already holds, so no case record cites it; the source asks for nothing to be registered from it, and the replay receipts carry its verdict and digest"
         },
         {
           "path": "s12/search/exact/batch/certs/n-64.cert",
           "bytes": 5952,
           "sha256": "4807ac791fa3603a17b69a3af6567ecc65624c55326174f2b729eaefa8b25504",
-          "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
+          "reason": "certifies a side above the register's reported one which, rounded up at the printed precision, lies at or above the verified upper bound the record already holds, so no case record cites it; the source asks for nothing to be registered from it, and the replay receipts carry its verdict and digest"
         },
         {
           "path": "s12/search/exact/batch/certs/n-65.cert",
           "bytes": 10378,
           "sha256": "edde9b49f79c08cbc47df68402bcd948264f616de08a85063cffe88d90ca6c2b",
-          "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
+          "reason": "certifies a side above the register's reported one which, rounded up at the printed precision, lies at or above the verified upper bound the record already holds, so no case record cites it; the source asks for nothing to be registered from it, and the replay receipts carry its verdict and digest"
         },
         {
           "path": "s12/search/exact/batch/certs/n-66.cert",
           "bytes": 13033,
           "sha256": "c4e8cb0eaa6b733188720a4118a053cd059749152f0e285032b338ad86700b92",
-          "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
+          "reason": "certifies a side above the register's reported one which, rounded up at the printed precision, lies at or above the verified upper bound the record already holds, so no case record cites it; the source asks for nothing to be registered from it, and the replay receipts carry its verdict and digest"
         },
         {
           "path": "s12/search/exact/batch/certs/n-67.cert",
           "bytes": 9276,
           "sha256": "21ee22793692845da1c083d106a1d33a46e35236d6c112c98ce80e9640e1903b",
-          "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
-        },
-        {
-          "path": "s12/search/exact/batch/certs/n-69.cert",
-          "bytes": 10242,
-          "sha256": "742d6b541dd1c8169f6b935b960b1cc5857b374cf39151375a5864b06b4f0791",
-          "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
+          "reason": "certifies a side above the register's reported one which, rounded up at the printed precision, lies at or above the verified upper bound the record already holds, so no case record cites it; the source asks for nothing to be registered from it, and the replay receipts carry its verdict and digest"
         },
         {
           "path": "s12/search/exact/batch/certs/n-7.cert",
           "bytes": 818,
           "sha256": "40150253b1ea163725b206266d50795a3982489b52be1d864e4f987b70aedcd8",
-          "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
-        },
-        {
-          "path": "s12/search/exact/batch/certs/n-70.cert",
-          "bytes": 10856,
-          "sha256": "631beff854aba404854e5c0841bc70b6d671d8d283ab9a8f6e9f42bfe7ef2deb",
-          "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
-        },
-        {
-          "path": "s12/search/exact/batch/certs/n-71.cert",
-          "bytes": 10940,
-          "sha256": "acbe9dac9468e5fb03d27c32a7cf46de6503e6c91614d9235cf203062221d4d1",
-          "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
+          "reason": "certifies a side above the register's reported one which, rounded up at the printed precision, lies at or above the verified upper bound the record already holds, so no case record cites it; the source asks for nothing to be registered from it, and the replay receipts carry its verdict and digest"
         },
         {
           "path": "s12/search/exact/batch/certs/n-72.cert",
           "bytes": 6680,
           "sha256": "b756c43df08129664e414e7199973909eb96279be09b3f7abe0d77094b992f4a",
-          "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
+          "reason": "certifies a side above the register's reported one which, rounded up at the printed precision, lies at or above the verified upper bound the record already holds, so no case record cites it; the source asks for nothing to be registered from it, and the replay receipts carry its verdict and digest"
         },
         {
           "path": "s12/search/exact/batch/certs/n-73.cert",
           "bytes": 6771,
           "sha256": "0d29194890c1ebaed88bc3883d18d8344d82585a0d1b7d892b5db1e24b9890e3",
-          "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
+          "reason": "certifies a side above the register's reported one which, rounded up at the printed precision, lies at or above the verified upper bound the record already holds, so no case record cites it; the source asks for nothing to be registered from it, and the replay receipts carry its verdict and digest"
         },
         {
           "path": "s12/search/exact/batch/certs/n-74.cert",
           "bytes": 6862,
           "sha256": "74d7836b2bde77724fd924569fd3b1f259655fb133bcdde33c74de89638b3cea",
-          "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
+          "reason": "certifies a side above the register's reported one which, rounded up at the printed precision, lies at or above the verified upper bound the record already holds, so no case record cites it; the source asks for nothing to be registered from it, and the replay receipts carry its verdict and digest"
         },
         {
           "path": "s12/search/exact/batch/certs/n-75.cert",
           "bytes": 6952,
           "sha256": "a6cf6a3819f3835a2886f7912de1788230fbd4f8002de120ce8df048783bf354",
-          "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
+          "reason": "certifies a side above the register's reported one which, rounded up at the printed precision, lies at or above the verified upper bound the record already holds, so no case record cites it; the source asks for nothing to be registered from it, and the replay receipts carry its verdict and digest"
         },
         {
           "path": "s12/search/exact/batch/certs/n-76.cert",
           "bytes": 7043,
           "sha256": "6cb2382e580e64a08a9d25026a564e33052fe965582c871bd388fa69135e62fe",
-          "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
+          "reason": "certifies a side above the register's reported one which, rounded up at the printed precision, lies at or above the verified upper bound the record already holds, so no case record cites it; the source asks for nothing to be registered from it, and the replay receipts carry its verdict and digest"
         },
         {
           "path": "s12/search/exact/batch/certs/n-77.cert",
           "bytes": 7134,
           "sha256": "575208bbce818c80da5994dc3899addd989807a7ea3f9f532d61d2b73f4a78f1",
-          "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
+          "reason": "certifies a side above the register's reported one which, rounded up at the printed precision, lies at or above the verified upper bound the record already holds, so no case record cites it; the source asks for nothing to be registered from it, and the replay receipts carry its verdict and digest"
         },
         {
           "path": "s12/search/exact/batch/certs/n-78.cert",
           "bytes": 7226,
           "sha256": "1df928779f93a0b74f44f01fcbedb790392c7aa39e9ecdfd8d315c79f0da32f0",
-          "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
+          "reason": "certifies a side above the register's reported one which, rounded up at the printed precision, lies at or above the verified upper bound the record already holds, so no case record cites it; the source asks for nothing to be registered from it, and the replay receipts carry its verdict and digest"
         },
         {
           "path": "s12/search/exact/batch/certs/n-79.cert",
           "bytes": 7318,
           "sha256": "7e76ef29a86c286d71a76a3fc3f87b626c5631f3ac8a244b4950958c914bf414",
-          "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
+          "reason": "certifies a side above the register's reported one which, rounded up at the printed precision, lies at or above the verified upper bound the record already holds, so no case record cites it; the source asks for nothing to be registered from it, and the replay receipts carry its verdict and digest"
         },
         {
           "path": "s12/search/exact/batch/certs/n-8.cert",
           "bytes": 887,
           "sha256": "1baf09603a83cfa197c5e9bb4e70254298eea3fec0386552c86fd930ce87c8f7",
-          "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
+          "reason": "certifies a side above the register's reported one which, rounded up at the printed precision, lies at or above the verified upper bound the record already holds, so no case record cites it; the source asks for nothing to be registered from it, and the replay receipts carry its verdict and digest"
         },
         {
           "path": "s12/search/exact/batch/certs/n-80.cert",
           "bytes": 7408,
           "sha256": "1597df1680a227a2a9d72f35903d3bb2f06633df7aae790e5abe11715c61ac20",
-          "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
+          "reason": "certifies a side above the register's reported one which, rounded up at the printed precision, lies at or above the verified upper bound the record already holds, so no case record cites it; the source asks for nothing to be registered from it, and the replay receipts carry its verdict and digest"
         },
         {
           "path": "s12/search/exact/batch/certs/n-81.cert",
           "bytes": 7500,
           "sha256": "7ded1a3617bca57c634d49737c8bb0d95afb8cb558eae0ba46fd9c012dfcc7ec",
-          "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
+          "reason": "certifies a side above the register's reported one which, rounded up at the printed precision, lies at or above the verified upper bound the record already holds, so no case record cites it; the source asks for nothing to be registered from it, and the replay receipts carry its verdict and digest"
         },
         {
           "path": "s12/search/exact/batch/certs/n-82.cert",
           "bytes": 12682,
           "sha256": "adfd9e3ecdc1624c8d9e9e1ff976be5496a38a3629d8cb574c31f5597907f2cb",
-          "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
-        },
-        {
-          "path": "s12/search/exact/batch/certs/n-83.cert",
-          "bytes": 12711,
-          "sha256": "c8b8e6f29cca57aa548549d3be003325efe34332e182ec903a468bde04011b50",
-          "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
+          "reason": "certifies a side above the register's reported one which, rounded up at the printed precision, lies at or above the verified upper bound the record already holds, so no case record cites it; the source asks for nothing to be registered from it, and the replay receipts carry its verdict and digest"
         },
         {
           "path": "s12/search/exact/batch/certs/n-84.cert",
           "bytes": 11422,
           "sha256": "b9e33843e340e00772ce16232a52806841b620e8def7f47b87d915cb632a3bd1",
-          "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
+          "reason": "certifies a side above the register's reported one which, rounded up at the printed precision, lies at or above the verified upper bound the record already holds, so no case record cites it; the source asks for nothing to be registered from it, and the replay receipts carry its verdict and digest"
         },
         {
           "path": "s12/search/exact/batch/certs/n-85.cert",
           "bytes": 13902,
           "sha256": "e3dd05c313d0535bc0de43df16fabc098c8a8ef0942bbb8a734ffe2e573b3fb1",
-          "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
+          "reason": "certifies a side above the register's reported one which, rounded up at the printed precision, lies at or above the verified upper bound the record already holds, so no case record cites it; the source asks for nothing to be registered from it, and the replay receipts carry its verdict and digest"
         },
         {
           "path": "s12/search/exact/batch/certs/n-86.cert",
           "bytes": 12332,
           "sha256": "7d4297d3039db5d4b06f8e0bf99f718305e82f4238f6458585e432cd088b2325",
-          "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
-        },
-        {
-          "path": "s12/search/exact/batch/certs/n-87.cert",
-          "bytes": 13452,
-          "sha256": "be10ccd9e14540a1ad09e7860a0ac23a85bd56e3bdc5d98ee6483fc3f7239856",
-          "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
-        },
-        {
-          "path": "s12/search/exact/batch/certs/n-88.cert",
-          "bytes": 12830,
-          "sha256": "40b50ca5f3536fc5d8667ec7ae4ba0346bf3f078bb84d763dfa39b084bf8ed37",
-          "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
+          "reason": "certifies a side above the register's reported one which, rounded up at the printed precision, lies at or above the verified upper bound the record already holds, so no case record cites it; the source asks for nothing to be registered from it, and the replay receipts carry its verdict and digest"
         },
         {
           "path": "s12/search/exact/batch/certs/n-89.cert",
           "bytes": 15349,
           "sha256": "b3769230512bac3c630215cae66188c3b12dc64e52e94493f521326516b9c4c4",
-          "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
+          "reason": "certifies a side above the register's reported one which, rounded up at the printed precision, lies at or above the verified upper bound the record already holds, so no case record cites it; the source asks for nothing to be registered from it, and the replay receipts carry its verdict and digest"
         },
         {
           "path": "s12/search/exact/batch/certs/n-9.cert",
           "bytes": 975,
           "sha256": "b3565e0f2f1e52a1ab778f2f0e8049460e956a793ca653ccf10fd98b84328710",
-          "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
+          "reason": "certifies a side above the register's reported one which, rounded up at the printed precision, lies at or above the verified upper bound the record already holds, so no case record cites it; the source asks for nothing to be registered from it, and the replay receipts carry its verdict and digest"
         },
         {
           "path": "s12/search/exact/batch/certs/n-90.cert",
           "bytes": 8299,
           "sha256": "52d158d86bbe9f7fbbbe760f4d28a1d4e83a076f273a14c1a2dd1281312a3cb2",
-          "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
+          "reason": "certifies a side above the register's reported one which, rounded up at the printed precision, lies at or above the verified upper bound the record already holds, so no case record cites it; the source asks for nothing to be registered from it, and the replay receipts carry its verdict and digest"
         },
         {
           "path": "s12/search/exact/batch/certs/n-91.cert",
           "bytes": 8412,
           "sha256": "5ce0844decfb821bfca997ae563fb60bcdcbe505645822f5f0d17fd723bb2353",
-          "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
+          "reason": "certifies a side above the register's reported one which, rounded up at the printed precision, lies at or above the verified upper bound the record already holds, so no case record cites it; the source asks for nothing to be registered from it, and the replay receipts carry its verdict and digest"
         },
         {
           "path": "s12/search/exact/batch/certs/n-92.cert",
           "bytes": 8503,
           "sha256": "5bea16c9fe611605011dbd99f22cc81dea82188b0622f2b7118383c7464c9dcd",
-          "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
+          "reason": "certifies a side above the register's reported one which, rounded up at the printed precision, lies at or above the verified upper bound the record already holds, so no case record cites it; the source asks for nothing to be registered from it, and the replay receipts carry its verdict and digest"
         },
         {
           "path": "s12/search/exact/batch/certs/n-93.cert",
           "bytes": 8593,
           "sha256": "6e451308e52b6c2e14965618fc50745c60d424a7f0b3648ff89c7af06261d7b6",
-          "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
+          "reason": "certifies a side above the register's reported one which, rounded up at the printed precision, lies at or above the verified upper bound the record already holds, so no case record cites it; the source asks for nothing to be registered from it, and the replay receipts carry its verdict and digest"
         },
         {
           "path": "s12/search/exact/batch/certs/n-94.cert",
           "bytes": 8684,
           "sha256": "853befcc12968d33d72078f51e0bd522a95a19298dbe33fb48a771eb85fa37ba",
-          "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
+          "reason": "certifies a side above the register's reported one which, rounded up at the printed precision, lies at or above the verified upper bound the record already holds, so no case record cites it; the source asks for nothing to be registered from it, and the replay receipts carry its verdict and digest"
         },
         {
           "path": "s12/search/exact/batch/certs/n-95.cert",
           "bytes": 8775,
           "sha256": "1e7ed652d8b76ddbd46aa798c6c58a83159533d705a80f323c7db6bb6abaefca",
-          "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
+          "reason": "certifies a side above the register's reported one which, rounded up at the printed precision, lies at or above the verified upper bound the record already holds, so no case record cites it; the source asks for nothing to be registered from it, and the replay receipts carry its verdict and digest"
         },
         {
           "path": "s12/search/exact/batch/certs/n-96.cert",
           "bytes": 8867,
           "sha256": "5b1de8020b055769e6c12dd5560bd8910e67bdd5ab77705489e9c8bae87c872a",
-          "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
+          "reason": "certifies a side above the register's reported one which, rounded up at the printed precision, lies at or above the verified upper bound the record already holds, so no case record cites it; the source asks for nothing to be registered from it, and the replay receipts carry its verdict and digest"
         },
         {
           "path": "s12/search/exact/batch/certs/n-97.cert",
           "bytes": 8959,
           "sha256": "8b298a42f05686fdc0874b478162d0799c0f9a90243c86c3414d32baff97377a",
-          "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
+          "reason": "certifies a side above the register's reported one which, rounded up at the printed precision, lies at or above the verified upper bound the record already holds, so no case record cites it; the source asks for nothing to be registered from it, and the replay receipts carry its verdict and digest"
         },
         {
           "path": "s12/search/exact/batch/certs/n-98.cert",
           "bytes": 9049,
           "sha256": "ed63ea3be2a7956fa8a44f17ad273d0e1265a891e820831271f74917af8c9358",
-          "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
+          "reason": "certifies a side above the register's reported one which, rounded up at the printed precision, lies at or above the verified upper bound the record already holds, so no case record cites it; the source asks for nothing to be registered from it, and the replay receipts carry its verdict and digest"
         },
         {
           "path": "s12/search/exact/batch/certs/n-99.cert",
           "bytes": 9141,
           "sha256": "965cf452c669369b97adc2a78243fb57e24214941d3727c3528e790dc1089ae5",
-          "reason": "certifies a side at or above the register's reported one, and the source asks for nothing to be registered from it; the replay receipts carry its verdict and digest"
+          "reason": "certifies a side above the register's reported one which, rounded up at the printed precision, lies at or above the verified upper bound the record already holds, so no case record cites it; the source asks for nothing to be registered from it, and the replay receipts carry its verdict and digest"
         },
         {
           "path": "s12/search/exact/batch/inputs/n-1.txt",

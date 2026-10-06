@@ -413,9 +413,12 @@ sources:
       minimisation reimplemented. Its author
       wrote on jlevy/squares#375 that the solver, the checkers and the batch were written
       with Claude (Anthropic) as a coding and research agent, directed and reviewed by
-      him. MIT. The packet web/evand-square-packing-2026-10-05/ retains the 48 improving
-      certificates, both checkers, the solver and the reports, and pins the rest by
-      digest; the n = 17 certificate is held and left out (think-x4v4).
+      him. MIT. At 77 further counts the certified side, 1.2e-16 to 9.8e-15 above the
+      printed one, lowers this register's verified ceiling (T-118), which the author
+      offered as an exact replay of the existing bounds without asking for it. The packet
+      web/evand-square-packing-2026-10-05/ retains those 125 certificates, both checkers,
+      the solver and the reports, and pins the rest by digest; the n = 17 certificate is
+      held and left out (think-x4v4).
   - key: '[squarepacker s12 2026]'
     authors: [Ryu]
     year: 2026

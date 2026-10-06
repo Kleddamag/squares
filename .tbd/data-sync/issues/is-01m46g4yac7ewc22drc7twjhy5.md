@@ -3,9 +3,9 @@ type: is
 id: is-01m46g4yac7ewc22drc7twjhy5
 title: "Intake pass 2026-10-05 evening: #363, #366, #368, wand125 43050ed, think-4qit; n = 17 items (#358 comment, #367) held for the n17 branches"
 kind: epic
-status: open
+status: closed
 priority: 1
-version: 15
+version: 17
 labels:
   - result-import
 dependencies: []
@@ -25,5 +25,13 @@ child_order_hints:
   - is-01m474b3danvrq5dr74c1hdzhv
   - is-01m478czzp4p015zm4dsxdt89c
 created_at: 2026-10-05T17:00:28.359Z
-updated_at: 2026-10-06T00:04:18.038Z
+updated_at: 2026-10-06T07:48:03.999Z
+closed_at: 2026-10-06T07:48:03.999Z
+close_reason: "Lanes merged in #369 (34e87a86b); remaining children moved to think-wyf4"
+resolution: null
+duplicate_of: null
 ---
+
+## Notes
+
+2026-10-06: the evening lanes merged in #369; the remaining children are #368's close (think-neei, owner's call on close_when) and the n = 17 hold (think-x4v4, moved under think-wyf4).

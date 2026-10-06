@@ -3,9 +3,9 @@ type: is
 id: is-01m47heaqfpfzme4eeahsyqgrw
 title: "Record #369's five verdict replies (#363, #366, #282, #368, #375) and #366's two new comments in result-requests.yaml"
 kind: task
-status: in_progress
+status: closed
 priority: 1
-version: 3
+version: 4
 delegate: claude-code@vm
 labels:
   - result-import
@@ -14,8 +14,12 @@ parent_id: is-01m47hea1vkqx8h5wzdzcyqs5k
 hold: null
 hold_until: null
 created_at: 2026-10-06T02:42:18.990Z
-updated_at: 2026-10-06T03:04:03.926Z
+updated_at: 2026-10-06T07:47:50.585Z
 started_at: 2026-10-06T02:46:46.490Z
+closed_at: 2026-10-06T07:47:50.585Z
+close_reason: "Recorded in #380 (merged c4f00832)"
+resolution: null
+duplicate_of: null
 ---
 
 ## Notes

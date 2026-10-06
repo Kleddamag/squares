@@ -361,11 +361,12 @@ OPTIMALITY_REVIEW_HISTORY = (
         version="v0.1.6",
         first_published="October 6, 2026",
         result_scope=(
-            "The uniqueness corollary is registered as T-102 and no longer called "
+            "The uniqueness corollary is registered as T-112 and no longer called "
             "unreviewed, with its prior art: Trump's rigidity claim is local, and "
             "Stromquist's three optimal packings of ten squares show uniqueness is not "
             "automatic; and Queuingtheorydotcom's report of a complete Lean 4 "
-            "formalization of October 6 is cited, with its native-compiler trust base."
+            "formalization of October 6 is cited, with its native-compiler trust base "
+            "and the project's statement audit."
         ),
     ),
     PublicationHistoryEntry(

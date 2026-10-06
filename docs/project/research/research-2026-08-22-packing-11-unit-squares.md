@@ -917,20 +917,20 @@ Use the structured form to query or plot; use these tables to read.
 | --- | --- | --- | --- | --- | --- | --- |
 | 12 | 4 | grid | — | 3.9715 | counting | 0.0285 |
 | 17 | 4.67553009 | hand | 18 | 4.660443 | counting | 0.0151 |
-| 18 | `(7/2) + (1/2)√7` = 4.82287566 | hand | — | 4.704 | counting | 0.1189 |
-| 19 | `3 + (4/3)√2` = 4.88561808 | hand | — | 4.8229 | counting | 0.0627 |
-| 20 | 5 | grid | — | 4.9 | counting | 0.1 |
-| 26 | `(7/2) + (3/2)√2` = 5.62132034 | extension | — | 5.5325 | counting | 0.0888 |
-| 27 | `5 + (1/2)√2` = 5.70710678 | strip | — | 5.635 | counting | 0.0721 |
-| 28 | 5.82444462 | annealing | 6 | 5.7225 | counting | 0.1019 |
-| 29 | 5.93383346 | annealing | — | 5.7975 | counting | 0.1363 |
-| 30 | 6 | grid | — | 5.875 | counting | 0.125 |
+| 18 | `(7/2) + (1/2)√7` = 4.82287566 | hand | — | 4.705 | counting | 0.1179 |
+| 19 | `3 + (4/3)√2` = 4.88561808 | hand | — | 4.825 | counting | 0.0606 |
+| 20 | 5 | grid | — | 4.905 | counting | 0.095 |
+| 26 | `(7/2) + (3/2)√2` = 5.62132034 | extension | — | 5.545 | counting | 0.0763 |
+| 27 | `5 + (1/2)√2` = 5.70710678 | strip | — | 5.6435 | counting | 0.0636 |
+| 28 | 5.82444462 | annealing | 6 | 5.735 | counting | 0.0894 |
+| 29 | 5.93383346 | annealing | — | 5.81 | counting | 0.1238 |
+| 30 | 6 | grid | — | 5.8835 | counting | 0.1165 |
 | 31 | 6 | grid | — | 5.9525 | counting | 0.0475 |
 | 37 | 6.59861961 | hand | 8 | 6.44 | counting | 0.1586 |
 | 38 | `6 + (1/2)√2` = 6.70710678 | strip | — | 6.545 | counting | 0.1621 |
-| 39 | 6.81072208 | annealing | 5 | 6.635 | counting | 0.1757 |
+| 39 | 6.81072208 | annealing | 5 | 6.65 | counting | 0.1607 |
 | 40 | `4 + 2 √2` = 6.82842712 | hand | — | 6.7 | counting | 0.1284 |
-| 41 | 6.92669309 | annealing | 42 | 6.76 | counting | 0.1667 |
+| 41 | 6.92669309 | annealing | 42 | 6.775 | counting | 0.1517 |
 | 42 | 7 | grid | — | 6.8475 | counting | 0.1525 |
 | 43 | 7 | grid | — | 6.9075 | counting | 0.0925 |
 | 44 | 7 | grid | — | 6.9725 | counting | 0.0275 |

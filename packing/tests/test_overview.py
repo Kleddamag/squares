@@ -3053,10 +3053,10 @@ def test_every_result_shows_its_status_and_its_place_on_the_frontier(
     assert t060 in _row(results, "T-037")
     assert not overview_sections.is_superseded(by_id["T-036"])
     in_part = render_recent_results.SUPERSEDED_IN_PART
-    # Since 2026-10-06 T-102, the uniqueness corollary of T-060, implies its equality
+    # Since 2026-10-06 T-112, the uniqueness corollary of T-060, implies its equality
     # clause, so its mark names both.
     assert by_id["T-036"].supersessions == (
-        render_recent_results.Supersession(in_part, ("T-060", "T-102")),
+        render_recent_results.Supersession(in_part, ("T-060", "T-112")),
     )
     assert t060 in _row(results, "T-036")
     # A superseding result that no replay has confirmed is named as a report, in the
@@ -3174,12 +3174,12 @@ def test_every_result_shows_its_kind(
     # own standing; `in part` leads the quiet text after it, so the line reads as the
     # register's does, and the status column is no wider than `superseded` (think-kmi4).
     t060 = f'<a href="{overview_sections.result_url("T-060")}">T-060</a>'
-    t102 = f'<a href="{overview_sections.result_url("T-102")}">T-102</a>'
+    t112 = f'<a href="{overview_sections.result_url("T-112")}">T-112</a>'
     marks = overview_sections.supersession_marks(t036)
     assert marks == (
         '<span class="site-superseded"><span class="site-chip" '
         'data-standing="superseded-in-part">superseded</span> '
-        f'<span class="site-cell-quiet">in part by {t060} and {t102}</span></span>'
+        f'<span class="site-cell-quiet">in part by {t060} and {t112}</span></span>'
     )
     (in_part,) = t036.supersessions
     assert html.unescape(re.sub(r"<[^>]+>", "", marks)) == in_part.words()
@@ -3496,10 +3496,12 @@ def _template_paragraphs(section: str) -> list[str]:
 #: question after a colon, the lower bound glossed as a size below which no packing can
 #: exist, and an example of each bound at $n = 29$, the case's current bounds as the
 #: record reports them (the owner, 2026-10-03: "make the examples current"), each
-#: written as the record writes it, with $\le$ and $\ge$. The lower is called reported:
-#: wand125's certificate is not yet replayed here, and its result stands at V0/C0, so
-#: "proved" alone would put a reported bound in a verified one's place
-#: (`test_the_intros_examples_are_the_records`).
+#: written as the record writes it, with $\le$ and $\ge$. The lower is called reported,
+#: the field `test_the_intros_examples_are_the_records` compares it with: when this was
+#: written wand125's certificate was not yet replayed here and stood at V0/C0, so "proved"
+#: alone would have put a reported bound in a verified one's place. Its 6 October
+#: certificate (T-108) is replayed here at V3/C3, so both lanes now hold 5.81, and the
+#: word stays the owner's.
 PROBLEM_STATEMENT = (
     (
         "The square packing problem is a simple and long-standing problem in geometry: "
@@ -3512,18 +3514,19 @@ PROBLEM_STATEMENT = (
         "for most $n$. In many cases, $s(n)$ is known only to lie between an upper bound "
         "(the size of the enclosing square for the tightest packing ever discovered, such "
         "as $s(29) \\le 5.934$) and a lower bound (a size below which it is proved that no "
-        "packing can exist, such as the reported $s(29) \\ge 5.7975$)."
+        "packing can exist, such as the reported $s(29) \\ge 5.81$)."
     ),
 )
 
 
 def test_the_intros_examples_are_the_records() -> None:
     """The introduction's two examples are case 29's current bounds: its lower example
-    is the reported lower bound, wand125's 5.79 of 2026-09-28 when this was written and
-    its 2319/400 = 5.7975 of 1 October (T-074) since,
-    and its upper example is the reported upper bound rounded up, which also stands at
-    or above the verified ceiling, so it is itself a proved ceiling. A new bound at
-    $n = 29$ that leaves an example stale fails here rather than on the page."""
+    is the reported lower bound, wand125's 5.79 of 2026-09-28 when this was written,
+    its 2319/400 = 5.7975 of 1 October (T-074) after it, and its 581/100 = 5.81 of 6
+    October (T-108) since, and its upper example is the reported upper bound rounded
+    up, which also stands at or above the verified ceiling, so it is itself a proved
+    ceiling. A new bound at $n = 29$ that leaves an example stale fails here rather
+    than on the page."""
     from devtools import overview_data, site_documents  # noqa: PLC0415
 
     block = site_documents.intro_block(site_documents.README.read_text(encoding="utf-8"))
@@ -5470,8 +5473,14 @@ def test_a_result_rows_popover_body_comes_from_one_function(
 #: choice of drawing that day (think-k8x9): a regularized case is drawn once, from its
 #: view, and its house drawing no longer ships, which rendered the page at 2,404,813
 #: bytes with the new-result stars, and the ceiling is 2,500,000 again, without the
-#: fetch think-yozo planned for the second drawings.
-PAGE_CEILINGS = {"index.html": 2_700_000, render_overview.RESULTS_PAGE: 1_300_000}
+#: fetch think-yozo planned for the second drawings. The results' short rows took both
+#: past it on 6 October: 2,548,891 and 1,200,769 bytes with the six results of that
+#: morning, and 2,680,770 and 1,332,411 with wand125's ten check2 results after them,
+#: about 13 KB a result on each page. Each ceiling keeps about a hundred kilobytes above
+#: the second measurement. Merged with main's T-101 the same day, as T-102 to T-111, they
+#: measured 2,727,614 and 1,379,239 bytes, above both earlier ceilings and about 70 KB
+#: under these.
+PAGE_CEILINGS = {"index.html": 2_800_000, render_overview.RESULTS_PAGE: 1_450_000}
 
 
 def test_no_page_carries_a_result_overview(

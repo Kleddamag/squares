@@ -949,7 +949,7 @@ the symmetry lemma, capture and inclusion, and the local theorem then makes its 
 image the construction.
 So, on the same complete exclusion and capture ensemble, every optimal packing is the
 construction up to the eight symmetries of the container and relabeling of the
-squares.[^gpt6] The Squares Project registers this corollary separately as T-102. It
+squares.[^gpt6] The Squares Project registers this corollary separately as T-112. It
 rests on T-060’s evidence and adds no computation; its one new step, that each premise
 is stated for a side at most $T$, is prose.
 Trump called his packing rigid, meaning that no square can move; that is a local
@@ -1011,8 +1011,10 @@ against the 11SquaresFormalized assembly is recorded in
 not merged as of October 4.[^lean] On October 6 Queuingtheorydotcom reported the
 formalization in 11SquaresFormalized complete: 7,920 Lean modules with no admitted goal,
 its numerical certificates checked by `native_decide`, so that it trusts Lean’s compiler
-as well as its kernel.[^lean-done] The Squares Project has reviewed neither
-formalization, and T-060’s rungs do not rest on them.
+as well as its kernel.[^lean-done] The Squares Project’s statement audit of October 6
+reads its theorem, `ElevenSquare.optimality`, as exactly $s(11)=T$; the full run is
+private, so T-060 records it as the source’s report, and no rung rests on either
+formalization.
 
 The final composition receipt reconciles the completed geometric executions and their
 reviewed dependencies.

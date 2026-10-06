@@ -1,0 +1,10 @@
+{
+ "candidate_file_sha256": "8438a806e1864cd11ae89d9505069e8bffaae8a4d5f9a3705e46268ee827e1de",
+ "kind": "every mass x 0.985, 32 directions",
+ "status": "REFUSED",
+ "exit": 1,
+ "refused_directions": 32,
+ "exact_below_threshold": 31,
+ "source_sha256": "ab6e33e164dbc5c32b40349ba55981b58e630b5eef59534196a69d259404fd7c",
+ "seconds": 16.0
+}

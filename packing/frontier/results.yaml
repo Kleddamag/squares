@@ -6806,7 +6806,13 @@ results:
       Each certificate passed a complete replay here on 2 and 3 October 2026 of the source's
       unchanged checker and per-angle functions on its pinned tarball: all 201 directions,
       each returning the certificate's own record. The replays run the source's own
-      algorithm and are not an independent decision of coverage.
+      algorithm and are not an independent decision of coverage. sqverify-fast, this
+      repository's clean-room measure verifier, also decided each at all 201 net directions
+      of the retained candidate in its census of 3 October 2026, and on 6 October two mutants
+      of each scaled below coverage one were refused: independently re-implemented, beside
+      the reproduction with the producer's code. It shares no code with the source's
+      checker and runs the same net-and-shrink method, so it is a second implementation and
+      not a second method.
 
       wand125 after Tokoharu and Levy,
       [square-packing-bounds](https://github.com/wand125/square-packing-bounds/tree/b00fc70f1904e9b1b567afee056d347f911209e8/certificates).
@@ -6833,22 +6839,30 @@ results:
       Six primary certificates, each on its own reported entry and its own replay entry.
       n = 86, 88 and 93 take the n = 85, 87 and 92 certificates directly, their masses
       being below those counts, so no step is added. Each replay runs the source's C++
-      checker unchanged: one interval-certified method, replayed here, C3. Coverage is
-      decided by that checker alone; the axis tables are a second implementation for one
-      direction and not a second method.
+      checker unchanged: one interval-certified method, replayed here, C3. The axis tables
+      are a second implementation for one direction and not a second method. Each
+      certificate also has a third entry, sqverify-fast at all 201 net directions of the
+      retained candidate: an independent implementation of the same method, recorded beside
+      the rung and not a condition of it.
     evidence:
       - E-n083-wand125-mixed-937-report
       - E-n083-wand125-mixed-937-source-replay
+      - E-n083-wand125-mixed-937-sqverify-fast-replay
       - E-n085-wand125-mixed-946-report
       - E-n085-wand125-mixed-946-source-replay
+      - E-n085-wand125-mixed-946-sqverify-fast-replay
       - E-n087-wand125-mixed-948-report
       - E-n087-wand125-mixed-948-source-replay
+      - E-n087-wand125-mixed-948-sqverify-fast-replay
       - E-n091-wand125-mixed-970-report
       - E-n091-wand125-mixed-970-source-replay
+      - E-n091-wand125-mixed-970-sqverify-fast-replay
       - E-n092-wand125-mixed-975-report
       - E-n092-wand125-mixed-975-source-replay
+      - E-n092-wand125-mixed-975-sqverify-fast-replay
       - E-n096-wand125-mixed-996-report
       - E-n096-wand125-mixed-996-source-replay
+      - E-n096-wand125-mixed-996-sqverify-fast-replay
     reviews:
       - path: docs/project/reviews/review-2026-10-02-wand125-afternoon-certificates.md
         kind: adversarial
@@ -6872,16 +6886,33 @@ results:
       - packing/devtools/audit_wand125_point_and_mixed.py
       - docs/project/reviews/review-2026-10-02-wand125-afternoon-certificates.md
       - docs/project/reviews/review-2026-09-28-wand125-n50-mixed-verifier.md
+      - packing/benchmarks/measure-verifier/census-mixed/census.json
+      - packing/benchmarks/measure-verifier/census-mixed/wand125-mixed-bounds-afternoon-2026-10-02/mixed_n83_L937.jsonl.gz
+      - packing/benchmarks/measure-verifier/census-mixed/wand125-mixed-bounds-afternoon-2026-10-02/mixed_n85_L946.jsonl.gz
+      - packing/benchmarks/measure-verifier/census-mixed/wand125-mixed-bounds-afternoon-2026-10-02/mixed_n87_L948.jsonl.gz
+      - packing/benchmarks/measure-verifier/census-mixed/wand125-mixed-bounds-afternoon-2026-10-02/mixed_n91_L970.jsonl.gz
+      - packing/benchmarks/measure-verifier/census-mixed/wand125-mixed-bounds-afternoon-2026-10-02/mixed_n92_L975.jsonl.gz
+      - packing/benchmarks/measure-verifier/census-mixed/wand125-mixed-bounds-afternoon-2026-10-02/mixed_n96_L996.jsonl.gz
+      - packing/devtools/sqverify_fast_census.py
+      - docs/project/reviews/review-2026-10-05-wand125-october-5-and-independent-replays.md
     controls:
       - packing/tests/test_wand125_checker_controls.py
       - packing/resources/web/wand125-point-and-mixed-2026-10-01/receipts/n37/control.json
+      - packing/benchmarks/measure-verifier/census-mixed/wand125-mixed-bounds-afternoon-2026-10-02/mixed_n83_L937.control.json
+      - packing/benchmarks/measure-verifier/census-mixed/wand125-mixed-bounds-afternoon-2026-10-02/mixed_n85_L946.control.json
+      - packing/benchmarks/measure-verifier/census-mixed/wand125-mixed-bounds-afternoon-2026-10-02/mixed_n87_L948.control.json
+      - packing/benchmarks/measure-verifier/census-mixed/wand125-mixed-bounds-afternoon-2026-10-02/mixed_n91_L970.control.json
+      - packing/benchmarks/measure-verifier/census-mixed/wand125-mixed-bounds-afternoon-2026-10-02/mixed_n92_L975.control.json
+      - packing/benchmarks/measure-verifier/census-mixed/wand125-mixed-bounds-afternoon-2026-10-02/mixed_n96_L996.control.json
+      - packing/tests/test_sqverify_fast_census.py
     next_rung: >-
       V4 and C4 need two adversarial AI reviews by distinct reviewers and a human oversight
       record; one adversarial review is retained, written by the retaining lane before any
       replay. A second machine method would be a method-distinct decision of rotated
-      coverage; the replays here run the source's own checker. The checker's controls were
-      made on the n = 37 certificate of the same kind; mixed-control n96 would put one on a
-      certificate of this release.
+      coverage; the replays here, the source's own checker and sqverify-fast, run one
+      method. The source's checker's controls were made on the n = 37 certificate of the
+      same kind; mixed-control n96 would put one on a certificate of this release.
+      sqverify-fast's controls are on all six.
     notes: >-
       Raised from V0/C1 on 3 October 2026, when the complete replays (think-r7yt) matched
       the shipped runs at all 201 directions, about 36.1 CPU-hours here over the six. The 2
@@ -6893,6 +6924,14 @@ results:
       that the rungs at n = 91 and 93 write nothing there. The source ships a completion
       audit for each count, which is retained; the proof-bundle tarballs are pinned by
       digest and not retained.
+
+      On 6 October 2026 (think-r7yt, lane R4 of think-wyf4) each certificate gained an
+      independent replay entry: its row of the 3 October sqverify-fast census, from reviewed
+      crate source, with a control receipt made that day, on the census route the review of 5 October accepted
+      (docs/project/reviews/review-2026-10-05-wand125-october-5-and-independent-replays.md),
+      whose per-certificate conditions the six meet. The review that read their mathematics
+      is the 2 October review above, the retaining lane's own. No rung moves: each count
+      already rested on the complete replay of the source's checker.
 
   - id: T-076
     kind: lower-bound

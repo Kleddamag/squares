@@ -857,7 +857,7 @@ sources:
     local: resources/web/wand125-mixed-bounds-afternoon-2026-10-02/
     source_key: '[wand125 mixed bounds afternoon 2026-10-02]'
     scope: {n_values: [83, 85, 86, 87, 88, 91, 92, 93, 96]}
-    reviewed: '2026-10-03'
+    reviewed: '2026-10-06'
     source_date: '2026-10-02'
     disposition: current-report
     replay_disposition: case-specific
@@ -865,16 +865,22 @@ sources:
     evidence:
       - E-n083-wand125-mixed-937-report
       - E-n083-wand125-mixed-937-source-replay
+      - E-n083-wand125-mixed-937-sqverify-fast-replay
       - E-n085-wand125-mixed-946-report
       - E-n085-wand125-mixed-946-source-replay
+      - E-n085-wand125-mixed-946-sqverify-fast-replay
       - E-n087-wand125-mixed-948-report
       - E-n087-wand125-mixed-948-source-replay
+      - E-n087-wand125-mixed-948-sqverify-fast-replay
       - E-n091-wand125-mixed-970-report
       - E-n091-wand125-mixed-970-source-replay
+      - E-n091-wand125-mixed-970-sqverify-fast-replay
       - E-n092-wand125-mixed-975-report
       - E-n092-wand125-mixed-975-source-replay
+      - E-n092-wand125-mixed-975-sqverify-fast-replay
       - E-n096-wand125-mixed-996-report
       - E-n096-wand125-mixed-996-source-replay
+      - E-n096-wand125-mixed-996-sqverify-fast-replay
     notes: >-
       Revision b00fc70f1904e9b1b567afee056d347f911209e8, retrieved at 2026-10-02T16:53Z for
       four comments of that afternoon on jlevy/squares#282. Six rectangle densities checked
@@ -887,7 +893,10 @@ sources:
       (T-071) and mixed_n92_L969 (T-069). On 2 and 3 October each passed a complete replay
       here, every direction returning the certificate's record, which put all six and the
       three counts they carry by mass in the verified lane; the proof-bundle tarballs are
-      pinned by digest and not retained. The source's improvement_lower at n = 83, 85 and 87
+      pinned by digest and not retained. sqverify-fast, this repository's clean-room measure
+      verifier, decided all six at all 201 net directions in its census of 3 October, and
+      two mutants of each were refused on 6 October: an independent second implementation
+      beside the source's checker, moving no rung. The source's improvement_lower at n = 83, 85 and 87
       is measured from a value below Green's (review finding AF-1), and at n = 96 the source
       calls Nagamochi's value unproven (AF-3). The same revision's rectangle rungs at n = 91
       and 93 are below these certificates there.

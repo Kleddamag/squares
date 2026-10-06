@@ -187,10 +187,12 @@ def test_the_table_fits_its_track_at_1280_and_scrolls_in_its_wrap_below(
     # at every narrower window: 1192 pixels since the table has no frame (2026-10-02,
     # think-wadm), 1194 before, and 1180 since 3 October 2026, when an exact gap with a
     # numerator or denominator of more than eight digits became its decimal (n = 68's
-    # 4512425581603/15625000000000 was the widest gap; GAP_DIGITS).
+    # 4512425581603/15625000000000 was the widest gap; GAP_DIGITS), and 1165 since 6
+    # October 2026, when Evan Daniel's exact optima (T-098) put the upper lane of 48
+    # counts, n = 68 among them, at their certified sides and narrowed the gap column.
     own = laid[WIDTHS[1]]["table_width"]
     assert own <= wide["table_width"]
-    assert own == pytest.approx(1180, abs=10)
+    assert own == pytest.approx(1165, abs=10)
     for width in WIDTHS[1:]:
         assert laid[width]["scrolls"] > 0, width
         assert laid[width]["table_width"] == pytest.approx(own, abs=1), width

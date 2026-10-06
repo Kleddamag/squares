@@ -809,6 +809,24 @@ sources:
       it. The repository has no credit or AI-assistance statement beyond LICENSE, NOTICE
       and READ_LOG.md. web/wand125-valid7-independent-check-2026-10-03/acquisition/sources.json
       pins the revision. Dated by that revision, 2026-10-03 UTC.
+  - key: '[wand125 valid7 independent check 2026-10-06]'
+    authors: [wand125]
+    year: 2026
+    venue: GitHub
+    dated: '2026-10-06'
+    credit: wand125 after Daniel
+    lineage: independent
+    note: >-
+      wand125/valid7-independent-check at c561dbb3fcea9178599db017f51f56b42ad9f91f, the
+      repository's third commit (2026-10-06T02:36:04Z; its author name is Hiroaki Hosono):
+      "Add the ValidTilt9 check: cover, driver v2, verify_tilt9.sh and README", with the
+      release records-tilt9-v1. It runs the same checker on Evan Daniel's box-9 cover and
+      reports ValidTilt9, the finite premise of s(k^2 - 4) = k for k >= 8 (T-081): 28,350
+      roots, none uncertified, about 766 core-hours. The commit message carries the trailer
+      Co-Authored-By: Claude Opus 5.5, the repository's first statement of AI assistance.
+      Nothing on jlevy/squares has reported it yet; #316 queues an independent check of
+      ValidTilt9. web/wand125-valid7-independent-check-2026-10-06/acquisition/sources.json
+      pins the revision. Dated by that revision, 2026-10-06 UTC.
   - key: '[wand125 Green DS7 Theorem 9 2026-10-02]'
     authors: [wand125]
     year: 2026

@@ -25,8 +25,8 @@ second implementation agrees.
 
 ## The Short Version
 
-- **88** programs: **33** external and **55** first-party; **68** decide claims and **20** check premises.
-- **292** of **319** evidence entries name the programs that verified them: 207 reproduced with the producer’s code, 68 independently re-implemented, 10 no relation: a proof, a derivation or a report, 7 re-implemented, sharing the producer’s components.
+- **89** programs: **33** external and **56** first-party; **68** decide claims and **21** check premises.
+- **293** of **320** evidence entries name the programs that verified them: 207 reproduced with the producer’s code, 69 independently re-implemented, 10 no relation: a proof, a derivation or a report, 7 re-implemented, sharing the producer’s components.
 
 ## Programs
 
@@ -38,7 +38,7 @@ second implementation agrees.
 | [`V-wand125-unified-linear-verify-cpp`](#v-wand125-unified-linear-verify-cpp) | unified_linear_verify.cpp | wand125 | external | decides | 6 | 3 |
 | [`V-wand125-verify-portable-py`](#v-wand125-verify-portable-py) | verify_portable.py | wand125 | external | decides | 2 | 1 |
 | [`V-wand125-check-with-sqpack`](#v-wand125-check-with-sqpack) | check_with_sqpack.py | wand125 | external | decides | 5 | 1 |
-| [`V-wand125-valid7-checker`](#v-wand125-valid7-checker) | valid7-independent-check (Tier A, Tier B and the record checker) | wand125 | external | decides | 1 | 1 |
+| [`V-wand125-valid7-checker`](#v-wand125-valid7-checker) | valid7-independent-check (Tier A, Tier B and the record checker) | wand125 | external | decides | 2 | 2 |
 | [`V-evand-zmx2`](#v-evand-zmx2) | zmx2 | Evan Daniel | external | decides | 19 | 9 |
 | [`V-evand-zm-mixed-py`](#v-evand-zm-mixed-py) | zm_mixed.py | Evan Daniel | external | decides | 6 | 6 |
 | [`V-evand-zeromargin-py`](#v-evand-zeromargin-py) | zeromargin.py | Evan Daniel | external | decides | 4 | 2 |
@@ -119,6 +119,7 @@ second implementation agrees.
 | [`V-audit-guzhou-r071`](#v-audit-guzhou-r071) | devtools.audit_guzhou_r071 | Squares Project (Levy) | first-party | premises | 1 | 1 |
 | [`V-replay-guzhou-r071`](#v-replay-guzhou-r071) | devtools.replay_guzhou_r071 | Squares Project (Levy) | first-party | premises | 1 | 1 |
 | [`V-audit-valid7-independent`](#v-audit-valid7-independent) | devtools.audit_valid7_independent | Squares Project (Levy) | first-party | premises | 1 | 1 |
+| [`V-audit-validtilt9-independent`](#v-audit-validtilt9-independent) | devtools.audit_validtilt9_independent | Squares Project (Levy) | first-party | premises | 1 | 1 |
 | [`V-probe-valid7-fixes`](#v-probe-valid7-fixes) | devtools.probe_valid7_fixes | Squares Project (Levy) | first-party | premises | 1 | 1 |
 
 ## By Program
@@ -376,16 +377,17 @@ wand125's adapter that expands its point certificates' direction rule and hands 
 
 **valid7-independent-check (Tier A, Tier B and the record checker)** · wand125 · external · decides · Python · exact-algebraic
 
-Decides Valid7 for Evan Daniel's k = 7 cover: every closed unit square in [0,7]^2, at every centre and angle, has mass at least one, by branch and bound in Fraction and python-flint arithmetic with its own Sturm root isolation.
+Decides Valid7 for Evan Daniel's k = 7 cover: every closed unit square in [0,7]^2, at every centre and angle, has mass at least one, by branch and bound in Fraction and python-flint arithmetic with its own Sturm root isolation. From c561dbb3 it also decides ValidTilt9 for Daniel's box-9 cover, over centres [0, 9/2]^2 and u = tan(theta/2) in [0, 7/16].
 
-- Source: [`packing/resources/web/wand125-valid7-independent-check-2026-10-02/valid7-independent-check/src`](../../packing/resources/web/wand125-valid7-independent-check-2026-10-02/valid7-independent-check/src), [`packing/resources/web/wand125-valid7-independent-check-2026-10-02/valid7-independent-check/verify.sh`](../../packing/resources/web/wand125-valid7-independent-check-2026-10-02/valid7-independent-check/verify.sh), [`packing/resources/web/wand125-valid7-independent-check-2026-10-03/valid7-independent-check/src`](../../packing/resources/web/wand125-valid7-independent-check-2026-10-03/valid7-independent-check/src)
-- Versions run: revision `38dd31b36999` (the repository's first commit, and its release records-v1); SHA-256 `ba73f6c10f81…` (src/tier_b2.py with D-1's accepting line made a refusal, as plan_valid7_replay stage --guard-d1 writes it; the full replay here of 2 and 3 October ran it with the other V2 files unchanged); revision `da469ecff5da` (the second commit, which fixes the 2 October review's D-1 to D-3 and leaves the release records unchanged; its verify.sh ran here on 5 October 2026 on those records)
+- Source: [`packing/resources/web/wand125-valid7-independent-check-2026-10-02/valid7-independent-check/src`](../../packing/resources/web/wand125-valid7-independent-check-2026-10-02/valid7-independent-check/src), [`packing/resources/web/wand125-valid7-independent-check-2026-10-02/valid7-independent-check/verify.sh`](../../packing/resources/web/wand125-valid7-independent-check-2026-10-02/valid7-independent-check/verify.sh), [`packing/resources/web/wand125-valid7-independent-check-2026-10-03/valid7-independent-check/src`](../../packing/resources/web/wand125-valid7-independent-check-2026-10-03/valid7-independent-check/src), [`packing/resources/web/wand125-valid7-independent-check-2026-10-06/valid7-independent-check/src`](../../packing/resources/web/wand125-valid7-independent-check-2026-10-06/valid7-independent-check/src), [`packing/resources/web/wand125-valid7-independent-check-2026-10-06/valid7-independent-check/verify_tilt9.sh`](../../packing/resources/web/wand125-valid7-independent-check-2026-10-06/valid7-independent-check/verify_tilt9.sh)
+- Versions run: revision `38dd31b36999` (the repository's first commit, and its release records-v1); SHA-256 `ba73f6c10f81…` (src/tier_b2.py with D-1's accepting line made a refusal, as plan_valid7_replay stage --guard-d1 writes it; the full replay here of 2 and 3 October ran it with the other V2 files unchanged); revision `da469ecff5da` (the second commit, which fixes the 2 October review's D-1 to D-3 and leaves the release records unchanged; its verify.sh ran here on 5 October 2026 on those records); revision `c561dbb3fcea` (the third commit, which adds the box-9 cover, verify_tilt9.sh and the driver's --bmid-u and --bmid-w (run_all.py cd6627de); its ValidTilt9 run, release records-tilt9-v1, ran da469ec's checking modules with the driver 899144f9 and then cd6627de; verify_tilt9.sh and a sample of roots ran here on 6 October 2026)
 - What its authors read and used: [`packing/resources/web/wand125-valid7-independent-check-2026-10-02/valid7-independent-check/READ_LOG.md`](../../packing/resources/web/wand125-valid7-independent-check-2026-10-02/valid7-independent-check/READ_LOG.md)
 - Note: Its read log says Daniel's checker qx2_zm.py and his lemma write-ups were not read; the two share the statement, the cover and its format specification.
 
 | evidence | run | code | results |
 | --- | --- | --- | --- |
 | `E-k2m3-wand125-valid7-independent` | replayed here | independent | T-064 |
+| `E-k2m4-wand125-validtilt9-report` | a third party’s run | independent | T-081 |
 
 ### `V-evand-zmx2`
 
@@ -1653,6 +1655,19 @@ Checks what the Valid7 checker's verify.sh leaves out: the records are the relea
 | evidence | run | code | results |
 | --- | --- | --- | --- |
 | `E-k2m3-wand125-valid7-independent` | replayed here | independent | T-064 |
+
+### `V-audit-validtilt9-independent`
+
+**devtools.audit_validtilt9_independent** · Squares Project (Levy) · first-party · checks premises · Python · exact-algebraic
+
+Checks what wand125's verify_tilt9.sh leaves out of the ValidTilt9 run: the records are the release's and name the retained code, their roots are the grid over ValidTilt9's region once, each root's Tier B leaves fit the options its place in the run gives it, and which lines of the checker also occur in Daniel's. It stages the checker, re-runs a sample of roots against their published leaves, prices the full replay from the sample, and runs two mutant-cover controls. A diagnostic, not a replay.
+
+- Source: [`packing/devtools/audit_validtilt9_independent.py`](../../packing/devtools/audit_validtilt9_independent.py)
+- Versions run: this repository's commits, which Git holds
+
+| evidence | run | code | results |
+| --- | --- | --- | --- |
+| `E-k2m4-wand125-validtilt9-report` | a third party’s run | independent | T-081 |
 
 ### `V-probe-valid7-fixes`
 

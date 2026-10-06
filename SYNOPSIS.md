@@ -1522,8 +1522,8 @@ controller, not permission to blur contracts.
 [Session 183](packing/campaign/agent-sessions/session-183-n17-draw-31.md) ran the one
 state of BC-428’s draw that exp-257 never reached, draw 31, under BC-429 and exp-258,
 with exp-257’s recipe unchanged from the clean run worktree at `cebb5d15a`. It stopped
-with its certification pending (`think-oanv`) and its resource rollups withheld
-(`think-h8oz`).
+with its resource rollups withheld (`think-h8oz`); the hosted fast run of its close
+commit certifies it.
 
 - **Certified residue.** Draw 31 closed in 577 s of wall and passed the standing kernel
   verifier in full in 266 s; `s183-bc429-u31` is admitted, and the census is 36,784

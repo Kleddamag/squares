@@ -6,13 +6,14 @@
 # the research document is generated from this file by python -m devtools.render_research_tables.
 #
 # RE-TEST RATHER THAN INHERIT. A "not retrievable" verdict is a negative search
-# result. This list has now been wrong eight times: Gensane-Ryckelynck, Nagamochi
+# result. This list has now been wrong ten times: Gensane-Ryckelynck, Nagamochi
 # and Wang-Dong-Li were all freely available when re-tested on 2026-08-22, and
 # Markot 2021 was open access at PMC the whole time. Roth-Vaughan was supplied
 # by the requester on the same day. Stromquist's three memoranda were linked
 # directly from the author's publication page. Every entry below carries the
 # date it was last checked and the exact evidence. Trump 2023 and El Moumni
-# 1999 were recovered from public author and institutional routes on 2026-08-27.
+# 1999 were recovered from public author and institutional routes on 2026-08-27,
+# and both Chung-Graham papers from Ron Graham's publication page on 2026-10-05.
 softschema:
   contract: packing.squares:SourceAvailability/v1
   schema: source-availability.schema.yaml
@@ -83,6 +84,23 @@ recovered:
       local-rigidity claim for the 1979 arrangement. It says that an improvement would
       require an essentially different arrangement; it does not prove global
       optimality.
+  - key: "[Chung–Graham 2009]"
+    title: Packing equal squares into a large square
+    how: >
+      Ron Graham's publication page at https://mathweb.ucsd.edu/~ronspubs/ links the
+      authors' copy as 09_03_square_packing.pdf, a 14-page preprint of the JCTA
+      article. It was listed as behind a ScienceDirect paywall with the author's copy
+      unreachable from this environment; the page answered on 2026-10-05, once the
+      session's egress policy was widened, and the copy and its pdftotext extraction
+      are retained.
+  - key: "[Chung–Graham 2020]"
+    title: Efficient packings of unit squares in a large square
+    how: >
+      The same page links the authors' preprint, "to appear in Discrete and
+      Computational Geometry", as pre_square_packing.pdf, 13 pages; retained with its
+      pdftotext extraction on 2026-10-05. It is the preprint, not the published
+      version; the step McClenagan says "has an error in it" can now be read in it,
+      which has not yet been done.
 
 # Still missing. `blocker` is the mechanism, not a guess.
 unretrieved:
@@ -162,30 +180,6 @@ unretrieved:
       Calibration only. Its successor, Markót 2021, is archived and carries the
       same method at n = 31, 32, 33.
     priority: 4
-    route: institutional subscription
-
-  - key: "[Chung–Graham 2009]"
-    title: Packing equal squares into a large square
-    authors: [Fan Chung, Ronald Graham]
-    year: 2009
-    venue: J. Combin. Theory Ser. A 116, 1167-1175
-    blocker: paywall
-    detail: ScienceDirect; an author-hosted copy was not reachable from this environment.
-    depends_on_it: The O(x^{(3+sqrt(2))/7} log x) step in the asymptotic chain.
-    priority: 3
-    route: author's homepage from a browser, or institutional access
-
-  - key: "[Chung–Graham 2020]"
-    title: Efficient packings of unit squares in a large square
-    authors: [Fan Chung, Ronald Graham]
-    year: 2020
-    venue: Discrete Comput. Geom.
-    blocker: paywall
-    detail: Springer.
-    depends_on_it: >
-      The claimed O(x^{3/5}) bound that McClenagan states "has an error in it".
-      Reading it would let us describe the error rather than relay the claim.
-    priority: 3
     route: institutional subscription
 
   - key: "[BSST 1940]"

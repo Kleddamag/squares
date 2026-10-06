@@ -2152,9 +2152,10 @@ covers two values of `n`. Any program should be weighted accordingly.
 
 1. **Retrieve the remaining primaries.** El Moumni (1999) and Trump (2023) are now
    archived with source-faithful notes.
-   The remaining priority routes are Chung–Graham (2009 and 2020) and Arslanov–Bui
-   (2025), each under the three-format archive discipline in
-   [`resources/`](../../../packing/resources/README.md).
+   The Chung–Graham papers (2009 and 2020) were archived on 2026-10-05 from Ron Graham’s
+   publication page, as PDFs with raw extractions and no cleaned transcription yet.
+   The remaining priority route is Arslanov–Bui (2025), under the three-format archive
+   discipline in [`resources/`](../../../packing/resources/README.md).
 2. **Machine-readable record corpus.** A first version now exists:
    [`frontier/`](../../../packing/frontier/README.md) carries one schema-validated
    artifact per `n ≤ 100`, built by parsing the catalogue’s *prose* for upper bounds and
@@ -2355,6 +2356,8 @@ Stromquist’s memoranda on the author’s publication page.
 | **[Stromquist 1984]** Packing Unit Squares Inside Squares, I-III | The author’s official publication page at https://www.walterstromquist.com/publications.html links squares1.pdf, squares2.pdf and squares3.pdf directly; “unpublished” described their publication status, not their present-day retrievability. |
 | **[El Moumni 1999]** Optimal Packings of Unit Squares in a Square | The Hungarian Academy’s REAL-J institutional repository publicly serves the complete published volume at https://real-j.mtak.hu/5478/; the article is PDF pages 287-296 (printed pages 281-290). The full source scan and faithful text extraction are retained locally. No article DOI was verified. |
 | **[Trump 2023]** Packing of 11 unit squares in a square with minimum size | Walter Trump’s public author page at https://trump.de/square-packing/index.htm links the full PDF directly. The author copy and faithful text extraction are retained locally; ResearchGate’s blocked download is no longer the acquisition route. |
+| **[Chung–Graham 2009]** Packing equal squares into a large square | Ron Graham’s publication page at https://mathweb.ucsd.edu/~ronspubs/ links the authors’ copy as 09_03_square_packing.pdf, a 14-page preprint of the JCTA article. It was listed as behind a ScienceDirect paywall with the author’s copy unreachable from this environment; the page answered on 2026-10-05, once the session’s egress policy was widened, and the copy and its pdftotext extraction are retained. |
+| **[Chung–Graham 2020]** Efficient packings of unit squares in a large square | The same page links the authors’ preprint, “to appear in Discrete and Computational Geometry”, as pre_square_packing.pdf, 13 pages; retained with its pdftotext extraction on 2026-10-05. It is the preprint, not the published version; the step McClenagan says “has an error in it” can now be read in it, which has not yet been done. |
 
 <!-- END GENERATED: sources-recovered -->
 
@@ -2371,8 +2374,6 @@ in place of the PDF on a re-test, not that access was assumed to be blocked.
 | **[Arslanov–Bui 2025]** Note on “efficient packings of unit squares in a large square” | 2025 | Discrete Comput. Geom. | paywall | Current continuation of the Kearney-Shiu delta_n / n_r line. |
 | **[MacIver 2026 n17 artifacts]** Supporting C1-C14 certificates, exact ledger, and theorem replay for the seventeen-square lower-bound manuscript | 2026 | Supporting computational artifacts cited by an author-hosted manuscript | unpublished | Independent replay of the historical source claim s(17), s(18) > (40sqrt(2)+19)/17 + 1/200 and assessment of the deformed-scaffold conditional counting method. Neither current verified 459/100 lower bound depends on these artifacts. |
 | **[Plakhta 2021]** Configuration spaces of squares in a rectangle | 2021 | Algebraic & Geometric Topology 21, 1445-1478 | bot-blocked | H-032’s literature routing for affine Morse-Bott analysis of square configuration spaces in a rectangle; it is context and method, not a classification of the exact optimal-moduli spaces asked there. |
-| **[Chung–Graham 2009]** Packing equal squares into a large square | 2009 | J. Combin. Theory Ser. A 116, 1167-1175 | paywall | The O(x^{(3+sqrt(2))/7} log x) step in the asymptotic chain. |
-| **[Chung–Graham 2020]** Efficient packings of unit squares in a large square | 2020 | Discrete Comput. Geom. | paywall | The claimed O(x^{3/5}) bound that McClenagan states “has an error in it”. Reading it would let us describe the error rather than relay the claim. |
 | **[Gardner 1979]** Mathematical Games | 1979 | Scientific American, Oct 1979 (also Nov 1979, Mar 1980, Nov 1980) | print only | Origin of the conjecture Stromquist settled. |
 | **[BSST 1940]** The dissection of rectangles into squares | 1940 | Duke Math. J. 7, 312-340 | paywall | The Smith-diagram correspondence, currently sourced to squaring.net -- an excellent specialist source but a secondary one. The rationality argument that makes the non-transferability section decisive does not depend on it. |
 | **[Markót 2004]** Optimal Packing of 28 Equal Circles in a Unit Square - The First Reliable Solution | 2004 | Numerical Algorithms | paywall | Calibration only. Its successor, Markót 2021, is archived and carries the same method at n = 31, 32, 33. |
@@ -2393,11 +2394,10 @@ Recovering Stromquist’s memoranda closes the largest provenance gap, but the m
 do not close the 2003 proof gap: Memo III asserts the unrestricted lower bound without
 the mechanism needed to check it.
 Exp-017 instead supplies an explicitly source-distinct exact repair.
-The highest-priority remaining acquisitions are Arslanov–Bui (2025) and the Chung–Graham
-2009/2020 asymptotic papers.
-El Moumni (1999) and Trump (2023) are now retained; the claims visible in those sources
-remain bounded to the published small-`n` statements and one arrangement’s local
-structure.
+The highest-priority remaining acquisition is Arslanov–Bui (2025); the Chung–Graham
+2009/2020 asymptotic papers were archived on 2026-10-05. El Moumni (1999) and Trump
+(2023) are now retained; the claims visible in those sources remain bounded to the
+published small-`n` statements and one arrangement’s local structure.
 
 ## Methodology
 
@@ -2428,10 +2428,10 @@ impossible constants.
   digits).
 
 **Sources that could not be retrieved.** Several primaries remain unavailable through
-the routes checked, including the Chung–Graham papers, Arslanov–Bui (2025), the BSST
-1940 paper, Gardner’s print column, and Hämäläinen’s correspondence.
-Claims that still rest on secondary reporting are marked as such and flagged in
-[Open Questions](#open-questions).
+the routes checked, including Arslanov–Bui (2025), the BSST 1940 paper, Gardner’s print
+column, and Hämäläinen’s correspondence; the Chung–Graham papers, long on this list,
+were archived on 2026-10-05. Claims that still rest on secondary reporting are marked as
+such and flagged in [Open Questions](#open-questions).
 
 **Link validation.** All 30 cited URLs were re-checked with `curl` after the third pass.
 Twenty-eight return HTTP 200. Two return bot-blocking codes to automated checkers but

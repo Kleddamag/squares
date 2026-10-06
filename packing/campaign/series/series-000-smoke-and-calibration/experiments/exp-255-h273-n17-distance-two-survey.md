@@ -124,6 +124,13 @@ A placement there would make the near-endpoint stage non-empty, as H-273’s not
 The receipts are under
 [receipts/E](../../../explorations/X048-session-182-overnight/receipts/E/).
 
+## Addendum
+
+2026-10-06: `s182-bc428-u8` (mask 3078077, distance 2) was certified excluded by the
+standing kernel verifier at 00:36 UTC under
+[exp-257](exp-257-h275-n17-unsampled-strata.md), one certified instance among the 95
+distance-2 orbits; exp-255’s unresolved verdict is unchanged.
+
 <!-- This document follows common-doc-guidelines.md.
 See github.com/jlevy/practical-prose and review guidelines before editing.
 -->

@@ -555,3 +555,289 @@ entries:
     verification:
       receipt: packing/campaign/explorations/X048-session-168-pilots/certificates/s182-bc428-u5/verification.json
       verifier: kernel-streamed
+  - name: s182-bc428-u7
+    cells: [corner-SE, corner-NE, side-S0, side-N0, side-W0, side-E0, side-S1, side-N1, side-W1, side-E1, side-N2, side-W2, side-E2, interior-NW, interior-S, interior-N, interior-SE]
+    certifier: kernel
+    # Session 182 BC-428 (H-275): draw 7, stratum c<=2/i4/d6 (69 orbits), a whole 17-cell
+    # residue state closed with SW9's adaptive-row recipe in 1,606 s of wall from the clean
+    # run worktree at cebb5d15a. Admitted in exp-257 by the standing verifier's full pass there.
+    receipt: packing/campaign/explorations/X048-session-182-overnight/receipts/U/kernel-u7-bc428.json
+    certificate: packing/campaign/explorations/X048-session-168-pilots/certificates/s182-bc428-u7
+    status: admitted
+    evidence: packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-257-h275-n17-unsampled-strata.md
+    verification:
+      receipt: packing/campaign/explorations/X048-session-168-pilots/certificates/s182-bc428-u7/verification.json
+      verifier: kernel-streamed
+  - name: s182-bc428-u8
+    cells: [corner-SW, corner-NW, corner-NE, side-S0, side-N0, side-E0, side-S1, side-N1, side-W1, side-S2, side-N2, side-W2, side-E2, interior-NW, interior-W, interior-S, interior-E]
+    certifier: kernel
+    # Session 182 BC-428 (H-275): draw 8, stratum c3/i4/d2 (13 orbits), a whole 17-cell
+    # residue state closed with SW9's adaptive-row recipe in 622 s of wall from the clean
+    # run worktree at cebb5d15a. Admitted in exp-257 by the standing verifier's full pass there.
+    receipt: packing/campaign/explorations/X048-session-182-overnight/receipts/U/kernel-u8-bc428.json
+    certificate: packing/campaign/explorations/X048-session-168-pilots/certificates/s182-bc428-u8
+    status: admitted
+    evidence: packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-257-h275-n17-unsampled-strata.md
+    verification:
+      receipt: packing/campaign/explorations/X048-session-168-pilots/certificates/s182-bc428-u8/verification.json
+      verifier: kernel-streamed
+  - name: s182-bc428-u10
+    cells: [corner-SW, corner-SE, corner-NE, side-N0, side-E0, side-S1, side-N1, side-W1, side-E1, side-S2, side-N2, side-W2, interior-SW, interior-NW, interior-S, interior-N, interior-SE]
+    certifier: kernel
+    # Session 182 BC-428 (H-275): draw 10, stratum c3/i>=5/d>=8 (78 orbits), a whole 17-cell
+    # residue state closed with SW9's adaptive-row recipe in 602 s of wall from the clean
+    # run worktree at cebb5d15a. Admitted in exp-257 by the standing verifier's full pass there.
+    receipt: packing/campaign/explorations/X048-session-182-overnight/receipts/U/kernel-u10-bc428.json
+    certificate: packing/campaign/explorations/X048-session-168-pilots/certificates/s182-bc428-u10
+    status: admitted
+    evidence: packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-257-h275-n17-unsampled-strata.md
+    verification:
+      receipt: packing/campaign/explorations/X048-session-168-pilots/certificates/s182-bc428-u10/verification.json
+      verifier: kernel-streamed
+  - name: s182-bc428-u9
+    cells: [corner-SW, corner-NE, side-S0, side-N0, side-W0, side-E0, side-S1, side-N1, side-W1, side-E1, side-S2, side-N2, side-W2, interior-NW, interior-S, interior-N, interior-SE]
+    certifier: kernel
+    # Session 182 BC-428 (H-275): draw 9, stratum c<=2/i4/d>=8 (56 orbits), a whole 17-cell
+    # residue state closed with SW9's adaptive-row recipe in 1,319 s of wall from the clean
+    # run worktree at cebb5d15a. Admitted in exp-257 by the standing verifier's full pass there.
+    receipt: packing/campaign/explorations/X048-session-182-overnight/receipts/U/kernel-u9-bc428.json
+    certificate: packing/campaign/explorations/X048-session-168-pilots/certificates/s182-bc428-u9
+    status: admitted
+    evidence: packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-257-h275-n17-unsampled-strata.md
+    verification:
+      receipt: packing/campaign/explorations/X048-session-168-pilots/certificates/s182-bc428-u9/verification.json
+      verifier: kernel-streamed
+  - name: s182-bc428-u11
+    cells: [corner-SE, corner-NW, side-S0, side-N0, side-W0, side-E0, side-S1, side-N1, side-E1, side-S2, side-N2, side-W2, side-E2, interior-NW, interior-W, interior-S, interior-E]
+    certifier: kernel
+    # Session 182 BC-428 (H-275): draw 11, stratum c<=2/i4/d4 (30 orbits), a whole 17-cell
+    # residue state closed with SW9's adaptive-row recipe in 1,246 s of wall from the clean
+    # run worktree at cebb5d15a. Admitted in exp-257 by the standing verifier's full pass there.
+    receipt: packing/campaign/explorations/X048-session-182-overnight/receipts/U/kernel-u11-bc428.json
+    certificate: packing/campaign/explorations/X048-session-168-pilots/certificates/s182-bc428-u11
+    status: admitted
+    evidence: packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-257-h275-n17-unsampled-strata.md
+    verification:
+      receipt: packing/campaign/explorations/X048-session-168-pilots/certificates/s182-bc428-u11/verification.json
+      verifier: kernel-streamed
+  - name: s182-bc428-u13
+    cells: [corner-SE, corner-NW, side-S0, side-N0, side-E0, side-S1, side-N1, side-W1, side-S2, side-N2, side-W2, side-E2, interior-SW, interior-W, interior-S, interior-N, interior-E]
+    certifier: kernel
+    # Session 182 BC-428 (H-275): draw 13, stratum c<=2/i>=5/d4 (5 orbits), a whole 17-cell
+    # residue state closed with SW9's adaptive-row recipe in 1,041 s of wall from the clean
+    # run worktree at cebb5d15a. Admitted in exp-257 by the standing verifier's full pass there.
+    receipt: packing/campaign/explorations/X048-session-182-overnight/receipts/U/kernel-u13-bc428.json
+    certificate: packing/campaign/explorations/X048-session-168-pilots/certificates/s182-bc428-u13
+    status: admitted
+    evidence: packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-257-h275-n17-unsampled-strata.md
+    verification:
+      receipt: packing/campaign/explorations/X048-session-168-pilots/certificates/s182-bc428-u13/verification.json
+      verifier: kernel-streamed
+  - name: s182-bc428-u14
+    cells: [corner-SE, corner-NE, side-S0, side-N0, side-W0, side-E0, side-S1, side-N1, side-W1, side-E1, side-S2, side-N2, side-W2, side-E2, interior-SW, interior-NW, interior-SE]
+    certifier: kernel
+    # Session 182 BC-428 (H-275): draw 14, stratum c<=2/i<=3/d>=8 (10 orbits), a whole 17-cell
+    # residue state closed with SW9's adaptive-row recipe in 1,328 s of wall from the clean
+    # run worktree at cebb5d15a. Admitted in exp-257 by the standing verifier's full pass there.
+    receipt: packing/campaign/explorations/X048-session-182-overnight/receipts/U/kernel-u14-bc428.json
+    certificate: packing/campaign/explorations/X048-session-168-pilots/certificates/s182-bc428-u14
+    status: admitted
+    evidence: packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-257-h275-n17-unsampled-strata.md
+    verification:
+      receipt: packing/campaign/explorations/X048-session-168-pilots/certificates/s182-bc428-u14/verification.json
+      verifier: kernel-streamed
+  - name: s182-bc428-u16
+    cells: [corner-SW, corner-SE, corner-NE, side-S0, side-N0, side-W0, side-E0, side-S1, side-N1, side-W1, side-E1, side-N2, side-W2, side-E2, interior-NW, interior-W, interior-SE]
+    certifier: kernel
+    # Session 182 BC-428 (H-275): draw 16, stratum c3/i<=3/d>=8 (17 orbits), a whole 17-cell
+    # residue state closed with SW9's adaptive-row recipe in 2,010 s of wall from the clean
+    # run worktree at cebb5d15a. Admitted in exp-257 by the standing verifier's full pass there.
+    receipt: packing/campaign/explorations/X048-session-182-overnight/receipts/U/kernel-u16-bc428.json
+    certificate: packing/campaign/explorations/X048-session-168-pilots/certificates/s182-bc428-u16
+    status: admitted
+    evidence: packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-257-h275-n17-unsampled-strata.md
+    verification:
+      receipt: packing/campaign/explorations/X048-session-168-pilots/certificates/s182-bc428-u16/verification.json
+      verifier: kernel-streamed
+  - name: s182-bc428-u17
+    cells: [corner-SW, corner-NW, corner-NE, side-S0, side-W0, side-E0, side-S1, side-N1, side-E1, side-S2, side-N2, side-W2, side-E2, interior-SW, interior-NW, interior-N, interior-SE]
+    certifier: kernel
+    # Session 182 BC-428 (H-275): draw 17, stratum c3/i4/d>=8 (97 orbits), a whole 17-cell
+    # residue state closed with SW9's adaptive-row recipe in 1,366 s of wall from the clean
+    # run worktree at cebb5d15a. Admitted in exp-257 by the standing verifier's full pass there.
+    receipt: packing/campaign/explorations/X048-session-182-overnight/receipts/U/kernel-u17-bc428.json
+    certificate: packing/campaign/explorations/X048-session-168-pilots/certificates/s182-bc428-u17
+    status: admitted
+    evidence: packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-257-h275-n17-unsampled-strata.md
+    verification:
+      receipt: packing/campaign/explorations/X048-session-168-pilots/certificates/s182-bc428-u17/verification.json
+      verifier: kernel-streamed
+  - name: s182-bc428-u18
+    cells: [corner-NW, corner-NE, side-S0, side-N0, side-W0, side-E0, side-S1, side-W1, side-E1, side-S2, side-N2, side-E2, interior-SW, interior-NW, interior-W, interior-SE, interior-NE]
+    certifier: kernel
+    # Session 182 BC-428 (H-275): draw 18, stratum c<=2/i>=5/d>=8 (28 orbits), a whole 17-cell
+    # residue state closed with SW9's adaptive-row recipe in 963 s of wall from the clean
+    # run worktree at cebb5d15a. Admitted in exp-257 by the standing verifier's full pass there.
+    receipt: packing/campaign/explorations/X048-session-182-overnight/receipts/U/kernel-u18-bc428.json
+    certificate: packing/campaign/explorations/X048-session-168-pilots/certificates/s182-bc428-u18
+    status: admitted
+    evidence: packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-257-h275-n17-unsampled-strata.md
+    verification:
+      receipt: packing/campaign/explorations/X048-session-168-pilots/certificates/s182-bc428-u18/verification.json
+      verifier: kernel-streamed
+  - name: s182-bc428-u19
+    cells: [corner-SW, corner-SE, corner-NW, corner-NE, side-S0, side-N0, side-W0, side-E0, side-S1, side-N1, side-E1, side-S2, side-N2, side-E2, interior-SW, interior-NW, interior-W]
+    certifier: kernel
+    # Session 182 BC-428 (H-275): draw 19, stratum c4/i<=3/d6 (82 orbits), a whole 17-cell
+    # residue state closed with SW9's adaptive-row recipe in 629 s of wall from the clean
+    # run worktree at cebb5d15a. Admitted in exp-257 by the standing verifier's full pass there.
+    receipt: packing/campaign/explorations/X048-session-182-overnight/receipts/U/kernel-u19-bc428.json
+    certificate: packing/campaign/explorations/X048-session-168-pilots/certificates/s182-bc428-u19
+    status: admitted
+    evidence: packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-257-h275-n17-unsampled-strata.md
+    verification:
+      receipt: packing/campaign/explorations/X048-session-168-pilots/certificates/s182-bc428-u19/verification.json
+      verifier: kernel-streamed
+  - name: s182-bc428-u20
+    cells: [corner-SW, corner-SE, corner-NE, side-S0, side-N0, side-W0, side-E0, side-S1, side-N1, side-W1, side-E1, side-S2, side-W2, side-E2, interior-SW, interior-NW, interior-E]
+    certifier: kernel
+    # Session 182 BC-428 (H-275): draw 20, stratum c3/i<=3/d6 (70 orbits), a whole 17-cell
+    # residue state closed with SW9's adaptive-row recipe in 1,135 s of wall from the clean
+    # run worktree at cebb5d15a. Admitted in exp-257 by the standing verifier's full pass there.
+    receipt: packing/campaign/explorations/X048-session-182-overnight/receipts/U/kernel-u20-bc428.json
+    certificate: packing/campaign/explorations/X048-session-168-pilots/certificates/s182-bc428-u20
+    status: admitted
+    evidence: packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-257-h275-n17-unsampled-strata.md
+    verification:
+      receipt: packing/campaign/explorations/X048-session-168-pilots/certificates/s182-bc428-u20/verification.json
+      verifier: kernel-streamed
+  - name: s182-bc428-u21
+    cells: [corner-SW, corner-SE, corner-NW, corner-NE, side-E0, side-S1, side-N1, side-W1, side-E1, side-S2, side-N2, side-E2, interior-SW, interior-NW, interior-W, interior-N, interior-SE]
+    certifier: kernel
+    # Session 182 BC-428 (H-275): draw 21, stratum c4/i>=5/d>=8 (80 orbits), a whole 17-cell
+    # residue state closed with SW9's adaptive-row recipe in 989 s of wall from the clean
+    # run worktree at cebb5d15a. Admitted in exp-257 by the standing verifier's full pass there.
+    receipt: packing/campaign/explorations/X048-session-182-overnight/receipts/U/kernel-u21-bc428.json
+    certificate: packing/campaign/explorations/X048-session-168-pilots/certificates/s182-bc428-u21
+    status: admitted
+    evidence: packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-257-h275-n17-unsampled-strata.md
+    verification:
+      receipt: packing/campaign/explorations/X048-session-168-pilots/certificates/s182-bc428-u21/verification.json
+      verifier: kernel-streamed
+  - name: s182-bc428-u23
+    cells: [corner-SW, corner-SE, corner-NE, side-S0, side-N0, side-E0, side-N1, side-E1, side-S2, side-N2, side-W2, side-E2, interior-NW, interior-W, interior-S, interior-N, interior-SE]
+    certifier: kernel
+    # Session 182 BC-428 (H-275): draw 23, stratum c3/i>=5/d6 (52 orbits), a whole 17-cell
+    # residue state closed with SW9's adaptive-row recipe in 572 s of wall from the clean
+    # run worktree at cebb5d15a. Admitted in exp-257 by the standing verifier's full pass there.
+    receipt: packing/campaign/explorations/X048-session-182-overnight/receipts/U/kernel-u23-bc428.json
+    certificate: packing/campaign/explorations/X048-session-168-pilots/certificates/s182-bc428-u23
+    status: admitted
+    evidence: packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-257-h275-n17-unsampled-strata.md
+    verification:
+      receipt: packing/campaign/explorations/X048-session-168-pilots/certificates/s182-bc428-u23/verification.json
+      verifier: kernel-streamed
+  - name: s182-bc428-u22
+    cells: [corner-SW, corner-NW, corner-NE, side-N0, side-E0, side-S1, side-N1, side-W1, side-S2, side-N2, side-W2, side-E2, interior-SW, interior-W, interior-S, interior-N, interior-E]
+    certifier: kernel
+    # Session 182 BC-428 (H-275): draw 22, stratum c3/i>=5/d4 (46 orbits), a whole 17-cell
+    # residue state closed with SW9's adaptive-row recipe in 1,462 s of wall from the clean
+    # run worktree at cebb5d15a. Admitted in exp-257 by the standing verifier's full pass there.
+    receipt: packing/campaign/explorations/X048-session-182-overnight/receipts/U/kernel-u22-bc428.json
+    certificate: packing/campaign/explorations/X048-session-168-pilots/certificates/s182-bc428-u22
+    status: admitted
+    evidence: packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-257-h275-n17-unsampled-strata.md
+    verification:
+      receipt: packing/campaign/explorations/X048-session-168-pilots/certificates/s182-bc428-u22/verification.json
+      verifier: kernel-streamed
+  - name: s182-bc428-u24
+    cells: [corner-SW, corner-SE, corner-NW, corner-NE, side-S0, side-N0, side-S1, side-W1, side-E1, side-S2, side-N2, side-W2, side-E2, interior-SW, interior-NW, interior-N, interior-SE]
+    certifier: kernel
+    # Session 182 BC-428 (H-275): draw 24, stratum c4/i4/d>=8 (56 orbits), a whole 17-cell
+    # residue state closed with SW9's adaptive-row recipe in 1,381 s of wall from the clean
+    # run worktree at cebb5d15a. Admitted in exp-257 by the standing verifier's full pass there.
+    receipt: packing/campaign/explorations/X048-session-182-overnight/receipts/U/kernel-u24-bc428.json
+    certificate: packing/campaign/explorations/X048-session-168-pilots/certificates/s182-bc428-u24
+    status: admitted
+    evidence: packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-257-h275-n17-unsampled-strata.md
+    verification:
+      receipt: packing/campaign/explorations/X048-session-168-pilots/certificates/s182-bc428-u24/verification.json
+      verifier: kernel-streamed
+  - name: s182-bc428-u26
+    cells: [corner-SE, corner-NE, side-S0, side-N0, side-W0, side-E0, side-S1, side-N1, side-W1, side-S2, side-N2, side-W2, side-E2, interior-SW, interior-NW, interior-SE, interior-NE]
+    certifier: kernel
+    # Session 182 BC-428 (H-275): draw 26, stratum c<=2/i4/d>=8 (56 orbits), a whole 17-cell
+    # residue state closed with SW9's adaptive-row recipe in 1,097 s of wall from the clean
+    # run worktree at cebb5d15a. Admitted in exp-257 by the standing verifier's full pass there.
+    receipt: packing/campaign/explorations/X048-session-182-overnight/receipts/U/kernel-u26-bc428.json
+    certificate: packing/campaign/explorations/X048-session-168-pilots/certificates/s182-bc428-u26
+    status: admitted
+    evidence: packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-257-h275-n17-unsampled-strata.md
+    verification:
+      receipt: packing/campaign/explorations/X048-session-168-pilots/certificates/s182-bc428-u26/verification.json
+      verifier: kernel-streamed
+  - name: s182-bc428-u25
+    cells: [corner-SW, corner-NE, side-S0, side-N0, side-W0, side-E0, side-S1, side-N1, side-W1, side-E1, side-S2, side-N2, side-E2, interior-NW, interior-W, interior-N, interior-SE]
+    certifier: kernel
+    # Session 182 BC-428 (H-275): draw 25, stratum c<=2/i4/d6 (69 orbits), a whole 17-cell
+    # residue state closed with SW9's adaptive-row recipe in 1,944 s of wall from the clean
+    # run worktree at cebb5d15a. Admitted in exp-257 by the standing verifier's full pass there.
+    receipt: packing/campaign/explorations/X048-session-182-overnight/receipts/U/kernel-u25-bc428.json
+    certificate: packing/campaign/explorations/X048-session-168-pilots/certificates/s182-bc428-u25
+    status: admitted
+    evidence: packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-257-h275-n17-unsampled-strata.md
+    verification:
+      receipt: packing/campaign/explorations/X048-session-168-pilots/certificates/s182-bc428-u25/verification.json
+      verifier: kernel-streamed
+  - name: s182-bc428-u27
+    cells: [corner-SW, corner-SE, corner-NE, side-S0, side-N0, side-W0, side-E0, side-N1, side-E1, side-N2, side-W2, side-E2, interior-SW, interior-NW, interior-S, interior-N, interior-SE]
+    certifier: kernel
+    # Session 182 BC-428 (H-275): draw 27, stratum c3/i>=5/d>=8 (78 orbits), a whole 17-cell
+    # residue state closed with SW9's adaptive-row recipe in 800 s of wall from the clean
+    # run worktree at cebb5d15a. Admitted in exp-257 by the standing verifier's full pass there.
+    receipt: packing/campaign/explorations/X048-session-182-overnight/receipts/U/kernel-u27-bc428.json
+    certificate: packing/campaign/explorations/X048-session-168-pilots/certificates/s182-bc428-u27
+    status: admitted
+    evidence: packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-257-h275-n17-unsampled-strata.md
+    verification:
+      receipt: packing/campaign/explorations/X048-session-168-pilots/certificates/s182-bc428-u27/verification.json
+      verifier: kernel-streamed
+  - name: s182-bc428-u28
+    cells: [corner-SE, corner-NW, corner-NE, side-S0, side-N0, side-W0, side-E0, side-S1, side-N1, side-W1, side-S2, side-N2, side-W2, interior-SW, interior-NW, interior-N, interior-SE]
+    certifier: kernel
+    # Session 182 BC-428 (H-275): draw 28, stratum c3/i4/d>=8 (97 orbits), a whole 17-cell
+    # residue state closed with SW9's adaptive-row recipe in 743 s of wall from the clean
+    # run worktree at cebb5d15a. Admitted in exp-257 by the standing verifier's full pass there.
+    receipt: packing/campaign/explorations/X048-session-182-overnight/receipts/U/kernel-u28-bc428.json
+    certificate: packing/campaign/explorations/X048-session-168-pilots/certificates/s182-bc428-u28
+    status: admitted
+    evidence: packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-257-h275-n17-unsampled-strata.md
+    verification:
+      receipt: packing/campaign/explorations/X048-session-168-pilots/certificates/s182-bc428-u28/verification.json
+      verifier: kernel-streamed
+  - name: s182-bc428-u30
+    cells: [corner-SW, corner-NW, corner-NE, side-S0, side-N0, side-W0, side-E0, side-S1, side-N1, side-W1, side-E1, side-S2, side-N2, side-W2, interior-NW, interior-S, interior-E]
+    certifier: kernel
+    # Session 182 BC-428 (H-275): draw 30, stratum c3/i<=3/d6 (70 orbits), a whole 17-cell
+    # residue state closed with SW9's adaptive-row recipe in 1,866 s of wall from the clean
+    # run worktree at cebb5d15a. Admitted in exp-257 by the standing verifier's full pass there.
+    receipt: packing/campaign/explorations/X048-session-182-overnight/receipts/U/kernel-u30-bc428.json
+    certificate: packing/campaign/explorations/X048-session-168-pilots/certificates/s182-bc428-u30
+    status: admitted
+    evidence: packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-257-h275-n17-unsampled-strata.md
+    verification:
+      receipt: packing/campaign/explorations/X048-session-168-pilots/certificates/s182-bc428-u30/verification.json
+      verifier: kernel-streamed
+  - name: s182-bc428-u29
+    cells: [corner-SW, corner-SE, corner-NW, corner-NE, side-S0, side-N0, side-W0, side-E0, side-N1, side-W1, side-E1, side-S2, side-N2, side-E2, interior-SW, interior-NW, interior-S]
+    certifier: kernel
+    # Session 182 BC-428 (H-275): draw 29, stratum c4/i<=3/d6 (82 orbits), a whole 17-cell
+    # residue state closed with SW9's adaptive-row recipe in 4,644 s of wall from the clean
+    # run worktree at cebb5d15a. Admitted in exp-257 by the standing verifier's full pass there.
+    receipt: packing/campaign/explorations/X048-session-182-overnight/receipts/U/kernel-u29-bc428.json
+    certificate: packing/campaign/explorations/X048-session-168-pilots/certificates/s182-bc428-u29
+    status: admitted
+    evidence: packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-257-h275-n17-unsampled-strata.md
+    verification:
+      receipt: packing/campaign/explorations/X048-session-168-pilots/certificates/s182-bc428-u29/verification.json
+      verifier: kernel-streamed

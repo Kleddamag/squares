@@ -7,11 +7,11 @@ softschema:
   schema: schemas/session-close-report.schema.yaml
   envelope: null
   status: enforced
-count: 180
+count: 181
 generated_by: >-
   uv run --frozen --all-extras --group dev python -m devtools.close_session --render
 totals:
-  sessions_measured: 125
+  sessions_measured: 126
   sessions_unmeasured: 55
   attributed:
     rollups: 297
@@ -35,9 +35,9 @@ totals:
     one_off_code: 7280
     wall_hours: 713.93
 codex_receipts:
-  attributed: 78
+  attributed: 79
   unattributed: 2
-  measured: 80
+  measured: 81
 # Per-session figures below are the logs each session DECLARES. They overlap when
 # sessions share a harness log, so they do not sum to `attributed` above.
 sessions:
@@ -3013,6 +3013,26 @@ sessions:
     active_union_hours: 0.28
     wall_hours: 0.28
     snapshot_incomplete: true
+- id: session-173
+  title: "Opt-in Windows owned-Job actual-worker supervisor"
+  status: stopped
+  primary_bead: think-v00i
+  phases: 2
+  measured: true
+  rollups:
+  - packing/campaign/resource-usage/codex-session-173.yaml
+  turns: null
+  tool_calls: null
+  tool_errors: null
+  one_off_code: null
+  wall_hours: null
+  codex_receipts:
+  - path: packing/campaign/resource-usage/codex-session-173.yaml
+    model_responses: 46
+    agent_hours: 0.52
+    active_union_hours: 0.26
+    wall_hours: 0.26
+    snapshot_incomplete: true
 - id: session-174
   title: "Fixed-witness half-interval octagon augmentation"
   status: stopped
@@ -3155,11 +3175,11 @@ sessions:
     snapshot_incomplete: true
 - id: session-182
   title: "n17 Overnight Lanes"
-  status: in_progress
+  status: stopped
   primary_bead: think-tmz6
-  phases: 3
+  phases: 4
   measured: false
   unmeasured_reason: >-
-    declares no resource measurement
+    native harness data unavailable; Measured, not committed: the harness and sub-agent logs exist, but every rollup this repository's contract writes is keyed by model identifier, which this session's agents may not commit. The owner can add the rollups with close_session --update. The logs, on the run container under /root/.claude/projects/-home-user-squares/: the harness log 6b1ed85f-ba08-5540-8095-4fd66881916f.jsonl, from 2026-10-04T05:54Z to the close, so it also spans work before this session; and the 15 sub-agent logs started at or after 2026-10-05T08:13:53Z under its subagents/ folder (agent-a0b0e4ddf405acc39.jsonl, agent-a3ad468c1d0eaa494.jsonl, agent-a4c8fa035f1ffcdfe.jsonl, agent-a53bf696b86d675e4.jsonl, agent-a5876044abe43c05d.jsonl, agent-a76f70717495baf45.jsonl, agent-a819f6f47909bde6a.jsonl, agent-a9984cf91e54e97ec.jsonl, agent-aa7f27534be946dec.jsonl, agent-ab2288a20d80178d9.jsonl, agent-ab708fe86a4d2a573.jsonl, agent-ac87a45cbae726fa6.jsonl, agent-acf4d10a9500316cf.jsonl, agent-af38a7dfb4a15a2aa.jsonl, agent-af521cc6fd2b8c3aa.jsonl). Excluded: agent-af4f5ec641151fc81.jsonl and agent-ab6ed7d52f8584026.jsonl, started at 2026-10-05T04:46Z, before the session.
   rollups: []
   codex_receipts: []

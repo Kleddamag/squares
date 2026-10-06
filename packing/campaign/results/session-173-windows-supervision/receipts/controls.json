@@ -1,0 +1,217 @@
+{
+  "schema": "packing.windows-supervisor-controls.v1",
+  "baseline_revision": "79419cdfc0da0f253f3fbc8dc622fe85c676b8ec",
+  "parent_observed_revision": "1525d4e03b891d6cbc9a7c0bb3fd1880765cfb65",
+  "tests": "20passed in3.64s after narrow cross-host FFI annotation repair",
+  "ruff": "PASS",
+  "types": "Linux and Windows targeted BasedPyright0errors/0warnings",
+  "allocation_bytes_per_control": 100663296,
+  "maximum_declared_allocation_bytes": 134217728,
+  "outer_timeout_seconds": 60,
+  "outer_worker_stop_bytes": 536870912,
+  "controls": [
+    {
+      "schema": "packing.windows-supervisor.v1",
+      "status": "success",
+      "timeout_seconds": 3.0,
+      "sample_interval_seconds": 0.1,
+      "worker_memory_stop_bytes": 268435456,
+      "worker_memory_review_stop_bytes": 268435456,
+      "wall_seconds": 1.1058179000392556,
+      "returncode": 0,
+      "assigned_to_job": true,
+      "active_processes_before_cleanup": 3,
+      "job_active_processes": 0,
+      "job_total_processes": 5,
+      "tree_cleanup_confirmed": true,
+      "cleanup_process_identity_checks": [
+        {
+          "creation_filetime_ticks": 134355689450977953,
+          "exit_signalled": true,
+          "pid": 26404
+        },
+        {
+          "creation_filetime_ticks": 134355689452274032,
+          "exit_signalled": true,
+          "pid": 55264
+        },
+        {
+          "creation_filetime_ticks": 134355689452391470,
+          "exit_signalled": true,
+          "pid": 45364
+        }
+      ],
+      "cleanup_errors": [],
+      "peak_root_working_set_bytes": 5517312,
+      "peak_observed_worker_working_set_bytes": 119164928,
+      "peak_job_committed_bytes": 128393216,
+      "minimum_system_available_memory_bytes": 11181932544,
+      "memory_scope": "per-live-owned-process current and peak working sets; shared-page overcounting sum and Job committed memory separately labelled",
+      "memory_sampling_limit": "Processes that start and exit between samples can be missed; observed per-process OS peaks are not a perfect tree RSS maximum"
+    },
+    {
+      "schema": "packing.windows-supervisor.v1",
+      "status": "timeout",
+      "timeout_seconds": 1.2,
+      "sample_interval_seconds": 0.1,
+      "worker_memory_stop_bytes": 268435456,
+      "worker_memory_review_stop_bytes": 268435456,
+      "wall_seconds": 1.258392499992624,
+      "returncode": 137,
+      "assigned_to_job": true,
+      "active_processes_before_cleanup": 5,
+      "job_active_processes": 0,
+      "job_total_processes": 5,
+      "tree_cleanup_confirmed": true,
+      "cleanup_process_identity_checks": [
+        {
+          "creation_filetime_ticks": 134355689464769283,
+          "exit_signalled": true,
+          "pid": 44844
+        },
+        {
+          "creation_filetime_ticks": 134355689464895765,
+          "exit_signalled": true,
+          "pid": 2216
+        },
+        {
+          "creation_filetime_ticks": 134355689466173596,
+          "exit_signalled": true,
+          "pid": 50380
+        },
+        {
+          "creation_filetime_ticks": 134355689465057705,
+          "exit_signalled": true,
+          "pid": 3592
+        },
+        {
+          "creation_filetime_ticks": 134355689466296773,
+          "exit_signalled": true,
+          "pid": 26160
+        }
+      ],
+      "cleanup_errors": [],
+      "peak_root_working_set_bytes": 5517312,
+      "peak_observed_worker_working_set_bytes": 118910976,
+      "peak_job_committed_bytes": 127684608,
+      "minimum_system_available_memory_bytes": 11187400704,
+      "memory_scope": "per-live-owned-process current and peak working sets; shared-page overcounting sum and Job committed memory separately labelled",
+      "memory_sampling_limit": "Processes that start and exit between samples can be missed; observed per-process OS peaks are not a perfect tree RSS maximum"
+    },
+    {
+      "schema": "packing.windows-supervisor.v1",
+      "status": "worker-memory-stop",
+      "timeout_seconds": 3.0,
+      "sample_interval_seconds": 0.1,
+      "worker_memory_stop_bytes": 83886080,
+      "worker_memory_review_stop_bytes": 268435456,
+      "wall_seconds": 0.2782794000231661,
+      "returncode": 137,
+      "assigned_to_job": true,
+      "active_processes_before_cleanup": 5,
+      "job_active_processes": 0,
+      "job_total_processes": 5,
+      "tree_cleanup_confirmed": true,
+      "cleanup_process_identity_checks": [
+        {
+          "creation_filetime_ticks": 134355689480241680,
+          "exit_signalled": true,
+          "pid": 55028
+        },
+        {
+          "creation_filetime_ticks": 134355689480365092,
+          "exit_signalled": true,
+          "pid": 50316
+        },
+        {
+          "creation_filetime_ticks": 134355689481672764,
+          "exit_signalled": true,
+          "pid": 46416
+        },
+        {
+          "creation_filetime_ticks": 134355689480540113,
+          "exit_signalled": true,
+          "pid": 15292
+        },
+        {
+          "creation_filetime_ticks": 134355689481784531,
+          "exit_signalled": true,
+          "pid": 38892
+        }
+      ],
+      "cleanup_errors": [],
+      "peak_root_working_set_bytes": 5517312,
+      "peak_observed_worker_working_set_bytes": 119164928,
+      "peak_job_committed_bytes": 128442368,
+      "minimum_system_available_memory_bytes": 11182870528,
+      "memory_scope": "per-live-owned-process current and peak working sets; shared-page overcounting sum and Job committed memory separately labelled",
+      "memory_sampling_limit": "Processes that start and exit between samples can be missed; observed per-process OS peaks are not a perfect tree RSS maximum"
+    }
+  ],
+  "independent_acceptance": {
+    "status": "PASS_INDEPENDENT_MEMORY_CONTROL",
+    "inner_status": "worker-memory-stop",
+    "worker_peak": 119312384,
+    "launcher_peak": 5505024,
+    "wall_seconds": 0.27696709998417646,
+    "identities": [
+      {
+        "pid": 33016,
+        "result": "PID absent"
+      },
+      {
+        "pid": 15580,
+        "result": "PID absent"
+      },
+      {
+        "pid": 22412,
+        "result": "PID absent"
+      },
+      {
+        "pid": 41980,
+        "result": "PID absent"
+      },
+      {
+        "pid": 3708,
+        "result": "PID absent"
+      }
+    ],
+    "outer_status": "command-failed",
+    "outer_exit_note": "Expected guard stop code2 is not a supervision defect",
+    "outer_cleanup": true,
+    "inner_job_active_processes": 0,
+    "inner_cleanup_confirmed": true,
+    "inner_cleanup_errors": [],
+    "retained_exit_signals": [
+      {
+        "creation_filetime_ticks": 134355682338348011,
+        "exit_signalled": true,
+        "pid": 33016
+      },
+      {
+        "creation_filetime_ticks": 134355682338470128,
+        "exit_signalled": true,
+        "pid": 15580
+      },
+      {
+        "creation_filetime_ticks": 134355682339715468,
+        "exit_signalled": true,
+        "pid": 22412
+      },
+      {
+        "creation_filetime_ticks": 134355682338625778,
+        "exit_signalled": true,
+        "pid": 41980
+      },
+      {
+        "creation_filetime_ticks": 134355682339839125,
+        "exit_signalled": true,
+        "pid": 3708
+      }
+    ],
+    "review_scope": "AST-normalized lifecycle/FFI comparison plus host gate; no blocking defect after test-only identity-output race fix"
+  },
+  "prototype_adoption": "Opt-in tool accepted for publication; original local P01C supervisor remains intact",
+  "scope": "opt-in Windows supervisor only; no default workflow/CI/kernel/checker changes",
+  "portability_repair": "Explicit dynamic DLL/Structure attributes and named ctypes lookup only; ABI/layout/lifecycle unchanged, unavailable APIs still fail before launch. Root accepted confined FFI fix; prior independent native replay retained, no repeat required."
+}

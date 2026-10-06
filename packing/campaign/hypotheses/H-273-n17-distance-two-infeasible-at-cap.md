@@ -65,6 +65,14 @@ each process stays under its wall ceiling.
 A placement is a candidate until an exact check confirms it, and the run stops there for
 the coordinator.
 
+## Evidence
+
+2026-10-06: `s182-bc428-u8` (mask 3078077, distance 2) was certified excluded by the
+standing kernel verifier at 00:36 UTC under
+[exp-257](../series/series-000-smoke-and-calibration/experiments/exp-257-h275-n17-unsampled-strata.md),
+one certified instance among the 95 distance-2 orbits; exp-255’s unresolved verdict is
+unchanged.
+
 <!-- This document follows common-doc-guidelines.md.
 See github.com/jlevy/practical-prose and review guidelines before editing.
 -->

@@ -130,6 +130,22 @@ def test_the_checker_accepts_an_explicit_unmeasured_stopped_session(
     assert "session-999" in output
 
 
+def test_the_checker_accepts_a_rollup_withheld_for_model_identifiers(
+    monkeypatch, tmp_path: pathlib.Path
+) -> None:
+    """Session 182's case: the logs exist, but every rollup keys turns by model identifier,
+    which its agents may not commit, so the reason says withheld rather than unavailable."""
+    _unmeasured_record(
+        tmp_path,
+        reason="rollup_withheld_model_identifiers",
+        detail="The harness log and 15 sub-agent logs exist; the owner adds the rollups.",
+    )
+    monkeypatch.setattr(checker, "SESSIONS", tmp_path)
+    monkeypatch.setattr(checker, "disposition_bead_presence", lambda _bead: "present")
+
+    assert checker.main() == 0
+
+
 def test_the_checker_refuses_a_well_formed_missing_disposition_bead(
     monkeypatch, tmp_path: pathlib.Path, capsys
 ) -> None:

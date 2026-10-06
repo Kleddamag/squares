@@ -3,17 +3,17 @@ type: is
 id: is-01m22hhptfnyf76kb3248bgcxr
 title: Maintain overnight efficiency and morning research handoff
 kind: task
-status: closed
+status: open
 priority: 1
-version: 7
+version: 9
 spec_path: packing/campaign/agendas/agenda-033-overnight-owner-geometry.md
 labels: []
 dependencies: []
 parent_id: is-01m22hh49r1gb5kkwqb1whwmmp
 created_at: 2026-09-09T07:36:33.870Z
-updated_at: 2026-10-06T08:44:59.029Z
-closed_at: 2026-10-06T08:44:59.029Z
-close_reason: "Finished: the overnight agenda-033 handoff is over; PR137, PR139, PR145 and PR147 all merged on 2026-09-10 (gh: MERGED)."
+updated_at: 2026-10-06T10:12:07.229Z
+closed_at: null
+close_reason: null
 resolution: null
 duplicate_of: null
 ---
@@ -21,4 +21,4 @@ Reconcile nonoverlapping native usage intervals, publish stacked PR checkpoints,
 
 ## Notes
 
-Prior PR145/147 matching certification is complete, and PR137/142/145/147 merged into main1c1db463. The earlier note saying PR145 awaits its full checkpoint is superseded. PR139 now reconciles both strands at0c4c41b4; current combined full checkpoint belongs to think-yl6y and merge to think-zaqc. Retained native publication-tail/aggregate payload on147 remains blocked by automatic approval and must not be republished through another route; local accounting is retained. Dated agenda033 closeout and transfer to the new overnight agenda follow the combined merge, without rerunning old targets or clocks.
+2026-10-06: reopened after the relevance review closed it. Session records name this bead in certification_pending (think-ta8s: sessions 123 and 124; think-gvlg: session 151), and the terminal-session gate requires that bead to be open. It stays open until those sessions are certified or their records name another owner.

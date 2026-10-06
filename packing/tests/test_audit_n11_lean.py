@@ -47,29 +47,19 @@ def test_char_literals_and_raw_strings_do_not_open_strings() -> None:
     assert audit.token_counts(primed)["sorry"] == 1
 
 
-@pytest.mark.parametrize(
-    ("line", "token"),
-    [
-        ("theorem x : 2 + 2 = 4 := by native_decide", "native_decide"),
-        ("theorem x : p := by decide +native", "decide_native"),
-        ("axiom bad : False", "axiom_decl"),
-        ("private axiom bad : False", "axiom_decl"),
-        ("@[implemented_by fastF] def f := 0", "implemented_by"),
-        ('@[extern "c_f"] opaque f : Nat', "extern"),
-        ("set_option debug.skipKernelTC true", "skipKernelTC"),
-        ('local notation "T" => 3', "notation"),
-        ("macro_rules | `(T) => `(3)", "macro"),
-        ("#eval 1", "eval"),
-        ("run_cmd pure ()", "run_cmd"),
-        ("import Lean.Elab.Tactic.Omega", "import_Lean"),
-        ("export ElevenSquare (Optimality)", "export"),
-        ("@[term_elab foo] def elabFoo := 0", "elab_attribute"),
-        ("instance : Sub Point := ⟨fun a b => a⟩", "instance"),
-        ("open Foo renaming bar → baz", "open_renaming"),
-        ("unsafe axiom bad : False", "axiom_decl"),
-        ("theorem x : False := sorry", "sorry"),
-    ],
-)
+ESCAPES = [
+    (line, token)
+    for token, _, line in (
+        row.partition("\t")
+        for row in (Path(__file__).parent / "fixtures/n11-lean/escapes.tsv")
+        .read_text(encoding="utf-8")
+        .splitlines()
+        if row and not row.startswith("#")
+    )
+]
+
+
+@pytest.mark.parametrize(("line", "token"), ESCAPES)
 def test_each_escape_is_found_in_code(line: str, token: str) -> None:
     assert audit.token_counts(line + "\n")[token] == 1
 

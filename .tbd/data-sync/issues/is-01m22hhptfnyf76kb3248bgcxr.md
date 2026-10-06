@@ -3,15 +3,19 @@ type: is
 id: is-01m22hhptfnyf76kb3248bgcxr
 title: Maintain overnight efficiency and morning research handoff
 kind: task
-status: in_progress
+status: closed
 priority: 1
-version: 6
+version: 7
 spec_path: packing/campaign/agendas/agenda-033-overnight-owner-geometry.md
 labels: []
 dependencies: []
 parent_id: is-01m22hh49r1gb5kkwqb1whwmmp
 created_at: 2026-09-09T07:36:33.870Z
-updated_at: 2026-09-10T07:41:58.959Z
+updated_at: 2026-10-06T08:44:59.029Z
+closed_at: 2026-10-06T08:44:59.029Z
+close_reason: "Finished: the overnight agenda-033 handoff is over; PR137, PR139, PR145 and PR147 all merged on 2026-09-10 (gh: MERGED)."
+resolution: null
+duplicate_of: null
 ---
 Reconcile nonoverlapping native usage intervals, publish stacked PR checkpoints, spend one block in four to eight on efficiency, and start finalization at14:30UTC for15:00UTC handoff. Include result dispositions, remaining proof gaps, and clear next actions.
 

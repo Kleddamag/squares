@@ -26,7 +26,7 @@ second implementation agrees.
 ## The Short Version
 
 - **89** programs: **33** external and **56** first-party; **68** decide claims and **21** check premises.
-- **293** of **320** evidence entries name the programs that verified them: 207 reproduced with the producer’s code, 69 independently re-implemented, 10 no relation: a proof, a derivation or a report, 7 re-implemented, sharing the producer’s components.
+- **294** of **321** evidence entries name the programs that verified them: 208 reproduced with the producer’s code, 69 independently re-implemented, 10 no relation: a proof, a derivation or a report, 7 re-implemented, sharing the producer’s components.
 
 ## Programs
 
@@ -48,7 +48,7 @@ second implementation agrees.
 | [`V-evand-qx2-zm-py`](#v-evand-qx2-zm-py) | qx2_zm.py | Evan Daniel | external | decides | 4 | 2 |
 | [`V-evand-verify-cert-py`](#v-evand-verify-cert-py) | verify_cert.py (s12/search/exact/) | Evan Daniel | external | decides | 2 | 1 |
 | [`V-evand-verify-cert2-py`](#v-evand-verify-cert2-py) | verify_cert2.py (s12/search/exact/) | Evan Daniel | external | decides | 2 | 1 |
-| [`V-evand-lean`](#v-evand-lean) | The source's Lean development (lean/) | Evan Daniel | external | decides | 7 | 5 |
+| [`V-evand-lean`](#v-evand-lean) | The source's Lean development (lean/) | Evan Daniel | external | decides | 8 | 5 |
 | [`V-chelokot-lean`](#v-chelokot-lean) | The source's Lean development (formal/) | chelokot | external | decides | 1 | 1 |
 | [`V-kleddamag-n11-verify`](#v-kleddamag-n11-verify) | verify.py | Kleddamag | external | decides | 4 | 2 |
 | [`V-kleddamag-n17-verify`](#v-kleddamag-n17-verify) | verify.py | Kleddamag | external | decides | 11 | 6 |
@@ -559,8 +559,8 @@ The source's second exact checker of the same certificates, written to share no 
 
 Kernel-checks a value of s(n) from a checker-cover hypothesis: for s(13) = 4 the box tree itself, decided by the verified checker ZMTree.check inside Lean; for the other covers and the k^2 - 3 family, the reduction from the hypothesis the source's checkers decide.
 
-- Source: [`packing/resources/web/evand-square-packing-2026-09-26/square-packing/s12/lean`](../../packing/resources/web/evand-square-packing-2026-09-26/square-packing/s12/lean), [`packing/resources/web/evand-square-packing-2026-10-01/source/s12/lean`](../../packing/resources/web/evand-square-packing-2026-10-01/source/s12/lean)
-- Versions run: revision `6aa82ba457e9` (the s(13) build here, Lean 4.33.1 with Mathlib's official cache); revision `08e8a5faa54c` (the k^2 - 3 reduction as retained, not built here)
+- Source: [`packing/resources/web/evand-square-packing-2026-09-26/square-packing/s12/lean`](../../packing/resources/web/evand-square-packing-2026-09-26/square-packing/s12/lean), [`packing/resources/web/evand-square-packing-2026-10-01/source/s12/lean`](../../packing/resources/web/evand-square-packing-2026-10-01/source/s12/lean), [`packing/resources/web/evand-square-packing-2026-10-03/square-packing/s12/lean`](../../packing/resources/web/evand-square-packing-2026-10-03/square-packing/s12/lean)
+- Versions run: revision `6aa82ba457e9` (the s(13) build here, Lean 4.33.1 with Mathlib's official cache); revision `08e8a5faa54c` (the k^2 - 3 reduction as retained, not built here); revision `2eb15455a6f1` (the k^2 - 4 reduction (ValidSplit9.lean), built here on 3 October 2026, Lean 4.33.1 with Mathlib's official cache)
 
 | evidence | run | code | results |
 | --- | --- | --- | --- |
@@ -571,6 +571,7 @@ Kernel-checks a value of s(n) from a checker-cover hypothesis: for s(13) = 4 the
 | `E-n021-evand-mixed-cover-report` | the source’s own run | producer’s code | T-052 |
 | `E-k2m4-evand-family-report` | the source’s own run | producer’s code | T-081 |
 | `E-k2m4-evand-lean-report` | the source’s own run | producer’s code | T-081 |
+| `E-k2m4-evand-bentz4-lean-build` | replayed here | producer’s code | T-081 |
 
 ### `V-chelokot-lean`
 

@@ -339,9 +339,11 @@ verifiers:
     source:
       - packing/resources/web/evand-square-packing-2026-09-26/square-packing/s12/lean
       - packing/resources/web/evand-square-packing-2026-10-01/source/s12/lean
+      - packing/resources/web/evand-square-packing-2026-10-03/square-packing/s12/lean
     versions:
       - {revision: 6aa82ba457e9eaeaaa3af0833600f27f91a2fce3, note: "the s(13) build here, Lean 4.33.1 with Mathlib's official cache"}
       - {revision: 08e8a5faa54c0a7b0bb1cb0134c77d3565ce40c5, note: "the k^2 - 3 reduction as retained, not built here"}
+      - {revision: 2eb15455a6f178213287a84ab4d0576c060baabe, note: "the k^2 - 4 reduction (ValidSplit9.lean), built here on 3 October 2026, Lean 4.33.1 with Mathlib's official cache"}
 
   - id: V-chelokot-lean
     program: The source's Lean development (formal/), built by lake at its pinned toolchain

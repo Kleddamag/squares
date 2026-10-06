@@ -7438,9 +7438,10 @@ results:
       Here the bundle's fast verify.sh passed on the retained bytes; it recomputes no
       tilted leaf. wand125's verify_tilt9.sh and an audit of its records passed here, 30 of
       its roots were certified again here, 21 of them with their published leaves, and two
-      lighter covers were refused; that re-decides about 3% of its recorded cost. Nothing here has yet replayed either
-      run in full or built the reduction into this record's evidence, and the verified
-      lower bounds are unchanged.
+      lighter covers were refused; that re-decides about 3% of its recorded cost. The
+      reduction was built here from the retained bytes on 3 October, with only the three
+      standard axioms. Nothing here has yet replayed either run of ValidTilt9 in full, and
+      the verified lower bounds are unchanged.
 
       Evan Daniel,
       [evand/square-packing](https://github.com/evand/square-packing/tree/2eb15455a6f178213287a84ab4d0576c060baabe/s12/certificates/k2m4),
@@ -7472,10 +7473,11 @@ results:
 
       At k >= 8 it is two parts in series: the finite premise ValidTilt9, reported by the
       source's run (E-k2m4-evand-validtilt9-qx2-report) and by wand125's independent run
-      (E-k2m4-wand125-validtilt9-report), and the reduction from it to every k >= 8,
-      reported by the source's Lean (E-k2m4-evand-lean-report). All three are reports, not
-      replayed here, so the entry is V0, and the claim-chain review of 3 October reads it,
-      C1.
+      (E-k2m4-wand125-validtilt9-report), and the reduction from it to every k >= 8, the
+      source's Lean (E-k2m4-evand-lean-report), built here with its axiom receipt
+      (E-k2m4-evand-bentz4-lean-build). The reduction is replayed and the finite premise is
+      not: both runs of ValidTilt9 are reports, so the premise sets the minimum, the entry
+      is V0, and the claim-chain review of 3 October reads it, C1.
 
       The scope lists the cases this record holds; the theorem's own domain is every k >= 5,
       and a scope that can say so is think-kqi1.
@@ -7484,6 +7486,7 @@ results:
       - E-k2m4-evand-validtilt9-qx2-report
       - E-k2m4-wand125-validtilt9-report
       - E-k2m4-evand-lean-report
+      - E-k2m4-evand-bentz4-lean-build
       - E-basic-grid-upper
     reviews:
       - path: docs/project/reviews/review-2026-10-03-evand-k2m4-claim-chain.md
@@ -7524,10 +7527,9 @@ results:
       226 CPU-hours at the source, in the shards the evand packet's replay plan gives,
       compared root for root with the published record (think-4uir); or wand125's run, the
       independent route, priced here from a sample at about 435 CPU-hours as
-      published, or about 118 under its last options (think-hwpr). And the Lean
-      reduction, built here on 3 October with its axiom receipt, entered as a replayed
-      proof-assistant entry (think-1b7c); the claim chain is reviewed already. Then the
-      verified lower bounds at k = 10 to 18.
+      published, or about 118 under its last options (think-hwpr). The Lean reduction is
+      replayed already (E-k2m4-evand-bentz4-lean-build), and the claim chain is reviewed.
+      Then a replayed entry for ValidTilt9, and the verified lower bounds at k = 10 to 18.
 
       A replay of wand125's run lifts the ValidTilt9
       part only, and with Daniel's own Lean beside it the result's code relation stays that
@@ -7550,7 +7552,10 @@ results:
       a second report of the finite premise (E-k2m4-wand125-validtilt9-report), reviewed
       the same day with no blocking defect
       (docs/project/reviews/review-2026-10-06-wand125-validtilt9-independent-check.md).
-      Reported, audited and sampled here, not replayed, it moves no rung.
+      Reported, audited and sampled here, not replayed, it moves no rung. The same day the
+      Lean build of 3 October entered the evidence as E-k2m4-evand-bentz4-lean-build
+      (think-1b7c), the replayed half of the series; with the premise unreplayed it moves
+      no rung either.
 
   - id: T-082
     kind: lower-bound

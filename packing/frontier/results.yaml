@@ -3231,8 +3231,10 @@ results:
 
       2026-10-06: T-112 registers the uniqueness corollary of T-060, that every packing of
       eleven squares at side T is Trump's up to the eight container symmetries and
-      relabelling, which implies the equality clause. With T-060 it implies the whole of
-      this result.
+      relabelling, which implies the equality clause. Each of the two implies a part of
+      this result and together they imply all of it; the register marks each as a part,
+      since it cannot mark a supersession that only two results make jointly
+      (think-d1bd), so this result stays listed as current.
     superseded_by:
       - result: T-060
         extent: part
@@ -11546,6 +11548,18 @@ results:
           significance, at 5ecb1307b.
         verdict: defect-open
         covers: [T-112]
+      - path: docs/project/reviews/review-2026-10-06-n11-uniqueness-fix-check.md
+        kind: confirming
+        reviewer: Fable, the reviewer of the adversarial review of the same day, prompted separately from the lane that registered and fixed this result, sharing none of its context beyond the brief and the committed record
+        reviewer_kind: ai
+        relation: project
+        date: '2026-10-06'
+        scope: >-
+          Findings U-1 to U-9 of the adversarial review against the merged and renumbered
+          record, at 0df76fc26, with the exact stabiliser re-derived in Q(u) and the
+          quotations checked against the archive.
+        verdict: defects-resolved
+        covers: [T-112]
     artifacts:
       - packing/resources/web/n11-optimality-2026-09-29/source/PROOF.md
       - packing/resources/web/n11-optimality-2026-09-29/receipts/final-composition.json
@@ -11553,25 +11567,30 @@ results:
       - docs/project/reviews/review-2026-10-03-n11-optimality-adversarial-gpt6-pro-unified.md
       - docs/project/reviews/review-2026-10-03-n11-optimality-upstream-delta.md
       - docs/project/reviews/review-2026-10-06-n11-uniqueness-adversarial.md
+      - docs/project/reviews/review-2026-10-06-n11-uniqueness-fix-check.md
     controls:
       - packing/tests/test_n11_composition_joins.py
+      - packing/tests/test_trump11_symmetry.py
     next_rung: >-
       C3 needs the step at S = T mechanised, or reviewed again by a distinct reviewer
       with the oversight record the ladder asks for. The Lean theorem
       ElevenSquare.optimality in 11SquaresFormalized, whose statement the project's audit
       of 6 October reads as s(11) = T, states the lower bound and the construction and no
       equality case; a Lean statement of the equality case would be the route to rung 5,
-      once a formalization is reviewed here. Rungs 4 need what T-060's need: the owner's
-      oversight record and a second adversarial review of the global chain.
+      once a formalization is reviewed here. Rung 4 needs what T-060's rung 4 needs: the
+      owner's oversight record and a second adversarial review of the global chain.
     notes: >-
       Registered on 6 October 2026 by the owner's decision, to state separately what
       the record had held only as a conditional corollary: the paper stated it from
       v0.1.2 and the register registered only optimality. It supersedes T-036's equality
-      clause, and with T-060 the whole of T-036.
+      clause; with T-060 it implies all of T-036, which the register marks as two parts,
+      since a joint supersession has no mark.
 
       Registered as T-102 and renumbered to T-112 when it was merged with main, where
       T-102 to T-111 had been taken the same day. The adversarial review is stored as its
-      reviewer wrote it: its "T-102" is this entry. Its verdict, defect-open, rests on two
+      reviewer wrote it: its "T-102" is this entry. The established date is the registration
+      day: the corollary was stated conditionally in the paper on 3 October, but no
+      record held it as a claim until this entry. Its verdict, defect-open, rests on two
       blocking findings about the registration, not the mathematics: U-1, the id clash,
       and U-2, Lean sentences that duplicated main's import of the formalization; both
       were resolved in the merge.
@@ -11579,8 +11598,10 @@ results:
       Its non-blocking findings were handled the same day:
       S3 for S4 (U-5); the epistemics definition allows finitely many named packings
       (U-6); the entry's limitations say what its certificate and verifiers decide (U-7);
-      the trivial stabiliser and the eight optimal configurations are stated (U-9, checked
-      here numerically, the nearest non-identity image 0.84 away); the novelty basis cites
+      the trivial stabiliser and the eight optimal configurations are stated (U-9), and
+      packing/tests/test_trump11_symmetry.py checks it exactly in the packing's number
+      field: no other symmetry maps more than four of the eleven squares onto squares of
+      the packing; the novelty basis cites
       the retained PROOF.md section 8 rather than an unretained upstream note (U-4); and
       the paper's stale sentence (U-3) is rewritten in its follow-up revision. U-8 fell
       away with U-2.

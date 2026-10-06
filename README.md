@@ -38,7 +38,7 @@ mathematical composition (`V3/C3/S5`: machine-checked, review record pending);
 The same argument, read at side exactly $T$, shows that Trump’s packing is the only
 optimal one up to the eight symmetries of the container and relabelling of the squares:
 [T-112](packing/frontier/RESULTS.md) registers that direct corollary of T-060, which
-adds no computation.
+adds no computation (`V3/C2/S3`: its step at side $T$ is prose).
 The [case record](packing/frontier/n-011.md),
 [review](docs/project/reviews/review-2026-09-29-n11-optimality.md), and
 [retained packet](packing/resources/web/n11-optimality-2026-09-29/README.md) state what

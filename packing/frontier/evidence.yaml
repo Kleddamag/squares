@@ -980,8 +980,8 @@ evidence:
         side S <= T (PROOF.md section 8: the local theorem forces the near-branch packing
         to be the exact construction), and concludes only s(11) = T in section 10. The
         global corollary was first written by GPT-6 Pro's adversarial review received on 3
-        October 2026 and stated conditionally in this project's paper from v0.1.2 (commit
-        1676145d5); before that the paper declined it. No source found proves it. At n =
+        October 2026 and stated conditionally in this project's paper from v0.1.2, of 3
+        October 2026; before that the paper declined it. No source found proves it. At n =
         10 Stromquist 1984 and 2003 give three optimal packings, so uniqueness is not
         automatic at a solved count (Stromquist 1984, memorandum II, p. 1: "Three
         different packings of ten unit squares").

@@ -32,6 +32,7 @@ documents:
   - {path: docs/project/reviews/review-2026-10-06-evand-exact-ceilings.md, role: review, authority: record, lifecycle: retained}
   - {path: docs/project/reviews/review-2026-10-06-evand-exact-ceilings-fix-check.md, role: review, authority: record, lifecycle: retained}
   - {path: docs/project/reviews/review-2026-10-06-n11-uniqueness-adversarial.md, role: review, authority: record, lifecycle: retained}
+  - {path: docs/project/reviews/review-2026-10-06-n11-uniqueness-fix-check.md, role: review, authority: record, lifecycle: retained}
   - {path: docs/project/reviews/review-2026-10-05-guzhou-r071.md, role: review, authority: record, lifecycle: retained}
   - {path: docs/project/reviews/review-2026-10-06-wand125-finer-net-n18-n19.md, role: review, authority: record, lifecycle: retained}
   - {path: docs/project/reviews/review-2026-10-06-wand125-check2-ten-certificates.md, role: review, authority: record, lifecycle: retained}

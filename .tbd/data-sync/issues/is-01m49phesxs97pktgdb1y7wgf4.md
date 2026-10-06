@@ -3,15 +3,19 @@ type: is
 id: is-01m49phesxs97pktgdb1y7wgf4
 title: "D4: workbench data in separate hashed files"
 kind: task
-status: open
+status: in_progress
 priority: 1
-version: 1
+version: 2
 spec_path: docs/project/specs/active/plan-2026-10-06-site-urls-seo-performance.md
+delegate: claude-code@vm
 labels:
   - pages
 dependencies: []
 parent_id: is-01m49ph0abvy6j16zcq4jse39y
+hold: null
+hold_until: null
 created_at: 2026-10-06T22:49:53.213Z
-updated_at: 2026-10-06T22:49:53.213Z
+updated_at: 2026-10-06T22:53:52.112Z
+started_at: 2026-10-06T22:53:52.111Z
 ---
 Lane D. packages/workbench build_site.
